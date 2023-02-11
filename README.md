@@ -10,3 +10,4 @@ A small windows system tray utility that allows you to switch between 3 main GPU
 2. Standard mode (Windows Hybrid) : iGPU and dGPU (Radeon 6700s/6800s) enabled, iGPU drives built in display
 3. Ultimate mode: iGPU and dGPU enabled, but dGPU drives built in display
 
+![Ultimate Mode](https://github.com/seerge/g14-helper/blob/main/ultimate.png)
