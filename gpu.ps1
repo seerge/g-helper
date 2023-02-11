@@ -76,7 +76,7 @@ function Set-ScreenRefreshRate
             { 
                 static public string ChangeRefreshRate(int frequency) 
                 { 
-                    DEVMODE1 dm = GetDevMode1(); 
+                    DEVMODE1 dm = new DEVMODE1(); 
 
                     if (0 != User_32.EnumDisplaySettings(null, User_32.ENUM_CURRENT_SETTINGS, ref dm)) 
                     { 
@@ -114,20 +114,22 @@ function Set-ScreenRefreshRate
                     } 
                 } 
 
-                private static DEVMODE1 GetDevMode1() 
-                { 
-                    DEVMODE1 dm = new DEVMODE1(); 
-                    dm.dmDeviceName = new String(new char[32]); 
-                    dm.dmFormName = new String(new char[32]); 
-                    dm.dmSize = (short)Marshal.SizeOf(dm); 
-                    return dm; 
-                } 
+
             } 
         } 
 "@ # don't indend this line
 
-    Add-Type $pinvokeCode -ErrorAction SilentlyContinue
+    Add-Type $pinvokeCode
     [Display.PrimaryScreen]::ChangeRefreshRate($frequency) 
+}
+
+
+function isLaptopScreenMain {
+    Add-Type -AssemblyName System.Windows.Forms
+    $name = [System.Windows.Forms.Screen]::PrimaryScreen | Select-Object -ExpandProperty "DeviceName"
+    if ($name -eq "\\.\DISPLAY1") {
+        return $true
+    }
 }
 
 function Get-ScreenRefreshRate
@@ -177,7 +179,6 @@ $Menu_Ultimate = New-Object System.Windows.Forms.MenuItem
 $Menu_Ultimate.Text = "Ultimate"
 
 $Menu_RR = New-Object System.Windows.Forms.MenuItem
-$Menu_RR.Text = "Screen Refresh"
 $Menu_RR.Enabled = $false
 
 $Menu_RR60 = New-Object System.Windows.Forms.MenuItem
@@ -203,7 +204,6 @@ $Main_Tool_Icon.contextMenu.MenuItems.AddRange("-")
 $Main_Tool_Icon.contextMenu.MenuItems.AddRange($Menu_RR)
 $Main_Tool_Icon.contextMenu.MenuItems.AddRange($Menu_RR60)
 $Main_Tool_Icon.contextMenu.MenuItems.AddRange($Menu_RR120)
-$Main_Tool_Icon.contextMenu.MenuItems.AddRange("-")
 $Main_Tool_Icon.contextMenu.MenuItems.AddRange($Menu_OD)
 $Main_Tool_Icon.contextMenu.MenuItems.AddRange("-")
 $Main_Tool_Icon.contextMenu.MenuItems.AddRange($Menu_Exit)
@@ -225,13 +225,28 @@ if ($mux_mode -eq 0) {
 }
 
 function CheckScreen {
+
+    $laptopScreen = isLaptopScreenMain;
+    if (-Not $laptopScreen) {
+        $Menu_RR.Text = "External Screen is main";
+        $Menu_RR60.Visible = $false;
+        $Menu_RR120.Visible = $false;
+        $Menu_OD.Visible = $false;
+        return;
+    } else {
+        $Menu_RR.Text = "Screen Refresh"
+        $Menu_RR60.Visible = $true;
+        $Menu_RR120.Visible = $true;
+        $Menu_OD.Visible = $true;
+    }
+
     $refresh_rate = Get-ScreenRefreshRate
     if ($refresh_rate -eq 60) {
-        $Menu_RR.Text = "Screen Refresh: "+$refresh_rate+"Hz" 
+        $Menu_RR.Text = "Laptop Screen Refresh: "+$refresh_rate+"Hz" 
         $Menu_RR60.Checked = $true;
         $Menu_RR120.Checked = $false;
     } elseif ($refresh_rate -eq 120) {
-        $Menu_RR.Text = "Screen Refresh: "+$refresh_rate+"Hz" 
+        $Menu_RR.Text = "Laptop Screen Refresh: "+$refresh_rate+"Hz" 
         $Menu_RR60.Checked = $false;
         $Menu_RR120.Checked = $true;
     }
@@ -281,9 +296,9 @@ CheckScreen
 # Action when after a click on the systray icon
 # ---------------------------------------------------------------------
 $Main_Tool_Icon.Add_Click({                    
+    CheckScreen
     If ($_.Button -eq [Windows.Forms.MouseButtons]::Left) {
         $Main_Tool_Icon.GetType().GetMethod("ShowContextMenu",[System.Reflection.BindingFlags]::Instance -bor [System.Reflection.BindingFlags]::NonPublic).Invoke($Main_Tool_Icon,$null)
-        CheckScreen
     }
 })
 
