@@ -12,6 +12,13 @@ A small windows system tray utility that allows you to switch between 3 main GPU
 
 UPDATE: February 12, 2023
 
-Swithing of performance profiles (including default fan curves) is also available! Swhiching happens via same ASUS WMI low leven commands. Profiles are same as in Armory Crate.
+1. Added switching of **Performance profiles (including default fan curves)** is also available! switching happens via same ASUS WMI low level commands. Profiles are same as in Armory Crate - Silent, Balanced and Turbo.
 
+2. App now monitors (once every 3 seconds) fan speeds and shows them in the menu
+
+3. App will save settings and write a basic log of it's actions to APPDATA\LOCAL directory
+
+Extra: **autostart.ps1** script to schedule autostart of the app (with admin privileges) on every user logon for convenience. Later will be integrated into main app.
+
+--------
 ![Ultimate Mode](https://github.com/seerge/g14-helper/blob/main/ultimate.png)
