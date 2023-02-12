@@ -10,7 +10,7 @@ A small windows system tray utility that allows you to switch between 3 main GPU
 2. Standard mode (Windows Hybrid) : iGPU and dGPU (Radeon 6700s/6800s) enabled, iGPU drives built in display
 3. Ultimate mode: iGPU and dGPU enabled, but dGPU drives built in display
 
-UPDATE: February 12, 2023
+##UPDATE: February 12, 2023
 
 1. Added switching of **Performance profiles (including default fan curves)** is also available! switching happens via same ASUS WMI low level commands. Profiles are same as in Armory Crate - Silent, Balanced and Turbo.
 
