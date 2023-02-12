@@ -1,4 +1,4 @@
-# G14-helper
+# G14-Helper
 
 Designed for Asus Zephyrus G14 2022 (with AMD Radeon iGPU and dGPU). But could potentially work for G14 of 2021 and 2020, G15, X FLOW, and other ROG models.
 
