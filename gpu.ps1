@@ -388,31 +388,38 @@ function SetGPUMode ($gpu_mode = "standard") {
     if ($gpu_mode -eq $script:gpu_mode) {return}
 
     $restart = $false;
+    $changed = $false;
 
     if ($script:gpu_mode -eq "ultimate") {
         $msgBox =  [System.Windows.MessageBox]::Show('Switching off Ultimate Mode requires restart','Reboot now?','OKCancel')
         if  ($msgBox -eq 'OK') {
             Invoke-CimMethod $asushw -MethodName DEVS -Arguments @{Device_ID=$device_mux ; Control_status=1 }
-            $restart = $true;                
+            $restart = $true;
+            $changed = $true;                
         }
     } elseif ($gpu_mode -eq "ultimate") {
         $msgBox =  [System.Windows.MessageBox]::Show('Ultimate mode requires restart','Reboot now?','OKCancel')
         if  ($msgBox -eq 'OK') {
             Invoke-CimMethod $asushw -MethodName DEVS -Arguments @{Device_ID=$device_mux ; Control_status=0 }
-            $restart = $true;                
+            $restart = $true;
+            $changed = $true;                 
         }
     } elseif ($gpu_mode -eq "eco") { 
         UIGPUMode($gpu_mode);
         Invoke-CimMethod $asushw -MethodName DEVS -Arguments @{Device_ID=$device_eco ; Control_status=1 }
+        $changed = $true; 
     } elseif ($gpu_mode -eq "standard") { 
         UIGPUMode($gpu_mode);
         Invoke-CimMethod $asushw -MethodName DEVS -Arguments @{Device_ID=$device_eco ; Control_status=0 }
+        $changed = $true; 
     }
 
-    $script:gpu_mode = $gpu_mode;
-    SaveConfigSetting -Name 'gpu_mode' -Value $gpu_mode
+    if ($changed) {
+        $script:gpu_mode = $gpu_mode;
+        SaveConfigSetting -Name 'gpu_mode' -Value $gpu_mode
+        WriteLog("GPU set to "+$gpu_mode)
+    }
 
-    WriteLog("GPU set to "+$gpu_mode)
 
     if ($restart) {
         UIGPUMode($gpu_mode);

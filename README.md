@@ -18,6 +18,8 @@ UPDATE: February 12, 2023
 
 3. App will save settings and write a basic log of it's actions to APPDATA\LOCAL directory
 
+4. App will reapply Panel Overdrive and Performance mode on each start (based on last setting from config)
+
 Extra: **autostart.ps1** script to schedule autostart of the app (with admin privileges) on every user logon for convenience. Later will be integrated into main app.
 
 --------
