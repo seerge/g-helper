@@ -9,7 +9,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write      
+  contents: read,write      
 
 jobs:
   build:
