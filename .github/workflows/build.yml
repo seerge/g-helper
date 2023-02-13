@@ -27,5 +27,5 @@ jobs:
 
       - uses: actions/upload-artifact@v3
         with:
-          name: artifact
+          name: g14-helper
           path: ./g14-helper.exe
