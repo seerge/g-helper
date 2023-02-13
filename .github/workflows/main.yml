@@ -20,18 +20,11 @@ jobs:
         run: |
           mkdir release
           cp *.exe ./release
-          echo ${{ github.sha }} > ./release/Release.txt
-
-      - name: Archive Artifacts
-        uses: actions/upload-artifact@v2
-        with:
-          name: "G14 Helper"
-          path: release/*
+          zip -r g14-helper.zip ./release
 
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
           files: |
-            ./release/*
-            artifacts/*
+            g14-helper.zip
             

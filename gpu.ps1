@@ -229,30 +229,46 @@ $Menu_Autostart = New-Object System.Windows.Forms.MenuItem("Run on startup")
 $Menu_Exit = New-Object System.Windows.Forms.MenuItem("Exit")
 
 $contextmenu = New-Object System.Windows.Forms.ContextMenu
+
+$contextmenu.MenuItems.AddRange($Menu_Perf_Title)
+$contextmenu.MenuItems.AddRange($Menu_Perf_Silent)
+$contextmenu.MenuItems.AddRange($Menu_Perf_Balanced)
+$contextmenu.MenuItems.AddRange($Menu_Perf_Turbo)
+$contextmenu.MenuItems.AddRange("-")
+
+$contextmenu.MenuItems.AddRange($Menu_Title)
+$contextmenu.MenuItems.AddRange($Menu_Eco)
+$contextmenu.MenuItems.AddRange($Menu_Standard)
+$contextmenu.MenuItems.AddRange($Menu_Ultimate)
+$contextmenu.MenuItems.AddRange("-")
+
+$contextmenu.MenuItems.AddRange($Menu_RR)
+$contextmenu.MenuItems.AddRange($Menu_RR60)
+$contextmenu.MenuItems.AddRange($Menu_RR120)
+$contextmenu.MenuItems.AddRange($Menu_OD)
+
+$contextmenu.MenuItems.AddRange("-")
+
+$Menu_Charge60 = New-Object System.Windows.Forms.MenuItem("60%")
+$Menu_Charge80 = New-Object System.Windows.Forms.MenuItem("80%")
+$Menu_Charge100 = New-Object System.Windows.Forms.MenuItem("100%")
+
+$Submenu_Charge = New-Object System.Windows.Forms.MenuItem("Charge Limit")
+$Submenu_Charge.MenuItems.AddRange($Menu_Charge60)
+$Submenu_Charge.MenuItems.AddRange($Menu_Charge80)
+$Submenu_Charge.MenuItems.AddRange($Menu_Charge100)
+$contextmenu.MenuItems.AddRange($Submenu_Charge)
+
+
+$contextmenu.MenuItems.AddRange("-")
+$contextmenu.MenuItems.AddRange($Menu_Autostart)
+
+$contextmenu.MenuItems.AddRange("-")
+$contextmenu.MenuItems.AddRange($Menu_Exit)
+
+
 $Main_Tool_Icon.ContextMenu = $contextmenu
 
-$Main_Tool_Icon.contextMenu.MenuItems.AddRange($Menu_Perf_Title)
-$Main_Tool_Icon.contextMenu.MenuItems.AddRange($Menu_Perf_Silent)
-$Main_Tool_Icon.contextMenu.MenuItems.AddRange($Menu_Perf_Balanced)
-$Main_Tool_Icon.contextMenu.MenuItems.AddRange($Menu_Perf_Turbo)
-$Main_Tool_Icon.contextMenu.MenuItems.AddRange("-")
-
-$Main_Tool_Icon.contextMenu.MenuItems.AddRange($Menu_Title)
-$Main_Tool_Icon.contextMenu.MenuItems.AddRange($Menu_Eco)
-$Main_Tool_Icon.contextMenu.MenuItems.AddRange($Menu_Standard)
-$Main_Tool_Icon.contextMenu.MenuItems.AddRange($Menu_Ultimate)
-$Main_Tool_Icon.contextMenu.MenuItems.AddRange("-")
-
-$Main_Tool_Icon.contextMenu.MenuItems.AddRange($Menu_RR)
-$Main_Tool_Icon.contextMenu.MenuItems.AddRange($Menu_RR60)
-$Main_Tool_Icon.contextMenu.MenuItems.AddRange($Menu_RR120)
-$Main_Tool_Icon.contextMenu.MenuItems.AddRange($Menu_OD)
-
-$Main_Tool_Icon.contextMenu.MenuItems.AddRange("-")
-$Main_Tool_Icon.contextMenu.MenuItems.AddRange($Menu_Autostart)
-
-$Main_Tool_Icon.contextMenu.MenuItems.AddRange("-")
-$Main_Tool_Icon.contextMenu.MenuItems.AddRange($Menu_Exit)
 
 # Hardware Initialisation
 
@@ -393,6 +409,33 @@ function SetPeformanceMode ($performance_mode = 0) {
     WriteLog("Performance set to "+$performance_mode)
 }
 
+function SetChargeLimit ($charge_limit = 100) {
+
+    $Menu_Charge60.Checked = $false;
+    $Menu_Charge80.Checked = $false;
+    $Menu_Charge100.Checked = $false;
+
+    switch ($charge_limit)
+    {
+        60 {
+            $Menu_Charge60.Checked = $true
+        }
+        80 {
+            $Menu_Charge80.Checked = $true
+        }
+        Default  {
+            $Menu_Charge100.Checked = $true
+            $charge_limit = 100
+        }
+    }    
+
+    SaveConfigSetting -Name 'charge_limit' -Value $charge_limit
+    $Submenu_Charge.Text = "Charge Limit: $charge_limit%" 
+    Invoke-CimMethod $asushw -MethodName DEVS -Arguments @{Device_ID=0x00120057 ; Control_status=$charge_limit }
+    WriteLog("Charge limit set to "+$charge_limit)
+}
+
+
 function SetPanelOverdrive ($overdrive = 1) {
     SaveConfigSetting -Name 'panel_overdrive' -Value $overdrive
     Invoke-CimMethod $asushw -MethodName DEVS -Arguments @{Device_ID=$device_overdrive ; Control_status=$overdrive }
@@ -487,7 +530,7 @@ function UIGPUMode ($gpu_mode) {
             $Main_Tool_Icon.Icon = $icon_eco
         }
         "ultimate" {
-            $script:title_gpu = "GPU: dGPU exclusive"
+            $script:title_gpu = "GPU: dGPU"
             $Menu_Ultimate.Checked = $true
             $Main_Tool_Icon.Icon = $icon_ultimate
         }
@@ -507,6 +550,7 @@ LoadConfig
 
 SetPeformanceMode(GetConfigSetting('performance_mode'))
 SetPanelOverdrive(GetConfigSetting('panel_overdrive'))
+SetChargeLimit(GetConfigSetting('charge_limit'))
 
 GetGPUMode
 
@@ -564,6 +608,18 @@ $Menu_RR60.add_Click({
 $Menu_RR120.add_Click({
     Set-ScreenRefreshRate -Frequency 120
     CheckScreen
+})
+
+$Menu_Charge60.add_Click({
+    SetChargeLimit(60)
+})
+
+$Menu_Charge80.add_Click({
+    SetChargeLimit(80)
+})
+
+$Menu_Charge100.add_Click({
+    SetChargeLimit(100)
 })
 
 $Menu_OD.add_Click({
