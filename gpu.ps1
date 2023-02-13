@@ -4,6 +4,44 @@
 [System.Reflection.Assembly]::LoadWithPartialName('WindowsFormsIntegration')    | out-null
 
 
+Function Get-PSScriptPath {
+    if ([System.IO.Path]::GetExtension($PSCommandPath) -eq '.ps1') {
+      $psScriptPath = $PSCommandPath
+    } else {
+        $psScriptPath = [System.Diagnostics.Process]::GetCurrentProcess().MainModule.FileName
+    }
+    return $psScriptPath
+}
+
+
+function SetAutostart () {
+    $taskName = "G14Helper"
+    $task = Get-ScheduledTask -TaskName $taskName -ErrorAction SilentlyContinue
+    if ($task -ne $null) {return }
+    
+    $scriptDir = Get-PSScriptPath
+    
+    $action = New-ScheduledTaskAction -Execute $scriptDir 
+    $trigger = New-ScheduledTaskTrigger -AtLogon
+    $settings = New-ScheduledTaskSettingsSet -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries
+    
+    $principal = New-ScheduledTaskPrincipal -UserId $env:USERNAME -RunLevel Highest
+    $definition = New-ScheduledTask -Action $action -Principal $principal -Trigger $trigger -Settings $settings -Description "Run $($taskName) at Logon"
+    
+    Register-ScheduledTask -TaskName $taskName -InputObject $definition    
+    SaveConfigSetting -Name 'autostart' -Value 1
+}
+
+function CheckAutostart () {
+    $task = Get-ScheduledTask -TaskName "G14Helper" -ErrorAction SilentlyContinue
+    $Menu_Autostart.Checked = ($task -ne $null)
+}
+
+function DisableAutostart () {
+    Unregister-ScheduledTask -TaskName "G14Helper" -Confirm:$false 
+    SaveConfigSetting -Name 'autostart' -Value 0
+}
+
 function Set-ScreenRefreshRate
 { 
     param ( 
@@ -185,6 +223,9 @@ $Menu_RR60 = New-Object System.Windows.Forms.MenuItem("60Hz")
 $Menu_RR120 = New-Object System.Windows.Forms.MenuItem("120Hz")
 $Menu_OD = New-Object System.Windows.Forms.MenuItem("Panel Overdrive")
 
+
+$Menu_Autostart = New-Object System.Windows.Forms.MenuItem("Run on startup")
+
 $Menu_Exit = New-Object System.Windows.Forms.MenuItem("Exit")
 
 $contextmenu = New-Object System.Windows.Forms.ContextMenu
@@ -206,6 +247,9 @@ $Main_Tool_Icon.contextMenu.MenuItems.AddRange($Menu_RR)
 $Main_Tool_Icon.contextMenu.MenuItems.AddRange($Menu_RR60)
 $Main_Tool_Icon.contextMenu.MenuItems.AddRange($Menu_RR120)
 $Main_Tool_Icon.contextMenu.MenuItems.AddRange($Menu_OD)
+
+$Main_Tool_Icon.contextMenu.MenuItems.AddRange("-")
+$Main_Tool_Icon.contextMenu.MenuItems.AddRange($Menu_Autostart)
 
 $Main_Tool_Icon.contextMenu.MenuItems.AddRange("-")
 $Main_Tool_Icon.contextMenu.MenuItems.AddRange($Menu_Exit)
@@ -465,12 +509,14 @@ SetPeformanceMode(GetConfigSetting('performance_mode'))
 SetPanelOverdrive(GetConfigSetting('panel_overdrive'))
 
 GetGPUMode
+
+CheckAutostart
 CheckScreen
 
 
 $timer = New-Object System.Windows.Forms.Timer
 $timer.Add_Tick({UICheckStats})
-$timer.Interval = 3000
+$timer.Interval = 5000
 $timer.Enabled = $True
 
 # ---------------------------------------------------------------------
@@ -527,6 +573,15 @@ $Menu_OD.add_Click({
         SetPanelOverdrive(1)
     }
     CheckScreen
+})
+
+$Menu_Autostart.add_Click({
+    if ($Menu_Autostart.Checked) {
+        DisableAutostart
+    } else {
+        SetAutostart
+    }
+    CheckAutostart
 })
 
 
