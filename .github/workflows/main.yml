@@ -1,0 +1,26 @@
+name: Main
+
+on: 
+  push:
+    tags:
+      - "v*.*"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Build
+        run: |
+          mkdir release
+          cp *.exe ./release
+          echo ${{ github.sha }} > ./release/Release.txt
+
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: |
+            ./release/*
+            
