@@ -1,6 +1,6 @@
 $taskName = "G14Helper"
 $task = Get-ScheduledTask -TaskName $taskName -ErrorAction SilentlyContinue
-if ($task -ne $null)
+if ($null -ne $task)
 {
     Unregister-ScheduledTask -TaskName $taskName -Confirm:$false 
 }
