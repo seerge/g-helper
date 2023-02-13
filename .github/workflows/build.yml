@@ -35,6 +35,6 @@ jobs:
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
-          files: g14-helper.zip
+          files: artifacts/*
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
