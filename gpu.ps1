@@ -17,7 +17,7 @@ Function Get-PSScriptPath {
 function SetAutostart () {
     $taskName = "G14Helper"
     $task = Get-ScheduledTask -TaskName $taskName -ErrorAction SilentlyContinue
-    if ($task -ne $null) {return }
+    if ($null -ne $task) {return }
     
     $scriptDir = Get-PSScriptPath
     
@@ -34,7 +34,7 @@ function SetAutostart () {
 
 function CheckAutostart () {
     $task = Get-ScheduledTask -TaskName "G14Helper" -ErrorAction SilentlyContinue
-    $Menu_Autostart.Checked = ($task -ne $null)
+    $Menu_Autostart.Checked = ($null -ne $task)
 }
 
 function DisableAutostart () {
