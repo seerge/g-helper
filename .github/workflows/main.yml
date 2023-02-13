@@ -2,7 +2,6 @@ name: Main
 
 on: 
   push:
-    branches: [ "main" ]
     tags:
       - "v*.*"
   
@@ -23,9 +22,16 @@ jobs:
           cp *.exe ./release
           echo ${{ github.sha }} > ./release/Release.txt
 
+      - name: Archive Artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: "G14 Helper"
+          path: release/*
+
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
           files: |
             ./release/*
+            artifacts/*
             
