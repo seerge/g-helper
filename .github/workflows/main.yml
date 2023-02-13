@@ -6,7 +6,10 @@ on:
     tags:
       - "v*.*"
   
-  workflow_dispatch:    
+  workflow_dispatch:
+
+permissions:
+  contents: write      
 
 jobs:
   build:
@@ -22,7 +25,6 @@ jobs:
 
       - name: Release
         uses: softprops/action-gh-release@v1
-        if: startsWith(github.ref, 'refs/tags/')
         with:
           files: |
             ./release/*
