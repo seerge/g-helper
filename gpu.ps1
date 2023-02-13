@@ -203,6 +203,7 @@ $Main_Tool_Icon.Visible = $true
 
 $Menu_Perf_Title = New-Object System.Windows.Forms.MenuItem("Mode")
 $Menu_Perf_Title.Enabled = $false
+
 $Menu_Perf_Silent = New-Object System.Windows.Forms.MenuItem("Silent")
 $Menu_Perf_Balanced = New-Object System.Windows.Forms.MenuItem("Balanced")
 $Menu_Perf_Turbo = New-Object System.Windows.Forms.MenuItem("Turbo")
