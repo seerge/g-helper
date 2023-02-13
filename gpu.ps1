@@ -492,7 +492,7 @@ function UIGPUMode ($gpu_mode) {
             $Main_Tool_Icon.Icon = $icon_ultimate
         }
         Default  {
-            $script:title_gpu = "GPU: Balanced"
+            $script:title_gpu = "GPU: iGPU and dGPU"
             $Menu_Standard.Checked = $true
             $gpu_mode = "standard"
             $Main_Tool_Icon.Icon = $icon_standard
