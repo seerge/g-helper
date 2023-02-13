@@ -16,3 +16,4 @@ $principal = New-ScheduledTaskPrincipal -UserId $env:USERNAME -RunLevel Highest
 $definition = New-ScheduledTask -Action $action -Principal $principal -Trigger $trigger -Settings $settings -Description "Run $($taskName) at Logon"
 
 Register-ScheduledTask -TaskName $taskName -InputObject $definition
+
