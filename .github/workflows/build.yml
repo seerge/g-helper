@@ -4,12 +4,6 @@ name: CI
 
 # Controls when the workflow will run
 on:
-  # Triggers the workflow on push or pull request events but only for the "main" branch
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
-
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
@@ -27,14 +21,17 @@ jobs:
         uses: actions/checkout@v3
   
       - name: Build-artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v2
         with:
-          name: g14-helper
-          path: ./g14-helper.exe
+          name: "G14-Helper"
+          path: g14-helper.exe
       
       - name: Release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@91409e712cf565ce9eff10c87a8d1b11b81757ae
+        if: startsWith(github.ref, 'refs/tags/')
         with:
-          files: artifacts/*
+          # Identify if this is a pre release by checking if the tag name contains -rc, -b, -a
+          prerelease: ${{ contains(github.ref, '-rc') || contains(github.ref, '-b') || contains(github.ref, '-a') }}
+          files: /*
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
