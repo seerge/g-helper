@@ -26,6 +26,17 @@ Profiles are **same** as in Armory Crate, including default fan curves
 4. Laptop screen panel overdrive switch
 5. Start with windows (optional)
 
+
+## How to install
+
+1. Download latest release from [https://github.com/seerge/g14-helper/releases](https://github.com/seerge/g14-helper/releases/download/v0.5.1/g14-helper.zip)
+2. Unzip to a folder of your choice
+3. Run **g14-helper.exe**
+
+_App is written in Powershell and wrapped into executable with https://github.com/MScholtes/PS2EXE . 
+If you don't trust exe - you can always run ghelper.ps1 script by yourself directly._
+
+
 Note: Uses low level ASUS WMI commands to do switching and doens't require Armory Crate to be isntalled at all. 
 Therefore requires Administrator priveledges on Windows to run.
 
