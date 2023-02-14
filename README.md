@@ -29,7 +29,7 @@ Profiles are **same** as in Armory Crate, including default fan curves
 
 ## How to install
 
-1. Download latest release from [https://github.com/seerge/g14-helper/releases](https://github.com/seerge/g14-helper/releases/download/v0.5.1/g14-helper.zip)
+1. Download latest release from https://github.com/seerge/g14-helper/releases
 2. Unzip to a folder of your choice
 3. Run **g14-helper.exe**
 
