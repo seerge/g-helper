@@ -1,26 +1,43 @@
 # G14-Helper
 
-Designed for Asus Zephyrus G14 2022 (with AMD Radeon iGPU and dGPU). But could potentially work for G14 of 2021 and 2020, G15, X FLOW, and other ROG models.
+Designed for Asus Zephyrus G14 2022 (with AMD Radeon iGPU and dGPU). But could and should potentially work for G14 of 2021 and 2020, G15, X FLOW, and other ROG models.
 
-A small windows system tray utility that allows you to switch between 3 main GPU modes (mirroring ones from ASUS Armory Crate). Uses  ASUS WMI commands to do switching and doens't require Armory Crate to be isntalled at all. Requires Administrator priveledges on Windows to run.
+A tiny system tray utility that allows you set performance and GPU profiles for your laptop. Same as ASUS Armory Crate does but without it completely!. 
 
-![Screenshot](https://github.com/seerge/g14-helper/blob/main/g14-helper.png)
+## Performance Profile switching 
+
+Profiles are **same** as in Armory Crate, including default fan curves
+
+1. Silent (minimal or no fans, 45W PPT to CPU)
+2. Balanced (balanced fans, 45W PPT to CPU)
+3. Turbo (intense fans, 125W PPT total, up to 105W PPT to GPU, up to 80W PPT to CPU) 
+
+## GPU Mode switching
 
 1. Eco mode : only low power iGPU (Radeon 680u) enabled, iGPU drives built in display
 2. Standard mode (Windows Hybrid) : iGPU and dGPU (Radeon 6700s/6800s) enabled, iGPU drives built in display
 3. Ultimate mode: iGPU and dGPU enabled, but dGPU drives built in display
 
-## UPDATE: February 12, 2023
+## Extras
 
-1. Added switching of **Performance profiles (including default fan curves)** is also available! switching happens via same ASUS WMI low level commands. Profiles are same as in Armory Crate - Silent, Balanced and Turbo.
+1. **Maximum battery charge rate** limit (60% / 80% / 100%) to preserve your battery
+2. CPU and GPU relative fan speed monitoring 
+3. Laptop screen refresh adjustments for power saving (60hz) and gaming (120hz)
+4. Laptop screen panel overdrive switch
+5. Start with windows (optional)
 
-2. App now monitors (once every 3 seconds) fan speeds and shows them in the menu
+Note: Uses low level ASUS WMI commands to do switching and doens't require Armory Crate to be isntalled at all. 
+Therefore requires Administrator priveledges on Windows to run.
 
-3. App will save settings and write a basic log of it's actions to APPDATA\LOCAL directory
+![Screenshot](https://github.com/seerge/g14-helper/blob/main/g14-helper.png)
 
-4. App will reapply Panel Overdrive and Performance mode on each start (based on last setting from config)
 
-Extra: **autostart.ps1** script to schedule autostart of the app (with admin privileges) on every user logon for convenience. Later will be integrated into main app.
+
+Settings and basic log are located in APPDATA\LOCAL
+
+P.S.: It's not recommended to use app in combination with Armory Crate, cause they adjust same settings.
+Please keep in mind, that if you also run MyASUS app periodically it will also try to adjust same battery charge settings
+
 
 --------
 ![Ultimate Mode](https://github.com/seerge/g14-helper/blob/main/ultimate.png)
