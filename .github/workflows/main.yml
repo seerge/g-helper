@@ -20,6 +20,7 @@ jobs:
         run: |
           mkdir release
           cp *.exe ./release
+          cp ghelper.ps1 ./release
           zip -r g14-helper.zip ./release
 
       - name: Release

@@ -190,8 +190,8 @@ $icon_ultimate = [Drawing.Icon][IO.MemoryStream][Convert]::FromBase64String("AAA
 
 # Init Config and Log
 $ghelper_app_path = "$($env:LOCALAPPDATA)\GHelper"
-$ghelper_config_path = "$($env:LOCALAPPDATA)\GHelper\config.json"
-$ghelper_log_path = "$($env:LOCALAPPDATA)\GHelper\log.txt"
+$ghelper_config_path = "$ghelper_app_path\config.json"
+$ghelper_log_path = "$ghelper_app_path\log.txt"
 
 New-Item -ItemType Directory -Force -Path $ghelper_app_path
 
