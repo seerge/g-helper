@@ -19,13 +19,15 @@ jobs:
       - name: Build
         run: |
           mkdir release
-          cp *.exe ./release
+          cp *.cmd ./release
+          cp *.lnk ./release
           cp ghelper.ps1 ./release
-          zip -r g14-helper.zip ./release
+          zip -r g14-helper-script.zip ./release
 
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
           files: |
-            g14-helper.zip
+            g14-helper-script.zip
+            g14-helper.exe
             

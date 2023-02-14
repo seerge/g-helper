@@ -1,27 +1,40 @@
-[System.Reflection.Assembly]::LoadWithPartialName('System.Windows.Forms')       | out-null
-[System.Reflection.Assembly]::LoadWithPartialName('presentationframework')      | out-null
-[System.Reflection.Assembly]::LoadWithPartialName('System.Drawing')             | out-null
-[System.Reflection.Assembly]::LoadWithPartialName('WindowsFormsIntegration')    | out-null
-
-
-Function Get-PSScriptPath {
-    if ([System.IO.Path]::GetExtension($PSCommandPath) -eq '.ps1') {
-      $psScriptPath = $PSCommandPath
-    } else {
-        $psScriptPath = [System.Diagnostics.Process]::GetCurrentProcess().MainModule.FileName
+# Self-elevate the script
+if (-Not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] 'Administrator')) {
+    if ([int](Get-CimInstance -Class Win32_OperatingSystem | Select-Object -ExpandProperty BuildNumber) -ge 6000) {
+        $CommandLine = "-File `"" + $MyInvocation.MyCommand.Path + "`" " + $MyInvocation.UnboundArguments
+        Start-Process -FilePath PowerShell.exe -Verb Runas -ArgumentList $CommandLine -WindowStyle Hidden
+        Exit
     }
-    return $psScriptPath
 }
 
+# DPI Awareness
+Add-Type -TypeDefinition @'
+using System.Runtime.InteropServices;
+public class ProcessDPI {
+    [DllImport("user32.dll", SetLastError=true)]
+    public static extern bool SetProcessDPIAware();      
+}
+'@
+$null = [ProcessDPI]::SetProcessDPIAware()
+[System.Windows.Forms.Application]::EnableVisualStyles()
+
+Add-Type -AssemblyName PresentationFramework
+Add-Type -AssemblyName System.Windows.Forms
+Add-Type -AssemblyName System.Drawing
+Add-Type -AssemblyName WindowsFormsIntegration
 
 function SetAutostart () {
     $taskName = "G14Helper"
     $task = Get-ScheduledTask -TaskName $taskName -ErrorAction SilentlyContinue
     if ($null -ne $task) {return }
     
-    $scriptDir = Get-PSScriptPath
+    if ([System.IO.Path]::GetExtension($PSCommandPath) -eq '.ps1') {
+        $action = New-ScheduledTaskAction -Execute "powershell" -Argument "-WindowStyle Hidden -File $PSCommandPath"
+    } else {
+        $psScriptPath = [System.Diagnostics.Process]::GetCurrentProcess().MainModule.FileName
+        $action = New-ScheduledTaskAction -Execute $psScriptPath
+    }
     
-    $action = New-ScheduledTaskAction -Execute $scriptDir 
     $trigger = New-ScheduledTaskTrigger -AtLogon
     $settings = New-ScheduledTaskSettingsSet -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries
     
@@ -406,7 +419,7 @@ function SetPeformanceMode ($performance_mode = 0) {
     SaveConfigSetting -Name 'performance_mode' -Value $performance_mode
     UICheckStats
 
-    Invoke-CimMethod $asushw -MethodName DEVS -Arguments @{Device_ID=$device_performance ; Control_status=$performance_mode }
+    Invoke-CimMethod $asushw -MethodName DEVS -Arguments @{Device_ID=$device_performance ; Control_status=$performance_mode }  | Out-Null
     WriteLog("Performance set to "+$performance_mode)
 }
 
@@ -432,14 +445,14 @@ function SetChargeLimit ($charge_limit = 100) {
 
     SaveConfigSetting -Name 'charge_limit' -Value $charge_limit
     $Submenu_Charge.Text = "Charge Limit: $charge_limit%" 
-    Invoke-CimMethod $asushw -MethodName DEVS -Arguments @{Device_ID=0x00120057 ; Control_status=$charge_limit }
+    Invoke-CimMethod $asushw -MethodName DEVS -Arguments @{Device_ID=0x00120057 ; Control_status=$charge_limit } | Out-Null
     WriteLog("Charge limit set to "+$charge_limit)
 }
 
 
 function SetPanelOverdrive ($overdrive = 1) {
     SaveConfigSetting -Name 'panel_overdrive' -Value $overdrive
-    Invoke-CimMethod $asushw -MethodName DEVS -Arguments @{Device_ID=$device_overdrive ; Control_status=$overdrive }
+    Invoke-CimMethod $asushw -MethodName DEVS -Arguments @{Device_ID=$device_overdrive ; Control_status=$overdrive }  | Out-Null
     WriteLog("Panel Overdrive set to "+$overdrive)
 }
 
@@ -647,7 +660,13 @@ $Menu_Exit.add_Click({
     $Main_Tool_Icon.Visible = $false
     Stop-Process $pid
  })
- 
+
+
+# Make PowerShell Disappear
+$windowcode = '[DllImport("user32.dll")] public static extern bool ShowWindowAsync(IntPtr hWnd, int nCmdShow);'
+$asyncwindow = Add-Type -MemberDefinition $windowcode -name Win32ShowWindowAsync -namespace Win32Functions -PassThru
+$null = $asyncwindow::ShowWindowAsync((Get-Process -PID $pid).MainWindowHandle, 0) 
+
 # Force garbage collection just to start slightly lower RAM usage.
 [System.GC]::Collect()
 
@@ -655,3 +674,5 @@ $Menu_Exit.add_Click({
 # This helps with responsiveness, especially when clicking Exit.
 $appContext = New-Object System.Windows.Forms.ApplicationContext
 [void][System.Windows.Forms.Application]::Run($appContext)
+
+
