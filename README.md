@@ -9,7 +9,7 @@ A tiny system tray utility that allows you set performance and GPU profiles for 
 Profiles are **same** as in Armory Crate, including default fan curves
 
 1. Silent (minimal or no fans, 45W PPT to CPU)
-2. Balanced (balanced fans, 45W PPT to CPU)
+2. Balanced (balanced fans, 60W PPT total, up to 45W PPT to CPU)
 3. Turbo (intense fans, 125W PPT total, up to 105W PPT to GPU, up to 80W PPT to CPU) 
 
 ## GPU Mode switching
