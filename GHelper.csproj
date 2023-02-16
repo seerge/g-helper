@@ -1,0 +1,45 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net6.0-windows10.0.22621.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <IsPublishable>True</IsPublishable>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <StartupObject>Program</StartupObject>
+    <ApplicationIcon>Resources\standard.ico</ApplicationIcon>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <COMReference Include="MMC20">
+      <WrapperTool>tlbimp</WrapperTool>
+      <VersionMinor>0</VersionMinor>
+      <VersionMajor>1</VersionMajor>
+      <Guid>8e80422b-cac4-472b-b272-9635f1dfef3b</Guid>
+      <Lcid>0</Lcid>
+      <Isolated>false</Isolated>
+      <EmbedInteropTypes>true</EmbedInteropTypes>
+    </COMReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Resources\standard.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Management" Version="7.0.0" />
+    <PackageReference Include="TaskScheduler" Version="2.10.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Microsoft.Management.Infrastructure">
+      <HintPath>..\..\.nuget\packages\microsoft.management.infrastructure\2.0.0\ref\net451\Microsoft.Management.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Management.Infrastructure.Native">
+      <HintPath>..\..\.nuget\packages\microsoft.management.infrastructure.runtime.win\2.0.0\runtimes\win10-x64\lib\netstandard1.6\Microsoft.Management.Infrastructure.Native.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>
