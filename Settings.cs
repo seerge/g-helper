@@ -116,7 +116,8 @@ namespace GHelper
                     break;
             }
 
-            Program.config.PerformanceMode = PerformanceMode;
+
+            Program.config.setConfig("performance_mode", PerformanceMode);
             Program.wmi.DeviceSet(ASUSWmi.PerformanceMode, PerformanceMode);
 
         }
@@ -125,13 +126,10 @@ namespace GHelper
         public void SetGPUMode(int GPUMode = ASUSWmi.GPUModeStandard)
         { 
 
-            int CurrentGPU = ASUSWmi.GPUModeStandard;
+            int CurrentGPU = Program.config.getConfig("gpu_mode");
 
-            if (((IDictionary<String, object>) Program.config).ContainsKey("gpu_mode")) {
-                CurrentGPU = Program.config.gpu_mode;
-            }
-
-            if (CurrentGPU == GPUMode) { return; }
+            if (CurrentGPU == GPUMode) 
+                return;
 
             var restart = false;
             var changed = false;
@@ -168,9 +166,7 @@ namespace GHelper
             }
 
             if (changed)
-            {
-                Program.config.gpu_mode = GPUMode;
-            }
+                Program.config.setConfig("gpu_mode", GPUMode);
 
             if (restart)
             {
@@ -193,14 +189,17 @@ namespace GHelper
                 case ASUSWmi.GPUModeEco:
                     buttonEco.BackColor = colorActive;
                     groupGPU.Text = "GPU Mode: Eco (iGPU only)";
+                    Program.trayIcon.Icon = new System.Drawing.Icon("Resources/eco.ico");
                     break;
                 case ASUSWmi.GPUModeUltimate:
                     buttonUltimate.BackColor = colorActive;
                     groupGPU.Text = "GPU Mode: Ultimate (dGPU exclusive)";
+                    Program.trayIcon.Icon = new System.Drawing.Icon("Resources/ultimate.ico");
                     break;
                 default:
                     buttonStandard.BackColor = colorActive;
                     groupGPU.Text = "GPU Mode: Eco (iGPU and dGPU)";
+                    Program.trayIcon.Icon = new System.Drawing.Icon("Resources/standard.ico");
                     break;
             }
         }

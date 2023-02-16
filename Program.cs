@@ -1,7 +1,6 @@
 using System;
 using System.Windows.Forms;
 
-using System.Text.Json;
 using System.Management;
 using Microsoft.Win32.TaskScheduler;
 using System.Diagnostics;
@@ -9,10 +8,12 @@ using System.Reflection.Emit;
 using System.Runtime.InteropServices;
 using System.Reflection;
 
-using System.Diagnostics;
-
 using GHelper;
 using System.Dynamic;
+using System.IO;
+using System.Xml.Linq;
+
+using Newtonsoft.Json;
 
 public class ASUSWmi
 {
@@ -89,13 +90,59 @@ public class ASUSWmi
 
 }
 
+public class AppConfig
+{
+
+    string appPath;
+    string configFile;
+
+    public dynamic Config = new ExpandoObject();
+
+    public AppConfig() {
+        
+        appPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)+"\\GHelper";
+        configFile = appPath + "\\config.json";
+
+        if (!System.IO.Directory.Exists(appPath))
+            System.IO.Directory.CreateDirectory(appPath);
+
+        if (File.Exists(configFile))
+        {
+            string text = File.ReadAllText(configFile);
+            Config = JsonConvert.DeserializeObject<ExpandoObject>(text);
+        } else
+        {
+            Config.performance_mode = 0;
+            string jsonString = JsonConvert.SerializeObject(Config);
+            File.WriteAllText(configFile, jsonString);
+        }
+
+    }
+
+    public int getConfig (string name)
+    {
+        var propertyInfo = Config.GetType().GetProperty(name);
+        return propertyInfo.GetValue(Config, null);
+    }
+
+    public void setConfig(string name, int value)
+    {
+        ((IDictionary<String, Object>)Config).TryAdd(name, value);
+        string jsonString = JsonConvert.SerializeObject(Config);
+        File.WriteAllText(configFile, jsonString);
+    }
+
+
+
+}
+
 
 static class Program
 {
-    static NotifyIcon trayIcon;
+    public static NotifyIcon trayIcon;
 
     public static ASUSWmi wmi;
-    public static dynamic config = new System.Dynamic.ExpandoObject();
+    public static AppConfig config;
 
     public static SettingsForm settingsForm;
 
@@ -111,6 +158,8 @@ static class Program
 
         trayIcon.MouseClick += TrayIcon_MouseClick; ;
 
+        config = new AppConfig();
+
         wmi = new ASUSWmi();
         wmi.SubscribeToEvents(WatcherEventArrived);
 
@@ -124,41 +173,32 @@ static class Program
 
         settingsForm.FormClosed += SettingsForm_FormClosed;
 
-        config.PerformanceMode = 0;
-
         Application.Run();
 
     }
 
     public static int GetGPUMode ()
     {
+
         int eco = wmi.DeviceGet(ASUSWmi.GPUEco);
         int mux = wmi.DeviceGet(ASUSWmi.GPUMux);
 
         int GpuMode;
 
         if (mux == 0)
-        {
             GpuMode = ASUSWmi.GPUModeUltimate;
-        }
         else
         {
             if (eco == 1)
-            {
                 GpuMode = ASUSWmi.GPUModeEco;
-            }
             else
-            {
                 GpuMode = ASUSWmi.GPUModeStandard;
-            }
 
             if (mux != 1)
-            {
                 settingsForm.Disable_Ultimate();
-            }
         }
 
-        config.gpu_mode = GpuMode;
+        config.setConfig ("gpu_mode",GpuMode);
 
         return GpuMode;
 
@@ -193,9 +233,7 @@ static class Program
         if (e.Button == MouseButtons.Left)
         {
             if (settingsForm.Visible)
-            {
-                settingsForm.Hide();
-            } else
+                settingsForm.Hide(); else
             {
                 settingsForm.Show();
                 settingsForm.Activate();
@@ -208,7 +246,7 @@ static class Program
     {
         settingsForm.BeginInvoke(delegate
         {
-            settingsForm.SetPerformanceMode(config.PerformanceMode + 1);
+            settingsForm.SetPerformanceMode(config.getConfig("performance_mode") + 1);
         });
     }
 
