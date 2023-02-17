@@ -25,8 +25,8 @@ Profiles are **same** as in Armory Crate, including default fan curves
 1. **Maximum battery charge rate** limit (60% / 80% / 100%) to preserve your battery
 2. CPU and GPU relative fan speed monitoring 
 3. Automatic switching of Standard/Eco GPU modes when laptop is plugged / unplugged!
-4. Start with windows (optional)
-
+4. FN+F5 an M4 (Rog) keys cycle through Performance modes
+5. Start with windows (optional)
 
 ## How to install
 
