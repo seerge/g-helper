@@ -1,31 +1,35 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
-using System.Drawing;
-using System.Dynamic;
-using System.Linq;
-using System.Reflection.Metadata.Ecma335;
-using System.Text;
-using System.Threading.Tasks;
 using System.Timers;
-using System.Windows.Forms;
-using Windows.ApplicationModel.Store;
 
 namespace GHelper
 {
     public partial class SettingsForm : Form
     {
 
-        static Color colorActive = Color.LightGray;
+        static Color colorEco = Color.FromArgb(255, 6, 180, 138);
+        static Color colorStandard = Color.FromArgb(255, 58, 174, 239);
+        static Color colorTurbo = Color.FromArgb(255, 255, 32, 32);
 
-        static System.Timers.Timer aTimer;
+        static int buttonInactive = 0;
+        static int buttonActive = 5;
+
+        static System.Timers.Timer aTimer = default!;
 
         public SettingsForm()
         {
 
             InitializeComponent();
+
+            FormClosing += SettingsForm_FormClosing;
+
+            buttonSilent.FlatAppearance.BorderColor = colorEco;
+            buttonBalanced.FlatAppearance.BorderColor = colorStandard;
+            buttonTurbo.FlatAppearance.BorderColor = colorTurbo;
+
+            buttonEco.FlatAppearance.BorderColor = colorEco;
+            buttonStandard.FlatAppearance.BorderColor = colorStandard;
+            buttonUltimate.FlatAppearance.BorderColor = colorTurbo;
 
             buttonSilent.Click += ButtonSilent_Click;
             buttonBalanced.Click += ButtonBalanced_Click;
@@ -37,9 +41,29 @@ namespace GHelper
 
             VisibleChanged += SettingsForm_VisibleChanged;
 
-            SetTimer();
-            
+            trackBattery.Scroll += trackBatteryChange;
 
+            buttonQuit.Click += ButtonQuit_Click;
+
+            SetTimer();
+
+
+        }
+
+        private void ButtonQuit_Click(object? sender, EventArgs e)
+        {
+            Close();
+            Program.trayIcon.Visible = false;
+            Application.Exit();
+        }
+
+        private void SettingsForm_FormClosing(object? sender, FormClosingEventArgs e)
+        {
+            if (e.CloseReason == CloseReason.UserClosing)
+            {
+                e.Cancel = true;
+                Hide();
+            }
         }
 
         private void ButtonUltimate_Click(object? sender, EventArgs e)
@@ -66,8 +90,8 @@ namespace GHelper
 
         private static void OnTimedEvent(Object source, ElapsedEventArgs e)
         {
-            var cpuFan = Math.Round(Program.wmi.DeviceGet(ASUSWmi.CPU_Fan)/0.6);
-            var gpuFan = Math.Round(Program.wmi.DeviceGet(ASUSWmi.GPU_Fan)/0.6);
+            var cpuFan = Math.Round(Program.wmi.DeviceGet(ASUSWmi.CPU_Fan) / 0.6);
+            var gpuFan = Math.Round(Program.wmi.DeviceGet(ASUSWmi.GPU_Fan) / 0.6);
 
             Program.settingsForm.BeginInvoke(delegate
             {
@@ -85,7 +109,8 @@ namespace GHelper
                 this.Top = Screen.FromControl(this).Bounds.Height - 100 - this.Height;
                 this.Activate();
                 aTimer.Enabled = true;
-            } else
+            }
+            else
             {
                 aTimer.Enabled = false;
             }
@@ -94,24 +119,23 @@ namespace GHelper
         public void SetPerformanceMode(int PerformanceMode = ASUSWmi.PerformanceBalanced)
         {
 
-            buttonSilent.UseVisualStyleBackColor = true;
-            buttonBalanced.UseVisualStyleBackColor = true;
-            buttonTurbo.UseVisualStyleBackColor = true;
-
+            buttonSilent.FlatAppearance.BorderSize = buttonInactive;
+            buttonBalanced.FlatAppearance.BorderSize = buttonInactive;
+            buttonTurbo.FlatAppearance.BorderSize = buttonInactive;
 
             switch (PerformanceMode)
             {
                 case ASUSWmi.PerformanceSilent:
-                    buttonSilent.BackColor = colorActive;
-                    groupPerf.Text = "Peformance Mode: Silent";
+                    buttonSilent.FlatAppearance.BorderSize = buttonActive;
+                    labelPerf.Text = "Peformance Mode: Silent";
                     break;
                 case ASUSWmi.PerformanceTurbo:
-                    buttonTurbo.BackColor = colorActive;
-                    groupPerf.Text = "Peformance Mode: Turbo";  
+                    buttonTurbo.FlatAppearance.BorderSize = buttonActive;
+                    labelPerf.Text = "Peformance Mode: Turbo";
                     break;
                 default:
-                    buttonBalanced.BackColor = colorActive;
-                    groupPerf.Text = "Peformance Mode: Balanced";
+                    buttonBalanced.FlatAppearance.BorderSize = buttonActive;
+                    labelPerf.Text = "Peformance Mode: Balanced";
                     PerformanceMode = ASUSWmi.PerformanceBalanced;
                     break;
             }
@@ -123,12 +147,81 @@ namespace GHelper
         }
 
 
+        public void CyclePerformanceMode()
+        {
+            SetPerformanceMode(Program.config.getConfig("performance_mode") + 1);
+        }
+
+        public void AutoGPUMode(int Plugged = 1)
+        {
+
+            int GpuAuto = Program.config.getConfig("gpu_auto");
+            if (GpuAuto != 1) return;
+
+            int eco = Program.wmi.DeviceGet(ASUSWmi.GPUEco);
+            int mux = Program.wmi.DeviceGet(ASUSWmi.GPUMux);
+
+            int GPUMode;
+
+            if (mux == 0) // GPU in Ultimate, ignore
+                return;
+            else
+            {
+                if (eco == 1 && Plugged == 1)  // Eco going Standard on plugged
+                {
+                    GPUMode = ASUSWmi.GPUModeStandard;
+                    VisualiseGPUMode(GPUMode);
+                    Program.wmi.DeviceSet(ASUSWmi.GPUEco, 0);
+                    Program.config.setConfig("gpu_mode", GPUMode);
+                }
+                else if (eco == 0 && Plugged == 0)  // Standard going Eco on plugged
+                {
+                    GPUMode = ASUSWmi.GPUModeEco;
+                    VisualiseGPUMode(GPUMode);
+                    Program.wmi.DeviceSet(ASUSWmi.GPUEco, 1);
+                    Program.config.setConfig("gpu_mode", GPUMode);
+
+                }
+
+            }
+        }
+
+
+
+        public int InitGPUMode()
+        {
+
+            int eco = Program.wmi.DeviceGet(ASUSWmi.GPUEco);
+            int mux = Program.wmi.DeviceGet(ASUSWmi.GPUMux);
+
+            int GpuMode;
+
+            if (mux == 0)
+                GpuMode = ASUSWmi.GPUModeUltimate;
+            else
+            {
+                if (eco == 1)
+                    GpuMode = ASUSWmi.GPUModeEco;
+                else
+                    GpuMode = ASUSWmi.GPUModeStandard;
+
+                if (mux != 1)
+                    Disable_Ultimate();
+            }
+
+            Program.config.setConfig("gpu_mode", GpuMode);
+            VisualiseGPUMode(GpuMode);
+
+            return GpuMode;
+
+        }
+
         public void SetGPUMode(int GPUMode = ASUSWmi.GPUModeStandard)
-        { 
+        {
 
             int CurrentGPU = Program.config.getConfig("gpu_mode");
 
-            if (CurrentGPU == GPUMode) 
+            if (CurrentGPU == GPUMode)
                 return;
 
             var restart = false;
@@ -143,7 +236,8 @@ namespace GHelper
                     restart = true;
                     changed = true;
                 }
-            } else if (GPUMode == ASUSWmi.GPUModeUltimate)
+            }
+            else if (GPUMode == ASUSWmi.GPUModeUltimate)
             {
                 DialogResult dialogResult = MessageBox.Show(" Ultimate Mode requires restart", "Reboot now?", MessageBoxButtons.YesNo);
                 if (dialogResult == DialogResult.Yes)
@@ -153,12 +247,14 @@ namespace GHelper
                     changed = true;
                 }
 
-            } else if (GPUMode == ASUSWmi.GPUModeEco)
+            }
+            else if (GPUMode == ASUSWmi.GPUModeEco)
             {
                 VisualiseGPUMode(GPUMode);
                 Program.wmi.DeviceSet(ASUSWmi.GPUEco, 1);
                 changed = true;
-            } else if (GPUMode == ASUSWmi.GPUModeStandard)
+            }
+            else if (GPUMode == ASUSWmi.GPUModeStandard)
             {
                 VisualiseGPUMode(GPUMode);
                 Program.wmi.DeviceSet(ASUSWmi.GPUEco, 0);
@@ -176,33 +272,41 @@ namespace GHelper
 
         }
 
-        public void VisualiseGPUMode (int GPUMode)
+
+        public void VisualiseGPUAuto(int GPUAuto) 
+        {
+            checkGPU.Checked = (GPUAuto == 1);
+        }
+
+        public void VisualiseGPUMode(int GPUMode)
         {
 
-            buttonEco.UseVisualStyleBackColor = true;
-            buttonStandard.UseVisualStyleBackColor = true;
-            buttonUltimate.UseVisualStyleBackColor = true;
-
+            buttonEco.FlatAppearance.BorderSize = buttonInactive;
+            buttonStandard.FlatAppearance.BorderSize = buttonInactive;
+            buttonUltimate.FlatAppearance.BorderSize = buttonInactive;
 
             switch (GPUMode)
             {
                 case ASUSWmi.GPUModeEco:
-                    buttonEco.BackColor = colorActive;
-                    groupGPU.Text = "GPU Mode: Eco (iGPU only)";
-                    Program.trayIcon.Icon = new System.Drawing.Icon("Resources/eco.ico");
+                    buttonEco.FlatAppearance.BorderSize = buttonActive;
+                    labelGPU.Text = "GPU Mode: Eco (iGPU only)";
+                    Program.trayIcon.Icon = GHelper.Properties.Resources.eco;
                     break;
                 case ASUSWmi.GPUModeUltimate:
-                    buttonUltimate.BackColor = colorActive;
-                    groupGPU.Text = "GPU Mode: Ultimate (dGPU exclusive)";
-                    Program.trayIcon.Icon = new System.Drawing.Icon("Resources/ultimate.ico");
+                    buttonUltimate.FlatAppearance.BorderSize = buttonActive;
+                    labelGPU.Text = "GPU Mode: Ultimate (dGPU exclusive)";
+                    Program.trayIcon.Icon = GHelper.Properties.Resources.ultimate;
                     break;
                 default:
-                    buttonStandard.BackColor = colorActive;
-                    groupGPU.Text = "GPU Mode: Eco (iGPU and dGPU)";
-                    Program.trayIcon.Icon = new System.Drawing.Icon("Resources/standard.ico");
+                    buttonStandard.FlatAppearance.BorderSize = buttonActive;
+                    labelGPU.Text = "GPU Mode: Eco (iGPU and dGPU)";
+                    Program.trayIcon.Icon = GHelper.Properties.Resources.standard;
                     break;
             }
         }
+
+
+
 
         private void ButtonSilent_Click(object? sender, EventArgs e)
         {
@@ -226,10 +330,58 @@ namespace GHelper
 
         public void Disable_Ultimate()
         {
-            buttonUltimate.Enabled= false;
+            buttonUltimate.Enabled = false;
         }
 
-   
+        public void SetStartupCheck(bool status)
+        {
+            checkStartup.Checked = status;
+        }
+        private void checkStartup_CheckedChanged(object sender, EventArgs e)
+        {
+            CheckBox chk = (CheckBox)sender;
+            if (chk.Checked)
+            {
+                Program.scheduler.Schedule();
+            }
+            else
+            {
+                Program.scheduler.UnSchedule();
+            }
+        }
+
+        public void SetBatteryChargeLimit (int limit = 100)
+        {
+
+            if (limit < 50 || limit > 100) limit = 100;
+
+            labelBatteryLimit.Text = limit.ToString() + "%";
+            trackBattery.Value = limit;
+            Program.wmi.DeviceSet(ASUSWmi.BatteryLimit, limit);
+            Program.config.setConfig("charge_limit", limit);
+
+        }
+
+        private void trackBatteryChange(object sender, EventArgs e)
+        {
+            TrackBar bar = (TrackBar)sender;
+            SetBatteryChargeLimit(bar.Value);
+        }
+
+        private void checkGPU_CheckedChanged(object sender, EventArgs e)
+        {
+            CheckBox chk = (CheckBox)sender;
+            if (chk.Checked)
+            {
+                Program.config.setConfig("gpu_auto", 1);
+            }
+            else
+            {
+                Program.config.setConfig("gpu_auto", 0);
+            }
+        }
+
+
     }
 
 

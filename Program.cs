@@ -1,19 +1,9 @@
-using System;
-using System.Windows.Forms;
-
-using System.Management;
 using Microsoft.Win32.TaskScheduler;
-using System.Diagnostics;
-using System.Reflection.Emit;
-using System.Runtime.InteropServices;
-using System.Reflection;
-
-using GHelper;
-using System.Dynamic;
-using System.IO;
-using System.Xml.Linq;
-
 using Newtonsoft.Json;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Management;
+using System.Reflection.Metadata.Ecma335;
 
 public class ASUSWmi
 {
@@ -28,6 +18,7 @@ public class ASUSWmi
     public const int GPUEco = 0x00090020;
     public const int GPUMux = 0x00090016;
 
+    public const int BatteryLimit = 0x00120057;
 
     public const int PerformanceBalanced = 0;
     public const int PerformanceTurbo = 1;
@@ -90,17 +81,64 @@ public class ASUSWmi
 
 }
 
+public class Startup
+{
+
+    static string taskName = "GSharpHelper";
+
+    public Startup()
+    {
+
+    }
+
+    public bool IsScheduled()
+    {
+        TaskService taskService = new TaskService();
+        return (taskService.RootFolder.AllTasks.Any(t => t.Name == taskName));
+    }
+
+    public void Schedule()
+    {
+        TaskService taskService = new TaskService();
+
+        string strExeFilePath = Application.ExecutablePath;
+
+        if (strExeFilePath is null) return;
+
+        Debug.WriteLine(strExeFilePath);
+        TaskDefinition td = TaskService.Instance.NewTask();
+        td.RegistrationInfo.Description = "GSharpHelper Auto Start";
+
+        LogonTrigger lt = new LogonTrigger();
+        td.Triggers.Add(lt);
+        td.Actions.Add(strExeFilePath);
+        td.Principal.RunLevel = TaskRunLevel.Highest;
+        td.Settings.StopIfGoingOnBatteries = false;
+        td.Settings.DisallowStartIfOnBatteries = false;
+
+        TaskService.Instance.RootFolder.RegisterTaskDefinition(taskName, td);
+    }
+
+    public void UnSchedule()
+    {
+        TaskService taskService = new TaskService();
+        taskService.RootFolder.DeleteTask(taskName);
+    }
+}
+
+
 public class AppConfig
 {
 
     string appPath;
     string configFile;
 
-    public dynamic Config = new ExpandoObject();
+    public Dictionary<string, object> config = new Dictionary<string, object>();
 
-    public AppConfig() {
-        
-        appPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)+"\\GHelper";
+    public AppConfig()
+    {
+
+        appPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\GHelper";
         configFile = appPath + "\\config.json";
 
         if (!System.IO.Directory.Exists(appPath))
@@ -109,26 +147,36 @@ public class AppConfig
         if (File.Exists(configFile))
         {
             string text = File.ReadAllText(configFile);
-            Config = JsonConvert.DeserializeObject<ExpandoObject>(text);
-        } else
+            config = JsonConvert.DeserializeObject<Dictionary<string, object>>(text);
+            if (config is null)
+                initConfig();
+        }
+        else
         {
-            Config.performance_mode = 0;
-            string jsonString = JsonConvert.SerializeObject(Config);
-            File.WriteAllText(configFile, jsonString);
+            initConfig();
         }
 
     }
 
-    public int getConfig (string name)
+    private void initConfig()
     {
-        var propertyInfo = Config.GetType().GetProperty(name);
-        return propertyInfo.GetValue(Config, null);
+        config = new Dictionary<string, object>();
+        config["performance_mode"] = 0;
+        string jsonString = JsonConvert.SerializeObject(config);
+        File.WriteAllText(configFile, jsonString);
+    }
+
+    public int getConfig(string name)
+    {
+        if (config.ContainsKey(name)) 
+            return int.Parse(config[name].ToString());
+        else return -1;
     }
 
     public void setConfig(string name, int value)
     {
-        ((IDictionary<String, Object>)Config).TryAdd(name, value);
-        string jsonString = JsonConvert.SerializeObject(Config);
+        config[name] = value;
+        string jsonString = JsonConvert.SerializeObject(config);
         File.WriteAllText(configFile, jsonString);
     }
 
@@ -136,124 +184,108 @@ public class AppConfig
 
 }
 
-
-static class Program
+namespace GHelper
 {
-    public static NotifyIcon trayIcon;
-
-    public static ASUSWmi wmi;
-    public static AppConfig config;
-
-    public static SettingsForm settingsForm;
-
-    // The main entry point for the application
-    public static void Main()
+    static class Program
     {
-        trayIcon = new NotifyIcon
+        public static NotifyIcon trayIcon;
+
+        public static ASUSWmi wmi;
+        public static AppConfig config;
+
+        public static SettingsForm settingsForm;
+        public static Startup scheduler;
+
+        // The main entry point for the application
+        public static void Main()
         {
-            Text = "G14 Helper",
-            Icon = new System.Drawing.Icon("Resources/standard.ico"),
-            Visible = true
-        };
-
-        trayIcon.MouseClick += TrayIcon_MouseClick; ;
-
-        config = new AppConfig();
-
-        wmi = new ASUSWmi();
-        wmi.SubscribeToEvents(WatcherEventArrived);
-
-        settingsForm = new SettingsForm();
-        //settingsForm.Show();
-
-        int GpuMode = GetGPUMode();
-
-        settingsForm.SetPerformanceMode();
-        settingsForm.VisualiseGPUMode(GpuMode);
-
-        settingsForm.FormClosed += SettingsForm_FormClosed;
-
-        Application.Run();
-
-    }
-
-    public static int GetGPUMode ()
-    {
-
-        int eco = wmi.DeviceGet(ASUSWmi.GPUEco);
-        int mux = wmi.DeviceGet(ASUSWmi.GPUMux);
-
-        int GpuMode;
-
-        if (mux == 0)
-            GpuMode = ASUSWmi.GPUModeUltimate;
-        else
-        {
-            if (eco == 1)
-                GpuMode = ASUSWmi.GPUModeEco;
-            else
-                GpuMode = ASUSWmi.GPUModeStandard;
-
-            if (mux != 1)
-                settingsForm.Disable_Ultimate();
-        }
-
-        config.setConfig ("gpu_mode",GpuMode);
-
-        return GpuMode;
-
-    }
-
-    private static void SettingsForm_FormClosed(object? sender, FormClosedEventArgs e)
-    {
-        trayIcon.Visible = false;
-        Application.Exit();
-    }
-
-    static void WatcherEventArrived(object sender, EventArrivedEventArgs e)
-    {
-        var collection = (ManagementEventWatcher)sender;
-        int EventID = int.Parse(e.NewEvent["EventID"].ToString());
-
-        Debug.WriteLine(EventID);
-
-        switch (EventID)
-        {
-            case 56:
-            case 174:    
-                CyclePerformanceMode();
-                return;
-        }
-
-
-    }
-
-    static void TrayIcon_MouseClick(object? sender, MouseEventArgs e)
-    {
-        if (e.Button == MouseButtons.Left)
-        {
-            if (settingsForm.Visible)
-                settingsForm.Hide(); else
+            trayIcon = new NotifyIcon
             {
-                settingsForm.Show();
-                settingsForm.Activate();
+                Text = "G14 Helper",
+                Icon = GHelper.Properties.Resources.standard,
+                Visible = true
+            };
+
+            trayIcon.MouseClick += TrayIcon_MouseClick; ;
+
+            config = new AppConfig();
+
+            wmi = new ASUSWmi();
+            wmi.SubscribeToEvents(WatcherEventArrived);
+
+            scheduler = new Startup();
+
+            settingsForm = new SettingsForm();
+
+            settingsForm.InitGPUMode();
+
+            settingsForm.SetPerformanceMode(config.getConfig("performance_mode"));
+            settingsForm.SetBatteryChargeLimit(config.getConfig("charge_limit"));
+
+            settingsForm.VisualiseGPUAuto(config.getConfig("gpu_auto"));
+            settingsForm.SetStartupCheck(scheduler.IsScheduled());
+
+            Application.Run();
+
+        }
+
+
+        static void WatcherEventArrived(object sender, EventArrivedEventArgs e)
+        {
+            var collection = (ManagementEventWatcher)sender;
+            int EventID = int.Parse(e.NewEvent["EventID"].ToString());
+
+            Debug.WriteLine(EventID);
+
+            switch (EventID)
+            {
+                case 56:    // Rog button
+                case 174:   // FN+F5
+                    settingsForm.BeginInvoke(delegate
+                    {
+                        settingsForm.CyclePerformanceMode();
+                    });
+                    return;
+                case 87:  // Battery
+                    settingsForm.BeginInvoke(delegate
+                    {
+                        settingsForm.AutoGPUMode(0);
+                    });
+                    return;
+                case 88:  // Plugged
+                    settingsForm.SetBatteryChargeLimit(config.getConfig("charge_limit"));
+                    settingsForm.BeginInvoke(delegate
+                    {
+                        settingsForm.AutoGPUMode(1);
+                    });
+                    return;
+
+            }
+
+
+        }
+
+        static void TrayIcon_MouseClick(object? sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left || e.Button == MouseButtons.Right)
+            {
+                if (settingsForm.Visible)
+                    settingsForm.Hide();
+                else
+                {
+                    settingsForm.Show();
+                    settingsForm.Activate();
+                }
             }
         }
-    }
 
 
-    static void CyclePerformanceMode()
-    {
-        settingsForm.BeginInvoke(delegate
+
+        static void OnExit(object sender, EventArgs e)
         {
-            settingsForm.SetPerformanceMode(config.getConfig("performance_mode") + 1);
-        });
+            trayIcon.Visible = false;
+            Application.Exit();
+        }
     }
 
-    static void OnExit(object sender, EventArgs e)
-    {
-        trayIcon.Visible = false;
-        Application.Exit();
-    }
 }
-
