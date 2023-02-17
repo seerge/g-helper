@@ -26,7 +26,8 @@ Profiles are **same** as in Armory Crate, including default fan curves
 2. CPU and GPU relative fan speed monitoring 
 3. Automatic switching of Standard/Eco GPU modes when laptop is plugged / unplugged!
 4. FN+F5 an M4 (Rog) keys cycle through Performance modes
-5. Start with windows (optional)
+5. Screen resolution and display overdrive switching
+6. Run on startup (optional)
 
 ## How to install
 
@@ -41,7 +42,7 @@ I don`t have Microsoft certificate to sign app yet, so if you set a warning from
 
 Alternatively you can comile and run project by yourself :)
 
-Settings are located in APPDATA\ROAMING
+Settings file is storer at %AppData%\GHelper
 
 P.S.: It's not recommended to use app in combination with Armory Crate, cause they adjust same settings.
 Please keep in mind, that if you also run MyASUS app periodically it will also try to adjust same battery charge settings
