@@ -43,11 +43,61 @@ namespace GHelper
 
             trackBattery.Scroll += trackBatteryChange;
 
+            button60Hz.Click += Button60Hz_Click;
+            button120Hz.Click += Button120Hz_Click;
+
             buttonQuit.Click += ButtonQuit_Click;
+
+            checkScreen.CheckedChanged += checkScreen_CheckedChanged;
 
             SetTimer();
 
 
+        }
+
+        private void Button120Hz_Click(object? sender, EventArgs e)
+        {
+            SetScreen(120, 1);
+        }
+
+        private void Button60Hz_Click(object? sender, EventArgs e)
+        {
+            SetScreen(60, 0);
+        }
+
+
+        public void SetScreen(int frequency = -1, int overdrive = -1)
+        {
+            if (frequency > 0) 
+                NativeMethods.SetRefreshRate(frequency);
+            if (overdrive > 0)
+                Program.wmi.DeviceSet(ASUSWmi.ScreenOverdrive, overdrive);
+            InitScreen(frequency, overdrive);
+        }
+
+
+        public void InitScreen(int frequency = -1, int overdrive = -1)
+        {
+
+            if (frequency < 0)
+                frequency = NativeMethods.GetRefreshRate();
+
+            if (overdrive < 0)
+                overdrive = Program.wmi.DeviceGet(ASUSWmi.ScreenOverdrive);
+
+            button60Hz.FlatAppearance.BorderSize = buttonInactive;
+            button120Hz.FlatAppearance.BorderSize = buttonInactive;
+
+            if (frequency == 60)
+            {
+                button60Hz.FlatAppearance.BorderSize = buttonActive;
+            } else if (frequency == 120)
+            {
+                button120Hz.FlatAppearance.BorderSize = buttonActive;
+            } 
+
+            Program.config.setConfig("frequency", frequency);
+            Program.config.setConfig("overdrive", overdrive);
         }
 
         private void ButtonQuit_Click(object? sender, EventArgs e)
@@ -105,6 +155,8 @@ namespace GHelper
         {
             if (this.Visible)
             {
+                InitScreen();
+
                 this.Left = Screen.FromControl(this).Bounds.Width - 10 - this.Width;
                 this.Top = Screen.FromControl(this).Bounds.Height - 100 - this.Height;
                 this.Activate();
@@ -150,6 +202,18 @@ namespace GHelper
         public void CyclePerformanceMode()
         {
             SetPerformanceMode(Program.config.getConfig("performance_mode") + 1);
+        }
+
+        public void AutoScreen (int Plugged = 1)
+        {
+            int ScreenAuto = Program.config.getConfig("screen_auto");
+            if (ScreenAuto != 1) return;
+            
+            if (Plugged == 1)
+                SetScreen(120, 1);
+            else
+                SetScreen(60, 0);
+
         }
 
         public void AutoGPUMode(int Plugged = 1)
@@ -278,6 +342,11 @@ namespace GHelper
             checkGPU.Checked = (GPUAuto == 1);
         }
 
+        public void VisualiseScreenAuto(int ScreenAuto)
+        {
+            checkScreen.Checked = (ScreenAuto == 1);
+        }
+
         public void VisualiseGPUMode(int GPUMode)
         {
 
@@ -381,6 +450,19 @@ namespace GHelper
             }
         }
 
+
+        private void checkScreen_CheckedChanged(object sender, EventArgs e)
+        {
+            CheckBox chk = (CheckBox)sender;
+            if (chk.Checked)
+            {
+                Program.config.setConfig("screen_auto", 1);
+            }
+            else
+            {
+                Program.config.setConfig("screen_auto", 0);
+            }
+        }
 
     }
 

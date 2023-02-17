@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Management;
 using System.Reflection.Metadata.Ecma335;
+using System.Runtime.InteropServices;
 
 public class ASUSWmi
 {
@@ -19,6 +20,7 @@ public class ASUSWmi
     public const int GPUMux = 0x00090016;
 
     public const int BatteryLimit = 0x00120057;
+    public const int ScreenOverdrive = 0x00050019;
 
     public const int PerformanceBalanced = 0;
     public const int PerformanceTurbo = 1;
@@ -49,8 +51,29 @@ public class ASUSWmi
         ManagementBaseObject outParams = this.mo.InvokeMethod(MethodName, inParams, null);
         foreach (PropertyData property in outParams.Properties)
         {
-            if (property.Name == "device_status") return int.Parse(property.Value.ToString()) - 65536;
-            if (property.Name == "result") return int.Parse(property.Value.ToString());
+            if (property.Name == "device_status")
+            {
+                int status;
+                try
+                {
+                    status = int.Parse(property.Value.ToString());
+                    status -= 65536;
+                    return status;
+                } catch
+                {
+                    return -1;
+                }
+            }
+            if (property.Name == "result")
+            {
+                try
+                {
+                    return int.Parse(property.Value.ToString());
+                } catch
+                {
+                    return -1;
+                }
+            }
         }
 
         return -1;
@@ -184,6 +207,103 @@ public class AppConfig
 
 }
 
+
+public class NativeMethods
+{
+
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
+    public struct DEVMODE
+    {
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)]
+        public string dmDeviceName;
+
+        public short dmSpecVersion;
+        public short dmDriverVersion;
+        public short dmSize;
+        public short dmDriverExtra;
+        public int dmFields;
+        public int dmPositionX;
+        public int dmPositionY;
+        public int dmDisplayOrientation;
+        public int dmDisplayFixedOutput;
+        public short dmColor;
+        public short dmDuplex;
+        public short dmYResolution;
+        public short dmTTOption;
+        public short dmCollate;
+
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)]
+        public string dmFormName;
+
+        public short dmLogPixels;
+        public short dmBitsPerPel;
+        public int dmPelsWidth;
+        public int dmPelsHeight;
+        public int dmDisplayFlags;
+        public int dmDisplayFrequency;
+        public int dmICMMethod;
+        public int dmICMIntent;
+        public int dmMediaType;
+        public int dmDitherType;
+        public int dmReserved1;
+        public int dmReserved2;
+        public int dmPanningWidth;
+        public int dmPanningHeight;
+    };
+
+    // PInvoke declaration for EnumDisplaySettings Win32 API
+    [DllImport("user32.dll")]
+    public static extern int EnumDisplaySettingsExA(
+         string lpszDeviceName,
+         int iModeNum,
+         ref DEVMODE lpDevMode);
+
+    // PInvoke declaration for ChangeDisplaySettings Win32 API
+    [DllImport("user32.dll")]
+    public static extern int ChangeDisplaySettings(
+         ref DEVMODE lpDevMode,
+         int dwFlags);
+
+    public const int ENUM_CURRENT_SETTINGS = -1;
+
+
+    public static DEVMODE CreateDevmode()
+    {
+        DEVMODE dm = new DEVMODE();
+        dm.dmDeviceName = new String(new char[32]);
+        dm.dmFormName = new String(new char[32]);
+        dm.dmSize = (short)Marshal.SizeOf(dm);
+        return dm;
+    }
+
+    public static int GetRefreshRate()
+    {
+        DEVMODE dm = CreateDevmode();
+
+        int frequency = -1;
+
+        if (0 != NativeMethods.EnumDisplaySettingsExA(null, NativeMethods.ENUM_CURRENT_SETTINGS, ref dm))
+        {
+            Debug.WriteLine(JsonConvert.SerializeObject(dm));
+            frequency = dm.dmDisplayFrequency;
+        }
+
+        return frequency;
+    }
+
+    public static void SetRefreshRate(int frequency = 120)
+    {
+        DEVMODE dm = CreateDevmode();
+
+        if (0 != NativeMethods.EnumDisplaySettingsExA(null,NativeMethods.ENUM_CURRENT_SETTINGS, ref dm))
+        {
+            dm.dmDisplayFrequency = frequency;
+            int iRet = NativeMethods.ChangeDisplaySettings(ref dm, 0);
+        }
+    }
+
+}
+
 namespace GHelper
 {
     static class Program
@@ -223,6 +343,8 @@ namespace GHelper
             settingsForm.SetBatteryChargeLimit(config.getConfig("charge_limit"));
 
             settingsForm.VisualiseGPUAuto(config.getConfig("gpu_auto"));
+            settingsForm.VisualiseScreenAuto(config.getConfig("screen_auto"));
+
             settingsForm.SetStartupCheck(scheduler.IsScheduled());
 
             Application.Run();
@@ -233,6 +355,9 @@ namespace GHelper
         static void WatcherEventArrived(object sender, EventArrivedEventArgs e)
         {
             var collection = (ManagementEventWatcher)sender;
+
+            if (e.NewEvent is null) return;
+
             int EventID = int.Parse(e.NewEvent["EventID"].ToString());
 
             Debug.WriteLine(EventID);
@@ -250,6 +375,7 @@ namespace GHelper
                     settingsForm.BeginInvoke(delegate
                     {
                         settingsForm.AutoGPUMode(0);
+                        settingsForm.AutoScreen(0);
                     });
                     return;
                 case 88:  // Plugged
@@ -257,6 +383,7 @@ namespace GHelper
                     settingsForm.BeginInvoke(delegate
                     {
                         settingsForm.AutoGPUMode(1);
+                        settingsForm.AutoScreen(1);
                     });
                     return;
 
