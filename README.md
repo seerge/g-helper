@@ -1,8 +1,10 @@
 # G14-Helper
 
+A tiny system tray utility that allows you set performance and GPU profiles for your laptop. Same as ASUS Armory Crate does but without it completely!. 
+
 Designed for Asus Zephyrus G14 2022 (with AMD Radeon iGPU and dGPU). But could and should potentially work for G14 of 2021 and 2020, G15, X FLOW, and other ROG models.
 
-A tiny system tray utility that allows you set performance and GPU profiles for your laptop. Same as ASUS Armory Crate does but without it completely!. 
+![Screenshot](https://github.com/seerge/g14-helper/blob/main/screenshot.png)
 
 ## Performance Profile switching 
 
@@ -38,8 +40,6 @@ Therefore requires Administrator priveledges on Windows to run.
 I don`t have Microsoft certificate to sign app yet, so if you set a warning from Windows Defender on launch (Windows Protected your PC), click More Info -> Run anyway.
 
 Alternatively you can comile and run project by yourself :)
-
-![Screenshot](https://github.com/seerge/g14-helper/blob/main/screenshot.png)
 
 Settings are located in APPDATA\ROAMING
 
