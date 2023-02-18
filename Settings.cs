@@ -123,7 +123,7 @@ namespace GHelper
                 button60Hz.FlatAppearance.BorderSize = buttonActive;
             } else 
             {
-                if (maxFrequency > 60)
+                if (frequency > 60)
                     maxFrequency = frequency;
                 
                 Program.config.setConfig("max_frequency", maxFrequency);
