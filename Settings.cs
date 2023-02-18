@@ -49,11 +49,22 @@ namespace GHelper
 
             buttonQuit.Click += ButtonQuit_Click;
 
+            checkBoost.Click += CheckBoost_Click;
+
             checkScreen.CheckedChanged += checkScreen_CheckedChanged;
 
             SetTimer();
 
 
+        }
+
+        private void CheckBoost_Click(object? sender, EventArgs e)
+        {
+            CheckBox chk = (CheckBox)sender;
+            if (chk.Checked)
+                NativeMethods.SetCPUBoost(3);
+            else
+                NativeMethods.SetCPUBoost(0);
         }
 
         private void Button120Hz_Click(object? sender, EventArgs e)
@@ -90,6 +101,12 @@ namespace GHelper
             InitScreen();
         }
 
+
+        public void InitBoost()
+        {
+            int boost = NativeMethods.GetCPUBoost();
+            checkBoost.Checked = (boost > 0);
+        }
 
         public void InitScreen()
         {
@@ -197,7 +214,7 @@ namespace GHelper
                 InitScreen();
 
                 this.Left = Screen.FromControl(this).Bounds.Width - 10 - this.Width;
-                this.Top = Screen.FromControl(this).Bounds.Height - 100 - this.Height;
+                this.Top = Screen.FromControl(this).WorkingArea.Height - 10 - this.Height;
                 this.Activate();
                 aTimer.Enabled = true;
             }
@@ -401,7 +418,7 @@ namespace GHelper
                     break;
                 case ASUSWmi.GPUModeUltimate:
                     buttonUltimate.FlatAppearance.BorderSize = buttonActive;
-                    labelGPU.Text = "GPU Mode: Ultimate (dGPU exclusive)";
+                    labelGPU.Text = "GPU Mode: Ultimate (dGPU is main)";
                     Program.trayIcon.Icon = GHelper.Properties.Resources.ultimate;
                     break;
                 default:
@@ -411,8 +428,6 @@ namespace GHelper
                     break;
             }
         }
-
-
 
 
         private void ButtonSilent_Click(object? sender, EventArgs e)
@@ -480,13 +495,9 @@ namespace GHelper
         {
             CheckBox chk = (CheckBox)sender;
             if (chk.Checked)
-            {
                 Program.config.setConfig("gpu_auto", 1);
-            }
             else
-            {
                 Program.config.setConfig("gpu_auto", 0);
-            }
         }
 
 
@@ -494,13 +505,9 @@ namespace GHelper
         {
             CheckBox chk = (CheckBox)sender;
             if (chk.Checked)
-            {
                 Program.config.setConfig("screen_auto", 1);
-            }
             else
-            {
                 Program.config.setConfig("screen_auto", 0);
-            }
         }
 
     }

@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net6.0-windows8.0</TargetFramework>
+    <TargetFramework>net7.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWindowsForms>True</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
@@ -10,7 +10,6 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <StartupObject>GHelper.Program</StartupObject>
     <ApplicationIcon>Resources\standard.ico</ApplicationIcon>
-    <SupportedOSPlatformVersion>8.0</SupportedOSPlatformVersion>
   </PropertyGroup>
 
   <ItemGroup>

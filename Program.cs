@@ -1,12 +1,15 @@
 using Microsoft.Win32.TaskScheduler;
-using System.Collections.Generic;
+using System;
 using System.Diagnostics;
 using System.Management;
-using System.Reflection.Metadata.Ecma335;
 using System.Runtime.InteropServices;
 
 using System.Text.Json;
-using System.Text.Json.Serialization;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+
+using System.Text.RegularExpressions;
+using System.Drawing;
+
 public class ASUSWmi
 {
     private ManagementObject mo;
@@ -60,7 +63,8 @@ public class ASUSWmi
                     status = int.Parse(property.Value.ToString());
                     status -= 65536;
                     return status;
-                } catch
+                }
+                catch
                 {
                     return -1;
                 }
@@ -70,7 +74,8 @@ public class ASUSWmi
                 try
                 {
                     return int.Parse(property.Value.ToString());
-                } catch
+                }
+                catch
                 {
                     return -1;
                 }
@@ -197,7 +202,7 @@ public class AppConfig
 
     public int getConfig(string name)
     {
-        if (config.ContainsKey(name)) 
+        if (config.ContainsKey(name))
             return int.Parse(config[name].ToString());
         else return -1;
     }
@@ -214,8 +219,90 @@ public class AppConfig
 }
 
 
+public class PowerPlan {
+    static void RunCommands(List<string> cmds, string workingDirectory = "")
+    {
+        var process = new Process();
+        var psi = new ProcessStartInfo();
+        psi.FileName = "powershell";
+        psi.RedirectStandardInput = true;
+        psi.RedirectStandardOutput = true;
+        psi.RedirectStandardError = true;
+        psi.UseShellExecute = false;
+
+        psi.CreateNoWindow = true;
+
+        psi.WorkingDirectory = workingDirectory;
+        process.StartInfo = psi;
+        process.Start();
+        process.OutputDataReceived += (sender, e) => { Debug.WriteLine(e.Data); };
+        process.ErrorDataReceived += (sender, e) => { Debug.WriteLine(e.Data); };
+        process.BeginOutputReadLine();
+        process.BeginErrorReadLine();
+        using (StreamWriter sw = process.StandardInput)
+        {
+            foreach (var cmd in cmds)
+            {
+                sw.WriteLine(cmd);
+            }
+        }
+        process.WaitForExit();
+    }
+
+
+    public static int getBoostStatus()
+    {
+        List<string> cmds = new List<string>
+        {
+            "$asGuid = [regex]::Match((powercfg /getactivescheme),'(\\{){0,1}[0-9a-fA-F]{8}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{12}(\\}){0,1}').Value",
+            "$statusFull = (powercfg /QUERY $asGuid 54533251-82be-4824-96c1-47b60b740d00 be337238-0d82-4146-a960-4f3749d470c7) -match 'Current AC Power Setting Index'",
+            "[regex]::Match($statusFull,'(0x.{8})').Value"
+        };
+
+        RunCommands(cmds);
+
+        return 0;
+    }
+
+}
+
+
 public class NativeMethods
 {
+
+    [DllImport("PowrProf.dll", CharSet = CharSet.Unicode)]
+    static extern UInt32 PowerWriteDCValueIndex(IntPtr RootPowerKey,
+        [MarshalAs(UnmanagedType.LPStruct)] Guid SchemeGuid,
+        [MarshalAs(UnmanagedType.LPStruct)] Guid SubGroupOfPowerSettingsGuid,
+        [MarshalAs(UnmanagedType.LPStruct)] Guid PowerSettingGuid,
+        int AcValueIndex);
+
+    [DllImport("PowrProf.dll", CharSet = CharSet.Unicode)]
+    static extern UInt32 PowerReadACValueIndex(IntPtr RootPowerKey,
+        [MarshalAs(UnmanagedType.LPStruct)] Guid SchemeGuid,
+        [MarshalAs(UnmanagedType.LPStruct)] Guid SubGroupOfPowerSettingsGuid,
+        [MarshalAs(UnmanagedType.LPStruct)] Guid PowerSettingGuid,
+        out IntPtr AcValueIndex
+        );
+
+
+
+    [DllImport("PowrProf.dll", CharSet = CharSet.Unicode)]
+    static extern UInt32 PowerWriteACValueIndex(IntPtr RootPowerKey,
+        [MarshalAs(UnmanagedType.LPStruct)] Guid SchemeGuid,
+        [MarshalAs(UnmanagedType.LPStruct)] Guid SubGroupOfPowerSettingsGuid,
+        [MarshalAs(UnmanagedType.LPStruct)] Guid PowerSettingGuid,
+        int AcValueIndex);
+
+    [DllImport("PowrProf.dll", CharSet = CharSet.Unicode)]
+    static extern UInt32 PowerSetActiveScheme(IntPtr RootPowerKey,
+        [MarshalAs(UnmanagedType.LPStruct)] Guid SchemeGuid);
+
+    [DllImport("PowrProf.dll", CharSet = CharSet.Unicode)]
+    static extern UInt32 PowerGetActiveScheme(IntPtr UserPowerKey, out IntPtr ActivePolicyGuid);
+
+    static readonly Guid GUID_CPU = new Guid("54533251-82be-4824-96c1-47b60b740d00");
+    static readonly Guid GUID_BOOST = new Guid("be337238-0d82-4146-a960-4f3749d470c7");
 
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
     public struct DEVMODE
@@ -350,7 +437,45 @@ public class NativeMethods
 
     }
 
+    static Guid GetActiveScheme()
+    {
+        IntPtr pActiveSchemeGuid;
+        var hr = PowerGetActiveScheme(IntPtr.Zero, out pActiveSchemeGuid);
+        Guid activeSchemeGuid = (Guid)Marshal.PtrToStructure(pActiveSchemeGuid, typeof(Guid));
+        return activeSchemeGuid;
+    }
+
+    public static int GetCPUBoost()
+    {
+        IntPtr AcValueIndex;
+        Guid activeSchemeGuid = GetActiveScheme();
+
+        UInt32 value = PowerReadACValueIndex(IntPtr.Zero,
+             activeSchemeGuid,
+             GUID_CPU,
+             GUID_BOOST, out AcValueIndex);
+
+        return AcValueIndex.ToInt32();
+        
+    }
+
+    public static void SetCPUBoost(int boost = 0)
+    {
+        Guid activeSchemeGuid = GetActiveScheme();
+
+        var hr = PowerWriteACValueIndex(
+             IntPtr.Zero,
+             activeSchemeGuid,
+             GUID_CPU,
+             GUID_BOOST,
+             boost);
+
+        PowerSetActiveScheme(IntPtr.Zero, activeSchemeGuid);
+    }
+
+
 }
+
 
 namespace GHelper
 {
@@ -386,6 +511,7 @@ namespace GHelper
             settingsForm = new SettingsForm();
 
             settingsForm.InitGPUMode();
+            settingsForm.InitBoost();
 
             settingsForm.SetPerformanceMode(config.getConfig("performance_mode"));
             settingsForm.SetBatteryChargeLimit(config.getConfig("charge_limit"));
