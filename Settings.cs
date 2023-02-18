@@ -1,6 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Diagnostics;
-using System.Text.Json;
+﻿using System.Diagnostics;
+using System.Management;
 using System.Timers;
 
 namespace GHelper
@@ -92,12 +91,12 @@ namespace GHelper
                     frequency = 120;
             }
 
-            if (frequency > 0) 
+            if (frequency > 0)
                 NativeMethods.SetRefreshRate(frequency);
 
             if (overdrive > 0)
                 Program.wmi.DeviceSet(ASUSWmi.ScreenOverdrive, overdrive);
-            
+
             InitScreen();
         }
 
@@ -114,8 +113,9 @@ namespace GHelper
             int frequency = NativeMethods.GetRefreshRate();
             int maxFrequency = Program.config.getConfig("max_frequency");
 
-            if (frequency < 0) {
-                button60Hz.Enabled= false;
+            if (frequency < 0)
+            {
+                button60Hz.Enabled = false;
                 button120Hz.Enabled = false;
                 labelSreen.Text = "Latop Screen: Turned off";
                 button60Hz.BackColor = SystemColors.ControlLight;
@@ -138,11 +138,12 @@ namespace GHelper
             if (frequency == 60)
             {
                 button60Hz.FlatAppearance.BorderSize = buttonActive;
-            } else 
+            }
+            else
             {
                 if (frequency > 60)
                     maxFrequency = frequency;
-                
+
                 Program.config.setConfig("max_frequency", maxFrequency);
                 button120Hz.FlatAppearance.BorderSize = buttonActive;
             }
@@ -260,11 +261,11 @@ namespace GHelper
             SetPerformanceMode(Program.config.getConfig("performance_mode") + 1);
         }
 
-        public void AutoScreen (int Plugged = 1)
+        public void AutoScreen(int Plugged = 1)
         {
             int ScreenAuto = Program.config.getConfig("screen_auto");
             if (ScreenAuto != 1) return;
-            
+
             if (Plugged == 1)
                 SetScreen(1000, 1);
             else
@@ -392,7 +393,7 @@ namespace GHelper
         }
 
 
-        public void VisualiseGPUAuto(int GPUAuto) 
+        public void VisualiseGPUAuto(int GPUAuto)
         {
             checkGPU.Checked = (GPUAuto == 1);
         }
@@ -413,17 +414,17 @@ namespace GHelper
             {
                 case ASUSWmi.GPUModeEco:
                     buttonEco.FlatAppearance.BorderSize = buttonActive;
-                    labelGPU.Text = "GPU Mode: Eco (iGPU only)";
+                    labelGPU.Text = "GPU Mode: iGPU only";
                     Program.trayIcon.Icon = GHelper.Properties.Resources.eco;
                     break;
                 case ASUSWmi.GPUModeUltimate:
                     buttonUltimate.FlatAppearance.BorderSize = buttonActive;
-                    labelGPU.Text = "GPU Mode: Ultimate (dGPU is main)";
+                    labelGPU.Text = "GPU Mode: dGPU exclusive";
                     Program.trayIcon.Icon = GHelper.Properties.Resources.ultimate;
                     break;
                 default:
                     buttonStandard.FlatAppearance.BorderSize = buttonActive;
-                    labelGPU.Text = "GPU Mode: Eco (iGPU and dGPU)";
+                    labelGPU.Text = "GPU Mode: iGPU and dGPU";
                     Program.trayIcon.Icon = GHelper.Properties.Resources.standard;
                     break;
             }
@@ -473,7 +474,7 @@ namespace GHelper
             }
         }
 
-        public void SetBatteryChargeLimit (int limit = 100)
+        public void SetBatteryChargeLimit(int limit = 100)
         {
 
             if (limit < 50 || limit > 100) limit = 100;

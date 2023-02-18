@@ -1,14 +1,9 @@
 using Microsoft.Win32.TaskScheduler;
-using System;
 using System.Diagnostics;
 using System.Management;
 using System.Runtime.InteropServices;
 
 using System.Text.Json;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
-
-using System.Text.RegularExpressions;
-using System.Drawing;
 
 public class ASUSWmi
 {
@@ -219,7 +214,8 @@ public class AppConfig
 }
 
 
-public class PowerPlan {
+public class PowerPlan
+{
     static void RunCommands(List<string> cmds, string workingDirectory = "")
     {
         var process = new Process();
@@ -456,7 +452,7 @@ public class NativeMethods
              GUID_BOOST, out AcValueIndex);
 
         return AcValueIndex.ToInt32();
-        
+
     }
 
     public static void SetCPUBoost(int boost = 0)
