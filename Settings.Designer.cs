@@ -367,6 +367,7 @@
             // 
             this.button120Hz.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.button120Hz.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.button120Hz.FlatAppearance.BorderColor = System.Drawing.SystemColors.ActiveBorder;
             this.button120Hz.FlatAppearance.BorderSize = 0;
             this.button120Hz.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button120Hz.Location = new System.Drawing.Point(227, 10);
@@ -382,8 +383,10 @@
             this.button60Hz.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.button60Hz.CausesValidation = false;
             this.button60Hz.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.button60Hz.FlatAppearance.BorderColor = System.Drawing.SystemColors.ActiveBorder;
             this.button60Hz.FlatAppearance.BorderSize = 0;
             this.button60Hz.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button60Hz.ForeColor = System.Drawing.SystemColors.ControlText;
             this.button60Hz.Location = new System.Drawing.Point(10, 10);
             this.button60Hz.Margin = new System.Windows.Forms.Padding(10);
             this.button60Hz.Name = "button60Hz";

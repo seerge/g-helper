@@ -1,11 +1,12 @@
 using Microsoft.Win32.TaskScheduler;
-using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Management;
 using System.Reflection.Metadata.Ecma335;
 using System.Runtime.InteropServices;
 
+using System.Text.Json;
+using System.Text.Json.Serialization;
 public class ASUSWmi
 {
     private ManagementObject mo;
@@ -170,9 +171,14 @@ public class AppConfig
         if (File.Exists(configFile))
         {
             string text = File.ReadAllText(configFile);
-            config = JsonConvert.DeserializeObject<Dictionary<string, object>>(text);
-            if (config is null)
+            try
+            {
+                config = JsonSerializer.Deserialize<Dictionary<string, object>>(text);
+            }
+            catch
+            {
                 initConfig();
+            }
         }
         else
         {
@@ -185,7 +191,7 @@ public class AppConfig
     {
         config = new Dictionary<string, object>();
         config["performance_mode"] = 0;
-        string jsonString = JsonConvert.SerializeObject(config);
+        string jsonString = JsonSerializer.Serialize(config);
         File.WriteAllText(configFile, jsonString);
     }
 
@@ -199,7 +205,7 @@ public class AppConfig
     public void setConfig(string name, int value)
     {
         config[name] = value;
-        string jsonString = JsonConvert.SerializeObject(config);
+        string jsonString = JsonSerializer.Serialize(config);
         File.WriteAllText(configFile, jsonString);
     }
 
@@ -251,21 +257,35 @@ public class NativeMethods
         public int dmPanningHeight;
     };
 
+    [Flags()]
+    public enum DisplaySettingsFlags : int
+    {
+        CDS_UPDATEREGISTRY = 1,
+        CDS_TEST = 2,
+        CDS_FULLSCREEN = 4,
+        CDS_GLOBAL = 8,
+        CDS_SET_PRIMARY = 0x10,
+        CDS_RESET = 0x40000000,
+        CDS_NORESET = 0x10000000
+    }
+
     // PInvoke declaration for EnumDisplaySettings Win32 API
     [DllImport("user32.dll")]
-    public static extern int EnumDisplaySettingsExA(
+    public static extern int EnumDisplaySettingsEx(
          string lpszDeviceName,
          int iModeNum,
          ref DEVMODE lpDevMode);
 
     // PInvoke declaration for ChangeDisplaySettings Win32 API
     [DllImport("user32.dll")]
-    public static extern int ChangeDisplaySettings(
-         ref DEVMODE lpDevMode,
-         int dwFlags);
+    public static extern int ChangeDisplaySettingsEx(
+            string lpszDeviceName, ref DEVMODE lpDevMode, IntPtr hwnd,
+            DisplaySettingsFlags dwflags, IntPtr lParam);
+
 
     public const int ENUM_CURRENT_SETTINGS = -1;
 
+    public const string laptopScreenName = "\\\\.\\DISPLAY1";
 
     public static DEVMODE CreateDevmode()
     {
@@ -276,30 +296,58 @@ public class NativeMethods
         return dm;
     }
 
+    public static Screen FindLaptopScreen()
+    {
+        var screens = Screen.AllScreens;
+        Screen laptopScreen = null;
+
+        foreach (var screen in screens)
+        {
+            if (screen.DeviceName == laptopScreenName)
+            {
+                laptopScreen = screen;
+            }
+        }
+
+        if (laptopScreen is null) return null;
+        else return laptopScreen;
+    }
+
     public static int GetRefreshRate()
     {
         DEVMODE dm = CreateDevmode();
 
+        Screen laptopScreen = FindLaptopScreen();
         int frequency = -1;
 
-        if (0 != NativeMethods.EnumDisplaySettingsExA(null, NativeMethods.ENUM_CURRENT_SETTINGS, ref dm))
+        if (laptopScreen is null)
+            return -1;
+
+        if (0 != NativeMethods.EnumDisplaySettingsEx(laptopScreen.DeviceName, NativeMethods.ENUM_CURRENT_SETTINGS, ref dm))
         {
-            Debug.WriteLine(JsonConvert.SerializeObject(dm));
             frequency = dm.dmDisplayFrequency;
         }
 
         return frequency;
     }
 
-    public static void SetRefreshRate(int frequency = 120)
+    public static int SetRefreshRate(int frequency = 120)
     {
         DEVMODE dm = CreateDevmode();
+        Screen laptopScreen = FindLaptopScreen();
 
-        if (0 != NativeMethods.EnumDisplaySettingsExA(null,NativeMethods.ENUM_CURRENT_SETTINGS, ref dm))
+        if (laptopScreen is null)
+            return -1;
+
+        if (0 != NativeMethods.EnumDisplaySettingsEx(laptopScreen.DeviceName, NativeMethods.ENUM_CURRENT_SETTINGS, ref dm))
         {
             dm.dmDisplayFrequency = frequency;
-            int iRet = NativeMethods.ChangeDisplaySettings(ref dm, 0);
+            int iRet = NativeMethods.ChangeDisplaySettingsEx(laptopScreen.DeviceName, ref dm, IntPtr.Zero, DisplaySettingsFlags.CDS_UPDATEREGISTRY, IntPtr.Zero);
+            return iRet;
         }
+
+        return 0;
+
     }
 
 }

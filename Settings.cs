@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
+using System.Text.Json;
 using System.Timers;
 
 namespace GHelper
@@ -57,7 +58,7 @@ namespace GHelper
 
         private void Button120Hz_Click(object? sender, EventArgs e)
         {
-            SetScreen(120, 1);
+            SetScreen(1000, 1);
         }
 
         private void Button60Hz_Click(object? sender, EventArgs e)
@@ -68,22 +69,51 @@ namespace GHelper
 
         public void SetScreen(int frequency = -1, int overdrive = -1)
         {
+
+            int currentFrequency = NativeMethods.GetRefreshRate();
+            if (currentFrequency < 0)  // Laptop screen not detected or has unknown refresh rate
+                return;
+
+            if (frequency >= 1000)
+            {
+                frequency = Program.config.getConfig("max_frequency");
+                if (frequency <= 60)
+                    frequency = 120;
+            }
+
             if (frequency > 0) 
                 NativeMethods.SetRefreshRate(frequency);
+
             if (overdrive > 0)
                 Program.wmi.DeviceSet(ASUSWmi.ScreenOverdrive, overdrive);
-            InitScreen(frequency, overdrive);
+            
+            InitScreen();
         }
 
 
-        public void InitScreen(int frequency = -1, int overdrive = -1)
+        public void InitScreen()
         {
 
-            if (frequency < 0)
-                frequency = NativeMethods.GetRefreshRate();
+            int frequency = NativeMethods.GetRefreshRate();
+            int maxFrequency = Program.config.getConfig("max_frequency");
 
-            if (overdrive < 0)
-                overdrive = Program.wmi.DeviceGet(ASUSWmi.ScreenOverdrive);
+            if (frequency < 0) {
+                button60Hz.Enabled= false;
+                button120Hz.Enabled = false;
+                labelSreen.Text = "Latop Screen: Turned off";
+                button60Hz.BackColor = SystemColors.ControlLight;
+                button120Hz.BackColor = SystemColors.ControlLight;
+            }
+            else
+            {
+                button60Hz.Enabled = true;
+                button120Hz.Enabled = true;
+                button60Hz.BackColor = SystemColors.ControlLightLight;
+                button120Hz.BackColor = SystemColors.ControlLightLight;
+                labelSreen.Text = "Latop Screen";
+            }
+
+            int overdrive = Program.wmi.DeviceGet(ASUSWmi.ScreenOverdrive);
 
             button60Hz.FlatAppearance.BorderSize = buttonInactive;
             button120Hz.FlatAppearance.BorderSize = buttonInactive;
@@ -91,10 +121,19 @@ namespace GHelper
             if (frequency == 60)
             {
                 button60Hz.FlatAppearance.BorderSize = buttonActive;
-            } else if (frequency == 120)
+            } else 
             {
+                if (maxFrequency > 60)
+                    maxFrequency = frequency;
+                
+                Program.config.setConfig("max_frequency", maxFrequency);
                 button120Hz.FlatAppearance.BorderSize = buttonActive;
-            } 
+            }
+
+            if (maxFrequency > 60)
+            {
+                button120Hz.Text = maxFrequency.ToString() + "Hz + OD";
+            }
 
             Program.config.setConfig("frequency", frequency);
             Program.config.setConfig("overdrive", overdrive);
@@ -210,7 +249,7 @@ namespace GHelper
             if (ScreenAuto != 1) return;
             
             if (Plugged == 1)
-                SetScreen(120, 1);
+                SetScreen(1000, 1);
             else
                 SetScreen(60, 0);
 
@@ -233,24 +272,23 @@ namespace GHelper
             {
                 if (eco == 1 && Plugged == 1)  // Eco going Standard on plugged
                 {
+                    Program.wmi.DeviceSet(ASUSWmi.GPUEco, 0);
+
                     GPUMode = ASUSWmi.GPUModeStandard;
                     VisualiseGPUMode(GPUMode);
-                    Program.wmi.DeviceSet(ASUSWmi.GPUEco, 0);
                     Program.config.setConfig("gpu_mode", GPUMode);
                 }
                 else if (eco == 0 && Plugged == 0)  // Standard going Eco on plugged
                 {
+                    Program.wmi.DeviceSet(ASUSWmi.GPUEco, 1);
+
                     GPUMode = ASUSWmi.GPUModeEco;
                     VisualiseGPUMode(GPUMode);
-                    Program.wmi.DeviceSet(ASUSWmi.GPUEco, 1);
                     Program.config.setConfig("gpu_mode", GPUMode);
-
                 }
 
             }
         }
-
-
 
         public int InitGPUMode()
         {
@@ -400,6 +438,7 @@ namespace GHelper
         public void Disable_Ultimate()
         {
             buttonUltimate.Enabled = false;
+            buttonUltimate.BackColor = SystemColors.ControlLight;
         }
 
         public void SetStartupCheck(bool status)
