@@ -61,6 +61,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.comboKeyboard = new System.Windows.Forms.ComboBox();
             this.buttonKeyboardColor = new System.Windows.Forms.Button();
+            this.pictureBox2 = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.trackBattery)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBattery)).BeginInit();
             this.tableGPU.SuspendLayout();
@@ -70,6 +71,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureScreen)).BeginInit();
             this.tableScreen.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.SuspendLayout();
             // 
             // checkStartup
@@ -482,9 +484,9 @@
             "Breathe",
             "Strobe",
             "Rainbow"});
-            this.comboKeyboard.Location = new System.Drawing.Point(31, 778);
+            this.comboKeyboard.Location = new System.Drawing.Point(40, 778);
             this.comboKeyboard.Name = "comboKeyboard";
-            this.comboKeyboard.Size = new System.Drawing.Size(212, 40);
+            this.comboKeyboard.Size = new System.Drawing.Size(198, 40);
             this.comboKeyboard.TabIndex = 24;
             // 
             // buttonKeyboardColor
@@ -497,11 +499,19 @@
             this.buttonKeyboardColor.Location = new System.Drawing.Point(261, 773);
             this.buttonKeyboardColor.Margin = new System.Windows.Forms.Padding(0);
             this.buttonKeyboardColor.Name = "buttonKeyboardColor";
-            this.buttonKeyboardColor.Size = new System.Drawing.Size(212, 49);
+            this.buttonKeyboardColor.Size = new System.Drawing.Size(212, 50);
             this.buttonKeyboardColor.TabIndex = 25;
             this.buttonKeyboardColor.Text = "Color";
             this.buttonKeyboardColor.UseVisualStyleBackColor = false;
-            this.buttonKeyboardColor.Click += new System.EventHandler(this.buttonKeyboard_Click);
+            // 
+            // pictureBox2
+            // 
+            this.pictureBox2.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.pictureBox2.Location = new System.Drawing.Point(32, 773);
+            this.pictureBox2.Name = "pictureBox2";
+            this.pictureBox2.Size = new System.Drawing.Size(212, 50);
+            this.pictureBox2.TabIndex = 26;
+            this.pictureBox2.TabStop = false;
             // 
             // SettingsForm
             // 
@@ -532,6 +542,7 @@
             this.Controls.Add(this.labelBattery);
             this.Controls.Add(this.trackBattery);
             this.Controls.Add(this.checkStartup);
+            this.Controls.Add(this.pictureBox2);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.MaximizeBox = false;
@@ -553,6 +564,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureScreen)).EndInit();
             this.tableScreen.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -591,5 +603,6 @@
         private Label label1;
         private ComboBox comboKeyboard;
         private Button buttonKeyboardColor;
+        private PictureBox pictureBox2;
     }
 }

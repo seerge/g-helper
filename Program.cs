@@ -429,11 +429,10 @@ public class Aura
     static byte[] MESSAGE_APPLY = { 0x5d, 0xb4 };
 
     public const int Static = 0;
-    public const int Breathe = 0;
-    public const int Strobe = 0;
-    public const int Rainbow = 0;
+    public const int Breathe = 1;
+    public const int Strobe = 2;
+    public const int Rainbow = 3;
 
-    
     public const int SpeedSlow = 0;
     public const int SpeedMedium = 1;
     public const int SpeedHigh = 2;
@@ -557,6 +556,12 @@ namespace GHelper
                     settingsForm.BeginInvoke(delegate
                     {
                         settingsForm.CyclePerformanceMode();
+                    });
+                    return;
+                case 179:   // FN+F4
+                    settingsForm.BeginInvoke(delegate
+                    {
+                        settingsForm.CycleAuraMode();
                     });
                     return;
                 case 87:  // Battery
