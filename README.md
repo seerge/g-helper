@@ -29,6 +29,12 @@ Profiles are **same** as in Armory Crate, including default fan curves
 5. Screen resolution and display overdrive switching
 6. Run on startup (optional)
 
+## Things still missing
+
+1. Keyboard backlight control
+2. Custom fan profiles
+3. Anime matrix control
+
 ## How to install
 
 1. Download latest release from https://github.com/seerge/g14-helper/releases
