@@ -525,6 +525,9 @@ namespace GHelper
             settingsForm.InitGPUMode();
             settingsForm.InitBoost();
             settingsForm.InitAura();
+            // Check if laptop is plugged in at boot. If true, set refresh rate accordingly
+            bool isPlugged = (SystemInformation.PowerStatus.PowerLineStatus == PowerLineStatus.Online);
+            settingsForm.AutoScreen(isPlugged ? 1 : 0);
 
             settingsForm.SetPerformanceMode(config.getConfig("performance_mode"));
             settingsForm.SetBatteryChargeLimit(config.getConfig("charge_limit"));

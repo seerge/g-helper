@@ -399,8 +399,13 @@ namespace GHelper
         public int InitGPUMode()
         {
 
+            // Check if laptop is plugged in at boot. If true, set gpu mode accordingly
+            bool isPlugged = (SystemInformation.PowerStatus.PowerLineStatus == PowerLineStatus.Online);
+            AutoGPUMode(isPlugged ? 1 : 0);
+
             int eco = Program.wmi.DeviceGet(ASUSWmi.GPUEco);
             int mux = Program.wmi.DeviceGet(ASUSWmi.GPUMux);
+
 
             int GpuMode;
 
