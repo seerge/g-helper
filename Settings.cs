@@ -117,7 +117,7 @@ namespace GHelper
             {
                 button60Hz.Enabled = false;
                 button120Hz.Enabled = false;
-                labelSreen.Text = "Latop Screen: Turned off";
+                labelSreen.Text = "Laptop Screen: Turned off";
                 button60Hz.BackColor = SystemColors.ControlLight;
                 button120Hz.BackColor = SystemColors.ControlLight;
             }
@@ -127,7 +127,7 @@ namespace GHelper
                 button120Hz.Enabled = true;
                 button60Hz.BackColor = SystemColors.ControlLightLight;
                 button120Hz.BackColor = SystemColors.ControlLightLight;
-                labelSreen.Text = "Latop Screen";
+                labelSreen.Text = "Laptop Screen";
             }
 
             int overdrive = Program.wmi.DeviceGet(ASUSWmi.ScreenOverdrive);
@@ -236,22 +236,28 @@ namespace GHelper
             {
                 case ASUSWmi.PerformanceSilent:
                     buttonSilent.FlatAppearance.BorderSize = buttonActive;
-                    labelPerf.Text = "Peformance Mode: Silent";
+                    labelPerf.Text = "Performance Mode: Silent";
                     break;
                 case ASUSWmi.PerformanceTurbo:
                     buttonTurbo.FlatAppearance.BorderSize = buttonActive;
-                    labelPerf.Text = "Peformance Mode: Turbo";
+                    labelPerf.Text = "Performance Mode: Turbo";
                     break;
                 default:
                     buttonBalanced.FlatAppearance.BorderSize = buttonActive;
-                    labelPerf.Text = "Peformance Mode: Balanced";
+                    labelPerf.Text = "Performance Mode: Balanced";
                     PerformanceMode = ASUSWmi.PerformanceBalanced;
                     break;
             }
 
 
             Program.config.setConfig("performance_mode", PerformanceMode);
-            Program.wmi.DeviceSet(ASUSWmi.PerformanceMode, PerformanceMode);
+            try
+            {
+                Program.wmi.DeviceSet(ASUSWmi.PerformanceMode, PerformanceMode);
+            } catch
+            {
+                labelPerf.Text = "Performance Mode: not supported";
+            }
 
         }
 
