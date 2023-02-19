@@ -215,7 +215,14 @@ namespace GHelper
                 labelSreen.Text = "Laptop Screen";
             }
 
-            int overdrive = Program.wmi.DeviceGet(ASUSWmi.ScreenOverdrive);
+            int overdrive = 0;
+            try
+            {
+                overdrive = Program.wmi.DeviceGet(ASUSWmi.ScreenOverdrive);
+            } catch
+            {
+                Debug.WriteLine("Screen Overdrive not supported");
+            }
 
             button60Hz.FlatAppearance.BorderSize = buttonInactive;
             button120Hz.FlatAppearance.BorderSize = buttonInactive;
