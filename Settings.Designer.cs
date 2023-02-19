@@ -488,6 +488,7 @@
             this.comboKeyboard.Name = "comboKeyboard";
             this.comboKeyboard.Size = new System.Drawing.Size(198, 40);
             this.comboKeyboard.TabIndex = 24;
+            this.comboKeyboard.TabStop = false;
             // 
             // buttonKeyboardColor
             // 

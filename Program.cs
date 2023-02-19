@@ -596,6 +596,8 @@ namespace GHelper
                     settingsForm.Show();
                     settingsForm.Activate();
                 }
+
+                trayIcon.Icon = trayIcon.Icon; // refreshing icon as it get's blurred when screen resolution changes
             }
         }
 

@@ -55,6 +55,8 @@ namespace GHelper
             checkScreen.CheckedChanged += checkScreen_CheckedChanged;
 
             comboKeyboard.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboKeyboard.SelectedIndex = 0;
+
             comboKeyboard.SelectedValueChanged += ComboKeyboard_SelectedValueChanged;
 
             buttonKeyboardColor.Click += ButtonKeyboardColor_Click;
@@ -114,6 +116,7 @@ namespace GHelper
 
         public void SetAuraMode (int mode = 0, bool apply = true)
         {
+
             if (mode > 3) mode = 0;
 
             if (Aura.Mode == mode) return; // same mode
@@ -123,8 +126,8 @@ namespace GHelper
 
             if (apply)
                 Aura.ApplyAura();
- 
-            comboKeyboard.SelectedIndex = mode;
+            else 
+                comboKeyboard.SelectedIndex = mode;
         }
 
         public void CycleAuraMode ()
@@ -569,7 +572,13 @@ namespace GHelper
 
             labelBatteryLimit.Text = limit.ToString() + "%";
             trackBattery.Value = limit;
-            Program.wmi.DeviceSet(ASUSWmi.BatteryLimit, limit);
+            try
+            {
+                Program.wmi.DeviceSet(ASUSWmi.BatteryLimit, limit);
+            } catch
+            {
+                Debug.WriteLine("Can't set battery charge limit");
+            }
             Program.config.setConfig("charge_limit", limit);
 
         }
