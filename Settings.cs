@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Management;
 using System.Timers;
+using System.Windows.Forms;
 
 namespace GHelper
 {
@@ -52,9 +53,59 @@ namespace GHelper
 
             checkScreen.CheckedChanged += checkScreen_CheckedChanged;
 
+            comboKeyboard.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboKeyboard.SelectedIndex = 0;
+            comboKeyboard.SelectedValueChanged += ComboKeyboard_SelectedValueChanged;
+
             SetTimer();
 
 
+        }
+
+
+        public void InitAura()
+        {
+            int mode = Program.config.getConfig("aura_mode");
+            int color = Program.config.getConfig("aura_color");
+            int speed = Program.config.getConfig("aura_speed");
+
+            if (mode == -1) mode = 0;
+            if (color == -1) color = Color.FromArgb(255, 255, 255).ToArgb();
+
+            Aura.Mode = mode;
+            Aura.Color1 = Color.FromArgb(color);
+
+            comboKeyboard.SelectedIndex = Aura.Mode;
+            buttonKeyboardColor.FlatAppearance.BorderColor = Aura.Color1;
+
+        }
+
+        private void ComboKeyboard_SelectedValueChanged(object? sender, EventArgs e)
+        {
+            ComboBox cmb = (ComboBox)sender;
+            int selectedIndex = cmb.SelectedIndex;
+            Aura.Mode = (byte)selectedIndex;
+            Aura.ApplyAura();
+            Program.config.setConfig("aura_mode", selectedIndex);
+        }
+
+
+        private void buttonKeyboard_Click(object sender, EventArgs e)
+        {
+
+            Button but = (Button)sender;
+
+            ColorDialog colorDlg = new ColorDialog();
+            colorDlg.AllowFullOpen = false;
+            colorDlg.Color = but.FlatAppearance.BorderColor;
+
+            if (colorDlg.ShowDialog() == DialogResult.OK)
+            {
+                but.FlatAppearance.BorderColor = colorDlg.Color;
+                Aura.Color1 = colorDlg.Color;
+                Aura.ApplyAura();
+                Program.config.setConfig("aura_color", colorDlg.Color.ToArgb());
+            }
         }
 
         private void CheckBoost_Click(object? sender, EventArgs e)

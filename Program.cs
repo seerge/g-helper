@@ -2,7 +2,7 @@ using Microsoft.Win32.TaskScheduler;
 using System.Diagnostics;
 using System.Management;
 using System.Runtime.InteropServices;
-
+using HidLibrary;
 using System.Text.Json;
 
 public class ASUSWmi
@@ -214,55 +214,6 @@ public class AppConfig
 }
 
 
-public class PowerPlan
-{
-    static void RunCommands(List<string> cmds, string workingDirectory = "")
-    {
-        var process = new Process();
-        var psi = new ProcessStartInfo();
-        psi.FileName = "powershell";
-        psi.RedirectStandardInput = true;
-        psi.RedirectStandardOutput = true;
-        psi.RedirectStandardError = true;
-        psi.UseShellExecute = false;
-
-        psi.CreateNoWindow = true;
-
-        psi.WorkingDirectory = workingDirectory;
-        process.StartInfo = psi;
-        process.Start();
-        process.OutputDataReceived += (sender, e) => { Debug.WriteLine(e.Data); };
-        process.ErrorDataReceived += (sender, e) => { Debug.WriteLine(e.Data); };
-        process.BeginOutputReadLine();
-        process.BeginErrorReadLine();
-        using (StreamWriter sw = process.StandardInput)
-        {
-            foreach (var cmd in cmds)
-            {
-                sw.WriteLine(cmd);
-            }
-        }
-        process.WaitForExit();
-    }
-
-
-    public static int getBoostStatus()
-    {
-        List<string> cmds = new List<string>
-        {
-            "$asGuid = [regex]::Match((powercfg /getactivescheme),'(\\{){0,1}[0-9a-fA-F]{8}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{12}(\\}){0,1}').Value",
-            "$statusFull = (powercfg /QUERY $asGuid 54533251-82be-4824-96c1-47b60b740d00 be337238-0d82-4146-a960-4f3749d470c7) -match 'Current AC Power Setting Index'",
-            "[regex]::Match($statusFull,'(0x.{8})').Value"
-        };
-
-        RunCommands(cmds);
-
-        return 0;
-    }
-
-}
-
-
 public class NativeMethods
 {
 
@@ -468,8 +419,74 @@ public class NativeMethods
 
         PowerSetActiveScheme(IntPtr.Zero, activeSchemeGuid);
     }
+}
 
 
+public class Aura
+{
+
+    static byte[] MESSAGE_SET = { 0x5d, 0xb5 };
+    static byte[] MESSAGE_APPLY = { 0x5d, 0xb4 };
+
+    public const int Static = 0;
+    public const int Breathe = 0;
+    public const int Strobe = 0;
+    public const int Rainbow = 0;
+
+    
+    public const int SpeedSlow = 0;
+    public const int SpeedMedium = 1;
+    public const int SpeedHigh = 2;
+
+    public static int Mode = Static;
+    public static Color Color1 = Color.White;
+    public static Color Color2 = Color.Black;
+    public static int Speed = SpeedSlow;
+
+    public static byte[] AuraMessage(int mode, Color color, Color color2, int speed)
+    {
+        byte[] msg = new byte[17];
+        msg[0] = 0x5d;
+        msg[1] = 0xb3;
+        msg[2] = 0x00; // Zone 
+        msg[3] = (byte)mode; // Aura Mode
+        msg[4] = (byte)(color.R); // R
+        msg[5] = (byte)(color.G); // G
+        msg[6] = (byte)(color.B); // B
+        msg[7] = (byte)speed; // aura.speed as u8;
+        msg[8] = 0; // aura.direction as u8;
+        msg[10] = (byte)(color2.R); // R
+        msg[11] = (byte)(color2.G); // G
+        msg[12] = (byte)(color2.B); // B
+        return msg;
+    }
+
+    public static void ApplyAura()
+    {
+
+        HidDevice[] HidDeviceList;
+        int[] deviceIds = { 0x1854, 0x1869, 0x1866, 0x19b6 };
+
+        HidDeviceList = HidDevices.Enumerate(0x0b05, deviceIds).ToArray();
+
+        foreach (HidDevice device in HidDeviceList)
+        {
+            if (device.IsConnected)
+            {
+                if (device.Description.IndexOf("HID") >= 0)
+                {
+                    device.OpenDevice();
+                    byte[] msg = AuraMessage(Mode, Color1, Color2, Speed);
+                    device.Write(msg);
+                    device.Write(MESSAGE_SET);
+                    device.Write(MESSAGE_APPLY);
+                    device.CloseDevice();
+                }
+
+            }
+        }
+
+    }
 }
 
 
@@ -508,6 +525,7 @@ namespace GHelper
 
             settingsForm.InitGPUMode();
             settingsForm.InitBoost();
+            settingsForm.InitAura();
 
             settingsForm.SetPerformanceMode(config.getConfig("performance_mode"));
             settingsForm.SetBatteryChargeLimit(config.getConfig("charge_limit"));
