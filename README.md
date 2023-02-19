@@ -22,18 +22,18 @@ Profiles are **same** as in Armory Crate, including default fan curves
 
 ## Extras
 
-1. **Maximum battery charge rate** limit (60% / 80% / 100%) to preserve your battery
-2. CPU and GPU relative fan speed monitoring 
-3. Automatic switching of Standard/Eco GPU modes when laptop is plugged / unplugged!
-4. FN+F5 an M4 (Rog) keys cycle through Performance modes
-5. Screen resolution and display overdrive switching
-6. Run on startup (optional)
+1. Keyboard backlight control (basic aura modes and colors)
+2. **Maximum battery charge rate** limit (60% / 80% / 100%) to preserve your battery
+3. CPU and GPU relative fan speed monitoring 
+4. Automatic switching of Standard/Eco GPU modes when laptop is plugged / unplugged!
+5. FN+F5 an M4 (Rog) keys cycle through Performance modes
+6. Screen resolution and display overdrive switching
+7. Run on startup (optional)
 
 ## Things still missing
 
-1. Keyboard backlight control
-2. Custom fan profiles
-3. Anime matrix control
+1. Custom fan profiles
+2. Anime matrix control
 
 ## How to install
 
