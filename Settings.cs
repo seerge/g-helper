@@ -399,7 +399,6 @@ namespace GHelper
         public int InitGPUMode()
         {
 
-
             int eco = Program.wmi.DeviceGet(ASUSWmi.GPUEco);
             int mux = Program.wmi.DeviceGet(ASUSWmi.GPUMux);
 
