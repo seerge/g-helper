@@ -534,6 +534,10 @@ namespace GHelper
 
             settingsForm.SetStartupCheck(scheduler.IsScheduled());
 
+            bool isPlugged = (SystemInformation.PowerStatus.PowerLineStatus == PowerLineStatus.Online);
+            settingsForm.AutoGPUMode(isPlugged ? 1 : 0);
+            settingsForm.AutoScreen(isPlugged ? 1 : 0);
+
             Application.Run();
 
         }

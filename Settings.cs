@@ -349,9 +349,6 @@ namespace GHelper
             }
 
 
-            Application.EnableVisualStyles();
-            Application.Run();
-
             Program.config.setConfig("performance_mode", PerformanceMode);
             try
             {
