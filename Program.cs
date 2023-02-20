@@ -506,7 +506,7 @@ namespace GHelper
         {
             trayIcon = new NotifyIcon
             {
-                Text = "G14 Helper",
+                Text = "G-Helper",
                 Icon = GHelper.Properties.Resources.standard,
                 Visible = true
             };

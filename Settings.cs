@@ -179,8 +179,15 @@ namespace GHelper
             if (frequency > 0)
                 NativeMethods.SetRefreshRate(frequency);
 
-            if (overdrive > 0)
-                Program.wmi.DeviceSet(ASUSWmi.ScreenOverdrive, overdrive);
+            try
+            {
+                if (overdrive > 0)
+                    Program.wmi.DeviceSet(ASUSWmi.ScreenOverdrive, overdrive);
+            } catch
+            {
+                Debug.WriteLine("Screen Overdrive not supported");
+            }
+
 
             InitScreen();
         }
@@ -317,7 +324,7 @@ namespace GHelper
             }
         }
 
-        public void SetPerformanceMode(int PerformanceMode = ASUSWmi.PerformanceBalanced)
+        public void SetPerformanceMode(int PerformanceMode = ASUSWmi.PerformanceBalanced, bool notify = false)
         {
 
             buttonSilent.FlatAppearance.BorderSize = buttonInactive;
@@ -341,6 +348,9 @@ namespace GHelper
                     break;
             }
 
+
+            Application.EnableVisualStyles();
+            Application.Run();
 
             Program.config.setConfig("performance_mode", PerformanceMode);
             try

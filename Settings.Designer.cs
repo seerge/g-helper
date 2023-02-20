@@ -108,7 +108,7 @@
             // 
             this.labelBattery.AutoSize = true;
             this.labelBattery.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.labelBattery.Location = new System.Drawing.Point(82, 876);
+            this.labelBattery.Location = new System.Drawing.Point(77, 877);
             this.labelBattery.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.labelBattery.Name = "labelBattery";
             this.labelBattery.Size = new System.Drawing.Size(248, 32);
@@ -130,10 +130,10 @@
             // 
             this.pictureBattery.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pictureBattery.BackgroundImage")));
             this.pictureBattery.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.pictureBattery.Location = new System.Drawing.Point(30, 868);
+            this.pictureBattery.Location = new System.Drawing.Point(33, 875);
             this.pictureBattery.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.pictureBattery.Name = "pictureBattery";
-            this.pictureBattery.Size = new System.Drawing.Size(48, 47);
+            this.pictureBattery.Size = new System.Drawing.Size(38, 38);
             this.pictureBattery.TabIndex = 6;
             this.pictureBattery.TabStop = false;
             // 
@@ -214,7 +214,7 @@
             // 
             this.labelGPU.AutoSize = true;
             this.labelGPU.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.labelGPU.Location = new System.Drawing.Point(84, 265);
+            this.labelGPU.Location = new System.Drawing.Point(77, 265);
             this.labelGPU.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.labelGPU.Name = "labelGPU";
             this.labelGPU.Size = new System.Drawing.Size(136, 32);
@@ -225,10 +225,10 @@
             // 
             this.pictureGPU.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pictureGPU.BackgroundImage")));
             this.pictureGPU.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.pictureGPU.Location = new System.Drawing.Point(32, 256);
+            this.pictureGPU.Location = new System.Drawing.Point(33, 263);
             this.pictureGPU.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.pictureGPU.Name = "pictureGPU";
-            this.pictureGPU.Size = new System.Drawing.Size(48, 47);
+            this.pictureGPU.Size = new System.Drawing.Size(38, 38);
             this.pictureGPU.TabIndex = 10;
             this.pictureGPU.TabStop = false;
             // 
@@ -254,7 +254,7 @@
             this.tablePerf.Controls.Add(this.buttonTurbo, 2, 0);
             this.tablePerf.Controls.Add(this.buttonBalanced, 1, 0);
             this.tablePerf.Controls.Add(this.buttonSilent, 0, 0);
-            this.tablePerf.Location = new System.Drawing.Point(22, 79);
+            this.tablePerf.Location = new System.Drawing.Point(22, 76);
             this.tablePerf.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.tablePerf.Name = "tablePerf";
             this.tablePerf.RowCount = 1;
@@ -313,10 +313,10 @@
             this.picturePerf.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("picturePerf.BackgroundImage")));
             this.picturePerf.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.picturePerf.InitialImage = null;
-            this.picturePerf.Location = new System.Drawing.Point(32, 32);
+            this.picturePerf.Location = new System.Drawing.Point(33, 36);
             this.picturePerf.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.picturePerf.Name = "picturePerf";
-            this.picturePerf.Size = new System.Drawing.Size(48, 47);
+            this.picturePerf.Size = new System.Drawing.Size(38, 38);
             this.picturePerf.TabIndex = 14;
             this.picturePerf.TabStop = false;
             // 
@@ -324,7 +324,7 @@
             // 
             this.labelPerf.AutoSize = true;
             this.labelPerf.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.labelPerf.Location = new System.Drawing.Point(84, 41);
+            this.labelPerf.Location = new System.Drawing.Point(77, 38);
             this.labelPerf.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.labelPerf.Name = "labelPerf";
             this.labelPerf.Size = new System.Drawing.Size(234, 32);
@@ -335,7 +335,7 @@
             // 
             this.checkGPU.AutoSize = true;
             this.checkGPU.ForeColor = System.Drawing.SystemColors.GrayText;
-            this.checkGPU.Location = new System.Drawing.Point(33, 410);
+            this.checkGPU.Location = new System.Drawing.Point(33, 411);
             this.checkGPU.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.checkGPU.Name = "checkGPU";
             this.checkGPU.Size = new System.Drawing.Size(550, 36);
@@ -360,10 +360,10 @@
             // 
             this.pictureScreen.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pictureScreen.BackgroundImage")));
             this.pictureScreen.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.pictureScreen.Location = new System.Drawing.Point(32, 489);
+            this.pictureScreen.Location = new System.Drawing.Point(33, 496);
             this.pictureScreen.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.pictureScreen.Name = "pictureScreen";
-            this.pictureScreen.Size = new System.Drawing.Size(48, 47);
+            this.pictureScreen.Size = new System.Drawing.Size(38, 38);
             this.pictureScreen.TabIndex = 18;
             this.pictureScreen.TabStop = false;
             // 
@@ -371,7 +371,7 @@
             // 
             this.labelSreen.AutoSize = true;
             this.labelSreen.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.labelSreen.Location = new System.Drawing.Point(84, 497);
+            this.labelSreen.Location = new System.Drawing.Point(77, 496);
             this.labelSreen.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.labelSreen.Name = "labelSreen";
             this.labelSreen.Size = new System.Drawing.Size(176, 32);
@@ -388,7 +388,7 @@
             this.tableScreen.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
             this.tableScreen.Controls.Add(this.button120Hz, 1, 0);
             this.tableScreen.Controls.Add(this.button60Hz, 0, 0);
-            this.tableScreen.Location = new System.Drawing.Point(22, 535);
+            this.tableScreen.Location = new System.Drawing.Point(22, 536);
             this.tableScreen.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.tableScreen.Name = "tableScreen";
             this.tableScreen.RowCount = 1;
@@ -432,7 +432,7 @@
             // 
             this.checkScreen.AutoSize = true;
             this.checkScreen.ForeColor = System.Drawing.SystemColors.GrayText;
-            this.checkScreen.Location = new System.Drawing.Point(33, 638);
+            this.checkScreen.Location = new System.Drawing.Point(33, 639);
             this.checkScreen.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.checkScreen.Name = "checkScreen";
             this.checkScreen.Size = new System.Drawing.Size(527, 36);
@@ -444,7 +444,7 @@
             // 
             this.checkBoost.AutoSize = true;
             this.checkBoost.ForeColor = System.Drawing.SystemColors.GrayText;
-            this.checkBoost.Location = new System.Drawing.Point(33, 186);
+            this.checkBoost.Location = new System.Drawing.Point(33, 184);
             this.checkBoost.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.checkBoost.Name = "checkBoost";
             this.checkBoost.Size = new System.Drawing.Size(250, 36);
@@ -456,10 +456,10 @@
             // 
             this.pictureBox1.BackgroundImage = global::GHelper.Properties.Resources.icons8_keyboard_48;
             this.pictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.pictureBox1.Location = new System.Drawing.Point(33, 720);
+            this.pictureBox1.Location = new System.Drawing.Point(33, 725);
             this.pictureBox1.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(42, 42);
+            this.pictureBox1.Size = new System.Drawing.Size(36, 36);
             this.pictureBox1.TabIndex = 23;
             this.pictureBox1.TabStop = false;
             // 
@@ -467,7 +467,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.label1.Location = new System.Drawing.Point(84, 723);
+            this.label1.Location = new System.Drawing.Point(77, 726);
             this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(210, 32);
@@ -484,9 +484,9 @@
             "Breathe",
             "Strobe",
             "Rainbow"});
-            this.comboKeyboard.Location = new System.Drawing.Point(40, 778);
+            this.comboKeyboard.Location = new System.Drawing.Point(38, 778);
             this.comboKeyboard.Name = "comboKeyboard";
-            this.comboKeyboard.Size = new System.Drawing.Size(198, 40);
+            this.comboKeyboard.Size = new System.Drawing.Size(200, 40);
             this.comboKeyboard.TabIndex = 24;
             this.comboKeyboard.TabStop = false;
             // 
@@ -554,7 +554,7 @@
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "G14 Helper";
+            this.Text = "G-Helper";
             this.Load += new System.EventHandler(this.Settings_Load);
             ((System.ComponentModel.ISupportInitialize)(this.trackBattery)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBattery)).EndInit();
