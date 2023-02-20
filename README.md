@@ -10,8 +10,8 @@ Designed for Asus Zephyrus G14 2022 (with AMD Radeon iGPU and dGPU). But could a
 
 Profiles are **same** as in Armory Crate, including default fan curves
 
-1. Silent (minimal or no fans, 45W PPT to CPU)
-2. Balanced (balanced fans, up to 45W PPT to CPU)
+1. Silent (minimal or no fans, 70W PPT total, up to 45W PPT to CPU)
+2. Balanced (balanced fans, 100W PPT total, up to 45W PPT to CPU)
 3. Turbo (intense fans, 125W PPT total, up to 80W PPT to CPU) 
 
 ## GPU Mode switching
@@ -28,7 +28,7 @@ Profiles are **same** as in Armory Crate, including default fan curves
 4. Automatic switching of Standard/Eco GPU modes when laptop is plugged / unplugged!
 5. FN+F5 an M4 (Rog) keys cycle through Performance modes
 6. Screen resolution and display overdrive switching
-7. Run on startup (optional)
+7. CPU turbo boost switching
 
 ## Things still missing
 
