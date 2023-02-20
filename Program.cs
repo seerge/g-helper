@@ -531,12 +531,14 @@ namespace GHelper
 
             settingsForm.VisualiseGPUAuto(config.getConfig("gpu_auto"));
             settingsForm.VisualiseScreenAuto(config.getConfig("screen_auto"));
+            settingsForm.VisualiseCPUAuto(config.getConfig("cpu_auto"));
 
             settingsForm.SetStartupCheck(scheduler.IsScheduled());
 
             bool isPlugged = (SystemInformation.PowerStatus.PowerLineStatus == PowerLineStatus.Online);
             settingsForm.AutoGPUMode(isPlugged ? 1 : 0);
             settingsForm.AutoScreen(isPlugged ? 1 : 0);
+            settingsForm.AutoCPUMode(isPlugged? 1 : 0);
 
             Application.Run();
 
@@ -573,6 +575,7 @@ namespace GHelper
                     {
                         settingsForm.AutoGPUMode(0);
                         settingsForm.AutoScreen(0);
+                        settingsForm.AutoCPUMode(0);
                     });
                     return;
                 case 88:  // Plugged
@@ -581,6 +584,7 @@ namespace GHelper
                     {
                         settingsForm.AutoGPUMode(1);
                         settingsForm.AutoScreen(1);
+                        settingsForm.AutoCPUMode(1);
                     });
                     return;
 

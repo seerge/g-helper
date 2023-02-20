@@ -378,6 +378,17 @@ namespace GHelper
 
         }
 
+        public void AutoCPUMode(int Plugged = 1)
+        {
+            int CpuAuto = Program.config.getConfig("cpu_auto");
+            if(CpuAuto != 1) return;
+
+            if (Plugged == 1)
+                SetPerformanceMode(ASUSWmi.PerformanceBalanced);
+            else
+                SetPerformanceMode(ASUSWmi.PerformanceSilent);
+        }
+
         public void AutoGPUMode(int Plugged = 1)
         {
 
@@ -503,6 +514,11 @@ namespace GHelper
             checkGPU.Checked = (GPUAuto == 1);
         }
 
+        public void VisualiseCPUAuto(int CPUAuto)
+        {
+            checkCPU.Checked = (CPUAuto == 1);
+        }
+
         public void VisualiseScreenAuto(int ScreenAuto)
         {
             checkScreen.Checked = (ScreenAuto == 1);
@@ -621,8 +637,14 @@ namespace GHelper
             else
                 Program.config.setConfig("screen_auto", 0);
         }
-
-
+        private void checkCPU_CheckedChanged(object sender, EventArgs e)
+        {
+            CheckBox chk = (CheckBox)sender;
+            if (chk.Checked)
+                Program.config.setConfig("cpu_auto", 1);
+            else
+                Program.config.setConfig("cpu_auto", 0);
+        }
     }
 
 

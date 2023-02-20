@@ -57,6 +57,7 @@
             this.button60Hz = new System.Windows.Forms.Button();
             this.checkScreen = new System.Windows.Forms.CheckBox();
             this.checkBoost = new System.Windows.Forms.CheckBox();
+            this.checkCPU = new System.Windows.Forms.CheckBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.label1 = new System.Windows.Forms.Label();
             this.comboKeyboard = new System.Windows.Forms.ComboBox();
@@ -331,6 +332,19 @@
             this.labelPerf.TabIndex = 13;
             this.labelPerf.Text = "Performance Mode";
             // 
+            // checkCPU
+            // 
+            this.checkCPU.AutoSize = true;
+            this.checkCPU.ForeColor = System.Drawing.SystemColors.GrayText;
+            this.checkCPU.Location = new System.Drawing.Point(33, 221);
+            this.checkCPU.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
+            this.checkCPU.Name = "checkCPU";
+            this.checkCPU.Size = new System.Drawing.Size(580, 36);
+            this.checkCPU.TabIndex = 20;
+            this.checkCPU.Text = "Set Silent on battery and Balanced when plugged";
+            this.checkCPU.UseVisualStyleBackColor = true;
+            this.checkCPU.CheckedChanged += new System.EventHandler(this.checkCPU_CheckedChanged);
+            // 
             // checkGPU
             // 
             this.checkGPU.AutoSize = true;
@@ -530,6 +544,7 @@
             this.Controls.Add(this.labelSreen);
             this.Controls.Add(this.buttonQuit);
             this.Controls.Add(this.checkGPU);
+            this.Controls.Add(this.checkCPU);
             this.Controls.Add(this.picturePerf);
             this.Controls.Add(this.labelPerf);
             this.Controls.Add(this.labelCPUFan);
@@ -592,6 +607,7 @@
         private PictureBox picturePerf;
         private Label labelPerf;
         private CheckBox checkGPU;
+        private CheckBox checkCPU;
         private Button buttonQuit;
         private PictureBox pictureScreen;
         private Label labelSreen;
