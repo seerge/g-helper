@@ -3,6 +3,8 @@ using System.Diagnostics;
 using System.Management;
 using System.Timers;
 using System.Windows.Forms;
+using Windows.UI.Notifications;
+using Microsoft.Toolkit.Uwp.Notifications;
 
 namespace GHelper
 {
@@ -331,6 +333,12 @@ namespace GHelper
             buttonBalanced.FlatAppearance.BorderSize = buttonInactive;
             buttonTurbo.FlatAppearance.BorderSize = buttonInactive;
 
+            string[] mode = new string[]{
+                "Balanced",
+                "Turbo",
+                "Silent"
+            };
+
             switch (PerformanceMode)
             {
                 case ASUSWmi.PerformanceSilent:
@@ -348,11 +356,17 @@ namespace GHelper
                     break;
             }
 
+            labelPerf.Text = "Performance Mode: " + mode[PerformanceMode];
+
+            string notifTitle = "Performance Mode Changed";
+            string notifBody = "Switched to: " + mode[PerformanceMode];
 
             Program.config.setConfig("performance_mode", PerformanceMode);
             try
             {
                 Program.wmi.DeviceSet(ASUSWmi.PerformanceMode, PerformanceMode);
+                if(notify)
+                    sendNotification(notifTitle, notifBody);
             } catch
             {
                 labelPerf.Text = "Performance Mode: not supported";
@@ -363,8 +377,25 @@ namespace GHelper
 
         public void CyclePerformanceMode()
         {
-            SetPerformanceMode(Program.config.getConfig("performance_mode") + 1);
+            SetPerformanceMode(Program.config.getConfig("performance_mode") + 1, true);
         }
+
+
+        public void sendNotification(string title, string message)
+        {
+            var content = new ToastContentBuilder()
+                .AddText(title)
+                .AddText(message)
+                .GetToastContent();
+
+            var notification = new ToastNotification(content.GetXml())
+            {
+                Priority = ToastNotificationPriority.High
+            };
+
+            ToastNotificationManagerCompat.CreateToastNotifier().Show(notification);
+        }
+
 
         public void AutoScreen(int Plugged = 1)
         {
@@ -384,9 +415,9 @@ namespace GHelper
             if(CpuAuto != 1) return;
 
             if (Plugged == 1)
-                SetPerformanceMode(ASUSWmi.PerformanceBalanced);
+                SetPerformanceMode(ASUSWmi.PerformanceBalanced, true);
             else
-                SetPerformanceMode(ASUSWmi.PerformanceSilent);
+                SetPerformanceMode(ASUSWmi.PerformanceSilent, true);
         }
 
         public void AutoGPUMode(int Plugged = 1)
