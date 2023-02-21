@@ -1,4 +1,4 @@
-# G-Helper (For G14, G15 ROG FLOW, and others)
+# G-Helper (For G14, G15, ROG FLOW, and others)
 
 A tiny system tray utility that allows you set performance and GPU profiles for your laptop. Same as ASUS Armory Crate does but without it completely!. 
 
