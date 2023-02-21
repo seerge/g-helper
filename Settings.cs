@@ -294,12 +294,12 @@ namespace GHelper
 
         private static void SetTimer()
         {
-            aTimer = new System.Timers.Timer(1000);
+            aTimer = new System.Timers.Timer(3000);
             aTimer.Elapsed += OnTimedEvent;
             aTimer.AutoReset = true;
         }
 
-        private static void OnTimedEvent(Object? source, ElapsedEventArgs? e)
+        private static void RefreshSensors()
         {
             string cpuFan = " Fan: " + Math.Round(Program.wmi.DeviceGet(ASUSWmi.CPU_Fan) / 0.6).ToString() + "%";
             string gpuFan = " Fan: " + Math.Round(Program.wmi.DeviceGet(ASUSWmi.GPU_Fan) / 0.6) + "%";
@@ -311,7 +311,8 @@ namespace GHelper
             try
             {
                 Program.hwmonitor.ReadSensors();
-            } catch
+            }
+            catch
             {
                 Debug.WriteLine("Failed reading sensors");
             }
@@ -334,7 +335,11 @@ namespace GHelper
                 Program.settingsForm.labelGPUFan.Text = "GPU" + gpuTemp + gpuFan;
                 Program.settingsForm.labelBattery.Text = battery;
             });
+        }
 
+        private static void OnTimedEvent(Object? source, ElapsedEventArgs? e)
+        {
+            RefreshSensors();
         }
 
         private void SettingsForm_VisibleChanged(object? sender, EventArgs e)
@@ -346,6 +351,8 @@ namespace GHelper
                 this.Left = Screen.FromControl(this).Bounds.Width - 10 - this.Width;
                 this.Top = Screen.FromControl(this).WorkingArea.Height - 10 - this.Height;
                 this.Activate();
+
+                RefreshSensors();
                 aTimer.Enabled = true;
 
             }
