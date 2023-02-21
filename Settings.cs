@@ -294,7 +294,7 @@ namespace GHelper
 
         private static void SetTimer()
         {
-            aTimer = new System.Timers.Timer(3000);
+            aTimer = new System.Timers.Timer(2000);
             aTimer.Elapsed += OnTimedEvent;
             aTimer.AutoReset = true;
         }
@@ -352,7 +352,7 @@ namespace GHelper
                 this.Top = Screen.FromControl(this).WorkingArea.Height - 10 - this.Height;
                 this.Activate();
 
-                RefreshSensors();
+                //RefreshSensors();
                 aTimer.Enabled = true;
 
             }
