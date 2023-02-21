@@ -9,7 +9,9 @@
     <IsPublishable>True</IsPublishable>
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <StartupObject>GHelper.Program</StartupObject>
-    <ApplicationIcon>Resources\standard.ico</ApplicationIcon>
+    <ApplicationIcon>favicon.ico</ApplicationIcon>
+    <Platforms>AnyCPU;x64</Platforms>
+    <SupportedOSPlatformVersion>8.0</SupportedOSPlatformVersion>
   </PropertyGroup>
 
   <ItemGroup>
@@ -24,7 +26,7 @@
 
 
   <ItemGroup>
-    <Content Include="Resources\standard.ico">
+    <Content Include="favicon.ico">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
@@ -32,6 +34,7 @@
   <ItemGroup>
     <PackageReference Include="hidlibrary" Version="3.3.40" />
     <PackageReference Include="Microsoft.Toolkit.Uwp.Notifications" Version="7.1.3" />
+    <PackageReference Include="LibreHardwareMonitorLib" Version="0.9.1" />
     <PackageReference Include="System.Management" Version="7.0.0" />
     <PackageReference Include="TaskScheduler" Version="2.10.1" />
   </ItemGroup>

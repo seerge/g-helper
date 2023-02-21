@@ -31,8 +31,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SettingsForm));
             this.checkStartup = new System.Windows.Forms.CheckBox();
             this.trackBattery = new System.Windows.Forms.TrackBar();
-            this.labelBattery = new System.Windows.Forms.Label();
-            this.labelBatteryLimit = new System.Windows.Forms.Label();
+            this.labelBatteryTitle = new System.Windows.Forms.Label();
             this.pictureBattery = new System.Windows.Forms.PictureBox();
             this.labelGPUFan = new System.Windows.Forms.Label();
             this.tableGPU = new System.Windows.Forms.TableLayoutPanel();
@@ -62,6 +61,7 @@
             this.comboKeyboard = new System.Windows.Forms.ComboBox();
             this.buttonKeyboardColor = new System.Windows.Forms.Button();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
+            this.labelBattery = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.trackBattery)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBattery)).BeginInit();
             this.tableGPU.SuspendLayout();
@@ -76,9 +76,8 @@
             // 
             // checkStartup
             // 
-            this.checkStartup.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.checkStartup.AutoSize = true;
-            this.checkStartup.Location = new System.Drawing.Point(31, 1022);
+            this.checkStartup.Location = new System.Drawing.Point(40, 1007);
             this.checkStartup.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.checkStartup.Name = "checkStartup";
             this.checkStartup.Size = new System.Drawing.Size(206, 36);
@@ -92,7 +91,7 @@
             this.trackBattery.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.trackBattery.LargeChange = 20;
-            this.trackBattery.Location = new System.Drawing.Point(20, 919);
+            this.trackBattery.Location = new System.Drawing.Point(20, 908);
             this.trackBattery.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.trackBattery.Maximum = 100;
             this.trackBattery.Minimum = 50;
@@ -104,33 +103,22 @@
             this.trackBattery.TickStyle = System.Windows.Forms.TickStyle.TopLeft;
             this.trackBattery.Value = 100;
             // 
-            // labelBattery
+            // labelBatteryTitle
             // 
-            this.labelBattery.AutoSize = true;
-            this.labelBattery.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.labelBattery.Location = new System.Drawing.Point(77, 877);
-            this.labelBattery.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.labelBattery.Name = "labelBattery";
-            this.labelBattery.Size = new System.Drawing.Size(248, 32);
-            this.labelBattery.TabIndex = 4;
-            this.labelBattery.Text = "Battery Charge Limit";
-            // 
-            // labelBatteryLimit
-            // 
-            this.labelBatteryLimit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.labelBatteryLimit.AutoSize = true;
-            this.labelBatteryLimit.Location = new System.Drawing.Point(633, 874);
-            this.labelBatteryLimit.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.labelBatteryLimit.Name = "labelBatteryLimit";
-            this.labelBatteryLimit.Size = new System.Drawing.Size(73, 32);
-            this.labelBatteryLimit.TabIndex = 5;
-            this.labelBatteryLimit.Text = "100%";
+            this.labelBatteryTitle.AutoSize = true;
+            this.labelBatteryTitle.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.labelBatteryTitle.Location = new System.Drawing.Point(77, 871);
+            this.labelBatteryTitle.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.labelBatteryTitle.Name = "labelBatteryTitle";
+            this.labelBatteryTitle.Size = new System.Drawing.Size(248, 32);
+            this.labelBatteryTitle.TabIndex = 4;
+            this.labelBatteryTitle.Text = "Battery Charge Limit";
             // 
             // pictureBattery
             // 
             this.pictureBattery.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pictureBattery.BackgroundImage")));
             this.pictureBattery.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.pictureBattery.Location = new System.Drawing.Point(33, 875);
+            this.pictureBattery.Location = new System.Drawing.Point(33, 868);
             this.pictureBattery.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.pictureBattery.Name = "pictureBattery";
             this.pictureBattery.Size = new System.Drawing.Size(38, 38);
@@ -140,13 +128,13 @@
             // labelGPUFan
             // 
             this.labelGPUFan.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.labelGPUFan.AutoSize = true;
-            this.labelGPUFan.Location = new System.Drawing.Point(546, 262);
+            this.labelGPUFan.Location = new System.Drawing.Point(425, 262);
             this.labelGPUFan.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.labelGPUFan.Name = "labelGPUFan";
-            this.labelGPUFan.Size = new System.Drawing.Size(155, 32);
+            this.labelGPUFan.Size = new System.Drawing.Size(277, 32);
             this.labelGPUFan.TabIndex = 8;
             this.labelGPUFan.Text = "GPU Fan : 0%";
+            this.labelGPUFan.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // tableGPU
             // 
@@ -235,13 +223,13 @@
             // labelCPUFan
             // 
             this.labelCPUFan.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.labelCPUFan.AutoSize = true;
-            this.labelCPUFan.Location = new System.Drawing.Point(546, 38);
+            this.labelCPUFan.Location = new System.Drawing.Point(425, 38);
             this.labelCPUFan.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.labelCPUFan.Name = "labelCPUFan";
-            this.labelCPUFan.Size = new System.Drawing.Size(154, 32);
+            this.labelCPUFan.Size = new System.Drawing.Size(277, 32);
             this.labelCPUFan.TabIndex = 12;
             this.labelCPUFan.Text = "CPU Fan : 0%";
+            this.labelCPUFan.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // tablePerf
             // 
@@ -346,7 +334,7 @@
             // 
             // buttonQuit
             // 
-            this.buttonQuit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonQuit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonQuit.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.buttonQuit.Location = new System.Drawing.Point(591, 1011);
             this.buttonQuit.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
@@ -485,6 +473,7 @@
             "Strobe",
             "Rainbow"});
             this.comboKeyboard.Location = new System.Drawing.Point(38, 778);
+            this.comboKeyboard.Margin = new System.Windows.Forms.Padding(0);
             this.comboKeyboard.Name = "comboKeyboard";
             this.comboKeyboard.Size = new System.Drawing.Size(200, 40);
             this.comboKeyboard.TabIndex = 24;
@@ -494,7 +483,7 @@
             // 
             this.buttonKeyboardColor.BackColor = System.Drawing.SystemColors.ButtonHighlight;
             this.buttonKeyboardColor.FlatAppearance.BorderColor = System.Drawing.Color.Red;
-            this.buttonKeyboardColor.FlatAppearance.BorderSize = 4;
+            this.buttonKeyboardColor.FlatAppearance.BorderSize = 3;
             this.buttonKeyboardColor.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonKeyboardColor.ForeColor = System.Drawing.SystemColors.ControlText;
             this.buttonKeyboardColor.Location = new System.Drawing.Point(261, 773);
@@ -514,11 +503,23 @@
             this.pictureBox2.TabIndex = 26;
             this.pictureBox2.TabStop = false;
             // 
+            // labelBattery
+            // 
+            this.labelBattery.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.labelBattery.Location = new System.Drawing.Point(491, 869);
+            this.labelBattery.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.labelBattery.Name = "labelBattery";
+            this.labelBattery.Size = new System.Drawing.Size(211, 32);
+            this.labelBattery.TabIndex = 27;
+            this.labelBattery.Text = "                ";
+            this.labelBattery.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            // 
             // SettingsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(13F, 32F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(744, 1085);
+            this.ClientSize = new System.Drawing.Size(744, 1093);
+            this.Controls.Add(this.labelBattery);
             this.Controls.Add(this.buttonKeyboardColor);
             this.Controls.Add(this.comboKeyboard);
             this.Controls.Add(this.pictureBox1);
@@ -539,8 +540,7 @@
             this.Controls.Add(this.labelGPUFan);
             this.Controls.Add(this.tableGPU);
             this.Controls.Add(this.pictureBattery);
-            this.Controls.Add(this.labelBatteryLimit);
-            this.Controls.Add(this.labelBattery);
+            this.Controls.Add(this.labelBatteryTitle);
             this.Controls.Add(this.trackBattery);
             this.Controls.Add(this.checkStartup);
             this.Controls.Add(this.pictureBox2);
@@ -574,8 +574,7 @@
         #endregion
         private CheckBox checkStartup;
         private TrackBar trackBattery;
-        private Label labelBattery;
-        private Label labelBatteryLimit;
+        private Label labelBatteryTitle;
         private PictureBox pictureBattery;
         private Label labelGPUFan;
         private TableLayoutPanel tableGPU;
@@ -605,5 +604,6 @@
         private ComboBox comboKeyboard;
         private Button buttonKeyboardColor;
         private PictureBox pictureBox2;
+        private Label labelBattery;
     }
 }

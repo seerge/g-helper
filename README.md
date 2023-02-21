@@ -1,4 +1,4 @@
-# G14-Helper
+# G-Helper (For G14, G15, ROG FLOW, and others)
 
 A tiny system tray utility that allows you set performance and GPU profiles for your laptop. Same as ASUS Armory Crate does but without it completely!. 
 
@@ -29,6 +29,7 @@ Profiles are **same** as in Armory Crate, including default fan curves
 5. FN+F5 an M4 (Rog) keys cycle through Performance modes
 6. Screen resolution and display overdrive switching
 7. CPU turbo boost switching
+8. CPU & dGPU temperature monitoring in Celsius, battery charge / discharge rates in Watts
 
 ## Things still missing
 
