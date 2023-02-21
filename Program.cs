@@ -4,6 +4,8 @@ using System.Management;
 using System.Runtime.InteropServices;
 using HidLibrary;
 using System.Text.Json;
+using LibreHardwareMonitor.Hardware;
+using System.Threading;
 
 public class ASUSWmi
 {
@@ -225,6 +227,13 @@ public class NativeMethods
         int AcValueIndex);
 
     [DllImport("PowrProf.dll", CharSet = CharSet.Unicode)]
+    static extern UInt32 PowerWriteACValueIndex(IntPtr RootPowerKey,
+        [MarshalAs(UnmanagedType.LPStruct)] Guid SchemeGuid,
+        [MarshalAs(UnmanagedType.LPStruct)] Guid SubGroupOfPowerSettingsGuid,
+        [MarshalAs(UnmanagedType.LPStruct)] Guid PowerSettingGuid,
+        int AcValueIndex);
+    
+    [DllImport("PowrProf.dll", CharSet = CharSet.Unicode)]
     static extern UInt32 PowerReadACValueIndex(IntPtr RootPowerKey,
         [MarshalAs(UnmanagedType.LPStruct)] Guid SchemeGuid,
         [MarshalAs(UnmanagedType.LPStruct)] Guid SubGroupOfPowerSettingsGuid,
@@ -232,14 +241,15 @@ public class NativeMethods
         out IntPtr AcValueIndex
         );
 
-
-
     [DllImport("PowrProf.dll", CharSet = CharSet.Unicode)]
-    static extern UInt32 PowerWriteACValueIndex(IntPtr RootPowerKey,
+    static extern UInt32 PowerReadDCValueIndex(IntPtr RootPowerKey,
         [MarshalAs(UnmanagedType.LPStruct)] Guid SchemeGuid,
         [MarshalAs(UnmanagedType.LPStruct)] Guid SubGroupOfPowerSettingsGuid,
         [MarshalAs(UnmanagedType.LPStruct)] Guid PowerSettingGuid,
-        int AcValueIndex);
+        out IntPtr AcValueIndex
+        );
+
+
 
     [DllImport("PowrProf.dll", CharSet = CharSet.Unicode)]
     static extern UInt32 PowerSetActiveScheme(IntPtr RootPowerKey,
@@ -410,7 +420,7 @@ public class NativeMethods
     {
         Guid activeSchemeGuid = GetActiveScheme();
 
-        var hr = PowerWriteACValueIndex(
+        var hrAC = PowerWriteACValueIndex(
              IntPtr.Zero,
              activeSchemeGuid,
              GUID_CPU,
@@ -418,6 +428,17 @@ public class NativeMethods
              boost);
 
         PowerSetActiveScheme(IntPtr.Zero, activeSchemeGuid);
+
+        var hrDC = PowerWriteDCValueIndex(
+             IntPtr.Zero,
+             activeSchemeGuid,
+             GUID_CPU,
+             GUID_BOOST,
+             boost);
+
+        PowerSetActiveScheme(IntPtr.Zero, activeSchemeGuid);
+
+
     }
 }
 
@@ -432,6 +453,7 @@ public class Aura
     public const int Breathe = 1;
     public const int Strobe = 2;
     public const int Rainbow = 3;
+    public const int Dingding = 10;
 
     public const int SpeedSlow = 0;
     public const int SpeedMedium = 1;
@@ -489,6 +511,106 @@ public class Aura
 }
 
 
+public class UpdateVisitor : IVisitor
+{
+    public void VisitComputer(IComputer computer)
+    {
+        computer.Traverse(this);
+    }
+    public void VisitHardware(IHardware hardware)
+    {
+        hardware.Update();
+        foreach (IHardware subHardware in hardware.SubHardware) subHardware.Accept(this);
+    }
+    public void VisitSensor(ISensor sensor) { }
+    public void VisitParameter(IParameter parameter) { }
+}
+
+
+public class HardwareMonitor
+{
+
+    Computer computer;
+
+    public float? cpuTemp = -1;
+    public float? gpuTemp = -1;
+    public float? batteryDischarge = -1;
+    public float? batteryCharge = -1;
+
+    public HardwareMonitor()
+    {
+        computer = new Computer
+        {
+            IsCpuEnabled = true,
+            IsGpuEnabled = true,
+            IsBatteryEnabled = true,
+        };
+
+    }
+
+    public void ReadSensors()
+    {
+ 
+        computer.Open();
+        computer.Accept(new UpdateVisitor());
+
+        cpuTemp = -1;
+        gpuTemp = -1;
+        batteryDischarge = -1;
+        batteryCharge = -1;
+
+        foreach (IHardware hardware in computer.Hardware)
+        {
+            //Debug.WriteLine("Hardware: {0}", hardware.Name);
+            //Debug.WriteLine("Hardware: {0}", hardware.HardwareType);
+
+            foreach (ISensor sensor in hardware.Sensors)
+            {
+                if (sensor.SensorType == SensorType.Temperature)
+                {
+                    if (hardware.HardwareType.ToString().Contains("Cpu") && sensor.Name.Contains("Core"))
+                    {
+                        cpuTemp = sensor.Value;
+                        //Debug.WriteLine("\tSensor: {0}, value: {1}", sensor.Name, sensor.Value);
+                    }
+
+                    if (hardware.HardwareType.ToString().Contains("Gpu") && sensor.Name.Contains("Core"))
+                    {
+                        gpuTemp = sensor.Value;
+                    }
+
+                    //Debug.WriteLine("\tSensor: {0}, value: {1}", sensor.Name, sensor.Value);
+
+                }
+                else if (sensor.SensorType == SensorType.Power)
+                {
+                    if (sensor.Name.Contains("Discharge"))
+                    {
+                        batteryDischarge = sensor.Value;
+                    }
+
+                    if (sensor.Name.Contains("Charge"))
+                    {
+                        batteryCharge = sensor.Value;
+                    }
+                }
+
+
+
+            }
+        }
+
+    }
+
+    public void StopReading()
+    {
+        computer.Close();
+    }
+
+}
+
+
+
 namespace GHelper
 {
     static class Program
@@ -499,7 +621,10 @@ namespace GHelper
         public static AppConfig config;
 
         public static SettingsForm settingsForm;
+        public static ToastForm toastForm;
+
         public static Startup scheduler;
+        public static HardwareMonitor hwmonitor;
 
         // The main entry point for the application
         public static void Main()
@@ -534,9 +659,12 @@ namespace GHelper
 
             settingsForm.SetStartupCheck(scheduler.IsScheduled());
 
-            bool isPlugged = (SystemInformation.PowerStatus.PowerLineStatus == PowerLineStatus.Online);
+            bool isPlugged = (System.Windows.Forms.SystemInformation.PowerStatus.PowerLineStatus == PowerLineStatus.Online);
             settingsForm.AutoGPUMode(isPlugged ? 1 : 0);
             settingsForm.AutoScreen(isPlugged ? 1 : 0);
+
+            hwmonitor = new HardwareMonitor();
+            IntPtr dummy = settingsForm.Handle;
 
             Application.Run();
 
@@ -557,10 +685,12 @@ namespace GHelper
             {
                 case 56:    // Rog button
                 case 174:   // FN+F5
+
                     settingsForm.BeginInvoke(delegate
                     {
                         settingsForm.CyclePerformanceMode();
                     });
+
                     return;
                 case 179:   // FN+F4
                     settingsForm.BeginInvoke(delegate

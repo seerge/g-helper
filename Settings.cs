@@ -1,11 +1,9 @@
-﻿using Microsoft.VisualBasic.ApplicationServices;
-using System.Diagnostics;
-using System.Management;
+﻿using System.Diagnostics;
 using System.Timers;
-using System.Windows.Forms;
 
 namespace GHelper
 {
+
     public partial class SettingsForm : Form
     {
 
@@ -88,7 +86,7 @@ namespace GHelper
 
             Color color = Color.FromArgb(255, 255, 255);
 
-            if (mode == -1) 
+            if (mode == -1)
                 mode = 0;
 
             if (colorCode != -1)
@@ -99,7 +97,7 @@ namespace GHelper
             SetAuraMode(mode, false);
 
             Aura.Mode = mode;
-           
+
 
         }
 
@@ -114,8 +112,10 @@ namespace GHelper
             buttonKeyboardColor.FlatAppearance.BorderColor = color;
         }
 
-        public void SetAuraMode (int mode = 0, bool apply = true)
+        public void SetAuraMode(int mode = 0, bool apply = true)
         {
+
+            //Debug.WriteLine(mode);
 
             if (mode > 3) mode = 0;
 
@@ -124,13 +124,16 @@ namespace GHelper
             Aura.Mode = mode;
             Program.config.setConfig("aura_mode", mode);
 
+            comboKeyboard.SelectedValueChanged -= ComboKeyboard_SelectedValueChanged;
+            comboKeyboard.SelectedIndex = mode;
+            comboKeyboard.SelectedValueChanged += ComboKeyboard_SelectedValueChanged;
+
             if (apply)
                 Aura.ApplyAura();
-            else 
-                comboKeyboard.SelectedIndex = mode;
+
         }
 
-        public void CycleAuraMode ()
+        public void CycleAuraMode()
         {
             SetAuraMode(Program.config.getConfig("aura_mode") + 1);
         }
@@ -183,7 +186,8 @@ namespace GHelper
             {
                 if (overdrive > 0)
                     Program.wmi.DeviceSet(ASUSWmi.ScreenOverdrive, overdrive);
-            } catch
+            }
+            catch
             {
                 Debug.WriteLine("Screen Overdrive not supported");
             }
@@ -226,7 +230,8 @@ namespace GHelper
             try
             {
                 overdrive = Program.wmi.DeviceGet(ASUSWmi.ScreenOverdrive);
-            } catch
+            }
+            catch
             {
                 Debug.WriteLine("Screen Overdrive not supported");
             }
@@ -294,15 +299,40 @@ namespace GHelper
             aTimer.AutoReset = true;
         }
 
-        private static void OnTimedEvent(Object source, ElapsedEventArgs e)
+        private static void OnTimedEvent(Object? source, ElapsedEventArgs? e)
         {
-            var cpuFan = Math.Round(Program.wmi.DeviceGet(ASUSWmi.CPU_Fan) / 0.6);
-            var gpuFan = Math.Round(Program.wmi.DeviceGet(ASUSWmi.GPU_Fan) / 0.6);
+            string cpuFan = " Fan: " + Math.Round(Program.wmi.DeviceGet(ASUSWmi.CPU_Fan) / 0.6).ToString() + "%";
+            string gpuFan = " Fan: " + Math.Round(Program.wmi.DeviceGet(ASUSWmi.GPU_Fan) / 0.6) + "%";
+
+            string cpuTemp = "";
+            string gpuTemp = "";
+            string battery = "";
+
+            try
+            {
+                Program.hwmonitor.ReadSensors();
+            } catch
+            {
+                Debug.WriteLine("Failed reading sensors");
+            }
+
+            if (Program.hwmonitor.cpuTemp > 0)
+                cpuTemp = ": " + Math.Round((decimal)Program.hwmonitor.cpuTemp).ToString() + "°C - ";
+
+            if (Program.hwmonitor.gpuTemp > 0)
+                gpuTemp = ": " + Math.Round((decimal)Program.hwmonitor.gpuTemp).ToString() + "°C - ";
+
+            if (Program.hwmonitor.batteryDischarge > 0)
+                battery = "Discharging: " + Math.Round((decimal)Program.hwmonitor.batteryDischarge, 1).ToString() + "W";
+
+            if (Program.hwmonitor.batteryCharge > 0)
+                battery = "Charging: " + Math.Round((decimal)Program.hwmonitor.batteryCharge, 1).ToString() + "W";
 
             Program.settingsForm.BeginInvoke(delegate
             {
-                Program.settingsForm.labelCPUFan.Text = "CPU Fan: " + cpuFan.ToString() + "%";
-                Program.settingsForm.labelGPUFan.Text = "GPU Fan: " + gpuFan.ToString() + "%";
+                Program.settingsForm.labelCPUFan.Text = "CPU" + cpuTemp + cpuFan;
+                Program.settingsForm.labelGPUFan.Text = "GPU" + gpuTemp + gpuFan;
+                Program.settingsForm.labelBattery.Text = battery;
             });
 
         }
@@ -317,15 +347,19 @@ namespace GHelper
                 this.Top = Screen.FromControl(this).WorkingArea.Height - 10 - this.Height;
                 this.Activate();
                 aTimer.Enabled = true;
+
             }
             else
             {
                 aTimer.Enabled = false;
+                Program.hwmonitor.StopReading();
             }
         }
 
         public void SetPerformanceMode(int PerformanceMode = ASUSWmi.PerformanceBalanced, bool notify = false)
         {
+
+            string perfName;
 
             buttonSilent.FlatAppearance.BorderSize = buttonInactive;
             buttonBalanced.FlatAppearance.BorderSize = buttonInactive;
@@ -335,25 +369,25 @@ namespace GHelper
             {
                 case ASUSWmi.PerformanceSilent:
                     buttonSilent.FlatAppearance.BorderSize = buttonActive;
-                    labelPerf.Text = "Performance Mode: Silent";
+                    perfName = "Silent";
                     break;
                 case ASUSWmi.PerformanceTurbo:
                     buttonTurbo.FlatAppearance.BorderSize = buttonActive;
-                    labelPerf.Text = "Performance Mode: Turbo";
+                    perfName = "Turbo";
                     break;
                 default:
                     buttonBalanced.FlatAppearance.BorderSize = buttonActive;
-                    labelPerf.Text = "Performance Mode: Balanced";
                     PerformanceMode = ASUSWmi.PerformanceBalanced;
+                    perfName = "Balanced";
                     break;
             }
-
 
             Program.config.setConfig("performance_mode", PerformanceMode);
             try
             {
                 Program.wmi.DeviceSet(ASUSWmi.PerformanceMode, PerformanceMode);
-            } catch
+            }
+            catch
             {
                 labelPerf.Text = "Performance Mode: not supported";
             }
@@ -376,6 +410,8 @@ namespace GHelper
             else
                 SetScreen(60, 0);
 
+            InitScreen();
+
         }
 
         public void AutoGPUMode(int Plugged = 1)
@@ -396,18 +432,12 @@ namespace GHelper
                 if (eco == 1 && Plugged == 1)  // Eco going Standard on plugged
                 {
                     Program.wmi.DeviceSet(ASUSWmi.GPUEco, 0);
-
-                    GPUMode = ASUSWmi.GPUModeStandard;
-                    VisualiseGPUMode(GPUMode);
-                    Program.config.setConfig("gpu_mode", GPUMode);
+                    InitGPUMode();
                 }
                 else if (eco == 0 && Plugged == 0)  // Standard going Eco on plugged
                 {
                     Program.wmi.DeviceSet(ASUSWmi.GPUEco, 1);
-
-                    GPUMode = ASUSWmi.GPUModeEco;
-                    VisualiseGPUMode(GPUMode);
-                    Program.config.setConfig("gpu_mode", GPUMode);
+                    InitGPUMode();
                 }
 
             }
@@ -584,12 +614,13 @@ namespace GHelper
 
             if (limit < 50 || limit > 100) limit = 100;
 
-            labelBatteryLimit.Text = limit.ToString() + "%";
+            labelBatteryTitle.Text = "Battery Charge Limit: " + limit.ToString() + "%";
             trackBattery.Value = limit;
             try
             {
                 Program.wmi.DeviceSet(ASUSWmi.BatteryLimit, limit);
-            } catch
+            }
+            catch
             {
                 Debug.WriteLine("Can't set battery charge limit");
             }
