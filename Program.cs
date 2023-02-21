@@ -1,11 +1,10 @@
+using HidLibrary;
+using LibreHardwareMonitor.Hardware;
 using Microsoft.Win32.TaskScheduler;
 using System.Diagnostics;
 using System.Management;
 using System.Runtime.InteropServices;
-using HidLibrary;
 using System.Text.Json;
-using LibreHardwareMonitor.Hardware;
-using System.Threading;
 
 public class ASUSWmi
 {
@@ -232,7 +231,7 @@ public class NativeMethods
         [MarshalAs(UnmanagedType.LPStruct)] Guid SubGroupOfPowerSettingsGuid,
         [MarshalAs(UnmanagedType.LPStruct)] Guid PowerSettingGuid,
         int AcValueIndex);
-    
+
     [DllImport("PowrProf.dll", CharSet = CharSet.Unicode)]
     static extern UInt32 PowerReadACValueIndex(IntPtr RootPowerKey,
         [MarshalAs(UnmanagedType.LPStruct)] Guid SchemeGuid,
@@ -550,7 +549,7 @@ public class HardwareMonitor
 
     public void ReadSensors()
     {
- 
+
         computer.Open();
         computer.Accept(new UpdateVisitor());
 

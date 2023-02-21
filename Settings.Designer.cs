@@ -473,6 +473,7 @@
             "Strobe",
             "Rainbow"});
             this.comboKeyboard.Location = new System.Drawing.Point(38, 778);
+            this.comboKeyboard.Margin = new System.Windows.Forms.Padding(0);
             this.comboKeyboard.Name = "comboKeyboard";
             this.comboKeyboard.Size = new System.Drawing.Size(200, 40);
             this.comboKeyboard.TabIndex = 24;
@@ -482,7 +483,7 @@
             // 
             this.buttonKeyboardColor.BackColor = System.Drawing.SystemColors.ButtonHighlight;
             this.buttonKeyboardColor.FlatAppearance.BorderColor = System.Drawing.Color.Red;
-            this.buttonKeyboardColor.FlatAppearance.BorderSize = 4;
+            this.buttonKeyboardColor.FlatAppearance.BorderSize = 3;
             this.buttonKeyboardColor.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonKeyboardColor.ForeColor = System.Drawing.SystemColors.ControlText;
             this.buttonKeyboardColor.Location = new System.Drawing.Point(261, 773);
@@ -517,7 +518,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(13F, 32F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(744, 1085);
+            this.ClientSize = new System.Drawing.Size(744, 1093);
             this.Controls.Add(this.labelBattery);
             this.Controls.Add(this.buttonKeyboardColor);
             this.Controls.Add(this.comboKeyboard);

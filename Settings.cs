@@ -294,9 +294,10 @@ namespace GHelper
 
         private static void SetTimer()
         {
-            aTimer = new System.Timers.Timer(2000);
+            aTimer = new System.Timers.Timer(500);
             aTimer.Elapsed += OnTimedEvent;
             aTimer.AutoReset = true;
+            aTimer.Enabled = false;
         }
 
         private static void RefreshSensors()
@@ -340,6 +341,7 @@ namespace GHelper
         private static void OnTimedEvent(Object? source, ElapsedEventArgs? e)
         {
             RefreshSensors();
+            aTimer.Interval = 2000;
         }
 
         private void SettingsForm_VisibleChanged(object? sender, EventArgs e)
@@ -352,7 +354,7 @@ namespace GHelper
                 this.Top = Screen.FromControl(this).WorkingArea.Height - 10 - this.Height;
                 this.Activate();
 
-                //RefreshSensors();
+                aTimer.Interval = 500;
                 aTimer.Enabled = true;
 
             }
