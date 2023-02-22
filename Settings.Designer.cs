@@ -29,546 +29,539 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SettingsForm));
-            this.checkStartup = new System.Windows.Forms.CheckBox();
-            this.trackBattery = new System.Windows.Forms.TrackBar();
-            this.labelBatteryTitle = new System.Windows.Forms.Label();
-            this.pictureBattery = new System.Windows.Forms.PictureBox();
-            this.labelGPUFan = new System.Windows.Forms.Label();
-            this.tableGPU = new System.Windows.Forms.TableLayoutPanel();
-            this.buttonUltimate = new System.Windows.Forms.Button();
-            this.buttonStandard = new System.Windows.Forms.Button();
-            this.buttonEco = new System.Windows.Forms.Button();
-            this.labelGPU = new System.Windows.Forms.Label();
-            this.pictureGPU = new System.Windows.Forms.PictureBox();
-            this.labelCPUFan = new System.Windows.Forms.Label();
-            this.tablePerf = new System.Windows.Forms.TableLayoutPanel();
-            this.buttonTurbo = new System.Windows.Forms.Button();
-            this.buttonBalanced = new System.Windows.Forms.Button();
-            this.buttonSilent = new System.Windows.Forms.Button();
-            this.picturePerf = new System.Windows.Forms.PictureBox();
-            this.labelPerf = new System.Windows.Forms.Label();
-            this.checkGPU = new System.Windows.Forms.CheckBox();
-            this.buttonQuit = new System.Windows.Forms.Button();
-            this.pictureScreen = new System.Windows.Forms.PictureBox();
-            this.labelSreen = new System.Windows.Forms.Label();
-            this.tableScreen = new System.Windows.Forms.TableLayoutPanel();
-            this.button120Hz = new System.Windows.Forms.Button();
-            this.button60Hz = new System.Windows.Forms.Button();
-            this.checkScreen = new System.Windows.Forms.CheckBox();
-            this.checkBoost = new System.Windows.Forms.CheckBox();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.comboKeyboard = new System.Windows.Forms.ComboBox();
-            this.buttonKeyboardColor = new System.Windows.Forms.Button();
-            this.pictureBox2 = new System.Windows.Forms.PictureBox();
-            this.labelBattery = new System.Windows.Forms.Label();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBattery)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBattery)).BeginInit();
-            this.tableGPU.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureGPU)).BeginInit();
-            this.tablePerf.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.picturePerf)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureScreen)).BeginInit();
-            this.tableScreen.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
-            this.SuspendLayout();
+            checkStartup = new CheckBox();
+            trackBattery = new TrackBar();
+            labelBatteryTitle = new Label();
+            pictureBattery = new PictureBox();
+            labelGPUFan = new Label();
+            tableGPU = new TableLayoutPanel();
+            buttonUltimate = new Button();
+            buttonStandard = new Button();
+            buttonEco = new Button();
+            labelGPU = new Label();
+            pictureGPU = new PictureBox();
+            labelCPUFan = new Label();
+            tablePerf = new TableLayoutPanel();
+            buttonTurbo = new Button();
+            buttonBalanced = new Button();
+            buttonSilent = new Button();
+            picturePerf = new PictureBox();
+            labelPerf = new Label();
+            checkGPU = new CheckBox();
+            buttonQuit = new Button();
+            pictureScreen = new PictureBox();
+            labelSreen = new Label();
+            tableScreen = new TableLayoutPanel();
+            button120Hz = new Button();
+            button60Hz = new Button();
+            checkScreen = new CheckBox();
+            checkBoost = new CheckBox();
+            pictureBox1 = new PictureBox();
+            label1 = new Label();
+            comboKeyboard = new ComboBox();
+            buttonKeyboardColor = new Button();
+            labelBattery = new Label();
+            buttonFans = new Button();
+            ((System.ComponentModel.ISupportInitialize)trackBattery).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBattery).BeginInit();
+            tableGPU.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureGPU).BeginInit();
+            tablePerf.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)picturePerf).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)pictureScreen).BeginInit();
+            tableScreen.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
+            SuspendLayout();
             // 
             // checkStartup
             // 
-            this.checkStartup.AutoSize = true;
-            this.checkStartup.Location = new System.Drawing.Point(40, 1007);
-            this.checkStartup.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
-            this.checkStartup.Name = "checkStartup";
-            this.checkStartup.Size = new System.Drawing.Size(206, 36);
-            this.checkStartup.TabIndex = 2;
-            this.checkStartup.Text = "Run on Startup";
-            this.checkStartup.UseVisualStyleBackColor = true;
-            this.checkStartup.CheckedChanged += new System.EventHandler(this.checkStartup_CheckedChanged);
+            checkStartup.AutoSize = true;
+            checkStartup.Location = new Point(41, 1007);
+            checkStartup.Margin = new Padding(4, 2, 4, 2);
+            checkStartup.Name = "checkStartup";
+            checkStartup.Size = new Size(206, 36);
+            checkStartup.TabIndex = 2;
+            checkStartup.Text = "Run on Startup";
+            checkStartup.UseVisualStyleBackColor = true;
+            checkStartup.CheckedChanged += checkStartup_CheckedChanged;
             // 
             // trackBattery
             // 
-            this.trackBattery.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.trackBattery.LargeChange = 20;
-            this.trackBattery.Location = new System.Drawing.Point(20, 908);
-            this.trackBattery.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
-            this.trackBattery.Maximum = 100;
-            this.trackBattery.Minimum = 50;
-            this.trackBattery.Name = "trackBattery";
-            this.trackBattery.Size = new System.Drawing.Size(690, 90);
-            this.trackBattery.SmallChange = 10;
-            this.trackBattery.TabIndex = 3;
-            this.trackBattery.TickFrequency = 10;
-            this.trackBattery.TickStyle = System.Windows.Forms.TickStyle.TopLeft;
-            this.trackBattery.Value = 100;
+            trackBattery.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            trackBattery.LargeChange = 20;
+            trackBattery.Location = new Point(20, 909);
+            trackBattery.Margin = new Padding(4, 2, 4, 2);
+            trackBattery.Maximum = 100;
+            trackBattery.Minimum = 50;
+            trackBattery.Name = "trackBattery";
+            trackBattery.Size = new Size(674, 90);
+            trackBattery.SmallChange = 10;
+            trackBattery.TabIndex = 3;
+            trackBattery.TickFrequency = 10;
+            trackBattery.TickStyle = TickStyle.TopLeft;
+            trackBattery.Value = 100;
             // 
             // labelBatteryTitle
             // 
-            this.labelBatteryTitle.AutoSize = true;
-            this.labelBatteryTitle.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.labelBatteryTitle.Location = new System.Drawing.Point(77, 871);
-            this.labelBatteryTitle.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.labelBatteryTitle.Name = "labelBatteryTitle";
-            this.labelBatteryTitle.Size = new System.Drawing.Size(248, 32);
-            this.labelBatteryTitle.TabIndex = 4;
-            this.labelBatteryTitle.Text = "Battery Charge Limit";
+            labelBatteryTitle.AutoSize = true;
+            labelBatteryTitle.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            labelBatteryTitle.Location = new Point(76, 870);
+            labelBatteryTitle.Margin = new Padding(4, 0, 4, 0);
+            labelBatteryTitle.Name = "labelBatteryTitle";
+            labelBatteryTitle.Size = new Size(248, 32);
+            labelBatteryTitle.TabIndex = 4;
+            labelBatteryTitle.Text = "Battery Charge Limit";
             // 
             // pictureBattery
             // 
-            this.pictureBattery.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pictureBattery.BackgroundImage")));
-            this.pictureBattery.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.pictureBattery.Location = new System.Drawing.Point(33, 868);
-            this.pictureBattery.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
-            this.pictureBattery.Name = "pictureBattery";
-            this.pictureBattery.Size = new System.Drawing.Size(38, 38);
-            this.pictureBattery.TabIndex = 6;
-            this.pictureBattery.TabStop = false;
+            pictureBattery.BackgroundImage = (Image)resources.GetObject("pictureBattery.BackgroundImage");
+            pictureBattery.BackgroundImageLayout = ImageLayout.Zoom;
+            pictureBattery.Location = new Point(33, 868);
+            pictureBattery.Margin = new Padding(4, 2, 4, 2);
+            pictureBattery.Name = "pictureBattery";
+            pictureBattery.Size = new Size(37, 38);
+            pictureBattery.TabIndex = 6;
+            pictureBattery.TabStop = false;
             // 
             // labelGPUFan
             // 
-            this.labelGPUFan.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.labelGPUFan.Location = new System.Drawing.Point(425, 262);
-            this.labelGPUFan.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.labelGPUFan.Name = "labelGPUFan";
-            this.labelGPUFan.Size = new System.Drawing.Size(277, 32);
-            this.labelGPUFan.TabIndex = 8;
-            this.labelGPUFan.Text = "GPU Fan : 0%";
-            this.labelGPUFan.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            labelGPUFan.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            labelGPUFan.Location = new Point(409, 262);
+            labelGPUFan.Margin = new Padding(4, 0, 4, 0);
+            labelGPUFan.Name = "labelGPUFan";
+            labelGPUFan.Size = new Size(277, 32);
+            labelGPUFan.TabIndex = 8;
+            labelGPUFan.Text = "GPU Fan : 0%";
+            labelGPUFan.TextAlign = ContentAlignment.TopRight;
             // 
             // tableGPU
             // 
-            this.tableGPU.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.tableGPU.ColumnCount = 3;
-            this.tableGPU.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.tableGPU.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.tableGPU.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.tableGPU.Controls.Add(this.buttonUltimate, 2, 0);
-            this.tableGPU.Controls.Add(this.buttonStandard, 1, 0);
-            this.tableGPU.Controls.Add(this.buttonEco, 0, 0);
-            this.tableGPU.Location = new System.Drawing.Point(22, 303);
-            this.tableGPU.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
-            this.tableGPU.Name = "tableGPU";
-            this.tableGPU.RowCount = 1;
-            this.tableGPU.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 107F));
-            this.tableGPU.Size = new System.Drawing.Size(690, 107);
-            this.tableGPU.TabIndex = 7;
+            tableGPU.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            tableGPU.ColumnCount = 3;
+            tableGPU.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.33333F));
+            tableGPU.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.33333F));
+            tableGPU.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.33333F));
+            tableGPU.Controls.Add(buttonUltimate, 2, 0);
+            tableGPU.Controls.Add(buttonStandard, 1, 0);
+            tableGPU.Controls.Add(buttonEco, 0, 0);
+            tableGPU.Location = new Point(22, 303);
+            tableGPU.Margin = new Padding(4, 2, 4, 2);
+            tableGPU.Name = "tableGPU";
+            tableGPU.RowCount = 1;
+            tableGPU.RowStyles.Add(new RowStyle(SizeType.Absolute, 107F));
+            tableGPU.Size = new Size(674, 107);
+            tableGPU.TabIndex = 7;
             // 
             // buttonUltimate
             // 
-            this.buttonUltimate.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.buttonUltimate.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.buttonUltimate.FlatAppearance.BorderSize = 0;
-            this.buttonUltimate.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonUltimate.Location = new System.Drawing.Point(469, 11);
-            this.buttonUltimate.Margin = new System.Windows.Forms.Padding(9, 11, 9, 11);
-            this.buttonUltimate.Name = "buttonUltimate";
-            this.buttonUltimate.Size = new System.Drawing.Size(212, 85);
-            this.buttonUltimate.TabIndex = 2;
-            this.buttonUltimate.Text = "Ultimate";
-            this.buttonUltimate.UseVisualStyleBackColor = false;
+            buttonUltimate.BackColor = SystemColors.ControlLightLight;
+            buttonUltimate.Dock = DockStyle.Fill;
+            buttonUltimate.FlatAppearance.BorderSize = 0;
+            buttonUltimate.FlatStyle = FlatStyle.Flat;
+            buttonUltimate.Location = new Point(457, 11);
+            buttonUltimate.Margin = new Padding(9, 11, 9, 11);
+            buttonUltimate.Name = "buttonUltimate";
+            buttonUltimate.Size = new Size(208, 85);
+            buttonUltimate.TabIndex = 2;
+            buttonUltimate.Text = "Ultimate";
+            buttonUltimate.UseVisualStyleBackColor = false;
             // 
             // buttonStandard
             // 
-            this.buttonStandard.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.buttonStandard.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.buttonStandard.FlatAppearance.BorderSize = 0;
-            this.buttonStandard.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonStandard.Location = new System.Drawing.Point(239, 11);
-            this.buttonStandard.Margin = new System.Windows.Forms.Padding(9, 11, 9, 11);
-            this.buttonStandard.Name = "buttonStandard";
-            this.buttonStandard.Size = new System.Drawing.Size(212, 85);
-            this.buttonStandard.TabIndex = 1;
-            this.buttonStandard.Text = "Standard";
-            this.buttonStandard.UseVisualStyleBackColor = false;
+            buttonStandard.BackColor = SystemColors.ControlLightLight;
+            buttonStandard.Dock = DockStyle.Fill;
+            buttonStandard.FlatAppearance.BorderSize = 0;
+            buttonStandard.FlatStyle = FlatStyle.Flat;
+            buttonStandard.Location = new Point(233, 11);
+            buttonStandard.Margin = new Padding(9, 11, 9, 11);
+            buttonStandard.Name = "buttonStandard";
+            buttonStandard.Size = new Size(206, 85);
+            buttonStandard.TabIndex = 1;
+            buttonStandard.Text = "Standard";
+            buttonStandard.UseVisualStyleBackColor = false;
             // 
             // buttonEco
             // 
-            this.buttonEco.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.buttonEco.CausesValidation = false;
-            this.buttonEco.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.buttonEco.FlatAppearance.BorderSize = 0;
-            this.buttonEco.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonEco.Location = new System.Drawing.Point(9, 11);
-            this.buttonEco.Margin = new System.Windows.Forms.Padding(9, 11, 9, 11);
-            this.buttonEco.Name = "buttonEco";
-            this.buttonEco.Size = new System.Drawing.Size(212, 85);
-            this.buttonEco.TabIndex = 0;
-            this.buttonEco.Text = "Eco";
-            this.buttonEco.UseVisualStyleBackColor = false;
+            buttonEco.BackColor = SystemColors.ControlLightLight;
+            buttonEco.CausesValidation = false;
+            buttonEco.Dock = DockStyle.Fill;
+            buttonEco.FlatAppearance.BorderSize = 0;
+            buttonEco.FlatStyle = FlatStyle.Flat;
+            buttonEco.Location = new Point(9, 11);
+            buttonEco.Margin = new Padding(9, 11, 9, 11);
+            buttonEco.Name = "buttonEco";
+            buttonEco.Size = new Size(206, 85);
+            buttonEco.TabIndex = 0;
+            buttonEco.Text = "Eco";
+            buttonEco.UseVisualStyleBackColor = false;
             // 
             // labelGPU
             // 
-            this.labelGPU.AutoSize = true;
-            this.labelGPU.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.labelGPU.Location = new System.Drawing.Point(77, 265);
-            this.labelGPU.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.labelGPU.Name = "labelGPU";
-            this.labelGPU.Size = new System.Drawing.Size(136, 32);
-            this.labelGPU.TabIndex = 9;
-            this.labelGPU.Text = "GPU Mode";
+            labelGPU.AutoSize = true;
+            labelGPU.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            labelGPU.Location = new Point(76, 265);
+            labelGPU.Margin = new Padding(4, 0, 4, 0);
+            labelGPU.Name = "labelGPU";
+            labelGPU.Size = new Size(136, 32);
+            labelGPU.TabIndex = 9;
+            labelGPU.Text = "GPU Mode";
             // 
             // pictureGPU
             // 
-            this.pictureGPU.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pictureGPU.BackgroundImage")));
-            this.pictureGPU.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.pictureGPU.Location = new System.Drawing.Point(33, 263);
-            this.pictureGPU.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
-            this.pictureGPU.Name = "pictureGPU";
-            this.pictureGPU.Size = new System.Drawing.Size(38, 38);
-            this.pictureGPU.TabIndex = 10;
-            this.pictureGPU.TabStop = false;
+            pictureGPU.BackgroundImage = (Image)resources.GetObject("pictureGPU.BackgroundImage");
+            pictureGPU.BackgroundImageLayout = ImageLayout.Zoom;
+            pictureGPU.Location = new Point(33, 262);
+            pictureGPU.Margin = new Padding(4, 2, 4, 2);
+            pictureGPU.Name = "pictureGPU";
+            pictureGPU.Size = new Size(37, 38);
+            pictureGPU.TabIndex = 10;
+            pictureGPU.TabStop = false;
             // 
             // labelCPUFan
             // 
-            this.labelCPUFan.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.labelCPUFan.Location = new System.Drawing.Point(425, 38);
-            this.labelCPUFan.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.labelCPUFan.Name = "labelCPUFan";
-            this.labelCPUFan.Size = new System.Drawing.Size(277, 32);
-            this.labelCPUFan.TabIndex = 12;
-            this.labelCPUFan.Text = "CPU Fan : 0%";
-            this.labelCPUFan.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            labelCPUFan.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            labelCPUFan.Location = new Point(409, 38);
+            labelCPUFan.Margin = new Padding(4, 0, 4, 0);
+            labelCPUFan.Name = "labelCPUFan";
+            labelCPUFan.Size = new Size(277, 32);
+            labelCPUFan.TabIndex = 12;
+            labelCPUFan.Text = "CPU Fan : 0%";
+            labelCPUFan.TextAlign = ContentAlignment.TopRight;
             // 
             // tablePerf
             // 
-            this.tablePerf.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.tablePerf.ColumnCount = 3;
-            this.tablePerf.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.tablePerf.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.tablePerf.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.tablePerf.Controls.Add(this.buttonTurbo, 2, 0);
-            this.tablePerf.Controls.Add(this.buttonBalanced, 1, 0);
-            this.tablePerf.Controls.Add(this.buttonSilent, 0, 0);
-            this.tablePerf.Location = new System.Drawing.Point(22, 76);
-            this.tablePerf.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
-            this.tablePerf.Name = "tablePerf";
-            this.tablePerf.RowCount = 1;
-            this.tablePerf.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 107F));
-            this.tablePerf.Size = new System.Drawing.Size(690, 107);
-            this.tablePerf.TabIndex = 11;
+            tablePerf.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            tablePerf.ColumnCount = 3;
+            tablePerf.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.33333F));
+            tablePerf.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.33333F));
+            tablePerf.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.33333F));
+            tablePerf.Controls.Add(buttonTurbo, 2, 0);
+            tablePerf.Controls.Add(buttonBalanced, 1, 0);
+            tablePerf.Controls.Add(buttonSilent, 0, 0);
+            tablePerf.Location = new Point(22, 77);
+            tablePerf.Margin = new Padding(4, 2, 4, 2);
+            tablePerf.Name = "tablePerf";
+            tablePerf.RowCount = 1;
+            tablePerf.RowStyles.Add(new RowStyle(SizeType.Absolute, 107F));
+            tablePerf.Size = new Size(674, 107);
+            tablePerf.TabIndex = 11;
             // 
             // buttonTurbo
             // 
-            this.buttonTurbo.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.buttonTurbo.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.buttonTurbo.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.buttonTurbo.FlatAppearance.BorderSize = 0;
-            this.buttonTurbo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonTurbo.Location = new System.Drawing.Point(469, 11);
-            this.buttonTurbo.Margin = new System.Windows.Forms.Padding(9, 11, 9, 11);
-            this.buttonTurbo.Name = "buttonTurbo";
-            this.buttonTurbo.Size = new System.Drawing.Size(212, 85);
-            this.buttonTurbo.TabIndex = 2;
-            this.buttonTurbo.Text = "Turbo";
-            this.buttonTurbo.UseVisualStyleBackColor = false;
+            buttonTurbo.BackColor = SystemColors.ControlLightLight;
+            buttonTurbo.Dock = DockStyle.Fill;
+            buttonTurbo.FlatAppearance.BorderColor = Color.FromArgb(192, 0, 0);
+            buttonTurbo.FlatAppearance.BorderSize = 0;
+            buttonTurbo.FlatStyle = FlatStyle.Flat;
+            buttonTurbo.Location = new Point(457, 11);
+            buttonTurbo.Margin = new Padding(9, 11, 9, 11);
+            buttonTurbo.Name = "buttonTurbo";
+            buttonTurbo.Size = new Size(208, 85);
+            buttonTurbo.TabIndex = 2;
+            buttonTurbo.Text = "Turbo";
+            buttonTurbo.UseVisualStyleBackColor = false;
             // 
             // buttonBalanced
             // 
-            this.buttonBalanced.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.buttonBalanced.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.buttonBalanced.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(192)))));
-            this.buttonBalanced.FlatAppearance.BorderSize = 0;
-            this.buttonBalanced.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonBalanced.Location = new System.Drawing.Point(239, 11);
-            this.buttonBalanced.Margin = new System.Windows.Forms.Padding(9, 11, 9, 11);
-            this.buttonBalanced.Name = "buttonBalanced";
-            this.buttonBalanced.Size = new System.Drawing.Size(212, 85);
-            this.buttonBalanced.TabIndex = 1;
-            this.buttonBalanced.Text = "Balanced";
-            this.buttonBalanced.UseVisualStyleBackColor = false;
+            buttonBalanced.BackColor = SystemColors.ControlLightLight;
+            buttonBalanced.Dock = DockStyle.Fill;
+            buttonBalanced.FlatAppearance.BorderColor = Color.FromArgb(0, 0, 192);
+            buttonBalanced.FlatAppearance.BorderSize = 0;
+            buttonBalanced.FlatStyle = FlatStyle.Flat;
+            buttonBalanced.Location = new Point(233, 11);
+            buttonBalanced.Margin = new Padding(9, 11, 9, 11);
+            buttonBalanced.Name = "buttonBalanced";
+            buttonBalanced.Size = new Size(206, 85);
+            buttonBalanced.TabIndex = 1;
+            buttonBalanced.Text = "Balanced";
+            buttonBalanced.UseVisualStyleBackColor = false;
             // 
             // buttonSilent
             // 
-            this.buttonSilent.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.buttonSilent.CausesValidation = false;
-            this.buttonSilent.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.buttonSilent.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
-            this.buttonSilent.FlatAppearance.BorderSize = 0;
-            this.buttonSilent.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonSilent.Location = new System.Drawing.Point(9, 11);
-            this.buttonSilent.Margin = new System.Windows.Forms.Padding(9, 11, 9, 11);
-            this.buttonSilent.Name = "buttonSilent";
-            this.buttonSilent.Size = new System.Drawing.Size(212, 85);
-            this.buttonSilent.TabIndex = 0;
-            this.buttonSilent.Text = "Silent";
-            this.buttonSilent.UseVisualStyleBackColor = false;
+            buttonSilent.BackColor = SystemColors.ControlLightLight;
+            buttonSilent.CausesValidation = false;
+            buttonSilent.Dock = DockStyle.Fill;
+            buttonSilent.FlatAppearance.BorderColor = Color.FromArgb(0, 192, 192);
+            buttonSilent.FlatAppearance.BorderSize = 0;
+            buttonSilent.FlatStyle = FlatStyle.Flat;
+            buttonSilent.Location = new Point(9, 11);
+            buttonSilent.Margin = new Padding(9, 11, 9, 11);
+            buttonSilent.Name = "buttonSilent";
+            buttonSilent.Size = new Size(206, 85);
+            buttonSilent.TabIndex = 0;
+            buttonSilent.Text = "Silent";
+            buttonSilent.UseVisualStyleBackColor = false;
             // 
             // picturePerf
             // 
-            this.picturePerf.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("picturePerf.BackgroundImage")));
-            this.picturePerf.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.picturePerf.InitialImage = null;
-            this.picturePerf.Location = new System.Drawing.Point(33, 36);
-            this.picturePerf.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
-            this.picturePerf.Name = "picturePerf";
-            this.picturePerf.Size = new System.Drawing.Size(38, 38);
-            this.picturePerf.TabIndex = 14;
-            this.picturePerf.TabStop = false;
+            picturePerf.BackgroundImage = (Image)resources.GetObject("picturePerf.BackgroundImage");
+            picturePerf.BackgroundImageLayout = ImageLayout.Zoom;
+            picturePerf.InitialImage = null;
+            picturePerf.Location = new Point(33, 36);
+            picturePerf.Margin = new Padding(4, 2, 4, 2);
+            picturePerf.Name = "picturePerf";
+            picturePerf.Size = new Size(37, 38);
+            picturePerf.TabIndex = 14;
+            picturePerf.TabStop = false;
             // 
             // labelPerf
             // 
-            this.labelPerf.AutoSize = true;
-            this.labelPerf.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.labelPerf.Location = new System.Drawing.Point(77, 38);
-            this.labelPerf.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.labelPerf.Name = "labelPerf";
-            this.labelPerf.Size = new System.Drawing.Size(234, 32);
-            this.labelPerf.TabIndex = 13;
-            this.labelPerf.Text = "Performance Mode";
+            labelPerf.AutoSize = true;
+            labelPerf.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            labelPerf.Location = new Point(76, 38);
+            labelPerf.Margin = new Padding(4, 0, 4, 0);
+            labelPerf.Name = "labelPerf";
+            labelPerf.Size = new Size(234, 32);
+            labelPerf.TabIndex = 13;
+            labelPerf.Text = "Performance Mode";
             // 
             // checkGPU
             // 
-            this.checkGPU.AutoSize = true;
-            this.checkGPU.ForeColor = System.Drawing.SystemColors.GrayText;
-            this.checkGPU.Location = new System.Drawing.Point(33, 411);
-            this.checkGPU.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
-            this.checkGPU.Name = "checkGPU";
-            this.checkGPU.Size = new System.Drawing.Size(550, 36);
-            this.checkGPU.TabIndex = 15;
-            this.checkGPU.Text = "Set Eco on battery and Standard when plugged";
-            this.checkGPU.UseVisualStyleBackColor = true;
-            this.checkGPU.CheckedChanged += new System.EventHandler(this.checkGPU_CheckedChanged);
+            checkGPU.AutoSize = true;
+            checkGPU.ForeColor = SystemColors.GrayText;
+            checkGPU.Location = new Point(33, 412);
+            checkGPU.Margin = new Padding(4, 2, 4, 2);
+            checkGPU.Name = "checkGPU";
+            checkGPU.Size = new Size(550, 36);
+            checkGPU.TabIndex = 15;
+            checkGPU.Text = "Set Eco on battery and Standard when plugged";
+            checkGPU.UseVisualStyleBackColor = true;
+            checkGPU.CheckedChanged += checkGPU_CheckedChanged;
             // 
             // buttonQuit
             // 
-            this.buttonQuit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonQuit.BackColor = System.Drawing.SystemColors.ButtonFace;
-            this.buttonQuit.Location = new System.Drawing.Point(591, 1011);
-            this.buttonQuit.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
-            this.buttonQuit.Name = "buttonQuit";
-            this.buttonQuit.Size = new System.Drawing.Size(121, 47);
-            this.buttonQuit.TabIndex = 16;
-            this.buttonQuit.Text = "Quit";
-            this.buttonQuit.UseVisualStyleBackColor = false;
+            buttonQuit.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            buttonQuit.BackColor = SystemColors.ButtonFace;
+            buttonQuit.Location = new Point(574, 1011);
+            buttonQuit.Margin = new Padding(4, 2, 4, 2);
+            buttonQuit.Name = "buttonQuit";
+            buttonQuit.Size = new Size(121, 47);
+            buttonQuit.TabIndex = 16;
+            buttonQuit.Text = "Quit";
+            buttonQuit.UseVisualStyleBackColor = false;
             // 
             // pictureScreen
             // 
-            this.pictureScreen.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pictureScreen.BackgroundImage")));
-            this.pictureScreen.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.pictureScreen.Location = new System.Drawing.Point(33, 496);
-            this.pictureScreen.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
-            this.pictureScreen.Name = "pictureScreen";
-            this.pictureScreen.Size = new System.Drawing.Size(38, 38);
-            this.pictureScreen.TabIndex = 18;
-            this.pictureScreen.TabStop = false;
+            pictureScreen.BackgroundImage = (Image)resources.GetObject("pictureScreen.BackgroundImage");
+            pictureScreen.BackgroundImageLayout = ImageLayout.Zoom;
+            pictureScreen.Location = new Point(33, 495);
+            pictureScreen.Margin = new Padding(4, 2, 4, 2);
+            pictureScreen.Name = "pictureScreen";
+            pictureScreen.Size = new Size(37, 38);
+            pictureScreen.TabIndex = 18;
+            pictureScreen.TabStop = false;
             // 
             // labelSreen
             // 
-            this.labelSreen.AutoSize = true;
-            this.labelSreen.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.labelSreen.Location = new System.Drawing.Point(77, 496);
-            this.labelSreen.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.labelSreen.Name = "labelSreen";
-            this.labelSreen.Size = new System.Drawing.Size(176, 32);
-            this.labelSreen.TabIndex = 17;
-            this.labelSreen.Text = "Laptop Screen";
+            labelSreen.AutoSize = true;
+            labelSreen.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            labelSreen.Location = new Point(76, 495);
+            labelSreen.Margin = new Padding(4, 0, 4, 0);
+            labelSreen.Name = "labelSreen";
+            labelSreen.Size = new Size(176, 32);
+            labelSreen.TabIndex = 17;
+            labelSreen.Text = "Laptop Screen";
             // 
             // tableScreen
             // 
-            this.tableScreen.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.tableScreen.ColumnCount = 3;
-            this.tableScreen.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.tableScreen.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.tableScreen.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.tableScreen.Controls.Add(this.button120Hz, 1, 0);
-            this.tableScreen.Controls.Add(this.button60Hz, 0, 0);
-            this.tableScreen.Location = new System.Drawing.Point(22, 536);
-            this.tableScreen.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
-            this.tableScreen.Name = "tableScreen";
-            this.tableScreen.RowCount = 1;
-            this.tableScreen.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 107F));
-            this.tableScreen.Size = new System.Drawing.Size(690, 102);
-            this.tableScreen.TabIndex = 19;
+            tableScreen.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            tableScreen.ColumnCount = 3;
+            tableScreen.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.33333F));
+            tableScreen.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.33333F));
+            tableScreen.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.33333F));
+            tableScreen.Controls.Add(button120Hz, 1, 0);
+            tableScreen.Controls.Add(button60Hz, 0, 0);
+            tableScreen.Location = new Point(22, 535);
+            tableScreen.Margin = new Padding(4, 2, 4, 2);
+            tableScreen.Name = "tableScreen";
+            tableScreen.RowCount = 1;
+            tableScreen.RowStyles.Add(new RowStyle(SizeType.Absolute, 107F));
+            tableScreen.Size = new Size(674, 107);
+            tableScreen.TabIndex = 19;
             // 
             // button120Hz
             // 
-            this.button120Hz.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.button120Hz.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.button120Hz.FlatAppearance.BorderColor = System.Drawing.SystemColors.ActiveBorder;
-            this.button120Hz.FlatAppearance.BorderSize = 0;
-            this.button120Hz.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button120Hz.Location = new System.Drawing.Point(239, 11);
-            this.button120Hz.Margin = new System.Windows.Forms.Padding(9, 11, 9, 11);
-            this.button120Hz.Name = "button120Hz";
-            this.button120Hz.Size = new System.Drawing.Size(212, 85);
-            this.button120Hz.TabIndex = 1;
-            this.button120Hz.Text = "120Hz + OD";
-            this.button120Hz.UseVisualStyleBackColor = false;
+            button120Hz.BackColor = SystemColors.ControlLightLight;
+            button120Hz.Dock = DockStyle.Fill;
+            button120Hz.FlatAppearance.BorderColor = SystemColors.ActiveBorder;
+            button120Hz.FlatAppearance.BorderSize = 0;
+            button120Hz.FlatStyle = FlatStyle.Flat;
+            button120Hz.Location = new Point(233, 11);
+            button120Hz.Margin = new Padding(9, 11, 9, 11);
+            button120Hz.Name = "button120Hz";
+            button120Hz.Size = new Size(206, 85);
+            button120Hz.TabIndex = 1;
+            button120Hz.Text = "120Hz + OD";
+            button120Hz.UseVisualStyleBackColor = false;
             // 
             // button60Hz
             // 
-            this.button60Hz.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.button60Hz.CausesValidation = false;
-            this.button60Hz.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.button60Hz.FlatAppearance.BorderColor = System.Drawing.SystemColors.ActiveBorder;
-            this.button60Hz.FlatAppearance.BorderSize = 0;
-            this.button60Hz.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button60Hz.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.button60Hz.Location = new System.Drawing.Point(9, 11);
-            this.button60Hz.Margin = new System.Windows.Forms.Padding(9, 11, 9, 11);
-            this.button60Hz.Name = "button60Hz";
-            this.button60Hz.Size = new System.Drawing.Size(212, 85);
-            this.button60Hz.TabIndex = 0;
-            this.button60Hz.Text = "60Hz";
-            this.button60Hz.UseVisualStyleBackColor = false;
+            button60Hz.BackColor = SystemColors.ControlLightLight;
+            button60Hz.CausesValidation = false;
+            button60Hz.Dock = DockStyle.Fill;
+            button60Hz.FlatAppearance.BorderColor = SystemColors.ActiveBorder;
+            button60Hz.FlatAppearance.BorderSize = 0;
+            button60Hz.FlatStyle = FlatStyle.Flat;
+            button60Hz.ForeColor = SystemColors.ControlText;
+            button60Hz.Location = new Point(9, 11);
+            button60Hz.Margin = new Padding(9, 11, 9, 11);
+            button60Hz.Name = "button60Hz";
+            button60Hz.Size = new Size(206, 85);
+            button60Hz.TabIndex = 0;
+            button60Hz.Text = "60Hz";
+            button60Hz.UseVisualStyleBackColor = false;
             // 
             // checkScreen
             // 
-            this.checkScreen.AutoSize = true;
-            this.checkScreen.ForeColor = System.Drawing.SystemColors.GrayText;
-            this.checkScreen.Location = new System.Drawing.Point(33, 639);
-            this.checkScreen.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
-            this.checkScreen.Name = "checkScreen";
-            this.checkScreen.Size = new System.Drawing.Size(527, 36);
-            this.checkScreen.TabIndex = 20;
-            this.checkScreen.Text = "Set 60Hz on battery, and back when plugged";
-            this.checkScreen.UseVisualStyleBackColor = true;
+            checkScreen.AutoSize = true;
+            checkScreen.ForeColor = SystemColors.GrayText;
+            checkScreen.Location = new Point(33, 644);
+            checkScreen.Margin = new Padding(4, 2, 4, 2);
+            checkScreen.Name = "checkScreen";
+            checkScreen.Size = new Size(527, 36);
+            checkScreen.TabIndex = 20;
+            checkScreen.Text = "Set 60Hz on battery, and back when plugged";
+            checkScreen.UseVisualStyleBackColor = true;
             // 
             // checkBoost
             // 
-            this.checkBoost.AutoSize = true;
-            this.checkBoost.ForeColor = System.Drawing.SystemColors.GrayText;
-            this.checkBoost.Location = new System.Drawing.Point(33, 184);
-            this.checkBoost.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
-            this.checkBoost.Name = "checkBoost";
-            this.checkBoost.Size = new System.Drawing.Size(250, 36);
-            this.checkBoost.TabIndex = 21;
-            this.checkBoost.Text = "CPU Boost enabled";
-            this.checkBoost.UseVisualStyleBackColor = true;
+            checkBoost.AutoSize = true;
+            checkBoost.ForeColor = SystemColors.GrayText;
+            checkBoost.Location = new Point(33, 184);
+            checkBoost.Margin = new Padding(4, 2, 4, 2);
+            checkBoost.Name = "checkBoost";
+            checkBoost.Size = new Size(250, 36);
+            checkBoost.TabIndex = 21;
+            checkBoost.Text = "CPU Boost enabled";
+            checkBoost.UseVisualStyleBackColor = true;
             // 
             // pictureBox1
             // 
-            this.pictureBox1.BackgroundImage = global::GHelper.Properties.Resources.icons8_keyboard_48;
-            this.pictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.pictureBox1.Location = new System.Drawing.Point(33, 725);
-            this.pictureBox1.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(36, 36);
-            this.pictureBox1.TabIndex = 23;
-            this.pictureBox1.TabStop = false;
+            pictureBox1.BackgroundImage = Properties.Resources.icons8_keyboard_48;
+            pictureBox1.BackgroundImageLayout = ImageLayout.Zoom;
+            pictureBox1.Location = new Point(33, 725);
+            pictureBox1.Margin = new Padding(4, 2, 4, 2);
+            pictureBox1.Name = "pictureBox1";
+            pictureBox1.Size = new Size(35, 36);
+            pictureBox1.TabIndex = 23;
+            pictureBox1.TabStop = false;
             // 
             // label1
             // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.label1.Location = new System.Drawing.Point(77, 726);
-            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(210, 32);
-            this.label1.TabIndex = 22;
-            this.label1.Text = "Laptop Keyboard";
+            label1.AutoSize = true;
+            label1.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            label1.Location = new Point(76, 725);
+            label1.Margin = new Padding(4, 0, 4, 0);
+            label1.Name = "label1";
+            label1.Size = new Size(210, 32);
+            label1.TabIndex = 22;
+            label1.Text = "Laptop Keyboard";
             // 
             // comboKeyboard
             // 
-            this.comboKeyboard.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.comboKeyboard.FormattingEnabled = true;
-            this.comboKeyboard.ItemHeight = 32;
-            this.comboKeyboard.Items.AddRange(new object[] {
-            "Static",
-            "Breathe",
-            "Strobe",
-            "Rainbow"});
-            this.comboKeyboard.Location = new System.Drawing.Point(38, 778);
-            this.comboKeyboard.Margin = new System.Windows.Forms.Padding(0);
-            this.comboKeyboard.Name = "comboKeyboard";
-            this.comboKeyboard.Size = new System.Drawing.Size(200, 40);
-            this.comboKeyboard.TabIndex = 24;
-            this.comboKeyboard.TabStop = false;
+            comboKeyboard.FlatStyle = FlatStyle.Flat;
+            comboKeyboard.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
+            comboKeyboard.FormattingEnabled = true;
+            comboKeyboard.ItemHeight = 37;
+            comboKeyboard.Items.AddRange(new object[] { "Static", "Breathe", "Strobe", "Rainbow" });
+            comboKeyboard.Location = new Point(37, 777);
+            comboKeyboard.Margin = new Padding(0);
+            comboKeyboard.Name = "comboKeyboard";
+            comboKeyboard.Size = new Size(201, 45);
+            comboKeyboard.TabIndex = 24;
+            comboKeyboard.TabStop = false;
             // 
             // buttonKeyboardColor
             // 
-            this.buttonKeyboardColor.BackColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.buttonKeyboardColor.FlatAppearance.BorderColor = System.Drawing.Color.Red;
-            this.buttonKeyboardColor.FlatAppearance.BorderSize = 3;
-            this.buttonKeyboardColor.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonKeyboardColor.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.buttonKeyboardColor.Location = new System.Drawing.Point(261, 773);
-            this.buttonKeyboardColor.Margin = new System.Windows.Forms.Padding(0);
-            this.buttonKeyboardColor.Name = "buttonKeyboardColor";
-            this.buttonKeyboardColor.Size = new System.Drawing.Size(212, 50);
-            this.buttonKeyboardColor.TabIndex = 25;
-            this.buttonKeyboardColor.Text = "Color";
-            this.buttonKeyboardColor.UseVisualStyleBackColor = false;
-            // 
-            // pictureBox2
-            // 
-            this.pictureBox2.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.pictureBox2.Location = new System.Drawing.Point(32, 773);
-            this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(212, 50);
-            this.pictureBox2.TabIndex = 26;
-            this.pictureBox2.TabStop = false;
+            buttonKeyboardColor.AutoSize = true;
+            buttonKeyboardColor.BackColor = SystemColors.ButtonHighlight;
+            buttonKeyboardColor.FlatAppearance.BorderColor = Color.Red;
+            buttonKeyboardColor.FlatAppearance.BorderSize = 2;
+            buttonKeyboardColor.FlatStyle = FlatStyle.Flat;
+            buttonKeyboardColor.ForeColor = SystemColors.ControlText;
+            buttonKeyboardColor.Location = new Point(256, 775);
+            buttonKeyboardColor.Margin = new Padding(0);
+            buttonKeyboardColor.Name = "buttonKeyboardColor";
+            buttonKeyboardColor.Size = new Size(212, 50);
+            buttonKeyboardColor.TabIndex = 25;
+            buttonKeyboardColor.Text = "Color";
+            buttonKeyboardColor.UseVisualStyleBackColor = false;
             // 
             // labelBattery
             // 
-            this.labelBattery.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.labelBattery.Location = new System.Drawing.Point(425, 869);
-            this.labelBattery.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.labelBattery.Name = "labelBattery";
-            this.labelBattery.Size = new System.Drawing.Size(277, 32);
-            this.labelBattery.TabIndex = 27;
-            this.labelBattery.Text = "                ";
-            this.labelBattery.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            labelBattery.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            labelBattery.Location = new Point(409, 868);
+            labelBattery.Margin = new Padding(4, 0, 4, 0);
+            labelBattery.Name = "labelBattery";
+            labelBattery.Size = new Size(277, 32);
+            labelBattery.TabIndex = 27;
+            labelBattery.Text = "                ";
+            labelBattery.TextAlign = ContentAlignment.TopRight;
+            // 
+            // buttonFans
+            // 
+            buttonFans.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            buttonFans.BackColor = SystemColors.ButtonFace;
+            buttonFans.Location = new Point(525, 186);
+            buttonFans.Margin = new Padding(4, 2, 4, 2);
+            buttonFans.Name = "buttonFans";
+            buttonFans.Size = new Size(165, 47);
+            buttonFans.TabIndex = 28;
+            buttonFans.Text = "Fan Profile";
+            buttonFans.UseVisualStyleBackColor = false;
             // 
             // SettingsForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(13F, 32F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(744, 1093);
-            this.Controls.Add(this.labelBattery);
-            this.Controls.Add(this.buttonKeyboardColor);
-            this.Controls.Add(this.comboKeyboard);
-            this.Controls.Add(this.pictureBox1);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.checkBoost);
-            this.Controls.Add(this.checkScreen);
-            this.Controls.Add(this.tableScreen);
-            this.Controls.Add(this.pictureScreen);
-            this.Controls.Add(this.labelSreen);
-            this.Controls.Add(this.buttonQuit);
-            this.Controls.Add(this.checkGPU);
-            this.Controls.Add(this.picturePerf);
-            this.Controls.Add(this.labelPerf);
-            this.Controls.Add(this.labelCPUFan);
-            this.Controls.Add(this.tablePerf);
-            this.Controls.Add(this.pictureGPU);
-            this.Controls.Add(this.labelGPU);
-            this.Controls.Add(this.labelGPUFan);
-            this.Controls.Add(this.tableGPU);
-            this.Controls.Add(this.pictureBattery);
-            this.Controls.Add(this.labelBatteryTitle);
-            this.Controls.Add(this.trackBattery);
-            this.Controls.Add(this.checkStartup);
-            this.Controls.Add(this.pictureBox2);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-            this.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
-            this.MaximizeBox = false;
-            this.MdiChildrenMinimizedAnchorBottom = false;
-            this.MinimizeBox = false;
-            this.Name = "SettingsForm";
-            this.Padding = new System.Windows.Forms.Padding(9, 11, 9, 11);
-            this.ShowIcon = false;
-            this.ShowInTaskbar = false;
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "G-Helper";
-            this.Load += new System.EventHandler(this.Settings_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.trackBattery)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBattery)).EndInit();
-            this.tableGPU.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureGPU)).EndInit();
-            this.tablePerf.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.picturePerf)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureScreen)).EndInit();
-            this.tableScreen.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
-            this.ResumeLayout(false);
-            this.PerformLayout();
-
+            AutoScaleDimensions = new SizeF(13F, 32F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(728, 1079);
+            Controls.Add(buttonFans);
+            Controls.Add(labelBattery);
+            Controls.Add(buttonKeyboardColor);
+            Controls.Add(comboKeyboard);
+            Controls.Add(pictureBox1);
+            Controls.Add(label1);
+            Controls.Add(checkBoost);
+            Controls.Add(checkScreen);
+            Controls.Add(tableScreen);
+            Controls.Add(pictureScreen);
+            Controls.Add(labelSreen);
+            Controls.Add(buttonQuit);
+            Controls.Add(checkGPU);
+            Controls.Add(picturePerf);
+            Controls.Add(labelPerf);
+            Controls.Add(labelCPUFan);
+            Controls.Add(tablePerf);
+            Controls.Add(pictureGPU);
+            Controls.Add(labelGPU);
+            Controls.Add(labelGPUFan);
+            Controls.Add(tableGPU);
+            Controls.Add(pictureBattery);
+            Controls.Add(labelBatteryTitle);
+            Controls.Add(trackBattery);
+            Controls.Add(checkStartup);
+            FormBorderStyle = FormBorderStyle.FixedSingle;
+            Margin = new Padding(4, 2, 4, 2);
+            MaximizeBox = false;
+            MdiChildrenMinimizedAnchorBottom = false;
+            MinimizeBox = false;
+            Name = "SettingsForm";
+            Padding = new Padding(9, 11, 9, 11);
+            ShowIcon = false;
+            StartPosition = FormStartPosition.CenterScreen;
+            Text = "G-Helper";
+            Load += Settings_Load;
+            ((System.ComponentModel.ISupportInitialize)trackBattery).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBattery).EndInit();
+            tableGPU.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)pictureGPU).EndInit();
+            tablePerf.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)picturePerf).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pictureScreen).EndInit();
+            tableScreen.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
+            ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
@@ -603,7 +596,7 @@
         private Label label1;
         private ComboBox comboKeyboard;
         private Button buttonKeyboardColor;
-        private PictureBox pictureBox2;
         private Label labelBattery;
+        private Button buttonFans;
     }
 }

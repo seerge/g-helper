@@ -1,5 +1,6 @@
 ﻿using System.Management;
 using System.Runtime.InteropServices;
+using System.Diagnostics;
 
 public class ASUSWmi
 {
@@ -115,7 +116,7 @@ public class ASUSWmi
         BitConverter.GetBytes((uint)args.Length).CopyTo(acpiBuf, 4);
         Array.Copy(args, 0, acpiBuf, 8, args.Length);
 
-        Console.WriteLine(BitConverter.ToString(acpiBuf, 0, acpiBuf.Length));
+        //Debug.WriteLine(BitConverter.ToString(acpiBuf, 0, acpiBuf.Length));
 
         Control(CONTROL_CODE, acpiBuf, outBuffer);
 
@@ -149,7 +150,7 @@ public class ASUSWmi
         return BitConverter.ToInt32(status, 0) - 65536;
     }
 
-    public byte[] DeviceGetBuffer(uint DeviceID, int Status = 0)
+    public byte[] DeviceGetBuffer(uint DeviceID, uint Status = 0)
     {
         byte[] args = new byte[8];
         BitConverter.GetBytes((uint)DeviceID).CopyTo(args, 0);
@@ -158,17 +159,31 @@ public class ASUSWmi
     }
 
 
-    public void SetFanCurve(byte[] curve)
+    public void SetFanCurve(int device, byte[] curve)
     {
-        DeviceSet(DevsCPUFanCurve, curve);
+        if (device == 1) 
+            DeviceSet(DevsGPUFanCurve, curve);
+        else 
+            DeviceSet(DevsCPUFanCurve, curve);
     }
 
-    public byte[] GetFanCurve(int mode = 0)
+    public byte[] GetFanCurve(int device, int mode = 0)
     {
-        if (mode == 1) mode = 2;
-        if (mode == 2) mode = 1; // because it's asus, and modes are swapped here
+        uint fan_mode;
 
-        return DeviceGetBuffer(DevsCPUFanCurve, mode);
+        // because it's asus, and modes are swapped here
+        switch (mode)
+        {
+            case 1:fan_mode = 2; break;
+            case 2: fan_mode = 1; break;
+            default: fan_mode = 0; break;
+        }
+
+        if (device == 1) 
+            return DeviceGetBuffer(DevsGPUFanCurve, fan_mode);
+        else 
+            return DeviceGetBuffer(DevsCPUFanCurve, fan_mode);
+
     }
 
 

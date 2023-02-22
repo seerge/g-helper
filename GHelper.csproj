@@ -12,6 +12,7 @@
     <ApplicationIcon>favicon.ico</ApplicationIcon>
     <Platforms>AnyCPU;x64</Platforms>
     <SupportedOSPlatformVersion>8.0</SupportedOSPlatformVersion>
+    <AssemblyName>GHelper</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>
@@ -35,6 +36,7 @@
     <PackageReference Include="hidlibrary" Version="3.3.40" />
     <PackageReference Include="LibreHardwareMonitorLib" Version="0.9.1" />
     <PackageReference Include="TaskScheduler" Version="2.10.1" />
+    <PackageReference Include="WinForms.DataVisualization" Version="1.7.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -48,22 +50,22 @@
 
   <ItemGroup>
     <Content Include="Resources\eco.ico">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\icons8-charging-battery-48.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\icons8-laptop-48.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\icons8-speed-48.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\icons8-video-card-48.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\ultimate.ico">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
 

@@ -17,6 +17,8 @@ namespace GHelper
 
         static System.Timers.Timer aTimer = default!;
 
+        Fans fans;
+
         public SettingsForm()
         {
 
@@ -60,12 +62,32 @@ namespace GHelper
 
             buttonKeyboardColor.Click += ButtonKeyboardColor_Click;
 
+            buttonFans.Click += ButtonFans_Click;
+
             SetTimer();
+
+            
+
+        }
+
+        private void ButtonFans_Click(object? sender, EventArgs e)
+        {
+            if (fans == null || fans.Text == "")
+            {
+                fans = new Fans();
+                fans.Show();
+            } else
+            {
+                fans.Close();
+            }
 
         }
 
         private void ButtonKeyboardColor_Click(object? sender, EventArgs e)
         {
+
+            if (sender is null)
+                return;
 
             Button but = (Button)sender;
 
@@ -141,6 +163,9 @@ namespace GHelper
 
         private void ComboKeyboard_SelectedValueChanged(object? sender, EventArgs e)
         {
+            if (sender is null)
+                return;
+
             ComboBox cmb = (ComboBox)sender;
             SetAuraMode(cmb.SelectedIndex);
         }
@@ -148,6 +173,9 @@ namespace GHelper
 
         private void CheckBoost_Click(object? sender, EventArgs e)
         {
+            if (sender is null)
+                return;
+
             CheckBox chk = (CheckBox)sender;
             if (chk.Checked)
                 NativeMethods.SetCPUBoost(3);
@@ -403,6 +431,9 @@ namespace GHelper
                 labelPerf.Text = "Performance Mode: not supported";
             }
 
+            if (fans != null && fans.Text != "")
+                fans.LoadFans();
+
         }
 
 
@@ -611,11 +642,11 @@ namespace GHelper
             CheckBox chk = (CheckBox)sender;
             if (chk.Checked)
             {
-                Program.scheduler.Schedule();
+                Startup.Schedule();
             }
             else
             {
-                Program.scheduler.UnSchedule();
+                Startup.UnSchedule();
             }
         }
 
@@ -638,14 +669,20 @@ namespace GHelper
 
         }
 
-        private void trackBatteryChange(object sender, EventArgs e)
+        private void trackBatteryChange(object? sender, EventArgs e)
         {
+            if (sender is null)
+                return;
+
             TrackBar bar = (TrackBar)sender;
             SetBatteryChargeLimit(bar.Value);
         }
 
-        private void checkGPU_CheckedChanged(object sender, EventArgs e)
+        private void checkGPU_CheckedChanged(object? sender, EventArgs e)
         {
+            if (sender is null)
+                return;
+
             CheckBox chk = (CheckBox)sender;
             if (chk.Checked)
                 Program.config.setConfig("gpu_auto", 1);
@@ -654,8 +691,12 @@ namespace GHelper
         }
 
 
-        private void checkScreen_CheckedChanged(object sender, EventArgs e)
+        private void checkScreen_CheckedChanged(object? sender, EventArgs e)
         {
+
+            if (sender is null)
+                return;
+
             CheckBox chk = (CheckBox)sender;
             if (chk.Checked)
                 Program.config.setConfig("screen_auto", 1);
