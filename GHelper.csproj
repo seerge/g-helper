@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net7.0-windows8.0</TargetFramework>
+    <TargetFramework>net7.0-windows10.0.17763.0</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWindowsForms>True</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
@@ -33,6 +33,7 @@
 
   <ItemGroup>
     <PackageReference Include="hidlibrary" Version="3.3.40" />
+    <PackageReference Include="Microsoft.Toolkit.Uwp.Notifications" Version="7.1.3" />
     <PackageReference Include="LibreHardwareMonitorLib" Version="0.9.1" />
     <PackageReference Include="TaskScheduler" Version="2.10.1" />
   </ItemGroup>
