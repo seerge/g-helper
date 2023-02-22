@@ -146,7 +146,7 @@ public class ASUSWmi
         byte[] args = new byte[8];
         BitConverter.GetBytes((uint)DeviceID).CopyTo(args, 0);
         byte[] status = CallMethod(DSTS, args);
-        return BitConverter.ToInt32(status, 0)-65536;
+        return BitConverter.ToInt32(status, 0) - 65536;
     }
 
     public byte[] DeviceGetBuffer(uint DeviceID, int Status = 0)

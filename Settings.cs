@@ -375,12 +375,6 @@ namespace GHelper
             buttonBalanced.FlatAppearance.BorderSize = buttonInactive;
             buttonTurbo.FlatAppearance.BorderSize = buttonInactive;
 
-            string[] mode = new string[]{
-                "Balanced",
-                "Turbo",
-                "Silent"
-            };
-
             switch (PerformanceMode)
             {
                 case ASUSWmi.PerformanceSilent:
@@ -398,13 +392,13 @@ namespace GHelper
                     break;
             }
 
-            string notifTitle = "Performance Mode Changed";
-            string notifBody = "Switched to: " + mode[PerformanceMode];
+
             Program.config.setConfig("performance_mode", PerformanceMode);
             try
             {
                 Program.wmi.DeviceSet(ASUSWmi.PerformanceMode, PerformanceMode);
-            } catch
+            }
+            catch
             {
                 labelPerf.Text = "Performance Mode: not supported";
             }
