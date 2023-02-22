@@ -19,6 +19,7 @@ Profiles are **same** as in Armory Crate, including default fan curves
 1. Eco mode : only low power iGPU (Radeon 680u) enabled, iGPU drives built in display
 2. Standard mode (Windows Hybrid) : iGPU and dGPU (Radeon 6700s/6800s) enabled, iGPU drives built in display
 3. Ultimate mode: iGPU and dGPU enabled, but dGPU drives built in display
+4. **Custom fan profiles** for any mode!
 
 ## Extras
 
@@ -33,8 +34,7 @@ Profiles are **same** as in Armory Crate, including default fan curves
 
 ## Things still missing
 
-1. Custom fan profiles
-2. Anime matrix control
+1. Anime matrix control
 
 ## How to install
 
@@ -42,8 +42,8 @@ Profiles are **same** as in Armory Crate, including default fan curves
 2. Unzip to a folder of your choice
 3. Run **GHelper.exe**
 
-Note: Uses low level ASUS WMI commands to do switching and doens't require Armory Crate to be isntalled at all. 
-Therefore requires Administrator priveledges on Windows to run.
+Note: Uses low level ASUS ACPI commands to do switching and doens't require Armory Crate to be isntalled at all. 
+Doesn't require administrator privileges to run (anymore)!
 
 I don`t have Microsoft certificate to sign app yet, so if you set a warning from Windows Defender on launch (Windows Protected your PC), click More Info -> Run anyway.
 
