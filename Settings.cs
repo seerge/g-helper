@@ -432,7 +432,6 @@ namespace GHelper
             int eco = Program.wmi.DeviceGet(ASUSWmi.GPUEco);
             int mux = Program.wmi.DeviceGet(ASUSWmi.GPUMux);
 
-            int GPUMode;
 
             if (mux == 0) // GPU in Ultimate, ignore
                 return;

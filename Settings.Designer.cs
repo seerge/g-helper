@@ -506,10 +506,10 @@
             // labelBattery
             // 
             this.labelBattery.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.labelBattery.Location = new System.Drawing.Point(491, 869);
+            this.labelBattery.Location = new System.Drawing.Point(425, 869);
             this.labelBattery.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.labelBattery.Name = "labelBattery";
-            this.labelBattery.Size = new System.Drawing.Size(211, 32);
+            this.labelBattery.Size = new System.Drawing.Size(277, 32);
             this.labelBattery.TabIndex = 27;
             this.labelBattery.Text = "                ";
             this.labelBattery.TextAlign = System.Drawing.ContentAlignment.TopRight;

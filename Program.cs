@@ -4,112 +4,13 @@ using Microsoft.Win32.TaskScheduler;
 using System.Diagnostics;
 using System.Management;
 using System.Runtime.InteropServices;
+using System.Security.Principal;
 using System.Text.Json;
-
-public class ASUSWmi
-{
-    private ManagementObject mo;
-    private ManagementClass classInstance;
-
-    public const int CPU_Fan = 0x00110013;
-    public const int GPU_Fan = 0x00110014;
-
-    public const int PerformanceMode = 0x00120075;
-
-    public const int GPUEco = 0x00090020;
-    public const int GPUMux = 0x00090016;
-
-    public const int BatteryLimit = 0x00120057;
-    public const int ScreenOverdrive = 0x00050019;
-
-    public const int PerformanceBalanced = 0;
-    public const int PerformanceTurbo = 1;
-    public const int PerformanceSilent = 2;
-
-    public const int GPUModeEco = 0;
-    public const int GPUModeStandard = 1;
-    public const int GPUModeUltimate = 2;
-
-    public ASUSWmi()
-    {
-        this.classInstance = new ManagementClass(new ManagementScope("root\\wmi"), new ManagementPath("AsusAtkWmi_WMNB"), null);
-        foreach (ManagementObject mo in this.classInstance.GetInstances())
-        {
-            this.mo = mo;
-        }
-    }
-
-    private int WMICall(string MethodName, int Device_Id, int Control_status = -1)
-    {
-        ManagementBaseObject inParams = this.classInstance.Methods[MethodName].InParameters;
-        inParams["Device_ID"] = Device_Id;
-        if (Control_status != -1)
-        {
-            inParams["Control_status"] = Control_status;
-        }
-
-        ManagementBaseObject outParams = this.mo.InvokeMethod(MethodName, inParams, null);
-        foreach (PropertyData property in outParams.Properties)
-        {
-            if (property.Name == "device_status")
-            {
-                int status;
-                try
-                {
-                    status = int.Parse(property.Value.ToString());
-                    status -= 65536;
-                    return status;
-                }
-                catch
-                {
-                    return -1;
-                }
-            }
-            if (property.Name == "result")
-            {
-                try
-                {
-                    return int.Parse(property.Value.ToString());
-                }
-                catch
-                {
-                    return -1;
-                }
-            }
-        }
-
-        return -1;
-
-    }
-
-    public int DeviceGet(int Device_Id)
-    {
-        return this.WMICall("DSTS", Device_Id);
-    }
-    public int DeviceSet(int Device_Id, int Control_status)
-    {
-        return this.WMICall("DEVS", Device_Id, Control_status);
-    }
-
-    public void SubscribeToEvents(Action<object, EventArrivedEventArgs> EventHandler)
-    {
-
-        ManagementEventWatcher watcher = new ManagementEventWatcher();
-
-        watcher.EventArrived += new EventArrivedEventHandler(EventHandler);
-        watcher.Scope = new ManagementScope("root\\wmi");
-        watcher.Query = new WqlEventQuery("SELECT * FROM AsusAtkWmiEvent");
-
-        watcher.Start();
-
-    }
-
-}
 
 public class Startup
 {
 
-    static string taskName = "GSharpHelper";
+    static string taskName = "GHelper";
 
     public Startup()
     {
@@ -130,14 +31,14 @@ public class Startup
 
         if (strExeFilePath is null) return;
 
+        var userId = WindowsIdentity.GetCurrent().Name;
+
         Debug.WriteLine(strExeFilePath);
         TaskDefinition td = TaskService.Instance.NewTask();
-        td.RegistrationInfo.Description = "GSharpHelper Auto Start";
-
-        LogonTrigger lt = new LogonTrigger();
-        td.Triggers.Add(lt);
+        td.RegistrationInfo.Description = "GHelper Auto Start";
+        td.Triggers.Add(new LogonTrigger { UserId = userId, });
         td.Actions.Add(strExeFilePath);
-        td.Principal.RunLevel = TaskRunLevel.Highest;
+
         td.Settings.StopIfGoingOnBatteries = false;
         td.Settings.DisallowStartIfOnBatteries = false;
 
@@ -620,7 +521,6 @@ namespace GHelper
         public static AppConfig config;
 
         public static SettingsForm settingsForm;
-        public static ToastForm toastForm;
 
         public static Startup scheduler;
         public static HardwareMonitor hwmonitor;
