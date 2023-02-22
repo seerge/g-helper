@@ -1,8 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Timers;
-using System.Windows.Forms;
-using Windows.UI.Notifications;
-using Microsoft.Toolkit.Uwp.Notifications;
+
 
 namespace GHelper
 {
@@ -411,8 +409,6 @@ namespace GHelper
                 labelPerf.Text = "Performance Mode: not supported";
             }
 
-            if(notify)
-              sendNotification(notifTitle, notifBody);
         }
 
 
@@ -420,24 +416,6 @@ namespace GHelper
         {
             SetPerformanceMode(Program.config.getConfig("performance_mode") + 1, true);
         }
-
-
-        public void sendNotification(string title, string message)
-        {
-            var content = new ToastContentBuilder()
-                .AddText(title)
-                .AddText(message)
-                .SetToastDuration(ToastDuration.Short)
-                .GetToastContent();
-
-            var notification = new ToastNotification(content.GetXml())
-            {
-                Priority = ToastNotificationPriority.High
-            };
-
-            ToastNotificationManagerCompat.CreateToastNotifier().Show(notification);
-        }
-
 
         public void AutoScreen(int Plugged = 1)
         {
