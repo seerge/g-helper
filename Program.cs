@@ -1,7 +1,8 @@
-using LibreHardwareMonitor.Hardware;
+using Microsoft.Win32;
 using System.Diagnostics;
 using System.Management;
 using System.Security.Principal;
+using System.Text;
 using System.Text.Json;
 
 
@@ -80,27 +81,9 @@ public class AppConfig
 
 }
 
-
-public class UpdateVisitor : IVisitor
-{
-    public void VisitComputer(IComputer computer)
-    {
-        computer.Traverse(this);
-    }
-    public void VisitHardware(IHardware hardware)
-    {
-        hardware.Update();
-        foreach (IHardware subHardware in hardware.SubHardware) subHardware.Accept(this);
-    }
-    public void VisitSensor(ISensor sensor) { }
-    public void VisitParameter(IParameter parameter) { }
-}
-
-
 public class HardwareMonitor
 {
 
-    Computer computer;
 
     public float? cpuTemp = -1;
     public float? gpuTemp = -1;
@@ -121,72 +104,33 @@ public class HardwareMonitor
     public void ReadSensors()
     {
 
-        try
-        {
-            if (computer is not Computer)
-            {
-                computer = new Computer
-                {
-                    IsGpuEnabled = true,
-                    IsBatteryEnabled = true,
-                };
-
-                if (IsAdministrator()) computer.IsCpuEnabled = true;
-            }
-
-            computer.Open();
-            computer.Accept(new UpdateVisitor());
-        } catch
-        {
-            Debug.WriteLine("Failed to read sensors");
-        }
-
-
         cpuTemp = -1;
         gpuTemp = -1;
         batteryDischarge = -1;
-        batteryCharge = -1;
 
-        foreach (IHardware hardware in computer.Hardware)
+        try
         {
-            //Debug.WriteLine("Hardware: {0}", hardware.Name);
-            //Debug.WriteLine("Hardware: {0}", hardware.HardwareType);
 
-            foreach (ISensor sensor in hardware.Sensors)
+            if (cpuTemp < 0)
             {
-                if (sensor.SensorType == SensorType.Temperature)
-                {
-                    if (hardware.HardwareType.ToString().Contains("Cpu") && sensor.Name.Contains("Core"))
-                    {
-                        cpuTemp = sensor.Value;
-                        //Debug.WriteLine("\tSensor: {0}, value: {1}", sensor.Name, sensor.Value);
-                    }
-
-                    if (hardware.HardwareType.ToString().Contains("Gpu") && sensor.Name.Contains("Core"))
-                    {
-                        gpuTemp = sensor.Value;
-                    }
-
-                    //Debug.WriteLine("\tSensor: {0}, value: {1}", sensor.Name, sensor.Value);
-
-                }
-                else if (sensor.SensorType == SensorType.Power)
-                {
-                    if (sensor.Name.Contains("Discharge"))
-                    {
-                        batteryDischarge = sensor.Value;
-                    }
-
-                    if (sensor.Name.Contains("Charge"))
-                    {
-                        batteryCharge = sensor.Value;
-                    }
-                }
-
-
-
+                var ct = new PerformanceCounter("Thermal Zone Information", "Temperature", @"\_TZ.THRM", true);
+                cpuTemp = ct.NextValue() - 273;
+                ct.Dispose();
             }
+
+            if (batteryDischarge < 0)
+            {
+                var ct = new PerformanceCounter("Power Meter", "Power", "Power Meter (0)", true);
+                batteryDischarge = ct.NextValue() / 1000;
+                ct.Dispose();
+            }
+
+
+        } catch
+        {
+            Debug.WriteLine("Failed reading sensors");
         }
+
 
     }
 
@@ -240,6 +184,7 @@ namespace GHelper
             settingsForm.AutoGPUMode(isPlugged ? 1 : 0);
             settingsForm.AutoScreen(isPlugged ? 1 : 0);
 
+            SystemEvents.PowerModeChanged += SystemEvents_PowerModeChanged;
 
             IntPtr dummy = settingsForm.Handle;
 
@@ -247,6 +192,10 @@ namespace GHelper
 
         }
 
+        private static void SystemEvents_PowerModeChanged(object sender, PowerModeChangedEventArgs e)
+        {
+            settingsForm.SetBatteryChargeLimit(config.getConfig("charge_limit"));
+        }
 
         static void WatcherEventArrived(object sender, EventArrivedEventArgs e)
         {
@@ -283,7 +232,6 @@ namespace GHelper
                     });
                     return;
                 case 88:  // Plugged
-                    settingsForm.SetBatteryChargeLimit(config.getConfig("charge_limit"));
                     settingsForm.BeginInvoke(delegate
                     {
                         settingsForm.AutoGPUMode(1);

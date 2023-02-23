@@ -35,7 +35,7 @@
 
   <ItemGroup>
     <PackageReference Include="hidlibrary" Version="3.3.40" />
-    <PackageReference Include="LibreHardwareMonitorLib" Version="0.9.1" />
+    <PackageReference Include="System.Management" Version="7.0.0" />
     <PackageReference Include="TaskScheduler" Version="2.10.1" />
     <PackageReference Include="WinForms.DataVisualization" Version="1.7.0" />
   </ItemGroup>
