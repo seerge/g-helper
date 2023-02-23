@@ -93,18 +93,24 @@ namespace GHelper
                 chartCPU.BackColor = colorDark;
                 chartCPU.ChartAreas[0].AxisX.LabelStyle.ForeColor = Color.White;
                 chartCPU.ChartAreas[0].AxisY.LabelStyle.ForeColor = Color.White;
+                chartCPU.ChartAreas[0].BackColor = colorGray;
                 chartCPU.Titles[0].ForeColor = Color.White;
 
                 chartGPU.BackColor = colorDark;
                 chartGPU.ChartAreas[0].AxisX.LabelStyle.ForeColor = Color.White;
                 chartGPU.ChartAreas[0].AxisY.LabelStyle.ForeColor = Color.White;
+                chartGPU.ChartAreas[0].BackColor = colorGray;
                 chartGPU.Titles[0].ForeColor = Color.White;
 
                 buttonReset.BackColor = colorDark;
                 buttonReset.ForeColor = Color.White;
+                buttonReset.FlatStyle = FlatStyle.Flat;
+                buttonReset.FlatAppearance.BorderSize = 0;
 
                 buttonApply.BackColor = colorDark;
                 buttonApply.ForeColor = Color.White;
+                buttonApply.FlatStyle = FlatStyle.Flat;
+                buttonApply.FlatAppearance.BorderSize = 0;
             }
 
             chartCPU.MouseMove += ChartCPU_MouseMove;
