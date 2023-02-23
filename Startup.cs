@@ -33,7 +33,7 @@ public class Startup
 
         var userId = WindowsIdentity.GetCurrent().Name;
 
-        Debug.WriteLine(strExeFilePath);
+        //Debug.WriteLine(strExeFilePath);
         TaskDefinition td = TaskService.Instance.NewTask();
         td.RegistrationInfo.Description = "GHelper Auto Start";
         td.Triggers.Add(new LogonTrigger { UserId = userId, });

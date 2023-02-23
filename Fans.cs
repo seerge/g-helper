@@ -11,9 +11,24 @@ namespace GHelper
         Series seriesCPU;
         Series seriesGPU;
 
-        void SetChart(Chart chart, string title)
+        void SetChart(Chart chart, int device)
         {
-            chart.Titles.Add(title);
+
+            string title;
+
+            if (device == 1)
+                title = "GPU Fan Profile";
+            else 
+                title = "CPU Fan Profile";
+
+            if (Program.settingsForm.perfName.Length > 0)
+                title += ": " + Program.settingsForm.perfName;
+
+            if (chart.Titles.Count > 0)
+                chart.Titles[0].Text = title;
+            else
+                chart.Titles.Add(title);
+
             chart.ChartAreas[0].AxisX.Minimum = 10;
             chart.ChartAreas[0].AxisX.Maximum = 100;
             chart.ChartAreas[0].AxisX.Interval = 10;
@@ -23,12 +38,16 @@ namespace GHelper
 
         }
 
+        private void Fans_Shown(object? sender, EventArgs e)
+        {
+            Top = Program.settingsForm.Top;
+            Left = Program.settingsForm.Left - Width - 10;
+        }
+
         public Fans()
         {
-            InitializeComponent();
 
-            SetChart(chartCPU, "CPU Fan Profile");
-            SetChart(chartGPU, "GPU Fan Profile");
+            InitializeComponent();
 
             seriesCPU = chartCPU.Series.Add("CPU");
             seriesGPU = chartGPU.Series.Add("GPU");
@@ -47,12 +66,19 @@ namespace GHelper
             buttonReset.Click += ButtonReset_Click;
             buttonApply.Click += ButtonApply_Click;
 
+            Shown += Fans_Shown;
+
         }
 
         public void LoadFans()
         {
+
+            SetChart(chartCPU, 0);
+            SetChart(chartGPU, 0);
+
             LoadProfile(seriesCPU, 0);
             LoadProfile(seriesGPU, 1);
+
         }
 
         byte[] StringToBytes(string str)
@@ -87,16 +113,16 @@ namespace GHelper
 
             int mode = Program.config.getConfig("performance_mode");
             string curveString = Program.config.getConfigString(GetFanName(device));
-            byte[] curve = {};
+            byte[] curve = { };
 
             if (curveString is not null)
                 curve = StringToBytes(curveString);
 
-            if (def == 1 || curve.Length < 16)
+            if (def == 1 || curve.Length != 16)
                 curve = Program.wmi.GetFanCurve(device, mode);
 
-            
-            Debug.WriteLine(BitConverter.ToString(curve));
+
+            //Debug.WriteLine(BitConverter.ToString(curve));
 
             byte old = 0;
             for (int i = 0; i < 8; i++)
@@ -138,6 +164,7 @@ namespace GHelper
         {
             LoadProfile(seriesCPU, 0, 1);
             LoadProfile(seriesGPU, 1, 1);
+            Program.wmi.DeviceSet(ASUSWmi.PerformanceMode, Program.config.getConfig("performance_mode"));
         }
 
         private void ChartCPU_MouseUp(object? sender, MouseEventArgs e)

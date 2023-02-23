@@ -17,6 +17,8 @@ namespace GHelper
 
         static System.Timers.Timer aTimer = default!;
 
+        public string perfName;
+
         Fans fans;
 
         public SettingsForm()
@@ -66,7 +68,7 @@ namespace GHelper
 
             SetTimer();
 
-            
+
 
         }
 
@@ -76,7 +78,8 @@ namespace GHelper
             {
                 fans = new Fans();
                 fans.Show();
-            } else
+            }
+            else
             {
                 fans.Close();
             }
@@ -396,8 +399,6 @@ namespace GHelper
 
         public void SetPerformanceMode(int PerformanceMode = ASUSWmi.PerformanceBalanced, bool notify = false)
         {
-
-            string perfName;
 
             buttonSilent.FlatAppearance.BorderSize = buttonInactive;
             buttonBalanced.FlatAppearance.BorderSize = buttonInactive;

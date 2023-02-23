@@ -73,7 +73,7 @@
             buttonReset.Name = "buttonReset";
             buttonReset.Size = new Size(254, 46);
             buttonReset.TabIndex = 2;
-            buttonReset.Text = "Load Default";
+            buttonReset.Text = "Factory Defaults";
             buttonReset.UseVisualStyleBackColor = true;
             // 
             // chartGPU

@@ -116,7 +116,7 @@ public class ASUSWmi
         BitConverter.GetBytes((uint)args.Length).CopyTo(acpiBuf, 4);
         Array.Copy(args, 0, acpiBuf, 8, args.Length);
 
-        //Debug.WriteLine(BitConverter.ToString(acpiBuf, 0, acpiBuf.Length));
+        // if (MethodID == DEVS)  Debug.WriteLine(BitConverter.ToString(acpiBuf, 0, acpiBuf.Length));
 
         Control(CONTROL_CODE, acpiBuf, outBuffer);
 
@@ -161,6 +161,7 @@ public class ASUSWmi
 
     public void SetFanCurve(int device, byte[] curve)
     {
+
         if (device == 1) 
             DeviceSet(DevsGPUFanCurve, curve);
         else 
