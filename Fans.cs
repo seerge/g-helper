@@ -1,15 +1,60 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 using System.Windows.Forms.DataVisualization.Charting;
+using System.Windows.Forms.Design;
 
 namespace GHelper
 {
     public partial class Fans : Form
     {
 
+        static Color colorbackgroundDark = Color.FromArgb(255, 25, 25, 25);
+        static Color colorDark = Color.FromArgb(255, 50, 50, 50);
+        static Color colorGray = Color.FromArgb(255, 75, 75, 75);
+
         DataPoint curPoint = null;
         Series seriesCPU;
         Series seriesGPU;
+
+        // Get dark mode status from Windows API
+        [DllImport("UXTheme.dll", SetLastError = true, EntryPoint = "#138")]
+        public static extern bool CheckSystemDarkModeStatus();
+
+        bool ThemeMode = CheckSystemDarkModeStatus();
+
+        // Setup to change taskbar to dark with Windows API (Windows Forms limitation workaround from 
+        // https://lostintheframework.blogspot.com/2020/10/creating-dark-mode-for-windows-forms.html)
+        [DllImport("dwmapi.dll")]
+        private static extern int DwmSetWindowAttribute(IntPtr hwnd, int attr,
+    ref int attrValue, int attrSize);
+
+        private const int DWMWA_USE_IMMERSIVE_DARK_MODE_BEFORE_20H1 = 19;
+        private const int DWMWA_USE_IMMERSIVE_DARK_MODE = 20;
+
+        internal static bool UseImmersiveDarkMode(IntPtr handle, bool enabled)
+        {
+            if (IsWindows10OrGreater(17763))
+            {
+                var attribute = DWMWA_USE_IMMERSIVE_DARK_MODE_BEFORE_20H1;
+                if (IsWindows10OrGreater(18985))
+                {
+                    attribute = DWMWA_USE_IMMERSIVE_DARK_MODE;
+                }
+
+                int useImmersiveDarkMode = enabled ? 1 : 0;
+                return DwmSetWindowAttribute(handle, (int)attribute,
+                    ref useImmersiveDarkMode, sizeof(int)) == 0;
+            }
+
+            return false;
+        }
+
+        private static bool IsWindows10OrGreater(int build = -1)
+        {
+            return Environment.OSVersion.Version.Major >= 10 &&
+                Environment.OSVersion.Version.Build >= build;
+        }
 
         void SetChart(Chart chart, string title)
         {
@@ -37,6 +82,36 @@ namespace GHelper
             seriesGPU.Color = Color.Red;
 
             LoadFans();
+
+
+            if (ThemeMode == true)
+            {
+                UseImmersiveDarkMode(this.Handle, true);
+                BackColor = colorbackgroundDark;
+                ForeColor = Color.White;
+
+                chartCPU.BackColor = colorDark;
+                chartCPU.ChartAreas[0].AxisX.LabelStyle.ForeColor = Color.White;
+                chartCPU.ChartAreas[0].AxisY.LabelStyle.ForeColor = Color.White;
+                chartCPU.ChartAreas[0].BackColor = colorGray;
+                chartCPU.Titles[0].ForeColor = Color.White;
+
+                chartGPU.BackColor = colorDark;
+                chartGPU.ChartAreas[0].AxisX.LabelStyle.ForeColor = Color.White;
+                chartGPU.ChartAreas[0].AxisY.LabelStyle.ForeColor = Color.White;
+                chartGPU.ChartAreas[0].BackColor = colorGray;
+                chartGPU.Titles[0].ForeColor = Color.White;
+
+                buttonReset.BackColor = colorDark;
+                buttonReset.ForeColor = Color.White;
+                buttonReset.FlatStyle = FlatStyle.Flat;
+                buttonReset.FlatAppearance.BorderSize = 0;
+
+                buttonApply.BackColor = colorDark;
+                buttonApply.ForeColor = Color.White;
+                buttonApply.FlatStyle = FlatStyle.Flat;
+                buttonApply.FlatAppearance.BorderSize = 0;
+            }
 
             chartCPU.MouseMove += ChartCPU_MouseMove;
             chartCPU.MouseUp += ChartCPU_MouseUp;
