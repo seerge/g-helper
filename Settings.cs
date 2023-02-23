@@ -403,6 +403,11 @@ namespace GHelper
                 labelPerf.Text = "Performance Mode: not supported";
             }
 
+            if(notify )
+            {
+                Program.notificationToast.RunToast(perfName);
+            }
+
         }
 
 

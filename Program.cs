@@ -521,6 +521,7 @@ namespace GHelper
         public static AppConfig config;
 
         public static SettingsForm settingsForm;
+        public static ToastForm notificationToast;
 
         public static Startup scheduler;
         public static HardwareMonitor hwmonitor;
@@ -545,6 +546,7 @@ namespace GHelper
             scheduler = new Startup();
 
             settingsForm = new SettingsForm();
+            notificationToast = new ToastForm();
 
             settingsForm.InitGPUMode();
             settingsForm.InitBoost();

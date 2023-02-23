@@ -35,34 +35,39 @@
             // 
             // pictureIcon
             // 
-            this.pictureIcon.BackgroundImage = global::GHelper.Properties.Resources.icons8_speed_96;
+            this.pictureIcon.BackgroundImage = global::GHelper.Properties.Resources.icons8_speed_96_inverted;
             this.pictureIcon.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.pictureIcon.Location = new System.Drawing.Point(21, 21);
+            this.pictureIcon.Location = new System.Drawing.Point(10, 4);
+            this.pictureIcon.Margin = new System.Windows.Forms.Padding(2, 1, 2, 1);
             this.pictureIcon.Name = "pictureIcon";
-            this.pictureIcon.Size = new System.Drawing.Size(82, 80);
+            this.pictureIcon.Size = new System.Drawing.Size(44, 38);
             this.pictureIcon.TabIndex = 0;
             this.pictureIcon.TabStop = false;
             // 
             // labelMode
             // 
             this.labelMode.AutoSize = true;
+            this.labelMode.BackColor = System.Drawing.Color.Transparent;
             this.labelMode.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.labelMode.Location = new System.Drawing.Point(127, 32);
+            this.labelMode.ForeColor = System.Drawing.Color.White;
+            this.labelMode.Location = new System.Drawing.Point(67, 9);
+            this.labelMode.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.labelMode.Name = "labelMode";
-            this.labelMode.Size = new System.Drawing.Size(195, 59);
+            this.labelMode.Size = new System.Drawing.Size(100, 30);
             this.labelMode.TabIndex = 1;
             this.labelMode.Text = "Balanced";
             this.labelMode.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // ToastForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(13F, 32F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.ClientSize = new System.Drawing.Size(356, 122);
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
+            this.ClientSize = new System.Drawing.Size(178, 48);
             this.Controls.Add(this.labelMode);
             this.Controls.Add(this.pictureIcon);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.Margin = new System.Windows.Forms.Padding(2, 1, 2, 1);
             this.MaximizeBox = false;
             this.MdiChildrenMinimizedAnchorBottom = false;
             this.MinimizeBox = false;
