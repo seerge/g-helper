@@ -1,7 +1,40 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Diagnostics;
+using System.Runtime.InteropServices;
 
 public class NativeMethods
 {
+
+
+    [DllImport("user32.dll")]
+    public static extern bool ShowWindowAsync(IntPtr hWnd, int nCmdShow);
+    public const int SW_RESTORE = 9;
+
+    public static bool SwitchToCurrent()
+    {
+        IntPtr hWnd = IntPtr.Zero;
+        Process process = Process.GetCurrentProcess();
+        Process[] processes = Process.GetProcessesByName(process.ProcessName);
+        foreach (Process _process in processes)
+        {
+            if (_process.Id != process.Id)
+            {
+
+                if (_process.MainWindowHandle != IntPtr.Zero)
+                {
+                    Debug.WriteLine(_process.Id);
+                    Debug.WriteLine(process.Id);
+
+                    hWnd = _process.MainWindowHandle;
+                    ShowWindowAsync(hWnd, SW_RESTORE);
+                }
+
+                return true;
+                break;
+            }
+        }
+
+        return false;
+    }
 
     [DllImport("PowrProf.dll", CharSet = CharSet.Unicode)]
     static extern UInt32 PowerWriteDCValueIndex(IntPtr RootPowerKey,

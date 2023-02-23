@@ -13,6 +13,7 @@
     <Platforms>AnyCPU;x64</Platforms>
     <SupportedOSPlatformVersion>8.0</SupportedOSPlatformVersion>
     <AssemblyName>GHelper</AssemblyName>
+    <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
 
   <ItemGroup>

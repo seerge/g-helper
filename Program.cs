@@ -1,6 +1,7 @@
 using LibreHardwareMonitor.Hardware;
 using System.Diagnostics;
 using System.Management;
+using System.Security.Principal;
 using System.Text.Json;
 
 
@@ -106,22 +107,40 @@ public class HardwareMonitor
     public float? batteryDischarge = -1;
     public float? batteryCharge = -1;
 
+    public static bool IsAdministrator()
+    {
+        return (new WindowsPrincipal(WindowsIdentity.GetCurrent()))
+                  .IsInRole(WindowsBuiltInRole.Administrator);
+    }
+
     public HardwareMonitor()
     {
-        computer = new Computer
-        {
-            IsCpuEnabled = true,
-            IsGpuEnabled = true,
-            IsBatteryEnabled = true,
-        };
 
     }
 
     public void ReadSensors()
     {
 
-        computer.Open();
-        computer.Accept(new UpdateVisitor());
+        try
+        {
+            if (computer is not Computer)
+            {
+                computer = new Computer
+                {
+                    IsGpuEnabled = true,
+                    IsBatteryEnabled = true,
+                };
+
+                if (IsAdministrator()) computer.IsCpuEnabled = true;
+            }
+
+            computer.Open();
+            computer.Accept(new UpdateVisitor());
+        } catch
+        {
+            Debug.WriteLine("Failed to read sensors");
+        }
+
 
         cpuTemp = -1;
         gpuTemp = -1;
@@ -173,7 +192,7 @@ public class HardwareMonitor
 
     public void StopReading()
     {
-        computer.Close();
+        //computer.Close();
     }
 
 }
