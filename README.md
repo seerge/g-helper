@@ -4,6 +4,8 @@ A tiny system tray utility that allows you set performance and GPU profiles for 
 
 Designed for Asus Zephyrus G14 2022 (with AMD Radeon iGPU and dGPU). But could and should potentially work for G14 of 2021 and 2020, G15, X FLOW, and other ROG models.
 
+### [Download latest release](https://github.com/seerge/g14-helper/releases)
+
 ![Screenshot](https://github.com/seerge/g14-helper/blob/main/screenshot.png)
 
 ## Performance Profile switching 
