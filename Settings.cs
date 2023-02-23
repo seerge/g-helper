@@ -1,5 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Timers;
+using System.Runtime.InteropServices;
+using System.Windows.Forms;
 
 
 namespace GHelper
@@ -12,10 +14,54 @@ namespace GHelper
         static Color colorStandard = Color.FromArgb(255, 58, 174, 239);
         static Color colorTurbo = Color.FromArgb(255, 255, 32, 32);
 
+        static Color colorbackgroundDark = Color.FromArgb(255, 25, 25, 25);
+        static Color colorDark = Color.FromArgb(255, 50, 50, 50);
+        static Color colorGray = Color.FromArgb(255, 75, 75, 75);
+
+
         static int buttonInactive = 0;
         static int buttonActive = 5;
 
         static System.Timers.Timer aTimer = default!;
+
+        // Get dark mode status from Windows API
+        [DllImport("UXTheme.dll", SetLastError = true, EntryPoint = "#138")]
+        public static extern bool CheckSystemDarkModeStatus();
+
+        bool ThemeMode = CheckSystemDarkModeStatus();
+
+        // Setup to change taskbar to dark with Windows API (Windows Forms limitation workaround from 
+        // https://lostintheframework.blogspot.com/2020/10/creating-dark-mode-for-windows-forms.html)
+        [DllImport("dwmapi.dll")]
+        private static extern int DwmSetWindowAttribute(IntPtr hwnd, int attr,
+    ref int attrValue, int attrSize);
+
+        private const int DWMWA_USE_IMMERSIVE_DARK_MODE_BEFORE_20H1 = 19;
+        private const int DWMWA_USE_IMMERSIVE_DARK_MODE = 20;
+
+        internal static bool UseImmersiveDarkMode(IntPtr handle, bool enabled)
+        {
+            if (IsWindows10OrGreater(17763))
+            {
+                var attribute = DWMWA_USE_IMMERSIVE_DARK_MODE_BEFORE_20H1;
+                if (IsWindows10OrGreater(18985))
+                {
+                    attribute = DWMWA_USE_IMMERSIVE_DARK_MODE;
+                }
+
+                int useImmersiveDarkMode = enabled ? 1 : 0;
+                return DwmSetWindowAttribute(handle, (int)attribute,
+                    ref useImmersiveDarkMode, sizeof(int)) == 0;
+            }
+
+            return false;
+        }
+
+        private static bool IsWindows10OrGreater(int build = -1)
+        {
+            return Environment.OSVersion.Version.Major >= 10 &&
+                Environment.OSVersion.Version.Build >= build;
+        }
 
         Fans fans;
 
@@ -23,6 +69,55 @@ namespace GHelper
         {
 
             InitializeComponent();
+
+            if (ThemeMode == true)
+            {
+                UseImmersiveDarkMode(this.Handle, true);
+                BackColor = colorbackgroundDark;
+                ForeColor = Color.White;
+
+                buttonQuit.BackColor = colorDark;
+                buttonQuit.ForeColor = Color.White;
+                buttonQuit.FlatStyle = FlatStyle.Flat;
+                buttonQuit.FlatAppearance.BorderSize = 0;
+
+                buttonFans.BackColor = colorDark;
+                buttonFans.ForeColor = Color.White;
+                buttonFans.FlatStyle = FlatStyle.Flat;
+                buttonFans.FlatAppearance.BorderSize = 0;
+
+                comboKeyboard.BackColor = colorDark;
+                comboKeyboard.ForeColor = Color.White;
+
+                buttonEco.BackColor = colorDark;
+                buttonEco.ForeColor = Color.White;
+
+                buttonStandard.BackColor = colorDark;
+                buttonStandard.ForeColor = Color.White;
+
+                buttonUltimate.BackColor = colorDark;
+                buttonUltimate.ForeColor = Color.White;
+
+                buttonSilent.BackColor = colorDark;
+                buttonSilent.ForeColor = Color.White;
+
+                buttonBalanced.BackColor = colorDark;
+                buttonBalanced.ForeColor = Color.White;
+
+                buttonTurbo.BackColor = colorDark;
+                buttonTurbo.ForeColor = Color.White;
+
+                buttonKeyboardColor.BackColor = colorDark;
+                buttonKeyboardColor.ForeColor = Color.White;
+
+                comboKeyboard.BackColor = colorDark;
+
+                picturePerf.BackgroundImage = GHelper.Properties.Resources.icons8_speed_48_inverted;
+                pictureGPU.BackgroundImage = GHelper.Properties.Resources.icons8_video_card_48_inverted;
+                pictureScreen.BackgroundImage = GHelper.Properties.Resources.icons8_laptop_48_inverted;
+                pictureBox1.BackgroundImage = GHelper.Properties.Resources.icons8_keyboard_48_inverted;
+                pictureBattery.BackgroundImage = GHelper.Properties.Resources.icons8_charging_battery_48_inverted;
+            }
 
             FormClosing += SettingsForm_FormClosing;
 
@@ -243,15 +338,36 @@ namespace GHelper
                 button60Hz.Enabled = false;
                 button120Hz.Enabled = false;
                 labelSreen.Text = "Laptop Screen: Turned off";
-                button60Hz.BackColor = SystemColors.ControlLight;
-                button120Hz.BackColor = SystemColors.ControlLight;
+                if (ThemeMode == true)
+                {
+                    button60Hz.BackColor = colorGray;
+                    button120Hz.BackColor = colorGray;
+                    button60Hz.ForeColor = Color.White;
+                    button120Hz.ForeColor = Color.White;
+                }
+                else
+                {
+                    button60Hz.BackColor = SystemColors.ControlLight;
+                    button120Hz.BackColor = SystemColors.ControlLight;
+                }
+
             }
             else
             {
                 button60Hz.Enabled = true;
                 button120Hz.Enabled = true;
-                button60Hz.BackColor = SystemColors.ControlLightLight;
-                button120Hz.BackColor = SystemColors.ControlLightLight;
+                if (ThemeMode == true)
+                {
+                    button60Hz.BackColor = colorDark;
+                    button120Hz.BackColor = colorDark;
+                    button60Hz.ForeColor = Color.White;
+                    button120Hz.ForeColor = Color.White;
+                }
+                else
+                {
+                    button60Hz.BackColor = SystemColors.ControlLightLight;
+                    button120Hz.BackColor = SystemColors.ControlLightLight;
+                }
                 labelSreen.Text = "Laptop Screen";
             }
 
