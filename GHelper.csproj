@@ -97,4 +97,8 @@
     </None>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="screenshots\" />
+  </ItemGroup>
+
 </Project>
