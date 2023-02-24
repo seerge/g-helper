@@ -382,7 +382,7 @@ namespace GHelper
             {
                 InitScreen();
 
-                this.Left = Screen.FromControl(this).Bounds.Width - 10 - this.Width;
+                this.Left = Screen.FromControl(this).WorkingArea.Width - 10 - this.Width;
                 this.Top = Screen.FromControl(this).WorkingArea.Height - 10 - this.Height;
                 this.Activate();
 
