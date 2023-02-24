@@ -1,68 +1,94 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Drawing.Drawing2D;
+using OSD;
 
 
 namespace GHelper
 {
-    public partial class ToastForm : Form
+
+    static class Drawing
     {
 
-        private System.Windows.Forms.Timer timer = default!;
-
-        private const int SW_SHOWNOACTIVATE = 4;
-        private const int HWND_TOPMOST = -1;
-        private const uint SWP_NOACTIVATE = 0x0010;
-
-        [DllImport("user32.dll", EntryPoint = "SetWindowPos")]
-        static extern bool SetWindowPos(
-             int hWnd,             // Window handle
-             int hWndInsertAfter,  // Placement-order handle
-             int X,                // Horizontal position
-             int Y,                // Vertical position
-             int cx,               // Width
-             int cy,               // Height
-             uint uFlags);         // Window positioning flags
-
-        [DllImport("user32.dll")]
-        static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
-
-        static void ShowInactiveTopmost(Form frm)
+        public static GraphicsPath RoundedRect(Rectangle bounds, int radius)
         {
-            ShowWindow(frm.Handle, SW_SHOWNOACTIVATE);
-            SetWindowPos(frm.Handle.ToInt32(), HWND_TOPMOST,
-            frm.Left, frm.Top, frm.Width, frm.Height,
-            SWP_NOACTIVATE);
+            int diameter = radius * 2;
+            Size size = new Size(diameter, diameter);
+            Rectangle arc = new Rectangle(bounds.Location, size);
+            GraphicsPath path = new GraphicsPath();
+
+            if (radius == 0)
+            {
+                path.AddRectangle(bounds);
+                return path;
+            }
+
+            path.AddArc(arc, 180, 90);
+            arc.X = bounds.Right - diameter;
+            path.AddArc(arc, 270, 90);
+            arc.Y = bounds.Bottom - diameter;
+            path.AddArc(arc, 0, 90);
+            arc.X = bounds.Left;
+            path.AddArc(arc, 90, 90);
+            path.CloseFigure();
+            return path;
         }
 
-        public ToastForm()
+        public static void FillRoundedRectangle(this Graphics graphics, Brush brush, Rectangle bounds, int cornerRadius)
         {
-            InitializeComponent();
+            using (GraphicsPath path = RoundedRect(bounds, cornerRadius))
+            {
+                graphics.FillPath(brush, path);
+            }
+        }
+    }
+
+    class  ToastForm : OSDNativeForm
+    {
+
+        protected static string toastText = "Balanced";
+        protected static System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
+
+        protected override void PerformPaint(PaintEventArgs e)
+        {
+            Brush brush = new SolidBrush(Color.FromArgb(150,Color.Black));
+            Drawing.FillRoundedRectangle(e.Graphics, brush, this.Bound, 10);
+
+            StringFormat format = new StringFormat();
+            format.LineAlignment = StringAlignment.Center;
+            format.Alignment = StringAlignment.Center;
+
+            e.Graphics.DrawString(toastText, 
+                new Font("Segoe UI", 16f, FontStyle.Bold), 
+                new SolidBrush(Color.White), 
+                new PointF(this.Bound.Width/2, this.Bound.Height / 2), 
+                format);
         }
 
         public void RunToast(string text)
         {
 
-            Top = Screen.FromControl(this).WorkingArea.Height - this.Height - 100;
-            Left = (Screen.FromControl(this).Bounds.Width - this.Width) / 2;
+            toastText = text;
+            Screen screen1 = Screen.FromHandle(base.Handle);
 
-            ShowInactiveTopmost(this);
+            Width = 300;
+            Height = 100;
+            X = (screen1.Bounds.Width - this.Width)/2;
+            Y = screen1.Bounds.Height - 300 - this.Height;
 
-            labelMode.Text = text;
+            Show();
 
-            timer = new System.Windows.Forms.Timer();
-            timer.Tick += new EventHandler(timer_Tick);
+            timer.Stop();
+            timer.Tick -= timer_Tick;
+
+            timer.Tick += timer_Tick;
             timer.Enabled = true;
-            timer.Interval = 1000;
+            timer.Interval = 2000;
             timer.Start();
         }
 
-        private void ToastForm_Show(object? sender, EventArgs e)
-        {
-        }
-
-        private void timer_Tick(object sender, EventArgs e)
+        private void timer_Tick(object? sender, EventArgs e)
         {
             timer.Stop();
-            Close();
+            Hide();
         }
     }
 }

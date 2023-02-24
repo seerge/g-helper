@@ -1,8 +1,8 @@
 using Microsoft.Win32;
 using System.Diagnostics;
 using System.Management;
+using System.Runtime.InteropServices;
 using System.Security.Principal;
-using System.Text;
 using System.Text.Json;
 
 
@@ -84,81 +84,49 @@ public class AppConfig
 public class HardwareMonitor
 {
 
+    public static float? cpuTemp = -1;
+    public static float? batteryDischarge = -1;
 
-    public float? cpuTemp = -1;
-    public float? gpuTemp = -1;
-    public float? batteryDischarge = -1;
-    public float? batteryCharge = -1;
 
-    public static bool IsAdministrator()
+    public static void ReadSensors()
     {
-        return (new WindowsPrincipal(WindowsIdentity.GetCurrent()))
-                  .IsInRole(WindowsBuiltInRole.Administrator);
-    }
-
-    public HardwareMonitor()
-    {
-
-    }
-
-    public void ReadSensors()
-    {
-
         cpuTemp = -1;
-        gpuTemp = -1;
         batteryDischarge = -1;
 
         try
         {
+            var ct = new PerformanceCounter("Thermal Zone Information", "Temperature", @"\_TZ.THRM", true);
+            cpuTemp = ct.NextValue() - 273;
+            ct.Dispose();
 
-            if (cpuTemp < 0)
-            {
-                var ct = new PerformanceCounter("Thermal Zone Information", "Temperature", @"\_TZ.THRM", true);
-                cpuTemp = ct.NextValue() - 273;
-                ct.Dispose();
-            }
-
-            if (batteryDischarge < 0)
-            {
-                var ct = new PerformanceCounter("Power Meter", "Power", "Power Meter (0)", true);
-                batteryDischarge = ct.NextValue() / 1000;
-                ct.Dispose();
-            }
-
-
-        } catch
+            var cb = new PerformanceCounter("Power Meter", "Power", "Power Meter (0)", true);
+            batteryDischarge = ct.NextValue() / 1000;
+            cb.Dispose();
+        }
+        catch
         {
             Debug.WriteLine("Failed reading sensors");
         }
-
-
-    }
-
-    public void StopReading()
-    {
-        //computer.Close();
     }
 
 }
-
-
 
 namespace GHelper
 {
     static class Program
     {
         public static NotifyIcon trayIcon = new NotifyIcon
-            {
-                Text = "G-Helper",
-                Icon = Properties.Resources.standard,
-                Visible = true
-            };
+        {
+            Text = "G-Helper",
+            Icon = Properties.Resources.standard,
+            Visible = true
+        };
 
         public static ASUSWmi wmi = new ASUSWmi();
         public static AppConfig config = new AppConfig();
-
+        
         public static SettingsForm settingsForm = new SettingsForm();
-        public static HardwareMonitor hwmonitor = new HardwareMonitor();
+        public static ToastForm toast = new ToastForm();
 
         // The main entry point for the application
         public static void Main()
@@ -186,7 +154,7 @@ namespace GHelper
 
             SystemEvents.PowerModeChanged += SystemEvents_PowerModeChanged;
 
-            IntPtr dummy = settingsForm.Handle;
+            IntPtr ds = settingsForm.Handle;
 
             Application.Run();
 

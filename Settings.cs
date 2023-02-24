@@ -338,34 +338,19 @@ namespace GHelper
             string gpuFan = " Fan: " + Math.Round(Program.wmi.DeviceGet(ASUSWmi.GPU_Fan) / 0.6) + "%";
 
             string cpuTemp = "";
-            string gpuTemp = "";
             string battery = "";
 
-            try
-            {
-                Program.hwmonitor.ReadSensors();
-            }
-            catch
-            {
-                Debug.WriteLine("Failed reading sensors");
-            }
+            HardwareMonitor.ReadSensors();
 
-            if (Program.hwmonitor.cpuTemp > 0)
-                cpuTemp = ": " + Math.Round((decimal)Program.hwmonitor.cpuTemp).ToString() + "°C - ";
+            if (HardwareMonitor.cpuTemp > 0)
+                cpuTemp = ": " + Math.Round((decimal)HardwareMonitor.cpuTemp).ToString() + "°C - ";
 
-            if (Program.hwmonitor.gpuTemp > 0)
-                gpuTemp = ": " + Math.Round((decimal)Program.hwmonitor.gpuTemp).ToString() + "°C - ";
-
-            if (Program.hwmonitor.batteryDischarge > 0)
-                battery = "Discharging: " + Math.Round((decimal)Program.hwmonitor.batteryDischarge, 1).ToString() + "W";
-
-            if (Program.hwmonitor.batteryCharge > 0)
-                battery = "Charging: " + Math.Round((decimal)Program.hwmonitor.batteryCharge, 1).ToString() + "W";
+            if (HardwareMonitor.batteryDischarge > 0)
+                battery = "Discharging: " + Math.Round((decimal)HardwareMonitor.batteryDischarge, 1).ToString() + "W";
 
             Program.settingsForm.BeginInvoke(delegate
             {
                 Program.settingsForm.labelCPUFan.Text = "CPU" + cpuTemp + cpuFan;
-                Program.settingsForm.labelGPUFan.Text = "GPU" + gpuTemp + gpuFan;
                 Program.settingsForm.labelBattery.Text = battery;
             });
         }
@@ -382,7 +367,7 @@ namespace GHelper
             {
                 InitScreen();
 
-                this.Left = Screen.FromControl(this).Bounds.Width - 10 - this.Width;
+                this.Left = Screen.FromControl(this).WorkingArea.Width - 10 - this.Width;
                 this.Top = Screen.FromControl(this).WorkingArea.Height - 10 - this.Height;
                 this.Activate();
 
@@ -393,7 +378,6 @@ namespace GHelper
             else
             {
                 aTimer.Enabled = false;
-                Program.hwmonitor.StopReading();
             }
         }
 
@@ -435,7 +419,11 @@ namespace GHelper
             if (fans != null && fans.Text != "")
                 fans.LoadFans();
 
-        }
+            if (notify) {
+                Program.toast.RunToast(perfName);
+            }
+
+}
 
 
         public void CyclePerformanceMode()

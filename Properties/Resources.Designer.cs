@@ -83,6 +83,16 @@ namespace GHelper.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap icons8_fan_head_96 {
+            get {
+                object obj = ResourceManager.GetObject("icons8-fan-head-96", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap icons8_keyboard_48 {
             get {
                 object obj = ResourceManager.GetObject("icons8-keyboard-48", resourceCulture);

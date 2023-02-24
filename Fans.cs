@@ -18,7 +18,7 @@ namespace GHelper
 
             if (device == 1)
                 title = "GPU Fan Profile";
-            else 
+            else
                 title = "CPU Fan Profile";
 
             if (Program.settingsForm.perfName.Length > 0)
@@ -34,7 +34,9 @@ namespace GHelper
             chart.ChartAreas[0].AxisX.Interval = 10;
             chart.ChartAreas[0].AxisY.Minimum = 0;
             chart.ChartAreas[0].AxisY.Maximum = 100;
-            chart.Legends[0].Enabled = false;
+
+            if (chart.Legends.Count > 0)
+                chart.Legends[0].Enabled = false;
 
         }
 
@@ -74,7 +76,7 @@ namespace GHelper
         {
 
             SetChart(chartCPU, 0);
-            SetChart(chartGPU, 0);
+            SetChart(chartGPU, 1);
 
             LoadProfile(seriesCPU, 0);
             LoadProfile(seriesGPU, 1);

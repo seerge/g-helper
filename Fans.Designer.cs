@@ -29,11 +29,7 @@
         private void InitializeComponent()
         {
             System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
             System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
             chartCPU = new System.Windows.Forms.DataVisualization.Charting.Chart();
             buttonApply = new Button();
             buttonReset = new Button();
@@ -46,14 +42,8 @@
             // 
             chartArea1.Name = "ChartArea1";
             chartCPU.ChartAreas.Add(chartArea1);
-            legend1.Name = "Legend1";
-            chartCPU.Legends.Add(legend1);
             chartCPU.Location = new Point(16, 13);
             chartCPU.Name = "chartCPU";
-            series1.ChartArea = "ChartArea1";
-            series1.Legend = "Legend1";
-            series1.Name = "Series1";
-            chartCPU.Series.Add(series1);
             chartCPU.Size = new Size(900, 446);
             chartCPU.TabIndex = 0;
             chartCPU.Text = "chartCPU";
@@ -80,14 +70,8 @@
             // 
             chartArea2.Name = "ChartArea1";
             chartGPU.ChartAreas.Add(chartArea2);
-            legend2.Name = "Legend1";
-            chartGPU.Legends.Add(legend2);
             chartGPU.Location = new Point(16, 477);
             chartGPU.Name = "chartGPU";
-            series2.ChartArea = "ChartArea1";
-            series2.Legend = "Legend1";
-            series2.Name = "Series1";
-            chartGPU.Series.Add(series2);
             chartGPU.Size = new Size(900, 448);
             chartGPU.TabIndex = 3;
             chartGPU.Text = "chart1";
