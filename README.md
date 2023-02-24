@@ -59,4 +59,8 @@ Settings file is storer at %AppData%\GHelper
 P.S.: It's not recommended to use app in combination with Armory Crate, cause they adjust same settings.
 Please keep in mind, that if you also run MyASUS app periodically it will also try to adjust same battery charge settings
 
+------------------
+
+Debloating helps to save your battery and keep laptop a bit cooler
+
 ![Helps to save your battery](https://raw.githubusercontent.com/seerge/g-helper/main/screenshots/screen-5w.png)
