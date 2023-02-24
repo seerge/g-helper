@@ -345,7 +345,7 @@ namespace GHelper
             if (HardwareMonitor.cpuTemp > 0)
                 cpuTemp = ": " + Math.Round((decimal)HardwareMonitor.cpuTemp).ToString() + "°C - ";
 
-            if (HardwareMonitor.batteryDischarge > 0)
+            if (HardwareMonitor.batteryDischarge > 1)
                 battery = "Discharging: " + Math.Round((decimal)HardwareMonitor.batteryDischarge, 1).ToString() + "W";
 
             Program.settingsForm.BeginInvoke(delegate

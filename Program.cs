@@ -202,8 +202,8 @@ namespace GHelper
                 case 88:  // Plugged
                     settingsForm.BeginInvoke(delegate
                     {
-                        settingsForm.AutoGPUMode(1);
                         settingsForm.AutoScreen(1);
+                        settingsForm.AutoGPUMode(1);
                     });
                     return;
 
