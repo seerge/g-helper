@@ -4,9 +4,9 @@ A tiny system tray utility that allows you set performance and GPU profiles for 
 
 Designed for Asus Zephyrus G14 2022 (with AMD Radeon iGPU and dGPU). But could and should potentially work for G14 of 2021 and 2020, G15, X FLOW, and other ROG models.
 
-### [Download latest release](https://github.com/seerge/g14-helper/releases)
+### [Download latest release](https://github.com/seerge/g-helper/releases)
 
-![Screenshot](https://github.com/seerge/g14-helper/blob/main/screenshot.png)
+![Screenshot](https://github.com/seerge/g-helper/blob/main/screenshot.png)
 
 ## Performance Profile switching 
 
@@ -40,7 +40,7 @@ Profiles are **same** as in Armory Crate, including default fan curves
 
 ## How to install
 
-1. Download latest release from https://github.com/seerge/g14-helper/releases
+1. Download latest release from https://github.com/seerge/g-helper/releases
 2. Unzip to a folder of your choice
 3. Run **GHelper.exe**
 
