@@ -420,7 +420,13 @@ namespace GHelper
                 fans.LoadFans();
 
             if (notify) {
-                Program.toast.RunToast(perfName);
+                try
+                {
+                    Program.toast.RunToast(perfName);
+                } catch
+                {
+                    Debug.WriteLine("Toast error");
+                }
             }
 
 }
