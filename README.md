@@ -29,7 +29,7 @@ Profiles are **same** as in Armory Crate, including default fan curves
 2. Balanced (balanced fans, 100W PPT total, up to 45W PPT to CPU)
 3. Turbo (intense fans, 125W PPT total, up to 80W PPT to CPU) 
 
-* PPTs are shown for G14 2022, for other models PPTs will be different as they are set in bios.
+PPTs are shown for G14 2022, for other models PPTs will be different as they are set in bios.
 
 ## GPU Modes
 
