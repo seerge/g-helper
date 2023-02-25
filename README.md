@@ -17,7 +17,7 @@ Designed and developer for Asus Zephyrus G14 2022 (with AMD Radeon iGPU and dGPU
 
 To keep autoswitching and hotkeys work app needs to stay in running in tray. It doesn't consume any resources. 
 
-I also recommend to keep "Asus Optimization Service" running , as it keeps basic laptop hotkeys such as screen or keyboard brightness adjustment working.
+I also recommend to keep "Asus Optimization Service" running , as it keeps basic laptop hotkeys such as screen or keyboard brightness adjustment working. If you have (or had) MyASUS app installed, that service is most probably still up an running even after MyASUS uninstall. 
 
 ### [Download latest release](https://github.com/seerge/g-helper/releases)
 
