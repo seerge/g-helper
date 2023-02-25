@@ -100,7 +100,7 @@ public class HardwareMonitor
             ct.Dispose();
 
             var cb = new PerformanceCounter("Power Meter", "Power", "Power Meter (0)", true);
-            batteryDischarge = ct.NextValue() / 1000;
+            batteryDischarge = cb.NextValue() / 1000;
             cb.Dispose();
         }
         catch
