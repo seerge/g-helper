@@ -4,7 +4,7 @@ A small utility that allows you do almost everyting you could do with Armory Cra
 
 1. Switch between default **Performance modes** - Silent / Balanced / Turbo and apply default fan curves
 2. Switch between Eco / Standard or Ultimate **GPU modes**
-3. Change laptop screen refresh rate - 60hz or your maximum (120hh, 144hz, etc depending on the model) with display overdrive (OD)
+3. Change laptop screen refresh rate - 60hz or your maximum (120hz, 144hz, etc depending on the model) with display overdrive (OD)
 4. View default fan profiles for every mode and apply custom ones
 5. Control keyboard backlit animation and colors
 6. Set battery charge limit to preserve battery
@@ -58,3 +58,9 @@ Settings file is storer at %AppData%\GHelper
 
 P.S.: It's not recommended to use app in combination with Armory Crate, cause they adjust same settings.
 Please keep in mind, that if you also run MyASUS app periodically it will also try to adjust same battery charge settings
+
+------------------
+
+Debloating helps to save your battery and keep laptop a bit cooler
+
+![Helps to save your battery](https://raw.githubusercontent.com/seerge/g-helper/main/screenshots/screen-5w.png)
