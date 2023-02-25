@@ -335,9 +335,10 @@ namespace GHelper
         private static void RefreshSensors()
         {
             string cpuFan = " Fan: " + Math.Round(Program.wmi.DeviceGet(ASUSWmi.CPU_Fan) / 0.6).ToString() + "%";
-            string gpuFan = " Fan: " + Math.Round(Program.wmi.DeviceGet(ASUSWmi.GPU_Fan) / 0.6) + "%";
+            string gpuFan = " Fan: " + Math.Round(Program.wmi.DeviceGet(ASUSWmi.GPU_Fan) / 0.6).ToString() + "%";
 
             string cpuTemp = "";
+            string gpuTemp = "";
             string battery = "";
 
             HardwareMonitor.ReadSensors();
@@ -351,6 +352,7 @@ namespace GHelper
             Program.settingsForm.BeginInvoke(delegate
             {
                 Program.settingsForm.labelCPUFan.Text = "CPU" + cpuTemp + cpuFan;
+                Program.settingsForm.labelGPUFan.Text = "GPU" + gpuTemp + gpuFan;
                 Program.settingsForm.labelBattery.Text = battery;
             });
         }
