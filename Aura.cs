@@ -12,9 +12,9 @@ public class Aura
     public const int Rainbow = 3;
     public const int Dingding = 10;
 
-    public const int SpeedSlow = 0;
-    public const int SpeedMedium = 1;
-    public const int SpeedHigh = 2;
+    public const int SpeedSlow = 0xe1;
+    public const int SpeedMedium = 0xeb;
+    public const int SpeedHigh = 0xf5;
 
     public static int Mode = Static;
     public static Color Color1 = Color.White;

@@ -35,6 +35,9 @@ namespace GHelper
             chart.ChartAreas[0].AxisY.Minimum = 0;
             chart.ChartAreas[0].AxisY.Maximum = 100;
 
+            chart.ChartAreas[0].AxisX.Interval = 10;
+            chart.ChartAreas[0].AxisY.Interval = 10;
+
             if (chart.Legends.Count > 0)
                 chart.Legends[0].Enabled = false;
 
@@ -43,7 +46,7 @@ namespace GHelper
         private void Fans_Shown(object? sender, EventArgs e)
         {
             Top = Program.settingsForm.Top;
-            Left = Program.settingsForm.Left - Width - 10;
+            Left = Program.settingsForm.Left - Width - 5;
         }
 
         public Fans()
@@ -194,18 +197,33 @@ namespace GHelper
 
                 if (curPoint != null)
                 {
+
                     Series s = hit.Series;
-                    double dx = ax.PixelPositionToValue(e.X);
-                    double dy = ay.PixelPositionToValue(e.Y);
+                    double dx, dy, dymin;
 
-                    if (dx < 0) dx = 0;
-                    if (dx > 100) dx = 100;
+                    try
+                    {
+                        dx = ax.PixelPositionToValue(e.X);
+                        dy = ay.PixelPositionToValue(e.Y);
 
-                    if (dy < 0) dy = 0;
-                    if (dy > 100) dy = 100;
+                        if (dx < 20) dx = 20;
+                        if (dx > 100) dx = 100;
 
-                    curPoint.XValue = dx;
-                    curPoint.YValues[0] = dy;
+                        if (dy < 0) dy = 0;
+                        if (dy > 100) dy = 100;
+
+                        dymin = (dx - 60) * 1.2;
+
+                        if (dy < dymin) dy = dymin;
+
+                        curPoint.XValue = dx;
+                        curPoint.YValues[0] = dy;
+
+                    }
+                    catch
+                    {
+                        Debug.WriteLine(e.Y);
+                    }
                 }
             }
         }

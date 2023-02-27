@@ -273,22 +273,7 @@ namespace OSD
     }
 
     #region #  Win32  #
-    internal struct PAINTSTRUCT
-    {
-        public IntPtr hdc;
-        public int fErase;
-        public Rectangle rcPaint;
-        public int fRestore;
-        public int fIncUpdate;
-        public int Reserved1;
-        public int Reserved2;
-        public int Reserved3;
-        public int Reserved4;
-        public int Reserved5;
-        public int Reserved6;
-        public int Reserved7;
-        public int Reserved8;
-    }
+
     [StructLayout(LayoutKind.Sequential)]
     internal struct POINT
     {
@@ -362,15 +347,11 @@ namespace OSD
         [DllImport("User32.dll", CharSet = CharSet.Auto)]
         internal static extern bool AnimateWindow(IntPtr hWnd, uint dwTime, uint dwFlags);
         [DllImport("User32.dll", CharSet = CharSet.Auto)]
-        internal static extern IntPtr BeginPaint(IntPtr hWnd, ref PAINTSTRUCT ps);
-        [DllImport("User32.dll", CharSet = CharSet.Auto)]
         internal static extern bool ClientToScreen(IntPtr hWnd, ref POINT pt);
         [DllImport("User32.dll", CharSet = CharSet.Auto)]
         internal static extern bool DispatchMessage(ref MSG msg);
         [DllImport("User32.dll", CharSet = CharSet.Auto)]
         internal static extern bool DrawFocusRect(IntPtr hWnd, ref RECT rect);
-        [DllImport("User32.dll", CharSet = CharSet.Auto)]
-        internal static extern bool EndPaint(IntPtr hWnd, ref PAINTSTRUCT ps);
         [DllImport("User32.dll", CharSet = CharSet.Auto)]
         internal static extern IntPtr GetDC(IntPtr hWnd);
         [DllImport("User32.dll", CharSet = CharSet.Auto)]

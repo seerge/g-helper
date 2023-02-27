@@ -44,13 +44,13 @@
             chartCPU.ChartAreas.Add(chartArea1);
             chartCPU.Location = new Point(16, 13);
             chartCPU.Name = "chartCPU";
-            chartCPU.Size = new Size(900, 446);
+            chartCPU.Size = new Size(900, 480);
             chartCPU.TabIndex = 0;
             chartCPU.Text = "chartCPU";
             // 
             // buttonApply
             // 
-            buttonApply.Location = new Point(662, 944);
+            buttonApply.Location = new Point(661, 1016);
             buttonApply.Name = "buttonApply";
             buttonApply.Size = new Size(254, 46);
             buttonApply.TabIndex = 1;
@@ -59,7 +59,7 @@
             // 
             // buttonReset
             // 
-            buttonReset.Location = new Point(402, 944);
+            buttonReset.Location = new Point(16, 1016);
             buttonReset.Name = "buttonReset";
             buttonReset.Size = new Size(254, 46);
             buttonReset.TabIndex = 2;
@@ -70,9 +70,9 @@
             // 
             chartArea2.Name = "ChartArea1";
             chartGPU.ChartAreas.Add(chartArea2);
-            chartGPU.Location = new Point(16, 477);
+            chartGPU.Location = new Point(16, 513);
             chartGPU.Name = "chartGPU";
-            chartGPU.Size = new Size(900, 448);
+            chartGPU.Size = new Size(900, 480);
             chartGPU.TabIndex = 3;
             chartGPU.Text = "chart1";
             // 
@@ -80,7 +80,7 @@
             // 
             AutoScaleDimensions = new SizeF(13F, 32F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(940, 1020);
+            ClientSize = new Size(940, 1089);
             Controls.Add(chartGPU);
             Controls.Add(buttonReset);
             Controls.Add(buttonApply);

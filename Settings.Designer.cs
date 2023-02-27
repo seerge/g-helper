@@ -62,6 +62,10 @@
             buttonKeyboardColor = new Button();
             labelBattery = new Label();
             buttonFans = new Button();
+            buttonKeyboard = new Button();
+            pictureColor = new PictureBox();
+            pictureColor2 = new PictureBox();
+            labelVersion = new Label();
             ((System.ComponentModel.ISupportInitialize)trackBattery).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBattery).BeginInit();
             tableGPU.SuspendLayout();
@@ -71,12 +75,14 @@
             ((System.ComponentModel.ISupportInitialize)pictureScreen).BeginInit();
             tableScreen.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)pictureColor).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)pictureColor2).BeginInit();
             SuspendLayout();
             // 
             // checkStartup
             // 
             checkStartup.AutoSize = true;
-            checkStartup.Location = new Point(40, 1016);
+            checkStartup.Location = new Point(33, 1016);
             checkStartup.Margin = new Padding(4, 2, 4, 2);
             checkStartup.Name = "checkStartup";
             checkStartup.Size = new Size(206, 36);
@@ -105,7 +111,7 @@
             // 
             labelBatteryTitle.AutoSize = true;
             labelBatteryTitle.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            labelBatteryTitle.Location = new Point(76, 870);
+            labelBatteryTitle.Location = new Point(78, 870);
             labelBatteryTitle.Margin = new Padding(4, 0, 4, 0);
             labelBatteryTitle.Name = "labelBatteryTitle";
             labelBatteryTitle.Size = new Size(248, 32);
@@ -116,7 +122,7 @@
             // 
             pictureBattery.BackgroundImage = (Image)resources.GetObject("pictureBattery.BackgroundImage");
             pictureBattery.BackgroundImageLayout = ImageLayout.Zoom;
-            pictureBattery.Location = new Point(32, 868);
+            pictureBattery.Location = new Point(36, 868);
             pictureBattery.Margin = new Padding(4, 2, 4, 2);
             pictureBattery.Name = "pictureBattery";
             pictureBattery.Size = new Size(36, 38);
@@ -199,7 +205,7 @@
             // 
             labelGPU.AutoSize = true;
             labelGPU.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            labelGPU.Location = new Point(76, 264);
+            labelGPU.Location = new Point(78, 264);
             labelGPU.Margin = new Padding(4, 0, 4, 0);
             labelGPU.Name = "labelGPU";
             labelGPU.Size = new Size(136, 32);
@@ -210,7 +216,7 @@
             // 
             pictureGPU.BackgroundImage = (Image)resources.GetObject("pictureGPU.BackgroundImage");
             pictureGPU.BackgroundImageLayout = ImageLayout.Zoom;
-            pictureGPU.Location = new Point(32, 262);
+            pictureGPU.Location = new Point(36, 262);
             pictureGPU.Margin = new Padding(4, 2, 4, 2);
             pictureGPU.Name = "pictureGPU";
             pictureGPU.Size = new Size(36, 38);
@@ -297,7 +303,7 @@
             picturePerf.BackgroundImage = (Image)resources.GetObject("picturePerf.BackgroundImage");
             picturePerf.BackgroundImageLayout = ImageLayout.Zoom;
             picturePerf.InitialImage = null;
-            picturePerf.Location = new Point(32, 36);
+            picturePerf.Location = new Point(36, 36);
             picturePerf.Margin = new Padding(4, 2, 4, 2);
             picturePerf.Name = "picturePerf";
             picturePerf.Size = new Size(36, 38);
@@ -308,7 +314,7 @@
             // 
             labelPerf.AutoSize = true;
             labelPerf.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            labelPerf.Location = new Point(76, 38);
+            labelPerf.Location = new Point(78, 38);
             labelPerf.Margin = new Padding(4, 0, 4, 0);
             labelPerf.Name = "labelPerf";
             labelPerf.Size = new Size(234, 32);
@@ -344,7 +350,7 @@
             // 
             pictureScreen.BackgroundImage = (Image)resources.GetObject("pictureScreen.BackgroundImage");
             pictureScreen.BackgroundImageLayout = ImageLayout.Zoom;
-            pictureScreen.Location = new Point(32, 496);
+            pictureScreen.Location = new Point(36, 496);
             pictureScreen.Margin = new Padding(4, 2, 4, 2);
             pictureScreen.Name = "pictureScreen";
             pictureScreen.Size = new Size(36, 38);
@@ -355,7 +361,7 @@
             // 
             labelSreen.AutoSize = true;
             labelSreen.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            labelSreen.Location = new Point(76, 496);
+            labelSreen.Location = new Point(78, 496);
             labelSreen.Margin = new Padding(4, 0, 4, 0);
             labelSreen.Name = "labelSreen";
             labelSreen.Size = new Size(176, 32);
@@ -439,7 +445,7 @@
             // 
             pictureBox1.BackgroundImage = Properties.Resources.icons8_keyboard_48;
             pictureBox1.BackgroundImageLayout = ImageLayout.Zoom;
-            pictureBox1.Location = new Point(32, 724);
+            pictureBox1.Location = new Point(36, 724);
             pictureBox1.Margin = new Padding(4, 2, 4, 2);
             pictureBox1.Name = "pictureBox1";
             pictureBox1.Size = new Size(36, 36);
@@ -450,7 +456,7 @@
             // 
             label1.AutoSize = true;
             label1.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            label1.Location = new Point(76, 724);
+            label1.Location = new Point(78, 724);
             label1.Margin = new Padding(4, 0, 4, 0);
             label1.Name = "label1";
             label1.Size = new Size(210, 32);
@@ -459,15 +465,14 @@
             // 
             // comboKeyboard
             // 
-            comboKeyboard.FlatStyle = FlatStyle.Flat;
-            comboKeyboard.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
+            comboKeyboard.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
             comboKeyboard.FormattingEnabled = true;
-            comboKeyboard.ItemHeight = 37;
+            comboKeyboard.ItemHeight = 32;
             comboKeyboard.Items.AddRange(new object[] { "Static", "Breathe", "Strobe", "Rainbow" });
-            comboKeyboard.Location = new Point(36, 777);
+            comboKeyboard.Location = new Point(32, 778);
             comboKeyboard.Margin = new Padding(0);
             comboKeyboard.Name = "comboKeyboard";
-            comboKeyboard.Size = new Size(200, 45);
+            comboKeyboard.Size = new Size(200, 40);
             comboKeyboard.TabIndex = 24;
             comboKeyboard.TabStop = false;
             // 
@@ -477,14 +482,13 @@
             buttonKeyboardColor.BackColor = SystemColors.ButtonHighlight;
             buttonKeyboardColor.FlatAppearance.BorderColor = Color.Red;
             buttonKeyboardColor.FlatAppearance.BorderSize = 2;
-            buttonKeyboardColor.FlatStyle = FlatStyle.Flat;
             buttonKeyboardColor.ForeColor = SystemColors.ControlText;
-            buttonKeyboardColor.Location = new Point(256, 775);
+            buttonKeyboardColor.Location = new Point(255, 774);
             buttonKeyboardColor.Margin = new Padding(0);
             buttonKeyboardColor.Name = "buttonKeyboardColor";
-            buttonKeyboardColor.Size = new Size(212, 50);
+            buttonKeyboardColor.Size = new Size(209, 48);
             buttonKeyboardColor.TabIndex = 25;
-            buttonKeyboardColor.Text = "Color";
+            buttonKeyboardColor.Text = "Color  ";
             buttonKeyboardColor.UseVisualStyleBackColor = false;
             // 
             // labelBattery
@@ -511,11 +515,55 @@
             buttonFans.Text = "Fan Profile";
             buttonFans.UseVisualStyleBackColor = false;
             // 
+            // buttonKeyboard
+            // 
+            buttonKeyboard.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            buttonKeyboard.BackColor = SystemColors.ButtonFace;
+            buttonKeyboard.FlatAppearance.BorderSize = 0;
+            buttonKeyboard.Location = new Point(480, 773);
+            buttonKeyboard.Margin = new Padding(4, 2, 4, 2);
+            buttonKeyboard.Name = "buttonKeyboard";
+            buttonKeyboard.Size = new Size(209, 48);
+            buttonKeyboard.TabIndex = 29;
+            buttonKeyboard.Text = "Extra";
+            buttonKeyboard.UseVisualStyleBackColor = false;
+            // 
+            // pictureColor
+            // 
+            pictureColor.Location = new Point(431, 789);
+            pictureColor.Name = "pictureColor";
+            pictureColor.Size = new Size(20, 20);
+            pictureColor.TabIndex = 30;
+            pictureColor.TabStop = false;
+            // 
+            // pictureColor2
+            // 
+            pictureColor2.Location = new Point(405, 789);
+            pictureColor2.Name = "pictureColor2";
+            pictureColor2.Size = new Size(20, 20);
+            pictureColor2.TabIndex = 31;
+            pictureColor2.TabStop = false;
+            // 
+            // labelVersion
+            // 
+            labelVersion.AutoSize = true;
+            labelVersion.Font = new Font("Segoe UI", 9F, FontStyle.Underline, GraphicsUnit.Point);
+            labelVersion.ForeColor = SystemColors.ControlDark;
+            labelVersion.Location = new Point(34, 966);
+            labelVersion.Name = "labelVersion";
+            labelVersion.Size = new Size(44, 32);
+            labelVersion.TabIndex = 32;
+            labelVersion.Text = "v.0";
+            // 
             // SettingsForm
             // 
             AutoScaleDimensions = new SizeF(192F, 192F);
             AutoScaleMode = AutoScaleMode.Dpi;
-            ClientSize = new Size(730, 1086);
+            ClientSize = new Size(730, 1089);
+            Controls.Add(labelVersion);
+            Controls.Add(pictureColor2);
+            Controls.Add(pictureColor);
+            Controls.Add(buttonKeyboard);
             Controls.Add(buttonFans);
             Controls.Add(labelBattery);
             Controls.Add(buttonKeyboardColor);
@@ -561,6 +609,8 @@
             ((System.ComponentModel.ISupportInitialize)pictureScreen).EndInit();
             tableScreen.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pictureColor).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pictureColor2).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -599,5 +649,9 @@
         private Button buttonKeyboardColor;
         private Label labelBattery;
         private Button buttonFans;
+        private Button buttonKeyboard;
+        private PictureBox pictureColor;
+        private PictureBox pictureColor2;
+        private Label labelVersion;
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
+using System.Reflection;
 using System.Timers;
-
+using System.Windows.Forms.DataVisualization.Charting;
 
 namespace GHelper
 {
@@ -17,9 +18,10 @@ namespace GHelper
 
         static System.Timers.Timer aTimer = default!;
 
-        public string perfName;
+        public string perfName = "Balanced";
 
         Fans fans;
+        Keyboard keyb;
 
         public SettingsForm()
         {
@@ -65,11 +67,54 @@ namespace GHelper
             buttonKeyboardColor.Click += ButtonKeyboardColor_Click;
 
             buttonFans.Click += ButtonFans_Click;
+            buttonKeyboard.Click += ButtonKeyboard_Click;
+
+            pictureColor.Click += PictureColor_Click;
+            pictureColor2.Click += PictureColor2_Click;
+
+            labelVersion.Text = "Version " + Assembly.GetExecutingAssembly().GetName().Version.ToString();
+            labelVersion.Click += LabelVersion_Click;
 
             SetTimer();
 
 
 
+        }
+
+        private void LabelVersion_Click(object? sender, EventArgs e)
+        {
+            Process.Start(new ProcessStartInfo("http://github.com/seerge/g-helper/releases") { UseShellExecute = true });
+        }
+
+        private void PictureColor2_Click(object? sender, EventArgs e)
+        {
+
+            ColorDialog colorDlg = new ColorDialog();
+            colorDlg.AllowFullOpen = false;
+            colorDlg.Color = pictureColor2.BackColor;
+
+            if (colorDlg.ShowDialog() == DialogResult.OK)
+            {
+                SetAuraColor(color2: colorDlg.Color);
+            }
+        }
+
+        private void PictureColor_Click(object? sender, EventArgs e)
+        {
+            buttonKeyboardColor.PerformClick();
+        }
+
+        private void ButtonKeyboard_Click(object? sender, EventArgs e)
+        {
+            if (keyb == null || keyb.Text == "")
+            {
+                keyb = new Keyboard();
+                keyb.Show();
+            }
+            else
+            {
+                keyb.Close();
+            }
         }
 
         private void ButtonFans_Click(object? sender, EventArgs e)
@@ -96,11 +141,11 @@ namespace GHelper
 
             ColorDialog colorDlg = new ColorDialog();
             colorDlg.AllowFullOpen = false;
-            colorDlg.Color = but.FlatAppearance.BorderColor;
+            colorDlg.Color = pictureColor.BackColor;
 
             if (colorDlg.ShowDialog() == DialogResult.OK)
             {
-                SetAuraColor(colorDlg.Color);
+                SetAuraColor(color1: colorDlg.Color);
             }
         }
 
@@ -108,9 +153,12 @@ namespace GHelper
         {
             int mode = Program.config.getConfig("aura_mode");
             int colorCode = Program.config.getConfig("aura_color");
+            int colorCode2 = Program.config.getConfig("aura_color2");
+
             int speed = Program.config.getConfig("aura_speed");
 
             Color color = Color.FromArgb(255, 255, 255);
+            Color color2 = Color.FromArgb(0, 0, 0);
 
             if (mode == -1)
                 mode = 0;
@@ -118,8 +166,10 @@ namespace GHelper
             if (colorCode != -1)
                 color = Color.FromArgb(colorCode);
 
+            if (colorCode2 != -1)
+                color2 = Color.FromArgb(colorCode2);
 
-            SetAuraColor(color, false);
+            SetAuraColor(color, color2, false);
             SetAuraMode(mode, false);
 
             Aura.Mode = mode;
@@ -127,15 +177,27 @@ namespace GHelper
 
         }
 
-        public void SetAuraColor(Color color, bool apply = true)
+        public void SetAuraColor(Color? color1 = null, Color? color2 = null, bool apply = true)
         {
-            Aura.Color1 = color;
-            Program.config.setConfig("aura_color", color.ToArgb());
+
+            if (color1 is not null)
+            {
+                Aura.Color1 = (Color)color1;
+                Program.config.setConfig("aura_color", Aura.Color1.ToArgb());
+
+            }
+
+            if (color2 is not null)
+            {
+                Aura.Color2 = (Color)color2;
+                Program.config.setConfig("aura_color2", Aura.Color2.ToArgb());
+            }
 
             if (apply)
                 Aura.ApplyAura();
 
-            buttonKeyboardColor.FlatAppearance.BorderColor = color;
+            pictureColor.BackColor = Aura.Color1;
+            pictureColor2.BackColor = Aura.Color2;
         }
 
         public void SetAuraMode(int mode = 0, bool apply = true)
@@ -145,7 +207,10 @@ namespace GHelper
 
             if (mode > 3) mode = 0;
 
+            pictureColor2.Visible = (mode == Aura.Breathe);
+
             if (Aura.Mode == mode) return; // same mode
+
 
             Aura.Mode = mode;
             Program.config.setConfig("aura_mode", mode);
@@ -181,7 +246,7 @@ namespace GHelper
 
             CheckBox chk = (CheckBox)sender;
             if (chk.Checked)
-                NativeMethods.SetCPUBoost(3);
+                NativeMethods.SetCPUBoost(2);
             else
                 NativeMethods.SetCPUBoost(0);
         }
@@ -421,17 +486,19 @@ namespace GHelper
             if (fans != null && fans.Text != "")
                 fans.LoadFans();
 
-            if (notify) {
+            if (notify)
+            {
                 try
                 {
                     Program.toast.RunToast(perfName);
-                } catch
+                }
+                catch
                 {
                     Debug.WriteLine("Toast error");
                 }
             }
 
-}
+        }
 
 
         public void CyclePerformanceMode()

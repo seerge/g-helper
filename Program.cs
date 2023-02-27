@@ -1,8 +1,7 @@
+using System.Reflection;
 using Microsoft.Win32;
 using System.Diagnostics;
 using System.Management;
-using System.Runtime.InteropServices;
-using System.Security.Principal;
 using System.Text.Json;
 
 
@@ -124,7 +123,7 @@ namespace GHelper
 
         public static ASUSWmi wmi = new ASUSWmi();
         public static AppConfig config = new AppConfig();
-        
+
         public static SettingsForm settingsForm = new SettingsForm();
         public static ToastForm toast = new ToastForm();
 
@@ -162,7 +161,29 @@ namespace GHelper
 
         private static void SystemEvents_PowerModeChanged(object sender, PowerModeChangedEventArgs e)
         {
+            bool isPlugged = (System.Windows.Forms.SystemInformation.PowerStatus.PowerLineStatus == PowerLineStatus.Online);
+            settingsForm.AutoGPUMode(isPlugged ? 1 : 0);
+            settingsForm.AutoScreen(isPlugged ? 1 : 0);
+
             settingsForm.SetBatteryChargeLimit(config.getConfig("charge_limit"));
+        }
+
+
+        static void LaunchProcess(string fileName = "")
+        {
+            ProcessStartInfo start = new ProcessStartInfo();
+            start.FileName = fileName;
+            start.WindowStyle = ProcessWindowStyle.Hidden;
+            start.CreateNoWindow = true;
+            try
+            {
+                Process proc = Process.Start(start);
+            } catch 
+            {
+                Debug.WriteLine("Failed to run " + fileName);
+            }
+
+
         }
 
         static void WatcherEventArrived(object sender, EventArrivedEventArgs e)
@@ -177,14 +198,39 @@ namespace GHelper
 
             switch (EventID)
             {
-                case 56:    // Rog button
-                case 174:   // FN+F5
-
-                    settingsForm.BeginInvoke(delegate
+                case 124:    // M3
+                    switch (config.getConfig("m3"))
                     {
-                        settingsForm.CyclePerformanceMode();
-                    });
-
+                        case 1:
+                            NativeMethods.KeyPress(NativeMethods.VK_MEDIA_PLAY_PAUSE);
+                            break;
+                        case 2:
+                            settingsForm.BeginInvoke(settingsForm.CycleAuraMode);
+                            break;
+                        case 3:
+                            LaunchProcess(config.getConfigString("m3_custom"));
+                            break;
+                        default:
+                            NativeMethods.KeyPress(NativeMethods.VK_VOLUME_MUTE);
+                            break;
+                    }
+                    return;
+                case 56:    // M4 / Rog button
+                    switch (config.getConfig("m4"))
+                    {
+                        case 1:
+                            settingsForm.BeginInvoke(SettingsToggle);
+                            break;
+                        case 2:
+                            LaunchProcess(config.getConfigString("m4_custom"));
+                            break;
+                        default:
+                            settingsForm.BeginInvoke(settingsForm.CyclePerformanceMode);
+                            break;
+                    }
+                    return;
+                case 174:   // FN+F5
+                    settingsForm.BeginInvoke(settingsForm.CyclePerformanceMode);
                     return;
                 case 179:   // FN+F4
                     settingsForm.BeginInvoke(delegate
@@ -193,18 +239,22 @@ namespace GHelper
                     });
                     return;
                 case 87:  // Battery
+                    /*
                     settingsForm.BeginInvoke(delegate
                     {
                         settingsForm.AutoGPUMode(0);
                         settingsForm.AutoScreen(0);
                     });
+                    */
                     return;
                 case 88:  // Plugged
+                    /*
                     settingsForm.BeginInvoke(delegate
                     {
                         settingsForm.AutoScreen(1);
                         settingsForm.AutoGPUMode(1);
                     });
+                    */
                     return;
 
             }
@@ -212,19 +262,22 @@ namespace GHelper
 
         }
 
+        static void SettingsToggle()
+        {
+            if (settingsForm.Visible)
+                settingsForm.Hide();
+            else
+            {
+                settingsForm.Show();
+                settingsForm.Activate();
+            }
+        }
+
         static void TrayIcon_MouseClick(object? sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left || e.Button == MouseButtons.Right)
             {
-                if (settingsForm.Visible)
-                    settingsForm.Hide();
-                else
-                {
-                    settingsForm.Show();
-                    settingsForm.Activate();
-                }
-
-                trayIcon.Icon = trayIcon.Icon; // refreshing icon as it get's blurred when screen resolution changes
+                SettingsToggle();
             }
         }
 
