@@ -11,7 +11,8 @@ A small utility that allows you do almost everyting you could do with Armory Cra
 7. Monitor CPU temperature, fan speeds and battery discharge rate
 8. **Automatically switch to Eco(iGPU)/60hz on battery** and back to Standard(GPU)/120hz modes when plugged
 9. Support for M4 key / FN+F5 to cycle through performance modes (with OSD notification) and FN+F4 to cycle through keeyboard animation modes
-10. Turn cpu turbo boost on/off with one checkbox to keep temps cooler
+10. Basic keybindings for M3 amd M4 keys
+11. Turn cpu turbo boost on/off with one checkbox to keep temps cooler
 
 Designed and developer for Asus Zephyrus G14 2022 (with AMD Radeon iGPU and dGPU). But could and should potentially work for G14 of 2021 and 2020, G15, X FLOW, and other ROG models for relevant and supported features.
 
@@ -42,7 +43,6 @@ PPTs are shown for G14 2022, for other models PPTs will be different as they are
 ## Things still missing
 
 1. Anime matrix control
-2. Custom bindings for M1-M3 keys
 
 ## How to install
 
