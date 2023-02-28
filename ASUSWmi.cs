@@ -25,6 +25,9 @@ public class ASUSWmi
     public const uint DevsCPUFanCurve = 0x00110024;
     public const uint DevsGPUFanCurve = 0x00110025;
 
+    public const int PPT_Total = 0x001200A0;
+    public const int PPT_CPU = 0x001200B0;
+
     public const int PerformanceBalanced = 0;
     public const int PerformanceTurbo = 1;
     public const int PerformanceSilent = 2;

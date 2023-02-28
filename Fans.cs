@@ -11,6 +11,14 @@ namespace GHelper
         Series seriesCPU;
         Series seriesGPU;
 
+        const int MaxTotal = 150;
+        const int MinTotal = 15;
+        const int DefaultTotal = 125;
+
+        const int MaxCPU = 90;
+        const int MinCPU = 15;
+        const int DefaultCPU = 80;
+
         void SetChart(Chart chart, int device)
         {
 
@@ -74,8 +82,83 @@ namespace GHelper
             buttonReset.Click += ButtonReset_Click;
             buttonApply.Click += ButtonApply_Click;
 
+            trackTotal.Maximum = MaxTotal;
+            trackTotal.Minimum = MinTotal;
+
+            trackCPU.Maximum = MaxCPU;
+            trackCPU.Minimum = MinCPU;
+
+            trackCPU.Scroll += TrackCPU_Scroll;
+            trackTotal.Scroll += TrackTotal_Scroll;
+
+            buttonApplyPower.Click += ButtonApplyPower_Click;
+
+            labelInfo.MaximumSize = new Size(300, 0);
+            labelInfo.Text = "Power Limits (PPT) is experimental feature.\n\nValues will be applied only after you click 'Apply' and reset after performance mode change.\n\nUse carefully and on your own risk!";
+
+            VisualisePower(true);
+
             Shown += Fans_Shown;
 
+        }
+
+        private void ButtonApplyPower_Click(object? sender, EventArgs e)
+        {
+            int limit_total = trackTotal.Value;
+            int limit_cpu = trackCPU.Value;
+
+            Program.config.setConfig("limit_total", limit_total);
+            Program.config.setConfig("limit_cpu", limit_cpu);
+
+            Program.wmi.DeviceSet(ASUSWmi.PPT_Total, limit_total);
+            Program.wmi.DeviceSet(ASUSWmi.PPT_CPU, limit_cpu);
+
+        }
+
+        public void VisualisePower(bool init = false)
+        {
+
+            int limit_total;
+            int limit_cpu;
+
+            if (init)
+            {
+                limit_total = Program.config.getConfig("limit_total");
+                limit_cpu = Program.config.getConfig("limit_cpu");
+            }
+            else
+            {
+                limit_total = trackTotal.Value;
+                limit_cpu = trackCPU.Value;
+            }
+
+            if (limit_total < 0) limit_total = DefaultTotal;
+            if (limit_total > MaxTotal) limit_total = MaxTotal;
+            if (limit_total < MinTotal) limit_total = MinTotal;
+
+            if (limit_cpu < 0) limit_cpu = DefaultCPU;
+            if (limit_cpu > MaxCPU) limit_cpu = MaxCPU;
+            if (limit_cpu < MinCPU) limit_cpu = MinCPU;
+
+            if (limit_cpu > limit_total) limit_cpu = limit_total;
+
+            trackTotal.Value = limit_total;
+            trackCPU.Value = limit_cpu;
+
+            labelTotal.Text = trackTotal.Value.ToString() + "W";
+            labelCPU.Text = trackCPU.Value.ToString() + "W";
+
+            pictureFine.Visible = (limit_cpu > 85 || limit_total > 145);
+        }
+
+        private void TrackTotal_Scroll(object? sender, EventArgs e)
+        {
+            VisualisePower();
+        }
+
+        private void TrackCPU_Scroll(object? sender, EventArgs e)
+        {
+            VisualisePower();
         }
 
         public void LoadFans()

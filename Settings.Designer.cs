@@ -512,7 +512,7 @@
             buttonFans.Name = "buttonFans";
             buttonFans.Size = new Size(210, 48);
             buttonFans.TabIndex = 28;
-            buttonFans.Text = "Fan Profile";
+            buttonFans.Text = "Fans and Power";
             buttonFans.UseVisualStyleBackColor = false;
             // 
             // buttonKeyboard
