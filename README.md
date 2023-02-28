@@ -2,6 +2,8 @@
 
 A small utility that allows you do almost everyting you could do with Armory Crate but without extra bloat and unnecessary services.
 
+NEW! Experimental feature: **Set Power limits (PPT) - Total and CPU**. 
+
 1. Switch between default **Performance modes** - Silent / Balanced / Turbo and apply default fan curves
 2. Switch between Eco / Standard or Ultimate **GPU modes**
 3. Change laptop screen refresh rate - 60hz or your maximum (120hz, 144hz, etc depending on the model) with display overdrive (OD)
