@@ -29,6 +29,9 @@ namespace GHelper
             else
                 chart.Titles.Add(title);
 
+            chart.ChartAreas[0].AxisX.MajorGrid.LineColor = Color.LightGray;
+            chart.ChartAreas[0].AxisY.MajorGrid.LineColor = Color.LightGray;
+
             chart.ChartAreas[0].AxisX.Minimum = 10;
             chart.ChartAreas[0].AxisX.Maximum = 100;
             chart.ChartAreas[0].AxisX.Interval = 10;
@@ -125,6 +128,33 @@ namespace GHelper
 
             if (def == 1 || curve.Length != 16)
                 curve = Program.wmi.GetFanCurve(device, mode);
+
+            if (curve.All(singleByte => singleByte == 0))
+            {
+                switch (mode)
+                {
+                    case 1:
+                        if (device == 1)
+                            curve = StringToBytes("14-3F-44-48-4C-50-54-62-16-1F-26-2D-39-47-55-5F");
+                        else
+                            curve = StringToBytes("14-3F-44-48-4C-50-54-62-11-1A-22-29-34-43-51-5A");
+                        break;
+                    case 2:
+                        if (device == 1)
+                            curve = StringToBytes("3C-41-42-46-47-4B-4C-62-08-11-11-1D-1D-26-26-2D");
+                        else
+                            curve = StringToBytes("3C-41-42-46-47-4B-4C-62-03-0C-0C-16-16-22-22-29");
+                        break;
+                    default:
+                        if (device == 1)
+                            curve = StringToBytes("3A-3D-40-44-48-4D-51-62-0C-16-1D-1F-26-2D-34-4A");
+                        else
+                            curve = StringToBytes("3A-3D-40-44-48-4D-51-62-08-11-16-1A-22-29-30-45");
+                        break;
+                }
+
+            }
+
 
 
             //Debug.WriteLine(BitConverter.ToString(curve));
