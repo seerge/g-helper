@@ -169,6 +169,11 @@ public class ASUSWmi
     public void SetFanCurve(int device, byte[] curve)
     {
 
+        if (curve.Length != 16) return;
+        if (curve.All(singleByte => singleByte == 0)) return;
+
+        Debug.WriteLine(BitConverter.ToString(curve));
+
         if (device == 1) 
             DeviceSet(DevsGPUFanCurve, curve);
         else 

@@ -45,6 +45,7 @@
             trackCPU = new TrackBar();
             trackTotal = new TrackBar();
             buttonApplyPower = new Button();
+            checkAuto = new CheckBox();
             ((System.ComponentModel.ISupportInitialize)chartCPU).BeginInit();
             ((System.ComponentModel.ISupportInitialize)chartGPU).BeginInit();
             groupBox1.SuspendLayout();
@@ -74,7 +75,7 @@
             // 
             // buttonReset
             // 
-            buttonReset.Location = new Point(619, 1016);
+            buttonReset.Location = new Point(362, 1016);
             buttonReset.Name = "buttonReset";
             buttonReset.Size = new Size(254, 46);
             buttonReset.TabIndex = 2;
@@ -104,6 +105,7 @@
             groupBox1.Controls.Add(trackTotal);
             groupBox1.Location = new Point(12, 12);
             groupBox1.Name = "groupBox1";
+            groupBox1.Padding = new Padding(5);
             groupBox1.Size = new Size(330, 979);
             groupBox1.TabIndex = 4;
             groupBox1.TabStop = false;
@@ -113,7 +115,7 @@
             // 
             labelApplied.AutoSize = true;
             labelApplied.ForeColor = Color.Tomato;
-            labelApplied.Location = new Point(12, 37);
+            labelApplied.Location = new Point(14, 39);
             labelApplied.Name = "labelApplied";
             labelApplied.Size = new Size(143, 32);
             labelApplied.TabIndex = 13;
@@ -121,11 +123,12 @@
             // 
             // pictureFine
             // 
+            pictureFine.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             pictureFine.BackgroundImage = Properties.Resources.everything_is_fine_itsfine;
             pictureFine.BackgroundImageLayout = ImageLayout.Zoom;
-            pictureFine.Location = new Point(12, 725);
+            pictureFine.Location = new Point(9, 730);
             pictureFine.Name = "pictureFine";
-            pictureFine.Size = new Size(304, 240);
+            pictureFine.Size = new Size(311, 240);
             pictureFine.TabIndex = 12;
             pictureFine.TabStop = false;
             pictureFine.Visible = false;
@@ -133,7 +136,8 @@
             // labelInfo
             // 
             labelInfo.AutoSize = true;
-            labelInfo.Location = new Point(22, 644);
+            labelInfo.Dock = DockStyle.Bottom;
+            labelInfo.Location = new Point(5, 942);
             labelInfo.Name = "labelInfo";
             labelInfo.Size = new Size(65, 32);
             labelInfo.TabIndex = 11;
@@ -143,7 +147,7 @@
             // 
             labelCPU.AutoSize = true;
             labelCPU.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            labelCPU.Location = new Point(195, 123);
+            labelCPU.Location = new Point(197, 125);
             labelCPU.Name = "labelCPU";
             labelCPU.Size = new Size(61, 32);
             labelCPU.TabIndex = 10;
@@ -154,7 +158,7 @@
             // 
             labelTotal.AutoSize = true;
             labelTotal.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            labelTotal.Location = new Point(37, 123);
+            labelTotal.Location = new Point(39, 125);
             labelTotal.Name = "labelTotal";
             labelTotal.Size = new Size(70, 32);
             labelTotal.TabIndex = 9;
@@ -164,7 +168,7 @@
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(198, 89);
+            label2.Location = new Point(200, 91);
             label2.Name = "label2";
             label2.Size = new Size(58, 32);
             label2.TabIndex = 8;
@@ -174,7 +178,7 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(39, 89);
+            label1.Location = new Point(41, 91);
             label1.Name = "label1";
             label1.Size = new Size(65, 32);
             label1.TabIndex = 7;
@@ -215,11 +219,22 @@
             buttonApplyPower.Text = "Apply Power Limits";
             buttonApplyPower.UseVisualStyleBackColor = true;
             // 
+            // checkAuto
+            // 
+            checkAuto.AutoSize = true;
+            checkAuto.Location = new Point(708, 1022);
+            checkAuto.Name = "checkAuto";
+            checkAuto.Size = new Size(165, 36);
+            checkAuto.TabIndex = 12;
+            checkAuto.Text = "Auto Apply";
+            checkAuto.UseVisualStyleBackColor = true;
+            // 
             // Fans
             // 
             AutoScaleDimensions = new SizeF(13F, 32F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1154, 1089);
+            Controls.Add(checkAuto);
             Controls.Add(buttonApplyPower);
             Controls.Add(groupBox1);
             Controls.Add(chartGPU);
@@ -243,6 +258,7 @@
             ((System.ComponentModel.ISupportInitialize)trackCPU).EndInit();
             ((System.ComponentModel.ISupportInitialize)trackTotal).EndInit();
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
@@ -262,5 +278,6 @@
         private Label labelInfo;
         private PictureBox pictureFine;
         private Label labelApplied;
+        private CheckBox checkAuto;
     }
 }

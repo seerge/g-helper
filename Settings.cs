@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Reflection;
+using System.Security.Cryptography;
 using System.Timers;
 
 namespace GHelper
@@ -429,7 +430,7 @@ namespace GHelper
         private static void OnTimedEvent(Object? source, ElapsedEventArgs? e)
         {
             RefreshSensors();
-            aTimer.Interval = 2000;
+            aTimer.Interval = 1000;
         }
 
         private void SettingsForm_VisibleChanged(object? sender, EventArgs e)
@@ -478,13 +479,12 @@ namespace GHelper
 
 
             Program.config.setConfig("performance_mode", PerformanceMode);
-            try
+            Program.wmi.DeviceSet(ASUSWmi.PerformanceMode, PerformanceMode);
+
+            if (Program.config.getConfig("auto_apply_" + PerformanceMode) == 1)
             {
-                Program.wmi.DeviceSet(ASUSWmi.PerformanceMode, PerformanceMode);
-            }
-            catch
-            {
-                labelPerf.Text = "Performance Mode: not supported";
+                Program.wmi.SetFanCurve(0, Program.config.getFanConfig(0));
+                Program.wmi.SetFanCurve(1, Program.config.getFanConfig(1));
             }
 
             if (fans != null && fans.Text != "")

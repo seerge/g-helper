@@ -93,6 +93,8 @@ namespace GHelper
 
             buttonApplyPower.Click += ButtonApplyPower_Click;
 
+            checkAuto.Click += CheckAuto_Click;
+
             labelInfo.MaximumSize = new Size(300, 0);
             labelInfo.Text = "Power Limits (PPT) is experimental feature.\n\nValues will be applied only after you click 'Apply' and reset after performance mode change.\n\nUse carefully and on your own risk!";
 
@@ -101,6 +103,16 @@ namespace GHelper
 
             Shown += Fans_Shown;
 
+        }
+
+        private void CheckAuto_Click(object? sender, EventArgs e)
+        {
+            if (sender is null)
+                return;
+
+            CheckBox chk = (CheckBox)sender;
+
+            Program.config.setConfig("auto_apply_" + Program.config.getConfig("performance_mode"), chk.Checked ? 1 : 0);
         }
 
         private void Fans_FormClosing(object? sender, FormClosingEventArgs e)
@@ -193,28 +205,12 @@ namespace GHelper
             LoadProfile(seriesCPU, 0);
             LoadProfile(seriesGPU, 1);
 
+            int auto_apply = Program.config.getConfig("auto_apply_" + Program.config.getConfig("performance_mode"));
+
+            checkAuto.Checked = (auto_apply == 1);
+
         }
 
-        byte[] StringToBytes(string str)
-        {
-            String[] arr = str.Split('-');
-            byte[] array = new byte[arr.Length];
-            for (int i = 0; i < arr.Length; i++) array[i] = Convert.ToByte(arr[i], 16);
-            return array;
-        }
-
-        string GetFanName(int device)
-        {
-            int mode = Program.config.getConfig("performance_mode");
-            string name;
-
-            if (device == 1)
-                name = "gpu";
-            else
-                name = "cpu";
-
-            return "fan_profile_" + name + "_" + mode;
-        }
 
         void LoadProfile(Series series, int device, int def = 0)
         {
@@ -226,42 +222,13 @@ namespace GHelper
             series.Points.Clear();
 
             int mode = Program.config.getConfig("performance_mode");
-            string curveString = Program.config.getConfigString(GetFanName(device));
-            byte[] curve = { };
-
-            if (curveString is not null)
-                curve = StringToBytes(curveString);
+            byte[] curve = Program.config.getFanConfig(device);
 
             if (def == 1 || curve.Length != 16)
                 curve = Program.wmi.GetFanCurve(device, mode);
 
             if (curve.All(singleByte => singleByte == 0))
-            {
-                switch (mode)
-                {
-                    case 1:
-                        if (device == 1)
-                            curve = StringToBytes("14-3F-44-48-4C-50-54-62-16-1F-26-2D-39-47-55-5F");
-                        else
-                            curve = StringToBytes("14-3F-44-48-4C-50-54-62-11-1A-22-29-34-43-51-5A");
-                        break;
-                    case 2:
-                        if (device == 1)
-                            curve = StringToBytes("3C-41-42-46-47-4B-4C-62-08-11-11-1D-1D-26-26-2D");
-                        else
-                            curve = StringToBytes("3C-41-42-46-47-4B-4C-62-03-0C-0C-16-16-22-22-29");
-                        break;
-                    default:
-                        if (device == 1)
-                            curve = StringToBytes("3A-3D-40-44-48-4D-51-62-0C-16-1D-1F-26-2D-34-4A");
-                        else
-                            curve = StringToBytes("3A-3D-40-44-48-4D-51-62-08-11-16-1A-22-29-30-45");
-                        break;
-                }
-
-            }
-
-
+                Program.config.getDefaultCurve(device);
 
             //Debug.WriteLine(BitConverter.ToString(curve));
 
@@ -286,10 +253,7 @@ namespace GHelper
                 i++;
             }
 
-            string bitCurve = BitConverter.ToString(curve);
-            Debug.WriteLine(bitCurve);
-            Program.config.setConfig(GetFanName(device), bitCurve);
-
+            Program.config.setFanConfig(device, curve);
             Program.wmi.SetFanCurve(device, curve);
 
         }
@@ -305,7 +269,12 @@ namespace GHelper
         {
             LoadProfile(seriesCPU, 0, 1);
             LoadProfile(seriesGPU, 1, 1);
+
+            checkAuto.Checked = false;
+            Program.config.setConfig("auto_apply_" + Program.config.getConfig("performance_mode"), 0);
+
             Program.wmi.DeviceSet(ASUSWmi.PerformanceMode, Program.config.getConfig("performance_mode"));
+
             ResetApplyLabel();
         }
 
