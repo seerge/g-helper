@@ -1,7 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Reflection;
 using System.Timers;
-using System.Windows.Forms.DataVisualization.Charting;
 
 namespace GHelper
 {
@@ -122,12 +121,17 @@ namespace GHelper
             if (fans == null || fans.Text == "")
             {
                 fans = new Fans();
+                Debug.WriteLine("Starting fans");
+            }
+
+            if (fans.Visible)
+            {
+                fans.Hide();
+            } else
+            {
                 fans.Show();
             }
-            else
-            {
-                fans.Close();
-            }
+
 
         }
 
@@ -205,14 +209,14 @@ namespace GHelper
 
             //Debug.WriteLine(mode);
 
-            if (mode > 3) mode = 0;
+            if (mode > 4) mode = 0;
 
             pictureColor2.Visible = (mode == Aura.Breathe);
 
             if (Aura.Mode == mode) return; // same mode
 
-
             Aura.Mode = mode;
+
             Program.config.setConfig("aura_mode", mode);
 
             comboKeyboard.SelectedValueChanged -= ComboKeyboard_SelectedValueChanged;
@@ -484,7 +488,10 @@ namespace GHelper
             }
 
             if (fans != null && fans.Text != "")
+            {
                 fans.LoadFans();
+                fans.ResetApplyLabel();
+            }
 
             if (notify)
             {
@@ -643,8 +650,13 @@ namespace GHelper
             checkScreen.Checked = (ScreenAuto == 1);
         }
 
-        public void VisualiseGPUMode(int GPUMode)
+        public void VisualiseGPUMode(int GPUMode = -1)
         {
+
+            if (GPUMode == -1)
+            {
+                GPUMode = Program.config.getConfig("gpu_mode");
+            }
 
             buttonEco.FlatAppearance.BorderSize = buttonInactive;
             buttonStandard.FlatAppearance.BorderSize = buttonInactive;

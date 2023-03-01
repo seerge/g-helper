@@ -269,6 +269,9 @@ namespace GHelper
                 settingsForm.Show();
                 settingsForm.Activate();
             }
+
+            settingsForm.VisualiseGPUMode();
+
         }
 
         static void TrayIcon_MouseClick(object? sender, MouseEventArgs e)

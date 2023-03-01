@@ -65,13 +65,13 @@ namespace GHelper
 
             InitializeComponent();
 
+            FormClosing += Fans_FormClosing;
+
             seriesCPU = chartCPU.Series.Add("CPU");
             seriesGPU = chartGPU.Series.Add("GPU");
 
             seriesCPU.Color = Color.Blue;
             seriesGPU.Color = Color.Red;
-
-            LoadFans();
 
             chartCPU.MouseMove += ChartCPU_MouseMove;
             chartCPU.MouseUp += ChartCPU_MouseUp;
@@ -96,10 +96,20 @@ namespace GHelper
             labelInfo.MaximumSize = new Size(300, 0);
             labelInfo.Text = "Power Limits (PPT) is experimental feature.\n\nValues will be applied only after you click 'Apply' and reset after performance mode change.\n\nUse carefully and on your own risk!";
 
+            LoadFans();
             VisualisePower(true);
 
             Shown += Fans_Shown;
 
+        }
+
+        private void Fans_FormClosing(object? sender, FormClosingEventArgs e)
+        {
+            if (e.CloseReason == CloseReason.UserClosing)
+            {
+                e.Cancel = true;
+                Hide();
+            }
         }
 
         private void ButtonApplyPower_Click(object? sender, EventArgs e)
@@ -111,7 +121,14 @@ namespace GHelper
             Program.config.setConfig("limit_cpu", limit_cpu);
 
             Program.wmi.DeviceSet(ASUSWmi.PPT_Total, limit_total);
+            Program.wmi.DeviceSet(ASUSWmi.PPT_Total1, limit_total);
+            Program.wmi.DeviceSet(ASUSWmi.PPT_Total2, limit_total);
+
             Program.wmi.DeviceSet(ASUSWmi.PPT_CPU, limit_cpu);
+            //Program.wmi.DeviceSet(ASUSWmi.PPT_CPU1, limit_cpu);
+
+            labelApplied.ForeColor = Color.Blue;
+            labelApplied.Text = "Applied";
 
         }
 
@@ -159,6 +176,12 @@ namespace GHelper
         private void TrackCPU_Scroll(object? sender, EventArgs e)
         {
             VisualisePower();
+        }
+
+        public void ResetApplyLabel()
+        {
+            labelApplied.ForeColor = Color.Red;
+            labelApplied.Text = "Not Applied";
         }
 
         public void LoadFans()
@@ -283,6 +306,7 @@ namespace GHelper
             LoadProfile(seriesCPU, 0, 1);
             LoadProfile(seriesGPU, 1, 1);
             Program.wmi.DeviceSet(ASUSWmi.PerformanceMode, Program.config.getConfig("performance_mode"));
+            ResetApplyLabel();
         }
 
         private void ChartCPU_MouseUp(object? sender, MouseEventArgs e)

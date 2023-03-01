@@ -10,7 +10,7 @@ public class Aura
     public const int Breathe = 1;
     public const int Strobe = 2;
     public const int Rainbow = 3;
-    public const int Dingding = 10;
+    public const int Dingding = 4;
 
     public const int SpeedSlow = 0xe1;
     public const int SpeedMedium = 0xeb;
@@ -46,6 +46,20 @@ public class Aura
         int[] deviceIds = { 0x1854, 0x1869, 0x1866, 0x19b6 };
 
         HidDeviceList = HidDevices.Enumerate(0x0b05, deviceIds).ToArray();
+
+        if (Mode == Dingding)
+        {
+            Mode = 10;
+            Speed = SpeedMedium;
+        }
+        else if (Mode == Rainbow)
+        {
+            Speed = SpeedMedium;
+        }
+        else
+        {
+            Speed = SpeedSlow;
+        }
 
         foreach (HidDevice device in HidDeviceList)
         {

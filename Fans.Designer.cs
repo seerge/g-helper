@@ -35,6 +35,7 @@
             buttonReset = new Button();
             chartGPU = new System.Windows.Forms.DataVisualization.Charting.Chart();
             groupBox1 = new GroupBox();
+            labelApplied = new Label();
             pictureFine = new PictureBox();
             labelInfo = new Label();
             labelCPU = new Label();
@@ -92,6 +93,7 @@
             // 
             // groupBox1
             // 
+            groupBox1.Controls.Add(labelApplied);
             groupBox1.Controls.Add(pictureFine);
             groupBox1.Controls.Add(labelInfo);
             groupBox1.Controls.Add(labelCPU);
@@ -106,6 +108,16 @@
             groupBox1.TabIndex = 4;
             groupBox1.TabStop = false;
             groupBox1.Text = "Power Limits (PPT)";
+            // 
+            // labelApplied
+            // 
+            labelApplied.AutoSize = true;
+            labelApplied.ForeColor = Color.Tomato;
+            labelApplied.Location = new Point(12, 37);
+            labelApplied.Name = "labelApplied";
+            labelApplied.Size = new Size(143, 32);
+            labelApplied.TabIndex = 13;
+            labelApplied.Text = "Not Applied";
             // 
             // pictureFine
             // 
@@ -131,7 +143,7 @@
             // 
             labelCPU.AutoSize = true;
             labelCPU.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            labelCPU.Location = new Point(195, 99);
+            labelCPU.Location = new Point(195, 123);
             labelCPU.Name = "labelCPU";
             labelCPU.Size = new Size(61, 32);
             labelCPU.TabIndex = 10;
@@ -142,7 +154,7 @@
             // 
             labelTotal.AutoSize = true;
             labelTotal.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            labelTotal.Location = new Point(37, 99);
+            labelTotal.Location = new Point(37, 123);
             labelTotal.Name = "labelTotal";
             labelTotal.Size = new Size(70, 32);
             labelTotal.TabIndex = 9;
@@ -152,7 +164,7 @@
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(198, 57);
+            label2.Location = new Point(198, 89);
             label2.Name = "label2";
             label2.Size = new Size(58, 32);
             label2.TabIndex = 8;
@@ -162,7 +174,7 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(39, 57);
+            label1.Location = new Point(39, 89);
             label1.Name = "label1";
             label1.Size = new Size(65, 32);
             label1.TabIndex = 7;
@@ -171,24 +183,24 @@
             // 
             // trackCPU
             // 
-            trackCPU.Location = new Point(203, 154);
+            trackCPU.Location = new Point(203, 178);
             trackCPU.Maximum = 85;
             trackCPU.Minimum = 15;
             trackCPU.Name = "trackCPU";
             trackCPU.Orientation = Orientation.Vertical;
-            trackCPU.Size = new Size(90, 470);
+            trackCPU.Size = new Size(90, 444);
             trackCPU.TabIndex = 6;
             trackCPU.TickFrequency = 5;
             trackCPU.Value = 80;
             // 
             // trackTotal
             // 
-            trackTotal.Location = new Point(45, 154);
+            trackTotal.Location = new Point(42, 178);
             trackTotal.Maximum = 150;
             trackTotal.Minimum = 15;
             trackTotal.Name = "trackTotal";
             trackTotal.Orientation = Orientation.Vertical;
-            trackTotal.Size = new Size(90, 470);
+            trackTotal.Size = new Size(90, 444);
             trackTotal.TabIndex = 5;
             trackTotal.TickFrequency = 5;
             trackTotal.TickStyle = TickStyle.TopLeft;
@@ -249,5 +261,6 @@
         private Button buttonApplyPower;
         private Label labelInfo;
         private PictureBox pictureFine;
+        private Label labelApplied;
     }
 }
