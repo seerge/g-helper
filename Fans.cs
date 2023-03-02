@@ -43,10 +43,19 @@ namespace GHelper
             chart.ChartAreas[0].AxisX.Minimum = 10;
             chart.ChartAreas[0].AxisX.Maximum = 100;
             chart.ChartAreas[0].AxisX.Interval = 10;
+            
             chart.ChartAreas[0].AxisY.Minimum = 0;
             chart.ChartAreas[0].AxisY.Maximum = 100;
 
-            chart.ChartAreas[0].AxisX.Interval = 10;
+            chart.ChartAreas[0].AxisY.LabelStyle.Font = new Font("Arial", 7F);
+
+            chart.ChartAreas[0].AxisY.CustomLabels.Add(-2, 2, "OFF");
+
+            for (int i = 1; i<= 9;i++)
+                chart.ChartAreas[0].AxisY.CustomLabels.Add(i*10-2, i*10+2, (1800+400*i).ToString());
+
+            chart.ChartAreas[0].AxisY.CustomLabels.Add(98, 102, "RPM");
+
             chart.ChartAreas[0].AxisY.Interval = 10;
 
             if (chart.Legends.Count > 0)
