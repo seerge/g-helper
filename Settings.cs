@@ -749,18 +749,12 @@ namespace GHelper
         public void SetBatteryChargeLimit(int limit = 100)
         {
 
-            if (limit < 50 || limit > 100) limit = 100;
+            if (limit < 40 || limit > 100) return;
 
             labelBatteryTitle.Text = "Battery Charge Limit: " + limit.ToString() + "%";
             trackBattery.Value = limit;
-            try
-            {
-                Program.wmi.DeviceSet(ASUSWmi.BatteryLimit, limit);
-            }
-            catch
-            {
-                Debug.WriteLine("Can't set battery charge limit");
-            }
+            Program.wmi.DeviceSet(ASUSWmi.BatteryLimit, limit);
+
             Program.config.setConfig("charge_limit", limit);
 
         }

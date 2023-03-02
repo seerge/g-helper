@@ -141,12 +141,11 @@ namespace GHelper
             Program.config.setConfig("limit_total", limit_total);
             Program.config.setConfig("limit_cpu", limit_cpu);
 
-            Program.wmi.DeviceSet(ASUSWmi.PPT_Total, limit_total);
-            Program.wmi.DeviceSet(ASUSWmi.PPT_Total1, limit_total);
-            Program.wmi.DeviceSet(ASUSWmi.PPT_Total2, limit_total);
+            Program.wmi.DeviceSet(ASUSWmi.PPT_TotalA0, limit_total);
+            Program.wmi.DeviceSet(ASUSWmi.PPT_TotalA1, limit_total);
 
-            Program.wmi.DeviceSet(ASUSWmi.PPT_CPU, limit_cpu);
-            //Program.wmi.DeviceSet(ASUSWmi.PPT_CPU1, limit_cpu);
+            Program.wmi.DeviceSet(ASUSWmi.PPT_CPUB0, limit_cpu);
+            Program.wmi.DeviceSet(ASUSWmi.PPT_CPUA2, limit_cpu);
 
             labelApplied.ForeColor = Color.Blue;
             labelApplied.Text = "Applied";
