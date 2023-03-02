@@ -498,7 +498,9 @@ namespace GHelper
             }
 
 
+            Program.config.setConfig("performance_"+(int)SystemInformation.PowerStatus.PowerLineStatus, PerformanceMode);
             Program.config.setConfig("performance_mode", PerformanceMode);
+
             Program.wmi.DeviceSet(ASUSWmi.PerformanceMode, PerformanceMode);
 
             if (Program.config.getConfig("auto_apply_" + PerformanceMode) == 1)
@@ -533,12 +535,22 @@ namespace GHelper
             SetPerformanceMode(Program.config.getConfig("performance_mode") + 1, true);
         }
 
-        public void AutoScreen(int Plugged = 1)
+        public void AutoPerformance(PowerLineStatus Plugged = PowerLineStatus.Online)
+        {
+            int mode = Program.config.getConfig("performance_"+(int)Plugged);
+            if (mode != -1)
+                SetPerformanceMode(mode, true);
+            else 
+                SetPerformanceMode(Program.config.getConfig("performance_mode"));
+        }
+
+
+        public void AutoScreen(PowerLineStatus Plugged = PowerLineStatus.Online)
         {
             int ScreenAuto = Program.config.getConfig("screen_auto");
             if (ScreenAuto != 1) return;
 
-            if (Plugged == 1)
+            if (Plugged == PowerLineStatus.Online)
                 SetScreen(1000, 1);
             else
                 SetScreen(60, 0);
@@ -547,7 +559,7 @@ namespace GHelper
 
         }
 
-        public void AutoGPUMode(int Plugged = 1)
+        public void AutoGPUMode(PowerLineStatus Plugged = PowerLineStatus.Online)
         {
 
             int GpuAuto = Program.config.getConfig("gpu_auto");
@@ -561,12 +573,12 @@ namespace GHelper
                 return;
             else
             {
-                if (eco == 1 && Plugged == 1)  // Eco going Standard on plugged
+                if (eco == 1 && Plugged == PowerLineStatus.Online)  // Eco going Standard on plugged
                 {
                     Program.wmi.DeviceSet(ASUSWmi.GPUEco, 0);
                     InitGPUMode();
                 }
-                else if (eco == 0 && Plugged == 0)  // Standard going Eco on plugged
+                else if (eco == 0 && Plugged != PowerLineStatus.Online)  // Standard going Eco on plugged
                 {
                     Program.wmi.DeviceSet(ASUSWmi.GPUEco, 1);
                     InitGPUMode();

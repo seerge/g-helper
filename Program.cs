@@ -61,17 +61,11 @@ namespace GHelper
             settingsForm.InitBoost();
             settingsForm.InitAura();
 
-            settingsForm.SetPerformanceMode(config.getConfig("performance_mode"));
-            settingsForm.SetBatteryChargeLimit(config.getConfig("charge_limit"));
-
             settingsForm.VisualiseGPUAuto(config.getConfig("gpu_auto"));
             settingsForm.VisualiseScreenAuto(config.getConfig("screen_auto"));
-
             settingsForm.SetStartupCheck(Startup.IsScheduled());
 
-            bool isPlugged = (System.Windows.Forms.SystemInformation.PowerStatus.PowerLineStatus == PowerLineStatus.Online);
-            settingsForm.AutoGPUMode(isPlugged ? 1 : 0);
-            settingsForm.AutoScreen(isPlugged ? 1 : 0);
+            SetAutoModes();
 
             SystemEvents.PowerModeChanged += SystemEvents_PowerModeChanged;
 
@@ -81,13 +75,18 @@ namespace GHelper
 
         }
 
+        private static void SetAutoModes()
+        {
+            PowerLineStatus isPlugged = SystemInformation.PowerStatus.PowerLineStatus;
+            settingsForm.AutoGPUMode(isPlugged);
+            settingsForm.AutoScreen(isPlugged);
+            settingsForm.AutoPerformance(isPlugged);
+            settingsForm.SetBatteryChargeLimit(config.getConfig("charge_limit"));
+        }
+
         private static void SystemEvents_PowerModeChanged(object sender, PowerModeChangedEventArgs e)
         {
-            bool isPlugged = (System.Windows.Forms.SystemInformation.PowerStatus.PowerLineStatus == PowerLineStatus.Online);
-            settingsForm.AutoGPUMode(isPlugged ? 1 : 0);
-            settingsForm.AutoScreen(isPlugged ? 1 : 0);
-
-            settingsForm.SetBatteryChargeLimit(config.getConfig("charge_limit"));
+            SetAutoModes();
         }
 
 
