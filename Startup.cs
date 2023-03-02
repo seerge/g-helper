@@ -10,17 +10,6 @@ public class Startup
     public static bool IsScheduled()
     {
         TaskService taskService = new TaskService();
-
-        // cleanup of OLD autorun
-        try
-        {
-            taskService.RootFolder.DeleteTask("GSharpHelper");
-        } catch
-        {
-            Debug.WriteLine("Not running as admin");
-        }
-
-
         return (taskService.RootFolder.AllTasks.Any(t => t.Name == taskName));
     }
 
