@@ -75,10 +75,19 @@ namespace GHelper
             labelVersion.Text = "Version " + Assembly.GetExecutingAssembly().GetName().Version.ToString();
             labelVersion.Click += LabelVersion_Click;
 
+            labelCPUFan.Click += LabelCPUFan_Click;
+            labelGPUFan.Click += LabelCPUFan_Click;
+
             SetTimer();
 
 
 
+        }
+
+        private void LabelCPUFan_Click(object? sender, EventArgs e)
+        {
+            Program.config.setConfig("fan_rpm", (Program.config.getConfig("fan_rpm") == 1) ? 0 : 1);
+            RefreshSensors();
         }
 
         private void LabelVersion_Click(object? sender, EventArgs e)
@@ -128,7 +137,8 @@ namespace GHelper
             if (fans.Visible)
             {
                 fans.Hide();
-            } else
+            }
+            else
             {
                 fans.Show();
             }
@@ -402,10 +412,20 @@ namespace GHelper
             aTimer.Enabled = false;
         }
 
+
+        private static string FormatFan(int fan)
+        {
+            if (Program.config.getConfig("fan_rpm") == 1)
+                return " Fan: " + (fan * 100).ToString() + "RPM";
+            else
+                return " Fan: " + Math.Round(fan / 0.6).ToString() + "%"; // relatively to 6000 rpm
+        }
+
         private static void RefreshSensors()
         {
-            string cpuFan = " Fan: " + Math.Round(Program.wmi.DeviceGet(ASUSWmi.CPU_Fan) / 0.6).ToString() + "%";
-            string gpuFan = " Fan: " + Math.Round(Program.wmi.DeviceGet(ASUSWmi.GPU_Fan) / 0.6).ToString() + "%";
+
+            string cpuFan = FormatFan(Program.wmi.DeviceGet(ASUSWmi.CPU_Fan));
+            string gpuFan = FormatFan(Program.wmi.DeviceGet(ASUSWmi.GPU_Fan));
 
             string cpuTemp = "";
             string gpuTemp = "";
@@ -443,7 +463,7 @@ namespace GHelper
                 this.Top = Screen.FromControl(this).WorkingArea.Height - 10 - this.Height;
                 this.Activate();
 
-                aTimer.Interval = 500;
+                aTimer.Interval = 100;
                 aTimer.Enabled = true;
 
             }

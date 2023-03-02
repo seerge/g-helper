@@ -132,12 +132,12 @@
             // labelGPUFan
             // 
             labelGPUFan.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            labelGPUFan.Location = new Point(410, 262);
+            labelGPUFan.Location = new Point(338, 262);
             labelGPUFan.Margin = new Padding(4, 0, 4, 0);
             labelGPUFan.Name = "labelGPUFan";
-            labelGPUFan.Size = new Size(276, 32);
+            labelGPUFan.Size = new Size(348, 32);
             labelGPUFan.TabIndex = 8;
-            labelGPUFan.Text = "GPU Fan : 0%";
+            labelGPUFan.Text = "GPU Fan";
             labelGPUFan.TextAlign = ContentAlignment.TopRight;
             // 
             // tableGPU
@@ -226,12 +226,12 @@
             // labelCPUFan
             // 
             labelCPUFan.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            labelCPUFan.Location = new Point(410, 38);
+            labelCPUFan.Location = new Point(320, 38);
             labelCPUFan.Margin = new Padding(4, 0, 4, 0);
             labelCPUFan.Name = "labelCPUFan";
-            labelCPUFan.Size = new Size(276, 32);
+            labelCPUFan.Size = new Size(366, 32);
             labelCPUFan.TabIndex = 12;
-            labelCPUFan.Text = "CPU Fan : 0%";
+            labelCPUFan.Text = "CPU Fan";
             labelCPUFan.TextAlign = ContentAlignment.TopRight;
             // 
             // tablePerf
