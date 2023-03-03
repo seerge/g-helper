@@ -43,7 +43,7 @@ namespace GHelper
             chart.ChartAreas[0].AxisX.Minimum = 10;
             chart.ChartAreas[0].AxisX.Maximum = 100;
             chart.ChartAreas[0].AxisX.Interval = 10;
-            
+
             chart.ChartAreas[0].AxisY.Minimum = 0;
             chart.ChartAreas[0].AxisY.Maximum = 100;
 
@@ -51,8 +51,8 @@ namespace GHelper
 
             chart.ChartAreas[0].AxisY.CustomLabels.Add(-2, 2, "OFF");
 
-            for (int i = 1; i<= 9;i++)
-                chart.ChartAreas[0].AxisY.CustomLabels.Add(i*10-2, i*10+2, (1800+400*i).ToString());
+            for (int i = 1; i <= 9; i++)
+                chart.ChartAreas[0].AxisY.CustomLabels.Add(i * 10 - 2, i * 10 + 2, (1800 + 400 * i).ToString());
 
             chart.ChartAreas[0].AxisY.CustomLabels.Add(98, 102, "RPM");
 
@@ -104,8 +104,8 @@ namespace GHelper
 
             checkAuto.Click += CheckAuto_Click;
 
-            labelInfo.MaximumSize = new Size(300, 0);
-            labelInfo.Text = "Power Limits (PPT) is experimental feature.\n\nValues will be applied only after you click 'Apply' and reset after performance mode change.\n\nUse carefully and on your own risk!";
+            //labelInfo.MaximumSize = new Size(280, 0);
+            labelInfo.Text = "Power Limits (PPT) is\nexperimental feature.\n\nValues will be applied\nonly after you click 'Apply'\nand reset after performance\nmode changes.\n\nUse carefully and\non your own risk!";
 
             LoadFans();
             VisualisePower(true);

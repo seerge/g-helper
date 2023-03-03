@@ -126,7 +126,7 @@
             pictureFine.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             pictureFine.BackgroundImage = Properties.Resources.everything_is_fine_itsfine;
             pictureFine.BackgroundImageLayout = ImageLayout.Zoom;
-            pictureFine.Location = new Point(9, 730);
+            pictureFine.Location = new Point(9, 731);
             pictureFine.Name = "pictureFine";
             pictureFine.Size = new Size(311, 240);
             pictureFine.TabIndex = 12;
