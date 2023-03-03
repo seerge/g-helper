@@ -1,6 +1,6 @@
-﻿using System.Management;
+﻿using System.Diagnostics;
+using System.Management;
 using System.Runtime.InteropServices;
-using System.Diagnostics;
 
 public class ASUSWmi
 {
@@ -30,7 +30,7 @@ public class ASUSWmi
 
     public const int PPT_CPUB0 = 0x001200B0;
     public const int PPT_CPUB1 = 0x001200B1;
-    public const int PPT_CPUA2 = 0x001200A2; 
+    public const int PPT_CPUA2 = 0x001200A2;
 
     public const int PerformanceBalanced = 0;
     public const int PerformanceTurbo = 1;
@@ -174,9 +174,9 @@ public class ASUSWmi
 
         Debug.WriteLine(BitConverter.ToString(curve));
 
-        if (device == 1) 
+        if (device == 1)
             DeviceSet(DevsGPUFanCurve, curve);
-        else 
+        else
             DeviceSet(DevsCPUFanCurve, curve);
     }
 
@@ -187,14 +187,14 @@ public class ASUSWmi
         // because it's asus, and modes are swapped here
         switch (mode)
         {
-            case 1:fan_mode = 2; break;
+            case 1: fan_mode = 2; break;
             case 2: fan_mode = 1; break;
             default: fan_mode = 0; break;
         }
 
-        if (device == 1) 
+        if (device == 1)
             return DeviceGetBuffer(DevsGPUFanCurve, fan_mode);
-        else 
+        else
             return DeviceGetBuffer(DevsCPUFanCurve, fan_mode);
 
     }

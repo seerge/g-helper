@@ -1,9 +1,8 @@
 ﻿using System.Text.Json;
-
 public class AppConfig
 {
 
-    string appPath;
+    public string appPath;
     string configFile;
 
     public Dictionary<string, object> config = new Dictionary<string, object>();
@@ -82,7 +81,7 @@ public class AppConfig
         else
             name = "cpu";
 
-        return paramName+"_" + name + "_" + mode;
+        return paramName + "_" + name + "_" + mode;
     }
 
     public byte[] getFanConfig(int device)

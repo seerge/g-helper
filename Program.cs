@@ -1,6 +1,7 @@
 using Microsoft.Win32;
 using System.Diagnostics;
 using System.Management;
+using Starlight.AnimeMatrix;
 
 public class HardwareMonitor
 {

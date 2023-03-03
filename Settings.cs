@@ -1,7 +1,10 @@
-﻿using System.Diagnostics;
+﻿using Starlight.AnimeMatrix;
+using System.Diagnostics;
 using System.Reflection;
-using System.Security.Cryptography;
 using System.Timers;
+using System.Drawing.Imaging;
+using System.CodeDom.Compiler;
+using System.Drawing;
 
 namespace GHelper
 {
@@ -61,7 +64,6 @@ namespace GHelper
 
             comboKeyboard.DropDownStyle = ComboBoxStyle.DropDownList;
             comboKeyboard.SelectedIndex = 0;
-
             comboKeyboard.SelectedValueChanged += ComboKeyboard_SelectedValueChanged;
 
             buttonKeyboardColor.Click += ButtonKeyboardColor_Click;
@@ -78,11 +80,155 @@ namespace GHelper
             labelCPUFan.Click += LabelCPUFan_Click;
             labelGPUFan.Click += LabelCPUFan_Click;
 
+
+            InitMatrix();
+
+            comboMatrix.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboMatrixRunning.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboMatrix.SelectedValueChanged += ComboMatrix_SelectedValueChanged;
+            comboMatrixRunning.SelectedValueChanged += ComboMatrixRunning_SelectedValueChanged;
+
+            buttonMatrix.Click += ButtonMatrix_Click;
+
+
             SetTimer();
 
+        }
+
+        void SetMatrixPicture(string fileName)
+        {
+
+            int width = 34 * 3;
+            int height = 61;
+            float scale;
+
+            Bitmap image;
+
+            try
+            {
+                using (var bmpTemp = (Bitmap)Image.FromFile(fileName))
+                {
+                    image = new Bitmap(bmpTemp);
+
+                    Bitmap canvas = new Bitmap(width, height);
+
+                    scale = Math.Min((float)width / (float)image.Width, (float)height / (float)image.Height);
+
+                    var graph = Graphics.FromImage(canvas);
+                    var scaleWidth = (int)(image.Width * scale);
+                    var scaleHeight = (int)(image.Height * scale);
+
+                    graph.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.High;
+                    graph.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
+                    graph.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+
+                    graph.DrawImage(image, ((int)width - scaleWidth), ((int)height - scaleHeight) / 2, scaleWidth, scaleHeight);
+
+                    Bitmap bmp = new Bitmap(canvas, 34, 61);
+
+                    var mat = new AnimeMatrixDevice();
+                    mat.SetBuiltInAnimation(false);
+
+                    for (int y = 0; y < bmp.Height; y++)
+                    {
+                        for (int x = 0; x < bmp.Width; x++)
+                        {
+                            var pixel = bmp.GetPixel(x, y);
+                            byte color = (byte)((pixel.R + pixel.G + pixel.B) / 3);
+                            mat.SetLedPlanar(x, y, color);
+                        }
+                    }
+
+                    mat.Present();
+                    mat.Dispose();
+                }
+            }
+            catch
+            {
+                Debug.WriteLine("Error loading picture");
+            }
 
 
         }
+
+
+        private void ButtonMatrix_Click(object? sender, EventArgs e)
+        {
+            Thread t = new Thread((ThreadStart)(() =>
+            {
+                OpenFileDialog of = new OpenFileDialog();
+                of.Filter = "Image Files (*.bmp;*.jpg;*.jpeg,*.png)|*.BMP;*.JPG;*.JPEG;*.PNG";
+                if (of.ShowDialog() == DialogResult.OK)
+                {
+                    Program.config.setConfig("matrix_picture", of.FileName);
+                    SetMatrixPicture(of.FileName);
+                    BeginInvoke(delegate
+                    {
+                        comboMatrixRunning.SelectedIndex = 2;
+                    });
+                }
+                return;
+            }));
+
+            t.SetApartmentState(ApartmentState.STA);
+            t.Start();
+            t.Join();
+        }
+
+        private void ComboMatrixRunning_SelectedValueChanged(object? sender, EventArgs e)
+        {
+            SetAnimeMatrix();
+        }
+
+
+        private void ComboMatrix_SelectedValueChanged(object? sender, EventArgs e)
+        {
+            SetAnimeMatrix();
+        }
+
+        private void SetAnimeMatrix()
+        {
+
+            int brightness = comboMatrix.SelectedIndex;
+            int running = comboMatrixRunning.SelectedIndex;
+
+            var mat = new AnimeMatrixDevice();
+
+            BuiltInAnimation animation = new BuiltInAnimation(
+                (BuiltInAnimation.Running)running,
+                BuiltInAnimation.Sleeping.Starfield,
+                BuiltInAnimation.Shutdown.SeeYa,
+                BuiltInAnimation.Startup.StaticEmergence
+            );
+
+
+            if (brightness == 0)
+            {
+                mat.SetDisplayState(false);
+            }
+            else
+            {
+                mat.SetDisplayState(true);
+                mat.SetBrightness((BrightnessMode)brightness);
+
+                if (running == 2)
+                {
+                    string fileName = Program.config.getConfigString("matrix_picture");
+                    SetMatrixPicture(fileName);
+                }
+                else
+                {
+                    mat.SetBuiltInAnimation(true, animation);
+                }
+            }
+
+            mat.Dispose();
+
+            Program.config.setConfig("matrix_brightness", comboMatrix.SelectedIndex);
+            Program.config.setConfig("matrix_running", comboMatrixRunning.SelectedIndex);
+        }
+
+
 
         private void LabelCPUFan_Click(object? sender, EventArgs e)
         {
@@ -188,9 +334,17 @@ namespace GHelper
             SetAuraMode(mode, false);
 
             Aura.Mode = mode;
-
-
         }
+
+        public void InitMatrix()
+        {
+            int brightness = Program.config.getConfig("matrix_brightness");
+            int running = Program.config.getConfig("matrix_running");
+
+            comboMatrix.SelectedIndex = (brightness != -1) ? brightness : 0;
+            comboMatrixRunning.SelectedIndex = (running != -1) ? running : 0;
+        }
+
 
         public void SetAuraColor(Color? color1 = null, Color? color2 = null, bool apply = true)
         {
@@ -498,7 +652,7 @@ namespace GHelper
             }
 
             int oldMode = Program.config.getConfig("performance_mode");
-            Program.config.setConfig("performance_"+(int)SystemInformation.PowerStatus.PowerLineStatus, PerformanceMode);
+            Program.config.setConfig("performance_" + (int)SystemInformation.PowerStatus.PowerLineStatus, PerformanceMode);
             Program.config.setConfig("performance_mode", PerformanceMode);
 
             Program.wmi.DeviceSet(ASUSWmi.PerformanceMode, PerformanceMode);
@@ -537,10 +691,10 @@ namespace GHelper
 
         public void AutoPerformance(PowerLineStatus Plugged = PowerLineStatus.Online)
         {
-            int mode = Program.config.getConfig("performance_"+(int)Plugged);
+            int mode = Program.config.getConfig("performance_" + (int)Plugged);
             if (mode != -1)
                 SetPerformanceMode(mode, true);
-            else 
+            else
                 SetPerformanceMode(Program.config.getConfig("performance_mode"));
         }
 
