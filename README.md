@@ -44,10 +44,6 @@ PPTs are shown for G14 2022, for other models PPTs will be different as they are
 2. Standard mode (Windows Hybrid) : iGPU and dGPU enabled, iGPU drives built in display
 3. Ultimate mode: iGPU and dGPU enabled, but dGPU drives built in display (supported only on G14 2022 model)
 
-## Things still missing
-
-1. Anime matrix control
-
 ## How to install
 
 1. Download latest release from https://github.com/seerge/g-helper/releases
