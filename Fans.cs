@@ -235,8 +235,8 @@ namespace GHelper
             if (def == 1 || curve.Length != 16)
                 curve = Program.wmi.GetFanCurve(device, mode);
 
-            if (curve.All(singleByte => singleByte == 0))
-                Program.config.getDefaultCurve(device);
+            if (curve.Length != 16 || curve.All(singleByte => singleByte == 0))
+                curve = Program.config.getDefaultCurve(device);
 
             //Debug.WriteLine(BitConverter.ToString(curve));
 

@@ -15,7 +15,7 @@
     <AssemblyName>GHelper</AssemblyName>
     <PlatformTarget>x64</PlatformTarget>
     <ProduceReferenceAssembly>False</ProduceReferenceAssembly>
-    <AssemblyVersion>0.14.0</AssemblyVersion>
+    <AssemblyVersion>0.14.1</AssemblyVersion>
   </PropertyGroup>
 
   <ItemGroup>
