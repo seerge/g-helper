@@ -30,7 +30,7 @@ public class ASUSWmi
 
     public const int PPT_CPUB0 = 0x001200B0;
     public const int PPT_CPUB1 = 0x001200B1;
-    public const int PPT_CPUA2 = 0x001200A2;
+    public const int PPT_CPUA2 = 0x001200A2; 
 
     public const int PerformanceBalanced = 0;
     public const int PerformanceTurbo = 1;

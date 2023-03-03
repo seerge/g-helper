@@ -497,7 +497,7 @@ namespace GHelper
                     break;
             }
 
-
+            int oldMode = Program.config.getConfig("performance_mode");
             Program.config.setConfig("performance_"+(int)SystemInformation.PowerStatus.PowerLineStatus, PerformanceMode);
             Program.config.setConfig("performance_mode", PerformanceMode);
 
@@ -515,7 +515,7 @@ namespace GHelper
                 fans.ResetApplyLabel();
             }
 
-            if (notify)
+            if (notify && (oldMode != PerformanceMode))
             {
                 try
                 {
