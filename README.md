@@ -2,7 +2,7 @@
 
 A small utility that allows you do almost everyting you could do with Armory Crate but without extra bloat and unnecessary services.
 
-### NEW!
+## NEW!
 
 1. Experimental feature: **Set Power limits (PPT) - Total and CPU**. 
 2. Anime matrix control thanks to https://github.com/vddCore/Starlight
