@@ -1,4 +1,4 @@
-# G-Helper (For G14, G15, ROG FLOW, and others)
+# G-Helper (For Asus ROG Zephyrus G14, G15, Flow X13, Flow X16, and others)
 
 A small utility that allows you do almost everyting you could do with Armory Crate but without extra bloat and unnecessary services.
 
@@ -56,11 +56,11 @@ PPTs are shown for G14 2022, for other models PPTs will be different as they are
 3. Run **GHelper.exe**
 
 Note: Uses low level ASUS ACPI commands to do switching and doens't require Armory Crate to be isntalled at all. 
-Doesn't require administrator privileges to run (anymore)!
+Doesn't require administrator privileges to run!
 
 I don`t have Microsoft certificate to sign app yet, so if you set a warning from Windows Defender on launch (Windows Protected your PC), click More Info -> Run anyway.
 
-Alternatively you can comile and run project by yourself :)
+Alternatively you can compile and run project by yourself :)
 Settings file is storer at %AppData%\GHelper
 
 P.S.: It's not recommended to use app in combination with Armory Crate, cause they adjust same settings.
