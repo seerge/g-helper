@@ -18,14 +18,15 @@ namespace GHelper
         static int buttonActive = 5;
 
         static System.Timers.Timer aTimer = default!;
-        static System.Timers.Timer matrixTimer = new System.Timers.Timer();
+        static System.Timers.Timer matrixTimer = default!;
 
         public string perfName = "Balanced";
 
         Fans fans;
         Keyboard keyb;
 
-        AnimeMatrixDevice mat = new AnimeMatrixDevice();
+        static AnimeMatrixDevice mat = new AnimeMatrixDevice();
+
 
         public SettingsForm()
         {
@@ -83,26 +84,41 @@ namespace GHelper
 
             comboMatrix.DropDownStyle = ComboBoxStyle.DropDownList;
             comboMatrixRunning.DropDownStyle = ComboBoxStyle.DropDownList;
-            comboMatrix.SelectedValueChanged += ComboMatrix_SelectedValueChanged;
-            comboMatrixRunning.SelectedValueChanged += ComboMatrixRunning_SelectedValueChanged;
+
+            comboMatrix.DropDownClosed += ComboMatrix_SelectedValueChanged;
+            comboMatrixRunning.DropDownClosed += ComboMatrixRunning_SelectedValueChanged;
 
             buttonMatrix.Click += ButtonMatrix_Click;
 
+            matrixTimer = new System.Timers.Timer();
             matrixTimer.Enabled = false;
             matrixTimer.Interval = 100;
             matrixTimer.Elapsed += MatrixTimer_Elapsed;
+
 
             SetTimer();
 
         }
 
-        private void MatrixTimer_Elapsed(object? sender, ElapsedEventArgs e)
+        private static void StartMatrixTimer()
+        {
+            matrixTimer.Enabled = true;
+        }
+
+        private static void StopMatrixTimer()
+        {
+            matrixTimer.Enabled = false;
+        }
+
+        private static void MatrixTimer_Elapsed(object? sender, ElapsedEventArgs e)
         {
             mat.PresentNextFrame();
         }
 
         void SetMatrixPicture(string fileName)
         {
+
+            StopMatrixTimer();
 
             Image image;
 
@@ -136,12 +152,11 @@ namespace GHelper
                     mat.GenerateFrame(image);
                     mat.AddFrame();
                 }
-                matrixTimer.Enabled = true;
+
+                StartMatrixTimer();
             }
             else
-            {
-                matrixTimer.Enabled = false;
-
+            { 
                 mat.GenerateFrame(image);
                 mat.Present();
             }
@@ -152,18 +167,15 @@ namespace GHelper
 
         private void ButtonMatrix_Click(object? sender, EventArgs e)
         {
+            string fileName = "";
+
             Thread t = new Thread((ThreadStart)(() =>
             {
                 OpenFileDialog of = new OpenFileDialog();
                 of.Filter = "Image Files (*.bmp;*.jpg;*.jpeg,*.png,*.gif)|*.BMP;*.JPG;*.JPEG;*.PNG;*.GIF";
                 if (of.ShowDialog() == DialogResult.OK)
                 {
-                    Program.config.setConfig("matrix_picture", of.FileName);
-                    SetMatrixPicture(of.FileName);
-                    BeginInvoke(delegate
-                    {
-                        comboMatrixRunning.SelectedIndex = 2;
-                    });
+                    fileName = of.FileName;
                 }
                 return;
             }));
@@ -171,6 +183,14 @@ namespace GHelper
             t.SetApartmentState(ApartmentState.STA);
             t.Start();
             t.Join();
+
+            Program.config.setConfig("matrix_picture", fileName);
+            SetMatrixPicture(fileName);
+            BeginInvoke(delegate
+            {
+                comboMatrixRunning.SelectedIndex = 2;
+            });
+
         }
 
         private void ComboMatrixRunning_SelectedValueChanged(object? sender, EventArgs e)
@@ -202,7 +222,7 @@ namespace GHelper
                 BuiltInAnimation.Startup.StaticEmergence
             );
 
-            matrixTimer.Enabled = false;
+            StopMatrixTimer();
 
             if (brightness == 0)
             {
