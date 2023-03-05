@@ -106,7 +106,7 @@
             trackBattery.Maximum = 100;
             trackBattery.Minimum = 50;
             trackBattery.Name = "trackBattery";
-            trackBattery.Size = new Size(341, 45);
+            trackBattery.Size = new Size(337, 45);
             trackBattery.SmallChange = 10;
             trackBattery.TabIndex = 3;
             trackBattery.TickFrequency = 10;
@@ -138,7 +138,7 @@
             // labelGPUFan
             // 
             labelGPUFan.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            labelGPUFan.Location = new Point(172, 131);
+            labelGPUFan.Location = new Point(168, 131);
             labelGPUFan.Margin = new Padding(2, 0, 2, 0);
             labelGPUFan.Name = "labelGPUFan";
             labelGPUFan.Size = new Size(174, 16);
@@ -161,7 +161,7 @@
             tableGPU.Name = "tableGPU";
             tableGPU.RowCount = 1;
             tableGPU.RowStyles.Add(new RowStyle(SizeType.Absolute, 54F));
-            tableGPU.Size = new Size(341, 54);
+            tableGPU.Size = new Size(337, 54);
             tableGPU.TabIndex = 7;
             // 
             // buttonUltimate
@@ -170,10 +170,10 @@
             buttonUltimate.Dock = DockStyle.Fill;
             buttonUltimate.FlatAppearance.BorderSize = 0;
             buttonUltimate.FlatStyle = FlatStyle.Flat;
-            buttonUltimate.Location = new Point(230, 6);
+            buttonUltimate.Location = new Point(228, 6);
             buttonUltimate.Margin = new Padding(4, 6, 4, 6);
             buttonUltimate.Name = "buttonUltimate";
-            buttonUltimate.Size = new Size(107, 42);
+            buttonUltimate.Size = new Size(105, 42);
             buttonUltimate.TabIndex = 2;
             buttonUltimate.Text = "Ultimate";
             buttonUltimate.UseVisualStyleBackColor = false;
@@ -184,10 +184,10 @@
             buttonStandard.Dock = DockStyle.Fill;
             buttonStandard.FlatAppearance.BorderSize = 0;
             buttonStandard.FlatStyle = FlatStyle.Flat;
-            buttonStandard.Location = new Point(117, 6);
+            buttonStandard.Location = new Point(116, 6);
             buttonStandard.Margin = new Padding(4, 6, 4, 6);
             buttonStandard.Name = "buttonStandard";
-            buttonStandard.Size = new Size(105, 42);
+            buttonStandard.Size = new Size(104, 42);
             buttonStandard.TabIndex = 1;
             buttonStandard.Text = "Standard";
             buttonStandard.UseVisualStyleBackColor = false;
@@ -202,7 +202,7 @@
             buttonEco.Location = new Point(4, 6);
             buttonEco.Margin = new Padding(4, 6, 4, 6);
             buttonEco.Name = "buttonEco";
-            buttonEco.Size = new Size(105, 42);
+            buttonEco.Size = new Size(104, 42);
             buttonEco.TabIndex = 0;
             buttonEco.Text = "Eco";
             buttonEco.UseVisualStyleBackColor = false;
@@ -232,7 +232,7 @@
             // labelCPUFan
             // 
             labelCPUFan.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            labelCPUFan.Location = new Point(163, 19);
+            labelCPUFan.Location = new Point(159, 19);
             labelCPUFan.Margin = new Padding(2, 0, 2, 0);
             labelCPUFan.Name = "labelCPUFan";
             labelCPUFan.Size = new Size(183, 16);
@@ -255,7 +255,7 @@
             tablePerf.Name = "tablePerf";
             tablePerf.RowCount = 1;
             tablePerf.RowStyles.Add(new RowStyle(SizeType.Absolute, 54F));
-            tablePerf.Size = new Size(341, 54);
+            tablePerf.Size = new Size(337, 54);
             tablePerf.TabIndex = 11;
             // 
             // buttonTurbo
@@ -265,10 +265,10 @@
             buttonTurbo.FlatAppearance.BorderColor = Color.FromArgb(192, 0, 0);
             buttonTurbo.FlatAppearance.BorderSize = 0;
             buttonTurbo.FlatStyle = FlatStyle.Flat;
-            buttonTurbo.Location = new Point(230, 6);
+            buttonTurbo.Location = new Point(228, 6);
             buttonTurbo.Margin = new Padding(4, 6, 4, 6);
             buttonTurbo.Name = "buttonTurbo";
-            buttonTurbo.Size = new Size(107, 42);
+            buttonTurbo.Size = new Size(105, 42);
             buttonTurbo.TabIndex = 2;
             buttonTurbo.Text = "Turbo";
             buttonTurbo.UseVisualStyleBackColor = false;
@@ -280,10 +280,10 @@
             buttonBalanced.FlatAppearance.BorderColor = Color.FromArgb(0, 0, 192);
             buttonBalanced.FlatAppearance.BorderSize = 0;
             buttonBalanced.FlatStyle = FlatStyle.Flat;
-            buttonBalanced.Location = new Point(117, 6);
+            buttonBalanced.Location = new Point(116, 6);
             buttonBalanced.Margin = new Padding(4, 6, 4, 6);
             buttonBalanced.Name = "buttonBalanced";
-            buttonBalanced.Size = new Size(105, 42);
+            buttonBalanced.Size = new Size(104, 42);
             buttonBalanced.TabIndex = 1;
             buttonBalanced.Text = "Balanced";
             buttonBalanced.UseVisualStyleBackColor = false;
@@ -299,7 +299,7 @@
             buttonSilent.Location = new Point(4, 6);
             buttonSilent.Margin = new Padding(4, 6, 4, 6);
             buttonSilent.Name = "buttonSilent";
-            buttonSilent.Size = new Size(105, 42);
+            buttonSilent.Size = new Size(104, 42);
             buttonSilent.TabIndex = 0;
             buttonSilent.Text = "Silent";
             buttonSilent.UseVisualStyleBackColor = false;
@@ -344,7 +344,7 @@
             // 
             buttonQuit.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             buttonQuit.BackColor = SystemColors.ButtonFace;
-            buttonQuit.Location = new Point(292, 565);
+            buttonQuit.Location = new Point(288, 565);
             buttonQuit.Margin = new Padding(2, 1, 2, 1);
             buttonQuit.Name = "buttonQuit";
             buttonQuit.Size = new Size(60, 24);
@@ -388,7 +388,7 @@
             tableScreen.Name = "tableScreen";
             tableScreen.RowCount = 1;
             tableScreen.RowStyles.Add(new RowStyle(SizeType.Absolute, 54F));
-            tableScreen.Size = new Size(341, 54);
+            tableScreen.Size = new Size(337, 54);
             tableScreen.TabIndex = 19;
             // 
             // button120Hz
@@ -398,10 +398,10 @@
             button120Hz.FlatAppearance.BorderColor = SystemColors.ActiveBorder;
             button120Hz.FlatAppearance.BorderSize = 0;
             button120Hz.FlatStyle = FlatStyle.Flat;
-            button120Hz.Location = new Point(117, 6);
+            button120Hz.Location = new Point(116, 6);
             button120Hz.Margin = new Padding(4, 6, 4, 6);
             button120Hz.Name = "button120Hz";
-            button120Hz.Size = new Size(105, 42);
+            button120Hz.Size = new Size(104, 42);
             button120Hz.TabIndex = 1;
             button120Hz.Text = "120Hz + OD";
             button120Hz.UseVisualStyleBackColor = false;
@@ -418,7 +418,7 @@
             button60Hz.Location = new Point(4, 6);
             button60Hz.Margin = new Padding(4, 6, 4, 6);
             button60Hz.Name = "button60Hz";
-            button60Hz.Size = new Size(105, 42);
+            button60Hz.Size = new Size(104, 42);
             button60Hz.TabIndex = 0;
             button60Hz.Text = "60Hz";
             button60Hz.UseVisualStyleBackColor = false;
@@ -500,7 +500,7 @@
             // labelBattery
             // 
             labelBattery.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            labelBattery.Location = new Point(210, 496);
+            labelBattery.Location = new Point(206, 496);
             labelBattery.Margin = new Padding(2, 0, 2, 0);
             labelBattery.Name = "labelBattery";
             labelBattery.Size = new Size(138, 16);
@@ -513,7 +513,7 @@
             buttonFans.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             buttonFans.BackColor = SystemColors.ButtonFace;
             buttonFans.FlatAppearance.BorderSize = 0;
-            buttonFans.Location = new Point(243, 93);
+            buttonFans.Location = new Point(239, 93);
             buttonFans.Margin = new Padding(2, 1, 2, 1);
             buttonFans.Name = "buttonFans";
             buttonFans.Size = new Size(105, 24);
@@ -526,7 +526,7 @@
             buttonKeyboard.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             buttonKeyboard.BackColor = SystemColors.ButtonFace;
             buttonKeyboard.FlatAppearance.BorderSize = 0;
-            buttonKeyboard.Location = new Point(243, 382);
+            buttonKeyboard.Location = new Point(238, 383);
             buttonKeyboard.Margin = new Padding(2, 1, 2, 1);
             buttonKeyboard.Name = "buttonKeyboard";
             buttonKeyboard.Size = new Size(104, 24);
@@ -537,7 +537,7 @@
             // pictureColor
             // 
             pictureColor.Location = new Point(216, 390);
-            pictureColor.Margin = new Padding(2, 2, 2, 2);
+            pictureColor.Margin = new Padding(2);
             pictureColor.Name = "pictureColor";
             pictureColor.Size = new Size(10, 10);
             pictureColor.TabIndex = 30;
@@ -546,7 +546,7 @@
             // pictureColor2
             // 
             pictureColor2.Location = new Point(202, 390);
-            pictureColor2.Margin = new Padding(2, 2, 2, 2);
+            pictureColor2.Margin = new Padding(2);
             pictureColor2.Name = "pictureColor2";
             pictureColor2.Size = new Size(10, 10);
             pictureColor2.TabIndex = 31;
@@ -617,7 +617,7 @@
             buttonMatrix.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             buttonMatrix.BackColor = SystemColors.ButtonFace;
             buttonMatrix.FlatAppearance.BorderSize = 0;
-            buttonMatrix.Location = new Point(243, 452);
+            buttonMatrix.Location = new Point(238, 453);
             buttonMatrix.Margin = new Padding(2, 1, 2, 1);
             buttonMatrix.Name = "buttonMatrix";
             buttonMatrix.Size = new Size(104, 24);
@@ -629,7 +629,8 @@
             // 
             AutoScaleDimensions = new SizeF(96F, 96F);
             AutoScaleMode = AutoScaleMode.Dpi;
-            ClientSize = new Size(368, 602);
+            AutoSize = true;
+            ClientSize = new Size(364, 599);
             Controls.Add(buttonMatrix);
             Controls.Add(comboMatrixRunning);
             Controls.Add(comboMatrix);
@@ -664,7 +665,6 @@
             Controls.Add(labelBatteryTitle);
             Controls.Add(trackBattery);
             Controls.Add(checkStartup);
-            FormBorderStyle = FormBorderStyle.FixedSingle;
             Margin = new Padding(2, 1, 2, 1);
             MaximizeBox = false;
             MdiChildrenMinimizedAnchorBottom = false;

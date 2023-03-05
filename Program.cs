@@ -134,10 +134,12 @@ namespace GHelper
         {
             string action = config.getConfigString(name);
 
-            if (action.Length == 0)
+            if (action is null || action.Length <= 1)
             {
                 if (name == "m4")
                     action = "performance";
+                if (name == "fnf4")
+                    action = "aura";
             }
 
             switch (action)
@@ -188,7 +190,7 @@ namespace GHelper
                     settingsForm.BeginInvoke(settingsForm.CyclePerformanceMode);
                     return;
                 case 179:   // FN+F4
-                    settingsForm.BeginInvoke(settingsForm.CycleAuraMode);
+                    KeyProcess("fnf4");
                     return;
             }
 
