@@ -18,7 +18,7 @@ namespace GHelper
         static int buttonActive = 5;
 
         static System.Timers.Timer aTimer = default!;
-        static System.Timers.Timer matrixTimer = new System.Timers.Timer(100);
+        static System.Timers.Timer matrixTimer = new System.Timers.Timer();
 
         public string perfName = "Balanced";
 
@@ -81,9 +81,6 @@ namespace GHelper
             labelCPUFan.Click += LabelCPUFan_Click;
             labelGPUFan.Click += LabelCPUFan_Click;
 
-
-            InitMatrix();
-
             comboMatrix.DropDownStyle = ComboBoxStyle.DropDownList;
             comboMatrixRunning.DropDownStyle = ComboBoxStyle.DropDownList;
             comboMatrix.SelectedValueChanged += ComboMatrix_SelectedValueChanged;
@@ -92,6 +89,7 @@ namespace GHelper
             buttonMatrix.Click += ButtonMatrix_Click;
 
             matrixTimer.Enabled = false;
+            matrixTimer.Interval = 100;
             matrixTimer.Elapsed += MatrixTimer_Elapsed;
 
             SetTimer();
@@ -177,22 +175,25 @@ namespace GHelper
 
         private void ComboMatrixRunning_SelectedValueChanged(object? sender, EventArgs e)
         {
+            Program.config.setConfig("matrix_running", comboMatrixRunning.SelectedIndex);
             SetAnimeMatrix();
         }
 
 
         private void ComboMatrix_SelectedValueChanged(object? sender, EventArgs e)
         {
+            Program.config.setConfig("matrix_brightness", comboMatrix.SelectedIndex);
             SetAnimeMatrix();
         }
 
-        private void SetAnimeMatrix()
+        public void SetAnimeMatrix()
         {
 
-            int brightness = comboMatrix.SelectedIndex;
-            int running = comboMatrixRunning.SelectedIndex;
+            int brightness = Program.config.getConfig("matrix_brightness");
+            int running = Program.config.getConfig("matrix_running");
 
-            //var mat = new AnimeMatrixDevice();
+            if (brightness < 0) brightness = 0;
+            if (running < 0) running = 0;
 
             BuiltInAnimation animation = new BuiltInAnimation(
                 (BuiltInAnimation.Running)running,
@@ -201,6 +202,7 @@ namespace GHelper
                 BuiltInAnimation.Startup.StaticEmergence
             );
 
+            matrixTimer.Enabled = false;
 
             if (brightness == 0)
             {
@@ -222,10 +224,6 @@ namespace GHelper
                 }
             }
 
-            //mat.Dispose();
-
-            Program.config.setConfig("matrix_brightness", comboMatrix.SelectedIndex);
-            Program.config.setConfig("matrix_running", comboMatrixRunning.SelectedIndex);
         }
 
 

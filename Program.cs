@@ -61,6 +61,7 @@ namespace GHelper
             settingsForm.InitGPUMode();
             settingsForm.InitBoost();
             settingsForm.InitAura();
+            settingsForm.InitMatrix();
 
             settingsForm.VisualiseGPUAuto(config.getConfig("gpu_auto"));
             settingsForm.VisualiseScreenAuto(config.getConfig("screen_auto"));
@@ -82,6 +83,9 @@ namespace GHelper
             settingsForm.AutoGPUMode(isPlugged);
             settingsForm.AutoScreen(isPlugged);
             settingsForm.AutoPerformance(isPlugged);
+
+            settingsForm.SetAnimeMatrix();
+
             settingsForm.SetBatteryChargeLimit(config.getConfig("charge_limit"));
         }
 

@@ -2,6 +2,7 @@
 using System.Management;
 using System.Runtime.InteropServices;
 
+
 public class ASUSWmi
 {
 

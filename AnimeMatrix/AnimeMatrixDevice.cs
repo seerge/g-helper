@@ -1,8 +1,8 @@
-﻿// Source thanks to https://github.com/vddCore/Starlight :)
+﻿// Source thanks to https://github.com/vddCore/Starlight with some adjustments from me
 
+using Starlight.Communication;
 using System.Diagnostics;
 using System.Text;
-using Starlight.Communication;
 
 namespace Starlight.AnimeMatrix
 {
@@ -89,6 +89,7 @@ namespace Starlight.AnimeMatrix
 
         public void PresentNextFrame()
         {
+            //Debug.WriteLine(frameIndex);
             if (frameIndex >= frames.Count) frameIndex = 0;
             _displayBuffer = frames[frameIndex];
             Present();
@@ -118,7 +119,7 @@ namespace Starlight.AnimeMatrix
         }
         public int Columns(int row)
         {
-            EnsureRowInRange(row);  
+            EnsureRowInRange(row);
             return 34 - EmptyColumns(row);
         }
 
@@ -230,7 +231,7 @@ namespace Starlight.AnimeMatrix
             var enabled = enable ? (byte)0x00 : (byte)0x80;
             Set(Packet<AnimeMatrixPacket>(0xC4, 0x01, enabled));
         }
-        
+
         public void SetBuiltInAnimation(bool enable, BuiltInAnimation animation)
         {
             SetBuiltInAnimation(enable);
@@ -265,13 +266,13 @@ namespace Starlight.AnimeMatrix
                 for (int x = 0; x < bmp.Width; x++)
                 {
                     var pixel = bmp.GetPixel(x, y);
-                    byte color = (byte)((pixel.R + pixel.G + pixel.B) / 3);
+                    byte color = (byte)(Math.Max((pixel.R + pixel.G + pixel.B) / 3 - 10, 0));
                     SetLedPlanar(x, y, color);
                 }
-            }            
+            }
 
         }
-        
+
         private void EnsureRowInRange(int row)
         {
             if (row < 0 || row >= Rows)

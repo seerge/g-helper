@@ -1,4 +1,5 @@
 ﻿using System.Text.Json;
+
 public class AppConfig
 {
 
