@@ -159,6 +159,9 @@ namespace GHelper
                 case "performance":
                     settingsForm.BeginInvoke(settingsForm.CyclePerformanceMode);
                     break;
+                case "ghelper":
+                    settingsForm.BeginInvoke(SettingsToggle);
+                    break;
                 case "custom":
                     CustomKey(name);
                     break;

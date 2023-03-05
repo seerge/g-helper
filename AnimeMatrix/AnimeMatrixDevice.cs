@@ -1,5 +1,6 @@
 ﻿// Source thanks to https://github.com/vddCore/Starlight :)
 
+using System.Diagnostics;
 using System.Text;
 using Starlight.Communication;
 
@@ -71,13 +72,40 @@ namespace Starlight.AnimeMatrix
         public int LedCount => 1450;
         public int Rows => 61;
 
-        private readonly byte[] _displayBuffer = new byte[UpdatePageLength * 3];
+        private byte[] _displayBuffer = new byte[UpdatePageLength * 3];
+        private List<byte[]> frames = new List<byte[]>();
+
+        private int frameIndex = 0;
 
         public AnimeMatrixDevice()
             : base(0x0B05, 0x193B, 640)
         {
         }
-        
+
+        public byte[] GetBuffer()
+        {
+            return _displayBuffer;
+        }
+
+        public void PresentNextFrame()
+        {
+            if (frameIndex >= frames.Count) frameIndex = 0;
+            _displayBuffer = frames[frameIndex];
+            Present();
+            frameIndex++;
+        }
+
+        public void ClearFrames()
+        {
+            frames.Clear();
+            frameIndex = 0;
+        }
+
+        public void AddFrame()
+        {
+            frames.Add(_displayBuffer.ToArray());
+        }
+
         public void SendRaw(params byte[] data)
         {
             Set(Packet<AnimeMatrixPacket>(data));
@@ -207,6 +235,41 @@ namespace Starlight.AnimeMatrix
         {
             SetBuiltInAnimation(enable);
             Set(Packet<AnimeMatrixPacket>(0xC5, animation.AsByte));
+        }
+
+        public void GenerateFrame(Image image)
+        {
+
+            int width = 34 * 3;
+            int height = 61;
+            float scale;
+
+            Bitmap canvas = new Bitmap(width, height);
+
+            scale = Math.Min((float)width / (float)image.Width, (float)height / (float)image.Height);
+
+            var graph = Graphics.FromImage(canvas);
+            var scaleWidth = (int)(image.Width * scale);
+            var scaleHeight = (int)(image.Height * scale);
+
+            graph.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.High;
+            graph.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
+            graph.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+
+            graph.DrawImage(image, ((int)width - scaleWidth), ((int)height - scaleHeight) / 2, scaleWidth, scaleHeight);
+
+            Bitmap bmp = new Bitmap(canvas, 34, 61);
+
+            for (int y = 0; y < bmp.Height; y++)
+            {
+                for (int x = 0; x < bmp.Width; x++)
+                {
+                    var pixel = bmp.GetPixel(x, y);
+                    byte color = (byte)((pixel.R + pixel.G + pixel.B) / 3);
+                    SetLedPlanar(x, y, color);
+                }
+            }            
+
         }
         
         private void EnsureRowInRange(int row)

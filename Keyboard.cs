@@ -10,6 +10,7 @@
           {"screenshot", "Screenshot"},
           {"play", "Play/Pause"},
           {"aura", "Aura"},
+          {"ghelper", "Open GHelper"},
           {"custom", "Custom"}
         };
 

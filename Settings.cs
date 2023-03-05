@@ -5,6 +5,8 @@ using System.Timers;
 using System.Drawing.Imaging;
 using System.CodeDom.Compiler;
 using System.Drawing;
+using System;
+using System.Globalization;
 
 namespace GHelper
 {
@@ -21,10 +23,14 @@ namespace GHelper
 
         static System.Timers.Timer aTimer = default!;
 
+        static System.Timers.Timer matrixTimer = default!;
+
         public string perfName = "Balanced";
 
         Fans fans;
         Keyboard keyb;
+
+        AnimeMatrixDevice mat = new AnimeMatrixDevice();
 
         public SettingsForm()
         {
@@ -98,54 +104,54 @@ namespace GHelper
         void SetMatrixPicture(string fileName)
         {
 
-            int width = 34 * 3;
-            int height = 61;
-            float scale;
-
-            Bitmap image;
+            Image image;
 
             try
             {
-                using (var bmpTemp = (Bitmap)Image.FromFile(fileName))
+                using (var fs = new FileStream(fileName, FileMode.Open))
                 {
-                    image = new Bitmap(bmpTemp);
-
-                    Bitmap canvas = new Bitmap(width, height);
-
-                    scale = Math.Min((float)width / (float)image.Width, (float)height / (float)image.Height);
-
-                    var graph = Graphics.FromImage(canvas);
-                    var scaleWidth = (int)(image.Width * scale);
-                    var scaleHeight = (int)(image.Height * scale);
-
-                    graph.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.High;
-                    graph.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
-                    graph.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
-
-                    graph.DrawImage(image, ((int)width - scaleWidth), ((int)height - scaleHeight) / 2, scaleWidth, scaleHeight);
-
-                    Bitmap bmp = new Bitmap(canvas, 34, 61);
-
-                    var mat = new AnimeMatrixDevice();
-                    mat.SetBuiltInAnimation(false);
-
-                    for (int y = 0; y < bmp.Height; y++)
-                    {
-                        for (int x = 0; x < bmp.Width; x++)
-                        {
-                            var pixel = bmp.GetPixel(x, y);
-                            byte color = (byte)((pixel.R + pixel.G + pixel.B) / 3);
-                            mat.SetLedPlanar(x, y, color);
-                        }
-                    }
-
-                    mat.Present();
-                    mat.Dispose();
+                    var ms = new MemoryStream();
+                    fs.CopyTo(ms);
+                    ms.Position = 0;
+                    image = Image.FromStream(ms);
                 }
-            }
-            catch
+            } catch
             {
                 Debug.WriteLine("Error loading picture");
+                return;
+            }
+
+            mat.SetBuiltInAnimation(false);
+            mat.ClearFrames();
+
+            FrameDimension dimension = new FrameDimension(image.FrameDimensionsList[0]);
+            int frameCount = image.GetFrameCount(dimension);                   
+
+            if (frameCount > 1)
+            {
+                for (int i = 0; i < frameCount; i++)
+                {
+                    image.SelectActiveFrame(dimension, i);
+                    mat.GenerateFrame(image);
+                    mat.AddFrame();
+                }
+
+                matrixTimer = new System.Timers.Timer(50);
+                matrixTimer.Enabled = true;
+                matrixTimer.Elapsed += delegate
+                {
+                    mat.PresentNextFrame();
+                };
+            } else
+            {
+                if (matrixTimer is not null)
+                {
+                    matrixTimer.Enabled = false;
+                    matrixTimer.Dispose();
+                }
+
+                mat.GenerateFrame(image);
+                mat.Present();
             }
 
 
@@ -157,7 +163,7 @@ namespace GHelper
             Thread t = new Thread((ThreadStart)(() =>
             {
                 OpenFileDialog of = new OpenFileDialog();
-                of.Filter = "Image Files (*.bmp;*.jpg;*.jpeg,*.png)|*.BMP;*.JPG;*.JPEG;*.PNG";
+                of.Filter = "Image Files (*.bmp;*.jpg;*.jpeg,*.png,*.gif)|*.BMP;*.JPG;*.JPEG;*.PNG;*.GIF";
                 if (of.ShowDialog() == DialogResult.OK)
                 {
                     Program.config.setConfig("matrix_picture", of.FileName);
@@ -192,7 +198,7 @@ namespace GHelper
             int brightness = comboMatrix.SelectedIndex;
             int running = comboMatrixRunning.SelectedIndex;
 
-            var mat = new AnimeMatrixDevice();
+            //var mat = new AnimeMatrixDevice();
 
             BuiltInAnimation animation = new BuiltInAnimation(
                 (BuiltInAnimation.Running)running,
@@ -222,7 +228,7 @@ namespace GHelper
                 }
             }
 
-            mat.Dispose();
+            //mat.Dispose();
 
             Program.config.setConfig("matrix_brightness", comboMatrix.SelectedIndex);
             Program.config.setConfig("matrix_running", comboMatrixRunning.SelectedIndex);

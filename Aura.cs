@@ -3,8 +3,8 @@
 public class Aura
 {
 
-    static byte[] MESSAGE_SET = { 0x5d, 0xb5 };
-    static byte[] MESSAGE_APPLY = { 0x5d, 0xb4 };
+    static byte[] MESSAGE_SET = { 0x5d, 0xb5, 0,0,0 };
+    static byte[] MESSAGE_APPLY = { 0x5d, 0xb4};
 
     public const int Static = 0;
     public const int Breathe = 1;
