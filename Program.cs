@@ -109,6 +109,63 @@ namespace GHelper
 
         }
 
+        static void CustomKey(string configKey = "m3")
+        {
+            string command = config.getConfigString(configKey + "_custom");
+            int intKey;
+
+            try
+            {
+                intKey = Convert.ToInt32(command, 16);
+            } catch
+            {
+                intKey = -1;
+            }
+
+
+            if (intKey > 0)
+                NativeMethods.KeyPress(intKey);
+            else
+                LaunchProcess(command);
+
+        }
+
+        static void KeyProcess(string name = "m3")
+        {
+            string action = config.getConfigString(name);
+
+            if (action.Length == 0)
+            {
+                if (name == "m4")
+                    action = "performance";
+            }
+
+            switch (action)
+            {
+                case "mute":
+                    NativeMethods.KeyPress(NativeMethods.VK_VOLUME_MUTE);
+                    break;
+                case "play":
+                    NativeMethods.KeyPress(NativeMethods.VK_MEDIA_PLAY_PAUSE);
+                    break;
+                case "screenshot":
+                    NativeMethods.KeyPress(NativeMethods.VK_SNAPSHOT);
+                    break;
+                case "aura":
+                    settingsForm.BeginInvoke(settingsForm.CycleAuraMode);
+                    break;
+                case "performance":
+                    settingsForm.BeginInvoke(settingsForm.CyclePerformanceMode);
+                    break;
+                case "custom":
+                    CustomKey(name);
+                    break;
+                default:
+                    break;
+            }
+        }
+
+
         static void WatcherEventArrived(object sender, EventArrivedEventArgs e)
         {
             var collection = (ManagementEventWatcher)sender;
@@ -122,64 +179,17 @@ namespace GHelper
             switch (EventID)
             {
                 case 124:    // M3
-                    switch (config.getConfig("m3"))
-                    {
-                        case 1:
-                            NativeMethods.KeyPress(NativeMethods.VK_MEDIA_PLAY_PAUSE);
-                            break;
-                        case 2:
-                            settingsForm.BeginInvoke(settingsForm.CycleAuraMode);
-                            break;
-                        case 3:
-                            LaunchProcess(config.getConfigString("m3_custom"));
-                            break;
-                        default:
-                            NativeMethods.KeyPress(NativeMethods.VK_VOLUME_MUTE);
-                            break;
-                    }
+                    KeyProcess("m3");
                     return;
                 case 56:    // M4 / Rog button
-                    switch (config.getConfig("m4"))
-                    {
-                        case 1:
-                            settingsForm.BeginInvoke(SettingsToggle);
-                            break;
-                        case 2:
-                            LaunchProcess(config.getConfigString("m4_custom"));
-                            break;
-                        default:
-                            settingsForm.BeginInvoke(settingsForm.CyclePerformanceMode);
-                            break;
-                    }
+                    KeyProcess("m4");
                     return;
                 case 174:   // FN+F5
                     settingsForm.BeginInvoke(settingsForm.CyclePerformanceMode);
                     return;
                 case 179:   // FN+F4
-                    settingsForm.BeginInvoke(delegate
-                    {
-                        settingsForm.CycleAuraMode();
-                    });
+                    settingsForm.BeginInvoke(settingsForm.CycleAuraMode);
                     return;
-                case 87:  // Battery
-                    /*
-                    settingsForm.BeginInvoke(delegate
-                    {
-                        settingsForm.AutoGPUMode(0);
-                        settingsForm.AutoScreen(0);
-                    });
-                    */
-                    return;
-                case 88:  // Plugged
-                    /*
-                    settingsForm.BeginInvoke(delegate
-                    {
-                        settingsForm.AutoScreen(1);
-                        settingsForm.AutoGPUMode(1);
-                    });
-                    */
-                    return;
-
             }
 
 

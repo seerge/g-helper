@@ -572,7 +572,7 @@ namespace GHelper
             if (Program.config.getConfig("fan_rpm") == 1)
                 return " Fan: " + (fan * 100).ToString() + "RPM";
             else
-                return " Fan: " + Math.Round(fan / 0.6).ToString() + "%"; // relatively to 6000 rpm
+                return " Fan: " + Math.Min(Math.Round(fan / 0.6), 100).ToString() + "%"; // relatively to 6000 rpm
         }
 
         private static void RefreshSensors()
@@ -604,7 +604,7 @@ namespace GHelper
         private static void OnTimedEvent(Object? source, ElapsedEventArgs? e)
         {
             RefreshSensors();
-            aTimer.Interval = 1000;
+            aTimer.Interval = 2000;
         }
 
         private void SettingsForm_VisibleChanged(object? sender, EventArgs e)
@@ -617,7 +617,7 @@ namespace GHelper
                 this.Top = Screen.FromControl(this).WorkingArea.Height - 10 - this.Height;
                 this.Activate();
 
-                aTimer.Interval = 100;
+                aTimer.Interval = 300;
                 aTimer.Enabled = true;
 
             }

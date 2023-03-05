@@ -88,10 +88,10 @@
             // checkStartup
             // 
             checkStartup.AutoSize = true;
-            checkStartup.Location = new Point(35, 1138);
-            checkStartup.Margin = new Padding(4, 2, 4, 2);
+            checkStartup.Location = new Point(18, 569);
+            checkStartup.Margin = new Padding(2, 1, 2, 1);
             checkStartup.Name = "checkStartup";
-            checkStartup.Size = new Size(206, 36);
+            checkStartup.Size = new Size(105, 19);
             checkStartup.TabIndex = 2;
             checkStartup.Text = "Run on Startup";
             checkStartup.UseVisualStyleBackColor = true;
@@ -101,12 +101,12 @@
             // 
             trackBattery.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             trackBattery.LargeChange = 20;
-            trackBattery.Location = new Point(22, 1030);
-            trackBattery.Margin = new Padding(4, 2, 4, 2);
+            trackBattery.Location = new Point(11, 515);
+            trackBattery.Margin = new Padding(2, 1, 2, 1);
             trackBattery.Maximum = 100;
             trackBattery.Minimum = 50;
             trackBattery.Name = "trackBattery";
-            trackBattery.Size = new Size(682, 90);
+            trackBattery.Size = new Size(341, 45);
             trackBattery.SmallChange = 10;
             trackBattery.TabIndex = 3;
             trackBattery.TickFrequency = 10;
@@ -117,10 +117,10 @@
             // 
             labelBatteryTitle.AutoSize = true;
             labelBatteryTitle.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            labelBatteryTitle.Location = new Point(80, 992);
-            labelBatteryTitle.Margin = new Padding(4, 0, 4, 0);
+            labelBatteryTitle.Location = new Point(40, 496);
+            labelBatteryTitle.Margin = new Padding(2, 0, 2, 0);
             labelBatteryTitle.Name = "labelBatteryTitle";
-            labelBatteryTitle.Size = new Size(248, 32);
+            labelBatteryTitle.Size = new Size(122, 15);
             labelBatteryTitle.TabIndex = 4;
             labelBatteryTitle.Text = "Battery Charge Limit";
             // 
@@ -128,20 +128,20 @@
             // 
             pictureBattery.BackgroundImage = (Image)resources.GetObject("pictureBattery.BackgroundImage");
             pictureBattery.BackgroundImageLayout = ImageLayout.Zoom;
-            pictureBattery.Location = new Point(38, 990);
-            pictureBattery.Margin = new Padding(4, 2, 4, 2);
+            pictureBattery.Location = new Point(19, 495);
+            pictureBattery.Margin = new Padding(2, 1, 2, 1);
             pictureBattery.Name = "pictureBattery";
-            pictureBattery.Size = new Size(36, 38);
+            pictureBattery.Size = new Size(18, 19);
             pictureBattery.TabIndex = 6;
             pictureBattery.TabStop = false;
             // 
             // labelGPUFan
             // 
             labelGPUFan.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            labelGPUFan.Location = new Point(344, 262);
-            labelGPUFan.Margin = new Padding(4, 0, 4, 0);
+            labelGPUFan.Location = new Point(172, 131);
+            labelGPUFan.Margin = new Padding(2, 0, 2, 0);
             labelGPUFan.Name = "labelGPUFan";
-            labelGPUFan.Size = new Size(348, 32);
+            labelGPUFan.Size = new Size(174, 16);
             labelGPUFan.TabIndex = 8;
             labelGPUFan.Text = "         ";
             labelGPUFan.TextAlign = ContentAlignment.TopRight;
@@ -156,12 +156,12 @@
             tableGPU.Controls.Add(buttonUltimate, 2, 0);
             tableGPU.Controls.Add(buttonStandard, 1, 0);
             tableGPU.Controls.Add(buttonEco, 0, 0);
-            tableGPU.Location = new Point(22, 304);
-            tableGPU.Margin = new Padding(4, 2, 4, 2);
+            tableGPU.Location = new Point(11, 152);
+            tableGPU.Margin = new Padding(2, 1, 2, 1);
             tableGPU.Name = "tableGPU";
             tableGPU.RowCount = 1;
-            tableGPU.RowStyles.Add(new RowStyle(SizeType.Absolute, 108F));
-            tableGPU.Size = new Size(682, 108);
+            tableGPU.RowStyles.Add(new RowStyle(SizeType.Absolute, 54F));
+            tableGPU.Size = new Size(341, 54);
             tableGPU.TabIndex = 7;
             // 
             // buttonUltimate
@@ -170,10 +170,10 @@
             buttonUltimate.Dock = DockStyle.Fill;
             buttonUltimate.FlatAppearance.BorderSize = 0;
             buttonUltimate.FlatStyle = FlatStyle.Flat;
-            buttonUltimate.Location = new Point(462, 12);
-            buttonUltimate.Margin = new Padding(8, 12, 8, 12);
+            buttonUltimate.Location = new Point(230, 6);
+            buttonUltimate.Margin = new Padding(4, 6, 4, 6);
             buttonUltimate.Name = "buttonUltimate";
-            buttonUltimate.Size = new Size(212, 84);
+            buttonUltimate.Size = new Size(107, 42);
             buttonUltimate.TabIndex = 2;
             buttonUltimate.Text = "Ultimate";
             buttonUltimate.UseVisualStyleBackColor = false;
@@ -184,10 +184,10 @@
             buttonStandard.Dock = DockStyle.Fill;
             buttonStandard.FlatAppearance.BorderSize = 0;
             buttonStandard.FlatStyle = FlatStyle.Flat;
-            buttonStandard.Location = new Point(235, 12);
-            buttonStandard.Margin = new Padding(8, 12, 8, 12);
+            buttonStandard.Location = new Point(117, 6);
+            buttonStandard.Margin = new Padding(4, 6, 4, 6);
             buttonStandard.Name = "buttonStandard";
-            buttonStandard.Size = new Size(211, 84);
+            buttonStandard.Size = new Size(105, 42);
             buttonStandard.TabIndex = 1;
             buttonStandard.Text = "Standard";
             buttonStandard.UseVisualStyleBackColor = false;
@@ -199,10 +199,10 @@
             buttonEco.Dock = DockStyle.Fill;
             buttonEco.FlatAppearance.BorderSize = 0;
             buttonEco.FlatStyle = FlatStyle.Flat;
-            buttonEco.Location = new Point(8, 12);
-            buttonEco.Margin = new Padding(8, 12, 8, 12);
+            buttonEco.Location = new Point(4, 6);
+            buttonEco.Margin = new Padding(4, 6, 4, 6);
             buttonEco.Name = "buttonEco";
-            buttonEco.Size = new Size(211, 84);
+            buttonEco.Size = new Size(105, 42);
             buttonEco.TabIndex = 0;
             buttonEco.Text = "Eco";
             buttonEco.UseVisualStyleBackColor = false;
@@ -211,10 +211,10 @@
             // 
             labelGPU.AutoSize = true;
             labelGPU.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            labelGPU.Location = new Point(78, 264);
-            labelGPU.Margin = new Padding(4, 0, 4, 0);
+            labelGPU.Location = new Point(39, 132);
+            labelGPU.Margin = new Padding(2, 0, 2, 0);
             labelGPU.Name = "labelGPU";
-            labelGPU.Size = new Size(136, 32);
+            labelGPU.Size = new Size(67, 15);
             labelGPU.TabIndex = 9;
             labelGPU.Text = "GPU Mode";
             // 
@@ -222,20 +222,20 @@
             // 
             pictureGPU.BackgroundImage = (Image)resources.GetObject("pictureGPU.BackgroundImage");
             pictureGPU.BackgroundImageLayout = ImageLayout.Zoom;
-            pictureGPU.Location = new Point(36, 262);
-            pictureGPU.Margin = new Padding(4, 2, 4, 2);
+            pictureGPU.Location = new Point(18, 131);
+            pictureGPU.Margin = new Padding(2, 1, 2, 1);
             pictureGPU.Name = "pictureGPU";
-            pictureGPU.Size = new Size(36, 38);
+            pictureGPU.Size = new Size(18, 19);
             pictureGPU.TabIndex = 10;
             pictureGPU.TabStop = false;
             // 
             // labelCPUFan
             // 
             labelCPUFan.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            labelCPUFan.Location = new Point(326, 38);
-            labelCPUFan.Margin = new Padding(4, 0, 4, 0);
+            labelCPUFan.Location = new Point(163, 19);
+            labelCPUFan.Margin = new Padding(2, 0, 2, 0);
             labelCPUFan.Name = "labelCPUFan";
-            labelCPUFan.Size = new Size(366, 32);
+            labelCPUFan.Size = new Size(183, 16);
             labelCPUFan.TabIndex = 12;
             labelCPUFan.Text = "      ";
             labelCPUFan.TextAlign = ContentAlignment.TopRight;
@@ -250,12 +250,12 @@
             tablePerf.Controls.Add(buttonTurbo, 2, 0);
             tablePerf.Controls.Add(buttonBalanced, 1, 0);
             tablePerf.Controls.Add(buttonSilent, 0, 0);
-            tablePerf.Location = new Point(22, 76);
-            tablePerf.Margin = new Padding(4, 2, 4, 2);
+            tablePerf.Location = new Point(11, 38);
+            tablePerf.Margin = new Padding(2, 1, 2, 1);
             tablePerf.Name = "tablePerf";
             tablePerf.RowCount = 1;
-            tablePerf.RowStyles.Add(new RowStyle(SizeType.Absolute, 108F));
-            tablePerf.Size = new Size(682, 108);
+            tablePerf.RowStyles.Add(new RowStyle(SizeType.Absolute, 54F));
+            tablePerf.Size = new Size(341, 54);
             tablePerf.TabIndex = 11;
             // 
             // buttonTurbo
@@ -265,10 +265,10 @@
             buttonTurbo.FlatAppearance.BorderColor = Color.FromArgb(192, 0, 0);
             buttonTurbo.FlatAppearance.BorderSize = 0;
             buttonTurbo.FlatStyle = FlatStyle.Flat;
-            buttonTurbo.Location = new Point(462, 12);
-            buttonTurbo.Margin = new Padding(8, 12, 8, 12);
+            buttonTurbo.Location = new Point(230, 6);
+            buttonTurbo.Margin = new Padding(4, 6, 4, 6);
             buttonTurbo.Name = "buttonTurbo";
-            buttonTurbo.Size = new Size(212, 84);
+            buttonTurbo.Size = new Size(107, 42);
             buttonTurbo.TabIndex = 2;
             buttonTurbo.Text = "Turbo";
             buttonTurbo.UseVisualStyleBackColor = false;
@@ -280,10 +280,10 @@
             buttonBalanced.FlatAppearance.BorderColor = Color.FromArgb(0, 0, 192);
             buttonBalanced.FlatAppearance.BorderSize = 0;
             buttonBalanced.FlatStyle = FlatStyle.Flat;
-            buttonBalanced.Location = new Point(235, 12);
-            buttonBalanced.Margin = new Padding(8, 12, 8, 12);
+            buttonBalanced.Location = new Point(117, 6);
+            buttonBalanced.Margin = new Padding(4, 6, 4, 6);
             buttonBalanced.Name = "buttonBalanced";
-            buttonBalanced.Size = new Size(211, 84);
+            buttonBalanced.Size = new Size(105, 42);
             buttonBalanced.TabIndex = 1;
             buttonBalanced.Text = "Balanced";
             buttonBalanced.UseVisualStyleBackColor = false;
@@ -296,10 +296,10 @@
             buttonSilent.FlatAppearance.BorderColor = Color.FromArgb(0, 192, 192);
             buttonSilent.FlatAppearance.BorderSize = 0;
             buttonSilent.FlatStyle = FlatStyle.Flat;
-            buttonSilent.Location = new Point(8, 12);
-            buttonSilent.Margin = new Padding(8, 12, 8, 12);
+            buttonSilent.Location = new Point(4, 6);
+            buttonSilent.Margin = new Padding(4, 6, 4, 6);
             buttonSilent.Name = "buttonSilent";
-            buttonSilent.Size = new Size(211, 84);
+            buttonSilent.Size = new Size(105, 42);
             buttonSilent.TabIndex = 0;
             buttonSilent.Text = "Silent";
             buttonSilent.UseVisualStyleBackColor = false;
@@ -309,10 +309,10 @@
             picturePerf.BackgroundImage = (Image)resources.GetObject("picturePerf.BackgroundImage");
             picturePerf.BackgroundImageLayout = ImageLayout.Zoom;
             picturePerf.InitialImage = null;
-            picturePerf.Location = new Point(36, 36);
-            picturePerf.Margin = new Padding(4, 2, 4, 2);
+            picturePerf.Location = new Point(18, 18);
+            picturePerf.Margin = new Padding(2, 1, 2, 1);
             picturePerf.Name = "picturePerf";
-            picturePerf.Size = new Size(36, 38);
+            picturePerf.Size = new Size(18, 19);
             picturePerf.TabIndex = 14;
             picturePerf.TabStop = false;
             // 
@@ -320,10 +320,10 @@
             // 
             labelPerf.AutoSize = true;
             labelPerf.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            labelPerf.Location = new Point(78, 38);
-            labelPerf.Margin = new Padding(4, 0, 4, 0);
+            labelPerf.Location = new Point(39, 19);
+            labelPerf.Margin = new Padding(2, 0, 2, 0);
             labelPerf.Name = "labelPerf";
-            labelPerf.Size = new Size(234, 32);
+            labelPerf.Size = new Size(115, 15);
             labelPerf.TabIndex = 13;
             labelPerf.Text = "Performance Mode";
             // 
@@ -331,10 +331,10 @@
             // 
             checkGPU.AutoSize = true;
             checkGPU.ForeColor = SystemColors.GrayText;
-            checkGPU.Location = new Point(32, 412);
-            checkGPU.Margin = new Padding(4, 2, 4, 2);
+            checkGPU.Location = new Point(16, 206);
+            checkGPU.Margin = new Padding(2, 1, 2, 1);
             checkGPU.Name = "checkGPU";
-            checkGPU.Size = new Size(550, 36);
+            checkGPU.Size = new Size(273, 19);
             checkGPU.TabIndex = 15;
             checkGPU.Text = "Set Eco on battery and Standard when plugged";
             checkGPU.UseVisualStyleBackColor = true;
@@ -344,10 +344,10 @@
             // 
             buttonQuit.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             buttonQuit.BackColor = SystemColors.ButtonFace;
-            buttonQuit.Location = new Point(584, 1130);
-            buttonQuit.Margin = new Padding(4, 2, 4, 2);
+            buttonQuit.Location = new Point(292, 565);
+            buttonQuit.Margin = new Padding(2, 1, 2, 1);
             buttonQuit.Name = "buttonQuit";
-            buttonQuit.Size = new Size(120, 48);
+            buttonQuit.Size = new Size(60, 24);
             buttonQuit.TabIndex = 16;
             buttonQuit.Text = "Quit";
             buttonQuit.UseVisualStyleBackColor = false;
@@ -356,10 +356,10 @@
             // 
             pictureScreen.BackgroundImage = (Image)resources.GetObject("pictureScreen.BackgroundImage");
             pictureScreen.BackgroundImageLayout = ImageLayout.Zoom;
-            pictureScreen.Location = new Point(36, 496);
-            pictureScreen.Margin = new Padding(4, 2, 4, 2);
+            pictureScreen.Location = new Point(18, 248);
+            pictureScreen.Margin = new Padding(2, 1, 2, 1);
             pictureScreen.Name = "pictureScreen";
-            pictureScreen.Size = new Size(36, 38);
+            pictureScreen.Size = new Size(18, 19);
             pictureScreen.TabIndex = 18;
             pictureScreen.TabStop = false;
             // 
@@ -367,10 +367,10 @@
             // 
             labelSreen.AutoSize = true;
             labelSreen.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            labelSreen.Location = new Point(78, 496);
-            labelSreen.Margin = new Padding(4, 0, 4, 0);
+            labelSreen.Location = new Point(39, 248);
+            labelSreen.Margin = new Padding(2, 0, 2, 0);
             labelSreen.Name = "labelSreen";
-            labelSreen.Size = new Size(176, 32);
+            labelSreen.Size = new Size(87, 15);
             labelSreen.TabIndex = 17;
             labelSreen.Text = "Laptop Screen";
             // 
@@ -383,12 +383,12 @@
             tableScreen.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.33333F));
             tableScreen.Controls.Add(button120Hz, 1, 0);
             tableScreen.Controls.Add(button60Hz, 0, 0);
-            tableScreen.Location = new Point(22, 536);
-            tableScreen.Margin = new Padding(4, 2, 4, 2);
+            tableScreen.Location = new Point(11, 268);
+            tableScreen.Margin = new Padding(2, 1, 2, 1);
             tableScreen.Name = "tableScreen";
             tableScreen.RowCount = 1;
-            tableScreen.RowStyles.Add(new RowStyle(SizeType.Absolute, 108F));
-            tableScreen.Size = new Size(682, 108);
+            tableScreen.RowStyles.Add(new RowStyle(SizeType.Absolute, 54F));
+            tableScreen.Size = new Size(341, 54);
             tableScreen.TabIndex = 19;
             // 
             // button120Hz
@@ -398,10 +398,10 @@
             button120Hz.FlatAppearance.BorderColor = SystemColors.ActiveBorder;
             button120Hz.FlatAppearance.BorderSize = 0;
             button120Hz.FlatStyle = FlatStyle.Flat;
-            button120Hz.Location = new Point(235, 12);
-            button120Hz.Margin = new Padding(8, 12, 8, 12);
+            button120Hz.Location = new Point(117, 6);
+            button120Hz.Margin = new Padding(4, 6, 4, 6);
             button120Hz.Name = "button120Hz";
-            button120Hz.Size = new Size(211, 84);
+            button120Hz.Size = new Size(105, 42);
             button120Hz.TabIndex = 1;
             button120Hz.Text = "120Hz + OD";
             button120Hz.UseVisualStyleBackColor = false;
@@ -415,10 +415,10 @@
             button60Hz.FlatAppearance.BorderSize = 0;
             button60Hz.FlatStyle = FlatStyle.Flat;
             button60Hz.ForeColor = SystemColors.ControlText;
-            button60Hz.Location = new Point(8, 12);
-            button60Hz.Margin = new Padding(8, 12, 8, 12);
+            button60Hz.Location = new Point(4, 6);
+            button60Hz.Margin = new Padding(4, 6, 4, 6);
             button60Hz.Name = "button60Hz";
-            button60Hz.Size = new Size(211, 84);
+            button60Hz.Size = new Size(105, 42);
             button60Hz.TabIndex = 0;
             button60Hz.Text = "60Hz";
             button60Hz.UseVisualStyleBackColor = false;
@@ -427,10 +427,10 @@
             // 
             checkScreen.AutoSize = true;
             checkScreen.ForeColor = SystemColors.GrayText;
-            checkScreen.Location = new Point(32, 644);
-            checkScreen.Margin = new Padding(4, 2, 4, 2);
+            checkScreen.Location = new Point(16, 322);
+            checkScreen.Margin = new Padding(2, 1, 2, 1);
             checkScreen.Name = "checkScreen";
-            checkScreen.Size = new Size(527, 36);
+            checkScreen.Size = new Size(261, 19);
             checkScreen.TabIndex = 20;
             checkScreen.Text = "Set 60Hz on battery, and back when plugged";
             checkScreen.UseVisualStyleBackColor = true;
@@ -439,10 +439,10 @@
             // 
             checkBoost.AutoSize = true;
             checkBoost.ForeColor = SystemColors.GrayText;
-            checkBoost.Location = new Point(32, 184);
-            checkBoost.Margin = new Padding(4, 2, 4, 2);
+            checkBoost.Location = new Point(16, 92);
+            checkBoost.Margin = new Padding(2, 1, 2, 1);
             checkBoost.Name = "checkBoost";
-            checkBoost.Size = new Size(320, 36);
+            checkBoost.Size = new Size(161, 19);
             checkBoost.TabIndex = 21;
             checkBoost.Text = "CPU Turbo Boost enabled";
             checkBoost.UseVisualStyleBackColor = true;
@@ -451,10 +451,10 @@
             // 
             pictureKeyboard.BackgroundImage = Properties.Resources.icons8_keyboard_48;
             pictureKeyboard.BackgroundImageLayout = ImageLayout.Zoom;
-            pictureKeyboard.Location = new Point(36, 724);
-            pictureKeyboard.Margin = new Padding(4, 2, 4, 2);
+            pictureKeyboard.Location = new Point(18, 362);
+            pictureKeyboard.Margin = new Padding(2, 1, 2, 1);
             pictureKeyboard.Name = "pictureKeyboard";
-            pictureKeyboard.Size = new Size(36, 36);
+            pictureKeyboard.Size = new Size(18, 18);
             pictureKeyboard.TabIndex = 23;
             pictureKeyboard.TabStop = false;
             // 
@@ -462,10 +462,10 @@
             // 
             label1.AutoSize = true;
             label1.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            label1.Location = new Point(78, 724);
-            label1.Margin = new Padding(4, 0, 4, 0);
+            label1.Location = new Point(39, 362);
+            label1.Margin = new Padding(2, 0, 2, 0);
             label1.Name = "label1";
-            label1.Size = new Size(210, 32);
+            label1.Size = new Size(101, 15);
             label1.TabIndex = 22;
             label1.Text = "Laptop Keyboard";
             // 
@@ -473,12 +473,12 @@
             // 
             comboKeyboard.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
             comboKeyboard.FormattingEnabled = true;
-            comboKeyboard.ItemHeight = 32;
+            comboKeyboard.ItemHeight = 15;
             comboKeyboard.Items.AddRange(new object[] { "Static", "Breathe", "Strobe", "Rainbow", "Dingding" });
-            comboKeyboard.Location = new Point(30, 770);
+            comboKeyboard.Location = new Point(15, 385);
             comboKeyboard.Margin = new Padding(0);
             comboKeyboard.Name = "comboKeyboard";
-            comboKeyboard.Size = new Size(211, 40);
+            comboKeyboard.Size = new Size(108, 23);
             comboKeyboard.TabIndex = 24;
             comboKeyboard.TabStop = false;
             // 
@@ -489,10 +489,10 @@
             buttonKeyboardColor.FlatAppearance.BorderColor = Color.Red;
             buttonKeyboardColor.FlatAppearance.BorderSize = 2;
             buttonKeyboardColor.ForeColor = SystemColors.ControlText;
-            buttonKeyboardColor.Location = new Point(257, 766);
+            buttonKeyboardColor.Location = new Point(128, 383);
             buttonKeyboardColor.Margin = new Padding(0);
             buttonKeyboardColor.Name = "buttonKeyboardColor";
-            buttonKeyboardColor.Size = new Size(211, 48);
+            buttonKeyboardColor.Size = new Size(106, 25);
             buttonKeyboardColor.TabIndex = 25;
             buttonKeyboardColor.Text = "Color  ";
             buttonKeyboardColor.UseVisualStyleBackColor = false;
@@ -500,10 +500,10 @@
             // labelBattery
             // 
             labelBattery.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            labelBattery.Location = new Point(420, 991);
-            labelBattery.Margin = new Padding(4, 0, 4, 0);
+            labelBattery.Location = new Point(210, 496);
+            labelBattery.Margin = new Padding(2, 0, 2, 0);
             labelBattery.Name = "labelBattery";
-            labelBattery.Size = new Size(276, 32);
+            labelBattery.Size = new Size(138, 16);
             labelBattery.TabIndex = 27;
             labelBattery.Text = "                ";
             labelBattery.TextAlign = ContentAlignment.TopRight;
@@ -513,10 +513,10 @@
             buttonFans.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             buttonFans.BackColor = SystemColors.ButtonFace;
             buttonFans.FlatAppearance.BorderSize = 0;
-            buttonFans.Location = new Point(486, 186);
-            buttonFans.Margin = new Padding(4, 2, 4, 2);
+            buttonFans.Location = new Point(243, 93);
+            buttonFans.Margin = new Padding(2, 1, 2, 1);
             buttonFans.Name = "buttonFans";
-            buttonFans.Size = new Size(210, 48);
+            buttonFans.Size = new Size(105, 24);
             buttonFans.TabIndex = 28;
             buttonFans.Text = "Fans and Power";
             buttonFans.UseVisualStyleBackColor = false;
@@ -526,27 +526,29 @@
             buttonKeyboard.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             buttonKeyboard.BackColor = SystemColors.ButtonFace;
             buttonKeyboard.FlatAppearance.BorderSize = 0;
-            buttonKeyboard.Location = new Point(486, 765);
-            buttonKeyboard.Margin = new Padding(4, 2, 4, 2);
+            buttonKeyboard.Location = new Point(243, 382);
+            buttonKeyboard.Margin = new Padding(2, 1, 2, 1);
             buttonKeyboard.Name = "buttonKeyboard";
-            buttonKeyboard.Size = new Size(209, 48);
+            buttonKeyboard.Size = new Size(104, 24);
             buttonKeyboard.TabIndex = 29;
             buttonKeyboard.Text = "Extra";
             buttonKeyboard.UseVisualStyleBackColor = false;
             // 
             // pictureColor
             // 
-            pictureColor.Location = new Point(431, 781);
+            pictureColor.Location = new Point(216, 390);
+            pictureColor.Margin = new Padding(2, 2, 2, 2);
             pictureColor.Name = "pictureColor";
-            pictureColor.Size = new Size(20, 20);
+            pictureColor.Size = new Size(10, 10);
             pictureColor.TabIndex = 30;
             pictureColor.TabStop = false;
             // 
             // pictureColor2
             // 
-            pictureColor2.Location = new Point(405, 781);
+            pictureColor2.Location = new Point(202, 390);
+            pictureColor2.Margin = new Padding(2, 2, 2, 2);
             pictureColor2.Name = "pictureColor2";
-            pictureColor2.Size = new Size(20, 20);
+            pictureColor2.Size = new Size(10, 10);
             pictureColor2.TabIndex = 31;
             pictureColor2.TabStop = false;
             // 
@@ -555,9 +557,10 @@
             labelVersion.AutoSize = true;
             labelVersion.Font = new Font("Segoe UI", 9F, FontStyle.Underline, GraphicsUnit.Point);
             labelVersion.ForeColor = SystemColors.ControlDark;
-            labelVersion.Location = new Point(36, 1088);
+            labelVersion.Location = new Point(18, 544);
+            labelVersion.Margin = new Padding(2, 0, 2, 0);
             labelVersion.Name = "labelVersion";
-            labelVersion.Size = new Size(44, 32);
+            labelVersion.Size = new Size(22, 15);
             labelVersion.TabIndex = 32;
             labelVersion.Text = "v.0";
             // 
@@ -565,10 +568,10 @@
             // 
             pictureMatrix.BackgroundImage = Properties.Resources.icons8_matrix_desktop_48;
             pictureMatrix.BackgroundImageLayout = ImageLayout.Zoom;
-            pictureMatrix.Location = new Point(36, 858);
-            pictureMatrix.Margin = new Padding(4, 2, 4, 2);
+            pictureMatrix.Location = new Point(18, 429);
+            pictureMatrix.Margin = new Padding(2, 1, 2, 1);
             pictureMatrix.Name = "pictureMatrix";
-            pictureMatrix.Size = new Size(36, 36);
+            pictureMatrix.Size = new Size(18, 18);
             pictureMatrix.TabIndex = 34;
             pictureMatrix.TabStop = false;
             // 
@@ -576,10 +579,10 @@
             // 
             labelMatrix.AutoSize = true;
             labelMatrix.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            labelMatrix.Location = new Point(78, 858);
-            labelMatrix.Margin = new Padding(4, 0, 4, 0);
+            labelMatrix.Location = new Point(39, 429);
+            labelMatrix.Margin = new Padding(2, 0, 2, 0);
             labelMatrix.Name = "labelMatrix";
-            labelMatrix.Size = new Size(170, 32);
+            labelMatrix.Size = new Size(83, 15);
             labelMatrix.TabIndex = 33;
             labelMatrix.Text = "Anime Matrix";
             // 
@@ -587,12 +590,12 @@
             // 
             comboMatrix.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
             comboMatrix.FormattingEnabled = true;
-            comboMatrix.ItemHeight = 32;
+            comboMatrix.ItemHeight = 15;
             comboMatrix.Items.AddRange(new object[] { "Off", "Dim", "Medium", "Bright" });
-            comboMatrix.Location = new Point(30, 910);
+            comboMatrix.Location = new Point(15, 455);
             comboMatrix.Margin = new Padding(0);
             comboMatrix.Name = "comboMatrix";
-            comboMatrix.Size = new Size(211, 40);
+            comboMatrix.Size = new Size(108, 23);
             comboMatrix.TabIndex = 35;
             comboMatrix.TabStop = false;
             // 
@@ -600,12 +603,12 @@
             // 
             comboMatrixRunning.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
             comboMatrixRunning.FormattingEnabled = true;
-            comboMatrixRunning.ItemHeight = 32;
+            comboMatrixRunning.ItemHeight = 15;
             comboMatrixRunning.Items.AddRange(new object[] { "Binary Banner", "Rog Logo", "Picture" });
-            comboMatrixRunning.Location = new Point(257, 910);
+            comboMatrixRunning.Location = new Point(128, 455);
             comboMatrixRunning.Margin = new Padding(0);
             comboMatrixRunning.Name = "comboMatrixRunning";
-            comboMatrixRunning.Size = new Size(211, 40);
+            comboMatrixRunning.Size = new Size(108, 23);
             comboMatrixRunning.TabIndex = 36;
             comboMatrixRunning.TabStop = false;
             // 
@@ -614,19 +617,19 @@
             buttonMatrix.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             buttonMatrix.BackColor = SystemColors.ButtonFace;
             buttonMatrix.FlatAppearance.BorderSize = 0;
-            buttonMatrix.Location = new Point(486, 905);
-            buttonMatrix.Margin = new Padding(4, 2, 4, 2);
+            buttonMatrix.Location = new Point(243, 452);
+            buttonMatrix.Margin = new Padding(2, 1, 2, 1);
             buttonMatrix.Name = "buttonMatrix";
-            buttonMatrix.Size = new Size(209, 48);
+            buttonMatrix.Size = new Size(104, 24);
             buttonMatrix.TabIndex = 37;
             buttonMatrix.Text = "Picture";
             buttonMatrix.UseVisualStyleBackColor = false;
             // 
             // SettingsForm
             // 
-            AutoScaleDimensions = new SizeF(192F, 192F);
+            AutoScaleDimensions = new SizeF(96F, 96F);
             AutoScaleMode = AutoScaleMode.Dpi;
-            ClientSize = new Size(736, 1203);
+            ClientSize = new Size(368, 602);
             Controls.Add(buttonMatrix);
             Controls.Add(comboMatrixRunning);
             Controls.Add(comboMatrix);
@@ -662,12 +665,12 @@
             Controls.Add(trackBattery);
             Controls.Add(checkStartup);
             FormBorderStyle = FormBorderStyle.FixedSingle;
-            Margin = new Padding(4, 2, 4, 2);
+            Margin = new Padding(2, 1, 2, 1);
             MaximizeBox = false;
             MdiChildrenMinimizedAnchorBottom = false;
             MinimizeBox = false;
             Name = "SettingsForm";
-            Padding = new Padding(8, 12, 8, 12);
+            Padding = new Padding(4, 6, 4, 6);
             ShowIcon = false;
             StartPosition = FormStartPosition.CenterScreen;
             Text = "G-Helper";

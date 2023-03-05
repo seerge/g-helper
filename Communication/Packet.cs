@@ -1,8 +1,5 @@
 ﻿// Source thanks to https://github.com/vddCore/Starlight :)
 
-using System.ComponentModel;
-using HidSharp;
-
 namespace Starlight.Communication
 {
     public abstract class Packet
@@ -20,7 +17,7 @@ namespace Starlight.Communication
                     "Packet length must be at least 1."
                 );
             }
-            
+
             Data = new byte[packetLength];
             Data[0] = reportId;
 
@@ -33,7 +30,7 @@ namespace Starlight.Communication
                         "Your packet length does not allow for initial data to be appended."
                     );
                 }
-                
+
                 AppendData(data);
             }
         }

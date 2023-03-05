@@ -5,7 +5,6 @@ using Starlight.Communication;
 
 namespace Starlight.AnimeMatrix
 {
-
     public class BuiltInAnimation
     {
         public enum Startup
@@ -138,7 +137,6 @@ namespace Starlight.AnimeMatrix
         public void SetLedPlanar(int x, int y, byte value)
         {
             EnsureRowInRange(y);
-            var ledsInRow = Columns(y);
             var start = RowToLinearAddress(y) - EmptyColumns(y);
 
             if (x > EmptyColumns(y))

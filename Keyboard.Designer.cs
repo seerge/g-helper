@@ -91,7 +91,7 @@
             // comboM3
             // 
             comboM3.FormattingEnabled = true;
-            comboM3.Items.AddRange(new object[] { "Volume Mute", "Play / Pause", "Toggle Aura", "Custom" });
+            comboM3.Items.AddRange(new object[] { "Default", "Volume Mute", "Play / Pause", "PrintScreen", "Toggle Aura", "Custom" });
             comboM3.Location = new Point(93, 54);
             comboM3.Name = "comboM3";
             comboM3.Size = new Size(312, 40);

@@ -1,6 +1,5 @@
 ﻿// Source thanks to https://github.com/vddCore/Starlight :)
 
-
 using Starlight.Communication.Platform;
 
 namespace Starlight.Communication
