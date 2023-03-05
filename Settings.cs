@@ -1,12 +1,8 @@
 ﻿using Starlight.AnimeMatrix;
 using System.Diagnostics;
+using System.Drawing.Imaging;
 using System.Reflection;
 using System.Timers;
-using System.Drawing.Imaging;
-using System.CodeDom.Compiler;
-using System.Drawing;
-using System;
-using System.Globalization;
 
 namespace GHelper
 {
@@ -22,8 +18,7 @@ namespace GHelper
         static int buttonActive = 5;
 
         static System.Timers.Timer aTimer = default!;
-
-        static System.Timers.Timer matrixTimer = default!;
+        static System.Timers.Timer matrixTimer = new System.Timers.Timer(100);
 
         public string perfName = "Balanced";
 
@@ -96,9 +91,16 @@ namespace GHelper
 
             buttonMatrix.Click += ButtonMatrix_Click;
 
+            matrixTimer.Enabled = false;
+            matrixTimer.Elapsed += MatrixTimer_Elapsed;
 
             SetTimer();
 
+        }
+
+        private void MatrixTimer_Elapsed(object? sender, ElapsedEventArgs e)
+        {
+            mat.PresentNextFrame();
         }
 
         void SetMatrixPicture(string fileName)
@@ -115,7 +117,8 @@ namespace GHelper
                     ms.Position = 0;
                     image = Image.FromStream(ms);
                 }
-            } catch
+            }
+            catch
             {
                 Debug.WriteLine("Error loading picture");
                 return;
@@ -125,7 +128,7 @@ namespace GHelper
             mat.ClearFrames();
 
             FrameDimension dimension = new FrameDimension(image.FrameDimensionsList[0]);
-            int frameCount = image.GetFrameCount(dimension);                   
+            int frameCount = image.GetFrameCount(dimension);
 
             if (frameCount > 1)
             {
@@ -135,20 +138,11 @@ namespace GHelper
                     mat.GenerateFrame(image);
                     mat.AddFrame();
                 }
-
-                matrixTimer = new System.Timers.Timer(50);
                 matrixTimer.Enabled = true;
-                matrixTimer.Elapsed += delegate
-                {
-                    mat.PresentNextFrame();
-                };
-            } else
+            }
+            else
             {
-                if (matrixTimer is not null)
-                {
-                    matrixTimer.Enabled = false;
-                    matrixTimer.Dispose();
-                }
+                matrixTimer.Enabled = false;
 
                 mat.GenerateFrame(image);
                 mat.Present();
