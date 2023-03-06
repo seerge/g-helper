@@ -44,7 +44,7 @@ namespace GHelper
             Visible = true
         };
 
-        public static ASUSWmi wmi = new ASUSWmi();
+        public static ASUSWmi wmi;
         public static AppConfig config = new AppConfig();
 
         public static SettingsForm settingsForm = new SettingsForm();
@@ -53,6 +53,21 @@ namespace GHelper
         // The main entry point for the application
         public static void Main()
         {
+            try
+            {
+                wmi = new ASUSWmi();
+            } catch {
+                DialogResult dialogResult = MessageBox.Show("Can't connect to ASUS ACPI. Application can't function without it. Try to install Asus System Controll Interface", "Startup Error", MessageBoxButtons.YesNo);
+                if (dialogResult == DialogResult.Yes)
+                {
+                    Process.Start(new ProcessStartInfo("https://www.asus.com/support/FAQ/1047338/") { UseShellExecute = true });
+                } 
+
+                Application.Exit();
+                return;
+
+            }
+
 
             trayIcon.MouseClick += TrayIcon_MouseClick; ;
 
