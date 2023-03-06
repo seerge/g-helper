@@ -1,7 +1,6 @@
 using Microsoft.Win32;
 using System.Diagnostics;
 using System.Management;
-using Starlight.AnimeMatrix;
 
 public class HardwareMonitor
 {
@@ -56,12 +55,14 @@ namespace GHelper
             try
             {
                 wmi = new ASUSWmi();
-            } catch {
+            }
+            catch
+            {
                 DialogResult dialogResult = MessageBox.Show("Can't connect to ASUS ACPI. Application can't function without it. Try to install Asus System Controll Interface", "Startup Error", MessageBoxButtons.YesNo);
                 if (dialogResult == DialogResult.Yes)
                 {
                     Process.Start(new ProcessStartInfo("https://www.asus.com/support/FAQ/1047338/") { UseShellExecute = true });
-                } 
+                }
 
                 Application.Exit();
                 return;
@@ -99,7 +100,7 @@ namespace GHelper
             settingsForm.AutoScreen(isPlugged);
             settingsForm.AutoPerformance(isPlugged);
 
-            settingsForm.SetAnimeMatrix();
+            settingsForm.SetMatrix(isPlugged);
 
             settingsForm.SetBatteryChargeLimit(config.getConfig("charge_limit"));
         }
@@ -136,7 +137,8 @@ namespace GHelper
             try
             {
                 intKey = Convert.ToInt32(command, 16);
-            } catch
+            }
+            catch
             {
                 intKey = -1;
             }

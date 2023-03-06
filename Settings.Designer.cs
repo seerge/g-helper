@@ -30,6 +30,7 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SettingsForm));
             panelMatrix = new Panel();
+            checkMatrix = new CheckBox();
             tableLayoutMatrix = new TableLayoutPanel();
             buttonMatrix = new Button();
             comboMatrixRunning = new ComboBox();
@@ -107,6 +108,7 @@
             // 
             // panelMatrix
             // 
+            panelMatrix.Controls.Add(checkMatrix);
             panelMatrix.Controls.Add(tableLayoutMatrix);
             panelMatrix.Controls.Add(pictureMatrix);
             panelMatrix.Controls.Add(labelMatrix);
@@ -114,8 +116,20 @@
             panelMatrix.Location = new Point(16, 806);
             panelMatrix.Margin = new Padding(4);
             panelMatrix.Name = "panelMatrix";
-            panelMatrix.Size = new Size(722, 148);
+            panelMatrix.Size = new Size(722, 156);
             panelMatrix.TabIndex = 33;
+            // 
+            // checkMatrix
+            // 
+            checkMatrix.AutoSize = true;
+            checkMatrix.ForeColor = SystemColors.GrayText;
+            checkMatrix.Location = new Point(26, 112);
+            checkMatrix.Margin = new Padding(4, 2, 4, 2);
+            checkMatrix.Name = "checkMatrix";
+            checkMatrix.Size = new Size(249, 36);
+            checkMatrix.TabIndex = 44;
+            checkMatrix.Text = "Turn off on battery";
+            checkMatrix.UseVisualStyleBackColor = true;
             // 
             // tableLayoutMatrix
             // 
@@ -206,7 +220,7 @@
             panelBattery.Controls.Add(labelBatteryTitle);
             panelBattery.Controls.Add(trackBattery);
             panelBattery.Dock = DockStyle.Top;
-            panelBattery.Location = new Point(16, 954);
+            panelBattery.Location = new Point(16, 962);
             panelBattery.Margin = new Padding(4);
             panelBattery.Name = "panelBattery";
             panelBattery.Size = new Size(722, 148);
@@ -277,7 +291,7 @@
             panelFooter.Controls.Add(buttonQuit);
             panelFooter.Controls.Add(checkStartup);
             panelFooter.Dock = DockStyle.Top;
-            panelFooter.Location = new Point(16, 1102);
+            panelFooter.Location = new Point(16, 1110);
             panelFooter.Margin = new Padding(4);
             panelFooter.Name = "panelFooter";
             panelFooter.Size = new Size(722, 64);
@@ -338,7 +352,7 @@
             // 
             checkBoost.AutoSize = true;
             checkBoost.ForeColor = SystemColors.GrayText;
-            checkBoost.Location = new Point(27, 158);
+            checkBoost.Location = new Point(27, 154);
             checkBoost.Margin = new Padding(4, 2, 4, 2);
             checkBoost.Name = "checkBoost";
             checkBoost.Size = new Size(320, 36);
@@ -462,7 +476,7 @@
             // 
             checkGPU.AutoSize = true;
             checkGPU.ForeColor = SystemColors.GrayText;
-            checkGPU.Location = new Point(27, 156);
+            checkGPU.Location = new Point(27, 154);
             checkGPU.Margin = new Padding(4, 2, 4, 2);
             checkGPU.Name = "checkGPU";
             checkGPU.Size = new Size(550, 36);
@@ -581,7 +595,7 @@
             // 
             checkScreen.AutoSize = true;
             checkScreen.ForeColor = SystemColors.GrayText;
-            checkScreen.Location = new Point(27, 156);
+            checkScreen.Location = new Point(27, 154);
             checkScreen.Margin = new Padding(4, 2, 4, 2);
             checkScreen.Name = "checkScreen";
             checkScreen.Size = new Size(527, 36);
@@ -896,5 +910,6 @@
         private PictureBox pictureColor2;
         private PictureBox pictureColor;
         private Button buttonKeyboardColor;
+        private CheckBox checkMatrix;
     }
 }

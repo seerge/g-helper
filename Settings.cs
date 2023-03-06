@@ -89,10 +89,19 @@ namespace GHelper
             comboMatrix.DropDownClosed += ComboMatrix_SelectedValueChanged;
             comboMatrixRunning.DropDownClosed += ComboMatrixRunning_SelectedValueChanged;
 
+            checkMatrix.CheckedChanged += CheckMatrix_CheckedChanged; ;
+
             buttonMatrix.Click += ButtonMatrix_Click;
 
             SetTimer();
 
+        }
+
+        private void CheckMatrix_CheckedChanged(object? sender, EventArgs e)
+        {
+            if (sender is null) return;
+            CheckBox check = (CheckBox)sender;
+            Program.config.setConfig("matrix_auto", check.Checked ? 1 : 0);
         }
 
         private static void StartMatrixTimer()
@@ -194,23 +203,24 @@ namespace GHelper
         private void ComboMatrixRunning_SelectedValueChanged(object? sender, EventArgs e)
         {
             Program.config.setConfig("matrix_running", comboMatrixRunning.SelectedIndex);
-            SetAnimeMatrix();
+            SetMatrix();
         }
 
 
         private void ComboMatrix_SelectedValueChanged(object? sender, EventArgs e)
         {
             Program.config.setConfig("matrix_brightness", comboMatrix.SelectedIndex);
-            SetAnimeMatrix();
+            SetMatrix();
         }
 
-        public void SetAnimeMatrix()
+        public void SetMatrix(PowerLineStatus Plugged = PowerLineStatus.Online)
         {
 
             if (mat is null) return;
 
             int brightness = Program.config.getConfig("matrix_brightness");
             int running = Program.config.getConfig("matrix_running");
+            bool auto = Program.config.getConfig("matrix_auto") == 1;
 
             if (brightness < 0) brightness = 0;
             if (running < 0) running = 0;
@@ -224,7 +234,7 @@ namespace GHelper
 
             StopMatrixTimer();
 
-            if (brightness == 0)
+            if (brightness == 0 || (auto && Plugged != PowerLineStatus.Online))
             {
                 mat.SetDisplayState(false);
             }
@@ -384,6 +394,8 @@ namespace GHelper
 
                 comboMatrix.SelectedIndex = (brightness != -1) ? brightness : 0;
                 comboMatrixRunning.SelectedIndex = (running != -1) ? running : 0;
+
+                checkMatrix.Checked = (Program.config.getConfig("matrix_auto") == 1);
             }
 
         }
@@ -970,37 +982,24 @@ namespace GHelper
 
         private void trackBatteryChange(object? sender, EventArgs e)
         {
-            if (sender is null)
-                return;
-
+            if (sender is null) return;
             TrackBar bar = (TrackBar)sender;
             SetBatteryChargeLimit(bar.Value);
         }
 
         private void checkGPU_CheckedChanged(object? sender, EventArgs e)
         {
-            if (sender is null)
-                return;
-
-            CheckBox chk = (CheckBox)sender;
-            if (chk.Checked)
-                Program.config.setConfig("gpu_auto", 1);
-            else
-                Program.config.setConfig("gpu_auto", 0);
+            if (sender is null) return;
+            CheckBox check = (CheckBox)sender;
+            Program.config.setConfig("gpu_auto", check.Checked ? 1 : 0);
         }
 
 
         private void checkScreen_CheckedChanged(object? sender, EventArgs e)
         {
-
-            if (sender is null)
-                return;
-
-            CheckBox chk = (CheckBox)sender;
-            if (chk.Checked)
-                Program.config.setConfig("screen_auto", 1);
-            else
-                Program.config.setConfig("screen_auto", 0);
+            if (sender is null) return;
+            CheckBox check = (CheckBox)sender;
+            Program.config.setConfig("screen_auto", check.Checked ? 1 : 0);
         }
 
 
