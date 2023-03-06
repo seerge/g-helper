@@ -25,7 +25,8 @@ namespace GHelper
         Fans fans;
         Keyboard keyb;
 
-        static AnimeMatrixDevice mat = new AnimeMatrixDevice();
+        static AnimeMatrixDevice mat;
+        static bool matEnabled = false;
 
 
         public SettingsForm()
@@ -90,12 +91,6 @@ namespace GHelper
 
             buttonMatrix.Click += ButtonMatrix_Click;
 
-            matrixTimer = new System.Timers.Timer();
-            matrixTimer.Enabled = false;
-            matrixTimer.Interval = 100;
-            matrixTimer.Elapsed += MatrixTimer_Elapsed;
-
-
             SetTimer();
 
         }
@@ -112,11 +107,14 @@ namespace GHelper
 
         private static void MatrixTimer_Elapsed(object? sender, ElapsedEventArgs e)
         {
+            if (mat is null) return;
             mat.PresentNextFrame();
         }
 
         void SetMatrixPicture(string fileName)
         {
+
+            if (mat is null) return;
 
             StopMatrixTimer();
 
@@ -156,7 +154,7 @@ namespace GHelper
                 StartMatrixTimer();
             }
             else
-            { 
+            {
                 mat.GenerateFrame(image);
                 mat.Present();
             }
@@ -208,6 +206,8 @@ namespace GHelper
 
         public void SetAnimeMatrix()
         {
+
+            if (mat is null) return;
 
             int brightness = Program.config.getConfig("matrix_brightness");
             int running = Program.config.getConfig("matrix_running");
@@ -356,11 +356,36 @@ namespace GHelper
 
         public void InitMatrix()
         {
-            int brightness = Program.config.getConfig("matrix_brightness");
-            int running = Program.config.getConfig("matrix_running");
 
-            comboMatrix.SelectedIndex = (brightness != -1) ? brightness : 0;
-            comboMatrixRunning.SelectedIndex = (running != -1) ? running : 0;
+            matrixTimer = new System.Timers.Timer();
+            matrixTimer.Enabled = false;
+            matrixTimer.Interval = 100;
+
+            try
+            {
+                matEnabled = true;
+                mat = new AnimeMatrixDevice();
+                matrixTimer.Elapsed += MatrixTimer_Elapsed;
+            }
+            catch
+            {
+                matEnabled = false;
+                Debug.WriteLine("Anime Matrix not detected");
+            }
+
+            if (!matEnabled)
+            {
+                panelMatrix.Visible = false;
+            }
+            else
+            {
+                int brightness = Program.config.getConfig("matrix_brightness");
+                int running = Program.config.getConfig("matrix_running");
+
+                comboMatrix.SelectedIndex = (brightness != -1) ? brightness : 0;
+                comboMatrixRunning.SelectedIndex = (running != -1) ? running : 0;
+            }
+
         }
 
 
