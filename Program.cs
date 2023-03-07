@@ -96,6 +96,9 @@ namespace GHelper
         private static void SetAutoModes()
         {
             PowerLineStatus isPlugged = SystemInformation.PowerStatus.PowerLineStatus;
+
+            Debug.WriteLine(isPlugged.ToString());
+
             settingsForm.AutoGPUMode(isPlugged);
             settingsForm.AutoScreen(isPlugged);
             settingsForm.AutoPerformance(isPlugged);

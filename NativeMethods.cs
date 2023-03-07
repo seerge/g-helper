@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Management;
 using System.Runtime.InteropServices;
+using System.Windows.Forms;
 
 public class NativeMethods
 {
@@ -258,24 +259,25 @@ public class NativeMethods
         {
             if ((d.StateFlags & DisplayDeviceStateFlags.AttachedToDesktop) != 0)
             {
+                //Debug.WriteLine(d.DeviceID);
+                //Debug.WriteLine(d.DeviceName);
                 if (counter == deviceNum)
                 {
                     laptopScreen = d.DeviceName;
-                    //Debug.WriteLine(d.DeviceID);
-                    //Debug.WriteLine(d.DeviceName);
                 }
                 counter++;
             }
 
         }
 
-        /*
-        if (laptopScreen is null)
+        // Mismatch between active screens and enumerated screens, fallback to old method
+        if (counter != activeScreens.Count)
         {
-            foreach (var screen in screens)
-                Debug.WriteLine(screen.DeviceName);
+            laptopScreen = null;
+            foreach (var screen in Screen.AllScreens)
+                if (screen.DeviceName == laptopScreenName)
+                    laptopScreen = screen.DeviceName;
         }
-        */
 
         return laptopScreen;
     }
