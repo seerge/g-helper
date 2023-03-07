@@ -28,36 +28,40 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea4 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
             chartCPU = new System.Windows.Forms.DataVisualization.Charting.Chart();
             buttonApply = new Button();
             buttonReset = new Button();
             chartGPU = new System.Windows.Forms.DataVisualization.Charting.Chart();
             groupBox1 = new GroupBox();
+            panelCPU = new Panel();
+            labelCPU = new Label();
+            label2 = new Label();
+            trackCPU = new TrackBar();
+            panelTotal = new Panel();
+            labelTotal = new Label();
+            label1 = new Label();
+            trackTotal = new TrackBar();
             labelApplied = new Label();
             pictureFine = new PictureBox();
             labelInfo = new Label();
-            labelCPU = new Label();
-            labelTotal = new Label();
-            label2 = new Label();
-            label1 = new Label();
-            trackCPU = new TrackBar();
-            trackTotal = new TrackBar();
             buttonApplyPower = new Button();
             checkAuto = new CheckBox();
             ((System.ComponentModel.ISupportInitialize)chartCPU).BeginInit();
             ((System.ComponentModel.ISupportInitialize)chartGPU).BeginInit();
             groupBox1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)pictureFine).BeginInit();
+            panelCPU.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)trackCPU).BeginInit();
+            panelTotal.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)trackTotal).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)pictureFine).BeginInit();
             SuspendLayout();
             // 
             // chartCPU
             // 
-            chartArea1.Name = "ChartArea1";
-            chartCPU.ChartAreas.Add(chartArea1);
+            chartArea3.Name = "ChartArea1";
+            chartCPU.ChartAreas.Add(chartArea3);
             chartCPU.Location = new Point(390, 28);
             chartCPU.Margin = new Padding(4, 2, 4, 2);
             chartCPU.Name = "chartCPU";
@@ -87,8 +91,8 @@
             // 
             // chartGPU
             // 
-            chartArea2.Name = "ChartArea1";
-            chartGPU.ChartAreas.Add(chartArea2);
+            chartArea4.Name = "ChartArea1";
+            chartGPU.ChartAreas.Add(chartArea4);
             chartGPU.Location = new Point(390, 480);
             chartGPU.Margin = new Padding(4, 2, 4, 2);
             chartGPU.Name = "chartGPU";
@@ -98,15 +102,11 @@
             // 
             // groupBox1
             // 
+            groupBox1.Controls.Add(panelCPU);
+            groupBox1.Controls.Add(panelTotal);
             groupBox1.Controls.Add(labelApplied);
             groupBox1.Controls.Add(pictureFine);
             groupBox1.Controls.Add(labelInfo);
-            groupBox1.Controls.Add(labelCPU);
-            groupBox1.Controls.Add(labelTotal);
-            groupBox1.Controls.Add(label2);
-            groupBox1.Controls.Add(label1);
-            groupBox1.Controls.Add(trackCPU);
-            groupBox1.Controls.Add(trackTotal);
             groupBox1.Location = new Point(12, 12);
             groupBox1.Margin = new Padding(4, 2, 4, 2);
             groupBox1.Name = "groupBox1";
@@ -116,11 +116,104 @@
             groupBox1.TabStop = false;
             groupBox1.Text = "Power Limits (PPT)";
             // 
+            // panelCPU
+            // 
+            panelCPU.Controls.Add(labelCPU);
+            panelCPU.Controls.Add(label2);
+            panelCPU.Controls.Add(trackCPU);
+            panelCPU.Location = new Point(186, 72);
+            panelCPU.Name = "panelCPU";
+            panelCPU.Size = new Size(160, 510);
+            panelCPU.TabIndex = 15;
+            // 
+            // labelCPU
+            // 
+            labelCPU.AutoSize = true;
+            labelCPU.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            labelCPU.Location = new Point(43, 41);
+            labelCPU.Margin = new Padding(4, 0, 4, 0);
+            labelCPU.Name = "labelCPU";
+            labelCPU.Size = new Size(61, 32);
+            labelCPU.TabIndex = 13;
+            labelCPU.Text = "CPU";
+            labelCPU.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.Location = new Point(45, 7);
+            label2.Margin = new Padding(4, 0, 4, 0);
+            label2.Name = "label2";
+            label2.Size = new Size(58, 32);
+            label2.TabIndex = 12;
+            label2.Text = "CPU";
+            label2.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // trackCPU
+            // 
+            trackCPU.Location = new Point(47, 89);
+            trackCPU.Margin = new Padding(4, 2, 4, 2);
+            trackCPU.Maximum = 85;
+            trackCPU.Minimum = 15;
+            trackCPU.Name = "trackCPU";
+            trackCPU.Orientation = Orientation.Vertical;
+            trackCPU.Size = new Size(90, 416);
+            trackCPU.TabIndex = 11;
+            trackCPU.TickFrequency = 5;
+            trackCPU.Value = 80;
+            // 
+            // panelTotal
+            // 
+            panelTotal.Controls.Add(labelTotal);
+            panelTotal.Controls.Add(label1);
+            panelTotal.Controls.Add(trackTotal);
+            panelTotal.Location = new Point(8, 72);
+            panelTotal.Name = "panelTotal";
+            panelTotal.Size = new Size(160, 511);
+            panelTotal.TabIndex = 14;
+            // 
+            // labelTotal
+            // 
+            labelTotal.AutoSize = true;
+            labelTotal.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            labelTotal.Location = new Point(46, 41);
+            labelTotal.Margin = new Padding(4, 0, 4, 0);
+            labelTotal.Name = "labelTotal";
+            labelTotal.Size = new Size(70, 32);
+            labelTotal.TabIndex = 12;
+            labelTotal.Text = "Total";
+            labelTotal.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Location = new Point(48, 7);
+            label1.Margin = new Padding(4, 0, 4, 0);
+            label1.Name = "label1";
+            label1.Size = new Size(65, 32);
+            label1.TabIndex = 11;
+            label1.Text = "Total";
+            label1.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // trackTotal
+            // 
+            trackTotal.Location = new Point(44, 89);
+            trackTotal.Margin = new Padding(4, 2, 4, 2);
+            trackTotal.Maximum = 150;
+            trackTotal.Minimum = 15;
+            trackTotal.Name = "trackTotal";
+            trackTotal.Orientation = Orientation.Vertical;
+            trackTotal.Size = new Size(90, 416);
+            trackTotal.TabIndex = 10;
+            trackTotal.TickFrequency = 5;
+            trackTotal.TickStyle = TickStyle.TopLeft;
+            trackTotal.Value = 125;
+            // 
             // labelApplied
             // 
             labelApplied.AutoSize = true;
             labelApplied.ForeColor = Color.Tomato;
-            labelApplied.Location = new Point(16, 36);
+            labelApplied.Location = new Point(13, 36);
             labelApplied.Margin = new Padding(4, 0, 4, 0);
             labelApplied.Name = "labelApplied";
             labelApplied.Size = new Size(143, 32);
@@ -152,79 +245,6 @@
             labelInfo.TabIndex = 11;
             labelInfo.Text = "label";
             // 
-            // labelCPU
-            // 
-            labelCPU.AutoSize = true;
-            labelCPU.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            labelCPU.Location = new Point(212, 118);
-            labelCPU.Margin = new Padding(4, 0, 4, 0);
-            labelCPU.Name = "labelCPU";
-            labelCPU.Size = new Size(61, 32);
-            labelCPU.TabIndex = 10;
-            labelCPU.Text = "CPU";
-            labelCPU.TextAlign = ContentAlignment.MiddleCenter;
-            // 
-            // labelTotal
-            // 
-            labelTotal.AutoSize = true;
-            labelTotal.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            labelTotal.Location = new Point(42, 118);
-            labelTotal.Margin = new Padding(4, 0, 4, 0);
-            labelTotal.Name = "labelTotal";
-            labelTotal.Size = new Size(70, 32);
-            labelTotal.TabIndex = 9;
-            labelTotal.Text = "Total";
-            labelTotal.TextAlign = ContentAlignment.MiddleCenter;
-            // 
-            // label2
-            // 
-            label2.AutoSize = true;
-            label2.Location = new Point(216, 86);
-            label2.Margin = new Padding(4, 0, 4, 0);
-            label2.Name = "label2";
-            label2.Size = new Size(58, 32);
-            label2.TabIndex = 8;
-            label2.Text = "CPU";
-            label2.TextAlign = ContentAlignment.MiddleCenter;
-            // 
-            // label1
-            // 
-            label1.AutoSize = true;
-            label1.Location = new Point(44, 86);
-            label1.Margin = new Padding(4, 0, 4, 0);
-            label1.Name = "label1";
-            label1.Size = new Size(65, 32);
-            label1.TabIndex = 7;
-            label1.Text = "Total";
-            label1.TextAlign = ContentAlignment.MiddleCenter;
-            // 
-            // trackCPU
-            // 
-            trackCPU.Location = new Point(218, 166);
-            trackCPU.Margin = new Padding(4, 2, 4, 2);
-            trackCPU.Maximum = 85;
-            trackCPU.Minimum = 15;
-            trackCPU.Name = "trackCPU";
-            trackCPU.Orientation = Orientation.Vertical;
-            trackCPU.Size = new Size(90, 416);
-            trackCPU.TabIndex = 6;
-            trackCPU.TickFrequency = 5;
-            trackCPU.Value = 80;
-            // 
-            // trackTotal
-            // 
-            trackTotal.Location = new Point(46, 166);
-            trackTotal.Margin = new Padding(4, 2, 4, 2);
-            trackTotal.Maximum = 150;
-            trackTotal.Minimum = 15;
-            trackTotal.Name = "trackTotal";
-            trackTotal.Orientation = Orientation.Vertical;
-            trackTotal.Size = new Size(90, 416);
-            trackTotal.TabIndex = 5;
-            trackTotal.TickFrequency = 5;
-            trackTotal.TickStyle = TickStyle.TopLeft;
-            trackTotal.Value = 125;
-            // 
             // buttonApplyPower
             // 
             buttonApplyPower.Location = new Point(16, 952);
@@ -238,7 +258,7 @@
             // checkAuto
             // 
             checkAuto.AutoSize = true;
-            checkAuto.Location = new Point(762, 958);
+            checkAuto.Location = new Point(772, 958);
             checkAuto.Margin = new Padding(4, 2, 4, 2);
             checkAuto.Name = "checkAuto";
             checkAuto.Size = new Size(165, 36);
@@ -272,9 +292,13 @@
             ((System.ComponentModel.ISupportInitialize)chartGPU).EndInit();
             groupBox1.ResumeLayout(false);
             groupBox1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)pictureFine).EndInit();
+            panelCPU.ResumeLayout(false);
+            panelCPU.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)trackCPU).EndInit();
+            panelTotal.ResumeLayout(false);
+            panelTotal.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)trackTotal).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pictureFine).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -286,16 +310,18 @@
         private Button buttonReset;
         private System.Windows.Forms.DataVisualization.Charting.Chart chartGPU;
         private GroupBox groupBox1;
-        private Label labelCPU;
-        private Label labelTotal;
-        private Label label2;
-        private Label label1;
-        private TrackBar trackCPU;
-        private TrackBar trackTotal;
         private Button buttonApplyPower;
         private Label labelInfo;
         private PictureBox pictureFine;
         private Label labelApplied;
         private CheckBox checkAuto;
+        private Panel panelTotal;
+        private Label labelTotal;
+        private Label label1;
+        private TrackBar trackTotal;
+        private Panel panelCPU;
+        private Label labelCPU;
+        private Label label2;
+        private TrackBar trackCPU;
     }
 }

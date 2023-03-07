@@ -212,53 +212,57 @@ public class NativeMethods
 
     public static string FindLaptopScreen()
     {
-        //var screens = Screen.AllScreens;
         string laptopScreen = null;
 
         DISPLAY_DEVICE d = new DISPLAY_DEVICE();
         d.cb = Marshal.SizeOf(d);
 
         List<string> activeScreens = new List<string>();
-
-        var searcherActive = new ManagementObjectSearcher(@"\\.\root\wmi", "SELECT * FROM WmiMonitorBasicDisplayParams");
-        var resultsActive = searcherActive.Get();
-        foreach (var result in resultsActive)
-        {
-            activeScreens.Add(result["InstanceName"].ToString());
-        }
-
-        var searcher = new ManagementObjectSearcher(@"\\.\root\wmi", "SELECT * FROM WmiMonitorConnectionParams");
-        var results = searcher.Get();
-
         int counter = 0;
         int deviceNum = -1;
 
-        foreach (var result in results)
+        try
         {
-            long technology;
-            long.TryParse(result["VideoOutputTechnology"].ToString(), out technology);
-            string instanceName = result["InstanceName"].ToString();
-
-            if (technology == 0x80000000 && activeScreens.Contains(instanceName))
+            var searcherActive = new ManagementObjectSearcher(@"\\.\root\wmi", "SELECT * FROM WmiMonitorBasicDisplayParams");
+            var resultsActive = searcherActive.Get();
+            foreach (var result in resultsActive)
             {
-                deviceNum = counter;
-                Debug.WriteLine(result["InstanceName"]);
+                activeScreens.Add(result["InstanceName"].ToString());
             }
-            counter++;
+
+            var searcher = new ManagementObjectSearcher(@"\\.\root\wmi", "SELECT * FROM WmiMonitorConnectionParams");
+            var results = searcher.Get();
+
+
+            foreach (var result in results)
+            {
+                long technology;
+                long.TryParse(result["VideoOutputTechnology"].ToString(), out technology);
+                string instanceName = result["InstanceName"].ToString();
+
+                if (technology == 0x80000000 && activeScreens.Contains(instanceName))
+                {
+                    deviceNum = counter;
+                    //Debug.WriteLine(result["InstanceName"]);
+                }
+                counter++;
+            }
+        } catch
+        {
+            Debug.WriteLine("Failed to detect built in display");
+            deviceNum = 0;
         }
 
         counter = 0;
         for (uint id = 0; EnumDisplayDevicesA(null, id, ref d, 0); id++)
         {
-            //Debug.WriteLine(d.StateFlags);
-
             if ((d.StateFlags & DisplayDeviceStateFlags.AttachedToDesktop) != 0)
             {
                 if (counter == deviceNum)
                 {
                     laptopScreen = d.DeviceName;
-                    Debug.WriteLine(d.DeviceID);
-                    Debug.WriteLine(d.DeviceName);
+                    //Debug.WriteLine(d.DeviceID);
+                    //Debug.WriteLine(d.DeviceName);
                 }
                 counter++;
             }

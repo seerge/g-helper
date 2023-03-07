@@ -145,7 +145,6 @@ namespace GHelper
             Program.wmi.DeviceSet(ASUSWmi.PPT_TotalA1, limit_total);
 
             Program.wmi.DeviceSet(ASUSWmi.PPT_CPUB0, limit_cpu);
-            Program.wmi.DeviceSet(ASUSWmi.PPT_CPUA2, limit_cpu);
 
             labelApplied.ForeColor = Color.Blue;
             labelApplied.Text = "Applied";
@@ -154,6 +153,9 @@ namespace GHelper
 
         public void VisualisePower(bool init = false)
         {
+
+            panelTotal.Visible = (Program.wmi.DeviceGet(ASUSWmi.PPT_TotalA0) >= 0);
+            panelCPU.Visible = (Program.wmi.DeviceGet(ASUSWmi.PPT_CPUB0) >= 0);
 
             int limit_total;
             int limit_cpu;
