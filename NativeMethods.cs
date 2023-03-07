@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Management;
 using System.Runtime.InteropServices;
 
 public class NativeMethods
@@ -160,10 +161,42 @@ public class NativeMethods
             string lpszDeviceName, ref DEVMODE lpDevMode, IntPtr hwnd,
             DisplaySettingsFlags dwflags, IntPtr lParam);
 
+    // ENUM DISPLAYS
+    [DllImport("user32.dll")]
+    static extern bool EnumDisplayDevicesA(string lpDevice, uint iDevNum, ref DISPLAY_DEVICE lpDisplayDevice, uint dwFlags);
 
-    public const int ENUM_CURRENT_SETTINGS = -1;
+    [Flags()]
+    public enum DisplayDeviceStateFlags : int
+    {
+        AttachedToDesktop = 0x1,
+        MultiDriver = 0x2,
+        PrimaryDevice = 0x4,
+        MirroringDriver = 0x8,
+        VGACompatible = 0x10,
+        Removable = 0x20,
+        ModesPruned = 0x8000000,
+        Remote = 0x4000000,
+        Disconnect = 0x2000000
+    }
 
-    public const string laptopScreenName = "\\\\.\\DISPLAY1";
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
+    public struct DISPLAY_DEVICE
+    {
+        [MarshalAs(UnmanagedType.U4)]
+        public int cb;
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)]
+        public string DeviceName;
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 128)]
+        public string DeviceString;
+        [MarshalAs(UnmanagedType.U4)]
+        public DisplayDeviceStateFlags StateFlags;
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 128)]
+        public string DeviceID;
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 128)]
+        public string DeviceKey;
+    }
+
+    // ----
 
     public static DEVMODE CreateDevmode()
     {
@@ -174,34 +207,86 @@ public class NativeMethods
         return dm;
     }
 
-    public static Screen FindLaptopScreen()
-    {
-        var screens = Screen.AllScreens;
-        Screen laptopScreen = null;
+    public const int ENUM_CURRENT_SETTINGS = -1;
+    public const string laptopScreenName = "\\\\.\\DISPLAY1";
 
-        foreach (var screen in screens)
+    public static string FindLaptopScreen()
+    {
+        //var screens = Screen.AllScreens;
+        string laptopScreen = null;
+
+        DISPLAY_DEVICE d = new DISPLAY_DEVICE();
+        d.cb = Marshal.SizeOf(d);
+
+        List<string> activeScreens = new List<string>();
+
+        var searcherActive = new ManagementObjectSearcher(@"\\.\root\wmi", "SELECT * FROM WmiMonitorBasicDisplayParams");
+        var resultsActive = searcherActive.Get();
+        foreach (var result in resultsActive)
         {
-            if (screen.DeviceName == laptopScreenName)
-            {
-                laptopScreen = screen;
-            }
+            activeScreens.Add(result["InstanceName"].ToString());
         }
 
-        if (laptopScreen is null) return null;
-        else return laptopScreen;
+        var searcher = new ManagementObjectSearcher(@"\\.\root\wmi", "SELECT * FROM WmiMonitorConnectionParams");
+        var results = searcher.Get();
+
+        int counter = 0;
+        int deviceNum = -1;
+
+        foreach (var result in results)
+        {
+            long technology;
+            long.TryParse(result["VideoOutputTechnology"].ToString(), out technology);
+            string instanceName = result["InstanceName"].ToString();
+
+            if (technology == 0x80000000 && activeScreens.Contains(instanceName))
+            {
+                deviceNum = counter;
+                Debug.WriteLine(result["InstanceName"]);
+            }
+            counter++;
+        }
+
+        counter = 0;
+        for (uint id = 0; EnumDisplayDevicesA(null, id, ref d, 0); id++)
+        {
+            //Debug.WriteLine(d.StateFlags);
+
+            if ((d.StateFlags & DisplayDeviceStateFlags.AttachedToDesktop) != 0)
+            {
+                if (counter == deviceNum)
+                {
+                    laptopScreen = d.DeviceName;
+                    Debug.WriteLine(d.DeviceID);
+                    Debug.WriteLine(d.DeviceName);
+                }
+                counter++;
+            }
+
+        }
+
+        /*
+        if (laptopScreen is null)
+        {
+            foreach (var screen in screens)
+                Debug.WriteLine(screen.DeviceName);
+        }
+        */
+
+        return laptopScreen;
     }
 
     public static int GetRefreshRate()
     {
         DEVMODE dm = CreateDevmode();
 
-        Screen laptopScreen = FindLaptopScreen();
+        string laptopScreen = FindLaptopScreen();
         int frequency = -1;
 
         if (laptopScreen is null)
             return -1;
 
-        if (0 != NativeMethods.EnumDisplaySettingsEx(laptopScreen.DeviceName, NativeMethods.ENUM_CURRENT_SETTINGS, ref dm))
+        if (0 != NativeMethods.EnumDisplaySettingsEx(laptopScreen, NativeMethods.ENUM_CURRENT_SETTINGS, ref dm))
         {
             frequency = dm.dmDisplayFrequency;
         }
@@ -212,15 +297,15 @@ public class NativeMethods
     public static int SetRefreshRate(int frequency = 120)
     {
         DEVMODE dm = CreateDevmode();
-        Screen laptopScreen = FindLaptopScreen();
+        string laptopScreen = FindLaptopScreen();
 
         if (laptopScreen is null)
             return -1;
 
-        if (0 != NativeMethods.EnumDisplaySettingsEx(laptopScreen.DeviceName, NativeMethods.ENUM_CURRENT_SETTINGS, ref dm))
+        if (0 != NativeMethods.EnumDisplaySettingsEx(laptopScreen, NativeMethods.ENUM_CURRENT_SETTINGS, ref dm))
         {
             dm.dmDisplayFrequency = frequency;
-            int iRet = NativeMethods.ChangeDisplaySettingsEx(laptopScreen.DeviceName, ref dm, IntPtr.Zero, DisplaySettingsFlags.CDS_UPDATEREGISTRY, IntPtr.Zero);
+            int iRet = NativeMethods.ChangeDisplaySettingsEx(laptopScreen, ref dm, IntPtr.Zero, DisplaySettingsFlags.CDS_UPDATEREGISTRY, IntPtr.Zero);
             return iRet;
         }
 
