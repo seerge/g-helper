@@ -1,4 +1,4 @@
-# G-Helper (For Asus ROG Zephyrus G14, G15, Flow X13, Flow X16, and others)
+# G-Helper / GHelper for Asus ROG Zephyrus G14, G15, Flow X13, Flow X16, and other models
 
 A small utility that allows you do almost everyting you could do with Armory Crate but without extra bloat and unnecessary services.
 
