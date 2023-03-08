@@ -42,6 +42,15 @@ public class ASUSWmi
     public const int GPUModeUltimate = 2;
 
 
+    public const int MaxTotal = 150;
+    public const int MinTotal = 15;
+    public const int DefaultTotal = 125;
+
+    public const int MaxCPU = 90;
+    public const int MinCPU = 15;
+    public const int DefaultCPU = 80;
+
+
     [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
     private static extern IntPtr CreateFile(
         string lpFileName,

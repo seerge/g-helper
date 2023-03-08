@@ -3,6 +3,7 @@
 using Starlight.Communication;
 using System.Diagnostics;
 using System.Text;
+using System.Management;
 
 namespace Starlight.AnimeMatrix
 {
@@ -75,11 +76,32 @@ namespace Starlight.AnimeMatrix
         private byte[] _displayBuffer = new byte[UpdatePageLength * 3];
         private List<byte[]> frames = new List<byte[]>();
 
+        private int pages = 3;
+
         private int frameIndex = 0;
 
         public AnimeMatrixDevice()
             : base(0x0B05, 0x193B, 640)
         {
+            string model = GetModel();
+            Debug.WriteLine(model);
+            if (model is not null && model.Contains("401"))
+            {
+                pages = 2;
+            }
+        }
+
+
+        public string GetModel()
+        {
+            using (var searcher = new ManagementObjectSearcher(@"Select * from Win32_ComputerSystem"))
+            {
+                foreach (var process in searcher.Get())
+                    return process["Model"].ToString();
+            }
+
+            return null;
+
         }
 
         public byte[] GetBuffer()
@@ -183,6 +205,7 @@ namespace Starlight.AnimeMatrix
 
         public void Present()
         {
+
             Set(Packet<AnimeMatrixPacket>(0xC0, 0x02)
                 .AppendData(BitConverter.GetBytes((ushort)(UpdatePageLength * 0 + 1)))
                 .AppendData(BitConverter.GetBytes((ushort)UpdatePageLength))
@@ -195,12 +218,13 @@ namespace Starlight.AnimeMatrix
                 .AppendData(_displayBuffer[(UpdatePageLength * 1)..(UpdatePageLength * 2)])
             );
 
-            Set(Packet<AnimeMatrixPacket>(0xC0, 0x02)
-                .AppendData(BitConverter.GetBytes((ushort)(UpdatePageLength * 2 + 1)))
-                .AppendData(BitConverter.GetBytes((ushort)(LedCount - UpdatePageLength * 2)))
-                .AppendData(
-                    _displayBuffer[(UpdatePageLength * 2)..(UpdatePageLength * 2 + (LedCount - UpdatePageLength * 2))])
-            );
+            if (pages > 2)
+                Set(Packet<AnimeMatrixPacket>(0xC0, 0x02)
+                    .AppendData(BitConverter.GetBytes((ushort)(UpdatePageLength * 2 + 1)))
+                    .AppendData(BitConverter.GetBytes((ushort)(LedCount - UpdatePageLength * 2)))
+                    .AppendData(
+                        _displayBuffer[(UpdatePageLength * 2)..(UpdatePageLength * 2 + (LedCount - UpdatePageLength * 2))])
+                );
 
             Set(Packet<AnimeMatrixPacket>(0xC0, 0x03));
         }

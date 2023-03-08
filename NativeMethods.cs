@@ -254,20 +254,27 @@ public class NativeMethods
             deviceNum = 0;
         }
 
-        counter = 0;
-        for (uint id = 0; EnumDisplayDevicesA(null, id, ref d, 0); id++)
-        {
-            if ((d.StateFlags & DisplayDeviceStateFlags.AttachedToDesktop) != 0)
-            {
-                //Debug.WriteLine(d.DeviceID);
-                //Debug.WriteLine(d.DeviceName);
-                if (counter == deviceNum)
-                {
-                    laptopScreen = d.DeviceName;
-                }
-                counter++;
-            }
 
+        try
+        {
+            counter = 0;
+            for (uint id = 0; EnumDisplayDevicesA(null, id, ref d, 0); id++)
+            {
+                if ((d.StateFlags & DisplayDeviceStateFlags.AttachedToDesktop) != 0)
+                {
+                    //Debug.WriteLine(d.DeviceID);
+                    //Debug.WriteLine(d.DeviceName);
+                    if (counter == deviceNum)
+                    {
+                        laptopScreen = d.DeviceName;
+                    }
+                    counter++;
+                }
+
+            }
+        } catch
+        {
+            Debug.WriteLine("Failed to enumerate displays");
         }
 
         // Mismatch between active screens and enumerated screens, fallback to old method

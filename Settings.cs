@@ -693,6 +693,12 @@ namespace GHelper
             int limit_total = Program.config.getConfigPerf("limit_total");
             int limit_cpu = Program.config.getConfigPerf("limit_cpu");
 
+            if (limit_total > ASUSWmi.MaxTotal) return;
+            if (limit_total < ASUSWmi.MinTotal) return;
+
+            if (limit_cpu > ASUSWmi.MaxCPU) return;
+            if (limit_cpu < ASUSWmi.MinCPU) return;
+
             Program.wmi.DeviceSet(ASUSWmi.PPT_TotalA0, limit_total);
             Program.wmi.DeviceSet(ASUSWmi.PPT_TotalA1, limit_total);
             Program.wmi.DeviceSet(ASUSWmi.PPT_CPUB0, limit_cpu);

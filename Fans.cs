@@ -11,14 +11,6 @@ namespace GHelper
         Series seriesCPU;
         Series seriesGPU;
 
-        const int MaxTotal = 150;
-        const int MinTotal = 15;
-        const int DefaultTotal = 125;
-
-        const int MaxCPU = 90;
-        const int MinCPU = 15;
-        const int DefaultCPU = 80;
-
         void SetChart(Chart chart, int device)
         {
 
@@ -91,11 +83,11 @@ namespace GHelper
             buttonReset.Click += ButtonReset_Click;
             buttonApply.Click += ButtonApply_Click;
 
-            trackTotal.Maximum = MaxTotal;
-            trackTotal.Minimum = MinTotal;
+            trackTotal.Maximum = ASUSWmi.MaxTotal;
+            trackTotal.Minimum = ASUSWmi.MinTotal;
 
-            trackCPU.Maximum = MaxCPU;
-            trackCPU.Minimum = MinCPU;
+            trackCPU.Maximum = ASUSWmi.MaxCPU;
+            trackCPU.Minimum = ASUSWmi.MinCPU;
 
             trackCPU.Scroll += TrackCPU_Scroll;
             trackTotal.Scroll += TrackTotal_Scroll;
@@ -167,13 +159,13 @@ namespace GHelper
                 ApplyLabel(apply);
             }
 
-            if (limit_total < 0) limit_total = DefaultTotal;
-            if (limit_total > MaxTotal) limit_total = MaxTotal;
-            if (limit_total < MinTotal) limit_total = MinTotal;
+            if (limit_total < 0) limit_total = ASUSWmi.DefaultTotal;
+            if (limit_total > ASUSWmi.MaxTotal) limit_total = ASUSWmi.MaxTotal;
+            if (limit_total < ASUSWmi.MinTotal) limit_total = ASUSWmi.MinTotal;
 
-            if (limit_cpu < 0) limit_cpu = DefaultCPU;
-            if (limit_cpu > MaxCPU) limit_cpu = MaxCPU;
-            if (limit_cpu < MinCPU) limit_cpu = MinCPU;
+            if (limit_cpu < 0) limit_cpu = ASUSWmi.DefaultCPU;
+            if (limit_cpu > ASUSWmi.MaxCPU) limit_cpu = ASUSWmi.MaxCPU;
+            if (limit_cpu < ASUSWmi.MinCPU) limit_cpu = ASUSWmi.MinCPU;
             if (limit_cpu > limit_total) limit_cpu = limit_total;
 
             trackTotal.Value = limit_total;
