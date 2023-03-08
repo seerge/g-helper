@@ -71,12 +71,16 @@ namespace Starlight.AnimeMatrix
         private const int UpdatePageLength = 0x0278;
 
         public int LedCount => 1450;
-        public int Rows => 61;
 
         private byte[] _displayBuffer = new byte[UpdatePageLength * 3];
         private List<byte[]> frames = new List<byte[]>();
 
         private int pages = 3;
+
+        public int MaxColumns = 34;
+        public int MaxRows = 61;
+
+        public int FullRows = 11;
 
         private int frameIndex = 0;
 
@@ -88,6 +92,10 @@ namespace Starlight.AnimeMatrix
             if (model is not null && model.Contains("401"))
             {
                 pages = 2;
+
+                FullRows = 6;
+                MaxColumns = 33;
+                MaxRows = 55;
             }
         }
 
@@ -137,12 +145,12 @@ namespace Starlight.AnimeMatrix
 
         public int EmptyColumns(int row)
         {
-            return (int)Math.Ceiling(Math.Max(0, row - 11) / 2.0);
+            return (int)Math.Ceiling(Math.Max(0, row - FullRows) / 2.0);
         }
         public int Columns(int row)
         {
             EnsureRowInRange(row);
-            return 34 - EmptyColumns(row);
+            return MaxColumns - EmptyColumns(row);
         }
 
         public int RowToLinearAddress(int row)
@@ -265,8 +273,8 @@ namespace Starlight.AnimeMatrix
         public void GenerateFrame(Image image)
         {
 
-            int width = 34 * 3;
-            int height = 61;
+            int width = MaxColumns * 3;
+            int height = MaxRows;
             float scale;
 
             Bitmap canvas = new Bitmap(width, height);
@@ -283,7 +291,7 @@ namespace Starlight.AnimeMatrix
 
             graph.DrawImage(image, ((int)width - scaleWidth), ((int)height - scaleHeight) / 2, scaleWidth, scaleHeight);
 
-            Bitmap bmp = new Bitmap(canvas, 34, 61);
+            Bitmap bmp = new Bitmap(canvas, MaxColumns, MaxRows);
 
             for (int y = 0; y < bmp.Height; y++)
             {
@@ -299,9 +307,9 @@ namespace Starlight.AnimeMatrix
 
         private void EnsureRowInRange(int row)
         {
-            if (row < 0 || row >= Rows)
+            if (row < 0 || row >= MaxRows)
             {
-                throw new IndexOutOfRangeException($"Y-coordinate should fall in range of [0, {Rows - 1}].");
+                throw new IndexOutOfRangeException($"Y-coordinate should fall in range of [0, {MaxRows - 1}].");
             }
         }
 
