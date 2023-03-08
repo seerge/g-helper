@@ -103,25 +103,30 @@ namespace GHelper
             buttonApplyPower.Click += ButtonApplyPower_Click;
 
             checkAuto.Click += CheckAuto_Click;
+            checkApplyPower.Click += CheckApplyPower_Click;
 
             //labelInfo.MaximumSize = new Size(280, 0);
-            labelInfo.Text = "Power Limits (PPT) is\nexperimental feature.\n\nValues will be applied\nonly after you click 'Apply'\nand reset after performance\nmode changes.\n\nUse carefully and\non your own risk!";
+            labelInfo.Text = "Power Limits (PPT) is\nexperimental feature.\n\nUse carefully and\non your own risk!";
 
-            LoadFans();
-            VisualisePower(true);
+            InitFans();
+            InitPower();
 
             Shown += Fans_Shown;
 
         }
 
+        private void CheckApplyPower_Click(object? sender, EventArgs e)
+        {
+            if (sender is null) return;
+            CheckBox chk = (CheckBox)sender;
+            Program.config.setConfigPerf("auto_apply_power", chk.Checked ? 1 : 0);
+        }
+
         private void CheckAuto_Click(object? sender, EventArgs e)
         {
-            if (sender is null)
-                return;
-
+            if (sender is null) return;
             CheckBox chk = (CheckBox)sender;
-
-            Program.config.setConfig("auto_apply_" + Program.config.getConfig("performance_mode"), chk.Checked ? 1 : 0);
+            Program.config.setConfigPerf("auto_apply", chk.Checked ? 1 : 0);
         }
 
         private void Fans_FormClosing(object? sender, FormClosingEventArgs e)
@@ -135,40 +140,31 @@ namespace GHelper
 
         private void ButtonApplyPower_Click(object? sender, EventArgs e)
         {
-            int limit_total = trackTotal.Value;
-            int limit_cpu = trackCPU.Value;
-
-            Program.config.setConfig("limit_total", limit_total);
-            Program.config.setConfig("limit_cpu", limit_cpu);
-
-            Program.wmi.DeviceSet(ASUSWmi.PPT_TotalA0, limit_total);
-            Program.wmi.DeviceSet(ASUSWmi.PPT_TotalA1, limit_total);
-
-            Program.wmi.DeviceSet(ASUSWmi.PPT_CPUB0, limit_cpu);
-
-            labelApplied.ForeColor = Color.Blue;
-            labelApplied.Text = "Applied";
-
+            Program.settingsForm.SetPower();
+            ApplyLabel(true);
         }
 
-        public void VisualisePower(bool init = false)
+        public void InitPower(bool changed = false)
         {
 
-            panelTotal.Visible = (Program.wmi.DeviceGet(ASUSWmi.PPT_TotalA0) >= 0);
+            panelPower.Visible = (Program.wmi.DeviceGet(ASUSWmi.PPT_TotalA0) >= 0);
             panelCPU.Visible = (Program.wmi.DeviceGet(ASUSWmi.PPT_CPUB0) >= 0);
 
             int limit_total;
             int limit_cpu;
+            bool apply = Program.config.getConfigPerf("auto_apply_power") == 1;
 
-            if (init)
-            {
-                limit_total = Program.config.getConfig("limit_total");
-                limit_cpu = Program.config.getConfig("limit_cpu");
-            }
-            else
+            if (changed)
             {
                 limit_total = trackTotal.Value;
                 limit_cpu = trackCPU.Value;
+                ApplyLabel(false);
+            }
+            else
+            {
+                limit_total = Program.config.getConfigPerf("limit_total");
+                limit_cpu = Program.config.getConfigPerf("limit_cpu");
+                ApplyLabel(apply);
             }
 
             if (limit_total < 0) limit_total = DefaultTotal;
@@ -178,35 +174,48 @@ namespace GHelper
             if (limit_cpu < 0) limit_cpu = DefaultCPU;
             if (limit_cpu > MaxCPU) limit_cpu = MaxCPU;
             if (limit_cpu < MinCPU) limit_cpu = MinCPU;
-
             if (limit_cpu > limit_total) limit_cpu = limit_total;
 
             trackTotal.Value = limit_total;
             trackCPU.Value = limit_cpu;
+            checkApplyPower.Checked = apply;
 
             labelTotal.Text = trackTotal.Value.ToString() + "W";
             labelCPU.Text = trackCPU.Value.ToString() + "W";
-
             pictureFine.Visible = (limit_cpu > 85 || limit_total > 145);
+
+            Program.config.setConfigPerf("limit_total", limit_total);
+            Program.config.setConfigPerf("limit_cpu", limit_cpu);
         }
+
 
         private void TrackTotal_Scroll(object? sender, EventArgs e)
         {
-            VisualisePower();
+            InitPower(true);
         }
 
         private void TrackCPU_Scroll(object? sender, EventArgs e)
         {
-            VisualisePower();
+            InitPower(true);
         }
 
-        public void ResetApplyLabel()
+
+        public void ApplyLabel(bool applied = false)
         {
-            labelApplied.ForeColor = Color.Red;
-            labelApplied.Text = "Not Applied";
+            if (applied)
+            {
+                labelApplied.ForeColor = Color.Blue;
+                labelApplied.Text = "Applied";
+            }
+            else
+            {
+                labelApplied.ForeColor = Color.Red;
+                labelApplied.Text = "Not Applied";
+
+            }
         }
 
-        public void LoadFans()
+        public void InitFans()
         {
 
             SetChart(chartCPU, 0);
@@ -215,7 +224,7 @@ namespace GHelper
             LoadProfile(seriesCPU, 0);
             LoadProfile(seriesGPU, 1);
 
-            int auto_apply = Program.config.getConfig("auto_apply_" + Program.config.getConfig("performance_mode"));
+            int auto_apply = Program.config.getConfigPerf("auto_apply");
 
             checkAuto.Checked = (auto_apply == 1);
 
@@ -277,15 +286,19 @@ namespace GHelper
 
         private void ButtonReset_Click(object? sender, EventArgs e)
         {
+
             LoadProfile(seriesCPU, 0, 1);
             LoadProfile(seriesGPU, 1, 1);
 
             checkAuto.Checked = false;
-            Program.config.setConfig("auto_apply_" + Program.config.getConfig("performance_mode"), 0);
+            checkApplyPower.Checked = false;
+
+            Program.config.setConfigPerf("auto_apply", 0);
+            Program.config.setConfigPerf("auto_apply_power", 0);
 
             Program.wmi.DeviceSet(ASUSWmi.PerformanceMode, Program.config.getConfig("performance_mode"));
 
-            ResetApplyLabel();
+            ApplyLabel(false);
         }
 
         private void ChartCPU_MouseUp(object? sender, MouseEventArgs e)

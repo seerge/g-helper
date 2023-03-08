@@ -28,13 +28,18 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea4 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            chartCPU = new System.Windows.Forms.DataVisualization.Charting.Chart();
-            buttonApply = new Button();
-            buttonReset = new Button();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea5 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea6 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            panelFans = new Panel();
+            checkAuto = new CheckBox();
             chartGPU = new System.Windows.Forms.DataVisualization.Charting.Chart();
-            groupBox1 = new GroupBox();
+            buttonReset = new Button();
+            buttonApply = new Button();
+            chartCPU = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            panelPower = new Panel();
+            labelPowerLimits = new Label();
+            checkApplyPower = new CheckBox();
+            buttonApplyPower = new Button();
             panelCPU = new Panel();
             labelCPU = new Label();
             label2 = new Label();
@@ -46,11 +51,10 @@
             labelApplied = new Label();
             pictureFine = new PictureBox();
             labelInfo = new Label();
-            buttonApplyPower = new Button();
-            checkAuto = new CheckBox();
-            ((System.ComponentModel.ISupportInitialize)chartCPU).BeginInit();
+            panelFans.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)chartGPU).BeginInit();
-            groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)chartCPU).BeginInit();
+            panelPower.SuspendLayout();
             panelCPU.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)trackCPU).BeginInit();
             panelTotal.SuspendLayout();
@@ -58,73 +62,138 @@
             ((System.ComponentModel.ISupportInitialize)pictureFine).BeginInit();
             SuspendLayout();
             // 
-            // chartCPU
+            // panelFans
             // 
-            chartArea3.Name = "ChartArea1";
-            chartCPU.ChartAreas.Add(chartArea3);
-            chartCPU.Location = new Point(390, 28);
-            chartCPU.Margin = new Padding(4, 2, 4, 2);
-            chartCPU.Name = "chartCPU";
-            chartCPU.Size = new Size(832, 436);
-            chartCPU.TabIndex = 0;
-            chartCPU.Text = "chartCPU";
+            panelFans.Controls.Add(checkAuto);
+            panelFans.Controls.Add(chartGPU);
+            panelFans.Controls.Add(buttonReset);
+            panelFans.Controls.Add(buttonApply);
+            panelFans.Controls.Add(chartCPU);
+            panelFans.Dock = DockStyle.Left;
+            panelFans.Location = new Point(363, 0);
+            panelFans.Margin = new Padding(10);
+            panelFans.MinimumSize = new Size(868, 1089);
+            panelFans.Name = "panelFans";
+            panelFans.Padding = new Padding(10);
+            panelFans.Size = new Size(872, 1089);
+            panelFans.TabIndex = 12;
             // 
-            // buttonApply
+            // checkAuto
             // 
-            buttonApply.Location = new Point(946, 952);
-            buttonApply.Margin = new Padding(4, 2, 4, 2);
-            buttonApply.Name = "buttonApply";
-            buttonApply.Size = new Size(274, 44);
-            buttonApply.TabIndex = 1;
-            buttonApply.Text = "Apply Fan Curve";
-            buttonApply.UseVisualStyleBackColor = true;
-            // 
-            // buttonReset
-            // 
-            buttonReset.Location = new Point(390, 952);
-            buttonReset.Margin = new Padding(4, 2, 4, 2);
-            buttonReset.Name = "buttonReset";
-            buttonReset.Size = new Size(274, 44);
-            buttonReset.TabIndex = 2;
-            buttonReset.Text = "Factory Defaults";
-            buttonReset.UseVisualStyleBackColor = true;
+            checkAuto.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            checkAuto.AutoSize = true;
+            checkAuto.Location = new Point(584, 981);
+            checkAuto.Margin = new Padding(4, 2, 4, 2);
+            checkAuto.Name = "checkAuto";
+            checkAuto.Size = new Size(165, 36);
+            checkAuto.TabIndex = 17;
+            checkAuto.Text = "Auto Apply";
+            checkAuto.UseVisualStyleBackColor = true;
             // 
             // chartGPU
             // 
-            chartArea4.Name = "ChartArea1";
-            chartGPU.ChartAreas.Add(chartArea4);
-            chartGPU.Location = new Point(390, 480);
+            chartGPU.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            chartArea5.Name = "ChartArea1";
+            chartGPU.ChartAreas.Add(chartArea5);
+            chartGPU.Location = new Point(22, 502);
             chartGPU.Margin = new Padding(4, 2, 4, 2);
             chartGPU.Name = "chartGPU";
-            chartGPU.Size = new Size(832, 450);
-            chartGPU.TabIndex = 3;
+            chartGPU.Size = new Size(810, 460);
+            chartGPU.TabIndex = 16;
             chartGPU.Text = "chart1";
             // 
-            // groupBox1
+            // buttonReset
             // 
-            groupBox1.Controls.Add(panelCPU);
-            groupBox1.Controls.Add(panelTotal);
-            groupBox1.Controls.Add(labelApplied);
-            groupBox1.Controls.Add(pictureFine);
-            groupBox1.Controls.Add(labelInfo);
-            groupBox1.Location = new Point(12, 12);
-            groupBox1.Margin = new Padding(4, 2, 4, 2);
-            groupBox1.Name = "groupBox1";
-            groupBox1.Padding = new Padding(6, 4, 6, 4);
-            groupBox1.Size = new Size(356, 918);
-            groupBox1.TabIndex = 4;
-            groupBox1.TabStop = false;
-            groupBox1.Text = "Power Limits (PPT)";
+            buttonReset.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            buttonReset.Location = new Point(22, 1025);
+            buttonReset.Margin = new Padding(4, 2, 4, 2);
+            buttonReset.Name = "buttonReset";
+            buttonReset.Size = new Size(231, 44);
+            buttonReset.TabIndex = 15;
+            buttonReset.Text = "Factory Defaults";
+            buttonReset.UseVisualStyleBackColor = true;
+            // 
+            // buttonApply
+            // 
+            buttonApply.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            buttonApply.Location = new Point(584, 1025);
+            buttonApply.Margin = new Padding(4, 2, 4, 2);
+            buttonApply.Name = "buttonApply";
+            buttonApply.Size = new Size(248, 44);
+            buttonApply.TabIndex = 14;
+            buttonApply.Text = "Apply Fan Curve";
+            buttonApply.UseVisualStyleBackColor = true;
+            // 
+            // chartCPU
+            // 
+            chartCPU.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            chartArea6.Name = "ChartArea1";
+            chartCPU.ChartAreas.Add(chartArea6);
+            chartCPU.Location = new Point(22, 21);
+            chartCPU.Margin = new Padding(10);
+            chartCPU.Name = "chartCPU";
+            chartCPU.Size = new Size(810, 460);
+            chartCPU.TabIndex = 13;
+            chartCPU.Text = "chartCPU";
+            // 
+            // panelPower
+            // 
+            panelPower.Controls.Add(labelPowerLimits);
+            panelPower.Controls.Add(checkApplyPower);
+            panelPower.Controls.Add(buttonApplyPower);
+            panelPower.Controls.Add(panelCPU);
+            panelPower.Controls.Add(panelTotal);
+            panelPower.Controls.Add(labelApplied);
+            panelPower.Controls.Add(pictureFine);
+            panelPower.Controls.Add(labelInfo);
+            panelPower.Dock = DockStyle.Left;
+            panelPower.Location = new Point(0, 0);
+            panelPower.Name = "panelPower";
+            panelPower.Size = new Size(363, 1089);
+            panelPower.TabIndex = 13;
+            // 
+            // labelPowerLimits
+            // 
+            labelPowerLimits.AutoSize = true;
+            labelPowerLimits.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            labelPowerLimits.Location = new Point(23, 15);
+            labelPowerLimits.Name = "labelPowerLimits";
+            labelPowerLimits.Size = new Size(229, 32);
+            labelPowerLimits.TabIndex = 26;
+            labelPowerLimits.Text = "Power Limits (PPT)";
+            // 
+            // checkApplyPower
+            // 
+            checkApplyPower.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            checkApplyPower.AutoSize = true;
+            checkApplyPower.Location = new Point(17, 981);
+            checkApplyPower.Margin = new Padding(4, 2, 4, 2);
+            checkApplyPower.Name = "checkApplyPower";
+            checkApplyPower.Size = new Size(165, 36);
+            checkApplyPower.TabIndex = 25;
+            checkApplyPower.Text = "Auto Apply";
+            checkApplyPower.UseVisualStyleBackColor = true;
+            // 
+            // buttonApplyPower
+            // 
+            buttonApplyPower.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            buttonApplyPower.Location = new Point(17, 1025);
+            buttonApplyPower.Margin = new Padding(4, 2, 4, 2);
+            buttonApplyPower.Name = "buttonApplyPower";
+            buttonApplyPower.Size = new Size(321, 44);
+            buttonApplyPower.TabIndex = 24;
+            buttonApplyPower.Text = "Apply Power Limits";
+            buttonApplyPower.UseVisualStyleBackColor = true;
             // 
             // panelCPU
             // 
             panelCPU.Controls.Add(labelCPU);
             panelCPU.Controls.Add(label2);
             panelCPU.Controls.Add(trackCPU);
-            panelCPU.Location = new Point(186, 72);
+            panelCPU.Location = new Point(184, 89);
             panelCPU.Name = "panelCPU";
             panelCPU.Size = new Size(160, 510);
-            panelCPU.TabIndex = 15;
+            panelCPU.TabIndex = 23;
             // 
             // labelCPU
             // 
@@ -167,10 +236,10 @@
             panelTotal.Controls.Add(labelTotal);
             panelTotal.Controls.Add(label1);
             panelTotal.Controls.Add(trackTotal);
-            panelTotal.Location = new Point(8, 72);
+            panelTotal.Location = new Point(17, 89);
             panelTotal.Name = "panelTotal";
             panelTotal.Size = new Size(160, 511);
-            panelTotal.TabIndex = 14;
+            panelTotal.TabIndex = 22;
             // 
             // labelTotal
             // 
@@ -213,11 +282,11 @@
             // 
             labelApplied.AutoSize = true;
             labelApplied.ForeColor = Color.Tomato;
-            labelApplied.Location = new Point(13, 36);
+            labelApplied.Location = new Point(23, 51);
             labelApplied.Margin = new Padding(4, 0, 4, 0);
             labelApplied.Name = "labelApplied";
             labelApplied.Size = new Size(143, 32);
-            labelApplied.TabIndex = 13;
+            labelApplied.TabIndex = 21;
             labelApplied.Text = "Not Applied";
             // 
             // pictureFine
@@ -225,73 +294,49 @@
             pictureFine.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             pictureFine.BackgroundImageLayout = ImageLayout.Zoom;
             pictureFine.Image = Properties.Resources.everything_is_fine_itsfine;
-            pictureFine.Location = new Point(10, 682);
+            pictureFine.Location = new Point(17, 694);
             pictureFine.Margin = new Padding(4, 2, 4, 2);
             pictureFine.Name = "pictureFine";
-            pictureFine.Size = new Size(336, 226);
+            pictureFine.Size = new Size(327, 254);
             pictureFine.SizeMode = PictureBoxSizeMode.Zoom;
-            pictureFine.TabIndex = 12;
+            pictureFine.TabIndex = 20;
             pictureFine.TabStop = false;
             pictureFine.Visible = false;
             // 
             // labelInfo
             // 
-            labelInfo.AutoSize = true;
-            labelInfo.Dock = DockStyle.Bottom;
-            labelInfo.Location = new Point(6, 882);
+            labelInfo.Location = new Point(17, 603);
             labelInfo.Margin = new Padding(4, 0, 4, 0);
             labelInfo.Name = "labelInfo";
-            labelInfo.Size = new Size(65, 32);
-            labelInfo.TabIndex = 11;
+            labelInfo.Size = new Size(327, 371);
+            labelInfo.TabIndex = 19;
             labelInfo.Text = "label";
-            // 
-            // buttonApplyPower
-            // 
-            buttonApplyPower.Location = new Point(16, 952);
-            buttonApplyPower.Margin = new Padding(4, 2, 4, 2);
-            buttonApplyPower.Name = "buttonApplyPower";
-            buttonApplyPower.Size = new Size(352, 44);
-            buttonApplyPower.TabIndex = 11;
-            buttonApplyPower.Text = "Apply Power Limits";
-            buttonApplyPower.UseVisualStyleBackColor = true;
-            // 
-            // checkAuto
-            // 
-            checkAuto.AutoSize = true;
-            checkAuto.Location = new Point(772, 958);
-            checkAuto.Margin = new Padding(4, 2, 4, 2);
-            checkAuto.Name = "checkAuto";
-            checkAuto.Size = new Size(165, 36);
-            checkAuto.TabIndex = 12;
-            checkAuto.Text = "Auto Apply";
-            checkAuto.UseVisualStyleBackColor = true;
             // 
             // Fans
             // 
             AutoScaleDimensions = new SizeF(192F, 192F);
             AutoScaleMode = AutoScaleMode.Dpi;
             AutoSize = true;
-            ClientSize = new Size(1242, 1020);
-            Controls.Add(checkAuto);
-            Controls.Add(buttonApplyPower);
-            Controls.Add(groupBox1);
-            Controls.Add(chartGPU);
-            Controls.Add(buttonReset);
-            Controls.Add(buttonApply);
-            Controls.Add(chartCPU);
+            AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            ClientSize = new Size(1220, 1089);
+            Controls.Add(panelFans);
+            Controls.Add(panelPower);
             Margin = new Padding(4, 2, 4, 2);
             MaximizeBox = false;
             MdiChildrenMinimizedAnchorBottom = false;
             MinimizeBox = false;
+            MinimumSize = new Size(0, 1160);
             Name = "Fans";
             ShowIcon = false;
             ShowInTaskbar = false;
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Fans and Power";
-            ((System.ComponentModel.ISupportInitialize)chartCPU).EndInit();
+            panelFans.ResumeLayout(false);
+            panelFans.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)chartGPU).EndInit();
-            groupBox1.ResumeLayout(false);
-            groupBox1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)chartCPU).EndInit();
+            panelPower.ResumeLayout(false);
+            panelPower.PerformLayout();
             panelCPU.ResumeLayout(false);
             panelCPU.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)trackCPU).EndInit();
@@ -300,28 +345,29 @@
             ((System.ComponentModel.ISupportInitialize)trackTotal).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureFine).EndInit();
             ResumeLayout(false);
-            PerformLayout();
         }
 
         #endregion
-
-        private System.Windows.Forms.DataVisualization.Charting.Chart chartCPU;
-        private Button buttonApply;
-        private Button buttonReset;
-        private System.Windows.Forms.DataVisualization.Charting.Chart chartGPU;
-        private GroupBox groupBox1;
-        private Button buttonApplyPower;
-        private Label labelInfo;
-        private PictureBox pictureFine;
-        private Label labelApplied;
+        private Panel panelFans;
         private CheckBox checkAuto;
-        private Panel panelTotal;
-        private Label labelTotal;
-        private Label label1;
-        private TrackBar trackTotal;
+        private System.Windows.Forms.DataVisualization.Charting.Chart chartGPU;
+        private Button buttonReset;
+        private Button buttonApply;
+        private System.Windows.Forms.DataVisualization.Charting.Chart chartCPU;
+        private Panel panelPower;
+        private CheckBox checkApplyPower;
+        private Button buttonApplyPower;
         private Panel panelCPU;
         private Label labelCPU;
         private Label label2;
         private TrackBar trackCPU;
+        private Panel panelTotal;
+        private Label labelTotal;
+        private Label label1;
+        private TrackBar trackTotal;
+        private Label labelApplied;
+        private PictureBox pictureFine;
+        private Label labelInfo;
+        private Label labelPowerLimits;
     }
 }

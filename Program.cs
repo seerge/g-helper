@@ -99,13 +99,13 @@ namespace GHelper
 
             Debug.WriteLine(isPlugged.ToString());
 
-            settingsForm.AutoGPUMode(isPlugged);
-            settingsForm.AutoScreen(isPlugged);
+            settingsForm.SetBatteryChargeLimit(config.getConfig("charge_limit"));
             settingsForm.AutoPerformance(isPlugged);
+            settingsForm.AutoScreen(isPlugged);
 
+            settingsForm.AutoGPUMode(isPlugged);
             settingsForm.SetMatrix(isPlugged);
 
-            settingsForm.SetBatteryChargeLimit(config.getConfig("charge_limit"));
         }
 
         private static void SystemEvents_PowerModeChanged(object sender, PowerModeChangedEventArgs e)

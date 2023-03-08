@@ -200,7 +200,6 @@ public class ASUSWmi
 
     }
 
-
     public void SubscribeToEvents(Action<object, EventArrivedEventArgs> EventHandler)
     {
         ManagementEventWatcher watcher = new ManagementEventWatcher();

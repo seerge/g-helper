@@ -176,9 +176,9 @@ namespace GHelper
 
         private void ButtonMatrix_Click(object? sender, EventArgs e)
         {
-            string fileName = "";
+            string fileName = null;
 
-            Thread t = new Thread((ThreadStart)(() =>
+            Thread t = new Thread(() =>
             {
                 OpenFileDialog of = new OpenFileDialog();
                 of.Filter = "Image Files (*.bmp;*.jpg;*.jpeg,*.png,*.gif)|*.BMP;*.JPG;*.JPEG;*.PNG;*.GIF";
@@ -187,18 +187,22 @@ namespace GHelper
                     fileName = of.FileName;
                 }
                 return;
-            }));
+            });
 
             t.SetApartmentState(ApartmentState.STA);
             t.Start();
             t.Join();
 
-            Program.config.setConfig("matrix_picture", fileName);
-            SetMatrixPicture(fileName);
-            BeginInvoke(delegate
+            if (fileName is not null)
             {
-                comboMatrixRunning.SelectedIndex = 2;
-            });
+                Program.config.setConfig("matrix_picture", fileName);
+                SetMatrixPicture(fileName);
+                BeginInvoke(delegate
+                {
+                    comboMatrixRunning.SelectedIndex = 2;
+                });
+            }
+
 
         }
 
@@ -307,7 +311,7 @@ namespace GHelper
             if (fans == null || fans.Text == "")
             {
                 fans = new Fans();
-                Debug.WriteLine("Starting fans");
+                //Debug.WriteLine("Starting fans");
             }
 
             if (fans.Visible)
@@ -684,6 +688,20 @@ namespace GHelper
             }
         }
 
+        public void SetPower()
+        {
+            int limit_total = Program.config.getConfigPerf("limit_total");
+            int limit_cpu = Program.config.getConfigPerf("limit_cpu");
+
+            Program.wmi.DeviceSet(ASUSWmi.PPT_TotalA0, limit_total);
+            Program.wmi.DeviceSet(ASUSWmi.PPT_TotalA1, limit_total);
+            Program.wmi.DeviceSet(ASUSWmi.PPT_CPUB0, limit_cpu);
+            
+            Debug.WriteLine(limit_total.ToString() + ", " + limit_cpu.ToString());
+
+
+        }
+
         public void SetPerformanceMode(int PerformanceMode = ASUSWmi.PerformanceBalanced, bool notify = false)
         {
 
@@ -714,16 +732,21 @@ namespace GHelper
 
             Program.wmi.DeviceSet(ASUSWmi.PerformanceMode, PerformanceMode);
 
-            if (Program.config.getConfig("auto_apply_" + PerformanceMode) == 1)
+            if (Program.config.getConfigPerf("auto_apply") == 1)
             {
                 Program.wmi.SetFanCurve(0, Program.config.getFanConfig(0));
                 Program.wmi.SetFanCurve(1, Program.config.getFanConfig(1));
             }
 
+            if (Program.config.getConfigPerf("auto_apply_power") == 1)
+            {
+                SetPower();
+            }
+
             if (fans != null && fans.Text != "")
             {
-                fans.LoadFans();
-                fans.ResetApplyLabel();
+                fans.InitFans();
+                fans.InitPower();
             }
 
             if (notify && (oldMode != PerformanceMode))
@@ -969,7 +992,7 @@ namespace GHelper
             }
         }
 
-        public void SetBatteryChargeLimit(int limit = 100)
+        public void SetBatteryChargeLimit(int limit)
         {
 
             if (limit < 40 || limit > 100) return;

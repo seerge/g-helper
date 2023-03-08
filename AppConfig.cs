@@ -44,8 +44,9 @@ public class AppConfig
         File.WriteAllText(configFile, jsonString);
     }
 
-    public int getConfig(string name)
+    public int getConfig(string name, bool performance = false)
     {
+
         if (config.ContainsKey(name))
             return int.Parse(config[name].ToString());
         else return -1;
@@ -140,5 +141,18 @@ public class AppConfig
 
         return curve;
     }
+
+    public int getConfigPerf(string name)
+    {
+        int mode = getConfig("performance_mode");
+        return getConfig(name + "_" + mode);
+    }
+
+    public void setConfigPerf(string name, int value)
+    {
+        int mode = getConfig("performance_mode");
+        setConfig(name + "_" + mode, value);
+    }
+
 
 }
