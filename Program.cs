@@ -1,6 +1,7 @@
 using Microsoft.Win32;
 using System.Diagnostics;
 using System.Management;
+using System.Runtime.InteropServices;
 
 public class HardwareMonitor
 {
@@ -36,6 +37,32 @@ namespace GHelper
 {
     static class Program
     {
+
+        // Native methods for sleep detection
+
+        [DllImport("Powrprof.dll", SetLastError = true)]
+        static extern uint PowerRegisterSuspendResumeNotification(uint flags, ref DEVICE_NOTIFY_SUBSCRIBE_PARAMETERS receipient, ref IntPtr registrationHandle);
+
+
+        private const int WM_POWERBROADCAST = 536; // (0x218)
+        private const int PBT_APMPOWERSTATUSCHANGE = 10; // (0xA) - Power status has changed.
+        private const int PBT_APMRESUMEAUTOMATIC = 18; // (0x12) - Operation is resuming automatically from a low-power state.This message is sent every time the system resumes.
+        private const int PBT_APMRESUMESUSPEND = 7; // (0x7) - Operation is resuming from a low-power state.This message is sent after PBT_APMRESUMEAUTOMATIC if the resume is triggered by user input, such as pressing a key.
+        private const int PBT_APMSUSPEND = 4; // (0x4) - System is suspending operation.
+        private const int PBT_POWERSETTINGCHANGE = 32787; // (0x8013) - A power setting change event has been received.
+        private const int DEVICE_NOTIFY_CALLBACK = 2;
+
+        [StructLayout(LayoutKind.Sequential)]
+        struct DEVICE_NOTIFY_SUBSCRIBE_PARAMETERS
+        {
+            public DeviceNotifyCallbackRoutine Callback;
+            public IntPtr Context;
+        }
+
+        public delegate int DeviceNotifyCallbackRoutine(IntPtr context, int type, IntPtr setting);
+
+        //
+
         public static NotifyIcon trayIcon = new NotifyIcon
         {
             Text = "G-Helper",
@@ -84,12 +111,44 @@ namespace GHelper
 
             SetAutoModes();
 
+            IntPtr registrationHandle = new IntPtr();
+            DEVICE_NOTIFY_SUBSCRIBE_PARAMETERS recipient = new DEVICE_NOTIFY_SUBSCRIBE_PARAMETERS();
+            recipient.Callback = new DeviceNotifyCallbackRoutine(DeviceNotifyCallback);
+            recipient.Context = IntPtr.Zero;
+
+            IntPtr pRecipient = Marshal.AllocHGlobal(Marshal.SizeOf(recipient));
+            Marshal.StructureToPtr(recipient, pRecipient, false);
+
+            uint result = PowerRegisterSuspendResumeNotification(DEVICE_NOTIFY_CALLBACK, ref recipient, ref registrationHandle);
+
             SystemEvents.PowerModeChanged += SystemEvents_PowerModeChanged;
 
             IntPtr ds = settingsForm.Handle;
 
             Application.Run();
 
+        }
+
+
+        private static int DeviceNotifyCallback(IntPtr context, int type, IntPtr setting)
+        {
+            //Debug.WriteLine($"Power callback type: {type}");
+            switch (type)
+            {
+                case PBT_APMRESUMEAUTOMATIC:
+                    settingsForm.BeginInvoke(delegate
+                    {
+                        // Setting "other" mode to prevent bios bugging with PPTs after wake up from sleep
+                        int PerformanceMode = (config.getConfig("performance_mode") + 1) % 3;
+                        wmi.DeviceSet(ASUSWmi.PerformanceMode, PerformanceMode);
+                        Thread.Sleep(1000);
+                        
+                        SetAutoModes();
+                    });
+                    break;
+            }
+
+            return 0;
         }
 
         private static void SetAutoModes()

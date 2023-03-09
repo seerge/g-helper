@@ -702,6 +702,22 @@ namespace GHelper
 
         }
 
+
+        public void AutoFansAndPower()
+        {
+
+            if (Program.config.getConfigPerf("auto_apply") == 1)
+            {
+                Program.wmi.SetFanCurve(0, Program.config.getFanConfig(0));
+                Program.wmi.SetFanCurve(1, Program.config.getFanConfig(1));
+            }
+
+            if (Program.config.getConfigPerf("auto_apply_power") == 1)
+            {
+                SetPower();
+            }
+        }
+
         public void SetPerformanceMode(int PerformanceMode = ASUSWmi.PerformanceBalanced, bool notify = false)
         {
 
@@ -732,22 +748,15 @@ namespace GHelper
 
             Program.wmi.DeviceSet(ASUSWmi.PerformanceMode, PerformanceMode);
 
-            if (Program.config.getConfigPerf("auto_apply") == 1)
-            {
-                Program.wmi.SetFanCurve(0, Program.config.getFanConfig(0));
-                Program.wmi.SetFanCurve(1, Program.config.getFanConfig(1));
-            }
-
-            if (Program.config.getConfigPerf("auto_apply_power") == 1)
-            {
-                SetPower();
-            }
+            AutoFansAndPower();
 
             if (fans != null && fans.Text != "")
             {
                 fans.InitFans();
                 fans.InitPower();
             }
+
+            Debug.WriteLine("Perf:" + PerformanceMode);
 
             if (notify && (oldMode != PerformanceMode))
             {
