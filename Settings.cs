@@ -93,11 +93,26 @@ namespace GHelper
 
             buttonMatrix.Click += ButtonMatrix_Click;
 
+            checkStartup.CheckedChanged += CheckStartup_CheckedChanged;
+
             SetTimer();
 
         }
 
+        private void CheckStartup_CheckedChanged(object? sender, EventArgs e)
+        {
+            if (sender is null) return;
+            CheckBox chk = (CheckBox)sender;
 
+            if (chk.Checked)
+            {
+                Startup.Schedule();
+            }
+            else
+            {
+                Startup.UnSchedule();
+            }
+        }
 
         private void CheckMatrix_CheckedChanged(object? sender, EventArgs e)
         {
@@ -984,18 +999,6 @@ namespace GHelper
         public void SetStartupCheck(bool status)
         {
             checkStartup.Checked = status;
-        }
-        private void checkStartup_CheckedChanged(object sender, EventArgs e)
-        {
-            CheckBox chk = (CheckBox)sender;
-            if (chk.Checked)
-            {
-                Startup.Schedule();
-            }
-            else
-            {
-                Startup.UnSchedule();
-            }
         }
 
         public void SetBatteryChargeLimit(int limit)
