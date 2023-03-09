@@ -1,7 +1,10 @@
 using Microsoft.Win32;
+using System;
 using System.Diagnostics;
 using System.Management;
+using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Text.Json;
 
 public class HardwareMonitor
 {
@@ -125,6 +128,8 @@ namespace GHelper
 
             IntPtr ds = settingsForm.Handle;
 
+            CheckForUpdates();
+
             Application.Run();
 
         }
@@ -139,10 +144,9 @@ namespace GHelper
                     settingsForm.BeginInvoke(delegate
                     {
                         // Setting "other" mode to prevent bios bugging with PPTs after wake up from sleep
-                        int PerformanceMode = (config.getConfig("performance_mode") + 1) % 3;
-                        wmi.DeviceSet(ASUSWmi.PerformanceMode, PerformanceMode);
+                        wmi.DeviceSet(ASUSWmi.PerformanceMode, config.getConfig("performance_mode"));
                         Thread.Sleep(1000);
-                        
+
                         SetAutoModes();
                     });
                     break;
@@ -150,6 +154,40 @@ namespace GHelper
 
             return 0;
         }
+
+
+        static async void CheckForUpdates()
+        {
+
+            settingsForm.SetVersionLabel("Version: " + Assembly.GetExecutingAssembly().GetName().Version.ToString());
+
+            try
+            {
+                using (var httpClient = new HttpClient())
+                {
+                    httpClient.DefaultRequestHeaders.Add("User-Agent", "C# App");
+                    var json = await httpClient.GetStringAsync("https://api.github.com/repos/seerge/g-helper/releases/latest");
+                    var config = JsonSerializer.Deserialize<JsonElement>(json);
+                    var tag = config.GetProperty("tag_name").ToString().Replace("v", "");
+                    var url = config.GetProperty("assets")[0].GetProperty("browser_download_url").ToString();
+                    var assembly = Assembly.GetExecutingAssembly().GetName().Version.ToString();
+
+                    var gitVersion = new Version(tag);
+                    var appVersion = new Version();
+
+                    var result = appVersion.CompareTo(gitVersion);
+                    if (result > 0)
+                    {
+                        settingsForm.SetVersionLabel("Download Update: " + tag, url);
+                    }
+
+                }
+            } catch {
+                Debug.WriteLine("Failed to get update");
+            }
+
+        }
+
 
         private static void SetAutoModes()
         {
@@ -162,6 +200,7 @@ namespace GHelper
             settingsForm.AutoScreen(isPlugged);
 
             settingsForm.AutoGPUMode(isPlugged);
+
             settingsForm.SetMatrix(isPlugged);
 
         }

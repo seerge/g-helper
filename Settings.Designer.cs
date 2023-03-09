@@ -112,17 +112,17 @@
             panelMatrix.Controls.Add(pictureMatrix);
             panelMatrix.Controls.Add(labelMatrix);
             panelMatrix.Dock = DockStyle.Top;
-            panelMatrix.Location = new Point(16, 806);
+            panelMatrix.Location = new Point(16, 814);
             panelMatrix.Margin = new Padding(4);
             panelMatrix.Name = "panelMatrix";
-            panelMatrix.Size = new Size(722, 156);
+            panelMatrix.Size = new Size(722, 180);
             panelMatrix.TabIndex = 33;
             // 
             // checkMatrix
             // 
             checkMatrix.AutoSize = true;
             checkMatrix.ForeColor = SystemColors.GrayText;
-            checkMatrix.Location = new Point(26, 112);
+            checkMatrix.Location = new Point(28, 109);
             checkMatrix.Margin = new Padding(4, 2, 4, 2);
             checkMatrix.Name = "checkMatrix";
             checkMatrix.Size = new Size(249, 36);
@@ -158,7 +158,7 @@
             buttonMatrix.Name = "buttonMatrix";
             buttonMatrix.Size = new Size(208, 42);
             buttonMatrix.TabIndex = 43;
-            buttonMatrix.Text = "Picture";
+            buttonMatrix.Text = "Picture / Gif";
             buttonMatrix.UseVisualStyleBackColor = false;
             // 
             // comboMatrixRunning
@@ -219,7 +219,7 @@
             panelBattery.Controls.Add(labelBatteryTitle);
             panelBattery.Controls.Add(trackBattery);
             panelBattery.Dock = DockStyle.Top;
-            panelBattery.Location = new Point(16, 962);
+            panelBattery.Location = new Point(16, 994);
             panelBattery.Margin = new Padding(4);
             panelBattery.Name = "panelBattery";
             panelBattery.Size = new Size(722, 148);
@@ -290,7 +290,7 @@
             panelFooter.Controls.Add(buttonQuit);
             panelFooter.Controls.Add(checkStartup);
             panelFooter.Dock = DockStyle.Top;
-            panelFooter.Location = new Point(16, 1110);
+            panelFooter.Location = new Point(16, 1142);
             panelFooter.Margin = new Padding(4);
             panelFooter.Name = "panelFooter";
             panelFooter.Size = new Size(722, 64);
@@ -581,7 +581,7 @@
             // 
             checkScreen.AutoSize = true;
             checkScreen.ForeColor = SystemColors.GrayText;
-            checkScreen.Location = new Point(27, 154);
+            checkScreen.Location = new Point(27, 153);
             checkScreen.Margin = new Padding(4, 2, 4, 2);
             checkScreen.Name = "checkScreen";
             checkScreen.Size = new Size(527, 36);
@@ -669,7 +669,7 @@
             panelKeyboard.Location = new Point(16, 660);
             panelKeyboard.Margin = new Padding(4);
             panelKeyboard.Name = "panelKeyboard";
-            panelKeyboard.Size = new Size(722, 146);
+            panelKeyboard.Size = new Size(722, 154);
             panelKeyboard.TabIndex = 39;
             // 
             // tableLayoutKeyboard
@@ -761,7 +761,7 @@
             buttonKeyboardColor.Name = "buttonKeyboardColor";
             buttonKeyboardColor.Size = new Size(208, 42);
             buttonKeyboardColor.TabIndex = 39;
-            buttonKeyboardColor.Text = "Color  ";
+            buttonKeyboardColor.Text = "Color   ";
             buttonKeyboardColor.UseVisualStyleBackColor = false;
             // 
             // pictureKeyboard

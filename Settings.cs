@@ -1,7 +1,6 @@
 ﻿using Starlight.AnimeMatrix;
 using System.Diagnostics;
 using System.Drawing.Imaging;
-using System.Reflection;
 using System.Timers;
 
 namespace GHelper
@@ -20,14 +19,14 @@ namespace GHelper
         static System.Timers.Timer aTimer = default!;
         static System.Timers.Timer matrixTimer = default!;
 
+        public string versionUrl = "http://github.com/seerge/g-helper/releases";
+
         public string perfName = "Balanced";
 
         Fans fans;
         Keyboard keyb;
 
         static AnimeMatrixDevice mat;
-        static bool matEnabled = false;
-
 
         public SettingsForm()
         {
@@ -76,9 +75,6 @@ namespace GHelper
             pictureColor.Click += PictureColor_Click;
             pictureColor2.Click += PictureColor2_Click;
 
-            labelVersion.Text = "Version " + Assembly.GetExecutingAssembly().GetName().Version.ToString();
-            labelVersion.Click += LabelVersion_Click;
-
             labelCPUFan.Click += LabelCPUFan_Click;
             labelGPUFan.Click += LabelCPUFan_Click;
 
@@ -94,9 +90,28 @@ namespace GHelper
 
             checkStartup.CheckedChanged += CheckStartup_CheckedChanged;
 
+            labelVersion.Click += LabelVersion_Click;
+
             SetTimer();
 
         }
+
+        public void SetVersionLabel(string label, string url = null)
+        {
+            labelVersion.Text = label;
+            if (url is not null)
+            {
+                versionUrl = url;
+                labelVersion.ForeColor = Color.Red;
+            }
+        }
+
+
+        private void LabelVersion_Click(object? sender, EventArgs e)
+        {
+            Process.Start(new ProcessStartInfo(versionUrl) { UseShellExecute = true });
+        }
+
 
         private void CheckStartup_CheckedChanged(object? sender, EventArgs e)
         {
@@ -254,6 +269,8 @@ namespace GHelper
 
             StopMatrixTimer();
 
+            mat.SetProvider();
+
             if (brightness == 0 || (auto && Plugged != PowerLineStatus.Online))
             {
                 mat.SetDisplayState(false);
@@ -272,6 +289,7 @@ namespace GHelper
                 {
                     mat.SetBuiltInAnimation(true, animation);
                 }
+
             }
 
         }
@@ -282,11 +300,6 @@ namespace GHelper
         {
             Program.config.setConfig("fan_rpm", (Program.config.getConfig("fan_rpm") == 1) ? 0 : 1);
             RefreshSensors();
-        }
-
-        private void LabelVersion_Click(object? sender, EventArgs e)
-        {
-            Process.Start(new ProcessStartInfo("http://github.com/seerge/g-helper/releases") { UseShellExecute = true });
         }
 
         private void PictureColor2_Click(object? sender, EventArgs e)
@@ -387,36 +400,26 @@ namespace GHelper
         public void InitMatrix()
         {
 
-            matrixTimer = new System.Timers.Timer();
-            matrixTimer.Enabled = false;
-            matrixTimer.Interval = 100;
-
             try
             {
-                matEnabled = true;
                 mat = new AnimeMatrixDevice();
+                matrixTimer = new System.Timers.Timer(100);
                 matrixTimer.Elapsed += MatrixTimer_Elapsed;
             }
             catch
             {
-                matEnabled = false;
-                Debug.WriteLine("Anime Matrix not detected");
-            }
-
-            if (!matEnabled)
-            {
                 panelMatrix.Visible = false;
+                return;
             }
-            else
-            {
-                int brightness = Program.config.getConfig("matrix_brightness");
-                int running = Program.config.getConfig("matrix_running");
 
-                comboMatrix.SelectedIndex = (brightness != -1) ? brightness : 0;
-                comboMatrixRunning.SelectedIndex = (running != -1) ? running : 0;
+            int brightness = Program.config.getConfig("matrix_brightness");
+            int running = Program.config.getConfig("matrix_running");
 
-                checkMatrix.Checked = (Program.config.getConfig("matrix_auto") == 1);
-            }
+            comboMatrix.SelectedIndex = (brightness != -1) ? brightness : 0;
+            comboMatrixRunning.SelectedIndex = (running != -1) ? running : 0;
+
+            checkMatrix.Checked = (Program.config.getConfig("matrix_auto") == 1);
+
 
         }
 
@@ -747,15 +750,6 @@ namespace GHelper
             Program.config.setConfig("performance_mode", PerformanceMode);
 
             Program.wmi.DeviceSet(ASUSWmi.PerformanceMode, PerformanceMode);
-
-            AutoFansAndPower();
-
-            if (fans != null && fans.Text != "")
-            {
-                fans.InitFans();
-                fans.InitPower();
-            }
-
             Debug.WriteLine("Perf:" + PerformanceMode);
 
             if (notify && (oldMode != PerformanceMode))
@@ -769,6 +763,16 @@ namespace GHelper
                     Debug.WriteLine("Toast error");
                 }
             }
+
+            AutoFansAndPower();
+
+            if (fans != null && fans.Text != "")
+            {
+                fans.InitFans();
+                fans.InitPower();
+            }
+
+
 
         }
 

@@ -1,6 +1,7 @@
 ﻿// Source thanks to https://github.com/vddCore/Starlight :)
 
 using Starlight.Communication.Platform;
+using System.Configuration;
 
 namespace Starlight.Communication
 {
@@ -8,9 +9,21 @@ namespace Starlight.Communication
     {
         private static UsbProvider _usbProvider;
 
+        private static ushort _vendorId;
+        private static ushort _productId;
+        private static int _maxFeatureReportLength;
+
         protected Device(ushort vendorId, ushort productId, int maxFeatureReportLength)
         {
-            _usbProvider = new WindowsUsbProvider(vendorId, productId, maxFeatureReportLength);
+            _vendorId = vendorId;
+            _productId = productId;
+            _maxFeatureReportLength = maxFeatureReportLength;
+            SetProvider();
+        }
+
+        public void SetProvider()
+        {
+            _usbProvider = new WindowsUsbProvider(_vendorId, _productId, _maxFeatureReportLength);
         }
 
         protected T Packet<T>(params byte[] command) where T : Packet

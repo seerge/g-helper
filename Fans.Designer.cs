@@ -28,9 +28,10 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea4 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
             panelFans = new Panel();
+            checkBoost = new CheckBox();
             labelFans = new Label();
             checkAuto = new CheckBox();
             chartGPU = new System.Windows.Forms.DataVisualization.Charting.Chart();
@@ -52,7 +53,6 @@
             labelApplied = new Label();
             pictureFine = new PictureBox();
             labelInfo = new Label();
-            checkBoost = new CheckBox();
             panelFans.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)chartGPU).BeginInit();
             ((System.ComponentModel.ISupportInitialize)chartCPU).BeginInit();
@@ -66,6 +66,7 @@
             // 
             // panelFans
             // 
+            panelFans.AutoSize = true;
             panelFans.Controls.Add(checkBoost);
             panelFans.Controls.Add(labelFans);
             panelFans.Controls.Add(checkAuto);
@@ -76,11 +77,23 @@
             panelFans.Dock = DockStyle.Left;
             panelFans.Location = new Point(363, 0);
             panelFans.Margin = new Padding(10);
-            panelFans.MinimumSize = new Size(868, 1089);
+            panelFans.MinimumSize = new Size(872, 1089);
             panelFans.Name = "panelFans";
             panelFans.Padding = new Padding(10);
             panelFans.Size = new Size(872, 1089);
             panelFans.TabIndex = 12;
+            // 
+            // checkBoost
+            // 
+            checkBoost.AutoSize = true;
+            checkBoost.ForeColor = SystemColors.ControlText;
+            checkBoost.Location = new Point(512, 15);
+            checkBoost.Margin = new Padding(4, 2, 4, 2);
+            checkBoost.Name = "checkBoost";
+            checkBoost.Size = new Size(320, 36);
+            checkBoost.TabIndex = 35;
+            checkBoost.Text = "CPU Turbo Boost enabled";
+            checkBoost.UseVisualStyleBackColor = true;
             // 
             // labelFans
             // 
@@ -107,8 +120,8 @@
             // chartGPU
             // 
             chartGPU.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            chartArea3.Name = "ChartArea1";
-            chartGPU.ChartAreas.Add(chartArea3);
+            chartArea1.Name = "ChartArea1";
+            chartGPU.ChartAreas.Add(chartArea1);
             chartGPU.Location = new Point(22, 547);
             chartGPU.Margin = new Padding(4, 2, 4, 2);
             chartGPU.Name = "chartGPU";
@@ -141,8 +154,8 @@
             // chartCPU
             // 
             chartCPU.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            chartArea4.Name = "ChartArea1";
-            chartCPU.ChartAreas.Add(chartArea4);
+            chartArea2.Name = "ChartArea1";
+            chartCPU.ChartAreas.Add(chartArea2);
             chartCPU.Location = new Point(22, 66);
             chartCPU.Margin = new Padding(10);
             chartCPU.Name = "chartCPU";
@@ -326,18 +339,6 @@
             labelInfo.TabIndex = 19;
             labelInfo.Text = "label";
             // 
-            // checkBoost
-            // 
-            checkBoost.AutoSize = true;
-            checkBoost.ForeColor = SystemColors.ControlText;
-            checkBoost.Location = new Point(512, 15);
-            checkBoost.Margin = new Padding(4, 2, 4, 2);
-            checkBoost.Name = "checkBoost";
-            checkBoost.Size = new Size(320, 36);
-            checkBoost.TabIndex = 35;
-            checkBoost.Text = "CPU Turbo Boost enabled";
-            checkBoost.UseVisualStyleBackColor = true;
-            // 
             // Fans
             // 
             AutoScaleDimensions = new SizeF(192F, 192F);
@@ -371,6 +372,7 @@
             ((System.ComponentModel.ISupportInitialize)trackTotal).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureFine).EndInit();
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
