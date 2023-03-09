@@ -28,9 +28,10 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea5 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea6 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea4 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
             panelFans = new Panel();
+            labelFans = new Label();
             checkAuto = new CheckBox();
             chartGPU = new System.Windows.Forms.DataVisualization.Charting.Chart();
             buttonReset = new Button();
@@ -51,6 +52,7 @@
             labelApplied = new Label();
             pictureFine = new PictureBox();
             labelInfo = new Label();
+            checkBoost = new CheckBox();
             panelFans.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)chartGPU).BeginInit();
             ((System.ComponentModel.ISupportInitialize)chartCPU).BeginInit();
@@ -64,6 +66,8 @@
             // 
             // panelFans
             // 
+            panelFans.Controls.Add(checkBoost);
+            panelFans.Controls.Add(labelFans);
             panelFans.Controls.Add(checkAuto);
             panelFans.Controls.Add(chartGPU);
             panelFans.Controls.Add(buttonReset);
@@ -78,11 +82,21 @@
             panelFans.Size = new Size(872, 1089);
             panelFans.TabIndex = 12;
             // 
+            // labelFans
+            // 
+            labelFans.AutoSize = true;
+            labelFans.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            labelFans.Location = new Point(24, 15);
+            labelFans.Name = "labelFans";
+            labelFans.Size = new Size(138, 32);
+            labelFans.TabIndex = 28;
+            labelFans.Text = "Fan Curves";
+            // 
             // checkAuto
             // 
             checkAuto.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             checkAuto.AutoSize = true;
-            checkAuto.Location = new Point(584, 981);
+            checkAuto.Location = new Point(411, 1030);
             checkAuto.Margin = new Padding(4, 2, 4, 2);
             checkAuto.Name = "checkAuto";
             checkAuto.Size = new Size(165, 36);
@@ -93,9 +107,9 @@
             // chartGPU
             // 
             chartGPU.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            chartArea5.Name = "ChartArea1";
-            chartGPU.ChartAreas.Add(chartArea5);
-            chartGPU.Location = new Point(22, 502);
+            chartArea3.Name = "ChartArea1";
+            chartGPU.ChartAreas.Add(chartArea3);
+            chartGPU.Location = new Point(22, 547);
             chartGPU.Margin = new Padding(4, 2, 4, 2);
             chartGPU.Name = "chartGPU";
             chartGPU.Size = new Size(810, 460);
@@ -127,9 +141,9 @@
             // chartCPU
             // 
             chartCPU.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            chartArea6.Name = "ChartArea1";
-            chartCPU.ChartAreas.Add(chartArea6);
-            chartCPU.Location = new Point(22, 21);
+            chartArea4.Name = "ChartArea1";
+            chartCPU.ChartAreas.Add(chartArea4);
+            chartCPU.Location = new Point(22, 66);
             chartCPU.Margin = new Padding(10);
             chartCPU.Name = "chartCPU";
             chartCPU.Size = new Size(810, 460);
@@ -166,7 +180,7 @@
             // 
             checkApplyPower.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             checkApplyPower.AutoSize = true;
-            checkApplyPower.Location = new Point(17, 981);
+            checkApplyPower.Location = new Point(21, 982);
             checkApplyPower.Margin = new Padding(4, 2, 4, 2);
             checkApplyPower.Name = "checkApplyPower";
             checkApplyPower.Size = new Size(165, 36);
@@ -294,7 +308,7 @@
             pictureFine.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             pictureFine.BackgroundImageLayout = ImageLayout.Zoom;
             pictureFine.Image = Properties.Resources.everything_is_fine_itsfine;
-            pictureFine.Location = new Point(17, 694);
+            pictureFine.Location = new Point(17, 671);
             pictureFine.Margin = new Padding(4, 2, 4, 2);
             pictureFine.Name = "pictureFine";
             pictureFine.Size = new Size(327, 254);
@@ -308,9 +322,21 @@
             labelInfo.Location = new Point(17, 603);
             labelInfo.Margin = new Padding(4, 0, 4, 0);
             labelInfo.Name = "labelInfo";
-            labelInfo.Size = new Size(327, 371);
+            labelInfo.Size = new Size(327, 330);
             labelInfo.TabIndex = 19;
             labelInfo.Text = "label";
+            // 
+            // checkBoost
+            // 
+            checkBoost.AutoSize = true;
+            checkBoost.ForeColor = SystemColors.ControlText;
+            checkBoost.Location = new Point(512, 15);
+            checkBoost.Margin = new Padding(4, 2, 4, 2);
+            checkBoost.Name = "checkBoost";
+            checkBoost.Size = new Size(320, 36);
+            checkBoost.TabIndex = 35;
+            checkBoost.Text = "CPU Turbo Boost enabled";
+            checkBoost.UseVisualStyleBackColor = true;
             // 
             // Fans
             // 
@@ -369,5 +395,7 @@
         private PictureBox pictureFine;
         private Label labelInfo;
         private Label labelPowerLimits;
+        private Label labelFans;
+        private CheckBox checkBoost;
     }
 }

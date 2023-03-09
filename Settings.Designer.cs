@@ -48,7 +48,6 @@
             checkStartup = new CheckBox();
             panelPerformance = new Panel();
             buttonFans = new Button();
-            checkBoost = new CheckBox();
             picturePerf = new PictureBox();
             labelPerf = new Label();
             labelCPUFan = new Label();
@@ -323,7 +322,6 @@
             // panelPerformance
             // 
             panelPerformance.Controls.Add(buttonFans);
-            panelPerformance.Controls.Add(checkBoost);
             panelPerformance.Controls.Add(picturePerf);
             panelPerformance.Controls.Add(labelPerf);
             panelPerformance.Controls.Add(labelCPUFan);
@@ -347,18 +345,6 @@
             buttonFans.TabIndex = 34;
             buttonFans.Text = "Fans and Power";
             buttonFans.UseVisualStyleBackColor = false;
-            // 
-            // checkBoost
-            // 
-            checkBoost.AutoSize = true;
-            checkBoost.ForeColor = SystemColors.GrayText;
-            checkBoost.Location = new Point(27, 154);
-            checkBoost.Margin = new Padding(4, 2, 4, 2);
-            checkBoost.Name = "checkBoost";
-            checkBoost.Size = new Size(320, 36);
-            checkBoost.TabIndex = 33;
-            checkBoost.Text = "CPU Turbo Boost enabled";
-            checkBoost.UseVisualStyleBackColor = true;
             // 
             // picturePerf
             // 
@@ -872,7 +858,6 @@
         private CheckBox checkStartup;
         private Panel panelPerformance;
         private Button buttonFans;
-        private CheckBox checkBoost;
         private PictureBox picturePerf;
         private Label labelPerf;
         private Label labelCPUFan;

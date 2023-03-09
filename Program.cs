@@ -75,7 +75,6 @@ namespace GHelper
             wmi.SubscribeToEvents(WatcherEventArrived);
 
             settingsForm.InitGPUMode();
-            settingsForm.InitBoost();
             settingsForm.InitAura();
             settingsForm.InitMatrix();
 

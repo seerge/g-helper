@@ -61,7 +61,6 @@ namespace GHelper
 
             buttonQuit.Click += ButtonQuit_Click;
 
-            checkBoost.Click += CheckBoost_Click;
 
             checkScreen.CheckedChanged += checkScreen_CheckedChanged;
 
@@ -483,19 +482,6 @@ namespace GHelper
             SetAuraMode(cmb.SelectedIndex);
         }
 
-
-        private void CheckBoost_Click(object? sender, EventArgs e)
-        {
-            if (sender is null)
-                return;
-
-            CheckBox chk = (CheckBox)sender;
-            if (chk.Checked)
-                NativeMethods.SetCPUBoost(2);
-            else
-                NativeMethods.SetCPUBoost(0);
-        }
-
         private void Button120Hz_Click(object? sender, EventArgs e)
         {
             SetScreen(1000, 1);
@@ -536,13 +522,6 @@ namespace GHelper
 
 
             InitScreen();
-        }
-
-
-        public void InitBoost()
-        {
-            int boost = NativeMethods.GetCPUBoost();
-            checkBoost.Checked = (boost > 0);
         }
 
         public void InitScreen()
@@ -717,7 +696,7 @@ namespace GHelper
             Program.wmi.DeviceSet(ASUSWmi.PPT_TotalA0, limit_total);
             Program.wmi.DeviceSet(ASUSWmi.PPT_TotalA1, limit_total);
             Program.wmi.DeviceSet(ASUSWmi.PPT_CPUB0, limit_cpu);
-            
+
             Debug.WriteLine(limit_total.ToString() + ", " + limit_cpu.ToString());
 
 

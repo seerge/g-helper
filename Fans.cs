@@ -22,7 +22,7 @@ namespace GHelper
                 title = "CPU Fan Profile";
 
             if (Program.settingsForm.perfName.Length > 0)
-                title += ": " + Program.settingsForm.perfName;
+                labelFans.Text = "Fan Profiles: " + Program.settingsForm.perfName;
 
             if (chart.Titles.Count > 0)
                 chart.Titles[0].Text = title;
@@ -102,9 +102,31 @@ namespace GHelper
 
             InitFans();
             InitPower();
+            InitBoost();
+
+            checkBoost.Click += CheckBoost_Click;
 
             Shown += Fans_Shown;
 
+        }
+
+
+        public void InitBoost()
+        {
+            int boost = NativeMethods.GetCPUBoost();
+            checkBoost.Checked = (boost > 0);
+        }
+
+        private void CheckBoost_Click(object? sender, EventArgs e)
+        {
+            if (sender is null)
+                return;
+
+            CheckBox chk = (CheckBox)sender;
+            if (chk.Checked)
+                NativeMethods.SetCPUBoost(2);
+            else
+                NativeMethods.SetCPUBoost(0);
         }
 
         private void CheckApplyPower_Click(object? sender, EventArgs e)
