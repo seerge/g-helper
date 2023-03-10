@@ -518,21 +518,15 @@ namespace GHelper
                     frequency = 120;
             }
 
-            if (frequency > 0)
-                NativeMethods.SetRefreshRate(frequency);
+            if (frequency <= 0) return;
 
-            try
-            {
-                if (overdrive > 0)
-                    Program.wmi.DeviceSet(ASUSWmi.ScreenOverdrive, overdrive);
-            }
-            catch
-            {
-                Debug.WriteLine("Screen Overdrive not supported");
-            }
-
+            NativeMethods.SetRefreshRate(frequency);
+            if (overdrive > 0)
+                Program.wmi.DeviceSet(ASUSWmi.ScreenOverdrive, overdrive);
 
             InitScreen();
+            Debug.WriteLine(frequency);
+
         }
 
         public void InitScreen()
@@ -728,8 +722,9 @@ namespace GHelper
                 var timer = new System.Timers.Timer(500);
                 timer.Elapsed += delegate
                 {
-                    SetPower();
                     timer.Stop();
+                    timer.Dispose();
+                    SetPower();
                 };
                 timer.Start();
             }
@@ -817,7 +812,6 @@ namespace GHelper
             else
                 SetScreen(60, 0);
 
-            InitScreen();
 
         }
 
@@ -829,7 +823,6 @@ namespace GHelper
 
             int eco = Program.wmi.DeviceGet(ASUSWmi.GPUEco);
             int mux = Program.wmi.DeviceGet(ASUSWmi.GPUMux);
-
 
             if (mux == 0) // GPU in Ultimate, ignore
                 return;
@@ -864,9 +857,12 @@ namespace GHelper
                 else
                     GpuMode = ASUSWmi.GPUModeStandard;
 
-                if (mux != 1)
-                    Disable_Ultimate();
+                buttonUltimate.Visible = (mux == 1);
             }
+
+            ButtonEnabled(buttonEco, true);
+            ButtonEnabled(buttonStandard, true);
+            ButtonEnabled(buttonUltimate, true);
 
             Program.config.setConfig("gpu_mode", GpuMode);
             VisualiseGPUMode(GpuMode);
@@ -878,16 +874,24 @@ namespace GHelper
 
         public void SetEcoGPU(int eco)
         {
+
+            ButtonEnabled(buttonEco, false);
+            ButtonEnabled(buttonStandard, false);
+            ButtonEnabled(buttonUltimate, false);
+
             new Thread(() =>
             {
                 Thread.CurrentThread.IsBackground = true;
                 Program.wmi.DeviceSet(ASUSWmi.GPUEco, eco);
-                BeginInvoke(delegate { InitGPUMode(); });
+                Program.settingsForm.BeginInvoke(delegate { 
+                    InitGPUMode();
+                    AutoScreen(SystemInformation.PowerStatus.PowerLineStatus);
+                });
             }).Start();
 
         }
 
-        public void SetGPUMode(int GPUMode = ASUSWmi.GPUModeStandard)
+        public void SetGPUMode(int GPUMode)
         {
 
             int CurrentGPU = Program.config.getConfig("gpu_mode");
@@ -984,6 +988,7 @@ namespace GHelper
                     Program.trayIcon.Icon = GHelper.Properties.Resources.standard;
                     break;
             }
+
         }
 
 
@@ -1007,10 +1012,10 @@ namespace GHelper
 
         }
 
-        public void Disable_Ultimate()
+        public void ButtonEnabled(Button but, bool enabled)
         {
-            buttonUltimate.Enabled = false;
-            buttonUltimate.BackColor = SystemColors.ControlLight;
+            but.Enabled = enabled;
+            but.BackColor = enabled ? SystemColors.ControlLightLight : SystemColors.ControlLight;
         }
 
         public void SetStartupCheck(bool status)

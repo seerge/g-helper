@@ -192,9 +192,8 @@ namespace GHelper
             Debug.WriteLine(isPlugged.ToString());
 
             settingsForm.SetBatteryChargeLimit(config.getConfig("charge_limit"));
-            settingsForm.AutoPerformance(isPlugged);
-            settingsForm.AutoScreen(isPlugged);
 
+            settingsForm.AutoPerformance(isPlugged);
             settingsForm.AutoGPUMode(isPlugged);
 
             settingsForm.SetMatrix(isPlugged);
