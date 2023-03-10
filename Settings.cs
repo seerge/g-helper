@@ -60,6 +60,7 @@ namespace GHelper
 
             buttonQuit.Click += ButtonQuit_Click;
 
+            checkGPU.CheckedChanged += CheckGPU_CheckedChanged;
 
             checkScreen.CheckedChanged += checkScreen_CheckedChanged;
 
@@ -94,6 +95,13 @@ namespace GHelper
 
             SetTimer();
 
+        }
+
+        private void CheckGPU_CheckedChanged(object? sender, EventArgs e)
+        {
+            if (sender is null) return;
+            CheckBox check = (CheckBox)sender;
+            Program.config.setConfig("gpu_auto", check.Checked ? 1 : 0);
         }
 
         public void SetVersionLabel(string label, string url = null)
@@ -717,8 +725,15 @@ namespace GHelper
 
             if (Program.config.getConfigPerf("auto_apply_power") == 1)
             {
-                SetPower();
+                var timer = new System.Timers.Timer(500);
+                timer.Elapsed += delegate
+                {
+                    SetPower();
+                    timer.Stop();
+                };
+                timer.Start();
             }
+
         }
 
         public void SetPerformanceMode(int PerformanceMode = ASUSWmi.PerformanceBalanced, bool notify = false)
@@ -822,13 +837,11 @@ namespace GHelper
             {
                 if (eco == 1 && Plugged == PowerLineStatus.Online)  // Eco going Standard on plugged
                 {
-                    Program.wmi.DeviceSet(ASUSWmi.GPUEco, 0);
-                    InitGPUMode();
+                    SetEcoGPU(0);
                 }
                 else if (eco == 0 && Plugged != PowerLineStatus.Online)  // Standard going Eco on plugged
                 {
-                    Program.wmi.DeviceSet(ASUSWmi.GPUEco, 1);
-                    InitGPUMode();
+                    SetEcoGPU(1);
                 }
 
             }
@@ -859,6 +872,18 @@ namespace GHelper
             VisualiseGPUMode(GpuMode);
 
             return GpuMode;
+
+        }
+
+
+        public void SetEcoGPU(int eco)
+        {
+            new Thread(() =>
+            {
+                Thread.CurrentThread.IsBackground = true;
+                Program.wmi.DeviceSet(ASUSWmi.GPUEco, eco);
+                BeginInvoke(delegate { InitGPUMode(); });
+            }).Start();
 
         }
 
@@ -897,13 +922,13 @@ namespace GHelper
             else if (GPUMode == ASUSWmi.GPUModeEco)
             {
                 VisualiseGPUMode(GPUMode);
-                Program.wmi.DeviceSet(ASUSWmi.GPUEco, 1);
+                SetEcoGPU(1);
                 changed = true;
             }
             else if (GPUMode == ASUSWmi.GPUModeStandard)
             {
                 VisualiseGPUMode(GPUMode);
-                Program.wmi.DeviceSet(ASUSWmi.GPUEco, 0);
+                SetEcoGPU(0);
                 changed = true;
             }
 
@@ -1011,13 +1036,6 @@ namespace GHelper
             if (sender is null) return;
             TrackBar bar = (TrackBar)sender;
             SetBatteryChargeLimit(bar.Value);
-        }
-
-        private void checkGPU_CheckedChanged(object? sender, EventArgs e)
-        {
-            if (sender is null) return;
-            CheckBox check = (CheckBox)sender;
-            Program.config.setConfig("gpu_auto", check.Checked ? 1 : 0);
         }
 
 

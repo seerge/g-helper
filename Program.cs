@@ -143,10 +143,6 @@ namespace GHelper
                 case PBT_APMRESUMEAUTOMATIC:
                     settingsForm.BeginInvoke(delegate
                     {
-                        // Setting "other" mode to prevent bios bugging with PPTs after wake up from sleep
-                        wmi.DeviceSet(ASUSWmi.PerformanceMode, config.getConfig("performance_mode"));
-                        Thread.Sleep(1000);
-
                         SetAutoModes();
                     });
                     break;
@@ -159,7 +155,8 @@ namespace GHelper
         static async void CheckForUpdates()
         {
 
-            settingsForm.SetVersionLabel("Version: " + Assembly.GetExecutingAssembly().GetName().Version.ToString());
+            var assembly = Assembly.GetExecutingAssembly().GetName().Version.ToString();
+            settingsForm.SetVersionLabel("Version: " + assembly);
 
             try
             {
@@ -170,12 +167,11 @@ namespace GHelper
                     var config = JsonSerializer.Deserialize<JsonElement>(json);
                     var tag = config.GetProperty("tag_name").ToString().Replace("v", "");
                     var url = config.GetProperty("assets")[0].GetProperty("browser_download_url").ToString();
-                    var assembly = Assembly.GetExecutingAssembly().GetName().Version.ToString();
-
+                    
                     var gitVersion = new Version(tag);
-                    var appVersion = new Version();
+                    var appVersion = new Version(assembly);
 
-                    var result = appVersion.CompareTo(gitVersion);
+                    var result = gitVersion.CompareTo(appVersion);
                     if (result > 0)
                     {
                         settingsForm.SetVersionLabel("Download Update: " + tag, url);

@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using GHelper;
+using System.Diagnostics;
 using System.Management;
 using System.Runtime.InteropServices;
 
