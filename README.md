@@ -4,7 +4,7 @@ A small utility that allows you do almost everyting you could do with Armory Cra
 
 ### [Download latest release](https://github.com/seerge/g-helper/releases)
 
-![Screenshot](https://github.com/seerge/g-helper/blob/main/screenshot.png)
+![Screenshot](https://raw.githubusercontent.com/seerge/g-helper/main/screenshot.png)
 
 ## NEW (and experimental) features
 
