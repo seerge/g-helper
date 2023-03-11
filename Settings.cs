@@ -879,11 +879,14 @@ namespace GHelper
             ButtonEnabled(buttonStandard, false);
             ButtonEnabled(buttonUltimate, false);
 
+            labelGPU.Text = "GPU Mode: Changing ...";
+
             new Thread(() =>
             {
                 Thread.CurrentThread.IsBackground = true;
                 Program.wmi.DeviceSet(ASUSWmi.GPUEco, eco);
-                Program.settingsForm.BeginInvoke(delegate { 
+                Program.settingsForm.BeginInvoke(delegate
+                {
                     InitGPUMode();
                     AutoScreen(SystemInformation.PowerStatus.PowerLineStatus);
                 });

@@ -99,6 +99,7 @@ namespace GHelper
 
             }
 
+            Application.EnableVisualStyles();
 
             trayIcon.MouseClick += TrayIcon_MouseClick; ;
 
