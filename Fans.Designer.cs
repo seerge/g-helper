@@ -28,8 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea4 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
             panelFans = new Panel();
             tableFanCharts = new TableLayoutPanel();
             chartGPU = new System.Windows.Forms.DataVisualization.Charting.Chart();
@@ -103,8 +103,8 @@
             // 
             // chartGPU
             // 
-            chartArea1.Name = "ChartArea1";
-            chartGPU.ChartAreas.Add(chartArea1);
+            chartArea3.Name = "ChartArea1";
+            chartGPU.ChartAreas.Add(chartArea3);
             chartGPU.Dock = DockStyle.Fill;
             chartGPU.Location = new Point(2, 504);
             chartGPU.Margin = new Padding(2, 10, 2, 10);
@@ -115,8 +115,8 @@
             // 
             // chartCPU
             // 
-            chartArea2.Name = "ChartArea1";
-            chartCPU.ChartAreas.Add(chartArea2);
+            chartArea4.Name = "ChartArea1";
+            chartCPU.ChartAreas.Add(chartArea4);
             chartCPU.Dock = DockStyle.Fill;
             chartCPU.Location = new Point(2, 10);
             chartCPU.Margin = new Padding(2, 10, 2, 10);
@@ -152,7 +152,7 @@
             // 
             checkAuto.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             checkAuto.AutoSize = true;
-            checkAuto.Location = new Point(377, 1089);
+            checkAuto.Location = new Point(377, 1086);
             checkAuto.Margin = new Padding(4, 2, 4, 2);
             checkAuto.Name = "checkAuto";
             checkAuto.Size = new Size(165, 36);
@@ -174,7 +174,7 @@
             // buttonApply
             // 
             buttonApply.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            buttonApply.Location = new Point(544, 1081);
+            buttonApply.Location = new Point(542, 1081);
             buttonApply.Margin = new Padding(4, 2, 4, 2);
             buttonApply.Name = "buttonApply";
             buttonApply.Size = new Size(248, 44);
@@ -215,7 +215,7 @@
             // 
             checkApplyPower.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             checkApplyPower.AutoSize = true;
-            checkApplyPower.Location = new Point(29, 1039);
+            checkApplyPower.Location = new Point(27, 1039);
             checkApplyPower.Margin = new Padding(4, 2, 4, 2);
             checkApplyPower.Name = "checkApplyPower";
             checkApplyPower.Size = new Size(165, 36);
@@ -226,10 +226,10 @@
             // buttonApplyPower
             // 
             buttonApplyPower.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            buttonApplyPower.Location = new Point(24, 1081);
+            buttonApplyPower.Location = new Point(20, 1081);
             buttonApplyPower.Margin = new Padding(4, 2, 4, 2);
             buttonApplyPower.Name = "buttonApplyPower";
-            buttonApplyPower.Size = new Size(300, 44);
+            buttonApplyPower.Size = new Size(324, 44);
             buttonApplyPower.TabIndex = 24;
             buttonApplyPower.Text = "Apply Power Limits";
             buttonApplyPower.UseVisualStyleBackColor = true;
