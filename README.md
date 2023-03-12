@@ -9,7 +9,7 @@ A small utility that allows you do almost everyting you could do with Armory Cra
 ## NEW (and experimental) features
 
 1. Set Power limits (PPT) for Total (APU + dGPU) and CPU. 
-2. Anime matrix control thanks to [Starlight](https://github.com/vddCore/Starlight)
+2. Anime matrix control thanks to [Starlight](https://github.com/vddCore/Starlight) + some tweaks from my side
 
 ## Main features
 
