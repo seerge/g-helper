@@ -493,14 +493,18 @@ public class NativeMethods
                 if (device.outputTechnology == DISPLAYCONFIG_VIDEO_OUTPUT_TECHNOLOGY.DISPLAYCONFIG_OUTPUT_TECHNOLOGY_INTERNAL)
                 {
                     displayNum = count;
-                    laptopScreen = device.monitorDevicePath;
                 }
                 count++;
                 //Debug.WriteLine(device.outputTechnology);
                 //Debug.WriteLine(device.monitorFriendlyDeviceName);
             }
 
-            
+            if (Screen.AllScreens.Length != count)
+            {
+                Debug.WriteLine("Mismatch between enumerated and available screens");
+                return null;
+            }
+
             count = 0;
             foreach (var screen in Screen.AllScreens)
             {

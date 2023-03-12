@@ -719,7 +719,7 @@ namespace GHelper
 
             if (Program.config.getConfigPerf("auto_apply_power") == 1)
             {
-                var timer = new System.Timers.Timer(500);
+                var timer = new System.Timers.Timer(1000);
                 timer.Elapsed += delegate
                 {
                     timer.Stop();
@@ -892,6 +892,7 @@ namespace GHelper
                 Program.settingsForm.BeginInvoke(delegate
                 {
                     InitGPUMode();
+                    Thread.Sleep(500);
                     AutoScreen(SystemInformation.PowerStatus.PowerLineStatus);
                 });
             }).Start();
