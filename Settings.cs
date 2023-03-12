@@ -836,8 +836,12 @@ namespace GHelper
                 {
                     SetEcoGPU(1);
                 }
-
+                else
+                {
+                    AutoScreen(Plugged);
+                }
             }
+
         }
 
         public int InitGPUMode()

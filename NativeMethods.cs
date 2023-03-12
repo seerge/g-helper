@@ -491,17 +491,23 @@ public class NativeMethods
             foreach (var device in devices)
             {
                 if (device.outputTechnology == DISPLAYCONFIG_VIDEO_OUTPUT_TECHNOLOGY.DISPLAYCONFIG_OUTPUT_TECHNOLOGY_INTERNAL)
+                {
                     displayNum = count;
+                    laptopScreen = device.monitorDevicePath;
+                }
                 count++;
                 //Debug.WriteLine(device.outputTechnology);
                 //Debug.WriteLine(device.monitorFriendlyDeviceName);
             }
 
+            
             count = 0;
             foreach (var screen in Screen.AllScreens)
             {
                 if (count == displayNum)
+                {
                     laptopScreen = screen.DeviceName;
+                }
                 //Debug.WriteLine(screen.DeviceName);
                 count++;
             }
