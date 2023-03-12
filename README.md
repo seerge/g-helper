@@ -9,7 +9,7 @@ A small utility that allows you do almost everyting you could do with Armory Cra
 ## NEW (and experimental) features
 
 1. Set Power limits (PPT) for Total (APU + dGPU) and CPU. 
-2. Anime matrix control thanks to https://github.com/vddCore/Starlight
+2. Anime matrix control thanks to [Starlight](https://github.com/vddCore/Starlight) + some tweaks from my side
 
 ## Main features
 
@@ -29,8 +29,6 @@ Designed and developed for Asus Zephyrus G14 2022 (with AMD Radeon iGPU and dGPU
 
 To keep autoswitching and hotkeys work app needs to stay in running in tray. It doesn't consume any resources. 
 
-I recommend to keep "Asus Optimization Service" running, as it keeps basic laptop hotkeys such as screen or keyboard brightness adjustment working. If you have (or had) MyASUS app installed, that service is most probably still up an running even after MyASUS uninstall. It's part of [Asus System Controll Interface](https://www.asus.com/support/FAQ/1047338/). You can install it, and later disable / remove unnecesarily services by running [this bat file](https://raw.githubusercontent.com/seerge/g-helper/main/stop-asus-sv.bat ) as admin.
-
 ## Performance Profile switching 
 
 Profiles are **same** as in Armory Crate (as they are stored in bios), including default fan curves
@@ -49,9 +47,13 @@ PPTs are shown for G14 2022, for other models PPTs will be different as they are
 
 ## How to install
 
-1. Download latest release from https://github.com/seerge/g-helper/releases
+1. Download latest release from [**Releases Page**](https://github.com/seerge/g-helper/releases)
 2. Unzip to a folder of your choice
 3. Run **GHelper.exe**
+
+App requires [.NET7](https://dotnet.microsoft.com/en-us/download) to be installed. Most probably you already have it. Otherwise you can [download it](https://dotnet.microsoft.com/en-us/download).
+
+I recommend to keep "Asus Optimization Service" running, as it keeps basic laptop hotkeys such as screen or keyboard brightness adjustment working. If you have (or had) MyASUS app installed, that service is most probably still up an running even after MyASUS uninstall. It's part of [Asus System Controll Interface](https://www.asus.com/support/FAQ/1047338/). You can install it, and later disable / remove unnecesarily services by running [this bat file](https://raw.githubusercontent.com/seerge/g-helper/main/stop-asus-sv.bat) as admin.
 
 Note: Uses low level ASUS ACPI commands and doens't require Armory Crate to be installed at all!  Doesn't need administrator privileges to run!
 
