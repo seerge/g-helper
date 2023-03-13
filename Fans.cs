@@ -115,7 +115,7 @@ namespace GHelper
             InitPower();
             InitBoost();
 
-            checkBoost.Click += CheckBoost_Click;
+            comboBoost.SelectedIndexChanged += ComboBoost_Changed;
 
             Shown += Fans_Shown;
 
@@ -125,19 +125,15 @@ namespace GHelper
         public void InitBoost()
         {
             int boost = NativeMethods.GetCPUBoost();
-            checkBoost.Checked = (boost > 0);
+            if (boost >= 0)
+                comboBoost.SelectedIndex = boost;
         }
 
-        private void CheckBoost_Click(object? sender, EventArgs e)
+        private void ComboBoost_Changed(object? sender, EventArgs e)
         {
-            if (sender is null)
-                return;
-
-            CheckBox chk = (CheckBox)sender;
-            if (chk.Checked)
-                NativeMethods.SetCPUBoost(2);
-            else
-                NativeMethods.SetCPUBoost(0);
+            if (sender is null) return;
+            ComboBox cmb = (ComboBox)sender;
+            NativeMethods.SetCPUBoost(cmb.SelectedIndex);
         }
 
         private void CheckApplyPower_Click(object? sender, EventArgs e)

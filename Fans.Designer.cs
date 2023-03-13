@@ -31,11 +31,12 @@
             System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
             System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
             panelFans = new Panel();
+            labelBoost = new Label();
+            comboBoost = new ComboBox();
             picturePerf = new PictureBox();
             tableFanCharts = new TableLayoutPanel();
             chartGPU = new System.Windows.Forms.DataVisualization.Charting.Chart();
             chartCPU = new System.Windows.Forms.DataVisualization.Charting.Chart();
-            checkBoost = new CheckBox();
             labelFans = new Label();
             checkAuto = new CheckBox();
             buttonReset = new Button();
@@ -72,9 +73,10 @@
             // 
             // panelFans
             // 
+            panelFans.Controls.Add(labelBoost);
+            panelFans.Controls.Add(comboBoost);
             panelFans.Controls.Add(picturePerf);
             panelFans.Controls.Add(tableFanCharts);
-            panelFans.Controls.Add(checkBoost);
             panelFans.Controls.Add(labelFans);
             panelFans.Controls.Add(checkAuto);
             panelFans.Controls.Add(buttonReset);
@@ -86,6 +88,26 @@
             panelFans.Padding = new Padding(20);
             panelFans.Size = new Size(824, 1159);
             panelFans.TabIndex = 12;
+            // 
+            // labelBoost
+            // 
+            labelBoost.AutoSize = true;
+            labelBoost.Location = new Point(396, 18);
+            labelBoost.Name = "labelBoost";
+            labelBoost.Size = new Size(125, 32);
+            labelBoost.TabIndex = 39;
+            labelBoost.Text = "CPU Boost";
+            // 
+            // comboBoost
+            // 
+            comboBoost.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            comboBoost.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboBoost.FormattingEnabled = true;
+            comboBoost.Items.AddRange(new object[] { "Disabled", "Enabled", "Aggressive", "Efficient Enabled", "Efficient Aggressive" });
+            comboBoost.Location = new Point(526, 15);
+            comboBoost.Name = "comboBoost";
+            comboBoost.Size = new Size(266, 40);
+            comboBoost.TabIndex = 38;
             // 
             // picturePerf
             // 
@@ -140,18 +162,6 @@
             chartCPU.Size = new Size(760, 474);
             chartCPU.TabIndex = 14;
             chartCPU.Text = "chartCPU";
-            // 
-            // checkBoost
-            // 
-            checkBoost.AutoSize = true;
-            checkBoost.ForeColor = SystemColors.ControlText;
-            checkBoost.Location = new Point(475, 18);
-            checkBoost.Margin = new Padding(4, 2, 4, 2);
-            checkBoost.Name = "checkBoost";
-            checkBoost.Size = new Size(320, 36);
-            checkBoost.TabIndex = 35;
-            checkBoost.Text = "CPU Turbo Boost enabled";
-            checkBoost.UseVisualStyleBackColor = true;
             // 
             // labelFans
             // 
@@ -453,9 +463,10 @@
         private TableLayoutPanel tableFanCharts;
         private System.Windows.Forms.DataVisualization.Charting.Chart chartGPU;
         private System.Windows.Forms.DataVisualization.Charting.Chart chartCPU;
-        private CheckBox checkBoost;
         private Label labelFans;
         private PictureBox picturePerf;
         private PictureBox pictureBox1;
+        private ComboBox comboBoost;
+        private Label labelBoost;
     }
 }
