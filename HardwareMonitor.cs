@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 using GHelper.Gpu;
 
-public class HardwareMonitor
+public static class HardwareMonitor
 {
     private static IGpuTemperatureProvider? GpuTemperatureProvider;
 
