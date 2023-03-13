@@ -1,5 +1,4 @@
 using Microsoft.Win32;
-using System;
 using System.Diagnostics;
 using System.Management;
 using System.Reflection;
@@ -47,7 +46,7 @@ public static class Logger
         using (StreamWriter w = File.AppendText(logFile))
         {
             Debug.WriteLine(logMessage);
-            w.WriteLine($"{DateTime.Now.ToUniversalTime()}: {logMessage}");
+            w.WriteLine($"{DateTime.Now}: {logMessage}");
         }
 
     }
@@ -98,6 +97,11 @@ namespace GHelper
         public static SettingsForm settingsForm = new SettingsForm();
         public static ToastForm toast = new ToastForm();
 
+        private static IntPtr unRegPowerNotify;
+        private static IntPtr ds;
+
+        private static long lastAuto;
+
         // The main entry point for the application
         public static void Main()
         {
@@ -120,6 +124,8 @@ namespace GHelper
 
             Application.EnableVisualStyles();
 
+            ds = settingsForm.Handle;
+
             trayIcon.MouseClick += TrayIcon_MouseClick; ;
 
             wmi.SubscribeToEvents(WatcherEventArrived);
@@ -134,6 +140,9 @@ namespace GHelper
 
             SetAutoModes();
 
+            // Subscribing for native power change events
+
+            /*
             IntPtr registrationHandle = new IntPtr();
             DEVICE_NOTIFY_SUBSCRIBE_PARAMETERS recipient = new DEVICE_NOTIFY_SUBSCRIBE_PARAMETERS();
             recipient.Callback = new DeviceNotifyCallbackRoutine(DeviceNotifyCallback);
@@ -143,17 +152,20 @@ namespace GHelper
             Marshal.StructureToPtr(recipient, pRecipient, false);
 
             uint result = PowerRegisterSuspendResumeNotification(DEVICE_NOTIFY_CALLBACK, ref recipient, ref registrationHandle);
+            */
 
+            // Subscribing for monitor power on events
+            var settingGuid = new NativeMethods.PowerSettingGuid();
+            unRegPowerNotify = NativeMethods.RegisterPowerSettingNotification(ds, settingGuid.ConsoleDisplayState, NativeMethods.DEVICE_NOTIFY_WINDOW_HANDLE);
+
+            // Subscribing for system power change events
             SystemEvents.PowerModeChanged += SystemEvents_PowerModeChanged;
 
-            IntPtr ds = settingsForm.Handle;
 
             CheckForUpdates();
-
             Application.Run();
 
         }
-
 
         private static int DeviceNotifyCallback(IntPtr context, int type, IntPtr setting)
         {
@@ -163,10 +175,6 @@ namespace GHelper
                 case PBT_APMRESUMEAUTOMATIC:
                     settingsForm.BeginInvoke(delegate
                     {
-                        // Fix for bugging buios on wake up
-                        Program.wmi.DeviceSet(ASUSWmi.PerformanceMode, (config.getConfig("performance_mode")+1) % 3);
-                        Thread.Sleep(3000);
-
                         SetAutoModes();
                     });
                     break;
@@ -191,7 +199,7 @@ namespace GHelper
                     var config = JsonSerializer.Deserialize<JsonElement>(json);
                     var tag = config.GetProperty("tag_name").ToString().Replace("v", "");
                     var url = config.GetProperty("assets")[0].GetProperty("browser_download_url").ToString();
-                    
+
                     var gitVersion = new Version(tag);
                     var appVersion = new Version(assembly);
 
@@ -202,18 +210,24 @@ namespace GHelper
                     }
 
                 }
-            } catch {
+            }
+            catch
+            {
                 Logger.WriteLine("Failed to get update");
             }
 
         }
 
 
-        private static void SetAutoModes()
+        public static void SetAutoModes()
         {
+
+            if (Math.Abs(DateTimeOffset.Now.ToUnixTimeMilliseconds() - lastAuto) < 1000) return;
+            lastAuto = DateTimeOffset.Now.ToUnixTimeMilliseconds();
+
             PowerLineStatus isPlugged = SystemInformation.PowerStatus.PowerLineStatus;
 
-            Logger.WriteLine("Power " + isPlugged.ToString());
+            Logger.WriteLine("AutoSetting for " + isPlugged.ToString());
 
             settingsForm.SetBatteryChargeLimit(config.getConfig("charge_limit"));
 
@@ -320,7 +334,7 @@ namespace GHelper
 
             int EventID = int.Parse(e.NewEvent["EventID"].ToString());
 
-            Logger.WriteLine("WMI event "+EventID);
+            Logger.WriteLine("WMI event " + EventID);
 
             switch (EventID)
             {
@@ -368,6 +382,7 @@ namespace GHelper
         static void OnExit(object sender, EventArgs e)
         {
             trayIcon.Visible = false;
+            NativeMethods.UnregisterPowerSettingNotification(unRegPowerNotify);
             Application.Exit();
         }
     }
