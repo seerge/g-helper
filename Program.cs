@@ -8,6 +8,8 @@ public static class Logger
 {
     public static void WriteLine(string logMessage)
     {
+        Debug.WriteLine(logMessage);
+        
         var appPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\GHelper";
         var logFile = appPath + "\\log.txt";
 
@@ -109,6 +111,7 @@ namespace GHelper
             settingsForm.SetStartupCheck(Startup.IsScheduled());
 
             SetAutoModes();
+            HardwareMonitor.RecreateGpuTemperatureProvider();
 
             // Subscribing for native power change events
 
@@ -205,15 +208,6 @@ namespace GHelper
             settingsForm.AutoGPUMode(isPlugged);
 
             settingsForm.SetMatrix(isPlugged);
-
-            HardwareMonitor.RecreateGpuTemperatureProvider();
-
-            // Re-enabling the discrete GPU takes a bit of time,
-            // so a simple workaround is to refresh again after that happens
-            Task.Run(async () => {
-                await Task.Delay(TimeSpan.FromSeconds(3));
-                HardwareMonitor.RecreateGpuTemperatureProvider();
-            });
         }
 
         private static void SystemEvents_PowerModeChanged(object sender, PowerModeChangedEventArgs e)
