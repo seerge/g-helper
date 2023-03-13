@@ -4,13 +4,15 @@ using System.Management;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text.Json;
+using GHelper.Gpu;
 
 public class HardwareMonitor
 {
+    private static IGpuTemperatureProvider? GpuTemperatureProvider;
 
     public static float? cpuTemp = -1;
     public static float? batteryDischarge = -1;
-
+    public static int? gpuTemp = null;
 
     public static void ReadSensors()
     {
@@ -26,6 +28,8 @@ public class HardwareMonitor
             var cb = new PerformanceCounter("Power Meter", "Power", "Power Meter (0)", true);
             batteryDischarge = cb.NextValue() / 1000;
             cb.Dispose();
+
+            gpuTemp = GpuTemperatureProvider?.GetCurrentTemperature();
         }
         catch
         {
@@ -33,6 +37,34 @@ public class HardwareMonitor
         }
     }
 
+    public static void RecreateGpuTemperatureProvider() {
+        try {
+            if (GpuTemperatureProvider != null) {
+                GpuTemperatureProvider.Dispose();
+            }
+            
+            // Detect valid GPU temperature provider.
+            // We start with NVIDIA because there's always at least an integrated AMD GPU
+            IGpuTemperatureProvider gpuTemperatureProvider = new NvidiaGpuTemperatureProvider();
+            if (gpuTemperatureProvider.IsValid) {
+                GpuTemperatureProvider = gpuTemperatureProvider;
+                return;
+            }
+        
+            gpuTemperatureProvider.Dispose();
+            gpuTemperatureProvider = new AmdGpuTemperatureProvider();
+            if (gpuTemperatureProvider.IsValid) {
+                GpuTemperatureProvider = gpuTemperatureProvider;
+                return;
+            }
+        
+            gpuTemperatureProvider.Dispose();
+        
+            GpuTemperatureProvider = null;
+        } finally {
+            Debug.WriteLine($"GpuTemperatureProvider: {GpuTemperatureProvider?.GetType().Name}");
+        }
+    }
 }
 public static class Logger
 {
@@ -236,6 +268,14 @@ namespace GHelper
 
             settingsForm.SetMatrix(isPlugged);
 
+            HardwareMonitor.RecreateGpuTemperatureProvider();
+
+            // Re-enabling the discrete GPU takes a bit of time,
+            // so a simple workaround is to refresh again after that happens
+            Task.Run(async () => {
+                await Task.Delay(TimeSpan.FromSeconds(3));
+                HardwareMonitor.RecreateGpuTemperatureProvider();
+            });
         }
 
         private static void SystemEvents_PowerModeChanged(object sender, PowerModeChangedEventArgs e)
