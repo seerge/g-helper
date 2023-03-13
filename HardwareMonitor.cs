@@ -19,7 +19,14 @@ public class HardwareMonitor
             var ct = new PerformanceCounter("Thermal Zone Information", "Temperature", @"\_TZ.THRM", true);
             cpuTemp = ct.NextValue() - 273;
             ct.Dispose();
+        }
+        catch
+        {
+            Logger.WriteLine("Failed reading CPU temp");
+        }
 
+        try
+        {
             var cb = new PerformanceCounter("Power Meter", "Power", "Power Meter (0)", true);
             batteryDischarge = cb.NextValue() / 1000;
             cb.Dispose();
@@ -27,15 +34,16 @@ public class HardwareMonitor
         }
         catch
         {
-            //Logger.WriteLine("Failed reading sensors");
+            Logger.WriteLine("Failed reading Battery discharge");
         }
 
         try
         {
             gpuTemp = GpuTemperatureProvider?.GetCurrentTemperature();
-        } catch
+        } catch (Exception ex)
         {
-            //Logger.WriteLine("Failed reading GPU temps");
+            Logger.WriteLine("Failed reading GPU temp");
+            Logger.WriteLine(ex.ToString());
         }
 
     }
