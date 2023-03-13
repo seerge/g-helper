@@ -653,6 +653,10 @@ namespace GHelper
             if (HardwareMonitor.batteryDischarge > 0)
                 battery = "Discharging: " + Math.Round((decimal)HardwareMonitor.batteryDischarge, 1).ToString() + "W";
 
+            if (HardwareMonitor.gpuTemp != null) {
+                gpuTemp = $": {HardwareMonitor.gpuTemp}°C - ";
+            }
+
             Program.settingsForm.BeginInvoke(delegate
             {
                 Program.settingsForm.labelCPUFan.Text = "CPU" + cpuTemp + cpuFan;
@@ -680,6 +684,7 @@ namespace GHelper
                 aTimer.Interval = 300;
                 aTimer.Enabled = true;
 
+                RefreshSensors();
             }
             else
             {
