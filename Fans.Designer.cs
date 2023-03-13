@@ -268,7 +268,7 @@
             panelCPU.Controls.Add(labelCPU);
             panelCPU.Controls.Add(label2);
             panelCPU.Controls.Add(trackCPU);
-            panelCPU.Location = new Point(184, 90);
+            panelCPU.Location = new Point(184, 93);
             panelCPU.Margin = new Padding(4);
             panelCPU.Name = "panelCPU";
             panelCPU.Size = new Size(160, 510);
@@ -315,7 +315,7 @@
             panelTotal.Controls.Add(labelTotal);
             panelTotal.Controls.Add(label1);
             panelTotal.Controls.Add(trackTotal);
-            panelTotal.Location = new Point(16, 90);
+            panelTotal.Location = new Point(16, 93);
             panelTotal.Margin = new Padding(4);
             panelTotal.Name = "panelTotal";
             panelTotal.Size = new Size(160, 512);
@@ -362,7 +362,7 @@
             // 
             labelApplied.AutoSize = true;
             labelApplied.ForeColor = Color.Tomato;
-            labelApplied.Location = new Point(56, 48);
+            labelApplied.Location = new Point(56, 54);
             labelApplied.Margin = new Padding(4, 0, 4, 0);
             labelApplied.Name = "labelApplied";
             labelApplied.Size = new Size(143, 32);

@@ -541,7 +541,7 @@ namespace GHelper
         {
 
             int currentFrequency = NativeMethods.GetRefreshRate();
-            
+
             if (currentFrequency < 0) // Laptop screen not detected or has unknown refresh rate
             {
                 InitScreen();
@@ -562,7 +562,7 @@ namespace GHelper
                 Program.wmi.DeviceSet(ASUSWmi.ScreenOverdrive, overdrive);
 
             InitScreen();
-            Logger.WriteLine("Screen "+ frequency.ToString() + "Hz");
+            Logger.WriteLine("Screen " + frequency.ToString() + "Hz");
 
         }
 
@@ -690,7 +690,8 @@ namespace GHelper
             if (HardwareMonitor.batteryDischarge > 0)
                 battery = "Discharging: " + Math.Round((decimal)HardwareMonitor.batteryDischarge, 1).ToString() + "W";
 
-            if (HardwareMonitor.gpuTemp != null) {
+            if (HardwareMonitor.gpuTemp != null)
+            {
                 gpuTemp = $": {HardwareMonitor.gpuTemp}°C - ";
             }
 
@@ -744,7 +745,7 @@ namespace GHelper
             Program.wmi.DeviceSet(ASUSWmi.PPT_TotalA1, limit_total);
             Program.wmi.DeviceSet(ASUSWmi.PPT_CPUB0, limit_cpu);
 
-            Logger.WriteLine("PowerLimits "+limit_total.ToString() + ", " + limit_cpu.ToString());
+            Logger.WriteLine("PowerLimits " + limit_total.ToString() + ", " + limit_cpu.ToString());
 
 
         }
@@ -802,7 +803,7 @@ namespace GHelper
             Program.config.setConfig("performance_mode", PerformanceMode);
 
             Program.wmi.DeviceSet(ASUSWmi.PerformanceMode, PerformanceMode);
-            Logger.WriteLine("PerfMode " + perfName + " "+ PerformanceMode);
+            Logger.WriteLine("PerfMode " + perfName + " " + PerformanceMode);
 
             if (notify && (oldMode != PerformanceMode))
             {
