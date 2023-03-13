@@ -22,16 +22,25 @@ public class Startup
 
         var userId = WindowsIdentity.GetCurrent().Name;
 
-        Debug.WriteLine(strExeFilePath);
         TaskDefinition td = TaskService.Instance.NewTask();
         td.RegistrationInfo.Description = "GHelper Auto Start";
-        td.Triggers.Add(new LogonTrigger { UserId = userId, });
+        td.Triggers.Add(new LogonTrigger { UserId = userId });
         td.Actions.Add(strExeFilePath);
 
         td.Settings.StopIfGoingOnBatteries = false;
         td.Settings.DisallowStartIfOnBatteries = false;
 
-        TaskService.Instance.RootFolder.RegisterTaskDefinition(taskName, td);
+        Debug.WriteLine(strExeFilePath);
+        Debug.WriteLine(userId);
+
+        try
+        {
+            TaskService.Instance.RootFolder.RegisterTaskDefinition(taskName, td);
+        } catch
+        {
+            MessageBox.Show("Can't schedule task", "Scheduler Error", MessageBoxButtons.OK);
+        }
+
     }
 
     public static void UnSchedule()
