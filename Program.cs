@@ -63,7 +63,7 @@ public class HardwareMonitor
         
             GpuTemperatureProvider = null;
         } finally {
-            Debug.WriteLine($"GpuTemperatureProvider: {GpuTemperatureProvider.GetType().Name}");
+            Debug.WriteLine($"GpuTemperatureProvider: {GpuTemperatureProvider?.GetType().Name}");
         }
     }
 }
