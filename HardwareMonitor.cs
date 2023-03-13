@@ -19,8 +19,7 @@ public static class HardwareMonitor
             var ct = new PerformanceCounter("Thermal Zone Information", "Temperature", @"\_TZ.THRM", true);
             cpuTemp = ct.NextValue() - 273;
             ct.Dispose();
-        }
-        catch
+        } catch
         {
             Logger.WriteLine("Failed reading CPU temp");
         }
@@ -31,8 +30,7 @@ public static class HardwareMonitor
             batteryDischarge = cb.NextValue() / 1000;
             cb.Dispose();
 
-        }
-        catch
+        } catch
         {
             Logger.WriteLine("Failed reading Battery discharge");
         }
