@@ -29,6 +29,7 @@ public class Startup
 
         td.Settings.StopIfGoingOnBatteries = false;
         td.Settings.DisallowStartIfOnBatteries = false;
+        td.Settings.ExecutionTimeLimit = TimeSpan.Zero;
 
         Debug.WriteLine(strExeFilePath);
         Debug.WriteLine(userId);
@@ -36,9 +37,9 @@ public class Startup
         try
         {
             TaskService.Instance.RootFolder.RegisterTaskDefinition(taskName, td);
-        } catch
+        } catch (Exception e)
         {
-            MessageBox.Show("Can't schedule task", "Scheduler Error", MessageBoxButtons.OK);
+            MessageBox.Show(e.ToString(), "Scheduler Error", MessageBoxButtons.OK);
         }
 
     }

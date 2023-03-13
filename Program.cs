@@ -30,8 +30,26 @@ public class HardwareMonitor
         }
         catch
         {
-            Debug.WriteLine("Failed reading sensors");
+            Logger.WriteLine("Failed reading sensors");
         }
+    }
+
+}
+public static class Logger
+{
+    public static void WriteLine(string logMessage)
+    {
+        var appPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\GHelper";
+        var logFile = appPath + "\\log.txt";
+
+        if (!Directory.Exists(appPath)) Directory.CreateDirectory(appPath);
+
+        using (StreamWriter w = File.AppendText(logFile))
+        {
+            Debug.WriteLine(logMessage);
+            w.WriteLine($"{DateTime.Now.ToUniversalTime()}: {logMessage}");
+        }
+
     }
 
 }
@@ -40,6 +58,7 @@ namespace GHelper
 {
     static class Program
     {
+
 
         // Native methods for sleep detection
 
@@ -138,7 +157,7 @@ namespace GHelper
 
         private static int DeviceNotifyCallback(IntPtr context, int type, IntPtr setting)
         {
-            //Debug.WriteLine($"Power callback type: {type}");
+            Logger.WriteLine($"Power callback {type}");
             switch (type)
             {
                 case PBT_APMRESUMEAUTOMATIC:
@@ -146,7 +165,7 @@ namespace GHelper
                     {
                         // Fix for bugging buios on wake up
                         Program.wmi.DeviceSet(ASUSWmi.PerformanceMode, (config.getConfig("performance_mode")+1) % 3);
-                        Thread.Sleep(500);
+                        Thread.Sleep(3000);
 
                         SetAutoModes();
                     });
@@ -184,7 +203,7 @@ namespace GHelper
 
                 }
             } catch {
-                Debug.WriteLine("Failed to get update");
+                Logger.WriteLine("Failed to get update");
             }
 
         }
@@ -194,7 +213,7 @@ namespace GHelper
         {
             PowerLineStatus isPlugged = SystemInformation.PowerStatus.PowerLineStatus;
 
-            Debug.WriteLine(isPlugged.ToString());
+            Logger.WriteLine("Power " + isPlugged.ToString());
 
             settingsForm.SetBatteryChargeLimit(config.getConfig("charge_limit"));
 
@@ -207,6 +226,7 @@ namespace GHelper
 
         private static void SystemEvents_PowerModeChanged(object sender, PowerModeChangedEventArgs e)
         {
+            Logger.WriteLine("Windows - Power Mode Changed");
             SetAutoModes();
         }
 
@@ -223,7 +243,7 @@ namespace GHelper
             }
             catch
             {
-                Debug.WriteLine("Failed to run " + fileName);
+                Logger.WriteLine("Failed to run " + fileName);
             }
 
 
@@ -300,7 +320,7 @@ namespace GHelper
 
             int EventID = int.Parse(e.NewEvent["EventID"].ToString());
 
-            Debug.WriteLine(EventID);
+            Logger.WriteLine("WMI event "+EventID);
 
             switch (EventID)
             {

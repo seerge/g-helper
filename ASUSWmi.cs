@@ -183,7 +183,7 @@ public class ASUSWmi
         if (curve.Length != 16) return;
         if (curve.All(singleByte => singleByte == 0)) return;
 
-        Debug.WriteLine(BitConverter.ToString(curve));
+        Logger.WriteLine("Fans" + ((device == 1)?"GPU":"CPU") + " " + BitConverter.ToString(curve));
 
         if (device == 1)
             DeviceSet(DevsGPUFanCurve, curve);

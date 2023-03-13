@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Drawing.Imaging;
 using System.Timers;
 
+
 namespace GHelper
 {
 
@@ -525,7 +526,7 @@ namespace GHelper
                 Program.wmi.DeviceSet(ASUSWmi.ScreenOverdrive, overdrive);
 
             InitScreen();
-            Debug.WriteLine(frequency);
+            Logger.WriteLine("Screen "+ frequency.ToString() + "Hz");
 
         }
 
@@ -559,7 +560,7 @@ namespace GHelper
             }
             catch
             {
-                Debug.WriteLine("Screen Overdrive not supported");
+                Logger.WriteLine("Screen Overdrive not supported");
             }
 
             button60Hz.FlatAppearance.BorderSize = buttonInactive;
@@ -702,7 +703,7 @@ namespace GHelper
             Program.wmi.DeviceSet(ASUSWmi.PPT_TotalA1, limit_total);
             Program.wmi.DeviceSet(ASUSWmi.PPT_CPUB0, limit_cpu);
 
-            Debug.WriteLine(limit_total.ToString() + ", " + limit_cpu.ToString());
+            Logger.WriteLine("PowerLimits "+limit_total.ToString() + ", " + limit_cpu.ToString());
 
 
         }
@@ -760,7 +761,7 @@ namespace GHelper
             Program.config.setConfig("performance_mode", PerformanceMode);
 
             Program.wmi.DeviceSet(ASUSWmi.PerformanceMode, PerformanceMode);
-            Debug.WriteLine("Perf:" + PerformanceMode);
+            Logger.WriteLine("PerfMode " + perfName + " "+ PerformanceMode);
 
             if (notify && (oldMode != PerformanceMode))
             {
