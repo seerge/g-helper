@@ -112,7 +112,7 @@
             panelMatrix.Controls.Add(pictureMatrix);
             panelMatrix.Controls.Add(labelMatrix);
             panelMatrix.Dock = DockStyle.Top;
-            panelMatrix.Location = new Point(16, 814);
+            panelMatrix.Location = new Point(16, 806);
             panelMatrix.Margin = new Padding(4);
             panelMatrix.Name = "panelMatrix";
             panelMatrix.Size = new Size(722, 180);
@@ -219,7 +219,7 @@
             panelBattery.Controls.Add(labelBatteryTitle);
             panelBattery.Controls.Add(trackBattery);
             panelBattery.Dock = DockStyle.Top;
-            panelBattery.Location = new Point(16, 994);
+            panelBattery.Location = new Point(16, 986);
             panelBattery.Margin = new Padding(4);
             panelBattery.Name = "panelBattery";
             panelBattery.Size = new Size(722, 148);
@@ -290,7 +290,7 @@
             panelFooter.Controls.Add(buttonQuit);
             panelFooter.Controls.Add(checkStartup);
             panelFooter.Dock = DockStyle.Top;
-            panelFooter.Location = new Point(16, 1142);
+            panelFooter.Location = new Point(16, 1134);
             panelFooter.Margin = new Padding(4);
             panelFooter.Name = "panelFooter";
             panelFooter.Size = new Size(722, 64);
@@ -330,7 +330,7 @@
             panelPerformance.Location = new Point(16, 16);
             panelPerformance.Margin = new Padding(0);
             panelPerformance.Name = "panelPerformance";
-            panelPerformance.Size = new Size(722, 228);
+            panelPerformance.Size = new Size(722, 220);
             panelPerformance.TabIndex = 36;
             // 
             // buttonFans
@@ -383,6 +383,8 @@
             // tablePerf
             // 
             tablePerf.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            tablePerf.AutoScroll = true;
+            tablePerf.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             tablePerf.ColumnCount = 3;
             tablePerf.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.33333F));
             tablePerf.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.33333F));
@@ -452,7 +454,7 @@
             panelGPU.Controls.Add(labelGPUFan);
             panelGPU.Controls.Add(tableGPU);
             panelGPU.Dock = DockStyle.Top;
-            panelGPU.Location = new Point(16, 244);
+            panelGPU.Location = new Point(16, 236);
             panelGPU.Margin = new Padding(4);
             panelGPU.Name = "panelGPU";
             panelGPU.Size = new Size(722, 216);
@@ -506,6 +508,8 @@
             // tableGPU
             // 
             tableGPU.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            tableGPU.AutoSize = true;
+            tableGPU.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             tableGPU.ColumnCount = 3;
             tableGPU.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.33333F));
             tableGPU.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.33333F));
@@ -571,7 +575,7 @@
             panelScreen.Controls.Add(pictureScreen);
             panelScreen.Controls.Add(labelSreen);
             panelScreen.Dock = DockStyle.Top;
-            panelScreen.Location = new Point(16, 460);
+            panelScreen.Location = new Point(16, 452);
             panelScreen.Margin = new Padding(4);
             panelScreen.Name = "panelScreen";
             panelScreen.Size = new Size(722, 200);
@@ -592,6 +596,8 @@
             // tableScreen
             // 
             tableScreen.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            tableScreen.AutoSize = true;
+            tableScreen.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             tableScreen.ColumnCount = 3;
             tableScreen.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.33333F));
             tableScreen.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.33333F));
@@ -666,7 +672,7 @@
             panelKeyboard.Controls.Add(pictureKeyboard);
             panelKeyboard.Controls.Add(label1);
             panelKeyboard.Dock = DockStyle.Top;
-            panelKeyboard.Location = new Point(16, 660);
+            panelKeyboard.Location = new Point(16, 652);
             panelKeyboard.Margin = new Padding(4);
             panelKeyboard.Name = "panelKeyboard";
             panelKeyboard.Size = new Size(722, 154);

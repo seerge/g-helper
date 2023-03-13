@@ -92,7 +92,7 @@
             // labelBoost
             // 
             labelBoost.AutoSize = true;
-            labelBoost.Location = new Point(396, 18);
+            labelBoost.Location = new Point(397, 19);
             labelBoost.Name = "labelBoost";
             labelBoost.Size = new Size(125, 32);
             labelBoost.TabIndex = 39;
@@ -128,7 +128,7 @@
             tableFanCharts.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
             tableFanCharts.Controls.Add(chartGPU, 0, 1);
             tableFanCharts.Controls.Add(chartCPU, 0, 0);
-            tableFanCharts.Location = new Point(28, 68);
+            tableFanCharts.Location = new Point(28, 64);
             tableFanCharts.Margin = new Padding(6);
             tableFanCharts.Name = "tableFanCharts";
             tableFanCharts.RowCount = 2;
@@ -136,7 +136,7 @@
             tableFanCharts.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
             tableFanCharts.RowStyles.Add(new RowStyle(SizeType.Absolute, 40F));
             tableFanCharts.RowStyles.Add(new RowStyle(SizeType.Absolute, 40F));
-            tableFanCharts.Size = new Size(764, 988);
+            tableFanCharts.Size = new Size(764, 992);
             tableFanCharts.TabIndex = 36;
             // 
             // chartGPU
@@ -144,10 +144,10 @@
             chartArea1.Name = "ChartArea1";
             chartGPU.ChartAreas.Add(chartArea1);
             chartGPU.Dock = DockStyle.Fill;
-            chartGPU.Location = new Point(2, 504);
+            chartGPU.Location = new Point(2, 506);
             chartGPU.Margin = new Padding(2, 10, 2, 10);
             chartGPU.Name = "chartGPU";
-            chartGPU.Size = new Size(760, 474);
+            chartGPU.Size = new Size(760, 476);
             chartGPU.TabIndex = 17;
             chartGPU.Text = "chart1";
             // 
@@ -159,7 +159,7 @@
             chartCPU.Location = new Point(2, 10);
             chartCPU.Margin = new Padding(2, 10, 2, 10);
             chartCPU.Name = "chartCPU";
-            chartCPU.Size = new Size(760, 474);
+            chartCPU.Size = new Size(760, 476);
             chartCPU.TabIndex = 14;
             chartCPU.Text = "chartCPU";
             // 
