@@ -19,14 +19,12 @@ public class NvidiaGpuTemperatureProvider : IGpuTemperatureProvider {
         if (!IsValid)
             return null;
 
+        PhysicalGPU internalGpu = _internalGpu!;
         IThermalSensor? gpuSensor = 
-            GPUApi.GetThermalSettings(_internalGpu!.Handle).Sensors
+            GPUApi.GetThermalSettings(internalGpu.Handle).Sensors
             .FirstOrDefault(s => s.Target == ThermalSettingsTarget.GPU);
 
-        if (gpuSensor == null)
-            return null;
-
-        return gpuSensor.CurrentTemperature;
+        return gpuSensor?.CurrentTemperature;
     }
 
     public void Dispose() {
