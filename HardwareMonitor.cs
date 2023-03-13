@@ -40,20 +40,29 @@ public class HardwareMonitor
         try
         {
             gpuTemp = GpuTemperatureProvider?.GetCurrentTemperature();
-        } catch (Exception ex)
-        {
+        } catch (Exception ex) {
+            gpuTemp = null;
             Logger.WriteLine("Failed reading GPU temp");
             Logger.WriteLine(ex.ToString());
         }
 
     }
 
+    public static void RecreateGpuTemperatureProviderWithRetry() {
+        RecreateGpuTemperatureProvider();
+
+        // Re-enabling the discrete GPU takes a bit of time,
+        // so a simple workaround is to refresh again after that happens
+        Task.Run(async () => {
+            await Task.Delay(TimeSpan.FromSeconds(3));
+            RecreateGpuTemperatureProvider();
+        });
+    }
+
     public static void RecreateGpuTemperatureProvider() {
         try {
-            if (GpuTemperatureProvider != null) {
-                GpuTemperatureProvider.Dispose();
-            }
-            
+            GpuTemperatureProvider?.Dispose();
+
             // Detect valid GPU temperature provider.
             // We start with NVIDIA because there's always at least an integrated AMD GPU
             IGpuTemperatureProvider gpuTemperatureProvider = new NvidiaGpuTemperatureProvider();
@@ -73,7 +82,7 @@ public class HardwareMonitor
         
             GpuTemperatureProvider = null;
         } finally {
-            Debug.WriteLine($"GpuTemperatureProvider: {GpuTemperatureProvider?.GetType().Name}");
+            Logger.WriteLine($"GpuTemperatureProvider: {GpuTemperatureProvider?.GetType().Name}");
         }
     }
 }
