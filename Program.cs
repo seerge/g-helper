@@ -9,7 +9,7 @@ public static class Logger
     public static void WriteLine(string logMessage)
     {
         Debug.WriteLine(logMessage);
-        
+
         var appPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\GHelper";
         var logFile = appPath + "\\log.txt";
 
@@ -17,7 +17,6 @@ public static class Logger
 
         using (StreamWriter w = File.AppendText(logFile))
         {
-            Debug.WriteLine(logMessage);
             w.WriteLine($"{DateTime.Now}: {logMessage}");
         }
 
