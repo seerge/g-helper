@@ -935,6 +935,7 @@ namespace GHelper
                 Program.settingsForm.BeginInvoke(delegate
                 {
                     InitGPUMode();
+                    HardwareMonitor.RecreateGpuTemperatureProviderWithRetry();
                     Thread.Sleep(500);
                     AutoScreen(SystemInformation.PowerStatus.PowerLineStatus);
                 });
@@ -987,8 +988,11 @@ namespace GHelper
                 changed = true;
             }
 
-            if (changed)
+            if (changed) {
                 Program.config.setConfig("gpu_mode", GPUMode);
+                
+                HardwareMonitor.RecreateGpuTemperatureProviderWithRetry();
+            }
 
             if (restart)
             {
