@@ -24,12 +24,20 @@ public class HardwareMonitor
             batteryDischarge = cb.NextValue() / 1000;
             cb.Dispose();
 
-            gpuTemp = GpuTemperatureProvider?.GetCurrentTemperature();
         }
         catch
         {
-            Logger.WriteLine("Failed reading sensors");
+            //Logger.WriteLine("Failed reading sensors");
         }
+
+        try
+        {
+            gpuTemp = GpuTemperatureProvider?.GetCurrentTemperature();
+        } catch
+        {
+            //Logger.WriteLine("Failed reading GPU temps");
+        }
+
     }
 
     public static void RecreateGpuTemperatureProvider() {

@@ -462,7 +462,7 @@
             // 
             checkGPU.AutoSize = true;
             checkGPU.ForeColor = SystemColors.GrayText;
-            checkGPU.Location = new Point(27, 154);
+            checkGPU.Location = new Point(27, 155);
             checkGPU.Margin = new Padding(4, 2, 4, 2);
             checkGPU.Name = "checkGPU";
             checkGPU.Size = new Size(550, 36);
@@ -581,7 +581,7 @@
             // 
             checkScreen.AutoSize = true;
             checkScreen.ForeColor = SystemColors.GrayText;
-            checkScreen.Location = new Point(27, 153);
+            checkScreen.Location = new Point(27, 154);
             checkScreen.Margin = new Padding(4, 2, 4, 2);
             checkScreen.Name = "checkScreen";
             checkScreen.Size = new Size(527, 36);
@@ -687,7 +687,7 @@
             tableLayoutKeyboard.Name = "tableLayoutKeyboard";
             tableLayoutKeyboard.RowCount = 1;
             tableLayoutKeyboard.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            tableLayoutKeyboard.Size = new Size(684, 62);
+            tableLayoutKeyboard.Size = new Size(684, 66);
             tableLayoutKeyboard.TabIndex = 39;
             // 
             // buttonKeyboard
@@ -726,7 +726,7 @@
             panelColor.Location = new Point(238, 10);
             panelColor.Margin = new Padding(10);
             panelColor.Name = "panelColor";
-            panelColor.Size = new Size(208, 42);
+            panelColor.Size = new Size(208, 46);
             panelColor.TabIndex = 36;
             // 
             // pictureColor2
@@ -792,7 +792,7 @@
             AutoScaleMode = AutoScaleMode.Dpi;
             AutoSize = true;
             AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            ClientSize = new Size(754, 1180);
+            ClientSize = new Size(754, 1217);
             Controls.Add(panelFooter);
             Controls.Add(panelBattery);
             Controls.Add(panelMatrix);
