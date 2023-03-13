@@ -1028,7 +1028,9 @@ namespace GHelper
 
         public void SetStartupCheck(bool status)
         {
+            checkStartup.CheckedChanged -= CheckStartup_CheckedChanged;
             checkStartup.Checked = status;
+            checkStartup.CheckedChanged += CheckStartup_CheckedChanged;
         }
 
         public void SetBatteryChargeLimit(int limit)

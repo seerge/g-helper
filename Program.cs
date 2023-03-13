@@ -144,6 +144,10 @@ namespace GHelper
                 case PBT_APMRESUMEAUTOMATIC:
                     settingsForm.BeginInvoke(delegate
                     {
+                        // Fix for bugging buios on wake up
+                        Program.wmi.DeviceSet(ASUSWmi.PerformanceMode, (config.getConfig("performance_mode")+1) % 3);
+                        Thread.Sleep(500);
+
                         SetAutoModes();
                     });
                     break;

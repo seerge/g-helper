@@ -485,7 +485,7 @@ public class NativeMethods
 
         try
         {
-            var devices = GetAllDevices();
+            var devices = GetAllDevices().ToArray();
             int count = 0, displayNum = -1;
 
             foreach (var device in devices)
