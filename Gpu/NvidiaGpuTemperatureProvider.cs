@@ -37,7 +37,7 @@ public class NvidiaGpuTemperatureProvider : IGpuTemperatureProvider {
             return PhysicalGPU
                 .GetPhysicalGPUs()
                 .FirstOrDefault(gpu => gpu.SystemType == SystemType.Laptop);
-        } catch (NVIDIAApiException) {
+        } catch {
             return null;
         }
     }

@@ -550,7 +550,7 @@ public class NativeMethods
                     displayNum = count;
                 }
                 count++;
-                Debug.WriteLine(device.outputTechnology);
+                //Debug.WriteLine(device.outputTechnology);
                 //Debug.WriteLine(device.monitorFriendlyDeviceName);
             }
 
@@ -569,7 +569,7 @@ public class NativeMethods
                 {
                     laptopScreen = screen.DeviceName;
                 }
-                Debug.WriteLine(screen.DeviceName);
+                //Debug.WriteLine(screen.DeviceName);
                 count++;
             }
         }
