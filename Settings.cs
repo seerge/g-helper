@@ -541,8 +541,12 @@ namespace GHelper
         {
 
             int currentFrequency = NativeMethods.GetRefreshRate();
-            if (currentFrequency < 0)  // Laptop screen not detected or has unknown refresh rate
+            
+            if (currentFrequency < 0) // Laptop screen not detected or has unknown refresh rate
+            {
+                InitScreen();
                 return;
+            }
 
             if (frequency >= 1000)
             {
@@ -717,7 +721,7 @@ namespace GHelper
                 aTimer.Interval = 300;
                 aTimer.Enabled = true;
 
-                RefreshSensors();
+                //RefreshSensors();
             }
             else
             {
@@ -1030,7 +1034,7 @@ namespace GHelper
                     break;
                 default:
                     buttonStandard.FlatAppearance.BorderSize = buttonActive;
-                    labelGPU.Text = "GPU Mode: iGPU and dGPU";
+                    labelGPU.Text = "GPU Mode: iGPU + dGPU";
                     Program.trayIcon.Icon = GHelper.Properties.Resources.standard;
                     break;
             }
