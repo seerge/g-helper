@@ -21,10 +21,7 @@ public static class Logger
                 w.WriteLine($"{DateTime.Now}: {logMessage}");
                 w.Close();
             }
-        } catch
-        {
-
-        }
+        } catch { }
 
         if (new Random().Next(100) == 1) Cleanup();
 
@@ -33,9 +30,12 @@ public static class Logger
 
     public static void Cleanup()
     {
-        var file = File.ReadAllLines(logFile);
-        int skip = Math.Max(0, file.Count() - 500);
-        File.WriteAllLines(logFile,file.Skip(skip).ToArray());
+        try
+        {
+            var file = File.ReadAllLines(logFile);
+            int skip = Math.Max(0, file.Count() - 500);
+            File.WriteAllLines(logFile, file.Skip(skip).ToArray());
+        } catch { }
     }
 
 }
