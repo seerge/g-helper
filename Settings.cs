@@ -858,32 +858,32 @@ namespace GHelper
 
         }
 
-        public void AutoGPUMode(PowerLineStatus Plugged = PowerLineStatus.Online)
+        public bool AutoGPUMode(PowerLineStatus Plugged = PowerLineStatus.Online)
         {
 
             int GpuAuto = Program.config.getConfig("gpu_auto");
-            if (GpuAuto != 1) return;
+            if (GpuAuto != 1) return false;
 
             int eco = Program.wmi.DeviceGet(ASUSWmi.GPUEco);
             int mux = Program.wmi.DeviceGet(ASUSWmi.GPUMux);
 
             if (mux == 0) // GPU in Ultimate, ignore
-                return;
+                return false;
             else
             {
                 if (eco == 1 && Plugged == PowerLineStatus.Online)  // Eco going Standard on plugged
                 {
                     SetEcoGPU(0);
+                    return true;
                 }
                 else if (eco == 0 && Plugged != PowerLineStatus.Online)  // Standard going Eco on plugged
                 {
                     SetEcoGPU(1);
-                }
-                else
-                {
-                    AutoScreen(Plugged);
+                    return true;
                 }
             }
+
+            return false;
 
         }
 

@@ -14,13 +14,19 @@ public static class Logger
         Debug.WriteLine(logMessage);
         if (!Directory.Exists(appPath)) Directory.CreateDirectory(appPath);
 
-        using (StreamWriter w = File.AppendText(logFile))
+        try
         {
-            w.WriteLine($"{DateTime.Now}: {logMessage}");
+            using (StreamWriter w = File.AppendText(logFile))
+            {
+                w.WriteLine($"{DateTime.Now}: {logMessage}");
+                w.Close();
+            }
+        } catch
+        {
+
         }
 
-        var rand = new Random();
-        if (rand.Next(50) == 1) Cleanup();
+        if (new Random().Next(100) == 1) Cleanup();
 
 
     }
@@ -214,7 +220,9 @@ namespace GHelper
             settingsForm.SetBatteryChargeLimit(config.getConfig("charge_limit"));
 
             settingsForm.AutoPerformance(isPlugged);
-            settingsForm.AutoGPUMode(isPlugged);
+            
+            bool switched = settingsForm.AutoGPUMode(isPlugged);
+            if (!switched) settingsForm.AutoScreen(isPlugged);
 
             settingsForm.SetMatrix(isPlugged);
         }

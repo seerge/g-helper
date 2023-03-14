@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using static Tools.ScreenInterrogatory;
+using System.Windows.Forms;
 
 namespace Tools
 {
@@ -545,22 +546,19 @@ public class NativeMethods
 
             foreach (var device in devices)
             {
-                if (device.outputTechnology == DISPLAYCONFIG_VIDEO_OUTPUT_TECHNOLOGY.DISPLAYCONFIG_OUTPUT_TECHNOLOGY_INTERNAL)
+                if (device.outputTechnology == DISPLAYCONFIG_VIDEO_OUTPUT_TECHNOLOGY.DISPLAYCONFIG_OUTPUT_TECHNOLOGY_INTERNAL ||
+                    device.outputTechnology == DISPLAYCONFIG_VIDEO_OUTPUT_TECHNOLOGY.DISPLAYCONFIG_OUTPUT_TECHNOLOGY_DISPLAYPORT_EMBEDDED)
                 {
                     displayNum = count;
                 }
                 count++;
-                //Debug.WriteLine(device.outputTechnology);
-                //Debug.WriteLine(device.monitorFriendlyDeviceName);
+                //Logger.WriteLine(device.outputTechnology.ToString());
+                //Logger.WriteLine(device.monitorFriendlyDeviceName);
             }
 
             var screens = Screen.AllScreens;
 
-            if (screens.Length != count)
-            {
-                Debug.WriteLine("Mismatch between enumerated and available screens");
-                return null;
-            }
+            if (screens.Length != count) return null;
 
             count = 0;
             foreach (var screen in screens)
@@ -569,13 +567,15 @@ public class NativeMethods
                 {
                     laptopScreen = screen.DeviceName;
                 }
-                //Debug.WriteLine(screen.DeviceName);
+                //Logger.WriteLine(screen.DeviceName);
                 count++;
             }
         }
-        catch
+        catch (Exception ex)
         {
-            Debug.WriteLine("Can't find internal screen");
+            Logger.WriteLine(ex.ToString());
+            Logger.WriteLine("Can't detect internal screen");
+            //laptopScreen = Screen.PrimaryScreen.DeviceName;
         }
 
 
