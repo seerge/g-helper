@@ -1,6 +1,6 @@
 # G-Helper / GHelper 
 
-## For Asus ROG Zephyrus G14, G15, Flow X13, Flow X16, and other models
+## Open source Armory Crate alternative for Asus ROG Zephyrus G14, G15, Flow X13, Flow X16, and other models
 
 A small utility that allows you do almost everyting you could do with Armory Crate but without extra bloat and unnecessary services.
 
@@ -16,7 +16,7 @@ A small utility that allows you do almost everyting you could do with Armory Cra
 ## Main features
 
 1. Switch between built-in system **Performance modes** Silent / Balanced / Turbo and apply default fan curves
-2. Switch between Eco / Standard or Ultimate **GPU modes**
+2. Seamless (!) switch between Eco / Standard or Ultimate **GPU modes**
 3. Change laptop screen refresh rate - 60hz or your maximum (120hz, 144hz, etc depending on the model) with display overdrive (OD)
 4. View default fan profiles for every mode and **auto apply** custom ones 
 5. Control keyboard backlit animation and colors
