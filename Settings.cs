@@ -741,9 +741,11 @@ namespace GHelper
             if (limit_cpu > ASUSWmi.MaxCPU) return;
             if (limit_cpu < ASUSWmi.MinCPU) return;
 
-            Program.wmi.DeviceSet(ASUSWmi.PPT_TotalA0, limit_total);
-            Program.wmi.DeviceSet(ASUSWmi.PPT_TotalA1, limit_total);
-            Program.wmi.DeviceSet(ASUSWmi.PPT_CPUB0, limit_cpu);
+            if (Program.wmi.DeviceGet(ASUSWmi.PPT_TotalA0) >= 0)
+                Program.wmi.DeviceSet(ASUSWmi.PPT_TotalA0, limit_total);
+
+            if (Program.wmi.DeviceGet(ASUSWmi.PPT_CPUB0) >= 0)
+                Program.wmi.DeviceSet(ASUSWmi.PPT_CPUB0, limit_cpu);
 
             Logger.WriteLine("PowerLimits " + limit_total.ToString() + ", " + limit_cpu.ToString());
 
@@ -818,6 +820,13 @@ namespace GHelper
             }
 
             AutoFansAndPower();
+
+            NativeMethods.SetPowerScheme(PerformanceMode);
+
+            if (NativeMethods.PowerGetEffectiveOverlayScheme(out Guid activeScheme) == 0)
+            {
+                Debug.WriteLine("Effective :" + activeScheme);
+            }
 
             if (fans != null && fans.Text != "")
             {

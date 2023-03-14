@@ -27,12 +27,16 @@ public class ASUSWmi
     public const uint DevsCPUFanCurve = 0x00110024;
     public const uint DevsGPUFanCurve = 0x00110025;
 
-    public const int PPT_TotalA0 = 0x001200A0;
-    public const int PPT_TotalA1 = 0x001200A1;
+    public const int PPT_TotalA0 = 0x001200A0;  // Total PPT on 2022 and CPU PPT on 2021
+    public const int PPT_EDCA1 = 0x001200A1;  // CPU EDC
+    public const int PPT_TDCA2 = 0x001200A2;  // CPU TDC
+    public const int PPT_APUA3 = 0x001200A3;  // APU PPT ON 2021, doesn't work on 2022
 
-    public const int PPT_CPUB0 = 0x001200B0;
-    public const int PPT_CPUB1 = 0x001200B1;
-    public const int PPT_CPUA2 = 0x001200A2;
+    public const int PPT_CPUB0 = 0x001200B0;  // CPU PPT on 2022
+    public const int PPT_CPUB1 = 0x001200B1;  // APU PPT on 2022
+
+    public const int PPT_APUC1 = 0x001200C1;  
+    public const int PPT_APUC2 = 0x001200C2;  
 
     public const int PerformanceBalanced = 0;
     public const int PerformanceTurbo = 1;
@@ -44,11 +48,11 @@ public class ASUSWmi
 
 
     public const int MaxTotal = 150;
-    public const int MinTotal = 15;
+    public const int MinTotal = 5;
     public const int DefaultTotal = 125;
 
     public const int MaxCPU = 90;
-    public const int MinCPU = 15;
+    public const int MinCPU = 5;
     public const int DefaultCPU = 80;
 
 

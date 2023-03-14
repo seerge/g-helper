@@ -168,8 +168,17 @@ namespace GHelper
         public void InitPower(bool changed = false)
         {
 
-            panelPower.Visible = (Program.wmi.DeviceGet(ASUSWmi.PPT_TotalA0) >= 0);
-            panelCPU.Visible = (Program.wmi.DeviceGet(ASUSWmi.PPT_CPUB0) >= 0);
+            bool cpuBmode = (Program.wmi.DeviceGet(ASUSWmi.PPT_CPUB0) >= 0); // 2022 model +
+            bool cpuAmode = (Program.wmi.DeviceGet(ASUSWmi.PPT_TotalA0) >= 0); // 2021 model +
+
+            panelPower.Visible = cpuAmode;
+            panelCPU.Visible = cpuBmode;
+
+            // Yes, that's stupid, but Total slider on 2021 model actually adjusts CPU PPT
+            if (!cpuBmode)
+            {
+                label1.Text = "CPU SPPT";
+            }
 
             int limit_total;
             int limit_cpu;

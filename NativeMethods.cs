@@ -458,6 +458,15 @@ public class NativeMethods
     static readonly Guid GUID_CPU = new Guid("54533251-82be-4824-96c1-47b60b740d00");
     static readonly Guid GUID_BOOST = new Guid("be337238-0d82-4146-a960-4f3749d470c7");
 
+    [DllImportAttribute("powrprof.dll", EntryPoint = "PowerGetActualOverlayScheme")]
+    public static extern uint PowerGetActualOverlayScheme(out Guid ActualOverlayGuid);
+
+    [DllImportAttribute("powrprof.dll", EntryPoint = "PowerGetEffectiveOverlayScheme")]
+    public static extern uint PowerGetEffectiveOverlayScheme(out Guid EffectiveOverlayGuid);
+
+    [DllImportAttribute("powrprof.dll", EntryPoint = "PowerSetActiveOverlayScheme")]
+    public static extern uint PowerSetActiveOverlayScheme(Guid OverlaySchemeGuid);
+
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
     public struct DEVMODE
     {
@@ -665,5 +674,21 @@ public class NativeMethods
         PowerSetActiveScheme(IntPtr.Zero, activeSchemeGuid);
         */
 
+    }
+
+    public static void SetPowerScheme(int mode)
+    {
+        switch (mode)
+        {
+            case 0: // balanced
+                PowerSetActiveOverlayScheme(new Guid("00000000-0000-0000-0000-000000000000"));
+                break;
+            case 1: // turbo
+                PowerSetActiveOverlayScheme(new Guid("ded574b5-45a0-4f42-8737-46345c09c238"));
+                break;
+            case 2: //silent
+                PowerSetActiveOverlayScheme(new Guid("961cc777-2547-4f9d-8174-7d86181b8a7a"));
+                break;
+        }
     }
 }
