@@ -988,9 +988,10 @@ namespace GHelper
                 changed = true;
             }
 
-            if (changed) {
+            if (changed)
+            {
                 Program.config.setConfig("gpu_mode", GPUMode);
-                
+
                 HardwareMonitor.RecreateGpuTemperatureProviderWithRetry();
             }
 

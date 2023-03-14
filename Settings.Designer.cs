@@ -193,7 +193,7 @@
             // 
             pictureMatrix.BackgroundImage = Properties.Resources.icons8_matrix_desktop_48;
             pictureMatrix.BackgroundImageLayout = ImageLayout.Zoom;
-            pictureMatrix.Location = new Point(29, 10);
+            pictureMatrix.Location = new Point(25, 10);
             pictureMatrix.Margin = new Padding(4, 2, 4, 2);
             pictureMatrix.Name = "pictureMatrix";
             pictureMatrix.Size = new Size(36, 36);
@@ -204,7 +204,7 @@
             // 
             labelMatrix.AutoSize = true;
             labelMatrix.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            labelMatrix.Location = new Point(68, 12);
+            labelMatrix.Location = new Point(64, 12);
             labelMatrix.Margin = new Padding(4, 0, 4, 0);
             labelMatrix.Name = "labelMatrix";
             labelMatrix.Size = new Size(170, 32);
@@ -252,7 +252,7 @@
             // 
             pictureBattery.BackgroundImage = (Image)resources.GetObject("pictureBattery.BackgroundImage");
             pictureBattery.BackgroundImageLayout = ImageLayout.Zoom;
-            pictureBattery.Location = new Point(29, 10);
+            pictureBattery.Location = new Point(25, 10);
             pictureBattery.Margin = new Padding(4, 2, 4, 2);
             pictureBattery.Name = "pictureBattery";
             pictureBattery.Size = new Size(36, 38);
@@ -262,7 +262,7 @@
             // labelBatteryTitle
             // 
             labelBatteryTitle.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            labelBatteryTitle.Location = new Point(70, 12);
+            labelBatteryTitle.Location = new Point(66, 12);
             labelBatteryTitle.Margin = new Padding(4, 0, 4, 0);
             labelBatteryTitle.Name = "labelBatteryTitle";
             labelBatteryTitle.Size = new Size(408, 36);
@@ -351,7 +351,7 @@
             picturePerf.BackgroundImage = (Image)resources.GetObject("picturePerf.BackgroundImage");
             picturePerf.BackgroundImageLayout = ImageLayout.Zoom;
             picturePerf.InitialImage = null;
-            picturePerf.Location = new Point(29, 10);
+            picturePerf.Location = new Point(25, 10);
             picturePerf.Margin = new Padding(4, 2, 4, 2);
             picturePerf.Name = "picturePerf";
             picturePerf.Size = new Size(36, 38);
@@ -362,7 +362,7 @@
             // 
             labelPerf.AutoSize = true;
             labelPerf.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            labelPerf.Location = new Point(68, 12);
+            labelPerf.Location = new Point(64, 12);
             labelPerf.Margin = new Padding(4, 0, 4, 0);
             labelPerf.Name = "labelPerf";
             labelPerf.Size = new Size(234, 32);
@@ -476,7 +476,7 @@
             // 
             pictureGPU.BackgroundImage = (Image)resources.GetObject("pictureGPU.BackgroundImage");
             pictureGPU.BackgroundImageLayout = ImageLayout.Zoom;
-            pictureGPU.Location = new Point(29, 10);
+            pictureGPU.Location = new Point(25, 10);
             pictureGPU.Margin = new Padding(4, 2, 4, 2);
             pictureGPU.Name = "pictureGPU";
             pictureGPU.Size = new Size(36, 38);
@@ -487,7 +487,7 @@
             // 
             labelGPU.AutoSize = true;
             labelGPU.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            labelGPU.Location = new Point(70, 12);
+            labelGPU.Location = new Point(66, 12);
             labelGPU.Margin = new Padding(4, 0, 4, 0);
             labelGPU.Name = "labelGPU";
             labelGPU.Size = new Size(136, 32);
@@ -648,7 +648,7 @@
             // 
             pictureScreen.BackgroundImage = (Image)resources.GetObject("pictureScreen.BackgroundImage");
             pictureScreen.BackgroundImageLayout = ImageLayout.Zoom;
-            pictureScreen.Location = new Point(29, 8);
+            pictureScreen.Location = new Point(25, 8);
             pictureScreen.Margin = new Padding(4, 2, 4, 2);
             pictureScreen.Name = "pictureScreen";
             pictureScreen.Size = new Size(36, 38);
@@ -659,7 +659,7 @@
             // 
             labelSreen.AutoSize = true;
             labelSreen.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            labelSreen.Location = new Point(72, 10);
+            labelSreen.Location = new Point(68, 10);
             labelSreen.Margin = new Padding(4, 0, 4, 0);
             labelSreen.Name = "labelSreen";
             labelSreen.Size = new Size(176, 32);
@@ -774,7 +774,7 @@
             // 
             pictureKeyboard.BackgroundImage = Properties.Resources.icons8_keyboard_48;
             pictureKeyboard.BackgroundImageLayout = ImageLayout.Zoom;
-            pictureKeyboard.Location = new Point(29, 16);
+            pictureKeyboard.Location = new Point(25, 16);
             pictureKeyboard.Margin = new Padding(4, 2, 4, 2);
             pictureKeyboard.Name = "pictureKeyboard";
             pictureKeyboard.Size = new Size(36, 36);
@@ -785,7 +785,7 @@
             // 
             label1.AutoSize = true;
             label1.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            label1.Location = new Point(72, 16);
+            label1.Location = new Point(68, 16);
             label1.Margin = new Padding(4, 0, 4, 0);
             label1.Name = "label1";
             label1.Size = new Size(210, 32);
