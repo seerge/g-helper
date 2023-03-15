@@ -89,7 +89,7 @@ Designed and developed for Asus Zephyrus G14 2022 (with AMD Radeon iGPU and dGPU
 
 I don't have a Microsoft certificate to sign the app yet, so if you get a warning from Windows Defender on launch (Windows Protected your PC), click More Info -> Run anyway. Alternatively you can compile and run project by yourself using Visual Studio :)
 
-Settings file is stored at %AppData%\GHelper
+Settings file is stored at ``%AppData%\GHelper``
 
 ------------------
 
