@@ -10,7 +10,7 @@ A small utility that allows you to do almost everything you could do with Armory
 2. All performance modes can be fully customized (with fan curves and PPTs)
 3. Very lightweight and consumes almost no resources, doesn't install any services. Just a single exe to run
 
-## [Download latest release](https://github.com/seerge/g-helper/releases)
+## [Download latest release](https://github.com/seerge/g-helper/releases/download/latest/GHelper.zip)
 
 ![Screenshot](https://raw.githubusercontent.com/seerge/g-helper/main/screenshot.png)
 
