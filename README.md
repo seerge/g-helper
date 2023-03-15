@@ -12,6 +12,8 @@ A small utility that allows you to do almost everything you could do with Armory
 
 ## [Download latest release](https://github.com/seerge/g-helper/releases/latest/download/GHelper.zip)
 
+If you like this app, please star :star: it on Github and spread a word about it!
+
 ![Screenshot](https://raw.githubusercontent.com/seerge/g-helper/main/screenshot.png)
 
 ## Main features
