@@ -54,6 +54,19 @@ PPTs are shown for G14 2022, for other models PPTs will be different as they are
 2. Standard mode (Windows Hybrid) : iGPU and dGPU enabled, iGPU drives built in display
 3. Ultimate mode: iGPU and dGPU enabled, but dGPU drives built in display (supported only on G14 2022 model)
 
+## FAQ
+
+### How to I stop Armory Crate install popup appearing every time I press M4 / Rog key?
+Go to BIOS (F2 on boot), open Advanced Settings (F8) and disable "Armory Control Intrerface"  
+
+### Why Ultimate GPU mode is not available on my laptop?
+Ultimate mode is supported (by hardware) only on G14 2022 (and possibly other models from 2022+)
+
+### App doesn't start / or crashes, what should I do ?
+Open "Event Viewer" from start menu, go to Windows Logs -> Application and check for recent Errors mentioning G-Helper. If you see one - please post a [new issue](https://github.com/seerge/g-helper/issues) with all details from this error.
+
+----------------------------
+
 ## How to install
 
 1. Download latest release from [**Releases Page**](https://github.com/seerge/g-helper/releases)
