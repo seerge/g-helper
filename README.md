@@ -23,7 +23,7 @@ If you like this app, please star :star: it on Github and spread a word about it
 3. Laptop screen refresh rate 60hz or 120hz (144hz, etc depending on the model) with display overdrive (OD)
 4. Default and custom fan profiles for every performance mode
 5. Power limits (PPT) for every performance mode
-6. CPU urbo boost mode
+6. CPU turbo boost mode
 7. Keyboard backlit animation and colors
 8. Anime matrix control thanks to [Starlight](https://github.com/vddCore/Starlight) + some tweaks from my side (including animated GIFs)
 9. FN+F5 to cycle through performance modes (with OSD notification) and FN+F4 to cycle through keyboard animation modes
@@ -56,7 +56,7 @@ PPTs are shown for G14 2022, for other models PPTs will be different as they are
 
 ### :question: FAQ
 
-#### How to I stop Armory Crate install popup appearing every time I press M4 / Rog key?
+#### How do I stop Armory Crate install popup appearing every time I press M4 / Rog key?
 Go to BIOS (F2 on boot), open Advanced Settings (F8) and disable "Armory Control Intrerface"  
 
 #### Why Ultimate GPU mode is not available on my laptop?
