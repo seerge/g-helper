@@ -56,13 +56,13 @@ PPTs are shown for G14 2022, for other models PPTs will be different as they are
 
 ## :question: FAQ
 
-### How to I stop Armory Crate install popup appearing every time I press M4 / Rog key?
+#### How to I stop Armory Crate install popup appearing every time I press M4 / Rog key?
 Go to BIOS (F2 on boot), open Advanced Settings (F8) and disable "Armory Control Intrerface"  
 
-### Why Ultimate GPU mode is not available on my laptop?
+#### Why Ultimate GPU mode is not available on my laptop?
 Ultimate mode is supported (by hardware) only on G14 2022 (and possibly other models from 2022+)
 
-### App doesn't start / or crashes, what should I do ?
+#### App doesn't start / or crashes, what should I do ?
 Open "Event Viewer" from start menu, go to Windows Logs -> Application and check for recent Errors mentioning G-Helper. If you see one - please post a [new issue](https://github.com/seerge/g-helper/issues) with all details from this error.
 
 ----------------------------
