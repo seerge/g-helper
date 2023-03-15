@@ -4,19 +4,19 @@
 
 A small utility that allows you to do almost everything you could do with Armory Crate but without extra bloat and unnecessary services.
 
-## :gift: Main advantages 
+### :gift: Main advantages 
 
 1. Seamless and automatic GPU switching (without asking you to close all apps, etc)
 2. All performance modes can be fully customized (with fan curves and PPTs)
 3. Very lightweight and consumes almost no resources, doesn't install any services. Just a single exe to run
 
-## [:floppy_disk: Download latest release](https://github.com/seerge/g-helper/releases/latest/download/GHelper.zip)
+### [:floppy_disk: Download latest release](https://github.com/seerge/g-helper/releases/latest/download/GHelper.zip)
 
 If you like this app, please star :star: it on Github and spread a word about it!
 
 ![Screenshot](https://raw.githubusercontent.com/seerge/g-helper/main/screenshot.png)
 
-## :zap: Main features
+### :zap: Main features
 
 1. Built-in **Performance modes**: Silent - Balanced - Turbo (with default fan curves)
 2. **GPU modes**: Eco -Standard - Ultimate 
@@ -31,14 +31,14 @@ If you like this app, please star :star: it on Github and spread a word about it
 11. Battery charge limit to preserve battery health
 12. Monitor CPU / GPU temperature, fan speeds and battery discharge rate
 
-## :apple: Automatic switching of modes when on battery or plugged in
+### :apple: Automatic switching of modes when on battery or plugged in
 - Performance modes
 - GPU modes
 - Screen refresh rate
 
 To keep auto switching and hotkeys working the app needs to stay in running in the tray. It doesn't consume any resources. 
 
-## :rocket: Performance Modes
+### :rocket: Performance Modes
 
 Modes are **same** as in Armory Crate (as they are stored in bios), including default fan curves
 
@@ -48,13 +48,13 @@ Modes are **same** as in Armory Crate (as they are stored in bios), including de
 
 PPTs are shown for G14 2022, for other models PPTs will be different as they are set in bios.
 
-## :video_game: GPU Modes
+### :video_game: GPU Modes
 
 1. Eco mode : only low power integrated GPU enabled, iGPU drives built in display
 2. Standard mode (Windows Hybrid) : iGPU and dGPU enabled, iGPU drives built in display
 3. Ultimate mode: iGPU and dGPU enabled, but dGPU drives built in display (supported only on G14 2022 model)
 
-## :question: FAQ
+### :question: FAQ
 
 #### How to I stop Armory Crate install popup appearing every time I press M4 / Rog key?
 Go to BIOS (F2 on boot), open Advanced Settings (F8) and disable "Armory Control Intrerface"  
@@ -67,7 +67,7 @@ Open "Event Viewer" from start menu, go to Windows Logs -> Application and check
 
 ----------------------------
 
-## How to install
+### How to install
 
 1. Download latest release from [**Releases Page**](https://github.com/seerge/g-helper/releases)
 2. Unzip to a folder of your choice
