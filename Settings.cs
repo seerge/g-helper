@@ -940,6 +940,12 @@ namespace GHelper
             new Thread(() =>
             {
                 Thread.CurrentThread.IsBackground = true;
+
+                if (eco == 1)
+                {
+                    foreach (var process in Process.GetProcessesByName("EADesktop")) process.Kill();
+                }
+
                 Program.wmi.DeviceSet(ASUSWmi.GPUEco, eco);
                 Program.settingsForm.BeginInvoke(delegate
                 {

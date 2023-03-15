@@ -1,6 +1,4 @@
-﻿using GHelper;
-using System.Diagnostics;
-using System.Management;
+﻿using System.Management;
 using System.Runtime.InteropServices;
 
 
@@ -35,8 +33,8 @@ public class ASUSWmi
     public const int PPT_CPUB0 = 0x001200B0;  // CPU PPT on 2022
     public const int PPT_CPUB1 = 0x001200B1;  // APU PPT on 2022
 
-    public const int PPT_APUC1 = 0x001200C1;  
-    public const int PPT_APUC2 = 0x001200C2;  
+    public const int PPT_APUC1 = 0x001200C1;
+    public const int PPT_APUC2 = 0x001200C2;
 
     public const int PerformanceBalanced = 0;
     public const int PerformanceTurbo = 1;
@@ -187,7 +185,7 @@ public class ASUSWmi
         if (curve.Length != 16) return;
         if (curve.All(singleByte => singleByte == 0)) return;
 
-        Logger.WriteLine("Fans" + ((device == 1)?"GPU":"CPU") + " " + BitConverter.ToString(curve));
+        Logger.WriteLine("Fans" + ((device == 1) ? "GPU" : "CPU") + " " + BitConverter.ToString(curve));
 
         if (device == 1)
             DeviceSet(DevsGPUFanCurve, curve);

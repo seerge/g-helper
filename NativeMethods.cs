@@ -1,10 +1,7 @@
-﻿using System.Collections;
-using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using static Tools.ScreenInterrogatory;
-using System.Windows.Forms;
 
 namespace Tools
 {
