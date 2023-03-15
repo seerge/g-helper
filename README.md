@@ -32,9 +32,9 @@ If you like this app, please star :star: it on Github and spread a word about it
 12. Monitor CPU / GPU temperature, fan speeds and battery discharge rate
 
 ### :apple: Automatic switching of modes when on battery or plugged in
-- Performance modes
-- GPU modes
-- Screen refresh rate
+- Performance modes (app remembers last mode used on battery or when plugged)
+- GPU modes (eco on battery, stanard when plugged)
+- Screen refresh rate (60hz on battery, 120+ hz when plugged)
 
 To keep auto switching and hotkeys working the app needs to stay in running in the tray. It doesn't consume any resources. 
 
