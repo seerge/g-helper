@@ -2,9 +2,15 @@
 
 ## Open source Armory Crate alternative for Asus ROG Zephyrus G14, G15, Flow X13, Flow X16, and other models
 
-A small utility that allows you do almost everyting you could do with Armory Crate but without extra bloat and unnecessary services.
+A small utility that allows you to do almost everything you could do with Armory Crate but without extra bloat and unnecessary services.
 
-### [Download latest release](https://github.com/seerge/g-helper/releases)
+## Advantages 
+
+1. Seamless and automatic GPU switching (without asking you to close all apps, etc)
+2. All performance modes can be fully customized (with fan curves and PPTs)
+3. Very lightweight and consumes almost no resources
+
+## [Download latest release](https://github.com/seerge/g-helper/releases)
 
 ![Screenshot](https://raw.githubusercontent.com/seerge/g-helper/main/screenshot.png)
 
@@ -16,28 +22,28 @@ A small utility that allows you do almost everyting you could do with Armory Cra
 ## Main features
 
 1. Switch between built-in system **Performance modes** Silent / Balanced / Turbo and apply default fan curves
-2. Seamless (!) switch between Eco / Standard or Ultimate **GPU modes**
+2. Switch between Eco / Standard or Ultimate **GPU modes**
 3. Change laptop screen refresh rate - 60hz or your maximum (120hz, 144hz, etc depending on the model) with display overdrive (OD)
 4. View default fan profiles for every mode and **auto apply** custom ones 
 5. Control keyboard backlit animation and colors
 6. Set battery charge limit to preserve battery health
 7. Monitor CPU temperature, fan speeds and battery discharge rate
 8. **Automatically switch to Eco(iGPU)/60hz on battery** and back to Standard(GPU)/120hz modes when plugged
-9. Support for FN+F5 to cycle through performance modes (with OSD notification) and FN+F4 to cycle through keeyboard animation modes
+9. Support for FN+F5 to cycle through performance modes (with OSD notification) and FN+F4 to cycle through keyboard animation modes
 10. Basic keybindings for M3 and M4 keys
 11. Turn cpu turbo boost on/off with one checkbox to keep temps cooler
 
 Designed and developed for Asus Zephyrus G14 2022 (with AMD Radeon iGPU and dGPU). But could and should potentially work for G14 of 2021 and 2020, G15, X FLOW, and other ROG models for relevant and supported features.
 
-To keep autoswitching and hotkeys work app needs to stay in running in tray. It doesn't consume any resources. 
+To keep auto switching and hotkeys working the app needs to stay in running in the tray. It doesn't consume any resources. 
 
 ## Performance Profile switching 
 
 Profiles are **same** as in Armory Crate (as they are stored in bios), including default fan curves
 
-1. Silent (minimal or no fans, 70W PPT total, up to 45W PPT to CPU)
-2. Balanced (balanced fans, 100W PPT total, up to 45W PPT to CPU)
-3. Turbo (intense fans, 125W PPT total, up to 80W PPT to CPU) 
+1. Silent (minimal or no fans, 70W PPT total, up to 45W PPT to CPU) + Best power efficiency setting in windows
+2. Balanced (balanced fans, 100W PPT total, up to 45W PPT to CPU) + Balanced setting in windows
+3. Turbo (intense fans, 125W PPT total, up to 80W PPT to CPU) + Best performance setting in windows
 
 PPTs are shown for G14 2022, for other models PPTs will be different as they are set in bios.
 
@@ -55,15 +61,15 @@ PPTs are shown for G14 2022, for other models PPTs will be different as they are
 
 App requires [.NET7](https://dotnet.microsoft.com/en-us/download) to be installed. Most probably you already have it. Otherwise you can [download it](https://dotnet.microsoft.com/en-us/download).
 
-I recommend to keep "Asus Optimization Service" running, as it keeps basic laptop hotkeys such as screen or keyboard brightness adjustment working. If you have (or had) MyASUS app installed, that service is most probably still up an running even after MyASUS uninstall. It's part of [Asus System Controll Interface](https://www.asus.com/support/FAQ/1047338/). You can install it, and later disable / remove unnecesarily services by running [this bat file](https://raw.githubusercontent.com/seerge/g-helper/main/stop-asus-sv.bat) as admin.
+I recommend to keep "Asus Optimization Service" running, as it keeps basic laptop hotkeys such as screen or keyboard brightness adjustment working. If you have (or had) MyASUS app installed, that service is most probably still up an running even after MyASUS uninstall. It's part of [Asus System Control Interface](https://www.asus.com/support/FAQ/1047338/). You can install it, and later disable / remove unnecessarily services by running [this bat file](https://raw.githubusercontent.com/seerge/g-helper/main/stop-asus-sv.bat) as admin.
 
-Note: Uses low level ASUS ACPI commands and doens't require Armory Crate to be installed at all!  Doesn't need administrator privileges to run!
+Note: Uses low level ASUS ACPI commands and doesn't require Armory Crate to be installed at all!  Doesn't need administrator privileges to run!
 
-I don`t have Microsoft certificate to sign app yet, so if you get a warning from Windows Defender on launch (Windows Protected your PC), click More Info -> Run anyway. Alternatively you can compile and run project by yourself using Visual Studio :)
+I don't have a Microsoft certificate to sign the app yet, so if you get a warning from Windows Defender on launch (Windows Protected your PC), click More Info -> Run anyway. Alternatively you can compile and run project by yourself using Visual Studio :)
 
 Settings file is stored at %AppData%\GHelper
 
-P.S.: It's not recommended to use app in combination with Armory Crate, cause they adjust same settings.
+P.S.: It's not recommended to use an app in combination with Armory Crate, cause they adjust the same settings.
 
 ------------------
 
