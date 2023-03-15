@@ -26,7 +26,7 @@ If you like this app, please star :star: it on Github and spread a word about it
 6. CPU turbo boost mode
 7. Keyboard backlit animation and colors
 8. Anime matrix control thanks to [Starlight](https://github.com/vddCore/Starlight) + some tweaks from my side (including animated GIFs)
-9. FN+F5 to cycle through performance modes (with OSD notification) and FN+F4 to cycle through keyboard animation modes
+9. FN+F5 cycles performance modes, FN+F4 cycles keyboard animation modes
 10. Keybindings for M3 and M4 keys
 11. Battery charge limit to preserve battery health
 12. Monitor CPU / GPU temperature, fan speeds and battery discharge rate
