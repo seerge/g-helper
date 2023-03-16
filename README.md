@@ -1,4 +1,4 @@
-# G-Helper (GHelper)
+# [G-Helper (GHelper)](https://github.com/seerge/g-helper)
 
 ## Open source Armory Crate alternative for Asus ROG Zephyrus G14, G15, Flow X13, Flow X16, and other models
 
