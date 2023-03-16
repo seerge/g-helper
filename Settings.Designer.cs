@@ -1,4 +1,6 @@
-﻿namespace GHelper
+﻿using CustomControls;
+
+namespace GHelper
 {
     partial class SettingsForm
     {
@@ -52,23 +54,23 @@
             labelPerf = new Label();
             labelCPUFan = new Label();
             tablePerf = new TableLayoutPanel();
-            buttonTurbo = new Button();
-            buttonBalanced = new Button();
-            buttonSilent = new Button();
+            buttonTurbo = new RoundedButton();
+            buttonBalanced = new RoundedButton();
+            buttonSilent = new RoundedButton();
             panelGPU = new Panel();
             checkGPU = new CheckBox();
             pictureGPU = new PictureBox();
             labelGPU = new Label();
             labelGPUFan = new Label();
             tableGPU = new TableLayoutPanel();
-            buttonUltimate = new Button();
-            buttonStandard = new Button();
-            buttonEco = new Button();
+            buttonUltimate = new RoundedButton();
+            buttonStandard = new RoundedButton();
+            buttonEco = new RoundedButton();
             panelScreen = new Panel();
             checkScreen = new CheckBox();
             tableScreen = new TableLayoutPanel();
-            button120Hz = new Button();
-            button60Hz = new Button();
+            button120Hz = new RoundedButton();
+            button60Hz = new RoundedButton();
             pictureScreen = new PictureBox();
             labelSreen = new Label();
             panelKeyboard = new Panel();
@@ -402,11 +404,14 @@
             // 
             // buttonTurbo
             // 
+            buttonTurbo.Activated = false;
             buttonTurbo.BackColor = SystemColors.ControlLightLight;
+            buttonTurbo.BorderColor = Color.Transparent;
             buttonTurbo.Dock = DockStyle.Fill;
             buttonTurbo.FlatAppearance.BorderColor = Color.FromArgb(192, 0, 0);
             buttonTurbo.FlatAppearance.BorderSize = 0;
             buttonTurbo.FlatStyle = FlatStyle.Flat;
+            buttonTurbo.ForeColor = SystemColors.ControlText;
             buttonTurbo.Location = new Point(464, 12);
             buttonTurbo.Margin = new Padding(8, 12, 8, 12);
             buttonTurbo.Name = "buttonTurbo";
@@ -417,11 +422,14 @@
             // 
             // buttonBalanced
             // 
+            buttonBalanced.Activated = false;
             buttonBalanced.BackColor = SystemColors.ControlLightLight;
+            buttonBalanced.BorderColor = Color.Transparent;
             buttonBalanced.Dock = DockStyle.Fill;
             buttonBalanced.FlatAppearance.BorderColor = Color.FromArgb(0, 0, 192);
             buttonBalanced.FlatAppearance.BorderSize = 0;
             buttonBalanced.FlatStyle = FlatStyle.Flat;
+            buttonBalanced.ForeColor = SystemColors.ControlText;
             buttonBalanced.Location = new Point(236, 12);
             buttonBalanced.Margin = new Padding(8, 12, 8, 12);
             buttonBalanced.Name = "buttonBalanced";
@@ -432,12 +440,15 @@
             // 
             // buttonSilent
             // 
+            buttonSilent.Activated = false;
             buttonSilent.BackColor = SystemColors.ControlLightLight;
+            buttonSilent.BorderColor = Color.Transparent;
             buttonSilent.CausesValidation = false;
             buttonSilent.Dock = DockStyle.Fill;
             buttonSilent.FlatAppearance.BorderColor = Color.FromArgb(0, 192, 192);
             buttonSilent.FlatAppearance.BorderSize = 0;
             buttonSilent.FlatStyle = FlatStyle.Flat;
+            buttonSilent.ForeColor = SystemColors.ControlText;
             buttonSilent.Location = new Point(8, 12);
             buttonSilent.Margin = new Padding(8, 12, 8, 12);
             buttonSilent.Name = "buttonSilent";
@@ -527,10 +538,13 @@
             // 
             // buttonUltimate
             // 
+            buttonUltimate.Activated = false;
             buttonUltimate.BackColor = SystemColors.ControlLightLight;
+            buttonUltimate.BorderColor = Color.Transparent;
             buttonUltimate.Dock = DockStyle.Fill;
             buttonUltimate.FlatAppearance.BorderSize = 0;
             buttonUltimate.FlatStyle = FlatStyle.Flat;
+            buttonUltimate.ForeColor = SystemColors.ControlText;
             buttonUltimate.Location = new Point(464, 12);
             buttonUltimate.Margin = new Padding(8, 12, 8, 12);
             buttonUltimate.Name = "buttonUltimate";
@@ -541,10 +555,13 @@
             // 
             // buttonStandard
             // 
+            buttonStandard.Activated = false;
             buttonStandard.BackColor = SystemColors.ControlLightLight;
+            buttonStandard.BorderColor = Color.Transparent;
             buttonStandard.Dock = DockStyle.Fill;
             buttonStandard.FlatAppearance.BorderSize = 0;
             buttonStandard.FlatStyle = FlatStyle.Flat;
+            buttonStandard.ForeColor = SystemColors.ControlText;
             buttonStandard.Location = new Point(236, 12);
             buttonStandard.Margin = new Padding(8, 12, 8, 12);
             buttonStandard.Name = "buttonStandard";
@@ -555,11 +572,14 @@
             // 
             // buttonEco
             // 
+            buttonEco.Activated = false;
             buttonEco.BackColor = SystemColors.ControlLightLight;
+            buttonEco.BorderColor = Color.Transparent;
             buttonEco.CausesValidation = false;
             buttonEco.Dock = DockStyle.Fill;
             buttonEco.FlatAppearance.BorderSize = 0;
             buttonEco.FlatStyle = FlatStyle.Flat;
+            buttonEco.ForeColor = SystemColors.ControlText;
             buttonEco.Location = new Point(8, 12);
             buttonEco.Margin = new Padding(8, 12, 8, 12);
             buttonEco.Name = "buttonEco";
@@ -614,11 +634,13 @@
             // 
             // button120Hz
             // 
+            button120Hz.Activated = false;
             button120Hz.BackColor = SystemColors.ControlLightLight;
+            button120Hz.BorderColor = Color.Transparent;
             button120Hz.Dock = DockStyle.Fill;
-            button120Hz.FlatAppearance.BorderColor = SystemColors.ActiveBorder;
             button120Hz.FlatAppearance.BorderSize = 0;
             button120Hz.FlatStyle = FlatStyle.Flat;
+            button120Hz.ForeColor = SystemColors.ControlText;
             button120Hz.Location = new Point(236, 12);
             button120Hz.Margin = new Padding(8, 12, 8, 12);
             button120Hz.Name = "button120Hz";
@@ -629,10 +651,11 @@
             // 
             // button60Hz
             // 
+            button60Hz.Activated = false;
             button60Hz.BackColor = SystemColors.ControlLightLight;
+            button60Hz.BorderColor = Color.Transparent;
             button60Hz.CausesValidation = false;
             button60Hz.Dock = DockStyle.Fill;
-            button60Hz.FlatAppearance.BorderColor = SystemColors.ActiveBorder;
             button60Hz.FlatAppearance.BorderSize = 0;
             button60Hz.FlatStyle = FlatStyle.Flat;
             button60Hz.ForeColor = SystemColors.ControlText;
@@ -774,10 +797,10 @@
             // 
             pictureKeyboard.BackgroundImage = Properties.Resources.icons8_keyboard_48;
             pictureKeyboard.BackgroundImageLayout = ImageLayout.Zoom;
-            pictureKeyboard.Location = new Point(25, 16);
+            pictureKeyboard.Location = new Point(27, 16);
             pictureKeyboard.Margin = new Padding(4, 2, 4, 2);
             pictureKeyboard.Name = "pictureKeyboard";
-            pictureKeyboard.Size = new Size(36, 36);
+            pictureKeyboard.Size = new Size(32, 36);
             pictureKeyboard.TabIndex = 33;
             pictureKeyboard.TabStop = false;
             // 
@@ -868,23 +891,23 @@
         private Label labelPerf;
         private Label labelCPUFan;
         private TableLayoutPanel tablePerf;
-        private Button buttonTurbo;
-        private Button buttonBalanced;
-        private Button buttonSilent;
+        private RoundedButton buttonTurbo;
+        private RoundedButton buttonBalanced;
+        private RoundedButton buttonSilent;
         private Panel panelGPU;
         private CheckBox checkGPU;
         private PictureBox pictureGPU;
         private Label labelGPU;
         private Label labelGPUFan;
         private TableLayoutPanel tableGPU;
-        private Button buttonUltimate;
-        private Button buttonStandard;
-        private Button buttonEco;
+        private RoundedButton buttonUltimate;
+        private RoundedButton buttonStandard;
+        private RoundedButton buttonEco;
         private Panel panelScreen;
         private CheckBox checkScreen;
         private TableLayoutPanel tableScreen;
-        private Button button120Hz;
-        private Button button60Hz;
+        private RoundedButton button120Hz;
+        private RoundedButton button60Hz;
         private PictureBox pictureScreen;
         private Label labelSreen;
         private Panel panelKeyboard;

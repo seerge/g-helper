@@ -14,9 +14,6 @@ namespace GHelper
         static Color colorStandard = Color.FromArgb(255, 58, 174, 239);
         static Color colorTurbo = Color.FromArgb(255, 255, 32, 32);
 
-        static int buttonInactive = 0;
-        static int buttonActive = 5;
-
         static System.Timers.Timer aTimer = default!;
         static System.Timers.Timer matrixTimer = default!;
 
@@ -36,13 +33,16 @@ namespace GHelper
 
             FormClosing += SettingsForm_FormClosing;
 
-            buttonSilent.FlatAppearance.BorderColor = colorEco;
-            buttonBalanced.FlatAppearance.BorderColor = colorStandard;
-            buttonTurbo.FlatAppearance.BorderColor = colorTurbo;
+            buttonSilent.BorderColor = colorEco;
+            buttonBalanced.BorderColor = colorStandard;
+            buttonTurbo.BorderColor = colorTurbo;
 
-            buttonEco.FlatAppearance.BorderColor = colorEco;
-            buttonStandard.FlatAppearance.BorderColor = colorStandard;
-            buttonUltimate.FlatAppearance.BorderColor = colorTurbo;
+            buttonEco.BorderColor = colorEco;
+            buttonStandard.BorderColor = colorStandard;
+            buttonUltimate.BorderColor = colorTurbo;
+
+            button60Hz.BorderColor = SystemColors.ActiveBorder;
+            button120Hz.BorderColor = SystemColors.ActiveBorder;
 
             buttonSilent.Click += ButtonSilent_Click;
             buttonBalanced.Click += ButtonBalanced_Click;
@@ -599,12 +599,12 @@ namespace GHelper
                 Logger.WriteLine("Screen Overdrive not supported");
             }
 
-            button60Hz.FlatAppearance.BorderSize = buttonInactive;
-            button120Hz.FlatAppearance.BorderSize = buttonInactive;
+            button60Hz.Activated = false;
+            button120Hz.Activated = false;
 
             if (frequency == 60)
             {
-                button60Hz.FlatAppearance.BorderSize = buttonActive;
+                button60Hz.Activated = true;
             }
             else
             {
@@ -612,7 +612,7 @@ namespace GHelper
                     maxFrequency = frequency;
 
                 Program.config.setConfig("max_frequency", maxFrequency);
-                button120Hz.FlatAppearance.BorderSize = buttonActive;
+                button120Hz.Activated = true;
             }
 
             if (maxFrequency > 60)
@@ -779,22 +779,23 @@ namespace GHelper
         public void SetPerformanceMode(int PerformanceMode = ASUSWmi.PerformanceBalanced, bool notify = false)
         {
 
-            buttonSilent.FlatAppearance.BorderSize = buttonInactive;
-            buttonBalanced.FlatAppearance.BorderSize = buttonInactive;
-            buttonTurbo.FlatAppearance.BorderSize = buttonInactive;
+
+            buttonSilent.Activated = false;
+            buttonBalanced.Activated = false;
+            buttonTurbo.Activated = false;
 
             switch (PerformanceMode)
             {
                 case ASUSWmi.PerformanceSilent:
-                    buttonSilent.FlatAppearance.BorderSize = buttonActive;
+                    buttonSilent.Activated = true;
                     perfName = "Silent";
                     break;
                 case ASUSWmi.PerformanceTurbo:
-                    buttonTurbo.FlatAppearance.BorderSize = buttonActive;
+                    buttonTurbo.Activated = true;
                     perfName = "Turbo";
                     break;
                 default:
-                    buttonBalanced.FlatAppearance.BorderSize = buttonActive;
+                    buttonBalanced.Activated = true;
                     PerformanceMode = ASUSWmi.PerformanceBalanced;
                     perfName = "Balanced";
                     break;
@@ -943,7 +944,9 @@ namespace GHelper
 
                 if (eco == 1)
                 {
-                    foreach (var process in Process.GetProcessesByName("EADesktop")) process.Kill();
+                    string[] tokill = { "EADesktop" };
+                    foreach (string kill in tokill)
+                        foreach (var process in Process.GetProcessesByName(kill)) process.Kill();
                 }
 
                 Program.wmi.DeviceSet(ASUSWmi.GPUEco, eco);
@@ -954,7 +957,10 @@ namespace GHelper
                     Thread.Sleep(500);
                     AutoScreen(SystemInformation.PowerStatus.PowerLineStatus);
                 });
-            }).Start();
+            })
+            {
+
+            }.Start();
 
         }
 
@@ -1037,24 +1043,24 @@ namespace GHelper
                 GPUMode = Program.config.getConfig("gpu_mode");
             }
 
-            buttonEco.FlatAppearance.BorderSize = buttonInactive;
-            buttonStandard.FlatAppearance.BorderSize = buttonInactive;
-            buttonUltimate.FlatAppearance.BorderSize = buttonInactive;
+            buttonEco.Activated = false;
+            buttonStandard.Activated = false;
+            buttonUltimate.Activated = false;
 
             switch (GPUMode)
             {
                 case ASUSWmi.GPUModeEco:
-                    buttonEco.FlatAppearance.BorderSize = buttonActive;
+                    buttonEco.Activated = true;
                     labelGPU.Text = "GPU Mode: iGPU only";
                     Program.trayIcon.Icon = GHelper.Properties.Resources.eco;
                     break;
                 case ASUSWmi.GPUModeUltimate:
-                    buttonUltimate.FlatAppearance.BorderSize = buttonActive;
+                    buttonUltimate.Activated = true;
                     labelGPU.Text = "GPU Mode: dGPU exclusive";
                     Program.trayIcon.Icon = GHelper.Properties.Resources.ultimate;
                     break;
                 default:
-                    buttonStandard.FlatAppearance.BorderSize = buttonActive;
+                    buttonStandard.Activated = true;
                     labelGPU.Text = "GPU Mode: iGPU + dGPU";
                     Program.trayIcon.Icon = GHelper.Properties.Resources.standard;
                     break;

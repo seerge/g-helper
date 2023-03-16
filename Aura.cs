@@ -43,7 +43,7 @@ public class Aura
     {
 
         HidDevice[] HidDeviceList;
-        int[] deviceIds = { 0x1854, 0x1869, 0x1866, 0x19b6 };
+        int[] deviceIds = { 0x1854, 0x1869, 0x1866, 0x19b6, 0x1822, 0x1837, 0x1854, 0x184a, 0x183d, 0x8502, 0x1807, 0x17e0 };
 
         HidDeviceList = HidDevices.Enumerate(0x0b05, deviceIds).ToArray();
 
@@ -63,18 +63,14 @@ public class Aura
 
         foreach (HidDevice device in HidDeviceList)
         {
-            if (device.IsConnected)
+            if (device.IsConnected && device.Description.Contains("HID"))
             {
-                if (device.Description.IndexOf("HID") >= 0)
-                {
-                    device.OpenDevice();
-                    byte[] msg = AuraMessage(Mode, Color1, Color2, Speed);
-                    device.Write(msg);
-                    device.Write(MESSAGE_SET);
-                    device.Write(MESSAGE_APPLY);
-                    device.CloseDevice();
-                }
-
+                device.OpenDevice();
+                byte[] msg = AuraMessage(Mode, Color1, Color2, Speed);
+                device.Write(msg);
+                device.Write(MESSAGE_SET);
+                device.Write(MESSAGE_APPLY);
+                device.CloseDevice();
             }
         }
 
