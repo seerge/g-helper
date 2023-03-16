@@ -66,6 +66,7 @@ namespace CustomControls
             using (Pen penSurface = new Pen(this.Parent.BackColor, borderSize))
             using (Pen penBorder = new Pen(borderDrawColor, borderSize))
             {
+                penBorder.Alignment = PenAlignment.Outset;
                 pevent.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
                 this.Region = new Region(pathSurface);
                 pevent.Graphics.DrawPath(penSurface, pathSurface);
