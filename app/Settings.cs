@@ -570,7 +570,6 @@ namespace GHelper
             if (overdrive > 0)
                 Program.wmi.DeviceSet(ASUSWmi.ScreenOverdrive, overdrive);
 
-            //Program.config.setConfig("screen_auto", 0);
             InitScreen();
 
             Logger.WriteLine("Screen " + frequency.ToString() + "Hz");

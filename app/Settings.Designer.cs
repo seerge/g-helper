@@ -528,10 +528,10 @@ namespace GHelper
             tableGPU.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
             tableGPU.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
             tableGPU.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
-            tableGPU.Controls.Add(buttonOptimized, 0, 0);
-            tableGPU.Controls.Add(buttonEco, 1, 0);
-            tableGPU.Controls.Add(buttonStandard, 2, 0);
-            tableGPU.Controls.Add(buttonUltimate, 3, 0);
+            tableGPU.Controls.Add(buttonEco, 0, 0);
+            tableGPU.Controls.Add(buttonStandard, 1, 0);
+            tableGPU.Controls.Add(buttonUltimate, 2, 0);
+            tableGPU.Controls.Add(buttonOptimized, 3, 0);
             tableGPU.Location = new Point(15, 48);
             tableGPU.Margin = new Padding(4, 2, 4, 2);
             tableGPU.Name = "tableGPU";
