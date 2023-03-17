@@ -17,7 +17,7 @@ A small utility that allows you to do almost everything you could do with Armory
 
 If you like this app, please star :star: it on Github and spread a word about it!
 
-![Screenshot](https://raw.githubusercontent.com/seerge/g-helper/main/screenshot.png)
+![Screenshot](https://raw.githubusercontent.com/seerge/g-helper/docs/main/screenshot.png)
 
 ### :zap: Main features
 
