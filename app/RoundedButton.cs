@@ -29,6 +29,7 @@ namespace CustomControls
                 if (activated != value)
                     this.Invalidate();
                 activated = value;
+
             }
         }
 

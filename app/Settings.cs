@@ -36,6 +36,7 @@ namespace GHelper
             buttonSilent.BorderColor = colorEco;
             buttonBalanced.BorderColor = colorStandard;
             buttonTurbo.BorderColor = colorTurbo;
+            buttonOptimized.BorderColor = colorEco;
 
             buttonEco.BorderColor = colorEco;
             buttonStandard.BorderColor = colorStandard;
@@ -43,7 +44,9 @@ namespace GHelper
 
             button60Hz.BorderColor = SystemColors.ActiveBorder;
             button120Hz.BorderColor = SystemColors.ActiveBorder;
+            buttonScreenAuto.BorderColor = colorEco;
 
+            buttonOptimized.Click += ButtonOptimized_Click;
             buttonSilent.Click += ButtonSilent_Click;
             buttonBalanced.Click += ButtonBalanced_Click;
             buttonTurbo.Click += ButtonTurbo_Click;
@@ -58,12 +61,9 @@ namespace GHelper
 
             button60Hz.Click += Button60Hz_Click;
             button120Hz.Click += Button120Hz_Click;
+            buttonScreenAuto.Click += ButtonScreenAuto_Click;
 
             buttonQuit.Click += ButtonQuit_Click;
-
-            checkGPU.CheckedChanged += CheckGPU_CheckedChanged;
-
-            checkScreen.CheckedChanged += checkScreen_CheckedChanged;
 
             comboKeyboard.DropDownStyle = ComboBoxStyle.DropDownList;
             comboKeyboard.SelectedIndex = 0;
@@ -98,6 +98,19 @@ namespace GHelper
 
         }
 
+        private void ButtonOptimized_Click(object? sender, EventArgs e)
+        {
+            Program.config.setConfig("gpu_auto", (Program.config.getConfig("gpu_auto") == 1) ? 0 : 1);
+            VisualiseGPUMode();
+            AutoGPUMode(SystemInformation.PowerStatus.PowerLineStatus);
+        }
+
+        private void ButtonScreenAuto_Click(object? sender, EventArgs e)
+        {
+            Program.config.setConfig("screen_auto", 1);
+            InitScreen();
+            AutoScreen(SystemInformation.PowerStatus.PowerLineStatus);
+        }
 
         protected override void WndProc(ref Message m)
         {
@@ -130,12 +143,6 @@ namespace GHelper
             base.WndProc(ref m);
         }
 
-        private void CheckGPU_CheckedChanged(object? sender, EventArgs e)
-        {
-            if (sender is null) return;
-            CheckBox check = (CheckBox)sender;
-            Program.config.setConfig("gpu_auto", check.Checked ? 1 : 0);
-        }
 
         public void SetVersionLabel(string label, string url = null)
         {
@@ -528,11 +535,13 @@ namespace GHelper
 
         private void Button120Hz_Click(object? sender, EventArgs e)
         {
+            Program.config.setConfig("screen_auto", 0);
             SetScreen(1000, 1);
         }
 
         private void Button60Hz_Click(object? sender, EventArgs e)
         {
+            Program.config.setConfig("screen_auto", 0);
             SetScreen(60, 0);
         }
 
@@ -561,7 +570,9 @@ namespace GHelper
             if (overdrive > 0)
                 Program.wmi.DeviceSet(ASUSWmi.ScreenOverdrive, overdrive);
 
+            //Program.config.setConfig("screen_auto", 0);
             InitScreen();
+
             Logger.WriteLine("Screen " + frequency.ToString() + "Hz");
 
         }
@@ -571,6 +582,8 @@ namespace GHelper
 
             int frequency = NativeMethods.GetRefreshRate();
             int maxFrequency = Program.config.getConfig("max_frequency");
+
+            bool screenAuto = (Program.config.getConfig("screen_auto") == 1);
 
             if (frequency < 0)
             {
@@ -586,7 +599,7 @@ namespace GHelper
                 button120Hz.Enabled = true;
                 button60Hz.BackColor = SystemColors.ControlLightLight;
                 button120Hz.BackColor = SystemColors.ControlLightLight;
-                labelSreen.Text = "Laptop Screen";
+                labelSreen.Text = "Laptop Screen: " + frequency + "Hz";
             }
 
             int overdrive = 0;
@@ -601,8 +614,13 @@ namespace GHelper
 
             button60Hz.Activated = false;
             button120Hz.Activated = false;
+            buttonScreenAuto.Activated = false;
 
-            if (frequency == 60)
+            if (screenAuto)
+            {
+                buttonScreenAuto.Activated = true;
+            }
+            else if (frequency == 60)
             {
                 button60Hz.Activated = true;
             }
@@ -857,8 +875,7 @@ namespace GHelper
 
         public void AutoScreen(PowerLineStatus Plugged = PowerLineStatus.Online)
         {
-            int ScreenAuto = Program.config.getConfig("screen_auto");
-            if (ScreenAuto != 1) return;
+            if (Program.config.getConfig("screen_auto") != 1) return;
 
             if (Plugged == PowerLineStatus.Online)
                 SetScreen(1000, 1);
@@ -871,8 +888,8 @@ namespace GHelper
         public bool AutoGPUMode(PowerLineStatus Plugged = PowerLineStatus.Online)
         {
 
-            int GpuAuto = Program.config.getConfig("gpu_auto");
-            if (GpuAuto != 1) return false;
+            bool GpuAuto = Program.config.getConfig("gpu_auto") == 1;
+            if (!GpuAuto) return false;
 
             int eco = Program.wmi.DeviceGet(ASUSWmi.GPUEco);
             int mux = Program.wmi.DeviceGet(ASUSWmi.GPUMux);
@@ -917,6 +934,7 @@ namespace GHelper
                 buttonUltimate.Visible = (mux == 1);
             }
 
+            ButtonEnabled(buttonOptimized, true);
             ButtonEnabled(buttonEco, true);
             ButtonEnabled(buttonStandard, true);
             ButtonEnabled(buttonUltimate, true);
@@ -932,6 +950,7 @@ namespace GHelper
         public void SetEcoGPU(int eco)
         {
 
+            ButtonEnabled(buttonOptimized, false);
             ButtonEnabled(buttonEco, false);
             ButtonEnabled(buttonStandard, false);
             ButtonEnabled(buttonUltimate, false);
@@ -968,9 +987,13 @@ namespace GHelper
         {
 
             int CurrentGPU = Program.config.getConfig("gpu_mode");
+            Program.config.setConfig("gpu_auto", 0);
 
             if (CurrentGPU == GPUMode)
+            {
+                VisualiseGPUMode();
                 return;
+            }
 
             var restart = false;
             var changed = false;
@@ -987,7 +1010,7 @@ namespace GHelper
             }
             else if (GPUMode == ASUSWmi.GPUModeUltimate)
             {
-                DialogResult dialogResult = MessageBox.Show(" Ultimate Mode requires restart", "Reboot now?", MessageBoxButtons.YesNo);
+                DialogResult dialogResult = MessageBox.Show("Ultimate Mode requires restart", "Reboot now?", MessageBoxButtons.YesNo);
                 if (dialogResult == DialogResult.Yes)
                 {
                     Program.wmi.DeviceSet(ASUSWmi.GPUMux, 0);
@@ -1012,59 +1035,54 @@ namespace GHelper
             if (changed)
             {
                 Program.config.setConfig("gpu_mode", GPUMode);
-
                 HardwareMonitor.RecreateGpuTemperatureProviderWithRetry();
             }
 
             if (restart)
             {
-                VisualiseGPUMode(GPUMode);
+                VisualiseGPUMode();
                 Process.Start("shutdown", "/r /t 1");
             }
 
         }
 
 
-        public void VisualiseGPUAuto(int GPUAuto)
-        {
-            checkGPU.Checked = (GPUAuto == 1);
-        }
-
-        public void VisualiseScreenAuto(int ScreenAuto)
-        {
-            checkScreen.Checked = (ScreenAuto == 1);
-        }
-
         public void VisualiseGPUMode(int GPUMode = -1)
         {
 
             if (GPUMode == -1)
-            {
                 GPUMode = Program.config.getConfig("gpu_mode");
-            }
+
+            bool GPUAuto = (Program.config.getConfig("gpu_auto") == 1);
 
             buttonEco.Activated = false;
             buttonStandard.Activated = false;
             buttonUltimate.Activated = false;
+            buttonOptimized.Activated = false;
 
             switch (GPUMode)
             {
                 case ASUSWmi.GPUModeEco:
-                    buttonEco.Activated = true;
+                    buttonOptimized.BorderColor = colorEco;
+                    buttonEco.Activated = !GPUAuto;
+                    buttonOptimized.Activated = GPUAuto;
                     labelGPU.Text = "GPU Mode: iGPU only";
-                    Program.trayIcon.Icon = GHelper.Properties.Resources.eco;
+                    Program.trayIcon.Icon = Properties.Resources.eco;
                     break;
                 case ASUSWmi.GPUModeUltimate:
                     buttonUltimate.Activated = true;
                     labelGPU.Text = "GPU Mode: dGPU exclusive";
-                    Program.trayIcon.Icon = GHelper.Properties.Resources.ultimate;
+                    Program.trayIcon.Icon = Properties.Resources.ultimate;
                     break;
                 default:
-                    buttonStandard.Activated = true;
+                    buttonOptimized.BorderColor = colorStandard;
+                    buttonStandard.Activated = !GPUAuto;
+                    buttonOptimized.Activated = GPUAuto;
                     labelGPU.Text = "GPU Mode: iGPU + dGPU";
-                    Program.trayIcon.Icon = GHelper.Properties.Resources.standard;
+                    Program.trayIcon.Icon = Properties.Resources.standard;
                     break;
             }
+
 
         }
 
@@ -1120,14 +1138,6 @@ namespace GHelper
             if (sender is null) return;
             TrackBar bar = (TrackBar)sender;
             SetBatteryChargeLimit(bar.Value);
-        }
-
-
-        private void checkScreen_CheckedChanged(object? sender, EventArgs e)
-        {
-            if (sender is null) return;
-            CheckBox check = (CheckBox)sender;
-            Program.config.setConfig("screen_auto", check.Checked ? 1 : 0);
         }
 
 

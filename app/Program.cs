@@ -60,8 +60,6 @@ namespace GHelper
             settingsForm.InitAura();
             settingsForm.InitMatrix();
 
-            settingsForm.VisualiseGPUAuto(config.getConfig("gpu_auto"));
-            settingsForm.VisualiseScreenAuto(config.getConfig("screen_auto"));
             settingsForm.SetStartupCheck(Startup.IsScheduled());
 
             SetAutoModes();
