@@ -2,43 +2,7 @@ using Microsoft.Win32;
 using System.Diagnostics;
 using System.Management;
 using System.Reflection;
-using System.Runtime.InteropServices;
 using System.Text.Json;
-public static class Logger
-{
-    static string appPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\GHelper";
-    static string logFile = appPath + "\\log.txt";
-
-    public static void WriteLine(string logMessage)
-    {
-        Debug.WriteLine(logMessage);
-        if (!Directory.Exists(appPath)) Directory.CreateDirectory(appPath);
-
-        try
-        {
-            using (StreamWriter w = File.AppendText(logFile))
-            {
-                w.WriteLine($"{DateTime.Now}: {logMessage}");
-                w.Close();
-            }
-        } catch { }
-
-        if (new Random().Next(100) == 1) Cleanup();
-
-
-    }
-
-    public static void Cleanup()
-    {
-        try
-        {
-            var file = File.ReadAllLines(logFile);
-            int skip = Math.Max(0, file.Count() - 500);
-            File.WriteAllLines(logFile, file.Skip(skip).ToArray());
-        } catch { }
-    }
-
-}
 
 namespace GHelper
 {
@@ -163,7 +127,7 @@ namespace GHelper
             settingsForm.SetBatteryChargeLimit(config.getConfig("charge_limit"));
 
             settingsForm.AutoPerformance(isPlugged);
-            
+
             bool switched = settingsForm.AutoGPUMode(isPlugged);
             if (!switched) settingsForm.AutoScreen(isPlugged);
 
