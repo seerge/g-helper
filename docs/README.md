@@ -98,7 +98,7 @@ Settings file is stored at ``%AppData%\GHelper``
 
 Debloating helps to save your battery and keep laptop a bit cooler
 
-![Helps to save your battery](https://raw.githubusercontent.com/seerge/g-helper/main/app/screenshots/screen-5w.png)
+![Helps to save your battery](https://raw.githubusercontent.com/seerge/g-helper/main/docs/screenshots/screen-5w.png)
 
 ---------
 
