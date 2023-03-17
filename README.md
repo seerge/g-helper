@@ -1,5 +1,8 @@
 # [G-Helper (GHelper)](https://github.com/seerge/g-helper)
 
+[![Github all releases](https://img.shields.io/github/downloads/seerge/g-helper/total.svg)](https://GitHub.com/seerge/g-helper/releases/) [![GitHub release](https://img.shields.io/github/release/seerge/g-helper.svg)](https://GitHub.com/seerge/g-helper/releases/) [![GitHub license](https://badgen.net/github/license/seerge/g-helper)](https://github.com/seerge/g-helper/blob/master/LICENSE)
+ [![GitHub stars](https://img.shields.io/github/stars/seerge/g-helper.svg?style=social&label=Star&maxAge=2592000)](https://GitHub.com/seerge/g-helper/stargazers/)
+
 ## Open source Armory Crate alternative for Asus ROG Zephyrus G14, G15, Flow X13, Flow X16, and other models
 
 A small utility that allows you to do almost everything you could do with Armory Crate but without extra bloat and unnecessary services.
