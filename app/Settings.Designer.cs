@@ -907,7 +907,7 @@ namespace GHelper
             AutoScaleMode = AutoScaleMode.Dpi;
             AutoSize = true;
             AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            ClientSize = new Size(836, 1173);
+            ClientSize = new Size(830, 1173);
             Controls.Add(panelFooter);
             Controls.Add(panelBattery);
             Controls.Add(panelMatrix);
@@ -919,7 +919,7 @@ namespace GHelper
             MaximizeBox = false;
             MdiChildrenMinimizedAnchorBottom = false;
             MinimizeBox = false;
-            MinimumSize = new Size(850, 71);
+            MinimumSize = new Size(830, 71);
             Name = "SettingsForm";
             Padding = new Padding(10);
             ShowIcon = false;

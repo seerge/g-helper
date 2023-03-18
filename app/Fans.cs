@@ -1,5 +1,9 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Diagnostics.Metrics;
+using System.Drawing.Imaging;
+using System.Drawing.Text;
+using System.IO;
 using System.Windows.Forms.DataVisualization.Charting;
 
 namespace GHelper
@@ -10,6 +14,12 @@ namespace GHelper
         DataPoint curPoint = null;
         Series seriesCPU;
         Series seriesGPU;
+
+        static string ChartPercToRPM(int percentage, string unit = "")
+        {
+            if (percentage == 0) return "OFF";
+            return (1800 + 200 * Math.Floor(percentage * 0.2)).ToString() + unit;
+        }
 
         void SetChart(Chart chart, int device)
         {
@@ -41,10 +51,8 @@ namespace GHelper
 
             chart.ChartAreas[0].AxisY.LabelStyle.Font = new Font("Arial", 7F);
 
-            chart.ChartAreas[0].AxisY.CustomLabels.Add(-2, 2, "OFF");
-
-            for (int i = 1; i <= 9; i++)
-                chart.ChartAreas[0].AxisY.CustomLabels.Add(i * 10 - 2, i * 10 + 2, (1800 + 400 * i).ToString());
+            for (int i = 0; i <= 90; i += 10)
+                chart.ChartAreas[0].AxisY.CustomLabels.Add(i - 2, i + 2, ChartPercToRPM(i));
 
             chart.ChartAreas[0].AxisY.CustomLabels.Add(98, 102, "RPM");
 
@@ -76,6 +84,9 @@ namespace GHelper
         {
 
             InitializeComponent();
+
+            labelTip.Visible = false;
+            labelTip.BackColor = Color.Transparent;
 
             FormClosing += Fans_FormClosing;
 
@@ -126,7 +137,7 @@ namespace GHelper
         {
             int boost = NativeMethods.GetCPUBoost();
             if (boost >= 0)
-                comboBoost.SelectedIndex = Math.Min(boost,5);
+                comboBoost.SelectedIndex = Math.Min(boost, comboBoost.Items.Count - 1);
         }
 
         private void ComboBoost_Changed(object? sender, EventArgs e)
@@ -334,6 +345,7 @@ namespace GHelper
         private void ChartCPU_MouseUp(object? sender, MouseEventArgs e)
         {
             curPoint = null;
+            labelTip.Visible = false;
         }
 
         private void ChartCPU_MouseMove(object? sender, MouseEventArgs e)
@@ -371,12 +383,17 @@ namespace GHelper
                         if (dy < 0) dy = 0;
                         if (dy > 100) dy = 100;
 
-                        dymin = (dx - 60) * 1.2;
+                        dymin = (dx - 65) * 1.2;
 
                         if (dy < dymin) dy = dymin;
 
                         curPoint.XValue = dx;
                         curPoint.YValues[0] = dy;
+
+                        labelTip.Visible = true;
+                        labelTip.Text = Math.Round(dx) + "C, " + ChartPercToRPM((int)dy, " RPM");
+                        labelTip.Top = e.Y + ((Control)sender).Top;
+                        labelTip.Left = e.X;
 
                     }
                     catch

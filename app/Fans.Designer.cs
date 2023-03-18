@@ -31,6 +31,7 @@
             System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
             System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
             panelFans = new Panel();
+            labelTip = new Label();
             labelBoost = new Label();
             comboBoost = new ComboBox();
             picturePerf = new PictureBox();
@@ -73,6 +74,7 @@
             // 
             // panelFans
             // 
+            panelFans.Controls.Add(labelTip);
             panelFans.Controls.Add(labelBoost);
             panelFans.Controls.Add(comboBoost);
             panelFans.Controls.Add(picturePerf);
@@ -88,6 +90,17 @@
             panelFans.Padding = new Padding(20);
             panelFans.Size = new Size(824, 1159);
             panelFans.TabIndex = 12;
+            // 
+            // labelTip
+            // 
+            labelTip.AutoSize = true;
+            labelTip.BackColor = SystemColors.ControlLightLight;
+            labelTip.Location = new Point(245, 13);
+            labelTip.Name = "labelTip";
+            labelTip.Padding = new Padding(5);
+            labelTip.Size = new Size(107, 42);
+            labelTip.TabIndex = 40;
+            labelTip.Text = "500,300";
             // 
             // labelBoost
             // 
@@ -468,5 +481,6 @@
         private PictureBox pictureBox1;
         private ComboBox comboBoost;
         private Label labelBoost;
+        private Label labelTip;
     }
 }

@@ -987,19 +987,26 @@ namespace GHelper
 
         }
 
-        private void NoUltimateUI()
+        private void UltimateUI(bool ultimate)
         {
-            tableGPU.Controls.Remove(buttonUltimate);
+            if (!ultimate)
+            {
+                tableGPU.Controls.Remove(buttonUltimate);
 
-            buttonFans.Image = null;
-            buttonFans.Height = 50;
+                /*
+                 * buttonFans.Image = null;
+                buttonFans.Height = 44;
+                */
 
-            tablePerf.ColumnCount = 3;
-            tablePerf.ColumnCount = 3;
-            tableGPU.ColumnCount = 0;
+                tablePerf.ColumnCount = 0;
+                tableGPU.ColumnCount = 0;
+
+            }
+
             tableLayoutKeyboard.ColumnCount = 0;
             tableScreen.ColumnCount = 0;
             tableLayoutMatrix.ColumnCount = 0;
+
 
         }
 
@@ -1020,7 +1027,7 @@ namespace GHelper
                 else
                     GpuMode = ASUSWmi.GPUModeStandard;
 
-                if (mux != 1) NoUltimateUI();
+                UltimateUI(mux == 1);
 
             }
 
