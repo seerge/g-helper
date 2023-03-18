@@ -126,7 +126,7 @@ namespace GHelper
         {
             int boost = NativeMethods.GetCPUBoost();
             if (boost >= 0)
-                comboBoost.SelectedIndex = boost;
+                comboBoost.SelectedIndex = Math.Min(boost,5);
         }
 
         private void ComboBoost_Changed(object? sender, EventArgs e)

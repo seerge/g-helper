@@ -3,7 +3,6 @@ using System.Diagnostics;
 using System.Drawing.Imaging;
 using System.Timers;
 
-
 namespace GHelper
 {
 
@@ -28,23 +27,24 @@ namespace GHelper
 
         public SettingsForm()
         {
-
             InitializeComponent();
+
+            HighDpiHelper.AdjustControlImagesDpiScale(this, 2);
 
             FormClosing += SettingsForm_FormClosing;
 
             buttonSilent.BorderColor = colorEco;
             buttonBalanced.BorderColor = colorStandard;
             buttonTurbo.BorderColor = colorTurbo;
-            buttonOptimized.BorderColor = colorEco;
 
             buttonEco.BorderColor = colorEco;
             buttonStandard.BorderColor = colorStandard;
             buttonUltimate.BorderColor = colorTurbo;
+            buttonOptimized.BorderColor = colorEco;
 
             button60Hz.BorderColor = SystemColors.ActiveBorder;
             button120Hz.BorderColor = SystemColors.ActiveBorder;
-            buttonScreenAuto.BorderColor = colorEco;
+            buttonScreenAuto.BorderColor = SystemColors.ActiveBorder;
 
             buttonOptimized.Click += ButtonOptimized_Click;
             buttonSilent.Click += ButtonSilent_Click;
@@ -94,9 +94,78 @@ namespace GHelper
 
             labelVersion.Click += LabelVersion_Click;
 
+            buttonOptimized.MouseMove += ButtonOptimized_MouseHover;
+            buttonOptimized.MouseLeave += ButtonGPU_MouseLeave;
+
+            buttonEco.MouseMove += ButtonEco_MouseHover;
+            buttonEco.MouseLeave += ButtonGPU_MouseLeave;
+
+            buttonStandard.MouseMove += ButtonStandard_MouseHover;
+            buttonStandard.MouseLeave += ButtonGPU_MouseLeave;
+
+            buttonUltimate.MouseMove += ButtonUltimate_MouseHover;
+            buttonUltimate.MouseLeave += ButtonGPU_MouseLeave;
+
+            buttonScreenAuto.MouseMove += ButtonScreenAuto_MouseHover;
+            buttonScreenAuto.MouseLeave += ButtonScreen_MouseLeave;
+
+            button60Hz.MouseMove += Button60Hz_MouseHover;
+            button60Hz.MouseLeave += ButtonScreen_MouseLeave;
+
+            button120Hz.MouseMove += Button120Hz_MouseHover;
+            button120Hz.MouseLeave += ButtonScreen_MouseLeave;
+
+            //buttonStandard.Image = (Image)(new Bitmap(buttonStandard.Image, new Size(16, 16)));
+
             SetTimer();
 
         }
+
+        private void Button120Hz_MouseHover(object? sender, EventArgs e)
+        {
+            labelTipScreen.Text = "Max refresh rate + screen overdrive for lower latency";
+        }
+
+        private void Button60Hz_MouseHover(object? sender, EventArgs e)
+        {
+            labelTipScreen.Text = "60Hz refresh rate to save battery";
+        }
+
+        private void ButtonScreen_MouseLeave(object? sender, EventArgs e)
+        {
+            labelTipScreen.Text = "";
+        }
+
+        private void ButtonScreenAuto_MouseHover(object? sender, EventArgs e)
+        {
+            labelTipScreen.Text = "Sets 60Hz to save battery, and back when plugged";
+        }
+
+        private void ButtonUltimate_MouseHover(object? sender, EventArgs e)
+        {
+            labelTipGPU.Text = "Routes laptop screen to dGPU, maximizing FPS";
+        }
+
+        private void ButtonStandard_MouseHover(object? sender, EventArgs e)
+        {
+            labelTipGPU.Text = "Enables dGPU for standard use";
+        }
+
+        private void ButtonEco_MouseHover(object? sender, EventArgs e)
+        {
+            labelTipGPU.Text = "Disables dGPU for battery savings";
+        }
+
+        private void ButtonOptimized_MouseHover(object? sender, EventArgs e)
+        {
+            labelTipGPU.Text = "Switch to Eco on battery and to Standard when plugged";
+        }
+
+        private void ButtonGPU_MouseLeave(object? sender, EventArgs e)
+        {
+            labelTipGPU.Text = "";
+        }
+
 
         private void ButtonOptimized_Click(object? sender, EventArgs e)
         {
@@ -567,7 +636,7 @@ namespace GHelper
             if (frequency <= 0) return;
 
             NativeMethods.SetRefreshRate(frequency);
-            if (overdrive > 0)
+            if (overdrive >= 0)
                 Program.wmi.DeviceSet(ASUSWmi.ScreenOverdrive, overdrive);
 
             InitScreen();
@@ -584,23 +653,6 @@ namespace GHelper
 
             bool screenAuto = (Program.config.getConfig("screen_auto") == 1);
 
-            if (frequency < 0)
-            {
-                button60Hz.Enabled = false;
-                button120Hz.Enabled = false;
-                labelSreen.Text = "Laptop Screen: Turned off";
-                button60Hz.BackColor = SystemColors.ControlLight;
-                button120Hz.BackColor = SystemColors.ControlLight;
-            }
-            else
-            {
-                button60Hz.Enabled = true;
-                button120Hz.Enabled = true;
-                button60Hz.BackColor = SystemColors.ControlLightLight;
-                button120Hz.BackColor = SystemColors.ControlLightLight;
-                labelSreen.Text = "Laptop Screen: " + frequency + "Hz";
-            }
-
             int overdrive = 0;
             try
             {
@@ -610,6 +662,28 @@ namespace GHelper
             {
                 Logger.WriteLine("Screen Overdrive not supported");
             }
+
+            if (frequency < 0)
+            {
+                button60Hz.Enabled = false;
+                button120Hz.Enabled = false;
+                buttonScreenAuto.Enabled = false;
+                labelSreen.Text = "Laptop Screen: Turned off";
+                button60Hz.BackColor = SystemColors.ControlLight;
+                button120Hz.BackColor = SystemColors.ControlLight;
+                buttonScreenAuto.BackColor = SystemColors.ControlLight;
+            }
+            else
+            {
+                button60Hz.Enabled = true;
+                button120Hz.Enabled = true;
+                buttonScreenAuto.Enabled = true;
+                button60Hz.BackColor = SystemColors.ControlLightLight;
+                button120Hz.BackColor = SystemColors.ControlLightLight;
+                buttonScreenAuto.BackColor = SystemColors.ControlLightLight;
+                labelSreen.Text = "Laptop Screen: " + frequency + "Hz" + ((overdrive == 1) ? " + Overdrive" : "");
+            }
+
 
             button60Hz.Activated = false;
             button120Hz.Activated = false;
@@ -913,6 +987,22 @@ namespace GHelper
 
         }
 
+        private void NoUltimateUI()
+        {
+            tableGPU.Controls.Remove(buttonUltimate);
+
+            buttonFans.Image = null;
+            buttonFans.Height = 50;
+
+            tablePerf.ColumnCount = 3;
+            tablePerf.ColumnCount = 3;
+            tableGPU.ColumnCount = 0;
+            tableLayoutKeyboard.ColumnCount = 0;
+            tableScreen.ColumnCount = 0;
+            tableLayoutMatrix.ColumnCount = 0;
+
+        }
+
         public int InitGPUMode()
         {
 
@@ -930,7 +1020,8 @@ namespace GHelper
                 else
                     GpuMode = ASUSWmi.GPUModeStandard;
 
-                buttonUltimate.Visible = (mux == 1);
+                if (mux != 1) NoUltimateUI();
+
             }
 
             ButtonEnabled(buttonOptimized, true);
