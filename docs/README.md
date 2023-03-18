@@ -91,7 +91,7 @@ Başlat menüsünden "Olay Görüntüleyicisi"ni açın, Windows Günlükleri ->
 - Temel dizüstü bilgisayar kısayol tuşlarını (örneğin ekran veya klavye parlaklığı ayarlamaları) çalışır durumda tuttuğu için "Asus Optimization Service" çalışır durumda kalmayı öneriyorum. MyASUS uygulaması yüklediyseniz (veya yüklemişseniz) bu hizmet muhtemelen MyASUS kaldırıldıktan sonra bile hala çalışıyor olacaktır. Bu, [Asus Sistem Kontrol Arayüzü](https://www.asus.com/support/FAQ/1047338/)nün bir parçasıdır. Kurabilir ve daha sonra gereksiz hizmetleri devre dışı bırakabilir / kaldırabilirsiniz [bu bat dosyasını](https://raw.githubusercontent.com/seerge/g-helper/main/debloat.bat) yönetici olarak çalıştırarak.
 - Bir uygulamayı Armory Crate ile birlikte kullanmanız önerilmez, çünkü aynı ayarları ayarlarlar. Kendi kaldırma aracını kullanarak [kendi kaldırma aracını kullanarak](https://dlcdnets.asus.com/pub/ASUS/mb/14Utilities/Armoury_Crate_Uninstall_Tool.zip?model=armoury%20crate) kaldırabilirsiniz. Her ihtimale karşı, her zaman geri yükleyebilirsiniz.
 
-Not: Çalıştırmak için yönetici haklarına ihtiyaç yoktur!
+Not: Çalıştırmak için yönetici izinlerine ihtiyaç yoktur!
 
 ---
 
