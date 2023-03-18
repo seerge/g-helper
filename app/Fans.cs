@@ -1,9 +1,4 @@
-﻿using System;
-using System.Diagnostics;
-using System.Diagnostics.Metrics;
-using System.Drawing.Imaging;
-using System.Drawing.Text;
-using System.IO;
+﻿using System.Diagnostics;
 using System.Windows.Forms.DataVisualization.Charting;
 
 namespace GHelper

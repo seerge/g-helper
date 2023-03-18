@@ -1,6 +1,4 @@
-﻿using System.ComponentModel;
-using System.Drawing;
-using System.Drawing.Drawing2D;
+﻿using System.Drawing.Drawing2D;
 
 namespace CustomControls
 {
@@ -68,7 +66,7 @@ namespace CustomControls
 
             Color borderDrawColor = activated ? borderColor : Color.Transparent;
 
-            using (GraphicsPath pathSurface = GetFigurePath(rectSurface, borderRadius+ border))
+            using (GraphicsPath pathSurface = GetFigurePath(rectSurface, borderRadius + border))
             using (GraphicsPath pathBorder = GetFigurePath(rectBorder, borderRadius))
             using (Pen penSurface = new Pen(this.Parent.BackColor, border))
             using (Pen penBorder = new Pen(borderDrawColor, border))

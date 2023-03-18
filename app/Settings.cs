@@ -1000,11 +1000,11 @@ namespace GHelper
 
                 tablePerf.ColumnCount = 0;
                 tableGPU.ColumnCount = 0;
+                tableScreen.ColumnCount = 0;
 
             }
 
             tableLayoutKeyboard.ColumnCount = 0;
-            tableScreen.ColumnCount = 0;
             tableLayoutMatrix.ColumnCount = 0;
 
 
