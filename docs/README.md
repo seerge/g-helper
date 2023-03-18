@@ -45,7 +45,7 @@ Bu uygulamayı beğendiyseniz, lütfen Github'da :star: ile işaretleyin ve hakk
 - GPU modları (pilde ekonomi, prize takılıyken standart)
 - Ekran yenileme hızı (pilde 60hz, prize takılıyken 120+ hz)
 
-Otomatik geçişleri ve kısayol tuşlarını çalışır durumda tutmak için uygulamanın teypte çalışmaya devam etmesi gerekiyor. Herhangi bir kaynak tüketmiyor.
+Otomatik geçişleri ve kısayol tuşlarını çalışır durumda tutmak için uygulamanın arka planda çalışmaya devam etmesi gerekiyor. Herhangi bir kaynak tüketmiyor.
 
 ### :rocket: Performans Modları
 
