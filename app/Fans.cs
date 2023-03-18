@@ -109,7 +109,7 @@ namespace GHelper
             checkApplyPower.Click += CheckApplyPower_Click;
 
             //labelInfo.MaximumSize = new Size(280, 0);
-            labelInfo.Text = "Power Limits (PPT) is\nexperimental feature.\n\nUse carefully and\non your own risk!";
+            labelInfo.Text = "Power Limits (PPT) ozelligi\ndeneysel bir \nozelliktir.\n\nDikkatli kullanin\nrisk kendi \nsorumluluğnuzdadir!";
 
             InitFans();
             InitPower();
@@ -235,12 +235,12 @@ namespace GHelper
             if (applied)
             {
                 labelApplied.ForeColor = Color.Blue;
-                labelApplied.Text = "Applied";
+                labelApplied.Text = "Uygulandi";
             }
             else
             {
                 labelApplied.ForeColor = Color.Red;
-                labelApplied.Text = "Not Applied";
+                labelApplied.Text = "Uygulanmadi";
 
             }
         }

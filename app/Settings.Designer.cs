@@ -269,7 +269,7 @@ namespace GHelper
             labelBatteryTitle.Name = "labelBatteryTitle";
             labelBatteryTitle.Size = new Size(408, 36);
             labelBatteryTitle.TabIndex = 34;
-            labelBatteryTitle.Text = "Battery Charge Limit";
+            labelBatteryTitle.Text = "Batarya Sarj Limiti";
             // 
             // trackBattery
             // 
@@ -307,7 +307,7 @@ namespace GHelper
             buttonQuit.Name = "buttonQuit";
             buttonQuit.Size = new Size(116, 40);
             buttonQuit.TabIndex = 18;
-            buttonQuit.Text = "Quit";
+            buttonQuit.Text = "Sonlandir";
             buttonQuit.UseVisualStyleBackColor = false;
             // 
             // checkStartup
@@ -318,7 +318,7 @@ namespace GHelper
             checkStartup.Name = "checkStartup";
             checkStartup.Size = new Size(206, 36);
             checkStartup.TabIndex = 17;
-            checkStartup.Text = "Run on Startup";
+            checkStartup.Text = "Baslangicta Calistir";
             checkStartup.UseVisualStyleBackColor = true;
             // 
             // panelPerformance
@@ -345,7 +345,7 @@ namespace GHelper
             buttonFans.Name = "buttonFans";
             buttonFans.Size = new Size(213, 48);
             buttonFans.TabIndex = 34;
-            buttonFans.Text = "Fans and Power";
+            buttonFans.Text = "Fan ve GUC";
             buttonFans.UseVisualStyleBackColor = false;
             // 
             // picturePerf
@@ -369,7 +369,7 @@ namespace GHelper
             labelPerf.Name = "labelPerf";
             labelPerf.Size = new Size(234, 32);
             labelPerf.TabIndex = 31;
-            labelPerf.Text = "Performance Mode";
+            labelPerf.Text = "Performans Ayarlari";
             // 
             // labelCPUFan
             // 
@@ -435,7 +435,7 @@ namespace GHelper
             buttonBalanced.Name = "buttonBalanced";
             buttonBalanced.Size = new Size(212, 84);
             buttonBalanced.TabIndex = 1;
-            buttonBalanced.Text = "Balanced";
+            buttonBalanced.Text = "Dengeli";
             buttonBalanced.UseVisualStyleBackColor = false;
             // 
             // buttonSilent
@@ -454,7 +454,7 @@ namespace GHelper
             buttonSilent.Name = "buttonSilent";
             buttonSilent.Size = new Size(212, 84);
             buttonSilent.TabIndex = 0;
-            buttonSilent.Text = "Silent";
+            buttonSilent.Text = "Sessiz";
             buttonSilent.UseVisualStyleBackColor = false;
             // 
             // panelGPU
@@ -480,7 +480,7 @@ namespace GHelper
             checkGPU.Name = "checkGPU";
             checkGPU.Size = new Size(550, 36);
             checkGPU.TabIndex = 20;
-            checkGPU.Text = "Set Eco on battery and Standard when plugged";
+            checkGPU.Text = "Otomatik - Bataryada ECO, Sarjda Standart";
             checkGPU.UseVisualStyleBackColor = true;
             // 
             // pictureGPU
@@ -503,7 +503,7 @@ namespace GHelper
             labelGPU.Name = "labelGPU";
             labelGPU.Size = new Size(136, 32);
             labelGPU.TabIndex = 18;
-            labelGPU.Text = "GPU Mode";
+            labelGPU.Text = "GPU Modu";
             // 
             // labelGPUFan
             // 
@@ -610,7 +610,7 @@ namespace GHelper
             checkScreen.Name = "checkScreen";
             checkScreen.Size = new Size(527, 36);
             checkScreen.TabIndex = 24;
-            checkScreen.Text = "Set 60Hz on battery, and back when plugged";
+            checkScreen.Text = "Otomatik - Bataryada 60Hz'e geçir, şarjda normale dondur";
             checkScreen.UseVisualStyleBackColor = true;
             // 
             // tableScreen
@@ -687,7 +687,7 @@ namespace GHelper
             labelSreen.Name = "labelSreen";
             labelSreen.Size = new Size(176, 32);
             labelSreen.TabIndex = 21;
-            labelSreen.Text = "Laptop Screen";
+            labelSreen.Text = "Laptop Ekrani";
             // 
             // panelKeyboard
             // 
@@ -729,7 +729,7 @@ namespace GHelper
             buttonKeyboard.Name = "buttonKeyboard";
             buttonKeyboard.Size = new Size(208, 42);
             buttonKeyboard.TabIndex = 37;
-            buttonKeyboard.Text = "Extra";
+            buttonKeyboard.Text = "Ekstra";
             buttonKeyboard.UseVisualStyleBackColor = false;
             // 
             // comboKeyboard
@@ -790,7 +790,7 @@ namespace GHelper
             buttonKeyboardColor.Name = "buttonKeyboardColor";
             buttonKeyboardColor.Size = new Size(208, 42);
             buttonKeyboardColor.TabIndex = 39;
-            buttonKeyboardColor.Text = "Color   ";
+            buttonKeyboardColor.Text = "Renk   ";
             buttonKeyboardColor.UseVisualStyleBackColor = false;
             // 
             // pictureKeyboard
@@ -813,7 +813,7 @@ namespace GHelper
             label1.Name = "label1";
             label1.Size = new Size(210, 32);
             label1.TabIndex = 32;
-            label1.Text = "Laptop Keyboard";
+            label1.Text = "Klavye Ayarları";
             // 
             // SettingsForm
             // 

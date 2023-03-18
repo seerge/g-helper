@@ -58,7 +58,7 @@
             groupBox1.Size = new Size(751, 242);
             groupBox1.TabIndex = 0;
             groupBox1.TabStop = false;
-            groupBox1.Text = "Key Bindings";
+            groupBox1.Text = "Tus Atamalari";
             // 
             // textM4
             // 

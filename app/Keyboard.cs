@@ -6,12 +6,12 @@
         Dictionary<string, string> customActions = new Dictionary<string, string>
         {
           {"","--------------" },
-          {"mute", "Volume Mute"},
-          {"screenshot", "Screenshot"},
-          {"play", "Play/Pause"},
+          {"mute", "Sesi AC/Kapat"},
+          {"screenshot", "Ekran Görüntüsü"},
+          {"play", "BaSlat/Durdur"},
           {"aura", "Aura"},
-          {"ghelper", "Open GHelper"},
-          {"custom", "Custom"}
+          {"ghelper", "GHelper'i BaSlat"},
+          {"custom", "Ozel Komut"}
         };
 
         private void SetKeyCombo(ComboBox combo, TextBox txbox, string name)

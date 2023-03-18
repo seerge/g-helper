@@ -183,7 +183,7 @@
             checkAuto.Name = "checkAuto";
             checkAuto.Size = new Size(165, 36);
             checkAuto.TabIndex = 17;
-            checkAuto.Text = "Auto Apply";
+            checkAuto.Text = "OTO Uygula";
             checkAuto.UseVisualStyleBackColor = true;
             // 
             // buttonReset
@@ -194,7 +194,7 @@
             buttonReset.Name = "buttonReset";
             buttonReset.Size = new Size(232, 44);
             buttonReset.TabIndex = 15;
-            buttonReset.Text = "Factory Defaults";
+            buttonReset.Text = "Fabrika Ayarlarina Don";
             buttonReset.UseVisualStyleBackColor = true;
             // 
             // buttonApply
@@ -205,7 +205,7 @@
             buttonApply.Name = "buttonApply";
             buttonApply.Size = new Size(248, 44);
             buttonApply.TabIndex = 14;
-            buttonApply.Text = "Apply Fan Curve";
+            buttonApply.Text = "Fan OTO Uygula";
             buttonApply.UseVisualStyleBackColor = true;
             // 
             // panelPower
@@ -259,7 +259,7 @@
             checkApplyPower.Name = "checkApplyPower";
             checkApplyPower.Size = new Size(165, 36);
             checkApplyPower.TabIndex = 25;
-            checkApplyPower.Text = "Auto Apply";
+            checkApplyPower.Text = "OTO Uygula";
             checkApplyPower.UseVisualStyleBackColor = true;
             // 
             // buttonApplyPower
@@ -270,7 +270,7 @@
             buttonApplyPower.Name = "buttonApplyPower";
             buttonApplyPower.Size = new Size(324, 44);
             buttonApplyPower.TabIndex = 24;
-            buttonApplyPower.Text = "Apply Power Limits";
+            buttonApplyPower.Text = "Uygula Power Limits";
             buttonApplyPower.UseVisualStyleBackColor = true;
             // 
             // panelCPU

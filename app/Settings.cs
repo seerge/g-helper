@@ -688,7 +688,7 @@ namespace GHelper
                 cpuTemp = ": " + Math.Round((decimal)HardwareMonitor.cpuTemp).ToString() + "°C - ";
 
             if (HardwareMonitor.batteryDischarge > 0)
-                battery = "Discharging: " + Math.Round((decimal)HardwareMonitor.batteryDischarge, 1).ToString() + "W";
+                battery = "Tuketim: " + Math.Round((decimal)HardwareMonitor.batteryDischarge, 1).ToString() + "W";
 
             if (HardwareMonitor.gpuTemp != null)
             {
@@ -936,7 +936,7 @@ namespace GHelper
             ButtonEnabled(buttonStandard, false);
             ButtonEnabled(buttonUltimate, false);
 
-            labelGPU.Text = "GPU Mode: Changing ...";
+            labelGPU.Text = "GPU Modu: Degisiyor ...";
 
             new Thread(() =>
             {
@@ -1051,12 +1051,12 @@ namespace GHelper
             {
                 case ASUSWmi.GPUModeEco:
                     buttonEco.Activated = true;
-                    labelGPU.Text = "GPU Mode: iGPU only";
+                    labelGPU.Text = "GPU Mode: iGPU (Tasarruf Modu)";
                     Program.trayIcon.Icon = GHelper.Properties.Resources.eco;
                     break;
                 case ASUSWmi.GPUModeUltimate:
                     buttonUltimate.Activated = true;
-                    labelGPU.Text = "GPU Mode: dGPU exclusive";
+                    labelGPU.Text = "GPU Mode: dGPU (MUX Mode)";
                     Program.trayIcon.Icon = GHelper.Properties.Resources.ultimate;
                     break;
                 default:
@@ -1107,7 +1107,7 @@ namespace GHelper
 
             if (limit < 40 || limit > 100) return;
 
-            labelBatteryTitle.Text = "Battery Charge Limit: " + limit.ToString() + "%";
+            labelBatteryTitle.Text = "Batarya Sarj Limiti:" + limit.ToString() + "%";
             trackBattery.Value = limit;
             Program.wmi.DeviceSet(ASUSWmi.BatteryLimit, limit);
 

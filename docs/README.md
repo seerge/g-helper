@@ -1,108 +1,115 @@
 # [G-Helper (GHelper)](https://github.com/seerge/g-helper)
 
-[![Github all releases](https://img.shields.io/github/downloads/seerge/g-helper/total.svg)](https://GitHub.com/seerge/g-helper/releases/) [![GitHub release](https://img.shields.io/github/release/seerge/g-helper.svg)](https://GitHub.com/seerge/g-helper/releases/) [![GitHub license](https://badgen.net/github/license/seerge/g-helper)](https://github.com/seerge/g-helper/blob/master/LICENSE)
- [![GitHub stars](https://img.shields.io/github/stars/seerge/g-helper.svg?style=social&label=Star&maxAge=2592000)](https://GitHub.com/seerge/g-helper/stargazers/)
+![https://img.shields.io/github/downloads/seerge/g-helper/total.svg](https://img.shields.io/github/downloads/seerge/g-helper/total.svg)
 
-## Open source Armory Crate alternative for Asus ROG Zephyrus G14, G15, Flow X13, Flow X16, and other models
+![https://img.shields.io/github/release/seerge/g-helper.svg](https://img.shields.io/github/release/seerge/g-helper.svg)
 
-A small utility that allows you to do almost everything you could do with Armory Crate but without extra bloat and unnecessary services.
+[https://badgen.net/github/license/seerge/g-helper](https://badgen.net/github/license/seerge/g-helper)
 
-### :gift: Main advantages 
+![https://img.shields.io/github/stars/seerge/g-helper.svg?style=social&label=Star&maxAge=2592000](https://img.shields.io/github/stars/seerge/g-helper.svg?style=social&label=Star&maxAge=2592000)
 
-1. Seamless and automatic GPU switching (without asking you to close all apps, etc)
-2. All performance modes can be fully customized (with fan curves and PPTs)
-3. Very lightweight and consumes almost no resources, doesn't install any services. Just a single exe to run
+## Asus ROG Zephyrus G14, G15, Flow X13, Flow X16 ve diğer modeller için açık kaynaklı Armory Crate alternatifi
 
-### [:floppy_disk: Download latest release](https://github.com/seerge/g-helper/releases/latest/download/GHelper.zip)
+Fazladan yük ve gereksiz hizmetler olmadan Armory Crate ile yapabileceğiniz neredeyse her şeyi yapmanızı sağlayan küçük bir yardımcı programdır.
 
-If you like this app, please star :star: it on Github and spread a word about it!
+### :gift: Temel avantajları
 
-![Screenshot](https://raw.githubusercontent.com/seerge/g-helper/main/docs/screenshot.png)
+1. Sorunsuz ve otomatik GPU geçişleri (tüm uygulamaların kapatılmasını falan istemeden)
+2. Tüm performans modları tamamen özelleştirilebilir (fan eğrileri ve PPT'lerle birlikte)
+3. Çok hafif ve neredeyse hiç kaynak tüketmiyor, herhangi bir hizmet yüklemeden sadece çalıştırılacak tek bir exe dosyası
 
-### :zap: Main features
+### [:floppy_disk: En son sürümü indirin](https://github.com/seerge/g-helper/releases/latest/download/GHelper.zip)
 
-1. Built-in **Performance modes**: Silent - Balanced - Turbo (with default fan curves)
-2. **GPU modes**: Eco -Standard - Ultimate 
-3. Laptop screen refresh rate 60hz or 120hz (144hz, etc depending on the model) with display overdrive (OD)
-4. Default and custom fan profiles for every performance mode
-5. Power limits (PPT) for every performance mode
-6. CPU turbo boost mode
-7. Keyboard backlit animation and colors
-8. Anime matrix control thanks to [Starlight](https://github.com/vddCore/Starlight) + some tweaks from my side (including animated GIFs)
-9. FN+F5 cycles performance modes, FN+F4 cycles keyboard animation modes
-10. Keybindings for M3 and M4 keys
-11. Battery charge limit to preserve battery health
-12. Monitor CPU / GPU temperature, fan speeds and battery discharge rate
+Bu uygulamayı beğendiyseniz, lütfen Github'da :star: ile işaretleyin ve hakkında söyleyin!
 
-### :apple: Automatic switching of modes when on battery or plugged in
-- Performance modes (app remembers last mode used on battery or when plugged)
-- GPU modes (eco on battery, stanard when plugged)
-- Screen refresh rate (60hz on battery, 120+ hz when plugged)
+![https://raw.githubusercontent.com/seerge/g-helper/main/docs/screenshot.png](https://raw.githubusercontent.com/seerge/g-helper/main/docs/screenshot.png)
 
-To keep auto switching and hotkeys working the app needs to stay in running in the tray. It doesn't consume any resources. 
+### :zap: Temel özellikler
 
-### :rocket: Performance Modes
+1. Dahili **Performans modları**: Sessiz - Dengeli - Turbo (varsayılan fan eğrileriyle)
+2. **GPU modları**: Eco -Standard - Ultimate
+3. Dizüstü bilgisayar ekran yenileme hızı 60hz veya 120hz (modelin bağlı olarak 144hz vb. olabilir) ile display overdrive (OD)
+4. Her performans modu için varsayılan ve özel fan profilleri
+5. Her performans modu için güç sınırları (PPT)
+6. CPU turbo boost modu
+7. Klavye arkadan aydınlatmalı animasyon ve renkler
+8. Benim tarafımdan bazı düzenlemelerle [Starlight](https://github.com/vddCore/Starlight) sayesinde Anime matrix kontrolü (animasyonlu GIF'leri içerir)
+9. FN+F5 performans modlarını döndürür, FN+F4 klavye animasyon modlarını döndürür
+10. M3 ve M4 tuşları için tuş atamaları
+11. Pil sağlığını korumak için pil şarj sınırı
+12. CPU / GPU sıcaklığını, fan hızlarını ve batarya boşalma hızını izleyin
 
-Modes are **same** as in Armory Crate (as they are stored in bios), including default fan curves
+### :apple: Şarjda veya prize takılıyken modların otomatik olarak değiştirilmesi
 
-1. Silent (minimal or no fans, 70W PPT total, up to 45W PPT to CPU) + Best power efficiency setting in windows
-2. Balanced (balanced fans, 100W PPT total, up to 45W PPT to CPU) + Balanced setting in windows
-3. Turbo (intense fans, 125W PPT total, up to 80W PPT to CPU) + Best performance setting in windows
+- Performans modları (uygulama, son kullanılan modu veya prize takılıyken kullandığı son modu hatırlar)
+- GPU modları (pilde ekonomi, prize takılıyken standart)
+- Ekran yenileme hızı (pilde 60hz, prize takılıyken 120+ hz)
 
-PPTs are shown for G14 2022, for other models PPTs will be different as they are set in bios.
+Otomatik geçişleri ve kısayol tuşlarını çalışır durumda tutmak için uygulamanın teypte çalışmaya devam etmesi gerekiyor. Herhangi bir kaynak tüketmiyor.
 
-### :video_game: GPU Modes
+### :rocket: Performans Modları
 
-1. Eco mode : only low power integrated GPU enabled, iGPU drives built in display
-2. Standard mode (Windows Hybrid) : iGPU and dGPU enabled, iGPU drives built in display
-3. Ultimate mode: iGPU and dGPU enabled, but dGPU drives built in display (supported only on G14 2022 model)
+Modlar, bios'ta depolandığı gibi Armory Crate ile aynıdır, varsayılan fan eğrileriyle birlikte
 
-### :question: FAQ
+1. Sessiz (minimal veya hiç fan açmaz, toplam 70W PPT, CPU'ya kadar 45W PPT) + Windows'taki en iyi güç verimliliği ayarı
+2. Dengeli (dengeli fanlar, toplam 100W PPT, CPU'ya kadar 45W PPT) + Windows'ta Dengeli ayarı
+3. Turbo (yoğun fanlar, toplam 125W PPT, CPU'ya kadar 80W PPT) + Windows'ta En İyi Performans ayarı
 
-#### How do I stop Armory Crate install popup appearing every time I press M4 / Rog key?
-Go to BIOS (F2 on boot), open Advanced Settings (F8) and disable "Armory Control Intrerface"  
+Diğer modeller için PPT'ler G14 2022 için gösterilir, çünkü bios'ta ayarlanmışlardır.
 
-#### Why Ultimate GPU mode is not available on my laptop?
-Ultimate mode is supported (by hardware) only on G14 2022 (and possibly other models from 2022+)
+### :video_game: GPU Modları
 
-#### App doesn't start / or crashes, what should I do ?
-Open "Event Viewer" from start menu, go to Windows Logs -> Application and check for recent Errors mentioning G-Helper. If you see one - please post a [new issue](https://github.com/seerge/g-helper/issues) with all details from this error.
+1. Eco mod: sadece düşük güç tüketimli entegre GPU etkin, iGPU ekrana görüntüyü verir
+2. Standart mod (Windows Hybrid): iGPU ve dGPU etkin, iGPU yerleşik ekrana görüntü verir. dGpu çalışır. Windows'ta "Windows Hybrid" ayarı 
+3. Ultimate mod: iGPU ve dGPU etkin, ancak dGPU yerleşik ekrana sürer (yalnızca 2022 modellerinde desteklenir)
 
-----------------------------
+### :question: SSS
 
-### How to install
+### M4 / Rog tuşuna her bastığımda Armory Crate kurulumu açılış penceresi nasıl durdurulur?
 
-1. Download latest release from [**Releases Page**](https://github.com/seerge/g-helper/releases)
-2. Unzip to a folder of your choice
-3. Run **GHelper.exe**
+BIOS'a gidin (açılışta F2), Gelişmiş Ayarlar'ı (F8) açın ve "Armory Control Interface"yi devre dışı bırakın
 
-### Dependencies
+### Neden Ultimate GPU modu benim dizüstü bilgisayarımda mevcut değil?
 
-- App requires [.NET7](https://dotnet.microsoft.com/en-us/download) to be installed. Most probably you already have it. Otherwise you can [download it](https://dotnet.microsoft.com/en-us/download).
+Ultimate modu, yalnızca 2022'de (ve muhtemelen 2022+ diğer modellerde) donanım tarafından destekleniyor
 
-- I recommend keeping "Asus Optimization Service" running, as it keeps basic laptop hotkeys such as screen or keyboard brightness adjustment working. If you have (or had) MyASUS app installed, that service is most probably still up and running even after MyASUS uninstalls. It's part of [Asus System Control Interface](https://www.asus.com/support/FAQ/1047338/). You can install it, and later disable / remove unnecessary services by running [this bat file](https://raw.githubusercontent.com/seerge/g-helper/main/debloat.bat) as admin.
+### Uygulama başlatılmıyor / veya çöktü, ne yapmalıyım?
 
-- It's not recommended to use an app in combination with Armory Crate, cause they adjust the same settings. You can [uninstall it using it's own uninstall tool](https://dlcdnets.asus.com/pub/ASUS/mb/14Utilities/Armoury_Crate_Uninstall_Tool.zip?model=armoury%20crate). Just in case, you can always install it back later.
+Başlat menüsünden "Olay Görüntüleyicisi"ni açın, Windows Günlükleri -> Uygulama'ya gidin ve G-Helper'ı belirten son Hataları kontrol edin. Bir tane görürseniz, lütfen bu hatanın tüm ayrıntıları ile birlikte bir [yeni konu](https://github.com/seerge/g-helper/issues) açın.
 
-Note: Doesn't need administrator privileges to run!
+---
 
--------------------------------
+### Nasıl yüklenir
 
-Designed and developed for Asus Zephyrus G14 2022 (with AMD Radeon iGPU and dGPU). But could and should potentially work for G14 of 2021 and 2020, G15, X FLOW, and other ROG models for relevant and supported features.
+1. **[Sürümler sayfasından](https://github.com/seerge/g-helper/releases)** en son sürümü indirin
+2. Seçtiğiniz bir klasöre çıkartın
+3. **GHelper.exe**'yi çalıştırın
 
-I don't have a Microsoft certificate to sign the app yet, so if you get a warning from Windows Defender on launch (Windows Protected your PC), click More Info -> Run anyway. Alternatively you can compile and run project by yourself using Visual Studio :)
+### Bağımlılıklar
 
-Settings file is stored at ``%AppData%\GHelper``
+- Uygulama için [.NET7](https://dotnet.microsoft.com/en-us/download) yüklü olmalıdır. Muhtemelen zaten yüklüsünüzdür. Aksi takdirde [buradan indirebilirsiniz](https://dotnet.microsoft.com/en-us/download).
+- Temel dizüstü bilgisayar kısayol tuşlarını (örneğin ekran veya klavye parlaklığı ayarlamaları) çalışır durumda tuttuğu için "Asus Optimization Service" çalışır durumda kalmayı öneriyorum. MyASUS uygulaması yüklediyseniz (veya yüklemişseniz) bu hizmet muhtemelen MyASUS kaldırıldıktan sonra bile hala çalışıyor olacaktır. Bu, [Asus Sistem Kontrol Arayüzü](https://www.asus.com/support/FAQ/1047338/)nün bir parçasıdır. Kurabilir ve daha sonra gereksiz hizmetleri devre dışı bırakabilir / kaldırabilirsiniz [bu bat dosyasını](https://raw.githubusercontent.com/seerge/g-helper/main/debloat.bat) yönetici olarak çalıştırarak.
+- Bir uygulamayı Armory Crate ile birlikte kullanmanız önerilmez, çünkü aynı ayarları ayarlarlar. Kendi kaldırma aracını kullanarak [kendi kaldırma aracını kullanarak](https://dlcdnets.asus.com/pub/ASUS/mb/14Utilities/Armoury_Crate_Uninstall_Tool.zip?model=armoury%20crate) kaldırabilirsiniz. Her ihtimale karşı, her zaman geri yükleyebilirsiniz.
 
-------------------
+Not: Çalıştırmak için yönetici haklarına ihtiyaç yoktur!
 
-Debloating helps to save your battery and keep laptop a bit cooler
+---
 
-![Helps to save your battery](https://raw.githubusercontent.com/seerge/g-helper/main/docs/screenshots/screen-5w.png)
+Asus Zephyrus G14 2022 (AMD Radeon iGPU ve dGPU ile) için tasarlanmış ve geliştirilmiştir. Ancak ilgili ve desteklenen özellikler için G14 2021 ve 2020, G15, X FLOW ve diğer ROG modelleri için potansiyel olarak çalışabilir ve çalışmalıdır.
 
----------
+Henüz uygulamayı imzalamak için bir Microsoft sertifikam yok, bu nedenle Windows Defender'dan bir uyarı alırsanız (Windows PC'nizi korudu), Daha Fazla Bilgi -> Yine çalıştır'ı tıklayın. Alternatif olarak, Visual Studio kullanarak projeyi kendiniz derleyebilir ve çalıştırabilirsiniz :)
 
-**Disclaimers**
-"ROG", "TUF", and "Armoury Crate" are trademarked by and belong to AsusTek Computer, Inc. I make no claims to these or any assets belonging to AsusTek Computer and use them purely for informational purposes only.
+Ayarlar dosyası `%AppData%\\GHelper`'da saklanır
 
-THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. MISUSE OF THIS SOFTWARE COULD CAUSE SYSTEM INSTABILITY OR MALFUNCTION.
+---
+
+Debloating, pilinizi ve dizüstü bilgisayarınızı biraz daha serin tutmanıza yardımcı olur
+
+![https://raw.githubusercontent.com/seerge/g-helper/main/docs/screenshots/screen-5w.png](https://raw.githubusercontent.com/seerge/g-helper/main/docs/screenshots/screen-5w.png)
+
+---
+
+**Reddetmeler**
+"ROG", "TUF" ve "Armoury Crate", AsusTek Computer, Inc.'e ait ticari markalardır ve bunlara veya AsusTek Computer'a ait diğer varlıklara hiçbir iddiam yoktur ve bunları yalnızca bilgilendirme amaçlı kullanıyorum.
+
+YAZILIM "OLDUĞU GİBİ" SAĞLANMAKTADIR, HERHANGİ BİR TÜRDE, AÇIK VEYA ZIMNİ GARANTİ OLMADAN, SATILABİLİRLİK, BELİRLİ BİR AMACA UYGUNLUK VE İHLAL ETMEME GARANTİLERİ DE DAHİL ANCAK BUNLARLA SINIRLI OLMAMAKTADIR. BU YAZILIMIN KULLANIMI SİSTEM İSTİKRARSIZLIĞINA VEYA ARIZASINA NEDEN OLABİLİR.

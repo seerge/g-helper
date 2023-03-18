@@ -21,7 +21,7 @@ public static class HardwareMonitor
             ct.Dispose();
         } catch
         {
-            Logger.WriteLine("Failed reading CPU temp");
+            Logger.WriteLine("Cpu sicakligi okunamadi.");
         }
 
         try
@@ -32,7 +32,7 @@ public static class HardwareMonitor
 
         } catch
         {
-            Logger.WriteLine("Failed reading Battery discharge");
+            Logger.WriteLine("Batarya tüketimi okunamadi.");
         }
 
         try
@@ -40,7 +40,7 @@ public static class HardwareMonitor
             gpuTemp = GpuTemperatureProvider?.GetCurrentTemperature();
         } catch (Exception ex) {
             gpuTemp = null;
-            Logger.WriteLine("Failed reading GPU temp");
+            Logger.WriteLine("GPU sicakligi okunamadi");
             Logger.WriteLine(ex.ToString());
         }
 
