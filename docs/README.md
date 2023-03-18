@@ -15,14 +15,14 @@ A small utility that allows you to do almost everything you could do with Armory
 
 ### [:floppy_disk: Download latest release](https://github.com/seerge/g-helper/releases/latest/download/GHelper.zip)
 
-If you like this app, please star :star: it on Github and spread a word about it!
+If you like this app, please [star :star: it on Github](https://github.com/seerge/g-helper) and spread a word about it!
 
 ![Screenshot](https://raw.githubusercontent.com/seerge/g-helper/main/docs/screenshot.png)
 
 ### :zap: Main features
 
 1. Built-in **Performance modes**: Silent - Balanced - Turbo (with default fan curves)
-2. **GPU modes**: Eco -Standard - Ultimate 
+2. **GPU modes**: Eco - Standard - Ultimate - Optimized
 3. Laptop screen refresh rate 60hz or 120hz (144hz, etc depending on the model) with display overdrive (OD)
 4. Default and custom fan profiles for every performance mode
 5. Power limits (PPT) for every performance mode
@@ -36,8 +36,8 @@ If you like this app, please star :star: it on Github and spread a word about it
 
 ### :apple: Automatic switching of modes when on battery or plugged in
 - Performance modes (app remembers last mode used on battery or when plugged)
-- GPU modes (eco on battery, stanard when plugged)
-- Screen refresh rate (60hz on battery, 120+ hz when plugged)
+- Optimized GPU mode - disables dGPU on battery and enables when plugged
+- Auto Screen refresh rate (60hz on battery, 120+ hz when plugged)
 
 To keep auto switching and hotkeys working the app needs to stay in running in the tray. It doesn't consume any resources. 
 
@@ -56,6 +56,7 @@ PPTs are shown for G14 2022, for other models PPTs will be different as they are
 1. Eco mode : only low power integrated GPU enabled, iGPU drives built in display
 2. Standard mode (Windows Hybrid) : iGPU and dGPU enabled, iGPU drives built in display
 3. Ultimate mode: iGPU and dGPU enabled, but dGPU drives built in display (supported only on G14 2022 model)
+4. Optimized (formely existed as a checkbox): disables dGPU on battery (Eco) and enables when plugged (Standard)
 
 ### :question: FAQ
 
