@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.Drawing;
 using System.Drawing.Drawing2D;
 
 namespace CustomControls
@@ -29,8 +30,10 @@ namespace CustomControls
                 if (activated != value)
                     this.Invalidate();
                 activated = value;
+
             }
         }
+
 
         public RoundedButton()
         {
@@ -52,19 +55,23 @@ namespace CustomControls
             return path;
         }
 
+
         protected override void OnPaint(PaintEventArgs pevent)
         {
             base.OnPaint(pevent);
 
+            float ratio = pevent.Graphics.DpiX / 192.0f;
+            int border = (int)(ratio * borderSize);
+
             Rectangle rectSurface = this.ClientRectangle;
-            Rectangle rectBorder = Rectangle.Inflate(rectSurface, -borderSize, -borderSize);
+            Rectangle rectBorder = Rectangle.Inflate(rectSurface, -border, -border);
 
             Color borderDrawColor = activated ? borderColor : Color.Transparent;
 
-            using (GraphicsPath pathSurface = GetFigurePath(rectSurface, borderRadius+borderSize))
+            using (GraphicsPath pathSurface = GetFigurePath(rectSurface, borderRadius+ border))
             using (GraphicsPath pathBorder = GetFigurePath(rectBorder, borderRadius))
-            using (Pen penSurface = new Pen(this.Parent.BackColor, borderSize))
-            using (Pen penBorder = new Pen(borderDrawColor, borderSize))
+            using (Pen penSurface = new Pen(this.Parent.BackColor, border))
+            using (Pen penBorder = new Pen(borderDrawColor, border))
             {
                 penBorder.Alignment = PenAlignment.Outset;
                 pevent.Graphics.SmoothingMode = SmoothingMode.AntiAlias;

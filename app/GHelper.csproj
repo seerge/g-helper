@@ -16,8 +16,14 @@
     <PlatformTarget>x64</PlatformTarget>
     <ProduceReferenceAssembly>False</ProduceReferenceAssembly>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
-    <AssemblyVersion>0.29</AssemblyVersion>
+    <AssemblyVersion>0.31</AssemblyVersion>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="screenshots\**" />
+    <EmbeddedResource Remove="screenshots\**" />
+    <None Remove="screenshots\**" />
+  </ItemGroup>
 
   <ItemGroup>
     <None Remove="Resources\eco.ico" />
@@ -100,10 +106,6 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="screenshots\" />
   </ItemGroup>
 
 </Project>
