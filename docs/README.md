@@ -20,7 +20,7 @@ Fazladan yük ve gereksiz hizmetler olmadan Armory Crate ile yapabileceğiniz ne
 
 ### [:floppy_disk: En son sürümü indirin](https://github.com/seerge/g-helper/releases/latest/download/GHelper.zip)
 
-Bu uygulamayı beğendiyseniz, lütfen Github'da :star: ile işaretleyin ve hakkında söyleyin!
+Bu uygulamayı beğendiyseniz, lütfen Github'da :star: ile işaretleyin ve arkadaşlarınıza bahsedin!
 
 ![https://raw.githubusercontent.com/seerge/g-helper/main/docs/screenshot.png](https://raw.githubusercontent.com/seerge/g-helper/main/docs/screenshot.png)
 
