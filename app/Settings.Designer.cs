@@ -85,6 +85,7 @@ namespace GHelper
             buttonKeyboardColor = new Button();
             pictureKeyboard = new PictureBox();
             labelKeyboard = new Label();
+            buttonMiniled = new RoundedButton();
             panelMatrix.SuspendLayout();
             tableLayoutMatrix.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureMatrix).BeginInit();
@@ -686,6 +687,7 @@ namespace GHelper
             tableScreen.Controls.Add(buttonScreenAuto, 0, 0);
             tableScreen.Controls.Add(button60Hz, 1, 0);
             tableScreen.Controls.Add(button120Hz, 2, 0);
+            
             tableScreen.Location = new Point(16, 51);
             tableScreen.Margin = new Padding(8, 4, 8, 4);
             tableScreen.Name = "tableScreen";
@@ -721,7 +723,7 @@ namespace GHelper
             button60Hz.FlatAppearance.BorderSize = 0;
             button60Hz.FlatStyle = FlatStyle.Flat;
             button60Hz.ForeColor = SystemColors.ControlText;
-            button60Hz.Location = new Point(197, 4);
+            button60Hz.Location = new Point(390, 4);
             button60Hz.Margin = new Padding(4);
             button60Hz.Name = "button60Hz";
             button60Hz.Size = new Size(185, 72);
@@ -738,7 +740,7 @@ namespace GHelper
             button120Hz.FlatAppearance.BorderSize = 0;
             button120Hz.FlatStyle = FlatStyle.Flat;
             button120Hz.ForeColor = SystemColors.ControlText;
-            button120Hz.Location = new Point(390, 4);
+            button120Hz.Location = new Point(583, 4);
             button120Hz.Margin = new Padding(4);
             button120Hz.Name = "button120Hz";
             button120Hz.Size = new Size(185, 72);
@@ -901,6 +903,24 @@ namespace GHelper
             labelKeyboard.TabIndex = 32;
             labelKeyboard.Text = "Laptop Keyboard";
             // 
+            // buttonMiniled
+            // 
+            buttonMiniled.Activated = false;
+            buttonMiniled.BackColor = SystemColors.ControlLightLight;
+            buttonMiniled.BorderColor = Color.Transparent;
+            buttonMiniled.CausesValidation = false;
+            buttonMiniled.Dock = DockStyle.Fill;
+            buttonMiniled.FlatAppearance.BorderSize = 0;
+            buttonMiniled.FlatStyle = FlatStyle.Flat;
+            buttonMiniled.ForeColor = SystemColors.ControlText;
+            buttonMiniled.Location = new Point(197, 4);
+            buttonMiniled.Margin = new Padding(4);
+            buttonMiniled.Name = "buttonMiniled";
+            buttonMiniled.Size = new Size(185, 72);
+            buttonMiniled.TabIndex = 3;
+            buttonMiniled.Text = "Miniled";
+            buttonMiniled.UseVisualStyleBackColor = false;
+            // 
             // SettingsForm
             // 
             AutoScaleDimensions = new SizeF(192F, 192F);
@@ -1015,5 +1035,6 @@ namespace GHelper
         private RoundedButton buttonOptimized;
         private Label labelTipGPU;
         private Label labelTipScreen;
+        private RoundedButton buttonMiniled;
     }
 }

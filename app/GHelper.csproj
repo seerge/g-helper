@@ -16,7 +16,7 @@
     <PlatformTarget>x64</PlatformTarget>
     <ProduceReferenceAssembly>False</ProduceReferenceAssembly>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
-    <AssemblyVersion>0.33</AssemblyVersion>
+    <AssemblyVersion>0.34</AssemblyVersion>
   </PropertyGroup>
 
   <ItemGroup>
@@ -49,15 +49,6 @@
     <PackageReference Include="System.Management" Version="7.0.0" />
     <PackageReference Include="TaskScheduler" Version="2.10.1" />
     <PackageReference Include="WinForms.DataVisualization" Version="1.7.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="Microsoft.Management.Infrastructure">
-      <HintPath>..\..\.nuget\packages\microsoft.management.infrastructure\2.0.0\ref\net451\Microsoft.Management.Infrastructure.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Management.Infrastructure.Native">
-      <HintPath>..\..\.nuget\packages\microsoft.management.infrastructure.runtime.win\2.0.0\runtimes\win10-x64\lib\netstandard1.6\Microsoft.Management.Infrastructure.Native.dll</HintPath>
-    </Reference>
   </ItemGroup>
 
   <ItemGroup>

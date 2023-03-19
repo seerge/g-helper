@@ -20,6 +20,7 @@ public class ASUSWmi
 
     public const uint BatteryLimit = 0x00120057;
     public const uint ScreenOverdrive = 0x00050019;
+    public const uint ScreenMiniled = 0x0005001E;
 
     public const uint DevsCPUFanCurve = 0x00110024;
     public const uint DevsGPUFanCurve = 0x00110025;
