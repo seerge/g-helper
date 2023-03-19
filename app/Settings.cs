@@ -1016,19 +1016,14 @@ namespace GHelper
             int eco = Program.wmi.DeviceGet(ASUSWmi.GPUEco);
             int mux = Program.wmi.DeviceGet(ASUSWmi.GPUMux);
 
-            int GpuMode = Program.config.getConfig("gpu_mode"); //call last gpu mode
+            int GpuMode;
 
             if (mux == 0)
                 GpuMode = ASUSWmi.GPUModeUltimate;
             else
             {
-                if (eco == 1)
-                    GpuMode = ASUSWmi.GPUModeEco;
-                else
-                    GpuMode = ASUSWmi.GPUModeStandard;
-
+                GpuMode = Program.config.getConfig("gpu_mode");
                 UltimateUI(mux == 1);
-
             }
 
             ButtonEnabled(buttonOptimized, true);
@@ -1246,3 +1241,5 @@ namespace GHelper
 
 
 }
+
+
