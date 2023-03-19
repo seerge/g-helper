@@ -1138,7 +1138,11 @@ namespace GHelper
             if (restart)
             {
                 VisualiseGPUMode();
-                Process.Start("shutdown", "/r /t 1");
+                ProcessStartInfo psi = new ProcessStartInfo("shutdown.exe", "/r /t 1");
+                psi.CreateNoWindow = true;
+                psi.UseShellExecute = false;
+
+                Process.Start(psi);
             }
 
         }
