@@ -10,13 +10,13 @@
 
 ## Asus ROG Zephyrus G14, G15, Flow X13, Flow X16 ve diğer modeller için açık kaynaklı Armory Crate alternatifi
 
-Fazladan yük ve gereksiz hizmetler olmadan Armory Crate ile yapabileceğiniz neredeyse her şeyi yapmanızı sağlayan küçük bir yardımcı programdır.
+Fazladan yük ve gereksiz hizmetler olmadan Armory Crate ile yapabileceğiniz neredeyse her şeyi yapmanızı sağlayan küçük bir yardımcı program.
 
 ### :gift: Temel avantajları
 
 1. Sorunsuz ve otomatik GPU geçişleri (tüm uygulamaların kapatılmasını falan istemeden)
 2. Tüm performans modları tamamen özelleştirilebilir (fan eğrileri ve PPT'lerle birlikte)
-3. Çok hafif ve neredeyse hiç kaynak tüketmiyor, herhangi bir hizmet yüklemeden sadece çalıştırılacak tek bir exe dosyası
+3. Çok hafif ve neredeyse hiç kaynak tüketmiyor, sadece çalıştırılacak tek bir exe dosyası
 
 ### [:floppy_disk: En son sürümü indirin](https://github.com/seerge/g-helper/releases/latest/download/GHelper.zip)
 
@@ -27,7 +27,7 @@ Bu uygulamayı beğendiyseniz, lütfen Github'da :star: ile işaretleyin ve arka
 ### :zap: Temel özellikler
 
 1. Dahili **Performans modları**: Sessiz - Dengeli - Turbo (varsayılan fan eğrileriyle)
-2. **GPU modları**: Eco -Standard - Ultimate
+2. **GPU modları**: Eco - Standard - Ultimate
 3. Dizüstü bilgisayar ekran yenileme hızı 60hz veya 120hz (modelin bağlı olarak 144hz vb. olabilir) ile display overdrive (OD)
 4. Her performans modu için varsayılan ve özel fan profilleri
 5. Her performans modu için güç sınırları (PPT)
@@ -45,7 +45,7 @@ Bu uygulamayı beğendiyseniz, lütfen Github'da :star: ile işaretleyin ve arka
 - GPU modları (pilde ekonomi, prize takılıyken standart)
 - Ekran yenileme hızı (pilde 60hz, prize takılıyken 120+ hz)
 
-Otomatik geçişleri ve kısayol tuşlarını çalışır durumda tutmak için uygulamanın arka planda çalışmaya devam etmesi gerekiyor. Herhangi bir kaynak tüketmiyor.
+Otomatik geçişleri ve kısayol tuşlarını çalışır durumda tutmak için uygulamanın arka planda çalışmaya devam etmesi gerekiyor. Herhangi bir kaynak tüketmez.
 
 ### :rocket: Performans Modları
 
@@ -87,9 +87,9 @@ Başlat menüsünden "Olay Görüntüleyicisi"ni açın, Windows Günlükleri ->
 
 ### Bağımlılıklar
 
-- Uygulama için [.NET7](https://dotnet.microsoft.com/en-us/download) yüklü olmalıdır. Muhtemelen zaten yüklüsünüzdür. Aksi takdirde [buradan indirebilirsiniz](https://dotnet.microsoft.com/en-us/download).
-- Temel dizüstü bilgisayar kısayol tuşlarını (örneğin ekran veya klavye parlaklığı ayarlamaları) çalışır durumda tuttuğu için "Asus Optimization Service" çalışır durumda kalmayı öneriyorum. MyASUS uygulaması yüklediyseniz (veya yüklemişseniz) bu hizmet muhtemelen MyASUS kaldırıldıktan sonra bile hala çalışıyor olacaktır. Bu, [Asus Sistem Kontrol Arayüzü](https://www.asus.com/support/FAQ/1047338/)nün bir parçasıdır. Kurabilir ve daha sonra gereksiz hizmetleri devre dışı bırakabilir / kaldırabilirsiniz [bu bat dosyasını](https://raw.githubusercontent.com/seerge/g-helper/main/debloat.bat) yönetici olarak çalıştırarak.
-- Bir uygulamayı Armory Crate ile birlikte kullanmanız önerilmez, çünkü aynı ayarları ayarlarlar. Kendi kaldırma aracını kullanarak [kendi kaldırma aracını kullanarak](https://dlcdnets.asus.com/pub/ASUS/mb/14Utilities/Armoury_Crate_Uninstall_Tool.zip?model=armoury%20crate) kaldırabilirsiniz. Her ihtimale karşı, her zaman geri yükleyebilirsiniz.
+- Uygulama için [.NET7](https://dotnet.microsoft.com/en-us/download) yüklü olmalıdır. Muhtemelen zaten yüklüdür. Aksi takdirde [buradan indirebilirsiniz](https://dotnet.microsoft.com/en-us/download).
+- Temel dizüstü bilgisayar kısayol tuşlarını (örneğin ekran veya klavye parlaklığı ayarlamaları) çalışır durumda tuttuğu için "Asus Optimization Service" çalışır durumda bırakmanızı öneriyorum. MyASUS uygulaması yüklediyseniz (veya yüklemişseniz) bu hizmet muhtemelen MyASUS kaldırıldıktan sonra bile hala çalışıyor olacaktır. Bu, [Asus Sistem Kontrol Arayüzü](https://www.asus.com/support/FAQ/1047338/)nün bir parçasıdır. Kurabilir ve daha sonra gereksiz hizmetleri devre dışı bırakabilir / kaldırabilirsiniz [bu bat dosyasını](https://raw.githubusercontent.com/seerge/g-helper/main/debloat.bat) yönetici olarak çalıştırarak gereksiz her hizmeti durdurabilirsiniz.
+- Bu uygulamayı Armory Crate ile birlikte kullanmanız önerilmez. Kendi kaldırma aracını kullanarak [kendi kaldırma aracını kullanarak](https://dlcdnets.asus.com/pub/ASUS/mb/14Utilities/Armoury_Crate_Uninstall_Tool.zip?model=armoury%20crate) kaldırabilirsiniz. Her ihtimale karşı, her zaman geri yükleyebilirsiniz.
 
 Not: Çalıştırmak için yönetici izinlerine ihtiyaç yoktur!
 
@@ -103,13 +103,13 @@ Ayarlar dosyası `%AppData%\\GHelper`'da saklanır
 
 ---
 
-Debloating, pilinizi ve dizüstü bilgisayarınızı biraz daha serin tutmanıza yardımcı olur
+Debloating (.bat dosyasını çalıştırmak), pilinizi korumaya ve dizüstü bilgisayarınızı biraz daha serin tutmanıza yardımcı olur
 
 ![https://raw.githubusercontent.com/seerge/g-helper/main/docs/screenshots/screen-5w.png](https://raw.githubusercontent.com/seerge/g-helper/main/docs/screenshots/screen-5w.png)
 
 ---
 
 **Reddetmeler**
-"ROG", "TUF" ve "Armoury Crate", AsusTek Computer, Inc.'e ait ticari markalardır ve bunlara veya AsusTek Computer'a ait diğer varlıklara hiçbir iddiam yoktur ve bunları yalnızca bilgilendirme amaçlı kullanıyorum.
+"ROG", "TUF" ve "Armoury Crate", AsusTek Computer, Inc.'e ait ticari markalardır. Bunlara veya AsusTek Computer'a ait diğer varlıklarla ilgili hiçbir iddiam yoktur. Bunları yalnızca bilgilendirme amaçlı kullanıyorum.
 
 YAZILIM "OLDUĞU GİBİ" SUNULMAKTADIR, HERHANGİ BİR TÜRDE, AÇIK VEYA ZIMNİ GARANTİ OLMADAN, SATILABİLİRLİK, BELİRLİ BİR AMACA UYGUNLUK VE İHLAL ETMEME GARANTİLERİ DE DAHİLDİR ANCAK BUNLARLA SINIRLI OLMAMAKTADIR, BU YAZILIMIN KULLANIMI SİSTEM İSTİKRARSIZLIĞINA VEYA ARIZASINA NEDEN OLABİLİR. SORUMLULUK SİZE AİTTİR.
