@@ -1,10 +1,14 @@
-﻿using System.Text.Json;
+﻿using System.Diagnostics;
+using System.Management;
+using System.Text.Json;
 
 public class AppConfig
 {
 
     public string appPath;
     string configFile;
+
+    string _model;
 
     public Dictionary<string, object> config = new Dictionary<string, object>();
 
@@ -36,6 +40,26 @@ public class AppConfig
 
     }
 
+
+
+    public bool ContainsModel(string contains)
+    {
+        if (_model is null)
+        {
+            _model = "";
+            using (var searcher = new ManagementObjectSearcher(@"Select * from Win32_ComputerSystem"))
+            {
+                foreach (var process in searcher.Get())
+                {
+                    _model = process["Model"].ToString();
+                    break;
+                }
+            }
+        }
+
+        return (_model is not null && _model.Contains(contains));
+
+    }
     private void initConfig()
     {
         config = new Dictionary<string, object>();

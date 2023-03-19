@@ -1,9 +1,4 @@
-﻿using System;
-using System.Diagnostics;
-using System.Diagnostics.Metrics;
-using System.Drawing.Imaging;
-using System.Drawing.Text;
-using System.IO;
+﻿using System.Diagnostics;
 using System.Windows.Forms.DataVisualization.Charting;
 
 namespace GHelper
@@ -17,8 +12,13 @@ namespace GHelper
 
         static string ChartPercToRPM(int percentage, string unit = "")
         {
+            int MinRPM, MaxRPM;
+            MinRPM = 1800;
+            MaxRPM = Program.config.ContainsModel("401") ? 7200 : 5800;
+
             if (percentage == 0) return "OFF";
-            return (1800 + 200 * Math.Floor(percentage * 0.2)).ToString() + unit;
+
+            return (200*Math.Round((float)(MinRPM + (MaxRPM-MinRPM)*percentage*0.01)/200)).ToString() + unit;
         }
 
         void SetChart(Chart chart, int device)
