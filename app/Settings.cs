@@ -2,7 +2,6 @@
 using System.Diagnostics;
 using System.Drawing.Imaging;
 using System.Timers;
-
 namespace GHelper
 {
 
@@ -1016,7 +1015,7 @@ namespace GHelper
             int eco = Program.wmi.DeviceGet(ASUSWmi.GPUEco);
             int mux = Program.wmi.DeviceGet(ASUSWmi.GPUMux);
 
-            int GpuMode;
+            int GpuMode = Program.config.getConfig("gpu_mode"); //call last gpu mode
 
             if (mux == 0)
                 GpuMode = ASUSWmi.GPUModeUltimate;
