@@ -17,9 +17,9 @@ namespace GHelper
             string title;
 
             if (device == 1)
-                title = "GPU Fan Profile";
+                title = "GPU Fan Ayarı";
             else
-                title = "CPU Fan Profile";
+                title = "CPU Fan Ayarı";
 
             if (Program.settingsForm.perfName.Length > 0)
                 labelFans.Text = "Fan Profili: " + Program.settingsForm.perfName;
