@@ -194,7 +194,7 @@
             buttonReset.Name = "buttonReset";
             buttonReset.Size = new Size(232, 44);
             buttonReset.TabIndex = 15;
-            buttonReset.Text = "Fabrika Ayarlarina Don";
+            buttonReset.Text = "Varsayılan Ayarlar";
             buttonReset.UseVisualStyleBackColor = true;
             // 
             // buttonApply
@@ -205,7 +205,7 @@
             buttonApply.Name = "buttonApply";
             buttonApply.Size = new Size(248, 44);
             buttonApply.TabIndex = 14;
-            buttonApply.Text = "Fan OTO Uygula";
+            buttonApply.Text = "Fan Ayarini Uygula";
             buttonApply.UseVisualStyleBackColor = true;
             // 
             // panelPower

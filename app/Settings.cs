@@ -586,7 +586,7 @@ namespace GHelper
                 button120Hz.Enabled = true;
                 button60Hz.BackColor = SystemColors.ControlLightLight;
                 button120Hz.BackColor = SystemColors.ControlLightLight;
-                labelSreen.Text = "Laptop Screen";
+                labelSreen.Text = "Ekran Seçenekleri";
             }
 
             int overdrive = 0;
@@ -1051,17 +1051,17 @@ namespace GHelper
             {
                 case ASUSWmi.GPUModeEco:
                     buttonEco.Activated = true;
-                    labelGPU.Text = "GPU Mode: iGPU (Tasarruf Modu)";
+                    labelGPU.Text = "GPU Modu: iGPU (Tasarruf Modu)";
                     Program.trayIcon.Icon = GHelper.Properties.Resources.eco;
                     break;
                 case ASUSWmi.GPUModeUltimate:
                     buttonUltimate.Activated = true;
-                    labelGPU.Text = "GPU Mode: dGPU (MUX Mode)";
+                    labelGPU.Text = "GPU Modu: dGPU (MUX Mode)";
                     Program.trayIcon.Icon = GHelper.Properties.Resources.ultimate;
                     break;
                 default:
                     buttonStandard.Activated = true;
-                    labelGPU.Text = "GPU Mode: iGPU + dGPU";
+                    labelGPU.Text = "GPU Modu: iGPU + dGPU";
                     Program.trayIcon.Icon = GHelper.Properties.Resources.standard;
                     break;
             }
@@ -1107,7 +1107,7 @@ namespace GHelper
 
             if (limit < 40 || limit > 100) return;
 
-            labelBatteryTitle.Text = "Batarya Sarj Limiti:" + limit.ToString() + "%";
+            labelBatteryTitle.Text = "Batarya Şarj Limiti: " + limit.ToString() + "%";
             trackBattery.Value = limit;
             Program.wmi.DeviceSet(ASUSWmi.BatteryLimit, limit);
 

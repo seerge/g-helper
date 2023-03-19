@@ -8,9 +8,9 @@
           {"","--------------" },
           {"mute", "Sesi AC/Kapat"},
           {"screenshot", "Ekran Görüntüsü"},
-          {"play", "BaSlat/Durdur"},
+          {"play", "Başlat/Durdur"},
           {"aura", "Aura"},
-          {"ghelper", "GHelper'i BaSlat"},
+          {"ghelper", "GHelper'i Başlat"},
           {"custom", "Ozel Komut"}
         };
 

@@ -307,7 +307,7 @@ namespace GHelper
             buttonQuit.Name = "buttonQuit";
             buttonQuit.Size = new Size(116, 40);
             buttonQuit.TabIndex = 18;
-            buttonQuit.Text = "Sonlandir";
+            buttonQuit.Text = "Çıkış";
             buttonQuit.UseVisualStyleBackColor = false;
             // 
             // checkStartup
@@ -318,7 +318,7 @@ namespace GHelper
             checkStartup.Name = "checkStartup";
             checkStartup.Size = new Size(206, 36);
             checkStartup.TabIndex = 17;
-            checkStartup.Text = "Baslangicta Calistir";
+            checkStartup.Text = "Başlangıçta Çalıştır";
             checkStartup.UseVisualStyleBackColor = true;
             // 
             // panelPerformance
@@ -345,7 +345,7 @@ namespace GHelper
             buttonFans.Name = "buttonFans";
             buttonFans.Size = new Size(213, 48);
             buttonFans.TabIndex = 34;
-            buttonFans.Text = "Fan ve GUC";
+            buttonFans.Text = "Fan ve Güç";
             buttonFans.UseVisualStyleBackColor = false;
             // 
             // picturePerf
@@ -369,7 +369,7 @@ namespace GHelper
             labelPerf.Name = "labelPerf";
             labelPerf.Size = new Size(234, 32);
             labelPerf.TabIndex = 31;
-            labelPerf.Text = "Performans Ayarlari";
+            labelPerf.Text = "Performans Ayarları";
             // 
             // labelCPUFan
             // 
@@ -610,7 +610,7 @@ namespace GHelper
             checkScreen.Name = "checkScreen";
             checkScreen.Size = new Size(527, 36);
             checkScreen.TabIndex = 24;
-            checkScreen.Text = "Otomatik - Bataryada 60Hz'e geçir, şarjda normale dondur";
+            checkScreen.Text = "Otomatik - Bataryada 60Hz'e geçir, Şarjda normale dondur";
             checkScreen.UseVisualStyleBackColor = true;
             // 
             // tableScreen
@@ -738,7 +738,7 @@ namespace GHelper
             comboKeyboard.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
             comboKeyboard.FormattingEnabled = true;
             comboKeyboard.ItemHeight = 32;
-            comboKeyboard.Items.AddRange(new object[] { "Static", "Breathe", "Strobe", "Rainbow", "Dingding" });
+            comboKeyboard.Items.AddRange(new object[] { "Sabit", "Nefes", "Flaş", "Gökkuşağı", "Dingding" });
             comboKeyboard.Location = new Point(10, 10);
             comboKeyboard.Margin = new Padding(10);
             comboKeyboard.Name = "comboKeyboard";
