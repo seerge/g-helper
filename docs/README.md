@@ -45,7 +45,7 @@ Bu uygulamayı beğendiyseniz, lütfen Github'da :star: ile işaretleyin ve hakk
 - GPU modları (pilde ekonomi, prize takılıyken standart)
 - Ekran yenileme hızı (pilde 60hz, prize takılıyken 120+ hz)
 
-Otomatik geçişleri ve kısayol tuşlarını çalışır durumda tutmak için uygulamanın teypte çalışmaya devam etmesi gerekiyor. Herhangi bir kaynak tüketmiyor.
+Otomatik geçişleri ve kısayol tuşlarını çalışır durumda tutmak için uygulamanın arka planda çalışmaya devam etmesi gerekiyor. Herhangi bir kaynak tüketmiyor.
 
 ### :rocket: Performans Modları
 
@@ -91,7 +91,7 @@ Başlat menüsünden "Olay Görüntüleyicisi"ni açın, Windows Günlükleri ->
 - Temel dizüstü bilgisayar kısayol tuşlarını (örneğin ekran veya klavye parlaklığı ayarlamaları) çalışır durumda tuttuğu için "Asus Optimization Service" çalışır durumda kalmayı öneriyorum. MyASUS uygulaması yüklediyseniz (veya yüklemişseniz) bu hizmet muhtemelen MyASUS kaldırıldıktan sonra bile hala çalışıyor olacaktır. Bu, [Asus Sistem Kontrol Arayüzü](https://www.asus.com/support/FAQ/1047338/)nün bir parçasıdır. Kurabilir ve daha sonra gereksiz hizmetleri devre dışı bırakabilir / kaldırabilirsiniz [bu bat dosyasını](https://raw.githubusercontent.com/seerge/g-helper/main/debloat.bat) yönetici olarak çalıştırarak.
 - Bir uygulamayı Armory Crate ile birlikte kullanmanız önerilmez, çünkü aynı ayarları ayarlarlar. Kendi kaldırma aracını kullanarak [kendi kaldırma aracını kullanarak](https://dlcdnets.asus.com/pub/ASUS/mb/14Utilities/Armoury_Crate_Uninstall_Tool.zip?model=armoury%20crate) kaldırabilirsiniz. Her ihtimale karşı, her zaman geri yükleyebilirsiniz.
 
-Not: Çalıştırmak için yönetici haklarına ihtiyaç yoktur!
+Not: Çalıştırmak için yönetici izinlerine ihtiyaç yoktur!
 
 ---
 
@@ -112,4 +112,4 @@ Debloating, pilinizi ve dizüstü bilgisayarınızı biraz daha serin tutmanıza
 **Reddetmeler**
 "ROG", "TUF" ve "Armoury Crate", AsusTek Computer, Inc.'e ait ticari markalardır ve bunlara veya AsusTek Computer'a ait diğer varlıklara hiçbir iddiam yoktur ve bunları yalnızca bilgilendirme amaçlı kullanıyorum.
 
-YAZILIM "OLDUĞU GİBİ" SAĞLANMAKTADIR, HERHANGİ BİR TÜRDE, AÇIK VEYA ZIMNİ GARANTİ OLMADAN, SATILABİLİRLİK, BELİRLİ BİR AMACA UYGUNLUK VE İHLAL ETMEME GARANTİLERİ DE DAHİL ANCAK BUNLARLA SINIRLI OLMAMAKTADIR. BU YAZILIMIN KULLANIMI SİSTEM İSTİKRARSIZLIĞINA VEYA ARIZASINA NEDEN OLABİLİR.
+YAZILIM "OLDUĞU GİBİ" SUNULMAKTADIR, HERHANGİ BİR TÜRDE, AÇIK VEYA ZIMNİ GARANTİ OLMADAN, SATILABİLİRLİK, BELİRLİ BİR AMACA UYGUNLUK VE İHLAL ETMEME GARANTİLERİ DE DAHİLDİR ANCAK BUNLARLA SINIRLI OLMAMAKTADIR, BU YAZILIMIN KULLANIMI SİSTEM İSTİKRARSIZLIĞINA VEYA ARIZASINA NEDEN OLABİLİR. SORUMLULUK SİZE AİTTİR.
