@@ -1060,7 +1060,7 @@ namespace GHelper
 
                 if (eco == 1)
                 {
-                    string[] tokill = { "EADesktop" };
+                    string[] tokill = { "EADesktop", "RadeonSoftware" };
                     foreach (string kill in tokill)
                         foreach (var process in Process.GetProcessesByName(kill)) process.Kill();
                 }
