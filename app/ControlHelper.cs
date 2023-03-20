@@ -6,37 +6,33 @@ public static class ControlHelper
 {
 
     static bool _invert = false;
+    static bool _resize = false;
+
     static float _scale = 1;
 
     static Color formBack;
     static Color backMain;
-    static Color backSecond;
     static Color foreMain;
     static Color foreAccent;
     static Color borderMain;
     static Color buttonMain;
 
-    public static void Adjust(RForm container, float baseScale = 2, bool invert = false)
+    public static void Adjust(RForm container, bool darkTheme = false, bool invert = false)
     {
-        _scale = GetDpiScale(container).Value / baseScale;
 
-        if (container.darkTheme)
+        if (darkTheme)
         {
             formBack = Color.FromArgb(255, 35, 35, 35);
             backMain = Color.FromArgb(255, 50, 50, 50);
-            backSecond = Color.FromArgb(255, 125, 125, 125);
-
             foreMain = Color.White;
-            foreAccent = Color.FromArgb(255,100, 100, 100);
+            foreAccent = Color.FromArgb(255, 100, 100, 100);
             borderMain = Color.FromArgb(255, 50, 50, 50);
-            buttonMain = Color.FromArgb(255, 100, 100, 100);
+            buttonMain = Color.FromArgb(255, 80, 80, 80);
         }
         else
         {
             formBack = SystemColors.Control;
             backMain = SystemColors.ControlLightLight;
-            backSecond = SystemColors.ButtonFace;
-
             foreMain = SystemColors.ControlText;
             foreAccent = Color.LightGray;
             borderMain = Color.LightGray;
@@ -51,6 +47,29 @@ public static class ControlHelper
         _invert = false;
     }
 
+    public static void Resize(RForm container, float baseScale = 2)
+    {
+        _scale = GetDpiScale(container).Value / baseScale;
+        ResizeControls(container.Controls);
+
+    }
+
+    private static void ResizeControls(Control.ControlCollection controls)
+    {
+        foreach (Control control in controls)
+        {
+            var button = control as RButton;
+            if (button != null && button.Image is not null)
+                button.Image = ResizeImage(button.Image);
+
+            var pictureBox = control as PictureBox;
+            if (pictureBox != null && pictureBox.BackgroundImage is not null)
+                pictureBox.BackgroundImage = ResizeImage(pictureBox.BackgroundImage);
+
+            ResizeControls(control.Controls);
+        }
+    }
+
 
     private static void AdjustControls(Control.ControlCollection controls)
     {
@@ -59,7 +78,7 @@ public static class ControlHelper
             var button = control as RButton;
             if (button != null)
             {
-                button.BackColor = backMain;
+                button.BackColor = button.Secondary ? buttonMain : backMain;
                 button.ForeColor = foreMain;
 
                 button.FlatStyle = FlatStyle.Flat;
@@ -70,11 +89,9 @@ public static class ControlHelper
             }
 
             var pictureBox = control as PictureBox;
-            if (pictureBox != null)
-            {
-                if (pictureBox.BackgroundImage is not null)
-                    pictureBox.BackgroundImage = AdjustImage(pictureBox.BackgroundImage);
-            }
+            if (pictureBox != null && pictureBox.BackgroundImage is not null)
+                pictureBox.BackgroundImage = AdjustImage(pictureBox.BackgroundImage);
+
 
             var combo = control as RComboBox;
             if (combo != null)
@@ -129,7 +146,7 @@ public static class ControlHelper
         });
     }
 
-    private static Image AdjustImage(Image image)
+    private static Image ResizeImage(Image image)
     {
         var newSize = new Size((int)(image.Width * _scale), (int)(image.Height * _scale));
         var pic = new Bitmap(newSize.Width, newSize.Height);
@@ -139,6 +156,12 @@ public static class ControlHelper
             g.InterpolationMode = InterpolationMode.HighQualityBicubic;
             g.DrawImage(image, new Rectangle(new Point(), newSize));
         }
+        return pic;
+    }
+
+    private static Image AdjustImage(Image image)
+    {
+        var pic = new Bitmap(image);
 
         if (_invert)
         {
@@ -153,6 +176,7 @@ public static class ControlHelper
         }
 
         return pic;
+
     }
 
 }

@@ -49,7 +49,8 @@ namespace GHelper
 
             }
 
-            SystemEvents.UserPreferenceChanged += OnUserPreferenceChanged;
+            SystemEvents.UserPreferenceChanged += new
+                 UserPreferenceChangedEventHandler(SystemEvents_UserPreferenceChanged);
 
             Application.EnableVisualStyles();
 
@@ -81,7 +82,7 @@ namespace GHelper
         }
 
 
-        static void OnUserPreferenceChanged(object sender, UserPreferenceChangedEventArgs e)
+        static void SystemEvents_UserPreferenceChanged(object sender, UserPreferenceChangedEventArgs e)
         {
 
             if (Math.Abs(DateTimeOffset.Now.ToUnixTimeMilliseconds() - lastTheme) < 2000) return;
@@ -91,13 +92,13 @@ namespace GHelper
             {
                 case UserPreferenceCategory.General:
                     Debug.WriteLine("Theme Changed");
-                    settingsForm.InitTheme();
+                    settingsForm.InitTheme(false);
 
                     if (settingsForm.fans is not null && settingsForm.fans.Text != "")
-                        settingsForm.fans.InitTheme();
+                        settingsForm.fans.InitTheme(false);
 
                     if (settingsForm.keyb is not null && settingsForm.keyb.Text != "")
-                        settingsForm.keyb.InitTheme();
+                        settingsForm.keyb.InitTheme(false);
 
                     break;
             }

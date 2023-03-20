@@ -31,10 +31,10 @@ namespace GHelper
         /// </summary>
         private void InitializeComponent()
         {
-            ChartArea chartArea3 = new ChartArea();
-            Title title3 = new Title();
-            ChartArea chartArea4 = new ChartArea();
-            Title title4 = new Title();
+            ChartArea chartArea1 = new ChartArea();
+            Title title1 = new Title();
+            ChartArea chartArea2 = new ChartArea();
+            Title title2 = new Title();
             panelFans = new Panel();
             labelTip = new Label();
             labelBoost = new Label();
@@ -160,8 +160,8 @@ namespace GHelper
             // 
             // chartGPU
             // 
-            chartArea3.Name = "ChartArea1";
-            chartGPU.ChartAreas.Add(chartArea3);
+            chartArea1.Name = "ChartArea1";
+            chartGPU.ChartAreas.Add(chartArea1);
             chartGPU.Dock = DockStyle.Fill;
             chartGPU.Location = new Point(2, 506);
             chartGPU.Margin = new Padding(2, 10, 2, 10);
@@ -169,13 +169,13 @@ namespace GHelper
             chartGPU.Size = new Size(760, 476);
             chartGPU.TabIndex = 17;
             chartGPU.Text = "chart1";
-            title3.Name = "Title1";
-            chartGPU.Titles.Add(title3);
+            title1.Name = "Title1";
+            chartGPU.Titles.Add(title1);
             // 
             // chartCPU
             // 
-            chartArea4.Name = "ChartArea1";
-            chartCPU.ChartAreas.Add(chartArea4);
+            chartArea2.Name = "ChartArea1";
+            chartCPU.ChartAreas.Add(chartArea2);
             chartCPU.Dock = DockStyle.Fill;
             chartCPU.Location = new Point(2, 10);
             chartCPU.Margin = new Padding(2, 10, 2, 10);
@@ -183,8 +183,8 @@ namespace GHelper
             chartCPU.Size = new Size(760, 476);
             chartCPU.TabIndex = 14;
             chartCPU.Text = "chartCPU";
-            title4.Name = "Title1";
-            chartCPU.Titles.Add(title4);
+            title2.Name = "Title1";
+            chartCPU.Titles.Add(title2);
             // 
             // labelFans
             // 
@@ -219,6 +219,7 @@ namespace GHelper
             buttonReset.Location = new Point(30, 1081);
             buttonReset.Margin = new Padding(4, 2, 4, 2);
             buttonReset.Name = "buttonReset";
+            buttonReset.Secondary = true;
             buttonReset.Size = new Size(232, 44);
             buttonReset.TabIndex = 15;
             buttonReset.Text = "Factory Defaults";
@@ -234,6 +235,7 @@ namespace GHelper
             buttonApply.Location = new Point(542, 1081);
             buttonApply.Margin = new Padding(4, 2, 4, 2);
             buttonApply.Name = "buttonApply";
+            buttonApply.Secondary = true;
             buttonApply.Size = new Size(248, 44);
             buttonApply.TabIndex = 14;
             buttonApply.Text = "Apply Fan Curve";
@@ -303,6 +305,7 @@ namespace GHelper
             buttonApplyPower.Location = new Point(20, 1081);
             buttonApplyPower.Margin = new Padding(4, 2, 4, 2);
             buttonApplyPower.Name = "buttonApplyPower";
+            buttonApplyPower.Secondary = true;
             buttonApplyPower.Size = new Size(324, 44);
             buttonApplyPower.TabIndex = 24;
             buttonApplyPower.Text = "Apply Power Limits";

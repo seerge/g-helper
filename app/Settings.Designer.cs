@@ -190,6 +190,7 @@ namespace GHelper
             buttonMatrix.TabIndex = 43;
             buttonMatrix.Text = "Picture / Gif";
             buttonMatrix.UseVisualStyleBackColor = false;
+            buttonMatrix.Secondary = true;
             // 
             // comboMatrixRunning
             // 
@@ -334,6 +335,7 @@ namespace GHelper
             buttonQuit.TabIndex = 18;
             buttonQuit.Text = "Quit";
             buttonQuit.UseVisualStyleBackColor = false;
+            buttonQuit.Secondary = true;
             // 
             // checkStartup
             // 
@@ -498,6 +500,7 @@ namespace GHelper
             buttonFans.Text = "Fans + Power";
             buttonFans.TextImageRelation = TextImageRelation.ImageAboveText;
             buttonFans.UseVisualStyleBackColor = false;
+            buttonFans.Secondary = true;
             // 
             // panelGPU
             // 
@@ -833,6 +836,8 @@ namespace GHelper
             buttonKeyboard.TabIndex = 37;
             buttonKeyboard.Text = "Extra";
             buttonKeyboard.UseVisualStyleBackColor = false;
+            buttonKeyboard.Secondary = true;
+
             // 
             // comboKeyboard
             // 

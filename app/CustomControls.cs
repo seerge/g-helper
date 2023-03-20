@@ -18,24 +18,28 @@ namespace CustomControls
         [DllImport("DwmApi")] //System.Runtime.InteropServices
         private static extern int DwmSetWindowAttribute(IntPtr hwnd, int attr, int[] attrValue, int attrSize);
 
-        public bool darkTheme;
-        public bool invert = false;
+        public bool darkTheme = false;
 
-        public void InitTheme()
+        public void InitTheme(bool setDPI = true)
         {
             bool newDarkTheme = CheckSystemDarkModeStatus();
-            invert = (darkTheme != newDarkTheme);
+            bool changed = (darkTheme != newDarkTheme);
             darkTheme = newDarkTheme;
 
-            ControlHelper.Adjust(this, 2, invert);
-            try
-            {
-                DwmSetWindowAttribute(this.Handle, 20, new[] { darkTheme ? 1 : 0 }, 4);
-            } catch { }
+            if (setDPI)
+                ControlHelper.Resize(this);
+
+            DwmSetWindowAttribute(this.Handle, 20, new[] { darkTheme ? 1 : 0 }, 4);
+            ControlHelper.Adjust(this, darkTheme, changed);
         }
 
     }
 
+
+    public class RTrackBar : TrackBar
+    {
+
+    }
 
     public class RComboBox : ComboBox
     {
@@ -224,9 +228,9 @@ namespace CustomControls
         private int borderRadius = 5;
         
         private bool activated = false;
+        private bool secondary = false;
 
         private Color borderColor = Color.Transparent;
-
 
         public Color BorderColor
         {
@@ -250,6 +254,14 @@ namespace CustomControls
             }
         }
 
+        public bool Secondary
+        {
+            get { return secondary; }
+            set
+            {
+                secondary = value;
+            }
+        }
 
         public RButton()
         {
