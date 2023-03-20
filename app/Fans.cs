@@ -82,8 +82,7 @@ namespace GHelper
         {
 
             InitializeComponent();
-
-            ControlHelper.Adjust(this, 2, darkTheme);
+            InitTheme();
 
             labelTip.Visible = false;
             labelTip.BackColor = Color.Transparent;

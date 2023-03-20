@@ -27,6 +27,7 @@ namespace GHelper
         private static IntPtr ds;
 
         private static long lastAuto;
+        private static long lastTheme;
 
         // The main entry point for the application
         public static void Main()
@@ -47,6 +48,8 @@ namespace GHelper
                 return;
 
             }
+
+            SystemEvents.UserPreferenceChanged += OnUserPreferenceChanged;
 
             Application.EnableVisualStyles();
 
@@ -76,6 +79,30 @@ namespace GHelper
             Application.Run();
 
         }
+
+
+        static void OnUserPreferenceChanged(object sender, UserPreferenceChangedEventArgs e)
+        {
+
+            if (Math.Abs(DateTimeOffset.Now.ToUnixTimeMilliseconds() - lastTheme) < 2000) return;
+            lastTheme = DateTimeOffset.Now.ToUnixTimeMilliseconds();
+
+            switch (e.Category)
+            {
+                case UserPreferenceCategory.General:
+                    Debug.WriteLine("Theme Changed");
+                    settingsForm.InitTheme();
+
+                    if (settingsForm.fans is not null && settingsForm.fans.Text != "")
+                        settingsForm.fans.InitTheme();
+
+                    if (settingsForm.keyb is not null && settingsForm.keyb.Text != "")
+                        settingsForm.keyb.InitTheme();
+
+                    break;
+            }
+        }
+
 
         static async void CheckForUpdates()
         {

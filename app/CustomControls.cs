@@ -1,11 +1,10 @@
-﻿using GHelper;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Drawing.Drawing2D;
 using System.Runtime.InteropServices;
 
 namespace CustomControls
 {
-   
+
     public class RForm : Form
     {
 
@@ -16,15 +15,31 @@ namespace CustomControls
         [DllImport("UXTheme.dll", SetLastError = true, EntryPoint = "#138")]
         public static extern bool CheckSystemDarkModeStatus();
 
-        public static bool darkTheme = CheckSystemDarkModeStatus();
 
         [DllImport("DwmApi")] //System.Runtime.InteropServices
         private static extern int DwmSetWindowAttribute(IntPtr hwnd, int attr, int[] attrValue, int attrSize);
 
-        protected override void OnHandleCreated(EventArgs e)
+        protected bool _darkTheme;
+        public bool invert = false;
+
+        public bool DarkTheme
         {
-            if (darkTheme && DwmSetWindowAttribute(Handle, 19, new[] { 1 }, 4) != 0)
-                DwmSetWindowAttribute(Handle, 20, new[] { 1 }, 4);
+            get { return _darkTheme; }
+            set
+            {
+                if (_darkTheme != value)
+                {
+                    _darkTheme = value;
+                    invert = true;
+                }
+            }
+        }
+
+        public void InitTheme()
+        {
+            DarkTheme = CheckSystemDarkModeStatus();
+            ControlHelper.Adjust(this, 2);
+            DwmSetWindowAttribute(this.Handle, 20, new[] { DarkTheme ? 1 : 0 }, 4);
         }
 
     }
@@ -290,7 +305,8 @@ namespace CustomControls
             if (!Enabled && ForeColor != SystemColors.ControlText)
             {
                 var rect = pevent.ClipRectangle;
-                if (Image is not null) {
+                if (Image is not null)
+                {
                     rect.Y += Image.Height;
                     rect.Height -= Image.Height;
                 }

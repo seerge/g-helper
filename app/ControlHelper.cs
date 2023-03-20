@@ -1,4 +1,5 @@
-﻿using System.Drawing.Drawing2D;
+﻿using System;
+using System.Drawing.Drawing2D;
 using System.Windows.Forms.DataVisualization.Charting;
 using CustomControls;
 
@@ -6,27 +7,43 @@ public static class ControlHelper
 {
 
     static bool _invert = false;
+    static bool _darkTheme = false;
+
     static float _scale = 1;
 
-    static Color formBack = Color.FromArgb(255, 35, 35, 35);
-    static Color backMain = Color.FromArgb(255, 50, 50, 50);
-    static Color foreMain = Color.White;
-    static Color borderMain = Color.FromArgb(255, 50, 50, 50);
-    static Color buttonMain = Color.FromArgb(255, 100,100,100);
+    static Color formBack;
+    static Color backMain;
+    static Color foreMain;
+    static Color borderMain;
+    static Color buttonMain;
 
-    public static void Adjust(Control container, float baseScale = 2, bool invert = false)
+    public static void Adjust(RForm container, float baseScale = 2)
     {
         _scale = GetDpiScale(container).Value / baseScale;
-        _invert = invert;
+        
 
-        if (_invert)
+        if (container.DarkTheme)
         {
-            container.BackColor = formBack;
-            container.ForeColor = foreMain;
+            formBack = Color.FromArgb(255, 35, 35, 35);
+            backMain = Color.FromArgb(255, 50, 50, 50);
+            foreMain = Color.White;
+            borderMain = Color.FromArgb(255, 50, 50, 50);
+            buttonMain = Color.FromArgb(255, 100, 100, 100);
+        } else
+        {
+            formBack = SystemColors.Control;
+            backMain = SystemColors.ControlLightLight;
+            foreMain = SystemColors.ControlText;
+            borderMain = Color.LightGray;
+            buttonMain = SystemColors.ControlLight;
         }
 
+        container.BackColor = formBack;
+        container.ForeColor = foreMain;
 
+        _invert = container.invert;
         AdjustControls(container.Controls);
+        _invert = false;
     }
 
 
@@ -37,15 +54,11 @@ public static class ControlHelper
             var button = control as Button;
             if (button != null)
             {
+                button.BackColor = backMain;
+                button.ForeColor = foreMain;
 
-                if (_invert)
-                {
-                    button.BackColor = backMain;
-                    button.ForeColor = foreMain;
-
-                    button.FlatStyle = FlatStyle.Flat;
-                    button.FlatAppearance.BorderColor = borderMain;
-                }
+                button.FlatStyle = FlatStyle.Flat;
+                button.FlatAppearance.BorderColor = borderMain;
 
                 if (button.Image is not null)
                     button.Image = AdjustImage(button.Image);
@@ -59,16 +72,23 @@ public static class ControlHelper
             }
 
             var combo = control as RComboBox;
-            if (combo != null && _invert)
+            if (combo != null)
             {
-                combo.BackColor = borderMain;
+                combo.BackColor = backMain;
                 combo.ForeColor = foreMain;
-                combo.BorderColor = borderMain;
+                combo.BorderColor = backMain;
                 combo.ButtonColor = buttonMain;
             }
+
+            var gb = control as GroupBox;
+            if (gb != null)
+            {
+                gb.ForeColor = foreMain;
+            }
+
             
             var chart = control as Chart;
-            if (chart != null && _invert)
+            if (chart != null)
             {
                 chart.BackColor = backMain;
                 chart.ChartAreas[0].BackColor = backMain;

@@ -1,6 +1,8 @@
-﻿namespace GHelper
+﻿using CustomControls;
+
+namespace GHelper
 {
-    public partial class Keyboard : Form
+    public partial class Keyboard : RForm
     {
 
         Dictionary<string, string> customActions = new Dictionary<string, string>
@@ -51,6 +53,7 @@
         public Keyboard()
         {
             InitializeComponent();
+            InitTheme();
 
             SetKeyCombo(comboM3, textM3, "m3");
             SetKeyCombo(comboM4, textM4, "m4");

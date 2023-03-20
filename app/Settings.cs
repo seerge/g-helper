@@ -17,16 +17,15 @@ namespace GHelper
 
         public string perfName = "Balanced";
 
-        Fans fans;
-        Keyboard keyb;
+        public Fans fans;
+        public Keyboard keyb;
 
         static AnimeMatrixDevice mat;
 
         public SettingsForm()
         {
             InitializeComponent();
-
-            ControlHelper.Adjust(this, 2, darkTheme);
+            InitTheme();
 
             FormClosing += SettingsForm_FormClosing;
 

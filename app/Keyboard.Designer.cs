@@ -1,4 +1,6 @@
-﻿namespace GHelper
+﻿using CustomControls;
+
+namespace GHelper
 {
     partial class Keyboard
     {
@@ -31,12 +33,12 @@
             groupBox1 = new GroupBox();
             textM4 = new TextBox();
             textM3 = new TextBox();
-            comboM4 = new ComboBox();
+            comboM4 = new RComboBox();
             labelM4 = new Label();
-            comboM3 = new ComboBox();
+            comboM3 = new RComboBox();
             labelM3 = new Label();
             textFNF4 = new TextBox();
-            comboFNF4 = new ComboBox();
+            comboFNF4 = new RComboBox();
             labelFNF4 = new Label();
             groupBox1.SuspendLayout();
             SuspendLayout();
@@ -161,13 +163,13 @@
 
         private GroupBox groupBox1;
         private Label labelM3;
-        private ComboBox comboM3;
-        private ComboBox comboM4;
+        private RComboBox comboM3;
+        private RComboBox comboM4;
         private Label labelM4;
         private TextBox textM4;
         private TextBox textM3;
         private TextBox textFNF4;
-        private ComboBox comboFNF4;
+        private RComboBox comboFNF4;
         private Label labelFNF4;
     }
 }
