@@ -62,25 +62,24 @@ namespace Starlight.AnimeMatrix
         Off = 0,
         Dim = 1,
         Medium = 2,
-        Full = 3
+        Full = 3,
+        Super = 4, //test, doesn't work
     }
 
 
     public class AnimeMatrixDevice : Device
     {
-        private const int UpdatePageLength = 0x0278;
+        int UpdatePageLength = 490;
+        int LedCount = 1450;
 
-        public int LedCount => 1450;
-
-        private byte[] _displayBuffer = new byte[UpdatePageLength * 3];
-        private List<byte[]> frames = new List<byte[]>();
-
-        private int pages = 3;
+        byte[] _displayBuffer;
+        List<byte[]> frames = new List<byte[]>();
 
         public int MaxColumns = 34;
         public int MaxRows = 61;
-
         public int FullRows = 11;
+
+        public int EmptyFirstRow = 0;
 
         private int frameIndex = 0;
 
@@ -89,14 +88,19 @@ namespace Starlight.AnimeMatrix
         {
             string model = GetModel();
             Debug.WriteLine(model);
-            if (model is not null && model.Contains("401"))
-            {
-                pages = 2;
 
+            if (true || model is not null && model.Contains("401"))
+            {
+                EmptyFirstRow = 1;
                 FullRows = 6;
                 MaxColumns = 33;
                 MaxRows = 55;
+                LedCount = 1214;
+                UpdatePageLength = 410;
             }
+
+            _displayBuffer = new byte[LedCount];
+
         }
 
 
@@ -145,6 +149,7 @@ namespace Starlight.AnimeMatrix
 
         public int EmptyColumns(int row)
         {
+            if (row == 0) return EmptyFirstRow;
             return (int)Math.Ceiling(Math.Max(0, row - FullRows) / 2.0);
         }
         public int Columns(int row)
@@ -175,13 +180,13 @@ namespace Starlight.AnimeMatrix
 
         public void SetLedLinear(int address, byte value)
         {
-            EnsureAddressableLed(address);
+            if (!IsAddressableLed(address)) return;
             _displayBuffer[address] = value;
         }
 
         public void SetLedLinearImmediate(int address, byte value)
         {
-            EnsureAddressableLed(address);
+            if (!IsAddressableLed(address)) return;
             _displayBuffer[address] = value;
 
             Set(Packet<AnimeMatrixPacket>(0xC0, 0x02)
@@ -214,25 +219,22 @@ namespace Starlight.AnimeMatrix
         public void Present()
         {
 
-            Set(Packet<AnimeMatrixPacket>(0xC0, 0x02)
-                .AppendData(BitConverter.GetBytes((ushort)(UpdatePageLength * 0 + 1)))
-                .AppendData(BitConverter.GetBytes((ushort)UpdatePageLength))
-                .AppendData(_displayBuffer[(UpdatePageLength * 0)..(UpdatePageLength * 1)])
-            );
+            int page = 0;
+            int start, end;
 
-            Set(Packet<AnimeMatrixPacket>(0xC0, 0x02)
-                .AppendData(BitConverter.GetBytes((ushort)(UpdatePageLength * 1 + 1)))
-                .AppendData(BitConverter.GetBytes((ushort)UpdatePageLength))
-                .AppendData(_displayBuffer[(UpdatePageLength * 1)..(UpdatePageLength * 2)])
-            );
+            while (page * UpdatePageLength < LedCount)
+            {
+                start = page * UpdatePageLength;
+                end = Math.Min(LedCount, (page + 1) * UpdatePageLength);
 
-            if (pages > 2)
                 Set(Packet<AnimeMatrixPacket>(0xC0, 0x02)
-                    .AppendData(BitConverter.GetBytes((ushort)(UpdatePageLength * 2 + 1)))
-                    .AppendData(BitConverter.GetBytes((ushort)(LedCount - UpdatePageLength * 2)))
-                    .AppendData(
-                        _displayBuffer[(UpdatePageLength * 2)..(UpdatePageLength * 2 + (LedCount - UpdatePageLength * 2))])
+                    .AppendData(BitConverter.GetBytes((ushort)(start + 1)))
+                    .AppendData(BitConverter.GetBytes((ushort)(end - start)))
+                    .AppendData(_displayBuffer[start..end])
                 );
+
+                page++;
+            }
 
             Set(Packet<AnimeMatrixPacket>(0xC0, 0x03));
         }
@@ -313,12 +315,9 @@ namespace Starlight.AnimeMatrix
             }
         }
 
-        private void EnsureAddressableLed(int address)
+        private bool IsAddressableLed(int address)
         {
-            if (address < 0 || address >= LedCount)
-            {
-                throw new IndexOutOfRangeException($"Linear LED address must be in range of [0, {LedCount - 1}].");
-            }
+            return (address >= 0 && address < LedCount);
         }
     }
 }

@@ -532,8 +532,8 @@ namespace GHelper
             int brightness = Program.config.getConfig("matrix_brightness");
             int running = Program.config.getConfig("matrix_running");
 
-            comboMatrix.SelectedIndex = (brightness != -1) ? brightness : 0;
-            comboMatrixRunning.SelectedIndex = (running != -1) ? running : 0;
+            comboMatrix.SelectedIndex = (brightness != -1) ? Math.Min(brightness, comboMatrix.Items.Count-1) : 0;
+            comboMatrixRunning.SelectedIndex = (running != -1) ? Math.Min(running, comboMatrixRunning.Items.Count - 1) : 0;
 
             checkMatrix.Checked = (Program.config.getConfig("matrix_auto") == 1);
 

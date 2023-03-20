@@ -186,11 +186,11 @@ namespace GHelper
             buttonMatrix.Location = new Point(390, 8);
             buttonMatrix.Margin = new Padding(4, 8, 4, 8);
             buttonMatrix.Name = "buttonMatrix";
+            buttonMatrix.Secondary = true;
             buttonMatrix.Size = new Size(185, 44);
             buttonMatrix.TabIndex = 43;
             buttonMatrix.Text = "Picture / Gif";
             buttonMatrix.UseVisualStyleBackColor = false;
-            buttonMatrix.Secondary = true;
             // 
             // comboMatrixRunning
             // 
@@ -331,11 +331,11 @@ namespace GHelper
             buttonQuit.Location = new Point(578, 16);
             buttonQuit.Margin = new Padding(8, 4, 8, 4);
             buttonQuit.Name = "buttonQuit";
+            buttonQuit.Secondary = true;
             buttonQuit.Size = new Size(208, 44);
             buttonQuit.TabIndex = 18;
             buttonQuit.Text = "Quit";
             buttonQuit.UseVisualStyleBackColor = false;
-            buttonQuit.Secondary = true;
             // 
             // checkStartup
             // 
@@ -436,6 +436,7 @@ namespace GHelper
             buttonSilent.Location = new Point(4, 4);
             buttonSilent.Margin = new Padding(4);
             buttonSilent.Name = "buttonSilent";
+            buttonSilent.Secondary = false;
             buttonSilent.Size = new Size(185, 120);
             buttonSilent.TabIndex = 0;
             buttonSilent.Text = "Silent";
@@ -456,6 +457,7 @@ namespace GHelper
             buttonBalanced.Location = new Point(197, 4);
             buttonBalanced.Margin = new Padding(4);
             buttonBalanced.Name = "buttonBalanced";
+            buttonBalanced.Secondary = false;
             buttonBalanced.Size = new Size(185, 120);
             buttonBalanced.TabIndex = 1;
             buttonBalanced.Text = "Balanced";
@@ -476,6 +478,7 @@ namespace GHelper
             buttonTurbo.Location = new Point(390, 4);
             buttonTurbo.Margin = new Padding(4);
             buttonTurbo.Name = "buttonTurbo";
+            buttonTurbo.Secondary = false;
             buttonTurbo.Size = new Size(185, 120);
             buttonTurbo.TabIndex = 2;
             buttonTurbo.Text = "Turbo";
@@ -495,12 +498,12 @@ namespace GHelper
             buttonFans.Location = new Point(583, 4);
             buttonFans.Margin = new Padding(4);
             buttonFans.Name = "buttonFans";
+            buttonFans.Secondary = true;
             buttonFans.Size = new Size(185, 120);
             buttonFans.TabIndex = 35;
             buttonFans.Text = "Fans + Power";
             buttonFans.TextImageRelation = TextImageRelation.ImageAboveText;
             buttonFans.UseVisualStyleBackColor = false;
-            buttonFans.Secondary = true;
             // 
             // panelGPU
             // 
@@ -599,6 +602,7 @@ namespace GHelper
             buttonEco.Location = new Point(4, 4);
             buttonEco.Margin = new Padding(4);
             buttonEco.Name = "buttonEco";
+            buttonEco.Secondary = false;
             buttonEco.Size = new Size(185, 120);
             buttonEco.TabIndex = 0;
             buttonEco.Text = "Eco";
@@ -619,6 +623,7 @@ namespace GHelper
             buttonStandard.Location = new Point(197, 4);
             buttonStandard.Margin = new Padding(4);
             buttonStandard.Name = "buttonStandard";
+            buttonStandard.Secondary = false;
             buttonStandard.Size = new Size(185, 120);
             buttonStandard.TabIndex = 1;
             buttonStandard.Text = "Standard";
@@ -639,6 +644,7 @@ namespace GHelper
             buttonOptimized.Location = new Point(583, 4);
             buttonOptimized.Margin = new Padding(4);
             buttonOptimized.Name = "buttonOptimized";
+            buttonOptimized.Secondary = false;
             buttonOptimized.Size = new Size(185, 120);
             buttonOptimized.TabIndex = 3;
             buttonOptimized.Text = "Optimized";
@@ -659,6 +665,7 @@ namespace GHelper
             buttonUltimate.Location = new Point(390, 4);
             buttonUltimate.Margin = new Padding(4);
             buttonUltimate.Name = "buttonUltimate";
+            buttonUltimate.Secondary = false;
             buttonUltimate.Size = new Size(185, 120);
             buttonUltimate.TabIndex = 2;
             buttonUltimate.Text = "Ultimate";
@@ -723,6 +730,7 @@ namespace GHelper
             buttonScreenAuto.Location = new Point(4, 4);
             buttonScreenAuto.Margin = new Padding(4);
             buttonScreenAuto.Name = "buttonScreenAuto";
+            buttonScreenAuto.Secondary = false;
             buttonScreenAuto.Size = new Size(185, 72);
             buttonScreenAuto.TabIndex = 0;
             buttonScreenAuto.Text = "Auto";
@@ -741,6 +749,7 @@ namespace GHelper
             button60Hz.Location = new Point(197, 4);
             button60Hz.Margin = new Padding(4);
             button60Hz.Name = "button60Hz";
+            button60Hz.Secondary = false;
             button60Hz.Size = new Size(185, 72);
             button60Hz.TabIndex = 1;
             button60Hz.Text = "60Hz";
@@ -758,6 +767,7 @@ namespace GHelper
             button120Hz.Location = new Point(390, 4);
             button120Hz.Margin = new Padding(4);
             button120Hz.Name = "button120Hz";
+            button120Hz.Secondary = false;
             button120Hz.Size = new Size(185, 72);
             button120Hz.TabIndex = 2;
             button120Hz.Text = "120Hz + OD";
@@ -832,12 +842,11 @@ namespace GHelper
             buttonKeyboard.Location = new Point(390, 8);
             buttonKeyboard.Margin = new Padding(4, 8, 4, 8);
             buttonKeyboard.Name = "buttonKeyboard";
+            buttonKeyboard.Secondary = true;
             buttonKeyboard.Size = new Size(185, 44);
             buttonKeyboard.TabIndex = 37;
             buttonKeyboard.Text = "Extra";
             buttonKeyboard.UseVisualStyleBackColor = false;
-            buttonKeyboard.Secondary = true;
-
             // 
             // comboKeyboard
             // 
@@ -900,6 +909,7 @@ namespace GHelper
             buttonKeyboardColor.Location = new Point(0, 0);
             buttonKeyboardColor.Margin = new Padding(4, 8, 4, 8);
             buttonKeyboardColor.Name = "buttonKeyboardColor";
+            buttonKeyboardColor.Secondary = false;
             buttonKeyboardColor.Size = new Size(185, 44);
             buttonKeyboardColor.TabIndex = 39;
             buttonKeyboardColor.Text = "Color   ";
@@ -940,6 +950,7 @@ namespace GHelper
             buttonMiniled.Location = new Point(197, 4);
             buttonMiniled.Margin = new Padding(4);
             buttonMiniled.Name = "buttonMiniled";
+            buttonMiniled.Secondary = false;
             buttonMiniled.Size = new Size(185, 72);
             buttonMiniled.TabIndex = 3;
             buttonMiniled.Text = "Miniled";
