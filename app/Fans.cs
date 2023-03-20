@@ -35,9 +35,6 @@ namespace GHelper
 
             chart.Titles[0].Text = title;
 
-            chart.ChartAreas[0].AxisX.MajorGrid.LineColor = Color.LightGray;
-            chart.ChartAreas[0].AxisY.MajorGrid.LineColor = Color.LightGray;
-
             chart.ChartAreas[0].AxisX.Minimum = 10;
             chart.ChartAreas[0].AxisX.Maximum = 100;
             chart.ChartAreas[0].AxisX.Interval = 10;

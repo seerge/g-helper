@@ -10,7 +10,9 @@ public static class ControlHelper
 
     static Color formBack;
     static Color backMain;
+    static Color backSecond;
     static Color foreMain;
+    static Color foreAccent;
     static Color borderMain;
     static Color buttonMain;
 
@@ -22,7 +24,10 @@ public static class ControlHelper
         {
             formBack = Color.FromArgb(255, 35, 35, 35);
             backMain = Color.FromArgb(255, 50, 50, 50);
+            backSecond = Color.FromArgb(255, 125, 125, 125);
+
             foreMain = Color.White;
+            foreAccent = Color.FromArgb(255,100, 100, 100);
             borderMain = Color.FromArgb(255, 50, 50, 50);
             buttonMain = Color.FromArgb(255, 100, 100, 100);
         }
@@ -30,7 +35,10 @@ public static class ControlHelper
         {
             formBack = SystemColors.Control;
             backMain = SystemColors.ControlLightLight;
+            backSecond = SystemColors.ButtonFace;
+
             foreMain = SystemColors.ControlText;
+            foreAccent = Color.LightGray;
             borderMain = Color.LightGray;
             buttonMain = SystemColors.ControlLight;
         }
@@ -48,7 +56,7 @@ public static class ControlHelper
     {
         foreach (Control control in controls)
         {
-            var button = control as Button;
+            var button = control as RButton;
             if (button != null)
             {
                 button.BackColor = backMain;
@@ -89,8 +97,8 @@ public static class ControlHelper
             {
                 chart.BackColor = backMain;
                 chart.ChartAreas[0].BackColor = backMain;
-                chart.ChartAreas[0].AxisX.MajorGrid.LineColor = foreMain;
-                chart.ChartAreas[0].AxisY.MajorGrid.LineColor = foreMain;
+                chart.ChartAreas[0].AxisX.MajorGrid.LineColor = foreAccent;
+                chart.ChartAreas[0].AxisY.MajorGrid.LineColor = foreAccent;
 
                 chart.ChartAreas[0].AxisX.TitleForeColor = foreMain;
                 chart.ChartAreas[0].AxisY.TitleForeColor = foreMain;
@@ -101,8 +109,8 @@ public static class ControlHelper
                 chart.ChartAreas[0].AxisX.MajorTickMark.LineColor = foreMain;
                 chart.ChartAreas[0].AxisY.MajorTickMark.LineColor = foreMain;
 
-                chart.ChartAreas[0].AxisX.LineColor = foreMain;
-                chart.ChartAreas[0].AxisY.LineColor = foreMain;
+                chart.ChartAreas[0].AxisX.LineColor = foreAccent;
+                chart.ChartAreas[0].AxisY.LineColor = foreAccent;
 
                 chart.Titles[0].ForeColor = foreMain;
 

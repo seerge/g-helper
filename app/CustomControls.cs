@@ -221,9 +221,12 @@ namespace CustomControls
     {
         //Fields
         private int borderSize = 5;
-        private int borderRadius = 3;
+        private int borderRadius = 5;
+        
         private bool activated = false;
+
         private Color borderColor = Color.Transparent;
+
 
         public Color BorderColor
         {
