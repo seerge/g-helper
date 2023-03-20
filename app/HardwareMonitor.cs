@@ -58,28 +58,36 @@ public static class HardwareMonitor
     }
 
     public static void RecreateGpuTemperatureProvider() {
-        try {
+        try
+        {
             GpuTemperatureProvider?.Dispose();
 
             // Detect valid GPU temperature provider.
             // We start with NVIDIA because there's always at least an integrated AMD GPU
             IGpuTemperatureProvider gpuTemperatureProvider = new NvidiaGpuTemperatureProvider();
-            if (gpuTemperatureProvider.IsValid) {
+            if (gpuTemperatureProvider.IsValid)
+            {
                 GpuTemperatureProvider = gpuTemperatureProvider;
                 return;
             }
-        
+
             gpuTemperatureProvider.Dispose();
             gpuTemperatureProvider = new AmdGpuTemperatureProvider();
-            if (gpuTemperatureProvider.IsValid) {
+            if (gpuTemperatureProvider.IsValid)
+            {
                 GpuTemperatureProvider = gpuTemperatureProvider;
                 return;
             }
-        
+
             gpuTemperatureProvider.Dispose();
-        
+
             GpuTemperatureProvider = null;
-        } finally {
+        }
+        catch (Exception ex)
+        { 
+        } 
+        finally
+        {
             Logger.WriteLine($"GpuTemperatureProvider: {GpuTemperatureProvider?.GetType().Name}");
         }
     }

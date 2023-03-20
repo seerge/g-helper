@@ -1205,10 +1205,10 @@ namespace GHelper
 
         }
 
-        public void ButtonEnabled(Button but, bool enabled)
+        public void ButtonEnabled(RButton but, bool enabled)
         {
             but.Enabled = enabled;
-            but.BackColor = enabled ? Color.FromArgb(255, but.BackColor) : Color.FromArgb(100, but.BackColor);
+            but.BackColor = but.Enabled ? Color.FromArgb(255, but.BackColor) : Color.FromArgb(100, but.BackColor);
         }
 
         public void SetStartupCheck(bool status)

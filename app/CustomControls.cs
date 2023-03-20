@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using GHelper;
+using System.ComponentModel;
 using System.Drawing.Drawing2D;
 using System.Runtime.InteropServices;
 
@@ -263,6 +264,7 @@ namespace CustomControls
 
         protected override void OnPaint(PaintEventArgs pevent)
         {
+
             base.OnPaint(pevent);
 
             float ratio = pevent.Graphics.DpiX / 192.0f;
@@ -284,6 +286,19 @@ namespace CustomControls
                 pevent.Graphics.DrawPath(penSurface, pathSurface);
                 pevent.Graphics.DrawPath(penBorder, pathBorder);
             }
+
+            if (!Enabled && ForeColor != SystemColors.ControlText)
+            {
+                var rect = pevent.ClipRectangle;
+                if (Image is not null) {
+                    rect.Y += Image.Height;
+                    rect.Height -= Image.Height;
+                }
+                TextFormatFlags flags = TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter | TextFormatFlags.WordBreak;
+                TextRenderer.DrawText(pevent.Graphics, this.Text, this.Font, rect, Color.Gray, flags);
+            }
+
+
         }
 
     }
