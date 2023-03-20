@@ -1,4 +1,7 @@
-﻿namespace GHelper
+﻿using CustomControls;
+using System.Windows.Forms.DataVisualization.Charting;
+
+namespace GHelper
 {
     partial class Fans
     {
@@ -28,25 +31,27 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            ChartArea chartArea3 = new ChartArea();
+            Title title3 = new Title();
+            ChartArea chartArea4 = new ChartArea();
+            Title title4 = new Title();
             panelFans = new Panel();
             labelTip = new Label();
             labelBoost = new Label();
-            comboBoost = new ComboBox();
+            comboBoost = new RComboBox();
             picturePerf = new PictureBox();
             tableFanCharts = new TableLayoutPanel();
-            chartGPU = new System.Windows.Forms.DataVisualization.Charting.Chart();
-            chartCPU = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            chartGPU = new Chart();
+            chartCPU = new Chart();
             labelFans = new Label();
             checkAuto = new CheckBox();
-            buttonReset = new Button();
-            buttonApply = new Button();
+            buttonReset = new RButton();
+            buttonApply = new RButton();
             panelPower = new Panel();
             pictureBox1 = new PictureBox();
             labelPowerLimits = new Label();
             checkApplyPower = new CheckBox();
-            buttonApplyPower = new Button();
+            buttonApplyPower = new RButton();
             panelCPU = new Panel();
             labelCPU = new Label();
             label2 = new Label();
@@ -114,6 +119,7 @@
             // comboBoost
             // 
             comboBoost.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            comboBoost.BorderColor = Color.White;
             comboBoost.DropDownStyle = ComboBoxStyle.DropDownList;
             comboBoost.FormattingEnabled = true;
             comboBoost.Items.AddRange(new object[] { "Disabled", "Enabled", "Aggressive", "Efficient Enabled", "Efficient Aggressive" });
@@ -154,8 +160,8 @@
             // 
             // chartGPU
             // 
-            chartArea1.Name = "ChartArea1";
-            chartGPU.ChartAreas.Add(chartArea1);
+            chartArea3.Name = "ChartArea1";
+            chartGPU.ChartAreas.Add(chartArea3);
             chartGPU.Dock = DockStyle.Fill;
             chartGPU.Location = new Point(2, 506);
             chartGPU.Margin = new Padding(2, 10, 2, 10);
@@ -163,11 +169,13 @@
             chartGPU.Size = new Size(760, 476);
             chartGPU.TabIndex = 17;
             chartGPU.Text = "chart1";
+            title3.Name = "Title1";
+            chartGPU.Titles.Add(title3);
             // 
             // chartCPU
             // 
-            chartArea2.Name = "ChartArea1";
-            chartCPU.ChartAreas.Add(chartArea2);
+            chartArea4.Name = "ChartArea1";
+            chartCPU.ChartAreas.Add(chartArea4);
             chartCPU.Dock = DockStyle.Fill;
             chartCPU.Location = new Point(2, 10);
             chartCPU.Margin = new Padding(2, 10, 2, 10);
@@ -175,6 +183,8 @@
             chartCPU.Size = new Size(760, 476);
             chartCPU.TabIndex = 14;
             chartCPU.Text = "chartCPU";
+            title4.Name = "Title1";
+            chartCPU.Titles.Add(title4);
             // 
             // labelFans
             // 
@@ -201,25 +211,33 @@
             // 
             // buttonReset
             // 
+            buttonReset.Activated = false;
             buttonReset.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            buttonReset.BackColor = SystemColors.ControlLight;
+            buttonReset.BorderColor = Color.Transparent;
+            buttonReset.FlatStyle = FlatStyle.Flat;
             buttonReset.Location = new Point(30, 1081);
             buttonReset.Margin = new Padding(4, 2, 4, 2);
             buttonReset.Name = "buttonReset";
             buttonReset.Size = new Size(232, 44);
             buttonReset.TabIndex = 15;
             buttonReset.Text = "Factory Defaults";
-            buttonReset.UseVisualStyleBackColor = true;
+            buttonReset.UseVisualStyleBackColor = false;
             // 
             // buttonApply
             // 
+            buttonApply.Activated = false;
             buttonApply.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            buttonApply.BackColor = SystemColors.ControlLight;
+            buttonApply.BorderColor = Color.Transparent;
+            buttonApply.FlatStyle = FlatStyle.Flat;
             buttonApply.Location = new Point(542, 1081);
             buttonApply.Margin = new Padding(4, 2, 4, 2);
             buttonApply.Name = "buttonApply";
             buttonApply.Size = new Size(248, 44);
             buttonApply.TabIndex = 14;
             buttonApply.Text = "Apply Fan Curve";
-            buttonApply.UseVisualStyleBackColor = true;
+            buttonApply.UseVisualStyleBackColor = false;
             // 
             // panelPower
             // 
@@ -277,14 +295,18 @@
             // 
             // buttonApplyPower
             // 
+            buttonApplyPower.Activated = false;
             buttonApplyPower.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            buttonApplyPower.BackColor = SystemColors.ControlLight;
+            buttonApplyPower.BorderColor = Color.Transparent;
+            buttonApplyPower.FlatStyle = FlatStyle.Flat;
             buttonApplyPower.Location = new Point(20, 1081);
             buttonApplyPower.Margin = new Padding(4, 2, 4, 2);
             buttonApplyPower.Name = "buttonApplyPower";
             buttonApplyPower.Size = new Size(324, 44);
             buttonApplyPower.TabIndex = 24;
             buttonApplyPower.Text = "Apply Power Limits";
-            buttonApplyPower.UseVisualStyleBackColor = true;
+            buttonApplyPower.UseVisualStyleBackColor = false;
             // 
             // panelCPU
             // 
@@ -456,11 +478,11 @@
         #endregion
         private Panel panelFans;
         private CheckBox checkAuto;
-        private Button buttonReset;
-        private Button buttonApply;
+        private RButton buttonReset;
+        private RButton buttonApply;
         private Panel panelPower;
         private CheckBox checkApplyPower;
-        private Button buttonApplyPower;
+        private RButton buttonApplyPower;
         private Panel panelCPU;
         private Label labelCPU;
         private Label label2;
@@ -479,7 +501,7 @@
         private Label labelFans;
         private PictureBox picturePerf;
         private PictureBox pictureBox1;
-        private ComboBox comboBoost;
+        private RComboBox comboBoost;
         private Label labelBoost;
         private Label labelTip;
     }

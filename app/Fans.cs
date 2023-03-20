@@ -1,9 +1,10 @@
 ﻿using System.Diagnostics;
 using System.Windows.Forms.DataVisualization.Charting;
+using CustomControls;
 
 namespace GHelper
 {
-    public partial class Fans : Form
+    public partial class Fans : RForm
     {
 
         DataPoint curPoint = null;
@@ -18,7 +19,7 @@ namespace GHelper
 
             if (percentage == 0) return "OFF";
 
-            return (200*Math.Round((float)(MinRPM + (MaxRPM-MinRPM)*percentage*0.01)/200)).ToString() + unit;
+            return (200 * Math.Round((float)(MinRPM + (MaxRPM - MinRPM) * percentage * 0.01) / 200)).ToString() + unit;
         }
 
         void SetChart(Chart chart, int device)
@@ -34,10 +35,7 @@ namespace GHelper
             if (Program.settingsForm.perfName.Length > 0)
                 labelFans.Text = "Fan Profiles: " + Program.settingsForm.perfName;
 
-            if (chart.Titles.Count > 0)
-                chart.Titles[0].Text = title;
-            else
-                chart.Titles.Add(title);
+            chart.Titles[0].Text = title;
 
             chart.ChartAreas[0].AxisX.MajorGrid.LineColor = Color.LightGray;
             chart.ChartAreas[0].AxisY.MajorGrid.LineColor = Color.LightGray;
@@ -85,6 +83,8 @@ namespace GHelper
 
             InitializeComponent();
 
+            ControlHelper.Adjust(this, 2, darkTheme);
+
             labelTip.Visible = false;
             labelTip.BackColor = Color.Transparent;
 
@@ -93,8 +93,8 @@ namespace GHelper
             seriesCPU = chartCPU.Series.Add("CPU");
             seriesGPU = chartGPU.Series.Add("GPU");
 
-            seriesCPU.Color = Color.Blue;
-            seriesGPU.Color = Color.Red;
+            seriesCPU.Color = colorStandard;
+            seriesGPU.Color = colorTurbo;
 
             chartCPU.MouseMove += ChartCPU_MouseMove;
             chartCPU.MouseUp += ChartCPU_MouseUp;
@@ -245,12 +245,12 @@ namespace GHelper
         {
             if (applied)
             {
-                labelApplied.ForeColor = Color.Blue;
+                labelApplied.ForeColor = colorStandard;
                 labelApplied.Text = "Applied";
             }
             else
             {
-                labelApplied.ForeColor = Color.Red;
+                labelApplied.ForeColor = colorTurbo;
                 labelApplied.Text = "Not Applied";
 
             }

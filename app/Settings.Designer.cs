@@ -34,9 +34,9 @@ namespace GHelper
             panelMatrix = new Panel();
             checkMatrix = new CheckBox();
             tableLayoutMatrix = new TableLayoutPanel();
-            comboMatrix = new ComboBox();
-            buttonMatrix = new Button();
-            comboMatrixRunning = new ComboBox();
+            comboMatrix = new RComboBox();
+            buttonMatrix = new RButton();
+            comboMatrixRunning = new RComboBox();
             pictureMatrix = new PictureBox();
             labelMatrix = new Label();
             panelBattery = new Panel();
@@ -46,46 +46,46 @@ namespace GHelper
             labelBatteryTitle = new Label();
             trackBattery = new TrackBar();
             panelFooter = new Panel();
-            buttonQuit = new Button();
+            buttonQuit = new RButton();
             checkStartup = new CheckBox();
             panelPerformance = new Panel();
             picturePerf = new PictureBox();
             labelPerf = new Label();
             labelCPUFan = new Label();
             tablePerf = new TableLayoutPanel();
-            buttonSilent = new RoundedButton();
-            buttonBalanced = new RoundedButton();
-            buttonTurbo = new RoundedButton();
-            buttonFans = new Button();
+            buttonSilent = new RButton();
+            buttonBalanced = new RButton();
+            buttonTurbo = new RButton();
+            buttonFans = new RButton();
             panelGPU = new Panel();
             labelTipGPU = new Label();
             pictureGPU = new PictureBox();
             labelGPU = new Label();
             labelGPUFan = new Label();
             tableGPU = new TableLayoutPanel();
-            buttonEco = new RoundedButton();
-            buttonStandard = new RoundedButton();
-            buttonOptimized = new RoundedButton();
-            buttonUltimate = new RoundedButton();
+            buttonEco = new RButton();
+            buttonStandard = new RButton();
+            buttonOptimized = new RButton();
+            buttonUltimate = new RButton();
             panelScreen = new Panel();
             labelTipScreen = new Label();
             tableScreen = new TableLayoutPanel();
-            buttonScreenAuto = new RoundedButton();
-            button60Hz = new RoundedButton();
-            button120Hz = new RoundedButton();
+            buttonScreenAuto = new RButton();
+            button60Hz = new RButton();
+            button120Hz = new RButton();
             pictureScreen = new PictureBox();
             labelSreen = new Label();
             panelKeyboard = new Panel();
             tableLayoutKeyboard = new TableLayoutPanel();
-            buttonKeyboard = new Button();
-            comboKeyboard = new ComboBox();
+            buttonKeyboard = new RButton();
+            comboKeyboard = new RComboBox();
             panelColor = new Panel();
             pictureColor2 = new PictureBox();
             pictureColor = new PictureBox();
-            buttonKeyboardColor = new Button();
+            buttonKeyboardColor = new RButton();
             pictureKeyboard = new PictureBox();
             labelKeyboard = new Label();
-            buttonMiniled = new RoundedButton();
+            buttonMiniled = new RButton();
             panelMatrix.SuspendLayout();
             tableLayoutMatrix.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureMatrix).BeginInit();
@@ -161,6 +161,8 @@ namespace GHelper
             // 
             // comboMatrix
             // 
+            comboMatrix.BorderColor = Color.White;
+            comboMatrix.ButtonColor = SystemColors.ControlLight;
             comboMatrix.Dock = DockStyle.Top;
             comboMatrix.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
             comboMatrix.FormattingEnabled = true;
@@ -175,9 +177,12 @@ namespace GHelper
             // 
             // buttonMatrix
             // 
-            buttonMatrix.BackColor = SystemColors.ButtonFace;
+            buttonMatrix.Activated = false;
+            buttonMatrix.BackColor = SystemColors.ControlLight;
+            buttonMatrix.BorderColor = Color.Transparent;
             buttonMatrix.Dock = DockStyle.Top;
             buttonMatrix.FlatAppearance.BorderSize = 0;
+            buttonMatrix.FlatStyle = FlatStyle.Flat;
             buttonMatrix.Location = new Point(390, 8);
             buttonMatrix.Margin = new Padding(4, 8, 4, 8);
             buttonMatrix.Name = "buttonMatrix";
@@ -188,6 +193,8 @@ namespace GHelper
             // 
             // comboMatrixRunning
             // 
+            comboMatrixRunning.BorderColor = Color.White;
+            comboMatrixRunning.ButtonColor = SystemColors.ControlLight;
             comboMatrixRunning.Dock = DockStyle.Top;
             comboMatrixRunning.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
             comboMatrixRunning.FormattingEnabled = true;
@@ -315,8 +322,11 @@ namespace GHelper
             // 
             // buttonQuit
             // 
+            buttonQuit.Activated = false;
             buttonQuit.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            buttonQuit.BackColor = SystemColors.ButtonFace;
+            buttonQuit.BackColor = SystemColors.ControlLight;
+            buttonQuit.BorderColor = Color.Transparent;
+            buttonQuit.FlatStyle = FlatStyle.Flat;
             buttonQuit.Location = new Point(578, 16);
             buttonQuit.Margin = new Padding(8, 4, 8, 4);
             buttonQuit.Name = "buttonQuit";
@@ -472,9 +482,12 @@ namespace GHelper
             // 
             // buttonFans
             // 
-            buttonFans.BackColor = SystemColors.ButtonFace;
+            buttonFans.Activated = false;
+            buttonFans.BackColor = SystemColors.ControlLight;
+            buttonFans.BorderColor = Color.Transparent;
             buttonFans.Dock = DockStyle.Fill;
             buttonFans.FlatAppearance.BorderSize = 0;
+            buttonFans.FlatStyle = FlatStyle.Flat;
             buttonFans.Image = Properties.Resources.icons8_fan_48;
             buttonFans.ImageAlign = ContentAlignment.BottomCenter;
             buttonFans.Location = new Point(583, 4);
@@ -687,7 +700,6 @@ namespace GHelper
             tableScreen.Controls.Add(buttonScreenAuto, 0, 0);
             tableScreen.Controls.Add(button60Hz, 1, 0);
             tableScreen.Controls.Add(button120Hz, 2, 0);
-            
             tableScreen.Location = new Point(16, 51);
             tableScreen.Margin = new Padding(8, 4, 8, 4);
             tableScreen.Name = "tableScreen";
@@ -723,7 +735,7 @@ namespace GHelper
             button60Hz.FlatAppearance.BorderSize = 0;
             button60Hz.FlatStyle = FlatStyle.Flat;
             button60Hz.ForeColor = SystemColors.ControlText;
-            button60Hz.Location = new Point(390, 4);
+            button60Hz.Location = new Point(197, 4);
             button60Hz.Margin = new Padding(4);
             button60Hz.Name = "button60Hz";
             button60Hz.Size = new Size(185, 72);
@@ -740,7 +752,7 @@ namespace GHelper
             button120Hz.FlatAppearance.BorderSize = 0;
             button120Hz.FlatStyle = FlatStyle.Flat;
             button120Hz.ForeColor = SystemColors.ControlText;
-            button120Hz.Location = new Point(583, 4);
+            button120Hz.Location = new Point(390, 4);
             button120Hz.Margin = new Padding(4);
             button120Hz.Name = "button120Hz";
             button120Hz.Size = new Size(185, 72);
@@ -808,9 +820,12 @@ namespace GHelper
             // 
             // buttonKeyboard
             // 
-            buttonKeyboard.BackColor = SystemColors.ButtonFace;
+            buttonKeyboard.Activated = false;
+            buttonKeyboard.BackColor = SystemColors.ControlLight;
+            buttonKeyboard.BorderColor = Color.Transparent;
             buttonKeyboard.Dock = DockStyle.Top;
             buttonKeyboard.FlatAppearance.BorderSize = 0;
+            buttonKeyboard.FlatStyle = FlatStyle.Flat;
             buttonKeyboard.Location = new Point(390, 8);
             buttonKeyboard.Margin = new Padding(4, 8, 4, 8);
             buttonKeyboard.Name = "buttonKeyboard";
@@ -821,7 +836,10 @@ namespace GHelper
             // 
             // comboKeyboard
             // 
+            comboKeyboard.BorderColor = Color.White;
+            comboKeyboard.ButtonColor = SystemColors.ControlLight;
             comboKeyboard.Dock = DockStyle.Top;
+            comboKeyboard.FlatStyle = FlatStyle.Flat;
             comboKeyboard.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
             comboKeyboard.FormattingEnabled = true;
             comboKeyboard.ItemHeight = 32;
@@ -868,10 +886,11 @@ namespace GHelper
             // 
             // buttonKeyboardColor
             // 
+            buttonKeyboardColor.Activated = false;
             buttonKeyboardColor.BackColor = SystemColors.ButtonHighlight;
+            buttonKeyboardColor.BorderColor = Color.Transparent;
             buttonKeyboardColor.Dock = DockStyle.Top;
-            buttonKeyboardColor.FlatAppearance.BorderColor = Color.Red;
-            buttonKeyboardColor.FlatAppearance.BorderSize = 2;
+            buttonKeyboardColor.FlatStyle = FlatStyle.Flat;
             buttonKeyboardColor.ForeColor = SystemColors.ControlText;
             buttonKeyboardColor.Location = new Point(0, 0);
             buttonKeyboardColor.Margin = new Padding(4, 8, 4, 8);
@@ -991,50 +1010,50 @@ namespace GHelper
         private Label labelBatteryTitle;
         private TrackBar trackBattery;
         private Panel panelFooter;
-        private Button buttonQuit;
+        private RButton buttonQuit;
         private CheckBox checkStartup;
         private Panel panelPerformance;
         private PictureBox picturePerf;
         private Label labelPerf;
         private Label labelCPUFan;
         private TableLayoutPanel tablePerf;
-        private RoundedButton buttonTurbo;
-        private RoundedButton buttonBalanced;
-        private RoundedButton buttonSilent;
+        private RButton buttonTurbo;
+        private RButton buttonBalanced;
+        private RButton buttonSilent;
         private Panel panelGPU;
         private PictureBox pictureGPU;
         private Label labelGPU;
         private Label labelGPUFan;
         private TableLayoutPanel tableGPU;
-        private RoundedButton buttonUltimate;
-        private RoundedButton buttonStandard;
-        private RoundedButton buttonEco;
+        private RButton buttonUltimate;
+        private RButton buttonStandard;
+        private RButton buttonEco;
         private Panel panelScreen;
         private TableLayoutPanel tableScreen;
-        private RoundedButton buttonScreenAuto;
-        private RoundedButton button60Hz;
+        private RButton buttonScreenAuto;
+        private RButton button60Hz;
         private PictureBox pictureScreen;
         private Label labelSreen;
         private Panel panelKeyboard;
         private PictureBox pictureKeyboard;
         private Label labelKeyboard;
         private TableLayoutPanel tableLayoutMatrix;
-        private Button buttonMatrix;
-        private ComboBox comboMatrixRunning;
-        private ComboBox comboMatrix;
+        private RComboBox comboMatrixRunning;
+        private RComboBox comboMatrix;
         private TableLayoutPanel tableLayoutKeyboard;
-        private Button buttonKeyboard;
-        private ComboBox comboKeyboard;
+        private RComboBox comboKeyboard;
         private Panel panelColor;
         private PictureBox pictureColor2;
         private PictureBox pictureColor;
-        private Button buttonKeyboardColor;
         private CheckBox checkMatrix;
-        private RoundedButton button120Hz;
-        private Button buttonFans;
-        private RoundedButton buttonOptimized;
+        private RButton button120Hz;
+        private RButton buttonOptimized;
         private Label labelTipGPU;
         private Label labelTipScreen;
-        private RoundedButton buttonMiniled;
+        private RButton buttonMiniled;
+        private RButton buttonMatrix;
+        private RButton buttonKeyboard;
+        private RButton buttonKeyboardColor;
+        private RButton buttonFans;
     }
 }
