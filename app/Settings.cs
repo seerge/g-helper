@@ -705,9 +705,11 @@ namespace GHelper
 
             if (miniled >= 0)
             {
-                tableScreen.Controls.Add(buttonMiniled, 3, 0);
                 buttonMiniled.Activated = (miniled == 1);
                 Program.config.setConfig("miniled", miniled);
+            } else
+            {
+                buttonMiniled.Visible = false;
             }
 
             Program.config.setConfig("frequency", frequency);

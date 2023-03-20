@@ -710,6 +710,8 @@ namespace GHelper
             tableScreen.Controls.Add(buttonScreenAuto, 0, 0);
             tableScreen.Controls.Add(button60Hz, 1, 0);
             tableScreen.Controls.Add(button120Hz, 2, 0);
+            tableScreen.Controls.Add(buttonMiniled, 3, 0);
+
             tableScreen.Location = new Point(16, 51);
             tableScreen.Margin = new Padding(8, 4, 8, 4);
             tableScreen.Name = "tableScreen";

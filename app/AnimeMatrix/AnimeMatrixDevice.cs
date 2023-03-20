@@ -4,6 +4,9 @@ using Starlight.Communication;
 using System.Diagnostics;
 using System.Text;
 using System.Management;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
+using System.Drawing.Imaging;
+using System.Windows.Forms;
 
 namespace Starlight.AnimeMatrix
 {
@@ -164,11 +167,8 @@ namespace Starlight.AnimeMatrix
 
             var ret = 0;
 
-            if (row > 0)
-            {
-                for (var i = 0; i < row; i++)
-                    ret += Columns(i);
-            }
+            for (var i = 0; i < row; i++)
+                ret += Columns(i);
 
             return ret;
         }
@@ -203,7 +203,7 @@ namespace Starlight.AnimeMatrix
             EnsureRowInRange(y);
             var start = RowToLinearAddress(y) - EmptyColumns(y);
 
-            if (x > EmptyColumns(y))
+            if (x >= EmptyColumns(y))
                 SetLedLinear(start + x, value);
         }
 
@@ -272,10 +272,15 @@ namespace Starlight.AnimeMatrix
             Set(Packet<AnimeMatrixPacket>(0xC5, animation.AsByte));
         }
 
+        static int GetColor(Bitmap bmp, int x, int y)
+        {
+            var pixel = bmp.GetPixel(Math.Max(0,Math.Min(bmp.Width - 1,x)), Math.Max(0, Math.Min(bmp.Height - 1, y)));
+            return (Math.Max((pixel.R + pixel.G + pixel.B) / 3 - 10, 0));
+        }
         public void GenerateFrame(Image image)
         {
 
-            int width = MaxColumns * 3;
+            int width = MaxColumns*3;
             int height = MaxRows;
             float scale;
 
@@ -291,17 +296,20 @@ namespace Starlight.AnimeMatrix
             graph.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
             graph.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
 
-            graph.DrawImage(image, ((int)width - scaleWidth), ((int)height - scaleHeight) / 2, scaleWidth, scaleHeight);
+            graph.DrawImage(image, ((int)width - scaleWidth), 0, scaleWidth, scaleHeight);
 
-            Bitmap bmp = new Bitmap(canvas, MaxColumns, MaxRows);
+            Bitmap bmp = new Bitmap(canvas, MaxColumns * 2, MaxRows);
 
             for (int y = 0; y < bmp.Height; y++)
             {
                 for (int x = 0; x < bmp.Width; x++)
                 {
-                    var pixel = bmp.GetPixel(x, y);
-                    byte color = (byte)(Math.Max((pixel.R + pixel.G + pixel.B) / 3 - 10, 0));
-                    SetLedPlanar(x, y, color);
+                    if (x % 2 == (y % 2))
+                    {
+                        var color = GetColor(bmp, x, y);
+                        //var color2= GetColor(bmp, x+1, y);
+                        SetLedPlanar(x/2,y, (byte)color);
+                    }
                 }
             }
 
