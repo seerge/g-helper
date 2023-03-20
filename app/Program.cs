@@ -92,6 +92,7 @@ namespace GHelper
             {
                 case UserPreferenceCategory.General:
                     Debug.WriteLine("Theme Changed");
+                    Thread.Sleep(100);
                     settingsForm.InitTheme(false);
 
                     if (settingsForm.fans is not null && settingsForm.fans.Text != "")

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using Microsoft.Win32;
+using System.ComponentModel;
 using System.Drawing.Drawing2D;
 using System.Runtime.InteropServices;
 
@@ -20,9 +21,18 @@ namespace CustomControls
 
         public bool darkTheme = false;
 
+        private static bool IsDarkTheme()
+        {
+            using var key = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Themes\Personalize");
+            var registryValueObject = key?.GetValue("AppsUseLightTheme");
+            
+            if (registryValueObject == null) return false;
+            return (int)registryValueObject <= 0;
+        }
+
         public void InitTheme(bool setDPI = true)
         {
-            bool newDarkTheme = CheckSystemDarkModeStatus();
+            bool newDarkTheme = IsDarkTheme();
             bool changed = (darkTheme != newDarkTheme);
             darkTheme = newDarkTheme;
 
