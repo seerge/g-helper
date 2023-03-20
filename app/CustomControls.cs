@@ -15,31 +15,23 @@ namespace CustomControls
         [DllImport("UXTheme.dll", SetLastError = true, EntryPoint = "#138")]
         public static extern bool CheckSystemDarkModeStatus();
 
-
         [DllImport("DwmApi")] //System.Runtime.InteropServices
         private static extern int DwmSetWindowAttribute(IntPtr hwnd, int attr, int[] attrValue, int attrSize);
 
-        protected bool _darkTheme;
+        public bool darkTheme;
         public bool invert = false;
-
-        public bool DarkTheme
-        {
-            get { return _darkTheme; }
-            set
-            {
-                if (_darkTheme != value)
-                {
-                    _darkTheme = value;
-                    invert = true;
-                }
-            }
-        }
 
         public void InitTheme()
         {
-            DarkTheme = CheckSystemDarkModeStatus();
-            ControlHelper.Adjust(this, 2);
-            DwmSetWindowAttribute(this.Handle, 20, new[] { DarkTheme ? 1 : 0 }, 4);
+            bool newDarkTheme = CheckSystemDarkModeStatus();
+            invert = (darkTheme != newDarkTheme);
+            darkTheme = newDarkTheme;
+
+            ControlHelper.Adjust(this, 2, invert);
+            try
+            {
+                DwmSetWindowAttribute(this.Handle, 20, new[] { darkTheme ? 1 : 0 }, 4);
+            } catch { }
         }
 
     }

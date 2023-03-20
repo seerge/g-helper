@@ -1,14 +1,11 @@
-﻿using System;
+﻿using CustomControls;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms.DataVisualization.Charting;
-using CustomControls;
 
 public static class ControlHelper
 {
 
     static bool _invert = false;
-    static bool _darkTheme = false;
-
     static float _scale = 1;
 
     static Color formBack;
@@ -17,19 +14,19 @@ public static class ControlHelper
     static Color borderMain;
     static Color buttonMain;
 
-    public static void Adjust(RForm container, float baseScale = 2)
+    public static void Adjust(RForm container, float baseScale = 2, bool invert = false)
     {
         _scale = GetDpiScale(container).Value / baseScale;
-        
 
-        if (container.DarkTheme)
+        if (container.darkTheme)
         {
             formBack = Color.FromArgb(255, 35, 35, 35);
             backMain = Color.FromArgb(255, 50, 50, 50);
             foreMain = Color.White;
             borderMain = Color.FromArgb(255, 50, 50, 50);
             buttonMain = Color.FromArgb(255, 100, 100, 100);
-        } else
+        }
+        else
         {
             formBack = SystemColors.Control;
             backMain = SystemColors.ControlLightLight;
@@ -41,7 +38,7 @@ public static class ControlHelper
         container.BackColor = formBack;
         container.ForeColor = foreMain;
 
-        _invert = container.invert;
+        _invert = invert;
         AdjustControls(container.Controls);
         _invert = false;
     }
@@ -63,7 +60,7 @@ public static class ControlHelper
                 if (button.Image is not null)
                     button.Image = AdjustImage(button.Image);
             }
-                
+
             var pictureBox = control as PictureBox;
             if (pictureBox != null)
             {
@@ -86,7 +83,7 @@ public static class ControlHelper
                 gb.ForeColor = foreMain;
             }
 
-            
+
             var chart = control as Chart;
             if (chart != null)
             {
@@ -94,7 +91,7 @@ public static class ControlHelper
                 chart.ChartAreas[0].BackColor = backMain;
                 chart.ChartAreas[0].AxisX.MajorGrid.LineColor = foreMain;
                 chart.ChartAreas[0].AxisY.MajorGrid.LineColor = foreMain;
-                
+
                 chart.ChartAreas[0].AxisX.TitleForeColor = foreMain;
                 chart.ChartAreas[0].AxisY.TitleForeColor = foreMain;
 

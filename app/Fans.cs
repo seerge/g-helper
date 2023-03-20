@@ -11,12 +11,10 @@ namespace GHelper
         Series seriesCPU;
         Series seriesGPU;
 
+        static int MinRPM, MaxRPM;
+
         static string ChartPercToRPM(int percentage, string unit = "")
         {
-            int MinRPM, MaxRPM;
-            MinRPM = 1800;
-            MaxRPM = Program.config.ContainsModel("401") ? 7200 : 5800;
-
             if (percentage == 0) return "OFF";
 
             return (200 * Math.Round((float)(MinRPM + (MaxRPM - MinRPM) * percentage * 0.01) / 200)).ToString() + unit;
@@ -83,6 +81,17 @@ namespace GHelper
 
             InitializeComponent();
             InitTheme();
+
+            MinRPM = 1800;
+
+            if (Program.config.ContainsModel("401"))
+                MaxRPM = 7200;
+            else if (Program.config.ContainsModel("503"))
+                MaxRPM = 6800;
+            else
+                MaxRPM = 5800;
+
+
 
             labelTip.Visible = false;
             labelTip.BackColor = Color.Transparent;
