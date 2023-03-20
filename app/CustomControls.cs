@@ -60,8 +60,8 @@ namespace CustomControls
             }
         }
 
-        private Color arrowColor = Color.Gray;
-        [DefaultValue(typeof(Color), "Gray")]
+        private Color arrowColor = Color.Black;
+        [DefaultValue(typeof(Color), "Black")]
         public Color ArrowColor
         {
             get { return arrowColor; }

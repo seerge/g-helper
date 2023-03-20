@@ -890,8 +890,6 @@ namespace GHelper
             buttonKeyboardColor.BackColor = SystemColors.ButtonHighlight;
             buttonKeyboardColor.BorderColor = Color.Transparent;
             buttonKeyboardColor.Dock = DockStyle.Top;
-            buttonKeyboardColor.FlatAppearance.BorderColor = Color.Red;
-            buttonKeyboardColor.FlatAppearance.BorderSize = 2;
             buttonKeyboardColor.FlatStyle = FlatStyle.Flat;
             buttonKeyboardColor.ForeColor = SystemColors.ControlText;
             buttonKeyboardColor.Location = new Point(0, 0);

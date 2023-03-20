@@ -19,7 +19,7 @@ namespace GHelper
 
             if (percentage == 0) return "OFF";
 
-            return (200*Math.Round((float)(MinRPM + (MaxRPM-MinRPM)*percentage*0.01)/200)).ToString() + unit;
+            return (200 * Math.Round((float)(MinRPM + (MaxRPM - MinRPM) * percentage * 0.01) / 200)).ToString() + unit;
         }
 
         void SetChart(Chart chart, int device)
