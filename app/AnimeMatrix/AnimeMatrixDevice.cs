@@ -89,13 +89,13 @@ namespace Starlight.AnimeMatrix
             string model = GetModel();
             Debug.WriteLine(model);
 
-            if (true || model is not null && model.Contains("401"))
+            if (model is not null && model.Contains("401"))
             {
                 EmptyFirstRow = 1;
                 FullRows = 6;
                 MaxColumns = 33;
                 MaxRows = 55;
-                LedCount = 1214;
+                LedCount = 1213;
                 UpdatePageLength = 410;
             }
 
