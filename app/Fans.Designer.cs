@@ -1,4 +1,7 @@
-﻿namespace GHelper
+﻿using CustomControls;
+using System.Windows.Forms.DataVisualization.Charting;
+
+namespace GHelper
 {
     partial class Fans
     {
@@ -33,20 +36,20 @@
             panelFans = new Panel();
             labelTip = new Label();
             labelBoost = new Label();
-            comboBoost = new ComboBox();
+            comboBoost = new RComboBox();
             picturePerf = new PictureBox();
             tableFanCharts = new TableLayoutPanel();
             chartGPU = new System.Windows.Forms.DataVisualization.Charting.Chart();
             chartCPU = new System.Windows.Forms.DataVisualization.Charting.Chart();
             labelFans = new Label();
             checkAuto = new CheckBox();
-            buttonReset = new Button();
-            buttonApply = new Button();
+            buttonReset = new RButton();
+            buttonApply = new RButton();
             panelPower = new Panel();
             pictureBox1 = new PictureBox();
             labelPowerLimits = new Label();
             checkApplyPower = new CheckBox();
-            buttonApplyPower = new Button();
+            buttonApplyPower = new RButton();
             panelCPU = new Panel();
             labelCPU = new Label();
             label2 = new Label();
@@ -121,6 +124,7 @@
             comboBoost.Name = "comboBoost";
             comboBoost.Size = new Size(266, 40);
             comboBoost.TabIndex = 38;
+            comboBoost.BorderColor = Color.White;
             // 
             // picturePerf
             // 
@@ -163,6 +167,7 @@
             chartGPU.Size = new Size(760, 476);
             chartGPU.TabIndex = 17;
             chartGPU.Text = "chart1";
+            chartGPU.Titles.Add("");
             // 
             // chartCPU
             // 
@@ -175,6 +180,7 @@
             chartCPU.Size = new Size(760, 476);
             chartCPU.TabIndex = 14;
             chartCPU.Text = "chartCPU";
+            chartCPU.Titles.Add("");
             // 
             // labelFans
             // 
@@ -456,11 +462,11 @@
         #endregion
         private Panel panelFans;
         private CheckBox checkAuto;
-        private Button buttonReset;
-        private Button buttonApply;
+        private RButton buttonReset;
+        private RButton buttonApply;
         private Panel panelPower;
         private CheckBox checkApplyPower;
-        private Button buttonApplyPower;
+        private RButton buttonApplyPower;
         private Panel panelCPU;
         private Label labelCPU;
         private Label label2;
@@ -479,7 +485,7 @@
         private Label labelFans;
         private PictureBox picturePerf;
         private PictureBox pictureBox1;
-        private ComboBox comboBoost;
+        private RComboBox comboBoost;
         private Label labelBoost;
         private Label labelTip;
     }

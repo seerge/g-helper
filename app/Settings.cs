@@ -1,4 +1,5 @@
-﻿using Starlight.AnimeMatrix;
+﻿using CustomControls;
+using Starlight.AnimeMatrix;
 using System.Diagnostics;
 using System.Drawing.Imaging;
 using System.Timers;
@@ -6,12 +7,8 @@ using System.Timers;
 namespace GHelper
 {
 
-    public partial class SettingsForm : Form
+    public partial class SettingsForm : RForm
     {
-
-        static Color colorEco = Color.FromArgb(255, 6, 180, 138);
-        static Color colorStandard = Color.FromArgb(255, 58, 174, 239);
-        static Color colorTurbo = Color.FromArgb(255, 255, 32, 32);
 
         static System.Timers.Timer aTimer = default!;
         static System.Timers.Timer matrixTimer = default!;
@@ -29,7 +26,7 @@ namespace GHelper
         {
             InitializeComponent();
 
-            HighDpiHelper.AdjustControlImagesDpiScale(this, 2);
+            ControlHelper.Adjust(this, 2, darkTheme);
 
             FormClosing += SettingsForm_FormClosing;
 
@@ -95,6 +92,7 @@ namespace GHelper
             checkStartup.CheckedChanged += CheckStartup_CheckedChanged;
 
             labelVersion.Click += LabelVersion_Click;
+            labelVersion.ForeColor = Color.FromArgb(128, Color.Gray);
 
             buttonOptimized.MouseMove += ButtonOptimized_MouseHover;
             buttonOptimized.MouseLeave += ButtonGPU_MouseLeave;
@@ -122,6 +120,7 @@ namespace GHelper
             SetTimer();
 
         }
+
 
         private void Button120Hz_MouseHover(object? sender, EventArgs e)
         {
@@ -668,27 +667,16 @@ namespace GHelper
             int overdrive = Program.wmi.DeviceGet(ASUSWmi.ScreenOverdrive);
             int miniled = Program.wmi.DeviceGet(ASUSWmi.ScreenMiniled);
 
-            if (frequency < 0)
-            {
-                button60Hz.Enabled = false;
-                button120Hz.Enabled = false;
-                buttonScreenAuto.Enabled = false;
-                labelSreen.Text = "Laptop Screen: Turned off";
-                button60Hz.BackColor = SystemColors.ControlLight;
-                button120Hz.BackColor = SystemColors.ControlLight;
-                buttonScreenAuto.BackColor = SystemColors.ControlLight;
-            }
-            else
-            {
-                button60Hz.Enabled = true;
-                button120Hz.Enabled = true;
-                buttonScreenAuto.Enabled = true;
-                button60Hz.BackColor = SystemColors.ControlLightLight;
-                button120Hz.BackColor = SystemColors.ControlLightLight;
-                buttonScreenAuto.BackColor = SystemColors.ControlLightLight;
-                labelSreen.Text = "Laptop Screen: " + frequency + "Hz" + ((overdrive == 1) ? " + Overdrive" : "");
-            }
+            bool screenEnabled = (frequency >= 0);
 
+            ButtonEnabled(button60Hz, screenEnabled);
+            ButtonEnabled(button120Hz, screenEnabled);
+            ButtonEnabled(buttonScreenAuto, screenEnabled);
+            ButtonEnabled(buttonMiniled, screenEnabled);
+
+            labelSreen.Text = screenEnabled
+                ? "Laptop Screen: " + frequency + "Hz" + ((overdrive == 1) ? " + Overdrive" : "")
+                : "Laptop Screen: Turned off";
 
             button60Hz.Activated = false;
             button120Hz.Activated = false;
@@ -1220,7 +1208,7 @@ namespace GHelper
         public void ButtonEnabled(Button but, bool enabled)
         {
             but.Enabled = enabled;
-            but.BackColor = enabled ? SystemColors.ControlLightLight : SystemColors.ControlLight;
+            but.BackColor = enabled ? Color.FromArgb(255, but.BackColor) : Color.FromArgb(100, but.BackColor);
         }
 
         public void SetStartupCheck(bool status)
