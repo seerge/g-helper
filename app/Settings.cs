@@ -45,6 +45,7 @@ namespace GHelper
             button60Hz.BorderColor = SystemColors.ActiveBorder;
             button120Hz.BorderColor = SystemColors.ActiveBorder;
             buttonScreenAuto.BorderColor = SystemColors.ActiveBorder;
+            buttonMiniled.BorderColor = colorTurbo;
 
             buttonOptimized.Click += ButtonOptimized_Click;
             buttonSilent.Click += ButtonSilent_Click;
@@ -62,6 +63,7 @@ namespace GHelper
             button60Hz.Click += Button60Hz_Click;
             button120Hz.Click += Button120Hz_Click;
             buttonScreenAuto.Click += ButtonScreenAuto_Click;
+            buttonMiniled.Click += ButtonMiniled_Click;
 
             buttonQuit.Click += ButtonQuit_Click;
 
@@ -614,13 +616,17 @@ namespace GHelper
             SetScreen(60, 0);
         }
 
+        private void ButtonMiniled_Click(object? sender, EventArgs e)
+        {
+            int miniled = (Program.config.getConfig("miniled") == 1) ? 0 : 1;
+            Program.config.setConfig("miniled", miniled);
+            SetScreen(-1, -1, miniled);
+        }
 
-        public void SetScreen(int frequency = -1, int overdrive = -1)
+        public void SetScreen(int frequency = -1, int overdrive = -1, int miniled = -1)
         {
 
-            int currentFrequency = NativeMethods.GetRefreshRate();
-
-            if (currentFrequency < 0) // Laptop screen not detected or has unknown refresh rate
+            if (NativeMethods.GetRefreshRate() < 0) // Laptop screen not detected or has unknown refresh rate
             {
                 InitScreen();
                 return;
@@ -629,19 +635,25 @@ namespace GHelper
             if (frequency >= 1000)
             {
                 frequency = Program.config.getConfig("max_frequency");
-                if (frequency <= 60)
-                    frequency = 120;
+                if (frequency <= 60) frequency = 120;
             }
 
-            if (frequency <= 0) return;
+            if (frequency > 0)
+            {
+                NativeMethods.SetRefreshRate(frequency);
+                Logger.WriteLine("Screen " + frequency.ToString() + "Hz");
+            }
 
-            NativeMethods.SetRefreshRate(frequency);
             if (overdrive >= 0)
                 Program.wmi.DeviceSet(ASUSWmi.ScreenOverdrive, overdrive);
 
-            InitScreen();
+            if (miniled >= 0)
+            {
+                Program.wmi.DeviceSet(ASUSWmi.ScreenMiniled, miniled);
+                Debug.WriteLine("Miniled " + miniled);
+            }
 
-            Logger.WriteLine("Screen " + frequency.ToString() + "Hz");
+            InitScreen();
 
         }
 
@@ -653,15 +665,8 @@ namespace GHelper
 
             bool screenAuto = (Program.config.getConfig("screen_auto") == 1);
 
-            int overdrive = 0;
-            try
-            {
-                overdrive = Program.wmi.DeviceGet(ASUSWmi.ScreenOverdrive);
-            }
-            catch
-            {
-                Logger.WriteLine("Screen Overdrive not supported");
-            }
+            int overdrive = Program.wmi.DeviceGet(ASUSWmi.ScreenOverdrive);
+            int miniled = Program.wmi.DeviceGet(ASUSWmi.ScreenMiniled);
 
             if (frequency < 0)
             {
@@ -709,6 +714,13 @@ namespace GHelper
             if (maxFrequency > 60)
             {
                 button120Hz.Text = maxFrequency.ToString() + "Hz + OD";
+            }
+
+            if (miniled >= 0)
+            {
+                tableScreen.Controls.Add(buttonMiniled, 3, 0);
+                buttonMiniled.Activated = (miniled == 1);
+                Program.config.setConfig("miniled", miniled);
             }
 
             Program.config.setConfig("frequency", frequency);
@@ -1026,12 +1038,13 @@ namespace GHelper
                 UltimateUI(mux == 1);
             }
 
+            Program.config.setConfig("gpu_mode", GpuMode);
+
             ButtonEnabled(buttonOptimized, true);
             ButtonEnabled(buttonEco, true);
             ButtonEnabled(buttonStandard, true);
             ButtonEnabled(buttonUltimate, true);
 
-            Program.config.setConfig("gpu_mode", GpuMode);
             VisualiseGPUMode(GpuMode);
 
             return GpuMode;

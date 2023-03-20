@@ -112,7 +112,7 @@ namespace GHelper
         }
 
 
-        public static void SetAutoModes()
+        public static void SetAutoModes(bool wait = false)
         {
 
             if (Math.Abs(DateTimeOffset.Now.ToUnixTimeMilliseconds() - lastAuto) < 1000) return;
@@ -126,6 +126,9 @@ namespace GHelper
 
             settingsForm.AutoPerformance(isPlugged);
 
+            // waiting a bit before turning off dGPU
+            // if (wait && isPlugged != PowerLineStatus.Online) Thread.Sleep(3000); 
+
             bool switched = settingsForm.AutoGPUMode(isPlugged);
             if (!switched) settingsForm.AutoScreen(isPlugged);
 
@@ -135,7 +138,7 @@ namespace GHelper
         private static void SystemEvents_PowerModeChanged(object sender, PowerModeChangedEventArgs e)
         {
             Logger.WriteLine("Windows - Power Mode Changed");
-            SetAutoModes();
+            SetAutoModes(true);
         }
 
 
