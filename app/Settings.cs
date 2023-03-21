@@ -852,6 +852,9 @@ namespace GHelper
             {
                 Program.wmi.SetFanCurve(0, Program.config.getFanConfig(0));
                 Program.wmi.SetFanCurve(1, Program.config.getFanConfig(1));
+
+                if (Program.config.getConfig("mid_fan") == 1)
+                    Program.wmi.SetFanCurve(2, Program.config.getFanConfig(2));
             }
 
             if (Program.config.getConfigPerf("auto_apply_power") == 1)

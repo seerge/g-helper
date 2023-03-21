@@ -304,7 +304,7 @@ namespace Starlight.AnimeMatrix
             {
                 for (int x = 0; x < bmp.Width; x++)
                 {
-                    if (x % 2 == (y % 2))
+                    if (x % 2 == y % 2)
                     {
                         var color = GetColor(bmp, x, y);
                         //var color2= GetColor(bmp, x+1, y);

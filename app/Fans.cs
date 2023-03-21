@@ -10,6 +10,7 @@ namespace GHelper
         DataPoint curPoint = null;
         Series seriesCPU;
         Series seriesGPU;
+        Series seriesMid;
 
         static int MinRPM, MaxRPM;
 
@@ -27,6 +28,8 @@ namespace GHelper
 
             if (device == 1)
                 title = "GPU Fan Profile";
+            else if (device == 2)
+                title = "Middle Fan Profile";
             else
                 title = "CPU Fan Profile";
 
@@ -97,15 +100,20 @@ namespace GHelper
 
             seriesCPU = chartCPU.Series.Add("CPU");
             seriesGPU = chartGPU.Series.Add("GPU");
+            seriesMid = chartMid.Series.Add("Mid");
 
             seriesCPU.Color = colorStandard;
             seriesGPU.Color = colorTurbo;
+            seriesMid.Color = colorEco;
 
             chartCPU.MouseMove += ChartCPU_MouseMove;
             chartCPU.MouseUp += ChartCPU_MouseUp;
 
             chartGPU.MouseMove += ChartCPU_MouseMove;
             chartGPU.MouseUp += ChartCPU_MouseUp;
+
+            chartMid.MouseMove += ChartCPU_MouseMove;
+            chartMid.MouseUp += ChartCPU_MouseUp;
 
             buttonReset.Click += ButtonReset_Click;
             buttonApply.Click += ButtonApply_Click;
@@ -264,6 +272,21 @@ namespace GHelper
         public void InitFans()
         {
 
+            byte[] curve = Program.wmi.GetFanCurve(2);
+            
+            if (curve.All(singleByte => singleByte == 0))
+            {
+                Program.config.setConfig("mid_fan", 0);
+                chartMid.Visible = false;
+
+            } else
+            {
+                Program.config.setConfig("mid_fan", 1);
+                SetChart(chartMid, 2);
+                LoadProfile(seriesMid, 2);
+            }
+
+
             SetChart(chartCPU, 0);
             SetChart(chartGPU, 1);
 
@@ -328,6 +351,8 @@ namespace GHelper
         {
             ApplyProfile(seriesCPU, 0);
             ApplyProfile(seriesGPU, 1);
+            if (Program.config.getConfig("mid_fan") == 1) 
+                ApplyProfile(seriesMid, 2);
         }
 
         private void ButtonReset_Click(object? sender, EventArgs e)
@@ -335,6 +360,8 @@ namespace GHelper
 
             LoadProfile(seriesCPU, 0, 1);
             LoadProfile(seriesGPU, 1, 1);
+            if (Program.config.getConfig("mid_fan") == 1) 
+                LoadProfile(seriesMid, 2, 1);
 
             checkAuto.Checked = false;
             checkApplyPower.Checked = false;

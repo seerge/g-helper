@@ -35,6 +35,8 @@ namespace GHelper
             Title title1 = new Title();
             ChartArea chartArea2 = new ChartArea();
             Title title2 = new Title();
+            ChartArea chartArea3 = new ChartArea();
+            Title title3 = new Title();
             panelFans = new Panel();
             labelTip = new Label();
             labelBoost = new Label();
@@ -43,6 +45,7 @@ namespace GHelper
             tableFanCharts = new TableLayoutPanel();
             chartGPU = new Chart();
             chartCPU = new Chart();
+            chartMid = new Chart();
             labelFans = new Label();
             checkAuto = new CheckBox();
             buttonReset = new RButton();
@@ -68,6 +71,7 @@ namespace GHelper
             tableFanCharts.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)chartGPU).BeginInit();
             ((System.ComponentModel.ISupportInitialize)chartCPU).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)chartMid).BeginInit();
             panelPower.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             panelCPU.SuspendLayout();
@@ -147,14 +151,14 @@ namespace GHelper
             tableFanCharts.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
             tableFanCharts.Controls.Add(chartGPU, 0, 1);
             tableFanCharts.Controls.Add(chartCPU, 0, 0);
+            tableFanCharts.Controls.Add(chartMid, 0, 2);
             tableFanCharts.Location = new Point(28, 64);
             tableFanCharts.Margin = new Padding(6);
             tableFanCharts.Name = "tableFanCharts";
             tableFanCharts.RowCount = 2;
-            tableFanCharts.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            tableFanCharts.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            tableFanCharts.RowStyles.Add(new RowStyle(SizeType.Absolute, 40F));
-            tableFanCharts.RowStyles.Add(new RowStyle(SizeType.Absolute, 40F));
+            tableFanCharts.RowStyles.Add(new RowStyle(SizeType.Percent, 33F));
+            tableFanCharts.RowStyles.Add(new RowStyle(SizeType.Percent, 33F));
+            tableFanCharts.RowStyles.Add(new RowStyle(SizeType.Percent, 33F));
             tableFanCharts.Size = new Size(764, 992);
             tableFanCharts.TabIndex = 36;
             // 
@@ -163,12 +167,12 @@ namespace GHelper
             chartArea1.Name = "ChartArea1";
             chartGPU.ChartAreas.Add(chartArea1);
             chartGPU.Dock = DockStyle.Fill;
-            chartGPU.Location = new Point(2, 506);
+            chartGPU.Location = new Point(2, 340);
             chartGPU.Margin = new Padding(2, 10, 2, 10);
             chartGPU.Name = "chartGPU";
-            chartGPU.Size = new Size(760, 476);
+            chartGPU.Size = new Size(760, 310);
             chartGPU.TabIndex = 17;
-            chartGPU.Text = "chart1";
+            chartGPU.Text = "chartGPU";
             title1.Name = "Title1";
             chartGPU.Titles.Add(title1);
             // 
@@ -180,11 +184,25 @@ namespace GHelper
             chartCPU.Location = new Point(2, 10);
             chartCPU.Margin = new Padding(2, 10, 2, 10);
             chartCPU.Name = "chartCPU";
-            chartCPU.Size = new Size(760, 476);
+            chartCPU.Size = new Size(760, 310);
             chartCPU.TabIndex = 14;
             chartCPU.Text = "chartCPU";
             title2.Name = "Title1";
             chartCPU.Titles.Add(title2);
+            // 
+            // chartMid
+            // 
+            chartArea3.Name = "ChartArea3";
+            chartMid.ChartAreas.Add(chartArea3);
+            chartMid.Dock = DockStyle.Fill;
+            chartMid.Location = new Point(2, 670);
+            chartMid.Margin = new Padding(2, 10, 2, 10);
+            chartMid.Name = "chartMid";
+            chartMid.Size = new Size(760, 312);
+            chartMid.TabIndex = 14;
+            chartMid.Text = "chartMid";
+            title3.Name = "Title3";
+            chartMid.Titles.Add(title3);
             // 
             // labelFans
             // 
@@ -465,6 +483,7 @@ namespace GHelper
             tableFanCharts.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)chartGPU).EndInit();
             ((System.ComponentModel.ISupportInitialize)chartCPU).EndInit();
+            ((System.ComponentModel.ISupportInitialize)chartMid).EndInit();
             panelPower.ResumeLayout(false);
             panelPower.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
@@ -501,6 +520,7 @@ namespace GHelper
         private TableLayoutPanel tableFanCharts;
         private System.Windows.Forms.DataVisualization.Charting.Chart chartGPU;
         private System.Windows.Forms.DataVisualization.Charting.Chart chartCPU;
+        private System.Windows.Forms.DataVisualization.Charting.Chart chartMid;
         private Label labelFans;
         private PictureBox picturePerf;
         private PictureBox pictureBox1;

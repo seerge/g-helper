@@ -24,6 +24,7 @@ public class ASUSWmi
 
     public const uint DevsCPUFanCurve = 0x00110024;
     public const uint DevsGPUFanCurve = 0x00110025;
+    public const uint DevsMidFanCurve = 0x00110032;
 
     public const int PPT_TotalA0 = 0x001200A0;  // Total PPT on 2022 and CPU PPT on 2021
     public const int PPT_EDCA1 = 0x001200A1;  // CPU EDC
@@ -185,12 +186,25 @@ public class ASUSWmi
         if (curve.Length != 16) return;
         if (curve.All(singleByte => singleByte == 0)) return;
 
-        Logger.WriteLine("Fans" + ((device == 1) ? "GPU" : "CPU") + " " + BitConverter.ToString(curve));
+        string name;
 
-        if (device == 1)
-            DeviceSet(DevsGPUFanCurve, curve);
-        else
-            DeviceSet(DevsCPUFanCurve, curve);
+        switch (device)
+        {
+            case 1:
+                DeviceSet(DevsGPUFanCurve, curve);
+                name = "GPU";
+                break;
+            case 2:
+                DeviceSet(DevsMidFanCurve, curve);
+                name = "Mid";
+                break;
+            default:
+                DeviceSet(DevsCPUFanCurve, curve);
+                name = "CPU";
+                break;
+        }
+
+        Logger.WriteLine("Fans" + name + " " + BitConverter.ToString(curve));
     }
 
     public byte[] GetFanCurve(int device, int mode = 0)
@@ -205,10 +219,15 @@ public class ASUSWmi
             default: fan_mode = 0; break;
         }
 
-        if (device == 1)
-            return DeviceGetBuffer(DevsGPUFanCurve, fan_mode);
-        else
-            return DeviceGetBuffer(DevsCPUFanCurve, fan_mode);
+        switch (device)
+        {
+            case 1:
+                return DeviceGetBuffer(DevsGPUFanCurve, fan_mode);
+            case 2:
+                return DeviceGetBuffer(DevsMidFanCurve, fan_mode);
+            default: 
+                return DeviceGetBuffer(DevsCPUFanCurve, fan_mode);
+        }
 
     }
 
