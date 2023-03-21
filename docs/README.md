@@ -53,14 +53,14 @@ PPTs are shown for G14 2022, for other models PPTs will be different as they are
 ### :video_game: GPU Modes
 
 1. Eco mode : only low power integrated GPU enabled, iGPU drives built in display
-2. Standard mode (Windows Hybrid) : iGPU and dGPU enabled, iGPU drives built in display
+2. Standard mode (MS Hybrid) : iGPU and dGPU enabled, iGPU drives built in display
 3. Ultimate mode: iGPU and dGPU enabled, but dGPU drives built in display (supported only on G14 2022 model)
 4. Optimized (formely existed as a checkbox): disables dGPU on battery (Eco) and enables when plugged (Standard)
 
 ### :question: FAQ
 
 #### How do I stop Armory Crate install popup appearing every time I press M4 / Rog key?
-Go to BIOS (F2 on boot), open Advanced Settings (F8) and disable "Armory Control Intrerface"  
+Go to BIOS (F2 on boot), open Advanced Settings and disable "Armory Control Intrerface"  
 
 #### Why Ultimate GPU mode is not available on my laptop?
 Ultimate mode is supported (by hardware) only on G14 2022 (and possibly other models from 2022+)
