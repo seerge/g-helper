@@ -2,11 +2,8 @@
 
 using Starlight.Communication;
 using System.Diagnostics;
-using System.Text;
 using System.Management;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
-using System.Drawing.Imaging;
-using System.Windows.Forms;
+using System.Text;
 
 namespace Starlight.AnimeMatrix
 {
@@ -82,7 +79,7 @@ namespace Starlight.AnimeMatrix
         public int MaxRows = 61;
         public int FullRows = 11;
 
-        public int EmptyFirstRow = 0;
+        public int EmptyFirstRow = 1;
 
         private int frameIndex = 0;
 
@@ -90,15 +87,16 @@ namespace Starlight.AnimeMatrix
             : base(0x0B05, 0x193B, 640)
         {
             string model = GetModel();
-            Debug.WriteLine(model);
 
-            if (model is not null && model.Contains("401"))
+            Logger.WriteLine("Animatrix: " + model);
+
+            if (model.Contains("401"))
             {
                 EmptyFirstRow = 1;
                 FullRows = 6;
                 MaxColumns = 33;
                 MaxRows = 55;
-                LedCount = 1213;
+                LedCount = 1214;
                 UpdatePageLength = 410;
             }
 
@@ -126,7 +124,6 @@ namespace Starlight.AnimeMatrix
 
         public void PresentNextFrame()
         {
-            //Debug.WriteLine(frameIndex);
             if (frameIndex >= frames.Count) frameIndex = 0;
             _displayBuffer = frames[frameIndex];
             Present();
@@ -150,25 +147,25 @@ namespace Starlight.AnimeMatrix
         }
 
 
-        public int EmptyColumns(int row)
+        public int XStart(int row)
         {
-            if (row == 0) return EmptyFirstRow;
             return (int)Math.Ceiling(Math.Max(0, row - FullRows) / 2.0);
         }
-        public int Columns(int row)
+
+        public int XEnd(int row)
         {
-            EnsureRowInRange(row);
-            return MaxColumns - EmptyColumns(row);
+            if (row == 0) return MaxColumns - EmptyFirstRow;
+            return MaxColumns;
         }
 
         public int RowToLinearAddress(int row)
         {
             EnsureRowInRange(row);
 
-            var ret = 0;
+            int ret = 0;
 
             for (var i = 0; i < row; i++)
-                ret += Columns(i);
+                ret += XEnd(i) - XStart(i);
 
             return ret;
         }
@@ -198,13 +195,20 @@ namespace Starlight.AnimeMatrix
             Set(Packet<AnimeMatrixPacket>(0xC0, 0x03));
         }
 
-        public void SetLedPlanar(int x, int y, byte value)
+        public int SetLedPlanar(int x, int y, byte value)
         {
             EnsureRowInRange(y);
-            var start = RowToLinearAddress(y) - EmptyColumns(y);
+            var start = RowToLinearAddress(y) - XStart(y);
 
-            if (x >= EmptyColumns(y))
+            if (x >= XStart(y) && x < XEnd(y))
+            {
+                //Debug.Write((start + x).ToString("D4") + ",");
                 SetLedLinear(start + x, value);
+                return start + x;
+            }
+
+            //Debug.Write("   ");
+            return -1;
         }
 
         public void Clear(bool present = false)
@@ -274,13 +278,13 @@ namespace Starlight.AnimeMatrix
 
         static int GetColor(Bitmap bmp, int x, int y)
         {
-            var pixel = bmp.GetPixel(Math.Max(0,Math.Min(bmp.Width - 1,x)), Math.Max(0, Math.Min(bmp.Height - 1, y)));
+            var pixel = bmp.GetPixel(Math.Max(0, Math.Min(bmp.Width - 1, x)), Math.Max(0, Math.Min(bmp.Height - 1, y)));
             return (Math.Max((pixel.R + pixel.G + pixel.B) / 3 - 10, 0));
         }
         public void GenerateFrame(Image image)
         {
 
-            int width = MaxColumns*3;
+            int width = MaxColumns * 3;
             int height = MaxRows;
             float scale;
 
@@ -298,6 +302,8 @@ namespace Starlight.AnimeMatrix
 
             graph.DrawImage(image, ((int)width - scaleWidth), 0, scaleWidth, scaleHeight);
 
+            int addr, counter = 0;
+
             Bitmap bmp = new Bitmap(canvas, MaxColumns * 2, MaxRows);
 
             for (int y = 0; y < bmp.Height; y++)
@@ -308,9 +314,18 @@ namespace Starlight.AnimeMatrix
                     {
                         var color = GetColor(bmp, x, y);
                         //var color2= GetColor(bmp, x+1, y);
-                        SetLedPlanar(x/2,y, (byte)color);
+                        addr = SetLedPlanar(x / 2, y, (byte)color);
+                        if (addr != -1) {
+                            if (addr != counter)
+                                Debug.Write("ERROR");
+                            counter++;
+                        }
+
+
+
                     }
                 }
+                //Debug.Write("\n");
             }
 
         }
