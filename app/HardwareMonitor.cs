@@ -86,9 +86,5 @@ public static class HardwareMonitor
         catch (Exception ex)
         { 
         } 
-        finally
-        {
-            Logger.WriteLine($"GpuTemperatureProvider: {GpuTemperatureProvider?.GetType().Name}");
-        }
     }
 }

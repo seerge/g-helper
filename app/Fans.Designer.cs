@@ -203,6 +203,7 @@ namespace GHelper
             chartMid.Text = "chartMid";
             title3.Name = "Title3";
             chartMid.Titles.Add(title3);
+            chartMid.Visible = false;
             // 
             // labelFans
             // 
@@ -233,6 +234,7 @@ namespace GHelper
             buttonReset.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             buttonReset.BackColor = SystemColors.ControlLight;
             buttonReset.BorderColor = Color.Transparent;
+            buttonReset.BorderRadius = 2;
             buttonReset.FlatStyle = FlatStyle.Flat;
             buttonReset.Location = new Point(30, 1081);
             buttonReset.Margin = new Padding(4, 2, 4, 2);
@@ -249,6 +251,7 @@ namespace GHelper
             buttonApply.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             buttonApply.BackColor = SystemColors.ControlLight;
             buttonApply.BorderColor = Color.Transparent;
+            buttonApply.BorderRadius = 2;
             buttonApply.FlatStyle = FlatStyle.Flat;
             buttonApply.Location = new Point(542, 1081);
             buttonApply.Margin = new Padding(4, 2, 4, 2);
@@ -319,6 +322,7 @@ namespace GHelper
             buttonApplyPower.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             buttonApplyPower.BackColor = SystemColors.ControlLight;
             buttonApplyPower.BorderColor = Color.Transparent;
+            buttonApplyPower.BorderRadius = 2;
             buttonApplyPower.FlatStyle = FlatStyle.Flat;
             buttonApplyPower.Location = new Point(20, 1081);
             buttonApplyPower.Margin = new Padding(4, 2, 4, 2);

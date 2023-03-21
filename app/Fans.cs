@@ -273,15 +273,16 @@ namespace GHelper
         {
 
             byte[] curve = Program.wmi.GetFanCurve(2);
-            
+
             if (curve.All(singleByte => singleByte == 0))
             {
                 Program.config.setConfig("mid_fan", 0);
-                chartMid.Visible = false;
 
-            } else
+            }
+            else
             {
                 Program.config.setConfig("mid_fan", 1);
+                chartMid.Visible = true;
                 SetChart(chartMid, 2);
                 LoadProfile(seriesMid, 2);
             }
@@ -351,7 +352,7 @@ namespace GHelper
         {
             ApplyProfile(seriesCPU, 0);
             ApplyProfile(seriesGPU, 1);
-            if (Program.config.getConfig("mid_fan") == 1) 
+            if (Program.config.getConfig("mid_fan") == 1)
                 ApplyProfile(seriesMid, 2);
         }
 
@@ -360,7 +361,7 @@ namespace GHelper
 
             LoadProfile(seriesCPU, 0, 1);
             LoadProfile(seriesGPU, 1, 1);
-            if (Program.config.getConfig("mid_fan") == 1) 
+            if (Program.config.getConfig("mid_fan") == 1)
                 LoadProfile(seriesMid, 2, 1);
 
             checkAuto.Checked = false;

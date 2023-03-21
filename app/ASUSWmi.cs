@@ -12,6 +12,7 @@ public class ASUSWmi
 
     public const uint CPU_Fan = 0x00110013;
     public const uint GPU_Fan = 0x00110014;
+    public const uint Mid_Fan = 0x00110031;
 
     public const uint PerformanceMode = 0x00120075; // Thermal Control
 

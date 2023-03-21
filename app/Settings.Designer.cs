@@ -68,11 +68,13 @@ namespace GHelper
             buttonOptimized = new RButton();
             buttonUltimate = new RButton();
             panelScreen = new Panel();
+            labelMidFan = new Label();
             labelTipScreen = new Label();
             tableScreen = new TableLayoutPanel();
             buttonScreenAuto = new RButton();
             button60Hz = new RButton();
             button120Hz = new RButton();
+            buttonMiniled = new RButton();
             pictureScreen = new PictureBox();
             labelSreen = new Label();
             panelKeyboard = new Panel();
@@ -85,7 +87,6 @@ namespace GHelper
             buttonKeyboardColor = new RButton();
             pictureKeyboard = new PictureBox();
             labelKeyboard = new Label();
-            buttonMiniled = new RButton();
             panelMatrix.SuspendLayout();
             tableLayoutMatrix.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureMatrix).BeginInit();
@@ -180,6 +181,7 @@ namespace GHelper
             buttonMatrix.Activated = false;
             buttonMatrix.BackColor = SystemColors.ControlLight;
             buttonMatrix.BorderColor = Color.Transparent;
+            buttonMatrix.BorderRadius = 2;
             buttonMatrix.Dock = DockStyle.Top;
             buttonMatrix.FlatAppearance.BorderSize = 0;
             buttonMatrix.FlatStyle = FlatStyle.Flat;
@@ -327,12 +329,13 @@ namespace GHelper
             buttonQuit.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             buttonQuit.BackColor = SystemColors.ControlLight;
             buttonQuit.BorderColor = Color.Transparent;
+            buttonQuit.BorderRadius = 2;
             buttonQuit.FlatStyle = FlatStyle.Flat;
-            buttonQuit.Location = new Point(578, 16);
+            buttonQuit.Location = new Point(599, 16);
             buttonQuit.Margin = new Padding(8, 4, 8, 4);
             buttonQuit.Name = "buttonQuit";
             buttonQuit.Secondary = true;
-            buttonQuit.Size = new Size(208, 44);
+            buttonQuit.Size = new Size(185, 44);
             buttonQuit.TabIndex = 18;
             buttonQuit.Text = "Quit";
             buttonQuit.UseVisualStyleBackColor = false;
@@ -426,6 +429,7 @@ namespace GHelper
             buttonSilent.BackColor = SystemColors.ControlLightLight;
             buttonSilent.BackgroundImageLayout = ImageLayout.None;
             buttonSilent.BorderColor = Color.Transparent;
+            buttonSilent.BorderRadius = 5;
             buttonSilent.CausesValidation = false;
             buttonSilent.Dock = DockStyle.Fill;
             buttonSilent.FlatAppearance.BorderSize = 0;
@@ -448,6 +452,7 @@ namespace GHelper
             buttonBalanced.Activated = false;
             buttonBalanced.BackColor = SystemColors.ControlLightLight;
             buttonBalanced.BorderColor = Color.Transparent;
+            buttonBalanced.BorderRadius = 5;
             buttonBalanced.Dock = DockStyle.Fill;
             buttonBalanced.FlatAppearance.BorderSize = 0;
             buttonBalanced.FlatStyle = FlatStyle.Flat;
@@ -469,6 +474,7 @@ namespace GHelper
             buttonTurbo.Activated = false;
             buttonTurbo.BackColor = SystemColors.ControlLightLight;
             buttonTurbo.BorderColor = Color.Transparent;
+            buttonTurbo.BorderRadius = 5;
             buttonTurbo.Dock = DockStyle.Fill;
             buttonTurbo.FlatAppearance.BorderSize = 0;
             buttonTurbo.FlatStyle = FlatStyle.Flat;
@@ -490,6 +496,7 @@ namespace GHelper
             buttonFans.Activated = false;
             buttonFans.BackColor = SystemColors.ControlLight;
             buttonFans.BorderColor = Color.Transparent;
+            buttonFans.BorderRadius = 5;
             buttonFans.Dock = DockStyle.Fill;
             buttonFans.FlatAppearance.BorderSize = 0;
             buttonFans.FlatStyle = FlatStyle.Flat;
@@ -592,6 +599,7 @@ namespace GHelper
             buttonEco.Activated = false;
             buttonEco.BackColor = SystemColors.ControlLightLight;
             buttonEco.BorderColor = Color.Transparent;
+            buttonEco.BorderRadius = 5;
             buttonEco.CausesValidation = false;
             buttonEco.Dock = DockStyle.Top;
             buttonEco.FlatAppearance.BorderSize = 0;
@@ -614,6 +622,7 @@ namespace GHelper
             buttonStandard.Activated = false;
             buttonStandard.BackColor = SystemColors.ControlLightLight;
             buttonStandard.BorderColor = Color.Transparent;
+            buttonStandard.BorderRadius = 5;
             buttonStandard.Dock = DockStyle.Top;
             buttonStandard.FlatAppearance.BorderSize = 0;
             buttonStandard.FlatStyle = FlatStyle.Flat;
@@ -635,6 +644,7 @@ namespace GHelper
             buttonOptimized.Activated = false;
             buttonOptimized.BackColor = SystemColors.ControlLightLight;
             buttonOptimized.BorderColor = Color.Transparent;
+            buttonOptimized.BorderRadius = 5;
             buttonOptimized.Dock = DockStyle.Top;
             buttonOptimized.FlatAppearance.BorderSize = 0;
             buttonOptimized.FlatStyle = FlatStyle.Flat;
@@ -656,6 +666,7 @@ namespace GHelper
             buttonUltimate.Activated = false;
             buttonUltimate.BackColor = SystemColors.ControlLightLight;
             buttonUltimate.BorderColor = Color.Transparent;
+            buttonUltimate.BorderRadius = 5;
             buttonUltimate.Dock = DockStyle.Top;
             buttonUltimate.FlatAppearance.BorderSize = 0;
             buttonUltimate.FlatStyle = FlatStyle.Flat;
@@ -676,6 +687,7 @@ namespace GHelper
             // 
             panelScreen.AutoSize = true;
             panelScreen.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            panelScreen.Controls.Add(labelMidFan);
             panelScreen.Controls.Add(labelTipScreen);
             panelScreen.Controls.Add(tableScreen);
             panelScreen.Controls.Add(pictureScreen);
@@ -687,6 +699,17 @@ namespace GHelper
             panelScreen.Padding = new Padding(0, 0, 0, 10);
             panelScreen.Size = new Size(810, 181);
             panelScreen.TabIndex = 38;
+            // 
+            // labelMidFan
+            // 
+            labelMidFan.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            labelMidFan.Location = new Point(488, 13);
+            labelMidFan.Margin = new Padding(8, 0, 8, 0);
+            labelMidFan.Name = "labelMidFan";
+            labelMidFan.Size = new Size(296, 34);
+            labelMidFan.TabIndex = 25;
+            labelMidFan.Text = "         ";
+            labelMidFan.TextAlign = ContentAlignment.TopRight;
             // 
             // labelTipScreen
             // 
@@ -711,7 +734,6 @@ namespace GHelper
             tableScreen.Controls.Add(button60Hz, 1, 0);
             tableScreen.Controls.Add(button120Hz, 2, 0);
             tableScreen.Controls.Add(buttonMiniled, 3, 0);
-
             tableScreen.Location = new Point(16, 51);
             tableScreen.Margin = new Padding(8, 4, 8, 4);
             tableScreen.Name = "tableScreen";
@@ -725,6 +747,7 @@ namespace GHelper
             buttonScreenAuto.Activated = false;
             buttonScreenAuto.BackColor = SystemColors.ControlLightLight;
             buttonScreenAuto.BorderColor = Color.Transparent;
+            buttonScreenAuto.BorderRadius = 5;
             buttonScreenAuto.Dock = DockStyle.Fill;
             buttonScreenAuto.FlatAppearance.BorderSize = 0;
             buttonScreenAuto.FlatStyle = FlatStyle.Flat;
@@ -743,6 +766,7 @@ namespace GHelper
             button60Hz.Activated = false;
             button60Hz.BackColor = SystemColors.ControlLightLight;
             button60Hz.BorderColor = Color.Transparent;
+            button60Hz.BorderRadius = 5;
             button60Hz.CausesValidation = false;
             button60Hz.Dock = DockStyle.Fill;
             button60Hz.FlatAppearance.BorderSize = 0;
@@ -762,6 +786,7 @@ namespace GHelper
             button120Hz.Activated = false;
             button120Hz.BackColor = SystemColors.ControlLightLight;
             button120Hz.BorderColor = Color.Transparent;
+            button120Hz.BorderRadius = 5;
             button120Hz.Dock = DockStyle.Fill;
             button120Hz.FlatAppearance.BorderSize = 0;
             button120Hz.FlatStyle = FlatStyle.Flat;
@@ -774,6 +799,26 @@ namespace GHelper
             button120Hz.TabIndex = 2;
             button120Hz.Text = "120Hz + OD";
             button120Hz.UseVisualStyleBackColor = false;
+            // 
+            // buttonMiniled
+            // 
+            buttonMiniled.Activated = false;
+            buttonMiniled.BackColor = SystemColors.ControlLightLight;
+            buttonMiniled.BorderColor = Color.Transparent;
+            buttonMiniled.BorderRadius = 5;
+            buttonMiniled.CausesValidation = false;
+            buttonMiniled.Dock = DockStyle.Fill;
+            buttonMiniled.FlatAppearance.BorderSize = 0;
+            buttonMiniled.FlatStyle = FlatStyle.Flat;
+            buttonMiniled.ForeColor = SystemColors.ControlText;
+            buttonMiniled.Location = new Point(583, 4);
+            buttonMiniled.Margin = new Padding(4);
+            buttonMiniled.Name = "buttonMiniled";
+            buttonMiniled.Secondary = false;
+            buttonMiniled.Size = new Size(185, 72);
+            buttonMiniled.TabIndex = 3;
+            buttonMiniled.Text = "Miniled";
+            buttonMiniled.UseVisualStyleBackColor = false;
             // 
             // pictureScreen
             // 
@@ -838,6 +883,7 @@ namespace GHelper
             buttonKeyboard.Activated = false;
             buttonKeyboard.BackColor = SystemColors.ControlLight;
             buttonKeyboard.BorderColor = Color.Transparent;
+            buttonKeyboard.BorderRadius = 2;
             buttonKeyboard.Dock = DockStyle.Top;
             buttonKeyboard.FlatAppearance.BorderSize = 0;
             buttonKeyboard.FlatStyle = FlatStyle.Flat;
@@ -905,6 +951,7 @@ namespace GHelper
             buttonKeyboardColor.Activated = false;
             buttonKeyboardColor.BackColor = SystemColors.ButtonHighlight;
             buttonKeyboardColor.BorderColor = Color.Transparent;
+            buttonKeyboardColor.BorderRadius = 2;
             buttonKeyboardColor.Dock = DockStyle.Top;
             buttonKeyboardColor.FlatStyle = FlatStyle.Flat;
             buttonKeyboardColor.ForeColor = SystemColors.ControlText;
@@ -938,25 +985,6 @@ namespace GHelper
             labelKeyboard.Size = new Size(210, 32);
             labelKeyboard.TabIndex = 32;
             labelKeyboard.Text = "Laptop Keyboard";
-            // 
-            // buttonMiniled
-            // 
-            buttonMiniled.Activated = false;
-            buttonMiniled.BackColor = SystemColors.ControlLightLight;
-            buttonMiniled.BorderColor = Color.Transparent;
-            buttonMiniled.CausesValidation = false;
-            buttonMiniled.Dock = DockStyle.Fill;
-            buttonMiniled.FlatAppearance.BorderSize = 0;
-            buttonMiniled.FlatStyle = FlatStyle.Flat;
-            buttonMiniled.ForeColor = SystemColors.ControlText;
-            buttonMiniled.Location = new Point(197, 4);
-            buttonMiniled.Margin = new Padding(4);
-            buttonMiniled.Name = "buttonMiniled";
-            buttonMiniled.Secondary = false;
-            buttonMiniled.Size = new Size(185, 72);
-            buttonMiniled.TabIndex = 3;
-            buttonMiniled.Text = "Miniled";
-            buttonMiniled.UseVisualStyleBackColor = false;
             // 
             // SettingsForm
             // 
@@ -1073,5 +1101,6 @@ namespace GHelper
         private RButton buttonKeyboard;
         private RButton buttonKeyboardColor;
         private RButton buttonFans;
+        private Label labelMidFan;
     }
 }

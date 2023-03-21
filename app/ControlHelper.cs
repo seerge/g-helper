@@ -45,6 +45,7 @@ public static class ControlHelper
         _invert = invert;
         AdjustControls(container.Controls);
         _invert = false;
+
     }
 
     public static void Resize(RForm container, float baseScale = 2)
@@ -92,7 +93,7 @@ public static class ControlHelper
             if (pictureBox != null && pictureBox.BackgroundImage is not null)
                 pictureBox.BackgroundImage = AdjustImage(pictureBox.BackgroundImage);
 
-
+            
             var combo = control as RComboBox;
             if (combo != null)
             {

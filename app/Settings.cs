@@ -532,7 +532,7 @@ namespace GHelper
             int brightness = Program.config.getConfig("matrix_brightness");
             int running = Program.config.getConfig("matrix_running");
 
-            comboMatrix.SelectedIndex = (brightness != -1) ? Math.Min(brightness, comboMatrix.Items.Count-1) : 0;
+            comboMatrix.SelectedIndex = (brightness != -1) ? Math.Min(brightness, comboMatrix.Items.Count - 1) : 0;
             comboMatrixRunning.SelectedIndex = (running != -1) ? Math.Min(running, comboMatrixRunning.Items.Count - 1) : 0;
 
             checkMatrix.Checked = (Program.config.getConfig("matrix_auto") == 1);
@@ -707,7 +707,8 @@ namespace GHelper
             {
                 buttonMiniled.Activated = (miniled == 1);
                 Program.config.setConfig("miniled", miniled);
-            } else
+            }
+            else
             {
                 buttonMiniled.Visible = false;
             }
@@ -758,6 +759,8 @@ namespace GHelper
 
         private static string FormatFan(int fan)
         {
+            if (fan < 0) return null;
+
             if (Program.config.getConfig("fan_rpm") == 1)
                 return " Fan: " + (fan * 100).ToString() + "RPM";
             else
@@ -769,6 +772,7 @@ namespace GHelper
 
             string cpuFan = FormatFan(Program.wmi.DeviceGet(ASUSWmi.CPU_Fan));
             string gpuFan = FormatFan(Program.wmi.DeviceGet(ASUSWmi.GPU_Fan));
+            string midFan = FormatFan(Program.wmi.DeviceGet(ASUSWmi.Mid_Fan));
 
             string cpuTemp = "";
             string gpuTemp = "";
@@ -791,6 +795,7 @@ namespace GHelper
             {
                 Program.settingsForm.labelCPUFan.Text = "CPU" + cpuTemp + cpuFan;
                 Program.settingsForm.labelGPUFan.Text = "GPU" + gpuTemp + gpuFan;
+                if (midFan is not null) Program.settingsForm.labelMidFan.Text = "Mid" + midFan;
                 Program.settingsForm.labelBattery.Text = battery;
             });
         }
@@ -996,12 +1001,6 @@ namespace GHelper
             if (!ultimate)
             {
                 tableGPU.Controls.Remove(buttonUltimate);
-
-                /*
-                 * buttonFans.Image = null;
-                buttonFans.Height = 44;
-                */
-
                 tablePerf.ColumnCount = 0;
                 tableGPU.ColumnCount = 0;
                 tableScreen.ColumnCount = 0;

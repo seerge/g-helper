@@ -62,8 +62,7 @@ namespace Starlight.AnimeMatrix
         Off = 0,
         Dim = 1,
         Medium = 2,
-        Full = 3,
-        Super = 4, //test, doesn't work
+        Full = 3
     }
 
 
@@ -79,7 +78,7 @@ namespace Starlight.AnimeMatrix
         public int MaxRows = 61;
         public int FullRows = 11;
 
-        public int EmptyFirstRow = 1;
+        public int EmptyFirstRow = 0;
 
         private int frameIndex = 0;
 
@@ -87,9 +86,6 @@ namespace Starlight.AnimeMatrix
             : base(0x0B05, 0x193B, 640)
         {
             string model = GetModel();
-
-            Logger.WriteLine("Animatrix: " + model);
-
             if (model.Contains("401"))
             {
                 EmptyFirstRow = 1;
@@ -199,15 +195,12 @@ namespace Starlight.AnimeMatrix
         {
             EnsureRowInRange(y);
             var start = RowToLinearAddress(y) - XStart(y);
-
             if (x >= XStart(y) && x < XEnd(y))
             {
                 //Debug.Write((start + x).ToString("D4") + ",");
                 SetLedLinear(start + x, value);
                 return start + x;
             }
-
-            //Debug.Write("   ");
             return -1;
         }
 
@@ -320,12 +313,8 @@ namespace Starlight.AnimeMatrix
                                 Debug.Write("ERROR");
                             counter++;
                         }
-
-
-
                     }
                 }
-                //Debug.Write("\n");
             }
 
         }

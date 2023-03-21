@@ -77,7 +77,14 @@ namespace GHelper
             SystemEvents.PowerModeChanged += SystemEvents_PowerModeChanged;
 
             CheckForUpdates();
+
+            if (Environment.CurrentDirectory.Trim('\\') == Application.StartupPath.Trim('\\'))
+            {
+                SettingsToggle();
+            }
+
             Application.Run();
+
 
         }
 
