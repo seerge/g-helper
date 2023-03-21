@@ -74,11 +74,11 @@ namespace Starlight.AnimeMatrix
         byte[] _displayBuffer;
         List<byte[]> frames = new List<byte[]>();
 
-        public int MaxColumns = 34;
         public int MaxRows = 61;
         public int FullRows = 11;
+        public int FullEvenRows = -1;
 
-        public int EmptyFirstRow = 0;
+        public int MaxColumns = 34;
 
         private int frameIndex = 0;
 
@@ -88,9 +88,11 @@ namespace Starlight.AnimeMatrix
             string model = GetModel();
             if (model.Contains("401"))
             {
-                EmptyFirstRow = 1;
-                FullRows = 6;
                 MaxColumns = 33;
+
+                FullRows = 6;
+                FullEvenRows = 6;
+
                 MaxRows = 55;
                 LedCount = 1214;
                 UpdatePageLength = 410;
@@ -150,7 +152,7 @@ namespace Starlight.AnimeMatrix
 
         public int XEnd(int row)
         {
-            if (row == 0) return MaxColumns - EmptyFirstRow;
+            if (row <= FullEvenRows && row % 2 == 0) return MaxColumns-1;
             return MaxColumns;
         }
 
@@ -197,7 +199,6 @@ namespace Starlight.AnimeMatrix
             var start = RowToLinearAddress(y) - XStart(y);
             if (x >= XStart(y) && x < XEnd(y))
             {
-                //Debug.Write((start + x).ToString("D4") + ",");
                 SetLedLinear(start + x, value);
                 return start + x;
             }
@@ -272,7 +273,7 @@ namespace Starlight.AnimeMatrix
         static int GetColor(Bitmap bmp, int x, int y)
         {
             var pixel = bmp.GetPixel(Math.Max(0, Math.Min(bmp.Width - 1, x)), Math.Max(0, Math.Min(bmp.Height - 1, y)));
-            return (Math.Max((pixel.R + pixel.G + pixel.B) / 3 - 10, 0));
+            return (Math.Max((pixel.R + pixel.G + pixel.B) / 3, 0));
         }
         public void GenerateFrame(Image image)
         {
@@ -295,8 +296,6 @@ namespace Starlight.AnimeMatrix
 
             graph.DrawImage(image, ((int)width - scaleWidth), 0, scaleWidth, scaleHeight);
 
-            int addr, counter = 0;
-
             Bitmap bmp = new Bitmap(canvas, MaxColumns * 2, MaxRows);
 
             for (int y = 0; y < bmp.Height; y++)
@@ -306,13 +305,7 @@ namespace Starlight.AnimeMatrix
                     if (x % 2 == y % 2)
                     {
                         var color = GetColor(bmp, x, y);
-                        //var color2= GetColor(bmp, x+1, y);
-                        addr = SetLedPlanar(x / 2, y, (byte)color);
-                        if (addr != -1) {
-                            if (addr != counter)
-                                Debug.Write("ERROR");
-                            counter++;
-                        }
+                        SetLedPlanar(x / 2, y, (byte)color);
                     }
                 }
             }

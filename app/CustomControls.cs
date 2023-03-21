@@ -1,5 +1,4 @@
-﻿using GHelper;
-using Microsoft.Win32;
+﻿using Microsoft.Win32;
 using System.ComponentModel;
 using System.Drawing.Drawing2D;
 using System.Runtime.InteropServices;
@@ -26,7 +25,7 @@ namespace CustomControls
         {
             using var key = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Themes\Personalize");
             var registryValueObject = key?.GetValue("AppsUseLightTheme");
-            
+
             if (registryValueObject == null) return false;
             return (int)registryValueObject <= 0;
         }
