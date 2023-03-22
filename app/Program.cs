@@ -56,7 +56,8 @@ namespace GHelper
 
             ds = settingsForm.Handle;
 
-            trayIcon.MouseClick += TrayIcon_MouseClick; ;
+            trayIcon.MouseClick += TrayIcon_MouseClick;
+            
 
             wmi.SubscribeToEvents(WatcherEventArrived);
 

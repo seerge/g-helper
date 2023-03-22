@@ -10,7 +10,9 @@ namespace GHelper
     public partial class SettingsForm : RForm
     {
 
-        static System.Timers.Timer aTimer = default!;
+        public static System.Timers.Timer aTimer = default!;
+        public static Point trayPoint;
+
         static System.Timers.Timer matrixTimer = default!;
 
         public string versionUrl = "http://github.com/seerge/g-helper/releases";
@@ -21,7 +23,6 @@ namespace GHelper
         public Keyboard keyb;
 
         static AnimeMatrixDevice mat;
-        static int matrixMode = 0;
 
         public SettingsForm()
         {
@@ -115,12 +116,40 @@ namespace GHelper
             button120Hz.MouseMove += Button120Hz_MouseHover;
             button120Hz.MouseLeave += ButtonScreen_MouseLeave;
 
+            //Program.trayIcon.MouseMove += TrayIcon_MouseMove;
+
             //buttonStandard.Image = (Image)(new Bitmap(buttonStandard.Image, new Size(16, 16)));
 
-            SetTimer();
+            aTimer = new System.Timers.Timer(500);
+            aTimer.Elapsed += OnTimedEvent;
 
         }
 
+        private static void TrayIcon_MouseMove(object? sender, MouseEventArgs e)
+        {
+            trayPoint = Cursor.Position;
+
+            if (!aTimer.Enabled)
+            {
+                aTimer.Interval = 100;
+                aTimer.Enabled = true;
+            }
+        }
+
+
+        private static void OnTimedEvent(Object? source, ElapsedEventArgs? e)
+        {
+            if (Program.settingsForm.Visible || Cursor.Position == trayPoint)
+            {
+                aTimer.Interval = 2000;
+                RefreshSensors();
+            } else
+            {
+                Program.trayIcon.Text = "";
+                aTimer.Enabled = false;
+            }
+
+        }
 
         private void Button120Hz_MouseHover(object? sender, EventArgs e)
         {
@@ -350,6 +379,8 @@ namespace GHelper
             if (fileName is not null)
             {
                 Program.config.setConfig("matrix_picture", fileName);
+                Program.config.setConfig("matrix_running", 2);
+
                 SetMatrixPicture(fileName);
                 BeginInvoke(delegate
                 {
@@ -408,8 +439,7 @@ namespace GHelper
                 switch (running)
                 {
                     case 2:
-                        string fileName = Program.config.getConfigString("matrix_picture");
-                        SetMatrixPicture(fileName);
+                        SetMatrixPicture(Program.config.getConfigString("matrix_picture"));
                         break;
                     case 3:
                         mat.SetBuiltInAnimation(false);
@@ -762,14 +792,6 @@ namespace GHelper
             SetGPUMode(ASUSWmi.GPUModeEco);
         }
 
-        private static void SetTimer()
-        {
-            aTimer = new System.Timers.Timer(500);
-            aTimer.Elapsed += OnTimedEvent;
-            aTimer.AutoReset = true;
-            aTimer.Enabled = false;
-        }
-
 
         private static string FormatFan(int fan)
         {
@@ -811,14 +833,12 @@ namespace GHelper
                 Program.settingsForm.labelGPUFan.Text = "GPU" + gpuTemp + gpuFan;
                 if (midFan is not null) Program.settingsForm.labelMidFan.Text = "Mid" + midFan;
                 Program.settingsForm.labelBattery.Text = battery;
+
+                Program.trayIcon.Text = "CPU" + cpuTemp + cpuFan + "\n" + "GPU" + gpuTemp + gpuFan + ((battery.Length > 0) ? ("\n" + battery) : "");
+
             });
         }
 
-        private static void OnTimedEvent(Object? source, ElapsedEventArgs? e)
-        {
-            RefreshSensors();
-            aTimer.Interval = 2000;
-        }
 
         private void SettingsForm_VisibleChanged(object? sender, EventArgs e)
         {

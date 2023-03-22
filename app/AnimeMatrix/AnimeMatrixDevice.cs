@@ -91,7 +91,7 @@ namespace Starlight.AnimeMatrix
                 MaxColumns = 33;
 
                 FullRows = 7;
-                FullEvenRows = 6;
+                FullEvenRows = 1;
 
                 MaxRows = 55;
                 LedCount = 1214;
@@ -277,34 +277,32 @@ namespace Starlight.AnimeMatrix
         }
 
 
-        public void PresentText(string text, int fontSize = 8)
+        public void PresentText(string text, float fontSize = 8F)
         {
-            int width = MaxColumns * 3;
-            int height = MaxRows;
-
-            Bitmap bmp = new Bitmap(width, height);
-
-            using (Graphics g = Graphics.FromImage(bmp))
+            using (Bitmap bmp = new Bitmap(MaxColumns * 3, MaxRows))
             {
-                using (Font font = new Font("Arial", fontSize))
+                using (Graphics g = Graphics.FromImage(bmp))
                 {
-                    
-                    g.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
-                    g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
-                    SizeF textSize = g.MeasureString(text, font);
-                    
-                    /*
-                    g.TranslateTransform(bmp.Width / 2, bmp.Height / 2);
-                    g.RotateTransform(33);
-                    g.DrawString(text, font, Brushes.White, -textSize.Width/2, -textSize.Height / 2);
-                    */
+                    using (Font font = new Font("Arial", fontSize))
+                    {
 
-                    g.DrawString(text, font, Brushes.White, bmp.Width - textSize.Width + 5, 0);
+                        g.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
+                        g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+                        SizeF textSize = g.MeasureString(text, font);
+
+                        /*
+                        g.TranslateTransform(bmp.Width / 2, bmp.Height / 2);
+                        g.RotateTransform(33);
+                        g.DrawString(text, font, Brushes.White, -textSize.Width/2, -textSize.Height / 2);
+                        */
+
+                        g.DrawString(text, font, Brushes.White, bmp.Width - textSize.Width + 5, 0);
+                    }
                 }
-            }
 
-            GenerateFrame(bmp);
-            Present();
+                GenerateFrame(bmp);
+                Present();
+            }
 
         }
 
@@ -315,33 +313,31 @@ namespace Starlight.AnimeMatrix
             int height = MaxRows;
             float scale;
 
-            Bitmap canvas = new Bitmap(width, height);
-
-            scale = Math.Min((float)width / (float)image.Width, (float)height / (float)image.Height);
-
-            var graph = Graphics.FromImage(canvas);
-            var scaleWidth = (int)(image.Width * scale);
-            var scaleHeight = (int)(image.Height * scale);
-
-            graph.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.High;
-            graph.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
-            graph.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
-
-            graph.DrawImage(image, ((int)width - scaleWidth), 0, scaleWidth, scaleHeight);
-
-            Bitmap bmp = new Bitmap(canvas, MaxColumns * 2, MaxRows);
-
-            for (int y = 0; y < bmp.Height; y++)
+            using (Bitmap canvas = new Bitmap(width, height))
             {
-                for (int x = 0; x < bmp.Width; x++)
+                scale = Math.Min((float)width / (float)image.Width, (float)height / (float)image.Height);
+
+                using (var graph = Graphics.FromImage(canvas))
                 {
-                    if (x % 2 == y % 2)
-                    {
-                        var color = GetColor(bmp, x, y);
-                        SetLedPlanar(x / 2, y, (byte)color);
-                    }
+                    var scaleWidth = (int)(image.Width * scale);
+                    var scaleHeight = (int)(image.Height * scale);
+
+                    graph.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.High;
+                    graph.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
+                    graph.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+
+                    graph.DrawImage(image, ((int)width - scaleWidth), 0, scaleWidth, scaleHeight);
+                }
+
+                using (Bitmap bmp = new Bitmap(canvas, MaxColumns * 2, MaxRows))
+                {
+                    for (int y = 0; y < bmp.Height; y++)
+                        for (int x = 0; x < bmp.Width; x++)
+                            if (x % 2 == y % 2)
+                                SetLedPlanar(x / 2, y, (byte)GetColor(bmp, x, y));
                 }
             }
+
 
         }
 
