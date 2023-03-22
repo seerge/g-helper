@@ -36,7 +36,7 @@ public static class ControlHelper
             foreMain = SystemColors.ControlText;
             foreAccent = Color.LightGray;
             borderMain = Color.LightGray;
-            buttonMain = SystemColors.ControlLight;
+            buttonMain = Color.FromArgb(255, 230, 230, 230);
         }
 
         container.BackColor = formBack;

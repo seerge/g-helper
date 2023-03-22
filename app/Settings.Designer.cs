@@ -179,7 +179,7 @@ namespace GHelper
             // buttonMatrix
             // 
             buttonMatrix.Activated = false;
-            buttonMatrix.BackColor = SystemColors.ControlLight;
+            buttonMatrix.BackColor = Color.FromArgb(230, 230, 230);
             buttonMatrix.BorderColor = Color.Transparent;
             buttonMatrix.BorderRadius = 2;
             buttonMatrix.Dock = DockStyle.Top;
@@ -202,7 +202,7 @@ namespace GHelper
             comboMatrixRunning.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
             comboMatrixRunning.FormattingEnabled = true;
             comboMatrixRunning.ItemHeight = 32;
-            comboMatrixRunning.Items.AddRange(new object[] { "Binary Banner", "Rog Logo", "Picture" });
+            comboMatrixRunning.Items.AddRange(new object[] { "Binary Banner", "Rog Logo", "Picture", "Clock" });
             comboMatrixRunning.Location = new Point(197, 10);
             comboMatrixRunning.Margin = new Padding(4, 10, 4, 8);
             comboMatrixRunning.Name = "comboMatrixRunning";
@@ -327,7 +327,7 @@ namespace GHelper
             // 
             buttonQuit.Activated = false;
             buttonQuit.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            buttonQuit.BackColor = SystemColors.ControlLight;
+            buttonQuit.BackColor = Color.FromArgb(230, 230, 230);
             buttonQuit.BorderColor = Color.Transparent;
             buttonQuit.BorderRadius = 2;
             buttonQuit.FlatStyle = FlatStyle.Flat;
@@ -494,7 +494,7 @@ namespace GHelper
             // buttonFans
             // 
             buttonFans.Activated = false;
-            buttonFans.BackColor = SystemColors.ControlLight;
+            buttonFans.BackColor = Color.FromArgb(230, 230, 230);
             buttonFans.BorderColor = Color.Transparent;
             buttonFans.BorderRadius = 5;
             buttonFans.Dock = DockStyle.Fill;
@@ -881,7 +881,7 @@ namespace GHelper
             // buttonKeyboard
             // 
             buttonKeyboard.Activated = false;
-            buttonKeyboard.BackColor = SystemColors.ControlLight;
+            buttonKeyboard.BackColor = Color.FromArgb(230, 230, 230);
             buttonKeyboard.BorderColor = Color.Transparent;
             buttonKeyboard.BorderRadius = 2;
             buttonKeyboard.Dock = DockStyle.Top;

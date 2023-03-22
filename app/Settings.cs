@@ -21,6 +21,7 @@ namespace GHelper
         public Keyboard keyb;
 
         static AnimeMatrixDevice mat;
+        static int matrixMode = 0;
 
         public SettingsForm()
         {
@@ -265,14 +266,23 @@ namespace GHelper
         private static void MatrixTimer_Elapsed(object? sender, ElapsedEventArgs e)
         {
             if (mat is null) return;
-            mat.PresentNextFrame();
+
+            switch (Program.config.getConfig("matrix_running"))
+            {
+                case 2:
+                    mat.PresentNextFrame();
+                    break;
+                case 3:
+                    mat.PresentText(DateTime.Now.ToString("H:mm:ss"));
+                    break;
+            }
+
         }
 
         void SetMatrixPicture(string fileName)
         {
 
             if (mat is null) return;
-
             StopMatrixTimer();
 
             Image image;
@@ -315,8 +325,6 @@ namespace GHelper
                 mat.GenerateFrame(image);
                 mat.Present();
             }
-
-
         }
 
 
@@ -397,14 +405,20 @@ namespace GHelper
                 mat.SetDisplayState(true);
                 mat.SetBrightness((BrightnessMode)brightness);
 
-                if (running == 2)
+                switch (running)
                 {
-                    string fileName = Program.config.getConfigString("matrix_picture");
-                    SetMatrixPicture(fileName);
-                }
-                else
-                {
-                    mat.SetBuiltInAnimation(true, animation);
+                    case 2:
+                        string fileName = Program.config.getConfigString("matrix_picture");
+                        SetMatrixPicture(fileName);
+                        break;
+                    case 3:
+                        mat.SetBuiltInAnimation(false);
+                        StartMatrixTimer();
+                        break;
+                    default:
+                        mat.SetBuiltInAnimation(true, animation);
+                        break;
+
                 }
 
             }

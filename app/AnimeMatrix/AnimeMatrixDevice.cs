@@ -1,7 +1,7 @@
 ﻿// Source thanks to https://github.com/vddCore/Starlight with some adjustments from me
 
 using Starlight.Communication;
-using System.Diagnostics;
+using System.Drawing;
 using System.Management;
 using System.Text;
 
@@ -90,7 +90,7 @@ namespace Starlight.AnimeMatrix
             {
                 MaxColumns = 33;
 
-                FullRows = 6;
+                FullRows = 7;
                 FullEvenRows = 6;
 
                 MaxRows = 55;
@@ -152,7 +152,7 @@ namespace Starlight.AnimeMatrix
 
         public int XEnd(int row)
         {
-            if (row <= FullEvenRows && row % 2 == 0) return MaxColumns-1;
+            if (row <= FullEvenRows && row % 2 == 0) return MaxColumns - 1;
             return MaxColumns;
         }
 
@@ -273,8 +273,41 @@ namespace Starlight.AnimeMatrix
         static int GetColor(Bitmap bmp, int x, int y)
         {
             var pixel = bmp.GetPixel(Math.Max(0, Math.Min(bmp.Width - 1, x)), Math.Max(0, Math.Min(bmp.Height - 1, y)));
-            return (Math.Max((pixel.R + pixel.G + pixel.B) / 3, 0));
+            return (Math.Min((pixel.R + pixel.G + pixel.B) / 3, 255));
         }
+
+
+        public void PresentText(string text, int fontSize = 8)
+        {
+            int width = MaxColumns * 3;
+            int height = MaxRows;
+
+            Bitmap bmp = new Bitmap(width, height);
+
+            using (Graphics g = Graphics.FromImage(bmp))
+            {
+                using (Font font = new Font("Arial", fontSize))
+                {
+                    
+                    g.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
+                    g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
+                    SizeF textSize = g.MeasureString(text, font);
+                    
+                    /*
+                    g.TranslateTransform(bmp.Width / 2, bmp.Height / 2);
+                    g.RotateTransform(33);
+                    g.DrawString(text, font, Brushes.White, -textSize.Width/2, -textSize.Height / 2);
+                    */
+
+                    g.DrawString(text, font, Brushes.White, bmp.Width - textSize.Width + 5, 0);
+                }
+            }
+
+            GenerateFrame(bmp);
+            Present();
+
+        }
+
         public void GenerateFrame(Image image)
         {
 

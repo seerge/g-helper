@@ -232,7 +232,7 @@ namespace GHelper
             // 
             buttonReset.Activated = false;
             buttonReset.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            buttonReset.BackColor = SystemColors.ControlLight;
+            buttonReset.BackColor = Color.FromArgb(230, 230, 230);
             buttonReset.BorderColor = Color.Transparent;
             buttonReset.BorderRadius = 2;
             buttonReset.FlatStyle = FlatStyle.Flat;
@@ -249,7 +249,7 @@ namespace GHelper
             // 
             buttonApply.Activated = false;
             buttonApply.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            buttonApply.BackColor = SystemColors.ControlLight;
+            buttonApply.BackColor = Color.FromArgb(230, 230, 230);
             buttonApply.BorderColor = Color.Transparent;
             buttonApply.BorderRadius = 2;
             buttonApply.FlatStyle = FlatStyle.Flat;
@@ -320,7 +320,7 @@ namespace GHelper
             // 
             buttonApplyPower.Activated = false;
             buttonApplyPower.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            buttonApplyPower.BackColor = SystemColors.ControlLight;
+            buttonApplyPower.BackColor = Color.FromArgb(230, 230, 230);
             buttonApplyPower.BorderColor = Color.Transparent;
             buttonApplyPower.BorderRadius = 2;
             buttonApplyPower.FlatStyle = FlatStyle.Flat;

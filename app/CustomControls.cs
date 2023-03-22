@@ -71,8 +71,8 @@ namespace CustomControls
                 }
             }
         }
-        private Color buttonColor = Color.LightGray;
-        [DefaultValue(typeof(Color), "LightGray")]
+        private Color buttonColor = Color.FromArgb(255,230, 230, 230);
+        [DefaultValue(typeof(Color), "230, 230, 230")]
         public Color ButtonColor
         {
             get { return buttonColor; }
