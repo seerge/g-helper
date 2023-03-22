@@ -287,7 +287,7 @@ namespace Starlight.AnimeMatrix
                     {
 
                         g.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
-                        g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+                        g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
                         SizeF textSize = g.MeasureString(text, font);
 
                         /*

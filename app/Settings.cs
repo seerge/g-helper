@@ -282,8 +282,9 @@ namespace GHelper
             Program.config.setConfig("matrix_auto", check.Checked ? 1 : 0);
         }
 
-        private static void StartMatrixTimer()
+        private static void StartMatrixTimer(int interval = 100)
         {
+            matrixTimer.Interval = interval;
             matrixTimer.Enabled = true;
         }
 
@@ -443,7 +444,7 @@ namespace GHelper
                         break;
                     case 3:
                         mat.SetBuiltInAnimation(false);
-                        StartMatrixTimer();
+                        StartMatrixTimer(1000);
                         break;
                     default:
                         mat.SetBuiltInAnimation(true, animation);
