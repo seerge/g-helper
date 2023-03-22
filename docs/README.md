@@ -68,6 +68,9 @@ Ultimate mode is supported (by hardware) only on G14 2022 (and possibly other mo
 #### App doesn't start / or crashes, what should I do ?
 Open "Event Viewer" from start menu, go to Windows Logs -> Application and check for recent Errors mentioning G-Helper. If you see one - please post a [new issue](https://github.com/seerge/g-helper/issues) with all details from this error.
 
+#### How do I uninstall G-helper?
+G-helper is a single exe, and it doesn't install anything in the system. To remove it - you can simply delete exe :) If you have applied any custom fan profiles or PPTs - before removing I would recommend selecting your favorite perfromance mode (for example balanced) and clicking "Factory defaults" under Fans + Power.
+
 ----------------------------
 
 ### How to install
