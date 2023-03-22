@@ -393,6 +393,7 @@ namespace GHelper
             // labelCPUFan
             // 
             labelCPUFan.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            labelCPUFan.Cursor = Cursors.Hand;
             labelCPUFan.Location = new Point(384, 15);
             labelCPUFan.Margin = new Padding(8, 0, 8, 0);
             labelCPUFan.Name = "labelCPUFan";

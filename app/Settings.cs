@@ -23,6 +23,7 @@ namespace GHelper
         public Keyboard keyb;
 
         static AnimeMatrixDevice mat;
+        static long lastTip;
 
         public SettingsForm()
         {
@@ -116,7 +117,7 @@ namespace GHelper
             button120Hz.MouseMove += Button120Hz_MouseHover;
             button120Hz.MouseLeave += ButtonScreen_MouseLeave;
 
-            //Program.trayIcon.MouseMove += TrayIcon_MouseMove;
+            Program.trayIcon.MouseMove += TrayIcon_MouseMove;
 
             //buttonStandard.Image = (Image)(new Bitmap(buttonStandard.Image, new Size(16, 16)));
 
@@ -127,28 +128,17 @@ namespace GHelper
 
         private static void TrayIcon_MouseMove(object? sender, MouseEventArgs e)
         {
-            trayPoint = Cursor.Position;
-
-            if (!aTimer.Enabled)
-            {
-                aTimer.Interval = 100;
-                aTimer.Enabled = true;
-            }
+            if (Math.Abs(DateTimeOffset.Now.ToUnixTimeMilliseconds() - lastTip) < 2000) return;
+            lastTip = DateTimeOffset.Now.ToUnixTimeMilliseconds();
+            RefreshSensors();
         }
 
 
         private static void OnTimedEvent(Object? source, ElapsedEventArgs? e)
         {
-            if (Program.settingsForm.Visible || Cursor.Position == trayPoint)
-            {
-                aTimer.Interval = 2000;
+            aTimer.Interval = 2000;
+            if (Program.settingsForm.Visible)
                 RefreshSensors();
-            } else
-            {
-                Program.trayIcon.Text = "";
-                aTimer.Enabled = false;
-            }
-
         }
 
         private void Button120Hz_MouseHover(object? sender, EventArgs e)

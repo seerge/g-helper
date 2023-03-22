@@ -1,7 +1,6 @@
 ﻿// Source thanks to https://github.com/vddCore/Starlight with some adjustments from me
 
 using Starlight.Communication;
-using System.Drawing;
 using System.Management;
 using System.Text;
 
@@ -193,16 +192,14 @@ namespace Starlight.AnimeMatrix
             Set(Packet<AnimeMatrixPacket>(0xC0, 0x03));
         }
 
-        public int SetLedPlanar(int x, int y, byte value)
+        public void SetLedPlanar(int x, int y, byte value)
         {
             EnsureRowInRange(y);
             var start = RowToLinearAddress(y) - XStart(y);
             if (x >= XStart(y) && x < XEnd(y))
             {
                 SetLedLinear(start + x, value);
-                return start + x;
             }
-            return -1;
         }
 
         public void Clear(bool present = false)
@@ -270,11 +267,6 @@ namespace Starlight.AnimeMatrix
             Set(Packet<AnimeMatrixPacket>(0xC5, animation.AsByte));
         }
 
-        static int GetColor(Bitmap bmp, int x, int y)
-        {
-            var pixel = bmp.GetPixel(Math.Max(0, Math.Min(bmp.Width - 1, x)), Math.Max(0, Math.Min(bmp.Height - 1, y)));
-            return (Math.Min((pixel.R + pixel.G + pixel.B) / 3, 255));
-        }
 
 
         public void PresentText(string text, float fontSize = 8F)
@@ -327,6 +319,7 @@ namespace Starlight.AnimeMatrix
                     graph.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
 
                     graph.DrawImage(image, ((int)width - scaleWidth), 0, scaleWidth, scaleHeight);
+
                 }
 
                 using (Bitmap bmp = new Bitmap(canvas, MaxColumns * 2, MaxRows))
@@ -334,7 +327,10 @@ namespace Starlight.AnimeMatrix
                     for (int y = 0; y < bmp.Height; y++)
                         for (int x = 0; x < bmp.Width; x++)
                             if (x % 2 == y % 2)
-                                SetLedPlanar(x / 2, y, (byte)GetColor(bmp, x, y));
+                            {
+                                var pixel = bmp.GetPixel(x, y);
+                                SetLedPlanar(x / 2, y, (byte)((pixel.R + pixel.G + pixel.B)/3));
+                            }
                 }
             }
 
