@@ -6,7 +6,7 @@ public static class ControlHelper
 {
 
     static bool _invert = false;
-    static bool _resize = false;
+    static bool _darkTheme = false;
 
     static float _scale = 1;
 
@@ -20,11 +20,13 @@ public static class ControlHelper
     public static void Adjust(RForm container, bool darkTheme = false, bool invert = false)
     {
 
+        _darkTheme = darkTheme;
+
         if (darkTheme)
         {
             formBack = Color.FromArgb(255, 35, 35, 35);
             backMain = Color.FromArgb(255, 50, 50, 50);
-            foreMain = Color.White;
+            foreMain = Color.FromArgb(255, 240, 240, 240);
             foreAccent = Color.FromArgb(255, 100, 100, 100);
             borderMain = Color.FromArgb(255, 50, 50, 50);
             buttonMain = Color.FromArgb(255, 80, 80, 80);
@@ -115,8 +117,6 @@ public static class ControlHelper
             {
                 chart.BackColor = backMain;
                 chart.ChartAreas[0].BackColor = backMain;
-                chart.ChartAreas[0].AxisX.MajorGrid.LineColor = foreAccent;
-                chart.ChartAreas[0].AxisY.MajorGrid.LineColor = foreAccent;
 
                 chart.ChartAreas[0].AxisX.TitleForeColor = foreMain;
                 chart.ChartAreas[0].AxisY.TitleForeColor = foreMain;
@@ -127,6 +127,8 @@ public static class ControlHelper
                 chart.ChartAreas[0].AxisX.MajorTickMark.LineColor = foreMain;
                 chart.ChartAreas[0].AxisY.MajorTickMark.LineColor = foreMain;
 
+                chart.ChartAreas[0].AxisX.MajorGrid.LineColor = foreAccent;
+                chart.ChartAreas[0].AxisY.MajorGrid.LineColor = foreAccent;
                 chart.ChartAreas[0].AxisX.LineColor = foreAccent;
                 chart.ChartAreas[0].AxisY.LineColor = foreAccent;
 

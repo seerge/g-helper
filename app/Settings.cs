@@ -2,6 +2,8 @@
 using Starlight.AnimeMatrix;
 using System.Diagnostics;
 using System.Drawing.Imaging;
+using System.Reflection;
+using System.Text.Json;
 using System.Timers;
 
 namespace GHelper
@@ -23,7 +25,7 @@ namespace GHelper
         public Keyboard keyb;
 
         static AnimeMatrixDevice mat;
-        static long lastTip;
+        static long lastRefresh;
 
         public SettingsForm()
         {
@@ -56,8 +58,6 @@ namespace GHelper
             buttonUltimate.Click += ButtonUltimate_Click;
 
             VisibleChanged += SettingsForm_VisibleChanged;
-
-            trackBattery.Scroll += trackBatteryChange;
 
             button60Hz.Click += Button60Hz_Click;
             button120Hz.Click += Button120Hz_Click;
@@ -117,6 +117,7 @@ namespace GHelper
             button120Hz.MouseMove += Button120Hz_MouseHover;
             button120Hz.MouseLeave += ButtonScreen_MouseLeave;
 
+            trackBattery.ValueChanged += TrackBattery_ValueChanged;
             Program.trayIcon.MouseMove += TrayIcon_MouseMove;
 
             //buttonStandard.Image = (Image)(new Bitmap(buttonStandard.Image, new Size(16, 16)));
@@ -124,21 +125,72 @@ namespace GHelper
             aTimer = new System.Timers.Timer(500);
             aTimer.Elapsed += OnTimedEvent;
 
+            SetVersionLabel("Version: " + Assembly.GetExecutingAssembly().GetName().Version);
+            Thread t = new Thread(() =>
+            {
+                CheckForUpdatesAsync();
+            });
+            t.Start();
+            t.Join();
+
+        }
+
+        private void TrackBattery_ValueChanged(object? sender, EventArgs e)
+        {
+            SetBatteryChargeLimit(trackBattery.Value);
+        }
+
+
+        public async void CheckForUpdatesAsync()
+        {
+
+            try
+            {
+
+                using (var httpClient = new HttpClient())
+                {
+                    httpClient.DefaultRequestHeaders.Add("User-Agent", "C# App");
+                    var json = await httpClient.GetStringAsync("https://api.github.com/repos/seerge/g-helper/releases/latest");
+                    var config = JsonSerializer.Deserialize<JsonElement>(json);
+                    var tag = config.GetProperty("tag_name").ToString().Replace("v", "");
+                    var url = config.GetProperty("assets")[0].GetProperty("browser_download_url").ToString();
+
+                    Thread.Sleep(5000);
+
+                    var gitVersion = new Version(tag);
+                    var appVersion = new Version(Assembly.GetExecutingAssembly().GetName().Version.ToString());
+
+                    if (gitVersion.CompareTo(appVersion) > 0)
+                    {
+                        BeginInvoke(delegate
+                        {
+                            SetVersionLabel("Download Update: " + tag, url);
+                        });
+                    }
+                    else
+                    {
+                        Debug.WriteLine("Latest version");
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+                //Logger.WriteLine("Failed to check for updates:" + ex.Message);
+
+            }
+
         }
 
         private static void TrayIcon_MouseMove(object? sender, MouseEventArgs e)
         {
-            if (Math.Abs(DateTimeOffset.Now.ToUnixTimeMilliseconds() - lastTip) < 2000) return;
-            lastTip = DateTimeOffset.Now.ToUnixTimeMilliseconds();
             RefreshSensors();
         }
 
 
         private static void OnTimedEvent(Object? source, ElapsedEventArgs? e)
         {
-            aTimer.Interval = 2000;
-            if (Program.settingsForm.Visible)
-                RefreshSensors();
+            RefreshSensors();
         }
 
         private void Button120Hz_MouseHover(object? sender, EventArgs e)
@@ -233,12 +285,12 @@ namespace GHelper
         }
 
 
-        public void SetVersionLabel(string label, string url = null)
+        void SetVersionLabel(string label, string url = null)
         {
             labelVersion.Text = label;
             if (url is not null)
             {
-                versionUrl = url;
+                this.versionUrl = url;
                 labelVersion.ForeColor = Color.Red;
             }
         }
@@ -798,6 +850,9 @@ namespace GHelper
         private static void RefreshSensors()
         {
 
+            if (Math.Abs(DateTimeOffset.Now.ToUnixTimeMilliseconds() - lastRefresh) < 2000) return;
+            lastRefresh = DateTimeOffset.Now.ToUnixTimeMilliseconds();
+
             string cpuFan = FormatFan(Program.wmi.DeviceGet(ASUSWmi.CPU_Fan));
             string gpuFan = FormatFan(Program.wmi.DeviceGet(ASUSWmi.GPU_Fan));
             string midFan = FormatFan(Program.wmi.DeviceGet(ASUSWmi.Mid_Fan));
@@ -1084,7 +1139,7 @@ namespace GHelper
 
             labelGPU.Text = "GPU Mode: Changing ...";
 
-            new Thread(() =>
+            Thread t = new Thread(() =>
             {
                 Thread.CurrentThread.IsBackground = true;
 
@@ -1099,14 +1154,13 @@ namespace GHelper
                 Program.settingsForm.BeginInvoke(delegate
                 {
                     InitGPUMode();
-                    HardwareMonitor.RecreateGpuTemperatureProviderWithRetry();
+                    HardwareMonitor.RecreateGpuTemperatureProviderWithDelay();
                     Thread.Sleep(500);
                     AutoScreen(SystemInformation.PowerStatus.PowerLineStatus);
                 });
-            })
-            {
+            });
 
-            }.Start();
+            t.Start();
 
         }
 
@@ -1162,7 +1216,6 @@ namespace GHelper
             if (changed)
             {
                 Program.config.setConfig("gpu_mode", GPUMode);
-                HardwareMonitor.RecreateGpuTemperatureProviderWithRetry();
             }
 
             if (restart)
@@ -1254,17 +1307,10 @@ namespace GHelper
 
             labelBatteryTitle.Text = "Battery Charge Limit: " + limit.ToString() + "%";
             trackBattery.Value = limit;
-            Program.wmi.DeviceSet(ASUSWmi.BatteryLimit, limit);
 
+            Program.wmi.DeviceSet(ASUSWmi.BatteryLimit, limit);
             Program.config.setConfig("charge_limit", limit);
 
-        }
-
-        private void trackBatteryChange(object? sender, EventArgs e)
-        {
-            if (sender is null) return;
-            TrackBar bar = (TrackBar)sender;
-            SetBatteryChargeLimit(bar.Value);
         }
 
 

@@ -47,6 +47,13 @@ namespace GHelper
 
             chart.ChartAreas[0].AxisY.LabelStyle.Font = new Font("Arial", 7F);
 
+            var foreAccent = Color.FromArgb(255, 100, 100, 100);
+
+            chart.ChartAreas[0].AxisX.MajorGrid.LineColor = foreAccent;
+            chart.ChartAreas[0].AxisY.MajorGrid.LineColor = foreAccent;
+            chart.ChartAreas[0].AxisX.LineColor = foreAccent;
+            chart.ChartAreas[0].AxisY.LineColor = foreAccent;
+
             for (int i = 0; i <= 90; i += 10)
                 chart.ChartAreas[0].AxisY.CustomLabels.Add(i - 2, i + 2, ChartPercToRPM(i));
 

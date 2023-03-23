@@ -78,9 +78,6 @@ namespace GHelper
             // Subscribing for system power change events
             SystemEvents.PowerModeChanged += SystemEvents_PowerModeChanged;
 
-            settingsForm.SetVersionLabel("Version: " + Assembly.GetExecutingAssembly().GetName().Version);
-            CheckForUpdates();
-
 
             if (Environment.CurrentDirectory.Trim('\\') == Application.StartupPath.Trim('\\'))
             {
@@ -103,7 +100,7 @@ namespace GHelper
             {
                 case UserPreferenceCategory.General:
                     Debug.WriteLine("Theme Changed");
-                    Thread.Sleep(500);
+                    Thread.Sleep(1000);
                     settingsForm.InitTheme(false);
 
                     if (settingsForm.fans is not null && settingsForm.fans.Text != "")
@@ -116,39 +113,6 @@ namespace GHelper
             }
         }
 
-
-        static async void CheckForUpdates()
-        {
-
-            try
-            {
-                using (var httpClient = new HttpClient())
-                {
-                    httpClient.DefaultRequestHeaders.Add("User-Agent", "C# App");
-                    var json = await httpClient.GetStringAsync("https://api.github.com/repos/seerge/g-helper/releases/latest");
-                    var config = JsonSerializer.Deserialize<JsonElement>(json);
-                    var tag = config.GetProperty("tag_name").ToString().Replace("v", "");
-                    var url = config.GetProperty("assets")[0].GetProperty("browser_download_url").ToString();
-
-                    var gitVersion = new Version(tag);
-                    var appVersion = new Version(Assembly.GetExecutingAssembly().GetName().Version.ToString());
-                    if (gitVersion.CompareTo(appVersion) > 0)
-                    {
-                        settingsForm.BeginInvoke(delegate
-                        {
-                            settingsForm.SetVersionLabel("Download Update: " + tag, url);
-                        });
-                    }
-
-                }
-            }
-            catch (Exception ex) 
-            {
-                Logger.WriteLine("Failed to check for updates:"+ ex.Message);
-                
-            }
-
-        }
 
 
         public static void SetAutoModes(bool wait = false)

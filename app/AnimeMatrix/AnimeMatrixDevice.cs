@@ -90,7 +90,7 @@ namespace Starlight.AnimeMatrix
                 MaxColumns = 33;
 
                 FullRows = 7;
-                FullEvenRows = 1;
+                FullEvenRows = 3;
 
                 MaxRows = 55;
                 LedCount = 1214;
@@ -151,7 +151,11 @@ namespace Starlight.AnimeMatrix
 
         public int XEnd(int row)
         {
-            if (row <= FullEvenRows && row % 2 == 0) return MaxColumns - 1;
+            if (row <= FullEvenRows)
+            {
+                if (row % 2 == 1) return MaxColumns + 2;
+                else return MaxColumns;
+            }
             return MaxColumns;
         }
 
@@ -196,7 +200,7 @@ namespace Starlight.AnimeMatrix
         {
             EnsureRowInRange(y);
             var start = RowToLinearAddress(y) - XStart(y);
-            if (x >= XStart(y) && x < XEnd(y))
+            if (x >= XStart(y) && x < MaxColumns)
             {
                 SetLedLinear(start + x, value);
             }
@@ -325,12 +329,14 @@ namespace Starlight.AnimeMatrix
                 using (Bitmap bmp = new Bitmap(canvas, MaxColumns * 2, MaxRows))
                 {
                     for (int y = 0; y < bmp.Height; y++)
+                    {
                         for (int x = 0; x < bmp.Width; x++)
                             if (x % 2 == y % 2)
                             {
                                 var pixel = bmp.GetPixel(x, y);
-                                SetLedPlanar(x / 2, y, (byte)((pixel.R + pixel.G + pixel.B)/3));
+                                SetLedPlanar(x / 2, y, (byte)((pixel.R + pixel.G + pixel.B) / 3));
                             }
+                    }
                 }
             }
 

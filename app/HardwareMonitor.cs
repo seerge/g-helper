@@ -46,15 +46,17 @@ public static class HardwareMonitor
 
     }
 
-    public static void RecreateGpuTemperatureProviderWithRetry() {
-        RecreateGpuTemperatureProvider();
+    public static void RecreateGpuTemperatureProviderWithDelay() {
 
         // Re-enabling the discrete GPU takes a bit of time,
         // so a simple workaround is to refresh again after that happens
         Task.Run(async () => {
-            await Task.Delay(TimeSpan.FromSeconds(3));
+            await Task.Delay(TimeSpan.FromSeconds(5));
             RecreateGpuTemperatureProvider();
         });
+
+
+
     }
 
     public static void RecreateGpuTemperatureProvider() {
