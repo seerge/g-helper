@@ -55,12 +55,12 @@ PPTs are shown for G14 2022, for other models PPTs will be different as they are
 1. Eco mode : only low power integrated GPU enabled, iGPU drives built in display
 2. Standard mode (MS Hybrid) : iGPU and dGPU enabled, iGPU drives built in display
 3. Ultimate mode: iGPU and dGPU enabled, but dGPU drives built in display (supported only on G14 2022 model)
-4. Optimized (formely existed as a checkbox): disables dGPU on battery (Eco) and enables when plugged (Standard)
+4. Optimized (formerly existed as a checkbox): disables dGPU on battery (Eco) and enables when plugged (Standard)
 
 ### :question: FAQ
 
 #### How do I stop Armory Crate install popup appearing every time I press M4 / Rog key?
-Go to BIOS (F2 on boot), open Advanced Settings and disable "Armory Control Intrerface"  
+Go to BIOS (F2 on boot), open Advanced Settings and disable "Armory Control Interface"  
 
 #### Why Ultimate GPU mode is not available on my laptop?
 Ultimate mode is supported (by hardware) only on G14 2022 (and possibly other models from 2022+)
@@ -81,7 +81,7 @@ Click on them
 Open "Event Viewer" from start menu, go to Windows Logs -> Application and check for recent Errors mentioning G-Helper. If you see one - please post a [new issue](https://github.com/seerge/g-helper/issues) with all details from this error.
 
 #### How do I uninstall G-helper?
-G-helper is a single exe, and it doesn't install anything in the system. To remove it - you can simply delete exe :) If you have applied any custom fan profiles or PPTs - before removing I would recommend selecting your favorite perfromance mode (for example balanced) and clicking "Factory defaults" under Fans + Power.
+G-helper is a single exe, and it doesn't install anything in the system. To remove it - you can simply delete exe :) If you have applied any custom fan profiles or PPTs - before removing I would recommend selecting your favorite performance mode (for example balanced) and clicking "Factory defaults" under Fans + Power.
 
 ----------------------------
 
@@ -97,7 +97,7 @@ G-helper is a single exe, and it doesn't install anything in the system. To remo
 
 - I recommend keeping "Asus Optimization Service" running, as it keeps basic laptop hotkeys such as screen or keyboard brightness adjustment working. If you have (or had) MyASUS app installed, that service is most probably still up and running even after MyASUS uninstalls. It's part of [Asus System Control Interface](https://www.asus.com/support/FAQ/1047338/). You can install it, and later disable / remove unnecessary services by running [this bat file](https://raw.githubusercontent.com/seerge/g-helper/main/debloat.bat) as admin.
 
-- It's not recommended to use an app in combination with Armory Crate, cause they adjust the same settings. You can [uninstall it using it's own uninstall tool](https://dlcdnets.asus.com/pub/ASUS/mb/14Utilities/Armoury_Crate_Uninstall_Tool.zip?model=armoury%20crate). Just in case, you can always install it back later.
+- It's not recommended to use an app in combination with Armoury Crate, cause they adjust the same settings. You can [uninstall it using it's own uninstall tool](https://dlcdnets.asus.com/pub/ASUS/mb/14Utilities/Armoury_Crate_Uninstall_Tool.zip?model=armoury%20crate). Just in case, you can always install it back later.
 
 Note: Doesn't need administrator privileges to run!
 
