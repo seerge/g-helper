@@ -442,6 +442,7 @@ namespace GHelper
 
                 }
 
+                //mat.SetBrightness((BrightnessMode)brightness);
             }
 
         }

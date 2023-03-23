@@ -279,16 +279,16 @@ namespace Starlight.AnimeMatrix
                     {
 
                         g.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
-                        g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
-                        SizeF textSize = g.MeasureString(text, font);
+                        g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
 
                         /*
+                        SizeF textSize = g.MeasureString(text, font);
                         g.TranslateTransform(bmp.Width / 2, bmp.Height / 2);
                         g.RotateTransform(33);
                         g.DrawString(text, font, Brushes.White, -textSize.Width/2, -textSize.Height / 2);
                         */
 
-                        g.DrawString(text, font, Brushes.White, bmp.Width - textSize.Width + 5, 0);
+                        g.DrawString(text, font, Brushes.White, 12, -2);
                     }
                 }
 
