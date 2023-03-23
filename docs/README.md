@@ -69,7 +69,7 @@ Ultimate mode is supported (by hardware) only on G14 2022 (and possibly other mo
 Unfortunately 2020 model doesn't support that on hardware level
 
 #### Should I apply custom PPTs and fan profiles?
-You don't have to, it's purely optional. From my experience built in (in bios) performance modes work well. Limit your power or apply custom fan curves only if you have issues :)
+You don't have to, it's purely optional. From my experience built in (in bios) performance modes work well. Limit your power or apply custom fan curves only if you have issues. As sooon as you click Apply in fan + power section bios will be considering fan profile as "custom"! (no matter if you modified it or not)
 
 #### How does G-helper control my fan speeds?
 It doesn't. Your bios does (same as in case with armoury). What G-helper can do - is (optionally) set a custom fan profile to current performance mode consisting of 8 pairs of temperature + fan speed % via same endpoint armoury seem to use.
