@@ -65,6 +65,18 @@ Go to BIOS (F2 on boot), open Advanced Settings and disable "Armory Control Intr
 #### Why Ultimate GPU mode is not available on my laptop?
 Ultimate mode is supported (by hardware) only on G14 2022 (and possibly other models from 2022+)
 
+#### I can't set Eco mode (disable dGPU) on my G14 2020
+Unfortunately 2020 model doesn't support that on hardware level
+
+#### Should I apply custom PPTs and fan profiles?
+You don't have to, it's purely optional. From my experience built in (in bios) performance modes work well. Limit your power or apply custom fan curves only if you have issues :)
+
+#### How does G-helper control my fan speeds?
+It doesn't. Your bios does (same as in case with armoury). What G-helper can do - is (optionally) set a custom fan profile to current performance mode consisting of 8 pairs of temperature + fan speed % via same endpoint armoury seem to use.
+
+#### How do I change fan % to fan RPM?
+Click on them
+
 #### App doesn't start / or crashes, what should I do ?
 Open "Event Viewer" from start menu, go to Windows Logs -> Application and check for recent Errors mentioning G-Helper. If you see one - please post a [new issue](https://github.com/seerge/g-helper/issues) with all details from this error.
 
