@@ -77,6 +77,9 @@ It doesn't. Your bios does (same as in case with armoury). What G-helper can do 
 #### How do I change fan % to fan RPM?
 Click on them
 
+#### I don't see a GPU temperature in G-helper
+Most probably either you are using Eco / Optimized mode and your dGPU is simply off, or your windows has put dGPU into sleep (to preserve power). In this situations G-helper won't be able to reach your GPU and get readings
+
 #### App doesn't start / or crashes, what should I do ?
 Open "Event Viewer" from start menu, go to Windows Logs -> Application and check for recent Errors mentioning G-Helper. If you see one - please post a [new issue](https://github.com/seerge/g-helper/issues) with all details from this error.
 
