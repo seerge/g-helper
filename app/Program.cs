@@ -28,6 +28,7 @@ namespace GHelper
 
         private static long lastAuto;
         private static long lastTheme;
+        private static PowerLineStatus isPlugged = PowerLineStatus.Unknown;
 
         // The main entry point for the application
         public static void Main()
@@ -121,7 +122,7 @@ namespace GHelper
             if (Math.Abs(DateTimeOffset.Now.ToUnixTimeMilliseconds() - lastAuto) < 2000) return;
             lastAuto = DateTimeOffset.Now.ToUnixTimeMilliseconds();
 
-            PowerLineStatus isPlugged = SystemInformation.PowerStatus.PowerLineStatus;
+            isPlugged = SystemInformation.PowerStatus.PowerLineStatus;
 
             Logger.WriteLine("AutoSetting for " + isPlugged.ToString());
 
@@ -140,6 +141,8 @@ namespace GHelper
 
         private static void SystemEvents_PowerModeChanged(object sender, PowerModeChangedEventArgs e)
         {
+            if (SystemInformation.PowerStatus.PowerLineStatus == isPlugged) return;
+
             Logger.WriteLine("Windows - Power Mode Changed");
             SetAutoModes(true);
         }
