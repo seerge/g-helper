@@ -11,6 +11,7 @@ A small utility that allows you to do almost everything you could do with Armour
 1. Seamless and automatic GPU switching (without asking you to close all apps, etc)
 2. All performance modes can be fully customized (with fan curves and PPTs)
 3. Very lightweight and consumes almost no resources, doesn't install any services. Just a single exe to run
+4. Simple and clean UI with easy access to all settings
 
 ### [:floppy_disk: Download latest release](https://github.com/seerge/g-helper/releases/latest/download/GHelper.zip)
 
