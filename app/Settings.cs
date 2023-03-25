@@ -66,10 +66,6 @@ namespace GHelper
 
             buttonQuit.Click += ButtonQuit_Click;
 
-            comboKeyboard.DropDownStyle = ComboBoxStyle.DropDownList;
-            comboKeyboard.SelectedIndex = 0;
-            comboKeyboard.SelectedValueChanged += ComboKeyboard_SelectedValueChanged;
-
             buttonKeyboardColor.Click += ButtonKeyboardColor_Click;
 
             buttonFans.Click += ButtonFans_Click;
@@ -133,7 +129,12 @@ namespace GHelper
             t.Start();
             t.Join();
 
+            // Subscribing for monitor power on events
+            var settingGuid = new NativeMethods.PowerSettingGuid();
+            Program.unRegPowerNotify = NativeMethods.RegisterPowerSettingNotification(Handle, settingGuid.ConsoleDisplayState, NativeMethods.DEVICE_NOTIFY_WINDOW_HANDLE);
+
         }
+
 
         private void TrackBattery_ValueChanged(object? sender, EventArgs e)
         {
@@ -255,6 +256,7 @@ namespace GHelper
 
         protected override void WndProc(ref Message m)
         {
+
             switch (m.Msg)
             {
                 case NativeMethods.WM_POWERBROADCAST:
@@ -511,12 +513,13 @@ namespace GHelper
         {
 
             ColorDialog colorDlg = new ColorDialog();
-            colorDlg.AllowFullOpen = false;
+            colorDlg.AllowFullOpen = true;
             colorDlg.Color = pictureColor2.BackColor;
 
             if (colorDlg.ShowDialog() == DialogResult.OK)
             {
-                SetAuraColor(color2: colorDlg.Color);
+                Program.config.setConfig("aura_color2", colorDlg.Color.ToArgb());
+                SetAura();
             }
         }
 
@@ -561,45 +564,42 @@ namespace GHelper
         private void ButtonKeyboardColor_Click(object? sender, EventArgs e)
         {
 
-            if (sender is null)
-                return;
-
-            Button but = (Button)sender;
-
             ColorDialog colorDlg = new ColorDialog();
-            colorDlg.AllowFullOpen = false;
+            colorDlg.AllowFullOpen = true;
             colorDlg.Color = pictureColor.BackColor;
 
             if (colorDlg.ShowDialog() == DialogResult.OK)
             {
-                SetAuraColor(color1: colorDlg.Color);
+                Program.config.setConfig("aura_color", colorDlg.Color.ToArgb());
+                SetAura();
             }
         }
 
         public void InitAura()
         {
-            int mode = Program.config.getConfig("aura_mode");
-            int colorCode = Program.config.getConfig("aura_color");
-            int colorCode2 = Program.config.getConfig("aura_color2");
+            Aura.Mode = Program.config.getConfig("aura_mode");
+            Aura.Speed = Program.config.getConfig("aura_speed");
+            Aura.SetColor(Program.config.getConfig("aura_color"));
+            Aura.SetColor2(Program.config.getConfig("aura_color2"));
 
-            int speed = Program.config.getConfig("aura_speed");
+            comboKeyboard.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboKeyboard.DataSource = new BindingSource(Aura.GetModes(), null);
+            comboKeyboard.DisplayMember = "Value";
+            comboKeyboard.ValueMember = "Key";
+            comboKeyboard.SelectedValue = Aura.Mode;
+            comboKeyboard.SelectedValueChanged += ComboKeyboard_SelectedValueChanged;
 
-            Color color = Color.FromArgb(255, 255, 255);
-            Color color2 = Color.FromArgb(0, 0, 0);
+            comboKeyboardSpeed.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboKeyboardSpeed.DataSource = new BindingSource(Aura.GetSpeeds(), null);
+            comboKeyboardSpeed.DisplayMember = "Value";
+            comboKeyboardSpeed.ValueMember = "Key";
+            comboKeyboardSpeed.SelectedValue = Aura.Speed;
+            comboKeyboardSpeed.SelectedValueChanged += ComboKeyboardSpeed_SelectedValueChanged;
 
-            if (mode == -1)
-                mode = 0;
 
-            if (colorCode != -1)
-                color = Color.FromArgb(colorCode);
-
-            if (colorCode2 != -1)
-                color2 = Color.FromArgb(colorCode2);
-
-            SetAuraColor(color, color2, false);
-            SetAuraMode(mode, false);
-
-            Aura.Mode = mode;
+            pictureColor.BackColor = Aura.Color1;
+            pictureColor2.BackColor = Aura.Color2;
+            pictureColor2.Visible = Aura.HasSecondColor();
         }
 
         public void InitMatrix()
@@ -629,66 +629,41 @@ namespace GHelper
         }
 
 
-        public void SetAuraColor(Color? color1 = null, Color? color2 = null, bool apply = true)
+        public void SetAura()
         {
-
-            if (color1 is not null)
-            {
-                Aura.Color1 = (Color)color1;
-                Program.config.setConfig("aura_color", Aura.Color1.ToArgb());
-
-            }
-
-            if (color2 is not null)
-            {
-                Aura.Color2 = (Color)color2;
-                Program.config.setConfig("aura_color2", Aura.Color2.ToArgb());
-            }
-
-            if (apply)
-                Aura.ApplyAura();
+            Aura.Mode = Program.config.getConfig("aura_mode");
+            Aura.Speed = Program.config.getConfig("aura_speed");
+            Aura.SetColor(Program.config.getConfig("aura_color"));
+            Aura.SetColor2(Program.config.getConfig("aura_color2"));
 
             pictureColor.BackColor = Aura.Color1;
             pictureColor2.BackColor = Aura.Color2;
-        }
+            pictureColor2.Visible = Aura.HasSecondColor();
 
-        public void SetAuraMode(int mode = 0, bool apply = true)
-        {
-
-            //Debug.WriteLine(mode);
-
-            if (mode > 4) mode = 0;
-
-            pictureColor2.Visible = (mode == Aura.Breathe);
-
-            if (Aura.Mode == mode) return; // same mode
-
-            Aura.Mode = mode;
-
-            Program.config.setConfig("aura_mode", mode);
-
-            comboKeyboard.SelectedValueChanged -= ComboKeyboard_SelectedValueChanged;
-            comboKeyboard.SelectedIndex = mode;
-            comboKeyboard.SelectedValueChanged += ComboKeyboard_SelectedValueChanged;
-
-            if (apply)
-                Aura.ApplyAura();
+            Aura.ApplyAura();
 
         }
 
         public void CycleAuraMode()
         {
-            SetAuraMode(Program.config.getConfig("aura_mode") + 1);
+            if (comboKeyboard.SelectedIndex < comboKeyboard.Items.Count-1) 
+                comboKeyboard.SelectedIndex += 1;
+            else
+                comboKeyboard.SelectedIndex = 0;
         }
 
         private void ComboKeyboard_SelectedValueChanged(object? sender, EventArgs e)
         {
-            if (sender is null)
-                return;
-
-            ComboBox cmb = (ComboBox)sender;
-            SetAuraMode(cmb.SelectedIndex);
+            Program.config.setConfig("aura_mode", (int)comboKeyboard.SelectedValue);
+            SetAura();
         }
+
+        private void ComboKeyboardSpeed_SelectedValueChanged(object? sender, EventArgs e)
+        {
+            Program.config.setConfig("aura_speed", (int)comboKeyboardSpeed.SelectedValue);
+            SetAura();
+        }
+
 
         private void Button120Hz_Click(object? sender, EventArgs e)
         {
@@ -1088,8 +1063,7 @@ namespace GHelper
 
             }
 
-            tableLayoutKeyboard.ColumnCount = 0;
-            tableLayoutMatrix.ColumnCount = 0;
+            //tableLayoutMatrix.ColumnCount = 0;
 
 
         }

@@ -23,8 +23,7 @@ namespace GHelper
         public static SettingsForm settingsForm = new SettingsForm();
         public static ToastForm toast = new ToastForm();
 
-        private static IntPtr unRegPowerNotify;
-        private static IntPtr ds;
+        public static IntPtr unRegPowerNotify;
 
         private static long lastAuto;
         private static long lastTheme;
@@ -56,7 +55,7 @@ namespace GHelper
             SystemEvents.UserPreferenceChanged += new
                  UserPreferenceChangedEventHandler(SystemEvents_UserPreferenceChanged);
 
-            ds = settingsForm.Handle;
+            var ds = settingsForm.Handle;
 
             trayIcon.MouseClick += TrayIcon_MouseClick;
             
@@ -71,10 +70,6 @@ namespace GHelper
 
             SetAutoModes();
             HardwareMonitor.RecreateGpuTemperatureProvider();
-
-            // Subscribing for monitor power on events
-            var settingGuid = new NativeMethods.PowerSettingGuid();
-            unRegPowerNotify = NativeMethods.RegisterPowerSettingNotification(ds, settingGuid.ConsoleDisplayState, NativeMethods.DEVICE_NOTIFY_WINDOW_HANDLE);
 
             // Subscribing for system power change events
             SystemEvents.PowerModeChanged += SystemEvents_PowerModeChanged;

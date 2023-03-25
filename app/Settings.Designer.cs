@@ -79,12 +79,13 @@ namespace GHelper
             labelSreen = new Label();
             panelKeyboard = new Panel();
             tableLayoutKeyboard = new TableLayoutPanel();
-            buttonKeyboard = new RButton();
             comboKeyboard = new RComboBox();
+            comboKeyboardSpeed = new RComboBox();
             panelColor = new Panel();
             pictureColor2 = new PictureBox();
             pictureColor = new PictureBox();
             buttonKeyboardColor = new RButton();
+            buttonKeyboard = new RButton();
             pictureKeyboard = new PictureBox();
             labelKeyboard = new Label();
             panelMatrix.SuspendLayout();
@@ -868,9 +869,10 @@ namespace GHelper
             tableLayoutKeyboard.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
             tableLayoutKeyboard.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
             tableLayoutKeyboard.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
-            tableLayoutKeyboard.Controls.Add(buttonKeyboard, 2, 0);
             tableLayoutKeyboard.Controls.Add(comboKeyboard, 0, 0);
-            tableLayoutKeyboard.Controls.Add(panelColor, 1, 0);
+            tableLayoutKeyboard.Controls.Add(comboKeyboardSpeed, 1, 0);
+            tableLayoutKeyboard.Controls.Add(panelColor, 2, 0);
+            tableLayoutKeyboard.Controls.Add(buttonKeyboard, 3, 0);
             tableLayoutKeyboard.Location = new Point(16, 50);
             tableLayoutKeyboard.Margin = new Padding(8);
             tableLayoutKeyboard.Name = "tableLayoutKeyboard";
@@ -878,24 +880,6 @@ namespace GHelper
             tableLayoutKeyboard.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
             tableLayoutKeyboard.Size = new Size(772, 60);
             tableLayoutKeyboard.TabIndex = 39;
-            // 
-            // buttonKeyboard
-            // 
-            buttonKeyboard.Activated = false;
-            buttonKeyboard.BackColor = Color.FromArgb(230, 230, 230);
-            buttonKeyboard.BorderColor = Color.Transparent;
-            buttonKeyboard.BorderRadius = 2;
-            buttonKeyboard.Dock = DockStyle.Top;
-            buttonKeyboard.FlatAppearance.BorderSize = 0;
-            buttonKeyboard.FlatStyle = FlatStyle.Flat;
-            buttonKeyboard.Location = new Point(390, 8);
-            buttonKeyboard.Margin = new Padding(4, 8, 4, 8);
-            buttonKeyboard.Name = "buttonKeyboard";
-            buttonKeyboard.Secondary = true;
-            buttonKeyboard.Size = new Size(185, 44);
-            buttonKeyboard.TabIndex = 37;
-            buttonKeyboard.Text = "Extra";
-            buttonKeyboard.UseVisualStyleBackColor = false;
             // 
             // comboKeyboard
             // 
@@ -906,13 +890,30 @@ namespace GHelper
             comboKeyboard.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
             comboKeyboard.FormattingEnabled = true;
             comboKeyboard.ItemHeight = 32;
-            comboKeyboard.Items.AddRange(new object[] { "Static", "Breathe", "Strobe", "Rainbow", "Dingding" });
+            comboKeyboard.Items.AddRange(new object[] { "Static", "Breathe", "Rainbow", "Strobe" });
             comboKeyboard.Location = new Point(4, 10);
             comboKeyboard.Margin = new Padding(4, 10, 4, 8);
             comboKeyboard.Name = "comboKeyboard";
             comboKeyboard.Size = new Size(185, 40);
             comboKeyboard.TabIndex = 35;
             comboKeyboard.TabStop = false;
+            // 
+            // comboKeyboardSpeed
+            // 
+            comboKeyboardSpeed.BorderColor = Color.White;
+            comboKeyboardSpeed.ButtonColor = SystemColors.ControlLight;
+            comboKeyboardSpeed.Dock = DockStyle.Top;
+            comboKeyboardSpeed.FlatStyle = FlatStyle.Flat;
+            comboKeyboardSpeed.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            comboKeyboardSpeed.FormattingEnabled = true;
+            comboKeyboardSpeed.ItemHeight = 32;
+            comboKeyboardSpeed.Items.AddRange(new object[] { "Slow", "Normal", "Fast" });
+            comboKeyboardSpeed.Location = new Point(197, 10);
+            comboKeyboardSpeed.Margin = new Padding(4, 10, 4, 8);
+            comboKeyboardSpeed.Name = "comboKeyboardSpeed";
+            comboKeyboardSpeed.Size = new Size(185, 40);
+            comboKeyboardSpeed.TabIndex = 38;
+            comboKeyboardSpeed.TabStop = false;
             // 
             // panelColor
             // 
@@ -921,7 +922,7 @@ namespace GHelper
             panelColor.Controls.Add(pictureColor);
             panelColor.Controls.Add(buttonKeyboardColor);
             panelColor.Dock = DockStyle.Fill;
-            panelColor.Location = new Point(197, 8);
+            panelColor.Location = new Point(390, 8);
             panelColor.Margin = new Padding(4, 8, 4, 8);
             panelColor.Name = "panelColor";
             panelColor.Size = new Size(185, 44);
@@ -930,7 +931,7 @@ namespace GHelper
             // pictureColor2
             // 
             pictureColor2.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            pictureColor2.Location = new Point(123, 12);
+            pictureColor2.Location = new Point(126, 12);
             pictureColor2.Margin = new Padding(8);
             pictureColor2.Name = "pictureColor2";
             pictureColor2.Size = new Size(20, 20);
@@ -962,8 +963,26 @@ namespace GHelper
             buttonKeyboardColor.Secondary = false;
             buttonKeyboardColor.Size = new Size(185, 44);
             buttonKeyboardColor.TabIndex = 39;
-            buttonKeyboardColor.Text = "Color   ";
+            buttonKeyboardColor.Text = "   Color     .";
             buttonKeyboardColor.UseVisualStyleBackColor = false;
+            // 
+            // buttonKeyboard
+            // 
+            buttonKeyboard.Activated = false;
+            buttonKeyboard.BackColor = Color.FromArgb(230, 230, 230);
+            buttonKeyboard.BorderColor = Color.Transparent;
+            buttonKeyboard.BorderRadius = 2;
+            buttonKeyboard.Dock = DockStyle.Top;
+            buttonKeyboard.FlatAppearance.BorderSize = 0;
+            buttonKeyboard.FlatStyle = FlatStyle.Flat;
+            buttonKeyboard.Location = new Point(583, 8);
+            buttonKeyboard.Margin = new Padding(4, 8, 4, 8);
+            buttonKeyboard.Name = "buttonKeyboard";
+            buttonKeyboard.Secondary = true;
+            buttonKeyboard.Size = new Size(185, 44);
+            buttonKeyboard.TabIndex = 37;
+            buttonKeyboard.Text = "Extra";
+            buttonKeyboard.UseVisualStyleBackColor = false;
             // 
             // pictureKeyboard
             // 
@@ -1103,5 +1122,6 @@ namespace GHelper
         private RButton buttonKeyboardColor;
         private RButton buttonFans;
         private Label labelMidFan;
+        private RComboBox comboKeyboardSpeed;
     }
 }

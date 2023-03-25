@@ -1,4 +1,6 @@
-﻿using System.Management;
+﻿using GHelper;
+using System.Diagnostics;
+using System.Management;
 using System.Runtime.InteropServices;
 
 public class ASUSWmi
@@ -37,6 +39,9 @@ public class ASUSWmi
 
     public const int PPT_APUC1 = 0x001200C1;
     public const int PPT_APUC2 = 0x001200C2;
+
+    public const int TUF_KB = 0x00100056;
+    public const int TUF_KB_STATE = 0x00100057;
 
     public const int PerformanceBalanced = 0;
     public const int PerformanceTurbo = 1;
@@ -146,21 +151,21 @@ public class ASUSWmi
 
     }
 
-    public void DeviceSet(uint DeviceID, int Status)
+    public byte[] DeviceSet(uint DeviceID, int Status)
     {
         byte[] args = new byte[8];
         BitConverter.GetBytes((uint)DeviceID).CopyTo(args, 0);
         BitConverter.GetBytes((uint)Status).CopyTo(args, 4);
-        CallMethod(DEVS, args);
+        return CallMethod(DEVS, args);
     }
 
 
-    public void DeviceSet(uint DeviceID, byte[] Params)
+    public byte[] DeviceSet(uint DeviceID, byte[] Params)
     {
         byte[] args = new byte[4 + Params.Length];
         BitConverter.GetBytes((uint)DeviceID).CopyTo(args, 0);
         Params.CopyTo(args, 4);
-        CallMethod(DEVS, args);
+        return CallMethod(DEVS, args);
     }
 
 
@@ -229,6 +234,44 @@ public class ASUSWmi
             default: 
                 return DeviceGetBuffer(DevsCPUFanCurve, fan_mode);
         }
+
+    }
+
+    public void TUFKeyboardRGB(int mode, Color color, int speed)
+    {
+
+        byte[] setting = new byte[12];
+        setting[0] = (byte)1;
+        setting[1] = (byte)mode;
+        setting[2] = color.R;
+        setting[3] = color.G;
+        setting[4] = color.B;
+        setting[5] = (byte)speed;
+
+        DeviceSet(TUF_KB, setting);
+        Debug.WriteLine(BitConverter.ToString(setting));
+
+        /*
+        uint flags, boot = 1, awake = 1, sleep = 1, keyboard = 1;
+
+        flags = 0;
+        if (boot != 0)
+            flags |= (1 << 1);
+        if (awake != 0)
+            flags |= (1 << 3);
+        if (sleep != 0)
+            flags |= (1 << 5);
+        if (keyboard != 0)
+            flags |= (1 << 7);
+
+        byte[] state = new byte[12];
+        state[0] = 0xbd;
+        state[1] = (byte)((cmd != 0) ? (1 << 2) : 0);
+        state[2] = (byte)flags;
+
+        DeviceSet(TUF_KB, state);
+        Debug.WriteLine(BitConverter.ToString(state));
+        */
 
     }
 

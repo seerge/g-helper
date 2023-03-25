@@ -2,6 +2,7 @@
 
 using Starlight.Communication;
 using System.Management;
+using System.Runtime.CompilerServices;
 using System.Text;
 
 namespace Starlight.AnimeMatrix
@@ -56,6 +57,14 @@ namespace Starlight.AnimeMatrix
         }
     }
 
+    public enum AnimeType
+    {
+        GA401,
+        GA402
+    }
+
+
+
     public enum BrightnessMode : byte
     {
         Off = 0,
@@ -74,12 +83,14 @@ namespace Starlight.AnimeMatrix
         List<byte[]> frames = new List<byte[]>();
 
         public int MaxRows = 61;
-        public int FullRows = 11;
-        public int FullEvenRows = -1;
+        //public int FullRows = 11;
+        //public int FullEvenRows = -1;
 
         public int MaxColumns = 34;
 
         private int frameIndex = 0;
+
+        private static AnimeType _model = AnimeType.GA402;
 
         public AnimeMatrixDevice()
             : base(0x0B05, 0x193B, 640)
@@ -87,15 +98,19 @@ namespace Starlight.AnimeMatrix
             string model = GetModel();
             if (model.Contains("401"))
             {
+
+                _model = AnimeType.GA401;
+
                 MaxColumns = 33;
 
-                FullRows = 7;
-                FullEvenRows = 3;
+                //FullRows = 7;
+                //FullEvenRows = 3;
 
                 MaxRows = 55;
                 LedCount = 1214;
                 UpdatePageLength = 410;
             }
+
 
             _displayBuffer = new byte[LedCount];
 
@@ -144,6 +159,70 @@ namespace Starlight.AnimeMatrix
         }
 
 
+        public static int FirstX(int y)
+        {
+            switch (_model)
+            {
+                case AnimeType.GA401:
+                    if (y < 5)
+                    {
+                        return 0;
+                    }
+                    else
+                    {
+                        return (y + 1) / 2 - 3;
+                    }
+                case AnimeType.GA402:
+                    if (y < 11)
+                    {
+                        return 0;
+                    } else
+                    {
+                        return (y) / 2 - 5;
+                    }
+                default:
+                    throw new ArgumentException("Invalid anime type", nameof(_model));
+            }
+        }
+
+        public static int Width(int y)
+        {
+            switch (_model)
+            {
+                case AnimeType.GA401:
+                    return 33;
+                case AnimeType.GA402:
+                    return 34;
+                default:
+                    throw new ArgumentException("Invalid anime type", nameof(_model));
+            }
+        }
+
+        public static int Pitch(int y)
+        {
+            switch (_model)
+            {
+                case AnimeType.GA401:
+                    switch (y)
+                    {
+                        case 0:
+                        case 2:
+                        case 4:
+                            return 33;
+                        case 1:
+                        case 3:
+                            return 35; // Some rows are padded
+                        default:
+                            return 36 - y / 2;
+                    }
+                case AnimeType.GA402:
+                    return Width(y) - FirstX(y);
+                default:
+                    throw new ArgumentException("Invalid anime type", nameof(_model));
+            }
+        }
+
+        /*
         public int XStart(int row)
         {
             return (int)Math.Ceiling(Math.Max(0, row - FullRows) / 2.0);
@@ -158,17 +237,28 @@ namespace Starlight.AnimeMatrix
             }
             return MaxColumns;
         }
+        */
 
-        public int RowToLinearAddress(int row)
+        public int RowToLinearAddress(int y)
         {
-            EnsureRowInRange(row);
+            EnsureRowInRange(y);
 
             int ret = 0;
 
-            for (var i = 0; i < row; i++)
-                ret += XEnd(i) - XStart(i);
+            for (var i = 0; i < y; i++)
+                ret += Pitch(i);
 
             return ret;
+        }
+
+        public void SetLedPlanar(int x, int y, byte value)
+        {
+            EnsureRowInRange(y);
+
+            if (x >= FirstX(y) && x < Width(y))
+            {
+                SetLedLinear(RowToLinearAddress(y) - FirstX(y) + x, value);
+            }
         }
 
         public void WakeUp()
@@ -196,15 +286,7 @@ namespace Starlight.AnimeMatrix
             Set(Packet<AnimeMatrixPacket>(0xC0, 0x03));
         }
 
-        public void SetLedPlanar(int x, int y, byte value)
-        {
-            EnsureRowInRange(y);
-            var start = RowToLinearAddress(y) - XStart(y);
-            if (x >= XStart(y) && x < MaxColumns)
-            {
-                SetLedLinear(start + x, value);
-            }
-        }
+
 
         public void Clear(bool present = false)
         {
