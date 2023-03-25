@@ -2,7 +2,7 @@
 
 [![Github all releases](https://img.shields.io/github/downloads/seerge/g-helper/total.svg)](https://GitHub.com/seerge/g-helper/releases/) [![GitHub release](https://img.shields.io/github/release/seerge/g-helper.svg)](https://GitHub.com/seerge/g-helper/releases/) [![GitHub stars](https://img.shields.io/github/stars/seerge/g-helper.svg?style=social&label=Star&maxAge=2592000)](https://GitHub.com/seerge/g-helper/stargazers/)
 
-## Open source Armoury Crate alternative for Asus ROG Zephyrus G14, G15, Flow X13, Flow X16, and other models
+## Open source Armoury Crate alternative for Asus laptops such as ROG Zephyrus G14, G15, Flow X13, Flow X16, and other models
 
 A small utility that allows you to do almost everything you could do with Armoury Crate but without extra bloat and unnecessary services.
 
@@ -11,6 +11,7 @@ A small utility that allows you to do almost everything you could do with Armour
 1. Seamless and automatic GPU switching (without asking you to close all apps, etc)
 2. All performance modes can be fully customized (with fan curves and PPTs)
 3. Very lightweight and consumes almost no resources, doesn't install any services. Just a single exe to run
+4. Simple and clean UI with easy access to all settings
 
 ### [:floppy_disk: Download latest release](https://github.com/seerge/g-helper/releases/latest/download/GHelper.zip)
 
@@ -57,30 +58,33 @@ PPTs are shown for G14 2022, for other models PPTs will be different as they are
 3. Ultimate mode: iGPU and dGPU enabled, but dGPU drives built in display (supported only on G14 2022 model)
 4. Optimized (formerly existed as a checkbox): disables dGPU on battery (Eco) and enables when plugged (Standard)
 
-### :question: FAQ
+## :question: FAQ
 
-#### How do I stop Armory Crate install popup appearing every time I press M4 / Rog key?
-Go to BIOS (F2 on boot), open Advanced Settings and disable "Armory Control Interface"  
+### How do I stop Armory Crate install popup appearing every time I press M4 / Rog key?
+Go to BIOS (F2 on boot), open Advanced Settings and disable "Armory Control Interface". If it still appears - delete or move somwhere following file  C:\Windows\System32\ASUSACCI\ArmouryCrateKeyControl.exe
 
-#### Why Ultimate GPU mode is not available on my laptop?
+### Why Ultimate GPU mode is not available on my laptop?
 Ultimate mode is supported (by hardware) only on G14 2022 (and possibly other models from 2022+)
 
-#### I can't set Eco mode (disable dGPU) on my G14 2020
+### I can't set Eco mode (disable dGPU) on my G14 2020
 Unfortunately 2020 model doesn't support that on hardware level
 
-#### Should I apply custom PPTs and fan profiles?
+### Should I apply custom PPTs and fan profiles?
 You don't have to, it's purely optional. From my experience built in (in bios) performance modes work well. Limit your power or apply custom fan curves only if you have issues. As sooon as you click Apply in fan + power section bios will be considering fan profile as "custom"! (no matter if you modified it or not)
 
-#### How does G-helper control my fan speeds?
+### How does G-helper control my fan speeds?
 It doesn't. Your bios does (same as in case with armoury). What G-helper can do - is (optionally) set a custom fan profile to current performance mode consisting of 8 pairs of temperature + fan speed % via same endpoint armoury seem to use.
 
-#### How do I change fan % to fan RPM?
+### How do I change fan % to fan RPM?
 Click on them
 
-#### App doesn't start / or crashes, what should I do ?
+### I don't see a GPU temperature in G-helper
+Most probably either you are using Eco / Optimized mode and your dGPU is simply off, or your windows has put dGPU into sleep (to preserve power). In this situations G-helper won't be able to reach your GPU and get readings
+
+### App doesn't start / or crashes, what should I do ?
 Open "Event Viewer" from start menu, go to Windows Logs -> Application and check for recent Errors mentioning G-Helper. If you see one - please post a [new issue](https://github.com/seerge/g-helper/issues) with all details from this error.
 
-#### How do I uninstall G-helper?
+### How do I uninstall G-helper?
 G-helper is a single exe, and it doesn't install anything in the system. To remove it - you can simply delete exe :) If you have applied any custom fan profiles or PPTs - before removing I would recommend selecting your favorite performance mode (for example balanced) and clicking "Factory defaults" under Fans + Power.
 
 ----------------------------
