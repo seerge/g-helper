@@ -121,17 +121,24 @@ namespace GHelper
             aTimer = new System.Timers.Timer(500);
             aTimer.Elapsed += OnTimedEvent;
 
-            SetVersionLabel("Version: " + Assembly.GetExecutingAssembly().GetName().Version);
-            Thread t = new Thread(() =>
-            {
-                CheckForUpdatesAsync();
-            });
-            t.Start();
-            t.Join();
-
             // Subscribing for monitor power on events
             var settingGuid = new NativeMethods.PowerSettingGuid();
             Program.unRegPowerNotify = NativeMethods.RegisterPowerSettingNotification(Handle, settingGuid.ConsoleDisplayState, NativeMethods.DEVICE_NOTIFY_WINDOW_HANDLE);
+
+            SetVersionLabel("Version: " + Assembly.GetExecutingAssembly().GetName().Version);
+            
+            string model = Program.config.GetModel();
+            int trim = model.LastIndexOf("_");
+            if (trim > 0) model = model.Substring(0, trim);
+
+            labelModel.Text = model;
+
+            Task.Run(async () =>
+            {
+                await Task.Delay(TimeSpan.FromSeconds(5));
+                CheckForUpdatesAsync();
+            });
+
 
         }
 
@@ -155,8 +162,6 @@ namespace GHelper
                     var config = JsonSerializer.Deserialize<JsonElement>(json);
                     var tag = config.GetProperty("tag_name").ToString().Replace("v", "");
                     var url = config.GetProperty("assets")[0].GetProperty("browser_download_url").ToString();
-
-                    Thread.Sleep(5000);
 
                     var gitVersion = new Version(tag);
                     var appVersion = new Version(Assembly.GetExecutingAssembly().GetName().Version.ToString());
@@ -506,7 +511,7 @@ namespace GHelper
         private void LabelCPUFan_Click(object? sender, EventArgs e)
         {
             Program.config.setConfig("fan_rpm", (Program.config.getConfig("fan_rpm") == 1) ? 0 : 1);
-            RefreshSensors();
+            RefreshSensors(true);
         }
 
         private void PictureColor2_Click(object? sender, EventArgs e)
@@ -808,10 +813,10 @@ namespace GHelper
                 return " Fan: " + Math.Min(Math.Round(fan / 0.6), 100).ToString() + "%"; // relatively to 6000 rpm
         }
 
-        private static void RefreshSensors()
+        private static void RefreshSensors(bool force = false)
         {
 
-            if (Math.Abs(DateTimeOffset.Now.ToUnixTimeMilliseconds() - lastRefresh) < 2000) return;
+            if (!force && Math.Abs(DateTimeOffset.Now.ToUnixTimeMilliseconds() - lastRefresh) < 2000) return;
             lastRefresh = DateTimeOffset.Now.ToUnixTimeMilliseconds();
 
             string cpuFan = FormatFan(Program.wmi.DeviceGet(ASUSWmi.CPU_Fan));
@@ -902,6 +907,12 @@ namespace GHelper
 
                 if (Program.config.getConfig("mid_fan") == 1)
                     Program.wmi.SetFanCurve(2, Program.config.getFanConfig(2));
+
+                labelPerf.Text = "Performance Mode+";
+
+            } else
+            {
+                labelPerf.Text = "Performance Mode";
             }
 
             if (Program.config.getConfigPerf("auto_apply_power") == 1)

@@ -253,28 +253,22 @@ public class ASUSWmi
 
     }
 
+    const int ASUS_WMI_KEYBOARD_POWER_BOOT = 0x03 << 16;
+    const int ASUS_WMI_KEYBOARD_POWER_AWAKE = 0x0C << 16;
+    const int ASUS_WMI_KEYBOARD_POWER_SLEEP = 0x30 << 16;
+    const int ASUS_WMI_KEYBOARD_POWER_SHUTDOWN = 0xC0 << 16;
     public void TUFKeyboardPower(bool awake = true, bool boot = false, bool sleep = false, bool shutdown = false)
     {
-        uint flags;
-        uint cmd = 1;
+        int state = 0xbd;
 
-        flags = 0;
-        if (boot)
-            flags |= (1 << 1);
-        if (awake)
-            flags |= (1 << 3);
-        if (sleep)
-            flags |= (1 << 5);
-        if (shutdown)
-            flags |= (1 << 7);
+        if (boot) state = state | ASUS_WMI_KEYBOARD_POWER_BOOT;
+        if (awake) state = state | ASUS_WMI_KEYBOARD_POWER_AWAKE;
+        if (sleep) state = state | ASUS_WMI_KEYBOARD_POWER_SLEEP;
+        if (shutdown) state = state | ASUS_WMI_KEYBOARD_POWER_SHUTDOWN;
 
-        byte[] state = new byte[12];
-        state[0] = 0xbd;
-        state[1] = (byte)((cmd != 0) ? (1 << 2) : 0);
-        state[2] = (byte)flags;
+        state = state | 0x01 << 8;
 
-        DeviceSet(TUF_KB, state);
-        Debug.WriteLine(BitConverter.ToString(state));
+        DeviceSet(TUF_KB_STATE, state);
     }
 
     public void SubscribeToEvents(Action<object, EventArrivedEventArgs> EventHandler)

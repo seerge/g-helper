@@ -40,6 +40,7 @@ namespace GHelper
             pictureMatrix = new PictureBox();
             labelMatrix = new Label();
             panelBattery = new Panel();
+            labelModel = new Label();
             labelVersion = new Label();
             labelBattery = new Label();
             pictureBattery = new PictureBox();
@@ -236,6 +237,7 @@ namespace GHelper
             // 
             panelBattery.AutoSize = true;
             panelBattery.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            panelBattery.Controls.Add(labelModel);
             panelBattery.Controls.Add(labelVersion);
             panelBattery.Controls.Add(labelBattery);
             panelBattery.Controls.Add(pictureBattery);
@@ -246,15 +248,27 @@ namespace GHelper
             panelBattery.Margin = new Padding(8);
             panelBattery.Name = "panelBattery";
             panelBattery.Padding = new Padding(0, 0, 0, 12);
-            panelBattery.Size = new Size(810, 158);
+            panelBattery.Size = new Size(810, 163);
             panelBattery.TabIndex = 34;
+            // 
+            // labelModel
+            // 
+            labelModel.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            labelModel.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            labelModel.ForeColor = SystemColors.ControlDark;
+            labelModel.Location = new Point(291, 119);
+            labelModel.Margin = new Padding(8, 0, 8, 0);
+            labelModel.Name = "labelModel";
+            labelModel.Size = new Size(492, 32);
+            labelModel.TabIndex = 38;
+            labelModel.TextAlign = ContentAlignment.TopRight;
             // 
             // labelVersion
             // 
             labelVersion.AutoSize = true;
             labelVersion.Font = new Font("Segoe UI", 9F, FontStyle.Underline, GraphicsUnit.Point);
             labelVersion.ForeColor = SystemColors.ControlDark;
-            labelVersion.Location = new Point(25, 109);
+            labelVersion.Location = new Point(25, 119);
             labelVersion.Margin = new Padding(8, 0, 8, 0);
             labelVersion.Name = "labelVersion";
             labelVersion.Size = new Size(44, 32);
@@ -316,7 +330,7 @@ namespace GHelper
             panelFooter.Controls.Add(buttonQuit);
             panelFooter.Controls.Add(checkStartup);
             panelFooter.Dock = DockStyle.Top;
-            panelFooter.Location = new Point(10, 1084);
+            panelFooter.Location = new Point(10, 1089);
             panelFooter.Margin = new Padding(8);
             panelFooter.Name = "panelFooter";
             panelFooter.Padding = new Padding(0, 0, 0, 10);
@@ -1103,5 +1117,6 @@ namespace GHelper
         private RButton buttonKeyboardColor;
         private RButton buttonFans;
         private Label labelMidFan;
+        private Label labelModel;
     }
 }

@@ -40,8 +40,7 @@ public class AppConfig
     }
 
 
-
-    public bool ContainsModel(string contains)
+    public string GetModel()
     {
         if (_model is null)
         {
@@ -56,6 +55,12 @@ public class AppConfig
             }
         }
 
+        return _model;
+    }
+    public bool ContainsModel(string contains)
+    {
+
+        GetModel();
         return (_model is not null && _model.Contains(contains));
 
     }
