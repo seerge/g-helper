@@ -249,19 +249,23 @@ public class ASUSWmi
         setting[5] = (byte)speed;
 
         DeviceSet(TUF_KB, setting);
-        Debug.WriteLine(BitConverter.ToString(setting));
+        //Debug.WriteLine(BitConverter.ToString(setting));
 
-        /*
-        uint flags, boot = 1, awake = 1, sleep = 1, keyboard = 1;
+    }
+
+    public void TUFKeyboardPower(bool awake = true, bool boot = false, bool sleep = false, bool shutdown = false)
+    {
+        uint flags;
+        uint cmd = 1;
 
         flags = 0;
-        if (boot != 0)
+        if (boot)
             flags |= (1 << 1);
-        if (awake != 0)
+        if (awake)
             flags |= (1 << 3);
-        if (sleep != 0)
+        if (sleep)
             flags |= (1 << 5);
-        if (keyboard != 0)
+        if (shutdown)
             flags |= (1 << 7);
 
         byte[] state = new byte[12];
@@ -271,8 +275,6 @@ public class ASUSWmi
 
         DeviceSet(TUF_KB, state);
         Debug.WriteLine(BitConverter.ToString(state));
-        */
-
     }
 
     public void SubscribeToEvents(Action<object, EventArrivedEventArgs> EventHandler)

@@ -1,10 +1,56 @@
 ﻿using HidLibrary;
+using Microsoft.VisualBasic.ApplicationServices;
+using System.Diagnostics;
+using static Starlight.AnimeMatrix.BuiltInAnimation;
 
 namespace GHelper
 {
 
+    [Flags]
+    public enum AuraDev19b6 : uint
+    {
+        BootLogo = 1,
+        BootKeyb = 1 << 1,
+        AwakeLogo = 1 << 2,
+        AwakeKeyb = 1 << 3,
+        SleepLogo = 1 << 4,
+        SleepKeyb = 1 << 5,
+        ShutdownLogo = 1 << 6,
+        ShutdownKeyb = 1 << 7,
+        BootBar = 1u << (7 + 2),
+        AwakeBar = 1u << (7 + 3),
+        SleepBar = 1u << (7 + 4),
+        ShutdownBar = 1u << (7 + 5),
+        BootLid = 1u << (15 + 1),
+        AwakeLid = 1u << (15 + 2),
+        SleepLid = 1u << (15 + 3),
+        ShutdownLid = 1u << (15 + 4)
+    }
 
-    public class Aura
+    public static class AuraDev19b6Extensions
+    {
+        public static byte[] ToBytes(this AuraDev19b6[] controls)
+        {
+            uint a = 0;
+            foreach (var n in controls)
+            {
+                a |= (uint)n;
+            }
+            return new byte[] {0x5d, 0xbd, 0x01, (byte)(a & 0xff), (byte)((a & 0xff00) >> 8), (byte)((a & 0xff0000) >> 16) };
+        }
+
+        public static ushort BitOr(this AuraDev19b6 self, AuraDev19b6 rhs)
+        {
+            return (ushort)(self | rhs);
+        }
+
+        public static ushort BitAnd(this AuraDev19b6 self, AuraDev19b6 rhs)
+        {
+            return (ushort)(self & rhs);
+        }
+    }
+
+    public static class Aura
     {
 
         static byte[] MESSAGE_SET = { 0x5d, 0xb5, 0, 0, 0 };
@@ -32,7 +78,8 @@ namespace GHelper
             {
                 { 0, "Static" },
                 { 1, "Breathe" },
-                { 2, "Rainbow" },
+                { 2, "Color Cycle" },
+                { 3, "Rainbow" },
                 { 10, "Strobe" },
             };
         }
@@ -97,6 +144,35 @@ namespace GHelper
             return msg;
         }
 
+
+
+        public static void ApplyAuraPower(bool awake = true, bool boot = false, bool sleep = false, bool shutdown = false)
+        {
+            HidDevice[] HidDeviceList = HidDevices.Enumerate(0x0b05, 0x19b6).ToArray();
+
+            List<AuraDev19b6> flags = new List<AuraDev19b6>();
+
+            if (awake) flags.Add(AuraDev19b6.AwakeKeyb);
+            if (boot) flags.Add(AuraDev19b6.BootKeyb);
+            if (sleep) flags.Add(AuraDev19b6.SleepKeyb);
+            if (shutdown) flags.Add(AuraDev19b6.ShutdownKeyb);
+
+            byte[] msg = AuraDev19b6Extensions.ToBytes(flags.ToArray());
+            
+            Debug.WriteLine(BitConverter.ToString(msg));
+
+            foreach (HidDevice device in HidDeviceList)
+                if (device.IsConnected && device.Description.Contains("HID"))
+                {
+                    device.OpenDevice();
+                    device.Write(msg);
+                    device.CloseDevice();
+                }
+
+            Program.wmi.TUFKeyboardPower(awake, boot, sleep, shutdown);
+
+        }
+
         public static void ApplyAura()
         {
 
@@ -121,20 +197,18 @@ namespace GHelper
             }
 
 
-            Program.wmi.TUFKeyboardRGB(Mode, Color1, _speed);
-
+            byte[] msg = AuraMessage(Mode, Color1, Color2, _speed);
             foreach (HidDevice device in HidDeviceList)
-            {
                 if (device.IsConnected && device.Description.Contains("HID"))
                 {
                     device.OpenDevice();
-                    byte[] msg = AuraMessage(Mode, Color1, Color2, _speed);
                     device.Write(msg);
                     device.Write(MESSAGE_SET);
                     device.Write(MESSAGE_APPLY);
                     device.CloseDevice();
                 }
-            }
+
+            Program.wmi.TUFKeyboardRGB(Mode, Color1, _speed);
 
         }
     }

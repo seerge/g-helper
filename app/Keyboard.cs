@@ -60,6 +60,41 @@ namespace GHelper
             SetKeyCombo(comboFNF4, textFNF4, "fnf4");
 
             Shown += Keyboard_Shown;
+
+            comboKeyboardSpeed.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboKeyboardSpeed.DataSource = new BindingSource(Aura.GetSpeeds(), null);
+            comboKeyboardSpeed.DisplayMember = "Value";
+            comboKeyboardSpeed.ValueMember = "Key";
+            comboKeyboardSpeed.SelectedValue = Aura.Speed;
+            comboKeyboardSpeed.SelectedValueChanged += ComboKeyboardSpeed_SelectedValueChanged;
+
+            checkAwake.Checked = !(Program.config.getConfig("keyboard_awake") == 0);
+            checkBoot.Checked = !(Program.config.getConfig("keyboard_boot") == 0);
+            checkSleep.Checked = !(Program.config.getConfig("keyboard_sleep") == 0);
+            checkShutdown.Checked = !(Program.config.getConfig("keyboard_shutdown") == 0);
+
+            checkAwake.CheckedChanged += CheckPower_CheckedChanged;
+            checkBoot.CheckedChanged += CheckPower_CheckedChanged;
+            checkSleep.CheckedChanged += CheckPower_CheckedChanged;
+            checkShutdown.CheckedChanged += CheckPower_CheckedChanged;
+
+        }
+
+
+        private void CheckPower_CheckedChanged(object? sender, EventArgs e)
+        {
+            Program.config.setConfig("keyboard_awake", (checkAwake.Checked ? 1 : 0));
+            Program.config.setConfig("keyboard_boot", (checkBoot.Checked ? 1 : 0));
+            Program.config.setConfig("keyboard_sleep", (checkSleep.Checked ? 1 : 0));
+            Program.config.setConfig("keyboard_shutdown", (checkShutdown.Checked ? 1 : 0));
+
+            Aura.ApplyAuraPower(checkAwake.Checked, checkBoot.Checked, checkSleep.Checked, checkShutdown.Checked);
+        }
+
+        private void ComboKeyboardSpeed_SelectedValueChanged(object? sender, EventArgs e)
+        {
+            Program.config.setConfig("aura_speed", (int)comboKeyboardSpeed.SelectedValue);
+            Program.settingsForm.SetAura();
         }
 
 
