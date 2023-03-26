@@ -272,6 +272,7 @@ namespace GHelper
                         {
                             case 0:
                                 Logger.WriteLine("Monitor Power Off");
+                                SetBatteryChargeLimit(Program.config.getConfig("charge_limit"));
                                 break;
                             case 1:
                                 Logger.WriteLine("Monitor Power On");

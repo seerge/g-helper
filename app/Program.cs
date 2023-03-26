@@ -32,6 +32,15 @@ namespace GHelper
         // The main entry point for the application
         public static void Main()
         {
+
+            if (Process.GetProcesses().Count(p => p.ProcessName == "GHelper") > 1)
+            {
+                MessageBox.Show("G-Helper is already running. Check system tray for an icon.", "App already running", MessageBoxButtons.OK);
+                Application.Exit();
+                return;
+            }
+
+
             try
             {
                 wmi = new ASUSWmi();

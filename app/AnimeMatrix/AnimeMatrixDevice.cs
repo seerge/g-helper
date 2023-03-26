@@ -1,6 +1,7 @@
 ﻿// Source thanks to https://github.com/vddCore/Starlight with some adjustments from me
 
 using Starlight.Communication;
+using System.Diagnostics;
 using System.Management;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -86,6 +87,7 @@ namespace Starlight.AnimeMatrix
         //public int FullRows = 11;
         //public int FullEvenRows = -1;
 
+        public int dx = 0;
         public int MaxColumns = 34;
 
         private int frameIndex = 0;
@@ -102,6 +104,7 @@ namespace Starlight.AnimeMatrix
                 _model = AnimeType.GA401;
 
                 MaxColumns = 33;
+                dx = 0;
 
                 //FullRows = 7;
                 //FullEvenRows = 3;
@@ -211,7 +214,7 @@ namespace Starlight.AnimeMatrix
                             return 33;
                         case 1:
                         case 3:
-                            return 35; // Some rows are padded
+                            return 35;
                         default:
                             return 36 - y / 2;
                     }
@@ -257,7 +260,8 @@ namespace Starlight.AnimeMatrix
 
             if (x >= FirstX(y) && x < Width(y))
             {
-                SetLedLinear(RowToLinearAddress(y) - FirstX(y) + x, value);
+                SetLedLinear(RowToLinearAddress(y) - FirstX(y) + x + dx, value);
+                //Debug.Write((RowToLinearAddress(y) - FirstX(y) + x + dx).ToString() + " ");
             }
         }
 
@@ -389,36 +393,35 @@ namespace Starlight.AnimeMatrix
 
             int width = MaxColumns * 3;
             int height = MaxRows;
+            int targetWidth = MaxColumns * 2;
+            
             float scale;
 
-            using (Bitmap canvas = new Bitmap(width, height))
+            using (Bitmap bmp = new Bitmap(targetWidth, height))
             {
                 scale = Math.Min((float)width / (float)image.Width, (float)height / (float)image.Height);
 
-                using (var graph = Graphics.FromImage(canvas))
+                using (var graph = Graphics.FromImage(bmp))
                 {
                     var scaleWidth = (int)(image.Width * scale);
                     var scaleHeight = (int)(image.Height * scale);
 
-                    graph.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.High;
+                    graph.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.Bilinear;
                     graph.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
                     graph.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
 
-                    graph.DrawImage(image, ((int)width - scaleWidth), 0, scaleWidth, scaleHeight);
+                    graph.DrawImage(image, (int)Math.Round(targetWidth - scaleWidth/1.5), 0, (int)Math.Round(scaleWidth/1.5), scaleHeight);
 
                 }
 
-                using (Bitmap bmp = new Bitmap(canvas, MaxColumns * 2, MaxRows))
+                for (int y = 0; y < bmp.Height; y++)
                 {
-                    for (int y = 0; y < bmp.Height; y++)
-                    {
-                        for (int x = 0; x < bmp.Width; x++)
-                            if (x % 2 == y % 2)
-                            {
-                                var pixel = bmp.GetPixel(x, y);
-                                SetLedPlanar(x / 2, y, (byte)((pixel.R + pixel.G + pixel.B) / 3));
-                            }
-                    }
+                    for (int x = 0; x < bmp.Width; x++)
+                        if (x % 2 == y % 2)
+                        {
+                            var pixel = bmp.GetPixel(x, y);
+                            SetLedPlanar(x / 2, y, (byte)((pixel.R + pixel.G + pixel.B) / 3));
+                        }
                 }
             }
 
