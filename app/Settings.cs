@@ -2,6 +2,7 @@
 using Starlight.AnimeMatrix;
 using System.Diagnostics;
 using System.Drawing.Imaging;
+using System.Globalization;
 using System.Reflection;
 using System.Text.Json;
 using System.Timers;
@@ -132,6 +133,8 @@ namespace GHelper
             if (trim > 0) model = model.Substring(0, trim);
 
             labelModel.Text = model;
+
+            this.TopMost = Program.config.getConfig("topmost") == 1;
 
             Task.Run(async () =>
             {
@@ -687,8 +690,7 @@ namespace GHelper
 
             if (frequency >= 1000)
             {
-                frequency = Program.config.getConfig("max_frequency");
-                if (frequency <= 60) frequency = 120;
+                frequency = NativeMethods.GetRefreshRate(true);
             }
 
             if (frequency > 0)
@@ -714,7 +716,7 @@ namespace GHelper
         {
 
             int frequency = NativeMethods.GetRefreshRate();
-            int maxFrequency = Program.config.getConfig("max_frequency");
+            int maxFrequency = NativeMethods.GetRefreshRate(true);
 
             bool screenAuto = (Program.config.getConfig("screen_auto") == 1);
 
@@ -744,12 +746,8 @@ namespace GHelper
             {
                 button60Hz.Activated = true;
             }
-            else
+            else if (frequency > 60)
             {
-                if (frequency > 60)
-                    maxFrequency = frequency;
-
-                Program.config.setConfig("max_frequency", maxFrequency);
                 button120Hz.Activated = true;
             }
 
@@ -997,6 +995,19 @@ namespace GHelper
         public void CyclePerformanceMode()
         {
             SetPerformanceMode(Program.config.getConfig("performance_mode") + 1, true);
+        }
+
+
+        public void AutoKeyboard(PowerLineStatus Plugged = PowerLineStatus.Online)
+        {
+            if (Program.config.getConfig("keyboard_auto") != 1) return;
+
+            if (Plugged == PowerLineStatus.Online)
+                Program.wmi.DeviceSet(ASUSWmi.UniversalControl, ASUSWmi.KB_Light_Up);
+            else
+                Program.wmi.DeviceSet(ASUSWmi.UniversalControl, ASUSWmi.KB_Light_Down);
+
+
         }
 
         public void AutoPerformance(PowerLineStatus Plugged = PowerLineStatus.Online)

@@ -41,14 +41,18 @@ namespace GHelper
             comboM3 = new RComboBox();
             labelM3 = new Label();
             groupLight = new GroupBox();
-            checkAwake = new CheckBox();
-            checkBoot = new CheckBox();
-            checkSleep = new CheckBox();
-            checkShutdown = new CheckBox();
-            comboKeyboardSpeed = new RComboBox();
             labelSpeed = new Label();
+            comboKeyboardSpeed = new RComboBox();
+            checkShutdown = new CheckBox();
+            checkSleep = new CheckBox();
+            checkBoot = new CheckBox();
+            checkAwake = new CheckBox();
+            groupOther = new GroupBox();
+            checkKeyboardAuto = new CheckBox();
+            checkTopmost = new CheckBox();
             groupBox1.SuspendLayout();
             groupLight.SuspendLayout();
+            groupOther.SuspendLayout();
             SuspendLayout();
             // 
             // groupBox1
@@ -65,7 +69,7 @@ namespace GHelper
             groupBox1.Dock = DockStyle.Top;
             groupBox1.Location = new Point(10, 10);
             groupBox1.Name = "groupBox1";
-            groupBox1.Size = new Size(751, 242);
+            groupBox1.Size = new Size(756, 242);
             groupBox1.TabIndex = 0;
             groupBox1.TabStop = false;
             groupBox1.Text = "Key Bindings";
@@ -158,50 +162,19 @@ namespace GHelper
             groupLight.Dock = DockStyle.Top;
             groupLight.Location = new Point(10, 252);
             groupLight.Name = "groupLight";
-            groupLight.Size = new Size(751, 304);
+            groupLight.Size = new Size(756, 304);
             groupLight.TabIndex = 1;
             groupLight.TabStop = false;
             groupLight.Text = "Keyboard Backlight";
             // 
-            // checkAwake
+            // labelSpeed
             // 
-            checkAwake.AutoSize = true;
-            checkAwake.Location = new Point(25, 59);
-            checkAwake.Name = "checkAwake";
-            checkAwake.Size = new Size(115, 36);
-            checkAwake.TabIndex = 0;
-            checkAwake.Text = "Awake";
-            checkAwake.UseVisualStyleBackColor = true;
-            // 
-            // checkBoot
-            // 
-            checkBoot.AutoSize = true;
-            checkBoot.Location = new Point(25, 101);
-            checkBoot.Name = "checkBoot";
-            checkBoot.Size = new Size(96, 36);
-            checkBoot.TabIndex = 1;
-            checkBoot.Text = "Boot";
-            checkBoot.UseVisualStyleBackColor = true;
-            // 
-            // checkSleep
-            // 
-            checkSleep.AutoSize = true;
-            checkSleep.Location = new Point(25, 143);
-            checkSleep.Name = "checkSleep";
-            checkSleep.Size = new Size(105, 36);
-            checkSleep.TabIndex = 2;
-            checkSleep.Text = "Sleep";
-            checkSleep.UseVisualStyleBackColor = true;
-            // 
-            // checkShutdown
-            // 
-            checkShutdown.AutoSize = true;
-            checkShutdown.Location = new Point(25, 185);
-            checkShutdown.Name = "checkShutdown";
-            checkShutdown.Size = new Size(154, 36);
-            checkShutdown.TabIndex = 3;
-            checkShutdown.Text = "Shutdown";
-            checkShutdown.UseVisualStyleBackColor = true;
+            labelSpeed.AutoSize = true;
+            labelSpeed.Location = new Point(25, 237);
+            labelSpeed.Name = "labelSpeed";
+            labelSpeed.Size = new Size(198, 32);
+            labelSpeed.TabIndex = 40;
+            labelSpeed.Text = "Animation Speed";
             // 
             // comboKeyboardSpeed
             // 
@@ -219,20 +192,84 @@ namespace GHelper
             comboKeyboardSpeed.TabIndex = 39;
             comboKeyboardSpeed.TabStop = false;
             // 
-            // labelSpeed
+            // checkShutdown
             // 
-            labelSpeed.AutoSize = true;
-            labelSpeed.Location = new Point(25, 237);
-            labelSpeed.Name = "labelSpeed";
-            labelSpeed.Size = new Size(198, 32);
-            labelSpeed.TabIndex = 40;
-            labelSpeed.Text = "Animation Speed";
+            checkShutdown.AutoSize = true;
+            checkShutdown.Location = new Point(25, 185);
+            checkShutdown.Name = "checkShutdown";
+            checkShutdown.Size = new Size(154, 36);
+            checkShutdown.TabIndex = 3;
+            checkShutdown.Text = "Shutdown";
+            checkShutdown.UseVisualStyleBackColor = true;
+            // 
+            // checkSleep
+            // 
+            checkSleep.AutoSize = true;
+            checkSleep.Location = new Point(25, 143);
+            checkSleep.Name = "checkSleep";
+            checkSleep.Size = new Size(105, 36);
+            checkSleep.TabIndex = 2;
+            checkSleep.Text = "Sleep";
+            checkSleep.UseVisualStyleBackColor = true;
+            // 
+            // checkBoot
+            // 
+            checkBoot.AutoSize = true;
+            checkBoot.Location = new Point(25, 101);
+            checkBoot.Name = "checkBoot";
+            checkBoot.Size = new Size(96, 36);
+            checkBoot.TabIndex = 1;
+            checkBoot.Text = "Boot";
+            checkBoot.UseVisualStyleBackColor = true;
+            // 
+            // checkAwake
+            // 
+            checkAwake.AutoSize = true;
+            checkAwake.Location = new Point(25, 59);
+            checkAwake.Name = "checkAwake";
+            checkAwake.Size = new Size(115, 36);
+            checkAwake.TabIndex = 0;
+            checkAwake.Text = "Awake";
+            checkAwake.UseVisualStyleBackColor = true;
+            // 
+            // groupOther
+            // 
+            groupOther.Controls.Add(checkKeyboardAuto);
+            groupOther.Controls.Add(checkTopmost);
+            groupOther.Dock = DockStyle.Top;
+            groupOther.Location = new Point(10, 556);
+            groupOther.Name = "groupOther";
+            groupOther.Size = new Size(756, 167);
+            groupOther.TabIndex = 2;
+            groupOther.TabStop = false;
+            groupOther.Text = "Other";
+            // 
+            // checkKeyboardAuto
+            // 
+            checkKeyboardAuto.AutoSize = true;
+            checkKeyboardAuto.Location = new Point(25, 51);
+            checkKeyboardAuto.Name = "checkKeyboardAuto";
+            checkKeyboardAuto.Size = new Size(712, 36);
+            checkKeyboardAuto.TabIndex = 2;
+            checkKeyboardAuto.Text = "Lower backlight brightness on battery and back when plugged";
+            checkKeyboardAuto.UseVisualStyleBackColor = true;
+            // 
+            // checkTopmost
+            // 
+            checkTopmost.AutoSize = true;
+            checkTopmost.Location = new Point(25, 104);
+            checkTopmost.Name = "checkTopmost";
+            checkTopmost.Size = new Size(390, 36);
+            checkTopmost.TabIndex = 1;
+            checkTopmost.Text = "Keep app window always on top";
+            checkTopmost.UseVisualStyleBackColor = true;
             // 
             // Keyboard
             // 
             AutoScaleDimensions = new SizeF(13F, 32F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(771, 858);
+            ClientSize = new Size(776, 858);
+            Controls.Add(groupOther);
             Controls.Add(groupLight);
             Controls.Add(groupBox1);
             FormBorderStyle = FormBorderStyle.FixedSingle;
@@ -243,11 +280,13 @@ namespace GHelper
             Padding = new Padding(10);
             ShowIcon = false;
             ShowInTaskbar = false;
-            Text = "Keyboard";
+            Text = "Extra Settings";
             groupBox1.ResumeLayout(false);
             groupBox1.PerformLayout();
             groupLight.ResumeLayout(false);
             groupLight.PerformLayout();
+            groupOther.ResumeLayout(false);
+            groupOther.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -270,5 +309,8 @@ namespace GHelper
         private CheckBox checkShutdown;
         private Label labelSpeed;
         private RComboBox comboKeyboardSpeed;
+        private GroupBox groupOther;
+        private CheckBox checkTopmost;
+        private CheckBox checkKeyboardAuto;
     }
 }

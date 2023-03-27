@@ -1,7 +1,5 @@
 ﻿using HidLibrary;
-using Microsoft.VisualBasic.ApplicationServices;
 using System.Diagnostics;
-using static Starlight.AnimeMatrix.BuiltInAnimation;
 
 namespace GHelper
 {
@@ -36,7 +34,7 @@ namespace GHelper
             {
                 a |= (uint)n;
             }
-            return new byte[] {0x5d, 0xbd, 0x01, (byte)(a & 0xff), (byte)((a & 0xff00) >> 8), (byte)((a & 0xff0000) >> 16) };
+            return new byte[] { 0x5d, 0xbd, 0x01, (byte)(a & 0xff), (byte)((a & 0xff00) >> 8), (byte)((a & 0xff0000) >> 16) };
         }
 
         public static ushort BitOr(this AuraDev19b6 self, AuraDev19b6 rhs)
@@ -56,6 +54,7 @@ namespace GHelper
         static byte[] MESSAGE_SET = { 0x5d, 0xb5, 0, 0, 0 };
         static byte[] MESSAGE_APPLY = { 0x5d, 0xb4 };
 
+        static int[] deviceIds = { 0x1854, 0x1869, 0x1866, 0x19b6, 0x1822, 0x1837, 0x1854, 0x184a, 0x183d, 0x8502, 0x1807, 0x17e0 };
 
         private static int mode = 0;
         private static int speed = 1;
@@ -92,7 +91,7 @@ namespace GHelper
             {
                 if (GetModes().ContainsKey(value))
                     mode = value;
-                else 
+                else
                     mode = 0;
             }
         }
@@ -145,6 +144,22 @@ namespace GHelper
         }
 
 
+        public static void ApplyBrightness(int brightness)
+        {
+            HidDevice[] HidDeviceList = HidDevices.Enumerate(0x0b05, deviceIds).ToArray();
+
+            byte[] msg = { 0x5a, 0xba, 0xc5, 0xc4, (byte)brightness };
+
+            foreach (HidDevice device in HidDeviceList)
+                if (device.IsConnected && device.Description.Contains("HID"))
+                {
+                    device.OpenDevice();
+                    device.Write(msg);
+                    device.CloseDevice();
+                }
+
+        }
+
 
         public static void ApplyAuraPower(bool awake = true, bool boot = false, bool sleep = false, bool shutdown = false)
         {
@@ -158,7 +173,7 @@ namespace GHelper
             if (shutdown) flags.Add(AuraDev19b6.ShutdownKeyb);
 
             byte[] msg = AuraDev19b6Extensions.ToBytes(flags.ToArray());
-            
+
             Debug.WriteLine(BitConverter.ToString(msg));
 
             foreach (HidDevice device in HidDeviceList)
@@ -176,10 +191,7 @@ namespace GHelper
         public static void ApplyAura()
         {
 
-            HidDevice[] HidDeviceList;
-            int[] deviceIds = { 0x1854, 0x1869, 0x1866, 0x19b6, 0x1822, 0x1837, 0x1854, 0x184a, 0x183d, 0x8502, 0x1807, 0x17e0 };
-
-            HidDeviceList = HidDevices.Enumerate(0x0b05, deviceIds).ToArray();
+            HidDevice[] HidDeviceList = HidDevices.Enumerate(0x0b05, deviceIds).ToArray();
 
             int _speed;
 

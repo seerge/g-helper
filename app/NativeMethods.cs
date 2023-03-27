@@ -588,7 +588,7 @@ public class NativeMethods
         return laptopScreen;
     }
 
-    public static int GetRefreshRate()
+    public static int GetRefreshRate(bool max = false)
     {
         DEVMODE dm = CreateDevmode();
 
@@ -598,10 +598,22 @@ public class NativeMethods
         if (laptopScreen is null)
             return -1;
 
-        if (0 != NativeMethods.EnumDisplaySettingsEx(laptopScreen, NativeMethods.ENUM_CURRENT_SETTINGS, ref dm))
+        if (max)
         {
-            frequency = dm.dmDisplayFrequency;
+            int i = 0;
+            while (0 != NativeMethods.EnumDisplaySettingsEx(laptopScreen, i, ref dm))
+            {
+                if (dm.dmDisplayFrequency > frequency) frequency = dm.dmDisplayFrequency;
+                i++;
+            }
+        } else
+        {
+            if (0 != NativeMethods.EnumDisplaySettingsEx(laptopScreen, NativeMethods.ENUM_CURRENT_SETTINGS, ref dm))
+            {
+                frequency = dm.dmDisplayFrequency;
+            }
         }
+
 
         return frequency;
     }

@@ -78,8 +78,25 @@ namespace GHelper
             checkSleep.CheckedChanged += CheckPower_CheckedChanged;
             checkShutdown.CheckedChanged += CheckPower_CheckedChanged;
 
+            checkTopmost.Checked = (Program.config.getConfig("topmost") == 1);
+            checkTopmost.CheckedChanged += CheckTopmost_CheckedChanged; ;
+
+            checkKeyboardAuto.Checked = (Program.config.getConfig("keyboard_auto") == 1);
+            checkKeyboardAuto.CheckedChanged += CheckKeyboardAuto_CheckedChanged;
+
+
         }
 
+        private void CheckKeyboardAuto_CheckedChanged(object? sender, EventArgs e)
+        {
+            Program.config.setConfig("keyboard_auto", (checkKeyboardAuto.Checked ? 1 : 0));
+        }
+
+        private void CheckTopmost_CheckedChanged(object? sender, EventArgs e)
+        {
+            Program.config.setConfig("topmost", (checkTopmost.Checked ? 1 : 0));
+            Program.settingsForm.TopMost = checkTopmost.Checked;
+        }
 
         private void CheckPower_CheckedChanged(object? sender, EventArgs e)
         {

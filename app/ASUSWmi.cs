@@ -1,6 +1,4 @@
-﻿using GHelper;
-using System.Diagnostics;
-using System.Management;
+﻿using System.Management;
 using System.Runtime.InteropServices;
 
 public class ASUSWmi
@@ -11,6 +9,10 @@ public class ASUSWmi
 
     const uint DSTS = 0x53545344;
     const uint DEVS = 0x53564544;
+
+    public const uint UniversalControl = 0x00100021;
+    public const int KB_Light_Up = 0xc4;
+    public const int KB_Light_Down = 0xc5;
 
     public const uint CPU_Fan = 0x00110013;
     public const uint GPU_Fan = 0x00110014;
@@ -231,7 +233,7 @@ public class ASUSWmi
                 return DeviceGetBuffer(DevsGPUFanCurve, fan_mode);
             case 2:
                 return DeviceGetBuffer(DevsMidFanCurve, fan_mode);
-            default: 
+            default:
                 return DeviceGetBuffer(DevsCPUFanCurve, fan_mode);
         }
 

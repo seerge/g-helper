@@ -359,7 +359,7 @@ namespace Starlight.AnimeMatrix
 
 
 
-        public void PresentText(string text, float fontSize = 8F)
+        public void PresentText(string text, float fontSize = 8.5F)
         {
             using (Bitmap bmp = new Bitmap(MaxColumns * 3, MaxRows))
             {
@@ -378,21 +378,22 @@ namespace Starlight.AnimeMatrix
                         g.DrawString(text, font, Brushes.White, -textSize.Width/2, -textSize.Height / 2);
                         */
 
-                        g.DrawString(text, font, Brushes.White, 12, -2);
+                        g.DrawString(text, font, Brushes.White, 5, -2);
                     }
                 }
 
-                GenerateFrame(bmp);
+                GenerateFrame(bmp, System.Drawing.Drawing2D.InterpolationMode.Bicubic);
                 Present();
             }
 
         }
 
-        public void GenerateFrame(Image image)
+        public void GenerateFrame(Image image, System.Drawing.Drawing2D.InterpolationMode interpolation = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic)
         {
 
             int width = MaxColumns * 3;
             int height = MaxRows;
+
             int targetWidth = MaxColumns * 2;
             
             float scale;
@@ -403,14 +404,14 @@ namespace Starlight.AnimeMatrix
 
                 using (var graph = Graphics.FromImage(bmp))
                 {
-                    var scaleWidth = (int)(image.Width * scale);
-                    var scaleHeight = (int)(image.Height * scale);
+                    var scaleWidth = (float)(image.Width * scale);
+                    var scaleHeight = (float)(image.Height * scale);
 
-                    graph.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.Bilinear;
+                    graph.InterpolationMode = interpolation;
                     graph.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
                     graph.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
 
-                    graph.DrawImage(image, (int)Math.Round(targetWidth - scaleWidth/1.5), 0, (int)Math.Round(scaleWidth/1.5), scaleHeight);
+                    graph.DrawImage(image, (float)Math.Round(targetWidth - scaleWidth * targetWidth / width), 0, (float)Math.Round(scaleWidth * targetWidth / width), scaleHeight);
 
                 }
 
@@ -420,12 +421,12 @@ namespace Starlight.AnimeMatrix
                         if (x % 2 == y % 2)
                         {
                             var pixel = bmp.GetPixel(x, y);
-                            SetLedPlanar(x / 2, y, (byte)((pixel.R + pixel.G + pixel.B) / 3));
+                            var color = (pixel.R + pixel.G + pixel.B) / 3;
+                            if (color < 10) color = 0;
+                            SetLedPlanar(x / 2, y, (byte)color);
                         }
                 }
             }
-
-
         }
 
         private void EnsureRowInRange(int row)

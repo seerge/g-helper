@@ -148,6 +148,7 @@ namespace GHelper
             if (SystemInformation.PowerStatus.PowerLineStatus == isPlugged) return;
 
             Logger.WriteLine("Windows - Power Mode Changed");
+            settingsForm.AutoKeyboard(SystemInformation.PowerStatus.PowerLineStatus);
             SetAutoModes(true);
         }
 
