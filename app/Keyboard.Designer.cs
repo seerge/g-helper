@@ -50,6 +50,7 @@ namespace GHelper
             groupOther = new GroupBox();
             checkKeyboardAuto = new CheckBox();
             checkTopmost = new CheckBox();
+            checkNoOverdrive = new CheckBox();
             groupBox1.SuspendLayout();
             groupLight.SuspendLayout();
             groupOther.SuspendLayout();
@@ -234,12 +235,13 @@ namespace GHelper
             // 
             // groupOther
             // 
+            groupOther.Controls.Add(checkNoOverdrive);
             groupOther.Controls.Add(checkKeyboardAuto);
             groupOther.Controls.Add(checkTopmost);
             groupOther.Dock = DockStyle.Top;
             groupOther.Location = new Point(10, 556);
             groupOther.Name = "groupOther";
-            groupOther.Size = new Size(756, 167);
+            groupOther.Size = new Size(756, 225);
             groupOther.TabIndex = 2;
             groupOther.TabStop = false;
             groupOther.Text = "Other";
@@ -263,6 +265,16 @@ namespace GHelper
             checkTopmost.TabIndex = 1;
             checkTopmost.Text = "Keep app window always on top";
             checkTopmost.UseVisualStyleBackColor = true;
+            // 
+            // checkNoOverdrive
+            // 
+            checkNoOverdrive.AutoSize = true;
+            checkNoOverdrive.Location = new Point(25, 156);
+            checkNoOverdrive.Name = "checkNoOverdrive";
+            checkNoOverdrive.Size = new Size(307, 36);
+            checkNoOverdrive.TabIndex = 3;
+            checkNoOverdrive.Text = "Disable screen overdrive";
+            checkNoOverdrive.UseVisualStyleBackColor = true;
             // 
             // Keyboard
             // 
@@ -312,5 +324,6 @@ namespace GHelper
         private GroupBox groupOther;
         private CheckBox checkTopmost;
         private CheckBox checkKeyboardAuto;
+        private CheckBox checkNoOverdrive;
     }
 }

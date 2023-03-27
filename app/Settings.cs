@@ -204,7 +204,7 @@ namespace GHelper
 
         private void Button120Hz_MouseHover(object? sender, EventArgs e)
         {
-            labelTipScreen.Text = "Max refresh rate + screen overdrive for lower latency";
+            labelTipScreen.Text = "Max refresh rate for lower latency";
         }
 
         private void Button60Hz_MouseHover(object? sender, EventArgs e)
@@ -252,14 +252,14 @@ namespace GHelper
         {
             Program.config.setConfig("gpu_auto", (Program.config.getConfig("gpu_auto") == 1) ? 0 : 1);
             VisualiseGPUMode();
-            AutoGPUMode(SystemInformation.PowerStatus.PowerLineStatus);
+            AutoGPUMode();
         }
 
         private void ButtonScreenAuto_Click(object? sender, EventArgs e)
         {
             Program.config.setConfig("screen_auto", 1);
             InitScreen();
-            AutoScreen(SystemInformation.PowerStatus.PowerLineStatus);
+            AutoScreen();
         }
 
         protected override void WndProc(ref Message m)
@@ -458,7 +458,7 @@ namespace GHelper
             SetMatrix();
         }
 
-        public void SetMatrix(PowerLineStatus Plugged = PowerLineStatus.Online)
+        public void SetMatrix()
         {
 
             if (mat is null) return;
@@ -481,7 +481,7 @@ namespace GHelper
 
             mat.SetProvider();
 
-            if (brightness == 0 || (auto && Plugged != PowerLineStatus.Online))
+            if (brightness == 0 || (auto && SystemInformation.PowerStatus.PowerLineStatus != PowerLineStatus.Online))
             {
                 mat.SetDisplayState(false);
             }
@@ -700,7 +700,11 @@ namespace GHelper
             }
 
             if (overdrive >= 0)
+            {
+                if (Program.config.getConfig("no_overdrive") == 1) overdrive = 0;
                 Program.wmi.DeviceSet(ASUSWmi.ScreenOverdrive, overdrive);
+
+            }
 
             if (miniled >= 0)
             {
@@ -719,8 +723,10 @@ namespace GHelper
             int maxFrequency = NativeMethods.GetRefreshRate(true);
 
             bool screenAuto = (Program.config.getConfig("screen_auto") == 1);
+            bool overdriveSetting = (Program.config.getConfig("no_overdrive") != 1);
 
             int overdrive = Program.wmi.DeviceGet(ASUSWmi.ScreenOverdrive);
+            
             int miniled = Program.wmi.DeviceGet(ASUSWmi.ScreenMiniled);
 
             bool screenEnabled = (frequency >= 0);
@@ -753,7 +759,7 @@ namespace GHelper
 
             if (maxFrequency > 60)
             {
-                button120Hz.Text = maxFrequency.ToString() + "Hz + OD";
+                button120Hz.Text = maxFrequency.ToString() + "Hz" + (overdriveSetting ? " + OD" : "");
             }
 
             if (miniled >= 0)
@@ -998,11 +1004,11 @@ namespace GHelper
         }
 
 
-        public void AutoKeyboard(PowerLineStatus Plugged = PowerLineStatus.Online)
+        public void AutoKeyboard()
         {
             if (Program.config.getConfig("keyboard_auto") != 1) return;
 
-            if (Plugged == PowerLineStatus.Online)
+            if (SystemInformation.PowerStatus.PowerLineStatus == PowerLineStatus.Online)
                 Program.wmi.DeviceSet(ASUSWmi.UniversalControl, ASUSWmi.KB_Light_Up);
             else
                 Program.wmi.DeviceSet(ASUSWmi.UniversalControl, ASUSWmi.KB_Light_Down);
@@ -1010,8 +1016,10 @@ namespace GHelper
 
         }
 
-        public void AutoPerformance(PowerLineStatus Plugged = PowerLineStatus.Online)
+        public void AutoPerformance()
         {
+            var Plugged = SystemInformation.PowerStatus.PowerLineStatus;
+
             int mode = Program.config.getConfig("performance_" + (int)Plugged);
             if (mode != -1)
                 SetPerformanceMode(mode, true);
@@ -1020,11 +1028,11 @@ namespace GHelper
         }
 
 
-        public void AutoScreen(PowerLineStatus Plugged = PowerLineStatus.Online)
+        public void AutoScreen(bool force = false)
         {
-            if (Program.config.getConfig("screen_auto") != 1) return;
+            if (!force && Program.config.getConfig("screen_auto") != 1) return;
 
-            if (Plugged == PowerLineStatus.Online)
+            if (SystemInformation.PowerStatus.PowerLineStatus == PowerLineStatus.Online)
                 SetScreen(1000, 1);
             else
                 SetScreen(60, 0);
@@ -1032,8 +1040,10 @@ namespace GHelper
 
         }
 
-        public bool AutoGPUMode(PowerLineStatus Plugged = PowerLineStatus.Online)
+        public bool AutoGPUMode()
         {
+
+            var Plugged = SystemInformation.PowerStatus.PowerLineStatus;
 
             bool GpuAuto = Program.config.getConfig("gpu_auto") == 1;
             if (!GpuAuto) return false;
@@ -1139,7 +1149,7 @@ namespace GHelper
                     InitGPUMode();
                     HardwareMonitor.RecreateGpuTemperatureProviderWithDelay();
                     Thread.Sleep(500);
-                    AutoScreen(SystemInformation.PowerStatus.PowerLineStatus);
+                    AutoScreen();
                 });
             });
 

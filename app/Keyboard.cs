@@ -84,7 +84,15 @@ namespace GHelper
             checkKeyboardAuto.Checked = (Program.config.getConfig("keyboard_auto") == 1);
             checkKeyboardAuto.CheckedChanged += CheckKeyboardAuto_CheckedChanged;
 
+            checkNoOverdrive.Checked = (Program.config.getConfig("no_overdrive") == 1);
+            checkNoOverdrive.CheckedChanged += CheckNoOverdrive_CheckedChanged;
 
+        }
+
+        private void CheckNoOverdrive_CheckedChanged(object? sender, EventArgs e)
+        {
+            Program.config.setConfig("no_overdrive", (checkNoOverdrive.Checked ? 1 : 0));
+            Program.settingsForm.AutoScreen(true);
         }
 
         private void CheckKeyboardAuto_CheckedChanged(object? sender, EventArgs e)
