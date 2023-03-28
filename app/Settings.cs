@@ -932,6 +932,10 @@ namespace GHelper
                 timer.Start();
             }
 
+            if (Program.config.getConfigPerf("auto_boost") != -1)
+            {
+                NativeMethods.SetCPUBoost(Program.config.getConfigPerf("auto_boost"));
+            }
         }
 
         public void SetPerformanceMode(int PerformanceMode = ASUSWmi.PerformanceBalanced, bool notify = false)
@@ -991,6 +995,7 @@ namespace GHelper
             {
                 fans.InitFans();
                 fans.InitPower();
+                fans.InitBoost();
             }
 
 

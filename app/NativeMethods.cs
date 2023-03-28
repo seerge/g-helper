@@ -1,6 +1,8 @@
 ﻿using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
+using System.Security.Cryptography;
+using System.Xml.Linq;
 using static Tools.ScreenInterrogatory;
 
 namespace Tools
@@ -672,7 +674,6 @@ public class NativeMethods
 
         PowerSetActiveScheme(IntPtr.Zero, activeSchemeGuid);
 
-        /*
         var hrDC = PowerWriteDCValueIndex(
              IntPtr.Zero,
              activeSchemeGuid,
@@ -681,8 +682,8 @@ public class NativeMethods
              boost);
 
         PowerSetActiveScheme(IntPtr.Zero, activeSchemeGuid);
-        */
 
+        Logger.WriteLine("Boost " + boost);
     }
 
     public static void SetPowerScheme(int mode)

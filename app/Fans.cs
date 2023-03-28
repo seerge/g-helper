@@ -146,7 +146,7 @@ namespace GHelper
             InitPower();
             InitBoost();
 
-            comboBoost.SelectedIndexChanged += ComboBoost_Changed;
+            comboBoost.SelectedValueChanged += ComboBoost_Changed;
 
             Shown += Fans_Shown;
 
@@ -162,9 +162,11 @@ namespace GHelper
 
         private void ComboBoost_Changed(object? sender, EventArgs e)
         {
-            if (sender is null) return;
-            ComboBox cmb = (ComboBox)sender;
-            NativeMethods.SetCPUBoost(cmb.SelectedIndex);
+            if (Program.config.getConfigPerf("auto_boost") != comboBoost.SelectedIndex)
+            {
+                NativeMethods.SetCPUBoost(comboBoost.SelectedIndex);
+                Program.config.setConfigPerf("auto_boost", comboBoost.SelectedIndex);
+            }
         }
 
         private void CheckApplyPower_Click(object? sender, EventArgs e)

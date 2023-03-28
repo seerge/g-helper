@@ -1,8 +1,6 @@
 using Microsoft.Win32;
 using System.Diagnostics;
 using System.Management;
-using System.Reflection;
-using System.Text.Json;
 
 namespace GHelper
 {
@@ -61,13 +59,12 @@ namespace GHelper
 
             Application.EnableVisualStyles();
 
-            SystemEvents.UserPreferenceChanged += new
-                 UserPreferenceChangedEventHandler(SystemEvents_UserPreferenceChanged);
+            SystemEvents.UserPreferenceChanged += new UserPreferenceChangedEventHandler(SystemEvents_UserPreferenceChanged);
 
             var ds = settingsForm.Handle;
 
             trayIcon.MouseClick += TrayIcon_MouseClick;
-            
+
 
             wmi.SubscribeToEvents(WatcherEventArrived);
 

@@ -30,9 +30,9 @@ namespace CustomControls
             return (int)registryValueObject <= 0;
         }
 
-        public void InitTheme(bool setDPI = true)
+        public bool InitTheme(bool setDPI = true)
         {
-            bool newDarkTheme = IsDarkTheme();
+            bool newDarkTheme = CheckSystemDarkModeStatus();
             bool changed = (darkTheme != newDarkTheme);
             darkTheme = newDarkTheme;
 
@@ -44,6 +44,8 @@ namespace CustomControls
                 DwmSetWindowAttribute(this.Handle, 20, new[] { darkTheme ? 1 : 0 }, 4);
                 ControlHelper.Adjust(this, darkTheme, changed);
             }
+
+            return changed;
 
         }
 
