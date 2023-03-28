@@ -379,7 +379,7 @@ namespace Starlight.AnimeMatrix
                         using (Font font = new Font("Arial", 9F))
                         {
                             SizeF textSize = g.MeasureString(text2, font);
-                            g.DrawString(text2, font, Brushes.White, (MaxColumns * 3 - textSize.Width), 25);
+                            g.DrawString(text2, font, Brushes.White, (MaxColumns * 3 - textSize.Width)+1, 25);
                         }
 
                 }
