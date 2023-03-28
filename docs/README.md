@@ -61,7 +61,8 @@ PPTs are shown for G14 2022, for other models PPTs will be different as they are
 ## :question: FAQ
 
 ### How do I stop Armory Crate install popup appearing every time I press M4 / Rog key?
-Go to BIOS (F2 on boot), open Advanced Settings and disable "Armory Control Interface". If it still appears - delete or move somwhere following file  C:\Windows\System32\ASUSACCI\ArmouryCrateKeyControl.exe
+Go to BIOS (F2 on boot), open Advanced Settings and disable "Armory Control Interface". 
+If it still appears - delete or move somwhere following file ``C:\Windows\System32\ASUSACCI\ArmouryCrateKeyControl.exe``
 
 ### Why Ultimate GPU mode is not available on my laptop?
 Ultimate mode is supported (by hardware) only on G14 2022 (and possibly other models from 2022+)
