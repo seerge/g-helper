@@ -26,6 +26,7 @@ namespace GHelper
         public Keyboard keyb;
 
         static AnimeMatrixDevice mat;
+        static int matrixTick = 0;
         static long lastRefresh;
 
         public SettingsForm()
@@ -356,7 +357,27 @@ namespace GHelper
                     mat.PresentNextFrame();
                     break;
                 case 3:
-                    mat.PresentText(DateTime.Now.ToString("H:mm:ss"));
+                    string format1, format2;
+                    if (CultureInfo.CurrentCulture.DateTimeFormat.ShortTimePattern.Contains("H"))
+                    {
+                        format1 = "H:mm";
+                        format2 = "";
+                    } else
+                    {
+                        format1 = "h:mm";
+                        format2 = "tt";
+                    }
+
+                    if (matrixTick > 0)
+                    {
+                        format1 = format1.Replace(":", " ");
+                        matrixTick = 0;
+                    } else
+                    {
+                        matrixTick++;
+                    }
+
+                    mat.PresentText(DateTime.Now.ToString(format1), DateTime.Now.ToString(format2));
                     break;
             }
 
