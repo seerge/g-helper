@@ -40,12 +40,12 @@ namespace GHelper
             pictureMatrix = new PictureBox();
             labelMatrix = new Label();
             panelBattery = new Panel();
+            sliderBattery = new WinFormsSliderBar.Slider();
             labelModel = new Label();
             labelVersion = new Label();
             labelBattery = new Label();
             pictureBattery = new PictureBox();
             labelBatteryTitle = new Label();
-            trackBattery = new TrackBar();
             panelFooter = new Panel();
             buttonQuit = new RButton();
             checkStartup = new CheckBox();
@@ -93,7 +93,6 @@ namespace GHelper
             ((System.ComponentModel.ISupportInitialize)pictureMatrix).BeginInit();
             panelBattery.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBattery).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)trackBattery).BeginInit();
             panelFooter.SuspendLayout();
             panelPerformance.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)picturePerf).BeginInit();
@@ -237,12 +236,12 @@ namespace GHelper
             // 
             panelBattery.AutoSize = true;
             panelBattery.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            panelBattery.Controls.Add(sliderBattery);
             panelBattery.Controls.Add(labelModel);
             panelBattery.Controls.Add(labelVersion);
             panelBattery.Controls.Add(labelBattery);
             panelBattery.Controls.Add(pictureBattery);
             panelBattery.Controls.Add(labelBatteryTitle);
-            panelBattery.Controls.Add(trackBattery);
             panelBattery.Dock = DockStyle.Top;
             panelBattery.Location = new Point(10, 926);
             panelBattery.Margin = new Padding(8);
@@ -250,6 +249,17 @@ namespace GHelper
             panelBattery.Padding = new Padding(0, 0, 0, 12);
             panelBattery.Size = new Size(810, 163);
             panelBattery.TabIndex = 34;
+            // 
+            // sliderBattery
+            // 
+            sliderBattery.Location = new Point(16, 70);
+            sliderBattery.Max = 100;
+            sliderBattery.Min = 50;
+            sliderBattery.Name = "sliderBattery";
+            sliderBattery.Size = new Size(772, 40);
+            sliderBattery.TabIndex = 39;
+            sliderBattery.Text = "sliderBattery";
+            sliderBattery.Value = 80;
             // 
             // labelModel
             // 
@@ -306,22 +316,6 @@ namespace GHelper
             labelBatteryTitle.Size = new Size(393, 36);
             labelBatteryTitle.TabIndex = 34;
             labelBatteryTitle.Text = "Battery Charge Limit";
-            // 
-            // trackBattery
-            // 
-            trackBattery.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            trackBattery.LargeChange = 10;
-            trackBattery.Location = new Point(20, 52);
-            trackBattery.Margin = new Padding(8, 4, 8, 4);
-            trackBattery.Maximum = 100;
-            trackBattery.Minimum = 50;
-            trackBattery.Name = "trackBattery";
-            trackBattery.Size = new Size(766, 90);
-            trackBattery.SmallChange = 5;
-            trackBattery.TabIndex = 33;
-            trackBattery.TickFrequency = 10;
-            trackBattery.TickStyle = TickStyle.TopLeft;
-            trackBattery.Value = 100;
             // 
             // panelFooter
             // 
@@ -1033,7 +1027,6 @@ namespace GHelper
             panelBattery.ResumeLayout(false);
             panelBattery.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBattery).EndInit();
-            ((System.ComponentModel.ISupportInitialize)trackBattery).EndInit();
             panelFooter.ResumeLayout(false);
             panelFooter.PerformLayout();
             panelPerformance.ResumeLayout(false);
@@ -1069,7 +1062,6 @@ namespace GHelper
         private Label labelBattery;
         private PictureBox pictureBattery;
         private Label labelBatteryTitle;
-        private TrackBar trackBattery;
         private Panel panelFooter;
         private RButton buttonQuit;
         private CheckBox checkStartup;
@@ -1118,5 +1110,6 @@ namespace GHelper
         private RButton buttonFans;
         private Label labelMidFan;
         private Label labelModel;
+        private WinFormsSliderBar.Slider sliderBattery;
     }
 }

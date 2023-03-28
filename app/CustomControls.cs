@@ -52,11 +52,6 @@ namespace CustomControls
     }
 
 
-    public class RTrackBar : TrackBar
-    {
-
-    }
-
     public class RComboBox : ComboBox
     {
         private Color borderColor = Color.Gray;
@@ -73,6 +68,8 @@ namespace CustomControls
                 }
             }
         }
+
+
         private Color buttonColor = Color.FromArgb(255,230, 230, 230);
         [DefaultValue(typeof(Color), "230, 230, 230")]
         public Color ButtonColor

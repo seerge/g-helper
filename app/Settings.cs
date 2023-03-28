@@ -115,10 +115,8 @@ namespace GHelper
             button120Hz.MouseMove += Button120Hz_MouseHover;
             button120Hz.MouseLeave += ButtonScreen_MouseLeave;
 
-            trackBattery.ValueChanged += TrackBattery_ValueChanged;
+            sliderBattery.ValueChanged += SliderBattery_ValueChanged;
             Program.trayIcon.MouseMove += TrayIcon_MouseMove;
-
-            //buttonStandard.Image = (Image)(new Bitmap(buttonStandard.Image, new Size(16, 16)));
 
             aTimer = new System.Timers.Timer(500);
             aTimer.Elapsed += OnTimedEvent;
@@ -128,7 +126,7 @@ namespace GHelper
             Program.unRegPowerNotify = NativeMethods.RegisterPowerSettingNotification(Handle, settingGuid.ConsoleDisplayState, NativeMethods.DEVICE_NOTIFY_WINDOW_HANDLE);
 
             SetVersionLabel("Version: " + Assembly.GetExecutingAssembly().GetName().Version);
-            
+
             string model = Program.config.GetModel();
             int trim = model.LastIndexOf("_");
             if (trim > 0) model = model.Substring(0, trim);
@@ -146,10 +144,9 @@ namespace GHelper
 
         }
 
-
-        private void TrackBattery_ValueChanged(object? sender, EventArgs e)
+        private void SliderBattery_ValueChanged(object? sender, EventArgs e)
         {
-            SetBatteryChargeLimit(trackBattery.Value);
+            SetBatteryChargeLimit(sliderBattery.Value);
         }
 
 
@@ -362,7 +359,8 @@ namespace GHelper
                     {
                         format1 = "H:mm";
                         format2 = "";
-                    } else
+                    }
+                    else
                     {
                         format1 = "h:mm";
                         format2 = "tt";
@@ -372,7 +370,8 @@ namespace GHelper
                     {
                         format1 = format1.Replace(":", " ");
                         matrixTick = 0;
-                    } else
+                    }
+                    else
                     {
                         matrixTick++;
                     }
@@ -747,7 +746,7 @@ namespace GHelper
             bool overdriveSetting = (Program.config.getConfig("no_overdrive") != 1);
 
             int overdrive = Program.wmi.DeviceGet(ASUSWmi.ScreenOverdrive);
-            
+
             int miniled = Program.wmi.DeviceGet(ASUSWmi.ScreenMiniled);
 
             bool screenEnabled = (frequency >= 0);
@@ -936,7 +935,8 @@ namespace GHelper
 
                 labelPerf.Text = "Performance Mode+";
 
-            } else
+            }
+            else
             {
                 labelPerf.Text = "Performance Mode";
             }
@@ -1324,8 +1324,10 @@ namespace GHelper
 
             if (limit < 40 || limit > 100) return;
 
+            //Debug.WriteLine(limit);
+
             labelBatteryTitle.Text = "Battery Charge Limit: " + limit.ToString() + "%";
-            trackBattery.Value = limit;
+            sliderBattery.Value = limit;
 
             Program.wmi.DeviceSet(ASUSWmi.BatteryLimit, limit);
             Program.config.setConfig("charge_limit", limit);
