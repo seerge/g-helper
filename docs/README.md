@@ -16,6 +16,7 @@ A small utility that allows you to do almost everything you could do with Armour
 ### [:floppy_disk: Download latest release](https://github.com/seerge/g-helper/releases/latest/download/GHelper.zip)
 
 If you like this app, please [star :star: it on Github](https://github.com/seerge/g-helper) and spread a word about it!
+If you post about app - please include a link. Thanks.
 
 ![Screenshot 2023-03-29 122524](https://user-images.githubusercontent.com/5920850/228505505-c3682509-a9e4-4cac-a5fd-e10d30c477cd.png)
 
