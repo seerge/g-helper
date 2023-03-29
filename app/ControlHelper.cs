@@ -9,6 +9,7 @@ public static class ControlHelper
     static bool _invert = false;
     static bool _darkTheme = false;
 
+
     static float _scale = 1;
 
     static Color formBack;

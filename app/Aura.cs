@@ -148,7 +148,7 @@ namespace GHelper
         {
             HidDevice[] HidDeviceList = HidDevices.Enumerate(0x0b05, deviceIds).ToArray();
 
-            byte[] msg = { 0x5a, 0xba, 0xc5, 0xc4, (byte)brightness };
+            byte[] msg = { 0x5d, 0xba, 0xc5, 0xc4, (byte)brightness };
 
             foreach (HidDevice device in HidDeviceList)
                 if (device.IsConnected && device.Description.Contains("HID"))

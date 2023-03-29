@@ -31,6 +31,10 @@ public class ASUSWmi
     public const uint DevsGPUFanCurve = 0x00110025;
     public const uint DevsMidFanCurve = 0x00110032;
 
+    public const int Temp_CPU = 0x00120094;
+    public const int Temp_GPU = 0x00120097;
+
+
     public const int PPT_TotalA0 = 0x001200A0;  // Total PPT on 2022 and CPU PPT on 2021
     public const int PPT_EDCA1 = 0x001200A1;  // CPU EDC
     public const int PPT_TDCA2 = 0x001200A2;  // CPU TDC

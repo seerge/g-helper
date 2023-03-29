@@ -137,7 +137,7 @@ namespace GHelper
 
             Task.Run(async () =>
             {
-                await Task.Delay(TimeSpan.FromSeconds(5));
+                await Task.Delay(TimeSpan.FromSeconds(1));
                 CheckForUpdatesAsync();
             });
 
@@ -828,25 +828,11 @@ namespace GHelper
         }
 
 
-        private static string FormatFan(int fan)
-        {
-            if (fan < 0) return null;
-
-            if (Program.config.getConfig("fan_rpm") == 1)
-                return " Fan: " + (fan * 100).ToString() + "RPM";
-            else
-                return " Fan: " + Math.Min(Math.Round(fan / 0.6), 100).ToString() + "%"; // relatively to 6000 rpm
-        }
-
         private static void RefreshSensors(bool force = false)
         {
 
             if (!force && Math.Abs(DateTimeOffset.Now.ToUnixTimeMilliseconds() - lastRefresh) < 2000) return;
             lastRefresh = DateTimeOffset.Now.ToUnixTimeMilliseconds();
-
-            string cpuFan = FormatFan(Program.wmi.DeviceGet(ASUSWmi.CPU_Fan));
-            string gpuFan = FormatFan(Program.wmi.DeviceGet(ASUSWmi.GPU_Fan));
-            string midFan = FormatFan(Program.wmi.DeviceGet(ASUSWmi.Mid_Fan));
 
             string cpuTemp = "";
             string gpuTemp = "";
@@ -867,12 +853,16 @@ namespace GHelper
 
             Program.settingsForm.BeginInvoke(delegate
             {
-                Program.settingsForm.labelCPUFan.Text = "CPU" + cpuTemp + cpuFan;
-                Program.settingsForm.labelGPUFan.Text = "GPU" + gpuTemp + gpuFan;
-                if (midFan is not null) Program.settingsForm.labelMidFan.Text = "Mid" + midFan;
+                Program.settingsForm.labelCPUFan.Text = "CPU" + cpuTemp + HardwareMonitor.cpuFan;
+                Program.settingsForm.labelGPUFan.Text = "GPU" + gpuTemp + HardwareMonitor.gpuFan;
+                if (HardwareMonitor.midFan is not null) 
+                    Program.settingsForm.labelMidFan.Text = "Mid" + HardwareMonitor.midFan;
+                
                 Program.settingsForm.labelBattery.Text = battery;
 
-                Program.trayIcon.Text = "CPU" + cpuTemp + cpuFan + "\n" + "GPU" + gpuTemp + gpuFan + ((battery.Length > 0) ? ("\n" + battery) : "");
+                Program.trayIcon.Text = "CPU" + cpuTemp + HardwareMonitor.cpuFan + "\n" 
+                                        + "GPU" + gpuTemp + HardwareMonitor.gpuFan + 
+                                        ((battery.Length > 0) ? ("\n" + battery) : "");
 
             });
         }
@@ -1035,9 +1025,11 @@ namespace GHelper
             if (Program.config.getConfig("keyboard_auto") != 1) return;
 
             if (SystemInformation.PowerStatus.PowerLineStatus == PowerLineStatus.Online)
-                Program.wmi.DeviceSet(ASUSWmi.UniversalControl, ASUSWmi.KB_Light_Up);
+                Aura.ApplyBrightness(3);
+                //Program.wmi.DeviceSet(ASUSWmi.UniversalControl, ASUSWmi.KB_Light_Up);
             else
-                Program.wmi.DeviceSet(ASUSWmi.UniversalControl, ASUSWmi.KB_Light_Down);
+                Aura.ApplyBrightness(0);
+                //Program.wmi.DeviceSet(ASUSWmi.UniversalControl, ASUSWmi.KB_Light_Down);
 
 
         }
@@ -1119,6 +1111,9 @@ namespace GHelper
             int eco = Program.wmi.DeviceGet(ASUSWmi.GPUEco);
             int mux = Program.wmi.DeviceGet(ASUSWmi.GPUMux);
 
+            //Logger.WriteLine("Eco flag : " + eco);
+            //Logger.WriteLine("Mux flag : " + mux);
+
             int GpuMode;
 
             if (mux == 0)
@@ -1170,11 +1165,12 @@ namespace GHelper
                 }
 
                 Program.wmi.DeviceSet(ASUSWmi.GPUEco, eco);
+                Logger.WriteLine("Setting Eco mode: " + eco);
+
                 Program.settingsForm.BeginInvoke(delegate
                 {
-                    InitGPUMode();
-                    HardwareMonitor.RecreateGpuTemperatureProviderWithDelay();
                     Thread.Sleep(500);
+                    InitGPUMode();
                     AutoScreen();
                 });
             });
