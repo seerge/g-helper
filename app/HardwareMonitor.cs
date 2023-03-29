@@ -41,10 +41,12 @@ public static class HardwareMonitor
         try
         {
             cpuTemp = Program.wmi.DeviceGet(ASUSWmi.Temp_CPU);
-            /*
-            var ct = new PerformanceCounter("Thermal Zone Information", "Temperature", @"\_TZ.THRM", true);
-            cpuTemp = ct.NextValue() - 273;
-            ct.Dispose();*/
+            if (cpuTemp < 0)
+            {
+                var ct = new PerformanceCounter("Thermal Zone Information", "Temperature", @"\_TZ.THRM", true);
+                cpuTemp = ct.NextValue() - 273;
+                ct.Dispose();
+            }
         } catch
         {
             Logger.WriteLine("Failed reading CPU temp");
