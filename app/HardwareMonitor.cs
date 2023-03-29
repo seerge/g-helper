@@ -14,6 +14,19 @@ public static class HardwareMonitor
     public static string? gpuFan;
     public static string? midFan;
 
+    public static int GetFanMax()
+    {
+        int max = 58;
+        if (Program.config.ContainsModel("401")) max = 72;
+        else if (Program.config.ContainsModel("503")) max = 68;
+
+        return Math.Max(max, Program.config.getConfig("fan_max"));
+    }
+
+    public static void SetFanMax(int fan)
+    {
+        Program.config.setConfig("fan_max", fan);
+    }
     private static string FormatFan(int fan)
     {
         // fix for old models 
@@ -23,10 +36,13 @@ public static class HardwareMonitor
             if (fan <= 0 || fan > 100) return null; //nothing reasonable
         }
 
+        int fanMax = GetFanMax();
+        if (fan > fanMax) SetFanMax(fan);
+
         if (Program.config.getConfig("fan_rpm") == 1)
             return " Fan: " + (fan * 100).ToString() + "RPM";
         else
-            return " Fan: " + Math.Min(Math.Round(fan / 0.6), 100).ToString() + "%"; // relatively to 6000 rpm
+            return " Fan: " + Math.Min(Math.Round((float)fan/fanMax*100), 100).ToString() + "%"; // relatively to 6000 rpm
     }
 
     public static void ReadSensors()

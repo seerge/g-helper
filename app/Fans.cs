@@ -18,7 +18,7 @@ namespace GHelper
         {
             if (percentage == 0) return "OFF";
 
-            return (200 * Math.Round((float)(MinRPM + (MaxRPM - MinRPM) * percentage * 0.01) / 200)).ToString() + unit;
+            return (200 * Math.Round((float)(MinRPM*100 + (MaxRPM - MinRPM) * percentage) / 200)).ToString() + unit;
         }
 
         void SetChart(Chart chart, int device)
@@ -89,14 +89,8 @@ namespace GHelper
             InitializeComponent();
             InitTheme();
 
-            MinRPM = 1800;
-
-            if (Program.config.ContainsModel("401"))
-                MaxRPM = 7200;
-            else if (Program.config.ContainsModel("503"))
-                MaxRPM = 6800;
-            else
-                MaxRPM = 5800;
+            MinRPM = 18;
+            MaxRPM = HardwareMonitor.GetFanMax();
 
 
 

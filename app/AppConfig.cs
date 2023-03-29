@@ -108,6 +108,8 @@ public class AppConfig
 
         if (device == 1)
             name = "gpu";
+        else if (device == 2)
+            name = "mid";
         else
             name = "cpu";
 
