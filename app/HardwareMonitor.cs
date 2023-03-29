@@ -31,43 +31,29 @@ public static class HardwareMonitor
 
     public static void ReadSensors()
     {
-        cpuTemp = -1;
         batteryDischarge = -1;
 
         cpuFan = FormatFan(Program.wmi.DeviceGet(ASUSWmi.CPU_Fan));
         gpuFan = FormatFan(Program.wmi.DeviceGet(ASUSWmi.GPU_Fan));
         midFan = FormatFan(Program.wmi.DeviceGet(ASUSWmi.Mid_Fan));
 
-        try
+        cpuTemp = Program.wmi.DeviceGet(ASUSWmi.Temp_CPU);
+        gpuTemp = Program.wmi.DeviceGet(ASUSWmi.Temp_GPU);
+
+        if (cpuTemp < 0) try
         {
-            cpuTemp = Program.wmi.DeviceGet(ASUSWmi.Temp_CPU);
-            if (cpuTemp < 0)
-            {
-                var ct = new PerformanceCounter("Thermal Zone Information", "Temperature", @"\_TZ.THRM", true);
-                cpuTemp = ct.NextValue() - 273;
-                ct.Dispose();
-            }
+            var ct = new PerformanceCounter("Thermal Zone Information", "Temperature", @"\_TZ.THRM", true);
+            cpuTemp = ct.NextValue() - 273;
+            ct.Dispose();
         } catch
         {
             Logger.WriteLine("Failed reading CPU temp");
         }
 
-        try
+        if (gpuTemp < 0)  try
         {
-            var cb = new PerformanceCounter("Power Meter", "Power", "Power Meter (0)", true);
-            batteryDischarge = cb.NextValue() / 1000;
-            cb.Dispose();
-
-        } catch
-        {
-            Logger.WriteLine("Failed reading Battery discharge");
-        }
-
-        try
-        {
-            gpuTemp = Program.wmi.DeviceGet(ASUSWmi.Temp_GPU);
-            if (gpuTemp < 0)
-                gpuTemp = GpuTemperatureProvider?.GetCurrentTemperature();
+           if (GpuTemperatureProvider is null) RecreateGpuTemperatureProvider();
+           gpuTemp = GpuTemperatureProvider?.GetCurrentTemperature();
 
         }
         catch (Exception ex) {
@@ -76,6 +62,17 @@ public static class HardwareMonitor
             Logger.WriteLine(ex.ToString());
         }
 
+        try
+        {
+            var cb = new PerformanceCounter("Power Meter", "Power", "Power Meter (0)", true);
+            batteryDischarge = cb.NextValue() / 1000;
+            cb.Dispose();
+
+        }
+        catch
+        {
+            Logger.WriteLine("Failed reading Battery discharge");
+        }
     }
 
     public static void RecreateGpuTemperatureProviderWithDelay() {

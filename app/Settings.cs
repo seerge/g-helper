@@ -118,7 +118,7 @@ namespace GHelper
             sliderBattery.ValueChanged += SliderBattery_ValueChanged;
             Program.trayIcon.MouseMove += TrayIcon_MouseMove;
 
-            aTimer = new System.Timers.Timer(500);
+            aTimer = new System.Timers.Timer(1000);
             aTimer.Elapsed += OnTimedEvent;
 
             // Subscribing for monitor power on events
@@ -878,7 +878,7 @@ namespace GHelper
                 this.Top = Screen.FromControl(this).WorkingArea.Height - 10 - this.Height;
                 this.Activate();
 
-                aTimer.Interval = 300;
+                //aTimer.Interval = 300;
                 aTimer.Enabled = true;
 
                 //RefreshSensors();

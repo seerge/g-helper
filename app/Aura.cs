@@ -71,9 +71,8 @@ namespace GHelper
                 { 2, "Fast" }
             };
         }
-        public static Dictionary<int, string> GetModes()
-        {
-            return new Dictionary<int, string>
+
+        static  Dictionary<int, string> _modes = new Dictionary<int, string>
             {
                 { 0, "Static" },
                 { 1, "Breathe" },
@@ -81,6 +80,21 @@ namespace GHelper
                 { 3, "Rainbow" },
                 { 10, "Strobe" },
             };
+
+        public static Dictionary<int, string> GetModes()
+        {
+            if (Program.config.ContainsModel("TUF"))
+            {
+                _modes.Remove(3);
+            }
+
+            if (Program.config.ContainsModel("401"))
+            {
+                _modes.Remove(2);
+                _modes.Remove(3);
+            }
+
+            return _modes;
         }
 
 
