@@ -1,4 +1,5 @@
 ﻿using CustomControls;
+using WinFormsSliderBar;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms.DataVisualization.Charting;
 
@@ -38,7 +39,7 @@ public static class ControlHelper
             foreMain = SystemColors.ControlText;
             foreAccent = Color.LightGray;
             borderMain = Color.LightGray;
-            buttonMain = Color.FromArgb(255, 230, 230, 230);
+            buttonMain = Color.FromArgb(255, 250, 250, 250);
         }
 
         container.BackColor = formBack;
@@ -53,7 +54,7 @@ public static class ControlHelper
     public static void Resize(RForm container, float baseScale = 2)
     {
         _scale = GetDpiScale(container).Value / baseScale;
-        ResizeControls(container.Controls);
+        if (Math.Abs(_scale - 1) > 0.2) ResizeControls(container.Controls);
 
     }
 
@@ -65,9 +66,11 @@ public static class ControlHelper
             if (button != null && button.Image is not null)
                 button.Image = ResizeImage(button.Image);
 
+            /*
             var pictureBox = control as PictureBox;
             if (pictureBox != null && pictureBox.BackgroundImage is not null)
                 pictureBox.BackgroundImage = ResizeImage(pictureBox.BackgroundImage);
+            */
 
             ResizeControls(control.Controls);
         }
@@ -95,7 +98,7 @@ public static class ControlHelper
             if (pictureBox != null && pictureBox.BackgroundImage is not null)
                 pictureBox.BackgroundImage = AdjustImage(pictureBox.BackgroundImage);
 
-            
+
             var combo = control as RComboBox;
             if (combo != null)
             {
@@ -111,6 +114,11 @@ public static class ControlHelper
                 gb.ForeColor = foreMain;
             }
 
+            var sl = control as Slider;
+            if (sl != null)
+            {
+                sl.borderColor = buttonMain;
+            }
 
             var chart = control as Chart;
             if (chart != null)

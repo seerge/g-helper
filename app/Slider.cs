@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using System.Drawing.Drawing2D;
+﻿using System.Drawing.Drawing2D;
 
 namespace WinFormsSliderBar
 {
@@ -30,6 +29,7 @@ namespace WinFormsSliderBar
         private int _step = 5;
 
         public Color accentColor = Color.FromArgb(255, 58, 174, 239);
+        public Color borderColor = Color.White;
 
         public event EventHandler ValueChanged;
 
@@ -85,7 +85,7 @@ namespace WinFormsSliderBar
 
             Brush brushAccent = new SolidBrush(accentColor);
             Brush brushEmpty = new SolidBrush(Color.Gray);
-            Brush brushBorder = new SolidBrush(Color.White);
+            Brush brushBorder = new SolidBrush(borderColor);
 
             e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
             e.Graphics.FillRectangle(brushEmpty,
@@ -105,11 +105,11 @@ namespace WinFormsSliderBar
 
         private void RecalculateParameters()
         {
-            _radius = 0.45F * ClientSize.Height;
-            _barSize = new SizeF(ClientSize.Width - 4 * _radius, ClientSize.Height*0.15F);
+            _radius = 0.4F * ClientSize.Height;
+            _barSize = new SizeF(ClientSize.Width - 4 * _radius, ClientSize.Height * 0.15F);
             _barPos = new PointF(_radius, (ClientSize.Height - _barSize.Height) / 2);
             _thumbPos = new PointF(
-                _barSize.Width / (Max - Min) * (Value-Min) + _barPos.X,
+                _barSize.Width / (Max - Min) * (Value - Min) + _barPos.X,
                 _barPos.Y + 0.5f * _barSize.Height);
             Invalidate();
         }
@@ -145,7 +145,7 @@ namespace WinFormsSliderBar
                 thumbX = _barPos.X + _barSize.Width;
             }
             Value = (int)Math.Round(Min + (thumbX - _barPos.X) * (Max - Min) / _barSize.Width);
-            
+
         }
 
         protected override void OnMouseMove(MouseEventArgs e)

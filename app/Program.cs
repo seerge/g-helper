@@ -103,13 +103,13 @@ namespace GHelper
                 case UserPreferenceCategory.General:
                     Debug.WriteLine("Theme Changed");
                     Thread.Sleep(1000);
-                    settingsForm.InitTheme(false);
+                    settingsForm.InitTheme();
 
                     if (settingsForm.fans is not null && settingsForm.fans.Text != "")
-                        settingsForm.fans.InitTheme(false);
+                        settingsForm.fans.InitTheme();
 
                     if (settingsForm.keyb is not null && settingsForm.keyb.Text != "")
-                        settingsForm.keyb.InitTheme(false);
+                        settingsForm.keyb.InitTheme();
 
                     break;
             }

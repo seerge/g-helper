@@ -674,6 +674,7 @@ public class NativeMethods
 
         PowerSetActiveScheme(IntPtr.Zero, activeSchemeGuid);
 
+        /*
         var hrDC = PowerWriteDCValueIndex(
              IntPtr.Zero,
              activeSchemeGuid,
@@ -682,6 +683,7 @@ public class NativeMethods
              boost);
 
         PowerSetActiveScheme(IntPtr.Zero, activeSchemeGuid);
+        */
 
         Logger.WriteLine("Boost " + boost);
     }

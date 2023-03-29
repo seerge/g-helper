@@ -32,7 +32,7 @@ namespace GHelper
         public SettingsForm()
         {
             InitializeComponent();
-            InitTheme();
+            InitTheme(true);
 
             FormClosing += SettingsForm_FormClosing;
 

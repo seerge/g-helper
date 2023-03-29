@@ -1,5 +1,6 @@
 ﻿using Microsoft.Win32;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Drawing.Drawing2D;
 using System.Runtime.InteropServices;
 
@@ -30,7 +31,7 @@ namespace CustomControls
             return (int)registryValueObject <= 0;
         }
 
-        public bool InitTheme(bool setDPI = true)
+        public bool InitTheme(bool setDPI = false)
         {
             bool newDarkTheme = CheckSystemDarkModeStatus();
             bool changed = (darkTheme != newDarkTheme);
