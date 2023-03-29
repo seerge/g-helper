@@ -16,8 +16,9 @@ A small utility that allows you to do almost everything you could do with Armour
 ### [:floppy_disk: Download latest release](https://github.com/seerge/g-helper/releases/latest/download/GHelper.zip)
 
 If you like this app, please [star :star: it on Github](https://github.com/seerge/g-helper) and spread a word about it!
+If you post about app - please include a link. Thanks.
 
-![Screenshot](https://raw.githubusercontent.com/seerge/g-helper/main/docs/screenshot.png)
+![Screenshot 2023-03-29 122524](https://user-images.githubusercontent.com/5920850/228505505-c3682509-a9e4-4cac-a5fd-e10d30c477cd.png)
 
 ### :zap: Main features
 
@@ -44,6 +45,8 @@ To keep auto switching and hotkeys working the app needs to stay in running in t
 ### :rocket: Performance Modes
 
 Modes are **same** as in Armory Crate (as they are stored in bios), including default fan curves
+
+![Screenshot 2023-03-29 122534](https://user-images.githubusercontent.com/5920850/228505581-4e7d087c-bd0a-4a48-b572-de2c01192830.png)
 
 1. Silent (minimal or no fans, 70W PPT total, up to 45W PPT to CPU) + Best power efficiency setting in windows
 2. Balanced (balanced fans, 100W PPT total, up to 45W PPT to CPU) + Balanced setting in windows
