@@ -163,7 +163,6 @@ namespace GHelper
             // comboMatrix
             // 
             comboMatrix.BorderColor = Color.White;
-            comboMatrix.ButtonColor = SystemColors.ControlLight;
             comboMatrix.Dock = DockStyle.Top;
             comboMatrix.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
             comboMatrix.FormattingEnabled = true;
@@ -179,7 +178,6 @@ namespace GHelper
             // comboMatrixRunning
             // 
             comboMatrixRunning.BorderColor = Color.White;
-            comboMatrixRunning.ButtonColor = SystemColors.ControlLight;
             comboMatrixRunning.Dock = DockStyle.Top;
             comboMatrixRunning.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
             comboMatrixRunning.FormattingEnabled = true;
@@ -890,7 +888,6 @@ namespace GHelper
             // comboKeyboard
             // 
             comboKeyboard.BorderColor = Color.White;
-            comboKeyboard.ButtonColor = SystemColors.ControlLight;
             comboKeyboard.Dock = DockStyle.Top;
             comboKeyboard.FlatStyle = FlatStyle.Flat;
             comboKeyboard.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);

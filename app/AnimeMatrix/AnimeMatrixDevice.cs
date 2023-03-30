@@ -390,7 +390,7 @@ namespace Starlight.AnimeMatrix
 
         }
 
-        public void GenerateFrame(Image image, InterpolationMode interpolation = InterpolationMode.HighQualityBicubic)
+        public void GenerateFrame(Image image, InterpolationMode interpolation = InterpolationMode.High)
         {
 
             int width = MaxColumns/2 * 6;

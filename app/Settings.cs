@@ -855,13 +855,13 @@ namespace GHelper
             {
                 Program.settingsForm.labelCPUFan.Text = "CPU" + cpuTemp + HardwareMonitor.cpuFan;
                 Program.settingsForm.labelGPUFan.Text = "GPU" + gpuTemp + HardwareMonitor.gpuFan;
-                if (HardwareMonitor.midFan is not null) 
+                if (HardwareMonitor.midFan is not null)
                     Program.settingsForm.labelMidFan.Text = "Mid" + HardwareMonitor.midFan;
-                
+
                 Program.settingsForm.labelBattery.Text = battery;
 
-                Program.trayIcon.Text = "CPU" + cpuTemp + HardwareMonitor.cpuFan + "\n" 
-                                        + "GPU" + gpuTemp + HardwareMonitor.gpuFan + 
+                Program.trayIcon.Text = "CPU" + cpuTemp + HardwareMonitor.cpuFan + "\n"
+                                        + "GPU" + gpuTemp + HardwareMonitor.gpuFan +
                                         ((battery.Length > 0) ? ("\n" + battery) : "");
 
             });
@@ -1026,10 +1026,10 @@ namespace GHelper
 
             if (SystemInformation.PowerStatus.PowerLineStatus == PowerLineStatus.Online)
                 Aura.ApplyBrightness(3);
-                //Program.wmi.DeviceSet(ASUSWmi.UniversalControl, ASUSWmi.KB_Light_Up);
+            //Program.wmi.DeviceSet(ASUSWmi.UniversalControl, ASUSWmi.KB_Light_Up);
             else
                 Aura.ApplyBrightness(0);
-                //Program.wmi.DeviceSet(ASUSWmi.UniversalControl, ASUSWmi.KB_Light_Down);
+            //Program.wmi.DeviceSet(ASUSWmi.UniversalControl, ASUSWmi.KB_Light_Down);
 
 
         }

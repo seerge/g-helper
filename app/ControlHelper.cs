@@ -106,7 +106,8 @@ public static class ControlHelper
                 combo.BackColor = backMain;
                 combo.ForeColor = foreMain;
                 combo.BorderColor = backMain;
-                combo.ButtonColor = buttonMain;
+                combo.ButtonColor = backMain;
+                combo.ArrowColor = foreMain;
             }
 
             var gb = control as GroupBox;

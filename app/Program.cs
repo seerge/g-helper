@@ -154,7 +154,7 @@ namespace GHelper
             }
             catch
             {
-                Logger.WriteLine("Failed to run " + fileName);
+                Logger.WriteLine("Failed to run  " + fileName);
             }
 
 

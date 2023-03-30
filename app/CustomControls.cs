@@ -71,8 +71,8 @@ namespace CustomControls
         }
 
 
-        private Color buttonColor = Color.FromArgb(255,230, 230, 230);
-        [DefaultValue(typeof(Color), "230, 230, 230")]
+        private Color buttonColor = Color.FromArgb(255, 255, 255, 255);
+        [DefaultValue(typeof(Color), "255, 255, 255")]
         public Color ButtonColor
         {
             get { return buttonColor; }

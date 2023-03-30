@@ -19,7 +19,6 @@ public static class HardwareMonitor
         int max = 58;
         if (Program.config.ContainsModel("401")) max = 72;
         else if (Program.config.ContainsModel("503")) max = 68;
-
         return Math.Max(max, Program.config.getConfig("fan_max"));
     }
 
