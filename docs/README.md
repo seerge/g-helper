@@ -94,6 +94,9 @@ Please check system tray for a (G) icon. By default windows is keen to hide all 
 ### App doesn't start / or crashes, what should I do ?
 Open "Event Viewer" from start menu, go to Windows Logs -> Application and check for recent Errors mentioning G-Helper. If you see one - please post a [new issue](https://github.com/seerge/g-helper/issues) with all details from this error.
 
+### Can I use MyASUS app along with G-Helper?
+Sure, you can! The only problem is that MyASUS may override battery charge limit that you set before. My advice in such case would be to set same limit (i.e. 80%) in both MyASUS and G-Helper.
+
 ### How do I uninstall G-helper?
 G-helper is a single exe, and it doesn't install anything in the system. To remove it - you can simply delete exe :) If you have applied any custom fan profiles or PPTs - before removing I would recommend selecting your favorite performance mode (for example balanced) and clicking "Factory defaults" under Fans + Power.
 
