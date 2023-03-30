@@ -1,3 +1,4 @@
+ 
 # [G-Helper](https://github.com/seerge/g-helper)
 
 [![Github all releases](https://img.shields.io/github/downloads/seerge/g-helper/total.svg)](https://GitHub.com/seerge/g-helper/releases/) [![GitHub release](https://img.shields.io/github/release/seerge/g-helper.svg)](https://GitHub.com/seerge/g-helper/releases/) [![GitHub stars](https://img.shields.io/github/stars/seerge/g-helper.svg?style=social&label=Star)](https://GitHub.com/seerge/g-helper/stargazers/)
@@ -10,7 +11,7 @@ A small utility that allows you to do almost everything you could do with Armour
 ### :gift: Main advantages 
 
 1. Seamless and automatic GPU switching (without asking you to close all apps, etc)
-2. All performance modes can be fully customized (with fan curves and PPTs)
+2. All performance modes can be fully customised (with fan curves and PPTs)
 3. Very lightweight and consumes almost no resources, doesn't install any services. Just a single exe to run
 4. Simple and clean native UI with easy access to all settings
 
@@ -46,7 +47,7 @@ To keep auto switching and hotkeys working the app needs to stay in running in t
 
 ### :rocket: Performance Modes
 
-Modes are **same** as in Armory Crate (as they are stored in bios), including default fan curves
+Modes are **same** as in Armoury Crate (as they are stored in bios), including default fan curves
 
 ![Screenshot 2023-03-29 122534](https://user-images.githubusercontent.com/5920850/228505581-4e7d087c-bd0a-4a48-b572-de2c01192830.png)
 
@@ -65,11 +66,11 @@ PPTs are shown for G14 2022, for other models PPTs will be different as they are
 
 ## :question: FAQ
 
-### How do I stop Armory Crate install popup appearing every time I press M4 / Rog key?
+### How do I stop the Armory Crate install popup appearing every time I press the M4 / Rog key?
 Go to BIOS (F2 on boot), open Advanced Settings and disable "Armory Control Interface". 
-If it still appears - delete or move somwhere following file ``C:\Windows\System32\ASUSACCI\ArmouryCrateKeyControl.exe``
+If it still appears - delete or move somewhere following file ``C:\Windows\System32\ASUSACCI\ArmouryCrateKeyControl.exe``
 
-### Why Ultimate GPU mode is not available on my laptop?
+### Why is Ultimate GPU mode not available on my laptop?
 Ultimate mode is supported (by hardware) only on G14 2022 (and possibly other models from 2022+)
 
 ### I can't set Eco mode (disable dGPU) on my G14 2020
@@ -85,7 +86,7 @@ It doesn't. Your bios does (same as in case with armoury). What G-helper can do 
 Click on them
 
 ### I don't see a GPU temperature in G-helper
-Most probably either you are using Eco / Optimized mode and your dGPU is simply off, or your windows has put dGPU into sleep (to preserve power). In this situations G-helper won't be able to reach your GPU and get readings
+Most probably either you are using Eco / Optimized mode and your dGPU is simply off, or your windows has put the dGPU into sleep (to preserve power). In this situations G-helper won't be able to reach your GPU and get readings
 
 ### App doesn't start / or crashes, what should I do ?
 Open "Event Viewer" from start menu, go to Windows Logs -> Application and check for recent Errors mentioning G-Helper. If you see one - please post a [new issue](https://github.com/seerge/g-helper/issues) with all details from this error.
@@ -101,13 +102,15 @@ G-helper is a single exe, and it doesn't install anything in the system. To remo
 2. Unzip to a folder of your choice
 3. Run **GHelper.exe**
 
-### Dependencies
+### Dependencies & Requirements
 
-- App requires [.NET7](https://dotnet.microsoft.com/en-us/download) to be installed. Most probably you already have it. Otherwise you can [download it](https://dotnet.microsoft.com/en-us/download).
+- Microsoft [.NET7](https://dotnet.microsoft.com/en-us/download). Most probably you already have it. Otherwise you can [download it](https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/sdk-7.0.202-windows-x64-installer) from the official website.
 
-- I recommend keeping "Asus Optimization Service" running, as it keeps basic laptop hotkeys such as screen or keyboard brightness adjustment working. If you have (or had) MyASUS app installed, that service is most probably still up and running even after MyASUS uninstalls. It's part of [Asus System Control Interface](https://www.asus.com/support/FAQ/1047338/). You can install it, and later disable / remove unnecessary services by running [this bat file](https://raw.githubusercontent.com/seerge/g-helper/main/debloat.bat) as admin.
+- [Asus System Control Interface](https://dlcdnets.asus.com/pub/ASUS/nb/Image/CustomComponent/ASUSSystemControlInterfaceV3/ASUSSystemControlInterfaceV3.exe). If you have or had MyASUS app installed this "driver" probably still in place (even after MyASUS uninstalls). Alternatively - you can download and install it, and later disable / remove unnecessary services by running [this bat file](https://raw.githubusercontent.com/seerge/g-helper/main/debloat.bat) as admin.
 
-- It's not recommended to use an app in combination with Armoury Crate, cause they adjust the same settings. You can [uninstall it using it's own uninstall tool](https://dlcdnets.asus.com/pub/ASUS/mb/14Utilities/Armoury_Crate_Uninstall_Tool.zip?model=armoury%20crate). Just in case, you can always install it back later.
+- I recommend keeping "Asus Optimization Service" running, as it keeps basic laptop hotkeys such as screen or keyboard brightness adjustment working.
+
+- It's not recommended to use an app in combination with Armoury Crate services, cause they adjust the same settings. You can [uninstall it using it's own uninstall tool](https://dlcdnets.asus.com/pub/ASUS/mb/14Utilities/Armoury_Crate_Uninstall_Tool.zip?model=armoury%20crate). Just in case, you can always install it back later.
 
 Note: Doesn't need administrator privileges to run!
 
