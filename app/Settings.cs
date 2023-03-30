@@ -716,19 +716,18 @@ namespace GHelper
             if (frequency > 0)
             {
                 NativeMethods.SetRefreshRate(frequency);
-                Logger.WriteLine("Screen " + frequency.ToString() + "Hz");
             }
 
             if (overdrive >= 0)
             {
                 if (Program.config.getConfig("no_overdrive") == 1) overdrive = 0;
-                Program.wmi.DeviceSet(ASUSWmi.ScreenOverdrive, overdrive);
+                Program.wmi.DeviceSet(ASUSWmi.ScreenOverdrive, overdrive, "ScreenOverdrive");
 
             }
 
             if (miniled >= 0)
             {
-                Program.wmi.DeviceSet(ASUSWmi.ScreenMiniled, miniled);
+                Program.wmi.DeviceSet(ASUSWmi.ScreenMiniled, miniled, "Miniled");
                 Debug.WriteLine("Miniled " + miniled);
             }
 
@@ -901,37 +900,45 @@ namespace GHelper
             if (limit_cpu < ASUSWmi.MinCPU) return;
 
             if (Program.wmi.DeviceGet(ASUSWmi.PPT_TotalA0) >= 0)
-                Program.wmi.DeviceSet(ASUSWmi.PPT_TotalA0, limit_total);
+                Program.wmi.DeviceSet(ASUSWmi.PPT_TotalA0, limit_total, "PowerLimit A");
 
             if (Program.wmi.DeviceGet(ASUSWmi.PPT_CPUB0) >= 0)
-                Program.wmi.DeviceSet(ASUSWmi.PPT_CPUB0, limit_cpu);
+                Program.wmi.DeviceSet(ASUSWmi.PPT_CPUB0, limit_cpu, "PowerLimit B");
 
-            Logger.WriteLine("PowerLimits " + limit_total.ToString() + ", " + limit_cpu.ToString());
+
 
 
         }
 
 
-        public void AutoFansAndPower()
+        public void AutoFans(bool force = false)
         {
 
-            if (Program.config.getConfigPerf("auto_apply") == 1)
+            if (force || Program.config.getConfigPerf("auto_apply") == 1)
             {
-                Program.wmi.SetFanCurve(0, Program.config.getFanConfig(0));
-                Program.wmi.SetFanCurve(1, Program.config.getFanConfig(1));
+                int cpuResult = Program.wmi.SetFanCurve(0, Program.config.getFanConfig(0));
+                int gpuResult = Program.wmi.SetFanCurve(1, Program.config.getFanConfig(1));
 
                 if (Program.config.getConfig("mid_fan") == 1)
                     Program.wmi.SetFanCurve(2, Program.config.getFanConfig(2));
 
-                labelPerf.Text = "Performance Mode+";
-
+                if (cpuResult != 1 || gpuResult != 1) // something went wrong, resetting to default profile
+                {
+                    int mode = Program.config.getConfig("performance_mode");
+                    Logger.WriteLine("Bios rejected fan curve, resetting mode to " + mode);
+                    Program.wmi.DeviceSet(ASUSWmi.PerformanceMode, mode, "PerformanceMode");
+                }
+                else
+                    labelPerf.Text = "Performance Mode+";
             }
             else
-            {
                 labelPerf.Text = "Performance Mode";
-            }
 
-            if (Program.config.getConfigPerf("auto_apply_power") == 1)
+        }
+
+        public void AutoPower(bool force = false)
+        {
+            if (force || Program.config.getConfigPerf("auto_apply_power") == 1)
             {
                 var timer = new System.Timers.Timer(1000);
                 timer.Elapsed += delegate
@@ -943,11 +950,8 @@ namespace GHelper
                 timer.Start();
             }
 
-            if (Program.config.getConfigPerf("auto_boost") != -1)
-            {
-                NativeMethods.SetCPUBoost(Program.config.getConfigPerf("auto_boost"));
-            }
         }
+
 
         public void SetPerformanceMode(int PerformanceMode = ASUSWmi.PerformanceBalanced, bool notify = false)
         {
@@ -978,8 +982,7 @@ namespace GHelper
             Program.config.setConfig("performance_" + (int)SystemInformation.PowerStatus.PowerLineStatus, PerformanceMode);
             Program.config.setConfig("performance_mode", PerformanceMode);
 
-            Program.wmi.DeviceSet(ASUSWmi.PerformanceMode, PerformanceMode);
-            Logger.WriteLine("PerfMode " + perfName + " " + PerformanceMode);
+            Program.wmi.DeviceSet(ASUSWmi.PerformanceMode, PerformanceMode, "PerformanceMode");
 
             if (notify && (oldMode != PerformanceMode))
             {
@@ -993,7 +996,13 @@ namespace GHelper
                 }
             }
 
-            AutoFansAndPower();
+            AutoFans();
+            AutoPower();
+
+            if (Program.config.getConfigPerf("auto_boost") != -1)
+            {
+                NativeMethods.SetCPUBoost(Program.config.getConfigPerf("auto_boost"));
+            }
 
             NativeMethods.SetPowerScheme(PerformanceMode);
 
@@ -1164,8 +1173,7 @@ namespace GHelper
                         foreach (var process in Process.GetProcessesByName(kill)) process.Kill();
                 }
 
-                Program.wmi.DeviceSet(ASUSWmi.GPUEco, eco);
-                Logger.WriteLine("Setting Eco mode: " + eco);
+                Program.wmi.DeviceSet(ASUSWmi.GPUEco, eco, "GPUEco");
 
                 Program.settingsForm.BeginInvoke(delegate
                 {
@@ -1199,7 +1207,7 @@ namespace GHelper
                 DialogResult dialogResult = MessageBox.Show("Switching off Ultimate Mode requires restart", "Reboot now?", MessageBoxButtons.YesNo);
                 if (dialogResult == DialogResult.Yes)
                 {
-                    Program.wmi.DeviceSet(ASUSWmi.GPUMux, 1);
+                    Program.wmi.DeviceSet(ASUSWmi.GPUMux, 1, "GPUMux");
                     restart = true;
                     changed = true;
                 }
@@ -1209,7 +1217,7 @@ namespace GHelper
                 DialogResult dialogResult = MessageBox.Show("Ultimate Mode requires restart", "Reboot now?", MessageBoxButtons.YesNo);
                 if (dialogResult == DialogResult.Yes)
                 {
-                    Program.wmi.DeviceSet(ASUSWmi.GPUMux, 0);
+                    Program.wmi.DeviceSet(ASUSWmi.GPUMux, 0, "GPUMux");
                     restart = true;
                     changed = true;
                 }
@@ -1325,7 +1333,7 @@ namespace GHelper
             labelBatteryTitle.Text = "Battery Charge Limit: " + limit.ToString() + "%";
             sliderBattery.Value = limit;
 
-            Program.wmi.DeviceSet(ASUSWmi.BatteryLimit, limit);
+            Program.wmi.DeviceSet(ASUSWmi.BatteryLimit, limit, "BatteryLimit");
             Program.config.setConfig("charge_limit", limit);
 
         }

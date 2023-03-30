@@ -157,21 +157,31 @@ public class ASUSWmi
 
     }
 
-    public byte[] DeviceSet(uint DeviceID, int Status)
+    public int DeviceSet(uint DeviceID, int Status, string logName)
     {
         byte[] args = new byte[8];
         BitConverter.GetBytes((uint)DeviceID).CopyTo(args, 0);
         BitConverter.GetBytes((uint)Status).CopyTo(args, 4);
-        return CallMethod(DEVS, args);
+
+        byte[] status = CallMethod(DEVS, args);
+        int result = BitConverter.ToInt32(status, 0);
+
+        Logger.WriteLine(logName + " = " + Status + " : " + (result == 1 ? "OK" : result));
+        return result;
     }
 
 
-    public byte[] DeviceSet(uint DeviceID, byte[] Params)
+    public int DeviceSet(uint DeviceID, byte[] Params, string logName)
     {
         byte[] args = new byte[4 + Params.Length];
         BitConverter.GetBytes((uint)DeviceID).CopyTo(args, 0);
         Params.CopyTo(args, 4);
-        return CallMethod(DEVS, args);
+
+        byte[] status = CallMethod(DEVS, args);
+        int result = BitConverter.ToInt32(status, 0);
+
+        Logger.WriteLine(logName + " = " + BitConverter.ToString(Params) + " : " + (result == 1 ? "OK" : result));
+        return BitConverter.ToInt32(status, 0);
     }
 
 
@@ -192,31 +202,28 @@ public class ASUSWmi
     }
 
 
-    public void SetFanCurve(int device, byte[] curve)
+    public int SetFanCurve(int device, byte[] curve)
     {
 
-        if (curve.Length != 16) return;
-        if (curve.All(singleByte => singleByte == 0)) return;
+        if (curve.Length != 16) return -1;
+        if (curve.All(singleByte => singleByte == 0)) return -1;
 
-        string name;
+        int result;
 
         switch (device)
         {
             case 1:
-                DeviceSet(DevsGPUFanCurve, curve);
-                name = "GPU";
+                result = DeviceSet(DevsGPUFanCurve, curve, "FanGPU");
                 break;
             case 2:
-                DeviceSet(DevsMidFanCurve, curve);
-                name = "Mid";
+                result = DeviceSet(DevsMidFanCurve, curve, "FanMid");
                 break;
             default:
-                DeviceSet(DevsCPUFanCurve, curve);
-                name = "CPU";
+                result = DeviceSet(DevsCPUFanCurve, curve, "FanCPU");
                 break;
         }
 
-        Logger.WriteLine("Fans" + name + " " + BitConverter.ToString(curve));
+        return result;
     }
 
     public byte[] GetFanCurve(int device, int mode = 0)
@@ -254,7 +261,7 @@ public class ASUSWmi
         setting[4] = color.B;
         setting[5] = (byte)speed;
 
-        DeviceSet(TUF_KB, setting);
+        DeviceSet(TUF_KB, setting, "TUF RGB");
         //Debug.WriteLine(BitConverter.ToString(setting));
 
     }
@@ -274,7 +281,7 @@ public class ASUSWmi
 
         state = state | 0x01 << 8;
 
-        DeviceSet(TUF_KB_STATE, state);
+        DeviceSet(TUF_KB_STATE, state, "TUF_KB");
     }
 
     public void SubscribeToEvents(Action<object, EventArrivedEventArgs> EventHandler)

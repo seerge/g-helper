@@ -334,7 +334,7 @@ namespace GHelper
 
         }
 
-        void ApplyProfile(Series series, int device)
+        void SaveProfile(Series series, int device)
         {
             byte[] curve = new byte[16];
             int i = 0;
@@ -346,17 +346,19 @@ namespace GHelper
             }
 
             Program.config.setFanConfig(device, curve);
-            Program.wmi.SetFanCurve(device, curve);
+            //Program.wmi.SetFanCurve(device, curve);
 
         }
 
 
         private void ButtonApply_Click(object? sender, EventArgs e)
         {
-            ApplyProfile(seriesCPU, 0);
-            ApplyProfile(seriesGPU, 1);
+            SaveProfile(seriesCPU, 0);
+            SaveProfile(seriesGPU, 1);
             if (Program.config.getConfig("mid_fan") == 1)
-                ApplyProfile(seriesMid, 2);
+                SaveProfile(seriesMid, 2);
+
+            Program.settingsForm.AutoFans(true);
         }
 
         private void ButtonReset_Click(object? sender, EventArgs e)
@@ -373,7 +375,7 @@ namespace GHelper
             Program.config.setConfigPerf("auto_apply", 0);
             Program.config.setConfigPerf("auto_apply_power", 0);
 
-            Program.wmi.DeviceSet(ASUSWmi.PerformanceMode, Program.config.getConfig("performance_mode"));
+            Program.wmi.DeviceSet(ASUSWmi.PerformanceMode, Program.config.getConfig("performance_mode"), "PerfMode");
 
             ApplyLabel(false);
         }
