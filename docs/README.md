@@ -88,6 +88,9 @@ Click on them
 ### I don't see a GPU temperature in G-helper
 Most probably either you are using Eco / Optimized mode and your dGPU is simply off, or your windows has put the dGPU into sleep (to preserve power). In this situations G-helper won't be able to reach your GPU and get readings
 
+### It says, that app is already running
+Please check system tray for a (G) icon. By default windows is keen to hide all icons, so you may need to click ^ to see them all. I would advise to right click on Task Bar select Task Bar Settings -> Other System Tray icons -> Mark G-Helper to be always ON.
+
 ### App doesn't start / or crashes, what should I do ?
 Open "Event Viewer" from start menu, go to Windows Logs -> Application and check for recent Errors mentioning G-Helper. If you see one - please post a [new issue](https://github.com/seerge/g-helper/issues) with all details from this error.
 
