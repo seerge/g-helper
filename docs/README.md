@@ -20,7 +20,7 @@ If you like this app, please [star :star: it on Github](https://github.com/seerg
 
 If you post about app - please include a link. Thanks.
 
-![Screenshot 2023-03-29 122524](https://user-images.githubusercontent.com/5920850/228505505-c3682509-a9e4-4cac-a5fd-e10d30c477cd.png)
+![Screenshot 2023-03-30 115149](https://user-images.githubusercontent.com/5920850/228799394-ede58bfb-832e-42d4-8c59-78bf3e105a2f.png)
 
 ### :zap: Main features
 
@@ -37,7 +37,7 @@ If you post about app - please include a link. Thanks.
 11. Battery charge limit to preserve battery health
 12. Monitor CPU / GPU temperature, fan speeds and battery discharge rate
 
-### :apple: Automatic switching of modes when on battery or plugged in
+### :gear: Automatic switching of modes when on battery or plugged in
 - Performance modes (app remembers last mode used on battery or when plugged)
 - Optimized GPU mode - disables dGPU on battery and enables when plugged
 - Auto Screen refresh rate (60hz on battery, 120+ hz when plugged)
