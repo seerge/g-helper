@@ -20,7 +20,7 @@ If you like this app, please [star :star: it on Github](https://github.com/seerg
 
 If you post about app - please include a link. Thanks.
 
-![Screenshot 2023-03-30 115149](https://user-images.githubusercontent.com/5920850/228799394-ede58bfb-832e-42d4-8c59-78bf3e105a2f.png)
+![Screenshot 2023-03-30 115149](https://user-images.githubusercontent.com/5920850/228799078-bc93148f-6580-4319-b9e6-fbde4d246cd2.png)
 
 ### :zap: Main features
 
