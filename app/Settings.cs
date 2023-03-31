@@ -821,7 +821,7 @@ namespace GHelper
             if (HardwareMonitor.batteryDischarge > 0)
                 battery = "Discharging: " + Math.Round((decimal)HardwareMonitor.batteryDischarge, 1).ToString() + "W";
 
-            if (HardwareMonitor.gpuTemp != null)
+            if (HardwareMonitor.gpuTemp > 0)
             {
                 gpuTemp = $": {HardwareMonitor.gpuTemp}°C - ";
             }
