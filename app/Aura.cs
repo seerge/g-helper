@@ -137,7 +137,7 @@ namespace GHelper
 
         public static bool HasSecondColor()
         {
-            return mode == 1;
+            return (mode == 1 && !Program.config.ContainsModel("TUF"));
         }
 
         public static int Speed

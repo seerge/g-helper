@@ -47,13 +47,14 @@ public static class HardwareMonitor
     public static void ReadSensors()
     {
         batteryDischarge = -1;
+        gpuTemp = -1;
 
         cpuFan = FormatFan(Program.wmi.DeviceGet(ASUSWmi.CPU_Fan));
         gpuFan = FormatFan(Program.wmi.DeviceGet(ASUSWmi.GPU_Fan));
         midFan = FormatFan(Program.wmi.DeviceGet(ASUSWmi.Mid_Fan));
 
         cpuTemp = Program.wmi.DeviceGet(ASUSWmi.Temp_CPU);
-        gpuTemp = Program.wmi.DeviceGet(ASUSWmi.Temp_GPU);
+
 
         if (cpuTemp < 0) try
         {
@@ -72,10 +73,14 @@ public static class HardwareMonitor
 
         }
         catch (Exception ex) {
-            gpuTemp = null;
+            gpuTemp = -1;
             Logger.WriteLine("Failed reading GPU temp");
             Logger.WriteLine(ex.ToString());
         }
+
+        if (gpuTemp < 0)
+            gpuTemp = Program.wmi.DeviceGet(ASUSWmi.Temp_GPU);
+
 
         try
         {

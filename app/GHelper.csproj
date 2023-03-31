@@ -16,7 +16,7 @@
     <PlatformTarget>x64</PlatformTarget>
     <ProduceReferenceAssembly>False</ProduceReferenceAssembly>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
-    <AssemblyVersion>0.44</AssemblyVersion>
+    <AssemblyVersion>0.45</AssemblyVersion>
   </PropertyGroup>
 
   <ItemGroup>
