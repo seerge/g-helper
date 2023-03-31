@@ -1,5 +1,8 @@
 ﻿using HidLibrary;
+using System.Data;
 using System.Diagnostics;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TextBox;
+using System.Security.Policy;
 
 namespace GHelper
 {
@@ -81,6 +84,23 @@ namespace GHelper
                 { 10, "Strobe" },
             };
 
+        static Dictionary<int, string> _modesStrix = new Dictionary<int, string>
+            {
+                { 0, "Static" },
+                { 1, "Breathe" },
+                { 2, "Color Cycle" },
+                { 3, "Rainbow" },
+                { 4, "Star" },
+                { 5, "Rain" },
+                { 6, "Highlight" },
+                { 7, "Laser" },
+                { 8, "Ripple" },
+                { 10, "Strobe" },
+                { 11, "Comet" },
+                { 12, "Flash" },
+            };
+
+
         public static Dictionary<int, string> GetModes()
         {
             if (Program.config.ContainsModel("TUF"))
@@ -92,6 +112,11 @@ namespace GHelper
             {
                 _modes.Remove(2);
                 _modes.Remove(3);
+            }
+
+            if (Program.config.ContainsModel("Strix") || Program.config.ContainsModel("Scar"))
+            {
+                return _modesStrix;
             }
 
             return _modes;
@@ -198,7 +223,8 @@ namespace GHelper
                     device.CloseDevice();
                 }
 
-            Program.wmi.TUFKeyboardPower(awake, boot, sleep, shutdown);
+            if (Program.config.ContainsModel("TUF"))
+                Program.wmi.TUFKeyboardPower(awake, boot, sleep, shutdown);
 
         }
 
@@ -234,7 +260,8 @@ namespace GHelper
                     device.CloseDevice();
                 }
 
-            Program.wmi.TUFKeyboardRGB(Mode, Color1, _speed);
+            if (Program.config.ContainsModel("TUF"))
+                Program.wmi.TUFKeyboardRGB(Mode, Color1, _speed);
 
         }
     }

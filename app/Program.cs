@@ -56,6 +56,7 @@ namespace GHelper
 
             }
 
+            Logger.WriteLine("App launched");
 
             Application.EnableVisualStyles();
 

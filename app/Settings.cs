@@ -2,7 +2,6 @@
 using Starlight.AnimeMatrix;
 using System.Diagnostics;
 using System.Drawing.Imaging;
-using System.Globalization;
 using System.Reflection;
 using System.Text.Json;
 using System.Timers;
