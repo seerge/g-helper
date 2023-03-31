@@ -27,6 +27,11 @@ If applicable, add screenshots to help explain your problem.
  - OS: [e.g. Windows 11]
  - Laptop model
 
+**Asus software**
+- Armoury crate (or it's services installed)
+- MyASUS installed
+- Other Asus services running in background
+
 **Additional context**
 Add any other context about the problem here.
 
