@@ -4,6 +4,8 @@ using Starlight.Communication;
 using System.Management;
 using System.Drawing.Drawing2D;
 using System.Text;
+using System.Globalization;
+using System;
 
 namespace Starlight.AnimeMatrix
 {
@@ -359,6 +361,15 @@ namespace Starlight.AnimeMatrix
         }
 
 
+        public void PresentClock()
+        {
+            int second = DateTime.Now.Second;
+
+            if (CultureInfo.CurrentCulture.DateTimeFormat.ShortTimePattern.Contains("H"))
+                PresentText(DateTime.Now.ToString("H" + ((second % 2 == 0)?":":" ") + "mm"));
+            else
+                PresentText(DateTime.Now.ToString("h" + ((second % 2 == 0) ? ":" : " ") + "mm"), DateTime.Now.ToString("tt"));
+        }
 
         public void PresentText(string text1, string text2 = "")
         {

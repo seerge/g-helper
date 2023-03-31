@@ -354,29 +354,7 @@ namespace GHelper
                     mat.PresentNextFrame();
                     break;
                 case 3:
-                    string format1, format2;
-                    if (CultureInfo.CurrentCulture.DateTimeFormat.ShortTimePattern.Contains("H"))
-                    {
-                        format1 = "H:mm";
-                        format2 = "";
-                    }
-                    else
-                    {
-                        format1 = "h:mm";
-                        format2 = "tt";
-                    }
-
-                    if (matrixTick > 0)
-                    {
-                        format1 = format1.Replace(":", " ");
-                        matrixTick = 0;
-                    }
-                    else
-                    {
-                        matrixTick++;
-                    }
-
-                    mat.PresentText(DateTime.Now.ToString(format1), DateTime.Now.ToString(format2));
+                    mat.PresentClock();
                     break;
             }
 
@@ -745,7 +723,6 @@ namespace GHelper
             bool overdriveSetting = (Program.config.getConfig("no_overdrive") != 1);
 
             int overdrive = Program.wmi.DeviceGet(ASUSWmi.ScreenOverdrive);
-
             int miniled = Program.wmi.DeviceGet(ASUSWmi.ScreenMiniled);
 
             bool screenEnabled = (frequency >= 0);
