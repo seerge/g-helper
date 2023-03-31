@@ -112,7 +112,9 @@ G-helper is a single exe, and it doesn't install anything in the system. To remo
 
 - Microsoft [.NET7](https://dotnet.microsoft.com/en-us/download). Most probably you already have it. Otherwise you can [download it](https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/sdk-7.0.202-windows-x64-installer) from the official website.
 
-- [Asus System Control Interface](https://dlcdnets.asus.com/pub/ASUS/nb/Image/CustomComponent/ASUSSystemControlInterfaceV3/ASUSSystemControlInterfaceV3.exe). If you have or had MyASUS app installed this "driver" probably still in place (even after MyASUS uninstalls). Alternatively - you can download and install it, and later disable / remove unnecessary services by running [this bat file](https://raw.githubusercontent.com/seerge/g-helper/main/debloat.bat) as admin.
+- [Asus System Control Interface](https://dlcdnets.asus.com/pub/ASUS/nb/Image/CustomComponent/ASUSSystemControlInterfaceV3/ASUSSystemControlInterfaceV3.exe). If you have or had MyASUS app installed this "driver" probably still in place (even after MyASUS uninstalls). Alternatively - you can download and install it
+
+- Optionally(!) you can disable / remove unnecessary services by running [this debloat bat file](https://raw.githubusercontent.com/seerge/g-helper/main/debloat.bat) as admin. To restore services - run [this bloat bat file](https://raw.githubusercontent.com/seerge/g-helper/main/bloat.bat) instead.
 
 - I recommend keeping "Asus Optimization Service" running, as it keeps basic laptop hotkeys such as screen or keyboard brightness adjustment working.
 
