@@ -1,5 +1,4 @@
- 
-# [G-Helper](https://github.com/seerge/g-helper)
+ # [G-Helper](https://github.com/seerge/g-helper)
 
 [![Github all releases](https://img.shields.io/github/downloads/seerge/g-helper/total.svg)](https://GitHub.com/seerge/g-helper/releases/) [![GitHub release](https://img.shields.io/github/release/seerge/g-helper.svg)](https://GitHub.com/seerge/g-helper/releases/) [![GitHub stars](https://img.shields.io/github/stars/seerge/g-helper.svg?style=social&label=Star)](https://GitHub.com/seerge/g-helper/stargazers/)
 
@@ -11,7 +10,7 @@ A small utility that allows you to do almost everything you could do with Armour
 ### :gift: Main advantages 
 
 1. Seamless and automatic GPU switching (without asking you to close all apps, etc)
-2. All performance modes can be fully customised (with fan curves and PPTs)
+2. All performance modes can be fully customized (with fan curves and PPTs)
 3. Very lightweight and consumes almost no resources, doesn't install any services. Just a single exe to run
 4. Simple and clean native UI with easy access to all settings
 
@@ -19,7 +18,7 @@ A small utility that allows you to do almost everything you could do with Armour
 
 If you like this app, please [star :star: it on Github](https://github.com/seerge/g-helper) and spread a word about it!
 
-If you post about app - please include a link. Thanks.
+If you post about the app - please include a link. Thanks.
 
 ![Screenshot 2023-03-30 115149](https://user-images.githubusercontent.com/5920850/228799078-bc93148f-6580-4319-b9e6-fbde4d246cd2.png)
 
@@ -77,7 +76,7 @@ Ultimate mode is supported (by hardware) only on G14 2022 (and possibly other mo
 Unfortunately 2020 model doesn't support that on hardware level
 
 ### Should I apply custom PPTs and fan profiles?
-You don't have to, it's purely optional. From my experience built in (in bios) performance modes work well. Limit your power or apply custom fan curves only if you have issues. As sooon as you click Apply in fan + power section bios will be considering fan profile as "custom"! (no matter if you modified it or not)
+You don't have to, it's purely optional. From my experience built in (in bios) performance modes work well. Limit your power or apply custom fan curves only if you have issues. As soon as you click Apply in the fan + power section bios will be considering the fan profile as "custom"! (no matter if you modified it or not)
 
 ### How does G-helper control my fan speeds?
 It doesn't. Your bios does (same as in case with armoury). What G-helper can do - is (optionally) set a custom fan profile to current performance mode consisting of 8 pairs of temperature + fan speed % via same endpoint armoury seem to use.
@@ -95,7 +94,7 @@ Please check system tray for a (G) icon. By default windows is keen to hide all 
 Open "Event Viewer" from start menu, go to Windows Logs -> Application and check for recent Errors mentioning G-Helper. If you see one - please post a [new issue](https://github.com/seerge/g-helper/issues) with all details from this error.
 
 ### Can I use MyASUS app along with G-Helper?
-Sure, you can! The only problem is that MyASUS may override battery charge limit that you set before. My advice in such case would be to set same limit (i.e. 80%) in both MyASUS and G-Helper.
+Sure, you can! The only problem is that MyASUS may override the battery charge limit that you set before. My advice in such a situation would be to set the same limit (i.e. 80%) in both MyASUS and G-Helper.
 
 ### How do I uninstall G-helper?
 G-helper is a single exe, and it doesn't install anything in the system. To remove it - you can simply delete exe :) If you have applied any custom fan profiles or PPTs - before removing I would recommend selecting your favorite performance mode (for example balanced) and clicking "Factory defaults" under Fans + Power.
@@ -118,7 +117,7 @@ G-helper is a single exe, and it doesn't install anything in the system. To remo
 
 - I recommend keeping "Asus Optimization Service" running, as it keeps basic laptop hotkeys such as screen or keyboard brightness adjustment working.
 
-- It's not recommended to use an app in combination with Armoury Crate services, cause they adjust the same settings. You can [uninstall it using it's own uninstall tool](https://dlcdnets.asus.com/pub/ASUS/mb/14Utilities/Armoury_Crate_Uninstall_Tool.zip?model=armoury%20crate). Just in case, you can always install it back later.
+- It's not recommended to use an app in combination with Armoury Crate services, because they adjust the same settings. You can [uninstall it using it's own uninstall tool](https://dlcdnets.asus.com/pub/ASUS/mb/14Utilities/Armoury_Crate_Uninstall_Tool.zip?model=armoury%20crate). Just in case, you can always install it back later.
 
 Note: Doesn't need administrator privileges to run!
 
@@ -142,3 +141,6 @@ Debloating helps to save your battery and keep laptop a bit cooler
 "ROG", "TUF", and "Armoury Crate" are trademarked by and belong to AsusTek Computer, Inc. I make no claims to these or any assets belonging to AsusTek Computer and use them purely for informational purposes only.
 
 THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. MISUSE OF THIS SOFTWARE COULD CAUSE SYSTEM INSTABILITY OR MALFUNCTION.
+
+
+
