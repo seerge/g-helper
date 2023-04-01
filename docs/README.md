@@ -1,4 +1,4 @@
- # [G-Helper](https://github.com/seerge/g-helper)
+# [G-Helper](https://github.com/seerge/g-helper)
 
 [![Github all releases](https://img.shields.io/github/downloads/seerge/g-helper/total.svg)](https://GitHub.com/seerge/g-helper/releases/) [![GitHub release](https://img.shields.io/github/release/seerge/g-helper.svg)](https://GitHub.com/seerge/g-helper/releases/) [![GitHub stars](https://img.shields.io/github/stars/seerge/g-helper.svg?style=social&label=Star)](https://GitHub.com/seerge/g-helper/stargazers/)
 
@@ -13,6 +13,8 @@ A small utility that allows you to do almost everything you could do with Armour
 2. All performance modes can be fully customized (with fan curves and PPTs)
 3. Very lightweight and consumes almost no resources, doesn't install any services. Just a single exe to run
 4. Simple and clean native UI with easy access to all settings
+
+_Doesn't need administrator privileges to run!_
 
 ### [:floppy_disk: Download latest release](https://github.com/seerge/g-helper/releases/latest/download/GHelper.zip)
 
@@ -29,7 +31,7 @@ If you post about the app - please include a link. Thanks.
 3. Laptop screen refresh rate 60hz or 120hz (144hz, etc depending on the model) with display overdrive (OD)
 4. Default and custom fan profiles for every performance mode
 5. Power limits (PPT) for every performance mode
-6. CPU turbo boost mode
+6. CPU turbo boost setting for each mode
 7. Keyboard backlit animation and colors
 8. Anime matrix control thanks to [Starlight](https://github.com/vddCore/Starlight) + some tweaks from my side (including animated GIFs)
 9. FN+F5 cycles performance modes, FN+F4 cycles keyboard animation modes
@@ -37,10 +39,11 @@ If you post about the app - please include a link. Thanks.
 11. Battery charge limit to preserve battery health
 12. Monitor CPU / GPU temperature, fan speeds and battery discharge rate
 
-### :gear: Automatic switching of modes when on battery or plugged in
+### :gear: Automatic switching when on battery or plugged in
 - Performance modes (app remembers last mode used on battery or when plugged)
 - Optimized GPU mode - disables dGPU on battery and enables when plugged
 - Auto Screen refresh rate (60hz on battery, 120+ hz when plugged)
+- Keyboard backlight can be turned off on battery
 
 To keep auto switching and hotkeys working the app needs to stay in running in the tray. It doesn't consume any resources. 
 
@@ -119,8 +122,6 @@ G-helper is a single exe, and it doesn't install anything in the system. To remo
 
 - It's not recommended to use an app in combination with Armoury Crate services, because they adjust the same settings. You can [uninstall it using it's own uninstall tool](https://dlcdnets.asus.com/pub/ASUS/mb/14Utilities/Armoury_Crate_Uninstall_Tool.zip?model=armoury%20crate). Just in case, you can always install it back later.
 
-Note: Doesn't need administrator privileges to run!
-
 -------------------------------
 
 Designed and developed for Asus Zephyrus G14 2022 (with AMD Radeon iGPU and dGPU). But could and should potentially work for G14 of 2021 and 2020, G15, X FLOW, and other ROG models for relevant and supported features.
@@ -141,6 +142,3 @@ Debloating helps to save your battery and keep laptop a bit cooler
 "ROG", "TUF", and "Armoury Crate" are trademarked by and belong to AsusTek Computer, Inc. I make no claims to these or any assets belonging to AsusTek Computer and use them purely for informational purposes only.
 
 THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. MISUSE OF THIS SOFTWARE COULD CAUSE SYSTEM INSTABILITY OR MALFUNCTION.
-
-
-
