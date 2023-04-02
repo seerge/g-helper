@@ -67,7 +67,6 @@ namespace GHelper
 
             wmi.SubscribeToEvents(WatcherEventArrived);
 
-            settingsForm.InitGPUMode();
             settingsForm.InitAura();
             settingsForm.InitMatrix();
 
@@ -78,6 +77,10 @@ namespace GHelper
             // Subscribing for system power change events
             SystemEvents.PowerModeChanged += SystemEvents_PowerModeChanged;
             SystemEvents.UserPreferenceChanged += SystemEvents_UserPreferenceChanged;
+
+            // Subscribing for monitor power on events
+            var settingGuid = new NativeMethods.PowerSettingGuid();
+            unRegPowerNotify = NativeMethods.RegisterPowerSettingNotification(ds, settingGuid.ConsoleDisplayState, NativeMethods.DEVICE_NOTIFY_WINDOW_HANDLE);
 
 
             if (Environment.CurrentDirectory.Trim('\\') == Application.StartupPath.Trim('\\'))
@@ -129,7 +132,12 @@ namespace GHelper
             settingsForm.AutoPerformance();
 
             bool switched = settingsForm.AutoGPUMode();
-            if (!switched) settingsForm.AutoScreen();
+
+            if (!switched)
+            {
+                settingsForm.InitGPUMode();
+                settingsForm.AutoScreen();
+            }
 
             settingsForm.AutoKeyboard();
             settingsForm.SetMatrix();
