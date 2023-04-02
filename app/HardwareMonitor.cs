@@ -78,7 +78,7 @@ public static class HardwareMonitor
             Logger.WriteLine(ex.ToString());
         }
 
-        if (gpuTemp < 0)
+        if (gpuTemp is null || gpuTemp < 0)
             gpuTemp = Program.wmi.DeviceGet(ASUSWmi.Temp_GPU);
 
 

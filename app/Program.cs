@@ -131,6 +131,7 @@ namespace GHelper
             bool switched = settingsForm.AutoGPUMode();
             if (!switched) settingsForm.AutoScreen();
 
+            settingsForm.AutoKeyboard();
             settingsForm.SetMatrix();
         }
 
@@ -139,7 +140,6 @@ namespace GHelper
             if (SystemInformation.PowerStatus.PowerLineStatus == isPlugged) return;
 
             Logger.WriteLine("Windows - Power Mode Changed");
-            settingsForm.AutoKeyboard();
             SetAutoModes();
         }
 

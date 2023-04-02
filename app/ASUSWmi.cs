@@ -294,11 +294,17 @@ public class ASUSWmi
 
     public void SubscribeToEvents(Action<object, EventArrivedEventArgs> EventHandler)
     {
-        ManagementEventWatcher watcher = new ManagementEventWatcher();
-        watcher.EventArrived += new EventArrivedEventHandler(EventHandler);
-        watcher.Scope = new ManagementScope("root\\wmi");
-        watcher.Query = new WqlEventQuery("SELECT * FROM AsusAtkWmiEvent");
-        watcher.Start();
+        try
+        {
+            ManagementEventWatcher watcher = new ManagementEventWatcher();
+            watcher.EventArrived += new EventArrivedEventHandler(EventHandler);
+            watcher.Scope = new ManagementScope("root\\wmi");
+            watcher.Query = new WqlEventQuery("SELECT * FROM AsusAtkWmiEvent");
+            watcher.Start();
+        } catch
+        {
+            Logger.WriteLine("Can't connect to ASUS WMI events");
+        }
     }
 
 }
