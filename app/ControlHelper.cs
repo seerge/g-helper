@@ -122,6 +122,12 @@ public static class ControlHelper
                 sl.borderColor = buttonMain;
             }
 
+            var chk = control as CheckBox;
+            if (chk != null)
+            {
+                chk.BackColor = buttonMain;
+            }
+
             var chart = control as Chart;
             if (chart != null)
             {

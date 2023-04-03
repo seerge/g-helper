@@ -877,16 +877,13 @@ namespace GHelper
             if (Program.wmi.DeviceGet(ASUSWmi.PPT_CPUB0) >= 0)
                 Program.wmi.DeviceSet(ASUSWmi.PPT_CPUB0, limit_cpu, "PowerLimit B");
 
-
-
-
         }
 
 
-        public void AutoFans(bool force = false)
+        public void AutoFans()
         {
 
-            if (force || Program.config.getConfigPerf("auto_apply") == 1)
+            if (Program.config.getConfigPerf("auto_apply") == 1)
             {
                 int cpuResult = Program.wmi.SetFanCurve(0, Program.config.getFanConfig(0));
                 int gpuResult = Program.wmi.SetFanCurve(1, Program.config.getFanConfig(1));
@@ -897,7 +894,7 @@ namespace GHelper
                 if (cpuResult != 1 || gpuResult != 1) // something went wrong, resetting to default profile
                 {
                     int mode = Program.config.getConfig("performance_mode");
-                    Logger.WriteLine("Bios rejected fan curve, resetting mode to " + mode);
+                    Logger.WriteLine("Driver rejected fan curve, resetting mode to " + mode);
                     Program.wmi.DeviceSet(ASUSWmi.PerformanceMode, mode, "PerformanceMode");
                 }
                 else
@@ -908,26 +905,35 @@ namespace GHelper
 
         }
 
-        public void AutoPower(bool force = false)
+        public void AutoPower(int delay = 0)
         {
-            if (force || Program.config.getConfigPerf("auto_apply_power") == 1)
+            if (Program.config.getConfigPerf("auto_apply_power") == 1)
             {
-                var timer = new System.Timers.Timer(1000);
-                timer.Elapsed += delegate
+                if (delay > 0)
                 {
-                    timer.Stop();
-                    timer.Dispose();
+                    var timer = new System.Timers.Timer(1000);
+                    timer.Elapsed += delegate
+                    {
+                        timer.Stop();
+                        timer.Dispose();
+                        SetPower();
+                    };
+                    timer.Start();
+                } else
+                {
                     SetPower();
-                };
-                timer.Start();
+                }
+
             }
 
         }
 
 
-        public void SetPerformanceMode(int PerformanceMode = ASUSWmi.PerformanceBalanced, bool notify = false)
+        public void SetPerformanceMode(int PerformanceMode = -1, bool notify = false)
         {
 
+            if (PerformanceMode < 0)
+                PerformanceMode = Program.config.getConfig("performance_mode");
 
             buttonSilent.Activated = false;
             buttonBalanced.Activated = false;
@@ -969,7 +975,7 @@ namespace GHelper
             }
 
             AutoFans();
-            AutoPower();
+            AutoPower(1000);
 
             if (Program.config.getConfigPerf("auto_boost") != -1)
             {

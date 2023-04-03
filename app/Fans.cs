@@ -18,7 +18,7 @@ namespace GHelper
         {
             if (percentage == 0) return "OFF";
 
-            return (200 * Math.Round((float)(MinRPM*100 + (MaxRPM - MinRPM) * percentage) / 200)).ToString() + unit;
+            return (200 * Math.Round((float)(MinRPM * 100 + (MaxRPM - MinRPM) * percentage) / 200)).ToString() + unit;
         }
 
         void SetChart(Chart chart, int device)
@@ -117,7 +117,6 @@ namespace GHelper
             chartMid.MouseUp += ChartCPU_MouseUp;
 
             buttonReset.Click += ButtonReset_Click;
-            buttonApply.Click += ButtonApply_Click;
 
             trackTotal.Maximum = ASUSWmi.MaxTotal;
             trackTotal.Minimum = ASUSWmi.MinTotal;
@@ -125,12 +124,13 @@ namespace GHelper
             trackCPU.Maximum = ASUSWmi.MaxCPU;
             trackCPU.Minimum = ASUSWmi.MinCPU;
 
-            trackCPU.Scroll += TrackCPU_Scroll;
-            trackTotal.Scroll += TrackTotal_Scroll;
+            trackCPU.Scroll += TrackPower_Scroll;
+            trackTotal.Scroll += TrackPower_Scroll;
 
-            buttonApplyPower.Click += ButtonApplyPower_Click;
+            trackCPU.MouseUp += TrackPower_MouseUp;
+            trackTotal.MouseUp += TrackPower_MouseUp;
 
-            checkAuto.Click += CheckAuto_Click;
+            checkApplyFans.Click += CheckApplyFans_Click;
             checkApplyPower.Click += CheckApplyPower_Click;
 
             //labelInfo.MaximumSize = new Size(280, 0);
@@ -144,6 +144,11 @@ namespace GHelper
 
             Shown += Fans_Shown;
 
+        }
+
+        private void TrackPower_MouseUp(object? sender, MouseEventArgs e)
+        {
+            Program.settingsForm.AutoPower();
         }
 
 
@@ -168,13 +173,38 @@ namespace GHelper
             if (sender is null) return;
             CheckBox chk = (CheckBox)sender;
             Program.config.setConfigPerf("auto_apply_power", chk.Checked ? 1 : 0);
+
+            if (chk.Checked)
+            {
+                Program.settingsForm.AutoPower();
+            }
+            else
+            {
+                Program.wmi.DeviceSet(ASUSWmi.PerformanceMode, Program.config.getConfig("performance_mode"), "PerfMode");
+                Program.settingsForm.AutoFans();
+            }
+
         }
 
-        private void CheckAuto_Click(object? sender, EventArgs e)
+        private void CheckApplyFans_Click(object? sender, EventArgs e)
         {
             if (sender is null) return;
             CheckBox chk = (CheckBox)sender;
+
             Program.config.setConfigPerf("auto_apply", chk.Checked ? 1 : 0);
+
+            if (chk.Checked)
+            {
+                Program.settingsForm.AutoFans();
+            }
+            else
+            {
+                Program.wmi.DeviceSet(ASUSWmi.PerformanceMode, Program.config.getConfig("performance_mode"), "PerfMode");
+                Program.settingsForm.AutoPower();
+            }
+
+
+
         }
 
         private void Fans_FormClosing(object? sender, FormClosingEventArgs e)
@@ -186,11 +216,6 @@ namespace GHelper
             }
         }
 
-        private void ButtonApplyPower_Click(object? sender, EventArgs e)
-        {
-            Program.settingsForm.SetPower();
-            ApplyLabel(true);
-        }
 
         public void InitPower(bool changed = false)
         {
@@ -215,13 +240,11 @@ namespace GHelper
             {
                 limit_total = trackTotal.Value;
                 limit_cpu = trackCPU.Value;
-                ApplyLabel(false);
             }
             else
             {
                 limit_total = Program.config.getConfigPerf("limit_total");
                 limit_cpu = Program.config.getConfigPerf("limit_cpu");
-                ApplyLabel(apply);
             }
 
             if (limit_total < 0) limit_total = ASUSWmi.DefaultTotal;
@@ -243,34 +266,16 @@ namespace GHelper
 
             Program.config.setConfigPerf("limit_total", limit_total);
             Program.config.setConfigPerf("limit_cpu", limit_cpu);
+
+
         }
 
 
-        private void TrackTotal_Scroll(object? sender, EventArgs e)
+        private void TrackPower_Scroll(object? sender, EventArgs e)
         {
             InitPower(true);
         }
 
-        private void TrackCPU_Scroll(object? sender, EventArgs e)
-        {
-            InitPower(true);
-        }
-
-
-        public void ApplyLabel(bool applied = false)
-        {
-            if (applied)
-            {
-                labelApplied.ForeColor = colorStandard;
-                labelApplied.Text = "Applied";
-            }
-            else
-            {
-                labelApplied.ForeColor = colorTurbo;
-                labelApplied.Text = "Not Applied";
-
-            }
-        }
 
         public void InitFans()
         {
@@ -299,7 +304,7 @@ namespace GHelper
 
             int auto_apply = Program.config.getConfigPerf("auto_apply");
 
-            checkAuto.Checked = (auto_apply == 1);
+            checkApplyFans.Checked = (auto_apply == 1);
 
         }
 
@@ -351,16 +356,6 @@ namespace GHelper
         }
 
 
-        private void ButtonApply_Click(object? sender, EventArgs e)
-        {
-            SaveProfile(seriesCPU, 0);
-            SaveProfile(seriesGPU, 1);
-            if (Program.config.getConfig("mid_fan") == 1)
-                SaveProfile(seriesMid, 2);
-
-            Program.settingsForm.AutoFans(true);
-        }
-
         private void ButtonReset_Click(object? sender, EventArgs e)
         {
 
@@ -369,21 +364,28 @@ namespace GHelper
             if (Program.config.getConfig("mid_fan") == 1)
                 LoadProfile(seriesMid, 2, 1);
 
-            checkAuto.Checked = false;
+            checkApplyFans.Checked = false;
             checkApplyPower.Checked = false;
 
             Program.config.setConfigPerf("auto_apply", 0);
             Program.config.setConfigPerf("auto_apply_power", 0);
 
             Program.wmi.DeviceSet(ASUSWmi.PerformanceMode, Program.config.getConfig("performance_mode"), "PerfMode");
-
-            ApplyLabel(false);
         }
 
         private void ChartCPU_MouseUp(object? sender, MouseEventArgs e)
         {
             curPoint = null;
             labelTip.Visible = false;
+
+            SaveProfile(seriesCPU, 0);
+            SaveProfile(seriesGPU, 1);
+            if (Program.config.getConfig("mid_fan") == 1)
+                SaveProfile(seriesMid, 2);
+
+            Program.settingsForm.AutoFans();
+
+
         }
 
         private void ChartCPU_MouseMove(object? sender, MouseEventArgs e)
