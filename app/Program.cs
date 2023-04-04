@@ -74,6 +74,8 @@ namespace GHelper
 
             SetAutoModes();
 
+            HardwareMonitor.RecreateGpuTemperatureProvider();
+
             // Subscribing for system power change events
             SystemEvents.PowerModeChanged += SystemEvents_PowerModeChanged;
             SystemEvents.UserPreferenceChanged += SystemEvents_UserPreferenceChanged;

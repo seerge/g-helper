@@ -13,76 +13,6 @@ namespace GHelper
         Series seriesMid;
 
         static int MinRPM, MaxRPM;
-
-        static string ChartPercToRPM(int percentage, string unit = "")
-        {
-            if (percentage == 0) return "OFF";
-
-            return (200 * Math.Round((float)(MinRPM * 100 + (MaxRPM - MinRPM) * percentage) / 200)).ToString() + unit;
-        }
-
-        void SetChart(Chart chart, int device)
-        {
-
-            string title;
-
-            if (device == 1)
-                title = "GPU Fan Profile";
-            else if (device == 2)
-                title = "Middle Fan Profile";
-            else
-                title = "CPU Fan Profile";
-
-            if (Program.settingsForm.perfName.Length > 0)
-                labelFans.Text = "Fan Profiles: " + Program.settingsForm.perfName;
-
-            chart.Titles[0].Text = title;
-
-            chart.ChartAreas[0].AxisX.Minimum = 10;
-            chart.ChartAreas[0].AxisX.Maximum = 100;
-            chart.ChartAreas[0].AxisX.Interval = 10;
-
-            chart.ChartAreas[0].AxisY.Minimum = 0;
-            chart.ChartAreas[0].AxisY.Maximum = 100;
-
-            chart.ChartAreas[0].AxisY.LabelStyle.Font = new Font("Arial", 7F);
-
-            var foreAccent = Color.FromArgb(255, 180, 180, 180);
-
-            chart.ChartAreas[0].AxisX.MajorGrid.LineColor = foreAccent;
-            chart.ChartAreas[0].AxisY.MajorGrid.LineColor = foreAccent;
-            chart.ChartAreas[0].AxisX.LineColor = foreAccent;
-            chart.ChartAreas[0].AxisY.LineColor = foreAccent;
-
-            for (int i = 0; i <= 90; i += 10)
-                chart.ChartAreas[0].AxisY.CustomLabels.Add(i - 2, i + 2, ChartPercToRPM(i));
-
-            chart.ChartAreas[0].AxisY.CustomLabels.Add(98, 102, "RPM");
-
-            chart.ChartAreas[0].AxisY.Interval = 10;
-
-            if (chart.Legends.Count > 0)
-                chart.Legends[0].Enabled = false;
-
-        }
-
-        private void Fans_Shown(object? sender, EventArgs e)
-        {
-            if (Height > Program.settingsForm.Height)
-            {
-                Top = Program.settingsForm.Top + Program.settingsForm.Height - Height;
-            }
-            else
-            {
-                MinimumSize = new Size(0, Program.settingsForm.Height);
-                Height = Program.settingsForm.Height;
-                Top = Program.settingsForm.Top;
-            }
-
-
-            Left = Program.settingsForm.Left - Width - 5;
-        }
-
         public Fans()
         {
 
@@ -145,6 +75,74 @@ namespace GHelper
             Shown += Fans_Shown;
 
         }
+
+        static string ChartPercToRPM(int percentage, string unit = "")
+        {
+            if (percentage == 0) return "OFF";
+
+            return (200 * Math.Round((float)(MinRPM * 100 + (MaxRPM - MinRPM) * percentage) / 200)).ToString() + unit;
+        }
+
+        void SetChart(Chart chart, int device)
+        {
+
+            string title;
+
+            if (device == 1)
+                title = "GPU Fan Profile";
+            else if (device == 2)
+                title = "Middle Fan Profile";
+            else
+                title = "CPU Fan Profile";
+
+            if (Program.settingsForm.perfName.Length > 0)
+                labelFans.Text = "Fan Profiles: " + Program.settingsForm.perfName;
+
+            chart.Titles[0].Text = title;
+
+            chart.ChartAreas[0].AxisX.Minimum = 10;
+            chart.ChartAreas[0].AxisX.Maximum = 100;
+            chart.ChartAreas[0].AxisX.Interval = 10;
+
+            chart.ChartAreas[0].AxisY.Minimum = 0;
+            chart.ChartAreas[0].AxisY.Maximum = 100;
+
+            chart.ChartAreas[0].AxisY.LabelStyle.Font = new Font("Arial", 7F);
+            
+            chart.ChartAreas[0].AxisX.MajorGrid.LineColor = chartGrid;
+            chart.ChartAreas[0].AxisY.MajorGrid.LineColor = chartGrid;
+            chart.ChartAreas[0].AxisX.LineColor = chartGrid;
+            chart.ChartAreas[0].AxisY.LineColor = chartGrid;
+
+            for (int i = 0; i <= 90; i += 10)
+                chart.ChartAreas[0].AxisY.CustomLabels.Add(i - 2, i + 2, ChartPercToRPM(i));
+
+            chart.ChartAreas[0].AxisY.CustomLabels.Add(98, 102, "RPM");
+
+            chart.ChartAreas[0].AxisY.Interval = 10;
+
+            if (chart.Legends.Count > 0)
+                chart.Legends[0].Enabled = false;
+
+        }
+
+        private void Fans_Shown(object? sender, EventArgs e)
+        {
+            if (Height > Program.settingsForm.Height)
+            {
+                Top = Program.settingsForm.Top + Program.settingsForm.Height - Height;
+            }
+            else
+            {
+                MinimumSize = new Size(0, Program.settingsForm.Height);
+                Height = Program.settingsForm.Height;
+                Top = Program.settingsForm.Top;
+            }
+
+
+            Left = Program.settingsForm.Left - Width - 5;
+        }
+
 
         private void TrackPower_MouseUp(object? sender, MouseEventArgs e)
         {

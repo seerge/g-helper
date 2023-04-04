@@ -25,7 +25,6 @@ namespace GHelper
         public Keyboard keyb;
 
         static AnimeMatrixDevice mat;
-        static int matrixTick = 0;
         static long lastRefresh;
 
         public SettingsForm()
@@ -272,10 +271,7 @@ namespace GHelper
                                 break;
                             case 1:
                                 Logger.WriteLine("Monitor Power On");
-                                Program.settingsForm.BeginInvoke(delegate
-                                {
-                                    Program.SetAutoModes();
-                                });
+                                Program.SetAutoModes();
                                 break;
                             case 2:
                                 Logger.WriteLine("Monitor Dimmed");
@@ -919,7 +915,8 @@ namespace GHelper
                         SetPower();
                     };
                     timer.Start();
-                } else
+                }
+                else
                 {
                     SetPower();
                 }
@@ -1013,10 +1010,10 @@ namespace GHelper
 
             if (SystemInformation.PowerStatus.PowerLineStatus == PowerLineStatus.Online)
                 Aura.ApplyBrightness(3);
-                //Program.wmi.DeviceSet(ASUSWmi.UniversalControl, ASUSWmi.KB_Light_Up);
+            //Program.wmi.DeviceSet(ASUSWmi.UniversalControl, ASUSWmi.KB_Light_Up);
             else
                 Aura.ApplyBrightness(0);
-                //Program.wmi.DeviceSet(ASUSWmi.UniversalControl, ASUSWmi.KB_Light_Down);
+            //Program.wmi.DeviceSet(ASUSWmi.UniversalControl, ASUSWmi.KB_Light_Down);
 
 
         }

@@ -7,44 +7,13 @@ public static class ControlHelper
 {
 
     static bool _invert = false;
-    static bool _darkTheme = false;
-
-
     static float _scale = 1;
 
-    static Color formBack;
-    static Color backMain;
-    static Color foreMain;
-    static Color foreAccent;
-    static Color borderMain;
-    static Color buttonMain;
-
-    public static void Adjust(RForm container, bool darkTheme = false, bool invert = false)
+    public static void Adjust(RForm container, bool invert = false)
     {
 
-        _darkTheme = darkTheme;
-
-        if (darkTheme)
-        {
-            formBack = Color.FromArgb(255, 35, 35, 35);
-            backMain = Color.FromArgb(255, 50, 50, 50);
-            foreMain = Color.FromArgb(255, 240, 240, 240);
-            foreAccent = Color.FromArgb(255, 100, 100, 100);
-            borderMain = Color.FromArgb(255, 50, 50, 50);
-            buttonMain = Color.FromArgb(255, 80, 80, 80);
-        }
-        else
-        {
-            formBack = SystemColors.Control;
-            backMain = SystemColors.ControlLightLight;
-            foreMain = SystemColors.ControlText;
-            foreAccent = Color.LightGray;
-            borderMain = Color.LightGray;
-            buttonMain = Color.FromArgb(255, 230, 230, 230);
-        }
-
-        container.BackColor = formBack;
-        container.ForeColor = foreMain;
+        container.BackColor = RForm.formBack;
+        container.ForeColor = RForm.foreMain;
 
         _invert = invert;
         AdjustControls(container.Controls);
@@ -85,11 +54,11 @@ public static class ControlHelper
             var button = control as RButton;
             if (button != null)
             {
-                button.BackColor = button.Secondary ? buttonMain : backMain;
-                button.ForeColor = foreMain;
+                button.BackColor = button.Secondary ? RForm.buttonSecond : RForm.buttonMain;
+                button.ForeColor = RForm.foreMain;
 
                 button.FlatStyle = FlatStyle.Flat;
-                button.FlatAppearance.BorderColor = borderMain;
+                button.FlatAppearance.BorderColor = RForm.borderMain;
 
                 if (button.Image is not null)
                     button.Image = AdjustImage(button.Image);
@@ -103,52 +72,52 @@ public static class ControlHelper
             var combo = control as RComboBox;
             if (combo != null)
             {
-                combo.BackColor = backMain;
-                combo.ForeColor = foreMain;
-                combo.BorderColor = backMain;
-                combo.ButtonColor = backMain;
-                combo.ArrowColor = foreMain;
+                combo.BackColor = RForm.buttonMain;
+                combo.ForeColor = RForm.foreMain;
+                combo.BorderColor = RForm.buttonMain;
+                combo.ButtonColor = RForm.buttonMain;
+                combo.ArrowColor = RForm.foreMain;
             }
 
             var gb = control as GroupBox;
             if (gb != null)
             {
-                gb.ForeColor = foreMain;
+                gb.ForeColor = RForm.foreMain;
             }
 
             var sl = control as Slider;
-            if (sl != null)
+            if (sl != null) 
             {
-                sl.borderColor = buttonMain;
+                sl.borderColor = RForm.buttonMain;
             }
 
             var chk = control as CheckBox;
-            if (chk != null)
+            if (chk != null && chk.Padding.Left > 5)
             {
-                chk.BackColor = buttonMain;
+                chk.BackColor = RForm.buttonSecond;
             }
 
             var chart = control as Chart;
             if (chart != null)
             {
-                chart.BackColor = backMain;
-                chart.ChartAreas[0].BackColor = backMain;
+                chart.BackColor = RForm.chartMain;
+                chart.ChartAreas[0].BackColor = RForm.chartMain;
 
-                chart.ChartAreas[0].AxisX.TitleForeColor = foreMain;
-                chart.ChartAreas[0].AxisY.TitleForeColor = foreMain;
+                chart.ChartAreas[0].AxisX.TitleForeColor = RForm.foreMain;
+                chart.ChartAreas[0].AxisY.TitleForeColor = RForm.foreMain;
 
-                chart.ChartAreas[0].AxisX.LabelStyle.ForeColor = foreMain;
-                chart.ChartAreas[0].AxisY.LabelStyle.ForeColor = foreMain;
+                chart.ChartAreas[0].AxisX.LabelStyle.ForeColor = RForm.foreMain;
+                chart.ChartAreas[0].AxisY.LabelStyle.ForeColor = RForm.foreMain;
 
-                chart.ChartAreas[0].AxisX.MajorTickMark.LineColor = foreMain;
-                chart.ChartAreas[0].AxisY.MajorTickMark.LineColor = foreMain;
+                chart.ChartAreas[0].AxisX.MajorTickMark.LineColor = RForm.foreMain;
+                chart.ChartAreas[0].AxisY.MajorTickMark.LineColor = RForm.foreMain;
 
-                chart.ChartAreas[0].AxisX.MajorGrid.LineColor = foreAccent;
-                chart.ChartAreas[0].AxisY.MajorGrid.LineColor = foreAccent;
-                chart.ChartAreas[0].AxisX.LineColor = foreAccent;
-                chart.ChartAreas[0].AxisY.LineColor = foreAccent;
+                chart.ChartAreas[0].AxisX.MajorGrid.LineColor = RForm.chartGrid;
+                chart.ChartAreas[0].AxisY.MajorGrid.LineColor = RForm.chartGrid;
+                chart.ChartAreas[0].AxisX.LineColor = RForm.chartGrid;
+                chart.ChartAreas[0].AxisY.LineColor = RForm.chartGrid;
 
-                chart.Titles[0].ForeColor = foreMain;
+                chart.Titles[0].ForeColor = RForm.foreMain;
 
             }
 

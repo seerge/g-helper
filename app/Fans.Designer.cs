@@ -31,12 +31,12 @@ namespace GHelper
         /// </summary>
         private void InitializeComponent()
         {
-            ChartArea chartArea4 = new ChartArea();
-            Title title4 = new Title();
-            ChartArea chartArea5 = new ChartArea();
-            Title title5 = new Title();
-            ChartArea chartArea6 = new ChartArea();
-            Title title6 = new Title();
+            ChartArea chartArea1 = new ChartArea();
+            Title title1 = new Title();
+            ChartArea chartArea2 = new ChartArea();
+            Title title2 = new Title();
+            ChartArea chartArea3 = new ChartArea();
+            Title title3 = new Title();
             panelFans = new Panel();
             labelTip = new Label();
             labelBoost = new Label();
@@ -47,12 +47,12 @@ namespace GHelper
             chartCPU = new Chart();
             chartMid = new Chart();
             labelFans = new Label();
-            checkApplyFans = new CheckBox();
+            checkApplyFans = new RCheckBox();
             buttonReset = new RButton();
             panelPower = new Panel();
             pictureBox1 = new PictureBox();
             labelPowerLimits = new Label();
-            checkApplyPower = new CheckBox();
+            checkApplyPower = new RCheckBox();
             panelCPU = new Panel();
             labelCPU = new Label();
             label2 = new Label();
@@ -161,8 +161,8 @@ namespace GHelper
             // 
             // chartGPU
             // 
-            chartArea4.Name = "ChartArea1";
-            chartGPU.ChartAreas.Add(chartArea4);
+            chartArea1.Name = "ChartArea1";
+            chartGPU.ChartAreas.Add(chartArea1);
             chartGPU.Dock = DockStyle.Fill;
             chartGPU.Location = new Point(2, 340);
             chartGPU.Margin = new Padding(2, 10, 2, 10);
@@ -170,13 +170,13 @@ namespace GHelper
             chartGPU.Size = new Size(760, 310);
             chartGPU.TabIndex = 17;
             chartGPU.Text = "chartGPU";
-            title4.Name = "Title1";
-            chartGPU.Titles.Add(title4);
+            title1.Name = "Title1";
+            chartGPU.Titles.Add(title1);
             // 
             // chartCPU
             // 
-            chartArea5.Name = "ChartArea1";
-            chartCPU.ChartAreas.Add(chartArea5);
+            chartArea2.Name = "ChartArea1";
+            chartCPU.ChartAreas.Add(chartArea2);
             chartCPU.Dock = DockStyle.Fill;
             chartCPU.Location = new Point(2, 10);
             chartCPU.Margin = new Padding(2, 10, 2, 10);
@@ -184,13 +184,13 @@ namespace GHelper
             chartCPU.Size = new Size(760, 310);
             chartCPU.TabIndex = 14;
             chartCPU.Text = "chartCPU";
-            title5.Name = "Title1";
-            chartCPU.Titles.Add(title5);
+            title2.Name = "Title1";
+            chartCPU.Titles.Add(title2);
             // 
             // chartMid
             // 
-            chartArea6.Name = "ChartArea3";
-            chartMid.ChartAreas.Add(chartArea6);
+            chartArea3.Name = "ChartArea3";
+            chartMid.ChartAreas.Add(chartArea3);
             chartMid.Dock = DockStyle.Fill;
             chartMid.Location = new Point(2, 670);
             chartMid.Margin = new Padding(2, 10, 2, 10);
@@ -198,8 +198,8 @@ namespace GHelper
             chartMid.Size = new Size(760, 312);
             chartMid.TabIndex = 14;
             chartMid.Text = "chartMid";
-            title6.Name = "Title3";
-            chartMid.Titles.Add(title6);
+            title3.Name = "Title3";
+            chartMid.Titles.Add(title3);
             chartMid.Visible = false;
             // 
             // labelFans
@@ -218,20 +218,20 @@ namespace GHelper
             checkApplyFans.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             checkApplyFans.AutoSize = true;
             checkApplyFans.BackColor = SystemColors.ControlLight;
-            checkApplyFans.Location = new Point(538, 1084);
+            checkApplyFans.Location = new Point(449, 1084);
             checkApplyFans.Margin = new Padding(4, 2, 4, 2);
             checkApplyFans.Name = "checkApplyFans";
             checkApplyFans.Padding = new Padding(15, 5, 15, 5);
-            checkApplyFans.Size = new Size(250, 46);
+            checkApplyFans.Size = new Size(339, 46);
             checkApplyFans.TabIndex = 17;
-            checkApplyFans.Text = "Apply Fan Curve";
+            checkApplyFans.Text = "Apply Custom Fan Curve";
             checkApplyFans.UseVisualStyleBackColor = false;
             // 
             // buttonReset
             // 
             buttonReset.Activated = false;
             buttonReset.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            buttonReset.BackColor = Color.FromArgb(230, 230, 230);
+            buttonReset.BackColor = SystemColors.ControlLight;
             buttonReset.BorderColor = Color.Transparent;
             buttonReset.BorderRadius = 2;
             buttonReset.FlatStyle = FlatStyle.Flat;
@@ -455,10 +455,10 @@ namespace GHelper
 
         #endregion
         private Panel panelFans;
-        private CheckBox checkApplyFans;
+        private RCheckBox checkApplyFans;
         private RButton buttonReset;
         private Panel panelPower;
-        private CheckBox checkApplyPower;
+        private RCheckBox checkApplyPower;
         private Panel panelCPU;
         private Label labelCPU;
         private Label label2;

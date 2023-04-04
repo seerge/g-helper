@@ -1,6 +1,5 @@
 ﻿using Microsoft.Win32;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Drawing.Drawing2D;
 using System.Runtime.InteropServices;
 
@@ -10,9 +9,18 @@ namespace CustomControls
     public class RForm : Form
     {
 
-        protected static Color colorEco = Color.FromArgb(255, 6, 180, 138);
-        protected static Color colorStandard = Color.FromArgb(255, 58, 174, 239);
-        protected static Color colorTurbo = Color.FromArgb(255, 255, 32, 32);
+        public static Color colorEco = Color.FromArgb(255, 6, 180, 138);
+        public static Color colorStandard = Color.FromArgb(255, 58, 174, 239);
+        public static Color colorTurbo = Color.FromArgb(255, 255, 32, 32);
+
+        public static Color buttonMain;
+        public static Color buttonSecond;
+
+        public static Color formBack;
+        public static Color foreMain;
+        public static Color borderMain;
+        public static Color chartMain;
+        public static Color chartGrid;
 
         [DllImport("UXTheme.dll", SetLastError = true, EntryPoint = "#138")]
         public static extern bool CheckSystemDarkModeStatus();
@@ -21,6 +29,34 @@ namespace CustomControls
         private static extern int DwmSetWindowAttribute(IntPtr hwnd, int attr, int[] attrValue, int attrSize);
 
         public bool darkTheme;
+
+        public static void InitColors(bool darkTheme)
+        {
+            if (darkTheme)
+            {
+                buttonMain = Color.FromArgb(255, 55, 55, 55);
+                buttonSecond = Color.FromArgb(255, 38, 38, 38);
+
+                formBack = Color.FromArgb(255, 28, 28, 28);
+                foreMain = Color.FromArgb(255, 240, 240, 240);
+                borderMain = Color.FromArgb(255, 50, 50, 50);
+
+                chartMain = Color.FromArgb(255, 35, 35, 35);
+                chartGrid = Color.FromArgb(255, 70, 70, 70);
+            }
+            else
+            {
+                buttonMain = SystemColors.ControlLightLight;
+                buttonSecond = SystemColors.ControlLight;
+
+                formBack = SystemColors.Control;
+                foreMain = SystemColors.ControlText;
+                borderMain = Color.LightGray;
+
+                chartMain = SystemColors.ControlLightLight;
+                chartGrid = Color.LightGray;
+            }
+        }
 
         private static bool IsDarkTheme()
         {
@@ -37,13 +73,15 @@ namespace CustomControls
             bool changed = (darkTheme != newDarkTheme);
             darkTheme = newDarkTheme;
 
+            InitColors(darkTheme);
+
             if (setDPI)
                 ControlHelper.Resize(this);
 
             if (changed)
             {
                 DwmSetWindowAttribute(this.Handle, 20, new[] { darkTheme ? 1 : 0 }, 4);
-                ControlHelper.Adjust(this, darkTheme, changed);
+                ControlHelper.Adjust(this, changed);
             }
 
             return changed;
@@ -53,7 +91,13 @@ namespace CustomControls
     }
 
 
-    public class RComboBox : ComboBox
+    public class RCheckBox : CheckBox
+    {
+
+    }
+
+
+        public class RComboBox : ComboBox
     {
         private Color borderColor = Color.Gray;
         [DefaultValue(typeof(Color), "Gray")]

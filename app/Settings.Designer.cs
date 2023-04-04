@@ -163,6 +163,7 @@ namespace GHelper
             // comboMatrix
             // 
             comboMatrix.BorderColor = Color.White;
+            comboMatrix.ButtonColor = Color.FromArgb(255, 255, 255);
             comboMatrix.Dock = DockStyle.Top;
             comboMatrix.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
             comboMatrix.FormattingEnabled = true;
@@ -178,6 +179,7 @@ namespace GHelper
             // comboMatrixRunning
             // 
             comboMatrixRunning.BorderColor = Color.White;
+            comboMatrixRunning.ButtonColor = Color.FromArgb(255, 255, 255);
             comboMatrixRunning.Dock = DockStyle.Top;
             comboMatrixRunning.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
             comboMatrixRunning.FormattingEnabled = true;
@@ -193,7 +195,7 @@ namespace GHelper
             // buttonMatrix
             // 
             buttonMatrix.Activated = false;
-            buttonMatrix.BackColor = Color.FromArgb(230, 230, 230);
+            buttonMatrix.BackColor = SystemColors.ControlLight;
             buttonMatrix.BorderColor = Color.Transparent;
             buttonMatrix.BorderRadius = 2;
             buttonMatrix.Dock = DockStyle.Top;
@@ -333,7 +335,7 @@ namespace GHelper
             // 
             buttonQuit.Activated = false;
             buttonQuit.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            buttonQuit.BackColor = Color.FromArgb(230, 230, 230);
+            buttonQuit.BackColor = SystemColors.ControlLight;
             buttonQuit.BorderColor = Color.Transparent;
             buttonQuit.BorderRadius = 2;
             buttonQuit.FlatStyle = FlatStyle.Flat;
@@ -501,7 +503,7 @@ namespace GHelper
             // buttonFans
             // 
             buttonFans.Activated = false;
-            buttonFans.BackColor = Color.FromArgb(230, 230, 230);
+            buttonFans.BackColor = SystemColors.ControlLight;
             buttonFans.BorderColor = Color.Transparent;
             buttonFans.BorderRadius = 5;
             buttonFans.Dock = DockStyle.Fill;
@@ -888,6 +890,7 @@ namespace GHelper
             // comboKeyboard
             // 
             comboKeyboard.BorderColor = Color.White;
+            comboKeyboard.ButtonColor = Color.FromArgb(255, 255, 255);
             comboKeyboard.Dock = DockStyle.Top;
             comboKeyboard.FlatStyle = FlatStyle.Flat;
             comboKeyboard.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
@@ -955,7 +958,7 @@ namespace GHelper
             // buttonKeyboard
             // 
             buttonKeyboard.Activated = false;
-            buttonKeyboard.BackColor = Color.FromArgb(230, 230, 230);
+            buttonKeyboard.BackColor = SystemColors.ControlLight;
             buttonKeyboard.BorderColor = Color.Transparent;
             buttonKeyboard.BorderRadius = 2;
             buttonKeyboard.Dock = DockStyle.Top;

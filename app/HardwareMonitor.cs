@@ -17,7 +17,7 @@ public static class HardwareMonitor
     public static int GetFanMax()
     {
         int max = 58;
-        if (Program.config.ContainsModel("401")) max = 72;
+        if (Program.config.ContainsModel("402")) max = 72;
         else if (Program.config.ContainsModel("503")) max = 68;
         return Math.Max(max, Program.config.getConfig("fan_max"));
     }
@@ -68,7 +68,6 @@ public static class HardwareMonitor
 
         if (gpuTemp < 0)  try
         {
-           if (GpuTemperatureProvider is null) RecreateGpuTemperatureProvider();
            gpuTemp = GpuTemperatureProvider?.GetCurrentTemperature();
 
         }

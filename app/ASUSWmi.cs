@@ -21,6 +21,8 @@ public class ASUSWmi
     public const uint PerformanceMode = 0x00120075; // Thermal Control
 
     public const uint GPUEco = 0x00090020;
+    public const uint GPUXGConnected = 0x00090018;
+    public const uint GPUXG = 0x00090019;
     public const uint GPUMux = 0x00090016;
 
     public const uint BatteryLimit = 0x00120057;
