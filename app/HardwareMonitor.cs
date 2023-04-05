@@ -48,6 +48,20 @@ public static class HardwareMonitor
             return " Fan: " + Math.Min(Math.Round((float)fan/fanMax*100), 100).ToString() + "%"; // relatively to 6000 rpm
     }
 
+    private static int GetGpuUse()
+    {
+        try
+        {
+            int? gpuUse = GpuTemperatureProvider?.GetGpuUse();
+            if (gpuUse is not null) return (int)gpuUse;
+        }
+        catch (Exception ex)
+        {
+        }
+
+        return 0;
+    }
+
     public static void ReadSensors()
     {
         batteryDischarge = -1;
@@ -84,20 +98,8 @@ public static class HardwareMonitor
         if (gpuTemp is null || gpuTemp < 0)
             gpuTemp = Program.wmi.DeviceGet(ASUSWmi.Temp_GPU);
 
-        try
-        {
-            gpuUse = GpuTemperatureProvider?.GetGpuUse();
-        } catch (Exception ex)
-        {
-            gpuUse = -1;
-            Debug.WriteLine(ex.ToString());
-        }
-
-        if (gpuUse is not null && gpuUse >= 0)
-        {
-            gpuUsage.Add((int)gpuUse);
-            if (gpuUsage.Count > 3)  gpuUsage.RemoveAt(0);
-        }
+        gpuUsage.Add(GetGpuUse());
+        if (gpuUsage.Count > 3)  gpuUsage.RemoveAt(0);
 
         try
         {
@@ -114,8 +116,10 @@ public static class HardwareMonitor
 
     public static bool IsUsedGPU(int threshold = 50)
     {
-        if (gpuUsage.Count < 2) return false;
-        return (gpuUsage.Average() > threshold);
+        if (GetGpuUse() > threshold) 
+            return true;
+        else 
+            return (gpuUsage.Average() > threshold);
     }
 
     public static void RecreateGpuTemperatureProviderWithDelay() {

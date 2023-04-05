@@ -1064,18 +1064,19 @@ namespace GHelper
                 if (eco == 1)
                     if ((GpuAuto && Plugged == PowerLineStatus.Online) || (ForceGPU && GpuMode == ASUSWmi.GPUModeStandard))
                     {
-                        if (HardwareMonitor.IsUsedGPU())
-                        {
-                            DialogResult dialogResult = MessageBox.Show("Your dGPU seem to be in heavy use, disable it?", "Eco Mode", MessageBoxButtons.YesNo);
-                            if (dialogResult == DialogResult.No) return false;
-                        }
-
                         SetEcoGPU(0);
                         return true;
                     }
                 if (eco == 0)
                     if ((GpuAuto && Plugged != PowerLineStatus.Online) || (ForceGPU && GpuMode == ASUSWmi.GPUModeEco))
                     {
+
+                        if (HardwareMonitor.IsUsedGPU())
+                        {
+                            DialogResult dialogResult = MessageBox.Show("Your dGPU seem to be in heavy use, disable it?", "Eco Mode", MessageBoxButtons.YesNo);
+                            if (dialogResult == DialogResult.No) return false;
+                        }
+
                         SetEcoGPU(1);
                         return true;
                     }
@@ -1141,7 +1142,6 @@ namespace GHelper
 
         public void SetEcoGPU(int eco)
         {
-
 
             ButtonEnabled(buttonOptimized, false);
             ButtonEnabled(buttonEco, false);
