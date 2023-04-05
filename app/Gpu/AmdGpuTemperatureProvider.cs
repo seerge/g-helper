@@ -73,6 +73,24 @@ public class AmdGpuTemperatureProvider : IGpuTemperatureProvider {
         return temperatureSensor.Value;
     }
 
+
+    public int? GetGpuUse()
+    {
+        if (!IsValid)
+            return -1;
+
+        if (Adl2.NativeMethods.ADL2_New_QueryPMLogData_Get(_adlContextHandle, _internalDiscreteAdapter.AdapterIndex, out ADLPMLogDataOutput adlpmLogDataOutput) != Adl2.ADL_SUCCESS)
+            return -1;
+
+        ADLSingleSensorData gpuUsage = adlpmLogDataOutput.Sensors[(int)ADLSensorType.PMLOG_INFO_ACTIVITY_GFX];
+        if (gpuUsage.Supported == 0)
+            return -1;
+
+        return gpuUsage.Value;
+
+    }
+
+
     private void ReleaseUnmanagedResources() {
         if (_adlContextHandle != IntPtr.Zero) {
             Adl2.NativeMethods.ADL2_Main_Control_Destroy(_adlContextHandle);

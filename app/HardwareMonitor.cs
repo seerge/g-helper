@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using GHelper;
 using GHelper.Gpu;
+using NvAPIWrapper.GPU;
 
 public static class HardwareMonitor
 {
@@ -13,6 +14,9 @@ public static class HardwareMonitor
     public static string? cpuFan;
     public static string? gpuFan;
     public static string? midFan;
+
+    public static List<int> gpuUsage = new List<int>();
+    public static int? gpuUse;
 
     public static int GetFanMax()
     {
@@ -48,13 +52,13 @@ public static class HardwareMonitor
     {
         batteryDischarge = -1;
         gpuTemp = -1;
+        gpuUse = -1;
 
         cpuFan = FormatFan(Program.wmi.DeviceGet(ASUSWmi.CPU_Fan));
         gpuFan = FormatFan(Program.wmi.DeviceGet(ASUSWmi.GPU_Fan));
         midFan = FormatFan(Program.wmi.DeviceGet(ASUSWmi.Mid_Fan));
 
         cpuTemp = Program.wmi.DeviceGet(ASUSWmi.Temp_CPU);
-
 
         if (cpuTemp < 0) try
         {
@@ -66,7 +70,7 @@ public static class HardwareMonitor
             Logger.WriteLine("Failed reading CPU temp");
         }
 
-        if (gpuTemp < 0)  try
+        try
         {
            gpuTemp = GpuTemperatureProvider?.GetCurrentTemperature();
 
@@ -80,6 +84,20 @@ public static class HardwareMonitor
         if (gpuTemp is null || gpuTemp < 0)
             gpuTemp = Program.wmi.DeviceGet(ASUSWmi.Temp_GPU);
 
+        try
+        {
+            gpuUse = GpuTemperatureProvider?.GetGpuUse();
+        } catch (Exception ex)
+        {
+            gpuUse = -1;
+            Debug.WriteLine(ex.ToString());
+        }
+
+        if (gpuUse is not null && gpuUse >= 0)
+        {
+            gpuUsage.Add((int)gpuUse);
+            if (gpuUsage.Count > 3)  gpuUsage.RemoveAt(0);
+        }
 
         try
         {
@@ -92,6 +110,12 @@ public static class HardwareMonitor
         {
             Logger.WriteLine("Failed reading Battery discharge");
         }
+    }
+
+    public static bool IsUsedGPU(int threshold = 50)
+    {
+        if (gpuUsage.Count < 2) return false;
+        return (gpuUsage.Average() > threshold);
     }
 
     public static void RecreateGpuTemperatureProviderWithDelay() {

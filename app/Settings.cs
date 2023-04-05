@@ -808,14 +808,14 @@ namespace GHelper
             HardwareMonitor.ReadSensors();
 
             if (HardwareMonitor.cpuTemp > 0)
-                cpuTemp = ": " + Math.Round((decimal)HardwareMonitor.cpuTemp).ToString() + "°C - ";
+                cpuTemp = ": " + Math.Round((decimal)HardwareMonitor.cpuTemp).ToString() + "°C ";
 
             if (HardwareMonitor.batteryDischarge > 0)
                 battery = "Discharging: " + Math.Round((decimal)HardwareMonitor.batteryDischarge, 1).ToString() + "W";
 
             if (HardwareMonitor.gpuTemp > 0)
             {
-                gpuTemp = $": {HardwareMonitor.gpuTemp}°C - ";
+                gpuTemp = $": {HardwareMonitor.gpuTemp}°C ";
             }
 
             Program.settingsForm.BeginInvoke(delegate
@@ -1064,6 +1064,12 @@ namespace GHelper
                 if (eco == 1)
                     if ((GpuAuto && Plugged == PowerLineStatus.Online) || (ForceGPU && GpuMode == ASUSWmi.GPUModeStandard))
                     {
+                        if (HardwareMonitor.IsUsedGPU())
+                        {
+                            DialogResult dialogResult = MessageBox.Show("Your dGPU seem to be in heavy use, disable it?", "Eco Mode", MessageBoxButtons.YesNo);
+                            if (dialogResult == DialogResult.No) return false;
+                        }
+
                         SetEcoGPU(0);
                         return true;
                     }
@@ -1135,6 +1141,7 @@ namespace GHelper
 
         public void SetEcoGPU(int eco)
         {
+
 
             ButtonEnabled(buttonOptimized, false);
             ButtonEnabled(buttonEco, false);
