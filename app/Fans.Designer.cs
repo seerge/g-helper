@@ -31,12 +31,12 @@ namespace GHelper
         /// </summary>
         private void InitializeComponent()
         {
-            ChartArea chartArea1 = new ChartArea();
-            Title title1 = new Title();
-            ChartArea chartArea2 = new ChartArea();
-            Title title2 = new Title();
-            ChartArea chartArea3 = new ChartArea();
-            Title title3 = new Title();
+            ChartArea chartArea4 = new ChartArea();
+            Title title4 = new Title();
+            ChartArea chartArea5 = new ChartArea();
+            Title title5 = new Title();
+            ChartArea chartArea6 = new ChartArea();
+            Title title6 = new Title();
             panelFans = new Panel();
             labelTip = new Label();
             labelBoost = new Label();
@@ -161,8 +161,8 @@ namespace GHelper
             // 
             // chartGPU
             // 
-            chartArea1.Name = "ChartArea1";
-            chartGPU.ChartAreas.Add(chartArea1);
+            chartArea4.Name = "ChartArea1";
+            chartGPU.ChartAreas.Add(chartArea4);
             chartGPU.Dock = DockStyle.Fill;
             chartGPU.Location = new Point(2, 340);
             chartGPU.Margin = new Padding(2, 10, 2, 10);
@@ -170,13 +170,13 @@ namespace GHelper
             chartGPU.Size = new Size(760, 310);
             chartGPU.TabIndex = 17;
             chartGPU.Text = "chartGPU";
-            title1.Name = "Title1";
-            chartGPU.Titles.Add(title1);
+            title4.Name = "Title1";
+            chartGPU.Titles.Add(title4);
             // 
             // chartCPU
             // 
-            chartArea2.Name = "ChartArea1";
-            chartCPU.ChartAreas.Add(chartArea2);
+            chartArea5.Name = "ChartArea1";
+            chartCPU.ChartAreas.Add(chartArea5);
             chartCPU.Dock = DockStyle.Fill;
             chartCPU.Location = new Point(2, 10);
             chartCPU.Margin = new Padding(2, 10, 2, 10);
@@ -184,13 +184,13 @@ namespace GHelper
             chartCPU.Size = new Size(760, 310);
             chartCPU.TabIndex = 14;
             chartCPU.Text = "chartCPU";
-            title2.Name = "Title1";
-            chartCPU.Titles.Add(title2);
+            title5.Name = "Title1";
+            chartCPU.Titles.Add(title5);
             // 
             // chartMid
             // 
-            chartArea3.Name = "ChartArea3";
-            chartMid.ChartAreas.Add(chartArea3);
+            chartArea6.Name = "ChartArea3";
+            chartMid.ChartAreas.Add(chartArea6);
             chartMid.Dock = DockStyle.Fill;
             chartMid.Location = new Point(2, 670);
             chartMid.Margin = new Padding(2, 10, 2, 10);
@@ -198,8 +198,8 @@ namespace GHelper
             chartMid.Size = new Size(760, 312);
             chartMid.TabIndex = 14;
             chartMid.Text = "chartMid";
-            title3.Name = "Title3";
-            chartMid.Titles.Add(title3);
+            title6.Name = "Title3";
+            chartMid.Titles.Add(title6);
             chartMid.Visible = false;
             // 
             // labelFans
@@ -336,7 +336,7 @@ namespace GHelper
             trackCPU.Location = new Point(48, 88);
             trackCPU.Margin = new Padding(4, 2, 4, 2);
             trackCPU.Maximum = 85;
-            trackCPU.Minimum = 15;
+            trackCPU.Minimum = 5;
             trackCPU.Name = "trackCPU";
             trackCPU.Orientation = Orientation.Vertical;
             trackCPU.Size = new Size(90, 416);
@@ -381,8 +381,8 @@ namespace GHelper
             // 
             trackTotal.Location = new Point(44, 88);
             trackTotal.Margin = new Padding(4, 2, 4, 2);
-            trackTotal.Maximum = 150;
-            trackTotal.Minimum = 15;
+            trackTotal.Maximum = 180;
+            trackTotal.Minimum = 10;
             trackTotal.Name = "trackTotal";
             trackTotal.Orientation = Orientation.Vertical;
             trackTotal.Size = new Size(90, 416);

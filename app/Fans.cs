@@ -108,7 +108,7 @@ namespace GHelper
             chart.ChartAreas[0].AxisY.Maximum = 100;
 
             chart.ChartAreas[0].AxisY.LabelStyle.Font = new Font("Arial", 7F);
-            
+
             chart.ChartAreas[0].AxisX.MajorGrid.LineColor = chartGrid;
             chart.ChartAreas[0].AxisY.MajorGrid.LineColor = chartGrid;
             chart.ChartAreas[0].AxisX.LineColor = chartGrid;
