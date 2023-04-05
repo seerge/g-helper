@@ -50,7 +50,19 @@ public class NvidiaGpuTemperatureProvider : IGpuTemperatureProvider
 
     public int? GetGpuUse()
     {
-        return -1;
+        if (!IsValid)
+            return null;
+
+        PhysicalGPU internalGpu = _internalGpu!;
+
+        IUtilizationDomainInfo? gpuUsage = GPUApi.GetUsages(internalGpu.Handle).GPU;
+
+        if (gpuUsage == null) 
+            return null;
+
+        return 
+            (int)gpuUsage?.Percentage;
+
     }
 
 }

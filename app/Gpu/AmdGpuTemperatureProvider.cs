@@ -77,14 +77,14 @@ public class AmdGpuTemperatureProvider : IGpuTemperatureProvider {
     public int? GetGpuUse()
     {
         if (!IsValid)
-            return -1;
+            return null;
 
         if (Adl2.NativeMethods.ADL2_New_QueryPMLogData_Get(_adlContextHandle, _internalDiscreteAdapter.AdapterIndex, out ADLPMLogDataOutput adlpmLogDataOutput) != Adl2.ADL_SUCCESS)
-            return -1;
+            return null;
 
         ADLSingleSensorData gpuUsage = adlpmLogDataOutput.Sensors[(int)ADLSensorType.PMLOG_INFO_ACTIVITY_GFX];
         if (gpuUsage.Supported == 0)
-            return -1;
+            return null;
 
         return gpuUsage.Value;
 

@@ -57,6 +57,7 @@ public static class HardwareMonitor
         }
         catch (Exception ex)
         {
+            Debug.WriteLine(ex.ToString());
         }
 
         return 0;
