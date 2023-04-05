@@ -1,4 +1,5 @@
 ﻿using CustomControls;
+using Microsoft.Win32;
 
 namespace GHelper
 {
@@ -98,6 +99,16 @@ namespace GHelper
         private void CheckKeyboardAuto_CheckedChanged(object? sender, EventArgs e)
         {
             Program.config.setConfig("keyboard_auto", (checkKeyboardAuto.Checked ? 1 : 0));
+
+            /*
+            RegistryKey myKey = Registry.LocalMachine.OpenSubKey("SOFTWARE\\ASUS\\ASUS System Control Interface\\AsusOptimization\\ASUS Keyboard Hotkeys", true);
+            if (myKey != null)
+            {
+                myKey.SetValue("TurnOffKeybdLight", 30, RegistryValueKind.DWord);
+                myKey.Close();
+            }
+            */
+
         }
 
         private void CheckTopmost_CheckedChanged(object? sender, EventArgs e)
