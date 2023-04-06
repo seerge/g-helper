@@ -14,7 +14,7 @@ public static class HardwareMonitor
     public static string? gpuFan;
     public static string? midFan;
 
-    public static List<int> gpuUsage = new List<int>();
+    //public static List<int> gpuUsage = new List<int>();
     public static int? gpuUse;
 
     public static int GetFanMax()
@@ -100,8 +100,10 @@ public static class HardwareMonitor
         if (gpuTemp is null || gpuTemp < 0)
             gpuTemp = Program.wmi.DeviceGet(ASUSWmi.Temp_GPU);
 
+        /*
         gpuUsage.Add(GetGpuUse());
         if (gpuUsage.Count > 3) gpuUsage.RemoveAt(0);
+        */
 
         try
         {
@@ -118,10 +120,7 @@ public static class HardwareMonitor
 
     public static bool IsUsedGPU(int threshold = 50)
     {
-        if (GetGpuUse() > threshold)
-            return true;
-        else
-            return (gpuUsage.Average() > threshold);
+        return (GetGpuUse() > threshold);
     }
 
     public static void RecreateGpuTemperatureProviderWithDelay()

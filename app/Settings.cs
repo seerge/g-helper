@@ -845,10 +845,7 @@ namespace GHelper
                 this.Top = Screen.FromControl(this).WorkingArea.Height - 10 - this.Height;
                 this.Activate();
 
-                //aTimer.Interval = 300;
                 aTimer.Enabled = true;
-
-                //RefreshSensors();
             }
             else
             {
