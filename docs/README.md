@@ -18,6 +18,7 @@ A small utility that allows you to do almost everything you could do with Armour
 ### [:floppy_disk: Download latest release](https://github.com/seerge/g-helper/releases/latest/download/GHelper.zip)
 
 If you like this app, please [star :star: it on Github](https://github.com/seerge/g-helper) and spread a word about it!
+
 _If you post about the app - please include a link. Thanks._
 
 ![Screenshot 2023-03-30 115149](https://user-images.githubusercontent.com/5920850/228799078-bc93148f-6580-4319-b9e6-fbde4d246cd2.png)
@@ -40,7 +41,7 @@ _If you post about the app - please include a link. Thanks._
 - Auto Screen refresh rate (60hz on battery, 120+ hz when plugged)
 - Keyboard backlight can be turned off on battery
 
-To keep auto switching and hotkeys working the app needs to stay in running in the tray. It doesn't consume any resources. 
+To keep auto switching and hotkeys working the app needs to stay running in the tray. It doesn't consume any resources. 
 
 ### :rocket: Performance Modes
 
