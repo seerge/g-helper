@@ -1,4 +1,4 @@
-﻿using CustomControls;
+using CustomControls;
 using System.Windows.Forms.DataVisualization.Charting;
 
 namespace GHelper
@@ -114,16 +114,16 @@ namespace GHelper
             labelBoost.Name = "labelBoost";
             labelBoost.Size = new Size(125, 32);
             labelBoost.TabIndex = 39;
-            labelBoost.Text = "CPU Boost";
+            labelBoost.Text = "CPU 加速";
             // 
-            // comboBoost
+            // comboBoost6
             // 
             comboBoost.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             comboBoost.BorderColor = Color.White;
             comboBoost.ButtonColor = Color.FromArgb(255, 255, 255);
             comboBoost.DropDownStyle = ComboBoxStyle.DropDownList;
             comboBoost.FormattingEnabled = true;
-            comboBoost.Items.AddRange(new object[] { "Disabled", "Enabled", "Aggressive", "Efficient Enabled", "Efficient Aggressive" });
+            comboBoost.Items.AddRange(new object[] { "关闭", "启用", "激进", "开启高效率", "高效率且激进" });
             comboBoost.Location = new Point(526, 15);
             comboBoost.Name = "comboBoost";
             comboBoost.Size = new Size(266, 40);
@@ -211,7 +211,7 @@ namespace GHelper
             labelFans.Name = "labelFans";
             labelFans.Size = new Size(138, 32);
             labelFans.TabIndex = 28;
-            labelFans.Text = "Fan Curves";
+            labelFans.Text = "Fan 曲线";
             // 
             // checkApplyFans
             // 
@@ -224,7 +224,7 @@ namespace GHelper
             checkApplyFans.Padding = new Padding(15, 5, 15, 5);
             checkApplyFans.Size = new Size(339, 46);
             checkApplyFans.TabIndex = 17;
-            checkApplyFans.Text = "Apply Custom Fan Curve";
+            checkApplyFans.Text = "应用自定义扇形曲线";
             checkApplyFans.UseVisualStyleBackColor = false;
             // 
             // buttonReset
@@ -241,7 +241,7 @@ namespace GHelper
             buttonReset.Secondary = true;
             buttonReset.Size = new Size(232, 50);
             buttonReset.TabIndex = 15;
-            buttonReset.Text = "Factory Defaults";
+            buttonReset.Text = "恢复出厂设置";
             buttonReset.UseVisualStyleBackColor = false;
             // 
             // panelPower
@@ -282,7 +282,7 @@ namespace GHelper
             labelPowerLimits.Name = "labelPowerLimits";
             labelPowerLimits.Size = new Size(229, 32);
             labelPowerLimits.TabIndex = 26;
-            labelPowerLimits.Text = "Power Limits (PPT)";
+            labelPowerLimits.Text = "功率限制 (PPT)";
             // 
             // checkApplyPower
             // 
@@ -295,7 +295,7 @@ namespace GHelper
             checkApplyPower.Padding = new Padding(15, 5, 15, 5);
             checkApplyPower.Size = new Size(277, 46);
             checkApplyPower.TabIndex = 25;
-            checkApplyPower.Text = "Apply Power Limits";
+            checkApplyPower.Text = "应用功率限制";
             checkApplyPower.UseVisualStyleBackColor = false;
             // 
             // panelCPU
@@ -432,7 +432,7 @@ namespace GHelper
             ShowIcon = false;
             ShowInTaskbar = false;
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "Fans and Power";
+            Text = "风扇和电源设置";
             panelFans.ResumeLayout(false);
             panelFans.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)picturePerf).EndInit();
