@@ -1,4 +1,4 @@
-using CustomControls;
+﻿using CustomControls;
 using System.Windows.Forms.DataVisualization.Charting;
 
 namespace GHelper

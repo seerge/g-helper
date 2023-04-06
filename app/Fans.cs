@@ -64,7 +64,7 @@ namespace GHelper
             checkApplyPower.Click += CheckApplyPower_Click;
 
             //labelInfo.MaximumSize = new Size(280, 0);
-            labelInfo.Text = "Power Limits (PPT) is\nexperimental feature.\n\nUse carefully and\non your own risk!";
+            labelInfo.Text = "功率限制是\n实验性特性\n\n请谨慎使用,后果自负!";
 
             InitFans();
             InitPower();
@@ -89,14 +89,14 @@ namespace GHelper
             string title;
 
             if (device == 1)
-                title = "GPU Fan Profile";
+                title = "GPU 风扇 曲线";
             else if (device == 2)
-                title = "Middle Fan Profile";
+                title = "Middle 风扇 曲线";
             else
-                title = "CPU Fan Profile";
+                title = "CPU 风扇 曲线";
 
             if (Program.settingsForm.perfName.Length > 0)
-                labelFans.Text = "Fan Profiles: " + Program.settingsForm.perfName;
+                labelFans.Text = "风扇 曲线: " + Program.settingsForm.perfName;
 
             chart.Titles[0].Text = title;
 

@@ -73,7 +73,7 @@ namespace GHelper
             groupBox1.Size = new Size(756, 242);
             groupBox1.TabIndex = 0;
             groupBox1.TabStop = false;
-            groupBox1.Text = "Key Bindings";
+            groupBox1.Text = "快捷键设置";
             // 
             // textFNF4
             // 
@@ -166,7 +166,7 @@ namespace GHelper
             groupLight.Size = new Size(756, 304);
             groupLight.TabIndex = 1;
             groupLight.TabStop = false;
-            groupLight.Text = "Keyboard Backlight";
+            groupLight.Text = "键盘背光";
             // 
             // labelSpeed
             // 
@@ -175,7 +175,7 @@ namespace GHelper
             labelSpeed.Name = "labelSpeed";
             labelSpeed.Size = new Size(198, 32);
             labelSpeed.TabIndex = 40;
-            labelSpeed.Text = "Animation Speed";
+            labelSpeed.Text = "动画速度";
             // 
             // comboKeyboardSpeed
             // 
@@ -185,7 +185,7 @@ namespace GHelper
             comboKeyboardSpeed.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
             comboKeyboardSpeed.FormattingEnabled = true;
             comboKeyboardSpeed.ItemHeight = 32;
-            comboKeyboardSpeed.Items.AddRange(new object[] { "Slow", "Normal", "Fast" });
+            comboKeyboardSpeed.Items.AddRange(new object[] { "慢速", "正常", "快速" });
             comboKeyboardSpeed.Location = new Point(230, 234);
             comboKeyboardSpeed.Margin = new Padding(4, 10, 4, 8);
             comboKeyboardSpeed.Name = "comboKeyboardSpeed";
@@ -200,7 +200,7 @@ namespace GHelper
             checkShutdown.Name = "checkShutdown";
             checkShutdown.Size = new Size(154, 36);
             checkShutdown.TabIndex = 3;
-            checkShutdown.Text = "Shutdown";
+            checkShutdown.Text = "关机时";
             checkShutdown.UseVisualStyleBackColor = true;
             // 
             // checkSleep
@@ -210,7 +210,7 @@ namespace GHelper
             checkSleep.Name = "checkSleep";
             checkSleep.Size = new Size(105, 36);
             checkSleep.TabIndex = 2;
-            checkSleep.Text = "Sleep";
+            checkSleep.Text = "睡眠时";
             checkSleep.UseVisualStyleBackColor = true;
             // 
             // checkBoot
@@ -220,7 +220,7 @@ namespace GHelper
             checkBoot.Name = "checkBoot";
             checkBoot.Size = new Size(96, 36);
             checkBoot.TabIndex = 1;
-            checkBoot.Text = "Boot";
+            checkBoot.Text = "启动时";
             checkBoot.UseVisualStyleBackColor = true;
             // 
             // checkAwake
@@ -230,7 +230,7 @@ namespace GHelper
             checkAwake.Name = "checkAwake";
             checkAwake.Size = new Size(115, 36);
             checkAwake.TabIndex = 0;
-            checkAwake.Text = "Awake";
+            checkAwake.Text = "唤醒时";
             checkAwake.UseVisualStyleBackColor = true;
             // 
             // groupOther
@@ -244,7 +244,7 @@ namespace GHelper
             groupOther.Size = new Size(756, 225);
             groupOther.TabIndex = 2;
             groupOther.TabStop = false;
-            groupOther.Text = "Other";
+            groupOther.Text = "其他";
             // 
             // checkKeyboardAuto
             // 
@@ -253,7 +253,7 @@ namespace GHelper
             checkKeyboardAuto.Name = "checkKeyboardAuto";
             checkKeyboardAuto.Size = new Size(712, 36);
             checkKeyboardAuto.TabIndex = 2;
-            checkKeyboardAuto.Text = "Lower backlight brightness on battery and back when plugged";
+            checkKeyboardAuto.Text = "无电源供电时自动降低键盘背光亮度";
             checkKeyboardAuto.UseVisualStyleBackColor = true;
             // 
             // checkTopmost
@@ -263,7 +263,7 @@ namespace GHelper
             checkTopmost.Name = "checkTopmost";
             checkTopmost.Size = new Size(390, 36);
             checkTopmost.TabIndex = 1;
-            checkTopmost.Text = "Keep app window always on top";
+            checkTopmost.Text = "使G-Helper置顶显示";
             checkTopmost.UseVisualStyleBackColor = true;
             // 
             // checkNoOverdrive
@@ -273,7 +273,7 @@ namespace GHelper
             checkNoOverdrive.Name = "checkNoOverdrive";
             checkNoOverdrive.Size = new Size(307, 36);
             checkNoOverdrive.TabIndex = 3;
-            checkNoOverdrive.Text = "Disable screen overdrive";
+            checkNoOverdrive.Text = "关闭屏幕超频(overdrive)模式";
             checkNoOverdrive.UseVisualStyleBackColor = true;
             // 
             // Keyboard
@@ -292,7 +292,7 @@ namespace GHelper
             Padding = new Padding(10);
             ShowIcon = false;
             ShowInTaskbar = false;
-            Text = "Extra Settings";
+            Text = "更多设置";
             groupBox1.ResumeLayout(false);
             groupBox1.PerformLayout();
             groupLight.ResumeLayout(false);

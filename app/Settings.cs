@@ -196,12 +196,12 @@ namespace GHelper
 
         private void Button120Hz_MouseHover(object? sender, EventArgs e)
         {
-            labelTipScreen.Text = "Max refresh rate for lower latency";
+            labelTipScreen.Text = "最大刷新率和更少的延迟";
         }
 
         private void Button60Hz_MouseHover(object? sender, EventArgs e)
         {
-            labelTipScreen.Text = "60Hz refresh rate to save battery";
+            labelTipScreen.Text = "60Hz刷新率以节约电量";
         }
 
         private void ButtonScreen_MouseLeave(object? sender, EventArgs e)
@@ -211,27 +211,27 @@ namespace GHelper
 
         private void ButtonScreenAuto_MouseHover(object? sender, EventArgs e)
         {
-            labelTipScreen.Text = "Sets 60Hz to save battery, and back when plugged";
+            labelTipScreen.Text = "电池模式时自动60Hz";
         }
 
         private void ButtonUltimate_MouseHover(object? sender, EventArgs e)
         {
-            labelTipGPU.Text = "Routes laptop screen to dGPU, maximizing FPS";
+            labelTipGPU.Text = "开启独显直连模式获得最大游戏性能";
         }
 
         private void ButtonStandard_MouseHover(object? sender, EventArgs e)
         {
-            labelTipGPU.Text = "Enables dGPU for standard use";
+            labelTipGPU.Text = "开启独显";
         }
 
         private void ButtonEco_MouseHover(object? sender, EventArgs e)
         {
-            labelTipGPU.Text = "Disables dGPU for battery savings";
+            labelTipGPU.Text = "关闭独显以省电";
         }
 
         private void ButtonOptimized_MouseHover(object? sender, EventArgs e)
         {
-            labelTipGPU.Text = "Switch to Eco on battery and to Standard when plugged";
+            labelTipGPU.Text = "电池模式时自动关闭独显";
         }
 
         private void ButtonGPU_MouseLeave(object? sender, EventArgs e)
@@ -724,8 +724,8 @@ namespace GHelper
             ButtonEnabled(buttonMiniled, screenEnabled);
 
             labelSreen.Text = screenEnabled
-                ? "Laptop Screen: " + frequency + "Hz" + ((overdrive == 1) ? " + Overdrive" : "")
-                : "Laptop Screen: Turned off";
+                ? "笔记本屏幕: " + frequency + "Hz" + ((overdrive == 1) ? " + Overdrive" : "")
+                : "笔记本屏幕: Turned off";
 
             button60Hz.Activated = false;
             button120Hz.Activated = false;
@@ -894,10 +894,10 @@ namespace GHelper
                     Program.wmi.DeviceSet(ASUSWmi.PerformanceMode, mode, "PerformanceMode");
                 }
                 else
-                    labelPerf.Text = "Performance Mode+";
+                    labelPerf.Text = "性能模式+";
             }
             else
-                labelPerf.Text = "Performance Mode";
+                labelPerf.Text = "性能模式";
 
         }
 
@@ -940,16 +940,16 @@ namespace GHelper
             {
                 case ASUSWmi.PerformanceSilent:
                     buttonSilent.Activated = true;
-                    perfName = "Silent";
+                    perfName = "安静模式";
                     break;
                 case ASUSWmi.PerformanceTurbo:
                     buttonTurbo.Activated = true;
-                    perfName = "Turbo";
+                    perfName = "极速模式";
                     break;
                 default:
                     buttonBalanced.Activated = true;
                     PerformanceMode = ASUSWmi.PerformanceBalanced;
-                    perfName = "Balanced";
+                    perfName = "平衡模式";
                     break;
             }
 
@@ -1148,7 +1148,7 @@ namespace GHelper
             ButtonEnabled(buttonStandard, false);
             ButtonEnabled(buttonUltimate, false);
 
-            labelGPU.Text = "GPU Mode: Changing ...";
+            labelGPU.Text = "GPU 模式: 改变中 ...";
 
             Thread t = new Thread(() =>
             {
@@ -1257,19 +1257,19 @@ namespace GHelper
                     buttonOptimized.BorderColor = colorEco;
                     buttonEco.Activated = !GPUAuto;
                     buttonOptimized.Activated = GPUAuto;
-                    labelGPU.Text = "GPU Mode: iGPU only";
+                    labelGPU.Text = "GPU 模式: 集显模式";
                     Program.trayIcon.Icon = Properties.Resources.eco;
                     break;
                 case ASUSWmi.GPUModeUltimate:
                     buttonUltimate.Activated = true;
-                    labelGPU.Text = "GPU Mode: dGPU exclusive";
+                    labelGPU.Text = "GPU 模式: 独显直连";
                     Program.trayIcon.Icon = Properties.Resources.ultimate;
                     break;
                 default:
                     buttonOptimized.BorderColor = colorStandard;
                     buttonStandard.Activated = !GPUAuto;
                     buttonOptimized.Activated = GPUAuto;
-                    labelGPU.Text = "GPU Mode: iGPU + dGPU";
+                    labelGPU.Text = "GPU Mode: 核显 + 独显";
                     Program.trayIcon.Icon = Properties.Resources.standard;
                     break;
             }
@@ -1318,7 +1318,7 @@ namespace GHelper
 
             //Debug.WriteLine(limit);
 
-            labelBatteryTitle.Text = "Battery Charge Limit: " + limit.ToString() + "%";
+            labelBatteryTitle.Text = "最大充电限制 " + limit.ToString() + "%";
             sliderBattery.Value = limit;
 
             Program.wmi.DeviceSet(ASUSWmi.BatteryLimit, limit, "BatteryLimit");

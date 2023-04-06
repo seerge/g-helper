@@ -136,7 +136,7 @@ namespace GHelper
             checkMatrix.Name = "checkMatrix";
             checkMatrix.Size = new Size(249, 36);
             checkMatrix.TabIndex = 44;
-            checkMatrix.Text = "Turn off on battery";
+            checkMatrix.Text = "电池供电时关闭";
             checkMatrix.UseVisualStyleBackColor = true;
             // 
             // tableLayoutMatrix
@@ -315,7 +315,7 @@ namespace GHelper
             labelBatteryTitle.Name = "labelBatteryTitle";
             labelBatteryTitle.Size = new Size(393, 36);
             labelBatteryTitle.TabIndex = 34;
-            labelBatteryTitle.Text = "Battery Charge Limit";
+            labelBatteryTitle.Text = "最大充电限制：";
             // 
             // panelFooter
             // 
@@ -345,7 +345,7 @@ namespace GHelper
             buttonQuit.Secondary = true;
             buttonQuit.Size = new Size(185, 44);
             buttonQuit.TabIndex = 18;
-            buttonQuit.Text = "Quit";
+            buttonQuit.Text = "退出";
             buttonQuit.UseVisualStyleBackColor = false;
             // 
             // checkStartup
@@ -356,7 +356,7 @@ namespace GHelper
             checkStartup.Name = "checkStartup";
             checkStartup.Size = new Size(206, 36);
             checkStartup.TabIndex = 17;
-            checkStartup.Text = "Run on Startup";
+            checkStartup.Text = "开机自启";
             checkStartup.UseVisualStyleBackColor = true;
             // 
             // panelPerformance
@@ -396,7 +396,7 @@ namespace GHelper
             labelPerf.Name = "labelPerf";
             labelPerf.Size = new Size(234, 32);
             labelPerf.TabIndex = 31;
-            labelPerf.Text = "Performance Mode";
+            labelPerf.Text = "性能模式";
             // 
             // labelCPUFan
             // 
@@ -452,7 +452,7 @@ namespace GHelper
             buttonSilent.Secondary = false;
             buttonSilent.Size = new Size(185, 120);
             buttonSilent.TabIndex = 0;
-            buttonSilent.Text = "Silent";
+            buttonSilent.Text = "安静模式";
             buttonSilent.TextImageRelation = TextImageRelation.ImageAboveText;
             buttonSilent.UseVisualStyleBackColor = false;
             // 
@@ -474,7 +474,7 @@ namespace GHelper
             buttonBalanced.Secondary = false;
             buttonBalanced.Size = new Size(185, 120);
             buttonBalanced.TabIndex = 1;
-            buttonBalanced.Text = "Balanced";
+            buttonBalanced.Text = "平衡模式";
             buttonBalanced.TextImageRelation = TextImageRelation.ImageAboveText;
             buttonBalanced.UseVisualStyleBackColor = false;
             // 
@@ -496,7 +496,7 @@ namespace GHelper
             buttonTurbo.Secondary = false;
             buttonTurbo.Size = new Size(185, 120);
             buttonTurbo.TabIndex = 2;
-            buttonTurbo.Text = "Turbo";
+            buttonTurbo.Text = "极速模式";
             buttonTurbo.TextImageRelation = TextImageRelation.ImageAboveText;
             buttonTurbo.UseVisualStyleBackColor = false;
             // 
@@ -517,7 +517,7 @@ namespace GHelper
             buttonFans.Secondary = true;
             buttonFans.Size = new Size(185, 120);
             buttonFans.TabIndex = 35;
-            buttonFans.Text = "Fans + Power";
+            buttonFans.Text = "自定义设置";
             buttonFans.TextImageRelation = TextImageRelation.ImageAboveText;
             buttonFans.UseVisualStyleBackColor = false;
             // 
@@ -568,7 +568,7 @@ namespace GHelper
             labelGPU.Name = "labelGPU";
             labelGPU.Size = new Size(136, 32);
             labelGPU.TabIndex = 18;
-            labelGPU.Text = "GPU Mode";
+            labelGPU.Text = "GPU模式";
             // 
             // labelGPUFan
             // 
@@ -622,7 +622,7 @@ namespace GHelper
             buttonEco.Secondary = false;
             buttonEco.Size = new Size(185, 120);
             buttonEco.TabIndex = 0;
-            buttonEco.Text = "Eco";
+            buttonEco.Text = "节能模式";
             buttonEco.TextImageRelation = TextImageRelation.ImageAboveText;
             buttonEco.UseVisualStyleBackColor = false;
             // 
@@ -644,7 +644,7 @@ namespace GHelper
             buttonStandard.Secondary = false;
             buttonStandard.Size = new Size(185, 120);
             buttonStandard.TabIndex = 1;
-            buttonStandard.Text = "Standard";
+            buttonStandard.Text = "标准模式";
             buttonStandard.TextImageRelation = TextImageRelation.ImageAboveText;
             buttonStandard.UseVisualStyleBackColor = false;
             // 
@@ -666,7 +666,7 @@ namespace GHelper
             buttonOptimized.Secondary = false;
             buttonOptimized.Size = new Size(185, 120);
             buttonOptimized.TabIndex = 3;
-            buttonOptimized.Text = "Optimized";
+            buttonOptimized.Text = "自动模式";
             buttonOptimized.TextImageRelation = TextImageRelation.ImageAboveText;
             buttonOptimized.UseVisualStyleBackColor = false;
             // 
@@ -688,7 +688,7 @@ namespace GHelper
             buttonUltimate.Secondary = false;
             buttonUltimate.Size = new Size(185, 120);
             buttonUltimate.TabIndex = 2;
-            buttonUltimate.Text = "Ultimate";
+            buttonUltimate.Text = "无限制模式";
             buttonUltimate.TextImageRelation = TextImageRelation.ImageAboveText;
             buttonUltimate.UseVisualStyleBackColor = false;
             // 
@@ -767,7 +767,7 @@ namespace GHelper
             buttonScreenAuto.Secondary = false;
             buttonScreenAuto.Size = new Size(185, 72);
             buttonScreenAuto.TabIndex = 0;
-            buttonScreenAuto.Text = "Auto";
+            buttonScreenAuto.Text = "自动";
             buttonScreenAuto.UseVisualStyleBackColor = false;
             // 
             // button60Hz
@@ -849,7 +849,7 @@ namespace GHelper
             labelSreen.Name = "labelSreen";
             labelSreen.Size = new Size(176, 32);
             labelSreen.TabIndex = 21;
-            labelSreen.Text = "Laptop Screen";
+            labelSreen.Text = "笔记本屏幕";
             // 
             // panelKeyboard
             // 
@@ -896,7 +896,7 @@ namespace GHelper
             comboKeyboard.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
             comboKeyboard.FormattingEnabled = true;
             comboKeyboard.ItemHeight = 32;
-            comboKeyboard.Items.AddRange(new object[] { "Static", "Breathe", "Rainbow", "Strobe" });
+            comboKeyboard.Items.AddRange(new object[] { "正常", "呼吸", "彩虹", "闪烁" });
             comboKeyboard.Location = new Point(4, 10);
             comboKeyboard.Margin = new Padding(4, 10, 4, 8);
             comboKeyboard.Name = "comboKeyboard";
@@ -952,7 +952,7 @@ namespace GHelper
             buttonKeyboardColor.Secondary = false;
             buttonKeyboardColor.Size = new Size(249, 44);
             buttonKeyboardColor.TabIndex = 39;
-            buttonKeyboardColor.Text = "Color";
+            buttonKeyboardColor.Text = "颜色";
             buttonKeyboardColor.UseVisualStyleBackColor = false;
             // 
             // buttonKeyboard
@@ -970,7 +970,7 @@ namespace GHelper
             buttonKeyboard.Secondary = true;
             buttonKeyboard.Size = new Size(249, 44);
             buttonKeyboard.TabIndex = 37;
-            buttonKeyboard.Text = "Extra";
+            buttonKeyboard.Text = "更多";
             buttonKeyboard.UseVisualStyleBackColor = false;
             // 
             // pictureKeyboard
@@ -993,7 +993,7 @@ namespace GHelper
             labelKeyboard.Name = "labelKeyboard";
             labelKeyboard.Size = new Size(210, 32);
             labelKeyboard.TabIndex = 32;
-            labelKeyboard.Text = "Laptop Keyboard";
+            labelKeyboard.Text = "笔记本键盘";
             // 
             // SettingsForm
             // 
