@@ -1,4 +1,4 @@
-# [G-Helper](https://github.com/seerge/g-helper)
+# G-Helper (GHelper)
 
 [![Github all releases](https://img.shields.io/github/downloads/seerge/g-helper/total.svg)](https://GitHub.com/seerge/g-helper/releases/) [![GitHub release](https://img.shields.io/github/release/seerge/g-helper.svg)](https://GitHub.com/seerge/g-helper/releases/) [![GitHub stars](https://img.shields.io/github/stars/seerge/g-helper.svg?style=social&label=Star)](https://GitHub.com/seerge/g-helper/stargazers/)
 
@@ -7,37 +7,33 @@
 
 A small utility that allows you to do almost everything you could do with Armoury Crate but without extra bloat and unnecessary services.
 
-### :gift: Main advantages 
+## :gift: Main advantages 
 
 1. Seamless and automatic GPU switching (without asking you to close all apps, etc)
 2. All performance modes can be fully customized (with fan curves and PPTs)
 3. Very lightweight and consumes almost no resources, doesn't install any services. Just a single exe to run
 4. Simple and clean native UI with easy access to all settings
+5. Doesn't need administrator privileges to run!
 
-_Doesn't need administrator privileges to run!_
-
-### [:floppy_disk: Download latest release](https://github.com/seerge/g-helper/releases/latest/download/GHelper.zip)
+## [:floppy_disk: Download App](https://github.com/seerge/g-helper/releases/latest/download/GHelper.zip)
 
 If you like this app, please [star :star: it on Github](https://github.com/seerge/g-helper) and spread a word about it!
 
-If you post about the app - please include a link. Thanks.
+_If you post about the app - please include a link. Thanks._
 
 ![Screenshot 2023-03-30 115149](https://user-images.githubusercontent.com/5920850/228799078-bc93148f-6580-4319-b9e6-fbde4d246cd2.png)
 
 ### :zap: Main features
 
-1. Built-in **Performance modes**: Silent - Balanced - Turbo (with default fan curves)
+1. **Performance modes**: Silent - Balanced - Turbo (built-in, with default fan curves)
 2. **GPU modes**: Eco - Standard - Ultimate - Optimized
-3. Laptop screen refresh rate 60hz or 120hz (144hz, etc depending on the model) with display overdrive (OD)
-4. Default and custom fan profiles for every performance mode
-5. Power limits (PPT) for every performance mode
-6. CPU turbo boost setting for each mode
-7. Keyboard backlit animation and colors
-8. Anime matrix control thanks to [Starlight](https://github.com/vddCore/Starlight) + some tweaks from my side (including animated GIFs)
-9. FN+F5 cycles performance modes, FN+F4 cycles keyboard animation modes
-10. Keybindings for M3 and M4 keys
-11. Battery charge limit to preserve battery health
-12. Monitor CPU / GPU temperature, fan speeds and battery discharge rate
+3. Laptop screen refresh rate 60hz or 120hz (144hz, etc) with display overdrive (OD) and miniled multizone switch
+4. Custom fan curve editor, power limits (PPT) and turbo boost selection for every performance mode
+5. Anime matrix control thanks to [Starlight](https://github.com/vddCore/Starlight) + some tweaks from my side including animated GIFs
+6. Keyboard backlit animation and colors (including sleep animation and support for TUF models)
+7. Custom bindings for M3, M4 keys and FN+F5 (performance mode) FN+F4 (keyboard animation modes)
+8. Monitor CPU / GPU temperature, fan speeds and battery discharge rate
+9. Battery charge limit to preserve battery health
 
 ### :gear: Automatic switching when on battery or plugged in
 - Performance modes (app remembers last mode used on battery or when plugged)
@@ -45,26 +41,26 @@ If you post about the app - please include a link. Thanks.
 - Auto Screen refresh rate (60hz on battery, 120+ hz when plugged)
 - Keyboard backlight can be turned off on battery
 
-To keep auto switching and hotkeys working the app needs to stay in running in the tray. It doesn't consume any resources. 
+To keep auto switching and hotkeys working the app needs to stay running in the tray. It doesn't consume any resources. 
 
 ### :rocket: Performance Modes
 
-Modes are **same** as in Armoury Crate (as they are stored in bios), including default fan curves
-
-![Screenshot 2023-03-29 122534](https://user-images.githubusercontent.com/5920850/228505581-4e7d087c-bd0a-4a48-b572-de2c01192830.png)
+Modes are **same** as in Armoury Crate as they are stored in bios including default fan curves
 
 1. Silent (minimal or no fans, 70W PPT total, up to 45W PPT to CPU) + Best power efficiency setting in windows
 2. Balanced (balanced fans, 100W PPT total, up to 45W PPT to CPU) + Balanced setting in windows
 3. Turbo (intense fans, 125W PPT total, up to 80W PPT to CPU) + Best performance setting in windows
 
-PPTs are shown for G14 2022, for other models PPTs will be different as they are set in bios.
+_PPTs are shown for G14 2022, for other models PPTs will be different as they are set in bios._
+
+![Screenshot 2023-04-06 142234](https://user-images.githubusercontent.com/5920850/230377635-7032a480-3a94-4e35-9468-d8911e3e55ec.png)
 
 ### :video_game: GPU Modes
 
 1. Eco mode : only low power integrated GPU enabled, iGPU drives built in display
 2. Standard mode (MS Hybrid) : iGPU and dGPU enabled, iGPU drives built in display
 3. Ultimate mode: iGPU and dGPU enabled, but dGPU drives built in display (supported only on G14 2022 model)
-4. Optimized (formerly existed as a checkbox): disables dGPU on battery (Eco) and enables when plugged (Standard)
+4. Optimized: disables dGPU on battery (Eco) and enables when plugged (Standard)
 
 ## :question: FAQ
 
