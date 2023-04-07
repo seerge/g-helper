@@ -100,14 +100,16 @@ namespace GHelper
         {
 
             if (Math.Abs(DateTimeOffset.Now.ToUnixTimeMilliseconds() - lastTheme) < 2000) return;
-            lastTheme = DateTimeOffset.Now.ToUnixTimeMilliseconds();
 
             switch (e.Category)
             {
                 case UserPreferenceCategory.General:
-                    Debug.WriteLine("Theme Changed");
-                    Thread.Sleep(1000);
-                    settingsForm.InitTheme();
+                    bool changed = settingsForm.InitTheme();
+                    if (changed)
+                    {
+                        Debug.WriteLine("Theme Changed");
+                        lastTheme = DateTimeOffset.Now.ToUnixTimeMilliseconds();
+                    }
 
                     if (settingsForm.fans is not null && settingsForm.fans.Text != "")
                         settingsForm.fans.InitTheme();

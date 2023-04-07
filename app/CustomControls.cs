@@ -28,7 +28,7 @@ namespace CustomControls
         [DllImport("DwmApi")] //System.Runtime.InteropServices
         private static extern int DwmSetWindowAttribute(IntPtr hwnd, int attr, int[] attrValue, int attrSize);
 
-        public bool darkTheme;
+        public bool darkTheme = false;
 
         public static void InitColors(bool darkTheme)
         {
