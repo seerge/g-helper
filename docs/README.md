@@ -7,7 +7,7 @@
 
 A small utility that allows you to do almost everything you could do with Armoury Crate but without extra bloat and unnecessary services.
 
-### :gift: Main advantages 
+## :gift: Main advantages 
 
 1. Seamless and automatic GPU switching (without asking you to close all apps, etc)
 2. All performance modes can be fully customized (with fan curves and PPTs)
@@ -15,7 +15,7 @@ A small utility that allows you to do almost everything you could do with Armour
 4. Simple and clean native UI with easy access to all settings
 5. Doesn't need administrator privileges to run!
 
-### [:floppy_disk: Download latest release](https://github.com/seerge/g-helper/releases/latest/download/GHelper.zip)
+## [:floppy_disk: Download App](https://github.com/seerge/g-helper/releases/latest/download/GHelper.zip)
 
 If you like this app, please [star :star: it on Github](https://github.com/seerge/g-helper) and spread a word about it!
 
