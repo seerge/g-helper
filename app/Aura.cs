@@ -3,6 +3,7 @@ using System.Data;
 using System.Diagnostics;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.TextBox;
 using System.Security.Policy;
+using HidSharp.Utility;
 
 namespace GHelper
 {
@@ -57,7 +58,7 @@ namespace GHelper
         static byte[] MESSAGE_SET = { 0x5d, 0xb5, 0, 0, 0 };
         static byte[] MESSAGE_APPLY = { 0x5d, 0xb4 };
 
-        static int[] deviceIds = { 0x1854, 0x1869, 0x1866, 0x19b6, 0x1822, 0x1837, 0x1854, 0x184a, 0x183d, 0x8502, 0x1807, 0x17e0 };
+        static int[] deviceIds = { 0x1a30, 0x1854, 0x1869, 0x1866, 0x19b6, 0x1822, 0x1837, 0x1854, 0x184a, 0x183d, 0x8502, 0x1807, 0x17e0 };
 
         private static int mode = 0;
         private static int speed = 1;
@@ -197,6 +198,7 @@ namespace GHelper
                     device.CloseDevice();
                 }
 
+            Logger.WriteLine("USB-KB = " + BitConverter.ToString(msg));
         }
 
 
@@ -222,6 +224,8 @@ namespace GHelper
                     device.Write(msg);
                     device.CloseDevice();
                 }
+
+            Logger.WriteLine("USB-KB = " + BitConverter.ToString(msg));
 
             if (Program.config.ContainsModel("TUF"))
                 Program.wmi.TUFKeyboardPower(awake, boot, sleep, shutdown);

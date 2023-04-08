@@ -826,7 +826,7 @@ namespace GHelper
             buttonMiniled.Secondary = false;
             buttonMiniled.Size = new Size(185, 72);
             buttonMiniled.TabIndex = 3;
-            buttonMiniled.Text = "Miniled";
+            buttonMiniled.Text = "Multizone";
             buttonMiniled.UseVisualStyleBackColor = false;
             // 
             // pictureScreen

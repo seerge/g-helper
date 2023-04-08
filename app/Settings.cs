@@ -185,13 +185,13 @@ namespace GHelper
 
         private static void TrayIcon_MouseMove(object? sender, MouseEventArgs e)
         {
-            RefreshSensors();
+           Program.settingsForm.RefreshSensors();
         }
 
 
         private static void OnTimedEvent(Object? source, ElapsedEventArgs? e)
         {
-            RefreshSensors();
+            Program.settingsForm.RefreshSensors();
         }
 
         private void Button120Hz_MouseHover(object? sender, EventArgs e)
@@ -795,7 +795,7 @@ namespace GHelper
         }
 
 
-        private static void RefreshSensors(bool force = false)
+        private void RefreshSensors(bool force = false)
         {
 
             if (!force && Math.Abs(DateTimeOffset.Now.ToUnixTimeMilliseconds() - lastRefresh) < 2000) return;
@@ -820,18 +820,19 @@ namespace GHelper
 
             Program.settingsForm.BeginInvoke(delegate
             {
-                Program.settingsForm.labelCPUFan.Text = "CPU" + cpuTemp + HardwareMonitor.cpuFan;
-                Program.settingsForm.labelGPUFan.Text = "GPU" + gpuTemp + HardwareMonitor.gpuFan;
+                labelCPUFan.Text = "CPU" + cpuTemp + HardwareMonitor.cpuFan;
+                labelGPUFan.Text = "GPU" + gpuTemp + HardwareMonitor.gpuFan;
                 if (HardwareMonitor.midFan is not null)
-                    Program.settingsForm.labelMidFan.Text = "Mid" + HardwareMonitor.midFan;
+                    labelMidFan.Text = "Mid" + HardwareMonitor.midFan;
 
-                Program.settingsForm.labelBattery.Text = battery;
-
-                Program.trayIcon.Text = "CPU" + cpuTemp + HardwareMonitor.cpuFan + "\n"
-                                        + "GPU" + gpuTemp + HardwareMonitor.gpuFan +
-                                        ((battery.Length > 0) ? ("\n" + battery) : "");
-
+                labelBattery.Text = battery;
             });
+
+
+            Program.trayIcon.Text = "CPU" + cpuTemp + HardwareMonitor.cpuFan + "\n"
+                                    + "GPU" + gpuTemp + HardwareMonitor.gpuFan +
+                                    ((battery.Length > 0) ? ("\n" + battery) : "");
+
         }
 
 
@@ -858,6 +859,8 @@ namespace GHelper
             int limit_total = Program.config.getConfigPerf("limit_total");
             int limit_cpu = Program.config.getConfigPerf("limit_cpu");
 
+            string limitLabel = null;
+
             if (limit_total > ASUSWmi.MaxTotal) return;
             if (limit_total < ASUSWmi.MinTotal) return;
 
@@ -865,10 +868,21 @@ namespace GHelper
             if (limit_cpu < ASUSWmi.MinCPU) return;
 
             if (Program.wmi.DeviceGet(ASUSWmi.PPT_TotalA0) >= 0)
+            {
                 Program.wmi.DeviceSet(ASUSWmi.PPT_TotalA0, limit_total, "PowerLimit A");
+                limitLabel = limit_total + "W";
+            }
 
             if (Program.wmi.DeviceGet(ASUSWmi.PPT_CPUB0) >= 0)
+            {
                 Program.wmi.DeviceSet(ASUSWmi.PPT_CPUB0, limit_cpu, "PowerLimit B");
+                limitLabel = limit_cpu + "W";
+            }
+
+            Program.settingsForm.BeginInvoke(delegate
+            {
+                labelPerf.Text = "Performance Mode+ " + limitLabel;
+            });
 
         }
 
@@ -1007,10 +1021,10 @@ namespace GHelper
 
             if (SystemInformation.PowerStatus.PowerLineStatus == PowerLineStatus.Online)
                 Aura.ApplyBrightness(3);
-            //Program.wmi.DeviceSet(ASUSWmi.UniversalControl, ASUSWmi.KB_Light_Up);
+                //Program.wmi.DeviceSet(ASUSWmi.UniversalControl, ASUSWmi.KB_Light_Up);
             else
                 Aura.ApplyBrightness(0);
-            //Program.wmi.DeviceSet(ASUSWmi.UniversalControl, ASUSWmi.KB_Light_Down);
+                //Program.wmi.DeviceSet(ASUSWmi.UniversalControl, ASUSWmi.KB_Light_Down);
 
 
         }
