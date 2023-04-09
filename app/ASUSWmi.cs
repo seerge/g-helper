@@ -60,11 +60,11 @@ public class ASUSWmi
     public const int GPUModeUltimate = 2;
 
 
-    public const int MaxTotal = 180;
+    public const int MaxTotal = 200;
     public const int MinTotal = 5;
     public const int DefaultTotal = 125;
 
-    public const int MaxCPU = 90;
+    public const int MaxCPU = 130;
     public const int MinCPU = 5;
     public const int DefaultCPU = 80;
 

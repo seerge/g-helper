@@ -1,6 +1,7 @@
 using Microsoft.Win32;
 using System.Diagnostics;
 using System.Management;
+using Tools;
 
 namespace GHelper
 {
@@ -57,7 +58,7 @@ namespace GHelper
             }
 
             Logger.WriteLine("------------");
-            Logger.WriteLine("App launched");
+            Logger.WriteLine("App launched: " + config.GetModel());
 
             Application.EnableVisualStyles();
 
@@ -84,6 +85,9 @@ namespace GHelper
             var settingGuid = new NativeMethods.PowerSettingGuid();
             unRegPowerNotify = NativeMethods.RegisterPowerSettingNotification(ds, settingGuid.ConsoleDisplayState, NativeMethods.DEVICE_NOTIFY_WINDOW_HANDLE);
 
+            // CTRL + SHIFT + F5 to cycle profiles
+            var ghk = new KeyHandler(KeyHandler.SHIFT | KeyHandler.CTRL, Keys.F5, ds);
+            ghk.Register();
 
             if (Environment.CurrentDirectory.Trim('\\') == Application.StartupPath.Trim('\\'))
             {

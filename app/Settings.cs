@@ -5,6 +5,7 @@ using System.Drawing.Imaging;
 using System.Reflection;
 using System.Text.Json;
 using System.Timers;
+using Tools;
 
 namespace GHelper
 {
@@ -26,6 +27,9 @@ namespace GHelper
 
         static AnimeMatrixDevice mat;
         static long lastRefresh;
+
+        private bool customFans = false;
+        private int customPower = 0;
 
         public SettingsForm()
         {
@@ -185,7 +189,7 @@ namespace GHelper
 
         private static void TrayIcon_MouseMove(object? sender, MouseEventArgs e)
         {
-           Program.settingsForm.RefreshSensors();
+            Program.settingsForm.RefreshSensors();
         }
 
 
@@ -231,7 +235,7 @@ namespace GHelper
 
         private void ButtonOptimized_MouseHover(object? sender, EventArgs e)
         {
-            labelTipGPU.Text = "Switch to Eco on battery and to Standard when plugged";
+            labelTipGPU.Text = "Sptch to Eco on battery and to Standard when plugged";
         }
 
         private void ButtonGPU_MouseLeave(object? sender, EventArgs e)
@@ -279,6 +283,9 @@ namespace GHelper
                         }
                     }
                     m.Result = (IntPtr)1;
+                    break;
+                case KeyHandler.WM_HOTKEY_MSG_ID:
+                    CyclePerformanceMode();
                     break;
             }
             base.WndProc(ref m);
@@ -854,12 +861,16 @@ namespace GHelper
             }
         }
 
+
+        private void SetPerformanceLabel()
+        {
+            labelPerf.Text = "Performance Mode" + (customFans?"+":"") + ((customPower > 0) ? " "+customPower+"W" : "");
+        }
+
         public void SetPower()
         {
             int limit_total = Program.config.getConfigPerf("limit_total");
             int limit_cpu = Program.config.getConfigPerf("limit_cpu");
-
-            string limitLabel = null;
 
             if (limit_total > ASUSWmi.MaxTotal) return;
             if (limit_total < ASUSWmi.MinTotal) return;
@@ -870,25 +881,23 @@ namespace GHelper
             if (Program.wmi.DeviceGet(ASUSWmi.PPT_TotalA0) >= 0)
             {
                 Program.wmi.DeviceSet(ASUSWmi.PPT_TotalA0, limit_total, "PowerLimit A");
-                limitLabel = limit_total + "W";
+                customPower = limit_total;
             }
 
             if (Program.wmi.DeviceGet(ASUSWmi.PPT_CPUB0) >= 0)
             {
                 Program.wmi.DeviceSet(ASUSWmi.PPT_CPUB0, limit_cpu, "PowerLimit B");
-                limitLabel = limit_cpu + "W";
+                customPower = limit_cpu;
             }
 
-            Program.settingsForm.BeginInvoke(delegate
-            {
-                labelPerf.Text = "Performance Mode+ " + limitLabel;
-            });
+            Program.settingsForm.BeginInvoke(SetPerformanceLabel);
 
         }
 
 
         public void AutoFans()
         {
+            customFans = false;
 
             if (Program.config.getConfigPerf("auto_apply") == 1)
             {
@@ -904,16 +913,18 @@ namespace GHelper
                     Logger.WriteLine("Driver rejected fan curve, resetting mode to " + mode);
                     Program.wmi.DeviceSet(ASUSWmi.PerformanceMode, mode, "PerformanceMode");
                 }
-                else
-                    labelPerf.Text = "Performance Mode+";
+                else customFans = true;
             }
-            else
-                labelPerf.Text = "Performance Mode";
+
+            Program.settingsForm.BeginInvoke(SetPerformanceLabel);
 
         }
 
         public void AutoPower(int delay = 0)
         {
+
+            customPower = 0;
+
             if (Program.config.getConfigPerf("auto_apply_power") == 1)
             {
                 if (delay > 0)
@@ -1003,15 +1014,19 @@ namespace GHelper
                 fans.InitPower();
                 fans.InitBoost();
             }
-
-
-
         }
 
 
         public void CyclePerformanceMode()
         {
-            SetPerformanceMode(Program.config.getConfig("performance_mode") + 1, true);
+            int mode = Program.config.getConfig("performance_mode");
+
+            if (Control.ModifierKeys == Keys.Shift)
+                mode = (mode == 0) ? 2 : mode - 1;
+            else
+                mode++;
+
+            SetPerformanceMode(mode, true);
         }
 
 
@@ -1021,10 +1036,10 @@ namespace GHelper
 
             if (SystemInformation.PowerStatus.PowerLineStatus == PowerLineStatus.Online)
                 Aura.ApplyBrightness(3);
-                //Program.wmi.DeviceSet(ASUSWmi.UniversalControl, ASUSWmi.KB_Light_Up);
+            //Program.wmi.DeviceSet(ASUSWmi.UniversalControl, ASUSWmi.KB_Light_Up);
             else
                 Aura.ApplyBrightness(0);
-                //Program.wmi.DeviceSet(ASUSWmi.UniversalControl, ASUSWmi.KB_Light_Down);
+            //Program.wmi.DeviceSet(ASUSWmi.UniversalControl, ASUSWmi.KB_Light_Down);
 
 
         }

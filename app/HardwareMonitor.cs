@@ -1,6 +1,7 @@
 ﻿using GHelper;
 using GHelper.Gpu;
 using System.Diagnostics;
+using System.Management;
 
 public static class HardwareMonitor
 {
@@ -61,6 +62,7 @@ public static class HardwareMonitor
 
         return 0;
     }
+
 
     public static void ReadSensors()
     {
