@@ -7,8 +7,6 @@ namespace GHelper
 {
     static class Program
     {
-
-
         public static NotifyIcon trayIcon = new NotifyIcon
         {
             Text = "G-Helper",
@@ -16,7 +14,7 @@ namespace GHelper
             Visible = true
         };
 
-        public static ASUSWmi wmi;
+        public static ASUSWmi? wmi;
         public static AppConfig config = new AppConfig();
 
         public static SettingsForm settingsForm = new SettingsForm();

@@ -235,7 +235,7 @@ namespace GHelper
 
         private void ButtonOptimized_MouseHover(object? sender, EventArgs e)
         {
-            labelTipGPU.Text = "Sptch to Eco on battery and to Standard when plugged";
+            labelTipGPU.Text = "Switch to Eco on battery and to Standard when plugged";
         }
 
         private void ButtonGPU_MouseLeave(object? sender, EventArgs e)
