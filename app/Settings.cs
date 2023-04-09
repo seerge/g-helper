@@ -907,13 +907,25 @@ namespace GHelper
                 if (Program.config.getConfig("mid_fan") == 1)
                     Program.wmi.SetFanCurve(2, Program.config.getFanConfig(2));
 
-                if (cpuResult != 1 || gpuResult != 1) // something went wrong, resetting to default profile
+                // something went wrong, resetting to default profile
+                if (cpuResult != 1 || gpuResult != 1) 
                 {
                     int mode = Program.config.getConfig("performance_mode");
                     Logger.WriteLine("Driver rejected fan curve, resetting mode to " + mode);
                     Program.wmi.DeviceSet(ASUSWmi.PerformanceMode, mode, "PerformanceMode");
                 }
                 else customFans = true;
+
+                // fix for misbehaving bios on intell based TUF 2022
+                if (Program.config.ContainsModel("FX507") && Program.config.getConfigPerf("auto_apply_power") != 1)
+                {
+                    Task.Run(async () =>
+                    {
+                        await Task.Delay(TimeSpan.FromSeconds(1));
+                        Program.wmi.DeviceSet(ASUSWmi.PPT_TotalA0, 80, "PowerLimit Fix");
+                    });
+                }
+
             }
 
             Program.settingsForm.BeginInvoke(SetPerformanceLabel);

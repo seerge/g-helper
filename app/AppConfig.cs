@@ -1,4 +1,5 @@
-﻿using System.Management;
+﻿using System.Diagnostics;
+using System.Management;
 using System.Text.Json;
 
 public class AppConfig
@@ -91,14 +92,27 @@ public class AppConfig
     {
         config[name] = value;
         string jsonString = JsonSerializer.Serialize(config, new JsonSerializerOptions { WriteIndented = true });
-        File.WriteAllText(configFile, jsonString);
+        try
+        {
+            File.WriteAllText(configFile, jsonString);
+        } catch (Exception e)
+        {
+            Debug.Write(e.ToString());
+        }
     }
 
     public void setConfig(string name, string value)
     {
         config[name] = value;
         string jsonString = JsonSerializer.Serialize(config, new JsonSerializerOptions { WriteIndented = true });
-        File.WriteAllText(configFile, jsonString);
+        try
+        {
+            File.WriteAllText(configFile, jsonString);
+        }
+        catch (Exception e)
+        {
+            Debug.Write(e.ToString());
+        }
     }
 
     public string getParamName(int device, string paramName = "fan_profile")
