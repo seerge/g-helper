@@ -64,7 +64,7 @@ namespace GHelper
             checkApplyPower.Click += CheckApplyPower_Click;
 
             //labelInfo.MaximumSize = new Size(280, 0);
-            labelInfo.Text = "Power Limits (PPT) is\nexperimental feature.\n\nUse carefully and\non your own risk!";
+            labelInfo.Text = Properties.Strings.PPTExperimental;
 
             InitFans();
             InitPower();
@@ -89,14 +89,14 @@ namespace GHelper
             string title;
 
             if (device == 1)
-                title = "GPU Fan Profile";
+                title = Properties.Strings.FanProfileGPU;
             else if (device == 2)
-                title = "Middle Fan Profile";
+                title = Properties.Strings.FanProfileMid;
             else
-                title = "CPU Fan Profile";
+                title = Properties.Strings.FanProfileCPU;
 
             if (Program.settingsForm.perfName.Length > 0)
-                labelFans.Text = "Fan Profiles: " + Program.settingsForm.perfName;
+                labelFans.Text = Properties.Strings.FanProfiles + ": " + Program.settingsForm.perfName;
 
             chart.Titles[0].Text = title;
 
@@ -117,7 +117,7 @@ namespace GHelper
             for (int i = 0; i <= 90; i += 10)
                 chart.ChartAreas[0].AxisY.CustomLabels.Add(i - 2, i + 2, ChartPercToRPM(i));
 
-            chart.ChartAreas[0].AxisY.CustomLabels.Add(98, 102, "RPM");
+            chart.ChartAreas[0].AxisY.CustomLabels.Add(98, 102, Properties.Strings.RPM);
 
             chart.ChartAreas[0].AxisY.Interval = 10;
 
@@ -429,7 +429,7 @@ namespace GHelper
                         curPoint.YValues[0] = dy;
 
                         labelTip.Visible = true;
-                        labelTip.Text = Math.Round(dx) + "C, " + ChartPercToRPM((int)dy, " RPM");
+                        labelTip.Text = Math.Round(dx) + "C, " + ChartPercToRPM((int)dy, " " + Properties.Strings.RPM);
                         labelTip.Top = e.Y + ((Control)sender).Top;
                         labelTip.Left = e.X;
 

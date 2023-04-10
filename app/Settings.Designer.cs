@@ -136,7 +136,7 @@ namespace GHelper
             checkMatrix.Name = "checkMatrix";
             checkMatrix.Size = new Size(249, 36);
             checkMatrix.TabIndex = 44;
-            checkMatrix.Text = "Turn off on battery";
+            checkMatrix.Text = Properties.Strings.TurnOffOnBattery;
             checkMatrix.UseVisualStyleBackColor = true;
             // 
             // tableLayoutMatrix
@@ -168,7 +168,7 @@ namespace GHelper
             comboMatrix.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
             comboMatrix.FormattingEnabled = true;
             comboMatrix.ItemHeight = 32;
-            comboMatrix.Items.AddRange(new object[] { "Off", "Dim", "Medium", "Bright" });
+            comboMatrix.Items.AddRange(new object[] { Properties.Strings.MatrixOff, Properties.Strings.MatrixDim, Properties.Strings.MatrixMedium, Properties.Strings.MatrixBright });
             comboMatrix.Location = new Point(4, 10);
             comboMatrix.Margin = new Padding(4, 10, 4, 8);
             comboMatrix.Name = "comboMatrix";
@@ -184,7 +184,7 @@ namespace GHelper
             comboMatrixRunning.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
             comboMatrixRunning.FormattingEnabled = true;
             comboMatrixRunning.ItemHeight = 32;
-            comboMatrixRunning.Items.AddRange(new object[] { "Binary Banner", "Rog Logo", "Picture", "Clock" });
+            comboMatrixRunning.Items.AddRange(new object[] { Properties.Strings.MatrixBanner, Properties.Strings.MatrixLogo, Properties.Strings.MatrixPicture, Properties.Strings.MatrixClock });
             comboMatrixRunning.Location = new Point(261, 10);
             comboMatrixRunning.Margin = new Padding(4, 10, 4, 8);
             comboMatrixRunning.Name = "comboMatrixRunning";
@@ -207,7 +207,7 @@ namespace GHelper
             buttonMatrix.Secondary = true;
             buttonMatrix.Size = new Size(249, 44);
             buttonMatrix.TabIndex = 43;
-            buttonMatrix.Text = "Picture / Gif";
+            buttonMatrix.Text = Properties.Strings.PictureGif;
             buttonMatrix.UseVisualStyleBackColor = false;
             // 
             // pictureMatrix
@@ -230,7 +230,7 @@ namespace GHelper
             labelMatrix.Name = "labelMatrix";
             labelMatrix.Size = new Size(170, 32);
             labelMatrix.TabIndex = 38;
-            labelMatrix.Text = "Anime Matrix";
+            labelMatrix.Text = Properties.Strings.AnimeMatrix;
             // 
             // panelBattery
             // 
@@ -315,7 +315,7 @@ namespace GHelper
             labelBatteryTitle.Name = "labelBatteryTitle";
             labelBatteryTitle.Size = new Size(393, 36);
             labelBatteryTitle.TabIndex = 34;
-            labelBatteryTitle.Text = "Battery Charge Limit";
+            labelBatteryTitle.Text = Properties.Strings.BatteryChargeLimit;
             // 
             // panelFooter
             // 
@@ -345,7 +345,7 @@ namespace GHelper
             buttonQuit.Secondary = true;
             buttonQuit.Size = new Size(185, 44);
             buttonQuit.TabIndex = 18;
-            buttonQuit.Text = "Quit";
+            buttonQuit.Text = Properties.Strings.Quit;
             buttonQuit.UseVisualStyleBackColor = false;
             // 
             // checkStartup
@@ -356,7 +356,7 @@ namespace GHelper
             checkStartup.Name = "checkStartup";
             checkStartup.Size = new Size(206, 36);
             checkStartup.TabIndex = 17;
-            checkStartup.Text = "Run on Startup";
+            checkStartup.Text = Properties.Strings.RunOnStartup;
             checkStartup.UseVisualStyleBackColor = true;
             // 
             // panelPerformance
@@ -396,7 +396,7 @@ namespace GHelper
             labelPerf.Name = "labelPerf";
             labelPerf.Size = new Size(234, 32);
             labelPerf.TabIndex = 31;
-            labelPerf.Text = "Performance Mode";
+            labelPerf.Text = Properties.Strings.PerformanceMode;
             // 
             // labelCPUFan
             // 
@@ -452,7 +452,7 @@ namespace GHelper
             buttonSilent.Secondary = false;
             buttonSilent.Size = new Size(185, 120);
             buttonSilent.TabIndex = 0;
-            buttonSilent.Text = "Silent";
+            buttonSilent.Text = Properties.Strings.Silent;
             buttonSilent.TextImageRelation = TextImageRelation.ImageAboveText;
             buttonSilent.UseVisualStyleBackColor = false;
             // 
@@ -474,7 +474,7 @@ namespace GHelper
             buttonBalanced.Secondary = false;
             buttonBalanced.Size = new Size(185, 120);
             buttonBalanced.TabIndex = 1;
-            buttonBalanced.Text = "Balanced";
+            buttonBalanced.Text = Properties.Strings.Balanced;
             buttonBalanced.TextImageRelation = TextImageRelation.ImageAboveText;
             buttonBalanced.UseVisualStyleBackColor = false;
             // 
@@ -496,7 +496,7 @@ namespace GHelper
             buttonTurbo.Secondary = false;
             buttonTurbo.Size = new Size(185, 120);
             buttonTurbo.TabIndex = 2;
-            buttonTurbo.Text = "Turbo";
+            buttonTurbo.Text = Properties.Strings.Turbo;
             buttonTurbo.TextImageRelation = TextImageRelation.ImageAboveText;
             buttonTurbo.UseVisualStyleBackColor = false;
             // 
@@ -517,7 +517,7 @@ namespace GHelper
             buttonFans.Secondary = true;
             buttonFans.Size = new Size(185, 120);
             buttonFans.TabIndex = 35;
-            buttonFans.Text = "Fans + Power";
+            buttonFans.Text = Properties.Strings.FansPower;
             buttonFans.TextImageRelation = TextImageRelation.ImageAboveText;
             buttonFans.UseVisualStyleBackColor = false;
             // 
@@ -568,7 +568,7 @@ namespace GHelper
             labelGPU.Name = "labelGPU";
             labelGPU.Size = new Size(136, 32);
             labelGPU.TabIndex = 18;
-            labelGPU.Text = "GPU Mode";
+            labelGPU.Text = Properties.Strings.GPUMode;
             // 
             // labelGPUFan
             // 
@@ -622,7 +622,7 @@ namespace GHelper
             buttonEco.Secondary = false;
             buttonEco.Size = new Size(185, 120);
             buttonEco.TabIndex = 0;
-            buttonEco.Text = "Eco";
+            buttonEco.Text = Properties.Strings.EcoMode;
             buttonEco.TextImageRelation = TextImageRelation.ImageAboveText;
             buttonEco.UseVisualStyleBackColor = false;
             // 
@@ -644,7 +644,7 @@ namespace GHelper
             buttonStandard.Secondary = false;
             buttonStandard.Size = new Size(185, 120);
             buttonStandard.TabIndex = 1;
-            buttonStandard.Text = "Standard";
+            buttonStandard.Text = Properties.Strings.StandardMode;
             buttonStandard.TextImageRelation = TextImageRelation.ImageAboveText;
             buttonStandard.UseVisualStyleBackColor = false;
             // 
@@ -666,7 +666,7 @@ namespace GHelper
             buttonOptimized.Secondary = false;
             buttonOptimized.Size = new Size(185, 120);
             buttonOptimized.TabIndex = 3;
-            buttonOptimized.Text = "Optimized";
+            buttonOptimized.Text = Properties.Strings.Optimized;
             buttonOptimized.TextImageRelation = TextImageRelation.ImageAboveText;
             buttonOptimized.UseVisualStyleBackColor = false;
             // 
@@ -688,7 +688,7 @@ namespace GHelper
             buttonUltimate.Secondary = false;
             buttonUltimate.Size = new Size(185, 120);
             buttonUltimate.TabIndex = 2;
-            buttonUltimate.Text = "Ultimate";
+            buttonUltimate.Text = Properties.Strings.UltimateMode;
             buttonUltimate.TextImageRelation = TextImageRelation.ImageAboveText;
             buttonUltimate.UseVisualStyleBackColor = false;
             // 
@@ -767,7 +767,7 @@ namespace GHelper
             buttonScreenAuto.Secondary = false;
             buttonScreenAuto.Size = new Size(185, 72);
             buttonScreenAuto.TabIndex = 0;
-            buttonScreenAuto.Text = "Auto";
+            buttonScreenAuto.Text = Properties.Strings.AutoMode;
             buttonScreenAuto.UseVisualStyleBackColor = false;
             // 
             // button60Hz
@@ -826,7 +826,7 @@ namespace GHelper
             buttonMiniled.Secondary = false;
             buttonMiniled.Size = new Size(185, 72);
             buttonMiniled.TabIndex = 3;
-            buttonMiniled.Text = "Multizone";
+            buttonMiniled.Text = Properties.Strings.Multizone;
             buttonMiniled.UseVisualStyleBackColor = false;
             // 
             // pictureScreen
@@ -849,7 +849,7 @@ namespace GHelper
             labelSreen.Name = "labelSreen";
             labelSreen.Size = new Size(176, 32);
             labelSreen.TabIndex = 21;
-            labelSreen.Text = "Laptop Screen";
+            labelSreen.Text = Properties.Strings.LaptopScreen;
             // 
             // panelKeyboard
             // 
@@ -952,7 +952,7 @@ namespace GHelper
             buttonKeyboardColor.Secondary = false;
             buttonKeyboardColor.Size = new Size(249, 44);
             buttonKeyboardColor.TabIndex = 39;
-            buttonKeyboardColor.Text = "Color";
+            buttonKeyboardColor.Text = Properties.Strings.Color;
             buttonKeyboardColor.UseVisualStyleBackColor = false;
             // 
             // buttonKeyboard
@@ -970,7 +970,7 @@ namespace GHelper
             buttonKeyboard.Secondary = true;
             buttonKeyboard.Size = new Size(249, 44);
             buttonKeyboard.TabIndex = 37;
-            buttonKeyboard.Text = "Extra";
+            buttonKeyboard.Text = Properties.Strings.Extra;
             buttonKeyboard.UseVisualStyleBackColor = false;
             // 
             // pictureKeyboard
@@ -993,7 +993,7 @@ namespace GHelper
             labelKeyboard.Name = "labelKeyboard";
             labelKeyboard.Size = new Size(210, 32);
             labelKeyboard.TabIndex = 32;
-            labelKeyboard.Text = "Laptop Keyboard";
+            labelKeyboard.Text = Properties.Strings.LaptopKeyboard;
             // 
             // SettingsForm
             // 

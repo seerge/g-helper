@@ -2,8 +2,10 @@
 using Starlight.AnimeMatrix;
 using System.Diagnostics;
 using System.Drawing.Imaging;
+using System.Globalization;
 using System.Reflection;
 using System.Text.Json;
+using System.Threading;
 using System.Timers;
 using Tools;
 
@@ -33,6 +35,8 @@ namespace GHelper
 
         public SettingsForm()
         {
+
+
             InitializeComponent();
             InitTheme(true);
 
@@ -123,7 +127,7 @@ namespace GHelper
             aTimer = new System.Timers.Timer(1000);
             aTimer.Elapsed += OnTimedEvent;
 
-            SetVersionLabel("Version: " + Assembly.GetExecutingAssembly().GetName().Version);
+            SetVersionLabel(Properties.Strings.VersionLabel + ": " + Assembly.GetExecutingAssembly().GetName().Version);
 
             string model = Program.config.GetModel();
             int trim = model.LastIndexOf("_");
@@ -169,7 +173,7 @@ namespace GHelper
                     {
                         BeginInvoke(delegate
                         {
-                            SetVersionLabel("Download Update: " + tag, url);
+                            SetVersionLabel(Properties.Strings.DownloadUpdate + ": " + tag, url);
                         });
                     }
                     else
@@ -200,12 +204,12 @@ namespace GHelper
 
         private void Button120Hz_MouseHover(object? sender, EventArgs e)
         {
-            labelTipScreen.Text = "Max refresh rate for lower latency";
+            labelTipScreen.Text = Properties.Strings.MaxRefreshTooltip;
         }
 
         private void Button60Hz_MouseHover(object? sender, EventArgs e)
         {
-            labelTipScreen.Text = "60Hz refresh rate to save battery";
+            labelTipScreen.Text = Properties.Strings.MinRefreshTooltip;
         }
 
         private void ButtonScreen_MouseLeave(object? sender, EventArgs e)
@@ -215,27 +219,27 @@ namespace GHelper
 
         private void ButtonScreenAuto_MouseHover(object? sender, EventArgs e)
         {
-            labelTipScreen.Text = "Sets 60Hz to save battery, and back when plugged";
+            labelTipScreen.Text = Properties.Strings.AutoRefreshTooltip;
         }
 
         private void ButtonUltimate_MouseHover(object? sender, EventArgs e)
         {
-            labelTipGPU.Text = "Routes laptop screen to dGPU, maximizing FPS";
+            labelTipGPU.Text = Properties.Strings.UltimateGPUTooltip;
         }
 
         private void ButtonStandard_MouseHover(object? sender, EventArgs e)
         {
-            labelTipGPU.Text = "Enables dGPU for standard use";
+            labelTipGPU.Text = Properties.Strings.StandardGPUTooltip;
         }
 
         private void ButtonEco_MouseHover(object? sender, EventArgs e)
         {
-            labelTipGPU.Text = "Disables dGPU for battery savings";
+            labelTipGPU.Text = Properties.Strings.EcoGPUTooltip;
         }
 
         private void ButtonOptimized_MouseHover(object? sender, EventArgs e)
         {
-            labelTipGPU.Text = "Switch to Eco on battery and to Standard when plugged";
+            labelTipGPU.Text = Properties.Strings.OptimizedGPUTooltip;
         }
 
         private void ButtonGPU_MouseLeave(object? sender, EventArgs e)
@@ -731,8 +735,8 @@ namespace GHelper
             ButtonEnabled(buttonMiniled, screenEnabled);
 
             labelSreen.Text = screenEnabled
-                ? "Laptop Screen: " + frequency + "Hz" + ((overdrive == 1) ? " + Overdrive" : "")
-                : "Laptop Screen: Turned off";
+                ? Properties.Strings.LaptopScreen + ": " + frequency + "Hz" + ((overdrive == 1) ? " + " + Properties.Strings.Overdrive : "")
+                : Properties.Strings.LaptopScreen + ": " + Properties.Strings.TurnedOff;
 
             button60Hz.Activated = false;
             button120Hz.Activated = false;
@@ -818,7 +822,7 @@ namespace GHelper
                 cpuTemp = ": " + Math.Round((decimal)HardwareMonitor.cpuTemp).ToString() + "°C ";
 
             if (HardwareMonitor.batteryDischarge > 0)
-                battery = "Discharging: " + Math.Round((decimal)HardwareMonitor.batteryDischarge, 1).ToString() + "W";
+                battery = Properties.Strings.Discharging +": " + Math.Round((decimal)HardwareMonitor.batteryDischarge, 1).ToString() + "W";
 
             if (HardwareMonitor.gpuTemp > 0)
             {
@@ -864,7 +868,7 @@ namespace GHelper
 
         private void SetPerformanceLabel()
         {
-            labelPerf.Text = "Performance Mode" + (customFans?"+":"") + ((customPower > 0) ? " "+customPower+"W" : "");
+            labelPerf.Text = Properties.Strings.PerformanceMode + (customFans?"+":"") + ((customPower > 0) ? " "+customPower+"W" : "");
         }
 
         public void SetPower()
@@ -880,13 +884,14 @@ namespace GHelper
 
             if (Program.wmi.DeviceGet(ASUSWmi.PPT_TotalA0) >= 0)
             {
-                Program.wmi.DeviceSet(ASUSWmi.PPT_TotalA0, limit_total, "PowerLimit A");
+                Program.wmi.DeviceSet(ASUSWmi.PPT_TotalA0, limit_total, "PowerLimit A0");
+                Program.wmi.DeviceSet(ASUSWmi.PPT_APUA3, limit_total, "PowerLimit A3");
                 customPower = limit_total;
             }
 
             if (Program.wmi.DeviceGet(ASUSWmi.PPT_CPUB0) >= 0)
             {
-                Program.wmi.DeviceSet(ASUSWmi.PPT_CPUB0, limit_cpu, "PowerLimit B");
+                Program.wmi.DeviceSet(ASUSWmi.PPT_CPUB0, limit_cpu, "PowerLimit B0");
                 customPower = limit_cpu;
             }
 
@@ -917,12 +922,13 @@ namespace GHelper
                 else customFans = true;
 
                 // fix for misbehaving bios on intell based TUF 2022
-                if (Program.config.ContainsModel("FX507") && Program.config.getConfigPerf("auto_apply_power") != 1)
+                if ((Program.config.ContainsModel("FX507") || Program.config.ContainsModel("FX517")) && Program.config.getConfigPerf("auto_apply_power") != 1)
                 {
                     Task.Run(async () =>
                     {
                         await Task.Delay(TimeSpan.FromSeconds(1));
-                        Program.wmi.DeviceSet(ASUSWmi.PPT_TotalA0, 80, "PowerLimit Fix");
+                        Program.wmi.DeviceSet(ASUSWmi.PPT_TotalA0, 80, "PowerLimit Fix A0");
+                        Program.wmi.DeviceSet(ASUSWmi.PPT_APUA3, 80, "PowerLimit Fix A3");
                     });
                 }
 
@@ -974,16 +980,16 @@ namespace GHelper
             {
                 case ASUSWmi.PerformanceSilent:
                     buttonSilent.Activated = true;
-                    perfName = "Silent";
+                    perfName = Properties.Strings.Silent;
                     break;
                 case ASUSWmi.PerformanceTurbo:
                     buttonTurbo.Activated = true;
-                    perfName = "Turbo";
+                    perfName = Properties.Strings.Turbo;
                     break;
                 default:
                     buttonBalanced.Activated = true;
                     PerformanceMode = ASUSWmi.PerformanceBalanced;
-                    perfName = "Balanced";
+                    perfName = Properties.Strings.Balanced;
                     break;
             }
 
@@ -1048,10 +1054,8 @@ namespace GHelper
 
             if (SystemInformation.PowerStatus.PowerLineStatus == PowerLineStatus.Online)
                 Aura.ApplyBrightness(3);
-            //Program.wmi.DeviceSet(ASUSWmi.UniversalControl, ASUSWmi.KB_Light_Up);
             else
                 Aura.ApplyBrightness(0);
-            //Program.wmi.DeviceSet(ASUSWmi.UniversalControl, ASUSWmi.KB_Light_Down);
 
 
         }
@@ -1111,7 +1115,7 @@ namespace GHelper
 
                         if (HardwareMonitor.IsUsedGPU())
                         {
-                            DialogResult dialogResult = MessageBox.Show("Your dGPU seem to be in heavy use, disable it?", "Eco Mode", MessageBoxButtons.YesNo);
+                            DialogResult dialogResult = MessageBox.Show(Properties.Strings.AlertDGPU, Properties.Strings.AlertDGPUTitle, MessageBoxButtons.YesNo);
                             if (dialogResult == DialogResult.No) return false;
                         }
 
@@ -1186,7 +1190,7 @@ namespace GHelper
             ButtonEnabled(buttonStandard, false);
             ButtonEnabled(buttonUltimate, false);
 
-            labelGPU.Text = "GPU Mode: Changing ...";
+            labelGPU.Text = Properties.Strings.GPUMode + ": "+ Properties.Strings.GPUChanging + " ...";
 
             Thread t = new Thread(() =>
             {
@@ -1230,7 +1234,7 @@ namespace GHelper
 
             if (CurrentGPU == ASUSWmi.GPUModeUltimate)
             {
-                DialogResult dialogResult = MessageBox.Show("Switching off Ultimate Mode requires restart", "Reboot now?", MessageBoxButtons.YesNo);
+                DialogResult dialogResult = MessageBox.Show(Properties.Strings.AlertUltimateOff, Properties.Strings.AlertUltimateTitle, MessageBoxButtons.YesNo);
                 if (dialogResult == DialogResult.Yes)
                 {
                     Program.wmi.DeviceSet(ASUSWmi.GPUMux, 1, "GPUMux");
@@ -1240,7 +1244,7 @@ namespace GHelper
             }
             else if (GPUMode == ASUSWmi.GPUModeUltimate)
             {
-                DialogResult dialogResult = MessageBox.Show("Ultimate Mode requires restart", "Reboot now?", MessageBoxButtons.YesNo);
+                DialogResult dialogResult = MessageBox.Show(Properties.Strings.AlertUltimateOn, Properties.Strings.AlertUltimateTitle, MessageBoxButtons.YesNo);
                 if (dialogResult == DialogResult.Yes)
                 {
                     Program.wmi.DeviceSet(ASUSWmi.GPUMux, 0, "GPUMux");
@@ -1295,19 +1299,19 @@ namespace GHelper
                     buttonOptimized.BorderColor = colorEco;
                     buttonEco.Activated = !GPUAuto;
                     buttonOptimized.Activated = GPUAuto;
-                    labelGPU.Text = "GPU Mode: iGPU only";
+                    labelGPU.Text = Properties.Strings.GPUMode + ": " + Properties.Strings.GPUModeEco;
                     Program.trayIcon.Icon = Properties.Resources.eco;
                     break;
                 case ASUSWmi.GPUModeUltimate:
                     buttonUltimate.Activated = true;
-                    labelGPU.Text = "GPU Mode: dGPU exclusive";
+                    labelGPU.Text = Properties.Strings.GPUMode + ": " + Properties.Strings.GPUModeUltimate;
                     Program.trayIcon.Icon = Properties.Resources.ultimate;
                     break;
                 default:
                     buttonOptimized.BorderColor = colorStandard;
                     buttonStandard.Activated = !GPUAuto;
                     buttonOptimized.Activated = GPUAuto;
-                    labelGPU.Text = "GPU Mode: iGPU + dGPU";
+                    labelGPU.Text = Properties.Strings.GPUMode + ": " + Properties.Strings.GPUModeStandard;
                     Program.trayIcon.Icon = Properties.Resources.standard;
                     break;
             }
@@ -1356,7 +1360,7 @@ namespace GHelper
 
             //Debug.WriteLine(limit);
 
-            labelBatteryTitle.Text = "Battery Charge Limit: " + limit.ToString() + "%";
+            labelBatteryTitle.Text = Properties.Strings.BatteryChargeLimit + ": " + limit.ToString() + "%";
             sliderBattery.Value = limit;
 
             Program.wmi.DeviceSet(ASUSWmi.BatteryLimit, limit, "BatteryLimit");

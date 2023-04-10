@@ -1,0 +1,408 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ACPIError" xml:space="preserve">
+    <value>ASUS ACPI'ye bağlanılamıyor. Uygulama onun olmadan çalışamaz. Asus Sistem Kontrol Arayüzü'nü yüklemeyi deneyin.</value>
+  </data>
+  <data name="AlertDGPU" xml:space="preserve">
+    <value>Görünüşe göre GPU yoğun bir şekilde kullanılıyor, devre dışı bırakılsın mı?</value>
+  </data>
+  <data name="AlertDGPUTitle" xml:space="preserve">
+    <value>Eko Modu</value>
+  </data>
+  <data name="AlertUltimateOff" xml:space="preserve">
+    <value>Ultimate Modu kapatmak yeniden başlatmayı gerektirir</value>
+  </data>
+  <data name="AlertUltimateOn" xml:space="preserve">
+    <value>Ultimate Modu etkinleştirmek yeniden başlatmayı gerektirir</value>
+  </data>
+  <data name="AlertUltimateTitle" xml:space="preserve">
+    <value>Şimdi yeniden başlatılsın mı?</value>
+  </data>
+  <data name="AnimationSpeed" xml:space="preserve">
+    <value>Animasyon Hızı</value>
+  </data>
+  <data name="AnimeMatrix" xml:space="preserve">
+    <value>Anime Matrisi</value>
+  </data>
+  <data name="AppAlreadyRunning" xml:space="preserve">
+    <value>Uygulama zaten çalışıyor</value>
+  </data>
+  <data name="AppAlreadyRunningText" xml:space="preserve">
+    <value>G-Helper zaten çalışıyor. Görev çubuğu simgesi için kontrol edin.</value>
+  </data>
+  <data name="ApplyFanCurve" xml:space="preserve">
+    <value>Özel Fan Eğrisini Uygula</value>
+  </data>
+  <data name="ApplyPowerLimits" xml:space="preserve">
+    <value>Güç Sınırlarını Uygula</value>
+  </data>
+  <data name="AuraBreathe" xml:space="preserve">
+    <value>Nefes Al</value>
+  </data>
+  <data name="AuraColorCycle" xml:space="preserve">
+    <value>Renk Döngüsü</value>
+  </data>
+  <data name="AuraFast" xml:space="preserve">
+    <value>Hızlı</value>
+  </data>
+  <data name="AuraNormal" xml:space="preserve">
+    <value>Normal</value>
+  </data>
+  <data name="AuraRainbow" xml:space="preserve">
+    <value>Gökkuşağı</value>
+  </data>
+  <data name="AuraSlow" xml:space="preserve">
+    <value>Yavaş</value>
+  </data>
+  <data name="AuraStatic" xml:space="preserve">
+    <value>Sabit</value>
+  </data>
+  <data name="AuraStrobe" xml:space="preserve">
+    <value>Strobe</value>
+  </data>
+  <data name="AutoMode" xml:space="preserve">
+    <value>Otomatik</value>
+  </data>
+  <data name="AutoRefreshTooltip" xml:space="preserve">
+    <value>Pil tasarrufu için 60Hz ayarlar, takılı olduğunda geri ayarlar</value>
+  </data>
+  <data name="Awake" xml:space="preserve">
+    <value>Uyanık</value>
+  </data>
+  <data name="Balanced" xml:space="preserve">
+    <value>Dengeli</value>
+  </data>
+  <data name="BatteryChargeLimit" xml:space="preserve">
+    <value>Pil Şarj Sınırı</value>
+  </data>
+  <data name="Boot" xml:space="preserve">
+    <value>Önyükleme</value>
+  </data>
+  <data name="Color" xml:space="preserve">
+    <value>Renk</value>
+  </data>
+  <data name="CPUBoost" xml:space="preserve">
+    <value>CPU Boost</value>
+  </data>
+  <data name="Custom" xml:space="preserve">
+    <value>Özel</value>
+  </data>
+  <data name="Default" xml:space="preserve">
+    <value>Varsayılan</value>
+  </data>
+  <data name="DisableOverdrive" xml:space="preserve">
+    <value>Ekran overdrive'ı devre dışı bırak</value>
+  </data>
+  <data name="Discharging" xml:space="preserve">
+    <value>Deşarj</value>
+  </data>
+  <data name="DownloadUpdate" xml:space="preserve">
+    <value>Güncelleştirmeyi İndir</value>
+  </data>
+  <data name="EcoGPUTooltip" xml:space="preserve">
+    <value>Pil tasarrufu için dGPU'yu devre dışı bırakır</value>
+  </data>
+  <data name="EcoMode" xml:space="preserve">
+    <value>Eko</value>
+  </data>
+  <data name="Extra" xml:space="preserve">
+    <value>Ekstra</value>
+  </data>
+  <data name="ExtraSettings" xml:space="preserve">
+    <value>Ekstra Ayarlar</value>
+  </data>
+  <data name="FactoryDefaults" xml:space="preserve">
+    <value>Fabrika Ayarları</value>
+  </data>
+  <data name="FanCurves" xml:space="preserve">
+    <value>Fan Eğrileri</value>
+  </data>
+  <data name="FanProfileCPU" xml:space="preserve">
+    <value>CPU Fan Profili</value>
+  </data>
+  <data name="FanProfileGPU" xml:space="preserve">
+    <value>GPU Fan Profili</value>
+  </data>
+  <data name="FanProfileMid" xml:space="preserve">
+    <value>Orta Fan Profili</value>
+  </data>
+  <data name="FanProfiles" xml:space="preserve">
+    <value>Fan Profilleri</value>
+  </data>
+  <data name="FansAndPower" xml:space="preserve">
+    <value>Fanlar ve Güç</value>
+  </data>
+  <data name="FansPower" xml:space="preserve">
+    <value>Fanlar + Güç</value>
+  </data>
+  <data name="GPUChanging" xml:space="preserve">
+    <value>Değiştiriliyor</value>
+  </data>
+  <data name="GPUMode" xml:space="preserve">
+    <value>GPU Modu</value>
+  </data>
+  <data name="GPUModeEco" xml:space="preserve">
+    <value>sadece iGPU</value>
+  </data>
+  <data name="GPUModeStandard" xml:space="preserve">
+    <value>iGPU + dGPU</value>
+  </data>
+  <data name="GPUModeUltimate" xml:space="preserve">
+    <value>sadece dGPU</value>
+  </data>
+  <data name="KeyBindings" xml:space="preserve">
+    <value>Tuş Bağlantıları</value>
+  </data>
+  <data name="Keyboard" xml:space="preserve">
+    <value>Klavye</value>
+  </data>
+  <data name="KeyboardAuto" xml:space="preserve">
+    <value>Pil ile çalışırken daha az aydınlatma, takılıyken daha fazla</value>
+  </data>
+  <data name="KeyboardBacklight" xml:space="preserve">
+    <value>Klavye Aydınlatması</value>
+  </data>
+  <data name="LaptopKeyboard" xml:space="preserve">
+    <value>Laptop Klavyesi</value>
+  </data>
+  <data name="LaptopScreen" xml:space="preserve">
+    <value>Laptop Ekranı</value>
+  </data>
+  <data name="MatrixBanner" xml:space="preserve">
+    <value>İkili Banner</value>
+  </data>
+  <data name="MatrixBright" xml:space="preserve">
+    <value>Parlak</value>
+  </data>
+  <data name="MatrixClock" xml:space="preserve">
+    <value>Saat</value>
+  </data>
+  <data name="MatrixDim" xml:space="preserve">
+    <value>Mat</value>
+  </data>
+  <data name="MatrixLogo" xml:space="preserve">
+    <value>Rog Logosu</value>
+  </data>
+  <data name="MatrixMedium" xml:space="preserve">
+    <value>Orta</value>
+  </data>
+  <data name="MatrixOff" xml:space="preserve">
+    <value>Kapalı</value>
+  </data>
+  <data name="MatrixPicture" xml:space="preserve">
+    <value>Resim</value>
+  </data>
+  <data name="MaxRefreshTooltip" xml:space="preserve">
+    <value>Daha düşük gecikme için maksimum yenileme hızı</value>
+  </data>
+  <data name="MinRefreshTooltip" xml:space="preserve">
+    <value>Pil tasarrufu için 60Hz yenileme hızı</value>
+  </data>
+  <data name="Multizone" xml:space="preserve">
+    <value>Çoklu Bölge</value>
+  </data>
+  <data name="OpenGHelper" xml:space="preserve">
+    <value>G-Helper penceresini aç</value>
+  </data>
+  <data name="Optimized" xml:space="preserve">
+    <value>Optimize edilmiş</value>
+  </data>
+  <data name="OptimizedGPUTooltip" xml:space="preserve">
+    <value>Pil ile Eco'ya ve Şarj ile Standart'a geçiş yapın</value>
+  </data>
+  <data name="Other" xml:space="preserve">
+    <value>Diğer</value>
+  </data>
+  <data name="Overdrive" xml:space="preserve">
+    <value>Overdrive</value>
+  </data>
+  <data name="PerformanceMode" xml:space="preserve">
+    <value>Performans Modu</value>
+  </data>
+  <data name="PictureGif" xml:space="preserve">
+    <value>Resim / Gif</value>
+  </data>
+  <data name="PlayPause" xml:space="preserve">
+    <value>Oynat / Duraklat</value>
+  </data>
+  <data name="PowerLimits" xml:space="preserve">
+    <value>Güç Sınırları (PPT)</value>
+  </data>
+  <data name="PPTExperimental" xml:space="preserve">
+    <value>Güç Sınırları (PPT) deneysel bir özelliktir. Dikkatli kullanın ve kendi riskinizde!</value>
+  </data>
+  <data name="PrintScreen" xml:space="preserve">
+    <value>Ekran Görüntüsü Al</value>
+  </data>
+  <data name="Quit" xml:space="preserve">
+    <value>Çıkış Yap</value>
+  </data>
+  <data name="RPM" xml:space="preserve">
+    <value>RPM</value>
+  </data>
+  <data name="RunOnStartup" xml:space="preserve">
+    <value>Başlangıçta Çalıştır</value>
+  </data>
+  <data name="Shutdown" xml:space="preserve">
+    <value>Kapat</value>
+  </data>
+  <data name="Silent" xml:space="preserve">
+    <value>Sessiz</value>
+  </data>
+  <data name="Sleep" xml:space="preserve">
+    <value>Uyku</value>
+  </data>
+  <data name="StandardGPUTooltip" xml:space="preserve">
+    <value>Standart kullanım için dGPU'yu etkinleştirir</value>
+  </data>
+  <data name="StandardMode" xml:space="preserve">
+    <value>Standart</value>
+  </data>
+  <data name="StartupError" xml:space="preserve">
+    <value>Başlatma Hatası</value>
+  </data>
+  <data name="ToggleAura" xml:space="preserve">
+    <value>Aura'yı Değiştir</value>
+  </data>
+  <data name="Turbo" xml:space="preserve">
+    <value>Turbo</value>
+  </data>
+  <data name="TurnedOff" xml:space="preserve">
+    <value>Kapatıldı</value>
+  </data>
+  <data name="TurnOffOnBattery" xml:space="preserve">
+    <value>Pil üzerinde kapat</value>
+  </data>
+  <data name="UltimateGPUTooltip" xml:space="preserve">
+    <value>Dizüstü bilgisayar ekranını dGPU'ya yönlendirerek FPS'yi maksimize eder</value>
+  </data>
+  <data name="UltimateMode" xml:space="preserve">
+    <value>Nihai</value>
+  </data>
+  <data name="VersionLabel" xml:space="preserve">
+    <value>Sürüm</value>
+  </data>
+  <data name="VolumeMute" xml:space="preserve">
+    <value>Ses Kısma</value>
+  </data>
+  <data name="WindowTop" xml:space="preserve">
+    <value>Uygulama penceresini her zaman en üstte tut</value>
+  </data>
+</root>

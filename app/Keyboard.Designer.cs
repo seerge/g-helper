@@ -73,7 +73,7 @@ namespace GHelper
             groupBox1.Size = new Size(756, 242);
             groupBox1.TabIndex = 0;
             groupBox1.TabStop = false;
-            groupBox1.Text = "Key Bindings";
+            groupBox1.Text = Properties.Strings.KeyBindings;
             // 
             // textFNF4
             // 
@@ -119,7 +119,7 @@ namespace GHelper
             // comboM4
             // 
             comboM4.FormattingEnabled = true;
-            comboM4.Items.AddRange(new object[] { "Performance Mode", "Open G-Helper window", "Custom" });
+            comboM4.Items.AddRange(new object[] { Properties.Strings.PerformanceMode, Properties.Strings.OpenGHelper, Properties.Strings.Custom });
             comboM4.Location = new Point(93, 112);
             comboM4.Name = "comboM4";
             comboM4.Size = new Size(312, 40);
@@ -137,7 +137,7 @@ namespace GHelper
             // comboM3
             // 
             comboM3.FormattingEnabled = true;
-            comboM3.Items.AddRange(new object[] { "Default", "Volume Mute", "Play / Pause", "PrintScreen", "Toggle Aura", "Custom" });
+            comboM3.Items.AddRange(new object[] { Properties.Strings.Default, Properties.Strings.VolumeMute, Properties.Strings.PlayPause, Properties.Strings.PrintScreen, Properties.Strings.ToggleAura, Properties.Strings.Custom });
             comboM3.Location = new Point(93, 54);
             comboM3.Name = "comboM3";
             comboM3.Size = new Size(312, 40);
@@ -166,7 +166,7 @@ namespace GHelper
             groupLight.Size = new Size(756, 304);
             groupLight.TabIndex = 1;
             groupLight.TabStop = false;
-            groupLight.Text = "Keyboard Backlight";
+            groupLight.Text = Properties.Strings.KeyboardBacklight;
             // 
             // labelSpeed
             // 
@@ -175,7 +175,7 @@ namespace GHelper
             labelSpeed.Name = "labelSpeed";
             labelSpeed.Size = new Size(198, 32);
             labelSpeed.TabIndex = 40;
-            labelSpeed.Text = "Animation Speed";
+            labelSpeed.Text = Properties.Strings.AnimationSpeed;
             // 
             // comboKeyboardSpeed
             // 
@@ -200,7 +200,7 @@ namespace GHelper
             checkShutdown.Name = "checkShutdown";
             checkShutdown.Size = new Size(154, 36);
             checkShutdown.TabIndex = 3;
-            checkShutdown.Text = "Shutdown";
+            checkShutdown.Text = Properties.Strings.Shutdown;
             checkShutdown.UseVisualStyleBackColor = true;
             // 
             // checkSleep
@@ -210,7 +210,7 @@ namespace GHelper
             checkSleep.Name = "checkSleep";
             checkSleep.Size = new Size(105, 36);
             checkSleep.TabIndex = 2;
-            checkSleep.Text = "Sleep";
+            checkSleep.Text = Properties.Strings.Sleep;
             checkSleep.UseVisualStyleBackColor = true;
             // 
             // checkBoot
@@ -220,7 +220,7 @@ namespace GHelper
             checkBoot.Name = "checkBoot";
             checkBoot.Size = new Size(96, 36);
             checkBoot.TabIndex = 1;
-            checkBoot.Text = "Boot";
+            checkBoot.Text = Properties.Strings.Boot;
             checkBoot.UseVisualStyleBackColor = true;
             // 
             // checkAwake
@@ -230,7 +230,7 @@ namespace GHelper
             checkAwake.Name = "checkAwake";
             checkAwake.Size = new Size(115, 36);
             checkAwake.TabIndex = 0;
-            checkAwake.Text = "Awake";
+            checkAwake.Text = Properties.Strings.Awake;
             checkAwake.UseVisualStyleBackColor = true;
             // 
             // groupOther
@@ -244,7 +244,7 @@ namespace GHelper
             groupOther.Size = new Size(756, 225);
             groupOther.TabIndex = 2;
             groupOther.TabStop = false;
-            groupOther.Text = "Other";
+            groupOther.Text = Properties.Strings.Other;
             // 
             // checkKeyboardAuto
             // 
@@ -253,7 +253,7 @@ namespace GHelper
             checkKeyboardAuto.Name = "checkKeyboardAuto";
             checkKeyboardAuto.Size = new Size(712, 36);
             checkKeyboardAuto.TabIndex = 2;
-            checkKeyboardAuto.Text = "Lower backlight brightness on battery and back when plugged";
+            checkKeyboardAuto.Text = Properties.Strings.KeyboardAuto;
             checkKeyboardAuto.UseVisualStyleBackColor = true;
             // 
             // checkTopmost
@@ -263,7 +263,7 @@ namespace GHelper
             checkTopmost.Name = "checkTopmost";
             checkTopmost.Size = new Size(390, 36);
             checkTopmost.TabIndex = 1;
-            checkTopmost.Text = "Keep app window always on top";
+            checkTopmost.Text = Properties.Strings.WindowTop;
             checkTopmost.UseVisualStyleBackColor = true;
             // 
             // checkNoOverdrive
@@ -273,7 +273,7 @@ namespace GHelper
             checkNoOverdrive.Name = "checkNoOverdrive";
             checkNoOverdrive.Size = new Size(307, 36);
             checkNoOverdrive.TabIndex = 3;
-            checkNoOverdrive.Text = "Disable screen overdrive";
+            checkNoOverdrive.Text = Properties.Strings.DisableOverdrive;
             checkNoOverdrive.UseVisualStyleBackColor = true;
             // 
             // Keyboard
@@ -288,11 +288,11 @@ namespace GHelper
             MaximizeBox = false;
             MdiChildrenMinimizedAnchorBottom = false;
             MinimizeBox = false;
-            Name = "Keyboard";
+            Name = Properties.Strings.Keyboard;
             Padding = new Padding(10);
             ShowIcon = false;
             ShowInTaskbar = false;
-            Text = "Extra Settings";
+            Text = Properties.Strings.ExtraSettings;
             groupBox1.ResumeLayout(false);
             groupBox1.PerformLayout();
             groupLight.ResumeLayout(false);

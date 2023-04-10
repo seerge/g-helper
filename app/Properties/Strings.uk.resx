@@ -1,0 +1,408 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ACPIError" xml:space="preserve">
+    <value>Не вдається підключитися до ASUS ACPI. Програма не може працювати без нього. Спробуйте встановити Asus System Control Interface</value>
+  </data>
+  <data name="AlertDGPU" xml:space="preserve">
+    <value>Здається, що GPU використовується, вимкнути її?</value>
+  </data>
+  <data name="AlertDGPUTitle" xml:space="preserve">
+    <value>Еко Режим</value>
+  </data>
+  <data name="AlertUltimateOff" xml:space="preserve">
+    <value>Вимкнення ультимативного режиму потребує перезавантаження</value>
+  </data>
+  <data name="AlertUltimateOn" xml:space="preserve">
+    <value>Ультимативний режим потребує перезавантаження</value>
+  </data>
+  <data name="AlertUltimateTitle" xml:space="preserve">
+    <value>Перезавантажитися зараз?</value>
+  </data>
+  <data name="AnimationSpeed" xml:space="preserve">
+    <value>Анімаця</value>
+  </data>
+  <data name="AnimeMatrix" xml:space="preserve">
+    <value>Аніме Матриця</value>
+  </data>
+  <data name="AppAlreadyRunning" xml:space="preserve">
+    <value>Програма вже запущена</value>
+  </data>
+  <data name="AppAlreadyRunningText" xml:space="preserve">
+    <value>G-Helper вже запущено. Перевірте значок у системному лотку.</value>
+  </data>
+  <data name="ApplyFanCurve" xml:space="preserve">
+    <value>Застосувати профілі кулерів</value>
+  </data>
+  <data name="ApplyPowerLimits" xml:space="preserve">
+    <value>Застосувати потужність</value>
+  </data>
+  <data name="AuraBreathe" xml:space="preserve">
+    <value>Дихання</value>
+  </data>
+  <data name="AuraColorCycle" xml:space="preserve">
+    <value>Зміна Кольорів</value>
+  </data>
+  <data name="AuraFast" xml:space="preserve">
+    <value>Швидка</value>
+  </data>
+  <data name="AuraNormal" xml:space="preserve">
+    <value>Нормальна</value>
+  </data>
+  <data name="AuraRainbow" xml:space="preserve">
+    <value>Веселка</value>
+  </data>
+  <data name="AuraSlow" xml:space="preserve">
+    <value>Повільна</value>
+  </data>
+  <data name="AuraStatic" xml:space="preserve">
+    <value>Статичний</value>
+  </data>
+  <data name="AuraStrobe" xml:space="preserve">
+    <value>Стробоскоп</value>
+  </data>
+  <data name="AutoMode" xml:space="preserve">
+    <value>Авто</value>
+  </data>
+  <data name="AutoRefreshTooltip" xml:space="preserve">
+    <value>Частота 60Гц на батареї та максимальна на зарядці</value>
+  </data>
+  <data name="Awake" xml:space="preserve">
+    <value>Робота</value>
+  </data>
+  <data name="Balanced" xml:space="preserve">
+    <value>Баланс</value>
+  </data>
+  <data name="BatteryChargeLimit" xml:space="preserve">
+    <value>Ліміт заряду батареї</value>
+  </data>
+  <data name="Boot" xml:space="preserve">
+    <value>Старт</value>
+  </data>
+  <data name="Color" xml:space="preserve">
+    <value>Колір</value>
+  </data>
+  <data name="CPUBoost" xml:space="preserve">
+    <value>CPU Boost</value>
+  </data>
+  <data name="Custom" xml:space="preserve">
+    <value>Своє</value>
+  </data>
+  <data name="Default" xml:space="preserve">
+    <value>За замовчуванням</value>
+  </data>
+  <data name="DisableOverdrive" xml:space="preserve">
+    <value>Вимкнути овердрайв дісплею</value>
+  </data>
+  <data name="Discharging" xml:space="preserve">
+    <value>Розрядка</value>
+  </data>
+  <data name="DownloadUpdate" xml:space="preserve">
+    <value>Завантажити</value>
+  </data>
+  <data name="EcoGPUTooltip" xml:space="preserve">
+    <value>Вимикає dGPU, щоб зберегти заряд</value>
+  </data>
+  <data name="EcoMode" xml:space="preserve">
+    <value>Еко</value>
+  </data>
+  <data name="Extra" xml:space="preserve">
+    <value>Додатково</value>
+  </data>
+  <data name="ExtraSettings" xml:space="preserve">
+    <value>Додаткові Налаштування</value>
+  </data>
+  <data name="FactoryDefaults" xml:space="preserve">
+    <value>Скинути</value>
+  </data>
+  <data name="FanCurves" xml:space="preserve">
+    <value>Криві кулерів</value>
+  </data>
+  <data name="FanProfileCPU" xml:space="preserve">
+    <value>Профіль кулеру CPU</value>
+  </data>
+  <data name="FanProfileGPU" xml:space="preserve">
+    <value>Профіль кулеру GPU</value>
+  </data>
+  <data name="FanProfileMid" xml:space="preserve">
+    <value>Профіль додаткового кулеру</value>
+  </data>
+  <data name="FanProfiles" xml:space="preserve">
+    <value>Профілі кулерів</value>
+  </data>
+  <data name="FansAndPower" xml:space="preserve">
+    <value>Кулери та Потужність</value>
+  </data>
+  <data name="FansPower" xml:space="preserve">
+    <value>Кулери та Потужність</value>
+  </data>
+  <data name="GPUChanging" xml:space="preserve">
+    <value>Зміна</value>
+  </data>
+  <data name="GPUMode" xml:space="preserve">
+    <value>Режим Графіки</value>
+  </data>
+  <data name="GPUModeEco" xml:space="preserve">
+    <value>Тільки iGPU</value>
+  </data>
+  <data name="GPUModeStandard" xml:space="preserve">
+    <value>iGPU + dGPU</value>
+  </data>
+  <data name="GPUModeUltimate" xml:space="preserve">
+    <value>Ексклюзивний dGPU</value>
+  </data>
+  <data name="KeyBindings" xml:space="preserve">
+    <value>Прив'язки клавіш</value>
+  </data>
+  <data name="Keyboard" xml:space="preserve">
+    <value>Клавіатура</value>
+  </data>
+  <data name="KeyboardAuto" xml:space="preserve">
+    <value>Вимкнути підсвітку на батареї та увімкнути на зарядці</value>
+  </data>
+  <data name="KeyboardBacklight" xml:space="preserve">
+    <value>Підсвітка клавіатури</value>
+  </data>
+  <data name="LaptopKeyboard" xml:space="preserve">
+    <value>Клавіатура</value>
+  </data>
+  <data name="LaptopScreen" xml:space="preserve">
+    <value>Дісплей</value>
+  </data>
+  <data name="MatrixBanner" xml:space="preserve">
+    <value>Бінарний банер</value>
+  </data>
+  <data name="MatrixBright" xml:space="preserve">
+    <value>Яскрава</value>
+  </data>
+  <data name="MatrixClock" xml:space="preserve">
+    <value>Годинник</value>
+  </data>
+  <data name="MatrixDim" xml:space="preserve">
+    <value>Слабка</value>
+  </data>
+  <data name="MatrixLogo" xml:space="preserve">
+    <value>Логотип Rog</value>
+  </data>
+  <data name="MatrixMedium" xml:space="preserve">
+    <value>Середня</value>
+  </data>
+  <data name="MatrixOff" xml:space="preserve">
+    <value>Вимкнена</value>
+  </data>
+  <data name="MatrixPicture" xml:space="preserve">
+    <value>Картинка</value>
+  </data>
+  <data name="MaxRefreshTooltip" xml:space="preserve">
+    <value>Максимальна частота оновлення для мінімізації затримок</value>
+  </data>
+  <data name="MinRefreshTooltip" xml:space="preserve">
+    <value>Частота 60Гц, щоб зберегти заряд батареї</value>
+  </data>
+  <data name="Multizone" xml:space="preserve">
+    <value>Мультизони</value>
+  </data>
+  <data name="OpenGHelper" xml:space="preserve">
+    <value>Відкрити вікно G-Helper</value>
+  </data>
+  <data name="Optimized" xml:space="preserve">
+    <value>Авто</value>
+  </data>
+  <data name="OptimizedGPUTooltip" xml:space="preserve">
+    <value>Вмикає Еко на батареї та Стандартний на зарядці</value>
+  </data>
+  <data name="Other" xml:space="preserve">
+    <value>Інше</value>
+  </data>
+  <data name="Overdrive" xml:space="preserve">
+    <value>Овердрайв</value>
+  </data>
+  <data name="PerformanceMode" xml:space="preserve">
+    <value>Режим Роботи</value>
+  </data>
+  <data name="PictureGif" xml:space="preserve">
+    <value>Картинка / GIF</value>
+  </data>
+  <data name="PlayPause" xml:space="preserve">
+    <value>Відтворення / Пауза</value>
+  </data>
+  <data name="PowerLimits" xml:space="preserve">
+    <value>Потужність (PPT)</value>
+  </data>
+  <data name="PPTExperimental" xml:space="preserve">
+    <value>Налаштування потужності (PPT) є експериментальною функцією. Використовуйте обережно та на свій страх і ризик!</value>
+  </data>
+  <data name="PrintScreen" xml:space="preserve">
+    <value>Зображення екрана</value>
+  </data>
+  <data name="Quit" xml:space="preserve">
+    <value>Вихід</value>
+  </data>
+  <data name="RPM" xml:space="preserve">
+    <value>Оберти</value>
+  </data>
+  <data name="RunOnStartup" xml:space="preserve">
+    <value>Запускати на старті</value>
+  </data>
+  <data name="Shutdown" xml:space="preserve">
+    <value>Вимикання</value>
+  </data>
+  <data name="Silent" xml:space="preserve">
+    <value>Тихий</value>
+  </data>
+  <data name="Sleep" xml:space="preserve">
+    <value>Сон</value>
+  </data>
+  <data name="StandardGPUTooltip" xml:space="preserve">
+    <value>Вмикає dGPU для нормального використання</value>
+  </data>
+  <data name="StandardMode" xml:space="preserve">
+    <value>Стандартний</value>
+  </data>
+  <data name="StartupError" xml:space="preserve">
+    <value>Помилка запуску</value>
+  </data>
+  <data name="ToggleAura" xml:space="preserve">
+    <value>Аура</value>
+  </data>
+  <data name="Turbo" xml:space="preserve">
+    <value>Турбо</value>
+  </data>
+  <data name="TurnedOff" xml:space="preserve">
+    <value>Вимкнений</value>
+  </data>
+  <data name="TurnOffOnBattery" xml:space="preserve">
+    <value>Вимикати на батареї</value>
+  </data>
+  <data name="UltimateGPUTooltip" xml:space="preserve">
+    <value>Підключає екран лептопу до dGPU, щоб підвищити FPS</value>
+  </data>
+  <data name="UltimateMode" xml:space="preserve">
+    <value>Ультімейт</value>
+  </data>
+  <data name="VersionLabel" xml:space="preserve">
+    <value>Версія</value>
+  </data>
+  <data name="VolumeMute" xml:space="preserve">
+    <value>Вимкнення звуку</value>
+  </data>
+  <data name="WindowTop" xml:space="preserve">
+    <value>Тримати вікно завжди зверху</value>
+  </data>
+</root>

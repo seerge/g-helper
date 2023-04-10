@@ -31,12 +31,12 @@ namespace GHelper
         /// </summary>
         private void InitializeComponent()
         {
-            ChartArea chartArea4 = new ChartArea();
-            Title title4 = new Title();
-            ChartArea chartArea5 = new ChartArea();
-            Title title5 = new Title();
-            ChartArea chartArea6 = new ChartArea();
-            Title title6 = new Title();
+            ChartArea chartArea1 = new ChartArea();
+            Title title1 = new Title();
+            ChartArea chartArea2 = new ChartArea();
+            Title title2 = new Title();
+            ChartArea chartArea3 = new ChartArea();
+            Title title3 = new Title();
             panelFans = new Panel();
             labelTip = new Label();
             labelBoost = new Label();
@@ -100,7 +100,7 @@ namespace GHelper
             // 
             labelTip.AutoSize = true;
             labelTip.BackColor = SystemColors.ControlLightLight;
-            labelTip.Location = new Point(271, 13);
+            labelTip.Location = new Point(155, 9);
             labelTip.Name = "labelTip";
             labelTip.Padding = new Padding(5);
             labelTip.Size = new Size(107, 42);
@@ -109,12 +109,15 @@ namespace GHelper
             // 
             // labelBoost
             // 
+            labelBoost.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             labelBoost.AutoSize = true;
-            labelBoost.Location = new Point(397, 19);
+            labelBoost.Location = new Point(375, 17);
             labelBoost.Name = "labelBoost";
             labelBoost.Size = new Size(125, 32);
             labelBoost.TabIndex = 39;
-            labelBoost.Text = "CPU Boost";
+            labelBoost.Text = Properties.Strings.CPUBoost;
+            labelBoost.TextAlign = ContentAlignment.MiddleRight;
+
             // 
             // comboBoost
             // 
@@ -161,8 +164,8 @@ namespace GHelper
             // 
             // chartGPU
             // 
-            chartArea4.Name = "ChartArea1";
-            chartGPU.ChartAreas.Add(chartArea4);
+            chartArea1.Name = "ChartArea1";
+            chartGPU.ChartAreas.Add(chartArea1);
             chartGPU.Dock = DockStyle.Fill;
             chartGPU.Location = new Point(2, 340);
             chartGPU.Margin = new Padding(2, 10, 2, 10);
@@ -170,13 +173,13 @@ namespace GHelper
             chartGPU.Size = new Size(760, 310);
             chartGPU.TabIndex = 17;
             chartGPU.Text = "chartGPU";
-            title4.Name = "Title1";
-            chartGPU.Titles.Add(title4);
+            title1.Name = "Title1";
+            chartGPU.Titles.Add(title1);
             // 
             // chartCPU
             // 
-            chartArea5.Name = "ChartArea1";
-            chartCPU.ChartAreas.Add(chartArea5);
+            chartArea2.Name = "ChartArea1";
+            chartCPU.ChartAreas.Add(chartArea2);
             chartCPU.Dock = DockStyle.Fill;
             chartCPU.Location = new Point(2, 10);
             chartCPU.Margin = new Padding(2, 10, 2, 10);
@@ -184,13 +187,13 @@ namespace GHelper
             chartCPU.Size = new Size(760, 310);
             chartCPU.TabIndex = 14;
             chartCPU.Text = "chartCPU";
-            title5.Name = "Title1";
-            chartCPU.Titles.Add(title5);
+            title2.Name = "Title1";
+            chartCPU.Titles.Add(title2);
             // 
             // chartMid
             // 
-            chartArea6.Name = "ChartArea3";
-            chartMid.ChartAreas.Add(chartArea6);
+            chartArea3.Name = "ChartArea3";
+            chartMid.ChartAreas.Add(chartArea3);
             chartMid.Dock = DockStyle.Fill;
             chartMid.Location = new Point(2, 670);
             chartMid.Margin = new Padding(2, 10, 2, 10);
@@ -198,8 +201,8 @@ namespace GHelper
             chartMid.Size = new Size(760, 312);
             chartMid.TabIndex = 14;
             chartMid.Text = "chartMid";
-            title6.Name = "Title3";
-            chartMid.Titles.Add(title6);
+            title3.Name = "Title3";
+            chartMid.Titles.Add(title3);
             chartMid.Visible = false;
             // 
             // labelFans
@@ -224,7 +227,7 @@ namespace GHelper
             checkApplyFans.Padding = new Padding(15, 5, 15, 5);
             checkApplyFans.Size = new Size(339, 46);
             checkApplyFans.TabIndex = 17;
-            checkApplyFans.Text = "Apply Custom Fan Curve";
+            checkApplyFans.Text = Properties.Strings.ApplyFanCurve;
             checkApplyFans.UseVisualStyleBackColor = false;
             // 
             // buttonReset
@@ -241,7 +244,7 @@ namespace GHelper
             buttonReset.Secondary = true;
             buttonReset.Size = new Size(232, 50);
             buttonReset.TabIndex = 15;
-            buttonReset.Text = "Factory Defaults";
+            buttonReset.Text = Properties.Strings.FactoryDefaults;
             buttonReset.UseVisualStyleBackColor = false;
             // 
             // panelPower
@@ -282,7 +285,7 @@ namespace GHelper
             labelPowerLimits.Name = "labelPowerLimits";
             labelPowerLimits.Size = new Size(229, 32);
             labelPowerLimits.TabIndex = 26;
-            labelPowerLimits.Text = "Power Limits (PPT)";
+            labelPowerLimits.Text = Properties.Strings.PowerLimits;
             // 
             // checkApplyPower
             // 
@@ -295,7 +298,7 @@ namespace GHelper
             checkApplyPower.Padding = new Padding(15, 5, 15, 5);
             checkApplyPower.Size = new Size(277, 46);
             checkApplyPower.TabIndex = 25;
-            checkApplyPower.Text = "Apply Power Limits";
+            checkApplyPower.Text = Properties.Strings.ApplyPowerLimits;
             checkApplyPower.UseVisualStyleBackColor = false;
             // 
             // panelCPU

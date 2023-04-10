@@ -1,5 +1,4 @@
 ﻿using CustomControls;
-using Microsoft.Win32;
 
 namespace GHelper
 {
@@ -9,22 +8,22 @@ namespace GHelper
         Dictionary<string, string> customActions = new Dictionary<string, string>
         {
           {"","--------------" },
-          {"mute", "Volume Mute"},
-          {"screenshot", "Screenshot"},
-          {"play", "Play/Pause"},
-          {"aura", "Aura"},
-          {"ghelper", "Open GHelper"},
-          {"custom", "Custom"}
+          {"mute", Properties.Strings.VolumeMute},
+          {"screenshot", Properties.Strings.PrintScreen},
+          {"play", Properties.Strings.PlayPause},
+          {"aura", Properties.Strings.ToggleAura},
+          {"ghelper", Properties.Strings.OpenGHelper},
+          {"custom", Properties.Strings.Custom}
         };
 
         private void SetKeyCombo(ComboBox combo, TextBox txbox, string name)
         {
             if (name == "m4")
-                customActions[""] = "Performance";
+                customActions[""] = Properties.Strings.PerformanceMode;
 
             if (name == "fnf4")
             {
-                customActions[""] = "Aura";
+                customActions[""] = Properties.Strings.ToggleAura;
                 customActions.Remove("aura");
             }
 
@@ -99,16 +98,6 @@ namespace GHelper
         private void CheckKeyboardAuto_CheckedChanged(object? sender, EventArgs e)
         {
             Program.config.setConfig("keyboard_auto", (checkKeyboardAuto.Checked ? 1 : 0));
-
-            /*
-            RegistryKey myKey = Registry.LocalMachine.OpenSubKey("SOFTWARE\\ASUS\\ASUS System Control Interface\\AsusOptimization\\ASUS Keyboard Hotkeys", true);
-            if (myKey != null)
-            {
-                myKey.SetValue("TurnOffKeybdLight", 30, RegistryValueKind.DWord);
-                myKey.Close();
-            }
-            */
-
         }
 
         private void CheckTopmost_CheckedChanged(object? sender, EventArgs e)

@@ -1,9 +1,5 @@
 ﻿using HidLibrary;
-using System.Data;
 using System.Diagnostics;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.TextBox;
-using System.Security.Policy;
-using HidSharp.Utility;
 
 namespace GHelper
 {
@@ -70,33 +66,33 @@ namespace GHelper
         {
             return new Dictionary<int, string>
             {
-                { 0, "Slow" },
-                { 1, "Normal" },
-                { 2, "Fast" }
+                { 0, Properties.Strings.AuraSlow },
+                { 1, Properties.Strings.AuraNormal },
+                { 2, Properties.Strings.AuraFast }
             };
         }
 
-        static  Dictionary<int, string> _modes = new Dictionary<int, string>
+        static Dictionary<int, string> _modes = new Dictionary<int, string>
             {
-                { 0, "Static" },
-                { 1, "Breathe" },
-                { 2, "Color Cycle" },
-                { 3, "Rainbow" },
-                { 10, "Strobe" },
+                { 0, Properties.Strings.AuraStatic },
+                { 1, Properties.Strings.AuraBreathe },
+                { 2, Properties.Strings.AuraColorCycle },
+                { 3, Properties.Strings.AuraRainbow },
+                { 10, Properties.Strings.AuraStrobe },
             };
 
         static Dictionary<int, string> _modesStrix = new Dictionary<int, string>
             {
-                { 0, "Static" },
-                { 1, "Breathe" },
-                { 2, "Color Cycle" },
-                { 3, "Rainbow" },
+                { 0, Properties.Strings.AuraStatic },
+                { 1, Properties.Strings.AuraBreathe },
+                { 2, Properties.Strings.AuraColorCycle },
+                { 3, Properties.Strings.AuraRainbow },
                 { 4, "Star" },
                 { 5, "Rain" },
                 { 6, "Highlight" },
                 { 7, "Laser" },
                 { 8, "Ripple" },
-                { 10, "Strobe" },
+                { 10, Properties.Strings.AuraStrobe},
                 { 11, "Comet" },
                 { 12, "Flash" },
             };

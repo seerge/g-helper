@@ -1,5 +1,6 @@
 using Microsoft.Win32;
 using System.Diagnostics;
+using System.Globalization;
 using System.Management;
 using Tools;
 
@@ -30,9 +31,16 @@ namespace GHelper
         public static void Main()
         {
 
+            Thread.CurrentThread.CurrentCulture = CultureInfo.CurrentCulture;
+            Thread.CurrentThread.CurrentUICulture = CultureInfo.CurrentUICulture;
+
+            //Thread.CurrentThread.CurrentCulture = CultureInfo.CreateSpecificCulture("zh");
+            //Thread.CurrentThread.CurrentUICulture = CultureInfo.CreateSpecificCulture("zh");
+
+
             if (Process.GetProcesses().Count(p => p.ProcessName == "GHelper") > 1)
             {
-                MessageBox.Show("G-Helper is already running. Check system tray for an icon.", "App already running", MessageBoxButtons.OK);
+                MessageBox.Show(Properties.Strings.AppAlreadyRunningText, Properties.Strings.AppAlreadyRunning, MessageBoxButtons.OK);
                 Application.Exit();
                 return;
             }
@@ -44,7 +52,7 @@ namespace GHelper
             }
             catch
             {
-                DialogResult dialogResult = MessageBox.Show("Can't connect to ASUS ACPI. Application can't function without it. Try to install Asus System Controll Interface", "Startup Error", MessageBoxButtons.YesNo);
+                DialogResult dialogResult = MessageBox.Show(Properties.Strings.ACPIError, Properties.Strings.StartupError, MessageBoxButtons.YesNo);
                 if (dialogResult == DialogResult.Yes)
                 {
                     Process.Start(new ProcessStartInfo("https://www.asus.com/support/FAQ/1047338/") { UseShellExecute = true });
@@ -54,6 +62,8 @@ namespace GHelper
                 return;
 
             }
+
+
 
             Logger.WriteLine("------------");
             Logger.WriteLine("App launched: " + config.GetModel());
@@ -91,6 +101,8 @@ namespace GHelper
             {
                 SettingsToggle();
             }
+
+
 
             Application.Run();
 
