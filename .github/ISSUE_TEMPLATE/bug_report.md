@@ -1,3 +1,9 @@
+
+## NOTE
+Bug reports without clear information or scenario to reproduce will be closed without answer. 
+Please respect time of the developer. Thanks.
+
+
 ---
 name: Bug report
 about: Create a report to help us improve
@@ -34,7 +40,3 @@ If applicable, add screenshots to help explain your problem.
 
 **Additional context**
 Add any other context about the problem here.
-
-## NOTE
-Bug reports without clear information or scenario to reproduce will be closed without answer. 
-Please respect time of the developer. Thanks.
