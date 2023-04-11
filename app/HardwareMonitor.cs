@@ -120,9 +120,14 @@ public static class HardwareMonitor
         }
     }
 
-    public static bool IsUsedGPU(int threshold = 50)
+    public static bool IsUsedGPU(int threshold = 20)
     {
-        return (GetGpuUse() > threshold);
+        if (GetGpuUse() > threshold)
+        {
+            Thread.Sleep(1000);
+            return (GetGpuUse() > threshold);
+        } else
+            return false;
     }
 
     public static void RecreateGpuTemperatureProviderWithDelay()
