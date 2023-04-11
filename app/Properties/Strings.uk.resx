@@ -136,7 +136,7 @@
     <value>Перезавантажитися зараз?</value>
   </data>
   <data name="AnimationSpeed" xml:space="preserve">
-    <value>Анімаця</value>
+    <value>Анімация</value>
   </data>
   <data name="AnimeMatrix" xml:space="preserve">
     <value>Аніме Матриця</value>
@@ -172,7 +172,7 @@
     <value>Повільна</value>
   </data>
   <data name="AuraStatic" xml:space="preserve">
-    <value>Статичний</value>
+    <value>Статична</value>
   </data>
   <data name="AuraStrobe" xml:space="preserve">
     <value>Стробоскоп</value>
@@ -208,7 +208,7 @@
     <value>За замовчуванням</value>
   </data>
   <data name="DisableOverdrive" xml:space="preserve">
-    <value>Вимкнути овердрайв дісплею</value>
+    <value>Вимкнути овердрайв дисплею</value>
   </data>
   <data name="Discharging" xml:space="preserve">
     <value>Розрядка</value>
@@ -283,7 +283,7 @@
     <value>Клавіатура</value>
   </data>
   <data name="LaptopScreen" xml:space="preserve">
-    <value>Дісплей</value>
+    <value>Дисплей</value>
   </data>
   <data name="MatrixBanner" xml:space="preserve">
     <value>Бінарний банер</value>
@@ -343,13 +343,13 @@
     <value>Відтворення / Пауза</value>
   </data>
   <data name="PowerLimits" xml:space="preserve">
-    <value>Потужність (PPT)</value>
+    <value>Ліміти Потужності (PPT)</value>
   </data>
   <data name="PPTExperimental" xml:space="preserve">
-    <value>Налаштування потужності (PPT) є експериментальною функцією. Використовуйте обережно та на свій страх і ризик!</value>
+    <value>Налаштування лімітів потужності (PPT) є експериментальною функцією. Використовуйте обережно та на свій страх і ризик!</value>
   </data>
   <data name="PrintScreen" xml:space="preserve">
-    <value>Зображення екрана</value>
+    <value>Print Screen</value>
   </data>
   <data name="Quit" xml:space="preserve">
     <value>Вихід</value>
