@@ -252,8 +252,8 @@ namespace GHelper
             checkKeyboardAuto.AutoSize = true;
             checkKeyboardAuto.Location = new Point(25, 51);
             checkKeyboardAuto.Name = "checkKeyboardAuto";
-            checkKeyboardAuto.Size = new Size(712, 36);
-            checkKeyboardAuto.MaximumSize = new Size(712, 0);
+            checkKeyboardAuto.Size = new Size(780, 36);
+            checkKeyboardAuto.MaximumSize = new Size(780, 0);
             checkKeyboardAuto.AutoEllipsis = true;
             checkKeyboardAuto.TabIndex = 2;
             checkKeyboardAuto.Text = Properties.Strings.KeyboardAuto;

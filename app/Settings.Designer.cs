@@ -544,7 +544,7 @@ namespace GHelper
             labelTipGPU.Location = new Point(24, 191);
             labelTipGPU.Margin = new Padding(4, 0, 4, 0);
             labelTipGPU.Name = "labelTipGPU";
-            labelTipGPU.Size = new Size(720, 36);
+            labelTipGPU.Size = new Size(760, 36);
             labelTipGPU.TabIndex = 20;
             labelTipGPU.Text = "                                                                          ";
             // 
@@ -726,7 +726,7 @@ namespace GHelper
             labelTipScreen.Location = new Point(20, 135);
             labelTipScreen.Margin = new Padding(4, 0, 4, 0);
             labelTipScreen.Name = "labelTipScreen";
-            labelTipScreen.Size = new Size(724, 36);
+            labelTipScreen.Size = new Size(760, 36);
             labelTipScreen.TabIndex = 24;
             // 
             // tableScreen

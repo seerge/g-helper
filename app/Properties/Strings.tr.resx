@@ -391,7 +391,7 @@
     <value>Pille çalışırken kapat</value>
   </data>
   <data name="UltimateGPUTooltip" xml:space="preserve">
-    <value>Dizüstü bilgisayar ekranını harici GPU'ya yönlendirerek FPS'yi maksimize eder</value>
+    <value>Dizüstü ekranını harici GPU'ya yönlendirerek FPS'yi maksimize eder</value>
   </data>
   <data name="UltimateMode" xml:space="preserve">
     <value>Ultimate</value>
