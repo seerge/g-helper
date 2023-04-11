@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -118,10 +118,10 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="ACPIError" xml:space="preserve">
-    <value>无法连接到华硕 ACPI。 没有它，应用程序将无法运行。 尝试安装Asus System Control Interface</value>
+    <value>无法连接到ASUS ACPI。 没有它，应用程序将无法运行。 请尝试安装Asus System Control Interface驱动。</value>
   </data>
   <data name="AlertDGPU" xml:space="preserve">
-    <value>看起来 GPU 正在大量使用，是否禁用它？</value>
+    <value>看起来 GPU 正在大量耗电，是否禁用？</value>
   </data>
   <data name="AlertDGPUTitle" xml:space="preserve">
     <value>节能模式</value>
@@ -139,7 +139,7 @@
     <value>动画速度</value>
   </data>
   <data name="AnimeMatrix" xml:space="preserve">
-    <value>光显矩阵屏</value>
+    <value>Anime Matrix 光显矩阵屏</value>
   </data>
   <data name="AppAlreadyRunning" xml:space="preserve">
     <value>应用已经运行</value>
@@ -157,7 +157,7 @@
     <value>呼吸</value>
   </data>
   <data name="AuraColorCycle" xml:space="preserve">
-    <value>循环</value>
+    <value>彩色循环</value>
   </data>
   <data name="AuraFast" xml:space="preserve">
     <value>快速</value>
@@ -172,22 +172,22 @@
     <value>慢</value>
   </data>
   <data name="AuraStatic" xml:space="preserve">
-    <value>静态</value>
+    <value>恒亮(静态)</value>
   </data>
   <data name="AuraStrobe" xml:space="preserve">
-    <value>频闪</value>
+    <value>闪烁</value>
   </data>
   <data name="AutoMode" xml:space="preserve">
     <value>自动</value>
   </data>
   <data name="AutoRefreshTooltip" xml:space="preserve">
-    <value>电池模式自动60Hz</value>
+    <value>使用电池时设置为60Hz,并在插上电源时恢复</value>
   </data>
   <data name="Awake" xml:space="preserve">
     <value>唤醒时</value>
   </data>
   <data name="Balanced" xml:space="preserve">
-    <value>平衡模式</value>
+    <value>平衡</value>
   </data>
   <data name="BatteryChargeLimit" xml:space="preserve">
     <value>电池充电限制</value>
@@ -199,7 +199,7 @@
     <value>颜色</value>
   </data>
   <data name="CPUBoost" xml:space="preserve">
-    <value>CPU 加速</value>
+    <value>CPU 睿频</value>
   </data>
   <data name="Custom" xml:space="preserve">
     <value>自定义设置</value>
@@ -208,7 +208,7 @@
     <value>默认</value>
   </data>
   <data name="DisableOverdrive" xml:space="preserve">
-    <value>禁用屏幕OD</value>
+    <value>禁用屏幕快速显示(OD)</value>
   </data>
   <data name="Discharging" xml:space="preserve">
     <value>正在放电</value>
@@ -220,7 +220,7 @@
     <value>禁用独显以节省电池电量</value>
   </data>
   <data name="EcoMode" xml:space="preserve">
-    <value>节能模式</value>
+    <value>集显模式</value>
   </data>
   <data name="Extra" xml:space="preserve">
     <value>更多</value>
@@ -229,7 +229,7 @@
     <value>更多设置</value>
   </data>
   <data name="FactoryDefaults" xml:space="preserve">
-    <value>恢复出厂设置</value>
+    <value>恢复默认设置</value>
   </data>
   <data name="FanCurves" xml:space="preserve">
     <value>风扇曲线</value>
@@ -250,13 +250,13 @@
     <value>风扇和电源</value>
   </data>
   <data name="FansPower" xml:space="preserve">
-    <value>自定义设置</value>
+    <value>风扇与电源设置</value>
   </data>
   <data name="GPUChanging" xml:space="preserve">
     <value>切换中...</value>
   </data>
   <data name="GPUMode" xml:space="preserve">
-    <value>GPU 模式</value>
+    <value>独显模式</value>
   </data>
   <data name="GPUModeEco" xml:space="preserve">
     <value>仅限核显</value>
@@ -265,7 +265,7 @@
     <value>核显 + 独显</value>
   </data>
   <data name="GPUModeUltimate" xml:space="preserve">
-    <value>独显</value>
+    <value>独显优先</value>
   </data>
   <data name="KeyBindings" xml:space="preserve">
     <value>按键绑定</value>
@@ -274,19 +274,19 @@
     <value>键盘</value>
   </data>
   <data name="KeyboardAuto" xml:space="preserve">
-    <value>电池模式自动降低键盘背光亮度以省电</value>
+    <value>电池模式下降低键盘亮度以省电，并在插上电源时恢复</value>
   </data>
   <data name="KeyboardBacklight" xml:space="preserve">
     <value>键盘背光</value>
   </data>
   <data name="LaptopKeyboard" xml:space="preserve">
-    <value>键盘背光:</value>
+    <value>键盘</value>
   </data>
   <data name="LaptopScreen" xml:space="preserve">
     <value>屏幕显示</value>
   </data>
   <data name="MatrixBanner" xml:space="preserve">
-    <value>横幅</value>
+    <value>Anime Matrix 标识</value>
   </data>
   <data name="MatrixBright" xml:space="preserve">
     <value>明亮</value>
@@ -310,22 +310,22 @@
     <value>图片</value>
   </data>
   <data name="MaxRefreshTooltip" xml:space="preserve">
-    <value>更高的刷新率和更低延迟</value>
+    <value>更高的刷新率和更低的延迟</value>
   </data>
   <data name="MinRefreshTooltip" xml:space="preserve">
-    <value>全局60Hz以节省电量</value>
+    <value>调整刷新率为60Hz以节省电量</value>
   </data>
   <data name="Multizone" xml:space="preserve">
-    <value>多区域</value>
+    <value>多区域设置</value>
   </data>
   <data name="OpenGHelper" xml:space="preserve">
     <value>打开G-Helper窗口</value>
   </data>
   <data name="Optimized" xml:space="preserve">
-    <value>自动模式</value>
+    <value>自动切换</value>
   </data>
   <data name="OptimizedGPUTooltip" xml:space="preserve">
-    <value>使用电池切换到节能模式，插入电源时切换到标准模式</value>
+    <value>使用电池时关闭独显(集显模式)，并在插上电源后重新启用独显(混合输出)</value>
   </data>
   <data name="Other" xml:space="preserve">
     <value>其他</value>
@@ -334,7 +334,7 @@
     <value>OD</value>
   </data>
   <data name="PerformanceMode" xml:space="preserve">
-    <value>性能模式:</value>
+    <value>性能模式</value>
   </data>
   <data name="PictureGif" xml:space="preserve">
     <value>图片/动图</value>
@@ -355,7 +355,7 @@
     <value>退出</value>
   </data>
   <data name="RPM" xml:space="preserve">
-    <value>每分钟转数</value>
+    <value>RPM</value>
   </data>
   <data name="RunOnStartup" xml:space="preserve">
     <value>开机自启</value>
@@ -364,13 +364,13 @@
     <value>关机时</value>
   </data>
   <data name="Silent" xml:space="preserve">
-    <value>安静模式</value>
+    <value>静音模式</value>
   </data>
   <data name="Sleep" xml:space="preserve">
     <value>睡眠时</value>
   </data>
   <data name="StandardGPUTooltip" xml:space="preserve">
-    <value>标准模式会启用独显</value>
+    <value>启用独显以供日常使用</value>
   </data>
   <data name="StandardMode" xml:space="preserve">
     <value>标准模式</value>
@@ -379,22 +379,22 @@
     <value>启动错误</value>
   </data>
   <data name="ToggleAura" xml:space="preserve">
-    <value>切换光环</value>
+    <value>切换 Aura 模式</value>
   </data>
   <data name="Turbo" xml:space="preserve">
-    <value>极速模式</value>
+    <value>增强</value>
   </data>
   <data name="TurnedOff" xml:space="preserve">
     <value>已关闭</value>
   </data>
   <data name="TurnOffOnBattery" xml:space="preserve">
-    <value>电池模式时关闭</value>
+    <value>使用电池时关闭</value>
   </data>
   <data name="UltimateGPUTooltip" xml:space="preserve">
     <value>开启独显直连获得最佳帧率</value>
   </data>
   <data name="UltimateMode" xml:space="preserve">
-    <value>独显直连</value>
+    <value>独显输出</value>
   </data>
   <data name="VersionLabel" xml:space="preserve">
     <value>版本</value>
