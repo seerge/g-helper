@@ -127,10 +127,10 @@
     <value>节能模式</value>
   </data>
   <data name="AlertUltimateOff" xml:space="preserve">
-    <value>关闭极致性能模式需要重新启动</value>
+    <value>关闭独显直连需要重新启动</value>
   </data>
   <data name="AlertUltimateOn" xml:space="preserve">
-    <value>极致性能模式需要重启</value>
+    <value>独显直连需要重启</value>
   </data>
   <data name="AlertUltimateTitle" xml:space="preserve">
     <value>现在重新启动吗？</value>
@@ -394,7 +394,7 @@
     <value>开启独显直连获得最佳帧率</value>
   </data>
   <data name="UltimateMode" xml:space="preserve">
-    <value>极致性能模式</value>
+    <value>独显直连</value>
   </data>
   <data name="VersionLabel" xml:space="preserve">
     <value>版本</value>
