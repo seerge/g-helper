@@ -274,7 +274,7 @@
     <value>Klavye</value>
   </data>
   <data name="KeyboardAuto" xml:space="preserve">
-    <value>Pil ile çalışırken klavye aydınlatmasını kıs, şarja takılınca eski haline dön</value>
+    <value>Pille çalışırken klavye aydınlatmasını kıs, şarjdayken eski haline dön</value>
   </data>
   <data name="KeyboardBacklight" xml:space="preserve">
     <value>Klavye Aydınlatması</value>
@@ -325,7 +325,7 @@
     <value>Optimize edilmiş</value>
   </data>
   <data name="OptimizedGPUTooltip" xml:space="preserve">
-    <value>Pil ile çalışırken Eko moda ve Şarj ile çalışırken Standart moda geçiş yapın</value>
+    <value>Pille çalışırken Eko moda ve şarjdayken Standart moda geçiş yapın</value>
   </data>
   <data name="Other" xml:space="preserve">
     <value>Diğer</value>
@@ -346,7 +346,7 @@
     <value>Güç Sınırları (PPT)</value>
   </data>
   <data name="PPTExperimental" xml:space="preserve">
-    <value>Güç Sınırları (PPT) deneysel bir özelliktir. Dikkatli ve riski göze alarak kullanın!</value>
+    <value>Güç Sınırları (PPT) deneysel bir özelliktir. Riski göze alarak dikkatli kullanın!</value>
   </data>
   <data name="PrintScreen" xml:space="preserve">
     <value>Ekran Görüntüsü Al</value>
