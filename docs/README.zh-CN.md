@@ -134,6 +134,22 @@ G-helper是一个单文件的exe文件, 而且它不会向系统中安装任何�
 ![Helps to save your battery](https://raw.githubusercontent.com/seerge/g-helper/main/docs/screenshots/screen-5w.png)
 
 ---------
+## 高级用户设置
+
+### 为每一个模式自定义用户计划
+
+在 config.json (位于 %appdata/GHelper) 中你可以手动添加自定义电源设置的GUID (它既可以是"真正的"可被选择的电源计划，也可以是"覆盖式(overlay)"的电源计划，就像g-helper默认设置的那样)
+
+格式 : "scheme_<mode>" : "GUID" 
+
+Where mode = 0 (balanced), 1 (turbo), 2 (silent)
+
+  "scheme_0": "2ac1d0e0-17a7-44ed-8091-d88ef75a4eb0",
+  "scheme_1": "381b4222-f694-41f0-9685-ff5bb260df2e"
+
+确保修改时保证json文件的结构 (也就是不要增减逗号等打乱配置的操作) - 否则应用会读取失败，并将重新创建一个新的配置文件来替代它。
+
+------------
 
 _注:请务必参考下方 **免责声明** 原文，以避免或减小错误或不恰当之翻译引起的负面影响。翻译仅为便于阅读之目的，不具有法律效力，亦不作为发生争端时处理之依据。_
 
