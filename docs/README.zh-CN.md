@@ -21,7 +21,7 @@
 
 _如果你在别的地方提到这个软件-请记得加上这个项目的网址。十分感谢。_
 
-![Screenshot 2023-03-30 115149](https://user-images.githubusercontent.com/5920850/228799078-bc93148f-6580-4319-b9e6-fbde4d246cd2.png)
+![Screenshot 2023-04-11 221528](https://user-images.githubusercontent.com/5920850/231278828-9bb7f5c3-4ce6-4825-b06d-572f39d3ede8.png)
 
 ### :zap: 主要功能
 
