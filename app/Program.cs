@@ -31,10 +31,14 @@ namespace GHelper
         public static void Main()
         {
 
-            Thread.CurrentThread.CurrentCulture = CultureInfo.CurrentCulture;
-            Thread.CurrentThread.CurrentUICulture = CultureInfo.CurrentUICulture;
+            if (CultureInfo.CurrentUICulture.ToString().Contains("zh-"))
+                Thread.CurrentThread.CurrentUICulture = CultureInfo.CreateSpecificCulture("zh");
+            else 
+                Thread.CurrentThread.CurrentUICulture = CultureInfo.CurrentUICulture;
 
-            //Thread.CurrentThread.CurrentUICulture = CultureInfo.CreateSpecificCulture("tr");
+            Debug.WriteLine(CultureInfo.CurrentUICulture);
+
+            //Thread.CurrentThread.CurrentUICulture = CultureInfo.CreateSpecificCulture("zh-hans");
 
             if (Process.GetProcesses().Count(p => p.ProcessName == "GHelper") > 1)
             {
