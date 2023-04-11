@@ -135,6 +135,22 @@ Debloating helps to save your battery and keep laptop a bit cooler
 
 ---------
 
+## Power user settings
+
+### Custom power plans with each mode
+
+In config.json (under %appdata/GHelper) you can manually add custom power plan GUID (it can be either "real" power plan that can be switched or "overlay" power plan like the ones g-helper sets by default)
+
+Format is following : "scheme_<mode>" : "GUID" 
+
+Where mode = 0 (balanced), 1 (turbo), 2 (silent)
+
+  "scheme_0": "2ac1d0e0-17a7-44ed-8091-d88ef75a4eb0",
+  "scheme_1": "381b4222-f694-41f0-9685-ff5bb260df2e"
+
+Make sure to keep json structure (i.e. not to break it with extra or missing comas, etc) - or app will fail to read it and will just recreate a new config instead.
+
+------------
 **Disclaimers**
 "ROG", "TUF", and "Armoury Crate" are trademarked by and belong to AsusTek Computer, Inc. I make no claims to these or any assets belonging to AsusTek Computer and use them purely for informational purposes only.
 
