@@ -181,7 +181,7 @@
     <value>Automático</value>
   </data>
   <data name="AutoRefreshTooltip" xml:space="preserve">
-    <value>Establece 60Hz para ahorrar batería y vuelve cuando está enchufado</value>
+    <value>Establece 60Hz con batería y vuelve cuando está enchufado</value>
   </data>
   <data name="Awake" xml:space="preserve">
     <value>Despierto</value>
@@ -256,7 +256,7 @@
     <value>Cargando</value>
   </data>
   <data name="GPUMode" xml:space="preserve">
-    <value>Modo GPU</value>
+    <value>Modo de GPU</value>
   </data>
   <data name="GPUModeEco" xml:space="preserve">
     <value>Sólo iGPU</value>
@@ -274,7 +274,7 @@
     <value>Teclado</value>
   </data>
   <data name="KeyboardAuto" xml:space="preserve">
-    <value>Bajar retroiluminación con batería y volver cuando está enchufado</value>
+    <value>Bajar retroiluminación con batería</value>
   </data>
   <data name="KeyboardBacklight" xml:space="preserve">
     <value>Retroiluminación del teclado</value>
