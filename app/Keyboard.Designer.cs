@@ -283,7 +283,7 @@ namespace GHelper
             // 
             AutoScaleDimensions = new SizeF(13F, 32F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(776, 858);
+            ClientSize = new Size(830, 858);
             Controls.Add(groupOther);
             Controls.Add(groupLight);
             Controls.Add(groupBox1);

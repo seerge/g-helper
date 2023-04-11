@@ -126,8 +126,8 @@ public static class HardwareMonitor
         {
             Thread.Sleep(1000);
             return (GetGpuUse() > threshold);
-        } else
-            return false;
+        } 
+        return false;
     }
 
     public static void RecreateGpuTemperatureProviderWithDelay()

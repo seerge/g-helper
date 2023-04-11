@@ -361,7 +361,7 @@
     <value>Başlangıçta Çalıştır</value>
   </data>
   <data name="Shutdown" xml:space="preserve">
-    <value>Kapat</value>
+    <value>Kapalı</value>
   </data>
   <data name="Silent" xml:space="preserve">
     <value>Sessiz</value>
