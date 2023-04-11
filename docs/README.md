@@ -139,7 +139,7 @@ Debloating helps to save your battery and keep laptop a bit cooler
 
 ### Custom power plans with each mode
 
-In config.json (under ``%appdata/GHelper``) you can manually add custom power plan GUID (it can be either "real" power plan that can be switched or "overlay" power plan like the ones g-helper sets by default)
+In config.json (under ``%AppData%\GHelper``) you can manually add custom power plan GUID (it can be either "real" power plan that can be switched or "overlay" power plan like the ones g-helper sets by default)
 
 Format is following : ``"scheme_<mode>" : "GUID" ``
 
