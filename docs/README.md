@@ -7,6 +7,8 @@
 
 A small utility that allows you to do almost everything you could do with Armoury Crate but without extra bloat and unnecessary services.
 
+[这个自述文件](https://github.com/seerge/g-helper/blob/main/docs/README.zh-CN.md)
+
 ## :gift: Main advantages 
 
 1. Seamless and automatic GPU switching (without asking you to close all apps, etc)
