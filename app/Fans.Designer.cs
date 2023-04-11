@@ -435,7 +435,7 @@ namespace GHelper
             ShowIcon = false;
             ShowInTaskbar = false;
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "Fans and Power";
+            Text = Properties.Strings.FansAndPower;
             panelFans.ResumeLayout(false);
             panelFans.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)picturePerf).EndInit();
