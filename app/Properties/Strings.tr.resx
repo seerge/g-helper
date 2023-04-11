@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="ACPIError" xml:space="preserve">
-    <value>ASUS ACPI'ye bağlanılamıyor. Uygulama onun olmadan çalışamaz. Asus Sistem Kontrol Arayüzü'nü yüklemeyi deneyin.</value>
+    <value>ASUS ACPI'ye bağlanılamıyor. Uygulama o olmadan çalışamaz. Asus Sistem Kontrol Arayüzü'nü yüklemeyi deneyin.</value>
   </data>
   <data name="AlertDGPU" xml:space="preserve">
     <value>Görünüşe göre GPU yoğun bir şekilde kullanılıyor, devre dışı bırakılsın mı?</value>
@@ -139,13 +139,13 @@
     <value>Animasyon Hızı</value>
   </data>
   <data name="AnimeMatrix" xml:space="preserve">
-    <value>Anime Matrisi</value>
+    <value>Anime Matrix</value>
   </data>
   <data name="AppAlreadyRunning" xml:space="preserve">
     <value>Uygulama zaten çalışıyor</value>
   </data>
   <data name="AppAlreadyRunningText" xml:space="preserve">
-    <value>G-Helper zaten çalışıyor. Görev çubuğu simgesi için kontrol edin.</value>
+    <value>G-Helper zaten çalışıyor. Simge için görev çubuğunu kontrol edin.</value>
   </data>
   <data name="ApplyFanCurve" xml:space="preserve">
     <value>Özel Fan Eğrisini Uygula</value>
@@ -154,7 +154,7 @@
     <value>Güç Sınırlarını Uygula</value>
   </data>
   <data name="AuraBreathe" xml:space="preserve">
-    <value>Nefes Al</value>
+    <value>Nefes</value>
   </data>
   <data name="AuraColorCycle" xml:space="preserve">
     <value>Renk Döngüsü</value>
@@ -175,13 +175,13 @@
     <value>Sabit</value>
   </data>
   <data name="AuraStrobe" xml:space="preserve">
-    <value>Strobe</value>
+    <value>Flaş</value>
   </data>
   <data name="AutoMode" xml:space="preserve">
     <value>Otomatik</value>
   </data>
   <data name="AutoRefreshTooltip" xml:space="preserve">
-    <value>Pil tasarrufu için 60Hz ayarlar, takılı olduğunda geri ayarlar</value>
+    <value>Pil tasarrufu için 60Hz kullanılır ve şarja takıldığında eski haline getirir</value>
   </data>
   <data name="Awake" xml:space="preserve">
     <value>Uyanık</value>
@@ -190,7 +190,7 @@
     <value>Dengeli</value>
   </data>
   <data name="BatteryChargeLimit" xml:space="preserve">
-    <value>Pil Şarj Sınırı</value>
+    <value>Pil Şarj Limiti</value>
   </data>
   <data name="Boot" xml:space="preserve">
     <value>Önyükleme</value>
@@ -208,16 +208,16 @@
     <value>Varsayılan</value>
   </data>
   <data name="DisableOverdrive" xml:space="preserve">
-    <value>Ekran overdrive'ı devre dışı bırak</value>
+    <value>Ekran overdrive özelliğini devre dışı bırak</value>
   </data>
   <data name="Discharging" xml:space="preserve">
-    <value>Deşarj</value>
+    <value>Pil boşalıyor</value>
   </data>
   <data name="DownloadUpdate" xml:space="preserve">
     <value>Güncelleştirmeyi İndir</value>
   </data>
   <data name="EcoGPUTooltip" xml:space="preserve">
-    <value>Pil tasarrufu için dGPU'yu devre dışı bırakır</value>
+    <value>Pil tasarrufu için harici GPU'yu devre dışı bırakır</value>
   </data>
   <data name="EcoMode" xml:space="preserve">
     <value>Eko</value>
@@ -259,13 +259,13 @@
     <value>GPU Modu</value>
   </data>
   <data name="GPUModeEco" xml:space="preserve">
-    <value>sadece iGPU</value>
+    <value>sadece dahili GPU</value>
   </data>
   <data name="GPUModeStandard" xml:space="preserve">
-    <value>iGPU + dGPU</value>
+    <value>dahili + harici GPU</value>
   </data>
   <data name="GPUModeUltimate" xml:space="preserve">
-    <value>sadece dGPU</value>
+    <value>sadece harici GPU</value>
   </data>
   <data name="KeyBindings" xml:space="preserve">
     <value>Tuş Bağlantıları</value>
@@ -274,7 +274,7 @@
     <value>Klavye</value>
   </data>
   <data name="KeyboardAuto" xml:space="preserve">
-    <value>Pil ile çalışırken daha az aydınlatma, takılıyken daha fazla</value>
+    <value>Pille çalışırken klavye aydınlatmasını kıs, şarjdayken eski haline dön</value>
   </data>
   <data name="KeyboardBacklight" xml:space="preserve">
     <value>Klavye Aydınlatması</value>
@@ -286,7 +286,7 @@
     <value>Laptop Ekranı</value>
   </data>
   <data name="MatrixBanner" xml:space="preserve">
-    <value>İkili Banner</value>
+    <value>Matrix Banner</value>
   </data>
   <data name="MatrixBright" xml:space="preserve">
     <value>Parlak</value>
@@ -325,7 +325,7 @@
     <value>Optimize edilmiş</value>
   </data>
   <data name="OptimizedGPUTooltip" xml:space="preserve">
-    <value>Pil ile Eco'ya ve Şarj ile Standart'a geçiş yapın</value>
+    <value>Pille çalışırken Eko moda ve şarjdayken Standart moda geçiş yapın</value>
   </data>
   <data name="Other" xml:space="preserve">
     <value>Diğer</value>
@@ -346,7 +346,7 @@
     <value>Güç Sınırları (PPT)</value>
   </data>
   <data name="PPTExperimental" xml:space="preserve">
-    <value>Güç Sınırları (PPT) deneysel bir özelliktir. Dikkatli kullanın ve kendi riskinizde!</value>
+    <value>Güç Sınırları (PPT) deneysel bir özelliktir. Riski göze alarak dikkatli kullanın!</value>
   </data>
   <data name="PrintScreen" xml:space="preserve">
     <value>Ekran Görüntüsü Al</value>
@@ -370,7 +370,7 @@
     <value>Uyku</value>
   </data>
   <data name="StandardGPUTooltip" xml:space="preserve">
-    <value>Standart kullanım için dGPU'yu etkinleştirir</value>
+    <value>Standart kullanım için harici GPU'yu etkinleştirir</value>
   </data>
   <data name="StandardMode" xml:space="preserve">
     <value>Standart</value>
@@ -388,13 +388,13 @@
     <value>Kapatıldı</value>
   </data>
   <data name="TurnOffOnBattery" xml:space="preserve">
-    <value>Pil üzerinde kapat</value>
+    <value>Pille çalışırken kapat</value>
   </data>
   <data name="UltimateGPUTooltip" xml:space="preserve">
-    <value>Dizüstü bilgisayar ekranını dGPU'ya yönlendirerek FPS'yi maksimize eder</value>
+    <value>Dizüstü bilgisayar ekranını harici GPU'ya yönlendirerek FPS'yi maksimize eder</value>
   </data>
   <data name="UltimateMode" xml:space="preserve">
-    <value>Nihai</value>
+    <value>Ultimate</value>
   </data>
   <data name="VersionLabel" xml:space="preserve">
     <value>Sürüm</value>
