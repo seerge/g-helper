@@ -163,7 +163,7 @@ namespace GHelper
             groupLight.Dock = DockStyle.Top;
             groupLight.Location = new Point(10, 252);
             groupLight.Name = "groupLight";
-            groupLight.Size = new Size(756, 304);
+            groupLight.Size = new Size(756, 320);
             groupLight.TabIndex = 1;
             groupLight.TabStop = false;
             groupLight.Text = Properties.Strings.KeyboardBacklight;
@@ -174,6 +174,7 @@ namespace GHelper
             labelSpeed.Location = new Point(25, 237);
             labelSpeed.Name = "labelSpeed";
             labelSpeed.Size = new Size(198, 32);
+            labelSpeed.MaximumSize = new Size(200, 0);
             labelSpeed.TabIndex = 40;
             labelSpeed.Text = Properties.Strings.AnimationSpeed;
             // 
@@ -252,6 +253,8 @@ namespace GHelper
             checkKeyboardAuto.Location = new Point(25, 51);
             checkKeyboardAuto.Name = "checkKeyboardAuto";
             checkKeyboardAuto.Size = new Size(712, 36);
+            checkKeyboardAuto.MaximumSize = new Size(712, 0);
+            checkKeyboardAuto.AutoEllipsis = true;
             checkKeyboardAuto.TabIndex = 2;
             checkKeyboardAuto.Text = Properties.Strings.KeyboardAuto;
             checkKeyboardAuto.UseVisualStyleBackColor = true;

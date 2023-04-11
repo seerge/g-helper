@@ -1019,7 +1019,10 @@ namespace GHelper
                 NativeMethods.SetCPUBoost(Program.config.getConfigPerf("auto_boost"));
             }
 
-            NativeMethods.SetPowerScheme(PerformanceMode);
+            if (Program.config.getConfigPerfString("scheme") is not null)
+                NativeMethods.SetPowerScheme(Program.config.getConfigPerfString("scheme"));
+            else 
+                NativeMethods.SetPowerScheme(PerformanceMode);
 
             if (NativeMethods.PowerGetEffectiveOverlayScheme(out Guid activeScheme) == 0)
             {

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using GHelper;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using static Tools.ScreenInterrogatory;
@@ -729,6 +730,12 @@ public class NativeMethods
         */
 
         Logger.WriteLine("Boost " + boost);
+    }
+
+    public static void SetPowerScheme(string scheme)
+    {
+        PowerSetActiveScheme(IntPtr.Zero, new Guid(scheme));
+        PowerSetActiveOverlayScheme(new Guid(scheme));
     }
 
     public static void SetPowerScheme(int mode)

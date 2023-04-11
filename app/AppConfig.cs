@@ -186,6 +186,12 @@ public class AppConfig
         return curve;
     }
 
+    public string getConfigPerfString(string name)
+    {
+        int mode = getConfig("performance_mode");
+        return getConfigString(name + "_" + mode);
+    }
+
     public int getConfigPerf(string name)
     {
         int mode = getConfig("performance_mode");
