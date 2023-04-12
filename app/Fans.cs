@@ -396,17 +396,19 @@ namespace GHelper
             Axis ax = ca.AxisX;
             Axis ay = ca.AxisY;
 
+            bool tip = false;
+
             HitTestResult hit = chart.HitTest(e.X, e.Y);
             if (hit.Series is not null && hit.PointIndex >= 0)
+            {
                 curPoint = hit.Series.Points[hit.PointIndex];
-            else
-                curPoint = null;
+                tip = true;
+            } 
 
 
             if (curPoint != null)
             {
 
-                Series s = hit.Series;
                 double dx, dy, dymin;
 
                 try
@@ -428,23 +430,24 @@ namespace GHelper
                     {
                         curPoint.XValue = dx;
                         curPoint.YValues[0] = dy;
+                        tip = true;
                     }
 
-                    labelTip.Visible = true;
                     labelTip.Text = Math.Round(curPoint.XValue) + "C, " + ChartPercToRPM((int)curPoint.YValues[0], " " + Properties.Strings.RPM);
                     labelTip.Top = e.Y + ((Control)sender).Top;
                     labelTip.Left = e.X;
+                    
                 }
                 catch
                 {
                     Debug.WriteLine(e.Y);
-                    labelTip.Visible = false;
+                    tip = false;
                 }
 
-            } else
-            {
-                labelTip.Visible = false;
-            }
+            } 
+
+            labelTip.Visible = tip;
+
 
         }
     }
