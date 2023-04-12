@@ -1014,15 +1014,15 @@ namespace GHelper
             AutoFans();
             AutoPower(1000);
 
-            if (Program.config.getConfigPerf("auto_boost") != -1)
-            {
-                NativeMethods.SetCPUBoost(Program.config.getConfigPerf("auto_boost"));
-            }
-
             if (Program.config.getConfigPerfString("scheme") is not null)
                 NativeMethods.SetPowerScheme(Program.config.getConfigPerfString("scheme"));
             else 
                 NativeMethods.SetPowerScheme(PerformanceMode);
+
+            if (Program.config.getConfigPerf("auto_boost") != -1)
+            {
+                NativeMethods.SetCPUBoost(Program.config.getConfigPerf("auto_boost"));
+            }
 
             if (NativeMethods.PowerGetEffectiveOverlayScheme(out Guid activeScheme) == 0)
             {

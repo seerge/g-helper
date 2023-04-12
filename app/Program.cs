@@ -31,10 +31,7 @@ namespace GHelper
         public static void Main()
         {
 
-            if (CultureInfo.CurrentUICulture.ToString().Contains("zh-"))
-                Thread.CurrentThread.CurrentUICulture = CultureInfo.CreateSpecificCulture("zh");
-            else 
-                Thread.CurrentThread.CurrentUICulture = CultureInfo.CurrentUICulture;
+            Thread.CurrentThread.CurrentUICulture = CultureInfo.CurrentUICulture;
 
             Debug.WriteLine(CultureInfo.CurrentUICulture);
 

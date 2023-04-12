@@ -390,56 +390,62 @@ namespace GHelper
         {
 
             if (sender is null) return;
-
             Chart chart = (Chart)sender;
 
-            if (e.Button.HasFlag(MouseButtons.Left))
+            ChartArea ca = chart.ChartAreas[0];
+            Axis ax = ca.AxisX;
+            Axis ay = ca.AxisY;
+
+            HitTestResult hit = chart.HitTest(e.X, e.Y);
+            if (hit.Series is not null && hit.PointIndex >= 0)
+                curPoint = hit.Series.Points[hit.PointIndex];
+            else
+                curPoint = null;
+
+
+            if (curPoint != null)
             {
-                ChartArea ca = chart.ChartAreas[0];
-                Axis ax = ca.AxisX;
-                Axis ay = ca.AxisY;
 
-                HitTestResult hit = chart.HitTest(e.X, e.Y);
-                if (hit.Series is not null && hit.PointIndex >= 0)
-                    curPoint = hit.Series.Points[hit.PointIndex];
+                Series s = hit.Series;
+                double dx, dy, dymin;
 
-
-                if (curPoint != null)
+                try
                 {
+                    dx = ax.PixelPositionToValue(e.X);
+                    dy = ay.PixelPositionToValue(e.Y);
 
-                    Series s = hit.Series;
-                    double dx, dy, dymin;
+                    if (dx < 20) dx = 20;
+                    if (dx > 100) dx = 100;
 
-                    try
+                    if (dy < 0) dy = 0;
+                    if (dy > 100) dy = 100;
+
+                    dymin = (dx - 65) * 1.2;
+
+                    if (dy < dymin) dy = dymin;
+
+                    if (e.Button.HasFlag(MouseButtons.Left))
                     {
-                        dx = ax.PixelPositionToValue(e.X);
-                        dy = ay.PixelPositionToValue(e.Y);
-
-                        if (dx < 20) dx = 20;
-                        if (dx > 100) dx = 100;
-
-                        if (dy < 0) dy = 0;
-                        if (dy > 100) dy = 100;
-
-                        dymin = (dx - 65) * 1.2;
-
-                        if (dy < dymin) dy = dymin;
-
                         curPoint.XValue = dx;
                         curPoint.YValues[0] = dy;
-
-                        labelTip.Visible = true;
-                        labelTip.Text = Math.Round(dx) + "C, " + ChartPercToRPM((int)dy, " " + Properties.Strings.RPM);
-                        labelTip.Top = e.Y + ((Control)sender).Top;
-                        labelTip.Left = e.X;
-
                     }
-                    catch
-                    {
-                        Debug.WriteLine(e.Y);
-                    }
+
+                    labelTip.Visible = true;
+                    labelTip.Text = Math.Round(curPoint.XValue) + "C, " + ChartPercToRPM((int)curPoint.YValues[0], " " + Properties.Strings.RPM);
+                    labelTip.Top = e.Y + ((Control)sender).Top;
+                    labelTip.Left = e.X;
                 }
+                catch
+                {
+                    Debug.WriteLine(e.Y);
+                    labelTip.Visible = false;
+                }
+
+            } else
+            {
+                labelTip.Visible = false;
             }
+
         }
     }
 
