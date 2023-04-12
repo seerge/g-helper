@@ -379,7 +379,7 @@
     <value>啟動錯誤</value>
   </data>
   <data name="ToggleAura" xml:space="preserve">
-    <value>切換光環</value>
+    <value>切換Aura</value>
   </data>
   <data name="Turbo" xml:space="preserve">
     <value>極速模式</value>
