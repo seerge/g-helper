@@ -1,6 +1,6 @@
 
 ## NOTE
-Bug reports without clear information or scenario to reproduce will be closed without answer. 
+Bug reports without clear information or scenario to reproduce and logs from ``%AppData%\GHelper`` will be closed without answer. 
 Please respect time of the developer. Thanks.
 
 
