@@ -469,7 +469,7 @@ namespace GHelper
                 lowerPoint = series.Points[index - 1];
             }
 
-            if (index < series.Points.Count)
+            if (index < series.Points.Count - 1)
             {
                 upperPoint = series.Points[index + 1];
             }
@@ -507,10 +507,10 @@ namespace GHelper
                 {
                     for (int i = index - 1; i > 0; i--)
                     {
-                        DataPoint curUpper = series.Points[i];
-                        if (curUpper.YValues[0] <= curYVal) break;
+                        DataPoint curLower = series.Points[i];
+                        if (curLower.YValues[0] <= curYVal) break;
 
-                        curUpper.YValues[0] = curYVal;
+                        curLower.YValues[0] = curYVal;
                     }
                 }
                 if (curXVal < lowerPoint.XValue)
@@ -518,10 +518,10 @@ namespace GHelper
 
                     for (int i = index - 1; i > 0; i--)
                     {
-                        DataPoint curUpper = series.Points[i];
-                        if (curUpper.XValue <= curXVal) break;
+                        DataPoint curLower = series.Points[i];
+                        if (curLower.XValue <= curXVal) break;
 
-                        curUpper.XValue = curXVal;
+                        curLower.XValue = curXVal;
                     }
                 }
             }
