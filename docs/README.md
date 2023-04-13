@@ -23,7 +23,7 @@ If you like this app, please [star :star: it on Github](https://github.com/seerg
 
 _If you post about the app - please include a link. Thanks._
 
-![Screenshot 2023-03-30 115149](https://user-images.githubusercontent.com/5920850/228799078-bc93148f-6580-4319-b9e6-fbde4d246cd2.png)
+![Screenshot 2023-04-13 190951](https://user-images.githubusercontent.com/5920850/231859391-c4963af4-491c-4523-95d4-0bdcfd7cfd6f.png)
 
 ### :zap: Main features
 
@@ -55,7 +55,7 @@ Modes are **same** as in Armoury Crate as they are stored in bios including defa
 
 _PPTs are shown for G14 2022, for other models PPTs will be different as they are set in bios._
 
-![Screenshot 2023-04-06 142234](https://user-images.githubusercontent.com/5920850/230377635-7032a480-3a94-4e35-9468-d8911e3e55ec.png)
+![Screenshot 2023-04-13 191030](https://user-images.githubusercontent.com/5920850/231859519-3cfa40f1-b06e-4cdb-b3e8-5187521ce208.png)
 
 ### :video_game: GPU Modes
 
