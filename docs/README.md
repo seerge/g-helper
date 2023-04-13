@@ -157,6 +157,18 @@ Where ``mode = 0 (balanced), 1 (turbo), 2 (silent)``
 
 Make sure to keep json structure (i.e. not to break it with extra or missing comas, etc) - or app will fail to read it and will just recreate a new config instead.
 
+### Custom hotkey actions
+
+App supports custom actions for M3, M4 and FN+F4 hotkeys. To set them select "Custom" next to appropriate hotkey and do one of the following:
+
+1. To run any custom application - put a full path to exe into "action" text field, for example:
+
+``C:\Program Files\EA Games\Battlefield 2042\BF2042.exe``
+
+2. To simulate any windows key - put appropriate keycode into "action" field, for example ``0x2C`` for Print screen. 
+
+Full list of keycodes https://learn.microsoft.com/en-us/windows/win32/inputdev/virtual-key-codes
+
 ------------
 **Disclaimers**
 "ROG", "TUF", and "Armoury Crate" are trademarked by and belong to AsusTek Computer, Inc. I make no claims to these or any assets belonging to AsusTek Computer and use them purely for informational purposes only.
