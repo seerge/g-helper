@@ -430,6 +430,13 @@ namespace GHelper
                     {
                         curPoint.XValue = dx;
                         curPoint.YValues[0] = dy;
+
+                        if (hit.Series is not null) {
+
+                            AdjustAllLevels(hit.PointIndex, dy, dx, hit.Series);
+
+                        }
+
                         tip = true;
                     }
 
@@ -449,6 +456,75 @@ namespace GHelper
             labelTip.Visible = tip;
 
 
+        }
+
+        private void AdjustAllLevels(int index, double curYVal,  double curXVal, Series series) {
+            
+            // Get the neighboring DataPoints of the hit point
+            DataPoint upperPoint = null;
+            DataPoint lowerPoint = null;
+
+            if (index > 0) 
+            {
+                lowerPoint = series.Points[index - 1];
+            }
+
+            if (index < series.Points.Count)
+            {
+                upperPoint = series.Points[index + 1];
+            }
+
+            // Adjust the values according to the comparison between the value and its neighbors
+            if (upperPoint != null)
+            {
+                if (curYVal > upperPoint.YValues[0])
+                {
+                    
+                    for (int i = index + 1; i < series.Points.Count; i++)
+                    {
+                        DataPoint curUpper = series.Points[i];
+                        if (curUpper.YValues[0] >= curYVal) break;
+
+                        curUpper.YValues[0] = curYVal;
+                    }
+                }
+                if (curXVal > upperPoint.XValue)
+                {
+
+                    for (int i = index + 1; i < series.Points.Count; i++)
+                    {
+                        DataPoint curUpper = series.Points[i];
+                        if (curUpper.XValue >= curXVal) break;
+
+                        curUpper.XValue = curXVal;
+                    }
+                }
+            }
+
+            if (lowerPoint != null)
+            {
+                if (curYVal < lowerPoint.YValues[0])
+                {
+                    for (int i = index - 1; i > 0; i--)
+                    {
+                        DataPoint curUpper = series.Points[i];
+                        if (curUpper.YValues[0] <= curYVal) break;
+
+                        curUpper.YValues[0] = curYVal;
+                    }
+                }
+                if (curXVal < lowerPoint.XValue)
+                {
+
+                    for (int i = index - 1; i > 0; i--)
+                    {
+                        DataPoint curUpper = series.Points[i];
+                        if (curUpper.XValue <= curXVal) break;
+
+                        curUpper.XValue = curXVal;
+                    }
+                }
+            }
         }
     }
 
