@@ -66,39 +66,42 @@ _PPTs are shown for G14 2022, for other models PPTs will be different as they ar
 
 ## :question: FAQ
 
-### How do I stop the Armory Crate install popup appearing every time I press the M4 / Rog key?
+#### How do I stop the Armory Crate install popup appearing every time I press the M4 / Rog key?
 Delete or move somewhere following file ``C:\Windows\System32\ASUSACCI\ArmouryCrateKeyControl.exe``.
 
 If it still appears - Go to BIOS (F2 on boot), open Advanced Settings and disable "Armory Control Interface". 
 
-### Why is Ultimate GPU mode not available on my laptop?
+#### Why is Ultimate GPU mode not available on my laptop?
 Ultimate mode is supported (by hardware) only on G14 2022 (and possibly other models from 2022+)
 
-### I can't set Eco mode (disable dGPU) on my G14 2020
+#### I can't set Eco mode (disable dGPU) on my G14 2020
 Unfortunately 2020 model doesn't support that on hardware level
 
-### Should I apply custom PPTs and fan profiles?
+#### Should I apply custom PPTs and fan profiles?
 You don't have to, it's purely optional. From my experience built in (in bios) performance modes work well. Limit your power or apply custom fan curves only if you have issues. As soon as you click Apply in the fan + power section bios will be considering the fan profile as "custom"! (no matter if you modified it or not)
 
-### How does G-helper control my fan speeds?
+#### How does G-helper control my fan speeds?
 It doesn't. Your bios does (same as in case with armoury). What G-helper can do - is (optionally) set a custom fan profile to current performance mode consisting of 8 pairs of temperature + fan speed % via same endpoint armoury seem to use.
 
-### How do I change fan % to fan RPM?
+#### How do I change fan % to fan RPM?
 Click on them
 
-### I don't see a GPU temperature in G-helper
+#### I don't see a GPU temperature in G-helper
 Most probably either you are using Eco / Optimized mode and your dGPU is simply off, or your windows has put the dGPU into sleep (to preserve power). In this situations G-helper won't be able to reach your GPU and get readings
 
-### It says, that app is already running
+#### It says, that app is already running
 Please check system tray for a (G) icon. By default windows is keen to hide all icons, so you may need to click ^ to see them all. I would advise to right click on Task Bar select Task Bar Settings -> Other System Tray icons -> Mark G-Helper to be always ON.
 
-### App doesn't start / or crashes, what should I do ?
+#### App doesn't start / or crashes, what should I do ?
 Open "Event Viewer" from start menu, go to Windows Logs -> Application and check for recent Errors mentioning G-Helper. If you see one - please post a [new issue](https://github.com/seerge/g-helper/issues) with all details from this error.
 
-### Can I use MyASUS app along with G-Helper?
+#### Can I use MyASUS app along with G-Helper?
 Sure, you can! The only problem is that MyASUS may override the battery charge limit that you set before. My advice in such a situation would be to set the same limit (i.e. 80%) in both MyASUS and G-Helper.
 
-### How do I uninstall G-helper?
+#### How do I set Mute Microphone to M3?
+This function is handled by Asus Optimization Service (therefore G-helper doesn't interfere and doesn't touch this function). Make sure that this service is up and running
+
+#### How do I uninstall G-helper?
 G-helper is a single exe, and it doesn't install anything in the system. To remove it - you can simply delete exe :) If you have applied any custom fan profiles or PPTs - before removing I would recommend selecting your favorite performance mode (for example balanced) and clicking "Factory defaults" under Fans + Power.
 
 ----------------------------
