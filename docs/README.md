@@ -162,12 +162,12 @@ Make sure to keep json structure (i.e. not to break it with extra or missing com
 App supports custom actions for M3, M4 and FN+F4 hotkeys. To set them select "Custom" next to appropriate hotkey and do one of the following:
 
 1. To run any custom application - put a full path to exe into "action" text field, for example:
-
 ``C:\Program Files\EA Games\Battlefield 2042\BF2042.exe``
 
 2. To simulate any windows key - put appropriate keycode into "action" field, for example ``0x2C`` for Print screen. 
-
 Full list of keycodes https://learn.microsoft.com/en-us/windows/win32/inputdev/virtual-key-codes
+
+![Screenshot 2023-04-13 172537](https://user-images.githubusercontent.com/5920850/231837470-df913847-cf8a-43e1-80b6-5eb6e9eaee4e.png)
 
 ------------
 **Disclaimers**
