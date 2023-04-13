@@ -225,7 +225,7 @@ namespace GHelper
             checkApplyFans.Margin = new Padding(4, 2, 4, 2);
             checkApplyFans.Name = "checkApplyFans";
             checkApplyFans.Padding = new Padding(15, 5, 15, 5);
-            checkApplyFans.Size = new Size(339, 46);
+            checkApplyFans.Size = new Size(339, 50);
             checkApplyFans.TabIndex = 17;
             checkApplyFans.Text = Properties.Strings.ApplyFanCurve;
             checkApplyFans.UseVisualStyleBackColor = false;
@@ -238,11 +238,11 @@ namespace GHelper
             buttonReset.BorderColor = Color.Transparent;
             buttonReset.BorderRadius = 2;
             buttonReset.FlatStyle = FlatStyle.Flat;
-            buttonReset.Location = new Point(30, 1084);
+            buttonReset.Location = new Point(30, 1082);
             buttonReset.Margin = new Padding(4, 2, 4, 2);
             buttonReset.Name = "buttonReset";
             buttonReset.Secondary = true;
-            buttonReset.Size = new Size(232, 50);
+            buttonReset.Size = new Size(232, 54);
             buttonReset.TabIndex = 15;
             buttonReset.Text = Properties.Strings.FactoryDefaults;
             buttonReset.UseVisualStyleBackColor = false;
@@ -292,11 +292,11 @@ namespace GHelper
             checkApplyPower.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             checkApplyPower.AutoSize = true;
             checkApplyPower.BackColor = SystemColors.ControlLight;
-            checkApplyPower.Location = new Point(20, 1086);
+            checkApplyPower.Location = new Point(20, 1084);
             checkApplyPower.Margin = new Padding(4, 2, 4, 2);
             checkApplyPower.Name = "checkApplyPower";
             checkApplyPower.Padding = new Padding(15, 5, 15, 5);
-            checkApplyPower.Size = new Size(277, 46);
+            checkApplyPower.Size = new Size(277, 50);
             checkApplyPower.TabIndex = 25;
             checkApplyPower.Text = Properties.Strings.ApplyPowerLimits;
             checkApplyPower.UseVisualStyleBackColor = false;

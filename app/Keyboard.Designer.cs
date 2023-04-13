@@ -286,7 +286,7 @@ namespace GHelper
             // 
             pictureHelp.BackgroundImageLayout = ImageLayout.Zoom;
             pictureHelp.Cursor = Cursors.Hand;
-            pictureHelp.Image = Properties.Resources.icons8_help_32;
+            pictureHelp.BackgroundImage = Properties.Resources.icons8_help_64;
             pictureHelp.Location = new Point(744, 57);
             pictureHelp.Name = "pictureHelp";
             pictureHelp.Size = new Size(32, 32);
