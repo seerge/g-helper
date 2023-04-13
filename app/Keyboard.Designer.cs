@@ -80,7 +80,7 @@ namespace GHelper
             // 
             // textFNF4
             // 
-            textFNF4.Location = new Point(411, 176);
+            textFNF4.Location = new Point(415, 176);
             textFNF4.Name = "textFNF4";
             textFNF4.PlaceholderText = "action";
             textFNF4.Size = new Size(320, 39);
@@ -93,6 +93,7 @@ namespace GHelper
             comboFNF4.Name = "comboFNF4";
             comboFNF4.Size = new Size(312, 40);
             comboFNF4.TabIndex = 7;
+            comboFNF4.BorderColor = Color.White;
             // 
             // labelFNF4
             // 
@@ -105,7 +106,7 @@ namespace GHelper
             // 
             // textM4
             // 
-            textM4.Location = new Point(411, 113);
+            textM4.Location = new Point(415, 113);
             textM4.Name = "textM4";
             textM4.PlaceholderText = "action";
             textM4.Size = new Size(320, 39);
@@ -113,7 +114,7 @@ namespace GHelper
             // 
             // textM3
             // 
-            textM3.Location = new Point(411, 54);
+            textM3.Location = new Point(415, 54);
             textM3.Name = "textM3";
             textM3.PlaceholderText = "notepad /p \"file.txt\"";
             textM3.Size = new Size(320, 39);
@@ -127,6 +128,8 @@ namespace GHelper
             comboM4.Name = "comboM4";
             comboM4.Size = new Size(312, 40);
             comboM4.TabIndex = 3;
+            comboM4.BorderColor = Color.White;
+
             // 
             // labelM4
             // 
@@ -145,6 +148,8 @@ namespace GHelper
             comboM3.Name = "comboM3";
             comboM3.Size = new Size(312, 40);
             comboM3.TabIndex = 1;
+            comboM3.BorderColor = Color.White;
+
             // 
             // labelM3
             // 

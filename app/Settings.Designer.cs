@@ -380,7 +380,7 @@ namespace GHelper
             picturePerf.BackgroundImage = (Image)resources.GetObject("picturePerf.BackgroundImage");
             picturePerf.BackgroundImageLayout = ImageLayout.Zoom;
             picturePerf.InitialImage = null;
-            picturePerf.Location = new Point(24, 20);
+            picturePerf.Location = new Point(24, 18);
             picturePerf.Margin = new Padding(4);
             picturePerf.Name = "picturePerf";
             picturePerf.Size = new Size(32, 32);
@@ -402,7 +402,7 @@ namespace GHelper
             // 
             labelCPUFan.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             labelCPUFan.Cursor = Cursors.Hand;
-            labelCPUFan.Location = new Point(384, 15);
+            labelCPUFan.Location = new Point(384, 18);
             labelCPUFan.Margin = new Padding(8, 0, 8, 0);
             labelCPUFan.Name = "labelCPUFan";
             labelCPUFan.Size = new Size(400, 36);
@@ -988,7 +988,7 @@ namespace GHelper
             // 
             labelKeyboard.AutoSize = true;
             labelKeyboard.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            labelKeyboard.Location = new Point(60, 13);
+            labelKeyboard.Location = new Point(60, 14);
             labelKeyboard.Margin = new Padding(8, 0, 8, 0);
             labelKeyboard.Name = "labelKeyboard";
             labelKeyboard.Size = new Size(210, 32);

@@ -335,6 +335,8 @@ namespace GHelper
                 old = curve[i];
             }
 
+            SaveProfile(series, device);
+
         }
 
         void SaveProfile(Series series, int device)

@@ -191,8 +191,10 @@ namespace CustomControls
                 {
                     dc = m.WParam;
                 }
+
                 var rgn = CreateRectRgn(innerInnerBorder.Left, innerInnerBorder.Top,
                     innerInnerBorder.Right, innerInnerBorder.Bottom);
+                
                 SelectClipRgn(dc, rgn);
                 DefWndProc(ref m);
                 DeleteObject(rgn);
