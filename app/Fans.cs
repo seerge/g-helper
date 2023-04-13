@@ -435,7 +435,7 @@ namespace GHelper
 
                     labelTip.Text = Math.Round(curPoint.XValue) + "C, " + ChartPercToRPM((int)curPoint.YValues[0], " " + Properties.Strings.RPM);
                     labelTip.Top = e.Y + ((Control)sender).Top;
-                    labelTip.Left = e.X;
+                    labelTip.Left = e.X - 50;
                     
                 }
                 catch

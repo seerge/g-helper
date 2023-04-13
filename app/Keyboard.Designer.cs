@@ -48,16 +48,19 @@ namespace GHelper
             checkBoot = new CheckBox();
             checkAwake = new CheckBox();
             groupOther = new GroupBox();
+            checkNoOverdrive = new CheckBox();
             checkKeyboardAuto = new CheckBox();
             checkTopmost = new CheckBox();
-            checkNoOverdrive = new CheckBox();
+            pictureHelp = new PictureBox();
             groupBox1.SuspendLayout();
             groupLight.SuspendLayout();
             groupOther.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureHelp).BeginInit();
             SuspendLayout();
             // 
             // groupBox1
             // 
+            groupBox1.Controls.Add(pictureHelp);
             groupBox1.Controls.Add(textFNF4);
             groupBox1.Controls.Add(comboFNF4);
             groupBox1.Controls.Add(labelFNF4);
@@ -70,7 +73,7 @@ namespace GHelper
             groupBox1.Dock = DockStyle.Top;
             groupBox1.Location = new Point(10, 10);
             groupBox1.Name = "groupBox1";
-            groupBox1.Size = new Size(756, 242);
+            groupBox1.Size = new Size(810, 242);
             groupBox1.TabIndex = 0;
             groupBox1.TabStop = false;
             groupBox1.Text = Properties.Strings.KeyBindings;
@@ -163,7 +166,7 @@ namespace GHelper
             groupLight.Dock = DockStyle.Top;
             groupLight.Location = new Point(10, 252);
             groupLight.Name = "groupLight";
-            groupLight.Size = new Size(756, 320);
+            groupLight.Size = new Size(810, 320);
             groupLight.TabIndex = 1;
             groupLight.TabStop = false;
             groupLight.Text = Properties.Strings.KeyboardBacklight;
@@ -172,9 +175,9 @@ namespace GHelper
             // 
             labelSpeed.AutoSize = true;
             labelSpeed.Location = new Point(25, 237);
+            labelSpeed.MaximumSize = new Size(200, 0);
             labelSpeed.Name = "labelSpeed";
             labelSpeed.Size = new Size(198, 32);
-            labelSpeed.MaximumSize = new Size(200, 0);
             labelSpeed.TabIndex = 40;
             labelSpeed.Text = Properties.Strings.AnimationSpeed;
             // 
@@ -240,21 +243,31 @@ namespace GHelper
             groupOther.Controls.Add(checkKeyboardAuto);
             groupOther.Controls.Add(checkTopmost);
             groupOther.Dock = DockStyle.Top;
-            groupOther.Location = new Point(10, 556);
+            groupOther.Location = new Point(10, 572);
             groupOther.Name = "groupOther";
-            groupOther.Size = new Size(756, 225);
+            groupOther.Size = new Size(810, 225);
             groupOther.TabIndex = 2;
             groupOther.TabStop = false;
             groupOther.Text = Properties.Strings.Other;
             // 
+            // checkNoOverdrive
+            // 
+            checkNoOverdrive.AutoSize = true;
+            checkNoOverdrive.Location = new Point(25, 156);
+            checkNoOverdrive.Name = "checkNoOverdrive";
+            checkNoOverdrive.Size = new Size(307, 36);
+            checkNoOverdrive.TabIndex = 3;
+            checkNoOverdrive.Text = Properties.Strings.DisableOverdrive;
+            checkNoOverdrive.UseVisualStyleBackColor = true;
+            // 
             // checkKeyboardAuto
             // 
+            checkKeyboardAuto.AutoEllipsis = true;
             checkKeyboardAuto.AutoSize = true;
             checkKeyboardAuto.Location = new Point(25, 51);
-            checkKeyboardAuto.Name = "checkKeyboardAuto";
-            checkKeyboardAuto.Size = new Size(780, 36);
             checkKeyboardAuto.MaximumSize = new Size(780, 0);
-            checkKeyboardAuto.AutoEllipsis = true;
+            checkKeyboardAuto.Name = "checkKeyboardAuto";
+            checkKeyboardAuto.Size = new Size(712, 36);
             checkKeyboardAuto.TabIndex = 2;
             checkKeyboardAuto.Text = Properties.Strings.KeyboardAuto;
             checkKeyboardAuto.UseVisualStyleBackColor = true;
@@ -269,15 +282,16 @@ namespace GHelper
             checkTopmost.Text = Properties.Strings.WindowTop;
             checkTopmost.UseVisualStyleBackColor = true;
             // 
-            // checkNoOverdrive
+            // pictureHelp
             // 
-            checkNoOverdrive.AutoSize = true;
-            checkNoOverdrive.Location = new Point(25, 156);
-            checkNoOverdrive.Name = "checkNoOverdrive";
-            checkNoOverdrive.Size = new Size(307, 36);
-            checkNoOverdrive.TabIndex = 3;
-            checkNoOverdrive.Text = Properties.Strings.DisableOverdrive;
-            checkNoOverdrive.UseVisualStyleBackColor = true;
+            pictureHelp.BackgroundImageLayout = ImageLayout.Zoom;
+            pictureHelp.Cursor = Cursors.Hand;
+            pictureHelp.Image = Properties.Resources.icons8_help_32;
+            pictureHelp.Location = new Point(744, 57);
+            pictureHelp.Name = "pictureHelp";
+            pictureHelp.Size = new Size(32, 32);
+            pictureHelp.TabIndex = 9;
+            pictureHelp.TabStop = false;
             // 
             // Keyboard
             // 
@@ -291,7 +305,7 @@ namespace GHelper
             MaximizeBox = false;
             MdiChildrenMinimizedAnchorBottom = false;
             MinimizeBox = false;
-            Name = Properties.Strings.Keyboard;
+            Name = "Keyboard";
             Padding = new Padding(10);
             ShowIcon = false;
             ShowInTaskbar = false;
@@ -302,6 +316,7 @@ namespace GHelper
             groupLight.PerformLayout();
             groupOther.ResumeLayout(false);
             groupOther.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureHelp).EndInit();
             ResumeLayout(false);
         }
 
@@ -328,5 +343,6 @@ namespace GHelper
         private CheckBox checkTopmost;
         private CheckBox checkKeyboardAuto;
         private CheckBox checkNoOverdrive;
+        private PictureBox pictureHelp;
     }
 }

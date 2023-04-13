@@ -35,7 +35,7 @@ namespace GHelper
 
             Debug.WriteLine(CultureInfo.CurrentUICulture);
 
-            //Thread.CurrentThread.CurrentUICulture = CultureInfo.CreateSpecificCulture("zh-hans");
+            //Thread.CurrentThread.CurrentUICulture = CultureInfo.CreateSpecificCulture("zh");
 
             if (Process.GetProcesses().Count(p => p.ProcessName == "GHelper") > 1)
             {
