@@ -3,9 +3,8 @@
 [![Github all releases](https://img.shields.io/github/downloads/seerge/g-helper/total.svg)](https://GitHub.com/seerge/g-helper/releases/) [![GitHub release](https://img.shields.io/github/release/seerge/g-helper.svg)](https://GitHub.com/seerge/g-helper/releases/) [![GitHub stars](https://img.shields.io/github/stars/seerge/g-helper.svg?style=social&label=Star)](https://GitHub.com/seerge/g-helper/stargazers/)
 
 ## Lightweight Armoury Crate alternative for Asus laptops
-### Control tool for ROG Zephyrus G14, G15, Flow X13, Flow X16, TUF, Strix, Scar and other models
 
-A small utility that allows you to do almost everything you could do with Armoury Crate but without extra bloat and unnecessary services.
+Control tool for ROG Zephyrus G14, G15, Flow X13, Flow X16, TUF, Strix, Scar and other models. A small utility that allows you to do almost everything you could do with Armoury Crate but without extra bloat and unnecessary services.
 
 [这个自述文件](https://github.com/seerge/g-helper/blob/main/docs/README.zh-CN.md)
 
