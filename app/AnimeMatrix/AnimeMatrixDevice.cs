@@ -380,14 +380,14 @@ namespace Starlight.AnimeMatrix
                     g.CompositingQuality = CompositingQuality.HighQuality;
                     g.SmoothingMode = SmoothingMode.AntiAlias;
 
-                    using (Font font = new Font("Arial", 12F))
+                    using (Font font = new Font("Arial", 24F, GraphicsUnit.Pixel))
                     {
                         SizeF textSize = g.MeasureString(text1, font);
-                        g.DrawString(text1, font, Brushes.White, (MaxColumns*3 - textSize.Width)+3, -5);
+                        g.DrawString(text1, font, Brushes.White, (MaxColumns*3 - textSize.Width)+3, -3);
                     }
 
                     if (text2.Length > 0)
-                        using (Font font = new Font("Arial", 9F))
+                        using (Font font = new Font("Arial", 18F, GraphicsUnit.Pixel))
                         {
                             SizeF textSize = g.MeasureString(text2, font);
                             g.DrawString(text2, font, Brushes.White, (MaxColumns * 3 - textSize.Width)+1, 25);
