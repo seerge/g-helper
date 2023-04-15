@@ -433,11 +433,8 @@ namespace GHelper
                         curPoint.XValue = dx;
                         curPoint.YValues[0] = dy;
 
-                        if (hit.Series is not null) {
-
-                            AdjustAllLevels(hit.PointIndex, dy, dx, hit.Series);
-
-                        }
+                        if (hit.Series is not null) 
+                            AdjustAllLevels(hit.PointIndex, dx, dy, hit.Series);
 
                         tip = true;
                     }
@@ -460,7 +457,7 @@ namespace GHelper
 
         }
 
-        private void AdjustAllLevels(int index, double curYVal,  double curXVal, Series series) {
+        private void AdjustAllLevels(int index, double curXVal, double curYVal, Series series) {
             
             // Get the neighboring DataPoints of the hit point
             DataPoint upperPoint = null;
@@ -505,20 +502,20 @@ namespace GHelper
 
             if (lowerPoint != null)
             {
-                if (curYVal < lowerPoint.YValues[0])
+                //Debug.WriteLine(curYVal + " <? " + Math.Floor(lowerPoint.YValues[0]));
+                if (curYVal < Math.Floor(lowerPoint.YValues[0]))
                 {
-                    for (int i = index - 1; i > 0; i--)
+                    for (int i = index - 1; i >= 0; i--)
                     {
                         DataPoint curLower = series.Points[i];
                         if (curLower.YValues[0] <= curYVal) break;
-
-                        curLower.YValues[0] = curYVal;
+                        curLower.YValues[0] = Math.Floor(curYVal);
                     }
                 }
                 if (curXVal < lowerPoint.XValue)
                 {
 
-                    for (int i = index - 1; i > 0; i--)
+                    for (int i = index - 1; i >= 0; i--)
                     {
                         DataPoint curLower = series.Points[i];
                         if (curLower.XValue <= curXVal) break;
