@@ -15,7 +15,6 @@ public static class HardwareMonitor
     public static string? gpuFan;
     public static string? midFan;
 
-    //public static List<int> gpuUsage = new List<int>();
     public static int? gpuUse;
 
     public static int GetFanMax()
@@ -78,9 +77,10 @@ public static class HardwareMonitor
 
         if (cpuTemp < 0) try
         {
-            var ct = new PerformanceCounter("Thermal Zone Information", "Temperature", @"\_TZ.THRM", true);
-            cpuTemp = ct.NextValue() - 273;
-            ct.Dispose();
+            using (var ct = new PerformanceCounter("Thermal Zone Information", "Temperature", @"\_TZ.THRM", true))
+            {
+                cpuTemp = ct.NextValue() - 273;
+            }
         }
         catch
         {
@@ -102,17 +102,12 @@ public static class HardwareMonitor
         if (gpuTemp is null || gpuTemp < 0)
             gpuTemp = Program.wmi.DeviceGet(ASUSWmi.Temp_GPU);
 
-        /*
-        gpuUsage.Add(GetGpuUse());
-        if (gpuUsage.Count > 3) gpuUsage.RemoveAt(0);
-        */
-
         try
         {
-            var cb = new PerformanceCounter("Power Meter", "Power", "Power Meter (0)", true);
-            batteryDischarge = cb.NextValue() / 1000;
-            cb.Dispose();
-
+            using (var cb = new PerformanceCounter("Power Meter", "Power", "Power Meter (0)", true))
+            {
+                batteryDischarge = cb.NextValue() / 1000;
+            }
         }
         catch
         {

@@ -560,7 +560,7 @@ namespace GHelper
 
             if (fans.Visible)
             {
-                fans.Hide();
+                fans.Close();
             }
             else
             {
@@ -917,7 +917,7 @@ namespace GHelper
                 if (cpuResult != 1 || gpuResult != 1) 
                 {
                     int mode = Program.config.getConfig("performance_mode");
-                    Logger.WriteLine("Driver rejected fan curve, resetting mode to " + mode);
+                    Logger.WriteLine("ASUS BIOS rejected fan curve, resetting mode to " + mode);
                     Program.wmi.DeviceSet(ASUSWmi.PerformanceMode, mode, "PerformanceMode");
                 }
                 else customFans = true;
