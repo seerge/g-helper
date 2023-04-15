@@ -184,7 +184,7 @@
     <value>Establece 60Hz con batería y vuelve cuando está enchufado</value>
   </data>
   <data name="Awake" xml:space="preserve">
-    <value>Despierto</value>
+    <value>Encendida</value>
   </data>
   <data name="Balanced" xml:space="preserve">
     <value>Equilibrado</value>
@@ -193,7 +193,7 @@
     <value>Límite de carga</value>
   </data>
   <data name="Boot" xml:space="preserve">
-    <value>Inicio</value>
+    <value>Al arrancar</value>
   </data>
   <data name="Color" xml:space="preserve">
     <value>Color</value>
@@ -361,13 +361,13 @@
     <value>Ejecutar al inicio</value>
   </data>
   <data name="Shutdown" xml:space="preserve">
-    <value>Apagar</value>
+    <value>Al apagar</value>
   </data>
   <data name="Silent" xml:space="preserve">
     <value>Silencio</value>
   </data>
   <data name="Sleep" xml:space="preserve">
-    <value>Suspender</value>
+    <value>En suspensión</value>
   </data>
   <data name="StandardGPUTooltip" xml:space="preserve">
     <value>Habilita la dGPU para uso estándar</value>
