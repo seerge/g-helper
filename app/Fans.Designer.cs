@@ -398,7 +398,7 @@ namespace GHelper
             // 
             pictureFine.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             pictureFine.BackgroundImageLayout = ImageLayout.Zoom;
-            pictureFine.Image = Properties.Resources.everything_is_fine_itsfine;
+            pictureFine.Image = new Bitmap(Properties.Resources.everything_is_fine_itsfine);
             pictureFine.Location = new Point(20, 682);
             pictureFine.Margin = new Padding(4, 2, 4, 2);
             pictureFine.Name = "pictureFine";
