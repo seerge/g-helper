@@ -100,8 +100,16 @@ Sure, you can! The only problem is that MyASUS may override the battery charge l
 #### How do I set Mute Microphone to M3?
 This function is handled by Asus Optimization Service (therefore G-helper doesn't interfere and doesn't touch this function). Make sure that this service is up and running
 
+#### How do I set different "Visual styles"?
+Personally, i'm not a big fan of them, as they make colors very inaccurate. But if you want so - you can adjust display colors using either Nvidia Control panel or AMD Adrenaline (appropriate display sections). If you really want you can also use [own ASUS utility from MS Store](https://apps.microsoft.com/store/detail/gamevisual/9P4K1LFTXSH8?hl=nl-nl&gl=nl&rtc=1)
+
 #### How do I uninstall G-helper?
 G-helper is a single exe, and it doesn't install anything in the system. To remove it - you can simply delete exe :) If you have applied any custom fan profiles or PPTs - before removing I would recommend selecting your favorite performance mode (for example balanced) and clicking "Factory defaults" under Fans + Power.
+
+#### What is G-helper ?
+It's a lightweight Armoury Crate alternative for Asus laptops. A small utility that allows you to do almost everything you could do with Armoury Crate but without extra bloat and unnecessary services.
+
+
 
 ----------------------------
 
