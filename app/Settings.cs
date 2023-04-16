@@ -901,6 +901,13 @@ namespace GHelper
         }
 
 
+        protected void LabelFansResult(string text)
+        {
+            if (fans != null && fans.Text != "")
+                fans.LabelFansResult(text);
+        }
+
+
         public void AutoFans(bool force = false)
         {
             customFans = false;
@@ -914,13 +921,18 @@ namespace GHelper
                     Program.wmi.SetFanCurve(2, Program.config.getFanConfig(2));
 
                 // something went wrong, resetting to default profile
-                if (cpuResult != 1 || gpuResult != 1) 
+                if (cpuResult != 1 || gpuResult != 1)
                 {
                     int mode = Program.config.getConfig("performance_mode");
                     Logger.WriteLine("ASUS BIOS rejected fan curve, resetting mode to " + mode);
                     Program.wmi.DeviceSet(ASUSWmi.PerformanceMode, mode, "PerformanceMode");
+                    LabelFansResult("ASUS BIOS rejected fan curve");
                 }
-                else customFans = true;
+                else
+                {
+                    LabelFansResult("");
+                    customFans = true;
+                }
 
                 // fix for misbehaving bios on intell based TUF 2022
                 if ((Program.config.ContainsModel("FX507") || Program.config.ContainsModel("FX517")) && Program.config.getConfigPerf("auto_apply_power") != 1)

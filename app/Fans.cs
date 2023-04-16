@@ -200,9 +200,12 @@ namespace GHelper
                 Program.wmi.DeviceSet(ASUSWmi.PerformanceMode, Program.config.getConfig("performance_mode"), "PerfMode");
                 Program.settingsForm.AutoPower();
             }
+        }
 
 
-
+        public void LabelFansResult(string text)
+        {
+            labelFansResult.Text = text;
         }
 
         private void Fans_FormClosing(object? sender, FormClosingEventArgs e)
@@ -407,7 +410,7 @@ namespace GHelper
             {
                 curPoint = hit.Series.Points[hit.PointIndex];
                 tip = true;
-            } 
+            }
 
 
             if (curPoint != null)
@@ -435,7 +438,7 @@ namespace GHelper
                         curPoint.XValue = dx;
                         curPoint.YValues[0] = dy;
 
-                        if (hit.Series is not null) 
+                        if (hit.Series is not null)
                             AdjustAllLevels(hit.PointIndex, dx, dy, hit.Series);
 
                         tip = true;
@@ -444,7 +447,7 @@ namespace GHelper
                     labelTip.Text = Math.Round(curPoint.XValue) + "C, " + ChartPercToRPM((int)curPoint.YValues[0], " " + Properties.Strings.RPM);
                     labelTip.Top = e.Y + ((Control)sender).Top;
                     labelTip.Left = e.X - 50;
-                    
+
                 }
                 catch
                 {
@@ -452,20 +455,21 @@ namespace GHelper
                     tip = false;
                 }
 
-            } 
+            }
 
             labelTip.Visible = tip;
 
 
         }
 
-        private void AdjustAllLevels(int index, double curXVal, double curYVal, Series series) {
-            
+        private void AdjustAllLevels(int index, double curXVal, double curYVal, Series series)
+        {
+
             // Get the neighboring DataPoints of the hit point
             DataPoint upperPoint = null;
             DataPoint lowerPoint = null;
 
-            if (index > 0) 
+            if (index > 0)
             {
                 lowerPoint = series.Points[index - 1];
             }
@@ -480,7 +484,7 @@ namespace GHelper
             {
                 if (curYVal > upperPoint.YValues[0])
                 {
-                    
+
                     for (int i = index + 1; i < series.Points.Count; i++)
                     {
                         DataPoint curUpper = series.Points[i];
@@ -505,12 +509,12 @@ namespace GHelper
             if (lowerPoint != null)
             {
                 //Debug.WriteLine(curYVal + " <? " + Math.Floor(lowerPoint.YValues[0]));
-                if (curYVal < Math.Floor(lowerPoint.YValues[0]))
+                if (curYVal <= Math.Floor(lowerPoint.YValues[0]))
                 {
                     for (int i = index - 1; i >= 0; i--)
                     {
                         DataPoint curLower = series.Points[i];
-                        if (curLower.YValues[0] <= curYVal) break;
+                        if (curLower.YValues[0] < curYVal) break;
                         curLower.YValues[0] = Math.Floor(curYVal);
                     }
                 }

@@ -63,6 +63,7 @@ namespace GHelper
             trackTotal = new TrackBar();
             pictureFine = new PictureBox();
             labelInfo = new Label();
+            labelFansResult = new Label();
             panelFans.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)picturePerf).BeginInit();
             tableFanCharts.SuspendLayout();
@@ -80,6 +81,7 @@ namespace GHelper
             // 
             // panelFans
             // 
+            panelFans.Controls.Add(labelFansResult);
             panelFans.Controls.Add(labelTip);
             panelFans.Controls.Add(labelBoost);
             panelFans.Controls.Add(comboBoost);
@@ -117,7 +119,6 @@ namespace GHelper
             labelBoost.TabIndex = 39;
             labelBoost.Text = Properties.Strings.CPUBoost;
             labelBoost.TextAlign = ContentAlignment.MiddleRight;
-
             // 
             // comboBoost
             // 
@@ -221,11 +222,11 @@ namespace GHelper
             checkApplyFans.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             checkApplyFans.AutoSize = true;
             checkApplyFans.BackColor = SystemColors.ControlLight;
-            checkApplyFans.Location = new Point(449, 1084);
+            checkApplyFans.Location = new Point(449, 1088);
             checkApplyFans.Margin = new Padding(4, 2, 4, 2);
             checkApplyFans.Name = "checkApplyFans";
             checkApplyFans.Padding = new Padding(15, 5, 15, 5);
-            checkApplyFans.Size = new Size(339, 50);
+            checkApplyFans.Size = new Size(339, 46);
             checkApplyFans.TabIndex = 17;
             checkApplyFans.Text = Properties.Strings.ApplyFanCurve;
             checkApplyFans.UseVisualStyleBackColor = false;
@@ -292,11 +293,11 @@ namespace GHelper
             checkApplyPower.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             checkApplyPower.AutoSize = true;
             checkApplyPower.BackColor = SystemColors.ControlLight;
-            checkApplyPower.Location = new Point(20, 1084);
+            checkApplyPower.Location = new Point(20, 1088);
             checkApplyPower.Margin = new Padding(4, 2, 4, 2);
             checkApplyPower.Name = "checkApplyPower";
             checkApplyPower.Padding = new Padding(15, 5, 15, 5);
-            checkApplyPower.Size = new Size(277, 50);
+            checkApplyPower.Size = new Size(277, 46);
             checkApplyPower.TabIndex = 25;
             checkApplyPower.Text = Properties.Strings.ApplyPowerLimits;
             checkApplyPower.UseVisualStyleBackColor = false;
@@ -417,6 +418,16 @@ namespace GHelper
             labelInfo.TabIndex = 19;
             labelInfo.Text = "label";
             // 
+            // labelFansResult
+            // 
+            labelFansResult.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            labelFansResult.ForeColor = Color.Red;
+            labelFansResult.Location = new Point(30, 1070);
+            labelFansResult.Name = "labelFansResult";
+            labelFansResult.Size = new Size(760, 32);
+            labelFansResult.TabIndex = 41;
+            labelFansResult.TextAlign = ContentAlignment.TopRight;
+            // 
             // Fans
             // 
             AutoScaleDimensions = new SizeF(192F, 192F);
@@ -483,5 +494,6 @@ namespace GHelper
         private RComboBox comboBoost;
         private Label labelBoost;
         private Label labelTip;
+        private Label labelFansResult;
     }
 }
