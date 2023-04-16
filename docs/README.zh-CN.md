@@ -19,7 +19,7 @@
 
 ## [:floppy_disk: 下载应用](https://github.com/seerge/g-helper/releases/latest/download/GHelper.zip)
 
-如果你喜欢这个应用，请给这个项目 [:star: 在Github上Star](https://github.com/seerge/g-helper) 或者向别人推荐它！
+如果你喜欢这个应用，请[给这个项目:star:](https://github.com/seerge/g-helper) 或者向别人推荐它！
 
 _如果你在别的地方提到这个软件-请记得加上这个项目的网址。十分感谢。_
 
