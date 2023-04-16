@@ -264,7 +264,7 @@ public class ASUSWmi
     {
 
         byte[] setting = new byte[12];
-        setting[0] = (byte)1;
+        setting[0] = (byte)0xB4;
         setting[1] = (byte)mode;
         setting[2] = color.R;
         setting[3] = color.G;
