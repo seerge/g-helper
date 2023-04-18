@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="ACPIError" xml:space="preserve">
-    <value>无法连接到ASUS ACPI。 没有它，应用程序将无法运行。 请尝试安装Asus System Control Interface驱动。</value>
+    <value>无法连接到ASUS ACPI。 没有它应用程序将无法运行。 请尝试安装Asus System Control Interface驱动。</value>
   </data>
   <data name="AlertDGPU" xml:space="preserve">
     <value>看起来 GPU 正在大量耗电，是否禁用？</value>
@@ -142,7 +142,7 @@
     <value>Anime Matrix 光显矩阵屏</value>
   </data>
   <data name="AppAlreadyRunning" xml:space="preserve">
-    <value>应用已经运行</value>
+    <value>应用已经在运行</value>
   </data>
   <data name="AppAlreadyRunningText" xml:space="preserve">
     <value>G-Helper已经在运行。 请查看系统托盘中的图标。</value>
@@ -187,7 +187,7 @@
     <value>唤醒时</value>
   </data>
   <data name="Balanced" xml:space="preserve">
-    <value>平衡</value>
+    <value>平衡模式</value>
   </data>
   <data name="BatteryChargeLimit" xml:space="preserve">
     <value>电池充电限制</value>
@@ -256,7 +256,7 @@
     <value>切换中...</value>
   </data>
   <data name="GPUMode" xml:space="preserve">
-    <value>独显模式</value>
+    <value>显卡模式</value>
   </data>
   <data name="GPUModeEco" xml:space="preserve">
     <value>仅限核显</value>
@@ -265,7 +265,7 @@
     <value>核显 + 独显</value>
   </data>
   <data name="GPUModeUltimate" xml:space="preserve">
-    <value>独显优先</value>
+    <value>独显直连</value>
   </data>
   <data name="KeyBindings" xml:space="preserve">
     <value>按键绑定</value>
@@ -280,10 +280,10 @@
     <value>键盘背光</value>
   </data>
   <data name="LaptopKeyboard" xml:space="preserve">
-    <value>键盘</value>
+    <value>笔记本键盘</value>
   </data>
   <data name="LaptopScreen" xml:space="preserve">
-    <value>屏幕显示</value>
+    <value>笔记本屏幕</value>
   </data>
   <data name="MatrixBanner" xml:space="preserve">
     <value>Anime Matrix 标识</value>
@@ -382,7 +382,7 @@
     <value>切换 Aura 模式</value>
   </data>
   <data name="Turbo" xml:space="preserve">
-    <value>增强</value>
+    <value>增强模式</value>
   </data>
   <data name="TurnedOff" xml:space="preserve">
     <value>已关闭</value>
@@ -394,7 +394,7 @@
     <value>开启独显直连获得最佳帧率</value>
   </data>
   <data name="UltimateMode" xml:space="preserve">
-    <value>独显输出</value>
+    <value>独显直连</value>
   </data>
   <data name="VersionLabel" xml:space="preserve">
     <value>版本</value>
