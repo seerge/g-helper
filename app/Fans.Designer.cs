@@ -441,7 +441,7 @@ namespace GHelper
             MaximizeBox = false;
             MdiChildrenMinimizedAnchorBottom = false;
             MinimizeBox = false;
-            MinimumSize = new Size(26, 1230);
+            MinimumSize = new Size(26, 1260);
             Name = "Fans";
             ShowIcon = false;
             ShowInTaskbar = false;

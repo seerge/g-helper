@@ -758,6 +758,10 @@ namespace GHelper
             if (maxFrequency > 60)
             {
                 button120Hz.Text = maxFrequency.ToString() + "Hz" + (overdriveSetting ? " + OD" : "");
+                panelScreen.Visible = true;
+            } else if (maxFrequency > 0)
+            {
+                panelScreen.Visible = false;
             }
 
             if (miniled >= 0)
@@ -1227,6 +1231,9 @@ namespace GHelper
                 }
 
                 Program.wmi.DeviceSet(ASUSWmi.GPUEco, eco, "GPUEco");
+
+                if (eco == 0)
+                    HardwareMonitor.RecreateGpuTemperatureProviderWithDelay();
 
                 Program.settingsForm.BeginInvoke(delegate
                 {
