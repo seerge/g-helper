@@ -68,6 +68,7 @@ namespace GHelper
             buttonStandard = new RButton();
             buttonOptimized = new RButton();
             buttonUltimate = new RButton();
+            buttonXGM = new RButton();
             panelScreen = new Panel();
             labelMidFan = new Label();
             labelTipScreen = new Label();
@@ -534,19 +535,21 @@ namespace GHelper
             panelGPU.Location = new Point(10, 210);
             panelGPU.Margin = new Padding(8);
             panelGPU.Name = "panelGPU";
-            panelGPU.Padding = new Padding(0, 0, 0, 10);
+            panelGPU.Padding = new Padding(0, 0, 0, 45);
             panelGPU.Size = new Size(810, 237);
             panelGPU.TabIndex = 37;
             // 
             // labelTipGPU
             // 
             labelTipGPU.ForeColor = SystemColors.GrayText;
-            labelTipGPU.Location = new Point(24, 191);
+            labelTipGPU.Location = new Point(44, 191);
             labelTipGPU.Margin = new Padding(4, 0, 4, 0);
             labelTipGPU.Name = "labelTipGPU";
             labelTipGPU.Size = new Size(760, 36);
             labelTipGPU.TabIndex = 20;
-            labelTipGPU.Text = "                                                                          ";
+            labelTipGPU.Text = "";
+            labelTipGPU.Anchor = AnchorStyles.Right | AnchorStyles.Bottom;
+
             // 
             // pictureGPU
             // 
@@ -593,8 +596,9 @@ namespace GHelper
             tableGPU.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
             tableGPU.Controls.Add(buttonEco, 0, 0);
             tableGPU.Controls.Add(buttonStandard, 1, 0);
-            tableGPU.Controls.Add(buttonOptimized, 2, 0);
             tableGPU.Controls.Add(buttonUltimate, 2, 0);
+            tableGPU.Controls.Add(buttonXGM, 3, 0);
+            tableGPU.Controls.Add(buttonOptimized, 3, 0);
             tableGPU.Location = new Point(16, 60);
             tableGPU.Margin = new Padding(8, 4, 8, 4);
             tableGPU.Name = "tableGPU";
@@ -691,6 +695,30 @@ namespace GHelper
             buttonUltimate.Text = Properties.Strings.UltimateMode;
             buttonUltimate.TextImageRelation = TextImageRelation.ImageAboveText;
             buttonUltimate.UseVisualStyleBackColor = false;
+            // 
+            // buttonXGM
+            // 
+            buttonXGM.Activated = false;
+            buttonXGM.BackColor = SystemColors.ControlLightLight;
+            buttonXGM.BorderColor = Color.Transparent;
+            buttonXGM.BorderRadius = 5;
+            buttonXGM.Dock = DockStyle.Top;
+            buttonXGM.FlatAppearance.BorderSize = 0;
+            buttonXGM.FlatStyle = FlatStyle.Flat;
+            buttonXGM.ForeColor = SystemColors.ControlText;
+            buttonXGM.Image = Properties.Resources.icons8_video_48;
+            buttonXGM.ImageAlign = ContentAlignment.BottomCenter;
+            buttonXGM.Location = new Point(390, 4);
+            buttonXGM.Margin = new Padding(4);
+            buttonXGM.Name = "buttonXGM";
+            buttonXGM.Secondary = false;
+            buttonXGM.Size = new Size(185, 120);
+            buttonXGM.TabIndex = 2;
+            buttonXGM.Text = "XG Mobile";
+            buttonXGM.TextImageRelation = TextImageRelation.ImageAboveText;
+            buttonXGM.UseVisualStyleBackColor = false;
+            buttonXGM.Visible = false;
+
             // 
             // panelScreen
             // 
@@ -1078,6 +1106,7 @@ namespace GHelper
         private Label labelGPU;
         private Label labelGPUFan;
         private TableLayoutPanel tableGPU;
+        private RButton buttonXGM;
         private RButton buttonUltimate;
         private RButton buttonStandard;
         private RButton buttonEco;

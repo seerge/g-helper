@@ -50,6 +50,7 @@ namespace GHelper
             buttonStandard.BorderColor = colorStandard;
             buttonUltimate.BorderColor = colorTurbo;
             buttonOptimized.BorderColor = colorEco;
+            buttonXGM.BorderColor = colorTurbo;
 
             button60Hz.BorderColor = SystemColors.ActiveBorder;
             button120Hz.BorderColor = SystemColors.ActiveBorder;
@@ -112,6 +113,8 @@ namespace GHelper
             buttonUltimate.MouseMove += ButtonUltimate_MouseHover;
             buttonUltimate.MouseLeave += ButtonGPU_MouseLeave;
 
+            buttonXGM.Click += ButtonXGM_Click;
+
             buttonScreenAuto.MouseMove += ButtonScreenAuto_MouseHover;
             buttonScreenAuto.MouseLeave += ButtonScreen_MouseLeave;
 
@@ -144,6 +147,18 @@ namespace GHelper
             });
 
 
+        }
+
+        private void ButtonXGM_Click(object? sender, EventArgs e)
+        {
+            if (Program.wmi.DeviceGet(ASUSWmi.GPUXG) == 1)
+            {
+                Program.wmi.DeviceSet(ASUSWmi.GPUXG, 0, "GPU XGM");
+            } else
+            {
+                Program.wmi.DeviceSet(ASUSWmi.GPUXG, 1, "GPU XGM");
+            }
+            InitXGM();
         }
 
         private void SliderBattery_ValueChanged(object? sender, EventArgs e)
@@ -856,6 +871,7 @@ namespace GHelper
             if (this.Visible)
             {
                 InitScreen();
+                InitXGM();
 
                 this.Left = Screen.FromControl(this).WorkingArea.Width - 10 - this.Width;
                 this.Top = Screen.FromControl(this).WorkingArea.Height - 10 - this.Height;
@@ -1171,6 +1187,17 @@ namespace GHelper
 
         }
 
+        public void InitXGM()
+        {
+            int connected = Program.wmi.DeviceGet(ASUSWmi.GPUXGConnected);
+            int enabled = Program.wmi.DeviceGet(ASUSWmi.GPUXG);
+
+            buttonXGM.Visible = (connected == 1);
+            buttonXGM.Activated = (enabled == 1);
+
+        }
+
+
         public int InitGPUMode()
         {
 
@@ -1201,6 +1228,8 @@ namespace GHelper
             ButtonEnabled(buttonEco, true);
             ButtonEnabled(buttonStandard, true);
             ButtonEnabled(buttonUltimate, true);
+
+            InitXGM();
 
             VisualiseGPUMode(GpuMode);
 
