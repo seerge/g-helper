@@ -104,6 +104,9 @@ This function is handled by Asus Optimization Service (therefore G-helper doesn'
 #### How do I set different "Visual styles"?
 Personally, i'm not a big fan of them, as they make colors very inaccurate. But if you want so - you can adjust display colors using either Nvidia Control panel or AMD Adrenaline (appropriate display sections). If you really want you can also use [own ASUS utility from MS Store](https://apps.microsoft.com/store/detail/gamevisual/9P4K1LFTXSH8?hl=nl-nl&gl=nl&rtc=1)
 
+#### Can I overclock Nvidia GPU core / memory?
+I don't own nvidia GPU at the moment, so can't safely add overclocking to the app. But you can use "msi afterburner" to do that and much more with your GPU, as it's much more specialized on this aspect :)
+
 #### How do I uninstall G-helper?
 G-helper is a single exe, and it doesn't install anything in the system. To remove it - you can simply delete exe :) If you have applied any custom fan profiles or PPTs - before removing I would recommend selecting your favorite performance mode (for example balanced) and clicking "Factory defaults" under Fans + Power.
 
