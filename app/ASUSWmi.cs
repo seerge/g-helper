@@ -48,6 +48,7 @@ public class ASUSWmi
     public const int PPT_APUC1 = 0x001200C1;  // Actual Power Limit (PPT_LIMIT_FAST) AND Sustained Power Limit (STAPM_LIMIT)
     public const int PPT_APUC2 = 0x001200C2;  // does nothing on G14 2022
 
+    public const int TUF_KB_BRIGHTNESS = 0x00050021;
     public const int TUF_KB = 0x00100056;
     public const int TUF_KB_STATE = 0x00100057;
 
@@ -258,6 +259,12 @@ public class ASUSWmi
                 return DeviceGetBuffer(DevsCPUFanCurve, fan_mode);
         }
 
+    }
+
+    public void TUFKeyboardBrightness(int brightness)
+    {
+        int param = 0x80 | (brightness & 0x7F);
+        DeviceSet(TUF_KB_BRIGHTNESS, param, "TUF Brightness");
     }
 
     public void TUFKeyboardRGB(int mode, Color color, int speed)

@@ -1,5 +1,6 @@
 ﻿using HidLibrary;
 using System.Diagnostics;
+using static Starlight.AnimeMatrix.BuiltInAnimation;
 
 namespace GHelper
 {
@@ -195,6 +196,9 @@ namespace GHelper
                 }
 
             Logger.WriteLine("USB-KB = " + BitConverter.ToString(msg));
+
+            if (Program.config.ContainsModel("TUF"))
+                Program.wmi.TUFKeyboardBrightness(brightness);
         }
 
 
@@ -208,6 +212,17 @@ namespace GHelper
             if (boot) flags.Add(AuraDev19b6.BootKeyb);
             if (sleep) flags.Add(AuraDev19b6.SleepKeyb);
             if (shutdown) flags.Add(AuraDev19b6.ShutdownKeyb);
+
+            flags.Add(AuraDev19b6.AwakeBar);
+            flags.Add(AuraDev19b6.BootBar);
+            flags.Add(AuraDev19b6.SleepBar);
+            flags.Add(AuraDev19b6.ShutdownBar);
+
+            flags.Add(AuraDev19b6.AwakeLid);
+            flags.Add(AuraDev19b6.BootLid);
+            flags.Add(AuraDev19b6.SleepLid);
+            flags.Add(AuraDev19b6.ShutdownLid);
+
 
             byte[] msg = AuraDev19b6Extensions.ToBytes(flags.ToArray());
 

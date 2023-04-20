@@ -1181,10 +1181,7 @@ namespace GHelper
                 tableScreen.ColumnCount = 0;
 
             }
-
             //tableLayoutMatrix.ColumnCount = 0;
-
-
         }
 
         public void InitXGM()

@@ -88,8 +88,18 @@ namespace GHelper
             checkNoOverdrive.Checked = (Program.config.getConfig("no_overdrive") == 1);
             checkNoOverdrive.CheckedChanged += CheckNoOverdrive_CheckedChanged;
 
-            pictureHelp.Click += PictureHelp_Click;
+            int kb_brightness = Program.config.getConfig("keyboard_brightness");
+            trackBrightness.Value = (kb_brightness >= 0 && kb_brightness <= 3) ? kb_brightness : 3;
 
+            pictureHelp.Click += PictureHelp_Click;
+            trackBrightness.Scroll += TrackBrightness_Scroll;
+
+        }
+
+        private void TrackBrightness_Scroll(object? sender, EventArgs e)
+        {
+            Program.config.setConfig("keyboard_brightness", trackBrightness.Value);
+            Aura.ApplyBrightness(trackBrightness.Value);
         }
 
         private void PictureHelp_Click(object? sender, EventArgs e)

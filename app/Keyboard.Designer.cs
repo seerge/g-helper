@@ -31,6 +31,7 @@ namespace GHelper
         private void InitializeComponent()
         {
             groupBox1 = new GroupBox();
+            pictureHelp = new PictureBox();
             textFNF4 = new TextBox();
             comboFNF4 = new RComboBox();
             labelFNF4 = new Label();
@@ -41,6 +42,8 @@ namespace GHelper
             comboM3 = new RComboBox();
             labelM3 = new Label();
             groupLight = new GroupBox();
+            labelBrightness = new Label();
+            trackBrightness = new TrackBar();
             labelSpeed = new Label();
             comboKeyboardSpeed = new RComboBox();
             checkShutdown = new CheckBox();
@@ -51,11 +54,11 @@ namespace GHelper
             checkNoOverdrive = new CheckBox();
             checkKeyboardAuto = new CheckBox();
             checkTopmost = new CheckBox();
-            pictureHelp = new PictureBox();
             groupBox1.SuspendLayout();
-            groupLight.SuspendLayout();
-            groupOther.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureHelp).BeginInit();
+            groupLight.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)trackBrightness).BeginInit();
+            groupOther.SuspendLayout();
             SuspendLayout();
             // 
             // groupBox1
@@ -73,10 +76,21 @@ namespace GHelper
             groupBox1.Dock = DockStyle.Top;
             groupBox1.Location = new Point(10, 10);
             groupBox1.Name = "groupBox1";
-            groupBox1.Size = new Size(810, 242);
+            groupBox1.Size = new Size(840, 242);
             groupBox1.TabIndex = 0;
             groupBox1.TabStop = false;
             groupBox1.Text = Properties.Strings.KeyBindings;
+            // 
+            // pictureHelp
+            // 
+            pictureHelp.BackgroundImage = Properties.Resources.icons8_help_64;
+            pictureHelp.BackgroundImageLayout = ImageLayout.Zoom;
+            pictureHelp.Cursor = Cursors.Hand;
+            pictureHelp.Location = new Point(744, 57);
+            pictureHelp.Name = "pictureHelp";
+            pictureHelp.Size = new Size(32, 32);
+            pictureHelp.TabIndex = 9;
+            pictureHelp.TabStop = false;
             // 
             // textFNF4
             // 
@@ -88,12 +102,13 @@ namespace GHelper
             // 
             // comboFNF4
             // 
+            comboFNF4.BorderColor = Color.White;
+            comboFNF4.ButtonColor = Color.FromArgb(255, 255, 255);
             comboFNF4.FormattingEnabled = true;
             comboFNF4.Location = new Point(93, 175);
             comboFNF4.Name = "comboFNF4";
             comboFNF4.Size = new Size(312, 40);
             comboFNF4.TabIndex = 7;
-            comboFNF4.BorderColor = Color.White;
             // 
             // labelFNF4
             // 
@@ -122,14 +137,14 @@ namespace GHelper
             // 
             // comboM4
             // 
+            comboM4.BorderColor = Color.White;
+            comboM4.ButtonColor = Color.FromArgb(255, 255, 255);
             comboM4.FormattingEnabled = true;
             comboM4.Items.AddRange(new object[] { Properties.Strings.PerformanceMode, Properties.Strings.OpenGHelper, Properties.Strings.Custom });
             comboM4.Location = new Point(93, 112);
             comboM4.Name = "comboM4";
             comboM4.Size = new Size(312, 40);
             comboM4.TabIndex = 3;
-            comboM4.BorderColor = Color.White;
-
             // 
             // labelM4
             // 
@@ -142,14 +157,14 @@ namespace GHelper
             // 
             // comboM3
             // 
+            comboM3.BorderColor = Color.White;
+            comboM3.ButtonColor = Color.FromArgb(255, 255, 255);
             comboM3.FormattingEnabled = true;
             comboM3.Items.AddRange(new object[] { Properties.Strings.Default, Properties.Strings.VolumeMute, Properties.Strings.PlayPause, Properties.Strings.PrintScreen, Properties.Strings.ToggleAura, Properties.Strings.Custom });
             comboM3.Location = new Point(93, 54);
             comboM3.Name = "comboM3";
             comboM3.Size = new Size(312, 40);
             comboM3.TabIndex = 1;
-            comboM3.BorderColor = Color.White;
-
             // 
             // labelM3
             // 
@@ -162,6 +177,8 @@ namespace GHelper
             // 
             // groupLight
             // 
+            groupLight.Controls.Add(labelBrightness);
+            groupLight.Controls.Add(trackBrightness);
             groupLight.Controls.Add(labelSpeed);
             groupLight.Controls.Add(comboKeyboardSpeed);
             groupLight.Controls.Add(checkShutdown);
@@ -171,15 +188,30 @@ namespace GHelper
             groupLight.Dock = DockStyle.Top;
             groupLight.Location = new Point(10, 252);
             groupLight.Name = "groupLight";
-            groupLight.Size = new Size(810, 320);
+            groupLight.Size = new Size(840, 374);
             groupLight.TabIndex = 1;
             groupLight.TabStop = false;
             groupLight.Text = Properties.Strings.KeyboardBacklight;
             // 
+            // labelBrightness
+            // 
+            labelBrightness.Location = new Point(25, 284);
+            labelBrightness.Name = "labelBrightness";
+            labelBrightness.Size = new Size(197, 49);
+            labelBrightness.TabIndex = 0;
+            labelBrightness.Text = "Brightness";
+            // 
+            // trackBrightness
+            // 
+            trackBrightness.Location = new Point(228, 284);
+            trackBrightness.Name = "trackBrightness";
+            trackBrightness.Size = new Size(612, 90);
+            trackBrightness.TabIndex = 1;
+            // 
             // labelSpeed
             // 
             labelSpeed.AutoSize = true;
-            labelSpeed.Location = new Point(25, 237);
+            labelSpeed.Location = new Point(25, 235);
             labelSpeed.MaximumSize = new Size(200, 0);
             labelSpeed.Name = "labelSpeed";
             labelSpeed.Size = new Size(198, 32);
@@ -195,7 +227,7 @@ namespace GHelper
             comboKeyboardSpeed.FormattingEnabled = true;
             comboKeyboardSpeed.ItemHeight = 32;
             comboKeyboardSpeed.Items.AddRange(new object[] { "Slow", "Normal", "Fast" });
-            comboKeyboardSpeed.Location = new Point(230, 234);
+            comboKeyboardSpeed.Location = new Point(230, 232);
             comboKeyboardSpeed.Margin = new Padding(4, 10, 4, 8);
             comboKeyboardSpeed.Name = "comboKeyboardSpeed";
             comboKeyboardSpeed.Size = new Size(291, 40);
@@ -248,9 +280,9 @@ namespace GHelper
             groupOther.Controls.Add(checkKeyboardAuto);
             groupOther.Controls.Add(checkTopmost);
             groupOther.Dock = DockStyle.Top;
-            groupOther.Location = new Point(10, 572);
+            groupOther.Location = new Point(10, 626);
             groupOther.Name = "groupOther";
-            groupOther.Size = new Size(810, 225);
+            groupOther.Size = new Size(840, 225);
             groupOther.TabIndex = 2;
             groupOther.TabStop = false;
             groupOther.Text = Properties.Strings.Other;
@@ -267,7 +299,6 @@ namespace GHelper
             // 
             // checkKeyboardAuto
             // 
-            checkKeyboardAuto.AutoEllipsis = true;
             checkKeyboardAuto.AutoSize = true;
             checkKeyboardAuto.Location = new Point(25, 51);
             checkKeyboardAuto.MaximumSize = new Size(780, 0);
@@ -287,22 +318,11 @@ namespace GHelper
             checkTopmost.Text = Properties.Strings.WindowTop;
             checkTopmost.UseVisualStyleBackColor = true;
             // 
-            // pictureHelp
-            // 
-            pictureHelp.BackgroundImageLayout = ImageLayout.Zoom;
-            pictureHelp.Cursor = Cursors.Hand;
-            pictureHelp.BackgroundImage = Properties.Resources.icons8_help_64;
-            pictureHelp.Location = new Point(744, 57);
-            pictureHelp.Name = "pictureHelp";
-            pictureHelp.Size = new Size(32, 32);
-            pictureHelp.TabIndex = 9;
-            pictureHelp.TabStop = false;
-            // 
             // Keyboard
             // 
             AutoScaleDimensions = new SizeF(13F, 32F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(830, 858);
+            ClientSize = new Size(860, 890);
             Controls.Add(groupOther);
             Controls.Add(groupLight);
             Controls.Add(groupBox1);
@@ -317,11 +337,12 @@ namespace GHelper
             Text = Properties.Strings.ExtraSettings;
             groupBox1.ResumeLayout(false);
             groupBox1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureHelp).EndInit();
             groupLight.ResumeLayout(false);
             groupLight.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)trackBrightness).EndInit();
             groupOther.ResumeLayout(false);
             groupOther.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)pictureHelp).EndInit();
             ResumeLayout(false);
         }
 
@@ -349,5 +370,7 @@ namespace GHelper
         private CheckBox checkKeyboardAuto;
         private CheckBox checkNoOverdrive;
         private PictureBox pictureHelp;
+        private TrackBar trackBrightness;
+        private Label labelBrightness;
     }
 }
