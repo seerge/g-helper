@@ -195,6 +195,9 @@
   <data name="Boot" xml:space="preserve">
     <value>Старт</value>
   </data>
+  <data name="Brightness" xml:space="preserve">
+    <value>Яскравість</value>
+  </data>
   <data name="Color" xml:space="preserve">
     <value>Колір</value>
   </data>

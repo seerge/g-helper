@@ -1,4 +1,5 @@
 ﻿using CustomControls;
+using GHelper.Properties;
 
 namespace GHelper
 {
@@ -188,25 +189,27 @@ namespace GHelper
             groupLight.Dock = DockStyle.Top;
             groupLight.Location = new Point(10, 252);
             groupLight.Name = "groupLight";
-            groupLight.Size = new Size(840, 374);
+            groupLight.Size = new Size(840, 390);
             groupLight.TabIndex = 1;
             groupLight.TabStop = false;
             groupLight.Text = Properties.Strings.KeyboardBacklight;
             // 
             // labelBrightness
             // 
-            labelBrightness.Location = new Point(25, 284);
+            labelBrightness.Location = new Point(25, 304);
             labelBrightness.Name = "labelBrightness";
             labelBrightness.Size = new Size(197, 49);
             labelBrightness.TabIndex = 0;
-            labelBrightness.Text = "Brightness";
+            labelBrightness.Text = Properties.Strings.Brightness;
             // 
             // trackBrightness
             // 
-            trackBrightness.Location = new Point(228, 284);
+            trackBrightness.Location = new Point(228, 294);
             trackBrightness.Name = "trackBrightness";
-            trackBrightness.Size = new Size(612, 90);
+            trackBrightness.Size = new Size(600, 70);
             trackBrightness.TabIndex = 1;
+            trackBrightness.Minimum = 0;
+            trackBrightness.Maximum = 3;
             // 
             // labelSpeed
             // 

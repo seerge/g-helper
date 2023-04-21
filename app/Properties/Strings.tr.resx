@@ -195,6 +195,9 @@
   <data name="Boot" xml:space="preserve">
     <value>Önyükleme</value>
   </data>
+  <data name="Brightness" xml:space="preserve">
+    <value>Parlaklığı</value>
+  </data>
   <data name="Color" xml:space="preserve">
     <value>Renk</value>
   </data>

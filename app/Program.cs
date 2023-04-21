@@ -35,7 +35,7 @@ namespace GHelper
 
             Debug.WriteLine(CultureInfo.CurrentUICulture);
 
-            //Thread.CurrentThread.CurrentUICulture = CultureInfo.CreateSpecificCulture("zh");
+            Thread.CurrentThread.CurrentUICulture = CultureInfo.CreateSpecificCulture("es");
 
             if (Process.GetProcesses().Count(p => p.ProcessName == "GHelper") > 1)
             {
@@ -61,8 +61,6 @@ namespace GHelper
                 return;
 
             }
-
-
 
             Logger.WriteLine("------------");
             Logger.WriteLine("App launched: " + config.GetModel());

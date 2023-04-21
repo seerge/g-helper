@@ -195,6 +195,9 @@
   <data name="Boot" xml:space="preserve">
     <value>Al arrancar</value>
   </data>
+  <data name="Brightness" xml:space="preserve">
+    <value>Brillo</value>
+  </data>
   <data name="Color" xml:space="preserve">
     <value>Color</value>
   </data>

@@ -223,6 +223,10 @@ namespace GHelper
             flags.Add(AuraDev19b6.SleepLid);
             flags.Add(AuraDev19b6.ShutdownLid);
 
+            flags.Add(AuraDev19b6.AwakeLogo);
+            flags.Add(AuraDev19b6.BootLogo);
+            flags.Add(AuraDev19b6.SleepLogo);
+            flags.Add(AuraDev19b6.ShutdownLogo);
 
             byte[] msg = AuraDev19b6Extensions.ToBytes(flags.ToArray());
 

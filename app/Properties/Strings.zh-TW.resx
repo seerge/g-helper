@@ -195,6 +195,9 @@
   <data name="Boot" xml:space="preserve">
     <value>開機時</value>
   </data>
+  <data name="Brightness" xml:space="preserve">
+    <value>亮度</value>
+  </data>
   <data name="Color" xml:space="preserve">
     <value>顏色</value>
   </data>
