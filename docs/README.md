@@ -114,8 +114,13 @@ G-helper is a single exe, and it doesn't install anything in the system. To remo
 It's a lightweight Armoury Crate alternative for Asus laptops. A small utility that allows you to do almost everything you could do with Armoury Crate but without extra bloat and unnecessary services.
 
 
+-----------------------------
 
-----------------------------
+## :euro: [Support Project](https://www.paypal.com/donate/?hosted_button_id=4HMSHS4EBQWTA)
+#### If you like the app you can make a [Donation via Paypal](https://www.paypal.com/donate/?hosted_button_id=4HMSHS4EBQWTA)
+[![QR Code](https://user-images.githubusercontent.com/5920850/233658717-0441494d-fede-4a2c-b4f2-4b16a184a69a.png)](https://www.paypal.com/donate/?hosted_button_id=4HMSHS4EBQWTA)
+
+----------------
 
 ### How to install
 
