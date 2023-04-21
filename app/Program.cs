@@ -35,7 +35,7 @@ namespace GHelper
 
             Debug.WriteLine(CultureInfo.CurrentUICulture);
 
-            Thread.CurrentThread.CurrentUICulture = CultureInfo.CreateSpecificCulture("es");
+            //Thread.CurrentThread.CurrentUICulture = CultureInfo.CreateSpecificCulture("es");
 
             if (Process.GetProcesses().Count(p => p.ProcessName == "GHelper") > 1)
             {
