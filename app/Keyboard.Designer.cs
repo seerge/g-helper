@@ -193,6 +193,7 @@ namespace GHelper
             groupLight.TabIndex = 1;
             groupLight.TabStop = false;
             groupLight.Text = Properties.Strings.KeyboardBacklight;
+            groupLight.AutoSize = true;
             // 
             // labelBrightness
             // 

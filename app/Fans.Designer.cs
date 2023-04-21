@@ -94,7 +94,7 @@ namespace GHelper
             panelFans.Location = new Point(364, 0);
             panelFans.Margin = new Padding(0);
             panelFans.Name = "panelFans";
-            panelFans.Padding = new Padding(20);
+            panelFans.Padding = new Padding(10);
             panelFans.Size = new Size(824, 1159);
             panelFans.TabIndex = 12;
             // 
@@ -154,7 +154,7 @@ namespace GHelper
             tableFanCharts.Controls.Add(chartCPU, 0, 0);
             tableFanCharts.Controls.Add(chartMid, 0, 2);
             tableFanCharts.Location = new Point(28, 64);
-            tableFanCharts.Margin = new Padding(6);
+            tableFanCharts.Margin = new Padding(4);
             tableFanCharts.Name = "tableFanCharts";
             tableFanCharts.RowCount = 2;
             tableFanCharts.RowStyles.Add(new RowStyle(SizeType.Percent, 33F));
@@ -422,7 +422,7 @@ namespace GHelper
             // 
             labelFansResult.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             labelFansResult.ForeColor = Color.Red;
-            labelFansResult.Location = new Point(30, 1070);
+            labelFansResult.Location = new Point(30, 1073);
             labelFansResult.Name = "labelFansResult";
             labelFansResult.Size = new Size(760, 32);
             labelFansResult.TabIndex = 41;
