@@ -206,6 +206,7 @@ namespace GHelper
         public void LabelFansResult(string text)
         {
             labelFansResult.Text = text;
+            labelFansResult.Visible = (text.Length == 0);
         }
 
         private void Fans_FormClosing(object? sender, FormClosingEventArgs e)
