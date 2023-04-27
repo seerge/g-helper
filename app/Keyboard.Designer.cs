@@ -189,11 +189,11 @@ namespace GHelper
             groupLight.Dock = DockStyle.Top;
             groupLight.Location = new Point(10, 252);
             groupLight.Name = "groupLight";
-            groupLight.Size = new Size(840, 390);
+            groupLight.Size = new Size(840, 395);
             groupLight.TabIndex = 1;
             groupLight.TabStop = false;
             groupLight.Text = Properties.Strings.KeyboardBacklight;
-            groupLight.AutoSize = true;
+            //groupLight.AutoSize = true;
             // 
             // labelBrightness
             // 
@@ -207,7 +207,7 @@ namespace GHelper
             // 
             trackBrightness.Location = new Point(228, 294);
             trackBrightness.Name = "trackBrightness";
-            trackBrightness.Size = new Size(600, 70);
+            trackBrightness.Size = new Size(600, 30);
             trackBrightness.TabIndex = 1;
             trackBrightness.Minimum = 0;
             trackBrightness.Maximum = 3;

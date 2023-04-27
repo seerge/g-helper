@@ -417,11 +417,13 @@ namespace GHelper
                 }
 
                 StartMatrixTimer();
+                Logger.WriteLine("Matrix GIF " + fileName);
             }
             else
             {
                 mat.GenerateFrame(image);
                 mat.Present();
+                Logger.WriteLine("Matrix " + fileName);
             }
         }
 
@@ -499,6 +501,7 @@ namespace GHelper
             if (brightness == 0 || (auto && SystemInformation.PowerStatus.PowerLineStatus != PowerLineStatus.Online))
             {
                 mat.SetDisplayState(false);
+                Logger.WriteLine("Matrix Off");
             }
             else
             {
@@ -513,9 +516,11 @@ namespace GHelper
                     case 3:
                         mat.SetBuiltInAnimation(false);
                         StartMatrixTimer(1000);
+                        Logger.WriteLine("Matrix Clock");
                         break;
                     default:
                         mat.SetBuiltInAnimation(true, animation);
+                        Logger.WriteLine("Matrix builtin "+animation.AsByte);
                         break;
 
                 }
@@ -914,6 +919,11 @@ namespace GHelper
             {
                 Program.wmi.DeviceSet(ASUSWmi.PPT_CPUB0, limit_cpu, "PowerLimit B0");
                 customPower = limit_cpu;
+            }
+
+            if (Program.wmi.DeviceGet(ASUSWmi.PPT_APUC2) >= 0)
+            {
+                Program.wmi.DeviceSet(ASUSWmi.PPT_APUC2, 87, "PowerLimit C2");
             }
 
             Program.settingsForm.BeginInvoke(SetPerformanceLabel);

@@ -427,6 +427,7 @@ namespace GHelper
             labelFansResult.Size = new Size(760, 32);
             labelFansResult.TabIndex = 41;
             labelFansResult.TextAlign = ContentAlignment.TopRight;
+            labelFansResult.Visible = false;
             // 
             // Fans
             // 
