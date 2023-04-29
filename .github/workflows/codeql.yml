@@ -1,0 +1,28 @@
+name: CodeQL
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  schedule:
+  - cron: '34 18 * * 3'
+
+permissions:
+  actions: read
+  contents: read
+  security-events: write
+
+jobs:
+  codeql:
+    runs-on: windows-2022
+    steps:
+    - uses: actions/checkout@v3
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v2
+      with:
+        languages: c#
+    - name: Autobuild
+      uses: github/codeql-action/autobuild@v2
+    - name: Analyze
+      uses: github/codeql-action/analyze@v2
