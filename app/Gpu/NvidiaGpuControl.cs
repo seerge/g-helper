@@ -5,16 +5,18 @@ using NvAPIWrapper.Native.Interfaces.GPU;
 
 namespace GHelper.Gpu;
 
-public class NvidiaGpuTemperatureProvider : IGpuTemperatureProvider
+public class NvidiaGpuControl : IGpuControl
 {
     private readonly PhysicalGPU? _internalGpu;
 
-    public NvidiaGpuTemperatureProvider()
+    public NvidiaGpuControl()
     {
         _internalGpu = GetInternalDiscreteGpu();
     }
 
     public bool IsValid => _internalGpu != null;
+
+    public bool IsNvidia => IsValid;
 
     public int? GetCurrentTemperature()
     {

@@ -4,7 +4,9 @@
   <trustInfo xmlns="urn:schemas-microsoft-com:asm.v2">
     <security>
       <requestedPrivileges xmlns="urn:schemas-microsoft-com:asm.v3">
-        <!-- UAC Manifest Options
+		  <requestedExecutionLevel level="asInvoker" uiAccess="false" />
+		  
+		  <!-- UAC Manifest Options
              If you want to change the Windows User Account Control level replace the 
              requestedExecutionLevel node with one of the following.
 

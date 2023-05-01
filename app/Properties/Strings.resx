@@ -384,6 +384,9 @@
   <data name="ToggleAura" xml:space="preserve">
     <value>Toggle Aura</value>
   </data>
+  <data name="ToggleScreen" xml:space="preserve">
+    <value>Toggle Screen</value>
+  </data>
   <data name="Turbo" xml:space="preserve">
     <value>Turbo</value>
   </data>

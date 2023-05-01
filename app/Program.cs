@@ -2,6 +2,7 @@ using Microsoft.Win32;
 using System.Diagnostics;
 using System.Globalization;
 using System.Management;
+using System.Security.Principal;
 using Tools;
 
 namespace GHelper
@@ -27,23 +28,62 @@ namespace GHelper
         private static long lastTheme;
         private static PowerLineStatus isPlugged = PowerLineStatus.Unknown;
 
+
+        static void CheckProcesses()
+        {
+            Process currentProcess = Process.GetCurrentProcess();
+            Process[] processes = Process.GetProcessesByName(currentProcess.ProcessName);
+
+            if (processes.Length > 1)
+            {
+                foreach (Process process in processes)
+                    if (process.Id != currentProcess.Id)
+                        try
+                        {
+                            process.Kill();
+                        }
+                        catch (Exception ex)
+                        {
+                            Logger.WriteLine(ex.ToString());
+                            MessageBox.Show(Properties.Strings.AppAlreadyRunningText, Properties.Strings.AppAlreadyRunning, MessageBoxButtons.OK);
+                            Application.Exit();
+                            return;
+                        }
+            }
+        }
+
+        static bool IsUserAdministrator()
+        {
+            WindowsIdentity identity = WindowsIdentity.GetCurrent();
+            WindowsPrincipal principal = new WindowsPrincipal(identity);
+            return principal.IsInRole(WindowsBuiltInRole.Administrator);
+        }
+
+        public static void RunAsAdmin()
+        {
+            // Check if the current user is an administrator
+            if (!IsUserAdministrator())
+            {
+                ProcessStartInfo startInfo = new ProcessStartInfo();
+                startInfo.UseShellExecute = true;
+                startInfo.WorkingDirectory = Environment.CurrentDirectory;
+                startInfo.FileName = Application.ExecutablePath;
+                startInfo.Verb = "runas";
+                Process.Start(startInfo);
+                //Application.Exit();
+            }
+        }
+
         // The main entry point for the application
         public static void Main()
         {
 
             Thread.CurrentThread.CurrentUICulture = CultureInfo.CurrentUICulture;
-
             Debug.WriteLine(CultureInfo.CurrentUICulture);
 
             //Thread.CurrentThread.CurrentUICulture = CultureInfo.CreateSpecificCulture("es");
 
-            if (Process.GetProcesses().Count(p => p.ProcessName == "GHelper") > 1)
-            {
-                MessageBox.Show(Properties.Strings.AppAlreadyRunningText, Properties.Strings.AppAlreadyRunning, MessageBoxButtons.OK);
-                Application.Exit();
-                return;
-            }
-
+            CheckProcesses();
 
             try
             {
@@ -98,8 +138,6 @@ namespace GHelper
             {
                 SettingsToggle();
             }
-
-
 
             Application.Run();
 
@@ -167,19 +205,18 @@ namespace GHelper
         }
 
 
-        static void LaunchProcess(string fileName = "")
+        static void LaunchProcess(string command = "")
         {
-            ProcessStartInfo start = new ProcessStartInfo();
-            start.FileName = fileName;
-            start.WindowStyle = ProcessWindowStyle.Hidden;
-            start.CreateNoWindow = true;
+            string executable = command.Split(' ')[0];
+            string arguments = command.Substring(executable.Length).Trim();
+
             try
             {
-                Process proc = Process.Start(start);
+                Process proc = Process.Start(executable, arguments);
             }
             catch
             {
-                Logger.WriteLine("Failed to run  " + fileName);
+                Logger.WriteLine("Failed to run  " + command);
             }
 
 
@@ -229,6 +266,9 @@ namespace GHelper
                     break;
                 case "screenshot":
                     NativeMethods.KeyPress(NativeMethods.VK_SNAPSHOT);
+                    break;
+                case "screen":
+                    NativeMethods.TurnOffScreen(Program.settingsForm.Handle);
                     break;
                 case "aura":
                     settingsForm.BeginInvoke(settingsForm.CycleAuraMode);

@@ -4,12 +4,15 @@ using AmdAdl2;
 namespace GHelper.Gpu;
 
 // Reference: https://github.com/GPUOpen-LibrariesAndSDKs/display-library/blob/master/Sample-Managed/Program.cs
-public class AmdGpuTemperatureProvider : IGpuTemperatureProvider {
+public class AmdGpuControl : IGpuControl {
     private bool _isReady;
     private IntPtr _adlContextHandle;
     private readonly ADLAdapterInfo _internalDiscreteAdapter;
 
-    public AmdGpuTemperatureProvider() {
+    public bool IsNvidia => false;
+
+
+    public AmdGpuControl() {
         if (!Adl2.Load())
             return;
 
@@ -104,7 +107,7 @@ public class AmdGpuTemperatureProvider : IGpuTemperatureProvider {
         GC.SuppressFinalize(this);
     }
 
-    ~AmdGpuTemperatureProvider() {
+    ~AmdGpuControl() {
         ReleaseUnmanagedResources();
     }
 }

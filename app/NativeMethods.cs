@@ -351,6 +351,33 @@ namespace Tools
 public class NativeMethods
 {
 
+    private const int WM_SYSCOMMAND = 0x0112;
+    private const int SC_MONITORPOWER = 0xF170;
+    private const int MONITOR_OFF = 2;
+
+    [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+    private static extern IntPtr SendMessage(IntPtr hWnd, uint Msg, IntPtr wParam, IntPtr lParam);
+
+    [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+    private static extern uint FormatMessage(uint dwFlags, IntPtr lpSource, uint dwMessageId, uint dwLanguageId, out string lpBuffer, uint nSize, IntPtr Arguments);
+
+    public static void TurnOffScreen(IntPtr handle)
+    {
+        IntPtr result = SendMessage(handle, WM_SYSCOMMAND, (IntPtr)SC_MONITORPOWER, (IntPtr)MONITOR_OFF);
+        if (result == IntPtr.Zero)
+        {
+            int error = Marshal.GetLastWin32Error();
+            string message = "";
+            uint formatFlags = 0x00001000 | 0x00000200 | 0x00000100 | 0x00000080;
+            uint formatResult = FormatMessage(formatFlags, IntPtr.Zero, (uint)error, 0, out message, 0, IntPtr.Zero);
+            if (formatResult == 0)
+            {
+                message = "Unknown error.";
+            }
+            Logger.WriteLine($"Failed to turn off screen. Error code: {error}. {message}");
+        }
+    }
+
     // Monitor Power detection
 
     internal const uint DEVICE_NOTIFY_WINDOW_HANDLE = 0x0;

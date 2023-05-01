@@ -1,11 +1,10 @@
 ﻿using GHelper;
 using GHelper.Gpu;
 using System.Diagnostics;
-using System.Management;
 
 public static class HardwareMonitor
 {
-    private static IGpuTemperatureProvider? GpuTemperatureProvider;
+    public static IGpuControl? GpuControl;
 
     public static float? cpuTemp = -1;
     public static float? batteryDischarge = -1;
@@ -51,7 +50,7 @@ public static class HardwareMonitor
     {
         try
         {
-            int? gpuUse = GpuTemperatureProvider?.GetGpuUse();
+            int? gpuUse = GpuControl?.GetGpuUse();
             if (gpuUse is not null) return (int)gpuUse;
         }
         catch (Exception ex)
@@ -76,20 +75,20 @@ public static class HardwareMonitor
         cpuTemp = Program.wmi.DeviceGet(ASUSWmi.Temp_CPU);
 
         if (cpuTemp < 0) try
-        {
-            using (var ct = new PerformanceCounter("Thermal Zone Information", "Temperature", @"\_TZ.THRM", true))
             {
-                cpuTemp = ct.NextValue() - 273;
+                using (var ct = new PerformanceCounter("Thermal Zone Information", "Temperature", @"\_TZ.THRM", true))
+                {
+                    cpuTemp = ct.NextValue() - 273;
+                }
             }
-        }
-        catch
-        {
-            Debug.WriteLine("Failed reading CPU temp");
-        }
+            catch
+            {
+                Debug.WriteLine("Failed reading CPU temp");
+            }
 
         try
         {
-            gpuTemp = GpuTemperatureProvider?.GetCurrentTemperature();
+            gpuTemp = GpuControl?.GetCurrentTemperature();
 
         }
         catch (Exception ex)
@@ -121,7 +120,7 @@ public static class HardwareMonitor
         {
             Thread.Sleep(1000);
             return (GetGpuUse() > threshold);
-        } 
+        }
         return false;
     }
 
@@ -144,28 +143,28 @@ public static class HardwareMonitor
     {
         try
         {
-            GpuTemperatureProvider?.Dispose();
+            GpuControl?.Dispose();
 
             // Detect valid GPU temperature provider.
             // We start with NVIDIA because there's always at least an integrated AMD GPU
-            IGpuTemperatureProvider gpuTemperatureProvider = new NvidiaGpuTemperatureProvider();
-            if (gpuTemperatureProvider.IsValid)
+            IGpuControl _gpuControl = new NvidiaGpuControl();
+            if (_gpuControl.IsValid)
             {
-                GpuTemperatureProvider = gpuTemperatureProvider;
+                GpuControl = _gpuControl;
                 return;
             }
 
-            gpuTemperatureProvider.Dispose();
-            gpuTemperatureProvider = new AmdGpuTemperatureProvider();
-            if (gpuTemperatureProvider.IsValid)
+            _gpuControl.Dispose();
+            _gpuControl = new AmdGpuControl();
+            if (_gpuControl.IsValid)
             {
-                GpuTemperatureProvider = gpuTemperatureProvider;
+                GpuControl = _gpuControl;
                 return;
             }
 
-            gpuTemperatureProvider.Dispose();
+            _gpuControl.Dispose();
 
-            GpuTemperatureProvider = null;
+            GpuControl = null;
         }
         catch (Exception ex)
         {

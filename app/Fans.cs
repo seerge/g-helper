@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Windows.Forms.DataVisualization.Charting;
 using CustomControls;
+using GHelper.Gpu;
 
 namespace GHelper
 {
@@ -63,6 +64,11 @@ namespace GHelper
             checkApplyFans.Click += CheckApplyFans_Click;
             checkApplyPower.Click += CheckApplyPower_Click;
 
+            trackGPUCore.Scroll += trackGPU_Scroll;
+            trackGPUMemory.Scroll += trackGPU_Scroll;
+
+            buttonResetGPU.Click += ButtonResetGPU_Click;
+
             //labelInfo.MaximumSize = new Size(280, 0);
             labelInfo.Text = Properties.Strings.PPTExperimental;
 
@@ -74,6 +80,57 @@ namespace GHelper
 
             Shown += Fans_Shown;
 
+            InitGPUClocks();
+
+        }
+
+        private void InitGPUClocks()
+        {
+
+            panelGPU.Visible = HardwareMonitor.GpuControl.IsNvidia;
+
+            trackGPUCore.Value = Math.Min(Program.config.getConfig("GPUCore"), 300);
+            trackGPUMemory.Value = Math.Min(Program.config.getConfig("GPUMemory"), 300);
+
+            VisualiseGPUClocks();
+        }
+
+        private void ButtonResetGPU_Click(object? sender, EventArgs e)
+        {
+
+            Program.RunAsAdmin();
+
+            try
+            {
+                trackGPUCore.Value = 0;
+                trackGPUMemory.Value = 0;
+                VisualiseGPUClocks();
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLine(ex.ToString());
+            }
+        }
+
+        private void VisualiseGPUClocks()
+        {
+            labelGPUCore.Text = $"+{trackGPUCore.Value} MHz";
+            labelGPUMemory.Text = $"+{trackGPUMemory.Value} MHz";
+        }
+
+        private void trackGPU_Scroll(object? sender, EventArgs e)
+        {
+            VisualiseGPUClocks();
+
+            try
+            {
+                Program.config.setConfig("GPUCore", trackGPUCore.Value);
+                Program.config.setConfig("GPUMemory", trackGPUMemory.Value);
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLine(ex.ToString());
+            }
         }
 
         static string ChartPercToRPM(int percentage, string unit = "")
@@ -532,6 +589,7 @@ namespace GHelper
                 }
             }
         }
+
     }
 
 }

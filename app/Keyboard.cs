@@ -14,6 +14,7 @@ namespace GHelper
           {"play", Properties.Strings.PlayPause},
           {"aura", Properties.Strings.ToggleAura},
           {"ghelper", Properties.Strings.OpenGHelper},
+          {"screen", Properties.Strings.ToggleScreen},
           {"custom", Properties.Strings.Custom}
         };
 
