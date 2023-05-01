@@ -328,7 +328,7 @@
     <value>自动切换</value>
   </data>
   <data name="OptimizedGPUTooltip" xml:space="preserve">
-    <value>使用电池时关闭独显(集显模式)，并在插上电源后重新启用独显(混合输出)</value>
+    <value>使用电池时切换到集显模式，并在插上电源后重新启用标准模式</value>
   </data>
   <data name="Other" xml:space="preserve">
     <value>其他</value>
