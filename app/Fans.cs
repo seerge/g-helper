@@ -18,13 +18,21 @@ namespace GHelper
         {
 
             InitializeComponent();
+
+            Text = Properties.Strings.FansAndPower;
+            labelPowerLimits.Text = Properties.Strings.PowerLimits;
+            labelInfo.Text = Properties.Strings.PPTExperimental;
+            checkApplyPower.Text = Properties.Strings.ApplyPowerLimits;
+
+            labelFans.Text = Properties.Strings.FanCurves;
+            labelBoost.Text = Properties.Strings.CPUBoost;
+            buttonReset.Text = Properties.Strings.FactoryDefaults;
+            checkApplyFans.Text = Properties.Strings.ApplyFanCurve;
+
             InitTheme();
 
             MinRPM = 18;
             MaxRPM = HardwareMonitor.GetFanMax();
-
-
-
             labelTip.Visible = false;
             labelTip.BackColor = Color.Transparent;
 
@@ -86,6 +94,7 @@ namespace GHelper
 
         private void InitGPUClocks()
         {
+            /*
             try
             {
                 using (var _gpuControl = new NvidiaGpuControl())
@@ -100,6 +109,9 @@ namespace GHelper
             {
                 panelGPU.Visible=false;
             }
+            */
+
+            panelGPU.Visible = false;
 
         }
 
@@ -298,7 +310,7 @@ namespace GHelper
             // Yes, that's stupid, but Total slider on 2021 model actually adjusts CPU PPT
             if (!cpuBmode)
             {
-                label1.Text = "CPU SPPT";
+                labelPlatform.Text = "CPU SPPT";
             }
 
             int limit_total;
