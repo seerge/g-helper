@@ -885,7 +885,12 @@ namespace GHelper
                 this.Top = Screen.FromControl(this).WorkingArea.Height - 10 - this.Height;
                 this.Activate();
 
-                aTimer.Enabled = true;
+                Task.Run(async () =>
+                {
+                    await Task.Delay(TimeSpan.FromSeconds(1));
+                    aTimer.Enabled = true;
+                });
+
             }
             else
             {
@@ -923,13 +928,6 @@ namespace GHelper
                 Program.wmi.DeviceSet(ASUSWmi.PPT_CPUB0, limit_cpu, "PowerLimit B0");
                 customPower = limit_cpu;
             }
-
-            /*
-            if (Program.wmi.DeviceGet(ASUSWmi.PPT_APUC2) >= 0)
-            {
-                Program.wmi.DeviceSet(ASUSWmi.PPT_APUC2, 87, "PowerLimit C2");
-            }
-            */
 
             Program.settingsForm.BeginInvoke(SetPerformanceLabel);
 

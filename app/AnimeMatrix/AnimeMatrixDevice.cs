@@ -420,6 +420,9 @@ namespace Starlight.AnimeMatrix
 
         public void PresentTextDiagonal(string text)
         {
+
+            Clear();
+
             int maxX = (int)Math.Sqrt(MaxRows * MaxRows + MaxColumns * MaxColumns);
 
             using (Bitmap bmp = new Bitmap(maxX, MaxRows))

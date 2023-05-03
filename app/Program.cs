@@ -2,6 +2,7 @@ using Microsoft.Win32;
 using System.Diagnostics;
 using System.Globalization;
 using System.Management;
+using System.Reflection;
 using System.Security.Principal;
 using Tools;
 
@@ -103,7 +104,7 @@ namespace GHelper
             }
 
             Logger.WriteLine("------------");
-            Logger.WriteLine("App launched: " + config.GetModel());
+            Logger.WriteLine("App launched: " + config.GetModel() + " :" + Assembly.GetExecutingAssembly().GetName().Version.ToString());
 
             Application.EnableVisualStyles();
 
