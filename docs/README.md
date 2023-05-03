@@ -188,6 +188,14 @@ Full list of keycodes https://learn.microsoft.com/en-us/windows/win32/inputdev/v
 
 ![Screenshot 2023-04-13 172537](https://user-images.githubusercontent.com/5920850/231837470-df913847-cf8a-43e1-80b6-5eb6e9eaee4e.png)
 
+### Workaround for [bugged bios on G15](https://github.com/seerge/g-helper/issues/253)
+
+Some people reported that on G15 model bios can be bugged and either not turn on or not turn off fans, when you set custom fan curve (in Armoury or g-helper, or any other app)
+I have added a very optional workaround as it was asked, on launch app will try to disable and re-enable dGPU when external monitor is connected, that seems to wake up fans :)
+
+To enable this custom workaround you need to add an extra line in In config.json (under ``%AppData%\GHelper``) 
+``gpu_reenable : 1,``
+
 ------------
 **Disclaimers**
 "ROG", "TUF", and "Armoury Crate" are trademarked by and belong to AsusTek Computer, Inc. I make no claims to these or any assets belonging to AsusTek Computer and use them purely for informational purposes only.
