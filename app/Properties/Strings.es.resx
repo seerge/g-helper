@@ -330,6 +330,9 @@
   <data name="OptimizedGPUTooltip" xml:space="preserve">
     <value>Cambia a Eco con batería y a Estándar cuando está enchufado</value>
   </data>
+  <data name="OptimizedUSBC" xml:space="preserve">
+	<value>Deshabilitar dGPU con cargador USB-C en modo Optimizado</value>
+  </data>
   <data name="Other" xml:space="preserve">
     <value>Otro</value>
   </data>
@@ -383,6 +386,12 @@
   </data>
   <data name="ToggleAura" xml:space="preserve">
     <value>Alternar Aura</value>
+  </data>
+  <data name="ToggleMiniled" xml:space="preserve">
+    <value>Alternar Miniled (si es compatible)</value>
+  </data>
+  <data name="ToggleScreen" xml:space="preserve">
+    <value>Alternar pantalla</value>
   </data>
   <data name="Turbo" xml:space="preserve">
     <value>Turbo</value>
