@@ -700,6 +700,15 @@ namespace GHelper.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Keep GPU disabled on USB-C charger in Optimized mode.
+        /// </summary>
+        internal static string OptimizedUSBC {
+            get {
+                return ResourceManager.GetString("OptimizedUSBC", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Other.
         /// </summary>
         internal static string Other {
@@ -858,6 +867,15 @@ namespace GHelper.Properties {
         internal static string ToggleAura {
             get {
                 return ResourceManager.GetString("ToggleAura", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Toggle Miniled (if supported).
+        /// </summary>
+        internal static string ToggleMiniled {
+            get {
+                return ResourceManager.GetString("ToggleMiniled", resourceCulture);
             }
         }
         

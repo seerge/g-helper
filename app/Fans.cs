@@ -86,13 +86,21 @@ namespace GHelper
 
         private void InitGPUClocks()
         {
+            try
+            {
+                using (var _gpuControl = new NvidiaGpuControl())
+                {
+                    panelGPU.Visible = _gpuControl.IsValid;
 
-            panelGPU.Visible = HardwareMonitor.GpuControl.IsNvidia;
+                    trackGPUCore.Value = Math.Min(Program.config.getConfig("GPUCore"), 300);
+                    trackGPUMemory.Value = Math.Min(Program.config.getConfig("GPUMemory"), 300);
+                    VisualiseGPUClocks();
+                }
+            } catch (Exception ex)
+            {
+                panelGPU.Visible=false;
+            }
 
-            trackGPUCore.Value = Math.Min(Program.config.getConfig("GPUCore"), 300);
-            trackGPUMemory.Value = Math.Min(Program.config.getConfig("GPUMemory"), 300);
-
-            VisualiseGPUClocks();
         }
 
         private void ButtonResetGPU_Click(object? sender, EventArgs e)

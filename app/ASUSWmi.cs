@@ -14,6 +14,11 @@ public class ASUSWmi
     public const int KB_Light_Up = 0xc4;
     public const int KB_Light_Down = 0xc5;
 
+    public const int ChargerMode = 0x0012006C;
+
+    public const int ChargerUSB = 2;
+    public const int ChargerBarrel = 1;
+
     public const uint CPU_Fan = 0x00110013;
     public const uint GPU_Fan = 0x00110014;
     public const uint Mid_Fan = 0x00110031;

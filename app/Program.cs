@@ -120,7 +120,7 @@ namespace GHelper
 
             SetAutoModes();
 
-            HardwareMonitor.RecreateGpuTemperatureProvider();
+            HardwareMonitor.RecreateGpuControl();
 
             // Subscribing for system power change events
             SystemEvents.PowerModeChanged += SystemEvents_PowerModeChanged;
@@ -172,10 +172,10 @@ namespace GHelper
 
 
 
-        public static void SetAutoModes()
+        public static void SetAutoModes(bool monitor = true)
         {
 
-            if (Math.Abs(DateTimeOffset.Now.ToUnixTimeMilliseconds() - lastAuto) < 2000) return;
+            if (Math.Abs(DateTimeOffset.Now.ToUnixTimeMilliseconds() - lastAuto) < 3000) return;
             lastAuto = DateTimeOffset.Now.ToUnixTimeMilliseconds();
 
             isPlugged = SystemInformation.PowerStatus.PowerLineStatus;
@@ -184,7 +184,8 @@ namespace GHelper
             settingsForm.SetBatteryChargeLimit(config.getConfig("charge_limit"));
             settingsForm.AutoPerformance();
 
-            bool switched = settingsForm.AutoGPUMode();
+            bool switched = false;
+            if (monitor) switched = settingsForm.AutoGPUMode();
 
             if (!switched)
             {
@@ -269,6 +270,9 @@ namespace GHelper
                     break;
                 case "screen":
                     NativeMethods.TurnOffScreen(Program.settingsForm.Handle);
+                    break;
+                case "miniled":
+                    settingsForm.BeginInvoke(settingsForm.ToogleMiniled);
                     break;
                 case "aura":
                     settingsForm.BeginInvoke(settingsForm.CycleAuraMode);

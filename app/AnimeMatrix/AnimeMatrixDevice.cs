@@ -6,6 +6,9 @@ using System.Drawing.Drawing2D;
 using System.Text;
 using System.Globalization;
 using System;
+using System.Drawing;
+using OSD;
+using System.Diagnostics;
 
 namespace Starlight.AnimeMatrix
 {
@@ -107,9 +110,6 @@ namespace Starlight.AnimeMatrix
                 MaxColumns = 33;
                 dx = 1;
 
-                //FullRows = 7;
-                //FullEvenRows = 3;
-
                 MaxRows = 55;
                 LedCount = 1245;
 
@@ -177,17 +177,8 @@ namespace Starlight.AnimeMatrix
                     {
                         return (y + 1) / 2 - 3;
                     }
-                case AnimeType.GA402:
-                    if (y < 11)
-                    {
-                        return 0;
-                    }
-                    else
-                    {
-                        return (y) / 2 - 5;
-                    }
                 default:
-                    throw new ArgumentException("Invalid anime type", nameof(_model));
+                    return (int)Math.Ceiling(Math.Max(0, y - 11) / 2F);
             }
         }
 
@@ -197,10 +188,8 @@ namespace Starlight.AnimeMatrix
             {
                 case AnimeType.GA401:
                     return 33;
-                case AnimeType.GA402:
-                    return 34;
                 default:
-                    throw new ArgumentException("Invalid anime type", nameof(_model));
+                    return 34;
             }
         }
 
@@ -221,36 +210,15 @@ namespace Starlight.AnimeMatrix
                         default:
                             return 36 - y / 2;
                     }
-                case AnimeType.GA402:
-                    return Width(y) - FirstX(y);
                 default:
-                    throw new ArgumentException("Invalid anime type", nameof(_model));
+                    return Width(y) - FirstX(y);
             }
         }
 
-        /*
-        public int XStart(int row)
-        {
-            return (int)Math.Ceiling(Math.Max(0, row - FullRows) / 2.0);
-        }
-
-        public int XEnd(int row)
-        {
-            if (row <= FullEvenRows)
-            {
-                if (row % 2 == 1) return MaxColumns + 2;
-                else return MaxColumns;
-            }
-            return MaxColumns;
-        }
-        */
 
         public int RowToLinearAddress(int y)
         {
-            EnsureRowInRange(y);
-
             int ret = 0;
-
             for (var i = 0; i < y; i++)
                 ret += Pitch(i);
 
@@ -259,13 +227,10 @@ namespace Starlight.AnimeMatrix
 
         public void SetLedPlanar(int x, int y, byte value)
         {
-            EnsureRowInRange(y);
+            if (!IsRowInRange(y)) return;
 
             if (x >= FirstX(y) && x < Width(y))
-            {
                 SetLedLinear(RowToLinearAddress(y) - FirstX(y) + x + dx, value);
-                //Debug.Write((RowToLinearAddress(y) - FirstX(y) + x + dx).ToString() + " ");
-            }
         }
 
         public void WakeUp()
@@ -366,9 +331,9 @@ namespace Starlight.AnimeMatrix
             int second = DateTime.Now.Second;
 
             if (CultureInfo.CurrentCulture.DateTimeFormat.ShortTimePattern.Contains("H"))
-                PresentText(DateTime.Now.ToString("H" + ((second % 2 == 0)?":":" ") + "mm"));
+                PresentTextDiagonal(DateTime.Now.ToString("H" + ((second % 2 == 0)?":":" ") + "mm"));
             else
-                PresentText(DateTime.Now.ToString("h" + ((second % 2 == 0) ? ":" : " ") + "mm"), DateTime.Now.ToString("tt"));
+                PresentTextDiagonal(DateTime.Now.ToString("h" + ((second % 2 == 0) ? ":" : " ") + "mmtt"));
         }
 
         public void PresentText(string text1, string text2 = "")
@@ -442,12 +407,52 @@ namespace Starlight.AnimeMatrix
             }
         }
 
-        private void EnsureRowInRange(int row)
+
+        public void SetLedDiagonal(int x, int y, byte color, int delta = 10)
         {
-            if (row < 0 || row >= MaxRows)
+            //x+=delta;
+            y-=delta;
+
+            int dx = (x - y)/2;
+            int dy = x + y;
+            SetLedPlanar(dx, dy, color);
+        }
+
+        public void PresentTextDiagonal(string text)
+        {
+            int maxX = (int)Math.Sqrt(MaxRows * MaxRows + MaxColumns * MaxColumns);
+
+            using (Bitmap bmp = new Bitmap(maxX, MaxRows))
             {
-                throw new IndexOutOfRangeException($"Y-coordinate should fall in range of [0, {MaxRows - 1}].");
+                using (Graphics g = Graphics.FromImage(bmp))
+                {
+                    g.CompositingQuality = CompositingQuality.HighQuality;
+                    g.SmoothingMode = SmoothingMode.AntiAlias;
+
+                    using (Font font = new Font("Calibri", 16F, GraphicsUnit.Pixel))
+                    {
+                        SizeF textSize = g.MeasureString(text, font);
+                        g.DrawString(text, font, Brushes.White, 4, 0);
+                    }
+                }
+
+                for (int y = 0; y < bmp.Height; y++)
+                {
+                    for (int x = 0; x < bmp.Width; x++)
+                        {
+                            var pixel = bmp.GetPixel(x, y);
+                            var color = (pixel.R + pixel.G + pixel.B) / 3;
+                            SetLedDiagonal(x, y, (byte)color);
+                        }
+                }
             }
+
+            Present();
+        }
+
+        private bool IsRowInRange(int row)
+        {
+            return (row >= 0 && row < MaxRows);
         }
 
         private bool IsAddressableLed(int address)

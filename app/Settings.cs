@@ -25,7 +25,7 @@ namespace GHelper
         public string perfName = "Balanced";
 
         public Fans fans;
-        public Keyboard keyb;
+        public Extra keyb;
 
         static AnimeMatrixDevice mat;
         static long lastRefresh;
@@ -186,10 +186,7 @@ namespace GHelper
 
                     if (gitVersion.CompareTo(appVersion) > 0)
                     {
-                        BeginInvoke(delegate
-                        {
-                            SetVersionLabel(Properties.Strings.DownloadUpdate + ": " + tag, url);
-                        });
+                        SetVersionLabel(Properties.Strings.DownloadUpdate + ": " + tag, url);
                     }
                     else
                     {
@@ -294,7 +291,7 @@ namespace GHelper
                                 break;
                             case 1:
                                 Logger.WriteLine("Monitor Power On");
-                                Program.SetAutoModes();
+                                Program.SetAutoModes(false);
                                 break;
                             case 2:
                                 Logger.WriteLine("Monitor Dimmed");
@@ -561,7 +558,7 @@ namespace GHelper
         {
             if (keyb == null || keyb.Text == "")
             {
-                keyb = new Keyboard();
+                keyb = new Extra();
                 keyb.Show();
             }
             else
@@ -692,11 +689,16 @@ namespace GHelper
             SetScreen(60, 0);
         }
 
-        private void ButtonMiniled_Click(object? sender, EventArgs e)
+        public void ToogleMiniled()
         {
             int miniled = (Program.config.getConfig("miniled") == 1) ? 0 : 1;
             Program.config.setConfig("miniled", miniled);
             SetScreen(-1, -1, miniled);
+        }
+
+        private void ButtonMiniled_Click(object? sender, EventArgs e)
+        {
+            ToogleMiniled();
         }
 
         public void SetScreen(int frequency = -1, int overdrive = -1, int miniled = -1)
@@ -853,6 +855,7 @@ namespace GHelper
                 gpuTemp = $": {HardwareMonitor.gpuTemp}°C ";
             }
 
+
             Program.settingsForm.BeginInvoke(delegate
             {
                 labelCPUFan.Text = "CPU" + cpuTemp + HardwareMonitor.cpuFan;
@@ -921,10 +924,12 @@ namespace GHelper
                 customPower = limit_cpu;
             }
 
+            /*
             if (Program.wmi.DeviceGet(ASUSWmi.PPT_APUC2) >= 0)
             {
                 Program.wmi.DeviceSet(ASUSWmi.PPT_APUC2, 87, "PowerLimit C2");
             }
+            */
 
             Program.settingsForm.BeginInvoke(SetPerformanceLabel);
 
@@ -1137,10 +1142,17 @@ namespace GHelper
 
         }
 
+        public static bool IsPlugged()
+        {
+            bool optimizedUSBC = Program.config.getConfig("optimized_usbc") != 1;
+            
+            return SystemInformation.PowerStatus.PowerLineStatus == PowerLineStatus.Online && 
+                   (optimizedUSBC || Program.wmi.DeviceGet(ASUSWmi.ChargerMode) != ASUSWmi.ChargerUSB);
+
+        }
+
         public bool AutoGPUMode()
         {
-
-            var Plugged = SystemInformation.PowerStatus.PowerLineStatus;
 
             bool GpuAuto = Program.config.getConfig("gpu_auto") == 1;
             bool ForceGPU = Program.config.ContainsModel("503");
@@ -1156,14 +1168,17 @@ namespace GHelper
                 return false;
             else
             {
+
+                if (ReEnableGPU()) return true;
+
                 if (eco == 1)
-                    if ((GpuAuto && Plugged == PowerLineStatus.Online) || (ForceGPU && GpuMode == ASUSWmi.GPUModeStandard))
+                    if ((GpuAuto && IsPlugged()) || (ForceGPU && GpuMode == ASUSWmi.GPUModeStandard))
                     {
                         SetEcoGPU(0);
                         return true;
                     }
                 if (eco == 0)
-                    if ((GpuAuto && Plugged != PowerLineStatus.Online) || (ForceGPU && GpuMode == ASUSWmi.GPUModeEco))
+                    if ((GpuAuto && !IsPlugged()) || (ForceGPU && GpuMode == ASUSWmi.GPUModeEco))
                     {
 
                         if (HardwareMonitor.IsUsedGPU())
@@ -1179,6 +1194,20 @@ namespace GHelper
 
             return false;
 
+        }
+
+        public bool ReEnableGPU()
+        {
+            if (Screen.AllScreens.Length <= 1) return false;
+            if (Program.config.getConfig("gpu_reenable") != 1) return false;
+
+            Logger.WriteLine("Re-enabling gpu for 503 model");
+
+            Thread.Sleep(1000);
+            SetEcoGPU(1);
+            Thread.Sleep(1000);
+            SetEcoGPU(0);
+            return true;
         }
 
         private void UltimateUI(bool ultimate)
@@ -1269,7 +1298,7 @@ namespace GHelper
                 Program.wmi.DeviceSet(ASUSWmi.GPUEco, eco, "GPUEco");
 
                 if (eco == 0)
-                    HardwareMonitor.RecreateGpuTemperatureProviderWithDelay();
+                    HardwareMonitor.RecreateGpuControlWithDelay();
 
                 Program.settingsForm.BeginInvoke(delegate
                 {

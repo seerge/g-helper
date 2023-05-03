@@ -3,7 +3,7 @@ using GHelper.Properties;
 
 namespace GHelper
 {
-    partial class Keyboard
+    partial class Extra
     {
         /// <summary>
         /// Required designer variable.
@@ -31,7 +31,7 @@ namespace GHelper
         /// </summary>
         private void InitializeComponent()
         {
-            groupBox1 = new GroupBox();
+            groupBindings = new GroupBox();
             pictureHelp = new PictureBox();
             textFNF4 = new TextBox();
             comboFNF4 = new RComboBox();
@@ -52,39 +52,40 @@ namespace GHelper
             checkBoot = new CheckBox();
             checkAwake = new CheckBox();
             groupOther = new GroupBox();
+            checkUSBC = new CheckBox();
             checkNoOverdrive = new CheckBox();
             checkKeyboardAuto = new CheckBox();
             checkTopmost = new CheckBox();
-            groupBox1.SuspendLayout();
+            groupBindings.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureHelp).BeginInit();
             groupLight.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)trackBrightness).BeginInit();
             groupOther.SuspendLayout();
             SuspendLayout();
             // 
-            // groupBox1
+            // groupBindings
             // 
-            groupBox1.Controls.Add(pictureHelp);
-            groupBox1.Controls.Add(textFNF4);
-            groupBox1.Controls.Add(comboFNF4);
-            groupBox1.Controls.Add(labelFNF4);
-            groupBox1.Controls.Add(textM4);
-            groupBox1.Controls.Add(textM3);
-            groupBox1.Controls.Add(comboM4);
-            groupBox1.Controls.Add(labelM4);
-            groupBox1.Controls.Add(comboM3);
-            groupBox1.Controls.Add(labelM3);
-            groupBox1.Dock = DockStyle.Top;
-            groupBox1.Location = new Point(10, 10);
-            groupBox1.Name = "groupBox1";
-            groupBox1.Size = new Size(840, 242);
-            groupBox1.TabIndex = 0;
-            groupBox1.TabStop = false;
-            groupBox1.Text = Properties.Strings.KeyBindings;
+            groupBindings.Controls.Add(pictureHelp);
+            groupBindings.Controls.Add(textFNF4);
+            groupBindings.Controls.Add(comboFNF4);
+            groupBindings.Controls.Add(labelFNF4);
+            groupBindings.Controls.Add(textM4);
+            groupBindings.Controls.Add(textM3);
+            groupBindings.Controls.Add(comboM4);
+            groupBindings.Controls.Add(labelM4);
+            groupBindings.Controls.Add(comboM3);
+            groupBindings.Controls.Add(labelM3);
+            groupBindings.Dock = DockStyle.Top;
+            groupBindings.Location = new Point(10, 10);
+            groupBindings.Name = "groupBindings";
+            groupBindings.Size = new Size(844, 242);
+            groupBindings.TabIndex = 0;
+            groupBindings.TabStop = false;
+            groupBindings.Text = "Key Bindings";
             // 
             // pictureHelp
             // 
-            pictureHelp.BackgroundImage = Properties.Resources.icons8_help_64;
+            pictureHelp.BackgroundImage = Resources.icons8_help_64;
             pictureHelp.BackgroundImageLayout = ImageLayout.Zoom;
             pictureHelp.Cursor = Cursors.Hand;
             pictureHelp.Location = new Point(744, 57);
@@ -141,7 +142,7 @@ namespace GHelper
             comboM4.BorderColor = Color.White;
             comboM4.ButtonColor = Color.FromArgb(255, 255, 255);
             comboM4.FormattingEnabled = true;
-            comboM4.Items.AddRange(new object[] { Properties.Strings.PerformanceMode, Properties.Strings.OpenGHelper, Properties.Strings.Custom });
+            comboM4.Items.AddRange(new object[] { Strings.PerformanceMode, Strings.OpenGHelper, Strings.Custom });
             comboM4.Location = new Point(93, 112);
             comboM4.Name = "comboM4";
             comboM4.Size = new Size(312, 40);
@@ -161,7 +162,7 @@ namespace GHelper
             comboM3.BorderColor = Color.White;
             comboM3.ButtonColor = Color.FromArgb(255, 255, 255);
             comboM3.FormattingEnabled = true;
-            comboM3.Items.AddRange(new object[] { Properties.Strings.Default, Properties.Strings.VolumeMute, Properties.Strings.PlayPause, Properties.Strings.PrintScreen, Properties.Strings.ToggleAura, Properties.Strings.Custom });
+            comboM3.Items.AddRange(new object[] { Strings.Default, Strings.VolumeMute, Strings.PlayPause, Strings.PrintScreen, Strings.ToggleAura, Strings.Custom });
             comboM3.Location = new Point(93, 54);
             comboM3.Name = "comboM3";
             comboM3.Size = new Size(312, 40);
@@ -189,11 +190,10 @@ namespace GHelper
             groupLight.Dock = DockStyle.Top;
             groupLight.Location = new Point(10, 252);
             groupLight.Name = "groupLight";
-            groupLight.Size = new Size(840, 395);
+            groupLight.Size = new Size(844, 395);
             groupLight.TabIndex = 1;
             groupLight.TabStop = false;
-            groupLight.Text = Properties.Strings.KeyboardBacklight;
-            //groupLight.AutoSize = true;
+            groupLight.Text = "Keyboard Backlight";
             // 
             // labelBrightness
             // 
@@ -201,16 +201,16 @@ namespace GHelper
             labelBrightness.Name = "labelBrightness";
             labelBrightness.Size = new Size(197, 49);
             labelBrightness.TabIndex = 0;
-            labelBrightness.Text = Properties.Strings.Brightness;
+            labelBrightness.Text = "Brightness";
             // 
             // trackBrightness
             // 
             trackBrightness.Location = new Point(228, 294);
-            trackBrightness.Name = "trackBrightness";
-            trackBrightness.Size = new Size(600, 30);
-            trackBrightness.TabIndex = 1;
-            trackBrightness.Minimum = 0;
             trackBrightness.Maximum = 3;
+            trackBrightness.Name = "trackBrightness";
+            trackBrightness.Size = new Size(600, 90);
+            trackBrightness.TabIndex = 1;
+            trackBrightness.TickStyle = TickStyle.TopLeft;
             // 
             // labelSpeed
             // 
@@ -220,7 +220,7 @@ namespace GHelper
             labelSpeed.Name = "labelSpeed";
             labelSpeed.Size = new Size(198, 32);
             labelSpeed.TabIndex = 40;
-            labelSpeed.Text = Properties.Strings.AnimationSpeed;
+            labelSpeed.Text = "Animation Speed";
             // 
             // comboKeyboardSpeed
             // 
@@ -245,7 +245,7 @@ namespace GHelper
             checkShutdown.Name = "checkShutdown";
             checkShutdown.Size = new Size(154, 36);
             checkShutdown.TabIndex = 3;
-            checkShutdown.Text = Properties.Strings.Shutdown;
+            checkShutdown.Text = Strings.Shutdown;
             checkShutdown.UseVisualStyleBackColor = true;
             // 
             // checkSleep
@@ -255,7 +255,7 @@ namespace GHelper
             checkSleep.Name = "checkSleep";
             checkSleep.Size = new Size(105, 36);
             checkSleep.TabIndex = 2;
-            checkSleep.Text = Properties.Strings.Sleep;
+            checkSleep.Text = Strings.Sleep;
             checkSleep.UseVisualStyleBackColor = true;
             // 
             // checkBoot
@@ -265,7 +265,7 @@ namespace GHelper
             checkBoot.Name = "checkBoot";
             checkBoot.Size = new Size(96, 36);
             checkBoot.TabIndex = 1;
-            checkBoot.Text = Properties.Strings.Boot;
+            checkBoot.Text = Strings.Boot;
             checkBoot.UseVisualStyleBackColor = true;
             // 
             // checkAwake
@@ -275,21 +275,32 @@ namespace GHelper
             checkAwake.Name = "checkAwake";
             checkAwake.Size = new Size(115, 36);
             checkAwake.TabIndex = 0;
-            checkAwake.Text = Properties.Strings.Awake;
+            checkAwake.Text = Strings.Awake;
             checkAwake.UseVisualStyleBackColor = true;
             // 
             // groupOther
             // 
+            groupOther.Controls.Add(checkUSBC);
             groupOther.Controls.Add(checkNoOverdrive);
             groupOther.Controls.Add(checkKeyboardAuto);
             groupOther.Controls.Add(checkTopmost);
             groupOther.Dock = DockStyle.Top;
-            groupOther.Location = new Point(10, 626);
+            groupOther.Location = new Point(10, 647);
             groupOther.Name = "groupOther";
-            groupOther.Size = new Size(840, 225);
+            groupOther.Size = new Size(844, 293);
             groupOther.TabIndex = 2;
             groupOther.TabStop = false;
-            groupOther.Text = Properties.Strings.Other;
+            groupOther.Text = "Other";
+            // 
+            // checkUSBC
+            // 
+            checkUSBC.AutoSize = true;
+            checkUSBC.Location = new Point(25, 210);
+            checkUSBC.Name = "checkUSBC";
+            checkUSBC.Size = new Size(659, 36);
+            checkUSBC.TabIndex = 4;
+            checkUSBC.Text = "Keep GPU disabled on USB-C charger in Optimized mode";
+            checkUSBC.UseVisualStyleBackColor = true;
             // 
             // checkNoOverdrive
             // 
@@ -298,7 +309,7 @@ namespace GHelper
             checkNoOverdrive.Name = "checkNoOverdrive";
             checkNoOverdrive.Size = new Size(307, 36);
             checkNoOverdrive.TabIndex = 3;
-            checkNoOverdrive.Text = Properties.Strings.DisableOverdrive;
+            checkNoOverdrive.Text = Strings.DisableOverdrive;
             checkNoOverdrive.UseVisualStyleBackColor = true;
             // 
             // checkKeyboardAuto
@@ -309,7 +320,7 @@ namespace GHelper
             checkKeyboardAuto.Name = "checkKeyboardAuto";
             checkKeyboardAuto.Size = new Size(712, 36);
             checkKeyboardAuto.TabIndex = 2;
-            checkKeyboardAuto.Text = Properties.Strings.KeyboardAuto;
+            checkKeyboardAuto.Text = Strings.KeyboardAuto;
             checkKeyboardAuto.UseVisualStyleBackColor = true;
             // 
             // checkTopmost
@@ -319,28 +330,28 @@ namespace GHelper
             checkTopmost.Name = "checkTopmost";
             checkTopmost.Size = new Size(390, 36);
             checkTopmost.TabIndex = 1;
-            checkTopmost.Text = Properties.Strings.WindowTop;
+            checkTopmost.Text = Strings.WindowTop;
             checkTopmost.UseVisualStyleBackColor = true;
             // 
-            // Keyboard
+            // Extra
             // 
             AutoScaleDimensions = new SizeF(13F, 32F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(860, 890);
+            ClientSize = new Size(864, 953);
             Controls.Add(groupOther);
             Controls.Add(groupLight);
-            Controls.Add(groupBox1);
+            Controls.Add(groupBindings);
             FormBorderStyle = FormBorderStyle.FixedSingle;
             MaximizeBox = false;
             MdiChildrenMinimizedAnchorBottom = false;
             MinimizeBox = false;
-            Name = "Keyboard";
+            Name = "Extra";
             Padding = new Padding(10);
             ShowIcon = false;
             ShowInTaskbar = false;
-            Text = Properties.Strings.ExtraSettings;
-            groupBox1.ResumeLayout(false);
-            groupBox1.PerformLayout();
+            Text = "Extra Settings";
+            groupBindings.ResumeLayout(false);
+            groupBindings.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)pictureHelp).EndInit();
             groupLight.ResumeLayout(false);
             groupLight.PerformLayout();
@@ -352,7 +363,7 @@ namespace GHelper
 
         #endregion
 
-        private GroupBox groupBox1;
+        private GroupBox groupBindings;
         private Label labelM3;
         private RComboBox comboM3;
         private RComboBox comboM4;
@@ -376,5 +387,6 @@ namespace GHelper
         private PictureBox pictureHelp;
         private TrackBar trackBrightness;
         private Label labelBrightness;
+        private CheckBox checkUSBC;
     }
 }

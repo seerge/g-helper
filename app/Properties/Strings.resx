@@ -330,6 +330,9 @@
   <data name="OptimizedGPUTooltip" xml:space="preserve">
     <value>Switch to Eco on battery and to Standard when plugged</value>
   </data>
+  <data name="OptimizedUSBC" xml:space="preserve">
+    <value>Keep GPU disabled on USB-C charger in Optimized mode</value>
+  </data>
   <data name="Other" xml:space="preserve">
     <value>Other</value>
   </data>
@@ -383,6 +386,9 @@
   </data>
   <data name="ToggleAura" xml:space="preserve">
     <value>Toggle Aura</value>
+  </data>
+  <data name="ToggleMiniled" xml:space="preserve">
+    <value>Toggle Miniled (if supported)</value>
   </data>
   <data name="ToggleScreen" xml:space="preserve">
     <value>Toggle Screen</value>

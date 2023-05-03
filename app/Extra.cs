@@ -3,7 +3,7 @@ using System.Diagnostics;
 
 namespace GHelper
 {
-    public partial class Keyboard : RForm
+    public partial class Extra : RForm
     {
 
         Dictionary<string, string> customActions = new Dictionary<string, string>
@@ -15,6 +15,7 @@ namespace GHelper
           {"aura", Properties.Strings.ToggleAura},
           {"ghelper", Properties.Strings.OpenGHelper},
           {"screen", Properties.Strings.ToggleScreen},
+          {"miniled", Properties.Strings.ToggleMiniled},
           {"custom", Properties.Strings.Custom}
         };
 
@@ -52,9 +53,29 @@ namespace GHelper
             };
         }
 
-        public Keyboard()
+        public Extra()
         {
             InitializeComponent();
+
+            groupBindings.Text = Properties.Strings.KeyBindings;
+            groupLight.Text = Properties.Strings.KeyboardBacklight;
+            groupOther.Text = Properties.Strings.Other;
+
+            checkAwake.Text = Properties.Strings.Awake;
+            checkSleep.Text = Properties.Strings.Sleep;
+            checkBoot.Text = Properties.Strings.Boot;
+            checkShutdown.Text = Properties.Strings.Shutdown;
+
+            labelSpeed.Text = Properties.Strings.AnimationSpeed;
+            labelBrightness.Text = Properties.Strings.Brightness;
+
+            checkKeyboardAuto.Text = Properties.Strings.KeyboardAuto;
+            checkNoOverdrive.Text = Properties.Strings.DisableOverdrive;
+            checkTopmost.Text = Properties.Strings.WindowTop;
+            checkUSBC.Text = Properties.Strings.OptimizedUSBC;
+
+            Text = Properties.Strings.ExtraSettings;
+
             InitTheme();
 
             SetKeyCombo(comboM3, textM3, "m3");
@@ -89,12 +110,20 @@ namespace GHelper
             checkNoOverdrive.Checked = (Program.config.getConfig("no_overdrive") == 1);
             checkNoOverdrive.CheckedChanged += CheckNoOverdrive_CheckedChanged;
 
+            checkUSBC.Checked = (Program.config.getConfig("optimized_usbc") == 1);
+            checkUSBC.CheckedChanged += CheckUSBC_CheckedChanged;
+
             int kb_brightness = Program.config.getConfig("keyboard_brightness");
             trackBrightness.Value = (kb_brightness >= 0 && kb_brightness <= 3) ? kb_brightness : 3;
 
             pictureHelp.Click += PictureHelp_Click;
             trackBrightness.Scroll += TrackBrightness_Scroll;
 
+        }
+
+        private void CheckUSBC_CheckedChanged(object? sender, EventArgs e)
+        {
+            Program.config.setConfig("optimized_usbc", (checkUSBC.Checked ? 1 : 0));
         }
 
         private void TrackBrightness_Scroll(object? sender, EventArgs e)
