@@ -15,6 +15,9 @@ namespace GHelper
     public partial class SettingsForm : RForm
     {
 
+        private ContextMenuStrip contextMenuStrip = new CustomContextMenu();
+        private ToolStripMenuItem menuSilent, menuBalanced, menuTurbo;
+
         public static System.Timers.Timer aTimer = default!;
         public static Point trayPoint;
 
@@ -140,11 +143,53 @@ namespace GHelper
 
             this.TopMost = Program.config.getConfig("topmost") == 1;
 
+            SetContextMenu();
+
             Task.Run(async () =>
             {
                 await Task.Delay(TimeSpan.FromSeconds(1));
                 CheckForUpdatesAsync();
             });
+
+
+        }
+        
+        private void SetContextMenu()
+        {
+
+            Padding padding = new Padding(5, 5, 5, 5);
+
+            var menuTitle = new ToolStripMenuItem(Properties.Strings.PerformanceMode);
+            menuTitle.Margin = padding;
+            menuTitle.Enabled = false;
+            contextMenuStrip.Items.Add(menuTitle);
+
+            menuSilent = new ToolStripMenuItem(Properties.Strings.Silent);
+            menuSilent.Click += ButtonSilent_Click;
+            menuSilent.Margin = padding;
+            contextMenuStrip.Items.Add(menuSilent);
+
+            menuBalanced = new ToolStripMenuItem(Properties.Strings.Balanced);
+            menuBalanced.Click += ButtonBalanced_Click;
+            menuBalanced.Margin = padding;
+            contextMenuStrip.Items.Add(menuBalanced);
+
+            menuTurbo = new ToolStripMenuItem(Properties.Strings.Turbo);
+            menuTurbo.Click += ButtonTurbo_Click;
+            menuTurbo.Checked = true;
+            menuTurbo.Margin = padding;
+            contextMenuStrip.Items.Add(menuTurbo);
+
+            contextMenuStrip.ShowCheckMargin = true;
+            contextMenuStrip.RenderMode = ToolStripRenderMode.System;
+
+            if (CheckSystemDarkModeStatus())
+            {
+                contextMenuStrip.BackColor = this.BackColor;
+                contextMenuStrip.ForeColor = this.ForeColor;
+            }
+
+            Program.trayIcon.ContextMenuStrip = contextMenuStrip;
 
 
         }
@@ -291,7 +336,7 @@ namespace GHelper
                                 break;
                             case 1:
                                 Logger.WriteLine("Monitor Power On");
-                                Program.SetAutoModes(false);
+                                Program.SetAutoModes();
                                 break;
                             case 2:
                                 Logger.WriteLine("Monitor Dimmed");
@@ -1029,18 +1074,25 @@ namespace GHelper
             buttonBalanced.Activated = false;
             buttonTurbo.Activated = false;
 
+            menuSilent.Checked = false;
+            menuBalanced.Checked = false;
+            menuTurbo.Checked = false;
+
             switch (PerformanceMode)
             {
                 case ASUSWmi.PerformanceSilent:
                     buttonSilent.Activated = true;
+                    menuSilent.Checked = true;
                     perfName = Properties.Strings.Silent;
                     break;
                 case ASUSWmi.PerformanceTurbo:
                     buttonTurbo.Activated = true;
+                    menuTurbo.Checked = true;
                     perfName = Properties.Strings.Turbo;
                     break;
                 default:
                     buttonBalanced.Activated = true;
+                    menuBalanced.Checked = true;
                     PerformanceMode = ASUSWmi.PerformanceBalanced;
                     perfName = Properties.Strings.Balanced;
                     break;

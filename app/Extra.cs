@@ -13,7 +13,7 @@ namespace GHelper
           {"screenshot", Properties.Strings.PrintScreen},
           {"play", Properties.Strings.PlayPause},
           {"aura", Properties.Strings.ToggleAura},
-          {"ghelper", Properties.Strings.OpenGHelper},
+          {"performance", Properties.Strings.PerformanceMode},
           {"screen", Properties.Strings.ToggleScreen},
           {"miniled", Properties.Strings.ToggleMiniled},
           {"custom", Properties.Strings.Custom}
@@ -22,7 +22,7 @@ namespace GHelper
         private void SetKeyCombo(ComboBox combo, TextBox txbox, string name)
         {
             if (name == "m4")
-                customActions[""] = Properties.Strings.PerformanceMode;
+                customActions[""] = Properties.Strings.OpenGHelper;
 
             if (name == "fnf4")
             {

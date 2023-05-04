@@ -3,11 +3,44 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Management;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Security.Principal;
+using System.Windows.Forms;
 using Tools;
 
 namespace GHelper
 {
+
+    class CustomContextMenu : ContextMenuStrip
+    {
+        [DllImport("dwmapi.dll", CharSet = CharSet.Unicode, SetLastError = true)]
+        private static extern long DwmSetWindowAttribute(IntPtr hwnd,
+                                                            DWMWINDOWATTRIBUTE attribute,
+                                                            ref DWM_WINDOW_CORNER_PREFERENCE pvAttribute,
+                                                            uint cbAttribute);
+
+        public CustomContextMenu()
+        {
+            var preference = DWM_WINDOW_CORNER_PREFERENCE.DWMWCP_ROUNDSMALL;     //change as you want
+            DwmSetWindowAttribute(Handle,
+                                  DWMWINDOWATTRIBUTE.DWMWA_WINDOW_CORNER_PREFERENCE,
+                                  ref preference,
+                                  sizeof(uint));
+        }
+
+        public enum DWMWINDOWATTRIBUTE
+        {
+            DWMWA_WINDOW_CORNER_PREFERENCE = 33
+        }
+        public enum DWM_WINDOW_CORNER_PREFERENCE
+        {
+            DWMWA_DEFAULT = 0,
+            DWMWCP_DONOTROUND = 1,
+            DWMWCP_ROUND = 2,
+            DWMWCP_ROUNDSMALL = 3,
+        }
+    }
+
     static class Program
     {
         public static NotifyIcon trayIcon = new NotifyIcon
@@ -145,7 +178,6 @@ namespace GHelper
 
         }
 
-
         static void SystemEvents_UserPreferenceChanged(object sender, UserPreferenceChangedEventArgs e)
         {
 
@@ -173,7 +205,7 @@ namespace GHelper
 
 
 
-        public static void SetAutoModes(bool monitor = true)
+        public static void SetAutoModes()
         {
 
             if (Math.Abs(DateTimeOffset.Now.ToUnixTimeMilliseconds() - lastAuto) < 3000) return;
@@ -185,8 +217,7 @@ namespace GHelper
             settingsForm.SetBatteryChargeLimit(config.getConfig("charge_limit"));
             settingsForm.AutoPerformance();
 
-            bool switched = false;
-            if (monitor) switched = settingsForm.AutoGPUMode();
+            bool switched = settingsForm.AutoGPUMode();
 
             if (!switched)
             {
@@ -253,7 +284,7 @@ namespace GHelper
             if (action is null || action.Length <= 1)
             {
                 if (name == "m4")
-                    action = "performance";
+                    action = "ghelper";
                 if (name == "fnf4")
                     action = "aura";
             }
@@ -338,7 +369,7 @@ namespace GHelper
 
         static void TrayIcon_MouseClick(object? sender, MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Left || e.Button == MouseButtons.Right)
+            if (e.Button == MouseButtons.Left)
             {
                 SettingsToggle();
             }

@@ -79,6 +79,7 @@ namespace GHelper
 
             //labelInfo.MaximumSize = new Size(280, 0);
             labelInfo.Text = Properties.Strings.PPTExperimental;
+            labelFansResult.Visible = false;
 
             InitFans();
             InitPower();
@@ -283,7 +284,7 @@ namespace GHelper
         public void LabelFansResult(string text)
         {
             labelFansResult.Text = text;
-            labelFansResult.Visible = (text.Length == 0);
+            labelFansResult.Visible = (text.Length > 0);
         }
 
         private void Fans_FormClosing(object? sender, FormClosingEventArgs e)

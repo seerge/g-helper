@@ -2,6 +2,7 @@
 using WinFormsSliderBar;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms.DataVisualization.Charting;
+using System.Windows.Forms;
 
 public static class ControlHelper
 {
