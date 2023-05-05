@@ -5,7 +5,6 @@ using System.Management;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Security.Principal;
-using System.Windows.Forms;
 using Tools;
 
 namespace GHelper
@@ -173,10 +172,14 @@ namespace GHelper
                 SettingsToggle();
             }
 
+            settingsForm.RefreshSensors();
+
             Application.Run();
 
 
         }
+
+
 
         static void SystemEvents_UserPreferenceChanged(object sender, UserPreferenceChangedEventArgs e)
         {
@@ -373,6 +376,7 @@ namespace GHelper
             {
                 SettingsToggle();
             }
+
         }
 
 

@@ -1,7 +1,6 @@
-﻿using System.Diagnostics;
+﻿using CustomControls;
+using System.Diagnostics;
 using System.Windows.Forms.DataVisualization.Charting;
-using CustomControls;
-using GHelper.Gpu;
 
 namespace GHelper
 {

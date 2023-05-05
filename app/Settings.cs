@@ -1,11 +1,11 @@
 ﻿using CustomControls;
 using Starlight.AnimeMatrix;
+using System;
 using System.Diagnostics;
 using System.Drawing.Imaging;
-using System.Globalization;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Text.Json;
-using System.Threading;
 using System.Timers;
 using Tools;
 
@@ -16,7 +16,7 @@ namespace GHelper
     {
 
         private ContextMenuStrip contextMenuStrip = new CustomContextMenu();
-        private ToolStripMenuItem menuSilent, menuBalanced, menuTurbo;
+        private ToolStripMenuItem menuSilent, menuBalanced, menuTurbo, menuEco, menuStandard, menuUltimate, menuOptimized;
 
         public static System.Timers.Timer aTimer = default!;
         public static Point trayPoint;
@@ -132,6 +132,7 @@ namespace GHelper
 
             aTimer = new System.Timers.Timer(1000);
             aTimer.Elapsed += OnTimedEvent;
+            aTimer.Enabled = true;
 
             SetVersionLabel(Properties.Strings.VersionLabel + ": " + Assembly.GetExecutingAssembly().GetName().Version);
 
@@ -141,7 +142,7 @@ namespace GHelper
 
             labelModel.Text = model;
 
-            this.TopMost = Program.config.getConfig("topmost") == 1;
+            TopMost = Program.config.getConfig("topmost") == 1;
 
             SetContextMenu();
 
@@ -151,18 +152,49 @@ namespace GHelper
                 CheckForUpdatesAsync();
             });
 
-
         }
-        
-        private void SetContextMenu()
+
+        public void SetContextMenu()
         {
+
+            contextMenuStrip.Items.Clear();
 
             Padding padding = new Padding(5, 5, 5, 5);
 
-            var menuTitle = new ToolStripMenuItem(Properties.Strings.PerformanceMode);
-            menuTitle.Margin = padding;
-            menuTitle.Enabled = false;
-            contextMenuStrip.Items.Add(menuTitle);
+            /*
+            TableLayoutPanel[] tables = { tablePerf, tableGPU };
+            string[] titles = { Properties.Strings.PerformanceMode, Properties.Strings.GPUMode};
+
+            int index = 0;
+            foreach (TableLayoutPanel table in tables)
+            {
+
+                var title = new ToolStripMenuItem(titles[index]);
+                title.Margin = padding;
+                title.Enabled = false;
+                contextMenuStrip.Items.Add(title);
+
+                foreach (Control control in table.Controls)
+                {
+                    var button = control as RButton;
+                    if (button != null && !button.Secondary && button.Enabled)
+                    {
+                        var menu = new ToolStripMenuItem(button.Text);
+                        menu.Margin = padding;
+                        menu.Checked = button.Activated;
+                        menu.Click += delegate { button.PerformClick(); };
+                        contextMenuStrip.Items.Add(menu);
+                    }
+                }
+                contextMenuStrip.Items.Add("-");
+                index++;
+            }*/
+
+
+            var title = new ToolStripMenuItem(Properties.Strings.PerformanceMode);
+            title.Margin = padding;
+            title.Enabled = false;
+            contextMenuStrip.Items.Add(title);
 
             menuSilent = new ToolStripMenuItem(Properties.Strings.Silent);
             menuSilent.Click += ButtonSilent_Click;
@@ -179,6 +211,40 @@ namespace GHelper
             menuTurbo.Checked = true;
             menuTurbo.Margin = padding;
             contextMenuStrip.Items.Add(menuTurbo);
+
+            contextMenuStrip.Items.Add("-");
+
+            var titleGPU = new ToolStripMenuItem(Properties.Strings.GPUMode);
+            titleGPU.Margin = padding;
+            titleGPU.Enabled = false;
+            contextMenuStrip.Items.Add(titleGPU);
+
+            menuEco = new ToolStripMenuItem(Properties.Strings.EcoMode);
+            menuEco.Click += ButtonEco_Click;
+            menuEco.Margin = padding;
+            contextMenuStrip.Items.Add(menuEco);
+
+            menuStandard = new ToolStripMenuItem(Properties.Strings.StandardMode);
+            menuStandard.Click += ButtonStandard_Click;
+            menuStandard.Margin = padding;
+            contextMenuStrip.Items.Add(menuStandard);
+
+            menuUltimate = new ToolStripMenuItem(Properties.Strings.UltimateMode);
+            menuUltimate.Click += ButtonUltimate_Click;
+            menuUltimate.Margin = padding;
+            contextMenuStrip.Items.Add(menuUltimate);
+
+            menuOptimized = new ToolStripMenuItem(Properties.Strings.Optimized);
+            menuOptimized.Click += ButtonOptimized_Click;
+            menuOptimized.Margin = padding;
+            contextMenuStrip.Items.Add(menuOptimized);
+
+            contextMenuStrip.Items.Add("-");
+
+            var quit = new ToolStripMenuItem(Properties.Strings.Quit);
+            quit.Click += ButtonQuit_Click;
+            quit.Margin = padding;
+            contextMenuStrip.Items.Add(quit);
 
             contextMenuStrip.ShowCheckMargin = true;
             contextMenuStrip.RenderMode = ToolStripRenderMode.System;
@@ -199,7 +265,8 @@ namespace GHelper
             if (Program.wmi.DeviceGet(ASUSWmi.GPUXG) == 1)
             {
                 Program.wmi.DeviceSet(ASUSWmi.GPUXG, 0, "GPU XGM");
-            } else
+            }
+            else
             {
                 Program.wmi.DeviceSet(ASUSWmi.GPUXG, 1, "GPU XGM");
             }
@@ -562,7 +629,7 @@ namespace GHelper
                         break;
                     default:
                         mat.SetBuiltInAnimation(true, animation);
-                        Logger.WriteLine("Matrix builtin "+animation.AsByte);
+                        Logger.WriteLine("Matrix builtin " + animation.AsByte);
                         break;
 
                 }
@@ -802,7 +869,7 @@ namespace GHelper
             ButtonEnabled(buttonMiniled, screenEnabled);
 
             labelSreen.Text = screenEnabled
-                ? Properties.Strings.LaptopScreen + ": " + frequency + "Hz" + ((overdrive == 1) ? " + " + Properties.Strings.Overdrive : "")
+                ? Properties.Strings.LaptopScreen + ": " + frequency + "Hz" + ((overdrive == 1 && overdriveSetting) ? " + " + Properties.Strings.Overdrive : "")
                 : Properties.Strings.LaptopScreen + ": " + Properties.Strings.TurnedOff;
 
             button60Hz.Activated = false;
@@ -826,7 +893,8 @@ namespace GHelper
             {
                 button120Hz.Text = maxFrequency.ToString() + "Hz" + (overdriveSetting ? " + OD" : "");
                 panelScreen.Visible = true;
-            } else if (maxFrequency > 0)
+            }
+            else if (maxFrequency > 0)
             {
                 panelScreen.Visible = false;
             }
@@ -876,8 +944,7 @@ namespace GHelper
             SetGPUMode(ASUSWmi.GPUModeEco);
         }
 
-
-        private void RefreshSensors(bool force = false)
+        public void RefreshSensors(bool force = false)
         {
 
             if (!force && Math.Abs(DateTimeOffset.Now.ToUnixTimeMilliseconds() - lastRefresh) < 2000) return;
@@ -893,7 +960,7 @@ namespace GHelper
                 cpuTemp = ": " + Math.Round((decimal)HardwareMonitor.cpuTemp).ToString() + "°C ";
 
             if (HardwareMonitor.batteryDischarge > 0)
-                battery = Properties.Strings.Discharging +": " + Math.Round((decimal)HardwareMonitor.batteryDischarge, 1).ToString() + "W";
+                battery = Properties.Strings.Discharging + ": " + Math.Round((decimal)HardwareMonitor.batteryDischarge, 1).ToString() + "W";
 
             if (HardwareMonitor.gpuTemp > 0)
             {
@@ -930,11 +997,7 @@ namespace GHelper
                 this.Top = Screen.FromControl(this).WorkingArea.Height - 10 - this.Height;
                 this.Activate();
 
-                Task.Run(async () =>
-                {
-                    await Task.Delay(TimeSpan.FromSeconds(1));
-                    aTimer.Enabled = true;
-                });
+                aTimer.Enabled = true;
 
             }
             else
@@ -946,7 +1009,7 @@ namespace GHelper
 
         private void SetPerformanceLabel()
         {
-            labelPerf.Text = Properties.Strings.PerformanceMode + (customFans?"+":"") + ((customPower > 0) ? " "+customPower+"W" : "");
+            labelPerf.Text = Properties.Strings.PerformanceMode + (customFans ? "+" : "") + ((customPower > 0) ? " " + customPower + "W" : "");
         }
 
         public void SetPower()
@@ -1074,29 +1137,26 @@ namespace GHelper
             buttonBalanced.Activated = false;
             buttonTurbo.Activated = false;
 
-            menuSilent.Checked = false;
-            menuBalanced.Checked = false;
-            menuTurbo.Checked = false;
-
             switch (PerformanceMode)
             {
                 case ASUSWmi.PerformanceSilent:
                     buttonSilent.Activated = true;
-                    menuSilent.Checked = true;
                     perfName = Properties.Strings.Silent;
                     break;
                 case ASUSWmi.PerformanceTurbo:
                     buttonTurbo.Activated = true;
-                    menuTurbo.Checked = true;
                     perfName = Properties.Strings.Turbo;
                     break;
                 default:
                     buttonBalanced.Activated = true;
-                    menuBalanced.Checked = true;
                     PerformanceMode = ASUSWmi.PerformanceBalanced;
                     perfName = Properties.Strings.Balanced;
                     break;
             }
+
+            menuSilent.Checked = buttonSilent.Activated;
+            menuBalanced.Checked = buttonBalanced.Activated;
+            menuTurbo.Checked = buttonTurbo.Activated;
 
             int oldMode = Program.config.getConfig("performance_mode");
             Program.config.setConfig("performance_" + (int)SystemInformation.PowerStatus.PowerLineStatus, PerformanceMode);
@@ -1121,7 +1181,7 @@ namespace GHelper
 
             if (Program.config.getConfigPerfString("scheme") is not null)
                 NativeMethods.SetPowerScheme(Program.config.getConfigPerfString("scheme"));
-            else 
+            else
                 NativeMethods.SetPowerScheme(PerformanceMode);
 
             if (Program.config.getConfigPerf("auto_boost") != -1)
@@ -1195,8 +1255,8 @@ namespace GHelper
         public static bool IsPlugged()
         {
             bool optimizedUSBC = Program.config.getConfig("optimized_usbc") != 1;
-            
-            return SystemInformation.PowerStatus.PowerLineStatus == PowerLineStatus.Online && 
+
+            return SystemInformation.PowerStatus.PowerLineStatus == PowerLineStatus.Online &&
                    (optimizedUSBC || Program.wmi.DeviceGet(ASUSWmi.ChargerMode) != ASUSWmi.ChargerUSB);
 
         }
@@ -1268,6 +1328,7 @@ namespace GHelper
                 tablePerf.ColumnCount = 0;
                 tableGPU.ColumnCount = 0;
                 tableScreen.ColumnCount = 0;
+                menuUltimate.Visible = false;
 
             }
             //tableLayoutMatrix.ColumnCount = 0;
@@ -1278,7 +1339,7 @@ namespace GHelper
             int connected = Program.wmi.DeviceGet(ASUSWmi.GPUXGConnected);
             int enabled = Program.wmi.DeviceGet(ASUSWmi.GPUXG);
 
-            buttonXGM.Visible = (connected == 1);
+            buttonXGM.Enabled = buttonXGM.Visible = (connected == 1);
             buttonXGM.Activated = (enabled == 1);
 
         }
@@ -1332,7 +1393,7 @@ namespace GHelper
             ButtonEnabled(buttonStandard, false);
             ButtonEnabled(buttonUltimate, false);
 
-            labelGPU.Text = Properties.Strings.GPUMode + ": "+ Properties.Strings.GPUChanging + " ...";
+            labelGPU.Text = Properties.Strings.GPUMode + ": " + Properties.Strings.GPUChanging + " ...";
 
             Thread t = new Thread(() =>
             {
@@ -1461,6 +1522,10 @@ namespace GHelper
                     break;
             }
 
+            menuEco.Checked = buttonEco.Activated;
+            menuStandard.Checked = buttonStandard.Activated;
+            menuUltimate.Checked = buttonUltimate.Activated;
+            menuOptimized.Checked = buttonOptimized.Activated;
 
         }
 

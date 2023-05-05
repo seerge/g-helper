@@ -1,14 +1,10 @@
 ﻿// Source thanks to https://github.com/vddCore/Starlight with some adjustments from me
 
 using Starlight.Communication;
-using System.Management;
 using System.Drawing.Drawing2D;
-using System.Text;
 using System.Globalization;
-using System;
-using System.Drawing;
-using OSD;
-using System.Diagnostics;
+using System.Management;
+using System.Text;
 
 namespace Starlight.AnimeMatrix
 {
@@ -331,7 +327,7 @@ namespace Starlight.AnimeMatrix
             int second = DateTime.Now.Second;
 
             if (CultureInfo.CurrentCulture.DateTimeFormat.ShortTimePattern.Contains("H"))
-                PresentTextDiagonal(DateTime.Now.ToString("H" + ((second % 2 == 0)?":":" ") + "mm"));
+                PresentTextDiagonal(DateTime.Now.ToString("H" + ((second % 2 == 0) ? ":" : " ") + "mm"));
             else
                 PresentTextDiagonal(DateTime.Now.ToString("h" + ((second % 2 == 0) ? ":" : " ") + "mmtt"));
         }
@@ -348,14 +344,14 @@ namespace Starlight.AnimeMatrix
                     using (Font font = new Font("Arial", 24F, GraphicsUnit.Pixel))
                     {
                         SizeF textSize = g.MeasureString(text1, font);
-                        g.DrawString(text1, font, Brushes.White, (MaxColumns*3 - textSize.Width)+3, -3);
+                        g.DrawString(text1, font, Brushes.White, (MaxColumns * 3 - textSize.Width) + 3, -3);
                     }
 
                     if (text2.Length > 0)
                         using (Font font = new Font("Arial", 18F, GraphicsUnit.Pixel))
                         {
                             SizeF textSize = g.MeasureString(text2, font);
-                            g.DrawString(text2, font, Brushes.White, (MaxColumns * 3 - textSize.Width)+1, 25);
+                            g.DrawString(text2, font, Brushes.White, (MaxColumns * 3 - textSize.Width) + 1, 25);
                         }
 
                 }
@@ -369,7 +365,7 @@ namespace Starlight.AnimeMatrix
         public void GenerateFrame(Image image, InterpolationMode interpolation = InterpolationMode.High)
         {
 
-            int width = MaxColumns/2 * 6;
+            int width = MaxColumns / 2 * 6;
             int height = MaxRows;
 
             int targetWidth = MaxColumns * 2;
@@ -396,7 +392,7 @@ namespace Starlight.AnimeMatrix
                 for (int y = 0; y < bmp.Height; y++)
                 {
                     for (int x = 0; x < bmp.Width; x++)
-                        if (x % 2 == (y+dx) % 2)
+                        if (x % 2 == (y + dx) % 2)
                         {
                             var pixel = bmp.GetPixel(x, y);
                             var color = (pixel.R + pixel.G + pixel.B) / 3;
@@ -411,9 +407,9 @@ namespace Starlight.AnimeMatrix
         public void SetLedDiagonal(int x, int y, byte color, int delta = 10)
         {
             //x+=delta;
-            y-=delta;
+            y -= delta;
 
-            int dx = (x - y)/2;
+            int dx = (x - y) / 2;
             int dy = x + y;
             SetLedPlanar(dx, dy, color);
         }
@@ -442,11 +438,11 @@ namespace Starlight.AnimeMatrix
                 for (int y = 0; y < bmp.Height; y++)
                 {
                     for (int x = 0; x < bmp.Width; x++)
-                        {
-                            var pixel = bmp.GetPixel(x, y);
-                            var color = (pixel.R + pixel.G + pixel.B) / 3;
-                            SetLedDiagonal(x, y, (byte)color);
-                        }
+                    {
+                        var pixel = bmp.GetPixel(x, y);
+                        var color = (pixel.R + pixel.G + pixel.B) / 3;
+                        SetLedDiagonal(x, y, (byte)color);
+                    }
                 }
             }
 

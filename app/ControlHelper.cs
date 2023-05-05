@@ -1,8 +1,7 @@
 ﻿using CustomControls;
-using WinFormsSliderBar;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms.DataVisualization.Charting;
-using System.Windows.Forms;
+using WinFormsSliderBar;
 
 public static class ControlHelper
 {
@@ -87,7 +86,7 @@ public static class ControlHelper
             }
 
             var sl = control as Slider;
-            if (sl != null) 
+            if (sl != null)
             {
                 sl.borderColor = RForm.buttonMain;
             }

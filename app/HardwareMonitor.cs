@@ -155,14 +155,16 @@ public static class HardwareMonitor
             }
 
             _gpuControl.Dispose();
+
+            /*
             _gpuControl = new AmdGpuControl();
             if (_gpuControl.IsValid)
             {
                 GpuControl = _gpuControl;
                 return;
             }
-
             _gpuControl.Dispose();
+            */
 
             GpuControl = null;
         }

@@ -208,25 +208,37 @@ namespace GHelper
 
             List<AuraDev19b6> flags = new List<AuraDev19b6>();
 
-            if (awake) flags.Add(AuraDev19b6.AwakeKeyb);
-            if (boot) flags.Add(AuraDev19b6.BootKeyb);
-            if (sleep) flags.Add(AuraDev19b6.SleepKeyb);
-            if (shutdown) flags.Add(AuraDev19b6.ShutdownKeyb);
+            if (awake)
+            {
+                flags.Add(AuraDev19b6.AwakeKeyb);
+                flags.Add(AuraDev19b6.AwakeBar);
+                flags.Add(AuraDev19b6.AwakeLid);
+                flags.Add(AuraDev19b6.AwakeLogo);
+            }
 
-            flags.Add(AuraDev19b6.AwakeBar);
-            flags.Add(AuraDev19b6.BootBar);
-            flags.Add(AuraDev19b6.SleepBar);
-            flags.Add(AuraDev19b6.ShutdownBar);
+            if (boot)
+            {
+                flags.Add(AuraDev19b6.BootKeyb);
+                flags.Add(AuraDev19b6.BootBar);
+                flags.Add(AuraDev19b6.BootLid);
+                flags.Add(AuraDev19b6.BootLogo);
+            }
 
-            flags.Add(AuraDev19b6.AwakeLid);
-            flags.Add(AuraDev19b6.BootLid);
-            flags.Add(AuraDev19b6.SleepLid);
-            flags.Add(AuraDev19b6.ShutdownLid);
+            if (sleep)
+            {
+                flags.Add(AuraDev19b6.SleepKeyb);
+                flags.Add(AuraDev19b6.SleepBar);
+                flags.Add(AuraDev19b6.SleepLid);
+                flags.Add(AuraDev19b6.SleepLogo);
+            }
 
-            flags.Add(AuraDev19b6.AwakeLogo);
-            flags.Add(AuraDev19b6.BootLogo);
-            flags.Add(AuraDev19b6.SleepLogo);
-            flags.Add(AuraDev19b6.ShutdownLogo);
+            if (shutdown)
+            {
+                flags.Add(AuraDev19b6.ShutdownKeyb);
+                flags.Add(AuraDev19b6.ShutdownBar);
+                flags.Add(AuraDev19b6.ShutdownLid);
+                flags.Add(AuraDev19b6.ShutdownLogo);
+            }
 
             byte[] msg = AuraDev19b6Extensions.ToBytes(flags.ToArray());
 

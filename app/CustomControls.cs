@@ -30,6 +30,11 @@ namespace CustomControls
 
         public bool darkTheme = false;
 
+        public RForm()
+        {
+            DoubleBuffered = true;
+        }
+
         public static void InitColors(bool darkTheme)
         {
             if (darkTheme)
@@ -97,7 +102,7 @@ namespace CustomControls
     }
 
 
-        public class RComboBox : ComboBox
+    public class RComboBox : ComboBox
     {
         private Color borderColor = Color.Gray;
         [DefaultValue(typeof(Color), "Gray")]
@@ -332,8 +337,9 @@ namespace CustomControls
 
         public RButton()
         {
-            this.FlatStyle = FlatStyle.Flat;
-            this.FlatAppearance.BorderSize = 0;
+            DoubleBuffered = true;
+            FlatStyle = FlatStyle.Flat;
+            FlatAppearance.BorderSize = 0;
         }
 
         private GraphicsPath GetFigurePath(Rectangle rect, int radius)
