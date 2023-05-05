@@ -172,10 +172,7 @@ namespace GHelper
                 SettingsToggle();
             }
 
-            settingsForm.RefreshSensors();
-
             Application.Run();
-
 
         }
 

@@ -846,7 +846,6 @@ namespace GHelper
             }
 
             InitScreen();
-
         }
 
         public void InitScreen()
@@ -869,7 +868,7 @@ namespace GHelper
             ButtonEnabled(buttonMiniled, screenEnabled);
 
             labelSreen.Text = screenEnabled
-                ? Properties.Strings.LaptopScreen + ": " + frequency + "Hz" + ((overdrive == 1 && overdriveSetting) ? " + " + Properties.Strings.Overdrive : "")
+                ? Properties.Strings.LaptopScreen + ": " + frequency + "Hz" + ((overdrive == 1) ? " + " + Properties.Strings.Overdrive : "")
                 : Properties.Strings.LaptopScreen + ": " + Properties.Strings.TurnedOff;
 
             button60Hz.Activated = false;
@@ -1242,12 +1241,17 @@ namespace GHelper
 
         public void AutoScreen(bool force = false)
         {
-            if (!force && Program.config.getConfig("screen_auto") != 1) return;
+            if (force || Program.config.getConfig("screen_auto") == 1)
+            {
+                if (SystemInformation.PowerStatus.PowerLineStatus == PowerLineStatus.Online)
+                    SetScreen(1000, 1);
+                else
+                    SetScreen(60, 0);
+            } else
+            {
+                SetScreen(overdrive : Program.config.getConfig("overdrive")); 
+            }
 
-            if (SystemInformation.PowerStatus.PowerLineStatus == PowerLineStatus.Online)
-                SetScreen(1000, 1);
-            else
-                SetScreen(60, 0);
 
 
         }
