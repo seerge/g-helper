@@ -1,3 +1,4 @@
+using GHelper.Gpu;
 using Microsoft.Win32;
 using System.Diagnostics;
 using System.Globalization;
@@ -61,6 +62,7 @@ namespace GHelper
         private static long lastTheme;
         private static PowerLineStatus isPlugged = PowerLineStatus.Unknown;
 
+        public static NvidiaGpuControl nvControl = new NvidiaGpuControl();
 
         static void CheckProcesses()
         {

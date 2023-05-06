@@ -1,4 +1,5 @@
 ﻿using CustomControls;
+using GHelper.Gpu;
 using System.Diagnostics;
 using System.Windows.Forms.DataVisualization.Charting;
 
@@ -13,6 +14,7 @@ namespace GHelper
         Series seriesMid;
 
         static int MinRPM, MaxRPM;
+
         public Fans()
         {
 
@@ -71,10 +73,17 @@ namespace GHelper
             checkApplyFans.Click += CheckApplyFans_Click;
             checkApplyPower.Click += CheckApplyPower_Click;
 
+            trackGPUCore.Minimum = NvidiaGpuControl.MinCoreOffset;
+            trackGPUCore.Maximum = NvidiaGpuControl.MaxCoreOffset;
+
+            trackGPUMemory.Minimum = NvidiaGpuControl.MinMemoryOffset;
+            trackGPUMemory.Maximum = NvidiaGpuControl.MaxMemoryOffset;
+
             trackGPUCore.Scroll += trackGPU_Scroll;
             trackGPUMemory.Scroll += trackGPU_Scroll;
 
-            buttonResetGPU.Click += ButtonResetGPU_Click;
+            trackGPUCore.MouseUp += TrackGPU_MouseUp;
+            trackGPUMemory.MouseUp += TrackGPU_MouseUp;
 
             //labelInfo.MaximumSize = new Size(280, 0);
             labelInfo.Text = Properties.Strings.PPTExperimental;
@@ -92,33 +101,51 @@ namespace GHelper
 
         }
 
-        private void InitGPUClocks()
+        private void TrackGPU_MouseUp(object? sender, MouseEventArgs e)
         {
-            /*
             try
             {
-                using (var _gpuControl = new NvidiaGpuControl())
-                {
-                    panelGPU.Visible = _gpuControl.IsValid;
+                int status = Program.nvControl.SetClocks(trackGPUCore.Value, trackGPUMemory.Value);
+                if (status == -1) Program.RunAsAdmin();
 
-                    trackGPUCore.Value = Math.Min(Program.config.getConfig("GPUCore"), 300);
-                    trackGPUMemory.Value = Math.Min(Program.config.getConfig("GPUMemory"), 300);
-                    VisualiseGPUClocks();
-                }
-            } catch (Exception ex)
-            {
-                panelGPU.Visible=false;
+                Program.config.setConfig("GPUCore", trackGPUCore.Value);
+                Program.config.setConfig("GPUMemory", trackGPUMemory.Value);
             }
-            */
+            catch (Exception ex)
+            {
+                Logger.WriteLine(ex.ToString());
+            }
+        }
 
-            panelGPU.Visible = false;
+        private void InitGPUClocks()
+        {
+            if (Program.nvControl is null || !Program.nvControl.IsValid)
+            {
+                panelGPU.Visible = false;
+                return;
+            }
+
+            try
+            {
+                panelGPU.Visible = true;
+
+                Program.nvControl.GetClocks(out int core, out int memory);
+                trackGPUCore.Value = Math.Max(Math.Min(core, NvidiaGpuControl.MaxCoreOffset), NvidiaGpuControl.MinCoreOffset);
+                trackGPUMemory.Value = Math.Max(Math.Min(memory, NvidiaGpuControl.MaxMemoryOffset), NvidiaGpuControl.MinMemoryOffset);
+
+                VisualiseGPUClocks();
+
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+                panelGPU.Visible = false;
+            }
 
         }
 
         private void ButtonResetGPU_Click(object? sender, EventArgs e)
         {
-
-            Program.RunAsAdmin();
 
             try
             {
@@ -134,23 +161,13 @@ namespace GHelper
 
         private void VisualiseGPUClocks()
         {
-            labelGPUCore.Text = $"+{trackGPUCore.Value} MHz";
-            labelGPUMemory.Text = $"+{trackGPUMemory.Value} MHz";
+            labelGPUCore.Text = $"{trackGPUCore.Value} MHz";
+            labelGPUMemory.Text = $"{trackGPUMemory.Value} MHz";
         }
 
         private void trackGPU_Scroll(object? sender, EventArgs e)
         {
             VisualiseGPUClocks();
-
-            try
-            {
-                Program.config.setConfig("GPUCore", trackGPUCore.Value);
-                Program.config.setConfig("GPUMemory", trackGPUMemory.Value);
-            }
-            catch (Exception ex)
-            {
-                Logger.WriteLine(ex.ToString());
-            }
         }
 
         static string ChartPercToRPM(int percentage, string unit = "")
@@ -304,7 +321,7 @@ namespace GHelper
             bool cpuBmode = (Program.wmi.DeviceGet(ASUSWmi.PPT_CPUB0) >= 0); // 2022 model +
             bool cpuAmode = (Program.wmi.DeviceGet(ASUSWmi.PPT_TotalA0) >= 0); // 2021 model +
 
-            panelPower.Visible = cpuAmode;
+            panelSliders.Visible = cpuAmode;
             panelCPU.Visible = cpuBmode;
 
             // Yes, that's stupid, but Total slider on 2021 model actually adjusts CPU PPT
@@ -343,7 +360,6 @@ namespace GHelper
 
             labelTotal.Text = trackTotal.Value.ToString() + "W";
             labelCPU.Text = trackCPU.Value.ToString() + "W";
-            pictureFine.Visible = (limit_cpu > 85 || limit_total > 145);
 
             Program.config.setConfigPerf("limit_total", limit_total);
             Program.config.setConfigPerf("limit_cpu", limit_cpu);
