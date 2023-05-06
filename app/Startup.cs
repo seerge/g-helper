@@ -1,4 +1,5 @@
-﻿using Microsoft.Win32.TaskScheduler;
+﻿using GHelper;
+using Microsoft.Win32.TaskScheduler;
 using System.Diagnostics;
 using System.Security.Principal;
 
@@ -28,6 +29,9 @@ public class Startup
             td.Triggers.Add(new LogonTrigger { UserId = userId });
             td.Actions.Add(strExeFilePath);
 
+            if (Program.IsUserAdministrator()) 
+                td.Principal.RunLevel = TaskRunLevel.Highest;
+
             td.Settings.StopIfGoingOnBatteries = false;
             td.Settings.DisallowStartIfOnBatteries = false;
             td.Settings.ExecutionTimeLimit = TimeSpan.Zero;
@@ -41,7 +45,10 @@ public class Startup
             }
             catch (Exception e)
             {
-                MessageBox.Show("Can't create a start up task. Try running Task Scheduler by hand and manually deleting GHelper task if it exists there.", "Scheduler Error", MessageBoxButtons.OK);
+                if (Program.IsUserAdministrator())
+                    MessageBox.Show("Can't create a start up task. Try running Task Scheduler by hand and manually deleting GHelper task if it exists there.", "Scheduler Error", MessageBoxButtons.OK);
+                else 
+                    Program.RunAsAdmin();
             }
         }
 
@@ -57,7 +64,10 @@ public class Startup
             }
             catch (Exception e)
             {
-                MessageBox.Show("Can't remove task. Try running Task Scheduler by hand and manually deleting GHelper task if it exists there.", "Scheduler Error", MessageBoxButtons.OK);
+                if (Program.IsUserAdministrator())
+                    MessageBox.Show("Can't remove task. Try running Task Scheduler by hand and manually deleting GHelper task if it exists there.", "Scheduler Error", MessageBoxButtons.OK);
+                else
+                    Program.RunAsAdmin();
             }
         }
     }

@@ -345,7 +345,7 @@ namespace GHelper
             }
         }
 
-        static bool IsUserAdministrator()
+        public static bool IsUserAdministrator()
         {
             WindowsIdentity identity = WindowsIdentity.GetCurrent();
             WindowsPrincipal principal = new WindowsPrincipal(identity);
