@@ -428,7 +428,7 @@ namespace Starlight.AnimeMatrix
                     g.CompositingQuality = CompositingQuality.HighQuality;
                     g.SmoothingMode = SmoothingMode.AntiAlias;
 
-                    using (Font font = new Font("Calibri", 16F, GraphicsUnit.Pixel))
+                    using (Font font = new Font("Calibri", 14F, GraphicsUnit.Pixel))
                     {
                         SizeF textSize = g.MeasureString(text, font);
                         g.DrawString(text, font, Brushes.White, 4, 0);

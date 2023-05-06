@@ -131,7 +131,7 @@ namespace GHelper
             }
             catch (Exception ex)
             {
-                Logger.WriteLine(ex.ToString());
+                Logger.WriteLine("F:" + ex.ToString());
             }
 
             InitGPUClocks();

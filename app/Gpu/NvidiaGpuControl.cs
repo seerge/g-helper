@@ -3,6 +3,7 @@ using NvAPIWrapper.Native;
 using NvAPIWrapper.Native.GPU;
 using NvAPIWrapper.Native.GPU.Structures;
 using NvAPIWrapper.Native.Interfaces.GPU;
+using static NvAPIWrapper.Native.GPU.Structures.PerformanceStates20InfoV1;
 
 namespace GHelper.Gpu;
 
@@ -48,7 +49,13 @@ public class NvidiaGpuControl : IGpuControl
     public void GetClocks(out int core, out int memory)
     {
         PhysicalGPU internalGpu = _internalGpu!;
-        PerformanceStates20InfoV1 states = (PerformanceStates20InfoV1)GPUApi.GetPerformanceStates20(internalGpu.Handle);
+        Logger.WriteLine(internalGpu.FullName);
+        Logger.WriteLine(internalGpu.ArchitectInformation.ToString());
+
+        IPerformanceStates20Info states = GPUApi.GetPerformanceStates20(internalGpu.Handle);
+
+        Logger.WriteLine("IPerformanceStates20Info type : " + states.GetType());
+
         core = states.Clocks[PerformanceStateId.P0_3DPerformance][0].FrequencyDeltaInkHz.DeltaValue / 1000;
         memory = states.Clocks[PerformanceStateId.P0_3DPerformance][1].FrequencyDeltaInkHz.DeltaValue / 1000;
     }
@@ -68,22 +75,28 @@ public class NvidiaGpuControl : IGpuControl
         if (memory < MinMemoryOffset || memory > MaxMemoryOffset) return 0;
 
         PhysicalGPU internalGpu = _internalGpu!;
-        PerformanceStates20InfoV1 states = (PerformanceStates20InfoV1)GPUApi.GetPerformanceStates20(internalGpu.Handle);
 
-        states._NumberOfPerformanceStates = 1;
-        states._NumberOfClocks = 2;
-        states.PerformanceStates[0]._Clocks[0]._FrequencyDeltaInkHz = new PerformanceStates20ParameterDelta(core * 1000);
-        states.PerformanceStates[0]._Clocks[1]._FrequencyDeltaInkHz = new PerformanceStates20ParameterDelta(memory * 1000);
+        var coreClock = new PerformanceStates20ClockEntryV1(PublicClockDomain.Graphics, new PerformanceStates20ParameterDelta(core * 1000));
+        var memoryClock = new PerformanceStates20ClockEntryV1(PublicClockDomain.Memory, new PerformanceStates20ParameterDelta(memory * 1000));
+
+        PerformanceStates20ClockEntryV1[] clocks = { coreClock , memoryClock};
+        PerformanceStates20BaseVoltageEntryV1[] voltages = { };
+
+        PerformanceState20[] performanceStates = { new PerformanceState20(PerformanceStateId.P0_3DPerformance, clocks, voltages) };
+
+        var overclock = new PerformanceStates20InfoV1(performanceStates, 2, 0);
 
         try
         {
-            GPUApi.SetPerformanceStates20(internalGpu.Handle, states);
+            GPUApi.SetPerformanceStates20(internalGpu.Handle, overclock);
         }
         catch (Exception ex)
         {
-            Logger.WriteLine(ex.Message);
+            Logger.WriteLine(ex.ToString());
             return -1;
         }
+
+
 
         return 1;
     }

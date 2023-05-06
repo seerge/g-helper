@@ -4,42 +4,11 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Management;
 using System.Reflection;
-using System.Runtime.InteropServices;
 using System.Security.Principal;
 using Tools;
 
 namespace GHelper
 {
-
-    class CustomContextMenu : ContextMenuStrip
-    {
-        [DllImport("dwmapi.dll", CharSet = CharSet.Unicode, SetLastError = true)]
-        private static extern long DwmSetWindowAttribute(IntPtr hwnd,
-                                                            DWMWINDOWATTRIBUTE attribute,
-                                                            ref DWM_WINDOW_CORNER_PREFERENCE pvAttribute,
-                                                            uint cbAttribute);
-
-        public CustomContextMenu()
-        {
-            var preference = DWM_WINDOW_CORNER_PREFERENCE.DWMWCP_ROUNDSMALL;     //change as you want
-            DwmSetWindowAttribute(Handle,
-                                  DWMWINDOWATTRIBUTE.DWMWA_WINDOW_CORNER_PREFERENCE,
-                                  ref preference,
-                                  sizeof(uint));
-        }
-
-        public enum DWMWINDOWATTRIBUTE
-        {
-            DWMWA_WINDOW_CORNER_PREFERENCE = 33
-        }
-        public enum DWM_WINDOW_CORNER_PREFERENCE
-        {
-            DWMWA_DEFAULT = 0,
-            DWMWCP_DONOTROUND = 1,
-            DWMWCP_ROUND = 2,
-            DWMWCP_ROUNDSMALL = 3,
-        }
-    }
 
     static class Program
     {
@@ -64,58 +33,12 @@ namespace GHelper
 
         public static NvidiaGpuControl nvControl = new NvidiaGpuControl();
 
-        static void CheckProcesses()
-        {
-            Process currentProcess = Process.GetCurrentProcess();
-            Process[] processes = Process.GetProcessesByName(currentProcess.ProcessName);
-
-            if (processes.Length > 1)
-            {
-                foreach (Process process in processes)
-                    if (process.Id != currentProcess.Id)
-                        try
-                        {
-                            process.Kill();
-                        }
-                        catch (Exception ex)
-                        {
-                            Logger.WriteLine(ex.ToString());
-                            MessageBox.Show(Properties.Strings.AppAlreadyRunningText, Properties.Strings.AppAlreadyRunning, MessageBoxButtons.OK);
-                            Application.Exit();
-                            return;
-                        }
-            }
-        }
-
-        static bool IsUserAdministrator()
-        {
-            WindowsIdentity identity = WindowsIdentity.GetCurrent();
-            WindowsPrincipal principal = new WindowsPrincipal(identity);
-            return principal.IsInRole(WindowsBuiltInRole.Administrator);
-        }
-
-        public static void RunAsAdmin(string? param = null)
-        {
-            // Check if the current user is an administrator
-            if (!IsUserAdministrator())
-            {
-                ProcessStartInfo startInfo = new ProcessStartInfo();
-                startInfo.UseShellExecute = true;
-                startInfo.WorkingDirectory = Environment.CurrentDirectory;
-                startInfo.FileName = Application.ExecutablePath;
-                startInfo.Arguments = param;
-                startInfo.Verb = "runas";
-                Process.Start(startInfo);
-                //Application.Exit();
-            }
-        }
-
         // The main entry point for the application
         public static void Main(string[] args)
         {
 
-            string? argument = null;
-            if (args.Length > 0) argument = args[0];
+            string action = "";
+            if (args.Length > 0) action = args[0];
 
             Thread.CurrentThread.CurrentUICulture = CultureInfo.CurrentUICulture;
             Debug.WriteLine(CultureInfo.CurrentUICulture);
@@ -171,9 +94,9 @@ namespace GHelper
             var ghk = new KeyHandler(KeyHandler.SHIFT | KeyHandler.CTRL, Keys.F5, ds);
             ghk.Register();
 
-            if (Environment.CurrentDirectory.Trim('\\') == Application.StartupPath.Trim('\\'))
+            if (Environment.CurrentDirectory.Trim('\\') == Application.StartupPath.Trim('\\') || action.Length > 0)
             {
-                SettingsToggle(argument);
+                SettingsToggle(action);
             }
 
             Application.Run();
@@ -317,7 +240,10 @@ namespace GHelper
                     settingsForm.BeginInvoke(settingsForm.CyclePerformanceMode);
                     break;
                 case "ghelper":
-                    settingsForm.BeginInvoke(SettingsToggle);
+                    settingsForm.BeginInvoke(delegate
+                    {
+                        SettingsToggle();
+                    });
                     break;
                 case "custom":
                     CustomKey(name);
@@ -357,7 +283,7 @@ namespace GHelper
 
         }
 
-        static void SettingsToggle(string? argument = null)
+        static void SettingsToggle(string action = "")
         {
             if (settingsForm.Visible)
                 settingsForm.Hide();
@@ -366,7 +292,7 @@ namespace GHelper
                 settingsForm.Show();
                 settingsForm.Activate();
 
-                if (argument == "gpu")
+                if (action == "gpu")
                 {
                     nvControl.SetClocksFromConfig();
                     settingsForm.FansToggle();
@@ -393,6 +319,53 @@ namespace GHelper
             trayIcon.Visible = false;
             NativeMethods.UnregisterPowerSettingNotification(unRegPowerNotify);
             Application.Exit();
+        }
+
+
+        static void CheckProcesses()
+        {
+            Process currentProcess = Process.GetCurrentProcess();
+            Process[] processes = Process.GetProcessesByName(currentProcess.ProcessName);
+
+            if (processes.Length > 1)
+            {
+                foreach (Process process in processes)
+                    if (process.Id != currentProcess.Id)
+                        try
+                        {
+                            process.Kill();
+                        }
+                        catch (Exception ex)
+                        {
+                            Logger.WriteLine(ex.ToString());
+                            MessageBox.Show(Properties.Strings.AppAlreadyRunningText, Properties.Strings.AppAlreadyRunning, MessageBoxButtons.OK);
+                            Application.Exit();
+                            return;
+                        }
+            }
+        }
+
+        static bool IsUserAdministrator()
+        {
+            WindowsIdentity identity = WindowsIdentity.GetCurrent();
+            WindowsPrincipal principal = new WindowsPrincipal(identity);
+            return principal.IsInRole(WindowsBuiltInRole.Administrator);
+        }
+
+        public static void RunAsAdmin(string? param = null)
+        {
+            // Check if the current user is an administrator
+            if (!IsUserAdministrator())
+            {
+                ProcessStartInfo startInfo = new ProcessStartInfo();
+                startInfo.UseShellExecute = true;
+                startInfo.WorkingDirectory = Environment.CurrentDirectory;
+                startInfo.FileName = Application.ExecutablePath;
+                startInfo.Arguments = param;
+                startInfo.Verb = "runas";
+                Process.Start(startInfo);
+                //Application.Exit();
+            }
         }
     }
 
