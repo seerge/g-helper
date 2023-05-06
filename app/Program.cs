@@ -94,7 +94,7 @@ namespace GHelper
             return principal.IsInRole(WindowsBuiltInRole.Administrator);
         }
 
-        public static void RunAsAdmin()
+        public static void RunAsAdmin(string? param = null)
         {
             // Check if the current user is an administrator
             if (!IsUserAdministrator())
@@ -103,6 +103,7 @@ namespace GHelper
                 startInfo.UseShellExecute = true;
                 startInfo.WorkingDirectory = Environment.CurrentDirectory;
                 startInfo.FileName = Application.ExecutablePath;
+                startInfo.Arguments = param;
                 startInfo.Verb = "runas";
                 Process.Start(startInfo);
                 //Application.Exit();
@@ -110,8 +111,11 @@ namespace GHelper
         }
 
         // The main entry point for the application
-        public static void Main()
+        public static void Main(string[] args)
         {
+
+            string? argument = null;
+            if (args.Length > 0) argument = args[0];
 
             Thread.CurrentThread.CurrentUICulture = CultureInfo.CurrentUICulture;
             Debug.WriteLine(CultureInfo.CurrentUICulture);
@@ -134,7 +138,6 @@ namespace GHelper
 
                 Application.Exit();
                 return;
-
             }
 
             Logger.WriteLine("------------");
@@ -150,7 +153,6 @@ namespace GHelper
 
             settingsForm.InitAura();
             settingsForm.InitMatrix();
-
             settingsForm.SetStartupCheck(Startup.IsScheduled());
 
             SetAutoModes();
@@ -171,7 +173,7 @@ namespace GHelper
 
             if (Environment.CurrentDirectory.Trim('\\') == Application.StartupPath.Trim('\\'))
             {
-                SettingsToggle();
+                SettingsToggle(argument);
             }
 
             Application.Run();
@@ -355,7 +357,7 @@ namespace GHelper
 
         }
 
-        static void SettingsToggle()
+        static void SettingsToggle(string? argument = null)
         {
             if (settingsForm.Visible)
                 settingsForm.Hide();
@@ -363,6 +365,12 @@ namespace GHelper
             {
                 settingsForm.Show();
                 settingsForm.Activate();
+
+                if (argument == "gpu")
+                {
+                    nvControl.SetClocksFromConfig();
+                    settingsForm.FansToggle();
+                }
             }
 
             settingsForm.VisualiseGPUMode();

@@ -105,16 +105,18 @@ namespace GHelper
         {
             try
             {
-                int status = Program.nvControl.SetClocks(trackGPUCore.Value, trackGPUMemory.Value);
-                if (status == -1) Program.RunAsAdmin();
-
                 Program.config.setConfig("GPUCore", trackGPUCore.Value);
                 Program.config.setConfig("GPUMemory", trackGPUMemory.Value);
+
+                int status = Program.nvControl.SetClocks(trackGPUCore.Value, trackGPUMemory.Value);
+                if (status == -1) Program.RunAsAdmin("gpu");
             }
             catch (Exception ex)
             {
                 Logger.WriteLine(ex.ToString());
             }
+
+            InitGPUClocks();
         }
 
         private void InitGPUClocks()

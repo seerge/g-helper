@@ -679,12 +679,11 @@ namespace GHelper
             }
         }
 
-        private void ButtonFans_Click(object? sender, EventArgs e)
+        public void FansToggle()
         {
             if (fans == null || fans.Text == "")
             {
                 fans = new Fans();
-                //Debug.WriteLine("Starting fans");
             }
 
             if (fans.Visible)
@@ -696,7 +695,11 @@ namespace GHelper
                 fans.Show();
             }
 
+        }
 
+        private void ButtonFans_Click(object? sender, EventArgs e)
+        {
+            FansToggle();
         }
 
         private void ButtonKeyboardColor_Click(object? sender, EventArgs e)

@@ -9,11 +9,11 @@ namespace GHelper.Gpu;
 public class NvidiaGpuControl : IGpuControl
 {
 
-    public const int MaxCoreOffset = 300;
-    public const int MaxMemoryOffset = 300;
+    public const int MaxCoreOffset = 250;
+    public const int MaxMemoryOffset = 250;
 
-    public const int MinCoreOffset = -300;
-    public const int MinMemoryOffset = -300;
+    public const int MinCoreOffset = -250;
+    public const int MinMemoryOffset = -250;
 
     private readonly PhysicalGPU? _internalGpu;
 
@@ -53,6 +53,13 @@ public class NvidiaGpuControl : IGpuControl
         memory = states.Clocks[PerformanceStateId.P0_3DPerformance][1].FrequencyDeltaInkHz.DeltaValue / 1000;
     }
 
+    public int SetClocksFromConfig()
+    {
+        int core = Program.config.getConfig("GPUCore");
+        int memory = Program.config.getConfig("GPUMemory");
+        int status = SetClocks(core, memory);
+        return status;
+    }
 
     public int SetClocks(int core, int memory)
     {
