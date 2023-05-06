@@ -79,11 +79,22 @@ namespace GHelper
             trackGPUMemory.Minimum = NvidiaGpuControl.MinMemoryOffset;
             trackGPUMemory.Maximum = NvidiaGpuControl.MaxMemoryOffset;
 
+            trackGPUBoost.Minimum = ASUSWmi.MinGPUBoost;
+            trackGPUBoost.Maximum = ASUSWmi.MaxGPUBoost;
+
+            trackGPUTemp.Minimum = ASUSWmi.MinGPUTemp;
+            trackGPUTemp.Maximum = ASUSWmi.MaxGPUTemp;
+
             trackGPUCore.Scroll += trackGPU_Scroll;
             trackGPUMemory.Scroll += trackGPU_Scroll;
+            trackGPUBoost.Scroll += trackGPU_Scroll;
+            trackGPUTemp.Scroll += trackGPU_Scroll;
 
             trackGPUCore.MouseUp += TrackGPU_MouseUp;
             trackGPUMemory.MouseUp += TrackGPU_MouseUp;
+
+            trackGPUBoost.MouseUp += TrackGPUBoost_MouseUp;
+            trackGPUTemp.MouseUp += TrackGPUBoost_MouseUp;
 
             //labelInfo.MaximumSize = new Size(280, 0);
             labelInfo.Text = Properties.Strings.PPTExperimental;
@@ -101,12 +112,19 @@ namespace GHelper
 
         }
 
+        private void TrackGPUBoost_MouseUp(object? sender, MouseEventArgs e)
+        {
+            Program.config.setConfig("gpu_boost", trackGPUBoost.Value);
+            Program.config.setConfig("gpu_temp", trackGPUTemp.Value);
+            Program.settingsForm.SetGPUPower();
+        }
+
         private void TrackGPU_MouseUp(object? sender, MouseEventArgs e)
         {
             try
             {
-                Program.config.setConfig("GPUCore", trackGPUCore.Value);
-                Program.config.setConfig("GPUMemory", trackGPUMemory.Value);
+                Program.config.setConfig("gpu_core", trackGPUCore.Value);
+                Program.config.setConfig("gpu_memory", trackGPUMemory.Value);
 
                 int status = Program.nvControl.SetClocks(trackGPUCore.Value, trackGPUMemory.Value);
                 if (status == -1) Program.RunAsAdmin("gpu");
@@ -135,41 +153,37 @@ namespace GHelper
                 trackGPUCore.Value = Math.Max(Math.Min(core, NvidiaGpuControl.MaxCoreOffset), NvidiaGpuControl.MinCoreOffset);
                 trackGPUMemory.Value = Math.Max(Math.Min(memory, NvidiaGpuControl.MaxMemoryOffset), NvidiaGpuControl.MinMemoryOffset);
 
-                VisualiseGPUClocks();
+                int gpu_boost = Program.config.getConfig("gpu_boost");
+                int gpu_temp = Program.config.getConfig("gpu_temp");
+
+                if (gpu_boost < 0) gpu_boost = ASUSWmi.MaxGPUBoost;
+                if (gpu_temp < 0) gpu_temp = ASUSWmi.MaxGPUTemp;
+
+                trackGPUBoost.Value = Math.Max(Math.Min(gpu_boost, ASUSWmi.MaxGPUBoost), ASUSWmi.MinGPUBoost);
+                trackGPUTemp.Value = Math.Max(Math.Min(gpu_temp, ASUSWmi.MaxGPUTemp), ASUSWmi.MinGPUTemp);
+
+                VisualiseGPUSettings();
 
             }
             catch (Exception ex)
             {
-                Debug.WriteLine(ex);
+                Logger.WriteLine(ex.ToString());
                 panelGPU.Visible = false;
             }
 
         }
 
-        private void ButtonResetGPU_Click(object? sender, EventArgs e)
-        {
-
-            try
-            {
-                trackGPUCore.Value = 0;
-                trackGPUMemory.Value = 0;
-                VisualiseGPUClocks();
-            }
-            catch (Exception ex)
-            {
-                Logger.WriteLine(ex.ToString());
-            }
-        }
-
-        private void VisualiseGPUClocks()
+        private void VisualiseGPUSettings()
         {
             labelGPUCore.Text = $"{trackGPUCore.Value} MHz";
             labelGPUMemory.Text = $"{trackGPUMemory.Value} MHz";
+            labelGPUBoost.Text = $"{trackGPUBoost.Value}W";
+            labelGPUTemp.Text = $"{trackGPUTemp.Value}°C";
         }
 
         private void trackGPU_Scroll(object? sender, EventArgs e)
         {
-            VisualiseGPUClocks();
+            VisualiseGPUSettings();
         }
 
         static string ChartPercToRPM(int percentage, string unit = "")

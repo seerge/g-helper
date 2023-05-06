@@ -1043,6 +1043,26 @@ namespace GHelper
 
         }
 
+        public void SetGPUPower()
+        {
+
+            int gpu_boost = Program.config.getConfig("gpu_boost");
+            int gpu_temp = Program.config.getConfig("gpu_temp");
+
+            if (gpu_boost < ASUSWmi.MinGPUBoost || gpu_boost > ASUSWmi.MaxGPUBoost ) return;
+            if (gpu_temp < ASUSWmi.MinGPUTemp || gpu_temp > ASUSWmi.MaxGPUTemp) return;
+
+            if (Program.wmi.DeviceGet(ASUSWmi.PPT_GPUC0) >= 0)
+            {
+                Program.wmi.DeviceSet(ASUSWmi.PPT_GPUC0, gpu_boost, "PowerLimit C0");
+            }
+
+            if (Program.wmi.DeviceGet(ASUSWmi.PPT_GPUC2) >= 0)
+            {
+                Program.wmi.DeviceSet(ASUSWmi.PPT_GPUC2, gpu_temp, "PowerLimit C2");
+            }
+
+        }
 
         protected void LabelFansResult(string text)
         {

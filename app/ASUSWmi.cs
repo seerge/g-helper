@@ -49,9 +49,9 @@ public class ASUSWmi
     public const int PPT_CPUB0 = 0x001200B0;  // CPU PPT on 2022 (PPT_LIMIT_APU)
     public const int PPT_CPUB1 = 0x001200B1;  // Total PPT on 2022 (PPT_LIMIT_SLOW)
 
-    public const int PPT_APUC0 = 0x001200C0;  // does nothing on G14 2022
+    public const int PPT_GPUC0 = 0x001200C0;  // NVIDIA GPU Boost
     public const int PPT_APUC1 = 0x001200C1;  // Actual Power Limit (PPT_LIMIT_FAST) AND Sustained Power Limit (STAPM_LIMIT)
-    public const int PPT_APUC2 = 0x001200C2;  // does nothing on G14 2022
+    public const int PPT_GPUC2 = 0x001200C2;  // NVIDIA GPU Temp Target (75.. 87 C) 
 
     public const int TUF_KB_BRIGHTNESS = 0x00050021;
     public const int TUF_KB = 0x00100056;
@@ -73,6 +73,12 @@ public class ASUSWmi
     public const int MaxCPU = 130;
     public const int MinCPU = 5;
     public const int DefaultCPU = 80;
+
+    public const int MinGPUBoost = 5;
+    public const int MaxGPUBoost = 25;
+
+    public const int MinGPUTemp = 75;
+    public const int MaxGPUTemp = 87;
 
 
     [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Unicode)]

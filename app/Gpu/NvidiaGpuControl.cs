@@ -48,15 +48,15 @@ public class NvidiaGpuControl : IGpuControl
     public void GetClocks(out int core, out int memory)
     {
         PhysicalGPU internalGpu = _internalGpu!;
-        PerformanceStates20InfoV3 states = (PerformanceStates20InfoV3)GPUApi.GetPerformanceStates20(internalGpu.Handle);
+        PerformanceStates20InfoV1 states = (PerformanceStates20InfoV1)GPUApi.GetPerformanceStates20(internalGpu.Handle);
         core = states.Clocks[PerformanceStateId.P0_3DPerformance][0].FrequencyDeltaInkHz.DeltaValue / 1000;
         memory = states.Clocks[PerformanceStateId.P0_3DPerformance][1].FrequencyDeltaInkHz.DeltaValue / 1000;
     }
 
     public int SetClocksFromConfig()
     {
-        int core = Program.config.getConfig("GPUCore");
-        int memory = Program.config.getConfig("GPUMemory");
+        int core = Program.config.getConfig("gpu_core");
+        int memory = Program.config.getConfig("gpu_memory");
         int status = SetClocks(core, memory);
         return status;
     }
@@ -68,7 +68,7 @@ public class NvidiaGpuControl : IGpuControl
         if (memory < MinMemoryOffset || memory > MaxMemoryOffset) return 0;
 
         PhysicalGPU internalGpu = _internalGpu!;
-        PerformanceStates20InfoV3 states = (PerformanceStates20InfoV3)GPUApi.GetPerformanceStates20(internalGpu.Handle);
+        PerformanceStates20InfoV1 states = (PerformanceStates20InfoV1)GPUApi.GetPerformanceStates20(internalGpu.Handle);
 
         states._NumberOfPerformanceStates = 1;
         states._NumberOfClocks = 2;
@@ -96,8 +96,9 @@ public class NvidiaGpuControl : IGpuControl
                 .GetPhysicalGPUs()
                 .FirstOrDefault(gpu => gpu.SystemType == SystemType.Laptop);
         }
-        catch
+        catch (Exception ex)
         {
+            Logger.WriteLine(ex.ToString());
             return null;
         }
     }

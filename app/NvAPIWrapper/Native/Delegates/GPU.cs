@@ -430,9 +430,9 @@ namespace NvAPIWrapper.Native.Delegates
         public delegate Status NvAPI_GPU_GetPStates20(
             [In] PhysicalGPUHandle physicalGpu,
             [Accepts(
-                typeof(PerformanceStates20InfoV3),
+                typeof(PerformanceStates20InfoV1),
                 typeof(PerformanceStates20InfoV2),
-                typeof(PerformanceStates20InfoV1)
+                typeof(PerformanceStates20InfoV3)
             )]
             [In]
             ValueTypeReference performanceStatesInfo);
