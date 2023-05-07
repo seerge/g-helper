@@ -15,6 +15,8 @@ namespace GHelper
 
         static int MinRPM, MaxRPM;
 
+        NvidiaGpuControl? nvControl = null;
+
         public Fans()
         {
 
@@ -35,7 +37,7 @@ namespace GHelper
             InitTheme();
 
             MinRPM = 18;
-            MaxRPM = HardwareMonitor.GetFanMax();
+            MaxRPM = HardwareControl.GetFanMax();
             labelTip.Visible = false;
             labelTip.BackColor = Color.Transparent;
 
@@ -89,8 +91,9 @@ namespace GHelper
 
             trackGPUCore.Scroll += trackGPU_Scroll;
             trackGPUMemory.Scroll += trackGPU_Scroll;
-            trackGPUBoost.Scroll += trackGPU_Scroll;
-            trackGPUTemp.Scroll += trackGPU_Scroll;
+
+            trackGPUBoost.Scroll += trackGPUPower_Scroll;
+            trackGPUTemp.Scroll += trackGPUPower_Scroll;
 
             trackGPUCore.MouseUp += TrackGPU_MouseUp;
             trackGPUMemory.MouseUp += TrackGPU_MouseUp;
@@ -110,7 +113,7 @@ namespace GHelper
 
             Shown += Fans_Shown;
 
-            InitGPUClocks();
+            InitGPUControl();
 
         }
 
@@ -128,7 +131,7 @@ namespace GHelper
                 Program.config.setConfig("gpu_core", trackGPUCore.Value);
                 Program.config.setConfig("gpu_memory", trackGPUMemory.Value);
 
-                int status = Program.nvControl.SetClocks(trackGPUCore.Value, trackGPUMemory.Value);
+                int status = nvControl.SetClocks(trackGPUCore.Value, trackGPUMemory.Value);
                 if (status == -1) Program.RunAsAdmin("gpu");
             }
             catch (Exception ex)
@@ -136,12 +139,16 @@ namespace GHelper
                 Logger.WriteLine("F:" + ex.ToString());
             }
 
-            InitGPUClocks();
+            InitGPUControl();
         }
 
-        private void InitGPUClocks()
+        private void InitGPUControl()
         {
-            if (Program.nvControl is null || !Program.nvControl.IsValid)
+            if (HardwareControl.GpuControl is not null && HardwareControl.GpuControl.IsNvidia)
+            {
+                nvControl = (NvidiaGpuControl)HardwareControl.GpuControl;
+            }
+            else
             {
                 panelGPU.Visible = false;
                 return;
@@ -151,9 +158,11 @@ namespace GHelper
             {
                 panelGPU.Visible = true;
 
-                Program.nvControl.GetClocks(out int core, out int memory);
+                nvControl.GetClocks(out int core, out int memory, out string gpuTitle);
+
                 trackGPUCore.Value = Math.Max(Math.Min(core, NvidiaGpuControl.MaxCoreOffset), NvidiaGpuControl.MinCoreOffset);
                 trackGPUMemory.Value = Math.Max(Math.Min(memory, NvidiaGpuControl.MaxMemoryOffset), NvidiaGpuControl.MinMemoryOffset);
+                labelGPU.Text = gpuTitle;
 
                 int gpu_boost = Program.config.getConfig("gpu_boost");
                 int gpu_temp = Program.config.getConfig("gpu_temp");
@@ -187,6 +196,16 @@ namespace GHelper
         }
 
         private void trackGPU_Scroll(object? sender, EventArgs e)
+        {
+            if (sender is null) return;
+
+            TrackBar track = (TrackBar)sender;
+            track.Value = (int)Math.Round((float)track.Value / 5) * 5;
+            VisualiseGPUSettings();
+
+        }
+
+        private void trackGPUPower_Scroll(object? sender, EventArgs e)
         {
             VisualiseGPUSettings();
         }
@@ -342,7 +361,7 @@ namespace GHelper
             bool cpuBmode = (Program.wmi.DeviceGet(ASUSWmi.PPT_CPUB0) >= 0); // 2022 model +
             bool cpuAmode = (Program.wmi.DeviceGet(ASUSWmi.PPT_TotalA0) >= 0); // 2021 model +
 
-            panelSliders.Visible = cpuAmode;
+            panelPower.Visible = cpuAmode;
             panelCPU.Visible = cpuBmode;
 
             // Yes, that's stupid, but Total slider on 2021 model actually adjusts CPU PPT
@@ -486,6 +505,14 @@ namespace GHelper
 
             checkApplyFans.Checked = false;
             checkApplyPower.Checked = false;
+
+            trackGPUCore.Value = 0;
+            trackGPUMemory.Value = 0;
+            trackGPUBoost.Value = ASUSWmi.MaxGPUBoost;
+            trackGPUTemp.Value = ASUSWmi.MaxGPUTemp;
+
+            Program.config.setConfig("gpu_core", ASUSWmi.MaxGPUBoost);
+            Program.config.setConfig("gpu_memory", ASUSWmi.MaxGPUTemp);
 
             Program.config.setConfigPerf("auto_apply", 0);
             Program.config.setConfigPerf("auto_apply_power", 0);

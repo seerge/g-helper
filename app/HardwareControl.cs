@@ -2,7 +2,7 @@
 using GHelper.Gpu;
 using System.Diagnostics;
 
-public static class HardwareMonitor
+public static class HardwareControl
 {
     public static IGpuControl? GpuControl;
 
@@ -124,9 +124,8 @@ public static class HardwareMonitor
         return false;
     }
 
-    public static void RecreateGpuControlWithDelay(int delay = 5)
+    public static void RecreateGpuControlWithDelay(int delay = 3)
     {
-
         // Re-enabling the discrete GPU takes a bit of time,
         // so a simple workaround is to refresh again after that happens
         Task.Run(async () =>
@@ -134,9 +133,6 @@ public static class HardwareMonitor
             await Task.Delay(TimeSpan.FromSeconds(delay));
             RecreateGpuControl();
         });
-
-
-
     }
 
     public static void RecreateGpuControl()
@@ -145,8 +141,6 @@ public static class HardwareMonitor
         {
             GpuControl?.Dispose();
 
-            // Detect valid GPU temperature provider.
-            // We start with NVIDIA because there's always at least an integrated AMD GPU
             IGpuControl _gpuControl = new NvidiaGpuControl();
             if (_gpuControl.IsValid)
             {
@@ -156,7 +150,6 @@ public static class HardwareMonitor
 
             _gpuControl.Dispose();
 
-            /*
             _gpuControl = new AmdGpuControl();
             if (_gpuControl.IsValid)
             {
@@ -164,7 +157,6 @@ public static class HardwareMonitor
                 return;
             }
             _gpuControl.Dispose();
-            */
 
             GpuControl = null;
         }

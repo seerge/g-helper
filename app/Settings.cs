@@ -956,33 +956,33 @@ namespace GHelper
             string gpuTemp = "";
             string battery = "";
 
-            HardwareMonitor.ReadSensors();
+            HardwareControl.ReadSensors();
 
-            if (HardwareMonitor.cpuTemp > 0)
-                cpuTemp = ": " + Math.Round((decimal)HardwareMonitor.cpuTemp).ToString() + "°C ";
+            if (HardwareControl.cpuTemp > 0)
+                cpuTemp = ": " + Math.Round((decimal)HardwareControl.cpuTemp).ToString() + "°C ";
 
-            if (HardwareMonitor.batteryDischarge > 0)
-                battery = Properties.Strings.Discharging + ": " + Math.Round((decimal)HardwareMonitor.batteryDischarge, 1).ToString() + "W";
+            if (HardwareControl.batteryDischarge > 0)
+                battery = Properties.Strings.Discharging + ": " + Math.Round((decimal)HardwareControl.batteryDischarge, 1).ToString() + "W";
 
-            if (HardwareMonitor.gpuTemp > 0)
+            if (HardwareControl.gpuTemp > 0)
             {
-                gpuTemp = $": {HardwareMonitor.gpuTemp}°C ";
+                gpuTemp = $": {HardwareControl.gpuTemp}°C ";
             }
 
 
             Program.settingsForm.BeginInvoke(delegate
             {
-                labelCPUFan.Text = "CPU" + cpuTemp + HardwareMonitor.cpuFan;
-                labelGPUFan.Text = "GPU" + gpuTemp + HardwareMonitor.gpuFan;
-                if (HardwareMonitor.midFan is not null)
-                    labelMidFan.Text = "Mid" + HardwareMonitor.midFan;
+                labelCPUFan.Text = "CPU" + cpuTemp + HardwareControl.cpuFan;
+                labelGPUFan.Text = "GPU" + gpuTemp + HardwareControl.gpuFan;
+                if (HardwareControl.midFan is not null)
+                    labelMidFan.Text = "Mid" + HardwareControl.midFan;
 
                 labelBattery.Text = battery;
             });
 
 
-            Program.trayIcon.Text = "CPU" + cpuTemp + HardwareMonitor.cpuFan + "\n"
-                                    + "GPU" + gpuTemp + HardwareMonitor.gpuFan +
+            Program.trayIcon.Text = "CPU" + cpuTemp + HardwareControl.cpuFan + "\n"
+                                    + "GPU" + gpuTemp + HardwareControl.gpuFan +
                                     ((battery.Length > 0) ? ("\n" + battery) : "");
 
         }
@@ -1320,7 +1320,7 @@ namespace GHelper
                     if ((GpuAuto && !IsPlugged()) || (ForceGPU && GpuMode == ASUSWmi.GPUModeEco))
                     {
 
-                        if (HardwareMonitor.IsUsedGPU())
+                        if (HardwareControl.IsUsedGPU())
                         {
                             DialogResult dialogResult = MessageBox.Show(Properties.Strings.AlertDGPU, Properties.Strings.AlertDGPUTitle, MessageBoxButtons.YesNo);
                             if (dialogResult == DialogResult.No) return false;
@@ -1438,7 +1438,7 @@ namespace GHelper
                 Program.wmi.DeviceSet(ASUSWmi.GPUEco, eco, "GPUEco");
 
                 if (eco == 0)
-                    HardwareMonitor.RecreateGpuControlWithDelay();
+                    HardwareControl.RecreateGpuControlWithDelay();
 
                 Program.settingsForm.BeginInvoke(delegate
                 {

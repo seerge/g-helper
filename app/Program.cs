@@ -31,8 +31,6 @@ namespace GHelper
         private static long lastTheme;
         private static PowerLineStatus isPlugged = PowerLineStatus.Unknown;
 
-        public static NvidiaGpuControl nvControl = new NvidiaGpuControl();
-
         // The main entry point for the application
         public static void Main(string[] args)
         {
@@ -68,6 +66,8 @@ namespace GHelper
 
             Application.EnableVisualStyles();
 
+            HardwareControl.RecreateGpuControl();
+
             var ds = settingsForm.Handle;
 
             trayIcon.MouseClick += TrayIcon_MouseClick;
@@ -79,8 +79,6 @@ namespace GHelper
             settingsForm.SetStartupCheck(Startup.IsScheduled());
 
             SetAutoModes();
-
-            HardwareMonitor.RecreateGpuControl();
 
             // Subscribing for system power change events
             SystemEvents.PowerModeChanged += SystemEvents_PowerModeChanged;
@@ -294,7 +292,12 @@ namespace GHelper
 
                 if (action == "gpu")
                 {
-                    nvControl.SetClocksFromConfig();
+                    if (HardwareControl.GpuControl is not null)
+                    {
+                        NvidiaGpuControl nvcontrol = (NvidiaGpuControl)HardwareControl.GpuControl;
+                        nvcontrol.SetClocksFromConfig();
+                    }
+
                     settingsForm.FansToggle();
                 }
             }

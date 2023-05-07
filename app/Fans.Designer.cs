@@ -31,12 +31,12 @@ namespace GHelper
         /// </summary>
         private void InitializeComponent()
         {
-            ChartArea chartArea13 = new ChartArea();
-            Title title13 = new Title();
-            ChartArea chartArea14 = new ChartArea();
-            Title title14 = new Title();
-            ChartArea chartArea15 = new ChartArea();
-            Title title15 = new Title();
+            ChartArea chartArea1 = new ChartArea();
+            Title title1 = new Title();
+            ChartArea chartArea2 = new ChartArea();
+            Title title2 = new Title();
+            ChartArea chartArea3 = new ChartArea();
+            Title title3 = new Title();
             panelFans = new Panel();
             labelFansResult = new Label();
             labelTip = new Label();
@@ -67,6 +67,14 @@ namespace GHelper
             pictureBox1 = new PictureBox();
             labelPowerLimits = new Label();
             panelGPU = new Panel();
+            panelGPUTemp = new Panel();
+            labelGPUTemp = new Label();
+            labelGPUTempTitle = new Label();
+            trackGPUTemp = new TrackBar();
+            panelGPUBoost = new Panel();
+            labelGPUBoost = new Label();
+            labelGPUBoostTitle = new Label();
+            trackGPUBoost = new TrackBar();
             panelGPUMemory = new Panel();
             labelGPUMemory = new Label();
             labelGPUMemoryTitle = new Label();
@@ -78,14 +86,6 @@ namespace GHelper
             panelTitleGPU = new Panel();
             pictureGPU = new PictureBox();
             labelGPU = new Label();
-            panelGPUBoost = new Panel();
-            labelGPUBoost = new Label();
-            labelGPUBoostTitle = new Label();
-            trackGPUBoost = new TrackBar();
-            panelGPUTemp = new Panel();
-            labelGPUTemp = new Label();
-            labelGPUTempTitle = new Label();
-            trackGPUTemp = new TrackBar();
             panelFans.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)picturePerf).BeginInit();
             tableFanCharts.SuspendLayout();
@@ -102,16 +102,16 @@ namespace GHelper
             panelTitleCPU.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             panelGPU.SuspendLayout();
+            panelGPUTemp.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)trackGPUTemp).BeginInit();
+            panelGPUBoost.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)trackGPUBoost).BeginInit();
             panelGPUMemory.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)trackGPUMemory).BeginInit();
             panelGPUCore.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)trackGPUCore).BeginInit();
             panelTitleGPU.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureGPU).BeginInit();
-            panelGPUBoost.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)trackGPUBoost).BeginInit();
-            panelGPUTemp.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)trackGPUTemp).BeginInit();
             SuspendLayout();
             // 
             // panelFans
@@ -211,8 +211,8 @@ namespace GHelper
             // 
             // chartGPU
             // 
-            chartArea13.Name = "ChartArea1";
-            chartGPU.ChartAreas.Add(chartArea13);
+            chartArea1.Name = "ChartArea1";
+            chartGPU.ChartAreas.Add(chartArea1);
             chartGPU.Dock = DockStyle.Fill;
             chartGPU.Location = new Point(2, 350);
             chartGPU.Margin = new Padding(2, 10, 2, 10);
@@ -220,13 +220,13 @@ namespace GHelper
             chartGPU.Size = new Size(760, 320);
             chartGPU.TabIndex = 17;
             chartGPU.Text = "chartGPU";
-            title13.Name = "Title1";
-            chartGPU.Titles.Add(title13);
+            title1.Name = "Title1";
+            chartGPU.Titles.Add(title1);
             // 
             // chartCPU
             // 
-            chartArea14.Name = "ChartArea1";
-            chartCPU.ChartAreas.Add(chartArea14);
+            chartArea2.Name = "ChartArea1";
+            chartCPU.ChartAreas.Add(chartArea2);
             chartCPU.Dock = DockStyle.Fill;
             chartCPU.Location = new Point(2, 10);
             chartCPU.Margin = new Padding(2, 10, 2, 10);
@@ -234,13 +234,13 @@ namespace GHelper
             chartCPU.Size = new Size(760, 320);
             chartCPU.TabIndex = 14;
             chartCPU.Text = "chartCPU";
-            title14.Name = "Title1";
-            chartCPU.Titles.Add(title14);
+            title2.Name = "Title1";
+            chartCPU.Titles.Add(title2);
             // 
             // chartMid
             // 
-            chartArea15.Name = "ChartArea3";
-            chartMid.ChartAreas.Add(chartArea15);
+            chartArea3.Name = "ChartArea3";
+            chartMid.ChartAreas.Add(chartArea3);
             chartMid.Dock = DockStyle.Fill;
             chartMid.Location = new Point(2, 690);
             chartMid.Margin = new Padding(2, 10, 2, 10);
@@ -248,8 +248,8 @@ namespace GHelper
             chartMid.Size = new Size(760, 322);
             chartMid.TabIndex = 14;
             chartMid.Text = "chartMid";
-            title15.Name = "Title3";
-            chartMid.Titles.Add(title15);
+            title3.Name = "Title3";
+            chartMid.Titles.Add(title3);
             chartMid.Visible = false;
             // 
             // labelFans
@@ -505,6 +505,100 @@ namespace GHelper
             panelGPU.Size = new Size(523, 634);
             panelGPU.TabIndex = 44;
             // 
+            // panelGPUTemp
+            // 
+            panelGPUTemp.AutoSize = true;
+            panelGPUTemp.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            panelGPUTemp.Controls.Add(labelGPUTemp);
+            panelGPUTemp.Controls.Add(labelGPUTempTitle);
+            panelGPUTemp.Controls.Add(trackGPUTemp);
+            panelGPUTemp.Dock = DockStyle.Top;
+            panelGPUTemp.Location = new Point(0, 485);
+            panelGPUTemp.Name = "panelGPUTemp";
+            panelGPUTemp.Size = new Size(523, 149);
+            panelGPUTemp.TabIndex = 47;
+            // 
+            // labelGPUTemp
+            // 
+            labelGPUTemp.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            labelGPUTemp.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            labelGPUTemp.Location = new Point(378, 14);
+            labelGPUTemp.Name = "labelGPUTemp";
+            labelGPUTemp.Size = new Size(130, 32);
+            labelGPUTemp.TabIndex = 44;
+            labelGPUTemp.Text = "87C";
+            labelGPUTemp.TextAlign = ContentAlignment.TopRight;
+            // 
+            // labelGPUTempTitle
+            // 
+            labelGPUTempTitle.AutoSize = true;
+            labelGPUTempTitle.Location = new Point(10, 14);
+            labelGPUTempTitle.Name = "labelGPUTempTitle";
+            labelGPUTempTitle.Size = new Size(173, 32);
+            labelGPUTempTitle.TabIndex = 43;
+            labelGPUTempTitle.Text = "Thermal Target";
+            // 
+            // trackGPUTemp
+            // 
+            trackGPUTemp.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            trackGPUTemp.Location = new Point(6, 57);
+            trackGPUTemp.Margin = new Padding(4, 2, 4, 2);
+            trackGPUTemp.Maximum = 87;
+            trackGPUTemp.Minimum = 75;
+            trackGPUTemp.Name = "trackGPUTemp";
+            trackGPUTemp.Size = new Size(502, 90);
+            trackGPUTemp.TabIndex = 42;
+            trackGPUTemp.TickFrequency = 5;
+            trackGPUTemp.TickStyle = TickStyle.TopLeft;
+            trackGPUTemp.Value = 87;
+            // 
+            // panelGPUBoost
+            // 
+            panelGPUBoost.AutoSize = true;
+            panelGPUBoost.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            panelGPUBoost.Controls.Add(labelGPUBoost);
+            panelGPUBoost.Controls.Add(labelGPUBoostTitle);
+            panelGPUBoost.Controls.Add(trackGPUBoost);
+            panelGPUBoost.Dock = DockStyle.Top;
+            panelGPUBoost.Location = new Point(0, 345);
+            panelGPUBoost.Name = "panelGPUBoost";
+            panelGPUBoost.Size = new Size(523, 140);
+            panelGPUBoost.TabIndex = 46;
+            // 
+            // labelGPUBoost
+            // 
+            labelGPUBoost.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            labelGPUBoost.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            labelGPUBoost.Location = new Point(374, 14);
+            labelGPUBoost.Name = "labelGPUBoost";
+            labelGPUBoost.Size = new Size(130, 32);
+            labelGPUBoost.TabIndex = 44;
+            labelGPUBoost.Text = "25W";
+            labelGPUBoost.TextAlign = ContentAlignment.TopRight;
+            // 
+            // labelGPUBoostTitle
+            // 
+            labelGPUBoostTitle.AutoSize = true;
+            labelGPUBoostTitle.Location = new Point(10, 14);
+            labelGPUBoostTitle.Name = "labelGPUBoostTitle";
+            labelGPUBoostTitle.Size = new Size(174, 32);
+            labelGPUBoostTitle.TabIndex = 43;
+            labelGPUBoostTitle.Text = "Dynamic Boost";
+            // 
+            // trackGPUBoost
+            // 
+            trackGPUBoost.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            trackGPUBoost.Location = new Point(6, 48);
+            trackGPUBoost.Margin = new Padding(4, 2, 4, 2);
+            trackGPUBoost.Maximum = 25;
+            trackGPUBoost.Minimum = 5;
+            trackGPUBoost.Name = "trackGPUBoost";
+            trackGPUBoost.Size = new Size(502, 90);
+            trackGPUBoost.TabIndex = 42;
+            trackGPUBoost.TickFrequency = 5;
+            trackGPUBoost.TickStyle = TickStyle.TopLeft;
+            trackGPUBoost.Value = 25;
+            // 
             // panelGPUMemory
             // 
             panelGPUMemory.AutoSize = true;
@@ -534,20 +628,20 @@ namespace GHelper
             labelGPUMemoryTitle.AutoSize = true;
             labelGPUMemoryTitle.Location = new Point(10, 14);
             labelGPUMemoryTitle.Name = "labelGPUMemoryTitle";
-            labelGPUMemoryTitle.Size = new Size(169, 32);
+            labelGPUMemoryTitle.Size = new Size(241, 32);
             labelGPUMemoryTitle.TabIndex = 43;
             labelGPUMemoryTitle.Text = "Memory Clock Offset";
             // 
             // trackGPUMemory
             // 
             trackGPUMemory.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            trackGPUMemory.LargeChange = 100;
+            trackGPUMemory.LargeChange = 50;
             trackGPUMemory.Location = new Point(6, 48);
             trackGPUMemory.Margin = new Padding(4, 2, 4, 2);
-            trackGPUMemory.Maximum = 300;
+            trackGPUMemory.Maximum = 250;
+            trackGPUMemory.Minimum = -250;
             trackGPUMemory.Name = "trackGPUMemory";
             trackGPUMemory.Size = new Size(502, 90);
-            trackGPUMemory.SmallChange = 10;
             trackGPUMemory.TabIndex = 42;
             trackGPUMemory.TickFrequency = 50;
             trackGPUMemory.TickStyle = TickStyle.TopLeft;
@@ -579,14 +673,14 @@ namespace GHelper
             // trackGPUCore
             // 
             trackGPUCore.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            trackGPUCore.LargeChange = 100;
+            trackGPUCore.LargeChange = 50;
             trackGPUCore.Location = new Point(6, 47);
             trackGPUCore.Margin = new Padding(4, 2, 4, 2);
-            trackGPUCore.Maximum = 300;
+            trackGPUCore.Maximum = 250;
+            trackGPUCore.Minimum = -250;
             trackGPUCore.Name = "trackGPUCore";
             trackGPUCore.RightToLeft = RightToLeft.No;
             trackGPUCore.Size = new Size(502, 90);
-            trackGPUCore.SmallChange = 10;
             trackGPUCore.TabIndex = 18;
             trackGPUCore.TickFrequency = 50;
             trackGPUCore.TickStyle = TickStyle.TopLeft;
@@ -636,100 +730,6 @@ namespace GHelper
             labelGPU.TabIndex = 40;
             labelGPU.Text = "GPU Settings";
             // 
-            // panelGPUBoost
-            // 
-            panelGPUBoost.AutoSize = true;
-            panelGPUBoost.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            panelGPUBoost.Controls.Add(labelGPUBoost);
-            panelGPUBoost.Controls.Add(labelGPUBoostTitle);
-            panelGPUBoost.Controls.Add(trackGPUBoost);
-            panelGPUBoost.Dock = DockStyle.Top;
-            panelGPUBoost.Location = new Point(0, 345);
-            panelGPUBoost.Name = "panelGPUBoost";
-            panelGPUBoost.Size = new Size(523, 140);
-            panelGPUBoost.TabIndex = 46;
-            // 
-            // labelGPUBoost
-            // 
-            labelGPUBoost.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            labelGPUBoost.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            labelGPUBoost.Location = new Point(374, 14);
-            labelGPUBoost.Name = "labelGPUBoost";
-            labelGPUBoost.Size = new Size(130, 32);
-            labelGPUBoost.TabIndex = 44;
-            labelGPUBoost.Text = "25W";
-            labelGPUBoost.TextAlign = ContentAlignment.TopRight;
-            // 
-            // labelGPUBoostTitle
-            // 
-            labelGPUBoostTitle.AutoSize = true;
-            labelGPUBoostTitle.Location = new Point(10, 14);
-            labelGPUBoostTitle.Name = "labelGPUBoostTitle";
-            labelGPUBoostTitle.Size = new Size(174, 32);
-            labelGPUBoostTitle.TabIndex = 43;
-            labelGPUBoostTitle.Text = "Dynamic Boost";
-            // 
-            // trackGPUBoost
-            // 
-            trackGPUBoost.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            trackGPUBoost.Location = new Point(6, 48);
-            trackGPUBoost.Margin = new Padding(4, 2, 4, 2);
-            trackGPUBoost.Maximum = 25;
-            trackGPUBoost.Minimum = 5;
-            trackGPUBoost.Name = "trackGPUBoost";
-            trackGPUBoost.Size = new Size(502, 90);
-            trackGPUBoost.TabIndex = 42;
-            trackGPUBoost.TickFrequency = 5;
-            trackGPUBoost.TickStyle = TickStyle.TopLeft;
-            trackGPUBoost.Value = 25;
-            // 
-            // panelGPUTemp
-            // 
-            panelGPUTemp.AutoSize = true;
-            panelGPUTemp.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            panelGPUTemp.Controls.Add(labelGPUTemp);
-            panelGPUTemp.Controls.Add(labelGPUTempTitle);
-            panelGPUTemp.Controls.Add(trackGPUTemp);
-            panelGPUTemp.Dock = DockStyle.Top;
-            panelGPUTemp.Location = new Point(0, 485);
-            panelGPUTemp.Name = "panelGPUTemp";
-            panelGPUTemp.Size = new Size(523, 149);
-            panelGPUTemp.TabIndex = 47;
-            // 
-            // labelGPUTemp
-            // 
-            labelGPUTemp.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            labelGPUTemp.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            labelGPUTemp.Location = new Point(378, 14);
-            labelGPUTemp.Name = "labelGPUTemp";
-            labelGPUTemp.Size = new Size(130, 32);
-            labelGPUTemp.TabIndex = 44;
-            labelGPUTemp.Text = "87C";
-            labelGPUTemp.TextAlign = ContentAlignment.TopRight;
-            // 
-            // labelGPUTempTitle
-            // 
-            labelGPUTempTitle.AutoSize = true;
-            labelGPUTempTitle.Location = new Point(10, 14);
-            labelGPUTempTitle.Name = "labelGPUTempTitle";
-            labelGPUTempTitle.Size = new Size(173, 32);
-            labelGPUTempTitle.TabIndex = 43;
-            labelGPUTempTitle.Text = "Thermal Target";
-            // 
-            // trackGPUTemp
-            // 
-            trackGPUTemp.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            trackGPUTemp.Location = new Point(6, 57);
-            trackGPUTemp.Margin = new Padding(4, 2, 4, 2);
-            trackGPUTemp.Maximum = 87;
-            trackGPUTemp.Minimum = 75;
-            trackGPUTemp.Name = "trackGPUTemp";
-            trackGPUTemp.Size = new Size(502, 90);
-            trackGPUTemp.TabIndex = 42;
-            trackGPUTemp.TickFrequency = 5;
-            trackGPUTemp.TickStyle = TickStyle.TopLeft;
-            trackGPUTemp.Value = 87;
-            // 
             // Fans
             // 
             AutoScaleDimensions = new SizeF(192F, 192F);
@@ -773,6 +773,12 @@ namespace GHelper
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             panelGPU.ResumeLayout(false);
             panelGPU.PerformLayout();
+            panelGPUTemp.ResumeLayout(false);
+            panelGPUTemp.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)trackGPUTemp).EndInit();
+            panelGPUBoost.ResumeLayout(false);
+            panelGPUBoost.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)trackGPUBoost).EndInit();
             panelGPUMemory.ResumeLayout(false);
             panelGPUMemory.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)trackGPUMemory).EndInit();
@@ -782,12 +788,6 @@ namespace GHelper
             panelTitleGPU.ResumeLayout(false);
             panelTitleGPU.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)pictureGPU).EndInit();
-            panelGPUBoost.ResumeLayout(false);
-            panelGPUBoost.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)trackGPUBoost).EndInit();
-            panelGPUTemp.ResumeLayout(false);
-            panelGPUTemp.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)trackGPUTemp).EndInit();
             ResumeLayout(false);
         }
 

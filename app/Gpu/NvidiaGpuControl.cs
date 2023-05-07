@@ -3,6 +3,7 @@ using NvAPIWrapper.Native;
 using NvAPIWrapper.Native.GPU;
 using NvAPIWrapper.Native.GPU.Structures;
 using NvAPIWrapper.Native.Interfaces.GPU;
+using System.Diagnostics;
 using static NvAPIWrapper.Native.GPU.Structures.PerformanceStates20InfoV1;
 
 namespace GHelper.Gpu;
@@ -16,11 +17,36 @@ public class NvidiaGpuControl : IGpuControl
     public const int MinCoreOffset = -250;
     public const int MinMemoryOffset = -250;
 
-    private readonly PhysicalGPU? _internalGpu;
+    private static PhysicalGPU? _internalGpu;
 
     public NvidiaGpuControl()
     {
-        _internalGpu = GetInternalDiscreteGpu();
+        Create();
+    }
+
+
+    public static void Create()
+    {
+        try
+        {
+            _internalGpu = GetInternalDiscreteGpu();
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine(ex);
+            _internalGpu = null;
+        }
+    }
+
+
+    public static void RecreateWithDelay(int delay = 5)
+    {
+        Task.Run(async () =>
+        {
+            await Task.Delay(TimeSpan.FromSeconds(delay));
+            Create();
+        });
+
     }
 
     public bool IsValid => _internalGpu != null;
@@ -46,9 +72,12 @@ public class NvidiaGpuControl : IGpuControl
 
 
 
-    public void GetClocks(out int core, out int memory)
+    public void GetClocks(out int core, out int memory, out string gpu)
     {
         PhysicalGPU internalGpu = _internalGpu!;
+
+        gpu = internalGpu.FullName;
+
         Logger.WriteLine(internalGpu.FullName);
         Logger.WriteLine(internalGpu.ArchitectInformation.ToString());
 
@@ -96,7 +125,7 @@ public class NvidiaGpuControl : IGpuControl
         }
         catch (Exception ex)
         {
-            Logger.WriteLine(ex.ToString());
+            Logger.WriteLine(ex.Message);
             return -1;
         }
 
