@@ -38,7 +38,7 @@ public static class HardwareMonitor
         }
 
         int fanMax = GetFanMax();
-        if (fan > fanMax) SetFanMax(fan);
+        if (fan > fanMax && fan < 110) SetFanMax(fan);
 
         if (Program.config.getConfig("fan_rpm") == 1)
             return " Fan: " + (fan * 100).ToString() + "RPM";

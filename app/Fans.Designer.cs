@@ -536,7 +536,7 @@ namespace GHelper
             labelGPUMemoryTitle.Name = "labelGPUMemoryTitle";
             labelGPUMemoryTitle.Size = new Size(169, 32);
             labelGPUMemoryTitle.TabIndex = 43;
-            labelGPUMemoryTitle.Text = "Memory Clock";
+            labelGPUMemoryTitle.Text = "Memory Clock Offset";
             // 
             // trackGPUMemory
             // 
