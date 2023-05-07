@@ -520,6 +520,15 @@ namespace GHelper.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to GPU Settings.
+        /// </summary>
+        internal static string GPUSettings {
+            get {
+                return ResourceManager.GetString("GPUSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Key Bindings.
         /// </summary>
         internal static string KeyBindings {

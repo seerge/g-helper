@@ -1136,12 +1136,14 @@ namespace GHelper
                         timer.Stop();
                         timer.Dispose();
                         SetPower();
+                        SetGPUPower();
                     };
                     timer.Start();
                 }
                 else
                 {
                     SetPower();
+                    SetGPUPower();
                 }
 
             }

@@ -270,6 +270,9 @@
   <data name="GPUModeUltimate" xml:space="preserve">
     <value>dGPU exclusive</value>
   </data>
+  <data name="GPUSettings" xml:space="preserve">
+    <value>GPU Settings</value>
+  </data>
   <data name="KeyBindings" xml:space="preserve">
     <value>Key Bindings</value>
   </data>

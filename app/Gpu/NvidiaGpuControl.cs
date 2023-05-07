@@ -54,10 +54,13 @@ public class NvidiaGpuControl : IGpuControl
 
         IPerformanceStates20Info states = GPUApi.GetPerformanceStates20(internalGpu.Handle);
 
-        Logger.WriteLine("IPerformanceStates20Info type : " + states.GetType());
+        //Logger.WriteLine("IPerformanceStates20Info type : " + states.GetType());
 
         core = states.Clocks[PerformanceStateId.P0_3DPerformance][0].FrequencyDeltaInkHz.DeltaValue / 1000;
         memory = states.Clocks[PerformanceStateId.P0_3DPerformance][1].FrequencyDeltaInkHz.DeltaValue / 1000;
+
+        Logger.WriteLine($"GET GPU Clock offsets : {core}, {memory}");
+
     }
 
     public int SetClocksFromConfig()
@@ -89,6 +92,7 @@ public class NvidiaGpuControl : IGpuControl
         try
         {
             GPUApi.SetPerformanceStates20(internalGpu.Handle, overclock);
+            Logger.WriteLine($"SET GPU Clock offsets : {core}, {memory}");
         }
         catch (Exception ex)
         {

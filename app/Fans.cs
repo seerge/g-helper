@@ -30,6 +30,8 @@ namespace GHelper
             buttonReset.Text = Properties.Strings.FactoryDefaults;
             checkApplyFans.Text = Properties.Strings.ApplyFanCurve;
 
+            labelGPU.Text = Properties.Strings.GPUSettings;
+
             InitTheme();
 
             MinRPM = 18;
@@ -161,6 +163,9 @@ namespace GHelper
 
                 trackGPUBoost.Value = Math.Max(Math.Min(gpu_boost, ASUSWmi.MaxGPUBoost), ASUSWmi.MinGPUBoost);
                 trackGPUTemp.Value = Math.Max(Math.Min(gpu_temp, ASUSWmi.MaxGPUTemp), ASUSWmi.MinGPUTemp);
+
+                panelGPUBoost.Visible = (Program.wmi.DeviceGet(ASUSWmi.PPT_GPUC0) >= 0);
+                panelGPUTemp.Visible = (Program.wmi.DeviceGet(ASUSWmi.PPT_GPUC2) >= 0);
 
                 VisualiseGPUSettings();
 

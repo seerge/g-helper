@@ -64,7 +64,7 @@ namespace GHelper
             }
 
             Logger.WriteLine("------------");
-            Logger.WriteLine("App launched: " + config.GetModel() + " :" + Assembly.GetExecutingAssembly().GetName().Version.ToString());
+            Logger.WriteLine("App launched: " + config.GetModel() + " :" + Assembly.GetExecutingAssembly().GetName().Version.ToString() + (IsUserAdministrator()?"A":"N"));
 
             Application.EnableVisualStyles();
 
