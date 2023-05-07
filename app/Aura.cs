@@ -1,6 +1,5 @@
 ﻿using HidLibrary;
 using System.Diagnostics;
-using static Starlight.AnimeMatrix.BuiltInAnimation;
 
 namespace GHelper
 {
@@ -161,6 +160,14 @@ namespace GHelper
             Color2 = Color.FromArgb(colorCode);
         }
 
+        private static IEnumerable<HidDevice> GetHidDevices(int[] deviceIds)
+        {
+            HidDevice[] HidDeviceList = HidDevices.Enumerate(0x0b05, deviceIds).ToArray();
+            foreach (HidDevice device in HidDeviceList)
+                if (device.IsConnected && device.Description.ToLower().Contains("hid") && device.Capabilities.FeatureReportByteLength >= 64)
+                    yield return device;
+        }
+
         public static byte[] AuraMessage(int mode, Color color, Color color2, int speed)
         {
 
@@ -183,17 +190,14 @@ namespace GHelper
 
         public static void ApplyBrightness(int brightness)
         {
-            HidDevice[] HidDeviceList = HidDevices.Enumerate(0x0b05, deviceIds).ToArray();
-
             byte[] msg = { 0x5d, 0xba, 0xc5, 0xc4, (byte)brightness };
 
-            foreach (HidDevice device in HidDeviceList)
-                if (device.IsConnected && device.Description.Contains("HID"))
-                {
-                    device.OpenDevice();
-                    device.Write(msg);
-                    device.CloseDevice();
-                }
+            foreach (HidDevice device in GetHidDevices(new int[] { 0x19b6 }))
+            {
+                device.OpenDevice();
+                device.Write(msg);
+                device.CloseDevice();
+            }
 
             Logger.WriteLine("USB-KB = " + BitConverter.ToString(msg));
 
@@ -204,8 +208,6 @@ namespace GHelper
 
         public static void ApplyAuraPower(bool awake = true, bool boot = false, bool sleep = false, bool shutdown = false)
         {
-            HidDevice[] HidDeviceList = HidDevices.Enumerate(0x0b05, 0x19b6).ToArray();
-
             List<AuraDev19b6> flags = new List<AuraDev19b6>();
 
             if (awake)
@@ -244,13 +246,12 @@ namespace GHelper
 
             Debug.WriteLine(BitConverter.ToString(msg));
 
-            foreach (HidDevice device in HidDeviceList)
-                if (device.IsConnected && device.Description.Contains("HID"))
-                {
-                    device.OpenDevice();
-                    device.Write(msg);
-                    device.CloseDevice();
-                }
+            foreach (HidDevice device in GetHidDevices(new int[] { 0x19b6 }))
+            {
+                device.OpenDevice();
+                device.Write(msg);
+                device.CloseDevice();
+            }
 
             Logger.WriteLine("USB-KB = " + BitConverter.ToString(msg));
 
@@ -259,10 +260,9 @@ namespace GHelper
 
         }
 
+
         public static void ApplyAura()
         {
-
-            HidDevice[] HidDeviceList = HidDevices.Enumerate(0x0b05, deviceIds).ToArray();
 
             int _speed;
 
@@ -279,17 +279,16 @@ namespace GHelper
                     break;
             }
 
-
             byte[] msg = AuraMessage(Mode, Color1, Color2, _speed);
-            foreach (HidDevice device in HidDeviceList)
-                if (device.IsConnected && device.Description.Contains("HID"))
-                {
-                    device.OpenDevice();
-                    device.Write(msg);
-                    device.Write(MESSAGE_SET);
-                    device.Write(MESSAGE_APPLY);
-                    device.CloseDevice();
-                }
+
+            foreach (HidDevice device in GetHidDevices(deviceIds))
+            {
+                device.OpenDevice();
+                device.Write(msg);
+                device.Write(MESSAGE_SET);
+                device.Write(MESSAGE_APPLY);
+                device.CloseDevice();
+            }
 
             if (Program.config.ContainsModel("TUF"))
                 Program.wmi.TUFKeyboardRGB(Mode, Color1, _speed);
