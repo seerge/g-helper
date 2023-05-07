@@ -31,12 +31,12 @@ namespace GHelper
         /// </summary>
         private void InitializeComponent()
         {
-            ChartArea chartArea1 = new ChartArea();
-            Title title1 = new Title();
-            ChartArea chartArea2 = new ChartArea();
-            Title title2 = new Title();
-            ChartArea chartArea3 = new ChartArea();
-            Title title3 = new Title();
+            ChartArea chartArea4 = new ChartArea();
+            Title title4 = new Title();
+            ChartArea chartArea5 = new ChartArea();
+            Title title5 = new Title();
+            ChartArea chartArea6 = new ChartArea();
+            Title title6 = new Title();
             panelFans = new Panel();
             labelFansResult = new Label();
             labelTip = new Label();
@@ -211,8 +211,8 @@ namespace GHelper
             // 
             // chartGPU
             // 
-            chartArea1.Name = "ChartArea1";
-            chartGPU.ChartAreas.Add(chartArea1);
+            chartArea4.Name = "ChartArea1";
+            chartGPU.ChartAreas.Add(chartArea4);
             chartGPU.Dock = DockStyle.Fill;
             chartGPU.Location = new Point(2, 350);
             chartGPU.Margin = new Padding(2, 10, 2, 10);
@@ -220,13 +220,13 @@ namespace GHelper
             chartGPU.Size = new Size(760, 320);
             chartGPU.TabIndex = 17;
             chartGPU.Text = "chartGPU";
-            title1.Name = "Title1";
-            chartGPU.Titles.Add(title1);
+            title4.Name = "Title1";
+            chartGPU.Titles.Add(title4);
             // 
             // chartCPU
             // 
-            chartArea2.Name = "ChartArea1";
-            chartCPU.ChartAreas.Add(chartArea2);
+            chartArea5.Name = "ChartArea1";
+            chartCPU.ChartAreas.Add(chartArea5);
             chartCPU.Dock = DockStyle.Fill;
             chartCPU.Location = new Point(2, 10);
             chartCPU.Margin = new Padding(2, 10, 2, 10);
@@ -234,13 +234,13 @@ namespace GHelper
             chartCPU.Size = new Size(760, 320);
             chartCPU.TabIndex = 14;
             chartCPU.Text = "chartCPU";
-            title2.Name = "Title1";
-            chartCPU.Titles.Add(title2);
+            title5.Name = "Title1";
+            chartCPU.Titles.Add(title5);
             // 
             // chartMid
             // 
-            chartArea3.Name = "ChartArea3";
-            chartMid.ChartAreas.Add(chartArea3);
+            chartArea6.Name = "ChartArea3";
+            chartMid.ChartAreas.Add(chartArea6);
             chartMid.Dock = DockStyle.Fill;
             chartMid.Location = new Point(2, 690);
             chartMid.Margin = new Padding(2, 10, 2, 10);
@@ -248,8 +248,8 @@ namespace GHelper
             chartMid.Size = new Size(760, 322);
             chartMid.TabIndex = 14;
             chartMid.Text = "chartMid";
-            title3.Name = "Title3";
-            chartMid.Titles.Add(title3);
+            title6.Name = "Title3";
+            chartMid.Titles.Add(title6);
             chartMid.Visible = false;
             // 
             // labelFans
@@ -316,16 +316,16 @@ namespace GHelper
             panelPower.Controls.Add(panelTotal);
             panelPower.Controls.Add(panelTitleCPU);
             panelPower.Dock = DockStyle.Fill;
-            panelPower.Location = new Point(10, 634);
+            panelPower.Location = new Point(10, 652);
             panelPower.Name = "panelPower";
-            panelPower.Size = new Size(523, 555);
+            panelPower.Size = new Size(523, 537);
             panelPower.TabIndex = 43;
             // 
             // panelApplyPower
             // 
             panelApplyPower.Controls.Add(checkApplyPower);
             panelApplyPower.Dock = DockStyle.Bottom;
-            panelApplyPower.Location = new Point(0, 463);
+            panelApplyPower.Location = new Point(0, 445);
             panelApplyPower.Name = "panelApplyPower";
             panelApplyPower.Padding = new Padding(10);
             panelApplyPower.Size = new Size(523, 92);
@@ -348,7 +348,7 @@ namespace GHelper
             // labelInfo
             // 
             labelInfo.Dock = DockStyle.Top;
-            labelInfo.Location = new Point(0, 368);
+            labelInfo.Location = new Point(0, 342);
             labelInfo.Margin = new Padding(4, 0, 4, 0);
             labelInfo.Name = "labelInfo";
             labelInfo.Padding = new Padding(5);
@@ -364,7 +364,7 @@ namespace GHelper
             panelCPU.Controls.Add(label2);
             panelCPU.Controls.Add(trackCPU);
             panelCPU.Dock = DockStyle.Top;
-            panelCPU.Location = new Point(0, 232);
+            panelCPU.Location = new Point(0, 206);
             panelCPU.Margin = new Padding(4);
             panelCPU.Name = "panelCPU";
             panelCPU.Size = new Size(523, 136);
@@ -414,7 +414,7 @@ namespace GHelper
             panelTotal.Controls.Add(labelPlatform);
             panelTotal.Controls.Add(trackTotal);
             panelTotal.Dock = DockStyle.Top;
-            panelTotal.Location = new Point(0, 92);
+            panelTotal.Location = new Point(0, 66);
             panelTotal.Margin = new Padding(4);
             panelTotal.Name = "panelTotal";
             panelTotal.Size = new Size(523, 140);
@@ -465,7 +465,7 @@ namespace GHelper
             panelTitleCPU.Dock = DockStyle.Top;
             panelTitleCPU.Location = new Point(0, 0);
             panelTitleCPU.Name = "panelTitleCPU";
-            panelTitleCPU.Size = new Size(523, 92);
+            panelTitleCPU.Size = new Size(523, 66);
             panelTitleCPU.TabIndex = 42;
             // 
             // pictureBox1
@@ -473,7 +473,7 @@ namespace GHelper
             pictureBox1.BackgroundImage = Properties.Resources.icons8_processor_96;
             pictureBox1.BackgroundImageLayout = ImageLayout.Zoom;
             pictureBox1.InitialImage = null;
-            pictureBox1.Location = new Point(10, 44);
+            pictureBox1.Location = new Point(18, 18);
             pictureBox1.Margin = new Padding(4, 2, 4, 10);
             pictureBox1.Name = "pictureBox1";
             pictureBox1.Size = new Size(36, 38);
@@ -484,7 +484,7 @@ namespace GHelper
             // 
             labelPowerLimits.AutoSize = true;
             labelPowerLimits.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            labelPowerLimits.Location = new Point(54, 48);
+            labelPowerLimits.Location = new Point(62, 20);
             labelPowerLimits.Margin = new Padding(4, 0, 4, 0);
             labelPowerLimits.Name = "labelPowerLimits";
             labelPowerLimits.Size = new Size(229, 32);
@@ -502,7 +502,8 @@ namespace GHelper
             panelGPU.Dock = DockStyle.Top;
             panelGPU.Location = new Point(10, 0);
             panelGPU.Name = "panelGPU";
-            panelGPU.Size = new Size(523, 634);
+            panelGPU.Padding = new Padding(0, 0, 0, 18);
+            panelGPU.Size = new Size(523, 652);
             panelGPU.TabIndex = 44;
             // 
             // panelGPUTemp
@@ -635,13 +636,13 @@ namespace GHelper
             // trackGPUMemory
             // 
             trackGPUMemory.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            trackGPUMemory.LargeChange = 50;
+            trackGPUMemory.LargeChange = 100;
             trackGPUMemory.Location = new Point(6, 48);
             trackGPUMemory.Margin = new Padding(4, 2, 4, 2);
-            trackGPUMemory.Maximum = 250;
-            trackGPUMemory.Minimum = -250;
+            trackGPUMemory.Maximum = 300;
             trackGPUMemory.Name = "trackGPUMemory";
             trackGPUMemory.Size = new Size(502, 90);
+            trackGPUMemory.SmallChange = 10;
             trackGPUMemory.TabIndex = 42;
             trackGPUMemory.TickFrequency = 50;
             trackGPUMemory.TickStyle = TickStyle.TopLeft;
@@ -673,14 +674,14 @@ namespace GHelper
             // trackGPUCore
             // 
             trackGPUCore.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            trackGPUCore.LargeChange = 50;
+            trackGPUCore.LargeChange = 100;
             trackGPUCore.Location = new Point(6, 47);
             trackGPUCore.Margin = new Padding(4, 2, 4, 2);
-            trackGPUCore.Maximum = 250;
-            trackGPUCore.Minimum = -250;
+            trackGPUCore.Maximum = 300;
             trackGPUCore.Name = "trackGPUCore";
             trackGPUCore.RightToLeft = RightToLeft.No;
             trackGPUCore.Size = new Size(502, 90);
+            trackGPUCore.SmallChange = 10;
             trackGPUCore.TabIndex = 18;
             trackGPUCore.TickFrequency = 50;
             trackGPUCore.TickStyle = TickStyle.TopLeft;
