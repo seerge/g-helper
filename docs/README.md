@@ -37,6 +37,7 @@ _If you post about the app - please include a link. Thanks._
 7. Custom bindings for M3, M4 keys and FN+F5 (performance mode) FN+F4 (keyboard animation modes)
 8. Monitor CPU / GPU temperature, fan speeds and battery discharge rate
 9. Battery charge limit to preserve battery health
+10. NVidia GPU overclocking 
 
 ### :gear: Automatic switching when on battery or plugged in
 - Performance modes (app remembers last mode used on battery or when plugged)
