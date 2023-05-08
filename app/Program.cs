@@ -292,12 +292,7 @@ namespace GHelper
 
                 if (action == "gpu")
                 {
-                    if (HardwareControl.GpuControl is not null)
-                    {
-                        NvidiaGpuControl nvcontrol = (NvidiaGpuControl)HardwareControl.GpuControl;
-                        nvcontrol.SetClocksFromConfig();
-                    }
-
+                    HardwareControl.GetNvidiaGpuControl()?.SetClocksFromConfig();
                     settingsForm.FansToggle();
                 }
             }

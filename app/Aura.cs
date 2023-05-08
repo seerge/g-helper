@@ -15,14 +15,14 @@ namespace GHelper
         SleepKeyb = 1 << 5,
         ShutdownLogo = 1 << 6,
         ShutdownKeyb = 1 << 7,
-        BootBar = 1u << (7 + 2),
-        AwakeBar = 1u << (7 + 3),
-        SleepBar = 1u << (7 + 4),
-        ShutdownBar = 1u << (7 + 5),
-        BootLid = 1u << (15 + 1),
-        AwakeLid = 1u << (15 + 2),
-        SleepLid = 1u << (15 + 3),
-        ShutdownLid = 1u << (15 + 4)
+        BootBar = 1 << (7 + 2),
+        AwakeBar = 1 << (7 + 3),
+        SleepBar = 1 << (7 + 4),
+        ShutdownBar = 1 << (7 + 5),
+        BootLid = 1 << (15 + 1),
+        AwakeLid = 1 << (15 + 2),
+        SleepLid = 1 << (15 + 3),
+        ShutdownLid = 1 << (15 + 4)
     }
 
     public static class AuraDev19b6Extensions
@@ -206,41 +206,8 @@ namespace GHelper
         }
 
 
-        public static void ApplyAuraPower(bool awake = true, bool boot = false, bool sleep = false, bool shutdown = false)
+        public static void ApplyAuraPower(List<AuraDev19b6> flags)
         {
-            List<AuraDev19b6> flags = new List<AuraDev19b6>();
-
-            if (awake)
-            {
-                flags.Add(AuraDev19b6.AwakeKeyb);
-                flags.Add(AuraDev19b6.AwakeBar);
-                flags.Add(AuraDev19b6.AwakeLid);
-                flags.Add(AuraDev19b6.AwakeLogo);
-            }
-
-            if (boot)
-            {
-                flags.Add(AuraDev19b6.BootKeyb);
-                flags.Add(AuraDev19b6.BootBar);
-                flags.Add(AuraDev19b6.BootLid);
-                flags.Add(AuraDev19b6.BootLogo);
-            }
-
-            if (sleep)
-            {
-                flags.Add(AuraDev19b6.SleepKeyb);
-                flags.Add(AuraDev19b6.SleepBar);
-                flags.Add(AuraDev19b6.SleepLid);
-                flags.Add(AuraDev19b6.SleepLogo);
-            }
-
-            if (shutdown)
-            {
-                flags.Add(AuraDev19b6.ShutdownKeyb);
-                flags.Add(AuraDev19b6.ShutdownBar);
-                flags.Add(AuraDev19b6.ShutdownLid);
-                flags.Add(AuraDev19b6.ShutdownLogo);
-            }
 
             byte[] msg = AuraDev19b6Extensions.ToBytes(flags.ToArray());
 
@@ -255,8 +222,12 @@ namespace GHelper
 
             Logger.WriteLine("USB-KB = " + BitConverter.ToString(msg));
 
-            if (Program.config.ContainsModel("TUF"))
-                Program.wmi.TUFKeyboardPower(awake, boot, sleep, shutdown);
+            //if (Program.config.ContainsModel("TUF"))
+                Program.wmi.TUFKeyboardPower(
+                    flags.Contains(AuraDev19b6.AwakeKeyb), 
+                    flags.Contains(AuraDev19b6.BootKeyb), 
+                    flags.Contains(AuraDev19b6.SleepKeyb), 
+                    flags.Contains(AuraDev19b6.ShutdownKeyb));
 
         }
 

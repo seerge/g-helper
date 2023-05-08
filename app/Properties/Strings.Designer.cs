@@ -556,7 +556,7 @@ namespace GHelper.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Keyboard Backlight.
+        ///   Looks up a localized string similar to Laptop Backlight.
         /// </summary>
         internal static string KeyboardBacklight {
             get {

@@ -506,6 +506,7 @@ namespace GHelper
             checkApplyFans.Checked = false;
             checkApplyPower.Checked = false;
 
+            /*
             trackGPUCore.Value = 0;
             trackGPUMemory.Value = 0;
             trackGPUBoost.Value = ASUSWmi.MaxGPUBoost;
@@ -513,6 +514,7 @@ namespace GHelper
 
             Program.config.setConfig("gpu_core", ASUSWmi.MaxGPUBoost);
             Program.config.setConfig("gpu_memory", ASUSWmi.MaxGPUTemp);
+            */
 
             Program.config.setConfigPerf("auto_apply", 0);
             Program.config.setConfigPerf("auto_apply_power", 0);
