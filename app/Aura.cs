@@ -1,4 +1,5 @@
 ﻿using HidLibrary;
+using OSD;
 using System.Diagnostics;
 
 namespace GHelper
@@ -233,6 +234,22 @@ namespace GHelper
                     flags.Contains(AuraDev19b6.SleepKeyb), 
                     flags.Contains(AuraDev19b6.ShutdownKeyb));
 
+        }
+
+        public static void ApplyXGMLight(bool status)
+        {
+            byte value = status? (byte)0x50:(byte)0;
+            var msg = new byte[] { 0x5e, 0xc5, value };
+
+            foreach (HidDevice device in GetHidDevices(new int[] { 0x1970 }))
+            {
+                device.OpenDevice();
+                var message = new byte[300];
+                Array.Copy(msg, message, msg.Length);
+                Debug.WriteLine(BitConverter.ToString(message));
+                device.WriteFeatureData(message);
+                device.CloseDevice();
+            }
         }
 
 
