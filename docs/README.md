@@ -6,7 +6,7 @@ Language: English | [中文](https://github.com/seerge/g-helper/blob/main/docs/R
 
 ## Lightweight Armoury Crate alternative for Asus laptops
 
-Control tool for ROG Zephyrus G14, G15, Flow X13, Flow X16, TUF, Strix, Scar and other models. A small utility that allows you to do almost everything you could do with Armoury Crate but without extra bloat and unnecessary services.
+Control tool for ROG Zephyrus G14, G15, G16, M16, Flow X13, Flow X16, TUF, Strix, Scar and other models. A small utility that allows you to do almost everything you could do with Armoury Crate but without extra bloat and unnecessary services.
 
 
 ## :gift: Main advantages 
@@ -37,6 +37,7 @@ _If you post about the app - please include a link. Thanks._
 7. Custom bindings for M3, M4 keys and FN+F5 (performance mode) FN+F4 (keyboard animation modes)
 8. Monitor CPU / GPU temperature, fan speeds and battery discharge rate
 9. Battery charge limit to preserve battery health
+10. NVidia GPU overclocking 
 
 ### :gear: Automatic switching when on battery or plugged in
 - Performance modes (app remembers last mode used on battery or when plugged)
@@ -56,7 +57,7 @@ Modes are **same** as in Armoury Crate as they are stored in bios including defa
 
 _PPTs are shown for G14 2022, for other models PPTs will be different as they are set in bios._
 
-![Screenshot 2023-04-13 191030](https://user-images.githubusercontent.com/5920850/231859519-3cfa40f1-b06e-4cdb-b3e8-5187521ce208.png)
+![Screenshot 2023-05-07 182519](https://user-images.githubusercontent.com/5920850/236697890-26938ac4-8840-4fed-a7b1-9a7b839fb865.png)
 
 ### :video_game: GPU Modes
 
@@ -106,7 +107,7 @@ This function is handled by Asus Optimization Service (therefore G-helper doesn'
 Personally, i'm not a big fan of them, as they make colors very inaccurate. But if you want so - you can adjust display colors using either Nvidia Control panel or AMD Adrenaline (appropriate display sections). If you really want you can also use [own ASUS utility from MS Store](https://apps.microsoft.com/store/detail/gamevisual/9P4K1LFTXSH8?hl=nl-nl&gl=nl&rtc=1)
 
 #### Can I overclock Nvidia GPU core / memory?
-I don't own nvidia GPU at the moment, so can't safely add overclocking to the app. But you can use "msi afterburner" to do that and much more with your GPU, as it's much more specialized on this aspect :)
+Make sure that your dGPU is enabled (i.e. it's not in Eco mode). Open Fans + Power section and adjust core / memory clock offsets. They work same as in armoury's manual mode. Please keep in mind that (unfortunately) you need admin permissions for that, and app will ask you for them.
 
 #### How do I uninstall G-helper?
 G-helper is a single exe, and it doesn't install anything in the system. To remove it - you can simply delete exe :) If you have applied any custom fan profiles or PPTs - before removing I would recommend selecting your favorite performance mode (for example balanced) and clicking "Factory defaults" under Fans + Power.
