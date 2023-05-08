@@ -279,8 +279,8 @@
   <data name="KeyboardAuto" xml:space="preserve">
     <value>電池模式時自動降低鍵盤背光亮度以省電</value>
   </data>
-  <data name="KeyboardBacklight" xml:space="preserve">
-    <value>鍵盤背光</value>
+  <data name="LaptopBacklight" xml:space="preserve">
+    <value>背光</value>
   </data>
   <data name="LaptopKeyboard" xml:space="preserve">
     <value>鍵盤背光:</value>

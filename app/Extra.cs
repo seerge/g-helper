@@ -58,7 +58,7 @@ namespace GHelper
             InitializeComponent();
 
             groupBindings.Text = Properties.Strings.KeyBindings;
-            groupLight.Text = " " + Properties.Strings.KeyboardBacklight;
+            groupLight.Text = " " + Properties.Strings.LaptopBacklight;
             groupOther.Text = Properties.Strings.Other;
 
             checkAwake.Text = Properties.Strings.Awake;
@@ -73,6 +73,11 @@ namespace GHelper
             checkNoOverdrive.Text = Properties.Strings.DisableOverdrive;
             checkTopmost.Text = Properties.Strings.WindowTop;
             checkUSBC.Text = Properties.Strings.OptimizedUSBC;
+
+            labelBacklight.Text = Properties.Strings.Keyboard;
+            labelBacklightBar.Text = Properties.Strings.Lightbar;
+            labelBacklightLid.Text = Properties.Strings.Lid;
+            labelBacklightLogo.Text = Properties.Strings.Logo;
 
             Text = Properties.Strings.ExtraSettings;
 
@@ -135,7 +140,6 @@ namespace GHelper
             checkSleepLogo.CheckedChanged += CheckPower_CheckedChanged;
             checkShutdownLogo.CheckedChanged += CheckPower_CheckedChanged;
 
-            /*
             if (!Program.config.ContainsModel("Strix"))
             {
                 labelBacklightBar.Visible = false;
@@ -143,8 +147,23 @@ namespace GHelper
                 checkBootBar.Visible = false;
                 checkSleepBar.Visible = false;
                 checkShutdownBar.Visible = false;
+
+                labelBacklightLid.Visible = false;
+                checkAwakeLid.Visible = false;
+                checkBootLid.Visible = false;
+                checkSleepLid.Visible = false;
+                checkShutdownLid.Visible = false;
+
+                if (!Program.config.ContainsModel("Z13"))
+                {
+                    labelBacklightLogo.Visible = false;
+                    checkAwakeLogo.Visible = false;
+                    checkBootLogo.Visible = false;
+                    checkSleepLogo.Visible = false;
+                    checkShutdownLogo.Visible = false;
+                }
+
             }
-            */
 
             checkTopmost.Checked = (Program.config.getConfig("topmost") == 1);
             checkTopmost.CheckedChanged += CheckTopmost_CheckedChanged; ;
@@ -242,6 +261,11 @@ namespace GHelper
             if (checkBootLogo.Checked) flags.Add(AuraDev19b6.BootLogo);
             if (checkSleepLogo.Checked) flags.Add(AuraDev19b6.SleepLogo);
             if (checkShutdownLogo.Checked) flags.Add(AuraDev19b6.ShutdownLogo);
+
+            flags.Add(AuraDev19b6.Unknown1);
+            flags.Add(AuraDev19b6.Unknown2);
+            flags.Add(AuraDev19b6.Unknown3);
+            flags.Add(AuraDev19b6.Unknown4);
 
             Aura.ApplyAuraPower(flags);
 

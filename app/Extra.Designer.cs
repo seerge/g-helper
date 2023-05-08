@@ -218,26 +218,32 @@ namespace GHelper
             tableBacklight.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
             tableBacklight.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
             tableBacklight.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
-            tableBacklight.Controls.Add(checkBootLid, 2, 2);
-            tableBacklight.Controls.Add(checkShutdown, 0, 4);
+
+            tableBacklight.Controls.Add(labelBacklight, 0, 0);
             tableBacklight.Controls.Add(checkAwake, 0, 1);
             tableBacklight.Controls.Add(checkBoot, 0, 2);
             tableBacklight.Controls.Add(checkSleep, 0, 3);
-            tableBacklight.Controls.Add(labelBacklight, 0, 0);
-            tableBacklight.Controls.Add(checkSleepBar, 1, 3);
-            tableBacklight.Controls.Add(checkShutdownBar, 1, 4);
-            tableBacklight.Controls.Add(labelBacklightBar, 1, 0);
-            tableBacklight.Controls.Add(checkAwakeBar, 1, 1);
-            tableBacklight.Controls.Add(checkBootBar, 1, 2);
-            tableBacklight.Controls.Add(checkSleepLid, 2, 3);
-            tableBacklight.Controls.Add(checkShutdownLid, 2, 4);
-            tableBacklight.Controls.Add(labelBacklightLid, 2, 0);
-            tableBacklight.Controls.Add(checkAwakeLid, 2, 1);
-            tableBacklight.Controls.Add(labelBacklightLogo, 3, 0);
-            tableBacklight.Controls.Add(checkAwakeLogo, 3, 1);
-            tableBacklight.Controls.Add(checkBootLogo, 3, 2);
-            tableBacklight.Controls.Add(checkSleepLogo, 3, 3);
-            tableBacklight.Controls.Add(checkShutdownLogo, 3, 4);
+            tableBacklight.Controls.Add(checkShutdown, 0, 4);
+
+            tableBacklight.Controls.Add(labelBacklightLogo, 1, 0);
+            tableBacklight.Controls.Add(checkAwakeLogo, 1, 1);
+            tableBacklight.Controls.Add(checkBootLogo, 1, 2);
+            tableBacklight.Controls.Add(checkSleepLogo, 1, 3);
+            tableBacklight.Controls.Add(checkShutdownLogo, 1, 4);
+
+            tableBacklight.Controls.Add(labelBacklightBar, 2, 0);
+            tableBacklight.Controls.Add(checkAwakeBar, 2, 1);
+            tableBacklight.Controls.Add(checkBootBar, 2, 2);
+            tableBacklight.Controls.Add(checkSleepBar, 2, 3);
+            tableBacklight.Controls.Add(checkShutdownBar, 2, 4);
+
+            tableBacklight.Controls.Add(labelBacklightLid, 3, 0);
+            tableBacklight.Controls.Add(checkAwakeLid, 3, 1);
+            tableBacklight.Controls.Add(checkBootLid, 3, 2);
+            tableBacklight.Controls.Add(checkSleepLid, 3, 3);
+            tableBacklight.Controls.Add(checkShutdownLid, 3, 4);
+
+
             tableBacklight.Dock = DockStyle.Top;
             tableBacklight.Location = new Point(3, 35);
             tableBacklight.Margin = new Padding(0);

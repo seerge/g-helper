@@ -282,7 +282,7 @@
   <data name="KeyboardAuto" xml:space="preserve">
     <value>Lower backlight brightness on battery and back when plugged</value>
   </data>
-  <data name="KeyboardBacklight" xml:space="preserve">
+  <data name="LaptopBacklight" xml:space="preserve">
     <value>Laptop Backlight</value>
   </data>
   <data name="LaptopKeyboard" xml:space="preserve">
@@ -290,6 +290,15 @@
   </data>
   <data name="LaptopScreen" xml:space="preserve">
     <value>Laptop Screen</value>
+  </data>
+  <data name="Lid" xml:space="preserve">
+    <value>Lid</value>
+  </data>
+  <data name="Lightbar" xml:space="preserve">
+    <value>Lightbar</value>
+  </data>
+  <data name="Logo" xml:space="preserve">
+    <value>Logo</value>
   </data>
   <data name="MatrixBanner" xml:space="preserve">
     <value>Binary Banner</value>

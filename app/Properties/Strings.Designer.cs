@@ -558,9 +558,9 @@ namespace GHelper.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Laptop Backlight.
         /// </summary>
-        internal static string KeyboardBacklight {
+        internal static string LaptopBacklight {
             get {
-                return ResourceManager.GetString("KeyboardBacklight", resourceCulture);
+                return ResourceManager.GetString("LaptopBacklight", resourceCulture);
             }
         }
         
@@ -579,6 +579,33 @@ namespace GHelper.Properties {
         internal static string LaptopScreen {
             get {
                 return ResourceManager.GetString("LaptopScreen", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lid.
+        /// </summary>
+        internal static string Lid {
+            get {
+                return ResourceManager.GetString("Lid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lightbar.
+        /// </summary>
+        internal static string Lightbar {
+            get {
+                return ResourceManager.GetString("Lightbar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Logo.
+        /// </summary>
+        internal static string Logo {
+            get {
+                return ResourceManager.GetString("Logo", resourceCulture);
             }
         }
         

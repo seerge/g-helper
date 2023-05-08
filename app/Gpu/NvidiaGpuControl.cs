@@ -21,32 +21,7 @@ public class NvidiaGpuControl : IGpuControl
 
     public NvidiaGpuControl()
     {
-        Create();
-    }
-
-
-    public static void Create()
-    {
-        try
-        {
-            _internalGpu = GetInternalDiscreteGpu();
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine(ex);
-            _internalGpu = null;
-        }
-    }
-
-
-    public static void RecreateWithDelay(int delay = 5)
-    {
-        Task.Run(async () =>
-        {
-            await Task.Delay(TimeSpan.FromSeconds(delay));
-            Create();
-        });
-
+        _internalGpu = GetInternalDiscreteGpu();
     }
 
     public bool IsValid => _internalGpu != null;
@@ -144,7 +119,7 @@ public class NvidiaGpuControl : IGpuControl
         }
         catch (Exception ex)
         {
-            Logger.WriteLine(ex.ToString());
+            Logger.WriteLine(ex.Message);
             return null;
         }
     }

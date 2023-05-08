@@ -279,8 +279,8 @@
   <data name="KeyboardAuto" xml:space="preserve">
     <value>Вимкнути підсвітку на батареї та увімкнути на зарядці</value>
   </data>
-  <data name="KeyboardBacklight" xml:space="preserve">
-    <value>Підсвітка клавіатури</value>
+  <data name="LaptopBacklight" xml:space="preserve">
+    <value>Підсвітка</value>
   </data>
   <data name="LaptopKeyboard" xml:space="preserve">
     <value>Клавіатура</value>

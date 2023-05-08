@@ -279,8 +279,8 @@
   <data name="KeyboardAuto" xml:space="preserve">
     <value>Bajar retroiluminación con batería</value>
   </data>
-  <data name="KeyboardBacklight" xml:space="preserve">
-    <value>Retroiluminación del teclado</value>
+  <data name="LaptopBacklight" xml:space="preserve">
+    <value>Retroiluminación</value>
   </data>
   <data name="LaptopKeyboard" xml:space="preserve">
     <value>Teclado del portátil</value>
@@ -331,7 +331,7 @@
     <value>Cambia a Eco con batería y a Estándar cuando está enchufado</value>
   </data>
   <data name="OptimizedUSBC" xml:space="preserve">
-	<value>Deshabilitar dGPU con cargador USB-C en modo Optimizado</value>
+    <value>Deshabilitar dGPU con cargador USB-C en modo Optimizado</value>
   </data>
   <data name="Other" xml:space="preserve">
     <value>Otro</value>

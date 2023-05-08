@@ -15,14 +15,18 @@ namespace GHelper
         SleepKeyb = 1 << 5,
         ShutdownLogo = 1 << 6,
         ShutdownKeyb = 1 << 7,
-        BootBar = 1 << (7 + 2),
-        AwakeBar = 1 << (7 + 3),
-        SleepBar = 1 << (7 + 4),
-        ShutdownBar = 1 << (7 + 5),
-        BootLid = 1 << (15 + 1),
-        AwakeLid = 1 << (15 + 2),
-        SleepLid = 1 << (15 + 3),
-        ShutdownLid = 1 << (15 + 4)
+        Unknown1 = 1 << 8,
+        BootBar = 1u << (7 + 2),
+        AwakeBar = 1u << (7 + 3),
+        SleepBar = 1u << (7 + 4),
+        ShutdownBar = 1u << (7 + 5),
+        Unknown2 = 1 << 13,
+        Unknown3 = 1 << 14,
+        Unknown4 = 1 << 15,
+        BootLid = 1u << (15 + 1),
+        AwakeLid = 1u << (15 + 2),
+        SleepLid = 1u << (15 + 3),
+        ShutdownLid = 1u << (15 + 4)
     }
 
     public static class AuraDev19b6Extensions
