@@ -14,6 +14,15 @@ public class Startup
         return (taskService.RootFolder.AllTasks.Any(t => t.Name == taskName));
     }
 
+    public static void ReScheduleAdmin()
+    {
+        if (Program.IsUserAdministrator() && IsScheduled())
+        {
+            UnSchedule();
+            Schedule();
+        }
+    }
+
     public static void Schedule()
     {
 

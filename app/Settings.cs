@@ -1,4 +1,5 @@
 ﻿using CustomControls;
+using GHelper.Gpu;
 using Starlight.AnimeMatrix;
 using System;
 using System.Diagnostics;
@@ -7,6 +8,7 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text.Json;
 using System.Timers;
+using System.Windows.Forms;
 using Tools;
 
 namespace GHelper
@@ -140,7 +142,7 @@ namespace GHelper
             int trim = model.LastIndexOf("_");
             if (trim > 0) model = model.Substring(0, trim);
 
-            labelModel.Text = model;
+            labelModel.Text = model+(Program.IsUserAdministrator()?".":"");
 
             TopMost = Program.config.getConfig("topmost") == 1;
 
@@ -1043,11 +1045,14 @@ namespace GHelper
 
         }
 
-        public void SetGPUPower()
+        public void AutoGPUSettings(bool launchAsAdmin = false)
         {
 
-            int gpu_boost = Program.config.getConfig("gpu_boost");
-            int gpu_temp = Program.config.getConfig("gpu_temp");
+            int gpu_boost = Program.config.getConfigPerf("gpu_boost");
+            int gpu_temp = Program.config.getConfigPerf("gpu_temp");
+
+            int gpu_core = Program.config.getConfigPerf("gpu_core");
+            int gpu_memory = Program.config.getConfigPerf("gpu_memory");
 
             if (gpu_boost < ASUSWmi.MinGPUBoost || gpu_boost > ASUSWmi.MaxGPUBoost ) return;
             if (gpu_temp < ASUSWmi.MinGPUTemp || gpu_temp > ASUSWmi.MaxGPUTemp) return;
@@ -1061,6 +1066,23 @@ namespace GHelper
             {
                 Program.wmi.DeviceSet(ASUSWmi.PPT_GPUC2, gpu_temp, "PowerLimit C2");
             }
+
+            if (gpu_core == -1 && gpu_memory == -1) return;
+
+            if (HardwareControl.GpuControl is not null && HardwareControl.GpuControl.IsNvidia)
+            {
+                using NvidiaGpuControl nvControl = (NvidiaGpuControl)HardwareControl.GpuControl;
+                try
+                {
+                    int status = nvControl.SetClocks(gpu_core, gpu_memory);
+                    if (launchAsAdmin && status == -1) Program.RunAsAdmin("gpu");
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex.ToString());
+                }
+            }
+
 
         }
 
@@ -1136,14 +1158,12 @@ namespace GHelper
                         timer.Stop();
                         timer.Dispose();
                         SetPower();
-                        SetGPUPower();
                     };
                     timer.Start();
                 }
                 else
                 {
                     SetPower();
-                    SetGPUPower();
                 }
 
             }
@@ -1201,7 +1221,9 @@ namespace GHelper
             }
 
             AutoFans();
+            AutoGPUSettings();
             AutoPower(1000);
+
 
             if (Program.config.getConfigPerfString("scheme") is not null)
                 NativeMethods.SetPowerScheme(Program.config.getConfigPerfString("scheme"));
@@ -1223,6 +1245,7 @@ namespace GHelper
                 fans.InitFans();
                 fans.InitPower();
                 fans.InitBoost();
+                fans.InitGPU();
             }
         }
 
@@ -1424,10 +1447,10 @@ namespace GHelper
 
             labelGPU.Text = Properties.Strings.GPUMode + ": " + Properties.Strings.GPUChanging + " ...";
 
-            Thread t = new Thread(() =>
-            {
-                Thread.CurrentThread.IsBackground = true;
 
+            Task.Run(async () =>
+            {
+                
                 if (eco == 1)
                 {
                     string[] tokill = { "EADesktop", "RadeonSoftware" };
@@ -1437,18 +1460,18 @@ namespace GHelper
 
                 Program.wmi.DeviceSet(ASUSWmi.GPUEco, eco, "GPUEco");
 
-                if (eco == 0)
-                    HardwareControl.RecreateGpuControlWithDelay();
-
+                await Task.Delay(TimeSpan.FromSeconds(1));
                 Program.settingsForm.BeginInvoke(delegate
                 {
-                    Thread.Sleep(500);
                     InitGPUMode();
                     AutoScreen();
                 });
+
+                if (eco == 0)
+                    HardwareControl.RecreateGpuControlWithDelay();
+
             });
 
-            t.Start();
 
         }
 
