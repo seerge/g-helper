@@ -271,7 +271,7 @@
     <value>Exclusivo dGPU</value>
   </data>
   <data name="GPUSettings" xml:space="preserve">
-    <value>Ajustes GPU</value>
+    <value>Ajustes de GPU</value>
   </data>
   <data name="KeyBindings" xml:space="preserve">
     <value>Atajos de teclado</value>
