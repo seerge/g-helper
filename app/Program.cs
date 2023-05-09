@@ -368,7 +368,7 @@ namespace GHelper
                 startInfo.Arguments = param;
                 startInfo.Verb = "runas";
                 Process.Start(startInfo);
-                //Application.Exit();
+                Application.Exit();
             }
         }
     }

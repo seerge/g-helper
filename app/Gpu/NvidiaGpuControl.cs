@@ -3,6 +3,7 @@ using NvAPIWrapper.Native;
 using NvAPIWrapper.Native.GPU;
 using NvAPIWrapper.Native.GPU.Structures;
 using NvAPIWrapper.Native.Interfaces.GPU;
+using System;
 using System.Diagnostics;
 using System.Management;
 using static NvAPIWrapper.Native.GPU.Structures.PerformanceStates20InfoV1;
@@ -47,23 +48,29 @@ public class NvidiaGpuControl : IGpuControl
     }
 
 
-    public void GetClocks(out int core, out int memory, out string gpu)
+    public int GetClocks(out int core, out int memory, out string gpu)
     {
         PhysicalGPU internalGpu = _internalGpu!;
 
         gpu = internalGpu.FullName;
 
-        Logger.WriteLine(internalGpu.FullName);
-        Logger.WriteLine(internalGpu.ArchitectInformation.ToString());
+        //Logger.WriteLine(internalGpu.FullName);
+        //Logger.WriteLine(internalGpu.ArchitectInformation.ToString());
 
-        IPerformanceStates20Info states = GPUApi.GetPerformanceStates20(internalGpu.Handle);
+        try
+        {
+            IPerformanceStates20Info states = GPUApi.GetPerformanceStates20(internalGpu.Handle);
+            core = states.Clocks[PerformanceStateId.P0_3DPerformance][0].FrequencyDeltaInkHz.DeltaValue / 1000;
+            memory = states.Clocks[PerformanceStateId.P0_3DPerformance][1].FrequencyDeltaInkHz.DeltaValue / 1000;
+            Logger.WriteLine($"GET GPU Clock offsets : {core}, {memory}");
+            return 0;
 
-        //Logger.WriteLine("IPerformanceStates20Info type : " + states.GetType());
-
-        core = states.Clocks[PerformanceStateId.P0_3DPerformance][0].FrequencyDeltaInkHz.DeltaValue / 1000;
-        memory = states.Clocks[PerformanceStateId.P0_3DPerformance][1].FrequencyDeltaInkHz.DeltaValue / 1000;
-
-        Logger.WriteLine($"GET GPU Clock offsets : {core}, {memory}");
+        } catch (Exception ex)
+        {
+            Logger.WriteLine(ex.Message);
+            core = memory = 0; 
+            return -1;
+        }
 
     }
 

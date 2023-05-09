@@ -1061,8 +1061,13 @@ namespace GHelper
                 using NvidiaGpuControl nvControl = (NvidiaGpuControl)HardwareControl.GpuControl;
                 try
                 {
-                    int status = nvControl.SetClocks(gpu_core, gpu_memory);
-                    if (launchAsAdmin && status == -1) Program.RunAsAdmin("gpu");
+                    int getStatus = nvControl.GetClocks(out int current_core, out int current_memory, out string gpuName);
+                    if (getStatus == -1) return;
+                    if (Math.Abs(gpu_core - current_core) < 5 && Math.Abs(gpu_memory - current_memory) < 5) return;
+
+                    int setStatus = nvControl.SetClocks(gpu_core, gpu_memory);
+                    if (launchAsAdmin && setStatus == -1) Program.RunAsAdmin("gpu");
+
                 }
                 catch (Exception ex)
                 {
