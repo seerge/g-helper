@@ -270,6 +270,9 @@
   <data name="GPUModeUltimate" xml:space="preserve">
     <value>Exclusivo dGPU</value>
   </data>
+  <data name="GPUSettings" xml:space="preserve">
+    <value>Ajustes GPU</value>
+  </data>
   <data name="KeyBindings" xml:space="preserve">
     <value>Atajos de teclado</value>
   </data>
@@ -287,6 +290,15 @@
   </data>
   <data name="LaptopScreen" xml:space="preserve">
     <value>Pantalla del portátil</value>
+  </data>
+  <data name="Lid" xml:space="preserve">
+    <value>Tapa</value>
+  </data>
+  <data name="Lightbar" xml:space="preserve">
+    <value>Barra de luz</value>
+  </data>
+  <data name="Logo" xml:space="preserve">
+    <value>Logo</value>
   </data>
   <data name="MatrixBanner" xml:space="preserve">
     <value>Banner binario</value>
@@ -388,7 +400,7 @@
     <value>Alternar Aura</value>
   </data>
   <data name="ToggleMiniled" xml:space="preserve">
-    <value>Alternar Miniled (si es compatible)</value>
+    <value>Alternar Miniled (si comp.)</value>
   </data>
   <data name="ToggleScreen" xml:space="preserve">
     <value>Alternar pantalla</value>
