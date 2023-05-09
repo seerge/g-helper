@@ -1045,27 +1045,14 @@ namespace GHelper
 
         }
 
-        public void SetGPUSettings(bool launchAsAdmin = true)
-        {
 
-            int gpu_boost = Program.config.getConfigPerf("gpu_boost");
-            int gpu_temp = Program.config.getConfigPerf("gpu_temp");
+        public void SetGPUClocks(bool launchAsAdmin = true)
+        {
 
             int gpu_core = Program.config.getConfigPerf("gpu_core");
             int gpu_memory = Program.config.getConfigPerf("gpu_memory");
 
-            if (gpu_boost < ASUSWmi.MinGPUBoost || gpu_boost > ASUSWmi.MaxGPUBoost ) return;
-            if (gpu_temp < ASUSWmi.MinGPUTemp || gpu_temp > ASUSWmi.MaxGPUTemp) return;
-
-            if (Program.wmi.DeviceGet(ASUSWmi.PPT_GPUC0) >= 0)
-            {
-                Program.wmi.DeviceSet(ASUSWmi.PPT_GPUC0, gpu_boost, "PowerLimit C0");
-            }
-
-            if (Program.wmi.DeviceGet(ASUSWmi.PPT_GPUC2) >= 0)
-            {
-                Program.wmi.DeviceSet(ASUSWmi.PPT_GPUC2, gpu_temp, "PowerLimit C2");
-            }
+            if (gpu_core == -1 && gpu_memory == -1) return;
 
             if ((gpu_core > -5 && gpu_core < 5) && (gpu_memory > -5 && gpu_memory < 5)) launchAsAdmin = false;
 
@@ -1082,7 +1069,27 @@ namespace GHelper
                     Logger.WriteLine(ex.ToString());
                 }
             }
+        }
 
+        public void SetGPUPower()
+        {
+
+            int gpu_boost = Program.config.getConfigPerf("gpu_boost");
+            int gpu_temp = Program.config.getConfigPerf("gpu_temp");
+
+
+            if (gpu_boost < ASUSWmi.MinGPUBoost || gpu_boost > ASUSWmi.MaxGPUBoost ) return;
+            if (gpu_temp < ASUSWmi.MinGPUTemp || gpu_temp > ASUSWmi.MaxGPUTemp) return;
+
+            if (Program.wmi.DeviceGet(ASUSWmi.PPT_GPUC0) >= 0)
+            {
+                Program.wmi.DeviceSet(ASUSWmi.PPT_GPUC0, gpu_boost, "PowerLimit C0");
+            }
+
+            if (Program.wmi.DeviceGet(ASUSWmi.PPT_GPUC2) >= 0)
+            {
+                Program.wmi.DeviceSet(ASUSWmi.PPT_GPUC2, gpu_temp, "PowerLimit C2");
+            }
 
         }
 
@@ -1159,14 +1166,14 @@ namespace GHelper
                     timer.Stop();
                     timer.Dispose();
                     if (applyPower) SetPower();
-                    SetGPUSettings();
+                    SetGPUPower();
                 };
                 timer.Start();
             }
             else
             {
                 if (applyPower) SetPower();
-                SetGPUSettings();
+                SetGPUPower();
             }
 
         }
@@ -1220,6 +1227,8 @@ namespace GHelper
                     Debug.WriteLine("Toast error");
                 }
             }
+
+            SetGPUClocks();
 
             AutoFans();
             AutoPower(1000);

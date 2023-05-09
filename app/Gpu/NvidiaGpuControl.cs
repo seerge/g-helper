@@ -95,8 +95,8 @@ public class NvidiaGpuControl : IGpuControl
 
         try
         {
+            Logger.WriteLine($"SET GPU Clock : {core}, {memory}");
             GPUApi.SetPerformanceStates20(internalGpu.Handle, overclock);
-            Logger.WriteLine($"SET GPU Clock offsets : {core}, {memory}");
         }
         catch (Exception ex)
         {

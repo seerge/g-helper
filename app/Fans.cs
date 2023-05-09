@@ -119,7 +119,8 @@ namespace GHelper
 
         private void TrackGPU_MouseUp(object? sender, MouseEventArgs e)
         {
-            Program.settingsForm.SetGPUSettings(true);
+            Program.settingsForm.SetGPUPower();
+            Program.settingsForm.SetGPUClocks(true);
         }
 
         public void InitGPU(bool readClocks = false)
@@ -509,7 +510,14 @@ namespace GHelper
             trackGPUBoost.Value = ASUSWmi.MaxGPUBoost;
             trackGPUTemp.Value = ASUSWmi.MaxGPUTemp;
 
-            Program.settingsForm.SetGPUSettings(true);
+            Program.config.setConfigPerf("gpu_boost", trackGPUBoost.Value);
+            Program.config.setConfigPerf("gpu_temp", trackGPUTemp.Value);
+            Program.config.setConfigPerf("gpu_core", trackGPUCore.Value);
+            Program.config.setConfigPerf("gpu_memory", trackGPUMemory.Value);
+            VisualiseGPUSettings();
+
+            Program.settingsForm.SetGPUClocks(true);
+            Program.settingsForm.SetGPUPower();
         }
 
         private void ChartCPU_MouseUp(object? sender, MouseEventArgs e)
