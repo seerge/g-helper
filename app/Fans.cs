@@ -97,9 +97,8 @@ namespace GHelper
 
             trackGPUCore.MouseUp += TrackGPU_MouseUp;
             trackGPUMemory.MouseUp += TrackGPU_MouseUp;
-
-            trackGPUBoost.MouseUp += TrackGPUBoost_MouseUp;
-            trackGPUTemp.MouseUp += TrackGPUBoost_MouseUp;
+            trackGPUBoost.MouseUp += TrackGPU_MouseUp;
+            trackGPUTemp.MouseUp += TrackGPU_MouseUp;
 
             //labelInfo.MaximumSize = new Size(280, 0);
             labelInfo.Text = Properties.Strings.PPTExperimental;
@@ -108,41 +107,22 @@ namespace GHelper
             InitFans();
             InitPower();
             InitBoost();
+            InitGPU();
 
             comboBoost.SelectedValueChanged += ComboBoost_Changed;
 
             Shown += Fans_Shown;
 
-            InitGPUControl();
 
         }
 
-        private void TrackGPUBoost_MouseUp(object? sender, MouseEventArgs e)
-        {
-            Program.config.setConfig("gpu_boost", trackGPUBoost.Value);
-            Program.config.setConfig("gpu_temp", trackGPUTemp.Value);
-            Program.settingsForm.SetGPUPower();
-        }
 
         private void TrackGPU_MouseUp(object? sender, MouseEventArgs e)
         {
-            try
-            {
-                Program.config.setConfig("gpu_core", trackGPUCore.Value);
-                Program.config.setConfig("gpu_memory", trackGPUMemory.Value);
-
-                int status = nvControl.SetClocks(trackGPUCore.Value, trackGPUMemory.Value);
-                if (status == -1) Program.RunAsAdmin("gpu");
-            }
-            catch (Exception ex)
-            {
-                Logger.WriteLine("F:" + ex.ToString());
-            }
-
-            InitGPUControl();
+            Program.settingsForm.AutoGPUSettings(true);
         }
 
-        private void InitGPUControl()
+        public void InitGPU()
         {
             if (HardwareControl.GpuControl is not null && HardwareControl.GpuControl.IsNvidia)
             {
@@ -164,8 +144,8 @@ namespace GHelper
                 trackGPUMemory.Value = Math.Max(Math.Min(memory, NvidiaGpuControl.MaxMemoryOffset), NvidiaGpuControl.MinMemoryOffset);
                 labelGPU.Text = gpuTitle;
 
-                int gpu_boost = Program.config.getConfig("gpu_boost");
-                int gpu_temp = Program.config.getConfig("gpu_temp");
+                int gpu_boost = Program.config.getConfigPerf("gpu_boost");
+                int gpu_temp = Program.config.getConfigPerf("gpu_temp");
 
                 if (gpu_boost < 0) gpu_boost = ASUSWmi.MaxGPUBoost;
                 if (gpu_temp < 0) gpu_temp = ASUSWmi.MaxGPUTemp;
@@ -198,15 +178,21 @@ namespace GHelper
         private void trackGPU_Scroll(object? sender, EventArgs e)
         {
             if (sender is null) return;
-
             TrackBar track = (TrackBar)sender;
             track.Value = (int)Math.Round((float)track.Value / 5) * 5;
+
+            Program.config.setConfigPerf("gpu_core", trackGPUCore.Value);
+            Program.config.setConfigPerf("gpu_memory", trackGPUMemory.Value);
+
             VisualiseGPUSettings();
 
         }
 
         private void trackGPUPower_Scroll(object? sender, EventArgs e)
         {
+            Program.config.setConfigPerf("gpu_boost", trackGPUBoost.Value);
+            Program.config.setConfigPerf("gpu_temp", trackGPUTemp.Value);
+
             VisualiseGPUSettings();
         }
 
@@ -367,7 +353,7 @@ namespace GHelper
             // Yes, that's stupid, but Total slider on 2021 model actually adjusts CPU PPT
             if (!cpuBmode)
             {
-                labelPlatform.Text = "CPU SPPT";
+                labelPlatform.Text = "CPU PPT";
             }
 
             int limit_total;
@@ -506,20 +492,17 @@ namespace GHelper
             checkApplyFans.Checked = false;
             checkApplyPower.Checked = false;
 
-            /*
+            Program.config.setConfigPerf("auto_apply", 0);
+            Program.config.setConfigPerf("auto_apply_power", 0);
+
+            Program.wmi.DeviceSet(ASUSWmi.PerformanceMode, Program.config.getConfig("performance_mode"), "PerfMode");
+
             trackGPUCore.Value = 0;
             trackGPUMemory.Value = 0;
             trackGPUBoost.Value = ASUSWmi.MaxGPUBoost;
             trackGPUTemp.Value = ASUSWmi.MaxGPUTemp;
 
-            Program.config.setConfig("gpu_core", ASUSWmi.MaxGPUBoost);
-            Program.config.setConfig("gpu_memory", ASUSWmi.MaxGPUTemp);
-            */
-
-            Program.config.setConfigPerf("auto_apply", 0);
-            Program.config.setConfigPerf("auto_apply_power", 0);
-
-            Program.wmi.DeviceSet(ASUSWmi.PerformanceMode, Program.config.getConfig("performance_mode"), "PerfMode");
+            Program.settingsForm.AutoGPUSettings(true);
         }
 
         private void ChartCPU_MouseUp(object? sender, MouseEventArgs e)

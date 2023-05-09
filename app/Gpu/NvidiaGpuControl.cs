@@ -4,6 +4,7 @@ using NvAPIWrapper.Native.GPU;
 using NvAPIWrapper.Native.GPU.Structures;
 using NvAPIWrapper.Native.Interfaces.GPU;
 using System.Diagnostics;
+using System.Management;
 using static NvAPIWrapper.Native.GPU.Structures.PerformanceStates20InfoV1;
 
 namespace GHelper.Gpu;
@@ -46,7 +47,6 @@ public class NvidiaGpuControl : IGpuControl
     }
 
 
-
     public void GetClocks(out int core, out int memory, out string gpu)
     {
         PhysicalGPU internalGpu = _internalGpu!;
@@ -86,7 +86,7 @@ public class NvidiaGpuControl : IGpuControl
         var coreClock = new PerformanceStates20ClockEntryV1(PublicClockDomain.Graphics, new PerformanceStates20ParameterDelta(core * 1000));
         var memoryClock = new PerformanceStates20ClockEntryV1(PublicClockDomain.Memory, new PerformanceStates20ParameterDelta(memory * 1000));
 
-        PerformanceStates20ClockEntryV1[] clocks = { coreClock , memoryClock};
+        PerformanceStates20ClockEntryV1[] clocks = { coreClock, memoryClock };
         PerformanceStates20BaseVoltageEntryV1[] voltages = { };
 
         PerformanceState20[] performanceStates = { new PerformanceState20(PerformanceStateId.P0_3DPerformance, clocks, voltages) };

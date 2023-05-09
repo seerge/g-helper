@@ -29,6 +29,8 @@ namespace GHelper
 
         private static long lastAuto;
         private static long lastTheme;
+        private static long lastAdmin;
+
         private static PowerLineStatus isPlugged = PowerLineStatus.Unknown;
 
         // The main entry point for the application
@@ -62,7 +64,7 @@ namespace GHelper
             }
 
             Logger.WriteLine("------------");
-            Logger.WriteLine("App launched: " + config.GetModel() + " :" + Assembly.GetExecutingAssembly().GetName().Version.ToString() + (IsUserAdministrator()?"A":"N"));
+            Logger.WriteLine("App launched: " + config.GetModel() + " :" + Assembly.GetExecutingAssembly().GetName().Version.ToString() + (IsUserAdministrator()?"A":""));
 
             Application.EnableVisualStyles();
 
@@ -292,7 +294,7 @@ namespace GHelper
 
                 if (action == "gpu")
                 {
-                    HardwareControl.GetNvidiaGpuControl()?.SetClocksFromConfig();
+                    Startup.ReScheduleAdmin();
                     settingsForm.FansToggle();
                 }
             }
@@ -352,6 +354,10 @@ namespace GHelper
 
         public static void RunAsAdmin(string? param = null)
         {
+
+            if (Math.Abs(DateTimeOffset.Now.ToUnixTimeMilliseconds() - lastAdmin) < 2000) return;
+            lastAdmin = DateTimeOffset.Now.ToUnixTimeMilliseconds();
+
             // Check if the current user is an administrator
             if (!IsUserAdministrator())
             {

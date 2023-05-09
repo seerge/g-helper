@@ -148,21 +148,20 @@ namespace GHelper
                 checkSleepBar.Visible = false;
                 checkShutdownBar.Visible = false;
 
-                labelBacklightLid.Visible = false;
-                checkAwakeLid.Visible = false;
-                checkBootLid.Visible = false;
-                checkSleepLid.Visible = false;
-                checkShutdownLid.Visible = false;
-
                 if (!Program.config.ContainsModel("Z13"))
                 {
+                    labelBacklightLid.Visible = false;
+                    checkAwakeLid.Visible = false;
+                    checkBootLid.Visible = false;
+                    checkSleepLid.Visible = false;
+                    checkShutdownLid.Visible = false;
+
                     labelBacklightLogo.Visible = false;
                     checkAwakeLogo.Visible = false;
                     checkBootLogo.Visible = false;
                     checkSleepLogo.Visible = false;
                     checkShutdownLogo.Visible = false;
                 }
-
             }
 
             checkTopmost.Checked = (Program.config.getConfig("topmost") == 1);
@@ -183,6 +182,17 @@ namespace GHelper
             pictureHelp.Click += PictureHelp_Click;
             trackBrightness.Scroll += TrackBrightness_Scroll;
 
+            panelXMG.Visible = (Program.wmi.DeviceGet(ASUSWmi.GPUXGConnected) == 1);
+            checkXMG.Checked = !(Program.config.getConfig("xmg_light") == 0);
+            checkXMG.CheckedChanged += CheckXMG_CheckedChanged;
+
+
+        }
+
+        private void CheckXMG_CheckedChanged(object? sender, EventArgs e)
+        {
+            Program.config.setConfig("xmg_light", (checkXMG.Checked ? 1 : 0));
+            Aura.ApplyXGMLight(checkXMG.Checked);
         }
 
         private void CheckUSBC_CheckedChanged(object? sender, EventArgs e)
