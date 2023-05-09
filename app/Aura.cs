@@ -1,6 +1,7 @@
 ﻿using HidLibrary;
 using OSD;
 using System.Diagnostics;
+using System.Windows.Forms;
 
 namespace GHelper
 {
@@ -197,14 +198,15 @@ namespace GHelper
         {
             byte[] msg = { 0x5d, 0xba, 0xc5, 0xc4, (byte)brightness };
 
-            foreach (HidDevice device in GetHidDevices(new int[] { 0x19b6 }))
+            var devices = GetHidDevices(new int[] { 0x19b6 });
+            if (devices.Count() > 0) Logger.WriteLine("USB-KB = " + BitConverter.ToString(msg));
+
+            foreach (HidDevice device in devices)
             {
                 device.OpenDevice();
                 device.Write(msg);
                 device.CloseDevice();
             }
-
-            Logger.WriteLine("USB-KB = " + BitConverter.ToString(msg));
 
             if (Program.config.ContainsModel("TUF"))
                 Program.wmi.TUFKeyboardBrightness(brightness);
@@ -216,18 +218,18 @@ namespace GHelper
 
             byte[] msg = AuraDev19b6Extensions.ToBytes(flags.ToArray());
 
-            Debug.WriteLine(BitConverter.ToString(msg));
 
-            foreach (HidDevice device in GetHidDevices(new int[] { 0x19b6 }))
+            var devices = GetHidDevices(new int[] { 0x19b6 });
+            if (devices.Count() > 0) Logger.WriteLine("USB-KB = " + BitConverter.ToString(msg));
+
+            foreach (HidDevice device in devices)
             {
                 device.OpenDevice();
                 device.Write(msg);
                 device.CloseDevice();
             }
 
-            Logger.WriteLine("USB-KB = " + BitConverter.ToString(msg));
-
-            //if (Program.config.ContainsModel("TUF"))
+            if (Program.config.ContainsModel("TUF"))
                 Program.wmi.TUFKeyboardPower(
                     flags.Contains(AuraDev19b6.AwakeKeyb), 
                     flags.Contains(AuraDev19b6.BootKeyb), 
@@ -273,7 +275,10 @@ namespace GHelper
 
             byte[] msg = AuraMessage(Mode, Color1, Color2, _speed);
 
-            foreach (HidDevice device in GetHidDevices(deviceIds))
+            var devices = GetHidDevices(deviceIds);
+            if (devices.Count() > 0) Logger.WriteLine("USB-KB = " + BitConverter.ToString(msg));
+
+            foreach (HidDevice device in devices)
             {
                 device.OpenDevice();
                 device.Write(msg);

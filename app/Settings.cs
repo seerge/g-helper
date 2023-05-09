@@ -948,7 +948,7 @@ namespace GHelper
             SetGPUMode(ASUSWmi.GPUModeEco);
         }
 
-        public void RefreshSensors(bool force = false)
+        public async void RefreshSensors(bool force = false)
         {
 
             if (!force && Math.Abs(DateTimeOffset.Now.ToUnixTimeMilliseconds() - lastRefresh) < 2000) return;
