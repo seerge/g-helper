@@ -1045,7 +1045,7 @@ namespace GHelper
 
         }
 
-        public void AutoGPUSettings(bool launchAsAdmin = false)
+        public void SetGPUSettings(bool launchAsAdmin = false)
         {
 
             int gpu_boost = Program.config.getConfigPerf("gpu_boost");
@@ -1148,24 +1148,25 @@ namespace GHelper
 
             customPower = 0;
 
-            if (Program.config.getConfigPerf("auto_apply_power") == 1)
-            {
-                if (delay > 0)
-                {
-                    var timer = new System.Timers.Timer(1000);
-                    timer.Elapsed += delegate
-                    {
-                        timer.Stop();
-                        timer.Dispose();
-                        SetPower();
-                    };
-                    timer.Start();
-                }
-                else
-                {
-                    SetPower();
-                }
+            bool applyPower = Program.config.getConfigPerf("auto_apply_power") == 1;
+            bool applyGPU = true;
 
+            if (delay > 0)
+            {
+                var timer = new System.Timers.Timer(delay);
+                timer.Elapsed += delegate
+                {
+                    timer.Stop();
+                    timer.Dispose();
+                    if (applyPower) SetPower();
+                    SetGPUSettings();
+                };
+                timer.Start();
+            }
+            else
+            {
+                if (applyPower) SetPower();
+                SetGPUSettings();
             }
 
         }
@@ -1221,7 +1222,6 @@ namespace GHelper
             }
 
             AutoFans();
-            AutoGPUSettings();
             AutoPower(1000);
 
 

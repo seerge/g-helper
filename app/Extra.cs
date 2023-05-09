@@ -272,11 +272,6 @@ namespace GHelper
             if (checkSleepLogo.Checked) flags.Add(AuraDev19b6.SleepLogo);
             if (checkShutdownLogo.Checked) flags.Add(AuraDev19b6.ShutdownLogo);
 
-            flags.Add(AuraDev19b6.Unknown1);
-            flags.Add(AuraDev19b6.Unknown2);
-            flags.Add(AuraDev19b6.Unknown3);
-            flags.Add(AuraDev19b6.Unknown4);
-
             Aura.ApplyAuraPower(flags);
 
         }

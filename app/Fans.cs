@@ -107,7 +107,7 @@ namespace GHelper
             InitFans();
             InitPower();
             InitBoost();
-            InitGPU();
+            InitGPU(true);
 
             comboBoost.SelectedValueChanged += ComboBoost_Changed;
 
@@ -119,10 +119,10 @@ namespace GHelper
 
         private void TrackGPU_MouseUp(object? sender, MouseEventArgs e)
         {
-            Program.settingsForm.AutoGPUSettings(true);
+            Program.settingsForm.SetGPUSettings(true);
         }
 
-        public void InitGPU()
+        public void InitGPU(bool readClocks = false)
         {
             if (HardwareControl.GpuControl is not null && HardwareControl.GpuControl.IsNvidia)
             {
@@ -138,17 +138,24 @@ namespace GHelper
             {
                 panelGPU.Visible = true;
 
-                nvControl.GetClocks(out int core, out int memory, out string gpuTitle);
-
-                trackGPUCore.Value = Math.Max(Math.Min(core, NvidiaGpuControl.MaxCoreOffset), NvidiaGpuControl.MinCoreOffset);
-                trackGPUMemory.Value = Math.Max(Math.Min(memory, NvidiaGpuControl.MaxMemoryOffset), NvidiaGpuControl.MinMemoryOffset);
-                labelGPU.Text = gpuTitle;
-
                 int gpu_boost = Program.config.getConfigPerf("gpu_boost");
                 int gpu_temp = Program.config.getConfigPerf("gpu_temp");
+                int core = Program.config.getConfigPerf("gpu_core");
+                int memory = Program.config.getConfigPerf("gpu_memory");
 
                 if (gpu_boost < 0) gpu_boost = ASUSWmi.MaxGPUBoost;
                 if (gpu_temp < 0) gpu_temp = ASUSWmi.MaxGPUTemp;
+                if (core == -1) core = 0;
+                if (memory == 1) memory = 0;
+
+                if (readClocks)
+                {
+                    nvControl.GetClocks(out core, out memory, out string gpuTitle);
+                    labelGPU.Text = gpuTitle;
+                }
+
+                trackGPUCore.Value = Math.Max(Math.Min(core, NvidiaGpuControl.MaxCoreOffset), NvidiaGpuControl.MinCoreOffset);
+                trackGPUMemory.Value = Math.Max(Math.Min(memory, NvidiaGpuControl.MaxMemoryOffset), NvidiaGpuControl.MinMemoryOffset);
 
                 trackGPUBoost.Value = Math.Max(Math.Min(gpu_boost, ASUSWmi.MaxGPUBoost), ASUSWmi.MinGPUBoost);
                 trackGPUTemp.Value = Math.Max(Math.Min(gpu_temp, ASUSWmi.MaxGPUTemp), ASUSWmi.MinGPUTemp);
@@ -502,7 +509,7 @@ namespace GHelper
             trackGPUBoost.Value = ASUSWmi.MaxGPUBoost;
             trackGPUTemp.Value = ASUSWmi.MaxGPUTemp;
 
-            Program.settingsForm.AutoGPUSettings(true);
+            Program.settingsForm.SetGPUSettings(true);
         }
 
         private void ChartCPU_MouseUp(object? sender, MouseEventArgs e)
