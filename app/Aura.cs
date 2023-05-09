@@ -194,7 +194,7 @@ namespace GHelper
         {
             byte[] msg = { 0x5d, 0xba, 0xc5, 0xc4, (byte)brightness };
 
-            var devices = GetHidDevices(new int[] { 0x19b6 });
+            var devices = GetHidDevices(deviceIds);
             if (devices.Count() > 0) Logger.WriteLine("USB-KB = " + BitConverter.ToString(msg));
 
             foreach (HidDevice device in devices)
@@ -215,7 +215,7 @@ namespace GHelper
             byte[] msg = AuraDev19b6Extensions.ToBytes(flags.ToArray());
 
 
-            var devices = GetHidDevices(new int[] { 0x19b6 });
+            var devices = GetHidDevices(deviceIds);
             if (devices.Count() > 0) Logger.WriteLine("USB-KB = " + BitConverter.ToString(msg));
 
             foreach (HidDevice device in devices)

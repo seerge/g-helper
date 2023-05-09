@@ -1045,7 +1045,7 @@ namespace GHelper
 
         }
 
-        public void SetGPUSettings(bool launchAsAdmin = false)
+        public void SetGPUSettings(bool launchAsAdmin = true)
         {
 
             int gpu_boost = Program.config.getConfigPerf("gpu_boost");
@@ -1067,7 +1067,7 @@ namespace GHelper
                 Program.wmi.DeviceSet(ASUSWmi.PPT_GPUC2, gpu_temp, "PowerLimit C2");
             }
 
-            if (gpu_core == -1 && gpu_memory == -1) return;
+            if ((gpu_core > -5 && gpu_core < 5) && (gpu_memory > -5 && gpu_memory < 5)) launchAsAdmin = false;
 
             if (HardwareControl.GpuControl is not null && HardwareControl.GpuControl.IsNvidia)
             {
@@ -1079,7 +1079,7 @@ namespace GHelper
                 }
                 catch (Exception ex)
                 {
-                    Debug.WriteLine(ex.ToString());
+                    Logger.WriteLine(ex.ToString());
                 }
             }
 
