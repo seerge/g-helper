@@ -1,4 +1,5 @@
-﻿using System.Management;
+﻿using GHelper;
+using System.Management;
 using System.Runtime.InteropServices;
 
 public class ASUSWmi
@@ -216,6 +217,20 @@ public class ASUSWmi
         BitConverter.GetBytes((uint)Status).CopyTo(args, 4);
         
         return CallMethod(DSTS, args);
+    }
+
+    public int SetGPUEco(int eco)
+    {
+        int ecoFlag = DeviceGet(GPUEco);
+        if (ecoFlag < 0) return -1;
+
+        if (ecoFlag == 1 && eco == 0)
+            return DeviceSet(GPUEco, eco, "GPUEco");
+
+        if (ecoFlag == 0 && eco == 1)
+            return DeviceSet(GPUEco, eco, "GPUEco");
+
+        return -1;
     }
 
 

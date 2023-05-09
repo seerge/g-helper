@@ -1313,7 +1313,7 @@ namespace GHelper
                 if (eco == 1)
                     if ((GpuAuto && IsPlugged()) || (ForceGPU && GpuMode == ASUSWmi.GPUModeStandard))
                     {
-                        SetEcoGPU(0);
+                        SetGPUEco(0);
                         return true;
                     }
                 if (eco == 0)
@@ -1326,7 +1326,7 @@ namespace GHelper
                             if (dialogResult == DialogResult.No) return false;
                         }
 
-                        SetEcoGPU(1);
+                        SetGPUEco(1);
                         return true;
                     }
             }
@@ -1337,15 +1337,16 @@ namespace GHelper
 
         public bool ReEnableGPU()
         {
-            if (Screen.AllScreens.Length <= 1) return false;
+
             if (Program.config.getConfig("gpu_reenable") != 1) return false;
+            if (Screen.AllScreens.Length <= 1) return false;
 
             Logger.WriteLine("Re-enabling gpu for 503 model");
 
             Thread.Sleep(1000);
-            SetEcoGPU(1);
+            SetGPUEco(1);
             Thread.Sleep(1000);
-            SetEcoGPU(0);
+            SetGPUEco(0);
             return true;
         }
 
@@ -1414,7 +1415,7 @@ namespace GHelper
         }
 
 
-        public void SetEcoGPU(int eco)
+        public void SetGPUEco(int eco)
         {
 
             ButtonEnabled(buttonOptimized, false);
@@ -1435,7 +1436,7 @@ namespace GHelper
                         foreach (var process in Process.GetProcessesByName(kill)) process.Kill();
                 }
 
-                Program.wmi.DeviceSet(ASUSWmi.GPUEco, eco, "GPUEco");
+                Program.wmi.SetGPUEco(eco);
 
                 if (eco == 0)
                     HardwareControl.RecreateGpuControlWithDelay();
@@ -1491,13 +1492,13 @@ namespace GHelper
             else if (GPUMode == ASUSWmi.GPUModeEco)
             {
                 VisualiseGPUMode(GPUMode);
-                SetEcoGPU(1);
+                SetGPUEco(1);
                 changed = true;
             }
             else if (GPUMode == ASUSWmi.GPUModeStandard)
             {
                 VisualiseGPUMode(GPUMode);
-                SetEcoGPU(0);
+                SetGPUEco(0);
                 changed = true;
             }
 
