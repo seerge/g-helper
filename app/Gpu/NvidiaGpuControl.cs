@@ -1,5 +1,6 @@
 ﻿using NvAPIWrapper.GPU;
 using NvAPIWrapper.Native;
+using NvAPIWrapper.Native.Delegates;
 using NvAPIWrapper.Native.GPU;
 using NvAPIWrapper.Native.GPU.Structures;
 using NvAPIWrapper.Native.Interfaces.GPU;
@@ -72,6 +73,41 @@ public class NvidiaGpuControl : IGpuControl
             return -1;
         }
 
+    }
+
+    private static void RunCMD(string name, string args)
+    {
+        var cmd = new Process();
+        cmd.StartInfo.UseShellExecute = false;
+        cmd.StartInfo.CreateNoWindow = true;
+        cmd.StartInfo.RedirectStandardOutput = true;
+        cmd.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+        cmd.StartInfo.FileName = name;
+        cmd.StartInfo.Arguments = args;
+        cmd.Start();
+        Logger.WriteLine(cmd.StandardOutput.ReadToEnd());
+        cmd.WaitForExit();
+    }
+
+
+    public void RestartGPU()
+    {
+
+        if (!IsValid) return;
+
+        try
+        {
+            PhysicalGPU internalGpu = _internalGpu!;
+            var pnpDeviceId = internalGpu.BusInformation.PCIIdentifiers.ToString();
+            Logger.WriteLine("Device ID:"+ pnpDeviceId);
+            RunCMD("pnputil", $"/disable-device /deviceid \"{pnpDeviceId}\"");
+            Thread.Sleep(1000);
+            RunCMD("pnputil", $"/enable-device /deviceid \"{pnpDeviceId}\"");
+        }
+        catch (Exception ex )
+        {
+            Logger.WriteLine(ex.ToString());
+        }
     }
 
     public int SetClocksFromConfig()

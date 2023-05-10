@@ -1054,25 +1054,25 @@ namespace GHelper
 
             if (gpu_core == -1 && gpu_memory == -1) return;
 
-            if ((gpu_core > -5 && gpu_core < 5) && (gpu_memory > -5 && gpu_memory < 5)) launchAsAdmin = false;
+            //if ((gpu_core > -5 && gpu_core < 5) && (gpu_memory > -5 && gpu_memory < 5)) launchAsAdmin = false;
 
-            if (HardwareControl.GpuControl is not null && HardwareControl.GpuControl.IsNvidia)
+            if (!HardwareControl.GpuControl!.IsNvidia) return;
+            if (Program.wmi.DeviceGet(ASUSWmi.GPUEco) == 1) return;
+
+            using NvidiaGpuControl nvControl = (NvidiaGpuControl)HardwareControl.GpuControl;
+            try
             {
-                using NvidiaGpuControl nvControl = (NvidiaGpuControl)HardwareControl.GpuControl;
-                try
-                {
-                    int getStatus = nvControl.GetClocks(out int current_core, out int current_memory, out string gpuName);
-                    if (getStatus == -1) return;
-                    if (Math.Abs(gpu_core - current_core) < 5 && Math.Abs(gpu_memory - current_memory) < 5) return;
+                int getStatus = nvControl.GetClocks(out int current_core, out int current_memory, out string gpuName);
+                if (getStatus == -1) return;
+                if (Math.Abs(gpu_core - current_core) < 5 && Math.Abs(gpu_memory - current_memory) < 5) return;
 
-                    int setStatus = nvControl.SetClocks(gpu_core, gpu_memory);
-                    if (launchAsAdmin && setStatus == -1) Program.RunAsAdmin("gpu");
+                int setStatus = nvControl.SetClocks(gpu_core, gpu_memory);
+                if (launchAsAdmin && setStatus == -1) Program.RunAsAdmin("gpu");
 
-                }
-                catch (Exception ex)
-                {
-                    Logger.WriteLine(ex.ToString());
-                }
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLine(ex.ToString());
             }
         }
 
@@ -1451,8 +1451,21 @@ namespace GHelper
 
         }
 
+        public void RestartGPUHardWay()
+        {
+            if (!HardwareControl.GpuControl!.IsNvidia) return;
 
-        public void SetGPUEco(int eco)
+            DialogResult dialogResult = MessageBox.Show("Something is using dGPU. Restart it in a device manager and try to set Eco again?", Properties.Strings.EcoMode, MessageBoxButtons.YesNo);
+            if (dialogResult == DialogResult.No) return;
+
+            Program.RunAsAdmin();
+
+            Logger.WriteLine("Trying to disable GPU in a hard way");
+            var nvControl = (NvidiaGpuControl)HardwareControl.GpuControl;
+            nvControl.RestartGPU();
+        }
+
+        public void SetGPUEco(int eco, bool hardWay = false)
         {
 
             ButtonEnabled(buttonOptimized, false);
@@ -1461,7 +1474,6 @@ namespace GHelper
             ButtonEnabled(buttonUltimate, false);
 
             labelGPU.Text = Properties.Strings.GPUMode + ": " + Properties.Strings.GPUChanging + " ...";
-
 
             Task.Run(async () =>
             {
@@ -1473,7 +1485,15 @@ namespace GHelper
                         foreach (var process in Process.GetProcessesByName(kill)) process.Kill();
                 }
 
-                Program.wmi.SetGPUEco(eco);
+                int status = Program.wmi.SetGPUEco(eco);
+
+                if (status == 0 && eco == 1 && hardWay)
+                {
+                    RestartGPUHardWay();
+                    await Task.Delay(TimeSpan.FromSeconds(2));
+                    Program.wmi.SetGPUEco(0);
+                }
+
 
                 await Task.Delay(TimeSpan.FromSeconds(1));
                 Program.settingsForm.BeginInvoke(delegate
@@ -1483,7 +1503,11 @@ namespace GHelper
                 });
 
                 if (eco == 0)
-                    HardwareControl.RecreateGpuControlWithDelay();
+                {
+                    await Task.Delay(TimeSpan.FromSeconds(1));
+                    HardwareControl.RecreateGpuControl();
+                    SetGPUClocks(false);
+                }
 
             });
 
@@ -1529,7 +1553,7 @@ namespace GHelper
             else if (GPUMode == ASUSWmi.GPUModeEco)
             {
                 VisualiseGPUMode(GPUMode);
-                SetGPUEco(1);
+                SetGPUEco(1, true);
                 changed = true;
             }
             else if (GPUMode == ASUSWmi.GPUModeStandard)

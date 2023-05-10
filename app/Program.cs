@@ -43,7 +43,7 @@ namespace GHelper
             Thread.CurrentThread.CurrentUICulture = CultureInfo.CurrentUICulture;
             Debug.WriteLine(CultureInfo.CurrentUICulture);
 
-            //Thread.CurrentThread.CurrentUICulture = CultureInfo.CreateSpecificCulture("zh");
+            //Thread.CurrentThread.CurrentUICulture = CultureInfo.CreateSpecificCulture("es");
 
             CheckProcesses();
 
