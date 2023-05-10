@@ -1056,6 +1056,7 @@ namespace GHelper
 
             //if ((gpu_core > -5 && gpu_core < 5) && (gpu_memory > -5 && gpu_memory < 5)) launchAsAdmin = false;
 
+            if (HardwareControl.GpuControl is null) return;
             if (!HardwareControl.GpuControl!.IsNvidia) return;
             if (Program.wmi.DeviceGet(ASUSWmi.GPUEco) == 1) return;
 
@@ -1452,8 +1453,9 @@ namespace GHelper
 
         }
 
-        public void RestartGPUHardWay()
+        public void RestartGPU()
         {
+            if (HardwareControl.GpuControl is null) return;
             if (!HardwareControl.GpuControl!.IsNvidia) return;
 
             DialogResult dialogResult = MessageBox.Show("Something is using dGPU. Restart it in a device manager and try to set Eco again?", Properties.Strings.EcoMode, MessageBoxButtons.YesNo);
@@ -1461,7 +1463,7 @@ namespace GHelper
 
             Program.RunAsAdmin();
 
-            Logger.WriteLine("Trying to disable GPU in a hard way");
+            Logger.WriteLine("Trying to restart GPU");
             var nvControl = (NvidiaGpuControl)HardwareControl.GpuControl;
             nvControl.RestartGPU();
         }
@@ -1490,7 +1492,7 @@ namespace GHelper
 
                 if (status == 0 && eco == 1 && hardWay)
                 {
-                    RestartGPUHardWay();
+                    RestartGPU();
                     Program.wmi.SetGPUEco(eco);
                 }
 
