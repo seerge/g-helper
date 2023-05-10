@@ -100,7 +100,7 @@ Open "Event Viewer" from start menu, go to Windows Logs -> Application and check
 #### Battery charge limiter is not working
 Open application log.text from ``%AppData%\GHelper`` . If you see something like ``BatteryLimit = 60 : OK`` there (with your selected limit). App has done everything it could to set a limit. It could be that MyASUS or other Asus services are overwriting this limit after. You may want to right click and save this [debloat.bat](https://raw.githubusercontent.com/seerge/g-helper/main/debloat.bat) and then right-click Run it As Admin. It will stop not mandatory asus services.
 
-What you can also try is to open ``C:\ProgramData\ASUS\ASUS System Control Interface\ASUSOptimization\Customization.ini`` and delete following section from that file : ``[BatteryHealthCharging] ... value=100``.
+What you can also try is to open ``C:\ProgramData\ASUS\ASUS System Control Interface\ASUSOptimization\Customization.ini`` and find following section from that file : ``[BatteryHealthCharging] ... value=100`` and either delete it or put same value as you use in G-helper.
 
 #### Can I use MyASUS app along with G-Helper?
 You can, the only problem is that MyASUS may override the battery charge limit that you set before. My advice in such a situation would be to set the same limit (i.e. 80%) in both MyASUS and G-Helper.
