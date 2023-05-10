@@ -629,8 +629,8 @@ public class NativeMethods
                     displayNum = count;
                 }
                 count++;
-                Logger.WriteLine(device.outputTechnology.ToString());
-                Logger.WriteLine(device.monitorFriendlyDeviceName);
+                //Logger.WriteLine(device.outputTechnology.ToString());
+                //Logger.WriteLine(device.monitorFriendlyDeviceName);
             }
 
             var screens = Screen.AllScreens;
@@ -644,7 +644,7 @@ public class NativeMethods
                 {
                     laptopScreen = screen.DeviceName;
                 }
-                Logger.WriteLine(screen.DeviceName);
+                //Logger.WriteLine(screen.DeviceName);
                 count++;
             }
         }
@@ -761,6 +761,7 @@ public class NativeMethods
     {
         PowerSetActiveScheme(IntPtr.Zero, new Guid(scheme));
         PowerSetActiveOverlayScheme(new Guid(scheme));
+        Logger.WriteLine(scheme);
     }
 
     public static void SetPowerScheme(int mode)

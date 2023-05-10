@@ -101,9 +101,9 @@ public class NvidiaGpuControl : IGpuControl
             var pnpDeviceId = internalGpu.BusInformation.PCIIdentifiers.ToString();
             Logger.WriteLine("Device ID:"+ pnpDeviceId);
             RunCMD("pnputil", $"/disable-device /deviceid \"{pnpDeviceId}\"");
-            Thread.Sleep(2000);
+            Thread.Sleep(3000);
             RunCMD("pnputil", $"/enable-device /deviceid \"{pnpDeviceId}\"");
-            Thread.Sleep(1000);
+            Thread.Sleep(2000);
         }
         catch (Exception ex )
         {
