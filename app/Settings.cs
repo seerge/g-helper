@@ -1064,6 +1064,7 @@ namespace GHelper
             {
                 int getStatus = nvControl.GetClocks(out int current_core, out int current_memory, out string gpuName);
                 if (getStatus == -1) return;
+                
                 if (Math.Abs(gpu_core - current_core) < 5 && Math.Abs(gpu_memory - current_memory) < 5) return;
 
                 int setStatus = nvControl.SetClocks(gpu_core, gpu_memory);
@@ -1490,8 +1491,7 @@ namespace GHelper
                 if (status == 0 && eco == 1 && hardWay)
                 {
                     RestartGPUHardWay();
-                    await Task.Delay(TimeSpan.FromSeconds(2));
-                    Program.wmi.SetGPUEco(0);
+                    Program.wmi.SetGPUEco(eco);
                 }
 
 

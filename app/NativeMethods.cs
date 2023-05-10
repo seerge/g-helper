@@ -629,8 +629,8 @@ public class NativeMethods
                     displayNum = count;
                 }
                 count++;
-                //Logger.WriteLine(device.outputTechnology.ToString());
-                //Logger.WriteLine(device.monitorFriendlyDeviceName);
+                Logger.WriteLine(device.outputTechnology.ToString());
+                Logger.WriteLine(device.monitorFriendlyDeviceName);
             }
 
             var screens = Screen.AllScreens;
@@ -644,7 +644,7 @@ public class NativeMethods
                 {
                     laptopScreen = screen.DeviceName;
                 }
-                //Logger.WriteLine(screen.DeviceName);
+                Logger.WriteLine(screen.DeviceName);
                 count++;
             }
         }
@@ -652,7 +652,7 @@ public class NativeMethods
         {
             Logger.WriteLine(ex.ToString());
             Logger.WriteLine("Can't detect internal screen");
-            //laptopScreen = Screen.PrimaryScreen.DeviceName;
+            laptopScreen = Screen.PrimaryScreen.DeviceName;
         }
 
 

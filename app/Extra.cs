@@ -186,7 +186,18 @@ namespace GHelper
             checkXMG.Checked = !(Program.config.getConfig("xmg_light") == 0);
             checkXMG.CheckedChanged += CheckXMG_CheckedChanged;
 
+            int kb_timeout = Program.config.getConfig("keyboard_light_tiomeout");
+            numericBacklightTime.Value = (kb_timeout >= 0) ? kb_timeout : 60;
 
+            numericBacklightTime.ValueChanged += NumericBacklightTime_ValueChanged;
+
+        }
+
+        private void NumericBacklightTime_ValueChanged(object? sender, EventArgs e)
+        {
+            Program.RunAsAdmin("extra");
+            Program.config.setConfig("keyboard_light_tiomeout", (int)numericBacklightTime.Value);
+            Aura.SetBacklightOffDelay((int)numericBacklightTime.Value);
         }
 
         private void CheckXMG_CheckedChanged(object? sender, EventArgs e)

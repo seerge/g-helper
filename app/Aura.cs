@@ -1,4 +1,5 @@
 ﻿using HidLibrary;
+using Microsoft.Win32;
 using OSD;
 using System.Diagnostics;
 using System.Windows.Forms;
@@ -56,7 +57,7 @@ namespace GHelper
         static byte[] MESSAGE_SET = { 0x5d, 0xb5, 0, 0, 0 };
         static byte[] MESSAGE_APPLY = { 0x5d, 0xb4 };
 
-        static int[] deviceIds = { 0x1a30, 0x1854, 0x1869, 0x1866, 0x19b6, 0x1822, 0x1837, 0x1854, 0x184a, 0x183d, 0x8502, 0x1807, 0x17e0 };
+        static int[] deviceIds = { 0x1a30, 0x1854, 0x1869, 0x1866, 0x19b6, 0x1822, 0x1837, 0x1854, 0x184a, 0x183d, 0x8502, 0x1807, 0x17e0, 0x18c6 };
 
         private static int mode = 0;
         private static int speed = 1;
@@ -287,6 +288,24 @@ namespace GHelper
                 Program.wmi.TUFKeyboardRGB(Mode, Color1, _speed);
 
         }
+
+        public static void SetBacklightOffDelay(int value = 60)
+        {
+            try
+            {
+                RegistryKey myKey = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\ASUS\ASUS System Control Interface\AsusOptimization\ASUS Keyboard Hotkeys", true);
+                if (myKey != null)
+                {
+                    myKey.SetValue("TurnOffKeybdLight", value, RegistryValueKind.DWord);
+                    myKey.Close();
+                }
+            } catch (Exception ex)
+            {
+                Logger.WriteLine(ex.Message);
+            }
+        }
+
+
     }
 
 }
