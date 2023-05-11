@@ -81,9 +81,9 @@ public static class HardwareControl
                     cpuTemp = ct.NextValue() - 273;
                 }
             }
-            catch
+            catch (Exception ex)
             {
-                Debug.WriteLine("Failed reading CPU temp");
+                Debug.WriteLine("Failed reading CPU temp :" + ex.Message);
             }
 
         try
@@ -94,8 +94,7 @@ public static class HardwareControl
         catch (Exception ex)
         {
             gpuTemp = -1;
-            Debug.WriteLine("Failed reading GPU temp");
-            Debug.WriteLine(ex.ToString());
+            Debug.WriteLine("Failed reading GPU temp :" + ex.Message);
         }
 
         if (gpuTemp is null || gpuTemp < 0)

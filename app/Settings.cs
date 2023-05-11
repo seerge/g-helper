@@ -1453,19 +1453,20 @@ namespace GHelper
 
         }
 
-        public void RestartGPU()
+        public bool RestartGPU()
         {
-            if (HardwareControl.GpuControl is null) return;
-            if (!HardwareControl.GpuControl!.IsNvidia) return;
+            if (HardwareControl.GpuControl is null) return false;
+            if (!HardwareControl.GpuControl!.IsNvidia) return false;
 
-            DialogResult dialogResult = MessageBox.Show("Something is using dGPU. Restart it in a device manager and try to set Eco again?", Properties.Strings.EcoMode, MessageBoxButtons.YesNo);
-            if (dialogResult == DialogResult.No) return;
+            DialogResult dialogResult = MessageBox.Show("Something is using dGPU and blocking Eco mode. Restart dGPU in a device manager and try to set Eco again?", Properties.Strings.EcoMode, MessageBoxButtons.YesNo);
+            if (dialogResult == DialogResult.No) return false;
 
             Program.RunAsAdmin();
 
             Logger.WriteLine("Trying to restart GPU");
             var nvControl = (NvidiaGpuControl)HardwareControl.GpuControl;
-            nvControl.RestartGPU();
+            return nvControl.RestartGPU();
+
         }
 
         public void SetGPUEco(int eco, bool hardWay = false)
@@ -1480,24 +1481,24 @@ namespace GHelper
 
             Task.Run(async () =>
             {
-                
+
+                int status;
+
                 if (eco == 1)
                 {
                     string[] tokill = { "EADesktop", "RadeonSoftware" };
                     foreach (string kill in tokill)
                         foreach (var process in Process.GetProcessesByName(kill)) process.Kill();
-                }
+                } 
 
-                int status = Program.wmi.SetGPUEco(eco);
+                status = Program.wmi.SetGPUEco(eco);
 
                 if (status == 0 && eco == 1 && hardWay)
                 {
-                    RestartGPU();
-                    Program.wmi.SetGPUEco(eco);
+                    if (RestartGPU()) Program.wmi.SetGPUEco(1);
                 }
 
-
-                await Task.Delay(TimeSpan.FromSeconds(1));
+                await Task.Delay(TimeSpan.FromMilliseconds(500));
                 Program.settingsForm.BeginInvoke(delegate
                 {
                     InitGPUMode();
@@ -1506,7 +1507,7 @@ namespace GHelper
 
                 if (eco == 0)
                 {
-                    await Task.Delay(TimeSpan.FromSeconds(1));
+                    await Task.Delay(TimeSpan.FromMilliseconds(1000));
                     HardwareControl.RecreateGpuControl();
                     SetGPUClocks(false);
                 }

@@ -90,10 +90,10 @@ public class NvidiaGpuControl : IGpuControl
     }
 
 
-    public void RestartGPU()
+    public bool RestartGPU()
     {
 
-        if (!IsValid) return;
+        if (!IsValid) return false;
 
         try
         {
@@ -104,10 +104,12 @@ public class NvidiaGpuControl : IGpuControl
             Thread.Sleep(3000);
             RunCMD("pnputil", $"/enable-device /deviceid \"{pnpDeviceId}\"");
             Thread.Sleep(2000);
+            return true;
         }
         catch (Exception ex )
         {
             Logger.WriteLine(ex.ToString());
+            return false;
         }
     }
 

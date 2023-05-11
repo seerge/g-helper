@@ -234,6 +234,7 @@ namespace GHelper
             // numericBacklightTime
             // 
             numericBacklightTime.Location = new Point(477, 131);
+            numericBacklightTime.Maximum = new decimal(new int[] { 3600, 0, 0, 0 });
             numericBacklightTime.Name = "numericBacklightTime";
             numericBacklightTime.Size = new Size(240, 39);
             numericBacklightTime.TabIndex = 47;
