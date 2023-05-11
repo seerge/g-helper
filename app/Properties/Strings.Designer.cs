@@ -826,6 +826,15 @@ namespace GHelper.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Something is using dGPU and blocking Eco mode. Restart dGPU in device manager and try to set Eco again?.
+        /// </summary>
+        internal static string RestartGPU {
+            get {
+                return ResourceManager.GetString("RestartGPU", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to RPM.
         /// </summary>
         internal static string RPM {

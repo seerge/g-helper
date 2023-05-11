@@ -1056,17 +1056,18 @@ namespace GHelper
 
             //if ((gpu_core > -5 && gpu_core < 5) && (gpu_memory > -5 && gpu_memory < 5)) launchAsAdmin = false;
 
+            if (Program.wmi.DeviceGet(ASUSWmi.GPUEco) == 1) return;
             if (HardwareControl.GpuControl is null) return;
             if (!HardwareControl.GpuControl!.IsNvidia) return;
-            if (Program.wmi.DeviceGet(ASUSWmi.GPUEco) == 1) return;
 
             using NvidiaGpuControl nvControl = (NvidiaGpuControl)HardwareControl.GpuControl;
             try
             {
-                int getStatus = nvControl.GetClocks(out int current_core, out int current_memory, out string gpuName);
-                if (getStatus == -1) return;
-                
-                if (Math.Abs(gpu_core - current_core) < 5 && Math.Abs(gpu_memory - current_memory) < 5) return;
+                int getStatus = nvControl.GetClocks(out int current_core, out int current_memory);
+                if (getStatus != -1)
+                {
+                    if (Math.Abs(gpu_core - current_core) < 5 && Math.Abs(gpu_memory - current_memory) < 5) return;
+                }
 
                 int setStatus = nvControl.SetClocks(gpu_core, gpu_memory);
                 if (launchAsAdmin && setStatus == -1) Program.RunAsAdmin("gpu");
@@ -1458,7 +1459,7 @@ namespace GHelper
             if (HardwareControl.GpuControl is null) return false;
             if (!HardwareControl.GpuControl!.IsNvidia) return false;
 
-            DialogResult dialogResult = MessageBox.Show("Something is using dGPU and blocking Eco mode. Restart dGPU in a device manager and try to set Eco again?", Properties.Strings.EcoMode, MessageBoxButtons.YesNo);
+            DialogResult dialogResult = MessageBox.Show(Properties.Strings.RestartGPU, Properties.Strings.EcoMode, MessageBoxButtons.YesNo);
             if (dialogResult == DialogResult.No) return false;
 
             Program.RunAsAdmin();

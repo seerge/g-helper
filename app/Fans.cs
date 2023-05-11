@@ -146,14 +146,22 @@ namespace GHelper
 
                 if (gpu_boost < 0) gpu_boost = ASUSWmi.MaxGPUBoost;
                 if (gpu_temp < 0) gpu_temp = ASUSWmi.MaxGPUTemp;
+                
                 if (core == -1) core = 0;
-                if (memory == 1) memory = 0;
+                if (memory == -1) memory = 0;
 
-                if (readClocks)
+                //if (readClocks)
+                //{
+                int status = nvControl.GetClocks(out int current_core, out int current_memory);
+                if (status != -1)
                 {
-                    nvControl.GetClocks(out core, out memory, out string gpuTitle);
-                    labelGPU.Text = gpuTitle;
+                    core = current_core;
+                    memory = current_memory;
                 }
+
+                labelGPU.Text = nvControl.FullName;
+
+                //}
 
                 trackGPUCore.Value = Math.Max(Math.Min(core, NvidiaGpuControl.MaxCoreOffset), NvidiaGpuControl.MinCoreOffset);
                 trackGPUMemory.Value = Math.Max(Math.Min(memory, NvidiaGpuControl.MaxMemoryOffset), NvidiaGpuControl.MinMemoryOffset);
