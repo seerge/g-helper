@@ -327,7 +327,7 @@ namespace Starlight.AnimeMatrix
             int second = DateTime.Now.Second;
 
             if (CultureInfo.CurrentCulture.DateTimeFormat.ShortTimePattern.Contains("H"))
-                PresentTextDiagonal(DateTime.Now.ToString("H" + ((second % 2 == 0) ? ":" : " ") + "mm"));
+                PresentTextDiagonal(DateTime.Now.ToString("   H" + ((second % 2 == 0) ? ":" : " ") + "mm"));
             else
                 PresentTextDiagonal(DateTime.Now.ToString("h" + ((second % 2 == 0) ? ":" : " ") + "mmtt"));
         }
