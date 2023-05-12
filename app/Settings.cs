@@ -1,14 +1,11 @@
 ﻿using CustomControls;
 using GHelper.Gpu;
 using Starlight.AnimeMatrix;
-using System;
 using System.Diagnostics;
 using System.Drawing.Imaging;
 using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Text.Json;
 using System.Timers;
-using System.Windows.Forms;
 using Tools;
 
 namespace GHelper
@@ -142,7 +139,7 @@ namespace GHelper
             int trim = model.LastIndexOf("_");
             if (trim > 0) model = model.Substring(0, trim);
 
-            labelModel.Text = model+(Program.IsUserAdministrator()?".":"");
+            labelModel.Text = model + (Program.IsUserAdministrator() ? "." : "");
 
             TopMost = Program.config.getConfig("topmost") == 1;
 
@@ -161,7 +158,7 @@ namespace GHelper
 
             contextMenuStrip.Items.Clear();
 
-            Padding padding = new Padding(5, 5, 5, 5);
+            Padding padding = new Padding(15,5,5,5);
 
             /*
             TableLayoutPanel[] tables = { tablePerf, tableGPU };
@@ -248,7 +245,7 @@ namespace GHelper
             quit.Margin = padding;
             contextMenuStrip.Items.Add(quit);
 
-            contextMenuStrip.ShowCheckMargin = true;
+            //contextMenuStrip.ShowCheckMargin = true;
             contextMenuStrip.RenderMode = ToolStripRenderMode.System;
 
             if (CheckSystemDarkModeStatus())
@@ -1086,7 +1083,7 @@ namespace GHelper
             int gpu_temp = Program.config.getConfigPerf("gpu_temp");
 
 
-            if (gpu_boost < ASUSWmi.MinGPUBoost || gpu_boost > ASUSWmi.MaxGPUBoost ) return;
+            if (gpu_boost < ASUSWmi.MinGPUBoost || gpu_boost > ASUSWmi.MaxGPUBoost) return;
             if (gpu_temp < ASUSWmi.MinGPUTemp || gpu_temp > ASUSWmi.MaxGPUTemp) return;
 
             if (Program.wmi.DeviceGet(ASUSWmi.PPT_GPUC0) >= 0)
@@ -1312,9 +1309,10 @@ namespace GHelper
                     SetScreen(1000, 1);
                 else
                     SetScreen(60, 0);
-            } else
+            }
+            else
             {
-                SetScreen(overdrive : Program.config.getConfig("overdrive")); 
+                SetScreen(overdrive: Program.config.getConfig("overdrive"));
             }
 
 
@@ -1481,7 +1479,7 @@ namespace GHelper
                     ButtonEnabled(buttonStandard, false);
                     ButtonEnabled(buttonUltimate, false);
                 });
-                
+
                 var nvControl = (NvidiaGpuControl)HardwareControl.GpuControl;
                 bool status = nvControl.RestartGPU();
 
