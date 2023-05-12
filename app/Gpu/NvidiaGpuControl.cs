@@ -31,6 +31,8 @@ public class NvidiaGpuControl : IGpuControl
 
     public bool IsNvidia => IsValid;
 
+    public string FullName => _internalGpu!.FullName;
+
     public int? GetCurrentTemperature()
     {
         if (!IsValid)
@@ -49,11 +51,9 @@ public class NvidiaGpuControl : IGpuControl
     }
 
 
-    public int GetClocks(out int core, out int memory, out string gpu)
+    public int GetClocks(out int core, out int memory)
     {
         PhysicalGPU internalGpu = _internalGpu!;
-
-        gpu = internalGpu.FullName;
 
         //Logger.WriteLine(internalGpu.FullName);
         //Logger.WriteLine(internalGpu.ArchitectInformation.ToString());
@@ -63,12 +63,12 @@ public class NvidiaGpuControl : IGpuControl
             IPerformanceStates20Info states = GPUApi.GetPerformanceStates20(internalGpu.Handle);
             core = states.Clocks[PerformanceStateId.P0_3DPerformance][0].FrequencyDeltaInkHz.DeltaValue / 1000;
             memory = states.Clocks[PerformanceStateId.P0_3DPerformance][1].FrequencyDeltaInkHz.DeltaValue / 1000;
-            Logger.WriteLine($"GET GPU Clock offsets : {core}, {memory}");
+            Logger.WriteLine($"GET GPU CLOCKS: {core}, {memory}");
             return 0;
 
         } catch (Exception ex)
         {
-            Logger.WriteLine(ex.Message);
+            Logger.WriteLine("GET GPU CLOCKS:" + ex.Message);
             core = memory = 0; 
             return -1;
         }
@@ -141,12 +141,12 @@ public class NvidiaGpuControl : IGpuControl
 
         try
         {
-            Logger.WriteLine($"SET GPU Clock : {core}, {memory}");
+            Logger.WriteLine($"SET GPU CLOCKS: {core}, {memory}");
             GPUApi.SetPerformanceStates20(internalGpu.Handle, overclock);
         }
         catch (Exception ex)
         {
-            Logger.WriteLine(ex.Message);
+            Logger.WriteLine("SET GPU CLOCKS: "+ex.Message);
             return -1;
         }
 
