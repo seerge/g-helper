@@ -1454,19 +1454,43 @@ namespace GHelper
 
         }
 
-        public bool RestartGPU()
+        public void RestartGPU(bool confirm = true)
         {
-            if (HardwareControl.GpuControl is null) return false;
-            if (!HardwareControl.GpuControl!.IsNvidia) return false;
+            if (HardwareControl.GpuControl is null) return;
+            if (!HardwareControl.GpuControl!.IsNvidia) return;
 
-            DialogResult dialogResult = MessageBox.Show(Properties.Strings.RestartGPU, Properties.Strings.EcoMode, MessageBoxButtons.YesNo);
-            if (dialogResult == DialogResult.No) return false;
+            if (confirm)
+            {
+                DialogResult dialogResult = MessageBox.Show(Properties.Strings.RestartGPU, Properties.Strings.EcoMode, MessageBoxButtons.YesNo);
+                if (dialogResult == DialogResult.No) return;
+            }
 
-            Program.RunAsAdmin();
+            Program.RunAsAdmin("gpurestart");
 
-            Logger.WriteLine("Trying to restart GPU");
-            var nvControl = (NvidiaGpuControl)HardwareControl.GpuControl;
-            return nvControl.RestartGPU();
+            if (!Program.IsUserAdministrator()) return;
+
+            Logger.WriteLine("Trying to restart dGPU");
+
+            Task.Run(async () =>
+            {
+                Program.settingsForm.BeginInvoke(delegate
+                {
+                    labelTipGPU.Text = "Restarting GPU ...";
+                    ButtonEnabled(buttonOptimized, false);
+                    ButtonEnabled(buttonEco, false);
+                    ButtonEnabled(buttonStandard, false);
+                    ButtonEnabled(buttonUltimate, false);
+                });
+                
+                var nvControl = (NvidiaGpuControl)HardwareControl.GpuControl;
+                bool status = nvControl.RestartGPU();
+
+                Program.settingsForm.BeginInvoke(delegate
+                {
+                    labelTipGPU.Text = status ? "GPU Restarted, you can try Eco mode again" : "Failed to restart GPU";
+                    InitGPUMode();
+                });
+            });
 
         }
 
@@ -1490,13 +1514,14 @@ namespace GHelper
                     string[] tokill = { "EADesktop", "RadeonSoftware" };
                     foreach (string kill in tokill)
                         foreach (var process in Process.GetProcessesByName(kill)) process.Kill();
-                } 
+                }
 
+                //if (eco == 1) status = 0; else
                 status = Program.wmi.SetGPUEco(eco);
 
                 if (status == 0 && eco == 1 && hardWay)
                 {
-                    if (RestartGPU()) Program.wmi.SetGPUEco(1);
+                    RestartGPU();
                 }
 
                 await Task.Delay(TimeSpan.FromMilliseconds(500));
@@ -1508,7 +1533,7 @@ namespace GHelper
 
                 if (eco == 0)
                 {
-                    await Task.Delay(TimeSpan.FromMilliseconds(1000));
+                    await Task.Delay(TimeSpan.FromMilliseconds(3000));
                     HardwareControl.RecreateGpuControl();
                     SetGPUClocks(false);
                 }
@@ -1669,6 +1694,8 @@ namespace GHelper
             sliderBattery.Value = limit;
 
             Program.wmi.DeviceSet(ASUSWmi.BatteryLimit, limit, "BatteryLimit");
+            OptimizationService.SetChargeLimit(limit);
+
             Program.config.setConfig("charge_limit", limit);
 
         }

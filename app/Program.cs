@@ -291,16 +291,19 @@ namespace GHelper
             {
                 settingsForm.Show();
                 settingsForm.Activate();
+                settingsForm.VisualiseGPUMode();
 
-                if (action == "gpu")
+                switch (action)
                 {
-                    Startup.ReScheduleAdmin();
-                    settingsForm.FansToggle();
+                    case "gpu":
+                        Startup.ReScheduleAdmin();
+                        settingsForm.FansToggle();
+                        break;
+                    case "gpurestart":
+                        settingsForm.RestartGPU(false);
+                        break;
                 }
             }
-
-            settingsForm.VisualiseGPUMode();
-
         }
 
         static void TrayIcon_MouseClick(object? sender, MouseEventArgs e)

@@ -90,7 +90,7 @@ public class NvidiaGpuControl : IGpuControl
     }
 
 
-    public bool RestartGPU()
+    public bool RestartGPUPnP()
     {
 
         if (!IsValid) return false;
@@ -99,10 +99,27 @@ public class NvidiaGpuControl : IGpuControl
         {
             PhysicalGPU internalGpu = _internalGpu!;
             var pnpDeviceId = internalGpu.BusInformation.PCIIdentifiers.ToString();
-            Logger.WriteLine("Device ID:"+ pnpDeviceId);
+            Logger.WriteLine("Device ID:" + pnpDeviceId);
             RunCMD("pnputil", $"/disable-device /deviceid \"{pnpDeviceId}\"");
             Thread.Sleep(3000);
             RunCMD("pnputil", $"/enable-device /deviceid \"{pnpDeviceId}\"");
+            Thread.Sleep(2000);
+            return true;
+        }
+        catch (Exception ex)
+        {
+            Logger.WriteLine(ex.ToString());
+            return false;
+        }
+    }
+
+    public bool RestartGPU()
+    {
+        try
+        {
+            string script = @"$device = Get-PnpDevice | Where-Object { $_.FriendlyName -imatch 'NVIDIA' -and $_.Class -eq 'Display' }; Disable-PnpDevice $device.InstanceId -Confirm:$false; Start-Sleep -Seconds 2; Enable-PnpDevice $device.InstanceId -Confirm:$false";
+            Logger.WriteLine(script);
+            RunCMD("powershell", script);
             Thread.Sleep(2000);
             return true;
         }

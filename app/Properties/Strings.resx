@@ -373,7 +373,7 @@
     <value>Quit</value>
   </data>
   <data name="RestartGPU" xml:space="preserve">
-    <value>Something is using dGPU and blocking Eco mode. Restart dGPU in device manager and try to set Eco again?</value>
+    <value>Something is using dGPU and preventing Eco mode. Restart dGPU in device manager? * Please proceed on your own risk.</value>
   </data>
   <data name="RPM" xml:space="preserve">
     <value>RPM</value>
