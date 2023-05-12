@@ -647,6 +647,8 @@ public class NativeMethods
                 //Logger.WriteLine(screen.DeviceName);
                 count++;
             }
+
+            if (displayNum > 0 && count == 0) laptopScreen = defaultDevice;
         }
         catch (Exception ex)
         {
