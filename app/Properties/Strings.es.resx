@@ -270,6 +270,9 @@
   <data name="GPUModeUltimate" xml:space="preserve">
     <value>Exclusivo dGPU</value>
   </data>
+  <data name="GPUSettings" xml:space="preserve">
+    <value>Ajustes de GPU</value>
+  </data>
   <data name="KeyBindings" xml:space="preserve">
     <value>Atajos de teclado</value>
   </data>
@@ -279,14 +282,23 @@
   <data name="KeyboardAuto" xml:space="preserve">
     <value>Bajar retroiluminación con batería</value>
   </data>
-  <data name="KeyboardBacklight" xml:space="preserve">
-    <value>Retroiluminación del teclado</value>
+  <data name="LaptopBacklight" xml:space="preserve">
+    <value>Retroiluminación</value>
   </data>
   <data name="LaptopKeyboard" xml:space="preserve">
     <value>Teclado del portátil</value>
   </data>
   <data name="LaptopScreen" xml:space="preserve">
     <value>Pantalla del portátil</value>
+  </data>
+  <data name="Lid" xml:space="preserve">
+    <value>Tapa</value>
+  </data>
+  <data name="Lightbar" xml:space="preserve">
+    <value>Barra de luz</value>
+  </data>
+  <data name="Logo" xml:space="preserve">
+    <value>Logo</value>
   </data>
   <data name="MatrixBanner" xml:space="preserve">
     <value>Banner binario</value>
@@ -331,7 +343,7 @@
     <value>Cambia a Eco con batería y a Estándar cuando está enchufado</value>
   </data>
   <data name="OptimizedUSBC" xml:space="preserve">
-	<value>Deshabilitar dGPU con cargador USB-C en modo Optimizado</value>
+    <value>Deshabilitar dGPU con cargador USB-C en modo Optimizado</value>
   </data>
   <data name="Other" xml:space="preserve">
     <value>Otro</value>
@@ -388,7 +400,7 @@
     <value>Alternar Aura</value>
   </data>
   <data name="ToggleMiniled" xml:space="preserve">
-    <value>Alternar Miniled (si es compatible)</value>
+    <value>Alternar Miniled (si comp.)</value>
   </data>
   <data name="ToggleScreen" xml:space="preserve">
     <value>Alternar pantalla</value>

@@ -279,8 +279,8 @@
   <data name="KeyboardAuto" xml:space="preserve">
     <value>Pille çalışırken klavye aydınlatmasını kıs, şarjdayken eski haline dön</value>
   </data>
-  <data name="KeyboardBacklight" xml:space="preserve">
-    <value>Klavye Aydınlatması</value>
+  <data name="LaptopBacklight" xml:space="preserve">
+    <value>Aydınlatması</value>
   </data>
   <data name="LaptopKeyboard" xml:space="preserve">
     <value>Laptop Klavyesi</value>

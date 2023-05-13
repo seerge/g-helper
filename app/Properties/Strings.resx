@@ -270,6 +270,9 @@
   <data name="GPUModeUltimate" xml:space="preserve">
     <value>dGPU exclusive</value>
   </data>
+  <data name="GPUSettings" xml:space="preserve">
+    <value>GPU Settings</value>
+  </data>
   <data name="KeyBindings" xml:space="preserve">
     <value>Key Bindings</value>
   </data>
@@ -279,14 +282,23 @@
   <data name="KeyboardAuto" xml:space="preserve">
     <value>Lower backlight brightness on battery and back when plugged</value>
   </data>
-  <data name="KeyboardBacklight" xml:space="preserve">
-    <value>Keyboard Backlight</value>
+  <data name="LaptopBacklight" xml:space="preserve">
+    <value>Laptop Backlight</value>
   </data>
   <data name="LaptopKeyboard" xml:space="preserve">
     <value>Laptop Keyboard</value>
   </data>
   <data name="LaptopScreen" xml:space="preserve">
     <value>Laptop Screen</value>
+  </data>
+  <data name="Lid" xml:space="preserve">
+    <value>Lid</value>
+  </data>
+  <data name="Lightbar" xml:space="preserve">
+    <value>Lightbar</value>
+  </data>
+  <data name="Logo" xml:space="preserve">
+    <value>Logo</value>
   </data>
   <data name="MatrixBanner" xml:space="preserve">
     <value>Binary Banner</value>
@@ -359,6 +371,9 @@
   </data>
   <data name="Quit" xml:space="preserve">
     <value>Quit</value>
+  </data>
+  <data name="RestartGPU" xml:space="preserve">
+    <value>Something is using dGPU and preventing Eco mode. Restart dGPU in device manager? * Please proceed on your own risk.</value>
   </data>
   <data name="RPM" xml:space="preserve">
     <value>RPM</value>

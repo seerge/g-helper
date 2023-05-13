@@ -647,12 +647,14 @@ public class NativeMethods
                 //Logger.WriteLine(screen.DeviceName);
                 count++;
             }
+
+            if (displayNum > 0 && count == 0) laptopScreen = defaultDevice;
         }
         catch (Exception ex)
         {
             Logger.WriteLine(ex.ToString());
             Logger.WriteLine("Can't detect internal screen");
-            //laptopScreen = Screen.PrimaryScreen.DeviceName;
+            laptopScreen = Screen.PrimaryScreen.DeviceName;
         }
 
 
@@ -761,6 +763,7 @@ public class NativeMethods
     {
         PowerSetActiveScheme(IntPtr.Zero, new Guid(scheme));
         PowerSetActiveOverlayScheme(new Guid(scheme));
+        Logger.WriteLine(scheme);
     }
 
     public static void SetPowerScheme(int mode)

@@ -92,7 +92,7 @@ public static class ControlHelper
             }
 
             var chk = control as CheckBox;
-            if (chk != null && chk.Padding.Left > 5)
+            if (chk != null && chk.Padding.Right > 5)
             {
                 chk.BackColor = RForm.buttonSecond;
             }

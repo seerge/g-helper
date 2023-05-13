@@ -1,4 +1,5 @@
 ﻿using CustomControls;
+using GHelper.Gpu;
 using System.Diagnostics;
 using System.Windows.Forms.DataVisualization.Charting;
 
@@ -13,6 +14,11 @@ namespace GHelper
         Series seriesMid;
 
         static int MinRPM, MaxRPM;
+
+        const int fansMax = 100;
+
+        NvidiaGpuControl? nvControl = null;
+
         public Fans()
         {
 
@@ -28,10 +34,12 @@ namespace GHelper
             buttonReset.Text = Properties.Strings.FactoryDefaults;
             checkApplyFans.Text = Properties.Strings.ApplyFanCurve;
 
+            labelGPU.Text = Properties.Strings.GPUSettings;
+
             InitTheme();
 
             MinRPM = 18;
-            MaxRPM = HardwareMonitor.GetFanMax();
+            MaxRPM = HardwareControl.GetFanMax();
             labelTip.Visible = false;
             labelTip.BackColor = Color.Transparent;
 
@@ -71,10 +79,28 @@ namespace GHelper
             checkApplyFans.Click += CheckApplyFans_Click;
             checkApplyPower.Click += CheckApplyPower_Click;
 
+            trackGPUCore.Minimum = NvidiaGpuControl.MinCoreOffset;
+            trackGPUCore.Maximum = NvidiaGpuControl.MaxCoreOffset;
+
+            trackGPUMemory.Minimum = NvidiaGpuControl.MinMemoryOffset;
+            trackGPUMemory.Maximum = NvidiaGpuControl.MaxMemoryOffset;
+
+            trackGPUBoost.Minimum = ASUSWmi.MinGPUBoost;
+            trackGPUBoost.Maximum = ASUSWmi.MaxGPUBoost;
+
+            trackGPUTemp.Minimum = ASUSWmi.MinGPUTemp;
+            trackGPUTemp.Maximum = ASUSWmi.MaxGPUTemp;
+
             trackGPUCore.Scroll += trackGPU_Scroll;
             trackGPUMemory.Scroll += trackGPU_Scroll;
 
-            buttonResetGPU.Click += ButtonResetGPU_Click;
+            trackGPUBoost.Scroll += trackGPUPower_Scroll;
+            trackGPUTemp.Scroll += trackGPUPower_Scroll;
+
+            trackGPUCore.MouseUp += TrackGPU_MouseUp;
+            trackGPUMemory.MouseUp += TrackGPU_MouseUp;
+            trackGPUBoost.MouseUp += TrackGPU_MouseUp;
+            trackGPUTemp.MouseUp += TrackGPU_MouseUp;
 
             //labelInfo.MaximumSize = new Size(280, 0);
             labelInfo.Text = Properties.Strings.PPTExperimental;
@@ -83,74 +109,109 @@ namespace GHelper
             InitFans();
             InitPower();
             InitBoost();
+            InitGPU(true);
 
             comboBoost.SelectedValueChanged += ComboBoost_Changed;
 
             Shown += Fans_Shown;
 
-            InitGPUClocks();
 
         }
 
-        private void InitGPUClocks()
-        {
-            /*
-            try
-            {
-                using (var _gpuControl = new NvidiaGpuControl())
-                {
-                    panelGPU.Visible = _gpuControl.IsValid;
 
-                    trackGPUCore.Value = Math.Min(Program.config.getConfig("GPUCore"), 300);
-                    trackGPUMemory.Value = Math.Min(Program.config.getConfig("GPUMemory"), 300);
-                    VisualiseGPUClocks();
-                }
-            } catch (Exception ex)
+        private void TrackGPU_MouseUp(object? sender, MouseEventArgs e)
+        {
+            Program.settingsForm.SetGPUPower();
+            Program.settingsForm.SetGPUClocks(true);
+        }
+
+        public void InitGPU(bool readClocks = false)
+        {
+            if (HardwareControl.GpuControl is not null && HardwareControl.GpuControl.IsNvidia)
             {
-                panelGPU.Visible=false;
+                nvControl = (NvidiaGpuControl)HardwareControl.GpuControl;
             }
-            */
-
-            panelGPU.Visible = false;
-
-        }
-
-        private void ButtonResetGPU_Click(object? sender, EventArgs e)
-        {
-
-            Program.RunAsAdmin();
+            else
+            {
+                panelGPU.Visible = false;
+                return;
+            }
 
             try
             {
-                trackGPUCore.Value = 0;
-                trackGPUMemory.Value = 0;
-                VisualiseGPUClocks();
+                panelGPU.Visible = true;
+
+                int gpu_boost = Program.config.getConfigPerf("gpu_boost");
+                int gpu_temp = Program.config.getConfigPerf("gpu_temp");
+                int core = Program.config.getConfigPerf("gpu_core");
+                int memory = Program.config.getConfigPerf("gpu_memory");
+
+                if (gpu_boost < 0) gpu_boost = ASUSWmi.MaxGPUBoost;
+                if (gpu_temp < 0) gpu_temp = ASUSWmi.MaxGPUTemp;
+                
+                if (core == -1) core = 0;
+                if (memory == -1) memory = 0;
+
+                //if (readClocks)
+                //{
+                int status = nvControl.GetClocks(out int current_core, out int current_memory);
+                if (status != -1)
+                {
+                    core = current_core;
+                    memory = current_memory;
+                }
+
+                labelGPU.Text = nvControl.FullName;
+
+                //}
+
+                trackGPUCore.Value = Math.Max(Math.Min(core, NvidiaGpuControl.MaxCoreOffset), NvidiaGpuControl.MinCoreOffset);
+                trackGPUMemory.Value = Math.Max(Math.Min(memory, NvidiaGpuControl.MaxMemoryOffset), NvidiaGpuControl.MinMemoryOffset);
+
+                trackGPUBoost.Value = Math.Max(Math.Min(gpu_boost, ASUSWmi.MaxGPUBoost), ASUSWmi.MinGPUBoost);
+                trackGPUTemp.Value = Math.Max(Math.Min(gpu_temp, ASUSWmi.MaxGPUTemp), ASUSWmi.MinGPUTemp);
+
+                panelGPUBoost.Visible = (Program.wmi.DeviceGet(ASUSWmi.PPT_GPUC0) >= 0);
+                panelGPUTemp.Visible = (Program.wmi.DeviceGet(ASUSWmi.PPT_GPUC2) >= 0);
+
+                VisualiseGPUSettings();
+
             }
             catch (Exception ex)
             {
                 Logger.WriteLine(ex.ToString());
+                panelGPU.Visible = false;
             }
+
         }
 
-        private void VisualiseGPUClocks()
+        private void VisualiseGPUSettings()
         {
-            labelGPUCore.Text = $"+{trackGPUCore.Value} MHz";
-            labelGPUMemory.Text = $"+{trackGPUMemory.Value} MHz";
+            labelGPUCore.Text = $"{trackGPUCore.Value} MHz";
+            labelGPUMemory.Text = $"{trackGPUMemory.Value} MHz";
+            labelGPUBoost.Text = $"{trackGPUBoost.Value}W";
+            labelGPUTemp.Text = $"{trackGPUTemp.Value}°C";
         }
 
         private void trackGPU_Scroll(object? sender, EventArgs e)
         {
-            VisualiseGPUClocks();
+            if (sender is null) return;
+            TrackBar track = (TrackBar)sender;
+            track.Value = (int)Math.Round((float)track.Value / 5) * 5;
 
-            try
-            {
-                Program.config.setConfig("GPUCore", trackGPUCore.Value);
-                Program.config.setConfig("GPUMemory", trackGPUMemory.Value);
-            }
-            catch (Exception ex)
-            {
-                Logger.WriteLine(ex.ToString());
-            }
+            Program.config.setConfigPerf("gpu_core", trackGPUCore.Value);
+            Program.config.setConfigPerf("gpu_memory", trackGPUMemory.Value);
+
+            VisualiseGPUSettings();
+
+        }
+
+        private void trackGPUPower_Scroll(object? sender, EventArgs e)
+        {
+            Program.config.setConfigPerf("gpu_boost", trackGPUBoost.Value);
+            Program.config.setConfigPerf("gpu_temp", trackGPUTemp.Value);
+
+            VisualiseGPUSettings();
         }
 
         static string ChartPercToRPM(int percentage, string unit = "")
@@ -182,7 +243,7 @@ namespace GHelper
             chart.ChartAreas[0].AxisX.Interval = 10;
 
             chart.ChartAreas[0].AxisY.Minimum = 0;
-            chart.ChartAreas[0].AxisY.Maximum = 100;
+            chart.ChartAreas[0].AxisY.Maximum = fansMax;
 
             chart.ChartAreas[0].AxisY.LabelStyle.Font = new Font("Arial", 7F);
 
@@ -191,10 +252,10 @@ namespace GHelper
             chart.ChartAreas[0].AxisX.LineColor = chartGrid;
             chart.ChartAreas[0].AxisY.LineColor = chartGrid;
 
-            for (int i = 0; i <= 90; i += 10)
+            for (int i = 0; i <= fansMax-10; i += 10)
                 chart.ChartAreas[0].AxisY.CustomLabels.Add(i - 2, i + 2, ChartPercToRPM(i));
 
-            chart.ChartAreas[0].AxisY.CustomLabels.Add(98, 102, Properties.Strings.RPM);
+            chart.ChartAreas[0].AxisY.CustomLabels.Add(fansMax-2, fansMax+2, Properties.Strings.RPM);
 
             chart.ChartAreas[0].AxisY.Interval = 10;
 
@@ -310,7 +371,7 @@ namespace GHelper
             // Yes, that's stupid, but Total slider on 2021 model actually adjusts CPU PPT
             if (!cpuBmode)
             {
-                labelPlatform.Text = "CPU SPPT";
+                labelPlatform.Text = "CPU PPT";
             }
 
             int limit_total;
@@ -343,7 +404,6 @@ namespace GHelper
 
             labelTotal.Text = trackTotal.Value.ToString() + "W";
             labelCPU.Text = trackCPU.Value.ToString() + "W";
-            pictureFine.Visible = (limit_cpu > 85 || limit_total > 145);
 
             Program.config.setConfigPerf("limit_total", limit_total);
             Program.config.setConfigPerf("limit_cpu", limit_cpu);
@@ -454,6 +514,20 @@ namespace GHelper
             Program.config.setConfigPerf("auto_apply_power", 0);
 
             Program.wmi.DeviceSet(ASUSWmi.PerformanceMode, Program.config.getConfig("performance_mode"), "PerfMode");
+
+            trackGPUCore.Value = 0;
+            trackGPUMemory.Value = 0;
+            trackGPUBoost.Value = ASUSWmi.MaxGPUBoost;
+            trackGPUTemp.Value = ASUSWmi.MaxGPUTemp;
+
+            Program.config.setConfigPerf("gpu_boost", trackGPUBoost.Value);
+            Program.config.setConfigPerf("gpu_temp", trackGPUTemp.Value);
+            Program.config.setConfigPerf("gpu_core", trackGPUCore.Value);
+            Program.config.setConfigPerf("gpu_memory", trackGPUMemory.Value);
+            VisualiseGPUSettings();
+
+            Program.settingsForm.SetGPUClocks(true);
+            Program.settingsForm.SetGPUPower();
         }
 
         private void ChartCPU_MouseUp(object? sender, MouseEventArgs e)
@@ -505,7 +579,7 @@ namespace GHelper
                     if (dx > 100) dx = 100;
 
                     if (dy < 0) dy = 0;
-                    if (dy > 100) dy = 100;
+                    if (dy > fansMax) dy = fansMax;
 
                     dymin = (dx - 65) * 1.2;
 

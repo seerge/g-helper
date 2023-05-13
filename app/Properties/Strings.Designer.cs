@@ -520,6 +520,15 @@ namespace GHelper.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to GPU Settings.
+        /// </summary>
+        internal static string GPUSettings {
+            get {
+                return ResourceManager.GetString("GPUSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Key Bindings.
         /// </summary>
         internal static string KeyBindings {
@@ -547,11 +556,11 @@ namespace GHelper.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Keyboard Backlight.
+        ///   Looks up a localized string similar to Laptop Backlight.
         /// </summary>
-        internal static string KeyboardBacklight {
+        internal static string LaptopBacklight {
             get {
-                return ResourceManager.GetString("KeyboardBacklight", resourceCulture);
+                return ResourceManager.GetString("LaptopBacklight", resourceCulture);
             }
         }
         
@@ -570,6 +579,33 @@ namespace GHelper.Properties {
         internal static string LaptopScreen {
             get {
                 return ResourceManager.GetString("LaptopScreen", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lid.
+        /// </summary>
+        internal static string Lid {
+            get {
+                return ResourceManager.GetString("Lid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lightbar.
+        /// </summary>
+        internal static string Lightbar {
+            get {
+                return ResourceManager.GetString("Lightbar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Logo.
+        /// </summary>
+        internal static string Logo {
+            get {
+                return ResourceManager.GetString("Logo", resourceCulture);
             }
         }
         
@@ -786,6 +822,15 @@ namespace GHelper.Properties {
         internal static string Quit {
             get {
                 return ResourceManager.GetString("Quit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Something is using dGPU and preventing Eco mode. Restart dGPU in device manager? * Please proceed on your own risk..
+        /// </summary>
+        internal static string RestartGPU {
+            get {
+                return ResourceManager.GetString("RestartGPU", resourceCulture);
             }
         }
         

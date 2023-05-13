@@ -1,4 +1,5 @@
-﻿using System.Management;
+﻿using GHelper;
+using System.Management;
 using System.Runtime.InteropServices;
 
 public class ASUSWmi
@@ -49,9 +50,9 @@ public class ASUSWmi
     public const int PPT_CPUB0 = 0x001200B0;  // CPU PPT on 2022 (PPT_LIMIT_APU)
     public const int PPT_CPUB1 = 0x001200B1;  // Total PPT on 2022 (PPT_LIMIT_SLOW)
 
-    public const int PPT_APUC0 = 0x001200C0;  // does nothing on G14 2022
+    public const int PPT_GPUC0 = 0x001200C0;  // NVIDIA GPU Boost
     public const int PPT_APUC1 = 0x001200C1;  // Actual Power Limit (PPT_LIMIT_FAST) AND Sustained Power Limit (STAPM_LIMIT)
-    public const int PPT_APUC2 = 0x001200C2;  // does nothing on G14 2022
+    public const int PPT_GPUC2 = 0x001200C2;  // NVIDIA GPU Temp Target (75.. 87 C) 
 
     public const int TUF_KB_BRIGHTNESS = 0x00050021;
     public const int TUF_KB = 0x00100056;
@@ -73,6 +74,12 @@ public class ASUSWmi
     public const int MaxCPU = 130;
     public const int MinCPU = 5;
     public const int DefaultCPU = 80;
+
+    public const int MinGPUBoost = 5;
+    public const int MaxGPUBoost = 25;
+
+    public const int MinGPUTemp = 75;
+    public const int MaxGPUTemp = 87;
 
 
     [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
@@ -212,6 +219,20 @@ public class ASUSWmi
         return CallMethod(DSTS, args);
     }
 
+    public int SetGPUEco(int eco)
+    {
+        int ecoFlag = DeviceGet(GPUEco);
+        if (ecoFlag < 0) return -1;
+
+        if (ecoFlag == 1 && eco == 0)
+            return DeviceSet(GPUEco, eco, "GPUEco");
+
+        if (ecoFlag == 0 && eco == 1)
+            return DeviceSet(GPUEco, eco, "GPUEco");
+
+        return -1;
+    }
+
 
     public int SetFanCurve(int device, byte[] curve)
     {
@@ -221,10 +242,8 @@ public class ASUSWmi
 
         int result;
 
-        for (int i = 8; i < curve.Length; i++)
-        {
-            curve[i] = Math.Max((byte)0, Math.Min((byte)99, curve[i])); // it seems to be a bug, when some old model's bios can go nuts if fan is set to 100% 
-        }
+        //for (int i = 8; i < curve.Length; i++)
+        //    curve[i] = Math.Max((byte)0, Math.Min((byte)99, curve[i])); // it seems to be a bug, when some old model's bios can go nuts if fan is set to 100% 
 
         switch (device)
         {

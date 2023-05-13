@@ -6,7 +6,7 @@ Language: English | [中文](https://github.com/seerge/g-helper/blob/main/docs/R
 
 ## Lightweight Armoury Crate alternative for Asus laptops
 
-Control tool for ROG Zephyrus G14, G15, Flow X13, Flow X16, TUF, Strix, Scar and other models. A small utility that allows you to do almost everything you could do with Armoury Crate but without extra bloat and unnecessary services.
+Control tool for ROG Zephyrus G14, G15, G16, M16, Flow X13, Flow X16, TUF, Strix, Scar and other models. A small utility that allows you to do almost everything you could do with Armoury Crate but without extra bloat and unnecessary services.
 
 
 ## :gift: Main advantages 
@@ -37,6 +37,7 @@ _If you post about the app - please include a link. Thanks._
 7. Custom bindings for M3, M4 keys and FN+F5 (performance mode) FN+F4 (keyboard animation modes)
 8. Monitor CPU / GPU temperature, fan speeds and battery discharge rate
 9. Battery charge limit to preserve battery health
+10. NVidia GPU overclocking 
 
 ### :gear: Automatic switching when on battery or plugged in
 - Performance modes (app remembers last mode used on battery or when plugged)
@@ -56,7 +57,7 @@ Modes are **same** as in Armoury Crate as they are stored in bios including defa
 
 _PPTs are shown for G14 2022, for other models PPTs will be different as they are set in bios._
 
-![Screenshot 2023-04-13 191030](https://user-images.githubusercontent.com/5920850/231859519-3cfa40f1-b06e-4cdb-b3e8-5187521ce208.png)
+![Screenshot 2023-05-07 182519](https://user-images.githubusercontent.com/5920850/236697890-26938ac4-8840-4fed-a7b1-9a7b839fb865.png)
 
 ### :video_game: GPU Modes
 
@@ -93,11 +94,16 @@ Most probably either you are using Eco / Optimized mode and your dGPU is simply 
 #### It says, that app is already running
 Please check system tray for a (G) icon. By default windows is keen to hide all icons, so you may need to click ^ to see them all. I would advise to right click on Task Bar select Task Bar Settings -> Other System Tray icons -> Mark G-Helper to be always ON.
 
-#### App doesn't start / or crashes, what should I do ?
+#### App doesn't crash or doesn't work properly what should I do ?
 Open "Event Viewer" from start menu, go to Windows Logs -> Application and check for recent Errors mentioning G-Helper. If you see one - please post a [new issue](https://github.com/seerge/g-helper/issues) with all details from this error.
 
+#### Battery charge limiter is not working
+Open application log.text from ``%AppData%\GHelper`` . If you see something like ``BatteryLimit = 60 : OK`` there (with your selected limit). App has done everything it could to set a limit. It could be that MyASUS or other Asus services are overwriting this limit after. You may want to right click and save this [debloat.bat](https://raw.githubusercontent.com/seerge/g-helper/main/debloat.bat) and then right-click Run it As Admin. It will stop not mandatory asus services.
+
+What you can also try is to open ``C:\ProgramData\ASUS\ASUS System Control Interface\ASUSOptimization\Customization.ini`` and find following section from that file : ``[BatteryHealthCharging] ... value=100`` and either delete it or put same value as you use in G-helper.
+
 #### Can I use MyASUS app along with G-Helper?
-Sure, you can! The only problem is that MyASUS may override the battery charge limit that you set before. My advice in such a situation would be to set the same limit (i.e. 80%) in both MyASUS and G-Helper.
+You can, the only problem is that MyASUS may override the battery charge limit that you set before. My advice in such a situation would be to set the same limit (i.e. 80%) in both MyASUS and G-Helper.
 
 #### How do I set Mute Microphone to M3?
 This function is handled by Asus Optimization Service (therefore G-helper doesn't interfere and doesn't touch this function). Make sure that this service is up and running
@@ -106,7 +112,7 @@ This function is handled by Asus Optimization Service (therefore G-helper doesn'
 Personally, i'm not a big fan of them, as they make colors very inaccurate. But if you want so - you can adjust display colors using either Nvidia Control panel or AMD Adrenaline (appropriate display sections). If you really want you can also use [own ASUS utility from MS Store](https://apps.microsoft.com/store/detail/gamevisual/9P4K1LFTXSH8?hl=nl-nl&gl=nl&rtc=1)
 
 #### Can I overclock Nvidia GPU core / memory?
-I don't own nvidia GPU at the moment, so can't safely add overclocking to the app. But you can use "msi afterburner" to do that and much more with your GPU, as it's much more specialized on this aspect :)
+Make sure that your dGPU is enabled (i.e. it's not in Eco mode). Open Fans + Power section and adjust core / memory clock offsets. They work same as in armoury's manual mode. Please keep in mind that (unfortunately) you need admin permissions for that, and app will ask you for them.
 
 #### How do I uninstall G-helper?
 G-helper is a single exe, and it doesn't install anything in the system. To remove it - you can simply delete exe :) If you have applied any custom fan profiles or PPTs - before removing I would recommend selecting your favorite performance mode (for example balanced) and clicking "Factory defaults" under Fans + Power.
@@ -139,7 +145,7 @@ It's a lightweight Armoury Crate alternative for Asus laptops. A small utility t
 
 - I recommend keeping "Asus Optimization Service" running, as it keeps basic laptop hotkeys such as screen or keyboard brightness adjustment working.
 
-- Optionally(!) you can disable / remove unnecessary services by running [this debloat bat file](https://raw.githubusercontent.com/seerge/g-helper/main/debloat.bat) as admin. To restore services - run [this bloat bat file](https://raw.githubusercontent.com/seerge/g-helper/main/bloat.bat) instead.
+- Optionally(!) you can disable / remove unnecessary services. Ruight click and save [debloat.bat](https://raw.githubusercontent.com/seerge/g-helper/main/debloat.bat). Then right click and Run it as Admin. To restore services - save and run [bloat.bat](https://raw.githubusercontent.com/seerge/g-helper/main/bloat.bat) instead.
 
 - It's not recommended to use an app in combination with Armoury Crate services, because they adjust the same settings. You can [uninstall it using it's own uninstall tool](https://dlcdnets.asus.com/pub/ASUS/mb/14Utilities/Armoury_Crate_Uninstall_Tool.zip?model=armoury%20crate). Just in case, you can always install it back later.
 

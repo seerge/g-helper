@@ -1,10 +1,9 @@
 ﻿using CustomControls;
+using GHelper.Gpu;
 using Starlight.AnimeMatrix;
-using System;
 using System.Diagnostics;
 using System.Drawing.Imaging;
 using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Text.Json;
 using System.Timers;
 using Tools;
@@ -140,7 +139,7 @@ namespace GHelper
             int trim = model.LastIndexOf("_");
             if (trim > 0) model = model.Substring(0, trim);
 
-            labelModel.Text = model;
+            labelModel.Text = model + (Program.IsUserAdministrator() ? "." : "");
 
             TopMost = Program.config.getConfig("topmost") == 1;
 
@@ -159,7 +158,7 @@ namespace GHelper
 
             contextMenuStrip.Items.Clear();
 
-            Padding padding = new Padding(5, 5, 5, 5);
+            Padding padding = new Padding(15,5,5,5);
 
             /*
             TableLayoutPanel[] tables = { tablePerf, tableGPU };
@@ -246,7 +245,7 @@ namespace GHelper
             quit.Margin = padding;
             contextMenuStrip.Items.Add(quit);
 
-            contextMenuStrip.ShowCheckMargin = true;
+            //contextMenuStrip.ShowCheckMargin = true;
             contextMenuStrip.RenderMode = ToolStripRenderMode.System;
 
             if (CheckSystemDarkModeStatus())
@@ -679,12 +678,11 @@ namespace GHelper
             }
         }
 
-        private void ButtonFans_Click(object? sender, EventArgs e)
+        public void FansToggle()
         {
             if (fans == null || fans.Text == "")
             {
                 fans = new Fans();
-                //Debug.WriteLine("Starting fans");
             }
 
             if (fans.Visible)
@@ -696,7 +694,11 @@ namespace GHelper
                 fans.Show();
             }
 
+        }
 
+        private void ButtonFans_Click(object? sender, EventArgs e)
+        {
+            FansToggle();
         }
 
         private void ButtonKeyboardColor_Click(object? sender, EventArgs e)
@@ -943,7 +945,7 @@ namespace GHelper
             SetGPUMode(ASUSWmi.GPUModeEco);
         }
 
-        public void RefreshSensors(bool force = false)
+        public async void RefreshSensors(bool force = false)
         {
 
             if (!force && Math.Abs(DateTimeOffset.Now.ToUnixTimeMilliseconds() - lastRefresh) < 2000) return;
@@ -953,33 +955,33 @@ namespace GHelper
             string gpuTemp = "";
             string battery = "";
 
-            HardwareMonitor.ReadSensors();
+            HardwareControl.ReadSensors();
 
-            if (HardwareMonitor.cpuTemp > 0)
-                cpuTemp = ": " + Math.Round((decimal)HardwareMonitor.cpuTemp).ToString() + "°C ";
+            if (HardwareControl.cpuTemp > 0)
+                cpuTemp = ": " + Math.Round((decimal)HardwareControl.cpuTemp).ToString() + "°C ";
 
-            if (HardwareMonitor.batteryDischarge > 0)
-                battery = Properties.Strings.Discharging + ": " + Math.Round((decimal)HardwareMonitor.batteryDischarge, 1).ToString() + "W";
+            if (HardwareControl.batteryDischarge > 0)
+                battery = Properties.Strings.Discharging + ": " + Math.Round((decimal)HardwareControl.batteryDischarge, 1).ToString() + "W";
 
-            if (HardwareMonitor.gpuTemp > 0)
+            if (HardwareControl.gpuTemp > 0)
             {
-                gpuTemp = $": {HardwareMonitor.gpuTemp}°C ";
+                gpuTemp = $": {HardwareControl.gpuTemp}°C ";
             }
 
 
             Program.settingsForm.BeginInvoke(delegate
             {
-                labelCPUFan.Text = "CPU" + cpuTemp + HardwareMonitor.cpuFan;
-                labelGPUFan.Text = "GPU" + gpuTemp + HardwareMonitor.gpuFan;
-                if (HardwareMonitor.midFan is not null)
-                    labelMidFan.Text = "Mid" + HardwareMonitor.midFan;
+                labelCPUFan.Text = "CPU" + cpuTemp + HardwareControl.cpuFan;
+                labelGPUFan.Text = "GPU" + gpuTemp + HardwareControl.gpuFan;
+                if (HardwareControl.midFan is not null)
+                    labelMidFan.Text = "Mid" + HardwareControl.midFan;
 
                 labelBattery.Text = battery;
             });
 
 
-            Program.trayIcon.Text = "CPU" + cpuTemp + HardwareMonitor.cpuFan + "\n"
-                                    + "GPU" + gpuTemp + HardwareMonitor.gpuFan +
+            Program.trayIcon.Text = "CPU" + cpuTemp + HardwareControl.cpuFan + "\n"
+                                    + "GPU" + gpuTemp + HardwareControl.gpuFan +
                                     ((battery.Length > 0) ? ("\n" + battery) : "");
 
         }
@@ -1040,6 +1042,61 @@ namespace GHelper
 
         }
 
+
+        public void SetGPUClocks(bool launchAsAdmin = true)
+        {
+
+            int gpu_core = Program.config.getConfigPerf("gpu_core");
+            int gpu_memory = Program.config.getConfigPerf("gpu_memory");
+
+            if (gpu_core == -1 && gpu_memory == -1) return;
+
+            //if ((gpu_core > -5 && gpu_core < 5) && (gpu_memory > -5 && gpu_memory < 5)) launchAsAdmin = false;
+
+            if (Program.wmi.DeviceGet(ASUSWmi.GPUEco) == 1) return;
+            if (HardwareControl.GpuControl is null) return;
+            if (!HardwareControl.GpuControl!.IsNvidia) return;
+
+            using NvidiaGpuControl nvControl = (NvidiaGpuControl)HardwareControl.GpuControl;
+            try
+            {
+                int getStatus = nvControl.GetClocks(out int current_core, out int current_memory);
+                if (getStatus != -1)
+                {
+                    if (Math.Abs(gpu_core - current_core) < 5 && Math.Abs(gpu_memory - current_memory) < 5) return;
+                }
+
+                int setStatus = nvControl.SetClocks(gpu_core, gpu_memory);
+                if (launchAsAdmin && setStatus == -1) Program.RunAsAdmin("gpu");
+
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLine(ex.ToString());
+            }
+        }
+
+        public void SetGPUPower()
+        {
+
+            int gpu_boost = Program.config.getConfigPerf("gpu_boost");
+            int gpu_temp = Program.config.getConfigPerf("gpu_temp");
+
+
+            if (gpu_boost < ASUSWmi.MinGPUBoost || gpu_boost > ASUSWmi.MaxGPUBoost) return;
+            if (gpu_temp < ASUSWmi.MinGPUTemp || gpu_temp > ASUSWmi.MaxGPUTemp) return;
+
+            if (Program.wmi.DeviceGet(ASUSWmi.PPT_GPUC0) >= 0)
+            {
+                Program.wmi.DeviceSet(ASUSWmi.PPT_GPUC0, gpu_boost, "PowerLimit C0");
+            }
+
+            if (Program.wmi.DeviceGet(ASUSWmi.PPT_GPUC2) >= 0)
+            {
+                Program.wmi.DeviceSet(ASUSWmi.PPT_GPUC2, gpu_temp, "PowerLimit C2");
+            }
+
+        }
 
         protected void LabelFansResult(string text)
         {
@@ -1103,24 +1160,25 @@ namespace GHelper
 
             customPower = 0;
 
-            if (Program.config.getConfigPerf("auto_apply_power") == 1)
-            {
-                if (delay > 0)
-                {
-                    var timer = new System.Timers.Timer(1000);
-                    timer.Elapsed += delegate
-                    {
-                        timer.Stop();
-                        timer.Dispose();
-                        SetPower();
-                    };
-                    timer.Start();
-                }
-                else
-                {
-                    SetPower();
-                }
+            bool applyPower = Program.config.getConfigPerf("auto_apply_power") == 1;
+            bool applyGPU = true;
 
+            if (delay > 0)
+            {
+                var timer = new System.Timers.Timer(delay);
+                timer.Elapsed += delegate
+                {
+                    timer.Stop();
+                    timer.Dispose();
+                    if (applyPower) SetPower();
+                    SetGPUPower();
+                };
+                timer.Start();
+            }
+            else
+            {
+                if (applyPower) SetPower();
+                SetGPUPower();
             }
 
         }
@@ -1175,8 +1233,11 @@ namespace GHelper
                 }
             }
 
+            SetGPUClocks();
+
             AutoFans();
             AutoPower(1000);
+
 
             if (Program.config.getConfigPerfString("scheme") is not null)
                 NativeMethods.SetPowerScheme(Program.config.getConfigPerfString("scheme"));
@@ -1198,6 +1259,7 @@ namespace GHelper
                 fans.InitFans();
                 fans.InitPower();
                 fans.InitBoost();
+                fans.InitGPU();
             }
         }
 
@@ -1247,9 +1309,10 @@ namespace GHelper
                     SetScreen(1000, 1);
                 else
                     SetScreen(60, 0);
-            } else
+            }
+            else
             {
-                SetScreen(overdrive : Program.config.getConfig("overdrive")); 
+                SetScreen(overdrive: Program.config.getConfig("overdrive"));
             }
 
 
@@ -1288,20 +1351,20 @@ namespace GHelper
                 if (eco == 1)
                     if ((GpuAuto && IsPlugged()) || (ForceGPU && GpuMode == ASUSWmi.GPUModeStandard))
                     {
-                        SetEcoGPU(0);
+                        SetGPUEco(0);
                         return true;
                     }
                 if (eco == 0)
                     if ((GpuAuto && !IsPlugged()) || (ForceGPU && GpuMode == ASUSWmi.GPUModeEco))
                     {
 
-                        if (HardwareMonitor.IsUsedGPU())
+                        if (HardwareControl.IsUsedGPU())
                         {
                             DialogResult dialogResult = MessageBox.Show(Properties.Strings.AlertDGPU, Properties.Strings.AlertDGPUTitle, MessageBoxButtons.YesNo);
                             if (dialogResult == DialogResult.No) return false;
                         }
 
-                        SetEcoGPU(1);
+                        SetGPUEco(1);
                         return true;
                     }
             }
@@ -1312,15 +1375,16 @@ namespace GHelper
 
         public bool ReEnableGPU()
         {
-            if (Screen.AllScreens.Length <= 1) return false;
+
             if (Program.config.getConfig("gpu_reenable") != 1) return false;
+            if (Screen.AllScreens.Length <= 1) return false;
 
             Logger.WriteLine("Re-enabling gpu for 503 model");
 
             Thread.Sleep(1000);
-            SetEcoGPU(1);
+            SetGPUEco(1);
             Thread.Sleep(1000);
-            SetEcoGPU(0);
+            SetGPUEco(0);
             return true;
         }
 
@@ -1388,8 +1452,47 @@ namespace GHelper
 
         }
 
+        public void RestartGPU(bool confirm = true)
+        {
+            if (HardwareControl.GpuControl is null) return;
+            if (!HardwareControl.GpuControl!.IsNvidia) return;
 
-        public void SetEcoGPU(int eco)
+            if (confirm)
+            {
+                DialogResult dialogResult = MessageBox.Show(Properties.Strings.RestartGPU, Properties.Strings.EcoMode, MessageBoxButtons.YesNo);
+                if (dialogResult == DialogResult.No) return;
+            }
+
+            Program.RunAsAdmin("gpurestart");
+
+            if (!Program.IsUserAdministrator()) return;
+
+            Logger.WriteLine("Trying to restart dGPU");
+
+            Task.Run(async () =>
+            {
+                Program.settingsForm.BeginInvoke(delegate
+                {
+                    labelTipGPU.Text = "Restarting GPU ...";
+                    ButtonEnabled(buttonOptimized, false);
+                    ButtonEnabled(buttonEco, false);
+                    ButtonEnabled(buttonStandard, false);
+                    ButtonEnabled(buttonUltimate, false);
+                });
+
+                var nvControl = (NvidiaGpuControl)HardwareControl.GpuControl;
+                bool status = nvControl.RestartGPU();
+
+                Program.settingsForm.BeginInvoke(delegate
+                {
+                    labelTipGPU.Text = status ? "GPU Restarted, you can try Eco mode again" : "Failed to restart GPU";
+                    InitGPUMode();
+                });
+            });
+
+        }
+
+        public void SetGPUEco(int eco, bool hardWay = false)
         {
 
             ButtonEnabled(buttonOptimized, false);
@@ -1399,9 +1502,10 @@ namespace GHelper
 
             labelGPU.Text = Properties.Strings.GPUMode + ": " + Properties.Strings.GPUChanging + " ...";
 
-            Thread t = new Thread(() =>
+            Task.Run(async () =>
             {
-                Thread.CurrentThread.IsBackground = true;
+
+                int status;
 
                 if (eco == 1)
                 {
@@ -1410,20 +1514,30 @@ namespace GHelper
                         foreach (var process in Process.GetProcessesByName(kill)) process.Kill();
                 }
 
-                Program.wmi.DeviceSet(ASUSWmi.GPUEco, eco, "GPUEco");
+                //if (eco == 1) status = 0; else
+                status = Program.wmi.SetGPUEco(eco);
 
-                if (eco == 0)
-                    HardwareMonitor.RecreateGpuControlWithDelay();
+                if (status == 0 && eco == 1 && hardWay)
+                {
+                    RestartGPU();
+                }
 
+                await Task.Delay(TimeSpan.FromMilliseconds(500));
                 Program.settingsForm.BeginInvoke(delegate
                 {
-                    Thread.Sleep(500);
                     InitGPUMode();
                     AutoScreen();
                 });
+
+                if (eco == 0)
+                {
+                    await Task.Delay(TimeSpan.FromMilliseconds(3000));
+                    HardwareControl.RecreateGpuControl();
+                    SetGPUClocks(false);
+                }
+
             });
 
-            t.Start();
 
         }
 
@@ -1466,13 +1580,13 @@ namespace GHelper
             else if (GPUMode == ASUSWmi.GPUModeEco)
             {
                 VisualiseGPUMode(GPUMode);
-                SetEcoGPU(1);
+                SetGPUEco(1, true);
                 changed = true;
             }
             else if (GPUMode == ASUSWmi.GPUModeStandard)
             {
                 VisualiseGPUMode(GPUMode);
-                SetEcoGPU(0);
+                SetGPUEco(0);
                 changed = true;
             }
 
@@ -1578,6 +1692,14 @@ namespace GHelper
             sliderBattery.Value = limit;
 
             Program.wmi.DeviceSet(ASUSWmi.BatteryLimit, limit, "BatteryLimit");
+            try
+            {
+                OptimizationService.SetChargeLimit(limit);
+            } catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+            }
+
             Program.config.setConfig("charge_limit", limit);
 
         }

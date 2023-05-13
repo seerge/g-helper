@@ -279,8 +279,8 @@
   <data name="KeyboardAuto" xml:space="preserve">
     <value>电池模式下降低键盘亮度以省电，并在插上电源时恢复</value>
   </data>
-  <data name="KeyboardBacklight" xml:space="preserve">
-    <value>键盘背光</value>
+  <data name="LaptopBacklight" xml:space="preserve">
+    <value>背光</value>
   </data>
   <data name="LaptopKeyboard" xml:space="preserve">
     <value>笔记本键盘</value>

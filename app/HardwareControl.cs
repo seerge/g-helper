@@ -2,7 +2,7 @@
 using GHelper.Gpu;
 using System.Diagnostics;
 
-public static class HardwareMonitor
+public static class HardwareControl
 {
     public static IGpuControl? GpuControl;
 
@@ -38,7 +38,7 @@ public static class HardwareMonitor
         }
 
         int fanMax = GetFanMax();
-        if (fan > fanMax) SetFanMax(fan);
+        if (fan > fanMax && fan < 110) SetFanMax(fan);
 
         if (Program.config.getConfig("fan_rpm") == 1)
             return " Fan: " + (fan * 100).ToString() + "RPM";
@@ -81,9 +81,9 @@ public static class HardwareMonitor
                     cpuTemp = ct.NextValue() - 273;
                 }
             }
-            catch
+            catch (Exception ex)
             {
-                Debug.WriteLine("Failed reading CPU temp");
+                Debug.WriteLine("Failed reading CPU temp :" + ex.Message);
             }
 
         try
@@ -94,8 +94,7 @@ public static class HardwareMonitor
         catch (Exception ex)
         {
             gpuTemp = -1;
-            Debug.WriteLine("Failed reading GPU temp");
-            Debug.WriteLine(ex.ToString());
+            Debug.WriteLine("Failed reading GPU temp :" + ex.Message);
         }
 
         if (gpuTemp is null || gpuTemp < 0)
@@ -124,9 +123,17 @@ public static class HardwareMonitor
         return false;
     }
 
-    public static void RecreateGpuControlWithDelay(int delay = 5)
-    {
 
+    public static NvidiaGpuControl? GetNvidiaGpuControl()
+    {
+        if ((bool)GpuControl?.IsNvidia)
+            return (NvidiaGpuControl)GpuControl;
+        else
+            return null;
+    }
+
+    public static void RecreateGpuControlWithDelay(int delay = 3)
+    {
         // Re-enabling the discrete GPU takes a bit of time,
         // so a simple workaround is to refresh again after that happens
         Task.Run(async () =>
@@ -134,9 +141,6 @@ public static class HardwareMonitor
             await Task.Delay(TimeSpan.FromSeconds(delay));
             RecreateGpuControl();
         });
-
-
-
     }
 
     public static void RecreateGpuControl()
@@ -145,8 +149,6 @@ public static class HardwareMonitor
         {
             GpuControl?.Dispose();
 
-            // Detect valid GPU temperature provider.
-            // We start with NVIDIA because there's always at least an integrated AMD GPU
             IGpuControl _gpuControl = new NvidiaGpuControl();
             if (_gpuControl.IsValid)
             {
@@ -156,7 +158,6 @@ public static class HardwareMonitor
 
             _gpuControl.Dispose();
 
-            /*
             _gpuControl = new AmdGpuControl();
             if (_gpuControl.IsValid)
             {
@@ -164,7 +165,6 @@ public static class HardwareMonitor
                 return;
             }
             _gpuControl.Dispose();
-            */
 
             GpuControl = null;
         }
