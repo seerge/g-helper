@@ -1692,7 +1692,13 @@ namespace GHelper
             sliderBattery.Value = limit;
 
             Program.wmi.DeviceSet(ASUSWmi.BatteryLimit, limit, "BatteryLimit");
-            OptimizationService.SetChargeLimit(limit);
+            try
+            {
+                OptimizationService.SetChargeLimit(limit);
+            } catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+            }
 
             Program.config.setConfig("charge_limit", limit);
 

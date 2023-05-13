@@ -242,10 +242,8 @@ public class ASUSWmi
 
         int result;
 
-        for (int i = 8; i < curve.Length; i++)
-        {
-            curve[i] = Math.Max((byte)0, Math.Min((byte)99, curve[i])); // it seems to be a bug, when some old model's bios can go nuts if fan is set to 100% 
-        }
+        //for (int i = 8; i < curve.Length; i++)
+        //    curve[i] = Math.Max((byte)0, Math.Min((byte)99, curve[i])); // it seems to be a bug, when some old model's bios can go nuts if fan is set to 100% 
 
         switch (device)
         {

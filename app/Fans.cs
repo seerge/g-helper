@@ -15,6 +15,8 @@ namespace GHelper
 
         static int MinRPM, MaxRPM;
 
+        const int fansMax = 100;
+
         NvidiaGpuControl? nvControl = null;
 
         public Fans()
@@ -241,7 +243,7 @@ namespace GHelper
             chart.ChartAreas[0].AxisX.Interval = 10;
 
             chart.ChartAreas[0].AxisY.Minimum = 0;
-            chart.ChartAreas[0].AxisY.Maximum = 100;
+            chart.ChartAreas[0].AxisY.Maximum = fansMax;
 
             chart.ChartAreas[0].AxisY.LabelStyle.Font = new Font("Arial", 7F);
 
@@ -250,10 +252,10 @@ namespace GHelper
             chart.ChartAreas[0].AxisX.LineColor = chartGrid;
             chart.ChartAreas[0].AxisY.LineColor = chartGrid;
 
-            for (int i = 0; i <= 90; i += 10)
+            for (int i = 0; i <= fansMax-10; i += 10)
                 chart.ChartAreas[0].AxisY.CustomLabels.Add(i - 2, i + 2, ChartPercToRPM(i));
 
-            chart.ChartAreas[0].AxisY.CustomLabels.Add(98, 102, Properties.Strings.RPM);
+            chart.ChartAreas[0].AxisY.CustomLabels.Add(fansMax-2, fansMax+2, Properties.Strings.RPM);
 
             chart.ChartAreas[0].AxisY.Interval = 10;
 
@@ -577,7 +579,7 @@ namespace GHelper
                     if (dx > 100) dx = 100;
 
                     if (dy < 0) dy = 0;
-                    if (dy > 100) dy = 100;
+                    if (dy > fansMax) dy = fansMax;
 
                     dymin = (dx - 65) * 1.2;
 
