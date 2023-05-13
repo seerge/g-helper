@@ -462,11 +462,16 @@ namespace GHelper
             int mode = Program.config.getConfig("performance_mode");
             byte[] curve = Program.config.getFanConfig(device);
 
-            if (def == 1 || curve.Length != 16)
+            if (def == 1 || ASUSWmi.IsEmptyCurve(curve))
+            {
                 curve = Program.wmi.GetFanCurve(device, mode);
+                
+                if (ASUSWmi.IsEmptyCurve(curve)) 
+                    curve = Program.config.getDefaultCurve(device);
 
-            if (curve.Length != 16 || curve.All(singleByte => singleByte == 0))
-                curve = Program.config.getDefaultCurve(device);
+                curve = ASUSWmi.FixFanCurve(curve);
+
+            }
 
             //Debug.WriteLine(BitConverter.ToString(curve));
 

@@ -1,8 +1,6 @@
 ﻿using HidLibrary;
 using Microsoft.Win32;
-using OSD;
 using System.Diagnostics;
-using System.Windows.Forms;
 
 namespace GHelper
 {
@@ -167,7 +165,9 @@ namespace GHelper
         {
             HidDevice[] HidDeviceList = HidDevices.Enumerate(0x0b05, deviceIds).ToArray();
             foreach (HidDevice device in HidDeviceList)
-                if (device.IsConnected && device.Description.ToLower().Contains("hid") && device.Capabilities.FeatureReportByteLength >= 64)
+                if (device.IsConnected 
+                    && device.Capabilities.FeatureReportByteLength >= 64
+                    && device.Capabilities.InputReportByteLength >= 12) // 
                     yield return device;
         }
 
@@ -196,12 +196,13 @@ namespace GHelper
             byte[] msg = { 0x5d, 0xba, 0xc5, 0xc4, (byte)brightness };
 
             var devices = GetHidDevices(deviceIds);
-            if (devices.Count() > 0) Logger.WriteLine("USB-KB = " + BitConverter.ToString(msg));
+            //Logger.WriteLine("USB-KB = " + BitConverter.ToString(msg));
 
             foreach (HidDevice device in devices)
             {
                 device.OpenDevice();
                 device.Write(msg);
+                Logger.WriteLine("USB-KB " + device.Attributes.ProductHexId + ":" + BitConverter.ToString(msg));
                 device.CloseDevice();
             }
 
@@ -217,27 +218,28 @@ namespace GHelper
 
 
             var devices = GetHidDevices(deviceIds);
-            if (devices.Count() > 0) Logger.WriteLine("USB-KB = " + BitConverter.ToString(msg));
+            //Logger.WriteLine("USB-KB = " + BitConverter.ToString(msg));
 
             foreach (HidDevice device in devices)
             {
                 device.OpenDevice();
                 device.Write(msg);
+                Logger.WriteLine("USB-KB " + device.Attributes.ProductHexId + ":" + BitConverter.ToString(msg));
                 device.CloseDevice();
             }
 
             if (Program.config.ContainsModel("TUF"))
                 Program.wmi.TUFKeyboardPower(
-                    flags.Contains(AuraDev19b6.AwakeKeyb), 
-                    flags.Contains(AuraDev19b6.BootKeyb), 
-                    flags.Contains(AuraDev19b6.SleepKeyb), 
+                    flags.Contains(AuraDev19b6.AwakeKeyb),
+                    flags.Contains(AuraDev19b6.BootKeyb),
+                    flags.Contains(AuraDev19b6.SleepKeyb),
                     flags.Contains(AuraDev19b6.ShutdownKeyb));
 
         }
 
         public static void ApplyXGMLight(bool status)
         {
-            byte value = status? (byte)0x50:(byte)0;
+            byte value = status ? (byte)0x50 : (byte)0;
             var msg = new byte[] { 0x5e, 0xc5, value };
 
             foreach (HidDevice device in GetHidDevices(new int[] { 0x1970 }))
@@ -273,7 +275,7 @@ namespace GHelper
             byte[] msg = AuraMessage(Mode, Color1, Color2, _speed);
 
             var devices = GetHidDevices(deviceIds);
-            if (devices.Count() > 0) Logger.WriteLine("USB-KB = " + BitConverter.ToString(msg));
+            //if (devices.Count() > 0) Logger.WriteLine("USB-KB = " + BitConverter.ToString(msg));
 
             foreach (HidDevice device in devices)
             {
@@ -282,6 +284,7 @@ namespace GHelper
                 device.Write(MESSAGE_SET);
                 device.Write(MESSAGE_APPLY);
                 device.CloseDevice();
+                Logger.WriteLine("USB-KB " + device.Capabilities.FeatureReportByteLength + "|" + device.Capabilities.InputReportByteLength + device.Description + device.DevicePath + ":" + BitConverter.ToString(msg));
             }
 
             if (Program.config.ContainsModel("TUF"))
@@ -299,7 +302,8 @@ namespace GHelper
                     myKey.SetValue("TurnOffKeybdLight", value, RegistryValueKind.DWord);
                     myKey.Close();
                 }
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 Logger.WriteLine(ex.Message);
             }

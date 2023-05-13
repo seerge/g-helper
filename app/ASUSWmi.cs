@@ -1,4 +1,5 @@
-﻿using GHelper;
+﻿using System.Globalization;
+using System.IO.Pipes;
 using System.Management;
 using System.Runtime.InteropServices;
 
@@ -205,7 +206,7 @@ public class ASUSWmi
         byte[] args = new byte[8];
         BitConverter.GetBytes((uint)DeviceID).CopyTo(args, 0);
         byte[] status = CallMethod(DSTS, args);
-        
+
         return BitConverter.ToInt32(status, 0) - 65536;
 
     }
@@ -215,7 +216,7 @@ public class ASUSWmi
         byte[] args = new byte[8];
         BitConverter.GetBytes((uint)DeviceID).CopyTo(args, 0);
         BitConverter.GetBytes((uint)Status).CopyTo(args, 4);
-        
+
         return CallMethod(DSTS, args);
     }
 
@@ -242,8 +243,8 @@ public class ASUSWmi
 
         int result;
 
-        //for (int i = 8; i < curve.Length; i++)
-        //    curve[i] = Math.Max((byte)0, Math.Min((byte)99, curve[i])); // it seems to be a bug, when some old model's bios can go nuts if fan is set to 100% 
+        for (int i = 8; i < curve.Length; i++)
+            curve[i] = Math.Max((byte)0, Math.Min((byte)99, curve[i])); // it seems to be a bug, when some old model's bios can go nuts if fan is set to 100% 
 
         switch (device)
         {
@@ -282,6 +283,47 @@ public class ASUSWmi
             default:
                 return DeviceGetBuffer(DevsCPUFanCurve, fan_mode);
         }
+
+    }
+
+
+    public static bool IsEmptyCurve(byte[] curve) {
+        return curve.Length != 16 || curve.All(singleByte => singleByte == 0);
+    }
+
+    public static byte[] FixFanCurve(byte[] curve)
+    {
+        if (curve.Length != 16) throw new Exception("Incorrect curve");
+
+        var points = new Dictionary<byte, byte>();
+        for (int i = 0; i < 8; i++) points[curve[i]] = curve[i+8];
+
+        var pointsFixed = new Dictionary<byte, byte>();
+        bool fix = false;
+
+        int count = 0;
+        foreach (var pair in points.OrderBy(x => x.Key))
+        {
+            if (count == 0 && pair.Key >= 40)
+            {
+                fix = true;
+                pointsFixed.Add(20, 0);
+            }
+
+            if (count != 3 || !fix) 
+                pointsFixed.Add(pair.Key, pair.Value);
+            count++;
+        }
+
+        count = 0;
+        foreach (var pair in pointsFixed.OrderBy(x => x.Key))
+        {
+            curve[count] =pair.Key;
+            curve[count+8] = pair.Value;
+            count++;
+        }
+
+        return curve;
 
     }
 
@@ -334,7 +376,8 @@ public class ASUSWmi
             watcher.Scope = new ManagementScope("root\\wmi");
             watcher.Query = new WqlEventQuery("SELECT * FROM AsusAtkWmiEvent");
             watcher.Start();
-        } catch
+        }
+        catch
         {
             Logger.WriteLine("Can't connect to ASUS WMI events");
         }
