@@ -61,7 +61,8 @@ namespace Starlight.AnimeMatrix
     public enum AnimeType
     {
         GA401,
-        GA402
+        GA402,
+        GU604
     }
 
 
@@ -88,6 +89,8 @@ namespace Starlight.AnimeMatrix
         //public int FullEvenRows = -1;
 
         public int dx = 0;
+        //Shifts the whole frame to the left or right to align with the diagonal cut
+        public int frameShiftX = 0;
         public int MaxColumns = 34;
 
         private int frameIndex = 0;
@@ -112,6 +115,16 @@ namespace Starlight.AnimeMatrix
                 UpdatePageLength = 410;
             }
 
+            if (model.Contains("GU604"))
+            {
+                _model = AnimeType.GU604;
+
+                MaxColumns = 39;
+                MaxRows = 92;
+                LedCount = 1711;
+                frameShiftX = -5;
+                UpdatePageLength = 630;
+            }
 
             _displayBuffer = new byte[LedCount];
 
@@ -173,6 +186,9 @@ namespace Starlight.AnimeMatrix
                     {
                         return (y + 1) / 2 - 3;
                     }
+                case AnimeType.GU604:
+                    return (int)Math.Ceiling(Math.Max(0, y - 9) / 2F);
+
                 default:
                     return (int)Math.Ceiling(Math.Max(0, y - 11) / 2F);
             }
@@ -184,6 +200,8 @@ namespace Starlight.AnimeMatrix
             {
                 case AnimeType.GA401:
                     return 33;
+                case AnimeType.GU604:
+                    return 39;
                 default:
                     return 34;
             }
@@ -226,7 +244,7 @@ namespace Starlight.AnimeMatrix
             if (!IsRowInRange(y)) return;
 
             if (x >= FirstX(y) && x < Width(y))
-                SetLedLinear(RowToLinearAddress(y) - FirstX(y) + x + dx, value);
+                SetLedLinear(RowToLinearAddress(y) - FirstX(y) + x + dx + frameShiftX, value);
         }
 
         public void WakeUp()
