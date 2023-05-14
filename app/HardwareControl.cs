@@ -115,10 +115,14 @@ public static class HardwareControl
 
     public static bool IsUsedGPU(int threshold = 20)
     {
-        if (GetGpuUse() > threshold)
+        int use = GetGpuUse();
+        Logger.WriteLine("GPU usage: " + use);
+        if (use > threshold)
         {
             Thread.Sleep(1000);
-            return (GetGpuUse() > threshold);
+            use = GetGpuUse();
+            Logger.WriteLine("GPU usage: " + use);
+            return (use > threshold);
         }
         return false;
     }

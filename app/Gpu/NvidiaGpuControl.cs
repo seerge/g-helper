@@ -117,10 +117,10 @@ public class NvidiaGpuControl : IGpuControl
     {
         try
         {
-            string script = @"$device = Get-PnpDevice | Where-Object { $_.FriendlyName -imatch 'NVIDIA' -and $_.Class -eq 'Display' }; Disable-PnpDevice $device.InstanceId -Confirm:$false; Start-Sleep -Seconds 2; Enable-PnpDevice $device.InstanceId -Confirm:$false";
+            string script = @"$device = Get-PnpDevice | Where-Object { $_.FriendlyName -imatch 'NVIDIA' -and $_.Class -eq 'Display' }; Disable-PnpDevice $device.InstanceId -Confirm:$false; Start-Sleep -Seconds 3; Enable-PnpDevice $device.InstanceId -Confirm:$false";
             Logger.WriteLine(script);
             RunCMD("powershell", script);
-            Thread.Sleep(2000);
+            //Thread.Sleep(2000);
             return true;
         }
         catch (Exception ex )

@@ -161,13 +161,14 @@ namespace GHelper
             Color2 = Color.FromArgb(colorCode);
         }
 
-        private static IEnumerable<HidDevice> GetHidDevices(int[] deviceIds)
+
+        private static IEnumerable<HidDevice> GetHidDevices(int[] deviceIds, int minInput = 18)
         {
             HidDevice[] HidDeviceList = HidDevices.Enumerate(0x0b05, deviceIds).ToArray();
             foreach (HidDevice device in HidDeviceList)
                 if (device.IsConnected 
-                    && device.Capabilities.FeatureReportByteLength >= 64
-                    && device.Capabilities.InputReportByteLength >= 12) // 
+                    && device.Capabilities.FeatureReportByteLength > 0
+                    && device.Capabilities.InputReportByteLength >= minInput) // 
                     yield return device;
         }
 
@@ -275,7 +276,11 @@ namespace GHelper
             byte[] msg = AuraMessage(Mode, Color1, Color2, _speed);
 
             var devices = GetHidDevices(deviceIds);
-            //if (devices.Count() > 0) Logger.WriteLine("USB-KB = " + BitConverter.ToString(msg));
+            if (devices.Count() == 0)
+            {
+                Logger.WriteLine("USB-KB : not found");
+                GetHidDevices(deviceIds, 0);
+            }
 
             foreach (HidDevice device in devices)
             {
