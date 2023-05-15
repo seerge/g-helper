@@ -298,15 +298,22 @@ namespace GHelper
 
                     var gitVersion = new Version(tag);
                     var appVersion = new Version(Assembly.GetExecutingAssembly().GetName().Version.ToString()); 
-                    //appVersion = new Version("0.50.0.0"); 
+                    appVersion = new Version("0.50.0.0"); 
 
                     int newer = gitVersion.CompareTo(appVersion);
 
                     if (newer > 0)
                     {
                         SetVersionLabel(Properties.Strings.DownloadUpdate + ": " + tag, url);
-                        DialogResult dialogResult = MessageBox.Show(Properties.Strings.DownloadUpdate + ": G-Helper " + tag + "?", "Update", MessageBoxButtons.YesNo);
-                        if (dialogResult == DialogResult.Yes) AutoUpdate(url);
+                        if (Program.config.getConfigString("skip_version") != tag)
+                        {
+                            DialogResult dialogResult = MessageBox.Show(Properties.Strings.DownloadUpdate + ": G-Helper " + tag + "?", "Update", MessageBoxButtons.YesNo);
+                            if (dialogResult == DialogResult.Yes)
+                                AutoUpdate(url);
+                            else
+                                Program.config.setConfig("skip_version", tag);
+                        }
+
                     }
                     else
                     {
@@ -342,10 +349,11 @@ namespace GHelper
         {
 
             Uri uri = new Uri(requestUri);
-            string filename = Path.GetFileName(uri.LocalPath);
+            string zipName = Path.GetFileName(uri.LocalPath);
+           
             string exeLocation = Application.ExecutablePath;
             string exeDir = Path.GetDirectoryName(exeLocation);
-            string zipLocation = exeDir + "\\" + filename;
+            string zipLocation = exeDir + "\\" + zipName;
 
             using (WebClient client = new WebClient())
             {
@@ -370,10 +378,7 @@ namespace GHelper
 
         private void LabelVersion_Click(object? sender, EventArgs e)
         {
-            if (versionUrl.Contains(".zip"))
-                AutoUpdate(versionUrl);
-            else
-                Process.Start(new ProcessStartInfo(versionUrl) { UseShellExecute = true });
+            Process.Start(new ProcessStartInfo(versionUrl) { UseShellExecute = true });
         }
 
         private static void TrayIcon_MouseMove(object? sender, MouseEventArgs e)
