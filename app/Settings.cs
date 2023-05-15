@@ -1238,11 +1238,13 @@ namespace GHelper
             AutoFans();
             AutoPower(1000);
 
-
-            if (Program.config.getConfigPerfString("scheme") is not null)
-                NativeMethods.SetPowerScheme(Program.config.getConfigPerfString("scheme"));
-            else
-                NativeMethods.SetPowerScheme(PerformanceMode);
+            if (Program.config.getConfigPerf("auto_apply_power_plan") == 1)
+            {
+                if (Program.config.getConfigPerfString("scheme") is not null)
+                    NativeMethods.SetPowerScheme(Program.config.getConfigPerfString("scheme"));
+                else
+                    NativeMethods.SetPowerScheme(PerformanceMode);
+            }
 
             if (Program.config.getConfigPerf("auto_boost") != -1)
             {

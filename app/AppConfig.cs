@@ -69,6 +69,7 @@ public class AppConfig
     {
         config = new Dictionary<string, object>();
         config["performance_mode"] = 0;
+        config["auto_apply_power_plan"] = 1;
         string jsonString = JsonSerializer.Serialize(config);
         File.WriteAllText(configFile, jsonString);
     }
