@@ -214,7 +214,7 @@
     <value>Disable screen overdrive</value>
   </data>
   <data name="EnableAutoUpdate" xml:space="preserve">
-    <value>Enable auto update to latest release</value>
+    <value>Enable auto update. update.bat must be in the same folder.</value>
   </data>
   <data name="Discharging" xml:space="preserve">
     <value>Discharging</value>
