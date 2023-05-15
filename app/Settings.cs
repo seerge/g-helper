@@ -3,13 +3,10 @@ using GHelper.Gpu;
 using Starlight.AnimeMatrix;
 using System.Diagnostics;
 using System.Drawing.Imaging;
-using System.IO.Compression;
 using System.Net;
 using System.Reflection;
 using System.Text.Json;
 using System.Timers;
-using System.Windows.Forms;
-using System.Xml.Linq;
 using Tools;
 
 namespace GHelper
@@ -162,7 +159,7 @@ namespace GHelper
 
             contextMenuStrip.Items.Clear();
 
-            Padding padding = new Padding(15,5,5,5);
+            Padding padding = new Padding(15, 5, 5, 5);
 
             /*
             TableLayoutPanel[] tables = { tablePerf, tableGPU };
@@ -297,12 +294,10 @@ namespace GHelper
                     var url = config.GetProperty("assets")[0].GetProperty("browser_download_url").ToString();
 
                     var gitVersion = new Version(tag);
-                    var appVersion = new Version(Assembly.GetExecutingAssembly().GetName().Version.ToString()); 
+                    var appVersion = new Version(Assembly.GetExecutingAssembly().GetName().Version.ToString());
                     //appVersion = new Version("0.50.0.0"); 
 
-                    int newer = gitVersion.CompareTo(appVersion);
-
-                    if (newer > 0)
+                    if (gitVersion.CompareTo(appVersion) > 0)
                     {
                         SetVersionLabel(Properties.Strings.DownloadUpdate + ": " + tag, url);
                         if (Program.config.getConfigString("skip_version") != tag)
@@ -350,7 +345,7 @@ namespace GHelper
 
             Uri uri = new Uri(requestUri);
             string zipName = Path.GetFileName(uri.LocalPath);
-           
+
             string exeLocation = Application.ExecutablePath;
             string exeDir = Path.GetDirectoryName(exeLocation);
             string zipLocation = exeDir + "\\" + zipName;
@@ -364,7 +359,7 @@ namespace GHelper
             cmd.StartInfo.UseShellExecute = false;
             cmd.StartInfo.CreateNoWindow = true;
             cmd.StartInfo.FileName = "powershell";
-            cmd.StartInfo.Arguments =  $"Start-Sleep -Seconds 1; Expand-Archive {zipLocation} -DestinationPath {exeDir} -Force; {exeLocation}";
+            cmd.StartInfo.Arguments = $"Start-Sleep -Seconds 1; Expand-Archive {zipLocation} -DestinationPath {exeDir} -Force; {exeLocation}";
             cmd.Start();
 
             Debug.WriteLine(requestUri);
@@ -1748,7 +1743,8 @@ namespace GHelper
             try
             {
                 OptimizationService.SetChargeLimit(limit);
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 Debug.WriteLine(ex);
             }

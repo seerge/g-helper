@@ -166,7 +166,7 @@ namespace GHelper
         {
             HidDevice[] HidDeviceList = HidDevices.Enumerate(0x0b05, deviceIds).ToArray();
             foreach (HidDevice device in HidDeviceList)
-                if (device.IsConnected 
+                if (device.IsConnected
                     && device.Capabilities.FeatureReportByteLength > 0
                     && device.Capabilities.InputReportByteLength >= minInput) // 
                     yield return device;

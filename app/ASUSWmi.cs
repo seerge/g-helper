@@ -15,6 +15,7 @@ public class ASUSWmi
     public const uint UniversalControl = 0x00100021;
     public const int KB_Light_Up = 0xc4;
     public const int KB_Light_Down = 0xc5;
+    public const int Touchpad_Toggle = 0x6B;
 
     public const int ChargerMode = 0x0012006C;
 
@@ -58,6 +59,13 @@ public class ASUSWmi
     public const int TUF_KB_BRIGHTNESS = 0x00050021;
     public const int TUF_KB = 0x00100056;
     public const int TUF_KB_STATE = 0x00100057;
+
+    public const int TabletState = 0x00060077;
+
+    public const int Tablet_Notebook = 0;
+    public const int Tablet_Tablet = 1;
+    public const int Tablet_Tent = 2;
+    public const int Tablet_Rotated = 3;
 
     public const int PerformanceBalanced = 0;
     public const int PerformanceTurbo = 1;

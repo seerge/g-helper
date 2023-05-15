@@ -1,4 +1,3 @@
-using GHelper.Gpu;
 using Microsoft.Win32;
 using System.Diagnostics;
 using System.Globalization;
@@ -64,7 +63,7 @@ namespace GHelper
             }
 
             Logger.WriteLine("------------");
-            Logger.WriteLine("App launched: " + config.GetModel() + " :" + Assembly.GetExecutingAssembly().GetName().Version.ToString() + (IsUserAdministrator()?"A":""));
+            Logger.WriteLine("App launched: " + config.GetModel() + " :" + Assembly.GetExecutingAssembly().GetName().Version.ToString() + (IsUserAdministrator() ? "A" : ""));
 
             Application.EnableVisualStyles();
 
@@ -253,6 +252,23 @@ namespace GHelper
             }
         }
 
+        static void TabletMode()
+        {
+            bool touchpadState, tabletState;
+
+            using (var key = Registry.CurrentUser.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\PrecisionTouchPad\Status", false))
+            {
+                touchpadState = (key?.GetValue("Enabled")?.ToString() == "1");
+            }
+
+            tabletState = wmi.DeviceGet(ASUSWmi.TabletState) > 0;
+
+            Logger.WriteLine("Tablet: " + tabletState + " Touchpad: " + touchpadState);
+
+            if ((tabletState && touchpadState) || (!tabletState && !touchpadState))
+                wmi.DeviceSet(ASUSWmi.UniversalControl, ASUSWmi.Touchpad_Toggle, "Touchpad");
+
+        }
 
         static void WatcherEventArrived(object sender, EventArrivedEventArgs e)
         {
@@ -278,6 +294,10 @@ namespace GHelper
                 case 179:   // FN+F4
                     KeyProcess("fnf4");
                     return;
+                case 189: // Tablet mode 
+                    TabletMode();
+                    return;
+
             }
 
 
