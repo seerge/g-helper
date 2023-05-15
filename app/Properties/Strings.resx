@@ -213,6 +213,9 @@
   <data name="DisableOverdrive" xml:space="preserve">
     <value>Disable screen overdrive</value>
   </data>
+  <data name="EnableAutoUpdate" xml:space="preserve">
+    <value>Enable auto update to latest release</value>
+  </data>
   <data name="Discharging" xml:space="preserve">
     <value>Discharging</value>
   </data>

@@ -429,4 +429,7 @@
   <data name="WindowTop" xml:space="preserve">
     <value>Mantener aplicación siempre visible</value>
   </data>
+  <data name="EnableAutoUpdate" xml:space="preserve">
+    <value>Enable auto update to latest release</value>
+  </data>
 </root>
