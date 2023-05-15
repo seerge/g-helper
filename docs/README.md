@@ -149,6 +149,8 @@ It's a lightweight Armoury Crate alternative for Asus laptops. A small utility t
 
 - It's not recommended to use an app in combination with Armoury Crate services, because they adjust the same settings. You can [uninstall it using it's own uninstall tool](https://dlcdnets.asus.com/pub/ASUS/mb/14Utilities/Armoury_Crate_Uninstall_Tool.zip?model=armoury%20crate). Just in case, you can always install it back later.
 
+- Also, it's not recommended to have "ASUS Smart Display Control" app running, as it will try to change refresh rates and fight with g-helper for the same function. You can safely uninstall it.
+
 -------------------------------
 
 Designed and developed for Asus Zephyrus G14 2022 (with AMD Radeon iGPU and dGPU). But could and should potentially work for G14 of 2021 and 2020, G15, X FLOW, and other ROG models for relevant and supported features.
