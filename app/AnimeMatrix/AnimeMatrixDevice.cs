@@ -2,6 +2,7 @@
 
 using Starlight.Communication;
 using System.Drawing.Drawing2D;
+using System.Drawing.Text;
 using System.Globalization;
 using System.Management;
 using System.Text;
@@ -343,11 +344,17 @@ namespace Starlight.AnimeMatrix
         public void PresentClock()
         {
             int second = DateTime.Now.Second;
+            string time;
 
             if (CultureInfo.CurrentCulture.DateTimeFormat.ShortTimePattern.Contains("H"))
-                PresentTextDiagonal(DateTime.Now.ToString("   H" + ((second % 2 == 0) ? ":" : " ") + "mm"));
+                time = DateTime.Now.ToString("H" + ((second % 2 == 0) ? ":" : " ") + "mm");
             else
-                PresentTextDiagonal(DateTime.Now.ToString("h" + ((second % 2 == 0) ? ":" : " ") + "mmtt"));
+                time = DateTime.Now.ToString("h" + ((second % 2 == 0) ? ":" : " ") + "mmtt");
+
+            if (_model == AnimeType.GA401)
+                PresentText(time);
+            else 
+                PresentTextDiagonal(time);
         }
 
         public void PresentText(string text1, string text2 = "")
@@ -359,14 +366,14 @@ namespace Starlight.AnimeMatrix
                     g.CompositingQuality = CompositingQuality.HighQuality;
                     g.SmoothingMode = SmoothingMode.AntiAlias;
 
-                    using (Font font = new Font("Arial", 24F, GraphicsUnit.Pixel))
+                    using (Font font = new Font("Consolas", 24F, FontStyle.Regular, GraphicsUnit.Pixel))
                     {
                         SizeF textSize = g.MeasureString(text1, font);
-                        g.DrawString(text1, font, Brushes.White, (MaxColumns * 3 - textSize.Width) + 3, -3);
+                        g.DrawString(text1, font, Brushes.White, (MaxColumns * 3 - textSize.Width) + 3, -4);
                     }
 
                     if (text2.Length > 0)
-                        using (Font font = new Font("Arial", 18F, GraphicsUnit.Pixel))
+                        using (Font font = new Font("Consolas", 18F, GraphicsUnit.Pixel))
                         {
                             SizeF textSize = g.MeasureString(text2, font);
                             g.DrawString(text2, font, Brushes.White, (MaxColumns * 3 - textSize.Width) + 1, 25);
@@ -437,6 +444,24 @@ namespace Starlight.AnimeMatrix
 
             Clear();
 
+
+            InstalledFontCollection installedFontCollection = new InstalledFontCollection();
+
+
+            string familyName;
+            string familyList = "";
+            FontFamily[] fontFamilies;
+            // Get the array of FontFamily objects.
+            fontFamilies = installedFontCollection.Families;
+
+            int count = fontFamilies.Length;
+            for (int j = 0; j < count; ++j)
+            {
+                familyName = fontFamilies[j].Name;
+                familyList = familyList + familyName;
+                familyList = familyList + ",  ";
+            }
+
             int maxX = (int)Math.Sqrt(MaxRows * MaxRows + MaxColumns * MaxColumns);
 
             using (Bitmap bmp = new Bitmap(maxX, MaxRows))
@@ -446,10 +471,10 @@ namespace Starlight.AnimeMatrix
                     g.CompositingQuality = CompositingQuality.HighQuality;
                     g.SmoothingMode = SmoothingMode.AntiAlias;
 
-                    using (Font font = new Font("Calibri", 13F, GraphicsUnit.Pixel))
+                    using (Font font = new Font("Consolas", 13F, FontStyle.Regular, GraphicsUnit.Pixel))
                     {
                         SizeF textSize = g.MeasureString(text, font);
-                        g.DrawString(text, font, Brushes.White, 4, 0);
+                        g.DrawString(text, font, Brushes.White, 4, 1);
                     }
                 }
 

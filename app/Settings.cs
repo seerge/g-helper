@@ -3,9 +3,13 @@ using GHelper.Gpu;
 using Starlight.AnimeMatrix;
 using System.Diagnostics;
 using System.Drawing.Imaging;
+using System.IO.Compression;
+using System.Net;
 using System.Reflection;
 using System.Text.Json;
 using System.Timers;
+using System.Windows.Forms;
+using System.Xml.Linq;
 using Tools;
 
 namespace GHelper
@@ -293,11 +297,16 @@ namespace GHelper
                     var url = config.GetProperty("assets")[0].GetProperty("browser_download_url").ToString();
 
                     var gitVersion = new Version(tag);
-                    var appVersion = new Version(Assembly.GetExecutingAssembly().GetName().Version.ToString());
+                    var appVersion = new Version(Assembly.GetExecutingAssembly().GetName().Version.ToString()); 
+                    //appVersion = new Version("0.50.0.0"); 
 
-                    if (gitVersion.CompareTo(appVersion) > 0)
+                    int newer = gitVersion.CompareTo(appVersion);
+
+                    if (newer > 0)
                     {
                         SetVersionLabel(Properties.Strings.DownloadUpdate + ": " + tag, url);
+                        DialogResult dialogResult = MessageBox.Show(Properties.Strings.DownloadUpdate + ": G-Helper " + tag + "?", "Update", MessageBoxButtons.YesNo);
+                        if (dialogResult == DialogResult.Yes) AutoUpdate(url);
                     }
                     else
                     {
@@ -312,6 +321,59 @@ namespace GHelper
 
             }
 
+        }
+
+        void SetVersionLabel(string label, string url = null)
+        {
+            BeginInvoke(delegate
+            {
+                labelVersion.Text = label;
+                if (url is not null)
+                {
+                    this.versionUrl = url;
+                    labelVersion.ForeColor = Color.Red;
+                }
+            });
+
+        }
+
+
+        public async void AutoUpdate(string requestUri)
+        {
+
+            Uri uri = new Uri(requestUri);
+            string filename = Path.GetFileName(uri.LocalPath);
+            string exeLocation = Application.ExecutablePath;
+            string exeDir = Path.GetDirectoryName(exeLocation);
+            string zipLocation = exeDir + "\\" + filename;
+
+            using (WebClient client = new WebClient())
+            {
+                client.DownloadFile(uri, zipLocation);
+            }
+
+            var cmd = new Process();
+            cmd.StartInfo.UseShellExecute = false;
+            cmd.StartInfo.CreateNoWindow = true;
+            cmd.StartInfo.FileName = "powershell";
+            cmd.StartInfo.Arguments =  $"Start-Sleep -Seconds 1; Expand-Archive {zipLocation} -DestinationPath {exeDir} -Force; {exeLocation}";
+            cmd.Start();
+
+            Debug.WriteLine(requestUri);
+            Debug.WriteLine(zipLocation);
+
+            Application.Exit();
+            return;
+
+        }
+
+
+        private void LabelVersion_Click(object? sender, EventArgs e)
+        {
+            if (versionUrl.Contains(".zip"))
+                AutoUpdate(versionUrl);
+            else
+                Process.Start(new ProcessStartInfo(versionUrl) { UseShellExecute = true });
         }
 
         private static void TrayIcon_MouseMove(object? sender, MouseEventArgs e)
@@ -419,21 +481,7 @@ namespace GHelper
         }
 
 
-        void SetVersionLabel(string label, string url = null)
-        {
-            labelVersion.Text = label;
-            if (url is not null)
-            {
-                this.versionUrl = url;
-                labelVersion.ForeColor = Color.Red;
-            }
-        }
 
-
-        private void LabelVersion_Click(object? sender, EventArgs e)
-        {
-            Process.Start(new ProcessStartInfo(versionUrl) { UseShellExecute = true });
-        }
 
 
         private void CheckStartup_CheckedChanged(object? sender, EventArgs e)

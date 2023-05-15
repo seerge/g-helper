@@ -51,6 +51,7 @@ public static class HardwareControl
         try
         {
             int? gpuUse = GpuControl?.GetGpuUse();
+            Logger.WriteLine("GPU usage: " + GpuControl?.FullName + " " + gpuUse + "%");
             if (gpuUse is not null) return (int)gpuUse;
         }
         catch (Exception ex)
@@ -113,16 +114,12 @@ public static class HardwareControl
         }
     }
 
-    public static bool IsUsedGPU(int threshold = 20)
+    public static bool IsUsedGPU(int threshold = 10)
     {
-        int use = GetGpuUse();
-        Logger.WriteLine("GPU usage: " + use);
-        if (use > threshold)
+        if (GetGpuUse() > threshold)
         {
             Thread.Sleep(1000);
-            use = GetGpuUse();
-            Logger.WriteLine("GPU usage: " + use);
-            return (use > threshold);
+            return (GetGpuUse() > threshold);
         }
         return false;
     }
@@ -136,7 +133,7 @@ public static class HardwareControl
             return null;
     }
 
-    public static void RecreateGpuControlWithDelay(int delay = 3)
+    public static void RecreateGpuControlWithDelay(int delay = 5)
     {
         // Re-enabling the discrete GPU takes a bit of time,
         // so a simple workaround is to refresh again after that happens

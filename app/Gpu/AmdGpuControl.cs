@@ -11,7 +11,7 @@ public class AmdGpuControl : IGpuControl {
 
     public bool IsNvidia => false;
 
-
+    public string FullName => _internalDiscreteAdapter!.AdapterName;
     public AmdGpuControl() {
         if (!Adl2.Load())
             return;

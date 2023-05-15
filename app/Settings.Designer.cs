@@ -267,24 +267,25 @@ namespace GHelper
             labelModel.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             labelModel.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
             labelModel.ForeColor = SystemColors.ControlDark;
-            labelModel.Location = new Point(291, 119);
+            labelModel.Location = new Point(380, 119);
             labelModel.Margin = new Padding(8, 0, 8, 0);
             labelModel.Name = "labelModel";
-            labelModel.Size = new Size(492, 32);
+            labelModel.Size = new Size(400, 32);
             labelModel.TabIndex = 38;
             labelModel.TextAlign = ContentAlignment.TopRight;
             // 
             // labelVersion
             // 
-            labelVersion.AutoSize = true;
+            labelVersion.AutoSize = false;
             labelVersion.Font = new Font("Segoe UI", 9F, FontStyle.Underline, GraphicsUnit.Point);
             labelVersion.ForeColor = SystemColors.ControlDark;
             labelVersion.Location = new Point(25, 119);
             labelVersion.Margin = new Padding(8, 0, 8, 0);
             labelVersion.Name = "labelVersion";
-            labelVersion.Size = new Size(44, 32);
+            labelVersion.Size = new Size(300, 32);
             labelVersion.TabIndex = 37;
             labelVersion.Text = "v.0";
+            labelVersion.Cursor = Cursors.Hand;
             // 
             // labelBattery
             // 
