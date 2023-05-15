@@ -298,11 +298,20 @@ namespace GHelper
                     if (gitVersion.CompareTo(appVersion) > 0)
                     {
                         SetVersionLabel(Properties.Strings.DownloadUpdate + ": " + tag, url);
+
+                        if (Program.config.getConfig("auto_update") == 1)
+                        {
+                            Debug.WriteLine("Proceeding to update");
+                            Process.Start(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "\\update.bat");
+                        }
+                        
                     }
                     else
                     {
                         Debug.WriteLine("Latest version");
                     }
+
+
 
                 }
             }
