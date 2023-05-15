@@ -77,6 +77,7 @@ namespace GHelper
             checkKeyboardAuto = new CheckBox();
             checkUSBC = new CheckBox();
             checkNoOverdrive = new CheckBox();
+            checkAutoUpdate = new CheckBox();
             checkTopmost = new CheckBox();
             groupBindings.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureHelp).BeginInit();
@@ -575,13 +576,14 @@ namespace GHelper
             // groupOther
             // 
             groupOther.Controls.Add(checkKeyboardAuto);
-            groupOther.Controls.Add(checkUSBC);
-            groupOther.Controls.Add(checkNoOverdrive);
             groupOther.Controls.Add(checkTopmost);
+            groupOther.Controls.Add(checkNoOverdrive);
+            groupOther.Controls.Add(checkUSBC);
+            groupOther.Controls.Add(checkAutoUpdate);
             groupOther.Dock = DockStyle.Top;
             groupOther.Location = new Point(10, 768);
             groupOther.Name = "groupOther";
-            groupOther.Size = new Size(954, 276);
+            groupOther.Size = new Size(954, 324);
             groupOther.TabIndex = 2;
             groupOther.TabStop = false;
             groupOther.Text = "Other";
@@ -589,33 +591,13 @@ namespace GHelper
             // checkKeyboardAuto
             // 
             checkKeyboardAuto.AutoSize = true;
-            checkKeyboardAuto.Location = new Point(25, 53);
+            checkKeyboardAuto.Location = new Point(25, 54);
             checkKeyboardAuto.MaximumSize = new Size(780, 0);
             checkKeyboardAuto.Name = "checkKeyboardAuto";
             checkKeyboardAuto.Size = new Size(712, 36);
             checkKeyboardAuto.TabIndex = 46;
             checkKeyboardAuto.Text = Strings.KeyboardAuto;
             checkKeyboardAuto.UseVisualStyleBackColor = true;
-            // 
-            // checkUSBC
-            // 
-            checkUSBC.AutoSize = true;
-            checkUSBC.Location = new Point(25, 210);
-            checkUSBC.Name = "checkUSBC";
-            checkUSBC.Size = new Size(659, 36);
-            checkUSBC.TabIndex = 4;
-            checkUSBC.Text = "Keep GPU disabled on USB-C charger in Optimized mode";
-            checkUSBC.UseVisualStyleBackColor = true;
-            // 
-            // checkNoOverdrive
-            // 
-            checkNoOverdrive.AutoSize = true;
-            checkNoOverdrive.Location = new Point(25, 156);
-            checkNoOverdrive.Name = "checkNoOverdrive";
-            checkNoOverdrive.Size = new Size(307, 36);
-            checkNoOverdrive.TabIndex = 3;
-            checkNoOverdrive.Text = Strings.DisableOverdrive;
-            checkNoOverdrive.UseVisualStyleBackColor = true;
             // 
             // checkTopmost
             // 
@@ -626,6 +608,36 @@ namespace GHelper
             checkTopmost.TabIndex = 1;
             checkTopmost.Text = Strings.WindowTop;
             checkTopmost.UseVisualStyleBackColor = true;
+            // 
+            // checkNoOverdrive
+            // 
+            checkNoOverdrive.AutoSize = true;
+            checkNoOverdrive.Location = new Point(25, 154);
+            checkNoOverdrive.Name = "checkNoOverdrive";
+            checkNoOverdrive.Size = new Size(307, 36);
+            checkNoOverdrive.TabIndex = 3;
+            checkNoOverdrive.Text = Strings.DisableOverdrive;
+            checkNoOverdrive.UseVisualStyleBackColor = true;
+            // 
+            // checkUSBC
+            // 
+            checkUSBC.AutoSize = true;
+            checkUSBC.Location = new Point(25, 204);
+            checkUSBC.Name = "checkUSBC";
+            checkUSBC.Size = new Size(659, 36);
+            checkUSBC.TabIndex = 4;
+            checkUSBC.Text = "Keep GPU disabled on USB-C charger in Optimized mode";
+            checkUSBC.UseVisualStyleBackColor = true;
+            // 
+            // checkEnableAuto
+            // 
+            checkAutoUpdate.AutoSize = true;
+            checkAutoUpdate.Location = new Point(25, 254);
+            checkAutoUpdate.Name = "checkAutoUpdate";
+            checkAutoUpdate.Size = new Size(307, 36);
+            checkAutoUpdate.TabIndex = 5;
+            checkAutoUpdate.Text = Strings.EnableAutoUpdate;
+            checkAutoUpdate.UseVisualStyleBackColor = true;
             // 
             // Extra
             // 
@@ -681,6 +693,7 @@ namespace GHelper
         private GroupBox groupOther;
         private CheckBox checkTopmost;
         private CheckBox checkNoOverdrive;
+        private CheckBox checkAutoUpdate;
         private PictureBox pictureHelp;
         private CheckBox checkUSBC;
         private TableLayoutPanel tableBacklight;

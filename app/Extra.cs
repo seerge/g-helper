@@ -71,6 +71,7 @@ namespace GHelper
 
             checkKeyboardAuto.Text = Properties.Strings.KeyboardAuto;
             checkNoOverdrive.Text = Properties.Strings.DisableOverdrive;
+            checkAutoUpdate.Text = Properties.Strings.EnableAutoUpdate;
             checkTopmost.Text = Properties.Strings.WindowTop;
             checkUSBC.Text = Properties.Strings.OptimizedUSBC;
 
@@ -172,6 +173,9 @@ namespace GHelper
 
             checkNoOverdrive.Checked = (Program.config.getConfig("no_overdrive") == 1);
             checkNoOverdrive.CheckedChanged += CheckNoOverdrive_CheckedChanged;
+            
+            checkAutoUpdate.Checked = (Program.config.getConfig("auto_update") == 1);
+            checkAutoUpdate.CheckedChanged += CheckAutoUpdate_CheckedChanged;
 
             checkUSBC.Checked = (Program.config.getConfig("optimized_usbc") == 1);
             checkUSBC.CheckedChanged += CheckUSBC_CheckedChanged;
@@ -226,6 +230,11 @@ namespace GHelper
         {
             Program.config.setConfig("no_overdrive", (checkNoOverdrive.Checked ? 1 : 0));
             Program.settingsForm.AutoScreen(true);
+        }
+        
+        private void CheckAutoUpdate_CheckedChanged(object? sender, EventArgs e)
+        {
+            Program.config.setConfig("auto_update", (checkAutoUpdate.Checked ? 1 : 0));
         }
 
         private void CheckKeyboardAuto_CheckedChanged(object? sender, EventArgs e)
