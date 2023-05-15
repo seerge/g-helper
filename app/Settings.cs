@@ -298,7 +298,7 @@ namespace GHelper
 
                     var gitVersion = new Version(tag);
                     var appVersion = new Version(Assembly.GetExecutingAssembly().GetName().Version.ToString()); 
-                    appVersion = new Version("0.50.0.0"); 
+                    //appVersion = new Version("0.50.0.0"); 
 
                     int newer = gitVersion.CompareTo(appVersion);
 
