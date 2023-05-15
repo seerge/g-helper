@@ -299,20 +299,27 @@ namespace GHelper
                     {
                         SetVersionLabel(Properties.Strings.DownloadUpdate + ": " + tag, url);
 
-                        if (Program.config.getConfig("auto_update") == 1)
-                        {
-                            Debug.WriteLine("Proceeding to update");
-                            Process.Start(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "\\update.bat");
-                        }
+                        if (Program.config.getConfig("auto_update") != 1) return;
                         
+                        Debug.WriteLine("Proceeding to update");
+                        
+                        var batchFile = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "\\update.bat";
+                            
+                        if (Path.Exists(batchFile))
+                        {
+                            Process.Start(batchFile);
+                        }
+                        else
+                        {
+                            Debug.WriteLine("Update.bat not found.");
+                        }
+
                     }
                     else
                     {
                         Debug.WriteLine("Latest version");
                     }
-
-
-
+                    
                 }
             }
             catch (Exception ex)
