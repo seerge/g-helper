@@ -94,6 +94,9 @@
   <data name="ApplyPowerLimits" xml:space="preserve">
     <value>Apply Power Limits</value>
   </data>
+  <data name="ApplyWindowsPowerPlan" xml:space="preserve">
+    <value>Auto Adjust Windows Power Plan</value>
+  </data>
   <data name="AuraBreathe" xml:space="preserve">
     <value>Breathe</value>
   </data>

@@ -74,6 +74,7 @@ namespace GHelper
             checkSleepLid = new CheckBox();
             checkShutdownLid = new CheckBox();
             groupOther = new GroupBox();
+            checkApplyWindowsPowerMode = new CheckBox();
             checkKeyboardAuto = new CheckBox();
             checkUSBC = new CheckBox();
             checkNoOverdrive = new CheckBox();
