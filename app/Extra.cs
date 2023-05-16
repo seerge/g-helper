@@ -177,7 +177,7 @@ namespace GHelper
             checkUSBC.Checked = (Program.config.getConfig("optimized_usbc") == 1);
             checkUSBC.CheckedChanged += CheckUSBC_CheckedChanged;
 
-            checkAutoApplyWindowsPowerMode.Checked = Program.config.getConfig("auto_apply_power_plan") == 1;
+            checkAutoApplyWindowsPowerMode.Checked = (Program.config.getConfig("auto_apply_power_plan") != 0);
             checkAutoApplyWindowsPowerMode.CheckedChanged += checkAutoApplyWindowsPowerMode_CheckedChanged;
 
             int kb_brightness = Program.config.getConfig("keyboard_brightness");
