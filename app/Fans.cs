@@ -28,7 +28,6 @@ namespace GHelper
             labelPowerLimits.Text = Properties.Strings.PowerLimits;
             labelInfo.Text = Properties.Strings.PPTExperimental;
             checkApplyPower.Text = Properties.Strings.ApplyPowerLimits;
-            checkApplyWindowsPowerPlan.Text = Properties.Strings.ApplyWindowsPowerPlan;
 
             labelFans.Text = Properties.Strings.FanCurves;
             labelBoost.Text = Properties.Strings.CPUBoost;
@@ -378,7 +377,6 @@ namespace GHelper
             int limit_total;
             int limit_cpu;
             bool apply = Program.config.getConfigPerf("auto_apply_power") == 1;
-            bool applyPP = Program.config.getConfig("auto_apply_power_plan") == 1;
 
             if (changed)
             {
@@ -403,7 +401,6 @@ namespace GHelper
             trackTotal.Value = limit_total;
             trackCPU.Value = limit_cpu;
             checkApplyPower.Checked = apply;
-            checkApplyWindowsPowerPlan.Checked = applyPP;
 
             labelTotal.Text = trackTotal.Value.ToString() + "W";
             labelCPU.Text = trackCPU.Value.ToString() + "W";
@@ -692,11 +689,6 @@ namespace GHelper
             }
         }
 
-        private void checkApplyWindowsPowerPlan_CheckedChanged(object sender, EventArgs e)
-        {
-            CheckBox chk = (CheckBox)sender;
-            Program.config.setConfig("auto_apply_power_plan", chk.Checked ? 1 : 0);
-        }
     }
 
 }

@@ -86,7 +86,6 @@ namespace GHelper
             panelTitleGPU = new Panel();
             pictureGPU = new PictureBox();
             labelGPU = new Label();
-            checkApplyWindowsPowerPlan = new RCheckBox();
             panelFans.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)picturePerf).BeginInit();
             tableFanCharts.SuspendLayout();
@@ -324,14 +323,12 @@ namespace GHelper
             // 
             // panelApplyPower
             // 
-            panelApplyPower.Controls.Add(checkApplyWindowsPowerPlan);
             panelApplyPower.Controls.Add(checkApplyPower);
             panelApplyPower.Dock = DockStyle.Bottom;
-            panelApplyPower.Location = new Point(0, 307);
-            panelApplyPower.Margin = new Padding(2);
+            panelApplyPower.Location = new Point(0, 445);
             panelApplyPower.Name = "panelApplyPower";
-            panelApplyPower.Padding = new Padding(6);
-            panelApplyPower.Size = new Size(392, 98);
+            panelApplyPower.Padding = new Padding(10);
+            panelApplyPower.Size = new Size(523, 92);
             panelApplyPower.TabIndex = 44;
             // 
             // checkApplyPower
@@ -339,11 +336,11 @@ namespace GHelper
             checkApplyPower.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             checkApplyPower.AutoSize = true;
             checkApplyPower.BackColor = SystemColors.ControlLight;
-            checkApplyPower.Location = new Point(10, 50);
-            checkApplyPower.Margin = new Padding(6);
+            checkApplyPower.Location = new Point(18, 22);
+            checkApplyPower.Margin = new Padding(10);
             checkApplyPower.Name = "checkApplyPower";
-            checkApplyPower.Padding = new Padding(8, 3, 8, 3);
-            checkApplyPower.Size = new Size(205, 35);
+            checkApplyPower.Padding = new Padding(15, 5, 15, 5);
+            checkApplyPower.Size = new Size(277, 46);
             checkApplyPower.TabIndex = 45;
             checkApplyPower.Text = Properties.Strings.ApplyPowerLimits;
             checkApplyPower.UseVisualStyleBackColor = false;
@@ -734,21 +731,6 @@ namespace GHelper
             labelGPU.TabIndex = 40;
             labelGPU.Text = "GPU Settings";
             // 
-            // checkApplyWindowsPowerPlan
-            // 
-            checkApplyWindowsPowerPlan.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            checkApplyWindowsPowerPlan.AutoSize = true;
-            checkApplyWindowsPowerPlan.BackColor = SystemColors.ControlLight;
-            checkApplyWindowsPowerPlan.Location = new Point(10, 13);
-            checkApplyWindowsPowerPlan.Margin = new Padding(6);
-            checkApplyWindowsPowerPlan.Name = "checkApplyWindowsPowerPlan";
-            checkApplyWindowsPowerPlan.Padding = new Padding(8, 3, 8, 3);
-            checkApplyWindowsPowerPlan.Size = new Size(319, 35);
-            checkApplyWindowsPowerPlan.TabIndex = 46;
-            checkApplyWindowsPowerPlan.Text = "Auto Adjust Windows Power Plan";
-            checkApplyWindowsPowerPlan.UseVisualStyleBackColor = false;
-            checkApplyWindowsPowerPlan.CheckedChanged += checkApplyWindowsPowerPlan_CheckedChanged;
-            // 
             // Fans
             // 
             AutoScaleDimensions = new SizeF(192F, 192F);
@@ -860,6 +842,5 @@ namespace GHelper
         private Label labelGPUTemp;
         private Label labelGPUTempTitle;
         private TrackBar trackGPUTemp;
-        private RCheckBox checkApplyWindowsPowerPlan;
     }
 }
