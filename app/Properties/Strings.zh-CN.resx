@@ -153,6 +153,9 @@
   <data name="ApplyPowerLimits" xml:space="preserve">
     <value>应用功率限制</value>
   </data>
+  <data name="ApplyWindowsPowerPlan" xml:space="preserve">
+    <value>Auto Adjust Windows Power Mode</value>
+  </data>
   <data name="AuraBreathe" xml:space="preserve">
     <value>呼吸</value>
   </data>

@@ -73,6 +73,7 @@ namespace GHelper
             checkNoOverdrive.Text = Properties.Strings.DisableOverdrive;
             checkTopmost.Text = Properties.Strings.WindowTop;
             checkUSBC.Text = Properties.Strings.OptimizedUSBC;
+            checkAutoApplyWindowsPowerMode.Text = Properties.Strings.ApplyWindowsPowerPlan;
 
             labelBacklight.Text = Properties.Strings.Keyboard;
             labelBacklightBar.Text = Properties.Strings.Lightbar;
@@ -175,6 +176,9 @@ namespace GHelper
 
             checkUSBC.Checked = (Program.config.getConfig("optimized_usbc") == 1);
             checkUSBC.CheckedChanged += CheckUSBC_CheckedChanged;
+
+            checkAutoApplyWindowsPowerMode.Checked = Program.config.getConfig("auto_apply_power_plan") == 1;
+            checkAutoApplyWindowsPowerMode.CheckedChanged += checkAutoApplyWindowsPowerMode_CheckedChanged;
 
             int kb_brightness = Program.config.getConfig("keyboard_brightness");
             trackBrightness.Value = (kb_brightness >= 0 && kb_brightness <= 3) ? kb_brightness : 3;
@@ -298,6 +302,11 @@ namespace GHelper
         {
             Top = Program.settingsForm.Top;
             Left = Program.settingsForm.Left - Width - 5;
+        }
+
+        private void checkAutoApplyWindowsPowerMode_CheckedChanged(object? sender, EventArgs e)
+        {
+            Program.config.setConfig("auto_apply_power_plan", checkAutoApplyWindowsPowerMode.Checked ? 1 : 0);
         }
     }
 }
