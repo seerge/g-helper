@@ -74,7 +74,7 @@ namespace GHelper
             checkSleepLid = new CheckBox();
             checkShutdownLid = new CheckBox();
             groupOther = new GroupBox();
-            checkApplyWindowsPowerMode = new CheckBox();
+            checkAutoApplyWindowsPowerMode = new CheckBox();
             checkKeyboardAuto = new CheckBox();
             checkUSBC = new CheckBox();
             checkNoOverdrive = new CheckBox();
@@ -575,12 +575,13 @@ namespace GHelper
             // 
             // groupOther
             // 
+            groupOther.Controls.Add(checkAutoApplyWindowsPowerMode);
             groupOther.Controls.Add(checkKeyboardAuto);
             groupOther.Controls.Add(checkUSBC);
             groupOther.Controls.Add(checkNoOverdrive);
             groupOther.Controls.Add(checkTopmost);
             groupOther.Dock = DockStyle.Top;
-            groupOther.Location = new Point(10, 768);
+            groupOther.Location = new Point(5, 358);
             groupOther.Name = "groupOther";
             groupOther.Size = new Size(954, 276);
             groupOther.TabIndex = 2;
@@ -590,8 +591,8 @@ namespace GHelper
             // checkKeyboardAuto
             // 
             checkKeyboardAuto.AutoSize = true;
-            checkKeyboardAuto.Location = new Point(25, 53);
             checkKeyboardAuto.MaximumSize = new Size(780, 0);
+            checkKeyboardAuto.Location = new Point(25, 40);
             checkKeyboardAuto.Name = "checkKeyboardAuto";
             checkKeyboardAuto.Size = new Size(712, 36);
             checkKeyboardAuto.TabIndex = 46;
@@ -601,7 +602,7 @@ namespace GHelper
             // checkUSBC
             // 
             checkUSBC.AutoSize = true;
-            checkUSBC.Location = new Point(25, 210);
+            checkUSBC.Location = new Point(25, 85);
             checkUSBC.Name = "checkUSBC";
             checkUSBC.Size = new Size(659, 36);
             checkUSBC.TabIndex = 4;
@@ -611,7 +612,7 @@ namespace GHelper
             // checkNoOverdrive
             // 
             checkNoOverdrive.AutoSize = true;
-            checkNoOverdrive.Location = new Point(25, 156);
+            checkNoOverdrive.Location = new Point(25, 130);
             checkNoOverdrive.Name = "checkNoOverdrive";
             checkNoOverdrive.Size = new Size(307, 36);
             checkNoOverdrive.TabIndex = 3;
@@ -621,12 +622,22 @@ namespace GHelper
             // checkTopmost
             // 
             checkTopmost.AutoSize = true;
-            checkTopmost.Location = new Point(25, 104);
+            checkTopmost.Location = new Point(25, 175);
             checkTopmost.Name = "checkTopmost";
             checkTopmost.Size = new Size(390, 36);
             checkTopmost.TabIndex = 1;
             checkTopmost.Text = Strings.WindowTop;
             checkTopmost.UseVisualStyleBackColor = true;
+            // 
+            // checkAutoApplyWindowsPowerMode
+            // 
+            checkAutoApplyWindowsPowerMode.AutoSize = true;
+            checkAutoApplyWindowsPowerMode.Location = new Point(25, 220);
+            checkAutoApplyWindowsPowerMode.Name = "checkAutoApplyWindowsPowerMode";
+            checkAutoApplyWindowsPowerMode.Size = new Size(211, 19);
+            checkAutoApplyWindowsPowerMode.TabIndex = 47;
+            checkAutoApplyWindowsPowerMode.Text = "Auto Adjust Windows Power Mode";
+            checkAutoApplyWindowsPowerMode.UseVisualStyleBackColor = true;
             // 
             // Extra
             // 
@@ -715,5 +726,6 @@ namespace GHelper
         private Label labelBacklightTimeout;
         private NumericUpDown numericBacklightTime;
         private CheckBox checkKeyboardAuto;
+        private CheckBox checkAutoApplyWindowsPowerMode;
     }
 }
