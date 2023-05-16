@@ -153,6 +153,9 @@
   <data name="ApplyPowerLimits" xml:space="preserve">
     <value>Güç Sınırlarını Uygula</value>
   </data>
+  <data name="ApplyWindowsPowerPlan" xml:space="preserve">
+    <value>Auto Adjust Windows Power Plan</value>
+  </data>
   <data name="AuraBreathe" xml:space="preserve">
     <value>Nefes</value>
   </data>
