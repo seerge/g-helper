@@ -359,7 +359,7 @@ namespace GHelper
             cmd.StartInfo.UseShellExecute = false;
             cmd.StartInfo.CreateNoWindow = true;
             cmd.StartInfo.FileName = "powershell";
-            cmd.StartInfo.Arguments = $"Start-Sleep -Seconds 1; Expand-Archive {zipLocation} -DestinationPath {exeDir} -Force; {exeLocation}";
+            cmd.StartInfo.Arguments = $"Start-Sleep -Seconds 1; Expand-Archive {zipLocation} -DestinationPath {exeDir} -Force; {exeLocation}; Remove-Item {zipLocation} -Force";
             cmd.Start();
 
             Debug.WriteLine(requestUri);
