@@ -189,6 +189,9 @@
   <data name="Awake" xml:space="preserve">
     <value>Awake</value>
   </data>
+  <data name="BacklightTimeout" xml:space="preserve">
+    <value>Seconds to turn off backlight on battery</value>
+  </data>
   <data name="Balanced" xml:space="preserve">
     <value>Balanced</value>
   </data>
@@ -258,8 +261,17 @@
   <data name="FansPower" xml:space="preserve">
     <value>Fans + Power</value>
   </data>
+  <data name="GPUBoost" xml:space="preserve">
+    <value>Dynamic Boost</value>
+  </data>
   <data name="GPUChanging" xml:space="preserve">
     <value>Changing</value>
+  </data>
+  <data name="GPUCoreClockOffset" xml:space="preserve">
+    <value>Core Clock Offset</value>
+  </data>
+  <data name="GPUMemoryClockOffset" xml:space="preserve">
+    <value>Memory Clock Offset</value>
   </data>
   <data name="GPUMode" xml:space="preserve">
     <value>GPU Mode</value>
@@ -275,6 +287,9 @@
   </data>
   <data name="GPUSettings" xml:space="preserve">
     <value>GPU Settings</value>
+  </data>
+  <data name="GPUTempTarget" xml:space="preserve">
+    <value>Temperature Target</value>
   </data>
   <data name="KeyBindings" xml:space="preserve">
     <value>Key Bindings</value>

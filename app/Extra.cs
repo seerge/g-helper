@@ -68,6 +68,7 @@ namespace GHelper
 
             labelSpeed.Text = Properties.Strings.AnimationSpeed;
             labelBrightness.Text = Properties.Strings.Brightness;
+            labelBacklightTimeout.Text = Properties.Strings.BacklightTimeout;
 
             checkKeyboardAuto.Text = Properties.Strings.KeyboardAuto;
             checkNoOverdrive.Text = Properties.Strings.DisableOverdrive;

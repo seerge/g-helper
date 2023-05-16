@@ -36,6 +36,11 @@ namespace GHelper
 
             labelGPU.Text = Properties.Strings.GPUSettings;
 
+            labelGPUCoreTitle.Text = Properties.Strings.GPUCoreClockOffset;
+            labelGPUMemoryTitle.Text = Properties.Strings.GPUMemoryClockOffset;
+            labelGPUBoostTitle.Text = Properties.Strings.GPUBoost;
+            labelGPUTempTitle.Text = Properties.Strings.GPUTempTarget;
+
             InitTheme();
 
             MinRPM = 18;

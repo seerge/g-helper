@@ -277,6 +277,15 @@ namespace GHelper.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Seconds to turn off backlight on battery.
+        /// </summary>
+        internal static string BacklightTimeout {
+            get {
+                return ResourceManager.GetString("BacklightTimeout", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Balanced.
         /// </summary>
         internal static string Balanced {
@@ -484,11 +493,38 @@ namespace GHelper.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Dynamic Boost.
+        /// </summary>
+        internal static string GPUBoost {
+            get {
+                return ResourceManager.GetString("GPUBoost", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Changing.
         /// </summary>
         internal static string GPUChanging {
             get {
                 return ResourceManager.GetString("GPUChanging", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Core Clock.
+        /// </summary>
+        internal static string GPUCoreClockOffset {
+            get {
+                return ResourceManager.GetString("GPUCoreClockOffset", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Memory Clock Offset.
+        /// </summary>
+        internal static string GPUMemoryClockOffset {
+            get {
+                return ResourceManager.GetString("GPUMemoryClockOffset", resourceCulture);
             }
         }
         
@@ -534,6 +570,15 @@ namespace GHelper.Properties {
         internal static string GPUSettings {
             get {
                 return ResourceManager.GetString("GPUSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Temperature Target.
+        /// </summary>
+        internal static string GPUTempTarget {
+            get {
+                return ResourceManager.GetString("GPUTempTarget", resourceCulture);
             }
         }
         
