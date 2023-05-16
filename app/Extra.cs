@@ -304,7 +304,7 @@ namespace GHelper
             Left = Program.settingsForm.Left - Width - 5;
         }
 
-        private void checkAutoApplyWindowsPowerMode_CheckedChanged(object sender, EventArgs e)
+        private void checkAutoApplyWindowsPowerMode_CheckedChanged(object? sender, EventArgs e)
         {
             CheckBox chk = (CheckBox)sender;
             Program.config.setConfig("auto_apply_power_plan", chk.Checked ? 1 : 0);
