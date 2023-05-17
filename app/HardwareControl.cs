@@ -41,9 +41,9 @@ public static class HardwareControl
         if (fan > fanMax && fan < 110) SetFanMax(fan);
 
         if (Program.config.getConfig("fan_rpm") == 1)
-            return " Fan: " + (fan * 100).ToString() + "RPM";
+            return GHelper.Properties.Strings.FanSpeed + (fan * 100).ToString() + GHelper.Properties.Strings.RPM;
         else
-            return " Fan: " + Math.Min(Math.Round((float)fan / fanMax * 100), 100).ToString() + "%"; // relatively to 6000 rpm
+            return GHelper.Properties.Strings.FanSpeed + Math.Min(Math.Round((float)fan / fanMax * 100), 100).ToString() + "%"; // relatively to 6000 rpm
     }
 
     private static int GetGpuUse()

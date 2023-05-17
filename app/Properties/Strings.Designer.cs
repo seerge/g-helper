@@ -484,6 +484,15 @@ namespace GHelper.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to  Fan: .
+        /// </summary>
+        internal static string FanSpeed {
+            get {
+                return ResourceManager.GetString("FanSpeed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Fans + Power.
         /// </summary>
         internal static string FansPower {

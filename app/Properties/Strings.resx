@@ -258,6 +258,9 @@
   <data name="FansAndPower" xml:space="preserve">
     <value>Fans and Power</value>
   </data>
+  <data name="FanSpeed" xml:space="preserve">
+    <value> Fan: </value>
+  </data>
   <data name="FansPower" xml:space="preserve">
     <value>Fans + Power</value>
   </data>

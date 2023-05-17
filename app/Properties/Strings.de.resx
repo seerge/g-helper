@@ -199,6 +199,9 @@
   <data name="FansAndPower" xml:space="preserve">
     <value>Lüfter und Leistung</value>
   </data>
+  <data name="FanSpeed" xml:space="preserve">
+    <value> Lüfter: </value>
+  </data>
   <data name="FansPower" xml:space="preserve">
     <value>Lüfter + Leistung</value>
   </data>
@@ -263,7 +266,7 @@
     <value>Dunkel</value>
   </data>
   <data name="MatrixLogo" xml:space="preserve">
-    <value>Rog Logo</value>
+    <value>ROG Logo</value>
   </data>
   <data name="MatrixMedium" xml:space="preserve">
     <value>Mittel</value>
