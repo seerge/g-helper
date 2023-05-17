@@ -122,7 +122,6 @@ public class ASUSWmi
     private const uint GENERIC_WRITE = 0x40000000;
     private const uint OPEN_EXISTING = 3;
     private const uint FILE_ATTRIBUTE_NORMAL = 0x80;
-    private const uint FILE_FLAG_OVERLAPPED = 0x40000000;
     private const uint FILE_SHARE_READ = 1;
     private const uint FILE_SHARE_WRITE = 2;
 
@@ -172,7 +171,7 @@ public class ASUSWmi
             FILE_SHARE_READ | FILE_SHARE_WRITE,
             IntPtr.Zero,
             OPEN_EXISTING,
-            FILE_ATTRIBUTE_NORMAL | FILE_FLAG_OVERLAPPED,
+            FILE_ATTRIBUTE_NORMAL,
             IntPtr.Zero
         );
 

@@ -90,8 +90,13 @@ namespace GHelper
             unRegPowerNotify = NativeMethods.RegisterPowerSettingNotification(ds, settingGuid.ConsoleDisplayState, NativeMethods.DEVICE_NOTIFY_WINDOW_HANDLE);
 
             // CTRL + SHIFT + F5 to cycle profiles
-            var ghk = new KeyHandler(KeyHandler.SHIFT | KeyHandler.CTRL, Keys.F5, ds);
-            ghk.Register();
+            Keys keybind_profile = (config.getConfig("keybind_profile") != -1) ? (Keys)config.getConfig("keybind_profile") : Keys.F5;
+            if (keybind_profile != 0)
+            {
+                var ghk = new KeyHandler(KeyHandler.SHIFT | KeyHandler.CTRL, keybind_profile, ds);
+                ghk.Register();
+            }
+
 
             if (Environment.CurrentDirectory.Trim('\\') == Application.StartupPath.Trim('\\') || action.Length > 0)
             {
