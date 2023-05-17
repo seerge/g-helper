@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using System.Diagnostics;
+using System.Globalization;
 using System.IO.Pipes;
 using System.Management;
 using System.Runtime.InteropServices;
@@ -121,10 +122,47 @@ public class ASUSWmi
     private const uint GENERIC_WRITE = 0x40000000;
     private const uint OPEN_EXISTING = 3;
     private const uint FILE_ATTRIBUTE_NORMAL = 0x80;
+    private const uint FILE_FLAG_OVERLAPPED = 0x40000000;
     private const uint FILE_SHARE_READ = 1;
     private const uint FILE_SHARE_WRITE = 2;
 
     private IntPtr handle;
+
+    // Event handling attempt
+
+    [DllImport("kernel32.dll", SetLastError = true)]
+    private static extern IntPtr CreateEvent(IntPtr lpEventAttributes, bool bManualReset, bool bInitialState, string lpName);
+
+    [DllImport("kernel32.dll", SetLastError = true)]
+    private static extern bool WaitForSingleObject(IntPtr hHandle, int dwMilliseconds);
+
+    private IntPtr eventHandle;
+
+    // still works only with asus optimization service on , if someone knows how to get ACPI events from asus without that - let me know
+    public void RunListener()
+    {
+
+        eventHandle = CreateEvent(IntPtr.Zero, false, false, "ATK Event");
+
+        byte[] outBuffer = new byte[16];
+        byte[] data = new byte[8];
+        bool result;
+
+        data[0] = BitConverter.GetBytes(eventHandle.ToInt32())[0];
+        data[1] = BitConverter.GetBytes(eventHandle.ToInt32())[1];
+
+        result = Control (0x222400, data, outBuffer);
+        Debug.WriteLine(result + ":" + BitConverter.ToString(data) + "|" + BitConverter.ToString(outBuffer));
+
+        while (true)
+        {
+            WaitForSingleObject(eventHandle, Timeout.Infinite);
+            Control(0x222408, new byte[0], outBuffer);
+            int code = BitConverter.ToInt32(outBuffer);
+            Logger.WriteLine("Code: " + code);
+        }
+    }
+
 
     public ASUSWmi()
     {
@@ -134,19 +172,21 @@ public class ASUSWmi
             FILE_SHARE_READ | FILE_SHARE_WRITE,
             IntPtr.Zero,
             OPEN_EXISTING,
-            FILE_ATTRIBUTE_NORMAL,
+            FILE_ATTRIBUTE_NORMAL | FILE_FLAG_OVERLAPPED,
             IntPtr.Zero
         );
+
         if (handle == new IntPtr(-1))
         {
             throw new Exception("Can't connect to ACPI");
         }
+        
     }
 
-    public void Control(uint dwIoControlCode, byte[] lpInBuffer, byte[] lpOutBuffer)
+    public bool Control(uint dwIoControlCode, byte[] lpInBuffer, byte[] lpOutBuffer)
     {
         uint lpBytesReturned = 0;
-        bool result = DeviceIoControl(
+        return DeviceIoControl(
             handle,
             dwIoControlCode,
             lpInBuffer,

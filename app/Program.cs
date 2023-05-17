@@ -98,6 +98,8 @@ namespace GHelper
                 SettingsToggle(action);
             }
 
+            //Task.Run(wmi.RunListener); 
+
             Application.Run();
 
         }
