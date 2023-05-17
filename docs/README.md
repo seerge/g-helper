@@ -201,8 +201,12 @@ Full list of keycodes https://learn.microsoft.com/en-us/windows/win32/inputdev/v
 Some people reported that on G15 model bios can be bugged and either not turn on or not turn off fans, when you set custom fan curve (in Armoury or g-helper, or any other app)
 I have added a very optional workaround as it was asked, on launch app will try to disable and re-enable dGPU when external monitor is connected, that seems to wake up fans :)
 
-To enable this custom workaround you need to add an extra line in In config.json (under ``%AppData%\GHelper``) 
+To enable this custom workaround you need to add an extra line in config.json (under ``%AppData%\GHelper``) 
 ``gpu_reenable : 1,``
+
+### Keybinding to toggle performance modes (on external keyboards)
+
+By default app will toggle performance modes with Ctr+Shift+F5. You can change this binding by adding ``"keybind_profile": 116`` in config.json (under ``%AppData%\GHelper``), where 116 is [numerical code for desired key](https://www.oreilly.com/library/view/javascript-dhtml/9780596514082/apb.html). Put 0 to completely disable this binding.
 
 ------------
 **Disclaimers**
