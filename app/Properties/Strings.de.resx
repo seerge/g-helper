@@ -59,10 +59,10 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="ACPIError" xml:space="preserve">
-    <value>Verbindung zur ASUS ACPI fehlgeschlagen. G-Helper kann nicht ausgeführt werden. Bitte installiere ASUS System Control Interface.</value>
+    <value>Verbindung zu ASUS ACPI fehlgeschlagen. G-Helper kann nicht ausgeführt werden. Bitte installiere ASUS System Control Interface.</value>
   </data>
   <data name="AlertDGPU" xml:space="preserve">
-    <value>Die GPU ist ausgelastet. Trotzdem deaktivieren?</value>
+    <value>Die GPU wird gerade verwendet. Trotzdem deaktivieren?</value>
   </data>
   <data name="AlertDGPUTitle" xml:space="preserve">
     <value>Eco Modus</value>
@@ -86,13 +86,13 @@
     <value>Die Anwendung läuft bereits</value>
   </data>
   <data name="AppAlreadyRunningText" xml:space="preserve">
-    <value>G-Helper läuft bereits. Bitte prüfen sie den Systemtray.</value>
+    <value>G-Helper läuft bereits. Bitte prüfe den Systemtray.</value>
   </data>
   <data name="ApplyFanCurve" xml:space="preserve">
     <value>Lüfterkurve anweden</value>
   </data>
   <data name="ApplyPowerLimits" xml:space="preserve">
-    <value>Leistungrenzen Anwenden</value>
+    <value>Leistunsgrenzen anwenden</value>
   </data>
   <data name="ApplyWindowsPowerPlan" xml:space="preserve">
     <value>Windows Leistungsmodus automatisch anpassen</value>
@@ -104,7 +104,7 @@
     <value>Farbwechsel</value>
   </data>
   <data name="AuraFast" xml:space="preserve">
-    <value>Fast</value>
+    <value>Schnell</value>
   </data>
   <data name="AuraNormal" xml:space="preserve">
     <value>Normal</value>
@@ -119,13 +119,13 @@
     <value>Statisch</value>
   </data>
   <data name="AuraStrobe" xml:space="preserve">
-    <value>Strobe</value>
+    <value>Stroboskop</value>
   </data>
   <data name="AutoMode" xml:space="preserve">
     <value>Auto</value>
   </data>
   <data name="AutoRefreshTooltip" xml:space="preserve">
-    <value>60Hz auf Batterie, Maximal wenn eingesteckt.</value>
+    <value>60Hz im Batteriebetrieb Maximal wenn eingesteckt.</value>
   </data>
   <data name="Awake" xml:space="preserve">
     <value>Im Betrieb</value>
@@ -167,7 +167,7 @@
     <value>Updates herunterladen</value>
   </data>
   <data name="EcoGPUTooltip" xml:space="preserve">
-    <value>dGPU zum Batteriesparen abschalten</value>
+    <value>dGPU zum Stromsparen abschalten</value>
   </data>
   <data name="EcoMode" xml:space="preserve">
     <value>Eco</value>
@@ -191,7 +191,7 @@
     <value>GPU Lüfterprofil</value>
   </data>
   <data name="FanProfileMid" xml:space="preserve">
-    <value>Zusatz Lüfterprofil</value>
+    <value>Mittleres Lüfterprofil</value>
   </data>
   <data name="FanProfiles" xml:space="preserve">
     <value>Lüfterprofile</value>
@@ -248,7 +248,7 @@
     <value>Laptopbelechtung</value>
   </data>
   <data name="LaptopKeyboard" xml:space="preserve">
-    <value>Laptopstastatur</value>
+    <value>Laptoptastatur</value>
   </data>
   <data name="LaptopScreen" xml:space="preserve">
     <value>Laptopbildschirm</value>
@@ -311,13 +311,13 @@
     <value>Bild / GIF</value>
   </data>
   <data name="PlayPause" xml:space="preserve">
-    <value>Play / Pause</value>
+    <value>Wiedergabe / Pause</value>
   </data>
   <data name="PowerLimits" xml:space="preserve">
-    <value>Strombegrenzung (PPT)</value>
+    <value>Leistungsbegrenzung (PPT)</value>
   </data>
   <data name="PPTExperimental" xml:space="preserve">
-    <value>Strombegrenzung (PPT) ist experimentell. Nutzung auf eigene Gefahr!</value>
+    <value>Leistungsbegrenzung (PPT) ist experimentell. Nutzung erfolgt auf eigene Gefahr!</value>
   </data>
   <data name="PrintScreen" xml:space="preserve">
     <value>Druck</value>
@@ -359,7 +359,7 @@
     <value>Ausgeschaltet</value>
   </data>
   <data name="TurnOffOnBattery" xml:space="preserve">
-    <value>Auf Batterie abschalten</value>
+    <value>Im Batteriebetrieb abschalten</value>
   </data>
   <data name="UltimateGPUTooltip" xml:space="preserve">
     <value>Verbindet den Bildschirm mit der dGPU für maximale Leistung.</value>
