@@ -271,6 +271,8 @@ namespace GHelper
 
         private void Fans_Shown(object? sender, EventArgs e)
         {
+            panelSliders.Visible = panelGPU.Visible || panelPower.Visible;
+
             if (Height > Program.settingsForm.Height)
             {
                 Top = Program.settingsForm.Top + Program.settingsForm.Height - Height;
@@ -282,8 +284,8 @@ namespace GHelper
                 Top = Program.settingsForm.Top;
             }
 
-
             Left = Program.settingsForm.Left - Width - 5;
+
         }
 
 

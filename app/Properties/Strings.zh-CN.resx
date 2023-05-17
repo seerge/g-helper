@@ -154,7 +154,7 @@
     <value>应用功率限制</value>
   </data>
   <data name="ApplyWindowsPowerPlan" xml:space="preserve">
-    <value>Auto Adjust Windows Power Mode</value>
+    <value>自动调整Windows电源模式</value>
   </data>
   <data name="AuraBreathe" xml:space="preserve">
     <value>呼吸</value>

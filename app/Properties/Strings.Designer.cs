@@ -169,7 +169,7 @@ namespace GHelper.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Auto Adjust Windows Power Plan.
+        ///   Looks up a localized string similar to Auto adjust Windows Power Mode.
         /// </summary>
         internal static string ApplyWindowsPowerPlan {
             get {
@@ -178,7 +178,7 @@ namespace GHelper.Properties {
         }
         
         /// <summary>
-        ///  Looks up a localized string similar to Breathe.
+        ///   Looks up a localized string similar to Breathe.
         /// </summary>
         internal static string AuraBreathe {
             get {

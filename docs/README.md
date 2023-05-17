@@ -20,7 +20,7 @@ Control tool for ROG Zephyrus G14, G15, G16, M16, Flow X13, Flow X16, TUF, Strix
 ## [:floppy_disk: Download App](https://github.com/seerge/g-helper/releases/latest/download/GHelper.zip)
 
 If you like this app, please [star :star: it on Github](https://github.com/seerge/g-helper) and spread a word about it!
-### [:euro:  Donate EUR](https://www.paypal.com/donate/?hosted_button_id=4HMSHS4EBQWTA) | [💵 Donate USD](https://www.paypal.com/donate/?hosted_button_id=SRM6QUX6ACXDY)
+### [:euro:  Donate EUR](https://www.paypal.com/donate/?hosted_button_id=4HMSHS4EBQWTA) | [💵 Donate USD](https://www.paypal.com/donate/?hosted_button_id=SRM6QUX6ACXDY) | [:coin: Donate via Stripe](https://buy.stripe.com/00gaFJ9Lf79v7WobII)
 
 _If you post about the app - please include a link. Thanks._
 
