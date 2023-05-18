@@ -1,7 +1,6 @@
 ﻿// Source thanks to https://github.com/vddCore/Starlight with some adjustments from me
 
 using Starlight.Communication;
-using System.Diagnostics;
 using System.Drawing.Drawing2D;
 using System.Drawing.Text;
 using System.Globalization;
@@ -99,8 +98,6 @@ namespace Starlight.AnimeMatrix
 
         private static AnimeType _model = AnimeType.GA402;
 
-        private static long lastPresent;
-        private static List<double> maxes = new List<double>();
 
         public AnimeMatrixDevice()
             : base(0x0B05, 0x193B, 640)
@@ -357,52 +354,10 @@ namespace Starlight.AnimeMatrix
 
             if (_model == AnimeType.GA401)
                 PresentText(time);
-            else 
+            else
                 PresentTextDiagonal(time);
         }
 
-        private void DrawBar(int pos, double h)
-        {
-            int dx = pos*2;
-            int dy = 20;
-            
-            byte color;
-
-            for (int y = 0; y < h - (h % 2); y++)
-                for (int x = 0; x < 2 - (y % 2); x++)
-                {
-                    //color = (byte)(Math.Min(1,(h - y - 2)*2) * 255);
-                    SetLedPlanar(x + dx, dy + y, (byte)(h* 255 / 30) );
-                    SetLedPlanar(x + dx, dy - y, 255);
-                }
-        }
-
-        public void PresentAudio(double[] audio)
-        {
-
-            if (Math.Abs(DateTimeOffset.Now.ToUnixTimeMilliseconds() - lastPresent) < 70)  return;
-            lastPresent = DateTimeOffset.Now.ToUnixTimeMilliseconds();
-
-            Clear();
-
-            int size = 20;
-            double[] bars = new double[size];
-            double max = 2, maxAverage;
-
-            for (int i = 0; i < size; i++)
-            {
-                bars[i] = Math.Sqrt(audio[i] * 10000);
-                if (bars[i] > max) max = bars[i];
-            }
-
-            maxes.Add(max);
-            if (maxes.Count > 20) maxes.RemoveAt(0);
-            maxAverage = maxes.Average();
-
-            for (int i = 0; i < size; i++) DrawBar(20 - i, bars[i] / maxAverage * 20);
-
-            Present();
-        }
 
 
         public void PresentText(string text1, string text2 = "")

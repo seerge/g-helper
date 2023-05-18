@@ -18,6 +18,9 @@ namespace GHelper.AnimeMatrix
 
         public static bool IsValid => mat != null;
 
+        private static long lastPresent;
+        private static List<double> maxes = new List<double>();
+
         public AniMatrix()
         {
             try
@@ -164,7 +167,7 @@ namespace GHelper.AnimeMatrix
 
         }
 
-        private static void WaveIn_DataAvailable(object? sender, WaveInEventArgs e)
+        private void WaveIn_DataAvailable(object? sender, WaveInEventArgs e)
         {
             int bytesPerSamplePerChannel = AudioDevice.WaveFormat.BitsPerSample / 8;
             int bytesPerSample = bytesPerSamplePerChannel * AudioDevice.WaveFormat.Channels;
@@ -194,7 +197,50 @@ namespace GHelper.AnimeMatrix
             double[] paddedAudio = FftSharp.Pad.ZeroPad(AudioValues);
             double[] fftMag = FftSharp.Transform.FFTmagnitude(paddedAudio);
 
-            mat.PresentAudio(fftMag);
+            PresentAudio(fftMag);
+        }
+
+        private void DrawBar(int pos, double h)
+        {
+            int dx = pos * 2;
+            int dy = 20;
+
+            byte color;
+
+            for (int y = 0; y < h - (h % 2); y++)
+                for (int x = 0; x < 2 - (y % 2); x++)
+                {
+                    //color = (byte)(Math.Min(1,(h - y - 2)*2) * 255);
+                    mat.SetLedPlanar(x + dx, dy + y, (byte)(h * 255 / 30));
+                    mat.SetLedPlanar(x + dx, dy - y, 255);
+                }
+        }
+
+        void PresentAudio(double[] audio)
+        {
+
+            if (Math.Abs(DateTimeOffset.Now.ToUnixTimeMilliseconds() - lastPresent) < 70) return;
+            lastPresent = DateTimeOffset.Now.ToUnixTimeMilliseconds();
+
+            mat.Clear();
+
+            int size = 20;
+            double[] bars = new double[size];
+            double max = 2, maxAverage;
+
+            for (int i = 0; i < size; i++)
+            {
+                bars[i] = Math.Sqrt(audio[i] * 10000);
+                if (bars[i] > max) max = bars[i];
+            }
+
+            maxes.Add(max);
+            if (maxes.Count > 20) maxes.RemoveAt(0);
+            maxAverage = maxes.Average();
+
+            for (int i = 0; i < size; i++) DrawBar(20 - i, bars[i]*20/maxAverage);
+
+            mat.Present();
         }
 
 
