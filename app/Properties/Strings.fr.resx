@@ -62,7 +62,7 @@
     <value>Connexion impossible avec ASUS ACPI. L’application ne peut fonctionner sans. Veuillez installer Asus System Control Interface.</value>
   </data>
   <data name="AlertDGPU" xml:space="preserve">
-    <value>Le GPU semble être surchargé, voulez vous la désactiver ?</value>
+    <value>Le GPU semble être surchargé, voulez vous le désactiver ?</value>
   </data>
   <data name="AlertDGPUTitle" xml:space="preserve">
     <value>Mode Économique</value>
@@ -71,7 +71,7 @@
     <value>Désactiver le Mode Ultime requiert un redémarrage</value>
   </data>
   <data name="AlertUltimateOn" xml:space="preserve">
-    <value>Le Mode Ultime requiert un redémarrage</value>
+    <value>Activer le Mode Ultime requiert un redémarrage</value>
   </data>
   <data name="AlertUltimateTitle" xml:space="preserve">
     <value>Redémarrer maintenant ?</value>
@@ -86,7 +86,7 @@
     <value>L’application est déjà en cours d’éxecution</value>
   </data>
   <data name="AppAlreadyRunningText" xml:space="preserve">
-    <value>G-Helper est déjà en cours d'exécution. Vérifiez la barre d'état système pour une icône.</value>
+    <value>G-Helper est déjà en cours d'exécution. Vérifiez la barre d'état du système</value>
   </data>
   <data name="ApplyFanCurve" xml:space="preserve">
     <value>Appliquer la courbe de ventilateur personnalisée</value>
@@ -119,13 +119,13 @@
     <value>Statique</value>
   </data>
   <data name="AuraStrobe" xml:space="preserve">
-    <value>Stroboscope</value>
+    <value>Stroboscopique</value>
   </data>
   <data name="AutoMode" xml:space="preserve">
     <value>Automatique</value>
   </data>
   <data name="AutoRefreshTooltip" xml:space="preserve">
-    <value>Établir à 60Hz pour économiser de la batterie, et retour à la normal en chargement</value>
+    <value>Limiter le rafraîchissement de l’écran à 60Hz pour économiser de la batterie, et retour à la normal en chargement</value>
   </data>
   <data name="Awake" xml:space="preserve">
     <value>Éveillé</value>
@@ -146,13 +146,13 @@
     <value>CPU Boost</value>
   </data>
   <data name="Custom" xml:space="preserve">
-    <value>Personalisé</value>
+    <value>Personnalisé</value>
   </data>
   <data name="Default" xml:space="preserve">
-    <value>Par défault</value>
+    <value>Par défaut</value>
   </data>
   <data name="DisableOverdrive" xml:space="preserve">
-    <value>Désactivé l’Overdrive de l’Écran</value>
+    <value>Désactiver l’Overdrive de l’Écran</value>
   </data>
   <data name="Discharging" xml:space="preserve">
     <value>En déchargement</value>
@@ -161,7 +161,7 @@
     <value>Télécharger la mise à jour</value>
   </data>
   <data name="EcoGPUTooltip" xml:space="preserve">
-    <value>Désactive le dGPU pour économiser de la batterie</value>
+    <value>Désactive le dGPU pour économiser la batterie</value>
   </data>
   <data name="EcoMode" xml:space="preserve">
     <value>Économique</value>
@@ -170,7 +170,7 @@
     <value>Aditionnel</value>
   </data>
   <data name="ExtraSettings" xml:space="preserve">
-    <value>Paramêtres additionnels</value>
+    <value>Paramètres additionnels</value>
   </data>
   <data name="FactoryDefaults" xml:space="preserve">
     <value>Paramètres d'usine</value>
@@ -290,7 +290,7 @@
     <value>Limites de puissance (PPT)</value>
   </data>
   <data name="PPTExperimental" xml:space="preserve">
-    <value>Limites de puissance (PPT) est une fonctionnalité expérimentale. Utiliser avec attention et à vos risques.</value>
+    <value>Limites de puissance (PPT) est une fonctionnalité expérimentale. Utilisez la avec attention et à vos risques.</value>
   </data>
   <data name="PrintScreen" xml:space="preserve">
     <value>Capture d’Écran</value>
