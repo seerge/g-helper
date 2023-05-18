@@ -287,4 +287,64 @@
     <data name="KeyBindings" xml:space="preserve">
         <value>Combinações de teclas</value>
     </data>
+    <data name="RPM" xml:space="preserve">
+        <value>RPM</value>
+    </data>
+    <data name="RestartGPU" xml:space="preserve">
+        <value>Algum processo está usando o dGPU e impedindo o modo Econômico. Reinicialize o dGPU no gerenciador de dispositivos. Por favor, proceda por sua conta e risco. </value>
+    </data>
+    <data name="RunOnStartup" xml:space="preserve">
+        <value>Executar ao iniciar</value>
+    </data>
+    <data name="Shutdown" xml:space="preserve">
+        <value>Desligar</value>
+    </data>
+    <data name="Silent" xml:space="preserve">
+        <value>Silencioso</value>
+    </data>
+    <data name="Sleep" xml:space="preserve">
+        <value>Hibernação</value>
+    </data>
+    <data name="StandardGPUTooltip" xml:space="preserve">
+        <value>Liga o dGPU para uso padrão</value>
+    </data>
+    <data name="StandardMode" xml:space="preserve">
+        <value>Padrão</value>
+    </data>
+    <data name="StartupError" xml:space="preserve">
+        <value>Erro ao iniciar</value>
+    </data>
+    <data name="ToggleAura" xml:space="preserve">
+        <value>Alternar Aura</value>
+    </data>
+    <data name="ToggleMiniled" xml:space="preserve">
+        <value>Alternar Miniled (se suportado) </value>
+    </data>
+    <data name="ToggleScreen" xml:space="preserve">
+        <value>Alternar Tela</value>
+    </data>
+    <data name="Turbo" xml:space="preserve">
+        <value>Turbo</value>
+    </data>
+    <data name="TurnedOff" xml:space="preserve">
+        <value>Desligado</value>
+    </data>
+    <data name="TurnOffOnBattery" xml:space="preserve">
+        <value>Desligar em bateria</value>
+    </data>
+    <data name="UltimateGPUTooltip" xml:space="preserve">
+        <value>Direciona a tela do computador ao dGPU</value>
+    </data>
+    <data name="UltimateMode" xml:space="preserve">
+        <value>Ultimate</value>
+    </data>
+    <data name="VersionLabel" xml:space="preserve">
+        <value>Versão</value>
+    </data>
+    <data name="VolumeMute" xml:space="preserve">
+        <value>Mudo</value>
+    </data>
+    <data name="WindowTop" xml:space="preserve">
+        <value>Manter o app em primeiro plano</value>
+    </data>
 </root>
