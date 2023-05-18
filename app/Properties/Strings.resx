@@ -321,6 +321,9 @@
   <data name="Logo" xml:space="preserve">
     <value>Logo</value>
   </data>
+  <data name="MatrixAudio" xml:space="preserve">
+    <value>Audio Visualizer</value>
+  </data>
   <data name="MatrixBanner" xml:space="preserve">
     <value>Binary Banner</value>
   </data>

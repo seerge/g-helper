@@ -166,7 +166,13 @@ namespace GHelper
                     memory = current_memory;
                 }
 
-                labelGPU.Text = nvControl.FullName;
+                try
+                {
+                    labelGPU.Text = nvControl.FullName;
+                } catch
+                {
+
+                }
 
                 //}
 

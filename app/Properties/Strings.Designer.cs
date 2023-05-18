@@ -520,7 +520,7 @@ namespace GHelper.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Core Clock.
+        ///   Looks up a localized string similar to Core Clock Offset.
         /// </summary>
         internal static string GPUCoreClockOffset {
             get {
@@ -669,6 +669,15 @@ namespace GHelper.Properties {
         internal static string Logo {
             get {
                 return ResourceManager.GetString("Logo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Audio Visualizer.
+        /// </summary>
+        internal static string MatrixAudio {
+            get {
+                return ResourceManager.GetString("MatrixAudio", resourceCulture);
             }
         }
         

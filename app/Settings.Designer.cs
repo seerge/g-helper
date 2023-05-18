@@ -185,7 +185,7 @@ namespace GHelper
             comboMatrixRunning.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
             comboMatrixRunning.FormattingEnabled = true;
             comboMatrixRunning.ItemHeight = 32;
-            comboMatrixRunning.Items.AddRange(new object[] { Properties.Strings.MatrixBanner, Properties.Strings.MatrixLogo, Properties.Strings.MatrixPicture, Properties.Strings.MatrixClock });
+            comboMatrixRunning.Items.AddRange(new object[] { Properties.Strings.MatrixBanner, Properties.Strings.MatrixLogo, Properties.Strings.MatrixPicture, Properties.Strings.MatrixClock, Properties.Strings.MatrixAudio });
             comboMatrixRunning.Location = new Point(261, 10);
             comboMatrixRunning.Margin = new Padding(4, 10, 4, 8);
             comboMatrixRunning.Name = "comboMatrixRunning";

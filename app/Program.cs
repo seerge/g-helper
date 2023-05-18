@@ -42,7 +42,7 @@ namespace GHelper
             Thread.CurrentThread.CurrentUICulture = CultureInfo.CurrentUICulture;
             Debug.WriteLine(CultureInfo.CurrentUICulture);
 
-            //Thread.CurrentThread.CurrentUICulture = CultureInfo.CreateSpecificCulture("es");
+            //Thread.CurrentThread.CurrentUICulture = CultureInfo.CreateSpecificCulture("de");
 
             CheckProcesses();
 
@@ -159,7 +159,7 @@ namespace GHelper
             }
 
             settingsForm.AutoKeyboard();
-            settingsForm.SetMatrix();
+            settingsForm.matrix.SetMatrix();
         }
 
         private static void SystemEvents_PowerModeChanged(object sender, PowerModeChangedEventArgs e)

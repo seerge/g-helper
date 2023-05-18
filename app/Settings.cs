@@ -1,7 +1,11 @@
 ﻿using CustomControls;
+using GHelper.AnimeMatrix;
 using GHelper.Gpu;
+using NAudio.CoreAudioApi;
+using NAudio.Wave;
 using Starlight.AnimeMatrix;
 using System.Diagnostics;
+using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Net;
 using System.Reflection;
@@ -21,16 +25,15 @@ namespace GHelper
         public static System.Timers.Timer aTimer = default!;
         public static Point trayPoint;
 
-        static System.Timers.Timer matrixTimer = default!;
-
         public string versionUrl = "http://github.com/seerge/g-helper/releases";
 
         public string perfName = "Balanced";
 
+        public AniMatrix matrix;
+
         public Fans fans;
         public Extra keyb;
 
-        static AnimeMatrixDevice mat;
         static long lastRefresh;
 
         private bool customFans = false;
@@ -504,84 +507,9 @@ namespace GHelper
             if (sender is null) return;
             CheckBox check = (CheckBox)sender;
             Program.config.setConfig("matrix_auto", check.Checked ? 1 : 0);
+            matrix?.SetMatrix();
         }
 
-        private static void StartMatrixTimer(int interval = 100)
-        {
-            matrixTimer.Interval = interval;
-            matrixTimer.Enabled = true;
-        }
-
-        private static void StopMatrixTimer()
-        {
-            matrixTimer.Enabled = false;
-        }
-
-        private static void MatrixTimer_Elapsed(object? sender, ElapsedEventArgs e)
-        {
-            if (mat is null) return;
-
-            switch (Program.config.getConfig("matrix_running"))
-            {
-                case 2:
-                    mat.PresentNextFrame();
-                    break;
-                case 3:
-                    mat.PresentClock();
-                    break;
-            }
-
-        }
-
-        void SetMatrixPicture(string fileName)
-        {
-
-            if (mat is null) return;
-            StopMatrixTimer();
-
-            Image image;
-
-            try
-            {
-                using (var fs = new FileStream(fileName, FileMode.Open))
-                {
-                    var ms = new MemoryStream();
-                    fs.CopyTo(ms);
-                    ms.Position = 0;
-                    image = Image.FromStream(ms);
-                }
-            }
-            catch
-            {
-                Debug.WriteLine("Error loading picture");
-                return;
-            }
-
-            mat.SetBuiltInAnimation(false);
-            mat.ClearFrames();
-
-            FrameDimension dimension = new FrameDimension(image.FrameDimensionsList[0]);
-            int frameCount = image.GetFrameCount(dimension);
-
-            if (frameCount > 1)
-            {
-                for (int i = 0; i < frameCount; i++)
-                {
-                    image.SelectActiveFrame(dimension, i);
-                    mat.GenerateFrame(image);
-                    mat.AddFrame();
-                }
-
-                StartMatrixTimer();
-                Logger.WriteLine("Matrix GIF " + fileName);
-            }
-            else
-            {
-                mat.GenerateFrame(image);
-                mat.Present();
-                Logger.WriteLine("Matrix " + fileName);
-            }
-        }
 
 
         private void ButtonMatrix_Click(object? sender, EventArgs e)
@@ -608,7 +536,7 @@ namespace GHelper
                 Program.config.setConfig("matrix_picture", fileName);
                 Program.config.setConfig("matrix_running", 2);
 
-                SetMatrixPicture(fileName);
+                matrix?.SetMatrixPicture(fileName);
                 BeginInvoke(delegate
                 {
                     comboMatrixRunning.SelectedIndex = 2;
@@ -621,71 +549,15 @@ namespace GHelper
         private void ComboMatrixRunning_SelectedValueChanged(object? sender, EventArgs e)
         {
             Program.config.setConfig("matrix_running", comboMatrixRunning.SelectedIndex);
-            SetMatrix();
+            matrix?.SetMatrix();
         }
 
 
         private void ComboMatrix_SelectedValueChanged(object? sender, EventArgs e)
         {
             Program.config.setConfig("matrix_brightness", comboMatrix.SelectedIndex);
-            SetMatrix();
+            matrix?.SetMatrix();
         }
-
-        public void SetMatrix()
-        {
-
-            if (mat is null) return;
-
-            int brightness = Program.config.getConfig("matrix_brightness");
-            int running = Program.config.getConfig("matrix_running");
-            bool auto = Program.config.getConfig("matrix_auto") == 1;
-
-            if (brightness < 0) brightness = 0;
-            if (running < 0) running = 0;
-
-            BuiltInAnimation animation = new BuiltInAnimation(
-                (BuiltInAnimation.Running)running,
-                BuiltInAnimation.Sleeping.Starfield,
-                BuiltInAnimation.Shutdown.SeeYa,
-                BuiltInAnimation.Startup.StaticEmergence
-            );
-
-            StopMatrixTimer();
-
-            mat.SetProvider();
-
-            if (brightness == 0 || (auto && SystemInformation.PowerStatus.PowerLineStatus != PowerLineStatus.Online))
-            {
-                mat.SetDisplayState(false);
-                Logger.WriteLine("Matrix Off");
-            }
-            else
-            {
-                mat.SetDisplayState(true);
-                mat.SetBrightness((BrightnessMode)brightness);
-
-                switch (running)
-                {
-                    case 2:
-                        SetMatrixPicture(Program.config.getConfigString("matrix_picture"));
-                        break;
-                    case 3:
-                        mat.SetBuiltInAnimation(false);
-                        StartMatrixTimer(1000);
-                        Logger.WriteLine("Matrix Clock");
-                        break;
-                    default:
-                        mat.SetBuiltInAnimation(true, animation);
-                        Logger.WriteLine("Matrix builtin " + animation.AsByte);
-                        break;
-
-                }
-
-                //mat.SetBrightness((BrightnessMode)brightness);
-            }
-
-        }
-
 
 
         private void LabelCPUFan_Click(object? sender, EventArgs e)
@@ -785,13 +657,9 @@ namespace GHelper
         public void InitMatrix()
         {
 
-            try
-            {
-                mat = new AnimeMatrixDevice();
-                matrixTimer = new System.Timers.Timer(100);
-                matrixTimer.Elapsed += MatrixTimer_Elapsed;
-            }
-            catch
+            matrix = new AniMatrix();
+
+            if (matrix is null)
             {
                 panelMatrix.Visible = false;
                 return;
