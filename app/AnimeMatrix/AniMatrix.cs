@@ -31,9 +31,9 @@ namespace GHelper.AnimeMatrix
             }
             catch
             {
-                mat.Dispose();
                 mat = null;
             }
+
         }
 
         public void SetMatrix()

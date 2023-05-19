@@ -38,18 +38,20 @@ namespace GHelper
             ChartArea chartArea3 = new ChartArea();
             Title title3 = new Title();
             panelFans = new Panel();
-            labelFansResult = new Label();
-            labelTip = new Label();
-            labelBoost = new Label();
-            comboBoost = new RComboBox();
-            picturePerf = new PictureBox();
             tableFanCharts = new TableLayoutPanel();
             chartGPU = new Chart();
             chartCPU = new Chart();
             chartMid = new Chart();
+            panelTitleFans = new Panel();
+            labelBoost = new Label();
+            comboBoost = new RComboBox();
+            picturePerf = new PictureBox();
             labelFans = new Label();
+            panelApplyFans = new Panel();
+            labelFansResult = new Label();
             checkApplyFans = new RCheckBox();
             buttonReset = new RButton();
+            labelTip = new Label();
             panelSliders = new Panel();
             panelPower = new Panel();
             panelApplyPower = new Panel();
@@ -87,11 +89,13 @@ namespace GHelper
             pictureGPU = new PictureBox();
             labelGPU = new Label();
             panelFans.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)picturePerf).BeginInit();
             tableFanCharts.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)chartGPU).BeginInit();
             ((System.ComponentModel.ISupportInitialize)chartCPU).BeginInit();
             ((System.ComponentModel.ISupportInitialize)chartMid).BeginInit();
+            panelTitleFans.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)picturePerf).BeginInit();
+            panelApplyFans.SuspendLayout();
             panelSliders.SuspendLayout();
             panelPower.SuspendLayout();
             panelApplyPower.SuspendLayout();
@@ -116,53 +120,102 @@ namespace GHelper
             // 
             // panelFans
             // 
-            panelFans.Controls.Add(labelFansResult);
-            panelFans.Controls.Add(labelTip);
-            panelFans.Controls.Add(labelBoost);
-            panelFans.Controls.Add(comboBoost);
-            panelFans.Controls.Add(picturePerf);
+            panelFans.AutoSize = true;
             panelFans.Controls.Add(tableFanCharts);
-            panelFans.Controls.Add(labelFans);
-            panelFans.Controls.Add(checkApplyFans);
-            panelFans.Controls.Add(buttonReset);
+            panelFans.Controls.Add(panelTitleFans);
+            panelFans.Controls.Add(panelApplyFans);
+            panelFans.Controls.Add(labelTip);
             panelFans.Dock = DockStyle.Left;
             panelFans.Location = new Point(533, 0);
             panelFans.Margin = new Padding(0);
+            panelFans.MinimumSize = new Size(815, 0);
             panelFans.Name = "panelFans";
-            panelFans.Padding = new Padding(10);
-            panelFans.Size = new Size(824, 1189);
+            panelFans.Padding = new Padding(0, 0, 10, 0);
+            panelFans.Size = new Size(815, 1189);
             panelFans.TabIndex = 12;
             // 
-            // labelFansResult
+            // tableFanCharts
             // 
-            labelFansResult.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            labelFansResult.ForeColor = Color.Red;
-            labelFansResult.Location = new Point(30, 1073);
-            labelFansResult.Name = "labelFansResult";
-            labelFansResult.Size = new Size(760, 32);
-            labelFansResult.TabIndex = 41;
-            labelFansResult.TextAlign = ContentAlignment.TopRight;
-            labelFansResult.Visible = false;
+            tableFanCharts.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            tableFanCharts.ColumnCount = 1;
+            tableFanCharts.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
+            tableFanCharts.Controls.Add(chartGPU, 0, 1);
+            tableFanCharts.Controls.Add(chartCPU, 0, 0);
+            tableFanCharts.Controls.Add(chartMid, 0, 2);
+            tableFanCharts.Dock = DockStyle.Fill;
+            tableFanCharts.Location = new Point(0, 66);
+            tableFanCharts.Margin = new Padding(4);
+            tableFanCharts.Name = "tableFanCharts";
+            tableFanCharts.Padding = new Padding(10, 0, 10, 10);
+            tableFanCharts.RowCount = 2;
+            tableFanCharts.RowStyles.Add(new RowStyle(SizeType.Percent, 33F));
+            tableFanCharts.RowStyles.Add(new RowStyle(SizeType.Percent, 33F));
+            tableFanCharts.RowStyles.Add(new RowStyle(SizeType.Percent, 33F));
+            tableFanCharts.Size = new Size(805, 1007);
+            tableFanCharts.TabIndex = 36;
             // 
-            // labelTip
+            // chartGPU
             // 
-            labelTip.AutoSize = true;
-            labelTip.BackColor = SystemColors.ControlLightLight;
-            labelTip.Location = new Point(155, 9);
-            labelTip.Name = "labelTip";
-            labelTip.Padding = new Padding(5);
-            labelTip.Size = new Size(107, 42);
-            labelTip.TabIndex = 40;
-            labelTip.Text = "500,300";
+            chartArea1.Name = "ChartArea1";
+            chartGPU.ChartAreas.Add(chartArea1);
+            chartGPU.Dock = DockStyle.Fill;
+            chartGPU.Location = new Point(12, 342);
+            chartGPU.Margin = new Padding(2, 10, 2, 10);
+            chartGPU.Name = "chartGPU";
+            chartGPU.Size = new Size(781, 312);
+            chartGPU.TabIndex = 17;
+            chartGPU.Text = "chartGPU";
+            title1.Name = "Title1";
+            chartGPU.Titles.Add(title1);
+            // 
+            // chartCPU
+            // 
+            chartArea2.Name = "ChartArea1";
+            chartCPU.ChartAreas.Add(chartArea2);
+            chartCPU.Dock = DockStyle.Fill;
+            chartCPU.Location = new Point(12, 10);
+            chartCPU.Margin = new Padding(2, 10, 2, 10);
+            chartCPU.Name = "chartCPU";
+            chartCPU.Size = new Size(781, 312);
+            chartCPU.TabIndex = 14;
+            chartCPU.Text = "chartCPU";
+            title2.Name = "Title1";
+            chartCPU.Titles.Add(title2);
+            // 
+            // chartMid
+            // 
+            chartArea3.Name = "ChartArea3";
+            chartMid.ChartAreas.Add(chartArea3);
+            chartMid.Dock = DockStyle.Fill;
+            chartMid.Location = new Point(12, 674);
+            chartMid.Margin = new Padding(2, 10, 2, 10);
+            chartMid.Name = "chartMid";
+            chartMid.Size = new Size(781, 313);
+            chartMid.TabIndex = 14;
+            chartMid.Text = "chartMid";
+            title3.Name = "Title3";
+            chartMid.Titles.Add(title3);
+            chartMid.Visible = false;
+            // 
+            // panelTitleFans
+            // 
+            panelTitleFans.Controls.Add(labelBoost);
+            panelTitleFans.Controls.Add(comboBoost);
+            panelTitleFans.Controls.Add(picturePerf);
+            panelTitleFans.Controls.Add(labelFans);
+            panelTitleFans.Dock = DockStyle.Top;
+            panelTitleFans.Location = new Point(0, 0);
+            panelTitleFans.Name = "panelTitleFans";
+            panelTitleFans.Size = new Size(805, 66);
+            panelTitleFans.TabIndex = 42;
             // 
             // labelBoost
             // 
             labelBoost.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            labelBoost.AutoSize = true;
-            labelBoost.Location = new Point(375, 17);
+            labelBoost.Location = new Point(335, 20);
             labelBoost.Name = "labelBoost";
-            labelBoost.Size = new Size(125, 32);
-            labelBoost.TabIndex = 39;
+            labelBoost.Size = new Size(143, 32);
+            labelBoost.TabIndex = 43;
             labelBoost.Text = "CPU Boost";
             labelBoost.TextAlign = ContentAlignment.MiddleRight;
             // 
@@ -174,106 +227,66 @@ namespace GHelper
             comboBoost.DropDownStyle = ComboBoxStyle.DropDownList;
             comboBoost.FormattingEnabled = true;
             comboBoost.Items.AddRange(new object[] { "Disabled", "Enabled", "Aggressive", "Efficient Enabled", "Efficient Aggressive" });
-            comboBoost.Location = new Point(526, 15);
+            comboBoost.Location = new Point(503, 16);
             comboBoost.Name = "comboBoost";
-            comboBoost.Size = new Size(266, 40);
-            comboBoost.TabIndex = 38;
+            comboBoost.Size = new Size(287, 40);
+            comboBoost.TabIndex = 42;
             // 
             // picturePerf
             // 
             picturePerf.BackgroundImage = Properties.Resources.icons8_fan_head_96;
             picturePerf.BackgroundImageLayout = ImageLayout.Zoom;
             picturePerf.InitialImage = null;
-            picturePerf.Location = new Point(30, 18);
+            picturePerf.Location = new Point(20, 18);
             picturePerf.Margin = new Padding(4, 2, 4, 2);
             picturePerf.Name = "picturePerf";
             picturePerf.Size = new Size(36, 38);
-            picturePerf.TabIndex = 37;
+            picturePerf.TabIndex = 41;
             picturePerf.TabStop = false;
-            // 
-            // tableFanCharts
-            // 
-            tableFanCharts.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            tableFanCharts.ColumnCount = 1;
-            tableFanCharts.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
-            tableFanCharts.Controls.Add(chartGPU, 0, 1);
-            tableFanCharts.Controls.Add(chartCPU, 0, 0);
-            tableFanCharts.Controls.Add(chartMid, 0, 2);
-            tableFanCharts.Location = new Point(28, 64);
-            tableFanCharts.Margin = new Padding(4);
-            tableFanCharts.Name = "tableFanCharts";
-            tableFanCharts.RowCount = 2;
-            tableFanCharts.RowStyles.Add(new RowStyle(SizeType.Percent, 33F));
-            tableFanCharts.RowStyles.Add(new RowStyle(SizeType.Percent, 33F));
-            tableFanCharts.RowStyles.Add(new RowStyle(SizeType.Percent, 33F));
-            tableFanCharts.Size = new Size(764, 1022);
-            tableFanCharts.TabIndex = 36;
-            // 
-            // chartGPU
-            // 
-            chartArea1.Name = "ChartArea1";
-            chartGPU.ChartAreas.Add(chartArea1);
-            chartGPU.Dock = DockStyle.Fill;
-            chartGPU.Location = new Point(2, 350);
-            chartGPU.Margin = new Padding(2, 10, 2, 10);
-            chartGPU.Name = "chartGPU";
-            chartGPU.Size = new Size(760, 320);
-            chartGPU.TabIndex = 17;
-            chartGPU.Text = "chartGPU";
-            title1.Name = "Title1";
-            chartGPU.Titles.Add(title1);
-            // 
-            // chartCPU
-            // 
-            chartArea2.Name = "ChartArea1";
-            chartCPU.ChartAreas.Add(chartArea2);
-            chartCPU.Dock = DockStyle.Fill;
-            chartCPU.Location = new Point(2, 10);
-            chartCPU.Margin = new Padding(2, 10, 2, 10);
-            chartCPU.Name = "chartCPU";
-            chartCPU.Size = new Size(760, 320);
-            chartCPU.TabIndex = 14;
-            chartCPU.Text = "chartCPU";
-            title2.Name = "Title1";
-            chartCPU.Titles.Add(title2);
-            // 
-            // chartMid
-            // 
-            chartArea3.Name = "ChartArea3";
-            chartMid.ChartAreas.Add(chartArea3);
-            chartMid.Dock = DockStyle.Fill;
-            chartMid.Location = new Point(2, 690);
-            chartMid.Margin = new Padding(2, 10, 2, 10);
-            chartMid.Name = "chartMid";
-            chartMid.Size = new Size(760, 322);
-            chartMid.TabIndex = 14;
-            chartMid.Text = "chartMid";
-            title3.Name = "Title3";
-            chartMid.Titles.Add(title3);
-            chartMid.Visible = false;
             // 
             // labelFans
             // 
-            labelFans.AutoSize = true;
             labelFans.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            labelFans.Location = new Point(66, 20);
+            labelFans.Location = new Point(64, 20);
             labelFans.Margin = new Padding(4, 0, 4, 0);
             labelFans.Name = "labelFans";
-            labelFans.Size = new Size(138, 32);
-            labelFans.TabIndex = 28;
+            labelFans.Size = new Size(293, 32);
+            labelFans.TabIndex = 40;
             labelFans.Text = "Fan Curves";
+            // 
+            // panelApplyFans
+            // 
+            panelApplyFans.Controls.Add(labelFansResult);
+            panelApplyFans.Controls.Add(checkApplyFans);
+            panelApplyFans.Controls.Add(buttonReset);
+            panelApplyFans.Dock = DockStyle.Bottom;
+            panelApplyFans.Location = new Point(0, 1073);
+            panelApplyFans.Name = "panelApplyFans";
+            panelApplyFans.Size = new Size(805, 116);
+            panelApplyFans.TabIndex = 43;
+            // 
+            // labelFansResult
+            // 
+            labelFansResult.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            labelFansResult.ForeColor = Color.Red;
+            labelFansResult.Location = new Point(25, 3);
+            labelFansResult.Name = "labelFansResult";
+            labelFansResult.Size = new Size(760, 32);
+            labelFansResult.TabIndex = 42;
+            labelFansResult.TextAlign = ContentAlignment.TopRight;
+            labelFansResult.Visible = false;
             // 
             // checkApplyFans
             // 
             checkApplyFans.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             checkApplyFans.AutoSize = true;
             checkApplyFans.BackColor = SystemColors.ControlLight;
-            checkApplyFans.Location = new Point(449, 1118);
+            checkApplyFans.Location = new Point(454, 46);
             checkApplyFans.Margin = new Padding(4, 2, 4, 2);
             checkApplyFans.Name = "checkApplyFans";
             checkApplyFans.Padding = new Padding(15, 5, 15, 5);
             checkApplyFans.Size = new Size(339, 46);
-            checkApplyFans.TabIndex = 17;
+            checkApplyFans.TabIndex = 19;
             checkApplyFans.Text = Properties.Strings.ApplyFanCurve;
             checkApplyFans.UseVisualStyleBackColor = false;
             // 
@@ -285,14 +298,25 @@ namespace GHelper
             buttonReset.BorderColor = Color.Transparent;
             buttonReset.BorderRadius = 2;
             buttonReset.FlatStyle = FlatStyle.Flat;
-            buttonReset.Location = new Point(30, 1112);
+            buttonReset.Location = new Point(12, 38);
             buttonReset.Margin = new Padding(4, 2, 4, 2);
             buttonReset.Name = "buttonReset";
             buttonReset.Secondary = true;
             buttonReset.Size = new Size(232, 54);
-            buttonReset.TabIndex = 15;
+            buttonReset.TabIndex = 18;
             buttonReset.Text = Properties.Strings.FactoryDefaults;
             buttonReset.UseVisualStyleBackColor = false;
+            // 
+            // labelTip
+            // 
+            labelTip.AutoSize = true;
+            labelTip.BackColor = SystemColors.ControlLightLight;
+            labelTip.Location = new Point(684, 91);
+            labelTip.Name = "labelTip";
+            labelTip.Padding = new Padding(5);
+            labelTip.Size = new Size(107, 42);
+            labelTip.TabIndex = 40;
+            labelTip.Text = "500,300";
             // 
             // panelSliders
             // 
@@ -325,10 +349,10 @@ namespace GHelper
             // 
             panelApplyPower.Controls.Add(checkApplyPower);
             panelApplyPower.Dock = DockStyle.Bottom;
-            panelApplyPower.Location = new Point(0, 445);
+            panelApplyPower.Location = new Point(0, 447);
             panelApplyPower.Name = "panelApplyPower";
             panelApplyPower.Padding = new Padding(10);
-            panelApplyPower.Size = new Size(523, 92);
+            panelApplyPower.Size = new Size(523, 90);
             panelApplyPower.TabIndex = 44;
             // 
             // checkApplyPower
@@ -336,7 +360,7 @@ namespace GHelper
             checkApplyPower.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             checkApplyPower.AutoSize = true;
             checkApplyPower.BackColor = SystemColors.ControlLight;
-            checkApplyPower.Location = new Point(18, 22);
+            checkApplyPower.Location = new Point(18, 20);
             checkApplyPower.Margin = new Padding(10);
             checkApplyPower.Name = "checkApplyPower";
             checkApplyPower.Padding = new Padding(15, 5, 15, 5);
@@ -724,7 +748,7 @@ namespace GHelper
             // 
             labelGPU.AutoSize = true;
             labelGPU.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            labelGPU.Location = new Point(62, 21);
+            labelGPU.Location = new Point(62, 20);
             labelGPU.Margin = new Padding(4, 0, 4, 0);
             labelGPU.Name = "labelGPU";
             labelGPU.Size = new Size(162, 32);
@@ -737,7 +761,7 @@ namespace GHelper
             AutoScaleMode = AutoScaleMode.Dpi;
             AutoSize = true;
             AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            ClientSize = new Size(1361, 1189);
+            ClientSize = new Size(1356, 1189);
             Controls.Add(panelFans);
             Controls.Add(panelSliders);
             Margin = new Padding(4, 2, 4, 2);
@@ -752,11 +776,14 @@ namespace GHelper
             Text = "Fans and Power";
             panelFans.ResumeLayout(false);
             panelFans.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)picturePerf).EndInit();
             tableFanCharts.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)chartGPU).EndInit();
             ((System.ComponentModel.ISupportInitialize)chartCPU).EndInit();
             ((System.ComponentModel.ISupportInitialize)chartMid).EndInit();
+            panelTitleFans.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)picturePerf).EndInit();
+            panelApplyFans.ResumeLayout(false);
+            panelApplyFans.PerformLayout();
             panelSliders.ResumeLayout(false);
             panelSliders.PerformLayout();
             panelPower.ResumeLayout(false);
@@ -790,23 +817,17 @@ namespace GHelper
             panelTitleGPU.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)pictureGPU).EndInit();
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
         private Panel panelFans;
-        private RCheckBox checkApplyFans;
-        private RButton buttonReset;
         private Panel panelSliders;
         private TableLayoutPanel tableFanCharts;
-        private System.Windows.Forms.DataVisualization.Charting.Chart chartGPU;
-        private System.Windows.Forms.DataVisualization.Charting.Chart chartCPU;
-        private System.Windows.Forms.DataVisualization.Charting.Chart chartMid;
-        private Label labelFans;
-        private PictureBox picturePerf;
-        private RComboBox comboBoost;
-        private Label labelBoost;
+        private Chart chartGPU;
+        private Chart chartCPU;
+        private Chart chartMid;
         private Label labelTip;
-        private Label labelFansResult;
         private Panel panelPower;
         private Label labelInfo;
         private Panel panelCPU;
@@ -842,5 +863,14 @@ namespace GHelper
         private Label labelGPUTemp;
         private Label labelGPUTempTitle;
         private TrackBar trackGPUTemp;
+        private Panel panelTitleFans;
+        private Panel panelApplyFans;
+        private Label labelFansResult;
+        private RCheckBox checkApplyFans;
+        private RButton buttonReset;
+        private Label labelBoost;
+        private RComboBox comboBoost;
+        private PictureBox picturePerf;
+        private Label labelFans;
     }
 }

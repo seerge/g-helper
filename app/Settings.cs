@@ -659,7 +659,7 @@ namespace GHelper
 
             matrix = new AniMatrix();
 
-            if (matrix is null)
+            if (!AniMatrix.IsValid)
             {
                 panelMatrix.Visible = false;
                 return;

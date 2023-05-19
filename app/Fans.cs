@@ -153,7 +153,7 @@ namespace GHelper
 
                 if (gpu_boost < 0) gpu_boost = ASUSWmi.MaxGPUBoost;
                 if (gpu_temp < 0) gpu_temp = ASUSWmi.MaxGPUTemp;
-                
+
                 if (core == -1) core = 0;
                 if (memory == -1) memory = 0;
 
@@ -169,7 +169,8 @@ namespace GHelper
                 try
                 {
                     labelGPU.Text = nvControl.FullName;
-                } catch
+                }
+                catch
                 {
 
                 }
@@ -263,10 +264,10 @@ namespace GHelper
             chart.ChartAreas[0].AxisX.LineColor = chartGrid;
             chart.ChartAreas[0].AxisY.LineColor = chartGrid;
 
-            for (int i = 0; i <= fansMax-10; i += 10)
+            for (int i = 0; i <= fansMax - 10; i += 10)
                 chart.ChartAreas[0].AxisY.CustomLabels.Add(i - 2, i + 2, ChartPercToRPM(i));
 
-            chart.ChartAreas[0].AxisY.CustomLabels.Add(fansMax-2, fansMax+2, Properties.Strings.RPM);
+            chart.ChartAreas[0].AxisY.CustomLabels.Add(fansMax - 2, fansMax + 2, Properties.Strings.RPM);
 
             chart.ChartAreas[0].AxisY.Interval = 10;
 
@@ -478,8 +479,8 @@ namespace GHelper
             if (def == 1 || ASUSWmi.IsEmptyCurve(curve))
             {
                 curve = Program.wmi.GetFanCurve(device, mode);
-                
-                if (ASUSWmi.IsEmptyCurve(curve)) 
+
+                if (ASUSWmi.IsEmptyCurve(curve))
                     curve = Program.config.getDefaultCurve(device);
 
                 curve = ASUSWmi.FixFanCurve(curve);
