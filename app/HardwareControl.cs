@@ -69,11 +69,11 @@ public static class HardwareControl
         gpuTemp = -1;
         gpuUse = -1;
 
-        cpuFan = FormatFan(Program.wmi.DeviceGet(ASUSWmi.CPU_Fan));
-        gpuFan = FormatFan(Program.wmi.DeviceGet(ASUSWmi.GPU_Fan));
-        midFan = FormatFan(Program.wmi.DeviceGet(ASUSWmi.Mid_Fan));
+        cpuFan = FormatFan(Program.acpi.DeviceGet(AsusACPI.CPU_Fan));
+        gpuFan = FormatFan(Program.acpi.DeviceGet(AsusACPI.GPU_Fan));
+        midFan = FormatFan(Program.acpi.DeviceGet(AsusACPI.Mid_Fan));
 
-        cpuTemp = Program.wmi.DeviceGet(ASUSWmi.Temp_CPU);
+        cpuTemp = Program.acpi.DeviceGet(AsusACPI.Temp_CPU);
 
         if (cpuTemp < 0) try
             {
@@ -99,7 +99,7 @@ public static class HardwareControl
         }
 
         if (gpuTemp is null || gpuTemp < 0)
-            gpuTemp = Program.wmi.DeviceGet(ASUSWmi.Temp_GPU);
+            gpuTemp = Program.acpi.DeviceGet(AsusACPI.Temp_GPU);
 
         try
         {

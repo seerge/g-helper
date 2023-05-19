@@ -37,12 +37,15 @@ namespace GHelper
             Title title2 = new Title();
             ChartArea chartArea3 = new ChartArea();
             Title title3 = new Title();
+            ChartArea chartArea4 = new ChartArea();
+            Title title4 = new Title();
             panelFans = new Panel();
             labelTip = new Label();
             tableFanCharts = new TableLayoutPanel();
             chartGPU = new Chart();
             chartCPU = new Chart();
             chartMid = new Chart();
+            chartXGM = new Chart();
             panelTitleFans = new Panel();
             labelBoost = new Label();
             comboBoost = new RComboBox();
@@ -93,6 +96,7 @@ namespace GHelper
             ((System.ComponentModel.ISupportInitialize)chartGPU).BeginInit();
             ((System.ComponentModel.ISupportInitialize)chartCPU).BeginInit();
             ((System.ComponentModel.ISupportInitialize)chartMid).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)chartXGM).BeginInit();
             panelTitleFans.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)picturePerf).BeginInit();
             panelApplyFans.SuspendLayout();
@@ -121,6 +125,7 @@ namespace GHelper
             // panelFans
             // 
             panelFans.AutoSize = true;
+            panelFans.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             panelFans.Controls.Add(labelTip);
             panelFans.Controls.Add(tableFanCharts);
             panelFans.Controls.Add(panelTitleFans);
@@ -154,16 +159,20 @@ namespace GHelper
             tableFanCharts.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
             tableFanCharts.Controls.Add(chartGPU, 0, 1);
             tableFanCharts.Controls.Add(chartCPU, 0, 0);
+
+            tableFanCharts.Controls.Add(chartXGM, 0, 2);
             tableFanCharts.Controls.Add(chartMid, 0, 2);
+
             tableFanCharts.Dock = DockStyle.Fill;
             tableFanCharts.Location = new Point(0, 66);
             tableFanCharts.Margin = new Padding(4);
             tableFanCharts.Name = "tableFanCharts";
             tableFanCharts.Padding = new Padding(10, 0, 10, 10);
             tableFanCharts.RowCount = 2;
-            tableFanCharts.RowStyles.Add(new RowStyle(SizeType.Percent, 33F));
-            tableFanCharts.RowStyles.Add(new RowStyle(SizeType.Percent, 33F));
-            tableFanCharts.RowStyles.Add(new RowStyle(SizeType.Percent, 33F));
+            tableFanCharts.RowStyles.Add(new RowStyle(SizeType.Percent, 25F));
+            tableFanCharts.RowStyles.Add(new RowStyle(SizeType.Percent, 25F));
+            tableFanCharts.RowStyles.Add(new RowStyle(SizeType.Percent, 25F));
+            tableFanCharts.RowStyles.Add(new RowStyle(SizeType.Percent, 25F));
             tableFanCharts.Size = new Size(805, 1007);
             tableFanCharts.TabIndex = 36;
             // 
@@ -210,6 +219,20 @@ namespace GHelper
             chartMid.Titles.Add(title3);
             chartMid.Visible = false;
             // 
+            // chartXGM
+            // 
+            chartArea4.Name = "ChartAreaXGM";
+            chartXGM.ChartAreas.Add(chartArea4);
+            chartXGM.Dock = DockStyle.Fill;
+            chartXGM.Location = new Point(12, 674);
+            chartXGM.Margin = new Padding(2, 10, 2, 10);
+            chartXGM.Name = "chartXGM";
+            chartXGM.Size = new Size(781, 313);
+            chartXGM.TabIndex = 14;
+            chartXGM.Text = "chartXGM";
+            title4.Name = "Title4";
+            chartXGM.Titles.Add(title4);
+            chartXGM.Visible = false;            // 
             // panelTitleFans
             // 
             panelTitleFans.Controls.Add(labelBoost);
@@ -763,7 +786,7 @@ namespace GHelper
             AutoScaleMode = AutoScaleMode.Dpi;
             AutoSize = true;
             AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            ClientSize = new Size(1356, 1189);
+            ClientSize = new Size(1340, 1189);
             Controls.Add(panelFans);
             Controls.Add(panelSliders);
             Margin = new Padding(4, 2, 4, 2);
@@ -782,6 +805,7 @@ namespace GHelper
             ((System.ComponentModel.ISupportInitialize)chartGPU).EndInit();
             ((System.ComponentModel.ISupportInitialize)chartCPU).EndInit();
             ((System.ComponentModel.ISupportInitialize)chartMid).EndInit();
+            ((System.ComponentModel.ISupportInitialize)chartXGM).EndInit();
             panelTitleFans.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)picturePerf).EndInit();
             panelApplyFans.ResumeLayout(false);
@@ -829,6 +853,7 @@ namespace GHelper
         private Chart chartGPU;
         private Chart chartCPU;
         private Chart chartMid;
+        private Chart chartXGM;
         private Label labelTip;
         private Panel panelPower;
         private Label labelInfo;

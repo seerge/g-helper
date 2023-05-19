@@ -1,10 +1,16 @@
 ﻿using System.Diagnostics;
-using System.Globalization;
-using System.IO.Pipes;
 using System.Management;
 using System.Runtime.InteropServices;
 
-public class ASUSWmi
+public enum AsusFan
+{
+    CPU = 0,
+    GPU = 1,
+    Mid = 2,
+    XGM = 3
+}
+
+public class AsusACPI
 {
 
     const string FILE_NAME = @"\\.\\ATKACPI";
@@ -150,7 +156,7 @@ public class ASUSWmi
         data[0] = BitConverter.GetBytes(eventHandle.ToInt32())[0];
         data[1] = BitConverter.GetBytes(eventHandle.ToInt32())[1];
 
-        result = Control (0x222400, data, outBuffer);
+        result = Control(0x222400, data, outBuffer);
         Debug.WriteLine(result + ":" + BitConverter.ToString(data) + "|" + BitConverter.ToString(outBuffer));
 
         while (true)
@@ -163,7 +169,7 @@ public class ASUSWmi
     }
 
 
-    public ASUSWmi()
+    public AsusACPI()
     {
         handle = CreateFile(
             FILE_NAME,
@@ -179,7 +185,7 @@ public class ASUSWmi
         {
             throw new Exception("Can't connect to ACPI");
         }
-        
+
     }
 
     public bool Control(uint dwIoControlCode, byte[] lpInBuffer, byte[] lpOutBuffer)
@@ -282,7 +288,7 @@ public class ASUSWmi
     }
 
 
-    public int SetFanCurve(int device, byte[] curve)
+    public int SetFanCurve(AsusFan device, byte[] curve)
     {
 
         if (curve.Length != 16) return -1;
@@ -295,10 +301,10 @@ public class ASUSWmi
 
         switch (device)
         {
-            case 1:
+            case AsusFan.GPU:
                 result = DeviceSet(DevsGPUFanCurve, curve, "FanGPU");
                 break;
-            case 2:
+            case AsusFan.Mid:
                 result = DeviceSet(DevsMidFanCurve, curve, "FanMid");
                 break;
             default:
@@ -309,7 +315,7 @@ public class ASUSWmi
         return result;
     }
 
-    public byte[] GetFanCurve(int device, int mode = 0)
+    public byte[] GetFanCurve(AsusFan device, int mode = 0)
     {
         uint fan_mode;
 
@@ -323,9 +329,9 @@ public class ASUSWmi
 
         switch (device)
         {
-            case 1:
+            case AsusFan.GPU:
                 return DeviceGetBuffer(DevsGPUFanCurve, fan_mode);
-            case 2:
+            case AsusFan.Mid:
                 return DeviceGetBuffer(DevsMidFanCurve, fan_mode);
             default:
                 return DeviceGetBuffer(DevsCPUFanCurve, fan_mode);
@@ -334,7 +340,8 @@ public class ASUSWmi
     }
 
 
-    public static bool IsEmptyCurve(byte[] curve) {
+    public static bool IsEmptyCurve(byte[] curve)
+    {
         return curve.Length != 16 || curve.All(singleByte => singleByte == 0);
     }
 
@@ -343,7 +350,7 @@ public class ASUSWmi
         if (curve.Length != 16) throw new Exception("Incorrect curve");
 
         var points = new Dictionary<byte, byte>();
-        for (int i = 0; i < 8; i++) points[curve[i]] = curve[i+8];
+        for (int i = 0; i < 8; i++) points[curve[i]] = curve[i + 8];
 
         var pointsFixed = new Dictionary<byte, byte>();
         bool fix = false;
@@ -357,7 +364,7 @@ public class ASUSWmi
                 pointsFixed.Add(20, 0);
             }
 
-            if (count != 3 || !fix) 
+            if (count != 3 || !fix)
                 pointsFixed.Add(pair.Key, pair.Value);
             count++;
         }
@@ -365,13 +372,18 @@ public class ASUSWmi
         count = 0;
         foreach (var pair in pointsFixed.OrderBy(x => x.Key))
         {
-            curve[count] =pair.Key;
-            curve[count+8] = pair.Value;
+            curve[count] = pair.Key;
+            curve[count + 8] = pair.Value;
             count++;
         }
 
         return curve;
 
+    }
+
+    public bool IsXGConnected()
+    {
+        return DeviceGet(GPUXGConnected) == 1;
     }
 
     public void TUFKeyboardBrightness(int brightness)

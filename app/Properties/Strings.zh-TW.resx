@@ -154,7 +154,7 @@
     <value>套用功率限制</value>
   </data>
   <data name="ApplyWindowsPowerPlan" xml:space="preserve">
-    <value>Auto Adjust Windows Power Mode</value>
+    <value>自動調整Windows電源模式</value>
   </data>
   <data name="AuraBreathe" xml:space="preserve">
     <value>呼吸</value>
@@ -188,6 +188,9 @@
   </data>
   <data name="Awake" xml:space="preserve">
     <value>喚醒時</value>
+  </data>
+  <data name="BacklightTimeout" xml:space="preserve">
+    <value>電池模式下自動關閉背光的秒數</value>
   </data>
   <data name="Balanced" xml:space="preserve">
     <value>平衡模式</value>
@@ -255,11 +258,23 @@
   <data name="FansAndPower" xml:space="preserve">
     <value>風扇和電源</value>
   </data>
+  <data name="FanSpeed" xml:space="preserve">
+    <value> 風扇: </value>
+  </data>
   <data name="FansPower" xml:space="preserve">
     <value>自定義設置</value>
   </data>
+  <data name="GPUBoost" xml:space="preserve">
+    <value>Dynamic Boost</value>
+  </data>
   <data name="GPUChanging" xml:space="preserve">
     <value>切換中...</value>
+  </data>
+  <data name="GPUCoreClockOffset" xml:space="preserve">
+    <value>核心時脈偏移量(Offset)</value>
+  </data>
+  <data name="GPUMemoryClockOffset" xml:space="preserve">
+    <value>顯示卡記憶體偏移量(Offset)</value>
   </data>
   <data name="GPUMode" xml:space="preserve">
     <value>GPU 模式</value>
@@ -272,6 +287,12 @@
   </data>
   <data name="GPUModeUltimate" xml:space="preserve">
     <value>獨立顯卡</value>
+  </data>
+  <data name="GPUSettings" xml:space="preserve">
+    <value>顯卡設定</value>
+  </data>
+  <data name="GPUTempTarget" xml:space="preserve">
+    <value>GPU溫度上限</value>
   </data>
   <data name="KeyBindings" xml:space="preserve">
     <value>按鍵綁定</value>
@@ -290,6 +311,18 @@
   </data>
   <data name="LaptopScreen" xml:space="preserve">
     <value>螢幕顯示</value>
+  </data>
+  <data name="Lid" xml:space="preserve">
+    <value>螢幕背蓋</value>
+  </data>
+  <data name="Lightbar" xml:space="preserve">
+    <value>燈條</value>
+  </data>
+  <data name="Logo" xml:space="preserve">
+    <value>Logo</value>
+  </data>
+  <data name="MatrixAudio" xml:space="preserve">
+    <value>Audio Visualizer</value>
   </data>
   <data name="MatrixBanner" xml:space="preserve">
     <value>横幅</value>
@@ -333,6 +366,9 @@
   <data name="OptimizedGPUTooltip" xml:space="preserve">
     <value>使用電池切換到節能模式，插入電源時切換到標準模式</value>
   </data>
+  <data name="OptimizedUSBC" xml:space="preserve">
+    <value>自動模式下，使用USB-C充電時持續關閉獨顯</value>
+  </data>
   <data name="Other" xml:space="preserve">
     <value>其他</value>
   </data>
@@ -360,6 +396,9 @@
   <data name="Quit" xml:space="preserve">
     <value>退出</value>
   </data>
+  <data name="RestartGPU" xml:space="preserve">
+    <value>有其他程式正在使用獨顯導致無法切換至節能模式. 是否在裝置管理員中重啟獨顯? * 請自行評估風險</value>
+  </data>
   <data name="RPM" xml:space="preserve">
     <value>每分鐘轉數</value>
   </data>
@@ -386,6 +425,12 @@
   </data>
   <data name="ToggleAura" xml:space="preserve">
     <value>切換Aura</value>
+  </data>
+  <data name="ToggleMiniled" xml:space="preserve">
+    <value>切換Miniled(若有支援)</value>
+  </data>
+  <data name="ToggleScreen" xml:space="preserve">
+    <value>切換螢幕</value>
   </data>
   <data name="Turbo" xml:space="preserve">
     <value>極速模式</value>

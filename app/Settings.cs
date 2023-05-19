@@ -265,13 +265,13 @@ namespace GHelper
 
         private void ButtonXGM_Click(object? sender, EventArgs e)
         {
-            if (Program.wmi.DeviceGet(ASUSWmi.GPUXG) == 1)
+            if (Program.acpi.DeviceGet(AsusACPI.GPUXG) == 1)
             {
-                Program.wmi.DeviceSet(ASUSWmi.GPUXG, 0, "GPU XGM");
+                Program.acpi.DeviceSet(AsusACPI.GPUXG, 0, "GPU XGM");
             }
             else
             {
-                Program.wmi.DeviceSet(ASUSWmi.GPUXG, 1, "GPU XGM");
+                Program.acpi.DeviceSet(AsusACPI.GPUXG, 1, "GPU XGM");
             }
             InitXGM();
         }
@@ -637,21 +637,21 @@ namespace GHelper
 
         public void InitAura()
         {
-            Aura.Mode = Program.config.getConfig("aura_mode");
-            Aura.Speed = Program.config.getConfig("aura_speed");
-            Aura.SetColor(Program.config.getConfig("aura_color"));
-            Aura.SetColor2(Program.config.getConfig("aura_color2"));
+            AsusUSB.Mode = Program.config.getConfig("aura_mode");
+            AsusUSB.Speed = Program.config.getConfig("aura_speed");
+            AsusUSB.SetColor(Program.config.getConfig("aura_color"));
+            AsusUSB.SetColor2(Program.config.getConfig("aura_color2"));
 
             comboKeyboard.DropDownStyle = ComboBoxStyle.DropDownList;
-            comboKeyboard.DataSource = new BindingSource(Aura.GetModes(), null);
+            comboKeyboard.DataSource = new BindingSource(AsusUSB.GetModes(), null);
             comboKeyboard.DisplayMember = "Value";
             comboKeyboard.ValueMember = "Key";
-            comboKeyboard.SelectedValue = Aura.Mode;
+            comboKeyboard.SelectedValue = AsusUSB.Mode;
             comboKeyboard.SelectedValueChanged += ComboKeyboard_SelectedValueChanged;
 
-            pictureColor.BackColor = Aura.Color1;
-            pictureColor2.BackColor = Aura.Color2;
-            pictureColor2.Visible = Aura.HasSecondColor();
+            pictureColor.BackColor = AsusUSB.Color1;
+            pictureColor2.BackColor = AsusUSB.Color2;
+            pictureColor2.Visible = AsusUSB.HasSecondColor();
         }
 
         public void InitMatrix()
@@ -679,16 +679,16 @@ namespace GHelper
 
         public void SetAura()
         {
-            Aura.Mode = Program.config.getConfig("aura_mode");
-            Aura.Speed = Program.config.getConfig("aura_speed");
-            Aura.SetColor(Program.config.getConfig("aura_color"));
-            Aura.SetColor2(Program.config.getConfig("aura_color2"));
+            AsusUSB.Mode = Program.config.getConfig("aura_mode");
+            AsusUSB.Speed = Program.config.getConfig("aura_speed");
+            AsusUSB.SetColor(Program.config.getConfig("aura_color"));
+            AsusUSB.SetColor2(Program.config.getConfig("aura_color2"));
 
-            pictureColor.BackColor = Aura.Color1;
-            pictureColor2.BackColor = Aura.Color2;
-            pictureColor2.Visible = Aura.HasSecondColor();
+            pictureColor.BackColor = AsusUSB.Color1;
+            pictureColor2.BackColor = AsusUSB.Color2;
+            pictureColor2.Visible = AsusUSB.HasSecondColor();
 
-            Aura.ApplyAura();
+            AsusUSB.ApplyAura();
 
         }
 
@@ -753,13 +753,13 @@ namespace GHelper
             if (overdrive >= 0)
             {
                 if (Program.config.getConfig("no_overdrive") == 1) overdrive = 0;
-                Program.wmi.DeviceSet(ASUSWmi.ScreenOverdrive, overdrive, "ScreenOverdrive");
+                Program.acpi.DeviceSet(AsusACPI.ScreenOverdrive, overdrive, "ScreenOverdrive");
 
             }
 
             if (miniled >= 0)
             {
-                Program.wmi.DeviceSet(ASUSWmi.ScreenMiniled, miniled, "Miniled");
+                Program.acpi.DeviceSet(AsusACPI.ScreenMiniled, miniled, "Miniled");
                 Debug.WriteLine("Miniled " + miniled);
             }
 
@@ -775,8 +775,8 @@ namespace GHelper
             bool screenAuto = (Program.config.getConfig("screen_auto") == 1);
             bool overdriveSetting = (Program.config.getConfig("no_overdrive") != 1);
 
-            int overdrive = Program.wmi.DeviceGet(ASUSWmi.ScreenOverdrive);
-            int miniled = Program.wmi.DeviceGet(ASUSWmi.ScreenMiniled);
+            int overdrive = Program.acpi.DeviceGet(AsusACPI.ScreenOverdrive);
+            int miniled = Program.acpi.DeviceGet(AsusACPI.ScreenMiniled);
 
             bool screenEnabled = (frequency >= 0);
 
@@ -848,17 +848,17 @@ namespace GHelper
 
         private void ButtonUltimate_Click(object? sender, EventArgs e)
         {
-            SetGPUMode(ASUSWmi.GPUModeUltimate);
+            SetGPUMode(AsusACPI.GPUModeUltimate);
         }
 
         private void ButtonStandard_Click(object? sender, EventArgs e)
         {
-            SetGPUMode(ASUSWmi.GPUModeStandard);
+            SetGPUMode(AsusACPI.GPUModeStandard);
         }
 
         private void ButtonEco_Click(object? sender, EventArgs e)
         {
-            SetGPUMode(ASUSWmi.GPUModeEco);
+            SetGPUMode(AsusACPI.GPUModeEco);
         }
 
         public async void RefreshSensors(bool force = false)
@@ -935,22 +935,22 @@ namespace GHelper
             int limit_total = Program.config.getConfigPerf("limit_total");
             int limit_cpu = Program.config.getConfigPerf("limit_cpu");
 
-            if (limit_total > ASUSWmi.MaxTotal) return;
-            if (limit_total < ASUSWmi.MinTotal) return;
+            if (limit_total > AsusACPI.MaxTotal) return;
+            if (limit_total < AsusACPI.MinTotal) return;
 
-            if (limit_cpu > ASUSWmi.MaxCPU) return;
-            if (limit_cpu < ASUSWmi.MinCPU) return;
+            if (limit_cpu > AsusACPI.MaxCPU) return;
+            if (limit_cpu < AsusACPI.MinCPU) return;
 
-            if (Program.wmi.DeviceGet(ASUSWmi.PPT_TotalA0) >= 0)
+            if (Program.acpi.DeviceGet(AsusACPI.PPT_TotalA0) >= 0)
             {
-                Program.wmi.DeviceSet(ASUSWmi.PPT_TotalA0, limit_total, "PowerLimit A0");
-                Program.wmi.DeviceSet(ASUSWmi.PPT_APUA3, limit_total, "PowerLimit A3");
+                Program.acpi.DeviceSet(AsusACPI.PPT_TotalA0, limit_total, "PowerLimit A0");
+                Program.acpi.DeviceSet(AsusACPI.PPT_APUA3, limit_total, "PowerLimit A3");
                 customPower = limit_total;
             }
 
-            if (Program.wmi.DeviceGet(ASUSWmi.PPT_CPUB0) >= 0)
+            if (Program.acpi.DeviceGet(AsusACPI.PPT_CPUB0) >= 0)
             {
-                Program.wmi.DeviceSet(ASUSWmi.PPT_CPUB0, limit_cpu, "PowerLimit B0");
+                Program.acpi.DeviceSet(AsusACPI.PPT_CPUB0, limit_cpu, "PowerLimit B0");
                 customPower = limit_cpu;
             }
 
@@ -969,7 +969,7 @@ namespace GHelper
 
             //if ((gpu_core > -5 && gpu_core < 5) && (gpu_memory > -5 && gpu_memory < 5)) launchAsAdmin = false;
 
-            if (Program.wmi.DeviceGet(ASUSWmi.GPUEco) == 1) return;
+            if (Program.acpi.DeviceGet(AsusACPI.GPUEco) == 1) return;
             if (HardwareControl.GpuControl is null) return;
             if (!HardwareControl.GpuControl!.IsNvidia) return;
 
@@ -999,17 +999,17 @@ namespace GHelper
             int gpu_temp = Program.config.getConfigPerf("gpu_temp");
 
 
-            if (gpu_boost < ASUSWmi.MinGPUBoost || gpu_boost > ASUSWmi.MaxGPUBoost) return;
-            if (gpu_temp < ASUSWmi.MinGPUTemp || gpu_temp > ASUSWmi.MaxGPUTemp) return;
+            if (gpu_boost < AsusACPI.MinGPUBoost || gpu_boost > AsusACPI.MaxGPUBoost) return;
+            if (gpu_temp < AsusACPI.MinGPUTemp || gpu_temp > AsusACPI.MaxGPUTemp) return;
 
-            if (Program.wmi.DeviceGet(ASUSWmi.PPT_GPUC0) >= 0)
+            if (Program.acpi.DeviceGet(AsusACPI.PPT_GPUC0) >= 0)
             {
-                Program.wmi.DeviceSet(ASUSWmi.PPT_GPUC0, gpu_boost, "PowerLimit C0");
+                Program.acpi.DeviceSet(AsusACPI.PPT_GPUC0, gpu_boost, "PowerLimit C0");
             }
 
-            if (Program.wmi.DeviceGet(ASUSWmi.PPT_GPUC2) >= 0)
+            if (Program.acpi.DeviceGet(AsusACPI.PPT_GPUC2) >= 0)
             {
-                Program.wmi.DeviceSet(ASUSWmi.PPT_GPUC2, gpu_temp, "PowerLimit C2");
+                Program.acpi.DeviceSet(AsusACPI.PPT_GPUC2, gpu_temp, "PowerLimit C2");
             }
 
         }
@@ -1027,18 +1027,21 @@ namespace GHelper
 
             if (Program.config.getConfigPerf("auto_apply") == 1 || force)
             {
-                int cpuResult = Program.wmi.SetFanCurve(0, Program.config.getFanConfig(0));
-                int gpuResult = Program.wmi.SetFanCurve(1, Program.config.getFanConfig(1));
+                int cpuResult = Program.acpi.SetFanCurve(AsusFan.CPU, Program.config.getFanConfig(AsusFan.CPU));
+                int gpuResult = Program.acpi.SetFanCurve(AsusFan.GPU, Program.config.getFanConfig(AsusFan.GPU));
 
-                if (Program.config.getConfig("mid_fan") == 1)
-                    Program.wmi.SetFanCurve(2, Program.config.getFanConfig(2));
+                if (Program.config.isConfig("mid_fan"))
+                    Program.acpi.SetFanCurve(AsusFan.Mid, Program.config.getFanConfig(AsusFan.Mid));
+
+                if (Program.config.isConfig("xgm_fan") && Program.acpi.IsXGConnected())
+                    AsusUSB.SetXGMFan(Program.config.getFanConfig(AsusFan.XGM));
 
                 // something went wrong, resetting to default profile
                 if (cpuResult != 1 || gpuResult != 1)
                 {
                     int mode = Program.config.getConfig("performance_mode");
                     Logger.WriteLine("ASUS BIOS rejected fan curve, resetting mode to " + mode);
-                    Program.wmi.DeviceSet(ASUSWmi.PerformanceMode, mode, "PerformanceMode");
+                    Program.acpi.DeviceSet(AsusACPI.PerformanceMode, mode, "PerformanceMode");
                     LabelFansResult("ASUS BIOS rejected fan curve");
                 }
                 else
@@ -1053,8 +1056,8 @@ namespace GHelper
                     Task.Run(async () =>
                     {
                         await Task.Delay(TimeSpan.FromSeconds(1));
-                        Program.wmi.DeviceSet(ASUSWmi.PPT_TotalA0, 80, "PowerLimit Fix A0");
-                        Program.wmi.DeviceSet(ASUSWmi.PPT_APUA3, 80, "PowerLimit Fix A3");
+                        Program.acpi.DeviceSet(AsusACPI.PPT_TotalA0, 80, "PowerLimit Fix A0");
+                        Program.acpi.DeviceSet(AsusACPI.PPT_APUA3, 80, "PowerLimit Fix A3");
                     });
                 }
 
@@ -1112,17 +1115,17 @@ namespace GHelper
 
             switch (PerformanceMode)
             {
-                case ASUSWmi.PerformanceSilent:
+                case AsusACPI.PerformanceSilent:
                     buttonSilent.Activated = true;
                     perfName = Properties.Strings.Silent;
                     break;
-                case ASUSWmi.PerformanceTurbo:
+                case AsusACPI.PerformanceTurbo:
                     buttonTurbo.Activated = true;
                     perfName = Properties.Strings.Turbo;
                     break;
                 default:
                     buttonBalanced.Activated = true;
-                    PerformanceMode = ASUSWmi.PerformanceBalanced;
+                    PerformanceMode = AsusACPI.PerformanceBalanced;
                     perfName = Properties.Strings.Balanced;
                     break;
             }
@@ -1135,7 +1138,8 @@ namespace GHelper
             Program.config.setConfig("performance_" + (int)SystemInformation.PowerStatus.PowerLineStatus, PerformanceMode);
             Program.config.setConfig("performance_mode", PerformanceMode);
 
-            Program.wmi.DeviceSet(ASUSWmi.PerformanceMode, PerformanceMode, "PerformanceMode");
+            Program.acpi.DeviceSet(AsusACPI.PerformanceMode, PerformanceMode, "PerformanceMode");
+            if (Program.config.isConfig("xgm_fan") && Program.acpi.IsXGConnected()) AsusUSB.ResetXGM();
 
             if (notify && (oldMode != PerformanceMode))
             {
@@ -1200,9 +1204,9 @@ namespace GHelper
             if (Program.config.getConfig("keyboard_auto") != 1) return;
 
             if (SystemInformation.PowerStatus.PowerLineStatus == PowerLineStatus.Online)
-                Aura.ApplyBrightness(3);
+                AsusUSB.ApplyBrightness(3);
             else
-                Aura.ApplyBrightness(0);
+                AsusUSB.ApplyBrightness(0);
 
 
         }
@@ -1242,7 +1246,7 @@ namespace GHelper
             bool optimizedUSBC = Program.config.getConfig("optimized_usbc") != 1;
 
             return SystemInformation.PowerStatus.PowerLineStatus == PowerLineStatus.Online &&
-                   (optimizedUSBC || Program.wmi.DeviceGet(ASUSWmi.ChargerMode) != ASUSWmi.ChargerUSB);
+                   (optimizedUSBC || Program.acpi.DeviceGet(AsusACPI.ChargerMode) != AsusACPI.ChargerUSB);
 
         }
 
@@ -1256,8 +1260,8 @@ namespace GHelper
 
             if (!GpuAuto && !ForceGPU) return false;
 
-            int eco = Program.wmi.DeviceGet(ASUSWmi.GPUEco);
-            int mux = Program.wmi.DeviceGet(ASUSWmi.GPUMux);
+            int eco = Program.acpi.DeviceGet(AsusACPI.GPUEco);
+            int mux = Program.acpi.DeviceGet(AsusACPI.GPUMux);
 
             if (mux == 0) // GPU in Ultimate, ignore
                 return false;
@@ -1267,13 +1271,13 @@ namespace GHelper
                 if (ReEnableGPU()) return true;
 
                 if (eco == 1)
-                    if ((GpuAuto && IsPlugged()) || (ForceGPU && GpuMode == ASUSWmi.GPUModeStandard))
+                    if ((GpuAuto && IsPlugged()) || (ForceGPU && GpuMode == AsusACPI.GPUModeStandard))
                     {
                         SetGPUEco(0);
                         return true;
                     }
                 if (eco == 0)
-                    if ((GpuAuto && !IsPlugged()) || (ForceGPU && GpuMode == ASUSWmi.GPUModeEco))
+                    if ((GpuAuto && !IsPlugged()) || (ForceGPU && GpuMode == AsusACPI.GPUModeEco))
                     {
 
                         if (HardwareControl.IsUsedGPU())
@@ -1322,20 +1326,16 @@ namespace GHelper
 
         public void InitXGM()
         {
-            int connected = Program.wmi.DeviceGet(ASUSWmi.GPUXGConnected);
-            int enabled = Program.wmi.DeviceGet(ASUSWmi.GPUXG);
-
-            buttonXGM.Enabled = buttonXGM.Visible = (connected == 1);
-            buttonXGM.Activated = (enabled == 1);
-
+            buttonXGM.Enabled = buttonXGM.Visible = Program.acpi.IsXGConnected();
+            buttonXGM.Activated = (Program.acpi.DeviceGet(AsusACPI.GPUXG) == 1);
         }
 
 
         public int InitGPUMode()
         {
 
-            int eco = Program.wmi.DeviceGet(ASUSWmi.GPUEco);
-            int mux = Program.wmi.DeviceGet(ASUSWmi.GPUMux);
+            int eco = Program.acpi.DeviceGet(AsusACPI.GPUEco);
+            int mux = Program.acpi.DeviceGet(AsusACPI.GPUMux);
 
             Logger.WriteLine("Eco flag : " + eco);
             Logger.WriteLine("Mux flag : " + mux);
@@ -1343,13 +1343,13 @@ namespace GHelper
             int GpuMode;
 
             if (mux == 0)
-                GpuMode = ASUSWmi.GPUModeUltimate;
+                GpuMode = AsusACPI.GPUModeUltimate;
             else
             {
                 if (eco == 1)
-                    GpuMode = ASUSWmi.GPUModeEco;
+                    GpuMode = AsusACPI.GPUModeEco;
                 else
-                    GpuMode = ASUSWmi.GPUModeStandard;
+                    GpuMode = AsusACPI.GPUModeStandard;
 
                 UltimateUI(mux == 1);
 
@@ -1433,7 +1433,7 @@ namespace GHelper
                 }
 
                 //if (eco == 1) status = 0; else
-                status = Program.wmi.SetGPUEco(eco);
+                status = Program.acpi.SetGPUEco(eco);
 
                 if (status == 0 && eco == 1 && hardWay)
                 {
@@ -1474,34 +1474,34 @@ namespace GHelper
             var restart = false;
             var changed = false;
 
-            if (CurrentGPU == ASUSWmi.GPUModeUltimate)
+            if (CurrentGPU == AsusACPI.GPUModeUltimate)
             {
                 DialogResult dialogResult = MessageBox.Show(Properties.Strings.AlertUltimateOff, Properties.Strings.AlertUltimateTitle, MessageBoxButtons.YesNo);
                 if (dialogResult == DialogResult.Yes)
                 {
-                    Program.wmi.DeviceSet(ASUSWmi.GPUMux, 1, "GPUMux");
+                    Program.acpi.DeviceSet(AsusACPI.GPUMux, 1, "GPUMux");
                     restart = true;
                     changed = true;
                 }
             }
-            else if (GPUMode == ASUSWmi.GPUModeUltimate)
+            else if (GPUMode == AsusACPI.GPUModeUltimate)
             {
                 DialogResult dialogResult = MessageBox.Show(Properties.Strings.AlertUltimateOn, Properties.Strings.AlertUltimateTitle, MessageBoxButtons.YesNo);
                 if (dialogResult == DialogResult.Yes)
                 {
-                    Program.wmi.DeviceSet(ASUSWmi.GPUMux, 0, "GPUMux");
+                    Program.acpi.DeviceSet(AsusACPI.GPUMux, 0, "GPUMux");
                     restart = true;
                     changed = true;
                 }
 
             }
-            else if (GPUMode == ASUSWmi.GPUModeEco)
+            else if (GPUMode == AsusACPI.GPUModeEco)
             {
                 VisualiseGPUMode(GPUMode);
                 SetGPUEco(1, true);
                 changed = true;
             }
-            else if (GPUMode == ASUSWmi.GPUModeStandard)
+            else if (GPUMode == AsusACPI.GPUModeStandard)
             {
                 VisualiseGPUMode(GPUMode);
                 SetGPUEco(0);
@@ -1537,14 +1537,14 @@ namespace GHelper
 
             switch (GPUMode)
             {
-                case ASUSWmi.GPUModeEco:
+                case AsusACPI.GPUModeEco:
                     buttonOptimized.BorderColor = colorEco;
                     buttonEco.Activated = !GPUAuto;
                     buttonOptimized.Activated = GPUAuto;
                     labelGPU.Text = Properties.Strings.GPUMode + ": " + Properties.Strings.GPUModeEco;
                     Program.trayIcon.Icon = Properties.Resources.eco;
                     break;
-                case ASUSWmi.GPUModeUltimate:
+                case AsusACPI.GPUModeUltimate:
                     buttonUltimate.Activated = true;
                     labelGPU.Text = Properties.Strings.GPUMode + ": " + Properties.Strings.GPUModeUltimate;
                     Program.trayIcon.Icon = Properties.Resources.ultimate;
@@ -1568,17 +1568,17 @@ namespace GHelper
 
         private void ButtonSilent_Click(object? sender, EventArgs e)
         {
-            SetPerformanceMode(ASUSWmi.PerformanceSilent);
+            SetPerformanceMode(AsusACPI.PerformanceSilent);
         }
 
         private void ButtonBalanced_Click(object? sender, EventArgs e)
         {
-            SetPerformanceMode(ASUSWmi.PerformanceBalanced);
+            SetPerformanceMode(AsusACPI.PerformanceBalanced);
         }
 
         private void ButtonTurbo_Click(object? sender, EventArgs e)
         {
-            SetPerformanceMode(ASUSWmi.PerformanceTurbo);
+            SetPerformanceMode(AsusACPI.PerformanceTurbo);
         }
 
         private void Settings_Load(object sender, EventArgs e)
@@ -1609,7 +1609,7 @@ namespace GHelper
             labelBatteryTitle.Text = Properties.Strings.BatteryChargeLimit + ": " + limit.ToString() + "%";
             sliderBattery.Value = limit;
 
-            Program.wmi.DeviceSet(ASUSWmi.BatteryLimit, limit, "BatteryLimit");
+            Program.acpi.DeviceSet(AsusACPI.BatteryLimit, limit, "BatteryLimit");
             try
             {
                 OptimizationService.SetChargeLimit(limit);

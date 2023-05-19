@@ -92,10 +92,10 @@ namespace GHelper
             Shown += Keyboard_Shown;
 
             comboKeyboardSpeed.DropDownStyle = ComboBoxStyle.DropDownList;
-            comboKeyboardSpeed.DataSource = new BindingSource(Aura.GetSpeeds(), null);
+            comboKeyboardSpeed.DataSource = new BindingSource(AsusUSB.GetSpeeds(), null);
             comboKeyboardSpeed.DisplayMember = "Value";
             comboKeyboardSpeed.ValueMember = "Key";
-            comboKeyboardSpeed.SelectedValue = Aura.Speed;
+            comboKeyboardSpeed.SelectedValue = AsusUSB.Speed;
             comboKeyboardSpeed.SelectedValueChanged += ComboKeyboardSpeed_SelectedValueChanged;
 
             // Keyboard
@@ -187,7 +187,7 @@ namespace GHelper
             pictureHelp.Click += PictureHelp_Click;
             trackBrightness.Scroll += TrackBrightness_Scroll;
 
-            panelXMG.Visible = (Program.wmi.DeviceGet(ASUSWmi.GPUXGConnected) == 1);
+            panelXMG.Visible = (Program.acpi.DeviceGet(AsusACPI.GPUXGConnected) == 1);
             checkXMG.Checked = !(Program.config.getConfig("xmg_light") == 0);
             checkXMG.CheckedChanged += CheckXMG_CheckedChanged;
 
@@ -202,13 +202,13 @@ namespace GHelper
         {
             Program.RunAsAdmin("extra");
             Program.config.setConfig("keyboard_light_tiomeout", (int)numericBacklightTime.Value);
-            Aura.SetBacklightOffDelay((int)numericBacklightTime.Value);
+            AsusUSB.SetBacklightOffDelay((int)numericBacklightTime.Value);
         }
 
         private void CheckXMG_CheckedChanged(object? sender, EventArgs e)
         {
             Program.config.setConfig("xmg_light", (checkXMG.Checked ? 1 : 0));
-            Aura.ApplyXGMLight(checkXMG.Checked);
+            AsusUSB.ApplyXGMLight(checkXMG.Checked);
         }
 
         private void CheckUSBC_CheckedChanged(object? sender, EventArgs e)
@@ -219,7 +219,7 @@ namespace GHelper
         private void TrackBrightness_Scroll(object? sender, EventArgs e)
         {
             Program.config.setConfig("keyboard_brightness", trackBrightness.Value);
-            Aura.ApplyBrightness(trackBrightness.Value);
+            AsusUSB.ApplyBrightness(trackBrightness.Value);
         }
 
         private void PictureHelp_Click(object? sender, EventArgs e)
@@ -288,7 +288,7 @@ namespace GHelper
             if (checkSleepLogo.Checked) flags.Add(AuraDev19b6.SleepLogo);
             if (checkShutdownLogo.Checked) flags.Add(AuraDev19b6.ShutdownLogo);
 
-            Aura.ApplyAuraPower(flags);
+            AsusUSB.ApplyAuraPower(flags);
 
         }
 

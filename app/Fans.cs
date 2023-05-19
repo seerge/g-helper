@@ -12,6 +12,7 @@ namespace GHelper
         Series seriesCPU;
         Series seriesGPU;
         Series seriesMid;
+        Series seriesXGM;
 
         static int MinRPM, MaxRPM;
 
@@ -53,10 +54,12 @@ namespace GHelper
             seriesCPU = chartCPU.Series.Add("CPU");
             seriesGPU = chartGPU.Series.Add("GPU");
             seriesMid = chartMid.Series.Add("Mid");
+            seriesXGM = chartXGM.Series.Add("XGM");
 
             seriesCPU.Color = colorStandard;
             seriesGPU.Color = colorTurbo;
             seriesMid.Color = colorEco;
+            seriesXGM.Color = Color.Orange;
 
             chartCPU.MouseMove += ChartCPU_MouseMove;
             chartCPU.MouseUp += ChartCPU_MouseUp;
@@ -67,13 +70,16 @@ namespace GHelper
             chartMid.MouseMove += ChartCPU_MouseMove;
             chartMid.MouseUp += ChartCPU_MouseUp;
 
+            chartXGM.MouseMove += ChartCPU_MouseMove;
+            chartXGM.MouseUp += ChartCPU_MouseUp;
+
             buttonReset.Click += ButtonReset_Click;
 
-            trackTotal.Maximum = ASUSWmi.MaxTotal;
-            trackTotal.Minimum = ASUSWmi.MinTotal;
+            trackTotal.Maximum = AsusACPI.MaxTotal;
+            trackTotal.Minimum = AsusACPI.MinTotal;
 
-            trackCPU.Maximum = ASUSWmi.MaxCPU;
-            trackCPU.Minimum = ASUSWmi.MinCPU;
+            trackCPU.Maximum = AsusACPI.MaxCPU;
+            trackCPU.Minimum = AsusACPI.MinCPU;
 
             trackCPU.Scroll += TrackPower_Scroll;
             trackTotal.Scroll += TrackPower_Scroll;
@@ -90,11 +96,11 @@ namespace GHelper
             trackGPUMemory.Minimum = NvidiaGpuControl.MinMemoryOffset;
             trackGPUMemory.Maximum = NvidiaGpuControl.MaxMemoryOffset;
 
-            trackGPUBoost.Minimum = ASUSWmi.MinGPUBoost;
-            trackGPUBoost.Maximum = ASUSWmi.MaxGPUBoost;
+            trackGPUBoost.Minimum = AsusACPI.MinGPUBoost;
+            trackGPUBoost.Maximum = AsusACPI.MaxGPUBoost;
 
-            trackGPUTemp.Minimum = ASUSWmi.MinGPUTemp;
-            trackGPUTemp.Maximum = ASUSWmi.MaxGPUTemp;
+            trackGPUTemp.Minimum = AsusACPI.MinGPUTemp;
+            trackGPUTemp.Maximum = AsusACPI.MaxGPUTemp;
 
             trackGPUCore.Scroll += trackGPU_Scroll;
             trackGPUMemory.Scroll += trackGPU_Scroll;
@@ -151,8 +157,8 @@ namespace GHelper
                 int core = Program.config.getConfigPerf("gpu_core");
                 int memory = Program.config.getConfigPerf("gpu_memory");
 
-                if (gpu_boost < 0) gpu_boost = ASUSWmi.MaxGPUBoost;
-                if (gpu_temp < 0) gpu_temp = ASUSWmi.MaxGPUTemp;
+                if (gpu_boost < 0) gpu_boost = AsusACPI.MaxGPUBoost;
+                if (gpu_temp < 0) gpu_temp = AsusACPI.MaxGPUTemp;
 
                 if (core == -1) core = 0;
                 if (memory == -1) memory = 0;
@@ -180,11 +186,11 @@ namespace GHelper
                 trackGPUCore.Value = Math.Max(Math.Min(core, NvidiaGpuControl.MaxCoreOffset), NvidiaGpuControl.MinCoreOffset);
                 trackGPUMemory.Value = Math.Max(Math.Min(memory, NvidiaGpuControl.MaxMemoryOffset), NvidiaGpuControl.MinMemoryOffset);
 
-                trackGPUBoost.Value = Math.Max(Math.Min(gpu_boost, ASUSWmi.MaxGPUBoost), ASUSWmi.MinGPUBoost);
-                trackGPUTemp.Value = Math.Max(Math.Min(gpu_temp, ASUSWmi.MaxGPUTemp), ASUSWmi.MinGPUTemp);
+                trackGPUBoost.Value = Math.Max(Math.Min(gpu_boost, AsusACPI.MaxGPUBoost), AsusACPI.MinGPUBoost);
+                trackGPUTemp.Value = Math.Max(Math.Min(gpu_temp, AsusACPI.MaxGPUTemp), AsusACPI.MinGPUTemp);
 
-                panelGPUBoost.Visible = (Program.wmi.DeviceGet(ASUSWmi.PPT_GPUC0) >= 0);
-                panelGPUTemp.Visible = (Program.wmi.DeviceGet(ASUSWmi.PPT_GPUC2) >= 0);
+                panelGPUBoost.Visible = (Program.acpi.DeviceGet(AsusACPI.PPT_GPUC0) >= 0);
+                panelGPUTemp.Visible = (Program.acpi.DeviceGet(AsusACPI.PPT_GPUC2) >= 0);
 
                 VisualiseGPUSettings();
 
@@ -233,17 +239,26 @@ namespace GHelper
             return (200 * Math.Round((float)(MinRPM * 100 + (MaxRPM - MinRPM) * percentage) / 200)).ToString() + unit;
         }
 
-        void SetChart(Chart chart, int device)
+        void SetChart(Chart chart, AsusFan device)
         {
 
-            string title;
+            string title = "";
 
-            if (device == 1)
-                title = Properties.Strings.FanProfileGPU;
-            else if (device == 2)
-                title = Properties.Strings.FanProfileMid;
-            else
-                title = Properties.Strings.FanProfileCPU;
+            switch (device)
+            {
+                case AsusFan.CPU:
+                    title = Properties.Strings.FanProfileCPU;
+                    break;
+                case AsusFan.GPU:
+                    title = Properties.Strings.FanProfileGPU;
+                    break;
+                case AsusFan.Mid:
+                    title = Properties.Strings.FanProfileMid;
+                    break;
+                case AsusFan.XGM:
+                    title = "XG Mobile";
+                    break;
+            }
 
             if (Program.settingsForm.perfName.Length > 0)
                 labelFans.Text = Properties.Strings.FanProfiles + ": " + Program.settingsForm.perfName;
@@ -330,7 +345,7 @@ namespace GHelper
             }
             else
             {
-                Program.wmi.DeviceSet(ASUSWmi.PerformanceMode, Program.config.getConfig("performance_mode"), "PerfMode");
+                Program.acpi.DeviceSet(AsusACPI.PerformanceMode, Program.config.getConfig("performance_mode"), "PerfMode");
                 Program.settingsForm.AutoFans();
             }
 
@@ -349,7 +364,7 @@ namespace GHelper
             }
             else
             {
-                Program.wmi.DeviceSet(ASUSWmi.PerformanceMode, Program.config.getConfig("performance_mode"), "PerfMode");
+                Program.acpi.DeviceSet(AsusACPI.PerformanceMode, Program.config.getConfig("performance_mode"), "PerfMode");
                 Program.settingsForm.AutoPower();
             }
         }
@@ -376,8 +391,8 @@ namespace GHelper
         public void InitPower(bool changed = false)
         {
 
-            bool cpuBmode = (Program.wmi.DeviceGet(ASUSWmi.PPT_CPUB0) >= 0); // 2022 model +
-            bool cpuAmode = (Program.wmi.DeviceGet(ASUSWmi.PPT_TotalA0) >= 0); // 2021 model +
+            bool cpuBmode = (Program.acpi.DeviceGet(AsusACPI.PPT_CPUB0) >= 0); // 2022 model +
+            bool cpuAmode = (Program.acpi.DeviceGet(AsusACPI.PPT_TotalA0) >= 0); // 2021 model +
 
             panelPower.Visible = cpuAmode;
             panelCPU.Visible = cpuBmode;
@@ -403,13 +418,13 @@ namespace GHelper
                 limit_cpu = Program.config.getConfigPerf("limit_cpu");
             }
 
-            if (limit_total < 0) limit_total = ASUSWmi.DefaultTotal;
-            if (limit_total > ASUSWmi.MaxTotal) limit_total = ASUSWmi.MaxTotal;
-            if (limit_total < ASUSWmi.MinTotal) limit_total = ASUSWmi.MinTotal;
+            if (limit_total < 0) limit_total = AsusACPI.DefaultTotal;
+            if (limit_total > AsusACPI.MaxTotal) limit_total = AsusACPI.MaxTotal;
+            if (limit_total < AsusACPI.MinTotal) limit_total = AsusACPI.MinTotal;
 
-            if (limit_cpu < 0) limit_cpu = ASUSWmi.DefaultCPU;
-            if (limit_cpu > ASUSWmi.MaxCPU) limit_cpu = ASUSWmi.MaxCPU;
-            if (limit_cpu < ASUSWmi.MinCPU) limit_cpu = ASUSWmi.MinCPU;
+            if (limit_cpu < 0) limit_cpu = AsusACPI.DefaultCPU;
+            if (limit_cpu > AsusACPI.MaxCPU) limit_cpu = AsusACPI.MaxCPU;
+            if (limit_cpu < AsusACPI.MinCPU) limit_cpu = AsusACPI.MinCPU;
             if (limit_cpu > limit_total) limit_cpu = limit_total;
 
             trackTotal.Value = limit_total;
@@ -435,27 +450,43 @@ namespace GHelper
         public void InitFans()
         {
 
-            byte[] curve = Program.wmi.GetFanCurve(2);
+            int chartCount = 2;
 
-            if (curve.All(singleByte => singleByte == 0))
+            // Middle / system fan check
+            if (!AsusACPI.IsEmptyCurve(Program.acpi.GetFanCurve(AsusFan.Mid)))
             {
-                Program.config.setConfig("mid_fan", 0);
-
+                Program.config.setConfig("mid_fan", 1);
+                chartCount++;
+                chartMid.Visible = true;
+                SetChart(chartMid, AsusFan.Mid);
+                LoadProfile(seriesMid, AsusFan.Mid);
+                MinimumSize = new Size(0, chartCount * 400 + 200);
             }
             else
             {
-                Program.config.setConfig("mid_fan", 1);
-                chartMid.Visible = true;
-                SetChart(chartMid, 2);
-                LoadProfile(seriesMid, 2);
+                Program.config.setConfig("mid_fan", 0);
             }
 
+            // XG Mobile Fan check
+            if (Program.acpi.IsXGConnected())
+            {
+                Program.config.setConfig("xgm_fan", 1);
+                chartCount++;
+                chartXGM.Visible = true;
+                SetChart(chartXGM, AsusFan.XGM);
+                LoadProfile(seriesXGM, AsusFan.XGM);
+                MinimumSize = new Size(0, chartCount * 400 + 200);
+            }
+            else
+            {
+                Program.config.setConfig("xgm_fan", 0);
+            }
 
-            SetChart(chartCPU, 0);
-            SetChart(chartGPU, 1);
+            SetChart(chartCPU, AsusFan.CPU);
+            SetChart(chartGPU, AsusFan.GPU);
 
-            LoadProfile(seriesCPU, 0);
-            LoadProfile(seriesGPU, 1);
+            LoadProfile(seriesCPU, AsusFan.CPU);
+            LoadProfile(seriesGPU, AsusFan.GPU);
 
             int auto_apply = Program.config.getConfigPerf("auto_apply");
 
@@ -464,7 +495,7 @@ namespace GHelper
         }
 
 
-        void LoadProfile(Series series, int device, int def = 0)
+        void LoadProfile(Series series, AsusFan device, bool reset = false)
         {
 
             series.ChartType = SeriesChartType.Line;
@@ -476,14 +507,14 @@ namespace GHelper
             int mode = Program.config.getConfig("performance_mode");
             byte[] curve = Program.config.getFanConfig(device);
 
-            if (def == 1 || ASUSWmi.IsEmptyCurve(curve))
+            if (reset || AsusACPI.IsEmptyCurve(curve))
             {
-                curve = Program.wmi.GetFanCurve(device, mode);
+                curve = Program.acpi.GetFanCurve(device, mode);
 
-                if (ASUSWmi.IsEmptyCurve(curve))
+                if (AsusACPI.IsEmptyCurve(curve))
                     curve = Program.config.getDefaultCurve(device);
 
-                curve = ASUSWmi.FixFanCurve(curve);
+                curve = AsusACPI.FixFanCurve(curve);
 
             }
 
@@ -501,7 +532,7 @@ namespace GHelper
 
         }
 
-        void SaveProfile(Series series, int device)
+        void SaveProfile(Series series, AsusFan device)
         {
             byte[] curve = new byte[16];
             int i = 0;
@@ -521,10 +552,14 @@ namespace GHelper
         private void ButtonReset_Click(object? sender, EventArgs e)
         {
 
-            LoadProfile(seriesCPU, 0, 1);
-            LoadProfile(seriesGPU, 1, 1);
-            if (Program.config.getConfig("mid_fan") == 1)
-                LoadProfile(seriesMid, 2, 1);
+            LoadProfile(seriesCPU, AsusFan.CPU, true);
+            LoadProfile(seriesGPU, AsusFan.GPU, true);
+
+            if (Program.config.isConfig("mid_fan"))
+                LoadProfile(seriesMid, AsusFan.Mid, true);
+
+            if (Program.config.isConfig("xgm_fan"))
+                LoadProfile(seriesXGM, AsusFan.XGM, true);
 
             checkApplyFans.Checked = false;
             checkApplyPower.Checked = false;
@@ -532,12 +567,13 @@ namespace GHelper
             Program.config.setConfigPerf("auto_apply", 0);
             Program.config.setConfigPerf("auto_apply_power", 0);
 
-            Program.wmi.DeviceSet(ASUSWmi.PerformanceMode, Program.config.getConfig("performance_mode"), "PerfMode");
+            Program.acpi.DeviceSet(AsusACPI.PerformanceMode, Program.config.getConfig("performance_mode"), "PerfMode");
+            if (Program.acpi.IsXGConnected()) AsusUSB.ResetXGM();
 
             trackGPUCore.Value = 0;
             trackGPUMemory.Value = 0;
-            trackGPUBoost.Value = ASUSWmi.MaxGPUBoost;
-            trackGPUTemp.Value = ASUSWmi.MaxGPUTemp;
+            trackGPUBoost.Value = AsusACPI.MaxGPUBoost;
+            trackGPUTemp.Value = AsusACPI.MaxGPUTemp;
 
             Program.config.setConfigPerf("gpu_boost", trackGPUBoost.Value);
             Program.config.setConfigPerf("gpu_temp", trackGPUTemp.Value);
@@ -554,10 +590,14 @@ namespace GHelper
             curPoint = null;
             labelTip.Visible = false;
 
-            SaveProfile(seriesCPU, 0);
-            SaveProfile(seriesGPU, 1);
-            if (Program.config.getConfig("mid_fan") == 1)
-                SaveProfile(seriesMid, 2);
+            SaveProfile(seriesCPU, AsusFan.CPU);
+            SaveProfile(seriesGPU, AsusFan.GPU);
+
+            if (Program.config.isConfig("mid_fan"))
+                SaveProfile(seriesMid, AsusFan.Mid);
+
+            if (Program.config.isConfig("xgm_fan"))
+                SaveProfile(seriesXGM, AsusFan.XGM);
 
             Program.settingsForm.AutoFans();
 

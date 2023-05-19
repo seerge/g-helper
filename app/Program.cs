@@ -18,7 +18,7 @@ namespace GHelper
             Visible = true
         };
 
-        public static ASUSWmi? wmi;
+        public static AsusACPI? acpi;
         public static AppConfig config = new AppConfig();
 
         public static SettingsForm settingsForm = new SettingsForm();
@@ -48,7 +48,7 @@ namespace GHelper
 
             try
             {
-                wmi = new ASUSWmi();
+                acpi = new AsusACPI();
             }
             catch
             {
@@ -73,7 +73,7 @@ namespace GHelper
 
             trayIcon.MouseClick += TrayIcon_MouseClick;
 
-            wmi.SubscribeToEvents(WatcherEventArrived);
+            acpi.SubscribeToEvents(WatcherEventArrived);
 
             settingsForm.InitAura();
             settingsForm.InitMatrix();
@@ -268,12 +268,12 @@ namespace GHelper
                 touchpadState = (key?.GetValue("Enabled")?.ToString() == "1");
             }
 
-            tabletState = wmi.DeviceGet(ASUSWmi.TabletState) > 0;
+            tabletState = acpi.DeviceGet(AsusACPI.TabletState) > 0;
 
             Logger.WriteLine("Tablet: " + tabletState + " Touchpad: " + touchpadState);
 
             if ((tabletState && touchpadState) || (!tabletState && !touchpadState))
-                wmi.DeviceSet(ASUSWmi.UniversalControl, ASUSWmi.Touchpad_Toggle, "Touchpad");
+                acpi.DeviceSet(AsusACPI.UniversalControl, AsusACPI.Touchpad_Toggle, "Touchpad");
 
         }
 

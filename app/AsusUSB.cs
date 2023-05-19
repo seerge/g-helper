@@ -49,7 +49,7 @@ namespace GHelper
         }
     }
 
-    public static class Aura
+    public static class AsusUSB
     {
 
         static byte[] MESSAGE_SET = { 0x5d, 0xb5, 0, 0, 0 };
@@ -208,7 +208,7 @@ namespace GHelper
             }
 
             if (Program.config.ContainsModel("TUF"))
-                Program.wmi.TUFKeyboardBrightness(brightness);
+                Program.acpi.TUFKeyboardBrightness(brightness);
         }
 
 
@@ -230,7 +230,7 @@ namespace GHelper
             }
 
             if (Program.config.ContainsModel("TUF"))
-                Program.wmi.TUFKeyboardPower(
+                Program.acpi.TUFKeyboardPower(
                     flags.Contains(AuraDev19b6.AwakeKeyb),
                     flags.Contains(AuraDev19b6.BootKeyb),
                     flags.Contains(AuraDev19b6.SleepKeyb),
@@ -238,20 +238,44 @@ namespace GHelper
 
         }
 
-        public static void ApplyXGMLight(bool status)
+        public static int SetXGM(byte[] msg)
         {
-            byte value = status ? (byte)0x50 : (byte)0;
-            var msg = new byte[] { 0x5e, 0xc5, value };
+
+            Debug.WriteLine("XGM Payload :" + BitConverter.ToString(msg));
 
             foreach (HidDevice device in GetHidDevices(new int[] { 0x1970 }))
             {
                 device.OpenDevice();
-                var message = new byte[300];
-                Array.Copy(msg, message, msg.Length);
-                Debug.WriteLine(BitConverter.ToString(message));
-                device.WriteFeatureData(message);
+                Debug.WriteLine("XGM " + device.Attributes.ProductHexId + ":" + BitConverter.ToString(msg));
+                device.WriteFeatureData(msg);
                 device.CloseDevice();
+                return 1;
             }
+
+            return 0;
+        }
+
+        public static void ApplyXGMLight(bool status)
+        {
+            SetXGM(new byte[] { 0x5e, 0xc5, status ? (byte)0x50 : (byte)0 });
+        }
+
+
+        public static int ResetXGM()
+        {
+            return SetXGM(new byte[] { 0x5e, 0xd1, 0x02 });
+        }
+
+        public static int SetXGMFan(byte[] curve)
+        {
+
+            if (AsusACPI.IsEmptyCurve(curve)) return -1;
+
+            byte[] msg = new byte[19];
+            Array.Copy(new byte[] { 0x5e, 0xd1, 0x01 }, msg, 3);
+            Array.Copy(curve, 0, msg, 3, curve.Length);
+
+            return SetXGM(msg);
         }
 
 
@@ -293,7 +317,7 @@ namespace GHelper
             }
 
             if (Program.config.ContainsModel("TUF"))
-                Program.wmi.TUFKeyboardRGB(Mode, Color1, _speed);
+                Program.acpi.TUFKeyboardRGB(Mode, Color1, _speed);
 
         }
 
