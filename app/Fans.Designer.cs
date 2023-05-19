@@ -38,6 +38,7 @@ namespace GHelper
             ChartArea chartArea3 = new ChartArea();
             Title title3 = new Title();
             panelFans = new Panel();
+            labelTip = new Label();
             tableFanCharts = new TableLayoutPanel();
             chartGPU = new Chart();
             chartCPU = new Chart();
@@ -51,7 +52,6 @@ namespace GHelper
             labelFansResult = new Label();
             checkApplyFans = new RCheckBox();
             buttonReset = new RButton();
-            labelTip = new Label();
             panelSliders = new Panel();
             panelPower = new Panel();
             panelApplyPower = new Panel();
@@ -121,21 +121,34 @@ namespace GHelper
             // panelFans
             // 
             panelFans.AutoSize = true;
+            panelFans.Controls.Add(labelTip);
             panelFans.Controls.Add(tableFanCharts);
             panelFans.Controls.Add(panelTitleFans);
             panelFans.Controls.Add(panelApplyFans);
-            panelFans.Controls.Add(labelTip);
             panelFans.Dock = DockStyle.Left;
             panelFans.Location = new Point(533, 0);
             panelFans.Margin = new Padding(0);
+            panelFans.MaximumSize = new Size(815, 0);
             panelFans.MinimumSize = new Size(815, 0);
             panelFans.Name = "panelFans";
             panelFans.Padding = new Padding(0, 0, 10, 0);
             panelFans.Size = new Size(815, 1189);
             panelFans.TabIndex = 12;
             // 
+            // labelTip
+            // 
+            labelTip.AutoSize = true;
+            labelTip.BackColor = SystemColors.ControlLightLight;
+            labelTip.Location = new Point(684, 91);
+            labelTip.Name = "labelTip";
+            labelTip.Padding = new Padding(5);
+            labelTip.Size = new Size(107, 42);
+            labelTip.TabIndex = 40;
+            labelTip.Text = "500,300";
+            // 
             // tableFanCharts
             // 
+            tableFanCharts.AutoSize = true;
             tableFanCharts.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             tableFanCharts.ColumnCount = 1;
             tableFanCharts.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
@@ -306,17 +319,6 @@ namespace GHelper
             buttonReset.TabIndex = 18;
             buttonReset.Text = Properties.Strings.FactoryDefaults;
             buttonReset.UseVisualStyleBackColor = false;
-            // 
-            // labelTip
-            // 
-            labelTip.AutoSize = true;
-            labelTip.BackColor = SystemColors.ControlLightLight;
-            labelTip.Location = new Point(684, 91);
-            labelTip.Name = "labelTip";
-            labelTip.Padding = new Padding(5);
-            labelTip.Size = new Size(107, 42);
-            labelTip.TabIndex = 40;
-            labelTip.Text = "500,300";
             // 
             // panelSliders
             // 
