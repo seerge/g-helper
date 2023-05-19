@@ -234,7 +234,7 @@ namespace GHelper
             // 
             // numericBacklightTime
             // 
-            numericBacklightTime.Location = new Point(477, 131);
+            numericBacklightTime.Location = new Point(655, 133);
             numericBacklightTime.Maximum = new decimal(new int[] { 3600, 0, 0, 0 });
             numericBacklightTime.Name = "numericBacklightTime";
             numericBacklightTime.Size = new Size(240, 39);
@@ -242,37 +242,35 @@ namespace GHelper
             // 
             // labelBacklightTimeout
             // 
-            labelBacklightTimeout.Location = new Point(13, 133);
+            labelBacklightTimeout.Location = new Point(13, 135);
             labelBacklightTimeout.Name = "labelBacklightTimeout";
-            labelBacklightTimeout.Size = new Size(489, 45);
+            labelBacklightTimeout.Size = new Size(636, 45);
             labelBacklightTimeout.TabIndex = 46;
             labelBacklightTimeout.Text = "Seconds to turn off backlight on battery";
             // 
             // labelBrightness
             // 
-            labelBrightness.Location = new Point(13, 76);
+            labelBrightness.Location = new Point(13, 75);
             labelBrightness.Name = "labelBrightness";
-            labelBrightness.Size = new Size(197, 49);
+            labelBrightness.Size = new Size(336, 43);
             labelBrightness.TabIndex = 41;
             labelBrightness.Text = "Brightness";
             // 
             // trackBrightness
             // 
             trackBrightness.LargeChange = 1;
-            trackBrightness.Location = new Point(216, 60);
+            trackBrightness.Location = new Point(355, 60);
             trackBrightness.Maximum = 3;
             trackBrightness.Name = "trackBrightness";
-            trackBrightness.Size = new Size(600, 90);
+            trackBrightness.Size = new Size(558, 90);
             trackBrightness.TabIndex = 42;
             trackBrightness.TickStyle = TickStyle.TopLeft;
             // 
             // labelSpeed
             // 
-            labelSpeed.AutoSize = true;
             labelSpeed.Location = new Point(13, 15);
-            labelSpeed.MaximumSize = new Size(200, 0);
             labelSpeed.Name = "labelSpeed";
-            labelSpeed.Size = new Size(198, 32);
+            labelSpeed.Size = new Size(538, 40);
             labelSpeed.TabIndex = 44;
             labelSpeed.Text = "Animation Speed";
             // 
@@ -285,7 +283,7 @@ namespace GHelper
             comboKeyboardSpeed.FormattingEnabled = true;
             comboKeyboardSpeed.ItemHeight = 32;
             comboKeyboardSpeed.Items.AddRange(new object[] { "Slow", "Normal", "Fast" });
-            comboKeyboardSpeed.Location = new Point(220, 12);
+            comboKeyboardSpeed.Location = new Point(607, 15);
             comboKeyboardSpeed.Margin = new Padding(4, 10, 4, 8);
             comboKeyboardSpeed.Name = "comboKeyboardSpeed";
             comboKeyboardSpeed.Size = new Size(291, 40);
@@ -581,18 +579,28 @@ namespace GHelper
             groupOther.Controls.Add(checkNoOverdrive);
             groupOther.Controls.Add(checkTopmost);
             groupOther.Dock = DockStyle.Top;
-            groupOther.Location = new Point(5, 358);
+            groupOther.Location = new Point(10, 768);
             groupOther.Name = "groupOther";
             groupOther.Size = new Size(954, 276);
             groupOther.TabIndex = 2;
             groupOther.TabStop = false;
             groupOther.Text = "Other";
             // 
+            // checkAutoApplyWindowsPowerMode
+            // 
+            checkAutoApplyWindowsPowerMode.AutoSize = true;
+            checkAutoApplyWindowsPowerMode.Location = new Point(25, 220);
+            checkAutoApplyWindowsPowerMode.Name = "checkAutoApplyWindowsPowerMode";
+            checkAutoApplyWindowsPowerMode.Size = new Size(416, 36);
+            checkAutoApplyWindowsPowerMode.TabIndex = 47;
+            checkAutoApplyWindowsPowerMode.Text = "Auto Adjust Windows Power Mode";
+            checkAutoApplyWindowsPowerMode.UseVisualStyleBackColor = true;
+            // 
             // checkKeyboardAuto
             // 
             checkKeyboardAuto.AutoSize = true;
-            checkKeyboardAuto.MaximumSize = new Size(780, 0);
             checkKeyboardAuto.Location = new Point(25, 40);
+            checkKeyboardAuto.MaximumSize = new Size(780, 0);
             checkKeyboardAuto.Name = "checkKeyboardAuto";
             checkKeyboardAuto.Size = new Size(712, 36);
             checkKeyboardAuto.TabIndex = 46;
@@ -628,16 +636,6 @@ namespace GHelper
             checkTopmost.TabIndex = 1;
             checkTopmost.Text = Strings.WindowTop;
             checkTopmost.UseVisualStyleBackColor = true;
-            // 
-            // checkAutoApplyWindowsPowerMode
-            // 
-            checkAutoApplyWindowsPowerMode.AutoSize = true;
-            checkAutoApplyWindowsPowerMode.Location = new Point(25, 220);
-            checkAutoApplyWindowsPowerMode.Name = "checkAutoApplyWindowsPowerMode";
-            checkAutoApplyWindowsPowerMode.Size = new Size(211, 19);
-            checkAutoApplyWindowsPowerMode.TabIndex = 47;
-            checkAutoApplyWindowsPowerMode.Text = "Auto Adjust Windows Power Mode";
-            checkAutoApplyWindowsPowerMode.UseVisualStyleBackColor = true;
             // 
             // Extra
             // 
