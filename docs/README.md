@@ -124,11 +124,11 @@ It's a lightweight Armoury Crate alternative for Asus laptops. A small utility t
 -----------------------------
 
 ## :euro: [Support Project](https://www.paypal.com/donate/?hosted_button_id=4HMSHS4EBQWTA)
-#### If you like the app you can make a [Donation via Paypal in EUR](https://www.paypal.com/donate/?hosted_button_id=4HMSHS4EBQWTA)
-[![QR Code](https://user-images.githubusercontent.com/5920850/233658717-0441494d-fede-4a2c-b4f2-4b16a184a69a.png)](https://www.paypal.com/donate/?hosted_button_id=4HMSHS4EBQWTA)
+#### If you like the app you can make a Donation 
 
-#### [Donation via Paypal in USD](https://www.paypal.com/donate/?hosted_button_id=SRM6QUX6ACXDY)
-[![QR Code](https://github.com/seerge/g-helper/assets/5920850/b487e89a-3df6-42ea-bdb8-24c455ab2310)](https://www.paypal.com/donate/?hosted_button_id=SRM6QUX6ACXDY)
+| [Paypal in EUR](https://www.paypal.com/donate/?hosted_button_id=4HMSHS4EBQWTA) | [Paypal in USD](https://www.paypal.com/donate/?hosted_button_id=SRM6QUX6ACXDY) |
+| ------------------------------------------ | ----------------------------------------------- |
+| [![QR Code](https://user-images.githubusercontent.com/5920850/233658717-0441494d-fede-4a2c-b4f2-4b16a184a69a.png)](https://www.paypal.com/donate/?hosted_button_id=4HMSHS4EBQWTA) | [![QR Code](https://github-production-user-asset-6210df.s3.amazonaws.com/5920850/239492811-b487e89a-3df6-42ea-bdb8-24c455ab2310.png)](https://www.paypal.com/donate/?hosted_button_id=SRM6QUX6ACXDY) |
 
 ----------------
 
