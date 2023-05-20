@@ -1,4 +1,6 @@
 using Microsoft.Win32;
+using NAudio.CoreAudioApi;
+using OSD;
 using System.Diagnostics;
 using System.Globalization;
 using System.Management;
@@ -22,13 +24,14 @@ namespace GHelper
         public static AppConfig config = new AppConfig();
 
         public static SettingsForm settingsForm = new SettingsForm();
-        public static ToastForm toast = new ToastForm();
 
         public static IntPtr unRegPowerNotify;
 
         private static long lastAuto;
         private static long lastTheme;
         private static long lastAdmin;
+
+        private static bool isOptimizationRunning = OptimizationService.IsRunning();
 
         private static PowerLineStatus isPlugged = PowerLineStatus.Unknown;
 
@@ -103,7 +106,7 @@ namespace GHelper
                 SettingsToggle(action);
             }
 
-            //Task.Run(wmi.RunListener); 
+            if (!isOptimizationRunning) AsusUSB.RunListener(HandleEvent); 
 
             Application.Run();
 
@@ -220,6 +223,8 @@ namespace GHelper
                     action = "ghelper";
                 if (name == "fnf4")
                     action = "aura";
+                if (name == "m3" && !isOptimizationRunning)
+                    action = "micmute";
             }
 
             switch (action)
@@ -254,6 +259,16 @@ namespace GHelper
                 case "custom":
                     CustomKey(name);
                     break;
+                case "micmute":
+                    using (var enumerator = new MMDeviceEnumerator())
+                    {
+                        var commDevice = enumerator.GetDefaultAudioEndpoint(DataFlow.Capture, Role.Communications);
+                        bool muteStatus = !commDevice.AudioEndpointVolume.Mute;
+                        commDevice.AudioEndpointVolume.Mute = muteStatus;
+                        settingsForm.BeginInvoke(settingsForm.RunToast, muteStatus ? "Mic Muted" : "Mic Unmuted");
+                    }
+                    break;
+
                 default:
                     break;
             }
@@ -272,21 +287,12 @@ namespace GHelper
 
             Logger.WriteLine("Tablet: " + tabletState + " Touchpad: " + touchpadState);
 
-            if ((tabletState && touchpadState) || (!tabletState && !touchpadState))
-                acpi.DeviceSet(AsusACPI.UniversalControl, AsusACPI.Touchpad_Toggle, "Touchpad");
+            if ((tabletState && touchpadState) || (!tabletState && !touchpadState)) AsusUSB.TouchpadToggle();
 
         }
 
-        static void WatcherEventArrived(object sender, EventArrivedEventArgs e)
+        static void HandleEvent(int EventID)
         {
-            var collection = (ManagementEventWatcher)sender;
-
-            if (e.NewEvent is null) return;
-
-            int EventID = int.Parse(e.NewEvent["EventID"].ToString());
-
-            Logger.WriteLine("WMI event " + EventID);
-
             switch (EventID)
             {
                 case 124:    // M3
@@ -304,10 +310,52 @@ namespace GHelper
                 case 189: // Tablet mode 
                     TabletMode();
                     return;
-
             }
 
+            if (isOptimizationRunning) return;
 
+            // Asus Optimization service Events 
+
+            int brightness = config.getConfig("keyboard_brightness");
+
+            switch (EventID)
+            {
+                case 197: // FN+F2
+                    brightness = Math.Max(0, brightness - 1);
+                    config.setConfig("keyboard_brightness", brightness);
+                    AsusUSB.ApplyBrightness(brightness);
+                    settingsForm.BeginInvoke(settingsForm.RunToast, "Backlight -");
+                    break;
+                case 196: // FN+F3
+                    brightness = Math.Min(3, brightness + 1);
+                    config.setConfig("keyboard_brightness", brightness);
+                    AsusUSB.ApplyBrightness(brightness);
+                    settingsForm.BeginInvoke(settingsForm.RunToast, "Backlight +");
+                    break;
+                case 16: // FN+F7
+                    ScreenBrightness.Adjust(-10);
+                    settingsForm.BeginInvoke(settingsForm.RunToast, "Brightness -");
+                    break;
+                case 32: // FN+F8
+                    ScreenBrightness.Adjust(+10);
+                    settingsForm.BeginInvoke(settingsForm.RunToast, "Brightness +");
+                    break;
+                case 107: // FN+F10
+                    AsusUSB.TouchpadToggle();
+                    settingsForm.BeginInvoke(settingsForm.RunToast, "Touchpad");
+                    break;
+                case 108: // FN+F11
+                    Application.SetSuspendState(PowerState.Suspend, true, true);
+                    break;
+            }
+        }
+
+        static void WatcherEventArrived(object sender, EventArrivedEventArgs e)
+        {
+            if (e.NewEvent is null) return;
+            int EventID = int.Parse(e.NewEvent["EventID"].ToString());
+            Logger.WriteLine("WMI event " + EventID);
+            HandleEvent(EventID);
         }
 
         static void SettingsToggle(string action = "")

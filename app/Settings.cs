@@ -1,12 +1,7 @@
 ﻿using CustomControls;
 using GHelper.AnimeMatrix;
 using GHelper.Gpu;
-using NAudio.CoreAudioApi;
-using NAudio.Wave;
-using Starlight.AnimeMatrix;
 using System.Diagnostics;
-using System.Drawing.Drawing2D;
-using System.Drawing.Imaging;
 using System.Net;
 using System.Reflection;
 using System.Text.Json;
@@ -22,6 +17,8 @@ namespace GHelper
         private ContextMenuStrip contextMenuStrip = new CustomContextMenu();
         private ToolStripMenuItem menuSilent, menuBalanced, menuTurbo, menuEco, menuStandard, menuUltimate, menuOptimized;
 
+        public ToastForm toast = new ToastForm();
+
         public static System.Timers.Timer aTimer = default!;
         public static Point trayPoint;
 
@@ -30,7 +27,6 @@ namespace GHelper
         public string perfName = "Balanced";
 
         public AniMatrix matrix;
-
         public Fans fans;
         public Extra keyb;
 
@@ -41,7 +37,6 @@ namespace GHelper
 
         public SettingsForm()
         {
-
 
             InitializeComponent();
             InitTheme(true);
@@ -155,6 +150,11 @@ namespace GHelper
                 CheckForUpdatesAsync();
             });
 
+        }
+
+        public void RunToast(string text)
+        {
+            toast.RunToast(text);
         }
 
         public void SetContextMenu()
@@ -1145,7 +1145,7 @@ namespace GHelper
             {
                 try
                 {
-                    Program.toast.RunToast(perfName);
+                    toast.RunToast(perfName);
                 }
                 catch
                 {

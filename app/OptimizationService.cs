@@ -1,5 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 using System.Text;
+using System.Diagnostics;
 
 namespace GHelper
 {
@@ -32,6 +33,11 @@ namespace GHelper
 
                 File.WriteAllText(path, fileContents, Encoding.Unicode);
             }
+        }
+
+        public static bool IsRunning()
+        {
+            return (Process.GetProcessesByName("AsusOptimization").Count() > 0);
         }
     }
 

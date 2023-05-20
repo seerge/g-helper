@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 namespace OSD
 {
 
-    class OSDNativeForm : NativeWindow, IDisposable
+    public class OSDNativeForm : NativeWindow, IDisposable
     {
 
         private bool _disposed = false;

@@ -1,4 +1,5 @@
-﻿using System.Drawing.Drawing2D;
+﻿using System.Diagnostics;
+using System.Drawing.Drawing2D;
 using OSD;
 
 
@@ -41,11 +42,18 @@ namespace GHelper
         }
     }
 
-    class  ToastForm : OSDNativeForm
+    public class  ToastForm : OSDNativeForm
     {
 
         protected static string toastText = "Balanced";
         protected static System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
+
+        public ToastForm()
+        {
+            timer.Tick += timer_Tick;
+            timer.Enabled = false;
+            timer.Interval = 2000;
+        }
 
         protected override void PerformPaint(PaintEventArgs e)
         {
@@ -65,6 +73,7 @@ namespace GHelper
 
         public void RunToast(string text)
         {
+            Hide();
 
             toastText = text;
             Screen screen1 = Screen.FromHandle(base.Handle);
@@ -76,18 +85,13 @@ namespace GHelper
 
             Show();
 
-            timer.Stop();
-            timer.Tick -= timer_Tick;
-
-            timer.Tick += timer_Tick;
             timer.Enabled = true;
-            timer.Interval = 2000;
-            timer.Start();
         }
 
         private void timer_Tick(object? sender, EventArgs e)
         {
-            timer.Stop();
+            Debug.WriteLine("Toast end");
+            timer.Enabled = false;
             Hide();
         }
     }

@@ -52,6 +52,8 @@ namespace GHelper
     public static class AsusUSB
     {
 
+        public const byte HID_ID = 0x5a;
+
         static byte[] MESSAGE_SET = { 0x5d, 0xb5, 0, 0, 0 };
         static byte[] MESSAGE_APPLY = { 0x5d, 0xb4 };
 
@@ -170,6 +172,51 @@ namespace GHelper
                     && device.Capabilities.FeatureReportByteLength > 0
                     && device.Capabilities.InputReportByteLength >= minInput) // 
                     yield return device;
+        }
+
+        private static HidDevice? GetInputDevice()
+        {
+            HidDevice[] HidDeviceList = HidDevices.Enumerate(0x0b05, deviceIds).ToArray();
+
+            foreach (HidDevice device in HidDeviceList)
+                if (device.ReadFeatureData(out byte[] data, HID_ID))
+                    return device;
+            return null;
+        }
+
+        public static void TouchpadToggle()
+        {
+            HidDevice? input = GetInputDevice();
+            if (input != null) input.WriteFeatureData(new byte[] { HID_ID,0xf4,0x6b});
+        }
+
+        public static void RunListener(Action<int> KeyHandler)
+        {
+            HidDevice? input = GetInputDevice();
+            if (input == null) return;
+
+            Logger.WriteLine("Input Events " + input.DevicePath);
+
+            Task.Run(() =>
+            {
+                try
+                {
+                    while (true)
+                    {
+                        var data = input.Read().Data;
+                        if (data.Length > 1 && data[0] == HID_ID && data[1] > 0)
+                        {
+                            Logger.WriteLine("Key:" + data[1]);
+                            KeyHandler(data[1]);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Logger.WriteLine(ex.ToString());
+                }
+            });
+
         }
 
         public static byte[] AuraMessage(int mode, Color color, Color color2, int speed)
@@ -300,10 +347,11 @@ namespace GHelper
             byte[] msg = AuraMessage(Mode, Color1, Color2, _speed);
 
             var devices = GetHidDevices(deviceIds);
+
             if (devices.Count() == 0)
             {
                 Logger.WriteLine("USB-KB : not found");
-                GetHidDevices(deviceIds, 0);
+                devices = GetHidDevices(deviceIds, 1);
             }
 
             foreach (HidDevice device in devices)
