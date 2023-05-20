@@ -1,0 +1,28 @@
+name: Release
+
+on:
+  release:
+    types: [ published ]
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: windows-2022
+    steps:
+    - uses: actions/checkout@v3
+    - name: Setup dotnet
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: |
+          7.0.x
+    - name: Publish
+      run: |
+        dotnet publish app/GHelper.sln --configuration Release --runtime win-x64 -p:PublishSingleFile=true --no-self-contained
+        powershell Compress-Archive app/bin/x64/Release/net7.0-windows8.0/win-x64/publish/GHelper.exe GHelper.zip
+    - name: Upload
+      env:
+        GH_TOKEN: ${{ github.token }}
+      run: |
+        gh release upload ${{ github.ref_name }} app/bin/x64/Release/net7.0-windows8.0/win-x64/publish/GHelper.exe GHelper.zip
