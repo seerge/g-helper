@@ -6,6 +6,7 @@ using System.Net;
 using System.Reflection;
 using System.Text.Json;
 using System.Timers;
+using System.Windows.Forms;
 using Tools;
 
 namespace GHelper
@@ -272,7 +273,11 @@ namespace GHelper
             else
             {
                 Program.acpi.DeviceSet(AsusACPI.GPUXG, 1, "GPU XGM");
+
+                if (Program.config.getConfigPerf("auto_apply") == 1) 
+                    AsusUSB.SetXGMFan(Program.config.getFanConfig(AsusFan.XGM));
             }
+            
             InitXGM();
         }
 

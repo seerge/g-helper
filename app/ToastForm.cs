@@ -45,10 +45,13 @@ namespace GHelper
 
     public enum ToastIcon
     {
-        Brightness,
-        Backlight,
+        BrightnessUp,
+        BrightnessDown,
+        BacklightUp,
+        BacklightDown,
         Touchpad,
-        Microphone
+        Microphone,
+        MicrophoneMute
     }
 
     public class  ToastForm : OSDNativeForm
@@ -79,14 +82,23 @@ namespace GHelper
 
             switch (toastIcon)
             {
-                case ToastIcon.Brightness:
-                    icon = Properties.Resources.icons8_brightness_96;
+                case ToastIcon.BrightnessUp:
+                    icon = Properties.Resources.brightness_up;
                     break;
-                case ToastIcon.Backlight:
-                    icon = Properties.Resources.icons8_sunset_96;
+                case ToastIcon.BrightnessDown:
+                    icon = Properties.Resources.brightness_down;
+                    break;
+                case ToastIcon.BacklightUp:
+                    icon = Properties.Resources.backlight_up;
+                    break;
+                case ToastIcon.BacklightDown:
+                    icon = Properties.Resources.backlight_down;
                     break;
                 case ToastIcon.Microphone:
                     icon = Properties.Resources.icons8_microphone_96;
+                    break;
+                case ToastIcon.MicrophoneMute:
+                    icon = Properties.Resources.icons8_mute_unmute_96;
                     break;
                 case ToastIcon.Touchpad:
                     icon = Properties.Resources.icons8_touchpad_96;
@@ -112,7 +124,7 @@ namespace GHelper
 
         public void RunToast(string text, ToastIcon? icon = null)
         {
-            Hide();
+            //Hide();
             timer.Stop();
 
             toastText = text;

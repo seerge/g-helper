@@ -357,6 +357,9 @@
   <data name="Multizone" xml:space="preserve">
     <value>Multizone</value>
   </data>
+  <data name="MuteMic" xml:space="preserve">
+    <value>Mute Mic</value>
+  </data>
   <data name="OpenGHelper" xml:space="preserve">
     <value>Open G-Helper window</value>
   </data>

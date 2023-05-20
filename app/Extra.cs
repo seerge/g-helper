@@ -21,6 +21,10 @@ namespace GHelper
 
         private void SetKeyCombo(ComboBox combo, TextBox txbox, string name)
         {
+
+            if (name == "m3")
+                customActions[""] = Properties.Strings.MuteMic;
+
             if (name == "m4")
                 customActions[""] = Properties.Strings.OpenGHelper;
 
