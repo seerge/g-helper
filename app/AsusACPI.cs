@@ -10,6 +10,20 @@ public enum AsusFan
     XGM = 3
 }
 
+public enum AsusMode
+{
+    Balanced = 0,
+    Turbo = 1,
+    Silent = 2
+}
+
+public enum AsusGPU
+{
+    Eco = 0,
+    Standard = 1,
+    Ultimate = 2
+}
+
 public class AsusACPI
 {
 
