@@ -1,6 +1,5 @@
 using Microsoft.Win32;
 using NAudio.CoreAudioApi;
-using OSD;
 using System.Diagnostics;
 using System.Globalization;
 using System.Management;
@@ -106,7 +105,7 @@ namespace GHelper
                 SettingsToggle(action);
             }
 
-            if (!isOptimizationRunning) AsusUSB.RunListener(HandleEvent); 
+            if (!isOptimizationRunning) AsusUSB.RunListener(HandleEvent);
 
             Application.Run();
 
@@ -265,7 +264,7 @@ namespace GHelper
                         var commDevice = enumerator.GetDefaultAudioEndpoint(DataFlow.Capture, Role.Communications);
                         bool muteStatus = !commDevice.AudioEndpointVolume.Mute;
                         commDevice.AudioEndpointVolume.Mute = muteStatus;
-                        settingsForm.BeginInvoke(settingsForm.RunToast, muteStatus ? "Mic Muted" : "Mic Unmuted");
+                        settingsForm.BeginInvoke(settingsForm.RunToast, muteStatus ? "Muted" : "Unmuted", ToastIcon.Microphone);
                     }
                     break;
 
@@ -324,25 +323,25 @@ namespace GHelper
                     brightness = Math.Max(0, brightness - 1);
                     config.setConfig("keyboard_brightness", brightness);
                     AsusUSB.ApplyBrightness(brightness);
-                    settingsForm.BeginInvoke(settingsForm.RunToast, "Backlight -");
+                    settingsForm.BeginInvoke(settingsForm.RunToast, "Down", ToastIcon.Backlight);
                     break;
                 case 196: // FN+F3
                     brightness = Math.Min(3, brightness + 1);
                     config.setConfig("keyboard_brightness", brightness);
                     AsusUSB.ApplyBrightness(brightness);
-                    settingsForm.BeginInvoke(settingsForm.RunToast, "Backlight +");
+                    settingsForm.BeginInvoke(settingsForm.RunToast, "Up", ToastIcon.Backlight);
                     break;
                 case 16: // FN+F7
                     ScreenBrightness.Adjust(-10);
-                    settingsForm.BeginInvoke(settingsForm.RunToast, "Brightness -");
+                    settingsForm.BeginInvoke(settingsForm.RunToast, "Down", ToastIcon.Brightness);
                     break;
                 case 32: // FN+F8
                     ScreenBrightness.Adjust(+10);
-                    settingsForm.BeginInvoke(settingsForm.RunToast, "Brightness +");
+                    settingsForm.BeginInvoke(settingsForm.RunToast, "Up", ToastIcon.Brightness);
                     break;
                 case 107: // FN+F10
                     AsusUSB.TouchpadToggle();
-                    settingsForm.BeginInvoke(settingsForm.RunToast, "Touchpad");
+                    settingsForm.BeginInvoke(settingsForm.RunToast, "Toggle", ToastIcon.Touchpad);
                     break;
                 case 108: // FN+F11
                     Application.SetSuspendState(PowerState.Suspend, true, true);

@@ -152,9 +152,9 @@ namespace GHelper
 
         }
 
-        public void RunToast(string text)
+        public void RunToast(string text, ToastIcon? icon = null)
         {
-            toast.RunToast(text);
+            toast.RunToast(text, icon);
         }
 
         public void SetContextMenu()

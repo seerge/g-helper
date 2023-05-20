@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Drawing;
 using System.Drawing.Drawing2D;
 using OSD;
 
@@ -42,10 +43,20 @@ namespace GHelper
         }
     }
 
+    public enum ToastIcon
+    {
+        Brightness,
+        Backlight,
+        Touchpad,
+        Microphone
+    }
+
     public class  ToastForm : OSDNativeForm
     {
 
         protected static string toastText = "Balanced";
+        protected static ToastIcon? toastIcon = null;
+
         protected static System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
 
         public ToastForm()
@@ -64,18 +75,49 @@ namespace GHelper
             format.LineAlignment = StringAlignment.Center;
             format.Alignment = StringAlignment.Center;
 
-            e.Graphics.DrawString(toastText, 
-                new Font("Segoe UI", 16f, FontStyle.Bold), 
-                new SolidBrush(Color.White), 
-                new PointF(this.Bound.Width/2, this.Bound.Height / 2), 
-                format);
+            Bitmap? icon = null;
+
+            switch (toastIcon)
+            {
+                case ToastIcon.Brightness:
+                    icon = Properties.Resources.icons8_brightness_96;
+                    break;
+                case ToastIcon.Backlight:
+                    icon = Properties.Resources.icons8_sunset_96;
+                    break;
+                case ToastIcon.Microphone:
+                    icon = Properties.Resources.icons8_microphone_96;
+                    break;
+                case ToastIcon.Touchpad:
+                    icon = Properties.Resources.icons8_touchpad_96;
+                    break;
+
+            }
+
+            int shiftX = 0;
+
+            if (icon is not null)
+            {
+                e.Graphics.DrawImage(icon, 18, 18, 64, 64);
+                shiftX = 40;
+            }
+
+            e.Graphics.DrawString(toastText,
+                new Font("Segoe UI", 36f, FontStyle.Bold, GraphicsUnit.Pixel),
+                new SolidBrush(Color.White),
+                new PointF(this.Bound.Width / 2 + shiftX, this.Bound.Height / 2),
+            format);
+
         }
 
-        public void RunToast(string text)
+        public void RunToast(string text, ToastIcon? icon = null)
         {
             Hide();
+            timer.Stop();
 
             toastText = text;
+            toastIcon = icon;
+
             Screen screen1 = Screen.FromHandle(base.Handle);
 
             Width = 300;
@@ -84,15 +126,15 @@ namespace GHelper
             Y = screen1.Bounds.Height - 300 - this.Height;
 
             Show();
-
-            timer.Enabled = true;
+            timer.Start();
         }
 
         private void timer_Tick(object? sender, EventArgs e)
         {
             Debug.WriteLine("Toast end");
-            timer.Enabled = false;
+
             Hide();
+            timer.Stop();
         }
     }
 }
