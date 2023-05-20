@@ -154,7 +154,7 @@
     <value>Aplicar límites de energía</value>
   </data>
   <data name="ApplyWindowsPowerPlan" xml:space="preserve">
-    <value>Auto Adjust Windows Power Mode</value>
+    <value>Auto-ajustar plan de energía Windows</value>
   </data>
   <data name="AuraBreathe" xml:space="preserve">
     <value>Respiración</value>
@@ -188,6 +188,9 @@
   </data>
   <data name="Awake" xml:space="preserve">
     <value>Encendida</value>
+  </data>
+  <data name="BacklightTimeout" xml:space="preserve">
+    <value>Apagar retroiluminación con batería (s.)</value>
   </data>
   <data name="Balanced" xml:space="preserve">
     <value>Equilibrado</value>
@@ -255,11 +258,23 @@
   <data name="FansAndPower" xml:space="preserve">
     <value>Ventiladores y energía</value>
   </data>
+  <data name="FanSpeed" xml:space="preserve">
+    <value> Fan: </value>
+  </data>
   <data name="FansPower" xml:space="preserve">
     <value>Ventiladores + Energía</value>
   </data>
+  <data name="GPUBoost" xml:space="preserve">
+    <value>Dynamic Boost</value>
+  </data>
   <data name="GPUChanging" xml:space="preserve">
     <value>Cargando</value>
+  </data>
+    <data name="GPUCoreClockOffset" xml:space="preserve">
+    <value>Core Clock Offset</value>
+  </data>
+  <data name="GPUMemoryClockOffset" xml:space="preserve">
+    <value>Memory Clock Offset</value>
   </data>
   <data name="GPUMode" xml:space="preserve">
     <value>Modo de GPU</value>
@@ -275,6 +290,9 @@
   </data>
   <data name="GPUSettings" xml:space="preserve">
     <value>Ajustes de GPU</value>
+  </data>
+    <data name="GPUTempTarget" xml:space="preserve">
+    <value>Temperatura objetivo</value>
   </data>
   <data name="KeyBindings" xml:space="preserve">
     <value>Atajos de teclado</value>
@@ -302,6 +320,9 @@
   </data>
   <data name="Logo" xml:space="preserve">
     <value>Logo</value>
+  </data>
+    <data name="MatrixAudio" xml:space="preserve">
+    <value>Visualizador de audio</value>
   </data>
   <data name="MatrixBanner" xml:space="preserve">
     <value>Banner binario</value>
@@ -374,6 +395,9 @@
   </data>
   <data name="Quit" xml:space="preserve">
     <value>Quitar</value>
+  </data>
+  <data name="RestartGPU" xml:space="preserve">
+	<value>Algo está usando la dGPU e impide usar Modo Eco. ¿Reiniciar dGPU en administrador de dispositivos? * Proceda bajo su propio riesgo.</value>
   </data>
   <data name="RPM" xml:space="preserve">
     <value>RPM</value>
