@@ -271,16 +271,7 @@ namespace GHelper
             var devices = GetHidDevices(deviceIds);
             foreach (HidDevice device in devices)
             {
-
-
                 device.OpenDevice();
-
-                device.WriteFeatureData(LED_INIT1);
-                device.WriteFeatureData(LED_INIT2);
-                device.WriteFeatureData(LED_INIT3);
-                device.WriteFeatureData(LED_INIT4);
-                device.WriteFeatureData(LED_INIT5);
-
                 device.WriteFeatureData(msg);
                 Logger.WriteLine("USB-KB " + device.Capabilities.FeatureReportByteLength + ":" + BitConverter.ToString(msg));
                 device.CloseDevice();

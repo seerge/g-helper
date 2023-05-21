@@ -26,6 +26,7 @@ namespace GHelper.AnimeMatrix
             try
             {
                 mat = new AnimeMatrixDevice();
+                mat.WakeUp();
                 matrixTimer = new System.Timers.Timer(100);
                 matrixTimer.Elapsed += MatrixTimer_Elapsed;
             }
