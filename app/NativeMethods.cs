@@ -435,6 +435,10 @@ public class NativeMethods
     }
 
 
+    [DllImport("Powrprof.dll", CharSet = CharSet.Auto, ExactSpelling = true)]
+    public static extern bool SetSuspendState(bool hiberate, bool forceCritical, bool disableWakeEvent);
+
+
     public const int KEYEVENTF_EXTENDEDKEY = 1;
     public const int KEYEVENTF_KEYUP = 2;
 

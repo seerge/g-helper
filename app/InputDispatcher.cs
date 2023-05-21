@@ -121,16 +121,18 @@ namespace GHelper
             }
         }
 
-        static void TabletMode()
+        static bool GetTouchpadState()
         {
-            bool touchpadState, tabletState;
-
             using (var key = Registry.CurrentUser.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\PrecisionTouchPad\Status", false))
             {
-                touchpadState = (key?.GetValue("Enabled")?.ToString() == "1");
+                return (key?.GetValue("Enabled")?.ToString() == "1");
             }
+        }
 
-            tabletState = Program.acpi.DeviceGet(AsusACPI.TabletState) > 0;
+        static void TabletMode()
+        {
+            bool touchpadState = GetTouchpadState();
+            bool tabletState = Program.acpi.DeviceGet(AsusACPI.TabletState) > 0;
 
             Logger.WriteLine("Tablet: " + tabletState + " Touchpad: " + touchpadState);
 
@@ -192,11 +194,13 @@ namespace GHelper
                     Program.settingsForm.BeginInvoke(Program.settingsForm.RunToast, brightness + "%", ToastIcon.BrightnessUp);
                     break;
                 case 107: // FN+F10
+                    bool touchpadState = GetTouchpadState();
                     AsusUSB.TouchpadToggle();
-                    Program.settingsForm.BeginInvoke(Program.settingsForm.RunToast, "Touchpad", ToastIcon.Touchpad);
+                    Program.settingsForm.BeginInvoke(Program.settingsForm.RunToast, touchpadState ? "Off" : "On", ToastIcon.Touchpad);
                     break;
                 case 108: // FN+F11
-                    Application.SetSuspendState(PowerState.Suspend, true, true);
+                    Program.acpi.DeviceSet(AsusACPI.UniversalControl, 0x6c, "Sleep");
+                    //NativeMethods.SetSuspendState(false, true, true);
                     break;
             }
         }
