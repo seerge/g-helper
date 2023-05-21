@@ -163,29 +163,33 @@ namespace GHelper
 
             // Asus Optimization service Events 
 
-            int brightness = AppConfig.getConfig("keyboard_brightness");
+            int backlight = AppConfig.getConfig("keyboard_brightness");
+
+            string[] backlightNames = new string[] { "Off", "Low", "Mid", "Max" };
+
+            int brightness;
 
             switch (EventID)
             {
                 case 197: // FN+F2
-                    brightness = Math.Max(0, brightness - 1);
-                    AppConfig.setConfig("keyboard_brightness", brightness);
-                    AsusUSB.ApplyBrightness(brightness);
-                    Program.settingsForm.BeginInvoke(Program.settingsForm.RunToast, "Backlight", ToastIcon.BacklightDown);
+                    backlight = Math.Max(0, backlight - 1);
+                    AppConfig.setConfig("keyboard_brightness", backlight);
+                    AsusUSB.ApplyBrightness(backlight);
+                    Program.settingsForm.BeginInvoke(Program.settingsForm.RunToast, backlightNames[backlight], ToastIcon.BacklightDown);
                     break;
                 case 196: // FN+F3
-                    brightness = Math.Min(3, brightness + 1);
-                    AppConfig.setConfig("keyboard_brightness", brightness);
-                    AsusUSB.ApplyBrightness(brightness);
-                    Program.settingsForm.BeginInvoke(Program.settingsForm.RunToast, "Backlight", ToastIcon.BacklightUp);
+                    backlight = Math.Min(3, backlight + 1);
+                    AppConfig.setConfig("keyboard_brightness", backlight);
+                    AsusUSB.ApplyBrightness(backlight);
+                    Program.settingsForm.BeginInvoke(Program.settingsForm.RunToast, backlightNames[backlight], ToastIcon.BacklightUp);
                     break;
                 case 16: // FN+F7
-                    ScreenBrightness.Adjust(-10);
-                    Program.settingsForm.BeginInvoke(Program.settingsForm.RunToast, "Brightness", ToastIcon.BrightnessDown);
+                    brightness = ScreenBrightness.Adjust(-10);
+                    Program.settingsForm.BeginInvoke(Program.settingsForm.RunToast, brightness + "%", ToastIcon.BrightnessDown);
                     break;
                 case 32: // FN+F8
-                    ScreenBrightness.Adjust(+10);
-                    Program.settingsForm.BeginInvoke(Program.settingsForm.RunToast, "Brightness", ToastIcon.BrightnessUp);
+                    brightness = ScreenBrightness.Adjust(+10);
+                    Program.settingsForm.BeginInvoke(Program.settingsForm.RunToast, brightness + "%", ToastIcon.BrightnessUp);
                     break;
                 case 107: // FN+F10
                     AsusUSB.TouchpadToggle();

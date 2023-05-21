@@ -16,6 +16,8 @@ namespace GHelper
 
         static int MinRPM, MaxRPM;
 
+        static bool powerVisible = true, gpuVisible = true;
+
         const int fansMax = 100;
 
         NvidiaGpuControl? nvControl = null;
@@ -144,13 +146,13 @@ namespace GHelper
             }
             else
             {
-                panelGPU.Visible = false;
+                gpuVisible = panelGPU.Visible = false;
                 return;
             }
 
             try
             {
-                panelGPU.Visible = true;
+                gpuVisible = panelGPU.Visible = true;
 
                 int gpu_boost = AppConfig.getConfigPerf("gpu_boost");
                 int gpu_temp = AppConfig.getConfigPerf("gpu_temp");
@@ -198,7 +200,7 @@ namespace GHelper
             catch (Exception ex)
             {
                 Logger.WriteLine(ex.ToString());
-                panelGPU.Visible = false;
+                gpuVisible = panelGPU.Visible = false;
             }
 
         }
@@ -291,9 +293,9 @@ namespace GHelper
 
         }
 
-        private void Fans_Shown(object? sender, EventArgs e)
+        public void FormPosition()
         {
-            panelSliders.Visible = panelGPU.Visible || panelPower.Visible;
+            panelSliders.Visible = gpuVisible || powerVisible;
 
             if (Height > Program.settingsForm.Height)
             {
@@ -307,7 +309,11 @@ namespace GHelper
             }
 
             Left = Program.settingsForm.Left - Width - 5;
+        }
 
+        private void Fans_Shown(object? sender, EventArgs e)
+        {
+            FormPosition();
         }
 
 
@@ -394,7 +400,7 @@ namespace GHelper
             bool cpuBmode = (Program.acpi.DeviceGet(AsusACPI.PPT_CPUB0) >= 0); // 2022 model +
             bool cpuAmode = (Program.acpi.DeviceGet(AsusACPI.PPT_TotalA0) >= 0); // 2021 model +
 
-            panelPower.Visible = cpuAmode;
+            powerVisible = panelPower.Visible = cpuAmode;
             panelCPU.Visible = cpuBmode;
 
             // Yes, that's stupid, but Total slider on 2021 model actually adjusts CPU PPT

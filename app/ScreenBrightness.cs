@@ -34,12 +34,13 @@
             }
         }
 
-        public static void Adjust(int delta)
+        public static int Adjust(int delta)
         {
             int brightness = Get();
             Debug.WriteLine(brightness);
             brightness = Math.Min(100, Math.Max(0, brightness + delta));
             Set(brightness);
+            return brightness;
         }
 
     }

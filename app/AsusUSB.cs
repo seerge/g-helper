@@ -49,6 +49,7 @@ namespace GHelper
         }
     }
 
+
     public static class AsusUSB
     {
 
@@ -74,6 +75,7 @@ namespace GHelper
                 { 2, Properties.Strings.AuraFast }
             };
         }
+
 
         static Dictionary<int, string> _modes = new Dictionary<int, string>
             {

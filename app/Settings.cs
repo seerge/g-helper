@@ -652,6 +652,7 @@ namespace GHelper
             }
             else
             {
+                fans.FormPosition();
                 fans.Show();
             }
 
