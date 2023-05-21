@@ -6,7 +6,6 @@ using System.Net;
 using System.Reflection;
 using System.Text.Json;
 using System.Timers;
-using System.Windows.Forms;
 using Tools;
 
 namespace GHelper
@@ -471,7 +470,7 @@ namespace GHelper
 
             if (!buttonXGM.Visible) return;
 
-            labelTipGPU.Text = buttonXGM.Bounds.Contains(table.PointToClient(Cursor.Position)) ? 
+            labelTipGPU.Text = buttonXGM.Bounds.Contains(table.PointToClient(Cursor.Position)) ?
                 "XGMobile toggle works only in Standard mode" : "";
 
         }
@@ -517,8 +516,24 @@ namespace GHelper
                     }
                     m.Result = (IntPtr)1;
                     break;
+                
                 case KeyHandler.WM_HOTKEY_MSG_ID:
-                    CyclePerformanceMode();
+
+                    Keys key = (Keys)(((int)m.LParam >> 16) & 0xFFFF);
+
+                    switch (key)
+                    {
+                        case Keys.VolumeDown:
+                            InputDispatcher.KeyProcess("m1");
+                            break;
+                        case Keys.VolumeUp:
+                            InputDispatcher.KeyProcess("m2");
+                            break;
+                        default:
+                            if (key == InputDispatcher.keyProfile) CyclePerformanceMode();
+                            break;
+                    }
+
                     break;
             }
             base.WndProc(ref m);
@@ -1384,7 +1399,8 @@ namespace GHelper
                 ButtonEnabled(buttonEco, false);
                 ButtonEnabled(buttonStandard, false);
                 ButtonEnabled(buttonUltimate, false);
-            } else
+            }
+            else
             {
                 ButtonEnabled(buttonOptimized, true);
                 ButtonEnabled(buttonEco, true);

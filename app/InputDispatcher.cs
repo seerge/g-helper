@@ -3,6 +3,7 @@ using NAudio.CoreAudioApi;
 using System.Diagnostics;
 using System.Management;
 using Tools;
+using static NativeMethods;
 
 namespace GHelper
 {
@@ -11,6 +12,10 @@ namespace GHelper
 
         private static bool isOptimizationRunning = OptimizationService.IsRunning();
         private static nint windowHandle;
+
+        public static Keys keyProfile = Keys.F5;
+
+        KeyHandler m1, m2, togggle;
 
         public InputDispatcher(nint handle)
         {
@@ -22,19 +27,39 @@ namespace GHelper
             if (!isOptimizationRunning) AsusUSB.RunListener(HandleEvent);
 
             // CTRL + SHIFT + F5 to cycle profiles
-            Keys keybind_profile = (AppConfig.getConfig("keybind_profile") != -1) ? (Keys)AppConfig.getConfig("keybind_profile") : Keys.F5;
-            if (keybind_profile != 0)
+            if (AppConfig.getConfig("keybind_profile") != -1) keyProfile = (Keys)AppConfig.getConfig("keybind_profile");
+
+            togggle = new KeyHandler(KeyHandler.SHIFT | KeyHandler.CTRL, keyProfile, windowHandle);
+            m1 = new KeyHandler(KeyHandler.NOMOD, Keys.VolumeDown, windowHandle);
+            m2 = new KeyHandler(KeyHandler.NOMOD, Keys.VolumeUp, windowHandle);
+
+            RegisterKeys();
+        }
+
+        public void RegisterKeys()
+        {
+
+            string actionM1 = AppConfig.getConfigString("m1");
+            string actionM2 = AppConfig.getConfigString("m2");
+
+            togggle.Unregiser();
+            m1.Unregiser();
+            m2.Unregiser();
+
+            if (keyProfile != Keys.None)
             {
-                KeyHandler ghk = new KeyHandler(KeyHandler.SHIFT | KeyHandler.CTRL, keybind_profile, windowHandle);
-                ghk.Register();
+                togggle.Register();
             }
 
-            /*
-            KeyHandler m1 = new KeyHandler(0, Keys.VolumeDown, ds);
-            m1.Register();
-            KeyHandler m2 = new KeyHandler(0, Keys.VolumeUp, ds);
-            m2.Register();
-            */
+            if (actionM1 is not null && actionM1.Length > 0)
+            {
+                m1.Register();
+            }
+
+            if (actionM2 is not null && actionM2.Length > 0)
+            {
+                m2.Register();
+            }
 
         }
 
@@ -60,7 +85,7 @@ namespace GHelper
 
         }
 
-        static void KeyProcess(string name = "m3")
+        public static void KeyProcess(string name = "m3")
         {
             string action = AppConfig.getConfigString(name);
 
@@ -70,6 +95,8 @@ namespace GHelper
                     action = "ghelper";
                 if (name == "fnf4")
                     action = "aura";
+                if (name == "fnf5")
+                    action = "performance";
                 if (name == "m3" && !isOptimizationRunning)
                     action = "micmute";
             }

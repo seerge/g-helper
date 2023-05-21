@@ -56,6 +56,10 @@ namespace GHelper
             {
                 if (combo.SelectedValue is not null)
                     AppConfig.setConfig(name, combo.SelectedValue.ToString());
+
+                if (name == "m1" || name == "m2")
+                    Program.inputDispatcher.RegisterKeys();
+
             };
 
             txbox.Text = AppConfig.getConfigString(name + "_custom");
