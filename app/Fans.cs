@@ -507,11 +507,11 @@ namespace GHelper
             int mode = AppConfig.getConfig("performance_mode");
             byte[] curve = AppConfig.getFanConfig(device);
 
-            if (reset || AsusACPI.IsEmptyCurve(curve))
+            if (reset || AsusACPI.IsInvalidCurve(curve))
             {
                 curve = Program.acpi.GetFanCurve(device, mode);
 
-                if (AsusACPI.IsEmptyCurve(curve))
+                if (AsusACPI.IsInvalidCurve(curve))
                     curve = AppConfig.getDefaultCurve(device);
 
                 curve = AsusACPI.FixFanCurve(curve);

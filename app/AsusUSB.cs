@@ -288,13 +288,16 @@ namespace GHelper
         public static int SetXGM(byte[] msg)
         {
 
-            Logger.WriteLine("XGM Payload :" + BitConverter.ToString(msg));
+            //Logger.WriteLine("XGM Payload :" + BitConverter.ToString(msg));
+
+            var payload = new byte[300];
+            Array.Copy(msg, payload, msg.Length);
 
             foreach (HidDevice device in GetHidDevices(new int[] { 0x1970 }, 0))
             {
                 device.OpenDevice();
-                Logger.WriteLine("XGM " + device.Attributes.ProductHexId + device.Capabilities.FeatureReportByteLength + ":" + BitConverter.ToString(msg));
-                device.WriteFeatureData(msg);
+                Logger.WriteLine("XGM " + device.Attributes.ProductHexId + "|" + device.Capabilities.FeatureReportByteLength + ":" + BitConverter.ToString(msg));
+                device.WriteFeatureData(payload);
                 device.CloseDevice();
                 return 1;
             }
@@ -316,7 +319,7 @@ namespace GHelper
         public static int SetXGMFan(byte[] curve)
         {
 
-            if (AsusACPI.IsEmptyCurve(curve)) return -1;
+            if (AsusACPI.IsInvalidCurve(curve)) return -1;
 
             byte[] msg = new byte[19];
             Array.Copy(new byte[] { 0x5e, 0xd1, 0x01 }, msg, 3);

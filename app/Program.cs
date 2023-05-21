@@ -30,7 +30,7 @@ namespace GHelper
         private static long lastTheme;
         private static long lastAdmin;
 
-        public static EventDispatcher eventDispatcher;
+        public static InputDispatcher inputDispatcher;
 
         private static PowerLineStatus isPlugged = PowerLineStatus.Unknown;
 
@@ -75,7 +75,7 @@ namespace GHelper
 
             trayIcon.MouseClick += TrayIcon_MouseClick;
 
-            eventDispatcher = new EventDispatcher(ds);
+            inputDispatcher = new InputDispatcher(ds);
 
             settingsForm.InitAura();
             settingsForm.InitMatrix();
@@ -90,7 +90,6 @@ namespace GHelper
             // Subscribing for monitor power on events
             PowerSettingGuid settingGuid = new NativeMethods.PowerSettingGuid();
             unRegPowerNotify = NativeMethods.RegisterPowerSettingNotification(ds, settingGuid.ConsoleDisplayState, NativeMethods.DEVICE_NOTIFY_WINDOW_HANDLE);
-
 
 
             if (Environment.CurrentDirectory.Trim('\\') == Application.StartupPath.Trim('\\') || action.Length > 0)

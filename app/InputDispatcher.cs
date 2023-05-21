@@ -6,13 +6,13 @@ using Tools;
 
 namespace GHelper
 {
-    public class EventDispatcher
+    public class InputDispatcher
     {
 
         private static bool isOptimizationRunning = OptimizationService.IsRunning();
         private static nint windowHandle;
 
-        public EventDispatcher(nint handle)
+        public InputDispatcher(nint handle)
         {
 
             windowHandle = handle;

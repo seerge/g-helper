@@ -115,6 +115,9 @@ namespace GHelper
             buttonUltimate.MouseMove += ButtonUltimate_MouseHover;
             buttonUltimate.MouseLeave += ButtonGPU_MouseLeave;
 
+            tableGPU.MouseMove += ButtonXGM_MouseMove;
+            tableGPU.MouseLeave += ButtonGPU_MouseLeave;
+
             buttonXGM.Click += ButtonXGM_Click;
 
             buttonScreenAuto.MouseMove += ButtonScreenAuto_MouseHover;
@@ -266,19 +269,40 @@ namespace GHelper
 
         private void ButtonXGM_Click(object? sender, EventArgs e)
         {
-            if (Program.acpi.DeviceGet(AsusACPI.GPUXG) == 1)
-            {
-                Program.acpi.DeviceSet(AsusACPI.GPUXG, 0, "GPU XGM");
-            }
-            else
-            {
-                Program.acpi.DeviceSet(AsusACPI.GPUXG, 1, "GPU XGM");
 
-                if (AppConfig.getConfigPerf("auto_apply") == 1) 
-                    AsusUSB.SetXGMFan(AppConfig.getFanConfig(AsusFan.XGM));
-            }
-            
-            InitXGM();
+            Task.Run(async () =>
+            {
+                BeginInvoke(delegate
+                {
+                    ButtonEnabled(buttonOptimized, false);
+                    ButtonEnabled(buttonEco, false);
+                    ButtonEnabled(buttonStandard, false);
+                    ButtonEnabled(buttonUltimate, false);
+                    ButtonEnabled(buttonXGM, false);
+                });
+
+                if (Program.acpi.DeviceGet(AsusACPI.GPUXG) == 1)
+                {
+                    Program.acpi.DeviceSet(AsusACPI.GPUXG, 0, "GPU XGM");
+                    await Task.Delay(TimeSpan.FromSeconds(15));
+                }
+                else
+                {
+                    Program.acpi.DeviceSet(AsusACPI.GPUXG, 1, "GPU XGM");
+                    await Task.Delay(TimeSpan.FromSeconds(15));
+
+                    if (AppConfig.getConfigPerf("auto_apply") == 1)
+                        AsusUSB.SetXGMFan(AppConfig.getFanConfig(AsusFan.XGM));
+                }
+
+                BeginInvoke(delegate
+                {
+                    InitGPUMode();
+                });
+
+
+            });
+
         }
 
         private void SliderBattery_ValueChanged(object? sender, EventArgs e)
@@ -438,6 +462,18 @@ namespace GHelper
         private void ButtonGPU_MouseLeave(object? sender, EventArgs e)
         {
             labelTipGPU.Text = "";
+        }
+
+        private void ButtonXGM_MouseMove(object? sender, MouseEventArgs e)
+        {
+            if (sender is null) return;
+            TableLayoutPanel table = (TableLayoutPanel)sender;
+
+            if (!buttonXGM.Visible) return;
+
+            labelTipGPU.Text = buttonXGM.Bounds.Contains(table.PointToClient(Cursor.Position)) ? 
+                "XGMobile toggle works only in Standard mode" : "";
+
         }
 
 
@@ -1331,8 +1367,13 @@ namespace GHelper
 
         public void InitXGM()
         {
+
             buttonXGM.Enabled = buttonXGM.Visible = Program.acpi.IsXGConnected();
-            buttonXGM.Activated = (Program.acpi.DeviceGet(AsusACPI.GPUXG) == 1);
+
+            int activated = Program.acpi.DeviceGet(AsusACPI.GPUXG);
+            if (activated < 0) return;
+
+            buttonXGM.Activated = (activated == 1);
 
             if (buttonXGM.Activated)
             {
@@ -1340,6 +1381,12 @@ namespace GHelper
                 ButtonEnabled(buttonEco, false);
                 ButtonEnabled(buttonStandard, false);
                 ButtonEnabled(buttonUltimate, false);
+            } else
+            {
+                ButtonEnabled(buttonOptimized, true);
+                ButtonEnabled(buttonEco, true);
+                ButtonEnabled(buttonStandard, true);
+                ButtonEnabled(buttonUltimate, true);
             }
 
         }
@@ -1431,6 +1478,7 @@ namespace GHelper
             ButtonEnabled(buttonEco, false);
             ButtonEnabled(buttonStandard, false);
             ButtonEnabled(buttonUltimate, false);
+            ButtonEnabled(buttonXGM, false);
 
             labelGPU.Text = Properties.Strings.GPUMode + ": " + Properties.Strings.GPUChanging + " ...";
 

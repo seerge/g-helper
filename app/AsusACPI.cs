@@ -353,10 +353,14 @@ public class AsusACPI
 
     }
 
+    public static bool IsInvalidCurve(byte[] curve)
+    {
+        return curve.Length != 16 || IsEmptyCurve(curve);
+    }
 
     public static bool IsEmptyCurve(byte[] curve)
     {
-        return curve.Length != 16 || curve.All(singleByte => singleByte == 0);
+        return curve.All(singleByte => singleByte == 0);
     }
 
     public static byte[] FixFanCurve(byte[] curve)
@@ -397,6 +401,7 @@ public class AsusACPI
 
     public bool IsXGConnected()
     {
+        //return true;
         return DeviceGet(GPUXGConnected) == 1;
     }
 

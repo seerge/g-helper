@@ -30,11 +30,6 @@ namespace CustomControls
 
         public bool darkTheme = false;
 
-        public RForm()
-        {
-            DoubleBuffered = true;
-        }
-
         public static void InitColors(bool darkTheme)
         {
             if (darkTheme)
