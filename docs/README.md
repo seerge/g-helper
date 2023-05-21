@@ -32,12 +32,13 @@ _If you post about the app - please include a link. Thanks._
 2. **GPU modes**: Eco - Standard - Ultimate - Optimized
 3. Laptop screen refresh rate 60hz or 120hz (144hz, etc) with display overdrive (OD) and miniled multizone switch
 4. Custom fan curve editor, power limits (PPT) and turbo boost selection for every performance mode
-5. Anime matrix control thanks to [Starlight](https://github.com/vddCore/Starlight) + some tweaks from my side including animated GIFs
+5. Anime matrix control thanks to [Starlight](https://github.com/vddCore/Starlight) + some tweaks from my side including animated GIFs, clock and autio visualizer
 6. Keyboard backlit animation and colors (including sleep animation and support for TUF models)
-7. Custom bindings for M3, M4 keys and FN+F5 (performance mode) FN+F4 (keyboard animation modes)
+7. All basic and custom Keyboard hotkeys (M-keys, FN+X keys)
 8. Monitor CPU / GPU temperature, fan speeds and battery discharge rate
 9. Battery charge limit to preserve battery health
-10. NVidia GPU overclocking 
+10. NVidia GPU overclocking
+11. XG Mobile Control
 
 ### :gear: Automatic switching when on battery or plugged in
 - Performance modes (app remembers last mode used on battery or when plugged)
