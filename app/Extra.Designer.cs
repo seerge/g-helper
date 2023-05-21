@@ -32,16 +32,23 @@ namespace GHelper
         private void InitializeComponent()
         {
             groupBindings = new GroupBox();
-            pictureHelp = new PictureBox();
-            textFNF4 = new TextBox();
-            comboFNF4 = new RComboBox();
+            tableKeys = new TableLayoutPanel();
+            textM2 = new TextBox();
+            textM1 = new TextBox();
+            comboM1 = new RComboBox();
+            labelM1 = new Label();
             labelFNF4 = new Label();
+            comboFNF4 = new RComboBox();
+            comboM4 = new RComboBox();
+            comboM3 = new RComboBox();
+            textFNF4 = new TextBox();
             textM4 = new TextBox();
             textM3 = new TextBox();
-            comboM4 = new RComboBox();
             labelM4 = new Label();
-            comboM3 = new RComboBox();
             labelM3 = new Label();
+            labelM2 = new Label();
+            comboM2 = new RComboBox();
+            pictureHelp = new PictureBox();
             groupLight = new GroupBox();
             panelBacklightExtra = new Panel();
             numericBacklightTime = new NumericUpDown();
@@ -80,6 +87,7 @@ namespace GHelper
             checkNoOverdrive = new CheckBox();
             checkTopmost = new CheckBox();
             groupBindings.SuspendLayout();
+            tableKeys.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureHelp).BeginInit();
             groupLight.SuspendLayout();
             panelBacklightExtra.SuspendLayout();
@@ -92,77 +100,103 @@ namespace GHelper
             // 
             // groupBindings
             // 
+            groupBindings.Controls.Add(tableKeys);
             groupBindings.Controls.Add(pictureHelp);
-            groupBindings.Controls.Add(textFNF4);
-            groupBindings.Controls.Add(comboFNF4);
-            groupBindings.Controls.Add(labelFNF4);
-            groupBindings.Controls.Add(textM4);
-            groupBindings.Controls.Add(textM3);
-            groupBindings.Controls.Add(comboM4);
-            groupBindings.Controls.Add(labelM4);
-            groupBindings.Controls.Add(comboM3);
-            groupBindings.Controls.Add(labelM3);
             groupBindings.Dock = DockStyle.Top;
             groupBindings.Location = new Point(10, 10);
             groupBindings.Name = "groupBindings";
-            groupBindings.Size = new Size(954, 242);
+            groupBindings.Size = new Size(954, 324);
             groupBindings.TabIndex = 0;
             groupBindings.TabStop = false;
             groupBindings.Text = "Key Bindings";
             // 
-            // pictureHelp
+            // tableKeys
             // 
-            pictureHelp.BackgroundImage = Resources.icons8_help_64;
-            pictureHelp.BackgroundImageLayout = ImageLayout.Zoom;
-            pictureHelp.Cursor = Cursors.Hand;
-            pictureHelp.Location = new Point(884, 58);
-            pictureHelp.Name = "pictureHelp";
-            pictureHelp.Size = new Size(32, 32);
-            pictureHelp.TabIndex = 9;
-            pictureHelp.TabStop = false;
+            tableKeys.ColumnCount = 3;
+            tableKeys.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20F));
+            tableKeys.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 40F));
+            tableKeys.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 40F));
+            tableKeys.Controls.Add(textM2, 2, 1);
+            tableKeys.Controls.Add(textM1, 2, 0);
+            tableKeys.Controls.Add(comboM1, 1, 0);
+            tableKeys.Controls.Add(labelM1, 0, 0);
+            tableKeys.Controls.Add(labelFNF4, 0, 4);
+            tableKeys.Controls.Add(comboFNF4, 1, 4);
+            tableKeys.Controls.Add(comboM4, 1, 3);
+            tableKeys.Controls.Add(comboM3, 1, 2);
+            tableKeys.Controls.Add(textFNF4, 2, 4);
+            tableKeys.Controls.Add(textM4, 2, 3);
+            tableKeys.Controls.Add(textM3, 2, 2);
+            tableKeys.Controls.Add(labelM4, 0, 3);
+            tableKeys.Controls.Add(labelM3, 0, 2);
+            tableKeys.Controls.Add(labelM2, 0, 1);
+            tableKeys.Controls.Add(comboM2, 1, 1);
+            tableKeys.Location = new Point(13, 38);
+            tableKeys.Name = "tableKeys";
+            tableKeys.Padding = new Padding(10);
+            tableKeys.RowCount = 5;
+            tableKeys.RowStyles.Add(new RowStyle(SizeType.Absolute, 50F));
+            tableKeys.RowStyles.Add(new RowStyle(SizeType.Absolute, 50F));
+            tableKeys.RowStyles.Add(new RowStyle(SizeType.Absolute, 50F));
+            tableKeys.RowStyles.Add(new RowStyle(SizeType.Absolute, 50F));
+            tableKeys.RowStyles.Add(new RowStyle(SizeType.Absolute, 50F));
+            tableKeys.Size = new Size(897, 266);
+            tableKeys.TabIndex = 10;
             // 
-            // textFNF4
+            // textM2
             // 
-            textFNF4.Location = new Point(415, 176);
-            textFNF4.Name = "textFNF4";
-            textFNF4.PlaceholderText = "action";
-            textFNF4.Size = new Size(448, 39);
-            textFNF4.TabIndex = 8;
+            textM2.Location = new Point(538, 63);
+            textM2.Name = "textM2";
+            textM2.PlaceholderText = "action";
+            textM2.Size = new Size(346, 39);
+            textM2.TabIndex = 14;
+            // 
+            // textM1
+            // 
+            textM1.Location = new Point(538, 13);
+            textM1.Name = "textM1";
+            textM1.PlaceholderText = "action";
+            textM1.Size = new Size(346, 39);
+            textM1.TabIndex = 13;
+            // 
+            // comboM1
+            // 
+            comboM1.BorderColor = Color.White;
+            comboM1.ButtonColor = Color.FromArgb(255, 255, 255);
+            comboM1.FormattingEnabled = true;
+            comboM1.Items.AddRange(new object[] { Strings.Default, Strings.VolumeMute, Strings.PlayPause, Strings.PrintScreen, Strings.ToggleAura, Strings.Custom });
+            comboM1.Location = new Point(188, 13);
+            comboM1.Name = "comboM1";
+            comboM1.Size = new Size(312, 40);
+            comboM1.TabIndex = 11;
+            // 
+            // labelM1
+            // 
+            labelM1.AutoSize = true;
+            labelM1.Location = new Point(13, 10);
+            labelM1.Name = "labelM1";
+            labelM1.Size = new Size(54, 32);
+            labelM1.TabIndex = 9;
+            labelM1.Text = "M1:";
+            // 
+            // labelFNF4
+            // 
+            labelFNF4.AutoSize = true;
+            labelFNF4.Location = new Point(13, 210);
+            labelFNF4.Name = "labelFNF4";
+            labelFNF4.Size = new Size(90, 32);
+            labelFNF4.TabIndex = 6;
+            labelFNF4.Text = "FN+F4:";
             // 
             // comboFNF4
             // 
             comboFNF4.BorderColor = Color.White;
             comboFNF4.ButtonColor = Color.FromArgb(255, 255, 255);
             comboFNF4.FormattingEnabled = true;
-            comboFNF4.Location = new Point(93, 175);
+            comboFNF4.Location = new Point(188, 213);
             comboFNF4.Name = "comboFNF4";
             comboFNF4.Size = new Size(312, 40);
             comboFNF4.TabIndex = 7;
-            // 
-            // labelFNF4
-            // 
-            labelFNF4.AutoSize = true;
-            labelFNF4.Location = new Point(2, 178);
-            labelFNF4.Name = "labelFNF4";
-            labelFNF4.Size = new Size(90, 32);
-            labelFNF4.TabIndex = 6;
-            labelFNF4.Text = "FN+F4:";
-            // 
-            // textM4
-            // 
-            textM4.Location = new Point(415, 113);
-            textM4.Name = "textM4";
-            textM4.PlaceholderText = "action";
-            textM4.Size = new Size(448, 39);
-            textM4.TabIndex = 5;
-            // 
-            // textM3
-            // 
-            textM3.Location = new Point(415, 54);
-            textM3.Name = "textM3";
-            textM3.PlaceholderText = "notepad /p \"file.txt\"";
-            textM3.Size = new Size(448, 39);
-            textM3.TabIndex = 4;
             // 
             // comboM4
             // 
@@ -170,19 +204,10 @@ namespace GHelper
             comboM4.ButtonColor = Color.FromArgb(255, 255, 255);
             comboM4.FormattingEnabled = true;
             comboM4.Items.AddRange(new object[] { Strings.PerformanceMode, Strings.OpenGHelper, Strings.Custom });
-            comboM4.Location = new Point(93, 112);
+            comboM4.Location = new Point(188, 163);
             comboM4.Name = "comboM4";
             comboM4.Size = new Size(312, 40);
             comboM4.TabIndex = 3;
-            // 
-            // labelM4
-            // 
-            labelM4.AutoSize = true;
-            labelM4.Location = new Point(25, 116);
-            labelM4.Name = "labelM4";
-            labelM4.Size = new Size(54, 32);
-            labelM4.TabIndex = 2;
-            labelM4.Text = "M4:";
             // 
             // comboM3
             // 
@@ -190,19 +215,83 @@ namespace GHelper
             comboM3.ButtonColor = Color.FromArgb(255, 255, 255);
             comboM3.FormattingEnabled = true;
             comboM3.Items.AddRange(new object[] { Strings.Default, Strings.VolumeMute, Strings.PlayPause, Strings.PrintScreen, Strings.ToggleAura, Strings.Custom });
-            comboM3.Location = new Point(93, 54);
+            comboM3.Location = new Point(188, 113);
             comboM3.Name = "comboM3";
             comboM3.Size = new Size(312, 40);
             comboM3.TabIndex = 1;
             // 
+            // textFNF4
+            // 
+            textFNF4.Location = new Point(538, 213);
+            textFNF4.Name = "textFNF4";
+            textFNF4.PlaceholderText = "action";
+            textFNF4.Size = new Size(346, 39);
+            textFNF4.TabIndex = 8;
+            // 
+            // textM4
+            // 
+            textM4.Location = new Point(538, 163);
+            textM4.Name = "textM4";
+            textM4.PlaceholderText = "action";
+            textM4.Size = new Size(346, 39);
+            textM4.TabIndex = 5;
+            // 
+            // textM3
+            // 
+            textM3.Location = new Point(538, 113);
+            textM3.Name = "textM3";
+            textM3.PlaceholderText = "action";
+            textM3.Size = new Size(346, 39);
+            textM3.TabIndex = 4;
+            // 
+            // labelM4
+            // 
+            labelM4.AutoSize = true;
+            labelM4.Location = new Point(13, 160);
+            labelM4.Name = "labelM4";
+            labelM4.Size = new Size(54, 32);
+            labelM4.TabIndex = 2;
+            labelM4.Text = "M4:";
+            // 
             // labelM3
             // 
             labelM3.AutoSize = true;
-            labelM3.Location = new Point(25, 58);
+            labelM3.Location = new Point(13, 110);
             labelM3.Name = "labelM3";
             labelM3.Size = new Size(54, 32);
             labelM3.TabIndex = 0;
             labelM3.Text = "M3:";
+            // 
+            // labelM2
+            // 
+            labelM2.AutoSize = true;
+            labelM2.Location = new Point(13, 60);
+            labelM2.Name = "labelM2";
+            labelM2.Size = new Size(54, 32);
+            labelM2.TabIndex = 10;
+            labelM2.Text = "M2:";
+            // 
+            // comboM2
+            // 
+            comboM2.BorderColor = Color.White;
+            comboM2.ButtonColor = Color.FromArgb(255, 255, 255);
+            comboM2.FormattingEnabled = true;
+            comboM2.Items.AddRange(new object[] { Strings.Default, Strings.VolumeMute, Strings.PlayPause, Strings.PrintScreen, Strings.ToggleAura, Strings.Custom });
+            comboM2.Location = new Point(188, 63);
+            comboM2.Name = "comboM2";
+            comboM2.Size = new Size(312, 40);
+            comboM2.TabIndex = 12;
+            // 
+            // pictureHelp
+            // 
+            pictureHelp.BackgroundImage = Resources.icons8_help_64;
+            pictureHelp.BackgroundImageLayout = ImageLayout.Zoom;
+            pictureHelp.Cursor = Cursors.Hand;
+            pictureHelp.Location = new Point(906, 51);
+            pictureHelp.Name = "pictureHelp";
+            pictureHelp.Size = new Size(32, 32);
+            pictureHelp.TabIndex = 9;
+            pictureHelp.TabStop = false;
             // 
             // groupLight
             // 
@@ -211,7 +300,7 @@ namespace GHelper
             groupLight.Controls.Add(panelXMG);
             groupLight.Controls.Add(tableBacklight);
             groupLight.Dock = DockStyle.Top;
-            groupLight.Location = new Point(10, 252);
+            groupLight.Location = new Point(10, 334);
             groupLight.Name = "groupLight";
             groupLight.Size = new Size(954, 516);
             groupLight.TabIndex = 1;
@@ -579,7 +668,7 @@ namespace GHelper
             groupOther.Controls.Add(checkNoOverdrive);
             groupOther.Controls.Add(checkTopmost);
             groupOther.Dock = DockStyle.Top;
-            groupOther.Location = new Point(10, 768);
+            groupOther.Location = new Point(10, 850);
             groupOther.Name = "groupOther";
             groupOther.Size = new Size(954, 276);
             groupOther.TabIndex = 2;
@@ -643,7 +732,7 @@ namespace GHelper
             AutoScaleMode = AutoScaleMode.Font;
             AutoSize = true;
             AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            ClientSize = new Size(974, 1059);
+            ClientSize = new Size(974, 1131);
             Controls.Add(groupOther);
             Controls.Add(groupLight);
             Controls.Add(groupBindings);
@@ -658,7 +747,8 @@ namespace GHelper
             ShowInTaskbar = false;
             Text = "Extra Settings";
             groupBindings.ResumeLayout(false);
-            groupBindings.PerformLayout();
+            tableKeys.ResumeLayout(false);
+            tableKeys.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)pictureHelp).EndInit();
             groupLight.ResumeLayout(false);
             groupLight.PerformLayout();
@@ -725,5 +815,12 @@ namespace GHelper
         private NumericUpDown numericBacklightTime;
         private CheckBox checkKeyboardAuto;
         private CheckBox checkAutoApplyWindowsPowerMode;
+        private TableLayoutPanel tableKeys;
+        private Label labelM1;
+        private Label labelM2;
+        private RComboBox comboM1;
+        private RComboBox comboM2;
+        private TextBox textM2;
+        private TextBox textM1;
     }
 }

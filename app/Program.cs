@@ -81,6 +81,7 @@ namespace GHelper
             settingsForm.InitMatrix();
             settingsForm.SetStartupCheck(Startup.IsScheduled());
 
+            
             SetAutoModes();
 
             // Subscribing for system power change events

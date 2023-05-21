@@ -1243,6 +1243,8 @@ namespace GHelper
 
         public void AutoKeyboard()
         {
+            AsusUSB.Init();
+
             if (AppConfig.getConfig("keyboard_auto") != 1) return;
 
             if (SystemInformation.PowerStatus.PowerLineStatus == PowerLineStatus.Online)

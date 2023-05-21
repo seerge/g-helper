@@ -1,6 +1,7 @@
 ﻿using HidLibrary;
 using Microsoft.Win32;
 using System.Diagnostics;
+using System.Text;
 
 namespace GHelper
 {
@@ -54,6 +55,12 @@ namespace GHelper
     {
 
         public const byte HID_ID = 0x5a;
+
+        public static readonly byte[] LED_INIT1 = new byte[] { 0x5d, 0xb9 };
+        public static readonly byte[] LED_INIT2 = Encoding.ASCII.GetBytes("]ASUS Tech.Inc.");
+        public static readonly byte[] LED_INIT3 = new byte[] { 0x5d, 0x05, 0x20, 0x31, 0, 0x08 };
+        public static readonly byte[] LED_INIT4 = Encoding.ASCII.GetBytes("^ASUS Tech.Inc.");
+        public static readonly byte[] LED_INIT5 = new byte[] { 0x5e, 0x05, 0x20, 0x31, 0, 0x08 };
 
         static byte[] MESSAGE_SET = { 0x5d, 0xb5, 0, 0, 0 };
         static byte[] MESSAGE_APPLY = { 0x5d, 0xb4 };
@@ -240,19 +247,42 @@ namespace GHelper
             return msg;
         }
 
+        public static void Init()
+        {
+
+            var devices = GetHidDevices(deviceIds);
+            foreach (HidDevice device in devices)
+            {
+                device.OpenDevice();
+                device.WriteFeatureData(LED_INIT1);
+                device.WriteFeatureData(LED_INIT2);
+                device.WriteFeatureData(LED_INIT3);
+                device.WriteFeatureData(LED_INIT4);
+                device.WriteFeatureData(LED_INIT5);
+                device.CloseDevice();
+            }
+        }
+
 
         public static void ApplyBrightness(int brightness)
         {
             byte[] msg = { 0x5d, 0xba, 0xc5, 0xc4, (byte)brightness };
 
             var devices = GetHidDevices(deviceIds);
-            //Logger.WriteLine("USB-KB = " + BitConverter.ToString(msg));
-
             foreach (HidDevice device in devices)
             {
+
+
                 device.OpenDevice();
-                device.Write(msg);
-                Logger.WriteLine("USB-KB " + device.Attributes.ProductHexId + ":" + BitConverter.ToString(msg));
+
+                device.WriteFeatureData(LED_INIT1);
+                device.WriteFeatureData(LED_INIT2);
+                device.WriteFeatureData(LED_INIT3);
+                device.WriteFeatureData(LED_INIT4);
+                device.WriteFeatureData(LED_INIT5);
+
+                device.WriteFeatureData(msg);
+                Logger.WriteLine("USB-KB " + device.Capabilities.FeatureReportByteLength + ":" + BitConverter.ToString(msg));
                 device.CloseDevice();
             }
 
@@ -273,7 +303,7 @@ namespace GHelper
             foreach (HidDevice device in devices)
             {
                 device.OpenDevice();
-                device.Write(msg);
+                device.WriteFeatureData(msg);
                 Logger.WriteLine("USB-KB " + device.Attributes.ProductHexId + ":" + BitConverter.ToString(msg));
                 device.CloseDevice();
             }
@@ -362,9 +392,9 @@ namespace GHelper
             foreach (HidDevice device in devices)
             {
                 device.OpenDevice();
-                device.Write(msg);
-                device.Write(MESSAGE_SET);
-                device.Write(MESSAGE_APPLY);
+                device.WriteFeatureData(msg);
+                device.WriteFeatureData(MESSAGE_SET);
+                device.WriteFeatureData(MESSAGE_APPLY);
                 device.CloseDevice();
                 Logger.WriteLine("USB-KB " + device.Capabilities.FeatureReportByteLength + "|" + device.Capabilities.InputReportByteLength + device.Description + device.DevicePath + ":" + BitConverter.ToString(msg));
             }

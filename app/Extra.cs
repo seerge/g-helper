@@ -22,16 +22,24 @@ namespace GHelper
         private void SetKeyCombo(ComboBox combo, TextBox txbox, string name)
         {
 
-            if (name == "m3")
-                customActions[""] = Properties.Strings.MuteMic;
-
-            if (name == "m4")
-                customActions[""] = Properties.Strings.OpenGHelper;
-
-            if (name == "fnf4")
+            switch (name)
             {
-                customActions[""] = Properties.Strings.ToggleAura;
-                customActions.Remove("aura");
+                case "m1":
+                    customActions[""] = Properties.Strings.VolumeDown;
+                    break;
+                case "m2":
+                    customActions[""] = Properties.Strings.VolumeUp;
+                    break;
+                case "m3":
+                    customActions[""] = Properties.Strings.MuteMic;
+                    break;
+                case "m4":
+                    customActions[""] = Properties.Strings.OpenGHelper;
+                    break;
+                case "fnf4":
+                    customActions[""] = Properties.Strings.ToggleAura;
+                    customActions.Remove("aura");
+                    break;
             }
 
             combo.DropDownStyle = ComboBoxStyle.DropDownList;
@@ -89,6 +97,8 @@ namespace GHelper
 
             InitTheme();
 
+            SetKeyCombo(comboM1, textM1, "m1");
+            SetKeyCombo(comboM2, textM2, "m2");
             SetKeyCombo(comboM3, textM3, "m3");
             SetKeyCombo(comboM4, textM4, "m4");
             SetKeyCombo(comboFNF4, textFNF4, "fnf4");

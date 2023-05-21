@@ -453,8 +453,14 @@
   <data name="VersionLabel" xml:space="preserve">
     <value>Version</value>
   </data>
+  <data name="VolumeDown" xml:space="preserve">
+    <value>Volume Down</value>
+  </data>
   <data name="VolumeMute" xml:space="preserve">
     <value>Volume Mute</value>
+  </data>
+  <data name="VolumeUp" xml:space="preserve">
+    <value>Volume Up</value>
   </data>
   <data name="WindowTop" xml:space="preserve">
     <value>Keep app window always on top</value>

@@ -1069,11 +1069,29 @@ namespace GHelper.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Volume Down.
+        /// </summary>
+        internal static string VolumeDown {
+            get {
+                return ResourceManager.GetString("VolumeDown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Volume Mute.
         /// </summary>
         internal static string VolumeMute {
             get {
                 return ResourceManager.GetString("VolumeMute", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Volume Up.
+        /// </summary>
+        internal static string VolumeUp {
+            get {
+                return ResourceManager.GetString("VolumeUp", resourceCulture);
             }
         }
         
