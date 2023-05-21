@@ -39,7 +39,7 @@ namespace GHelper
             combo.DisplayMember = "Value";
             combo.ValueMember = "Key";
 
-            string action = Program.config.getConfigString(name);
+            string action = AppConfig.getConfigString(name);
 
             combo.SelectedValue = (action is not null) ? action : "";
             if (combo.SelectedValue is null) combo.SelectedValue = "";
@@ -47,13 +47,13 @@ namespace GHelper
             combo.SelectedValueChanged += delegate
             {
                 if (combo.SelectedValue is not null)
-                    Program.config.setConfig(name, combo.SelectedValue.ToString());
+                    AppConfig.setConfig(name, combo.SelectedValue.ToString());
             };
 
-            txbox.Text = Program.config.getConfigString(name + "_custom");
+            txbox.Text = AppConfig.getConfigString(name + "_custom");
             txbox.TextChanged += delegate
             {
-                Program.config.setConfig(name + "_custom", txbox.Text);
+                AppConfig.setConfig(name + "_custom", txbox.Text);
             };
         }
 
@@ -103,28 +103,28 @@ namespace GHelper
             comboKeyboardSpeed.SelectedValueChanged += ComboKeyboardSpeed_SelectedValueChanged;
 
             // Keyboard
-            checkAwake.Checked = !(Program.config.getConfig("keyboard_awake") == 0);
-            checkBoot.Checked = !(Program.config.getConfig("keyboard_boot") == 0);
-            checkSleep.Checked = !(Program.config.getConfig("keyboard_sleep") == 0);
-            checkShutdown.Checked = !(Program.config.getConfig("keyboard_shutdown") == 0);
+            checkAwake.Checked = !(AppConfig.getConfig("keyboard_awake") == 0);
+            checkBoot.Checked = !(AppConfig.getConfig("keyboard_boot") == 0);
+            checkSleep.Checked = !(AppConfig.getConfig("keyboard_sleep") == 0);
+            checkShutdown.Checked = !(AppConfig.getConfig("keyboard_shutdown") == 0);
 
             // Lightbar
-            checkAwakeBar.Checked = !(Program.config.getConfig("keyboard_awake_bar") == 0);
-            checkBootBar.Checked = !(Program.config.getConfig("keyboard_boot_bar") == 0);
-            checkSleepBar.Checked = !(Program.config.getConfig("keyboard_sleep_bar") == 0);
-            checkShutdownBar.Checked = !(Program.config.getConfig("keyboard_shutdown_bar") == 0);
+            checkAwakeBar.Checked = !(AppConfig.getConfig("keyboard_awake_bar") == 0);
+            checkBootBar.Checked = !(AppConfig.getConfig("keyboard_boot_bar") == 0);
+            checkSleepBar.Checked = !(AppConfig.getConfig("keyboard_sleep_bar") == 0);
+            checkShutdownBar.Checked = !(AppConfig.getConfig("keyboard_shutdown_bar") == 0);
 
             // Lid
-            checkAwakeLid.Checked = !(Program.config.getConfig("keyboard_awake_lid") == 0);
-            checkBootLid.Checked = !(Program.config.getConfig("keyboard_boot_lid") == 0);
-            checkSleepLid.Checked = !(Program.config.getConfig("keyboard_sleep_lid") == 0);
-            checkShutdownLid.Checked = !(Program.config.getConfig("keyboard_shutdown_lid") == 0);
+            checkAwakeLid.Checked = !(AppConfig.getConfig("keyboard_awake_lid") == 0);
+            checkBootLid.Checked = !(AppConfig.getConfig("keyboard_boot_lid") == 0);
+            checkSleepLid.Checked = !(AppConfig.getConfig("keyboard_sleep_lid") == 0);
+            checkShutdownLid.Checked = !(AppConfig.getConfig("keyboard_shutdown_lid") == 0);
 
             // Logo
-            checkAwakeLogo.Checked = !(Program.config.getConfig("keyboard_awake_logo") == 0);
-            checkBootLogo.Checked = !(Program.config.getConfig("keyboard_boot_logo") == 0);
-            checkSleepLogo.Checked = !(Program.config.getConfig("keyboard_sleep_logo") == 0);
-            checkShutdownLogo.Checked = !(Program.config.getConfig("keyboard_shutdown_logo") == 0);
+            checkAwakeLogo.Checked = !(AppConfig.getConfig("keyboard_awake_logo") == 0);
+            checkBootLogo.Checked = !(AppConfig.getConfig("keyboard_boot_logo") == 0);
+            checkSleepLogo.Checked = !(AppConfig.getConfig("keyboard_sleep_logo") == 0);
+            checkShutdownLogo.Checked = !(AppConfig.getConfig("keyboard_shutdown_logo") == 0);
 
             checkAwake.CheckedChanged += CheckPower_CheckedChanged;
             checkBoot.CheckedChanged += CheckPower_CheckedChanged;
@@ -146,7 +146,7 @@ namespace GHelper
             checkSleepLogo.CheckedChanged += CheckPower_CheckedChanged;
             checkShutdownLogo.CheckedChanged += CheckPower_CheckedChanged;
 
-            if (!Program.config.ContainsModel("Strix"))
+            if (!AppConfig.ContainsModel("Strix"))
             {
                 labelBacklightBar.Visible = false;
                 checkAwakeBar.Visible = false;
@@ -154,7 +154,7 @@ namespace GHelper
                 checkSleepBar.Visible = false;
                 checkShutdownBar.Visible = false;
 
-                if (!Program.config.ContainsModel("Z13"))
+                if (!AppConfig.ContainsModel("Z13"))
                 {
                     labelBacklightLid.Visible = false;
                     checkAwakeLid.Visible = false;
@@ -170,32 +170,32 @@ namespace GHelper
                 }
             }
 
-            checkTopmost.Checked = (Program.config.getConfig("topmost") == 1);
+            checkTopmost.Checked = (AppConfig.getConfig("topmost") == 1);
             checkTopmost.CheckedChanged += CheckTopmost_CheckedChanged; ;
 
-            checkKeyboardAuto.Checked = (Program.config.getConfig("keyboard_auto") == 1);
+            checkKeyboardAuto.Checked = (AppConfig.getConfig("keyboard_auto") == 1);
             checkKeyboardAuto.CheckedChanged += CheckKeyboardAuto_CheckedChanged;
 
-            checkNoOverdrive.Checked = (Program.config.getConfig("no_overdrive") == 1);
+            checkNoOverdrive.Checked = (AppConfig.getConfig("no_overdrive") == 1);
             checkNoOverdrive.CheckedChanged += CheckNoOverdrive_CheckedChanged;
 
-            checkUSBC.Checked = (Program.config.getConfig("optimized_usbc") == 1);
+            checkUSBC.Checked = (AppConfig.getConfig("optimized_usbc") == 1);
             checkUSBC.CheckedChanged += CheckUSBC_CheckedChanged;
 
-            checkAutoApplyWindowsPowerMode.Checked = (Program.config.getConfig("auto_apply_power_plan") != 0);
+            checkAutoApplyWindowsPowerMode.Checked = (AppConfig.getConfig("auto_apply_power_plan") != 0);
             checkAutoApplyWindowsPowerMode.CheckedChanged += checkAutoApplyWindowsPowerMode_CheckedChanged;
 
-            int kb_brightness = Program.config.getConfig("keyboard_brightness");
+            int kb_brightness = AppConfig.getConfig("keyboard_brightness");
             trackBrightness.Value = (kb_brightness >= 0 && kb_brightness <= 3) ? kb_brightness : 3;
 
             pictureHelp.Click += PictureHelp_Click;
             trackBrightness.Scroll += TrackBrightness_Scroll;
 
             panelXMG.Visible = (Program.acpi.DeviceGet(AsusACPI.GPUXGConnected) == 1);
-            checkXMG.Checked = !(Program.config.getConfig("xmg_light") == 0);
+            checkXMG.Checked = !(AppConfig.getConfig("xmg_light") == 0);
             checkXMG.CheckedChanged += CheckXMG_CheckedChanged;
 
-            int kb_timeout = Program.config.getConfig("keyboard_light_tiomeout");
+            int kb_timeout = AppConfig.getConfig("keyboard_light_tiomeout");
             numericBacklightTime.Value = (kb_timeout >= 0) ? kb_timeout : 60;
 
             numericBacklightTime.ValueChanged += NumericBacklightTime_ValueChanged;
@@ -205,24 +205,24 @@ namespace GHelper
         private void NumericBacklightTime_ValueChanged(object? sender, EventArgs e)
         {
             Program.RunAsAdmin("extra");
-            Program.config.setConfig("keyboard_light_tiomeout", (int)numericBacklightTime.Value);
+            AppConfig.setConfig("keyboard_light_tiomeout", (int)numericBacklightTime.Value);
             AsusUSB.SetBacklightOffDelay((int)numericBacklightTime.Value);
         }
 
         private void CheckXMG_CheckedChanged(object? sender, EventArgs e)
         {
-            Program.config.setConfig("xmg_light", (checkXMG.Checked ? 1 : 0));
+            AppConfig.setConfig("xmg_light", (checkXMG.Checked ? 1 : 0));
             AsusUSB.ApplyXGMLight(checkXMG.Checked);
         }
 
         private void CheckUSBC_CheckedChanged(object? sender, EventArgs e)
         {
-            Program.config.setConfig("optimized_usbc", (checkUSBC.Checked ? 1 : 0));
+            AppConfig.setConfig("optimized_usbc", (checkUSBC.Checked ? 1 : 0));
         }
 
         private void TrackBrightness_Scroll(object? sender, EventArgs e)
         {
-            Program.config.setConfig("keyboard_brightness", trackBrightness.Value);
+            AppConfig.setConfig("keyboard_brightness", trackBrightness.Value);
             AsusUSB.ApplyBrightness(trackBrightness.Value);
         }
 
@@ -233,42 +233,42 @@ namespace GHelper
 
         private void CheckNoOverdrive_CheckedChanged(object? sender, EventArgs e)
         {
-            Program.config.setConfig("no_overdrive", (checkNoOverdrive.Checked ? 1 : 0));
+            AppConfig.setConfig("no_overdrive", (checkNoOverdrive.Checked ? 1 : 0));
             Program.settingsForm.AutoScreen(true);
         }
 
         private void CheckKeyboardAuto_CheckedChanged(object? sender, EventArgs e)
         {
-            Program.config.setConfig("keyboard_auto", (checkKeyboardAuto.Checked ? 1 : 0));
+            AppConfig.setConfig("keyboard_auto", (checkKeyboardAuto.Checked ? 1 : 0));
         }
 
         private void CheckTopmost_CheckedChanged(object? sender, EventArgs e)
         {
-            Program.config.setConfig("topmost", (checkTopmost.Checked ? 1 : 0));
+            AppConfig.setConfig("topmost", (checkTopmost.Checked ? 1 : 0));
             Program.settingsForm.TopMost = checkTopmost.Checked;
         }
 
         private void CheckPower_CheckedChanged(object? sender, EventArgs e)
         {
-            Program.config.setConfig("keyboard_awake", (checkAwake.Checked ? 1 : 0));
-            Program.config.setConfig("keyboard_boot", (checkBoot.Checked ? 1 : 0));
-            Program.config.setConfig("keyboard_sleep", (checkSleep.Checked ? 1 : 0));
-            Program.config.setConfig("keyboard_shutdown", (checkShutdown.Checked ? 1 : 0));
+            AppConfig.setConfig("keyboard_awake", (checkAwake.Checked ? 1 : 0));
+            AppConfig.setConfig("keyboard_boot", (checkBoot.Checked ? 1 : 0));
+            AppConfig.setConfig("keyboard_sleep", (checkSleep.Checked ? 1 : 0));
+            AppConfig.setConfig("keyboard_shutdown", (checkShutdown.Checked ? 1 : 0));
 
-            Program.config.setConfig("keyboard_awake_bar", (checkAwakeBar.Checked ? 1 : 0));
-            Program.config.setConfig("keyboard_boot_bar", (checkBootBar.Checked ? 1 : 0));
-            Program.config.setConfig("keyboard_sleep_bar", (checkSleepBar.Checked ? 1 : 0));
-            Program.config.setConfig("keyboard_shutdown_bar", (checkShutdownBar.Checked ? 1 : 0));
+            AppConfig.setConfig("keyboard_awake_bar", (checkAwakeBar.Checked ? 1 : 0));
+            AppConfig.setConfig("keyboard_boot_bar", (checkBootBar.Checked ? 1 : 0));
+            AppConfig.setConfig("keyboard_sleep_bar", (checkSleepBar.Checked ? 1 : 0));
+            AppConfig.setConfig("keyboard_shutdown_bar", (checkShutdownBar.Checked ? 1 : 0));
 
-            Program.config.setConfig("keyboard_awake_lid", (checkAwakeLid.Checked ? 1 : 0));
-            Program.config.setConfig("keyboard_boot_lid", (checkBootLid.Checked ? 1 : 0));
-            Program.config.setConfig("keyboard_sleep_lid", (checkSleepLid.Checked ? 1 : 0));
-            Program.config.setConfig("keyboard_shutdown_lid", (checkShutdownLid.Checked ? 1 : 0));
+            AppConfig.setConfig("keyboard_awake_lid", (checkAwakeLid.Checked ? 1 : 0));
+            AppConfig.setConfig("keyboard_boot_lid", (checkBootLid.Checked ? 1 : 0));
+            AppConfig.setConfig("keyboard_sleep_lid", (checkSleepLid.Checked ? 1 : 0));
+            AppConfig.setConfig("keyboard_shutdown_lid", (checkShutdownLid.Checked ? 1 : 0));
 
-            Program.config.setConfig("keyboard_awake_logo", (checkAwakeLogo.Checked ? 1 : 0));
-            Program.config.setConfig("keyboard_boot_logo", (checkBootLogo.Checked ? 1 : 0));
-            Program.config.setConfig("keyboard_sleep_logo", (checkSleepLogo.Checked ? 1 : 0));
-            Program.config.setConfig("keyboard_shutdown_logo", (checkShutdownLogo.Checked ? 1 : 0));
+            AppConfig.setConfig("keyboard_awake_logo", (checkAwakeLogo.Checked ? 1 : 0));
+            AppConfig.setConfig("keyboard_boot_logo", (checkBootLogo.Checked ? 1 : 0));
+            AppConfig.setConfig("keyboard_sleep_logo", (checkSleepLogo.Checked ? 1 : 0));
+            AppConfig.setConfig("keyboard_shutdown_logo", (checkShutdownLogo.Checked ? 1 : 0));
 
             List<AuraDev19b6> flags = new List<AuraDev19b6>();
 
@@ -298,7 +298,7 @@ namespace GHelper
 
         private void ComboKeyboardSpeed_SelectedValueChanged(object? sender, EventArgs e)
         {
-            Program.config.setConfig("aura_speed", (int)comboKeyboardSpeed.SelectedValue);
+            AppConfig.setConfig("aura_speed", (int)comboKeyboardSpeed.SelectedValue);
             Program.settingsForm.SetAura();
         }
 
@@ -311,7 +311,7 @@ namespace GHelper
 
         private void checkAutoApplyWindowsPowerMode_CheckedChanged(object? sender, EventArgs e)
         {
-            Program.config.setConfig("auto_apply_power_plan", checkAutoApplyWindowsPowerMode.Checked ? 1 : 0);
+            AppConfig.setConfig("auto_apply_power_plan", checkAutoApplyWindowsPowerMode.Checked ? 1 : 0);
         }
     }
 }

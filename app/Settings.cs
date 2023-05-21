@@ -135,13 +135,13 @@ namespace GHelper
 
             SetVersionLabel(Properties.Strings.VersionLabel + ": " + Assembly.GetExecutingAssembly().GetName().Version);
 
-            string model = Program.config.GetModel();
+            string model = AppConfig.GetModel();
             int trim = model.LastIndexOf("_");
             if (trim > 0) model = model.Substring(0, trim);
 
             labelModel.Text = model + (Program.IsUserAdministrator() ? "." : "");
 
-            TopMost = Program.config.getConfig("topmost") == 1;
+            TopMost = AppConfig.getConfig("topmost") == 1;
 
             SetContextMenu();
 
@@ -274,8 +274,8 @@ namespace GHelper
             {
                 Program.acpi.DeviceSet(AsusACPI.GPUXG, 1, "GPU XGM");
 
-                if (Program.config.getConfigPerf("auto_apply") == 1) 
-                    AsusUSB.SetXGMFan(Program.config.getFanConfig(AsusFan.XGM));
+                if (AppConfig.getConfigPerf("auto_apply") == 1) 
+                    AsusUSB.SetXGMFan(AppConfig.getFanConfig(AsusFan.XGM));
             }
             
             InitXGM();
@@ -308,13 +308,13 @@ namespace GHelper
                     if (gitVersion.CompareTo(appVersion) > 0)
                     {
                         SetVersionLabel(Properties.Strings.DownloadUpdate + ": " + tag, url);
-                        if (Program.config.getConfigString("skip_version") != tag)
+                        if (AppConfig.getConfigString("skip_version") != tag)
                         {
                             DialogResult dialogResult = MessageBox.Show(Properties.Strings.DownloadUpdate + ": G-Helper " + tag + "?", "Update", MessageBoxButtons.YesNo);
                             if (dialogResult == DialogResult.Yes)
                                 AutoUpdate(url);
                             else
-                                Program.config.setConfig("skip_version", tag);
+                                AppConfig.setConfig("skip_version", tag);
                         }
 
                     }
@@ -443,14 +443,14 @@ namespace GHelper
 
         private void ButtonOptimized_Click(object? sender, EventArgs e)
         {
-            Program.config.setConfig("gpu_auto", (Program.config.getConfig("gpu_auto") == 1) ? 0 : 1);
+            AppConfig.setConfig("gpu_auto", (AppConfig.getConfig("gpu_auto") == 1) ? 0 : 1);
             VisualiseGPUMode();
             AutoGPUMode();
         }
 
         private void ButtonScreenAuto_Click(object? sender, EventArgs e)
         {
-            Program.config.setConfig("screen_auto", 1);
+            AppConfig.setConfig("screen_auto", 1);
             InitScreen();
             AutoScreen();
         }
@@ -468,7 +468,7 @@ namespace GHelper
                         {
                             case 0:
                                 Logger.WriteLine("Monitor Power Off");
-                                SetBatteryChargeLimit(Program.config.getConfig("charge_limit"));
+                                SetBatteryChargeLimit(AppConfig.getConfig("charge_limit"));
                                 break;
                             case 1:
                                 Logger.WriteLine("Monitor Power On");
@@ -511,7 +511,7 @@ namespace GHelper
         {
             if (sender is null) return;
             CheckBox check = (CheckBox)sender;
-            Program.config.setConfig("matrix_auto", check.Checked ? 1 : 0);
+            AppConfig.setConfig("matrix_auto", check.Checked ? 1 : 0);
             matrix?.SetMatrix();
         }
 
@@ -538,8 +538,8 @@ namespace GHelper
 
             if (fileName is not null)
             {
-                Program.config.setConfig("matrix_picture", fileName);
-                Program.config.setConfig("matrix_running", 2);
+                AppConfig.setConfig("matrix_picture", fileName);
+                AppConfig.setConfig("matrix_running", 2);
 
                 matrix?.SetMatrixPicture(fileName);
                 BeginInvoke(delegate
@@ -553,21 +553,21 @@ namespace GHelper
 
         private void ComboMatrixRunning_SelectedValueChanged(object? sender, EventArgs e)
         {
-            Program.config.setConfig("matrix_running", comboMatrixRunning.SelectedIndex);
+            AppConfig.setConfig("matrix_running", comboMatrixRunning.SelectedIndex);
             matrix?.SetMatrix();
         }
 
 
         private void ComboMatrix_SelectedValueChanged(object? sender, EventArgs e)
         {
-            Program.config.setConfig("matrix_brightness", comboMatrix.SelectedIndex);
+            AppConfig.setConfig("matrix_brightness", comboMatrix.SelectedIndex);
             matrix?.SetMatrix();
         }
 
 
         private void LabelCPUFan_Click(object? sender, EventArgs e)
         {
-            Program.config.setConfig("fan_rpm", (Program.config.getConfig("fan_rpm") == 1) ? 0 : 1);
+            AppConfig.setConfig("fan_rpm", (AppConfig.getConfig("fan_rpm") == 1) ? 0 : 1);
             RefreshSensors(true);
         }
 
@@ -580,7 +580,7 @@ namespace GHelper
 
             if (colorDlg.ShowDialog() == DialogResult.OK)
             {
-                Program.config.setConfig("aura_color2", colorDlg.Color.ToArgb());
+                AppConfig.setConfig("aura_color2", colorDlg.Color.ToArgb());
                 SetAura();
             }
         }
@@ -635,17 +635,17 @@ namespace GHelper
 
             if (colorDlg.ShowDialog() == DialogResult.OK)
             {
-                Program.config.setConfig("aura_color", colorDlg.Color.ToArgb());
+                AppConfig.setConfig("aura_color", colorDlg.Color.ToArgb());
                 SetAura();
             }
         }
 
         public void InitAura()
         {
-            AsusUSB.Mode = Program.config.getConfig("aura_mode");
-            AsusUSB.Speed = Program.config.getConfig("aura_speed");
-            AsusUSB.SetColor(Program.config.getConfig("aura_color"));
-            AsusUSB.SetColor2(Program.config.getConfig("aura_color2"));
+            AsusUSB.Mode = AppConfig.getConfig("aura_mode");
+            AsusUSB.Speed = AppConfig.getConfig("aura_speed");
+            AsusUSB.SetColor(AppConfig.getConfig("aura_color"));
+            AsusUSB.SetColor2(AppConfig.getConfig("aura_color2"));
 
             comboKeyboard.DropDownStyle = ComboBoxStyle.DropDownList;
             comboKeyboard.DataSource = new BindingSource(AsusUSB.GetModes(), null);
@@ -670,13 +670,13 @@ namespace GHelper
                 return;
             }
 
-            int brightness = Program.config.getConfig("matrix_brightness");
-            int running = Program.config.getConfig("matrix_running");
+            int brightness = AppConfig.getConfig("matrix_brightness");
+            int running = AppConfig.getConfig("matrix_running");
 
             comboMatrix.SelectedIndex = (brightness != -1) ? Math.Min(brightness, comboMatrix.Items.Count - 1) : 0;
             comboMatrixRunning.SelectedIndex = (running != -1) ? Math.Min(running, comboMatrixRunning.Items.Count - 1) : 0;
 
-            checkMatrix.Checked = (Program.config.getConfig("matrix_auto") == 1);
+            checkMatrix.Checked = (AppConfig.getConfig("matrix_auto") == 1);
 
 
         }
@@ -684,10 +684,10 @@ namespace GHelper
 
         public void SetAura()
         {
-            AsusUSB.Mode = Program.config.getConfig("aura_mode");
-            AsusUSB.Speed = Program.config.getConfig("aura_speed");
-            AsusUSB.SetColor(Program.config.getConfig("aura_color"));
-            AsusUSB.SetColor2(Program.config.getConfig("aura_color2"));
+            AsusUSB.Mode = AppConfig.getConfig("aura_mode");
+            AsusUSB.Speed = AppConfig.getConfig("aura_speed");
+            AsusUSB.SetColor(AppConfig.getConfig("aura_color"));
+            AsusUSB.SetColor2(AppConfig.getConfig("aura_color2"));
 
             pictureColor.BackColor = AsusUSB.Color1;
             pictureColor2.BackColor = AsusUSB.Color2;
@@ -707,27 +707,27 @@ namespace GHelper
 
         private void ComboKeyboard_SelectedValueChanged(object? sender, EventArgs e)
         {
-            Program.config.setConfig("aura_mode", (int)comboKeyboard.SelectedValue);
+            AppConfig.setConfig("aura_mode", (int)comboKeyboard.SelectedValue);
             SetAura();
         }
 
 
         private void Button120Hz_Click(object? sender, EventArgs e)
         {
-            Program.config.setConfig("screen_auto", 0);
+            AppConfig.setConfig("screen_auto", 0);
             SetScreen(1000, 1);
         }
 
         private void Button60Hz_Click(object? sender, EventArgs e)
         {
-            Program.config.setConfig("screen_auto", 0);
+            AppConfig.setConfig("screen_auto", 0);
             SetScreen(60, 0);
         }
 
         public void ToogleMiniled()
         {
-            int miniled = (Program.config.getConfig("miniled") == 1) ? 0 : 1;
-            Program.config.setConfig("miniled", miniled);
+            int miniled = (AppConfig.getConfig("miniled") == 1) ? 0 : 1;
+            AppConfig.setConfig("miniled", miniled);
             SetScreen(-1, -1, miniled);
         }
 
@@ -757,7 +757,7 @@ namespace GHelper
 
             if (overdrive >= 0)
             {
-                if (Program.config.getConfig("no_overdrive") == 1) overdrive = 0;
+                if (AppConfig.getConfig("no_overdrive") == 1) overdrive = 0;
                 Program.acpi.DeviceSet(AsusACPI.ScreenOverdrive, overdrive, "ScreenOverdrive");
 
             }
@@ -777,8 +777,8 @@ namespace GHelper
             int frequency = NativeMethods.GetRefreshRate();
             int maxFrequency = NativeMethods.GetRefreshRate(true);
 
-            bool screenAuto = (Program.config.getConfig("screen_auto") == 1);
-            bool overdriveSetting = (Program.config.getConfig("no_overdrive") != 1);
+            bool screenAuto = (AppConfig.getConfig("screen_auto") == 1);
+            bool overdriveSetting = (AppConfig.getConfig("no_overdrive") != 1);
 
             int overdrive = Program.acpi.DeviceGet(AsusACPI.ScreenOverdrive);
             int miniled = Program.acpi.DeviceGet(AsusACPI.ScreenMiniled);
@@ -824,15 +824,15 @@ namespace GHelper
             if (miniled >= 0)
             {
                 buttonMiniled.Activated = (miniled == 1);
-                Program.config.setConfig("miniled", miniled);
+                AppConfig.setConfig("miniled", miniled);
             }
             else
             {
                 buttonMiniled.Visible = false;
             }
 
-            Program.config.setConfig("frequency", frequency);
-            Program.config.setConfig("overdrive", overdrive);
+            AppConfig.setConfig("frequency", frequency);
+            AppConfig.setConfig("overdrive", overdrive);
         }
 
         private void ButtonQuit_Click(object? sender, EventArgs e)
@@ -937,8 +937,8 @@ namespace GHelper
         public void SetPower()
         {
 
-            int limit_total = Program.config.getConfigPerf("limit_total");
-            int limit_cpu = Program.config.getConfigPerf("limit_cpu");
+            int limit_total = AppConfig.getConfigPerf("limit_total");
+            int limit_cpu = AppConfig.getConfigPerf("limit_cpu");
 
             if (limit_total > AsusACPI.MaxTotal) return;
             if (limit_total < AsusACPI.MinTotal) return;
@@ -967,8 +967,8 @@ namespace GHelper
         public void SetGPUClocks(bool launchAsAdmin = true)
         {
 
-            int gpu_core = Program.config.getConfigPerf("gpu_core");
-            int gpu_memory = Program.config.getConfigPerf("gpu_memory");
+            int gpu_core = AppConfig.getConfigPerf("gpu_core");
+            int gpu_memory = AppConfig.getConfigPerf("gpu_memory");
 
             if (gpu_core == -1 && gpu_memory == -1) return;
 
@@ -1000,8 +1000,8 @@ namespace GHelper
         public void SetGPUPower()
         {
 
-            int gpu_boost = Program.config.getConfigPerf("gpu_boost");
-            int gpu_temp = Program.config.getConfigPerf("gpu_temp");
+            int gpu_boost = AppConfig.getConfigPerf("gpu_boost");
+            int gpu_temp = AppConfig.getConfigPerf("gpu_temp");
 
 
             if (gpu_boost < AsusACPI.MinGPUBoost || gpu_boost > AsusACPI.MaxGPUBoost) return;
@@ -1030,21 +1030,21 @@ namespace GHelper
         {
             customFans = false;
 
-            if (Program.config.getConfigPerf("auto_apply") == 1 || force)
+            if (AppConfig.getConfigPerf("auto_apply") == 1 || force)
             {
-                int cpuResult = Program.acpi.SetFanCurve(AsusFan.CPU, Program.config.getFanConfig(AsusFan.CPU));
-                int gpuResult = Program.acpi.SetFanCurve(AsusFan.GPU, Program.config.getFanConfig(AsusFan.GPU));
+                int cpuResult = Program.acpi.SetFanCurve(AsusFan.CPU, AppConfig.getFanConfig(AsusFan.CPU));
+                int gpuResult = Program.acpi.SetFanCurve(AsusFan.GPU, AppConfig.getFanConfig(AsusFan.GPU));
 
-                if (Program.config.isConfig("mid_fan"))
-                    Program.acpi.SetFanCurve(AsusFan.Mid, Program.config.getFanConfig(AsusFan.Mid));
+                if (AppConfig.isConfig("mid_fan"))
+                    Program.acpi.SetFanCurve(AsusFan.Mid, AppConfig.getFanConfig(AsusFan.Mid));
 
-                if (Program.config.isConfig("xgm_fan") && Program.acpi.IsXGConnected())
-                    AsusUSB.SetXGMFan(Program.config.getFanConfig(AsusFan.XGM));
+                if (AppConfig.isConfig("xgm_fan") && Program.acpi.IsXGConnected())
+                    AsusUSB.SetXGMFan(AppConfig.getFanConfig(AsusFan.XGM));
 
                 // something went wrong, resetting to default profile
                 if (cpuResult != 1 || gpuResult != 1)
                 {
-                    int mode = Program.config.getConfig("performance_mode");
+                    int mode = AppConfig.getConfig("performance_mode");
                     Logger.WriteLine("ASUS BIOS rejected fan curve, resetting mode to " + mode);
                     Program.acpi.DeviceSet(AsusACPI.PerformanceMode, mode, "PerformanceMode");
                     LabelFansResult("ASUS BIOS rejected fan curve");
@@ -1056,7 +1056,7 @@ namespace GHelper
                 }
 
                 // fix for misbehaving bios on intell based TUF 2022
-                if ((Program.config.ContainsModel("FX507") || Program.config.ContainsModel("FX517")) && Program.config.getConfigPerf("auto_apply_power") != 1)
+                if ((AppConfig.ContainsModel("FX507") || AppConfig.ContainsModel("FX517")) && AppConfig.getConfigPerf("auto_apply_power") != 1)
                 {
                     Task.Run(async () =>
                     {
@@ -1076,7 +1076,7 @@ namespace GHelper
         {
 
             // fix for misbehaving bios PPTs on G513
-            if (Program.config.ContainsModel("G513") && Program.config.getConfigPerf("auto_apply") != 1)
+            if (AppConfig.ContainsModel("G513") && AppConfig.getConfigPerf("auto_apply") != 1)
             {
                 AutoFans(true);
                 delay = 500;
@@ -1084,7 +1084,7 @@ namespace GHelper
 
             customPower = 0;
 
-            bool applyPower = Program.config.getConfigPerf("auto_apply_power") == 1;
+            bool applyPower = AppConfig.getConfigPerf("auto_apply_power") == 1;
             bool applyGPU = true;
 
             if (delay > 0)
@@ -1112,7 +1112,7 @@ namespace GHelper
         {
 
             if (PerformanceMode < 0)
-                PerformanceMode = Program.config.getConfig("performance_mode");
+                PerformanceMode = AppConfig.getConfig("performance_mode");
 
             buttonSilent.Activated = false;
             buttonBalanced.Activated = false;
@@ -1139,12 +1139,12 @@ namespace GHelper
             menuBalanced.Checked = buttonBalanced.Activated;
             menuTurbo.Checked = buttonTurbo.Activated;
 
-            int oldMode = Program.config.getConfig("performance_mode");
-            Program.config.setConfig("performance_" + (int)SystemInformation.PowerStatus.PowerLineStatus, PerformanceMode);
-            Program.config.setConfig("performance_mode", PerformanceMode);
+            int oldMode = AppConfig.getConfig("performance_mode");
+            AppConfig.setConfig("performance_" + (int)SystemInformation.PowerStatus.PowerLineStatus, PerformanceMode);
+            AppConfig.setConfig("performance_mode", PerformanceMode);
 
             Program.acpi.DeviceSet(AsusACPI.PerformanceMode, PerformanceMode, "PerformanceMode");
-            if (Program.config.isConfig("xgm_fan") && Program.acpi.IsXGConnected()) AsusUSB.ResetXGM();
+            if (AppConfig.isConfig("xgm_fan") && Program.acpi.IsXGConnected()) AsusUSB.ResetXGM();
 
             if (notify && (oldMode != PerformanceMode))
             {
@@ -1163,17 +1163,17 @@ namespace GHelper
             AutoFans();
             AutoPower(1000);
 
-            if (Program.config.getConfig("auto_apply_power_plan") != 0)
+            if (AppConfig.getConfig("auto_apply_power_plan") != 0)
             {
-                if (Program.config.getConfigPerfString("scheme") is not null)
-                    NativeMethods.SetPowerScheme(Program.config.getConfigPerfString("scheme"));
+                if (AppConfig.getConfigPerfString("scheme") is not null)
+                    NativeMethods.SetPowerScheme(AppConfig.getConfigPerfString("scheme"));
                 else
                     NativeMethods.SetPowerScheme(PerformanceMode);
             }
 
-            if (Program.config.getConfigPerf("auto_boost") != -1)
+            if (AppConfig.getConfigPerf("auto_boost") != -1)
             {
-                NativeMethods.SetCPUBoost(Program.config.getConfigPerf("auto_boost"));
+                NativeMethods.SetCPUBoost(AppConfig.getConfigPerf("auto_boost"));
             }
 
             if (NativeMethods.PowerGetEffectiveOverlayScheme(out Guid activeScheme) == 0)
@@ -1193,7 +1193,7 @@ namespace GHelper
 
         public void CyclePerformanceMode()
         {
-            int mode = Program.config.getConfig("performance_mode");
+            int mode = AppConfig.getConfig("performance_mode");
 
             if (Control.ModifierKeys == Keys.Shift)
                 mode = (mode == 0) ? 2 : mode - 1;
@@ -1206,7 +1206,7 @@ namespace GHelper
 
         public void AutoKeyboard()
         {
-            if (Program.config.getConfig("keyboard_auto") != 1) return;
+            if (AppConfig.getConfig("keyboard_auto") != 1) return;
 
             if (SystemInformation.PowerStatus.PowerLineStatus == PowerLineStatus.Online)
                 AsusUSB.ApplyBrightness(3);
@@ -1220,17 +1220,17 @@ namespace GHelper
         {
             var Plugged = SystemInformation.PowerStatus.PowerLineStatus;
 
-            int mode = Program.config.getConfig("performance_" + (int)Plugged);
+            int mode = AppConfig.getConfig("performance_" + (int)Plugged);
             if (mode != -1)
                 SetPerformanceMode(mode, true);
             else
-                SetPerformanceMode(Program.config.getConfig("performance_mode"));
+                SetPerformanceMode(AppConfig.getConfig("performance_mode"));
         }
 
 
         public void AutoScreen(bool force = false)
         {
-            if (force || Program.config.getConfig("screen_auto") == 1)
+            if (force || AppConfig.getConfig("screen_auto") == 1)
             {
                 if (SystemInformation.PowerStatus.PowerLineStatus == PowerLineStatus.Online)
                     SetScreen(1000, 1);
@@ -1239,7 +1239,7 @@ namespace GHelper
             }
             else
             {
-                SetScreen(overdrive: Program.config.getConfig("overdrive"));
+                SetScreen(overdrive: AppConfig.getConfig("overdrive"));
             }
 
 
@@ -1248,7 +1248,7 @@ namespace GHelper
 
         public static bool IsPlugged()
         {
-            bool optimizedUSBC = Program.config.getConfig("optimized_usbc") != 1;
+            bool optimizedUSBC = AppConfig.getConfig("optimized_usbc") != 1;
 
             return SystemInformation.PowerStatus.PowerLineStatus == PowerLineStatus.Online &&
                    (optimizedUSBC || Program.acpi.DeviceGet(AsusACPI.ChargerMode) != AsusACPI.ChargerUSB);
@@ -1258,10 +1258,10 @@ namespace GHelper
         public bool AutoGPUMode()
         {
 
-            bool GpuAuto = Program.config.getConfig("gpu_auto") == 1;
-            bool ForceGPU = Program.config.ContainsModel("503");
+            bool GpuAuto = AppConfig.getConfig("gpu_auto") == 1;
+            bool ForceGPU = AppConfig.ContainsModel("503");
 
-            int GpuMode = Program.config.getConfig("gpu_mode");
+            int GpuMode = AppConfig.getConfig("gpu_mode");
 
             if (!GpuAuto && !ForceGPU) return false;
 
@@ -1303,7 +1303,7 @@ namespace GHelper
         public bool ReEnableGPU()
         {
 
-            if (Program.config.getConfig("gpu_reenable") != 1) return false;
+            if (AppConfig.getConfig("gpu_reenable") != 1) return false;
             if (Screen.AllScreens.Length <= 1) return false;
 
             Logger.WriteLine("Re-enabling gpu for 503 model");
@@ -1333,6 +1333,15 @@ namespace GHelper
         {
             buttonXGM.Enabled = buttonXGM.Visible = Program.acpi.IsXGConnected();
             buttonXGM.Activated = (Program.acpi.DeviceGet(AsusACPI.GPUXG) == 1);
+
+            if (buttonXGM.Activated)
+            {
+                ButtonEnabled(buttonOptimized, false);
+                ButtonEnabled(buttonEco, false);
+                ButtonEnabled(buttonStandard, false);
+                ButtonEnabled(buttonUltimate, false);
+            }
+
         }
 
 
@@ -1360,7 +1369,7 @@ namespace GHelper
 
             }
 
-            Program.config.setConfig("gpu_mode", GpuMode);
+            AppConfig.setConfig("gpu_mode", GpuMode);
 
             ButtonEnabled(buttonOptimized, true);
             ButtonEnabled(buttonEco, true);
@@ -1467,8 +1476,8 @@ namespace GHelper
         public void SetGPUMode(int GPUMode)
         {
 
-            int CurrentGPU = Program.config.getConfig("gpu_mode");
-            Program.config.setConfig("gpu_auto", 0);
+            int CurrentGPU = AppConfig.getConfig("gpu_mode");
+            AppConfig.setConfig("gpu_auto", 0);
 
             if (CurrentGPU == GPUMode)
             {
@@ -1515,7 +1524,7 @@ namespace GHelper
 
             if (changed)
             {
-                Program.config.setConfig("gpu_mode", GPUMode);
+                AppConfig.setConfig("gpu_mode", GPUMode);
             }
 
             if (restart)
@@ -1531,9 +1540,9 @@ namespace GHelper
         {
 
             if (GPUMode == -1)
-                GPUMode = Program.config.getConfig("gpu_mode");
+                GPUMode = AppConfig.getConfig("gpu_mode");
 
-            bool GPUAuto = (Program.config.getConfig("gpu_auto") == 1);
+            bool GPUAuto = (AppConfig.getConfig("gpu_auto") == 1);
 
             buttonEco.Activated = false;
             buttonStandard.Activated = false;
@@ -1548,6 +1557,7 @@ namespace GHelper
                     buttonOptimized.Activated = GPUAuto;
                     labelGPU.Text = Properties.Strings.GPUMode + ": " + Properties.Strings.GPUModeEco;
                     Program.trayIcon.Icon = Properties.Resources.eco;
+                    ButtonEnabled(buttonXGM, false);
                     break;
                 case AsusACPI.GPUModeUltimate:
                     buttonUltimate.Activated = true;
@@ -1560,6 +1570,7 @@ namespace GHelper
                     buttonOptimized.Activated = GPUAuto;
                     labelGPU.Text = Properties.Strings.GPUMode + ": " + Properties.Strings.GPUModeStandard;
                     Program.trayIcon.Icon = Properties.Resources.standard;
+                    ButtonEnabled(buttonXGM, true);
                     break;
             }
 
@@ -1624,7 +1635,7 @@ namespace GHelper
                 Debug.WriteLine(ex);
             }
 
-            Program.config.setConfig("charge_limit", limit);
+            AppConfig.setConfig("charge_limit", limit);
 
         }
 

@@ -132,8 +132,8 @@ public class NvidiaGpuControl : IGpuControl
 
     public int SetClocksFromConfig()
     {
-        int core = Program.config.getConfig("gpu_core");
-        int memory = Program.config.getConfig("gpu_memory");
+        int core = AppConfig.getConfig("gpu_core");
+        int memory = AppConfig.getConfig("gpu_memory");
         int status = SetClocks(core, memory);
         return status;
     }

@@ -41,10 +41,10 @@ namespace GHelper.AnimeMatrix
 
             if (!IsValid) return;
 
-            int brightness = Program.config.getConfig("matrix_brightness");
-            int running = Program.config.getConfig("matrix_running");
+            int brightness = AppConfig.getConfig("matrix_brightness");
+            int running = AppConfig.getConfig("matrix_running");
 
-            bool auto = Program.config.getConfig("matrix_auto") == 1;
+            bool auto = AppConfig.getConfig("matrix_auto") == 1;
 
             if (brightness < 0) brightness = 0;
             if (running < 0) running = 0;
@@ -74,7 +74,7 @@ namespace GHelper.AnimeMatrix
                 switch (running)
                 {
                     case 2:
-                        SetMatrixPicture(Program.config.getConfigString("matrix_picture"));
+                        SetMatrixPicture(AppConfig.getConfigString("matrix_picture"));
                         break;
                     case 3:
                         StartMatrixTimer(1000);
@@ -110,7 +110,7 @@ namespace GHelper.AnimeMatrix
         {
             if (!IsValid) return;
 
-            switch (Program.config.getConfig("matrix_running"))
+            switch (AppConfig.getConfig("matrix_running"))
             {
                 case 2:
                     mat.PresentNextFrame();

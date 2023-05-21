@@ -152,10 +152,10 @@ namespace GHelper
             {
                 panelGPU.Visible = true;
 
-                int gpu_boost = Program.config.getConfigPerf("gpu_boost");
-                int gpu_temp = Program.config.getConfigPerf("gpu_temp");
-                int core = Program.config.getConfigPerf("gpu_core");
-                int memory = Program.config.getConfigPerf("gpu_memory");
+                int gpu_boost = AppConfig.getConfigPerf("gpu_boost");
+                int gpu_temp = AppConfig.getConfigPerf("gpu_temp");
+                int core = AppConfig.getConfigPerf("gpu_core");
+                int memory = AppConfig.getConfigPerf("gpu_memory");
 
                 if (gpu_boost < 0) gpu_boost = AsusACPI.MaxGPUBoost;
                 if (gpu_temp < 0) gpu_temp = AsusACPI.MaxGPUTemp;
@@ -217,8 +217,8 @@ namespace GHelper
             TrackBar track = (TrackBar)sender;
             track.Value = (int)Math.Round((float)track.Value / 5) * 5;
 
-            Program.config.setConfigPerf("gpu_core", trackGPUCore.Value);
-            Program.config.setConfigPerf("gpu_memory", trackGPUMemory.Value);
+            AppConfig.setConfigPerf("gpu_core", trackGPUCore.Value);
+            AppConfig.setConfigPerf("gpu_memory", trackGPUMemory.Value);
 
             VisualiseGPUSettings();
 
@@ -226,8 +226,8 @@ namespace GHelper
 
         private void trackGPUPower_Scroll(object? sender, EventArgs e)
         {
-            Program.config.setConfigPerf("gpu_boost", trackGPUBoost.Value);
-            Program.config.setConfigPerf("gpu_temp", trackGPUTemp.Value);
+            AppConfig.setConfigPerf("gpu_boost", trackGPUBoost.Value);
+            AppConfig.setConfigPerf("gpu_temp", trackGPUTemp.Value);
 
             VisualiseGPUSettings();
         }
@@ -326,10 +326,10 @@ namespace GHelper
 
         private void ComboBoost_Changed(object? sender, EventArgs e)
         {
-            if (Program.config.getConfigPerf("auto_boost") != comboBoost.SelectedIndex)
+            if (AppConfig.getConfigPerf("auto_boost") != comboBoost.SelectedIndex)
             {
                 NativeMethods.SetCPUBoost(comboBoost.SelectedIndex);
-                Program.config.setConfigPerf("auto_boost", comboBoost.SelectedIndex);
+                AppConfig.setConfigPerf("auto_boost", comboBoost.SelectedIndex);
             }
         }
 
@@ -337,7 +337,7 @@ namespace GHelper
         {
             if (sender is null) return;
             CheckBox chk = (CheckBox)sender;
-            Program.config.setConfigPerf("auto_apply_power", chk.Checked ? 1 : 0);
+            AppConfig.setConfigPerf("auto_apply_power", chk.Checked ? 1 : 0);
 
             if (chk.Checked)
             {
@@ -345,7 +345,7 @@ namespace GHelper
             }
             else
             {
-                Program.acpi.DeviceSet(AsusACPI.PerformanceMode, Program.config.getConfig("performance_mode"), "PerfMode");
+                Program.acpi.DeviceSet(AsusACPI.PerformanceMode, AppConfig.getConfig("performance_mode"), "PerfMode");
                 Program.settingsForm.AutoFans();
             }
 
@@ -356,7 +356,7 @@ namespace GHelper
             if (sender is null) return;
             CheckBox chk = (CheckBox)sender;
 
-            Program.config.setConfigPerf("auto_apply", chk.Checked ? 1 : 0);
+            AppConfig.setConfigPerf("auto_apply", chk.Checked ? 1 : 0);
 
             if (chk.Checked)
             {
@@ -364,7 +364,7 @@ namespace GHelper
             }
             else
             {
-                Program.acpi.DeviceSet(AsusACPI.PerformanceMode, Program.config.getConfig("performance_mode"), "PerfMode");
+                Program.acpi.DeviceSet(AsusACPI.PerformanceMode, AppConfig.getConfig("performance_mode"), "PerfMode");
                 Program.settingsForm.AutoPower();
             }
         }
@@ -405,7 +405,7 @@ namespace GHelper
 
             int limit_total;
             int limit_cpu;
-            bool apply = Program.config.getConfigPerf("auto_apply_power") == 1;
+            bool apply = AppConfig.getConfigPerf("auto_apply_power") == 1;
 
             if (changed)
             {
@@ -414,8 +414,8 @@ namespace GHelper
             }
             else
             {
-                limit_total = Program.config.getConfigPerf("limit_total");
-                limit_cpu = Program.config.getConfigPerf("limit_cpu");
+                limit_total = AppConfig.getConfigPerf("limit_total");
+                limit_cpu = AppConfig.getConfigPerf("limit_cpu");
             }
 
             if (limit_total < 0) limit_total = AsusACPI.DefaultTotal;
@@ -434,8 +434,8 @@ namespace GHelper
             labelTotal.Text = trackTotal.Value.ToString() + "W";
             labelCPU.Text = trackCPU.Value.ToString() + "W";
 
-            Program.config.setConfigPerf("limit_total", limit_total);
-            Program.config.setConfigPerf("limit_cpu", limit_cpu);
+            AppConfig.setConfigPerf("limit_total", limit_total);
+            AppConfig.setConfigPerf("limit_cpu", limit_cpu);
 
 
         }
@@ -455,7 +455,7 @@ namespace GHelper
             // Middle / system fan check
             if (!AsusACPI.IsEmptyCurve(Program.acpi.GetFanCurve(AsusFan.Mid)))
             {
-                Program.config.setConfig("mid_fan", 1);
+                AppConfig.setConfig("mid_fan", 1);
                 chartCount++;
                 chartMid.Visible = true;
                 SetChart(chartMid, AsusFan.Mid);
@@ -464,13 +464,13 @@ namespace GHelper
             }
             else
             {
-                Program.config.setConfig("mid_fan", 0);
+                AppConfig.setConfig("mid_fan", 0);
             }
 
             // XG Mobile Fan check
             if (Program.acpi.IsXGConnected())
             {
-                Program.config.setConfig("xgm_fan", 1);
+                AppConfig.setConfig("xgm_fan", 1);
                 chartCount++;
                 chartXGM.Visible = true;
                 SetChart(chartXGM, AsusFan.XGM);
@@ -479,7 +479,7 @@ namespace GHelper
             }
             else
             {
-                Program.config.setConfig("xgm_fan", 0);
+                AppConfig.setConfig("xgm_fan", 0);
             }
 
             SetChart(chartCPU, AsusFan.CPU);
@@ -488,7 +488,7 @@ namespace GHelper
             LoadProfile(seriesCPU, AsusFan.CPU);
             LoadProfile(seriesGPU, AsusFan.GPU);
 
-            int auto_apply = Program.config.getConfigPerf("auto_apply");
+            int auto_apply = AppConfig.getConfigPerf("auto_apply");
 
             checkApplyFans.Checked = (auto_apply == 1);
 
@@ -504,15 +504,15 @@ namespace GHelper
 
             series.Points.Clear();
 
-            int mode = Program.config.getConfig("performance_mode");
-            byte[] curve = Program.config.getFanConfig(device);
+            int mode = AppConfig.getConfig("performance_mode");
+            byte[] curve = AppConfig.getFanConfig(device);
 
             if (reset || AsusACPI.IsEmptyCurve(curve))
             {
                 curve = Program.acpi.GetFanCurve(device, mode);
 
                 if (AsusACPI.IsEmptyCurve(curve))
-                    curve = Program.config.getDefaultCurve(device);
+                    curve = AppConfig.getDefaultCurve(device);
 
                 curve = AsusACPI.FixFanCurve(curve);
 
@@ -543,7 +543,7 @@ namespace GHelper
                 i++;
             }
 
-            Program.config.setFanConfig(device, curve);
+            AppConfig.setFanConfig(device, curve);
             //Program.wmi.SetFanCurve(device, curve);
 
         }
@@ -555,19 +555,19 @@ namespace GHelper
             LoadProfile(seriesCPU, AsusFan.CPU, true);
             LoadProfile(seriesGPU, AsusFan.GPU, true);
 
-            if (Program.config.isConfig("mid_fan"))
+            if (AppConfig.isConfig("mid_fan"))
                 LoadProfile(seriesMid, AsusFan.Mid, true);
 
-            if (Program.config.isConfig("xgm_fan"))
+            if (AppConfig.isConfig("xgm_fan"))
                 LoadProfile(seriesXGM, AsusFan.XGM, true);
 
             checkApplyFans.Checked = false;
             checkApplyPower.Checked = false;
 
-            Program.config.setConfigPerf("auto_apply", 0);
-            Program.config.setConfigPerf("auto_apply_power", 0);
+            AppConfig.setConfigPerf("auto_apply", 0);
+            AppConfig.setConfigPerf("auto_apply_power", 0);
 
-            Program.acpi.DeviceSet(AsusACPI.PerformanceMode, Program.config.getConfig("performance_mode"), "PerfMode");
+            Program.acpi.DeviceSet(AsusACPI.PerformanceMode, AppConfig.getConfig("performance_mode"), "PerfMode");
             if (Program.acpi.IsXGConnected()) AsusUSB.ResetXGM();
 
             trackGPUCore.Value = 0;
@@ -575,10 +575,10 @@ namespace GHelper
             trackGPUBoost.Value = AsusACPI.MaxGPUBoost;
             trackGPUTemp.Value = AsusACPI.MaxGPUTemp;
 
-            Program.config.setConfigPerf("gpu_boost", trackGPUBoost.Value);
-            Program.config.setConfigPerf("gpu_temp", trackGPUTemp.Value);
-            Program.config.setConfigPerf("gpu_core", trackGPUCore.Value);
-            Program.config.setConfigPerf("gpu_memory", trackGPUMemory.Value);
+            AppConfig.setConfigPerf("gpu_boost", trackGPUBoost.Value);
+            AppConfig.setConfigPerf("gpu_temp", trackGPUTemp.Value);
+            AppConfig.setConfigPerf("gpu_core", trackGPUCore.Value);
+            AppConfig.setConfigPerf("gpu_memory", trackGPUMemory.Value);
             VisualiseGPUSettings();
 
             Program.settingsForm.SetGPUClocks(true);
@@ -593,10 +593,10 @@ namespace GHelper
             SaveProfile(seriesCPU, AsusFan.CPU);
             SaveProfile(seriesGPU, AsusFan.GPU);
 
-            if (Program.config.isConfig("mid_fan"))
+            if (AppConfig.isConfig("mid_fan"))
                 SaveProfile(seriesMid, AsusFan.Mid);
 
-            if (Program.config.isConfig("xgm_fan"))
+            if (AppConfig.isConfig("xgm_fan"))
                 SaveProfile(seriesXGM, AsusFan.XGM);
 
             Program.settingsForm.AutoFans();

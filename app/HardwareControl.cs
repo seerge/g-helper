@@ -19,14 +19,14 @@ public static class HardwareControl
     public static int GetFanMax()
     {
         int max = 58;
-        if (Program.config.ContainsModel("401")) max = 72;
-        else if (Program.config.ContainsModel("503")) max = 68;
-        return Math.Max(max, Program.config.getConfig("fan_max"));
+        if (AppConfig.ContainsModel("401")) max = 72;
+        else if (AppConfig.ContainsModel("503")) max = 68;
+        return Math.Max(max, AppConfig.getConfig("fan_max"));
     }
 
     public static void SetFanMax(int fan)
     {
-        Program.config.setConfig("fan_max", fan);
+        AppConfig.setConfig("fan_max", fan);
     }
     private static string FormatFan(int fan)
     {
@@ -40,7 +40,7 @@ public static class HardwareControl
         int fanMax = GetFanMax();
         if (fan > fanMax && fan < 110) SetFanMax(fan);
 
-        if (Program.config.getConfig("fan_rpm") == 1)
+        if (AppConfig.getConfig("fan_rpm") == 1)
             return GHelper.Properties.Strings.FanSpeed + (fan * 100).ToString() + GHelper.Properties.Strings.RPM;
         else
             return GHelper.Properties.Strings.FanSpeed + Math.Min(Math.Round((float)fan / fanMax * 100), 100).ToString() + "%"; // relatively to 6000 rpm

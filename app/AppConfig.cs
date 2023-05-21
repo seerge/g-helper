@@ -2,20 +2,18 @@
 using System.Management;
 using System.Text.Json;
 
-public class AppConfig
+public static class AppConfig
 {
 
-    public string appPath;
-    string configFile;
+    private static string configFile;
+    private static string? _model;
 
-    string _model;
+    private static Dictionary<string, object> config = new Dictionary<string, object>();
 
-    public Dictionary<string, object> config = new Dictionary<string, object>();
-
-    public AppConfig()
+    static AppConfig()
     {
 
-        appPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\GHelper";
+        string appPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\GHelper";
         configFile = appPath + "\\config.json";
 
         if (!System.IO.Directory.Exists(appPath))
@@ -41,7 +39,7 @@ public class AppConfig
     }
 
 
-    public string GetModel()
+    public static string GetModel()
     {
         if (_model is null)
         {
@@ -58,14 +56,14 @@ public class AppConfig
 
         return _model;
     }
-    public bool ContainsModel(string contains)
+    public static bool ContainsModel(string contains)
     {
 
         GetModel();
         return (_model is not null && _model.Contains(contains));
 
     }
-    private void initConfig()
+    private static void initConfig()
     {
         config = new Dictionary<string, object>();
         config["performance_mode"] = 0;
@@ -73,26 +71,26 @@ public class AppConfig
         File.WriteAllText(configFile, jsonString);
     }
 
-    public int getConfig(string name, bool performance = false)
+    public static int getConfig(string name)
     {
         if (config.ContainsKey(name))
             return int.Parse(config[name].ToString());
         else return -1;
     }
 
-    public bool isConfig(string name)
+    public static bool isConfig(string name)
     {
         return getConfig(name) == 1;
     }
 
-    public string getConfigString(string name)
+    public static string getConfigString(string name)
     {
         if (config.ContainsKey(name))
             return config[name].ToString();
         else return null;
     }
 
-    public void setConfig(string name, int value)
+    public static void setConfig(string name, int value)
     {
         config[name] = value;
         string jsonString = JsonSerializer.Serialize(config, new JsonSerializerOptions { WriteIndented = true });
@@ -105,7 +103,7 @@ public class AppConfig
         }
     }
 
-    public void setConfig(string name, string value)
+    public static void setConfig(string name, string value)
     {
         config[name] = value;
         string jsonString = JsonSerializer.Serialize(config, new JsonSerializerOptions { WriteIndented = true });
@@ -119,7 +117,7 @@ public class AppConfig
         }
     }
 
-    public string getParamName(AsusFan device, string paramName = "fan_profile")
+    public static string getParamName(AsusFan device, string paramName = "fan_profile")
     {
         int mode = getConfig("performance_mode");
         string name;
@@ -144,7 +142,7 @@ public class AppConfig
         return paramName + "_" + name + "_" + mode;
     }
 
-    public byte[] getFanConfig(AsusFan device)
+    public static byte[] getFanConfig(AsusFan device)
     {
         string curveString = getConfigString(getParamName(device));
         byte[] curve = { };
@@ -155,7 +153,7 @@ public class AppConfig
         return curve;
     }
 
-    public void setFanConfig(AsusFan device, byte[] curve)
+    public static void setFanConfig(AsusFan device, byte[] curve)
     {
         string bitCurve = BitConverter.ToString(curve);
         setConfig(getParamName(device), bitCurve);
@@ -170,7 +168,7 @@ public class AppConfig
         return array;
     }
 
-    public byte[] getDefaultCurve(AsusFan device)
+    public static byte[] getDefaultCurve(AsusFan device)
     {
         int mode = getConfig("performance_mode");
         byte[] curve;
@@ -200,19 +198,19 @@ public class AppConfig
         return curve;
     }
 
-    public string getConfigPerfString(string name)
+    public static string getConfigPerfString(string name)
     {
         int mode = getConfig("performance_mode");
         return getConfigString(name + "_" + mode);
     }
 
-    public int getConfigPerf(string name)
+    public static int getConfigPerf(string name)
     {
         int mode = getConfig("performance_mode");
         return getConfig(name + "_" + mode);
     }
 
-    public void setConfigPerf(string name, int value)
+    public static void setConfigPerf(string name, int value)
     {
         int mode = getConfig("performance_mode");
         setConfig(name + "_" + mode, value);

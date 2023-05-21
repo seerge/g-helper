@@ -103,18 +103,18 @@ namespace GHelper
 
         public static Dictionary<int, string> GetModes()
         {
-            if (Program.config.ContainsModel("TUF"))
+            if (AppConfig.ContainsModel("TUF"))
             {
                 _modes.Remove(3);
             }
 
-            if (Program.config.ContainsModel("401"))
+            if (AppConfig.ContainsModel("401"))
             {
                 _modes.Remove(2);
                 _modes.Remove(3);
             }
 
-            if (Program.config.ContainsModel("Strix") || Program.config.ContainsModel("Scar"))
+            if (AppConfig.ContainsModel("Strix") || AppConfig.ContainsModel("Scar"))
             {
                 return _modesStrix;
             }
@@ -137,7 +137,7 @@ namespace GHelper
 
         public static bool HasSecondColor()
         {
-            return (mode == 1 && !Program.config.ContainsModel("TUF"));
+            return (mode == 1 && !AppConfig.ContainsModel("TUF"));
         }
 
         public static int Speed
@@ -197,7 +197,7 @@ namespace GHelper
 
             Logger.WriteLine("Input Events " + input.DevicePath);
 
-            Task.Run(() =>
+            var task = Task.Run(() =>
             {
                 try
                 {
@@ -254,7 +254,7 @@ namespace GHelper
                 device.CloseDevice();
             }
 
-            if (Program.config.ContainsModel("TUF"))
+            if (AppConfig.ContainsModel("TUF"))
                 Program.acpi.TUFKeyboardBrightness(brightness);
         }
 
@@ -276,7 +276,7 @@ namespace GHelper
                 device.CloseDevice();
             }
 
-            if (Program.config.ContainsModel("TUF"))
+            if (AppConfig.ContainsModel("TUF"))
                 Program.acpi.TUFKeyboardPower(
                     flags.Contains(AuraDev19b6.AwakeKeyb),
                     flags.Contains(AuraDev19b6.BootKeyb),
@@ -288,12 +288,12 @@ namespace GHelper
         public static int SetXGM(byte[] msg)
         {
 
-            Debug.WriteLine("XGM Payload :" + BitConverter.ToString(msg));
+            Logger.WriteLine("XGM Payload :" + BitConverter.ToString(msg));
 
-            foreach (HidDevice device in GetHidDevices(new int[] { 0x1970 }))
+            foreach (HidDevice device in GetHidDevices(new int[] { 0x1970 }, 0))
             {
                 device.OpenDevice();
-                Debug.WriteLine("XGM " + device.Attributes.ProductHexId + ":" + BitConverter.ToString(msg));
+                Logger.WriteLine("XGM " + device.Attributes.ProductHexId + device.Capabilities.FeatureReportByteLength + ":" + BitConverter.ToString(msg));
                 device.WriteFeatureData(msg);
                 device.CloseDevice();
                 return 1;
@@ -364,7 +364,7 @@ namespace GHelper
                 Logger.WriteLine("USB-KB " + device.Capabilities.FeatureReportByteLength + "|" + device.Capabilities.InputReportByteLength + device.Description + device.DevicePath + ":" + BitConverter.ToString(msg));
             }
 
-            if (Program.config.ContainsModel("TUF"))
+            if (AppConfig.ContainsModel("TUF"))
                 Program.acpi.TUFKeyboardRGB(Mode, Color1, _speed);
 
         }
