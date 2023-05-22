@@ -171,7 +171,7 @@ public class AsusACPI
         data[1] = BitConverter.GetBytes(eventHandle.ToInt32())[1];
 
         result = Control(0x222400, data, outBuffer);
-        Debug.WriteLine(result + ":" + BitConverter.ToString(data) + "|" + BitConverter.ToString(outBuffer));
+        Logger.WriteLine("ACPI " + result + ":" + BitConverter.ToString(data) + "|" + BitConverter.ToString(outBuffer));
 
         while (true)
         {

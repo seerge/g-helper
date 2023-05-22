@@ -194,6 +194,8 @@ namespace GHelper
                     Logger.WriteLine("Input Events" + device.Capabilities.FeatureReportByteLength + "|" + device.Capabilities.InputReportByteLength + device.Description + device.DevicePath);
                 }
 
+            if (input is null) Logger.WriteLine("Input device not found");
+
             return input;
         }
 
