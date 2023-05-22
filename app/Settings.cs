@@ -282,8 +282,13 @@ namespace GHelper
 
                 if (Program.acpi.DeviceGet(AsusACPI.GPUXG) == 1)
                 {
-                    Program.acpi.DeviceSet(AsusACPI.GPUXG, 0, "GPU XGM");
-                    await Task.Delay(TimeSpan.FromSeconds(15));
+                    KillGPUApps();
+                    DialogResult dialogResult = MessageBox.Show("Did you close all applications running on XG Mobile?", "Disabling XG Mobile", MessageBoxButtons.YesNo);
+                    if (dialogResult == DialogResult.Yes)
+                    {
+                        Program.acpi.DeviceSet(AsusACPI.GPUXG, 0, "GPU XGM");
+                        await Task.Delay(TimeSpan.FromSeconds(15));
+                    }
                 }
                 else
                 {
@@ -516,7 +521,7 @@ namespace GHelper
                     }
                     m.Result = (IntPtr)1;
                     break;
-                
+
                 case KeyHandler.WM_HOTKEY_MSG_ID:
 
                     Keys key = (Keys)(((int)m.LParam >> 16) & 0xFFFF);
@@ -1491,6 +1496,14 @@ namespace GHelper
 
         }
 
+        protected static void KillGPUApps()
+        {
+            string[] tokill = { "EADesktop", "RadeonSoftware", "epicgameslauncher" };
+            foreach (string kill in tokill)
+                foreach (var process in Process.GetProcessesByName(kill)) process.Kill();
+
+        }
+
         public void SetGPUEco(int eco, bool hardWay = false)
         {
 
@@ -1507,12 +1520,7 @@ namespace GHelper
 
                 int status;
 
-                if (eco == 1)
-                {
-                    string[] tokill = { "EADesktop", "RadeonSoftware" };
-                    foreach (string kill in tokill)
-                        foreach (var process in Process.GetProcessesByName(kill)) process.Kill();
-                }
+                if (eco == 1) KillGPUApps();
 
                 //if (eco == 1) status = 0; else
                 status = Program.acpi.SetGPUEco(eco);

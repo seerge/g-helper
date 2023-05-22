@@ -319,7 +319,15 @@ namespace GHelper
 
         private void Keyboard_Shown(object? sender, EventArgs e)
         {
-            Top = Program.settingsForm.Top;
+            if (Height > Program.settingsForm.Height)
+            {
+                Top = Program.settingsForm.Top + Program.settingsForm.Height - Height;
+            }
+            else
+            {
+                Top = Program.settingsForm.Top;
+            }
+
             Left = Program.settingsForm.Left - Width - 5;
         }
 
