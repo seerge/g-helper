@@ -190,7 +190,7 @@
     <value>Encendida</value>
   </data>
   <data name="BacklightTimeout" xml:space="preserve">
-    <value>Apagar retroiluminación con batería (s.)</value>
+    <value>Apagar retroiluminación con batería (segundos)</value>
   </data>
   <data name="Balanced" xml:space="preserve">
     <value>Equilibrado</value>
@@ -357,6 +357,9 @@
   <data name="Multizone" xml:space="preserve">
     <value>Multizona</value>
   </data>
+  <data name="MuteMic" xml:space="preserve">
+    <value>Silenciar micrófono</value>
+  </data>
   <data name="OpenGHelper" xml:space="preserve">
     <value>Abrir ventana G-Helper</value>
   </data>
@@ -450,8 +453,14 @@
   <data name="VersionLabel" xml:space="preserve">
     <value>Versión</value>
   </data>
+  <data name="VolumeDown" xml:space="preserve">
+    <value>Bajar volumen</value>
+  </data>
   <data name="VolumeMute" xml:space="preserve">
     <value>Silenciar volumen</value>
+  </data>
+  <data name="VolumeUp" xml:space="preserve">
+    <value>Subir volumen</value>
   </data>
   <data name="WindowTop" xml:space="preserve">
     <value>Mantener aplicación siempre visible</value>
