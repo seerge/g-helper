@@ -1,6 +1,5 @@
 ﻿using HidLibrary;
 using Microsoft.Win32;
-using System.Diagnostics;
 using System.Text;
 
 namespace GHelper
@@ -186,17 +185,22 @@ namespace GHelper
         private static HidDevice? GetInputDevice()
         {
             HidDevice[] HidDeviceList = HidDevices.Enumerate(0x0b05, deviceIds).ToArray();
+            HidDevice input = null;
 
             foreach (HidDevice device in HidDeviceList)
                 if (device.ReadFeatureData(out byte[] data, HID_ID))
-                    return device;
-            return null;
+                {
+                    input = device;
+                    Logger.WriteLine("Input Events" + device.Capabilities.FeatureReportByteLength + "|" + device.Capabilities.InputReportByteLength + device.Description + device.DevicePath);
+                }
+
+            return input;
         }
 
         public static bool TouchpadToggle()
         {
             HidDevice? input = GetInputDevice();
-            if (input != null) return input.WriteFeatureData(new byte[] { HID_ID,0xf4,0x6b});
+            if (input != null) return input.WriteFeatureData(new byte[] { HID_ID, 0xf4, 0x6b });
             return false;
         }
 
@@ -205,7 +209,7 @@ namespace GHelper
             HidDevice? input = GetInputDevice();
             if (input == null) return;
 
-            Logger.WriteLine("Input Events " + input.DevicePath);
+            //Logger.WriteLine("Input Events " + input.DevicePath);
 
             var task = Task.Run(() =>
             {

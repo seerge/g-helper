@@ -3,7 +3,6 @@ using NAudio.CoreAudioApi;
 using System.Diagnostics;
 using System.Management;
 using Tools;
-using static NativeMethods;
 
 namespace GHelper
 {
@@ -212,15 +211,17 @@ namespace GHelper
                     AsusUSB.ApplyBrightness(backlight);
                     Program.settingsForm.BeginInvoke(Program.settingsForm.RunToast, backlightNames[backlight], ToastIcon.BacklightUp);
                     break;
+                case 199: // ON Z13 - FN+F11 - cycles backlight
+                    if (++backlight > 3) backlight = 0;
+                    AppConfig.setConfig("keyboard_brightness", backlight);
+                    AsusUSB.ApplyBrightness(backlight);
+                    Program.settingsForm.BeginInvoke(Program.settingsForm.RunToast, backlightNames[backlight], ToastIcon.BacklightUp);
+                    break;
                 case 16: // FN+F7
                     Program.acpi.DeviceSet(AsusACPI.UniversalControl, 0x10, "Brightness");
-                    //brightness = ScreenBrightness.Adjust(-10);
-                    //Program.settingsForm.BeginInvoke(Program.settingsForm.RunToast, brightness + "%", ToastIcon.BrightnessDown);
                     break;
                 case 32: // FN+F8
                     Program.acpi.DeviceSet(AsusACPI.UniversalControl, 0x20, "Brightness");
-                    //brightness = ScreenBrightness.Adjust(+10);
-                    //Program.settingsForm.BeginInvoke(Program.settingsForm.RunToast, brightness + "%", ToastIcon.BrightnessUp);
                     break;
                 case 107: // FN+F10
                     bool touchpadState = GetTouchpadState();
