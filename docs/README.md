@@ -101,13 +101,11 @@ Open "Event Viewer" from start menu, go to Windows Logs -> Application and check
 #### Battery charge limiter is not working
 Open application log.text from ``%AppData%\GHelper`` . If you see something like ``BatteryLimit = 60 : OK`` there (with your selected limit). App has done everything it could to set a limit. It could be that MyASUS or other Asus services are overwriting this limit after. You may want to right click and save this [debloat.bat](https://raw.githubusercontent.com/seerge/g-helper/main/debloat.bat) and then right-click Run it As Admin. It will stop not mandatory asus services.
 
-What you can also try is to open ``C:\ProgramData\ASUS\ASUS System Control Interface\ASUSOptimization\Customization.ini`` and find following section from that file : ``[BatteryHealthCharging] ... value=100`` and either delete it or put same value as you use in G-helper.
-
 #### Can I use MyASUS app along with G-Helper?
 You can, the only problem is that MyASUS may override the battery charge limit that you set before. My advice in such a situation would be to set the same limit (i.e. 80%) in both MyASUS and G-Helper.
 
 #### How do I set Mute Microphone to M3?
-This function is handled by Asus Optimization Service (therefore G-helper doesn't interfere and doesn't touch this function). Make sure that this service is up and running
+If you have Asus Optimization Service running, it's controlled by that service (therefore G-helper doesn't interfere and doesn't touch this function). Alternatively you can stop that service - and you can bind M3 to anything you want.
 
 #### How do I set different "Visual styles"?
 Personally, i'm not a big fan of them, as they make colors very inaccurate. But if you want so - you can adjust display colors using either Nvidia Control panel or AMD Adrenaline (appropriate display sections). If you really want you can also use [own ASUS utility from MS Store](https://apps.microsoft.com/store/detail/gamevisual/9P4K1LFTXSH8?hl=nl-nl&gl=nl&rtc=1)
@@ -147,9 +145,7 @@ It's a lightweight Armoury Crate alternative for Asus laptops. A small utility t
 
 ### Recommendations (optional)
 
-- I recommend keeping "Asus Optimization Service" running, as it keeps basic laptop hotkeys such as screen or keyboard brightness adjustment working.
-
-- Optionally(!) you can disable / remove unnecessary services. Ruight click and save [debloat.bat](https://raw.githubusercontent.com/seerge/g-helper/main/debloat.bat). Then right click and Run it as Admin. To restore services - save and run [bloat.bat](https://raw.githubusercontent.com/seerge/g-helper/main/bloat.bat) instead.
+- You can disable / remove unnecessary services. Ruight click and save [debloat.bat](https://raw.githubusercontent.com/seerge/g-helper/main/debloat.bat). Then right click and Run it as Admin. To restore services - save and run [bloat.bat](https://raw.githubusercontent.com/seerge/g-helper/main/bloat.bat) instead.
 
 - It's not recommended to use an app in combination with Armoury Crate services, because they adjust the same settings. You can [uninstall it using it's own uninstall tool](https://dlcdnets.asus.com/pub/ASUS/mb/14Utilities/Armoury_Crate_Uninstall_Tool.zip?model=armoury%20crate). Just in case, you can always install it back later.
 
@@ -200,7 +196,7 @@ Full list of keycodes https://learn.microsoft.com/en-us/windows/win32/inputdev/v
 
 ![Screenshot 2023-04-13 172537](https://user-images.githubusercontent.com/5920850/231837470-df913847-cf8a-43e1-80b6-5eb6e9eaee4e.png)
 
-### Workaround for [bugged bios on G15](https://github.com/seerge/g-helper/issues/253)
+### Workaround for [bugged bios on G15](https://github.com/seerge/g-helper/issues/253) when external monitor is connected
 
 Some people reported that on G15 model bios can be bugged and either not turn on or not turn off fans, when you set custom fan curve (in Armoury or g-helper, or any other app)
 I have added a very optional workaround as it was asked, on launch app will try to disable and re-enable dGPU when external monitor is connected, that seems to wake up fans :)
