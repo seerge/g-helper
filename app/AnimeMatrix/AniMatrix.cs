@@ -10,23 +10,23 @@ namespace GHelper.AnimeMatrix
 
     public class AniMatrix
     {
-        static System.Timers.Timer matrixTimer = default!;
-        static AnimeMatrixDevice mat;
+        System.Timers.Timer matrixTimer = default!;
+        AnimeMatrixDevice mat;
 
-        static double[] AudioValues;
-        static WasapiCapture AudioDevice;
+        double[] AudioValues;
+        WasapiCapture AudioDevice;
 
-        public static bool IsValid => mat != null;
+        public bool IsValid => mat != null;
 
-        private static long lastPresent;
-        private static List<double> maxes = new List<double>();
+        private long lastPresent;
+        private List<double> maxes = new List<double>();
 
         public AniMatrix()
         {
             try
             {
                 mat = new AnimeMatrixDevice();
-                Task.Run(mat.WakeUp);
+                //Task.Run(mat.WakeUp);
                 matrixTimer = new System.Timers.Timer(100);
                 matrixTimer.Elapsed += MatrixTimer_Elapsed;
             }
@@ -78,8 +78,7 @@ namespace GHelper.AnimeMatrix
                         SetMatrixPicture(AppConfig.getConfigString("matrix_picture"));
                         break;
                     case 3:
-                        StartMatrixTimer(1000);
-                        Logger.WriteLine("Matrix Clock");
+                        SetMatrixClock();
                         break;
                     case 4:
                         SetMatrixAudio();
@@ -95,21 +94,21 @@ namespace GHelper.AnimeMatrix
             }
 
         }
-        private static void StartMatrixTimer(int interval = 100)
+        private void StartMatrixTimer(int interval = 100)
         {
             matrixTimer.Interval = interval;
-            matrixTimer.Enabled = true;
+            matrixTimer.Start();
         }
 
-        private static void StopMatrixTimer()
+        private void StopMatrixTimer()
         {
-            matrixTimer.Enabled = false;
+            matrixTimer.Stop();
         }
 
 
-        private static void MatrixTimer_Elapsed(object? sender, ElapsedEventArgs e)
+        private void MatrixTimer_Elapsed(object? sender, ElapsedEventArgs e)
         {
-            if (!IsValid) return;
+            //if (!IsValid) return;
 
             switch (AppConfig.getConfig("matrix_running"))
             {
@@ -121,6 +120,14 @@ namespace GHelper.AnimeMatrix
                     break;
             }
 
+        }
+
+
+        public void SetMatrixClock()
+        {
+            mat.SetBuiltInAnimation(false);
+            StartMatrixTimer(1000);
+            Logger.WriteLine("Matrix Clock");
         }
 
         public void Dispose()
