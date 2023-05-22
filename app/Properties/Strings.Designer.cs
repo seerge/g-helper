@@ -169,7 +169,7 @@ namespace GHelper.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Auto adjust Windows Power Mode.
+        ///   Looks up a localized string similar to Auto adjust Windows Power Modes.
         /// </summary>
         internal static string ApplyWindowsPowerPlan {
             get {

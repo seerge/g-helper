@@ -154,7 +154,7 @@
     <value>Застосувати потужність</value>
   </data>
   <data name="ApplyWindowsPowerPlan" xml:space="preserve">
-    <value>Автоматично застосовувати Windows Power Mode</value>
+    <value>Автоматично застосовувати Windows Power Modes</value>
   </data>
   <data name="AuraBreathe" xml:space="preserve">
     <value>Дихання</value>

@@ -193,10 +193,11 @@ namespace GHelper
             return null;
         }
 
-        public static void TouchpadToggle()
+        public static bool TouchpadToggle()
         {
             HidDevice? input = GetInputDevice();
-            if (input != null) input.WriteFeatureData(new byte[] { HID_ID,0xf4,0x6b});
+            if (input != null) return input.WriteFeatureData(new byte[] { HID_ID,0xf4,0x6b});
+            return false;
         }
 
         public static void RunListener(Action<int> KeyHandler)
@@ -249,36 +250,41 @@ namespace GHelper
 
         public static void Init()
         {
-
-            var devices = GetHidDevices(deviceIds);
-            foreach (HidDevice device in devices)
+            Task.Run(() =>
             {
-                device.OpenDevice();
-                device.WriteFeatureData(LED_INIT1);
-                device.WriteFeatureData(LED_INIT2);
-                device.WriteFeatureData(LED_INIT3);
-                device.WriteFeatureData(LED_INIT4);
-                device.WriteFeatureData(LED_INIT5);
-                device.CloseDevice();
-            }
+                var devices = GetHidDevices(deviceIds);
+                foreach (HidDevice device in devices)
+                {
+                    device.OpenDevice();
+                    device.WriteFeatureData(LED_INIT1);
+                    device.WriteFeatureData(LED_INIT2);
+                    device.WriteFeatureData(LED_INIT3);
+                    device.WriteFeatureData(LED_INIT4);
+                    device.WriteFeatureData(LED_INIT5);
+                    device.CloseDevice();
+                }
+            });
         }
 
 
         public static void ApplyBrightness(int brightness)
         {
-            byte[] msg = { 0x5d, 0xba, 0xc5, 0xc4, (byte)brightness };
-
-            var devices = GetHidDevices(deviceIds);
-            foreach (HidDevice device in devices)
+            Task.Run(() =>
             {
-                device.OpenDevice();
-                device.WriteFeatureData(msg);
-                Logger.WriteLine("USB-KB " + device.Capabilities.FeatureReportByteLength + ":" + BitConverter.ToString(msg));
-                device.CloseDevice();
-            }
+                byte[] msg = { 0x5d, 0xba, 0xc5, 0xc4, (byte)brightness };
 
-            if (AppConfig.ContainsModel("TUF"))
-                Program.acpi.TUFKeyboardBrightness(brightness);
+                var devices = GetHidDevices(deviceIds);
+                foreach (HidDevice device in devices)
+                {
+                    device.OpenDevice();
+                    device.WriteFeatureData(msg);
+                    Logger.WriteLine("USB-KB " + device.Capabilities.FeatureReportByteLength + ":" + BitConverter.ToString(msg));
+                    device.CloseDevice();
+                }
+
+                if (AppConfig.ContainsModel("TUF"))
+                    Program.acpi.TUFKeyboardBrightness(brightness);
+            });
         }
 
 

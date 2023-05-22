@@ -889,6 +889,7 @@ namespace GHelper
 
         private void ButtonQuit_Click(object? sender, EventArgs e)
         {
+            matrix.Dispose();
             Close();
             Program.trayIcon.Visible = false;
             Application.Exit();

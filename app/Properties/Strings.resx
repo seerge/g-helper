@@ -154,7 +154,7 @@
     <value>Apply Power Limits</value>
   </data>
   <data name="ApplyWindowsPowerPlan" xml:space="preserve">
-    <value>Auto adjust Windows Power Mode</value>
+    <value>Auto adjust Windows Power Modes</value>
   </data>
   <data name="AuraBreathe" xml:space="preserve">
     <value>Breathe</value>

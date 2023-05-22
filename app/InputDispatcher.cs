@@ -213,16 +213,18 @@ namespace GHelper
                     Program.settingsForm.BeginInvoke(Program.settingsForm.RunToast, backlightNames[backlight], ToastIcon.BacklightUp);
                     break;
                 case 16: // FN+F7
-                    brightness = ScreenBrightness.Adjust(-10);
-                    Program.settingsForm.BeginInvoke(Program.settingsForm.RunToast, brightness + "%", ToastIcon.BrightnessDown);
+                    Program.acpi.DeviceSet(AsusACPI.UniversalControl, 0x10, "Brightness");
+                    //brightness = ScreenBrightness.Adjust(-10);
+                    //Program.settingsForm.BeginInvoke(Program.settingsForm.RunToast, brightness + "%", ToastIcon.BrightnessDown);
                     break;
                 case 32: // FN+F8
-                    brightness = ScreenBrightness.Adjust(+10);
-                    Program.settingsForm.BeginInvoke(Program.settingsForm.RunToast, brightness + "%", ToastIcon.BrightnessUp);
+                    Program.acpi.DeviceSet(AsusACPI.UniversalControl, 0x20, "Brightness");
+                    //brightness = ScreenBrightness.Adjust(+10);
+                    //Program.settingsForm.BeginInvoke(Program.settingsForm.RunToast, brightness + "%", ToastIcon.BrightnessUp);
                     break;
                 case 107: // FN+F10
                     bool touchpadState = GetTouchpadState();
-                    AsusUSB.TouchpadToggle();
+                    if (!AsusUSB.TouchpadToggle()) Program.acpi.DeviceSet(AsusACPI.UniversalControl, 0x6B, "Touchpad");
                     Program.settingsForm.BeginInvoke(Program.settingsForm.RunToast, touchpadState ? "Off" : "On", ToastIcon.Touchpad);
                     break;
                 case 108: // FN+F11

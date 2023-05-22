@@ -44,7 +44,7 @@ namespace GHelper
             Thread.CurrentThread.CurrentUICulture = CultureInfo.CurrentUICulture;
             Debug.WriteLine(CultureInfo.CurrentUICulture);
 
-            //Thread.CurrentThread.CurrentUICulture = CultureInfo.CreateSpecificCulture("es");
+            //Thread.CurrentThread.CurrentUICulture = CultureInfo.CreateSpecificCulture("uk");
 
             CheckProcesses();
 
@@ -65,7 +65,7 @@ namespace GHelper
             }
 
             Logger.WriteLine("------------");
-            Logger.WriteLine("App launched: " + AppConfig.GetModel() + " :" + Assembly.GetExecutingAssembly().GetName().Version.ToString() + (IsUserAdministrator() ? "A" : ""));
+            Logger.WriteLine("App launched: " + AppConfig.GetModel() + " :" + Assembly.GetExecutingAssembly().GetName().Version.ToString() + CultureInfo.CurrentUICulture + (IsUserAdministrator() ? "A" : ""));
 
             Application.EnableVisualStyles();
 
