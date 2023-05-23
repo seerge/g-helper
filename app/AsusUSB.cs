@@ -53,16 +53,19 @@ namespace GHelper
     public static class AsusUSB
     {
 
-        public const byte HID_ID = 0x5a;
+        public const int ASUS_ID = 0x0b05;
 
-        public static readonly byte[] LED_INIT1 = new byte[] { 0x5d, 0xb9 };
+        public const byte INPUT_HID_ID = 0x5a;
+        public const byte AURA_HID_ID = 0x5d;
+
+        public static readonly byte[] LED_INIT1 = new byte[] { AURA_HID_ID, 0xb9 };
         public static readonly byte[] LED_INIT2 = Encoding.ASCII.GetBytes("]ASUS Tech.Inc.");
-        public static readonly byte[] LED_INIT3 = new byte[] { 0x5d, 0x05, 0x20, 0x31, 0, 0x08 };
+        public static readonly byte[] LED_INIT3 = new byte[] { AURA_HID_ID, 0x05, 0x20, 0x31, 0, 0x08 };
         public static readonly byte[] LED_INIT4 = Encoding.ASCII.GetBytes("^ASUS Tech.Inc.");
         public static readonly byte[] LED_INIT5 = new byte[] { 0x5e, 0x05, 0x20, 0x31, 0, 0x08 };
 
-        static byte[] MESSAGE_SET = { 0x5d, 0xb5, 0, 0, 0 };
-        static byte[] MESSAGE_APPLY = { 0x5d, 0xb4 };
+        static byte[] MESSAGE_SET = { AURA_HID_ID, 0xb5, 0, 0, 0 };
+        static byte[] MESSAGE_APPLY = { AURA_HID_ID, 0xb4 };
 
         static int[] deviceIds = { 0x1a30, 0x1854, 0x1869, 0x1866, 0x19b6, 0x1822, 0x1837, 0x1854, 0x184a, 0x183d, 0x8502, 0x1807, 0x17e0, 0x18c6 };
 
@@ -174,72 +177,42 @@ namespace GHelper
 
         private static IEnumerable<HidDevice> GetHidDevices(int[] deviceIds, int minInput = 18)
         {
-            HidDevice[] HidDeviceList = HidDevices.Enumerate(0x0b05, deviceIds).ToArray();
+            HidDevice[] HidDeviceList = HidDevices.Enumerate(ASUS_ID, deviceIds).ToArray();
             foreach (HidDevice device in HidDeviceList)
                 if (device.IsConnected
                     && device.Capabilities.FeatureReportByteLength > 0
-                    && device.Capabilities.InputReportByteLength >= minInput) // 
+                    && device.Capabilities.InputReportByteLength >= minInput) 
                     yield return device;
         }
 
-        private static HidDevice? GetInputDevice()
+        public static HidDevice? GetDevice(byte reportID = INPUT_HID_ID)
         {
-            HidDevice[] HidDeviceList = HidDevices.Enumerate(0x0b05, deviceIds).ToArray();
+            HidDevice[] HidDeviceList = HidDevices.Enumerate(ASUS_ID, deviceIds).ToArray();
             HidDevice input = null;
 
             foreach (HidDevice device in HidDeviceList)
-                if (device.ReadFeatureData(out byte[] data, HID_ID))
+                if (device.ReadFeatureData(out byte[] data, reportID))
                 {
                     input = device;
-                    Logger.WriteLine("Input Events" + device.Capabilities.FeatureReportByteLength + "|" + device.Capabilities.InputReportByteLength + device.Description + device.DevicePath);
+                    //Logger.WriteLine("HID Device("+ reportID + ")" +  + device.Capabilities.FeatureReportByteLength + "|" + device.Capabilities.InputReportByteLength + device.DevicePath);
                 }
-
-            if (input is null) Logger.WriteLine("Input device not found");
 
             return input;
         }
 
         public static bool TouchpadToggle()
         {
-            HidDevice? input = GetInputDevice();
-            if (input != null) return input.WriteFeatureData(new byte[] { HID_ID, 0xf4, 0x6b });
+            HidDevice? input = GetDevice();
+            if (input != null) return input.WriteFeatureData(new byte[] { INPUT_HID_ID, 0xf4, 0x6b });
             return false;
         }
 
-        public static void RunListener(Action<int> KeyHandler)
-        {
-            HidDevice? input = GetInputDevice();
-            if (input == null) return;
-
-            //Logger.WriteLine("Input Events " + input.DevicePath);
-
-            var task = Task.Run(() =>
-            {
-                try
-                {
-                    while (true)
-                    {
-                        var data = input.Read().Data;
-                        if (data.Length > 1 && data[0] == HID_ID && data[1] > 0)
-                        {
-                            Logger.WriteLine("Key:" + data[1]);
-                            KeyHandler(data[1]);
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Logger.WriteLine(ex.ToString());
-                }
-            });
-
-        }
 
         public static byte[] AuraMessage(int mode, Color color, Color color2, int speed)
         {
 
             byte[] msg = new byte[17];
-            msg[0] = 0x5d;
+            msg[0] = AURA_HID_ID;
             msg[1] = 0xb3;
             msg[2] = 0x00; // Zone 
             msg[3] = (byte)mode; // Aura Mode
@@ -277,14 +250,15 @@ namespace GHelper
         {
             Task.Run(() =>
             {
-                byte[] msg = { 0x5d, 0xba, 0xc5, 0xc4, (byte)brightness };
 
-                var devices = GetHidDevices(deviceIds);
+                byte[] msg = { INPUT_HID_ID, 0xba, 0xc5, 0xc4, (byte)brightness };
+                Logger.WriteLine("KB Backlight:" + BitConverter.ToString(msg));
+
+                var devices = GetHidDevices(deviceIds, 0);
                 foreach (HidDevice device in devices)
                 {
                     device.OpenDevice();
                     device.WriteFeatureData(msg);
-                    Logger.WriteLine("USB-KB " + device.Capabilities.FeatureReportByteLength + ":" + BitConverter.ToString(msg));
                     device.CloseDevice();
                 }
 

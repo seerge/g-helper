@@ -1,4 +1,5 @@
-﻿using Microsoft.Win32;
+﻿using HidLibrary;
+using Microsoft.Win32;
 using NAudio.CoreAudioApi;
 using System.Diagnostics;
 using System.Management;
@@ -6,6 +7,58 @@ using Tools;
 
 namespace GHelper
 {
+    public class KeyboardListener
+    {
+
+        CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
+
+        public KeyboardListener(Action<int> KeyHandler)
+        {
+            HidDevice? input = AsusUSB.GetDevice();
+
+            if (input == null)
+            {
+                Logger.WriteLine("Input device not found");
+                return;
+            }
+            else
+            {
+                Logger.WriteLine("Listener input " + input.DevicePath);
+            }
+
+
+            var task = Task.Run(() =>
+            {
+                try
+                {
+                    while (!cancellationTokenSource.Token.IsCancellationRequested)
+                    {
+                        var data = input.Read().Data;
+                        if (data.Length > 1 && data[0] == AsusUSB.INPUT_HID_ID && data[1] > 0)
+                        {
+                            Logger.WriteLine("Key:" + data[1]);
+                            KeyHandler(data[1]);
+                        }
+                    }
+                    Logger.WriteLine("Listener stopped");
+
+                }
+                catch (Exception ex)
+                {
+                    Logger.WriteLine(ex.ToString());
+                }
+            });
+
+
+        }
+
+        public void Dispose()
+        {
+            cancellationTokenSource?.Cancel();
+        }
+    }
+
+
     public class InputDispatcher
     {
 
@@ -13,6 +66,8 @@ namespace GHelper
         private static nint windowHandle;
 
         public static Keys keyProfile = Keys.F5;
+
+        KeyboardListener listener;
 
         KeyHandler m1, m2, togggle;
 
@@ -23,8 +78,6 @@ namespace GHelper
 
             Program.acpi.SubscribeToEvents(WatcherEventArrived);
 
-            if (!isOptimizationRunning) AsusUSB.RunListener(HandleEvent);
-
             // CTRL + SHIFT + F5 to cycle profiles
             if (AppConfig.getConfig("keybind_profile") != -1) keyProfile = (Keys)AppConfig.getConfig("keybind_profile");
 
@@ -33,7 +86,18 @@ namespace GHelper
             m2 = new KeyHandler(KeyHandler.NOMOD, Keys.VolumeUp, windowHandle);
 
             RegisterKeys();
+
         }
+
+        public void InitListener()
+        {
+            if (listener is not null) listener.Dispose();
+
+            if (!OptimizationService.IsRunning())
+                listener = new KeyboardListener(HandleEvent);
+        }
+
+
 
         public void RegisterKeys()
         {

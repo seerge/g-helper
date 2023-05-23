@@ -187,7 +187,7 @@
     <value>Limite à 60 Hz pour éco. batterie, valeur normale sur secteur</value>
   </data>
   <data name="Awake" xml:space="preserve">
-    <value>Éveillé</value>
+    <value>Allumé</value>
   </data>
   <data name="BacklightTimeout" xml:space="preserve">
     <value>Délai (secondes) avant extinction rétroéclairage</value>
@@ -199,7 +199,7 @@
     <value>Limite de charge </value>
   </data>
   <data name="Boot" xml:space="preserve">
-    <value>Lors du démarrage</value>
+    <value>Au démarrage</value>
   </data>
   <data name="Brightness" xml:space="preserve">
     <value>Luminosité</value>
@@ -361,7 +361,7 @@
     <value>Désactiver le micro</value>
   </data>
   <data name="OpenGHelper" xml:space="preserve">
-    <value>Ouvrir la fenêtre G-Helper</value>
+    <value>Ouvrir G-Helper</value>
   </data>
   <data name="Optimized" xml:space="preserve">
     <value>Optimisé</value>

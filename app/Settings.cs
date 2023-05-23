@@ -93,8 +93,6 @@ namespace GHelper
             comboMatrix.DropDownClosed += ComboMatrix_SelectedValueChanged;
             comboMatrixRunning.DropDownClosed += ComboMatrixRunning_SelectedValueChanged;
 
-            checkMatrix.CheckedChanged += CheckMatrix_CheckedChanged; ;
-
             buttonMatrix.Click += ButtonMatrix_Click;
 
             checkStartup.CheckedChanged += CheckStartup_CheckedChanged;
@@ -735,7 +733,7 @@ namespace GHelper
             comboMatrixRunning.SelectedIndex = (running != -1) ? Math.Min(running, comboMatrixRunning.Items.Count - 1) : 0;
 
             checkMatrix.Checked = (AppConfig.getConfig("matrix_auto") == 1);
-
+            checkMatrix.CheckedChanged += CheckMatrix_CheckedChanged;
 
         }
 
@@ -1267,13 +1265,12 @@ namespace GHelper
         {
             AsusUSB.Init();
 
-            if (AppConfig.getConfig("keyboard_auto") != 1) return;
+            int backlight = AppConfig.getConfig("keyboard_brightness");
 
-            if (SystemInformation.PowerStatus.PowerLineStatus == PowerLineStatus.Online)
-                AsusUSB.ApplyBrightness(3);
-            else
+            if (AppConfig.isConfig("keyboard_auto") && SystemInformation.PowerStatus.PowerLineStatus != PowerLineStatus.Online) 
                 AsusUSB.ApplyBrightness(0);
-
+            else if (backlight >= 0)
+                AsusUSB.ApplyBrightness(backlight);
 
         }
 

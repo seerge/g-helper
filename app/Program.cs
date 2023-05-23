@@ -1,11 +1,8 @@
 using Microsoft.Win32;
-using NAudio.CoreAudioApi;
 using System.Diagnostics;
 using System.Globalization;
-using System.Management;
 using System.Reflection;
 using System.Security.Principal;
-using Tools;
 using static NativeMethods;
 
 namespace GHelper
@@ -43,11 +40,11 @@ namespace GHelper
 
             string language = AppConfig.getConfigString("language");
 
-            if (language != null && language.Length > 0) 
+            if (language != null && language.Length > 0)
                 Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo(language);
-            else 
+            else
                 Thread.CurrentThread.CurrentUICulture = CultureInfo.CurrentUICulture;
-            
+
             Debug.WriteLine(CultureInfo.CurrentUICulture);
             //Thread.CurrentThread.CurrentUICulture = CultureInfo.CreateSpecificCulture("fr");
 
@@ -86,7 +83,7 @@ namespace GHelper
             settingsForm.InitMatrix();
             settingsForm.SetStartupCheck(Startup.IsScheduled());
 
-            
+
             SetAutoModes();
 
             // Subscribing for system power change events
@@ -103,7 +100,7 @@ namespace GHelper
                 SettingsToggle(action);
             }
 
-            
+
 
             Application.Run();
 
@@ -146,6 +143,8 @@ namespace GHelper
 
             isPlugged = SystemInformation.PowerStatus.PowerLineStatus;
             Logger.WriteLine("AutoSetting for " + isPlugged.ToString());
+
+            inputDispatcher.InitListener();
 
             settingsForm.SetBatteryChargeLimit(AppConfig.getConfig("charge_limit"));
             settingsForm.AutoPerformance();
