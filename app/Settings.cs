@@ -508,6 +508,7 @@ namespace GHelper
                         {
                             case 0:
                                 Logger.WriteLine("Monitor Power Off");
+                                AsusUSB.ApplyBrightness(0);
                                 SetBatteryChargeLimit(AppConfig.getConfig("charge_limit"));
                                 break;
                             case 1:
@@ -1311,7 +1312,7 @@ namespace GHelper
             bool optimizedUSBC = AppConfig.getConfig("optimized_usbc") != 1;
 
             return SystemInformation.PowerStatus.PowerLineStatus == PowerLineStatus.Online &&
-                   (optimizedUSBC || Program.acpi.DeviceGet(AsusACPI.ChargerMode) != AsusACPI.ChargerUSB);
+                   (optimizedUSBC || Program.acpi.DeviceGet(AsusACPI.ChargerMode) < AsusACPI.ChargerUSB);
 
         }
 

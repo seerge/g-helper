@@ -709,14 +709,6 @@ public class NativeMethods
             dm.dmDisplayFrequency = frequency;
             int iRet = NativeMethods.ChangeDisplaySettingsEx(laptopScreen, ref dm, IntPtr.Zero, DisplaySettingsFlags.CDS_UPDATEREGISTRY, IntPtr.Zero);
             Logger.WriteLine("Screen = " + frequency.ToString() + "Hz : " + (iRet == 0 ? "OK" : iRet));
-            
-            // Retry as refresh rate can fail sometimes
-            if (iRet == -1)
-            {
-                Thread.Sleep(500);
-                iRet = NativeMethods.ChangeDisplaySettingsEx(laptopScreen, ref dm, IntPtr.Zero, DisplaySettingsFlags.CDS_UPDATEREGISTRY, IntPtr.Zero);
-                Logger.WriteLine("Screen = " + frequency.ToString() + "Hz : " + (iRet == 0 ? "OK" : iRet));
-            }
 
             return iRet;
         }
