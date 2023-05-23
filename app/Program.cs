@@ -41,9 +41,14 @@ namespace GHelper
             string action = "";
             if (args.Length > 0) action = args[0];
 
-            Thread.CurrentThread.CurrentUICulture = CultureInfo.CurrentUICulture;
-            Debug.WriteLine(CultureInfo.CurrentUICulture);
+            string language = AppConfig.getConfigString("language");
 
+            if (language != null && language.Length > 0) 
+                Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo(language);
+            else 
+                Thread.CurrentThread.CurrentUICulture = CultureInfo.CurrentUICulture;
+            
+            Debug.WriteLine(CultureInfo.CurrentUICulture);
             //Thread.CurrentThread.CurrentUICulture = CultureInfo.CreateSpecificCulture("fr");
 
             CheckProcesses();

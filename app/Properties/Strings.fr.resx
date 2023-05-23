@@ -118,13 +118,13 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="ACPIError" xml:space="preserve">
-    <value>Connexion impossible avec ASUS ACPI. L’application ne peut fonctionner sans. Veuillez installer Asus System Control Interface.</value>
+    <value>Connexion impossible avec ASUS ACPI. L'application ne peut fonctionner sans. Veuillez installer Asus System Control Interface.</value>
   </data>
   <data name="AlertDGPU" xml:space="preserve">
     <value>Le GPU semble être surchargé, voulez vous le désactiver ?</value>
   </data>
   <data name="AlertDGPUTitle" xml:space="preserve">
-    <value>Mode Économique</value>
+    <value>Mode Éco</value>
   </data>
   <data name="AlertUltimateOff" xml:space="preserve">
     <value>Désactiver le Mode Ultime requiert un redémarrage</value>
@@ -136,28 +136,28 @@
     <value>Redémarrer maintenant ?</value>
   </data>
   <data name="AnimationSpeed" xml:space="preserve">
-    <value>Vitesse d’animation</value>
+    <value>Vitesse de l'animation</value>
   </data>
   <data name="AnimeMatrix" xml:space="preserve">
     <value>Anime Matrix</value>
   </data>
   <data name="AppAlreadyRunning" xml:space="preserve">
-    <value>L’application est déjà en cours d’éxecution</value>
+    <value>L'application est déjà en cours d'exécution</value>
   </data>
   <data name="AppAlreadyRunningText" xml:space="preserve">
-    <value>G-Helper est déjà en cours d'exécution. Vérifiez la barre d'état du système</value>
+    <value>G-Helper est déjà en cours d'exécution. Vérifiez la barre d'état système.</value>
   </data>
   <data name="ApplyFanCurve" xml:space="preserve">
-    <value>Appliquer le profil</value>
+    <value>Appliquer la courbe</value>
   </data>
   <data name="ApplyPowerLimits" xml:space="preserve">
     <value>Appliquer les limites</value>
   </data>
   <data name="ApplyWindowsPowerPlan" xml:space="preserve">
-    <value>Ajuster automatiquement les modes de Performance Windows</value>
+    <value>Ajustement auto des modes de gestion alim. Windows</value>
   </data>
   <data name="AuraBreathe" xml:space="preserve">
-    <value>Respiration</value>
+    <value>Pulsation</value>
   </data>
   <data name="AuraColorCycle" xml:space="preserve">
     <value>Cycle de couleur</value>
@@ -184,19 +184,25 @@
     <value>Automatique</value>
   </data>
   <data name="AutoRefreshTooltip" xml:space="preserve">
-    <value>Limiter le rafraîchissement de l’écran à 60Hz pour économiser de la batterie, et retour à la normal en chargement</value>
+    <value>Limite à 60 Hz pour éco. batterie, valeur normale sur secteur</value>
   </data>
   <data name="Awake" xml:space="preserve">
     <value>Éveillé</value>
   </data>
+  <data name="BacklightTimeout" xml:space="preserve">
+    <value>Délai (secondes) avant extinction rétroéclairage</value>
+  </data>
   <data name="Balanced" xml:space="preserve">
-    <value>Balancé</value>
+    <value>Équilibré</value>
   </data>
   <data name="BatteryChargeLimit" xml:space="preserve">
-    <value>Limite de charge</value>
+    <value>Limite de charge </value>
   </data>
   <data name="Boot" xml:space="preserve">
-    <value>Au lancement</value>
+    <value>Lors du démarrage</value>
+  </data>
+  <data name="Brightness" xml:space="preserve">
+    <value>Luminosité</value>
   </data>
   <data name="Color" xml:space="preserve">
     <value>Couleur</value>
@@ -211,25 +217,25 @@
     <value>Par défaut</value>
   </data>
   <data name="DisableOverdrive" xml:space="preserve">
-    <value>Désactiver l’Overdrive de l’Écran</value>
+    <value>Désactiver l'overdrive de l'écran</value>
   </data>
   <data name="Discharging" xml:space="preserve">
-    <value>En déchargement</value>
+    <value>Taux décharge </value>
   </data>
   <data name="DownloadUpdate" xml:space="preserve">
     <value>Télécharger la mise à jour</value>
   </data>
   <data name="EcoGPUTooltip" xml:space="preserve">
-    <value>Désactive le dGPU pour économiser la batterie</value>
+    <value>Désactive le dGPU pour préserver la batterie</value>
   </data>
   <data name="EcoMode" xml:space="preserve">
-    <value>Économique</value>
+    <value>Éco</value>
   </data>
   <data name="Extra" xml:space="preserve">
-    <value>Aditionnel</value>
+    <value>+ d'options</value>
   </data>
   <data name="ExtraSettings" xml:space="preserve">
-    <value>Paramètres additionnels</value>
+    <value>Paramètres supplémentaires</value>
   </data>
   <data name="FactoryDefaults" xml:space="preserve">
     <value>Paramètres d'usine</value>
@@ -238,37 +244,55 @@
     <value>Courbes des ventilateurs</value>
   </data>
   <data name="FanProfileCPU" xml:space="preserve">
-    <value>Profil de ventilateur CPU</value>
+    <value>Profil du ventilateur CPU</value>
   </data>
   <data name="FanProfileGPU" xml:space="preserve">
-    <value>Profil de ventilateur GPU</value>
+    <value>Profil du ventilateur GPU</value>
   </data>
   <data name="FanProfileMid" xml:space="preserve">
-    <value>Profil de ventilateur central</value>
+    <value>Profil du ventilateur central</value>
   </data>
   <data name="FanProfiles" xml:space="preserve">
     <value>Profil</value>
   </data>
   <data name="FansAndPower" xml:space="preserve">
-    <value>Ventilateurs et Puissance</value>
+    <value>Ventilateurs + Puissance</value>
+  </data>
+  <data name="FanSpeed" xml:space="preserve">
+    <value>Vent: </value>
   </data>
   <data name="FansPower" xml:space="preserve">
     <value>Ventilateurs + Puissance</value>
   </data>
+  <data name="GPUBoost" xml:space="preserve">
+    <value>Dynamic Boost</value>
+  </data>
   <data name="GPUChanging" xml:space="preserve">
     <value>Changement</value>
   </data>
+  <data name="GPUCoreClockOffset" xml:space="preserve">
+    <value>Ajustement fréq. de base</value>
+  </data>
+  <data name="GPUMemoryClockOffset" xml:space="preserve">
+    <value>Ajustement fréq. mémoire</value>
+  </data>
   <data name="GPUMode" xml:space="preserve">
-    <value>Mode de GPU</value>
+    <value>Mode GPU </value>
   </data>
   <data name="GPUModeEco" xml:space="preserve">
-    <value>Seulement iGPU</value>
+    <value>iGPU uniquement</value>
   </data>
   <data name="GPUModeStandard" xml:space="preserve">
     <value>iGPU + dGPU</value>
   </data>
   <data name="GPUModeUltimate" xml:space="preserve">
-    <value>Exclusivement dGPU</value>
+    <value>dGPU exclusif</value>
+  </data>
+  <data name="GPUSettings" xml:space="preserve">
+    <value>Paramètres du GPU</value>
+  </data>
+  <data name="GPUTempTarget" xml:space="preserve">
+    <value>Température cible</value>
   </data>
   <data name="KeyBindings" xml:space="preserve">
     <value>Raccourcis clavier</value>
@@ -277,16 +301,28 @@
     <value>Clavier</value>
   </data>
   <data name="KeyboardAuto" xml:space="preserve">
-    <value>Baisser la luminosité du rétroéclairage sur batterie et retour à la normal en charge</value>
+    <value>Réduire rétroéclairage sur batterie et mode normal sur secteur</value>
   </data>
-  <data name="KeyboardBacklight" xml:space="preserve">
-    <value>Rétroéclairage du clavier</value>
+  <data name="LaptopBacklight" xml:space="preserve">
+    <value>Rétroéclairage de l'ordinateur</value>
   </data>
   <data name="LaptopKeyboard" xml:space="preserve">
-    <value>Clavier de l’ordinateur</value>
+    <value>Clavier de l'ordinateur</value>
   </data>
   <data name="LaptopScreen" xml:space="preserve">
-    <value>Écran de l’ordinateur</value>
+    <value>Écran de l'ordinateur </value>
+  </data>
+  <data name="Lid" xml:space="preserve">
+    <value>Capot</value>
+  </data>
+  <data name="Lightbar" xml:space="preserve">
+    <value>Barre lumineuse</value>
+  </data>
+  <data name="Logo" xml:space="preserve">
+    <value>Logo</value>
+  </data>
+  <data name="MatrixAudio" xml:space="preserve">
+    <value>Visualiseur Audio</value>
   </data>
   <data name="MatrixBanner" xml:space="preserve">
     <value>Bannière binaire</value>
@@ -310,25 +346,31 @@
     <value>Éteint</value>
   </data>
   <data name="MatrixPicture" xml:space="preserve">
-    <value>Image</value>
+    <value>Images</value>
   </data>
   <data name="MaxRefreshTooltip" xml:space="preserve">
-    <value>Rafraichissement maximum pour baisser la latance</value>
+    <value>Rafraîchissement maximum, faible latence</value>
   </data>
   <data name="MinRefreshTooltip" xml:space="preserve">
-    <value>Rafraichissement à 60Hz pour économiser de la batterie</value>
+    <value>Rafraichîssement 60 Hz pour économiser de la batterie</value>
   </data>
   <data name="Multizone" xml:space="preserve">
-    <value>Multizone</value>
+    <value>Multi-zone</value>
+  </data>
+  <data name="MuteMic" xml:space="preserve">
+    <value>Désactiver le micro</value>
   </data>
   <data name="OpenGHelper" xml:space="preserve">
     <value>Ouvrir la fenêtre G-Helper</value>
   </data>
   <data name="Optimized" xml:space="preserve">
-    <value>Optimizé</value>
+    <value>Optimisé</value>
   </data>
   <data name="OptimizedGPUTooltip" xml:space="preserve">
-    <value>Passer en Économique sur batterie et sur Standard en chargement</value>
+    <value>Éco sur batterie, bascule vers Standard sur secteur</value>
+  </data>
+  <data name="OptimizedUSBC" xml:space="preserve">
+    <value>Garder le GPU désactivé lorsque branché via USB-C en mode Optimisé</value>
   </data>
   <data name="Other" xml:space="preserve">
     <value>Autre</value>
@@ -343,34 +385,37 @@
     <value>Image / Gif</value>
   </data>
   <data name="PlayPause" xml:space="preserve">
-    <value>Reproduire / Pause</value>
+    <value>Lecture / Pause</value>
   </data>
   <data name="PowerLimits" xml:space="preserve">
     <value>Limites de puissance (PPT)</value>
   </data>
   <data name="PPTExperimental" xml:space="preserve">
-    <value>Limites de puissance (PPT) est une fonctionnalité expérimentale. Utilisez la avec attention et à vos risques.</value>
+    <value>Limites de puissance (PPT) est une fonctionnalité expérimentale. Faire attention, à utiliser à vos risques !</value>
   </data>
   <data name="PrintScreen" xml:space="preserve">
-    <value>Capture d’Écran</value>
+    <value>Capture d'écran</value>
   </data>
   <data name="Quit" xml:space="preserve">
     <value>Quitter</value>
   </data>
+  <data name="RestartGPU" xml:space="preserve">
+    <value>Un processus utilisant le dGPU empêche le passage en mode Éco. Redémarrer le dGPU ? * Procédez à vos risques.</value>
+  </data>
   <data name="RPM" xml:space="preserve">
-    <value>RPM</value>
+    <value> RPM</value>
   </data>
   <data name="RunOnStartup" xml:space="preserve">
-    <value>Executer au lancement</value>
+    <value>Exécuter au démarrage</value>
   </data>
   <data name="Shutdown" xml:space="preserve">
-    <value>Éteindre</value>
+    <value>Arrêter</value>
   </data>
   <data name="Silent" xml:space="preserve">
     <value>Silencieux</value>
   </data>
   <data name="Sleep" xml:space="preserve">
-    <value>En veille</value>
+    <value>Veille</value>
   </data>
   <data name="StandardGPUTooltip" xml:space="preserve">
     <value>Active le dGPU pour une utilisation standard</value>
@@ -382,7 +427,13 @@
     <value>Erreur au lancement</value>
   </data>
   <data name="ToggleAura" xml:space="preserve">
-    <value>Basculer Aura</value>
+    <value>Activer Aura</value>
+  </data>
+  <data name="ToggleMiniled" xml:space="preserve">
+    <value>Activer Miniled (si supporté)</value>
+  </data>
+  <data name="ToggleScreen" xml:space="preserve">
+    <value>Allumer l'écran</value>
   </data>
   <data name="Turbo" xml:space="preserve">
     <value>Turbo</value>
@@ -394,66 +445,24 @@
     <value>Éteindre sur batterie</value>
   </data>
   <data name="UltimateGPUTooltip" xml:space="preserve">
-    <value>Redirige l’écran de l’ordinateur sur le dGPU pour maximiser le nombre de FPS</value>
+    <value>Redirige l'écran du portable vers le dGPU, maximisation taux FPS </value>
   </data>
   <data name="UltimateMode" xml:space="preserve">
-    <value>Ultimate</value>
+    <value>Ultime</value>
   </data>
   <data name="VersionLabel" xml:space="preserve">
-    <value>Version</value>
+    <value>Version </value>
+  </data>
+  <data name="VolumeDown" xml:space="preserve">
+    <value>Vol-</value>
   </data>
   <data name="VolumeMute" xml:space="preserve">
     <value>Mettre en sourdine</value>
   </data>
+  <data name="VolumeUp" xml:space="preserve">
+    <value>Vol+</value>
+  </data>
   <data name="WindowTop" xml:space="preserve">
-    <value>Garder l’application au premier plan</value>
-  </data>
-  <data name="Brightness" xml:space="preserve">
-    <value>Luminosité</value>
-  </data>
-  <data name="FanSpeed" xml:space="preserve">
-    <value>Ventilateurs: </value>
-  </data>
-  <data name="GPUBoost" xml:space="preserve">
-    <value>Boost Dynamique</value>
-  </data>
-  <data name="GPUCoreClockOffset" xml:space="preserve">
-    <value>Augmentation de la fréquence de base</value>
-  </data>
-  <data name="GPUMemoryClockOffset" xml:space="preserve">
-    <value>Augmentation de la fréquence de la mémoire</value>
-  </data>
-  <data name="GPUSettings" xml:space="preserve">
-    <value>Paramêtres de GPU</value>
-  </data>
-  <data name="GPUTempTarget" xml:space="preserve">
-    <value>Température ciblée</value>
-  </data>
-  <data name="LaptopBacklight" xml:space="preserve">
-    <value>Rétroéclairage de l’ordinateur</value>
-  </data>
-  <data name="Lid" xml:space="preserve">
-    <value>Capot</value>
-  </data>
-  <data name="Lightbar" xml:space="preserve">
-    <value>Barre de lumière</value>
-  </data>
-  <data name="Logo" xml:space="preserve">
-    <value>Logo</value>
-  </data>
-  <data name="OptimizedUSBC" xml:space="preserve">
-    <value>Garder le GPU désactivé en chargement via USB-C dans le mode Optimisé</value>
-  </data>
-  <data name="RestartGPU" xml:space="preserve">
-    <value>Un processus utilise le dGPU est empêche le passage en mode Économique. Redémarrer le dGPU dans le gestionnaire de périphérique ? * Veuillez procéder à vos risques</value>
-  </data>
-  <data name="ToggleMiniled" xml:space="preserve">
-    <value>Basculer sur Miniled (si supporté)</value>
-  </data>
-  <data name="ToggleScreen" xml:space="preserve">
-    <value>Basculer d’écran</value>
-  </data>
-  <data name="BacklightTimeout" xml:space="preserve">
-    <value>Nombre de secondes avant d’éteindre le rétroéclairage sur batterie</value>
+    <value>Maintenir la fenêtre au premier plan</value>
   </data>
 </root>
