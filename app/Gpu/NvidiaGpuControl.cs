@@ -182,7 +182,7 @@ public class NvidiaGpuControl : IGpuControl
         }
         catch (Exception ex)
         {
-            Logger.WriteLine(ex.Message);
+            Debug.WriteLine(ex.Message);
             return null;
         }
     }

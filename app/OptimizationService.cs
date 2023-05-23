@@ -39,6 +39,7 @@ namespace GHelper
         {
             return (Process.GetProcessesByName("AsusOptimization").Count() > 0);
         }
+
     }
 
 }

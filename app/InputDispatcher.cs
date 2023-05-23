@@ -1,6 +1,7 @@
 ﻿using HidLibrary;
 using Microsoft.Win32;
 using NAudio.CoreAudioApi;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Management;
 using Tools;
@@ -15,17 +16,9 @@ namespace GHelper
         public KeyboardListener(Action<int> KeyHandler)
         {
             HidDevice? input = AsusUSB.GetDevice();
+            if (input == null) return;
 
-            if (input == null)
-            {
-                Logger.WriteLine("Input device not found");
-                return;
-            }
-            else
-            {
-                Logger.WriteLine("Listener input " + input.DevicePath);
-            }
-
+            Logger.WriteLine($"Input: {input.DevicePath}");
 
             var task = Task.Run(() =>
             {
@@ -36,7 +29,7 @@ namespace GHelper
                         var data = input.Read().Data;
                         if (data.Length > 1 && data[0] == AsusUSB.INPUT_HID_ID && data[1] > 0)
                         {
-                            Logger.WriteLine("Key:" + data[1]);
+                            Logger.WriteLine($"Key: {data[1]}");
                             KeyHandler(data[1]);
                         }
                     }
@@ -62,7 +55,6 @@ namespace GHelper
     public class InputDispatcher
     {
 
-        private static bool isOptimizationRunning = OptimizationService.IsRunning();
         private static nint windowHandle;
 
         public static Keys keyProfile = Keys.F5;
@@ -76,7 +68,12 @@ namespace GHelper
 
             windowHandle = handle;
 
+            byte[] result = Program.acpi.DeviceInit();
+            Debug.WriteLine($"Init: {BitConverter.ToString(result)}");
+
             Program.acpi.SubscribeToEvents(WatcherEventArrived);
+            //Task.Run(Program.acpi.RunListener);
+
 
             // CTRL + SHIFT + F5 to cycle profiles
             if (AppConfig.getConfig("keybind_profile") != -1) keyProfile = (Keys)AppConfig.getConfig("keybind_profile");
@@ -95,6 +92,7 @@ namespace GHelper
 
             if (!OptimizationService.IsRunning())
                 listener = new KeyboardListener(HandleEvent);
+
         }
 
 
@@ -160,7 +158,7 @@ namespace GHelper
                     action = "aura";
                 if (name == "fnf5")
                     action = "performance";
-                if (name == "m3" && !isOptimizationRunning)
+                if (name == "m3" && !OptimizationService.IsRunning())
                     action = "micmute";
             }
 
@@ -251,15 +249,12 @@ namespace GHelper
                     return;
             }
 
-            if (isOptimizationRunning) return;
+            if (OptimizationService.IsRunning()) return;
 
             // Asus Optimization service Events 
 
             int backlight = AppConfig.getConfig("keyboard_brightness");
-
             string[] backlightNames = new string[] { "Off", "Low", "Mid", "Max" };
-
-            int brightness;
 
             switch (EventID)
             {
@@ -289,7 +284,7 @@ namespace GHelper
                     break;
                 case 107: // FN+F10
                     bool touchpadState = GetTouchpadState();
-                    if (!AsusUSB.TouchpadToggle()) Program.acpi.DeviceSet(AsusACPI.UniversalControl, 0x6B, "Touchpad");
+                    AsusUSB.TouchpadToggle();
                     Program.settingsForm.BeginInvoke(Program.settingsForm.RunToast, touchpadState ? "Off" : "On", ToastIcon.Touchpad);
                     break;
                 case 108: // FN+F11

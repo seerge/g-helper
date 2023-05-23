@@ -32,6 +32,7 @@ public class AsusACPI
 
     const uint DSTS = 0x53545344;
     const uint DEVS = 0x53564544;
+    const uint INIT = 0x54494E49;
 
     public const uint UniversalControl = 0x00100021;
     public const int KB_Light_Up = 0xc4;
@@ -161,7 +162,7 @@ public class AsusACPI
     public void RunListener()
     {
 
-        eventHandle = CreateEvent(IntPtr.Zero, false, false, "ATK Event");
+        eventHandle = CreateEvent(IntPtr.Zero, false, false, "ATK4001");
 
         byte[] outBuffer = new byte[16];
         byte[] data = new byte[8];
@@ -178,7 +179,7 @@ public class AsusACPI
             WaitForSingleObject(eventHandle, Timeout.Infinite);
             Control(0x222408, new byte[0], outBuffer);
             int code = BitConverter.ToInt32(outBuffer);
-            Logger.WriteLine("Code: " + code);
+            Logger.WriteLine("ACPI Code: " + code);
         }
     }
 
@@ -237,6 +238,13 @@ public class AsusACPI
         Control(CONTROL_CODE, acpiBuf, outBuffer);
 
         return outBuffer;
+
+    }
+
+    public byte[] DeviceInit()
+    {
+        byte[] args = new byte[8];
+        return CallMethod(INIT, args);
 
     }
 

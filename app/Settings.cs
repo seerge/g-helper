@@ -1436,6 +1436,8 @@ namespace GHelper
                     GpuMode = AsusACPI.GPUModeStandard;
 
                 UltimateUI(mux == 1);
+                
+                if (eco < 0) tableGPU.Visible = false;
 
             }
 

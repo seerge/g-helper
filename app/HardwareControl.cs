@@ -151,6 +151,7 @@ public static class HardwareControl
             GpuControl?.Dispose();
 
             IGpuControl _gpuControl = new NvidiaGpuControl();
+            
             if (_gpuControl.IsValid)
             {
                 GpuControl = _gpuControl;

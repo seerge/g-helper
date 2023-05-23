@@ -229,9 +229,9 @@ namespace GHelper
 
         public static void Init()
         {
-            Task.Run(() =>
+            Task.Run(async () =>
             {
-                var devices = GetHidDevices(deviceIds);
+                var devices = GetHidDevices(deviceIds, 0);
                 foreach (HidDevice device in devices)
                 {
                     device.OpenDevice();
@@ -248,7 +248,7 @@ namespace GHelper
 
         public static void ApplyBrightness(int brightness)
         {
-            Task.Run(() =>
+            Task.Run(async () =>
             {
 
                 byte[] msg = { INPUT_HID_ID, 0xba, 0xc5, 0xc4, (byte)brightness };
