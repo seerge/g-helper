@@ -153,6 +153,55 @@ namespace GHelper
 
         }
 
+        protected override void WndProc(ref Message m)
+        {
+
+            switch (m.Msg)
+            {
+                case NativeMethods.WM_POWERBROADCAST:
+                    if (m.WParam == (IntPtr)NativeMethods.PBT_POWERSETTINGCHANGE)
+                    {
+                        var settings = (NativeMethods.POWERBROADCAST_SETTING)m.GetLParam(typeof(NativeMethods.POWERBROADCAST_SETTING));
+                        switch (settings.Data)
+                        {
+                            case 0:
+                                Logger.WriteLine("Monitor Power Off");
+                                AsusUSB.ApplyBrightness(0);
+                                break;
+                            case 1:
+                                Logger.WriteLine("Monitor Power On");
+                                Program.SetAutoModes();
+                                break;
+                            case 2:
+                                Logger.WriteLine("Monitor Dimmed");
+                                break;
+                        }
+                    }
+                    m.Result = (IntPtr)1;
+                    break;
+
+                case KeyHandler.WM_HOTKEY_MSG_ID:
+
+                    Keys key = (Keys)(((int)m.LParam >> 16) & 0xFFFF);
+
+                    switch (key)
+                    {
+                        case Keys.VolumeDown:
+                            InputDispatcher.KeyProcess("m1");
+                            break;
+                        case Keys.VolumeUp:
+                            InputDispatcher.KeyProcess("m2");
+                            break;
+                        default:
+                            if (key == InputDispatcher.keyProfile) CyclePerformanceMode();
+                            break;
+                    }
+
+                    break;
+            }
+            base.WndProc(ref m);
+        }
+
         public void RunToast(string text, ToastIcon? icon = null)
         {
             toast.RunToast(text, icon);
@@ -492,59 +541,6 @@ namespace GHelper
             InitScreen();
             AutoScreen();
         }
-
-        protected override void WndProc(ref Message m)
-        {
-
-            switch (m.Msg)
-            {
-                case NativeMethods.WM_POWERBROADCAST:
-                    if (m.WParam == (IntPtr)NativeMethods.PBT_POWERSETTINGCHANGE)
-                    {
-                        var settings = (NativeMethods.POWERBROADCAST_SETTING)m.GetLParam(typeof(NativeMethods.POWERBROADCAST_SETTING));
-                        switch (settings.Data)
-                        {
-                            case 0:
-                                Logger.WriteLine("Monitor Power Off");
-                                AsusUSB.ApplyBrightness(0);
-                                SetBatteryChargeLimit(AppConfig.getConfig("charge_limit"));
-                                break;
-                            case 1:
-                                Logger.WriteLine("Monitor Power On");
-                                Program.SetAutoModes();
-                                break;
-                            case 2:
-                                Logger.WriteLine("Monitor Dimmed");
-                                break;
-                        }
-                    }
-                    m.Result = (IntPtr)1;
-                    break;
-
-                case KeyHandler.WM_HOTKEY_MSG_ID:
-
-                    Keys key = (Keys)(((int)m.LParam >> 16) & 0xFFFF);
-
-                    switch (key)
-                    {
-                        case Keys.VolumeDown:
-                            InputDispatcher.KeyProcess("m1");
-                            break;
-                        case Keys.VolumeUp:
-                            InputDispatcher.KeyProcess("m2");
-                            break;
-                        default:
-                            if (key == InputDispatcher.keyProfile) CyclePerformanceMode();
-                            break;
-                    }
-
-                    break;
-            }
-            base.WndProc(ref m);
-        }
-
-
-
 
 
         private void CheckStartup_CheckedChanged(object? sender, EventArgs e)

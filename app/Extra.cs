@@ -209,7 +209,7 @@ namespace GHelper
             checkXMG.Checked = !(AppConfig.getConfig("xmg_light") == 0);
             checkXMG.CheckedChanged += CheckXMG_CheckedChanged;
 
-            int kb_timeout = AppConfig.getConfig("keyboard_light_tiomeout");
+            int kb_timeout = AppConfig.getConfig("keyboard_timeout");
             numericBacklightTime.Value = (kb_timeout >= 0) ? kb_timeout : 60;
 
             numericBacklightTime.ValueChanged += NumericBacklightTime_ValueChanged;
@@ -218,9 +218,7 @@ namespace GHelper
 
         private void NumericBacklightTime_ValueChanged(object? sender, EventArgs e)
         {
-            Program.RunAsAdmin("extra");
-            AppConfig.setConfig("keyboard_light_tiomeout", (int)numericBacklightTime.Value);
-            AsusUSB.SetBacklightOffDelay((int)numericBacklightTime.Value);
+            AppConfig.setConfig("keyboard_timeout", (int)numericBacklightTime.Value);
         }
 
         private void CheckXMG_CheckedChanged(object? sender, EventArgs e)

@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TrackBar;
 using static Tools.ScreenInterrogatory;
 
 namespace Tools
@@ -350,6 +351,25 @@ namespace Tools
 
 public class NativeMethods
 {
+
+    internal struct LASTINPUTINFO
+    {
+        public uint cbSize;
+        public uint dwTime;
+    }
+
+    [DllImport("User32.dll")]
+    private static extern bool GetLastInputInfo(ref LASTINPUTINFO plii);
+
+    public static TimeSpan GetIdleTime()
+    {
+        LASTINPUTINFO lastInPut = new LASTINPUTINFO();
+        lastInPut.cbSize = (uint)Marshal.SizeOf(lastInPut);
+        GetLastInputInfo(ref lastInPut);
+        return TimeSpan.FromMilliseconds((uint)Environment.TickCount - lastInPut.dwTime);
+
+    }
+
 
     private const int WM_SYSCOMMAND = 0x0112;
     private const int SC_MONITORPOWER = 0xF170;

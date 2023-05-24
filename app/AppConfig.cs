@@ -71,11 +71,11 @@ public static class AppConfig
         File.WriteAllText(configFile, jsonString);
     }
 
-    public static int getConfig(string name)
+    public static int getConfig(string name, int empty = -1)
     {
         if (config.ContainsKey(name))
             return int.Parse(config[name].ToString());
-        else return -1;
+        else return empty;
     }
 
     public static bool isConfig(string name)
@@ -83,11 +83,11 @@ public static class AppConfig
         return getConfig(name) == 1;
     }
 
-    public static string getConfigString(string name)
+    public static string getConfigString(string name, string empty = null)
     {
         if (config.ContainsKey(name))
             return config[name].ToString();
-        else return null;
+        else return empty;
     }
 
     public static void setConfig(string name, int value)

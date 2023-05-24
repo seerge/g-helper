@@ -1,6 +1,7 @@
 ﻿using System.Text.RegularExpressions;
 using System.Text;
 using System.Diagnostics;
+using Microsoft.Win32;
 
 namespace GHelper
 {
@@ -39,6 +40,25 @@ namespace GHelper
         {
             return (Process.GetProcessesByName("AsusOptimization").Count() > 0);
         }
+
+
+        public static void SetBacklightOffDelay(int value = 60)
+        {
+            try
+            {
+                RegistryKey myKey = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\ASUS\ASUS System Control Interface\AsusOptimization\ASUS Keyboard Hotkeys", true);
+                if (myKey != null)
+                {
+                    myKey.SetValue("TurnOffKeybdLight", value, RegistryValueKind.DWord);
+                    myKey.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLine(ex.Message);
+            }
+        }
+
 
     }
 

@@ -29,7 +29,7 @@ namespace GHelper
 
         public static InputDispatcher inputDispatcher;
 
-        private static PowerLineStatus isPlugged = PowerLineStatus.Unknown;
+        private static PowerLineStatus isPlugged = SystemInformation.PowerStatus.PowerLineStatus;
 
         // The main entry point for the application
         public static void Main(string[] args)
@@ -144,7 +144,7 @@ namespace GHelper
             isPlugged = SystemInformation.PowerStatus.PowerLineStatus;
             Logger.WriteLine("AutoSetting for " + isPlugged.ToString());
 
-            inputDispatcher.InitListener();
+            inputDispatcher.Init();
 
             settingsForm.SetBatteryChargeLimit(AppConfig.getConfig("charge_limit"));
             settingsForm.AutoPerformance();
@@ -163,9 +163,10 @@ namespace GHelper
 
         private static void SystemEvents_PowerModeChanged(object sender, PowerModeChangedEventArgs e)
         {
+
             if (SystemInformation.PowerStatus.PowerLineStatus == isPlugged) return;
 
-            Logger.WriteLine("Windows - Power Mode Changed");
+            Logger.WriteLine("Power Mode Changed");
             SetAutoModes();
         }
 

@@ -248,23 +248,31 @@ namespace GHelper
 
         public static void ApplyBrightness(int brightness)
         {
-            Task.Run(async () =>
+            if (AppConfig.ContainsModel("TUF"))
+                Program.acpi.TUFKeyboardBrightness(brightness);
+
+            byte[] msg = { AURA_HID_ID, 0xba, 0xc5, 0xc4, (byte)brightness };
+
+            var devices = GetHidDevices(deviceIds);
+            foreach (HidDevice device in devices)
             {
-
-                byte[] msg = { INPUT_HID_ID, 0xba, 0xc5, 0xc4, (byte)brightness };
+                device.OpenDevice();
+                device.WriteFeatureData(msg);
                 Logger.WriteLine("KB Backlight:" + BitConverter.ToString(msg));
+                device.CloseDevice();
+            }
 
-                var devices = GetHidDevices(deviceIds, 0);
-                foreach (HidDevice device in devices)
-                {
-                    device.OpenDevice();
-                    device.WriteFeatureData(msg);
-                    device.CloseDevice();
-                }
 
-                if (AppConfig.ContainsModel("TUF"))
-                    Program.acpi.TUFKeyboardBrightness(brightness);
-            });
+            // Backup payload for old models
+            byte[] msgBackup = { INPUT_HID_ID, 0xba, 0xc5, 0xc4, (byte)brightness };
+
+            var devicesBackup = GetHidDevices(deviceIds, 0);
+            foreach (HidDevice device in devicesBackup)
+            {
+                device.OpenDevice();
+                device.WriteFeatureData(msgBackup);
+                device.CloseDevice();
+            }
         }
 
 
@@ -379,23 +387,6 @@ namespace GHelper
             if (AppConfig.ContainsModel("TUF"))
                 Program.acpi.TUFKeyboardRGB(Mode, Color1, _speed);
 
-        }
-
-        public static void SetBacklightOffDelay(int value = 60)
-        {
-            try
-            {
-                RegistryKey myKey = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\ASUS\ASUS System Control Interface\AsusOptimization\ASUS Keyboard Hotkeys", true);
-                if (myKey != null)
-                {
-                    myKey.SetValue("TurnOffKeybdLight", value, RegistryValueKind.DWord);
-                    myKey.Close();
-                }
-            }
-            catch (Exception ex)
-            {
-                Logger.WriteLine(ex.Message);
-            }
         }
 
 

@@ -54,6 +54,8 @@ namespace GHelper
 
     public class InputDispatcher
     {
+        System.Timers.Timer timer = new System.Timers.Timer(1000);
+        public bool backlight = true;
 
         private static nint windowHandle;
 
@@ -84,14 +86,42 @@ namespace GHelper
 
             RegisterKeys();
 
+            timer.Elapsed += Timer_Elapsed;
+
         }
 
-        public void InitListener()
+        private void Timer_Elapsed(object? sender, System.Timers.ElapsedEventArgs e)
+        {
+            TimeSpan iddle = NativeMethods.GetIdleTime();
+            int kb_timeout = AppConfig.getConfig("keyboard_timeout", 60);
+            
+            if (kb_timeout == 0) return;
+
+            if (backlight && iddle.TotalSeconds > kb_timeout)
+            {
+                backlight = false;
+                AsusUSB.ApplyBrightness(0);
+            }
+
+            if (!backlight && iddle.TotalSeconds < kb_timeout)
+            {
+                backlight = true;
+                AsusUSB.ApplyBrightness(AppConfig.getConfig("keyboard_brightness"));
+            }
+
+            //Debug.WriteLine(iddle.TotalSeconds);
+        }
+
+        public void Init()
         {
             if (listener is not null) listener.Dispose();
 
+            Program.acpi.DeviceInit();
+
             if (!OptimizationService.IsRunning())
                 listener = new KeyboardListener(HandleEvent);
+
+            timer.Enabled = (AppConfig.getConfig("keyboard_timeout") > 0 && SystemInformation.PowerStatus.PowerLineStatus != PowerLineStatus.Online);
 
         }
 
