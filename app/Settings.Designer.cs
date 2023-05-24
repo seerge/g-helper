@@ -255,7 +255,7 @@ namespace GHelper
             // 
             sliderBattery.Location = new Point(16, 70);
             sliderBattery.Max = 100;
-            sliderBattery.Min = 50;
+            sliderBattery.Min = 40;
             sliderBattery.Name = "sliderBattery";
             sliderBattery.Size = new Size(772, 40);
             sliderBattery.TabIndex = 39;

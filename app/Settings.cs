@@ -953,10 +953,11 @@ namespace GHelper
                 labelBattery.Text = battery;
             });
 
+            string trayTip = "CPU" + cpuTemp + HardwareControl.cpuFan;
+            if (gpuTemp.Length > 0) trayTip += "\nGPU" + gpuTemp + HardwareControl.gpuFan;
+            if (battery.Length > 0) trayTip += "\n" + battery;
 
-            Program.trayIcon.Text = "CPU" + cpuTemp + HardwareControl.cpuFan + "\n"
-                                    + "GPU" + gpuTemp + HardwareControl.gpuFan +
-                                    ((battery.Length > 0) ? ("\n" + battery) : "");
+            Program.trayIcon.Text = trayTip;
 
         }
 
@@ -1432,8 +1433,12 @@ namespace GHelper
                     GpuMode = AsusACPI.GPUModeStandard;
 
                 UltimateUI(mux == 1);
-                
-                if (eco < 0) tableGPU.Visible = false;
+
+                if (eco < 0)
+                {
+                    tableGPU.Visible = false;
+                    if (Program.acpi.DeviceGet(AsusACPI.GPU_Fan) < 0 ) panelGPU.Visible = false;
+                }
 
             }
 
