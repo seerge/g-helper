@@ -272,6 +272,7 @@ namespace GHelper
                     Program.settingsForm.BeginInvoke(Program.settingsForm.CyclePerformanceMode);
                     return;
                 case 179:   // FN+F4
+                case 178:   // FN+F4
                     KeyProcess("fnf4");
                     return;
                 case 189: // Tablet mode 
@@ -327,11 +328,11 @@ namespace GHelper
 
         static void LaunchProcess(string command = "")
         {
-            string executable = command.Split(' ')[0];
-            string arguments = command.Substring(executable.Length).Trim();
 
             try
             {
+                string executable = command.Split(' ')[0];
+                string arguments = command.Substring(executable.Length).Trim();
                 Process proc = Process.Start(executable, arguments);
             }
             catch

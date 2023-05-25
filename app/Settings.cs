@@ -199,7 +199,14 @@ namespace GHelper
 
                     break;
             }
-            base.WndProc(ref m);
+
+            try
+            {
+                base.WndProc(ref m);
+            } catch (Exception ex)
+            {
+                Debug.WriteLine(ex.ToString());
+            }
         }
 
         public void RunToast(string text, ToastIcon? icon = null)
