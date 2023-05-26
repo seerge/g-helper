@@ -4,9 +4,9 @@
 
 Language: English | [中文](https://github.com/seerge/g-helper/blob/main/docs/README.zh-CN.md)
 
-## Lightweight Armoury Crate alternative for Asus laptops
+## Control tool for Asus laptops
 
-Control tool for ROG Zephyrus G14, G15, G16, M16, Flow X13, Flow X16, TUF, Strix, Scar and other models. A small utility that allows you to do almost everything you could do with Armoury Crate but without extra bloat and unnecessary services.
+Lightweight Armoury Crate alternative for Asus lapopts. A small utility that allows you to do almost everything you could do with Armoury Crate but without extra bloat and unnecessary services. Works on all popular models, such as ROG Zephyrus G14, G15, G16, M16, Flow X13, Flow X16, TUF, Strix, Scar, ProArt and many more! Feel free to try :)
 
 
 ## :gift: Main advantages 
