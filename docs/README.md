@@ -24,7 +24,7 @@ If you like this app, please [star :star: it on Github](https://github.com/seerg
 
 _If you post about the app - please include a link. Thanks._
 
-![Screenshot 2023-04-13 190951](https://user-images.githubusercontent.com/5920850/231859391-c4963af4-491c-4523-95d4-0bdcfd7cfd6f.png)
+![Gihhub](https://github.com/seerge/g-helper/assets/5920850/4d98465a-63a5-4498-ae14-afb3e67e7e82)
 
 ### :zap: Main features
 
@@ -48,6 +48,8 @@ _If you post about the app - please include a link. Thanks._
 
 To keep auto switching and hotkeys working the app needs to stay running in the tray. It doesn't consume any resources. 
 
+![Screenshot 2023-05-07 182519](https://user-images.githubusercontent.com/5920850/236697890-26938ac4-8840-4fed-a7b1-9a7b839fb865.png)
+
 ### :rocket: Performance Modes
 
 Modes are **same** as in Armoury Crate as they are stored in bios including default fan curves
@@ -58,14 +60,14 @@ Modes are **same** as in Armoury Crate as they are stored in bios including defa
 
 _PPTs are shown for G14 2022, for other models PPTs will be different as they are set in bios._
 
-![Screenshot 2023-05-07 182519](https://user-images.githubusercontent.com/5920850/236697890-26938ac4-8840-4fed-a7b1-9a7b839fb865.png)
-
 ### :video_game: GPU Modes
 
 1. Eco mode : only low power integrated GPU enabled, iGPU drives built in display
 2. Standard mode (MS Hybrid) : iGPU and dGPU enabled, iGPU drives built in display
 3. Ultimate mode: iGPU and dGPU enabled, but dGPU drives built in display (supported only on G14 2022 model)
 4. Optimized: disables dGPU on battery (Eco) and enables when plugged (Standard)
+
+![Screenshot 2023-04-13 190951](https://user-images.githubusercontent.com/5920850/231859391-c4963af4-491c-4523-95d4-0bdcfd7cfd6f.png)
 
 ## :question: FAQ
 
