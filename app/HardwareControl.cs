@@ -155,6 +155,7 @@ public static class HardwareControl
             if (_gpuControl.IsValid)
             {
                 GpuControl = _gpuControl;
+                Logger.WriteLine(GpuControl.FullName);
                 return;
             }
 
@@ -164,11 +165,14 @@ public static class HardwareControl
             if (_gpuControl.IsValid)
             {
                 GpuControl = _gpuControl;
+                Logger.WriteLine(GpuControl.FullName);
                 return;
             }
             _gpuControl.Dispose();
 
             GpuControl = null;
+
+
         }
         catch (Exception ex)
         {

@@ -262,17 +262,20 @@ namespace GHelper
                 device.CloseDevice();
             }
 
-
             // Backup payload for old models
-            byte[] msgBackup = { INPUT_HID_ID, 0xba, 0xc5, 0xc4, (byte)brightness };
-
-            var devicesBackup = GetHidDevices(deviceIds, 0);
-            foreach (HidDevice device in devicesBackup)
+            if (AppConfig.ContainsModel("503"))
             {
-                device.OpenDevice();
-                device.WriteFeatureData(msgBackup);
-                device.CloseDevice();
+                byte[] msgBackup = { INPUT_HID_ID, 0xba, 0xc5, 0xc4, (byte)brightness };
+
+                var devicesBackup = GetHidDevices(deviceIds, 0);
+                foreach (HidDevice device in devicesBackup)
+                {
+                    device.OpenDevice();
+                    device.WriteFeatureData(msgBackup);
+                    device.CloseDevice();
+                }
             }
+
         }
 
 

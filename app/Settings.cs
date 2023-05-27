@@ -221,36 +221,6 @@ namespace GHelper
 
             Padding padding = new Padding(15, 5, 5, 5);
 
-            /*
-            TableLayoutPanel[] tables = { tablePerf, tableGPU };
-            string[] titles = { Properties.Strings.PerformanceMode, Properties.Strings.GPUMode};
-
-            int index = 0;
-            foreach (TableLayoutPanel table in tables)
-            {
-
-                var title = new ToolStripMenuItem(titles[index]);
-                title.Margin = padding;
-                title.Enabled = false;
-                contextMenuStrip.Items.Add(title);
-
-                foreach (Control control in table.Controls)
-                {
-                    var button = control as RButton;
-                    if (button != null && !button.Secondary && button.Enabled)
-                    {
-                        var menu = new ToolStripMenuItem(button.Text);
-                        menu.Margin = padding;
-                        menu.Checked = button.Activated;
-                        menu.Click += delegate { button.PerformClick(); };
-                        contextMenuStrip.Items.Add(menu);
-                    }
-                }
-                contextMenuStrip.Items.Add("-");
-                index++;
-            }*/
-
-
             var title = new ToolStripMenuItem(Properties.Strings.PerformanceMode);
             title.Margin = padding;
             title.Enabled = false;
