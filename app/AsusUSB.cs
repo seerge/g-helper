@@ -175,12 +175,12 @@ namespace GHelper
         }
 
 
-        private static IEnumerable<HidDevice> GetHidDevices(int[] deviceIds, int minInput = 18)
+        private static IEnumerable<HidDevice> GetHidDevices(int[] deviceIds, int minInput = 18, int minFeatures = 1)
         {
             HidDevice[] HidDeviceList = HidDevices.Enumerate(ASUS_ID, deviceIds).ToArray();
             foreach (HidDevice device in HidDeviceList)
                 if (device.IsConnected
-                    && device.Capabilities.FeatureReportByteLength > 0
+                    && device.Capabilities.FeatureReportByteLength >= minFeatures
                     && device.Capabilities.InputReportByteLength >= minInput) 
                     yield return device;
         }
@@ -313,7 +313,7 @@ namespace GHelper
             var payload = new byte[300];
             Array.Copy(msg, payload, msg.Length);
 
-            foreach (HidDevice device in GetHidDevices(new int[] { 0x1970 }, 0))
+            foreach (HidDevice device in GetHidDevices(new int[] { 0x1970 }, 0, 64))
             {
                 device.OpenDevice();
                 Logger.WriteLine("XGM " + device.Attributes.ProductHexId + "|" + device.Capabilities.FeatureReportByteLength + ":" + BitConverter.ToString(msg));
