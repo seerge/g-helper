@@ -190,7 +190,10 @@
     <value>Awake</value>
   </data>
   <data name="BacklightTimeout" xml:space="preserve">
-    <value>Seconds to turn off backlight on battery</value>
+    <value>Backlight timeout on battery</value>
+  </data>
+  <data name="BacklightTimeoutPlugged" xml:space="preserve">
+    <value>Backlight timeout when plugged (0 - always on)</value>
   </data>
   <data name="Balanced" xml:space="preserve">
     <value>Balanced</value>
@@ -259,7 +262,7 @@
     <value>Fans and Power</value>
   </data>
   <data name="FanSpeed" xml:space="preserve">
-    <value> Fan: </value>
+    <value>Fan: </value>
   </data>
   <data name="FansPower" xml:space="preserve">
     <value>Fans + Power</value>

@@ -84,7 +84,9 @@ namespace GHelper
 
             labelSpeed.Text = Properties.Strings.AnimationSpeed;
             labelBrightness.Text = Properties.Strings.Brightness;
+
             labelBacklightTimeout.Text = Properties.Strings.BacklightTimeout;
+            labelBacklightTimeoutPlugged.Text = Properties.Strings.BacklightTimeoutPlugged;
 
             checkKeyboardAuto.Text = Properties.Strings.KeyboardAuto;
             checkNoOverdrive.Text = Properties.Strings.DisableOverdrive;
@@ -209,16 +211,19 @@ namespace GHelper
             checkXMG.Checked = !(AppConfig.getConfig("xmg_light") == 0);
             checkXMG.CheckedChanged += CheckXMG_CheckedChanged;
 
-            int kb_timeout = AppConfig.getConfig("keyboard_timeout");
-            numericBacklightTime.Value = (kb_timeout >= 0) ? kb_timeout : 60;
+            numericBacklightTime.Value = AppConfig.getConfig("keyboard_timeout", 60);
+            numericBacklightPluggedTime.Value = AppConfig.getConfig("keyboard_ac_timeout", 0);
 
             numericBacklightTime.ValueChanged += NumericBacklightTime_ValueChanged;
+            numericBacklightPluggedTime.ValueChanged += NumericBacklightTime_ValueChanged;
 
         }
 
         private void NumericBacklightTime_ValueChanged(object? sender, EventArgs e)
         {
             AppConfig.setConfig("keyboard_timeout", (int)numericBacklightTime.Value);
+            AppConfig.setConfig("keyboard_ac_timeout", (int)numericBacklightPluggedTime.Value);
+            Program.inputDispatcher.InitBacklightTimer();
         }
 
         private void CheckXMG_CheckedChanged(object? sender, EventArgs e)

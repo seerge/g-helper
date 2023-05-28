@@ -86,6 +86,8 @@ namespace GHelper
             checkUSBC = new CheckBox();
             checkNoOverdrive = new CheckBox();
             checkTopmost = new CheckBox();
+            numericBacklightPluggedTime = new NumericUpDown();
+            labelBacklightTimeoutPlugged = new Label();
             groupBindings.SuspendLayout();
             tableKeys.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureHelp).BeginInit();
@@ -96,6 +98,7 @@ namespace GHelper
             panelXMG.SuspendLayout();
             tableBacklight.SuspendLayout();
             groupOther.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numericBacklightPluggedTime).BeginInit();
             SuspendLayout();
             // 
             // groupBindings
@@ -302,13 +305,15 @@ namespace GHelper
             groupLight.Dock = DockStyle.Top;
             groupLight.Location = new Point(10, 334);
             groupLight.Name = "groupLight";
-            groupLight.Size = new Size(954, 516);
+            groupLight.Size = new Size(954, 563);
             groupLight.TabIndex = 1;
             groupLight.TabStop = false;
             groupLight.Text = "Keyboard Backlight";
             // 
             // panelBacklightExtra
             // 
+            panelBacklightExtra.Controls.Add(numericBacklightPluggedTime);
+            panelBacklightExtra.Controls.Add(labelBacklightTimeoutPlugged);
             panelBacklightExtra.Controls.Add(numericBacklightTime);
             panelBacklightExtra.Controls.Add(labelBacklightTimeout);
             panelBacklightExtra.Controls.Add(labelBrightness);
@@ -318,7 +323,7 @@ namespace GHelper
             panelBacklightExtra.Dock = DockStyle.Top;
             panelBacklightExtra.Location = new Point(3, 319);
             panelBacklightExtra.Name = "panelBacklightExtra";
-            panelBacklightExtra.Size = new Size(948, 194);
+            panelBacklightExtra.Size = new Size(948, 241);
             panelBacklightExtra.TabIndex = 43;
             // 
             // numericBacklightTime
@@ -668,7 +673,7 @@ namespace GHelper
             groupOther.Controls.Add(checkNoOverdrive);
             groupOther.Controls.Add(checkTopmost);
             groupOther.Dock = DockStyle.Top;
-            groupOther.Location = new Point(10, 850);
+            groupOther.Location = new Point(10, 897);
             groupOther.Name = "groupOther";
             groupOther.Size = new Size(954, 276);
             groupOther.TabIndex = 2;
@@ -726,6 +731,22 @@ namespace GHelper
             checkTopmost.Text = Strings.WindowTop;
             checkTopmost.UseVisualStyleBackColor = true;
             // 
+            // numericBacklightPluggedTime
+            // 
+            numericBacklightPluggedTime.Location = new Point(655, 181);
+            numericBacklightPluggedTime.Maximum = new decimal(new int[] { 3600, 0, 0, 0 });
+            numericBacklightPluggedTime.Name = "numericBacklightPluggedTime";
+            numericBacklightPluggedTime.Size = new Size(240, 39);
+            numericBacklightPluggedTime.TabIndex = 49;
+            // 
+            // labelBacklightTimeoutPlugged
+            // 
+            labelBacklightTimeoutPlugged.Location = new Point(13, 183);
+            labelBacklightTimeoutPlugged.Name = "labelBacklightTimeoutPlugged";
+            labelBacklightTimeoutPlugged.Size = new Size(636, 45);
+            labelBacklightTimeoutPlugged.TabIndex = 48;
+            labelBacklightTimeoutPlugged.Text = "Seconds to turn off backlight when plugged";
+            // 
             // Extra
             // 
             AutoScaleDimensions = new SizeF(13F, 32F);
@@ -761,6 +782,7 @@ namespace GHelper
             tableBacklight.ResumeLayout(false);
             groupOther.ResumeLayout(false);
             groupOther.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)numericBacklightPluggedTime).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -822,5 +844,7 @@ namespace GHelper
         private RComboBox comboM2;
         private TextBox textM2;
         private TextBox textM1;
+        private NumericUpDown numericBacklightPluggedTime;
+        private Label labelBacklightTimeoutPlugged;
     }
 }

@@ -93,8 +93,14 @@ namespace GHelper
         private void Timer_Elapsed(object? sender, System.Timers.ElapsedEventArgs e)
         {
             TimeSpan iddle = NativeMethods.GetIdleTime();
-            int kb_timeout = AppConfig.getConfig("keyboard_timeout", 60);
-            
+
+            int kb_timeout;
+
+            if (SystemInformation.PowerStatus.PowerLineStatus == PowerLineStatus.Online)
+                kb_timeout = AppConfig.getConfig("keyboard_ac_timeout", 0);
+            else 
+                kb_timeout = AppConfig.getConfig("keyboard_timeout", 60);
+
             if (kb_timeout == 0) return;
 
             if (backlight && iddle.TotalSeconds > kb_timeout)
@@ -109,7 +115,7 @@ namespace GHelper
                 AsusUSB.ApplyBrightness(AppConfig.getConfig("keyboard_brightness"));
             }
 
-            //Debug.WriteLine(iddle.TotalSeconds);
+            Debug.WriteLine(iddle.TotalSeconds);
         }
 
         public void Init()
@@ -121,8 +127,13 @@ namespace GHelper
             if (!OptimizationService.IsRunning())
                 listener = new KeyboardListener(HandleEvent);
 
-            timer.Enabled = (AppConfig.getConfig("keyboard_timeout") > 0 && SystemInformation.PowerStatus.PowerLineStatus != PowerLineStatus.Online);
+            InitBacklightTimer();
+        }
 
+        public void InitBacklightTimer()
+        {
+            timer.Enabled = (AppConfig.getConfig("keyboard_timeout") > 0 && SystemInformation.PowerStatus.PowerLineStatus != PowerLineStatus.Online) ||
+                            (AppConfig.getConfig("keyboard_ac_timeout") > 0 && SystemInformation.PowerStatus.PowerLineStatus == PowerLineStatus.Online);
         }
 
 

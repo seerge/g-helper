@@ -319,7 +319,7 @@ namespace GHelper
                 Logger.WriteLine("XGM " + device.Attributes.ProductHexId + "|" + device.Capabilities.FeatureReportByteLength + ":" + BitConverter.ToString(msg));
                 device.WriteFeatureData(payload);
                 device.CloseDevice();
-                return 1;
+                //return 1;
             }
 
             return 0;

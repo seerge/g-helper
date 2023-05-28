@@ -189,6 +189,12 @@
   <data name="Awake" xml:space="preserve">
     <value>Робота</value>
   </data>
+  <data name="BacklightTimeout" xml:space="preserve">
+    <value>Тайм-аут підсвітки на батареї</value>
+  </data>
+  <data name="BacklightTimeoutPlugged" xml:space="preserve">
+    <value>Тайм-аут підсвітки на зарядці (0 - завжди ввімкнено)</value>
+  </data>
   <data name="Balanced" xml:space="preserve">
     <value>Баланс</value>
   </data>
@@ -324,6 +330,9 @@
   <data name="Multizone" xml:space="preserve">
     <value>Мультизони</value>
   </data>
+  <data name="MuteMic" xml:space="preserve">
+    <value>Вимкнути мікрофон</value>
+  </data>
   <data name="OpenGHelper" xml:space="preserve">
     <value>Відкрити вікно G-Helper</value>
   </data>
@@ -332,6 +341,9 @@
   </data>
   <data name="OptimizedGPUTooltip" xml:space="preserve">
     <value>Вмикає Еко на батареї та Стандартний на зарядці</value>
+  </data>
+  <data name="OptimizedUSBC" xml:space="preserve">
+    <value>Вимикати GPU на зарядці від USB-C в режимі Авто</value>
   </data>
   <data name="Other" xml:space="preserve">
     <value>Інше</value>
@@ -387,6 +399,12 @@
   <data name="ToggleAura" xml:space="preserve">
     <value>Аура</value>
   </data>
+  <data name="ToggleMiniled" xml:space="preserve">
+    <value>Міні-лед (якщо підтримується)</value>
+  </data>
+  <data name="ToggleScreen" xml:space="preserve">
+    <value>Вимкнути екран</value>
+  </data>
   <data name="Turbo" xml:space="preserve">
     <value>Турбо</value>
   </data>
@@ -405,8 +423,14 @@
   <data name="VersionLabel" xml:space="preserve">
     <value>Версія</value>
   </data>
+  <data name="VolumeDown" xml:space="preserve">
+    <value>Зменшення гучності</value>
+  </data>
   <data name="VolumeMute" xml:space="preserve">
     <value>Вимкнення звуку</value>
+  </data>
+  <data name="VolumeUp" xml:space="preserve">
+    <value>Збільшення гучності</value>
   </data>
   <data name="WindowTop" xml:space="preserve">
     <value>Тримати вікно завжди зверху</value>

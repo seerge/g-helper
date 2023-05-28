@@ -277,11 +277,20 @@ namespace GHelper.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Seconds to turn off backlight on battery.
+        ///   Looks up a localized string similar to Backlight timeout on battery.
         /// </summary>
         internal static string BacklightTimeout {
             get {
                 return ResourceManager.GetString("BacklightTimeout", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Backlight timeout when plugged (0 - always on).
+        /// </summary>
+        internal static string BacklightTimeoutPlugged {
+            get {
+                return ResourceManager.GetString("BacklightTimeoutPlugged", resourceCulture);
             }
         }
         
@@ -484,7 +493,7 @@ namespace GHelper.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to  Fan: .
+        ///   Looks up a localized string similar to Fan: .
         /// </summary>
         internal static string FanSpeed {
             get {
