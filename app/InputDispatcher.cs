@@ -115,7 +115,7 @@ namespace GHelper
                 AsusUSB.ApplyBrightness(AppConfig.getConfig("keyboard_brightness"));
             }
 
-            Debug.WriteLine(iddle.TotalSeconds);
+            //Debug.WriteLine(iddle.TotalSeconds);
         }
 
         public void Init()

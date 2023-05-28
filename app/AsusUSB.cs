@@ -1,5 +1,4 @@
 ﻿using HidLibrary;
-using Microsoft.Win32;
 using System.Text;
 
 namespace GHelper
@@ -181,7 +180,7 @@ namespace GHelper
             foreach (HidDevice device in HidDeviceList)
                 if (device.IsConnected
                     && device.Capabilities.FeatureReportByteLength >= minFeatures
-                    && device.Capabilities.InputReportByteLength >= minInput) 
+                    && device.Capabilities.InputReportByteLength >= minInput)
                     yield return device;
         }
 
@@ -248,33 +247,41 @@ namespace GHelper
 
         public static void ApplyBrightness(int brightness)
         {
+
             if (AppConfig.ContainsModel("TUF"))
                 Program.acpi.TUFKeyboardBrightness(brightness);
 
-            byte[] msg = { AURA_HID_ID, 0xba, 0xc5, 0xc4, (byte)brightness };
 
-            var devices = GetHidDevices(deviceIds);
-            foreach (HidDevice device in devices)
+            Task.Run(async () =>
             {
-                device.OpenDevice();
-                device.WriteFeatureData(msg);
-                Logger.WriteLine("KB Backlight:" + BitConverter.ToString(msg));
-                device.CloseDevice();
-            }
 
-            // Backup payload for old models
-            if (AppConfig.ContainsModel("503"))
-            {
-                byte[] msgBackup = { INPUT_HID_ID, 0xba, 0xc5, 0xc4, (byte)brightness };
+                byte[] msg = { AURA_HID_ID, 0xba, 0xc5, 0xc4, (byte)brightness };
 
-                var devicesBackup = GetHidDevices(deviceIds, 0);
-                foreach (HidDevice device in devicesBackup)
+                var devices = GetHidDevices(deviceIds);
+                foreach (HidDevice device in devices)
                 {
                     device.OpenDevice();
-                    device.WriteFeatureData(msgBackup);
+                    device.WriteFeatureData(msg);
+                    Logger.WriteLine("KB Backlight:" + BitConverter.ToString(msg));
                     device.CloseDevice();
                 }
-            }
+
+                // Backup payload for old models
+                if (AppConfig.ContainsModel("503"))
+                {
+                    byte[] msgBackup = { INPUT_HID_ID, 0xba, 0xc5, 0xc4, (byte)brightness };
+
+                    var devicesBackup = GetHidDevices(deviceIds, 0);
+                    foreach (HidDevice device in devicesBackup)
+                    {
+                        device.OpenDevice();
+                        device.WriteFeatureData(msgBackup);
+                        device.CloseDevice();
+                    }
+                }
+
+            });
+
 
         }
 
@@ -303,49 +310,6 @@ namespace GHelper
                     flags.Contains(AuraDev19b6.SleepKeyb),
                     flags.Contains(AuraDev19b6.ShutdownKeyb));
 
-        }
-
-        public static int SetXGM(byte[] msg)
-        {
-
-            //Logger.WriteLine("XGM Payload :" + BitConverter.ToString(msg));
-
-            var payload = new byte[300];
-            Array.Copy(msg, payload, msg.Length);
-
-            foreach (HidDevice device in GetHidDevices(new int[] { 0x1970 }, 0, 64))
-            {
-                device.OpenDevice();
-                Logger.WriteLine("XGM " + device.Attributes.ProductHexId + "|" + device.Capabilities.FeatureReportByteLength + ":" + BitConverter.ToString(msg));
-                device.WriteFeatureData(payload);
-                device.CloseDevice();
-                //return 1;
-            }
-
-            return 0;
-        }
-
-        public static void ApplyXGMLight(bool status)
-        {
-            SetXGM(new byte[] { 0x5e, 0xc5, status ? (byte)0x50 : (byte)0 });
-        }
-
-
-        public static int ResetXGM()
-        {
-            return SetXGM(new byte[] { 0x5e, 0xd1, 0x02 });
-        }
-
-        public static int SetXGMFan(byte[] curve)
-        {
-
-            if (AsusACPI.IsInvalidCurve(curve)) return -1;
-
-            byte[] msg = new byte[19];
-            Array.Copy(new byte[] { 0x5e, 0xd1, 0x01 }, msg, 3);
-            Array.Copy(curve, 0, msg, 3, curve.Length);
-
-            return SetXGM(msg);
         }
 
 
@@ -390,6 +354,51 @@ namespace GHelper
             if (AppConfig.ContainsModel("TUF"))
                 Program.acpi.TUFKeyboardRGB(Mode, Color1, _speed);
 
+        }
+
+
+        // Reference : thanks to https://github.com/RomanYazvinsky/ for initial discovery of XGM payloads
+        public static int SetXGM(byte[] msg)
+        {
+
+            //Logger.WriteLine("XGM Payload :" + BitConverter.ToString(msg));
+
+            var payload = new byte[300];
+            Array.Copy(msg, payload, msg.Length);
+
+            foreach (HidDevice device in GetHidDevices(new int[] { 0x1970 }, 0, 300))
+            {
+                device.OpenDevice();
+                Logger.WriteLine("XGM " + device.Attributes.ProductHexId + "|" + device.Capabilities.FeatureReportByteLength + ":" + BitConverter.ToString(msg));
+                device.WriteFeatureData(payload);
+                device.CloseDevice();
+                //return 1;
+            }
+
+            return 0;
+        }
+
+        public static void ApplyXGMLight(bool status)
+        {
+            SetXGM(new byte[] { 0x5e, 0xc5, status ? (byte)0x50 : (byte)0 });
+        }
+
+
+        public static int ResetXGM()
+        {
+            return SetXGM(new byte[] { 0x5e, 0xd1, 0x02 });
+        }
+
+        public static int SetXGMFan(byte[] curve)
+        {
+
+            if (AsusACPI.IsInvalidCurve(curve)) return -1;
+
+            byte[] msg = new byte[19];
+            Array.Copy(new byte[] { 0x5e, 0xd1, 0x01 }, msg, 3);
+            Array.Copy(curve, 0, msg, 3, curve.Length);
+
+            return SetXGM(msg);
         }
 
 

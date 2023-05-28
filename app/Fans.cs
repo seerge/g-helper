@@ -303,7 +303,7 @@ namespace GHelper
             }
             else
             {
-                MinimumSize = new Size(0, Program.settingsForm.Height);
+                Size = MinimumSize = new Size(0, Program.settingsForm.Height);
                 Height = Program.settingsForm.Height;
                 Top = Program.settingsForm.Top;
             }
@@ -466,7 +466,7 @@ namespace GHelper
                 chartMid.Visible = true;
                 SetChart(chartMid, AsusFan.Mid);
                 LoadProfile(seriesMid, AsusFan.Mid);
-                MinimumSize = new Size(0, chartCount * 400 + 200);
+                Size = MinimumSize = new Size(0, chartCount * 400 + 200);
             }
             else
             {
@@ -481,7 +481,7 @@ namespace GHelper
                 chartXGM.Visible = true;
                 SetChart(chartXGM, AsusFan.XGM);
                 LoadProfile(seriesXGM, AsusFan.XGM);
-                MinimumSize = new Size(0, chartCount * 400 + 200);
+                Size = MinimumSize = new Size(0, chartCount * 400 + 200);
             }
             else
             {
