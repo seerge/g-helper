@@ -1,0 +1,468 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ACPIError" xml:space="preserve">
+    <value>Không thể kết nối đến ASUS ACPI. Chương trình cần nó để có thể hoạt động. Hãy thử cài lại Asus System Control Interface</value>
+  </data>
+  <data name="AlertDGPU" xml:space="preserve">
+    <value>Có vẻ như GPU rời đang được sử dụng nhiều, tắt nó?</value>
+  </data>
+  <data name="AlertDGPUTitle" xml:space="preserve">
+    <value>Chế độ Tiết kiệm</value>
+  </data>
+  <data name="AlertUltimateOff" xml:space="preserve">
+    <value>Chuyển sang Chế độ Ultimate cần phải khởi động lại</value>
+  </data>
+  <data name="AlertUltimateOn" xml:space="preserve">
+    <value>Chế độ Ultimate yêu cầu phải khởi động lại</value>
+  </data>
+  <data name="AlertUltimateTitle" xml:space="preserve">
+    <value>Khởi động lại ngay?</value>
+  </data>
+  <data name="AnimationSpeed" xml:space="preserve">
+    <value>Tốc độ</value>
+  </data>
+  <data name="AnimeMatrix" xml:space="preserve">
+    <value>AniMe Matrix</value>
+  </data>
+  <data name="AppAlreadyRunning" xml:space="preserve">
+    <value>Chương trình đã chạy</value>
+  </data>
+  <data name="AppAlreadyRunningText" xml:space="preserve">
+    <value>G-Helper đã chạy. Hãy kiểm tra khay hệ thống</value>
+  </data>
+  <data name="ApplyFanCurve" xml:space="preserve">
+    <value>Áp dụng Chế độ quạt tuỳ chỉnh</value>
+  </data>
+  <data name="ApplyPowerLimits" xml:space="preserve">
+    <value>Áp dụng Giới hạn nguồn</value>
+  </data>
+  <data name="ApplyWindowsPowerPlan" xml:space="preserve">
+    <value>Tự động điều chỉnh Chế độ nguồn của Windows</value>
+  </data>
+  <data name="AuraBreathe" xml:space="preserve">
+    <value>Hơi thở</value>
+  </data>
+  <data name="AuraColorCycle" xml:space="preserve">
+    <value>Chuyển màu</value>
+  </data>
+  <data name="AuraFast" xml:space="preserve">
+    <value>Nhanh</value>
+  </data>
+  <data name="AuraNormal" xml:space="preserve">
+    <value>Bình thường</value>
+  </data>
+  <data name="AuraRainbow" xml:space="preserve">
+    <value>Cầu vồng</value>
+  </data>
+  <data name="AuraSlow" xml:space="preserve">
+    <value>Chậm</value>
+  </data>
+  <data name="AuraStatic" xml:space="preserve">
+    <value>Tĩnh</value>
+  </data>
+  <data name="AuraStrobe" xml:space="preserve">
+    <value>Nhấp nháy</value>
+  </data>
+  <data name="AutoMode" xml:space="preserve">
+    <value>Tự động</value>
+  </data>
+  <data name="AutoRefreshTooltip" xml:space="preserve">
+    <value>Chuyển về 60Hz để tiết kiệm pin, và chuyển lại tần số quét cao khi cắm sạc</value>
+  </data>
+  <data name="Awake" xml:space="preserve">
+    <value>Đang bật</value>
+  </data>
+  <data name="BacklightTimeout" xml:space="preserve">
+    <value>Số giây để tắt đèn nền bàn phím(khi dùng pin)</value>
+  </data>
+  <data name="Balanced" xml:space="preserve">
+    <value>Cân bằng</value>
+  </data>
+  <data name="BatteryChargeLimit" xml:space="preserve">
+    <value>Giới hạn sạc</value>
+  </data>
+  <data name="Boot" xml:space="preserve">
+    <value>Khởi động</value>
+  </data>
+  <data name="Brightness" xml:space="preserve">
+    <value>Độ sáng</value>
+  </data>
+  <data name="Color" xml:space="preserve">
+    <value>Màu</value>
+  </data>
+  <data name="CPUBoost" xml:space="preserve">
+    <value>Tăng tốc CPU</value>
+  </data>
+  <data name="Custom" xml:space="preserve">
+    <value>Tuỳ chỉnh</value>
+  </data>
+  <data name="Default" xml:space="preserve">
+    <value>Mặc định</value>
+  </data>
+  <data name="DisableOverdrive" xml:space="preserve">
+    <value>Tắt Overdrive</value>
+  </data>
+  <data name="Discharging" xml:space="preserve">
+    <value>Đang không sạc</value>
+  </data>
+  <data name="DownloadUpdate" xml:space="preserve">
+    <value>Tải xuống Bản cập nhật</value>
+  </data>
+  <data name="EcoGPUTooltip" xml:space="preserve">
+    <value>Tắt GPU rời để tiết kiệm pin</value>
+  </data>
+  <data name="EcoMode" xml:space="preserve">
+    <value>Tiết kiệm</value>
+  </data>
+  <data name="Extra" xml:space="preserve">
+    <value>Thêm</value>
+  </data>
+  <data name="ExtraSettings" xml:space="preserve">
+    <value>Cài đặt bổ sung</value>
+  </data>
+  <data name="FactoryDefaults" xml:space="preserve">
+    <value>Đặt về Mặc định</value>
+  </data>
+  <data name="FanCurves" xml:space="preserve">
+    <value>Chế độ Quạt</value>
+  </data>
+  <data name="FanProfileCPU" xml:space="preserve">
+    <value>Cấu hình Quạt CPU</value>
+  </data>
+  <data name="FanProfileGPU" xml:space="preserve">
+    <value>Cấu hình Quạt GPU</value>
+  </data>
+  <data name="FanProfileMid" xml:space="preserve">
+    <value>Cấu hình Quạt giữa</value>
+  </data>
+  <data name="FanProfiles" xml:space="preserve">
+    <value>Cấu hình Quạt</value>
+  </data>
+  <data name="FansAndPower" xml:space="preserve">
+    <value>Quạt và Nguồn điện</value>
+  </data>
+  <data name="FanSpeed" xml:space="preserve">
+    <value> Quạt: </value>
+  </data>
+  <data name="FansPower" xml:space="preserve">
+    <value>Quạt + Nguồn</value>
+  </data>
+  <data name="GPUBoost" xml:space="preserve">
+    <value>Dynamic Boost</value>
+  </data>
+  <data name="GPUChanging" xml:space="preserve">
+    <value>Đang đổi GPU</value>
+  </data>
+  <data name="GPUCoreClockOffset" xml:space="preserve">
+    <value>Bù trừ Tốc độ Nhân GPU</value>
+  </data>
+  <data name="GPUMemoryClockOffset" xml:space="preserve">
+    <value>Bù trừ Tốc độ RAM GPU</value>
+  </data>
+  <data name="GPUMode" xml:space="preserve">
+    <value>Chế độ GPU</value>
+  </data>
+  <data name="GPUModeEco" xml:space="preserve">
+    <value>Chỉ GPU tích hợp</value>
+  </data>
+  <data name="GPUModeStandard" xml:space="preserve">
+    <value>GPU tích hợp + GPU rời</value>
+  </data>
+  <data name="GPUModeUltimate" xml:space="preserve">
+    <value>Độc quyền của GPU rời</value>
+  </data>
+  <data name="GPUSettings" xml:space="preserve">
+    <value>Cài đặt GPU</value>
+  </data>
+  <data name="GPUTempTarget" xml:space="preserve">
+    <value>Nhiệt độ đích</value>
+  </data>
+  <data name="KeyBindings" xml:space="preserve">
+    <value>Tổ hợp phím</value>
+  </data>
+  <data name="Keyboard" xml:space="preserve">
+    <value>Bàn phím</value>
+  </data>
+  <data name="KeyboardAuto" xml:space="preserve">
+    <value>Giảm độ sáng bàn phím khi không cắm sạc</value>
+  </data>
+  <data name="LaptopBacklight" xml:space="preserve">
+    <value>Độ sáng đèn nền</value>
+  </data>
+  <data name="LaptopKeyboard" xml:space="preserve">
+    <value>Bàn phím Laptop</value>
+  </data>
+  <data name="LaptopScreen" xml:space="preserve">
+    <value>Màn hình Laptop</value>
+  </data>
+  <data name="Lid" xml:space="preserve">
+    <value>Màn gập</value>
+  </data>
+  <data name="Lightbar" xml:space="preserve">
+    <value>Thanh sáng</value>
+  </data>
+  <data name="Logo" xml:space="preserve">
+    <value>Logo</value>
+  </data>
+  <data name="MatrixAudio" xml:space="preserve">
+    <value>Sóng nhạc</value>
+  </data>
+  <data name="MatrixBanner" xml:space="preserve">
+    <value>Nhị phân</value>
+  </data>
+  <data name="MatrixBright" xml:space="preserve">
+    <value>Sáng</value>
+  </data>
+  <data name="MatrixClock" xml:space="preserve">
+    <value>Đồng hồ</value>
+  </data>
+  <data name="MatrixDim" xml:space="preserve">
+    <value>Sáng mờ</value>
+  </data>
+  <data name="MatrixLogo" xml:space="preserve">
+    <value>Logo ROG</value>
+  </data>
+  <data name="MatrixMedium" xml:space="preserve">
+    <value>Vừa phải</value>
+  </data>
+  <data name="MatrixOff" xml:space="preserve">
+    <value>Tắt</value>
+  </data>
+  <data name="MatrixPicture" xml:space="preserve">
+    <value>Hình ảnh</value>
+  </data>
+  <data name="MaxRefreshTooltip" xml:space="preserve">
+    <value>Tốc độ làm mới tối đa để có độ trễ thấp</value>
+  </data>
+  <data name="MinRefreshTooltip" xml:space="preserve">
+    <value>Tốc độ làm mới 60Hz để tiết kiệm pin</value>
+  </data>
+  <data name="Multizone" xml:space="preserve">
+    <value>Đèn nền Đa vùng(Multi-Zone)</value>
+  </data>
+  <data name="MuteMic" xml:space="preserve">
+    <value>Tắt Mic</value>
+  </data>
+  <data name="OpenGHelper" xml:space="preserve">
+    <value>Mở cửa sổ G-Helper</value>
+  </data>
+  <data name="Optimized" xml:space="preserve">
+    <value>Tối ưu</value>
+  </data>
+  <data name="OptimizedGPUTooltip" xml:space="preserve">
+    <value>Chuyển về Chế độ Tiết kiệm khi dùng pin và Chế độ Tiêu chuẩn khi cắm sạc</value>
+  </data>
+  <data name="OptimizedUSBC" xml:space="preserve">
+    <value>Tắt GPU khi dùng sạc Type-C ở Chế độ Tối ưu</value>
+  </data>
+  <data name="Other" xml:space="preserve">
+    <value>Khác</value>
+  </data>
+  <data name="Overdrive" xml:space="preserve">
+    <value>Overdrive</value>
+  </data>
+  <data name="PerformanceMode" xml:space="preserve">
+    <value>Chế độ Hiệu suất</value>
+  </data>
+  <data name="PictureGif" xml:space="preserve">
+    <value>Ảnh tĩnh / Ảnh Động</value>
+  </data>
+  <data name="PlayPause" xml:space="preserve">
+    <value>Phát / Dừng</value>
+  </data>
+  <data name="PowerLimits" xml:space="preserve">
+    <value>Giới hạn Nguồn (PPT)</value>
+  </data>
+  <data name="PPTExperimental" xml:space="preserve">
+    <value>Giới hạn Nguồn (PPT) là tính năng thử nghiệm. Sử dụng nó cẩn thận và tự chịu mọi rủi ro!</value>
+  </data>
+  <data name="PrintScreen" xml:space="preserve">
+    <value>Chụp màn hình</value>
+  </data>
+  <data name="Quit" xml:space="preserve">
+    <value>Thoát</value>
+  </data>
+  <data name="RestartGPU" xml:space="preserve">
+    <value>Không thể chuyển về Chế độ Tiết kiệm do có gì đó đang dùng GPU. Khởi động lại GPU rời trong Quản lý Thiết bị? * Bạn sẽ chịu mọi rủi ro.</value>
+  </data>
+  <data name="RPM" xml:space="preserve">
+    <value>RPM</value>
+  </data>
+  <data name="RunOnStartup" xml:space="preserve">
+    <value>Chạy khi khởi động</value>
+  </data>
+  <data name="Shutdown" xml:space="preserve">
+    <value>Tắt nguồn</value>
+  </data>
+  <data name="Silent" xml:space="preserve">
+    <value>Im lặng</value>
+  </data>
+  <data name="Sleep" xml:space="preserve">
+    <value>Ngủ</value>
+  </data>
+  <data name="StandardGPUTooltip" xml:space="preserve">
+    <value>Bật GPU rời cho khi cho mức độ dùng tiêu chuẩn</value>
+  </data>
+  <data name="StandardMode" xml:space="preserve">
+    <value>Tiêu chuẩn</value>
+  </data>
+  <data name="StartupError" xml:space="preserve">
+    <value>Khởi động lỗi</value>
+  </data>
+  <data name="ToggleAura" xml:space="preserve">
+    <value>Bật tắt Aura</value>
+  </data>
+  <data name="ToggleMiniled" xml:space="preserve">
+    <value>Bật tắt Miniled(Nếu có hỗ trợ)</value>
+  </data>
+  <data name="ToggleScreen" xml:space="preserve">
+    <value>Bật tắt màn hình</value>
+  </data>
+  <data name="Turbo" xml:space="preserve">
+    <value>Turbo</value>
+  </data>
+  <data name="TurnedOff" xml:space="preserve">
+    <value>Đã tắt</value>
+  </data>
+  <data name="TurnOffOnBattery" xml:space="preserve">
+    <value>Tắt khi không cắm sạc</value>
+  </data>
+  <data name="UltimateGPUTooltip" xml:space="preserve">
+    <value>Định tuyến màn hình laptop đến Card rời, tối đa hóa FPS</value>
+  </data>
+  <data name="UltimateMode" xml:space="preserve">
+    <value>Ultimate</value>
+  </data>
+  <data name="VersionLabel" xml:space="preserve">
+    <value>Phiên bản</value>
+  </data>
+  <data name="VolumeDown" xml:space="preserve">
+    <value>Giảm âm lượng</value>
+  </data>
+  <data name="VolumeMute" xml:space="preserve">
+    <value>Tắt âm lượng</value>
+  </data>
+  <data name="VolumeUp" xml:space="preserve">
+    <value>Tăng âm lượng</value>
+  </data>
+  <data name="WindowTop" xml:space="preserve">
+    <value>Giữ cửa sổ ở trên cùng</value>
+  </data>
+</root>
