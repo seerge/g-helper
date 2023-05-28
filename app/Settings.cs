@@ -194,6 +194,7 @@ namespace GHelper
                             break;
                         default:
                             if (key == InputDispatcher.keyProfile) CyclePerformanceMode();
+                            if (key == InputDispatcher.keyApp) Program.SettingsToggle();
                             break;
                     }
 

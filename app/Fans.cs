@@ -466,7 +466,6 @@ namespace GHelper
                 chartMid.Visible = true;
                 SetChart(chartMid, AsusFan.Mid);
                 LoadProfile(seriesMid, AsusFan.Mid);
-                Size = MinimumSize = new Size(0, chartCount * 400 + 200);
             }
             else
             {
@@ -481,12 +480,21 @@ namespace GHelper
                 chartXGM.Visible = true;
                 SetChart(chartXGM, AsusFan.XGM);
                 LoadProfile(seriesXGM, AsusFan.XGM);
-                Size = MinimumSize = new Size(0, chartCount * 400 + 200);
             }
             else
             {
                 AppConfig.setConfig("xgm_fan", 0);
             }
+
+            try
+            {
+                if (chartCount > 2)
+                    Size = MinimumSize = new Size(0, (int)(ControlHelper.GetDpiScale(this).Value * (chartCount * 200 + 100)));
+            } catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+            }
+
 
             SetChart(chartCPU, AsusFan.CPU);
             SetChart(chartGPU, AsusFan.GPU);

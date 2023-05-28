@@ -60,10 +60,11 @@ namespace GHelper
         private static nint windowHandle;
 
         public static Keys keyProfile = Keys.F5;
+        public static Keys keyApp = Keys.F12;
 
         KeyboardListener listener;
 
-        KeyHandler m1, m2, togggle;
+        KeyHandler m1, m2, handlerProfile, handlerApp;
 
         public InputDispatcher(nint handle)
         {
@@ -76,11 +77,12 @@ namespace GHelper
             Program.acpi.SubscribeToEvents(WatcherEventArrived);
             //Task.Run(Program.acpi.RunListener);
 
-
             // CTRL + SHIFT + F5 to cycle profiles
             if (AppConfig.getConfig("keybind_profile") != -1) keyProfile = (Keys)AppConfig.getConfig("keybind_profile");
 
-            togggle = new KeyHandler(KeyHandler.SHIFT | KeyHandler.CTRL, keyProfile, windowHandle);
+            handlerProfile = new KeyHandler(KeyHandler.SHIFT | KeyHandler.CTRL, keyProfile, windowHandle);
+            handlerApp = new KeyHandler(KeyHandler.SHIFT | KeyHandler.CTRL, keyApp, windowHandle);
+
             m1 = new KeyHandler(KeyHandler.NOMOD, Keys.VolumeDown, windowHandle);
             m2 = new KeyHandler(KeyHandler.NOMOD, Keys.VolumeUp, windowHandle);
 
@@ -144,24 +146,16 @@ namespace GHelper
             string actionM1 = AppConfig.getConfigString("m1");
             string actionM2 = AppConfig.getConfigString("m2");
 
-            togggle.Unregiser();
+            handlerProfile.Unregiser();
             m1.Unregiser();
             m2.Unregiser();
 
-            if (keyProfile != Keys.None)
-            {
-                togggle.Register();
-            }
+            if (keyProfile != Keys.None) handlerProfile.Register();
+            if (keyApp != Keys.None) handlerApp.Register();
 
-            if (actionM1 is not null && actionM1.Length > 0)
-            {
-                m1.Register();
-            }
+            if (actionM1 is not null && actionM1.Length > 0) m1.Register();
 
-            if (actionM2 is not null && actionM2.Length > 0)
-            {
-                m2.Register();
-            }
+            if (actionM2 is not null && actionM2.Length > 0) m2.Register();
 
         }
 
