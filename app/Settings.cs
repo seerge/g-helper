@@ -991,8 +991,8 @@ namespace GHelper
             if (limit_cpu > AsusACPI.MaxCPU) return;
             if (limit_cpu < AsusACPI.MinCPU) return;
 
-            if (limit_apu > AsusACPI.MaxCPU) return;
-            if (limit_apu < AsusACPI.MinCPU) return;
+            if (limit_apu > AsusACPI.MaxTotal) return;
+            if (limit_apu < AsusACPI.MinTotal) return;
 
             if (Program.acpi.DeviceGet(AsusACPI.PPT_TotalA0) >= 0)
             {

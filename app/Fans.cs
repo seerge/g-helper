@@ -83,8 +83,8 @@ namespace GHelper
             trackCPU.Maximum = AsusACPI.MaxCPU;
             trackCPU.Minimum = AsusACPI.MinCPU;
 
-            trackAPU.Maximum = AsusACPI.MaxCPU;
-            trackAPU.Minimum = AsusACPI.MinCPU;
+            trackAPU.Maximum = AsusACPI.MaxTotal;
+            trackAPU.Minimum = AsusACPI.MinTotal;
 
             trackAPU.Scroll += TrackPower_Scroll;
             trackCPU.Scroll += TrackPower_Scroll;
@@ -145,6 +145,15 @@ namespace GHelper
 
         public void InitGPU(bool readClocks = false)
         {
+
+            if (Program.acpi.DeviceGet(AsusACPI.GPUEco) == 1)
+            {
+                gpuVisible = panelGPU.Visible = false;
+                return;
+            }
+
+            if (HardwareControl.GpuControl is null) HardwareControl.RecreateGpuControl();
+
             if (HardwareControl.GpuControl is not null && HardwareControl.GpuControl.IsNvidia)
             {
                 nvControl = (NvidiaGpuControl)HardwareControl.GpuControl;
@@ -444,11 +453,9 @@ namespace GHelper
             if (limit_cpu < AsusACPI.MinCPU) limit_cpu = AsusACPI.MinCPU;
             if (limit_cpu > limit_total) limit_cpu = limit_total;
 
-            if (limit_apu < 0) limit_apu = AsusACPI.DefaultCPU;
-            if (limit_apu > AsusACPI.MaxCPU) limit_apu = AsusACPI.MaxCPU;
-            if (limit_apu < AsusACPI.MinCPU) limit_apu = AsusACPI.MinCPU;
-            if (limit_apu > limit_total) limit_apu = limit_total;
-
+            if (limit_apu < 0) limit_apu = AsusACPI.DefaultTotal;
+            if (limit_apu > AsusACPI.MaxTotal) limit_apu = AsusACPI.MaxTotal;
+            if (limit_apu < AsusACPI.MinTotal) limit_apu = AsusACPI.MinTotal;
 
             trackTotal.Value = limit_total;
             trackCPU.Value = limit_cpu;
