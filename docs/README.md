@@ -153,6 +153,10 @@ It's a lightweight Armoury Crate alternative for Asus laptops. A small utility t
 
 - Also, it's not recommended to have "ASUS Smart Display Control" app running, as it will try to change refresh rates and fight with g-helper for the same function. You can safely uninstall it.
 
+- It is recommended to run app with windows default "balanced" power plan
+![Screenshot 2023-05-29 191650](https://github.com/seerge/g-helper/assets/5920850/27719d96-e9ca-4164-ac4a-23b5966fc0ec)
+
+
 -------------------------------
 
 Designed and developed for Asus Zephyrus G14 2022 (with AMD Radeon iGPU and dGPU). But could and should potentially work for G14 of 2021 and 2020, G15, X FLOW, and other ROG models for relevant and supported features.
