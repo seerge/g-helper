@@ -1065,14 +1065,16 @@ namespace GHelper
 
             if (AppConfig.getConfigPerf("auto_apply") == 1 || force)
             {
+                if (AppConfig.isConfig("xgm_fan") && Program.acpi.IsXGConnected())
+                {
+                    AsusUSB.SetXGMFan(AppConfig.getFanConfig(AsusFan.XGM));
+                } 
+
                 int cpuResult = Program.acpi.SetFanCurve(AsusFan.CPU, AppConfig.getFanConfig(AsusFan.CPU));
                 int gpuResult = Program.acpi.SetFanCurve(AsusFan.GPU, AppConfig.getFanConfig(AsusFan.GPU));
 
                 if (AppConfig.isConfig("mid_fan"))
                     Program.acpi.SetFanCurve(AsusFan.Mid, AppConfig.getFanConfig(AsusFan.Mid));
-
-                if (AppConfig.isConfig("xgm_fan") && Program.acpi.IsXGConnected())
-                    AsusUSB.SetXGMFan(AppConfig.getFanConfig(AsusFan.XGM));
 
                 // something went wrong, resetting to default profile
                 if (cpuResult != 1 || gpuResult != 1)

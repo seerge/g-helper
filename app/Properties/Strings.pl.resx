@@ -1,0 +1,471 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ACPIError" xml:space="preserve">
+    <value>Nie można odnaleźć sterownika ASUS ACPI. Aplikacja nie może bez niego funkcjonować. Spróbuj zainstalować Asus System Control Interface</value>
+  </data>
+  <data name="AlertDGPU" xml:space="preserve">
+    <value>Wygląda na to, że GPU jest mocno obciążone. Wyłączyć?</value>
+  </data>
+  <data name="AlertDGPUTitle" xml:space="preserve">
+    <value>Tryb Eco</value>
+  </data>
+  <data name="AlertUltimateOff" xml:space="preserve">
+    <value>Wyłączenie trybu Ultimate wymaga ponownego uruchomienia</value>
+  </data>
+  <data name="AlertUltimateOn" xml:space="preserve">
+    <value>Tryb Ultimate wymaga ponownego uruchomienia</value>
+  </data>
+  <data name="AlertUltimateTitle" xml:space="preserve">
+    <value>Uruchomić ponownie teraz?</value>
+  </data>
+  <data name="AnimationSpeed" xml:space="preserve">
+    <value>Prędkość animacji</value>
+  </data>
+  <data name="AnimeMatrix" xml:space="preserve">
+    <value>Anime Matrix</value>
+  </data>
+  <data name="AppAlreadyRunning" xml:space="preserve">
+    <value>Aplikacja jest już uruchomiona</value>
+  </data>
+  <data name="AppAlreadyRunningText" xml:space="preserve">
+    <value>G-Helper jest już uruchomiony. Sprawdź obszar powiadomień na pasku zadań.</value>
+  </data>
+  <data name="ApplyFanCurve" xml:space="preserve">
+    <value>Zastosuj krzywe</value>
+  </data>
+  <data name="ApplyPowerLimits" xml:space="preserve">
+    <value>Zastosuj limity</value>
+  </data>
+  <data name="ApplyWindowsPowerPlan" xml:space="preserve">
+    <value>Automatycznie dostosuj Plan Zasilania Windows</value>
+  </data>
+  <data name="AuraBreathe" xml:space="preserve">
+    <value>Oddychanie</value>
+  </data>
+  <data name="AuraColorCycle" xml:space="preserve">
+    <value>Pętla kolorów</value>
+  </data>
+  <data name="AuraFast" xml:space="preserve">
+    <value>Szybki</value>
+  </data>
+  <data name="AuraNormal" xml:space="preserve">
+    <value>Normalny</value>
+  </data>
+  <data name="AuraRainbow" xml:space="preserve">
+    <value>Tęcza</value>
+  </data>
+  <data name="AuraSlow" xml:space="preserve">
+    <value>Powolny</value>
+  </data>
+  <data name="AuraStatic" xml:space="preserve">
+    <value>Statyczny</value>
+  </data>
+  <data name="AuraStrobe" xml:space="preserve">
+    <value>Stroboskop</value>
+  </data>
+  <data name="AutoMode" xml:space="preserve">
+    <value>Automatyczny</value>
+  </data>
+  <data name="AutoRefreshTooltip" xml:space="preserve">
+    <value>Automatycznie ustaw odświeżanie 60 Hz w czasie pracy na baterii</value>
+  </data>
+  <data name="Awake" xml:space="preserve">
+    <value>Aktywność</value>
+  </data>
+  <data name="BacklightTimeout" xml:space="preserve">
+    <value>Wyłączenie podświetlenia na baterii</value>
+  </data>
+  <data name="BacklightTimeoutPlugged" xml:space="preserve">
+    <value>Wyłączenie podświetlenia po podłączeniu (0 - zawsze)</value>
+  </data>
+  <data name="Balanced" xml:space="preserve">
+    <value>Zbalansowany</value>
+  </data>
+  <data name="BatteryChargeLimit" xml:space="preserve">
+    <value>Limit ładowania baterii</value>
+  </data>
+  <data name="Boot" xml:space="preserve">
+    <value>Podczas uruchamiania</value>
+  </data>
+  <data name="Brightness" xml:space="preserve">
+    <value>Jasność</value>
+  </data>
+  <data name="Color" xml:space="preserve">
+    <value>Kolor</value>
+  </data>
+  <data name="CPUBoost" xml:space="preserve">
+    <value>Tryb turbo CPU</value>
+  </data>
+  <data name="Custom" xml:space="preserve">
+    <value>Niestandardowy</value>
+  </data>
+  <data name="Default" xml:space="preserve">
+    <value>Domyślny</value>
+  </data>
+  <data name="DisableOverdrive" xml:space="preserve">
+    <value>Wyłącz funkcję Overdrive monitora</value>
+  </data>
+  <data name="Discharging" xml:space="preserve">
+    <value>Zużycie mocy</value>
+  </data>
+  <data name="DownloadUpdate" xml:space="preserve">
+    <value>Pobierz aktualizację</value>
+  </data>
+  <data name="EcoGPUTooltip" xml:space="preserve">
+    <value>Wyłącza dedykowane GPU aby oszczędzić baterię</value>
+  </data>
+  <data name="EcoMode" xml:space="preserve">
+    <value>Eco</value>
+  </data>
+  <data name="Extra" xml:space="preserve">
+    <value>Ustawienia</value>
+  </data>
+  <data name="ExtraSettings" xml:space="preserve">
+    <value>Dodatkowe ustawienia</value>
+  </data>
+  <data name="FactoryDefaults" xml:space="preserve">
+    <value>Ustawienia fabryczne</value>
+  </data>
+  <data name="FanCurves" xml:space="preserve">
+    <value>Krzywe wentylatorów</value>
+  </data>
+  <data name="FanProfileCPU" xml:space="preserve">
+    <value>Krzywa wentylatora CPU</value>
+  </data>
+  <data name="FanProfileGPU" xml:space="preserve">
+    <value>Krzywa wentylatora GPU</value>
+  </data>
+  <data name="FanProfileMid" xml:space="preserve">
+    <value>Krzywa wentylatora centralnego</value>
+  </data>
+  <data name="FanProfiles" xml:space="preserve">
+    <value>Tryb krzywych</value>
+  </data>
+  <data name="FansAndPower" xml:space="preserve">
+    <value>Wentylatory i moc</value>
+  </data>
+  <data name="FanSpeed" xml:space="preserve">
+    <value>Obroty: </value>
+  </data>
+  <data name="FansPower" xml:space="preserve">
+    <value>Dostosuj</value>
+  </data>
+  <data name="GPUBoost" xml:space="preserve">
+    <value>Dynamic Boost</value>
+  </data>
+  <data name="GPUChanging" xml:space="preserve">
+    <value>Przełączanie</value>
+  </data>
+  <data name="GPUCoreClockOffset" xml:space="preserve">
+    <value>Przesunięcie zegara rdzenia</value>
+  </data>
+  <data name="GPUMemoryClockOffset" xml:space="preserve">
+    <value>Przesunięcie zegara pamięci</value>
+  </data>
+  <data name="GPUMode" xml:space="preserve">
+    <value>Tryb GPU</value>
+  </data>
+  <data name="GPUModeEco" xml:space="preserve">
+    <value>tylko iGPU</value>
+  </data>
+  <data name="GPUModeStandard" xml:space="preserve">
+    <value>iGPU + dGPU</value>
+  </data>
+  <data name="GPUModeUltimate" xml:space="preserve">
+    <value>tylko dGPU</value>
+  </data>
+  <data name="GPUSettings" xml:space="preserve">
+    <value>Ustawienia GPU</value>
+  </data>
+  <data name="GPUTempTarget" xml:space="preserve">
+    <value>Temperatura docelowa</value>
+  </data>
+  <data name="KeyBindings" xml:space="preserve">
+    <value>Ustawienia klawiszy skrótów</value>
+  </data>
+  <data name="Keyboard" xml:space="preserve">
+    <value>Klawiatura</value>
+  </data>
+  <data name="KeyboardAuto" xml:space="preserve">
+    <value>Automatycznie zmniejsz jasność w czasie pracy na baterii</value>
+  </data>
+  <data name="LaptopBacklight" xml:space="preserve">
+    <value>Podświetlenie</value>
+  </data>
+  <data name="LaptopKeyboard" xml:space="preserve">
+    <value>Klawiatura laptopa</value>
+  </data>
+  <data name="LaptopScreen" xml:space="preserve">
+    <value>Ekran laptopa</value>
+  </data>
+  <data name="Lid" xml:space="preserve">
+    <value>Pokrywa</value>
+  </data>
+  <data name="Lightbar" xml:space="preserve">
+    <value>Lightbar</value>
+  </data>
+  <data name="Logo" xml:space="preserve">
+    <value>Logo</value>
+  </data>
+  <data name="MatrixAudio" xml:space="preserve">
+    <value>Wizualizer muzyki</value>
+  </data>
+  <data name="MatrixBanner" xml:space="preserve">
+    <value>Binarny</value>
+  </data>
+  <data name="MatrixBright" xml:space="preserve">
+    <value>Jasny</value>
+  </data>
+  <data name="MatrixClock" xml:space="preserve">
+    <value>Clock</value>
+  </data>
+  <data name="MatrixDim" xml:space="preserve">
+    <value>Ciemny</value>
+  </data>
+  <data name="MatrixLogo" xml:space="preserve">
+    <value>Logo ROG</value>
+  </data>
+  <data name="MatrixMedium" xml:space="preserve">
+    <value>Średni</value>
+  </data>
+  <data name="MatrixOff" xml:space="preserve">
+    <value>Wyłączony</value>
+  </data>
+  <data name="MatrixPicture" xml:space="preserve">
+    <value>Obraz</value>
+  </data>
+  <data name="MaxRefreshTooltip" xml:space="preserve">
+    <value>Maksymalna częstotliwość odświeżania dla mniejszych opóźnień</value>
+  </data>
+  <data name="MinRefreshTooltip" xml:space="preserve">
+    <value>Częstotliwość odświeżania 60 Hz dla oszczędzania baterii</value>
+  </data>
+  <data name="Multizone" xml:space="preserve">
+    <value>Multizone</value>
+  </data>
+  <data name="MuteMic" xml:space="preserve">
+    <value>Wyciszenie mikrofonu</value>
+  </data>
+  <data name="OpenGHelper" xml:space="preserve">
+    <value>Otwórz okno G-Helper</value>
+  </data>
+  <data name="Optimized" xml:space="preserve">
+    <value>Optymalny</value>
+  </data>
+  <data name="OptimizedGPUTooltip" xml:space="preserve">
+    <value>Przełącza na Eco w czasie pracy na baterii i na Standard po podłączeniu</value>
+  </data>
+  <data name="OptimizedUSBC" xml:space="preserve">
+    <value>W trybie Optymalnym wyłącz GPU podczas ładowania przez USB-C</value>
+  </data>
+  <data name="Other" xml:space="preserve">
+    <value>Inne</value>
+  </data>
+  <data name="Overdrive" xml:space="preserve">
+    <value>Overdrive</value>
+  </data>
+  <data name="PerformanceMode" xml:space="preserve">
+    <value>Tryb zasilania</value>
+  </data>
+  <data name="PictureGif" xml:space="preserve">
+    <value>Obraz / GIF</value>
+  </data>
+  <data name="PlayPause" xml:space="preserve">
+    <value>Odtwórz / Pauza</value>
+  </data>
+  <data name="PowerLimits" xml:space="preserve">
+    <value>Limit mocy (PPT)</value>
+  </data>
+  <data name="PPTExperimental" xml:space="preserve">
+    <value>Ustawienie limitu mocy (PPT) jest funkcją eksperymentalną. Używaj ostrożnie, na własną odpowiedzialność!</value>
+  </data>
+  <data name="PrintScreen" xml:space="preserve">
+    <value>Zrzut ekranu</value>
+  </data>
+  <data name="Quit" xml:space="preserve">
+    <value>Zamknij</value>
+  </data>
+  <data name="RestartGPU" xml:space="preserve">
+    <value>Coś korzysta z dedykowanego GPU i uniemożliwia włączenie trybu Eco. Zresetować dedykowany GPU w Menadżerze Urządzeń? * Używaj na własną odpowiedzialność</value>
+  </data>
+  <data name="RPM" xml:space="preserve">
+    <value>RPM</value>
+  </data>
+  <data name="RunOnStartup" xml:space="preserve">
+    <value>Uruchom przy starcie systemu</value>
+  </data>
+  <data name="Shutdown" xml:space="preserve">
+    <value>Zamknij</value>
+  </data>
+  <data name="Silent" xml:space="preserve">
+    <value>Cichy</value>
+  </data>
+  <data name="Sleep" xml:space="preserve">
+    <value>Uśpij</value>
+  </data>
+  <data name="StandardGPUTooltip" xml:space="preserve">
+    <value>Enables dGPU for standard use</value>
+  </data>
+  <data name="StandardMode" xml:space="preserve">
+    <value>Standard</value>
+  </data>
+  <data name="StartupError" xml:space="preserve">
+    <value>Błąd uruchamiania</value>
+  </data>
+  <data name="ToggleAura" xml:space="preserve">
+    <value>Przełącz Aura</value>
+  </data>
+  <data name="ToggleMiniled" xml:space="preserve">
+    <value>Przełąć MiniLED (jeżeli wspierane)</value>
+  </data>
+  <data name="ToggleScreen" xml:space="preserve">
+    <value>Przełącz ekran</value>
+  </data>
+  <data name="Turbo" xml:space="preserve">
+    <value>Turbo</value>
+  </data>
+  <data name="TurnedOff" xml:space="preserve">
+    <value>Wyłączony</value>
+  </data>
+  <data name="TurnOffOnBattery" xml:space="preserve">
+    <value>Wyłączony na baterii</value>
+  </data>
+  <data name="UltimateGPUTooltip" xml:space="preserve">
+    <value>Podłącza ekran laptopa bezpośrednio do dedykowanego GPU</value>
+  </data>
+  <data name="UltimateMode" xml:space="preserve">
+    <value>Ultimate</value>
+  </data>
+  <data name="VersionLabel" xml:space="preserve">
+    <value>Wersja</value>
+  </data>
+  <data name="VolumeDown" xml:space="preserve">
+    <value>Zmniejsz głośność</value>
+  </data>
+  <data name="VolumeMute" xml:space="preserve">
+    <value>Wyciszenie</value>
+  </data>
+  <data name="VolumeUp" xml:space="preserve">
+    <value>Zwiększ głośność</value>
+  </data>
+  <data name="WindowTop" xml:space="preserve">
+    <value>Zachowaj okno aplikacji zawsze na wierzchu</value>
+  </data>
+</root>
