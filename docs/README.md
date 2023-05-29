@@ -38,7 +38,7 @@ _If you post about the app - please include a link. Thanks._
 10. NVidia GPU overclocking
 11. XG Mobile Control
 
-![Screenshot 2023-05-29 191650](https://github.com/seerge/g-helper/assets/5920850/27719d96-e9ca-4164-ac4a-23b5966fc0ec)
+![Screenshot 2023-04-13 190951](https://user-images.githubusercontent.com/5920850/231859391-c4963af4-491c-4523-95d4-0bdcfd7cfd6f.png)
 
 ### :gear: Automatic switching when on battery or plugged in
 - Performance modes (app remembers last mode used on battery or when plugged)
@@ -47,8 +47,6 @@ _If you post about the app - please include a link. Thanks._
 - Keyboard backlight can be turned off on battery
 
 To keep auto switching and hotkeys working the app needs to stay running in the tray. It doesn't consume any resources. 
-
-![Screenshot 2023-05-07 182519](https://user-images.githubusercontent.com/5920850/236697890-26938ac4-8840-4fed-a7b1-9a7b839fb865.png)
 
 ### :rocket: Performance Modes
 
@@ -67,7 +65,7 @@ _PPTs are shown for G14 2022, for other models PPTs will be different as they ar
 3. Ultimate mode: iGPU and dGPU enabled, but dGPU drives built in display (supported only on G14 2022 model)
 4. Optimized: disables dGPU on battery (Eco) and enables when plugged (Standard)
 
-![Screenshot 2023-04-13 190951](https://user-images.githubusercontent.com/5920850/231859391-c4963af4-491c-4523-95d4-0bdcfd7cfd6f.png)
+![Screenshot 2023-05-07 182519](https://user-images.githubusercontent.com/5920850/236697890-26938ac4-8840-4fed-a7b1-9a7b839fb865.png)
 
 ## :question: FAQ
 
@@ -154,6 +152,7 @@ It's a lightweight Armoury Crate alternative for Asus laptops. A small utility t
 - Also, it's not recommended to have "ASUS Smart Display Control" app running, as it will try to change refresh rates and fight with g-helper for the same function. You can safely uninstall it.
 
 - It is recommended to run app with windows default "balanced" power plan
+![Screenshot 2023-05-29 191650](https://github.com/seerge/g-helper/assets/5920850/27719d96-e9ca-4164-ac4a-23b5966fc0ec)
 
 -------------------------------
 
