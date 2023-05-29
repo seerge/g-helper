@@ -163,16 +163,16 @@
     <value>Pętla kolorów</value>
   </data>
   <data name="AuraFast" xml:space="preserve">
-    <value>Szybki</value>
+    <value>Szybka</value>
   </data>
   <data name="AuraNormal" xml:space="preserve">
-    <value>Normalny</value>
+    <value>Normalna</value>
   </data>
   <data name="AuraRainbow" xml:space="preserve">
     <value>Tęcza</value>
   </data>
   <data name="AuraSlow" xml:space="preserve">
-    <value>Powolny</value>
+    <value>Powolna</value>
   </data>
   <data name="AuraStatic" xml:space="preserve">
     <value>Statyczny</value>
@@ -181,7 +181,7 @@
     <value>Stroboskop</value>
   </data>
   <data name="AutoMode" xml:space="preserve">
-    <value>Automatyczny</value>
+    <value>Auto</value>
   </data>
   <data name="AutoRefreshTooltip" xml:space="preserve">
     <value>Automatycznie ustaw odświeżanie 60 Hz w czasie pracy na baterii</value>
@@ -193,10 +193,10 @@
     <value>Wyłączenie podświetlenia na baterii</value>
   </data>
   <data name="BacklightTimeoutPlugged" xml:space="preserve">
-    <value>Wyłączenie podświetlenia po podłączeniu (0 - zawsze)</value>
+    <value>Wyłączenie podświetlenia po podłączeniu (0 - nigdy)</value>
   </data>
   <data name="Balanced" xml:space="preserve">
-    <value>Zbalansowany</value>
+    <value>Balans</value>
   </data>
   <data name="BatteryChargeLimit" xml:space="preserve">
     <value>Limit ładowania baterii</value>
@@ -211,7 +211,7 @@
     <value>Kolor</value>
   </data>
   <data name="CPUBoost" xml:space="preserve">
-    <value>Tryb turbo CPU</value>
+    <value>CPU Boost</value>
   </data>
   <data name="Custom" xml:space="preserve">
     <value>Niestandardowy</value>
@@ -433,7 +433,7 @@
     <value>Przełącz Aura</value>
   </data>
   <data name="ToggleMiniled" xml:space="preserve">
-    <value>Przełąć MiniLED (jeżeli wspierane)</value>
+    <value>Przełącz MiniLED</value>
   </data>
   <data name="ToggleScreen" xml:space="preserve">
     <value>Przełącz ekran</value>
