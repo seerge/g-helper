@@ -1,4 +1,5 @@
-﻿using NvAPIWrapper.GPU;
+﻿using NvAPIWrapper;
+using NvAPIWrapper.GPU;
 using NvAPIWrapper.Native;
 using NvAPIWrapper.Native.Delegates;
 using NvAPIWrapper.Native.GPU;
@@ -35,8 +36,7 @@ public class NvidiaGpuControl : IGpuControl
 
     public int? GetCurrentTemperature()
     {
-        if (!IsValid)
-            return null;
+        if (!IsValid) return null;
 
         PhysicalGPU internalGpu = _internalGpu!;
         IThermalSensor? gpuSensor =
@@ -48,6 +48,38 @@ public class NvidiaGpuControl : IGpuControl
 
     public void Dispose()
     {
+    }
+
+    public void KillGPUApps()
+    {
+
+        if (!IsValid) return;
+        PhysicalGPU internalGpu = _internalGpu!;
+
+        try
+        {
+            Process[]  processes = internalGpu.GetActiveApplications();
+            foreach (Process process in processes)
+            {
+                try
+                {
+                    process?.Kill();
+                    Logger.WriteLine("Stopped: " + process.ProcessName);
+                }
+                catch (Exception ex)
+                {
+                    Logger.WriteLine(ex.Message);
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Logger.WriteLine(ex.Message);
+        }
+
+
+
+        //NVIDIA.RestartDisplayDriver();
     }
 
 

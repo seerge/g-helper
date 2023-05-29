@@ -99,6 +99,8 @@ namespace GHelper
             labelBacklightLid.Text = Properties.Strings.Lid;
             labelBacklightLogo.Text = Properties.Strings.Logo;
 
+            checkGpuApps.Text = Properties.Strings.KillGpuApps;
+
             Text = Properties.Strings.ExtraSettings;
 
             InitTheme();
@@ -217,6 +219,14 @@ namespace GHelper
             numericBacklightTime.ValueChanged += NumericBacklightTime_ValueChanged;
             numericBacklightPluggedTime.ValueChanged += NumericBacklightTime_ValueChanged;
 
+            checkGpuApps.Checked = AppConfig.isConfig("kill_gpu_apps");
+            checkGpuApps.CheckedChanged += CheckGpuApps_CheckedChanged;
+
+        }
+
+        private void CheckGpuApps_CheckedChanged(object? sender, EventArgs e)
+        {
+            AppConfig.setConfig("kill_gpu_apps", (checkGpuApps.Checked ? 1 : 0));
         }
 
         private void NumericBacklightTime_ValueChanged(object? sender, EventArgs e)

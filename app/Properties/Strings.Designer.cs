@@ -628,6 +628,15 @@ namespace GHelper.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Stop all apps using GPU when switching to Eco.
+        /// </summary>
+        internal static string KillGpuApps {
+            get {
+                return ResourceManager.GetString("KillGpuApps", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Laptop Backlight.
         /// </summary>
         internal static string LaptopBacklight {

@@ -6,6 +6,7 @@ using System.Net;
 using System.Reflection;
 using System.Text.Json;
 using System.Timers;
+using System.Windows.Forms;
 using Tools;
 
 namespace GHelper
@@ -1478,9 +1479,15 @@ namespace GHelper
         protected static void KillGPUApps()
         {
             string[] tokill = { "EADesktop", "RadeonSoftware", "epicgameslauncher" };
+            
             foreach (string kill in tokill)
                 foreach (var process in Process.GetProcessesByName(kill)) process.Kill();
 
+            if (AppConfig.isConfig("kill_gpu_apps") && HardwareControl.GpuControl is not null && HardwareControl.GpuControl.IsNvidia)
+            {
+                NvidiaGpuControl nvControl = (NvidiaGpuControl)HardwareControl.GpuControl;
+                nvControl.KillGPUApps();
+            }
         }
 
         public void SetGPUEco(int eco, bool hardWay = false)

@@ -51,6 +51,8 @@ namespace GHelper
             pictureHelp = new PictureBox();
             groupLight = new GroupBox();
             panelBacklightExtra = new Panel();
+            numericBacklightPluggedTime = new NumericUpDown();
+            labelBacklightTimeoutPlugged = new Label();
             numericBacklightTime = new NumericUpDown();
             labelBacklightTimeout = new Label();
             labelBrightness = new Label();
@@ -81,24 +83,23 @@ namespace GHelper
             checkSleepLid = new CheckBox();
             checkShutdownLid = new CheckBox();
             groupOther = new GroupBox();
+            checkGpuApps = new CheckBox();
             checkAutoApplyWindowsPowerMode = new CheckBox();
             checkKeyboardAuto = new CheckBox();
             checkUSBC = new CheckBox();
             checkNoOverdrive = new CheckBox();
             checkTopmost = new CheckBox();
-            numericBacklightPluggedTime = new NumericUpDown();
-            labelBacklightTimeoutPlugged = new Label();
             groupBindings.SuspendLayout();
             tableKeys.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureHelp).BeginInit();
             groupLight.SuspendLayout();
             panelBacklightExtra.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numericBacklightPluggedTime).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numericBacklightTime).BeginInit();
             ((System.ComponentModel.ISupportInitialize)trackBrightness).BeginInit();
             panelXMG.SuspendLayout();
             tableBacklight.SuspendLayout();
             groupOther.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)numericBacklightPluggedTime).BeginInit();
             SuspendLayout();
             // 
             // groupBindings
@@ -325,6 +326,22 @@ namespace GHelper
             panelBacklightExtra.Name = "panelBacklightExtra";
             panelBacklightExtra.Size = new Size(948, 241);
             panelBacklightExtra.TabIndex = 43;
+            // 
+            // numericBacklightPluggedTime
+            // 
+            numericBacklightPluggedTime.Location = new Point(655, 181);
+            numericBacklightPluggedTime.Maximum = new decimal(new int[] { 3600, 0, 0, 0 });
+            numericBacklightPluggedTime.Name = "numericBacklightPluggedTime";
+            numericBacklightPluggedTime.Size = new Size(240, 39);
+            numericBacklightPluggedTime.TabIndex = 49;
+            // 
+            // labelBacklightTimeoutPlugged
+            // 
+            labelBacklightTimeoutPlugged.Location = new Point(13, 183);
+            labelBacklightTimeoutPlugged.Name = "labelBacklightTimeoutPlugged";
+            labelBacklightTimeoutPlugged.Size = new Size(636, 45);
+            labelBacklightTimeoutPlugged.TabIndex = 48;
+            labelBacklightTimeoutPlugged.Text = "Seconds to turn off backlight when plugged";
             // 
             // numericBacklightTime
             // 
@@ -667,6 +684,7 @@ namespace GHelper
             // 
             // groupOther
             // 
+            groupOther.Controls.Add(checkGpuApps);
             groupOther.Controls.Add(checkAutoApplyWindowsPowerMode);
             groupOther.Controls.Add(checkKeyboardAuto);
             groupOther.Controls.Add(checkUSBC);
@@ -675,15 +693,25 @@ namespace GHelper
             groupOther.Dock = DockStyle.Top;
             groupOther.Location = new Point(10, 897);
             groupOther.Name = "groupOther";
-            groupOther.Size = new Size(954, 276);
+            groupOther.Size = new Size(954, 310);
             groupOther.TabIndex = 2;
             groupOther.TabStop = false;
             groupOther.Text = "Other";
             // 
+            // checkGpuApps
+            // 
+            checkGpuApps.AutoSize = true;
+            checkGpuApps.Location = new Point(25, 220);
+            checkGpuApps.Name = "checkGpuApps";
+            checkGpuApps.Size = new Size(544, 36);
+            checkGpuApps.TabIndex = 48;
+            checkGpuApps.Text = "Stop all apps using GPU when switching to Eco";
+            checkGpuApps.UseVisualStyleBackColor = true;
+            // 
             // checkAutoApplyWindowsPowerMode
             // 
             checkAutoApplyWindowsPowerMode.AutoSize = true;
-            checkAutoApplyWindowsPowerMode.Location = new Point(25, 220);
+            checkAutoApplyWindowsPowerMode.Location = new Point(25, 268);
             checkAutoApplyWindowsPowerMode.Name = "checkAutoApplyWindowsPowerMode";
             checkAutoApplyWindowsPowerMode.Size = new Size(416, 36);
             checkAutoApplyWindowsPowerMode.TabIndex = 47;
@@ -731,29 +759,13 @@ namespace GHelper
             checkTopmost.Text = Strings.WindowTop;
             checkTopmost.UseVisualStyleBackColor = true;
             // 
-            // numericBacklightPluggedTime
-            // 
-            numericBacklightPluggedTime.Location = new Point(655, 181);
-            numericBacklightPluggedTime.Maximum = new decimal(new int[] { 3600, 0, 0, 0 });
-            numericBacklightPluggedTime.Name = "numericBacklightPluggedTime";
-            numericBacklightPluggedTime.Size = new Size(240, 39);
-            numericBacklightPluggedTime.TabIndex = 49;
-            // 
-            // labelBacklightTimeoutPlugged
-            // 
-            labelBacklightTimeoutPlugged.Location = new Point(13, 183);
-            labelBacklightTimeoutPlugged.Name = "labelBacklightTimeoutPlugged";
-            labelBacklightTimeoutPlugged.Size = new Size(636, 45);
-            labelBacklightTimeoutPlugged.TabIndex = 48;
-            labelBacklightTimeoutPlugged.Text = "Seconds to turn off backlight when plugged";
-            // 
             // Extra
             // 
             AutoScaleDimensions = new SizeF(13F, 32F);
             AutoScaleMode = AutoScaleMode.Font;
             AutoSize = true;
             AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            ClientSize = new Size(974, 1131);
+            ClientSize = new Size(974, 1220);
             Controls.Add(groupOther);
             Controls.Add(groupLight);
             Controls.Add(groupBindings);
@@ -775,6 +787,7 @@ namespace GHelper
             groupLight.PerformLayout();
             panelBacklightExtra.ResumeLayout(false);
             panelBacklightExtra.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)numericBacklightPluggedTime).EndInit();
             ((System.ComponentModel.ISupportInitialize)numericBacklightTime).EndInit();
             ((System.ComponentModel.ISupportInitialize)trackBrightness).EndInit();
             panelXMG.ResumeLayout(false);
@@ -782,7 +795,6 @@ namespace GHelper
             tableBacklight.ResumeLayout(false);
             groupOther.ResumeLayout(false);
             groupOther.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)numericBacklightPluggedTime).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -846,5 +858,6 @@ namespace GHelper
         private TextBox textM1;
         private NumericUpDown numericBacklightPluggedTime;
         private Label labelBacklightTimeoutPlugged;
+        private CheckBox checkGpuApps;
     }
 }

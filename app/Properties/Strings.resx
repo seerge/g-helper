@@ -306,6 +306,9 @@
   <data name="KeyboardAuto" xml:space="preserve">
     <value>Lower backlight brightness on battery and back when plugged</value>
   </data>
+  <data name="KillGpuApps" xml:space="preserve">
+    <value>Stop all apps using GPU when switching to Eco</value>
+  </data>
   <data name="LaptopBacklight" xml:space="preserve">
     <value>Laptop Backlight</value>
   </data>
