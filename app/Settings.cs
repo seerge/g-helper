@@ -6,7 +6,6 @@ using System.Net;
 using System.Reflection;
 using System.Text.Json;
 using System.Timers;
-using System.Windows.Forms;
 using Tools;
 
 namespace GHelper
@@ -205,7 +204,8 @@ namespace GHelper
             try
             {
                 base.WndProc(ref m);
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 Debug.WriteLine(ex.ToString());
             }
@@ -1243,7 +1243,7 @@ namespace GHelper
 
             int backlight = AppConfig.getConfig("keyboard_brightness");
 
-            if (AppConfig.isConfig("keyboard_auto") && SystemInformation.PowerStatus.PowerLineStatus != PowerLineStatus.Online) 
+            if (AppConfig.isConfig("keyboard_auto") && SystemInformation.PowerStatus.PowerLineStatus != PowerLineStatus.Online)
                 AsusUSB.ApplyBrightness(0);
             else if (backlight >= 0)
                 AsusUSB.ApplyBrightness(backlight);
@@ -1416,7 +1416,7 @@ namespace GHelper
                 if (eco < 0)
                 {
                     tableGPU.Visible = false;
-                    if (Program.acpi.DeviceGet(AsusACPI.GPU_Fan) < 0 ) panelGPU.Visible = false;
+                    if (Program.acpi.DeviceGet(AsusACPI.GPU_Fan) < 0) panelGPU.Visible = false;
                 }
 
             }
@@ -1479,7 +1479,7 @@ namespace GHelper
         protected static void KillGPUApps()
         {
             string[] tokill = { "EADesktop", "RadeonSoftware", "epicgameslauncher" };
-            
+
             foreach (string kill in tokill)
                 foreach (var process in Process.GetProcessesByName(kill)) process.Kill();
 
