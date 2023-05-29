@@ -83,9 +83,14 @@ namespace GHelper
             trackCPU.Maximum = AsusACPI.MaxCPU;
             trackCPU.Minimum = AsusACPI.MinCPU;
 
+            trackAPU.Maximum = AsusACPI.MaxCPU;
+            trackAPU.Minimum = AsusACPI.MinCPU;
+
+            trackAPU.Scroll += TrackPower_Scroll;
             trackCPU.Scroll += TrackPower_Scroll;
             trackTotal.Scroll += TrackPower_Scroll;
 
+            trackAPU.MouseUp += TrackPower_MouseUp;
             trackCPU.MouseUp += TrackPower_MouseUp;
             trackTotal.MouseUp += TrackPower_MouseUp;
 
@@ -397,31 +402,37 @@ namespace GHelper
         public void InitPower(bool changed = false)
         {
 
-            bool cpuBmode = (Program.acpi.DeviceGet(AsusACPI.PPT_CPUB0) >= 0); // 2022 model +
             bool cpuAmode = (Program.acpi.DeviceGet(AsusACPI.PPT_TotalA0) >= 0); // 2021 model +
+            bool cpuBmode = (Program.acpi.DeviceGet(AsusACPI.PPT_CPUB0) >= 0); // 2022 model +
+            bool apuMode = (Program.acpi.DeviceGet(AsusACPI.PPT_APUC1) >= 0);
 
             powerVisible = panelPower.Visible = cpuAmode;
             panelCPU.Visible = cpuBmode;
+            panelAPU.Visible = apuMode;
 
             // Yes, that's stupid, but Total slider on 2021 model actually adjusts CPU PPT
             if (!cpuBmode)
             {
-                labelPlatform.Text = "CPU PPT";
+                labelLeftPlatform.Text = "CPU";
             }
 
             int limit_total;
             int limit_cpu;
+            int limit_apu;
+
             bool apply = AppConfig.getConfigPerf("auto_apply_power") == 1;
 
             if (changed)
             {
                 limit_total = trackTotal.Value;
                 limit_cpu = trackCPU.Value;
+                limit_apu = trackAPU.Value;
             }
             else
             {
                 limit_total = AppConfig.getConfigPerf("limit_total");
                 limit_cpu = AppConfig.getConfigPerf("limit_cpu");
+                limit_apu = AppConfig.getConfigPerf("limit_apu");
             }
 
             if (limit_total < 0) limit_total = AsusACPI.DefaultTotal;
@@ -433,15 +444,25 @@ namespace GHelper
             if (limit_cpu < AsusACPI.MinCPU) limit_cpu = AsusACPI.MinCPU;
             if (limit_cpu > limit_total) limit_cpu = limit_total;
 
+            if (limit_apu < 0) limit_apu = AsusACPI.DefaultCPU;
+            if (limit_apu > AsusACPI.MaxCPU) limit_apu = AsusACPI.MaxCPU;
+            if (limit_apu < AsusACPI.MinCPU) limit_apu = AsusACPI.MinCPU;
+            if (limit_apu > limit_total) limit_apu = limit_total;
+
+
             trackTotal.Value = limit_total;
             trackCPU.Value = limit_cpu;
+            trackAPU.Value = limit_apu;
+
             checkApplyPower.Checked = apply;
 
             labelTotal.Text = trackTotal.Value.ToString() + "W";
             labelCPU.Text = trackCPU.Value.ToString() + "W";
+            labelAPU.Text = trackAPU.Value.ToString() + "W";
 
             AppConfig.setConfigPerf("limit_total", limit_total);
             AppConfig.setConfigPerf("limit_cpu", limit_cpu);
+            AppConfig.setConfigPerf("limit_apu", limit_apu);
 
 
         }

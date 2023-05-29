@@ -983,12 +983,16 @@ namespace GHelper
 
             int limit_total = AppConfig.getConfigPerf("limit_total");
             int limit_cpu = AppConfig.getConfigPerf("limit_cpu");
+            int limit_apu = AppConfig.getConfigPerf("limit_apu");
 
             if (limit_total > AsusACPI.MaxTotal) return;
             if (limit_total < AsusACPI.MinTotal) return;
 
             if (limit_cpu > AsusACPI.MaxCPU) return;
             if (limit_cpu < AsusACPI.MinCPU) return;
+
+            if (limit_apu > AsusACPI.MaxCPU) return;
+            if (limit_apu < AsusACPI.MinCPU) return;
 
             if (Program.acpi.DeviceGet(AsusACPI.PPT_TotalA0) >= 0)
             {
@@ -1001,6 +1005,11 @@ namespace GHelper
             {
                 Program.acpi.DeviceSet(AsusACPI.PPT_CPUB0, limit_cpu, "PowerLimit B0");
                 customPower = limit_cpu;
+            }
+
+            if (Program.acpi.DeviceGet(AsusACPI.PPT_APUC1) >= 0)
+            {
+                Program.acpi.DeviceSet(AsusACPI.PPT_APUC1, limit_apu, "PowerLimit C1");
             }
 
             Program.settingsForm.BeginInvoke(SetPerformanceLabel);
