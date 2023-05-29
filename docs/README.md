@@ -1,5 +1,4 @@
 # G-Helper (GHelper)
-
 [![Github all releases](https://img.shields.io/github/downloads/seerge/g-helper/total.svg)](https://GitHub.com/seerge/g-helper/releases/) [![GitHub release](https://img.shields.io/github/release/seerge/g-helper.svg)](https://GitHub.com/seerge/g-helper/releases/) [![GitHub stars](https://img.shields.io/github/stars/seerge/g-helper.svg?style=social&label=Star)](https://GitHub.com/seerge/g-helper/stargazers/)
 
 Language: English | [中文](https://github.com/seerge/g-helper/blob/main/docs/README.zh-CN.md)
@@ -7,7 +6,6 @@ Language: English | [中文](https://github.com/seerge/g-helper/blob/main/docs/R
 ## Control tool for Asus laptops
 
 Lightweight Armoury Crate alternative for Asus lapopts. A small utility that allows you to do almost everything you could do with Armoury Crate but without extra bloat and unnecessary services. Works on all popular models, such as ROG Zephyrus G14, G15, G16, M16, Flow X13, Flow X16, TUF, Strix, Scar, ProArt and many more! Feel free to try :)
-
 
 ## :gift: Main advantages 
 
@@ -39,6 +37,8 @@ _If you post about the app - please include a link. Thanks._
 9. Battery charge limit to preserve battery health
 10. NVidia GPU overclocking
 11. XG Mobile Control
+
+![Screenshot 2023-05-29 191650](https://github.com/seerge/g-helper/assets/5920850/27719d96-e9ca-4164-ac4a-23b5966fc0ec)
 
 ### :gear: Automatic switching when on battery or plugged in
 - Performance modes (app remembers last mode used on battery or when plugged)
@@ -154,8 +154,6 @@ It's a lightweight Armoury Crate alternative for Asus laptops. A small utility t
 - Also, it's not recommended to have "ASUS Smart Display Control" app running, as it will try to change refresh rates and fight with g-helper for the same function. You can safely uninstall it.
 
 - It is recommended to run app with windows default "balanced" power plan
-![Screenshot 2023-05-29 191650](https://github.com/seerge/g-helper/assets/5920850/27719d96-e9ca-4164-ac4a-23b5966fc0ec)
-
 
 -------------------------------
 
