@@ -288,6 +288,9 @@
   <data name="KeyboardAuto" xml:space="preserve">
     <value>Вимкнути підсвітку на батареї та увімкнути на зарядці</value>
   </data>
+  <data name="KillGpuApps" xml:space="preserve">
+    <value>Закривати додатки, що використовують GPU, під час переходу в режим Eco</value>
+  </data>
   <data name="LaptopBacklight" xml:space="preserve">
     <value>Підсвітка</value>
   </data>
@@ -296,6 +299,9 @@
   </data>
   <data name="LaptopScreen" xml:space="preserve">
     <value>Дисплей</value>
+  </data>
+  <data name="MatrixAudio" xml:space="preserve">
+    <value>Аудіо візуалізатор</value>
   </data>
   <data name="MatrixBanner" xml:space="preserve">
     <value>Бінарний банер</value>
@@ -400,7 +406,7 @@
     <value>Аура</value>
   </data>
   <data name="ToggleMiniled" xml:space="preserve">
-    <value>Міні-лед (якщо підтримується)</value>
+    <value>Міні-лед (якщо є)</value>
   </data>
   <data name="ToggleScreen" xml:space="preserve">
     <value>Вимкнути екран</value>

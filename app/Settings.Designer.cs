@@ -901,13 +901,12 @@ namespace GHelper
             tableLayoutKeyboard.AutoSize = true;
             tableLayoutKeyboard.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             tableLayoutKeyboard.ColumnCount = 3;
-            tableLayoutKeyboard.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
-            tableLayoutKeyboard.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
-            tableLayoutKeyboard.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
-            tableLayoutKeyboard.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
+            tableLayoutKeyboard.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33F));
+            tableLayoutKeyboard.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33F));
+            tableLayoutKeyboard.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33F));
+            tableLayoutKeyboard.Controls.Add(buttonKeyboard, 0, 0);
+            tableLayoutKeyboard.Controls.Add(panelColor, 0, 0);
             tableLayoutKeyboard.Controls.Add(comboKeyboard, 0, 0);
-            tableLayoutKeyboard.Controls.Add(panelColor, 1, 0);
-            tableLayoutKeyboard.Controls.Add(buttonKeyboard, 2, 0);
             tableLayoutKeyboard.Location = new Point(16, 50);
             tableLayoutKeyboard.Margin = new Padding(8);
             tableLayoutKeyboard.Name = "tableLayoutKeyboard";

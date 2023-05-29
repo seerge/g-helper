@@ -688,6 +688,17 @@ namespace GHelper
             pictureColor.BackColor = AsusUSB.Color1;
             pictureColor2.BackColor = AsusUSB.Color2;
             pictureColor2.Visible = AsusUSB.HasSecondColor();
+
+            if (AppConfig.ContainsModel("GA401"))
+            {
+                panelColor.Visible = false;
+            }
+
+            if (AppConfig.ContainsModel("GA401I"))
+            {
+                comboKeyboard.Visible = false;
+            }
+
         }
 
         public void InitMatrix()
@@ -1065,16 +1076,21 @@ namespace GHelper
 
             if (AppConfig.getConfigPerf("auto_apply") == 1 || force)
             {
+
+                bool xgmFan = false;
                 if (AppConfig.isConfig("xgm_fan") && Program.acpi.IsXGConnected())
                 {
                     AsusUSB.SetXGMFan(AppConfig.getFanConfig(AsusFan.XGM));
-                } 
+                    xgmFan = true;
+                }
 
                 int cpuResult = Program.acpi.SetFanCurve(AsusFan.CPU, AppConfig.getFanConfig(AsusFan.CPU));
                 int gpuResult = Program.acpi.SetFanCurve(AsusFan.GPU, AppConfig.getFanConfig(AsusFan.GPU));
 
+
                 if (AppConfig.isConfig("mid_fan"))
                     Program.acpi.SetFanCurve(AsusFan.Mid, AppConfig.getFanConfig(AsusFan.Mid));
+
 
                 // something went wrong, resetting to default profile
                 if (cpuResult != 1 || gpuResult != 1)
@@ -1091,7 +1107,7 @@ namespace GHelper
                 }
 
                 // fix for misbehaving bios on intell based TUF 2022
-                if ((AppConfig.ContainsModel("FX507") || AppConfig.ContainsModel("FX517")) && AppConfig.getConfigPerf("auto_apply_power") != 1)
+                if ((AppConfig.ContainsModel("FX507") || AppConfig.ContainsModel("FX517") || xgmFan) && AppConfig.getConfigPerf("auto_apply_power") != 1)
                 {
                     Task.Run(async () =>
                     {
