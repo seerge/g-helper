@@ -411,18 +411,30 @@ namespace GHelper
         public void InitPower(bool changed = false)
         {
 
-            bool cpuAmode = (Program.acpi.DeviceGet(AsusACPI.PPT_TotalA0) >= 0); // 2021 model +
-            bool cpuBmode = (Program.acpi.DeviceGet(AsusACPI.PPT_CPUB0) >= 0); // 2022 model +
+            bool cpuAmode = (Program.acpi.DeviceGet(AsusACPI.PPT_TotalA0) >= 0); 
+            bool cpuBmode = (Program.acpi.DeviceGet(AsusACPI.PPT_CPUB1) >= 0); 
             bool apuMode = (Program.acpi.DeviceGet(AsusACPI.PPT_APUC1) >= 0);
+            
+            bool gpuMode = (Program.acpi.DeviceGet(AsusACPI.PPT_GPUC0) >= 0);
+
+            bool allAMD = cpuBmode && !gpuMode;
 
             powerVisible = panelPower.Visible = cpuAmode;
-            panelCPU.Visible = cpuBmode;
+            panelCPU.Visible = allAMD;
             panelAPU.Visible = apuMode;
 
+
             // Yes, that's stupid, but Total slider on 2021 model actually adjusts CPU PPT
-            if (!cpuBmode)
+            if (allAMD)
             {
-                labelLeftPlatform.Text = "CPU";
+                labelLeftPlatform.Text = "Platform Slow (CPU + GPU)";
+                labelLeftAPU.Text = "Platform Fast (CPU + GPU)";
+                labelLeftCPU.Text = "CPU";
+            }
+            else
+            {
+                labelLeftPlatform.Text = "CPU Slow";
+                labelLeftAPU.Text = "CPU Fast";
             }
 
             int limit_total;

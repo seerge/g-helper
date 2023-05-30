@@ -53,7 +53,7 @@ namespace GHelper
 
 
             buttonScreenAuto.Text = Properties.Strings.AutoMode;
-            buttonMiniled.Text = Properties.Strings.ToggleMiniled;
+            buttonMiniled.Text = Properties.Strings.Multizone;
 
             buttonKeyboardColor.Text = Properties.Strings.Color;
             buttonKeyboard.Text = Properties.Strings.Extra;
@@ -1538,7 +1538,17 @@ namespace GHelper
             string[] tokill = { "EADesktop", "RadeonSoftware", "epicgameslauncher", "nvdisplay.container", "nvcontainer", "nvcplui" };
 
             foreach (string kill in tokill)
-                foreach (var process in Process.GetProcessesByName(kill)) process.Kill();
+                foreach (var process in Process.GetProcessesByName(kill))
+                {
+                    try
+                    {
+                        process.Kill();
+                        Logger.WriteLine($"Stopped: {process.ProcessName}");
+                    } catch (Exception ex)
+                    {
+                        Logger.WriteLine($"Failed to stop: {process.ProcessName} {ex.Message}");
+                    }
+                }
 
             if (AppConfig.isConfig("kill_gpu_apps") && HardwareControl.GpuControl is not null && HardwareControl.GpuControl.IsNvidia)
             {
