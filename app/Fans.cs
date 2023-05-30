@@ -429,8 +429,8 @@ namespace GHelper
             }
             else
             {
-                labelLeftA0.Text = "CPU Slow";
-                labelLeftC1.Text = "CPU Fast";
+                labelLeftA0.Text = "CPU Slow (SPL + sPPT)";
+                labelLeftC1.Text = "CPU Fast (fPPT)";
             }
 
             int limit_total;
