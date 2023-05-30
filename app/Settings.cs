@@ -1013,7 +1013,7 @@ namespace GHelper
 
             int limit_total = AppConfig.getConfigPerf("limit_total");
             int limit_cpu = AppConfig.getConfigPerf("limit_cpu");
-            int limit_apu = AppConfig.getConfigPerf("limit_apu");
+            int limit_fast = AppConfig.getConfigPerf("limit_fast");
 
             if (limit_total > AsusACPI.MaxTotal) return;
             if (limit_total < AsusACPI.MinTotal) return;
@@ -1021,9 +1021,10 @@ namespace GHelper
             if (limit_cpu > AsusACPI.MaxCPU) return;
             if (limit_cpu < AsusACPI.MinCPU) return;
 
-            if (limit_apu > AsusACPI.MaxTotal) return;
-            if (limit_apu < AsusACPI.MinTotal) return;
+            if (limit_fast > AsusACPI.MaxTotal) return;
+            if (limit_fast < AsusACPI.MinTotal) return;
 
+            // SPL + SPPT togeher in one slider
             if (Program.acpi.DeviceGet(AsusACPI.PPT_TotalA0) >= 0)
             {
                 Program.acpi.DeviceSet(AsusACPI.PPT_TotalA0, limit_total, "PowerLimit A0");
@@ -1031,16 +1032,17 @@ namespace GHelper
                 customPower = limit_total;
             }
 
-            if (Program.acpi.DeviceGet(AsusACPI.PPT_CPUB0) >= 0)
+            if (Program.acpi.IsAllAmdPPT()) // CPU limit all amd models
             {
                 Program.acpi.DeviceSet(AsusACPI.PPT_CPUB0, limit_cpu, "PowerLimit B0");
                 customPower = limit_cpu;
             }
-
-            if (Program.acpi.DeviceGet(AsusACPI.PPT_APUC1) >= 0)
+            else if (Program.acpi.DeviceGet(AsusACPI.PPT_APUC1) >= 0) // FPPT boost for non all-amd models
             {
-                Program.acpi.DeviceSet(AsusACPI.PPT_APUC1, limit_apu, "PowerLimit C1");
+                Program.acpi.DeviceSet(AsusACPI.PPT_APUC1, limit_fast, "PowerLimit C1");
+                customPower = limit_fast;
             }
+
 
             Program.settingsForm.BeginInvoke(SetPerformanceLabel);
 

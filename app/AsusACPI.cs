@@ -1,4 +1,5 @@
-﻿using System.Management;
+﻿using GHelper;
+using System.Management;
 using System.Runtime.InteropServices;
 
 public enum AsusFan
@@ -65,16 +66,16 @@ public class AsusACPI
     public const int Temp_CPU = 0x00120094;
     public const int Temp_GPU = 0x00120097;
 
-    public const int PPT_TotalA0 = 0x001200A0;  // Total PPT on 2022 (PPT_LIMIT_SLOW ) and CPU PPT on 2021
+    public const int PPT_TotalA0 = 0x001200A0;  // SPL (Total limit for all-AMD models)
     public const int PPT_EDCA1 = 0x001200A1;  // CPU EDC
     public const int PPT_TDCA2 = 0x001200A2;  // CPU TDC
-    public const int PPT_APUA3 = 0x001200A3;  // APU PPT ON 2021, doesn't work on 2022
+    public const int PPT_APUA3 = 0x001200A3;  // sPPT (long boost limit)
 
     public const int PPT_CPUB0 = 0x001200B0;  // CPU PPT on 2022 (PPT_LIMIT_APU)
     public const int PPT_CPUB1 = 0x001200B1;  // Total PPT on 2022 (PPT_LIMIT_SLOW)
 
     public const int PPT_GPUC0 = 0x001200C0;  // NVIDIA GPU Boost
-    public const int PPT_APUC1 = 0x001200C1;  // Actual Power Limit (PPT_LIMIT_FAST) AND Sustained Power Limit (STAPM_LIMIT)
+    public const int PPT_APUC1 = 0x001200C1;  // fPPT (fast boost limit)
     public const int PPT_GPUC2 = 0x001200C2;  // NVIDIA GPU Temp Target (75.. 87 C) 
 
     public const int TUF_KB_BRIGHTNESS = 0x00050021;
@@ -411,6 +412,11 @@ public class AsusACPI
     {
         //return true;
         return DeviceGet(GPUXGConnected) == 1;
+    }
+
+    public bool IsAllAmdPPT()
+    {
+        return DeviceGet(PPT_CPUB0) >= 0 && DeviceGet(PPT_GPUC0) < 0;
     }
 
     public void TUFKeyboardBrightness(int brightness)
