@@ -170,8 +170,8 @@ public class AsusACPI
         data[0] = BitConverter.GetBytes(eventHandle.ToInt32())[0];
         data[1] = BitConverter.GetBytes(eventHandle.ToInt32())[1];
 
-        result = Control(0x222400, data, outBuffer);
-        Logger.WriteLine("ACPI " + result + ":" + BitConverter.ToString(data) + "|" + BitConverter.ToString(outBuffer));
+        Control(0x222400, data, outBuffer);
+        Logger.WriteLine("ACPI :" + BitConverter.ToString(data) + "|" + BitConverter.ToString(outBuffer));
 
         while (true)
         {
@@ -202,10 +202,11 @@ public class AsusACPI
 
     }
 
-    public bool Control(uint dwIoControlCode, byte[] lpInBuffer, byte[] lpOutBuffer)
+    public void Control(uint dwIoControlCode, byte[] lpInBuffer, byte[] lpOutBuffer)
     {
+
         uint lpBytesReturned = 0;
-        return DeviceIoControl(
+        DeviceIoControl(
             handle,
             dwIoControlCode,
             lpInBuffer,

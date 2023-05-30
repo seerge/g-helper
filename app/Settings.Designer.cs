@@ -66,9 +66,9 @@ namespace GHelper
             tableGPU = new TableLayoutPanel();
             buttonEco = new RButton();
             buttonStandard = new RButton();
+            buttonXGM = new RButton();
             buttonOptimized = new RButton();
             buttonUltimate = new RButton();
-            buttonXGM = new RButton();
             panelScreen = new Panel();
             labelMidFan = new Label();
             labelTipScreen = new Label();
@@ -81,12 +81,12 @@ namespace GHelper
             labelSreen = new Label();
             panelKeyboard = new Panel();
             tableLayoutKeyboard = new TableLayoutPanel();
-            comboKeyboard = new RComboBox();
+            buttonKeyboard = new RButton();
             panelColor = new Panel();
             pictureColor2 = new PictureBox();
             pictureColor = new PictureBox();
             buttonKeyboardColor = new RButton();
-            buttonKeyboard = new RButton();
+            comboKeyboard = new RComboBox();
             pictureKeyboard = new PictureBox();
             labelKeyboard = new Label();
             panelMatrix.SuspendLayout();
@@ -121,7 +121,7 @@ namespace GHelper
             panelMatrix.Controls.Add(pictureMatrix);
             panelMatrix.Controls.Add(labelMatrix);
             panelMatrix.Dock = DockStyle.Top;
-            panelMatrix.Location = new Point(10, 758);
+            panelMatrix.Location = new Point(10, 795);
             panelMatrix.Margin = new Padding(8);
             panelMatrix.Name = "panelMatrix";
             panelMatrix.Padding = new Padding(0, 0, 0, 12);
@@ -158,7 +158,7 @@ namespace GHelper
             tableLayoutMatrix.Name = "tableLayoutMatrix";
             tableLayoutMatrix.RowCount = 1;
             tableLayoutMatrix.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            tableLayoutMatrix.Size = new Size(771, 60);
+            tableLayoutMatrix.Size = new Size(771, 59);
             tableLayoutMatrix.TabIndex = 43;
             // 
             // comboMatrix
@@ -202,7 +202,7 @@ namespace GHelper
             buttonMatrix.Dock = DockStyle.Top;
             buttonMatrix.FlatAppearance.BorderSize = 0;
             buttonMatrix.FlatStyle = FlatStyle.Flat;
-            buttonMatrix.Location = new Point(518, 8);
+            buttonMatrix.Location = new Point(518, 7);
             buttonMatrix.Margin = new Padding(4, 7, 4, 7);
             buttonMatrix.Name = "buttonMatrix";
             buttonMatrix.Secondary = true;
@@ -231,7 +231,7 @@ namespace GHelper
             labelMatrix.Name = "labelMatrix";
             labelMatrix.Size = new Size(170, 32);
             labelMatrix.TabIndex = 38;
-            labelMatrix.Text = Properties.Strings.AnimeMatrix;
+            labelMatrix.Text = "Anime Matrix";
             // 
             // panelBattery
             // 
@@ -244,7 +244,7 @@ namespace GHelper
             panelBattery.Controls.Add(pictureBattery);
             panelBattery.Controls.Add(labelBatteryTitle);
             panelBattery.Dock = DockStyle.Top;
-            panelBattery.Location = new Point(10, 926);
+            panelBattery.Location = new Point(10, 963);
             panelBattery.Margin = new Padding(8);
             panelBattery.Name = "panelBattery";
             panelBattery.Padding = new Padding(0, 0, 0, 12);
@@ -276,7 +276,7 @@ namespace GHelper
             // 
             // labelVersion
             // 
-            labelVersion.AutoSize = false;
+            labelVersion.Cursor = Cursors.Hand;
             labelVersion.Font = new Font("Segoe UI", 9F, FontStyle.Underline, GraphicsUnit.Point);
             labelVersion.ForeColor = SystemColors.ControlDark;
             labelVersion.Location = new Point(25, 119);
@@ -285,7 +285,6 @@ namespace GHelper
             labelVersion.Size = new Size(300, 32);
             labelVersion.TabIndex = 37;
             labelVersion.Text = "v.0";
-            labelVersion.Cursor = Cursors.Hand;
             // 
             // labelBattery
             // 
@@ -317,7 +316,7 @@ namespace GHelper
             labelBatteryTitle.Name = "labelBatteryTitle";
             labelBatteryTitle.Size = new Size(393, 36);
             labelBatteryTitle.TabIndex = 34;
-            labelBatteryTitle.Text = Properties.Strings.BatteryChargeLimit;
+            labelBatteryTitle.Text = "Battery Charge Limit";
             // 
             // panelFooter
             // 
@@ -326,7 +325,7 @@ namespace GHelper
             panelFooter.Controls.Add(buttonQuit);
             panelFooter.Controls.Add(checkStartup);
             panelFooter.Dock = DockStyle.Top;
-            panelFooter.Location = new Point(10, 1089);
+            panelFooter.Location = new Point(10, 1126);
             panelFooter.Margin = new Padding(8);
             panelFooter.Name = "panelFooter";
             panelFooter.Padding = new Padding(0, 0, 0, 10);
@@ -398,7 +397,7 @@ namespace GHelper
             labelPerf.Name = "labelPerf";
             labelPerf.Size = new Size(234, 32);
             labelPerf.TabIndex = 31;
-            labelPerf.Text = Properties.Strings.PerformanceMode;
+            labelPerf.Text = "Performance Mode";
             // 
             // labelCPUFan
             // 
@@ -572,7 +571,7 @@ namespace GHelper
             labelGPU.Name = "labelGPU";
             labelGPU.Size = new Size(136, 32);
             labelGPU.TabIndex = 18;
-            labelGPU.Text = Properties.Strings.GPUMode;
+            labelGPU.Text = "GPU Mode";
             // 
             // labelGPUFan
             // 
@@ -653,6 +652,29 @@ namespace GHelper
             buttonStandard.TextImageRelation = TextImageRelation.ImageAboveText;
             buttonStandard.UseVisualStyleBackColor = false;
             // 
+            // buttonXGM
+            // 
+            buttonXGM.Activated = false;
+            buttonXGM.BackColor = SystemColors.ControlLightLight;
+            buttonXGM.BorderColor = Color.Transparent;
+            buttonXGM.BorderRadius = 5;
+            buttonXGM.Dock = DockStyle.Top;
+            buttonXGM.FlatAppearance.BorderSize = 0;
+            buttonXGM.FlatStyle = FlatStyle.Flat;
+            buttonXGM.ForeColor = SystemColors.ControlText;
+            buttonXGM.Image = Properties.Resources.icons8_video_48;
+            buttonXGM.ImageAlign = ContentAlignment.BottomCenter;
+            buttonXGM.Location = new Point(4, 132);
+            buttonXGM.Margin = new Padding(4);
+            buttonXGM.Name = "buttonXGM";
+            buttonXGM.Secondary = false;
+            buttonXGM.Size = new Size(185, 120);
+            buttonXGM.TabIndex = 2;
+            buttonXGM.Text = "XG Mobile";
+            buttonXGM.TextImageRelation = TextImageRelation.ImageAboveText;
+            buttonXGM.UseVisualStyleBackColor = false;
+            buttonXGM.Visible = false;
+            // 
             // buttonOptimized
             // 
             buttonOptimized.Activated = false;
@@ -697,30 +719,6 @@ namespace GHelper
             buttonUltimate.TextImageRelation = TextImageRelation.ImageAboveText;
             buttonUltimate.UseVisualStyleBackColor = false;
             // 
-            // buttonXGM
-            // 
-            buttonXGM.Activated = false;
-            buttonXGM.BackColor = SystemColors.ControlLightLight;
-            buttonXGM.BorderColor = Color.Transparent;
-            buttonXGM.BorderRadius = 5;
-            buttonXGM.Dock = DockStyle.Top;
-            buttonXGM.FlatAppearance.BorderSize = 0;
-            buttonXGM.FlatStyle = FlatStyle.Flat;
-            buttonXGM.ForeColor = SystemColors.ControlText;
-            buttonXGM.Image = Properties.Resources.icons8_video_48;
-            buttonXGM.ImageAlign = ContentAlignment.BottomCenter;
-            buttonXGM.Location = new Point(390, 4);
-            buttonXGM.Margin = new Padding(4);
-            buttonXGM.Name = "buttonXGM";
-            buttonXGM.Secondary = false;
-            buttonXGM.Size = new Size(185, 120);
-            buttonXGM.TabIndex = 2;
-            buttonXGM.Text = "XG Mobile";
-            buttonXGM.TextImageRelation = TextImageRelation.ImageAboveText;
-            buttonXGM.UseVisualStyleBackColor = false;
-            buttonXGM.Visible = false;
-
-            // 
             // panelScreen
             // 
             panelScreen.AutoSize = true;
@@ -731,7 +729,7 @@ namespace GHelper
             panelScreen.Controls.Add(pictureScreen);
             panelScreen.Controls.Add(labelSreen);
             panelScreen.Dock = DockStyle.Top;
-            panelScreen.Location = new Point(10, 447);
+            panelScreen.Location = new Point(10, 485);
             panelScreen.Margin = new Padding(8);
             panelScreen.Name = "panelScreen";
             panelScreen.Padding = new Padding(0, 0, 0, 10);
@@ -878,7 +876,7 @@ namespace GHelper
             labelSreen.Name = "labelSreen";
             labelSreen.Size = new Size(176, 32);
             labelSreen.TabIndex = 21;
-            labelSreen.Text = Properties.Strings.LaptopScreen;
+            labelSreen.Text = "Laptop Screen";
             // 
             // panelKeyboard
             // 
@@ -888,11 +886,11 @@ namespace GHelper
             panelKeyboard.Controls.Add(pictureKeyboard);
             panelKeyboard.Controls.Add(labelKeyboard);
             panelKeyboard.Dock = DockStyle.Top;
-            panelKeyboard.Location = new Point(10, 628);
+            panelKeyboard.Location = new Point(10, 666);
             panelKeyboard.Margin = new Padding(8);
             panelKeyboard.Name = "panelKeyboard";
             panelKeyboard.Padding = new Padding(0, 0, 0, 12);
-            panelKeyboard.Size = new Size(810, 130);
+            panelKeyboard.Size = new Size(810, 129);
             panelKeyboard.TabIndex = 39;
             // 
             // tableLayoutKeyboard
@@ -912,25 +910,26 @@ namespace GHelper
             tableLayoutKeyboard.Name = "tableLayoutKeyboard";
             tableLayoutKeyboard.RowCount = 1;
             tableLayoutKeyboard.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            tableLayoutKeyboard.Size = new Size(771, 60);
+            tableLayoutKeyboard.Size = new Size(771, 59);
             tableLayoutKeyboard.TabIndex = 39;
             // 
-            // comboKeyboard
+            // buttonKeyboard
             // 
-            comboKeyboard.BorderColor = Color.White;
-            comboKeyboard.ButtonColor = Color.FromArgb(255, 255, 255);
-            comboKeyboard.Dock = DockStyle.Top;
-            comboKeyboard.FlatStyle = FlatStyle.Flat;
-            comboKeyboard.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            comboKeyboard.FormattingEnabled = true;
-            comboKeyboard.ItemHeight = 32;
-            comboKeyboard.Items.AddRange(new object[] { "Static", "Breathe", "Rainbow", "Strobe" });
-            comboKeyboard.Location = new Point(4, 10);
-            comboKeyboard.Margin = new Padding(4, 10, 4, 8);
-            comboKeyboard.Name = "comboKeyboard";
-            comboKeyboard.Size = new Size(249, 44);
-            comboKeyboard.TabIndex = 35;
-            comboKeyboard.TabStop = false;
+            buttonKeyboard.Activated = false;
+            buttonKeyboard.BackColor = SystemColors.ControlLight;
+            buttonKeyboard.BorderColor = Color.Transparent;
+            buttonKeyboard.BorderRadius = 2;
+            buttonKeyboard.Dock = DockStyle.Top;
+            buttonKeyboard.FlatAppearance.BorderSize = 0;
+            buttonKeyboard.FlatStyle = FlatStyle.Flat;
+            buttonKeyboard.Location = new Point(518, 7);
+            buttonKeyboard.Margin = new Padding(4, 7, 4, 7);
+            buttonKeyboard.Name = "buttonKeyboard";
+            buttonKeyboard.Secondary = true;
+            buttonKeyboard.Size = new Size(249, 45);
+            buttonKeyboard.TabIndex = 37;
+            buttonKeyboard.Text = Properties.Strings.Extra;
+            buttonKeyboard.UseVisualStyleBackColor = false;
             // 
             // panelColor
             // 
@@ -939,7 +938,7 @@ namespace GHelper
             panelColor.Controls.Add(pictureColor);
             panelColor.Controls.Add(buttonKeyboardColor);
             panelColor.Dock = DockStyle.Fill;
-            panelColor.Location = new Point(261, 8);
+            panelColor.Location = new Point(261, 7);
             panelColor.Margin = new Padding(4, 7, 4, 7);
             panelColor.Name = "panelColor";
             panelColor.Size = new Size(249, 45);
@@ -983,23 +982,22 @@ namespace GHelper
             buttonKeyboardColor.Text = Properties.Strings.Color;
             buttonKeyboardColor.UseVisualStyleBackColor = false;
             // 
-            // buttonKeyboard
+            // comboKeyboard
             // 
-            buttonKeyboard.Activated = false;
-            buttonKeyboard.BackColor = SystemColors.ControlLight;
-            buttonKeyboard.BorderColor = Color.Transparent;
-            buttonKeyboard.BorderRadius = 2;
-            buttonKeyboard.Dock = DockStyle.Top;
-            buttonKeyboard.FlatAppearance.BorderSize = 0;
-            buttonKeyboard.FlatStyle = FlatStyle.Flat;
-            buttonKeyboard.Location = new Point(518, 8);
-            buttonKeyboard.Margin = new Padding(4, 7, 4, 7);
-            buttonKeyboard.Name = "buttonKeyboard";
-            buttonKeyboard.Secondary = true;
-            buttonKeyboard.Size = new Size(249, 45);
-            buttonKeyboard.TabIndex = 37;
-            buttonKeyboard.Text = Properties.Strings.Extra;
-            buttonKeyboard.UseVisualStyleBackColor = false;
+            comboKeyboard.BorderColor = Color.White;
+            comboKeyboard.ButtonColor = Color.FromArgb(255, 255, 255);
+            comboKeyboard.Dock = DockStyle.Top;
+            comboKeyboard.FlatStyle = FlatStyle.Flat;
+            comboKeyboard.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            comboKeyboard.FormattingEnabled = true;
+            comboKeyboard.ItemHeight = 32;
+            comboKeyboard.Items.AddRange(new object[] { "Static", "Breathe", "Rainbow", "Strobe" });
+            comboKeyboard.Location = new Point(4, 10);
+            comboKeyboard.Margin = new Padding(4, 10, 4, 8);
+            comboKeyboard.Name = "comboKeyboard";
+            comboKeyboard.Size = new Size(249, 40);
+            comboKeyboard.TabIndex = 35;
+            comboKeyboard.TabStop = false;
             // 
             // pictureKeyboard
             // 
@@ -1021,7 +1019,7 @@ namespace GHelper
             labelKeyboard.Name = "labelKeyboard";
             labelKeyboard.Size = new Size(210, 32);
             labelKeyboard.TabIndex = 32;
-            labelKeyboard.Text = Properties.Strings.LaptopKeyboard;
+            labelKeyboard.Text = "Laptop Keyboard";
             // 
             // SettingsForm
             // 
@@ -1053,7 +1051,6 @@ namespace GHelper
             tableLayoutMatrix.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)pictureMatrix).EndInit();
             panelBattery.ResumeLayout(false);
-            panelBattery.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBattery).EndInit();
             panelFooter.ResumeLayout(false);
             panelFooter.PerformLayout();

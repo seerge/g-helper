@@ -124,6 +124,10 @@ namespace GHelper
                 _modes.Remove(3);
             }
 
+            if (AppConfig.ContainsModel("G513")) {
+                return _modes;
+            }
+
             if (AppConfig.ContainsModel("Strix") || AppConfig.ContainsModel("Scar"))
             {
                 return _modesStrix;

@@ -41,6 +41,36 @@ namespace GHelper
             InitializeComponent();
             InitTheme(true);
 
+            buttonSilent.Text = Properties.Strings.Silent;
+            buttonBalanced.Text = Properties.Strings.Balanced;
+            buttonTurbo.Text = Properties.Strings.Turbo;
+            buttonFans.Text = Properties.Strings.FansPower;
+
+            buttonEco.Text = Properties.Strings.EcoMode;
+            buttonUltimate.Text = Properties.Strings.UltimateMode;
+            buttonStandard.Text = Properties.Strings.StandardMode;
+            buttonOptimized.Text = Properties.Strings.Optimized;
+
+
+            buttonScreenAuto.Text = Properties.Strings.AutoMode;
+            buttonMiniled.Text = Properties.Strings.ToggleMiniled;
+
+            buttonKeyboardColor.Text = Properties.Strings.Color;
+            buttonKeyboard.Text = Properties.Strings.Extra;
+
+            labelPerf.Text = Properties.Strings.PerformanceMode;
+            labelGPU.Text = Properties.Strings.GPUMode;
+            labelSreen.Text = Properties.Strings.LaptopScreen;
+            labelKeyboard.Text = Properties.Strings.LaptopKeyboard;
+            labelMatrix.Text = Properties.Strings.AnimeMatrix;
+            labelBatteryTitle.Text = Properties.Strings.BatteryChargeLimit;
+
+            checkMatrix.Text = Properties.Strings.TurnOffOnBattery;
+            checkStartup.Text = Properties.Strings.RunOnStartup;
+
+            buttonMatrix.Text = Properties.Strings.PictureGif;
+            buttonQuit.Text = Properties.Strings.Quit;
+
             FormClosing += SettingsForm_FormClosing;
 
             buttonSilent.BorderColor = colorEco;
@@ -58,7 +88,6 @@ namespace GHelper
             buttonScreenAuto.BorderColor = SystemColors.ActiveBorder;
             buttonMiniled.BorderColor = colorTurbo;
 
-            buttonOptimized.Click += ButtonOptimized_Click;
             buttonSilent.Click += ButtonSilent_Click;
             buttonBalanced.Click += ButtonBalanced_Click;
             buttonTurbo.Click += ButtonTurbo_Click;
@@ -66,6 +95,7 @@ namespace GHelper
             buttonEco.Click += ButtonEco_Click;
             buttonStandard.Click += ButtonStandard_Click;
             buttonUltimate.Click += ButtonUltimate_Click;
+            buttonOptimized.Click += ButtonOptimized_Click;
 
             VisibleChanged += SettingsForm_VisibleChanged;
 
@@ -922,21 +952,21 @@ namespace GHelper
             HardwareControl.ReadSensors();
 
             if (HardwareControl.cpuTemp > 0)
-                cpuTemp = ": " + Math.Round((decimal)HardwareControl.cpuTemp).ToString() + "°C ";
+                cpuTemp = ": " + Math.Round((decimal)HardwareControl.cpuTemp).ToString() + "°C";
 
             if (HardwareControl.batteryDischarge > 0)
                 battery = Properties.Strings.Discharging + ": " + Math.Round((decimal)HardwareControl.batteryDischarge, 1).ToString() + "W";
 
             if (HardwareControl.gpuTemp > 0)
             {
-                gpuTemp = $": {HardwareControl.gpuTemp}°C ";
+                gpuTemp = $": {HardwareControl.gpuTemp}°C";
             }
 
 
             Program.settingsForm.BeginInvoke(delegate
             {
-                labelCPUFan.Text = "CPU" + cpuTemp + HardwareControl.cpuFan;
-                labelGPUFan.Text = "GPU" + gpuTemp + HardwareControl.gpuFan;
+                labelCPUFan.Text = "CPU" + cpuTemp + " " + HardwareControl.cpuFan;
+                labelGPUFan.Text = "GPU" + gpuTemp + " " + HardwareControl.gpuFan;
                 if (HardwareControl.midFan is not null)
                     labelMidFan.Text = "Mid" + HardwareControl.midFan;
 
@@ -1505,7 +1535,7 @@ namespace GHelper
 
         protected static void KillGPUApps()
         {
-            string[] tokill = { "EADesktop", "RadeonSoftware", "epicgameslauncher" };
+            string[] tokill = { "EADesktop", "RadeonSoftware", "epicgameslauncher", "nvdisplay.container", "nvcontainer", "nvcplui" };
 
             foreach (string kill in tokill)
                 foreach (var process in Process.GetProcessesByName(kill)) process.Kill();
@@ -1531,19 +1561,17 @@ namespace GHelper
             Task.Run(async () =>
             {
 
-                int status;
+                int status = 1;
 
                 if (eco == 1) KillGPUApps();
 
-                //if (eco == 1) status = 0; else
+                Logger.WriteLine($"Running eco command {eco}");
+
                 status = Program.acpi.SetGPUEco(eco);
 
-                if (status == 0 && eco == 1 && hardWay)
-                {
-                    RestartGPU();
-                }
+                if (status == 0 && eco == 1 && hardWay) RestartGPU();
 
-                await Task.Delay(TimeSpan.FromMilliseconds(500));
+                await Task.Delay(TimeSpan.FromMilliseconds(100));
                 Program.settingsForm.BeginInvoke(delegate
                 {
                     InitGPUMode();
