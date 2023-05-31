@@ -77,7 +77,7 @@ namespace GHelper
 
             trayIcon.MouseClick += TrayIcon_MouseClick;
 
-            inputDispatcher = new InputDispatcher(ds);
+            inputDispatcher = new InputDispatcher();
 
             settingsForm.InitAura();
             settingsForm.InitMatrix();

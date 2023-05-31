@@ -1,10 +1,8 @@
 ﻿using HidLibrary;
 using Microsoft.Win32;
 using NAudio.CoreAudioApi;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Management;
-using Tools;
 
 namespace GHelper
 {
@@ -57,19 +55,15 @@ namespace GHelper
         System.Timers.Timer timer = new System.Timers.Timer(1000);
         public bool backlight = true;
 
-        private static nint windowHandle;
-
         public static Keys keyProfile = Keys.F5;
         public static Keys keyApp = Keys.F12;
 
         KeyboardListener listener;
 
-        KeyHandler m1, m2, handlerProfile, handlerApp;
+        KeyboardHook hook = new KeyboardHook();
 
-        public InputDispatcher(nint handle)
+        public InputDispatcher()
         {
-
-            windowHandle = handle;
 
             byte[] result = Program.acpi.DeviceInit();
             Debug.WriteLine($"Init: {BitConverter.ToString(result)}");
@@ -77,14 +71,7 @@ namespace GHelper
             Program.acpi.SubscribeToEvents(WatcherEventArrived);
             //Task.Run(Program.acpi.RunListener);
 
-            // CTRL + SHIFT + F5 to cycle profiles
-            if (AppConfig.getConfig("keybind_profile") != -1) keyProfile = (Keys)AppConfig.getConfig("keybind_profile");
-
-            handlerProfile = new KeyHandler(KeyHandler.SHIFT | KeyHandler.CTRL, keyProfile, windowHandle);
-            handlerApp = new KeyHandler(KeyHandler.SHIFT | KeyHandler.CTRL, keyApp, windowHandle);
-
-            m1 = new KeyHandler(KeyHandler.NOMOD, Keys.VolumeDown, windowHandle);
-            m2 = new KeyHandler(KeyHandler.NOMOD, Keys.VolumeUp, windowHandle);
+            hook.KeyPressed += new EventHandler<KeyPressedEventArgs>(KeyPressed);
 
             RegisterKeys();
 
@@ -100,7 +87,7 @@ namespace GHelper
 
             if (SystemInformation.PowerStatus.PowerLineStatus == PowerLineStatus.Online)
                 kb_timeout = AppConfig.getConfig("keyboard_ac_timeout", 0);
-            else 
+            else
                 kb_timeout = AppConfig.getConfig("keyboard_timeout", 60);
 
             if (kb_timeout == 0) return;
@@ -142,20 +129,26 @@ namespace GHelper
 
         public void RegisterKeys()
         {
+            // CTRL + SHIFT + F5 to cycle profiles
+            if (AppConfig.getConfig("keybind_profile") != -1) keyProfile = (Keys)AppConfig.getConfig("keybind_profile");
+            if (AppConfig.getConfig("keybind_app") != -1) keyApp = (Keys)AppConfig.getConfig("keybind_app");
 
             string actionM1 = AppConfig.getConfigString("m1");
             string actionM2 = AppConfig.getConfigString("m2");
 
-            handlerProfile.Unregiser();
-            m1.Unregiser();
-            m2.Unregiser();
+            hook.UnregisterAll();
 
-            if (keyProfile != Keys.None) handlerProfile.Register();
-            if (keyApp != Keys.None) handlerApp.Register();
+            if (keyProfile != Keys.None) hook.RegisterHotKey(ModifierKeys.Shift | ModifierKeys.Control, keyProfile);
+            if (keyApp != Keys.None) hook.RegisterHotKey(ModifierKeys.Shift | ModifierKeys.Control, keyApp);
 
-            if (actionM1 is not null && actionM1.Length > 0) m1.Register();
+            if (actionM1 is not null && actionM1.Length > 0) hook.RegisterHotKey(ModifierKeys.None, Keys.VolumeDown);
+            if (actionM2 is not null && actionM2.Length > 0) hook.RegisterHotKey(ModifierKeys.None, Keys.VolumeUp);
 
-            if (actionM2 is not null && actionM2.Length > 0) m2.Register();
+            // FN-Lock group
+
+            //for (Keys i = Keys.F1; i < Keys.F12; i++) hook.RegisterHotKey(ModifierKeys.None, i);
+            //hook.RegisterHotKey(ModifierKeys.None, Keys.VolumeMute);
+            //hook.RegisterHotKey(ModifierKeys.None, Keys.PrintScreen);
 
         }
 
@@ -175,11 +168,77 @@ namespace GHelper
 
 
             if (intKey > 0)
-                NativeMethods.KeyPress(intKey);
+                KeyboardHook.KeyPress((Keys)intKey);
             else
                 LaunchProcess(command);
 
         }
+
+        public void KeyPressed(object sender, KeyPressedEventArgs e)
+        {
+
+            if (e.Modifier == ModifierKeys.None)
+            {
+                Debug.WriteLine(e.Key);
+                switch (e.Key)
+                {
+                    case Keys.F1:
+                        KeyboardHook.KeyPress(Keys.VolumeMute);
+                        break;
+                    case Keys.F2:
+                        HandleEvent(197);
+                        break;
+                    case Keys.F3:
+                        HandleEvent(196);
+                        break;
+                    case Keys.F4:
+                        KeyProcess("fnf4");
+                        break;
+                    case Keys.F5:
+                        KeyProcess("fnf5");
+                        break;
+                    case Keys.F6:
+                        KeyboardHook.KeyPress(Keys.Snapshot);
+                        break;
+                    case Keys.F7:
+                        HandleEvent(16);
+                        break;
+                    case Keys.F8:
+                        HandleEvent(32);
+                        break;
+                    case Keys.F9:
+                        break;
+                    case Keys.F10:
+                        HandleEvent(107);
+                        break;
+                    case Keys.F11:
+                        HandleEvent(108);
+                        break;
+                    case Keys.F12:
+                        break;
+                    case Keys.VolumeDown:
+                        KeyProcess("m1");
+                        break;
+                    case Keys.VolumeUp:
+                        KeyProcess("m2");
+                        break;
+                    case Keys.VolumeMute:
+                        KeyboardHook.KeyPress(Keys.F1);
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+            if (e.Modifier == (ModifierKeys.Control | ModifierKeys.Shift))
+            {
+                if (e.Key == keyProfile) Program.settingsForm.CyclePerformanceMode();
+                if (e.Key == keyApp) Program.SettingsToggle();
+            }
+
+
+        }
+
 
         public static void KeyProcess(string name = "m3")
         {
@@ -200,13 +259,13 @@ namespace GHelper
             switch (action)
             {
                 case "mute":
-                    NativeMethods.KeyPress(NativeMethods.VK_VOLUME_MUTE);
+                    KeyboardHook.KeyPress(Keys.VolumeMute);
                     break;
                 case "play":
-                    NativeMethods.KeyPress(NativeMethods.VK_MEDIA_PLAY_PAUSE);
+                    KeyboardHook.KeyPress(Keys.MediaPlayPause);
                     break;
                 case "screenshot":
-                    NativeMethods.KeyPress(NativeMethods.VK_SNAPSHOT);
+                    KeyboardHook.KeyPress(Keys.Snapshot);
                     break;
                 case "screen":
                     NativeMethods.TurnOffScreen(Program.settingsForm.Handle);

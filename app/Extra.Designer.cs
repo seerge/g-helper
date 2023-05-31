@@ -693,7 +693,7 @@ namespace GHelper
             groupOther.Dock = DockStyle.Top;
             groupOther.Location = new Point(10, 897);
             groupOther.Name = "groupOther";
-            groupOther.Size = new Size(954, 310);
+            groupOther.Size = new Size(954, 319);
             groupOther.TabIndex = 2;
             groupOther.TabStop = false;
             groupOther.Text = "Other";
@@ -701,7 +701,7 @@ namespace GHelper
             // checkGpuApps
             // 
             checkGpuApps.AutoSize = true;
-            checkGpuApps.Location = new Point(25, 220);
+            checkGpuApps.Location = new Point(25, 92);
             checkGpuApps.Name = "checkGpuApps";
             checkGpuApps.Size = new Size(544, 36);
             checkGpuApps.TabIndex = 48;
@@ -711,7 +711,7 @@ namespace GHelper
             // checkAutoApplyWindowsPowerMode
             // 
             checkAutoApplyWindowsPowerMode.AutoSize = true;
-            checkAutoApplyWindowsPowerMode.Location = new Point(25, 268);
+            checkAutoApplyWindowsPowerMode.Location = new Point(25, 260);
             checkAutoApplyWindowsPowerMode.Name = "checkAutoApplyWindowsPowerMode";
             checkAutoApplyWindowsPowerMode.Size = new Size(416, 36);
             checkAutoApplyWindowsPowerMode.TabIndex = 47;
@@ -721,7 +721,7 @@ namespace GHelper
             // checkKeyboardAuto
             // 
             checkKeyboardAuto.AutoSize = true;
-            checkKeyboardAuto.Location = new Point(25, 40);
+            checkKeyboardAuto.Location = new Point(25, 50);
             checkKeyboardAuto.MaximumSize = new Size(780, 0);
             checkKeyboardAuto.Name = "checkKeyboardAuto";
             checkKeyboardAuto.Size = new Size(712, 36);
@@ -732,7 +732,7 @@ namespace GHelper
             // checkUSBC
             // 
             checkUSBC.AutoSize = true;
-            checkUSBC.Location = new Point(25, 85);
+            checkUSBC.Location = new Point(25, 134);
             checkUSBC.Name = "checkUSBC";
             checkUSBC.Size = new Size(659, 36);
             checkUSBC.TabIndex = 4;
@@ -742,7 +742,7 @@ namespace GHelper
             // checkNoOverdrive
             // 
             checkNoOverdrive.AutoSize = true;
-            checkNoOverdrive.Location = new Point(25, 130);
+            checkNoOverdrive.Location = new Point(25, 176);
             checkNoOverdrive.Name = "checkNoOverdrive";
             checkNoOverdrive.Size = new Size(307, 36);
             checkNoOverdrive.TabIndex = 3;
@@ -752,7 +752,7 @@ namespace GHelper
             // checkTopmost
             // 
             checkTopmost.AutoSize = true;
-            checkTopmost.Location = new Point(25, 175);
+            checkTopmost.Location = new Point(25, 218);
             checkTopmost.Name = "checkTopmost";
             checkTopmost.Size = new Size(390, 36);
             checkTopmost.TabIndex = 1;

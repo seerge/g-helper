@@ -1,54 +1,11 @@
-﻿using GHelper;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.TrackBar;
 using static Tools.ScreenInterrogatory;
 
 namespace Tools
 {
 
-    public class KeyHandler
-    {
-
-        public const int NOMOD = 0x0000;
-        public const int ALT = 0x0001;
-        public const int CTRL = 0x0002;
-        public const int SHIFT = 0x0004;
-        public const int WIN = 0x0008;
-
-        public const int WM_HOTKEY_MSG_ID = 0x0312;
-
-
-        [DllImport("user32.dll")]
-        private static extern bool RegisterHotKey(IntPtr hWnd, int id, int fsModifiers, int vk);
-        [DllImport("user32.dll")]
-        private static extern bool UnregisterHotKey(IntPtr hWnd, int id);
-
-        private int modifier;
-        private int key;
-        private IntPtr hWnd;
-        private int id;
-        public KeyHandler(int modifier, Keys key, nint handle)
-        {
-            this.modifier = modifier;
-            this.key = (int)key;
-            this.hWnd = handle;
-            id = this.GetHashCode();
-        }
-        public override int GetHashCode()
-        {
-            return modifier ^ key ^ hWnd.ToInt32();
-        }
-        public bool Register()
-        {
-            return RegisterHotKey(hWnd, id, modifier, key);
-        }
-        public bool Unregiser()
-        {
-            return UnregisterHotKey(hWnd, id);
-        }
-    }
 
     public static class ScreenInterrogatory
     {
@@ -457,24 +414,6 @@ public class NativeMethods
 
     [DllImport("Powrprof.dll", CharSet = CharSet.Auto, ExactSpelling = true)]
     public static extern bool SetSuspendState(bool hiberate, bool forceCritical, bool disableWakeEvent);
-
-
-    public const int KEYEVENTF_EXTENDEDKEY = 1;
-    public const int KEYEVENTF_KEYUP = 2;
-
-    public const int VK_MEDIA_NEXT_TRACK = 0xB0;
-    public const int VK_MEDIA_PLAY_PAUSE = 0xB3;
-    public const int VK_MEDIA_PREV_TRACK = 0xB1;
-    public const int VK_VOLUME_MUTE = 0xAD;
-    public const int VK_SNAPSHOT = 0x2C;
-
-    [DllImport("user32.dll", SetLastError = true)]
-    public static extern void keybd_event(byte virtualKey, byte scanCode, uint flags, IntPtr extraInfo);
-
-    public static void KeyPress(int key = VK_MEDIA_PLAY_PAUSE)
-    {
-        keybd_event((byte)key, 0, KEYEVENTF_EXTENDEDKEY, IntPtr.Zero);
-    }
 
 
     [DllImport("user32.dll")]

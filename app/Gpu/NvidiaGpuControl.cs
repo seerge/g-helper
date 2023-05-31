@@ -1,13 +1,9 @@
-﻿using NvAPIWrapper;
-using NvAPIWrapper.GPU;
+﻿using NvAPIWrapper.GPU;
 using NvAPIWrapper.Native;
-using NvAPIWrapper.Native.Delegates;
 using NvAPIWrapper.Native.GPU;
 using NvAPIWrapper.Native.GPU.Structures;
 using NvAPIWrapper.Native.Interfaces.GPU;
-using System;
 using System.Diagnostics;
-using System.Management;
 using static NvAPIWrapper.Native.GPU.Structures.PerformanceStates20InfoV1;
 
 namespace GHelper.Gpu;
@@ -58,7 +54,7 @@ public class NvidiaGpuControl : IGpuControl
 
         try
         {
-            Process[]  processes = internalGpu.GetActiveApplications();
+            Process[] processes = internalGpu.GetActiveApplications();
             foreach (Process process in processes)
             {
                 try
@@ -98,10 +94,11 @@ public class NvidiaGpuControl : IGpuControl
             Logger.WriteLine($"GET GPU CLOCKS: {core}, {memory}");
             return 0;
 
-        } catch (Exception ex)
+        }
+        catch (Exception ex)
         {
             Logger.WriteLine("GET GPU CLOCKS:" + ex.Message);
-            core = memory = 0; 
+            core = memory = 0;
             return -1;
         }
 
@@ -155,7 +152,7 @@ public class NvidiaGpuControl : IGpuControl
             //Thread.Sleep(2000);
             return true;
         }
-        catch (Exception ex )
+        catch (Exception ex)
         {
             Logger.WriteLine(ex.ToString());
             return false;
@@ -195,7 +192,7 @@ public class NvidiaGpuControl : IGpuControl
         }
         catch (Exception ex)
         {
-            Logger.WriteLine("SET GPU CLOCKS: "+ex.Message);
+            Logger.WriteLine("SET GPU CLOCKS: " + ex.Message);
             return -1;
         }
 

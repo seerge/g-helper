@@ -209,26 +209,6 @@ namespace GHelper
                     }
                     m.Result = (IntPtr)1;
                     break;
-
-                case KeyHandler.WM_HOTKEY_MSG_ID:
-
-                    Keys key = (Keys)(((int)m.LParam >> 16) & 0xFFFF);
-
-                    switch (key)
-                    {
-                        case Keys.VolumeDown:
-                            InputDispatcher.KeyProcess("m1");
-                            break;
-                        case Keys.VolumeUp:
-                            InputDispatcher.KeyProcess("m2");
-                            break;
-                        default:
-                            if (key == InputDispatcher.keyProfile) CyclePerformanceMode();
-                            if (key == InputDispatcher.keyApp) Program.SettingsToggle();
-                            break;
-                    }
-
-                    break;
             }
 
             try
@@ -338,7 +318,7 @@ namespace GHelper
 
                 if (Program.acpi.DeviceGet(AsusACPI.GPUXG) == 1)
                 {
-                    KillGPUApps();
+                    HardwareControl.KillGPUApps();
                     DialogResult dialogResult = MessageBox.Show("Did you close all applications running on XG Mobile?", "Disabling XG Mobile", MessageBoxButtons.YesNo);
                     if (dialogResult == DialogResult.Yes)
                     {
@@ -973,8 +953,8 @@ namespace GHelper
                 labelBattery.Text = battery;
             });
 
-            string trayTip = "CPU" + cpuTemp + HardwareControl.cpuFan;
-            if (gpuTemp.Length > 0) trayTip += "\nGPU" + gpuTemp + HardwareControl.gpuFan;
+            string trayTip = "CPU" + cpuTemp + " " + HardwareControl.cpuFan;
+            if (gpuTemp.Length > 0) trayTip += "\nGPU" + gpuTemp + " " + HardwareControl.gpuFan;
             if (battery.Length > 0) trayTip += "\n" + battery;
 
             Program.trayIcon.Text = trayTip;
@@ -1302,10 +1282,14 @@ namespace GHelper
 
             int backlight = AppConfig.getConfig("keyboard_brightness");
 
-            if (AppConfig.isConfig("keyboard_auto") && SystemInformation.PowerStatus.PowerLineStatus != PowerLineStatus.Online)
-                AsusUSB.ApplyBrightness(0);
-            else if (backlight >= 0)
-                AsusUSB.ApplyBrightness(backlight);
+            if (backlight > 0)
+            {
+                if (AppConfig.isConfig("keyboard_auto") && SystemInformation.PowerStatus.PowerLineStatus != PowerLineStatus.Online)
+                    AsusUSB.ApplyBrightness(1);
+                else
+                    AsusUSB.ApplyBrightness(backlight);
+            }
+
 
         }
 
@@ -1535,29 +1519,6 @@ namespace GHelper
 
         }
 
-        protected static void KillGPUApps()
-        {
-            string[] tokill = { "EADesktop", "RadeonSoftware", "epicgameslauncher", "nvdisplay.container", "nvcontainer", "nvcplui" };
-
-            foreach (string kill in tokill)
-                foreach (var process in Process.GetProcessesByName(kill))
-                {
-                    try
-                    {
-                        process.Kill();
-                        Logger.WriteLine($"Stopped: {process.ProcessName}");
-                    } catch (Exception ex)
-                    {
-                        Logger.WriteLine($"Failed to stop: {process.ProcessName} {ex.Message}");
-                    }
-                }
-
-            if (AppConfig.isConfig("kill_gpu_apps") && HardwareControl.GpuControl is not null && HardwareControl.GpuControl.IsNvidia)
-            {
-                NvidiaGpuControl nvControl = (NvidiaGpuControl)HardwareControl.GpuControl;
-                nvControl.KillGPUApps();
-            }
-        }
 
         public void SetGPUEco(int eco, bool hardWay = false)
         {
@@ -1575,7 +1536,7 @@ namespace GHelper
 
                 int status = 1;
 
-                if (eco == 1) KillGPUApps();
+                if (eco == 1) HardwareControl.KillGPUApps();
 
                 Logger.WriteLine($"Running eco command {eco}");
 
