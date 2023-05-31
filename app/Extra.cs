@@ -222,6 +222,14 @@ namespace GHelper
             checkGpuApps.Checked = AppConfig.isConfig("kill_gpu_apps");
             checkGpuApps.CheckedChanged += CheckGpuApps_CheckedChanged;
 
+            checkFnLock.Checked = AppConfig.isConfig("fn_lock");
+            checkFnLock.CheckedChanged += CheckFnLock_CheckedChanged; ;
+        }
+
+        private void CheckFnLock_CheckedChanged(object? sender, EventArgs e)
+        {
+            AppConfig.setConfig("fn_lock", (checkFnLock.Checked ? 1 : 0));
+            Program.inputDispatcher.RegisterKeys();
         }
 
         private void CheckGpuApps_CheckedChanged(object? sender, EventArgs e)

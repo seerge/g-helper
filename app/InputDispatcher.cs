@@ -59,7 +59,6 @@ namespace GHelper
         public static Keys keyApp = Keys.F12;
 
         KeyboardListener listener;
-
         KeyboardHook hook = new KeyboardHook();
 
         public InputDispatcher()
@@ -146,9 +145,8 @@ namespace GHelper
 
             // FN-Lock group
 
-            //for (Keys i = Keys.F1; i < Keys.F12; i++) hook.RegisterHotKey(ModifierKeys.None, i);
-            //hook.RegisterHotKey(ModifierKeys.None, Keys.VolumeMute);
-            //hook.RegisterHotKey(ModifierKeys.None, Keys.PrintScreen);
+            if (AppConfig.isConfig("fn_lock"))
+                for (Keys i = Keys.F1; i < Keys.F12; i++) hook.RegisterHotKey(ModifierKeys.None, i);
 
         }
 
@@ -221,9 +219,6 @@ namespace GHelper
                         break;
                     case Keys.VolumeUp:
                         KeyProcess("m2");
-                        break;
-                    case Keys.VolumeMute:
-                        KeyboardHook.KeyPress(Keys.F1);
                         break;
                     default:
                         break;

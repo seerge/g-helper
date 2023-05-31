@@ -89,6 +89,7 @@ namespace GHelper
             checkUSBC = new CheckBox();
             checkNoOverdrive = new CheckBox();
             checkTopmost = new CheckBox();
+            checkFnLock = new CheckBox();
             groupBindings.SuspendLayout();
             tableKeys.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureHelp).BeginInit();
@@ -684,6 +685,7 @@ namespace GHelper
             // 
             // groupOther
             // 
+            groupOther.Controls.Add(checkFnLock);
             groupOther.Controls.Add(checkGpuApps);
             groupOther.Controls.Add(checkAutoApplyWindowsPowerMode);
             groupOther.Controls.Add(checkKeyboardAuto);
@@ -693,7 +695,7 @@ namespace GHelper
             groupOther.Dock = DockStyle.Top;
             groupOther.Location = new Point(10, 897);
             groupOther.Name = "groupOther";
-            groupOther.Size = new Size(954, 319);
+            groupOther.Size = new Size(954, 352);
             groupOther.TabIndex = 2;
             groupOther.TabStop = false;
             groupOther.Text = "Other";
@@ -701,7 +703,7 @@ namespace GHelper
             // checkGpuApps
             // 
             checkGpuApps.AutoSize = true;
-            checkGpuApps.Location = new Point(25, 92);
+            checkGpuApps.Location = new Point(25, 128);
             checkGpuApps.Name = "checkGpuApps";
             checkGpuApps.Size = new Size(544, 36);
             checkGpuApps.TabIndex = 48;
@@ -711,7 +713,7 @@ namespace GHelper
             // checkAutoApplyWindowsPowerMode
             // 
             checkAutoApplyWindowsPowerMode.AutoSize = true;
-            checkAutoApplyWindowsPowerMode.Location = new Point(25, 260);
+            checkAutoApplyWindowsPowerMode.Location = new Point(25, 296);
             checkAutoApplyWindowsPowerMode.Name = "checkAutoApplyWindowsPowerMode";
             checkAutoApplyWindowsPowerMode.Size = new Size(416, 36);
             checkAutoApplyWindowsPowerMode.TabIndex = 47;
@@ -732,7 +734,7 @@ namespace GHelper
             // checkUSBC
             // 
             checkUSBC.AutoSize = true;
-            checkUSBC.Location = new Point(25, 134);
+            checkUSBC.Location = new Point(25, 170);
             checkUSBC.Name = "checkUSBC";
             checkUSBC.Size = new Size(659, 36);
             checkUSBC.TabIndex = 4;
@@ -742,7 +744,7 @@ namespace GHelper
             // checkNoOverdrive
             // 
             checkNoOverdrive.AutoSize = true;
-            checkNoOverdrive.Location = new Point(25, 176);
+            checkNoOverdrive.Location = new Point(25, 212);
             checkNoOverdrive.Name = "checkNoOverdrive";
             checkNoOverdrive.Size = new Size(307, 36);
             checkNoOverdrive.TabIndex = 3;
@@ -752,12 +754,23 @@ namespace GHelper
             // checkTopmost
             // 
             checkTopmost.AutoSize = true;
-            checkTopmost.Location = new Point(25, 218);
+            checkTopmost.Location = new Point(25, 254);
             checkTopmost.Name = "checkTopmost";
             checkTopmost.Size = new Size(390, 36);
             checkTopmost.TabIndex = 1;
             checkTopmost.Text = Strings.WindowTop;
             checkTopmost.UseVisualStyleBackColor = true;
+            // 
+            // checkFnLock
+            // 
+            checkFnLock.AutoSize = true;
+            checkFnLock.Location = new Point(25, 89);
+            checkFnLock.MaximumSize = new Size(780, 0);
+            checkFnLock.Name = "checkFnLock";
+            checkFnLock.Size = new Size(401, 36);
+            checkFnLock.TabIndex = 49;
+            checkFnLock.Text = "Process Fn+F hotkeys without FN";
+            checkFnLock.UseVisualStyleBackColor = true;
             // 
             // Extra
             // 
@@ -765,7 +778,7 @@ namespace GHelper
             AutoScaleMode = AutoScaleMode.Font;
             AutoSize = true;
             AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            ClientSize = new Size(974, 1220);
+            ClientSize = new Size(974, 1262);
             Controls.Add(groupOther);
             Controls.Add(groupLight);
             Controls.Add(groupBindings);
@@ -859,5 +872,6 @@ namespace GHelper
         private NumericUpDown numericBacklightPluggedTime;
         private Label labelBacklightTimeoutPlugged;
         private CheckBox checkGpuApps;
+        private CheckBox checkFnLock;
     }
 }
