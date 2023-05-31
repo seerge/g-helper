@@ -193,7 +193,7 @@
     <value>Apagar con batería tras (segundos)</value>
   </data>
   <data name="BacklightTimeoutPlugged" xml:space="preserve">
-    <value>Apagar cuando está enchufado tras (0 - siempre encendida)</value>
+    <value>Apagar cuando está enchufado tras (0 - nunca)</value>
   </data>
   <data name="Balanced" xml:space="preserve">
     <value>Equilibrado</value>
@@ -307,7 +307,7 @@
     <value>Bajar retroiluminación con batería</value>
   </data>
   <data name="KillGpuApps" xml:space="preserve">
-    <value>Detener todas las aplicaciones que usan la GPU cuando se cambia a Eco</value>
+    <value>Detener todas las aplicaciones que usan la dGPU cuando se cambia a Eco</value>
   </data>
   <data name="LaptopBacklight" xml:space="preserve">
     <value>Retroiluminación</value>
