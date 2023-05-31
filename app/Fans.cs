@@ -417,7 +417,6 @@ namespace GHelper
 
             powerVisible = panelPower.Visible = modeA0;
             panelB0.Visible = modeB0;
-            panelC1.Visible = modeC1;
 
 
             // All AMD version has B0 but doesn't have C0 (Nvidia GPU) settings
@@ -431,6 +430,7 @@ namespace GHelper
             {
                 labelLeftA0.Text = "CPU Slow (SPL + sPPT)";
                 labelLeftC1.Text = "CPU Fast (fPPT)";
+                panelC1.Visible = modeC1;
             }
 
             int limit_total;
