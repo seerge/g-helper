@@ -702,6 +702,8 @@ public class NativeMethods
     {
         Guid activeSchemeGuid = GetActiveScheme();
 
+        if (boost == GetCPUBoost()) return;
+
         var hrAC = PowerWriteACValueIndex(
              IntPtr.Zero,
              activeSchemeGuid,

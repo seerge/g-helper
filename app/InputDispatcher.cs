@@ -195,7 +195,7 @@ namespace GHelper
                             KeyProcess("m3");
                             return;
                         case Keys.F11:
-                            HandleEvent(199);
+                            OptimizationEvent(199);
                             return;
                     }
                 }
@@ -207,10 +207,10 @@ namespace GHelper
                         KeyboardHook.KeyPress(Keys.VolumeMute);
                         break;
                     case Keys.F2:
-                        HandleEvent(197);
+                        OptimizationEvent(197);
                         break;
                     case Keys.F3:
-                        HandleEvent(196);
+                        OptimizationEvent(196);
                         break;
                     case Keys.F4:
                         KeyProcess("fnf4");
@@ -224,21 +224,21 @@ namespace GHelper
                     case Keys.F7:
                         if (AppConfig.ContainsModel("TUF"))
                             Program.settingsForm.BeginInvoke(Program.settingsForm.RunToast, ScreenBrightness.Adjust(-10) + "%", ToastIcon.BrightnessDown);
-                        HandleEvent(16);
+                        OptimizationEvent(16);
                         break;
                     case Keys.F8:
                         if (AppConfig.ContainsModel("TUF")) 
                             Program.settingsForm.BeginInvoke(Program.settingsForm.RunToast, ScreenBrightness.Adjust(+10) + "%", ToastIcon.BrightnessUp);
-                        HandleEvent(32);
+                        OptimizationEvent(32);
                         break;
                     case Keys.F9:
                         KeyboardHook.KeyWinPress(Keys.P);
                         break;
                     case Keys.F10:
-                        HandleEvent(107);
+                        OptimizationEvent(107);
                         break;
                     case Keys.F11:
-                        HandleEvent(108);
+                        OptimizationEvent(108);
                         break;
                     case Keys.F12:
                         KeyboardHook.KeyWinPress(Keys.A);
@@ -378,7 +378,11 @@ namespace GHelper
                     return;
             }
 
-            if (OptimizationService.IsRunning()) return;
+            if (!OptimizationService.IsRunning()) OptimizationEvent(EventID);
+        }
+
+        static void OptimizationEvent(int EventID)
+        { 
 
             // Asus Optimization service Events 
 
