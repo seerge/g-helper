@@ -127,10 +127,10 @@
     <value>Chế độ Tiết kiệm</value>
   </data>
   <data name="AlertUltimateOff" xml:space="preserve">
-    <value>Chuyển sang Chế độ Ultimate cần phải khởi động lại</value>
+    <value>Chuyển sang Chế độ Tối thượng cần phải khởi động lại</value>
   </data>
   <data name="AlertUltimateOn" xml:space="preserve">
-    <value>Chế độ Ultimate yêu cầu phải khởi động lại</value>
+    <value>Chế độ Tối thượng yêu cầu phải khởi động lại</value>
   </data>
   <data name="AlertUltimateTitle" xml:space="preserve">
     <value>Khởi động lại ngay?</value>
@@ -148,13 +148,13 @@
     <value>G-Helper đã chạy. Hãy kiểm tra khay hệ thống</value>
   </data>
   <data name="ApplyFanCurve" xml:space="preserve">
-    <value>Áp dụng Chế độ quạt tuỳ chỉnh</value>
+    <value>Áp dụng Đường cong quạt tuỳ chỉnh</value>
   </data>
   <data name="ApplyPowerLimits" xml:space="preserve">
-    <value>Áp dụng Giới hạn nguồn</value>
+    <value>Áp dụng Giới hạn công suất</value>
   </data>
   <data name="ApplyWindowsPowerPlan" xml:space="preserve">
-    <value>Tự động điều chỉnh Chế độ nguồn của Windows</value>
+    <value>Tự động điều chỉnh Kế hoạch nguồn của Windows</value>
   </data>
   <data name="AuraBreathe" xml:space="preserve">
     <value>Hơi thở</value>
@@ -184,7 +184,7 @@
     <value>Tự động</value>
   </data>
   <data name="AutoRefreshTooltip" xml:space="preserve">
-    <value>Chuyển về 60Hz để tiết kiệm pin, và chuyển lại tần số quét cao khi cắm sạc</value>
+    <value>Chuyển về 60Hz khi không cắm sạc và 120Hz khi cắm sạc</value>
   </data>
   <data name="Awake" xml:space="preserve">
     <value>Đang bật</value>
@@ -223,7 +223,7 @@
     <value>Đang không sạc</value>
   </data>
   <data name="DownloadUpdate" xml:space="preserve">
-    <value>Tải xuống Bản cập nhật</value>
+    <value>Tải xuống bản cập nhật</value>
   </data>
   <data name="EcoGPUTooltip" xml:space="preserve">
     <value>Tắt GPU rời để tiết kiệm pin</value>
@@ -238,7 +238,7 @@
     <value>Cài đặt bổ sung</value>
   </data>
   <data name="FactoryDefaults" xml:space="preserve">
-    <value>Đặt về Mặc định</value>
+    <value>Đặt về mặc định</value>
   </data>
   <data name="FanCurves" xml:space="preserve">
     <value>Chế độ Quạt</value>
@@ -256,16 +256,16 @@
     <value>Cấu hình Quạt</value>
   </data>
   <data name="FansAndPower" xml:space="preserve">
-    <value>Quạt và Nguồn điện</value>
+    <value>Quạt và Công suất</value>
   </data>
   <data name="FanSpeed" xml:space="preserve">
-    <value> Quạt: </value>
+    <value>Quạt: </value>
   </data>
   <data name="FansPower" xml:space="preserve">
-    <value>Quạt + Nguồn</value>
+    <value>Quạt + Công suất</value>
   </data>
   <data name="GPUBoost" xml:space="preserve">
-    <value>Dynamic Boost</value>
+    <value>Tăng tốc năng động</value>
   </data>
   <data name="GPUChanging" xml:space="preserve">
     <value>Đang đổi GPU</value>
@@ -280,13 +280,13 @@
     <value>Chế độ GPU</value>
   </data>
   <data name="GPUModeEco" xml:space="preserve">
-    <value>Chỉ GPU tích hợp</value>
+    <value>Chỉ dùng GPU tích hợp</value>
   </data>
   <data name="GPUModeStandard" xml:space="preserve">
     <value>GPU tích hợp + GPU rời</value>
   </data>
   <data name="GPUModeUltimate" xml:space="preserve">
-    <value>Độc quyền của GPU rời</value>
+    <value>Chỉ dùng của GPU rời</value>
   </data>
   <data name="GPUSettings" xml:space="preserve">
     <value>Cài đặt GPU</value>
@@ -349,10 +349,10 @@
     <value>Hình ảnh</value>
   </data>
   <data name="MaxRefreshTooltip" xml:space="preserve">
-    <value>Tốc độ làm mới tối đa để có độ trễ thấp</value>
+    <value>Tần số quét tối đa để có độ trễ thấp</value>
   </data>
   <data name="MinRefreshTooltip" xml:space="preserve">
-    <value>Tốc độ làm mới 60Hz để tiết kiệm pin</value>
+    <value>Tần số quét 60Hz để tiết kiệm pin</value>
   </data>
   <data name="Multizone" xml:space="preserve">
     <value>Đèn nền Đa vùng(Multi-Zone)</value>
@@ -367,7 +367,7 @@
     <value>Tối ưu</value>
   </data>
   <data name="OptimizedGPUTooltip" xml:space="preserve">
-    <value>Chuyển về Chế độ Tiết kiệm khi dùng pin và Chế độ Tiêu chuẩn khi cắm sạc</value>
+    <value>Chuyển về Tiết kiệm khi dùng pin và Tiêu chuẩn khi cắm sạc</value>
   </data>
   <data name="OptimizedUSBC" xml:space="preserve">
     <value>Tắt GPU khi dùng sạc Type-C ở Chế độ Tối ưu</value>
@@ -382,16 +382,16 @@
     <value>Chế độ Hiệu suất</value>
   </data>
   <data name="PictureGif" xml:space="preserve">
-    <value>Ảnh tĩnh / Ảnh Động</value>
+    <value>Ảnh tĩnh / Ảnh động</value>
   </data>
   <data name="PlayPause" xml:space="preserve">
     <value>Phát / Dừng</value>
   </data>
   <data name="PowerLimits" xml:space="preserve">
-    <value>Giới hạn Nguồn (PPT)</value>
+    <value>Giới hạn công suất (PPT)</value>
   </data>
   <data name="PPTExperimental" xml:space="preserve">
-    <value>Giới hạn Nguồn (PPT) là tính năng thử nghiệm. Sử dụng nó cẩn thận và tự chịu mọi rủi ro!</value>
+    <value>Giới hạn công suất (PPT) là tính năng thử nghiệm. Sử dụng nó cẩn thận và tự chịu mọi rủi ro!</value>
   </data>
   <data name="PrintScreen" xml:space="preserve">
     <value>Chụp màn hình</value>
@@ -400,10 +400,10 @@
     <value>Thoát</value>
   </data>
   <data name="RestartGPU" xml:space="preserve">
-    <value>Không thể chuyển về Chế độ Tiết kiệm do có gì đó đang dùng GPU. Khởi động lại GPU rời trong Quản lý Thiết bị? * Bạn sẽ chịu mọi rủi ro.</value>
+    <value>Không thể chuyển về Chế độ Tiết kiệm do có gì đó đang dùng GPU rời. Khởi động lại GPU rời trong Quản lý Thiết bị? * Bạn sẽ chịu mọi rủi ro.</value>
   </data>
   <data name="RPM" xml:space="preserve">
-    <value>RPM</value>
+    <value>VTP</value>
   </data>
   <data name="RunOnStartup" xml:space="preserve">
     <value>Chạy khi khởi động</value>
@@ -418,7 +418,7 @@
     <value>Ngủ</value>
   </data>
   <data name="StandardGPUTooltip" xml:space="preserve">
-    <value>Bật GPU rời cho khi cho mức độ dùng tiêu chuẩn</value>
+    <value>Bật GPU rời song song với GPU tích hợp</value>
   </data>
   <data name="StandardMode" xml:space="preserve">
     <value>Tiêu chuẩn</value>
@@ -445,10 +445,10 @@
     <value>Tắt khi không cắm sạc</value>
   </data>
   <data name="UltimateGPUTooltip" xml:space="preserve">
-    <value>Định tuyến màn hình laptop đến Card rời, tối đa hóa FPS</value>
+    <value>Chỉ dùng GPU rời, tối đa hóa FPS</value>
   </data>
   <data name="UltimateMode" xml:space="preserve">
-    <value>Ultimate</value>
+    <value>Tối thượng</value>
   </data>
   <data name="VersionLabel" xml:space="preserve">
     <value>Phiên bản</value>
