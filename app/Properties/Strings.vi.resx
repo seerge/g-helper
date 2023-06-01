@@ -286,7 +286,7 @@
     <value>GPU tích hợp + GPU rời</value>
   </data>
   <data name="GPUModeUltimate" xml:space="preserve">
-    <value>Chỉ dùng của GPU rời</value>
+    <value>Chỉ dùng GPU rời</value>
   </data>
   <data name="GPUSettings" xml:space="preserve">
     <value>Cài đặt GPU</value>
