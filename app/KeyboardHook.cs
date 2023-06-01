@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 
 public sealed class KeyboardHook : IDisposable
 {
@@ -18,11 +17,21 @@ public sealed class KeyboardHook : IDisposable
 
     public const int KEYEVENTF_EXTENDEDKEY = 1;
     public const int KEYEVENTF_KEYUP = 2;
+    private const byte VK_LWIN = 0x5B;
 
     public static void KeyPress(Keys key)
     {
         keybd_event((byte)key, 0, KEYEVENTF_EXTENDEDKEY, IntPtr.Zero);
     }
+
+    public static void KeyWinPress(Keys key)
+    {
+        keybd_event(VK_LWIN, 0, KEYEVENTF_EXTENDEDKEY, IntPtr.Zero);
+        keybd_event((byte)key, 0, KEYEVENTF_EXTENDEDKEY, IntPtr.Zero);
+        keybd_event((byte)key, 0, KEYEVENTF_EXTENDEDKEY | KEYEVENTF_KEYUP, IntPtr.Zero);
+        keybd_event(VK_LWIN, 0, KEYEVENTF_EXTENDEDKEY | KEYEVENTF_KEYUP, IntPtr.Zero);
+    }
+
 
     /// <summary>
     /// Represents the window that is used internally to get the messages.

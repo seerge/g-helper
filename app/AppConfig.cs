@@ -60,7 +60,7 @@ public static class AppConfig
     {
 
         GetModel();
-        return (_model is not null && _model.Contains(contains));
+        return (_model is not null && _model.ToLower().Contains(contains.ToLower()));
 
     }
     private static void initConfig()

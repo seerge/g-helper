@@ -1,4 +1,5 @@
 ﻿using CustomControls;
+using Microsoft.VisualBasic.Devices;
 using System.Diagnostics;
 
 namespace GHelper
@@ -93,6 +94,7 @@ namespace GHelper
             checkTopmost.Text = Properties.Strings.WindowTop;
             checkUSBC.Text = Properties.Strings.OptimizedUSBC;
             checkAutoApplyWindowsPowerMode.Text = Properties.Strings.ApplyWindowsPowerPlan;
+            checkFnLock.Text = Properties.Strings.FnLock;
 
             labelBacklight.Text = Properties.Strings.Keyboard;
             labelBacklightBar.Text = Properties.Strings.Lightbar;
@@ -228,7 +230,10 @@ namespace GHelper
 
         private void CheckFnLock_CheckedChanged(object? sender, EventArgs e)
         {
-            AppConfig.setConfig("fn_lock", (checkFnLock.Checked ? 1 : 0));
+            int fnLock = checkFnLock.Checked ? 1 : 0;
+            AppConfig.setConfig("fn_lock", fnLock);
+            Program.acpi.DeviceSet(AsusACPI.FnLock, (fnLock == 1) ? 0 : 1, "FnLock");
+
             Program.inputDispatcher.RegisterKeys();
         }
 

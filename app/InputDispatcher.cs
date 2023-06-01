@@ -128,6 +128,8 @@ namespace GHelper
 
         public void RegisterKeys()
         {
+            hook.UnregisterAll();
+
             // CTRL + SHIFT + F5 to cycle profiles
             if (AppConfig.getConfig("keybind_profile") != -1) keyProfile = (Keys)AppConfig.getConfig("keybind_profile");
             if (AppConfig.getConfig("keybind_app") != -1) keyApp = (Keys)AppConfig.getConfig("keybind_app");
@@ -135,17 +137,17 @@ namespace GHelper
             string actionM1 = AppConfig.getConfigString("m1");
             string actionM2 = AppConfig.getConfigString("m2");
 
-            hook.UnregisterAll();
 
             if (keyProfile != Keys.None) hook.RegisterHotKey(ModifierKeys.Shift | ModifierKeys.Control, keyProfile);
             if (keyApp != Keys.None) hook.RegisterHotKey(ModifierKeys.Shift | ModifierKeys.Control, keyApp);
 
-            if (actionM1 is not null && actionM1.Length > 0) hook.RegisterHotKey(ModifierKeys.None, Keys.VolumeDown);
-            if (actionM2 is not null && actionM2.Length > 0) hook.RegisterHotKey(ModifierKeys.None, Keys.VolumeUp);
+            if (!AppConfig.ContainsModel("Z13"))
+                if (actionM1 is not null && actionM1.Length > 0) hook.RegisterHotKey(ModifierKeys.None, Keys.VolumeDown);
+                if (actionM2 is not null && actionM2.Length > 0) hook.RegisterHotKey(ModifierKeys.None, Keys.VolumeUp);
 
             // FN-Lock group
 
-            if (AppConfig.isConfig("fn_lock"))
+            if (AppConfig.isConfig("fn_lock") && !AppConfig.ContainsModel("VivoBook"))
                 for (Keys i = Keys.F1; i < Keys.F12; i++) hook.RegisterHotKey(ModifierKeys.None, i);
 
         }
@@ -177,7 +179,28 @@ namespace GHelper
 
             if (e.Modifier == ModifierKeys.None)
             {
-                Debug.WriteLine(e.Key);
+                Logger.WriteLine(e.Key.ToString());
+
+                if (AppConfig.ContainsModel("Z13"))
+                {
+                    switch (e.Key)
+                    {
+                        case Keys.F2:
+                            KeyboardHook.KeyPress(Keys.VolumeDown);
+                            return;
+                        case Keys.F3:
+                            KeyboardHook.KeyPress(Keys.VolumeUp);
+                            return;
+                        case Keys.F4:
+                            KeyProcess("m3");
+                            return;
+                        case Keys.F11:
+                            HandleEvent(199);
+                            return;
+                    }
+                }
+                
+                
                 switch (e.Key)
                 {
                     case Keys.F1:
@@ -199,12 +222,17 @@ namespace GHelper
                         KeyboardHook.KeyPress(Keys.Snapshot);
                         break;
                     case Keys.F7:
+                        if (AppConfig.ContainsModel("TUF"))
+                            Program.settingsForm.BeginInvoke(Program.settingsForm.RunToast, ScreenBrightness.Adjust(-10) + "%", ToastIcon.BrightnessDown);
                         HandleEvent(16);
                         break;
                     case Keys.F8:
+                        if (AppConfig.ContainsModel("TUF")) 
+                            Program.settingsForm.BeginInvoke(Program.settingsForm.RunToast, ScreenBrightness.Adjust(+10) + "%", ToastIcon.BrightnessUp);
                         HandleEvent(32);
                         break;
                     case Keys.F9:
+                        KeyboardHook.KeyWinPress(Keys.P);
                         break;
                     case Keys.F10:
                         HandleEvent(107);
@@ -213,6 +241,7 @@ namespace GHelper
                         HandleEvent(108);
                         break;
                     case Keys.F12:
+                        KeyboardHook.KeyWinPress(Keys.A);
                         break;
                     case Keys.VolumeDown:
                         KeyProcess("m1");
@@ -306,6 +335,13 @@ namespace GHelper
             }
         }
 
+        static void ToggleFnLock()
+        {
+            int fnLock = AppConfig.isConfig("fn_lock") ? 0 : 1;
+            AppConfig.setConfig("fn_lock", fnLock);
+            Program.acpi.DeviceSet(AsusACPI.FnLock, (fnLock == 1) ? 0 : 1, "FnLock");
+        }
+
         static void TabletMode()
         {
             bool touchpadState = GetTouchpadState();
@@ -336,6 +372,9 @@ namespace GHelper
                     return;
                 case 189: // Tablet mode 
                     TabletMode();
+                    return;
+                case 78:    // Fn + ESC
+                    ToggleFnLock();
                     return;
             }
 

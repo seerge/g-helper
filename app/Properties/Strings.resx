@@ -267,6 +267,9 @@
   <data name="FansPower" xml:space="preserve">
     <value>Fans + Power</value>
   </data>
+  <data name="FnLock" xml:space="preserve">
+    <value>Process Fn+F hotkeys without Fn</value>
+  </data>
   <data name="GPUBoost" xml:space="preserve">
     <value>Dynamic Boost</value>
   </data>

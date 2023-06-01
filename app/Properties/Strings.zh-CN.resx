@@ -189,6 +189,12 @@
   <data name="Awake" xml:space="preserve">
     <value>唤醒时</value>
   </data>
+  <data name="BacklightTimeout" xml:space="preserve">
+    <value>使用电池时的背光超时时间</value>
+  </data>
+  <data name="BacklightTimeoutPlugged" xml:space="preserve">
+    <value>插入电源时的背光超时时间 (0 - 始终开启)</value>
+  </data>
   <data name="Balanced" xml:space="preserve">
     <value>平衡模式</value>
   </data>
@@ -258,6 +264,9 @@
   <data name="FansPower" xml:space="preserve">
     <value>风扇与电源设置</value>
   </data>
+  <data name="FnLock" xml:space="preserve">
+    <value>无需FN处理 Fn+F 热键</value>
+  </data>
   <data name="GPUChanging" xml:space="preserve">
     <value>切换中...</value>
   </data>
@@ -281,6 +290,9 @@
   </data>
   <data name="KeyboardAuto" xml:space="preserve">
     <value>电池模式下降低键盘亮度以省电，并在插上电源时恢复</value>
+  </data>
+  <data name="KillGpuApps" xml:space="preserve">
+    <value>当切换到集显模式时，停止所有正在使用dGPU的应用</value>
   </data>
   <data name="LaptopBacklight" xml:space="preserve">
     <value>背光</value>
@@ -324,6 +336,9 @@
   <data name="Multizone" xml:space="preserve">
     <value>多区域设置</value>
   </data>
+  <data name="MuteMic" xml:space="preserve">
+    <value>静音麦克风</value>
+  </data>
   <data name="OpenGHelper" xml:space="preserve">
     <value>打开G-Helper窗口</value>
   </data>
@@ -332,6 +347,9 @@
   </data>
   <data name="OptimizedGPUTooltip" xml:space="preserve">
     <value>使用电池时切换到集显模式，并在插上电源后重新启用标准模式</value>
+  </data>
+  <data name="OptimizedUSBC" xml:space="preserve">
+    <value>在自动切换模式下，使用USB-C充电器时禁用GPU</value>
   </data>
   <data name="Other" xml:space="preserve">
     <value>其他</value>
@@ -405,8 +423,14 @@
   <data name="VersionLabel" xml:space="preserve">
     <value>版本</value>
   </data>
+  <data name="VolumeDown" xml:space="preserve">
+    <value>音量降低</value>
+  </data>
   <data name="VolumeMute" xml:space="preserve">
     <value>静音</value>
+  </data>
+  <data name="VolumeUp" xml:space="preserve">
+    <value>音量增加</value>
   </data>
   <data name="WindowTop" xml:space="preserve">
     <value>窗口置顶</value>

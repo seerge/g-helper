@@ -19,9 +19,12 @@ public static class HardwareControl
     public static int GetFanMax()
     {
         int max = 58;
+        int configMax = AppConfig.getConfig("fan_max");
+        if (configMax > 100) configMax = 0; // skipping inadvequate settings
+
         if (AppConfig.ContainsModel("401")) max = 72;
         else if (AppConfig.ContainsModel("503")) max = 68;
-        return Math.Max(max, AppConfig.getConfig("fan_max"));
+        return Math.Max(max, configMax);
     }
 
     public static void SetFanMax(int fan)

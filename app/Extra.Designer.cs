@@ -83,13 +83,13 @@ namespace GHelper
             checkSleepLid = new CheckBox();
             checkShutdownLid = new CheckBox();
             groupOther = new GroupBox();
+            checkFnLock = new CheckBox();
             checkGpuApps = new CheckBox();
             checkAutoApplyWindowsPowerMode = new CheckBox();
             checkKeyboardAuto = new CheckBox();
             checkUSBC = new CheckBox();
             checkNoOverdrive = new CheckBox();
             checkTopmost = new CheckBox();
-            checkFnLock = new CheckBox();
             groupBindings.SuspendLayout();
             tableKeys.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureHelp).BeginInit();
@@ -700,6 +700,17 @@ namespace GHelper
             groupOther.TabStop = false;
             groupOther.Text = "Other";
             // 
+            // checkFnLock
+            // 
+            checkFnLock.AutoSize = true;
+            checkFnLock.Location = new Point(25, 89);
+            checkFnLock.MaximumSize = new Size(780, 0);
+            checkFnLock.Name = "checkFnLock";
+            checkFnLock.Size = new Size(397, 36);
+            checkFnLock.TabIndex = 49;
+            checkFnLock.Text = "Process Fn+F hotkeys without Fn";
+            checkFnLock.UseVisualStyleBackColor = true;
+            // 
             // checkGpuApps
             // 
             checkGpuApps.AutoSize = true;
@@ -760,17 +771,6 @@ namespace GHelper
             checkTopmost.TabIndex = 1;
             checkTopmost.Text = Strings.WindowTop;
             checkTopmost.UseVisualStyleBackColor = true;
-            // 
-            // checkFnLock
-            // 
-            checkFnLock.AutoSize = true;
-            checkFnLock.Location = new Point(25, 89);
-            checkFnLock.MaximumSize = new Size(780, 0);
-            checkFnLock.Name = "checkFnLock";
-            checkFnLock.Size = new Size(401, 36);
-            checkFnLock.TabIndex = 49;
-            checkFnLock.Text = "Process Fn+F hotkeys without FN";
-            checkFnLock.UseVisualStyleBackColor = true;
             // 
             // Extra
             // 
