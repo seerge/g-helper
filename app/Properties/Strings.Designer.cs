@@ -1024,6 +1024,15 @@ namespace GHelper.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Toggle Fn-Lock.
+        /// </summary>
+        internal static string ToggleFnLock {
+            get {
+                return ResourceManager.GetString("ToggleFnLock", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Toggle Miniled (if supported).
         /// </summary>
         internal static string ToggleMiniled {

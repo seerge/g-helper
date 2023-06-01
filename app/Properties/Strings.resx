@@ -438,6 +438,9 @@
   <data name="ToggleAura" xml:space="preserve">
     <value>Toggle Aura</value>
   </data>
+  <data name="ToggleFnLock" xml:space="preserve">
+    <value>Toggle Fn-Lock</value>
+  </data>
   <data name="ToggleMiniled" xml:space="preserve">
     <value>Toggle Miniled (if supported)</value>
   </data>

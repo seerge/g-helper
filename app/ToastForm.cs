@@ -51,7 +51,8 @@ namespace GHelper
         BacklightDown,
         Touchpad,
         Microphone,
-        MicrophoneMute
+        MicrophoneMute,
+        FnLock
     }
 
     public class  ToastForm : OSDNativeForm
@@ -102,6 +103,9 @@ namespace GHelper
                     break;
                 case ToastIcon.Touchpad:
                     icon = Properties.Resources.icons8_touchpad_96;
+                    break;
+                case ToastIcon.FnLock:
+                    icon = Properties.Resources.icons8_function;
                     break;
 
             }

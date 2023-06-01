@@ -267,6 +267,9 @@
 	<data name="FansPower" xml:space="preserve">
     <value>自定義設置</value>
   </data>
+	<data name="FnLock" xml:space="preserve">
+    <value>使用Fn+F1~F12的功能時不須按下Fn鍵</value>
+  </data>
 	<data name="GPUBoost" xml:space="preserve">
     <value>Dynamic Boost</value>
   </data>
@@ -308,6 +311,9 @@
   </data>
 	<data name="LaptopBacklight" xml:space="preserve">
     <value>背光</value>
+  </data>
+	<data name="KillGpuApps" xml:space="preserve">
+    <value>切換至節能模式時，關閉所有正在使用獨顯的程式</value>
   </data>
 	<data name="LaptopKeyboard" xml:space="preserve">
     <value>鍵盤背光:</value>

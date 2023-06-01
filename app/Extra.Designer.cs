@@ -90,6 +90,9 @@ namespace GHelper
             checkUSBC = new CheckBox();
             checkNoOverdrive = new CheckBox();
             checkTopmost = new CheckBox();
+            labelFNC = new Label();
+            comboFNC = new RComboBox();
+            textFNC = new TextBox();
             groupBindings.SuspendLayout();
             tableKeys.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureHelp).BeginInit();
@@ -110,7 +113,7 @@ namespace GHelper
             groupBindings.Dock = DockStyle.Top;
             groupBindings.Location = new Point(10, 10);
             groupBindings.Name = "groupBindings";
-            groupBindings.Size = new Size(954, 324);
+            groupBindings.Size = new Size(954, 376);
             groupBindings.TabIndex = 0;
             groupBindings.TabStop = false;
             groupBindings.Text = "Key Bindings";
@@ -121,31 +124,35 @@ namespace GHelper
             tableKeys.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20F));
             tableKeys.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 40F));
             tableKeys.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 40F));
+            tableKeys.Controls.Add(labelFNC, 0, 5);
             tableKeys.Controls.Add(textM2, 2, 1);
             tableKeys.Controls.Add(textM1, 2, 0);
             tableKeys.Controls.Add(comboM1, 1, 0);
             tableKeys.Controls.Add(labelM1, 0, 0);
-            tableKeys.Controls.Add(labelFNF4, 0, 4);
-            tableKeys.Controls.Add(comboFNF4, 1, 4);
             tableKeys.Controls.Add(comboM4, 1, 3);
             tableKeys.Controls.Add(comboM3, 1, 2);
-            tableKeys.Controls.Add(textFNF4, 2, 4);
             tableKeys.Controls.Add(textM4, 2, 3);
             tableKeys.Controls.Add(textM3, 2, 2);
             tableKeys.Controls.Add(labelM4, 0, 3);
             tableKeys.Controls.Add(labelM3, 0, 2);
             tableKeys.Controls.Add(labelM2, 0, 1);
             tableKeys.Controls.Add(comboM2, 1, 1);
+            tableKeys.Controls.Add(labelFNF4, 0, 4);
+            tableKeys.Controls.Add(comboFNF4, 1, 4);
+            tableKeys.Controls.Add(textFNF4, 2, 4);
+            tableKeys.Controls.Add(comboFNC, 1, 5);
+            tableKeys.Controls.Add(textFNC, 2, 5);
             tableKeys.Location = new Point(13, 38);
             tableKeys.Name = "tableKeys";
             tableKeys.Padding = new Padding(10);
-            tableKeys.RowCount = 5;
+            tableKeys.RowCount = 6;
             tableKeys.RowStyles.Add(new RowStyle(SizeType.Absolute, 50F));
             tableKeys.RowStyles.Add(new RowStyle(SizeType.Absolute, 50F));
             tableKeys.RowStyles.Add(new RowStyle(SizeType.Absolute, 50F));
             tableKeys.RowStyles.Add(new RowStyle(SizeType.Absolute, 50F));
-            tableKeys.RowStyles.Add(new RowStyle(SizeType.Absolute, 50F));
-            tableKeys.Size = new Size(897, 266);
+            tableKeys.RowStyles.Add(new RowStyle(SizeType.Absolute, 48F));
+            tableKeys.RowStyles.Add(new RowStyle(SizeType.Absolute, 22F));
+            tableKeys.Size = new Size(897, 318);
             tableKeys.TabIndex = 10;
             // 
             // textM2
@@ -305,7 +312,7 @@ namespace GHelper
             groupLight.Controls.Add(panelXMG);
             groupLight.Controls.Add(tableBacklight);
             groupLight.Dock = DockStyle.Top;
-            groupLight.Location = new Point(10, 334);
+            groupLight.Location = new Point(10, 386);
             groupLight.Name = "groupLight";
             groupLight.Size = new Size(954, 563);
             groupLight.TabIndex = 1;
@@ -693,7 +700,7 @@ namespace GHelper
             groupOther.Controls.Add(checkNoOverdrive);
             groupOther.Controls.Add(checkTopmost);
             groupOther.Dock = DockStyle.Top;
-            groupOther.Location = new Point(10, 897);
+            groupOther.Location = new Point(10, 949);
             groupOther.Name = "groupOther";
             groupOther.Size = new Size(954, 352);
             groupOther.TabIndex = 2;
@@ -771,6 +778,33 @@ namespace GHelper
             checkTopmost.TabIndex = 1;
             checkTopmost.Text = Strings.WindowTop;
             checkTopmost.UseVisualStyleBackColor = true;
+            // 
+            // labelFNC
+            // 
+            labelFNC.AutoSize = true;
+            labelFNC.Location = new Point(13, 258);
+            labelFNC.Name = "labelFNC";
+            labelFNC.Size = new Size(80, 32);
+            labelFNC.TabIndex = 15;
+            labelFNC.Text = "FN+C:";
+            // 
+            // comboFNC
+            // 
+            comboFNC.BorderColor = Color.White;
+            comboFNC.ButtonColor = Color.FromArgb(255, 255, 255);
+            comboFNC.FormattingEnabled = true;
+            comboFNC.Location = new Point(188, 261);
+            comboFNC.Name = "comboFNC";
+            comboFNC.Size = new Size(312, 40);
+            comboFNC.TabIndex = 16;
+            // 
+            // textFNC
+            // 
+            textFNC.Location = new Point(538, 261);
+            textFNC.Name = "textFNC";
+            textFNC.PlaceholderText = "action";
+            textFNC.Size = new Size(346, 39);
+            textFNC.TabIndex = 17;
             // 
             // Extra
             // 
@@ -873,5 +907,8 @@ namespace GHelper
         private Label labelBacklightTimeoutPlugged;
         private CheckBox checkGpuApps;
         private CheckBox checkFnLock;
+        private Label labelFNC;
+        private RComboBox comboFNC;
+        private TextBox textFNC;
     }
 }

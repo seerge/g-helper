@@ -17,6 +17,7 @@ namespace GHelper
           {"performance", Properties.Strings.PerformanceMode},
           {"screen", Properties.Strings.ToggleScreen},
           {"miniled", Properties.Strings.ToggleMiniled},
+          {"fnlock", Properties.Strings.ToggleFnLock},
           {"custom", Properties.Strings.Custom}
         };
 
@@ -40,6 +41,10 @@ namespace GHelper
                 case "fnf4":
                     customActions[""] = Properties.Strings.ToggleAura;
                     customActions.Remove("aura");
+                    break;
+                case "fnc":
+                    customActions[""] = Properties.Strings.ToggleFnLock;
+                    customActions.Remove("fnlock");
                     break;
             }
 
@@ -112,6 +117,7 @@ namespace GHelper
             SetKeyCombo(comboM3, textM3, "m3");
             SetKeyCombo(comboM4, textM4, "m4");
             SetKeyCombo(comboFNF4, textFNF4, "fnf4");
+            SetKeyCombo(comboFNC, textFNC, "fnc");
 
             Shown += Keyboard_Shown;
 

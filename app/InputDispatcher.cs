@@ -198,8 +198,24 @@ namespace GHelper
                             return;
                     }
                 }
-                
-                
+
+                if (AppConfig.ContainsModel("GA401I"))
+                {
+                    switch (e.Key)
+                    {
+                        case Keys.F2:
+                            KeyboardHook.KeyPress(Keys.MediaPreviousTrack);
+                            return;
+                        case Keys.F3:
+                            KeyboardHook.KeyPress(Keys.MediaPlayPause);
+                            return;
+                        case Keys.F4:
+                            KeyboardHook.KeyPress(Keys.MediaNextTrack);
+                            return;
+                    }
+                }
+
+
                 switch (e.Key)
                 {
                     case Keys.F1:
@@ -277,6 +293,8 @@ namespace GHelper
                     action = "performance";
                 if (name == "m3" && !OptimizationService.IsRunning())
                     action = "micmute";
+                if (name == "fnc")
+                    action = "fnlock";
             }
 
             switch (action)
@@ -308,8 +326,8 @@ namespace GHelper
                         Program.SettingsToggle();
                     });
                     break;
-                case "custom":
-                    CustomKey(name);
+                case "fnlock":
+                    ToggleFnLock();
                     break;
                 case "micmute":
                     using (var enumerator = new MMDeviceEnumerator())
@@ -319,6 +337,9 @@ namespace GHelper
                         commDevice.AudioEndpointVolume.Mute = muteStatus;
                         Program.settingsForm.BeginInvoke(Program.settingsForm.RunToast, muteStatus ? "Muted" : "Unmuted", muteStatus ? ToastIcon.MicrophoneMute : ToastIcon.Microphone);
                     }
+                    break;
+                case "custom":
+                    CustomKey(name);
                     break;
 
                 default:
@@ -338,7 +359,13 @@ namespace GHelper
         {
             int fnLock = AppConfig.isConfig("fn_lock") ? 0 : 1;
             AppConfig.setConfig("fn_lock", fnLock);
-            Program.acpi.DeviceSet(AsusACPI.FnLock, (fnLock == 1) ? 0 : 1, "FnLock");
+
+            if (AppConfig.ContainsModel("VivoBook"))
+                Program.acpi.DeviceSet(AsusACPI.FnLock, (fnLock == 1) ? 0 : 1, "FnLock");
+            else
+                Program.settingsForm.BeginInvoke(Program.inputDispatcher.RegisterKeys);
+
+            Program.settingsForm.BeginInvoke(Program.settingsForm.RunToast, "Fn-Lock "+(fnLock==1?"On":"Off"), ToastIcon.FnLock);
         }
 
         static void TabletMode()
@@ -369,11 +396,14 @@ namespace GHelper
                 case 178:   // FN+F4
                     KeyProcess("fnf4");
                     return;
-                case 189: // Tablet mode 
-                    TabletMode();
+                case 158:   // Fn + C
+                    KeyProcess("fnc");
                     return;
                 case 78:    // Fn + ESC
                     ToggleFnLock();
+                    return;
+                case 189: // Tablet mode 
+                    TabletMode();
                     return;
             }
 
