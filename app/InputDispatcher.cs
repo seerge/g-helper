@@ -137,7 +137,6 @@ namespace GHelper
             string actionM1 = AppConfig.getConfigString("m1");
             string actionM2 = AppConfig.getConfigString("m2");
 
-
             if (keyProfile != Keys.None) hook.RegisterHotKey(ModifierKeys.Shift | ModifierKeys.Control, keyProfile);
             if (keyApp != Keys.None) hook.RegisterHotKey(ModifierKeys.Shift | ModifierKeys.Control, keyApp);
 
@@ -148,7 +147,7 @@ namespace GHelper
             // FN-Lock group
 
             if (AppConfig.isConfig("fn_lock") && !AppConfig.ContainsModel("VivoBook"))
-                for (Keys i = Keys.F1; i < Keys.F12; i++) hook.RegisterHotKey(ModifierKeys.None, i);
+                for (Keys i = Keys.F1; i <= Keys.F11; i++) hook.RegisterHotKey(ModifierKeys.None, i);
 
         }
 
