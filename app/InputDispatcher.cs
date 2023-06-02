@@ -53,7 +53,7 @@ namespace GHelper
     public class InputDispatcher
     {
         System.Timers.Timer timer = new System.Timers.Timer(1000);
-        public bool backlight = true;
+        public bool backlightActivity = true;
 
         public static Keys keyProfile = Keys.F5;
         public static Keys keyApp = Keys.F12;
@@ -80,8 +80,9 @@ namespace GHelper
 
         private void Timer_Elapsed(object? sender, System.Timers.ElapsedEventArgs e)
         {
-            TimeSpan iddle = NativeMethods.GetIdleTime();
+            if (GetBacklight() == 0) return;
 
+            TimeSpan iddle = NativeMethods.GetIdleTime();
             int kb_timeout;
 
             if (SystemInformation.PowerStatus.PowerLineStatus == PowerLineStatus.Online)
@@ -91,16 +92,16 @@ namespace GHelper
 
             if (kb_timeout == 0) return;
 
-            if (backlight && iddle.TotalSeconds > kb_timeout)
+            if (backlightActivity && iddle.TotalSeconds > kb_timeout)
             {
-                backlight = false;
-                AsusUSB.ApplyBrightness(0);
+                backlightActivity = false;
+                AsusUSB.ApplyBrightness(0, "Timeout");
             }
 
-            if (!backlight && iddle.TotalSeconds < kb_timeout)
+            if (!backlightActivity && iddle.TotalSeconds < kb_timeout)
             {
-                backlight = true;
-                AsusUSB.ApplyBrightness(AppConfig.getConfig("keyboard_brightness"));
+                backlightActivity = true;
+                SetBacklightAuto();
             }
 
             //Debug.WriteLine(iddle.TotalSeconds);
@@ -410,33 +411,61 @@ namespace GHelper
             if (!OptimizationService.IsRunning()) OptimizationEvent(EventID);
         }
 
+
+        static int GetBacklight()
+        {
+            int backlight_power = AppConfig.getConfig("keyboard_brightness", 1);
+            int backlight_battery = AppConfig.getConfig("keyboard_brightness_ac", 1);
+            bool onBattery = SystemInformation.PowerStatus.PowerLineStatus != PowerLineStatus.Online;
+
+            return onBattery ? Math.Min(backlight_battery, backlight_power) : Math.Max(backlight_battery, backlight_power);
+        }
+
+        public static void SetBacklightAuto()
+        {
+            AsusUSB.ApplyBrightness(GetBacklight(), "Auto");
+        }
+
+        public static void SetBacklight(int delta)
+        {
+            int backlight_power = AppConfig.getConfig("keyboard_brightness", 1);
+            int backlight_battery = AppConfig.getConfig("keyboard_brightness_ac", 1);
+            bool onBattery = SystemInformation.PowerStatus.PowerLineStatus != PowerLineStatus.Online;
+
+            int backlight = onBattery ? backlight_battery : backlight_power;
+
+            if (delta >= 4)
+                backlight = (++backlight % 4);
+            else 
+                backlight = Math.Max(Math.Min(3, backlight + delta), 0);
+
+            if (onBattery)
+                AppConfig.setConfig("keyboard_brightness_ac", backlight);
+            else
+                AppConfig.setConfig("keyboard_brightness", backlight);
+
+            AsusUSB.ApplyBrightness(backlight, "HotKey");
+
+            string[] backlightNames = new string[] { "Off", "Low", "Mid", "Max" };
+            Program.settingsForm.BeginInvoke(Program.settingsForm.RunToast, backlightNames[backlight], delta > 0 ? ToastIcon.BacklightUp : ToastIcon.BacklightDown);
+
+        }
+
         static void OptimizationEvent(int EventID)
         { 
 
             // Asus Optimization service Events 
 
-            int backlight = AppConfig.getConfig("keyboard_brightness");
-            string[] backlightNames = new string[] { "Off", "Low", "Mid", "Max" };
-
             switch (EventID)
             {
                 case 197: // FN+F2
-                    backlight = Math.Max(0, backlight - 1);
-                    AppConfig.setConfig("keyboard_brightness", backlight);
-                    AsusUSB.ApplyBrightness(backlight);
-                    Program.settingsForm.BeginInvoke(Program.settingsForm.RunToast, backlightNames[backlight], ToastIcon.BacklightDown);
+                    SetBacklight(-1);
                     break;
                 case 196: // FN+F3
-                    backlight = Math.Min(3, backlight + 1);
-                    AppConfig.setConfig("keyboard_brightness", backlight);
-                    AsusUSB.ApplyBrightness(backlight);
-                    Program.settingsForm.BeginInvoke(Program.settingsForm.RunToast, backlightNames[backlight], ToastIcon.BacklightUp);
+                    SetBacklight(1);
                     break;
                 case 199: // ON Z13 - FN+F11 - cycles backlight
-                    if (++backlight > 3) backlight = 0;
-                    AppConfig.setConfig("keyboard_brightness", backlight);
-                    AsusUSB.ApplyBrightness(backlight);
-                    Program.settingsForm.BeginInvoke(Program.settingsForm.RunToast, backlightNames[backlight], ToastIcon.BacklightUp);
+                    SetBacklight(4);
                     break;
                 case 16: // FN+F7
                     Program.acpi.DeviceSet(AsusACPI.UniversalControl, 0x10, "Brightness");

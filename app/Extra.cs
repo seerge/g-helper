@@ -94,7 +94,6 @@ namespace GHelper
             labelBacklightTimeout.Text = Properties.Strings.BacklightTimeout;
             labelBacklightTimeoutPlugged.Text = Properties.Strings.BacklightTimeoutPlugged;
 
-            checkKeyboardAuto.Text = Properties.Strings.KeyboardAuto;
             checkNoOverdrive.Text = Properties.Strings.DisableOverdrive;
             checkTopmost.Text = Properties.Strings.WindowTop;
             checkUSBC.Text = Properties.Strings.OptimizedUSBC;
@@ -199,9 +198,6 @@ namespace GHelper
             checkTopmost.Checked = (AppConfig.getConfig("topmost") == 1);
             checkTopmost.CheckedChanged += CheckTopmost_CheckedChanged; ;
 
-            checkKeyboardAuto.Checked = (AppConfig.getConfig("keyboard_auto") == 1);
-            checkKeyboardAuto.CheckedChanged += CheckKeyboardAuto_CheckedChanged;
-
             checkNoOverdrive.Checked = (AppConfig.getConfig("no_overdrive") == 1);
             checkNoOverdrive.CheckedChanged += CheckNoOverdrive_CheckedChanged;
 
@@ -283,10 +279,6 @@ namespace GHelper
             Program.settingsForm.AutoScreen(true);
         }
 
-        private void CheckKeyboardAuto_CheckedChanged(object? sender, EventArgs e)
-        {
-            AppConfig.setConfig("keyboard_auto", (checkKeyboardAuto.Checked ? 1 : 0));
-        }
 
         private void CheckTopmost_CheckedChanged(object? sender, EventArgs e)
         {

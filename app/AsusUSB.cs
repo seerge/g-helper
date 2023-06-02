@@ -249,7 +249,7 @@ namespace GHelper
         }
 
 
-        public static void ApplyBrightness(int brightness)
+        public static void ApplyBrightness(int brightness, string log = "Backlight")
         {
 
             if (AppConfig.ContainsModel("TUF"))
@@ -266,7 +266,7 @@ namespace GHelper
                 {
                     device.OpenDevice();
                     device.WriteFeatureData(msg);
-                    Logger.WriteLine("KB Backlight:" + BitConverter.ToString(msg));
+                    Logger.WriteLine(log + ":" + BitConverter.ToString(msg));
                     device.CloseDevice();
                 }
 

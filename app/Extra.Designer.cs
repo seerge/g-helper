@@ -33,21 +33,24 @@ namespace GHelper
         {
             groupBindings = new GroupBox();
             tableKeys = new TableLayoutPanel();
+            labelFNC = new Label();
             textM2 = new TextBox();
             textM1 = new TextBox();
             comboM1 = new RComboBox();
             labelM1 = new Label();
-            labelFNF4 = new Label();
-            comboFNF4 = new RComboBox();
             comboM4 = new RComboBox();
             comboM3 = new RComboBox();
-            textFNF4 = new TextBox();
             textM4 = new TextBox();
             textM3 = new TextBox();
             labelM4 = new Label();
             labelM3 = new Label();
             labelM2 = new Label();
             comboM2 = new RComboBox();
+            labelFNF4 = new Label();
+            comboFNF4 = new RComboBox();
+            textFNF4 = new TextBox();
+            comboFNC = new RComboBox();
+            textFNC = new TextBox();
             pictureHelp = new PictureBox();
             groupLight = new GroupBox();
             panelBacklightExtra = new Panel();
@@ -86,13 +89,9 @@ namespace GHelper
             checkFnLock = new CheckBox();
             checkGpuApps = new CheckBox();
             checkAutoApplyWindowsPowerMode = new CheckBox();
-            checkKeyboardAuto = new CheckBox();
             checkUSBC = new CheckBox();
             checkNoOverdrive = new CheckBox();
             checkTopmost = new CheckBox();
-            labelFNC = new Label();
-            comboFNC = new RComboBox();
-            textFNC = new TextBox();
             groupBindings.SuspendLayout();
             tableKeys.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureHelp).BeginInit();
@@ -108,12 +107,13 @@ namespace GHelper
             // 
             // groupBindings
             // 
+            groupBindings.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             groupBindings.Controls.Add(tableKeys);
             groupBindings.Controls.Add(pictureHelp);
             groupBindings.Dock = DockStyle.Top;
             groupBindings.Location = new Point(10, 10);
             groupBindings.Name = "groupBindings";
-            groupBindings.Size = new Size(954, 376);
+            groupBindings.Size = new Size(954, 360);
             groupBindings.TabIndex = 0;
             groupBindings.TabStop = false;
             groupBindings.Text = "Key Bindings";
@@ -152,12 +152,21 @@ namespace GHelper
             tableKeys.RowStyles.Add(new RowStyle(SizeType.Absolute, 50F));
             tableKeys.RowStyles.Add(new RowStyle(SizeType.Absolute, 48F));
             tableKeys.RowStyles.Add(new RowStyle(SizeType.Absolute, 22F));
-            tableKeys.Size = new Size(897, 318);
+            tableKeys.Size = new Size(900, 308);
             tableKeys.TabIndex = 10;
+            // 
+            // labelFNC
+            // 
+            labelFNC.AutoSize = true;
+            labelFNC.Location = new Point(13, 258);
+            labelFNC.Name = "labelFNC";
+            labelFNC.Size = new Size(80, 32);
+            labelFNC.TabIndex = 15;
+            labelFNC.Text = "FN+C:";
             // 
             // textM2
             // 
-            textM2.Location = new Point(538, 63);
+            textM2.Location = new Point(541, 63);
             textM2.Name = "textM2";
             textM2.PlaceholderText = "action";
             textM2.Size = new Size(346, 39);
@@ -165,7 +174,7 @@ namespace GHelper
             // 
             // textM1
             // 
-            textM1.Location = new Point(538, 13);
+            textM1.Location = new Point(541, 13);
             textM1.Name = "textM1";
             textM1.PlaceholderText = "action";
             textM1.Size = new Size(346, 39);
@@ -177,7 +186,7 @@ namespace GHelper
             comboM1.ButtonColor = Color.FromArgb(255, 255, 255);
             comboM1.FormattingEnabled = true;
             comboM1.Items.AddRange(new object[] { Strings.Default, Strings.VolumeMute, Strings.PlayPause, Strings.PrintScreen, Strings.ToggleAura, Strings.Custom });
-            comboM1.Location = new Point(188, 13);
+            comboM1.Location = new Point(189, 13);
             comboM1.Name = "comboM1";
             comboM1.Size = new Size(312, 40);
             comboM1.TabIndex = 11;
@@ -191,32 +200,13 @@ namespace GHelper
             labelM1.TabIndex = 9;
             labelM1.Text = "M1:";
             // 
-            // labelFNF4
-            // 
-            labelFNF4.AutoSize = true;
-            labelFNF4.Location = new Point(13, 210);
-            labelFNF4.Name = "labelFNF4";
-            labelFNF4.Size = new Size(90, 32);
-            labelFNF4.TabIndex = 6;
-            labelFNF4.Text = "FN+F4:";
-            // 
-            // comboFNF4
-            // 
-            comboFNF4.BorderColor = Color.White;
-            comboFNF4.ButtonColor = Color.FromArgb(255, 255, 255);
-            comboFNF4.FormattingEnabled = true;
-            comboFNF4.Location = new Point(188, 213);
-            comboFNF4.Name = "comboFNF4";
-            comboFNF4.Size = new Size(312, 40);
-            comboFNF4.TabIndex = 7;
-            // 
             // comboM4
             // 
             comboM4.BorderColor = Color.White;
             comboM4.ButtonColor = Color.FromArgb(255, 255, 255);
             comboM4.FormattingEnabled = true;
             comboM4.Items.AddRange(new object[] { Strings.PerformanceMode, Strings.OpenGHelper, Strings.Custom });
-            comboM4.Location = new Point(188, 163);
+            comboM4.Location = new Point(189, 163);
             comboM4.Name = "comboM4";
             comboM4.Size = new Size(312, 40);
             comboM4.TabIndex = 3;
@@ -227,22 +217,14 @@ namespace GHelper
             comboM3.ButtonColor = Color.FromArgb(255, 255, 255);
             comboM3.FormattingEnabled = true;
             comboM3.Items.AddRange(new object[] { Strings.Default, Strings.VolumeMute, Strings.PlayPause, Strings.PrintScreen, Strings.ToggleAura, Strings.Custom });
-            comboM3.Location = new Point(188, 113);
+            comboM3.Location = new Point(189, 113);
             comboM3.Name = "comboM3";
             comboM3.Size = new Size(312, 40);
             comboM3.TabIndex = 1;
             // 
-            // textFNF4
-            // 
-            textFNF4.Location = new Point(538, 213);
-            textFNF4.Name = "textFNF4";
-            textFNF4.PlaceholderText = "action";
-            textFNF4.Size = new Size(346, 39);
-            textFNF4.TabIndex = 8;
-            // 
             // textM4
             // 
-            textM4.Location = new Point(538, 163);
+            textM4.Location = new Point(541, 163);
             textM4.Name = "textM4";
             textM4.PlaceholderText = "action";
             textM4.Size = new Size(346, 39);
@@ -250,7 +232,7 @@ namespace GHelper
             // 
             // textM3
             // 
-            textM3.Location = new Point(538, 113);
+            textM3.Location = new Point(541, 113);
             textM3.Name = "textM3";
             textM3.PlaceholderText = "action";
             textM3.Size = new Size(346, 39);
@@ -289,10 +271,55 @@ namespace GHelper
             comboM2.ButtonColor = Color.FromArgb(255, 255, 255);
             comboM2.FormattingEnabled = true;
             comboM2.Items.AddRange(new object[] { Strings.Default, Strings.VolumeMute, Strings.PlayPause, Strings.PrintScreen, Strings.ToggleAura, Strings.Custom });
-            comboM2.Location = new Point(188, 63);
+            comboM2.Location = new Point(189, 63);
             comboM2.Name = "comboM2";
             comboM2.Size = new Size(312, 40);
             comboM2.TabIndex = 12;
+            // 
+            // labelFNF4
+            // 
+            labelFNF4.AutoSize = true;
+            labelFNF4.Location = new Point(13, 210);
+            labelFNF4.Name = "labelFNF4";
+            labelFNF4.Size = new Size(90, 32);
+            labelFNF4.TabIndex = 6;
+            labelFNF4.Text = "FN+F4:";
+            // 
+            // comboFNF4
+            // 
+            comboFNF4.BorderColor = Color.White;
+            comboFNF4.ButtonColor = Color.FromArgb(255, 255, 255);
+            comboFNF4.FormattingEnabled = true;
+            comboFNF4.Location = new Point(189, 213);
+            comboFNF4.Name = "comboFNF4";
+            comboFNF4.Size = new Size(312, 40);
+            comboFNF4.TabIndex = 7;
+            // 
+            // textFNF4
+            // 
+            textFNF4.Location = new Point(541, 213);
+            textFNF4.Name = "textFNF4";
+            textFNF4.PlaceholderText = "action";
+            textFNF4.Size = new Size(346, 39);
+            textFNF4.TabIndex = 8;
+            // 
+            // comboFNC
+            // 
+            comboFNC.BorderColor = Color.White;
+            comboFNC.ButtonColor = Color.FromArgb(255, 255, 255);
+            comboFNC.FormattingEnabled = true;
+            comboFNC.Location = new Point(189, 261);
+            comboFNC.Name = "comboFNC";
+            comboFNC.Size = new Size(312, 40);
+            comboFNC.TabIndex = 16;
+            // 
+            // textFNC
+            // 
+            textFNC.Location = new Point(541, 261);
+            textFNC.Name = "textFNC";
+            textFNC.PlaceholderText = "action";
+            textFNC.Size = new Size(346, 39);
+            textFNC.TabIndex = 17;
             // 
             // pictureHelp
             // 
@@ -312,7 +339,7 @@ namespace GHelper
             groupLight.Controls.Add(panelXMG);
             groupLight.Controls.Add(tableBacklight);
             groupLight.Dock = DockStyle.Top;
-            groupLight.Location = new Point(10, 386);
+            groupLight.Location = new Point(10, 370);
             groupLight.Name = "groupLight";
             groupLight.Size = new Size(954, 563);
             groupLight.TabIndex = 1;
@@ -695,14 +722,13 @@ namespace GHelper
             groupOther.Controls.Add(checkFnLock);
             groupOther.Controls.Add(checkGpuApps);
             groupOther.Controls.Add(checkAutoApplyWindowsPowerMode);
-            groupOther.Controls.Add(checkKeyboardAuto);
             groupOther.Controls.Add(checkUSBC);
             groupOther.Controls.Add(checkNoOverdrive);
             groupOther.Controls.Add(checkTopmost);
             groupOther.Dock = DockStyle.Top;
-            groupOther.Location = new Point(10, 949);
+            groupOther.Location = new Point(10, 933);
             groupOther.Name = "groupOther";
-            groupOther.Size = new Size(954, 352);
+            groupOther.Size = new Size(954, 300);
             groupOther.TabIndex = 2;
             groupOther.TabStop = false;
             groupOther.Text = "Other";
@@ -710,7 +736,7 @@ namespace GHelper
             // checkFnLock
             // 
             checkFnLock.AutoSize = true;
-            checkFnLock.Location = new Point(25, 89);
+            checkFnLock.Location = new Point(25, 44);
             checkFnLock.MaximumSize = new Size(780, 0);
             checkFnLock.Name = "checkFnLock";
             checkFnLock.Size = new Size(397, 36);
@@ -721,7 +747,7 @@ namespace GHelper
             // checkGpuApps
             // 
             checkGpuApps.AutoSize = true;
-            checkGpuApps.Location = new Point(25, 128);
+            checkGpuApps.Location = new Point(25, 83);
             checkGpuApps.Name = "checkGpuApps";
             checkGpuApps.Size = new Size(544, 36);
             checkGpuApps.TabIndex = 48;
@@ -731,28 +757,17 @@ namespace GHelper
             // checkAutoApplyWindowsPowerMode
             // 
             checkAutoApplyWindowsPowerMode.AutoSize = true;
-            checkAutoApplyWindowsPowerMode.Location = new Point(25, 296);
+            checkAutoApplyWindowsPowerMode.Location = new Point(25, 251);
             checkAutoApplyWindowsPowerMode.Name = "checkAutoApplyWindowsPowerMode";
             checkAutoApplyWindowsPowerMode.Size = new Size(416, 36);
             checkAutoApplyWindowsPowerMode.TabIndex = 47;
             checkAutoApplyWindowsPowerMode.Text = "Auto Adjust Windows Power Mode";
             checkAutoApplyWindowsPowerMode.UseVisualStyleBackColor = true;
             // 
-            // checkKeyboardAuto
-            // 
-            checkKeyboardAuto.AutoSize = true;
-            checkKeyboardAuto.Location = new Point(25, 50);
-            checkKeyboardAuto.MaximumSize = new Size(780, 0);
-            checkKeyboardAuto.Name = "checkKeyboardAuto";
-            checkKeyboardAuto.Size = new Size(712, 36);
-            checkKeyboardAuto.TabIndex = 46;
-            checkKeyboardAuto.Text = Strings.KeyboardAuto;
-            checkKeyboardAuto.UseVisualStyleBackColor = true;
-            // 
             // checkUSBC
             // 
             checkUSBC.AutoSize = true;
-            checkUSBC.Location = new Point(25, 170);
+            checkUSBC.Location = new Point(25, 125);
             checkUSBC.Name = "checkUSBC";
             checkUSBC.Size = new Size(659, 36);
             checkUSBC.TabIndex = 4;
@@ -762,7 +777,7 @@ namespace GHelper
             // checkNoOverdrive
             // 
             checkNoOverdrive.AutoSize = true;
-            checkNoOverdrive.Location = new Point(25, 212);
+            checkNoOverdrive.Location = new Point(25, 167);
             checkNoOverdrive.Name = "checkNoOverdrive";
             checkNoOverdrive.Size = new Size(307, 36);
             checkNoOverdrive.TabIndex = 3;
@@ -772,39 +787,12 @@ namespace GHelper
             // checkTopmost
             // 
             checkTopmost.AutoSize = true;
-            checkTopmost.Location = new Point(25, 254);
+            checkTopmost.Location = new Point(25, 209);
             checkTopmost.Name = "checkTopmost";
             checkTopmost.Size = new Size(390, 36);
             checkTopmost.TabIndex = 1;
             checkTopmost.Text = Strings.WindowTop;
             checkTopmost.UseVisualStyleBackColor = true;
-            // 
-            // labelFNC
-            // 
-            labelFNC.AutoSize = true;
-            labelFNC.Location = new Point(13, 258);
-            labelFNC.Name = "labelFNC";
-            labelFNC.Size = new Size(80, 32);
-            labelFNC.TabIndex = 15;
-            labelFNC.Text = "FN+C:";
-            // 
-            // comboFNC
-            // 
-            comboFNC.BorderColor = Color.White;
-            comboFNC.ButtonColor = Color.FromArgb(255, 255, 255);
-            comboFNC.FormattingEnabled = true;
-            comboFNC.Location = new Point(188, 261);
-            comboFNC.Name = "comboFNC";
-            comboFNC.Size = new Size(312, 40);
-            comboFNC.TabIndex = 16;
-            // 
-            // textFNC
-            // 
-            textFNC.Location = new Point(538, 261);
-            textFNC.Name = "textFNC";
-            textFNC.PlaceholderText = "action";
-            textFNC.Size = new Size(346, 39);
-            textFNC.TabIndex = 17;
             // 
             // Extra
             // 
@@ -812,7 +800,7 @@ namespace GHelper
             AutoScaleMode = AutoScaleMode.Font;
             AutoSize = true;
             AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            ClientSize = new Size(974, 1262);
+            ClientSize = new Size(974, 1247);
             Controls.Add(groupOther);
             Controls.Add(groupLight);
             Controls.Add(groupBindings);
@@ -894,7 +882,6 @@ namespace GHelper
         private CheckBox checkXMG;
         private Label labelBacklightTimeout;
         private NumericUpDown numericBacklightTime;
-        private CheckBox checkKeyboardAuto;
         private CheckBox checkAutoApplyWindowsPowerMode;
         private TableLayoutPanel tableKeys;
         private Label labelM1;

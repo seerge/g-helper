@@ -181,6 +181,13 @@ namespace GHelper
                 CheckForUpdatesAsync();
             });
 
+            Activated += SettingsForm_Activated;
+
+        }
+
+        private void SettingsForm_Activated(object? sender, EventArgs e)
+        {
+            if (fans != null && fans.Text != "") fans.BringToFront();
         }
 
         protected override void WndProc(ref Message m)
@@ -1279,15 +1286,7 @@ namespace GHelper
         public void AutoKeyboard()
         {
             AsusUSB.Init();
-
-            int backlight = AppConfig.getConfig("keyboard_brightness");
-
-            if (AppConfig.isConfig("keyboard_auto") && SystemInformation.PowerStatus.PowerLineStatus != PowerLineStatus.Online)
-                AsusUSB.ApplyBrightness(0);
-            else
-                AsusUSB.ApplyBrightness(backlight);
-
-
+            InputDispatcher.SetBacklightAuto();
         }
 
         public void AutoPerformance()
