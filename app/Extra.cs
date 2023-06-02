@@ -207,10 +207,7 @@ namespace GHelper
             checkAutoApplyWindowsPowerMode.Checked = (AppConfig.getConfig("auto_apply_power_plan") != 0);
             checkAutoApplyWindowsPowerMode.CheckedChanged += checkAutoApplyWindowsPowerMode_CheckedChanged;
 
-            int kb_brightness = AppConfig.getConfig("keyboard_brightness");
-            trackBrightness.Value = (kb_brightness >= 0 && kb_brightness <= 3) ? kb_brightness : 3;
-
-            pictureHelp.Click += PictureHelp_Click;
+            trackBrightness.Value = InputDispatcher.GetBacklight();
             trackBrightness.Scroll += TrackBrightness_Scroll;
 
             panelXMG.Visible = (Program.acpi.DeviceGet(AsusACPI.GPUXGConnected) == 1);
@@ -228,6 +225,8 @@ namespace GHelper
 
             checkFnLock.Checked = AppConfig.isConfig("fn_lock");
             checkFnLock.CheckedChanged += CheckFnLock_CheckedChanged; ;
+
+            pictureHelp.Click += PictureHelp_Click;
         }
 
         private void CheckFnLock_CheckedChanged(object? sender, EventArgs e)
@@ -265,6 +264,7 @@ namespace GHelper
         private void TrackBrightness_Scroll(object? sender, EventArgs e)
         {
             AppConfig.setConfig("keyboard_brightness", trackBrightness.Value);
+            AppConfig.setConfig("keyboard_brightness_ac", trackBrightness.Value);
             AsusUSB.ApplyBrightness(trackBrightness.Value, "Slider");
         }
 

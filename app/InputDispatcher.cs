@@ -101,7 +101,7 @@ namespace GHelper
             if (!backlightActivity && iddle.TotalSeconds < kb_timeout)
             {
                 backlightActivity = true;
-                SetBacklightAuto();
+                SetBacklight();
             }
 
             //Debug.WriteLine(iddle.TotalSeconds);
@@ -412,18 +412,26 @@ namespace GHelper
         }
 
 
-        static int GetBacklight()
+        public static int GetBacklight(bool auto = false)
         {
             int backlight_power = AppConfig.getConfig("keyboard_brightness", 1);
             int backlight_battery = AppConfig.getConfig("keyboard_brightness_ac", 1);
             bool onBattery = SystemInformation.PowerStatus.PowerLineStatus != PowerLineStatus.Online;
 
-            return onBattery ? Math.Min(backlight_battery, backlight_power) : Math.Max(backlight_battery, backlight_power);
+            int backlight;
+
+            if (auto)
+                backlight = onBattery ? Math.Min(backlight_battery, backlight_power) : Math.Max(backlight_battery, backlight_power);
+            else
+                backlight = onBattery ? backlight_battery : backlight_power;
+
+            return Math.Max(Math.Min(3, backlight), 0);
         }
 
-        public static void SetBacklightAuto()
+        public static void SetBacklight(bool auto = false)
         {
-            AsusUSB.ApplyBrightness(GetBacklight(), "Auto");
+            if (auto) AsusUSB.Init();
+            AsusUSB.ApplyBrightness(GetBacklight(auto), "Auto");
         }
 
         public static void SetBacklight(int delta)

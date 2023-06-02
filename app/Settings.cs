@@ -1295,8 +1295,7 @@ namespace GHelper
 
         public void AutoKeyboard()
         {
-            AsusUSB.Init();
-            InputDispatcher.SetBacklightAuto();
+            InputDispatcher.SetBacklight(true);
         }
 
         public void AutoPerformance()
