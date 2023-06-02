@@ -327,6 +327,8 @@ public class NativeMethods
 
     }
 
+    [DllImport("User32.dll")]
+    public static extern bool SetForegroundWindow(IntPtr handle);
 
     private const int WM_SYSCOMMAND = 0x0112;
     private const int SC_MONITORPOWER = 0xF170;

@@ -181,14 +181,8 @@ namespace GHelper
                 CheckForUpdatesAsync();
             });
 
-            Activated += SettingsForm_Activated;
-
         }
 
-        private void SettingsForm_Activated(object? sender, EventArgs e)
-        {
-            if (fans != null && fans.Text != "") fans.BringToFront();
-        }
 
         protected override void WndProc(ref Message m)
         {
