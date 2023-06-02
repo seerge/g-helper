@@ -15,6 +15,9 @@ Lightweight Armoury Crate alternative for Asus laptops. A small utility that all
 4. Simple and clean native UI with easy access to all settings
 5. Doesn't need administrator privileges to run!
 
+[![United24](https://raw.githubusercontent.com/seerge/g-helper/main/docs/ua.png)](https://u24.gov.ua/)
+
+
 ## [:floppy_disk: Download App](https://github.com/seerge/g-helper/releases/latest/download/GHelper.zip)
 
 If you like this app, please [star :star: it on Github](https://github.com/seerge/g-helper) and spread a word about it!
