@@ -1295,7 +1295,7 @@ namespace GHelper
 
         public void AutoKeyboard()
         {
-            InputDispatcher.SetBacklight(true);
+            InputDispatcher.SetBacklightAuto(true);
         }
 
         public void AutoPerformance()
