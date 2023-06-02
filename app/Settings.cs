@@ -370,7 +370,17 @@ namespace GHelper
                     var json = await httpClient.GetStringAsync("https://api.github.com/repos/seerge/g-helper/releases/latest");
                     var config = JsonSerializer.Deserialize<JsonElement>(json);
                     var tag = config.GetProperty("tag_name").ToString().Replace("v", "");
-                    var url = config.GetProperty("assets")[0].GetProperty("browser_download_url").ToString();
+                    var assets = config.GetProperty("assets");
+
+                    string url = null;
+
+                    for (int i = 0; i < assets.GetArrayLength(); i++) {
+                        if (assets[i].GetProperty("browser_download_url").ToString().Contains(".zip"))
+                            url = assets[i].GetProperty("browser_download_url").ToString();
+                    }
+
+                    if (url is null)
+                        url = assets[0].GetProperty("browser_download_url").ToString();
 
                     var gitVersion = new Version(tag);
                     var appVersion = new Version(Assembly.GetExecutingAssembly().GetName().Version.ToString());
@@ -432,20 +442,20 @@ namespace GHelper
             using (WebClient client = new WebClient())
             {
                 client.DownloadFile(uri, zipLocation);
+
+                Logger.WriteLine(requestUri);
+                Logger.WriteLine(zipLocation);
+                Logger.WriteLine(exeLocation);
+
+                var cmd = new Process();
+                cmd.StartInfo.UseShellExecute = false;
+                cmd.StartInfo.CreateNoWindow = true;
+                cmd.StartInfo.FileName = "powershell";
+                cmd.StartInfo.Arguments = $"Start-Sleep -Seconds 1; Expand-Archive {zipLocation} -DestinationPath {exeDir} -Force; Remove-Item {zipLocation} -Force; {exeLocation}";
+                cmd.Start();
+
+                Application.Exit();
             }
-
-            var cmd = new Process();
-            cmd.StartInfo.UseShellExecute = false;
-            cmd.StartInfo.CreateNoWindow = true;
-            cmd.StartInfo.FileName = "powershell";
-            cmd.StartInfo.Arguments = $"Start-Sleep -Seconds 1; Expand-Archive {zipLocation} -DestinationPath {exeDir} -Force; Remove-Item {zipLocation} -Force; {exeLocation}";
-            cmd.Start();
-
-            Debug.WriteLine(requestUri);
-            Debug.WriteLine(zipLocation);
-
-            Application.Exit();
-            return;
 
         }
 

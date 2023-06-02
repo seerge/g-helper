@@ -265,7 +265,7 @@ namespace GHelper
         private void TrackBrightness_Scroll(object? sender, EventArgs e)
         {
             AppConfig.setConfig("keyboard_brightness", trackBrightness.Value);
-            AsusUSB.ApplyBrightness(trackBrightness.Value);
+            AsusUSB.ApplyBrightness(trackBrightness.Value, "Slider");
         }
 
         private void PictureHelp_Click(object? sender, EventArgs e)
