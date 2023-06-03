@@ -190,7 +190,7 @@
     <value>Encendida</value>
   </data>
   <data name="BacklightTimeout" xml:space="preserve">
-    <value>Apagar con batería tras (segundos)</value>
+    <value>Apagar con batería tras (0 - nunca)</value>
   </data>
   <data name="BacklightTimeoutPlugged" xml:space="preserve">
     <value>Apagar cuando está enchufado tras (0 - nunca)</value>
@@ -266,6 +266,9 @@
   </data>
   <data name="FansPower" xml:space="preserve">
     <value>Ventiladores + Energía</value>
+  </data>
+  <data name="FnLock" xml:space="preserve">
+    <value>Usar teclas de acceso rápido (Fn+F) sin pulsar Fn</value>
   </data>
   <data name="GPUBoost" xml:space="preserve">
     <value>Dynamic Boost</value>
@@ -434,6 +437,9 @@
   </data>
   <data name="ToggleAura" xml:space="preserve">
     <value>Alternar Aura</value>
+  </data>
+  <data name="ToggleFnLock" xml:space="preserve">
+    <value>Alternar Fn-Lock</value>
   </data>
   <data name="ToggleMiniled" xml:space="preserve">
     <value>Alternar Miniled (si comp.)</value>
