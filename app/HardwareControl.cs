@@ -210,10 +210,9 @@ public static class HardwareControl
                 }
             }
 
-        if (AppConfig.isConfig("kill_gpu_apps") && GpuControl is not null && GpuControl.IsNvidia)
+        if (AppConfig.isConfig("kill_gpu_apps") && GpuControl is not null)
         {
-            NvidiaGpuControl nvControl = (NvidiaGpuControl)GpuControl;
-            nvControl.KillGPUApps();
+            GpuControl.KillGPUApps();
         }
     }
 }

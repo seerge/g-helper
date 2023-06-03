@@ -100,8 +100,6 @@ namespace GHelper
                 SettingsToggle(action);
             }
 
-
-
             Application.Run();
 
         }

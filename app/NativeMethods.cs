@@ -600,12 +600,16 @@ public class NativeMethods
             var devices = GetAllDevices().ToArray();
             int count = 0, displayNum = -1;
 
+            string internalName = AppConfig.getConfigString("internal_display");
+
             foreach (var device in devices)
             {
                 if (device.outputTechnology == DISPLAYCONFIG_VIDEO_OUTPUT_TECHNOLOGY.DISPLAYCONFIG_OUTPUT_TECHNOLOGY_INTERNAL ||
-                    device.outputTechnology == DISPLAYCONFIG_VIDEO_OUTPUT_TECHNOLOGY.DISPLAYCONFIG_OUTPUT_TECHNOLOGY_DISPLAYPORT_EMBEDDED)
+                    device.outputTechnology == DISPLAYCONFIG_VIDEO_OUTPUT_TECHNOLOGY.DISPLAYCONFIG_OUTPUT_TECHNOLOGY_DISPLAYPORT_EMBEDDED ||
+                    device.monitorFriendlyDeviceName == internalName)
                 {
                     displayNum = count;
+                    AppConfig.setConfig("internal_display", device.monitorFriendlyDeviceName);
                 }
                 count++;
                 //Logger.WriteLine(device.monitorFriendlyDeviceName + ":" + device.outputTechnology.ToString());

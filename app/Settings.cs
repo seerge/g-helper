@@ -6,7 +6,6 @@ using System.Net;
 using System.Reflection;
 using System.Text.Json;
 using System.Timers;
-using Tools;
 
 namespace GHelper
 {
@@ -368,7 +367,8 @@ namespace GHelper
 
                     string url = null;
 
-                    for (int i = 0; i < assets.GetArrayLength(); i++) {
+                    for (int i = 0; i < assets.GetArrayLength(); i++)
+                    {
                         if (assets[i].GetProperty("browser_download_url").ToString().Contains(".zip"))
                             url = assets[i].GetProperty("browser_download_url").ToString();
                     }
@@ -1301,7 +1301,7 @@ namespace GHelper
         public void AutoKeyboard()
         {
             InputDispatcher.SetBacklightAuto(true);
-            if (AppConfig.ContainsModel("X16") || AppConfig.ContainsModel("X13")) InputDispatcher.TabletMode(); 
+            if (AppConfig.ContainsModel("X16") || AppConfig.ContainsModel("X13")) InputDispatcher.TabletMode();
 
         }
 
