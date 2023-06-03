@@ -480,6 +480,17 @@ public class NativeMethods
         );
 
 
+    [DllImport("powrprof.dll")]
+    static extern uint PowerReadACValue(
+        IntPtr RootPowerKey,
+        Guid SchemeGuid,
+        Guid SubGroupOfPowerSettingGuid,
+        Guid PowerSettingGuid,
+        ref int Type,
+        ref IntPtr Buffer,
+        ref uint BufferSize
+        );
+
 
     [DllImport("PowrProf.dll", CharSet = CharSet.Unicode)]
     static extern UInt32 PowerSetActiveScheme(IntPtr RootPowerKey,
@@ -490,6 +501,9 @@ public class NativeMethods
 
     static readonly Guid GUID_CPU = new Guid("54533251-82be-4824-96c1-47b60b740d00");
     static readonly Guid GUID_BOOST = new Guid("be337238-0d82-4146-a960-4f3749d470c7");
+
+    private static Guid GUID_SLEEP_SUBGROUP = new Guid("238c9fa8-0aad-41ed-83f4-97be242c8f20");
+    private static Guid GUID_HIBERNATEIDLE = new Guid("9d7815a6-7ee4-497e-8888-515a05f02364");
 
     [DllImportAttribute("powrprof.dll", EntryPoint = "PowerGetActualOverlayScheme")]
     public static extern uint PowerGetActualOverlayScheme(out Guid ActualOverlayGuid);
@@ -594,8 +608,7 @@ public class NativeMethods
                     displayNum = count;
                 }
                 count++;
-                //Logger.WriteLine(device.outputTechnology.ToString());
-                //Logger.WriteLine(device.monitorFriendlyDeviceName);
+                //Logger.WriteLine(device.monitorFriendlyDeviceName + ":" + device.outputTechnology.ToString());
             }
 
             var screens = Screen.AllScreens;
@@ -676,6 +689,20 @@ public class NativeMethods
 
         return 0;
 
+    }
+
+    public static nint GetHuibernateAfter()
+    {
+        Guid activePolicyGuid = GetActiveScheme();
+        var type = 0;
+        nint value = 0;
+        var valueSize = 4u;
+
+        PowerReadACValue(IntPtr.Zero, activePolicyGuid,
+             GUID_SLEEP_SUBGROUP, GUID_HIBERNATEIDLE,
+            ref type, ref value, ref valueSize);
+
+        return value;
     }
 
     static Guid GetActiveScheme()

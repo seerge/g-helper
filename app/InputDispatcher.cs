@@ -369,7 +369,7 @@ namespace GHelper
             Program.settingsForm.BeginInvoke(Program.settingsForm.RunToast, "Fn-Lock "+(fnLock==1?"On":"Off"), ToastIcon.FnLock);
         }
 
-        static void TabletMode()
+        public static void TabletMode()
         {
             bool touchpadState = GetTouchpadState();
             bool tabletState = Program.acpi.DeviceGet(AsusACPI.TabletState) > 0;

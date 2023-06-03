@@ -107,13 +107,15 @@ namespace GHelper
             // 
             // groupBindings
             // 
-            groupBindings.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            groupBindings.AutoSize = true;
             groupBindings.Controls.Add(tableKeys);
             groupBindings.Controls.Add(pictureHelp);
             groupBindings.Dock = DockStyle.Top;
-            groupBindings.Location = new Point(10, 10);
+            groupBindings.Location = new Point(9, 11);
+            groupBindings.Margin = new Padding(4, 2, 4, 2);
             groupBindings.Name = "groupBindings";
-            groupBindings.Size = new Size(954, 360);
+            groupBindings.Padding = new Padding(4, 2, 4, 2);
+            groupBindings.Size = new Size(966, 381);
             groupBindings.TabIndex = 0;
             groupBindings.TabStop = false;
             groupBindings.Text = "Key Bindings";
@@ -143,22 +145,24 @@ namespace GHelper
             tableKeys.Controls.Add(comboFNC, 1, 5);
             tableKeys.Controls.Add(textFNC, 2, 5);
             tableKeys.Location = new Point(13, 38);
+            tableKeys.Margin = new Padding(4, 2, 40, 2);
             tableKeys.Name = "tableKeys";
-            tableKeys.Padding = new Padding(10);
+            tableKeys.Padding = new Padding(9, 11, 9, 11);
             tableKeys.RowCount = 6;
-            tableKeys.RowStyles.Add(new RowStyle(SizeType.Absolute, 50F));
-            tableKeys.RowStyles.Add(new RowStyle(SizeType.Absolute, 50F));
-            tableKeys.RowStyles.Add(new RowStyle(SizeType.Absolute, 50F));
-            tableKeys.RowStyles.Add(new RowStyle(SizeType.Absolute, 50F));
-            tableKeys.RowStyles.Add(new RowStyle(SizeType.Absolute, 48F));
-            tableKeys.RowStyles.Add(new RowStyle(SizeType.Absolute, 22F));
-            tableKeys.Size = new Size(900, 308);
+            tableKeys.RowStyles.Add(new RowStyle(SizeType.Absolute, 49F));
+            tableKeys.RowStyles.Add(new RowStyle(SizeType.Absolute, 49F));
+            tableKeys.RowStyles.Add(new RowStyle(SizeType.Absolute, 49F));
+            tableKeys.RowStyles.Add(new RowStyle(SizeType.Absolute, 49F));
+            tableKeys.RowStyles.Add(new RowStyle(SizeType.Absolute, 47F));
+            tableKeys.RowStyles.Add(new RowStyle(SizeType.Absolute, 21F));
+            tableKeys.Size = new Size(901, 307);
             tableKeys.TabIndex = 10;
             // 
             // labelFNC
             // 
             labelFNC.AutoSize = true;
-            labelFNC.Location = new Point(13, 258);
+            labelFNC.Location = new Point(13, 254);
+            labelFNC.Margin = new Padding(4, 0, 4, 0);
             labelFNC.Name = "labelFNC";
             labelFNC.Size = new Size(80, 32);
             labelFNC.TabIndex = 15;
@@ -166,18 +170,20 @@ namespace GHelper
             // 
             // textM2
             // 
-            textM2.Location = new Point(541, 63);
+            textM2.Location = new Point(542, 62);
+            textM2.Margin = new Padding(4, 2, 4, 2);
             textM2.Name = "textM2";
             textM2.PlaceholderText = "action";
-            textM2.Size = new Size(346, 39);
+            textM2.Size = new Size(342, 39);
             textM2.TabIndex = 14;
             // 
             // textM1
             // 
-            textM1.Location = new Point(541, 13);
+            textM1.Location = new Point(542, 13);
+            textM1.Margin = new Padding(4, 2, 4, 2);
             textM1.Name = "textM1";
             textM1.PlaceholderText = "action";
-            textM1.Size = new Size(346, 39);
+            textM1.Size = new Size(342, 39);
             textM1.TabIndex = 13;
             // 
             // comboM1
@@ -187,6 +193,7 @@ namespace GHelper
             comboM1.FormattingEnabled = true;
             comboM1.Items.AddRange(new object[] { Strings.Default, Strings.VolumeMute, Strings.PlayPause, Strings.PrintScreen, Strings.ToggleAura, Strings.Custom });
             comboM1.Location = new Point(189, 13);
+            comboM1.Margin = new Padding(4, 2, 4, 2);
             comboM1.Name = "comboM1";
             comboM1.Size = new Size(312, 40);
             comboM1.TabIndex = 11;
@@ -194,7 +201,8 @@ namespace GHelper
             // labelM1
             // 
             labelM1.AutoSize = true;
-            labelM1.Location = new Point(13, 10);
+            labelM1.Location = new Point(13, 11);
+            labelM1.Margin = new Padding(4, 0, 4, 0);
             labelM1.Name = "labelM1";
             labelM1.Size = new Size(54, 32);
             labelM1.TabIndex = 9;
@@ -206,7 +214,8 @@ namespace GHelper
             comboM4.ButtonColor = Color.FromArgb(255, 255, 255);
             comboM4.FormattingEnabled = true;
             comboM4.Items.AddRange(new object[] { Strings.PerformanceMode, Strings.OpenGHelper, Strings.Custom });
-            comboM4.Location = new Point(189, 163);
+            comboM4.Location = new Point(189, 160);
+            comboM4.Margin = new Padding(4, 2, 4, 2);
             comboM4.Name = "comboM4";
             comboM4.Size = new Size(312, 40);
             comboM4.TabIndex = 3;
@@ -217,31 +226,35 @@ namespace GHelper
             comboM3.ButtonColor = Color.FromArgb(255, 255, 255);
             comboM3.FormattingEnabled = true;
             comboM3.Items.AddRange(new object[] { Strings.Default, Strings.VolumeMute, Strings.PlayPause, Strings.PrintScreen, Strings.ToggleAura, Strings.Custom });
-            comboM3.Location = new Point(189, 113);
+            comboM3.Location = new Point(189, 111);
+            comboM3.Margin = new Padding(4, 2, 4, 2);
             comboM3.Name = "comboM3";
             comboM3.Size = new Size(312, 40);
             comboM3.TabIndex = 1;
             // 
             // textM4
             // 
-            textM4.Location = new Point(541, 163);
+            textM4.Location = new Point(542, 160);
+            textM4.Margin = new Padding(4, 2, 4, 2);
             textM4.Name = "textM4";
             textM4.PlaceholderText = "action";
-            textM4.Size = new Size(346, 39);
+            textM4.Size = new Size(342, 39);
             textM4.TabIndex = 5;
             // 
             // textM3
             // 
-            textM3.Location = new Point(541, 113);
+            textM3.Location = new Point(542, 111);
+            textM3.Margin = new Padding(4, 2, 4, 2);
             textM3.Name = "textM3";
             textM3.PlaceholderText = "action";
-            textM3.Size = new Size(346, 39);
+            textM3.Size = new Size(342, 39);
             textM3.TabIndex = 4;
             // 
             // labelM4
             // 
             labelM4.AutoSize = true;
-            labelM4.Location = new Point(13, 160);
+            labelM4.Location = new Point(13, 158);
+            labelM4.Margin = new Padding(4, 0, 4, 0);
             labelM4.Name = "labelM4";
             labelM4.Size = new Size(54, 32);
             labelM4.TabIndex = 2;
@@ -250,7 +263,8 @@ namespace GHelper
             // labelM3
             // 
             labelM3.AutoSize = true;
-            labelM3.Location = new Point(13, 110);
+            labelM3.Location = new Point(13, 109);
+            labelM3.Margin = new Padding(4, 0, 4, 0);
             labelM3.Name = "labelM3";
             labelM3.Size = new Size(54, 32);
             labelM3.TabIndex = 0;
@@ -260,6 +274,7 @@ namespace GHelper
             // 
             labelM2.AutoSize = true;
             labelM2.Location = new Point(13, 60);
+            labelM2.Margin = new Padding(4, 0, 4, 0);
             labelM2.Name = "labelM2";
             labelM2.Size = new Size(54, 32);
             labelM2.TabIndex = 10;
@@ -271,7 +286,8 @@ namespace GHelper
             comboM2.ButtonColor = Color.FromArgb(255, 255, 255);
             comboM2.FormattingEnabled = true;
             comboM2.Items.AddRange(new object[] { Strings.Default, Strings.VolumeMute, Strings.PlayPause, Strings.PrintScreen, Strings.ToggleAura, Strings.Custom });
-            comboM2.Location = new Point(189, 63);
+            comboM2.Location = new Point(189, 62);
+            comboM2.Margin = new Padding(4, 2, 4, 2);
             comboM2.Name = "comboM2";
             comboM2.Size = new Size(312, 40);
             comboM2.TabIndex = 12;
@@ -279,7 +295,8 @@ namespace GHelper
             // labelFNF4
             // 
             labelFNF4.AutoSize = true;
-            labelFNF4.Location = new Point(13, 210);
+            labelFNF4.Location = new Point(13, 207);
+            labelFNF4.Margin = new Padding(4, 0, 4, 0);
             labelFNF4.Name = "labelFNF4";
             labelFNF4.Size = new Size(90, 32);
             labelFNF4.TabIndex = 6;
@@ -290,17 +307,19 @@ namespace GHelper
             comboFNF4.BorderColor = Color.White;
             comboFNF4.ButtonColor = Color.FromArgb(255, 255, 255);
             comboFNF4.FormattingEnabled = true;
-            comboFNF4.Location = new Point(189, 213);
+            comboFNF4.Location = new Point(189, 209);
+            comboFNF4.Margin = new Padding(4, 2, 4, 2);
             comboFNF4.Name = "comboFNF4";
             comboFNF4.Size = new Size(312, 40);
             comboFNF4.TabIndex = 7;
             // 
             // textFNF4
             // 
-            textFNF4.Location = new Point(541, 213);
+            textFNF4.Location = new Point(542, 209);
+            textFNF4.Margin = new Padding(4, 2, 4, 2);
             textFNF4.Name = "textFNF4";
             textFNF4.PlaceholderText = "action";
-            textFNF4.Size = new Size(346, 39);
+            textFNF4.Size = new Size(342, 39);
             textFNF4.TabIndex = 8;
             // 
             // comboFNC
@@ -308,17 +327,19 @@ namespace GHelper
             comboFNC.BorderColor = Color.White;
             comboFNC.ButtonColor = Color.FromArgb(255, 255, 255);
             comboFNC.FormattingEnabled = true;
-            comboFNC.Location = new Point(189, 261);
+            comboFNC.Location = new Point(189, 256);
+            comboFNC.Margin = new Padding(4, 2, 4, 2);
             comboFNC.Name = "comboFNC";
             comboFNC.Size = new Size(312, 40);
             comboFNC.TabIndex = 16;
             // 
             // textFNC
             // 
-            textFNC.Location = new Point(541, 261);
+            textFNC.Location = new Point(542, 256);
+            textFNC.Margin = new Padding(4, 2, 4, 2);
             textFNC.Name = "textFNC";
             textFNC.PlaceholderText = "action";
-            textFNC.Size = new Size(346, 39);
+            textFNC.Size = new Size(342, 39);
             textFNC.TabIndex = 17;
             // 
             // pictureHelp
@@ -326,7 +347,8 @@ namespace GHelper
             pictureHelp.BackgroundImage = Resources.icons8_help_64;
             pictureHelp.BackgroundImageLayout = ImageLayout.Zoom;
             pictureHelp.Cursor = Cursors.Hand;
-            pictureHelp.Location = new Point(912, 51);
+            pictureHelp.Location = new Point(915, 55);
+            pictureHelp.Margin = new Padding(4, 2, 4, 2);
             pictureHelp.Name = "pictureHelp";
             pictureHelp.Size = new Size(32, 32);
             pictureHelp.TabIndex = 9;
@@ -335,19 +357,24 @@ namespace GHelper
             // groupLight
             // 
             groupLight.AutoSize = true;
+            groupLight.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             groupLight.Controls.Add(panelBacklightExtra);
             groupLight.Controls.Add(panelXMG);
             groupLight.Controls.Add(tableBacklight);
             groupLight.Dock = DockStyle.Top;
-            groupLight.Location = new Point(10, 370);
+            groupLight.Location = new Point(9, 392);
+            groupLight.Margin = new Padding(4, 2, 4, 2);
             groupLight.Name = "groupLight";
-            groupLight.Size = new Size(954, 563);
+            groupLight.Padding = new Padding(4, 2, 4, 11);
+            groupLight.Size = new Size(966, 554);
             groupLight.TabIndex = 1;
             groupLight.TabStop = false;
             groupLight.Text = "Keyboard Backlight";
             // 
             // panelBacklightExtra
             // 
+            panelBacklightExtra.AutoSize = true;
+            panelBacklightExtra.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             panelBacklightExtra.Controls.Add(numericBacklightPluggedTime);
             panelBacklightExtra.Controls.Add(labelBacklightTimeoutPlugged);
             panelBacklightExtra.Controls.Add(numericBacklightTime);
@@ -357,46 +384,52 @@ namespace GHelper
             panelBacklightExtra.Controls.Add(labelSpeed);
             panelBacklightExtra.Controls.Add(comboKeyboardSpeed);
             panelBacklightExtra.Dock = DockStyle.Top;
-            panelBacklightExtra.Location = new Point(3, 319);
+            panelBacklightExtra.Location = new Point(4, 315);
+            panelBacklightExtra.Margin = new Padding(4, 2, 4, 2);
             panelBacklightExtra.Name = "panelBacklightExtra";
-            panelBacklightExtra.Size = new Size(948, 241);
+            panelBacklightExtra.Size = new Size(958, 228);
             panelBacklightExtra.TabIndex = 43;
             // 
             // numericBacklightPluggedTime
             // 
-            numericBacklightPluggedTime.Location = new Point(655, 181);
+            numericBacklightPluggedTime.Location = new Point(702, 181);
+            numericBacklightPluggedTime.Margin = new Padding(4, 2, 4, 2);
             numericBacklightPluggedTime.Maximum = new decimal(new int[] { 3600, 0, 0, 0 });
             numericBacklightPluggedTime.Name = "numericBacklightPluggedTime";
-            numericBacklightPluggedTime.Size = new Size(240, 39);
+            numericBacklightPluggedTime.Size = new Size(193, 39);
             numericBacklightPluggedTime.TabIndex = 49;
             // 
             // labelBacklightTimeoutPlugged
             // 
             labelBacklightTimeoutPlugged.Location = new Point(13, 183);
+            labelBacklightTimeoutPlugged.Margin = new Padding(4, 0, 4, 0);
             labelBacklightTimeoutPlugged.Name = "labelBacklightTimeoutPlugged";
-            labelBacklightTimeoutPlugged.Size = new Size(636, 45);
+            labelBacklightTimeoutPlugged.Size = new Size(683, 45);
             labelBacklightTimeoutPlugged.TabIndex = 48;
             labelBacklightTimeoutPlugged.Text = "Seconds to turn off backlight when plugged";
             // 
             // numericBacklightTime
             // 
-            numericBacklightTime.Location = new Point(655, 133);
+            numericBacklightTime.Location = new Point(702, 132);
+            numericBacklightTime.Margin = new Padding(4, 2, 4, 2);
             numericBacklightTime.Maximum = new decimal(new int[] { 3600, 0, 0, 0 });
             numericBacklightTime.Name = "numericBacklightTime";
-            numericBacklightTime.Size = new Size(240, 39);
+            numericBacklightTime.Size = new Size(193, 39);
             numericBacklightTime.TabIndex = 47;
             // 
             // labelBacklightTimeout
             // 
-            labelBacklightTimeout.Location = new Point(13, 135);
+            labelBacklightTimeout.Location = new Point(13, 134);
+            labelBacklightTimeout.Margin = new Padding(4, 0, 4, 0);
             labelBacklightTimeout.Name = "labelBacklightTimeout";
-            labelBacklightTimeout.Size = new Size(636, 45);
+            labelBacklightTimeout.Size = new Size(683, 45);
             labelBacklightTimeout.TabIndex = 46;
             labelBacklightTimeout.Text = "Seconds to turn off backlight on battery";
             // 
             // labelBrightness
             // 
             labelBrightness.Location = new Point(13, 75);
+            labelBrightness.Margin = new Padding(4, 0, 4, 0);
             labelBrightness.Name = "labelBrightness";
             labelBrightness.Size = new Size(336, 43);
             labelBrightness.TabIndex = 41;
@@ -406,17 +439,19 @@ namespace GHelper
             // 
             trackBrightness.LargeChange = 1;
             trackBrightness.Location = new Point(355, 60);
+            trackBrightness.Margin = new Padding(4, 2, 4, 2);
             trackBrightness.Maximum = 3;
             trackBrightness.Name = "trackBrightness";
-            trackBrightness.Size = new Size(558, 90);
+            trackBrightness.Size = new Size(557, 90);
             trackBrightness.TabIndex = 42;
             trackBrightness.TickStyle = TickStyle.TopLeft;
             // 
             // labelSpeed
             // 
             labelSpeed.Location = new Point(13, 15);
+            labelSpeed.Margin = new Padding(4, 0, 4, 0);
             labelSpeed.Name = "labelSpeed";
-            labelSpeed.Size = new Size(538, 40);
+            labelSpeed.Size = new Size(539, 41);
             labelSpeed.TabIndex = 44;
             labelSpeed.Text = "Animation Speed";
             // 
@@ -430,9 +465,9 @@ namespace GHelper
             comboKeyboardSpeed.ItemHeight = 32;
             comboKeyboardSpeed.Items.AddRange(new object[] { "Slow", "Normal", "Fast" });
             comboKeyboardSpeed.Location = new Point(607, 15);
-            comboKeyboardSpeed.Margin = new Padding(4, 10, 4, 8);
+            comboKeyboardSpeed.Margin = new Padding(4, 11, 4, 9);
             comboKeyboardSpeed.Name = "comboKeyboardSpeed";
-            comboKeyboardSpeed.Size = new Size(291, 40);
+            comboKeyboardSpeed.Size = new Size(292, 40);
             comboKeyboardSpeed.TabIndex = 43;
             comboKeyboardSpeed.TabStop = false;
             // 
@@ -440,18 +475,20 @@ namespace GHelper
             // 
             panelXMG.Controls.Add(checkXMG);
             panelXMG.Dock = DockStyle.Top;
-            panelXMG.Location = new Point(3, 261);
+            panelXMG.Location = new Point(4, 257);
+            panelXMG.Margin = new Padding(4, 2, 4, 2);
             panelXMG.Name = "panelXMG";
-            panelXMG.Size = new Size(948, 58);
+            panelXMG.Size = new Size(958, 58);
             panelXMG.TabIndex = 42;
             // 
             // checkXMG
             // 
             checkXMG.AutoSize = true;
-            checkXMG.Location = new Point(3, 10);
+            checkXMG.Location = new Point(4, 11);
+            checkXMG.Margin = new Padding(4, 2, 4, 2);
             checkXMG.Name = "checkXMG";
-            checkXMG.Padding = new Padding(15, 2, 5, 2);
-            checkXMG.Size = new Size(178, 40);
+            checkXMG.Padding = new Padding(15, 2, 6, 2);
+            checkXMG.Size = new Size(179, 40);
             checkXMG.TabIndex = 2;
             checkXMG.Text = "XG Mobile";
             checkXMG.UseVisualStyleBackColor = true;
@@ -485,7 +522,7 @@ namespace GHelper
             tableBacklight.Controls.Add(checkSleepLid, 3, 3);
             tableBacklight.Controls.Add(checkShutdownLid, 3, 4);
             tableBacklight.Dock = DockStyle.Top;
-            tableBacklight.Location = new Point(3, 35);
+            tableBacklight.Location = new Point(4, 34);
             tableBacklight.Margin = new Padding(0);
             tableBacklight.Name = "tableBacklight";
             tableBacklight.RowCount = 5;
@@ -494,27 +531,29 @@ namespace GHelper
             tableBacklight.RowStyles.Add(new RowStyle());
             tableBacklight.RowStyles.Add(new RowStyle());
             tableBacklight.RowStyles.Add(new RowStyle());
-            tableBacklight.Size = new Size(948, 226);
+            tableBacklight.Size = new Size(958, 223);
             tableBacklight.TabIndex = 41;
             // 
             // labelBacklight
             // 
             labelBacklight.Dock = DockStyle.Fill;
             labelBacklight.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            labelBacklight.Location = new Point(3, 0);
+            labelBacklight.Location = new Point(4, 0);
+            labelBacklight.Margin = new Padding(4, 0, 4, 0);
             labelBacklight.Name = "labelBacklight";
-            labelBacklight.Padding = new Padding(10, 5, 5, 5);
-            labelBacklight.Size = new Size(231, 42);
+            labelBacklight.Padding = new Padding(9, 4, 6, 4);
+            labelBacklight.Size = new Size(231, 43);
             labelBacklight.TabIndex = 6;
             labelBacklight.Text = "Keyboard";
             // 
             // checkAwake
             // 
             checkAwake.Dock = DockStyle.Fill;
-            checkAwake.Location = new Point(3, 45);
+            checkAwake.Location = new Point(4, 45);
+            checkAwake.Margin = new Padding(4, 2, 4, 2);
             checkAwake.Name = "checkAwake";
-            checkAwake.Padding = new Padding(15, 2, 5, 2);
-            checkAwake.Size = new Size(231, 40);
+            checkAwake.Padding = new Padding(15, 2, 6, 2);
+            checkAwake.Size = new Size(231, 41);
             checkAwake.TabIndex = 1;
             checkAwake.Text = Strings.Awake;
             checkAwake.UseVisualStyleBackColor = true;
@@ -522,10 +561,11 @@ namespace GHelper
             // checkBoot
             // 
             checkBoot.Dock = DockStyle.Fill;
-            checkBoot.Location = new Point(3, 91);
+            checkBoot.Location = new Point(4, 90);
+            checkBoot.Margin = new Padding(4, 2, 4, 2);
             checkBoot.Name = "checkBoot";
-            checkBoot.Padding = new Padding(15, 2, 5, 2);
-            checkBoot.Size = new Size(231, 40);
+            checkBoot.Padding = new Padding(15, 2, 6, 2);
+            checkBoot.Size = new Size(231, 41);
             checkBoot.TabIndex = 2;
             checkBoot.Text = Strings.Boot;
             checkBoot.UseVisualStyleBackColor = true;
@@ -533,10 +573,11 @@ namespace GHelper
             // checkSleep
             // 
             checkSleep.Dock = DockStyle.Fill;
-            checkSleep.Location = new Point(3, 137);
+            checkSleep.Location = new Point(4, 135);
+            checkSleep.Margin = new Padding(4, 2, 4, 2);
             checkSleep.Name = "checkSleep";
-            checkSleep.Padding = new Padding(15, 2, 5, 2);
-            checkSleep.Size = new Size(231, 40);
+            checkSleep.Padding = new Padding(15, 2, 6, 2);
+            checkSleep.Size = new Size(231, 41);
             checkSleep.TabIndex = 3;
             checkSleep.Text = "Sleep";
             checkSleep.UseVisualStyleBackColor = true;
@@ -544,10 +585,11 @@ namespace GHelper
             // checkShutdown
             // 
             checkShutdown.Dock = DockStyle.Fill;
-            checkShutdown.Location = new Point(3, 183);
+            checkShutdown.Location = new Point(4, 180);
+            checkShutdown.Margin = new Padding(4, 2, 4, 2);
             checkShutdown.Name = "checkShutdown";
-            checkShutdown.Padding = new Padding(15, 2, 5, 2);
-            checkShutdown.Size = new Size(231, 40);
+            checkShutdown.Padding = new Padding(15, 2, 6, 2);
+            checkShutdown.Size = new Size(231, 41);
             checkShutdown.TabIndex = 4;
             checkShutdown.Text = Strings.Shutdown;
             checkShutdown.UseVisualStyleBackColor = true;
@@ -556,20 +598,22 @@ namespace GHelper
             // 
             labelBacklightLogo.Dock = DockStyle.Fill;
             labelBacklightLogo.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            labelBacklightLogo.Location = new Point(240, 0);
+            labelBacklightLogo.Location = new Point(243, 0);
+            labelBacklightLogo.Margin = new Padding(4, 0, 4, 0);
             labelBacklightLogo.Name = "labelBacklightLogo";
-            labelBacklightLogo.Padding = new Padding(10, 5, 5, 5);
-            labelBacklightLogo.Size = new Size(231, 42);
+            labelBacklightLogo.Padding = new Padding(9, 4, 6, 4);
+            labelBacklightLogo.Size = new Size(231, 43);
             labelBacklightLogo.TabIndex = 21;
             labelBacklightLogo.Text = "Logo";
             // 
             // checkAwakeLogo
             // 
             checkAwakeLogo.Dock = DockStyle.Fill;
-            checkAwakeLogo.Location = new Point(240, 45);
+            checkAwakeLogo.Location = new Point(243, 45);
+            checkAwakeLogo.Margin = new Padding(4, 2, 4, 2);
             checkAwakeLogo.Name = "checkAwakeLogo";
-            checkAwakeLogo.Padding = new Padding(15, 2, 5, 2);
-            checkAwakeLogo.Size = new Size(231, 40);
+            checkAwakeLogo.Padding = new Padding(15, 2, 6, 2);
+            checkAwakeLogo.Size = new Size(231, 41);
             checkAwakeLogo.TabIndex = 17;
             checkAwakeLogo.Text = Strings.Awake;
             checkAwakeLogo.UseVisualStyleBackColor = true;
@@ -577,10 +621,11 @@ namespace GHelper
             // checkBootLogo
             // 
             checkBootLogo.Dock = DockStyle.Fill;
-            checkBootLogo.Location = new Point(240, 91);
+            checkBootLogo.Location = new Point(243, 90);
+            checkBootLogo.Margin = new Padding(4, 2, 4, 2);
             checkBootLogo.Name = "checkBootLogo";
-            checkBootLogo.Padding = new Padding(15, 2, 5, 2);
-            checkBootLogo.Size = new Size(231, 40);
+            checkBootLogo.Padding = new Padding(15, 2, 6, 2);
+            checkBootLogo.Size = new Size(231, 41);
             checkBootLogo.TabIndex = 18;
             checkBootLogo.Text = Strings.Boot;
             checkBootLogo.UseVisualStyleBackColor = true;
@@ -588,10 +633,11 @@ namespace GHelper
             // checkSleepLogo
             // 
             checkSleepLogo.Dock = DockStyle.Fill;
-            checkSleepLogo.Location = new Point(240, 137);
+            checkSleepLogo.Location = new Point(243, 135);
+            checkSleepLogo.Margin = new Padding(4, 2, 4, 2);
             checkSleepLogo.Name = "checkSleepLogo";
-            checkSleepLogo.Padding = new Padding(15, 2, 5, 2);
-            checkSleepLogo.Size = new Size(231, 40);
+            checkSleepLogo.Padding = new Padding(15, 2, 6, 2);
+            checkSleepLogo.Size = new Size(231, 41);
             checkSleepLogo.TabIndex = 19;
             checkSleepLogo.Text = Strings.Sleep;
             checkSleepLogo.UseVisualStyleBackColor = true;
@@ -599,10 +645,11 @@ namespace GHelper
             // checkShutdownLogo
             // 
             checkShutdownLogo.Dock = DockStyle.Fill;
-            checkShutdownLogo.Location = new Point(240, 183);
+            checkShutdownLogo.Location = new Point(243, 180);
+            checkShutdownLogo.Margin = new Padding(4, 2, 4, 2);
             checkShutdownLogo.Name = "checkShutdownLogo";
-            checkShutdownLogo.Padding = new Padding(15, 2, 5, 2);
-            checkShutdownLogo.Size = new Size(231, 40);
+            checkShutdownLogo.Padding = new Padding(15, 2, 6, 2);
+            checkShutdownLogo.Size = new Size(231, 41);
             checkShutdownLogo.TabIndex = 20;
             checkShutdownLogo.Text = Strings.Shutdown;
             checkShutdownLogo.UseVisualStyleBackColor = true;
@@ -611,20 +658,22 @@ namespace GHelper
             // 
             labelBacklightBar.Dock = DockStyle.Fill;
             labelBacklightBar.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            labelBacklightBar.Location = new Point(477, 0);
+            labelBacklightBar.Location = new Point(482, 0);
+            labelBacklightBar.Margin = new Padding(4, 0, 4, 0);
             labelBacklightBar.Name = "labelBacklightBar";
-            labelBacklightBar.Padding = new Padding(10, 5, 5, 5);
-            labelBacklightBar.Size = new Size(231, 42);
+            labelBacklightBar.Padding = new Padding(9, 4, 6, 4);
+            labelBacklightBar.Size = new Size(231, 43);
             labelBacklightBar.TabIndex = 11;
             labelBacklightBar.Text = "Lightbar";
             // 
             // checkAwakeBar
             // 
             checkAwakeBar.Dock = DockStyle.Fill;
-            checkAwakeBar.Location = new Point(477, 45);
+            checkAwakeBar.Location = new Point(482, 45);
+            checkAwakeBar.Margin = new Padding(4, 2, 4, 2);
             checkAwakeBar.Name = "checkAwakeBar";
-            checkAwakeBar.Padding = new Padding(15, 2, 5, 2);
-            checkAwakeBar.Size = new Size(231, 40);
+            checkAwakeBar.Padding = new Padding(15, 2, 6, 2);
+            checkAwakeBar.Size = new Size(231, 41);
             checkAwakeBar.TabIndex = 7;
             checkAwakeBar.Text = Strings.Awake;
             checkAwakeBar.UseVisualStyleBackColor = true;
@@ -632,10 +681,11 @@ namespace GHelper
             // checkBootBar
             // 
             checkBootBar.Dock = DockStyle.Fill;
-            checkBootBar.Location = new Point(477, 91);
+            checkBootBar.Location = new Point(482, 90);
+            checkBootBar.Margin = new Padding(4, 2, 4, 2);
             checkBootBar.Name = "checkBootBar";
-            checkBootBar.Padding = new Padding(15, 2, 5, 2);
-            checkBootBar.Size = new Size(231, 40);
+            checkBootBar.Padding = new Padding(15, 2, 6, 2);
+            checkBootBar.Size = new Size(231, 41);
             checkBootBar.TabIndex = 8;
             checkBootBar.Text = Strings.Boot;
             checkBootBar.UseVisualStyleBackColor = true;
@@ -643,10 +693,11 @@ namespace GHelper
             // checkSleepBar
             // 
             checkSleepBar.Dock = DockStyle.Fill;
-            checkSleepBar.Location = new Point(477, 137);
+            checkSleepBar.Location = new Point(482, 135);
+            checkSleepBar.Margin = new Padding(4, 2, 4, 2);
             checkSleepBar.Name = "checkSleepBar";
-            checkSleepBar.Padding = new Padding(15, 2, 5, 2);
-            checkSleepBar.Size = new Size(231, 40);
+            checkSleepBar.Padding = new Padding(15, 2, 6, 2);
+            checkSleepBar.Size = new Size(231, 41);
             checkSleepBar.TabIndex = 9;
             checkSleepBar.Text = Strings.Sleep;
             checkSleepBar.UseVisualStyleBackColor = true;
@@ -654,10 +705,11 @@ namespace GHelper
             // checkShutdownBar
             // 
             checkShutdownBar.Dock = DockStyle.Fill;
-            checkShutdownBar.Location = new Point(477, 183);
+            checkShutdownBar.Location = new Point(482, 180);
+            checkShutdownBar.Margin = new Padding(4, 2, 4, 2);
             checkShutdownBar.Name = "checkShutdownBar";
-            checkShutdownBar.Padding = new Padding(15, 2, 5, 2);
-            checkShutdownBar.Size = new Size(231, 40);
+            checkShutdownBar.Padding = new Padding(15, 2, 6, 2);
+            checkShutdownBar.Size = new Size(231, 41);
             checkShutdownBar.TabIndex = 10;
             checkShutdownBar.Text = Strings.Shutdown;
             checkShutdownBar.UseVisualStyleBackColor = true;
@@ -666,20 +718,22 @@ namespace GHelper
             // 
             labelBacklightLid.Dock = DockStyle.Fill;
             labelBacklightLid.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            labelBacklightLid.Location = new Point(714, 0);
+            labelBacklightLid.Location = new Point(721, 0);
+            labelBacklightLid.Margin = new Padding(4, 0, 4, 0);
             labelBacklightLid.Name = "labelBacklightLid";
-            labelBacklightLid.Padding = new Padding(10, 5, 5, 5);
-            labelBacklightLid.Size = new Size(231, 42);
+            labelBacklightLid.Padding = new Padding(9, 4, 6, 4);
+            labelBacklightLid.Size = new Size(233, 43);
             labelBacklightLid.TabIndex = 16;
             labelBacklightLid.Text = "Lid";
             // 
             // checkAwakeLid
             // 
             checkAwakeLid.Dock = DockStyle.Fill;
-            checkAwakeLid.Location = new Point(714, 45);
+            checkAwakeLid.Location = new Point(721, 45);
+            checkAwakeLid.Margin = new Padding(4, 2, 4, 2);
             checkAwakeLid.Name = "checkAwakeLid";
-            checkAwakeLid.Padding = new Padding(15, 2, 5, 2);
-            checkAwakeLid.Size = new Size(231, 40);
+            checkAwakeLid.Padding = new Padding(15, 2, 6, 2);
+            checkAwakeLid.Size = new Size(233, 41);
             checkAwakeLid.TabIndex = 12;
             checkAwakeLid.Text = Strings.Awake;
             checkAwakeLid.UseVisualStyleBackColor = true;
@@ -687,10 +741,11 @@ namespace GHelper
             // checkBootLid
             // 
             checkBootLid.Dock = DockStyle.Fill;
-            checkBootLid.Location = new Point(714, 91);
+            checkBootLid.Location = new Point(721, 90);
+            checkBootLid.Margin = new Padding(4, 2, 4, 2);
             checkBootLid.Name = "checkBootLid";
-            checkBootLid.Padding = new Padding(15, 2, 5, 2);
-            checkBootLid.Size = new Size(231, 40);
+            checkBootLid.Padding = new Padding(15, 2, 6, 2);
+            checkBootLid.Size = new Size(233, 41);
             checkBootLid.TabIndex = 13;
             checkBootLid.Text = Strings.Boot;
             checkBootLid.UseVisualStyleBackColor = true;
@@ -698,10 +753,11 @@ namespace GHelper
             // checkSleepLid
             // 
             checkSleepLid.Dock = DockStyle.Fill;
-            checkSleepLid.Location = new Point(714, 137);
+            checkSleepLid.Location = new Point(721, 135);
+            checkSleepLid.Margin = new Padding(4, 2, 4, 2);
             checkSleepLid.Name = "checkSleepLid";
-            checkSleepLid.Padding = new Padding(15, 2, 5, 2);
-            checkSleepLid.Size = new Size(231, 40);
+            checkSleepLid.Padding = new Padding(15, 2, 6, 2);
+            checkSleepLid.Size = new Size(233, 41);
             checkSleepLid.TabIndex = 14;
             checkSleepLid.Text = Strings.Sleep;
             checkSleepLid.UseVisualStyleBackColor = true;
@@ -709,16 +765,19 @@ namespace GHelper
             // checkShutdownLid
             // 
             checkShutdownLid.Dock = DockStyle.Fill;
-            checkShutdownLid.Location = new Point(714, 183);
+            checkShutdownLid.Location = new Point(721, 180);
+            checkShutdownLid.Margin = new Padding(4, 2, 4, 2);
             checkShutdownLid.Name = "checkShutdownLid";
-            checkShutdownLid.Padding = new Padding(15, 2, 5, 2);
-            checkShutdownLid.Size = new Size(231, 40);
+            checkShutdownLid.Padding = new Padding(15, 2, 6, 2);
+            checkShutdownLid.Size = new Size(233, 41);
             checkShutdownLid.TabIndex = 15;
             checkShutdownLid.Text = Strings.Shutdown;
             checkShutdownLid.UseVisualStyleBackColor = true;
             // 
             // groupOther
             // 
+            groupOther.AutoSize = true;
+            groupOther.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             groupOther.Controls.Add(checkFnLock);
             groupOther.Controls.Add(checkGpuApps);
             groupOther.Controls.Add(checkAutoApplyWindowsPowerMode);
@@ -726,9 +785,11 @@ namespace GHelper
             groupOther.Controls.Add(checkNoOverdrive);
             groupOther.Controls.Add(checkTopmost);
             groupOther.Dock = DockStyle.Top;
-            groupOther.Location = new Point(10, 933);
+            groupOther.Location = new Point(9, 946);
+            groupOther.Margin = new Padding(4, 2, 4, 2);
             groupOther.Name = "groupOther";
-            groupOther.Size = new Size(954, 300);
+            groupOther.Padding = new Padding(4, 2, 4, 0);
+            groupOther.Size = new Size(966, 320);
             groupOther.TabIndex = 2;
             groupOther.TabStop = false;
             groupOther.Text = "Other";
@@ -736,7 +797,8 @@ namespace GHelper
             // checkFnLock
             // 
             checkFnLock.AutoSize = true;
-            checkFnLock.Location = new Point(25, 44);
+            checkFnLock.Location = new Point(24, 45);
+            checkFnLock.Margin = new Padding(4, 2, 4, 2);
             checkFnLock.MaximumSize = new Size(780, 0);
             checkFnLock.Name = "checkFnLock";
             checkFnLock.Size = new Size(397, 36);
@@ -747,7 +809,8 @@ namespace GHelper
             // checkGpuApps
             // 
             checkGpuApps.AutoSize = true;
-            checkGpuApps.Location = new Point(25, 83);
+            checkGpuApps.Location = new Point(24, 83);
+            checkGpuApps.Margin = new Padding(4, 2, 4, 2);
             checkGpuApps.Name = "checkGpuApps";
             checkGpuApps.Size = new Size(544, 36);
             checkGpuApps.TabIndex = 48;
@@ -757,7 +820,8 @@ namespace GHelper
             // checkAutoApplyWindowsPowerMode
             // 
             checkAutoApplyWindowsPowerMode.AutoSize = true;
-            checkAutoApplyWindowsPowerMode.Location = new Point(25, 251);
+            checkAutoApplyWindowsPowerMode.Location = new Point(24, 250);
+            checkAutoApplyWindowsPowerMode.Margin = new Padding(4, 2, 4, 2);
             checkAutoApplyWindowsPowerMode.Name = "checkAutoApplyWindowsPowerMode";
             checkAutoApplyWindowsPowerMode.Size = new Size(416, 36);
             checkAutoApplyWindowsPowerMode.TabIndex = 47;
@@ -767,7 +831,8 @@ namespace GHelper
             // checkUSBC
             // 
             checkUSBC.AutoSize = true;
-            checkUSBC.Location = new Point(25, 125);
+            checkUSBC.Location = new Point(24, 126);
+            checkUSBC.Margin = new Padding(4, 2, 4, 2);
             checkUSBC.Name = "checkUSBC";
             checkUSBC.Size = new Size(659, 36);
             checkUSBC.TabIndex = 4;
@@ -777,7 +842,8 @@ namespace GHelper
             // checkNoOverdrive
             // 
             checkNoOverdrive.AutoSize = true;
-            checkNoOverdrive.Location = new Point(25, 167);
+            checkNoOverdrive.Location = new Point(24, 166);
+            checkNoOverdrive.Margin = new Padding(4, 2, 4, 2);
             checkNoOverdrive.Name = "checkNoOverdrive";
             checkNoOverdrive.Size = new Size(307, 36);
             checkNoOverdrive.TabIndex = 3;
@@ -787,7 +853,8 @@ namespace GHelper
             // checkTopmost
             // 
             checkTopmost.AutoSize = true;
-            checkTopmost.Location = new Point(25, 209);
+            checkTopmost.Location = new Point(24, 209);
+            checkTopmost.Margin = new Padding(4, 2, 4, 2);
             checkTopmost.Name = "checkTopmost";
             checkTopmost.Size = new Size(390, 36);
             checkTopmost.TabIndex = 1;
@@ -800,17 +867,18 @@ namespace GHelper
             AutoScaleMode = AutoScaleMode.Font;
             AutoSize = true;
             AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            ClientSize = new Size(974, 1247);
+            ClientSize = new Size(984, 1244);
             Controls.Add(groupOther);
             Controls.Add(groupLight);
             Controls.Add(groupBindings);
             FormBorderStyle = FormBorderStyle.FixedSingle;
+            Margin = new Padding(4, 2, 4, 2);
             MaximizeBox = false;
             MdiChildrenMinimizedAnchorBottom = false;
             MinimizeBox = false;
-            MinimumSize = new Size(1000, 0);
+            MinimumSize = new Size(1010, 71);
             Name = "Extra";
-            Padding = new Padding(10);
+            Padding = new Padding(9, 11, 9, 11);
             ShowIcon = false;
             ShowInTaskbar = false;
             Text = "Extra Settings";

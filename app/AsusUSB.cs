@@ -124,7 +124,7 @@ namespace GHelper
                 _modes.Remove(3);
             }
 
-            if (AppConfig.ContainsModel("G513")) {
+            if (AppConfig.ContainsModel("G513QY")) {
                 return _modes;
             }
 

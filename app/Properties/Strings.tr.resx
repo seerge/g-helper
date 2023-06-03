@@ -154,7 +154,7 @@
     <value>Güç Sınırlarını Uygula</value>
   </data>
   <data name="ApplyWindowsPowerPlan" xml:space="preserve">
-    <value>Auto adjust Windows Power Mode</value>
+    <value>Windows Güç Modunu otomatik ayarla</value>
   </data>
   <data name="AuraBreathe" xml:space="preserve">
     <value>Nefes</value>
@@ -188,6 +188,12 @@
   </data>
   <data name="Awake" xml:space="preserve">
     <value>Uyanık</value>
+  </data>
+  <data name="BacklightTimeout" xml:space="preserve">
+    <value>Pildeyken klavye ışığının kapanma süresi</value>
+  </data>
+  <data name="BacklightTimeoutPlugged" xml:space="preserve">
+    <value>Şarjdayken klavye ışığının kapanma süresi (0 her zaman açık)</value>
   </data>
   <data name="Balanced" xml:space="preserve">
     <value>Dengeli</value>
@@ -258,6 +264,9 @@
   <data name="FansPower" xml:space="preserve">
     <value>Fanlar + Güç</value>
   </data>
+  <data name="FnLock" xml:space="preserve">
+    <value>Fn+F kısayol tuşlarını FN tuşuna basmadan çalıştır</value>
+  </data>
   <data name="GPUChanging" xml:space="preserve">
     <value>Değiştiriliyor</value>
   </data>
@@ -281,6 +290,9 @@
   </data>
   <data name="KeyboardAuto" xml:space="preserve">
     <value>Pille çalışırken klavye aydınlatmasını kıs, şarjdayken eski haline dön</value>
+  </data>
+  <data name="KillGpuApps" xml:space="preserve">
+    <value>Eco'ya geçerken dGPU kullanan tüm uygulamaları durdur</value>
   </data>
   <data name="LaptopBacklight" xml:space="preserve">
     <value>Aydınlatması</value>
@@ -332,6 +344,9 @@
   </data>
   <data name="OptimizedGPUTooltip" xml:space="preserve">
     <value>Pille çalışırken Eko moda ve şarjdayken Standart moda geçiş yapın</value>
+  </data>
+  <data name="OptimizedUSBC" xml:space="preserve">
+    <value>Optimize edilmiş modda USB-c şarj cihazında GPU'yu devre dışı bırak</value>
   </data>
   <data name="Other" xml:space="preserve">
     <value>Diğer</value>

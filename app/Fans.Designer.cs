@@ -31,14 +31,14 @@ namespace GHelper
         /// </summary>
         private void InitializeComponent()
         {
-            ChartArea chartArea5 = new ChartArea();
-            Title title5 = new Title();
-            ChartArea chartArea6 = new ChartArea();
-            Title title6 = new Title();
-            ChartArea chartArea7 = new ChartArea();
-            Title title7 = new Title();
-            ChartArea chartArea8 = new ChartArea();
-            Title title8 = new Title();
+            ChartArea chartArea1 = new ChartArea();
+            Title title1 = new Title();
+            ChartArea chartArea2 = new ChartArea();
+            Title title2 = new Title();
+            ChartArea chartArea3 = new ChartArea();
+            Title title3 = new Title();
+            ChartArea chartArea4 = new ChartArea();
+            Title title4 = new Title();
             panelFans = new Panel();
             labelTip = new Label();
             tableFanCharts = new TableLayoutPanel();
@@ -181,8 +181,8 @@ namespace GHelper
             // 
             // chartGPU
             // 
-            chartArea5.Name = "ChartArea1";
-            chartGPU.ChartAreas.Add(chartArea5);
+            chartArea1.Name = "ChartArea1";
+            chartGPU.ChartAreas.Add(chartArea1);
             chartGPU.Dock = DockStyle.Fill;
             chartGPU.Location = new Point(12, 289);
             chartGPU.Margin = new Padding(2, 10, 2, 10);
@@ -190,13 +190,13 @@ namespace GHelper
             chartGPU.Size = new Size(781, 259);
             chartGPU.TabIndex = 17;
             chartGPU.Text = "chartGPU";
-            title5.Name = "Title1";
-            chartGPU.Titles.Add(title5);
+            title1.Name = "Title1";
+            chartGPU.Titles.Add(title1);
             // 
             // chartCPU
             // 
-            chartArea6.Name = "ChartArea1";
-            chartCPU.ChartAreas.Add(chartArea6);
+            chartArea2.Name = "ChartArea1";
+            chartCPU.ChartAreas.Add(chartArea2);
             chartCPU.Dock = DockStyle.Fill;
             chartCPU.Location = new Point(12, 10);
             chartCPU.Margin = new Padding(2, 10, 2, 10);
@@ -204,13 +204,13 @@ namespace GHelper
             chartCPU.Size = new Size(781, 259);
             chartCPU.TabIndex = 14;
             chartCPU.Text = "chartCPU";
-            title6.Name = "Title1";
-            chartCPU.Titles.Add(title6);
+            title2.Name = "Title1";
+            chartCPU.Titles.Add(title2);
             // 
             // chartXGM
             // 
-            chartArea7.Name = "ChartAreaXGM";
-            chartXGM.ChartAreas.Add(chartArea7);
+            chartArea3.Name = "ChartAreaXGM";
+            chartXGM.ChartAreas.Add(chartArea3);
             chartXGM.Dock = DockStyle.Fill;
             chartXGM.Location = new Point(12, 847);
             chartXGM.Margin = new Padding(2, 10, 2, 10);
@@ -218,14 +218,14 @@ namespace GHelper
             chartXGM.Size = new Size(781, 261);
             chartXGM.TabIndex = 14;
             chartXGM.Text = "chartXGM";
-            title7.Name = "Title4";
-            chartXGM.Titles.Add(title7);
+            title3.Name = "Title4";
+            chartXGM.Titles.Add(title3);
             chartXGM.Visible = false;
             // 
             // chartMid
             // 
-            chartArea8.Name = "ChartArea3";
-            chartMid.ChartAreas.Add(chartArea8);
+            chartArea4.Name = "ChartArea3";
+            chartMid.ChartAreas.Add(chartArea4);
             chartMid.Dock = DockStyle.Fill;
             chartMid.Location = new Point(12, 568);
             chartMid.Margin = new Padding(2, 10, 2, 10);
@@ -233,8 +233,8 @@ namespace GHelper
             chartMid.Size = new Size(781, 259);
             chartMid.TabIndex = 14;
             chartMid.Text = "chartMid";
-            title8.Name = "Title3";
-            chartMid.Titles.Add(title8);
+            title4.Name = "Title3";
+            chartMid.Titles.Add(title4);
             chartMid.Visible = false;
             // 
             // panelTitleFans
@@ -847,7 +847,6 @@ namespace GHelper
             Controls.Add(panelSliders);
             Margin = new Padding(4, 2, 4, 2);
             MaximizeBox = false;
-            MdiChildrenMinimizedAnchorBottom = false;
             MinimizeBox = false;
             MinimumSize = new Size(0, 1200);
             Name = "Fans";

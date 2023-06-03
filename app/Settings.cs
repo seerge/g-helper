@@ -906,12 +906,23 @@ namespace GHelper
             Application.Exit();
         }
 
+        public void HideAll()
+        {
+            this.Hide();
+            if (fans != null && fans.Text != "") fans.Close();
+            if (keyb != null && keyb.Text != "") keyb.Close();
+        }
+
+        public void CloseOthers()
+        {
+        }
+
         private void SettingsForm_FormClosing(object? sender, FormClosingEventArgs e)
         {
             if (e.CloseReason == CloseReason.UserClosing)
             {
                 e.Cancel = true;
-                Hide();
+                HideAll();
             }
         }
 
@@ -1290,6 +1301,8 @@ namespace GHelper
         public void AutoKeyboard()
         {
             InputDispatcher.SetBacklightAuto(true);
+            if (AppConfig.ContainsModel("X16") || AppConfig.ContainsModel("X13")) InputDispatcher.TabletMode(); 
+
         }
 
         public void AutoPerformance()
@@ -1458,7 +1471,7 @@ namespace GHelper
                 if (eco < 0)
                 {
                     tableGPU.Visible = false;
-                    if (Program.acpi.DeviceGet(AsusACPI.GPU_Fan) < 0) panelGPU.Visible = false;
+                    if (Program.acpi.DeviceGet(AsusACPI.GPU_Fan) < -65536) panelGPU.Visible = false;
                 }
 
             }

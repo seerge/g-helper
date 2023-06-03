@@ -174,8 +174,7 @@ namespace GHelper
 
         public static void SettingsToggle(string action = "")
         {
-            if (settingsForm.Visible)
-                settingsForm.Hide();
+            if (settingsForm.Visible) settingsForm.HideAll();
             else
             {
                 settingsForm.Show();

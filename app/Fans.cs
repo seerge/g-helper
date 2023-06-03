@@ -1,5 +1,6 @@
 ﻿using CustomControls;
 using GHelper.Gpu;
+using System;
 using System.Diagnostics;
 using System.Windows.Forms.DataVisualization.Charting;
 
@@ -695,13 +696,19 @@ namespace GHelper
 
                     if (dy < dymin) dy = dymin;
 
-                    if (e.Button.HasFlag(MouseButtons.Left))
+                    if (e.Button.HasFlag(MouseButtons.Left) && hit.Series is not null)
                     {
-                        curPoint.XValue = dx;
-                        curPoint.YValues[0] = dy;
 
-                        if (hit.Series is not null)
+                        curPoint.XValue = dx;
+
+                        if (Control.ModifierKeys == Keys.Shift)
+                        {
+                            AdjustAllDots(0, dy - curPoint.YValues[0], hit.Series);
+                        } else
+                        {
+                            curPoint.YValues[0] = dy;
                             AdjustAllLevels(hit.PointIndex, dx, dy, hit.Series);
+                        }
 
                         tip = true;
                     }
@@ -722,6 +729,15 @@ namespace GHelper
             labelTip.Visible = tip;
 
 
+        }
+
+        private void AdjustAllDots(double deltaX, double deltaY, Series series)
+        {
+            for (int i = 0; i < series.Points.Count; i++)
+            {
+                series.Points[i].XValue = Math.Max(20, Math.Min(100, series.Points[i].XValue + deltaX));
+                series.Points[i].YValues[0] = Math.Max(0, Math.Min(100, series.Points[i].YValues[0]+deltaY));
+            }
         }
 
         private void AdjustAllLevels(int index, double curXVal, double curYVal, Series series)
