@@ -265,7 +265,7 @@
     <value>风扇与电源设置</value>
   </data>
   <data name="FnLock" xml:space="preserve">
-    <value>无需FN处理 Fn+F 热键</value>
+    <value>打开FnLock (无需按下FN使用FN+(F1-F12)热键)</value>
   </data>
   <data name="GPUChanging" xml:space="preserve">
     <value>切换中...</value>
@@ -292,7 +292,7 @@
     <value>电池模式下降低键盘亮度以省电，并在插上电源时恢复</value>
   </data>
   <data name="KillGpuApps" xml:space="preserve">
-    <value>当切换到集显模式时，停止所有正在使用dGPU的应用</value>
+    <value>当切换到集显模式时，停止所有正在使用独显的应用</value>
   </data>
   <data name="LaptopBacklight" xml:space="preserve">
     <value>背光</value>
@@ -349,7 +349,7 @@
     <value>使用电池时切换到集显模式，并在插上电源后重新启用标准模式</value>
   </data>
   <data name="OptimizedUSBC" xml:space="preserve">
-    <value>在自动切换模式下，使用USB-C充电器时禁用GPU</value>
+    <value>在自动切换模式下，使用USB-C为笔记本供电时禁用GPU</value>
   </data>
   <data name="Other" xml:space="preserve">
     <value>其他</value>
