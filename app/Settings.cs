@@ -34,6 +34,8 @@ namespace GHelper
         private bool customFans = false;
         private int customPower = 0;
 
+        bool isGpuSection = true;
+
         public SettingsForm()
         {
 
@@ -256,32 +258,36 @@ namespace GHelper
 
             contextMenuStrip.Items.Add("-");
 
-            var titleGPU = new ToolStripMenuItem(Properties.Strings.GPUMode);
-            titleGPU.Margin = padding;
-            titleGPU.Enabled = false;
-            contextMenuStrip.Items.Add(titleGPU);
+            if (isGpuSection)
+            {
+                var titleGPU = new ToolStripMenuItem(Properties.Strings.GPUMode);
+                titleGPU.Margin = padding;
+                titleGPU.Enabled = false;
+                contextMenuStrip.Items.Add(titleGPU);
 
-            menuEco = new ToolStripMenuItem(Properties.Strings.EcoMode);
-            menuEco.Click += ButtonEco_Click;
-            menuEco.Margin = padding;
-            contextMenuStrip.Items.Add(menuEco);
+                menuEco = new ToolStripMenuItem(Properties.Strings.EcoMode);
+                menuEco.Click += ButtonEco_Click;
+                menuEco.Margin = padding;
+                contextMenuStrip.Items.Add(menuEco);
 
-            menuStandard = new ToolStripMenuItem(Properties.Strings.StandardMode);
-            menuStandard.Click += ButtonStandard_Click;
-            menuStandard.Margin = padding;
-            contextMenuStrip.Items.Add(menuStandard);
+                menuStandard = new ToolStripMenuItem(Properties.Strings.StandardMode);
+                menuStandard.Click += ButtonStandard_Click;
+                menuStandard.Margin = padding;
+                contextMenuStrip.Items.Add(menuStandard);
 
-            menuUltimate = new ToolStripMenuItem(Properties.Strings.UltimateMode);
-            menuUltimate.Click += ButtonUltimate_Click;
-            menuUltimate.Margin = padding;
-            contextMenuStrip.Items.Add(menuUltimate);
+                menuUltimate = new ToolStripMenuItem(Properties.Strings.UltimateMode);
+                menuUltimate.Click += ButtonUltimate_Click;
+                menuUltimate.Margin = padding;
+                contextMenuStrip.Items.Add(menuUltimate);
 
-            menuOptimized = new ToolStripMenuItem(Properties.Strings.Optimized);
-            menuOptimized.Click += ButtonOptimized_Click;
-            menuOptimized.Margin = padding;
-            contextMenuStrip.Items.Add(menuOptimized);
+                menuOptimized = new ToolStripMenuItem(Properties.Strings.Optimized);
+                menuOptimized.Click += ButtonOptimized_Click;
+                menuOptimized.Margin = padding;
+                contextMenuStrip.Items.Add(menuOptimized);
 
-            contextMenuStrip.Items.Add("-");
+                contextMenuStrip.Items.Add("-");
+            }
+
 
             var quit = new ToolStripMenuItem(Properties.Strings.Quit);
             quit.Click += ButtonQuit_Click;
@@ -1470,8 +1476,9 @@ namespace GHelper
 
                 if (eco < 0)
                 {
-                    tableGPU.Visible = false;
-                    if (Program.acpi.DeviceGet(AsusACPI.GPU_Fan) < -65536) panelGPU.Visible = false;
+                    isGpuSection = tableGPU.Visible = false;
+                    SetContextMenu();
+                    if (HardwareControl.FormatFan(Program.acpi.DeviceGet(AsusACPI.GPU_Fan)) is null) panelGPU.Visible = false;
                 }
 
             }

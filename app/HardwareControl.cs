@@ -31,7 +31,7 @@ public static class HardwareControl
     {
         AppConfig.setConfig("fan_max", fan);
     }
-    private static string FormatFan(int fan)
+    public static string FormatFan(int fan)
     {
         // fix for old models 
         if (fan < 0)
