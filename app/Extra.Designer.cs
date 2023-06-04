@@ -92,6 +92,7 @@ namespace GHelper
             checkUSBC = new CheckBox();
             checkNoOverdrive = new CheckBox();
             checkTopmost = new CheckBox();
+            checkVariBright = new CheckBox();
             groupBindings.SuspendLayout();
             tableKeys.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureHelp).BeginInit();
@@ -778,18 +779,19 @@ namespace GHelper
             // 
             groupOther.AutoSize = true;
             groupOther.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            groupOther.Controls.Add(checkFnLock);
-            groupOther.Controls.Add(checkGpuApps);
             groupOther.Controls.Add(checkAutoApplyWindowsPowerMode);
-            groupOther.Controls.Add(checkUSBC);
-            groupOther.Controls.Add(checkNoOverdrive);
             groupOther.Controls.Add(checkTopmost);
+            groupOther.Controls.Add(checkNoOverdrive);
+            groupOther.Controls.Add(checkUSBC);
+            groupOther.Controls.Add(checkVariBright);
+            groupOther.Controls.Add(checkGpuApps);
+            groupOther.Controls.Add(checkFnLock);
             groupOther.Dock = DockStyle.Top;
             groupOther.Location = new Point(9, 946);
             groupOther.Margin = new Padding(4, 2, 4, 2);
             groupOther.Name = "groupOther";
-            groupOther.Padding = new Padding(4, 2, 4, 0);
-            groupOther.Size = new Size(966, 320);
+            groupOther.Padding = new Padding(20, 2, 4, 10);
+            groupOther.Size = new Size(966, 296);
             groupOther.TabIndex = 2;
             groupOther.TabStop = false;
             groupOther.Text = "Other";
@@ -797,11 +799,12 @@ namespace GHelper
             // checkFnLock
             // 
             checkFnLock.AutoSize = true;
-            checkFnLock.Location = new Point(24, 45);
+            checkFnLock.Dock = DockStyle.Top;
+            checkFnLock.Location = new Point(20, 34);
             checkFnLock.Margin = new Padding(4, 2, 4, 2);
             checkFnLock.MaximumSize = new Size(780, 0);
             checkFnLock.Name = "checkFnLock";
-            checkFnLock.Size = new Size(397, 36);
+            checkFnLock.Size = new Size(780, 36);
             checkFnLock.TabIndex = 49;
             checkFnLock.Text = "Process Fn+F hotkeys without Fn";
             checkFnLock.UseVisualStyleBackColor = true;
@@ -809,10 +812,11 @@ namespace GHelper
             // checkGpuApps
             // 
             checkGpuApps.AutoSize = true;
-            checkGpuApps.Location = new Point(24, 83);
+            checkGpuApps.Dock = DockStyle.Top;
+            checkGpuApps.Location = new Point(20, 70);
             checkGpuApps.Margin = new Padding(4, 2, 4, 2);
             checkGpuApps.Name = "checkGpuApps";
-            checkGpuApps.Size = new Size(544, 36);
+            checkGpuApps.Size = new Size(942, 36);
             checkGpuApps.TabIndex = 48;
             checkGpuApps.Text = "Stop all apps using GPU when switching to Eco";
             checkGpuApps.UseVisualStyleBackColor = true;
@@ -820,10 +824,11 @@ namespace GHelper
             // checkAutoApplyWindowsPowerMode
             // 
             checkAutoApplyWindowsPowerMode.AutoSize = true;
-            checkAutoApplyWindowsPowerMode.Location = new Point(24, 250);
+            checkAutoApplyWindowsPowerMode.Dock = DockStyle.Top;
+            checkAutoApplyWindowsPowerMode.Location = new Point(20, 250);
             checkAutoApplyWindowsPowerMode.Margin = new Padding(4, 2, 4, 2);
             checkAutoApplyWindowsPowerMode.Name = "checkAutoApplyWindowsPowerMode";
-            checkAutoApplyWindowsPowerMode.Size = new Size(416, 36);
+            checkAutoApplyWindowsPowerMode.Size = new Size(942, 36);
             checkAutoApplyWindowsPowerMode.TabIndex = 47;
             checkAutoApplyWindowsPowerMode.Text = "Auto Adjust Windows Power Mode";
             checkAutoApplyWindowsPowerMode.UseVisualStyleBackColor = true;
@@ -831,10 +836,11 @@ namespace GHelper
             // checkUSBC
             // 
             checkUSBC.AutoSize = true;
-            checkUSBC.Location = new Point(24, 126);
+            checkUSBC.Dock = DockStyle.Top;
+            checkUSBC.Location = new Point(20, 142);
             checkUSBC.Margin = new Padding(4, 2, 4, 2);
             checkUSBC.Name = "checkUSBC";
-            checkUSBC.Size = new Size(659, 36);
+            checkUSBC.Size = new Size(942, 36);
             checkUSBC.TabIndex = 4;
             checkUSBC.Text = "Keep GPU disabled on USB-C charger in Optimized mode";
             checkUSBC.UseVisualStyleBackColor = true;
@@ -842,10 +848,11 @@ namespace GHelper
             // checkNoOverdrive
             // 
             checkNoOverdrive.AutoSize = true;
-            checkNoOverdrive.Location = new Point(24, 166);
+            checkNoOverdrive.Dock = DockStyle.Top;
+            checkNoOverdrive.Location = new Point(20, 178);
             checkNoOverdrive.Margin = new Padding(4, 2, 4, 2);
             checkNoOverdrive.Name = "checkNoOverdrive";
-            checkNoOverdrive.Size = new Size(307, 36);
+            checkNoOverdrive.Size = new Size(942, 36);
             checkNoOverdrive.TabIndex = 3;
             checkNoOverdrive.Text = Strings.DisableOverdrive;
             checkNoOverdrive.UseVisualStyleBackColor = true;
@@ -853,13 +860,26 @@ namespace GHelper
             // checkTopmost
             // 
             checkTopmost.AutoSize = true;
-            checkTopmost.Location = new Point(24, 209);
+            checkTopmost.Dock = DockStyle.Top;
+            checkTopmost.Location = new Point(20, 214);
             checkTopmost.Margin = new Padding(4, 2, 4, 2);
             checkTopmost.Name = "checkTopmost";
-            checkTopmost.Size = new Size(390, 36);
+            checkTopmost.Size = new Size(942, 36);
             checkTopmost.TabIndex = 1;
             checkTopmost.Text = Strings.WindowTop;
             checkTopmost.UseVisualStyleBackColor = true;
+            // 
+            // checkVariBright
+            // 
+            checkVariBright.AutoSize = true;
+            checkVariBright.Dock = DockStyle.Top;
+            checkVariBright.Location = new Point(20, 106);
+            checkVariBright.Margin = new Padding(4, 2, 4, 2);
+            checkVariBright.Name = "checkVariBright";
+            checkVariBright.Size = new Size(942, 36);
+            checkVariBright.TabIndex = 50;
+            checkVariBright.Text = "AMD Display VariBright";
+            checkVariBright.UseVisualStyleBackColor = true;
             // 
             // Extra
             // 
@@ -965,5 +985,6 @@ namespace GHelper
         private Label labelFNC;
         private RComboBox comboFNC;
         private TextBox textFNC;
+        private CheckBox checkVariBright;
     }
 }

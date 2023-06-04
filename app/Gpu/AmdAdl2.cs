@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using System.Runtime.InteropServices;
+using static AmdAdl2.Adl2.NativeMethods;
 
 namespace AmdAdl2;
 
@@ -515,6 +516,63 @@ public class Adl2 {
             out int lpNumApps,
             out IntPtr lppAppList);
 
+        [DllImport(Atiadlxx_FileName)]
+        public static extern int ADL2_Adapter_VariBright_Caps(
+            IntPtr context,
+            int iAdapterIndex,
+            out int iSupported,
+            out int iEnabled,
+            out int iVersion);
 
+        [DllImport(Atiadlxx_FileName)]
+        public static extern int ADL2_Adapter_VariBrightEnable_Set(
+            IntPtr context,
+            int iAdapterIndex,
+            int iEnabled);
+
+        // Clocks
+
+        [StructLayout(LayoutKind.Sequential)]
+        public struct ADLODNPerformanceLevel
+        {
+            public int iClock;
+            public int iVddc;
+            public int iEnabled;
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
+        public struct ADLODNPerformanceLevels
+        {
+            public int iSize;
+            public int iMode;
+            public int iNumberOfPerformanceLevels;
+            [MarshalAs(UnmanagedType.ByValArray, SizeConst = 1)]
+            public ADLODNPerformanceLevel[] aLevels;
+        }
+
+
+        [DllImport(Atiadlxx_FileName)]
+        public static extern int ADL2_OverdriveN_SystemClocks_Get(
+            IntPtr context,
+            int adapterIndex,
+            ref ADLODNPerformanceLevels performanceLevels);
+
+        [DllImport(Atiadlxx_FileName)]
+        public static extern int ADL2_OverdriveN_SystemClocks_Set(
+            IntPtr context,
+            int adapterIndex,
+            ref ADLODNPerformanceLevels performanceLevels);
+
+        [DllImport(Atiadlxx_FileName)]
+        public static extern int ADL2_OverdriveN_MemoryClocks_Get(
+            IntPtr context,
+            int adapterIndex,
+            ref ADLODNPerformanceLevels performanceLevels);
+
+        [DllImport(Atiadlxx_FileName)]
+        public static extern int ADL2_OverdriveN_MemoryClocks_Set(
+            IntPtr context,
+            int adapterIndex,
+            ref ADLODNPerformanceLevels performanceLevels);
     }
 }
