@@ -55,25 +55,12 @@ public class NvidiaGpuControl : IGpuControl
         try
         {
             Process[] processes = internalGpu.GetActiveApplications();
-            foreach (Process process in processes)
-            {
-                try
-                {
-                    process?.Kill();
-                    Logger.WriteLine("Stopped: " + process.ProcessName);
-                }
-                catch (Exception ex)
-                {
-                    Logger.WriteLine(ex.Message);
-                }
-            }
+            foreach (Process process in processes) ProcessHelper.KillByProcess(process);
         }
         catch (Exception ex)
         {
             Logger.WriteLine(ex.Message);
         }
-
-
 
         //NVIDIA.RestartDisplayDriver();
     }

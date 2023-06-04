@@ -168,7 +168,7 @@ namespace GHelper
             int trim = model.LastIndexOf("_");
             if (trim > 0) model = model.Substring(0, trim);
 
-            labelModel.Text = model + (Program.IsUserAdministrator() ? "." : "");
+            labelModel.Text = model + (ProcessHelper.IsUserAdministrator() ? "." : "");
 
             TopMost = AppConfig.getConfig("topmost") == 1;
 
@@ -1075,7 +1075,7 @@ namespace GHelper
                 }
 
                 int setStatus = nvControl.SetClocks(gpu_core, gpu_memory);
-                if (launchAsAdmin && setStatus == -1) Program.RunAsAdmin("gpu");
+                if (launchAsAdmin && setStatus == -1) ProcessHelper.RunAsAdmin("gpu");
 
             }
             catch (Exception ex)
@@ -1502,9 +1502,9 @@ namespace GHelper
                 if (dialogResult == DialogResult.No) return;
             }
 
-            Program.RunAsAdmin("gpurestart");
+            ProcessHelper.RunAsAdmin("gpurestart");
 
-            if (!Program.IsUserAdministrator()) return;
+            if (!ProcessHelper.IsUserAdministrator()) return;
 
             Logger.WriteLine("Trying to restart dGPU");
 

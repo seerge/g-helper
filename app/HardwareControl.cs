@@ -187,7 +187,7 @@ public static class HardwareControl
     public static void KillGPUApps()
     {
 
-        List<string> tokill = new() { "EADesktop", "RadeonSoftware", "epicgameslauncher" };
+        List<string> tokill = new() { "EADesktop", "RadeonSoftware", "epicgameslauncher", "ASUSSmartDisplayControl" };
 
         if (AppConfig.isConfig("kill_gpu_apps"))
         {
@@ -196,19 +196,7 @@ public static class HardwareControl
             tokill.Add("nvcplui");
         }
 
-        foreach (string kill in tokill)
-            foreach (var process in Process.GetProcessesByName(kill))
-            {
-                try
-                {
-                    process.Kill();
-                    Logger.WriteLine($"Stopped: {process.ProcessName}");
-                }
-                catch (Exception ex)
-                {
-                    Logger.WriteLine($"Failed to stop: {process.ProcessName} {ex.Message}");
-                }
-            }
+        foreach (string kill in tokill) ProcessHelper.KillByName(kill);
 
         if (AppConfig.isConfig("kill_gpu_apps") && GpuControl is not null)
         {

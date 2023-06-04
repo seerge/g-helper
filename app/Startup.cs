@@ -16,7 +16,7 @@ public class Startup
 
     public static void ReScheduleAdmin()
     {
-        if (Program.IsUserAdministrator() && IsScheduled())
+        if (ProcessHelper.IsUserAdministrator() && IsScheduled())
         {
             UnSchedule();
             Schedule();
@@ -38,7 +38,7 @@ public class Startup
             td.Triggers.Add(new LogonTrigger { UserId = userId });
             td.Actions.Add(strExeFilePath);
 
-            if (Program.IsUserAdministrator()) 
+            if (ProcessHelper.IsUserAdministrator()) 
                 td.Principal.RunLevel = TaskRunLevel.Highest;
 
             td.Settings.StopIfGoingOnBatteries = false;
@@ -54,10 +54,10 @@ public class Startup
             }
             catch (Exception e)
             {
-                if (Program.IsUserAdministrator())
+                if (ProcessHelper.IsUserAdministrator())
                     MessageBox.Show("Can't create a start up task. Try running Task Scheduler by hand and manually deleting GHelper task if it exists there.", "Scheduler Error", MessageBoxButtons.OK);
-                else 
-                    Program.RunAsAdmin();
+                else
+                    ProcessHelper.RunAsAdmin();
             }
         }
 
@@ -73,10 +73,10 @@ public class Startup
             }
             catch (Exception e)
             {
-                if (Program.IsUserAdministrator())
+                if (ProcessHelper.IsUserAdministrator())
                     MessageBox.Show("Can't remove task. Try running Task Scheduler by hand and manually deleting GHelper task if it exists there.", "Scheduler Error", MessageBoxButtons.OK);
                 else
-                    Program.RunAsAdmin();
+                    ProcessHelper.RunAsAdmin();
             }
         }
     }

@@ -135,19 +135,7 @@ public class AmdGpuControl : IGpuControl
                 }
             }
 
-            foreach (string kill in appNames)
-                foreach (var process in Process.GetProcessesByName(kill))
-                {
-                    try
-                    {
-                        process.Kill();
-                        Logger.WriteLine($"Stopped: {process.ProcessName}");
-                    }
-                    catch (Exception ex)
-                    {
-                        Logger.WriteLine($"Failed to stop: {process.ProcessName} {ex.Message}");
-                    }
-                }
+            foreach (string kill in appNames) ProcessHelper.KillByName(kill);
 
 
         } catch (Exception ex)
