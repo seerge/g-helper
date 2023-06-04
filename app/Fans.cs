@@ -9,7 +9,9 @@ namespace GHelper
     public partial class Fans : RForm
     {
 
+        int curIndex = -1;
         DataPoint curPoint = null;
+
         Series seriesCPU;
         Series seriesGPU;
         Series seriesMid;
@@ -640,6 +642,8 @@ namespace GHelper
         private void ChartCPU_MouseUp(object? sender, MouseEventArgs e)
         {
             curPoint = null;
+            curIndex = -1;
+
             labelTip.Visible = false;
 
             SaveProfile(seriesCPU, AsusFan.CPU);
@@ -669,9 +673,12 @@ namespace GHelper
             bool tip = false;
 
             HitTestResult hit = chart.HitTest(e.X, e.Y);
+            Series series = chart.Series[0];
+
             if (hit.Series is not null && hit.PointIndex >= 0)
             {
-                curPoint = hit.Series.Points[hit.PointIndex];
+                curIndex = hit.PointIndex;
+                curPoint = hit.Series.Points[curIndex];
                 tip = true;
             }
 
@@ -696,18 +703,19 @@ namespace GHelper
 
                     if (dy < dymin) dy = dymin;
 
-                    if (e.Button.HasFlag(MouseButtons.Left) && hit.Series is not null)
+                    if (e.Button.HasFlag(MouseButtons.Left))
                     {
+                        double deltaY = dy - curPoint.YValues[0];
+                        double deltaX = dx - curPoint.XValue;
 
                         curPoint.XValue = dx;
 
                         if (Control.ModifierKeys == Keys.Shift)
-                        {
-                            AdjustAllDots(0, dy - curPoint.YValues[0], hit.Series);
-                        } else
+                            AdjustAll(0, deltaY, series);
+                        else
                         {
                             curPoint.YValues[0] = dy;
-                            AdjustAllLevels(hit.PointIndex, dx, dy, hit.Series);
+                            AdjustAllLevels(curIndex, dx, dy, series);
                         }
 
                         tip = true;
@@ -731,7 +739,7 @@ namespace GHelper
 
         }
 
-        private void AdjustAllDots(double deltaX, double deltaY, Series series)
+        private void AdjustAll(double deltaX, double deltaY, Series series)
         {
             for (int i = 0; i < series.Points.Count; i++)
             {

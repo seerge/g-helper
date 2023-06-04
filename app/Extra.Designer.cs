@@ -86,13 +86,13 @@ namespace GHelper
             checkSleepLid = new CheckBox();
             checkShutdownLid = new CheckBox();
             groupOther = new GroupBox();
-            checkFnLock = new CheckBox();
-            checkGpuApps = new CheckBox();
             checkAutoApplyWindowsPowerMode = new CheckBox();
-            checkUSBC = new CheckBox();
-            checkNoOverdrive = new CheckBox();
             checkTopmost = new CheckBox();
+            checkNoOverdrive = new CheckBox();
+            checkUSBC = new CheckBox();
             checkVariBright = new CheckBox();
+            checkGpuApps = new CheckBox();
+            checkFnLock = new CheckBox();
             groupBindings.SuspendLayout();
             tableKeys.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureHelp).BeginInit();
@@ -115,8 +115,8 @@ namespace GHelper
             groupBindings.Location = new Point(9, 11);
             groupBindings.Margin = new Padding(4, 2, 4, 2);
             groupBindings.Name = "groupBindings";
-            groupBindings.Padding = new Padding(4, 2, 4, 2);
-            groupBindings.Size = new Size(966, 381);
+            groupBindings.Padding = new Padding(4, 2, 50, 2);
+            groupBindings.Size = new Size(966, 343);
             groupBindings.TabIndex = 0;
             groupBindings.TabStop = false;
             groupBindings.Text = "Key Bindings";
@@ -145,10 +145,11 @@ namespace GHelper
             tableKeys.Controls.Add(textFNF4, 2, 4);
             tableKeys.Controls.Add(comboFNC, 1, 5);
             tableKeys.Controls.Add(textFNC, 2, 5);
-            tableKeys.Location = new Point(13, 38);
-            tableKeys.Margin = new Padding(4, 2, 40, 2);
+            tableKeys.Dock = DockStyle.Top;
+            tableKeys.Location = new Point(4, 34);
+            tableKeys.Margin = new Padding(4, 2, 4, 2);
             tableKeys.Name = "tableKeys";
-            tableKeys.Padding = new Padding(9, 11, 9, 11);
+            tableKeys.Padding = new Padding(9, 11, 0, 11);
             tableKeys.RowCount = 6;
             tableKeys.RowStyles.Add(new RowStyle(SizeType.Absolute, 49F));
             tableKeys.RowStyles.Add(new RowStyle(SizeType.Absolute, 49F));
@@ -156,7 +157,7 @@ namespace GHelper
             tableKeys.RowStyles.Add(new RowStyle(SizeType.Absolute, 49F));
             tableKeys.RowStyles.Add(new RowStyle(SizeType.Absolute, 47F));
             tableKeys.RowStyles.Add(new RowStyle(SizeType.Absolute, 21F));
-            tableKeys.Size = new Size(901, 307);
+            tableKeys.Size = new Size(912, 307);
             tableKeys.TabIndex = 10;
             // 
             // labelFNC
@@ -171,32 +172,35 @@ namespace GHelper
             // 
             // textM2
             // 
-            textM2.Location = new Point(542, 62);
+            textM2.Dock = DockStyle.Top;
+            textM2.Location = new Point(554, 62);
             textM2.Margin = new Padding(4, 2, 4, 2);
             textM2.Name = "textM2";
             textM2.PlaceholderText = "action";
-            textM2.Size = new Size(342, 39);
+            textM2.Size = new Size(354, 39);
             textM2.TabIndex = 14;
             // 
             // textM1
             // 
-            textM1.Location = new Point(542, 13);
+            textM1.Dock = DockStyle.Top;
+            textM1.Location = new Point(554, 13);
             textM1.Margin = new Padding(4, 2, 4, 2);
             textM1.Name = "textM1";
             textM1.PlaceholderText = "action";
-            textM1.Size = new Size(342, 39);
+            textM1.Size = new Size(354, 39);
             textM1.TabIndex = 13;
             // 
             // comboM1
             // 
             comboM1.BorderColor = Color.White;
             comboM1.ButtonColor = Color.FromArgb(255, 255, 255);
+            comboM1.Dock = DockStyle.Top;
             comboM1.FormattingEnabled = true;
             comboM1.Items.AddRange(new object[] { Strings.Default, Strings.VolumeMute, Strings.PlayPause, Strings.PrintScreen, Strings.ToggleAura, Strings.Custom });
-            comboM1.Location = new Point(189, 13);
+            comboM1.Location = new Point(193, 13);
             comboM1.Margin = new Padding(4, 2, 4, 2);
             comboM1.Name = "comboM1";
-            comboM1.Size = new Size(312, 40);
+            comboM1.Size = new Size(353, 40);
             comboM1.TabIndex = 11;
             // 
             // labelM1
@@ -213,42 +217,46 @@ namespace GHelper
             // 
             comboM4.BorderColor = Color.White;
             comboM4.ButtonColor = Color.FromArgb(255, 255, 255);
+            comboM4.Dock = DockStyle.Top;
             comboM4.FormattingEnabled = true;
             comboM4.Items.AddRange(new object[] { Strings.PerformanceMode, Strings.OpenGHelper, Strings.Custom });
-            comboM4.Location = new Point(189, 160);
+            comboM4.Location = new Point(193, 160);
             comboM4.Margin = new Padding(4, 2, 4, 2);
             comboM4.Name = "comboM4";
-            comboM4.Size = new Size(312, 40);
+            comboM4.Size = new Size(353, 40);
             comboM4.TabIndex = 3;
             // 
             // comboM3
             // 
             comboM3.BorderColor = Color.White;
             comboM3.ButtonColor = Color.FromArgb(255, 255, 255);
+            comboM3.Dock = DockStyle.Top;
             comboM3.FormattingEnabled = true;
             comboM3.Items.AddRange(new object[] { Strings.Default, Strings.VolumeMute, Strings.PlayPause, Strings.PrintScreen, Strings.ToggleAura, Strings.Custom });
-            comboM3.Location = new Point(189, 111);
+            comboM3.Location = new Point(193, 111);
             comboM3.Margin = new Padding(4, 2, 4, 2);
             comboM3.Name = "comboM3";
-            comboM3.Size = new Size(312, 40);
+            comboM3.Size = new Size(353, 40);
             comboM3.TabIndex = 1;
             // 
             // textM4
             // 
-            textM4.Location = new Point(542, 160);
+            textM4.Dock = DockStyle.Top;
+            textM4.Location = new Point(554, 160);
             textM4.Margin = new Padding(4, 2, 4, 2);
             textM4.Name = "textM4";
             textM4.PlaceholderText = "action";
-            textM4.Size = new Size(342, 39);
+            textM4.Size = new Size(354, 39);
             textM4.TabIndex = 5;
             // 
             // textM3
             // 
-            textM3.Location = new Point(542, 111);
+            textM3.Dock = DockStyle.Top;
+            textM3.Location = new Point(554, 111);
             textM3.Margin = new Padding(4, 2, 4, 2);
             textM3.Name = "textM3";
             textM3.PlaceholderText = "action";
-            textM3.Size = new Size(342, 39);
+            textM3.Size = new Size(354, 39);
             textM3.TabIndex = 4;
             // 
             // labelM4
@@ -285,12 +293,13 @@ namespace GHelper
             // 
             comboM2.BorderColor = Color.White;
             comboM2.ButtonColor = Color.FromArgb(255, 255, 255);
+            comboM2.Dock = DockStyle.Top;
             comboM2.FormattingEnabled = true;
             comboM2.Items.AddRange(new object[] { Strings.Default, Strings.VolumeMute, Strings.PlayPause, Strings.PrintScreen, Strings.ToggleAura, Strings.Custom });
-            comboM2.Location = new Point(189, 62);
+            comboM2.Location = new Point(193, 62);
             comboM2.Margin = new Padding(4, 2, 4, 2);
             comboM2.Name = "comboM2";
-            comboM2.Size = new Size(312, 40);
+            comboM2.Size = new Size(353, 40);
             comboM2.TabIndex = 12;
             // 
             // labelFNF4
@@ -307,40 +316,44 @@ namespace GHelper
             // 
             comboFNF4.BorderColor = Color.White;
             comboFNF4.ButtonColor = Color.FromArgb(255, 255, 255);
+            comboFNF4.Dock = DockStyle.Top;
             comboFNF4.FormattingEnabled = true;
-            comboFNF4.Location = new Point(189, 209);
+            comboFNF4.Location = new Point(193, 209);
             comboFNF4.Margin = new Padding(4, 2, 4, 2);
             comboFNF4.Name = "comboFNF4";
-            comboFNF4.Size = new Size(312, 40);
+            comboFNF4.Size = new Size(353, 40);
             comboFNF4.TabIndex = 7;
             // 
             // textFNF4
             // 
-            textFNF4.Location = new Point(542, 209);
+            textFNF4.Dock = DockStyle.Top;
+            textFNF4.Location = new Point(554, 209);
             textFNF4.Margin = new Padding(4, 2, 4, 2);
             textFNF4.Name = "textFNF4";
             textFNF4.PlaceholderText = "action";
-            textFNF4.Size = new Size(342, 39);
+            textFNF4.Size = new Size(354, 39);
             textFNF4.TabIndex = 8;
             // 
             // comboFNC
             // 
             comboFNC.BorderColor = Color.White;
             comboFNC.ButtonColor = Color.FromArgb(255, 255, 255);
+            comboFNC.Dock = DockStyle.Top;
             comboFNC.FormattingEnabled = true;
-            comboFNC.Location = new Point(189, 256);
+            comboFNC.Location = new Point(193, 256);
             comboFNC.Margin = new Padding(4, 2, 4, 2);
             comboFNC.Name = "comboFNC";
-            comboFNC.Size = new Size(312, 40);
+            comboFNC.Size = new Size(353, 40);
             comboFNC.TabIndex = 16;
             // 
             // textFNC
             // 
-            textFNC.Location = new Point(542, 256);
+            textFNC.Dock = DockStyle.Top;
+            textFNC.Location = new Point(554, 256);
             textFNC.Margin = new Padding(4, 2, 4, 2);
             textFNC.Name = "textFNC";
             textFNC.PlaceholderText = "action";
-            textFNC.Size = new Size(342, 39);
+            textFNC.Size = new Size(354, 39);
             textFNC.TabIndex = 17;
             // 
             // pictureHelp
@@ -348,7 +361,7 @@ namespace GHelper
             pictureHelp.BackgroundImage = Resources.icons8_help_64;
             pictureHelp.BackgroundImageLayout = ImageLayout.Zoom;
             pictureHelp.Cursor = Cursors.Hand;
-            pictureHelp.Location = new Point(915, 55);
+            pictureHelp.Location = new Point(921, 51);
             pictureHelp.Margin = new Padding(4, 2, 4, 2);
             pictureHelp.Name = "pictureHelp";
             pictureHelp.Size = new Size(32, 32);
@@ -363,7 +376,7 @@ namespace GHelper
             groupLight.Controls.Add(panelXMG);
             groupLight.Controls.Add(tableBacklight);
             groupLight.Dock = DockStyle.Top;
-            groupLight.Location = new Point(9, 392);
+            groupLight.Location = new Point(9, 354);
             groupLight.Margin = new Padding(4, 2, 4, 2);
             groupLight.Name = "groupLight";
             groupLight.Padding = new Padding(4, 2, 4, 11);
@@ -787,7 +800,7 @@ namespace GHelper
             groupOther.Controls.Add(checkGpuApps);
             groupOther.Controls.Add(checkFnLock);
             groupOther.Dock = DockStyle.Top;
-            groupOther.Location = new Point(9, 946);
+            groupOther.Location = new Point(9, 908);
             groupOther.Margin = new Padding(4, 2, 4, 2);
             groupOther.Name = "groupOther";
             groupOther.Padding = new Padding(20, 2, 4, 10);
@@ -795,31 +808,6 @@ namespace GHelper
             groupOther.TabIndex = 2;
             groupOther.TabStop = false;
             groupOther.Text = "Other";
-            // 
-            // checkFnLock
-            // 
-            checkFnLock.AutoSize = true;
-            checkFnLock.Dock = DockStyle.Top;
-            checkFnLock.Location = new Point(20, 34);
-            checkFnLock.Margin = new Padding(4, 2, 4, 2);
-            checkFnLock.MaximumSize = new Size(780, 0);
-            checkFnLock.Name = "checkFnLock";
-            checkFnLock.Size = new Size(780, 36);
-            checkFnLock.TabIndex = 49;
-            checkFnLock.Text = "Process Fn+F hotkeys without Fn";
-            checkFnLock.UseVisualStyleBackColor = true;
-            // 
-            // checkGpuApps
-            // 
-            checkGpuApps.AutoSize = true;
-            checkGpuApps.Dock = DockStyle.Top;
-            checkGpuApps.Location = new Point(20, 70);
-            checkGpuApps.Margin = new Padding(4, 2, 4, 2);
-            checkGpuApps.Name = "checkGpuApps";
-            checkGpuApps.Size = new Size(942, 36);
-            checkGpuApps.TabIndex = 48;
-            checkGpuApps.Text = "Stop all apps using GPU when switching to Eco";
-            checkGpuApps.UseVisualStyleBackColor = true;
             // 
             // checkAutoApplyWindowsPowerMode
             // 
@@ -833,17 +821,17 @@ namespace GHelper
             checkAutoApplyWindowsPowerMode.Text = "Auto Adjust Windows Power Mode";
             checkAutoApplyWindowsPowerMode.UseVisualStyleBackColor = true;
             // 
-            // checkUSBC
+            // checkTopmost
             // 
-            checkUSBC.AutoSize = true;
-            checkUSBC.Dock = DockStyle.Top;
-            checkUSBC.Location = new Point(20, 142);
-            checkUSBC.Margin = new Padding(4, 2, 4, 2);
-            checkUSBC.Name = "checkUSBC";
-            checkUSBC.Size = new Size(942, 36);
-            checkUSBC.TabIndex = 4;
-            checkUSBC.Text = "Keep GPU disabled on USB-C charger in Optimized mode";
-            checkUSBC.UseVisualStyleBackColor = true;
+            checkTopmost.AutoSize = true;
+            checkTopmost.Dock = DockStyle.Top;
+            checkTopmost.Location = new Point(20, 214);
+            checkTopmost.Margin = new Padding(4, 2, 4, 2);
+            checkTopmost.Name = "checkTopmost";
+            checkTopmost.Size = new Size(942, 36);
+            checkTopmost.TabIndex = 1;
+            checkTopmost.Text = Strings.WindowTop;
+            checkTopmost.UseVisualStyleBackColor = true;
             // 
             // checkNoOverdrive
             // 
@@ -857,17 +845,17 @@ namespace GHelper
             checkNoOverdrive.Text = Strings.DisableOverdrive;
             checkNoOverdrive.UseVisualStyleBackColor = true;
             // 
-            // checkTopmost
+            // checkUSBC
             // 
-            checkTopmost.AutoSize = true;
-            checkTopmost.Dock = DockStyle.Top;
-            checkTopmost.Location = new Point(20, 214);
-            checkTopmost.Margin = new Padding(4, 2, 4, 2);
-            checkTopmost.Name = "checkTopmost";
-            checkTopmost.Size = new Size(942, 36);
-            checkTopmost.TabIndex = 1;
-            checkTopmost.Text = Strings.WindowTop;
-            checkTopmost.UseVisualStyleBackColor = true;
+            checkUSBC.AutoSize = true;
+            checkUSBC.Dock = DockStyle.Top;
+            checkUSBC.Location = new Point(20, 142);
+            checkUSBC.Margin = new Padding(4, 2, 4, 2);
+            checkUSBC.Name = "checkUSBC";
+            checkUSBC.Size = new Size(942, 36);
+            checkUSBC.TabIndex = 4;
+            checkUSBC.Text = "Keep GPU disabled on USB-C charger in Optimized mode";
+            checkUSBC.UseVisualStyleBackColor = true;
             // 
             // checkVariBright
             // 
@@ -880,6 +868,31 @@ namespace GHelper
             checkVariBright.TabIndex = 50;
             checkVariBright.Text = "AMD Display VariBright";
             checkVariBright.UseVisualStyleBackColor = true;
+            // 
+            // checkGpuApps
+            // 
+            checkGpuApps.AutoSize = true;
+            checkGpuApps.Dock = DockStyle.Top;
+            checkGpuApps.Location = new Point(20, 70);
+            checkGpuApps.Margin = new Padding(4, 2, 4, 2);
+            checkGpuApps.Name = "checkGpuApps";
+            checkGpuApps.Size = new Size(942, 36);
+            checkGpuApps.TabIndex = 48;
+            checkGpuApps.Text = "Stop all apps using GPU when switching to Eco";
+            checkGpuApps.UseVisualStyleBackColor = true;
+            // 
+            // checkFnLock
+            // 
+            checkFnLock.AutoSize = true;
+            checkFnLock.Dock = DockStyle.Top;
+            checkFnLock.Location = new Point(20, 34);
+            checkFnLock.Margin = new Padding(4, 2, 4, 2);
+            checkFnLock.MaximumSize = new Size(780, 0);
+            checkFnLock.Name = "checkFnLock";
+            checkFnLock.Size = new Size(780, 36);
+            checkFnLock.TabIndex = 49;
+            checkFnLock.Text = "Process Fn+F hotkeys without Fn";
+            checkFnLock.UseVisualStyleBackColor = true;
             // 
             // Extra
             // 

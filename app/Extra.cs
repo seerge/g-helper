@@ -249,7 +249,8 @@ namespace GHelper
                     checkVariBright.CheckedChanged += CheckVariBright_CheckedChanged;
                 }
 
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 Debug.WriteLine(ex.ToString());
                 checkVariBright.Visible = false;
