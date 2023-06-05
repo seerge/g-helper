@@ -50,25 +50,27 @@
             // tableBios
             // 
             tableBios.AutoSize = true;
+            tableBios.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             tableBios.ColumnCount = 3;
             tableBios.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
             tableBios.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
             tableBios.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
-            tableBios.Dock = DockStyle.Fill;
-            tableBios.Location = new Point(20, 20);
-            tableBios.MinimumSize = new Size(1100, 0);
+            tableBios.Dock = DockStyle.Top;
+            tableBios.Location = new Point(10, 10);
+            tableBios.Margin = new Padding(2);
+            tableBios.MinimumSize = new Size(550, 0);
             tableBios.Name = "tableBios";
-            tableBios.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            tableBios.Size = new Size(1138, 0);
+            tableBios.Size = new Size(608, 0);
             tableBios.TabIndex = 0;
             // 
             // labelBIOS
             // 
             labelBIOS.AutoSize = true;
             labelBIOS.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            labelBIOS.Location = new Point(67, 27);
+            labelBIOS.Location = new Point(34, 14);
+            labelBIOS.Margin = new Padding(2, 0, 2, 0);
             labelBIOS.Name = "labelBIOS";
-            labelBIOS.Size = new Size(68, 32);
+            labelBIOS.Size = new Size(35, 15);
             labelBIOS.TabIndex = 1;
             labelBIOS.Text = "BIOS";
             // 
@@ -76,9 +78,10 @@
             // 
             pictureBios.BackgroundImage = (Image)resources.GetObject("pictureBios.BackgroundImage");
             pictureBios.BackgroundImageLayout = ImageLayout.Zoom;
-            pictureBios.Location = new Point(29, 27);
+            pictureBios.Location = new Point(14, 14);
+            pictureBios.Margin = new Padding(2);
             pictureBios.Name = "pictureBios";
-            pictureBios.Size = new Size(32, 32);
+            pictureBios.Size = new Size(16, 16);
             pictureBios.TabIndex = 2;
             pictureBios.TabStop = false;
             // 
@@ -88,8 +91,9 @@
             panelBiosTitle.Controls.Add(pictureBios);
             panelBiosTitle.Dock = DockStyle.Top;
             panelBiosTitle.Location = new Point(0, 0);
+            panelBiosTitle.Margin = new Padding(2);
             panelBiosTitle.Name = "panelBiosTitle";
-            panelBiosTitle.Size = new Size(1178, 62);
+            panelBiosTitle.Size = new Size(628, 31);
             panelBiosTitle.TabIndex = 3;
             // 
             // panelBios
@@ -97,10 +101,11 @@
             panelBios.AutoSize = true;
             panelBios.Controls.Add(tableBios);
             panelBios.Dock = DockStyle.Top;
-            panelBios.Location = new Point(0, 62);
+            panelBios.Location = new Point(0, 31);
+            panelBios.Margin = new Padding(2);
             panelBios.Name = "panelBios";
-            panelBios.Padding = new Padding(20);
-            panelBios.Size = new Size(1178, 40);
+            panelBios.Padding = new Padding(10);
+            panelBios.Size = new Size(628, 20);
             panelBios.TabIndex = 4;
             // 
             // panelDrivers
@@ -108,25 +113,27 @@
             panelDrivers.AutoSize = true;
             panelDrivers.Controls.Add(tableDrivers);
             panelDrivers.Dock = DockStyle.Top;
-            panelDrivers.Location = new Point(0, 146);
+            panelDrivers.Location = new Point(0, 73);
+            panelDrivers.Margin = new Padding(2);
             panelDrivers.Name = "panelDrivers";
-            panelDrivers.Padding = new Padding(20);
-            panelDrivers.Size = new Size(1178, 40);
+            panelDrivers.Padding = new Padding(10);
+            panelDrivers.Size = new Size(628, 20);
             panelDrivers.TabIndex = 6;
             // 
             // tableDrivers
             // 
             tableDrivers.AutoSize = true;
+            tableDrivers.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             tableDrivers.ColumnCount = 3;
             tableDrivers.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
             tableDrivers.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
             tableDrivers.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
-            tableDrivers.Dock = DockStyle.Fill;
-            tableDrivers.Location = new Point(20, 20);
-            tableDrivers.MinimumSize = new Size(1100, 0);
+            tableDrivers.Dock = DockStyle.Top;
+            tableDrivers.Location = new Point(10, 10);
+            tableDrivers.Margin = new Padding(2);
+            tableDrivers.MinimumSize = new Size(550, 0);
             tableDrivers.Name = "tableDrivers";
-            tableDrivers.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            tableDrivers.Size = new Size(1138, 0);
+            tableDrivers.Size = new Size(608, 0);
             tableDrivers.TabIndex = 0;
             // 
             // panelDriversTitle
@@ -134,18 +141,20 @@
             panelDriversTitle.Controls.Add(labelDrivers);
             panelDriversTitle.Controls.Add(pictureDrivers);
             panelDriversTitle.Dock = DockStyle.Top;
-            panelDriversTitle.Location = new Point(0, 102);
+            panelDriversTitle.Location = new Point(0, 51);
+            panelDriversTitle.Margin = new Padding(2);
             panelDriversTitle.Name = "panelDriversTitle";
-            panelDriversTitle.Size = new Size(1178, 44);
+            panelDriversTitle.Size = new Size(628, 22);
             panelDriversTitle.TabIndex = 5;
             // 
             // labelDrivers
             // 
             labelDrivers.AutoSize = true;
             labelDrivers.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            labelDrivers.Location = new Point(67, 7);
+            labelDrivers.Location = new Point(34, 4);
+            labelDrivers.Margin = new Padding(2, 0, 2, 0);
             labelDrivers.Name = "labelDrivers";
-            labelDrivers.Size = new Size(254, 32);
+            labelDrivers.Size = new Size(126, 15);
             labelDrivers.TabIndex = 1;
             labelDrivers.Text = "Drivers and Software";
             // 
@@ -153,22 +162,24 @@
             // 
             pictureDrivers.BackgroundImage = (Image)resources.GetObject("pictureDrivers.BackgroundImage");
             pictureDrivers.BackgroundImageLayout = ImageLayout.Zoom;
-            pictureDrivers.Location = new Point(29, 8);
+            pictureDrivers.Location = new Point(14, 4);
+            pictureDrivers.Margin = new Padding(2);
             pictureDrivers.Name = "pictureDrivers";
-            pictureDrivers.Size = new Size(32, 32);
+            pictureDrivers.Size = new Size(16, 16);
             pictureDrivers.TabIndex = 2;
             pictureDrivers.TabStop = false;
             // 
             // Updates
             // 
-            AutoScaleDimensions = new SizeF(192F, 192F);
+            AutoScaleDimensions = new SizeF(96F, 96F);
             AutoScaleMode = AutoScaleMode.Dpi;
             AutoScroll = true;
-            ClientSize = new Size(1178, 690);
+            ClientSize = new Size(628, 345);
             Controls.Add(panelDrivers);
             Controls.Add(panelDriversTitle);
             Controls.Add(panelBios);
             Controls.Add(panelBiosTitle);
+            Margin = new Padding(2);
             MinimizeBox = false;
             Name = "Updates";
             ShowIcon = false;

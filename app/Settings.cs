@@ -1203,6 +1203,8 @@ namespace GHelper
             bool applyPower = AppConfig.getConfigPerf("auto_apply_power") == 1;
             bool applyGPU = true;
 
+            //if (applyPower) Program.acpi.DeviceSet(AsusACPI.PerformanceMode, AsusACPI.PerformanceManual, "CustomMode");
+
             if (delay > 0)
             {
                 var timer = new System.Timers.Timer(delay);

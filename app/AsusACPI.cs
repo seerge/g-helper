@@ -1,5 +1,4 @@
-﻿using GHelper;
-using System.Management;
+﻿using System.Management;
 using System.Runtime.InteropServices;
 
 public enum AsusFan
@@ -93,6 +92,7 @@ public class AsusACPI
     public const int PerformanceBalanced = 0;
     public const int PerformanceTurbo = 1;
     public const int PerformanceSilent = 2;
+    public const int PerformanceManual = 4;
 
     public const int GPUModeEco = 0;
     public const int GPUModeStandard = 1;
@@ -418,6 +418,24 @@ public class AsusACPI
     public bool IsAllAmdPPT()
     {
         return DeviceGet(PPT_CPUB0) >= 0 && DeviceGet(PPT_GPUC0) < 0;
+    }
+
+    public void ScanRange()
+    {
+        int value;
+        string appPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\GHelper";
+        string logFile = appPath + "\\scan.txt";
+        for (uint i = 0x00000000; i <= 0x00160000; i++)
+        {
+            value = DeviceGet(i);
+            if (value >= 0)
+                using (StreamWriter w = File.AppendText(logFile))
+                {
+                    w.WriteLine(i.ToString("X8") + ": " + value.ToString("X4") + " (" + value + ")");
+                    w.Close();
+                }
+        }
+
     }
 
     public void TUFKeyboardBrightness(int brightness)

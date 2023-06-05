@@ -1,9 +1,7 @@
 ﻿using CustomControls;
-using NAudio.CoreAudioApi;
 using System.Diagnostics;
 using System.Management;
 using System.Text.Json;
-using System.Xml.Linq;
 
 namespace GHelper
 {
@@ -151,7 +149,7 @@ namespace GHelper
                                         Process.Start(new ProcessStartInfo(downloadUrl) { UseShellExecute = true });
                                     };
 
-                                    table.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
+                                    table.RowStyles.Add(new RowStyle(SizeType.AutoSize));
                                     table.Controls.Add(new Label { Text = categoryName, Anchor = AnchorStyles.Left, Dock = DockStyle.Fill, Padding = new Padding(5, 5, 5, 5) }, 0, table.RowCount);
                                     table.Controls.Add(new Label { Text = title, Anchor = AnchorStyles.Left, Dock = DockStyle.Fill, Padding = new Padding(5, 5, 5, 5) }, 1, table.RowCount);
                                     table.Controls.Add(versionLabel, 2, table.RowCount);
