@@ -187,7 +187,11 @@ public class AmdGpuControl : IGpuControl
                 }
             }
 
-            foreach (string kill in appNames) ProcessHelper.KillByName(kill);
+            List<string> immune = new() { "svchost", "system", "ntoskrnl", "csrss", "winlogon", "wininit", "smss" };
+
+            foreach (string kill in appNames) 
+                if (!immune.Contains(kill.ToLower()))
+                    ProcessHelper.KillByName(kill);
 
 
         }

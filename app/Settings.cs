@@ -1474,7 +1474,7 @@ namespace GHelper
 
                 UltimateUI(mux == 1);
 
-                if (eco < 0)
+                if (eco < 0 && mux < 0)
                 {
                     isGpuSection = tableGPU.Visible = false;
                     SetContextMenu();
