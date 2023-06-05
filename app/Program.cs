@@ -126,6 +126,9 @@ namespace GHelper
                     if (settingsForm.keyb is not null && settingsForm.keyb.Text != "")
                         settingsForm.keyb.InitTheme();
 
+                    if (settingsForm.updates is not null && settingsForm.updates.Text != "")
+                        settingsForm.updates.InitTheme();
+
                     break;
             }
         }

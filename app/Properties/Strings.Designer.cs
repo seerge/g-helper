@@ -313,6 +313,15 @@ namespace GHelper.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to BIOS and Driver Updates.
+        /// </summary>
+        internal static string BiosAndDriverUpdates {
+            get {
+                return ResourceManager.GetString("BiosAndDriverUpdates", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Boot.
         /// </summary>
         internal static string Boot {
@@ -390,6 +399,15 @@ namespace GHelper.Properties {
         internal static string DownloadUpdate {
             get {
                 return ResourceManager.GetString("DownloadUpdate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Drivers and Software.
+        /// </summary>
+        internal static string DriverAndSoftware {
+            get {
+                return ResourceManager.GetString("DriverAndSoftware", resourceCulture);
             }
         }
         
@@ -1092,6 +1110,15 @@ namespace GHelper.Properties {
         internal static string UltimateMode {
             get {
                 return ResourceManager.GetString("UltimateMode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Updates.
+        /// </summary>
+        internal static string Updates {
+            get {
+                return ResourceManager.GetString("Updates", resourceCulture);
             }
         }
         

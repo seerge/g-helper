@@ -28,6 +28,7 @@ namespace GHelper
         public AniMatrix matrix;
         public Fans fans;
         public Extra keyb;
+        public Updates updates;
 
         static long lastRefresh;
 
@@ -71,6 +72,7 @@ namespace GHelper
 
             buttonMatrix.Text = Properties.Strings.PictureGif;
             buttonQuit.Text = Properties.Strings.Quit;
+            buttonUpdates.Text = Properties.Strings.Updates;
 
             FormClosing += SettingsForm_FormClosing;
 
@@ -157,6 +159,8 @@ namespace GHelper
             button120Hz.MouseMove += Button120Hz_MouseHover;
             button120Hz.MouseLeave += ButtonScreen_MouseLeave;
 
+            buttonUpdates.Click += ButtonUpdates_Click;
+
             sliderBattery.ValueChanged += SliderBattery_ValueChanged;
             Program.trayIcon.MouseMove += TrayIcon_MouseMove;
 
@@ -184,6 +188,18 @@ namespace GHelper
 
         }
 
+        private void ButtonUpdates_Click(object? sender, EventArgs e)
+        {
+            if (updates == null || updates.Text == "")
+            {
+                updates = new Updates();
+                updates.Show();
+            }
+            else
+            {
+                updates.Close();
+            }
+        }
 
         protected override void WndProc(ref Message m)
         {

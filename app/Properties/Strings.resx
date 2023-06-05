@@ -201,6 +201,9 @@
   <data name="BatteryChargeLimit" xml:space="preserve">
     <value>Battery Charge Limit</value>
   </data>
+  <data name="BiosAndDriverUpdates" xml:space="preserve">
+    <value>BIOS and Driver Updates</value>
+  </data>
   <data name="Boot" xml:space="preserve">
     <value>Boot</value>
   </data>
@@ -227,6 +230,9 @@
   </data>
   <data name="DownloadUpdate" xml:space="preserve">
     <value>Download Update</value>
+  </data>
+  <data name="DriverAndSoftware" xml:space="preserve">
+    <value>Drivers and Software</value>
   </data>
   <data name="EcoGPUTooltip" xml:space="preserve">
     <value>Disables dGPU for battery savings</value>
@@ -461,6 +467,9 @@
   </data>
   <data name="UltimateMode" xml:space="preserve">
     <value>Ultimate</value>
+  </data>
+  <data name="Updates" xml:space="preserve">
+    <value>Updates</value>
   </data>
   <data name="VersionLabel" xml:space="preserve">
     <value>Version</value>

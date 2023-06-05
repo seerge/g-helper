@@ -47,6 +47,7 @@ namespace GHelper
             pictureBattery = new PictureBox();
             labelBatteryTitle = new Label();
             panelFooter = new Panel();
+            buttonUpdates = new RButton();
             buttonQuit = new RButton();
             checkStartup = new CheckBox();
             panelPerformance = new Panel();
@@ -121,7 +122,7 @@ namespace GHelper
             panelMatrix.Controls.Add(pictureMatrix);
             panelMatrix.Controls.Add(labelMatrix);
             panelMatrix.Dock = DockStyle.Top;
-            panelMatrix.Location = new Point(10, 795);
+            panelMatrix.Location = new Point(10, 777);
             panelMatrix.Margin = new Padding(8);
             panelMatrix.Name = "panelMatrix";
             panelMatrix.Padding = new Padding(0, 0, 0, 12);
@@ -244,7 +245,7 @@ namespace GHelper
             panelBattery.Controls.Add(pictureBattery);
             panelBattery.Controls.Add(labelBatteryTitle);
             panelBattery.Dock = DockStyle.Top;
-            panelBattery.Location = new Point(10, 963);
+            panelBattery.Location = new Point(10, 945);
             panelBattery.Margin = new Padding(8);
             panelBattery.Name = "panelBattery";
             panelBattery.Padding = new Padding(0, 0, 0, 12);
@@ -322,15 +323,33 @@ namespace GHelper
             // 
             panelFooter.AutoSize = true;
             panelFooter.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            panelFooter.Controls.Add(buttonUpdates);
             panelFooter.Controls.Add(buttonQuit);
             panelFooter.Controls.Add(checkStartup);
             panelFooter.Dock = DockStyle.Top;
-            panelFooter.Location = new Point(10, 1126);
+            panelFooter.Location = new Point(10, 1108);
             panelFooter.Margin = new Padding(8);
             panelFooter.Name = "panelFooter";
             panelFooter.Padding = new Padding(0, 0, 0, 10);
             panelFooter.Size = new Size(810, 74);
             panelFooter.TabIndex = 35;
+            // 
+            // buttonUpdates
+            // 
+            buttonUpdates.Activated = false;
+            buttonUpdates.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            buttonUpdates.BackColor = SystemColors.ControlLight;
+            buttonUpdates.BorderColor = Color.Transparent;
+            buttonUpdates.BorderRadius = 2;
+            buttonUpdates.FlatStyle = FlatStyle.Flat;
+            buttonUpdates.Location = new Point(401, 16);
+            buttonUpdates.Margin = new Padding(8, 4, 8, 4);
+            buttonUpdates.Name = "buttonUpdates";
+            buttonUpdates.Secondary = true;
+            buttonUpdates.Size = new Size(180, 44);
+            buttonUpdates.TabIndex = 19;
+            buttonUpdates.Text = "Updates";
+            buttonUpdates.UseVisualStyleBackColor = false;
             // 
             // buttonQuit
             // 
@@ -340,11 +359,11 @@ namespace GHelper
             buttonQuit.BorderColor = Color.Transparent;
             buttonQuit.BorderRadius = 2;
             buttonQuit.FlatStyle = FlatStyle.Flat;
-            buttonQuit.Location = new Point(599, 16);
+            buttonQuit.Location = new Point(597, 16);
             buttonQuit.Margin = new Padding(8, 4, 8, 4);
             buttonQuit.Name = "buttonQuit";
             buttonQuit.Secondary = true;
-            buttonQuit.Size = new Size(185, 44);
+            buttonQuit.Size = new Size(180, 44);
             buttonQuit.TabIndex = 18;
             buttonQuit.Text = Properties.Strings.Quit;
             buttonQuit.UseVisualStyleBackColor = false;
@@ -536,20 +555,18 @@ namespace GHelper
             panelGPU.Margin = new Padding(8);
             panelGPU.Name = "panelGPU";
             panelGPU.Padding = new Padding(0, 0, 0, 45);
-            panelGPU.Size = new Size(810, 237);
+            panelGPU.Size = new Size(810, 257);
             panelGPU.TabIndex = 37;
             // 
             // labelTipGPU
             // 
+            labelTipGPU.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             labelTipGPU.ForeColor = SystemColors.GrayText;
-            labelTipGPU.Location = new Point(44, 191);
+            labelTipGPU.Location = new Point(44, 211);
             labelTipGPU.Margin = new Padding(4, 0, 4, 0);
             labelTipGPU.Name = "labelTipGPU";
             labelTipGPU.Size = new Size(760, 36);
             labelTipGPU.TabIndex = 20;
-            labelTipGPU.Text = "";
-            labelTipGPU.Anchor = AnchorStyles.Right | AnchorStyles.Bottom;
-
             // 
             // pictureGPU
             // 
@@ -604,7 +621,8 @@ namespace GHelper
             tableGPU.Name = "tableGPU";
             tableGPU.RowCount = 1;
             tableGPU.RowStyles.Add(new RowStyle(SizeType.Absolute, 128F));
-            tableGPU.Size = new Size(772, 128);
+            tableGPU.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
+            tableGPU.Size = new Size(772, 148);
             tableGPU.TabIndex = 16;
             // 
             // buttonEco
@@ -668,7 +686,7 @@ namespace GHelper
             buttonXGM.Margin = new Padding(4);
             buttonXGM.Name = "buttonXGM";
             buttonXGM.Secondary = false;
-            buttonXGM.Size = new Size(185, 120);
+            buttonXGM.Size = new Size(185, 12);
             buttonXGM.TabIndex = 2;
             buttonXGM.Text = "XG Mobile";
             buttonXGM.TextImageRelation = TextImageRelation.ImageAboveText;
@@ -729,7 +747,7 @@ namespace GHelper
             panelScreen.Controls.Add(pictureScreen);
             panelScreen.Controls.Add(labelSreen);
             panelScreen.Dock = DockStyle.Top;
-            panelScreen.Location = new Point(10, 485);
+            panelScreen.Location = new Point(10, 467);
             panelScreen.Margin = new Padding(8);
             panelScreen.Name = "panelScreen";
             panelScreen.Padding = new Padding(0, 0, 0, 10);
@@ -886,7 +904,7 @@ namespace GHelper
             panelKeyboard.Controls.Add(pictureKeyboard);
             panelKeyboard.Controls.Add(labelKeyboard);
             panelKeyboard.Dock = DockStyle.Top;
-            panelKeyboard.Location = new Point(10, 666);
+            panelKeyboard.Location = new Point(10, 648);
             panelKeyboard.Margin = new Padding(8);
             panelKeyboard.Name = "panelKeyboard";
             panelKeyboard.Padding = new Padding(0, 0, 0, 12);
@@ -1027,7 +1045,7 @@ namespace GHelper
             AutoScaleMode = AutoScaleMode.Dpi;
             AutoSize = true;
             AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            ClientSize = new Size(830, 1173);
+            ClientSize = new Size(830, 1195);
             Controls.Add(panelFooter);
             Controls.Add(panelBattery);
             Controls.Add(panelMatrix);
@@ -1137,5 +1155,6 @@ namespace GHelper
         private Label labelMidFan;
         private Label labelModel;
         private WinFormsSliderBar.Slider sliderBattery;
+        private RButton buttonUpdates;
     }
 }
