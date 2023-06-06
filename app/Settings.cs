@@ -1191,19 +1191,30 @@ namespace GHelper
         public void AutoPower(int delay = 0)
         {
 
-            // fix for misbehaving bios PPTs on G513
-            if (AppConfig.ContainsModel("G513") && AppConfig.getConfigPerf("auto_apply") != 1)
-            {
-                AutoFans(true);
-                delay = 500;
-            }
-
             customPower = 0;
 
-            bool applyPower = AppConfig.getConfigPerf("auto_apply_power") == 1;
-            bool applyGPU = true;
+            bool applyPower = (AppConfig.getConfigPerf("auto_apply_power") == 1);
+            //bool applyGPU = true;
 
-            //if (applyPower) Program.acpi.DeviceSet(AsusACPI.PerformanceMode, AsusACPI.PerformanceManual, "CustomMode");
+            if (applyPower)
+            {
+                // fix for misbehaving bios PPTs on G513
+                if (AppConfig.ContainsModel("G513") && AppConfig.getConfigPerf("auto_apply") != 1)
+                {
+                    AutoFans(true);
+                    delay = 500;
+                }
+
+                // Fix for models that don't support PPT settings in all modes
+                if (AppConfig.ContainsModel("GU603") || AppConfig.ContainsModel("GU604") || AppConfig.ContainsModel("FX517") || AppConfig.ContainsModel("G733"))
+                {
+                    Program.acpi.DeviceSet(AsusACPI.PerformanceMode, AsusACPI.PerformanceManual, "CustomMode");
+                    if (AppConfig.getConfigPerf("auto_apply") != 1) AutoFans(true);
+                    delay = 500;
+                }
+
+            }
+
 
             if (delay > 0)
             {

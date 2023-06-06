@@ -44,34 +44,41 @@ namespace GHelper
         }
         private Dictionary<string, string> GetDeviceVersions()
         {
-            ManagementObjectSearcher objSearcher = new ManagementObjectSearcher("Select * from Win32_PnPSignedDriver");
-            ManagementObjectCollection objCollection = objSearcher.Get();
-            Dictionary<string, string> list = new();
-
-            foreach (ManagementObject obj in objCollection)
+            using (ManagementObjectSearcher objSearcher = new ManagementObjectSearcher("Select * from Win32_PnPSignedDriver"))
             {
-                if (obj["DeviceID"] is not null && obj["DriverVersion"] is not null)
-                    list[obj["DeviceID"].ToString()] = obj["DriverVersion"].ToString();
-            }
+                using (ManagementObjectCollection objCollection = objSearcher.Get())
+                {
+                    Dictionary<string, string> list = new();
 
-            return list;
+                    foreach (ManagementObject obj in objCollection)
+                    {
+                        if (obj["DeviceID"] is not null && obj["DriverVersion"] is not null)
+                            list[obj["DeviceID"].ToString()] = obj["DriverVersion"].ToString();
+                    }
+
+                    return list;
+                }
+            }
         }
 
         private string GetBiosVersion()
         {
-            ManagementObjectSearcher objSearcher = new ManagementObjectSearcher("SELECT * FROM Win32_BIOS");
-            ManagementObjectCollection objCollection = objSearcher.Get();
-
-            foreach (ManagementObject obj in objCollection)
-                if (obj["SMBIOSBIOSVersion"] is not null)
+            using (ManagementObjectSearcher objSearcher = new ManagementObjectSearcher("SELECT * FROM Win32_BIOS"))
+            {
+                using (ManagementObjectCollection objCollection = objSearcher.Get())
                 {
-                    var bios = obj["SMBIOSBIOSVersion"].ToString();
-                    int trim = bios.LastIndexOf(".");
-                    if (trim > 0) return bios.Substring(trim + 1);
-                    else return bios;
-                }
+                    foreach (ManagementObject obj in objCollection)
+                        if (obj["SMBIOSBIOSVersion"] is not null)
+                        {
+                            var bios = obj["SMBIOSBIOSVersion"].ToString();
+                            int trim = bios.LastIndexOf(".");
+                            if (trim > 0) return bios.Substring(trim + 1);
+                            else return bios;
+                        }
 
-            return "";
+                    return "";
+                }
+            }
         }
 
         public async void DriversAsync(string url, int type, TableLayoutPanel table)

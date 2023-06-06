@@ -106,7 +106,7 @@ namespace WinFormsSliderBar
         private void RecalculateParameters()
         {
             _radius = 0.4F * ClientSize.Height;
-            _barSize = new SizeF(ClientSize.Width - 4 * _radius, ClientSize.Height * 0.15F);
+            _barSize = new SizeF(ClientSize.Width - 2 * _radius, ClientSize.Height * 0.15F);
             _barPos = new PointF(_radius, (ClientSize.Height - _barSize.Height) / 2);
             _thumbPos = new PointF(
                 _barSize.Width / (Max - Min) * (Value - Min) + _barPos.X,
