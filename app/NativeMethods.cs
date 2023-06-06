@@ -588,6 +588,42 @@ public class NativeMethods
         return dm;
     }
 
+    public enum COLORPROFILETYPE
+    {
+        CPT_ICC,
+        CPT_DMP,
+        CPT_CAMP,
+        CPT_GMMP
+    }
+    public enum COLORPROFILESUBTYPE
+    {
+        CPST_PERCEPTUAL,
+        CPST_RELATIVE_COLORIMETRIC,
+        CPST_SATURATION,
+        CPST_ABSOLUTE_COLORIMETRIC,
+        CPST_NONE,
+        CPST_RGB_WORKING_SPACE,
+        CPST_CUSTOM_WORKING_SPACE,
+        CPST_STANDARD_DISPLAY_COLOR_MODE,
+        CPST_EXTENDED_DISPLAY_COLOR_MODE
+    }
+    public enum WCS_PROFILE_MANAGEMENT_SCOPE
+    {
+        WCS_PROFILE_MANAGEMENT_SCOPE_SYSTEM_WIDE,
+        WCS_PROFILE_MANAGEMENT_SCOPE_CURRENT_USER
+    }
+
+    [DllImport("mscms.dll", CharSet = CharSet.Unicode)]
+    public static extern bool WcsSetDefaultColorProfile(
+        WCS_PROFILE_MANAGEMENT_SCOPE scope,
+        string pDeviceName,
+        COLORPROFILETYPE cptColorProfileType,
+        COLORPROFILESUBTYPE cpstColorProfileSubType,
+        uint dwProfileID,
+        string pProfileName
+    );
+
+
     public const int ENUM_CURRENT_SETTINGS = -1;
     public const string defaultDevice = "\\\\.\\DISPLAY1";
 

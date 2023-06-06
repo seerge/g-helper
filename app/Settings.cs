@@ -1194,7 +1194,6 @@ namespace GHelper
                 return false;
             
             return
-                //AppConfig.ContainsModel("GA402") ||
                 AppConfig.ContainsModel("GU604") || 
                 AppConfig.ContainsModel("FX517") || 
                 AppConfig.ContainsModel("G733");
@@ -1219,10 +1218,9 @@ namespace GHelper
                 }
 
                 // Fix for models that don't support PPT settings in all modes, setting a "manual" mode for them
-                if (isManualModeRequired())
+                if (isManualModeRequired() && !applyFans)
                 {
-                    delay = 500;
-                    if (!applyFans) AutoFans(true);
+                    AutoFans(true);
                 }
             }
 

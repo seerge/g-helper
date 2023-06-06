@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <root>
-	<!-- 
+  <!-- 
     Microsoft ResX Schema 
     
     Version 2.0
@@ -59,419 +59,431 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-	<xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-		<xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
-		<xsd:element name="root" msdata:IsDataSet="true">
-			<xsd:complexType>
-				<xsd:choice maxOccurs="unbounded">
-					<xsd:element name="metadata">
-						<xsd:complexType>
-							<xsd:sequence>
-								<xsd:element name="value" type="xsd:string" minOccurs="0" />
-							</xsd:sequence>
-							<xsd:attribute name="name" use="required" type="xsd:string" />
-							<xsd:attribute name="type" type="xsd:string" />
-							<xsd:attribute name="mimetype" type="xsd:string" />
-							<xsd:attribute ref="xml:space" />
-						</xsd:complexType>
-					</xsd:element>
-					<xsd:element name="assembly">
-						<xsd:complexType>
-							<xsd:attribute name="alias" type="xsd:string" />
-							<xsd:attribute name="name" type="xsd:string" />
-						</xsd:complexType>
-					</xsd:element>
-					<xsd:element name="data">
-						<xsd:complexType>
-							<xsd:sequence>
-								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-								<xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
-							</xsd:sequence>
-							<xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
-							<xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-							<xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-							<xsd:attribute ref="xml:space" />
-						</xsd:complexType>
-					</xsd:element>
-					<xsd:element name="resheader">
-						<xsd:complexType>
-							<xsd:sequence>
-								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-							</xsd:sequence>
-							<xsd:attribute name="name" type="xsd:string" use="required" />
-						</xsd:complexType>
-					</xsd:element>
-				</xsd:choice>
-			</xsd:complexType>
-		</xsd:element>
-	</xsd:schema>
-	<resheader name="resmimetype">
-		<value>text/microsoft-resx</value>
-	</resheader>
-	<resheader name="version">
-		<value>2.0</value>
-	</resheader>
-	<resheader name="reader">
-		<value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-	</resheader>
-	<resheader name="writer">
-		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-	</resheader>
-	<data name="ACPIError" xml:space="preserve">
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ACPIError" xml:space="preserve">
     <value>無法連結到華碩 ACPI。 没有它，應用程式將無法執行。 嘗試安裝Asus System Control Interface</value>
   </data>
-	<data name="AlertDGPU" xml:space="preserve">
+  <data name="AlertDGPU" xml:space="preserve">
     <value>看起来 GPU 正在大量使用，是否禁用它?</value>
   </data>
-	<data name="AlertDGPUTitle" xml:space="preserve">
+  <data name="AlertDGPUTitle" xml:space="preserve">
     <value>節能模式</value>
   </data>
-	<data name="AlertUltimateOff" xml:space="preserve">
+  <data name="AlertUltimateOff" xml:space="preserve">
     <value>關閉獨顯需要重新啟動</value>
   </data>
-	<data name="AlertUltimateOn" xml:space="preserve">
+  <data name="AlertUltimateOn" xml:space="preserve">
     <value>獨顯直連需要重啟</value>
   </data>
-	<data name="AlertUltimateTitle" xml:space="preserve">
+  <data name="AlertUltimateTitle" xml:space="preserve">
     <value>現在重新啟動嗎?</value>
   </data>
-	<data name="AnimationSpeed" xml:space="preserve">
+  <data name="AnimationSpeed" xml:space="preserve">
     <value>動畫速度</value>
   </data>
-	<data name="AnimeMatrix" xml:space="preserve">
+  <data name="AnimeMatrix" xml:space="preserve">
     <value>AnimeMatrix</value>
   </data>
-	<data name="AppAlreadyRunning" xml:space="preserve">
+  <data name="AppAlreadyRunning" xml:space="preserve">
     <value>程式已正在執行</value>
   </data>
-	<data name="AppAlreadyRunningText" xml:space="preserve">
+  <data name="AppAlreadyRunningText" xml:space="preserve">
     <value>G-Helper已經在執行。 請確認右下工作列中的圖示。</value>
   </data>
-	<data name="ApplyFanCurve" xml:space="preserve">
+  <data name="ApplyFanCurve" xml:space="preserve">
     <value>套用自定義風扇曲線</value>
   </data>
-	<data name="ApplyPowerLimits" xml:space="preserve">
+  <data name="ApplyPowerLimits" xml:space="preserve">
     <value>套用功率限制</value>
   </data>
-	<data name="ApplyWindowsPowerPlan" xml:space="preserve">
+  <data name="ApplyWindowsPowerPlan" xml:space="preserve">
     <value>自動調整Windows電源模式</value>
   </data>
-	<data name="AuraBreathe" xml:space="preserve">
+  <data name="AuraBreathe" xml:space="preserve">
     <value>呼吸</value>
   </data>
-	<data name="AuraColorCycle" xml:space="preserve">
+  <data name="AuraColorCycle" xml:space="preserve">
     <value>循環</value>
   </data>
-	<data name="AuraFast" xml:space="preserve">
+  <data name="AuraFast" xml:space="preserve">
     <value>快速</value>
   </data>
-	<data name="AuraNormal" xml:space="preserve">
+  <data name="AuraNormal" xml:space="preserve">
     <value>正常</value>
   </data>
-	<data name="AuraRainbow" xml:space="preserve">
+  <data name="AuraRainbow" xml:space="preserve">
     <value>彩虹</value>
   </data>
-	<data name="AuraSlow" xml:space="preserve">
+  <data name="AuraSlow" xml:space="preserve">
     <value>慢</value>
   </data>
-	<data name="AuraStatic" xml:space="preserve">
+  <data name="AuraStatic" xml:space="preserve">
     <value>靜態</value>
   </data>
-	<data name="AuraStrobe" xml:space="preserve">
+  <data name="AuraStrobe" xml:space="preserve">
     <value>閃爍</value>
   </data>
-	<data name="AutoMode" xml:space="preserve">
+  <data name="AutoMode" xml:space="preserve">
     <value>自動</value>
   </data>
-	<data name="AutoRefreshTooltip" xml:space="preserve">
+  <data name="AutoRefreshTooltip" xml:space="preserve">
     <value>電池模式時自動60Hz</value>
   </data>
-	<data name="Awake" xml:space="preserve">
+  <data name="Awake" xml:space="preserve">
     <value>喚醒時</value>
   </data>
-	<data name="BacklightTimeout" xml:space="preserve">
+  <data name="BacklightTimeout" xml:space="preserve">
     <value>電池模式下自動關閉鍵盤背光的秒數(0 = 不關閉)</value>
   </data>
-	<data name="BacklightTimeoutPlugged" xml:space="preserve">
+  <data name="BacklightTimeoutPlugged" xml:space="preserve">
     <value>插電模式下自動關閉鍵盤背光的秒數(0 = 不關閉)</value>
   </data>
-	<data name="Balanced" xml:space="preserve">
+  <data name="Balanced" xml:space="preserve">
     <value>平衡模式</value>
   </data>
-	<data name="BatteryChargeLimit" xml:space="preserve">
+  <data name="BatteryChargeLimit" xml:space="preserve">
     <value>電池充電上限</value>
   </data>
-	<data name="Boot" xml:space="preserve">
+  <data name="BiosAndDriverUpdates" xml:space="preserve">
+    <value>BIOS與驅動程式更新 Updates</value>
+  </data>
+  <data name="Boot" xml:space="preserve">
     <value>開機時</value>
   </data>
-	<data name="Brightness" xml:space="preserve">
+  <data name="Brightness" xml:space="preserve">
     <value>亮度</value>
   </data>
-	<data name="Color" xml:space="preserve">
+  <data name="Color" xml:space="preserve">
     <value>顏色</value>
   </data>
-	<data name="CPUBoost" xml:space="preserve">
+  <data name="CPUBoost" xml:space="preserve">
     <value>CPU 加速</value>
   </data>
-	<data name="Custom" xml:space="preserve">
+  <data name="Custom" xml:space="preserve">
     <value>自定義設置</value>
   </data>
-	<data name="Default" xml:space="preserve">
+  <data name="Default" xml:space="preserve">
     <value>預設</value>
   </data>
-	<data name="DisableOverdrive" xml:space="preserve">
+  <data name="DisableOverdrive" xml:space="preserve">
     <value>禁用螢幕加速OD</value>
   </data>
-	<data name="Discharging" xml:space="preserve">
+  <data name="Discharging" xml:space="preserve">
     <value>正在釋放電力</value>
   </data>
-	<data name="DownloadUpdate" xml:space="preserve">
+  <data name="DownloadUpdate" xml:space="preserve">
     <value>下載更新</value>
   </data>
-	<data name="EcoGPUTooltip" xml:space="preserve">
+  <data name="DriverAndSoftware" xml:space="preserve">
+    <value>驅動程式與軟體</value>
+  </data>
+  <data name="EcoGPUTooltip" xml:space="preserve">
     <value>禁用獨顯以節省電池電量</value>
   </data>
-	<data name="EcoMode" xml:space="preserve">
+  <data name="EcoMode" xml:space="preserve">
     <value>節能模式</value>
   </data>
-	<data name="Extra" xml:space="preserve">
+  <data name="Extra" xml:space="preserve">
     <value>更多</value>
   </data>
-	<data name="ExtraSettings" xml:space="preserve">
+  <data name="ExtraSettings" xml:space="preserve">
     <value>更多設定</value>
   </data>
-	<data name="FactoryDefaults" xml:space="preserve">
+  <data name="FactoryDefaults" xml:space="preserve">
     <value>恢復原廠設定</value>
   </data>
-	<data name="FanCurves" xml:space="preserve">
+  <data name="FanCurves" xml:space="preserve">
     <value>風扇曲線</value>
   </data>
-	<data name="FanProfileCPU" xml:space="preserve">
-    <value>CPU 風扇設置文件</value>
+  <data name="FanProfileCPU" xml:space="preserve">
+    <value>CPU 風扇設定檔</value>
   </data>
-	<data name="FanProfileGPU" xml:space="preserve">
-    <value>GPU 風扇設置文件</value>
+  <data name="FanProfileGPU" xml:space="preserve">
+    <value>GPU 風扇設定檔</value>
   </data>
-	<data name="FanProfileMid" xml:space="preserve">
+  <data name="FanProfileMid" xml:space="preserve">
     <value>中等風扇設置</value>
   </data>
-	<data name="FanProfiles" xml:space="preserve">
+  <data name="FanProfiles" xml:space="preserve">
     <value>風扇設置</value>
   </data>
-	<data name="FansAndPower" xml:space="preserve">
+  <data name="FansAndPower" xml:space="preserve">
     <value>風扇和電源</value>
   </data>
-	<data name="FanSpeed" xml:space="preserve">
+  <data name="FanSpeed" xml:space="preserve">
     <value> 風扇: </value>
   </data>
-	<data name="FansPower" xml:space="preserve">
+  <data name="FansPower" xml:space="preserve">
     <value>自定義設置</value>
   </data>
-	<data name="FnLock" xml:space="preserve">
-    <value>使用Fn+F1~F12的功能時不須按下Fn鍵</value>
+  <data name="FnLock" xml:space="preserve">
+    <value>使用Fn+F1~F12功能時免按下Fn鍵</value>
   </data>
-	<data name="GPUBoost" xml:space="preserve">
+  <data name="GPUBoost" xml:space="preserve">
     <value>Dynamic Boost</value>
   </data>
-	<data name="GPUChanging" xml:space="preserve">
+  <data name="GPUChanging" xml:space="preserve">
     <value>切換中...</value>
   </data>
-	<data name="GPUCoreClockOffset" xml:space="preserve">
+  <data name="GPUCoreClockOffset" xml:space="preserve">
     <value>核心時脈偏移量(Offset)</value>
   </data>
-	<data name="GPUMemoryClockOffset" xml:space="preserve">
+  <data name="GPUMemoryClockOffset" xml:space="preserve">
     <value>顯示卡記憶體偏移量(Offset)</value>
   </data>
-	<data name="GPUMode" xml:space="preserve">
+  <data name="GPUMode" xml:space="preserve">
     <value>GPU 模式</value>
   </data>
-	<data name="GPUModeEco" xml:space="preserve">
+  <data name="GPUModeEco" xml:space="preserve">
     <value>僅限內顯</value>
   </data>
-	<data name="GPUModeStandard" xml:space="preserve">
+  <data name="GPUModeStandard" xml:space="preserve">
     <value>內顯 + 獨顯</value>
   </data>
-	<data name="GPUModeUltimate" xml:space="preserve">
+  <data name="GPUModeUltimate" xml:space="preserve">
     <value>獨立顯卡</value>
   </data>
-	<data name="GPUSettings" xml:space="preserve">
+  <data name="GPUSettings" xml:space="preserve">
     <value>顯卡設定</value>
   </data>
-	<data name="GPUTempTarget" xml:space="preserve">
+  <data name="GPUTempTarget" xml:space="preserve">
     <value>GPU溫度上限</value>
   </data>
-	<data name="KeyBindings" xml:space="preserve">
+  <data name="KeyBindings" xml:space="preserve">
     <value>按鍵綁定</value>
   </data>
-	<data name="Keyboard" xml:space="preserve">
+  <data name="Keyboard" xml:space="preserve">
     <value>鍵盤</value>
   </data>
-	<data name="KeyboardAuto" xml:space="preserve">
+  <data name="KeyboardAuto" xml:space="preserve">
     <value>電池模式時自動降低鍵盤背光亮度以節省電量</value>
   </data>
-	<data name="LaptopBacklight" xml:space="preserve">
+  <data name="LaptopBacklight" xml:space="preserve">
     <value>背光</value>
   </data>
-	<data name="KillGpuApps" xml:space="preserve">
+  <data name="KillGpuApps" xml:space="preserve">
     <value>切換至節能模式時，關閉所有正在使用獨顯的程式</value>
   </data>
-	<data name="LaptopKeyboard" xml:space="preserve">
+  <data name="LaptopKeyboard" xml:space="preserve">
     <value>鍵盤背光:</value>
   </data>
-	<data name="LaptopScreen" xml:space="preserve">
+  <data name="LaptopScreen" xml:space="preserve">
     <value>螢幕顯示</value>
   </data>
-	<data name="Lid" xml:space="preserve">
+  <data name="Lid" xml:space="preserve">
     <value>螢幕背蓋</value>
   </data>
-	<data name="Lightbar" xml:space="preserve">
+  <data name="Lightbar" xml:space="preserve">
     <value>燈條</value>
   </data>
-	<data name="Logo" xml:space="preserve">
+  <data name="Logo" xml:space="preserve">
     <value>Logo</value>
   </data>
-	<data name="MatrixAudio" xml:space="preserve">
-    <value>Audio Visualizer</value>
+  <data name="MatrixAudio" xml:space="preserve">
+    <value>音效視覺化</value>
   </data>
-	<data name="MatrixBanner" xml:space="preserve">
+  <data name="MatrixBanner" xml:space="preserve">
     <value>横幅</value>
   </data>
-	<data name="MatrixBright" xml:space="preserve">
+  <data name="MatrixBright" xml:space="preserve">
     <value>明亮</value>
   </data>
-	<data name="MatrixClock" xml:space="preserve">
+  <data name="MatrixClock" xml:space="preserve">
     <value>時鐘</value>
   </data>
-	<data name="MatrixDim" xml:space="preserve">
+  <data name="MatrixDim" xml:space="preserve">
     <value>黯淡</value>
   </data>
-	<data name="MatrixLogo" xml:space="preserve">
+  <data name="MatrixLogo" xml:space="preserve">
     <value>ROG logo</value>
   </data>
-	<data name="MatrixMedium" xml:space="preserve">
+  <data name="MatrixMedium" xml:space="preserve">
     <value>中</value>
   </data>
-	<data name="MatrixOff" xml:space="preserve">
+  <data name="MatrixOff" xml:space="preserve">
     <value>關閉</value>
   </data>
-	<data name="MatrixPicture" xml:space="preserve">
+  <data name="MatrixPicture" xml:space="preserve">
     <value>圖片</value>
   </data>
-	<data name="MaxRefreshTooltip" xml:space="preserve">
+  <data name="MaxRefreshTooltip" xml:space="preserve">
     <value>更高的更新率和更低延遲</value>
   </data>
-	<data name="MinRefreshTooltip" xml:space="preserve">
+  <data name="MinRefreshTooltip" xml:space="preserve">
     <value>維持60Hz以節省電量</value>
   </data>
-	<data name="Multizone" xml:space="preserve">
+  <data name="Multizone" xml:space="preserve">
     <value>多區域</value>
   </data>
-	<data name="MuteMic" xml:space="preserve">
+  <data name="MuteMic" xml:space="preserve">
     <value>麥克風開關</value>
   </data>
-	<data name="OpenGHelper" xml:space="preserve">
+  <data name="OpenGHelper" xml:space="preserve">
     <value>開啟G-Helper視窗</value>
   </data>
-	<data name="Optimized" xml:space="preserve">
+  <data name="Optimized" xml:space="preserve">
     <value>自動模式</value>
   </data>
-	<data name="OptimizedGPUTooltip" xml:space="preserve">
+  <data name="OptimizedGPUTooltip" xml:space="preserve">
     <value>使用電池切換到節能模式，插入電源時切換到標準模式</value>
   </data>
-	<data name="OptimizedUSBC" xml:space="preserve">
+  <data name="OptimizedUSBC" xml:space="preserve">
     <value>自動模式下，使用USB-C充電時持續關閉獨顯</value>
   </data>
-	<data name="Other" xml:space="preserve">
+  <data name="Other" xml:space="preserve">
     <value>其他</value>
   </data>
-	<data name="Overdrive" xml:space="preserve">
+  <data name="Overdrive" xml:space="preserve">
     <value>OD</value>
   </data>
-	<data name="PerformanceMode" xml:space="preserve">
+  <data name="PerformanceMode" xml:space="preserve">
     <value>性能模式:</value>
   </data>
-	<data name="PictureGif" xml:space="preserve">
+  <data name="PictureGif" xml:space="preserve">
     <value>圖片/動圖</value>
   </data>
-	<data name="PlayPause" xml:space="preserve">
+  <data name="PlayPause" xml:space="preserve">
     <value>播放/暫停</value>
   </data>
-	<data name="PowerLimits" xml:space="preserve">
+  <data name="PowerLimits" xml:space="preserve">
     <value>功率限制 (PPT)</value>
   </data>
-	<data name="PPTExperimental" xml:space="preserve">
-    <value>功率限制 (PPT) 是實驗性功能。 謹慎使用，風險自負！</value>
+  <data name="PPTExperimental" xml:space="preserve">
+    <value>功率限制是實驗性功能。謹慎使用,風險自負!</value>
   </data>
-	<data name="PrintScreen" xml:space="preserve">
+  <data name="PrintScreen" xml:space="preserve">
     <value>截圖</value>
   </data>
-	<data name="Quit" xml:space="preserve">
+  <data name="Quit" xml:space="preserve">
     <value>退出</value>
   </data>
-	<data name="RestartGPU" xml:space="preserve">
+  <data name="RestartGPU" xml:space="preserve">
     <value>有其他程式正在使用獨顯導致無法切換至節能模式. 是否在裝置管理員中重啟獨顯? * 請自行評估風險</value>
   </data>
-	<data name="RPM" xml:space="preserve">
+  <data name="RPM" xml:space="preserve">
     <value>每分鐘轉數</value>
   </data>
-	<data name="RunOnStartup" xml:space="preserve">
+  <data name="RunOnStartup" xml:space="preserve">
     <value>開機自動開啟</value>
   </data>
-	<data name="Shutdown" xml:space="preserve">
+  <data name="Shutdown" xml:space="preserve">
     <value>關機時</value>
   </data>
-	<data name="Silent" xml:space="preserve">
+  <data name="Silent" xml:space="preserve">
     <value>安靜模式</value>
   </data>
-	<data name="Sleep" xml:space="preserve">
+  <data name="Sleep" xml:space="preserve">
     <value>睡眠時</value>
   </data>
-	<data name="StandardGPUTooltip" xml:space="preserve">
+  <data name="StandardGPUTooltip" xml:space="preserve">
     <value>標準模式會啟用獨顯</value>
   </data>
-	<data name="StandardMode" xml:space="preserve">
+  <data name="StandardMode" xml:space="preserve">
     <value>標準模式</value>
   </data>
-	<data name="StartupError" xml:space="preserve">
+  <data name="StartupError" xml:space="preserve">
     <value>啟動錯誤</value>
   </data>
-	<data name="ToggleAura" xml:space="preserve">
+  <data name="ToggleAura" xml:space="preserve">
     <value>切換Aura</value>
   </data>
-	<data name="ToggleMiniled" xml:space="preserve">
+  <data name="ToggleFnLock" xml:space="preserve">
+    <value>免按Fn鍵使用Fn+F1~F12功能</value>
+  </data>
+  <data name="ToggleMiniled" xml:space="preserve">
     <value>切換Miniled(若有支援)</value>
   </data>
-	<data name="ToggleScreen" xml:space="preserve">
+  <data name="ToggleScreen" xml:space="preserve">
     <value>切換螢幕</value>
   </data>
-	<data name="Turbo" xml:space="preserve">
+  <data name="Turbo" xml:space="preserve">
     <value>極速模式</value>
   </data>
-	<data name="TurnedOff" xml:space="preserve">
+  <data name="TurnedOff" xml:space="preserve">
     <value>已關閉</value>
   </data>
-	<data name="TurnOffOnBattery" xml:space="preserve">
+  <data name="TurnOffOnBattery" xml:space="preserve">
     <value>電池模式時關閉</value>
   </data>
-	<data name="UltimateGPUTooltip" xml:space="preserve">
+  <data name="UltimateGPUTooltip" xml:space="preserve">
     <value>開啟獨顯直連獲得最佳幀數</value>
   </data>
-	<data name="UltimateMode" xml:space="preserve">
+  <data name="UltimateMode" xml:space="preserve">
     <value>獨顯直連</value>
   </data>
-	<data name="VersionLabel" xml:space="preserve">
+  <data name="Updates" xml:space="preserve">
+    <value>更新驅動</value>
+  </data>
+  <data name="VersionLabel" xml:space="preserve">
     <value>版本</value>
   </data>
-	<data name="VolumeDown" xml:space="preserve">
+  <data name="VolumeDown" xml:space="preserve">
     <value>音量降低</value>
   </data>
-	<data name="VolumeMute" xml:space="preserve">
+  <data name="VolumeMute" xml:space="preserve">
     <value>靜音</value>
   </data>
-	<data name="VolumeUp" xml:space="preserve">
+  <data name="VolumeUp" xml:space="preserve">
     <value>音量增加</value>
   </data>
-	<data name="WindowTop" xml:space="preserve">
+  <data name="WindowTop" xml:space="preserve">
     <value>視窗置頂</value>
   </data>
 </root>

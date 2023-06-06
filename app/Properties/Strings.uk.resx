@@ -201,6 +201,9 @@
   <data name="BatteryChargeLimit" xml:space="preserve">
     <value>Ліміт заряду батареї</value>
   </data>
+  <data name="BiosAndDriverUpdates" xml:space="preserve">
+    <value>Оновлення BIOS та драйверів</value>
+  </data>
   <data name="Boot" xml:space="preserve">
     <value>Старт</value>
   </data>
@@ -227,6 +230,9 @@
   </data>
   <data name="DownloadUpdate" xml:space="preserve">
     <value>Завантажити</value>
+  </data>
+  <data name="DriverAndSoftware" xml:space="preserve">
+    <value>Драйвери та програми</value>
   </data>
   <data name="EcoGPUTooltip" xml:space="preserve">
     <value>Вимикає dGPU, щоб зберегти заряд</value>
@@ -408,6 +414,9 @@
   <data name="ToggleAura" xml:space="preserve">
     <value>Аура</value>
   </data>
+  <data name="ToggleFnLock" xml:space="preserve">
+    <value>Fn-Lock</value>
+  </data>
   <data name="ToggleMiniled" xml:space="preserve">
     <value>Міні-лед (якщо є)</value>
   </data>
@@ -428,6 +437,9 @@
   </data>
   <data name="UltimateMode" xml:space="preserve">
     <value>Ультімейт</value>
+  </data>
+  <data name="Updates" xml:space="preserve">
+    <value>Оновлення</value>
   </data>
   <data name="VersionLabel" xml:space="preserve">
     <value>Версія</value>
