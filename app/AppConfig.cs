@@ -227,6 +227,12 @@ public static class AppConfig
         return getConfig(name + "_" + mode);
     }
 
+    public static bool isConfigPerf(string name)
+    {
+        int mode = getConfig("performance_mode");
+        return getConfig(name + "_" + mode) == 1;
+    }
+
     public static void setConfigPerf(string name, int value)
     {
         int mode = getConfig("performance_mode");

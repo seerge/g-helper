@@ -360,17 +360,9 @@ namespace GHelper
         {
             if (sender is null) return;
             CheckBox chk = (CheckBox)sender;
-            AppConfig.setConfigPerf("auto_apply_power", chk.Checked ? 1 : 0);
 
-            if (chk.Checked)
-            {
-                Program.settingsForm.AutoPower();
-            }
-            else
-            {
-                Program.acpi.DeviceSet(AsusACPI.PerformanceMode, AppConfig.getConfig("performance_mode"), "PerfMode");
-                Program.settingsForm.AutoFans();
-            }
+            AppConfig.setConfigPerf("auto_apply_power", chk.Checked ? 1 : 0);
+            Program.settingsForm.SetPerformanceMode();
 
         }
 
@@ -380,16 +372,8 @@ namespace GHelper
             CheckBox chk = (CheckBox)sender;
 
             AppConfig.setConfigPerf("auto_apply", chk.Checked ? 1 : 0);
+            Program.settingsForm.SetPerformanceMode();
 
-            if (chk.Checked)
-            {
-                Program.settingsForm.AutoFans();
-            }
-            else
-            {
-                Program.acpi.DeviceSet(AsusACPI.PerformanceMode, AppConfig.getConfig("performance_mode"), "PerfMode");
-                Program.settingsForm.AutoPower();
-            }
         }
 
 
@@ -440,7 +424,7 @@ namespace GHelper
             int limit_cpu;
             int limit_fast;
 
-            bool apply = AppConfig.getConfigPerf("auto_apply_power") == 1;
+            bool apply = AppConfig.isConfigPerf("auto_apply_power");
 
             if (changed)
             {
@@ -621,22 +605,28 @@ namespace GHelper
             AppConfig.setConfigPerf("auto_apply", 0);
             AppConfig.setConfigPerf("auto_apply_power", 0);
 
-            Program.acpi.DeviceSet(AsusACPI.PerformanceMode, AppConfig.getConfig("performance_mode"), "PerfMode");
-            if (Program.acpi.IsXGConnected()) AsusUSB.ResetXGM();
+            Program.acpi.DeviceSet(AsusACPI.PerformanceMode, AppConfig.getConfig("performance_mode"), "Mode");
+            
+            if (Program.acpi.IsXGConnected()) 
+                AsusUSB.ResetXGM();
 
-            trackGPUCore.Value = 0;
-            trackGPUMemory.Value = 0;
-            trackGPUBoost.Value = AsusACPI.MaxGPUBoost;
-            trackGPUTemp.Value = AsusACPI.MaxGPUTemp;
+            if (gpuVisible)
+            {
+                trackGPUCore.Value = 0;
+                trackGPUMemory.Value = 0;
+                trackGPUBoost.Value = AsusACPI.MaxGPUBoost;
+                trackGPUTemp.Value = AsusACPI.MaxGPUTemp;
 
-            AppConfig.setConfigPerf("gpu_boost", trackGPUBoost.Value);
-            AppConfig.setConfigPerf("gpu_temp", trackGPUTemp.Value);
-            AppConfig.setConfigPerf("gpu_core", trackGPUCore.Value);
-            AppConfig.setConfigPerf("gpu_memory", trackGPUMemory.Value);
-            VisualiseGPUSettings();
+                AppConfig.setConfigPerf("gpu_boost", trackGPUBoost.Value);
+                AppConfig.setConfigPerf("gpu_temp", trackGPUTemp.Value);
+                AppConfig.setConfigPerf("gpu_core", trackGPUCore.Value);
+                AppConfig.setConfigPerf("gpu_memory", trackGPUMemory.Value);
 
-            Program.settingsForm.SetGPUClocks(true);
-            Program.settingsForm.SetGPUPower();
+                VisualiseGPUSettings();
+                Program.settingsForm.SetGPUClocks(true);
+                Program.settingsForm.SetGPUPower();
+            }
+
         }
 
         private void ChartCPU_MouseUp(object? sender, MouseEventArgs e)

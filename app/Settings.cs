@@ -353,7 +353,7 @@ namespace GHelper
                     Program.acpi.DeviceSet(AsusACPI.GPUXG, 1, "GPU XGM");
                     await Task.Delay(TimeSpan.FromSeconds(15));
 
-                    if (AppConfig.getConfigPerf("auto_apply") == 1)
+                    if (AppConfig.isConfigPerf("auto_apply"))
                         AsusUSB.SetXGMFan(AppConfig.getFanConfig(AsusFan.XGM));
                 }
 
@@ -1139,7 +1139,7 @@ namespace GHelper
         {
             customFans = false;
 
-            if (AppConfig.getConfigPerf("auto_apply") == 1 || force)
+            if (AppConfig.isConfigPerf("auto_apply") || force)
             {
 
                 bool xgmFan = false;
@@ -1162,7 +1162,7 @@ namespace GHelper
                 {
                     int mode = AppConfig.getConfig("performance_mode");
                     Logger.WriteLine("ASUS BIOS rejected fan curve, resetting mode to " + mode);
-                    Program.acpi.DeviceSet(AsusACPI.PerformanceMode, mode, "PerformanceMode");
+                    Program.acpi.DeviceSet(AsusACPI.PerformanceMode, mode, "Reset Mode");
                     LabelFansResult("ASUS BIOS rejected fan curve");
                 }
                 else
@@ -1171,8 +1171,8 @@ namespace GHelper
                     customFans = true;
                 }
 
-                // fix for misbehaving bios on intell based TUF 2022
-                if ((AppConfig.ContainsModel("FX507") || AppConfig.ContainsModel("FX517") || xgmFan) && AppConfig.getConfigPerf("auto_apply_power") != 1)
+                // force set PPTs for missbehaving bios on FX507/517 series
+                if ((AppConfig.ContainsModel("FX507") || AppConfig.ContainsModel("FX517") || xgmFan) && !AppConfig.isConfigPerf("auto_apply_power"))
                 {
                     Task.Run(async () =>
                     {
@@ -1188,31 +1188,41 @@ namespace GHelper
 
         }
 
+        private static bool isManualModeRequired()
+        {
+            if (!AppConfig.isConfigPerf("auto_apply_power")) 
+                return false;
+            
+            return
+                //AppConfig.ContainsModel("GA402") ||
+                AppConfig.ContainsModel("GU604") || 
+                AppConfig.ContainsModel("FX517") || 
+                AppConfig.ContainsModel("G733");
+        }
+
         public void AutoPower(int delay = 0)
         {
 
             customPower = 0;
 
-            bool applyPower = (AppConfig.getConfigPerf("auto_apply_power") == 1);
+            bool applyPower = AppConfig.isConfigPerf("auto_apply_power");
+            bool applyFans = AppConfig.isConfigPerf("auto_apply");
             //bool applyGPU = true;
 
             if (applyPower)
             {
-                // fix for misbehaving bios PPTs on G513
-                if (AppConfig.ContainsModel("G513") && AppConfig.getConfigPerf("auto_apply") != 1)
+                // force fan curve for misbehaving bios PPTs on G513
+                if (AppConfig.ContainsModel("G513") && !applyFans)
                 {
-                    AutoFans(true);
                     delay = 500;
+                    AutoFans(true);
                 }
 
                 // Fix for models that don't support PPT settings in all modes, setting a "manual" mode for them
-                if (AppConfig.ContainsModel("GU604") || 
-                    AppConfig.ContainsModel("FX517") || 
-                    AppConfig.ContainsModel("G733"))
+                if (isManualModeRequired())
                 {
-                    Program.acpi.DeviceSet(AsusACPI.PerformanceMode, AsusACPI.PerformanceManual, "CustomMode");
-                    if (AppConfig.getConfigPerf("auto_apply") != 1) AutoFans(true);
                     delay = 500;
+                    if (!applyFans) AutoFans(true);
                 }
             }
 
@@ -1240,8 +1250,8 @@ namespace GHelper
         public void SetPerformanceMode(int PerformanceMode = -1, bool notify = false)
         {
 
-            if (PerformanceMode < 0)
-                PerformanceMode = AppConfig.getConfig("performance_mode");
+            int oldMode = AppConfig.getConfig("performance_mode");
+            if (PerformanceMode < 0) PerformanceMode = oldMode;
 
             buttonSilent.Activated = false;
             buttonBalanced.Activated = false;
@@ -1268,11 +1278,14 @@ namespace GHelper
             menuBalanced.Checked = buttonBalanced.Activated;
             menuTurbo.Checked = buttonTurbo.Activated;
 
-            int oldMode = AppConfig.getConfig("performance_mode");
             AppConfig.setConfig("performance_" + (int)SystemInformation.PowerStatus.PowerLineStatus, PerformanceMode);
             AppConfig.setConfig("performance_mode", PerformanceMode);
 
-            Program.acpi.DeviceSet(AsusACPI.PerformanceMode, PerformanceMode, "PerformanceMode");
+            if (isManualModeRequired())
+                Program.acpi.DeviceSet(AsusACPI.PerformanceMode, AsusACPI.PerformanceManual, "Manual Mode");
+            else
+                Program.acpi.DeviceSet(AsusACPI.PerformanceMode, PerformanceMode, "Mode");
+
             if (AppConfig.isConfig("xgm_fan") && Program.acpi.IsXGConnected()) AsusUSB.ResetXGM();
 
             if (notify && (oldMode != PerformanceMode))
