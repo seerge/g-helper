@@ -1205,16 +1205,16 @@ namespace GHelper
                     delay = 500;
                 }
 
-                // Fix for models that don't support PPT settings in all modes
-                if (AppConfig.ContainsModel("GU603") || AppConfig.ContainsModel("GU604") || AppConfig.ContainsModel("FX517") || AppConfig.ContainsModel("G733"))
+                // Fix for models that don't support PPT settings in all modes, setting a "manual" mode for them
+                if (AppConfig.ContainsModel("GU604") || 
+                    AppConfig.ContainsModel("FX517") || 
+                    AppConfig.ContainsModel("G733"))
                 {
                     Program.acpi.DeviceSet(AsusACPI.PerformanceMode, AsusACPI.PerformanceManual, "CustomMode");
                     if (AppConfig.getConfigPerf("auto_apply") != 1) AutoFans(true);
                     delay = 500;
                 }
-
             }
-
 
             if (delay > 0)
             {
