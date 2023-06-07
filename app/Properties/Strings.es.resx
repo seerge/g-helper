@@ -201,11 +201,20 @@
   <data name="BatteryChargeLimit" xml:space="preserve">
     <value>Límite de carga</value>
   </data>
+  <data name="BiosAndDriverUpdates" xml:space="preserve">
+    <value>Actualizaciones de BIOS y Drivers</value>
+  </data>
   <data name="Boot" xml:space="preserve">
     <value>Al arrancar</value>
   </data>
   <data name="Brightness" xml:space="preserve">
     <value>Brillo</value>
+  </data>
+  <data name="BrightnessDown" xml:space="preserve">
+    <value>Bajar brillo</value>
+  </data>
+  <data name="BrightnessUp" xml:space="preserve">
+    <value>Subir brillo</value>
   </data>
   <data name="Color" xml:space="preserve">
     <value>Color</value>
@@ -227,6 +236,9 @@
   </data>
   <data name="DownloadUpdate" xml:space="preserve">
     <value>Descargar actualización</value>
+  </data>
+  <data name="DriverAndSoftware" xml:space="preserve">
+    <value>Drivers y Software</value>
   </data>
   <data name="EcoGPUTooltip" xml:space="preserve">
     <value>Deshabilita la dGPU para ahorrar batería</value>
@@ -461,6 +473,9 @@
   </data>
   <data name="UltimateMode" xml:space="preserve">
     <value>Ultimate</value>
+  </data>
+  <data name="Updates" xml:space="preserve">
+    <value>Actualizaciones</value>
   </data>
   <data name="VersionLabel" xml:space="preserve">
     <value>Versión</value>
