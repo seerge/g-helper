@@ -1,13 +1,27 @@
-﻿using System.Text.RegularExpressions;
-using System.Text;
+﻿using Microsoft.Win32;
 using System.Diagnostics;
-using Microsoft.Win32;
+using System.Text;
+using System.Text.RegularExpressions;
 
 namespace GHelper
 {
     public static class OptimizationService
     {
-        public static void SetChargeLimit (int newValue)
+
+        static List<string> services = new() {
+                "AsusAppService",
+                "ASUSLinkNear",
+                "ASUSLinkRemote",
+                "ASUSSoftwareManager",
+                "ASUSSwitch",
+                "ASUSSystemAnalysis",
+                "ASUSSystemDiagnosis",
+                "ArmouryCrateControlInterface",
+                "AsusCertService",
+                "ASUSOptimization"
+        };
+
+        public static void SetChargeLimit(int newValue)
         {
             // Set the path to the .ini file
             string path = @"C:\ProgramData\ASUS\ASUS System Control Interface\ASUSOptimization\Customization.ini";
@@ -41,8 +55,18 @@ namespace GHelper
             return (Process.GetProcessesByName("AsusOptimization").Count() > 0);
         }
 
+        public static int GetRunningCount()
+        {
+            int count = 0;
+            foreach (string service in services)
+            {
+                if (Process.GetProcessesByName(service).Count() > 0) count++;
+            }
+            return count;
+        }
 
-        public static void SetBacklightOffDelay(int value = 60)
+
+            public static void SetBacklightOffDelay(int value = 60)
         {
             try
             {
@@ -59,6 +83,23 @@ namespace GHelper
             }
         }
 
+
+
+        public static void StopAsusServices()
+        {
+            foreach (string service in services)
+            {
+                ProcessHelper.StopDisableService(service);
+            }
+        }
+
+        public static void StartAsusServices()
+        {
+            foreach (string service in services)
+            {
+                ProcessHelper.StartEnableService(service);
+            }
+        }
 
     }
 

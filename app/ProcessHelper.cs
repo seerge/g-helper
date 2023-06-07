@@ -92,6 +92,48 @@ namespace GHelper
             }
         }
 
+        public static void StopDisableService(string serviceName)
+        {
+            try
+            {
+                string script = $"Set-Service -Name \"{serviceName}\" -Status stopped -StartupType disabled";
+                Logger.WriteLine(script);
+                RunCMD("powershell", script);
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLine(ex.ToString());
+            }
+        }
+
+        public static void StartEnableService(string serviceName)
+        {
+            try
+            {
+                string script = $"Set-Service -Name \"{serviceName}\" -Status running -StartupType Automatic";
+                Logger.WriteLine(script);
+                RunCMD("powershell", script);
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLine(ex.ToString());
+            }
+        }
+
+        public static void RunCMD(string name, string args)
+        {
+            var cmd = new Process();
+            cmd.StartInfo.UseShellExecute = false;
+            cmd.StartInfo.CreateNoWindow = true;
+            cmd.StartInfo.RedirectStandardOutput = true;
+            cmd.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+            cmd.StartInfo.FileName = name;
+            cmd.StartInfo.Arguments = args;
+            cmd.Start();
+            Logger.WriteLine(cmd.StandardOutput.ReadToEnd());
+            cmd.WaitForExit();
+        }
+
 
     }
 }

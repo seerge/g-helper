@@ -1,6 +1,5 @@
 ﻿using CustomControls;
 using GHelper.Gpu;
-using Microsoft.VisualBasic.Devices;
 using System.Diagnostics;
 
 namespace GHelper
@@ -231,7 +230,61 @@ namespace GHelper
 
             pictureHelp.Click += PictureHelp_Click;
 
+            buttonServices.Click += ButtonServices_Click;
+
             InitVariBright();
+            InitServices();
+        }
+
+
+        private void InitServices()
+        {
+            if (OptimizationService.IsRunning()) buttonServices.Text = Properties.Strings.Stop;
+            else buttonServices.Text = Properties.Strings.Start;
+
+            labelServices.Text = Properties.Strings.AsusServicesRunning + ": " + OptimizationService.GetRunningCount();
+            buttonServices.Enabled = true;
+
+            Program.inputDispatcher.Init();
+
+        }
+
+        public void ServiesToggle()
+        {
+            buttonServices.Enabled = false;
+
+            if (OptimizationService.IsRunning())
+            {
+                labelServices.Text = Properties.Strings.StoppingServices + " ...";
+                Task.Run(() =>
+                {
+                    OptimizationService.StopAsusServices();
+                    BeginInvoke(delegate
+                    {
+                        InitServices();
+                    });
+                });
+            }
+            else
+            {
+                labelServices.Text = Properties.Strings.StartingServices + " ...";
+                Task.Run(() =>
+                {
+                    OptimizationService.StartAsusServices();
+                    BeginInvoke(delegate
+                    {
+                        InitServices();
+                    });
+                });
+            }
+        }
+
+        private void ButtonServices_Click(object? sender, EventArgs e)
+        {
+            if (ProcessHelper.IsUserAdministrator())
+                ServiesToggle();
+            else
+                ProcessHelper.RunAsAdmin("services");
         }
 
         private void InitVariBright()

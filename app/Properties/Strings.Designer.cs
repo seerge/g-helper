@@ -178,6 +178,15 @@ namespace GHelper.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Asus Services Running.
+        /// </summary>
+        internal static string AsusServicesRunning {
+            get {
+                return ResourceManager.GetString("AsusServicesRunning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Breathe.
         /// </summary>
         internal static string AuraBreathe {
@@ -1042,11 +1051,47 @@ namespace GHelper.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Start.
+        /// </summary>
+        internal static string Start {
+            get {
+                return ResourceManager.GetString("Start", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Starting Services.
+        /// </summary>
+        internal static string StartingServices {
+            get {
+                return ResourceManager.GetString("StartingServices", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Startup Error.
         /// </summary>
         internal static string StartupError {
             get {
                 return ResourceManager.GetString("StartupError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Stop.
+        /// </summary>
+        internal static string Stop {
+            get {
+                return ResourceManager.GetString("Stop", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Stopping Services.
+        /// </summary>
+        internal static string StoppingServices {
+            get {
+                return ResourceManager.GetString("StoppingServices", resourceCulture);
             }
         }
         

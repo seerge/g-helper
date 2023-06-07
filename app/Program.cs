@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Reflection;
 using System.Security.Principal;
+using System.Windows.Forms;
 using static NativeMethods;
 
 namespace GHelper
@@ -187,6 +188,11 @@ namespace GHelper
                         break;
                     case "gpurestart":
                         settingsForm.RestartGPU(false);
+                        break;
+                    case "services":
+                        settingsForm.keyb = new Extra();
+                        settingsForm.keyb.Show();
+                        settingsForm.keyb.ServiesToggle();
                         break;
                 }
             }
