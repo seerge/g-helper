@@ -147,9 +147,9 @@ It's a lightweight Armoury Crate alternative for Asus laptops. A small utility t
 
 ### Recommendations (optional)
 
-- You can disable / remove unnecessary services. Ruight click and save [debloat.bat](https://raw.githubusercontent.com/seerge/g-helper/main/debloat.bat). Then right click and Run it as Admin. To restore services - save and run [bloat.bat](https://raw.githubusercontent.com/seerge/g-helper/main/bloat.bat) instead.
+- You can disable / remove unnecessary services. Right click and save [debloat.bat](https://raw.githubusercontent.com/seerge/g-helper/main/debloat.bat). Then right click and Run it as Admin. To restore services - save and run [bloat.bat](https://raw.githubusercontent.com/seerge/g-helper/main/bloat.bat) instead.
 
-- It's not recommended to use an app in combination with Armoury Crate services, because they adjust the same settings. You can [uninstall it using it's own uninstall tool](https://dlcdnets.asus.com/pub/ASUS/mb/14Utilities/Armoury_Crate_Uninstall_Tool.zip?model=armoury%20crate). Just in case, you can always install it back later.
+- It's not recommended to use an app in combination with Armoury Crate services, because they adjust the same settings. You can [uninstall it using its own uninstall tool](https://dlcdnets.asus.com/pub/ASUS/mb/14Utilities/Armoury_Crate_Uninstall_Tool.zip?model=armoury%20crate). Just in case, you can always install it back later.
 
 - Also, it's not recommended to have "ASUS Smart Display Control" app running, as it will try to change refresh rates and fight with g-helper for the same function. You can safely uninstall it.
 
@@ -206,7 +206,7 @@ Full list of keycodes https://learn.microsoft.com/en-us/windows/win32/inputdev/v
 Some people reported that on G15 model bios can be bugged and either not turn on or not turn off fans, when you set custom fan curve (in Armoury or g-helper, or any other app)
 I have added a very optional workaround as it was asked, on launch app will try to disable and re-enable dGPU when external monitor is connected, that seems to wake up fans :)
 
-To enable this custom workaround you need to add an extra line in config.json (under ``%AppData%\GHelper``) 
+To enable this custom workaround you need to add an extra line in config.json (under ``%AppData%\GHelper``)
 ``gpu_reenable : 1,``
 
 ### Keybinding to toggle performance modes (on external keyboards)
