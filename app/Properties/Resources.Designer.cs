@@ -133,9 +133,29 @@ namespace GHelper.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap icons8_charged_battery_96 {
+            get {
+                object obj = ResourceManager.GetObject("icons8_charged_battery_96", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap icons8_charging_battery_48 {
             get {
                 object obj = ResourceManager.GetObject("icons8-charging-battery-48", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap icons8_electrical_96 {
+            get {
+                object obj = ResourceManager.GetObject("icons8_electrical_96", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

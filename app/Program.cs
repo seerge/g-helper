@@ -135,7 +135,7 @@ namespace GHelper
 
 
 
-        public static void SetAutoModes()
+        public static void SetAutoModes(bool powerChanged = false)
         {
 
             if (Math.Abs(DateTimeOffset.Now.ToUnixTimeMilliseconds() - lastAuto) < 3000) return;
@@ -147,7 +147,7 @@ namespace GHelper
             inputDispatcher.Init();
 
             settingsForm.SetBatteryChargeLimit(AppConfig.getConfig("charge_limit"));
-            settingsForm.AutoPerformance();
+            settingsForm.AutoPerformance(powerChanged);
 
             bool switched = settingsForm.AutoGPUMode();
 
@@ -163,11 +163,9 @@ namespace GHelper
 
         private static void SystemEvents_PowerModeChanged(object sender, PowerModeChangedEventArgs e)
         {
-
             if (SystemInformation.PowerStatus.PowerLineStatus == isPlugged) return;
-
             Logger.WriteLine("Power Mode Changed");
-            SetAutoModes();
+            SetAutoModes(true);
         }
 
 

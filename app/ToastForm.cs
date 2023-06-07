@@ -52,7 +52,9 @@ namespace GHelper
         Touchpad,
         Microphone,
         MicrophoneMute,
-        FnLock
+        FnLock,
+        Battery,
+        Charger
     }
 
     public class  ToastForm : OSDNativeForm
@@ -106,6 +108,12 @@ namespace GHelper
                     break;
                 case ToastIcon.FnLock:
                     icon = Properties.Resources.icons8_function;
+                    break;
+                case ToastIcon.Battery:
+                    icon = Properties.Resources.icons8_charged_battery_96;
+                    break;
+                case ToastIcon.Charger:
+                    icon = Properties.Resources.icons8_electrical_96;
                     break;
 
             }

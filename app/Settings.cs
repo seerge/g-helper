@@ -176,7 +176,7 @@ namespace GHelper
 
             labelModel.Text = model + (ProcessHelper.IsUserAdministrator() ? "." : "");
 
-            TopMost = AppConfig.getConfig("topmost") == 1;
+            TopMost = AppConfig.isConfig("topmost");
 
             SetContextMenu();
 
@@ -1260,24 +1260,25 @@ namespace GHelper
             {
                 case AsusACPI.PerformanceSilent:
                     buttonSilent.Activated = true;
+                    menuSilent.Checked = true;
                     perfName = Properties.Strings.Silent;
                     break;
                 case AsusACPI.PerformanceTurbo:
                     buttonTurbo.Activated = true;
+                    menuTurbo.Checked = true;
                     perfName = Properties.Strings.Turbo;
                     break;
                 default:
                     buttonBalanced.Activated = true;
+                    menuBalanced.Checked = true;
                     PerformanceMode = AsusACPI.PerformanceBalanced;
                     perfName = Properties.Strings.Balanced;
                     break;
             }
 
-            menuSilent.Checked = buttonSilent.Activated;
-            menuBalanced.Checked = buttonBalanced.Activated;
-            menuTurbo.Checked = buttonTurbo.Activated;
+            var powerStatus = SystemInformation.PowerStatus.PowerLineStatus;
 
-            AppConfig.setConfig("performance_" + (int)SystemInformation.PowerStatus.PowerLineStatus, PerformanceMode);
+            AppConfig.setConfig("performance_" + (int)powerStatus, PerformanceMode);
             AppConfig.setConfig("performance_mode", PerformanceMode);
 
             if (isManualModeRequired())
@@ -1287,11 +1288,11 @@ namespace GHelper
 
             if (AppConfig.isConfig("xgm_fan") && Program.acpi.IsXGConnected()) AsusUSB.ResetXGM();
 
-            if (notify && (oldMode != PerformanceMode))
+            if (notify)
             {
                 try
                 {
-                    toast.RunToast(perfName);
+                    toast.RunToast(perfName, powerStatus == PowerLineStatus.Online ? ToastIcon.Charger : ToastIcon.Battery);
                 }
                 catch
                 {
@@ -1352,13 +1353,13 @@ namespace GHelper
 
         }
 
-        public void AutoPerformance()
+        public void AutoPerformance(bool powerChanged = false)
         {
             var Plugged = SystemInformation.PowerStatus.PowerLineStatus;
 
             int mode = AppConfig.getConfig("performance_" + (int)Plugged);
             if (mode != -1)
-                SetPerformanceMode(mode, true);
+                SetPerformanceMode(mode, powerChanged);
             else
                 SetPerformanceMode(AppConfig.getConfig("performance_mode"));
         }
@@ -1724,10 +1725,13 @@ namespace GHelper
                     break;
             }
 
-            menuEco.Checked = buttonEco.Activated;
-            menuStandard.Checked = buttonStandard.Activated;
-            menuUltimate.Checked = buttonUltimate.Activated;
-            menuOptimized.Checked = buttonOptimized.Activated;
+            if (isGpuSection)
+            {
+                menuEco.Checked = buttonEco.Activated;
+                menuStandard.Checked = buttonStandard.Activated;
+                menuUltimate.Checked = buttonUltimate.Activated;
+                menuOptimized.Checked = buttonOptimized.Activated;
+            }
 
         }
 
