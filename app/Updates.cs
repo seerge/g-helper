@@ -1,6 +1,7 @@
 ﻿using CustomControls;
 using System.Diagnostics;
 using System.Management;
+using System.Net;
 using System.Text.Json;
 
 namespace GHelper
@@ -94,8 +95,12 @@ namespace GHelper
 
                 //Debug.WriteLine(biosVersion);
 
-                using (var httpClient = new HttpClient())
+                using (var httpClient = new HttpClient(new HttpClientHandler
                 {
+                    AutomaticDecompression = DecompressionMethods.All
+                }))
+                {
+                    httpClient.DefaultRequestHeaders.AcceptEncoding.ParseAdd("gzip, deflate, br");
                     httpClient.DefaultRequestHeaders.Add("User-Agent", "C# App");
                     var json = await httpClient.GetStringAsync(url);
                     var data = JsonSerializer.Deserialize<JsonElement>(json);
@@ -146,19 +151,40 @@ namespace GHelper
                                 BeginInvoke(delegate
                                 {
                                     string versionText = version.Replace("latest version at the ", "");
-                                    Label versionLabel = new Label { Text = versionText, Anchor = AnchorStyles.Left, Dock = DockStyle.Fill, Height = 50 };
+                                    Label versionLabel = new Label
+                                    {
+                                        Text = versionText,
+                                        Anchor = AnchorStyles.Left,
+                                        Dock = DockStyle.Fill,
+                                        Height = 50
+                                    };
                                     versionLabel.Cursor = Cursors.Hand;
                                     versionLabel.Font = new Font(versionLabel.Font, newer ? FontStyle.Underline | FontStyle.Bold : FontStyle.Underline);
                                     versionLabel.ForeColor = newer ? colorTurbo : colorEco;
                                     versionLabel.Padding = new Padding(5, 5, 5, 5);
                                     versionLabel.Click += delegate
                                     {
-                                        Process.Start(new ProcessStartInfo(downloadUrl) { UseShellExecute = true });
+                                        Process.Start(new ProcessStartInfo(downloadUrl)
+                                        {
+                                            UseShellExecute = true
+                                        });
                                     };
 
                                     table.RowStyles.Add(new RowStyle(SizeType.AutoSize));
-                                    table.Controls.Add(new Label { Text = categoryName, Anchor = AnchorStyles.Left, Dock = DockStyle.Fill, Padding = new Padding(5, 5, 5, 5) }, 0, table.RowCount);
-                                    table.Controls.Add(new Label { Text = title, Anchor = AnchorStyles.Left, Dock = DockStyle.Fill, Padding = new Padding(5, 5, 5, 5) }, 1, table.RowCount);
+                                    table.Controls.Add(new Label
+                                    {
+                                        Text = categoryName,
+                                        Anchor = AnchorStyles.Left,
+                                        Dock = DockStyle.Fill,
+                                        Padding = new Padding(5, 5, 5, 5)
+                                    }, 0, table.RowCount);
+                                    table.Controls.Add(new Label
+                                    {
+                                        Text = title,
+                                        Anchor = AnchorStyles.Left,
+                                        Dock = DockStyle.Fill,
+                                        Padding = new Padding(5, 5, 5, 5)
+                                    }, 1, table.RowCount);
                                     table.Controls.Add(versionLabel, 2, table.RowCount);
                                     table.RowCount++;
                                 });
