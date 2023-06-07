@@ -340,6 +340,24 @@ namespace GHelper.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Brightness Down.
+        /// </summary>
+        internal static string BrightnessDown {
+            get {
+                return ResourceManager.GetString("BrightnessDown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Brightness Up.
+        /// </summary>
+        internal static string BrightnessUp {
+            get {
+                return ResourceManager.GetString("BrightnessUp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Color.
         /// </summary>
         internal static string Color {

@@ -247,8 +247,9 @@ namespace GHelper
         public void SetContextMenu()
         {
 
-            contextMenuStrip.Items.Clear();
+            var mode = AppConfig.getConfig("performance_mode");
 
+            contextMenuStrip.Items.Clear();
             Padding padding = new Padding(15, 5, 5, 5);
 
             var title = new ToolStripMenuItem(Properties.Strings.PerformanceMode);
@@ -259,17 +260,19 @@ namespace GHelper
             menuSilent = new ToolStripMenuItem(Properties.Strings.Silent);
             menuSilent.Click += ButtonSilent_Click;
             menuSilent.Margin = padding;
+            menuSilent.Checked = (mode == AsusACPI.PerformanceSilent);
             contextMenuStrip.Items.Add(menuSilent);
 
             menuBalanced = new ToolStripMenuItem(Properties.Strings.Balanced);
             menuBalanced.Click += ButtonBalanced_Click;
             menuBalanced.Margin = padding;
+            menuBalanced.Checked = (mode == AsusACPI.PerformanceBalanced);
             contextMenuStrip.Items.Add(menuBalanced);
 
             menuTurbo = new ToolStripMenuItem(Properties.Strings.Turbo);
             menuTurbo.Click += ButtonTurbo_Click;
-            menuTurbo.Checked = true;
             menuTurbo.Margin = padding;
+            menuTurbo.Checked = (mode == AsusACPI.PerformanceTurbo);
             contextMenuStrip.Items.Add(menuTurbo);
 
             contextMenuStrip.Items.Add("-");
@@ -1256,6 +1259,10 @@ namespace GHelper
             buttonBalanced.Activated = false;
             buttonTurbo.Activated = false;
 
+            menuSilent.Checked = false;
+            menuBalanced.Checked = false;
+            menuTurbo.Checked = false;
+
             switch (PerformanceMode)
             {
                 case AsusACPI.PerformanceSilent:
@@ -1271,8 +1278,8 @@ namespace GHelper
                 default:
                     buttonBalanced.Activated = true;
                     menuBalanced.Checked = true;
-                    PerformanceMode = AsusACPI.PerformanceBalanced;
                     perfName = Properties.Strings.Balanced;
+                    PerformanceMode = AsusACPI.PerformanceBalanced;
                     break;
             }
 

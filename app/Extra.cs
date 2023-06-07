@@ -19,6 +19,8 @@ namespace GHelper
           {"screen", Properties.Strings.ToggleScreen},
           {"miniled", Properties.Strings.ToggleMiniled},
           {"fnlock", Properties.Strings.ToggleFnLock},
+          {"brightness_down", Properties.Strings.BrightnessDown},
+          {"brightness_up", Properties.Strings.BrightnessUp},
           {"custom", Properties.Strings.Custom}
         };
 

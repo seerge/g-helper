@@ -339,6 +339,12 @@ namespace GHelper
                         Program.settingsForm.BeginInvoke(Program.settingsForm.RunToast, muteStatus ? "Muted" : "Unmuted", muteStatus ? ToastIcon.MicrophoneMute : ToastIcon.Microphone);
                     }
                     break;
+                case "brightness_up":
+                    OptimizationEvent(32);
+                    break;
+                case "brightness_down":
+                    OptimizationEvent(16);
+                    break;
                 case "custom":
                     CustomKey(name);
                     break;

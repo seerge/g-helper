@@ -210,6 +210,12 @@
   <data name="Brightness" xml:space="preserve">
     <value>Brightness</value>
   </data>
+  <data name="BrightnessDown" xml:space="preserve">
+    <value>Brightness Down</value>
+  </data>
+  <data name="BrightnessUp" xml:space="preserve">
+    <value>Brightness Up</value>
+  </data>
   <data name="Color" xml:space="preserve">
     <value>Color</value>
   </data>
