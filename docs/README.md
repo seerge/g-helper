@@ -147,11 +147,11 @@ It's a lightweight Armoury Crate alternative for Asus laptops. A small utility t
 
 ### Recommendations (optional)
 
-- It's not recommended to use an app in combination with Armoury Crate services, because they adjust the same settings. You can [uninstall it using it's own uninstall tool](https://dlcdnets.asus.com/pub/ASUS/mb/14Utilities/Armoury_Crate_Uninstall_Tool.zip?model=armoury%20crate). Just in case, you can always install it back later.
+- It's not recommended to use an app in combination with Armoury Crate services, because they adjust the same settings. You can [uninstall it using AC own uninstall tool](https://dlcdnets.asus.com/pub/ASUS/mb/14Utilities/Armoury_Crate_Uninstall_Tool.zip?model=armoury%20crate). Just in case, you can always install it back later.
 
 - Also, it's not recommended to have "ASUS Smart Display Control" app running, as it will try to change refresh rates and fight with g-helper for the same function. You can safely uninstall it.
 
-- You can stop / disable unnecessary services - click  **Extra** in the app, and press "Stop" in Asus Services section. To start / enable services back - click "Start" instead.
+- You can stop / disable unnecessary services: Go to **Extra** in the app, and press "Stop" in Asus Services section (former **debloat.bat**). To start / enable services back - click "Start" instead (former **bloat.bat**)
 
 - It is **recommended** to run app with windows default "balanced" power plan
 ![Screenshot 2023-05-29 191650](https://github.com/seerge/g-helper/assets/5920850/27719d96-e9ca-4164-ac4a-23b5966fc0ec)
