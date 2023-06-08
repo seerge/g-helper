@@ -32,7 +32,7 @@ _If you post about the app - please include a link. Thanks._
 2. **GPU modes**: Eco - Standard - Ultimate - Optimized
 3. Laptop screen refresh rate 60hz or 120hz (144hz, etc) with display overdrive (OD) and miniled multizone switch
 4. Custom fan curve editor, power limits (PPT) and turbo boost selection for every performance mode
-5. Anime matrix control thanks to [Starlight](https://github.com/vddCore/Starlight) + some tweaks from my side including animated GIFs, clock and autio visualizer
+5. Anime matrix control thanks to [Starlight](https://github.com/vddCore/Starlight) + some tweaks from my side including animated GIFs, clock and audio visualizer
 6. Keyboard backlit animation and colors (including sleep animation and support for TUF models)
 7. All basic and custom Keyboard hotkeys (M-keys, FN+X keys)
 8. Monitor CPU / GPU temperature, fan speeds and battery discharge rate
@@ -101,7 +101,7 @@ Please check system tray for a (G) icon. By default windows is keen to hide all 
 Open "Event Viewer" from start menu, go to Windows Logs -> Application and check for recent Errors mentioning G-Helper. If you see one - please post a [new issue](https://github.com/seerge/g-helper/issues) with all details from this error.
 
 #### Battery charge limiter is not working
-Open application log.text from ``%AppData%\GHelper`` . If you see something like ``BatteryLimit = 60 : OK`` there (with your selected limit). App has done everything it could to set a limit. It could be that MyASUS or other Asus services are overwriting this limit after. You may want to right click and save this [debloat.bat](https://raw.githubusercontent.com/seerge/g-helper/main/debloat.bat) and then right-click Run it As Admin. It will stop not mandatory asus services.
+Open application log.text from ``%AppData%\GHelper``. If you see something like ``BatteryLimit = 60 : OK`` there with your selected limit - App has done everything it could to set a limit. It could be that MyASUS or other Asus services are overwriting this limit after. You may want to stop them by clicking "Stop" in Asus Services section (under Extra).
 
 #### Can I use MyASUS app along with G-Helper?
 You can, the only problem is that MyASUS may override the battery charge limit that you set before. My advice in such a situation would be to set the same limit (i.e. 80%) in both MyASUS and G-Helper.
@@ -147,13 +147,13 @@ It's a lightweight Armoury Crate alternative for Asus laptops. A small utility t
 
 ### Recommendations (optional)
 
-- You can disable / remove unnecessary services. Ruight click and save [debloat.bat](https://raw.githubusercontent.com/seerge/g-helper/main/debloat.bat). Then right click and Run it as Admin. To restore services - save and run [bloat.bat](https://raw.githubusercontent.com/seerge/g-helper/main/bloat.bat) instead.
-
-- It's not recommended to use an app in combination with Armoury Crate services, because they adjust the same settings. You can [uninstall it using it's own uninstall tool](https://dlcdnets.asus.com/pub/ASUS/mb/14Utilities/Armoury_Crate_Uninstall_Tool.zip?model=armoury%20crate). Just in case, you can always install it back later.
+- It's not recommended to use an app in combination with Armoury Crate services, because they adjust the same settings. You can [uninstall it using AC own uninstall tool](https://dlcdnets.asus.com/pub/ASUS/mb/14Utilities/Armoury_Crate_Uninstall_Tool.zip?model=armoury%20crate). Just in case, you can always install it back later.
 
 - Also, it's not recommended to have "ASUS Smart Display Control" app running, as it will try to change refresh rates and fight with g-helper for the same function. You can safely uninstall it.
 
-- It is recommended to run app with windows default "balanced" power plan
+- You can stop / disable unnecessary services: Go to **Extra** in the app, and press "Stop" in Asus Services section (former **debloat.bat**). To start / enable services back - click "Start" instead (former **bloat.bat**)
+
+- It is **recommended** to run app with windows default "balanced" power plan
 ![Screenshot 2023-05-29 191650](https://github.com/seerge/g-helper/assets/5920850/27719d96-e9ca-4164-ac4a-23b5966fc0ec)
 
 -------------------------------
@@ -165,12 +165,6 @@ I don't have a Microsoft certificate to sign the app yet, so if you get a warnin
 Settings file is stored at ``%AppData%\GHelper``
 
 ------------------
-
-Debloating helps to save your battery and keep laptop a bit cooler
-
-![Helps to save your battery](https://raw.githubusercontent.com/seerge/g-helper/main/docs/screenshots/screen-5w.png)
-
----------
 
 ## Power user settings
 
