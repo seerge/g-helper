@@ -156,6 +156,9 @@
   <data name="ApplyWindowsPowerPlan" xml:space="preserve">
     <value>윈도우 전원 모드 자동조절</value>
   </data>
+  <data name="AsusServicesRunning" xml:space="preserve">
+    <value>실행중인 Asus 서비스</value>
+  </data>
   <data name="AuraBreathe" xml:space="preserve">
     <value>Breathe</value>
   </data>
@@ -209,6 +212,12 @@
   </data>
   <data name="Brightness" xml:space="preserve">
     <value>밝기</value>
+  </data>
+  <data name="BrightnessDown" xml:space="preserve">
+    <value>밝기 감소</value>
+  </data>
+  <data name="BrightnessUp" xml:space="preserve">
+    <value>밝기 증가</value>
   </data>
   <data name="Color" xml:space="preserve">
     <value>색상</value>
@@ -438,8 +447,20 @@
   <data name="StandardMode" xml:space="preserve">
     <value>Standard</value>
   </data>
+  <data name="Start" xml:space="preserve">
+    <value>시작</value>
+  </data>
+  <data name="StartingServices" xml:space="preserve">
+    <value>서비스 시작 중</value>
+  </data>
   <data name="StartupError" xml:space="preserve">
     <value>시작 오류</value>
+  </data>
+  <data name="Stop" xml:space="preserve">
+    <value>중지</value>
+  </data>
+  <data name="StoppingServices" xml:space="preserve">
+    <value>서비스 중지 중</value>
   </data>
   <data name="ToggleAura" xml:space="preserve">
     <value>Aura 토글 키</value>
