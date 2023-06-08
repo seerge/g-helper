@@ -135,7 +135,7 @@ namespace GHelper
             panelMatrix.Controls.Add(panelMatrixTitle);
             panelMatrix.Controls.Add(checkMatrix);
             panelMatrix.Dock = DockStyle.Top;
-            panelMatrix.Location = new Point(10, 783);
+            panelMatrix.Location = new Point(10, 891);
             panelMatrix.Margin = new Padding(0);
             panelMatrix.Name = "panelMatrix";
             panelMatrix.Padding = new Padding(20, 20, 20, 10);
@@ -264,7 +264,7 @@ namespace GHelper
             panelBattery.Controls.Add(sliderBattery);
             panelBattery.Controls.Add(panelBatteryTitle);
             panelBattery.Dock = DockStyle.Top;
-            panelBattery.Location = new Point(10, 954);
+            panelBattery.Location = new Point(10, 1062);
             panelBattery.Margin = new Padding(0);
             panelBattery.Name = "panelBattery";
             panelBattery.Padding = new Padding(20);
@@ -335,7 +335,7 @@ namespace GHelper
             panelFooter.Controls.Add(buttonQuit);
             panelFooter.Controls.Add(checkStartup);
             panelFooter.Dock = DockStyle.Top;
-            panelFooter.Location = new Point(10, 1136);
+            panelFooter.Location = new Point(10, 1244);
             panelFooter.Margin = new Padding(0);
             panelFooter.Name = "panelFooter";
             panelFooter.Padding = new Padding(20);
@@ -570,14 +570,14 @@ namespace GHelper
             panelGPU.Margin = new Padding(0);
             panelGPU.Name = "panelGPU";
             panelGPU.Padding = new Padding(20, 20, 20, 0);
-            panelGPU.Size = new Size(810, 243);
+            panelGPU.Size = new Size(810, 351);
             panelGPU.TabIndex = 37;
             // 
             // labelTipGPU
             // 
             labelTipGPU.Dock = DockStyle.Top;
             labelTipGPU.ForeColor = SystemColors.GrayText;
-            labelTipGPU.Location = new Point(20, 207);
+            labelTipGPU.Location = new Point(20, 315);
             labelTipGPU.Margin = new Padding(4, 0, 4, 0);
             labelTipGPU.Name = "labelTipGPU";
             labelTipGPU.Size = new Size(770, 36);
@@ -603,8 +603,8 @@ namespace GHelper
             tableGPU.Name = "tableGPU";
             tableGPU.RowCount = 1;
             tableGPU.RowStyles.Add(new RowStyle(SizeType.Absolute, 128F));
-            tableGPU.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            tableGPU.Size = new Size(770, 148);
+            tableGPU.RowStyles.Add(new RowStyle(SizeType.Absolute, 128F));
+            tableGPU.Size = new Size(770, 256);
             tableGPU.TabIndex = 16;
             // 
             // buttonEco
@@ -668,7 +668,7 @@ namespace GHelper
             buttonXGM.Margin = new Padding(4);
             buttonXGM.Name = "buttonXGM";
             buttonXGM.Secondary = false;
-            buttonXGM.Size = new Size(184, 12);
+            buttonXGM.Size = new Size(184, 120);
             buttonXGM.TabIndex = 2;
             buttonXGM.Text = "XG Mobile";
             buttonXGM.TextImageRelation = TextImageRelation.ImageAboveText;
@@ -771,7 +771,7 @@ namespace GHelper
             panelScreen.Controls.Add(tableScreen);
             panelScreen.Controls.Add(panelScreenTitle);
             panelScreen.Dock = DockStyle.Top;
-            panelScreen.Location = new Point(10, 460);
+            panelScreen.Location = new Point(10, 568);
             panelScreen.Margin = new Padding(0);
             panelScreen.Name = "panelScreen";
             panelScreen.Padding = new Padding(20, 20, 20, 10);
@@ -939,7 +939,7 @@ namespace GHelper
             panelKeyboard.Controls.Add(tableLayoutKeyboard);
             panelKeyboard.Controls.Add(panelKeyboardTitle);
             panelKeyboard.Dock = DockStyle.Top;
-            panelKeyboard.Location = new Point(10, 645);
+            panelKeyboard.Location = new Point(10, 753);
             panelKeyboard.Margin = new Padding(0);
             panelKeyboard.Name = "panelKeyboard";
             panelKeyboard.Padding = new Padding(20);
@@ -1113,7 +1113,7 @@ namespace GHelper
             panelVersion.Controls.Add(labelVersion);
             panelVersion.Controls.Add(labelModel);
             panelVersion.Dock = DockStyle.Top;
-            panelVersion.Location = new Point(10, 1079);
+            panelVersion.Location = new Point(10, 1187);
             panelVersion.Name = "panelVersion";
             panelVersion.Size = new Size(810, 57);
             panelVersion.TabIndex = 41;

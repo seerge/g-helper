@@ -124,7 +124,8 @@ namespace GHelper
                 _modes.Remove(3);
             }
 
-            if (AppConfig.ContainsModel("G513QY")) {
+            if (AppConfig.ContainsModel("G513QY"))
+            {
                 return _modes;
             }
 
@@ -260,18 +261,31 @@ namespace GHelper
             {
 
                 byte[] msg = { AURA_HID_ID, 0xba, 0xc5, 0xc4, (byte)brightness };
+                byte[] msgBackup = { INPUT_HID_ID, 0xba, 0xc5, 0xc4, (byte)brightness };
 
-                var devices = GetHidDevices(deviceIds);
+                var devices = GetHidDevices(deviceIds, 0);
                 foreach (HidDevice device in devices)
                 {
                     device.OpenDevice();
-                    device.WriteFeatureData(msg);
-                    Logger.WriteLine(log + ":" + BitConverter.ToString(msg));
+
+                    if (device.ReadFeatureData(out byte[] data, AURA_HID_ID))
+                    {
+                        device.WriteFeatureData(msg);
+                        Logger.WriteLine(log + ":" + BitConverter.ToString(msg));
+                    }
+
+                    if (AppConfig.ContainsModel("GA503") && device.ReadFeatureData(out byte[] dataBackkup, INPUT_HID_ID))
+                    {
+                        device.WriteFeatureData(msgBackup);
+                        Logger.WriteLine(log + ":" + BitConverter.ToString(msgBackup));
+                    }
+
                     device.CloseDevice();
                 }
 
                 // Backup payload for old models
-                if (AppConfig.ContainsModel("503"))
+                /*
+                if (AppConfig.ContainsModel("GA503RW"))
                 {
                     byte[] msgBackup = { INPUT_HID_ID, 0xba, 0xc5, 0xc4, (byte)brightness };
 
@@ -283,6 +297,7 @@ namespace GHelper
                         device.CloseDevice();
                     }
                 }
+                */
 
             });
 

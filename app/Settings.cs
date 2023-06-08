@@ -354,6 +354,8 @@ namespace GHelper
                 else
                 {
                     Program.acpi.DeviceSet(AsusACPI.GPUXG, 1, "GPU XGM");
+                    AsusUSB.ApplyXGMLight(AppConfig.isConfig("xmg_light"));
+
                     await Task.Delay(TimeSpan.FromSeconds(15));
 
                     if (AppConfig.isConfigPerf("auto_apply"))
@@ -1193,13 +1195,13 @@ namespace GHelper
 
         private static bool isManualModeRequired()
         {
-            if (!AppConfig.isConfigPerf("auto_apply_power")) 
+            if (!AppConfig.isConfigPerf("auto_apply_power"))
                 return false;
-            
+
             return
                 AppConfig.isConfig("manual_mode") ||
-                AppConfig.ContainsModel("GU604") || 
-                AppConfig.ContainsModel("FX517") || 
+                AppConfig.ContainsModel("GU604") ||
+                AppConfig.ContainsModel("FX517") ||
                 AppConfig.ContainsModel("G733");
         }
 

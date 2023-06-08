@@ -242,7 +242,7 @@ namespace GHelper
             if (OptimizationService.IsRunning()) buttonServices.Text = Properties.Strings.Stop;
             else buttonServices.Text = Properties.Strings.Start;
 
-            labelServices.Text = Properties.Strings.AsusServicesRunning + ": " + OptimizationService.GetRunningCount();
+            labelServices.Text = Properties.Strings.AsusServicesRunning + ":  " + OptimizationService.GetRunningCount();
             buttonServices.Enabled = true;
 
             Program.inputDispatcher.Init();
