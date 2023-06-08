@@ -63,22 +63,6 @@ public static class AppConfig
         return (_model is not null && _model.ToLower().Contains(contains.ToLower()));
     }
 
-    public static string GetModelShort()
-    {
-        GetModel();
-        if (_model is not null)
-        {
-            int trim = _model.LastIndexOf("_");
-            if (trim > 0) return _model.Substring(trim+1);
-            
-            trim = _model.LastIndexOf(" ");
-            if (trim > 0) return _model.Substring(trim + 1);
-
-            return _model;
-        }
-
-        return "";
-    }
 
     private static void initConfig()
     {

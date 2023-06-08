@@ -20,14 +20,17 @@ namespace GHelper
     public partial class Updates : RForm
     {
         //static int rowCount = 0;
-        static string model = AppConfig.GetModelShort();
+        static string model;
+        static string bios;
 
         public Updates()
         {
             InitializeComponent();
             InitTheme();
 
-            Text = Properties.Strings.BiosAndDriverUpdates + ": " + model + " " + GetBiosVersion();
+            InitBiosAndModel();
+
+            Text = Properties.Strings.BiosAndDriverUpdates + ": " + model + " " + bios;
             labelBIOS.Text = "BIOS";
             labelDrivers.Text = Properties.Strings.DriverAndSoftware;
 
@@ -73,7 +76,7 @@ namespace GHelper
             }
         }
 
-        private string GetBiosVersion()
+        private string InitBiosAndModel()
         {
             using (ManagementObjectSearcher objSearcher = new ManagementObjectSearcher("SELECT * FROM Win32_BIOS"))
             {
@@ -82,10 +85,15 @@ namespace GHelper
                     foreach (ManagementObject obj in objCollection)
                         if (obj["SMBIOSBIOSVersion"] is not null)
                         {
-                            var bios = obj["SMBIOSBIOSVersion"].ToString();
-                            int trim = bios.LastIndexOf(".");
-                            if (trim > 0) return bios.Substring(trim + 1);
-                            else return bios;
+                            string[] results = obj["SMBIOSBIOSVersion"].ToString().Split(".");
+                            if (results.Length > 1)
+                            {
+                                model = results[0];
+                                bios = results[1];
+                            } else
+                            {
+                                model = obj["SMBIOSBIOSVersion"].ToString();
+                            }
                         }
 
                     return "";
@@ -140,7 +148,7 @@ namespace GHelper
                                 BeginInvoke(delegate
                                 {
                                     string versionText = driver.version.Replace("latest version at the ", "");
-                                    Label versionLabel = new Label { Text = versionText, Anchor = AnchorStyles.Left, Dock = DockStyle.Fill, Height = 50 };
+                                    Label versionLabel = new Label { Text = versionText, Anchor = AnchorStyles.Left, AutoSize = true };
                                     versionLabel.Cursor = Cursors.Hand;
                                     versionLabel.Font = new Font(versionLabel.Font, FontStyle.Underline);
                                     versionLabel.ForeColor = colorEco;
@@ -170,10 +178,7 @@ namespace GHelper
                     });
 
                     Dictionary<string, string> devices = new();
-                    string biosVersion = "0";
-
                     if (type == 0) devices = GetDeviceVersions();
-                    else biosVersion = GetBiosVersion();
 
                     //Debug.WriteLine(biosVersion);
 
@@ -194,7 +199,7 @@ namespace GHelper
                             }
 
                         if (type == 1)
-                            newer = Int32.Parse(driver.version) > Int32.Parse(biosVersion) ? 1 : -1;
+                            newer = Int32.Parse(driver.version) > Int32.Parse(bios) ? 1 : -1;
 
                         if (newer > 0)
                         {

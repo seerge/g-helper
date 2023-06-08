@@ -245,8 +245,6 @@ namespace GHelper
             labelServices.Text = Properties.Strings.AsusServicesRunning + ":  " + OptimizationService.GetRunningCount();
             buttonServices.Enabled = true;
 
-            Program.inputDispatcher.Init();
-
         }
 
         public void ServiesToggle()
@@ -263,6 +261,7 @@ namespace GHelper
                     {
                         InitServices();
                     });
+                    Program.inputDispatcher.Init();
                 });
             }
             else
