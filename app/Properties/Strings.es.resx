@@ -156,6 +156,9 @@
   <data name="ApplyWindowsPowerPlan" xml:space="preserve">
     <value>Auto-ajustar plan de energía Windows</value>
   </data>
+  <data name="AsusServicesRunning" xml:space="preserve">
+    <value>Servicios de Asus en ejecución</value>
+  </data>
   <data name="AuraBreathe" xml:space="preserve">
     <value>Respiración</value>
   </data>
@@ -444,8 +447,20 @@
   <data name="StandardMode" xml:space="preserve">
     <value>Estándar</value>
   </data>
+  <data name="Start" xml:space="preserve">
+    <value>Iniciar</value>
+  </data>
+  <data name="StartingServices" xml:space="preserve">
+    <value>Iniciando servicios</value>
+  </data>
   <data name="StartupError" xml:space="preserve">
     <value>Error de inicio</value>
+  </data>
+  <data name="Stop" xml:space="preserve">
+    <value>Detener</value>
+  </data>
+  <data name="StoppingServices" xml:space="preserve">
+    <value>Deteniendo servicios</value>
   </data>
   <data name="ToggleAura" xml:space="preserve">
     <value>Alternar Aura</value>
