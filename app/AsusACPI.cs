@@ -34,8 +34,16 @@ public class AsusACPI
     const uint INIT = 0x54494E49;
 
     public const uint UniversalControl = 0x00100021;
+    
     public const int KB_Light_Up = 0xc4;
     public const int KB_Light_Down = 0xc5;
+    public const int Brightness_Down = 0x10;
+    public const int Brightness_Up = 0x20;
+    public const int KB_Sleep = 0x6c;
+    public const int KB_DUO_PgUpDn = 0x4B;
+    public const int KB_DUO_SecondDisplay = 0x6A;
+
+
     public const int Touchpad_Toggle = 0x6B;
 
     public const int ChargerMode = 0x0012006C;
@@ -65,10 +73,10 @@ public class AsusACPI
     public const int Temp_CPU = 0x00120094;
     public const int Temp_GPU = 0x00120097;
 
-    public const int PPT_TotalA0 = 0x001200A0;  // SPL (Total limit for all-AMD models)
+    public const int PPT_TotalA0 = 0x001200A0;  // SPL (Total limit for all-AMD models) / PL1
     public const int PPT_EDCA1 = 0x001200A1;  // CPU EDC
     public const int PPT_TDCA2 = 0x001200A2;  // CPU TDC
-    public const int PPT_APUA3 = 0x001200A3;  // sPPT (long boost limit)
+    public const int PPT_APUA3 = 0x001200A3;  // sPPT (long boost limit) / PL2
 
     public const int PPT_CPUB0 = 0x001200B0;  // CPU PPT on 2022 (PPT_LIMIT_APU)
     public const int PPT_CPUB1 = 0x001200B1;  // Total PPT on 2022 (PPT_LIMIT_SLOW)

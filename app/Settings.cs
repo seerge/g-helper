@@ -1358,6 +1358,10 @@ namespace GHelper
         public void AutoKeyboard()
         {
             InputDispatcher.SetBacklightAuto(true);
+
+            if (Program.acpi.IsXGConnected()) 
+                AsusUSB.ApplyXGMLight(AppConfig.isConfig("xmg_light"));
+
             if (AppConfig.ContainsModel("X16") || AppConfig.ContainsModel("X13")) InputDispatcher.TabletMode();
 
         }

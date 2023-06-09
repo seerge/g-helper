@@ -352,9 +352,11 @@ namespace Starlight.AnimeMatrix
             else
                 time = DateTime.Now.ToString("h" + ((second % 2 == 0) ? ":" : " ") + "mmtt");
 
+            /*
             if (_model == AnimeType.GA401)
                 PresentText(time);
             else
+            */
                 PresentTextDiagonal(time);
         }
 

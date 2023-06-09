@@ -115,6 +115,8 @@ namespace GHelper
 
             if (!OptimizationService.IsRunning())
                 listener = new KeyboardListener(HandleEvent);
+            else
+                Logger.WriteLine("Optimization service is running");
 
             InitBacklightTimer();
         }
@@ -195,7 +197,7 @@ namespace GHelper
                             KeyProcess("m3");
                             return;
                         case Keys.F11:
-                            OptimizationEvent(199);
+                            HandleEvent(199);
                             return;
                     }
                 }
@@ -223,10 +225,10 @@ namespace GHelper
                         KeyboardHook.KeyPress(Keys.VolumeMute);
                         break;
                     case Keys.F2:
-                        OptimizationEvent(197);
+                        HandleEvent(197);
                         break;
                     case Keys.F3:
-                        OptimizationEvent(196);
+                        HandleEvent(196);
                         break;
                     case Keys.F4:
                         KeyProcess("fnf4");
@@ -240,21 +242,21 @@ namespace GHelper
                     case Keys.F7:
                         if (AppConfig.ContainsModel("TUF"))
                             Program.settingsForm.BeginInvoke(Program.settingsForm.RunToast, ScreenBrightness.Adjust(-10) + "%", ToastIcon.BrightnessDown);
-                        OptimizationEvent(16);
+                        HandleEvent(16);
                         break;
                     case Keys.F8:
                         if (AppConfig.ContainsModel("TUF")) 
                             Program.settingsForm.BeginInvoke(Program.settingsForm.RunToast, ScreenBrightness.Adjust(+10) + "%", ToastIcon.BrightnessUp);
-                        OptimizationEvent(32);
+                        HandleEvent(32);
                         break;
                     case Keys.F9:
                         KeyboardHook.KeyWinPress(Keys.P);
                         break;
                     case Keys.F10:
-                        OptimizationEvent(107);
+                        HandleEvent(107);
                         break;
                     case Keys.F11:
-                        OptimizationEvent(108);
+                        HandleEvent(108);
                         break;
                     case Keys.F12:
                         KeyboardHook.KeyWinPress(Keys.A);
@@ -340,10 +342,10 @@ namespace GHelper
                     }
                     break;
                 case "brightness_up":
-                    OptimizationEvent(32);
+                    HandleEvent(32);
                     break;
                 case "brightness_down":
-                    OptimizationEvent(16);
+                    HandleEvent(16);
                     break;
                 case "custom":
                     CustomKey(name);
@@ -412,9 +414,45 @@ namespace GHelper
                 case 189: // Tablet mode 
                     TabletMode();
                     return;
+                case 197: // FN+F2
+                    SetBacklight(-1);
+                    break;
+                case 196: // FN+F3
+                    SetBacklight(1);
+                    break;
+                case 199: // ON Z13 - FN+F11 - cycles backlight
+                    SetBacklight(4);
+                    break;
             }
 
-            if (!OptimizationService.IsRunning()) OptimizationEvent(EventID);
+            if (OptimizationService.IsRunning()) return;
+
+            // Asus Optimization service Events 
+
+            switch (EventID)
+            {
+                case 16: // FN+F7
+                    Program.acpi.DeviceSet(AsusACPI.UniversalControl, AsusACPI.Brightness_Down, "Brightness");
+                    break;
+                case 32: // FN+F8
+                    Program.acpi.DeviceSet(AsusACPI.UniversalControl, AsusACPI.Brightness_Up, "Brightness");
+                    break;
+                case 107: // FN+F10
+                    bool touchpadState = GetTouchpadState();
+                    AsusUSB.TouchpadToggle();
+                    Program.settingsForm.BeginInvoke(Program.settingsForm.RunToast, touchpadState ? "Off" : "On", ToastIcon.Touchpad);
+                    break;
+                case 108: // FN+F11
+                    Program.acpi.DeviceSet(AsusACPI.UniversalControl, AsusACPI.KB_Sleep, "Sleep");
+                    break;
+                case 106: // Zephyrus DUO special key for turning on/off second display.
+                    //Program.acpi.DeviceSet(AsusACPI.UniversalControl, AsusACPI.KB_DUO_SecondDisplay, "SecondDisplay");
+                    break;
+                case 75: // Zephyrus DUO special key  for changing between arrows and pgup/pgdn
+                    //Program.acpi.DeviceSet(AsusACPI.UniversalControl, AsusACPI.KB_DUO_PgUpDn, "PgUpDown");
+                    break;
+            }
+
         }
 
 
@@ -436,7 +474,8 @@ namespace GHelper
         {
             if (init) AsusUSB.Init();
 
-            if (!OptimizationService.IsRunning()) AsusUSB.ApplyBrightness(GetBacklight(), "Auto");
+            //if (!OptimizationService.IsRunning()) 
+            AsusUSB.ApplyBrightness(GetBacklight(), "Auto");
         }
 
         public static void SetBacklight(int delta)
@@ -457,47 +496,14 @@ namespace GHelper
             else
                 AppConfig.setConfig("keyboard_brightness", backlight);
 
-            AsusUSB.ApplyBrightness(backlight, "HotKey");
-
-            string[] backlightNames = new string[] { "Off", "Low", "Mid", "Max" };
-            Program.settingsForm.BeginInvoke(Program.settingsForm.RunToast, backlightNames[backlight], delta > 0 ? ToastIcon.BacklightUp : ToastIcon.BacklightDown);
-
-        }
-
-        static void OptimizationEvent(int EventID)
-        { 
-
-            // Asus Optimization service Events 
-
-            switch (EventID)
+            if (!OptimizationService.IsRunning())
             {
-                case 197: // FN+F2
-                    SetBacklight(-1);
-                    break;
-                case 196: // FN+F3
-                    SetBacklight(1);
-                    break;
-                case 199: // ON Z13 - FN+F11 - cycles backlight
-                    SetBacklight(4);
-                    break;
-                case 16: // FN+F7
-                    Program.acpi.DeviceSet(AsusACPI.UniversalControl, 0x10, "Brightness");
-                    break;
-                case 32: // FN+F8
-                    Program.acpi.DeviceSet(AsusACPI.UniversalControl, 0x20, "Brightness");
-                    break;
-                case 107: // FN+F10
-                    bool touchpadState = GetTouchpadState();
-                    AsusUSB.TouchpadToggle();
-                    Program.settingsForm.BeginInvoke(Program.settingsForm.RunToast, touchpadState ? "Off" : "On", ToastIcon.Touchpad);
-                    break;
-                case 108: // FN+F11
-                    Program.acpi.DeviceSet(AsusACPI.UniversalControl, 0x6c, "Sleep");
-                    //NativeMethods.SetSuspendState(false, true, true);
-                    break;
+                AsusUSB.ApplyBrightness(backlight, "HotKey");
+                string[] backlightNames = new string[] { "Off", "Low", "Mid", "Max" };
+                Program.settingsForm.BeginInvoke(Program.settingsForm.RunToast, backlightNames[backlight], delta > 0 ? ToastIcon.BacklightUp : ToastIcon.BacklightDown);
             }
-        }
 
+        }
 
         static void LaunchProcess(string command = "")
         {
