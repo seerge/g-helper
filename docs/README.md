@@ -151,7 +151,7 @@ It's a lightweight Armoury Crate alternative for Asus laptops. A small utility t
 
 - Also, it's not recommended to have "ASUS Smart Display Control" app running, as it will try to change refresh rates and fight with g-helper for the same function. You can safely uninstall it.
 
-- You can stop / disable unnecessary services: Go to **Extra** in the app, and press "Stop" in Asus Services section (former **debloat.bat**). To start / enable services back - click "Start" instead (former **bloat.bat**)
+- You can stop / disable unnecessary services: Go to **Extra** in the app, and press "Stop" in Asus Services section (former **[debloat.bat](https://raw.githubusercontent.com/seerge/g-helper/main/debloat.bat)**). To start / enable services back - click "Start" instead (former **[bloat.bat](https://raw.githubusercontent.com/seerge/g-helper/main/bloat.bat)**)
 
 - It is **recommended** to run app with windows default "balanced" power plan
 ![Screenshot 2023-05-29 191650](https://github.com/seerge/g-helper/assets/5920850/27719d96-e9ca-4164-ac4a-23b5966fc0ec)
