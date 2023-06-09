@@ -168,9 +168,15 @@ Settings file is stored at ``%AppData%\GHelper``
 
 ## Power user settings
 
+### Manual app language setting
+
+By default app will use your windows language setting. But you can set language manually (if it supported of course)
+
+Add following line to ``%AppData%\GHelper\config.json`` : ``"language" : "en"`` (by replacing "en" with language of your choice)
+
 ### Custom power plans with each mode
 
-In config.json (under ``%AppData%\GHelper``) you can manually add custom power plan GUID (it can be either "real" power plan that can be switched or "overlay" power plan like the ones g-helper sets by default)
+In ``%AppData%\GHelper\config.json`` you can manually add custom power plan GUID (it can be either "real" power plan that can be switched or "overlay" power plan like the ones g-helper sets by default)
 
 Format is following : ``"scheme_<mode>" : "GUID" ``
 
