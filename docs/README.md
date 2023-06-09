@@ -15,7 +15,8 @@ Lightweight Armoury Crate alternative for Asus laptops. A small utility that all
 2. All performance modes can be fully customized (with fan curves and PPTs)
 3. Very lightweight and consumes almost no resources, doesn't install any services. Just a single exe to run
 4. Simple and clean native UI with easy access to all settings
-5. Doesn't need administrator privileges to run!
+5. FN-Lock
+6. Doesn't need administrator privileges to run (*)
 
 ## [:floppy_disk: Download App](https://github.com/seerge/g-helper/releases/latest/download/GHelper.zip)
 
@@ -73,16 +74,15 @@ _PPTs are shown for G14 2022, for other models PPTs will be different as they ar
 
 #### How do I stop the Armory Crate install popup appearing every time I press the M4 / Rog key?
 Delete or move somewhere following file ``C:\Windows\System32\ASUSACCI\ArmouryCrateKeyControl.exe``.
-
 If it still appears - Go to BIOS (F2 on boot), open Advanced Settings and disable "Armory Control Interface". 
 
 #### Why is Ultimate GPU mode not available on my laptop?
-Ultimate mode is supported (by hardware) only on G14 2022 (and possibly other models from 2022+)
+Ultimate mode is supported (by hardware) only on 2022+ models
 
-#### I can't set Eco mode (disable dGPU) on my G14 2020
-Unfortunately 2020 model doesn't support that on hardware level
+####  I don't see GPU modes section 
+Some older models (for example G14 2020) don't support disabling GPU on hardware level, therefore GPU section makes no sense for them and will be hidden
 
-#### Should I apply custom PPTs and fan profiles?
+#### Should I apply custom power limits (PPT) and fan profiles?
 You don't have to, it's purely optional. From my experience built in (in bios) performance modes work well. Limit your power or apply custom fan curves only if you have issues. As soon as you click Apply in the fan + power section bios will be considering the fan profile as "custom"! (no matter if you modified it or not)
 
 #### How does G-helper control my fan speeds?
@@ -97,7 +97,7 @@ Most probably either you are using Eco / Optimized mode and your dGPU is simply 
 #### It says, that app is already running
 Please check system tray for a (G) icon. By default windows is keen to hide all icons, so you may need to click ^ to see them all. I would advise to right click on Task Bar select Task Bar Settings -> Other System Tray icons -> Mark G-Helper to be always ON.
 
-#### App doesn't crash or doesn't work properly what should I do ?
+#### App crash or doesn't work properly what should I do ?
 Open "Event Viewer" from start menu, go to Windows Logs -> Application and check for recent Errors mentioning G-Helper. If you see one - please post a [new issue](https://github.com/seerge/g-helper/issues) with all details from this error.
 
 #### Battery charge limiter is not working
@@ -112,15 +112,20 @@ If you have Asus Optimization Service running, it's controlled by that service (
 #### How do I set different "Visual styles"?
 Personally, i'm not a big fan of them, as they make colors very inaccurate. But if you want so - you can adjust display colors using either Nvidia Control panel or AMD Adrenaline (appropriate display sections). If you really want you can also use [own ASUS utility from MS Store](https://apps.microsoft.com/store/detail/gamevisual/9P4K1LFTXSH8?hl=nl-nl&gl=nl&rtc=1)
 
-#### Can I overclock Nvidia GPU core / memory?
-Make sure that your dGPU is enabled (i.e. it's not in Eco mode). Open Fans + Power section and adjust core / memory clock offsets. They work same as in armoury's manual mode. Please keep in mind that (unfortunately) you need admin permissions for that, and app will ask you for them.
+#### Can I overclock Nvidia GPU core / memory? 
+Make sure that your dGPU is enabled (i.e. it's not in Eco mode). Open Fans + Power section and adjust core / memory clock offsets. They work same as in armoury's manual mode. Please keep in mind that (unfortunately) you need admin permissions for that, and app will ask you for them. (*)
+
+#### Windows defender marks app download as malware / virus
+False positives from Windows Defender (or any other similar system that uses machine learning for detection) is possible as application is not digitally signed with a certificate. You can always download a version below or compile app by yourself. All application sources are open and can be monitored from A to Z :)
+
+#### Where can I find app settings or logs ?
+You can find them under ``%AppData%\GHelper`` folder. Please include them when posting a new bug-report or issue.
 
 #### How do I uninstall G-helper?
 G-helper is a single exe, and it doesn't install anything in the system. To remove it - you can simply delete exe :) If you have applied any custom fan profiles or PPTs - before removing I would recommend selecting your favorite performance mode (for example balanced) and clicking "Factory defaults" under Fans + Power.
 
 #### What is G-helper ?
-It's a lightweight Armoury Crate alternative for Asus laptops. A small utility that allows you to do almost everything you could do with Armoury Crate but without extra bloat and unnecessary services.
-
+G-Helper is a lightweight Armoury Crate alternative for Asus laptops. A small utility that allows you to do almost everything you could do with Armoury Crate but without extra bloat and unnecessary services.
 
 -----------------------------
 
@@ -136,33 +141,31 @@ It's a lightweight Armoury Crate alternative for Asus laptops. A small utility t
 ### How to install
 
 1. Download latest release from [**Releases Page**](https://github.com/seerge/g-helper/releases)
-2. Unzip to a folder of your choice
+2. Unzip to a folder of your choice _(don't run exe from zip directly, as windows will put it into temp folder and delete after)_
 3. Run **GHelper.exe**
 
 ### Requirements (mandatory)
 
-- Microsoft [.NET7](https://dotnet.microsoft.com/en-us/download). Most probably you already have it. Otherwise you can [download it](https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/sdk-7.0.202-windows-x64-installer) from the official website.
+- [Microsoft .NET7](https://dotnet.microsoft.com/en-us/download). Most probably you already have it. Otherwise [download it](https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/sdk-7.0.202-windows-x64-installer) from the official website.
 
-- [Asus System Control Interface](https://dlcdnets.asus.com/pub/ASUS/nb/Image/CustomComponent/ASUSSystemControlInterfaceV3/ASUSSystemControlInterfaceV3.exe). If you have or had MyASUS app installed this "driver" probably still in place (even after MyASUS uninstalls). Alternatively - you can download and install it
+- [Asus System Control Interface v3+](https://dlcdnets.asus.com/pub/ASUS/nb/Image/CustomComponent/ASUSSystemControlInterfaceV3/ASUSSystemControlInterfaceV3.exe). This "driver" from asus should be installed automatically by windows update or along other asus apps. If it's not the case by some reason - you can download and install it manually.
 
 ### Recommendations (optional)
 
-- It's not recommended to use an app in combination with Armoury Crate services, because they adjust the same settings. You can [uninstall it using AC own uninstall tool](https://dlcdnets.asus.com/pub/ASUS/mb/14Utilities/Armoury_Crate_Uninstall_Tool.zip?model=armoury%20crate). Just in case, you can always install it back later.
+- It's **not recommended** to use an app in combination with Armoury Crate services, because they adjust the same settings. You can [uninstall it using AC own uninstall tool](https://dlcdnets.asus.com/pub/ASUS/mb/14Utilities/Armoury_Crate_Uninstall_Tool.zip?model=armoury%20crate). Just in case, you can always install it back later.
 
-- Also, it's not recommended to have "ASUS Smart Display Control" app running, as it will try to change refresh rates and fight with g-helper for the same function. You can safely uninstall it.
+- It's **not recommended** to have "ASUS Smart Display Control" app running, as it will try to change refresh rates and fight with g-helper for the same function. You can safely uninstall it.
 
 - You can stop / disable unnecessary services: Go to **Extra** in the app, and press "Stop" in Asus Services section (former **[debloat.bat](https://raw.githubusercontent.com/seerge/g-helper/main/debloat.bat)**). To start / enable services back - click "Start" instead (former **[bloat.bat](https://raw.githubusercontent.com/seerge/g-helper/main/bloat.bat)**)
 
-- It is **recommended** to run app with windows default "balanced" power plan
-![Screenshot 2023-05-29 191650](https://github.com/seerge/g-helper/assets/5920850/27719d96-e9ca-4164-ac4a-23b5966fc0ec)
+- It is **strongly recommended** to run app with windows default "balanced" power plan
+![Screenshot 2023-06-09 153453](https://github.com/seerge/g-helper/assets/5920850/d1d05c53-a0bd-4207-b23a-244653f3e7df)
 
 -------------------------------
 
-Designed and developed for Asus Zephyrus G14 2022 (with AMD Radeon iGPU and dGPU). But could and should potentially work for G14 of 2021 and 2020, G15, X FLOW, and other ROG models for relevant and supported features.
+_Designed and developed for Asus Zephyrus G14 2022 (with AMD Radeon iGPU and dGPU). But could and should potentially work for G14 of 2021 and 2020, G15, X FLOW, and other ROG models for relevant and supported features._
 
 I don't have a Microsoft certificate to sign the app yet, so if you get a warning from Windows Defender on launch (Windows Protected your PC), click More Info -> Run anyway. Alternatively you can compile and run project by yourself using Visual Studio :)
-
-Settings file is stored at ``%AppData%\GHelper``
 
 ------------------
 
@@ -214,6 +217,7 @@ To enable this custom workaround you need to add an extra line in config.json (u
 By default app will toggle performance modes with Ctr+Shift+F5. You can change this binding by adding ``"keybind_profile": 116`` in config.json (under ``%AppData%\GHelper``), where 116 is [numerical code for desired key](https://www.oreilly.com/library/view/javascript-dhtml/9780596514082/apb.html). Put 0 to completely disable this binding.
 
 ------------
+
 **Disclaimers**
 "ROG", "TUF", and "Armoury Crate" are trademarked by and belong to AsusTek Computer, Inc. I make no claims to these or any assets belonging to AsusTek Computer and use them purely for informational purposes only.
 
