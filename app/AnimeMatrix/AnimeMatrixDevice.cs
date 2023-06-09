@@ -352,11 +352,9 @@ namespace Starlight.AnimeMatrix
             else
                 time = DateTime.Now.ToString("h" + ((second % 2 == 0) ? ":" : " ") + "mmtt");
 
-            /*
             if (_model == AnimeType.GA401)
                 PresentText(time);
             else
-            */
                 PresentTextDiagonal(time);
         }
 
@@ -371,7 +369,7 @@ namespace Starlight.AnimeMatrix
                     g.CompositingQuality = CompositingQuality.HighQuality;
                     g.SmoothingMode = SmoothingMode.AntiAlias;
 
-                    using (Font font = new Font("Consolas", 24F, FontStyle.Regular, GraphicsUnit.Pixel))
+                    using (Font font = new Font("Consolas", 21F, FontStyle.Regular, GraphicsUnit.Pixel))
                     {
                         SizeF textSize = g.MeasureString(text1, font);
                         g.DrawString(text1, font, Brushes.White, (MaxColumns * 3 - textSize.Width) + 3, -4);
