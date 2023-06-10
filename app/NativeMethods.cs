@@ -636,7 +636,7 @@ public class NativeMethods
             var devices = GetAllDevices().ToArray();
             int count = 0, displayNum = -1;
 
-            string internalName = AppConfig.getConfigString("internal_display");
+            string internalName = AppConfig.GetString("internal_display");
 
             foreach (var device in devices)
             {
@@ -645,7 +645,7 @@ public class NativeMethods
                     device.monitorFriendlyDeviceName == internalName)
                 {
                     displayNum = count;
-                    AppConfig.setConfig("internal_display", device.monitorFriendlyDeviceName);
+                    AppConfig.Set("internal_display", device.monitorFriendlyDeviceName);
                 }
                 count++;
                 //Logger.WriteLine(device.monitorFriendlyDeviceName + ":" + device.outputTechnology.ToString());

@@ -111,8 +111,8 @@ public class NvidiaGpuControl : IGpuControl
 
     public int SetClocksFromConfig()
     {
-        int core = AppConfig.getConfig("gpu_core");
-        int memory = AppConfig.getConfig("gpu_memory");
+        int core = AppConfig.Get("gpu_core",0);
+        int memory = AppConfig.Get("gpu_memory",0);
         int status = SetClocks(core, memory);
         return status;
     }

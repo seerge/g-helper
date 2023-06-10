@@ -19,7 +19,7 @@ public static class HardwareControl
     public static int GetFanMax()
     {
         int max = 58;
-        int configMax = AppConfig.getConfig("fan_max");
+        int configMax = AppConfig.Get("fan_max");
         if (configMax > 100) configMax = 0; // skipping inadvequate settings
 
         if (AppConfig.ContainsModel("401")) max = 72;
@@ -29,7 +29,7 @@ public static class HardwareControl
 
     public static void SetFanMax(int fan)
     {
-        AppConfig.setConfig("fan_max", fan);
+        AppConfig.Set("fan_max", fan);
     }
     public static string FormatFan(int fan)
     {
@@ -43,7 +43,7 @@ public static class HardwareControl
         int fanMax = GetFanMax();
         if (fan > fanMax && fan < 110) SetFanMax(fan);
 
-        if (AppConfig.getConfig("fan_rpm") == 1)
+        if (AppConfig.Is("fan_rpm"))
             return GHelper.Properties.Strings.FanSpeed + (fan * 100).ToString() + "RPM";
         else
             return GHelper.Properties.Strings.FanSpeed + Math.Min(Math.Round((float)fan / fanMax * 100), 100).ToString() + "%"; // relatively to 6000 rpm
@@ -189,7 +189,7 @@ public static class HardwareControl
 
         List<string> tokill = new() { "EADesktop", "RadeonSoftware", "epicgameslauncher", "ASUSSmartDisplayControl" };
 
-        if (AppConfig.isConfig("kill_gpu_apps"))
+        if (AppConfig.Is("kill_gpu_apps"))
         {
             tokill.Add("nvdisplay.container");
             tokill.Add("nvcontainer");
@@ -198,7 +198,7 @@ public static class HardwareControl
 
         foreach (string kill in tokill) ProcessHelper.KillByName(kill);
 
-        if (AppConfig.isConfig("kill_gpu_apps") && GpuControl is not null)
+        if (AppConfig.Is("kill_gpu_apps") && GpuControl is not null)
         {
             GpuControl.KillGPUApps();
         }

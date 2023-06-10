@@ -57,8 +57,14 @@ namespace GHelper
                 startInfo.FileName = Application.ExecutablePath;
                 startInfo.Arguments = param;
                 startInfo.Verb = "runas";
-                Process.Start(startInfo);
-                Application.Exit();
+                try
+                {
+                    Process.Start(startInfo);
+                    Application.Exit();
+                } catch (Exception ex)
+                {
+                    Logger.WriteLine(ex.Message);
+                }
             }
         }
 

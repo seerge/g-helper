@@ -38,7 +38,7 @@ namespace GHelper
             string action = "";
             if (args.Length > 0) action = args[0];
 
-            string language = AppConfig.getConfigString("language");
+            string language = AppConfig.GetString("language");
 
             if (language != null && language.Length > 0)
                 Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo(language);
@@ -147,7 +147,7 @@ namespace GHelper
 
             inputDispatcher.Init();
 
-            settingsForm.SetBatteryChargeLimit(AppConfig.getConfig("charge_limit"));
+            settingsForm.SetBatteryChargeLimit(AppConfig.Get("charge_limit"));
             settingsForm.AutoPerformance(powerChanged);
 
             bool switched = settingsForm.AutoGPUMode();

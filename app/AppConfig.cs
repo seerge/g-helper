@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using GHelper;
+using System.Diagnostics;
 using System.Management;
 using System.Text.Json;
 
@@ -28,12 +29,12 @@ public static class AppConfig
             }
             catch
             {
-                initConfig();
+                Init();
             }
         }
         else
         {
-            initConfig();
+            Init();
         }
 
     }
@@ -64,7 +65,7 @@ public static class AppConfig
     }
 
 
-    private static void initConfig()
+    private static void Init()
     {
         config = new Dictionary<string, object>();
         config["performance_mode"] = 0;
@@ -72,41 +73,27 @@ public static class AppConfig
         File.WriteAllText(configFile, jsonString);
     }
 
-    public static int getConfig(string name, int empty = -1)
+    public static int Get(string name, int empty = -1)
     {
         if (config.ContainsKey(name))
             return int.Parse(config[name].ToString());
         else return empty;
     }
 
-    public static bool isConfig(string name)
+    public static bool Is(string name)
     {
-        return getConfig(name) == 1;
+        return Get(name) == 1;
     }
 
-    public static string getConfigString(string name, string empty = null)
+    public static string GetString(string name, string empty = null)
     {
         if (config.ContainsKey(name))
             return config[name].ToString();
         else return empty;
     }
 
-    public static void setConfig(string name, int value)
+    private static void Write()
     {
-        config[name] = value;
-        string jsonString = JsonSerializer.Serialize(config, new JsonSerializerOptions { WriteIndented = true });
-        try
-        {
-            File.WriteAllText(configFile, jsonString);
-        } catch (Exception e)
-        {
-            Debug.Write(e.ToString());
-        }
-    }
-
-    public static void setConfig(string name, string value)
-    {
-        config[name] = value;
         string jsonString = JsonSerializer.Serialize(config, new JsonSerializerOptions { WriteIndented = true });
         try
         {
@@ -118,9 +105,26 @@ public static class AppConfig
         }
     }
 
-    public static string getParamName(AsusFan device, string paramName = "fan_profile")
+    public static void Set(string name, int value)
     {
-        int mode = getConfig("performance_mode");
+        config[name] = value;
+        Write();
+    }
+
+    public static void Set(string name, string value)
+    {
+        config[name] = value;
+        Write();
+    }
+    public static void Remove(string name)
+    {
+        config.Remove(name);
+        Write();
+    }
+
+    public static string GgetParamName(AsusFan device, string paramName = "fan_profile")
+    {
+        int mode = Modes.GetCurrent();
         string name;
 
         switch (device)
@@ -143,9 +147,9 @@ public static class AppConfig
         return paramName + "_" + name + "_" + mode;
     }
 
-    public static byte[] getFanConfig(AsusFan device)
+    public static byte[] GetFanConfig(AsusFan device)
     {
-        string curveString = getConfigString(getParamName(device));
+        string curveString = GetString(GgetParamName(device));
         byte[] curve = { };
 
         if (curveString is not null)
@@ -154,10 +158,10 @@ public static class AppConfig
         return curve;
     }
 
-    public static void setFanConfig(AsusFan device, byte[] curve)
+    public static void SetFanConfig(AsusFan device, byte[] curve)
     {
         string bitCurve = BitConverter.ToString(curve);
-        setConfig(getParamName(device), bitCurve);
+        Set(GgetParamName(device), bitCurve);
     }
 
 
@@ -169,9 +173,9 @@ public static class AppConfig
         return array;
     }
 
-    public static byte[] getDefaultCurve(AsusFan device)
+    public static byte[] GetDefaultCurve(AsusFan device)
     {
-        int mode = getConfig("performance_mode");
+        int mode = Modes.GetCurrentBase();
         byte[] curve;
 
         switch (mode)
@@ -199,29 +203,29 @@ public static class AppConfig
         return curve;
     }
 
-    public static string getConfigPerfString(string name)
+    public static string GetModeString(string name)
     {
-        int mode = getConfig("performance_mode");
-        return getConfigString(name + "_" + mode);
+        return GetString(name + "_" + Modes.GetCurrent());
     }
 
-    public static int getConfigPerf(string name)
+    public static int GetMode(string name)
     {
-        int mode = getConfig("performance_mode");
-        return getConfig(name + "_" + mode);
+        return Get(name + "_" + Modes.GetCurrent());
     }
 
-    public static bool isConfigPerf(string name)
+    public static bool IsMode(string name)
     {
-        int mode = getConfig("performance_mode");
-        return getConfig(name + "_" + mode) == 1;
+        return Get(name + "_" + Modes.GetCurrent()) == 1;
     }
 
-    public static void setConfigPerf(string name, int value)
+    public static void SetMode(string name, int value)
     {
-        int mode = getConfig("performance_mode");
-        setConfig(name + "_" + mode, value);
+        Set(name + "_" + Modes.GetCurrent(), value);
     }
 
+    public static void SetMode(string name, string value)
+    {
+        Set(name + "_" + Modes.GetCurrent(), value);
+    }
 
 }
