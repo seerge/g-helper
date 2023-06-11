@@ -137,14 +137,47 @@ namespace GHelper
             InitGPU(true);
 
             comboBoost.SelectedValueChanged += ComboBoost_Changed;
-            comboModes.SelectedValueChanged += ComboModes_SelectedValueChanged;
+
+            comboModes.SelectionChangeCommitted += ComboModes_SelectedValueChanged;
+            comboModes.TextChanged += ComboModes_TextChanged;
+            comboModes.KeyPress += ComboModes_KeyPress;
 
             Shown += Fans_Shown;
 
             buttonAdd.Click += ButtonAdd_Click;
             buttonRemove.Click += ButtonRemove_Click;
+            buttonRename.Click += ButtonRename_Click;
+
         }
 
+        private void ComboModes_KeyPress(object? sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == 13) RenameToggle();
+        }
+
+        private void ComboModes_TextChanged(object? sender, EventArgs e)
+        {
+            if (comboModes.DropDownStyle == ComboBoxStyle.DropDownList) return;
+            if (!Modes.IsCurrentCustom()) return;
+            AppConfig.SetMode("mode_name", comboModes.Text);
+        }
+
+        private void RenameToggle()
+        {
+            if (comboModes.DropDownStyle == ComboBoxStyle.DropDownList)
+                comboModes.DropDownStyle = ComboBoxStyle.Simple;
+            else
+            {
+                var mode = Modes.GetCurrent();
+                FillModes();
+                comboModes.SelectedValue = mode;
+            }
+        }
+
+        private void ButtonRename_Click(object? sender, EventArgs e)
+        {
+            RenameToggle();
+        }
 
         private void ButtonRemove_Click(object? sender, EventArgs e)
         {
@@ -161,7 +194,7 @@ namespace GHelper
         private void FillModes()
         {
             comboModes.DropDownStyle = ComboBoxStyle.DropDownList;
-            comboModes.DataSource = new BindingSource(Modes.GetList(), null);
+            comboModes.DataSource = new BindingSource(Modes.GetDictonary(), null);
             comboModes.DisplayMember = "Value";
             comboModes.ValueMember = "Key";
         }
@@ -177,13 +210,17 @@ namespace GHelper
         {
             int mode = Modes.GetCurrent();
             comboModes.SelectedValue = mode;
-            buttonRemove.Visible = Modes.IsCurrentCustom();
+            buttonRename.Visible = buttonRemove.Visible = Modes.IsCurrentCustom();
         }
 
         private void ComboModes_SelectedValueChanged(object? sender, EventArgs e)
         {
-            int selectedMode = (int)comboModes.SelectedValue;
-            if (selectedMode == Modes.GetCurrent()) return;
+            var selectedMode = comboModes.SelectedValue;
+
+            if (selectedMode == null) return;
+            if ((int)selectedMode == Modes.GetCurrent()) return;
+
+            Debug.WriteLine(selectedMode);
 
             Program.settingsForm.SetPerformanceMode((int)selectedMode);
         }
@@ -397,8 +434,8 @@ namespace GHelper
             if (AppConfig.GetMode("auto_boost") != comboBoost.SelectedIndex)
             {
                 NativeMethods.SetCPUBoost(comboBoost.SelectedIndex);
-                AppConfig.SetMode("auto_boost", comboBoost.SelectedIndex);
             }
+            AppConfig.SetMode("auto_boost", comboBoost.SelectedIndex);
         }
 
         private void CheckApplyPower_Click(object? sender, EventArgs e)

@@ -31,14 +31,14 @@ namespace GHelper
         /// </summary>
         private void InitializeComponent()
         {
-            ChartArea chartArea1 = new ChartArea();
-            Title title1 = new Title();
-            ChartArea chartArea2 = new ChartArea();
-            Title title2 = new Title();
-            ChartArea chartArea3 = new ChartArea();
-            Title title3 = new Title();
-            ChartArea chartArea4 = new ChartArea();
-            Title title4 = new Title();
+            ChartArea chartArea5 = new ChartArea();
+            Title title5 = new Title();
+            ChartArea chartArea6 = new ChartArea();
+            Title title6 = new Title();
+            ChartArea chartArea7 = new ChartArea();
+            Title title7 = new Title();
+            ChartArea chartArea8 = new ChartArea();
+            Title title8 = new Title();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Fans));
             panelFans = new Panel();
             labelTip = new Label();
@@ -48,6 +48,7 @@ namespace GHelper
             chartXGM = new Chart();
             chartMid = new Chart();
             panelTitleFans = new Panel();
+            buttonRename = new RButton();
             buttonRemove = new RButton();
             buttonAdd = new RButton();
             comboModes = new RComboBox();
@@ -187,8 +188,8 @@ namespace GHelper
             // 
             // chartGPU
             // 
-            chartArea1.Name = "ChartArea1";
-            chartGPU.ChartAreas.Add(chartArea1);
+            chartArea5.Name = "ChartArea1";
+            chartGPU.ChartAreas.Add(chartArea5);
             chartGPU.Dock = DockStyle.Fill;
             chartGPU.Location = new Point(12, 289);
             chartGPU.Margin = new Padding(2, 10, 2, 10);
@@ -196,13 +197,13 @@ namespace GHelper
             chartGPU.Size = new Size(781, 259);
             chartGPU.TabIndex = 17;
             chartGPU.Text = "chartGPU";
-            title1.Name = "Title1";
-            chartGPU.Titles.Add(title1);
+            title5.Name = "Title1";
+            chartGPU.Titles.Add(title5);
             // 
             // chartCPU
             // 
-            chartArea2.Name = "ChartArea1";
-            chartCPU.ChartAreas.Add(chartArea2);
+            chartArea6.Name = "ChartArea1";
+            chartCPU.ChartAreas.Add(chartArea6);
             chartCPU.Dock = DockStyle.Fill;
             chartCPU.Location = new Point(12, 10);
             chartCPU.Margin = new Padding(2, 10, 2, 10);
@@ -210,13 +211,13 @@ namespace GHelper
             chartCPU.Size = new Size(781, 259);
             chartCPU.TabIndex = 14;
             chartCPU.Text = "chartCPU";
-            title2.Name = "Title1";
-            chartCPU.Titles.Add(title2);
+            title6.Name = "Title1";
+            chartCPU.Titles.Add(title6);
             // 
             // chartXGM
             // 
-            chartArea3.Name = "ChartAreaXGM";
-            chartXGM.ChartAreas.Add(chartArea3);
+            chartArea7.Name = "ChartAreaXGM";
+            chartXGM.ChartAreas.Add(chartArea7);
             chartXGM.Dock = DockStyle.Fill;
             chartXGM.Location = new Point(12, 847);
             chartXGM.Margin = new Padding(2, 10, 2, 10);
@@ -224,14 +225,14 @@ namespace GHelper
             chartXGM.Size = new Size(781, 261);
             chartXGM.TabIndex = 14;
             chartXGM.Text = "chartXGM";
-            title3.Name = "Title4";
-            chartXGM.Titles.Add(title3);
+            title7.Name = "Title4";
+            chartXGM.Titles.Add(title7);
             chartXGM.Visible = false;
             // 
             // chartMid
             // 
-            chartArea4.Name = "ChartArea3";
-            chartMid.ChartAreas.Add(chartArea4);
+            chartArea8.Name = "ChartArea3";
+            chartMid.ChartAreas.Add(chartArea8);
             chartMid.Dock = DockStyle.Fill;
             chartMid.Location = new Point(12, 568);
             chartMid.Margin = new Padding(2, 10, 2, 10);
@@ -239,12 +240,13 @@ namespace GHelper
             chartMid.Size = new Size(781, 259);
             chartMid.TabIndex = 14;
             chartMid.Text = "chartMid";
-            title4.Name = "Title3";
-            chartMid.Titles.Add(title4);
+            title8.Name = "Title3";
+            chartMid.Titles.Add(title8);
             chartMid.Visible = false;
             // 
             // panelTitleFans
             // 
+            panelTitleFans.Controls.Add(buttonRename);
             panelTitleFans.Controls.Add(buttonRemove);
             panelTitleFans.Controls.Add(buttonAdd);
             panelTitleFans.Controls.Add(comboModes);
@@ -256,37 +258,54 @@ namespace GHelper
             panelTitleFans.Size = new Size(805, 66);
             panelTitleFans.TabIndex = 42;
             // 
+            // buttonRename
+            // 
+            buttonRename.Activated = false;
+            buttonRename.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            buttonRename.BackColor = SystemColors.ControlLight;
+            buttonRename.BorderColor = Color.Transparent;
+            buttonRename.BorderRadius = 2;
+            buttonRename.FlatStyle = FlatStyle.Flat;
+            buttonRename.Image = (Image)resources.GetObject("buttonRename.Image");
+            buttonRename.Location = new Point(369, 12);
+            buttonRename.Margin = new Padding(4, 2, 4, 2);
+            buttonRename.Name = "buttonRename";
+            buttonRename.Secondary = true;
+            buttonRename.Size = new Size(52, 46);
+            buttonRename.TabIndex = 45;
+            buttonRename.UseVisualStyleBackColor = false;
+            // 
             // buttonRemove
             // 
             buttonRemove.Activated = false;
-            buttonRemove.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            buttonRemove.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             buttonRemove.BackColor = SystemColors.ControlLight;
             buttonRemove.BorderColor = Color.Transparent;
             buttonRemove.BorderRadius = 2;
             buttonRemove.FlatStyle = FlatStyle.Flat;
             buttonRemove.Image = (Image)resources.GetObject("buttonRemove.Image");
-            buttonRemove.Location = new Point(370, 14);
+            buttonRemove.Location = new Point(314, 12);
             buttonRemove.Margin = new Padding(4, 2, 4, 2);
             buttonRemove.Name = "buttonRemove";
             buttonRemove.Secondary = true;
-            buttonRemove.Size = new Size(52, 44);
+            buttonRemove.Size = new Size(52, 46);
             buttonRemove.TabIndex = 44;
             buttonRemove.UseVisualStyleBackColor = false;
             // 
             // buttonAdd
             // 
             buttonAdd.Activated = false;
-            buttonAdd.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            buttonAdd.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             buttonAdd.BackColor = SystemColors.ControlLight;
             buttonAdd.BorderColor = Color.Transparent;
             buttonAdd.BorderRadius = 2;
             buttonAdd.FlatStyle = FlatStyle.Flat;
             buttonAdd.Image = (Image)resources.GetObject("buttonAdd.Image");
-            buttonAdd.Location = new Point(737, 14);
+            buttonAdd.Location = new Point(737, 12);
             buttonAdd.Margin = new Padding(4, 2, 4, 2);
             buttonAdd.Name = "buttonAdd";
             buttonAdd.Secondary = true;
-            buttonAdd.Size = new Size(52, 44);
+            buttonAdd.Size = new Size(52, 46);
             buttonAdd.TabIndex = 43;
             buttonAdd.UseVisualStyleBackColor = false;
             // 
@@ -295,6 +314,7 @@ namespace GHelper
             comboModes.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             comboModes.BorderColor = Color.White;
             comboModes.ButtonColor = Color.FromArgb(255, 255, 255);
+            comboModes.FlatStyle = FlatStyle.Flat;
             comboModes.FormattingEnabled = true;
             comboModes.Location = new Point(429, 16);
             comboModes.Name = "comboModes";
@@ -306,7 +326,7 @@ namespace GHelper
             picturePerf.BackgroundImage = Properties.Resources.icons8_fan_head_96;
             picturePerf.BackgroundImageLayout = ImageLayout.Zoom;
             picturePerf.InitialImage = null;
-            picturePerf.Location = new Point(20, 18);
+            picturePerf.Location = new Point(18, 18);
             picturePerf.Margin = new Padding(4, 2, 4, 2);
             picturePerf.Name = "picturePerf";
             picturePerf.Size = new Size(36, 38);
@@ -317,7 +337,7 @@ namespace GHelper
             // 
             labelFans.AutoSize = true;
             labelFans.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            labelFans.Location = new Point(58, 20);
+            labelFans.Location = new Point(53, 20);
             labelFans.Margin = new Padding(4, 0, 4, 0);
             labelFans.Name = "labelFans";
             labelFans.Size = new Size(90, 32);
@@ -643,7 +663,7 @@ namespace GHelper
             pictureBox1.BackgroundImage = Properties.Resources.icons8_processor_96;
             pictureBox1.BackgroundImageLayout = ImageLayout.Zoom;
             pictureBox1.InitialImage = null;
-            pictureBox1.Location = new Point(18, 18);
+            pictureBox1.Location = new Point(16, 18);
             pictureBox1.Margin = new Padding(4, 2, 4, 10);
             pictureBox1.Name = "pictureBox1";
             pictureBox1.Size = new Size(36, 38);
@@ -654,7 +674,7 @@ namespace GHelper
             // 
             labelPowerLimits.AutoSize = true;
             labelPowerLimits.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            labelPowerLimits.Location = new Point(57, 20);
+            labelPowerLimits.Location = new Point(53, 20);
             labelPowerLimits.Margin = new Padding(4, 0, 4, 0);
             labelPowerLimits.Name = "labelPowerLimits";
             labelPowerLimits.Size = new Size(160, 32);
@@ -887,7 +907,7 @@ namespace GHelper
             pictureGPU.BackgroundImageLayout = ImageLayout.Zoom;
             pictureGPU.ErrorImage = null;
             pictureGPU.InitialImage = null;
-            pictureGPU.Location = new Point(18, 18);
+            pictureGPU.Location = new Point(16, 18);
             pictureGPU.Margin = new Padding(4, 2, 4, 10);
             pictureGPU.Name = "pictureGPU";
             pictureGPU.Size = new Size(36, 38);
@@ -898,7 +918,7 @@ namespace GHelper
             // 
             labelGPU.AutoSize = true;
             labelGPU.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            labelGPU.Location = new Point(55, 20);
+            labelGPU.Location = new Point(52, 20);
             labelGPU.Margin = new Padding(4, 0, 4, 0);
             labelGPU.Name = "labelGPU";
             labelGPU.Size = new Size(162, 32);
@@ -1036,5 +1056,6 @@ namespace GHelper
         private RComboBox comboModes;
         private RButton buttonAdd;
         private RButton buttonRemove;
+        private RButton buttonRename;
     }
 }

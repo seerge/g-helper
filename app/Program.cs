@@ -43,10 +43,13 @@ namespace GHelper
             if (language != null && language.Length > 0)
                 Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo(language);
             else
-                Thread.CurrentThread.CurrentUICulture = CultureInfo.CurrentUICulture;
+            {
+                var culture = CultureInfo.CurrentUICulture;
+                if (culture.ToString() == "kr") culture = CultureInfo.GetCultureInfo("ko");
+                Thread.CurrentThread.CurrentUICulture = culture;
+            }
 
             Debug.WriteLine(CultureInfo.CurrentUICulture);
-            //Thread.CurrentThread.CurrentUICulture = CultureInfo.CreateSpecificCulture("fr");
 
             ProcessHelper.CheckAlreadyRunning();
 

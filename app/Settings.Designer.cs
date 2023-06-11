@@ -310,7 +310,7 @@ namespace GHelper
             // 
             pictureBattery.BackgroundImage = (Image)resources.GetObject("pictureBattery.BackgroundImage");
             pictureBattery.BackgroundImageLayout = ImageLayout.Zoom;
-            pictureBattery.Location = new Point(6, 0);
+            pictureBattery.Location = new Point(4, 1);
             pictureBattery.Margin = new Padding(4);
             pictureBattery.Name = "pictureBattery";
             pictureBattery.Size = new Size(32, 32);
@@ -320,7 +320,7 @@ namespace GHelper
             // labelBatteryTitle
             // 
             labelBatteryTitle.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            labelBatteryTitle.Location = new Point(34, 0);
+            labelBatteryTitle.Location = new Point(42, 0);
             labelBatteryTitle.Margin = new Padding(8, 0, 8, 0);
             labelBatteryTitle.Name = "labelBatteryTitle";
             labelBatteryTitle.Size = new Size(393, 32);

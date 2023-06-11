@@ -79,6 +79,7 @@ namespace GHelper
             buttonSilent.BorderColor = colorEco;
             buttonBalanced.BorderColor = colorStandard;
             buttonTurbo.BorderColor = colorTurbo;
+            buttonFans.BorderColor = colorCustom;
 
             buttonEco.BorderColor = colorEco;
             buttonStandard.BorderColor = colorStandard;
@@ -1260,6 +1261,7 @@ namespace GHelper
             buttonSilent.Activated = false;
             buttonBalanced.Activated = false;
             buttonTurbo.Activated = false;
+            buttonFans.Activated = false;
 
             menuSilent.Checked = false;
             menuBalanced.Checked = false;
@@ -1285,6 +1287,10 @@ namespace GHelper
                         buttonBalanced.Activated = true;
                         menuBalanced.Checked = true;
                         mode = AsusACPI.PerformanceBalanced;
+                    }
+                    else
+                    {
+                        buttonFans.Activated = true;
                     }
                     break;
             }
@@ -1357,7 +1363,7 @@ namespace GHelper
         {
             InputDispatcher.SetBacklightAuto(true);
 
-            if (Program.acpi.IsXGConnected()) 
+            if (Program.acpi.IsXGConnected())
                 AsusUSB.ApplyXGMLight(AppConfig.Is("xmg_light"));
 
             if (AppConfig.ContainsModel("X16") || AppConfig.ContainsModel("X13")) InputDispatcher.TabletMode();

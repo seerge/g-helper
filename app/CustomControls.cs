@@ -12,6 +12,8 @@ namespace CustomControls
         public static Color colorEco = Color.FromArgb(255, 6, 180, 138);
         public static Color colorStandard = Color.FromArgb(255, 58, 174, 239);
         public static Color colorTurbo = Color.FromArgb(255, 255, 32, 32);
+        public static Color colorCustom = Color.FromArgb(255, 255, 128, 0);
+
 
         public static Color buttonMain;
         public static Color buttonSecond;

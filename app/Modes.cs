@@ -1,11 +1,13 @@
-﻿namespace GHelper
+﻿using Microsoft.VisualBasic.Devices;
+
+namespace GHelper
 {
     internal class Modes
     {
 
         const int maxModes = 20;
 
-        public static Dictionary<int, string> GetList()
+        public static Dictionary<int, string> GetDictonary()
         {
             Dictionary<int, string> modes = new Dictionary<int, string>
             {
@@ -16,8 +18,18 @@
 
             for (int i = 3; i < maxModes; i++)
             {
-                if (Exists(i))
-                    modes.Add(i, GetName(i));
+                if (Exists(i)) modes.Add(i, GetName(i));
+            }
+
+            return modes;
+        }
+
+        public static List<int> GetList()
+        {
+            List<int> modes = new() { 2, 0, 1 };
+            for (int i = 3; i < maxModes; i++)
+            {
+                if (Exists(i)) modes.Add(i);
             }
 
             return modes;
@@ -124,18 +136,21 @@
 
         public static int GetNext(bool back = false)
         {
-            int mode = GetCurrent();
+            var modes = GetList();
+            int index = modes.IndexOf(GetCurrent());
+
             if (back)
             {
-                mode--;
-                if (mode < 0) mode = 2;
+                index--;
+                if (index < 0) index = modes.Count - 1;
+                return modes[index];
             }
             else
             {
-                mode++;
-                if (mode > 2) mode = 0;
+                index++;
+                if (index > modes.Count - 1) index = 0;
+                return modes[index];
             }
-            return mode;
         }
     }
 }

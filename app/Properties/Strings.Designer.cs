@@ -916,7 +916,7 @@ namespace GHelper.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Performance Mode.
+        ///   Looks up a localized string similar to Mode.
         /// </summary>
         internal static string PerformanceMode {
             get {

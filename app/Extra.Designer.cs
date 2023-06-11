@@ -119,8 +119,8 @@ namespace GHelper
             groupBindings.Location = new Point(9, 11);
             groupBindings.Margin = new Padding(4, 2, 4, 2);
             groupBindings.Name = "groupBindings";
-            groupBindings.Padding = new Padding(4, 2, 50, 2);
-            groupBindings.Size = new Size(966, 343);
+            groupBindings.Padding = new Padding(4, 2, 50, 10);
+            groupBindings.Size = new Size(966, 351);
             groupBindings.TabIndex = 0;
             groupBindings.TabStop = false;
             groupBindings.Text = "Key Bindings";
@@ -380,7 +380,7 @@ namespace GHelper
             groupLight.Controls.Add(panelXMG);
             groupLight.Controls.Add(tableBacklight);
             groupLight.Dock = DockStyle.Top;
-            groupLight.Location = new Point(9, 354);
+            groupLight.Location = new Point(9, 362);
             groupLight.Margin = new Padding(4, 2, 4, 2);
             groupLight.Name = "groupLight";
             groupLight.Padding = new Padding(4, 2, 4, 11);
@@ -804,7 +804,7 @@ namespace GHelper
             groupOther.Controls.Add(checkGpuApps);
             groupOther.Controls.Add(checkFnLock);
             groupOther.Dock = DockStyle.Top;
-            groupOther.Location = new Point(9, 880);
+            groupOther.Location = new Point(9, 888);
             groupOther.Margin = new Padding(4, 2, 4, 2);
             groupOther.Name = "groupOther";
             groupOther.Padding = new Padding(20, 2, 4, 10);
@@ -903,7 +903,7 @@ namespace GHelper
             panelServices.Controls.Add(labelServices);
             panelServices.Controls.Add(buttonServices);
             panelServices.Dock = DockStyle.Top;
-            panelServices.Location = new Point(9, 1176);
+            panelServices.Location = new Point(9, 1184);
             panelServices.Name = "panelServices";
             panelServices.Size = new Size(966, 72);
             panelServices.TabIndex = 3;
