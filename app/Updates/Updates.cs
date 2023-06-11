@@ -132,11 +132,16 @@ namespace GHelper.Updates
                 }
             }
             
-            BeginInvoke(() =>
+            var handle = BeginInvoke(() =>
             {
                 ResumeLayout(true);
                 tableDrivers.Visible = true;
             });
+            
+            while (!handle.IsCompleted)
+            {
+                await Task.Delay(100);
+            }
         }
         
         private async Task RefreshBiosAsync(TableLayoutPanel table)
@@ -167,11 +172,16 @@ namespace GHelper.Updates
                 MarkAsOutdated(table, i);
             }
             
-            BeginInvoke(() =>
+            var handle = BeginInvoke(() =>
             {
                 ResumeLayout(true);
                 tableBios.Visible = true;
             });
+            
+            while (!handle.IsCompleted)
+            {
+                await Task.Delay(100);
+            }
         }
 
         private List<DriverDownload> FilterDownloads(DriverObject[] groups)
