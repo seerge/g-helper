@@ -25,6 +25,14 @@ namespace GHelper.Updates
             AutomaticDecompression = DecompressionMethods.All
         });
         
+        private volatile int _isUpdating;
+
+        private bool IsUpdating
+        {
+            get => Interlocked.CompareExchange(ref _isUpdating, 0, 0) == 1;
+            set => Interlocked.Exchange(ref _isUpdating, value ? 1 : 0);
+        }
+        
         public Updates()
         {
             InitializeComponent();
@@ -41,31 +49,29 @@ namespace GHelper.Updates
 
         private void RefreshVersions()
         {
+            if (IsUpdating)
+            {
+                return;
+            }
+            
+            IsUpdating = true;
+            
             SuspendLayout();
             tableBios.Visible = false;
             tableDrivers.Visible = false;
-
-            Task.Run(async () =>
-            {
-                await RefreshBiosAsync(tableBios);
-
-                BeginInvoke(() =>
-                {
-                    ResumeLayout(true);
-                    tableBios.Visible = true;
-                });
-            }).Forget();
             
+            tableBios.Controls.Clear();
+            tableDrivers.Controls.Clear();
+
             Task.Run(async () =>
             {
-                await RefreshDriversAsync(tableDrivers);
+                var biosTask = RefreshBiosAsync(tableBios);
+                var driversTask = RefreshDriversAsync(tableDrivers);
+                
+                await Task.WhenAll(biosTask, driversTask);
 
-                BeginInvoke(() =>
-                {
-                    ResumeLayout(true);
-                    tableDrivers.Visible = true;
-                });
-            }).Forget();
+                IsUpdating = false;
+            });
         }
 
         private void Updates_Shown(object? sender, EventArgs e)
@@ -125,6 +131,12 @@ namespace GHelper.Updates
                     MarkAsOutdated(table, i);
                 }
             }
+            
+            BeginInvoke(() =>
+            {
+                ResumeLayout(true);
+                tableDrivers.Visible = true;
+            });
         }
         
         private async Task RefreshBiosAsync(TableLayoutPanel table)
@@ -154,6 +166,12 @@ namespace GHelper.Updates
 
                 MarkAsOutdated(table, i);
             }
+            
+            BeginInvoke(() =>
+            {
+                ResumeLayout(true);
+                tableBios.Visible = true;
+            });
         }
 
         private List<DriverDownload> FilterDownloads(DriverObject[] groups)
