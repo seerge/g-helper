@@ -64,12 +64,24 @@ namespace GHelper
         protected static ToastIcon? toastIcon = null;
 
         protected static System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
+        
+        protected static int TimerInterval = 10; // Time in ms, how often the timer ticks. More ticks means smoother animation
+
+        protected static int MaxAlpha = 250; // Max alpha for ToastForm. 250 by default
+        protected static int AlphaStep = 30; // How much alpha is added/subtracted per tick. Biggers steps means faster animation
+        protected static int ShowDuration = 2000; // How long the toast is shown in ms before it starts to fade out
+
+        protected int TicksSinceTimerStart; // How many ticks have passed since the timer started
+        protected int CurrentTimerDuration => TicksSinceTimerStart * TimerInterval; // How long the timer has been running in ms
+        
 
         public ToastForm()
         {
+            Alpha = 0;
+            
             timer.Tick += timer_Tick;
             timer.Enabled = false;
-            timer.Interval = 2000;
+            timer.Interval = TimerInterval;
         }
 
         protected override void PerformPaint(PaintEventArgs e)
@@ -137,7 +149,7 @@ namespace GHelper
         public void RunToast(string text, ToastIcon? icon = null)
         {
             //Hide();
-            timer.Stop();
+            TimerStop();
 
             toastText = text;
             toastIcon = icon;
@@ -148,13 +160,45 @@ namespace GHelper
             Height = 100;
             X = (screen1.Bounds.Width - this.Width)/2;
             Y = screen1.Bounds.Height - 300 - this.Height;
-
+            
             Show();
+            TimerStart();
+        }
+        
+        private void TimerStart()
+        {
+            TicksSinceTimerStart = 0;
             timer.Start();
+        }
+
+        private void TimerStop()
+        {
+            TicksSinceTimerStart = 0;
+            timer.Stop();
+        }
+        
+        private void StepAlpha(int step)
+        {
+            Alpha = (byte) Math.Clamp(Alpha + step, 0, MaxAlpha);
         }
 
         private void timer_Tick(object? sender, EventArgs e)
         {
+            TicksSinceTimerStart++;
+            
+            if (CurrentTimerDuration <= ShowDuration)
+            {
+                StepAlpha(AlphaStep);
+                return;
+            }
+            
+            StepAlpha(-AlphaStep);
+            
+            if (Alpha > 0)
+            {
+                return;
+            }
+
             Debug.WriteLine("Toast end");
 
             Hide();
