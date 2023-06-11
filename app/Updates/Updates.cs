@@ -42,10 +42,10 @@ namespace GHelper.Updates
             Text = Properties.Strings.BiosAndDriverUpdates + ": " + _modelInfo.Model + " " + _modelInfo.Bios;
             labelBIOS.Text = "BIOS";
             labelDrivers.Text = Properties.Strings.DriverAndSoftware;
+            
+            Shown += Updates_Shown;
 
             RefreshVersions();
-
-            Shown += Updates_Shown;
         }
         
         // Can be integrated into UI
