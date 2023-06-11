@@ -653,7 +653,7 @@ public class NativeMethods
 
             var screens = Screen.AllScreens;
 
-            if (screens.Length != count) return Screen.PrimaryScreen.DeviceName;
+            if (screens.Length != count) return null;
 
             count = 0;
             foreach (var screen in screens)
@@ -679,11 +679,10 @@ public class NativeMethods
         return laptopScreen;
     }
 
-    public static int GetRefreshRate(bool max = false)
+    public static int GetRefreshRate(string laptopScreen, bool max = false)
     {
         DEVMODE dm = CreateDevmode();
 
-        string laptopScreen = FindLaptopScreen();
         int frequency = -1;
 
         if (laptopScreen is null)

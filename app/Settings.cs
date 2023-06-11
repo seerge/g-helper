@@ -828,8 +828,9 @@ namespace GHelper
 
         public void SetScreen(int frequency = -1, int overdrive = -1, int miniled = -1)
         {
-
-            if (NativeMethods.GetRefreshRate() < 0) // Laptop screen not detected or has unknown refresh rate
+            var laptopScreen = NativeMethods.FindLaptopScreen();
+            
+            if (NativeMethods.GetRefreshRate(laptopScreen) < 0) // Laptop screen not detected or has unknown refresh rate
             {
                 InitScreen();
                 return;
@@ -837,7 +838,7 @@ namespace GHelper
 
             if (frequency >= 1000)
             {
-                frequency = NativeMethods.GetRefreshRate(true);
+                frequency = NativeMethods.GetRefreshRate(laptopScreen, true);
             }
 
             if (frequency > 0)
@@ -863,9 +864,10 @@ namespace GHelper
 
         public void InitScreen()
         {
-
-            int frequency = NativeMethods.GetRefreshRate();
-            int maxFrequency = NativeMethods.GetRefreshRate(true);
+            var laptopScreen = NativeMethods.FindLaptopScreen();
+            
+            int frequency = NativeMethods.GetRefreshRate(laptopScreen);
+            int maxFrequency = NativeMethods.GetRefreshRate(laptopScreen, true);
 
             bool screenAuto = (AppConfig.Get("screen_auto") == 1);
             bool overdriveSetting = (AppConfig.Get("no_overdrive") != 1);
@@ -875,9 +877,7 @@ namespace GHelper
 
             bool screenEnabled = (frequency >= 0);
 
-            // Default to 120Hz if unknown, usually happens if Mux is switched to dGPU-only.
-            // It's been observed that dGPU screen is named same as internal screen, but with EXTERNAL at the end. Might as well check for that?
-            var displayFrequency = maxFrequency > 0 ? maxFrequency : 120; 
+            var displayFrequency = maxFrequency > 0 ? maxFrequency : NativeMethods.GetRefreshRate(Screen.PrimaryScreen.DeviceName); 
             button120Hz.Text = $"{displayFrequency} Hz + OD";
             
             ButtonEnabled(button60Hz, screenEnabled);
