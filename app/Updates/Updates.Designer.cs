@@ -1,4 +1,4 @@
-﻿namespace GHelper
+﻿namespace GHelper.Updates
 {
     partial class Updates
     {

@@ -28,7 +28,7 @@ namespace GHelper
         public AniMatrix matrix;
         public Fans fans;
         public Extra keyb;
-        public Updates updates;
+        public Updates.Updates updates;
 
         static long lastRefresh;
 
@@ -192,7 +192,7 @@ namespace GHelper
         {
             if (updates == null || updates.Text == "")
             {
-                updates = new Updates();
+                updates = new Updates.Updates();
                 updates.Show();
             }
             else
