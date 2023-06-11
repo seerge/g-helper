@@ -312,6 +312,7 @@ namespace GHelper
                     KeyboardHook.KeyPress(Keys.Snapshot);
                     break;
                 case "screen":
+                    Logger.WriteLine("Screen off toggle");
                     NativeMethods.TurnOffScreen(Program.settingsForm.Handle);
                     break;
                 case "miniled":
@@ -423,6 +424,9 @@ namespace GHelper
                 case 199: // ON Z13 - FN+F11 - cycles backlight
                     SetBacklight(4);
                     break;
+                case 53:    // FN+F6 on GA-502DU model
+                    KeyProcess("screen");
+                    return;
             }
 
             if (OptimizationService.IsRunning()) return;

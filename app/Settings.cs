@@ -1282,15 +1282,27 @@ namespace GHelper
                     menuBalanced.Checked = true;
                     break;
                 default:
-                    if (!Modes.Exists(mode))
+                    if (Modes.Exists(mode))
+                    {
+                        buttonFans.Activated = true;
+                        switch (Modes.GetBase(mode))
+                        {
+                            case AsusACPI.PerformanceSilent:
+                                buttonFans.BorderColor = colorEco;
+                                break;
+                            case AsusACPI.PerformanceTurbo:
+                                buttonFans.BorderColor = colorTurbo;
+                                break;
+                            default:
+                                buttonFans.BorderColor = colorStandard;
+                                break;
+                        }
+                    }
+                    else
                     {
                         buttonBalanced.Activated = true;
                         menuBalanced.Checked = true;
                         mode = AsusACPI.PerformanceBalanced;
-                    }
-                    else
-                    {
-                        buttonFans.Activated = true;
                     }
                     break;
             }

@@ -412,10 +412,10 @@
     <value>Play / Pause</value>
   </data>
   <data name="PowerLimits" xml:space="preserve">
-    <value>Power Limits (PPT)</value>
+    <value>Power Limits</value>
   </data>
   <data name="PPTExperimental" xml:space="preserve">
-    <value>Power Limits (PPT) is experimental feature. Use carefully and on your own risk!</value>
+    <value>Power Limits is experimental feature. Use carefully and on your own risk!</value>
   </data>
   <data name="PrintScreen" xml:space="preserve">
     <value>PrintScreen</value>
