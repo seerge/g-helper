@@ -46,6 +46,12 @@ namespace GHelper.Updates
 
             Shown += Updates_Shown;
         }
+        
+        // Can be integrated into UI
+        private void Refresh_Pressed(object? sender, EventArgs e)
+        {
+            RefreshVersions();
+        }
 
         private void RefreshVersions()
         {
