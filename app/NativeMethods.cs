@@ -653,7 +653,7 @@ public class NativeMethods
 
             var screens = Screen.AllScreens;
 
-            if (screens.Length != count) return null;
+            if (screens.Length != count) return Screen.PrimaryScreen.DeviceName;
 
             count = 0;
             foreach (var screen in screens)
