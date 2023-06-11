@@ -364,10 +364,10 @@
     <value>Oynat / Duraklat</value>
   </data>
   <data name="PowerLimits" xml:space="preserve">
-    <value>Güç Sınırları (PPT)</value>
+    <value>Güç Sınırları</value>
   </data>
   <data name="PPTExperimental" xml:space="preserve">
-    <value>Güç Sınırları (PPT) deneysel bir özelliktir. Riski göze alarak dikkatli kullanın!</value>
+    <value>Güç Sınırları deneysel bir özelliktir. Riski göze alarak dikkatli kullanın!</value>
   </data>
   <data name="PrintScreen" xml:space="preserve">
     <value>Ekran Görüntüsü Al</value>

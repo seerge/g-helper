@@ -412,10 +412,10 @@
     <value>재생 / 정지</value>
   </data>
   <data name="PowerLimits" xml:space="preserve">
-    <value>전력 제한 (PPT)</value>
+    <value>전력 제한</value>
   </data>
   <data name="PPTExperimental" xml:space="preserve">
-    <value>전력 제한 (PPT)은 실험적인 기능입니다. 주의하여 사용하세요!</value>
+    <value>전력 제한 은 실험적인 기능입니다. 주의하여 사용하세요!</value>
   </data>
   <data name="PrintScreen" xml:space="preserve">
     <value>PrintScreen</value>

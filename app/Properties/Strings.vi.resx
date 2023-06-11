@@ -388,10 +388,10 @@
     <value>Phát / Dừng</value>
   </data>
   <data name="PowerLimits" xml:space="preserve">
-    <value>Giới hạn công suất (PPT)</value>
+    <value>Giới hạn công suất</value>
   </data>
   <data name="PPTExperimental" xml:space="preserve">
-    <value>Giới hạn công suất (PPT) là tính năng thử nghiệm. Sử dụng nó cẩn thận và tự chịu mọi rủi ro!</value>
+    <value>Giới hạn công suất là tính năng thử nghiệm. Sử dụng nó cẩn thận và tự chịu mọi rủi ro!</value>
   </data>
   <data name="PrintScreen" xml:space="preserve">
     <value>Chụp màn hình</value>

@@ -156,6 +156,9 @@
   <data name="ApplyWindowsPowerPlan" xml:space="preserve">
     <value>Автоматично застосовувати Windows Power Modes</value>
   </data>
+  <data name="AsusServicesRunning" xml:space="preserve">
+    <value>Кількість запущених сервісів Asus</value>
+  </data>
   <data name="AuraBreathe" xml:space="preserve">
     <value>Дихання</value>
   </data>
@@ -209,6 +212,12 @@
   </data>
   <data name="Brightness" xml:space="preserve">
     <value>Яскравість</value>
+  </data>
+  <data name="BrightnessDown" xml:space="preserve">
+    <value>Зменшити яскравість</value>
+  </data>
+  <data name="BrightnessUp" xml:space="preserve">
+    <value>Підвищити яскравість</value>
   </data>
   <data name="Color" xml:space="preserve">
     <value>Колір</value>
@@ -367,7 +376,7 @@
     <value>Овердрайв</value>
   </data>
   <data name="PerformanceMode" xml:space="preserve">
-    <value>Режим Роботи</value>
+    <value>Режим</value>
   </data>
   <data name="PictureGif" xml:space="preserve">
     <value>Картинка / GIF</value>
@@ -376,10 +385,10 @@
     <value>Відтворення / Пауза</value>
   </data>
   <data name="PowerLimits" xml:space="preserve">
-    <value>Ліміти Потужності (PPT)</value>
+    <value>Ліміти Потужності</value>
   </data>
   <data name="PPTExperimental" xml:space="preserve">
-    <value>Налаштування лімітів потужності (PPT) є експериментальною функцією. Використовуйте обережно та на свій страх і ризик!</value>
+    <value>Налаштування лімітів потужності є експериментальною функцією. Використовуйте обережно та на свій страх і ризик!</value>
   </data>
   <data name="PrintScreen" xml:space="preserve">
     <value>Print Screen</value>
@@ -408,8 +417,20 @@
   <data name="StandardMode" xml:space="preserve">
     <value>Стандартний</value>
   </data>
+  <data name="Start" xml:space="preserve">
+    <value>Запустити</value>
+  </data>
+  <data name="StartingServices" xml:space="preserve">
+    <value>Запускаються сервіси</value>
+  </data>
   <data name="StartupError" xml:space="preserve">
     <value>Помилка запуску</value>
+  </data>
+  <data name="Stop" xml:space="preserve">
+    <value>Зупинити</value>
+  </data>
+  <data name="StoppingServices" xml:space="preserve">
+    <value>Зупиняються сервіси</value>
   </data>
   <data name="ToggleAura" xml:space="preserve">
     <value>Аура</value>

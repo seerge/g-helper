@@ -403,7 +403,7 @@
     <value>播放/暫停</value>
   </data>
   <data name="PowerLimits" xml:space="preserve">
-    <value>功率限制 (PPT)</value>
+    <value>功率限制</value>
   </data>
   <data name="PPTExperimental" xml:space="preserve">
     <value>功率限制是實驗性功能。謹慎使用,風險自負!</value>

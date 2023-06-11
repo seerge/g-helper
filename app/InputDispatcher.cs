@@ -417,15 +417,15 @@ namespace GHelper
                     return;
                 case 197: // FN+F2
                     SetBacklight(-1);
-                    break;
+                    return;
                 case 196: // FN+F3
                     SetBacklight(1);
-                    break;
+                    return;
                 case 199: // ON Z13 - FN+F11 - cycles backlight
                     SetBacklight(4);
-                    break;
+                    return;
                 case 53:    // FN+F6 on GA-502DU model
-                    KeyProcess("screen");
+                    NativeMethods.TurnOffScreen(Program.settingsForm.Handle);
                     return;
             }
 

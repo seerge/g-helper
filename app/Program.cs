@@ -2,8 +2,6 @@ using Microsoft.Win32;
 using System.Diagnostics;
 using System.Globalization;
 using System.Reflection;
-using System.Security.Principal;
-using System.Windows.Forms;
 using static NativeMethods;
 
 namespace GHelper

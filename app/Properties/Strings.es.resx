@@ -291,7 +291,7 @@
   <data name="GPUChanging" xml:space="preserve">
     <value>Cargando</value>
   </data>
-    <data name="GPUCoreClockOffset" xml:space="preserve">
+  <data name="GPUCoreClockOffset" xml:space="preserve">
     <value>Core Clock Offset</value>
   </data>
   <data name="GPUMemoryClockOffset" xml:space="preserve">
@@ -312,7 +312,7 @@
   <data name="GPUSettings" xml:space="preserve">
     <value>Ajustes de GPU</value>
   </data>
-    <data name="GPUTempTarget" xml:space="preserve">
+  <data name="GPUTempTarget" xml:space="preserve">
     <value>Temperatura objetivo</value>
   </data>
   <data name="KeyBindings" xml:space="preserve">
@@ -345,7 +345,7 @@
   <data name="Logo" xml:space="preserve">
     <value>Logo</value>
   </data>
-    <data name="MatrixAudio" xml:space="preserve">
+  <data name="MatrixAudio" xml:space="preserve">
     <value>Visualizador de audio</value>
   </data>
   <data name="MatrixBanner" xml:space="preserve">
@@ -412,10 +412,10 @@
     <value>Reproducir / Pausar</value>
   </data>
   <data name="PowerLimits" xml:space="preserve">
-    <value>Límites de energía (PPT)</value>
+    <value>Límites de energía</value>
   </data>
   <data name="PPTExperimental" xml:space="preserve">
-    <value>Los límites de energía (PPT) son una característica experimental. ¡Úselo con cuidado y bajo su propio riesgo!</value>
+    <value>Los límites de energía son una característica experimental. ¡Úselo con cuidado y bajo su propio riesgo!</value>
   </data>
   <data name="PrintScreen" xml:space="preserve">
     <value>Capturar pantalla</value>
@@ -424,7 +424,7 @@
     <value>Quitar</value>
   </data>
   <data name="RestartGPU" xml:space="preserve">
-	<value>Algo está usando la dGPU e impide usar Modo Eco. ¿Reiniciar dGPU en administrador de dispositivos? * Proceda bajo su propio riesgo.</value>
+    <value>Algo está usando la dGPU e impide usar Modo Eco. ¿Reiniciar dGPU en administrador de dispositivos? * Proceda bajo su propio riesgo.</value>
   </data>
   <data name="RPM" xml:space="preserve">
     <value>RPM</value>

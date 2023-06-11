@@ -367,10 +367,10 @@
     <value>播放/暂停</value>
   </data>
   <data name="PowerLimits" xml:space="preserve">
-    <value>功率限制 (PPT)</value>
+    <value>功率限制</value>
   </data>
   <data name="PPTExperimental" xml:space="preserve">
-    <value>功率限制 (PPT) 是实验性功能。 谨慎使用，风险自负！</value>
+    <value>功率限制 是实验性功能。 谨慎使用，风险自负！</value>
   </data>
   <data name="PrintScreen" xml:space="preserve">
     <value>截图</value>

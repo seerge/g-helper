@@ -391,10 +391,10 @@
     <value>Odtwórz / Pauza</value>
   </data>
   <data name="PowerLimits" xml:space="preserve">
-    <value>Limit mocy (PPT)</value>
+    <value>Limit mocy</value>
   </data>
   <data name="PPTExperimental" xml:space="preserve">
-    <value>Ustawienie limitu mocy (PPT) jest funkcją eksperymentalną. Używaj ostrożnie, na własną odpowiedzialność!</value>
+    <value>Ustawienie limitu mocy jest funkcją eksperymentalną. Używaj ostrożnie, na własną odpowiedzialność!</value>
   </data>
   <data name="PrintScreen" xml:space="preserve">
     <value>Zrzut ekranu</value>

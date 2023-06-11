@@ -113,7 +113,7 @@ namespace GHelper
                     icon = Properties.Resources.icons8_charged_battery_96;
                     break;
                 case ToastIcon.Charger:
-                    icon = Properties.Resources.icons8_electrical_96;
+                    icon = Properties.Resources.icons8_charging_battery_96;
                     break;
 
             }

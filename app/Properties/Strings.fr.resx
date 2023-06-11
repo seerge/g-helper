@@ -388,10 +388,10 @@
     <value>Lecture / Pause</value>
   </data>
   <data name="PowerLimits" xml:space="preserve">
-    <value>Limites de puissance (PPT)</value>
+    <value>Limites de puissance</value>
   </data>
   <data name="PPTExperimental" xml:space="preserve">
-    <value>Limites de puissance (PPT) est une fonctionnalité expérimentale. Faire attention, à utiliser à vos risques !</value>
+    <value>Limites de puissance est une fonctionnalité expérimentale. Faire attention, à utiliser à vos risques !</value>
   </data>
   <data name="PrintScreen" xml:space="preserve">
     <value>Capture d'écran</value>
