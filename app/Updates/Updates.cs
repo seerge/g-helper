@@ -47,18 +47,22 @@ namespace GHelper.Updates
 
             Task.Run(async () =>
             {
-                var devices = DeviceVersions.Create();
-                
-                var bios = RefreshBiosAsync(tableBios);
-                var drivers = RefreshDriversAsync(devices, tableDrivers);
-                
-                await Task.WhenAll(bios, drivers);
+                await RefreshBiosAsync(tableBios);
 
                 BeginInvoke(() =>
                 {
                     ResumeLayout(true);
-                    
                     tableBios.Visible = true;
+                });
+            }).Forget();
+            
+            Task.Run(async () =>
+            {
+                await RefreshDriversAsync(tableDrivers);
+
+                BeginInvoke(() =>
+                {
+                    ResumeLayout(true);
                     tableDrivers.Visible = true;
                 });
             }).Forget();
@@ -71,15 +75,20 @@ namespace GHelper.Updates
             Left = Program.settingsForm.Left - Width - 5;
         }
 
-        private async Task RefreshDriversAsync(DeviceVersions devices, TableLayoutPanel table)
+        private async Task RefreshDriversAsync(TableLayoutPanel table)
         {
-            var data = await PerformRequest<DriversModel>(UpdatesUrl.GetDriversUrl(_modelInfo));
+            var requestTask = PerformRequest<DriversModel>(UpdatesUrl.GetDriversUrl(_modelInfo));
+            
+            var devices = DeviceVersions.Create();
+            
+            var data = await requestTask;
             
             if (data == null)
             {
                 Logger.WriteLine("Failed to get drivers data");
                 return;
             }
+            
             
             var drivers = FilterDownloads(data.Result.Obj);
 
@@ -264,7 +273,7 @@ namespace GHelper.Updates
                 catch (Exception e)
                 {
                     attempt++;
-                    Console.WriteLine(e);
+                    Logger.WriteLine($"Failed to get data from {url} ({e.Message}), attempt {attempt}");
                 }
             }
 
