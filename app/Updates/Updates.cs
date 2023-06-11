@@ -18,6 +18,7 @@ namespace GHelper.Updates
 
     public partial class Updates : RForm
     {
+        // TODO: Somehow create this object in a dedicated thread so that first UI creation isn't delayed
         private static readonly ModelInfo _modelInfo = ModelInfo.Create();
         private static readonly HashSet<string> skipList = new() { "Armoury Crate & Aura Creator Installer", "MyASUS", "ASUS Smart Display Control", "Aura Wallpaper", "Virtual Pet","ROG Font V1.5" };
         private static readonly HttpClient httpClient = new(new HttpClientHandler
