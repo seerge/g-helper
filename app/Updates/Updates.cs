@@ -18,12 +18,8 @@ namespace GHelper.Updates
 
     public partial class Updates : RForm
     {
-        //static int rowCount = 0;
-        static string model;
-        static string bios;
-        
+        private static ModelInfo _modelInfo;
         private static HashSet<string> skipList = new() { "Armoury Crate & Aura Creator Installer", "MyASUS", "ASUS Smart Display Control", "Aura Wallpaper", "Virtual Pet","ROG Font V1.5" };
-
         private static HttpClient httpClient = new(new HttpClientHandler
         {
             AutomaticDecompression = DecompressionMethods.All
@@ -34,27 +30,38 @@ namespace GHelper.Updates
             InitializeComponent();
             InitTheme();
 
-            InitBiosAndModel();
+            _modelInfo = new ModelInfo();
 
-            Text = Properties.Strings.BiosAndDriverUpdates + ": " + model + " " + bios;
+            Text = Properties.Strings.BiosAndDriverUpdates + ": " + _modelInfo.Model + " " + _modelInfo.Bios;
             labelBIOS.Text = "BIOS";
             labelDrivers.Text = Properties.Strings.DriverAndSoftware;
 
+            RefreshVersions();
+
+            Shown += Updates_Shown;
+        }
+
+        private void RefreshVersions()
+        {
             SuspendLayout();
             tableBios.Visible = false;
             tableDrivers.Visible = false;
 
             Task.Run(async () =>
             {
-                await DriversAsync($"https://rog.asus.com/support/webapi/product/GetPDBIOS?website=global&model={model}&cpu=", UpdateType.Bios, tableBios);
-            }).Forget();
+                var bios = RefreshBiosAsync($"https://rog.asus.com/support/webapi/product/GetPDBIOS?website=global&model={_modelInfo.Model}&cpu=", tableBios);
+                var drivers = RefreshDriversAsync($"https://rog.asus.com/support/webapi/product/GetPDDrivers?website=global&model={_modelInfo.Model}&cpu={_modelInfo.Model}&osid=52", tableDrivers);
+                
+                await Task.WhenAll(bios, drivers);
 
-            Task.Run(async () =>
-            {
-                await DriversAsync($"https://rog.asus.com/support/webapi/product/GetPDDrivers?website=global&model={model}&cpu={model}&osid=52", UpdateType.Drivers, tableDrivers);
+                BeginInvoke(() =>
+                {
+                    ResumeLayout(true);
+                    
+                    tableBios.Visible = true;
+                    tableDrivers.Visible = true;
+                });
             }).Forget();
-
-            Shown += Updates_Shown;
         }
 
         private void Updates_Shown(object? sender, EventArgs e)
@@ -64,49 +71,81 @@ namespace GHelper.Updates
             Left = Program.settingsForm.Left - Width - 5;
         }
 
-        private void InitBiosAndModel()
+        private async Task RefreshDriversAsync(string url, TableLayoutPanel table)
         {
-            using var objSearcher = new ManagementObjectSearcher("SELECT * FROM Win32_BIOS");
-            using var objCollection = objSearcher.Get();
-
-            foreach (ManagementObject obj in objCollection)
-            {
-                if (obj["SMBIOSBIOSVersion"] is null)
-                {
-                    continue;
-                }
-                
-                var results = obj["SMBIOSBIOSVersion"].ToString().Split(".");
-                    
-                if (results.Length > 1)
-                {
-                    model = results[0];
-                    bios = results[1];
-                }
-                else
-                {
-                    model = obj["SMBIOSBIOSVersion"].ToString();
-                }
-            }
-        }
-
-        public async Task DriversAsync(string url, UpdateType type, TableLayoutPanel table)
-        {
-            var request = new HttpRequestMessage(HttpMethod.Get, url);
-
-            request.Headers.AcceptEncoding.ParseAdd("gzip");
-            request.Headers.AcceptEncoding.ParseAdd("deflate");
-            request.Headers.AcceptEncoding.ParseAdd("br");
-
-            request.Headers.UserAgent.ParseAdd("C# App");
-
+            var request = CreateRequest(url);
             var response = await httpClient.SendAsync(request);
             var stream = await response.Content.ReadAsStringAsync();
 
             var data = JsonConvert.DeserializeObject<DriversModel>(stream);
-            var groups = data.Result.Obj;
+            
+            var drivers = FilterDownloads(data.Result.Obj);
+            var devices = DeviceVersions.Create();
 
-            List<DriverDownload> drivers = new();
+            for (var i = 0; i < drivers.Count; i++)
+            {
+                var driver = drivers[i];
+                
+                UpdateDriverUi(driver, table);
+
+                if (driver.hardwares == null)
+                {
+                    continue;
+                }
+                
+                var newer = -2;
+                if (driver.hardwares.Length > 0)
+                {
+                    foreach (var hwInfo in driver.hardwares)
+                    {
+                        var localVersion = devices.GetLocalVersion(hwInfo.HardwareId);
+
+                        if (localVersion == null)
+                        {
+                            continue;
+                        }
+
+                        newer = new Version(driver.version).CompareTo(new Version(localVersion));
+                        break;
+                    }
+                }
+
+                if (newer > 0)
+                {
+                    MarkAsOutdated(table, i);
+                }
+            }
+        }
+        
+        private async Task RefreshBiosAsync(string url, TableLayoutPanel table)
+        {
+            var request = CreateRequest(url);
+            var response = await httpClient.SendAsync(request);
+            var stream = await response.Content.ReadAsStringAsync();
+
+            var data = JsonConvert.DeserializeObject<DriversModel>(stream);
+            var drivers = FilterDownloads(data.Result.Obj);
+
+            for (var i = 0; i < drivers.Count; i++)
+            {
+                var driver = drivers[i];
+                
+                UpdateDriverUi(driver, table);
+
+                var newer = int.Parse(driver.version) > _modelInfo.GetNumericBiosVersion() ? 1 : -1;
+
+                if (newer <= 0)
+                {
+                    continue;
+                }
+
+                MarkAsOutdated(table, i);
+            }
+        }
+
+        private List<DriverDownload> FilterDownloads(DriverObject[] groups)
+        {
+            var drivers = new List<DriverDownload>();
 
             foreach (var driverObject in groups)
             {
@@ -140,95 +179,75 @@ namespace GHelper.Updates
                         hardwares = file.HardwareInfoList
                     };
                     drivers.Add(driver);
-
-                    BeginInvoke(delegate
-                    {
-                        var versionText = driver.version.Replace("latest version at the ", "");
-                        var versionLabel = new Label
-                        {
-                            Text = versionText,
-                            Anchor = AnchorStyles.Left,
-                            AutoSize = true
-                        };
-                        versionLabel.Cursor = Cursors.Hand;
-                        versionLabel.Font = new Font(versionLabel.Font, FontStyle.Underline);
-                        versionLabel.ForeColor = colorEco;
-                        versionLabel.Padding = new Padding(5, 5, 5, 5);
-                        versionLabel.Click += delegate
-                        {
-                            Process.Start(new ProcessStartInfo(driver.downloadUrl) { UseShellExecute = true });
-                        };
-
-                        table.RowStyles.Add(new RowStyle(SizeType.AutoSize));
-                        table.Controls.Add(new Label
-                        {
-                            Text = driver.categoryName, Anchor = AnchorStyles.Left, Dock = DockStyle.Fill,
-                            Padding = new Padding(5, 5, 5, 5)
-                        }, 0, table.RowCount);
-                        table.Controls.Add(new Label
-                        {
-                            Text = driver.title, Anchor = AnchorStyles.Left, Dock = DockStyle.Fill,
-                            Padding = new Padding(5, 5, 5, 5)
-                        }, 1, table.RowCount);
-                        table.Controls.Add(versionLabel, 2, table.RowCount);
-                        table.RowCount++;
-                    });
                 }
             }
+            
+            return drivers;
+        }
 
+        private void UpdateDriverUi(DriverDownload driver, TableLayoutPanel table)
+        {
             BeginInvoke(delegate
             {
-                table.Visible = true;
-                ResumeLayout(false);
-                PerformLayout();
+                var versionText = driver.version.Replace("latest version at the ", "");
+                var versionLabel = new Label
+                {
+                    Text = versionText,
+                    Anchor = AnchorStyles.Left,
+                    AutoSize = true
+                };
+                versionLabel.Cursor = Cursors.Hand;
+                versionLabel.Font = new Font(versionLabel.Font, FontStyle.Underline);
+                versionLabel.ForeColor = colorEco;
+                versionLabel.Padding = new Padding(5, 5, 5, 5);
+                versionLabel.Click += delegate
+                {
+                    Process.Start(new ProcessStartInfo(driver.downloadUrl) { UseShellExecute = true });
+                };
+
+                table.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+                table.Controls.Add(new Label
+                {
+                    Text = driver.categoryName, Anchor = AnchorStyles.Left, Dock = DockStyle.Fill,
+                    Padding = new Padding(5, 5, 5, 5)
+                }, 0, table.RowCount);
+                table.Controls.Add(new Label
+                {
+                    Text = driver.title, Anchor = AnchorStyles.Left, Dock = DockStyle.Fill,
+                    Padding = new Padding(5, 5, 5, 5)
+                }, 1, table.RowCount);
+                table.Controls.Add(versionLabel, 2, table.RowCount);
+                table.RowCount++;
             });
+        }
 
-            var devices = default(DeviceVersions);
-            if (type == UpdateType.Drivers)
+        private HttpRequestMessage CreateRequest(string url)
+        {
+            var request = new HttpRequestMessage(HttpMethod.Get, url);
+
+            request.Headers.AcceptEncoding.ParseAdd("gzip");
+            request.Headers.AcceptEncoding.ParseAdd("deflate");
+            request.Headers.AcceptEncoding.ParseAdd("br");
+
+            request.Headers.UserAgent.ParseAdd("C# App");
+            
+            return request;
+        }
+
+        private void MarkAsOutdated(TableLayoutPanel table, int row)
+        {
+            var label = table.GetControlFromPosition(2, row) as Label;
+                
+            if (label == null)
             {
-                devices = DeviceVersions.Create();
+                return;
             }
-
-            var count = 0;
-            foreach (var driver in drivers)
+                
+            BeginInvoke(delegate
             {
-                var newer = -2;
-                if (type == UpdateType.Drivers && driver.hardwares != null && driver.hardwares.Length > 0)
-                {
-                    foreach (var hwInfo in driver.hardwares)
-                    {
-                        var localVersion = devices.GetLocalVersion(hwInfo.HardwareId);
-
-                        if (localVersion == null)
-                        {
-                            continue;
-                        }
-
-                        newer = new Version(driver.version).CompareTo(new Version(localVersion));
-                        break;
-                    }
-                }
-
-                if (type == UpdateType.Bios)
-                {
-                    newer = int.Parse(driver.version) > int.Parse(bios) ? 1 : -1;
-                }
-
-                if (newer > 0)
-                {
-                    var label = table.GetControlFromPosition(2, count) as Label;
-                    if (label != null)
-                    {
-                        BeginInvoke(delegate
-                        {
-                            label.Font = new Font(label.Font, FontStyle.Underline | FontStyle.Bold);
-                            label.ForeColor = colorTurbo;
-                        });
-                    }
-                }
-
-                count++;
-            }
+                label.Font = new Font(label.Font, FontStyle.Underline | FontStyle.Bold);
+                label.ForeColor = colorTurbo;
+            });
         }
     }
 }
