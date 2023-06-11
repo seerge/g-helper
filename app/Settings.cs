@@ -875,6 +875,11 @@ namespace GHelper
 
             bool screenEnabled = (frequency >= 0);
 
+            // Default to 120Hz if unknown, usually happens if Mux is switched to dGPU-only.
+            // It's been observed that dGPU screen is named same as internal screen, but with EXTERNAL at the end. Might as well check for that?
+            var displayFrequency = maxFrequency > 0 ? maxFrequency : 120; 
+            button120Hz.Text = $"{displayFrequency} Hz + OD";
+            
             ButtonEnabled(button60Hz, screenEnabled);
             ButtonEnabled(button120Hz, screenEnabled);
             ButtonEnabled(buttonScreenAuto, screenEnabled);
