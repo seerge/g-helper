@@ -71,8 +71,8 @@ namespace GHelper.Updates
 
             Task.Run(async () =>
             {
-                var biosTask = RefreshBiosAsync(tableBios);
-                var driversTask = RefreshDriversAsync(tableDrivers);
+                var biosTask = RefreshBiosAsync(_modelInfo, tableBios);
+                var driversTask = RefreshDriversAsync(_modelInfo, tableDrivers);
                 
                 await Task.WhenAll(biosTask, driversTask);
 
@@ -87,9 +87,9 @@ namespace GHelper.Updates
             Left = Program.settingsForm.Left - Width - 5;
         }
 
-        private async Task RefreshDriversAsync(TableLayoutPanel table)
+        private async Task RefreshDriversAsync(ModelInfo modelInfo, TableLayoutPanel table)
         {
-            var requestTask = PerformRequest<DriversModel>(UpdatesUrl.GetDriversUrl(_modelInfo));
+            var requestTask = PerformRequest<DriversModel>(UpdatesUrl.GetDriversUrl(modelInfo));
             
             var devices = DeviceVersions.Create();
             
@@ -141,7 +141,7 @@ namespace GHelper.Updates
             var handle = BeginInvoke(() =>
             {
                 ResumeLayout(true);
-                tableDrivers.Visible = true;
+                table.Visible = true;
             });
             
             while (!handle.IsCompleted)
@@ -150,9 +150,9 @@ namespace GHelper.Updates
             }
         }
         
-        private async Task RefreshBiosAsync(TableLayoutPanel table)
+        private async Task RefreshBiosAsync(ModelInfo modelInfo, TableLayoutPanel table)
         {
-            var data = await PerformRequest<DriversModel>(UpdatesUrl.GetBiosUrl(_modelInfo));
+            var data = await PerformRequest<DriversModel>(UpdatesUrl.GetBiosUrl(modelInfo));
             
             if (data == null)
             {
@@ -168,7 +168,7 @@ namespace GHelper.Updates
                 
                 UpdateDriverUi(driver, table);
 
-                var newer = int.Parse(driver.version) > _modelInfo.GetNumericBiosVersion() ? 1 : -1;
+                var newer = int.Parse(driver.version) > modelInfo.GetNumericBiosVersion() ? 1 : -1;
 
                 if (newer <= 0)
                 {
@@ -181,7 +181,7 @@ namespace GHelper.Updates
             var handle = BeginInvoke(() =>
             {
                 ResumeLayout(true);
-                tableBios.Visible = true;
+                table.Visible = true;
             });
             
             while (!handle.IsCompleted)
@@ -266,19 +266,6 @@ namespace GHelper.Updates
                 table.Controls.Add(versionLabel, 2, table.RowCount);
                 table.RowCount++;
             });
-        }
-
-        private HttpRequestMessage CreateRequest(string url)
-        {
-            var request = new HttpRequestMessage(HttpMethod.Get, url);
-
-            request.Headers.AcceptEncoding.ParseAdd("gzip");
-            request.Headers.AcceptEncoding.ParseAdd("deflate");
-            request.Headers.AcceptEncoding.ParseAdd("br");
-
-            request.Headers.UserAgent.ParseAdd("C# App");
-            
-            return request;
         }
 
         private async Task<T?> PerformRequest<T>(string url) where T : class
