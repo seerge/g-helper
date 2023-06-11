@@ -18,9 +18,9 @@ namespace GHelper.Updates
 
     public partial class Updates : RForm
     {
-        private static ModelInfo _modelInfo;
-        private static HashSet<string> skipList = new() { "Armoury Crate & Aura Creator Installer", "MyASUS", "ASUS Smart Display Control", "Aura Wallpaper", "Virtual Pet","ROG Font V1.5" };
-        private static HttpClient httpClient = new(new HttpClientHandler
+        private static readonly ModelInfo _modelInfo = new();
+        private static readonly HashSet<string> skipList = new() { "Armoury Crate & Aura Creator Installer", "MyASUS", "ASUS Smart Display Control", "Aura Wallpaper", "Virtual Pet","ROG Font V1.5" };
+        private static readonly HttpClient httpClient = new(new HttpClientHandler
         {
             AutomaticDecompression = DecompressionMethods.All
         });
@@ -29,9 +29,7 @@ namespace GHelper.Updates
         {
             InitializeComponent();
             InitTheme();
-
-            _modelInfo = new ModelInfo();
-
+            
             Text = Properties.Strings.BiosAndDriverUpdates + ": " + _modelInfo.Model + " " + _modelInfo.Bios;
             labelBIOS.Text = "BIOS";
             labelDrivers.Text = Properties.Strings.DriverAndSoftware;
@@ -73,11 +71,13 @@ namespace GHelper.Updates
 
         private async Task RefreshDriversAsync(string url, TableLayoutPanel table)
         {
-            var request = CreateRequest(url);
-            var response = await httpClient.SendAsync(request);
-            var stream = await response.Content.ReadAsStringAsync();
-
-            var data = JsonConvert.DeserializeObject<DriversModel>(stream);
+            var data = await PerformRequest<DriversModel>(url);
+            
+            if (data == null)
+            {
+                Logger.WriteLine("Failed to get drivers data");
+                return;
+            }
             
             var drivers = FilterDownloads(data.Result.Obj);
             var devices = DeviceVersions.Create();
@@ -119,11 +119,14 @@ namespace GHelper.Updates
         
         private async Task RefreshBiosAsync(string url, TableLayoutPanel table)
         {
-            var request = CreateRequest(url);
-            var response = await httpClient.SendAsync(request);
-            var stream = await response.Content.ReadAsStringAsync();
-
-            var data = JsonConvert.DeserializeObject<DriversModel>(stream);
+            var data = await PerformRequest<DriversModel>(url);
+            
+            if (data == null)
+            {
+                Logger.WriteLine("Failed to get BIOS data");
+                return;
+            }
+            
             var drivers = FilterDownloads(data.Result.Obj);
 
             for (var i = 0; i < drivers.Count; i++)
@@ -232,6 +235,39 @@ namespace GHelper.Updates
             request.Headers.UserAgent.ParseAdd("C# App");
             
             return request;
+        }
+
+        private async Task<T?> PerformRequest<T>(string url) where T : class
+        {
+            var request = new HttpRequestMessage(HttpMethod.Get, url);
+
+            request.Headers.AcceptEncoding.ParseAdd("gzip");
+            request.Headers.AcceptEncoding.ParseAdd("deflate");
+            request.Headers.AcceptEncoding.ParseAdd("br");
+
+            request.Headers.UserAgent.ParseAdd("C# App");
+
+            var attempt = 0;
+            
+            while (attempt < 3)
+            {
+                try
+                {
+                    var response = await httpClient.SendAsync(request);
+                    var stream = await response.Content.ReadAsStringAsync();
+
+                    var data = JsonConvert.DeserializeObject<T>(stream);
+                    
+                    return data;
+                }
+                catch (Exception e)
+                {
+                    attempt++;
+                    Console.WriteLine(e);
+                }
+            }
+
+            return null;
         }
 
         private void MarkAsOutdated(TableLayoutPanel table, int row)
