@@ -12,11 +12,11 @@ public class ModelInfo
         return int.TryParse(Bios, out var result) ? result : 0;
     }
 
-    public ModelInfo()
+    public static ModelInfo Create()
     {
         using var objSearcher = new ManagementObjectSearcher("SELECT * FROM Win32_BIOS");
         using var objCollection = objSearcher.Get();
-
+        
         foreach (ManagementObject obj in objCollection)
         {
             if (obj["SMBIOSBIOSVersion"] is null)
@@ -28,13 +28,20 @@ public class ModelInfo
                     
             if (results.Length > 1)
             {
-                Model = results[0];
-                Bios = results[1];
+                return new ModelInfo(results[0], results[1]);
             }
             else
             {
-                Model = obj["SMBIOSBIOSVersion"].ToString();
+                return new ModelInfo(results[0], null);
             }
         }
+        
+        return new ModelInfo(null, null);
+    }
+
+    private ModelInfo(string? model, string? bios)
+    {
+        Model = model;
+        Bios = bios;
     }
 }

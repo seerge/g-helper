@@ -18,7 +18,7 @@ namespace GHelper.Updates
 
     public partial class Updates : RForm
     {
-        private static readonly ModelInfo _modelInfo = new();
+        private static readonly ModelInfo _modelInfo = ModelInfo.Create();
         private static readonly HashSet<string> skipList = new() { "Armoury Crate & Aura Creator Installer", "MyASUS", "ASUS Smart Display Control", "Aura Wallpaper", "Virtual Pet","ROG Font V1.5" };
         private static readonly HttpClient httpClient = new(new HttpClientHandler
         {
@@ -47,8 +47,10 @@ namespace GHelper.Updates
 
             Task.Run(async () =>
             {
-                var bios = RefreshBiosAsync($"https://rog.asus.com/support/webapi/product/GetPDBIOS?website=global&model={_modelInfo.Model}&cpu=", tableBios);
-                var drivers = RefreshDriversAsync($"https://rog.asus.com/support/webapi/product/GetPDDrivers?website=global&model={_modelInfo.Model}&cpu={_modelInfo.Model}&osid=52", tableDrivers);
+                var devices = DeviceVersions.Create();
+                
+                var bios = RefreshBiosAsync(tableBios);
+                var drivers = RefreshDriversAsync(devices, tableDrivers);
                 
                 await Task.WhenAll(bios, drivers);
 
@@ -69,9 +71,9 @@ namespace GHelper.Updates
             Left = Program.settingsForm.Left - Width - 5;
         }
 
-        private async Task RefreshDriversAsync(string url, TableLayoutPanel table)
+        private async Task RefreshDriversAsync(DeviceVersions devices, TableLayoutPanel table)
         {
-            var data = await PerformRequest<DriversModel>(url);
+            var data = await PerformRequest<DriversModel>(UpdatesUrl.GetDriversUrl(_modelInfo));
             
             if (data == null)
             {
@@ -80,7 +82,6 @@ namespace GHelper.Updates
             }
             
             var drivers = FilterDownloads(data.Result.Obj);
-            var devices = DeviceVersions.Create();
 
             for (var i = 0; i < drivers.Count; i++)
             {
@@ -117,9 +118,9 @@ namespace GHelper.Updates
             }
         }
         
-        private async Task RefreshBiosAsync(string url, TableLayoutPanel table)
+        private async Task RefreshBiosAsync(TableLayoutPanel table)
         {
-            var data = await PerformRequest<DriversModel>(url);
+            var data = await PerformRequest<DriversModel>(UpdatesUrl.GetBiosUrl(_modelInfo));
             
             if (data == null)
             {
