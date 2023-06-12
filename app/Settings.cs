@@ -189,6 +189,16 @@ namespace GHelper
 
         }
 
+        private void SettingsForm_VisibleChanged(object? sender, EventArgs e)
+        {
+            aTimer.Enabled = this.Visible;
+            if (this.Visible)
+            {
+                InitScreen();
+                InitXGM();
+            }
+        }
+
         private void ButtonUpdates_Click(object? sender, EventArgs e)
         {
             if (updates == null || updates.Text == "")
@@ -876,6 +886,8 @@ namespace GHelper
 
             bool screenEnabled = (frequency >= 0);
 
+            Debug.WriteLine(frequency.ToString());
+
             ButtonEnabled(button60Hz, screenEnabled);
             ButtonEnabled(button120Hz, screenEnabled);
             ButtonEnabled(buttonScreenAuto, screenEnabled);
@@ -1009,27 +1021,6 @@ namespace GHelper
 
             Program.trayIcon.Text = trayTip;
 
-        }
-
-
-        private void SettingsForm_VisibleChanged(object? sender, EventArgs e)
-        {
-            if (this.Visible)
-            {
-                InitScreen();
-                InitXGM();
-
-                this.Left = Screen.FromControl(this).WorkingArea.Width - 10 - this.Width;
-                this.Top = Screen.FromControl(this).WorkingArea.Height - 10 - this.Height;
-                this.Activate();
-
-                aTimer.Enabled = true;
-
-            }
-            else
-            {
-                aTimer.Enabled = false;
-            }
         }
 
 
@@ -1497,8 +1488,10 @@ namespace GHelper
 
         public void InitXGM()
         {
+            bool connected = Program.acpi.IsXGConnected();
+            buttonXGM.Enabled = buttonXGM.Visible = connected;
 
-            buttonXGM.Enabled = buttonXGM.Visible = Program.acpi.IsXGConnected();
+            if (!connected) return;
 
             int activated = Program.acpi.DeviceGet(AsusACPI.GPUXG);
             if (activated < 0) return;

@@ -39,7 +39,6 @@ namespace GHelper
             Title title3 = new Title();
             ChartArea chartArea4 = new ChartArea();
             Title title4 = new Title();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Fans));
             panelFans = new Panel();
             labelTip = new Label();
             tableFanCharts = new TableLayoutPanel();
@@ -266,7 +265,7 @@ namespace GHelper
             buttonRename.BorderColor = Color.Transparent;
             buttonRename.BorderRadius = 2;
             buttonRename.FlatStyle = FlatStyle.Flat;
-            buttonRename.Image = (Image)resources.GetObject("buttonRename.Image");
+            buttonRename.Image = Properties.Resources.icons8_edit_32;
             buttonRename.Location = new Point(374, 12);
             buttonRename.Margin = new Padding(4, 2, 4, 2);
             buttonRename.Name = "buttonRename";
@@ -283,7 +282,7 @@ namespace GHelper
             buttonRemove.BorderColor = Color.Transparent;
             buttonRemove.BorderRadius = 2;
             buttonRemove.FlatStyle = FlatStyle.Flat;
-            buttonRemove.Image = (Image)resources.GetObject("buttonRemove.Image");
+            buttonRemove.Image = Properties.Resources.icons8_remove_64;
             buttonRemove.Location = new Point(319, 12);
             buttonRemove.Margin = new Padding(4, 2, 4, 2);
             buttonRemove.Name = "buttonRemove";
@@ -300,7 +299,7 @@ namespace GHelper
             buttonAdd.BorderColor = Color.Transparent;
             buttonAdd.BorderRadius = 2;
             buttonAdd.FlatStyle = FlatStyle.Flat;
-            buttonAdd.Image = (Image)resources.GetObject("buttonAdd.Image");
+            buttonAdd.Image = Properties.Resources.icons8_add_64;
             buttonAdd.Location = new Point(742, 12);
             buttonAdd.Margin = new Padding(4, 2, 4, 2);
             buttonAdd.Name = "buttonAdd";
@@ -500,12 +499,11 @@ namespace GHelper
             // 
             // labelB0
             // 
-            labelB0.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             labelB0.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
             labelB0.Location = new Point(398, 8);
             labelB0.Margin = new Padding(4, 0, 4, 0);
             labelB0.Name = "labelB0";
-            labelB0.Size = new Size(120, 32);
+            labelB0.Size = new Size(115, 32);
             labelB0.TabIndex = 13;
             labelB0.Text = "CPU";
             labelB0.TextAlign = ContentAlignment.TopRight;
@@ -522,13 +520,12 @@ namespace GHelper
             // 
             // trackB0
             // 
-            trackB0.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             trackB0.Location = new Point(6, 44);
             trackB0.Margin = new Padding(4, 2, 4, 2);
             trackB0.Maximum = 85;
             trackB0.Minimum = 5;
             trackB0.Name = "trackB0";
-            trackB0.Size = new Size(513, 90);
+            trackB0.Size = new Size(508, 90);
             trackB0.TabIndex = 11;
             trackB0.TickFrequency = 5;
             trackB0.TickStyle = TickStyle.TopLeft;
@@ -551,12 +548,11 @@ namespace GHelper
             // 
             // labelC1
             // 
-            labelC1.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             labelC1.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
             labelC1.Location = new Point(396, 8);
             labelC1.Margin = new Padding(4, 0, 4, 0);
             labelC1.Name = "labelC1";
-            labelC1.Size = new Size(119, 32);
+            labelC1.Size = new Size(114, 32);
             labelC1.TabIndex = 13;
             labelC1.Text = "C1";
             labelC1.TextAlign = ContentAlignment.TopRight;
@@ -573,13 +569,12 @@ namespace GHelper
             // 
             // trackC1
             // 
-            trackC1.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             trackC1.Location = new Point(6, 48);
             trackC1.Margin = new Padding(4, 2, 4, 2);
             trackC1.Maximum = 85;
             trackC1.Minimum = 5;
             trackC1.Name = "trackC1";
-            trackC1.Size = new Size(513, 90);
+            trackC1.Size = new Size(508, 90);
             trackC1.TabIndex = 11;
             trackC1.TickFrequency = 5;
             trackC1.TickStyle = TickStyle.TopLeft;
@@ -602,12 +597,11 @@ namespace GHelper
             // 
             // labelA0
             // 
-            labelA0.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             labelA0.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
             labelA0.Location = new Point(396, 10);
             labelA0.Margin = new Padding(4, 0, 4, 0);
             labelA0.Name = "labelA0";
-            labelA0.Size = new Size(122, 32);
+            labelA0.Size = new Size(117, 32);
             labelA0.TabIndex = 12;
             labelA0.Text = "Platform";
             labelA0.TextAlign = ContentAlignment.TopRight;
@@ -624,13 +618,12 @@ namespace GHelper
             // 
             // trackA0
             // 
-            trackA0.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             trackA0.Location = new Point(6, 48);
             trackA0.Margin = new Padding(4, 2, 4, 2);
             trackA0.Maximum = 180;
             trackA0.Minimum = 10;
             trackA0.Name = "trackA0";
-            trackA0.Size = new Size(513, 90);
+            trackA0.Size = new Size(508, 90);
             trackA0.TabIndex = 10;
             trackA0.TickFrequency = 5;
             trackA0.TickStyle = TickStyle.TopLeft;
@@ -712,11 +705,10 @@ namespace GHelper
             // 
             // labelGPUTemp
             // 
-            labelGPUTemp.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             labelGPUTemp.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
             labelGPUTemp.Location = new Point(378, 14);
             labelGPUTemp.Name = "labelGPUTemp";
-            labelGPUTemp.Size = new Size(130, 32);
+            labelGPUTemp.Size = new Size(125, 32);
             labelGPUTemp.TabIndex = 44;
             labelGPUTemp.Text = "87C";
             labelGPUTemp.TextAlign = ContentAlignment.TopRight;
@@ -732,13 +724,12 @@ namespace GHelper
             // 
             // trackGPUTemp
             // 
-            trackGPUTemp.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             trackGPUTemp.Location = new Point(6, 57);
             trackGPUTemp.Margin = new Padding(4, 2, 4, 2);
             trackGPUTemp.Maximum = 87;
             trackGPUTemp.Minimum = 75;
             trackGPUTemp.Name = "trackGPUTemp";
-            trackGPUTemp.Size = new Size(502, 90);
+            trackGPUTemp.Size = new Size(497, 90);
             trackGPUTemp.TabIndex = 42;
             trackGPUTemp.TickFrequency = 5;
             trackGPUTemp.TickStyle = TickStyle.TopLeft;
@@ -760,11 +751,10 @@ namespace GHelper
             // 
             // labelGPUBoost
             // 
-            labelGPUBoost.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             labelGPUBoost.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
             labelGPUBoost.Location = new Point(374, 14);
             labelGPUBoost.Name = "labelGPUBoost";
-            labelGPUBoost.Size = new Size(130, 32);
+            labelGPUBoost.Size = new Size(125, 32);
             labelGPUBoost.TabIndex = 44;
             labelGPUBoost.Text = "25W";
             labelGPUBoost.TextAlign = ContentAlignment.TopRight;
@@ -780,13 +770,12 @@ namespace GHelper
             // 
             // trackGPUBoost
             // 
-            trackGPUBoost.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             trackGPUBoost.Location = new Point(6, 48);
             trackGPUBoost.Margin = new Padding(4, 2, 4, 2);
             trackGPUBoost.Maximum = 25;
             trackGPUBoost.Minimum = 5;
             trackGPUBoost.Name = "trackGPUBoost";
-            trackGPUBoost.Size = new Size(502, 90);
+            trackGPUBoost.Size = new Size(497, 90);
             trackGPUBoost.TabIndex = 42;
             trackGPUBoost.TickFrequency = 5;
             trackGPUBoost.TickStyle = TickStyle.TopLeft;
@@ -808,11 +797,10 @@ namespace GHelper
             // 
             // labelGPUMemory
             // 
-            labelGPUMemory.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             labelGPUMemory.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            labelGPUMemory.Location = new Point(378, 14);
+            labelGPUMemory.Location = new Point(344, 14);
             labelGPUMemory.Name = "labelGPUMemory";
-            labelGPUMemory.Size = new Size(130, 32);
+            labelGPUMemory.Size = new Size(159, 32);
             labelGPUMemory.TabIndex = 44;
             labelGPUMemory.Text = "2000 MHz";
             labelGPUMemory.TextAlign = ContentAlignment.TopRight;
@@ -828,13 +816,12 @@ namespace GHelper
             // 
             // trackGPUMemory
             // 
-            trackGPUMemory.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             trackGPUMemory.LargeChange = 100;
             trackGPUMemory.Location = new Point(6, 48);
             trackGPUMemory.Margin = new Padding(4, 2, 4, 2);
             trackGPUMemory.Maximum = 300;
             trackGPUMemory.Name = "trackGPUMemory";
-            trackGPUMemory.Size = new Size(502, 90);
+            trackGPUMemory.Size = new Size(497, 90);
             trackGPUMemory.SmallChange = 10;
             trackGPUMemory.TabIndex = 42;
             trackGPUMemory.TickFrequency = 50;
@@ -856,25 +843,23 @@ namespace GHelper
             // 
             // labelGPUCore
             // 
-            labelGPUCore.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             labelGPUCore.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            labelGPUCore.Location = new Point(378, 15);
+            labelGPUCore.Location = new Point(326, 15);
             labelGPUCore.Name = "labelGPUCore";
-            labelGPUCore.Size = new Size(130, 32);
+            labelGPUCore.Size = new Size(177, 32);
             labelGPUCore.TabIndex = 29;
             labelGPUCore.Text = "1500 MHz";
             labelGPUCore.TextAlign = ContentAlignment.TopRight;
             // 
             // trackGPUCore
             // 
-            trackGPUCore.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             trackGPUCore.LargeChange = 100;
             trackGPUCore.Location = new Point(6, 47);
             trackGPUCore.Margin = new Padding(4, 2, 4, 2);
             trackGPUCore.Maximum = 300;
             trackGPUCore.Name = "trackGPUCore";
             trackGPUCore.RightToLeft = RightToLeft.No;
-            trackGPUCore.Size = new Size(502, 90);
+            trackGPUCore.Size = new Size(497, 90);
             trackGPUCore.SmallChange = 10;
             trackGPUCore.TabIndex = 18;
             trackGPUCore.TickFrequency = 50;

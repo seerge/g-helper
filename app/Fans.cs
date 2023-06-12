@@ -48,7 +48,7 @@ namespace GHelper
             labelGPUBoostTitle.Text = Properties.Strings.GPUBoost;
             labelGPUTempTitle.Text = Properties.Strings.GPUTempTarget;
 
-            InitTheme();
+            InitTheme(true);
 
             MinRPM = 18;
             MaxRPM = HardwareControl.GetFanMax();

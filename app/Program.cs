@@ -177,6 +177,10 @@ namespace GHelper
             if (settingsForm.Visible) settingsForm.HideAll();
             else
             {
+
+                settingsForm.Left = Screen.FromControl(settingsForm).WorkingArea.Width - 10 - settingsForm.Width;
+                settingsForm.Top = Screen.FromControl(settingsForm).WorkingArea.Height - 10 - settingsForm.Height;
+
                 settingsForm.Show();
                 settingsForm.Activate();
                 settingsForm.VisualiseGPUMode();
