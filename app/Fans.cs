@@ -20,7 +20,7 @@ namespace GHelper
 
         static int MinRPM, MaxRPM;
 
-        static bool powerVisible = true, gpuVisible = true;
+        static bool gpuVisible = true;
 
         const int fansMax = 100;
 
@@ -394,8 +394,6 @@ namespace GHelper
 
         public void FormPosition()
         {
-            panelSliders.Visible = gpuVisible || powerVisible;
-
             if (Height > Program.settingsForm.Height)
             {
                 Top = Program.settingsForm.Top + Program.settingsForm.Height - Height;
@@ -484,7 +482,7 @@ namespace GHelper
             bool modeB0 = Program.acpi.IsAllAmdPPT();
             bool modeC1 = Program.acpi.DeviceGet(AsusACPI.PPT_APUC1) >= 0;
 
-            powerVisible = panelPower.Visible = modeA0;
+            panelA0.Visible = modeA0;
             panelB0.Visible = modeB0;
 
 
