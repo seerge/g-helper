@@ -242,21 +242,21 @@ namespace GHelper
                     case Keys.F7:
                         if (AppConfig.ContainsModel("TUF"))
                             Program.settingsForm.BeginInvoke(Program.settingsForm.RunToast, ScreenBrightness.Adjust(-10) + "%", ToastIcon.BrightnessDown);
-                        HandleEvent(16);
+                        HandleOptimizationEvent(16);
                         break;
                     case Keys.F8:
                         if (AppConfig.ContainsModel("TUF")) 
                             Program.settingsForm.BeginInvoke(Program.settingsForm.RunToast, ScreenBrightness.Adjust(+10) + "%", ToastIcon.BrightnessUp);
-                        HandleEvent(32);
+                        HandleOptimizationEvent(32);
                         break;
                     case Keys.F9:
                         KeyboardHook.KeyWinPress(Keys.P);
                         break;
                     case Keys.F10:
-                        HandleEvent(107);
+                        HandleOptimizationEvent(107);
                         break;
                     case Keys.F11:
-                        HandleEvent(108);
+                        HandleOptimizationEvent(108);
                         break;
                     case Keys.F12:
                         KeyboardHook.KeyWinPress(Keys.A);
@@ -343,10 +343,10 @@ namespace GHelper
                     }
                     break;
                 case "brightness_up":
-                    HandleEvent(32);
+                    HandleOptimizationEvent(32);
                     break;
                 case "brightness_down":
-                    HandleEvent(16);
+                    HandleOptimizationEvent(16);
                     break;
                 case "custom":
                     CustomKey(name);
@@ -429,10 +429,17 @@ namespace GHelper
                     return;
             }
 
-            if (OptimizationService.IsRunning()) return;
+            if (!OptimizationService.IsRunning()) 
+                
+                HandleOptimizationEvent(EventID);
 
             // Asus Optimization service Events 
 
+
+        }
+
+        static void HandleOptimizationEvent(int EventID)
+        {
             switch (EventID)
             {
                 case 16: // FN+F7
@@ -449,14 +456,7 @@ namespace GHelper
                 case 108: // FN+F11
                     Program.acpi.DeviceSet(AsusACPI.UniversalControl, AsusACPI.KB_Sleep, "Sleep");
                     break;
-                case 106: // Zephyrus DUO special key for turning on/off second display.
-                    //Program.acpi.DeviceSet(AsusACPI.UniversalControl, AsusACPI.KB_DUO_SecondDisplay, "SecondDisplay");
-                    break;
-                case 75: // Zephyrus DUO special key  for changing between arrows and pgup/pgdn
-                    //Program.acpi.DeviceSet(AsusACPI.UniversalControl, AsusACPI.KB_DUO_PgUpDn, "PgUpDown");
-                    break;
             }
-
         }
 
 

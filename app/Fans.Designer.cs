@@ -412,7 +412,7 @@ namespace GHelper
             comboBoost.ButtonColor = Color.FromArgb(255, 255, 255);
             comboBoost.DropDownStyle = ComboBoxStyle.DropDownList;
             comboBoost.FormattingEnabled = true;
-            comboBoost.Items.AddRange(new object[] { "Disabled", "Enabled", "Aggressive", "Efficient Enabled", "Efficient Aggressive" });
+            comboBoost.Items.AddRange(new object[] { "Disabled", "Enabled", "Aggressive", "Efficient Enabled", "Efficient Aggressive", "Aggressive at Guaranteed", "Efficient at Guaranteed" });
             comboBoost.Location = new Point(226, 10);
             comboBoost.Name = "comboBoost";
             comboBoost.Size = new Size(287, 40);

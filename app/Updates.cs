@@ -145,7 +145,7 @@ namespace GHelper
                                 driver.hardwares = file.GetProperty("HardwareInfoList");
                                 drivers.Add(driver);
 
-                                BeginInvoke(delegate
+                                Invoke(delegate
                                 {
                                     string versionText = driver.version.Replace("latest version at the ", "");
                                     Label versionLabel = new Label { Text = versionText, Anchor = AnchorStyles.Left, AutoSize = true };
@@ -170,7 +170,7 @@ namespace GHelper
                         }
                     }
 
-                    BeginInvoke(delegate
+                    Invoke(delegate
                     {
                         table.Visible = true;
                         ResumeLayout(false);
@@ -206,7 +206,7 @@ namespace GHelper
                             var label = table.GetControlFromPosition(2, count) as Label;
                             if (label != null)
                             {
-                                BeginInvoke(delegate
+                                Invoke(delegate
                                 {
                                     label.Font = new Font(label.Font, FontStyle.Underline | FontStyle.Bold);
                                     label.ForeColor = colorTurbo;
