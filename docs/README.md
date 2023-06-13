@@ -216,6 +216,9 @@ To enable this custom workaround you need to add an extra line in config.json (u
 
 By default app will toggle performance modes with Ctr+Shift+F5. You can change this binding by adding ``"keybind_profile": 116`` in config.json (under ``%AppData%\GHelper``), where 116 is [numerical code for desired key](https://www.oreilly.com/library/view/javascript-dhtml/9780596514082/apb.html). Put 0 to completely disable this binding.
 
+### Keybinding to open G-helper from external keyboards
+Ctrl + Shift + F12
+
 ------------
 
 **Disclaimers**
