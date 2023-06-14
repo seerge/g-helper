@@ -183,6 +183,10 @@ namespace GHelper
 
                 settingsForm.Show();
                 settingsForm.Activate();
+
+                settingsForm.Left = Screen.FromControl(settingsForm).WorkingArea.Width - 10 - settingsForm.Width;
+                settingsForm.Top = Screen.FromControl(settingsForm).WorkingArea.Height - 10 - settingsForm.Height;
+
                 settingsForm.VisualiseGPUMode();
 
                 switch (action)

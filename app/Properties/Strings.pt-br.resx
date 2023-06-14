@@ -148,7 +148,7 @@
     <value>G-Helper já está em execução. Verifique a barra de sistema</value>
   </data>
   <data name="ApplyFanCurve" xml:space="preserve">
-    <value>Aplicar a curva de ventilador personalizada</value>
+    <value>Aplicar a curva personalizada</value>
   </data>
   <data name="ApplyPowerLimits" xml:space="preserve">
     <value>Aplicar as limitações de energia</value>
@@ -156,7 +156,7 @@
   <data name="ApplyWindowsPowerPlan" xml:space="preserve">
     <value>Ajuste automático dos modos de energia do Windows</value>
   </data>
-    <data name="AsusServicesRunning" xml:space="preserve">
+  <data name="AsusServicesRunning" xml:space="preserve">
     <value>Serviços da Asus em execução</value>
   </data>
   <data name="AuraBreathe" xml:space="preserve">
@@ -194,15 +194,15 @@
   </data>
   <data name="BacklightTimeout" xml:space="preserve">
     <value>Tempo limite da iluminação na bateria (em segundos)</value>
-  </data>~
-    <data name="BacklightTimeoutPlugged" xml:space="preserve">
+  </data>
+  <data name="BacklightTimeoutPlugged" xml:space="preserve">
     <value>Tempo limite da iluminação carregando (0 - sempre ligado)</value>
   </data>
   <data name="Balanced" xml:space="preserve">
     <value>Equilibrado</value>
   </data>
   <data name="BatteryChargeLimit" xml:space="preserve">
-    <value>Limite de carga da bateria</value>
+    <value>Limite de carga</value>
   </data>
   <data name="Boot" xml:space="preserve">
     <value>Ao ligar</value>
@@ -265,12 +265,12 @@
     <value>Ventiladores e Energía</value>
   </data>
   <data name="FanSpeed" xml:space="preserve">
-    <value>Ventilador</value>
+    <value>Vent</value>
   </data>
   <data name="FansPower" xml:space="preserve">
     <value>Ventiladores + Energía</value>
   </data>
-    <data name="FnLock" xml:space="preserve">
+  <data name="FnLock" xml:space="preserve">
     <value>Processar teclas de atalho Fn+F sem pressionar Fn</value>
   </data>
   <data name="GPUBoost" xml:space="preserve">
@@ -306,17 +306,17 @@
   <data name="KeyboardBacklight" xml:space="preserve">
     <value>Luz de fundo do teclado</value>
   </data>
-   <data name="KillGpuApps" xml:space="preserve">
+  <data name="KillGpuApps" xml:space="preserve">
     <value>Parar todos os aplicativos que usam a GPU ao alternar para o modo Eco</value>
   </data>
   <data name="LaptopBacklight" xml:space="preserve">
     <value>Configurações de iluminação</value>
   </data>
   <data name="LaptopKeyboard" xml:space="preserve">
-    <value>Teclado do computador</value>
+    <value>Teclado</value>
   </data>
   <data name="LaptopScreen" xml:space="preserve">
-    <value>Tela do computador</value>
+    <value>Tela</value>
   </data>
   <data name="Lid" xml:space="preserve">
     <value>Tampa</value>
@@ -376,7 +376,7 @@
     <value>Overdrive</value>
   </data>
   <data name="PerformanceMode" xml:space="preserve">
-    <value>Modo Desempenho</value>
+    <value>Modo</value>
   </data>
   <data name="PictureGif" xml:space="preserve">
     <value>Imagem / Gif</value>
@@ -430,16 +430,13 @@
     <value>Padrão</value>
   </data>
   <data name="StartupError" xml:space="preserve">
-    <value>Erro ao iniciar</value>
+    <value>Erro de inicialização</value>
   </data>
   <data name="Start" xml:space="preserve">
     <value>Iniciar</value>
   </data>
   <data name="StartingServices" xml:space="preserve">
     <value>Iniciando os serviços</value>
-  </data>
-  <data name="StartupError" xml:space="preserve">
-    <value>Erro de inicialização</value>
   </data>
   <data name="Stop" xml:space="preserve">
     <value>Parar</value>
@@ -471,19 +468,19 @@
   <data name="UltimateMode" xml:space="preserve">
     <value>Ultimate</value>
   </data>
-   <data name="Updates" xml:space="preserve">
+  <data name="Updates" xml:space="preserve">
     <value>Atualizações</value>
   </data>
   <data name="VersionLabel" xml:space="preserve">
     <value>Versão</value>
   </data>
-    <data name="VolumeDown" xml:space="preserve">
+  <data name="VolumeDown" xml:space="preserve">
     <value>Abaixar o volume</value>
   </data>
   <data name="VolumeUp" xml:space="preserve">
     <value>Aumentar o volume</value>
   </data>
-    <data name="VolumeMute" xml:space="preserve">
+  <data name="VolumeMute" xml:space="preserve">
     <value>Silenciar microfone</value>
   </data>
   <data name="WindowTop" xml:space="preserve">
