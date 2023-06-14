@@ -187,7 +187,7 @@
     <value>Automático</value>
   </data>
   <data name="AutoRefreshTooltip" xml:space="preserve">
-    <value>Estabelece 60Hz para economizar energia</value>
+    <value>Menor taxa de atualização quando estiver na bateria</value>
   </data>
   <data name="Awake" xml:space="preserve">
     <value>Acordado</value>
@@ -349,13 +349,16 @@
     <value>Imagem</value>
   </data>
   <data name="MaxRefreshTooltip" xml:space="preserve">
-    <value>Taxa de atualização maxíma para abaixar a latência</value>
+    <value>Taxa de atualização máxima e menor latência</value>
   </data>
   <data name="MinRefreshTooltip" xml:space="preserve">
-    <value>Taxa de atualização à 60Hz para salvar energía</value>
+    <value>Taxa de atualização à 60Hz para economizar bateria</value>
   </data>
   <data name="Multizone" xml:space="preserve">
     <value>Multizona</value>
+  </data>
+    <data name="MuteMic" xml:space="preserve">
+    <value>Desligar microfone</value>
   </data>
   <data name="OpenGHelper" xml:space="preserve">
     <value>Abrir G-Helper</value>
@@ -388,7 +391,7 @@
     <value>Limitações de Energia</value>
   </data>
   <data name="PPTExperimental" xml:space="preserve">
-    <value>Limitações de Energia é uma funcionalidade experimental. Use com cuidado e por sua própria conta e risco!</value>
+    <value>Limitações de Energia é uma funcionalidade experimental. Use com cuidado.</value>
   </data>
   <data name="PrintScreen" xml:space="preserve">
     <value>Captura de tela</value>
@@ -484,7 +487,7 @@
     <value>Aumentar o volume</value>
   </data>
     <data name="VolumeMute" xml:space="preserve">
-    <value>Silenciar microfone</value>
+    <value>Mudo</value>
   </data>
   <data name="WindowTop" xml:space="preserve">
     <value>Manter a janela do aplicativo sempre no topo</value>
