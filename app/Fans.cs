@@ -31,6 +31,10 @@ namespace GHelper
 
             InitializeComponent();
 
+            float dpi = ControlHelper.GetDpiScale(this).Value;
+            comboModes.Size = new Size((int)dpi*150, (int)dpi * 18);
+            comboModes.ClientSize = new Size((int)dpi * 150, (int)dpi * 18);
+
             Text = Properties.Strings.FansAndPower;
             labelPowerLimits.Text = Properties.Strings.PowerLimits;
             labelInfo.Text = Properties.Strings.PPTExperimental;
