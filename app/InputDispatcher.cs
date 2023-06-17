@@ -25,7 +25,7 @@ namespace GHelper
                     while (!cancellationTokenSource.Token.IsCancellationRequested)
                     {
                         var data = input.Read().Data;
-                        if (data.Length > 1 && data[0] == AsusUSB.INPUT_HID_ID && data[1] > 0)
+                        if (data.Length > 1 && data[0] == AsusUSB.INPUT_HID_ID && data[1] > 0 && data[1] != 236)
                         {
                             Logger.WriteLine($"Key: {data[1]}");
                             KeyHandler(data[1]);

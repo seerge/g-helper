@@ -1,4 +1,5 @@
 using Microsoft.Win32;
+using Ryzen;
 using System.Diagnostics;
 using System.Globalization;
 using System.Reflection;
@@ -73,6 +74,7 @@ namespace GHelper
             Application.EnableVisualStyles();
 
             HardwareControl.RecreateGpuControl();
+            Undervolter.Init();
 
             var ds = settingsForm.Handle;
 
@@ -193,7 +195,7 @@ namespace GHelper
                 {
                     case "gpu":
                         Startup.ReScheduleAdmin();
-                        settingsForm.FansToggle();
+                        settingsForm.FansToggle(1);
                         break;
                     case "gpurestart":
                         settingsForm.RestartGPU(false);
@@ -202,6 +204,11 @@ namespace GHelper
                         settingsForm.keyb = new Extra();
                         settingsForm.keyb.Show();
                         settingsForm.keyb.ServiesToggle();
+                        break;
+                    case "uv":
+                        Startup.ReScheduleAdmin();
+                        settingsForm.FansToggle(2);
+                        settingsForm.SetUV();
                         break;
                 }
             }

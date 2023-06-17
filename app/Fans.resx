@@ -117,4 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="labelRisky.Text" xml:space="preserve">
+    <value>Undervolting is experimental and risky feature. If applied values are too low for your hardware, it can become unstable or shut down. Try small negative values first, click Apply and test what works for you.</value>
+  </data>
 </root>

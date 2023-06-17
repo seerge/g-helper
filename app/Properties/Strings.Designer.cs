@@ -160,7 +160,7 @@ namespace GHelper.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Apply Power Limits.
+        ///   Looks up a localized string similar to Apply.
         /// </summary>
         internal static string ApplyPowerLimits {
             get {

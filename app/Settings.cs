@@ -1,6 +1,7 @@
 ﻿using CustomControls;
 using GHelper.AnimeMatrix;
 using GHelper.Gpu;
+using Ryzen;
 using System.Diagnostics;
 using System.Net;
 using System.Reflection;
@@ -692,7 +693,7 @@ namespace GHelper
             }
         }
 
-        public void FansToggle()
+        public void FansToggle(int index = 0)
         {
             if (fans == null || fans.Text == "")
             {
@@ -707,6 +708,7 @@ namespace GHelper
             {
                 fans.FormPosition();
                 fans.Show();
+                fans.ToggleNavigation(index);
             }
 
         }
@@ -885,8 +887,6 @@ namespace GHelper
             int miniled = Program.acpi.DeviceGet(AsusACPI.ScreenMiniled);
 
             bool screenEnabled = (frequency >= 0);
-
-            Debug.WriteLine(frequency.ToString());
 
             ButtonEnabled(button60Hz, screenEnabled);
             ButtonEnabled(button120Hz, screenEnabled);
@@ -1125,6 +1125,39 @@ namespace GHelper
 
         }
 
+
+        public void AutoUV()
+        {
+            if (!AppConfig.IsMode("auto_uv")) return;
+            SetUV();
+        }
+
+        public void SetUV(bool launchAsAdmin = false)
+        {
+            
+            if (!ProcessHelper.IsUserAdministrator())
+            {
+                if (launchAsAdmin) ProcessHelper.RunAsAdmin("uv");
+                return;
+            }
+
+            if (!Undervolter.IsAMD()) return;
+
+            int cpuUV = AppConfig.GetMode("cpu_uv", 0);
+            int igpuUV = AppConfig.GetMode("igpu_uv", 0);
+
+            if (cpuUV >= -40 && cpuUV <= 0)
+            {
+                SendCommand.set_coall(cpuUV);
+            }
+
+            if (igpuUV >= -40 && igpuUV <= 0)
+            {
+                SendCommand.set_cogfx(igpuUV);
+            }
+        }
+
+
         protected void LabelFansResult(string text)
         {
             if (fans != null && fans.Text != "")
@@ -1229,8 +1262,10 @@ namespace GHelper
                 {
                     timer.Stop();
                     timer.Dispose();
+
                     if (applyPower) SetPower();
                     SetGPUPower();
+                    AutoUV();
                 };
                 timer.Start();
             }
@@ -1238,6 +1273,7 @@ namespace GHelper
             {
                 if (applyPower) SetPower();
                 SetGPUPower();
+                AutoUV();
             }
 
         }
@@ -1347,11 +1383,7 @@ namespace GHelper
 
             if (fans != null && fans.Text != "")
             {
-                fans.InitMode();
-                fans.InitFans();
-                fans.InitPower();
-                fans.InitBoost();
-                fans.InitGPU();
+                fans.InitAll();
             }
         }
 
