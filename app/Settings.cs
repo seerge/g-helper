@@ -1146,14 +1146,20 @@ namespace GHelper
             int cpuUV = AppConfig.GetMode("cpu_uv", 0);
             int igpuUV = AppConfig.GetMode("igpu_uv", 0);
 
-            if (cpuUV >= -40 && cpuUV <= 0)
+            try
             {
-                SendCommand.set_coall(cpuUV);
-            }
+                if (cpuUV >= -40 && cpuUV <= 0)
+                {
+                    SendCommand.set_coall(cpuUV);
+                }
 
-            if (igpuUV >= -40 && igpuUV <= 0)
+                if (igpuUV >= -40 && igpuUV <= 0)
+                {
+                    SendCommand.set_cogfx(igpuUV);
+                }
+            } catch (Exception ex)
             {
-                SendCommand.set_cogfx(igpuUV);
+                Logger.WriteLine("UV Error: " + ex.ToString());
             }
         }
 
