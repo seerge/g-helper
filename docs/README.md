@@ -222,6 +222,12 @@ Ctrl + Shift + F12
 
 ------------
 
+**Libraries / projects used**
+- [Linux Kernel](https://github.com/torvalds/linux/blob/master/drivers/platform/x86/asus-wmi.c) for some basic endpoints in ASUS ACPI/WMI interface
+- [NvAPIWrapper](https://github.com/falahati/NvAPIWrapper) for accessing Nvidia API
+- [Starlight](https://github.com/vddCore/Starlight) for anime matrix communication protocol
+- [UXTU](https://github.com/JamesCJ60/Universal-x86-Tuning-Utility) for undervolting using Ryzen System Management Unit
+
 **Disclaimers**
 "ROG", "TUF", and "Armoury Crate" are trademarked by and belong to AsusTek Computer, Inc. I make no claims to these or any assets belonging to AsusTek Computer and use them purely for informational purposes only.
 
