@@ -255,7 +255,9 @@ namespace GHelper
 
             int cpuUV = Math.Max(trackUV.Minimum, Math.Min(trackUV.Maximum, AppConfig.GetMode("cpu_uv", 0)));
             int igpuUV = Math.Max(trackUViGPU.Minimum, Math.Min(trackUViGPU.Maximum, AppConfig.GetMode("igpu_uv", 0)));
-            int temp = Math.Max(trackTemp.Minimum, Math.Min(trackTemp.Maximum, AppConfig.GetMode("cpu_temp", 96)));
+
+            int temp = AppConfig.GetMode("cpu_temp");
+            if (temp < trackTemp.Minimum || temp > trackTemp.Maximum) temp = 96;
 
             checkApplyUV.Enabled = checkApplyUV.Checked = AppConfig.IsMode("auto_uv");
 
@@ -835,7 +837,7 @@ namespace GHelper
             trackTemp.Value = 96;
 
             AdvancedScroll();
-            AppConfig.SetMode("cpu_temp", 0);
+            AppConfig.SetMode("cpu_temp", -1);
 
             if (gpuVisible)
             {
