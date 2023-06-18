@@ -195,15 +195,17 @@ namespace Ryzen
             uint[] Args = new uint[6];
             Args[0] = value;
 
+            Smu.Status? result = null;
+
             switch (FAMID)
             {
                 case -1:
-                    RyzenAccess.SendPsmu(0x68, ref Args);
+                    result = RyzenAccess.SendPsmu(0x68, ref Args);
                     break;
                 case 0:
                 case 1:
                 case 2:
-                    RyzenAccess.SendMp1(0x1f, ref Args);
+                    result = RyzenAccess.SendMp1(0x1f, ref Args);
                     break;
                 case 3:
                 case 5:
@@ -211,19 +213,22 @@ namespace Ryzen
                 case 8:
                 case 9:
                 case 11:
-                    RyzenAccess.SendMp1(0x19, ref Args);
+                    result = RyzenAccess.SendMp1(0x19, ref Args);
                     break;
                 case 4:
                 case 6:
                     RyzenAccess.SendMp1(0x23, ref Args);
-                    RyzenAccess.SendPsmu(0x56, ref Args);
+                    result = RyzenAccess.SendPsmu(0x56, ref Args);
                     break;
                 case 10:
-                    RyzenAccess.SendPsmu(0x59, ref Args);
+                    result = RyzenAccess.SendPsmu(0x59, ref Args);
                     break;
                 default:
                     break;
             }
+
+            Logger.WriteLine($"CPU Temp: {value} {result}");
+
             RyzenAccess.Deinitialize();
         }
 
@@ -262,21 +267,26 @@ namespace Ryzen
             uint[] Args = new uint[6];
             Args[0] = value;
 
+            Smu.Status? result = null;
+
             switch (FAMID)
             {
                 case 5:
                 case 8:
                 case 9:
                 case 11:
-                    RyzenAccess.SendMp1(0x33, ref Args);
+                    result = RyzenAccess.SendMp1(0x33, ref Args);
                     break;
                 case 3:
                 case 7:
-                    RyzenAccess.SendMp1(0x38, ref Args);
+                    result = RyzenAccess.SendMp1(0x38, ref Args);
                     break;
                 default:
                     break;
             }
+
+            Logger.WriteLine($"APU Temp: {value} {result}");
+
             RyzenAccess.Deinitialize();
         }
 

@@ -31,6 +31,7 @@ namespace GHelper
         public Extra keyb;
         public Updates updates;
 
+        static long lastUpdate;
         static long lastRefresh;
 
         private bool customFans = false;
@@ -182,11 +183,6 @@ namespace GHelper
 
             SetContextMenu();
 
-            Task.Run(async () =>
-            {
-                await Task.Delay(TimeSpan.FromSeconds(1));
-                CheckForUpdatesAsync();
-            });
 
         }
 
@@ -197,6 +193,17 @@ namespace GHelper
             {
                 InitScreen();
                 InitXGM();
+
+                // Run update once per 12 hours
+                if (Math.Abs(DateTimeOffset.Now.ToUnixTimeSeconds() - lastUpdate) < 43200) return;
+                lastUpdate = DateTimeOffset.Now.ToUnixTimeSeconds();
+
+                Task.Run(async () =>
+                {
+                    await Task.Delay(TimeSpan.FromSeconds(1));
+                    CheckForUpdatesAsync();
+                });
+
             }
         }
 
@@ -1145,6 +1152,7 @@ namespace GHelper
 
             int cpuUV = AppConfig.GetMode("cpu_uv", 0);
             int igpuUV = AppConfig.GetMode("igpu_uv", 0);
+            int cpuTemp = AppConfig.GetMode("cpu_temp");
 
             try
             {
@@ -1157,7 +1165,15 @@ namespace GHelper
                 {
                     SendCommand.set_cogfx(igpuUV);
                 }
-            } catch (Exception ex)
+
+                if (cpuTemp >= 70 && cpuTemp <= 97)
+                {
+                    SendCommand.set_tctl_temp((uint)cpuTemp);
+                    SendCommand.set_apu_skin_temp_limit((uint)cpuTemp);
+                }
+
+            }
+            catch (Exception ex)
             {
                 Logger.WriteLine("UV Error: " + ex.ToString());
             }

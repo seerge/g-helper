@@ -132,6 +132,17 @@ namespace GHelper
             //labelInfo.MaximumSize = new Size(280, 0);
             labelFansResult.Visible = false;
 
+
+            trackUV.Minimum = -30;
+            trackUV.Maximum = 0;
+
+            trackUViGPU.Minimum = -20;
+            trackUViGPU.Maximum = 0;
+
+            trackTemp.Minimum = 75;
+            trackTemp.Maximum = 97;
+
+
             FillModes();
             InitAll();
 
@@ -147,14 +158,10 @@ namespace GHelper
             buttonRemove.Click += ButtonRemove_Click;
             buttonRename.Click += ButtonRename_Click;
 
-            trackUV.Minimum = -30;
-            trackUV.Maximum = 0;
-
-            trackUViGPU.Minimum = -20;
-            trackUViGPU.Maximum = 0;
 
             trackUV.Scroll += TrackUV_Scroll;
             trackUViGPU.Scroll += TrackUV_Scroll;
+            trackTemp.Scroll += TrackUV_Scroll;
 
             buttonApplyAdvanced.Click += ButtonApplyAdvanced_Click;
 
@@ -248,6 +255,7 @@ namespace GHelper
 
             int cpuUV = Math.Max(trackUV.Minimum, Math.Min(trackUV.Maximum, AppConfig.GetMode("cpu_uv", 0)));
             int igpuUV = Math.Max(trackUViGPU.Minimum, Math.Min(trackUViGPU.Maximum, AppConfig.GetMode("igpu_uv", 0)));
+            int temp = Math.Max(trackTemp.Minimum, Math.Min(trackTemp.Maximum, AppConfig.GetMode("cpu_temp", 96)));
 
             checkApplyUV.Enabled = checkApplyUV.Checked = AppConfig.IsMode("auto_uv");
 
@@ -256,6 +264,10 @@ namespace GHelper
 
             trackUViGPU.Value = igpuUV;
             labelUViGPU.Text = trackUViGPU.Value.ToString();
+
+            trackTemp.Value = temp;
+            labelTemp.Text = trackTemp.Value.ToString() + "°C";
+
 
             buttonAdvanced.Visible = Undervolter.IsAMD();
 
@@ -269,7 +281,9 @@ namespace GHelper
 
             labelUV.Text = trackUV.Value.ToString();
             labelUViGPU.Text = trackUViGPU.Value.ToString();
+            labelTemp.Text = trackTemp.Value.ToString() + "°C";
 
+            AppConfig.SetMode("cpu_temp", trackTemp.Value);
             AppConfig.SetMode("cpu_uv", trackUV.Value);
             AppConfig.SetMode("igpu_uv", trackUViGPU.Value);
 
