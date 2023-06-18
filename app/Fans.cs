@@ -273,8 +273,7 @@ namespace GHelper
 
         }
 
-
-        private void TrackUV_Scroll(object? sender, EventArgs e)
+        private void AdvancedScroll()
         {
             AppConfig.SetMode("auto_uv", 0);
             checkApplyUV.Enabled = checkApplyUV.Checked = false;
@@ -286,7 +285,12 @@ namespace GHelper
             AppConfig.SetMode("cpu_temp", trackTemp.Value);
             AppConfig.SetMode("cpu_uv", trackUV.Value);
             AppConfig.SetMode("igpu_uv", trackUViGPU.Value);
+        }
 
+
+        private void TrackUV_Scroll(object? sender, EventArgs e)
+        {
+            AdvancedScroll();
         }
 
         private void ComboModes_KeyPress(object? sender, KeyPressEventArgs e)
@@ -828,8 +832,10 @@ namespace GHelper
 
             trackUV.Value = 0;
             trackUViGPU.Value = 0;
-            AppConfig.SetMode("cpu_uv", 0);
-            AppConfig.SetMode("igpu_uv", 0);
+            trackTemp.Value = 96;
+
+            AdvancedScroll();
+            AppConfig.SetMode("cpu_temp", 0);
 
             if (gpuVisible)
             {
