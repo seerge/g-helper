@@ -73,7 +73,7 @@ _PPTs are shown for G14 2022, for other models PPTs will be different as they ar
 ## :question: FAQ
 
 #### How do I stop the Armory Crate install popup appearing every time I press the M4 / Rog key?
-Delete or move somewhere following file ``C:\Windows\System32\ASUSACCI\ArmouryCrateKeyControl.exe``.
+Stop ``ArmouryCrateControlInterface`` service under windows Services app.
 If it still appears - Go to BIOS (F2 on boot), open Advanced Settings and disable "Armory Control Interface". 
 
 #### Why is Ultimate GPU mode not available on my laptop?
