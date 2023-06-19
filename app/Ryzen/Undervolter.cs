@@ -10,6 +10,16 @@ namespace Ryzen
 {
     internal class Undervolter
     {
+
+        public const int MinCPUUV = -30;
+        public const int MaxCPUUV = 0;
+
+        public const int MinIGPUUV = -20;
+        public const int MaxIGPUUV = 0;
+
+        public const int MinTemp = 75;
+        public const int MaxTemp = 98;
+
         public static string[] FAM = { "RAVEN", "PICASSO", "DALI", "RENOIR/LUCIENNE", "MATISSE", "VANGOGH", "VERMEER", "CEZANNE/BARCELO", "REMBRANDT", "PHOENIX", "RAPHAEL/DRAGON RANGE" };
         public static int FAMID { get; protected set; }
 

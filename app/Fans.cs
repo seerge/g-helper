@@ -133,14 +133,14 @@ namespace GHelper
             labelFansResult.Visible = false;
 
 
-            trackUV.Minimum = -30;
-            trackUV.Maximum = 0;
+            trackUV.Minimum = Undervolter.MinCPUUV;
+            trackUV.Maximum = Undervolter.MaxCPUUV;
 
-            trackUViGPU.Minimum = -20;
-            trackUViGPU.Maximum = 0;
+            trackUViGPU.Minimum = Undervolter.MinIGPUUV;
+            trackUViGPU.Maximum = Undervolter.MaxIGPUUV;
 
-            trackTemp.Minimum = 75;
-            trackTemp.Maximum = 97;
+            trackTemp.Minimum = Undervolter.MinTemp;
+            trackTemp.Maximum = Undervolter.MaxTemp;
 
 
             FillModes();
