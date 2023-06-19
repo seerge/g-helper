@@ -1,8 +1,10 @@
 ﻿using CustomControls;
 using GHelper.Gpu;
+using Ryzen;
 using System;
 using System.Diagnostics;
 using System.Net.Sockets;
+using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
 
 namespace GHelper
@@ -31,13 +33,12 @@ namespace GHelper
 
             InitializeComponent();
 
-            float dpi = ControlHelper.GetDpiScale(this).Value;
-            comboModes.Size = new Size((int)dpi*150, (int)dpi * 18);
-            comboModes.ClientSize = new Size((int)dpi * 150, (int)dpi * 18);
+            //float dpi = ControlHelper.GetDpiScale(this).Value;
+            //comboModes.Size = new Size(comboModes.Width, (int)dpi * 18);
+            comboModes.ClientSize = new Size(comboModes.Width, comboModes.Height - 4);
 
             Text = Properties.Strings.FansAndPower;
             labelPowerLimits.Text = Properties.Strings.PowerLimits;
-            labelInfo.Text = Properties.Strings.PPTExperimental;
             checkApplyPower.Text = Properties.Strings.ApplyPowerLimits;
 
             labelFans.Text = Properties.Strings.FanCurves;
@@ -129,16 +130,21 @@ namespace GHelper
             trackGPUTemp.MouseUp += TrackGPU_MouseUp;
 
             //labelInfo.MaximumSize = new Size(280, 0);
-            labelInfo.Text = Properties.Strings.PPTExperimental;
             labelFansResult.Visible = false;
 
-            FillModes();
 
-            InitMode();
-            InitFans();
-            InitPower();
-            InitBoost();
-            InitGPU(true);
+            trackUV.Minimum = -30;
+            trackUV.Maximum = 0;
+
+            trackUViGPU.Minimum = -20;
+            trackUViGPU.Maximum = 0;
+
+            trackTemp.Minimum = 75;
+            trackTemp.Maximum = 97;
+
+
+            FillModes();
+            InitAll();
 
             comboBoost.SelectedValueChanged += ComboBoost_Changed;
 
@@ -152,6 +158,141 @@ namespace GHelper
             buttonRemove.Click += ButtonRemove_Click;
             buttonRename.Click += ButtonRename_Click;
 
+
+            trackUV.Scroll += TrackUV_Scroll;
+            trackUViGPU.Scroll += TrackUV_Scroll;
+            trackTemp.Scroll += TrackUV_Scroll;
+
+            buttonApplyAdvanced.Click += ButtonApplyAdvanced_Click;
+
+            buttonCPU.BorderColor = colorStandard;
+            buttonGPU.BorderColor = colorTurbo;
+            buttonAdvanced.BorderColor = Color.Gray;
+
+            buttonCPU.Click += ButtonCPU_Click;
+            buttonGPU.Click += ButtonGPU_Click;
+            buttonAdvanced.Click += ButtonAdvanced_Click;
+
+            checkApplyUV.Click += CheckApplyUV_Click;
+
+            ToggleNavigation(0);
+
+        }
+
+        private void CheckApplyUV_Click(object? sender, EventArgs e)
+        {
+            AppConfig.SetMode("auto_uv", checkApplyUV.Checked ? 1 : 0);
+        }
+
+        public void InitAll()
+        {
+            InitMode();
+            InitFans();
+            InitPower();
+            InitBoost();
+            InitUV();
+            InitGPU();
+        }
+
+        public void ToggleNavigation(int index = 0)
+        {
+
+            SuspendLayout();
+
+            buttonCPU.Activated = false;
+            buttonGPU.Activated = false;
+            buttonAdvanced.Activated = false;
+
+            panelPower.Visible = false;
+            panelGPU.Visible = false;
+            panelAdvanced.Visible = false;
+
+            switch (index)
+            {
+                case 1:
+                    buttonGPU.Activated = true;
+                    panelGPU.Visible = true;
+                    break;
+                case 2:
+                    buttonAdvanced.Activated = true;
+                    panelAdvanced.Visible = true;
+                    break;
+                default:
+                    buttonCPU.Activated = true;
+                    panelPower.Visible = true;
+                    break;
+            }
+
+            ResumeLayout(false);
+            PerformLayout();
+        }
+
+        private void ButtonAdvanced_Click(object? sender, EventArgs e)
+        {
+            ToggleNavigation(2);
+        }
+
+        private void ButtonGPU_Click(object? sender, EventArgs e)
+        {
+            ToggleNavigation(1);
+        }
+
+        private void ButtonCPU_Click(object? sender, EventArgs e)
+        {
+            ToggleNavigation(0);
+        }
+
+        private void ButtonApplyAdvanced_Click(object? sender, EventArgs e)
+        {
+            Program.settingsForm.SetUV(true);
+            checkApplyUV.Enabled = true;
+        }
+
+        public void InitUV()
+        {
+
+            //if (!ProcessHelper.IsUserAdministrator()) return;
+
+            int cpuUV = Math.Max(trackUV.Minimum, Math.Min(trackUV.Maximum, AppConfig.GetMode("cpu_uv", 0)));
+            int igpuUV = Math.Max(trackUViGPU.Minimum, Math.Min(trackUViGPU.Maximum, AppConfig.GetMode("igpu_uv", 0)));
+
+            int temp = AppConfig.GetMode("cpu_temp");
+            if (temp < trackTemp.Minimum || temp > trackTemp.Maximum) temp = 96;
+
+            checkApplyUV.Enabled = checkApplyUV.Checked = AppConfig.IsMode("auto_uv");
+
+            trackUV.Value = cpuUV;
+            labelUV.Text = trackUV.Value.ToString();
+
+            trackUViGPU.Value = igpuUV;
+            labelUViGPU.Text = trackUViGPU.Value.ToString();
+
+            trackTemp.Value = temp;
+            labelTemp.Text = trackTemp.Value.ToString() + "°C";
+
+
+            buttonAdvanced.Visible = Undervolter.IsAMD();
+
+        }
+
+        private void AdvancedScroll()
+        {
+            AppConfig.SetMode("auto_uv", 0);
+            checkApplyUV.Enabled = checkApplyUV.Checked = false;
+
+            labelUV.Text = trackUV.Value.ToString();
+            labelUViGPU.Text = trackUViGPU.Value.ToString();
+            labelTemp.Text = trackTemp.Value.ToString() + "°C";
+
+            AppConfig.SetMode("cpu_temp", trackTemp.Value);
+            AppConfig.SetMode("cpu_uv", trackUV.Value);
+            AppConfig.SetMode("igpu_uv", trackUViGPU.Value);
+        }
+
+
+        private void TrackUV_Scroll(object? sender, EventArgs e)
+        {
+            AdvancedScroll();
         }
 
         private void ComboModes_KeyPress(object? sender, KeyPressEventArgs e)
@@ -235,12 +376,12 @@ namespace GHelper
             Program.settingsForm.SetGPUClocks(true);
         }
 
-        public void InitGPU(bool readClocks = false)
+        public void InitGPU()
         {
 
             if (Program.acpi.DeviceGet(AsusACPI.GPUEco) == 1)
             {
-                gpuVisible = panelGPU.Visible = false;
+                gpuVisible = buttonGPU.Visible = false;
                 return;
             }
 
@@ -252,13 +393,13 @@ namespace GHelper
             }
             else
             {
-                gpuVisible = panelGPU.Visible = false;
+                gpuVisible = buttonGPU.Visible = false;
                 return;
             }
 
             try
             {
-                gpuVisible = panelGPU.Visible = true;
+                gpuVisible = buttonGPU.Visible = true;
 
                 int gpu_boost = AppConfig.GetMode("gpu_boost");
                 int gpu_temp = AppConfig.GetMode("gpu_temp");
@@ -306,7 +447,7 @@ namespace GHelper
             catch (Exception ex)
             {
                 Logger.WriteLine(ex.ToString());
-                gpuVisible = panelGPU.Visible = false;
+                gpuVisible = buttonGPU.Visible = false;
             }
 
         }
@@ -690,6 +831,13 @@ namespace GHelper
 
             if (Program.acpi.IsXGConnected())
                 AsusUSB.ResetXGM();
+
+            trackUV.Value = 0;
+            trackUViGPU.Value = 0;
+            trackTemp.Value = 96;
+
+            AdvancedScroll();
+            AppConfig.SetMode("cpu_temp", -1);
 
             if (gpuVisible)
             {

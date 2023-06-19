@@ -39,6 +39,7 @@ public static class AppConfig
             }
             catch
             {
+                Logger.WriteLine("Broken config: " + text);
                 Init();
             }
         }
@@ -218,9 +219,9 @@ public static class AppConfig
         return GetString(name + "_" + Modes.GetCurrent());
     }
 
-    public static int GetMode(string name)
+    public static int GetMode(string name, int empty = -1)
     {
-        return Get(name + "_" + Modes.GetCurrent());
+        return Get(name + "_" + Modes.GetCurrent(), empty);
     }
 
     public static bool IsMode(string name)

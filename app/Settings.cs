@@ -1,6 +1,7 @@
 ﻿using CustomControls;
 using GHelper.AnimeMatrix;
 using GHelper.Gpu;
+using Ryzen;
 using System.Diagnostics;
 using System.Net;
 using System.Reflection;
@@ -30,6 +31,7 @@ namespace GHelper
         public Extra keyb;
         public Updates updates;
 
+        static long lastUpdate;
         static long lastRefresh;
 
         private bool customFans = false;
@@ -181,11 +183,6 @@ namespace GHelper
 
             SetContextMenu();
 
-            Task.Run(async () =>
-            {
-                await Task.Delay(TimeSpan.FromSeconds(1));
-                CheckForUpdatesAsync();
-            });
 
         }
 
@@ -196,6 +193,17 @@ namespace GHelper
             {
                 InitScreen();
                 InitXGM();
+
+                // Run update once per 12 hours
+                if (Math.Abs(DateTimeOffset.Now.ToUnixTimeSeconds() - lastUpdate) < 43200) return;
+                lastUpdate = DateTimeOffset.Now.ToUnixTimeSeconds();
+
+                Task.Run(async () =>
+                {
+                    await Task.Delay(TimeSpan.FromSeconds(1));
+                    CheckForUpdatesAsync();
+                });
+
             }
         }
 
@@ -692,7 +700,7 @@ namespace GHelper
             }
         }
 
-        public void FansToggle()
+        public void FansToggle(int index = 0)
         {
             if (fans == null || fans.Text == "")
             {
@@ -707,6 +715,7 @@ namespace GHelper
             {
                 fans.FormPosition();
                 fans.Show();
+                fans.ToggleNavigation(index);
             }
 
         }
@@ -885,8 +894,6 @@ namespace GHelper
             int miniled = Program.acpi.DeviceGet(AsusACPI.ScreenMiniled);
 
             bool screenEnabled = (frequency >= 0);
-
-            Debug.WriteLine(frequency.ToString());
 
             ButtonEnabled(button60Hz, screenEnabled);
             ButtonEnabled(button120Hz, screenEnabled);
@@ -1125,6 +1132,54 @@ namespace GHelper
 
         }
 
+
+        public void AutoUV()
+        {
+            if (!AppConfig.IsMode("auto_uv")) return;
+            SetUV();
+        }
+
+        public void SetUV(bool launchAsAdmin = false)
+        {
+            
+            if (!ProcessHelper.IsUserAdministrator())
+            {
+                if (launchAsAdmin) ProcessHelper.RunAsAdmin("uv");
+                return;
+            }
+
+            if (!Undervolter.IsAMD()) return;
+
+            int cpuUV = AppConfig.GetMode("cpu_uv", 0);
+            int igpuUV = AppConfig.GetMode("igpu_uv", 0);
+            int cpuTemp = AppConfig.GetMode("cpu_temp");
+
+            try
+            {
+                if (cpuUV >= -40 && cpuUV <= 0)
+                {
+                    SendCommand.set_coall(cpuUV);
+                }
+
+                if (igpuUV >= -40 && igpuUV <= 0)
+                {
+                    SendCommand.set_cogfx(igpuUV);
+                }
+
+                if (cpuTemp >= 70 && cpuTemp <= 97)
+                {
+                    SendCommand.set_tctl_temp((uint)cpuTemp);
+                    SendCommand.set_apu_skin_temp_limit((uint)cpuTemp);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLine("UV Error: " + ex.ToString());
+            }
+        }
+
+
         protected void LabelFansResult(string text)
         {
             if (fans != null && fans.Text != "")
@@ -1229,8 +1284,10 @@ namespace GHelper
                 {
                     timer.Stop();
                     timer.Dispose();
+
                     if (applyPower) SetPower();
                     SetGPUPower();
+                    AutoUV();
                 };
                 timer.Start();
             }
@@ -1238,6 +1295,7 @@ namespace GHelper
             {
                 if (applyPower) SetPower();
                 SetGPUPower();
+                AutoUV();
             }
 
         }
@@ -1347,11 +1405,7 @@ namespace GHelper
 
             if (fans != null && fans.Text != "")
             {
-                fans.InitMode();
-                fans.InitFans();
-                fans.InitPower();
-                fans.InitBoost();
-                fans.InitGPU();
+                fans.InitAll();
             }
         }
 

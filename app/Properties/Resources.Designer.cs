@@ -143,6 +143,16 @@ namespace GHelper.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap icons8_boost_30 {
+            get {
+                object obj = ResourceManager.GetObject("icons8-boost-30", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap icons8_charged_battery_96 {
             get {
                 object obj = ResourceManager.GetObject("icons8_charged_battery_96", resourceCulture);
@@ -403,6 +413,16 @@ namespace GHelper.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap icons8_save_32 {
+            get {
+                object obj = ResourceManager.GetObject("icons8-save-32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap icons8_share_32 {
             get {
                 object obj = ResourceManager.GetObject("icons8_share_32", resourceCulture);
@@ -463,6 +483,16 @@ namespace GHelper.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap icons8_temperature_48 {
+            get {
+                object obj = ResourceManager.GetObject("icons8-temperature-48", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap icons8_touchpad_96 {
             get {
                 object obj = ResourceManager.GetObject("icons8_touchpad_96", resourceCulture);
@@ -486,6 +516,16 @@ namespace GHelper.Properties {
         internal static System.Drawing.Bitmap icons8_video_card_48 {
             get {
                 object obj = ResourceManager.GetObject("icons8-video-card-48", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap icons8_voltage_60 {
+            get {
+                object obj = ResourceManager.GetObject("icons8-voltage-60", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
