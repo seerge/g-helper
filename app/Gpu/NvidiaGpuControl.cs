@@ -79,6 +79,12 @@ public class NvidiaGpuControl : IGpuControl
             core = states.Clocks[PerformanceStateId.P0_3DPerformance][0].FrequencyDeltaInkHz.DeltaValue / 1000;
             memory = states.Clocks[PerformanceStateId.P0_3DPerformance][1].FrequencyDeltaInkHz.DeltaValue / 1000;
             Logger.WriteLine($"GET GPU CLOCKS: {core}, {memory}");
+
+            foreach (var delta in states.Voltages[PerformanceStateId.P0_3DPerformance])
+            {
+                Logger.WriteLine("GPU VOLT:" + delta.IsEditable + " - " + delta.ValueDeltaInMicroVolt.DeltaValue);
+            }
+
             return 0;
 
         }
@@ -117,7 +123,7 @@ public class NvidiaGpuControl : IGpuControl
         return status;
     }
 
-    public int SetClocks(int core, int memory)
+    public int SetClocks(int core, int memory, int voltage = 0)
     {
 
         if (core < MinCoreOffset || core > MaxCoreOffset) return 0;
@@ -127,9 +133,10 @@ public class NvidiaGpuControl : IGpuControl
 
         var coreClock = new PerformanceStates20ClockEntryV1(PublicClockDomain.Graphics, new PerformanceStates20ParameterDelta(core * 1000));
         var memoryClock = new PerformanceStates20ClockEntryV1(PublicClockDomain.Memory, new PerformanceStates20ParameterDelta(memory * 1000));
+        var voltageEntry = new PerformanceStates20BaseVoltageEntryV1(PerformanceVoltageDomain.Core, new PerformanceStates20ParameterDelta(voltage));
 
         PerformanceStates20ClockEntryV1[] clocks = { coreClock, memoryClock };
-        PerformanceStates20BaseVoltageEntryV1[] voltages = { };
+        PerformanceStates20BaseVoltageEntryV1[] voltages = {  };
 
         PerformanceState20[] performanceStates = { new PerformanceState20(PerformanceStateId.P0_3DPerformance, clocks, voltages) };
 

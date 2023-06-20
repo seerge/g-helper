@@ -179,13 +179,11 @@ namespace GHelper
         }
 
 
-        private static IEnumerable<HidDevice> GetHidDevices(int[] deviceIds, int minInput = 18, int minFeatures = 1)
+        private static IEnumerable<HidDevice> GetHidDevices(int[] deviceIds, int minFeatures = 1)
         {
             HidDevice[] HidDeviceList = HidDevices.Enumerate(ASUS_ID, deviceIds).ToArray();
             foreach (HidDevice device in HidDeviceList)
-                if (device.IsConnected
-                    && device.Capabilities.FeatureReportByteLength >= minFeatures
-                    && device.Capabilities.InputReportByteLength >= minInput)
+                if (device.IsConnected && device.Capabilities.FeatureReportByteLength >= minFeatures)
                     yield return device;
         }
 
@@ -235,7 +233,7 @@ namespace GHelper
         {
             Task.Run(async () =>
             {
-                var devices = GetHidDevices(deviceIds, 0);
+                var devices = GetHidDevices(deviceIds);
                 foreach (HidDevice device in devices)
                 {
                     device.OpenDevice();
@@ -263,7 +261,7 @@ namespace GHelper
                 byte[] msg = { AURA_HID_ID, 0xba, 0xc5, 0xc4, (byte)brightness };
                 byte[] msgBackup = { INPUT_HID_ID, 0xba, 0xc5, 0xc4, (byte)brightness };
 
-                var devices = GetHidDevices(deviceIds, 0);
+                var devices = GetHidDevices(deviceIds);
                 foreach (HidDevice device in devices)
                 {
                     device.OpenDevice();
@@ -289,7 +287,7 @@ namespace GHelper
                 {
                     byte[] msgBackup = { INPUT_HID_ID, 0xba, 0xc5, 0xc4, (byte)brightness };
 
-                    var devicesBackup = GetHidDevices(deviceIds, 0);
+                    var devicesBackup = GetHidDevices(deviceIds);
                     foreach (HidDevice device in devicesBackup)
                     {
                         device.OpenDevice();
@@ -312,13 +310,15 @@ namespace GHelper
 
 
             var devices = GetHidDevices(deviceIds);
-            //Logger.WriteLine("USB-KB = " + BitConverter.ToString(msg));
 
             foreach (HidDevice device in devices)
             {
                 device.OpenDevice();
-                device.WriteFeatureData(msg);
-                Logger.WriteLine("USB-KB " + device.Attributes.ProductHexId + ":" + BitConverter.ToString(msg));
+                if (device.ReadFeatureData(out byte[] data, AURA_HID_ID))
+                {
+                    device.WriteFeatureData(msg);
+                    Logger.WriteLine("USB-KB " + device.Attributes.ProductHexId + ":" + BitConverter.ToString(msg));
+                }
                 device.CloseDevice();
             }
 
@@ -351,23 +351,19 @@ namespace GHelper
             }
 
             byte[] msg = AuraMessage(Mode, Color1, Color2, _speed);
-
             var devices = GetHidDevices(deviceIds);
-
-            if (devices.Count() == 0)
-            {
-                Logger.WriteLine("USB-KB : not found");
-                devices = GetHidDevices(deviceIds, 1);
-            }
 
             foreach (HidDevice device in devices)
             {
                 device.OpenDevice();
-                device.WriteFeatureData(msg);
-                device.WriteFeatureData(MESSAGE_SET);
-                device.WriteFeatureData(MESSAGE_APPLY);
+                if (device.ReadFeatureData(out byte[] data, AURA_HID_ID))
+                {
+                    device.WriteFeatureData(msg);
+                    //device.WriteFeatureData(MESSAGE_SET);
+                    device.WriteFeatureData(MESSAGE_APPLY);
+                    Logger.WriteLine("USB-KB " + device.Capabilities.FeatureReportByteLength + "|" + device.Capabilities.InputReportByteLength + device.Description + device.DevicePath + ":" + BitConverter.ToString(msg));
+                }
                 device.CloseDevice();
-                Logger.WriteLine("USB-KB " + device.Capabilities.FeatureReportByteLength + "|" + device.Capabilities.InputReportByteLength + device.Description + device.DevicePath + ":" + BitConverter.ToString(msg));
             }
 
             if (AppConfig.ContainsModel("TUF"))
@@ -385,7 +381,7 @@ namespace GHelper
             var payload = new byte[300];
             Array.Copy(msg, payload, msg.Length);
 
-            foreach (HidDevice device in GetHidDevices(new int[] { 0x1970 }, 0, 300))
+            foreach (HidDevice device in GetHidDevices(new int[] { 0x1970 }, 300))
             {
                 device.OpenDevice();
                 Logger.WriteLine("XGM " + device.Attributes.ProductHexId + "|" + device.Capabilities.FeatureReportByteLength + ":" + BitConverter.ToString(msg));
