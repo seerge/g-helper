@@ -11,8 +11,8 @@ namespace GHelper.Gpu;
 public class NvidiaGpuControl : IGpuControl
 {
 
-    public const int MaxCoreOffset = 250;
-    public const int MaxMemoryOffset = 250;
+    public static int MaxCoreOffset => AppConfig.Get("max_gpu_core", 250);
+    public static int MaxMemoryOffset => AppConfig.Get("max_gpu_memory", 250);
 
     public const int MinCoreOffset = -250;
     public const int MinMemoryOffset = -250;
