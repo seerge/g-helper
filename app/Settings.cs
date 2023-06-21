@@ -1156,17 +1156,17 @@ namespace GHelper
 
             try
             {
-                if (cpuUV >= -40 && cpuUV <= 0)
+                if (cpuUV >= Undervolter.MinCPUUV && cpuUV <= Undervolter.MaxCPUUV)
                 {
                     SendCommand.set_coall(cpuUV);
                 }
 
-                if (igpuUV >= -40 && igpuUV <= 0)
+                if (igpuUV >= Undervolter.MinIGPUUV && igpuUV <= Undervolter.MaxIGPUUV)
                 {
                     SendCommand.set_cogfx(igpuUV);
                 }
 
-                if (cpuTemp >= 70 && cpuTemp <= 97)
+                if (cpuTemp >= Undervolter.MinTemp && cpuTemp <= Undervolter.MaxTemp)
                 {
                     SendCommand.set_tctl_temp((uint)cpuTemp);
                     SendCommand.set_apu_skin_temp_limit((uint)cpuTemp);
