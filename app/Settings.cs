@@ -1036,7 +1036,7 @@ namespace GHelper
             labelPerf.Text = Properties.Strings.PerformanceMode + ": " + Modes.GetCurrentName() + (customFans ? "+" : "") + ((customPower > 0) ? " " + customPower + "W" : "");
         }
 
-        public void SetPower()
+        public void SetPower(bool launchAsAdmin = false)
         {
 
             int limit_total = AppConfig.GetMode("limit_total");
@@ -1058,6 +1058,21 @@ namespace GHelper
                 Program.acpi.DeviceSet(AsusACPI.PPT_TotalA0, limit_total, "PowerLimit A0");
                 Program.acpi.DeviceSet(AsusACPI.PPT_APUA3, limit_total, "PowerLimit A3");
                 customPower = limit_total;
+            } else if (Undervolter.IsAMD())
+            {
+
+                if (ProcessHelper.IsUserAdministrator())
+                {
+                    SendCommand.set_stapm_limit((uint)limit_total * 1000);
+                    SendCommand.set_stapm2_limit((uint)limit_total * 1000);
+                    SendCommand.set_slow_limit((uint)limit_total * 1000);
+                    SendCommand.set_fast_limit((uint)limit_total * 1000);
+                    customPower = limit_total;
+                } else if (launchAsAdmin)
+                {
+                    ProcessHelper.RunAsAdmin("cpu");
+                    return;
+                }
             }
 
             if (Program.acpi.IsAllAmdPPT()) // CPU limit all amd models
@@ -1293,7 +1308,7 @@ namespace GHelper
             }
             else
             {
-                if (applyPower) SetPower();
+                if (applyPower) SetPower(true);
                 SetGPUPower();
                 AutoUV();
             }

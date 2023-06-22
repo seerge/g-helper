@@ -403,7 +403,7 @@
     <value>Overdrive</value>
   </data>
   <data name="PerformanceMode" xml:space="preserve">
-    <value>Modo de rendimiento</value>
+    <value>Modo</value>
   </data>
   <data name="PictureGif" xml:space="preserve">
     <value>Imagen / Gif</value>

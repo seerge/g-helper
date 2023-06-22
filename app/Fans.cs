@@ -1,10 +1,7 @@
 ﻿using CustomControls;
 using GHelper.Gpu;
 using Ryzen;
-using System;
 using System.Diagnostics;
-using System.Net.Sockets;
-using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
 
 namespace GHelper
@@ -52,6 +49,8 @@ namespace GHelper
             labelGPUMemoryTitle.Text = Properties.Strings.GPUMemoryClockOffset;
             labelGPUBoostTitle.Text = Properties.Strings.GPUBoost;
             labelGPUTempTitle.Text = Properties.Strings.GPUTempTarget;
+
+            labelRisky.Text = Properties.Strings.UndervoltingRisky;
 
             InitTheme(true);
 
@@ -623,7 +622,7 @@ namespace GHelper
         public void InitPower(bool changed = false)
         {
 
-            bool modeA0 = Program.acpi.DeviceGet(AsusACPI.PPT_TotalA0) >= 0;
+            bool modeA0 = Program.acpi.DeviceGet(AsusACPI.PPT_TotalA0) >= 0 || Undervolter.IsAMD();
             bool modeB0 = Program.acpi.IsAllAmdPPT();
             bool modeC1 = Program.acpi.DeviceGet(AsusACPI.PPT_APUC1) >= 0;
 

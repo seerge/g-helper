@@ -126,11 +126,14 @@ namespace Ryzen
 
         public static bool IsAMD()
         {
-
             if (CPUName.Length == 0) Init();
-
             return CPUName.Contains("AMD") || CPUName.Contains("Ryzen") || CPUName.Contains("Athlon") || CPUName.Contains("Radeon") || CPUName.Contains("AMD Custom APU 0405");
+        }
 
+        public static bool IsRyzen9()
+        {
+            if (CPUName.Length == 0) Init();
+            return CPUName.Contains("Ryzen 9");
         }
 
         public static void SetAddresses()

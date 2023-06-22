@@ -193,6 +193,10 @@ namespace GHelper
 
                 switch (action)
                 {
+                    case "cpu":
+                        Startup.ReScheduleAdmin();
+                        settingsForm.FansToggle();
+                        break;
                     case "gpu":
                         Startup.ReScheduleAdmin();
                         settingsForm.FansToggle(1);

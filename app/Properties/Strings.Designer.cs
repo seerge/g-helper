@@ -160,7 +160,7 @@ namespace GHelper.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Apply.
+        ///   Looks up a localized string similar to Apply Power Limits.
         /// </summary>
         internal static string ApplyPowerLimits {
             get {
@@ -1173,6 +1173,15 @@ namespace GHelper.Properties {
         internal static string UltimateMode {
             get {
                 return ResourceManager.GetString("UltimateMode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Undervolting is experimental and risky feature. If applied values are too low for your hardware, it can become unstable, shut down or cause data corruption. If you want to try - start from small values first, click Apply and test what works for you..
+        /// </summary>
+        internal static string UndervoltingRisky {
+            get {
+                return ResourceManager.GetString("UndervoltingRisky", resourceCulture);
             }
         }
         
