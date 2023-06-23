@@ -457,6 +457,26 @@ namespace GHelper.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Disabling the dGPU by going to Eco mode while Display Mode in NVIDIA Control Panel is not set to Optimus might cause problems with brightness controls until after the next reboot. 
+        ///
+        ///Do you still want to continue?.
+        /// </summary>
+        internal static string EnableOptimusText {
+            get {
+                return ResourceManager.GetString("EnableOptimusText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to NVIDIA Display Mode is not set to Optimus.
+        /// </summary>
+        internal static string EnableOptimusTitle {
+            get {
+                return ResourceManager.GetString("EnableOptimusTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Extra.
         /// </summary>
         internal static string Extra {
@@ -858,6 +878,24 @@ namespace GHelper.Properties {
         internal static string MuteMic {
             get {
                 return ResourceManager.GetString("MuteMic", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New updates.
+        /// </summary>
+        internal static string NewUpdates {
+            get {
+                return ResourceManager.GetString("NewUpdates", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No new updates.
+        /// </summary>
+        internal static string NoNewUpdates {
+            get {
+                return ResourceManager.GetString("NoNewUpdates", resourceCulture);
             }
         }
         

@@ -1688,7 +1688,20 @@ namespace GHelper
 
                 int status = 1;
 
-                if (eco == 1) HardwareControl.KillGPUApps();
+                if (eco == 1)
+                {
+                    if (NvidiaSmi.GetDisplayActiveStatus())
+                    {
+                        DialogResult dialogResult = MessageBox.Show(Properties.Strings.EnableOptimusText, Properties.Strings.EnableOptimusTitle, MessageBoxButtons.YesNo);
+                        if (dialogResult == DialogResult.No)
+                        {
+                            InitGPUMode();
+                            return;
+                        }
+                    }
+
+                    HardwareControl.KillGPUApps();
+                }
 
                 Logger.WriteLine($"Running eco command {eco}");
 

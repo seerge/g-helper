@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Management;
 using System.Net;
 using System.Text.Json;
+using System.Windows.Forms;
 
 namespace GHelper
 {
@@ -22,20 +23,28 @@ namespace GHelper
         static string model;
         static string bios;
 
-        public Updates()
-        {
-            InitializeComponent();
-            InitTheme();
+        static int updatesCount = 0;
 
+        private void LoadUpdates()
+        {
             InitBiosAndModel();
+
+            updatesCount = 0;
+            labelUpdates.ForeColor = colorEco;
+            labelUpdates.Text = Properties.Strings.NoNewUpdates;
+
 
             Text = Properties.Strings.BiosAndDriverUpdates + ": " + model + " " + bios;
             labelBIOS.Text = "BIOS";
             labelDrivers.Text = Properties.Strings.DriverAndSoftware;
 
             SuspendLayout();
+
             tableBios.Visible = false;
             tableDrivers.Visible = false;
+
+            ClearTable(tableBios);
+            ClearTable(tableDrivers);
 
             Task.Run(async () =>
             {
@@ -46,8 +55,32 @@ namespace GHelper
             {
                 DriversAsync($"https://rog.asus.com/support/webapi/product/GetPDDrivers?website=global&model={model}&cpu={model}&osid=52", 0, tableDrivers);
             });
+        }
 
+        private void ClearTable(TableLayoutPanel tableLayoutPanel)
+        {
+            while (tableLayoutPanel.Controls.Count > 0)
+            {
+                tableLayoutPanel.Controls[0].Dispose();
+            }
+
+            tableLayoutPanel.RowCount = 0;
+        }
+
+        public Updates()
+        {
+            InitializeComponent();
+            InitTheme();
+
+            LoadUpdates();
+
+            buttonRefresh.Click += ButtonRefresh_Click;
             Shown += Updates_Shown;
+        }
+
+        private void ButtonRefresh_Click(object? sender, EventArgs e)
+        {
+            LoadUpdates();
         }
 
         private void Updates_Shown(object? sender, EventArgs e)
@@ -208,8 +241,13 @@ namespace GHelper
                             {
                                 Invoke(delegate
                                 {
+                                    updatesCount++;
                                     label.Font = new Font(label.Font, FontStyle.Underline | FontStyle.Bold);
                                     label.ForeColor = colorTurbo;
+
+                                    labelUpdates.Text = $"{Properties.Strings.NewUpdates}: {updatesCount}";
+                                    labelUpdates.ForeColor = colorTurbo;
+                                    labelUpdates.Font = new Font(label.Font, FontStyle.Bold);
                                 });
                             }
                         }
