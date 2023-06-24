@@ -993,7 +993,10 @@ namespace GHelper
 
         private void ButtonStopGPU_Click(object? sender, EventArgs e)
         {
-            HardwareControl.KillGPUApps();
+            if (HardwareControl.GpuControl is not null)
+            {
+                HardwareControl.GpuControl.KillGPUApps();
+            }
         }
 
         public async void RefreshSensors(bool force = false)
@@ -1615,7 +1618,7 @@ namespace GHelper
                 if (eco < 0 && mux < 0)
                 {
                     isGpuSection = false;
-                    
+
                     buttonEco.Visible = false;
                     buttonStandard.Visible = false;
                     buttonUltimate.Visible = false;
