@@ -121,7 +121,7 @@ False positives from Windows Defender (or any other similar system that uses mac
 #### Where can I find app settings or logs ?
 You can find them under ``%AppData%\GHelper`` folder. Please include them when posting a new bug-report or issue.
 
-### App refuses to run on startup / runs without icon in tray on startup
+#### App refuses to run on startup / runs without icon in tray on startup
 Open app, and uncheck and check again "run on startup". If it still doesn't help (by some reason), you can manually delete "GHelper" task in windows Task Scheduler app, and then check "run on startup" again.
 
 #### How do I uninstall G-helper?
