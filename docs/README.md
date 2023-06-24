@@ -122,7 +122,7 @@ False positives from Windows Defender (or any other similar system that uses mac
 You can find them under ``%AppData%\GHelper`` folder. Please include them when posting a new bug-report or issue.
 
 #### App refuses to run on startup / runs without icon in tray on startup
-Open app, and uncheck and check again "run on startup". If it still doesn't help (by some reason), you can manually delete "GHelper" task in windows Task Scheduler app, and then check "run on startup" again.
+Open app, and uncheck and check again "run on startup". If it still doesn't help (by some reason), you can try to manually edit "GHelper" task in windows Task Scheduler, and add couple of seconds delay to start.
 
 #### How do I uninstall G-helper?
 G-helper is a single exe, and it doesn't install anything in the system. To remove it - you can simply delete exe :) If you have applied any custom fan profiles or PPTs - before removing I would recommend selecting your favorite performance mode (for example balanced) and clicking "Factory defaults" under Fans + Power.
