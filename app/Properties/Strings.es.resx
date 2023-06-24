@@ -249,6 +249,14 @@
   <data name="EcoMode" xml:space="preserve">
     <value>Eco</value>
   </data>
+  <data name="EnableOptimusText" xml:space="preserve">
+    <value>Deshabilitar la dGPU cambiando a modo Eco moentras el Modo de Pantalla en el Panel de Control de NVIDIA no está configurado en Optimus puede causar problemas con el control del brillo hasta después del próximo reinicio.
+
+¿Seguro que desea continuar?</value>
+  </data>
+  <data name="EnableOptimusTitle" xml:space="preserve">
+    <value>Modo de Pantalla NVIDIA no está configurado en Optimus</value>
+  </data>
   <data name="Extra" xml:space="preserve">
     <value>Adicional</value>
   </data>
@@ -384,6 +392,12 @@
   <data name="MuteMic" xml:space="preserve">
     <value>Silenciar micrófono</value>
   </data>
+  <data name="NewUpdates" xml:space="preserve">
+    <value>Nuevas actualizaciones</value>
+  </data>
+  <data name="NoNewUpdates" xml:space="preserve">
+    <value>No hay nuevas actualizaciones</value>
+  </data>
   <data name="OpenGHelper" xml:space="preserve">
     <value>Abrir ventana G-Helper</value>
   </data>
@@ -459,6 +473,9 @@
   <data name="Stop" xml:space="preserve">
     <value>Detener</value>
   </data>
+  <data name="StopGPUApps" xml:space="preserve">
+    <value>Detener aplicaciones dGPU</value>
+  </data>
   <data name="StoppingServices" xml:space="preserve">
     <value>Deteniendo servicios</value>
   </data>
@@ -488,6 +505,9 @@
   </data>
   <data name="UltimateMode" xml:space="preserve">
     <value>Ultimate</value>
+  </data>
+  <data name="UndervoltingRisky" xml:space="preserve">
+    <value>Undervolting es una característica experimental. Aplicar valores demasiado bajos puede causar inestabilidad en el hardware o corrupción de datos. Si desea probar, empiece con valores pequeños, haga click en Aplicar y pruebe.</value>
   </data>
   <data name="Updates" xml:space="preserve">
     <value>Actualización</value>
