@@ -54,7 +54,7 @@ namespace GHelper
             buttonUltimate.Text = Properties.Strings.UltimateMode;
             buttonStandard.Text = Properties.Strings.StandardMode;
             buttonOptimized.Text = Properties.Strings.Optimized;
-
+            buttonStopGPU.Text = Properties.Strings.StopGPUApps;
 
             buttonScreenAuto.Text = Properties.Strings.AutoMode;
             buttonMiniled.Text = Properties.Strings.Multizone;
@@ -102,6 +102,7 @@ namespace GHelper
             buttonStandard.Click += ButtonStandard_Click;
             buttonUltimate.Click += ButtonUltimate_Click;
             buttonOptimized.Click += ButtonOptimized_Click;
+            buttonStopGPU.Click += ButtonStopGPU_Click;
 
             VisibleChanged += SettingsForm_VisibleChanged;
 
@@ -185,6 +186,7 @@ namespace GHelper
 
 
         }
+
 
         private void SettingsForm_VisibleChanged(object? sender, EventArgs e)
         {
@@ -988,6 +990,12 @@ namespace GHelper
             SetGPUMode(AsusACPI.GPUModeEco);
         }
 
+
+        private void ButtonStopGPU_Click(object? sender, EventArgs e)
+        {
+            HardwareControl.KillGPUApps();
+        }
+
         public async void RefreshSensors(bool force = false)
         {
 
@@ -1059,7 +1067,7 @@ namespace GHelper
                 Program.acpi.DeviceSet(AsusACPI.PPT_APUA3, limit_total, "PowerLimit A3");
                 customPower = limit_total;
             }
-            else if (Undervolter.IsAMD())
+            else if (RyzenControl.IsAMD())
             {
 
                 if (ProcessHelper.IsUserAdministrator())
@@ -1165,7 +1173,7 @@ namespace GHelper
                 return;
             }
 
-            if (!Undervolter.IsAMD()) return;
+            if (!RyzenControl.IsAMD()) return;
 
             int cpuUV = AppConfig.GetMode("cpu_uv", 0);
             int igpuUV = AppConfig.GetMode("igpu_uv", 0);
@@ -1173,17 +1181,17 @@ namespace GHelper
 
             try
             {
-                if (cpuUV >= Undervolter.MinCPUUV && cpuUV <= Undervolter.MaxCPUUV)
+                if (cpuUV >= RyzenControl.MinCPUUV && cpuUV <= RyzenControl.MaxCPUUV)
                 {
                     SendCommand.set_coall(cpuUV);
                 }
 
-                if (igpuUV >= Undervolter.MinIGPUUV && igpuUV <= Undervolter.MaxIGPUUV)
+                if (igpuUV >= RyzenControl.MinIGPUUV && igpuUV <= RyzenControl.MaxIGPUUV)
                 {
                     SendCommand.set_cogfx(igpuUV);
                 }
 
-                if (cpuTemp >= Undervolter.MinTemp && cpuTemp <= Undervolter.MaxTemp)
+                if (cpuTemp >= RyzenControl.MinTemp && cpuTemp <= RyzenControl.MaxTemp)
                 {
                     SendCommand.set_tctl_temp((uint)cpuTemp);
                     SendCommand.set_apu_skin_temp_limit((uint)cpuTemp);
@@ -1544,20 +1552,6 @@ namespace GHelper
             return true;
         }
 
-        private void UltimateUI(bool ultimate)
-        {
-            if (!ultimate)
-            {
-                tableGPU.Controls.Remove(buttonUltimate);
-                tablePerf.ColumnCount = 0;
-                tableGPU.ColumnCount = 0;
-                tableScreen.ColumnCount = 0;
-                menuUltimate.Visible = false;
-
-            }
-            //tableLayoutMatrix.ColumnCount = 0;
-        }
-
         public void InitXGM()
         {
             bool connected = Program.acpi.IsXGConnected();
@@ -1608,12 +1602,28 @@ namespace GHelper
                 else
                     GpuMode = AsusACPI.GPUModeStandard;
 
-                UltimateUI(mux == 1);
+                // Ultimate mode not suported
+                if (mux != 1)
+                {
+                    tableGPU.Controls.Remove(buttonUltimate);
+                    tablePerf.ColumnCount = 0;
+                    tableGPU.ColumnCount = 0;
+                    tableScreen.ColumnCount = 0;
+                    menuUltimate.Visible = false;
+                }
 
                 if (eco < 0 && mux < 0)
                 {
-                    isGpuSection = tableGPU.Visible = false;
+                    isGpuSection = false;
+                    
+                    buttonEco.Visible = false;
+                    buttonStandard.Visible = false;
+                    buttonUltimate.Visible = false;
+                    buttonOptimized.Visible = false;
+                    buttonStopGPU.Visible = true;
+
                     SetContextMenu();
+
                     if (HardwareControl.FormatFan(Program.acpi.DeviceGet(AsusACPI.GPU_Fan)) is null) panelGPU.Visible = false;
                 }
 

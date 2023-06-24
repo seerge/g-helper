@@ -74,7 +74,7 @@ namespace GHelper
         public Updates()
         {
             InitializeComponent();
-            InitTheme();
+            InitTheme(true);
 
 
             LoadUpdates();

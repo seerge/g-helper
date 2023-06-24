@@ -97,6 +97,7 @@ namespace GHelper
             labelVersion = new Label();
             labelModel = new Label();
             panelVersion = new Panel();
+            buttonStopGPU = new RButton();
             panelMatrix.SuspendLayout();
             tableLayoutMatrix.SuspendLayout();
             panelMatrixTitle.SuspendLayout();
@@ -592,6 +593,7 @@ namespace GHelper
             tableGPU.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
             tableGPU.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
             tableGPU.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
+            tableGPU.Controls.Add(buttonStopGPU, 0, 0);
             tableGPU.Controls.Add(buttonEco, 0, 0);
             tableGPU.Controls.Add(buttonStandard, 1, 0);
             tableGPU.Controls.Add(buttonXGM, 2, 0);
@@ -664,11 +666,11 @@ namespace GHelper
             buttonXGM.ForeColor = SystemColors.ControlText;
             buttonXGM.Image = Properties.Resources.icons8_video_48;
             buttonXGM.ImageAlign = ContentAlignment.BottomCenter;
-            buttonXGM.Location = new Point(4, 132);
+            buttonXGM.Location = new Point(580, 4);
             buttonXGM.Margin = new Padding(4);
             buttonXGM.Name = "buttonXGM";
             buttonXGM.Secondary = false;
-            buttonXGM.Size = new Size(184, 120);
+            buttonXGM.Size = new Size(186, 120);
             buttonXGM.TabIndex = 2;
             buttonXGM.Text = "XG Mobile";
             buttonXGM.TextImageRelation = TextImageRelation.ImageAboveText;
@@ -687,11 +689,11 @@ namespace GHelper
             buttonOptimized.ForeColor = SystemColors.ControlText;
             buttonOptimized.Image = Properties.Resources.icons8_project_management_48__1_;
             buttonOptimized.ImageAlign = ContentAlignment.BottomCenter;
-            buttonOptimized.Location = new Point(580, 4);
+            buttonOptimized.Location = new Point(388, 4);
             buttonOptimized.Margin = new Padding(4);
             buttonOptimized.Name = "buttonOptimized";
             buttonOptimized.Secondary = false;
-            buttonOptimized.Size = new Size(186, 120);
+            buttonOptimized.Size = new Size(184, 120);
             buttonOptimized.TabIndex = 3;
             buttonOptimized.Text = Properties.Strings.Optimized;
             buttonOptimized.TextImageRelation = TextImageRelation.ImageAboveText;
@@ -709,7 +711,7 @@ namespace GHelper
             buttonUltimate.ForeColor = SystemColors.ControlText;
             buttonUltimate.Image = Properties.Resources.icons8_game_controller_48;
             buttonUltimate.ImageAlign = ContentAlignment.BottomCenter;
-            buttonUltimate.Location = new Point(388, 4);
+            buttonUltimate.Location = new Point(4, 132);
             buttonUltimate.Margin = new Padding(4);
             buttonUltimate.Name = "buttonUltimate";
             buttonUltimate.Secondary = false;
@@ -1118,6 +1120,30 @@ namespace GHelper
             panelVersion.Size = new Size(810, 57);
             panelVersion.TabIndex = 41;
             // 
+            // buttonStopGPU
+            // 
+            buttonStopGPU.Activated = false;
+            buttonStopGPU.BackColor = SystemColors.ControlLightLight;
+            buttonStopGPU.BorderColor = Color.Transparent;
+            buttonStopGPU.BorderRadius = 5;
+            buttonStopGPU.CausesValidation = false;
+            buttonStopGPU.Dock = DockStyle.Top;
+            buttonStopGPU.FlatAppearance.BorderSize = 0;
+            buttonStopGPU.FlatStyle = FlatStyle.Flat;
+            buttonStopGPU.ForeColor = SystemColors.ControlText;
+            buttonStopGPU.Image = Properties.Resources.icons8_leaf_48;
+            buttonStopGPU.ImageAlign = ContentAlignment.BottomCenter;
+            buttonStopGPU.Location = new Point(196, 132);
+            buttonStopGPU.Margin = new Padding(4);
+            buttonStopGPU.Name = "buttonStopGPU";
+            buttonStopGPU.Secondary = false;
+            buttonStopGPU.Size = new Size(184, 120);
+            buttonStopGPU.TabIndex = 4;
+            buttonStopGPU.Text = "Stop GPU applications";
+            buttonStopGPU.TextImageRelation = TextImageRelation.ImageAboveText;
+            buttonStopGPU.UseVisualStyleBackColor = false;
+            buttonStopGPU.Visible = false;
+            // 
             // SettingsForm
             // 
             AutoScaleDimensions = new SizeF(192F, 192F);
@@ -1255,5 +1281,6 @@ namespace GHelper
         private Panel panelVersion;
         private Label labelVersion;
         private Label labelModel;
+        private RButton buttonStopGPU;
     }
 }

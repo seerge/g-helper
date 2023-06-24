@@ -8,7 +8,7 @@ using System.Management;
 
 namespace Ryzen
 {
-    internal class Undervolter
+    internal class RyzenControl
     {
 
         public const int MinCPUUV = -30;

@@ -132,14 +132,14 @@ namespace GHelper
             labelFansResult.Visible = false;
 
 
-            trackUV.Minimum = Undervolter.MinCPUUV;
-            trackUV.Maximum = Undervolter.MaxCPUUV;
+            trackUV.Minimum = RyzenControl.MinCPUUV;
+            trackUV.Maximum = RyzenControl.MaxCPUUV;
 
-            trackUViGPU.Minimum = Undervolter.MinIGPUUV;
-            trackUViGPU.Maximum = Undervolter.MaxIGPUUV;
+            trackUViGPU.Minimum = RyzenControl.MinIGPUUV;
+            trackUViGPU.Maximum = RyzenControl.MaxIGPUUV;
 
-            trackTemp.Minimum = Undervolter.MinTemp;
-            trackTemp.Maximum = Undervolter.MaxTemp;
+            trackTemp.Minimum = RyzenControl.MinTemp;
+            trackTemp.Maximum = RyzenControl.MaxTemp;
 
 
             FillModes();
@@ -270,7 +270,7 @@ namespace GHelper
             labelTemp.Text = trackTemp.Value.ToString() + "°C";
 
 
-            buttonAdvanced.Visible = Undervolter.IsAMD();
+            buttonAdvanced.Visible = RyzenControl.IsAMD();
 
         }
 
@@ -622,7 +622,7 @@ namespace GHelper
         public void InitPower(bool changed = false)
         {
 
-            bool modeA0 = (Program.acpi.DeviceGet(AsusACPI.PPT_TotalA0) >= 0 || Undervolter.IsAMD());
+            bool modeA0 = (Program.acpi.DeviceGet(AsusACPI.PPT_TotalA0) >= 0 || RyzenControl.IsAMD());
             bool modeB0 = Program.acpi.IsAllAmdPPT();
             bool modeC1 = Program.acpi.DeviceGet(AsusACPI.PPT_APUC1) >= 0;
 

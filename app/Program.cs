@@ -74,7 +74,7 @@ namespace GHelper
             Application.EnableVisualStyles();
 
             HardwareControl.RecreateGpuControl();
-            Undervolter.Init();
+            RyzenControl.Init();
 
             var ds = settingsForm.Handle;
 

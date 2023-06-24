@@ -22,7 +22,7 @@ namespace Ryzen
         //RAPHAEL/DRAGON RANGE - 10
 
         public static Smu RyzenAccess = new Smu(false);
-        public static int FAMID = Undervolter.FAMID;
+        public static int FAMID = RyzenControl.FAMID;
 
 
         //STAMP Limit

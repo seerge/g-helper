@@ -1125,6 +1125,15 @@ namespace GHelper.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Stop GPU Applications.
+        /// </summary>
+        internal static string StopGPUApps {
+            get {
+                return ResourceManager.GetString("StopGPUApps", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Stopping Services.
         /// </summary>
         internal static string StoppingServices {
