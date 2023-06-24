@@ -622,12 +622,14 @@ namespace GHelper
         public void InitPower(bool changed = false)
         {
 
-            bool modeA0 = Program.acpi.DeviceGet(AsusACPI.PPT_TotalA0) >= 0 || Undervolter.IsAMD();
+            bool modeA0 = (Program.acpi.DeviceGet(AsusACPI.PPT_TotalA0) >= 0 || Undervolter.IsAMD());
             bool modeB0 = Program.acpi.IsAllAmdPPT();
             bool modeC1 = Program.acpi.DeviceGet(AsusACPI.PPT_APUC1) >= 0;
 
             panelA0.Visible = modeA0;
             panelB0.Visible = modeB0;
+
+            panelApplyPower.Visible = panelTitleCPU.Visible = modeA0 || modeB0 || modeC1;
 
 
             // All AMD version has B0 but doesn't have C0 (Nvidia GPU) settings

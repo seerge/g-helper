@@ -24,6 +24,14 @@ namespace GHelper
                 {
                     while (!cancellationTokenSource.Token.IsCancellationRequested)
                     {
+
+                        // Emergency break
+                        if (input == null || !input.IsConnected )
+                        {
+                            Logger.WriteLine("Listener terminated");
+                            break;
+                        }
+
                         var data = input.Read().Data;
                         if (data.Length > 1 && data[0] == AsusUSB.INPUT_HID_ID && data[1] > 0 && data[1] != 236)
                         {
@@ -31,6 +39,7 @@ namespace GHelper
                             KeyHandler(data[1]);
                         }
                     }
+
                     Logger.WriteLine("Listener stopped");
 
                 }

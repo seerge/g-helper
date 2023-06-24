@@ -3,7 +3,6 @@ using System.Diagnostics;
 using System.Management;
 using System.Net;
 using System.Text.Json;
-using System.Windows.Forms;
 
 namespace GHelper
 {
@@ -24,9 +23,14 @@ namespace GHelper
         static string bios;
 
         static int updatesCount = 0;
+        private static long lastUpdate;
 
         private void LoadUpdates()
         {
+
+            if (Math.Abs(DateTimeOffset.Now.ToUnixTimeMilliseconds() - lastUpdate) < 5000) return;
+            lastUpdate = DateTimeOffset.Now.ToUnixTimeMilliseconds();
+
             InitBiosAndModel();
 
             updatesCount = 0;
@@ -72,8 +76,10 @@ namespace GHelper
             InitializeComponent();
             InitTheme();
 
+
             LoadUpdates();
 
+            //buttonRefresh.Visible = false;
             buttonRefresh.Click += ButtonRefresh_Click;
             Shown += Updates_Shown;
         }
@@ -147,6 +153,7 @@ namespace GHelper
                     httpClient.DefaultRequestHeaders.AcceptEncoding.ParseAdd("gzip, deflate, br");
                     httpClient.DefaultRequestHeaders.Add("User-Agent", "C# App");
                     var json = await httpClient.GetStringAsync(url);
+
                     var data = JsonSerializer.Deserialize<JsonElement>(json);
                     var groups = data.GetProperty("Result").GetProperty("Obj");
 
@@ -178,6 +185,7 @@ namespace GHelper
                                 driver.hardwares = file.GetProperty("HardwareInfoList");
                                 drivers.Add(driver);
 
+
                                 Invoke(delegate
                                 {
                                     string versionText = driver.version.Replace("latest version at the ", "");
@@ -203,12 +211,14 @@ namespace GHelper
                         }
                     }
 
+
                     Invoke(delegate
                     {
                         table.Visible = true;
                         ResumeLayout(false);
                         PerformLayout();
                     });
+
 
                     Dictionary<string, string> devices = new();
                     if (type == 0) devices = GetDeviceVersions();
@@ -255,6 +265,8 @@ namespace GHelper
                         count++;
                     }
 
+                    GC.Collect();
+                    GC.WaitForPendingFinalizers();
                 }
             }
             catch (Exception ex)

@@ -1058,7 +1058,8 @@ namespace GHelper
                 Program.acpi.DeviceSet(AsusACPI.PPT_TotalA0, limit_total, "PowerLimit A0");
                 Program.acpi.DeviceSet(AsusACPI.PPT_APUA3, limit_total, "PowerLimit A3");
                 customPower = limit_total;
-            } else if (Undervolter.IsAMD())
+            }
+            else if (Undervolter.IsAMD())
             {
 
                 if (ProcessHelper.IsUserAdministrator())
@@ -1068,7 +1069,8 @@ namespace GHelper
                     SendCommand.set_slow_limit((uint)limit_total * 1000);
                     SendCommand.set_fast_limit((uint)limit_total * 1000);
                     customPower = limit_total;
-                } else if (launchAsAdmin)
+                }
+                else if (launchAsAdmin)
                 {
                     ProcessHelper.RunAsAdmin("cpu");
                     return;
@@ -1156,7 +1158,7 @@ namespace GHelper
 
         public void SetUV(bool launchAsAdmin = false)
         {
-            
+
             if (!ProcessHelper.IsUserAdministrator())
             {
                 if (launchAsAdmin) ProcessHelper.RunAsAdmin("uv");
@@ -1255,13 +1257,14 @@ namespace GHelper
 
         }
 
-        private static bool isManualModeRequired()
+        private static bool IsManualModeRequired()
         {
             if (!AppConfig.IsMode("auto_apply_power"))
                 return false;
 
             return
                 AppConfig.Is("manual_mode") ||
+                AppConfig.ContainsModel("GU603") ||
                 AppConfig.ContainsModel("GU604") ||
                 AppConfig.ContainsModel("FX517") ||
                 AppConfig.ContainsModel("G733");
@@ -1286,7 +1289,7 @@ namespace GHelper
                 }
 
                 // Fix for models that don't support PPT settings in all modes, setting a "manual" mode for them
-                if (isManualModeRequired() && !applyFans)
+                if (IsManualModeRequired() && !applyFans)
                 {
                     AutoFans(true);
                 }
@@ -1376,7 +1379,7 @@ namespace GHelper
 
             SetPerformanceLabel();
 
-            if (isManualModeRequired())
+            if (IsManualModeRequired())
                 Program.acpi.DeviceSet(AsusACPI.PerformanceMode, AsusACPI.PerformanceManual, "Manual Mode");
             else
                 Program.acpi.DeviceSet(AsusACPI.PerformanceMode, Modes.GetBase(mode), "Mode");

@@ -359,7 +359,7 @@ namespace GHelper
                 if (device.ReadFeatureData(out byte[] data, AURA_HID_ID))
                 {
                     device.WriteFeatureData(msg);
-                    //device.WriteFeatureData(MESSAGE_SET);
+                    device.WriteFeatureData(MESSAGE_SET);
                     device.WriteFeatureData(MESSAGE_APPLY);
                     Logger.WriteLine("USB-KB " + device.Capabilities.FeatureReportByteLength + "|" + device.Capabilities.InputReportByteLength + device.Description + device.DevicePath + ":" + BitConverter.ToString(msg));
                 }
