@@ -1,3 +1,4 @@
+using GHelper.Mode;
 using Microsoft.Win32;
 using Ryzen;
 using System.Diagnostics;
@@ -20,6 +21,7 @@ namespace GHelper
         public static AsusACPI? acpi;
 
         public static SettingsForm settingsForm = new SettingsForm();
+        public static ModeControl modeControl = new ModeControl();
 
         public static IntPtr unRegPowerNotify;
 
@@ -151,7 +153,7 @@ namespace GHelper
             inputDispatcher.Init();
 
             settingsForm.SetBatteryChargeLimit(AppConfig.Get("charge_limit"));
-            settingsForm.AutoPerformance(powerChanged);
+            modeControl.AutoPerformance(powerChanged);
 
             bool switched = settingsForm.AutoGPUMode();
 
@@ -212,7 +214,7 @@ namespace GHelper
                     case "uv":
                         Startup.ReScheduleAdmin();
                         settingsForm.FansToggle(2);
-                        settingsForm.SetUV();
+                        //settingsForm.SetUV(); TODO
                         break;
                 }
             }

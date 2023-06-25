@@ -1,4 +1,5 @@
-﻿using HidLibrary;
+﻿using GHelper.Mode;
+using HidLibrary;
 using Microsoft.Win32;
 using NAudio.CoreAudioApi;
 using System.Diagnostics;
@@ -66,6 +67,8 @@ namespace GHelper
 
         public static Keys keyProfile = Keys.F5;
         public static Keys keyApp = Keys.F12;
+
+        static ModeControl modeControl = new ModeControl();
 
         KeyboardListener listener;
         KeyboardHook hook = new KeyboardHook();
@@ -283,7 +286,7 @@ namespace GHelper
 
             if (e.Modifier == (ModifierKeys.Control | ModifierKeys.Shift))
             {
-                if (e.Key == keyProfile) Program.settingsForm.CyclePerformanceMode();
+                if (e.Key == keyProfile) modeControl.CyclePerformanceMode();
                 if (e.Key == keyApp) Program.SettingsToggle();
             }
 
@@ -331,7 +334,7 @@ namespace GHelper
                     Program.settingsForm.BeginInvoke(Program.settingsForm.CycleAuraMode);
                     break;
                 case "performance":
-                    Program.settingsForm.BeginInvoke(Program.settingsForm.CyclePerformanceMode);
+                    Program.settingsForm.BeginInvoke(modeControl.CyclePerformanceMode);
                     break;
                 case "ghelper":
                     Program.settingsForm.BeginInvoke(delegate
@@ -409,7 +412,7 @@ namespace GHelper
                     KeyProcess("m4");
                     return;
                 case 174:   // FN+F5
-                    Program.settingsForm.BeginInvoke(Program.settingsForm.CyclePerformanceMode);
+                    Program.settingsForm.BeginInvoke(modeControl.CyclePerformanceMode);
                     return;
                 case 179:   // FN+F4
                 case 178:   // FN+F4

@@ -1,5 +1,6 @@
 ﻿using CustomControls;
 using GHelper.Gpu;
+using GHelper.Mode;
 using Ryzen;
 using System.Diagnostics;
 using System.Windows.Forms.DataVisualization.Charting;
@@ -24,6 +25,7 @@ namespace GHelper
         const int fansMax = 100;
 
         NvidiaGpuControl? nvControl = null;
+        ModeControl modeControl = new ModeControl();
 
         public Fans()
         {
@@ -243,7 +245,7 @@ namespace GHelper
 
         private void ButtonApplyAdvanced_Click(object? sender, EventArgs e)
         {
-            Program.settingsForm.SetUV(true);
+            modeControl.SetUV(true);
             checkApplyUV.Enabled = true;
         }
 
@@ -331,7 +333,7 @@ namespace GHelper
             Modes.Remove(mode);
             FillModes();
 
-            Program.settingsForm.SetPerformanceMode(AsusACPI.PerformanceBalanced);
+            modeControl.SetPerformanceMode(AsusACPI.PerformanceBalanced);
 
         }
 
@@ -347,7 +349,7 @@ namespace GHelper
         {
             int mode = Modes.Add();
             FillModes();
-            Program.settingsForm.SetPerformanceMode(mode);
+            modeControl.SetPerformanceMode(mode);
         }
 
         public void InitMode()
@@ -366,13 +368,13 @@ namespace GHelper
 
             Debug.WriteLine(selectedMode);
 
-            Program.settingsForm.SetPerformanceMode((int)selectedMode);
+            modeControl.SetPerformanceMode((int)selectedMode);
         }
 
         private void TrackGPU_MouseUp(object? sender, MouseEventArgs e)
         {
-            Program.settingsForm.SetGPUPower();
-            Program.settingsForm.SetGPUClocks(true);
+            modeControl.SetGPUPower();
+            modeControl.SetGPUClocks(true);
         }
 
         public void InitGPU()
@@ -560,7 +562,7 @@ namespace GHelper
 
         private void TrackPower_MouseUp(object? sender, MouseEventArgs e)
         {
-            Program.settingsForm.AutoPower();
+            modeControl.AutoPower();
         }
 
 
@@ -586,7 +588,7 @@ namespace GHelper
             CheckBox chk = (CheckBox)sender;
 
             AppConfig.SetMode("auto_apply_power", chk.Checked ? 1 : 0);
-            Program.settingsForm.SetPerformanceMode();
+            modeControl.SetPerformanceMode();
 
         }
 
@@ -596,7 +598,7 @@ namespace GHelper
             CheckBox chk = (CheckBox)sender;
 
             AppConfig.SetMode("auto_apply", chk.Checked ? 1 : 0);
-            Program.settingsForm.SetPerformanceMode();
+            modeControl.SetPerformanceMode();
 
         }
 
@@ -853,8 +855,8 @@ namespace GHelper
                 AppConfig.SetMode("gpu_memory", trackGPUMemory.Value);
 
                 VisualiseGPUSettings();
-                Program.settingsForm.SetGPUClocks(true);
-                Program.settingsForm.SetGPUPower();
+                modeControl.SetGPUClocks(true);
+                modeControl.SetGPUPower();
             }
 
         }
@@ -875,7 +877,7 @@ namespace GHelper
             if (AppConfig.Is("xgm_fan"))
                 SaveProfile(seriesXGM, AsusFan.XGM);
 
-            Program.settingsForm.AutoFans();
+            modeControl.AutoFans();
 
 
         }

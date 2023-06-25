@@ -63,6 +63,7 @@
     <PackageReference Include="hidlibrary" Version="3.3.40" />
     <PackageReference Include="HidSharpCore" Version="1.2.1.1" />
     <PackageReference Include="NAudio" Version="2.1.0" />
+    <PackageReference Include="NvAPIWrapper.Net" Version="0.8.1.101" />
     <PackageReference Include="System.Management" Version="7.0.1" />
     <PackageReference Include="TaskScheduler" Version="2.10.1" />
     <PackageReference Include="WinForms.DataVisualization" Version="1.8.0" />
