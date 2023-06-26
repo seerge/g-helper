@@ -1,10 +1,14 @@
-﻿using System.Diagnostics;
+﻿using Ryzen;
+using System.Diagnostics;
 using System.Text.RegularExpressions;
 
 public static class NvidiaSmi
 {
     public static bool GetDisplayActiveStatus()
     {
+        // Non AMD devices doesn't seem to be affected
+        if (!RyzenControl.IsAMD()) return false;
+
         string commandOutput = RunNvidiaSmiCommand();
 
         Logger.WriteLine(commandOutput);
