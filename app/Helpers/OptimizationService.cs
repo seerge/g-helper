@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace GHelper
+namespace GHelper.Helpers
 {
     public static class OptimizationService
     {
@@ -52,7 +52,7 @@ namespace GHelper
 
         public static bool IsRunning()
         {
-            return (Process.GetProcessesByName("AsusOptimization").Count() > 0);
+            return Process.GetProcessesByName("AsusOptimization").Count() > 0;
         }
 
         public static int GetRunningCount()
@@ -66,7 +66,7 @@ namespace GHelper
         }
 
 
-            public static void SetBacklightOffDelay(int value = 60)
+        public static void SetBacklightOffDelay(int value = 60)
         {
             try
             {

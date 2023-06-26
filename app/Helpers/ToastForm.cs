@@ -1,9 +1,8 @@
-﻿using OSD;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Drawing.Drawing2D;
 
 
-namespace GHelper
+namespace GHelper.Helpers
 {
 
     static class Drawing
@@ -74,7 +73,7 @@ namespace GHelper
         protected override void PerformPaint(PaintEventArgs e)
         {
             Brush brush = new SolidBrush(Color.FromArgb(150, Color.Black));
-            Drawing.FillRoundedRectangle(e.Graphics, brush, this.Bound, 10);
+            e.Graphics.FillRoundedRectangle(brush, Bound, 10);
 
             StringFormat format = new StringFormat();
             format.LineAlignment = StringAlignment.Center;
@@ -128,34 +127,37 @@ namespace GHelper
             e.Graphics.DrawString(toastText,
                 new Font("Segoe UI", 36f, FontStyle.Bold, GraphicsUnit.Pixel),
                 new SolidBrush(Color.White),
-                new PointF(this.Bound.Width / 2 + shiftX, this.Bound.Height / 2),
+                new PointF(Bound.Width / 2 + shiftX, Bound.Height / 2),
             format);
 
         }
 
         public void RunToast(string text, ToastIcon? icon = null)
         {
-            //Hide();
-            timer.Stop();
+            Program.settingsForm.Invoke(delegate
+            {
+                //Hide();
+                timer.Stop();
 
-            toastText = text;
-            toastIcon = icon;
+                toastText = text;
+                toastIcon = icon;
 
-            Screen screen1 = Screen.FromHandle(base.Handle);
+                Screen screen1 = Screen.FromHandle(Handle);
 
-            Width = Math.Max(300, 100 + toastText.Length * 22);
-            Height = 100;
-            X = (screen1.Bounds.Width - this.Width) / 2;
-            Y = screen1.Bounds.Height - 300 - this.Height;
+                Width = Math.Max(300, 100 + toastText.Length * 22);
+                Height = 100;
+                X = (screen1.Bounds.Width - Width) / 2;
+                Y = screen1.Bounds.Height - 300 - Height;
 
-            Show();
-            timer.Start();
+                Show();
+                timer.Start();
+            });
+
         }
 
         private void timer_Tick(object? sender, EventArgs e)
         {
-            Debug.WriteLine("Toast end");
-
+            //Debug.WriteLine("Toast end");
             Hide();
             timer.Stop();
         }

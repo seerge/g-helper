@@ -1,5 +1,5 @@
-﻿using CustomControls;
-using GHelper.Properties;
+﻿using GHelper.Properties;
+using GHelper.UI;
 
 namespace GHelper
 {

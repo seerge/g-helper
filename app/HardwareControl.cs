@@ -1,5 +1,9 @@
 ﻿using GHelper;
 using GHelper.Gpu;
+using GHelper.Gpu.NVidia;
+using GHelper.Gpu.AMD;
+
+using GHelper.Helpers;
 using System.Diagnostics;
 
 public static class HardwareControl

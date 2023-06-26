@@ -1,7 +1,9 @@
-﻿using CustomControls;
-using GHelper.AnimeMatrix;
+﻿using GHelper.AnimeMatrix;
 using GHelper.Gpu;
+using GHelper.Helpers;
+using GHelper.Input;
 using GHelper.Mode;
+using GHelper.UI;
 using System.Diagnostics;
 using System.Net;
 using System.Reflection;
@@ -17,17 +19,12 @@ namespace GHelper
         ContextMenuStrip contextMenuStrip = new CustomContextMenu();
         ToolStripMenuItem menuSilent, menuBalanced, menuTurbo, menuEco, menuStandard, menuUltimate, menuOptimized;
 
-        ModeControl modeControl;
-
-        public ToastForm toast = new ToastForm();
+        ModeControl modeControl = new ModeControl();
+        GPUModeControl gpuControl = new GPUModeControl();
 
         public static System.Timers.Timer aTimer = default!;
-        public static Point trayPoint;
-
         public string versionUrl = "http://github.com/seerge/g-helper/releases";
 
-        //public string modeName = "Balanced";
-        
         public AniMatrix matrix;
         public Fans fans;
         public Extra keyb;
@@ -43,8 +40,6 @@ namespace GHelper
 
             InitializeComponent();
             InitTheme(true);
-
-            modeControl = new ModeControl();
 
             buttonSilent.Text = Properties.Strings.Silent;
             buttonBalanced.Text = Properties.Strings.Balanced;
@@ -133,6 +128,7 @@ namespace GHelper
 
             buttonMatrix.Click += ButtonMatrix_Click;
 
+            checkStartup.Checked = Startup.IsScheduled();
             checkStartup.CheckedChanged += CheckStartup_CheckedChanged;
 
             labelVersion.Click += LabelVersion_Click;
@@ -195,7 +191,7 @@ namespace GHelper
             if (this.Visible)
             {
                 InitScreen();
-                InitXGM();
+                gpuControl.InitXGM();
 
                 // Run update once per 12 hours
                 if (Math.Abs(DateTimeOffset.Now.ToUnixTimeSeconds() - lastUpdate) < 43200) return;
@@ -259,11 +255,6 @@ namespace GHelper
             {
                 Debug.WriteLine(ex.ToString());
             }
-        }
-
-        public void RunToast(string text, ToastIcon? icon = null)
-        {
-            toast.RunToast(text, icon);
         }
 
         public void SetContextMenu()
@@ -351,47 +342,7 @@ namespace GHelper
 
         private void ButtonXGM_Click(object? sender, EventArgs e)
         {
-
-            Task.Run(async () =>
-            {
-                BeginInvoke(delegate
-                {
-                    ButtonEnabled(buttonOptimized, false);
-                    ButtonEnabled(buttonEco, false);
-                    ButtonEnabled(buttonStandard, false);
-                    ButtonEnabled(buttonUltimate, false);
-                    ButtonEnabled(buttonXGM, false);
-                });
-
-                if (Program.acpi.DeviceGet(AsusACPI.GPUXG) == 1)
-                {
-                    HardwareControl.KillGPUApps();
-                    DialogResult dialogResult = MessageBox.Show("Did you close all applications running on XG Mobile?", "Disabling XG Mobile", MessageBoxButtons.YesNo);
-                    if (dialogResult == DialogResult.Yes)
-                    {
-                        Program.acpi.DeviceSet(AsusACPI.GPUXG, 0, "GPU XGM");
-                        await Task.Delay(TimeSpan.FromSeconds(15));
-                    }
-                }
-                else
-                {
-                    Program.acpi.DeviceSet(AsusACPI.GPUXG, 1, "GPU XGM");
-                    AsusUSB.ApplyXGMLight(AppConfig.Is("xmg_light"));
-
-                    await Task.Delay(TimeSpan.FromSeconds(15));
-
-                    if (AppConfig.IsMode("auto_apply"))
-                        AsusUSB.SetXGMFan(AppConfig.GetFanConfig(AsusFan.XGM));
-                }
-
-                BeginInvoke(delegate
-                {
-                    InitGPUMode();
-                });
-
-
-            });
-
+            gpuControl.ToggleXGM();
         }
 
         private void SliderBattery_ValueChanged(object? sender, EventArgs e)
@@ -451,8 +402,7 @@ namespace GHelper
             }
             catch (Exception ex)
             {
-                //Logger.WriteLine("Failed to check for updates:" + ex.Message);
-
+                Debug.WriteLine("Failed to check for updates:" + ex.Message);
             }
 
         }
@@ -581,7 +531,7 @@ namespace GHelper
         {
             AppConfig.Set("gpu_auto", (AppConfig.Get("gpu_auto") == 1) ? 0 : 1);
             VisualiseGPUMode();
-            AutoGPUMode();
+            gpuControl.AutoGPUMode();
         }
 
         private void ButtonScreenAuto_Click(object? sender, EventArgs e)
@@ -598,13 +548,9 @@ namespace GHelper
             CheckBox chk = (CheckBox)sender;
 
             if (chk.Checked)
-            {
                 Startup.Schedule();
-            }
             else
-            {
                 Startup.UnSchedule();
-            }
         }
 
         private void CheckMatrix_CheckedChanged(object? sender, EventArgs e)
@@ -703,6 +649,14 @@ namespace GHelper
             }
         }
 
+        public void FansInit()
+        {
+            Invoke(delegate
+            {
+                if (fans != null && fans.Text != "") fans.InitAll();
+            });
+        }
+
         public void FansToggle(int index = 0)
         {
             if (fans == null || fans.Text == "")
@@ -783,13 +737,10 @@ namespace GHelper
                 return;
             }
 
-            int brightness = AppConfig.Get("matrix_brightness");
-            int running = AppConfig.Get("matrix_running");
+            comboMatrix.SelectedIndex = Math.Min(AppConfig.Get("matrix_brightness", 0), comboMatrix.Items.Count - 1);
+            comboMatrixRunning.SelectedIndex = Math.Min(AppConfig.Get("matrix_running", 0), comboMatrixRunning.Items.Count - 1);
 
-            comboMatrix.SelectedIndex = (brightness != -1) ? Math.Min(brightness, comboMatrix.Items.Count - 1) : 0;
-            comboMatrixRunning.SelectedIndex = (running != -1) ? Math.Min(running, comboMatrixRunning.Items.Count - 1) : 0;
-
-            checkMatrix.Checked = (AppConfig.Get("matrix_auto") == 1);
+            checkMatrix.Checked = AppConfig.Is("matrix_auto");
             checkMatrix.CheckedChanged += CheckMatrix_CheckedChanged;
 
         }
@@ -890,7 +841,7 @@ namespace GHelper
             int frequency = NativeMethods.GetRefreshRate();
             int maxFrequency = NativeMethods.GetRefreshRate(true);
 
-            bool screenAuto = (AppConfig.Get("screen_auto") == 1);
+            bool screenAuto = AppConfig.Is("screen_auto");
             bool overdriveSetting = (AppConfig.Get("no_overdrive") != 1);
 
             int overdrive = Program.acpi.DeviceGet(AsusACPI.ScreenOverdrive);
@@ -978,26 +929,23 @@ namespace GHelper
 
         private void ButtonUltimate_Click(object? sender, EventArgs e)
         {
-            SetGPUMode(AsusACPI.GPUModeUltimate);
+            gpuControl.SetGPUMode(AsusACPI.GPUModeUltimate);
         }
 
         private void ButtonStandard_Click(object? sender, EventArgs e)
         {
-            SetGPUMode(AsusACPI.GPUModeStandard);
+            gpuControl.SetGPUMode(AsusACPI.GPUModeStandard);
         }
 
         private void ButtonEco_Click(object? sender, EventArgs e)
         {
-            SetGPUMode(AsusACPI.GPUModeEco);
+            gpuControl.SetGPUMode(AsusACPI.GPUModeEco);
         }
 
 
         private void ButtonStopGPU_Click(object? sender, EventArgs e)
         {
-            if (HardwareControl.GpuControl is not null)
-            {
-                HardwareControl.GpuControl.KillGPUApps();
-            }
+            gpuControl.KillGPUApps();
         }
 
         public async void RefreshSensors(bool force = false)
@@ -1050,54 +998,51 @@ namespace GHelper
 
         public void ShowMode(int mode)
         {
-
-            buttonSilent.Activated = false;
-            buttonBalanced.Activated = false;
-            buttonTurbo.Activated = false;
-            buttonFans.Activated = false;
-
-            menuSilent.Checked = false;
-            menuBalanced.Checked = false;
-            menuTurbo.Checked = false;
-
-            switch (mode)
+            Invoke(delegate
             {
-                case AsusACPI.PerformanceSilent:
-                    buttonSilent.Activated = true;
-                    menuSilent.Checked = true;
-                    break;
-                case AsusACPI.PerformanceTurbo:
-                    buttonTurbo.Activated = true;
-                    menuTurbo.Checked = true;
-                    break;
-                case AsusACPI.PerformanceBalanced:
-                    buttonBalanced.Activated = true;
-                    menuBalanced.Checked = true;
-                    break;
-                default:
-                    buttonFans.Activated = true;
-                    switch (Modes.GetBase(mode))
-                    {
-                        case AsusACPI.PerformanceSilent:
-                            buttonFans.BorderColor = colorEco;
-                            break;
-                        case AsusACPI.PerformanceTurbo:
-                            buttonFans.BorderColor = colorTurbo;
-                            break;
-                        default:
-                            buttonFans.BorderColor = colorStandard;
-                            break;
-                    }
-                    break;
-            }
+                buttonSilent.Activated = false;
+                buttonBalanced.Activated = false;
+                buttonTurbo.Activated = false;
+                buttonFans.Activated = false;
 
+                menuSilent.Checked = false;
+                menuBalanced.Checked = false;
+                menuTurbo.Checked = false;
 
+                switch (mode)
+                {
+                    case AsusACPI.PerformanceSilent:
+                        buttonSilent.Activated = true;
+                        menuSilent.Checked = true;
+                        break;
+                    case AsusACPI.PerformanceTurbo:
+                        buttonTurbo.Activated = true;
+                        menuTurbo.Checked = true;
+                        break;
+                    case AsusACPI.PerformanceBalanced:
+                        buttonBalanced.Activated = true;
+                        menuBalanced.Checked = true;
+                        break;
+                    default:
+                        buttonFans.Activated = true;
+                        buttonFans.BorderColor = Modes.GetBase(mode) switch
+                        {
+                            AsusACPI.PerformanceSilent => colorEco,
+                            AsusACPI.PerformanceTurbo => colorTurbo,
+                            _ => colorStandard,
+                        };
+                        break;
+                }
+            });
         }
 
 
         public void SetModeLabel(string modeText)
         {
-            labelPerf.Text = modeText;
+            Invoke(delegate
+            {
+                labelPerf.Text = modeText;
+            });
         }
 
 
@@ -1131,88 +1076,15 @@ namespace GHelper
 
         }
 
-        public static bool IsPlugged()
-        {
-            bool optimizedUSBC = AppConfig.Get("optimized_usbc") != 1;
-
-            return SystemInformation.PowerStatus.PowerLineStatus == PowerLineStatus.Online &&
-                   (optimizedUSBC || Program.acpi.DeviceGet(AsusACPI.ChargerMode) < AsusACPI.ChargerUSB);
-
-        }
-
-        public bool AutoGPUMode()
+        public void VisualizeXGM(bool connected, bool activated)
         {
 
-            bool GpuAuto = AppConfig.Is("gpu_auto");
-            bool ForceGPU = AppConfig.ContainsModel("503");
-
-            int GpuMode = AppConfig.Get("gpu_mode");
-
-            if (!GpuAuto && !ForceGPU) return false;
-
-            int eco = Program.acpi.DeviceGet(AsusACPI.GPUEco);
-            int mux = Program.acpi.DeviceGet(AsusACPI.GPUMux);
-
-            if (mux == 0) // GPU in Ultimate, ignore
-                return false;
-            else
-            {
-
-                if (ReEnableGPU()) return true;
-
-                if (eco == 1)
-                    if ((GpuAuto && IsPlugged()) || (ForceGPU && GpuMode == AsusACPI.GPUModeStandard))
-                    {
-                        SetGPUEco(0);
-                        return true;
-                    }
-                if (eco == 0)
-                    if ((GpuAuto && !IsPlugged()) || (ForceGPU && GpuMode == AsusACPI.GPUModeEco))
-                    {
-
-                        if (HardwareControl.IsUsedGPU())
-                        {
-                            DialogResult dialogResult = MessageBox.Show(Properties.Strings.AlertDGPU, Properties.Strings.AlertDGPUTitle, MessageBoxButtons.YesNo);
-                            if (dialogResult == DialogResult.No) return false;
-                        }
-
-                        SetGPUEco(1);
-                        return true;
-                    }
-            }
-
-            return false;
-
-        }
-
-        public bool ReEnableGPU()
-        {
-
-            if (AppConfig.Get("gpu_reenable") != 1) return false;
-            if (Screen.AllScreens.Length <= 1) return false;
-
-            Logger.WriteLine("Re-enabling gpu for 503 model");
-
-            Thread.Sleep(1000);
-            SetGPUEco(1);
-            Thread.Sleep(1000);
-            SetGPUEco(0);
-            return true;
-        }
-
-        public void InitXGM()
-        {
-            bool connected = Program.acpi.IsXGConnected();
             buttonXGM.Enabled = buttonXGM.Visible = connected;
-
             if (!connected) return;
 
-            int activated = Program.acpi.DeviceGet(AsusACPI.GPUXG);
-            if (activated < 0) return;
+            buttonXGM.Activated = activated;
 
-            buttonXGM.Activated = (activated == 1);
-
-            if (buttonXGM.Activated)
+            if (activated)
             {
                 ButtonEnabled(buttonOptimized, false);
                 ButtonEnabled(buttonEco, false);
@@ -1229,231 +1101,52 @@ namespace GHelper
 
         }
 
-
-        public int InitGPUMode()
+        public void HideUltimateMode()
         {
+            tableGPU.Controls.Remove(buttonUltimate);
+            tablePerf.ColumnCount = 0;
+            tableGPU.ColumnCount = 0;
+            tableScreen.ColumnCount = 0;
+            menuUltimate.Visible = false;
+        }
 
-            int eco = Program.acpi.DeviceGet(AsusACPI.GPUEco);
-            int mux = Program.acpi.DeviceGet(AsusACPI.GPUMux);
+        public void HideGPUModes()
+        {
+            isGpuSection = false;
+            buttonEco.Visible = false;
+            buttonStandard.Visible = false;
+            buttonUltimate.Visible = false;
+            buttonOptimized.Visible = false;
+            buttonStopGPU.Visible = true;
 
-            Logger.WriteLine("Eco flag : " + eco);
-            Logger.WriteLine("Mux flag : " + mux);
-
-            int GpuMode;
-
-            if (mux == 0)
-                GpuMode = AsusACPI.GPUModeUltimate;
-            else
-            {
-                if (eco == 1)
-                    GpuMode = AsusACPI.GPUModeEco;
-                else
-                    GpuMode = AsusACPI.GPUModeStandard;
-
-                // Ultimate mode not suported
-                if (mux != 1)
-                {
-                    tableGPU.Controls.Remove(buttonUltimate);
-                    tablePerf.ColumnCount = 0;
-                    tableGPU.ColumnCount = 0;
-                    tableScreen.ColumnCount = 0;
-                    menuUltimate.Visible = false;
-                }
-
-                if (eco < 0 && mux < 0)
-                {
-                    isGpuSection = false;
-
-                    buttonEco.Visible = false;
-                    buttonStandard.Visible = false;
-                    buttonUltimate.Visible = false;
-                    buttonOptimized.Visible = false;
-                    buttonStopGPU.Visible = true;
-
-                    SetContextMenu();
-
-                    if (HardwareControl.FormatFan(Program.acpi.DeviceGet(AsusACPI.GPU_Fan)) is null) panelGPU.Visible = false;
-                }
-
-            }
-
-            AppConfig.Set("gpu_mode", GpuMode);
-
-            ButtonEnabled(buttonOptimized, true);
-            ButtonEnabled(buttonEco, true);
-            ButtonEnabled(buttonStandard, true);
-            ButtonEnabled(buttonUltimate, true);
-
-            InitXGM();
-
-            VisualiseGPUMode(GpuMode);
-
-            return GpuMode;
+            SetContextMenu();
+            if (HardwareControl.FormatFan(Program.acpi.DeviceGet(AsusACPI.GPU_Fan)) is null) panelGPU.Visible = false;
 
         }
 
-        public void RestartGPU(bool confirm = true)
+        public void LockGPUModes(string text = null)
         {
-            if (HardwareControl.GpuControl is null) return;
-            if (!HardwareControl.GpuControl!.IsNvidia) return;
-
-            if (confirm)
+            Invoke(delegate
             {
-                DialogResult dialogResult = MessageBox.Show(Properties.Strings.RestartGPU, Properties.Strings.EcoMode, MessageBoxButtons.YesNo);
-                if (dialogResult == DialogResult.No) return;
-            }
+                if (text is null) text = Properties.Strings.GPUMode + ": " + Properties.Strings.GPUChanging + " ...";
 
-            ProcessHelper.RunAsAdmin("gpurestart");
+                ButtonEnabled(buttonOptimized, false);
+                ButtonEnabled(buttonEco, false);
+                ButtonEnabled(buttonStandard, false);
+                ButtonEnabled(buttonUltimate, false);
+                ButtonEnabled(buttonXGM, false);
 
-            if (!ProcessHelper.IsUserAdministrator()) return;
-
-            Logger.WriteLine("Trying to restart dGPU");
-
-            Task.Run(async () =>
-            {
-                Program.settingsForm.BeginInvoke(delegate
-                {
-                    labelTipGPU.Text = "Restarting GPU ...";
-                    ButtonEnabled(buttonOptimized, false);
-                    ButtonEnabled(buttonEco, false);
-                    ButtonEnabled(buttonStandard, false);
-                    ButtonEnabled(buttonUltimate, false);
-                });
-
-                var nvControl = (NvidiaGpuControl)HardwareControl.GpuControl;
-                bool status = nvControl.RestartGPU();
-
-                Program.settingsForm.BeginInvoke(delegate
-                {
-                    labelTipGPU.Text = status ? "GPU Restarted, you can try Eco mode again" : "Failed to restart GPU";
-                    InitGPUMode();
-                });
+                labelGPU.Text = text;
             });
-
-        }
-
-
-        public void SetGPUEco(int eco, bool hardWay = false)
-        {
-
-            ButtonEnabled(buttonOptimized, false);
-            ButtonEnabled(buttonEco, false);
-            ButtonEnabled(buttonStandard, false);
-            ButtonEnabled(buttonUltimate, false);
-            ButtonEnabled(buttonXGM, false);
-
-            labelGPU.Text = Properties.Strings.GPUMode + ": " + Properties.Strings.GPUChanging + " ...";
-
-            Task.Run(async () =>
-            {
-
-                int status = 1;
-
-                if (eco == 1)
-                {
-                    if (NvidiaSmi.GetDisplayActiveStatus())
-                    {
-                        DialogResult dialogResult = MessageBox.Show(Properties.Strings.EnableOptimusText, Properties.Strings.EnableOptimusTitle, MessageBoxButtons.YesNo);
-                        if (dialogResult == DialogResult.No)
-                        {
-                            InitGPUMode();
-                            return;
-                        }
-                    }
-
-                    HardwareControl.KillGPUApps();
-                }
-
-                Logger.WriteLine($"Running eco command {eco}");
-
-                status = Program.acpi.SetGPUEco(eco);
-
-                if (status == 0 && eco == 1 && hardWay) RestartGPU();
-
-                await Task.Delay(TimeSpan.FromMilliseconds(100));
-                Program.settingsForm.BeginInvoke(delegate
-                {
-                    InitGPUMode();
-                    AutoScreen();
-                });
-
-                if (eco == 0)
-                {
-                    await Task.Delay(TimeSpan.FromMilliseconds(3000));
-                    HardwareControl.RecreateGpuControl();
-                    modeControl.SetGPUClocks(false);
-                }
-
-            });
-
-
-        }
-
-        public void SetGPUMode(int GPUMode)
-        {
-
-            int CurrentGPU = AppConfig.Get("gpu_mode");
-            AppConfig.Set("gpu_auto", 0);
-
-            if (CurrentGPU == GPUMode)
-            {
-                VisualiseGPUMode();
-                return;
-            }
-
-            var restart = false;
-            var changed = false;
-
-            if (CurrentGPU == AsusACPI.GPUModeUltimate)
-            {
-                DialogResult dialogResult = MessageBox.Show(Properties.Strings.AlertUltimateOff, Properties.Strings.AlertUltimateTitle, MessageBoxButtons.YesNo);
-                if (dialogResult == DialogResult.Yes)
-                {
-                    Program.acpi.DeviceSet(AsusACPI.GPUMux, 1, "GPUMux");
-                    restart = true;
-                    changed = true;
-                }
-            }
-            else if (GPUMode == AsusACPI.GPUModeUltimate)
-            {
-                DialogResult dialogResult = MessageBox.Show(Properties.Strings.AlertUltimateOn, Properties.Strings.AlertUltimateTitle, MessageBoxButtons.YesNo);
-                if (dialogResult == DialogResult.Yes)
-                {
-                    Program.acpi.DeviceSet(AsusACPI.GPUMux, 0, "GPUMux");
-                    restart = true;
-                    changed = true;
-                }
-
-            }
-            else if (GPUMode == AsusACPI.GPUModeEco)
-            {
-                VisualiseGPUMode(GPUMode);
-                SetGPUEco(1, true);
-                changed = true;
-            }
-            else if (GPUMode == AsusACPI.GPUModeStandard)
-            {
-                VisualiseGPUMode(GPUMode);
-                SetGPUEco(0);
-                changed = true;
-            }
-
-            if (changed)
-            {
-                AppConfig.Set("gpu_mode", GPUMode);
-            }
-
-            if (restart)
-            {
-                VisualiseGPUMode();
-                Process.Start("shutdown", "/r /t 1");
-            }
-
         }
 
 
         public void VisualiseGPUMode(int GPUMode = -1)
         {
+            ButtonEnabled(buttonOptimized, true);
+            ButtonEnabled(buttonEco, true);
+            ButtonEnabled(buttonStandard, true);
+            ButtonEnabled(buttonUltimate, true);
 
             if (GPUMode == -1)
                 GPUMode = AppConfig.Get("gpu_mode");
@@ -1516,10 +1209,6 @@ namespace GHelper
             modeControl.SetPerformanceMode(AsusACPI.PerformanceTurbo);
         }
 
-        private void Settings_Load(object sender, EventArgs e)
-        {
-
-        }
 
         public void ButtonEnabled(RButton but, bool enabled)
         {
@@ -1527,12 +1216,6 @@ namespace GHelper
             but.BackColor = but.Enabled ? Color.FromArgb(255, but.BackColor) : Color.FromArgb(100, but.BackColor);
         }
 
-        public void SetStartupCheck(bool status)
-        {
-            checkStartup.CheckedChanged -= CheckStartup_CheckedChanged;
-            checkStartup.Checked = status;
-            checkStartup.CheckedChanged += CheckStartup_CheckedChanged;
-        }
 
         public void SetBatteryChargeLimit(int limit)
         {

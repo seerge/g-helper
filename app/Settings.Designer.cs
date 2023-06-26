@@ -1,4 +1,4 @@
-﻿using CustomControls;
+﻿using GHelper.UI;
 
 namespace GHelper
 {
@@ -41,7 +41,7 @@ namespace GHelper
             labelMatrix = new Label();
             checkMatrix = new CheckBox();
             panelBattery = new Panel();
-            sliderBattery = new WinFormsSliderBar.Slider();
+            sliderBattery = new Slider();
             panelBatteryTitle = new Panel();
             labelBattery = new Label();
             pictureBattery = new PictureBox();
@@ -1169,7 +1169,6 @@ namespace GHelper
             ShowIcon = false;
             StartPosition = FormStartPosition.CenterScreen;
             Text = "G-Helper";
-            Load += Settings_Load;
             panelMatrix.ResumeLayout(false);
             panelMatrix.PerformLayout();
             tableLayoutMatrix.ResumeLayout(false);
@@ -1254,7 +1253,7 @@ namespace GHelper
         private RButton buttonKeyboard;
         private RButton buttonKeyboardColor;
         private RButton buttonFans;
-        private WinFormsSliderBar.Slider sliderBattery;
+        private Slider sliderBattery;
         private RButton buttonUpdates;
         private Panel panelGPUTitle;
         private PictureBox pictureGPU;

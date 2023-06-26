@@ -1,6 +1,4 @@
-﻿using Microsoft.VisualBasic.Devices;
-
-namespace GHelper
+﻿namespace GHelper.Mode
 {
     internal class Modes
     {

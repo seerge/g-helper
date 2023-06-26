@@ -1,6 +1,6 @@
-﻿using CustomControls;
-using GHelper.Gpu;
+﻿using GHelper.Gpu.NVidia;
 using GHelper.Mode;
+using GHelper.UI;
 using Ryzen;
 using System.Diagnostics;
 using System.Windows.Forms.DataVisualization.Charting;

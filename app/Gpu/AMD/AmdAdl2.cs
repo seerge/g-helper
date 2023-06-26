@@ -1,8 +1,8 @@
 using System.Diagnostics;
 using System.Runtime.InteropServices;
-using static AmdAdl2.Adl2.NativeMethods;
+using static GHelper.Gpu.AMD.Adl2.NativeMethods;
 
-namespace AmdAdl2;
+namespace GHelper.Gpu.AMD;
 
 #region Export Struct
 
@@ -33,13 +33,15 @@ public struct ADLBdf
 }
 
 [StructLayout(LayoutKind.Sequential)]
-public struct ADLSingleSensorData {
+public struct ADLSingleSensorData
+{
     public int Supported;
     public int Value;
 }
 
 [StructLayout(LayoutKind.Sequential)]
-public struct ADLPMLogDataOutput {
+public struct ADLPMLogDataOutput
+{
     int Size;
 
     [MarshalAs(UnmanagedType.ByValArray, SizeConst = Adl2.ADL_PMLOG_MAX_SENSORS)]
@@ -57,7 +59,8 @@ public struct ADLGcnInfo
 }
 
 [Flags]
-public enum ADLAsicFamilyType {
+public enum ADLAsicFamilyType
+{
     Undefined = 0,
     Discrete = 1 << 0,
     Integrated = 1 << 1,
@@ -69,7 +72,8 @@ public enum ADLAsicFamilyType {
     Embedded = 1 << 7,
 }
 
-public enum ADLSensorType {
+public enum ADLSensorType
+{
     SENSOR_MAXTYPES = 0,
     PMLOG_CLK_GFXCLK = 1, // Current graphic clock value in MHz
     PMLOG_CLK_MEMCLK = 2, // Current memory clock value in MHz
@@ -149,13 +153,15 @@ public enum ADLSensorType {
 
 //Throttle Status
 [Flags]
-public enum ADL_THROTTLE_NOTIFICATION {
+public enum ADL_THROTTLE_NOTIFICATION
+{
     ADL_PMLOG_THROTTLE_POWER = 1 << 0,
     ADL_PMLOG_THROTTLE_THERMAL = 1 << 1,
     ADL_PMLOG_THROTTLE_CURRENT = 1 << 2,
 };
 
-public enum ADL_PMLOG_SENSORS {
+public enum ADL_PMLOG_SENSORS
+{
     ADL_SENSOR_MAXTYPES = 0,
     ADL_PMLOG_CLK_GFXCLK = 1,
     ADL_PMLOG_CLK_MEMCLK = 2,
@@ -237,7 +243,8 @@ public enum ADL_PMLOG_SENSORS {
 
 /// <summary> ADLAdapterInfo Structure</summary>
 [StructLayout(LayoutKind.Sequential)]
-public struct ADLAdapterInfo {
+public struct ADLAdapterInfo
+{
     /// <summary>The size of the structure</summary>
     int Size;
 
@@ -292,7 +299,8 @@ public struct ADLAdapterInfo {
 
 /// <summary> ADLAdapterInfo Array</summary>
 [StructLayout(LayoutKind.Sequential)]
-public struct ADLAdapterInfoArray {
+public struct ADLAdapterInfoArray
+{
     /// <summary> ADLAdapterInfo Array </summary>
     [MarshalAs(UnmanagedType.ByValArray, SizeConst = Adl2.ADL_MAX_ADAPTERS)]
     public ADLAdapterInfo[] ADLAdapterInfo;
@@ -304,7 +312,8 @@ public struct ADLAdapterInfoArray {
 
 /// <summary> ADLDisplayID Structure</summary>
 [StructLayout(LayoutKind.Sequential)]
-public struct ADLDisplayID {
+public struct ADLDisplayID
+{
     /// <summary> Display Logical Index </summary>
     public int DisplayLogicalIndex;
 
@@ -320,7 +329,8 @@ public struct ADLDisplayID {
 
 /// <summary> ADLDisplayInfo Structure</summary>
 [StructLayout(LayoutKind.Sequential)]
-public struct ADLDisplayInfo {
+public struct ADLDisplayInfo
+{
     /// <summary> Display Index </summary>
     public ADLDisplayID DisplayID;
 
@@ -355,7 +365,8 @@ public struct ADLDisplayInfo {
 
 #endregion Export Struct
 
-public class Adl2 {
+public class Adl2
+{
     public const string Atiadlxx_FileName = "atiadlxx.dll";
 
     #region Internal Constant
@@ -398,24 +409,30 @@ public class Adl2 {
     // ///// <summary> ADL Create Function to create ADL Data</summary>
     /// <param name="enumConnectedAdapters">If it is 1, then ADL will only return the physical exist adapters </param>
     ///// <returns> retrun ADL Error Code</returns>
-    public static int ADL2_Main_Control_Create(int enumConnectedAdapters, out IntPtr adlContextHandle) {
+    public static int ADL2_Main_Control_Create(int enumConnectedAdapters, out nint adlContextHandle)
+    {
         return NativeMethods.ADL2_Main_Control_Create(ADL_Main_Memory_Alloc_Impl_Reference, enumConnectedAdapters, out adlContextHandle);
     }
 
-    public static void FreeMemory(IntPtr buffer) {
+    public static void FreeMemory(nint buffer)
+    {
         Memory_Free_Impl(buffer);
     }
 
     private static bool? isDllLoaded;
 
-    public static bool Load() {
+    public static bool Load()
+    {
         if (isDllLoaded != null)
             return isDllLoaded.Value;
 
-        try {
+        try
+        {
             Marshal.PrelinkAll(typeof(Adl2));
             isDllLoaded = true;
-        } catch (Exception e) when (e is DllNotFoundException or EntryPointNotFoundException) {
+        }
+        catch (Exception e) when (e is DllNotFoundException or EntryPointNotFoundException)
+        {
             Debug.WriteLine(e);
             isDllLoaded = false;
         }
@@ -423,53 +440,57 @@ public class Adl2 {
         return isDllLoaded.Value;
     }
 
-    private static NativeMethods.ADL_Main_Memory_Alloc ADL_Main_Memory_Alloc_Impl_Reference = Memory_Alloc_Impl;
+    private static ADL_Main_Memory_Alloc ADL_Main_Memory_Alloc_Impl_Reference = Memory_Alloc_Impl;
 
     /// <summary> Build in memory allocation function</summary>
     /// <param name="size">input size</param>
     /// <returns>return the memory buffer</returns>
-    private static IntPtr Memory_Alloc_Impl(int size) {
+    private static nint Memory_Alloc_Impl(int size)
+    {
         return Marshal.AllocCoTaskMem(size);
     }
 
     /// <summary> Build in memory free function</summary>
     /// <param name="buffer">input buffer</param>
-    private static void Memory_Free_Impl(IntPtr buffer) {
-        if (IntPtr.Zero != buffer) {
+    private static void Memory_Free_Impl(nint buffer)
+    {
+        if (nint.Zero != buffer)
+        {
             Marshal.FreeCoTaskMem(buffer);
         }
     }
 
-    public static class NativeMethods {
+    public static class NativeMethods
+    {
         /// <summary> ADL Memory allocation function allows ADL to callback for memory allocation</summary>
         /// <param name="size">input size</param>
         /// <returns> retrun ADL Error Code</returns>
-        public delegate IntPtr ADL_Main_Memory_Alloc(int size);
+        public delegate nint ADL_Main_Memory_Alloc(int size);
 
         // ///// <summary> ADL Create Function to create ADL Data</summary>
         /// <param name="callback">Call back functin pointer which is ised to allocate memeory </param>
         /// <param name="enumConnectedAdapters">If it is 1, then ADL will only retuen the physical exist adapters </param>
         ///// <returns> retrun ADL Error Code</returns>
         [DllImport(Atiadlxx_FileName)]
-        public static extern int ADL2_Main_Control_Create(ADL_Main_Memory_Alloc callback, int enumConnectedAdapters, out IntPtr adlContextHandle);
+        public static extern int ADL2_Main_Control_Create(ADL_Main_Memory_Alloc callback, int enumConnectedAdapters, out nint adlContextHandle);
 
         /// <summary> ADL Destroy Function to free up ADL Data</summary>
         /// <returns> retrun ADL Error Code</returns>
         [DllImport(Atiadlxx_FileName)]
-        public static extern int ADL2_Main_Control_Destroy(IntPtr adlContextHandle);
+        public static extern int ADL2_Main_Control_Destroy(nint adlContextHandle);
 
         /// <summary> ADL Function to get the number of adapters</summary>
         /// <param name="numAdapters">return number of adapters</param>
         /// <returns> retrun ADL Error Code</returns>
         [DllImport(Atiadlxx_FileName)]
-        public static extern int ADL2_Adapter_NumberOfAdapters_Get(IntPtr adlContextHandle, out int numAdapters);
+        public static extern int ADL2_Adapter_NumberOfAdapters_Get(nint adlContextHandle, out int numAdapters);
 
         /// <summary> ADL Function to get the GPU adapter information</summary>
         /// <param name="info">return GPU adapter information</param>
         /// <param name="inputSize">the size of the GPU adapter struct</param>
         /// <returns> retrun ADL Error Code</returns>
         [DllImport(Atiadlxx_FileName)]
-        public static extern int ADL2_Adapter_AdapterInfo_Get(IntPtr adlContextHandle, IntPtr info, int inputSize);
+        public static extern int ADL2_Adapter_AdapterInfo_Get(nint adlContextHandle, nint info, int inputSize);
 
         /// <summary> Function to determine if the adapter is active or not.</summary>
         /// <remarks>The function is used to check if the adapter associated with iAdapterIndex is active</remarks>  
@@ -477,7 +498,7 @@ public class Adl2 {
         /// <param name="status"> Status of the adapter. True: Active; False: Dsiabled</param>
         /// <returns>Non zero is successfull</returns> 
         [DllImport(Atiadlxx_FileName)]
-        public static extern int ADL2_Adapter_Active_Get(IntPtr adlContextHandle, int adapterIndex, out int status);
+        public static extern int ADL2_Adapter_Active_Get(nint adlContextHandle, int adapterIndex, out int status);
 
         /// <summary>Get display information based on adapter index</summary>
         /// <param name="adapterIndex">Adapter Index</param>
@@ -487,16 +508,16 @@ public class Adl2 {
         /// <returns>return ADL Error Code</returns>
         [DllImport(Atiadlxx_FileName)]
         public static extern int ADL2_Display_DisplayInfo_Get(
-            IntPtr adlContextHandle,
+            nint adlContextHandle,
             int adapterIndex,
             out int numDisplays,
-            out IntPtr displayInfoArray,
+            out nint displayInfoArray,
             int forceDetect
         );
 
         [DllImport(Atiadlxx_FileName)]
         public static extern int ADL2_Overdrive_Caps(
-            IntPtr adlContextHandle,
+            nint adlContextHandle,
             int adapterIndex,
             out int supported,
             out int enabled,
@@ -504,21 +525,21 @@ public class Adl2 {
         );
 
         [DllImport(Atiadlxx_FileName)]
-        public static extern int ADL2_New_QueryPMLogData_Get(IntPtr adlContextHandle, int adapterIndex, out ADLPMLogDataOutput adlpmLogDataOutput);
+        public static extern int ADL2_New_QueryPMLogData_Get(nint adlContextHandle, int adapterIndex, out ADLPMLogDataOutput adlpmLogDataOutput);
 
         [DllImport(Atiadlxx_FileName)]
-        public static extern int ADL2_Adapter_ASICFamilyType_Get(IntPtr adlContextHandle, int adapterIndex, out ADLAsicFamilyType asicFamilyType, out int asicFamilyTypeValids);
+        public static extern int ADL2_Adapter_ASICFamilyType_Get(nint adlContextHandle, int adapterIndex, out ADLAsicFamilyType asicFamilyType, out int asicFamilyTypeValids);
 
         [DllImport(Atiadlxx_FileName)]
         public static extern int ADL2_SwitchableGraphics_Applications_Get(
-            IntPtr context,
+            nint context,
             int iListType,
             out int lpNumApps,
-            out IntPtr lppAppList);
+            out nint lppAppList);
 
         [DllImport(Atiadlxx_FileName)]
         public static extern int ADL2_Adapter_VariBright_Caps(
-            IntPtr context,
+            nint context,
             int iAdapterIndex,
             out int iSupported,
             out int iEnabled,
@@ -526,7 +547,7 @@ public class Adl2 {
 
         [DllImport(Atiadlxx_FileName)]
         public static extern int ADL2_Adapter_VariBrightEnable_Set(
-            IntPtr context,
+            nint context,
             int iAdapterIndex,
             int iEnabled);
 
@@ -553,25 +574,25 @@ public class Adl2 {
 
         [DllImport(Atiadlxx_FileName)]
         public static extern int ADL2_OverdriveN_SystemClocks_Get(
-            IntPtr context,
+            nint context,
             int adapterIndex,
             ref ADLODNPerformanceLevels performanceLevels);
 
         [DllImport(Atiadlxx_FileName)]
         public static extern int ADL2_OverdriveN_SystemClocks_Set(
-            IntPtr context,
+            nint context,
             int adapterIndex,
             ref ADLODNPerformanceLevels performanceLevels);
 
         [DllImport(Atiadlxx_FileName)]
         public static extern int ADL2_OverdriveN_MemoryClocks_Get(
-            IntPtr context,
+            nint context,
             int adapterIndex,
             ref ADLODNPerformanceLevels performanceLevels);
 
         [DllImport(Atiadlxx_FileName)]
         public static extern int ADL2_OverdriveN_MemoryClocks_Set(
-            IntPtr context,
+            nint context,
             int adapterIndex,
             ref ADLODNPerformanceLevels performanceLevels);
     }

@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.Drawing.Drawing2D;
 using System.Runtime.InteropServices;
 
-namespace CustomControls
+namespace GHelper.UI
 {
 
     public class RForm : Form
@@ -28,7 +28,7 @@ namespace CustomControls
         public static extern bool CheckSystemDarkModeStatus();
 
         [DllImport("DwmApi")] //System.Runtime.InteropServices
-        private static extern int DwmSetWindowAttribute(IntPtr hwnd, int attr, int[] attrValue, int attrSize);
+        private static extern int DwmSetWindowAttribute(nint hwnd, int attr, int[] attrValue, int attrSize);
 
         public bool darkTheme = false;
 
@@ -72,7 +72,7 @@ namespace CustomControls
         public bool InitTheme(bool setDPI = false)
         {
             bool newDarkTheme = CheckSystemDarkModeStatus();
-            bool changed = (darkTheme != newDarkTheme);
+            bool changed = darkTheme != newDarkTheme;
             darkTheme = newDarkTheme;
 
             InitColors(darkTheme);
@@ -82,7 +82,7 @@ namespace CustomControls
 
             if (changed)
             {
-                DwmSetWindowAttribute(this.Handle, 20, new[] { darkTheme ? 1 : 0 }, 4);
+                DwmSetWindowAttribute(Handle, 20, new[] { darkTheme ? 1 : 0 }, 4);
                 ControlHelper.Adjust(this, changed);
             }
 
@@ -182,8 +182,8 @@ namespace CustomControls
                 };
                 var ps = new PAINTSTRUCT();
                 bool shoulEndPaint = false;
-                IntPtr dc;
-                if (m.WParam == IntPtr.Zero)
+                nint dc;
+                if (m.WParam == nint.Zero)
                 {
                     dc = BeginPaint(Handle, ref ps);
                     m.WParam = dc;
@@ -196,7 +196,7 @@ namespace CustomControls
 
                 var rgn = CreateRectRgn(innerInnerBorder.Left, innerInnerBorder.Top,
                     innerInnerBorder.Right, innerInnerBorder.Bottom);
-                
+
                 SelectClipRgn(dc, rgn);
                 DefWndProc(ref m);
                 DeleteObject(rgn);
@@ -240,7 +240,7 @@ namespace CustomControls
         [StructLayout(LayoutKind.Sequential)]
         public struct PAINTSTRUCT
         {
-            public IntPtr hdc;
+            public nint hdc;
             public bool fErase;
             public int rcPaint_left;
             public int rcPaint_top;
@@ -258,17 +258,17 @@ namespace CustomControls
             public int reserved8;
         }
         [DllImport("user32.dll")]
-        private static extern IntPtr BeginPaint(IntPtr hWnd,
+        private static extern nint BeginPaint(nint hWnd,
             [In, Out] ref PAINTSTRUCT lpPaint);
 
         [DllImport("user32.dll")]
-        private static extern bool EndPaint(IntPtr hWnd, ref PAINTSTRUCT lpPaint);
+        private static extern bool EndPaint(nint hWnd, ref PAINTSTRUCT lpPaint);
 
         [DllImport("gdi32.dll")]
-        public static extern int SelectClipRgn(IntPtr hDC, IntPtr hRgn);
+        public static extern int SelectClipRgn(nint hDC, nint hRgn);
 
         [DllImport("user32.dll")]
-        public static extern int GetUpdateRgn(IntPtr hwnd, IntPtr hrgn, bool fErase);
+        public static extern int GetUpdateRgn(nint hwnd, nint hrgn, bool fErase);
         public enum RegionFlags
         {
             ERROR = 0,
@@ -277,10 +277,10 @@ namespace CustomControls
             COMPLEXREGION = 3,
         }
         [DllImport("gdi32.dll")]
-        internal static extern bool DeleteObject(IntPtr hObject);
+        internal static extern bool DeleteObject(nint hObject);
 
         [DllImport("gdi32.dll")]
-        private static extern IntPtr CreateRectRgn(int x1, int y1, int x2, int y2);
+        private static extern nint CreateRectRgn(int x1, int y1, int x2, int y2);
     }
 
     public class RButton : Button
@@ -316,7 +316,7 @@ namespace CustomControls
             set
             {
                 if (activated != value)
-                    this.Invalidate();
+                    Invalidate();
                 activated = value;
 
             }
@@ -362,19 +362,19 @@ namespace CustomControls
             float ratio = pevent.Graphics.DpiX / 192.0f;
             int border = (int)(ratio * borderSize);
 
-            Rectangle rectSurface = this.ClientRectangle;
+            Rectangle rectSurface = ClientRectangle;
             Rectangle rectBorder = Rectangle.Inflate(rectSurface, -border, -border);
 
             Color borderDrawColor = activated ? borderColor : Color.Transparent;
 
             using (GraphicsPath pathSurface = GetFigurePath(rectSurface, borderRadius + border))
             using (GraphicsPath pathBorder = GetFigurePath(rectBorder, borderRadius))
-            using (Pen penSurface = new Pen(this.Parent.BackColor, border))
+            using (Pen penSurface = new Pen(Parent.BackColor, border))
             using (Pen penBorder = new Pen(borderDrawColor, border))
             {
                 penBorder.Alignment = PenAlignment.Outset;
                 pevent.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
-                this.Region = new Region(pathSurface);
+                Region = new Region(pathSurface);
                 pevent.Graphics.DrawPath(penSurface, pathSurface);
                 pevent.Graphics.DrawPath(penBorder, pathBorder);
             }
@@ -388,7 +388,7 @@ namespace CustomControls
                     rect.Height -= Image.Height;
                 }
                 TextFormatFlags flags = TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter | TextFormatFlags.WordBreak;
-                TextRenderer.DrawText(pevent.Graphics, this.Text, this.Font, rect, Color.Gray, flags);
+                TextRenderer.DrawText(pevent.Graphics, Text, Font, rect, Color.Gray, flags);
             }
 
 

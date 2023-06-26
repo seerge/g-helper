@@ -1,14 +1,14 @@
-using AmdAdl2;
+using GHelper.Helpers;
 using System.Runtime.InteropServices;
-using static AmdAdl2.Adl2.NativeMethods;
+using static GHelper.Gpu.AMD.Adl2.NativeMethods;
 
-namespace GHelper.Gpu;
+namespace GHelper.Gpu.AMD;
 
 // Reference: https://github.com/GPUOpen-LibrariesAndSDKs/display-library/blob/master/Sample-Managed/Program.cs
 public class AmdGpuControl : IGpuControl
 {
     private bool _isReady;
-    private IntPtr _adlContextHandle;
+    private nint _adlContextHandle;
     private readonly ADLAdapterInfo _internalDiscreteAdapter;
 
     public bool IsNvidia => false;
@@ -23,7 +23,7 @@ public class AmdGpuControl : IGpuControl
 
         ADLAdapterInfoArray osAdapterInfoData = new();
         int osAdapterInfoDataSize = Marshal.SizeOf(osAdapterInfoData);
-        IntPtr AdapterBuffer = Marshal.AllocCoTaskMem(osAdapterInfoDataSize);
+        nint AdapterBuffer = Marshal.AllocCoTaskMem(osAdapterInfoDataSize);
         Marshal.StructureToPtr(osAdapterInfoData, AdapterBuffer, false);
         if (ADL2_Adapter_AdapterInfo_Get(_adlContextHandle, AdapterBuffer, osAdapterInfoDataSize) != Adl2.ADL_SUCCESS)
             return null;
@@ -76,7 +76,7 @@ public class AmdGpuControl : IGpuControl
 
     }
 
-    public bool IsValid => _isReady && _adlContextHandle != IntPtr.Zero;
+    public bool IsValid => _isReady && _adlContextHandle != nint.Zero;
 
     public int? GetCurrentTemperature()
     {
@@ -112,7 +112,7 @@ public class AmdGpuControl : IGpuControl
 
     public bool SetVariBright(int enabled)
     {
-        if (_adlContextHandle == IntPtr.Zero) return false;
+        if (_adlContextHandle == nint.Zero) return false;
 
         ADLAdapterInfo? iGPU = FindByType(ADLAsicFamilyType.Integrated);
         if (iGPU is null) return false;
@@ -125,7 +125,7 @@ public class AmdGpuControl : IGpuControl
     {
         supported = enabled = -1;
 
-        if (_adlContextHandle == IntPtr.Zero) return false;
+        if (_adlContextHandle == nint.Zero) return false;
 
         ADLAdapterInfo? iGPU = FindByType(ADLAsicFamilyType.Integrated);
         if (iGPU is null) return false;
@@ -154,7 +154,7 @@ public class AmdGpuControl : IGpuControl
 
         if (!IsValid) return;
 
-        IntPtr appInfoPtr = IntPtr.Zero;
+        nint appInfoPtr = nint.Zero;
         int appCount = 0;
 
         try
@@ -168,12 +168,12 @@ public class AmdGpuControl : IGpuControl
 
             // Convert the application data pointers to an array of structs
             var appInfoArray = new ADLSGApplicationInfo[appCount];
-            IntPtr currentPtr = appInfoPtr;
+            nint currentPtr = appInfoPtr;
 
             for (int i = 0; i < appCount; i++)
             {
                 appInfoArray[i] = Marshal.PtrToStructure<ADLSGApplicationInfo>(currentPtr);
-                currentPtr = IntPtr.Add(currentPtr, Marshal.SizeOf<ADLSGApplicationInfo>());
+                currentPtr = nint.Add(currentPtr, Marshal.SizeOf<ADLSGApplicationInfo>());
             }
 
             var appNames = new List<string>();
@@ -189,7 +189,7 @@ public class AmdGpuControl : IGpuControl
 
             List<string> immune = new() { "svchost", "system", "ntoskrnl", "csrss", "winlogon", "wininit", "smss" };
 
-            foreach (string kill in appNames) 
+            foreach (string kill in appNames)
                 if (!immune.Contains(kill.ToLower()))
                     ProcessHelper.KillByName(kill);
 
@@ -202,7 +202,7 @@ public class AmdGpuControl : IGpuControl
         finally
         {
             // Clean up resources
-            if (appInfoPtr != IntPtr.Zero)
+            if (appInfoPtr != nint.Zero)
             {
                 Marshal.FreeCoTaskMem(appInfoPtr);
             }
@@ -213,10 +213,10 @@ public class AmdGpuControl : IGpuControl
 
     private void ReleaseUnmanagedResources()
     {
-        if (_adlContextHandle != IntPtr.Zero)
+        if (_adlContextHandle != nint.Zero)
         {
             ADL2_Main_Control_Destroy(_adlContextHandle);
-            _adlContextHandle = IntPtr.Zero;
+            _adlContextHandle = nint.Zero;
             _isReady = false;
         }
     }

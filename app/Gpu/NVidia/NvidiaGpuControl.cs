@@ -1,4 +1,5 @@
-﻿using NvAPIWrapper.GPU;
+﻿using GHelper.Helpers;
+using NvAPIWrapper.GPU;
 using NvAPIWrapper.Native;
 using NvAPIWrapper.Native.GPU;
 using NvAPIWrapper.Native.GPU.Structures;
@@ -6,7 +7,7 @@ using NvAPIWrapper.Native.Interfaces.GPU;
 using System.Diagnostics;
 using static NvAPIWrapper.Native.GPU.Structures.PerformanceStates20InfoV1;
 
-namespace GHelper.Gpu;
+namespace GHelper.Gpu.NVidia;
 
 public class NvidiaGpuControl : IGpuControl
 {
@@ -126,8 +127,8 @@ public class NvidiaGpuControl : IGpuControl
 
     public int SetClocksFromConfig()
     {
-        int core = AppConfig.Get("gpu_core",0);
-        int memory = AppConfig.Get("gpu_memory",0);
+        int core = AppConfig.Get("gpu_core", 0);
+        int memory = AppConfig.Get("gpu_memory", 0);
         int status = SetClocks(core, memory);
         return status;
     }
@@ -145,7 +146,7 @@ public class NvidiaGpuControl : IGpuControl
         var voltageEntry = new PerformanceStates20BaseVoltageEntryV1(PerformanceVoltageDomain.Core, new PerformanceStates20ParameterDelta(voltage));
 
         PerformanceStates20ClockEntryV1[] clocks = { coreClock, memoryClock };
-        PerformanceStates20BaseVoltageEntryV1[] voltages = {  };
+        PerformanceStates20BaseVoltageEntryV1[] voltages = { };
 
         PerformanceState20[] performanceStates = { new PerformanceState20(PerformanceStateId.P0_3DPerformance, clocks, voltages) };
 

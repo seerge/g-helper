@@ -1,4 +1,4 @@
-﻿using GHelper;
+﻿using GHelper.Helpers;
 using Microsoft.Win32.TaskScheduler;
 using System.Diagnostics;
 using System.Security.Principal;

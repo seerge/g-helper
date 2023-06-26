@@ -1,4 +1,4 @@
-﻿using GHelper;
+﻿using GHelper.Mode;
 using System.Diagnostics;
 using System.Management;
 using System.Text.Json;

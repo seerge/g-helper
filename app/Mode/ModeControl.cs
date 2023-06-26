@@ -1,6 +1,6 @@
-﻿using GHelper.Gpu;
+﻿using GHelper.Gpu.NVidia;
+using GHelper.Helpers;
 using Ryzen;
-using System.Diagnostics;
 
 namespace GHelper.Mode
 {
@@ -8,6 +8,7 @@ namespace GHelper.Mode
     {
 
         static SettingsForm settings = Program.settingsForm;
+        static ToastForm toast = new ToastForm();
 
         private static bool customFans = false;
         private static int customPower = 0;
@@ -32,30 +33,20 @@ namespace GHelper.Mode
 
             if (!Modes.Exists(mode)) mode = 0;
 
+            customFans = false;
+            customPower = 0;
+
             settings.ShowMode(mode);
+            SetModeLabel();
 
             Modes.SetCurrent(mode);
 
-            SetModeLabel();
-
-            if (IsManualModeRequired())
-                Program.acpi.DeviceSet(AsusACPI.PerformanceMode, AsusACPI.PerformanceManual, "Manual Mode");
-            else
-                Program.acpi.DeviceSet(AsusACPI.PerformanceMode, Modes.GetBase(mode), "Mode");
+            Program.acpi.DeviceSet(AsusACPI.PerformanceMode, IsManualModeRequired() ? AsusACPI.PerformanceManual : Modes.GetBase(mode), "Mode");
 
             if (AppConfig.Is("xgm_fan") && Program.acpi.IsXGConnected()) AsusUSB.ResetXGM();
 
             if (notify)
-            {
-                try
-                {
-                    settings.toast.RunToast(Modes.GetCurrentName(), SystemInformation.PowerStatus.PowerLineStatus == PowerLineStatus.Online ? ToastIcon.Charger : ToastIcon.Battery);
-                }
-                catch
-                {
-                    Debug.WriteLine("Toast error");
-                }
-            }
+                toast.RunToast(Modes.GetCurrentName(), SystemInformation.PowerStatus.PowerLineStatus == PowerLineStatus.Online ? ToastIcon.Charger : ToastIcon.Battery);
 
             SetGPUClocks();
             AutoFans();
@@ -74,15 +65,14 @@ namespace GHelper.Mode
                 NativeMethods.SetCPUBoost(AppConfig.GetMode("auto_boost"));
             }
 
+            /*
             if (NativeMethods.PowerGetEffectiveOverlayScheme(out Guid activeScheme) == 0)
             {
                 Debug.WriteLine("Effective :" + activeScheme);
             }
+            */
 
-            if (settings.fans != null && settings.fans.Text != "")
-            {
-                settings.fans.InitAll();
-            }
+            settings.FansInit();
         }
 
 
@@ -107,7 +97,6 @@ namespace GHelper.Mode
 
                 int cpuResult = Program.acpi.SetFanCurve(AsusFan.CPU, AppConfig.GetFanConfig(AsusFan.CPU));
                 int gpuResult = Program.acpi.SetFanCurve(AsusFan.GPU, AppConfig.GetFanConfig(AsusFan.GPU));
-
 
                 if (AppConfig.Is("mid_fan"))
                     Program.acpi.SetFanCurve(AsusFan.Mid, AppConfig.GetFanConfig(AsusFan.Mid));
@@ -140,7 +129,7 @@ namespace GHelper.Mode
 
             }
 
-            Program.settingsForm.BeginInvoke(SetModeLabel);
+            SetModeLabel();
 
         }
 
@@ -263,7 +252,7 @@ namespace GHelper.Mode
             }
 
 
-            Program.settingsForm.BeginInvoke(SetModeLabel);
+            SetModeLabel();
 
         }
 
@@ -311,14 +300,10 @@ namespace GHelper.Mode
             if (gpu_temp < AsusACPI.MinGPUTemp || gpu_temp > AsusACPI.MaxGPUTemp) return;
 
             if (Program.acpi.DeviceGet(AsusACPI.PPT_GPUC0) >= 0)
-            {
                 Program.acpi.DeviceSet(AsusACPI.PPT_GPUC0, gpu_boost, "PowerLimit C0");
-            }
 
             if (Program.acpi.DeviceGet(AsusACPI.PPT_GPUC2) >= 0)
-            {
                 Program.acpi.DeviceSet(AsusACPI.PPT_GPUC2, gpu_temp, "PowerLimit C2");
-            }
 
         }
 

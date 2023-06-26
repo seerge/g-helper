@@ -6,7 +6,7 @@ using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GHelper
+namespace GHelper.Helpers
 {
     public static class ProcessHelper
     {
@@ -61,7 +61,8 @@ namespace GHelper
                 {
                     Process.Start(startInfo);
                     Application.Exit();
-                } catch (Exception ex)
+                }
+                catch (Exception ex)
                 {
                     Logger.WriteLine(ex.Message);
                 }

@@ -1,6 +1,6 @@
 ﻿using System.Drawing.Drawing2D;
 
-namespace WinFormsSliderBar
+namespace GHelper.UI
 {
     public static class GraphicsExtensions
     {

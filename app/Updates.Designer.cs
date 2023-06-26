@@ -1,4 +1,6 @@
-﻿namespace GHelper
+﻿using GHelper.UI;
+
+namespace GHelper
 {
     partial class Updates
     {
@@ -34,7 +36,7 @@
             pictureBios = new PictureBox();
             panelBiosTitle = new Panel();
             labelUpdates = new Label();
-            buttonRefresh = new CustomControls.RButton();
+            buttonRefresh = new RButton();
             panelBios = new Panel();
             panelDrivers = new Panel();
             tableDrivers = new TableLayoutPanel();
@@ -242,7 +244,7 @@
         private Panel panelDriversTitle;
         private Label labelDrivers;
         private PictureBox pictureDrivers;
-        private CustomControls.RButton buttonRefresh;
+        private RButton buttonRefresh;
         private Label labelUpdates;
     }
 }

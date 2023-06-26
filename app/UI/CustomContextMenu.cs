@@ -1,11 +1,11 @@
 ﻿using System.Runtime.InteropServices;
 
-namespace GHelper
+namespace GHelper.UI
 {
     class CustomContextMenu : ContextMenuStrip
     {
         [DllImport("dwmapi.dll", CharSet = CharSet.Unicode, SetLastError = true)]
-        private static extern long DwmSetWindowAttribute(IntPtr hwnd,
+        private static extern long DwmSetWindowAttribute(nint hwnd,
                                                             DWMWINDOWATTRIBUTE attribute,
                                                             ref DWM_WINDOW_CORNER_PREFERENCE pvAttribute,
                                                             uint cbAttribute);
