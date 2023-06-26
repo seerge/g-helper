@@ -8,7 +8,6 @@ namespace GHelper.Mode
     {
 
         static SettingsForm settings = Program.settingsForm;
-        static ToastForm toast = new ToastForm();
 
         private static bool customFans = false;
         private static int customPower = 0;
@@ -46,7 +45,7 @@ namespace GHelper.Mode
             if (AppConfig.Is("xgm_fan") && Program.acpi.IsXGConnected()) AsusUSB.ResetXGM();
 
             if (notify)
-                toast.RunToast(Modes.GetCurrentName(), SystemInformation.PowerStatus.PowerLineStatus == PowerLineStatus.Online ? ToastIcon.Charger : ToastIcon.Battery);
+                Program.toast.RunToast(Modes.GetCurrentName(), SystemInformation.PowerStatus.PowerLineStatus == PowerLineStatus.Online ? ToastIcon.Charger : ToastIcon.Battery);
 
             SetGPUClocks();
             AutoFans();

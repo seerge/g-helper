@@ -1,6 +1,6 @@
-﻿using GHelper.Helpers;
+﻿using GHelper.Display;
+using GHelper.Helpers;
 using GHelper.Mode;
-using HidLibrary;
 using Microsoft.Win32;
 using NAudio.CoreAudioApi;
 using System.Diagnostics;
@@ -8,58 +8,6 @@ using System.Management;
 
 namespace GHelper.Input
 {
-    public class KeyboardListener
-    {
-
-        CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
-
-        public KeyboardListener(Action<int> KeyHandler)
-        {
-            HidDevice? input = AsusUSB.GetDevice();
-            if (input == null) return;
-
-            Logger.WriteLine($"Input: {input.DevicePath}");
-
-            var task = Task.Run(() =>
-            {
-                try
-                {
-                    while (!cancellationTokenSource.Token.IsCancellationRequested)
-                    {
-
-                        // Emergency break
-                        if (input == null || !input.IsConnected)
-                        {
-                            Logger.WriteLine("Listener terminated");
-                            break;
-                        }
-
-                        var data = input.Read().Data;
-                        if (data.Length > 1 && data[0] == AsusUSB.INPUT_HID_ID && data[1] > 0 && data[1] != 236)
-                        {
-                            Logger.WriteLine($"Key: {data[1]}");
-                            KeyHandler(data[1]);
-                        }
-                    }
-
-                    Logger.WriteLine("Listener stopped");
-
-                }
-                catch (Exception ex)
-                {
-                    Logger.WriteLine(ex.ToString());
-                }
-            });
-
-
-        }
-
-        public void Dispose()
-        {
-            cancellationTokenSource?.Cancel();
-        }
-    }
-
 
     public class InputDispatcher
     {
@@ -70,7 +18,7 @@ namespace GHelper.Input
         public static Keys keyApp = Keys.F12;
 
         static ModeControl modeControl = new ModeControl();
-        static ToastForm toast = new ToastForm();
+        static ScreenControl screenControl = new ScreenControl();
 
         KeyboardListener listener;
         KeyboardHook hook = new KeyboardHook();
@@ -255,12 +203,12 @@ namespace GHelper.Input
                         break;
                     case Keys.F7:
                         if (AppConfig.ContainsModel("TUF"))
-                            toast.RunToast(ScreenBrightness.Adjust(-10) + "%", ToastIcon.BrightnessDown);
+                            Program.toast.RunToast(ScreenBrightness.Adjust(-10) + "%", ToastIcon.BrightnessDown);
                         HandleOptimizationEvent(16);
                         break;
                     case Keys.F8:
                         if (AppConfig.ContainsModel("TUF"))
-                            toast.RunToast(ScreenBrightness.Adjust(+10) + "%", ToastIcon.BrightnessUp);
+                            Program.toast.RunToast(ScreenBrightness.Adjust(+10) + "%", ToastIcon.BrightnessUp);
                         HandleOptimizationEvent(32);
                         break;
                     case Keys.F9:
@@ -330,7 +278,7 @@ namespace GHelper.Input
                     NativeMethods.TurnOffScreen(Program.settingsForm.Handle);
                     break;
                 case "miniled":
-                    Program.settingsForm.BeginInvoke(Program.settingsForm.ToogleMiniled);
+                    screenControl.ToogleMiniled();
                     break;
                 case "aura":
                     Program.settingsForm.BeginInvoke(Program.settingsForm.CycleAuraMode);
@@ -353,7 +301,7 @@ namespace GHelper.Input
                         var commDevice = enumerator.GetDefaultAudioEndpoint(DataFlow.Capture, Role.Communications);
                         bool muteStatus = !commDevice.AudioEndpointVolume.Mute;
                         commDevice.AudioEndpointVolume.Mute = muteStatus;
-                        toast.RunToast(muteStatus ? "Muted" : "Unmuted", muteStatus ? ToastIcon.MicrophoneMute : ToastIcon.Microphone);
+                        Program.toast.RunToast(muteStatus ? "Muted" : "Unmuted", muteStatus ? ToastIcon.MicrophoneMute : ToastIcon.Microphone);
                     }
                     break;
                 case "brightness_up":
@@ -389,7 +337,7 @@ namespace GHelper.Input
             else
                 Program.settingsForm.BeginInvoke(Program.inputDispatcher.RegisterKeys);
 
-            toast.RunToast("Fn-Lock " + (fnLock == 1 ? "On" : "Off"), ToastIcon.FnLock);
+            Program.toast.RunToast("Fn-Lock " + (fnLock == 1 ? "On" : "Off"), ToastIcon.FnLock);
         }
 
         public static void TabletMode()
@@ -444,14 +392,11 @@ namespace GHelper.Input
             }
 
             if (!OptimizationService.IsRunning())
-
                 HandleOptimizationEvent(EventID);
-
-            // Asus Optimization service Events 
-
 
         }
 
+        // Asus Optimization service Events 
         static void HandleOptimizationEvent(int EventID)
         {
             switch (EventID)
@@ -465,7 +410,7 @@ namespace GHelper.Input
                 case 107: // FN+F10
                     bool touchpadState = GetTouchpadState();
                     AsusUSB.TouchpadToggle();
-                    toast.RunToast(touchpadState ? "Off" : "On", ToastIcon.Touchpad);
+                    Program.toast.RunToast(touchpadState ? "Off" : "On", ToastIcon.Touchpad);
                     break;
                 case 108: // FN+F11
                     Program.acpi.DeviceSet(AsusACPI.UniversalControl, AsusACPI.KB_Sleep, "Sleep");
@@ -518,7 +463,7 @@ namespace GHelper.Input
             {
                 AsusUSB.ApplyBrightness(backlight, "HotKey");
                 string[] backlightNames = new string[] { "Off", "Low", "Mid", "Max" };
-                toast.RunToast(backlightNames[backlight], delta > 0 ? ToastIcon.BacklightUp : ToastIcon.BacklightDown);
+                Program.toast.RunToast(backlightNames[backlight], delta > 0 ? ToastIcon.BacklightUp : ToastIcon.BacklightDown);
             }
 
         }

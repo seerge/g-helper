@@ -3,6 +3,7 @@ using GHelper.Gpu;
 using GHelper.Helpers;
 using GHelper.Input;
 using GHelper.Mode;
+using GHelper.Display;
 using GHelper.UI;
 using System.Diagnostics;
 using System.Net;
@@ -21,6 +22,7 @@ namespace GHelper
 
         ModeControl modeControl = new ModeControl();
         GPUModeControl gpuControl = new GPUModeControl();
+        ScreenControl screenControl = new ScreenControl();
 
         public static System.Timers.Timer aTimer = default!;
         public string versionUrl = "http://github.com/seerge/g-helper/releases";
@@ -190,7 +192,7 @@ namespace GHelper
             aTimer.Enabled = this.Visible;
             if (this.Visible)
             {
-                InitScreen();
+                screenControl.InitScreen();
                 gpuControl.InitXGM();
 
                 // Run update once per 12 hours
@@ -537,8 +539,7 @@ namespace GHelper
         private void ButtonScreenAuto_Click(object? sender, EventArgs e)
         {
             AppConfig.Set("screen_auto", 1);
-            InitScreen();
-            AutoScreen();
+            screenControl.AutoScreen();
         }
 
 
@@ -779,75 +780,25 @@ namespace GHelper
         private void Button120Hz_Click(object? sender, EventArgs e)
         {
             AppConfig.Set("screen_auto", 0);
-            SetScreen(1000, 1);
+            screenControl.SetScreen(1000, 1);
         }
 
         private void Button60Hz_Click(object? sender, EventArgs e)
         {
             AppConfig.Set("screen_auto", 0);
-            SetScreen(60, 0);
+            screenControl.SetScreen(60, 0);
         }
 
-        public void ToogleMiniled()
-        {
-            int miniled = (AppConfig.Get("miniled") == 1) ? 0 : 1;
-            AppConfig.Set("miniled", miniled);
-            SetScreen(-1, -1, miniled);
-        }
 
         private void ButtonMiniled_Click(object? sender, EventArgs e)
         {
-            ToogleMiniled();
+            screenControl.ToogleMiniled();
         }
 
-        public void SetScreen(int frequency = -1, int overdrive = -1, int miniled = -1)
+
+
+        public void VisualiseScreen(bool screenEnabled, bool screenAuto, int frequency, int maxFrequency, int overdrive, bool overdriveSetting, int miniled)
         {
-
-            if (NativeMethods.GetRefreshRate() < 0) // Laptop screen not detected or has unknown refresh rate
-            {
-                InitScreen();
-                return;
-            }
-
-            if (frequency >= 1000)
-            {
-                frequency = NativeMethods.GetRefreshRate(true);
-            }
-
-            if (frequency > 0)
-            {
-                NativeMethods.SetRefreshRate(frequency);
-            }
-
-            if (overdrive >= 0)
-            {
-                if (AppConfig.Get("no_overdrive") == 1) overdrive = 0;
-                Program.acpi.DeviceSet(AsusACPI.ScreenOverdrive, overdrive, "ScreenOverdrive");
-
-            }
-
-            if (miniled >= 0)
-            {
-                Program.acpi.DeviceSet(AsusACPI.ScreenMiniled, miniled, "Miniled");
-                Debug.WriteLine("Miniled " + miniled);
-            }
-
-            InitScreen();
-        }
-
-        public void InitScreen()
-        {
-
-            int frequency = NativeMethods.GetRefreshRate();
-            int maxFrequency = NativeMethods.GetRefreshRate(true);
-
-            bool screenAuto = AppConfig.Is("screen_auto");
-            bool overdriveSetting = (AppConfig.Get("no_overdrive") != 1);
-
-            int overdrive = Program.acpi.DeviceGet(AsusACPI.ScreenOverdrive);
-            int miniled = Program.acpi.DeviceGet(AsusACPI.ScreenMiniled);
-
-            bool screenEnabled = (frequency >= 0);
 
             ButtonEnabled(button60Hz, screenEnabled);
             ButtonEnabled(button120Hz, screenEnabled);
@@ -888,15 +839,12 @@ namespace GHelper
             if (miniled >= 0)
             {
                 buttonMiniled.Activated = (miniled == 1);
-                AppConfig.Set("miniled", miniled);
             }
             else
             {
                 buttonMiniled.Visible = false;
             }
 
-            AppConfig.Set("frequency", frequency);
-            AppConfig.Set("overdrive", overdrive);
         }
 
         private void ButtonQuit_Click(object? sender, EventArgs e)
@@ -914,9 +862,6 @@ namespace GHelper
             if (keyb != null && keyb.Text != "") keyb.Close();
         }
 
-        public void CloseOthers()
-        {
-        }
 
         private void SettingsForm_FormClosing(object? sender, FormClosingEventArgs e)
         {
@@ -1058,24 +1003,6 @@ namespace GHelper
         }
 
 
-        public void AutoScreen(bool force = false)
-        {
-            if (force || AppConfig.Is("screen_auto"))
-            {
-                if (SystemInformation.PowerStatus.PowerLineStatus == PowerLineStatus.Online)
-                    SetScreen(1000, 1);
-                else
-                    SetScreen(60, 0);
-            }
-            else
-            {
-                SetScreen(overdrive: AppConfig.Get("overdrive"));
-            }
-
-
-
-        }
-
         public void VisualizeXGM(bool connected, bool activated)
         {
 
@@ -1113,10 +1040,12 @@ namespace GHelper
         public void HideGPUModes()
         {
             isGpuSection = false;
+            
             buttonEco.Visible = false;
             buttonStandard.Visible = false;
             buttonUltimate.Visible = false;
             buttonOptimized.Visible = false;
+
             buttonStopGPU.Visible = true;
 
             SetContextMenu();

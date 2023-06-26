@@ -2,6 +2,7 @@ using GHelper.Gpu;
 using GHelper.Helpers;
 using GHelper.Input;
 using GHelper.Mode;
+using GHelper.Display;
 using Microsoft.Win32;
 using Ryzen;
 using System.Diagnostics;
@@ -26,6 +27,9 @@ namespace GHelper
         public static SettingsForm settingsForm = new SettingsForm();
         public static ModeControl modeControl = new ModeControl();
         public static GPUModeControl gpuControl = new GPUModeControl();
+        public static ScreenControl screenControl = new ScreenControl();
+
+        public static ToastForm toast = new ToastForm();
 
         public static IntPtr unRegPowerNotify;
 
@@ -159,7 +163,7 @@ namespace GHelper
             if (!switched)
             {
                 gpuControl.InitGPUMode();
-                settingsForm.AutoScreen();
+                screenControl.AutoScreen();
             }
 
             settingsForm.AutoKeyboard();

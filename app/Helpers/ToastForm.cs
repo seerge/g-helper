@@ -1,6 +1,4 @@
-﻿using System.Diagnostics;
-using System.Drawing.Drawing2D;
-
+﻿using System.Drawing.Drawing2D;
 
 namespace GHelper.Helpers
 {

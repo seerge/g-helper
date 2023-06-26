@@ -1,4 +1,5 @@
-﻿using GHelper.Gpu.NVidia;
+﻿using GHelper.Display;
+using GHelper.Gpu.NVidia;
 using GHelper.Helpers;
 using GHelper.Mode;
 using System.Diagnostics;
@@ -9,6 +10,7 @@ namespace GHelper.Gpu
     {
         static SettingsForm settings = Program.settingsForm;
         ModeControl modeControl = new ModeControl();
+        ScreenControl screenControl = new ScreenControl();
 
         public void InitGPUMode()
         {
@@ -33,6 +35,7 @@ namespace GHelper.Gpu
 
                 // Ultimate mode not suported
                 if (mux != 1) settings.HideUltimateMode();
+                // GPU mode not supported
                 if (eco < 0 && mux < 0) settings.HideGPUModes();
             }
 
@@ -143,7 +146,7 @@ namespace GHelper.Gpu
                 settings.Invoke(delegate
                 {
                     InitGPUMode();
-                    settings.AutoScreen();
+                    screenControl.AutoScreen();
                 });
 
                 if (eco == 0)
