@@ -12,11 +12,14 @@ namespace GHelper.Mode
         private static bool customFans = false;
         private static int customPower = 0;
 
+        private int _cpuUV = 0;
+        private int _igpuUV = 0;
+
         static System.Timers.Timer reapplyTimer = default!;
 
         public ModeControl()
         {
-            reapplyTimer = new System.Timers.Timer(5000);
+            reapplyTimer = new System.Timers.Timer(30 * 1000);
             reapplyTimer.Elapsed += ReapplyTimer_Elapsed;
             reapplyTimer.Enabled = false;
         }
@@ -36,6 +39,13 @@ namespace GHelper.Mode
                 SetPerformanceMode(mode, powerChanged);
             else
                 SetPerformanceMode(Modes.GetCurrent());
+        }
+
+
+        public void ResetPerformanceMode()
+        {
+            ResetRyzen();
+            Program.acpi.DeviceSet(AsusACPI.PerformanceMode, Modes.GetCurrentBase(), "Mode");
         }
 
         public void SetPerformanceMode(int mode = -1, bool notify = false)
@@ -193,7 +203,7 @@ namespace GHelper.Mode
 
                     if (applyPower) SetPower();
                     SetGPUPower();
-                    AutoUV();
+                    AutoRyzen();
                 };
                 timer.Start();
             }
@@ -201,7 +211,7 @@ namespace GHelper.Mode
             {
                 if (applyPower) SetPower(true);
                 SetGPUPower();
-                AutoUV();
+                AutoRyzen();
             }
 
         }
@@ -319,13 +329,6 @@ namespace GHelper.Mode
 
         }
 
-
-        public void AutoUV()
-        {
-            if (!AppConfig.IsMode("auto_uv")) return;
-            SetUV();
-        }
-
         public void SetCPUTemp(int? cpuTemp, bool log = true)
         {
             if (cpuTemp >= RyzenControl.MinTemp && cpuTemp <= RyzenControl.MaxTemp)
@@ -338,48 +341,66 @@ namespace GHelper.Mode
 
                 reapplyTimer.Enabled = AppConfig.IsMode("auto_uv");
 
-            } else
+            }
+            else
             {
                 reapplyTimer.Enabled = false;
             }
         }
 
-        public void SetUV(bool launchAsAdmin = false)
+        public void SetUV(int cpuUV)
         {
+            if (cpuUV >= RyzenControl.MinCPUUV && cpuUV <= RyzenControl.MaxCPUUV)
+            {
+                var uvResult = SendCommand.set_coall(cpuUV);
+                Logger.WriteLine($"UV: {cpuUV} {uvResult}");
+                if (uvResult == Smu.Status.OK) _cpuUV = cpuUV;
+            }
+        }
 
+        public void SetUViGPU(int igpuUV)
+        {
+            if (igpuUV >= RyzenControl.MinIGPUUV && igpuUV <= RyzenControl.MaxIGPUUV)
+            {
+                var iGPUResult = SendCommand.set_cogfx(igpuUV);
+                Logger.WriteLine($"iGPU UV: {igpuUV} {iGPUResult}");
+                if (iGPUResult == Smu.Status.OK) _igpuUV = igpuUV;
+            }
+        }
+
+
+        public void SetRyzen(bool launchAsAdmin = false)
+        {
             if (!ProcessHelper.IsUserAdministrator())
             {
                 if (launchAsAdmin) ProcessHelper.RunAsAdmin("uv");
                 return;
             }
 
-            if (!RyzenControl.IsAMD()) return;
-
-            int cpuUV = AppConfig.GetMode("cpu_uv", 0);
-            int igpuUV = AppConfig.GetMode("igpu_uv", 0);
-            int cpuTemp = AppConfig.GetMode("cpu_temp");
-
             try
             {
-                if (cpuUV >= RyzenControl.MinCPUUV && cpuUV <= RyzenControl.MaxCPUUV)
-                {
-                    var uvResult = SendCommand.set_coall(cpuUV);
-                    Logger.WriteLine($"UV: {cpuUV} {uvResult}");
-                }
-
-                if (igpuUV >= RyzenControl.MinIGPUUV && igpuUV <= RyzenControl.MaxIGPUUV)
-                {
-                    var iGPUResult = SendCommand.set_cogfx(igpuUV);
-                    Logger.WriteLine($"iGPU UV: {igpuUV} {iGPUResult}");
-                }
-
-                SetCPUTemp(cpuTemp);
-
+                SetUV(AppConfig.GetMode("cpu_uv", 0));
+                SetUViGPU(AppConfig.GetMode("igpu_uv", 0));
+                SetCPUTemp(AppConfig.GetMode("cpu_temp"));
             }
             catch (Exception ex)
             {
                 Logger.WriteLine("UV Error: " + ex.ToString());
             }
+        }
+
+        public void ResetRyzen()
+        {
+            if (_cpuUV != 0) SetUV(0);
+            if (_igpuUV != 0) SetUViGPU(0);
+        }
+
+        public void AutoRyzen()
+        {
+            if (!RyzenControl.IsAMD()) return;
+
+            if (AppConfig.IsMode("auto_uv")) SetRyzen();
+            else ResetRyzen();
         }
 
     }

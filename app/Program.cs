@@ -218,7 +218,7 @@ namespace GHelper
                     case "uv":
                         Startup.ReScheduleAdmin();
                         settingsForm.FansToggle(2);
-                        modeControl.SetUV(); 
+                        modeControl.SetRyzen(); 
                         break;
                 }
             }

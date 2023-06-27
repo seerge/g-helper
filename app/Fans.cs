@@ -183,7 +183,7 @@ namespace GHelper
         private void CheckApplyUV_Click(object? sender, EventArgs e)
         {
             AppConfig.SetMode("auto_uv", checkApplyUV.Checked ? 1 : 0);
-            modeControl.AutoUV();
+            modeControl.AutoRyzen();
         }
 
         public void InitAll()
@@ -246,7 +246,7 @@ namespace GHelper
 
         private void ButtonApplyAdvanced_Click(object? sender, EventArgs e)
         {
-            modeControl.SetUV(true);
+            modeControl.SetRyzen(true);
             checkApplyUV.Enabled = true;
         }
 
@@ -831,10 +831,6 @@ namespace GHelper
             AppConfig.SetMode("auto_apply", 0);
             AppConfig.SetMode("auto_apply_power", 0);
 
-            Program.acpi.DeviceSet(AsusACPI.PerformanceMode, Modes.GetCurrentBase(), "Mode");
-
-            if (Program.acpi.IsXGConnected())
-                AsusUSB.ResetXGM();
 
             trackUV.Value = 0;
             trackUViGPU.Value = 0;
@@ -842,6 +838,11 @@ namespace GHelper
 
             AdvancedScroll();
             AppConfig.SetMode("cpu_temp", -1);
+
+            modeControl.ResetPerformanceMode();
+            
+            if (Program.acpi.IsXGConnected()) AsusUSB.ResetXGM();
+
 
             if (gpuVisible)
             {
