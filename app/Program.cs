@@ -22,12 +22,13 @@ namespace GHelper
             Visible = true
         };
 
-        public static AsusACPI? acpi;
+        public static AsusACPI acpi;
 
         public static SettingsForm settingsForm = new SettingsForm();
+
         public static ModeControl modeControl = new ModeControl();
-        public static GPUModeControl gpuControl = new GPUModeControl();
-        public static ScreenControl screenControl = new ScreenControl();
+        static GPUModeControl gpuControl = new GPUModeControl();
+        static ScreenControl screenControl = new ScreenControl();
 
         public static ToastForm toast = new ToastForm();
 

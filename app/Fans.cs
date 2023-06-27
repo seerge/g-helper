@@ -11,7 +11,7 @@ namespace GHelper
     {
 
         int curIndex = -1;
-        DataPoint curPoint = null;
+        DataPoint? curPoint = null;
 
         Series seriesCPU;
         Series seriesGPU;
@@ -25,7 +25,7 @@ namespace GHelper
         const int fansMax = 100;
 
         NvidiaGpuControl? nvControl = null;
-        ModeControl modeControl = new ModeControl();
+        ModeControl modeControl = Program.modeControl;
 
         public Fans()
         {
@@ -183,6 +183,7 @@ namespace GHelper
         private void CheckApplyUV_Click(object? sender, EventArgs e)
         {
             AppConfig.SetMode("auto_uv", checkApplyUV.Checked ? 1 : 0);
+            modeControl.AutoUV();
         }
 
         public void InitAll()
@@ -974,8 +975,8 @@ namespace GHelper
         {
 
             // Get the neighboring DataPoints of the hit point
-            DataPoint upperPoint = null;
-            DataPoint lowerPoint = null;
+            DataPoint? upperPoint = null;
+            DataPoint? lowerPoint = null;
 
             if (index > 0)
             {

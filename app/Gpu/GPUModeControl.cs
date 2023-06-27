@@ -1,7 +1,6 @@
 ﻿using GHelper.Display;
 using GHelper.Gpu.NVidia;
 using GHelper.Helpers;
-using GHelper.Mode;
 using System.Diagnostics;
 
 namespace GHelper.Gpu
@@ -9,7 +8,6 @@ namespace GHelper.Gpu
     public class GPUModeControl
     {
         static SettingsForm settings = Program.settingsForm;
-        ModeControl modeControl = new ModeControl();
         ScreenControl screenControl = new ScreenControl();
 
         public void InitGPUMode()
@@ -153,7 +151,7 @@ namespace GHelper.Gpu
                 {
                     await Task.Delay(TimeSpan.FromMilliseconds(3000));
                     HardwareControl.RecreateGpuControl();
-                    modeControl.SetGPUClocks(false);
+                    Program.modeControl.SetGPUClocks(false);
                 }
 
             });

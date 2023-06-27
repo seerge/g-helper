@@ -4,7 +4,6 @@ namespace GHelper.Display
 {
     public class ScreenControl
     {
-        static SettingsForm settings = Program.settingsForm;
         public void AutoScreen(bool force = false)
         {
             if (force || AppConfig.Is("screen_auto"))
@@ -82,9 +81,9 @@ namespace GHelper.Display
             AppConfig.Set("frequency", frequency);
             AppConfig.Set("overdrive", overdrive);
 
-            settings.Invoke(delegate
+            Program.settingsForm.Invoke(delegate
             {
-                settings.VisualiseScreen(
+                Program.settingsForm.VisualiseScreen(
                     screenEnabled: screenEnabled,
                     screenAuto: screenAuto,
                     frequency: frequency,

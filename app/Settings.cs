@@ -20,7 +20,6 @@ namespace GHelper
         ContextMenuStrip contextMenuStrip = new CustomContextMenu();
         ToolStripMenuItem menuSilent, menuBalanced, menuTurbo, menuEco, menuStandard, menuUltimate, menuOptimized;
 
-        ModeControl modeControl = new ModeControl();
         GPUModeControl gpuControl = new GPUModeControl();
         ScreenControl screenControl = new ScreenControl();
 
@@ -39,7 +38,7 @@ namespace GHelper
 
         public SettingsForm()
         {
-
+ 
             InitializeComponent();
             InitTheme(true);
 
@@ -183,9 +182,7 @@ namespace GHelper
 
             SetContextMenu();
 
-
         }
-
 
         private void SettingsForm_VisibleChanged(object? sender, EventArgs e)
         {
@@ -1125,17 +1122,17 @@ namespace GHelper
 
         private void ButtonSilent_Click(object? sender, EventArgs e)
         {
-            modeControl.SetPerformanceMode(AsusACPI.PerformanceSilent);
+            Program.modeControl.SetPerformanceMode(AsusACPI.PerformanceSilent);
         }
 
         private void ButtonBalanced_Click(object? sender, EventArgs e)
         {
-            modeControl.SetPerformanceMode(AsusACPI.PerformanceBalanced);
+            Program.modeControl.SetPerformanceMode(AsusACPI.PerformanceBalanced);
         }
 
         private void ButtonTurbo_Click(object? sender, EventArgs e)
         {
-            modeControl.SetPerformanceMode(AsusACPI.PerformanceTurbo);
+            Program.modeControl.SetPerformanceMode(AsusACPI.PerformanceTurbo);
         }
 
 

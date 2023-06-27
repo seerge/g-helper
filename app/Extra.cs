@@ -12,7 +12,6 @@ namespace GHelper
 
         ScreenControl screenControl = new ScreenControl();
 
-
         Dictionary<string, string> customActions = new Dictionary<string, string>
         {
           {"","--------------" },

@@ -17,7 +17,7 @@ namespace GHelper.Input
         public static Keys keyProfile = Keys.F5;
         public static Keys keyApp = Keys.F12;
 
-        static ModeControl modeControl = new ModeControl();
+        static ModeControl modeControl = Program.modeControl;
         static ScreenControl screenControl = new ScreenControl();
 
         KeyboardListener listener;

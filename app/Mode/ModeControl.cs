@@ -12,6 +12,20 @@ namespace GHelper.Mode
         private static bool customFans = false;
         private static int customPower = 0;
 
+        static System.Timers.Timer reapplyTimer = default!;
+
+        public ModeControl()
+        {
+            reapplyTimer = new System.Timers.Timer(5000);
+            reapplyTimer.Elapsed += ReapplyTimer_Elapsed;
+            reapplyTimer.Enabled = false;
+        }
+
+        private void ReapplyTimer_Elapsed(object? sender, System.Timers.ElapsedEventArgs e)
+        {
+            SetCPUTemp(AppConfig.GetMode("cpu_temp"), false);
+        }
+
         public void AutoPerformance(bool powerChanged = false)
         {
             var Plugged = SystemInformation.PowerStatus.PowerLineStatus;
@@ -141,7 +155,6 @@ namespace GHelper.Mode
                 AppConfig.Is("manual_mode") ||
                 AppConfig.ContainsModel("GU603") ||
                 AppConfig.ContainsModel("GU604") ||
-                AppConfig.ContainsModel("FX517") ||
                 AppConfig.ContainsModel("G733");
         }
 
@@ -313,6 +326,24 @@ namespace GHelper.Mode
             SetUV();
         }
 
+        public void SetCPUTemp(int? cpuTemp, bool log = true)
+        {
+            if (cpuTemp >= RyzenControl.MinTemp && cpuTemp <= RyzenControl.MaxTemp)
+            {
+                var resultCPU = SendCommand.set_tctl_temp((uint)cpuTemp);
+                if (log) Logger.WriteLine($"CPU Temp: {cpuTemp} {resultCPU}");
+
+                var restultAPU = SendCommand.set_apu_skin_temp_limit((uint)cpuTemp);
+                if (log) Logger.WriteLine($"APU Temp: {cpuTemp} {restultAPU}");
+
+                reapplyTimer.Enabled = AppConfig.IsMode("auto_uv");
+
+            } else
+            {
+                reapplyTimer.Enabled = false;
+            }
+        }
+
         public void SetUV(bool launchAsAdmin = false)
         {
 
@@ -332,19 +363,17 @@ namespace GHelper.Mode
             {
                 if (cpuUV >= RyzenControl.MinCPUUV && cpuUV <= RyzenControl.MaxCPUUV)
                 {
-                    SendCommand.set_coall(cpuUV);
+                    var uvResult = SendCommand.set_coall(cpuUV);
+                    Logger.WriteLine($"UV: {cpuUV} {uvResult}");
                 }
 
                 if (igpuUV >= RyzenControl.MinIGPUUV && igpuUV <= RyzenControl.MaxIGPUUV)
                 {
-                    SendCommand.set_cogfx(igpuUV);
+                    var iGPUResult = SendCommand.set_cogfx(igpuUV);
+                    Logger.WriteLine($"iGPU UV: {igpuUV} {iGPUResult}");
                 }
 
-                if (cpuTemp >= RyzenControl.MinTemp && cpuTemp <= RyzenControl.MaxTemp)
-                {
-                    SendCommand.set_tctl_temp((uint)cpuTemp);
-                    SendCommand.set_apu_skin_temp_limit((uint)cpuTemp);
-                }
+                SetCPUTemp(cpuTemp);
 
             }
             catch (Exception ex)

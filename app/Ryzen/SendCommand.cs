@@ -189,7 +189,7 @@ namespace Ryzen
         }
 
         //TCTL Temp Limit
-        public static void set_tctl_temp(uint value)
+        public static Smu.Status? set_tctl_temp(uint value)
         {
             RyzenAccess.Initialize();
             uint[] Args = new uint[6];
@@ -227,9 +227,8 @@ namespace Ryzen
                     break;
             }
 
-            Logger.WriteLine($"CPU Temp: {value} {result}");
-
             RyzenAccess.Deinitialize();
+            return result;
         }
 
         //cHTC Temp Limit
@@ -261,7 +260,7 @@ namespace Ryzen
         }
 
         //Skin Temp limit
-        public static void set_apu_skin_temp_limit(uint value)
+        public static Smu.Status? set_apu_skin_temp_limit(uint value)
         {
             RyzenAccess.Initialize();
             uint[] Args = new uint[6];
@@ -285,9 +284,9 @@ namespace Ryzen
                     break;
             }
 
-            Logger.WriteLine($"APU Temp: {value} {result}");
-
             RyzenAccess.Deinitialize();
+
+            return result;
         }
 
         //VRM Current
@@ -908,7 +907,7 @@ namespace Ryzen
         }
 
         //Set All Core Curve Optimiser
-        public static void set_coall(int value)
+        public static Smu.Status? set_coall(int value)
         {
 
             uint uvalue = Convert.ToUInt32(0x100000 - (uint)(-1 * value));
@@ -944,9 +943,9 @@ namespace Ryzen
                     break;
             }
 
-            Logger.WriteLine($"UV: {value} {result}");
-
             RyzenAccess.Deinitialize();
+            return result;
+
         }
 
         //Set Per Core Curve Optimiser
@@ -982,7 +981,7 @@ namespace Ryzen
         }
 
         //Set iGPU Curve Optimiser
-        public static void set_cogfx(int value)
+        public static Smu.Status? set_cogfx(int value)
         {
 
             uint uvalue = Convert.ToUInt32(0x100000 - (uint)(-1 * value));
@@ -1010,9 +1009,8 @@ namespace Ryzen
                     break;
             }
 
-            Logger.WriteLine($"iGPU UV: {value} {result}");
-
             RyzenAccess.Deinitialize();
+            return result;
         }
 
         //Disable OC
