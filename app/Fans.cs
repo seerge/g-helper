@@ -178,6 +178,14 @@ namespace GHelper
 
             ToggleNavigation(0);
 
+            FormClosed += Fans_FormClosed;
+
+        }
+
+        private void Fans_FormClosed(object? sender, FormClosedEventArgs e)
+        {
+            //Because windows charts seem to eat a lot of memory :(
+            GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced);
         }
 
         private void CheckApplyUV_Click(object? sender, EventArgs e)
