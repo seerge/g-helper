@@ -712,7 +712,7 @@ namespace GHelper
             pictureColor2.BackColor = AsusUSB.Color2;
             pictureColor2.Visible = AsusUSB.HasSecondColor();
 
-            if (AppConfig.ContainsModel("GA401"))
+            if (AsusUSB.HasColor())
             {
                 panelColor.Visible = false;
             }

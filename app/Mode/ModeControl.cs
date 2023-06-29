@@ -19,7 +19,7 @@ namespace GHelper.Mode
 
         public ModeControl()
         {
-            reapplyTimer = new System.Timers.Timer(30 * 1000);
+            reapplyTimer = new System.Timers.Timer(AppConfig.GetMode("reapply_time", 30) * 1000);
             reapplyTimer.Elapsed += ReapplyTimer_Elapsed;
             reapplyTimer.Enabled = false;
         }

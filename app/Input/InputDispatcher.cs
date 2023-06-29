@@ -402,9 +402,11 @@ namespace GHelper.Input
             switch (EventID)
             {
                 case 16: // FN+F7
+                    //ScreenBrightness.Adjust(-10);
                     Program.acpi.DeviceSet(AsusACPI.UniversalControl, AsusACPI.Brightness_Down, "Brightness");
                     break;
                 case 32: // FN+F8
+                    //ScreenBrightness.Adjust(+10);
                     Program.acpi.DeviceSet(AsusACPI.UniversalControl, AsusACPI.Brightness_Up, "Brightness");
                     break;
                 case 107: // FN+F10

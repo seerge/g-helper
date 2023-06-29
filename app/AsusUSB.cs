@@ -118,7 +118,7 @@ namespace GHelper
                 _modes.Remove(3);
             }
 
-            if (AppConfig.ContainsModel("401"))
+            if (AppConfig.ContainsModel("401") || AppConfig.ContainsModel("X13"))
             {
                 _modes.Remove(2);
                 _modes.Remove(3);
@@ -148,6 +148,11 @@ namespace GHelper
                 else
                     mode = 0;
             }
+        }
+
+        public static bool HasColor()
+        {
+            return AppConfig.ContainsModel("GA401") || AppConfig.ContainsModel("X13");
         }
 
         public static bool HasSecondColor()
