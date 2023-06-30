@@ -249,6 +249,14 @@
   <data name="EcoMode" xml:space="preserve">
     <value>Eco</value>
   </data>
+  <data name="EnableOptimusText" xml:space="preserve">
+    <value>Wenn Sie die dGPU deaktivieren, indem Sie in den Eco Modus wechseln, kann zu Problemen mit der Helligkeitseinstellung führen, wenn der Anzeigemodus nicht auf Optimus eingestellt ist.
+
+Trotzdem fortfahren?</value>
+  </data>
+  <data name="EnableOptimusTitle" xml:space="preserve">
+    <value>Nvidia Anzeigemodus ist nicht auf Optimus eingestellt</value>
+  </data>
   <data name="Extra" xml:space="preserve">
     <value>Extra</value>
   </data>
@@ -308,6 +316,9 @@
   </data>
   <data name="GPUModeUltimate" xml:space="preserve">
     <value>Nur dGPU</value>
+  </data>
+  <data name="GPUSettings" xml:space="preserve">
+    <value>GPU Einstellungen</value>
   </data>
   <data name="GPUTempTarget" xml:space="preserve">
     <value>Maximale GPU Temperatur</value>
@@ -384,6 +395,12 @@
   <data name="MuteMic" xml:space="preserve">
     <value>Mikrofon stummschalten</value>
   </data>
+  <data name="NewUpdates" xml:space="preserve">
+    <value>Updates verfügbar</value>
+  </data>
+  <data name="NoNewUpdates" xml:space="preserve">
+    <value>Keine Updates verfügbar</value>
+  </data>
   <data name="OpenGHelper" xml:space="preserve">
     <value>G-Helper Fenster öffnen</value>
   </data>
@@ -423,6 +440,9 @@
   <data name="Quit" xml:space="preserve">
     <value>Schließen</value>
   </data>
+  <data name="RestartGPU" xml:space="preserve">
+    <value>Ein Prozess verhindert den Wechsel in den Eco Modus. dGPU neustarten? Fortfahren auf eigene Gefahr.</value>
+  </data>
   <data name="RPM" xml:space="preserve">
     <value>U/Min</value>
   </data>
@@ -456,6 +476,9 @@
   <data name="Stop" xml:space="preserve">
     <value>Beenden</value>
   </data>
+  <data name="StopGPUApps" xml:space="preserve">
+    <value>GPU Anwendungen beenden</value>
+  </data>
   <data name="StoppingServices" xml:space="preserve">
     <value>Beende Dienste</value>
   </data>
@@ -485,6 +508,9 @@
   </data>
   <data name="UltimateMode" xml:space="preserve">
     <value>Ultimate</value>
+  </data>
+  <data name="UndervoltingRisky" xml:space="preserve">
+    <value>Die Spannungsabsenkung (Undervolting) ist experimentell und birgt u.U. ein Risik. Wenn die Spannung zu weit abgesenkt wird, wird der Computer instabil und kann abstürzen, was zu Datenverlust führen kann. Es empfiehlt sich mit kleinen Werten anzufangen und es ausgiebig zu testen, um den idealen Wert zu finden.</value>
   </data>
   <data name="Updates" xml:space="preserve">
     <value>Updates</value>
