@@ -1,11 +1,12 @@
-﻿using CustomControls;
-using GHelper.AnimeMatrix;
+﻿using GHelper.AnimeMatrix;
+using GHelper.AutoUpdate;
+using GHelper.Display;
 using GHelper.Gpu;
-using Ryzen;
+using GHelper.Helpers;
+using GHelper.Input;
+using GHelper.Mode;
+using GHelper.UI;
 using System.Diagnostics;
-using System.Net;
-using System.Reflection;
-using System.Text.Json;
 using System.Timers;
 
 namespace GHelper
@@ -14,28 +15,22 @@ namespace GHelper
     public partial class SettingsForm : RForm
     {
 
-        private ContextMenuStrip contextMenuStrip = new CustomContextMenu();
-        private ToolStripMenuItem menuSilent, menuBalanced, menuTurbo, menuEco, menuStandard, menuUltimate, menuOptimized;
+        ContextMenuStrip contextMenuStrip = new CustomContextMenu();
+        ToolStripMenuItem menuSilent, menuBalanced, menuTurbo, menuEco, menuStandard, menuUltimate, menuOptimized;
 
-        public ToastForm toast = new ToastForm();
+        GPUModeControl gpuControl;
+        ScreenControl screenControl = new ScreenControl();
+        AutoUpdateControl updateControl;
 
-        public static System.Timers.Timer aTimer = default!;
-        public static Point trayPoint;
+        public AniMatrixControl matrix;
 
-        public string versionUrl = "http://github.com/seerge/g-helper/releases";
+        public static System.Timers.Timer sensorTimer = default!;
 
-        public string modeName = "Balanced";
+        public Fans? fans;
+        public Extra? keyb;
+        public Updates? updates;
 
-        public AniMatrix matrix;
-        public Fans fans;
-        public Extra keyb;
-        public Updates updates;
-
-        static long lastUpdate;
         static long lastRefresh;
-
-        private bool customFans = false;
-        private int customPower = 0;
 
         bool isGpuSection = true;
 
@@ -44,6 +39,10 @@ namespace GHelper
 
             InitializeComponent();
             InitTheme(true);
+
+            gpuControl = new GPUModeControl(this);
+            updateControl = new AutoUpdateControl(this);
+            matrix = new AniMatrixControl(this);
 
             buttonSilent.Text = Properties.Strings.Silent;
             buttonBalanced.Text = Properties.Strings.Balanced;
@@ -54,7 +53,7 @@ namespace GHelper
             buttonUltimate.Text = Properties.Strings.UltimateMode;
             buttonStandard.Text = Properties.Strings.StandardMode;
             buttonOptimized.Text = Properties.Strings.Optimized;
-
+            buttonStopGPU.Text = Properties.Strings.StopGPUApps;
 
             buttonScreenAuto.Text = Properties.Strings.AutoMode;
             buttonMiniled.Text = Properties.Strings.Multizone;
@@ -102,6 +101,7 @@ namespace GHelper
             buttonStandard.Click += ButtonStandard_Click;
             buttonUltimate.Click += ButtonUltimate_Click;
             buttonOptimized.Click += ButtonOptimized_Click;
+            buttonStopGPU.Click += ButtonStopGPU_Click;
 
             VisibleChanged += SettingsForm_VisibleChanged;
 
@@ -131,6 +131,7 @@ namespace GHelper
 
             buttonMatrix.Click += ButtonMatrix_Click;
 
+            checkStartup.Checked = Startup.IsScheduled();
             checkStartup.CheckedChanged += CheckStartup_CheckedChanged;
 
             labelVersion.Click += LabelVersion_Click;
@@ -167,43 +168,25 @@ namespace GHelper
             sliderBattery.ValueChanged += SliderBattery_ValueChanged;
             Program.trayIcon.MouseMove += TrayIcon_MouseMove;
 
-            aTimer = new System.Timers.Timer(1000);
-            aTimer.Elapsed += OnTimedEvent;
-            aTimer.Enabled = true;
+            sensorTimer = new System.Timers.Timer(1000);
+            sensorTimer.Elapsed += OnTimedEvent;
+            sensorTimer.Enabled = true;
 
-            SetVersionLabel(Properties.Strings.VersionLabel + ": " + Assembly.GetExecutingAssembly().GetName().Version);
-
-            string model = AppConfig.GetModel();
-            int trim = model.LastIndexOf("_");
-            if (trim > 0) model = model.Substring(0, trim);
-
-            labelModel.Text = model + (ProcessHelper.IsUserAdministrator() ? "." : "");
-
+            labelModel.Text = AppConfig.GetModelShort() + (ProcessHelper.IsUserAdministrator() ? "." : "");
             TopMost = AppConfig.Is("topmost");
 
             SetContextMenu();
-
 
         }
 
         private void SettingsForm_VisibleChanged(object? sender, EventArgs e)
         {
-            aTimer.Enabled = this.Visible;
+            sensorTimer.Enabled = this.Visible;
             if (this.Visible)
             {
-                InitScreen();
-                InitXGM();
-
-                // Run update once per 12 hours
-                if (Math.Abs(DateTimeOffset.Now.ToUnixTimeSeconds() - lastUpdate) < 43200) return;
-                lastUpdate = DateTimeOffset.Now.ToUnixTimeSeconds();
-
-                Task.Run(async () =>
-                {
-                    await Task.Delay(TimeSpan.FromSeconds(1));
-                    CheckForUpdatesAsync();
-                });
-
+                screenControl.InitScreen();
+                gpuControl.InitXGM();
+                updateControl.CheckForUpdates();
             }
         }
 
@@ -256,11 +239,6 @@ namespace GHelper
             {
                 Debug.WriteLine(ex.ToString());
             }
-        }
-
-        public void RunToast(string text, ToastIcon? icon = null)
-        {
-            toast.RunToast(text, icon);
         }
 
         public void SetContextMenu()
@@ -348,47 +326,7 @@ namespace GHelper
 
         private void ButtonXGM_Click(object? sender, EventArgs e)
         {
-
-            Task.Run(async () =>
-            {
-                BeginInvoke(delegate
-                {
-                    ButtonEnabled(buttonOptimized, false);
-                    ButtonEnabled(buttonEco, false);
-                    ButtonEnabled(buttonStandard, false);
-                    ButtonEnabled(buttonUltimate, false);
-                    ButtonEnabled(buttonXGM, false);
-                });
-
-                if (Program.acpi.DeviceGet(AsusACPI.GPUXG) == 1)
-                {
-                    HardwareControl.KillGPUApps();
-                    DialogResult dialogResult = MessageBox.Show("Did you close all applications running on XG Mobile?", "Disabling XG Mobile", MessageBoxButtons.YesNo);
-                    if (dialogResult == DialogResult.Yes)
-                    {
-                        Program.acpi.DeviceSet(AsusACPI.GPUXG, 0, "GPU XGM");
-                        await Task.Delay(TimeSpan.FromSeconds(15));
-                    }
-                }
-                else
-                {
-                    Program.acpi.DeviceSet(AsusACPI.GPUXG, 1, "GPU XGM");
-                    AsusUSB.ApplyXGMLight(AppConfig.Is("xmg_light"));
-
-                    await Task.Delay(TimeSpan.FromSeconds(15));
-
-                    if (AppConfig.IsMode("auto_apply"))
-                        AsusUSB.SetXGMFan(AppConfig.GetFanConfig(AsusFan.XGM));
-                }
-
-                BeginInvoke(delegate
-                {
-                    InitGPUMode();
-                });
-
-
-            });
-
+            gpuControl.ToggleXGM();
         }
 
         private void SliderBattery_ValueChanged(object? sender, EventArgs e)
@@ -397,112 +335,19 @@ namespace GHelper
         }
 
 
-        public async void CheckForUpdatesAsync()
+        public void SetVersionLabel(string label, bool update = false)
         {
-
-            try
-            {
-
-                using (var httpClient = new HttpClient())
-                {
-                    httpClient.DefaultRequestHeaders.Add("User-Agent", "C# App");
-                    var json = await httpClient.GetStringAsync("https://api.github.com/repos/seerge/g-helper/releases/latest");
-                    var config = JsonSerializer.Deserialize<JsonElement>(json);
-                    var tag = config.GetProperty("tag_name").ToString().Replace("v", "");
-                    var assets = config.GetProperty("assets");
-
-                    string url = null;
-
-                    for (int i = 0; i < assets.GetArrayLength(); i++)
-                    {
-                        if (assets[i].GetProperty("browser_download_url").ToString().Contains(".zip"))
-                            url = assets[i].GetProperty("browser_download_url").ToString();
-                    }
-
-                    if (url is null)
-                        url = assets[0].GetProperty("browser_download_url").ToString();
-
-                    var gitVersion = new Version(tag);
-                    var appVersion = new Version(Assembly.GetExecutingAssembly().GetName().Version.ToString());
-                    //appVersion = new Version("0.50.0.0"); 
-
-                    if (gitVersion.CompareTo(appVersion) > 0)
-                    {
-                        SetVersionLabel(Properties.Strings.DownloadUpdate + ": " + tag, url);
-                        if (AppConfig.GetString("skip_version") != tag)
-                        {
-                            DialogResult dialogResult = MessageBox.Show(Properties.Strings.DownloadUpdate + ": G-Helper " + tag + "?", "Update", MessageBoxButtons.YesNo);
-                            if (dialogResult == DialogResult.Yes)
-                                AutoUpdate(url);
-                            else
-                                AppConfig.Set("skip_version", tag);
-                        }
-
-                    }
-                    else
-                    {
-                        Debug.WriteLine("Latest version");
-                    }
-
-                }
-            }
-            catch (Exception ex)
-            {
-                //Logger.WriteLine("Failed to check for updates:" + ex.Message);
-
-            }
-
-        }
-
-        void SetVersionLabel(string label, string url = null)
-        {
-            BeginInvoke(delegate
+            Invoke(delegate
             {
                 labelVersion.Text = label;
-                if (url is not null)
-                {
-                    this.versionUrl = url;
-                    labelVersion.ForeColor = Color.Red;
-                }
+                if (update) labelVersion.ForeColor = colorTurbo;
             });
-
-        }
-
-
-        public async void AutoUpdate(string requestUri)
-        {
-
-            Uri uri = new Uri(requestUri);
-            string zipName = Path.GetFileName(uri.LocalPath);
-
-            string exeLocation = Application.ExecutablePath;
-            string exeDir = Path.GetDirectoryName(exeLocation);
-            string zipLocation = exeDir + "\\" + zipName;
-
-            using (WebClient client = new WebClient())
-            {
-                client.DownloadFile(uri, zipLocation);
-
-                Logger.WriteLine(requestUri);
-                Logger.WriteLine(zipLocation);
-                Logger.WriteLine(exeLocation);
-
-                var cmd = new Process();
-                cmd.StartInfo.UseShellExecute = false;
-                cmd.StartInfo.CreateNoWindow = true;
-                cmd.StartInfo.FileName = "powershell";
-                cmd.StartInfo.Arguments = $"Start-Sleep -Seconds 1; Expand-Archive {zipLocation} -DestinationPath {exeDir} -Force; Remove-Item {zipLocation} -Force; {exeLocation}";
-                cmd.Start();
-
-                Application.Exit();
-            }
-
         }
 
 
         private void LabelVersion_Click(object? sender, EventArgs e)
         {
-            Process.Start(new ProcessStartInfo(versionUrl) { UseShellExecute = true });
+            updateControl.LoadReleases();
         }
 
         private static void TrayIcon_MouseMove(object? sender, MouseEventArgs e)
@@ -578,14 +423,13 @@ namespace GHelper
         {
             AppConfig.Set("gpu_auto", (AppConfig.Get("gpu_auto") == 1) ? 0 : 1);
             VisualiseGPUMode();
-            AutoGPUMode();
+            gpuControl.AutoGPUMode();
         }
 
         private void ButtonScreenAuto_Click(object? sender, EventArgs e)
         {
             AppConfig.Set("screen_auto", 1);
-            InitScreen();
-            AutoScreen();
+            screenControl.AutoScreen();
         }
 
 
@@ -595,70 +439,43 @@ namespace GHelper
             CheckBox chk = (CheckBox)sender;
 
             if (chk.Checked)
-            {
                 Startup.Schedule();
-            }
             else
-            {
                 Startup.UnSchedule();
-            }
         }
 
         private void CheckMatrix_CheckedChanged(object? sender, EventArgs e)
         {
-            if (sender is null) return;
-            CheckBox check = (CheckBox)sender;
-            AppConfig.Set("matrix_auto", check.Checked ? 1 : 0);
-            matrix?.SetMatrix();
+            AppConfig.Set("matrix_auto", checkMatrix.Checked ? 1 : 0);
+            matrix.SetMatrix();
         }
 
 
 
         private void ButtonMatrix_Click(object? sender, EventArgs e)
         {
-            string fileName = null;
+            matrix.OpenMatrixPicture();
+        }
 
-            Thread t = new Thread(() =>
+        public void SetMatrixRunning(int mode)
+        {
+            Invoke(delegate
             {
-                OpenFileDialog of = new OpenFileDialog();
-                of.Filter = "Image Files (*.bmp;*.jpg;*.jpeg,*.png,*.gif)|*.BMP;*.JPG;*.JPEG;*.PNG;*.GIF";
-                if (of.ShowDialog() == DialogResult.OK)
-                {
-                    fileName = of.FileName;
-                }
-                return;
+                comboMatrixRunning.SelectedIndex = mode;
             });
-
-            t.SetApartmentState(ApartmentState.STA);
-            t.Start();
-            t.Join();
-
-            if (fileName is not null)
-            {
-                AppConfig.Set("matrix_picture", fileName);
-                AppConfig.Set("matrix_running", 2);
-
-                matrix?.SetMatrixPicture(fileName);
-                BeginInvoke(delegate
-                {
-                    comboMatrixRunning.SelectedIndex = 2;
-                });
-            }
-
-
         }
 
         private void ComboMatrixRunning_SelectedValueChanged(object? sender, EventArgs e)
         {
             AppConfig.Set("matrix_running", comboMatrixRunning.SelectedIndex);
-            matrix?.SetMatrix();
+            matrix.SetMatrix();
         }
 
 
         private void ComboMatrix_SelectedValueChanged(object? sender, EventArgs e)
         {
             AppConfig.Set("matrix_brightness", comboMatrix.SelectedIndex);
-            matrix?.SetMatrix();
+            matrix.SetMatrix();
         }
 
 
@@ -698,6 +515,14 @@ namespace GHelper
             {
                 keyb.Close();
             }
+        }
+
+        public void FansInit()
+        {
+            Invoke(delegate
+            {
+                if (fans != null && fans.Text != "") fans.InitAll();
+            });
         }
 
         public void FansToggle(int index = 0)
@@ -757,7 +582,7 @@ namespace GHelper
             pictureColor2.BackColor = AsusUSB.Color2;
             pictureColor2.Visible = AsusUSB.HasSecondColor();
 
-            if (AppConfig.ContainsModel("GA401"))
+            if (AsusUSB.HasColor())
             {
                 panelColor.Visible = false;
             }
@@ -772,21 +597,16 @@ namespace GHelper
         public void InitMatrix()
         {
 
-            matrix = new AniMatrix();
-
             if (!matrix.IsValid)
             {
                 panelMatrix.Visible = false;
                 return;
             }
 
-            int brightness = AppConfig.Get("matrix_brightness");
-            int running = AppConfig.Get("matrix_running");
+            comboMatrix.SelectedIndex = Math.Min(AppConfig.Get("matrix_brightness", 0), comboMatrix.Items.Count - 1);
+            comboMatrixRunning.SelectedIndex = Math.Min(AppConfig.Get("matrix_running", 0), comboMatrixRunning.Items.Count - 1);
 
-            comboMatrix.SelectedIndex = (brightness != -1) ? Math.Min(brightness, comboMatrix.Items.Count - 1) : 0;
-            comboMatrixRunning.SelectedIndex = (running != -1) ? Math.Min(running, comboMatrixRunning.Items.Count - 1) : 0;
-
-            checkMatrix.Checked = (AppConfig.Get("matrix_auto") == 1);
+            checkMatrix.Checked = AppConfig.Is("matrix_auto");
             checkMatrix.CheckedChanged += CheckMatrix_CheckedChanged;
 
         }
@@ -825,75 +645,25 @@ namespace GHelper
         private void Button120Hz_Click(object? sender, EventArgs e)
         {
             AppConfig.Set("screen_auto", 0);
-            SetScreen(1000, 1);
+            screenControl.SetScreen(1000, 1);
         }
 
         private void Button60Hz_Click(object? sender, EventArgs e)
         {
             AppConfig.Set("screen_auto", 0);
-            SetScreen(60, 0);
+            screenControl.SetScreen(60, 0);
         }
 
-        public void ToogleMiniled()
-        {
-            int miniled = (AppConfig.Get("miniled") == 1) ? 0 : 1;
-            AppConfig.Set("miniled", miniled);
-            SetScreen(-1, -1, miniled);
-        }
 
         private void ButtonMiniled_Click(object? sender, EventArgs e)
         {
-            ToogleMiniled();
+            screenControl.ToogleMiniled();
         }
 
-        public void SetScreen(int frequency = -1, int overdrive = -1, int miniled = -1)
+
+
+        public void VisualiseScreen(bool screenEnabled, bool screenAuto, int frequency, int maxFrequency, int overdrive, bool overdriveSetting, int miniled)
         {
-
-            if (NativeMethods.GetRefreshRate() < 0) // Laptop screen not detected or has unknown refresh rate
-            {
-                InitScreen();
-                return;
-            }
-
-            if (frequency >= 1000)
-            {
-                frequency = NativeMethods.GetRefreshRate(true);
-            }
-
-            if (frequency > 0)
-            {
-                NativeMethods.SetRefreshRate(frequency);
-            }
-
-            if (overdrive >= 0)
-            {
-                if (AppConfig.Get("no_overdrive") == 1) overdrive = 0;
-                Program.acpi.DeviceSet(AsusACPI.ScreenOverdrive, overdrive, "ScreenOverdrive");
-
-            }
-
-            if (miniled >= 0)
-            {
-                Program.acpi.DeviceSet(AsusACPI.ScreenMiniled, miniled, "Miniled");
-                Debug.WriteLine("Miniled " + miniled);
-            }
-
-            InitScreen();
-        }
-
-        public void InitScreen()
-        {
-
-            int frequency = NativeMethods.GetRefreshRate();
-            int maxFrequency = NativeMethods.GetRefreshRate(true);
-
-            bool screenAuto = (AppConfig.Get("screen_auto") == 1);
-            bool overdriveSetting = (AppConfig.Get("no_overdrive") != 1);
-
-            int overdrive = Program.acpi.DeviceGet(AsusACPI.ScreenOverdrive);
-            int miniled = Program.acpi.DeviceGet(AsusACPI.ScreenMiniled);
-
-            bool screenEnabled = (frequency >= 0);
 
             ButtonEnabled(button60Hz, screenEnabled);
             ButtonEnabled(button120Hz, screenEnabled);
@@ -934,15 +704,12 @@ namespace GHelper
             if (miniled >= 0)
             {
                 buttonMiniled.Activated = (miniled == 1);
-                AppConfig.Set("miniled", miniled);
             }
             else
             {
                 buttonMiniled.Visible = false;
             }
 
-            AppConfig.Set("frequency", frequency);
-            AppConfig.Set("overdrive", overdrive);
         }
 
         private void ButtonQuit_Click(object? sender, EventArgs e)
@@ -960,9 +727,6 @@ namespace GHelper
             if (keyb != null && keyb.Text != "") keyb.Close();
         }
 
-        public void CloseOthers()
-        {
-        }
 
         private void SettingsForm_FormClosing(object? sender, FormClosingEventArgs e)
         {
@@ -975,17 +739,23 @@ namespace GHelper
 
         private void ButtonUltimate_Click(object? sender, EventArgs e)
         {
-            SetGPUMode(AsusACPI.GPUModeUltimate);
+            gpuControl.SetGPUMode(AsusACPI.GPUModeUltimate);
         }
 
         private void ButtonStandard_Click(object? sender, EventArgs e)
         {
-            SetGPUMode(AsusACPI.GPUModeStandard);
+            gpuControl.SetGPUMode(AsusACPI.GPUModeStandard);
         }
 
         private void ButtonEco_Click(object? sender, EventArgs e)
         {
-            SetGPUMode(AsusACPI.GPUModeEco);
+            gpuControl.SetGPUMode(AsusACPI.GPUModeEco);
+        }
+
+
+        private void ButtonStopGPU_Click(object? sender, EventArgs e)
+        {
+            gpuControl.KillGPUApps();
         }
 
         public async void RefreshSensors(bool force = false)
@@ -1030,389 +800,59 @@ namespace GHelper
 
         }
 
-
-        private void SetPerformanceLabel()
-        {
-            labelPerf.Text = Properties.Strings.PerformanceMode + ": " + Modes.GetCurrentName() + (customFans ? "+" : "") + ((customPower > 0) ? " " + customPower + "W" : "");
-        }
-
-        public void SetPower()
-        {
-
-            int limit_total = AppConfig.GetMode("limit_total");
-            int limit_cpu = AppConfig.GetMode("limit_cpu");
-            int limit_fast = AppConfig.GetMode("limit_fast");
-
-            if (limit_total > AsusACPI.MaxTotal) return;
-            if (limit_total < AsusACPI.MinTotal) return;
-
-            if (limit_cpu > AsusACPI.MaxCPU) return;
-            if (limit_cpu < AsusACPI.MinCPU) return;
-
-            if (limit_fast > AsusACPI.MaxTotal) return;
-            if (limit_fast < AsusACPI.MinTotal) return;
-
-            // SPL + SPPT togeher in one slider
-            if (Program.acpi.DeviceGet(AsusACPI.PPT_TotalA0) >= 0)
-            {
-                Program.acpi.DeviceSet(AsusACPI.PPT_TotalA0, limit_total, "PowerLimit A0");
-                Program.acpi.DeviceSet(AsusACPI.PPT_APUA3, limit_total, "PowerLimit A3");
-                customPower = limit_total;
-            }
-
-            if (Program.acpi.IsAllAmdPPT()) // CPU limit all amd models
-            {
-                Program.acpi.DeviceSet(AsusACPI.PPT_CPUB0, limit_cpu, "PowerLimit B0");
-                customPower = limit_cpu;
-            }
-            else if (Program.acpi.DeviceGet(AsusACPI.PPT_APUC1) >= 0) // FPPT boost for non all-amd models
-            {
-                Program.acpi.DeviceSet(AsusACPI.PPT_APUC1, limit_fast, "PowerLimit C1");
-                customPower = limit_fast;
-            }
-
-
-            Program.settingsForm.BeginInvoke(SetPerformanceLabel);
-
-        }
-
-
-        public void SetGPUClocks(bool launchAsAdmin = true)
-        {
-
-            int gpu_core = AppConfig.GetMode("gpu_core");
-            int gpu_memory = AppConfig.GetMode("gpu_memory");
-
-            if (gpu_core == -1 && gpu_memory == -1) return;
-
-            //if ((gpu_core > -5 && gpu_core < 5) && (gpu_memory > -5 && gpu_memory < 5)) launchAsAdmin = false;
-
-            if (Program.acpi.DeviceGet(AsusACPI.GPUEco) == 1) return;
-            if (HardwareControl.GpuControl is null) return;
-            if (!HardwareControl.GpuControl!.IsNvidia) return;
-
-            using NvidiaGpuControl nvControl = (NvidiaGpuControl)HardwareControl.GpuControl;
-            try
-            {
-                int getStatus = nvControl.GetClocks(out int current_core, out int current_memory);
-                if (getStatus != -1)
-                {
-                    if (Math.Abs(gpu_core - current_core) < 5 && Math.Abs(gpu_memory - current_memory) < 5) return;
-                }
-
-                int setStatus = nvControl.SetClocks(gpu_core, gpu_memory);
-                if (launchAsAdmin && setStatus == -1) ProcessHelper.RunAsAdmin("gpu");
-
-            }
-            catch (Exception ex)
-            {
-                Logger.WriteLine(ex.ToString());
-            }
-        }
-
-        public void SetGPUPower()
-        {
-
-            int gpu_boost = AppConfig.GetMode("gpu_boost");
-            int gpu_temp = AppConfig.GetMode("gpu_temp");
-
-
-            if (gpu_boost < AsusACPI.MinGPUBoost || gpu_boost > AsusACPI.MaxGPUBoost) return;
-            if (gpu_temp < AsusACPI.MinGPUTemp || gpu_temp > AsusACPI.MaxGPUTemp) return;
-
-            if (Program.acpi.DeviceGet(AsusACPI.PPT_GPUC0) >= 0)
-            {
-                Program.acpi.DeviceSet(AsusACPI.PPT_GPUC0, gpu_boost, "PowerLimit C0");
-            }
-
-            if (Program.acpi.DeviceGet(AsusACPI.PPT_GPUC2) >= 0)
-            {
-                Program.acpi.DeviceSet(AsusACPI.PPT_GPUC2, gpu_temp, "PowerLimit C2");
-            }
-
-        }
-
-
-        public void AutoUV()
-        {
-            if (!AppConfig.IsMode("auto_uv")) return;
-            SetUV();
-        }
-
-        public void SetUV(bool launchAsAdmin = false)
-        {
-            
-            if (!ProcessHelper.IsUserAdministrator())
-            {
-                if (launchAsAdmin) ProcessHelper.RunAsAdmin("uv");
-                return;
-            }
-
-            if (!Undervolter.IsAMD()) return;
-
-            int cpuUV = AppConfig.GetMode("cpu_uv", 0);
-            int igpuUV = AppConfig.GetMode("igpu_uv", 0);
-            int cpuTemp = AppConfig.GetMode("cpu_temp");
-
-            try
-            {
-                if (cpuUV >= Undervolter.MinCPUUV && cpuUV <= Undervolter.MaxCPUUV)
-                {
-                    SendCommand.set_coall(cpuUV);
-                }
-
-                if (igpuUV >= Undervolter.MinIGPUUV && igpuUV <= Undervolter.MaxIGPUUV)
-                {
-                    SendCommand.set_cogfx(igpuUV);
-                }
-
-                if (cpuTemp >= Undervolter.MinTemp && cpuTemp <= Undervolter.MaxTemp)
-                {
-                    SendCommand.set_tctl_temp((uint)cpuTemp);
-                    SendCommand.set_apu_skin_temp_limit((uint)cpuTemp);
-                }
-
-            }
-            catch (Exception ex)
-            {
-                Logger.WriteLine("UV Error: " + ex.ToString());
-            }
-        }
-
-
-        protected void LabelFansResult(string text)
+        public void LabelFansResult(string text)
         {
             if (fans != null && fans.Text != "")
                 fans.LabelFansResult(text);
         }
 
-
-        public void AutoFans(bool force = false)
+        public void ShowMode(int mode)
         {
-            customFans = false;
-
-            if (AppConfig.IsMode("auto_apply") || force)
+            Invoke(delegate
             {
+                buttonSilent.Activated = false;
+                buttonBalanced.Activated = false;
+                buttonTurbo.Activated = false;
+                buttonFans.Activated = false;
 
-                bool xgmFan = false;
-                if (AppConfig.Is("xgm_fan") && Program.acpi.IsXGConnected())
+                menuSilent.Checked = false;
+                menuBalanced.Checked = false;
+                menuTurbo.Checked = false;
+
+                switch (mode)
                 {
-                    AsusUSB.SetXGMFan(AppConfig.GetFanConfig(AsusFan.XGM));
-                    xgmFan = true;
-                }
-
-                int cpuResult = Program.acpi.SetFanCurve(AsusFan.CPU, AppConfig.GetFanConfig(AsusFan.CPU));
-                int gpuResult = Program.acpi.SetFanCurve(AsusFan.GPU, AppConfig.GetFanConfig(AsusFan.GPU));
-
-
-                if (AppConfig.Is("mid_fan"))
-                    Program.acpi.SetFanCurve(AsusFan.Mid, AppConfig.GetFanConfig(AsusFan.Mid));
-
-
-                // something went wrong, resetting to default profile
-                if (cpuResult != 1 || gpuResult != 1)
-                {
-                    int mode = Modes.GetCurrentBase();
-                    Logger.WriteLine("ASUS BIOS rejected fan curve, resetting mode to " + mode);
-                    Program.acpi.DeviceSet(AsusACPI.PerformanceMode, mode, "Reset Mode");
-                    LabelFansResult("ASUS BIOS rejected fan curve");
-                }
-                else
-                {
-                    LabelFansResult("");
-                    customFans = true;
-                }
-
-                // force set PPTs for missbehaving bios on FX507/517 series
-                if ((AppConfig.ContainsModel("FX507") || AppConfig.ContainsModel("FX517") || xgmFan) && !AppConfig.IsMode("auto_apply_power"))
-                {
-                    Task.Run(async () =>
-                    {
-                        await Task.Delay(TimeSpan.FromSeconds(1));
-                        Program.acpi.DeviceSet(AsusACPI.PPT_TotalA0, 80, "PowerLimit Fix A0");
-                        Program.acpi.DeviceSet(AsusACPI.PPT_APUA3, 80, "PowerLimit Fix A3");
-                    });
-                }
-
-            }
-
-            Program.settingsForm.BeginInvoke(SetPerformanceLabel);
-
-        }
-
-        private static bool isManualModeRequired()
-        {
-            if (!AppConfig.IsMode("auto_apply_power"))
-                return false;
-
-            return
-                AppConfig.Is("manual_mode") ||
-                AppConfig.ContainsModel("GU604") ||
-                AppConfig.ContainsModel("FX517") ||
-                AppConfig.ContainsModel("G733");
-        }
-
-        public void AutoPower(int delay = 0)
-        {
-
-            customPower = 0;
-
-            bool applyPower = AppConfig.IsMode("auto_apply_power");
-            bool applyFans = AppConfig.IsMode("auto_apply");
-            //bool applyGPU = true;
-
-            if (applyPower)
-            {
-                // force fan curve for misbehaving bios PPTs on G513
-                if (AppConfig.ContainsModel("G513") && !applyFans)
-                {
-                    delay = 500;
-                    AutoFans(true);
-                }
-
-                // Fix for models that don't support PPT settings in all modes, setting a "manual" mode for them
-                if (isManualModeRequired() && !applyFans)
-                {
-                    AutoFans(true);
-                }
-            }
-
-            if (delay > 0)
-            {
-                var timer = new System.Timers.Timer(delay);
-                timer.Elapsed += delegate
-                {
-                    timer.Stop();
-                    timer.Dispose();
-
-                    if (applyPower) SetPower();
-                    SetGPUPower();
-                    AutoUV();
-                };
-                timer.Start();
-            }
-            else
-            {
-                if (applyPower) SetPower();
-                SetGPUPower();
-                AutoUV();
-            }
-
-        }
-
-
-        public void SetPerformanceMode(int mode = -1, bool notify = false)
-        {
-
-            int oldMode = Modes.GetCurrent();
-            if (mode < 0) mode = oldMode;
-
-            buttonSilent.Activated = false;
-            buttonBalanced.Activated = false;
-            buttonTurbo.Activated = false;
-            buttonFans.Activated = false;
-
-            menuSilent.Checked = false;
-            menuBalanced.Checked = false;
-            menuTurbo.Checked = false;
-
-            switch (mode)
-            {
-                case AsusACPI.PerformanceSilent:
-                    buttonSilent.Activated = true;
-                    menuSilent.Checked = true;
-                    break;
-                case AsusACPI.PerformanceTurbo:
-                    buttonTurbo.Activated = true;
-                    menuTurbo.Checked = true;
-                    break;
-                case AsusACPI.PerformanceBalanced:
-                    buttonBalanced.Activated = true;
-                    menuBalanced.Checked = true;
-                    break;
-                default:
-                    if (Modes.Exists(mode))
-                    {
-                        buttonFans.Activated = true;
-                        switch (Modes.GetBase(mode))
-                        {
-                            case AsusACPI.PerformanceSilent:
-                                buttonFans.BorderColor = colorEco;
-                                break;
-                            case AsusACPI.PerformanceTurbo:
-                                buttonFans.BorderColor = colorTurbo;
-                                break;
-                            default:
-                                buttonFans.BorderColor = colorStandard;
-                                break;
-                        }
-                    }
-                    else
-                    {
+                    case AsusACPI.PerformanceSilent:
+                        buttonSilent.Activated = true;
+                        menuSilent.Checked = true;
+                        break;
+                    case AsusACPI.PerformanceTurbo:
+                        buttonTurbo.Activated = true;
+                        menuTurbo.Checked = true;
+                        break;
+                    case AsusACPI.PerformanceBalanced:
                         buttonBalanced.Activated = true;
                         menuBalanced.Checked = true;
-                        mode = AsusACPI.PerformanceBalanced;
-                    }
-                    break;
-            }
-
-
-            Modes.SetCurrent(mode);
-
-            SetPerformanceLabel();
-
-            if (isManualModeRequired())
-                Program.acpi.DeviceSet(AsusACPI.PerformanceMode, AsusACPI.PerformanceManual, "Manual Mode");
-            else
-                Program.acpi.DeviceSet(AsusACPI.PerformanceMode, Modes.GetBase(mode), "Mode");
-
-            if (AppConfig.Is("xgm_fan") && Program.acpi.IsXGConnected()) AsusUSB.ResetXGM();
-
-            if (notify)
-            {
-                try
-                {
-                    toast.RunToast(Modes.GetCurrentName(), SystemInformation.PowerStatus.PowerLineStatus == PowerLineStatus.Online ? ToastIcon.Charger : ToastIcon.Battery);
+                        break;
+                    default:
+                        buttonFans.Activated = true;
+                        buttonFans.BorderColor = Modes.GetBase(mode) switch
+                        {
+                            AsusACPI.PerformanceSilent => colorEco,
+                            AsusACPI.PerformanceTurbo => colorTurbo,
+                            _ => colorStandard,
+                        };
+                        break;
                 }
-                catch
-                {
-                    Debug.WriteLine("Toast error");
-                }
-            }
-
-            SetGPUClocks();
-
-            AutoFans();
-            AutoPower(1000);
-
-            if (AppConfig.Get("auto_apply_power_plan") != 0)
-            {
-                if (AppConfig.GetModeString("scheme") is not null)
-                    NativeMethods.SetPowerScheme(AppConfig.GetModeString("scheme"));
-                else
-                    NativeMethods.SetPowerScheme(Modes.GetBase(mode));
-            }
-
-            if (AppConfig.GetMode("auto_boost") != -1)
-            {
-                NativeMethods.SetCPUBoost(AppConfig.GetMode("auto_boost"));
-            }
-
-            if (NativeMethods.PowerGetEffectiveOverlayScheme(out Guid activeScheme) == 0)
-            {
-                Debug.WriteLine("Effective :" + activeScheme);
-            }
-
-            if (fans != null && fans.Text != "")
-            {
-                fans.InitAll();
-            }
+            });
         }
 
 
-        public void CyclePerformanceMode()
+        public void SetModeLabel(string modeText)
         {
-            SetPerformanceMode(Modes.GetNext(Control.ModifierKeys == Keys.Shift), true);
+            Invoke(delegate
+            {
+                labelPerf.Text = modeText;
+            });
         }
 
 
@@ -1427,132 +867,16 @@ namespace GHelper
 
         }
 
-        public void AutoPerformance(bool powerChanged = false)
-        {
-            var Plugged = SystemInformation.PowerStatus.PowerLineStatus;
 
-            int mode = AppConfig.Get("performance_" + (int)Plugged);
-            if (mode != -1)
-                SetPerformanceMode(mode, powerChanged);
-            else
-                SetPerformanceMode(Modes.GetCurrent());
-        }
-
-
-        public void AutoScreen(bool force = false)
-        {
-            if (force || AppConfig.Is("screen_auto"))
-            {
-                if (SystemInformation.PowerStatus.PowerLineStatus == PowerLineStatus.Online)
-                    SetScreen(1000, 1);
-                else
-                    SetScreen(60, 0);
-            }
-            else
-            {
-                SetScreen(overdrive: AppConfig.Get("overdrive"));
-            }
-
-
-
-        }
-
-        public static bool IsPlugged()
-        {
-            bool optimizedUSBC = AppConfig.Get("optimized_usbc") != 1;
-
-            return SystemInformation.PowerStatus.PowerLineStatus == PowerLineStatus.Online &&
-                   (optimizedUSBC || Program.acpi.DeviceGet(AsusACPI.ChargerMode) < AsusACPI.ChargerUSB);
-
-        }
-
-        public bool AutoGPUMode()
+        public void VisualizeXGM(bool connected, bool activated)
         {
 
-            bool GpuAuto = AppConfig.Is("gpu_auto");
-            bool ForceGPU = AppConfig.ContainsModel("503");
-
-            int GpuMode = AppConfig.Get("gpu_mode");
-
-            if (!GpuAuto && !ForceGPU) return false;
-
-            int eco = Program.acpi.DeviceGet(AsusACPI.GPUEco);
-            int mux = Program.acpi.DeviceGet(AsusACPI.GPUMux);
-
-            if (mux == 0) // GPU in Ultimate, ignore
-                return false;
-            else
-            {
-
-                if (ReEnableGPU()) return true;
-
-                if (eco == 1)
-                    if ((GpuAuto && IsPlugged()) || (ForceGPU && GpuMode == AsusACPI.GPUModeStandard))
-                    {
-                        SetGPUEco(0);
-                        return true;
-                    }
-                if (eco == 0)
-                    if ((GpuAuto && !IsPlugged()) || (ForceGPU && GpuMode == AsusACPI.GPUModeEco))
-                    {
-
-                        if (HardwareControl.IsUsedGPU())
-                        {
-                            DialogResult dialogResult = MessageBox.Show(Properties.Strings.AlertDGPU, Properties.Strings.AlertDGPUTitle, MessageBoxButtons.YesNo);
-                            if (dialogResult == DialogResult.No) return false;
-                        }
-
-                        SetGPUEco(1);
-                        return true;
-                    }
-            }
-
-            return false;
-
-        }
-
-        public bool ReEnableGPU()
-        {
-
-            if (AppConfig.Get("gpu_reenable") != 1) return false;
-            if (Screen.AllScreens.Length <= 1) return false;
-
-            Logger.WriteLine("Re-enabling gpu for 503 model");
-
-            Thread.Sleep(1000);
-            SetGPUEco(1);
-            Thread.Sleep(1000);
-            SetGPUEco(0);
-            return true;
-        }
-
-        private void UltimateUI(bool ultimate)
-        {
-            if (!ultimate)
-            {
-                tableGPU.Controls.Remove(buttonUltimate);
-                tablePerf.ColumnCount = 0;
-                tableGPU.ColumnCount = 0;
-                tableScreen.ColumnCount = 0;
-                menuUltimate.Visible = false;
-
-            }
-            //tableLayoutMatrix.ColumnCount = 0;
-        }
-
-        public void InitXGM()
-        {
-            bool connected = Program.acpi.IsXGConnected();
             buttonXGM.Enabled = buttonXGM.Visible = connected;
-
             if (!connected) return;
 
-            int activated = Program.acpi.DeviceGet(AsusACPI.GPUXG);
-            if (activated < 0) return;
+            buttonXGM.Activated = activated;
 
-            buttonXGM.Activated = (activated == 1);
-
-            if (buttonXGM.Activated)
+            if (activated)
             {
                 ButtonEnabled(buttonOptimized, false);
                 ButtonEnabled(buttonEco, false);
@@ -1569,202 +893,54 @@ namespace GHelper
 
         }
 
-
-        public int InitGPUMode()
+        public void HideUltimateMode()
         {
+            tableGPU.Controls.Remove(buttonUltimate);
+            tablePerf.ColumnCount = 0;
+            tableGPU.ColumnCount = 0;
+            tableScreen.ColumnCount = 0;
+            menuUltimate.Visible = false;
+        }
 
-            int eco = Program.acpi.DeviceGet(AsusACPI.GPUEco);
-            int mux = Program.acpi.DeviceGet(AsusACPI.GPUMux);
+        public void HideGPUModes()
+        {
+            isGpuSection = false;
 
-            Logger.WriteLine("Eco flag : " + eco);
-            Logger.WriteLine("Mux flag : " + mux);
+            buttonEco.Visible = false;
+            buttonStandard.Visible = false;
+            buttonUltimate.Visible = false;
+            buttonOptimized.Visible = false;
 
-            int GpuMode;
+            buttonStopGPU.Visible = true;
 
-            if (mux == 0)
-                GpuMode = AsusACPI.GPUModeUltimate;
-            else
-            {
-                if (eco == 1)
-                    GpuMode = AsusACPI.GPUModeEco;
-                else
-                    GpuMode = AsusACPI.GPUModeStandard;
-
-                UltimateUI(mux == 1);
-
-                if (eco < 0 && mux < 0)
-                {
-                    isGpuSection = tableGPU.Visible = false;
-                    SetContextMenu();
-                    if (HardwareControl.FormatFan(Program.acpi.DeviceGet(AsusACPI.GPU_Fan)) is null) panelGPU.Visible = false;
-                }
-
-            }
-
-            AppConfig.Set("gpu_mode", GpuMode);
-
-            ButtonEnabled(buttonOptimized, true);
-            ButtonEnabled(buttonEco, true);
-            ButtonEnabled(buttonStandard, true);
-            ButtonEnabled(buttonUltimate, true);
-
-            InitXGM();
-
-            VisualiseGPUMode(GpuMode);
-
-            return GpuMode;
+            SetContextMenu();
+            if (HardwareControl.FormatFan(Program.acpi.DeviceGet(AsusACPI.GPU_Fan)) is null) panelGPU.Visible = false;
 
         }
 
-        public void RestartGPU(bool confirm = true)
+        public void LockGPUModes(string text = null)
         {
-            if (HardwareControl.GpuControl is null) return;
-            if (!HardwareControl.GpuControl!.IsNvidia) return;
-
-            if (confirm)
+            Invoke(delegate
             {
-                DialogResult dialogResult = MessageBox.Show(Properties.Strings.RestartGPU, Properties.Strings.EcoMode, MessageBoxButtons.YesNo);
-                if (dialogResult == DialogResult.No) return;
-            }
+                if (text is null) text = Properties.Strings.GPUMode + ": " + Properties.Strings.GPUChanging + " ...";
 
-            ProcessHelper.RunAsAdmin("gpurestart");
+                ButtonEnabled(buttonOptimized, false);
+                ButtonEnabled(buttonEco, false);
+                ButtonEnabled(buttonStandard, false);
+                ButtonEnabled(buttonUltimate, false);
+                ButtonEnabled(buttonXGM, false);
 
-            if (!ProcessHelper.IsUserAdministrator()) return;
-
-            Logger.WriteLine("Trying to restart dGPU");
-
-            Task.Run(async () =>
-            {
-                Program.settingsForm.BeginInvoke(delegate
-                {
-                    labelTipGPU.Text = "Restarting GPU ...";
-                    ButtonEnabled(buttonOptimized, false);
-                    ButtonEnabled(buttonEco, false);
-                    ButtonEnabled(buttonStandard, false);
-                    ButtonEnabled(buttonUltimate, false);
-                });
-
-                var nvControl = (NvidiaGpuControl)HardwareControl.GpuControl;
-                bool status = nvControl.RestartGPU();
-
-                Program.settingsForm.BeginInvoke(delegate
-                {
-                    labelTipGPU.Text = status ? "GPU Restarted, you can try Eco mode again" : "Failed to restart GPU";
-                    InitGPUMode();
-                });
+                labelGPU.Text = text;
             });
-
-        }
-
-
-        public void SetGPUEco(int eco, bool hardWay = false)
-        {
-
-            ButtonEnabled(buttonOptimized, false);
-            ButtonEnabled(buttonEco, false);
-            ButtonEnabled(buttonStandard, false);
-            ButtonEnabled(buttonUltimate, false);
-            ButtonEnabled(buttonXGM, false);
-
-            labelGPU.Text = Properties.Strings.GPUMode + ": " + Properties.Strings.GPUChanging + " ...";
-
-            Task.Run(async () =>
-            {
-
-                int status = 1;
-
-                if (eco == 1) HardwareControl.KillGPUApps();
-
-                Logger.WriteLine($"Running eco command {eco}");
-
-                status = Program.acpi.SetGPUEco(eco);
-
-                if (status == 0 && eco == 1 && hardWay) RestartGPU();
-
-                await Task.Delay(TimeSpan.FromMilliseconds(100));
-                Program.settingsForm.BeginInvoke(delegate
-                {
-                    InitGPUMode();
-                    AutoScreen();
-                });
-
-                if (eco == 0)
-                {
-                    await Task.Delay(TimeSpan.FromMilliseconds(3000));
-                    HardwareControl.RecreateGpuControl();
-                    SetGPUClocks(false);
-                }
-
-            });
-
-
-        }
-
-        public void SetGPUMode(int GPUMode)
-        {
-
-            int CurrentGPU = AppConfig.Get("gpu_mode");
-            AppConfig.Set("gpu_auto", 0);
-
-            if (CurrentGPU == GPUMode)
-            {
-                VisualiseGPUMode();
-                return;
-            }
-
-            var restart = false;
-            var changed = false;
-
-            if (CurrentGPU == AsusACPI.GPUModeUltimate)
-            {
-                DialogResult dialogResult = MessageBox.Show(Properties.Strings.AlertUltimateOff, Properties.Strings.AlertUltimateTitle, MessageBoxButtons.YesNo);
-                if (dialogResult == DialogResult.Yes)
-                {
-                    Program.acpi.DeviceSet(AsusACPI.GPUMux, 1, "GPUMux");
-                    restart = true;
-                    changed = true;
-                }
-            }
-            else if (GPUMode == AsusACPI.GPUModeUltimate)
-            {
-                DialogResult dialogResult = MessageBox.Show(Properties.Strings.AlertUltimateOn, Properties.Strings.AlertUltimateTitle, MessageBoxButtons.YesNo);
-                if (dialogResult == DialogResult.Yes)
-                {
-                    Program.acpi.DeviceSet(AsusACPI.GPUMux, 0, "GPUMux");
-                    restart = true;
-                    changed = true;
-                }
-
-            }
-            else if (GPUMode == AsusACPI.GPUModeEco)
-            {
-                VisualiseGPUMode(GPUMode);
-                SetGPUEco(1, true);
-                changed = true;
-            }
-            else if (GPUMode == AsusACPI.GPUModeStandard)
-            {
-                VisualiseGPUMode(GPUMode);
-                SetGPUEco(0);
-                changed = true;
-            }
-
-            if (changed)
-            {
-                AppConfig.Set("gpu_mode", GPUMode);
-            }
-
-            if (restart)
-            {
-                VisualiseGPUMode();
-                Process.Start("shutdown", "/r /t 1");
-            }
-
         }
 
 
         public void VisualiseGPUMode(int GPUMode = -1)
         {
+            ButtonEnabled(buttonOptimized, true);
+            ButtonEnabled(buttonEco, true);
+            ButtonEnabled(buttonStandard, true);
+            ButtonEnabled(buttonUltimate, true);
 
             if (GPUMode == -1)
                 GPUMode = AppConfig.Get("gpu_mode");
@@ -1814,23 +990,19 @@ namespace GHelper
 
         private void ButtonSilent_Click(object? sender, EventArgs e)
         {
-            SetPerformanceMode(AsusACPI.PerformanceSilent);
+            Program.modeControl.SetPerformanceMode(AsusACPI.PerformanceSilent);
         }
 
         private void ButtonBalanced_Click(object? sender, EventArgs e)
         {
-            SetPerformanceMode(AsusACPI.PerformanceBalanced);
+            Program.modeControl.SetPerformanceMode(AsusACPI.PerformanceBalanced);
         }
 
         private void ButtonTurbo_Click(object? sender, EventArgs e)
         {
-            SetPerformanceMode(AsusACPI.PerformanceTurbo);
+            Program.modeControl.SetPerformanceMode(AsusACPI.PerformanceTurbo);
         }
 
-        private void Settings_Load(object sender, EventArgs e)
-        {
-
-        }
 
         public void ButtonEnabled(RButton but, bool enabled)
         {
@@ -1838,12 +1010,6 @@ namespace GHelper
             but.BackColor = but.Enabled ? Color.FromArgb(255, but.BackColor) : Color.FromArgb(100, but.BackColor);
         }
 
-        public void SetStartupCheck(bool status)
-        {
-            checkStartup.CheckedChanged -= CheckStartup_CheckedChanged;
-            checkStartup.Checked = status;
-            checkStartup.CheckedChanged += CheckStartup_CheckedChanged;
-        }
 
         public void SetBatteryChargeLimit(int limit)
         {

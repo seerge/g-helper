@@ -1,5 +1,4 @@
-﻿using CustomControls;
-using HidSharp;
+﻿using GHelper.UI;
 using System.Diagnostics;
 using System.Management;
 using System.Net;
@@ -23,20 +22,33 @@ namespace GHelper
         static string model;
         static string bios;
 
-        public Updates()
+        static int updatesCount = 0;
+        private static long lastUpdate;
+
+        private void LoadUpdates()
         {
-            InitializeComponent();
-            InitTheme();
+
+            if (Math.Abs(DateTimeOffset.Now.ToUnixTimeMilliseconds() - lastUpdate) < 5000) return;
+            lastUpdate = DateTimeOffset.Now.ToUnixTimeMilliseconds();
 
             InitBiosAndModel();
+
+            updatesCount = 0;
+            labelUpdates.ForeColor = colorEco;
+            labelUpdates.Text = Properties.Strings.NoNewUpdates;
+
 
             Text = Properties.Strings.BiosAndDriverUpdates + ": " + model + " " + bios;
             labelBIOS.Text = "BIOS";
             labelDrivers.Text = Properties.Strings.DriverAndSoftware;
 
             SuspendLayout();
+
             tableBios.Visible = false;
             tableDrivers.Visible = false;
+
+            ClearTable(tableBios);
+            ClearTable(tableDrivers);
 
             Task.Run(async () =>
             {
@@ -47,8 +59,34 @@ namespace GHelper
             {
                 DriversAsync($"https://rog.asus.com/support/webapi/product/GetPDDrivers?website=global&model={model}&cpu={model}&osid=52", 0, tableDrivers);
             });
+        }
 
+        private void ClearTable(TableLayoutPanel tableLayoutPanel)
+        {
+            while (tableLayoutPanel.Controls.Count > 0)
+            {
+                tableLayoutPanel.Controls[0].Dispose();
+            }
+
+            tableLayoutPanel.RowCount = 0;
+        }
+
+        public Updates()
+        {
+            InitializeComponent();
+            InitTheme(true);
+
+
+            LoadUpdates();
+
+            //buttonRefresh.Visible = false;
+            buttonRefresh.Click += ButtonRefresh_Click;
             Shown += Updates_Shown;
+        }
+
+        private void ButtonRefresh_Click(object? sender, EventArgs e)
+        {
+            LoadUpdates();
         }
 
         private void Updates_Shown(object? sender, EventArgs e)
@@ -90,7 +128,8 @@ namespace GHelper
                             {
                                 model = results[0];
                                 bios = results[1];
-                            } else
+                            }
+                            else
                             {
                                 model = obj["SMBIOSBIOSVersion"].ToString();
                             }
@@ -114,11 +153,12 @@ namespace GHelper
                     httpClient.DefaultRequestHeaders.AcceptEncoding.ParseAdd("gzip, deflate, br");
                     httpClient.DefaultRequestHeaders.Add("User-Agent", "C# App");
                     var json = await httpClient.GetStringAsync(url);
+
                     var data = JsonSerializer.Deserialize<JsonElement>(json);
                     var groups = data.GetProperty("Result").GetProperty("Obj");
 
 
-                    List<string> skipList = new() { "Armoury Crate & Aura Creator Installer", "MyASUS", "ASUS Smart Display Control", "Aura Wallpaper", "Virtual Pet","ROG Font V1.5" };
+                    List<string> skipList = new() { "Armoury Crate & Aura Creator Installer", "MyASUS", "ASUS Smart Display Control", "Aura Wallpaper", "Virtual Pet", "ROG Font V1.5" };
                     List<DriverDownload> drivers = new();
 
                     for (int i = 0; i < groups.GetArrayLength(); i++)
@@ -145,6 +185,7 @@ namespace GHelper
                                 driver.hardwares = file.GetProperty("HardwareInfoList");
                                 drivers.Add(driver);
 
+
                                 Invoke(delegate
                                 {
                                     string versionText = driver.version.Replace("latest version at the ", "");
@@ -170,12 +211,14 @@ namespace GHelper
                         }
                     }
 
+
                     Invoke(delegate
                     {
                         table.Visible = true;
                         ResumeLayout(false);
                         PerformLayout();
                     });
+
 
                     Dictionary<string, string> devices = new();
                     if (type == 0) devices = GetDeviceVersions();
@@ -208,8 +251,13 @@ namespace GHelper
                             {
                                 Invoke(delegate
                                 {
+                                    updatesCount++;
                                     label.Font = new Font(label.Font, FontStyle.Underline | FontStyle.Bold);
                                     label.ForeColor = colorTurbo;
+
+                                    labelUpdates.Text = $"{Properties.Strings.NewUpdates}: {updatesCount}";
+                                    labelUpdates.ForeColor = colorTurbo;
+                                    labelUpdates.Font = new Font(label.Font, FontStyle.Bold);
                                 });
                             }
                         }
@@ -217,6 +265,8 @@ namespace GHelper
                         count++;
                     }
 
+                    GC.Collect();
+                    GC.WaitForPendingFinalizers();
                 }
             }
             catch (Exception ex)

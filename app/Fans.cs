@@ -1,10 +1,8 @@
-﻿using CustomControls;
-using GHelper.Gpu;
+﻿using GHelper.Gpu.NVidia;
+using GHelper.Mode;
+using GHelper.UI;
 using Ryzen;
-using System;
 using System.Diagnostics;
-using System.Net.Sockets;
-using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
 
 namespace GHelper
@@ -13,7 +11,7 @@ namespace GHelper
     {
 
         int curIndex = -1;
-        DataPoint curPoint = null;
+        DataPoint? curPoint = null;
 
         Series seriesCPU;
         Series seriesGPU;
@@ -27,6 +25,7 @@ namespace GHelper
         const int fansMax = 100;
 
         NvidiaGpuControl? nvControl = null;
+        ModeControl modeControl = Program.modeControl;
 
         public Fans()
         {
@@ -52,6 +51,8 @@ namespace GHelper
             labelGPUMemoryTitle.Text = Properties.Strings.GPUMemoryClockOffset;
             labelGPUBoostTitle.Text = Properties.Strings.GPUBoost;
             labelGPUTempTitle.Text = Properties.Strings.GPUTempTarget;
+
+            labelRisky.Text = Properties.Strings.UndervoltingRisky;
 
             InitTheme(true);
 
@@ -133,14 +134,14 @@ namespace GHelper
             labelFansResult.Visible = false;
 
 
-            trackUV.Minimum = Undervolter.MinCPUUV;
-            trackUV.Maximum = Undervolter.MaxCPUUV;
+            trackUV.Minimum = RyzenControl.MinCPUUV;
+            trackUV.Maximum = RyzenControl.MaxCPUUV;
 
-            trackUViGPU.Minimum = Undervolter.MinIGPUUV;
-            trackUViGPU.Maximum = Undervolter.MaxIGPUUV;
+            trackUViGPU.Minimum = RyzenControl.MinIGPUUV;
+            trackUViGPU.Maximum = RyzenControl.MaxIGPUUV;
 
-            trackTemp.Minimum = Undervolter.MinTemp;
-            trackTemp.Maximum = Undervolter.MaxTemp;
+            trackTemp.Minimum = RyzenControl.MinTemp;
+            trackTemp.Maximum = RyzenControl.MaxTemp;
 
 
             FillModes();
@@ -177,11 +178,20 @@ namespace GHelper
 
             ToggleNavigation(0);
 
+            FormClosed += Fans_FormClosed;
+
+        }
+
+        private void Fans_FormClosed(object? sender, FormClosedEventArgs e)
+        {
+            //Because windows charts seem to eat a lot of memory :(
+            GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced);
         }
 
         private void CheckApplyUV_Click(object? sender, EventArgs e)
         {
             AppConfig.SetMode("auto_uv", checkApplyUV.Checked ? 1 : 0);
+            modeControl.AutoRyzen();
         }
 
         public void InitAll()
@@ -244,7 +254,7 @@ namespace GHelper
 
         private void ButtonApplyAdvanced_Click(object? sender, EventArgs e)
         {
-            Program.settingsForm.SetUV(true);
+            modeControl.SetRyzen(true);
             checkApplyUV.Enabled = true;
         }
 
@@ -271,7 +281,7 @@ namespace GHelper
             labelTemp.Text = trackTemp.Value.ToString() + "°C";
 
 
-            buttonAdvanced.Visible = Undervolter.IsAMD();
+            buttonAdvanced.Visible = RyzenControl.IsAMD();
 
         }
 
@@ -332,7 +342,7 @@ namespace GHelper
             Modes.Remove(mode);
             FillModes();
 
-            Program.settingsForm.SetPerformanceMode(AsusACPI.PerformanceBalanced);
+            modeControl.SetPerformanceMode(AsusACPI.PerformanceBalanced);
 
         }
 
@@ -348,7 +358,7 @@ namespace GHelper
         {
             int mode = Modes.Add();
             FillModes();
-            Program.settingsForm.SetPerformanceMode(mode);
+            modeControl.SetPerformanceMode(mode);
         }
 
         public void InitMode()
@@ -367,13 +377,13 @@ namespace GHelper
 
             Debug.WriteLine(selectedMode);
 
-            Program.settingsForm.SetPerformanceMode((int)selectedMode);
+            modeControl.SetPerformanceMode((int)selectedMode);
         }
 
         private void TrackGPU_MouseUp(object? sender, MouseEventArgs e)
         {
-            Program.settingsForm.SetGPUPower();
-            Program.settingsForm.SetGPUClocks(true);
+            modeControl.SetGPUPower();
+            modeControl.SetGPUClocks(true);
         }
 
         public void InitGPU()
@@ -561,13 +571,13 @@ namespace GHelper
 
         private void TrackPower_MouseUp(object? sender, MouseEventArgs e)
         {
-            Program.settingsForm.AutoPower();
+            modeControl.AutoPower();
         }
 
 
         public void InitBoost()
         {
-            int boost = NativeMethods.GetCPUBoost();
+            int boost = PowerNative.GetCPUBoost();
             if (boost >= 0)
                 comboBoost.SelectedIndex = Math.Min(boost, comboBoost.Items.Count - 1);
         }
@@ -576,7 +586,7 @@ namespace GHelper
         {
             if (AppConfig.GetMode("auto_boost") != comboBoost.SelectedIndex)
             {
-                NativeMethods.SetCPUBoost(comboBoost.SelectedIndex);
+                PowerNative.SetCPUBoost(comboBoost.SelectedIndex);
             }
             AppConfig.SetMode("auto_boost", comboBoost.SelectedIndex);
         }
@@ -587,7 +597,7 @@ namespace GHelper
             CheckBox chk = (CheckBox)sender;
 
             AppConfig.SetMode("auto_apply_power", chk.Checked ? 1 : 0);
-            Program.settingsForm.SetPerformanceMode();
+            modeControl.SetPerformanceMode();
 
         }
 
@@ -597,7 +607,7 @@ namespace GHelper
             CheckBox chk = (CheckBox)sender;
 
             AppConfig.SetMode("auto_apply", chk.Checked ? 1 : 0);
-            Program.settingsForm.SetPerformanceMode();
+            modeControl.SetPerformanceMode();
 
         }
 
@@ -623,12 +633,14 @@ namespace GHelper
         public void InitPower(bool changed = false)
         {
 
-            bool modeA0 = Program.acpi.DeviceGet(AsusACPI.PPT_TotalA0) >= 0;
+            bool modeA0 = (Program.acpi.DeviceGet(AsusACPI.PPT_TotalA0) >= 0 || RyzenControl.IsAMD());
             bool modeB0 = Program.acpi.IsAllAmdPPT();
             bool modeC1 = Program.acpi.DeviceGet(AsusACPI.PPT_APUC1) >= 0;
 
             panelA0.Visible = modeA0;
             panelB0.Visible = modeB0;
+
+            panelApplyPower.Visible = panelTitleCPU.Visible = modeA0 || modeB0 || modeC1;
 
 
             // All AMD version has B0 but doesn't have C0 (Nvidia GPU) settings
@@ -827,10 +839,6 @@ namespace GHelper
             AppConfig.SetMode("auto_apply", 0);
             AppConfig.SetMode("auto_apply_power", 0);
 
-            Program.acpi.DeviceSet(AsusACPI.PerformanceMode, Modes.GetCurrentBase(), "Mode");
-
-            if (Program.acpi.IsXGConnected())
-                AsusUSB.ResetXGM();
 
             trackUV.Value = 0;
             trackUViGPU.Value = 0;
@@ -838,6 +846,11 @@ namespace GHelper
 
             AdvancedScroll();
             AppConfig.SetMode("cpu_temp", -1);
+
+            modeControl.ResetPerformanceMode();
+            
+            if (Program.acpi.IsXGConnected()) AsusUSB.ResetXGM();
+
 
             if (gpuVisible)
             {
@@ -852,8 +865,8 @@ namespace GHelper
                 AppConfig.SetMode("gpu_memory", trackGPUMemory.Value);
 
                 VisualiseGPUSettings();
-                Program.settingsForm.SetGPUClocks(true);
-                Program.settingsForm.SetGPUPower();
+                modeControl.SetGPUClocks(true);
+                modeControl.SetGPUPower();
             }
 
         }
@@ -874,7 +887,7 @@ namespace GHelper
             if (AppConfig.Is("xgm_fan"))
                 SaveProfile(seriesXGM, AsusFan.XGM);
 
-            Program.settingsForm.AutoFans();
+            modeControl.AutoFans();
 
 
         }
@@ -971,8 +984,8 @@ namespace GHelper
         {
 
             // Get the neighboring DataPoints of the hit point
-            DataPoint upperPoint = null;
-            DataPoint lowerPoint = null;
+            DataPoint? upperPoint = null;
+            DataPoint? lowerPoint = null;
 
             if (index > 0)
             {

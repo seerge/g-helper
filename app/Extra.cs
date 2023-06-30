@@ -1,11 +1,16 @@
-﻿using CustomControls;
-using GHelper.Gpu;
+﻿using GHelper.Display;
+using GHelper.Gpu.AMD;
+using GHelper.Helpers;
+using GHelper.Input;
+using GHelper.UI;
 using System.Diagnostics;
 
 namespace GHelper
 {
     public partial class Extra : RForm
     {
+
+        ScreenControl screenControl = new ScreenControl();
 
         Dictionary<string, string> customActions = new Dictionary<string, string>
         {
@@ -369,7 +374,7 @@ namespace GHelper
         private void CheckNoOverdrive_CheckedChanged(object? sender, EventArgs e)
         {
             AppConfig.Set("no_overdrive", (checkNoOverdrive.Checked ? 1 : 0));
-            Program.settingsForm.AutoScreen(true);
+            screenControl.AutoScreen(true);
         }
 
 

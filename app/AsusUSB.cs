@@ -118,7 +118,7 @@ namespace GHelper
                 _modes.Remove(3);
             }
 
-            if (AppConfig.ContainsModel("401"))
+            if (AppConfig.ContainsModel("401") || AppConfig.ContainsModel("X13"))
             {
                 _modes.Remove(2);
                 _modes.Remove(3);
@@ -148,6 +148,11 @@ namespace GHelper
                 else
                     mode = 0;
             }
+        }
+
+        public static bool HasColor()
+        {
+            return AppConfig.ContainsModel("GA401") || AppConfig.ContainsModel("X13");
         }
 
         public static bool HasSecondColor()
@@ -359,7 +364,7 @@ namespace GHelper
                 if (device.ReadFeatureData(out byte[] data, AURA_HID_ID))
                 {
                     device.WriteFeatureData(msg);
-                    //device.WriteFeatureData(MESSAGE_SET);
+                    device.WriteFeatureData(MESSAGE_SET);
                     device.WriteFeatureData(MESSAGE_APPLY);
                     Logger.WriteLine("USB-KB " + device.Capabilities.FeatureReportByteLength + "|" + device.Capabilities.InputReportByteLength + device.Description + device.DevicePath + ":" + BitConverter.ToString(msg));
                 }

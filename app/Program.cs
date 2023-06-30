@@ -1,9 +1,15 @@
+using GHelper.Gpu;
+using GHelper.Helpers;
+using GHelper.Input;
+using GHelper.Mode;
+using GHelper.Display;
 using Microsoft.Win32;
 using Ryzen;
 using System.Diagnostics;
 using System.Globalization;
 using System.Reflection;
 using static NativeMethods;
+using GHelper.AutoUpdate;
 
 namespace GHelper
 {
@@ -17,16 +23,22 @@ namespace GHelper
             Visible = true
         };
 
-        public static AsusACPI? acpi;
+        public static AsusACPI acpi;
 
         public static SettingsForm settingsForm = new SettingsForm();
+
+        public static ModeControl modeControl = new ModeControl();
+        static GPUModeControl gpuControl = new GPUModeControl(settingsForm);
+        static ScreenControl screenControl = new ScreenControl();
+
+        public static ToastForm toast = new ToastForm();
 
         public static IntPtr unRegPowerNotify;
 
         private static long lastAuto;
         private static long lastTheme;
 
-        public static InputDispatcher inputDispatcher;
+        public static InputDispatcher? inputDispatcher;
 
         private static PowerLineStatus isPlugged = SystemInformation.PowerStatus.PowerLineStatus;
 
@@ -47,8 +59,6 @@ namespace GHelper
                 if (culture.ToString() == "kr") culture = CultureInfo.GetCultureInfo("ko");
                 Thread.CurrentThread.CurrentUICulture = culture;
             }
-
-            Debug.WriteLine(CultureInfo.CurrentUICulture);
 
             ProcessHelper.CheckAlreadyRunning();
 
@@ -74,9 +84,7 @@ namespace GHelper
             Application.EnableVisualStyles();
 
             HardwareControl.RecreateGpuControl();
-            Undervolter.Init();
-
-            var ds = settingsForm.Handle;
+            RyzenControl.Init();
 
             trayIcon.MouseClick += TrayIcon_MouseClick;
 
@@ -84,7 +92,6 @@ namespace GHelper
 
             settingsForm.InitAura();
             settingsForm.InitMatrix();
-            settingsForm.SetStartupCheck(Startup.IsScheduled());
 
 
             SetAutoModes();
@@ -95,7 +102,7 @@ namespace GHelper
 
             // Subscribing for monitor power on events
             PowerSettingGuid settingGuid = new NativeMethods.PowerSettingGuid();
-            unRegPowerNotify = NativeMethods.RegisterPowerSettingNotification(ds, settingGuid.ConsoleDisplayState, NativeMethods.DEVICE_NOTIFY_WINDOW_HANDLE);
+            unRegPowerNotify = NativeMethods.RegisterPowerSettingNotification(settingsForm.Handle, settingGuid.ConsoleDisplayState, NativeMethods.DEVICE_NOTIFY_WINDOW_HANDLE);
 
 
             if (Environment.CurrentDirectory.Trim('\\') == Application.StartupPath.Trim('\\') || action.Length > 0)
@@ -151,14 +158,14 @@ namespace GHelper
             inputDispatcher.Init();
 
             settingsForm.SetBatteryChargeLimit(AppConfig.Get("charge_limit"));
-            settingsForm.AutoPerformance(powerChanged);
+            modeControl.AutoPerformance(powerChanged);
 
-            bool switched = settingsForm.AutoGPUMode();
+            bool switched = gpuControl.AutoGPUMode();
 
             if (!switched)
             {
-                settingsForm.InitGPUMode();
-                settingsForm.AutoScreen();
+                gpuControl.InitGPUMode();
+                screenControl.AutoScreen();
             }
 
             settingsForm.AutoKeyboard();
@@ -193,12 +200,16 @@ namespace GHelper
 
                 switch (action)
                 {
+                    case "cpu":
+                        Startup.ReScheduleAdmin();
+                        settingsForm.FansToggle();
+                        break;
                     case "gpu":
                         Startup.ReScheduleAdmin();
                         settingsForm.FansToggle(1);
                         break;
                     case "gpurestart":
-                        settingsForm.RestartGPU(false);
+                        gpuControl.RestartGPU(false);
                         break;
                     case "services":
                         settingsForm.keyb = new Extra();
@@ -208,7 +219,7 @@ namespace GHelper
                     case "uv":
                         Startup.ReScheduleAdmin();
                         settingsForm.FansToggle(2);
-                        settingsForm.SetUV();
+                        modeControl.SetRyzen(); 
                         break;
                 }
             }
@@ -217,9 +228,7 @@ namespace GHelper
         static void TrayIcon_MouseClick(object? sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
-            {
                 SettingsToggle();
-            }
 
         }
 

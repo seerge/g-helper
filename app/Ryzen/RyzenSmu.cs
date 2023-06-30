@@ -135,12 +135,16 @@ namespace Ryzen
 
         public Status SendMp1(uint message, ref uint[] arguments)
         {
-            return SendMsg(MP1_ADDR_MSG, MP1_ADDR_RSP, MP1_ADDR_ARG, message, ref arguments);
+            var result = SendMsg(MP1_ADDR_MSG, MP1_ADDR_RSP, MP1_ADDR_ARG, message, ref arguments);
+            //Logger.WriteLine($"RyzenMP1:{message} {arguments[0]} {result}");
+            return result;
         }
 
         public Status SendPsmu(uint message, ref uint[] arguments)
         {
-            return SendMsg(PSMU_ADDR_MSG, PSMU_ADDR_RSP, PSMU_ADDR_ARG, message, ref arguments);
+            var result =  SendMsg(PSMU_ADDR_MSG, PSMU_ADDR_RSP, PSMU_ADDR_ARG, message, ref arguments);
+            //Logger.WriteLine($"RyzenPSMU:{message} {arguments[0]} {result}");
+            return result;
         }
 
 

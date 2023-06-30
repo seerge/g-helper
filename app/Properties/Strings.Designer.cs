@@ -160,7 +160,7 @@ namespace GHelper.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Apply.
+        ///   Looks up a localized string similar to Apply Power Limits.
         /// </summary>
         internal static string ApplyPowerLimits {
             get {
@@ -453,6 +453,26 @@ namespace GHelper.Properties {
         internal static string EcoMode {
             get {
                 return ResourceManager.GetString("EcoMode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Disabling the dGPU by going to Eco mode while Display Mode in NVIDIA Control Panel is not set to Optimus might cause problems with brightness controls until after the next reboot. 
+        ///
+        ///Do you still want to continue?.
+        /// </summary>
+        internal static string EnableOptimusText {
+            get {
+                return ResourceManager.GetString("EnableOptimusText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to NVIDIA Display Mode is not set to Optimus.
+        /// </summary>
+        internal static string EnableOptimusTitle {
+            get {
+                return ResourceManager.GetString("EnableOptimusTitle", resourceCulture);
             }
         }
         
@@ -862,6 +882,24 @@ namespace GHelper.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to New updates.
+        /// </summary>
+        internal static string NewUpdates {
+            get {
+                return ResourceManager.GetString("NewUpdates", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No new updates.
+        /// </summary>
+        internal static string NoNewUpdates {
+            get {
+                return ResourceManager.GetString("NoNewUpdates", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Open G-Helper window.
         /// </summary>
         internal static string OpenGHelper {
@@ -1087,6 +1125,15 @@ namespace GHelper.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Stop GPU Applications.
+        /// </summary>
+        internal static string StopGPUApps {
+            get {
+                return ResourceManager.GetString("StopGPUApps", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Stopping Services.
         /// </summary>
         internal static string StoppingServices {
@@ -1173,6 +1220,15 @@ namespace GHelper.Properties {
         internal static string UltimateMode {
             get {
                 return ResourceManager.GetString("UltimateMode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Undervolting is experimental and risky feature. If applied values are too low for your hardware, it can become unstable, shut down or cause data corruption. If you want to try - start from small values first, click Apply and test what works for you..
+        /// </summary>
+        internal static string UndervoltingRisky {
+            get {
+                return ResourceManager.GetString("UndervoltingRisky", resourceCulture);
             }
         }
         

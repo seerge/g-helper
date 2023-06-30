@@ -249,6 +249,14 @@
   <data name="EcoMode" xml:space="preserve">
     <value>Eco</value>
   </data>
+  <data name="EnableOptimusText" xml:space="preserve">
+    <value>Disabling the dGPU by going to Eco mode while Display Mode in NVIDIA Control Panel is not set to Optimus might cause problems with brightness controls until after the next reboot. 
+
+Do you still want to continue?</value>
+  </data>
+  <data name="EnableOptimusTitle" xml:space="preserve">
+    <value>NVIDIA Display Mode is not set to Optimus</value>
+  </data>
   <data name="Extra" xml:space="preserve">
     <value>Extra</value>
   </data>
@@ -384,6 +392,12 @@
   <data name="MuteMic" xml:space="preserve">
     <value>Mute Mic</value>
   </data>
+  <data name="NewUpdates" xml:space="preserve">
+    <value>New updates</value>
+  </data>
+  <data name="NoNewUpdates" xml:space="preserve">
+    <value>No new updates</value>
+  </data>
   <data name="OpenGHelper" xml:space="preserve">
     <value>Open G-Helper window</value>
   </data>
@@ -459,6 +473,9 @@
   <data name="Stop" xml:space="preserve">
     <value>Stop</value>
   </data>
+  <data name="StopGPUApps" xml:space="preserve">
+    <value>Stop GPU Applications</value>
+  </data>
   <data name="StoppingServices" xml:space="preserve">
     <value>Stopping Services</value>
   </data>
@@ -488,6 +505,9 @@
   </data>
   <data name="UltimateMode" xml:space="preserve">
     <value>Ultimate</value>
+  </data>
+  <data name="UndervoltingRisky" xml:space="preserve">
+    <value>Undervolting is experimental and risky feature. If applied values are too low for your hardware, it can become unstable, shut down or cause data corruption. If you want to try - start from small values first, click Apply and test what works for you.</value>
   </data>
   <data name="Updates" xml:space="preserve">
     <value>Updates</value>

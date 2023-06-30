@@ -427,6 +427,7 @@ public class AsusACPI
         return DeviceGet(PPT_CPUB0) >= 0 && DeviceGet(PPT_GPUC0) < 0;
     }
 
+
     public void ScanRange()
     {
         int value;
