@@ -396,7 +396,7 @@ Trotzdem fortfahren?</value>
     <value>Mikrofon stummschalten</value>
   </data>
   <data name="NewUpdates" xml:space="preserve">
-    <value>Updates verfügbar</value>
+    <value>Neue Updates:</value>
   </data>
   <data name="NoNewUpdates" xml:space="preserve">
     <value>Keine Updates verfügbar</value>
