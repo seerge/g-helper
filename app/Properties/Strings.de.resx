@@ -156,6 +156,9 @@
   <data name="ApplyWindowsPowerPlan" xml:space="preserve">
     <value>Windows Leistungsmodus automatisch anpassen</value>
   </data>
+  <data name="AsusServicesRunning" xml:space="preserve">
+    <value>ASUS Dienste laufen</value>
+  </data>
   <data name="AuraBreathe" xml:space="preserve">
     <value>Atmen</value>
   </data>
@@ -192,17 +195,29 @@
   <data name="BacklightTimeout" xml:space="preserve">
     <value>Tastaturbelechtung abschalten in (Sekunden)</value>
   </data>
+  <data name="BacklightTimeoutPlBacklightTimeoutPlugged" xml:space="preserve">
+    <value>Tastaturbelechtung beim aufladen abschalten in (Sekunden)</value>
+  </data>
   <data name="Balanced" xml:space="preserve">
     <value>Ausbalanciert</value>
   </data>
   <data name="BatteryChargeLimit" xml:space="preserve">
     <value>Ladebegrenzung</value>
   </data>
+  <data name="BiosAndDriverUpdates" xml:space="preserve">
+    <value>BIOS und Treiber Updates</value>
+  </data>
   <data name="Boot" xml:space="preserve">
     <value>Hochfahren</value>
   </data>
   <data name="Brightness" xml:space="preserve">
     <value>Helligkeit</value>
+  </data>
+  <data name="BrightnessDown" xml:space="preserve">
+    <value>Helligkeit erhöhen</value>
+  </data>
+  <data name="BrightnessUp" xml:space="preserve">
+    <value>Helligkeit verringern</value>
   </data>
   <data name="Color" xml:space="preserve">
     <value>Farbe</value>
@@ -225,11 +240,22 @@
   <data name="DownloadUpdate" xml:space="preserve">
     <value>Updates herunterladen</value>
   </data>
+  <data name="DriverAndSoftware" xml:space="preserve">
+    <value>Treiber und Software</value>
+  </data>
   <data name="EcoGPUTooltip" xml:space="preserve">
     <value>dGPU zum Stromsparen abschalten</value>
   </data>
   <data name="EcoMode" xml:space="preserve">
     <value>Eco</value>
+  </data>
+  <data name="EnableOptimusText" xml:space="preserve">
+    <value>Wenn Sie die dGPU deaktivieren, indem Sie in den Eco Modus wechseln, kann zu Problemen mit der Helligkeitseinstellung führen, wenn der Anzeigemodus nicht auf Optimus eingestellt ist.
+
+Trotzdem fortfahren?</value>
+  </data>
+  <data name="EnableOptimusTitle" xml:space="preserve">
+    <value>Nvidia Anzeigemodus ist nicht auf Optimus eingestellt</value>
   </data>
   <data name="Extra" xml:space="preserve">
     <value>Extra</value>
@@ -264,6 +290,9 @@
   <data name="FansPower" xml:space="preserve">
     <value>Lüfter + Leistung</value>
   </data>
+  <data name="FnLock" xml:space="preserve">
+    <value>FN+F Funktionen ohne FN Taste nutzen</value>
+  </data>
   <data name="GPUBoost" xml:space="preserve">
     <value>Dynamic Boost</value>
   </data>
@@ -288,6 +317,9 @@
   <data name="GPUModeUltimate" xml:space="preserve">
     <value>Nur dGPU</value>
   </data>
+  <data name="GPUSettings" xml:space="preserve">
+    <value>GPU Einstellungen</value>
+  </data>
   <data name="GPUTempTarget" xml:space="preserve">
     <value>Maximale GPU Temperatur</value>
   </data>
@@ -303,6 +335,9 @@
   <data name="KeyboardBacklight" xml:space="preserve">
     <value>Tastaturbeleuchtung</value>
   </data>
+  <data name="KillGpuApps" xml:space="preserve">
+    <value>Alle Anwendungen auf der dGPU beim Wechsel in den Eco Modus beenden.</value>
+  </data>
   <data name="LaptopBacklight" xml:space="preserve">
     <value>Laptopbelechtung</value>
   </data>
@@ -311,6 +346,18 @@
   </data>
   <data name="LaptopScreen" xml:space="preserve">
     <value>Laptopbildschirm</value>
+  </data>
+  <data name="Lid" xml:space="preserve">
+    <value>Deckel</value>
+  </data>
+  <data name="Lightbar" xml:space="preserve">
+    <value>Leuchtstreifen</value>
+  </data>
+  <data name="Logo" xml:space="preserve">
+    <value>Logo</value>
+  </data>
+  <data name="MatrixAudio" xml:space="preserve">
+    <value>Audio Visualisierung</value>
   </data>
   <data name="MatrixBanner" xml:space="preserve">
     <value>Binary Banner</value>
@@ -344,6 +391,15 @@
   </data>
   <data name="Multizone" xml:space="preserve">
     <value>Multi-Zone</value>
+  </data>
+  <data name="MuteMic" xml:space="preserve">
+    <value>Mikrofon stummschalten</value>
+  </data>
+  <data name="NewUpdates" xml:space="preserve">
+    <value>Neue Updates:</value>
+  </data>
+  <data name="NoNewUpdates" xml:space="preserve">
+    <value>Keine Updates verfügbar</value>
   </data>
   <data name="OpenGHelper" xml:space="preserve">
     <value>G-Helper Fenster öffnen</value>
@@ -384,6 +440,9 @@
   <data name="Quit" xml:space="preserve">
     <value>Schließen</value>
   </data>
+  <data name="RestartGPU" xml:space="preserve">
+    <value>Ein Prozess verhindert den Wechsel in den Eco Modus. dGPU neustarten? Fortfahren auf eigene Gefahr.</value>
+  </data>
   <data name="RPM" xml:space="preserve">
     <value>U/Min</value>
   </data>
@@ -405,11 +464,35 @@
   <data name="StandardMode" xml:space="preserve">
     <value>Standard</value>
   </data>
+  <data name="Start" xml:space="preserve">
+    <value>Starten</value>
+  </data>
+  <data name="StartingServices" xml:space="preserve">
+    <value>Starte Dienste</value>
+  </data>
   <data name="StartupError" xml:space="preserve">
     <value>Startfehler</value>
   </data>
+  <data name="Stop" xml:space="preserve">
+    <value>Beenden</value>
+  </data>
+  <data name="StopGPUApps" xml:space="preserve">
+    <value>GPU Anwendungen beenden</value>
+  </data>
+  <data name="StoppingServices" xml:space="preserve">
+    <value>Beende Dienste</value>
+  </data>
   <data name="ToggleAura" xml:space="preserve">
     <value>Aura umschalten</value>
+  </data>
+  <data name="ToggleFnLock" xml:space="preserve">
+    <value>FN Sperre umschalten</value>
+  </data>
+  <data name="ToggleMiniled" xml:space="preserve">
+    <value>MiniLED umschalten</value>
+  </data>
+  <data name="ToggleScreen" xml:space="preserve">
+    <value>Bildschirm umschalten</value>
   </data>
   <data name="Turbo" xml:space="preserve">
     <value>Turbo</value>
@@ -426,11 +509,23 @@
   <data name="UltimateMode" xml:space="preserve">
     <value>Ultimate</value>
   </data>
+  <data name="UndervoltingRisky" xml:space="preserve">
+    <value>Die Spannungsabsenkung (Undervolting) ist experimentell und birgt u.U. ein Risik. Wenn die Spannung zu weit abgesenkt wird, wird der Computer instabil und kann abstürzen, was zu Datenverlust führen kann. Es empfiehlt sich mit kleinen Werten anzufangen und es ausgiebig zu testen, um den idealen Wert zu finden.</value>
+  </data>
+  <data name="Updates" xml:space="preserve">
+    <value>Updates</value>
+  </data>
   <data name="VersionLabel" xml:space="preserve">
     <value>Version</value>
   </data>
+  <data name="VolumeDown" xml:space="preserve">
+    <value>Lautstärke verringern</value>
+  </data>
   <data name="VolumeMute" xml:space="preserve">
     <value>Stummschalten</value>
+  </data>
+  <data name="VolumeUp" xml:space="preserve">
+    <value>Lautstärke erhöhen</value>
   </data>
   <data name="WindowTop" xml:space="preserve">
     <value>Fenster immer über allen anderen</value>
