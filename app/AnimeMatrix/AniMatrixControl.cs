@@ -8,21 +8,26 @@ using System.Timers;
 namespace GHelper.AnimeMatrix
 {
 
-    public class AniMatrix
+    public class AniMatrixControl
     {
-        System.Timers.Timer matrixTimer = default!;
-        AnimeMatrixDevice mat;
 
-        double[] AudioValues;
-        WasapiCapture AudioDevice;
+        SettingsForm settings;
+
+        System.Timers.Timer matrixTimer = default!;
+        AnimeMatrixDevice? mat;
+
+        double[]? AudioValues;
+        WasapiCapture? AudioDevice;
 
         public bool IsValid => mat != null;
 
         private long lastPresent;
         private List<double> maxes = new List<double>();
 
-        public AniMatrix()
+        public AniMatrixControl(SettingsForm settingsForm)
         {
+            settings = settingsForm;
+
             try
             {
                 mat = new AnimeMatrixDevice();
@@ -251,11 +256,42 @@ namespace GHelper.AnimeMatrix
             if (maxes.Count > 20) maxes.RemoveAt(0);
             maxAverage = maxes.Average();
 
-            for (int i = 0; i < size; i++) DrawBar(20 - i, bars[i]*20/maxAverage);
+            for (int i = 0; i < size; i++) DrawBar(20 - i, bars[i] * 20 / maxAverage);
 
             mat.Present();
         }
 
+
+        public void OpenMatrixPicture()
+        {
+            string fileName = null;
+
+            Thread t = new Thread(() =>
+            {
+                OpenFileDialog of = new OpenFileDialog();
+                of.Filter = "Image Files (*.bmp;*.jpg;*.jpeg,*.png,*.gif)|*.BMP;*.JPG;*.JPEG;*.PNG;*.GIF";
+                if (of.ShowDialog() == DialogResult.OK)
+                {
+                    fileName = of.FileName;
+                }
+                return;
+            });
+
+            t.SetApartmentState(ApartmentState.STA);
+            t.Start();
+            t.Join();
+
+            if (fileName is not null)
+            {
+                AppConfig.Set("matrix_picture", fileName);
+                AppConfig.Set("matrix_running", 2);
+
+                SetMatrixPicture(fileName);
+                settings.SetMatrixRunning(2);
+
+            }
+
+        }
 
         public void SetMatrixPicture(string fileName)
         {

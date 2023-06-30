@@ -68,6 +68,15 @@ public static class AppConfig
 
         return _model;
     }
+
+    public static string GetModelShort()
+    {
+        string model = GetModel();
+        int trim = model.LastIndexOf("_");
+        if (trim > 0) model = model.Substring(0, trim);
+        return model;
+    }
+
     public static bool ContainsModel(string contains)
     {
 

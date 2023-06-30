@@ -9,6 +9,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Reflection;
 using static NativeMethods;
+using GHelper.AutoUpdate;
 
 namespace GHelper
 {
@@ -27,7 +28,7 @@ namespace GHelper
         public static SettingsForm settingsForm = new SettingsForm();
 
         public static ModeControl modeControl = new ModeControl();
-        static GPUModeControl gpuControl = new GPUModeControl();
+        static GPUModeControl gpuControl = new GPUModeControl(settingsForm);
         static ScreenControl screenControl = new ScreenControl();
 
         public static ToastForm toast = new ToastForm();

@@ -22,7 +22,7 @@ namespace GHelper.Display
         public void SetScreen(int frequency = -1, int overdrive = -1, int miniled = -1)
         {
 
-            if (NativeMethods.GetRefreshRate() < 0) // Laptop screen not detected or has unknown refresh rate
+            if (ScreenNative.GetRefreshRate() < 0) // Laptop screen not detected or has unknown refresh rate
             {
                 InitScreen();
                 return;
@@ -30,12 +30,12 @@ namespace GHelper.Display
 
             if (frequency >= 1000)
             {
-                frequency = NativeMethods.GetRefreshRate(true);
+                frequency = ScreenNative.GetRefreshRate(true);
             }
 
             if (frequency > 0)
             {
-                NativeMethods.SetRefreshRate(frequency);
+                ScreenNative.SetRefreshRate(frequency);
             }
 
             if (overdrive >= 0)
@@ -64,8 +64,8 @@ namespace GHelper.Display
 
         public void InitScreen()
         {
-            int frequency = NativeMethods.GetRefreshRate();
-            int maxFrequency = NativeMethods.GetRefreshRate(true);
+            int frequency = ScreenNative.GetRefreshRate();
+            int maxFrequency = ScreenNative.GetRefreshRate(true);
 
             bool screenAuto = AppConfig.Is("screen_auto");
             bool overdriveSetting = !AppConfig.Is("no_overdrive");

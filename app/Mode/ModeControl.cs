@@ -78,14 +78,14 @@ namespace GHelper.Mode
             if (AppConfig.Get("auto_apply_power_plan") != 0)
             {
                 if (AppConfig.GetModeString("scheme") is not null)
-                    NativeMethods.SetPowerScheme(AppConfig.GetModeString("scheme"));
+                    PowerNative.SetPowerScheme(AppConfig.GetModeString("scheme"));
                 else
-                    NativeMethods.SetPowerScheme(Modes.GetBase(mode));
+                    PowerNative.SetPowerScheme(Modes.GetBase(mode));
             }
 
             if (AppConfig.GetMode("auto_boost") != -1)
             {
-                NativeMethods.SetCPUBoost(AppConfig.GetMode("auto_boost"));
+                PowerNative.SetCPUBoost(AppConfig.GetMode("auto_boost"));
             }
 
             /*

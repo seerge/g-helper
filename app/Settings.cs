@@ -1,14 +1,12 @@
 ﻿using GHelper.AnimeMatrix;
+using GHelper.AutoUpdate;
+using GHelper.Display;
 using GHelper.Gpu;
 using GHelper.Helpers;
 using GHelper.Input;
 using GHelper.Mode;
-using GHelper.Display;
 using GHelper.UI;
 using System.Diagnostics;
-using System.Net;
-using System.Reflection;
-using System.Text.Json;
 using System.Timers;
 
 namespace GHelper
@@ -20,27 +18,31 @@ namespace GHelper
         ContextMenuStrip contextMenuStrip = new CustomContextMenu();
         ToolStripMenuItem menuSilent, menuBalanced, menuTurbo, menuEco, menuStandard, menuUltimate, menuOptimized;
 
-        GPUModeControl gpuControl = new GPUModeControl();
+        GPUModeControl gpuControl;
         ScreenControl screenControl = new ScreenControl();
+        AutoUpdateControl updateControl;
 
-        public static System.Timers.Timer aTimer = default!;
-        public string versionUrl = "http://github.com/seerge/g-helper/releases";
+        public AniMatrixControl matrix;
 
-        public AniMatrix matrix;
-        public Fans fans;
-        public Extra keyb;
-        public Updates updates;
+        public static System.Timers.Timer sensorTimer = default!;
 
-        static long lastUpdate;
+        public Fans? fans;
+        public Extra? keyb;
+        public Updates? updates;
+
         static long lastRefresh;
 
         bool isGpuSection = true;
 
         public SettingsForm()
         {
- 
+
             InitializeComponent();
             InitTheme(true);
+
+            gpuControl = new GPUModeControl(this);
+            updateControl = new AutoUpdateControl(this);
+            matrix = new AniMatrixControl(this);
 
             buttonSilent.Text = Properties.Strings.Silent;
             buttonBalanced.Text = Properties.Strings.Balanced;
@@ -166,18 +168,11 @@ namespace GHelper
             sliderBattery.ValueChanged += SliderBattery_ValueChanged;
             Program.trayIcon.MouseMove += TrayIcon_MouseMove;
 
-            aTimer = new System.Timers.Timer(1000);
-            aTimer.Elapsed += OnTimedEvent;
-            aTimer.Enabled = true;
+            sensorTimer = new System.Timers.Timer(1000);
+            sensorTimer.Elapsed += OnTimedEvent;
+            sensorTimer.Enabled = true;
 
-            SetVersionLabel(Properties.Strings.VersionLabel + ": " + Assembly.GetExecutingAssembly().GetName().Version);
-
-            string model = AppConfig.GetModel();
-            int trim = model.LastIndexOf("_");
-            if (trim > 0) model = model.Substring(0, trim);
-
-            labelModel.Text = model + (ProcessHelper.IsUserAdministrator() ? "." : "");
-
+            labelModel.Text = AppConfig.GetModelShort() + (ProcessHelper.IsUserAdministrator() ? "." : "");
             TopMost = AppConfig.Is("topmost");
 
             SetContextMenu();
@@ -186,22 +181,12 @@ namespace GHelper
 
         private void SettingsForm_VisibleChanged(object? sender, EventArgs e)
         {
-            aTimer.Enabled = this.Visible;
+            sensorTimer.Enabled = this.Visible;
             if (this.Visible)
             {
                 screenControl.InitScreen();
                 gpuControl.InitXGM();
-
-                // Run update once per 12 hours
-                if (Math.Abs(DateTimeOffset.Now.ToUnixTimeSeconds() - lastUpdate) < 43200) return;
-                lastUpdate = DateTimeOffset.Now.ToUnixTimeSeconds();
-
-                Task.Run(async () =>
-                {
-                    await Task.Delay(TimeSpan.FromSeconds(1));
-                    CheckForUpdatesAsync();
-                });
-
+                updateControl.CheckForUpdates();
             }
         }
 
@@ -350,111 +335,19 @@ namespace GHelper
         }
 
 
-        public async void CheckForUpdatesAsync()
+        public void SetVersionLabel(string label, bool update = false)
         {
-
-            try
-            {
-
-                using (var httpClient = new HttpClient())
-                {
-                    httpClient.DefaultRequestHeaders.Add("User-Agent", "C# App");
-                    var json = await httpClient.GetStringAsync("https://api.github.com/repos/seerge/g-helper/releases/latest");
-                    var config = JsonSerializer.Deserialize<JsonElement>(json);
-                    var tag = config.GetProperty("tag_name").ToString().Replace("v", "");
-                    var assets = config.GetProperty("assets");
-
-                    string url = null;
-
-                    for (int i = 0; i < assets.GetArrayLength(); i++)
-                    {
-                        if (assets[i].GetProperty("browser_download_url").ToString().Contains(".zip"))
-                            url = assets[i].GetProperty("browser_download_url").ToString();
-                    }
-
-                    if (url is null)
-                        url = assets[0].GetProperty("browser_download_url").ToString();
-
-                    var gitVersion = new Version(tag);
-                    var appVersion = new Version(Assembly.GetExecutingAssembly().GetName().Version.ToString());
-                    //appVersion = new Version("0.50.0.0"); 
-
-                    if (gitVersion.CompareTo(appVersion) > 0)
-                    {
-                        SetVersionLabel(Properties.Strings.DownloadUpdate + ": " + tag, url);
-                        if (AppConfig.GetString("skip_version") != tag)
-                        {
-                            DialogResult dialogResult = MessageBox.Show(Properties.Strings.DownloadUpdate + ": G-Helper " + tag + "?", "Update", MessageBoxButtons.YesNo);
-                            if (dialogResult == DialogResult.Yes)
-                                AutoUpdate(url);
-                            else
-                                AppConfig.Set("skip_version", tag);
-                        }
-
-                    }
-                    else
-                    {
-                        Debug.WriteLine("Latest version");
-                    }
-
-                }
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine("Failed to check for updates:" + ex.Message);
-            }
-
-        }
-
-        void SetVersionLabel(string label, string url = null)
-        {
-            BeginInvoke(delegate
+            Invoke(delegate
             {
                 labelVersion.Text = label;
-                if (url is not null)
-                {
-                    this.versionUrl = url;
-                    labelVersion.ForeColor = Color.Red;
-                }
+                if (update) labelVersion.ForeColor = colorTurbo;
             });
-
-        }
-
-
-        public async void AutoUpdate(string requestUri)
-        {
-
-            Uri uri = new Uri(requestUri);
-            string zipName = Path.GetFileName(uri.LocalPath);
-
-            string exeLocation = Application.ExecutablePath;
-            string exeDir = Path.GetDirectoryName(exeLocation);
-            string zipLocation = exeDir + "\\" + zipName;
-
-            using (WebClient client = new WebClient())
-            {
-                client.DownloadFile(uri, zipLocation);
-
-                Logger.WriteLine(requestUri);
-                Logger.WriteLine(zipLocation);
-                Logger.WriteLine(exeLocation);
-
-                var cmd = new Process();
-                cmd.StartInfo.UseShellExecute = false;
-                cmd.StartInfo.CreateNoWindow = true;
-                cmd.StartInfo.FileName = "powershell";
-                cmd.StartInfo.Arguments = $"Start-Sleep -Seconds 1; Expand-Archive {zipLocation} -DestinationPath {exeDir} -Force; Remove-Item {zipLocation} -Force; {exeLocation}";
-                cmd.Start();
-
-                Application.Exit();
-            }
-
         }
 
 
         private void LabelVersion_Click(object? sender, EventArgs e)
         {
-            Process.Start(new ProcessStartInfo(versionUrl) { UseShellExecute = true });
+            updateControl.LoadReleases();
         }
 
         private static void TrayIcon_MouseMove(object? sender, MouseEventArgs e)
@@ -553,59 +446,36 @@ namespace GHelper
 
         private void CheckMatrix_CheckedChanged(object? sender, EventArgs e)
         {
-            if (sender is null) return;
-            CheckBox check = (CheckBox)sender;
-            AppConfig.Set("matrix_auto", check.Checked ? 1 : 0);
-            matrix?.SetMatrix();
+            AppConfig.Set("matrix_auto", checkMatrix.Checked ? 1 : 0);
+            matrix.SetMatrix();
         }
 
 
 
         private void ButtonMatrix_Click(object? sender, EventArgs e)
         {
-            string fileName = null;
+            matrix.OpenMatrixPicture();
+        }
 
-            Thread t = new Thread(() =>
+        public void SetMatrixRunning(int mode)
+        {
+            Invoke(delegate
             {
-                OpenFileDialog of = new OpenFileDialog();
-                of.Filter = "Image Files (*.bmp;*.jpg;*.jpeg,*.png,*.gif)|*.BMP;*.JPG;*.JPEG;*.PNG;*.GIF";
-                if (of.ShowDialog() == DialogResult.OK)
-                {
-                    fileName = of.FileName;
-                }
-                return;
+                comboMatrixRunning.SelectedIndex = mode;
             });
-
-            t.SetApartmentState(ApartmentState.STA);
-            t.Start();
-            t.Join();
-
-            if (fileName is not null)
-            {
-                AppConfig.Set("matrix_picture", fileName);
-                AppConfig.Set("matrix_running", 2);
-
-                matrix?.SetMatrixPicture(fileName);
-                BeginInvoke(delegate
-                {
-                    comboMatrixRunning.SelectedIndex = 2;
-                });
-            }
-
-
         }
 
         private void ComboMatrixRunning_SelectedValueChanged(object? sender, EventArgs e)
         {
             AppConfig.Set("matrix_running", comboMatrixRunning.SelectedIndex);
-            matrix?.SetMatrix();
+            matrix.SetMatrix();
         }
 
 
         private void ComboMatrix_SelectedValueChanged(object? sender, EventArgs e)
         {
             AppConfig.Set("matrix_brightness", comboMatrix.SelectedIndex);
-            matrix?.SetMatrix();
+            matrix.SetMatrix();
         }
 
 
@@ -726,8 +596,6 @@ namespace GHelper
 
         public void InitMatrix()
         {
-
-            matrix = new AniMatrix();
 
             if (!matrix.IsValid)
             {
@@ -1037,7 +905,7 @@ namespace GHelper
         public void HideGPUModes()
         {
             isGpuSection = false;
-            
+
             buttonEco.Visible = false;
             buttonStandard.Visible = false;
             buttonUltimate.Visible = false;

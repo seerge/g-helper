@@ -577,7 +577,7 @@ namespace GHelper
 
         public void InitBoost()
         {
-            int boost = NativeMethods.GetCPUBoost();
+            int boost = PowerNative.GetCPUBoost();
             if (boost >= 0)
                 comboBoost.SelectedIndex = Math.Min(boost, comboBoost.Items.Count - 1);
         }
@@ -586,7 +586,7 @@ namespace GHelper
         {
             if (AppConfig.GetMode("auto_boost") != comboBoost.SelectedIndex)
             {
-                NativeMethods.SetCPUBoost(comboBoost.SelectedIndex);
+                PowerNative.SetCPUBoost(comboBoost.SelectedIndex);
             }
             AppConfig.SetMode("auto_boost", comboBoost.SelectedIndex);
         }

@@ -7,8 +7,13 @@ namespace GHelper.Gpu
 {
     public class GPUModeControl
     {
-        static SettingsForm settings = Program.settingsForm;
+        SettingsForm settings;
         ScreenControl screenControl = new ScreenControl();
+
+        public GPUModeControl(SettingsForm settingsForm)
+        {
+            settings = settingsForm;
+        }
 
         public void InitGPUMode()
         {
