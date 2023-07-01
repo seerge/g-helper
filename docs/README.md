@@ -128,7 +128,7 @@ Open app, and uncheck and check again "run on startup". If it still doesn't help
 G-helper is a single exe, and it doesn't install anything in the system. To remove it - you can simply delete exe :) If you have applied any custom fan profiles or PPTs - before removing I would recommend selecting your favorite performance mode (for example balanced) and clicking "Factory defaults" under Fans + Power.
 
 #### How do I do a hardware reset on a laptop?
-This is not related to g-helper anyhow, but all Asus laptops have an option to do a hardware reset that can be handy sometimes. It doesn't touch your data in any way, but resets all main hardware-related things (enables your dGPU, wakes up wifi/bt adapter if it hanged by some reason, etc). To do this reset : Turn OFF laptop. Press and hold "power" button for 30-40 seconds. Then boot normally (it will take a bit longer to boot)
+All Asus laptops have an option to do a hardware reset that can be handy sometimes. It doesn't touch your data, but resets all main hardware-related things (enables your dGPU, wakes up wifi/bt adapter if it hanged by some reason, etc). Turn OFF laptop. Press and hold "power" button for 30-40 seconds. Then boot normally (it will take a bit longer to boot)
 
 #### What is G-helper ?
 G-Helper is a lightweight Armoury Crate alternative for Asus laptops. A small utility that allows you to do almost everything you could do with Armoury Crate but without extra bloat and unnecessary services.
