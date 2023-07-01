@@ -34,8 +34,9 @@ public class Startup
 
         using (TaskDefinition td = TaskService.Instance.NewTask())
         {
+
             td.RegistrationInfo.Description = "G-Helper Auto Start";
-            td.Triggers.Add(new LogonTrigger { UserId = userId });
+            td.Triggers.Add(new LogonTrigger { UserId = userId, Delay = TimeSpan.FromSeconds(1) });
             td.Actions.Add(strExeFilePath);
 
             if (ProcessHelper.IsUserAdministrator()) 

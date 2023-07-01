@@ -419,13 +419,6 @@ namespace GHelper
         }
 
 
-        private void ButtonOptimized_Click(object? sender, EventArgs e)
-        {
-            AppConfig.Set("gpu_auto", (AppConfig.Get("gpu_auto") == 1) ? 0 : 1);
-            VisualiseGPUMode();
-            gpuControl.AutoGPUMode();
-        }
-
         private void ButtonScreenAuto_Click(object? sender, EventArgs e)
         {
             AppConfig.Set("screen_auto", 1);
@@ -752,6 +745,13 @@ namespace GHelper
             gpuControl.SetGPUMode(AsusACPI.GPUModeEco);
         }
 
+
+        private void ButtonOptimized_Click(object? sender, EventArgs e)
+        {
+            AppConfig.Set("gpu_auto", (AppConfig.Get("gpu_auto") == 1) ? 0 : 1);
+            VisualiseGPUMode();
+            gpuControl.AutoGPUMode(true);
+        }
 
         private void ButtonStopGPU_Click(object? sender, EventArgs e)
         {
