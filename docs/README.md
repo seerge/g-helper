@@ -127,6 +127,9 @@ Open app, and uncheck and check again "run on startup". If it still doesn't help
 #### How do I uninstall G-helper?
 G-helper is a single exe, and it doesn't install anything in the system. To remove it - you can simply delete exe :) If you have applied any custom fan profiles or PPTs - before removing I would recommend selecting your favorite performance mode (for example balanced) and clicking "Factory defaults" under Fans + Power.
 
+#### I have G14 2023 and my GPU refuses to disable/enable
+It seem to be an issue in older BIOS versions. As [users report](https://github.com/seerge/g-helper/issues/680) - latest BIOS 310 (installable via myasus / g-helper -> updates) resolves all issues :) So please update.
+
 #### How do I do a hardware reset on a laptop?
 All Asus laptops have an option to do a hardware reset that can be handy sometimes. It doesn't touch your data, but resets all main hardware-related things (enables your dGPU, wakes up wifi/bt adapter if it hanged by some reason, etc). Turn OFF laptop. Press and hold "power" button for 30-40 seconds. Then boot normally (it will take a bit longer to boot)
 
