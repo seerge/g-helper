@@ -180,6 +180,8 @@ I don't have a Microsoft certificate to sign the app yet, so if you get a warnin
 
 ## Power user settings
 
+_GENERAL NOTE: "Power user" settings require some config edits. Before making any changes to ``config.json`` - quit G-Helper. Make your changes. Run G-Helper again._
+
 ### Manual app language setting
 
 By default app will use your windows language setting. But you can set language manually (if it supported of course)
