@@ -122,21 +122,27 @@ namespace GHelper.Mode
         public static void SetPowerScheme(string scheme)
         {
             List<string> overlays = new() {
-            "00000000-0000-0000-0000-000000000000",
-            "ded574b5-45a0-4f42-8737-46345c09c238",
-            "961cc777-2547-4f9d-8174-7d86181b8a7a",
-            "3af9B8d9-7c97-431d-ad78-34a8bfea439f"
-        };
+                "00000000-0000-0000-0000-000000000000",
+                "ded574b5-45a0-4f42-8737-46345c09c238",
+                "961cc777-2547-4f9d-8174-7d86181b8a7a",
+                "3af9B8d9-7c97-431d-ad78-34a8bfea439f"
+            };
+
+            Guid guidScheme = new Guid(scheme);
 
             if (overlays.Contains(scheme))
             {
-                PowerSetActiveOverlayScheme(new Guid(scheme));
-                Logger.WriteLine("Power mode:" + scheme);
+                uint status = PowerGetEffectiveOverlayScheme(out Guid activeScheme);
+                if (status != 0 || activeScheme != guidScheme)
+                {
+                    PowerSetActiveOverlayScheme(guidScheme);
+                    Logger.WriteLine("Power mode: " + scheme);
+                }
             }
             else
             {
-                PowerSetActiveScheme(IntPtr.Zero, new Guid(scheme));
-                Logger.WriteLine("Power plan:" + scheme);
+                PowerSetActiveScheme(IntPtr.Zero, guidScheme);
+                Logger.WriteLine("Power plan: " + scheme);
             }
 
 
@@ -147,13 +153,13 @@ namespace GHelper.Mode
             switch (mode)
             {
                 case 0: // balanced
-                    PowerSetActiveOverlayScheme(new Guid("00000000-0000-0000-0000-000000000000"));
+                    SetPowerScheme("00000000-0000-0000-0000-000000000000");
                     break;
                 case 1: // turbo
-                    PowerSetActiveOverlayScheme(new Guid("ded574b5-45a0-4f42-8737-46345c09c238"));
+                    SetPowerScheme("ded574b5-45a0-4f42-8737-46345c09c238");
                     break;
                 case 2: //silent
-                    PowerSetActiveOverlayScheme(new Guid("961cc777-2547-4f9d-8174-7d86181b8a7a"));
+                    SetPowerScheme("961cc777-2547-4f9d-8174-7d86181b8a7a");
                     break;
             }
         }

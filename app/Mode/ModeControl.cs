@@ -89,7 +89,7 @@ namespace GHelper.Mode
                 PowerNative.SetCPUBoost(AppConfig.GetMode("auto_boost"));
             }
 
-            BatteryControl.SetBatteryChargeLimit();
+            //BatteryControl.SetBatteryChargeLimit();
 
             /*
             if (NativeMethods.PowerGetEffectiveOverlayScheme(out Guid activeScheme) == 0)
