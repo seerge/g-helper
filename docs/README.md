@@ -127,8 +127,11 @@ Open app, and uncheck and check again "run on startup". If it still doesn't help
 #### How do I uninstall G-helper?
 G-helper is a single exe, and it doesn't install anything in the system. To remove it - you can simply delete exe :) If you have applied any custom fan profiles or PPTs - before removing I would recommend selecting your favorite performance mode (for example balanced) and clicking "Factory defaults" under Fans + Power.
 
+#### I have G14 2023 and my GPU refuses to disable/enable
+It seem to be an issue in older BIOS versions. As [users report](https://github.com/seerge/g-helper/issues/680) - latest BIOS 310 (installable via myasus / g-helper -> updates) resolves all issues :) So please update.
+
 #### How do I do a hardware reset on a laptop?
-This is not related to g-helper anyhow, but all Asus laptops have an option to do a hardware reset that can be handy sometimes. It doesn't touch your data in any way, but resets all main hardware-related things (enables your dGPU, wakes up wifi/bt adapter if it hanged by some reason, etc). To do this reset : Turn OFF laptop. Press and hold "power" button for 30-40 seconds. Then boot normally (it will take a bit longer to boot)
+All Asus laptops have an option to do a hardware reset that can be handy sometimes. It doesn't touch your data, but resets all main hardware-related things (enables your dGPU, wakes up wifi/bt adapter if it hanged by some reason, etc). Turn OFF laptop. Press and hold "power" button for 30-40 seconds. Then boot normally (it will take a bit longer to boot)
 
 #### What is G-helper ?
 G-Helper is a lightweight Armoury Crate alternative for Asus laptops. A small utility that allows you to do almost everything you could do with Armoury Crate but without extra bloat and unnecessary services.
@@ -176,6 +179,8 @@ I don't have a Microsoft certificate to sign the app yet, so if you get a warnin
 ------------------
 
 ## Power user settings
+
+_GENERAL NOTE: "Power user" settings require some config edits. Before making any changes to ``config.json`` - quit G-Helper. Make your changes. Run G-Helper again._
 
 ### Manual app language setting
 
