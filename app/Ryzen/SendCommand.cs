@@ -26,18 +26,19 @@ namespace Ryzen
 
 
         //STAMP Limit
-        public static void set_stapm_limit(uint value)
+        public static Smu.Status? set_stapm_limit(uint value)
         {
             RyzenAccess.Initialize();
             uint[] Args = new uint[6];
             Args[0] = value;
+            Smu.Status? result = null;
 
             switch (FAMID)
             {
                 case 0:
                 case 1:
                 case 2:
-                    RyzenAccess.SendMp1(0x1a, ref Args);
+                    result = RyzenAccess.SendMp1(0x1a, ref Args);
                     break;
                 case 3:
                 case 5:
@@ -46,20 +47,24 @@ namespace Ryzen
                 case 9:
                 case 11:
                     RyzenAccess.SendMp1(0x14, ref Args);
-                    RyzenAccess.SendPsmu(0x31, ref Args);
+                    result = RyzenAccess.SendPsmu(0x31, ref Args);
                     break;
                 default:
                     break;
             }
+
             RyzenAccess.Deinitialize();
+            return result;
+            
         }
 
         //STAMP2 Limit
-        public static void set_stapm2_limit(uint value)
+        public static Smu.Status? set_stapm2_limit(uint value)
         {
             RyzenAccess.Initialize();
             uint[] Args = new uint[6];
             Args[0] = value;
+            Smu.Status? result = null;
 
             switch (FAMID)
             {
@@ -69,26 +74,29 @@ namespace Ryzen
                 case 8:
                 case 9:
                 case 11:
-                    RyzenAccess.SendPsmu(0x31, ref Args);
+                    result = RyzenAccess.SendPsmu(0x31, ref Args);
                     break;
                 default:
                     break;
             }
             RyzenAccess.Deinitialize();
+            return result;
         }
 
         //Fast Limit
-        public static void set_fast_limit(uint value)
+        public static Smu.Status? set_fast_limit(uint value)
         {
             RyzenAccess.Initialize();
             uint[] Args = new uint[6];
             Args[0] = value;
+            Smu.Status? result = null;
+
             switch (FAMID)
             {
                 case 0:
                 case 1:
                 case 2:
-                    RyzenAccess.SendMp1(0x1b, ref Args);
+                    result = RyzenAccess.SendMp1(0x1b, ref Args);
                     break;
                 case 3:
                 case 5:
@@ -96,27 +104,29 @@ namespace Ryzen
                 case 8:
                 case 9:
                 case 11:
-                    RyzenAccess.SendMp1(0x15, ref Args);
+                    result = RyzenAccess.SendMp1(0x15, ref Args);
                     break;
                 default:
                     break;
             }
             RyzenAccess.Deinitialize();
+            return result;
         }
 
         //Slow Limit
-        public static void set_slow_limit(uint value)
+        public static Smu.Status? set_slow_limit(uint value)
         {
             RyzenAccess.Initialize();
             uint[] Args = new uint[6];
             Args[0] = value;
-
+            Smu.Status? result = null;
+            
             switch (FAMID)
             {
                 case 0:
                 case 1:
                 case 2:
-                    RyzenAccess.SendMp1(0x1c, ref Args);
+                    result = RyzenAccess.SendMp1(0x1c, ref Args);
                     break;
                 case 3:
                 case 5:
@@ -124,12 +134,13 @@ namespace Ryzen
                 case 8:
                 case 9:
                 case 11:
-                    RyzenAccess.SendMp1(0x16, ref Args);
+                    result = RyzenAccess.SendMp1(0x16, ref Args);
                     break;
                 default:
                     break;
             }
             RyzenAccess.Deinitialize();
+            return result;
         }
 
         //Slow time
