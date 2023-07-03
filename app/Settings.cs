@@ -1,5 +1,6 @@
 ﻿using GHelper.AnimeMatrix;
 using GHelper.AutoUpdate;
+using GHelper.Battery;
 using GHelper.Display;
 using GHelper.Gpu;
 using GHelper.Helpers;
@@ -331,7 +332,7 @@ namespace GHelper
 
         private void SliderBattery_ValueChanged(object? sender, EventArgs e)
         {
-            SetBatteryChargeLimit(sliderBattery.Value);
+            BatteryControl.SetBatteryChargeLimit(sliderBattery.Value);
         }
 
 
@@ -1010,29 +1011,10 @@ namespace GHelper
             but.BackColor = but.Enabled ? Color.FromArgb(255, but.BackColor) : Color.FromArgb(100, but.BackColor);
         }
 
-
-        public void SetBatteryChargeLimit(int limit)
+        public void VisualiseBattery(int limit)
         {
-
-            if (limit < 40 || limit > 100) return;
-
-            //Debug.WriteLine(limit);
-
             labelBatteryTitle.Text = Properties.Strings.BatteryChargeLimit + ": " + limit.ToString() + "%";
             sliderBattery.Value = limit;
-
-            Program.acpi.DeviceSet(AsusACPI.BatteryLimit, limit, "BatteryLimit");
-            try
-            {
-                OptimizationService.SetChargeLimit(limit);
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex);
-            }
-
-            AppConfig.Set("charge_limit", limit);
-
         }
 
 

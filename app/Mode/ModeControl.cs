@@ -1,4 +1,5 @@
-﻿using GHelper.Gpu.NVidia;
+﻿using GHelper.Battery;
+using GHelper.Gpu.NVidia;
 using GHelper.Helpers;
 using Ryzen;
 
@@ -87,6 +88,8 @@ namespace GHelper.Mode
             {
                 PowerNative.SetCPUBoost(AppConfig.GetMode("auto_boost"));
             }
+
+            BatteryControl.SetBatteryChargeLimit();
 
             /*
             if (NativeMethods.PowerGetEffectiveOverlayScheme(out Guid activeScheme) == 0)

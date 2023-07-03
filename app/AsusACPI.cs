@@ -106,7 +106,7 @@ public class AsusACPI
     public const int GPUModeStandard = 1;
     public const int GPUModeUltimate = 2;
 
-    public static int MaxTotal => AppConfig.ContainsModel("G513QY") ? 250 : 150;
+    public static int MaxTotal => AppConfig.ContainsModel("13QY") ? 250 : 150;
     public const int MinTotal = 5;
     public const int DefaultTotal = 125;
 
@@ -396,7 +396,7 @@ public class AsusACPI
             if (count == 0 && pair.Key >= 40)
             {
                 fix = true;
-                pointsFixed.Add(20, 0);
+                pointsFixed.Add(30, 0);
             }
 
             if (count != 3 || !fix)

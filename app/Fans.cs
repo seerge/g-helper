@@ -931,7 +931,7 @@ namespace GHelper
                     if (dy < 0) dy = 0;
                     if (dy > fansMax) dy = fansMax;
 
-                    dymin = (dx - 65) * 1.2;
+                    dymin = (dx - 70) * 1.2;
 
                     if (dy < dymin) dy = dymin;
 

@@ -1,15 +1,14 @@
+using GHelper.Display;
 using GHelper.Gpu;
 using GHelper.Helpers;
 using GHelper.Input;
 using GHelper.Mode;
-using GHelper.Display;
 using Microsoft.Win32;
 using Ryzen;
 using System.Diagnostics;
 using System.Globalization;
 using System.Reflection;
 using static NativeMethods;
-using GHelper.AutoUpdate;
 
 namespace GHelper
 {
@@ -157,7 +156,6 @@ namespace GHelper
 
             inputDispatcher.Init();
 
-            settingsForm.SetBatteryChargeLimit(AppConfig.Get("charge_limit"));
             modeControl.AutoPerformance(powerChanged);
 
             bool switched = gpuControl.AutoGPUMode();
@@ -219,7 +217,7 @@ namespace GHelper
                     case "uv":
                         Startup.ReScheduleAdmin();
                         settingsForm.FansToggle(2);
-                        modeControl.SetRyzen(); 
+                        modeControl.SetRyzen();
                         break;
                 }
             }
