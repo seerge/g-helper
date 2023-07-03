@@ -94,14 +94,14 @@ Click on them
 #### I don't see a GPU temperature in G-helper
 Most probably either you are using Eco / Optimized mode and your dGPU is simply off, or your windows has put the dGPU into sleep (to preserve power). In this situations G-helper won't be able to reach your GPU and get readings
 
-#### It says, that app is already running
+#### I don't see app after starting it
 Please check system tray for a (G) icon. By default windows is keen to hide all icons, so you may need to click ^ to see them all. I would advise to right click on Task Bar select Task Bar Settings -> Other System Tray icons -> Mark G-Helper to be always ON.
 
 #### App crash or doesn't work properly what should I do ?
 Open "Event Viewer" from start menu, go to Windows Logs -> Application and check for recent Errors mentioning G-Helper. If you see one - please post a [new issue](https://github.com/seerge/g-helper/issues) with all details from this error.
 
 #### Battery charge limiter is not working
-Open application log.text from ``%AppData%\GHelper``. If you see something like ``BatteryLimit = 60 : OK`` there with your selected limit - App has done everything it could to set a limit. It could be that MyASUS or other Asus services are overwriting this limit after. You may want to stop them by clicking "Stop" in Asus Services section (under Extra).
+It could be that Asus services are overwriting this limit after. You may want to stop them by clicking "Stop" in Asus Services section (under Extra).
 
 #### Can I use MyASUS app along with G-Helper?
 You can, the only problem is that MyASUS may override the battery charge limit that you set before. My advice in such a situation would be to set the same limit (i.e. 80%) in both MyASUS and G-Helper.
@@ -147,9 +147,9 @@ G-Helper is a lightweight Armoury Crate alternative for Asus laptops. A small ut
 
 ----------------
 
-### How to install
+### How to run
 
-1. Download latest release from [**Releases Page**](https://github.com/seerge/g-helper/releases)
+1. Download [**latest release**](https://github.com/seerge/g-helper/releases/latest/download/GHelper.zip)
 2. Unzip to a folder of your choice _(don't run exe from zip directly, as windows will put it into temp folder and delete after)_
 3. Run **GHelper.exe**
 
