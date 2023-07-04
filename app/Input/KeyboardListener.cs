@@ -10,7 +10,20 @@ namespace GHelper.Input
         public KeyboardListener(Action<int> KeyHandler)
         {
             HidDevice? input = AsusUSB.GetDevice();
-            if (input == null) return;
+            
+            // Fallback
+            if (input == null)
+            {
+                AsusUSB.Init();
+                Thread.Sleep(1000);
+                input = AsusUSB.GetDevice();
+            }
+
+            if (input == null)
+            {
+                Logger.WriteLine($"Input device not found");
+                return;
+            }
 
             Logger.WriteLine($"Input: {input.DevicePath}");
 

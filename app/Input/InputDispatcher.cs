@@ -12,7 +12,7 @@ namespace GHelper.Input
     public class InputDispatcher
     {
         System.Timers.Timer timer = new System.Timers.Timer(1000);
-        public bool backlightActivity = true;
+        public static bool backlightActivity = true;
 
         public static Keys keyProfile = Keys.F5;
         public static Keys keyApp = Keys.F12;
@@ -342,6 +342,7 @@ namespace GHelper.Input
 
         public static void TabletMode()
         {
+
             bool touchpadState = GetTouchpadState();
             bool tabletState = Program.acpi.DeviceGet(AsusACPI.TabletState) > 0;
 
