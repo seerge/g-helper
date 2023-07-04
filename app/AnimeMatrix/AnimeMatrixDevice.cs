@@ -1,6 +1,6 @@
 ﻿// Source thanks to https://github.com/vddCore/Starlight with some adjustments from me
 
-using Starlight.Communication;
+using GHelper.AnimeMatrix.Communication;
 using System.Drawing.Drawing2D;
 using System.Drawing.Text;
 using System.Globalization;

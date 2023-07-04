@@ -267,22 +267,25 @@ namespace GHelper
             int igpuUV = Math.Max(trackUViGPU.Minimum, Math.Min(trackUViGPU.Maximum, AppConfig.GetMode("igpu_uv", 0)));
 
             int temp = AppConfig.GetMode("cpu_temp");
-            if (temp < trackTemp.Minimum || temp > trackTemp.Maximum) temp = 96;
+            if (temp < RyzenControl.MinTemp || temp > RyzenControl.MaxTemp) temp = RyzenControl.MaxTemp;
 
             checkApplyUV.Enabled = checkApplyUV.Checked = AppConfig.IsMode("auto_uv");
 
             trackUV.Value = cpuUV;
-            labelUV.Text = trackUV.Value.ToString();
-
             trackUViGPU.Value = igpuUV;
-            labelUViGPU.Text = trackUViGPU.Value.ToString();
-
             trackTemp.Value = temp;
-            labelTemp.Text = trackTemp.Value.ToString() + "°C";
 
+            VisualiseAdvanced();
 
             buttonAdvanced.Visible = RyzenControl.IsAMD();
 
+        }
+
+        private void VisualiseAdvanced()
+        {
+            labelUV.Text = trackUV.Value.ToString();
+            labelUViGPU.Text = trackUViGPU.Value.ToString();
+            labelTemp.Text = (trackTemp.Value < RyzenControl.MaxTemp) ? trackTemp.Value.ToString() + "°C" : "Default";
         }
 
         private void AdvancedScroll()
@@ -290,9 +293,7 @@ namespace GHelper
             AppConfig.SetMode("auto_uv", 0);
             checkApplyUV.Enabled = checkApplyUV.Checked = false;
 
-            labelUV.Text = trackUV.Value.ToString();
-            labelUViGPU.Text = trackUViGPU.Value.ToString();
-            labelTemp.Text = trackTemp.Value.ToString() + "°C";
+            VisualiseAdvanced();
 
             AppConfig.SetMode("cpu_temp", trackTemp.Value);
             AppConfig.SetMode("cpu_uv", trackUV.Value);
@@ -839,10 +840,9 @@ namespace GHelper
             AppConfig.SetMode("auto_apply", 0);
             AppConfig.SetMode("auto_apply_power", 0);
 
-
-            trackUV.Value = 0;
-            trackUViGPU.Value = 0;
-            trackTemp.Value = 96;
+            trackUV.Value = RyzenControl.MaxCPUUV;
+            trackUViGPU.Value = RyzenControl.MaxIGPUUV;
+            trackTemp.Value = RyzenControl.MaxTemp;
 
             AdvancedScroll();
             AppConfig.SetMode("cpu_temp", -1);

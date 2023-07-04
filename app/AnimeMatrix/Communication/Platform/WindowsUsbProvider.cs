@@ -1,14 +1,14 @@
 using System.ComponentModel;
 using HidSharp;
 
-namespace Starlight.Communication.Platform
+namespace GHelper.AnimeMatrix.Communication.Platform
 {
     internal class WindowsUsbProvider : UsbProvider
     {
         protected HidDevice HidDevice { get; }
         protected HidStream HidStream { get; }
 
-        public WindowsUsbProvider(ushort vendorId, ushort productId, int maxFeatureReportLength) 
+        public WindowsUsbProvider(ushort vendorId, ushort productId, int maxFeatureReportLength)
             : base(vendorId, productId)
         {
             try
@@ -43,7 +43,7 @@ namespace Starlight.Communication.Platform
         {
             var outData = new byte[data.Length];
             Array.Copy(data, outData, data.Length);
-            
+
             WrapException(() =>
             {
                 HidStream.GetFeature(outData);
@@ -57,7 +57,7 @@ namespace Starlight.Communication.Platform
         {
             HidStream.Dispose();
         }
-        
+
         private void WrapException(Action action)
         {
             try
