@@ -1,3 +1,4 @@
+using GHelper.Battery;
 using GHelper.Display;
 using GHelper.Gpu;
 using GHelper.Helpers;
@@ -165,6 +166,8 @@ namespace GHelper
                 gpuControl.InitGPUMode();
                 screenControl.AutoScreen();
             }
+
+            BatteryControl.SetBatteryChargeLimit();
 
             settingsForm.AutoKeyboard();
             settingsForm.matrix.SetMatrix();
