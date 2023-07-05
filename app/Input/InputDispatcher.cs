@@ -342,6 +342,7 @@ namespace GHelper.Input
 
         public static void TabletMode()
         {
+            if (AppConfig.Is("disable_tablet")) return;
 
             bool touchpadState = GetTouchpadState();
             bool tabletState = Program.acpi.DeviceGet(AsusACPI.TabletState) > 0;

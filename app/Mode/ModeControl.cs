@@ -345,7 +345,7 @@ namespace GHelper.Mode
             if (cpuTemp >= RyzenControl.MinTemp && cpuTemp < RyzenControl.MaxTemp)
             {
                 var resultCPU = SendCommand.set_tctl_temp((uint)cpuTemp);
-                Logger.WriteLine($"CPU Temp: {cpuTemp} {resultCPU}");
+                if (log) Logger.WriteLine($"CPU Temp: {cpuTemp} {resultCPU}");
 
                 var restultAPU = SendCommand.set_apu_skin_temp_limit((uint)cpuTemp);
                 if (log) Logger.WriteLine($"APU Temp: {cpuTemp} {restultAPU}");
