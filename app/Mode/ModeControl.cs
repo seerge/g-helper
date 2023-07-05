@@ -171,6 +171,11 @@ namespace GHelper.Mode
                 AppConfig.ContainsModel("G733");
         }
 
+        private static bool IsFanRequired()
+        {
+            return AppConfig.ContainsModel("GA402XI") || AppConfig.ContainsModel("G513");
+        }
+
         public void AutoPower(int delay = 0)
         {
 
@@ -182,8 +187,8 @@ namespace GHelper.Mode
 
             if (applyPower)
             {
-                // force fan curve for misbehaving bios PPTs on G513
-                if (AppConfig.ContainsModel("G513") && !applyFans)
+                // force fan curve for misbehaving bios PPTs on some models
+                if (!applyFans && IsFanRequired())
                 {
                     delay = 500;
                     AutoFans(true);
