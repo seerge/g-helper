@@ -296,13 +296,8 @@ namespace GHelper.Input
                     ToggleFnLock();
                     break;
                 case "micmute":
-                    using (var enumerator = new MMDeviceEnumerator())
-                    {
-                        var commDevice = enumerator.GetDefaultAudioEndpoint(DataFlow.Capture, Role.Communications);
-                        bool muteStatus = !commDevice.AudioEndpointVolume.Mute;
-                        commDevice.AudioEndpointVolume.Mute = muteStatus;
-                        Program.toast.RunToast(muteStatus ? "Muted" : "Unmuted", muteStatus ? ToastIcon.MicrophoneMute : ToastIcon.Microphone);
-                    }
+                    bool muteStatus = Audio.ToggleMute();
+                    Program.toast.RunToast(muteStatus ? "Muted" : "Unmuted", muteStatus ? ToastIcon.MicrophoneMute : ToastIcon.Microphone);
                     break;
                 case "brightness_up":
                     HandleOptimizationEvent(32);
