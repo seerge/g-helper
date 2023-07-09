@@ -196,7 +196,7 @@
     <value>Backlight timeout on battery</value>
   </data>
   <data name="BacklightTimeoutPlugged" xml:space="preserve">
-    <value>Backlight timeout when plugged (0 - always on)</value>
+    <value>Backlight timeout when plugged in (0 - always on)</value>
   </data>
   <data name="Balanced" xml:space="preserve">
     <value>Balanced</value>
@@ -244,13 +244,13 @@
     <value>Drivers and Software</value>
   </data>
   <data name="EcoGPUTooltip" xml:space="preserve">
-    <value>Disables dGPU for battery savings</value>
+    <value>Disables dGPU to save battery</value>
   </data>
   <data name="EcoMode" xml:space="preserve">
     <value>Eco</value>
   </data>
   <data name="EnableOptimusText" xml:space="preserve">
-    <value>Disabling the dGPU by going to Eco mode while Display Mode in NVIDIA Control Panel is not set to Optimus might cause problems with brightness controls until after the next reboot. 
+    <value>Disabling the dGPU by going into Eco mode while Display Mode in NVIDIA Control Panel is not set to Optimus might cause problems with brightness controls until after the next reboot. 
 
 Do you still want to continue?</value>
   </data>
@@ -333,7 +333,7 @@ Do you still want to continue?</value>
     <value>Lower backlight brightness on battery and back when plugged</value>
   </data>
   <data name="KillGpuApps" xml:space="preserve">
-    <value>Stop all apps using GPU when switching to Eco</value>
+    <value>Stops all apps using GPU when switching to Eco</value>
   </data>
   <data name="LaptopBacklight" xml:space="preserve">
     <value>Laptop Backlight</value>
@@ -429,7 +429,7 @@ Do you still want to continue?</value>
     <value>Power Limits</value>
   </data>
   <data name="PPTExperimental" xml:space="preserve">
-    <value>Power Limits is experimental feature. Use carefully and on your own risk!</value>
+    <value>Power Limits is an experimental feature. Use carefully and at your own risk!</value>
   </data>
   <data name="PrintScreen" xml:space="preserve">
     <value>PrintScreen</value>
@@ -438,7 +438,7 @@ Do you still want to continue?</value>
     <value>Quit</value>
   </data>
   <data name="RestartGPU" xml:space="preserve">
-    <value>Something is using dGPU and preventing Eco mode. Restart dGPU in device manager? * Please proceed on your own risk.</value>
+    <value>Something is using dGPU and preventing Eco mode. Restart dGPU in device manager? * Please proceed at your own risk.</value>
   </data>
   <data name="RPM" xml:space="preserve">
     <value>RPM</value>
@@ -507,7 +507,7 @@ Do you still want to continue?</value>
     <value>Ultimate</value>
   </data>
   <data name="UndervoltingRisky" xml:space="preserve">
-    <value>Undervolting is experimental and risky feature. If applied values are too low for your hardware, it can become unstable, shut down or cause data corruption. If you want to try - start from small values first, click Apply and test what works for you.</value>
+    <value>Undervolting is an experimental and risky feature. If applied values are too low for your hardware, it can become unstable, shut down or cause data corruption. If you want to try - start from small values first, click Apply and test what works for you.</value>
   </data>
   <data name="Updates" xml:space="preserve">
     <value>Updates</value>
