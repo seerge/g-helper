@@ -147,6 +147,9 @@
   <data name="AppAlreadyRunningText" xml:space="preserve">
     <value>G-Helper ya está ejecutándose. Compruebe la bandeja del sistema.</value>
   </data>
+  <data name="Apply" xml:space="preserve">
+    <value>Aplicar</value>
+  </data>
   <data name="ApplyFanCurve" xml:space="preserve">
     <value>Aplicar curva personalizada</value>
   </data>
@@ -154,7 +157,7 @@
     <value>Aplicar límites de energía</value>
   </data>
   <data name="ApplyWindowsPowerPlan" xml:space="preserve">
-    <value>Auto-ajustar plan de energía Windows</value>
+    <value>Autoajustar plan de energía Windows</value>
   </data>
   <data name="AsusServicesRunning" xml:space="preserve">
     <value>Servicios de Asus en ejecución</value>
@@ -182,6 +185,9 @@
   </data>
   <data name="AuraStrobe" xml:space="preserve">
     <value>Estroboscópico</value>
+  </data>
+  <data name="AutoApply" xml:space="preserve">
+    <value>Autoaplicar</value>
   </data>
   <data name="AutoMode" xml:space="preserve">
     <value>Automático</value>
@@ -285,7 +291,7 @@
     <value>Ventiladores y energía</value>
   </data>
   <data name="FanSpeed" xml:space="preserve">
-    <value> Fan: </value>
+    <value>Fan: </value>
   </data>
   <data name="FansPower" xml:space="preserve">
     <value>Ventiladores + Energía</value>
