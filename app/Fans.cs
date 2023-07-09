@@ -53,6 +53,8 @@ namespace GHelper
             labelGPUTempTitle.Text = Properties.Strings.GPUTempTarget;
 
             labelRisky.Text = Properties.Strings.UndervoltingRisky;
+            buttonApplyAdvanced.Text = Properties.Strings.Apply;
+            checkApplyUV.Text = Properties.Strings.AutoApply;
 
             InitTheme(true);
 
@@ -848,7 +850,7 @@ namespace GHelper
             AppConfig.SetMode("cpu_temp", -1);
 
             modeControl.ResetPerformanceMode();
-            
+
             if (Program.acpi.IsXGConnected()) AsusUSB.ResetXGM();
 
 

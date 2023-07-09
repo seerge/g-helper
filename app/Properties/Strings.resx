@@ -147,6 +147,9 @@
   <data name="AppAlreadyRunningText" xml:space="preserve">
     <value>G-Helper is already running. Check system tray for an icon.</value>
   </data>
+  <data name="Apply" xml:space="preserve">
+    <value>Apply</value>
+  </data>
   <data name="ApplyFanCurve" xml:space="preserve">
     <value>Apply Custom Fan Curve</value>
   </data>
@@ -182,6 +185,9 @@
   </data>
   <data name="AuraStrobe" xml:space="preserve">
     <value>Strobe</value>
+  </data>
+  <data name="AutoApply" xml:space="preserve">
+    <value>Auto Apply</value>
   </data>
   <data name="AutoMode" xml:space="preserve">
     <value>Auto</value>
@@ -333,7 +339,7 @@ Do you still want to continue?</value>
     <value>Lower backlight brightness on battery and back when plugged</value>
   </data>
   <data name="KillGpuApps" xml:space="preserve">
-    <value>Stops all apps using GPU when switching to Eco</value>
+    <value>Stop all apps using GPU when switching to Eco</value>
   </data>
   <data name="LaptopBacklight" xml:space="preserve">
     <value>Laptop Backlight</value>

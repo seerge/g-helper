@@ -148,7 +148,7 @@
     <value>G-Helper è già in esecuzione. Controlla il system tray per una icona.</value>
   </data>
   <data name="ApplyFanCurve" xml:space="preserve">
-    <value>Applica una Curva Ventola personalizzata</value>
+    <value>Applica una Curva Ventola</value>
   </data>
   <data name="ApplyPowerLimits" xml:space="preserve">
     <value>Applica limiti di alimentazione</value>
@@ -156,7 +156,7 @@
   <data name="ApplyWindowsPowerPlan" xml:space="preserve">
     <value>Regolazione automatica del Risparmio Energetico</value>
   </data>
-    <data name="AsusServicesRunning" xml:space="preserve">
+  <data name="AsusServicesRunning" xml:space="preserve">
     <value>Servizi Asus in Esecuzione</value>
   </data>
   <data name="AuraBreathe" xml:space="preserve">
@@ -192,11 +192,11 @@
   <data name="Awake" xml:space="preserve">
     <value>In uso</value>
   </data>
-    <data name="BacklightTimeout" xml:space="preserve">
+  <data name="BacklightTimeout" xml:space="preserve">
     <value>Timeout retroilluminazione quando non in carica</value>
   </data>
   <data name="BacklightTimeoutPlugged" xml:space="preserve">
-    <value>Timeout retroilluminazione quando in carica (0 - sempre accesa)</value>
+    <value>Timeout retroilluminazione quando in carica (0 - accesa)</value>
   </data>
   <data name="Balanced" xml:space="preserve">
     <value>Bilanciato</value>
@@ -209,7 +209,7 @@
   </data>
   <data name="Boot" xml:space="preserve">
     <value>Avvio</value>
-  </data>  
+  </data>
   <data name="Brightness" xml:space="preserve">
     <value>Luminosità</value>
   </data>
@@ -264,7 +264,7 @@ Sei sicuro di voler continuare?</value>
     <value>Impostazioni aggiuntive</value>
   </data>
   <data name="FactoryDefaults" xml:space="preserve">
-    <value>Impostazioni predefinite</value>
+    <value>Predefinite</value>
   </data>
   <data name="FanCurves" xml:space="preserve">
     <value>Curve Ventola</value>
@@ -389,7 +389,7 @@ Sei sicuro di voler continuare?</value>
   <data name="Multizone" xml:space="preserve">
     <value>Multizona</value>
   </data>
-    <data name="MuteMic" xml:space="preserve">
+  <data name="MuteMic" xml:space="preserve">
     <value>Muta microfono</value>
   </data>
   <data name="NewUpdates" xml:space="preserve">
@@ -417,7 +417,7 @@ Sei sicuro di voler continuare?</value>
     <value>Overdrive</value>
   </data>
   <data name="PerformanceMode" xml:space="preserve">
-    <value>Modalità Performance</value>
+    <value>Modalità</value>
   </data>
   <data name="PictureGif" xml:space="preserve">
     <value>Immagine / Gif</value>

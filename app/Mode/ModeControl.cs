@@ -210,6 +210,7 @@ namespace GHelper.Mode
                     timer.Dispose();
 
                     if (applyPower) SetPower();
+                    Thread.Sleep(1000);
                     SetGPUPower();
                     AutoRyzen();
                 };

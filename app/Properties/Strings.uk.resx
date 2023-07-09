@@ -147,6 +147,9 @@
   <data name="AppAlreadyRunningText" xml:space="preserve">
     <value>G-Helper вже запущено. Перевірте значок у системному лотку.</value>
   </data>
+  <data name="Apply" xml:space="preserve">
+    <value>Застосувати</value>
+  </data>
   <data name="ApplyFanCurve" xml:space="preserve">
     <value>Застосувати профілі кулерів</value>
   </data>
@@ -182,6 +185,9 @@
   </data>
   <data name="AuraStrobe" xml:space="preserve">
     <value>Стробоскоп</value>
+  </data>
+  <data name="AutoApply" xml:space="preserve">
+    <value>Автоматично</value>
   </data>
   <data name="AutoMode" xml:space="preserve">
     <value>Авто</value>
@@ -458,6 +464,9 @@
   </data>
   <data name="UltimateMode" xml:space="preserve">
     <value>Ультімейт</value>
+  </data>
+  <data name="UndervoltingRisky" xml:space="preserve">
+    <value>Undervolting є експериментальним. Якщо значення занизькі для вашого CPU, це може спричинити нестабільність, припинити роботу або пошкодити дані. Якщо хочете спробувати - почніть з малих значень, натисніть «Застосувати» та перевірте, чи стабільно все працює.</value>
   </data>
   <data name="Updates" xml:space="preserve">
     <value>Оновлення</value>

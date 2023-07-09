@@ -195,7 +195,7 @@ namespace GHelper
             panelFans.MinimumSize = new Size(816, 0);
             panelFans.Name = "panelFans";
             panelFans.Padding = new Padding(0, 0, 10, 0);
-            panelFans.Size = new Size(816, 2023);
+            panelFans.Size = new Size(816, 2119);
             panelFans.TabIndex = 12;
             // 
             // labelTip
@@ -229,7 +229,7 @@ namespace GHelper
             tableFanCharts.RowStyles.Add(new RowStyle(SizeType.Percent, 25F));
             tableFanCharts.RowStyles.Add(new RowStyle(SizeType.Percent, 25F));
             tableFanCharts.RowStyles.Add(new RowStyle(SizeType.Percent, 25F));
-            tableFanCharts.Size = new Size(806, 1841);
+            tableFanCharts.Size = new Size(806, 1937);
             tableFanCharts.TabIndex = 36;
             // 
             // chartGPU
@@ -237,10 +237,10 @@ namespace GHelper
             chartArea1.Name = "ChartArea1";
             chartGPU.ChartAreas.Add(chartArea1);
             chartGPU.Dock = DockStyle.Fill;
-            chartGPU.Location = new Point(12, 467);
+            chartGPU.Location = new Point(12, 491);
             chartGPU.Margin = new Padding(2, 10, 2, 10);
             chartGPU.Name = "chartGPU";
-            chartGPU.Size = new Size(782, 437);
+            chartGPU.Size = new Size(782, 461);
             chartGPU.TabIndex = 17;
             chartGPU.Text = "chartGPU";
             title1.Name = "Title1";
@@ -254,7 +254,7 @@ namespace GHelper
             chartCPU.Location = new Point(12, 10);
             chartCPU.Margin = new Padding(2, 10, 2, 10);
             chartCPU.Name = "chartCPU";
-            chartCPU.Size = new Size(782, 437);
+            chartCPU.Size = new Size(782, 461);
             chartCPU.TabIndex = 14;
             chartCPU.Text = "chartCPU";
             title2.Name = "Title1";
@@ -265,10 +265,10 @@ namespace GHelper
             chartArea3.Name = "ChartAreaXGM";
             chartXGM.ChartAreas.Add(chartArea3);
             chartXGM.Dock = DockStyle.Fill;
-            chartXGM.Location = new Point(12, 1381);
+            chartXGM.Location = new Point(12, 1453);
             chartXGM.Margin = new Padding(2, 10, 2, 10);
             chartXGM.Name = "chartXGM";
-            chartXGM.Size = new Size(782, 440);
+            chartXGM.Size = new Size(782, 464);
             chartXGM.TabIndex = 14;
             chartXGM.Text = "chartXGM";
             title3.Name = "Title4";
@@ -280,10 +280,10 @@ namespace GHelper
             chartArea4.Name = "ChartArea3";
             chartMid.ChartAreas.Add(chartArea4);
             chartMid.Dock = DockStyle.Fill;
-            chartMid.Location = new Point(12, 924);
+            chartMid.Location = new Point(12, 972);
             chartMid.Margin = new Padding(2, 10, 2, 10);
             chartMid.Name = "chartMid";
-            chartMid.Size = new Size(782, 437);
+            chartMid.Size = new Size(782, 461);
             chartMid.TabIndex = 14;
             chartMid.Text = "chartMid";
             title4.Name = "Title3";
@@ -398,7 +398,7 @@ namespace GHelper
             panelApplyFans.Controls.Add(checkApplyFans);
             panelApplyFans.Controls.Add(buttonReset);
             panelApplyFans.Dock = DockStyle.Bottom;
-            panelApplyFans.Location = new Point(0, 1907);
+            panelApplyFans.Location = new Point(0, 2003);
             panelApplyFans.Margin = new Padding(4);
             panelApplyFans.Name = "panelApplyFans";
             panelApplyFans.Size = new Size(806, 116);
@@ -473,7 +473,7 @@ namespace GHelper
             panelSliders.MinimumSize = new Size(530, 0);
             panelSliders.Name = "panelSliders";
             panelSliders.Padding = new Padding(10, 0, 0, 0);
-            panelSliders.Size = new Size(530, 2023);
+            panelSliders.Size = new Size(530, 2119);
             panelSliders.TabIndex = 13;
             // 
             // panelAdvanced
@@ -490,7 +490,7 @@ namespace GHelper
             panelAdvanced.Dock = DockStyle.Top;
             panelAdvanced.Location = new Point(10, 1284);
             panelAdvanced.Name = "panelAdvanced";
-            panelAdvanced.Size = new Size(520, 778);
+            panelAdvanced.Size = new Size(520, 840);
             panelAdvanced.TabIndex = 14;
             panelAdvanced.Visible = false;
             // 
@@ -499,7 +499,7 @@ namespace GHelper
             panelAdvancedApply.Controls.Add(checkApplyUV);
             panelAdvancedApply.Controls.Add(buttonApplyAdvanced);
             panelAdvancedApply.Dock = DockStyle.Top;
-            panelAdvancedApply.Location = new Point(0, 702);
+            panelAdvancedApply.Location = new Point(0, 764);
             panelAdvancedApply.Name = "panelAdvancedApply";
             panelAdvancedApply.Size = new Size(520, 76);
             panelAdvancedApply.TabIndex = 47;
@@ -541,10 +541,10 @@ namespace GHelper
             labelRisky.Dock = DockStyle.Top;
             labelRisky.ForeColor = SystemColors.ControlLightLight;
             labelRisky.Location = new Point(0, 504);
-            labelRisky.Margin = new Padding(0, 0, 0, 0);
+            labelRisky.Margin = new Padding(0);
             labelRisky.Name = "labelRisky";
             labelRisky.Padding = new Padding(10, 10, 10, 5);
-            labelRisky.Size = new Size(520, 220);
+            labelRisky.Size = new Size(520, 260);
             labelRisky.TabIndex = 46;
             labelRisky.Text = resources.GetString("labelRisky.Text");
             // 
@@ -1368,7 +1368,7 @@ namespace GHelper
             AutoScaleMode = AutoScaleMode.Dpi;
             AutoSize = true;
             AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            ClientSize = new Size(1350, 2023);
+            ClientSize = new Size(1350, 2119);
             Controls.Add(panelFans);
             Controls.Add(panelSliders);
             Margin = new Padding(4, 2, 4, 2);

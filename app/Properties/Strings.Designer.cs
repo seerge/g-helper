@@ -151,6 +151,15 @@ namespace GHelper.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Apply.
+        /// </summary>
+        internal static string Apply {
+            get {
+                return ResourceManager.GetString("Apply", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Apply Custom Fan Curve.
         /// </summary>
         internal static string ApplyFanCurve {
@@ -259,6 +268,15 @@ namespace GHelper.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Auto Apply.
+        /// </summary>
+        internal static string AutoApply {
+            get {
+                return ResourceManager.GetString("AutoApply", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Auto.
         /// </summary>
         internal static string AutoMode {
@@ -295,7 +313,7 @@ namespace GHelper.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Backlight timeout when plugged (0 - always on).
+        ///   Looks up a localized string similar to Backlight timeout when plugged in (0 - always on).
         /// </summary>
         internal static string BacklightTimeoutPlugged {
             get {
@@ -439,7 +457,7 @@ namespace GHelper.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Disables dGPU for battery savings.
+        ///   Looks up a localized string similar to Disables dGPU to save battery.
         /// </summary>
         internal static string EcoGPUTooltip {
             get {
@@ -457,7 +475,7 @@ namespace GHelper.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Disabling the dGPU by going to Eco mode while Display Mode in NVIDIA Control Panel is not set to Optimus might cause problems with brightness controls until after the next reboot. 
+        ///   Looks up a localized string similar to Disabling the dGPU by going into Eco mode while Display Mode in NVIDIA Control Panel is not set to Optimus might cause problems with brightness controls until after the next reboot. 
         ///
         ///Do you still want to continue?.
         /// </summary>
@@ -990,7 +1008,7 @@ namespace GHelper.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Power Limits is experimental feature. Use carefully and on your own risk!.
+        ///   Looks up a localized string similar to Power Limits is an experimental feature. Use carefully and at your own risk!.
         /// </summary>
         internal static string PPTExperimental {
             get {
@@ -1017,7 +1035,7 @@ namespace GHelper.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Something is using dGPU and preventing Eco mode. Restart dGPU in device manager? * Please proceed on your own risk..
+        ///   Looks up a localized string similar to Something is using dGPU and preventing Eco mode. Restart dGPU in device manager? * Please proceed at your own risk..
         /// </summary>
         internal static string RestartGPU {
             get {
@@ -1224,7 +1242,7 @@ namespace GHelper.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Undervolting is experimental and risky feature. If applied values are too low for your hardware, it can become unstable, shut down or cause data corruption. If you want to try - start from small values first, click Apply and test what works for you..
+        ///   Looks up a localized string similar to Undervolting is an experimental and risky feature. If applied values are too low for your hardware, it can become unstable, shut down or cause data corruption. If you want to try - start from small values first, click Apply and test what works for you..
         /// </summary>
         internal static string UndervoltingRisky {
             get {
