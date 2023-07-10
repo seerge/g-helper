@@ -26,7 +26,7 @@ namespace GHelper.UI
         private SizeF _barSize;
         private PointF _barPos;
 
-        private int _step = 5;
+        public int Step = 1;
 
         public Color accentColor = Color.FromArgb(255, 58, 174, 239);
         public Color borderColor = Color.White;
@@ -68,7 +68,7 @@ namespace GHelper.UI
             set
             {
 
-                value = (int)Math.Round(value / (float)_step) * _step;
+                value = (int)Math.Round(value / (float)Step) * Step;
 
                 if (_value != value)
                 {

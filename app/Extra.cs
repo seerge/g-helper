@@ -86,9 +86,9 @@ namespace GHelper
         {
             InitializeComponent();
 
-            groupBindings.Text = Properties.Strings.KeyBindings;
-            groupLight.Text = " " + Properties.Strings.LaptopBacklight;
-            groupOther.Text = Properties.Strings.Other;
+            labelBindings.Text = Properties.Strings.KeyBindings;
+            labelBacklightKeyboard.Text = " " + Properties.Strings.LaptopBacklight;
+            labelSettings.Text = Properties.Strings.Other;
 
             checkAwake.Text = Properties.Strings.Awake;
             checkSleep.Text = Properties.Strings.Sleep;
@@ -96,7 +96,7 @@ namespace GHelper
             checkShutdown.Text = Properties.Strings.Shutdown;
 
             labelSpeed.Text = Properties.Strings.AnimationSpeed;
-            labelBrightness.Text = Properties.Strings.Brightness;
+            //labelBrightness.Text = Properties.Strings.Brightness;
 
             labelBacklightTimeout.Text = Properties.Strings.BacklightTimeout;
             labelBacklightTimeoutPlugged.Text = Properties.Strings.BacklightTimeoutPlugged;
@@ -107,7 +107,7 @@ namespace GHelper
             checkAutoApplyWindowsPowerMode.Text = Properties.Strings.ApplyWindowsPowerPlan;
             checkFnLock.Text = Properties.Strings.FnLock;
 
-            labelBacklight.Text = Properties.Strings.Keyboard;
+            labelBacklightKeyboard.Text = Properties.Strings.Keyboard;
             labelBacklightBar.Text = Properties.Strings.Lightbar;
             labelBacklightLid.Text = Properties.Strings.Lid;
             labelBacklightLogo.Text = Properties.Strings.Logo;
@@ -199,6 +199,8 @@ namespace GHelper
                     checkBootLogo.Visible = false;
                     checkSleepLogo.Visible = false;
                     checkShutdownLogo.Visible = false;
+
+                    labelBacklightKeyboard.Visible = false;
                 }
             }
 
@@ -214,8 +216,8 @@ namespace GHelper
             checkAutoApplyWindowsPowerMode.Checked = (AppConfig.Get("auto_apply_power_plan") != 0);
             checkAutoApplyWindowsPowerMode.CheckedChanged += checkAutoApplyWindowsPowerMode_CheckedChanged;
 
-            trackBrightness.Value = InputDispatcher.GetBacklight();
-            trackBrightness.Scroll += TrackBrightness_Scroll;
+            sliderBrightness.Value = InputDispatcher.GetBacklight();
+            sliderBrightness.ValueChanged += SliderBrightness_ValueChanged;
 
             panelXMG.Visible = (Program.acpi.DeviceGet(AsusACPI.GPUXGConnected) == 1);
             checkXMG.Checked = !(AppConfig.Get("xmg_light") == 0);
@@ -237,10 +239,29 @@ namespace GHelper
 
             buttonServices.Click += ButtonServices_Click;
 
+            pictureLog.Click += PictureLog_Click;
+
             InitVariBright();
             InitServices();
         }
 
+        private void PictureLog_Click(object? sender, EventArgs e)
+        {
+            new Process
+            {
+                StartInfo = new ProcessStartInfo(Logger.logFile)
+                {
+                    UseShellExecute = true
+                }
+            }.Start();
+        }
+
+        private void SliderBrightness_ValueChanged(object? sender, EventArgs e)
+        {
+            AppConfig.Set("keyboard_brightness", sliderBrightness.Value);
+            AppConfig.Set("keyboard_brightness_ac", sliderBrightness.Value);
+            AsusUSB.ApplyBrightness(sliderBrightness.Value, "Slider");
+        }
 
         private void InitServices()
         {
@@ -357,13 +378,6 @@ namespace GHelper
         private void CheckUSBC_CheckedChanged(object? sender, EventArgs e)
         {
             AppConfig.Set("optimized_usbc", (checkUSBC.Checked ? 1 : 0));
-        }
-
-        private void TrackBrightness_Scroll(object? sender, EventArgs e)
-        {
-            AppConfig.Set("keyboard_brightness", trackBrightness.Value);
-            AppConfig.Set("keyboard_brightness_ac", trackBrightness.Value);
-            AsusUSB.ApplyBrightness(trackBrightness.Value, "Slider");
         }
 
         private void PictureHelp_Click(object? sender, EventArgs e)

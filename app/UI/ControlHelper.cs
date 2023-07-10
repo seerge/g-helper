@@ -84,6 +84,12 @@ public static class ControlHelper
                 gb.ForeColor = RForm.foreMain;
             }
 
+            var pn = control as Panel;
+            if (pn != null && pn.Name.Contains("Header"))
+            {
+                pn.BackColor = RForm.buttonSecond;
+            }
+
             var sl = control as Slider;
             if (sl != null)
             {
@@ -91,7 +97,7 @@ public static class ControlHelper
             }
 
             var chk = control as CheckBox;
-            if (chk != null && chk.Padding.Right > 5)
+            if (chk != null && chk.Padding.Right >= 10)
             {
                 chk.BackColor = RForm.buttonSecond;
             }
