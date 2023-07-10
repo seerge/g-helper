@@ -87,7 +87,7 @@ namespace GHelper
             InitializeComponent();
 
             labelBindings.Text = Properties.Strings.KeyBindings;
-            labelBacklightKeyboard.Text = " " + Properties.Strings.LaptopBacklight;
+            labelBacklightTitle.Text = Properties.Strings.LaptopBacklight;
             labelSettings.Text = Properties.Strings.Other;
 
             checkAwake.Text = Properties.Strings.Awake;
