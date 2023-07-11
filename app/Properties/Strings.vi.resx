@@ -59,46 +59,46 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
           <xsd:element name="metadata">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0"/>
               </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string" />
-              <xsd:attribute name="type" type="xsd:string" />
-              <xsd:attribute name="mimetype" type="xsd:string" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" use="required" type="xsd:string"/>
+              <xsd:attribute name="type" type="xsd:string"/>
+              <xsd:attribute name="mimetype" type="xsd:string"/>
+              <xsd:attribute ref="xml:space"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="assembly">
             <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string" />
-              <xsd:attribute name="name" type="xsd:string" />
+              <xsd:attribute name="alias" type="xsd:string"/>
+              <xsd:attribute name="name" type="xsd:string"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="data">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"/>
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
+              <xsd:attribute ref="xml:space"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" />
+              <xsd:attribute name="name" type="xsd:string" use="required"/>
             </xsd:complexType>
           </xsd:element>
         </xsd:choice>
@@ -147,6 +147,9 @@
   <data name="AppAlreadyRunningText" xml:space="preserve">
     <value>G-Helper đã chạy. Hãy kiểm tra khay hệ thống</value>
   </data>
+  <data name="Apply" xml:space="preserve">
+    <value>Apply</value>
+  </data>
   <data name="ApplyFanCurve" xml:space="preserve">
     <value>Áp dụng Đường cong quạt tuỳ chỉnh</value>
   </data>
@@ -155,6 +158,9 @@
   </data>
   <data name="ApplyWindowsPowerPlan" xml:space="preserve">
     <value>Tự động điều chỉnh Kế hoạch nguồn của Windows</value>
+  </data>
+  <data name="AsusServicesRunning" xml:space="preserve">
+    <value>Asus Services Running</value>
   </data>
   <data name="AuraBreathe" xml:space="preserve">
     <value>Hơi thở</value>
@@ -180,6 +186,9 @@
   <data name="AuraStrobe" xml:space="preserve">
     <value>Nhấp nháy</value>
   </data>
+  <data name="AutoApply" xml:space="preserve">
+    <value>Auto Apply</value>
+  </data>
   <data name="AutoMode" xml:space="preserve">
     <value>Tự động</value>
   </data>
@@ -192,17 +201,29 @@
   <data name="BacklightTimeout" xml:space="preserve">
     <value>Số giây để tắt đèn nền bàn phím(khi dùng pin)</value>
   </data>
+  <data name="BacklightTimeoutPlugged" xml:space="preserve">
+    <value>Backlight timeout when plugged in (0 - always on)</value>
+  </data>
   <data name="Balanced" xml:space="preserve">
     <value>Cân bằng</value>
   </data>
   <data name="BatteryChargeLimit" xml:space="preserve">
     <value>Giới hạn sạc</value>
   </data>
+  <data name="BiosAndDriverUpdates" xml:space="preserve">
+    <value>BIOS and Driver Updates</value>
+  </data>
   <data name="Boot" xml:space="preserve">
     <value>Khởi động</value>
   </data>
   <data name="Brightness" xml:space="preserve">
     <value>Độ sáng</value>
+  </data>
+  <data name="BrightnessDown" xml:space="preserve">
+    <value>Brightness Down</value>
+  </data>
+  <data name="BrightnessUp" xml:space="preserve">
+    <value>Brightness Up</value>
   </data>
   <data name="Color" xml:space="preserve">
     <value>Màu</value>
@@ -225,11 +246,22 @@
   <data name="DownloadUpdate" xml:space="preserve">
     <value>Tải xuống bản cập nhật</value>
   </data>
+  <data name="DriverAndSoftware" xml:space="preserve">
+    <value>Drivers and Software</value>
+  </data>
   <data name="EcoGPUTooltip" xml:space="preserve">
     <value>Tắt GPU rời để tiết kiệm pin</value>
   </data>
   <data name="EcoMode" xml:space="preserve">
     <value>Tiết kiệm</value>
+  </data>
+  <data name="EnableOptimusText" xml:space="preserve">
+    <value>Disabling the dGPU by going into Eco mode while Display Mode in NVIDIA Control Panel is not set to Optimus might cause problems with brightness controls until after the next reboot. 
+
+Do you still want to continue?</value>
+  </data>
+  <data name="EnableOptimusTitle" xml:space="preserve">
+    <value>NVIDIA Display Mode is not set to Optimus</value>
   </data>
   <data name="Extra" xml:space="preserve">
     <value>Thêm</value>
@@ -259,10 +291,13 @@
     <value>Quạt và Công suất</value>
   </data>
   <data name="FanSpeed" xml:space="preserve">
-    <value>Quạt: </value>
+    <value>Fan</value>
   </data>
   <data name="FansPower" xml:space="preserve">
     <value>Quạt + Công suất</value>
+  </data>
+  <data name="FnLock" xml:space="preserve">
+    <value>Process Fn+F hotkeys without Fn</value>
   </data>
   <data name="GPUBoost" xml:space="preserve">
     <value>Tăng tốc năng động</value>
@@ -302,6 +337,9 @@
   </data>
   <data name="KeyboardAuto" xml:space="preserve">
     <value>Giảm độ sáng bàn phím khi không cắm sạc</value>
+  </data>
+  <data name="KillGpuApps" xml:space="preserve">
+    <value>Stop all apps using GPU when switching to Eco</value>
   </data>
   <data name="LaptopBacklight" xml:space="preserve">
     <value>Độ sáng đèn nền</value>
@@ -359,6 +397,12 @@
   </data>
   <data name="MuteMic" xml:space="preserve">
     <value>Tắt Mic</value>
+  </data>
+  <data name="NewUpdates" xml:space="preserve">
+    <value>New updates</value>
+  </data>
+  <data name="NoNewUpdates" xml:space="preserve">
+    <value>No new updates</value>
   </data>
   <data name="OpenGHelper" xml:space="preserve">
     <value>Mở cửa sổ G-Helper</value>
@@ -423,11 +467,29 @@
   <data name="StandardMode" xml:space="preserve">
     <value>Tiêu chuẩn</value>
   </data>
+  <data name="Start" xml:space="preserve">
+    <value>Start</value>
+  </data>
+  <data name="StartingServices" xml:space="preserve">
+    <value>Starting Services</value>
+  </data>
   <data name="StartupError" xml:space="preserve">
     <value>Khởi động lỗi</value>
   </data>
+  <data name="Stop" xml:space="preserve">
+    <value>Stop</value>
+  </data>
+  <data name="StopGPUApps" xml:space="preserve">
+    <value>Stop GPU Applications</value>
+  </data>
+  <data name="StoppingServices" xml:space="preserve">
+    <value>Stopping Services</value>
+  </data>
   <data name="ToggleAura" xml:space="preserve">
     <value>Bật tắt Aura</value>
+  </data>
+  <data name="ToggleFnLock" xml:space="preserve">
+    <value>Toggle Fn-Lock</value>
   </data>
   <data name="ToggleMiniled" xml:space="preserve">
     <value>Bật tắt Miniled(Nếu có hỗ trợ)</value>
@@ -449,6 +511,12 @@
   </data>
   <data name="UltimateMode" xml:space="preserve">
     <value>Tối thượng</value>
+  </data>
+  <data name="UndervoltingRisky" xml:space="preserve">
+    <value>Undervolting is an experimental and risky feature. If applied values are too low for your hardware, it can become unstable, shut down or cause data corruption. If you want to try - start from small values first, click Apply and test what works for you.</value>
+  </data>
+  <data name="Updates" xml:space="preserve">
+    <value>Updates</value>
   </data>
   <data name="VersionLabel" xml:space="preserve">
     <value>Phiên bản</value>

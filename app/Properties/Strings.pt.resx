@@ -59,46 +59,46 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
           <xsd:element name="metadata">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0"/>
               </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string" />
-              <xsd:attribute name="type" type="xsd:string" />
-              <xsd:attribute name="mimetype" type="xsd:string" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" use="required" type="xsd:string"/>
+              <xsd:attribute name="type" type="xsd:string"/>
+              <xsd:attribute name="mimetype" type="xsd:string"/>
+              <xsd:attribute ref="xml:space"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="assembly">
             <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string" />
-              <xsd:attribute name="name" type="xsd:string" />
+              <xsd:attribute name="alias" type="xsd:string"/>
+              <xsd:attribute name="name" type="xsd:string"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="data">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"/>
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
+              <xsd:attribute ref="xml:space"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" />
+              <xsd:attribute name="name" type="xsd:string" use="required"/>
             </xsd:complexType>
           </xsd:element>
         </xsd:choice>
@@ -147,6 +147,9 @@
   <data name="AppAlreadyRunningText" xml:space="preserve">
     <value>G-Helper já está em execução. Verifique a barra de sistema</value>
   </data>
+  <data name="Apply" xml:space="preserve">
+    <value>Apply</value>
+  </data>
   <data name="ApplyFanCurve" xml:space="preserve">
     <value>Aplicar a curva personalizada</value>
   </data>
@@ -183,6 +186,9 @@
   <data name="AuraStrobe" xml:space="preserve">
     <value>Estroboscópio</value>
   </data>
+  <data name="AutoApply" xml:space="preserve">
+    <value>Auto Apply</value>
+  </data>
   <data name="AutoMode" xml:space="preserve">
     <value>Automático</value>
   </data>
@@ -193,7 +199,7 @@
     <value>Acordado</value>
   </data>
   <data name="BacklightTimeout" xml:space="preserve">
-    <value>Tempo limite da iluminação na bateria (em segundos)</value>
+    <value>Tempo limite plugado / na bateria (0 - ligado)</value>
   </data>
   <data name="BacklightTimeoutPlugged" xml:space="preserve">
     <value>Tempo limite da iluminação carregando (0 - sempre ligado)</value>
@@ -204,11 +210,20 @@
   <data name="BatteryChargeLimit" xml:space="preserve">
     <value>Limite de carga</value>
   </data>
+  <data name="BiosAndDriverUpdates" xml:space="preserve">
+    <value>BIOS and Driver Updates</value>
+  </data>
   <data name="Boot" xml:space="preserve">
     <value>Ao ligar</value>
   </data>
   <data name="Brightness" xml:space="preserve">
     <value>Nível do brilho</value>
+  </data>
+  <data name="BrightnessDown" xml:space="preserve">
+    <value>Brightness Down</value>
+  </data>
+  <data name="BrightnessUp" xml:space="preserve">
+    <value>Brightness Up</value>
   </data>
   <data name="Color" xml:space="preserve">
     <value>Cor</value>
@@ -231,11 +246,22 @@
   <data name="DownloadUpdate" xml:space="preserve">
     <value>Baixar a atualização</value>
   </data>
+  <data name="DriverAndSoftware" xml:space="preserve">
+    <value>Drivers and Software</value>
+  </data>
   <data name="EcoGPUTooltip" xml:space="preserve">
     <value>Desativar o dGPU para economisar a energía</value>
   </data>
   <data name="EcoMode" xml:space="preserve">
     <value>Econômico</value>
+  </data>
+  <data name="EnableOptimusText" xml:space="preserve">
+    <value>Disabling the dGPU by going into Eco mode while Display Mode in NVIDIA Control Panel is not set to Optimus might cause problems with brightness controls until after the next reboot. 
+
+Do you still want to continue?</value>
+  </data>
+  <data name="EnableOptimusTitle" xml:space="preserve">
+    <value>NVIDIA Display Mode is not set to Optimus</value>
   </data>
   <data name="Extra" xml:space="preserve">
     <value>Adicional</value>
@@ -265,7 +291,7 @@
     <value>Ventiladores e Energía</value>
   </data>
   <data name="FanSpeed" xml:space="preserve">
-    <value>Vent</value>
+    <value>Fan</value>
   </data>
   <data name="FansPower" xml:space="preserve">
     <value>Ventiladores + Energía</value>
@@ -278,6 +304,12 @@
   </data>
   <data name="GPUChanging" xml:space="preserve">
     <value>Carregando</value>
+  </data>
+  <data name="GPUCoreClockOffset" xml:space="preserve">
+    <value>Aumento da frequência básica</value>
+  </data>
+  <data name="GPUMemoryClockOffset" xml:space="preserve">
+    <value>Aumento da frequência da memória</value>
   </data>
   <data name="GPUMode" xml:space="preserve">
     <value>Modo de GPU</value>
@@ -297,14 +329,14 @@
   <data name="GPUTempTarget" xml:space="preserve">
     <value>Alvo de temperatura</value>
   </data>
+  <data name="KeyBindings" xml:space="preserve">
+    <value>Combinações de teclas</value>
+  </data>
   <data name="Keyboard" xml:space="preserve">
     <value>Teclado</value>
   </data>
   <data name="KeyboardAuto" xml:space="preserve">
     <value>Abaixar a luz de fundo na bateria e voltar quando carregando</value>
-  </data>
-  <data name="KeyboardBacklight" xml:space="preserve">
-    <value>Luz de fundo do teclado</value>
   </data>
   <data name="KillGpuApps" xml:space="preserve">
     <value>Parar todos os aplicativos que usam a GPU ao alternar para o modo Eco</value>
@@ -321,8 +353,14 @@
   <data name="Lid" xml:space="preserve">
     <value>Tampa</value>
   </data>
+  <data name="Lightbar" xml:space="preserve">
+    <value>Lightbar</value>
+  </data>
   <data name="Logo" xml:space="preserve">
     <value>Logo</value>
+  </data>
+  <data name="MatrixAudio" xml:space="preserve">
+    <value>Audio Visualizer</value>
   </data>
   <data name="MatrixBanner" xml:space="preserve">
     <value>Bandeira Binária</value>
@@ -357,8 +395,14 @@
   <data name="Multizone" xml:space="preserve">
     <value>Multizona</value>
   </data>
-    <data name="MuteMic" xml:space="preserve">
+  <data name="MuteMic" xml:space="preserve">
     <value>Desligar microfone</value>
+  </data>
+  <data name="NewUpdates" xml:space="preserve">
+    <value>New updates</value>
+  </data>
+  <data name="NoNewUpdates" xml:space="preserve">
+    <value>No new updates</value>
   </data>
   <data name="OpenGHelper" xml:space="preserve">
     <value>Abrir G-Helper</value>
@@ -399,20 +443,11 @@
   <data name="Quit" xml:space="preserve">
     <value>Sair</value>
   </data>
-  <data name="GPUCoreClockOffset" xml:space="preserve">
-    <value>Aumento da frequência básica</value>
-  </data>
-  <data name="GPUMemoryClockOffset" xml:space="preserve">
-    <value>Aumento da frequência da memória</value>
-  </data>
-  <data name="KeyBindings" xml:space="preserve">
-    <value>Combinações de teclas</value>
+  <data name="RestartGPU" xml:space="preserve">
+    <value>Algum processo está usando o dGPU e impedindo o modo Econômico. Reinicialize o dGPU no gerenciador de dispositivos. Por favor, proceda por sua conta e risco. </value>
   </data>
   <data name="RPM" xml:space="preserve">
     <value>RPM</value>
-  </data>
-  <data name="RestartGPU" xml:space="preserve">
-    <value>Algum processo está usando o dGPU e impedindo o modo Econômico. Reinicialize o dGPU no gerenciador de dispositivos. Por favor, proceda por sua conta e risco. </value>
   </data>
   <data name="RunOnStartup" xml:space="preserve">
     <value>Executar ao iniciar</value>
@@ -432,23 +467,29 @@
   <data name="StandardMode" xml:space="preserve">
     <value>Padrão</value>
   </data>
-  <data name="StartupError" xml:space="preserve">
-    <value>Erro de inicialização</value>
-  </data>
   <data name="Start" xml:space="preserve">
     <value>Iniciar</value>
   </data>
   <data name="StartingServices" xml:space="preserve">
     <value>Iniciando os serviços</value>
   </data>
+  <data name="StartupError" xml:space="preserve">
+    <value>Erro de inicialização</value>
+  </data>
   <data name="Stop" xml:space="preserve">
     <value>Parar</value>
+  </data>
+  <data name="StopGPUApps" xml:space="preserve">
+    <value>Stop GPU Applications</value>
   </data>
   <data name="StoppingServices" xml:space="preserve">
     <value>Parando os serviços</value>
   </data>
   <data name="ToggleAura" xml:space="preserve">
     <value>Alternar Aura</value>
+  </data>
+  <data name="ToggleFnLock" xml:space="preserve">
+    <value>Toggle Fn-Lock</value>
   </data>
   <data name="ToggleMiniled" xml:space="preserve">
     <value>Alternar Miniled (se suportado) </value>
@@ -471,6 +512,9 @@
   <data name="UltimateMode" xml:space="preserve">
     <value>Ultimate</value>
   </data>
+  <data name="UndervoltingRisky" xml:space="preserve">
+    <value>Undervolting is an experimental and risky feature. If applied values are too low for your hardware, it can become unstable, shut down or cause data corruption. If you want to try - start from small values first, click Apply and test what works for you.</value>
+  </data>
   <data name="Updates" xml:space="preserve">
     <value>Atualizações</value>
   </data>
@@ -480,11 +524,11 @@
   <data name="VolumeDown" xml:space="preserve">
     <value>Abaixar o volume</value>
   </data>
+  <data name="VolumeMute" xml:space="preserve">
+    <value>Mudo</value>
+  </data>
   <data name="VolumeUp" xml:space="preserve">
     <value>Aumentar o volume</value>
-  </data>
-    <data name="VolumeMute" xml:space="preserve">
-    <value>Mudo</value>
   </data>
   <data name="WindowTop" xml:space="preserve">
     <value>Manter a janela do aplicativo sempre no topo</value>
