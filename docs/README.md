@@ -129,6 +129,9 @@ G-helper is a single exe, and it doesn't install anything in the system. To remo
 #### I have G14 2023 and my GPU refuses to disable/enable
 It seem to be an issue in older BIOS versions. As [users report](https://github.com/seerge/g-helper/issues/680) - latest BIOS 310 (installable via myasus / g-helper -> updates) resolves all issues :) So please update.
 
+#### I have uninstalled Armoury andmy GPU performance is lower than it was
+Check your NVidia Experience settings and make sure that you have **Whisper Mode** set to ``OFF``. Also you can go to reset all settings ``Nvidia Control panel -> Manage 3D Settings -> Reset to defaults``
+
 #### How do I do a hardware reset on a laptop?
 All Asus laptops have an option to do a hardware reset that can be handy sometimes. It doesn't touch your data, but resets all main hardware-related things (enables your dGPU, wakes up wifi/bt adapter if it hanged by some reason, etc). Turn OFF laptop. Press and hold "power" button for 30-40 seconds. Then boot normally (it will take a bit longer to boot)
 
