@@ -199,7 +199,7 @@
     <value>In uso</value>
   </data>
   <data name="BacklightTimeout" xml:space="preserve">
-    <value>Timeout plugged / on battery (0 - ON)</value>
+    <value>Timeout retroilluminazione quando non in carica</value>
   </data>
   <data name="BacklightTimeoutPlugged" xml:space="preserve">
     <value>Timeout retroilluminazione quando in carica (0 - accesa)</value>
