@@ -291,7 +291,7 @@ Do you still want to continue?</value>
     <value>Wentylatory i moc</value>
   </data>
   <data name="FanSpeed" xml:space="preserve">
-    <value>Obroty: </value>
+    <value>Fan</value>
   </data>
   <data name="FansPower" xml:space="preserve">
     <value>Dostosuj</value>
