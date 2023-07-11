@@ -201,9 +201,6 @@
   <data name="BacklightTimeout" xml:space="preserve">
     <value>Timeout collegato / alla batteria (0 - ACCESO)</value>
   </data>
-  <data name="BacklightTimeoutPlugged" xml:space="preserve">
-    <value>Timeout retroilluminazione quando in carica (0 - accesa)</value>
-  </data>
   <data name="Balanced" xml:space="preserve">
     <value>Bilanciato</value>
   </data>
@@ -334,9 +331,6 @@ Sei sicuro di voler continuare?</value>
   </data>
   <data name="Keyboard" xml:space="preserve">
     <value>Tastiera</value>
-  </data>
-  <data name="KeyboardAuto" xml:space="preserve">
-    <value>Retroilluminazione tastiera ridotta quando non in carica</value>
   </data>
   <data name="KillGpuApps" xml:space="preserve">
     <value>Arrestta tutte le app che usano la GPU passando ad Eco</value>
