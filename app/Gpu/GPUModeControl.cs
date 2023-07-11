@@ -154,7 +154,7 @@ namespace GHelper.Gpu
 
                 if (eco == 0)
                 {
-                    await Task.Delay(TimeSpan.FromMilliseconds(3000));
+                    await Task.Delay(TimeSpan.FromMilliseconds(5000));
                     HardwareControl.RecreateGpuControl();
                     Program.modeControl.SetGPUClocks(false);
                 }

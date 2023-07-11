@@ -177,6 +177,7 @@ public static class HardwareControl
             }
             _gpuControl.Dispose();
 
+            Logger.WriteLine("dGPU not found");
             GpuControl = null;
 
 
