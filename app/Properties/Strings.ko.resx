@@ -199,7 +199,7 @@
     <value>Awake</value>
   </data>
   <data name="BacklightTimeout" xml:space="preserve">
-    <value>배터리 사용 중 백라이트 자동 꺼짐</value>
+    <value>Timeout plugged / on battery (0 - ON)</value>
   </data>
   <data name="BacklightTimeoutPlugged" xml:space="preserve">
     <value>전원 연결 시 백라이트 자동 꺼짐 (0 - 항상 켜짐)</value>
