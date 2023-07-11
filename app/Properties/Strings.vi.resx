@@ -201,9 +201,6 @@
   <data name="BacklightTimeout" xml:space="preserve">
     <value>Số giây để tắt đèn nền bàn phím(khi dùng pin)</value>
   </data>
-  <data name="BacklightTimeoutPlugged" xml:space="preserve">
-    <value>Backlight timeout when plugged in (0 - always on)</value>
-  </data>
   <data name="Balanced" xml:space="preserve">
     <value>Cân bằng</value>
   </data>
@@ -334,9 +331,6 @@ Do you still want to continue?</value>
   </data>
   <data name="Keyboard" xml:space="preserve">
     <value>Bàn phím</value>
-  </data>
-  <data name="KeyboardAuto" xml:space="preserve">
-    <value>Giảm độ sáng bàn phím khi không cắm sạc</value>
   </data>
   <data name="KillGpuApps" xml:space="preserve">
     <value>Stop all apps using GPU when switching to Eco</value>
