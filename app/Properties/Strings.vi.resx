@@ -199,7 +199,7 @@
     <value>Đang bật</value>
   </data>
   <data name="BacklightTimeout" xml:space="preserve">
-    <value>Số giây để tắt đèn nền bàn phím(khi dùng pin)</value>
+    <value>Timeout plugged / on battery (0 - ON)</value>
   </data>
   <data name="BacklightTimeoutPlugged" xml:space="preserve">
     <value>Backlight timeout when plugged in (0 - always on)</value>
