@@ -199,7 +199,7 @@
     <value>唤醒时</value>
   </data>
   <data name="BacklightTimeout" xml:space="preserve">
-    <value>使用电池时的背光超时时间</value>
+    <value>Timeout plugged / on battery (0 - ON)</value>
   </data>
   <data name="BacklightTimeoutPlugged" xml:space="preserve">
     <value>插入电源时的背光超时时间 (0 - 始终开启)</value>
