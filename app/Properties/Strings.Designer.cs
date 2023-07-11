@@ -576,7 +576,7 @@ namespace GHelper.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Fan: .
+        ///   Looks up a localized string similar to Fan.
         /// </summary>
         internal static string FanSpeed {
             get {
