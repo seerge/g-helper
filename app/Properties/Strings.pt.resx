@@ -199,7 +199,7 @@
     <value>Acordado</value>
   </data>
   <data name="BacklightTimeout" xml:space="preserve">
-    <value>Tempo limite da iluminação na bateria (em segundos)</value>
+    <value>Tempo limite plugado / na bateria (0 - ligado)</value>
   </data>
   <data name="BacklightTimeoutPlugged" xml:space="preserve">
     <value>Tempo limite da iluminação carregando (0 - sempre ligado)</value>
