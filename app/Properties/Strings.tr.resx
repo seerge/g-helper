@@ -291,7 +291,7 @@ Do you still want to continue?</value>
     <value>Fanlar ve Güç</value>
   </data>
   <data name="FanSpeed" xml:space="preserve">
-    <value>Fan: </value>
+    <value>Fan</value>
   </data>
   <data name="FansPower" xml:space="preserve">
     <value>Fanlar + Güç</value>
