@@ -201,9 +201,6 @@
   <data name="BacklightTimeout" xml:space="preserve">
     <value>Limit czasu podłączonego / na baterii (0 - Włączony)</value>
   </data>
-  <data name="BacklightTimeoutPlugged" xml:space="preserve">
-    <value>Wyłączenie podświetlenia po podłączeniu (0 - nigdy)</value>
-  </data>
   <data name="Balanced" xml:space="preserve">
     <value>Balans</value>
   </data>
@@ -334,9 +331,6 @@ Do you still want to continue?</value>
   </data>
   <data name="Keyboard" xml:space="preserve">
     <value>Klawiatura</value>
-  </data>
-  <data name="KeyboardAuto" xml:space="preserve">
-    <value>Automatycznie zmniejsz jasność w czasie pracy na baterii</value>
   </data>
   <data name="KillGpuApps" xml:space="preserve">
     <value>Stop all apps using GPU when switching to Eco</value>
