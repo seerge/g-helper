@@ -30,7 +30,6 @@ namespace GHelper
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Updates));
             tableBios = new TableLayoutPanel();
             labelBIOS = new Label();
             pictureBios = new PictureBox();
@@ -80,7 +79,7 @@ namespace GHelper
             // 
             // pictureBios
             // 
-            pictureBios.BackgroundImage = (Image)resources.GetObject("pictureBios.BackgroundImage");
+            pictureBios.BackgroundImage = Properties.Resources.icons8_processor_32;
             pictureBios.BackgroundImageLayout = ImageLayout.Zoom;
             pictureBios.Location = new Point(28, 23);
             pictureBios.Margin = new Padding(4);
@@ -193,7 +192,7 @@ namespace GHelper
             // 
             // pictureDrivers
             // 
-            pictureDrivers.BackgroundImage = (Image)resources.GetObject("pictureDrivers.BackgroundImage");
+            pictureDrivers.BackgroundImage = Properties.Resources.icons8_software_32;
             pictureDrivers.BackgroundImageLayout = ImageLayout.Zoom;
             pictureDrivers.Location = new Point(28, 6);
             pictureDrivers.Margin = new Padding(4);
