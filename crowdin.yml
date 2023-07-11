@@ -1,0 +1,3 @@
+files:
+  - source: /app/Properties/Strings.resx
+    translation: /app/Properties/Strings.%two_letters_code%.resx
