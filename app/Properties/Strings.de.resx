@@ -199,7 +199,7 @@
     <value>Im Betrieb</value>
   </data>
   <data name="BacklightTimeout" xml:space="preserve">
-    <value>Timeout plugged / on battery (0 - ON)</value>
+    <value>Tastaturbelechtung abschalten in (Sekunden)</value>
   </data>
   <data name="BacklightTimeoutPlugged" xml:space="preserve">
     <value>Backlight timeout when plugged in (0 - always on)</value>
