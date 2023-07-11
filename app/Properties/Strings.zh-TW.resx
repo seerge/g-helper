@@ -199,10 +199,7 @@
     <value>喚醒時</value>
   </data>
   <data name="BacklightTimeout" xml:space="preserve">
-    <value>電池模式下自動關閉鍵盤背光的秒數(0 = 不關閉)</value>
-  </data>
-  <data name="BacklightTimeoutPlugged" xml:space="preserve">
-    <value>插電模式下自動關閉鍵盤背光的秒數(0 = 不關閉)</value>
+    <value>超時插入/使用電池 (0 = 不關閉)</value>
   </data>
   <data name="Balanced" xml:space="preserve">
     <value>平衡模式</value>
@@ -334,9 +331,6 @@ Do you still want to continue?</value>
   </data>
   <data name="Keyboard" xml:space="preserve">
     <value>鍵盤</value>
-  </data>
-  <data name="KeyboardAuto" xml:space="preserve">
-    <value>電池模式時自動降低鍵盤背光亮度以節省電量</value>
   </data>
   <data name="KillGpuApps" xml:space="preserve">
     <value>切換至節能模式時，關閉所有正在使用獨顯的程式</value>

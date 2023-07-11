@@ -201,9 +201,6 @@
   <data name="BacklightTimeout" xml:space="preserve">
     <value>Tiempo de espera conectado / con batería (0 - ACT)</value>
   </data>
-  <data name="BacklightTimeoutPlugged" xml:space="preserve">
-    <value>Apagar cuando está enchufado tras (0 - nunca)</value>
-  </data>
   <data name="Balanced" xml:space="preserve">
     <value>Equilibrado</value>
   </data>
@@ -334,9 +331,6 @@
   </data>
   <data name="Keyboard" xml:space="preserve">
     <value>Teclado</value>
-  </data>
-  <data name="KeyboardAuto" xml:space="preserve">
-    <value>Bajar retroiluminación con batería</value>
   </data>
   <data name="KillGpuApps" xml:space="preserve">
     <value>Detener todas las aplicaciones que usan la dGPU cuando se cambia a Eco</value>

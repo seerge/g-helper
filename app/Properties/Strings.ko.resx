@@ -201,9 +201,6 @@
   <data name="BacklightTimeout" xml:space="preserve">
     <value>배터리 사용 중 백라이트 자동 꺼짐</value>
   </data>
-  <data name="BacklightTimeoutPlugged" xml:space="preserve">
-    <value>전원 연결 시 백라이트 자동 꺼짐 (0 - 항상 켜짐)</value>
-  </data>
   <data name="Balanced" xml:space="preserve">
     <value>균형</value>
   </data>
@@ -334,9 +331,6 @@ Do you still want to continue?</value>
   </data>
   <data name="Keyboard" xml:space="preserve">
     <value>키보드</value>
-  </data>
-  <data name="KeyboardAuto" xml:space="preserve">
-    <value>배터리 사용 중에만 백라이트 밝기 낮추기</value>
   </data>
   <data name="KillGpuApps" xml:space="preserve">
     <value>Eco 모드로 전환 시 GPU를 사용하는 모든 앱 중지</value>

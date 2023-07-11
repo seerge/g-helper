@@ -201,9 +201,6 @@
   <data name="BacklightTimeout" xml:space="preserve">
     <value>Timeout angeschlossen / bei Akku (0 - AN)</value>
   </data>
-  <data name="BacklightTimeoutPlugged" xml:space="preserve">
-    <value>Backlight timeout when plugged in (0 - always on)</value>
-  </data>
   <data name="Balanced" xml:space="preserve">
     <value>Ausbalanciert</value>
   </data>
@@ -334,9 +331,6 @@ Trotzdem fortfahren?</value>
   </data>
   <data name="Keyboard" xml:space="preserve">
     <value>Tastatur</value>
-  </data>
-  <data name="KeyboardAuto" xml:space="preserve">
-    <value>Tastaturbeleuchtung im Batteriebetrieb abdunkeln.</value>
   </data>
   <data name="KillGpuApps" xml:space="preserve">
     <value>Alle Anwendungen auf der dGPU beim Wechsel in den Eco Modus beenden.</value>
