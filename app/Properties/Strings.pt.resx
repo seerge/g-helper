@@ -291,7 +291,7 @@ Do you still want to continue?</value>
     <value>Ventiladores e Energía</value>
   </data>
   <data name="FanSpeed" xml:space="preserve">
-    <value>Vent</value>
+    <value>Fan</value>
   </data>
   <data name="FansPower" xml:space="preserve">
     <value>Ventiladores + Energía</value>
