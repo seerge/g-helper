@@ -201,9 +201,6 @@
   <data name="BacklightTimeout" xml:space="preserve">
     <value>Pildeyken klavye ışığının kapanma süresi</value>
   </data>
-  <data name="BacklightTimeoutPlugged" xml:space="preserve">
-    <value>Şarjdayken klavye ışığının kapanma süresi (0 her zaman açık)</value>
-  </data>
   <data name="Balanced" xml:space="preserve">
     <value>Dengeli</value>
   </data>
@@ -334,9 +331,6 @@ Do you still want to continue?</value>
   </data>
   <data name="Keyboard" xml:space="preserve">
     <value>Klavye</value>
-  </data>
-  <data name="KeyboardAuto" xml:space="preserve">
-    <value>Pille çalışırken klavye aydınlatmasını kıs, şarjdayken eski haline dön</value>
   </data>
   <data name="KillGpuApps" xml:space="preserve">
     <value>Eco'ya geçerken dGPU kullanan tüm uygulamaları durdur</value>
