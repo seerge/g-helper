@@ -199,7 +199,7 @@
     <value>Робота</value>
   </data>
   <data name="BacklightTimeout" xml:space="preserve">
-    <value>Тайм-аут підсвітки на батареї</value>
+    <value>Тайм-аут на зарядці / на батареї (0 - УВІМК)</value>
   </data>
   <data name="BacklightTimeoutPlugged" xml:space="preserve">
     <value>Тайм-аут підсвітки на зарядці (0 - завжди ввімкнено)</value>
@@ -256,12 +256,12 @@
     <value>Еко</value>
   </data>
   <data name="EnableOptimusText" xml:space="preserve">
-    <value>Disabling the dGPU by going into Eco mode while Display Mode in NVIDIA Control Panel is not set to Optimus might cause problems with brightness controls until after the next reboot. 
+    <value>Вимкнення dGPU коли NVIDIA Display Mode не встановлено в режим Optimus може спричинити проблеми з управлінням яскравістю до наступного перезавантаження. 
 
-Do you still want to continue?</value>
+Ви все ще хочете продовжити?</value>
   </data>
   <data name="EnableOptimusTitle" xml:space="preserve">
-    <value>NVIDIA Display Mode is not set to Optimus</value>
+    <value>NVIDIA Display Mode не в режимі Optimus</value>
   </data>
   <data name="Extra" xml:space="preserve">
     <value>Додатково</value>
@@ -291,7 +291,7 @@ Do you still want to continue?</value>
     <value>Кулери та Потужність</value>
   </data>
   <data name="FanSpeed" xml:space="preserve">
-    <value>Fan: </value>
+    <value>Fan</value>
   </data>
   <data name="FansPower" xml:space="preserve">
     <value>Кулери та Потужність</value>
@@ -324,7 +324,7 @@ Do you still want to continue?</value>
     <value>Ексклюзивний dGPU</value>
   </data>
   <data name="GPUSettings" xml:space="preserve">
-    <value>GPU Settings</value>
+    <value>Параметри GPU</value>
   </data>
   <data name="GPUTempTarget" xml:space="preserve">
     <value>Temperature Target</value>
@@ -351,13 +351,13 @@ Do you still want to continue?</value>
     <value>Дисплей</value>
   </data>
   <data name="Lid" xml:space="preserve">
-    <value>Lid</value>
+    <value>Кришка</value>
   </data>
   <data name="Lightbar" xml:space="preserve">
-    <value>Lightbar</value>
+    <value>Лайтбар</value>
   </data>
   <data name="Logo" xml:space="preserve">
-    <value>Logo</value>
+    <value>Лого</value>
   </data>
   <data name="MatrixAudio" xml:space="preserve">
     <value>Аудіо візуалізатор</value>
@@ -399,10 +399,10 @@ Do you still want to continue?</value>
     <value>Вимкнути мікрофон</value>
   </data>
   <data name="NewUpdates" xml:space="preserve">
-    <value>New updates</value>
+    <value>Є оновлення</value>
   </data>
   <data name="NoNewUpdates" xml:space="preserve">
-    <value>No new updates</value>
+    <value>Немає оновлень</value>
   </data>
   <data name="OpenGHelper" xml:space="preserve">
     <value>Відкрити вікно G-Helper</value>
@@ -444,7 +444,7 @@ Do you still want to continue?</value>
     <value>Вихід</value>
   </data>
   <data name="RestartGPU" xml:space="preserve">
-    <value>Something is using dGPU and preventing Eco mode. Restart dGPU in device manager? * Please proceed at your own risk.</value>
+    <value>Щось використовує dGPU та не дає перейти в режимі Еко. Перезапустити dGPU у менеджері пристроїв? * Будь ласка, продовжуйте на свій страх і ризик.</value>
   </data>
   <data name="RPM" xml:space="preserve">
     <value>Оберти</value>
@@ -480,7 +480,7 @@ Do you still want to continue?</value>
     <value>Зупинити</value>
   </data>
   <data name="StopGPUApps" xml:space="preserve">
-    <value>Stop GPU Applications</value>
+    <value>Зупинити GPU додатки</value>
   </data>
   <data name="StoppingServices" xml:space="preserve">
     <value>Зупиняються сервіси</value>
