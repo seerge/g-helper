@@ -291,7 +291,7 @@
     <value>Ventiladores y energía</value>
   </data>
   <data name="FanSpeed" xml:space="preserve">
-    <value>Fan: </value>
+    <value>Fan</value>
   </data>
   <data name="FansPower" xml:space="preserve">
     <value>Ventiladores + Energía</value>
