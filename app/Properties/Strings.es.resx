@@ -199,7 +199,7 @@
     <value>Encendida</value>
   </data>
   <data name="BacklightTimeout" xml:space="preserve">
-    <value>Apagar con batería tras (0 - nunca)</value>
+    <value>Tiempo de espera conectado / con batería (0 - ACT)</value>
   </data>
   <data name="BacklightTimeoutPlugged" xml:space="preserve">
     <value>Apagar cuando está enchufado tras (0 - nunca)</value>
