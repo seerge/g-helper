@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="ACPIError" xml:space="preserve">
-    <value>Impossibile connettersi ad ASUS ACPI. Senza, l'applicazione non può funzionare. Prova ad installare Asus System Control Interface</value>
+    <value>Impossibile connettersi ad ASUS ACPI. Senza di essa l'applicazione non può funzionare. Prova ad installare Asus System Control Interface</value>
   </data>
   <data name="AlertDGPU" xml:space="preserve">
     <value>Uso intensivo della GPU, disabilitare?</value>
@@ -199,7 +199,7 @@
     <value>In uso</value>
   </data>
   <data name="BacklightTimeout" xml:space="preserve">
-    <value>Timeout collegato / alla batteria (0 - ACCESO)</value>
+    <value>Timeout collegato / batteria (0 - ACCESO)</value>
   </data>
   <data name="Balanced" xml:space="preserve">
     <value>Bilanciato</value>
@@ -456,7 +456,7 @@ Sei sicuro di voler continuare?</value>
     <value>Sospensione</value>
   </data>
   <data name="StandardGPUTooltip" xml:space="preserve">
-    <value>Abilita dGPU per uso standard</value>
+    <value>Abilita la dGPU in modalità standard</value>
   </data>
   <data name="StandardMode" xml:space="preserve">
     <value>Standard</value>
@@ -498,7 +498,7 @@ Sei sicuro di voler continuare?</value>
     <value>Spento</value>
   </data>
   <data name="TurnOffOnBattery" xml:space="preserve">
-    <value>Spegni quando non alimentato</value>
+    <value>Disattiva quando alimentato a batteria</value>
   </data>
   <data name="UltimateGPUTooltip" xml:space="preserve">
     <value>Utilizza la dGPU in modalità esclusiva, massimizzando gli FPS</value>
