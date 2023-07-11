@@ -291,7 +291,7 @@ Trotzdem fortfahren?</value>
     <value>Lüfter und Leistung</value>
   </data>
   <data name="FanSpeed" xml:space="preserve">
-    <value> Lüfter: </value>
+    <value>Fan</value>
   </data>
   <data name="FansPower" xml:space="preserve">
     <value>Lüfter + Leistung</value>
