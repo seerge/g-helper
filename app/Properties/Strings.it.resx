@@ -291,7 +291,7 @@ Sei sicuro di voler continuare?</value>
     <value>Alimentazione e Ventole</value>
   </data>
   <data name="FanSpeed" xml:space="preserve">
-    <value>Ventola: </value>
+    <value>Fan</value>
   </data>
   <data name="FansPower" xml:space="preserve">
     <value>Ventole + Alimentazione</value>
