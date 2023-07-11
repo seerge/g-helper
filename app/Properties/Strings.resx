@@ -201,9 +201,6 @@
   <data name="BacklightTimeout" xml:space="preserve">
     <value>Timeout plugged / on battery (0 - ON)</value>
   </data>
-  <data name="BacklightTimeoutPlugged" xml:space="preserve">
-    <value>Backlight timeout when plugged in (0 - always on)</value>
-  </data>
   <data name="Balanced" xml:space="preserve">
     <value>Balanced</value>
   </data>
@@ -334,9 +331,6 @@ Do you still want to continue?</value>
   </data>
   <data name="Keyboard" xml:space="preserve">
     <value>Keyboard</value>
-  </data>
-  <data name="KeyboardAuto" xml:space="preserve">
-    <value>Lower backlight brightness on battery and back when plugged</value>
   </data>
   <data name="KillGpuApps" xml:space="preserve">
     <value>Stop all apps using GPU when switching to Eco</value>
