@@ -304,7 +304,7 @@ namespace GHelper.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Backlight timeout on battery.
+        ///   Looks up a localized string similar to Timeout plugged / on battery (0 - ON).
         /// </summary>
         internal static string BacklightTimeout {
             get {
@@ -576,7 +576,7 @@ namespace GHelper.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Fan: .
+        ///   Looks up a localized string similar to Fan.
         /// </summary>
         internal static string FanSpeed {
             get {

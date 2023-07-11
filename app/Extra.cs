@@ -99,7 +99,7 @@ namespace GHelper
             //labelBrightness.Text = Properties.Strings.Brightness;
 
             labelBacklightTimeout.Text = Properties.Strings.BacklightTimeout;
-            labelBacklightTimeoutPlugged.Text = Properties.Strings.BacklightTimeoutPlugged;
+            //labelBacklightTimeoutPlugged.Text = Properties.Strings.BacklightTimeoutPlugged;
 
             checkNoOverdrive.Text = Properties.Strings.DisableOverdrive;
             checkTopmost.Text = Properties.Strings.WindowTop;

@@ -69,7 +69,6 @@ namespace GHelper
             panelBacklight = new Panel();
             panelBacklightExtra = new Panel();
             numericBacklightPluggedTime = new NumericUpDown();
-            labelBacklightTimeoutPlugged = new Label();
             numericBacklightTime = new NumericUpDown();
             labelBacklightTimeout = new Label();
             labelSpeed = new Label();
@@ -137,7 +136,7 @@ namespace GHelper
             panelServices.Controls.Add(labelServices);
             panelServices.Controls.Add(buttonServices);
             panelServices.Dock = DockStyle.Top;
-            panelServices.Location = new Point(15, 1285);
+            panelServices.Location = new Point(15, 1196);
             panelServices.Name = "panelServices";
             panelServices.Size = new Size(983, 75);
             panelServices.TabIndex = 3;
@@ -189,8 +188,8 @@ namespace GHelper
             panelBindingsHeader.Dock = DockStyle.Top;
             panelBindingsHeader.Location = new Point(15, 15);
             panelBindingsHeader.Name = "panelBindingsHeader";
-            panelBindingsHeader.Padding = new Padding(10, 8, 10, 8);
-            panelBindingsHeader.Size = new Size(983, 56);
+            panelBindingsHeader.Padding = new Padding(10, 5, 10, 5);
+            panelBindingsHeader.Size = new Size(983, 50);
             panelBindingsHeader.TabIndex = 4;
             // 
             // pictureBindings
@@ -209,7 +208,7 @@ namespace GHelper
             pictureHelp.BackgroundImage = Resources.icons8_help_32;
             pictureHelp.BackgroundImageLayout = ImageLayout.Zoom;
             pictureHelp.Cursor = Cursors.Hand;
-            pictureHelp.Location = new Point(930, 13);
+            pictureHelp.Location = new Point(930, 10);
             pictureHelp.Margin = new Padding(4, 3, 4, 3);
             pictureHelp.Name = "pictureHelp";
             pictureHelp.Size = new Size(32, 32);
@@ -220,7 +219,7 @@ namespace GHelper
             // 
             labelBindings.AutoSize = true;
             labelBindings.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            labelBindings.Location = new Point(56, 9);
+            labelBindings.Location = new Point(56, 8);
             labelBindings.Name = "labelBindings";
             labelBindings.Size = new Size(114, 32);
             labelBindings.TabIndex = 0;
@@ -232,7 +231,7 @@ namespace GHelper
             panelBindings.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             panelBindings.Controls.Add(tableBindings);
             panelBindings.Dock = DockStyle.Top;
-            panelBindings.Location = new Point(15, 71);
+            panelBindings.Location = new Point(15, 65);
             panelBindings.Name = "panelBindings";
             panelBindings.Padding = new Padding(0, 0, 10, 5);
             panelBindings.Size = new Size(983, 325);
@@ -526,16 +525,16 @@ namespace GHelper
             panelBacklightHeader.Controls.Add(pictureBacklight);
             panelBacklightHeader.Controls.Add(labelBacklightTitle);
             panelBacklightHeader.Dock = DockStyle.Top;
-            panelBacklightHeader.Location = new Point(15, 396);
+            panelBacklightHeader.Location = new Point(15, 390);
             panelBacklightHeader.Name = "panelBacklightHeader";
-            panelBacklightHeader.Padding = new Padding(10, 8, 10, 8);
-            panelBacklightHeader.Size = new Size(983, 56);
+            panelBacklightHeader.Padding = new Padding(10, 5, 10, 5);
+            panelBacklightHeader.Size = new Size(983, 50);
             panelBacklightHeader.TabIndex = 44;
             // 
             // sliderBrightness
             // 
             sliderBrightness.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            sliderBrightness.Location = new Point(546, 9);
+            sliderBrightness.Location = new Point(546, 6);
             sliderBrightness.Max = 3;
             sliderBrightness.Min = 0;
             sliderBrightness.Name = "sliderBrightness";
@@ -572,10 +571,10 @@ namespace GHelper
             panelBacklight.Controls.Add(panelXMG);
             panelBacklight.Controls.Add(tableBacklight);
             panelBacklight.Dock = DockStyle.Top;
-            panelBacklight.Location = new Point(15, 452);
+            panelBacklight.Location = new Point(15, 440);
             panelBacklight.Name = "panelBacklight";
-            panelBacklight.Padding = new Padding(0, 11, 0, 11);
-            panelBacklight.Size = new Size(983, 463);
+            panelBacklight.Padding = new Padding(0, 5, 0, 5);
+            panelBacklight.Size = new Size(983, 402);
             panelBacklight.TabIndex = 6;
             // 
             // panelBacklightExtra
@@ -583,46 +582,36 @@ namespace GHelper
             panelBacklightExtra.AutoSize = true;
             panelBacklightExtra.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             panelBacklightExtra.Controls.Add(numericBacklightPluggedTime);
-            panelBacklightExtra.Controls.Add(labelBacklightTimeoutPlugged);
             panelBacklightExtra.Controls.Add(numericBacklightTime);
             panelBacklightExtra.Controls.Add(labelBacklightTimeout);
             panelBacklightExtra.Controls.Add(labelSpeed);
             panelBacklightExtra.Controls.Add(comboKeyboardSpeed);
             panelBacklightExtra.Dock = DockStyle.Top;
-            panelBacklightExtra.Location = new Point(0, 288);
+            panelBacklightExtra.Location = new Point(0, 282);
             panelBacklightExtra.Margin = new Padding(4, 3, 4, 3);
             panelBacklightExtra.Name = "panelBacklightExtra";
             panelBacklightExtra.Padding = new Padding(0, 0, 0, 5);
-            panelBacklightExtra.Size = new Size(983, 164);
+            panelBacklightExtra.Size = new Size(983, 115);
             panelBacklightExtra.TabIndex = 46;
             // 
             // numericBacklightPluggedTime
             // 
             numericBacklightPluggedTime.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            numericBacklightPluggedTime.Location = new Point(764, 117);
+            numericBacklightPluggedTime.Location = new Point(670, 63);
             numericBacklightPluggedTime.Margin = new Padding(4, 3, 4, 3);
             numericBacklightPluggedTime.Maximum = new decimal(new int[] { 3600, 0, 0, 0 });
             numericBacklightPluggedTime.Name = "numericBacklightPluggedTime";
-            numericBacklightPluggedTime.Size = new Size(197, 39);
+            numericBacklightPluggedTime.Size = new Size(140, 39);
             numericBacklightPluggedTime.TabIndex = 49;
-            // 
-            // labelBacklightTimeoutPlugged
-            // 
-            labelBacklightTimeoutPlugged.Location = new Point(16, 112);
-            labelBacklightTimeoutPlugged.Margin = new Padding(4, 0, 4, 0);
-            labelBacklightTimeoutPlugged.Name = "labelBacklightTimeoutPlugged";
-            labelBacklightTimeoutPlugged.Size = new Size(744, 47);
-            labelBacklightTimeoutPlugged.TabIndex = 48;
-            labelBacklightTimeoutPlugged.Text = "Seconds to turn off backlight when plugged";
             // 
             // numericBacklightTime
             // 
             numericBacklightTime.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            numericBacklightTime.Location = new Point(764, 65);
+            numericBacklightTime.Location = new Point(822, 63);
             numericBacklightTime.Margin = new Padding(4, 3, 4, 3);
             numericBacklightTime.Maximum = new decimal(new int[] { 3600, 0, 0, 0 });
             numericBacklightTime.Name = "numericBacklightTime";
-            numericBacklightTime.Size = new Size(197, 39);
+            numericBacklightTime.Size = new Size(140, 39);
             numericBacklightTime.TabIndex = 47;
             // 
             // labelBacklightTimeout
@@ -630,16 +619,16 @@ namespace GHelper
             labelBacklightTimeout.Location = new Point(16, 63);
             labelBacklightTimeout.Margin = new Padding(4, 0, 4, 0);
             labelBacklightTimeout.Name = "labelBacklightTimeout";
-            labelBacklightTimeout.Size = new Size(744, 47);
+            labelBacklightTimeout.Size = new Size(646, 47);
             labelBacklightTimeout.TabIndex = 46;
-            labelBacklightTimeout.Text = "Seconds to turn off backlight on battery";
+            labelBacklightTimeout.Text = "Timeout when plugged / on battery";
             // 
             // labelSpeed
             // 
             labelSpeed.Location = new Point(16, 16);
             labelSpeed.Margin = new Padding(4, 0, 4, 0);
             labelSpeed.Name = "labelSpeed";
-            labelSpeed.Size = new Size(547, 43);
+            labelSpeed.Size = new Size(646, 43);
             labelSpeed.TabIndex = 44;
             labelSpeed.Text = "Animation Speed";
             // 
@@ -653,10 +642,10 @@ namespace GHelper
             comboKeyboardSpeed.FormattingEnabled = true;
             comboKeyboardSpeed.ItemHeight = 32;
             comboKeyboardSpeed.Items.AddRange(new object[] { "Slow", "Normal", "Fast" });
-            comboKeyboardSpeed.Location = new Point(594, 13);
+            comboKeyboardSpeed.Location = new Point(670, 13);
             comboKeyboardSpeed.Margin = new Padding(4, 12, 4, 9);
             comboKeyboardSpeed.Name = "comboKeyboardSpeed";
-            comboKeyboardSpeed.Size = new Size(369, 40);
+            comboKeyboardSpeed.Size = new Size(293, 40);
             comboKeyboardSpeed.TabIndex = 43;
             comboKeyboardSpeed.TabStop = false;
             // 
@@ -664,7 +653,7 @@ namespace GHelper
             // 
             panelXMG.Controls.Add(checkXMG);
             panelXMG.Dock = DockStyle.Top;
-            panelXMG.Location = new Point(0, 228);
+            panelXMG.Location = new Point(0, 222);
             panelXMG.Margin = new Padding(4, 3, 4, 3);
             panelXMG.Name = "panelXMG";
             panelXMG.Size = new Size(983, 60);
@@ -711,7 +700,7 @@ namespace GHelper
             tableBacklight.Controls.Add(checkSleepLid, 3, 3);
             tableBacklight.Controls.Add(checkShutdownLid, 3, 4);
             tableBacklight.Dock = DockStyle.Top;
-            tableBacklight.Location = new Point(0, 11);
+            tableBacklight.Location = new Point(0, 5);
             tableBacklight.Margin = new Padding(0);
             tableBacklight.Name = "tableBacklight";
             tableBacklight.RowCount = 5;
@@ -971,10 +960,10 @@ namespace GHelper
             panelSettingsHeader.Controls.Add(pictureSettings);
             panelSettingsHeader.Controls.Add(labelSettings);
             panelSettingsHeader.Dock = DockStyle.Top;
-            panelSettingsHeader.Location = new Point(15, 915);
+            panelSettingsHeader.Location = new Point(15, 842);
             panelSettingsHeader.Name = "panelSettingsHeader";
-            panelSettingsHeader.Padding = new Padding(10, 8, 10, 8);
-            panelSettingsHeader.Size = new Size(983, 56);
+            panelSettingsHeader.Padding = new Padding(10, 5, 10, 5);
+            panelSettingsHeader.Size = new Size(983, 50);
             panelSettingsHeader.TabIndex = 45;
             // 
             // pictureLog
@@ -983,7 +972,7 @@ namespace GHelper
             pictureLog.BackgroundImage = Resources.icons8_log_32;
             pictureLog.BackgroundImageLayout = ImageLayout.Zoom;
             pictureLog.Cursor = Cursors.Hand;
-            pictureLog.Location = new Point(930, 13);
+            pictureLog.Location = new Point(930, 10);
             pictureLog.Margin = new Padding(4, 3, 4, 3);
             pictureLog.Name = "pictureLog";
             pictureLog.Size = new Size(32, 32);
@@ -1004,7 +993,7 @@ namespace GHelper
             // 
             labelSettings.AutoSize = true;
             labelSettings.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            labelSettings.Location = new Point(56, 8);
+            labelSettings.Location = new Point(56, 9);
             labelSettings.Name = "labelSettings";
             labelSettings.Size = new Size(78, 32);
             labelSettings.TabIndex = 0;
@@ -1022,17 +1011,17 @@ namespace GHelper
             panelSettings.Controls.Add(checkGpuApps);
             panelSettings.Controls.Add(checkFnLock);
             panelSettings.Dock = DockStyle.Top;
-            panelSettings.Location = new Point(15, 971);
+            panelSettings.Location = new Point(15, 892);
             panelSettings.Name = "panelSettings";
-            panelSettings.Padding = new Padding(20, 10, 10, 10);
-            panelSettings.Size = new Size(983, 314);
+            panelSettings.Padding = new Padding(20, 5, 10, 5);
+            panelSettings.Size = new Size(983, 304);
             panelSettings.TabIndex = 46;
             // 
             // checkAutoApplyWindowsPowerMode
             // 
             checkAutoApplyWindowsPowerMode.AutoSize = true;
             checkAutoApplyWindowsPowerMode.Dock = DockStyle.Top;
-            checkAutoApplyWindowsPowerMode.Location = new Point(20, 262);
+            checkAutoApplyWindowsPowerMode.Location = new Point(20, 257);
             checkAutoApplyWindowsPowerMode.Margin = new Padding(4, 3, 4, 3);
             checkAutoApplyWindowsPowerMode.Name = "checkAutoApplyWindowsPowerMode";
             checkAutoApplyWindowsPowerMode.Padding = new Padding(3);
@@ -1045,7 +1034,7 @@ namespace GHelper
             // 
             checkTopmost.AutoSize = true;
             checkTopmost.Dock = DockStyle.Top;
-            checkTopmost.Location = new Point(20, 220);
+            checkTopmost.Location = new Point(20, 215);
             checkTopmost.Margin = new Padding(4, 3, 4, 3);
             checkTopmost.Name = "checkTopmost";
             checkTopmost.Padding = new Padding(3);
@@ -1058,7 +1047,7 @@ namespace GHelper
             // 
             checkNoOverdrive.AutoSize = true;
             checkNoOverdrive.Dock = DockStyle.Top;
-            checkNoOverdrive.Location = new Point(20, 178);
+            checkNoOverdrive.Location = new Point(20, 173);
             checkNoOverdrive.Margin = new Padding(4, 3, 4, 3);
             checkNoOverdrive.Name = "checkNoOverdrive";
             checkNoOverdrive.Padding = new Padding(3);
@@ -1071,7 +1060,7 @@ namespace GHelper
             // 
             checkUSBC.AutoSize = true;
             checkUSBC.Dock = DockStyle.Top;
-            checkUSBC.Location = new Point(20, 136);
+            checkUSBC.Location = new Point(20, 131);
             checkUSBC.Margin = new Padding(4, 3, 4, 3);
             checkUSBC.Name = "checkUSBC";
             checkUSBC.Padding = new Padding(3);
@@ -1084,7 +1073,7 @@ namespace GHelper
             // 
             checkVariBright.AutoSize = true;
             checkVariBright.Dock = DockStyle.Top;
-            checkVariBright.Location = new Point(20, 94);
+            checkVariBright.Location = new Point(20, 89);
             checkVariBright.Margin = new Padding(4, 3, 4, 3);
             checkVariBright.Name = "checkVariBright";
             checkVariBright.Padding = new Padding(3);
@@ -1097,7 +1086,7 @@ namespace GHelper
             // 
             checkGpuApps.AutoSize = true;
             checkGpuApps.Dock = DockStyle.Top;
-            checkGpuApps.Location = new Point(20, 52);
+            checkGpuApps.Location = new Point(20, 47);
             checkGpuApps.Margin = new Padding(4, 3, 4, 3);
             checkGpuApps.Name = "checkGpuApps";
             checkGpuApps.Padding = new Padding(3);
@@ -1110,7 +1099,7 @@ namespace GHelper
             // 
             checkFnLock.AutoSize = true;
             checkFnLock.Dock = DockStyle.Top;
-            checkFnLock.Location = new Point(20, 10);
+            checkFnLock.Location = new Point(20, 5);
             checkFnLock.Margin = new Padding(4, 3, 4, 3);
             checkFnLock.MaximumSize = new Size(800, 0);
             checkFnLock.Name = "checkFnLock";
@@ -1124,6 +1113,7 @@ namespace GHelper
             // 
             AutoScaleDimensions = new SizeF(192F, 192F);
             AutoScaleMode = AutoScaleMode.Dpi;
+            AutoScroll = true;
             AutoSize = true;
             AutoSizeMode = AutoSizeMode.GrowAndShrink;
             ClientSize = new Size(1013, 1355);
@@ -1213,7 +1203,6 @@ namespace GHelper
         private Panel panelBacklight;
         private Panel panelBacklightExtra;
         private NumericUpDown numericBacklightPluggedTime;
-        private Label labelBacklightTimeoutPlugged;
         private NumericUpDown numericBacklightTime;
         private Label labelBacklightTimeout;
         private Label labelSpeed;

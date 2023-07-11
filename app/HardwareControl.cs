@@ -48,9 +48,9 @@ public static class HardwareControl
         if (fan > fanMax && fan < 80) SetFanMax(fan);
 
         if (AppConfig.Is("fan_rpm"))
-            return GHelper.Properties.Strings.FanSpeed + (fan * 100).ToString() + "RPM";
+            return GHelper.Properties.Strings.FanSpeed + ": " + (fan * 100).ToString() + "RPM";
         else
-            return GHelper.Properties.Strings.FanSpeed + Math.Min(Math.Round((float)fan / fanMax * 100), 100).ToString() + "%"; // relatively to 6000 rpm
+            return GHelper.Properties.Strings.FanSpeed + ": " + Math.Min(Math.Round((float)fan / fanMax * 100), 100).ToString() + "%"; // relatively to 6000 rpm
     }
 
     private static int GetGpuUse()
@@ -177,6 +177,7 @@ public static class HardwareControl
             }
             _gpuControl.Dispose();
 
+            Logger.WriteLine("dGPU not found");
             GpuControl = null;
 
 
