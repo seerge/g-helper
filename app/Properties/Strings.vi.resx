@@ -291,7 +291,7 @@ Do you still want to continue?</value>
     <value>Quạt và Công suất</value>
   </data>
   <data name="FanSpeed" xml:space="preserve">
-    <value>Quạt: </value>
+    <value>Fan</value>
   </data>
   <data name="FansPower" xml:space="preserve">
     <value>Quạt + Công suất</value>
