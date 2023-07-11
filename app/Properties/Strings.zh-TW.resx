@@ -199,7 +199,7 @@
     <value>喚醒時</value>
   </data>
   <data name="BacklightTimeout" xml:space="preserve">
-    <value>電池模式下自動關閉鍵盤背光的秒數(0 = 不關閉)</value>
+    <value>Timeout plugged / on battery (0 - ON)</value>
   </data>
   <data name="BacklightTimeoutPlugged" xml:space="preserve">
     <value>插電模式下自動關閉鍵盤背光的秒數(0 = 不關閉)</value>
