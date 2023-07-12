@@ -190,7 +190,7 @@
     <value>Auto Apply</value>
   </data>
   <data name="AutoMode" xml:space="preserve">
-    <value>Auto</value>
+    <value>Automat</value>
   </data>
   <data name="AutoRefreshTooltip" xml:space="preserve">
     <value>Sets 60Hz to save battery, and back when plugged</value>
@@ -202,7 +202,7 @@
     <value>Timeout plugged / on battery (0 - ON)</value>
   </data>
   <data name="Balanced" xml:space="preserve">
-    <value>Balanced</value>
+    <value>Echilibrat</value>
   </data>
   <data name="BatteryChargeLimit" xml:space="preserve">
     <value>Battery Charge Limit</value>
@@ -214,7 +214,7 @@
     <value>Boot</value>
   </data>
   <data name="Brightness" xml:space="preserve">
-    <value>Brightness</value>
+    <value>Luminozitate</value>
   </data>
   <data name="BrightnessDown" xml:space="preserve">
     <value>Brightness Down</value>
@@ -223,22 +223,22 @@
     <value>Brightness Up</value>
   </data>
   <data name="Color" xml:space="preserve">
-    <value>Color</value>
+    <value>Culoare</value>
   </data>
   <data name="CPUBoost" xml:space="preserve">
     <value>CPU Boost</value>
   </data>
   <data name="Custom" xml:space="preserve">
-    <value>Custom</value>
+    <value>Personalizat</value>
   </data>
   <data name="Default" xml:space="preserve">
-    <value>Default</value>
+    <value>Implicit</value>
   </data>
   <data name="DisableOverdrive" xml:space="preserve">
     <value>Disable screen overdrive</value>
   </data>
   <data name="Discharging" xml:space="preserve">
-    <value>Discharging</value>
+    <value>Se descarcă</value>
   </data>
   <data name="DownloadUpdate" xml:space="preserve">
     <value>Descărcați actualizarea</value>
@@ -264,10 +264,10 @@ Do you still want to continue?</value>
     <value>Extra</value>
   </data>
   <data name="ExtraSettings" xml:space="preserve">
-    <value>Extra Settings</value>
+    <value>Setări suplimentare</value>
   </data>
   <data name="FactoryDefaults" xml:space="preserve">
-    <value>Factory Defaults</value>
+    <value>Setările implicite ale fabricii</value>
   </data>
   <data name="FanCurves" xml:space="preserve">
     <value>Fan Curves</value>
@@ -351,7 +351,7 @@ Do you still want to continue?</value>
     <value>Lightbar</value>
   </data>
   <data name="Logo" xml:space="preserve">
-    <value>Logo</value>
+    <value>Logo-ul</value>
   </data>
   <data name="MatrixAudio" xml:space="preserve">
     <value>Audio Visualizer</value>
@@ -363,16 +363,16 @@ Do you still want to continue?</value>
     <value>Bright</value>
   </data>
   <data name="MatrixClock" xml:space="preserve">
-    <value>Clock</value>
+    <value>Ceas</value>
   </data>
   <data name="MatrixDim" xml:space="preserve">
     <value>Dim</value>
   </data>
   <data name="MatrixLogo" xml:space="preserve">
-    <value>Rog Logo</value>
+    <value>Logo-ul ROG</value>
   </data>
   <data name="MatrixMedium" xml:space="preserve">
-    <value>Medium</value>
+    <value>Mediu</value>
   </data>
   <data name="MatrixOff" xml:space="preserve">
     <value>Off</value>
@@ -393,10 +393,10 @@ Do you still want to continue?</value>
     <value>Mute Mic</value>
   </data>
   <data name="NewUpdates" xml:space="preserve">
-    <value>New updates</value>
+    <value>Actualizări noi</value>
   </data>
   <data name="NoNewUpdates" xml:space="preserve">
-    <value>No new updates</value>
+    <value>Nu există actualizări noi</value>
   </data>
   <data name="OpenGHelper" xml:space="preserve">
     <value>Open G-Helper window</value>
