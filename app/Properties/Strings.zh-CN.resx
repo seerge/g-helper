@@ -59,46 +59,46 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
           <xsd:element name="metadata">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0"/>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
               </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string"/>
-              <xsd:attribute name="type" type="xsd:string"/>
-              <xsd:attribute name="mimetype" type="xsd:string"/>
-              <xsd:attribute ref="xml:space"/>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="assembly">
             <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string"/>
-              <xsd:attribute name="name" type="xsd:string"/>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="data">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"/>
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
-              <xsd:attribute ref="xml:space"/>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required"/>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
             </xsd:complexType>
           </xsd:element>
         </xsd:choice>
@@ -121,7 +121,7 @@
     <value>无法连接到ASUS ACPI。 没有它应用程序将无法运行。 请尝试安装Asus System Control Interface驱动。</value>
   </data>
   <data name="AlertDGPU" xml:space="preserve">
-    <value>看起来 GPU 正在大量耗电，是否禁用？</value>
+    <value>看起来 GPU 正在被重度使用，是否禁用？</value>
   </data>
   <data name="AlertDGPUTitle" xml:space="preserve">
     <value>节能模式</value>
@@ -148,10 +148,10 @@
     <value>G-Helper已经在运行。 请查看系统托盘中的图标。</value>
   </data>
   <data name="Apply" xml:space="preserve">
-    <value>Apply</value>
+    <value>应用</value>
   </data>
   <data name="ApplyFanCurve" xml:space="preserve">
-    <value>应用自定义扇形曲线</value>
+    <value>应用风扇曲线</value>
   </data>
   <data name="ApplyPowerLimits" xml:space="preserve">
     <value>应用功率限制</value>
@@ -160,7 +160,7 @@
     <value>自动调整Windows电源模式</value>
   </data>
   <data name="AsusServicesRunning" xml:space="preserve">
-    <value>Asus Services Running</value>
+    <value>Asus 服务正在运行</value>
   </data>
   <data name="AuraBreathe" xml:space="preserve">
     <value>呼吸</value>
@@ -187,13 +187,13 @@
     <value>闪烁</value>
   </data>
   <data name="AutoApply" xml:space="preserve">
-    <value>Auto Apply</value>
+    <value>自动应用</value>
   </data>
   <data name="AutoMode" xml:space="preserve">
     <value>自动</value>
   </data>
   <data name="AutoRefreshTooltip" xml:space="preserve">
-    <value>使用电池时设置为60Hz,并在插上电源时恢复</value>
+    <value>使用电池时设置为60Hz，插上电源时恢复正常</value>
   </data>
   <data name="Awake" xml:space="preserve">
     <value>唤醒时</value>
@@ -208,7 +208,7 @@
     <value>电池充电限制</value>
   </data>
   <data name="BiosAndDriverUpdates" xml:space="preserve">
-    <value>BIOS and Driver Updates</value>
+    <value>BIOS 和驱动更新</value>
   </data>
   <data name="Boot" xml:space="preserve">
     <value>开机时</value>
@@ -217,10 +217,10 @@
     <value>亮度</value>
   </data>
   <data name="BrightnessDown" xml:space="preserve">
-    <value>Brightness Down</value>
+    <value>降低亮度</value>
   </data>
   <data name="BrightnessUp" xml:space="preserve">
-    <value>Brightness Up</value>
+    <value>提高亮度</value>
   </data>
   <data name="Color" xml:space="preserve">
     <value>颜色</value>
@@ -235,7 +235,7 @@
     <value>默认</value>
   </data>
   <data name="DisableOverdrive" xml:space="preserve">
-    <value>禁用屏幕快速显示(OD)</value>
+    <value>禁用屏幕超频(OD)</value>
   </data>
   <data name="Discharging" xml:space="preserve">
     <value>正在放电</value>
@@ -244,7 +244,7 @@
     <value>下载更新</value>
   </data>
   <data name="DriverAndSoftware" xml:space="preserve">
-    <value>Drivers and Software</value>
+    <value>驱动及软件</value>
   </data>
   <data name="EcoGPUTooltip" xml:space="preserve">
     <value>禁用独显以节省电池电量</value>
@@ -253,12 +253,10 @@
     <value>集显模式</value>
   </data>
   <data name="EnableOptimusText" xml:space="preserve">
-    <value>Disabling the dGPU by going into Eco mode while Display Mode in NVIDIA Control Panel is not set to Optimus might cause problems with brightness controls until after the next reboot. 
-
-Do you still want to continue?</value>
+    <value>若未在nVIDIA控制面板的混合显示模式中设置为Optimus，关闭独立显卡可能会导致亮度控制在重启前不可用。  还要继续吗？</value>
   </data>
   <data name="EnableOptimusTitle" xml:space="preserve">
-    <value>NVIDIA Display Mode is not set to Optimus</value>
+    <value>nVIDIA显示模式尚未设置至Optimus</value>
   </data>
   <data name="Extra" xml:space="preserve">
     <value>更多</value>
@@ -288,25 +286,25 @@ Do you still want to continue?</value>
     <value>风扇和电源</value>
   </data>
   <data name="FanSpeed" xml:space="preserve">
-    <value>Fan</value>
+    <value>风扇速度</value>
   </data>
   <data name="FansPower" xml:space="preserve">
     <value>风扇与电源设置</value>
   </data>
   <data name="FnLock" xml:space="preserve">
-    <value>打开FnLock (无需按下FN使用FN+(F1-F12)热键)</value>
+    <value>打开Fn锁定 (无需按下FN使用FN+(F1-F12)热键)</value>
   </data>
   <data name="GPUBoost" xml:space="preserve">
-    <value>Dynamic Boost</value>
+    <value>动态睿频</value>
   </data>
   <data name="GPUChanging" xml:space="preserve">
     <value>切换中...</value>
   </data>
   <data name="GPUCoreClockOffset" xml:space="preserve">
-    <value>Core Clock Offset</value>
+    <value>核心频率偏移</value>
   </data>
   <data name="GPUMemoryClockOffset" xml:space="preserve">
-    <value>Memory Clock Offset</value>
+    <value>显存频率偏移</value>
   </data>
   <data name="GPUMode" xml:space="preserve">
     <value>显卡模式</value>
@@ -321,10 +319,10 @@ Do you still want to continue?</value>
     <value>独显直连</value>
   </data>
   <data name="GPUSettings" xml:space="preserve">
-    <value>GPU Settings</value>
+    <value>GPU设置</value>
   </data>
   <data name="GPUTempTarget" xml:space="preserve">
-    <value>Temperature Target</value>
+    <value>目标温度</value>
   </data>
   <data name="KeyBindings" xml:space="preserve">
     <value>按键绑定</value>
@@ -390,13 +388,13 @@ Do you still want to continue?</value>
     <value>多区域设置</value>
   </data>
   <data name="MuteMic" xml:space="preserve">
-    <value>静音麦克风</value>
+    <value>麦克风静音</value>
   </data>
   <data name="NewUpdates" xml:space="preserve">
-    <value>New updates</value>
+    <value>新的更新</value>
   </data>
   <data name="NoNewUpdates" xml:space="preserve">
-    <value>No new updates</value>
+    <value>没有新的更新</value>
   </data>
   <data name="OpenGHelper" xml:space="preserve">
     <value>打开G-Helper窗口</value>
@@ -414,7 +412,7 @@ Do you still want to continue?</value>
     <value>其他</value>
   </data>
   <data name="Overdrive" xml:space="preserve">
-    <value>OD</value>
+    <value>超频</value>
   </data>
   <data name="PerformanceMode" xml:space="preserve">
     <value>性能模式</value>
@@ -429,7 +427,7 @@ Do you still want to continue?</value>
     <value>功率限制</value>
   </data>
   <data name="PPTExperimental" xml:space="preserve">
-    <value>功率限制 是实验性功能。 谨慎使用，风险自负！</value>
+    <value>功率限制是实验性功能。 谨慎使用，风险自负！</value>
   </data>
   <data name="PrintScreen" xml:space="preserve">
     <value>截图</value>
@@ -438,10 +436,10 @@ Do you still want to continue?</value>
     <value>退出</value>
   </data>
   <data name="RestartGPU" xml:space="preserve">
-    <value>Something is using dGPU and preventing Eco mode. Restart dGPU in device manager? * Please proceed at your own risk.</value>
+    <value>有程序正在使用独立显卡导致无法进入节能模式，在设备管理器中重启独立显卡？</value>
   </data>
   <data name="RPM" xml:space="preserve">
-    <value>RPM</value>
+    <value>转速</value>
   </data>
   <data name="RunOnStartup" xml:space="preserve">
     <value>开机自启</value>
@@ -462,34 +460,34 @@ Do you still want to continue?</value>
     <value>标准模式</value>
   </data>
   <data name="Start" xml:space="preserve">
-    <value>Start</value>
+    <value>开始</value>
   </data>
   <data name="StartingServices" xml:space="preserve">
-    <value>Starting Services</value>
+    <value>正在启用服务</value>
   </data>
   <data name="StartupError" xml:space="preserve">
     <value>启动错误</value>
   </data>
   <data name="Stop" xml:space="preserve">
-    <value>Stop</value>
+    <value>停止</value>
   </data>
   <data name="StopGPUApps" xml:space="preserve">
-    <value>Stop GPU Applications</value>
+    <value>停止使用 GPU 的程序</value>
   </data>
   <data name="StoppingServices" xml:space="preserve">
-    <value>Stopping Services</value>
+    <value>停止服务</value>
   </data>
   <data name="ToggleAura" xml:space="preserve">
     <value>切换 Aura 模式</value>
   </data>
   <data name="ToggleFnLock" xml:space="preserve">
-    <value>Toggle Fn-Lock</value>
+    <value>切换 Fn 锁定</value>
   </data>
   <data name="ToggleMiniled" xml:space="preserve">
-    <value>Toggle Miniled (if supported)</value>
+    <value>切换 Miniled (如果支持)</value>
   </data>
   <data name="ToggleScreen" xml:space="preserve">
-    <value>Toggle Screen</value>
+    <value>切换屏幕</value>
   </data>
   <data name="Turbo" xml:space="preserve">
     <value>增强模式</value>
@@ -507,10 +505,10 @@ Do you still want to continue?</value>
     <value>独显直连</value>
   </data>
   <data name="UndervoltingRisky" xml:space="preserve">
-    <value>Undervolting is an experimental and risky feature. If applied values are too low for your hardware, it can become unstable, shut down or cause data corruption. If you want to try - start from small values first, click Apply and test what works for you.</value>
+    <value>降压是危险且试验性的功能，如果电压太低系统可能会不稳定，自动关机或者出现数据错误。如果你想尝试，请从少量减压开始进行尝试，点击“应用”然后进行测试是否稳定</value>
   </data>
   <data name="Updates" xml:space="preserve">
-    <value>Updates</value>
+    <value>更新</value>
   </data>
   <data name="VersionLabel" xml:space="preserve">
     <value>版本</value>
