@@ -121,7 +121,7 @@
     <value>无法连接到ASUS ACPI。 没有它应用程序将无法运行。 请尝试安装Asus System Control Interface驱动。</value>
   </data>
   <data name="AlertDGPU" xml:space="preserve">
-    <value>似乎 GPU 正在大量耗电，是否禁用？</value>
+    <value>GPU 看起来正在大量耗电，是否禁用？</value>
   </data>
   <data name="AlertDGPUTitle" xml:space="preserve">
     <value>节能模式</value>
