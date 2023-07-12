@@ -121,19 +121,19 @@
     <value>无法连接到ASUS ACPI。 没有它应用程序将无法运行。 请尝试安装Asus System Control Interface驱动。</value>
   </data>
   <data name="AlertDGPU" xml:space="preserve">
-    <value>看起来 GPU 正在大量耗电，是否禁用？</value>
+    <value>似乎 GPU 正在大量耗电，是否禁用？</value>
   </data>
   <data name="AlertDGPUTitle" xml:space="preserve">
     <value>节能模式</value>
   </data>
   <data name="AlertUltimateOff" xml:space="preserve">
-    <value>关闭独显直连需要重新启动</value>
+    <value>关闭独显直连需要重启</value>
   </data>
   <data name="AlertUltimateOn" xml:space="preserve">
     <value>独显直连需要重启</value>
   </data>
   <data name="AlertUltimateTitle" xml:space="preserve">
-    <value>现在重新启动吗？</value>
+    <value>现在重启吗？</value>
   </data>
   <data name="AnimationSpeed" xml:space="preserve">
     <value>动画速度</value>
@@ -199,7 +199,7 @@
     <value>唤醒时</value>
   </data>
   <data name="BacklightTimeout" xml:space="preserve">
-    <value>超时插入/使用电池 (0 - ON)</value>
+    <value>背光超时时间 (0表示长亮)</value>
   </data>
   <data name="Balanced" xml:space="preserve">
     <value>平衡模式</value>
@@ -226,7 +226,7 @@
     <value>颜色</value>
   </data>
   <data name="CPUBoost" xml:space="preserve">
-    <value>CPU 睿频</value>
+    <value>CPU 睿频加速</value>
   </data>
   <data name="Custom" xml:space="preserve">
     <value>自定义设置</value>
@@ -336,7 +336,7 @@
     <value>当切换到集显模式时，停止所有正在使用独显的应用</value>
   </data>
   <data name="LaptopBacklight" xml:space="preserve">
-    <value>背光</value>
+    <value>笔记本背光</value>
   </data>
   <data name="LaptopKeyboard" xml:space="preserve">
     <value>笔记本键盘</value>
@@ -441,7 +441,7 @@
     <value>有程序正在使用独立显卡阻止进入节能模式。要在设备管理器中重新启动dGPU 吗？* 请自行承担风险。</value>
   </data>
   <data name="RPM" xml:space="preserve">
-    <value>RPM</value>
+    <value>转/分钟</value>
   </data>
   <data name="RunOnStartup" xml:space="preserve">
     <value>开机自启</value>
@@ -462,10 +462,10 @@
     <value>标准模式</value>
   </data>
   <data name="Start" xml:space="preserve">
-    <value>Start</value>
+    <value>启动</value>
   </data>
   <data name="StartingServices" xml:space="preserve">
-    <value>Starting Services</value>
+    <value>启动服务中...</value>
   </data>
   <data name="StartupError" xml:space="preserve">
     <value>启动错误</value>
@@ -474,22 +474,22 @@
     <value>停止</value>
   </data>
   <data name="StopGPUApps" xml:space="preserve">
-    <value>Stop GPU Applications</value>
+    <value>停止使用 GPU 的程序</value>
   </data>
   <data name="StoppingServices" xml:space="preserve">
-    <value>停止服务</value>
+    <value>停止服务中...</value>
   </data>
   <data name="ToggleAura" xml:space="preserve">
     <value>切换 Aura 模式</value>
   </data>
   <data name="ToggleFnLock" xml:space="preserve">
-    <value>切换Fn-Lock</value>
+    <value>切换 Fn 锁定</value>
   </data>
   <data name="ToggleMiniled" xml:space="preserve">
-    <value>Toggle Miniled (if supported)</value>
+    <value>切换 MiniLED (如果支持)</value>
   </data>
   <data name="ToggleScreen" xml:space="preserve">
-    <value>Toggle Screen</value>
+    <value>切换屏幕</value>
   </data>
   <data name="Turbo" xml:space="preserve">
     <value>增强模式</value>
@@ -507,7 +507,7 @@
     <value>独显直连</value>
   </data>
   <data name="UndervoltingRisky" xml:space="preserve">
-    <value>Undervolting is an experimental and risky feature. If applied values are too low for your hardware, it can become unstable, shut down or cause data corruption. If you want to try - start from small values first, click Apply and test what works for you.</value>
+    <value>降低电压是实验性的危险功能。 如果对硬件应用的值太低，可能会产生不稳定、关闭现象或造成数据损坏问题。 如果你想要尝试，应先从小值开始，点击应用并测试合适的值。</value>
   </data>
   <data name="Updates" xml:space="preserve">
     <value>更新</value>
