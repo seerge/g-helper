@@ -160,7 +160,7 @@
     <value>自動調整Windows電源模式</value>
   </data>
   <data name="AsusServicesRunning" xml:space="preserve">
-    <value>Asus Services Running</value>
+    <value>執行中的華碩服務</value>
   </data>
   <data name="AuraBreathe" xml:space="preserve">
     <value>呼吸</value>
@@ -465,19 +465,19 @@ Do you still want to continue?</value>
     <value>開始</value>
   </data>
   <data name="StartingServices" xml:space="preserve">
-    <value>Starting Services</value>
+    <value>正在啟動服務</value>
   </data>
   <data name="StartupError" xml:space="preserve">
     <value>啟動錯誤</value>
   </data>
   <data name="Stop" xml:space="preserve">
-    <value>Stop</value>
+    <value>停止</value>
   </data>
   <data name="StopGPUApps" xml:space="preserve">
-    <value>Stop GPU Applications</value>
+    <value>停止GPU相關程式</value>
   </data>
   <data name="StoppingServices" xml:space="preserve">
-    <value>Stopping Services</value>
+    <value>正在停止服務</value>
   </data>
   <data name="ToggleAura" xml:space="preserve">
     <value>切換Aura</value>
@@ -507,7 +507,7 @@ Do you still want to continue?</value>
     <value>獨顯直連</value>
   </data>
   <data name="UndervoltingRisky" xml:space="preserve">
-    <value>Undervolting is an experimental and risky feature. If applied values are too low for your hardware, it can become unstable, shut down or cause data corruption. If you want to try - start from small values first, click Apply and test what works for you.</value>
+    <value>降壓是一項實驗性且有風險的功能，若設定的值過低，可能造成系統不穩定甚至無預警關機，建議可先嘗試較小的降壓數值，並點擊"套用"來測試適合你的使用狀況</value>
   </data>
   <data name="Updates" xml:space="preserve">
     <value>更新驅動</value>
