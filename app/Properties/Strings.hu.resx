@@ -124,34 +124,34 @@
     <value>Looks like GPU is in heavy use, disable it?</value>
   </data>
   <data name="AlertDGPUTitle" xml:space="preserve">
-    <value>Eco Mode</value>
+    <value>Takarékos üzemmód</value>
   </data>
   <data name="AlertUltimateOff" xml:space="preserve">
-    <value>Switching off Ultimate Mode requires restart</value>
+    <value>Az Ultimate mód kikapcsolása után újraindítás szükséges</value>
   </data>
   <data name="AlertUltimateOn" xml:space="preserve">
-    <value>Ultimate Mode requires restart</value>
+    <value>Az Ultimate mód használatához újraindítás szükséges</value>
   </data>
   <data name="AlertUltimateTitle" xml:space="preserve">
-    <value>Reboot now?</value>
+    <value>Újraindítja most?</value>
   </data>
   <data name="AnimationSpeed" xml:space="preserve">
-    <value>Animation Speed</value>
+    <value>Animáció sebessége</value>
   </data>
   <data name="AnimeMatrix" xml:space="preserve">
     <value>Anime Matrix</value>
   </data>
   <data name="AppAlreadyRunning" xml:space="preserve">
-    <value>App already running</value>
+    <value>Az alkalmazás már el lett inítva</value>
   </data>
   <data name="AppAlreadyRunningText" xml:space="preserve">
-    <value>G-Helper is already running. Check system tray for an icon.</value>
+    <value>A G-Helper már fut. A rendszertárcán megtalálod az alkalmazás ikonját.</value>
   </data>
   <data name="Apply" xml:space="preserve">
-    <value>Apply</value>
+    <value>Alkalmaz</value>
   </data>
   <data name="ApplyFanCurve" xml:space="preserve">
-    <value>Apply Custom Fan Curve</value>
+    <value>Egyedi ventilátorgörbe alkalmazása</value>
   </data>
   <data name="ApplyPowerLimits" xml:space="preserve">
     <value>Apply Power Limits</value>
@@ -190,10 +190,10 @@
     <value>Auto Apply</value>
   </data>
   <data name="AutoMode" xml:space="preserve">
-    <value>Auto</value>
+    <value>Automatikus</value>
   </data>
   <data name="AutoRefreshTooltip" xml:space="preserve">
-    <value>Sets 60Hz to save battery, and back when plugged</value>
+    <value>A képfrissítést átállítja 60Hz-re, hogy spóroljon az akku-val, majd töltőre csatlakoztatás után vissza</value>
   </data>
   <data name="Awake" xml:space="preserve">
     <value>Awake</value>
@@ -270,7 +270,7 @@ Do you still want to continue?</value>
     <value>Factory Defaults</value>
   </data>
   <data name="FanCurves" xml:space="preserve">
-    <value>Fan Curves</value>
+    <value>Ventilátorgörbe</value>
   </data>
   <data name="FanProfileCPU" xml:space="preserve">
     <value>CPU Fan Profile</value>
