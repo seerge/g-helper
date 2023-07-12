@@ -148,7 +148,7 @@
     <value>G-Helper已經在執行。 請確認右下工作列中的圖示。</value>
   </data>
   <data name="Apply" xml:space="preserve">
-    <value>Apply</value>
+    <value>套用</value>
   </data>
   <data name="ApplyFanCurve" xml:space="preserve">
     <value>套用自定義風扇曲線</value>
@@ -160,7 +160,7 @@
     <value>自動調整Windows電源模式</value>
   </data>
   <data name="AsusServicesRunning" xml:space="preserve">
-    <value>Asus Services Running</value>
+    <value>執行中的華碩服務</value>
   </data>
   <data name="AuraBreathe" xml:space="preserve">
     <value>呼吸</value>
@@ -187,7 +187,7 @@
     <value>閃爍</value>
   </data>
   <data name="AutoApply" xml:space="preserve">
-    <value>Auto Apply</value>
+    <value>自動套用</value>
   </data>
   <data name="AutoMode" xml:space="preserve">
     <value>自動</value>
@@ -217,10 +217,10 @@
     <value>亮度</value>
   </data>
   <data name="BrightnessDown" xml:space="preserve">
-    <value>Brightness Down</value>
+    <value>螢幕亮度降低</value>
   </data>
   <data name="BrightnessUp" xml:space="preserve">
-    <value>Brightness Up</value>
+    <value>螢幕亮度提高</value>
   </data>
   <data name="Color" xml:space="preserve">
     <value>顏色</value>
@@ -253,12 +253,12 @@
     <value>節能模式</value>
   </data>
   <data name="EnableOptimusText" xml:space="preserve">
-    <value>Disabling the dGPU by going into Eco mode while Display Mode in NVIDIA Control Panel is not set to Optimus might cause problems with brightness controls until after the next reboot. 
+    <value>「Nvidia控制面板」中的顯示模式未設置為自動切換時，透過G-Helper的節能模式禁用獨顯可能導致螢幕亮度控制出現問題直到下次重新開機後。
 
-Do you still want to continue?</value>
+是否繼續？</value>
   </data>
   <data name="EnableOptimusTitle" xml:space="preserve">
-    <value>NVIDIA Display Mode is not set to Optimus</value>
+    <value>Nvidia顯示模式未設置為自動切換</value>
   </data>
   <data name="Extra" xml:space="preserve">
     <value>更多</value>
@@ -288,7 +288,7 @@ Do you still want to continue?</value>
     <value>風扇和電源</value>
   </data>
   <data name="FanSpeed" xml:space="preserve">
-    <value>Fan</value>
+    <value>風扇</value>
   </data>
   <data name="FansPower" xml:space="preserve">
     <value>自定義設置</value>
@@ -297,7 +297,7 @@ Do you still want to continue?</value>
     <value>使用Fn+F1~F12功能時免按下Fn鍵</value>
   </data>
   <data name="GPUBoost" xml:space="preserve">
-    <value>Dynamic Boost</value>
+    <value>動態加速</value>
   </data>
   <data name="GPUChanging" xml:space="preserve">
     <value>切換中...</value>
@@ -393,10 +393,10 @@ Do you still want to continue?</value>
     <value>麥克風開關</value>
   </data>
   <data name="NewUpdates" xml:space="preserve">
-    <value>New updates</value>
+    <value>新的更新</value>
   </data>
   <data name="NoNewUpdates" xml:space="preserve">
-    <value>No new updates</value>
+    <value>沒有新的更新</value>
   </data>
   <data name="OpenGHelper" xml:space="preserve">
     <value>開啟G-Helper視窗</value>
@@ -462,22 +462,22 @@ Do you still want to continue?</value>
     <value>標準模式</value>
   </data>
   <data name="Start" xml:space="preserve">
-    <value>Start</value>
+    <value>開始</value>
   </data>
   <data name="StartingServices" xml:space="preserve">
-    <value>Starting Services</value>
+    <value>正在啟動服務</value>
   </data>
   <data name="StartupError" xml:space="preserve">
     <value>啟動錯誤</value>
   </data>
   <data name="Stop" xml:space="preserve">
-    <value>Stop</value>
+    <value>停止</value>
   </data>
   <data name="StopGPUApps" xml:space="preserve">
-    <value>Stop GPU Applications</value>
+    <value>停止GPU相關程式</value>
   </data>
   <data name="StoppingServices" xml:space="preserve">
-    <value>Stopping Services</value>
+    <value>正在停止服務</value>
   </data>
   <data name="ToggleAura" xml:space="preserve">
     <value>切換Aura</value>
@@ -507,7 +507,7 @@ Do you still want to continue?</value>
     <value>獨顯直連</value>
   </data>
   <data name="UndervoltingRisky" xml:space="preserve">
-    <value>Undervolting is an experimental and risky feature. If applied values are too low for your hardware, it can become unstable, shut down or cause data corruption. If you want to try - start from small values first, click Apply and test what works for you.</value>
+    <value>降壓是一項實驗性且有風險的功能，若設定的值過低，可能造成系統不穩定甚至無預警關機，建議可先嘗試較小的降壓數值，並點擊"套用"來測試適合你的使用狀況</value>
   </data>
   <data name="Updates" xml:space="preserve">
     <value>更新驅動</value>

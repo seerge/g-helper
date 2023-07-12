@@ -148,7 +148,7 @@
     <value>G-Helper jest już uruchomiony. Sprawdź obszar powiadomień na pasku zadań.</value>
   </data>
   <data name="Apply" xml:space="preserve">
-    <value>Apply</value>
+    <value>Zastosuj</value>
   </data>
   <data name="ApplyFanCurve" xml:space="preserve">
     <value>Zastosuj krzywe</value>
@@ -160,7 +160,7 @@
     <value>Automatycznie dostosuj Plan Zasilania Windows</value>
   </data>
   <data name="AsusServicesRunning" xml:space="preserve">
-    <value>Asus Services Running</value>
+    <value>Usługi Asus uruchomione</value>
   </data>
   <data name="AuraBreathe" xml:space="preserve">
     <value>Oddychanie</value>
@@ -187,10 +187,10 @@
     <value>Stroboskop</value>
   </data>
   <data name="AutoApply" xml:space="preserve">
-    <value>Auto Apply</value>
+    <value>Zastosuj automatycznie</value>
   </data>
   <data name="AutoMode" xml:space="preserve">
-    <value>Auto</value>
+    <value>Automatycznie</value>
   </data>
   <data name="AutoRefreshTooltip" xml:space="preserve">
     <value>Automatycznie ustaw odświeżanie 60 Hz w czasie pracy na baterii</value>
@@ -208,7 +208,7 @@
     <value>Limit ładowania baterii</value>
   </data>
   <data name="BiosAndDriverUpdates" xml:space="preserve">
-    <value>BIOS and Driver Updates</value>
+    <value>Aktualizacje BIOS i sterowników</value>
   </data>
   <data name="Boot" xml:space="preserve">
     <value>Podczas uruchamiania</value>
@@ -217,16 +217,16 @@
     <value>Jasność</value>
   </data>
   <data name="BrightnessDown" xml:space="preserve">
-    <value>Brightness Down</value>
+    <value>Zmniejsz jasność</value>
   </data>
   <data name="BrightnessUp" xml:space="preserve">
-    <value>Brightness Up</value>
+    <value>Zwiększ jasność</value>
   </data>
   <data name="Color" xml:space="preserve">
     <value>Kolor</value>
   </data>
   <data name="CPUBoost" xml:space="preserve">
-    <value>CPU Boost</value>
+    <value>Zwiększenie taktowania CPU</value>
   </data>
   <data name="Custom" xml:space="preserve">
     <value>Niestandardowy</value>
@@ -244,7 +244,7 @@
     <value>Pobierz aktualizację</value>
   </data>
   <data name="DriverAndSoftware" xml:space="preserve">
-    <value>Drivers and Software</value>
+    <value>Sterowniki i Oprogramowanie</value>
   </data>
   <data name="EcoGPUTooltip" xml:space="preserve">
     <value>Wyłącza dedykowane GPU aby oszczędzić baterię</value>
@@ -253,12 +253,12 @@
     <value>Eco</value>
   </data>
   <data name="EnableOptimusText" xml:space="preserve">
-    <value>Disabling the dGPU by going into Eco mode while Display Mode in NVIDIA Control Panel is not set to Optimus might cause problems with brightness controls until after the next reboot. 
+    <value>Wyłączenie dGPU poprzez przejście do trybu Eco, podczas gdy tryb wyświetlania w Panelu sterowania NVIDIA nie jest ustawiony na Optimus może powodować problemy z regulacją jasności do czasu następnego restartu. 
 
-Do you still want to continue?</value>
+Nadal chcesz kontynuować?</value>
   </data>
   <data name="EnableOptimusTitle" xml:space="preserve">
-    <value>NVIDIA Display Mode is not set to Optimus</value>
+    <value>Tryb wyświetlania NVIDIA nie jest ustawiony na Optimus</value>
   </data>
   <data name="Extra" xml:space="preserve">
     <value>Ustawienia</value>
@@ -288,16 +288,16 @@ Do you still want to continue?</value>
     <value>Wentylatory i moc</value>
   </data>
   <data name="FanSpeed" xml:space="preserve">
-    <value>Fan</value>
+    <value>Wentylator</value>
   </data>
   <data name="FansPower" xml:space="preserve">
     <value>Dostosuj</value>
   </data>
   <data name="FnLock" xml:space="preserve">
-    <value>Process Fn+F hotkeys without Fn</value>
+    <value>Przetwarzaj skróty Fn+F bez Fn</value>
   </data>
   <data name="GPUBoost" xml:space="preserve">
-    <value>Dynamic Boost</value>
+    <value>Dynamiczne Wzmocnienie</value>
   </data>
   <data name="GPUChanging" xml:space="preserve">
     <value>Przełączanie</value>
@@ -333,7 +333,7 @@ Do you still want to continue?</value>
     <value>Klawiatura</value>
   </data>
   <data name="KillGpuApps" xml:space="preserve">
-    <value>Stop all apps using GPU when switching to Eco</value>
+    <value>Zatrzymaj wszystkie aplikacje używając GPU podczas przełączania na Eco</value>
   </data>
   <data name="LaptopBacklight" xml:space="preserve">
     <value>Podświetlenie</value>
@@ -363,7 +363,7 @@ Do you still want to continue?</value>
     <value>Jasny</value>
   </data>
   <data name="MatrixClock" xml:space="preserve">
-    <value>Clock</value>
+    <value>Zegar</value>
   </data>
   <data name="MatrixDim" xml:space="preserve">
     <value>Ciemny</value>
@@ -387,16 +387,16 @@ Do you still want to continue?</value>
     <value>Częstotliwość odświeżania 60 Hz dla oszczędzania baterii</value>
   </data>
   <data name="Multizone" xml:space="preserve">
-    <value>Multizone</value>
+    <value>Wielostrefowa</value>
   </data>
   <data name="MuteMic" xml:space="preserve">
     <value>Wyciszenie mikrofonu</value>
   </data>
   <data name="NewUpdates" xml:space="preserve">
-    <value>New updates</value>
+    <value>Nowa aktualizacja</value>
   </data>
   <data name="NoNewUpdates" xml:space="preserve">
-    <value>No new updates</value>
+    <value>Brak aktualizacji</value>
   </data>
   <data name="OpenGHelper" xml:space="preserve">
     <value>Otwórz okno G-Helper</value>
@@ -414,7 +414,7 @@ Do you still want to continue?</value>
     <value>Inne</value>
   </data>
   <data name="Overdrive" xml:space="preserve">
-    <value>Overdrive</value>
+    <value>Przeciążenie</value>
   </data>
   <data name="PerformanceMode" xml:space="preserve">
     <value>Tryb zasilania</value>
@@ -456,16 +456,16 @@ Do you still want to continue?</value>
     <value>Uśpij</value>
   </data>
   <data name="StandardGPUTooltip" xml:space="preserve">
-    <value>Enables dGPU for standard use</value>
+    <value>Włącza dGPU dla standardowego użycia</value>
   </data>
   <data name="StandardMode" xml:space="preserve">
-    <value>Standard</value>
+    <value>Standardowy</value>
   </data>
   <data name="Start" xml:space="preserve">
     <value>Start</value>
   </data>
   <data name="StartingServices" xml:space="preserve">
-    <value>Starting Services</value>
+    <value>Uruchamianie usług</value>
   </data>
   <data name="StartupError" xml:space="preserve">
     <value>Błąd uruchamiania</value>
@@ -474,16 +474,16 @@ Do you still want to continue?</value>
     <value>Stop</value>
   </data>
   <data name="StopGPUApps" xml:space="preserve">
-    <value>Stop GPU Applications</value>
+    <value>Zatrzymaj aplikacje GPU</value>
   </data>
   <data name="StoppingServices" xml:space="preserve">
-    <value>Stopping Services</value>
+    <value>Zatrzymywanie usług</value>
   </data>
   <data name="ToggleAura" xml:space="preserve">
     <value>Przełącz Aura</value>
   </data>
   <data name="ToggleFnLock" xml:space="preserve">
-    <value>Toggle Fn-Lock</value>
+    <value>Przełącz Fn-Lock</value>
   </data>
   <data name="ToggleMiniled" xml:space="preserve">
     <value>Przełącz MiniLED</value>
@@ -507,10 +507,10 @@ Do you still want to continue?</value>
     <value>Ultimate</value>
   </data>
   <data name="UndervoltingRisky" xml:space="preserve">
-    <value>Undervolting is an experimental and risky feature. If applied values are too low for your hardware, it can become unstable, shut down or cause data corruption. If you want to try - start from small values first, click Apply and test what works for you.</value>
+    <value>Undervolting jest funkcją eksperymentalną i ryzykowną. Jeżeli zastosowane wartości są za niskie dla Twojego urządzenia, może ono działać niestabilnie, wyłączyć się lub uszkodzić dane. Chcąc wypróbować tę funkcję, zacznij od niewielkich wartości, zastosuj je i sprawdź efekt.</value>
   </data>
   <data name="Updates" xml:space="preserve">
-    <value>Updates</value>
+    <value>Aktualizacje</value>
   </data>
   <data name="VersionLabel" xml:space="preserve">
     <value>Wersja</value>
