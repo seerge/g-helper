@@ -61,8 +61,9 @@ namespace GHelper
             comboBoost = new RComboBox();
             panelSliders = new Panel();
             panelAdvanced = new Panel();
-            panelAdvancedApply = new Panel();
+            panelAdvancedAlways = new Panel();
             checkApplyUV = new RCheckBox();
+            panelAdvancedApply = new Panel();
             buttonApplyAdvanced = new RButton();
             labelRisky = new Label();
             panelUViGPU = new Panel();
@@ -141,6 +142,7 @@ namespace GHelper
             panelApplyFans.SuspendLayout();
             panelSliders.SuspendLayout();
             panelAdvanced.SuspendLayout();
+            panelAdvancedAlways.SuspendLayout();
             panelAdvancedApply.SuspendLayout();
             panelUViGPU.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)trackUViGPU).BeginInit();
@@ -480,6 +482,7 @@ namespace GHelper
             // 
             panelAdvanced.AutoSize = true;
             panelAdvanced.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            panelAdvanced.Controls.Add(panelAdvancedAlways);
             panelAdvanced.Controls.Add(panelAdvancedApply);
             panelAdvanced.Controls.Add(labelRisky);
             panelAdvanced.Controls.Add(panelUViGPU);
@@ -488,35 +491,48 @@ namespace GHelper
             panelAdvanced.Controls.Add(panelTemperature);
             panelAdvanced.Controls.Add(panelTitleTemp);
             panelAdvanced.Dock = DockStyle.Top;
-            panelAdvanced.Location = new Point(10, 1266);
+            panelAdvanced.Location = new Point(10, 1272);
             panelAdvanced.Name = "panelAdvanced";
-            panelAdvanced.Size = new Size(520, 840);
+            panelAdvanced.Size = new Size(520, 888);
             panelAdvanced.TabIndex = 14;
             panelAdvanced.Visible = false;
             // 
-            // panelAdvancedApply
+            // panelAdvancedAlways
             // 
-            panelAdvancedApply.Controls.Add(checkApplyUV);
-            panelAdvancedApply.Controls.Add(buttonApplyAdvanced);
-            panelAdvancedApply.Dock = DockStyle.Top;
-            panelAdvancedApply.Location = new Point(0, 764);
-            panelAdvancedApply.Name = "panelAdvancedApply";
-            panelAdvancedApply.Size = new Size(520, 76);
-            panelAdvancedApply.TabIndex = 47;
+            panelAdvancedAlways.AutoSize = true;
+            panelAdvancedAlways.Controls.Add(checkApplyUV);
+            panelAdvancedAlways.Dock = DockStyle.Top;
+            panelAdvancedAlways.Location = new Point(0, 827);
+            panelAdvancedAlways.Name = "panelAdvancedAlways";
+            panelAdvancedAlways.Padding = new Padding(16, 0, 16, 15);
+            panelAdvancedAlways.Size = new Size(520, 61);
+            panelAdvancedAlways.TabIndex = 46;
             // 
             // checkApplyUV
             // 
             checkApplyUV.BackColor = SystemColors.ControlLight;
+            checkApplyUV.Dock = DockStyle.Top;
             checkApplyUV.Enabled = false;
-            checkApplyUV.Location = new Point(255, 16);
-            checkApplyUV.Margin = new Padding(0);
+            checkApplyUV.Location = new Point(16, 0);
+            checkApplyUV.Margin = new Padding(15, 15, 0, 0);
             checkApplyUV.Name = "checkApplyUV";
             checkApplyUV.Padding = new Padding(16, 6, 16, 6);
-            checkApplyUV.Size = new Size(246, 46);
-            checkApplyUV.TabIndex = 50;
+            checkApplyUV.Size = new Size(488, 46);
+            checkApplyUV.TabIndex = 51;
             checkApplyUV.Text = "Auto Apply";
             checkApplyUV.TextAlign = ContentAlignment.MiddleCenter;
             checkApplyUV.UseVisualStyleBackColor = false;
+            // 
+            // panelAdvancedApply
+            // 
+            panelAdvancedApply.AutoSize = true;
+            panelAdvancedApply.Controls.Add(buttonApplyAdvanced);
+            panelAdvancedApply.Dock = DockStyle.Top;
+            panelAdvancedApply.Location = new Point(0, 747);
+            panelAdvancedApply.Name = "panelAdvancedApply";
+            panelAdvancedApply.Padding = new Padding(15);
+            panelAdvancedApply.Size = new Size(520, 80);
+            panelAdvancedApply.TabIndex = 47;
             // 
             // buttonApplyAdvanced
             // 
@@ -524,12 +540,13 @@ namespace GHelper
             buttonApplyAdvanced.BackColor = SystemColors.ControlLight;
             buttonApplyAdvanced.BorderColor = Color.Transparent;
             buttonApplyAdvanced.BorderRadius = 2;
+            buttonApplyAdvanced.Dock = DockStyle.Top;
             buttonApplyAdvanced.FlatStyle = FlatStyle.Flat;
-            buttonApplyAdvanced.Location = new Point(10, 13);
-            buttonApplyAdvanced.Margin = new Padding(4, 2, 4, 2);
+            buttonApplyAdvanced.Location = new Point(15, 15);
+            buttonApplyAdvanced.Margin = new Padding(4, 2, 15, 15);
             buttonApplyAdvanced.Name = "buttonApplyAdvanced";
             buttonApplyAdvanced.Secondary = true;
-            buttonApplyAdvanced.Size = new Size(224, 50);
+            buttonApplyAdvanced.Size = new Size(490, 50);
             buttonApplyAdvanced.TabIndex = 49;
             buttonApplyAdvanced.Text = "Apply";
             buttonApplyAdvanced.TextImageRelation = TextImageRelation.ImageBeforeText;
@@ -544,7 +561,7 @@ namespace GHelper
             labelRisky.Margin = new Padding(0);
             labelRisky.Name = "labelRisky";
             labelRisky.Padding = new Padding(10, 10, 10, 5);
-            labelRisky.Size = new Size(520, 260);
+            labelRisky.Size = new Size(520, 243);
             labelRisky.TabIndex = 46;
             labelRisky.Text = resources.GetString("labelRisky.Text");
             // 
@@ -773,26 +790,29 @@ namespace GHelper
             panelPower.Location = new Point(10, 640);
             panelPower.Margin = new Padding(4);
             panelPower.Name = "panelPower";
-            panelPower.Size = new Size(520, 626);
+            panelPower.Size = new Size(520, 632);
             panelPower.TabIndex = 43;
             // 
             // panelApplyPower
             // 
+            panelApplyPower.AutoSize = true;
             panelApplyPower.Controls.Add(checkApplyPower);
             panelApplyPower.Dock = DockStyle.Top;
             panelApplyPower.Location = new Point(0, 556);
             panelApplyPower.Name = "panelApplyPower";
-            panelApplyPower.Size = new Size(520, 70);
+            panelApplyPower.Padding = new Padding(15);
+            panelApplyPower.Size = new Size(520, 76);
             panelApplyPower.TabIndex = 47;
             // 
             // checkApplyPower
             // 
             checkApplyPower.BackColor = SystemColors.ControlLight;
-            checkApplyPower.Location = new Point(13, 13);
+            checkApplyPower.Dock = DockStyle.Top;
+            checkApplyPower.Location = new Point(15, 15);
             checkApplyPower.Margin = new Padding(0);
             checkApplyPower.Name = "checkApplyPower";
             checkApplyPower.Padding = new Padding(16, 6, 16, 6);
-            checkApplyPower.Size = new Size(489, 46);
+            checkApplyPower.Size = new Size(490, 46);
             checkApplyPower.TabIndex = 45;
             checkApplyPower.Text = "Apply Power Limits";
             checkApplyPower.UseVisualStyleBackColor = false;
@@ -1396,6 +1416,7 @@ namespace GHelper
             panelSliders.PerformLayout();
             panelAdvanced.ResumeLayout(false);
             panelAdvanced.PerformLayout();
+            panelAdvancedAlways.ResumeLayout(false);
             panelAdvancedApply.ResumeLayout(false);
             panelUViGPU.ResumeLayout(false);
             panelUViGPU.PerformLayout();
@@ -1502,7 +1523,6 @@ namespace GHelper
         private RCheckBox checkApplyFans;
         private RButton buttonReset;
         private Label labelBoost;
-        private RCheckBox checkApplyUV;
         private RComboBox comboBoost;
         private PictureBox picturePerf;
         private Label labelFans;
@@ -1546,5 +1566,7 @@ namespace GHelper
         private Label labelTemp;
         private Label labelLeftTemp;
         private TrackBar trackTemp;
+        private Panel panelAdvancedAlways;
+        private RCheckBox checkApplyUV;
     }
 }
