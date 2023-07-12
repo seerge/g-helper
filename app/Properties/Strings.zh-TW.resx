@@ -148,7 +148,7 @@
     <value>G-Helper已經在執行。 請確認右下工作列中的圖示。</value>
   </data>
   <data name="Apply" xml:space="preserve">
-    <value>Apply</value>
+    <value>套用</value>
   </data>
   <data name="ApplyFanCurve" xml:space="preserve">
     <value>套用自定義風扇曲線</value>
@@ -187,7 +187,7 @@
     <value>閃爍</value>
   </data>
   <data name="AutoApply" xml:space="preserve">
-    <value>Auto Apply</value>
+    <value>自動套用</value>
   </data>
   <data name="AutoMode" xml:space="preserve">
     <value>自動</value>
@@ -217,10 +217,10 @@
     <value>亮度</value>
   </data>
   <data name="BrightnessDown" xml:space="preserve">
-    <value>Brightness Down</value>
+    <value>螢幕亮度降低</value>
   </data>
   <data name="BrightnessUp" xml:space="preserve">
-    <value>Brightness Up</value>
+    <value>螢幕亮度提高</value>
   </data>
   <data name="Color" xml:space="preserve">
     <value>顏色</value>
@@ -288,7 +288,7 @@ Do you still want to continue?</value>
     <value>風扇和電源</value>
   </data>
   <data name="FanSpeed" xml:space="preserve">
-    <value>Fan</value>
+    <value>風扇</value>
   </data>
   <data name="FansPower" xml:space="preserve">
     <value>自定義設置</value>
@@ -297,7 +297,7 @@ Do you still want to continue?</value>
     <value>使用Fn+F1~F12功能時免按下Fn鍵</value>
   </data>
   <data name="GPUBoost" xml:space="preserve">
-    <value>Dynamic Boost</value>
+    <value>動態加速</value>
   </data>
   <data name="GPUChanging" xml:space="preserve">
     <value>切換中...</value>
@@ -393,10 +393,10 @@ Do you still want to continue?</value>
     <value>麥克風開關</value>
   </data>
   <data name="NewUpdates" xml:space="preserve">
-    <value>New updates</value>
+    <value>新的更新</value>
   </data>
   <data name="NoNewUpdates" xml:space="preserve">
-    <value>No new updates</value>
+    <value>沒有新的更新</value>
   </data>
   <data name="OpenGHelper" xml:space="preserve">
     <value>開啟G-Helper視窗</value>
@@ -462,7 +462,7 @@ Do you still want to continue?</value>
     <value>標準模式</value>
   </data>
   <data name="Start" xml:space="preserve">
-    <value>Start</value>
+    <value>開始</value>
   </data>
   <data name="StartingServices" xml:space="preserve">
     <value>Starting Services</value>
