@@ -160,7 +160,7 @@
     <value>自动调整Windows电源模式</value>
   </data>
   <data name="AsusServicesRunning" xml:space="preserve">
-    <value>Asus Services Running</value>
+    <value>运行中的Asus服务</value>
   </data>
   <data name="AuraBreathe" xml:space="preserve">
     <value>呼吸</value>
@@ -187,7 +187,7 @@
     <value>闪烁</value>
   </data>
   <data name="AutoApply" xml:space="preserve">
-    <value>Auto Apply</value>
+    <value>自动应用</value>
   </data>
   <data name="AutoMode" xml:space="preserve">
     <value>自动</value>
@@ -208,7 +208,7 @@
     <value>电池充电限制</value>
   </data>
   <data name="BiosAndDriverUpdates" xml:space="preserve">
-    <value>BIOS and Driver Updates</value>
+    <value>BIOS和驱动更新</value>
   </data>
   <data name="Boot" xml:space="preserve">
     <value>开机时</value>
@@ -217,10 +217,10 @@
     <value>亮度</value>
   </data>
   <data name="BrightnessDown" xml:space="preserve">
-    <value>Brightness Down</value>
+    <value>亮度降低</value>
   </data>
   <data name="BrightnessUp" xml:space="preserve">
-    <value>Brightness Up</value>
+    <value>亮度提高</value>
   </data>
   <data name="Color" xml:space="preserve">
     <value>颜色</value>
@@ -244,7 +244,7 @@
     <value>下载更新</value>
   </data>
   <data name="DriverAndSoftware" xml:space="preserve">
-    <value>Drivers and Software</value>
+    <value>驱动和软件</value>
   </data>
   <data name="EcoGPUTooltip" xml:space="preserve">
     <value>禁用独显以节省电池电量</value>
@@ -253,12 +253,12 @@
     <value>集显模式</value>
   </data>
   <data name="EnableOptimusText" xml:space="preserve">
-    <value>Disabling the dGPU by going into Eco mode while Display Mode in NVIDIA Control Panel is not set to Optimus might cause problems with brightness controls until after the next reboot. 
+    <value>在NVIDIA控制面板中显示模式未设置为Optimus的情况下, 进入集显模式禁用dGPU可能会导致亮度控制出现问题, 直到下次重新启动为止. 
 
-Do you still want to continue?</value>
+你仍然要继续吗?</value>
   </data>
   <data name="EnableOptimusTitle" xml:space="preserve">
-    <value>NVIDIA Display Mode is not set to Optimus</value>
+    <value>NVIDIA显示模式未设置为Optimus</value>
   </data>
   <data name="Extra" xml:space="preserve">
     <value>更多</value>
@@ -393,10 +393,10 @@ Do you still want to continue?</value>
     <value>静音麦克风</value>
   </data>
   <data name="NewUpdates" xml:space="preserve">
-    <value>New updates</value>
+    <value>新的更新</value>
   </data>
   <data name="NoNewUpdates" xml:space="preserve">
-    <value>No new updates</value>
+    <value>没有新的更新</value>
   </data>
   <data name="OpenGHelper" xml:space="preserve">
     <value>打开G-Helper窗口</value>
@@ -438,7 +438,7 @@ Do you still want to continue?</value>
     <value>退出</value>
   </data>
   <data name="RestartGPU" xml:space="preserve">
-    <value>Something is using dGPU and preventing Eco mode. Restart dGPU in device manager? * Please proceed at your own risk.</value>
+    <value>有些东西正在使用dGPU并阻止进入集显模式. 是否在设备管理器中重启dGPU? * 请自行承担风险.</value>
   </data>
   <data name="RPM" xml:space="preserve">
     <value>RPM</value>
@@ -462,22 +462,22 @@ Do you still want to continue?</value>
     <value>标准模式</value>
   </data>
   <data name="Start" xml:space="preserve">
-    <value>Start</value>
+    <value>启动</value>
   </data>
   <data name="StartingServices" xml:space="preserve">
-    <value>Starting Services</value>
+    <value>正在启动服务</value>
   </data>
   <data name="StartupError" xml:space="preserve">
     <value>启动错误</value>
   </data>
   <data name="Stop" xml:space="preserve">
-    <value>Stop</value>
+    <value>停止</value>
   </data>
   <data name="StopGPUApps" xml:space="preserve">
-    <value>Stop GPU Applications</value>
+    <value>停止GPU应用</value>
   </data>
   <data name="StoppingServices" xml:space="preserve">
-    <value>Stopping Services</value>
+    <value>正在停止服务</value>
   </data>
   <data name="ToggleAura" xml:space="preserve">
     <value>切换 Aura 模式</value>
@@ -507,10 +507,10 @@ Do you still want to continue?</value>
     <value>独显直连</value>
   </data>
   <data name="UndervoltingRisky" xml:space="preserve">
-    <value>Undervolting is an experimental and risky feature. If applied values are too low for your hardware, it can become unstable, shut down or cause data corruption. If you want to try - start from small values first, click Apply and test what works for you.</value>
+    <value>降压特性是实验性并有风险的. 如果应用了对于你的设备来说太低的值, 可能会造成不稳定, 关机或数据损坏. 如果你想要尝试 - 先从小的值开始, 点击应用测试什么值对你的设备有效.</value>
   </data>
   <data name="Updates" xml:space="preserve">
-    <value>Updates</value>
+    <value>更新</value>
   </data>
   <data name="VersionLabel" xml:space="preserve">
     <value>版本</value>
