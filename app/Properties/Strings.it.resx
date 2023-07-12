@@ -402,7 +402,7 @@ Sei sicuro di voler continuare?</value>
     <value>Apri G-Helper</value>
   </data>
   <data name="Optimized" xml:space="preserve">
-    <value>Ottimizzato</value>
+    <value>Ottimizzata</value>
   </data>
   <data name="OptimizedGPUTooltip" xml:space="preserve">
     <value>Passa ad Eco quando alimentato a batteria e a Standard quando in carica</value>
