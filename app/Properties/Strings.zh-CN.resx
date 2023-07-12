@@ -121,13 +121,13 @@
     <value>无法连接到ASUS ACPI。 没有它应用程序将无法运行。 请尝试安装Asus System Control Interface驱动。</value>
   </data>
   <data name="AlertDGPU" xml:space="preserve">
-    <value>GPU 看起来正在大量耗电，是否禁用？</value>
+    <value>看起来 GPU 正在被重度使用，是否禁用？</value>
   </data>
   <data name="AlertDGPUTitle" xml:space="preserve">
     <value>集显模式</value>
   </data>
   <data name="AlertUltimateOff" xml:space="preserve">
-    <value>关闭独显直连需要重启</value>
+    <value>关闭独显直连需要重新启动</value>
   </data>
   <data name="AlertUltimateOn" xml:space="preserve">
     <value>切换到独显直连需要重启</value>
@@ -253,12 +253,12 @@
     <value>集显模式</value>
   </data>
   <data name="EnableOptimusText" xml:space="preserve">
-    <value>NVIDIA 控制面板中的显示模式未设置为自动切换时，通过集显模式禁用dGPU可能会导致亮度控制直到下次重启后出现问题。
+    <value>若未在nVIDIA控制面板的混合显示模式中设置为Optimus，关闭独立显卡可能会导致亮度控制在系统重启前都不可用。 
 
-你仍然要继续吗？</value>
+确定还要继续吗？</value>
   </data>
   <data name="EnableOptimusTitle" xml:space="preserve">
-    <value>NVIDIA 显示模式未设置为自动切换</value>
+    <value>nVIDIA显示模式尚未设置至Optimus</value>
   </data>
   <data name="Extra" xml:space="preserve">
     <value>更多</value>
