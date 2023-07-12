@@ -160,7 +160,7 @@
     <value>Automatycznie dostosuj Plan Zasilania Windows</value>
   </data>
   <data name="AsusServicesRunning" xml:space="preserve">
-    <value>Usługi Asus uruchomione</value>
+    <value>Uruchomione usługi Asus</value>
   </data>
   <data name="AuraBreathe" xml:space="preserve">
     <value>Oddychanie</value>
@@ -190,7 +190,7 @@
     <value>Zastosuj automatycznie</value>
   </data>
   <data name="AutoMode" xml:space="preserve">
-    <value>Automatycznie</value>
+    <value>Auto</value>
   </data>
   <data name="AutoRefreshTooltip" xml:space="preserve">
     <value>Automatycznie ustaw odświeżanie 60 Hz w czasie pracy na baterii</value>
@@ -244,7 +244,7 @@
     <value>Pobierz aktualizację</value>
   </data>
   <data name="DriverAndSoftware" xml:space="preserve">
-    <value>Sterowniki i Oprogramowanie</value>
+    <value>Sterowniki i oprogramowanie</value>
   </data>
   <data name="EcoGPUTooltip" xml:space="preserve">
     <value>Wyłącza dedykowane GPU aby oszczędzić baterię</value>
@@ -253,7 +253,7 @@
     <value>Eco</value>
   </data>
   <data name="EnableOptimusText" xml:space="preserve">
-    <value>Wyłączenie dGPU poprzez przejście do trybu Eco, podczas gdy tryb wyświetlania w Panelu sterowania NVIDIA nie jest ustawiony na Optimus może powodować problemy z regulacją jasności do czasu następnego restartu. 
+    <value>Wyłączenie dGPU przez przejście do trybu Eco, podczas gdy tryb wyświetlania w Panelu sterowania NVIDIA nie jest ustawiony na Optimus, może powodować problemy z regulacją jasności do czasu następnego restartu systemu. 
 
 Nadal chcesz kontynuować?</value>
   </data>
@@ -294,10 +294,10 @@ Nadal chcesz kontynuować?</value>
     <value>Dostosuj</value>
   </data>
   <data name="FnLock" xml:space="preserve">
-    <value>Przetwarzaj skróty Fn+F bez Fn</value>
+    <value>Używaj klawiszy funkcyjnych bez przycisku Fn</value>
   </data>
   <data name="GPUBoost" xml:space="preserve">
-    <value>Dynamiczne Wzmocnienie</value>
+    <value>Dynamic Boost</value>
   </data>
   <data name="GPUChanging" xml:space="preserve">
     <value>Przełączanie</value>
@@ -333,7 +333,7 @@ Nadal chcesz kontynuować?</value>
     <value>Klawiatura</value>
   </data>
   <data name="KillGpuApps" xml:space="preserve">
-    <value>Zatrzymaj wszystkie aplikacje używając GPU podczas przełączania na Eco</value>
+    <value>Zatrzymaj wszystkie aplikacje używające GPU podczas przełączania na Eco</value>
   </data>
   <data name="LaptopBacklight" xml:space="preserve">
     <value>Podświetlenie</value>
@@ -393,7 +393,7 @@ Nadal chcesz kontynuować?</value>
     <value>Wyciszenie mikrofonu</value>
   </data>
   <data name="NewUpdates" xml:space="preserve">
-    <value>Nowa aktualizacja</value>
+    <value>Nowe aktualizacje</value>
   </data>
   <data name="NoNewUpdates" xml:space="preserve">
     <value>Brak aktualizacji</value>
@@ -414,7 +414,7 @@ Nadal chcesz kontynuować?</value>
     <value>Inne</value>
   </data>
   <data name="Overdrive" xml:space="preserve">
-    <value>Przeciążenie</value>
+    <value>Overdrive</value>
   </data>
   <data name="PerformanceMode" xml:space="preserve">
     <value>Tryb zasilania</value>
@@ -459,7 +459,7 @@ Nadal chcesz kontynuować?</value>
     <value>Włącza dGPU dla standardowego użycia</value>
   </data>
   <data name="StandardMode" xml:space="preserve">
-    <value>Standardowy</value>
+    <value>Standard</value>
   </data>
   <data name="Start" xml:space="preserve">
     <value>Start</value>
@@ -474,7 +474,7 @@ Nadal chcesz kontynuować?</value>
     <value>Stop</value>
   </data>
   <data name="StopGPUApps" xml:space="preserve">
-    <value>Zatrzymaj aplikacje GPU</value>
+    <value>Zatrzymaj aplikacje używające GPU</value>
   </data>
   <data name="StoppingServices" xml:space="preserve">
     <value>Zatrzymywanie usług</value>
