@@ -226,7 +226,7 @@
     <value>颜色</value>
   </data>
   <data name="CPUBoost" xml:space="preserve">
-    <value>CPU 睿频加速</value>
+    <value>CPU 睿频</value>
   </data>
   <data name="Custom" xml:space="preserve">
     <value>自定义设置</value>
@@ -244,7 +244,7 @@
     <value>下载更新</value>
   </data>
   <data name="DriverAndSoftware" xml:space="preserve">
-    <value>驱动软件</value>
+    <value>驱动程序和软件</value>
   </data>
   <data name="EcoGPUTooltip" xml:space="preserve">
     <value>禁用独显以节省电池电量</value>
@@ -253,9 +253,9 @@
     <value>集显模式</value>
   </data>
   <data name="EnableOptimusText" xml:space="preserve">
-    <value>NVIDIA 控制面板中的显示模式未设置为自动切换时，通过节能模式禁用独立显卡可能会使亮度控制出现问题，直到下次重启后才能恢复。
+    <value>NVIDIA 控制面板中的显示模式未设置为自动切换时，通过集显模式禁用dGPU可能会导致亮度控制直到下次重启后出现问题。
 
-确定继续？</value>
+你仍然要继续吗？</value>
   </data>
   <data name="EnableOptimusTitle" xml:space="preserve">
     <value>NVIDIA 显示模式未设置为自动切换</value>
