@@ -456,7 +456,7 @@ Sei sicuro di voler continuare?</value>
     <value>Sospensione</value>
   </data>
   <data name="StandardGPUTooltip" xml:space="preserve">
-    <value>Abilita la dGPU in modalità standard</value>
+    <value>Abilita la dGPU in modalità Standard</value>
   </data>
   <data name="StandardMode" xml:space="preserve">
     <value>Standard</value>
