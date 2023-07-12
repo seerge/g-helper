@@ -169,7 +169,7 @@
     <value>Color Cycle</value>
   </data>
   <data name="AuraFast" xml:space="preserve">
-    <value>Fast</value>
+    <value>Rapid</value>
   </data>
   <data name="AuraNormal" xml:space="preserve">
     <value>Normal</value>
@@ -178,7 +178,7 @@
     <value>Curcubeu</value>
   </data>
   <data name="AuraSlow" xml:space="preserve">
-    <value>Slow</value>
+    <value>Încet</value>
   </data>
   <data name="AuraStatic" xml:space="preserve">
     <value>Static</value>
@@ -187,7 +187,7 @@
     <value>Strobe</value>
   </data>
   <data name="AutoApply" xml:space="preserve">
-    <value>Auto Apply</value>
+    <value>Aplicare automată</value>
   </data>
   <data name="AutoMode" xml:space="preserve">
     <value>Automat</value>
@@ -330,7 +330,7 @@ Do you still want to continue?</value>
     <value>Key Bindings</value>
   </data>
   <data name="Keyboard" xml:space="preserve">
-    <value>Keyboard</value>
+    <value>Tastatură</value>
   </data>
   <data name="KillGpuApps" xml:space="preserve">
     <value>Stop all apps using GPU when switching to Eco</value>
