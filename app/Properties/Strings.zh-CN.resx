@@ -148,7 +148,7 @@
     <value>G-Helper已经在运行。 请查看系统托盘中的图标。</value>
   </data>
   <data name="Apply" xml:space="preserve">
-    <value>Apply</value>
+    <value>应用</value>
   </data>
   <data name="ApplyFanCurve" xml:space="preserve">
     <value>应用自定义扇形曲线</value>
@@ -160,7 +160,7 @@
     <value>自动调整Windows电源模式</value>
   </data>
   <data name="AsusServicesRunning" xml:space="preserve">
-    <value>Asus Services Running</value>
+    <value>正在运行的 Asus 服务</value>
   </data>
   <data name="AuraBreathe" xml:space="preserve">
     <value>呼吸</value>
@@ -187,7 +187,7 @@
     <value>闪烁</value>
   </data>
   <data name="AutoApply" xml:space="preserve">
-    <value>Auto Apply</value>
+    <value>自动应用</value>
   </data>
   <data name="AutoMode" xml:space="preserve">
     <value>自动</value>
@@ -208,7 +208,7 @@
     <value>电池充电限制</value>
   </data>
   <data name="BiosAndDriverUpdates" xml:space="preserve">
-    <value>BIOS and Driver Updates</value>
+    <value>BIOS 和驱动程序更新</value>
   </data>
   <data name="Boot" xml:space="preserve">
     <value>开机时</value>
@@ -217,10 +217,10 @@
     <value>亮度</value>
   </data>
   <data name="BrightnessDown" xml:space="preserve">
-    <value>Brightness Down</value>
+    <value>降低亮度</value>
   </data>
   <data name="BrightnessUp" xml:space="preserve">
-    <value>Brightness Up</value>
+    <value>提高亮度</value>
   </data>
   <data name="Color" xml:space="preserve">
     <value>颜色</value>
@@ -244,7 +244,7 @@
     <value>下载更新</value>
   </data>
   <data name="DriverAndSoftware" xml:space="preserve">
-    <value>Drivers and Software</value>
+    <value>驱动软件</value>
   </data>
   <data name="EcoGPUTooltip" xml:space="preserve">
     <value>禁用独显以节省电池电量</value>
@@ -253,12 +253,12 @@
     <value>集显模式</value>
   </data>
   <data name="EnableOptimusText" xml:space="preserve">
-    <value>Disabling the dGPU by going into Eco mode while Display Mode in NVIDIA Control Panel is not set to Optimus might cause problems with brightness controls until after the next reboot. 
+    <value>NVIDIA 控制面板中的显示模式未设置为自动切换时，通过节能模式禁用独立显卡可能会使亮度控制出现问题，直到下次重启后才能恢复。
 
-Do you still want to continue?</value>
+确定继续？</value>
   </data>
   <data name="EnableOptimusTitle" xml:space="preserve">
-    <value>NVIDIA Display Mode is not set to Optimus</value>
+    <value>NVIDIA 显示模式未设置为自动切换</value>
   </data>
   <data name="Extra" xml:space="preserve">
     <value>更多</value>
@@ -288,7 +288,7 @@ Do you still want to continue?</value>
     <value>风扇和电源</value>
   </data>
   <data name="FanSpeed" xml:space="preserve">
-    <value>Fan</value>
+    <value>风扇</value>
   </data>
   <data name="FansPower" xml:space="preserve">
     <value>风扇与电源设置</value>
@@ -297,16 +297,16 @@ Do you still want to continue?</value>
     <value>打开FnLock (无需按下FN使用FN+(F1-F12)热键)</value>
   </data>
   <data name="GPUBoost" xml:space="preserve">
-    <value>Dynamic Boost</value>
+    <value>动态加速</value>
   </data>
   <data name="GPUChanging" xml:space="preserve">
     <value>切换中...</value>
   </data>
   <data name="GPUCoreClockOffset" xml:space="preserve">
-    <value>Core Clock Offset</value>
+    <value>核心频率偏移量</value>
   </data>
   <data name="GPUMemoryClockOffset" xml:space="preserve">
-    <value>Memory Clock Offset</value>
+    <value>显存频率偏移量</value>
   </data>
   <data name="GPUMode" xml:space="preserve">
     <value>显卡模式</value>
@@ -321,10 +321,10 @@ Do you still want to continue?</value>
     <value>独显直连</value>
   </data>
   <data name="GPUSettings" xml:space="preserve">
-    <value>GPU Settings</value>
+    <value>GPU 设置</value>
   </data>
   <data name="GPUTempTarget" xml:space="preserve">
-    <value>Temperature Target</value>
+    <value>温度目标</value>
   </data>
   <data name="KeyBindings" xml:space="preserve">
     <value>按键绑定</value>
@@ -345,16 +345,16 @@ Do you still want to continue?</value>
     <value>笔记本屏幕</value>
   </data>
   <data name="Lid" xml:space="preserve">
-    <value>Lid</value>
+    <value>盖子</value>
   </data>
   <data name="Lightbar" xml:space="preserve">
-    <value>Lightbar</value>
+    <value>灯条</value>
   </data>
   <data name="Logo" xml:space="preserve">
-    <value>Logo</value>
+    <value>徽标</value>
   </data>
   <data name="MatrixAudio" xml:space="preserve">
-    <value>Audio Visualizer</value>
+    <value>音频可视化器</value>
   </data>
   <data name="MatrixBanner" xml:space="preserve">
     <value>Anime Matrix 标识</value>
@@ -393,10 +393,10 @@ Do you still want to continue?</value>
     <value>静音麦克风</value>
   </data>
   <data name="NewUpdates" xml:space="preserve">
-    <value>New updates</value>
+    <value>有更新</value>
   </data>
   <data name="NoNewUpdates" xml:space="preserve">
-    <value>No new updates</value>
+    <value>无更新</value>
   </data>
   <data name="OpenGHelper" xml:space="preserve">
     <value>打开G-Helper窗口</value>
@@ -438,7 +438,7 @@ Do you still want to continue?</value>
     <value>退出</value>
   </data>
   <data name="RestartGPU" xml:space="preserve">
-    <value>Something is using dGPU and preventing Eco mode. Restart dGPU in device manager? * Please proceed at your own risk.</value>
+    <value>有程序正在使用独立显卡阻止进入节能模式。要在设备管理器中重新启动dGPU 吗？* 请自行承担风险。</value>
   </data>
   <data name="RPM" xml:space="preserve">
     <value>RPM</value>
@@ -471,19 +471,19 @@ Do you still want to continue?</value>
     <value>启动错误</value>
   </data>
   <data name="Stop" xml:space="preserve">
-    <value>Stop</value>
+    <value>停止</value>
   </data>
   <data name="StopGPUApps" xml:space="preserve">
     <value>Stop GPU Applications</value>
   </data>
   <data name="StoppingServices" xml:space="preserve">
-    <value>Stopping Services</value>
+    <value>停止服务</value>
   </data>
   <data name="ToggleAura" xml:space="preserve">
     <value>切换 Aura 模式</value>
   </data>
   <data name="ToggleFnLock" xml:space="preserve">
-    <value>Toggle Fn-Lock</value>
+    <value>切换Fn-Lock</value>
   </data>
   <data name="ToggleMiniled" xml:space="preserve">
     <value>Toggle Miniled (if supported)</value>
@@ -510,7 +510,7 @@ Do you still want to continue?</value>
     <value>Undervolting is an experimental and risky feature. If applied values are too low for your hardware, it can become unstable, shut down or cause data corruption. If you want to try - start from small values first, click Apply and test what works for you.</value>
   </data>
   <data name="Updates" xml:space="preserve">
-    <value>Updates</value>
+    <value>更新</value>
   </data>
   <data name="VersionLabel" xml:space="preserve">
     <value>版本</value>
