@@ -118,13 +118,13 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="ACPIError" xml:space="preserve">
-    <value>Can't connect to ASUS ACPI. Application can't function without it. Try to install Asus System Control Interface</value>
+    <value>Nem sikerült csatlakozni az ASUS ACPI-hez, az alkalmazás nem működik enélkül. Próbáld meg telepíteni az ASUS rendszervezérlő interfész-t</value>
   </data>
   <data name="AlertDGPU" xml:space="preserve">
-    <value>Looks like GPU is in heavy use, disable it?</value>
+    <value>Úgy tűnik használatban van a GPU. Biztosan letiltod?</value>
   </data>
   <data name="AlertDGPUTitle" xml:space="preserve">
-    <value>Takarékos üzemmód</value>
+    <value>Eco mód</value>
   </data>
   <data name="AlertUltimateOff" xml:space="preserve">
     <value>Az Ultimate mód kikapcsolása után újraindítás szükséges</value>
@@ -184,7 +184,7 @@
     <value>Állandó</value>
   </data>
   <data name="AuraStrobe" xml:space="preserve">
-    <value>Gyors villogás</value>
+    <value>Stroboszkóp</value>
   </data>
   <data name="AutoApply" xml:space="preserve">
     <value>Automatikus alkalmazás</value>
@@ -193,7 +193,7 @@
     <value>Automata</value>
   </data>
   <data name="AutoRefreshTooltip" xml:space="preserve">
-    <value>A képfrissítést átállítja 60Hz-re, hogy spóroljon az akku-val, majd töltőre csatlakoztatás után vissza</value>
+    <value>Átállítja 60Hz-re, hogy spóroljon az akku-val, majd töltőn vissza</value>
   </data>
   <data name="Awake" xml:space="preserve">
     <value>Ébren</value>
@@ -202,10 +202,10 @@
     <value>Timeout plugged / on battery (0 - ON)</value>
   </data>
   <data name="Balanced" xml:space="preserve">
-    <value>Kiegyensúlyozott</value>
+    <value>Teljesítmény</value>
   </data>
   <data name="BatteryChargeLimit" xml:space="preserve">
-    <value>Akkumulátor töltési korlát</value>
+    <value>Töltési korlát</value>
   </data>
   <data name="BiosAndDriverUpdates" xml:space="preserve">
     <value>BIOS és illesztőprogram frissítések</value>
@@ -258,7 +258,7 @@
 Do you still want to continue?</value>
   </data>
   <data name="EnableOptimusTitle" xml:space="preserve">
-    <value>NVIDIA Display Mode is not set to Optimus</value>
+    <value>NVIDIA kijelzőmód nincs Optimus-ra állítva</value>
   </data>
   <data name="Extra" xml:space="preserve">
     <value>Extra</value>
@@ -291,7 +291,7 @@ Do you still want to continue?</value>
     <value>Ventilátor</value>
   </data>
   <data name="FansPower" xml:space="preserve">
-    <value>Ventilátor + energia</value>
+    <value>Venti + energia</value>
   </data>
   <data name="FnLock" xml:space="preserve">
     <value>Process Fn+F hotkeys without Fn</value>
@@ -300,7 +300,7 @@ Do you still want to continue?</value>
     <value>Dinamikus gyorsítás</value>
   </data>
   <data name="GPUChanging" xml:space="preserve">
-    <value>Töltés</value>
+    <value>Váltás...</value>
   </data>
   <data name="GPUCoreClockOffset" xml:space="preserve">
     <value>Magórajel eltolás</value>
@@ -318,31 +318,31 @@ Do you still want to continue?</value>
     <value>iGPU + dGPU</value>
   </data>
   <data name="GPUModeUltimate" xml:space="preserve">
-    <value>dGPU exclusive</value>
+    <value>kizárólag dGPU</value>
   </data>
   <data name="GPUSettings" xml:space="preserve">
-    <value>GPU Settings</value>
+    <value>GPU beállítások</value>
   </data>
   <data name="GPUTempTarget" xml:space="preserve">
-    <value>Temperature Target</value>
+    <value>Célhőmérséklet</value>
   </data>
   <data name="KeyBindings" xml:space="preserve">
-    <value>Key Bindings</value>
+    <value>Gyorsbillentyűk</value>
   </data>
   <data name="Keyboard" xml:space="preserve">
-    <value>Keyboard</value>
+    <value>Billentyűzet</value>
   </data>
   <data name="KillGpuApps" xml:space="preserve">
     <value>Stop all apps using GPU when switching to Eco</value>
   </data>
   <data name="LaptopBacklight" xml:space="preserve">
-    <value>Laptop Backlight</value>
+    <value>Laptop háttérvilágítás</value>
   </data>
   <data name="LaptopKeyboard" xml:space="preserve">
-    <value>Laptop Keyboard</value>
+    <value>Laptop billentyűzet</value>
   </data>
   <data name="LaptopScreen" xml:space="preserve">
-    <value>Laptop Screen</value>
+    <value>Laptop kijelző</value>
   </data>
   <data name="Lid" xml:space="preserve">
     <value>Fedél</value>
@@ -369,7 +369,7 @@ Do you still want to continue?</value>
     <value>Halvány</value>
   </data>
   <data name="MatrixLogo" xml:space="preserve">
-    <value>Rog Logo</value>
+    <value>Rog logó</value>
   </data>
   <data name="MatrixMedium" xml:space="preserve">
     <value>Közepes</value>
@@ -417,7 +417,7 @@ Do you still want to continue?</value>
     <value>Túlhajtás</value>
   </data>
   <data name="PerformanceMode" xml:space="preserve">
-    <value>Mód</value>
+    <value>Üzemmód</value>
   </data>
   <data name="PictureGif" xml:space="preserve">
     <value>Kép / Gif</value>
@@ -459,7 +459,7 @@ Do you still want to continue?</value>
     <value>Általános használathoz engedélyezi a dGPU-t</value>
   </data>
   <data name="StandardMode" xml:space="preserve">
-    <value>Általános</value>
+    <value>Standard</value>
   </data>
   <data name="Start" xml:space="preserve">
     <value>Indítás</value>

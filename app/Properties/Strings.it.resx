@@ -199,7 +199,7 @@
     <value>In uso</value>
   </data>
   <data name="BacklightTimeout" xml:space="preserve">
-    <value>Timeout collegato / batteria (0 - ACCESO)</value>
+    <value>Timeout in carica / a batteria (0 - ACCESO)</value>
   </data>
   <data name="Balanced" xml:space="preserve">
     <value>Bilanciato</value>
@@ -327,7 +327,7 @@ Sei sicuro di voler continuare?</value>
     <value>Temperatura Target</value>
   </data>
   <data name="KeyBindings" xml:space="preserve">
-    <value>Associazione tasti</value>
+    <value>Associazione Tasti</value>
   </data>
   <data name="Keyboard" xml:space="preserve">
     <value>Tastiera</value>
@@ -396,7 +396,7 @@ Sei sicuro di voler continuare?</value>
     <value>Nuovi aggiornamenti</value>
   </data>
   <data name="NoNewUpdates" xml:space="preserve">
-    <value>Non ci sono nuovi aggiornamenti</value>
+    <value>Sistema aggiornato</value>
   </data>
   <data name="OpenGHelper" xml:space="preserve">
     <value>Apri G-Helper</value>

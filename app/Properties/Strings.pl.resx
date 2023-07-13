@@ -348,7 +348,7 @@ Nadal chcesz kontynuować?</value>
     <value>Pokrywa</value>
   </data>
   <data name="Lightbar" xml:space="preserve">
-    <value>Pasek świetlny</value>
+    <value>Lightbar</value>
   </data>
   <data name="Logo" xml:space="preserve">
     <value>Logo</value>
