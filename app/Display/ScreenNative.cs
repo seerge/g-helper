@@ -116,15 +116,17 @@ namespace GHelper.Display
 
 
         public const int ENUM_CURRENT_SETTINGS = -1;
-        public const string defaultDevice = "\\\\.\\DISPLAY1";
+        public const string defaultDevice = @"\\.\DISPLAY1";
 
-        public static string? FindLaptopScreen()
+        public static string? FindLaptopScreen(bool log = false)
         {
             string? laptopScreen = null;
 
             try
             {
                 var devices = GetAllDevices().ToArray();
+                var screens = Screen.AllScreens;
+
                 int count = 0, displayNum = -1;
 
                 string internalName = AppConfig.GetString("internal_display");
@@ -138,13 +140,9 @@ namespace GHelper.Display
                         displayNum = count;
                         AppConfig.Set("internal_display", device.monitorFriendlyDeviceName);
                     }
+                    if (log) Logger.WriteLine(device.monitorFriendlyDeviceName + ":" + device.outputTechnology.ToString() + ": " + ((count < screens.Length) ? screens[count].DeviceName : ""));
                     count++;
-                    //Logger.WriteLine(device.monitorFriendlyDeviceName + ":" + device.outputTechnology.ToString());
                 }
-
-                var screens = Screen.AllScreens;
-
-                if (screens.Length != count) return null;
 
                 count = 0;
                 foreach (var screen in screens)
@@ -153,7 +151,7 @@ namespace GHelper.Display
                     {
                         laptopScreen = screen.DeviceName;
                     }
-                    //Logger.WriteLine(screen.DeviceName);
+                    //if (log) Logger.WriteLine(screen.DeviceName);
                     count++;
                 }
 
@@ -170,44 +168,48 @@ namespace GHelper.Display
             return laptopScreen;
         }
 
-        public static int GetRefreshRate(bool max = false)
-        {
-            DEVMODE dm = CreateDevmode();
 
-            string? laptopScreen = FindLaptopScreen();
+        public static int GetMaxRefreshRate(string? laptopScreen)
+        {
+
+            if (laptopScreen is null) return -1;
+
+            DEVMODE dm = CreateDevmode();
             int frequency = -1;
 
-            if (laptopScreen is null)
-                return -1;
-
-            if (max)
+            int i = 0;
+            while (0 != EnumDisplaySettingsEx(laptopScreen, i, ref dm))
             {
-                int i = 0;
-                while (0 != EnumDisplaySettingsEx(laptopScreen, i, ref dm))
-                {
-                    if (dm.dmDisplayFrequency > frequency) frequency = dm.dmDisplayFrequency;
-                    i++;
-                }
-            }
-            else
-            {
-                if (0 != EnumDisplaySettingsEx(laptopScreen, ENUM_CURRENT_SETTINGS, ref dm))
-                {
-                    frequency = dm.dmDisplayFrequency;
-                }
+                if (dm.dmDisplayFrequency > frequency) frequency = dm.dmDisplayFrequency;
+                i++;
             }
 
+            if (frequency > 0) AppConfig.Set("screen_max", frequency);
+            else frequency = AppConfig.Get("screen_max");
+
+            return frequency;
+
+        }
+
+        public static int GetRefreshRate(string? laptopScreen)
+        {
+
+            if (laptopScreen is null) return -1;
+
+            DEVMODE dm = CreateDevmode();
+            int frequency = -1;
+
+            if (0 != EnumDisplaySettingsEx(laptopScreen, ENUM_CURRENT_SETTINGS, ref dm))
+            {
+                frequency = dm.dmDisplayFrequency;
+            }
 
             return frequency;
         }
 
-        public static int SetRefreshRate(int frequency = 120)
+        public static int SetRefreshRate(string laptopScreen, int frequency = 120)
         {
             DEVMODE dm = CreateDevmode();
-            string? laptopScreen = FindLaptopScreen();
-
-            if (laptopScreen is null)
-                return -1;
 
             if (0 != EnumDisplaySettingsEx(laptopScreen, ENUM_CURRENT_SETTINGS, ref dm))
             {

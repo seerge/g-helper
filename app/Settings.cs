@@ -639,7 +639,7 @@ namespace GHelper
         private void Button120Hz_Click(object? sender, EventArgs e)
         {
             AppConfig.Set("screen_auto", 0);
-            screenControl.SetScreen(1000, 1);
+            screenControl.SetScreen(ScreenControl.MAX_REFRESH, 1);
         }
 
         private void Button60Hz_Click(object? sender, EventArgs e)

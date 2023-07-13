@@ -4,12 +4,15 @@ namespace GHelper.Display
 {
     public class ScreenControl
     {
+
+        public const int MAX_REFRESH = 1000;
+
         public void AutoScreen(bool force = false)
         {
             if (force || AppConfig.Is("screen_auto"))
             {
                 if (SystemInformation.PowerStatus.PowerLineStatus == PowerLineStatus.Online)
-                    SetScreen(1000, 1);
+                    SetScreen(MAX_REFRESH, 1);
                 else
                     SetScreen(60, 0);
             }
@@ -22,20 +25,19 @@ namespace GHelper.Display
         public void SetScreen(int frequency = -1, int overdrive = -1, int miniled = -1)
         {
 
-            if (ScreenNative.GetRefreshRate() < 0) // Laptop screen not detected or has unknown refresh rate
-            {
-                InitScreen();
-                return;
-            }
+            var laptopScreen = ScreenNative.FindLaptopScreen(true);
+            if (laptopScreen is null) return;
 
-            if (frequency >= 1000)
+            if (ScreenNative.GetRefreshRate(laptopScreen) < 0) return;
+
+            if (frequency >= MAX_REFRESH)
             {
-                frequency = ScreenNative.GetRefreshRate(true);
+                frequency = ScreenNative.GetMaxRefreshRate(laptopScreen);
             }
 
             if (frequency > 0)
             {
-                ScreenNative.SetRefreshRate(frequency);
+                ScreenNative.SetRefreshRate(laptopScreen, frequency);
             }
 
             if (overdrive >= 0)
@@ -64,8 +66,11 @@ namespace GHelper.Display
 
         public void InitScreen()
         {
-            int frequency = ScreenNative.GetRefreshRate();
-            int maxFrequency = ScreenNative.GetRefreshRate(true);
+
+            var laptopScreen = ScreenNative.FindLaptopScreen();
+
+            int frequency = ScreenNative.GetRefreshRate(laptopScreen);
+            int maxFrequency = ScreenNative.GetMaxRefreshRate(laptopScreen);
 
             bool screenAuto = AppConfig.Is("screen_auto");
             bool overdriveSetting = !AppConfig.Is("no_overdrive");
