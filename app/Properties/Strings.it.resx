@@ -288,7 +288,7 @@ Sei sicuro di voler continuare?</value>
     <value>Alimentazione e Ventole</value>
   </data>
   <data name="FanSpeed" xml:space="preserve">
-    <value>Fan</value>
+    <value>Ventola</value>
   </data>
   <data name="FansPower" xml:space="preserve">
     <value>Ventole + Alimentazione</value>
@@ -405,7 +405,7 @@ Sei sicuro di voler continuare?</value>
     <value>Ottimizzata</value>
   </data>
   <data name="OptimizedGPUTooltip" xml:space="preserve">
-    <value>Passa ad Eco quando alimentato a batteria e a Standard quando in carica</value>
+    <value>Passa ad Eco se alimentato a batteria e a Standard quando in carica</value>
   </data>
   <data name="OptimizedUSBC" xml:space="preserve">
     <value>Lascia la GPU disabilitata sulla porta USB-C in modalità Ottimizzata</value>
@@ -456,7 +456,7 @@ Sei sicuro di voler continuare?</value>
     <value>Sospensione</value>
   </data>
   <data name="StandardGPUTooltip" xml:space="preserve">
-    <value>Abilita la dGPU in modalità Standard</value>
+    <value>Abilita la dGPU solo quando richiesto da app e giochi</value>
   </data>
   <data name="StandardMode" xml:space="preserve">
     <value>Standard</value>
