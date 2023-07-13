@@ -148,7 +148,7 @@
     <value>G-Helper đã chạy. Hãy kiểm tra khay hệ thống</value>
   </data>
   <data name="Apply" xml:space="preserve">
-    <value>Apply</value>
+    <value>Áp dụng</value>
   </data>
   <data name="ApplyFanCurve" xml:space="preserve">
     <value>Áp dụng Đường cong quạt tuỳ chỉnh</value>
@@ -160,7 +160,7 @@
     <value>Tự động điều chỉnh Kế hoạch nguồn của Windows</value>
   </data>
   <data name="AsusServicesRunning" xml:space="preserve">
-    <value>Asus Services Running</value>
+    <value>Dịch vụ Asus đang chạy</value>
   </data>
   <data name="AuraBreathe" xml:space="preserve">
     <value>Hơi thở</value>
@@ -187,7 +187,7 @@
     <value>Nhấp nháy</value>
   </data>
   <data name="AutoApply" xml:space="preserve">
-    <value>Auto Apply</value>
+    <value>Áp dụng tự động</value>
   </data>
   <data name="AutoMode" xml:space="preserve">
     <value>Tự động</value>
@@ -208,7 +208,7 @@
     <value>Giới hạn sạc</value>
   </data>
   <data name="BiosAndDriverUpdates" xml:space="preserve">
-    <value>BIOS and Driver Updates</value>
+    <value>Cập nhật BIOS và driver</value>
   </data>
   <data name="Boot" xml:space="preserve">
     <value>Khởi động</value>
@@ -217,10 +217,10 @@
     <value>Độ sáng</value>
   </data>
   <data name="BrightnessDown" xml:space="preserve">
-    <value>Brightness Down</value>
+    <value>Giảm độ sáng</value>
   </data>
   <data name="BrightnessUp" xml:space="preserve">
-    <value>Brightness Up</value>
+    <value>Tăng độ sáng</value>
   </data>
   <data name="Color" xml:space="preserve">
     <value>Màu</value>
@@ -244,7 +244,7 @@
     <value>Tải xuống bản cập nhật</value>
   </data>
   <data name="DriverAndSoftware" xml:space="preserve">
-    <value>Drivers and Software</value>
+    <value>Driver và phần mềm</value>
   </data>
   <data name="EcoGPUTooltip" xml:space="preserve">
     <value>Tắt GPU rời để tiết kiệm pin</value>
