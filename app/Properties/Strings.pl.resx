@@ -387,7 +387,7 @@ Nadal chcesz kontynuować?</value>
     <value>Częstotliwość odświeżania 60 Hz dla oszczędzania baterii</value>
   </data>
   <data name="Multizone" xml:space="preserve">
-    <value>Wielostrefowa</value>
+    <value>Multizone</value>
   </data>
   <data name="MuteMic" xml:space="preserve">
     <value>Wyciszenie mikrofonu</value>
