@@ -299,10 +299,10 @@ namespace GHelper
             // labelBattery
             // 
             labelBattery.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            labelBattery.Location = new Point(392, 0);
+            labelBattery.Location = new Point(432, 0);
             labelBattery.Margin = new Padding(8, 0, 8, 0);
             labelBattery.Name = "labelBattery";
-            labelBattery.Size = new Size(364, 36);
+            labelBattery.Size = new Size(324, 36);
             labelBattery.TabIndex = 39;
             labelBattery.Text = "                ";
             labelBattery.TextAlign = ContentAlignment.TopRight;
@@ -324,7 +324,7 @@ namespace GHelper
             labelBatteryTitle.Location = new Point(42, 0);
             labelBatteryTitle.Margin = new Padding(8, 0, 8, 0);
             labelBatteryTitle.Name = "labelBatteryTitle";
-            labelBatteryTitle.Size = new Size(393, 32);
+            labelBatteryTitle.Size = new Size(466, 32);
             labelBatteryTitle.TabIndex = 37;
             labelBatteryTitle.Text = "Battery Charge Limit";
             // 
@@ -928,10 +928,10 @@ namespace GHelper
             // labelMidFan
             // 
             labelMidFan.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            labelMidFan.Location = new Point(474, -2);
+            labelMidFan.Location = new Point(516, -2);
             labelMidFan.Margin = new Padding(8, 0, 8, 0);
             labelMidFan.Name = "labelMidFan";
-            labelMidFan.Size = new Size(296, 34);
+            labelMidFan.Size = new Size(254, 34);
             labelMidFan.TabIndex = 28;
             labelMidFan.Text = "         ";
             labelMidFan.TextAlign = ContentAlignment.TopRight;
