@@ -118,10 +118,10 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="ACPIError" xml:space="preserve">
-    <value>Can't connect to ASUS ACPI. Application can't function without it. Try to install Asus System Control Interface</value>
+    <value>Nem sikerült csatlakozni az ASUS ACPI-hez, az alkalmazás nem működik enélkül. Próbáld meg telepíteni az ASUS rendszervezérlő interfész-t</value>
   </data>
   <data name="AlertDGPU" xml:space="preserve">
-    <value>Looks like GPU is in heavy use, disable it?</value>
+    <value>Úgy tűnik használatban van a GPU. Biztosan letiltod?</value>
   </data>
   <data name="AlertDGPUTitle" xml:space="preserve">
     <value>Eco mód</value>
@@ -193,7 +193,7 @@
     <value>Automata</value>
   </data>
   <data name="AutoRefreshTooltip" xml:space="preserve">
-    <value>A képfrissítést átállítja 60Hz-re, hogy spóroljon az akku-val, majd töltőre csatlakoztatás után vissza</value>
+    <value>Átállítja 60Hz-re, hogy spóroljon az akku-val, majd töltőn vissza</value>
   </data>
   <data name="Awake" xml:space="preserve">
     <value>Ébren</value>
@@ -205,7 +205,7 @@
     <value>Teljesítmény</value>
   </data>
   <data name="BatteryChargeLimit" xml:space="preserve">
-    <value>Akkumulátor töltési korlát</value>
+    <value>Töltési korlát</value>
   </data>
   <data name="BiosAndDriverUpdates" xml:space="preserve">
     <value>BIOS és illesztőprogram frissítések</value>
