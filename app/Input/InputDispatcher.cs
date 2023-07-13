@@ -158,6 +158,13 @@ namespace GHelper.Input
                         case Keys.F4:
                             KeyProcess("m3");
                             return;
+                    }
+                }
+
+                if (AppConfig.ContainsModel("Z13")) 
+                {
+                    switch (e.Key)
+                    {
                         case Keys.F11:
                             HandleEvent(199);
                             return;
