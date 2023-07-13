@@ -327,7 +327,7 @@ Sei sicuro di voler continuare?</value>
     <value>Temperatura Target</value>
   </data>
   <data name="KeyBindings" xml:space="preserve">
-    <value>Associazione tasti</value>
+    <value>Associazione Tasti</value>
   </data>
   <data name="Keyboard" xml:space="preserve">
     <value>Tastiera</value>
