@@ -166,7 +166,6 @@ namespace GHelper.Mode
 
             return
                 AppConfig.Is("manual_mode") ||
-                AppConfig.ContainsModel("GU603") ||
                 AppConfig.ContainsModel("GU604") ||
                 AppConfig.ContainsModel("G733");
         }
