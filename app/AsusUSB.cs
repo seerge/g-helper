@@ -308,8 +308,35 @@ namespace GHelper
         }
 
 
-        public static void ApplyAuraPower(List<AuraDev19b6> flags)
+        public static void ApplyAuraPower()
         {
+
+            List<AuraDev19b6> flags = new();
+
+            // Keyboard
+            if (AppConfig.IsNotFalse("keyboard_awake")) flags.Add(AuraDev19b6.AwakeKeyb);
+            if (AppConfig.IsNotFalse("keyboard_boot")) flags.Add(AuraDev19b6.BootKeyb);
+            if (AppConfig.IsNotFalse("keyboard_sleep")) flags.Add(AuraDev19b6.SleepKeyb);
+            if (AppConfig.IsNotFalse("keyboard_shutdown")) flags.Add(AuraDev19b6.ShutdownKeyb);
+
+            // Lightbar
+            if (AppConfig.IsNotFalse("keyboard_awake_bar")) flags.Add(AuraDev19b6.AwakeBar);
+            if (AppConfig.IsNotFalse("keyboard_boot_bar")) flags.Add(AuraDev19b6.BootBar);
+            if (AppConfig.IsNotFalse("keyboard_sleep_bar")) flags.Add(AuraDev19b6.SleepBar);
+            if (AppConfig.IsNotFalse("keyboard_shutdown_bar")) flags.Add(AuraDev19b6.ShutdownBar);
+
+            // Lid
+            if (AppConfig.IsNotFalse("keyboard_awake_lid")) flags.Add(AuraDev19b6.AwakeLid);
+            if (AppConfig.IsNotFalse("keyboard_boot_lid")) flags.Add(AuraDev19b6.BootLid);
+            if (AppConfig.IsNotFalse("keyboard_sleep_lid")) flags.Add(AuraDev19b6.SleepLid);
+            if (AppConfig.IsNotFalse("keyboard_shutdown_lid")) flags.Add(AuraDev19b6.ShutdownLid);
+
+            // Logo
+            if (AppConfig.IsNotFalse("keyboard_awake_logo")) flags.Add(AuraDev19b6.AwakeLogo);
+            if (AppConfig.IsNotFalse("keyboard_boot_logo")) flags.Add(AuraDev19b6.BootLogo);
+            if (AppConfig.IsNotFalse("keyboard_sleep_logo")) flags.Add(AuraDev19b6.SleepLogo);
+            if (AppConfig.IsNotFalse("keyboard_shutdown_logo")) flags.Add(AuraDev19b6.ShutdownLogo);
+
 
             byte[] msg = AuraDev19b6Extensions.ToBytes(flags.ToArray());
 

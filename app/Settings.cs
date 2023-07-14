@@ -861,6 +861,8 @@ namespace GHelper
         {
             InputDispatcher.SetBacklightAuto(true);
 
+            AsusUSB.ApplyAuraPower();
+
             if (Program.acpi.IsXGConnected())
                 AsusUSB.ApplyXGMLight(AppConfig.Is("xmg_light"));
 
