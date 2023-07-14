@@ -384,7 +384,7 @@ Sei sicuro di voler continuare?</value>
     <value>Massimo refresh rate per latenza ridotta</value>
   </data>
   <data name="MinRefreshTooltip" xml:space="preserve">
-    <value>60Hz refresh rate per rispamiare batteria</value>
+    <value>60Hz refresh rate per risparmiare batteria</value>
   </data>
   <data name="Multizone" xml:space="preserve">
     <value>Multizona</value>
