@@ -124,10 +124,10 @@
     <value>看起来 GPU 正在被重度使用，是否禁用？</value>
   </data>
   <data name="AlertDGPUTitle" xml:space="preserve">
-    <value>集显模式</value>
+    <value>节能模式</value>
   </data>
   <data name="AlertUltimateOff" xml:space="preserve">
-    <value>关闭独显直连需要重新启动</value>
+    <value>关闭独显直连需要重启</value>
   </data>
   <data name="AlertUltimateOn" xml:space="preserve">
     <value>切换到独显直连需要重启</value>
@@ -291,7 +291,7 @@
     <value>风扇</value>
   </data>
   <data name="FansPower" xml:space="preserve">
-    <value>风扇与电源设置</value>
+    <value>高级设置</value>
   </data>
   <data name="FnLock" xml:space="preserve">
     <value>打开FnLock (无需按下FN使用FN+(F1-F12)热键)</value>
