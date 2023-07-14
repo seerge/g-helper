@@ -157,7 +157,7 @@
     <value>Zastosuj limity</value>
   </data>
   <data name="ApplyWindowsPowerPlan" xml:space="preserve">
-    <value>Automatycznie dostosuj systemowy Tryb Zasilania</value>
+    <value>Dostosuj systemowy Tryb Zasilania</value>
   </data>
   <data name="AsusServicesRunning" xml:space="preserve">
     <value>Uruchomione usługi Asus</value>
