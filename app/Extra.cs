@@ -265,10 +265,21 @@ namespace GHelper
 
         private void InitServices()
         {
-            if (OptimizationService.IsRunning()) buttonServices.Text = Properties.Strings.Stop;
-            else buttonServices.Text = Properties.Strings.Start;
 
-            labelServices.Text = Properties.Strings.AsusServicesRunning + ":  " + OptimizationService.GetRunningCount();
+            int servicesCount = OptimizationService.GetRunningCount();
+
+            if (servicesCount > 0)
+            {
+                buttonServices.Text = Properties.Strings.Stop;
+                labelServices.ForeColor = colorTurbo;
+            }
+            else
+            {
+                buttonServices.Text = Properties.Strings.Start;
+                labelServices.ForeColor = colorStandard;
+            }
+
+            labelServices.Text = Properties.Strings.AsusServicesRunning + ":  " + servicesCount;
             buttonServices.Enabled = true;
 
         }
