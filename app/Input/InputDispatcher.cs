@@ -138,6 +138,11 @@ namespace GHelper.Input
 
         }
 
+        static bool IsManualBrightness()
+        {
+            return AppConfig.ContainsModel("TUF") && !AppConfig.ContainsModel("FA506");
+        }
+
         public void KeyPressed(object sender, KeyPressedEventArgs e)
         {
 
@@ -209,11 +214,11 @@ namespace GHelper.Input
                         KeyboardHook.KeyPress(Keys.Snapshot);
                         break;
                     case Keys.F7:
-                        //if (AppConfig.ContainsModel("TUF")) Program.toast.RunToast(ScreenBrightness.Adjust(-10) + "%", ToastIcon.BrightnessDown);
+                        if (IsManualBrightness()) Program.toast.RunToast(ScreenBrightness.Adjust(-10) + "%", ToastIcon.BrightnessDown);
                         HandleOptimizationEvent(16);
                         break;
                     case Keys.F8:
-                        // if (AppConfig.ContainsModel("TUF")) Program.toast.RunToast(ScreenBrightness.Adjust(+10) + "%", ToastIcon.BrightnessUp);
+                        if (IsManualBrightness()) Program.toast.RunToast(ScreenBrightness.Adjust(+10) + "%", ToastIcon.BrightnessUp);
                         HandleOptimizationEvent(32);
                         break;
                     case Keys.F9:

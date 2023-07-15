@@ -1,4 +1,4 @@
-﻿namespace GHelper.Helpers
+﻿namespace GHelper.Display
 {
     using System;
     using System.Diagnostics;
