@@ -118,14 +118,34 @@ namespace GHelper.Display
         public const int ENUM_CURRENT_SETTINGS = -1;
         public const string defaultDevice = @"\\.\DISPLAY1";
 
+        static bool? _ultimate = null;
+
+        static bool isUltimate
+        {
+            get
+            {
+                if (_ultimate is null) _ultimate = (Program.acpi.DeviceGet(AsusACPI.GPUMux) == 0);
+                return (bool)_ultimate;
+            }
+        }
+
         public static string? FindLaptopScreen(bool log = false)
         {
             string? laptopScreen = null;
+            var screens = Screen.AllScreens;
+
+            if (!isUltimate)
+            {
+                foreach (var screen in screens )
+                {
+                    if (log) Logger.WriteLine(screen.DeviceName);
+                    if (screen.DeviceName == defaultDevice) return defaultDevice;
+                }
+            }
 
             try
             {
                 var devices = GetAllDevices().ToArray();
-                var screens = Screen.AllScreens;
 
                 int count = 0, displayNum = -1;
 
@@ -147,11 +167,7 @@ namespace GHelper.Display
                 count = 0;
                 foreach (var screen in screens)
                 {
-                    if (count == displayNum)
-                    {
-                        laptopScreen = screen.DeviceName;
-                    }
-                    //if (log) Logger.WriteLine(screen.DeviceName);
+                    if (count == displayNum) laptopScreen = screen.DeviceName;
                     count++;
                 }
 

@@ -24,8 +24,8 @@ namespace GHelper.Display
 
         public void SetScreen(int frequency = -1, int overdrive = -1, int miniled = -1)
         {
-
             var laptopScreen = ScreenNative.FindLaptopScreen(true);
+
             if (laptopScreen is null) return;
 
             if (ScreenNative.GetRefreshRate(laptopScreen) < 0) return;
@@ -66,7 +66,6 @@ namespace GHelper.Display
 
         public void InitScreen()
         {
-
             var laptopScreen = ScreenNative.FindLaptopScreen();
 
             int frequency = ScreenNative.GetRefreshRate(laptopScreen);
