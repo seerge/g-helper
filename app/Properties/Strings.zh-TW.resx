@@ -447,10 +447,10 @@
     <value>開機自動開啟</value>
   </data>
   <data name="ScreenPadDown" xml:space="preserve">
-    <value>Screenpad Brightness Down</value>
+    <value>第二觸控螢幕亮度降低</value>
   </data>
   <data name="ScreenPadUp" xml:space="preserve">
-    <value>Screenpad Brightness Up</value>
+    <value>第二觸控螢幕亮度提高</value>
   </data>
   <data name="Shutdown" xml:space="preserve">
     <value>關機時</value>
