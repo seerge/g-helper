@@ -447,10 +447,10 @@ Nadal chcesz kontynuować?</value>
     <value>Uruchom przy starcie systemu</value>
   </data>
   <data name="ScreenPadDown" xml:space="preserve">
-    <value>Screenpad Brightness Down</value>
+    <value>Zmniejsz jasność ScreenPad</value>
   </data>
   <data name="ScreenPadUp" xml:space="preserve">
-    <value>Screenpad Brightness Up</value>
+    <value>Zwiększ jasność ScreenPad</value>
   </data>
   <data name="Shutdown" xml:space="preserve">
     <value>Zamknij</value>
