@@ -287,7 +287,10 @@ namespace GHelper
         {
             if (!RyzenControl.IsSupportedUV())
             {
-                panelUV.Visible = panelUViGPU.Visible = false;
+                panelTitleAdvanced.Visible = false;
+                labelRisky.Visible = false;
+                panelUV.Visible = false;
+                panelUViGPU.Visible = false;
             }
 
             if (!RyzenControl.IsSupportedUV())
