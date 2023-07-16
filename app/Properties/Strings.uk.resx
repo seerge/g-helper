@@ -446,6 +446,12 @@
   <data name="RunOnStartup" xml:space="preserve">
     <value>Запускати на старті</value>
   </data>
+  <data name="ScreenPadDown" xml:space="preserve">
+    <value>Screenpad Brightness Down</value>
+  </data>
+  <data name="ScreenPadUp" xml:space="preserve">
+    <value>Screenpad Brightness Up</value>
+  </data>
   <data name="Shutdown" xml:space="preserve">
     <value>Вимикання</value>
   </data>
