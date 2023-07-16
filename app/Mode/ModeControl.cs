@@ -366,6 +366,8 @@ namespace GHelper.Mode
 
         public void SetUV(int cpuUV)
         {
+            if (!RyzenControl.IsSupportedUV()) return;
+
             if (cpuUV >= RyzenControl.MinCPUUV && cpuUV <= RyzenControl.MaxCPUUV)
             {
                 var uvResult = SendCommand.set_coall(cpuUV);
@@ -376,6 +378,8 @@ namespace GHelper.Mode
 
         public void SetUViGPU(int igpuUV)
         {
+            if (!RyzenControl.IsSupportedUViGPU()) return;
+
             if (igpuUV >= RyzenControl.MinIGPUUV && igpuUV <= RyzenControl.MaxIGPUUV)
             {
                 var iGPUResult = SendCommand.set_cogfx(igpuUV);

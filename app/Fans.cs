@@ -285,6 +285,16 @@ namespace GHelper
 
         private void VisualiseAdvanced()
         {
+            if (!RyzenControl.IsSupportedUV())
+            {
+                panelUV.Visible = panelUViGPU.Visible = false;
+            }
+
+            if (!RyzenControl.IsSupportedUV())
+            {
+                panelUViGPU.Visible = false;
+            }
+
             labelUV.Text = trackUV.Value.ToString();
             labelUViGPU.Text = trackUViGPU.Value.ToString();
             labelTemp.Text = (trackTemp.Value < RyzenControl.MaxTemp) ? trackTemp.Value.ToString() + "°C" : "Default";

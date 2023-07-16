@@ -130,10 +130,16 @@ namespace Ryzen
             return CPUName.Contains("AMD") || CPUName.Contains("Ryzen") || CPUName.Contains("Athlon") || CPUName.Contains("Radeon") || CPUName.Contains("AMD Custom APU 0405");
         }
 
-        public static bool IsRyzen9()
+        public static bool IsSupportedUV()
         {
             if (CPUName.Length == 0) Init();
-            return CPUName.Contains("Ryzen 9");
+            return CPUName.Contains("Ryzen 9") || CPUName.Contains("4900H") || CPUName.Contains("4800H") || CPUName.Contains("4600H");
+        }
+
+        public static bool IsSupportedUViGPU()
+        {
+            if (CPUName.Length == 0) Init();
+            return CPUName.Contains("6900H") || CPUName.Contains("7945H") || CPUName.Contains("7845H");
         }
 
         public static void SetAddresses()
