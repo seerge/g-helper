@@ -116,6 +116,12 @@ namespace GHelper
 
             Text = Properties.Strings.ExtraSettings;
 
+            if (AppConfig.ContainsModel("Duo"))
+            {
+                customActions.Add("screenpad_down", Properties.Strings.ScreenPadDown);
+                customActions.Add("screenpad_up", Properties.Strings.ScreenPadUp);
+            }
+
             InitTheme();
 
             SetKeyCombo(comboM1, textM1, "m1");

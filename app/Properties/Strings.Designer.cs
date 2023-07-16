@@ -1044,6 +1044,24 @@ namespace GHelper.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Screenpad Brightness Down.
+        /// </summary>
+        internal static string ScreenPadDown {
+            get {
+                return ResourceManager.GetString("ScreenPadDown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Screenpad Brightness Up.
+        /// </summary>
+        internal static string ScreenPadUp {
+            get {
+                return ResourceManager.GetString("ScreenPadUp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Shutdown.
         /// </summary>
         internal static string Shutdown {

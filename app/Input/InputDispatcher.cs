@@ -315,6 +315,12 @@ namespace GHelper.Input
                 case "brightness_down":
                     HandleOptimizationEvent(16);
                     break;
+                case "screenpad_up":
+                    SetScreenpad(10);
+                    break;
+                case "screenpad_down":
+                    SetScreenpad(-10);
+                    break;
                 case "custom":
                     CustomKey(name);
                     break;
@@ -478,6 +484,21 @@ namespace GHelper.Input
             Program.toast.RunToast(backlightNames[backlight], delta > 0 ? ToastIcon.BacklightUp : ToastIcon.BacklightDown);
 
         }
+
+        public static void SetScreenpad(int delta)
+        {
+            int brightness = AppConfig.Get("screenpad", 100);
+            brightness = Math.Max(Math.Min(100, brightness + delta), 0);
+
+            AppConfig.Set("screenpad", brightness);
+
+            Program.acpi.DeviceSet(AsusACPI.ScreenPadBrightness, (brightness*255/100), "Screenpad");
+            if (brightness == 0) Program.acpi.DeviceSet(AsusACPI.ScreenPadToggle, brightness, "ScreenpadToggle");
+
+            Program.toast.RunToast($"Screen Pad {brightness}", delta > 0 ? ToastIcon.BrightnessUp : ToastIcon.BrightnessDown);
+
+        }
+
 
         static void LaunchProcess(string command = "")
         {
