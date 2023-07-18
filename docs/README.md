@@ -18,7 +18,7 @@ Lightweight Armoury Crate alternative for Asus laptops. A small utility that all
 5. FN-Lock
 6. Doesn't need administrator privileges to run (*)
 
-## [:floppy_disk: Download App](https://github.com/seerge/g-helper/releases/latest/download/GHelper.zip)
+# [:floppy_disk: Download G-Helper App](https://github.com/seerge/g-helper/releases/latest/download/GHelper.zip)
 
 If you like this app, please [star :star: it on Github](https://github.com/seerge/g-helper) and spread a word about it!
 #### Support project in [:euro: EUR](https://www.paypal.com/donate/?hosted_button_id=4HMSHS4EBQWTA) | [💵 USD](https://www.paypal.com/donate/?hosted_button_id=SRM6QUX6ACXDY) | [:credit_card: Stripe](https://buy.stripe.com/00gaFJ9Lf79v7WobII)
