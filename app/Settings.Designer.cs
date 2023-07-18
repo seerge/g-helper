@@ -140,7 +140,7 @@ namespace GHelper
             panelMatrix.Name = "panelMatrix";
             panelMatrix.Padding = new Padding(20, 20, 20, 10);
             panelMatrix.Size = new Size(810, 171);
-            panelMatrix.TabIndex = 33;
+            panelMatrix.TabIndex = 4;
             // 
             // tableLayoutMatrix
             // 
@@ -176,8 +176,7 @@ namespace GHelper
             comboMatrix.Margin = new Padding(4, 10, 4, 8);
             comboMatrix.Name = "comboMatrix";
             comboMatrix.Size = new Size(248, 40);
-            comboMatrix.TabIndex = 41;
-            comboMatrix.TabStop = false;
+            comboMatrix.TabIndex = 16;
             // 
             // comboMatrixRunning
             // 
@@ -192,8 +191,7 @@ namespace GHelper
             comboMatrixRunning.Margin = new Padding(4, 10, 4, 8);
             comboMatrixRunning.Name = "comboMatrixRunning";
             comboMatrixRunning.Size = new Size(248, 40);
-            comboMatrixRunning.TabIndex = 42;
-            comboMatrixRunning.TabStop = false;
+            comboMatrixRunning.TabIndex = 17;
             // 
             // buttonMatrix
             // 
@@ -209,7 +207,7 @@ namespace GHelper
             buttonMatrix.Name = "buttonMatrix";
             buttonMatrix.Secondary = true;
             buttonMatrix.Size = new Size(250, 45);
-            buttonMatrix.TabIndex = 43;
+            buttonMatrix.TabIndex = 18;
             buttonMatrix.Text = Properties.Strings.PictureGif;
             buttonMatrix.UseVisualStyleBackColor = false;
             // 
@@ -253,7 +251,7 @@ namespace GHelper
             checkMatrix.Margin = new Padding(8, 4, 8, 4);
             checkMatrix.Name = "checkMatrix";
             checkMatrix.Size = new Size(249, 36);
-            checkMatrix.TabIndex = 44;
+            checkMatrix.TabIndex = 19;
             checkMatrix.Text = Properties.Strings.TurnOffOnBattery;
             checkMatrix.UseVisualStyleBackColor = true;
             // 
@@ -269,10 +267,11 @@ namespace GHelper
             panelBattery.Name = "panelBattery";
             panelBattery.Padding = new Padding(20);
             panelBattery.Size = new Size(810, 125);
-            panelBattery.TabIndex = 34;
+            panelBattery.TabIndex = 5;
             // 
             // sliderBattery
             // 
+            sliderBattery.AccessibleName = "Battery Charge Limit";
             sliderBattery.Dock = DockStyle.Top;
             sliderBattery.Location = new Point(20, 65);
             sliderBattery.Max = 100;
@@ -280,7 +279,8 @@ namespace GHelper
             sliderBattery.Name = "sliderBattery";
             sliderBattery.Size = new Size(770, 40);
             sliderBattery.Step = 5;
-            sliderBattery.TabIndex = 39;
+            sliderBattery.TabIndex = 20;
+            sliderBattery.TabStop = false;
             sliderBattery.Text = "sliderBattery";
             sliderBattery.Value = 80;
             // 
@@ -341,10 +341,11 @@ namespace GHelper
             panelFooter.Name = "panelFooter";
             panelFooter.Padding = new Padding(20);
             panelFooter.Size = new Size(810, 92);
-            panelFooter.TabIndex = 35;
+            panelFooter.TabIndex = 7;
             // 
             // buttonUpdates
             // 
+            buttonUpdates.AccessibleName = "BIOS and Driver Updates";
             buttonUpdates.Activated = false;
             buttonUpdates.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             buttonUpdates.BackColor = SystemColors.ControlLight;
@@ -356,12 +357,13 @@ namespace GHelper
             buttonUpdates.Name = "buttonUpdates";
             buttonUpdates.Secondary = true;
             buttonUpdates.Size = new Size(180, 44);
-            buttonUpdates.TabIndex = 19;
+            buttonUpdates.TabIndex = 22;
             buttonUpdates.Text = "Updates";
             buttonUpdates.UseVisualStyleBackColor = false;
             // 
             // buttonQuit
             // 
+            buttonQuit.AccessibleName = "Quit Application";
             buttonQuit.Activated = false;
             buttonQuit.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             buttonQuit.BackColor = SystemColors.ControlLight;
@@ -373,7 +375,7 @@ namespace GHelper
             buttonQuit.Name = "buttonQuit";
             buttonQuit.Secondary = true;
             buttonQuit.Size = new Size(180, 44);
-            buttonQuit.TabIndex = 18;
+            buttonQuit.TabIndex = 23;
             buttonQuit.Text = Properties.Strings.Quit;
             buttonQuit.UseVisualStyleBackColor = false;
             // 
@@ -384,7 +386,7 @@ namespace GHelper
             checkStartup.Margin = new Padding(8, 4, 8, 4);
             checkStartup.Name = "checkStartup";
             checkStartup.Size = new Size(206, 36);
-            checkStartup.TabIndex = 17;
+            checkStartup.TabIndex = 21;
             checkStartup.Text = Properties.Strings.RunOnStartup;
             checkStartup.UseVisualStyleBackColor = true;
             // 
@@ -400,7 +402,7 @@ namespace GHelper
             panelPerformance.Name = "panelPerformance";
             panelPerformance.Padding = new Padding(20);
             panelPerformance.Size = new Size(810, 207);
-            panelPerformance.TabIndex = 36;
+            panelPerformance.TabIndex = 0;
             // 
             // tablePerf
             // 
@@ -426,12 +428,12 @@ namespace GHelper
             // 
             // buttonSilent
             // 
+            buttonSilent.AccessibleName = "Silent Mode";
             buttonSilent.Activated = false;
             buttonSilent.BackColor = SystemColors.ControlLightLight;
             buttonSilent.BackgroundImageLayout = ImageLayout.None;
             buttonSilent.BorderColor = Color.Transparent;
             buttonSilent.BorderRadius = 5;
-            buttonSilent.CausesValidation = false;
             buttonSilent.Dock = DockStyle.Fill;
             buttonSilent.FlatAppearance.BorderSize = 0;
             buttonSilent.FlatStyle = FlatStyle.Flat;
@@ -443,13 +445,14 @@ namespace GHelper
             buttonSilent.Name = "buttonSilent";
             buttonSilent.Secondary = false;
             buttonSilent.Size = new Size(184, 120);
-            buttonSilent.TabIndex = 0;
+            buttonSilent.TabIndex = 1;
             buttonSilent.Text = Properties.Strings.Silent;
             buttonSilent.TextImageRelation = TextImageRelation.ImageAboveText;
             buttonSilent.UseVisualStyleBackColor = false;
             // 
             // buttonBalanced
             // 
+            buttonBalanced.AccessibleName = "Balanced Mode";
             buttonBalanced.Activated = false;
             buttonBalanced.BackColor = SystemColors.ControlLightLight;
             buttonBalanced.BorderColor = Color.Transparent;
@@ -472,6 +475,7 @@ namespace GHelper
             // 
             // buttonTurbo
             // 
+            buttonTurbo.AccessibleName = "Turbo Mode";
             buttonTurbo.Activated = false;
             buttonTurbo.BackColor = SystemColors.ControlLightLight;
             buttonTurbo.BorderColor = Color.Transparent;
@@ -494,6 +498,7 @@ namespace GHelper
             // 
             // buttonFans
             // 
+            buttonFans.AccessibleName = "Fans and Power Settings";
             buttonFans.Activated = false;
             buttonFans.BackColor = SystemColors.ControlLight;
             buttonFans.BorderColor = Color.Transparent;
@@ -508,7 +513,7 @@ namespace GHelper
             buttonFans.Name = "buttonFans";
             buttonFans.Secondary = true;
             buttonFans.Size = new Size(186, 120);
-            buttonFans.TabIndex = 35;
+            buttonFans.TabIndex = 3;
             buttonFans.Text = Properties.Strings.FansPower;
             buttonFans.TextImageRelation = TextImageRelation.ImageAboveText;
             buttonFans.UseVisualStyleBackColor = false;
@@ -544,7 +549,7 @@ namespace GHelper
             labelPerf.Margin = new Padding(8, 0, 8, 0);
             labelPerf.Name = "labelPerf";
             labelPerf.Size = new Size(234, 32);
-            labelPerf.TabIndex = 34;
+            labelPerf.TabIndex = 0;
             labelPerf.Text = "Performance Mode";
             // 
             // labelCPUFan
@@ -572,7 +577,7 @@ namespace GHelper
             panelGPU.Name = "panelGPU";
             panelGPU.Padding = new Padding(20, 20, 20, 0);
             panelGPU.Size = new Size(810, 351);
-            panelGPU.TabIndex = 37;
+            panelGPU.TabIndex = 1;
             // 
             // labelTipGPU
             // 
@@ -635,6 +640,7 @@ namespace GHelper
             // 
             // buttonEco
             // 
+            buttonEco.AccessibleName = "Eco GPU Mode";
             buttonEco.Activated = false;
             buttonEco.BackColor = SystemColors.ControlLightLight;
             buttonEco.BorderColor = Color.Transparent;
@@ -651,13 +657,14 @@ namespace GHelper
             buttonEco.Name = "buttonEco";
             buttonEco.Secondary = false;
             buttonEco.Size = new Size(184, 120);
-            buttonEco.TabIndex = 0;
+            buttonEco.TabIndex = 4;
             buttonEco.Text = Properties.Strings.EcoMode;
             buttonEco.TextImageRelation = TextImageRelation.ImageAboveText;
             buttonEco.UseVisualStyleBackColor = false;
             // 
             // buttonStandard
             // 
+            buttonStandard.AccessibleName = "Standard GPU Mode";
             buttonStandard.Activated = false;
             buttonStandard.BackColor = SystemColors.ControlLightLight;
             buttonStandard.BorderColor = Color.Transparent;
@@ -673,7 +680,7 @@ namespace GHelper
             buttonStandard.Name = "buttonStandard";
             buttonStandard.Secondary = false;
             buttonStandard.Size = new Size(184, 120);
-            buttonStandard.TabIndex = 1;
+            buttonStandard.TabIndex = 5;
             buttonStandard.Text = Properties.Strings.StandardMode;
             buttonStandard.TextImageRelation = TextImageRelation.ImageAboveText;
             buttonStandard.UseVisualStyleBackColor = false;
@@ -695,7 +702,7 @@ namespace GHelper
             buttonXGM.Name = "buttonXGM";
             buttonXGM.Secondary = false;
             buttonXGM.Size = new Size(184, 120);
-            buttonXGM.TabIndex = 2;
+            buttonXGM.TabIndex = 8;
             buttonXGM.Text = "XG Mobile";
             buttonXGM.TextImageRelation = TextImageRelation.ImageAboveText;
             buttonXGM.UseVisualStyleBackColor = false;
@@ -718,13 +725,14 @@ namespace GHelper
             buttonOptimized.Name = "buttonOptimized";
             buttonOptimized.Secondary = false;
             buttonOptimized.Size = new Size(184, 120);
-            buttonOptimized.TabIndex = 3;
+            buttonOptimized.TabIndex = 7;
             buttonOptimized.Text = Properties.Strings.Optimized;
             buttonOptimized.TextImageRelation = TextImageRelation.ImageAboveText;
             buttonOptimized.UseVisualStyleBackColor = false;
             // 
             // buttonUltimate
             // 
+            buttonUltimate.AccessibleName = "Ultimate GPU Mode";
             buttonUltimate.Activated = false;
             buttonUltimate.BackColor = SystemColors.ControlLightLight;
             buttonUltimate.BorderColor = Color.Transparent;
@@ -740,7 +748,7 @@ namespace GHelper
             buttonUltimate.Name = "buttonUltimate";
             buttonUltimate.Secondary = false;
             buttonUltimate.Size = new Size(186, 120);
-            buttonUltimate.TabIndex = 2;
+            buttonUltimate.TabIndex = 6;
             buttonUltimate.Text = Properties.Strings.UltimateMode;
             buttonUltimate.TextImageRelation = TextImageRelation.ImageAboveText;
             buttonUltimate.UseVisualStyleBackColor = false;
@@ -802,7 +810,7 @@ namespace GHelper
             panelScreen.Name = "panelScreen";
             panelScreen.Padding = new Padding(20, 20, 20, 10);
             panelScreen.Size = new Size(810, 185);
-            panelScreen.TabIndex = 38;
+            panelScreen.TabIndex = 2;
             // 
             // labelTipScreen
             // 
@@ -838,6 +846,7 @@ namespace GHelper
             // 
             // buttonScreenAuto
             // 
+            buttonScreenAuto.AccessibleName = "Auto Screen Refresh Rate";
             buttonScreenAuto.Activated = false;
             buttonScreenAuto.BackColor = SystemColors.ControlLightLight;
             buttonScreenAuto.BorderColor = Color.Transparent;
@@ -851,12 +860,13 @@ namespace GHelper
             buttonScreenAuto.Name = "buttonScreenAuto";
             buttonScreenAuto.Secondary = false;
             buttonScreenAuto.Size = new Size(184, 72);
-            buttonScreenAuto.TabIndex = 0;
+            buttonScreenAuto.TabIndex = 9;
             buttonScreenAuto.Text = Properties.Strings.AutoMode;
             buttonScreenAuto.UseVisualStyleBackColor = false;
             // 
             // button60Hz
             // 
+            button60Hz.AccessibleName = "60Hz Refresh Rate";
             button60Hz.Activated = false;
             button60Hz.BackColor = SystemColors.ControlLightLight;
             button60Hz.BorderColor = Color.Transparent;
@@ -871,12 +881,13 @@ namespace GHelper
             button60Hz.Name = "button60Hz";
             button60Hz.Secondary = false;
             button60Hz.Size = new Size(184, 72);
-            button60Hz.TabIndex = 1;
+            button60Hz.TabIndex = 10;
             button60Hz.Text = "60Hz";
             button60Hz.UseVisualStyleBackColor = false;
             // 
             // button120Hz
             // 
+            button120Hz.AccessibleName = "Maximum Refresh Rate";
             button120Hz.Activated = false;
             button120Hz.BackColor = SystemColors.ControlLightLight;
             button120Hz.BorderColor = Color.Transparent;
@@ -890,7 +901,7 @@ namespace GHelper
             button120Hz.Name = "button120Hz";
             button120Hz.Secondary = false;
             button120Hz.Size = new Size(184, 72);
-            button120Hz.TabIndex = 2;
+            button120Hz.TabIndex = 11;
             button120Hz.Text = "120Hz + OD";
             button120Hz.UseVisualStyleBackColor = false;
             // 
@@ -910,7 +921,7 @@ namespace GHelper
             buttonMiniled.Name = "buttonMiniled";
             buttonMiniled.Secondary = false;
             buttonMiniled.Size = new Size(186, 72);
-            buttonMiniled.TabIndex = 3;
+            buttonMiniled.TabIndex = 12;
             buttonMiniled.Text = Properties.Strings.Multizone;
             buttonMiniled.UseVisualStyleBackColor = false;
             // 
@@ -970,7 +981,7 @@ namespace GHelper
             panelKeyboard.Name = "panelKeyboard";
             panelKeyboard.Padding = new Padding(20);
             panelKeyboard.Size = new Size(810, 138);
-            panelKeyboard.TabIndex = 39;
+            panelKeyboard.TabIndex = 3;
             // 
             // tableLayoutKeyboard
             // 
@@ -994,6 +1005,7 @@ namespace GHelper
             // 
             // buttonKeyboard
             // 
+            buttonKeyboard.AccessibleName = "Extra Settings";
             buttonKeyboard.Activated = false;
             buttonKeyboard.BackColor = SystemColors.ControlLight;
             buttonKeyboard.BorderColor = Color.Transparent;
@@ -1008,7 +1020,7 @@ namespace GHelper
             buttonKeyboard.Name = "buttonKeyboard";
             buttonKeyboard.Secondary = true;
             buttonKeyboard.Size = new Size(250, 45);
-            buttonKeyboard.TabIndex = 37;
+            buttonKeyboard.TabIndex = 15;
             buttonKeyboard.Text = Properties.Strings.Extra;
             buttonKeyboard.TextImageRelation = TextImageRelation.ImageBeforeText;
             buttonKeyboard.UseVisualStyleBackColor = false;
@@ -1048,6 +1060,7 @@ namespace GHelper
             // 
             // buttonKeyboardColor
             // 
+            buttonKeyboardColor.AccessibleName = "Keyboard Color";
             buttonKeyboardColor.Activated = false;
             buttonKeyboardColor.BackColor = SystemColors.ButtonHighlight;
             buttonKeyboardColor.BorderColor = Color.Transparent;
@@ -1060,12 +1073,13 @@ namespace GHelper
             buttonKeyboardColor.Name = "buttonKeyboardColor";
             buttonKeyboardColor.Secondary = false;
             buttonKeyboardColor.Size = new Size(248, 45);
-            buttonKeyboardColor.TabIndex = 39;
+            buttonKeyboardColor.TabIndex = 14;
             buttonKeyboardColor.Text = Properties.Strings.Color;
             buttonKeyboardColor.UseVisualStyleBackColor = false;
             // 
             // comboKeyboard
             // 
+            comboKeyboard.AccessibleName = "Keyboard Backlight Mode";
             comboKeyboard.BorderColor = Color.White;
             comboKeyboard.ButtonColor = Color.FromArgb(255, 255, 255);
             comboKeyboard.Dock = DockStyle.Top;
@@ -1078,8 +1092,7 @@ namespace GHelper
             comboKeyboard.Margin = new Padding(4, 10, 4, 8);
             comboKeyboard.Name = "comboKeyboard";
             comboKeyboard.Size = new Size(248, 40);
-            comboKeyboard.TabIndex = 35;
-            comboKeyboard.TabStop = false;
+            comboKeyboard.TabIndex = 13;
             // 
             // panelKeyboardTitle
             // 
@@ -1145,7 +1158,7 @@ namespace GHelper
             panelVersion.Location = new Point(10, 1187);
             panelVersion.Name = "panelVersion";
             panelVersion.Size = new Size(810, 57);
-            panelVersion.TabIndex = 41;
+            panelVersion.TabIndex = 6;
             // 
             // SettingsForm
             // 
@@ -1153,7 +1166,7 @@ namespace GHelper
             AutoScaleMode = AutoScaleMode.Dpi;
             AutoSize = true;
             AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            ClientSize = new Size(830, 1213);
+            ClientSize = new Size(830, 1373);
             Controls.Add(panelFooter);
             Controls.Add(panelVersion);
             Controls.Add(panelBattery);

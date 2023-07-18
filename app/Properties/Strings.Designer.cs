@@ -376,6 +376,15 @@ namespace GHelper.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Charging.
+        /// </summary>
+        internal static string Charging {
+            get {
+                return ResourceManager.GetString("Charging", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Color.
         /// </summary>
         internal static string Color {

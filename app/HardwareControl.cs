@@ -5,13 +5,14 @@ using GHelper.Gpu.AMD;
 
 using GHelper.Helpers;
 using System.Diagnostics;
+using System.Management;
 
 public static class HardwareControl
 {
     public static IGpuControl? GpuControl;
 
     public static float? cpuTemp = -1;
-    public static float? batteryDischarge = -1;
+    public static decimal? batteryRate = 0;
     public static int? gpuTemp = null;
 
     public static string? cpuFan;
@@ -70,9 +71,39 @@ public static class HardwareControl
     }
 
 
+    public static decimal GetBatteryRate()
+    {
+
+        try
+        {
+            ManagementScope scope = new ManagementScope("root\\WMI");
+            ObjectQuery query = new ObjectQuery("SELECT * FROM BatteryStatus");
+
+            using ManagementObjectSearcher searcher = new ManagementObjectSearcher(scope, query);
+            foreach (ManagementObject obj in searcher.Get().Cast<ManagementObject>())
+            {
+                decimal chargeRate = Convert.ToDecimal(obj["ChargeRate"]);
+                decimal dischargeRate = Convert.ToDecimal(obj["DischargeRate"]);
+                if (chargeRate > 0)
+                    return chargeRate;
+                else
+                    return -dischargeRate;
+            }
+
+            return 0;
+
+        }
+        catch (Exception ex)
+        {
+            Logger.WriteLine("Discharge Reading: " + ex.Message);
+            return 0;
+        }
+
+    }
+
     public static void ReadSensors()
     {
-        batteryDischarge = -1;
+        batteryRate = 0;
         gpuTemp = -1;
         gpuUse = -1;
 
@@ -108,17 +139,8 @@ public static class HardwareControl
         if (gpuTemp is null || gpuTemp < 0)
             gpuTemp = Program.acpi.DeviceGet(AsusACPI.Temp_GPU);
 
-        try
-        {
-            using (var cb = new PerformanceCounter("Power Meter", "Power", "Power Meter (0)", true))
-            {
-                batteryDischarge = cb.NextValue() / 1000;
-            }
-        }
-        catch
-        {
-            Debug.WriteLine("Failed reading Battery discharge");
-        }
+        batteryRate = GetBatteryRate() / 1000;
+
     }
 
     public static bool IsUsedGPU(int threshold = 10)

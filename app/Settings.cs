@@ -774,8 +774,10 @@ namespace GHelper
             if (HardwareControl.cpuTemp > 0)
                 cpuTemp = ": " + Math.Round((decimal)HardwareControl.cpuTemp).ToString() + "°C";
 
-            if (HardwareControl.batteryDischarge > 0)
-                battery = Properties.Strings.Discharging + ": " + Math.Round((decimal)HardwareControl.batteryDischarge, 1).ToString() + "W";
+            if (HardwareControl.batteryRate < 0)
+                battery = Properties.Strings.Discharging + ": " + Math.Round(-(decimal)HardwareControl.batteryRate, 1).ToString() + "W";
+            else if (HardwareControl.batteryRate > 0)
+                battery = Properties.Strings.Charging + ": " + Math.Round((decimal)HardwareControl.batteryRate, 1).ToString() + "W";
 
             if (HardwareControl.gpuTemp > 0)
             {
