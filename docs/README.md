@@ -27,7 +27,7 @@ _If you post about the app - please include a link. Thanks._
 
 ![Gihhub](https://github.com/seerge/g-helper/assets/5920850/4d98465a-63a5-4498-ae14-afb3e67e7e82)
 
-### :zap: Main features
+### :zap: Features
 
 1. **Performance modes**: Silent - Balanced - Turbo (built-in, with default fan curves)
 2. **GPU modes**: Eco - Standard - Ultimate - Optimized
@@ -40,6 +40,7 @@ _If you post about the app - please include a link. Thanks._
 9. Battery charge limit to preserve battery health
 10. NVidia GPU overclocking
 11. XG Mobile Control
+12. AMD CPU Undervolting
 
 ![Screenshot 2023-04-13 190951](https://user-images.githubusercontent.com/5920850/231859391-c4963af4-491c-4523-95d4-0bdcfd7cfd6f.png)
 
