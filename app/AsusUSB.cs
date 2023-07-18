@@ -175,12 +175,14 @@ namespace GHelper
 
         public static void SetColor(int colorCode)
         {
-            Color1 = Color.FromArgb(colorCode);
+            if (colorCode == -1) Color1 = Color.Red;
+            else Color1 = Color.FromArgb(colorCode);
         }
 
         public static void SetColor2(int colorCode)
         {
-            Color2 = Color.FromArgb(colorCode);
+            if (colorCode == -1) Color2 = Color.White;
+            else Color2 = Color.FromArgb(colorCode);
         }
 
 
@@ -366,6 +368,11 @@ namespace GHelper
 
         public static void ApplyAura()
         {
+
+            Mode = AppConfig.Get("aura_mode");
+            Speed = AppConfig.Get("aura_speed");
+            SetColor(AppConfig.Get("aura_color"));
+            SetColor2(AppConfig.Get("aura_color2"));
 
             int _speed;
 
