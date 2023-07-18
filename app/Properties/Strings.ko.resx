@@ -199,7 +199,7 @@
     <value>Awake</value>
   </data>
   <data name="BacklightTimeout" xml:space="preserve">
-    <value>배터리 사용 중 백라이트 자동 꺼짐</value>
+    <value>전원 연결 / 배터리 사용 중 자동 꺼짐 시간 (0 - 항상 켜짐)</value>
   </data>
   <data name="Balanced" xml:space="preserve">
     <value>균형</value>
@@ -221,6 +221,9 @@
   </data>
   <data name="BrightnessUp" xml:space="preserve">
     <value>밝기 증가</value>
+  </data>
+  <data name="Charging" xml:space="preserve">
+    <value>Charging</value>
   </data>
   <data name="Color" xml:space="preserve">
     <value>색상</value>
@@ -253,12 +256,12 @@
     <value>Eco</value>
   </data>
   <data name="EnableOptimusText" xml:space="preserve">
-    <value>Disabling the dGPU by going into Eco mode while Display Mode in NVIDIA Control Panel is not set to Optimus might cause problems with brightness controls until after the next reboot. 
+    <value>NVIDIA 디스플레이 모드가 Optimus로 설정되어 있지 않을 때 Eco 모드로 전환하여 dGPU를 비활성화하면 다시 시작하기 전까지 밝기 조절 문제가 생길 수 있습니다.
 
-Do you still want to continue?</value>
+계속하시겠습니까?</value>
   </data>
   <data name="EnableOptimusTitle" xml:space="preserve">
-    <value>NVIDIA Display Mode is not set to Optimus</value>
+    <value>NVIDIA 디스플레이 모드가 Optimus로 설정되어 있지 않습니다.</value>
   </data>
   <data name="Extra" xml:space="preserve">
     <value>추가 설정</value>
@@ -513,7 +516,7 @@ Do you still want to continue?</value>
     <value>Ultimate</value>
   </data>
   <data name="UndervoltingRisky" xml:space="preserve">
-    <value>Undervolting is an experimental and risky feature. If applied values are too low for your hardware, it can become unstable, shut down or cause data corruption. If you want to try - start from small values first, click Apply and test what works for you.</value>
+    <value>언더볼팅은 실험적이며 위험한 기능입니다. 적용 값이 너무 낮은 경우 시스템이 불안정해지고, 종료되거나 데이터 손상을 유발할 수 있습니다. 작은 값부터 적용하여 잘 작동하는지 확인해 보십시오.</value>
   </data>
   <data name="Updates" xml:space="preserve">
     <value>업데이트</value>
