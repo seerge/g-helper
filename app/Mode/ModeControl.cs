@@ -172,7 +172,7 @@ namespace GHelper.Mode
 
         private static bool IsFanRequired()
         {
-            return AppConfig.ContainsModel("GA402XI") || AppConfig.ContainsModel("G513");
+            return AppConfig.ContainsModel("GA402XI") || AppConfig.ContainsModel("GA402XV") || AppConfig.ContainsModel("G513");
         }
 
         public void AutoPower(int delay = 0)
