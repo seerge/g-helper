@@ -219,13 +219,11 @@ Full list of keycodes https://learn.microsoft.com/en-us/windows/win32/inputdev/v
 
 ![Screenshot 2023-07-17 192155](https://github.com/seerge/g-helper/assets/5920850/e450e124-1589-4787-bce8-7c37ffe72fbd)
 
-### Workaround for [bugged bios on G15](https://github.com/seerge/g-helper/issues/253) when external monitor is connected
-
-Some people reported that on G15 model bios can be bugged and either not turn on or not turn off fans, when you set custom fan curve (in Armoury or g-helper, or any other app)
-I have added a very optional workaround as it was asked, on launch app will try to disable and re-enable dGPU when external monitor is connected, that seems to wake up fans :)
-
-To enable this custom workaround you need to add an extra line in config.json (under ``%AppData%\GHelper``) 
-``gpu_reenable : 1,``
+### Disable OSD
+You can disable app's OSD (for performance modes, keyboard backlight, etc) by adding following line to ``%AppData%\GHelper\config.json``
+```
+"disable_osd": 1,
+```
 
 ### Keybinding to toggle performance modes (on external keyboards)
 
