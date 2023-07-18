@@ -489,7 +489,8 @@ namespace GHelper
             if (colorDlg.ShowDialog() == DialogResult.OK)
             {
                 AppConfig.Set("aura_color2", colorDlg.Color.ToArgb());
-                SetAura();
+                AsusUSB.ApplyAura();
+                VisualiseAura();
             }
         }
 
@@ -554,7 +555,8 @@ namespace GHelper
             if (colorDlg.ShowDialog() == DialogResult.OK)
             {
                 AppConfig.Set("aura_color", colorDlg.Color.ToArgb());
-                SetAura();
+                AsusUSB.ApplyAura();
+                VisualiseAura();
             }
         }
 
@@ -572,9 +574,6 @@ namespace GHelper
             comboKeyboard.SelectedValue = AsusUSB.Mode;
             comboKeyboard.SelectedValueChanged += ComboKeyboard_SelectedValueChanged;
 
-            pictureColor.BackColor = AsusUSB.Color1;
-            pictureColor2.BackColor = AsusUSB.Color2;
-            pictureColor2.Visible = AsusUSB.HasSecondColor();
 
             if (AsusUSB.HasColor())
             {
@@ -586,6 +585,15 @@ namespace GHelper
                 comboKeyboard.Visible = false;
             }
 
+            VisualiseAura();
+
+        }
+
+        public void VisualiseAura()
+        {
+            pictureColor.BackColor = AsusUSB.Color1;
+            pictureColor2.BackColor = AsusUSB.Color2;
+            pictureColor2.Visible = AsusUSB.HasSecondColor();
         }
 
         public void InitMatrix()
@@ -606,21 +614,6 @@ namespace GHelper
         }
 
 
-        public void SetAura()
-        {
-            AsusUSB.Mode = AppConfig.Get("aura_mode");
-            AsusUSB.Speed = AppConfig.Get("aura_speed");
-            AsusUSB.SetColor(AppConfig.Get("aura_color"));
-            AsusUSB.SetColor2(AppConfig.Get("aura_color2"));
-
-            pictureColor.BackColor = AsusUSB.Color1;
-            pictureColor2.BackColor = AsusUSB.Color2;
-            pictureColor2.Visible = AsusUSB.HasSecondColor();
-
-            AsusUSB.ApplyAura();
-
-        }
-
         public void CycleAuraMode()
         {
             if (comboKeyboard.SelectedIndex < comboKeyboard.Items.Count - 1)
@@ -632,7 +625,8 @@ namespace GHelper
         private void ComboKeyboard_SelectedValueChanged(object? sender, EventArgs e)
         {
             AppConfig.Set("aura_mode", (int)comboKeyboard.SelectedValue);
-            SetAura();
+            AsusUSB.ApplyAura();
+            VisualiseAura();
         }
 
 
@@ -861,9 +855,11 @@ namespace GHelper
 
         public void AutoKeyboard()
         {
-            InputDispatcher.SetBacklightAuto(true);
 
             AsusUSB.ApplyAuraPower();
+            AsusUSB.ApplyAura();
+
+            InputDispatcher.SetBacklightAuto(true);
 
             if (Program.acpi.IsXGConnected())
                 AsusUSB.ApplyXGMLight(AppConfig.Is("xmg_light"));

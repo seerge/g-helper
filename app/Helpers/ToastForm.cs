@@ -132,6 +132,9 @@ namespace GHelper.Helpers
 
         public void RunToast(string text, ToastIcon? icon = null)
         {
+
+            if (AppConfig.Is("disable_osd")) return;
+
             Program.settingsForm.Invoke(delegate
             {
                 //Hide();
