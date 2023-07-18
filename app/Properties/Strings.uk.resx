@@ -222,6 +222,9 @@
   <data name="BrightnessUp" xml:space="preserve">
     <value>Підвищити яскравість</value>
   </data>
+  <data name="Charging" xml:space="preserve">
+    <value>Charging</value>
+  </data>
   <data name="Color" xml:space="preserve">
     <value>Колір</value>
   </data>
