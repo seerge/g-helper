@@ -124,7 +124,7 @@
     <value>看起来 GPU 正在被重度使用，是否禁用？</value>
   </data>
   <data name="AlertDGPUTitle" xml:space="preserve">
-    <value>节能模式</value>
+    <value>集显模式</value>
   </data>
   <data name="AlertUltimateOff" xml:space="preserve">
     <value>关闭独显直连需要重启</value>
@@ -221,6 +221,9 @@
   </data>
   <data name="BrightnessUp" xml:space="preserve">
     <value>提高亮度</value>
+  </data>
+  <data name="Charging" xml:space="preserve">
+    <value>充电中</value>
   </data>
   <data name="Color" xml:space="preserve">
     <value>颜色</value>
