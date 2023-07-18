@@ -223,7 +223,7 @@
     <value>螢幕亮度提高</value>
   </data>
   <data name="Charging" xml:space="preserve">
-    <value>Charging</value>
+    <value>充填時</value>
   </data>
   <data name="Color" xml:space="preserve">
     <value>顏色</value>
