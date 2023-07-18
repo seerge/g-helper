@@ -272,7 +272,6 @@ namespace GHelper.Input
 
             if (e.Modifier == (ModifierKeys.Shift))
             {
-                Logger.WriteLine("shift");
                 switch (e.Key)
                 {
                     case Keys.VolumeDown:
