@@ -105,6 +105,11 @@ namespace GHelper.Input
             if (keyProfile != Keys.None) hook.RegisterHotKey(ModifierKeys.Shift | ModifierKeys.Control, keyProfile);
             if (keyApp != Keys.None) hook.RegisterHotKey(ModifierKeys.Shift | ModifierKeys.Control, keyApp);
 
+            hook.RegisterHotKey(ModifierKeys.Control, Keys.VolumeDown);
+            hook.RegisterHotKey(ModifierKeys.Control, Keys.VolumeUp);
+            hook.RegisterHotKey(ModifierKeys.Shift, Keys.VolumeDown);
+            hook.RegisterHotKey(ModifierKeys.Shift, Keys.VolumeUp);
+
             if (!AppConfig.ContainsModel("Z13"))
                 if (actionM1 is not null && actionM1.Length > 0) hook.RegisterHotKey(ModifierKeys.None, Keys.VolumeDown);
             if (actionM2 is not null && actionM2.Length > 0) hook.RegisterHotKey(ModifierKeys.None, Keys.VolumeUp);
@@ -250,7 +255,36 @@ namespace GHelper.Input
                 if (e.Key == keyApp) Program.SettingsToggle();
             }
 
+            if (e.Modifier == (ModifierKeys.Control))
+            {
+                switch (e.Key)
+                {
+                    case Keys.VolumeDown:
+                        // Screen brightness down on CTRL+VolDown
+                        HandleOptimizationEvent(16);
+                        break;
+                    case Keys.VolumeUp:
+                        // Screen brightness up on CTRL+VolUp
+                        HandleOptimizationEvent(32);
+                        break;
+                }
+            }
 
+            if (e.Modifier == (ModifierKeys.Shift))
+            {
+                Logger.WriteLine("shift");
+                switch (e.Key)
+                {
+                    case Keys.VolumeDown:
+                        // Keyboard backlight down on SHIFT+VolDown
+                        SetBacklight(-1);
+                        break;
+                    case Keys.VolumeUp:
+                        // Keyboard backlight up on SHIFT+VolUp
+                        SetBacklight(1);
+                        break;
+                }
+            }
         }
 
 
