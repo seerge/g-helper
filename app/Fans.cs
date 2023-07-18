@@ -411,7 +411,7 @@ namespace GHelper
                 return;
             }
 
-            if (HardwareControl.GpuControl is null) HardwareControl.RecreateGpuControl();
+            if (HardwareControl.GpuControl is null || !HardwareControl.GpuControl.IsValid) HardwareControl.RecreateGpuControl();
 
             if (HardwareControl.GpuControl is not null && HardwareControl.GpuControl.IsNvidia)
             {
