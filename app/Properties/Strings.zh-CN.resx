@@ -223,7 +223,7 @@
     <value>提高亮度</value>
   </data>
   <data name="Charging" xml:space="preserve">
-    <value>Charging</value>
+    <value>充电中</value>
   </data>
   <data name="Color" xml:space="preserve">
     <value>颜色</value>
