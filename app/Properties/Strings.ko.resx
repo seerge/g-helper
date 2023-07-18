@@ -446,6 +446,12 @@ Do you still want to continue?</value>
   <data name="RunOnStartup" xml:space="preserve">
     <value>시스템 시작 시 실행</value>
   </data>
+  <data name="ScreenPadDown" xml:space="preserve">
+    <value>Screenpad Brightness Down</value>
+  </data>
+  <data name="ScreenPadUp" xml:space="preserve">
+    <value>Screenpad Brightness Up</value>
+  </data>
   <data name="Shutdown" xml:space="preserve">
     <value>꺼짐</value>
   </data>

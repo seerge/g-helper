@@ -446,6 +446,12 @@
   <data name="RunOnStartup" xml:space="preserve">
     <value>开机自启</value>
   </data>
+  <data name="ScreenPadDown" xml:space="preserve">
+    <value>Screenpad亮度降低</value>
+  </data>
+  <data name="ScreenPadUp" xml:space="preserve">
+    <value>Screenpad亮度增加</value>
+  </data>
   <data name="Shutdown" xml:space="preserve">
     <value>关机时</value>
   </data>

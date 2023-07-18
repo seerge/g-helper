@@ -446,6 +446,12 @@ Nadal chcesz kontynuować?</value>
   <data name="RunOnStartup" xml:space="preserve">
     <value>Uruchom przy starcie systemu</value>
   </data>
+  <data name="ScreenPadDown" xml:space="preserve">
+    <value>Zmniejsz jasność ScreenPad</value>
+  </data>
+  <data name="ScreenPadUp" xml:space="preserve">
+    <value>Zwiększ jasność ScreenPad</value>
+  </data>
   <data name="Shutdown" xml:space="preserve">
     <value>Zamknij</value>
   </data>

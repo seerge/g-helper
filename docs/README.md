@@ -216,7 +216,7 @@ App supports custom actions for M3, M4 and FN+F4 hotkeys. To set them select "Cu
 2. To simulate any windows key - put appropriate keycode into "action" field, for example ``0x2C`` for Print screen. 
 Full list of keycodes https://learn.microsoft.com/en-us/windows/win32/inputdev/virtual-key-codes
 
-![Screenshot 2023-06-04 232848](https://github.com/seerge/g-helper/assets/5920850/3db6f058-af2b-4220-9ac9-3b812ab09903)
+![Screenshot 2023-07-17 192155](https://github.com/seerge/g-helper/assets/5920850/e450e124-1589-4787-bce8-7c37ffe72fbd)
 
 ### Workaround for [bugged bios on G15](https://github.com/seerge/g-helper/issues/253) when external monitor is connected
 
