@@ -148,7 +148,7 @@
     <value>G-Helper가 이미 실행중입니다. 시스템 트레이에서 아이콘을 확인하십시오.</value>
   </data>
   <data name="Apply" xml:space="preserve">
-    <value>Apply</value>
+    <value>적용</value>
   </data>
   <data name="ApplyFanCurve" xml:space="preserve">
     <value>사용자 설정 팬 커브 적용</value>
@@ -187,7 +187,7 @@
     <value>Strobe</value>
   </data>
   <data name="AutoApply" xml:space="preserve">
-    <value>Auto Apply</value>
+    <value>자동 적용</value>
   </data>
   <data name="AutoMode" xml:space="preserve">
     <value>자동</value>
@@ -393,10 +393,10 @@ Do you still want to continue?</value>
     <value>마이크 음소거</value>
   </data>
   <data name="NewUpdates" xml:space="preserve">
-    <value>New updates</value>
+    <value>새 업데이트</value>
   </data>
   <data name="NoNewUpdates" xml:space="preserve">
-    <value>No new updates</value>
+    <value>새 업데이트 없음</value>
   </data>
   <data name="OpenGHelper" xml:space="preserve">
     <value>G-Helper 열기</value>
@@ -429,7 +429,7 @@ Do you still want to continue?</value>
     <value>전력 제한</value>
   </data>
   <data name="PPTExperimental" xml:space="preserve">
-    <value>전력 제한 은 실험적인 기능입니다. 주의하여 사용하세요!</value>
+    <value>전력 제한은 실험적인 기능입니다. 주의하여 사용하세요!</value>
   </data>
   <data name="PrintScreen" xml:space="preserve">
     <value>PrintScreen</value>
@@ -447,10 +447,10 @@ Do you still want to continue?</value>
     <value>시스템 시작 시 실행</value>
   </data>
   <data name="ScreenPadDown" xml:space="preserve">
-    <value>Screenpad Brightness Down</value>
+    <value>Screenpad 밝기 감소</value>
   </data>
   <data name="ScreenPadUp" xml:space="preserve">
-    <value>Screenpad Brightness Up</value>
+    <value>Screenpad 밝기 증가</value>
   </data>
   <data name="Shutdown" xml:space="preserve">
     <value>꺼짐</value>
@@ -480,7 +480,7 @@ Do you still want to continue?</value>
     <value>중지</value>
   </data>
   <data name="StopGPUApps" xml:space="preserve">
-    <value>Stop GPU Applications</value>
+    <value>GPU를 사용하는 앱 중지</value>
   </data>
   <data name="StoppingServices" xml:space="preserve">
     <value>서비스 중지 중</value>
