@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="ACPIError" xml:space="preserve">
-    <value>Impossibile connettersi ad ASUS ACPI. Senza di essa l'applicazione non può funzionare. Prova a installare Asus System Control Interface</value>
+    <value>Impossibile connettersi ad ASUS ACPI. Senza di essa l'applicazione non può funzionare. Prova a installare Asus Satem Contro Interfacce</value>
   </data>
   <data name="AlertDGPU" xml:space="preserve">
     <value>Uso intensivo della GPU, disabilitare?</value>
@@ -411,7 +411,7 @@ Sei sicuro di voler continuare?</value>
     <value>Passa ad Eco se alimentato a batteria e a Standard quando in carica</value>
   </data>
   <data name="OptimizedUSBC" xml:space="preserve">
-    <value>Lascia la GPU disabilitata sulla porta USB-C in modalità Ottimizzata</value>
+    <value>Disabilita GPU durante ricarica tramite USB-C in modalità Ottimizzata</value>
   </data>
   <data name="Other" xml:space="preserve">
     <value>Altro</value>
@@ -492,7 +492,7 @@ Sei sicuro di voler continuare?</value>
     <value>Alterna Aura</value>
   </data>
   <data name="ToggleClamshellMode" xml:space="preserve">
-    <value>Auto Toggle Clamshell Mode</value>
+    <value>Attiva automaticamente la modalità a conchiglia</value>
   </data>
   <data name="ToggleFnLock" xml:space="preserve">
     <value>Alterna Blocco-Fn</value>
