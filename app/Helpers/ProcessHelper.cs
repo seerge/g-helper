@@ -103,7 +103,7 @@ namespace GHelper.Helpers
         {
             try
             {
-                string script = $"Set-Service -Name \"{serviceName}\" -Status stopped -StartupType disabled";
+                string script = $"Get-Service -Name \"{serviceName}\" | Stop-Service -Force -PassThru | Set-Service -StartupType Disabled";
                 Logger.WriteLine(script);
                 RunCMD("powershell", script);
             }
