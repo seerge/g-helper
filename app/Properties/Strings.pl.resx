@@ -492,7 +492,7 @@ Nadal chcesz kontynuować?</value>
     <value>Przełącz Aura</value>
   </data>
   <data name="ToggleClamshellMode" xml:space="preserve">
-    <value>Auto Toggle Clamshell Mode</value>
+    <value>Automatyczne przełączanie trybu klapki</value>
   </data>
   <data name="ToggleFnLock" xml:space="preserve">
     <value>Przełącz Fn-Lock</value>
