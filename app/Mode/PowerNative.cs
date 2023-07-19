@@ -60,6 +60,9 @@ namespace GHelper.Mode
         private static Guid GUID_SLEEP_SUBGROUP = new Guid("238c9fa8-0aad-41ed-83f4-97be242c8f20");
         private static Guid GUID_HIBERNATEIDLE = new Guid("9d7815a6-7ee4-497e-8888-515a05f02364");
 
+        private static Guid GUID_SYSTEM_BUTTON_SUBGROUP = new Guid("4f971e89-eebd-4455-a8de-9e59040e7347");
+        private static Guid GUID_LIDACTION = new Guid("5CA83367-6E45-459F-A27B-476B1D01C936");
+
         [DllImportAttribute("powrprof.dll", EntryPoint = "PowerGetActualOverlayScheme")]
         public static extern uint PowerGetActualOverlayScheme(out Guid ActualOverlayGuid);
 
@@ -162,6 +165,41 @@ namespace GHelper.Mode
                     SetPowerScheme("961cc777-2547-4f9d-8174-7d86181b8a7a");
                     break;
             }
+        }
+
+        public static void SetLidAction(int action, bool acOnly = false)
+        {
+            /**
+             * 1: Do nothing
+             * 2: Seelp
+             * 3: Hibernate
+             * 4: Shutdown
+             */
+
+            Guid activeSchemeGuid = GetActiveScheme();
+
+            var hrAC = PowerWriteACValueIndex(
+                IntPtr.Zero,
+                activeSchemeGuid,
+                GUID_SYSTEM_BUTTON_SUBGROUP,
+                GUID_LIDACTION,
+                action);
+
+            PowerSetActiveScheme(IntPtr.Zero, activeSchemeGuid);
+
+            if (!acOnly)
+            {
+                var hrDC = PowerWriteDCValueIndex(
+                  IntPtr.Zero,
+                  activeSchemeGuid,
+                  GUID_SYSTEM_BUTTON_SUBGROUP,
+                  GUID_LIDACTION,
+                  action);
+
+                PowerSetActiveScheme(IntPtr.Zero, activeSchemeGuid);
+            }
+
+            Logger.WriteLine("Changed Lid Action to " + action);
         }
     }
 }

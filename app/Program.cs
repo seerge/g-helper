@@ -30,6 +30,7 @@ namespace GHelper
         public static ModeControl modeControl = new ModeControl();
         static GPUModeControl gpuControl = new GPUModeControl(settingsForm);
         static ScreenControl screenControl = new ScreenControl();
+        static ClamshellModeControl clamshellControl = new ClamshellModeControl();
 
         public static ToastForm toast = new ToastForm();
 
@@ -99,6 +100,8 @@ namespace GHelper
             // Subscribing for system power change events
             SystemEvents.PowerModeChanged += SystemEvents_PowerModeChanged;
             SystemEvents.UserPreferenceChanged += SystemEvents_UserPreferenceChanged;
+            clamshellControl.RegisterDisplayEvents();
+            clamshellControl.ToggleLidAction();
 
             // Subscribing for monitor power on events
             PowerSettingGuid settingGuid = new NativeMethods.PowerSettingGuid();
@@ -238,6 +241,7 @@ namespace GHelper
         static void OnExit(object sender, EventArgs e)
         {
             trayIcon.Visible = false;
+            clamshellControl.UnregisterDisplayEvents();
             NativeMethods.UnregisterPowerSettingNotification(unRegPowerNotify);
             Application.Exit();
         }
