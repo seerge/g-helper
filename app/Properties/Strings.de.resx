@@ -148,7 +148,7 @@
     <value>G-Helper läuft bereits. Bitte prüfe den Systemtray.</value>
   </data>
   <data name="Apply" xml:space="preserve">
-    <value>Apply</value>
+    <value>Anwenden</value>
   </data>
   <data name="ApplyFanCurve" xml:space="preserve">
     <value>Lüfterkurve anwenden</value>
@@ -229,7 +229,7 @@
     <value>Farbe</value>
   </data>
   <data name="CPUBoost" xml:space="preserve">
-    <value>CPU Boost</value>
+    <value>CPU-Boost</value>
   </data>
   <data name="Custom" xml:space="preserve">
     <value>Benutzerdefiniert</value>
@@ -253,7 +253,7 @@
     <value>dGPU zum Stromsparen abschalten</value>
   </data>
   <data name="EcoMode" xml:space="preserve">
-    <value>Eco</value>
+    <value>Öko</value>
   </data>
   <data name="EnableOptimusText" xml:space="preserve">
     <value>Wenn Sie die dGPU deaktivieren, indem Sie in den Eco-Modus wechseln, kann zu Problemen mit der Helligkeitseinstellung führen, wenn der Anzeigemodus nicht auf Optimus eingestellt ist.
@@ -300,7 +300,7 @@ Trotzdem fortfahren?</value>
     <value>FN+F Funktionen ohne FN Taste nutzen</value>
   </data>
   <data name="GPUBoost" xml:space="preserve">
-    <value>Dynamic Boost</value>
+    <value>Dynamischer Schub</value>
   </data>
   <data name="GPUChanging" xml:space="preserve">
     <value>Wechseln</value>
@@ -360,7 +360,7 @@ Trotzdem fortfahren?</value>
     <value>Audio Visualisierung</value>
   </data>
   <data name="MatrixBanner" xml:space="preserve">
-    <value>Binary Banner</value>
+    <value>Binäres Banner</value>
   </data>
   <data name="MatrixBright" xml:space="preserve">
     <value>Hell</value>
@@ -450,10 +450,10 @@ Trotzdem fortfahren?</value>
     <value>Beim Start ausführen</value>
   </data>
   <data name="ScreenPadDown" xml:space="preserve">
-    <value>Screenpad Brightness Down</value>
+    <value>Screenend Helligkeit verringern</value>
   </data>
   <data name="ScreenPadUp" xml:space="preserve">
-    <value>Screenpad Brightness Up</value>
+    <value>Screenend Helligkeit erhöhen</value>
   </data>
   <data name="Shutdown" xml:space="preserve">
     <value>Herunterfahren</value>
@@ -516,16 +516,16 @@ Trotzdem fortfahren?</value>
     <value>Verbindet den Bildschirm mit der dGPU für maximale Leistung.</value>
   </data>
   <data name="UltimateMode" xml:space="preserve">
-    <value>Ultimate</value>
+    <value>Ultimativ</value>
   </data>
   <data name="UndervoltingRisky" xml:space="preserve">
     <value>Die Spannungsabsenkung (Undervolting) ist experimentell und birgt u.U. ein Risik. Wenn die Spannung zu weit abgesenkt wird, wird der Computer instabil und kann abstürzen, was zu Datenverlust führen kann. Es empfiehlt sich mit kleinen Werten anzufangen und es ausgiebig zu testen, um den idealen Wert zu finden.</value>
   </data>
   <data name="Updates" xml:space="preserve">
-    <value>Updates</value>
+    <value>Aktualisierung</value>
   </data>
   <data name="VersionLabel" xml:space="preserve">
-    <value>Version</value>
+    <value>Ausführung</value>
   </data>
   <data name="VolumeDown" xml:space="preserve">
     <value>Lautstärke verringern</value>
