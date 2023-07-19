@@ -498,7 +498,7 @@
     <value>Alternar Fn-Lock</value>
   </data>
   <data name="ToggleMiniled" xml:space="preserve">
-    <value>Alternar Miniled (si comp.)</value>
+    <value>Alternar Miniled (si compatible)</value>
   </data>
   <data name="ToggleScreen" xml:space="preserve">
     <value>Alternar pantalla</value>
