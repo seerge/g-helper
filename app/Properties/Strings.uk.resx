@@ -291,7 +291,7 @@
     <value>Кулери та Потужність</value>
   </data>
   <data name="FanSpeed" xml:space="preserve">
-    <value>Віяло</value>
+    <value>Fan</value>
   </data>
   <data name="FansPower" xml:space="preserve">
     <value>Кулери та Потужність</value>
@@ -450,10 +450,10 @@
     <value>Запускати на старті</value>
   </data>
   <data name="ScreenPadDown" xml:space="preserve">
-    <value>Зменшення яскравості екрана</value>
+    <value>Зменшити яскравість Screenpad</value>
   </data>
   <data name="ScreenPadUp" xml:space="preserve">
-    <value>Збільшення яскравості екрана</value>
+    <value>Збільшити яскравість Screenpad</value>
   </data>
   <data name="Shutdown" xml:space="preserve">
     <value>Вимикання</value>
@@ -492,7 +492,7 @@
     <value>Аура</value>
   </data>
   <data name="ToggleClamshellMode" xml:space="preserve">
-    <value>Автоматичне перемикання режиму розкладачки</value>
+    <value>Автоматично вмикати режим Clamshell</value>
   </data>
   <data name="ToggleFnLock" xml:space="preserve">
     <value>Fn-Lock</value>
