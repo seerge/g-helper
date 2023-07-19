@@ -492,7 +492,7 @@
     <value>切換Aura</value>
   </data>
   <data name="ToggleClamshellMode" xml:space="preserve">
-    <value>Auto Toggle Clamshell Mode</value>
+    <value>翻蓋模式 (蓋上筆電但有外接螢幕時，系統仍會持續運行)</value>
   </data>
   <data name="ToggleFnLock" xml:space="preserve">
     <value>免按Fn鍵使用Fn+F1~F12功能</value>
