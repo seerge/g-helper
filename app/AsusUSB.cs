@@ -175,14 +175,12 @@ namespace GHelper
 
         public static void SetColor(int colorCode)
         {
-            if (colorCode == -1) Color1 = Color.Red;
-            else Color1 = Color.FromArgb(colorCode);
+            Color1 = Color.FromArgb(colorCode);
         }
 
         public static void SetColor2(int colorCode)
         {
-            if (colorCode == -1) Color2 = Color.White;
-            else Color2 = Color.FromArgb(colorCode);
+            Color2 = Color.FromArgb(colorCode);
         }
 
 
