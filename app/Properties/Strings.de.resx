@@ -491,6 +491,9 @@ Trotzdem fortfahren?</value>
   <data name="ToggleAura" xml:space="preserve">
     <value>Aura umschalten</value>
   </data>
+  <data name="ToggleClamshellMode" xml:space="preserve">
+    <value>Auto Toggle Clamshell Mode</value>
+  </data>
   <data name="ToggleFnLock" xml:space="preserve">
     <value>FN Sperre umschalten</value>
   </data>

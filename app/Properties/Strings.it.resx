@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="ACPIError" xml:space="preserve">
-    <value>Impossibile connettersi ad ASUS ACPI. Senza di essa l'applicazione non può funzionare. Prova ad installare Asus System Control Interface</value>
+    <value>Impossibile connettersi ad ASUS ACPI. Senza di essa l'applicazione non può funzionare. Prova a installare Asus System Control Interface</value>
   </data>
   <data name="AlertDGPU" xml:space="preserve">
     <value>Uso intensivo della GPU, disabilitare?</value>
@@ -223,7 +223,7 @@
     <value>Aumenta Luminosità</value>
   </data>
   <data name="Charging" xml:space="preserve">
-    <value>Charging</value>
+    <value>In carica</value>
   </data>
   <data name="Color" xml:space="preserve">
     <value>Colore</value>
@@ -450,10 +450,10 @@ Sei sicuro di voler continuare?</value>
     <value>Esegui all'Avvio</value>
   </data>
   <data name="ScreenPadDown" xml:space="preserve">
-    <value>Screenpad Brightness Down</value>
+    <value>Riduci luminosità Screenpad</value>
   </data>
   <data name="ScreenPadUp" xml:space="preserve">
-    <value>Screenpad Brightness Up</value>
+    <value>Aumenta luminosità Screenpad</value>
   </data>
   <data name="Shutdown" xml:space="preserve">
     <value>Spegnimento</value>
@@ -490,6 +490,9 @@ Sei sicuro di voler continuare?</value>
   </data>
   <data name="ToggleAura" xml:space="preserve">
     <value>Alterna Aura</value>
+  </data>
+  <data name="ToggleClamshellMode" xml:space="preserve">
+    <value>Auto Toggle Clamshell Mode</value>
   </data>
   <data name="ToggleFnLock" xml:space="preserve">
     <value>Alterna Blocco-Fn</value>

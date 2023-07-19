@@ -223,7 +223,7 @@
     <value>Zwiększ jasność</value>
   </data>
   <data name="Charging" xml:space="preserve">
-    <value>Charging</value>
+    <value>Ładowanie</value>
   </data>
   <data name="Color" xml:space="preserve">
     <value>Kolor</value>
@@ -490,6 +490,9 @@ Nadal chcesz kontynuować?</value>
   </data>
   <data name="ToggleAura" xml:space="preserve">
     <value>Przełącz Aura</value>
+  </data>
+  <data name="ToggleClamshellMode" xml:space="preserve">
+    <value>Auto Toggle Clamshell Mode</value>
   </data>
   <data name="ToggleFnLock" xml:space="preserve">
     <value>Przełącz Fn-Lock</value>

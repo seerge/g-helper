@@ -491,6 +491,9 @@ Do you still want to continue?</value>
   <data name="ToggleAura" xml:space="preserve">
     <value>Activer Aura</value>
   </data>
+  <data name="ToggleClamshellMode" xml:space="preserve">
+    <value>Auto Toggle Clamshell Mode</value>
+  </data>
   <data name="ToggleFnLock" xml:space="preserve">
     <value>Toggle Fn-Lock</value>
   </data>
