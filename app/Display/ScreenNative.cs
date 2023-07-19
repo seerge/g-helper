@@ -134,6 +134,7 @@ namespace GHelper.Display
             string? laptopScreen = null;
             var screens = Screen.AllScreens;
 
+            /*
             if (!isUltimate)
             {
                 foreach (var screen in screens )
@@ -142,6 +143,7 @@ namespace GHelper.Display
                     if (screen.DeviceName == defaultDevice) return defaultDevice;
                 }
             }
+            */
 
             try
             {

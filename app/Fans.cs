@@ -668,7 +668,11 @@ namespace GHelper
             }
             else
             {
-                labelLeftA0.Text = "CPU Slow (SPL + sPPT)";
+                if (RyzenControl.IsAMD())
+                    labelLeftA0.Text = "CPU Slow (SPL + sPPT)";
+                else
+                    labelLeftA0.Text = "CPU (PL1 + PL2)";
+
                 labelLeftC1.Text = "CPU Fast (fPPT)";
                 panelC1.Visible = modeC1;
             }
@@ -765,7 +769,7 @@ namespace GHelper
             try
             {
                 if (chartCount > 2)
-                    Size = MinimumSize = new Size(0, (int)(ControlHelper.GetDpiScale(this).Value * (chartCount * 200 + 100)));
+                    Size = MinimumSize = new Size(Size.Width, (int)(ControlHelper.GetDpiScale(this).Value * (chartCount * 200 + 100)));
             }
             catch (Exception ex)
             {
