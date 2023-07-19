@@ -148,7 +148,7 @@
     <value>G-Helper est déjà en cours d'exécution. Vérifiez la barre d'état système.</value>
   </data>
   <data name="Apply" xml:space="preserve">
-    <value>Apply</value>
+    <value>Appliquer</value>
   </data>
   <data name="ApplyFanCurve" xml:space="preserve">
     <value>Appliquer la courbe</value>
@@ -160,7 +160,7 @@
     <value>Ajustement auto des modes de gestion alim. Windows</value>
   </data>
   <data name="AsusServicesRunning" xml:space="preserve">
-    <value>Asus Services Running</value>
+    <value>Services Asus actifs</value>
   </data>
   <data name="AuraBreathe" xml:space="preserve">
     <value>Pulsation</value>
@@ -187,7 +187,7 @@
     <value>Stroboscopique</value>
   </data>
   <data name="AutoApply" xml:space="preserve">
-    <value>Auto Apply</value>
+    <value>Applicage automatique</value>
   </data>
   <data name="AutoMode" xml:space="preserve">
     <value>Automatique</value>
@@ -208,7 +208,7 @@
     <value>Limite de charge </value>
   </data>
   <data name="BiosAndDriverUpdates" xml:space="preserve">
-    <value>BIOS and Driver Updates</value>
+    <value>Mise à jour BIOS et pilotes</value>
   </data>
   <data name="Boot" xml:space="preserve">
     <value>Au démarrage</value>
@@ -217,7 +217,7 @@
     <value>Luminosité</value>
   </data>
   <data name="BrightnessDown" xml:space="preserve">
-    <value>Brightness Down</value>
+    <value>Baisser la luminosité</value>
   </data>
   <data name="BrightnessUp" xml:space="preserve">
     <value>Brightness Up</value>
