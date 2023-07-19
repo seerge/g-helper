@@ -101,6 +101,7 @@ namespace GHelper
             pictureSettings = new PictureBox();
             labelSettings = new Label();
             panelSettings = new Panel();
+            checkAutoToggleClamshellMode = new CheckBox();
             checkAutoApplyWindowsPowerMode = new CheckBox();
             checkTopmost = new CheckBox();
             checkNoOverdrive = new CheckBox();
@@ -1003,6 +1004,7 @@ namespace GHelper
             // 
             panelSettings.AutoSize = true;
             panelSettings.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            panelSettings.Controls.Add(checkAutoToggleClamshellMode);
             panelSettings.Controls.Add(checkAutoApplyWindowsPowerMode);
             panelSettings.Controls.Add(checkTopmost);
             panelSettings.Controls.Add(checkNoOverdrive);
@@ -1016,6 +1018,20 @@ namespace GHelper
             panelSettings.Padding = new Padding(20, 5, 10, 5);
             panelSettings.Size = new Size(983, 304);
             panelSettings.TabIndex = 46;
+            // 
+            // checkAutoToggleClamshellMode
+            // 
+            checkAutoToggleClamshellMode.AutoSize = true;
+            checkAutoToggleClamshellMode.Dock = DockStyle.Top;
+            checkAutoToggleClamshellMode.Location = new Point(10, 163);
+            checkAutoToggleClamshellMode.Margin = new Padding(2);
+            checkAutoToggleClamshellMode.Name = "checkAutoToggleClamshellMode";
+            checkAutoToggleClamshellMode.Padding = new Padding(2);
+            checkAutoToggleClamshellMode.Size = new Size(481, 23);
+            checkAutoToggleClamshellMode.TabIndex = 58;
+            checkAutoToggleClamshellMode.Text = "Auto Toggle Clamshell Mode";
+            checkAutoToggleClamshellMode.UseVisualStyleBackColor = true;
+            checkAutoToggleClamshellMode.CheckedChanged += checkAutoToggleClamshellMode_CheckedChanged;
             // 
             // checkAutoApplyWindowsPowerMode
             // 
@@ -1246,5 +1262,6 @@ namespace GHelper
         private PictureBox pictureService;
         private Slider sliderBrightness;
         private PictureBox pictureLog;
+        private CheckBox checkAutoToggleClamshellMode;
     }
 }

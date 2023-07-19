@@ -106,6 +106,7 @@ namespace GHelper
             checkUSBC.Text = Properties.Strings.OptimizedUSBC;
             checkAutoApplyWindowsPowerMode.Text = Properties.Strings.ApplyWindowsPowerPlan;
             checkFnLock.Text = Properties.Strings.FnLock;
+            checkAutoToggleClamshellMode.Text = Properties.Strings.ToggleClamshellMode;
 
             labelBacklightKeyboard.Text = Properties.Strings.Keyboard;
             labelBacklightBar.Text = Properties.Strings.Lightbar;
@@ -209,6 +210,9 @@ namespace GHelper
                     labelBacklightKeyboard.Visible = false;
                 }
             }
+
+
+            checkAutoToggleClamshellMode.Checked = AppConfig.Is("toggle_clamshell_mode");
 
             checkTopmost.Checked = AppConfig.Is("topmost");
             checkTopmost.CheckedChanged += CheckTopmost_CheckedChanged; ;
@@ -465,6 +469,13 @@ namespace GHelper
         private void checkAutoApplyWindowsPowerMode_CheckedChanged(object? sender, EventArgs e)
         {
             AppConfig.Set("auto_apply_power_plan", checkAutoApplyWindowsPowerMode.Checked ? 1 : 0);
+        }
+
+        private void checkAutoToggleClamshellMode_CheckedChanged(object sender, EventArgs e)
+        {
+            AppConfig.Set("toggle_clamshell_mode", checkAutoToggleClamshellMode.Checked ? 1 : 0);
+            ClamshellModeControl ctrl = new ClamshellModeControl();
+            ctrl.ToggleLidAction();
         }
     }
 }

@@ -1177,6 +1177,15 @@ namespace GHelper.Properties {
                 return ResourceManager.GetString("ToggleAura", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Auto Toggle Clamshell Mode.
+        /// </summary>
+        internal static string ToggleClamshellMode {
+            get {
+                return ResourceManager.GetString("ToggleClamshellMode", resourceCulture);
+            }
+        }
         
         /// <summary>
         ///   Looks up a localized string similar to Toggle Fn-Lock.
