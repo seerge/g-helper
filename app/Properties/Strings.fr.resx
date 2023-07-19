@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="ACPIError" xml:space="preserve">
-    <value>Connexion impossible avec ASUS ACPI. L'application ne peut fonctionner sans. Veuillez installer Asus System Control Interface.</value>
+    <value>Connexion impossible avec ASUS ACPI. L'application ne peut fonctionner sans. Veuillez installer Asus System Control Interface</value>
   </data>
   <data name="AlertDGPU" xml:space="preserve">
     <value>Le GPU semble être surchargé, voulez vous le désactiver ?</value>
@@ -220,10 +220,10 @@
     <value>Baisser la luminosité</value>
   </data>
   <data name="BrightnessUp" xml:space="preserve">
-    <value>Brightness Up</value>
+    <value>Augmenter la luminosité</value>
   </data>
   <data name="Charging" xml:space="preserve">
-    <value>Charging</value>
+    <value>Chargement en cours</value>
   </data>
   <data name="Color" xml:space="preserve">
     <value>Couleur</value>
@@ -247,7 +247,7 @@
     <value>Télécharger la mise à jour</value>
   </data>
   <data name="DriverAndSoftware" xml:space="preserve">
-    <value>Drivers and Software</value>
+    <value>Pilotes et Logiciels</value>
   </data>
   <data name="EcoGPUTooltip" xml:space="preserve">
     <value>Désactive le dGPU pour préserver la batterie</value>
@@ -256,12 +256,12 @@
     <value>Éco</value>
   </data>
   <data name="EnableOptimusText" xml:space="preserve">
-    <value>Disabling the dGPU by going into Eco mode while Display Mode in NVIDIA Control Panel is not set to Optimus might cause problems with brightness controls until after the next reboot. 
+    <value>Désactiver la dGPU en passant au mode Eco pendant que le mode d'affichage dans le panneau de configuration NVIDIA n'est pas réglé sur Optimus peut causer des problèmes avec les commandes de luminosité jusqu'au prochain redémarrage.
 
-Do you still want to continue?</value>
+Voulez-vous continuer ?</value>
   </data>
   <data name="EnableOptimusTitle" xml:space="preserve">
-    <value>NVIDIA Display Mode is not set to Optimus</value>
+    <value>Le mode d'affichage NVIDIA n'est pas réglé sur Optimus</value>
   </data>
   <data name="Extra" xml:space="preserve">
     <value>+ d'options</value>
@@ -291,13 +291,13 @@ Do you still want to continue?</value>
     <value>Ventilateurs + Puissance</value>
   </data>
   <data name="FanSpeed" xml:space="preserve">
-    <value>Fan</value>
+    <value>Ventilateur</value>
   </data>
   <data name="FansPower" xml:space="preserve">
     <value>Ventilateurs + Puissance</value>
   </data>
   <data name="FnLock" xml:space="preserve">
-    <value>Process Fn+F hotkeys without Fn</value>
+    <value>Traiter les raccourcis clavier Fn+F sans Fn</value>
   </data>
   <data name="GPUBoost" xml:space="preserve">
     <value>Dynamic Boost</value>
@@ -336,7 +336,7 @@ Do you still want to continue?</value>
     <value>Clavier</value>
   </data>
   <data name="KillGpuApps" xml:space="preserve">
-    <value>Stop all apps using GPU when switching to Eco</value>
+    <value>Arrêter toutes les applications utilisant la dGPU lors du passage au mode Eco</value>
   </data>
   <data name="LaptopBacklight" xml:space="preserve">
     <value>Rétroéclairage de l'ordinateur</value>
@@ -396,10 +396,10 @@ Do you still want to continue?</value>
     <value>Désactiver le micro</value>
   </data>
   <data name="NewUpdates" xml:space="preserve">
-    <value>New updates</value>
+    <value>Nouvelles mises à jour</value>
   </data>
   <data name="NoNewUpdates" xml:space="preserve">
-    <value>No new updates</value>
+    <value>Aucune mise à jour disponible</value>
   </data>
   <data name="OpenGHelper" xml:space="preserve">
     <value>Ouvrir G-Helper</value>
@@ -450,10 +450,10 @@ Do you still want to continue?</value>
     <value>Exécuter au démarrage</value>
   </data>
   <data name="ScreenPadDown" xml:space="preserve">
-    <value>Screenpad Brightness Down</value>
+    <value>Baisser la luminosité du Screenpad</value>
   </data>
   <data name="ScreenPadUp" xml:space="preserve">
-    <value>Screenpad Brightness Up</value>
+    <value>Augmenter la luminosité du Screenpad</value>
   </data>
   <data name="Shutdown" xml:space="preserve">
     <value>Arrêter</value>
@@ -471,10 +471,10 @@ Do you still want to continue?</value>
     <value>Standard</value>
   </data>
   <data name="Start" xml:space="preserve">
-    <value>Start</value>
+    <value>Démarrer</value>
   </data>
   <data name="StartingServices" xml:space="preserve">
-    <value>Starting Services</value>
+    <value>Démarrage des services</value>
   </data>
   <data name="StartupError" xml:space="preserve">
     <value>Erreur au lancement</value>
@@ -483,19 +483,19 @@ Do you still want to continue?</value>
     <value>Stop</value>
   </data>
   <data name="StopGPUApps" xml:space="preserve">
-    <value>Stop GPU Applications</value>
+    <value>Arrêt des applications dGPU</value>
   </data>
   <data name="StoppingServices" xml:space="preserve">
-    <value>Stopping Services</value>
+    <value>Arrêt des services</value>
   </data>
   <data name="ToggleAura" xml:space="preserve">
     <value>Activer Aura</value>
   </data>
   <data name="ToggleClamshellMode" xml:space="preserve">
-    <value>Auto Toggle Clamshell Mode</value>
+    <value>Basculer automatiquement en mode Clamshell</value>
   </data>
   <data name="ToggleFnLock" xml:space="preserve">
-    <value>Toggle Fn-Lock</value>
+    <value>Activer/désactiver Fn-Lock</value>
   </data>
   <data name="ToggleMiniled" xml:space="preserve">
     <value>Activer Miniled (si supporté)</value>
@@ -519,10 +519,10 @@ Do you still want to continue?</value>
     <value>Ultime</value>
   </data>
   <data name="UndervoltingRisky" xml:space="preserve">
-    <value>Undervolting is an experimental and risky feature. If applied values are too low for your hardware, it can become unstable, shut down or cause data corruption. If you want to try - start from small values first, click Apply and test what works for you.</value>
+    <value>L'undervolting est une fonctionnalité expérimentale et risquée. Si les valeurs appliquées sont trop faibles, elles peuvent causer de l'instabilité, éteindre l'ordinateur ou causer une corruption de données. Si vous voulez essayer - commencer avec des petites valeurs, cliquez sur Appliquer et testez ce qui fonctionne pour vous.</value>
   </data>
   <data name="Updates" xml:space="preserve">
-    <value>Updates</value>
+    <value>Mises à jour</value>
   </data>
   <data name="VersionLabel" xml:space="preserve">
     <value>Version </value>
