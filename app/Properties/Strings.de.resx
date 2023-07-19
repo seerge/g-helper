@@ -133,7 +133,7 @@
     <value>Ultimate Modus benötigt einen Neustart</value>
   </data>
   <data name="AlertUltimateTitle" xml:space="preserve">
-    <value>Jetzt neustarten?</value>
+    <value>Jetzt neu starten?</value>
   </data>
   <data name="AnimationSpeed" xml:space="preserve">
     <value>Animationsgeschwindigkeit</value>
@@ -151,10 +151,10 @@
     <value>Apply</value>
   </data>
   <data name="ApplyFanCurve" xml:space="preserve">
-    <value>Lüfterkurve anweden</value>
+    <value>Lüfterkurve anwenden</value>
   </data>
   <data name="ApplyPowerLimits" xml:space="preserve">
-    <value>Leistunsgrenzen anwenden</value>
+    <value>Leistungsgrenzen anwenden</value>
   </data>
   <data name="ApplyWindowsPowerPlan" xml:space="preserve">
     <value>Windows Leistungsmodus automatisch anpassen</value>
@@ -187,13 +187,13 @@
     <value>Stroboskop</value>
   </data>
   <data name="AutoApply" xml:space="preserve">
-    <value>Auto Apply</value>
+    <value>Automatisch anwenden</value>
   </data>
   <data name="AutoMode" xml:space="preserve">
     <value>Auto</value>
   </data>
   <data name="AutoRefreshTooltip" xml:space="preserve">
-    <value>60Hz im Batteriebetrieb Maximal wenn eingesteckt.</value>
+    <value>60Hz im Batteriebetrieb. Maximal, wenn eingesteckt.</value>
   </data>
   <data name="Awake" xml:space="preserve">
     <value>Im Betrieb</value>
@@ -217,13 +217,13 @@
     <value>Helligkeit</value>
   </data>
   <data name="BrightnessDown" xml:space="preserve">
-    <value>Helligkeit erhöhen</value>
-  </data>
-  <data name="BrightnessUp" xml:space="preserve">
     <value>Helligkeit verringern</value>
   </data>
+  <data name="BrightnessUp" xml:space="preserve">
+    <value>Helligkeit erhöhen</value>
+  </data>
   <data name="Charging" xml:space="preserve">
-    <value>Charging</value>
+    <value>Lädt</value>
   </data>
   <data name="Color" xml:space="preserve">
     <value>Farbe</value>
@@ -256,7 +256,7 @@
     <value>Eco</value>
   </data>
   <data name="EnableOptimusText" xml:space="preserve">
-    <value>Wenn Sie die dGPU deaktivieren, indem Sie in den Eco Modus wechseln, kann zu Problemen mit der Helligkeitseinstellung führen, wenn der Anzeigemodus nicht auf Optimus eingestellt ist.
+    <value>Wenn Sie die dGPU deaktivieren, indem Sie in den Eco-Modus wechseln, kann zu Problemen mit der Helligkeitseinstellung führen, wenn der Anzeigemodus nicht auf Optimus eingestellt ist.
 
 Trotzdem fortfahren?</value>
   </data>
@@ -408,10 +408,10 @@ Trotzdem fortfahren?</value>
     <value>Optimiert</value>
   </data>
   <data name="OptimizedGPUTooltip" xml:space="preserve">
-    <value>Eco Modus im Batteriebetrieb, Standard wenn eingesteckt.</value>
+    <value>Eco-Modus im Batteriebetrieb. Standard, wenn eingesteckt.</value>
   </data>
   <data name="OptimizedUSBC" xml:space="preserve">
-    <value>GPU beim USB-C Laden im Optimierten Modus deaktiviert lassen</value>
+    <value>dGPU beim USB-C Laden im Optimierten Modus deaktiviert lassen</value>
   </data>
   <data name="Other" xml:space="preserve">
     <value>Sonstiges</value>
@@ -441,7 +441,7 @@ Trotzdem fortfahren?</value>
     <value>Schließen</value>
   </data>
   <data name="RestartGPU" xml:space="preserve">
-    <value>Ein Prozess verhindert den Wechsel in den Eco Modus. dGPU neustarten? Fortfahren auf eigene Gefahr.</value>
+    <value>Ein Prozess verhindert den Wechsel in den Eco-Modus. dGPU neu starten? Fortfahren auf eigene Gefahr.</value>
   </data>
   <data name="RPM" xml:space="preserve">
     <value>U/Min</value>
@@ -492,7 +492,7 @@ Trotzdem fortfahren?</value>
     <value>Aura umschalten</value>
   </data>
   <data name="ToggleClamshellMode" xml:space="preserve">
-    <value>Auto Toggle Clamshell Mode</value>
+    <value>Clamshell Modus automatisch aktivieren</value>
   </data>
   <data name="ToggleFnLock" xml:space="preserve">
     <value>FN Sperre umschalten</value>
