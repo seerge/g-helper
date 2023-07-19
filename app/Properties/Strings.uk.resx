@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="ACPIError" xml:space="preserve">
-    <value>Не вдається підключитися до ASUS ACPI. Програма не може працювати без нього. Спробуйте встановити Asus System Control Interface</value>
+    <value>Не вдається під'єднатися до ASUS ACPI. Програма не може працювати без нього. Спробуйте встановити Asus System Control Interface</value>
   </data>
   <data name="AlertDGPU" xml:space="preserve">
     <value>Здається, що GPU використовується, вимкнути її?</value>
@@ -291,7 +291,7 @@
     <value>Кулери та Потужність</value>
   </data>
   <data name="FanSpeed" xml:space="preserve">
-    <value>Fan</value>
+    <value>Віяло</value>
   </data>
   <data name="FansPower" xml:space="preserve">
     <value>Кулери та Потужність</value>
@@ -450,10 +450,10 @@
     <value>Запускати на старті</value>
   </data>
   <data name="ScreenPadDown" xml:space="preserve">
-    <value>Screenpad Brightness Down</value>
+    <value>Зменшення яскравості екрана</value>
   </data>
   <data name="ScreenPadUp" xml:space="preserve">
-    <value>Screenpad Brightness Up</value>
+    <value>Збільшення яскравості екрана</value>
   </data>
   <data name="Shutdown" xml:space="preserve">
     <value>Вимикання</value>
@@ -492,7 +492,7 @@
     <value>Аура</value>
   </data>
   <data name="ToggleClamshellMode" xml:space="preserve">
-    <value>Auto Toggle Clamshell Mode</value>
+    <value>Автоматичне перемикання режиму розкладачки</value>
   </data>
   <data name="ToggleFnLock" xml:space="preserve">
     <value>Fn-Lock</value>
