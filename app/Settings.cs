@@ -36,6 +36,7 @@ namespace GHelper
         static long lastBatteryRefresh;
 
         bool isGpuSection = true;
+        bool batteryMouseOver = false;
 
         public SettingsForm()
         {
@@ -175,14 +176,8 @@ namespace GHelper
             sensorTimer.Elapsed += OnTimedEvent;
             sensorTimer.Enabled = true;
 
-            panelBattery.MouseEnter += PanelBattery_MouseEnter;
-            labelBatteryTitle.MouseEnter += PanelBattery_MouseEnter;
-            labelBatteryHealth.MouseEnter += PanelBattery_MouseEnter;
             labelBattery.MouseEnter += PanelBattery_MouseEnter;
-            pictureBattery.MouseEnter += PanelBattery_MouseEnter;
-            sliderBattery.MouseEnter += PanelBattery_MouseEnter;
-            panelBattery.MouseLeave += PanelBattery_MouseLeave;
-            labelBatteryHealth.Text = String.Empty;
+            labelBattery.MouseLeave += PanelBattery_MouseLeave;
 
             labelModel.Text = AppConfig.GetModelShort() + (ProcessHelper.IsUserAdministrator() ? "." : "");
             TopMost = AppConfig.Is("topmost");
@@ -193,27 +188,18 @@ namespace GHelper
 
         private void PanelBattery_MouseEnter(object? sender, EventArgs e)
         {
+            batteryMouseOver = true;
             ShowBatteryWear();
         }
 
         private void PanelBattery_MouseLeave(object? sender, EventArgs e)
         {
-            labelBatteryHealth.Text = String.Empty;
-        }
-
-        private void PanelBattery_MouseMove(object? sender, MouseEventArgs e)
-        {
-            ShowBatteryWear();
+            batteryMouseOver = false;
+            RefreshSensors();
         }
 
         private void ShowBatteryWear()
         {
-            if (labelBatteryHealth.Text != String.Empty)
-            {
-                //Already visible. Nothing to do here.
-                return;
-            }
-
             //Refresh again only after 15 Minutes since the last refresh
             if (lastBatteryRefresh == 0 || Math.Abs(DateTimeOffset.Now.ToUnixTimeMilliseconds() - lastBatteryRefresh) > 15 * 60_000)
             {
@@ -221,19 +207,10 @@ namespace GHelper
                 HardwareControl.RefreshBatteryHealth();
             }
 
-            string batteryHealth = "";
-
-            if (HardwareControl.batteryHealth == -1)
+            if (HardwareControl.batteryHealth != -1)
             {
-                batteryHealth = Properties.Strings.BatteryHealth + ": " + "?";
+                labelBattery.Text = Properties.Strings.BatteryHealth + ": " + Math.Round(HardwareControl.batteryHealth, 1) + "%";
             }
-            else
-            {
-                batteryHealth = Properties.Strings.BatteryHealth + ": "
-                    + Math.Round((decimal)HardwareControl.batteryHealth, 1).ToString() + "%";
-            }
-
-            labelBatteryHealth.Text = batteryHealth;
         }
 
         private void SettingsForm_VisibleChanged(object? sender, EventArgs e)
@@ -844,7 +821,7 @@ namespace GHelper
                 if (HardwareControl.midFan is not null)
                     labelMidFan.Text = "Mid" + HardwareControl.midFan;
 
-                labelBattery.Text = battery;
+                if (!batteryMouseOver) labelBattery.Text = battery;
             });
 
             string trayTip = "CPU" + cpuTemp + " " + HardwareControl.cpuFan;
