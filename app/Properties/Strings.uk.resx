@@ -207,6 +207,9 @@
   <data name="BatteryChargeLimit" xml:space="preserve">
     <value>Ліміт заряду батареї</value>
   </data>
+  <data name="BatteryHealth" xml:space="preserve">
+    <value>Battery Health</value>
+  </data>
   <data name="BiosAndDriverUpdates" xml:space="preserve">
     <value>Оновлення BIOS та драйверів</value>
   </data>
