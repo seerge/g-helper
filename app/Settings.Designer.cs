@@ -157,7 +157,7 @@ namespace GHelper
             tableLayoutMatrix.Controls.Add(buttonMatrix, 2, 0);
             tableLayoutMatrix.Dock = DockStyle.Top;
             tableLayoutMatrix.Location = new Point(15, 45);
-            tableLayoutMatrix.Margin = new Padding(6, 6, 6, 6);
+            tableLayoutMatrix.Margin = new Padding(6);
             tableLayoutMatrix.Name = "tableLayoutMatrix";
             tableLayoutMatrix.RowCount = 1;
             tableLayoutMatrix.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
@@ -266,17 +266,18 @@ namespace GHelper
             panelBattery.Location = new Point(8, 805);
             panelBattery.Margin = new Padding(0);
             panelBattery.Name = "panelBattery";
-            panelBattery.Padding = new Padding(15, 15, 15, 15);
-            panelBattery.Size = new Size(606, 114);
+            panelBattery.Padding = new Padding(15, 15, 15, 5);
+            panelBattery.Size = new Size(606, 104);
             panelBattery.TabIndex = 5;
             // 
             // labelBatteryHealth
             // 
             labelBatteryHealth.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            labelBatteryHealth.Location = new Point(377, 78);
+            labelBatteryHealth.ForeColor = SystemColors.GrayText;
+            labelBatteryHealth.Location = new Point(377, 75);
             labelBatteryHealth.Margin = new Padding(4, 0, 4, 0);
             labelBatteryHealth.Name = "labelBatteryHealth";
-            labelBatteryHealth.Size = new Size(213, 21);
+            labelBatteryHealth.Size = new Size(213, 24);
             labelBatteryHealth.TabIndex = 40;
             labelBatteryHealth.Text = "                ";
             labelBatteryHealth.TextAlign = ContentAlignment.TopRight;
@@ -347,10 +348,10 @@ namespace GHelper
             panelFooter.Controls.Add(buttonQuit);
             panelFooter.Controls.Add(checkStartup);
             panelFooter.Dock = DockStyle.Top;
-            panelFooter.Location = new Point(8, 961);
+            panelFooter.Location = new Point(8, 951);
             panelFooter.Margin = new Padding(0);
             panelFooter.Name = "panelFooter";
-            panelFooter.Padding = new Padding(15, 15, 15, 15);
+            panelFooter.Padding = new Padding(15);
             panelFooter.Size = new Size(606, 69);
             panelFooter.TabIndex = 7;
             // 
@@ -411,7 +412,7 @@ namespace GHelper
             panelPerformance.Location = new Point(8, 8);
             panelPerformance.Margin = new Padding(0);
             panelPerformance.Name = "panelPerformance";
-            panelPerformance.Padding = new Padding(15, 15, 15, 15);
+            panelPerformance.Padding = new Padding(15);
             panelPerformance.Size = new Size(606, 156);
             panelPerformance.TabIndex = 0;
             // 
@@ -971,7 +972,7 @@ namespace GHelper
             panelKeyboard.Location = new Point(8, 568);
             panelKeyboard.Margin = new Padding(0);
             panelKeyboard.Name = "panelKeyboard";
-            panelKeyboard.Padding = new Padding(15, 15, 15, 15);
+            panelKeyboard.Padding = new Padding(15);
             panelKeyboard.Size = new Size(606, 107);
             panelKeyboard.TabIndex = 3;
             // 
@@ -988,7 +989,7 @@ namespace GHelper
             tableLayoutKeyboard.Controls.Add(comboKeyboard, 0, 0);
             tableLayoutKeyboard.Dock = DockStyle.Top;
             tableLayoutKeyboard.Location = new Point(15, 45);
-            tableLayoutKeyboard.Margin = new Padding(6, 6, 6, 6);
+            tableLayoutKeyboard.Margin = new Padding(6);
             tableLayoutKeyboard.Name = "tableLayoutKeyboard";
             tableLayoutKeyboard.RowCount = 1;
             tableLayoutKeyboard.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
@@ -1034,7 +1035,7 @@ namespace GHelper
             // 
             pictureColor2.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             pictureColor2.Location = new Point(141, 9);
-            pictureColor2.Margin = new Padding(6, 6, 6, 6);
+            pictureColor2.Margin = new Padding(6);
             pictureColor2.Name = "pictureColor2";
             pictureColor2.Size = new Size(15, 15);
             pictureColor2.TabIndex = 41;
@@ -1044,7 +1045,7 @@ namespace GHelper
             // 
             pictureColor.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             pictureColor.Location = new Point(160, 9);
-            pictureColor.Margin = new Padding(6, 6, 6, 6);
+            pictureColor.Margin = new Padding(6);
             pictureColor.Name = "pictureColor";
             pictureColor.Size = new Size(15, 15);
             pictureColor.TabIndex = 40;
@@ -1146,7 +1147,7 @@ namespace GHelper
             panelVersion.Controls.Add(labelVersion);
             panelVersion.Controls.Add(labelModel);
             panelVersion.Dock = DockStyle.Top;
-            panelVersion.Location = new Point(8, 919);
+            panelVersion.Location = new Point(8, 909);
             panelVersion.Name = "panelVersion";
             panelVersion.Size = new Size(606, 42);
             panelVersion.TabIndex = 6;
@@ -1172,7 +1173,7 @@ namespace GHelper
             MinimizeBox = false;
             MinimumSize = new Size(624, 56);
             Name = "SettingsForm";
-            Padding = new Padding(8, 8, 8, 8);
+            Padding = new Padding(8);
             ShowIcon = false;
             StartPosition = FormStartPosition.CenterScreen;
             Text = "G-Helper";

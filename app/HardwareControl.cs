@@ -13,7 +13,7 @@ public static class HardwareControl
 
     public static float? cpuTemp = -1;
     public static decimal? batteryRate = 0;
-    public static decimal batteryWear = -1;
+    public static decimal batteryHealth = -1;
     public static decimal? designCapacity;
     public static decimal? fullCapacity;
     public static int? gpuTemp = null;
@@ -145,8 +145,13 @@ public static class HardwareControl
         }
     }
 
+    public static void RefreshBatteryHealth()
+    {
+        batteryHealth = GetBatteryHealth() * 100;
+    }
 
-    public static decimal GetBatteryWear()
+
+    public static decimal GetBatteryHealth()
     {
         if (designCapacity is null)
         {
@@ -159,10 +164,10 @@ public static class HardwareControl
             return -1;
         }
 
-        decimal batteryHealth = (decimal)fullCapacity / (decimal)designCapacity;
-        Logger.WriteLine("Design Capacity: " + designCapacity + "mWh, Full Charge Capacity: " + fullCapacity + "mWh, Health: " + batteryHealth + "%");
+        decimal health = (decimal)fullCapacity / (decimal)designCapacity;
+        Logger.WriteLine("Design Capacity: " + designCapacity + "mWh, Full Charge Capacity: " + fullCapacity + "mWh, Health: " + health + "%");
 
-        return batteryHealth;
+        return health;
     }
 
     public static void ReadSensors()
@@ -204,7 +209,6 @@ public static class HardwareControl
             gpuTemp = Program.acpi.DeviceGet(AsusACPI.Temp_GPU);
 
         batteryRate = GetBatteryRate() / 1000;
-        batteryWear = GetBatteryWear() * 100;
     }
 
     public static bool IsUsedGPU(int threshold = 10)
