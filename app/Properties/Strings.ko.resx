@@ -207,6 +207,9 @@
   <data name="BatteryChargeLimit" xml:space="preserve">
     <value>배터리 충전 제한</value>
   </data>
+  <data name="BatteryHealth" xml:space="preserve">
+    <value>Battery Health</value>
+  </data>
   <data name="BiosAndDriverUpdates" xml:space="preserve">
     <value>바이오스/드라이버 업데이트</value>
   </data>
