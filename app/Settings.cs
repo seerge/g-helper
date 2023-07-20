@@ -819,7 +819,7 @@ namespace GHelper
                 labelCPUFan.Text = "CPU" + cpuTemp + " " + HardwareControl.cpuFan;
                 labelGPUFan.Text = "GPU" + gpuTemp + " " + HardwareControl.gpuFan;
                 if (HardwareControl.midFan is not null)
-                    labelMidFan.Text = "Mid" + HardwareControl.midFan;
+                    labelMidFan.Text = "SYS " + HardwareControl.midFan;
 
                 if (!batteryMouseOver) labelBattery.Text = battery;
             });
