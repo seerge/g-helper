@@ -329,9 +329,13 @@ public class AsusACPI
         if (curve.All(singleByte => singleByte == 0)) return -1;
 
         int result;
+        int fanScale = AppConfig.Get("fan_scale", 100);
 
-        for (int i = 8; i < curve.Length; i++)
-            curve[i] = Math.Max((byte)0, Math.Min((byte)99, curve[i])); // it seems to be a bug, when some old model's bios can go nuts if fan is set to 100% 
+        if (fanScale != 100 && device == AsusFan.CPU) Logger.WriteLine("Custom fan scale: " + fanScale);
+
+        // it seems to be a bug, when some old model's bios can go nuts if fan is set to 100% 
+
+        for (int i = 8; i < curve.Length; i++) curve[i] = (byte)(Math.Max((byte)0, Math.Min((byte)99, curve[i])) * fanScale / 100); 
 
         switch (device)
         {
