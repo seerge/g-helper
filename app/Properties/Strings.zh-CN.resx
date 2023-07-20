@@ -207,6 +207,9 @@
   <data name="BatteryChargeLimit" xml:space="preserve">
     <value>电池充电限制</value>
   </data>
+  <data name="BatteryHealth" xml:space="preserve">
+    <value>Battery Health</value>
+  </data>
   <data name="BiosAndDriverUpdates" xml:space="preserve">
     <value>BIOS 和驱动程序更新</value>
   </data>
