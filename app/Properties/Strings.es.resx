@@ -208,7 +208,7 @@
     <value>Límite de carga</value>
   </data>
   <data name="BatteryHealth" xml:space="preserve">
-    <value>Battery Health</value>
+    <value>Salud de la batería</value>
   </data>
   <data name="BiosAndDriverUpdates" xml:space="preserve">
     <value>Actualizaciones de BIOS y Drivers</value>
