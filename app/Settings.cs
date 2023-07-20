@@ -177,7 +177,10 @@ namespace GHelper
             sensorTimer.Enabled = true;
 
             labelBattery.MouseEnter += PanelBattery_MouseEnter;
+            labelBatteryTitle.MouseEnter += PanelBattery_MouseEnter;
+
             labelBattery.MouseLeave += PanelBattery_MouseLeave;
+            labelBatteryTitle.MouseLeave += PanelBattery_MouseLeave;
 
             labelModel.Text = AppConfig.GetModelShort() + (ProcessHelper.IsUserAdministrator() ? "." : "");
             TopMost = AppConfig.Is("topmost");
@@ -195,7 +198,7 @@ namespace GHelper
         private void PanelBattery_MouseLeave(object? sender, EventArgs e)
         {
             batteryMouseOver = false;
-            RefreshSensors();
+            RefreshSensors(true);
         }
 
         private void ShowBatteryWear()
