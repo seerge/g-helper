@@ -139,7 +139,7 @@
     <value>Velocidad</value>
   </data>
   <data name="AnimeMatrix" xml:space="preserve">
-    <value>Anime Matrix</value>
+    <value>AniMe Matrix</value>
   </data>
   <data name="AppAlreadyRunning" xml:space="preserve">
     <value>La apliación ya está ejecutándose</value>
@@ -223,7 +223,7 @@
     <value>Subir brillo</value>
   </data>
   <data name="Charging" xml:space="preserve">
-    <value>Charging</value>
+    <value>Cargando</value>
   </data>
   <data name="Color" xml:space="preserve">
     <value>Color</value>
