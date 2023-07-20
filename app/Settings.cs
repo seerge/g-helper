@@ -9,6 +9,7 @@ using GHelper.Mode;
 using GHelper.UI;
 using System.Diagnostics;
 using System.Timers;
+using System.Windows.Forms;
 
 namespace GHelper
 {
@@ -32,6 +33,7 @@ namespace GHelper
         public Updates? updates;
 
         static long lastRefresh;
+        static long lastBatteryRefresh;
 
         bool isGpuSection = true;
 
@@ -173,11 +175,65 @@ namespace GHelper
             sensorTimer.Elapsed += OnTimedEvent;
             sensorTimer.Enabled = true;
 
+            panelBattery.MouseEnter += PanelBattery_MouseEnter;
+            labelBatteryTitle.MouseEnter += PanelBattery_MouseEnter;
+            labelBatteryHealth.MouseEnter += PanelBattery_MouseEnter;
+            labelBattery.MouseEnter += PanelBattery_MouseEnter;
+            pictureBattery.MouseEnter += PanelBattery_MouseEnter;
+            sliderBattery.MouseEnter += PanelBattery_MouseEnter;
+            panelBattery.MouseLeave += PanelBattery_MouseLeave;
+            labelBatteryHealth.Text = String.Empty;
+
             labelModel.Text = AppConfig.GetModelShort() + (ProcessHelper.IsUserAdministrator() ? "." : "");
             TopMost = AppConfig.Is("topmost");
 
             SetContextMenu();
 
+        }
+
+        private void PanelBattery_MouseEnter(object? sender, EventArgs e)
+        {
+            ShowBatteryWear();
+        }
+
+        private void PanelBattery_MouseLeave(object? sender, EventArgs e)
+        {
+            labelBatteryHealth.Text = String.Empty;
+        }
+
+        private void PanelBattery_MouseMove(object? sender, MouseEventArgs e)
+        {
+            ShowBatteryWear();
+        }
+
+        private void ShowBatteryWear()
+        {
+            if (labelBatteryHealth.Text != String.Empty)
+            {
+                //Already visible. Nothing to do here.
+                return;
+            }
+
+            //Refresh again only after 15 Minutes since the last refresh
+            if (lastBatteryRefresh == 0 || Math.Abs(DateTimeOffset.Now.ToUnixTimeMilliseconds() - lastBatteryRefresh) > 15 * 60_000)
+            {
+                lastBatteryRefresh = DateTimeOffset.Now.ToUnixTimeMilliseconds();
+                HardwareControl.RefreshBatteryHealth();
+            }
+
+            string batteryHealth = "";
+
+            if (HardwareControl.batteryHealth == -1)
+            {
+                batteryHealth = Properties.Strings.BatteryHealth + ": " + "?";
+            }
+            else
+            {
+                batteryHealth = Properties.Strings.BatteryHealth + ": "
+                    + Math.Round((decimal)HardwareControl.batteryHealth, 1).ToString() + "%";
+            }
+
+            labelBatteryHealth.Text = batteryHealth;
         }
 
         private void SettingsForm_VisibleChanged(object? sender, EventArgs e)
@@ -772,6 +828,8 @@ namespace GHelper
                 battery = Properties.Strings.Discharging + ": " + Math.Round(-(decimal)HardwareControl.batteryRate, 1).ToString() + "W";
             else if (HardwareControl.batteryRate > 0)
                 battery = Properties.Strings.Charging + ": " + Math.Round((decimal)HardwareControl.batteryRate, 1).ToString() + "W";
+
+
 
             if (HardwareControl.gpuTemp > 0)
             {

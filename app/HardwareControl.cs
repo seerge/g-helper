@@ -13,6 +13,9 @@ public static class HardwareControl
 
     public static float? cpuTemp = -1;
     public static decimal? batteryRate = 0;
+    public static decimal batteryHealth = -1;
+    public static decimal? designCapacity;
+    public static decimal? fullCapacity;
     public static int? gpuTemp = null;
 
     public static string? cpuFan;
@@ -100,6 +103,72 @@ public static class HardwareControl
         }
 
     }
+    public static void ReadFullChargeCapacity()
+    {
+
+        try
+        {
+            ManagementScope scope = new ManagementScope("root\\WMI");
+            ObjectQuery query = new ObjectQuery("SELECT * FROM BatteryFullChargedCapacity");
+
+            using ManagementObjectSearcher searcher = new ManagementObjectSearcher(scope, query);
+            foreach (ManagementObject obj in searcher.Get().Cast<ManagementObject>())
+            {
+                fullCapacity = Convert.ToDecimal(obj["FullChargedCapacity"]);
+            }
+
+        }
+        catch (Exception ex)
+        {
+            Logger.WriteLine("Full Charge Reading: " + ex.Message);
+        }
+
+    }
+
+    public static void ReadDesignCapacity()
+    {
+        try
+        {
+            ManagementScope scope = new ManagementScope("root\\WMI");
+            ObjectQuery query = new ObjectQuery("SELECT * FROM BatteryStaticData");
+
+            using ManagementObjectSearcher searcher = new ManagementObjectSearcher(scope, query);
+            foreach (ManagementObject obj in searcher.Get().Cast<ManagementObject>())
+            {
+                designCapacity = Convert.ToDecimal(obj["DesignedCapacity"]);
+            }
+
+        }
+        catch (Exception ex)
+        {
+            Logger.WriteLine("Design Capacity Reading: " + ex.Message);
+        }
+    }
+
+    public static void RefreshBatteryHealth()
+    {
+        batteryHealth = GetBatteryHealth() * 100;
+    }
+
+
+    public static decimal GetBatteryHealth()
+    {
+        if (designCapacity is null)
+        {
+            ReadDesignCapacity();
+        }
+        ReadFullChargeCapacity();
+
+        if (designCapacity is null || fullCapacity is null)
+        {
+            return -1;
+        }
+
+        decimal health = (decimal)fullCapacity / (decimal)designCapacity;
+        Logger.WriteLine("Design Capacity: " + designCapacity + "mWh, Full Charge Capacity: " + fullCapacity + "mWh, Health: " + health + "%");
+
+        return health;
+    }
 
     public static void ReadSensors()
     {
@@ -140,7 +209,6 @@ public static class HardwareControl
             gpuTemp = Program.acpi.DeviceGet(AsusACPI.Temp_GPU);
 
         batteryRate = GetBatteryRate() / 1000;
-
     }
 
     public static bool IsUsedGPU(int threshold = 10)
