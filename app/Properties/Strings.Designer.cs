@@ -329,6 +329,15 @@ namespace GHelper.Properties {
                 return ResourceManager.GetString("BatteryChargeLimit", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Battery Health.
+        /// </summary>
+        internal static string BatteryHealth {
+            get {
+                return ResourceManager.GetString("BatteryHealth", resourceCulture);
+            }
+        }
         
         /// <summary>
         ///   Looks up a localized string similar to BIOS and Driver Updates.

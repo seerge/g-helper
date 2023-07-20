@@ -762,6 +762,7 @@ namespace GHelper
             string cpuTemp = "";
             string gpuTemp = "";
             string battery = "";
+            string batteryHealth = "";
 
             HardwareControl.ReadSensors();
 
@@ -772,6 +773,17 @@ namespace GHelper
                 battery = Properties.Strings.Discharging + ": " + Math.Round(-(decimal)HardwareControl.batteryRate, 1).ToString() + "W";
             else if (HardwareControl.batteryRate > 0)
                 battery = Properties.Strings.Charging + ": " + Math.Round((decimal)HardwareControl.batteryRate, 1).ToString() + "W";
+
+
+            if (HardwareControl.batteryWear == -1)
+            {
+                batteryHealth = Properties.Strings.BatteryHealth + ": " + "?";
+            }
+            else
+            {
+                batteryHealth = Properties.Strings.BatteryHealth + ": "
+                    + Math.Round((decimal)HardwareControl.batteryWear, 1).ToString() + "%";
+            }
 
             if (HardwareControl.gpuTemp > 0)
             {
@@ -787,6 +799,7 @@ namespace GHelper
                     labelMidFan.Text = "Mid" + HardwareControl.midFan;
 
                 labelBattery.Text = battery;
+                labelBatteryHealth.Text = batteryHealth;
             });
 
             string trayTip = "CPU" + cpuTemp + " " + HardwareControl.cpuFan;
