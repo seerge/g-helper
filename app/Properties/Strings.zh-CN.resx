@@ -208,7 +208,7 @@
     <value>电池充电限制</value>
   </data>
   <data name="BatteryHealth" xml:space="preserve">
-    <value>Battery Health</value>
+    <value>电池健康</value>
   </data>
   <data name="BiosAndDriverUpdates" xml:space="preserve">
     <value>BIOS 和驱动程序更新</value>
@@ -495,7 +495,7 @@
     <value>切换 Aura 模式</value>
   </data>
   <data name="ToggleClamshellMode" xml:space="preserve">
-    <value>Auto Toggle Clamshell Mode</value>
+    <value>自动启用外接显示器模式</value>
   </data>
   <data name="ToggleFnLock" xml:space="preserve">
     <value>切换 Fn 锁定</value>
