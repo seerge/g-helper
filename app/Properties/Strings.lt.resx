@@ -208,7 +208,7 @@
     <value>Akumuliatoriaus įkrovos riba</value>
   </data>
   <data name="BatteryHealth" xml:space="preserve">
-    <value>Battery Health</value>
+    <value>Akumuliatoriaus sveikata</value>
   </data>
   <data name="BiosAndDriverUpdates" xml:space="preserve">
     <value>BIOS ir tvarkyklių naujinimai</value>
