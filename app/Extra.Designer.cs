@@ -137,7 +137,7 @@ namespace GHelper
             panelServices.Controls.Add(labelServices);
             panelServices.Controls.Add(buttonServices);
             panelServices.Dock = DockStyle.Top;
-            panelServices.Location = new Point(15, 1196);
+            panelServices.Location = new Point(15, 1236);
             panelServices.Name = "panelServices";
             panelServices.Size = new Size(983, 75);
             panelServices.TabIndex = 3;
@@ -1016,18 +1016,18 @@ namespace GHelper
             panelSettings.Location = new Point(15, 892);
             panelSettings.Name = "panelSettings";
             panelSettings.Padding = new Padding(20, 5, 10, 5);
-            panelSettings.Size = new Size(983, 304);
+            panelSettings.Size = new Size(983, 344);
             panelSettings.TabIndex = 46;
             // 
             // checkAutoToggleClamshellMode
             // 
             checkAutoToggleClamshellMode.AutoSize = true;
             checkAutoToggleClamshellMode.Dock = DockStyle.Top;
-            checkAutoToggleClamshellMode.Location = new Point(10, 163);
+            checkAutoToggleClamshellMode.Location = new Point(20, 299);
             checkAutoToggleClamshellMode.Margin = new Padding(2);
             checkAutoToggleClamshellMode.Name = "checkAutoToggleClamshellMode";
             checkAutoToggleClamshellMode.Padding = new Padding(2);
-            checkAutoToggleClamshellMode.Size = new Size(481, 23);
+            checkAutoToggleClamshellMode.Size = new Size(953, 40);
             checkAutoToggleClamshellMode.TabIndex = 58;
             checkAutoToggleClamshellMode.Text = "Auto Toggle Clamshell Mode";
             checkAutoToggleClamshellMode.UseVisualStyleBackColor = true;
