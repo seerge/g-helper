@@ -39,7 +39,7 @@ namespace GHelper.Helpers
             return SystemInformation.PowerStatus.PowerLineStatus == PowerLineStatus.Online;
         }
 
-        public bool IsInClamshellMode()
+        public bool IsInClamshellReady()
         {
             return IsExternalDisplayConnected() && IsChargerConnected();
         }
@@ -51,7 +51,7 @@ namespace GHelper.Helpers
                 return;
             }
 
-            if (IsInClamshellMode())
+            if (IsInClamshellReady())
             {
                 EnableClamshellMode();
             }
