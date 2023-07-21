@@ -213,6 +213,7 @@ namespace GHelper
 
 
             checkAutoToggleClamshellMode.Checked = AppConfig.Is("toggle_clamshell_mode");
+            checkAutoToggleClamshellMode.CheckedChanged += checkAutoToggleClamshellMode_CheckedChanged;
 
             checkTopmost.Checked = AppConfig.Is("topmost");
             checkTopmost.CheckedChanged += CheckTopmost_CheckedChanged; ;
@@ -471,11 +472,20 @@ namespace GHelper
             AppConfig.Set("auto_apply_power_plan", checkAutoApplyWindowsPowerMode.Checked ? 1 : 0);
         }
 
-        private void checkAutoToggleClamshellMode_CheckedChanged(object sender, EventArgs e)
+        private void checkAutoToggleClamshellMode_CheckedChanged(object? sender, EventArgs e)
         {
             AppConfig.Set("toggle_clamshell_mode", checkAutoToggleClamshellMode.Checked ? 1 : 0);
-            ClamshellModeControl ctrl = new ClamshellModeControl();
-            ctrl.ToggleLidAction();
+
+            if (checkAutoToggleClamshellMode.Checked)
+            {
+                ClamshellModeControl ctrl = new ClamshellModeControl();
+                ctrl.ToggleLidAction();
+            }
+            else
+            {
+                ClamshellModeControl.DisableClamshellMode();
+            }
+
         }
     }
 }
