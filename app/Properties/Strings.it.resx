@@ -208,7 +208,7 @@
     <value>Limite Ricarica Batteria</value>
   </data>
   <data name="BatteryHealth" xml:space="preserve">
-    <value>Battery Health</value>
+    <value>Salute Batteria</value>
   </data>
   <data name="BiosAndDriverUpdates" xml:space="preserve">
     <value>Aggiornamenti Driver e BIOS</value>
@@ -232,7 +232,7 @@
     <value>Colore</value>
   </data>
   <data name="CPUBoost" xml:space="preserve">
-    <value>CPU Boost</value>
+    <value>Boost CPU</value>
   </data>
   <data name="Custom" xml:space="preserve">
     <value>Personalizzato</value>
