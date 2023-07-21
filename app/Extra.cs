@@ -475,7 +475,16 @@ namespace GHelper
         {
             AppConfig.Set("toggle_clamshell_mode", checkAutoToggleClamshellMode.Checked ? 1 : 0);
             ClamshellModeControl ctrl = new ClamshellModeControl();
-            ctrl.ToggleLidAction();
+
+            if (checkAutoToggleClamshellMode.Checked)
+            {
+                ctrl.ToggleLidAction();
+            }
+            else
+            {
+                ClamshellModeControl.DisableClamshellMode();
+            }
+
         }
     }
 }

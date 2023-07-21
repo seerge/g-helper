@@ -46,16 +46,30 @@ namespace GHelper.Helpers
 
         public void ToggleLidAction()
         {
-            if (IsInClamshellMode() && IsClamshellEnabled())
+            if (!IsClamshellEnabled())
             {
-                PowerNative.SetLidAction(0, true);
-                Logger.WriteLine("Engaging Clamshell Mode");
+                return;
+            }
+
+            if (IsInClamshellMode())
+            {
+                EnableClamshellMode();
             }
             else
             {
-                PowerNative.SetLidAction(1, true);
-                Logger.WriteLine("Disengaging Clamshell Mode");
+                DisableClamshellMode();
             }
+        }
+        public static void DisableClamshellMode()
+        {
+            PowerNative.SetLidAction(1, true);
+            Logger.WriteLine("Disengaging Clamshell Mode");
+        }
+
+        public static void EnableClamshellMode()
+        {
+            PowerNative.SetLidAction(0, true);
+            Logger.WriteLine("Engaging Clamshell Mode");
         }
 
         public void UnregisterDisplayEvents()
