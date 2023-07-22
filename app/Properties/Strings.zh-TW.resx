@@ -208,7 +208,7 @@
     <value>電池充電上限</value>
   </data>
   <data name="BatteryHealth" xml:space="preserve">
-    <value>Battery Health</value>
+    <value>電池健康度</value>
   </data>
   <data name="BiosAndDriverUpdates" xml:space="preserve">
     <value>BIOS與驅動程式更新 Updates</value>
