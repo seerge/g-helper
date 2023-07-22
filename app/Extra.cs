@@ -11,6 +11,7 @@ namespace GHelper
     {
 
         ScreenControl screenControl = new ScreenControl();
+        ClamshellModeControl clamshellControl = new ClamshellModeControl();
 
         Dictionary<string, string> customActions = new Dictionary<string, string>
         {
@@ -123,6 +124,21 @@ namespace GHelper
                 customActions.Add("screenpad_up", Properties.Strings.ScreenPadUp);
             }
 
+            if (InputDispatcher.NoMKeys())
+            {
+                labelM1.Text = "FN+F2";
+                labelM2.Text = "FN+F3";
+                labelM3.Text = "FN+F4";
+                labelM4.Visible = comboM4.Visible = textM4.Visible = false;
+                labelFNF4.Visible = comboFNF4.Visible = textFNF4.Visible = false;
+            }
+
+            if (Program.acpi.DeviceGet(AsusACPI.GPUEco) < 0)
+            {
+                checkGpuApps.Visible = false;
+                checkUSBC.Visible = false;
+            }
+
             InitTheme();
 
             SetKeyCombo(comboM1, textM1, "m1");
@@ -211,7 +227,7 @@ namespace GHelper
                 }
             }
 
-
+            checkAutoToggleClamshellMode.Visible = clamshellControl.IsExternalDisplayConnected();
             checkAutoToggleClamshellMode.Checked = AppConfig.Is("toggle_clamshell_mode");
 
             checkTopmost.Checked = AppConfig.Is("topmost");
@@ -474,8 +490,7 @@ namespace GHelper
         private void checkAutoToggleClamshellMode_CheckedChanged(object sender, EventArgs e)
         {
             AppConfig.Set("toggle_clamshell_mode", checkAutoToggleClamshellMode.Checked ? 1 : 0);
-            ClamshellModeControl ctrl = new ClamshellModeControl();
-            ctrl.ToggleLidAction();
+            clamshellControl.ToggleLidAction();
         }
     }
 }

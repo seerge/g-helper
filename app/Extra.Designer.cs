@@ -137,7 +137,7 @@ namespace GHelper
             panelServices.Controls.Add(labelServices);
             panelServices.Controls.Add(buttonServices);
             panelServices.Dock = DockStyle.Top;
-            panelServices.Location = new Point(15, 1236);
+            panelServices.Location = new Point(15, 1216);
             panelServices.Name = "panelServices";
             panelServices.Size = new Size(983, 75);
             panelServices.TabIndex = 3;
@@ -235,15 +235,17 @@ namespace GHelper
             panelBindings.Location = new Point(15, 65);
             panelBindings.Name = "panelBindings";
             panelBindings.Padding = new Padding(0, 0, 10, 5);
-            panelBindings.Size = new Size(983, 325);
+            panelBindings.Size = new Size(983, 305);
             panelBindings.TabIndex = 5;
             // 
             // tableBindings
             // 
+            tableBindings.AutoSize = true;
+            tableBindings.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             tableBindings.ColumnCount = 3;
-            tableBindings.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 15.4649944F));
-            tableBindings.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 40.97453F));
-            tableBindings.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 43.6323357F));
+            tableBindings.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 15.45389F));
+            tableBindings.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 40.94511F));
+            tableBindings.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 43.6010056F));
             tableBindings.Controls.Add(label1, 0, 5);
             tableBindings.Controls.Add(textBox1, 2, 1);
             tableBindings.Controls.Add(textM1, 2, 0);
@@ -268,19 +270,19 @@ namespace GHelper
             tableBindings.Name = "tableBindings";
             tableBindings.Padding = new Padding(16, 12, 0, 12);
             tableBindings.RowCount = 6;
-            tableBindings.RowStyles.Add(new RowStyle(SizeType.Absolute, 51F));
-            tableBindings.RowStyles.Add(new RowStyle(SizeType.Absolute, 51F));
-            tableBindings.RowStyles.Add(new RowStyle(SizeType.Absolute, 51F));
-            tableBindings.RowStyles.Add(new RowStyle(SizeType.Absolute, 51F));
-            tableBindings.RowStyles.Add(new RowStyle(SizeType.Absolute, 49F));
-            tableBindings.RowStyles.Add(new RowStyle(SizeType.Absolute, 21F));
-            tableBindings.Size = new Size(973, 320);
+            tableBindings.RowStyles.Add(new RowStyle());
+            tableBindings.RowStyles.Add(new RowStyle());
+            tableBindings.RowStyles.Add(new RowStyle());
+            tableBindings.RowStyles.Add(new RowStyle());
+            tableBindings.RowStyles.Add(new RowStyle());
+            tableBindings.RowStyles.Add(new RowStyle());
+            tableBindings.Size = new Size(973, 300);
             tableBindings.TabIndex = 12;
             // 
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(16, 265);
+            label1.Location = new Point(16, 242);
             label1.Margin = new Padding(0);
             label1.Name = "label1";
             label1.Padding = new Padding(5, 10, 0, 0);
@@ -291,7 +293,7 @@ namespace GHelper
             // textBox1
             // 
             textBox1.Dock = DockStyle.Top;
-            textBox1.Location = new Point(558, 66);
+            textBox1.Location = new Point(558, 61);
             textBox1.Margin = new Padding(4, 3, 4, 3);
             textBox1.Name = "textBox1";
             textBox1.PlaceholderText = "action";
@@ -339,7 +341,7 @@ namespace GHelper
             comboM4.Dock = DockStyle.Top;
             comboM4.FormattingEnabled = true;
             comboM4.Items.AddRange(new object[] { Strings.PerformanceMode, Strings.OpenGHelper, Strings.Custom });
-            comboM4.Location = new Point(167, 168);
+            comboM4.Location = new Point(167, 153);
             comboM4.Margin = new Padding(4, 3, 4, 3);
             comboM4.Name = "comboM4";
             comboM4.Size = new Size(383, 40);
@@ -352,7 +354,7 @@ namespace GHelper
             comboM3.Dock = DockStyle.Top;
             comboM3.FormattingEnabled = true;
             comboM3.Items.AddRange(new object[] { Strings.Default, Strings.VolumeMute, Strings.PlayPause, Strings.PrintScreen, Strings.ToggleAura, Strings.Custom });
-            comboM3.Location = new Point(167, 117);
+            comboM3.Location = new Point(167, 107);
             comboM3.Margin = new Padding(4, 3, 4, 3);
             comboM3.Name = "comboM3";
             comboM3.Size = new Size(383, 40);
@@ -361,7 +363,7 @@ namespace GHelper
             // textM4
             // 
             textM4.Dock = DockStyle.Top;
-            textM4.Location = new Point(558, 168);
+            textM4.Location = new Point(558, 153);
             textM4.Margin = new Padding(4, 3, 4, 3);
             textM4.Name = "textM4";
             textM4.PlaceholderText = "action";
@@ -371,7 +373,7 @@ namespace GHelper
             // textM3
             // 
             textM3.Dock = DockStyle.Top;
-            textM3.Location = new Point(558, 117);
+            textM3.Location = new Point(558, 107);
             textM3.Margin = new Padding(4, 3, 4, 3);
             textM3.Name = "textM3";
             textM3.PlaceholderText = "action";
@@ -381,7 +383,7 @@ namespace GHelper
             // labelM4
             // 
             labelM4.AutoSize = true;
-            labelM4.Location = new Point(16, 165);
+            labelM4.Location = new Point(16, 150);
             labelM4.Margin = new Padding(0);
             labelM4.Name = "labelM4";
             labelM4.Padding = new Padding(5, 10, 0, 0);
@@ -392,7 +394,7 @@ namespace GHelper
             // labelM3
             // 
             labelM3.AutoSize = true;
-            labelM3.Location = new Point(16, 114);
+            labelM3.Location = new Point(16, 104);
             labelM3.Margin = new Padding(0);
             labelM3.Name = "labelM3";
             labelM3.Padding = new Padding(5, 10, 0, 0);
@@ -403,7 +405,7 @@ namespace GHelper
             // labelM2
             // 
             labelM2.AutoSize = true;
-            labelM2.Location = new Point(16, 63);
+            labelM2.Location = new Point(16, 58);
             labelM2.Margin = new Padding(0);
             labelM2.Name = "labelM2";
             labelM2.Padding = new Padding(5, 10, 0, 0);
@@ -418,7 +420,7 @@ namespace GHelper
             comboM2.Dock = DockStyle.Top;
             comboM2.FormattingEnabled = true;
             comboM2.Items.AddRange(new object[] { Strings.Default, Strings.VolumeMute, Strings.PlayPause, Strings.PrintScreen, Strings.ToggleAura, Strings.Custom });
-            comboM2.Location = new Point(167, 66);
+            comboM2.Location = new Point(167, 61);
             comboM2.Margin = new Padding(4, 3, 4, 3);
             comboM2.Name = "comboM2";
             comboM2.Size = new Size(383, 40);
@@ -427,7 +429,7 @@ namespace GHelper
             // labelFNF4
             // 
             labelFNF4.AutoSize = true;
-            labelFNF4.Location = new Point(16, 216);
+            labelFNF4.Location = new Point(16, 196);
             labelFNF4.Margin = new Padding(0);
             labelFNF4.Name = "labelFNF4";
             labelFNF4.Padding = new Padding(5, 10, 0, 0);
@@ -441,7 +443,7 @@ namespace GHelper
             comboFNF4.ButtonColor = Color.FromArgb(255, 255, 255);
             comboFNF4.Dock = DockStyle.Top;
             comboFNF4.FormattingEnabled = true;
-            comboFNF4.Location = new Point(167, 219);
+            comboFNF4.Location = new Point(167, 199);
             comboFNF4.Margin = new Padding(4, 3, 4, 3);
             comboFNF4.Name = "comboFNF4";
             comboFNF4.Size = new Size(383, 40);
@@ -450,7 +452,7 @@ namespace GHelper
             // textFNF4
             // 
             textFNF4.Dock = DockStyle.Top;
-            textFNF4.Location = new Point(558, 219);
+            textFNF4.Location = new Point(558, 199);
             textFNF4.Margin = new Padding(4, 3, 4, 3);
             textFNF4.Name = "textFNF4";
             textFNF4.PlaceholderText = "action";
@@ -463,7 +465,7 @@ namespace GHelper
             comboFNC.ButtonColor = Color.FromArgb(255, 255, 255);
             comboFNC.Dock = DockStyle.Top;
             comboFNC.FormattingEnabled = true;
-            comboFNC.Location = new Point(167, 268);
+            comboFNC.Location = new Point(167, 245);
             comboFNC.Margin = new Padding(4, 3, 4, 3);
             comboFNC.Name = "comboFNC";
             comboFNC.Size = new Size(383, 40);
@@ -472,7 +474,7 @@ namespace GHelper
             // textFNC
             // 
             textFNC.Dock = DockStyle.Top;
-            textFNC.Location = new Point(558, 268);
+            textFNC.Location = new Point(558, 245);
             textFNC.Margin = new Padding(4, 3, 4, 3);
             textFNC.Name = "textFNC";
             textFNC.PlaceholderText = "action";
@@ -526,7 +528,7 @@ namespace GHelper
             panelBacklightHeader.Controls.Add(pictureBacklight);
             panelBacklightHeader.Controls.Add(labelBacklightTitle);
             panelBacklightHeader.Dock = DockStyle.Top;
-            panelBacklightHeader.Location = new Point(15, 390);
+            panelBacklightHeader.Location = new Point(15, 370);
             panelBacklightHeader.Name = "panelBacklightHeader";
             panelBacklightHeader.Padding = new Padding(10, 5, 10, 5);
             panelBacklightHeader.Size = new Size(983, 50);
@@ -572,7 +574,7 @@ namespace GHelper
             panelBacklight.Controls.Add(panelXMG);
             panelBacklight.Controls.Add(tableBacklight);
             panelBacklight.Dock = DockStyle.Top;
-            panelBacklight.Location = new Point(15, 440);
+            panelBacklight.Location = new Point(15, 420);
             panelBacklight.Name = "panelBacklight";
             panelBacklight.Padding = new Padding(0, 5, 0, 5);
             panelBacklight.Size = new Size(983, 402);
@@ -961,7 +963,7 @@ namespace GHelper
             panelSettingsHeader.Controls.Add(pictureSettings);
             panelSettingsHeader.Controls.Add(labelSettings);
             panelSettingsHeader.Dock = DockStyle.Top;
-            panelSettingsHeader.Location = new Point(15, 842);
+            panelSettingsHeader.Location = new Point(15, 822);
             panelSettingsHeader.Name = "panelSettingsHeader";
             panelSettingsHeader.Padding = new Padding(10, 5, 10, 5);
             panelSettingsHeader.Size = new Size(983, 50);
@@ -1013,7 +1015,7 @@ namespace GHelper
             panelSettings.Controls.Add(checkGpuApps);
             panelSettings.Controls.Add(checkFnLock);
             panelSettings.Dock = DockStyle.Top;
-            panelSettings.Location = new Point(15, 892);
+            panelSettings.Location = new Point(15, 872);
             panelSettings.Name = "panelSettings";
             panelSettings.Padding = new Padding(20, 5, 10, 5);
             panelSettings.Size = new Size(983, 344);
@@ -1159,6 +1161,7 @@ namespace GHelper
             ((System.ComponentModel.ISupportInitialize)pictureBindings).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureHelp).EndInit();
             panelBindings.ResumeLayout(false);
+            panelBindings.PerformLayout();
             tableBindings.ResumeLayout(false);
             tableBindings.PerformLayout();
             tableKeys.ResumeLayout(false);
