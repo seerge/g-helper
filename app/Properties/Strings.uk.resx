@@ -208,7 +208,7 @@
     <value>Ліміт заряду батареї</value>
   </data>
   <data name="BatteryHealth" xml:space="preserve">
-    <value>Battery Health</value>
+    <value>Стан батареї</value>
   </data>
   <data name="BiosAndDriverUpdates" xml:space="preserve">
     <value>Оновлення BIOS та драйверів</value>

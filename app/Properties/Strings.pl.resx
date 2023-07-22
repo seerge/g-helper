@@ -208,7 +208,7 @@
     <value>Limit ładowania baterii</value>
   </data>
   <data name="BatteryHealth" xml:space="preserve">
-    <value>Battery Health</value>
+    <value>Stan baterii</value>
   </data>
   <data name="BiosAndDriverUpdates" xml:space="preserve">
     <value>Aktualizacje BIOS i sterowników</value>
@@ -294,7 +294,7 @@ Nadal chcesz kontynuować?</value>
     <value>Wentylatory i moc</value>
   </data>
   <data name="FanSpeed" xml:space="preserve">
-    <value>Wentylator</value>
+    <value>Went</value>
   </data>
   <data name="FansPower" xml:space="preserve">
     <value>Dostosuj</value>

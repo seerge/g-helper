@@ -1033,7 +1033,6 @@ namespace GHelper
             checkAutoToggleClamshellMode.TabIndex = 58;
             checkAutoToggleClamshellMode.Text = "Auto Toggle Clamshell Mode";
             checkAutoToggleClamshellMode.UseVisualStyleBackColor = true;
-            checkAutoToggleClamshellMode.CheckedChanged += checkAutoToggleClamshellMode_CheckedChanged;
             // 
             // checkAutoApplyWindowsPowerMode
             // 

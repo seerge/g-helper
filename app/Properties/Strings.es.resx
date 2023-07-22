@@ -402,7 +402,7 @@
     <value>Nuevas actualizaciones</value>
   </data>
   <data name="NoNewUpdates" xml:space="preserve">
-    <value>No hay nuevas actualizaciones</value>
+    <value>No hay actualizaciones</value>
   </data>
   <data name="OpenGHelper" xml:space="preserve">
     <value>Abrir ventana G-Helper</value>

@@ -125,7 +125,11 @@ You can find them under ``%AppData%\GHelper`` folder. Please include them when p
 Open app, and uncheck and check again "run on startup". If it still doesn't help (by some reason), you can try to manually edit "GHelper" task in windows Task Scheduler, and add couple of seconds delay to start.
 
 #### How do I uninstall G-helper?
-G-helper is a single exe, and it doesn't install anything in the system. To remove it - you can simply delete exe :) If you have applied any custom fan profiles or PPTs - before removing I would recommend selecting your favorite performance mode (for example balanced) and clicking "Factory defaults" under Fans + Power.
+G-helper is a single exe, and it doesn't install anything in the system. To remove it - you can simply delete exe :) If you have applied any custom fan profiles or PPTs - before removing I would recommend selecting your 
+favorite performance mode (for example balanced) and clicking "Factory defaults" under Fans + Power.
+
+#### Can I undervolt my CPU ?
+Currently you can undervolt AMD CPUs. If your model supports that - you will see undervolting slider under ``Fans+Power -> Advanced``. If you don't see slider there, it means your CPU doesn't support undervolting. Full list of models that suppor that [can be found here](https://github.com/seerge/g-helper/discussions/736)
 
 #### I have G14 2023 and my GPU refuses to disable/enable
 It seem to be an issue in older BIOS versions. As [users report](https://github.com/seerge/g-helper/issues/680) - latest BIOS 310 (installable via myasus / g-helper -> updates) resolves all issues :) So please update.
