@@ -41,6 +41,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="BootFromEco.xml" />
     <None Remove="Resources\eco.ico" />
     <None Remove="Resources\icons8-charging-battery-48.png" />
     <None Remove="Resources\icons8-laptop-48.png" />
@@ -52,6 +53,9 @@
 
 
   <ItemGroup>
+    <Content Include="BootFromEco.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="favicon.ico">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Content>

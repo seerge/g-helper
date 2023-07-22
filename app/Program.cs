@@ -9,6 +9,7 @@ using Ryzen;
 using System.Diagnostics;
 using System.Globalization;
 using System.Reflection;
+using System.Xml;
 using static NativeMethods;
 
 namespace GHelper
@@ -31,7 +32,8 @@ namespace GHelper
         static GPUModeControl gpuControl = new GPUModeControl(settingsForm);
         static ScreenControl screenControl = new ScreenControl();
         static ClamshellModeControl clamshellControl = new ClamshellModeControl();
-
+        public static XmlDocument xdoc = new XmlDocument(); //XML for Eco mode safe boot flag
+        public static string sFilePath = ""; //path for XML
         public static ToastForm toast = new ToastForm();
 
         public static IntPtr unRegPowerNotify;
@@ -97,8 +99,32 @@ namespace GHelper
 
             SetAutoModes();
 
+            //Load the shutdown from eco xml
+            string sCurrentDirectory = AppDomain.CurrentDomain.BaseDirectory;
+            string sFile = System.IO.Path.Combine(sCurrentDirectory, @"BootFromEco.xml");
+            sFilePath = Path.GetFullPath(sFile);
+            xdoc.Load(sFilePath);
+
+            //Check the shutdown state
+            //Check for boot from eco
+            if (xdoc.SelectSingleNode("/Session/BootFromEco").InnerText == "True")
+            {
+                gpuControl.SetGPUMode(AsusACPI.GPUModeEco); //set mode back to eco
+                xdoc.SelectSingleNode("/Session/BootFromEco").InnerText = "False"; //reset flag
+                xdoc.Save(sFilePath);
+            }
+            //Check for boot from optimised
+            if (xdoc.SelectSingleNode("/Session/BootFromOptimised").InnerText == "True")
+            {
+                AppConfig.Set("gpu_auto", (AppConfig.Get("gpu_auto") == 1) ? 0 : 1); //set back to optimised
+                gpuControl.AutoGPUMode(true); //set back to optimised
+                xdoc.SelectSingleNode("/Session/BootFromOptimised").InnerText = "False"; //reset flag
+                xdoc.Save(sFilePath);
+            }
+
             // Subscribing for system power change events
             SystemEvents.PowerModeChanged += SystemEvents_PowerModeChanged;
+            SystemEvents.SessionEnding += c_SessionEndedEvent; //add handler for session end event
             SystemEvents.UserPreferenceChanged += SystemEvents_UserPreferenceChanged;
             clamshellControl.RegisterDisplayEvents();
             clamshellControl.ToggleLidAction();
@@ -117,7 +143,28 @@ namespace GHelper
 
         }
 
+        //Session end event handler to ensure Normal mode for safe boot
+        private static void c_SessionEndedEvent(object sender, SessionEndingEventArgs e)
+        {
+            //Check for ultimate or standard mode
+            int CurrentGPU = AppConfig.Get("gpu_mode");
+            if (CurrentGPU != AsusACPI.GPUModeUltimate && CurrentGPU != AsusACPI.GPUModeStandard)
+            {
+                if (AppConfig.Is("gpu_auto")) //set flag for safe boot from optimised unplugged
+                {
+                    xdoc.SelectSingleNode("/Session/BootFromOptimised").InnerText = "True";
+                }
+                else //set flag for safe boot from eco
+                {
+                    xdoc.SelectSingleNode("/Session/BootFromEco").InnerText = "True";
+                }
 
+                xdoc.Save(sFilePath);
+                gpuControl.SetGPUMode(AsusACPI.GPUModeStandard); //set to standard for safe boot
+                //This will ensure that eco and optimised unplugged mode will reboot correctly
+                //If in optimised with power state the request will be ignored, dont need to handle.
+            }
+        }
 
         static void SystemEvents_UserPreferenceChanged(object sender, UserPreferenceChangedEventArgs e)
         {
@@ -178,6 +225,46 @@ namespace GHelper
 
         private static void SystemEvents_PowerModeChanged(object sender, PowerModeChangedEventArgs e)
         {
+            //Eco mode safe boot when system shuts down
+            if (e.Mode.ToString() == "Suspend")
+            {
+                int CurrentGPU = AppConfig.Get("gpu_mode");
+                //ignore for standard and ultimate mode
+                if (CurrentGPU != AsusACPI.GPUModeUltimate && CurrentGPU != AsusACPI.GPUModeStandard)
+                {
+                    if (AppConfig.Is("gpu_auto")) //set flag for auto mode boot
+                    {
+                        xdoc.SelectSingleNode("/Session/BootFromOptimised").InnerText = "True";
+                    }
+                    else //set flag for eco mode boot
+                    {
+                        xdoc.SelectSingleNode("/Session/BootFromEco").InnerText = "True";
+                    }
+                    xdoc.Save(sFilePath);
+                    gpuControl.SetGPUMode(AsusACPI.GPUModeStandard); //set standard mode to ensure safe boot
+                    //Again, this will set standard mode for safe boot from eco mode and optimised unplugged state
+                    //This will also trigger for optimised plugged in but does not need to be handled, on resume or
+                    //restart the flag will trigger a reset to optimised, ultimatly no effect.
+                }
+            }
+            if (e.Mode.ToString() == "Resume")
+            {
+                //Ensure correct modes are honored during system resume
+                //Conditions only triggered if safe boot flags have been raised
+                if (xdoc.SelectSingleNode("/Session/BootFromEco").InnerText == "True")
+                {
+                    gpuControl.SetGPUMode(AsusACPI.GPUModeEco);
+                    xdoc.SelectSingleNode("/Session/BootFromEco").InnerText = "False";
+                    xdoc.Save(sFilePath);
+                }
+                if (xdoc.SelectSingleNode("/Session/BootFromOptimised").InnerText == "True")
+                {
+                    AppConfig.Set("gpu_auto", (AppConfig.Get("gpu_auto") == 1) ? 0 : 1);
+                    gpuControl.AutoGPUMode(true);
+                    xdoc.SelectSingleNode("/Session/BootFromOptimised").InnerText = "False";
+                    xdoc.Save(sFilePath);
+                }
+            }
             if (SystemInformation.PowerStatus.PowerLineStatus == isPlugged) return;
             Logger.WriteLine("Power Mode Changed");
             SetAutoModes(true);
