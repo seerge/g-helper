@@ -494,8 +494,7 @@ namespace GHelper
 
             if (checkAutoToggleClamshellMode.Checked)
             {
-                ClamshellModeControl ctrl = new ClamshellModeControl();
-                ctrl.ToggleLidAction();
+                clamshellControl.ToggleLidAction();
             }
             else
             {
