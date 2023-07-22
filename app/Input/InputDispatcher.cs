@@ -148,6 +148,13 @@ namespace GHelper.Input
             return AppConfig.ContainsModel("TUF") && !AppConfig.ContainsModel("FA506");
         }
 
+        public static bool NoMKeys()
+        {
+            return AppConfig.ContainsModel("Z13") || 
+                   AppConfig.ContainsModel("FA506") || 
+                   AppConfig.ContainsModel("FX506");
+        }
+
         public void KeyPressed(object sender, KeyPressedEventArgs e)
         {
 
@@ -155,7 +162,7 @@ namespace GHelper.Input
             {
                 Logger.WriteLine(e.Key.ToString());
 
-                if (AppConfig.ContainsModel("Z13") || AppConfig.ContainsModel("FA506"))
+                if (NoMKeys())
                 {
                     switch (e.Key)
                     {
