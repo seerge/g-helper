@@ -7,6 +7,8 @@ namespace GHelper.Peripherals
 {
     public class PeripheralsProvider
     {
+        public static object _LOCK = new object();
+
         public static List<AsusMouse> ConnectedMice = new List<AsusMouse>();
 
         public static event EventHandler? DeviceChanged;
@@ -16,15 +18,30 @@ namespace GHelper.Peripherals
             return ConnectedMice.Count > 0;
         }
 
+        //Expand if keyboards or other device get supported later.
+        public static bool IsAnyPeripheralConnect()
+        {
+            return IsMouseConnected();
+        }
+
+        public static List<IPeripheral> AllPeripherals()
+        {
+            List<IPeripheral> l = new List<IPeripheral>();
+            l.AddRange(ConnectedMice);
+
+            return l;
+        }
+
         public static void RefreshBatteryForAllDevices()
         {
-            lock (ConnectedMice)
+            lock (_LOCK)
             {
-                foreach (AsusMouse m in ConnectedMice)
+                foreach (IPeripheral m in AllPeripherals())
                 {
-                    if (!m.MouseIsReady)
+                    if (!m.IsDeviceReady)
                     {
-                        m.SynchronizeMouse();
+                        //Try to sync the device if that hasn't been done yet
+                        m.SynchronizeDevice();
                     }
                     else
                     {
@@ -37,7 +54,7 @@ namespace GHelper.Peripherals
 
         public static void Disconnect(AsusMouse am)
         {
-            lock (ConnectedMice)
+            lock (_LOCK)
             {
                 ConnectedMice.Remove(am);
                 if (DeviceChanged is not null)
@@ -49,7 +66,7 @@ namespace GHelper.Peripherals
 
         public static void Connect(AsusMouse am)
         {
-            lock (ConnectedMice)
+            lock (_LOCK)
             {
                 if (ConnectedMice.Contains(am))
                 {
@@ -72,11 +89,11 @@ namespace GHelper.Peripherals
                 //Retry 3 times. Do not call this on main thread! It would block the UI
 
                 int tries = 0;
-                while (!am.MouseIsReady && tries < 3)
+                while (!am.IsDeviceReady && tries < 3)
                 {
                     Thread.Sleep(250);
                     Logger.WriteLine(am.GetDisplayName() + " synchronising. Try " + (tries + 1));
-                    am.SynchronizeMouse();
+                    am.SynchronizeDevice();
                     ++tries;
                 }
 
@@ -96,7 +113,7 @@ namespace GHelper.Peripherals
             {
                 return;
             }
-            lock (ConnectedMice)
+            lock (_LOCK)
             {
                 AsusMouse am = (AsusMouse)sender;
                 ConnectedMice.Remove(am);

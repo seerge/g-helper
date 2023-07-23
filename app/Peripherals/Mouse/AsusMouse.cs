@@ -86,7 +86,7 @@ namespace GHelper.Peripherals.Mouse
         }
     }
 
-    public abstract class AsusMouse : Device
+    public abstract class AsusMouse : Device, IPeripheral
     {
         internal const int ASUS_MOUSE_PACKET_SIZE = 65;
 
@@ -94,7 +94,7 @@ namespace GHelper.Peripherals.Mouse
 
         private readonly string path;
 
-        public bool MouseIsReady { get; protected set; }
+        public bool IsDeviceReady { get; protected set; }
         public bool Wireless { get; protected set; }
         public int Battery { get; protected set; }
         public bool Charging { get; protected set; }
@@ -153,6 +153,13 @@ namespace GHelper.Peripherals.Mouse
         {
             //Use this to validate whether the device is still connected.
             //If not, this will also initiate the disconnect and cleanup sequence.
+            CheckConnection();
+        }
+
+        //Override this for non battery devices to check whether the connection is still there
+        //This function should automatically disconnect the device in GHelper if the device is no longer there or the pipe is broken.
+        public virtual void CheckConnection()
+        {
             ReadBattery();
         }
 
@@ -219,19 +226,23 @@ namespace GHelper.Peripherals.Mouse
         }
         public abstract string GetDisplayName();
 
+        public PeripheralType DeviceType()
+        {
+            return PeripheralType.Mouse;
+        }
 
-        public virtual void SynchronizeMouse()
+        public virtual void SynchronizeDevice()
         {
             DpiSettings = new AsusMouseDPI[DPIProfileCount()];
             ReadBattery();
-            if (Wireless && Battery == 0 && Charging == false)
+            if (HasBattery() && Battery <= 0 && Charging == false)
             {
                 //Likely only the dongle connected and the mouse is either sleeping or turned off.
                 //The mouse will not respond with proper data, but empty responses at this point
-                MouseIsReady = false;
+                IsDeviceReady = false;
                 return;
             }
-            MouseIsReady = true;
+            IsDeviceReady = true;
 
             ReadProfile();
             ReadDPI();
@@ -243,6 +254,11 @@ namespace GHelper.Peripherals.Mouse
         // ------------------------------------------------------------------------------
         // Battery
         // ------------------------------------------------------------------------------
+
+        public virtual bool HasBattery()
+        {
+            return true;
+        }
 
         protected virtual bool HasEnergySettings()
         {
@@ -294,16 +310,32 @@ namespace GHelper.Peripherals.Mouse
 
         public void ReadBattery()
         {
+            if (!HasBattery() && !HasEnergySettings())
+            {
+                return;
+            }
+
             byte[]? response = WriteForResponse(GetBatteryReportPacket());
             if (response is null) return;
 
-            Battery = ParseBattery(response);
-            Charging = ParseChargingState(response);
-            PowerOffSetting = ParsePowerOffSetting(response);
-            LowBatteryWarning = ParseLowBatteryWarning(response);
+            if (HasBattery())
+            {
+                Battery = ParseBattery(response);
+                Charging = ParseChargingState(response);
 
-            Logger.WriteLine(GetDisplayName() + ": Got Battery Percentage " + Battery + "% - Charging:" + Charging);
-            Logger.WriteLine(GetDisplayName() + ": Got Auto Power Off: " + PowerOffSetting + " - Low Battery Warnning at: " + LowBatteryWarning + "%");
+                //If the device goes to standby it will not report battery state anymore.
+                IsDeviceReady = Battery > 0;
+
+                Logger.WriteLine(GetDisplayName() + ": Got Battery Percentage " + Battery + "% - Charging:" + Charging);
+            }
+
+            if (HasEnergySettings())
+            {
+                PowerOffSetting = ParsePowerOffSetting(response);
+                LowBatteryWarning = ParseLowBatteryWarning(response);
+                Logger.WriteLine(GetDisplayName() + ": Got Auto Power Off: " + PowerOffSetting + " - Low Battery Warnning at: " + LowBatteryWarning + "%");
+            }
+
         }
 
         // ------------------------------------------------------------------------------
