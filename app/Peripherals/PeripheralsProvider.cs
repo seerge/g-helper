@@ -16,41 +16,77 @@ namespace GHelper.Peripherals
             return ConnectedMice.Count > 0;
         }
 
-        public static void RefreshAllMice()
+        public static void RefreshBatteryForAllDevices()
         {
-            foreach (AsusMouse m in ConnectedMice)
+            lock (ConnectedMice)
             {
-                m.ReadBattery();
+                foreach (AsusMouse m in ConnectedMice)
+                {
+                    if (!m.MouseIsReady)
+                    {
+                        m.SynchronizeMouse();
+                    }
+                    else
+                    {
+                        m.ReadBattery();
+                    }
+                }
             }
+
         }
 
         public static void Disconnect(AsusMouse am)
         {
-            ConnectedMice.Remove(am);
-            if (DeviceChanged is not null)
+            lock (ConnectedMice)
             {
-                DeviceChanged(am, EventArgs.Empty);
+                ConnectedMice.Remove(am);
+                if (DeviceChanged is not null)
+                {
+                    DeviceChanged(am, EventArgs.Empty);
+                }
             }
         }
 
         public static void Connect(AsusMouse am)
         {
-            try
+            lock (ConnectedMice)
             {
-                am.Connect();
-            }
-            catch (IOException e)
-            {
-                Logger.WriteLine(am.GetDisplayName() + " failed to connect to device: " + e);
-                return;
-            }
+                if (ConnectedMice.Contains(am))
+                {
+                    //Mouse already connected;
+                    return;
+                }
+                try
+                {
+                    am.Connect();
+                }
+                catch (IOException e)
+                {
+                    Logger.WriteLine(am.GetDisplayName() + " failed to connect to device: " + e);
+                    return;
+                }
 
-            am.Disconnect += Mouse_Disconnect;
-            am.SynchronizeMouse();
-            ConnectedMice.Add(am);
-            if (DeviceChanged is not null)
-            {
-                DeviceChanged(am, EventArgs.Empty);
+                am.Disconnect += Mouse_Disconnect;
+
+                //The Mouse might needs a few ms to register all its subdevices or the sync will fail.
+                //Retry 3 times. Do not call this on main thread! It would block the UI
+
+                int tries = 0;
+                while (!am.MouseIsReady && tries < 3)
+                {
+                    Thread.Sleep(250);
+                    Logger.WriteLine(am.GetDisplayName() + " synchronising. Try " + (tries + 1));
+                    am.SynchronizeMouse();
+                    ++tries;
+                }
+
+                ConnectedMice.Add(am);
+                Logger.WriteLine(am.GetDisplayName() + " added to the list: " + ConnectedMice.Count + " device are conneted.");
+                if (DeviceChanged is not null)
+                {
+                    DeviceChanged(am, EventArgs.Empty);
+                }
+                UpdateSettingsView();
             }
         }
 
@@ -60,10 +96,23 @@ namespace GHelper.Peripherals
             {
                 return;
             }
+            lock (ConnectedMice)
+            {
+                AsusMouse am = (AsusMouse)sender;
+                ConnectedMice.Remove(am);
+                Logger.WriteLine(am.GetDisplayName() + " reported disconnect. " + ConnectedMice.Count + " device are conneted.");
+                am.Dispose();
+                UpdateSettingsView();
+            }
+        }
 
-            AsusMouse am = (AsusMouse)sender;
-            ConnectedMice.Remove(am);
-            am.Dispose();
+
+        private static void UpdateSettingsView()
+        {
+            Program.settingsForm.Invoke(delegate
+            {
+                Program.settingsForm.VisualizePeripherals();
+            });
         }
 
         [MethodImpl(MethodImplOptions.Synchronized)]
