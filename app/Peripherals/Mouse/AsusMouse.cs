@@ -143,6 +143,12 @@ namespace GHelper.Peripherals.Mouse
             HidSharp.DeviceList.Local.Changed += Device_Changed;
         }
 
+        public override void Dispose()
+        {
+            HidSharp.DeviceList.Local.Changed -= Device_Changed;
+            base.Dispose();
+        }
+
         private void Device_Changed(object? sender, HidSharp.DeviceListChangedEventArgs e)
         {
             //Use this to validate whether the device is still connected.
@@ -199,6 +205,12 @@ namespace GHelper.Peripherals.Mouse
             catch (System.TimeoutException e)
             {
                 Logger.WriteLine(GetDisplayName() + ": Timeout reading packet " + e.Message);
+                return null;
+            }
+            catch (System.ObjectDisposedException e)
+            {
+                Logger.WriteLine(GetDisplayName() + ": Channel closed ");
+                OnDisconnect();
                 return null;
             }
 
@@ -655,7 +667,6 @@ namespace GHelper.Peripherals.Mouse
 
             for (int i = 0; i < DPIProfileCount(); ++i)
             {
-
                 Logger.WriteLine(GetDisplayName() + ": Read DPI Setting " + (i + 1) + ": " + DpiSettings[i].ToString());
             }
 
