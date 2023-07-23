@@ -57,7 +57,7 @@ namespace GHelper.AnimeMatrix.Communication
         public void Write(byte[] data)
             => _usbProvider?.Write(data);
 
-        public void Dispose()
+        public virtual void Dispose()
         {
             _usbProvider?.Dispose();
         }
