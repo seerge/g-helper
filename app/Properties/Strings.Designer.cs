@@ -916,6 +916,15 @@ namespace GHelper.Properties {
                 return ResourceManager.GetString("NoNewUpdates", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Not Connected ähnelt.
+        /// </summary>
+        internal static string NotConnected {
+            get {
+                return ResourceManager.GetString("NotConnected", resourceCulture);
+            }
+        }
         
         /// <summary>
         ///   Looks up a localized string similar to Open G-Helper window.
@@ -977,6 +986,15 @@ namespace GHelper.Properties {
         internal static string PerformanceMode {
             get {
                 return ResourceManager.GetString("PerformanceMode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Peripherals ähnelt.
+        /// </summary>
+        internal static string Peripherals {
+            get {
+                return ResourceManager.GetString("Peripherals", resourceCulture);
             }
         }
         

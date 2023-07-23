@@ -404,6 +404,9 @@ Do you still want to continue?</value>
   <data name="NoNewUpdates" xml:space="preserve">
     <value>No new updates</value>
   </data>
+  <data name="NotConnected" xml:space="preserve">
+    <value>Not Connected</value>
+  </data>
   <data name="OpenGHelper" xml:space="preserve">
     <value>Open G-Helper window</value>
   </data>
@@ -424,6 +427,9 @@ Do you still want to continue?</value>
   </data>
   <data name="PerformanceMode" xml:space="preserve">
     <value>Mode</value>
+  </data>
+  <data name="Peripherals" xml:space="preserve">
+    <value>Peripherals</value>
   </data>
   <data name="PictureGif" xml:space="preserve">
     <value>Picture / Gif</value>
