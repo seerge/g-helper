@@ -908,9 +908,9 @@ namespace GHelper.Peripherals.Mouse
             setting.Brightness = packet[6];
 
             setting.RGBColor = Color.FromArgb(packet[7], packet[8], packet[9]);
-            setting.AnimationDirection = (AnimationDirection)packet[10];
-            setting.RandomColor = packet[11] == 0x01;
-            setting.AnimationSpeed = (AnimationSpeed)packet[12];
+            setting.AnimationDirection = (AnimationDirection)packet[11];
+            setting.RandomColor = packet[12] == 0x01;
+            setting.AnimationSpeed = (AnimationSpeed)packet[13];
 
 
             return setting;
