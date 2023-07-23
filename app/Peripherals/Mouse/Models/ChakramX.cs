@@ -3,7 +3,7 @@ namespace GHelper.Peripherals.Mouse.Models
 {
     public class ChakramX : AsusMouse
     {
-        internal static string[] POLLING_RATES = { "250Hz", "500Hz", "1000Hz" };
+        private static string[] POLLING_RATES = { "250Hz", "500Hz", "1000Hz" };
 
         public ChakramX() : base(0x0B05, 0x1A1A, "mi_00", true)
         {
@@ -28,6 +28,11 @@ namespace GHelper.Peripherals.Mouse.Models
             return "Unknown";
         }
 
+        public override string[] PollingRateDisplayStrings()
+        {
+            return POLLING_RATES;
+        }
+
         public override bool HasAngleSnapping()
         {
             return true;
@@ -43,27 +48,27 @@ namespace GHelper.Peripherals.Mouse.Models
             return 5;
         }
 
-        protected override int DPIProfileCount()
+        public override int DPIProfileCount()
         {
             return 4;
         }
 
-        protected override int MaxDPI()
+        public override int MaxDPI()
         {
-            return 65_000;
+            return 36_000;
         }
 
-        protected override bool HasLiftOffSetting()
-        {
-            return true;
-        }
-
-        protected override bool HasRGB()
+        public override bool HasLiftOffSetting()
         {
             return true;
         }
 
-        protected override bool HasEnergySettings()
+        public override bool HasRGB()
+        {
+            return true;
+        }
+
+        public override bool HasEnergySettings()
         {
             return true;
         }
@@ -72,7 +77,7 @@ namespace GHelper.Peripherals.Mouse.Models
 
     public class ChakramXWired : ChakramX
     {
-        internal new static string[] POLLING_RATES = { "250Hz", "500Hz", "1000Hz", "2000Hz", "4000Hz", "8000Hz" };
+        private static string[] POLLING_RATES = { "250Hz", "500Hz", "1000Hz", "2000Hz", "4000Hz", "8000Hz" };
         public ChakramXWired() : base(0x1A18, false)
         {
         }
@@ -90,6 +95,11 @@ namespace GHelper.Peripherals.Mouse.Models
             }
 
             return "Unknown";
+        }
+
+        public override string[] PollingRateDisplayStrings()
+        {
+            return POLLING_RATES;
         }
     }
 }

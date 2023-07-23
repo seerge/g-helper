@@ -1,5 +1,6 @@
 ﻿using GHelper.AnimeMatrix.Communication;
 using GHelper.AnimeMatrix.Communication.Platform;
+using System;
 using System.Runtime.CompilerServices;
 using System.Text;
 
@@ -26,7 +27,7 @@ namespace GHelper.Peripherals.Mouse
         CounterClockwise = 0x1
     }
 
-    public enum LightingSpeed
+    public enum AnimationSpeed
     {
         Slow = 0x9,
         Medium = 0x7,
@@ -36,7 +37,7 @@ namespace GHelper.Peripherals.Mouse
     {
         Static = 0x0,
         Breathing = 0x1,
-        Colorwheel = 0x2,
+        ColorCycle = 0x2,
         Rainbow = 0x3,
         React = 0x4,
         Comet = 0x5,
@@ -49,7 +50,7 @@ namespace GHelper.Peripherals.Mouse
         {
             //Some Sane defaults
             LightingMode = LightingMode.Static;
-            LightingSpeed = LightingSpeed.Medium;
+            AnimationSpeed = AnimationSpeed.Medium;
             AnimationDirection = AnimationDirection.Clockwise;
             RandomColor = false;
             Brightness = 25;
@@ -60,14 +61,14 @@ namespace GHelper.Peripherals.Mouse
         public int Brightness { get; set; }
         public Color RGBColor { get; set; }
         public bool RandomColor { get; set; }
-        public LightingSpeed LightingSpeed { get; set; }
+        public AnimationSpeed AnimationSpeed { get; set; }
 
         public AnimationDirection AnimationDirection { get; set; }
 
         public override string? ToString()
         {
             return "LightingMode: " + LightingMode + ", Color (" + RGBColor.R + ", " + RGBColor.G + ", " + RGBColor.B
-                + "), Brightness: " + Brightness + "%, LightingSpeed: " + LightingSpeed + ", RandomColor:" + RandomColor + ", AnimationDirection:" + AnimationDirection;
+                + "), Brightness: " + Brightness + "%, LightingSpeed: " + AnimationSpeed + ", RandomColor:" + RandomColor + ", AnimationDirection:" + AnimationDirection;
         }
     }
 
@@ -105,7 +106,7 @@ namespace GHelper.Peripherals.Mouse
         public int DpiProfile { get; protected set; }
         public AsusMouseDPI[] DpiSettings { get; protected set; }
         public int Profile { get; protected set; }
-        public int PollingRate1 { get; protected set; }
+        public int PollingRate { get; protected set; }
         public bool AngleSnapping { get; protected set; }
         public short AngleAdjustmentDegrees { get; protected set; }
 
@@ -260,7 +261,7 @@ namespace GHelper.Peripherals.Mouse
             return true;
         }
 
-        protected virtual bool HasEnergySettings()
+        public virtual bool HasEnergySettings()
         {
             return false;
         }
@@ -307,6 +308,24 @@ namespace GHelper.Peripherals.Mouse
 
             return 0;
         }
+        protected virtual byte[] GetUpdateEnergySettingsPacket(int lowBatteryWarning, PowerOffSetting powerOff)
+        {
+            return new byte[] { 0x00, 0x51, 0x37, 0x00, 0x00, (byte)powerOff, 0x00, (byte)lowBatteryWarning };
+        }
+
+        public void SetEnergySettings(int lowBatteryWarning, PowerOffSetting powerOff)
+        {
+            if (!HasEnergySettings())
+            {
+                return;
+            }
+
+            WriteForResponse(GetUpdateEnergySettingsPacket(lowBatteryWarning, powerOff));
+
+            Logger.WriteLine(GetDisplayName() + ": Got Auto Power Off: " + powerOff + " - Low Battery Warnning at: " + lowBatteryWarning + "%");
+            this.PowerOffSetting = powerOff;
+            this.LowBatteryWarning = lowBatteryWarning;
+        }
 
         public void ReadBattery()
         {
@@ -343,7 +362,7 @@ namespace GHelper.Peripherals.Mouse
         // ------------------------------------------------------------------------------
         public abstract int ProfileCount();
 
-        protected virtual bool HasProfiles()
+        public virtual bool HasProfiles()
         {
             return true;
         }
@@ -421,10 +440,6 @@ namespace GHelper.Peripherals.Mouse
         // Polling Rate and Angle Snapping
         // ------------------------------------------------------------------------------
 
-        public int PollingRate()
-        {
-            return PollingRate1;
-        }
 
         public virtual bool HasAngleSnapping()
         {
@@ -434,8 +449,9 @@ namespace GHelper.Peripherals.Mouse
         public abstract string PollingRateDisplayString(int pollingRate);
         public abstract int PollingRateCount();
 
+        public abstract string[] PollingRateDisplayStrings();
 
-        protected virtual bool CanSetPollingRate()
+        public virtual bool CanSetPollingRate()
         {
             return true;
         }
@@ -449,9 +465,9 @@ namespace GHelper.Peripherals.Mouse
         {
             return new byte[] { 0x00, 0x51, 0x31, 0x04, 0x00, (byte)pollingRate };
         }
-        protected virtual byte[] GetUpdateAngleSnappingPacket(bool angleSnappin)
+        protected virtual byte[] GetUpdateAngleSnappingPacket(bool angleSnapping)
         {
-            return new byte[] { 0x00, 0x51, 0x31, 0x06, 0x00, (byte)(AngleSnapping ? 0x01 : 0x00) };
+            return new byte[] { 0x00, 0x51, 0x31, 0x06, 0x00, (byte)(angleSnapping ? 0x01 : 0x00) };
         }
         protected virtual byte[] GetUpdateAngleAdjustmentPacket(short angleAdjustment)
         {
@@ -482,7 +498,7 @@ namespace GHelper.Peripherals.Mouse
         {
             if (packet[1] == 0x12 && packet[2] == 0x04 && packet[3] == 0x00)
             {
-                return (short)(packet[19] << 8 | packet[20]);
+                return (short)(packet[20] << 8 | packet[19]);
             }
 
             return 0;
@@ -498,8 +514,8 @@ namespace GHelper.Peripherals.Mouse
             byte[]? response = WriteForResponse(GetReadPollingRatePacket());
             if (response is null) return;
 
-            PollingRate1 = ParsePollingRate(response);
-            Logger.WriteLine(GetDisplayName() + ": Pollingrate: " + PollingRateDisplayString(PollingRate1) + " (" + PollingRate1 + ")");
+            PollingRate = ParsePollingRate(response);
+            Logger.WriteLine(GetDisplayName() + ": Pollingrate: " + PollingRateDisplayString(PollingRate) + " (" + PollingRate + ")");
 
             if (HasAngleSnapping())
             {
@@ -525,7 +541,7 @@ namespace GHelper.Peripherals.Mouse
             WriteForResponse(GetUpdatePollingRatePacket(pollingRate));
 
             Logger.WriteLine(GetDisplayName() + ": Pollingrate set to " + PollingRateDisplayString(pollingRate));
-            this.PollingRate1 = pollingRate;
+            this.PollingRate = pollingRate;
         }
 
         public void SetAngleSnapping(bool angleSnapping)
@@ -563,22 +579,22 @@ namespace GHelper.Peripherals.Mouse
         // ------------------------------------------------------------------------------
         // DPI
         // ------------------------------------------------------------------------------
-        protected abstract int DPIProfileCount();
-        protected virtual bool HasDPIColors()
+        public abstract int DPIProfileCount();
+        public virtual bool HasDPIColors()
         {
             return true;
         }
 
-        protected virtual bool CanChangeDPIProfile()
+        public virtual bool CanChangeDPIProfile()
         {
             return DPIProfileCount() > 1;
         }
 
-        protected virtual int MaxDPI()
+        public virtual int MaxDPI()
         {
             return 2000;
         }
-        protected virtual int MinDPI()
+        public virtual int MinDPI()
         {
             return 100;
         }
@@ -588,8 +604,7 @@ namespace GHelper.Peripherals.Mouse
             return new byte[] { 0x00, 0x51, 0x31, 0x09, 0x00, (byte)profile };
         }
 
-        //There is no API to read this out from the mouse. Armoury Crate also doesn't read it.
-        //You can however get the HID button event when you change the profile via a mouse button which tells you the profile it was set to
+        //profiles start to count at 1
         public void SetDPIProfile(int profile)
         {
             if (!CanChangeDPIProfile())
@@ -597,14 +612,14 @@ namespace GHelper.Peripherals.Mouse
                 return;
             }
 
-            if (profile >= DPIProfileCount() || profile < 0)
+            if (profile > DPIProfileCount() || profile < 1)
             {
                 Logger.WriteLine(GetDisplayName() + ": DPI Profile:" + profile + " is invalid.");
                 return;
             }
 
             //The first DPI profile is 1
-            WriteForResponse(GetChangeDPIProfilePacket(profile + 1));
+            WriteForResponse(GetChangeDPIProfilePacket(profile));
 
             Logger.WriteLine(GetDisplayName() + ": DPI Profile set to " + profile);
             this.DpiProfile = profile;
@@ -615,9 +630,8 @@ namespace GHelper.Peripherals.Mouse
             return new byte[] { 0x00, 0x12, 0x04, 0x02 };
         }
 
-        protected virtual byte[]? GetUpdateDPIPacket(int profile)
+        protected virtual byte[]? GetUpdateDPIPacket(AsusMouseDPI dpi, int profile)
         {
-            AsusMouseDPI dpi = DpiSettings[profile];
             if (dpi is null)
             {
                 return null;
@@ -630,11 +644,11 @@ namespace GHelper.Peripherals.Mouse
 
             if (HasDPIColors())
             {
-                return new byte[] { 0x00, 0x51, 0x31, 0x00, (byte)(dpiEncoded & 0xFF), (byte)((dpiEncoded >> 8) & 0xFF), (byte)profile, dpi.Color.R, dpi.Color.G, dpi.Color.B };
+                return new byte[] { 0x00, 0x51, 0x31, (byte)(profile - 1), 0x00, (byte)(dpiEncoded & 0xFF), (byte)((dpiEncoded >> 8) & 0xFF), dpi.Color.R, dpi.Color.G, dpi.Color.B };
             }
             else
             {
-                return new byte[] { 0x00, 0x51, 0x31, 0x00, (byte)(dpiEncoded & 0xFF), (byte)((dpiEncoded >> 8) & 0xFF), (byte)profile };
+                return new byte[] { 0x00, 0x51, 0x31, (byte)(profile - 1), 0x00, (byte)(dpiEncoded & 0xFF), (byte)((dpiEncoded >> 8) & 0xFF) };
             }
 
         }
@@ -653,9 +667,12 @@ namespace GHelper.Peripherals.Mouse
                     DpiSettings[i] = new AsusMouseDPI();
                 }
 
-                int offset = 4 + (i * 4);
+                int offset = 5 + (i * 4);
 
-                DpiSettings[i].DPI = (uint)(packet[offset] << 8 | packet[offset + 1]) * 50 + 50;
+                uint b1 = packet[offset];
+                uint b2 = packet[offset + 1];
+
+                DpiSettings[i].DPI = (uint)(b2 << 8 | b1) * 50 + 50;
             }
         }
 
@@ -704,15 +721,15 @@ namespace GHelper.Peripherals.Mouse
 
         }
 
-        public void SetDPIForProfile(int profile)
+        public void SetDPIForProfile(AsusMouseDPI dpi, int profile)
         {
-            if (profile >= DPIProfileCount() || profile < 0)
+            if (profile > DPIProfileCount() || profile < 1)
             {
                 Logger.WriteLine(GetDisplayName() + ": DPI Profile:" + profile + " is invalid.");
                 return;
             }
 
-            byte[]? packet = GetUpdateDPIPacket(profile);
+            byte[]? packet = GetUpdateDPIPacket(dpi, profile);
             if (packet == null)
             {
                 Logger.WriteLine(GetDisplayName() + ": DPI setting for profile " + profile + " does not exist or is invalid.");
@@ -720,8 +737,9 @@ namespace GHelper.Peripherals.Mouse
             }
             WriteForResponse(packet);
 
-            Logger.WriteLine(GetDisplayName() + ": DPI for profile " + profile + " set to " + DpiSettings[profile].DPI);
-            this.DpiProfile = profile;
+            Logger.WriteLine(GetDisplayName() + ": DPI for profile " + profile + " set to " + DpiSettings[profile - 1].DPI);
+            //this.DpiProfile = profile;
+            this.DpiSettings[profile - 1] = dpi;
         }
 
 
@@ -730,7 +748,7 @@ namespace GHelper.Peripherals.Mouse
         // Lift-off Distance
         // ------------------------------------------------------------------------------
 
-        protected virtual bool HasLiftOffSetting()
+        public virtual bool HasLiftOffSetting()
         {
             return false;
         }
@@ -788,7 +806,7 @@ namespace GHelper.Peripherals.Mouse
         // RGB
         // ------------------------------------------------------------------------------
 
-        protected virtual bool HasRGB()
+        public virtual bool HasRGB()
         {
             return false;
         }
@@ -807,9 +825,32 @@ namespace GHelper.Peripherals.Mouse
         }
 
         //And this if not all modes are supported
-        protected virtual bool IsLightingModeSupported(LightingMode lightingMode)
+        public virtual bool IsLightingModeSupported(LightingMode lightingMode)
         {
             return true;
+        }
+
+        public virtual bool SupportsRandomColor(LightingMode lightingMode)
+        {
+            return lightingMode == LightingMode.Comet;
+        }
+
+        public virtual bool SupportsAnimationDirection(LightingMode lightingMode)
+        {
+            return lightingMode == LightingMode.Rainbow
+                || lightingMode == LightingMode.Comet;
+        }
+        public virtual bool SupportsAnimationSpeed(LightingMode lightingMode)
+        {
+            return lightingMode == LightingMode.Rainbow;
+        }
+
+        public virtual bool SupportsColorSetting(LightingMode lightingMode)
+        {
+            return lightingMode == LightingMode.Static
+                 || lightingMode == LightingMode.Breathing
+                 || lightingMode == LightingMode.Comet
+                 || lightingMode == LightingMode.React;
         }
 
         protected virtual byte[] GetReadLightingModePacket()
@@ -836,7 +877,7 @@ namespace GHelper.Peripherals.Mouse
                 lightingSetting.RGBColor.R, lightingSetting.RGBColor.G, lightingSetting.RGBColor.B,
                 (byte)lightingSetting.AnimationDirection,
                 (byte)(lightingSetting.RandomColor ? 0x01: 0x00),
-                (byte)lightingSetting.LightingSpeed
+                (byte)lightingSetting.AnimationSpeed
             };
         }
 
@@ -855,7 +896,7 @@ namespace GHelper.Peripherals.Mouse
             setting.RGBColor = Color.FromArgb(packet[7], packet[8], packet[9]);
             setting.AnimationDirection = (AnimationDirection)packet[10];
             setting.RandomColor = packet[11] == 0x01;
-            setting.LightingSpeed = (LightingSpeed)packet[12];
+            setting.AnimationSpeed = (AnimationSpeed)packet[12];
 
 
             return setting;
@@ -882,7 +923,7 @@ namespace GHelper.Peripherals.Mouse
             }
         }
 
-        public void SetLightingSettinge(LightingSetting lightingSetting)
+        public void SetLightingSetting(LightingSetting lightingSetting)
         {
             if (!HasRGB() || lightingSetting is null)
             {
@@ -893,6 +934,18 @@ namespace GHelper.Peripherals.Mouse
 
             Logger.WriteLine(GetDisplayName() + ": Set RGB Setting " + lightingSetting.ToString());
             this.LightingSetting = lightingSetting;
+        }
+
+        protected virtual byte[] GetSaveProfilePacket()
+        {
+            return new byte[] { 0x00, 0x50, 0x03 };
+        }
+
+        public void FlushSettings()
+        {
+            WriteForResponse(GetSaveProfilePacket());
+
+            Logger.WriteLine(GetDisplayName() + ": Settings Flushed ");
         }
 
         public override string? ToString()
