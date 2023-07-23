@@ -238,7 +238,7 @@ namespace GHelper.Display
                 //Fallback scenario
                 if (iRet != 0)
                 {
-                    Thread.Sleep(1000);
+                    Thread.Sleep(500);
                     iRet = ChangeDisplaySettingsEx(laptopScreen, ref dm, IntPtr.Zero, DisplaySettingsFlags.CDS_UPDATEREGISTRY, IntPtr.Zero);
                     Logger.WriteLine("Screen = " + frequency.ToString() + "Hz : " + (iRet == 0 ? "OK" : iRet));
                 }

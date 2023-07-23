@@ -227,7 +227,7 @@ namespace GHelper
                 }
             }
 
-            checkAutoToggleClamshellMode.Visible = clamshellControl.IsExternalDisplayConnected();
+            //checkAutoToggleClamshellMode.Visible = clamshellControl.IsExternalDisplayConnected();
             checkAutoToggleClamshellMode.Checked = AppConfig.Is("toggle_clamshell_mode");
             checkAutoToggleClamshellMode.CheckedChanged += checkAutoToggleClamshellMode_CheckedChanged;
 
