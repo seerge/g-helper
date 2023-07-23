@@ -172,4 +172,20 @@ public static class ControlHelper
 
     }
 
+    public static Image TintImage(Image image, Color tintColor)
+    {
+        var pic = new Bitmap(image);
+
+        for (int y = 0; (y <= (pic.Height - 1)); y++)
+        {
+            for (int x = 0; (x <= (pic.Width - 1)); x++)
+            {
+                Color col = pic.GetPixel(x, y);
+                pic.SetPixel(x, y, Color.FromArgb(col.A, tintColor.R, tintColor.G, tintColor.B));
+            }
+        }
+        
+        return pic;
+    }
+
 }
