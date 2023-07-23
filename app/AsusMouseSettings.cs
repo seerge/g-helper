@@ -47,6 +47,7 @@ namespace GHelper
             this.Text = mouse.GetDisplayName();
 
             Shown += AsusMouseSettings_Shown;
+            FormClosing += AsusMouseSettings_FormClosing;
 
             mouse.Disconnect += Mouse_Disconnect;
             mouse.BatteryUpdated += Mouse_BatteryUpdated;
@@ -79,6 +80,12 @@ namespace GHelper
 
             InitMouseCapabilities();
             RefreshMouseData();
+        }
+
+        private void AsusMouseSettings_FormClosing(object? sender, FormClosingEventArgs e)
+        {
+            mouse.BatteryUpdated -= Mouse_BatteryUpdated;
+            mouse.Disconnect -= Mouse_Disconnect;
         }
 
         private void Mouse_BatteryUpdated(object? sender, EventArgs e)
