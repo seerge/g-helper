@@ -1131,7 +1131,31 @@ namespace GHelper
             if (sender == buttonPeripheral2) index = 1;
             if (sender == buttonPeripheral3) index = 2;
 
-            //TODO: Open Configuration Panel
+            IPeripheral iph = PeripheralsProvider.AllPeripherals().ElementAt(index);
+
+            if (iph is null)
+            {
+                //Can only happen when the user hits the button in the exact moment a device is disconnected.
+                return;
+            }
+
+            if (iph.DeviceType() == PeripheralType.Mouse)
+            {
+                AsusMouse? am = iph as AsusMouse;
+                if (am is null)
+                {
+                    //Should not happen if all device classes are implemented correctly. But better safe than sorry.
+                    return;
+                }
+                AsusMouseSettings s = new AsusMouseSettings(am);
+                if (!s.IsDisposed)
+                {
+                    s.Show();
+                }
+
+            }
+
+
 
         }
     }
