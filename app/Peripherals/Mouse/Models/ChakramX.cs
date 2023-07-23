@@ -18,16 +18,6 @@ namespace GHelper.Peripherals.Mouse.Models
             return "ROG Chakram X (Wireless)";
         }
 
-        public override string PollingRateDisplayString(int pollingRate)
-        {
-            if (pollingRate >= 1 && pollingRate <= POLLING_RATES.Length)
-            {
-                return POLLING_RATES[pollingRate - 1];
-            }
-
-            return "Unknown";
-        }
-
         public override string[] PollingRateDisplayStrings()
         {
             return POLLING_RATES;
@@ -36,11 +26,6 @@ namespace GHelper.Peripherals.Mouse.Models
         public override bool HasAngleSnapping()
         {
             return true;
-        }
-
-        public override int PollingRateCount()
-        {
-            return 3;
         }
 
         public override int ProfileCount()
@@ -85,16 +70,6 @@ namespace GHelper.Peripherals.Mouse.Models
         public override string GetDisplayName()
         {
             return "ROG Chakram X (Wired)";
-        }
-
-        public override string PollingRateDisplayString(int pollingRate)
-        {
-            if (pollingRate >= 1 && pollingRate <= POLLING_RATES.Length)
-            {
-                return POLLING_RATES[pollingRate - 1];
-            }
-
-            return "Unknown";
         }
 
         public override string[] PollingRateDisplayStrings()

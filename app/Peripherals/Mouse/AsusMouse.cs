@@ -1,6 +1,5 @@
 ﻿using GHelper.AnimeMatrix.Communication;
 using GHelper.AnimeMatrix.Communication.Platform;
-using System;
 using System.Runtime.CompilerServices;
 using System.Text;
 
@@ -454,8 +453,15 @@ namespace GHelper.Peripherals.Mouse
             return false;
         }
 
-        public abstract string PollingRateDisplayString(int pollingRate);
-        public abstract int PollingRateCount();
+        public virtual string PollingRateDisplayString(int pollingRate)
+        {
+            return PollingRateDisplayStrings()[pollingRate -1];
+        }
+
+        public virtual int PollingRateCount()
+        {
+            return PollingRateDisplayStrings().Length;
+        }
 
         public abstract string[] PollingRateDisplayStrings();
 
