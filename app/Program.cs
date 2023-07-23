@@ -4,6 +4,7 @@ using GHelper.Gpu;
 using GHelper.Helpers;
 using GHelper.Input;
 using GHelper.Mode;
+using GHelper.Peripherals;
 using Microsoft.Win32;
 using Ryzen;
 using System.Diagnostics;
@@ -107,6 +108,9 @@ namespace GHelper
             PowerSettingGuid settingGuid = new NativeMethods.PowerSettingGuid();
             unRegPowerNotify = NativeMethods.RegisterPowerSettingNotification(settingsForm.Handle, settingGuid.ConsoleDisplayState, NativeMethods.DEVICE_NOTIFY_WINDOW_HANDLE);
 
+
+            Task task = Task.Run((Action)PeripheralsProvider.DetectAllAsusMice);
+            PeripheralsProvider.RegisterForDeviceEvents();
 
             if (Environment.CurrentDirectory.Trim('\\') == Application.StartupPath.Trim('\\') || action.Length > 0)
             {
@@ -241,6 +245,7 @@ namespace GHelper
         static void OnExit(object sender, EventArgs e)
         {
             trayIcon.Visible = false;
+            PeripheralsProvider.UnregisterForDeviceEvents();
             clamshellControl.UnregisterDisplayEvents();
             NativeMethods.UnregisterPowerSettingNotification(unRegPowerNotify);
             Application.Exit();
