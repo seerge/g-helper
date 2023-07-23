@@ -92,6 +92,7 @@ namespace GHelper.Peripherals.Mouse
         internal const int ASUS_MOUSE_PACKET_SIZE = 65;
 
         public event EventHandler? Disconnect;
+        public event EventHandler? BatteryUpdated;
 
         private readonly string path;
 
@@ -346,6 +347,11 @@ namespace GHelper.Peripherals.Mouse
                 IsDeviceReady = Battery > 0;
 
                 Logger.WriteLine(GetDisplayName() + ": Got Battery Percentage " + Battery + "% - Charging:" + Charging);
+
+                if (BatteryUpdated is not null)
+                {
+                    BatteryUpdated(this, EventArgs.Empty);
+                }
             }
 
             if (HasEnergySettings())
