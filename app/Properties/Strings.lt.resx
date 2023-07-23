@@ -190,25 +190,25 @@
     <value>Taikyti automatiškai</value>
   </data>
   <data name="AutoMode" xml:space="preserve">
-    <value>Autom.</value>
+    <value>Automatinis</value>
   </data>
   <data name="AutoRefreshTooltip" xml:space="preserve">
-    <value>Nustato 60Hz, kad išsaugotų akumuliatoriaus įkrovą, ir atgal, kai prijungtas prie lizdo</value>
+    <value>Nustato 60Hz, kad stokotų akumuliatorių, ir atgal, kai prijungtas prie lizdo</value>
   </data>
   <data name="Awake" xml:space="preserve">
     <value>Pabudęs</value>
   </data>
   <data name="BacklightTimeout" xml:space="preserve">
-    <value>Skirtasis laikas naudojant lizdą / akumuliatorių (0 – ĮJUNGTA)</value>
+    <value>Laiko riba su lizdu / akumuliatoriumi (0 – ĮJUNGTA)</value>
   </data>
   <data name="Balanced" xml:space="preserve">
     <value>Balansuotas</value>
   </data>
   <data name="BatteryChargeLimit" xml:space="preserve">
-    <value>Akumuliatoriaus įkrovos riba</value>
+    <value>Įkrovos riba</value>
   </data>
   <data name="BatteryHealth" xml:space="preserve">
-    <value>Akumuliatoriaus sveikata</value>
+    <value>Sveikata</value>
   </data>
   <data name="BiosAndDriverUpdates" xml:space="preserve">
     <value>BIOS ir tvarkyklių naujinimai</value>
@@ -235,7 +235,7 @@
     <value>CPU spartinimas</value>
   </data>
   <data name="Custom" xml:space="preserve">
-    <value>Tinkinta</value>
+    <value>Tinkintas</value>
   </data>
   <data name="Default" xml:space="preserve">
     <value>Numatytas</value>
@@ -342,13 +342,13 @@ Vis tiek norite tęsti?</value>
     <value>Sustabdyti visas GPU naudojančias programėles, kai perjungiama į ekonomišką režimą</value>
   </data>
   <data name="LaptopBacklight" xml:space="preserve">
-    <value>Nešiojamojo kompiuterio apšvietimas</value>
+    <value>Apšvietimas</value>
   </data>
   <data name="LaptopKeyboard" xml:space="preserve">
-    <value>Nešiojamojo kompiuterio klaviatūra</value>
+    <value>Klaviatūra</value>
   </data>
   <data name="LaptopScreen" xml:space="preserve">
-    <value>Nešiojamojo kompiuterio ekranas</value>
+    <value>Ekranas</value>
   </data>
   <data name="Lid" xml:space="preserve">
     <value>Korpusas</value>
@@ -399,10 +399,10 @@ Vis tiek norite tęsti?</value>
     <value>Mikrofono nutildymas</value>
   </data>
   <data name="NewUpdates" xml:space="preserve">
-    <value>Nauji naujinimai</value>
+    <value>Prieinami naujinimai</value>
   </data>
   <data name="NoNewUpdates" xml:space="preserve">
-    <value>Nėra naujų naujinimų</value>
+    <value>Nėra prieinamų naujinimų</value>
   </data>
   <data name="OpenGHelper" xml:space="preserve">
     <value>Atidaryti G-Helper langą</value>
@@ -516,7 +516,7 @@ Vis tiek norite tęsti?</value>
     <value>Išjungti naudojant akumuliatorių</value>
   </data>
   <data name="UltimateGPUTooltip" xml:space="preserve">
-    <value>Nukreipia nešiojamojo kompiuterio ekraną į dGPU, kad maksimizuotų kadrų dažnį</value>
+    <value>Nukreipia ekraną į dGPU, kad maksimizuotų kadrų dažnį</value>
   </data>
   <data name="UltimateMode" xml:space="preserve">
     <value>Maksimalus</value>
