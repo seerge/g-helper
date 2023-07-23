@@ -9,7 +9,6 @@ using Ryzen;
 using System.Diagnostics;
 using System.Globalization;
 using System.Reflection;
-using System.Xml;
 using static NativeMethods;
 
 namespace GHelper
@@ -32,8 +31,6 @@ namespace GHelper
         static GPUModeControl gpuControl = new GPUModeControl(settingsForm);
         static ScreenControl screenControl = new ScreenControl();
         static ClamshellModeControl clamshellControl = new ClamshellModeControl();
-        public static XmlDocument xdoc = new XmlDocument(); //XML for Eco mode safe boot flag
-        public static string sFilePath = ""; //path for XML
         public static ToastForm toast = new ToastForm();
 
         public static IntPtr unRegPowerNotify;
@@ -99,27 +96,18 @@ namespace GHelper
 
             SetAutoModes();
 
-            //Load the shutdown from eco xml
-            string sCurrentDirectory = AppDomain.CurrentDomain.BaseDirectory;
-            string sFile = System.IO.Path.Combine(sCurrentDirectory, @"BootFromEco.xml");
-            sFilePath = Path.GetFullPath(sFile);
-            xdoc.Load(sFilePath);
-
+            //Check boot from eco
             //Check the shutdown state
-            //Check for boot from eco
-            if (xdoc.SelectSingleNode("/Session/BootFromEco").InnerText == "True")
+            if (AppConfig.Get("eco_shutdown") == 1) //shutdown from eco
             {
-                gpuControl.SetGPUMode(AsusACPI.GPUModeEco); //set mode back to eco
-                xdoc.SelectSingleNode("/Session/BootFromEco").InnerText = "False"; //reset flag
-                xdoc.Save(sFilePath);
+                gpuControl.SetGPUMode(AsusACPI.GPUModeEco);
+                AppConfig.Set("eco_shutdown", 0);
             }
-            //Check for boot from optimised
-            if (xdoc.SelectSingleNode("/Session/BootFromOptimised").InnerText == "True")
+            if (AppConfig.Get("eco_shutdown") == 2) //shutdown from optimised
             {
-                AppConfig.Set("gpu_auto", (AppConfig.Get("gpu_auto") == 1) ? 0 : 1); //set back to optimised
-                gpuControl.AutoGPUMode(true); //set back to optimised
-                xdoc.SelectSingleNode("/Session/BootFromOptimised").InnerText = "False"; //reset flag
-                xdoc.Save(sFilePath);
+                AppConfig.Set("gpu_auto", (AppConfig.Get("gpu_auto") == 1) ? 0 : 1);
+                gpuControl.AutoGPUMode(true);
+                AppConfig.Set("eco_shutdown", 0);
             }
 
             // Subscribing for system power change events
@@ -150,16 +138,14 @@ namespace GHelper
             int CurrentGPU = AppConfig.Get("gpu_mode");
             if (CurrentGPU != AsusACPI.GPUModeUltimate && CurrentGPU != AsusACPI.GPUModeStandard)
             {
-                if (AppConfig.Is("gpu_auto")) //set flag for safe boot from optimised unplugged
+                if (AppConfig.Is("gpu_auto"))
                 {
-                    xdoc.SelectSingleNode("/Session/BootFromOptimised").InnerText = "True";
+                    AppConfig.Set("eco_shutdown", 2);
                 }
-                else //set flag for safe boot from eco
+                else
                 {
-                    xdoc.SelectSingleNode("/Session/BootFromEco").InnerText = "True";
+                    AppConfig.Set("eco_shutdown", 1);
                 }
-
-                xdoc.Save(sFilePath);
                 gpuControl.SetGPUMode(AsusACPI.GPUModeStandard); //set to standard for safe boot
                 //This will ensure that eco and optimised unplugged mode will reboot correctly
                 //If in optimised with power state the request will be ignored, dont need to handle.
@@ -232,15 +218,14 @@ namespace GHelper
                 //ignore for standard and ultimate mode
                 if (CurrentGPU != AsusACPI.GPUModeUltimate && CurrentGPU != AsusACPI.GPUModeStandard)
                 {
-                    if (AppConfig.Is("gpu_auto")) //set flag for auto mode boot
+                    if (AppConfig.Is("gpu_auto"))
                     {
-                        xdoc.SelectSingleNode("/Session/BootFromOptimised").InnerText = "True";
+                        AppConfig.Set("eco_shutdown", 2);
                     }
-                    else //set flag for eco mode boot
+                    else
                     {
-                        xdoc.SelectSingleNode("/Session/BootFromEco").InnerText = "True";
+                        AppConfig.Set("eco_shutdown", 1);
                     }
-                    xdoc.Save(sFilePath);
                     gpuControl.SetGPUMode(AsusACPI.GPUModeStandard); //set standard mode to ensure safe boot
                     //Again, this will set standard mode for safe boot from eco mode and optimised unplugged state
                     //This will also trigger for optimised plugged in but does not need to be handled, on resume or
@@ -251,18 +236,16 @@ namespace GHelper
             {
                 //Ensure correct modes are honored during system resume
                 //Conditions only triggered if safe boot flags have been raised
-                if (xdoc.SelectSingleNode("/Session/BootFromEco").InnerText == "True")
+                if (AppConfig.Get("eco_shutdown") == 1)
                 {
                     gpuControl.SetGPUMode(AsusACPI.GPUModeEco);
-                    xdoc.SelectSingleNode("/Session/BootFromEco").InnerText = "False";
-                    xdoc.Save(sFilePath);
+                    AppConfig.Set("eco_shutdown", 0);
                 }
-                if (xdoc.SelectSingleNode("/Session/BootFromOptimised").InnerText == "True")
+                if (AppConfig.Get("eco_shutdown") == 2)
                 {
                     AppConfig.Set("gpu_auto", (AppConfig.Get("gpu_auto") == 1) ? 0 : 1);
                     gpuControl.AutoGPUMode(true);
-                    xdoc.SelectSingleNode("/Session/BootFromOptimised").InnerText = "False";
-                    xdoc.Save(sFilePath);
+                    AppConfig.Set("eco_shutdown", 0);
                 }
             }
             if (SystemInformation.PowerStatus.PowerLineStatus == isPlugged) return;
