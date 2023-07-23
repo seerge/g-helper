@@ -15,14 +15,22 @@ namespace GHelper
         SleepKeyb = 1 << 5,
         ShutdownLogo = 1 << 6,
         ShutdownKeyb = 1 << 7,
-        BootBar = 1u << (7 + 2),
-        AwakeBar = 1u << (7 + 3),
-        SleepBar = 1u << (7 + 4),
-        ShutdownBar = 1u << (7 + 5),
-        BootLid = 1u << (15 + 1),
-        AwakeLid = 1u << (15 + 2),
-        SleepLid = 1u << (15 + 3),
-        ShutdownLid = 1u << (15 + 4)
+
+        BootBar = 1 << (7 + 2),
+        AwakeBar = 1 << (7 + 3),
+        SleepBar = 1 << (7 + 4),
+        ShutdownBar = 1 << (7 + 5),
+
+        BootLid = 1 << (15 + 1),
+        AwakeLid = 1 << (15 + 2),
+        SleepLid = 1 << (15 + 3),
+        ShutdownLid = 1 << (15 + 4),
+
+        BootRear = 1 << (23 + 1),
+        AwakeRear = 1 << (23 + 2),
+        SleepRear = 1 << (23 + 3),
+        ShutdownRear = 1 << (23 + 4),
+
     }
 
     public static class AuraDev19b6Extensions
@@ -34,18 +42,9 @@ namespace GHelper
             {
                 a |= (uint)n;
             }
-            return new byte[] { 0x5d, 0xbd, 0x01, (byte)(a & 0xff), (byte)((a & 0xff00) >> 8), (byte)((a & 0xff0000) >> 16) };
+            return new byte[] { 0x5d, 0xbd, 0x01, (byte)(a & 0xff), (byte)((a & 0xff00) >> 8), (byte)((a & 0xff0000) >> 16), (byte)((a & 0xff000000) >> 24) };
         }
 
-        public static ushort BitOr(this AuraDev19b6 self, AuraDev19b6 rhs)
-        {
-            return (ushort)(self | rhs);
-        }
-
-        public static ushort BitAnd(this AuraDev19b6 self, AuraDev19b6 rhs)
-        {
-            return (ushort)(self & rhs);
-        }
     }
 
 
@@ -322,6 +321,12 @@ namespace GHelper
                 if (AppConfig.IsNotFalse("keyboard_sleep")) flags.Add(AuraDev19b6.SleepKeyb);
                 if (AppConfig.IsNotFalse("keyboard_shutdown")) flags.Add(AuraDev19b6.ShutdownKeyb);
 
+                // Logo
+                if (AppConfig.IsNotFalse("keyboard_awake_logo")) flags.Add(AuraDev19b6.AwakeLogo);
+                if (AppConfig.IsNotFalse("keyboard_boot_logo")) flags.Add(AuraDev19b6.BootLogo);
+                if (AppConfig.IsNotFalse("keyboard_sleep_logo")) flags.Add(AuraDev19b6.SleepLogo);
+                if (AppConfig.IsNotFalse("keyboard_shutdown_logo")) flags.Add(AuraDev19b6.ShutdownLogo);
+
                 // Lightbar
                 if (AppConfig.IsNotFalse("keyboard_awake_bar")) flags.Add(AuraDev19b6.AwakeBar);
                 if (AppConfig.IsNotFalse("keyboard_boot_bar")) flags.Add(AuraDev19b6.BootBar);
@@ -334,12 +339,10 @@ namespace GHelper
                 if (AppConfig.IsNotFalse("keyboard_sleep_lid")) flags.Add(AuraDev19b6.SleepLid);
                 if (AppConfig.IsNotFalse("keyboard_shutdown_lid")) flags.Add(AuraDev19b6.ShutdownLid);
 
-                // Logo
-                if (AppConfig.IsNotFalse("keyboard_awake_logo")) flags.Add(AuraDev19b6.AwakeLogo);
-                if (AppConfig.IsNotFalse("keyboard_boot_logo")) flags.Add(AuraDev19b6.BootLogo);
-                if (AppConfig.IsNotFalse("keyboard_sleep_logo")) flags.Add(AuraDev19b6.SleepLogo);
-                if (AppConfig.IsNotFalse("keyboard_shutdown_logo")) flags.Add(AuraDev19b6.ShutdownLogo);
-
+                if (AppConfig.IsNotFalse("keyboard_awake_lid")) flags.Add(AuraDev19b6.AwakeRear);
+                if (AppConfig.IsNotFalse("keyboard_boot_lid")) flags.Add(AuraDev19b6.BootRear);
+                if (AppConfig.IsNotFalse("keyboard_sleep_lid")) flags.Add(AuraDev19b6.SleepRear);
+                if (AppConfig.IsNotFalse("keyboard_shutdown_lid")) flags.Add(AuraDev19b6.ShutdownRear);
 
                 byte[] msg = AuraDev19b6Extensions.ToBytes(flags.ToArray());
 
