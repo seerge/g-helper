@@ -372,13 +372,14 @@ namespace GHelper
         public static void ApplyAura()
         {
 
+            Mode = AppConfig.Get("aura_mode");
+            Speed = AppConfig.Get("aura_speed");
+            SetColor(AppConfig.Get("aura_color"));
+            SetColor2(AppConfig.Get("aura_color2"));
+
             Task.Run(async () =>
             {
 
-                Mode = AppConfig.Get("aura_mode");
-                Speed = AppConfig.Get("aura_speed");
-                SetColor(AppConfig.Get("aura_color"));
-                SetColor2(AppConfig.Get("aura_color2"));
 
                 int _speed;
 
