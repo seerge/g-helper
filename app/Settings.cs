@@ -192,8 +192,15 @@ namespace GHelper
             labelModel.Text = AppConfig.GetModelShort() + (ProcessHelper.IsUserAdministrator() ? "." : "");
             TopMost = AppConfig.Is("topmost");
 
+            //This will auto position the window again when it resizes. Might mess with position if people drag the window somewhere else.
+            this.Resize += SettingsForm_Resize;
             SetContextMenu();
+        }
 
+        private void SettingsForm_Resize(object? sender, EventArgs e)
+        {
+            Left = Screen.FromControl(this).WorkingArea.Width - 10 - Width;
+            Top = Screen.FromControl(this).WorkingArea.Height - 10 - Height;
         }
 
         private void PanelBattery_MouseEnter(object? sender, EventArgs e)
