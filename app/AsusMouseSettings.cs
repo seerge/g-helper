@@ -39,7 +39,7 @@ namespace GHelper
             buttonSync.Text = Properties.Strings.MouseSynchronize;
             checkBoxAngleSnapping.Text = Properties.Strings.MouseAngleSnapping;
             labelLiftOffDistance.Text = Properties.Strings.MouseLiftOffDistance;
-            labelChargingState.Text = Properties.Strings.Charging;
+            labelChargingState.Text = "(" + Properties.Strings.Charging + ")";
             labelProfile.Text = Properties.Strings.Profile;
 
             InitTheme();
