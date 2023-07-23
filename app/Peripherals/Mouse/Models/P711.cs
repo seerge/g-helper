@@ -56,15 +56,6 @@
         {
             return true;
         }
-
-        public override bool IsLightingModeSupported(LightingMode lightingMode)
-        {
-            return lightingMode == LightingMode.Static
-                || lightingMode == LightingMode.Breathing
-                || lightingMode == LightingMode.ColorCycle
-                || lightingMode == LightingMode.React
-                || lightingMode == LightingMode.BatteryState;
-        }
     }
 
     public class P711Wired : P711
