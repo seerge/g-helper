@@ -223,6 +223,12 @@ Full list of keycodes https://learn.microsoft.com/en-us/windows/win32/inputdev/v
 
 ![Screenshot 2023-07-17 192155](https://github.com/seerge/g-helper/assets/5920850/e450e124-1589-4787-bce8-7c37ffe72fbd)
 
+### Force Standard mode on shutdown / hibernation
+In some rare cases G14 2023 seem to have issues with enabling / disabling dGPU - i.e. Eco mode. Till we wait for a fix from asus on BIOS level, one of the proposed solutions is to always shutdown laptop in Standard mode (then everything seem to work fine). To enable "forced" Standard mode on shutdown add following line to ``%AppData%\GHelper\config.json``
+```
+"gpu_fix" : 1,
+```
+
 ### Disable OSD
 You can disable app's OSD (for performance modes, keyboard backlight, etc) by adding following line to ``%AppData%\GHelper\config.json``
 ```

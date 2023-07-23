@@ -177,7 +177,7 @@ namespace GHelper.Gpu
         {
 
             bool GpuAuto = AppConfig.Is("gpu_auto");
-            bool ForceGPU = AppConfig.ContainsModel("503");
+            bool ForceGPU = AppConfig.ContainsModel("503") || AppConfig.Is("gpu_fix");
 
             int GpuMode = AppConfig.Get("gpu_mode");
 
@@ -319,6 +319,17 @@ namespace GHelper.Gpu
             {
                 HardwareControl.GpuControl.KillGPUApps();
             }
+        }
+
+        // Manually forcing standard mode on shutdown/hibernate for some exotic cases
+        // https://github.com/seerge/g-helper/pull/855 
+        public void StandardModeFix()
+        {
+            if (!AppConfig.Is("gpu_fix")) return; // No config entry
+            if (Program.acpi.DeviceGet(AsusACPI.GPUMux) == 0) return; // Ultimate mode
+
+            Logger.WriteLine("Forcing Standard Mode on shutdown / hibernation");
+            Program.acpi.SetGPUEco(0);
         }
 
     }

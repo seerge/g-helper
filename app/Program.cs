@@ -101,6 +101,10 @@ namespace GHelper
             // Subscribing for system power change events
             SystemEvents.PowerModeChanged += SystemEvents_PowerModeChanged;
             SystemEvents.UserPreferenceChanged += SystemEvents_UserPreferenceChanged;
+
+            SystemEvents.SessionSwitch += SystemEvents_SessionSwitch;
+            SystemEvents.SessionEnding += SystemEvents_SessionEnding;
+
             clamshellControl.RegisterDisplayEvents();
             clamshellControl.ToggleLidAction();
 
@@ -121,7 +125,19 @@ namespace GHelper
 
         }
 
+        private static void SystemEvents_SessionEnding(object sender, SessionEndingEventArgs e)
+        {
+            gpuControl.StandardModeFix();
+        }
 
+        private static void SystemEvents_SessionSwitch(object sender, SessionSwitchEventArgs e)
+        {
+            if (e.Reason == SessionSwitchReason.SessionLogon || e.Reason == SessionSwitchReason.SessionUnlock)
+            {
+                Logger.WriteLine("Session:" + e.Reason.ToString());
+                screenControl.AutoScreen();
+            }
+        }
 
         static void SystemEvents_UserPreferenceChanged(object sender, UserPreferenceChangedEventArgs e)
         {
@@ -182,8 +198,12 @@ namespace GHelper
 
         private static void SystemEvents_PowerModeChanged(object sender, PowerModeChangedEventArgs e)
         {
+            Logger.WriteLine("Power Mode:" + e.Mode.ToString());
+            
+
+            if (e.Mode == PowerModes.Suspend) gpuControl.StandardModeFix();
+
             if (SystemInformation.PowerStatus.PowerLineStatus == isPlugged) return;
-            Logger.WriteLine("Power Mode Changed");
             SetAutoModes(true);
         }
 
