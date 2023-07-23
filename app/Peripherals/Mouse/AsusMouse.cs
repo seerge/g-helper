@@ -322,6 +322,7 @@ namespace GHelper.Peripherals.Mouse
             }
 
             WriteForResponse(GetUpdateEnergySettingsPacket(lowBatteryWarning, powerOff));
+            FlushSettings();
 
             Logger.WriteLine(GetDisplayName() + ": Got Auto Power Off: " + powerOff + " - Low Battery Warnning at: " + lowBatteryWarning + "%");
             this.PowerOffSetting = powerOff;
@@ -437,6 +438,7 @@ namespace GHelper.Peripherals.Mouse
             }
 
             WriteForResponse(GetUpdateProfilePacket(profile));
+            FlushSettings();
 
             Logger.WriteLine(GetDisplayName() + ": Profile set to " + profile);
             this.Profile = profile;
@@ -545,6 +547,7 @@ namespace GHelper.Peripherals.Mouse
             }
 
             WriteForResponse(GetUpdatePollingRatePacket(pollingRate));
+            FlushSettings();
 
             Logger.WriteLine(GetDisplayName() + ": Pollingrate set to " + PollingRateDisplayString(pollingRate));
             this.PollingRate = pollingRate;
@@ -558,6 +561,7 @@ namespace GHelper.Peripherals.Mouse
             }
 
             WriteForResponse(GetUpdateAngleSnappingPacket(angleSnapping));
+            FlushSettings();
 
             Logger.WriteLine(GetDisplayName() + ": Angle Snapping set to " + angleSnapping);
             this.AngleSnapping = angleSnapping;
@@ -577,6 +581,7 @@ namespace GHelper.Peripherals.Mouse
             }
 
             WriteForResponse(GetUpdateAngleAdjustmentPacket(angleAdjustment));
+            FlushSettings();
 
             Logger.WriteLine(GetDisplayName() + ": Angle Adjustment set to " + angleAdjustment);
             this.AngleAdjustmentDegrees = angleAdjustment;
@@ -626,6 +631,7 @@ namespace GHelper.Peripherals.Mouse
 
             //The first DPI profile is 1
             WriteForResponse(GetChangeDPIProfilePacket(profile));
+            FlushSettings();
 
             Logger.WriteLine(GetDisplayName() + ": DPI Profile set to " + profile);
             this.DpiProfile = profile;
@@ -742,6 +748,7 @@ namespace GHelper.Peripherals.Mouse
                 return;
             }
             WriteForResponse(packet);
+            FlushSettings();
 
             Logger.WriteLine(GetDisplayName() + ": DPI for profile " + profile + " set to " + DpiSettings[profile - 1].DPI);
             //this.DpiProfile = profile;
@@ -803,6 +810,7 @@ namespace GHelper.Peripherals.Mouse
             }
 
             WriteForResponse(GetUpdateLiftOffDistancePacket(liftOffDistance));
+            FlushSettings();
 
             Logger.WriteLine(GetDisplayName() + ": Set Liftoff Distance to " + liftOffDistance);
             this.LiftOffDistance = liftOffDistance;
@@ -937,6 +945,7 @@ namespace GHelper.Peripherals.Mouse
             }
 
             WriteForResponse(GetUpdateLightingModePacket(lightingSetting));
+            FlushSettings();
 
             Logger.WriteLine(GetDisplayName() + ": Set RGB Setting " + lightingSetting.ToString());
             this.LightingSetting = lightingSetting;
