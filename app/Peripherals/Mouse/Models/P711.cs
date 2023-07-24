@@ -2,11 +2,11 @@
 {
     public class P711 : AsusMouse
     {
-        public P711() : base(0x0B05, 0x1A70, "mi_01", true)
+        public P711() : base(0x0B05, 0x1A70, "mi_00", true)
         {
         }
 
-        protected P711(ushort vendorId, bool wireless) : base(0x0B05, vendorId, "mi_01", wireless)
+        protected P711(ushort vendorId, bool wireless) : base(0x0B05, vendorId, "mi_00", wireless)
         {
         }
 
