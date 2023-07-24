@@ -33,7 +33,7 @@
 
         public override int ProfileCount()
         {
-            throw new NotImplementedException();
+            return 5;
         }
         public override int MaxDPI()
         {
