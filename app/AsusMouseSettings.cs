@@ -513,7 +513,7 @@ namespace GHelper
             checkBoxRandomColor.Visible = mouse.SupportsRandomColor(ls.LightingMode);
 
             pictureBoxLightingColor.Visible = mouse.SupportsColorSetting(ls.LightingMode);
-            pictureBoxLightingColor.Visible = mouse.SupportsColorSetting(ls.LightingMode);
+            buttonLightingColor.Visible = mouse.SupportsColorSetting(ls.LightingMode);
 
             comboBoxAnimationSpeed.Visible = mouse.SupportsAnimationSpeed(ls.LightingMode);
             labelAnimationSpeed.Visible = mouse.SupportsAnimationSpeed(ls.LightingMode);
