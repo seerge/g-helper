@@ -48,8 +48,8 @@ namespace GHelper
             panelFooter = new Panel();
             tableButtons = new TableLayoutPanel();
             buttonKeyboard = new RButton();
-            buttonQuit = new RButton();
             buttonUpdates = new RButton();
+            buttonQuit = new RButton();
             checkStartup = new CheckBox();
             panelPerformance = new Panel();
             tablePerf = new TableLayoutPanel();
@@ -348,13 +348,14 @@ namespace GHelper
             // tableButtons
             // 
             tableButtons.AutoSize = true;
-            tableButtons.ColumnCount = 3;
+            tableButtons.ColumnCount = 4;
             tableButtons.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.3333321F));
             tableButtons.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.3333321F));
-            tableButtons.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.3333321F));
+            tableButtons.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 8.33083248F));
+            tableButtons.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25.0024986F));
             tableButtons.Controls.Add(buttonKeyboard, 0, 0);
-            tableButtons.Controls.Add(buttonQuit, 2, 0);
             tableButtons.Controls.Add(buttonUpdates, 1, 0);
+            tableButtons.Controls.Add(buttonQuit, 3, 0);
             tableButtons.Dock = DockStyle.Top;
             tableButtons.Location = new Point(20, 20);
             tableButtons.Name = "tableButtons";
@@ -385,24 +386,6 @@ namespace GHelper
             buttonKeyboard.TextImageRelation = TextImageRelation.ImageBeforeText;
             buttonKeyboard.UseVisualStyleBackColor = false;
             // 
-            // buttonQuit
-            // 
-            buttonQuit.AccessibleName = "Quit Application";
-            buttonQuit.Activated = false;
-            buttonQuit.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            buttonQuit.BackColor = SystemColors.ControlLight;
-            buttonQuit.BorderColor = Color.Transparent;
-            buttonQuit.BorderRadius = 2;
-            buttonQuit.FlatStyle = FlatStyle.Flat;
-            buttonQuit.Image = Properties.Resources.icons8_quit_32;
-            buttonQuit.Location = new Point(703, 4);
-            buttonQuit.Margin = new Padding(4);
-            buttonQuit.Name = "buttonQuit";
-            buttonQuit.Secondary = true;
-            buttonQuit.Size = new Size(64, 50);
-            buttonQuit.TabIndex = 23;
-            buttonQuit.UseVisualStyleBackColor = false;
-            // 
             // buttonUpdates
             // 
             buttonUpdates.AccessibleName = "BIOS and Driver Updates";
@@ -423,6 +406,24 @@ namespace GHelper
             buttonUpdates.Text = "Updates";
             buttonUpdates.TextImageRelation = TextImageRelation.ImageBeforeText;
             buttonUpdates.UseVisualStyleBackColor = false;
+            // 
+            // buttonQuit
+            // 
+            buttonQuit.AccessibleName = "Quit Application";
+            buttonQuit.Activated = false;
+            buttonQuit.BackColor = SystemColors.ControlLight;
+            buttonQuit.BorderColor = Color.Transparent;
+            buttonQuit.BorderRadius = 2;
+            buttonQuit.Dock = DockStyle.Top;
+            buttonQuit.FlatStyle = FlatStyle.Flat;
+            buttonQuit.Location = new Point(580, 4);
+            buttonQuit.Margin = new Padding(4);
+            buttonQuit.Name = "buttonQuit";
+            buttonQuit.Secondary = true;
+            buttonQuit.Size = new Size(187, 50);
+            buttonQuit.TabIndex = 23;
+            buttonQuit.Text = "Quit";
+            buttonQuit.UseVisualStyleBackColor = false;
             // 
             // checkStartup
             // 

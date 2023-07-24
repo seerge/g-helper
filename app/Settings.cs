@@ -75,7 +75,7 @@ namespace GHelper
             checkStartup.Text = Properties.Strings.RunOnStartup;
 
             buttonMatrix.Text = Properties.Strings.PictureGif;
-            //buttonQuit.Text = Properties.Strings.Quit;
+            buttonQuit.Text = Properties.Strings.Quit;
             buttonUpdates.Text = Properties.Strings.Updates;
 
             FormClosing += SettingsForm_FormClosing;
@@ -893,8 +893,11 @@ namespace GHelper
         public void AutoKeyboard()
         {
 
-            AsusUSB.ApplyAuraPower();
-            AsusUSB.ApplyAura();
+            if (!AppConfig.Is("skip_aura"))
+            {
+                AsusUSB.ApplyAuraPower();
+                AsusUSB.ApplyAura();
+            }
 
             InputDispatcher.SetBacklightAuto(true);
 
