@@ -75,7 +75,7 @@ namespace GHelper
             checkStartup.Text = Properties.Strings.RunOnStartup;
 
             buttonMatrix.Text = Properties.Strings.PictureGif;
-            buttonQuit.Text = Properties.Strings.Quit;
+            //buttonQuit.Text = Properties.Strings.Quit;
             buttonUpdates.Text = Properties.Strings.Updates;
 
             FormClosing += SettingsForm_FormClosing;
@@ -181,7 +181,7 @@ namespace GHelper
             labelBattery.MouseLeave += PanelBattery_MouseLeave;
             labelBatteryTitle.MouseLeave += PanelBattery_MouseLeave;
 
-            labelModel.Text = AppConfig.GetModelShort() + (ProcessHelper.IsUserAdministrator() ? "." : "");
+            Text = "G-Helper - " + AppConfig.GetModelShort() + (ProcessHelper.IsUserAdministrator() ? "." : "");
             TopMost = AppConfig.Is("topmost");
 
             SetContextMenu();

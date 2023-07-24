@@ -46,6 +46,7 @@ namespace GHelper
             pictureBattery = new PictureBox();
             labelBatteryTitle = new Label();
             panelFooter = new Panel();
+            buttonKeyboard = new RButton();
             buttonUpdates = new RButton();
             buttonQuit = new RButton();
             checkStartup = new CheckBox();
@@ -85,7 +86,6 @@ namespace GHelper
             labelSreen = new Label();
             panelKeyboard = new Panel();
             tableLayoutKeyboard = new TableLayoutPanel();
-            buttonKeyboard = new RButton();
             panelColor = new Panel();
             pictureColor2 = new PictureBox();
             pictureColor = new PictureBox();
@@ -95,8 +95,8 @@ namespace GHelper
             pictureKeyboard = new PictureBox();
             labelKeyboard = new Label();
             labelVersion = new Label();
-            labelModel = new Label();
             panelVersion = new Panel();
+            tableLayoutPanel1 = new TableLayoutPanel();
             panelMatrix.SuspendLayout();
             tableLayoutMatrix.SuspendLayout();
             panelMatrixTitle.SuspendLayout();
@@ -125,6 +125,7 @@ namespace GHelper
             panelKeyboardTitle.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureKeyboard).BeginInit();
             panelVersion.SuspendLayout();
+            tableLayoutPanel1.SuspendLayout();
             SuspendLayout();
             // 
             // panelMatrix
@@ -335,33 +336,56 @@ namespace GHelper
             // 
             panelFooter.AutoSize = true;
             panelFooter.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            panelFooter.Controls.Add(buttonUpdates);
-            panelFooter.Controls.Add(buttonQuit);
-            panelFooter.Controls.Add(checkStartup);
+            panelFooter.Controls.Add(tableLayoutPanel1);
             panelFooter.Dock = DockStyle.Top;
             panelFooter.Location = new Point(11, 1236);
             panelFooter.Margin = new Padding(0);
             panelFooter.Name = "panelFooter";
             panelFooter.Padding = new Padding(20);
-            panelFooter.Size = new Size(811, 92);
+            panelFooter.Size = new Size(811, 96);
             panelFooter.TabIndex = 7;
+            // 
+            // buttonKeyboard
+            // 
+            buttonKeyboard.AccessibleName = "Extra Settings";
+            buttonKeyboard.Activated = false;
+            buttonKeyboard.BackColor = SystemColors.ControlLight;
+            buttonKeyboard.BorderColor = Color.Transparent;
+            buttonKeyboard.BorderRadius = 2;
+            buttonKeyboard.Dock = DockStyle.Top;
+            buttonKeyboard.FlatAppearance.BorderSize = 0;
+            buttonKeyboard.FlatStyle = FlatStyle.Flat;
+            buttonKeyboard.Image = Properties.Resources.icons8_settings_32;
+            buttonKeyboard.ImageAlign = ContentAlignment.MiddleRight;
+            buttonKeyboard.Location = new Point(4, 4);
+            buttonKeyboard.Margin = new Padding(4);
+            buttonKeyboard.Name = "buttonKeyboard";
+            buttonKeyboard.Secondary = true;
+            buttonKeyboard.Size = new Size(248, 48);
+            buttonKeyboard.TabIndex = 24;
+            buttonKeyboard.Text = Properties.Strings.Extra;
+            buttonKeyboard.TextImageRelation = TextImageRelation.ImageBeforeText;
+            buttonKeyboard.UseVisualStyleBackColor = false;
             // 
             // buttonUpdates
             // 
             buttonUpdates.AccessibleName = "BIOS and Driver Updates";
             buttonUpdates.Activated = false;
-            buttonUpdates.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             buttonUpdates.BackColor = SystemColors.ControlLight;
             buttonUpdates.BorderColor = Color.Transparent;
             buttonUpdates.BorderRadius = 2;
+            buttonUpdates.Dock = DockStyle.Top;
             buttonUpdates.FlatStyle = FlatStyle.Flat;
-            buttonUpdates.Location = new Point(412, 24);
-            buttonUpdates.Margin = new Padding(8, 4, 8, 4);
+            buttonUpdates.Image = Properties.Resources.icons8_software_32_white;
+            buttonUpdates.ImageAlign = ContentAlignment.MiddleRight;
+            buttonUpdates.Location = new Point(260, 4);
+            buttonUpdates.Margin = new Padding(4);
             buttonUpdates.Name = "buttonUpdates";
             buttonUpdates.Secondary = true;
-            buttonUpdates.Size = new Size(180, 44);
+            buttonUpdates.Size = new Size(248, 48);
             buttonUpdates.TabIndex = 22;
             buttonUpdates.Text = "Updates";
+            buttonUpdates.TextImageRelation = TextImageRelation.ImageBeforeText;
             buttonUpdates.UseVisualStyleBackColor = false;
             // 
             // buttonQuit
@@ -373,19 +397,19 @@ namespace GHelper
             buttonQuit.BorderColor = Color.Transparent;
             buttonQuit.BorderRadius = 2;
             buttonQuit.FlatStyle = FlatStyle.Flat;
-            buttonQuit.Location = new Point(606, 24);
-            buttonQuit.Margin = new Padding(8, 4, 8, 4);
+            buttonQuit.Image = Properties.Resources.icons8_quit_32;
+            buttonQuit.Location = new Point(703, 4);
+            buttonQuit.Margin = new Padding(4);
             buttonQuit.Name = "buttonQuit";
             buttonQuit.Secondary = true;
-            buttonQuit.Size = new Size(180, 44);
+            buttonQuit.Size = new Size(64, 46);
             buttonQuit.TabIndex = 23;
-            buttonQuit.Text = Properties.Strings.Quit;
             buttonQuit.UseVisualStyleBackColor = false;
             // 
             // checkStartup
             // 
             checkStartup.AutoSize = true;
-            checkStartup.Location = new Point(27, 28);
+            checkStartup.Location = new Point(27, 12);
             checkStartup.Margin = new Padding(8, 4, 8, 4);
             checkStartup.Name = "checkStartup";
             checkStartup.Size = new Size(206, 36);
@@ -997,7 +1021,6 @@ namespace GHelper
             tableLayoutKeyboard.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33F));
             tableLayoutKeyboard.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33F));
             tableLayoutKeyboard.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33F));
-            tableLayoutKeyboard.Controls.Add(buttonKeyboard, 0, 0);
             tableLayoutKeyboard.Controls.Add(panelColor, 0, 0);
             tableLayoutKeyboard.Controls.Add(comboKeyboard, 0, 0);
             tableLayoutKeyboard.Dock = DockStyle.Top;
@@ -1008,28 +1031,6 @@ namespace GHelper
             tableLayoutKeyboard.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
             tableLayoutKeyboard.Size = new Size(771, 60);
             tableLayoutKeyboard.TabIndex = 39;
-            // 
-            // buttonKeyboard
-            // 
-            buttonKeyboard.AccessibleName = "Extra Settings";
-            buttonKeyboard.Activated = false;
-            buttonKeyboard.BackColor = SystemColors.ControlLight;
-            buttonKeyboard.BorderColor = Color.Transparent;
-            buttonKeyboard.BorderRadius = 2;
-            buttonKeyboard.Dock = DockStyle.Top;
-            buttonKeyboard.FlatAppearance.BorderSize = 0;
-            buttonKeyboard.FlatStyle = FlatStyle.Flat;
-            buttonKeyboard.Image = Properties.Resources.icons8_settings_32;
-            buttonKeyboard.ImageAlign = ContentAlignment.MiddleRight;
-            buttonKeyboard.Location = new Point(518, 8);
-            buttonKeyboard.Margin = new Padding(4, 8, 4, 8);
-            buttonKeyboard.Name = "buttonKeyboard";
-            buttonKeyboard.Secondary = true;
-            buttonKeyboard.Size = new Size(249, 44);
-            buttonKeyboard.TabIndex = 15;
-            buttonKeyboard.Text = Properties.Strings.Extra;
-            buttonKeyboard.TextImageRelation = TextImageRelation.ImageBeforeText;
-            buttonKeyboard.UseVisualStyleBackColor = false;
             // 
             // panelColor
             // 
@@ -1135,38 +1136,46 @@ namespace GHelper
             // 
             // labelVersion
             // 
+            labelVersion.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             labelVersion.Cursor = Cursors.Hand;
             labelVersion.Font = new Font("Segoe UI", 9F, FontStyle.Underline, GraphicsUnit.Point);
             labelVersion.ForeColor = SystemColors.ControlDark;
-            labelVersion.Location = new Point(28, 12);
+            labelVersion.Location = new Point(487, 12);
             labelVersion.Margin = new Padding(8, 0, 8, 0);
             labelVersion.Name = "labelVersion";
             labelVersion.Size = new Size(300, 32);
             labelVersion.TabIndex = 37;
             labelVersion.Text = "v.0";
-            // 
-            // labelModel
-            // 
-            labelModel.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            labelModel.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            labelModel.ForeColor = SystemColors.ControlDark;
-            labelModel.Location = new Point(380, 12);
-            labelModel.Margin = new Padding(8, 0, 8, 0);
-            labelModel.Name = "labelModel";
-            labelModel.Size = new Size(400, 32);
-            labelModel.TabIndex = 38;
-            labelModel.TextAlign = ContentAlignment.TopRight;
+            labelVersion.TextAlign = ContentAlignment.TopRight;
             // 
             // panelVersion
             // 
             panelVersion.Controls.Add(labelVersion);
-            panelVersion.Controls.Add(labelModel);
+            panelVersion.Controls.Add(checkStartup);
             panelVersion.Dock = DockStyle.Top;
             panelVersion.Location = new Point(11, 1180);
             panelVersion.Margin = new Padding(4);
             panelVersion.Name = "panelVersion";
             panelVersion.Size = new Size(811, 56);
             panelVersion.TabIndex = 6;
+            // 
+            // tableLayoutPanel1
+            // 
+            tableLayoutPanel1.AutoSize = true;
+            tableLayoutPanel1.ColumnCount = 3;
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.3333321F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.3333321F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.3333321F));
+            tableLayoutPanel1.Controls.Add(buttonKeyboard, 0, 0);
+            tableLayoutPanel1.Controls.Add(buttonQuit, 2, 0);
+            tableLayoutPanel1.Controls.Add(buttonUpdates, 1, 0);
+            tableLayoutPanel1.Dock = DockStyle.Top;
+            tableLayoutPanel1.Location = new Point(20, 20);
+            tableLayoutPanel1.Name = "tableLayoutPanel1";
+            tableLayoutPanel1.RowCount = 1;
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
+            tableLayoutPanel1.Size = new Size(771, 56);
+            tableLayoutPanel1.TabIndex = 25;
             // 
             // SettingsForm
             // 
@@ -1233,6 +1242,8 @@ namespace GHelper
             panelKeyboardTitle.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)pictureKeyboard).EndInit();
             panelVersion.ResumeLayout(false);
+            panelVersion.PerformLayout();
+            tableLayoutPanel1.ResumeLayout(false);
             ResumeLayout(false);
             PerformLayout();
         }
@@ -1274,7 +1285,6 @@ namespace GHelper
         private Label labelTipScreen;
         private RButton buttonMiniled;
         private RButton buttonMatrix;
-        private RButton buttonKeyboard;
         private RButton buttonKeyboardColor;
         private RButton buttonFans;
         private Slider sliderBattery;
@@ -1303,7 +1313,8 @@ namespace GHelper
         private Label labelBatteryTitle;
         private Panel panelVersion;
         private Label labelVersion;
-        private Label labelModel;
         private RButton buttonStopGPU;
+        private RButton buttonKeyboard;
+        private TableLayoutPanel tableLayoutPanel1;
     }
 }
