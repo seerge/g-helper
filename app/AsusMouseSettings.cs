@@ -15,6 +15,7 @@ namespace GHelper
             { LightingMode.React, Properties.Strings.AuraReact},
             { LightingMode.Comet, Properties.Strings.AuraComet},
             { LightingMode.BatteryState, Properties.Strings.AuraBatteryState},
+            { LightingMode.Off, Properties.Strings.MatrixOff},
         };
         private List<LightingMode> supportedLightingModes = new List<LightingMode>();
 

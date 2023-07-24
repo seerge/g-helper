@@ -46,6 +46,7 @@ namespace GHelper.Peripherals.Mouse
     }
     public enum LightingMode
     {
+        Off = 0xF0,
         Static = 0x0,
         Breathing = 0x1,
         ColorCycle = 0x2,
@@ -873,6 +874,11 @@ namespace GHelper.Peripherals.Mouse
         //Also override this for the reverse mapping
         protected virtual LightingMode LightingModeForIndex(byte lightingMode)
         {
+            //We do not support other mods. we treat them as off. True off is actually 0xF0.
+            if (lightingMode > 0x06)
+            {
+                return LightingMode.Off;
+            }
             return ((LightingMode)lightingMode);
         }
 
