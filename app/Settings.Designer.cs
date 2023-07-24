@@ -46,7 +46,7 @@ namespace GHelper
             pictureBattery = new PictureBox();
             labelBatteryTitle = new Label();
             panelFooter = new Panel();
-            tableLayoutPanel1 = new TableLayoutPanel();
+            tableButtons = new TableLayoutPanel();
             buttonKeyboard = new RButton();
             buttonQuit = new RButton();
             buttonUpdates = new RButton();
@@ -105,7 +105,7 @@ namespace GHelper
             panelBatteryTitle.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBattery).BeginInit();
             panelFooter.SuspendLayout();
-            tableLayoutPanel1.SuspendLayout();
+            tableButtons.SuspendLayout();
             panelPerformance.SuspendLayout();
             tablePerf.SuspendLayout();
             panelCPUTitle.SuspendLayout();
@@ -336,7 +336,7 @@ namespace GHelper
             // 
             panelFooter.AutoSize = true;
             panelFooter.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            panelFooter.Controls.Add(tableLayoutPanel1);
+            panelFooter.Controls.Add(tableButtons);
             panelFooter.Dock = DockStyle.Top;
             panelFooter.Location = new Point(11, 1236);
             panelFooter.Margin = new Padding(0);
@@ -345,23 +345,23 @@ namespace GHelper
             panelFooter.Size = new Size(811, 98);
             panelFooter.TabIndex = 7;
             // 
-            // tableLayoutPanel1
+            // tableButtons
             // 
-            tableLayoutPanel1.AutoSize = true;
-            tableLayoutPanel1.ColumnCount = 3;
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.3333321F));
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.3333321F));
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.3333321F));
-            tableLayoutPanel1.Controls.Add(buttonKeyboard, 0, 0);
-            tableLayoutPanel1.Controls.Add(buttonQuit, 2, 0);
-            tableLayoutPanel1.Controls.Add(buttonUpdates, 1, 0);
-            tableLayoutPanel1.Dock = DockStyle.Top;
-            tableLayoutPanel1.Location = new Point(20, 20);
-            tableLayoutPanel1.Name = "tableLayoutPanel1";
-            tableLayoutPanel1.RowCount = 1;
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            tableLayoutPanel1.Size = new Size(771, 58);
-            tableLayoutPanel1.TabIndex = 25;
+            tableButtons.AutoSize = true;
+            tableButtons.ColumnCount = 3;
+            tableButtons.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.3333321F));
+            tableButtons.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.3333321F));
+            tableButtons.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.3333321F));
+            tableButtons.Controls.Add(buttonKeyboard, 0, 0);
+            tableButtons.Controls.Add(buttonQuit, 2, 0);
+            tableButtons.Controls.Add(buttonUpdates, 1, 0);
+            tableButtons.Dock = DockStyle.Top;
+            tableButtons.Location = new Point(20, 20);
+            tableButtons.Name = "tableButtons";
+            tableButtons.RowCount = 1;
+            tableButtons.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
+            tableButtons.Size = new Size(771, 58);
+            tableButtons.TabIndex = 25;
             // 
             // buttonKeyboard
             // 
@@ -1213,7 +1213,7 @@ namespace GHelper
             ((System.ComponentModel.ISupportInitialize)pictureBattery).EndInit();
             panelFooter.ResumeLayout(false);
             panelFooter.PerformLayout();
-            tableLayoutPanel1.ResumeLayout(false);
+            tableButtons.ResumeLayout(false);
             panelPerformance.ResumeLayout(false);
             panelPerformance.PerformLayout();
             tablePerf.ResumeLayout(false);
@@ -1315,6 +1315,6 @@ namespace GHelper
         private Label labelVersion;
         private RButton buttonStopGPU;
         private RButton buttonKeyboard;
-        private TableLayoutPanel tableLayoutPanel1;
+        private TableLayoutPanel tableButtons;
     }
 }

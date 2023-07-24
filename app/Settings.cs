@@ -181,7 +181,7 @@ namespace GHelper
             labelBattery.MouseLeave += PanelBattery_MouseLeave;
             labelBatteryTitle.MouseLeave += PanelBattery_MouseLeave;
 
-            Text = "G-Helper - " + AppConfig.GetModelShort() + (ProcessHelper.IsUserAdministrator() ? "." : "");
+            Text = "G-Helper " + (ProcessHelper.IsUserAdministrator() ? "—" : "-") + " " + AppConfig.GetModelShort();
             TopMost = AppConfig.Is("topmost");
 
             SetContextMenu();
