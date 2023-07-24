@@ -956,6 +956,13 @@ namespace GHelper.Peripherals.Mouse
             setting.RandomColor = packet[12] == 0x01;
             setting.AnimationSpeed = (AnimationSpeed)packet[13];
 
+            //If the mouse reports 0, which it does when the current setting has no speed option, chose medium as default
+            if (setting.AnimationSpeed != AnimationSpeed.Fast
+                && setting.AnimationSpeed != AnimationSpeed.Medium
+                && setting.AnimationSpeed != AnimationSpeed.Slow)
+            {
+                setting.AnimationSpeed = AnimationSpeed.Medium;
+            }
 
             return setting;
         }
