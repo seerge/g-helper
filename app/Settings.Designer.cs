@@ -1207,15 +1207,15 @@ namespace GHelper
             buttonPeripheral3.FlatStyle = FlatStyle.Flat;
             buttonPeripheral3.Font = new Font("Segoe UI", 8F, FontStyle.Regular, GraphicsUnit.Point);
             buttonPeripheral3.ForeColor = SystemColors.ControlText;
-            buttonPeripheral3.Image = Properties.Resources.icons8_maus_32;
-            buttonPeripheral3.ImageAlign = ContentAlignment.BottomCenter;
+            buttonPeripheral3.Image = Properties.Resources.icons8_maus_48;
+            buttonPeripheral3.ImageAlign = ContentAlignment.MiddleLeft;
             buttonPeripheral3.Location = new Point(397, 3);
             buttonPeripheral3.Name = "buttonPeripheral3";
             buttonPeripheral3.Secondary = false;
             buttonPeripheral3.Size = new Size(191, 110);
             buttonPeripheral3.TabIndex = 22;
             buttonPeripheral3.Text = "Mouse 3";
-            buttonPeripheral3.TextImageRelation = TextImageRelation.ImageAboveText;
+            buttonPeripheral3.TextImageRelation = TextImageRelation.ImageBeforeText;
             buttonPeripheral3.UseVisualStyleBackColor = false;
             // 
             // buttonPeripheral2
@@ -1231,15 +1231,15 @@ namespace GHelper
             buttonPeripheral2.FlatStyle = FlatStyle.Flat;
             buttonPeripheral2.Font = new Font("Segoe UI", 8F, FontStyle.Regular, GraphicsUnit.Point);
             buttonPeripheral2.ForeColor = SystemColors.ControlText;
-            buttonPeripheral2.Image = Properties.Resources.icons8_maus_32;
-            buttonPeripheral2.ImageAlign = ContentAlignment.BottomCenter;
+            buttonPeripheral2.Image = Properties.Resources.icons8_maus_48;
+            buttonPeripheral2.ImageAlign = ContentAlignment.MiddleLeft;
             buttonPeripheral2.Location = new Point(200, 3);
             buttonPeripheral2.Name = "buttonPeripheral2";
             buttonPeripheral2.Secondary = false;
             buttonPeripheral2.Size = new Size(191, 110);
             buttonPeripheral2.TabIndex = 19;
             buttonPeripheral2.Text = "Mouse 2";
-            buttonPeripheral2.TextImageRelation = TextImageRelation.ImageAboveText;
+            buttonPeripheral2.TextImageRelation = TextImageRelation.ImageBeforeText;
             buttonPeripheral2.UseVisualStyleBackColor = false;
             // 
             // buttonPeripheral1
@@ -1255,15 +1255,15 @@ namespace GHelper
             buttonPeripheral1.FlatStyle = FlatStyle.Flat;
             buttonPeripheral1.Font = new Font("Segoe UI", 8F, FontStyle.Regular, GraphicsUnit.Point);
             buttonPeripheral1.ForeColor = SystemColors.ControlText;
-            buttonPeripheral1.Image = Properties.Resources.icons8_maus_32;
-            buttonPeripheral1.ImageAlign = ContentAlignment.BottomCenter;
+            buttonPeripheral1.Image = Properties.Resources.icons8_maus_48;
+            buttonPeripheral1.ImageAlign = ContentAlignment.MiddleLeft;
             buttonPeripheral1.Location = new Point(3, 3);
             buttonPeripheral1.Name = "buttonPeripheral1";
             buttonPeripheral1.Secondary = false;
             buttonPeripheral1.Size = new Size(191, 110);
             buttonPeripheral1.TabIndex = 20;
             buttonPeripheral1.Text = "Mouse 1";
-            buttonPeripheral1.TextImageRelation = TextImageRelation.ImageAboveText;
+            buttonPeripheral1.TextImageRelation = TextImageRelation.ImageBeforeText;
             buttonPeripheral1.UseVisualStyleBackColor = false;
             // 
             // panelPeripheralsTile
