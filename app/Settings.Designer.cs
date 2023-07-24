@@ -274,7 +274,7 @@ namespace GHelper
             panelBattery.Controls.Add(sliderBattery);
             panelBattery.Controls.Add(panelBatteryTitle);
             panelBattery.Dock = DockStyle.Top;
-            panelBattery.Location = new Point(8, 974);
+            panelBattery.Location = new Point(8, 959);
             panelBattery.Margin = new Padding(0);
             panelBattery.Name = "panelBattery";
             panelBattery.Padding = new Padding(15, 15, 15, 5);
@@ -345,7 +345,7 @@ namespace GHelper
             panelFooter.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             panelFooter.Controls.Add(tableButtons);
             panelFooter.Dock = DockStyle.Top;
-            panelFooter.Location = new Point(8, 1099);
+            panelFooter.Location = new Point(8, 1084);
             panelFooter.Margin = new Padding(0);
             panelFooter.Name = "panelFooter";
             panelFooter.Padding = new Padding(20);
@@ -1154,7 +1154,7 @@ namespace GHelper
             panelVersion.Controls.Add(labelVersion);
             panelVersion.Controls.Add(checkStartup);
             panelVersion.Dock = DockStyle.Top;
-            panelVersion.Location = new Point(8, 1057);
+            panelVersion.Location = new Point(8, 1042);
             panelVersion.Name = "panelVersion";
             panelVersion.Size = new Size(621, 42);
             panelVersion.TabIndex = 6;
@@ -1170,7 +1170,7 @@ namespace GHelper
             panelPeripherals.Margin = new Padding(0);
             panelPeripherals.Name = "panelPeripherals";
             panelPeripherals.Padding = new Padding(15, 15, 15, 8);
-            panelPeripherals.Size = new Size(621, 169);
+            panelPeripherals.Size = new Size(621, 154);
             panelPeripherals.TabIndex = 4;
             // 
             // tableLayoutPeripherals
@@ -1191,7 +1191,7 @@ namespace GHelper
             tableLayoutPeripherals.Name = "tableLayoutPeripherals";
             tableLayoutPeripherals.RowCount = 1;
             tableLayoutPeripherals.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            tableLayoutPeripherals.Size = new Size(591, 116);
+            tableLayoutPeripherals.Size = new Size(591, 101);
             tableLayoutPeripherals.TabIndex = 43;
             // 
             // buttonPeripheral3
@@ -1212,7 +1212,7 @@ namespace GHelper
             buttonPeripheral3.Location = new Point(397, 3);
             buttonPeripheral3.Name = "buttonPeripheral3";
             buttonPeripheral3.Secondary = false;
-            buttonPeripheral3.Size = new Size(191, 110);
+            buttonPeripheral3.Size = new Size(191, 95);
             buttonPeripheral3.TabIndex = 22;
             buttonPeripheral3.Text = "Mouse 3";
             buttonPeripheral3.TextImageRelation = TextImageRelation.ImageBeforeText;
@@ -1236,7 +1236,7 @@ namespace GHelper
             buttonPeripheral2.Location = new Point(200, 3);
             buttonPeripheral2.Name = "buttonPeripheral2";
             buttonPeripheral2.Secondary = false;
-            buttonPeripheral2.Size = new Size(191, 110);
+            buttonPeripheral2.Size = new Size(191, 95);
             buttonPeripheral2.TabIndex = 19;
             buttonPeripheral2.Text = "Mouse 2";
             buttonPeripheral2.TextImageRelation = TextImageRelation.ImageBeforeText;
@@ -1260,7 +1260,7 @@ namespace GHelper
             buttonPeripheral1.Location = new Point(3, 3);
             buttonPeripheral1.Name = "buttonPeripheral1";
             buttonPeripheral1.Secondary = false;
-            buttonPeripheral1.Size = new Size(191, 110);
+            buttonPeripheral1.Size = new Size(191, 95);
             buttonPeripheral1.TabIndex = 20;
             buttonPeripheral1.Text = "Mouse 1";
             buttonPeripheral1.TextImageRelation = TextImageRelation.ImageBeforeText;
