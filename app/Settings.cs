@@ -78,7 +78,7 @@ namespace GHelper
             checkStartup.Text = Properties.Strings.RunOnStartup;
 
             buttonMatrix.Text = Properties.Strings.PictureGif;
-            buttonQuit.Text = Properties.Strings.Quit;
+            //buttonQuit.Text = Properties.Strings.Quit;
             buttonUpdates.Text = Properties.Strings.Updates;
 
             FormClosing += SettingsForm_FormClosing;
@@ -188,7 +188,7 @@ namespace GHelper
             buttonPeripheral2.Click += ButtonPeripheral_Click;
             buttonPeripheral3.Click += ButtonPeripheral_Click;
 
-            labelModel.Text = AppConfig.GetModelShort() + (ProcessHelper.IsUserAdministrator() ? "." : "");
+            Text = "G-Helper " + (ProcessHelper.IsUserAdministrator() ? "—" : "-") + " " + AppConfig.GetModelShort();
             TopMost = AppConfig.Is("topmost");
 
             //This will auto position the window again when it resizes. Might mess with position if people drag the window somewhere else.
@@ -631,7 +631,7 @@ namespace GHelper
 
             if (AppConfig.ContainsModel("GA401I"))
             {
-                comboKeyboard.Visible = false;
+                panelKeyboard.Visible = false;
             }
 
             VisualiseAura();

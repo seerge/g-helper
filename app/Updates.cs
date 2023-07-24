@@ -25,10 +25,10 @@ namespace GHelper
         static int updatesCount = 0;
         private static long lastUpdate;
 
-        private void LoadUpdates()
+        private void LoadUpdates(bool force = false)
         {
 
-            if (Math.Abs(DateTimeOffset.Now.ToUnixTimeMilliseconds() - lastUpdate) < 5000) return;
+            if (!force && (Math.Abs(DateTimeOffset.Now.ToUnixTimeMilliseconds() - lastUpdate) < 5000)) return;
             lastUpdate = DateTimeOffset.Now.ToUnixTimeMilliseconds();
 
             InitBiosAndModel();
@@ -77,7 +77,7 @@ namespace GHelper
             InitTheme(true);
 
 
-            LoadUpdates();
+            LoadUpdates(true);
 
             //buttonRefresh.Visible = false;
             buttonRefresh.Click += ButtonRefresh_Click;

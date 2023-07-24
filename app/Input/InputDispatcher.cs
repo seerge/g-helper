@@ -545,9 +545,16 @@ namespace GHelper.Input
 
             try
             {
-                string executable = command.Split(' ')[0];
-                string arguments = command.Substring(executable.Length).Trim();
-                Process proc = Process.Start(executable, arguments);
+
+                //string executable = command.Split(' ')[0];
+                //string arguments = command.Substring(executable.Length).Trim();
+
+                ProcessStartInfo startInfo = new ProcessStartInfo();
+                startInfo.UseShellExecute = true;
+                startInfo.WorkingDirectory = Environment.CurrentDirectory;
+                startInfo.FileName = command;
+                //startInfo.Arguments = arguments;
+                Process proc = Process.Start(startInfo);
             }
             catch
             {
