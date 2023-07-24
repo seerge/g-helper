@@ -1,8 +1,27 @@
 ﻿using HidLibrary;
+using System.Diagnostics;
 using System.Text;
 
 namespace GHelper
 {
+
+    public class ColorUtilities
+    {
+        // Method to get the weighted average between two colors
+        public static Color GetWeightedAverage(Color color1, Color color2, double weight)
+        {
+
+            int red = (int)Math.Round(color1.R * (1 - weight) + color2.R * weight);
+            int green = (int)Math.Round(color1.G * (1 - weight) + color2.G * weight);
+            int blue = (int)Math.Round(color1.B * (1 - weight) + color2.B * weight);
+
+            red = Math.Min(255, Math.Max(0, red));
+            green = Math.Min(255, Math.Max(0, green));
+            blue = Math.Min(255, Math.Max(0, blue));
+
+            return Color.FromArgb(red, green, blue);
+        }
+    }
 
     [Flags]
     public enum AuraDev19b6 : uint
@@ -50,6 +69,7 @@ namespace GHelper
 
     public static class AsusUSB
     {
+        public const int HEATMAP = 20;
 
         public const int ASUS_ID = 0x0b05;
 
@@ -73,6 +93,30 @@ namespace GHelper
         public static Color Color2 = Color.Black;
 
 
+        static System.Timers.Timer timer = new System.Timers.Timer(1000);
+        static HidDevice? auraDevice = null;
+
+        static AsusUSB()
+        {
+            timer.Elapsed += Timer_Elapsed;
+        }
+
+        private static void Timer_Elapsed(object? sender, System.Timers.ElapsedEventArgs e)
+        {
+            int cpuTemp = Program.acpi.DeviceGet(AsusACPI.Temp_CPU);
+            int freeze = 20, cold = 45, warm = 65, hot = 90;
+            Color color;
+
+            //Debug.WriteLine(cpuTemp);
+
+            if (cpuTemp < cold) color = color = ColorUtilities.GetWeightedAverage(Color.Blue, Color.Green, ((double)cpuTemp - freeze) / (cold - freeze));
+            else if (cpuTemp < warm) color = ColorUtilities.GetWeightedAverage(Color.Green, Color.Yellow, ((double)cpuTemp - cold) / (warm - cold));
+            else if (cpuTemp < hot) color = ColorUtilities.GetWeightedAverage(Color.Yellow, Color.Red, ((double)cpuTemp - warm) / (hot - warm));
+            else color = Color.Red;
+
+            ApplyColor(color);
+        }
+
         public static Dictionary<int, string> GetSpeeds()
         {
             return new Dictionary<int, string>
@@ -91,6 +135,7 @@ namespace GHelper
                 { 2, Properties.Strings.AuraColorCycle },
                 { 3, Properties.Strings.AuraRainbow },
                 { 10, Properties.Strings.AuraStrobe },
+                { HEATMAP, "Heatmap"}
             };
 
         static Dictionary<int, string> _modesStrix = new Dictionary<int, string>
@@ -107,6 +152,7 @@ namespace GHelper
                 { 10, Properties.Strings.AuraStrobe},
                 { 11, "Comet" },
                 { 12, "Flash" },
+                { HEATMAP, "Heatmap"}
             };
 
 
@@ -181,6 +227,7 @@ namespace GHelper
         {
             Color2 = Color.FromArgb(colorCode);
         }
+
 
 
         private static IEnumerable<HidDevice> GetHidDevices(int[] deviceIds, int minFeatures = 1)
@@ -372,6 +419,37 @@ namespace GHelper
         }
 
 
+        static void GetAuraDevice()
+        {
+            var devices = GetHidDevices(deviceIds);
+            foreach (HidDevice device in devices)
+            {
+                device.OpenDevice();
+                if (device.ReadFeatureData(out byte[] data, AURA_HID_ID))
+                {
+                    auraDevice = device;
+                    return;
+                }
+                else
+                {
+                    device.CloseDevice();
+                }
+            }
+        }
+
+        public static void ApplyColor(Color color)
+        {
+            Task.Run(async () =>
+            {
+                if (auraDevice is null || !auraDevice.IsConnected) GetAuraDevice();
+                if (auraDevice is null || !auraDevice.IsConnected) return;
+                auraDevice.WriteFeatureData(AuraMessage(0, color, color, 0xf5));
+                auraDevice.WriteFeatureData(MESSAGE_SET);
+                //auraDevice.WriteFeatureData(MESSAGE_APPLY);
+            });
+        }
+
+
         public static void ApplyAura()
         {
 
@@ -379,6 +457,16 @@ namespace GHelper
             Speed = AppConfig.Get("aura_speed");
             SetColor(AppConfig.Get("aura_color"));
             SetColor2(AppConfig.Get("aura_color2"));
+
+            if (Mode == HEATMAP)
+            {
+                timer.Enabled = true;
+                return;
+            }
+            else
+            {
+                timer.Enabled = false;
+            }
 
             Task.Run(async () =>
             {
