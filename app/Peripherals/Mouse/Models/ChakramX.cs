@@ -3,8 +3,6 @@ namespace GHelper.Peripherals.Mouse.Models
 {
     public class ChakramX : AsusMouse
     {
-        private static string[] POLLING_RATES = { "250Hz", "500Hz", "1000Hz" };
-
         public ChakramX() : base(0x0B05, 0x1A1A, "mi_00", true)
         {
         }
@@ -18,9 +16,13 @@ namespace GHelper.Peripherals.Mouse.Models
             return "ROG Chakram X (Wireless)";
         }
 
-        public override string[] PollingRateDisplayStrings()
+        public override PollingRate[] SupportedPollingrates()
         {
-            return POLLING_RATES;
+            return new PollingRate[] {
+                PollingRate.PR250Hz,
+                PollingRate.PR500Hz,
+                PollingRate.PR1000Hz
+            };
         }
 
         public override bool HasAngleSnapping()
@@ -62,7 +64,6 @@ namespace GHelper.Peripherals.Mouse.Models
 
     public class ChakramXWired : ChakramX
     {
-        private static string[] POLLING_RATES = { "250Hz", "500Hz", "1000Hz", "2000Hz", "4000Hz", "8000Hz" };
         public ChakramXWired() : base(0x1A18, false)
         {
         }
@@ -72,9 +73,16 @@ namespace GHelper.Peripherals.Mouse.Models
             return "ROG Chakram X (Wired)";
         }
 
-        public override string[] PollingRateDisplayStrings()
+        public override PollingRate[] SupportedPollingrates()
         {
-            return POLLING_RATES;
+            return new PollingRate[] {
+                PollingRate.PR250Hz,
+                PollingRate.PR500Hz,
+                PollingRate.PR1000Hz,
+                PollingRate.PR2000Hz,
+                PollingRate.PR4000Hz,
+                PollingRate.PR8000Hz
+            };
         }
     }
 }

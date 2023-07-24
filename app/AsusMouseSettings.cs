@@ -105,7 +105,7 @@ namespace GHelper
 
         private void ComboBoxPollingRate_DropDownClosed(object? sender, EventArgs e)
         {
-            mouse.SetPollingRate(comboBoxPollingRate.SelectedIndex + 1);
+            mouse.SetPollingRate(mouse.SupportedPollingrates()[comboBoxPollingRate.SelectedIndex]);
         }
 
         private void ButtonDPIColor_Click(object? sender, EventArgs e)
@@ -337,7 +337,11 @@ namespace GHelper
 
             if (mouse.CanSetPollingRate())
             {
-                comboBoxPollingRate.Items.AddRange(mouse.PollingRateDisplayStrings());
+                foreach(PollingRate pr in mouse.SupportedPollingrates())
+                {
+                    comboBoxPollingRate.Items.Add(mouse.PollingRateDisplayString(pr));
+                }
+                
             }
             else
             {
@@ -433,7 +437,12 @@ namespace GHelper
 
             if (mouse.CanSetPollingRate())
             {
-                comboBoxPollingRate.SelectedIndex = mouse.PollingRate - 1;
+                int idx = mouse.PollingRateIndex(mouse.PollingRate);
+                if(idx == -1)
+                {
+                    return;
+                }
+                comboBoxPollingRate.SelectedIndex = idx;
             }
 
             if (mouse.HasAngleSnapping())

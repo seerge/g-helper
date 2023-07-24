@@ -2,8 +2,6 @@
 {
     public class P711 : AsusMouse
     {
-        private static string[] POLLING_RATES = { "125Hz", "250Hz", "500Hz", "1000Hz" };
-
         public P711() : base(0x0B05, 0x1A70, "mi_01", true)
         {
         }
@@ -23,9 +21,14 @@
         }
 
 
-        public override string[] PollingRateDisplayStrings()
+        public override PollingRate[] SupportedPollingrates()
         {
-            return POLLING_RATES;
+            return new PollingRate[] {
+                PollingRate.PR125Hz,
+                PollingRate.PR250Hz,
+                PollingRate.PR500Hz,
+                PollingRate.PR1000Hz
+            };
         }
 
         public override int ProfileCount()

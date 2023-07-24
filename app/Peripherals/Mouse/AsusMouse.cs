@@ -15,6 +15,18 @@ namespace GHelper.Peripherals.Mouse
         Never = 0xFF
     }
 
+    public enum PollingRate
+    {
+        PR125Hz = 0,
+        PR250Hz = 1,
+        PR500Hz = 2,
+        PR1000Hz = 3,
+        PR2000Hz = 4,
+        PR4000Hz = 5,
+        PR8000Hz = 6,
+        PR16000Hz = 7 //for whenever that gets supported lol
+    }
+
     public enum LiftOffDistance
     {
         Low = 0,
@@ -88,6 +100,8 @@ namespace GHelper.Peripherals.Mouse
 
     public abstract class AsusMouse : Device, IPeripheral
     {
+        private static string[] POLLING_RATES = { "125 Hz", "250 Hz", "500 Hz", "1000 Hz", "2000 Hz", "4000 Hz", "8000 Hz", "16000 Hz" };
+
         internal const int ASUS_MOUSE_PACKET_SIZE = 65;
 
         public event EventHandler? Disconnect;
@@ -106,7 +120,7 @@ namespace GHelper.Peripherals.Mouse
         public int DpiProfile { get; protected set; }
         public AsusMouseDPI[] DpiSettings { get; protected set; }
         public int Profile { get; protected set; }
-        public int PollingRate { get; protected set; }
+        public PollingRate PollingRate { get; protected set; }
         public bool AngleSnapping { get; protected set; }
         public short AngleAdjustmentDegrees { get; protected set; }
 
@@ -453,17 +467,35 @@ namespace GHelper.Peripherals.Mouse
             return false;
         }
 
-        public virtual string PollingRateDisplayString(int pollingRate)
+        public virtual string PollingRateDisplayString(PollingRate pollingRate)
         {
-            return PollingRateDisplayStrings()[pollingRate -1];
+            return POLLING_RATES[(int)pollingRate];
         }
 
         public virtual int PollingRateCount()
         {
-            return PollingRateDisplayStrings().Length;
+            return SupportedPollingrates().Length;
         }
 
-        public abstract string[] PollingRateDisplayStrings();
+        public virtual int PollingRateIndex(PollingRate pollingRate)
+        {
+            for (int i = 0; i < PollingRateCount(); ++i)
+            {
+                if (SupportedPollingrates()[i] == pollingRate)
+                {
+                    return i;
+                }
+            }
+            return -1;
+        }
+
+
+        public virtual bool IsPollingRateSupported(PollingRate pollingRate)
+        {
+            return SupportedPollingrates().Contains(pollingRate);
+        }
+
+        public abstract PollingRate[] SupportedPollingrates();
 
         public virtual bool CanSetPollingRate()
         {
@@ -475,7 +507,7 @@ namespace GHelper.Peripherals.Mouse
             return new byte[] { 0x00, 0x12, 0x04, 0x00 };
         }
 
-        protected virtual byte[] GetUpdatePollingRatePacket(int pollingRate)
+        protected virtual byte[] GetUpdatePollingRatePacket(PollingRate pollingRate)
         {
             return new byte[] { 0x00, 0x51, 0x31, 0x04, 0x00, (byte)pollingRate };
         }
@@ -488,14 +520,14 @@ namespace GHelper.Peripherals.Mouse
             return new byte[] { 0x00, 0x51, 0x31, 0x0B, 0x00, (byte)(angleAdjustment & 0xFF), (byte)((angleAdjustment >> 8) & 0xFF) };
         }
 
-        protected virtual int ParsePollingRate(byte[] packet)
+        protected virtual PollingRate ParsePollingRate(byte[] packet)
         {
             if (packet[1] == 0x12 && packet[2] == 0x04 && packet[3] == 0x00)
             {
-                return packet[13];
+                return (PollingRate)packet[13];
             }
 
-            return -1;
+            return PollingRate.PR125Hz;
         }
 
         protected virtual bool ParseAngleSnapping(byte[] packet)
@@ -539,16 +571,16 @@ namespace GHelper.Peripherals.Mouse
             }
         }
 
-        public void SetPollingRate(int pollingRate)
+        public void SetPollingRate(PollingRate pollingRate)
         {
             if (!CanSetPollingRate())
             {
                 return;
             }
 
-            if (pollingRate > PollingRateCount() || pollingRate < 1)
+            if (!IsPollingRateSupported(pollingRate))
             {
-                Logger.WriteLine(GetDisplayName() + ": Pollingrate:" + pollingRate + " is invalid.");
+                Logger.WriteLine(GetDisplayName() + ": Pollingrate:" + pollingRate + " is not supported by this mouse.");
                 return;
             }
 
