@@ -381,6 +381,10 @@ namespace GHelper
             if (!mouse.HasAngleSnapping())
             {
                 checkBoxAngleSnapping.Visible = false;
+            }
+
+            if (!mouse.HasAngleTuning())
+            {
                 labelAngleAdjustmentValue.Visible = false;
                 sliderAngleAdjustment.Visible = false;
             }
@@ -411,7 +415,7 @@ namespace GHelper
                 panelBatteryState.Visible = false;
             }
 
-            if (mouse.HasEnergySettings())
+            if (mouse.HasAutoPowerOff())
             {
                 comboBoxAutoPowerOff.Items.AddRange(new string[]{
                     " 1 "+ Properties.Strings.Minute,
@@ -422,7 +426,15 @@ namespace GHelper
                      Properties.Strings.Never,
                 });
             }
-            else
+
+            if (!mouse.HasLowBatteryWarning())
+            {
+                labelLowBatteryWarning.Visible = false;
+                labelLowBatteryWarningValue.Visible = false;
+                sliderLowBatteryWarning.Visible = false;
+            }
+
+            if (!mouse.HasAutoPowerOff() && !mouse.HasLowBatteryWarning())
             {
                 panelEnergy.Visible = false;
             }
@@ -477,10 +489,14 @@ namespace GHelper
             if (mouse.HasAngleSnapping())
             {
                 checkBoxAngleSnapping.Checked = mouse.AngleSnapping;
+            }
+
+            if (mouse.HasAngleTuning())
+            {
                 sliderAngleAdjustment.Value = mouse.AngleAdjustmentDegrees;
             }
 
-            if (mouse.HasEnergySettings())
+            if (mouse.HasAutoPowerOff())
             {
                 if (mouse.PowerOffSetting == PowerOffSetting.Never)
                 {
@@ -490,9 +506,11 @@ namespace GHelper
                 {
                     comboBoxAutoPowerOff.SelectedIndex = (int)mouse.PowerOffSetting;
                 }
+            }
 
+            if (mouse.HasLowBatteryWarning())
+            {
                 sliderLowBatteryWarning.Value = mouse.LowBatteryWarning;
-
             }
 
             if (mouse.HasLiftOffSetting())

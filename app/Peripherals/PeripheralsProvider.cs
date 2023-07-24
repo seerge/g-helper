@@ -138,8 +138,8 @@ namespace GHelper.Peripherals
             //Add one line for every supported mouse class here to support them.
             DetectMouse(new ChakramX());
             DetectMouse(new ChakramXWired());
-            DetectMouse(new P711());
-            DetectMouse(new P711Wired());
+            DetectMouse(new GladiusIII());
+            DetectMouse(new GladiusIIIWired());
         }
 
         public static void DetectMouse(AsusMouse am)

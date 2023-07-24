@@ -276,7 +276,12 @@ namespace GHelper.Peripherals.Mouse
             return true;
         }
 
-        public virtual bool HasEnergySettings()
+        public virtual bool HasAutoPowerOff()
+        {
+            return false;
+        }
+
+        public virtual bool HasLowBatteryWarning()
         {
             return false;
         }
@@ -330,7 +335,7 @@ namespace GHelper.Peripherals.Mouse
 
         public void SetEnergySettings(int lowBatteryWarning, PowerOffSetting powerOff)
         {
-            if (!HasEnergySettings())
+            if (!HasAutoPowerOff() && !HasLowBatteryWarning())
             {
                 return;
             }
@@ -345,7 +350,7 @@ namespace GHelper.Peripherals.Mouse
 
         public void ReadBattery()
         {
-            if (!HasBattery() && !HasEnergySettings())
+            if (!HasBattery() && !HasAutoPowerOff())
             {
                 return;
             }
@@ -369,10 +374,18 @@ namespace GHelper.Peripherals.Mouse
                 }
             }
 
-            if (HasEnergySettings())
+            if (HasAutoPowerOff())
             {
                 PowerOffSetting = ParsePowerOffSetting(response);
+            }
+
+            if (HasLowBatteryWarning())
+            {
                 LowBatteryWarning = ParseLowBatteryWarning(response);
+            }
+
+            if (HasLowBatteryWarning() || HasAutoPowerOff())
+            {
                 Logger.WriteLine(GetDisplayName() + ": Got Auto Power Off: " + PowerOffSetting + " - Low Battery Warnning at: " + LowBatteryWarning + "%");
             }
 
@@ -464,6 +477,10 @@ namespace GHelper.Peripherals.Mouse
 
 
         public virtual bool HasAngleSnapping()
+        {
+            return false;
+        }
+        public virtual bool HasAngleTuning()
         {
             return false;
         }
@@ -567,7 +584,9 @@ namespace GHelper.Peripherals.Mouse
             if (HasAngleSnapping())
             {
                 AngleSnapping = ParseAngleSnapping(response);
-                AngleAdjustmentDegrees = ParseAngleAdjustment(response);
+                if (HasAngleTuning())
+                    AngleAdjustmentDegrees = ParseAngleAdjustment(response);
+
                 Logger.WriteLine(GetDisplayName() + ": Angle Snapping enabled: " + AngleSnapping + ", Angle Adjustment: " + AngleAdjustmentDegrees + "°");
             }
         }
@@ -608,7 +627,7 @@ namespace GHelper.Peripherals.Mouse
 
         public void SetAngleAdjustment(short angleAdjustment)
         {
-            if (!HasAngleSnapping())
+            if (!HasAngleTuning())
             {
                 return;
             }
@@ -632,7 +651,7 @@ namespace GHelper.Peripherals.Mouse
         public abstract int DPIProfileCount();
         public virtual bool HasDPIColors()
         {
-            return true;
+            return false;
         }
 
         public virtual bool CanChangeDPIProfile()

@@ -1,12 +1,12 @@
 ﻿namespace GHelper.Peripherals.Mouse.Models
 {
-    public class P711 : AsusMouse
+    public class GladiusIII : AsusMouse
     {
-        public P711() : base(0x0B05, 0x1A70, "mi_00", true)
+        public GladiusIII() : base(0x0B05, 0x1A70, "mi_00", true)
         {
         }
 
-        protected P711(ushort vendorId, bool wireless) : base(0x0B05, vendorId, "mi_00", wireless)
+        protected GladiusIII(ushort vendorId, bool wireless) : base(0x0B05, vendorId, "mi_00", wireless)
         {
         }
 
@@ -50,7 +50,7 @@
             return true;
         }
 
-        public override bool HasEnergySettings()
+        public override bool HasAutoPowerOff()
         {
             return true;
         }
@@ -59,11 +59,26 @@
         {
             return true;
         }
+
+        public override bool HasAngleTuning()
+        {
+            return true;
+        }
+
+        public override bool HasLowBatteryWarning()
+        {
+            return true;
+        }
+
+        public override bool HasDPIColors()
+        {
+            return true;
+        }
     }
 
-    public class P711Wired : P711
+    public class GladiusIIIWired : GladiusIII
     {
-        public P711Wired() : base(0x1A72, false)
+        public GladiusIIIWired() : base(0x1A72, false)
         {
         }
 

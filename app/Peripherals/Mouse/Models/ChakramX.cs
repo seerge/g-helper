@@ -55,11 +55,25 @@ namespace GHelper.Peripherals.Mouse.Models
             return true;
         }
 
-        public override bool HasEnergySettings()
+        public override bool HasAutoPowerOff()
         {
             return true;
         }
 
+        public override bool HasAngleTuning()
+        {
+            return true;
+        }
+
+        public override bool HasLowBatteryWarning()
+        {
+            return true;
+        }
+
+        public override bool HasDPIColors()
+        {
+            return true;
+        }
     }
 
     public class ChakramXWired : ChakramX
