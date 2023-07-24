@@ -22,6 +22,8 @@ namespace GHelper
         private readonly AsusMouse mouse;
         private readonly RButton[] dpiButtons;
 
+        private bool updateMouseDPI = true;
+
         public AsusMouseSettings(AsusMouse mouse)
         {
             this.mouse = mouse;
@@ -55,7 +57,9 @@ namespace GHelper
             comboProfile.DropDownClosed += ComboProfile_DropDownClosed;
 
             sliderDPI.ValueChanged += SliderDPI_ValueChanged;
+            numericUpDownCurrentDPI.ValueChanged += NumericUpDownCurrentDPI_ValueChanged;
             sliderDPI.MouseUp += SliderDPI_MouseUp;
+            sliderDPI.MouseDown += SliderDPI_MouseDown;
             buttonDPIColor.Click += ButtonDPIColor_Click;
             buttonDPI1.Click += ButtonDPI_Click;
             buttonDPI2.Click += ButtonDPI_Click;
@@ -265,11 +269,32 @@ namespace GHelper
 
         private void SliderDPI_ValueChanged(object? sender, EventArgs e)
         {
-            labelDPIValue.Text = sliderDPI.Value.ToString();
+            numericUpDownCurrentDPI.Value = sliderDPI.Value;
+            UpdateMouseDPISettings();
+        }
+
+        private void NumericUpDownCurrentDPI_ValueChanged(object? sender, EventArgs e)
+        {
+            sliderDPI.Value = (int)numericUpDownCurrentDPI.Value;
+        }
+
+        private void SliderDPI_MouseDown(object? sender, MouseEventArgs e)
+        {
+            updateMouseDPI = false;
         }
 
         private void SliderDPI_MouseUp(object? sender, MouseEventArgs e)
         {
+            updateMouseDPI = true;
+            UpdateMouseDPISettings();
+        }
+
+        private void UpdateMouseDPISettings()
+        {
+            if (!updateMouseDPI)
+            {
+                return;
+            }
             AsusMouseDPI dpi = mouse.DpiSettings[mouse.DpiProfile - 1];
             dpi.DPI = (uint)sliderDPI.Value;
 
@@ -319,6 +344,9 @@ namespace GHelper
 
             sliderDPI.Max = mouse.MaxDPI();
             sliderDPI.Min = mouse.MinDPI();
+
+            numericUpDownCurrentDPI.Minimum = mouse.MinDPI();
+            numericUpDownCurrentDPI.Maximum = mouse.MaxDPI();
 
 
             if (!mouse.HasDPIColors())

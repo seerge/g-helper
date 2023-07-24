@@ -77,6 +77,12 @@ public static class ControlHelper
                 combo.ButtonColor = RForm.buttonMain;
                 combo.ArrowColor = RForm.foreMain;
             }
+            var numbericUpDown = control as NumericUpDown;
+            if(numbericUpDown is not null)
+            {
+                numbericUpDown.ForeColor = RForm.foreMain;
+                numbericUpDown.BackColor = RForm.buttonMain;
+            }
 
             var gb = control as GroupBox;
             if (gb != null)

@@ -44,8 +44,8 @@
             sliderDPI = new UI.Slider();
             tableLayoutPanel1 = new TableLayoutPanel();
             labelMinDPI = new Label();
-            labelDPIValue = new Label();
             labelMaxDPI = new Label();
+            numericUpDownCurrentDPI = new NumericUpDown();
             panelDPITile = new Panel();
             pictureDPIColor = new PictureBox();
             buttonDPIColor = new UI.RButton();
@@ -94,6 +94,7 @@
             panelPerformanceOther.SuspendLayout();
             panelDPISettings.SuspendLayout();
             tableLayoutPanel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numericUpDownCurrentDPI).BeginInit();
             panelDPITile.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureDPIColor).BeginInit();
             tableDPI.SuspendLayout();
@@ -159,7 +160,7 @@
             panelPerformance.Location = new Point(11, 68);
             panelPerformance.Name = "panelPerformance";
             panelPerformance.Padding = new Padding(0, 11, 0, 25);
-            panelPerformance.Size = new Size(654, 401);
+            panelPerformance.Size = new Size(654, 408);
             panelPerformance.TabIndex = 1;
             // 
             // panelPerformanceOther
@@ -174,7 +175,7 @@
             panelPerformanceOther.Controls.Add(comboBoxPollingRate);
             panelPerformanceOther.Controls.Add(labelPollingRate);
             panelPerformanceOther.Dock = DockStyle.Top;
-            panelPerformanceOther.Location = new Point(0, 233);
+            panelPerformanceOther.Location = new Point(0, 240);
             panelPerformanceOther.Name = "panelPerformanceOther";
             panelPerformanceOther.Padding = new Padding(0, 11, 0, 11);
             panelPerformanceOther.Size = new Size(654, 143);
@@ -270,14 +271,14 @@
             panelDPISettings.Dock = DockStyle.Top;
             panelDPISettings.Location = new Point(0, 137);
             panelDPISettings.Name = "panelDPISettings";
-            panelDPISettings.Size = new Size(654, 96);
+            panelDPISettings.Size = new Size(654, 103);
             panelDPISettings.TabIndex = 44;
             // 
             // sliderDPI
             // 
             sliderDPI.AccessibleName = "DPI Slider";
             sliderDPI.Dock = DockStyle.Top;
-            sliderDPI.Location = new Point(0, 66);
+            sliderDPI.Location = new Point(0, 73);
             sliderDPI.Max = 35000;
             sliderDPI.Min = 100;
             sliderDPI.Name = "sliderDPI";
@@ -293,53 +294,57 @@
             tableLayoutPanel1.AutoSize = true;
             tableLayoutPanel1.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             tableLayoutPanel1.ColumnCount = 3;
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.3333321F));
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.3333321F));
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.3333321F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 38F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 24F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 38F));
             tableLayoutPanel1.Controls.Add(labelMinDPI, 0, 0);
-            tableLayoutPanel1.Controls.Add(labelDPIValue, 1, 0);
             tableLayoutPanel1.Controls.Add(labelMaxDPI, 2, 0);
+            tableLayoutPanel1.Controls.Add(numericUpDownCurrentDPI, 1, 0);
             tableLayoutPanel1.Dock = DockStyle.Top;
             tableLayoutPanel1.GrowStyle = TableLayoutPanelGrowStyle.FixedSize;
             tableLayoutPanel1.Location = new Point(0, 40);
             tableLayoutPanel1.Name = "tableLayoutPanel1";
             tableLayoutPanel1.RowCount = 1;
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            tableLayoutPanel1.Size = new Size(654, 26);
+            tableLayoutPanel1.Size = new Size(654, 33);
             tableLayoutPanel1.TabIndex = 47;
             // 
             // labelMinDPI
             // 
+            labelMinDPI.Dock = DockStyle.Fill;
             labelMinDPI.ForeColor = SystemColors.GrayText;
             labelMinDPI.Location = new Point(6, 0);
             labelMinDPI.Margin = new Padding(6, 0, 6, 0);
             labelMinDPI.Name = "labelMinDPI";
-            labelMinDPI.Size = new Size(105, 26);
+            labelMinDPI.Size = new Size(236, 33);
             labelMinDPI.TabIndex = 45;
             labelMinDPI.Text = "100";
             // 
-            // labelDPIValue
-            // 
-            labelDPIValue.Anchor = AnchorStyles.Top;
-            labelDPIValue.Location = new Point(271, 0);
-            labelDPIValue.Margin = new Padding(6, 0, 6, 0);
-            labelDPIValue.Name = "labelDPIValue";
-            labelDPIValue.Size = new Size(111, 26);
-            labelDPIValue.TabIndex = 44;
-            labelDPIValue.Text = "2000";
-            labelDPIValue.TextAlign = ContentAlignment.TopCenter;
-            // 
             // labelMaxDPI
             // 
-            labelMaxDPI.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            labelMaxDPI.Dock = DockStyle.Fill;
             labelMaxDPI.ForeColor = SystemColors.GrayText;
-            labelMaxDPI.Location = new Point(543, 0);
+            labelMaxDPI.Location = new Point(410, 0);
             labelMaxDPI.Margin = new Padding(6, 0, 6, 0);
             labelMaxDPI.Name = "labelMaxDPI";
-            labelMaxDPI.Size = new Size(105, 26);
+            labelMaxDPI.Size = new Size(238, 33);
             labelMaxDPI.TabIndex = 46;
             labelMaxDPI.Text = " 35000";
             labelMaxDPI.TextAlign = ContentAlignment.TopRight;
+            // 
+            // numericUpDownCurrentDPI
+            // 
+            numericUpDownCurrentDPI.BorderStyle = BorderStyle.None;
+            numericUpDownCurrentDPI.Dock = DockStyle.Fill;
+            numericUpDownCurrentDPI.Increment = new decimal(new int[] { 50, 0, 0, 0 });
+            numericUpDownCurrentDPI.Location = new Point(251, 3);
+            numericUpDownCurrentDPI.Maximum = new decimal(new int[] { 35000, 0, 0, 0 });
+            numericUpDownCurrentDPI.Minimum = new decimal(new int[] { 100, 0, 0, 0 });
+            numericUpDownCurrentDPI.Name = "numericUpDownCurrentDPI";
+            numericUpDownCurrentDPI.Size = new Size(150, 27);
+            numericUpDownCurrentDPI.TabIndex = 47;
+            numericUpDownCurrentDPI.TextAlign = HorizontalAlignment.Center;
+            numericUpDownCurrentDPI.Value = new decimal(new int[] { 2000, 0, 0, 0 });
             // 
             // panelDPITile
             // 
@@ -545,7 +550,7 @@
             panelLighting.Controls.Add(panelLightingContent);
             panelLighting.Controls.Add(panelLightingHeader);
             panelLighting.Dock = DockStyle.Top;
-            panelLighting.Location = new Point(11, 469);
+            panelLighting.Location = new Point(11, 476);
             panelLighting.Name = "panelLighting";
             panelLighting.Padding = new Padding(0, 0, 0, 25);
             panelLighting.Size = new Size(654, 271);
@@ -734,7 +739,7 @@
             panelEnergy.Controls.Add(labelAutoPowerOff);
             panelEnergy.Controls.Add(panelEnergyHeader);
             panelEnergy.Dock = DockStyle.Top;
-            panelEnergy.Location = new Point(11, 740);
+            panelEnergy.Location = new Point(11, 747);
             panelEnergy.Name = "panelEnergy";
             panelEnergy.Padding = new Padding(0, 0, 0, 25);
             panelEnergy.Size = new Size(654, 143);
@@ -915,7 +920,7 @@
             panelBottomButtons.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             panelBottomButtons.Controls.Add(buttonSync);
             panelBottomButtons.Dock = DockStyle.Top;
-            panelBottomButtons.Location = new Point(11, 883);
+            panelBottomButtons.Location = new Point(11, 890);
             panelBottomButtons.Name = "panelBottomButtons";
             panelBottomButtons.Size = new Size(654, 67);
             panelBottomButtons.TabIndex = 47;
@@ -950,6 +955,7 @@
             panelDPISettings.ResumeLayout(false);
             panelDPISettings.PerformLayout();
             tableLayoutPanel1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)numericUpDownCurrentDPI).EndInit();
             panelDPITile.ResumeLayout(false);
             panelDPITile.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)pictureDPIColor).EndInit();
@@ -1003,7 +1009,6 @@
         private Panel panelDPISettings;
         private TableLayoutPanel tableLayoutPanel1;
         private Label labelMinDPI;
-        private Label labelDPIValue;
         private Label labelMaxDPI;
         private Panel panelDPITile;
         private Label labelDPI;
@@ -1041,5 +1046,6 @@
         private PictureBox pictureBoxBatteryState;
         private UI.RButton buttonSync;
         private Panel panelBottomButtons;
+        private NumericUpDown numericUpDownCurrentDPI;
     }
 }
