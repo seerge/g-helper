@@ -1,27 +1,9 @@
-﻿using HidLibrary;
-using System.Diagnostics;
+﻿using GHelper.Helpers;
+using HidLibrary;
 using System.Text;
 
 namespace GHelper
 {
-
-    public class ColorUtilities
-    {
-        // Method to get the weighted average between two colors
-        public static Color GetWeightedAverage(Color color1, Color color2, double weight)
-        {
-
-            int red = (int)Math.Round(color1.R * (1 - weight) + color2.R * weight);
-            int green = (int)Math.Round(color1.G * (1 - weight) + color2.G * weight);
-            int blue = (int)Math.Round(color1.B * (1 - weight) + color2.B * weight);
-
-            red = Math.Min(255, Math.Max(0, red));
-            green = Math.Min(255, Math.Max(0, green));
-            blue = Math.Min(255, Math.Max(0, blue));
-
-            return Color.FromArgb(red, green, blue);
-        }
-    }
 
     [Flags]
     public enum AuraDev19b6 : uint
@@ -103,15 +85,15 @@ namespace GHelper
 
         private static void Timer_Elapsed(object? sender, System.Timers.ElapsedEventArgs e)
         {
-            int cpuTemp = Program.acpi.DeviceGet(AsusACPI.Temp_CPU);
-            int freeze = 20, cold = 45, warm = 65, hot = 90;
+            float cpuTemp = (float)HardwareControl.GetCPUTemp();
+            int freeze = 20, cold = 40, warm = 65, hot = 90;
             Color color;
 
             //Debug.WriteLine(cpuTemp);
 
-            if (cpuTemp < cold) color = color = ColorUtilities.GetWeightedAverage(Color.Blue, Color.Green, ((double)cpuTemp - freeze) / (cold - freeze));
-            else if (cpuTemp < warm) color = ColorUtilities.GetWeightedAverage(Color.Green, Color.Yellow, ((double)cpuTemp - cold) / (warm - cold));
-            else if (cpuTemp < hot) color = ColorUtilities.GetWeightedAverage(Color.Yellow, Color.Red, ((double)cpuTemp - warm) / (hot - warm));
+            if (cpuTemp < cold) color = ColorUtilities.GetWeightedAverage(Color.Blue, Color.Green, ((float)cpuTemp - freeze) / (cold - freeze));
+            else if (cpuTemp < warm) color = ColorUtilities.GetWeightedAverage(Color.Green, Color.Yellow, ((float)cpuTemp - cold) / (warm - cold));
+            else if (cpuTemp < hot) color = ColorUtilities.GetWeightedAverage(Color.Yellow, Color.Red, ((float)cpuTemp - warm) / (hot - warm));
             else color = Color.Red;
 
             ApplyColor(color);
