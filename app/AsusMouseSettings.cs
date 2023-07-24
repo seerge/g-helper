@@ -338,11 +338,11 @@ namespace GHelper
 
             if (mouse.CanSetPollingRate())
             {
-                foreach(PollingRate pr in mouse.SupportedPollingrates())
+                foreach (PollingRate pr in mouse.SupportedPollingrates())
                 {
                     comboBoxPollingRate.Items.Add(mouse.PollingRateDisplayString(pr));
                 }
-                
+
             }
             else
             {
@@ -439,7 +439,7 @@ namespace GHelper
             if (mouse.CanSetPollingRate())
             {
                 int idx = mouse.PollingRateIndex(mouse.PollingRate);
-                if(idx == -1)
+                if (idx == -1)
                 {
                     return;
                 }
@@ -526,7 +526,6 @@ namespace GHelper
             {
                 checkBoxRandomColor.Checked = ls.RandomColor;
                 buttonLightingColor.Visible = !ls.RandomColor;
-
             }
 
             if (ls.RandomColor && mouse.SupportsRandomColor(ls.LightingMode))
