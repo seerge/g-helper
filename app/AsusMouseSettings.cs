@@ -1,6 +1,5 @@
 ﻿using GHelper.Peripherals.Mouse;
 using GHelper.UI;
-using System.Windows.Forms;
 
 namespace GHelper
 {
