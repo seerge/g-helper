@@ -1,4 +1,5 @@
-﻿using HidLibrary;
+﻿using GHelper.Helpers;
+using HidLibrary;
 using System.Text;
 
 namespace GHelper
@@ -50,6 +51,7 @@ namespace GHelper
 
     public static class AsusUSB
     {
+        public const int HEATMAP = 20;
 
         public const int ASUS_ID = 0x0b05;
 
@@ -73,6 +75,30 @@ namespace GHelper
         public static Color Color2 = Color.Black;
 
 
+        static System.Timers.Timer timer = new System.Timers.Timer(1000);
+        static HidDevice? auraDevice = null;
+
+        static AsusUSB()
+        {
+            timer.Elapsed += Timer_Elapsed;
+        }
+
+        private static void Timer_Elapsed(object? sender, System.Timers.ElapsedEventArgs e)
+        {
+            float cpuTemp = (float)HardwareControl.GetCPUTemp();
+            int freeze = 20, cold = 40, warm = 65, hot = 90;
+            Color color;
+
+            //Debug.WriteLine(cpuTemp);
+
+            if (cpuTemp < cold) color = ColorUtilities.GetWeightedAverage(Color.Blue, Color.Green, ((float)cpuTemp - freeze) / (cold - freeze));
+            else if (cpuTemp < warm) color = ColorUtilities.GetWeightedAverage(Color.Green, Color.Yellow, ((float)cpuTemp - cold) / (warm - cold));
+            else if (cpuTemp < hot) color = ColorUtilities.GetWeightedAverage(Color.Yellow, Color.Red, ((float)cpuTemp - warm) / (hot - warm));
+            else color = Color.Red;
+
+            ApplyColor(color);
+        }
+
         public static Dictionary<int, string> GetSpeeds()
         {
             return new Dictionary<int, string>
@@ -91,6 +117,7 @@ namespace GHelper
                 { 2, Properties.Strings.AuraColorCycle },
                 { 3, Properties.Strings.AuraRainbow },
                 { 10, Properties.Strings.AuraStrobe },
+                { HEATMAP, "Heatmap"}
             };
 
         static Dictionary<int, string> _modesStrix = new Dictionary<int, string>
@@ -107,6 +134,7 @@ namespace GHelper
                 { 10, Properties.Strings.AuraStrobe},
                 { 11, "Comet" },
                 { 12, "Flash" },
+                { HEATMAP, "Heatmap"}
             };
 
 
@@ -181,6 +209,7 @@ namespace GHelper
         {
             Color2 = Color.FromArgb(colorCode);
         }
+
 
 
         private static IEnumerable<HidDevice> GetHidDevices(int[] deviceIds, int minFeatures = 1)
@@ -372,6 +401,37 @@ namespace GHelper
         }
 
 
+        static void GetAuraDevice()
+        {
+            var devices = GetHidDevices(deviceIds);
+            foreach (HidDevice device in devices)
+            {
+                device.OpenDevice();
+                if (device.ReadFeatureData(out byte[] data, AURA_HID_ID))
+                {
+                    auraDevice = device;
+                    return;
+                }
+                else
+                {
+                    device.CloseDevice();
+                }
+            }
+        }
+
+        public static void ApplyColor(Color color)
+        {
+            Task.Run(async () =>
+            {
+                if (auraDevice is null || !auraDevice.IsConnected) GetAuraDevice();
+                if (auraDevice is null || !auraDevice.IsConnected) return;
+                auraDevice.WriteFeatureData(AuraMessage(0, color, color, 0xf5));
+                auraDevice.WriteFeatureData(MESSAGE_SET);
+                //auraDevice.WriteFeatureData(MESSAGE_APPLY);
+            });
+        }
+
+
         public static void ApplyAura()
         {
 
@@ -379,6 +439,16 @@ namespace GHelper
             Speed = AppConfig.Get("aura_speed");
             SetColor(AppConfig.Get("aura_color"));
             SetColor2(AppConfig.Get("aura_color2"));
+
+            if (Mode == HEATMAP)
+            {
+                timer.Enabled = true;
+                return;
+            }
+            else
+            {
+                timer.Enabled = false;
+            }
 
             Task.Run(async () =>
             {

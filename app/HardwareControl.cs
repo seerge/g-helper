@@ -24,6 +24,8 @@ public static class HardwareControl
 
     public static int? gpuUse;
 
+    static long lastUpdate;
+
     public static int GetFanMax()
     {
         int max = 58;
@@ -170,15 +172,10 @@ public static class HardwareControl
         return health;
     }
 
-    public static void ReadSensors()
-    {
-        batteryRate = 0;
-        gpuTemp = -1;
-        gpuUse = -1;
+    public static float? GetCPUTemp() {
 
-        cpuFan = FormatFan(Program.acpi.DeviceGet(AsusACPI.CPU_Fan));
-        gpuFan = FormatFan(Program.acpi.DeviceGet(AsusACPI.GPU_Fan));
-        midFan = FormatFan(Program.acpi.DeviceGet(AsusACPI.Mid_Fan));
+        if (Math.Abs(DateTimeOffset.Now.ToUnixTimeMilliseconds() - lastUpdate) < 1000) return cpuTemp;
+        lastUpdate = DateTimeOffset.Now.ToUnixTimeMilliseconds();
 
         cpuTemp = Program.acpi.DeviceGet(AsusACPI.Temp_CPU);
 
@@ -193,6 +190,22 @@ public static class HardwareControl
             {
                 Debug.WriteLine("Failed reading CPU temp :" + ex.Message);
             }
+
+        return cpuTemp;
+    }
+
+
+    public static void ReadSensors()
+    {
+        batteryRate = 0;
+        gpuTemp = -1;
+        gpuUse = -1;
+
+        cpuFan = FormatFan(Program.acpi.DeviceGet(AsusACPI.CPU_Fan));
+        gpuFan = FormatFan(Program.acpi.DeviceGet(AsusACPI.GPU_Fan));
+        midFan = FormatFan(Program.acpi.DeviceGet(AsusACPI.Mid_Fan));
+
+        cpuTemp = GetCPUTemp();
 
         try
         {
