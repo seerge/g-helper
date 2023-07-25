@@ -148,11 +148,11 @@ namespace GHelper
             panelMatrix.Controls.Add(panelMatrixTitle);
             panelMatrix.Controls.Add(checkMatrix);
             panelMatrix.Dock = DockStyle.Top;
-            panelMatrix.Location = new Point(11, 758);
+            panelMatrix.Location = new Point(11, 747);
             panelMatrix.Margin = new Padding(0);
             panelMatrix.Name = "panelMatrix";
-            panelMatrix.Padding = new Padding(20, 20, 20, 11);
-            panelMatrix.Size = new Size(827, 177);
+            panelMatrix.Padding = new Padding(20, 20, 20, 10);
+            panelMatrix.Size = new Size(827, 176);
             panelMatrix.TabIndex = 4;
             // 
             // tableLayoutMatrix
@@ -276,11 +276,11 @@ namespace GHelper
             panelBattery.Controls.Add(sliderBattery);
             panelBattery.Controls.Add(panelBatteryTitle);
             panelBattery.Dock = DockStyle.Top;
-            panelBattery.Location = new Point(11, 1273);
+            panelBattery.Location = new Point(11, 1261);
             panelBattery.Margin = new Padding(0);
             panelBattery.Name = "panelBattery";
-            panelBattery.Padding = new Padding(20, 20, 20, 7);
-            panelBattery.Size = new Size(827, 111);
+            panelBattery.Padding = new Padding(20, 20, 20, 10);
+            panelBattery.Size = new Size(827, 114);
             panelBattery.TabIndex = 5;
             // 
             // sliderBattery
@@ -350,7 +350,7 @@ namespace GHelper
             panelFooter.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             panelFooter.Controls.Add(tableButtons);
             panelFooter.Dock = DockStyle.Top;
-            panelFooter.Location = new Point(11, 1440);
+            panelFooter.Location = new Point(11, 1431);
             panelFooter.Margin = new Padding(0);
             panelFooter.Name = "panelFooter";
             panelFooter.Padding = new Padding(20);
@@ -849,8 +849,8 @@ namespace GHelper
             panelScreen.Location = new Point(11, 571);
             panelScreen.Margin = new Padding(0);
             panelScreen.Name = "panelScreen";
-            panelScreen.Padding = new Padding(20, 20, 20, 11);
-            panelScreen.Size = new Size(827, 187);
+            panelScreen.Padding = new Padding(20, 20, 20, 0);
+            panelScreen.Size = new Size(827, 176);
             panelScreen.TabIndex = 2;
             // 
             // labelTipScreen
@@ -1018,7 +1018,7 @@ namespace GHelper
             panelKeyboard.Controls.Add(tableLayoutKeyboard);
             panelKeyboard.Controls.Add(panelKeyboardTitle);
             panelKeyboard.Dock = DockStyle.Top;
-            panelKeyboard.Location = new Point(11, 935);
+            panelKeyboard.Location = new Point(11, 923);
             panelKeyboard.Margin = new Padding(0);
             panelKeyboard.Name = "panelKeyboard";
             panelKeyboard.Padding = new Padding(20);
@@ -1188,7 +1188,7 @@ namespace GHelper
             panelVersion.Controls.Add(labelVersion);
             panelVersion.Controls.Add(checkStartup);
             panelVersion.Dock = DockStyle.Top;
-            panelVersion.Location = new Point(11, 1384);
+            panelVersion.Location = new Point(11, 1375);
             panelVersion.Margin = new Padding(4);
             panelVersion.Name = "panelVersion";
             panelVersion.Size = new Size(827, 56);
@@ -1201,7 +1201,7 @@ namespace GHelper
             panelPeripherals.Controls.Add(tableLayoutPeripherals);
             panelPeripherals.Controls.Add(panelPeripheralsTile);
             panelPeripherals.Dock = DockStyle.Top;
-            panelPeripherals.Location = new Point(11, 1075);
+            panelPeripherals.Location = new Point(11, 1063);
             panelPeripherals.Margin = new Padding(0);
             panelPeripherals.Name = "panelPeripherals";
             panelPeripherals.Padding = new Padding(20, 20, 20, 10);
