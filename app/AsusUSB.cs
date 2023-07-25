@@ -423,6 +423,12 @@ namespace GHelper
         {
             Task.Run(async () =>
             {
+                if (AppConfig.ContainsModel("TUF"))
+                {
+                    Program.acpi.TUFKeyboardRGB(0, color, 0);
+                    return;
+                }
+
                 if (auraDevice is null || !auraDevice.IsConnected) GetAuraDevice();
                 if (auraDevice is null || !auraDevice.IsConnected) return;
                 auraDevice.WriteFeatureData(AuraMessage(0, color, color, 0));
