@@ -206,6 +206,16 @@ namespace GHelper.Peripherals.Mouse
             }
         }
 
+        private static bool IsPacketLoggerEnabled()
+        {
+#if DEBUG
+            return true;
+#else
+
+            return AppConfig.Get("usb_packet_logger") == 1;
+#endif
+        }
+
         [MethodImpl(MethodImplOptions.Synchronized)]
         protected virtual byte[]? WriteForResponse(byte[] packet)
         {
@@ -213,11 +223,15 @@ namespace GHelper.Peripherals.Mouse
 
             try
             {
-                Logger.WriteLine(GetDisplayName() + ": Sending packet: " + ByteArrayToString(packet));
+                if (IsPacketLoggerEnabled())
+                    Logger.WriteLine(GetDisplayName() + ": Sending packet: " + ByteArrayToString(packet));
+
                 Write(packet);
 
                 Read(response);
-                Logger.WriteLine(GetDisplayName() + ": Read packet: " + ByteArrayToString(response));
+
+                if (IsPacketLoggerEnabled())
+                    Logger.WriteLine(GetDisplayName() + ": Read packet: " + ByteArrayToString(response));
             }
             catch (IOException e)
             {
