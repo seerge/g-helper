@@ -145,7 +145,7 @@ namespace GHelper.Peripherals
         {
             if (am.IsDeviceConnected() && !ConnectedMice.Contains(am))
             {
-                Logger.WriteLine("Detected a new ROG Chakram X. Connecting...");
+                Logger.WriteLine("Detected a new" + am.GetDisplayName() + " . Connecting...");
                 Connect(am);
             }
         }
