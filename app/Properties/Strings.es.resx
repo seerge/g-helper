@@ -163,22 +163,22 @@
     <value>Servicios de Asus en ejecución</value>
   </data>
   <data name="AuraBatteryState" xml:space="preserve">
-    <value>Battery State</value>
+    <value>Estado de la batería</value>
   </data>
   <data name="AuraBreathe" xml:space="preserve">
     <value>Respiración</value>
   </data>
   <data name="AuraClockwise" xml:space="preserve">
-    <value>Clockwise</value>
+    <value>Sentido horario</value>
   </data>
   <data name="AuraColorCycle" xml:space="preserve">
     <value>Ciclo de color</value>
   </data>
   <data name="AuraComet" xml:space="preserve">
-    <value>Comet</value>
+    <value>Cometa</value>
   </data>
   <data name="AuraCounterClockwise" xml:space="preserve">
-    <value>Counterclockwise</value>
+    <value>Sentido anti-horario</value>
   </data>
   <data name="AuraFast" xml:space="preserve">
     <value>Rápido</value>
@@ -190,10 +190,10 @@
     <value>Arcoíris</value>
   </data>
   <data name="AuraRandomColor" xml:space="preserve">
-    <value>Random</value>
+    <value>Aleatorio</value>
   </data>
   <data name="AuraReact" xml:space="preserve">
-    <value>React</value>
+    <value>Sensible</value>
   </data>
   <data name="AuraSlow" xml:space="preserve">
     <value>Lento</value>
@@ -285,7 +285,7 @@
     <value>Modo de Pantalla NVIDIA no está configurado en Optimus</value>
   </data>
   <data name="EnergySettings" xml:space="preserve">
-    <value>Energy Settings</value>
+    <value>Ajustes de energía</value>
   </data>
   <data name="Extra" xml:space="preserve">
     <value>Adicional</value>
@@ -354,7 +354,7 @@
     <value>Temperatura objetivo</value>
   </data>
   <data name="High" xml:space="preserve">
-    <value>High</value>
+    <value>Alto</value>
   </data>
   <data name="KeyBindings" xml:space="preserve">
     <value>Atajos de teclado</value>
@@ -381,13 +381,13 @@
     <value>Barra de luz</value>
   </data>
   <data name="Lighting" xml:space="preserve">
-    <value>Lighting</value>
+    <value>Iluminación</value>
   </data>
   <data name="Logo" xml:space="preserve">
     <value>Logo</value>
   </data>
   <data name="Low" xml:space="preserve">
-    <value>Low</value>
+    <value>Bajo</value>
   </data>
   <data name="MatrixAudio" xml:space="preserve">
     <value>Visualizador de audio</value>
@@ -423,28 +423,28 @@
     <value>Frecuencia de actualización de 60Hz para ahorrar batería</value>
   </data>
   <data name="Minute" xml:space="preserve">
-    <value>Minute</value>
+    <value>Minuto</value>
   </data>
   <data name="Minutes" xml:space="preserve">
-    <value>Minutes</value>
+    <value>Minutos</value>
   </data>
   <data name="MouseAngleSnapping" xml:space="preserve">
-    <value>Angle Snapping</value>
+    <value>Ajuste de ángulo</value>
   </data>
   <data name="MouseAutoPowerOff" xml:space="preserve">
-    <value>Auto Power Off After</value>
+    <value>Auto-apagar tras</value>
   </data>
   <data name="MouseLiftOffDistance" xml:space="preserve">
-    <value>Lift Off Distance</value>
+    <value>Distancia de despegue (LOD)</value>
   </data>
   <data name="MouseLowBatteryWarning" xml:space="preserve">
-    <value>Low Battery Warning at</value>
+    <value>Aviso de batería baja al</value>
   </data>
   <data name="MousePerformance" xml:space="preserve">
-    <value>Performance</value>
+    <value>Rendimiento</value>
   </data>
   <data name="MouseSynchronize" xml:space="preserve">
-    <value>Synchronize with mouse</value>
+    <value>Sincronizar con el ratón</value>
   </data>
   <data name="Multizone" xml:space="preserve">
     <value>Multizona</value>
@@ -453,7 +453,7 @@
     <value>Silenciar micrófono</value>
   </data>
   <data name="Never" xml:space="preserve">
-    <value>Never</value>
+    <value>Nunca</value>
   </data>
   <data name="NewUpdates" xml:space="preserve">
     <value>Nuevas actualizaciones</value>
@@ -462,7 +462,7 @@
     <value>No hay actualizaciones</value>
   </data>
   <data name="NotConnected" xml:space="preserve">
-    <value>Not Connected</value>
+    <value>No conectado</value>
   </data>
   <data name="OpenGHelper" xml:space="preserve">
     <value>Abrir ventana G-Helper</value>
@@ -486,7 +486,7 @@
     <value>Modo</value>
   </data>
   <data name="Peripherals" xml:space="preserve">
-    <value>Peripherals</value>
+    <value>Periféricos</value>
   </data>
   <data name="PictureGif" xml:space="preserve">
     <value>Imagen / Gif</value>
@@ -495,7 +495,7 @@
     <value>Reproducir / Pausar</value>
   </data>
   <data name="PollingRate" xml:space="preserve">
-    <value>Polling Rate</value>
+    <value>Velocidad de respuesta</value>
   </data>
   <data name="PowerLimits" xml:space="preserve">
     <value>Límites de energía</value>
@@ -507,7 +507,7 @@
     <value>Capturar pantalla</value>
   </data>
   <data name="Profile" xml:space="preserve">
-    <value>Profile</value>
+    <value>Perfil</value>
   </data>
   <data name="Quit" xml:space="preserve">
     <value>Quitar</value>

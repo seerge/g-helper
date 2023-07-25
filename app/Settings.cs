@@ -631,7 +631,7 @@ namespace GHelper
 
             if (AppConfig.ContainsModel("GA401I"))
             {
-                panelKeyboard.Visible = false;
+                comboKeyboard.Visible = false;
             }
 
             VisualiseAura();

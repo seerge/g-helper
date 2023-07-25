@@ -161,7 +161,7 @@ public static class HardwareControl
         }
         ReadFullChargeCapacity();
 
-        if (designCapacity is null || fullCapacity is null)
+        if (designCapacity is null || fullCapacity is null || designCapacity == 0 || fullCapacity == 0)
         {
             return -1;
         }
