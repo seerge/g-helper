@@ -152,7 +152,8 @@ namespace GHelper.Input
         {
             return AppConfig.ContainsModel("Z13") || 
                    AppConfig.ContainsModel("FA506") || 
-                   AppConfig.ContainsModel("FX506");
+                   AppConfig.ContainsModel("FX506") ||
+                   AppConfig.ContainsModel("FX505");
         }
 
         public void KeyPressed(object sender, KeyPressedEventArgs e)
@@ -413,6 +414,7 @@ namespace GHelper.Input
                     KeyProcess("m3");
                     return;
                 case 56:    // M4 / Rog button
+                case 181:    // FN + Numpad Enter
                     KeyProcess("m4");
                     return;
                 case 174:   // FN+F5
