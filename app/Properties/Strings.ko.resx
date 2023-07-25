@@ -162,11 +162,23 @@
   <data name="AsusServicesRunning" xml:space="preserve">
     <value>실행중인 Asus 서비스</value>
   </data>
+  <data name="AuraBatteryState" xml:space="preserve">
+    <value>Battery State</value>
+  </data>
   <data name="AuraBreathe" xml:space="preserve">
     <value>Breathe</value>
   </data>
+  <data name="AuraClockwise" xml:space="preserve">
+    <value>Clockwise</value>
+  </data>
   <data name="AuraColorCycle" xml:space="preserve">
     <value>Color Cycle</value>
+  </data>
+  <data name="AuraComet" xml:space="preserve">
+    <value>Comet</value>
+  </data>
+  <data name="AuraCounterClockwise" xml:space="preserve">
+    <value>Counterclockwise</value>
   </data>
   <data name="AuraFast" xml:space="preserve">
     <value>빠르게</value>
@@ -176,6 +188,12 @@
   </data>
   <data name="AuraRainbow" xml:space="preserve">
     <value>Rainbow</value>
+  </data>
+  <data name="AuraRandomColor" xml:space="preserve">
+    <value>Random</value>
+  </data>
+  <data name="AuraReact" xml:space="preserve">
+    <value>React</value>
   </data>
   <data name="AuraSlow" xml:space="preserve">
     <value>느리게</value>
@@ -266,6 +284,9 @@
   <data name="EnableOptimusTitle" xml:space="preserve">
     <value>NVIDIA 디스플레이 모드가 Optimus로 설정되어 있지 않습니다.</value>
   </data>
+  <data name="EnergySettings" xml:space="preserve">
+    <value>Energy Settings</value>
+  </data>
   <data name="Extra" xml:space="preserve">
     <value>추가 설정</value>
   </data>
@@ -332,6 +353,9 @@
   <data name="GPUTempTarget" xml:space="preserve">
     <value>목표 온도</value>
   </data>
+  <data name="High" xml:space="preserve">
+    <value>High</value>
+  </data>
   <data name="KeyBindings" xml:space="preserve">
     <value>키 설정</value>
   </data>
@@ -356,8 +380,14 @@
   <data name="Lightbar" xml:space="preserve">
     <value>라이트바</value>
   </data>
+  <data name="Lighting" xml:space="preserve">
+    <value>Lighting</value>
+  </data>
   <data name="Logo" xml:space="preserve">
     <value>로고</value>
+  </data>
+  <data name="Low" xml:space="preserve">
+    <value>Low</value>
   </data>
   <data name="MatrixAudio" xml:space="preserve">
     <value>오디오 비주얼라이저</value>
@@ -392,17 +422,47 @@
   <data name="MinRefreshTooltip" xml:space="preserve">
     <value>60Hz 주사율 설정</value>
   </data>
+  <data name="Minute" xml:space="preserve">
+    <value>Minute</value>
+  </data>
+  <data name="Minutes" xml:space="preserve">
+    <value>Minutes</value>
+  </data>
+  <data name="MouseAngleSnapping" xml:space="preserve">
+    <value>Angle Snapping</value>
+  </data>
+  <data name="MouseAutoPowerOff" xml:space="preserve">
+    <value>Auto Power Off After</value>
+  </data>
+  <data name="MouseLiftOffDistance" xml:space="preserve">
+    <value>Lift Off Distance</value>
+  </data>
+  <data name="MouseLowBatteryWarning" xml:space="preserve">
+    <value>Low Battery Warning at</value>
+  </data>
+  <data name="MousePerformance" xml:space="preserve">
+    <value>Performance</value>
+  </data>
+  <data name="MouseSynchronize" xml:space="preserve">
+    <value>Synchronize with mouse</value>
+  </data>
   <data name="Multizone" xml:space="preserve">
     <value>멀티존</value>
   </data>
   <data name="MuteMic" xml:space="preserve">
     <value>마이크 음소거</value>
   </data>
+  <data name="Never" xml:space="preserve">
+    <value>Never</value>
+  </data>
   <data name="NewUpdates" xml:space="preserve">
     <value>새 업데이트</value>
   </data>
   <data name="NoNewUpdates" xml:space="preserve">
     <value>새 업데이트 없음</value>
+  </data>
+  <data name="NotConnected" xml:space="preserve">
+    <value>Not Connected</value>
   </data>
   <data name="OpenGHelper" xml:space="preserve">
     <value>G-Helper 열기</value>
@@ -425,11 +485,17 @@
   <data name="PerformanceMode" xml:space="preserve">
     <value>성능 모드</value>
   </data>
+  <data name="Peripherals" xml:space="preserve">
+    <value>Peripherals</value>
+  </data>
   <data name="PictureGif" xml:space="preserve">
     <value>사진 / Gif</value>
   </data>
   <data name="PlayPause" xml:space="preserve">
     <value>재생 / 정지</value>
+  </data>
+  <data name="PollingRate" xml:space="preserve">
+    <value>Polling Rate</value>
   </data>
   <data name="PowerLimits" xml:space="preserve">
     <value>전력 제한</value>
@@ -439,6 +505,9 @@
   </data>
   <data name="PrintScreen" xml:space="preserve">
     <value>PrintScreen</value>
+  </data>
+  <data name="Profile" xml:space="preserve">
+    <value>Profile</value>
   </data>
   <data name="Quit" xml:space="preserve">
     <value>종료</value>
