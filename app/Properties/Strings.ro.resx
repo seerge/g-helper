@@ -276,7 +276,7 @@
     <value>Setările implicite ale fabricii</value>
   </data>
   <data name="FanCurves" xml:space="preserve">
-    <value>Curbele ventilatorului</value>
+    <value>Curbe ventilator</value>
   </data>
   <data name="FanProfileCPU" xml:space="preserve">
     <value>Profil ventilator CPU</value>
@@ -291,10 +291,10 @@
     <value>Profiluri ventilatoare</value>
   </data>
   <data name="FansAndPower" xml:space="preserve">
-    <value>Ventilatoare și energie</value>
+    <value>Vent. și putere</value>
   </data>
   <data name="FanSpeed" xml:space="preserve">
-    <value>Ventilator</value>
+    <value>Vent</value>
   </data>
   <data name="FansPower" xml:space="preserve">
     <value>Fans + Power</value>
