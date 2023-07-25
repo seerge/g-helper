@@ -162,11 +162,23 @@
   <data name="AsusServicesRunning" xml:space="preserve">
     <value>執行中的華碩服務</value>
   </data>
+  <data name="AuraBatteryState" xml:space="preserve">
+    <value>Battery State</value>
+  </data>
   <data name="AuraBreathe" xml:space="preserve">
     <value>呼吸</value>
   </data>
+  <data name="AuraClockwise" xml:space="preserve">
+    <value>Clockwise</value>
+  </data>
   <data name="AuraColorCycle" xml:space="preserve">
     <value>循環</value>
+  </data>
+  <data name="AuraComet" xml:space="preserve">
+    <value>Comet</value>
+  </data>
+  <data name="AuraCounterClockwise" xml:space="preserve">
+    <value>Counterclockwise</value>
   </data>
   <data name="AuraFast" xml:space="preserve">
     <value>快速</value>
@@ -176,6 +188,12 @@
   </data>
   <data name="AuraRainbow" xml:space="preserve">
     <value>彩虹</value>
+  </data>
+  <data name="AuraRandomColor" xml:space="preserve">
+    <value>Random</value>
+  </data>
+  <data name="AuraReact" xml:space="preserve">
+    <value>React</value>
   </data>
   <data name="AuraSlow" xml:space="preserve">
     <value>慢</value>
@@ -266,6 +284,9 @@
   <data name="EnableOptimusTitle" xml:space="preserve">
     <value>Nvidia顯示模式未設置為自動切換</value>
   </data>
+  <data name="EnergySettings" xml:space="preserve">
+    <value>Energy Settings</value>
+  </data>
   <data name="Extra" xml:space="preserve">
     <value>更多</value>
   </data>
@@ -332,6 +353,9 @@
   <data name="GPUTempTarget" xml:space="preserve">
     <value>GPU溫度上限</value>
   </data>
+  <data name="High" xml:space="preserve">
+    <value>High</value>
+  </data>
   <data name="KeyBindings" xml:space="preserve">
     <value>按鍵綁定</value>
   </data>
@@ -356,8 +380,14 @@
   <data name="Lightbar" xml:space="preserve">
     <value>燈條</value>
   </data>
+  <data name="Lighting" xml:space="preserve">
+    <value>Lighting</value>
+  </data>
   <data name="Logo" xml:space="preserve">
     <value>Logo</value>
+  </data>
+  <data name="Low" xml:space="preserve">
+    <value>Low</value>
   </data>
   <data name="MatrixAudio" xml:space="preserve">
     <value>音效視覺化</value>
@@ -392,17 +422,47 @@
   <data name="MinRefreshTooltip" xml:space="preserve">
     <value>維持60Hz以節省電量</value>
   </data>
+  <data name="Minute" xml:space="preserve">
+    <value>Minute</value>
+  </data>
+  <data name="Minutes" xml:space="preserve">
+    <value>Minutes</value>
+  </data>
+  <data name="MouseAngleSnapping" xml:space="preserve">
+    <value>Angle Snapping</value>
+  </data>
+  <data name="MouseAutoPowerOff" xml:space="preserve">
+    <value>Auto Power Off After</value>
+  </data>
+  <data name="MouseLiftOffDistance" xml:space="preserve">
+    <value>Lift Off Distance</value>
+  </data>
+  <data name="MouseLowBatteryWarning" xml:space="preserve">
+    <value>Low Battery Warning at</value>
+  </data>
+  <data name="MousePerformance" xml:space="preserve">
+    <value>Performance</value>
+  </data>
+  <data name="MouseSynchronize" xml:space="preserve">
+    <value>Synchronize with mouse</value>
+  </data>
   <data name="Multizone" xml:space="preserve">
     <value>多區域</value>
   </data>
   <data name="MuteMic" xml:space="preserve">
     <value>麥克風開關</value>
   </data>
+  <data name="Never" xml:space="preserve">
+    <value>Never</value>
+  </data>
   <data name="NewUpdates" xml:space="preserve">
     <value>新的更新</value>
   </data>
   <data name="NoNewUpdates" xml:space="preserve">
     <value>沒有新的更新</value>
+  </data>
+  <data name="NotConnected" xml:space="preserve">
+    <value>Not Connected</value>
   </data>
   <data name="OpenGHelper" xml:space="preserve">
     <value>開啟G-Helper視窗</value>
@@ -425,11 +485,17 @@
   <data name="PerformanceMode" xml:space="preserve">
     <value>性能模式:</value>
   </data>
+  <data name="Peripherals" xml:space="preserve">
+    <value>Peripherals</value>
+  </data>
   <data name="PictureGif" xml:space="preserve">
     <value>圖片/動圖</value>
   </data>
   <data name="PlayPause" xml:space="preserve">
     <value>播放/暫停</value>
+  </data>
+  <data name="PollingRate" xml:space="preserve">
+    <value>Polling Rate</value>
   </data>
   <data name="PowerLimits" xml:space="preserve">
     <value>功率限制</value>
@@ -439,6 +505,9 @@
   </data>
   <data name="PrintScreen" xml:space="preserve">
     <value>截圖</value>
+  </data>
+  <data name="Profile" xml:space="preserve">
+    <value>Profile</value>
   </data>
   <data name="Quit" xml:space="preserve">
     <value>退出</value>

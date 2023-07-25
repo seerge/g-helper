@@ -162,11 +162,23 @@
   <data name="AsusServicesRunning" xml:space="preserve">
     <value>ASUS Dienste laufen</value>
   </data>
+  <data name="AuraBatteryState" xml:space="preserve">
+    <value>Batteriezustand</value>
+  </data>
   <data name="AuraBreathe" xml:space="preserve">
     <value>Atmen</value>
   </data>
+  <data name="AuraClockwise" xml:space="preserve">
+    <value>Im Uhrzeigersinn</value>
+  </data>
   <data name="AuraColorCycle" xml:space="preserve">
     <value>Farbwechsel</value>
+  </data>
+  <data name="AuraComet" xml:space="preserve">
+    <value>Komet</value>
+  </data>
+  <data name="AuraCounterClockwise" xml:space="preserve">
+    <value>Gegen den Uhrzeigersinn</value>
   </data>
   <data name="AuraFast" xml:space="preserve">
     <value>Schnell</value>
@@ -176,6 +188,12 @@
   </data>
   <data name="AuraRainbow" xml:space="preserve">
     <value>Regenbogen</value>
+  </data>
+  <data name="AuraRandomColor" xml:space="preserve">
+    <value>Zufällig</value>
+  </data>
+  <data name="AuraReact" xml:space="preserve">
+    <value>Reagierend</value>
   </data>
   <data name="AuraSlow" xml:space="preserve">
     <value>Langsam</value>
@@ -266,6 +284,9 @@ Trotzdem fortfahren?</value>
   <data name="EnableOptimusTitle" xml:space="preserve">
     <value>Nvidia Anzeigemodus ist nicht auf Optimus eingestellt</value>
   </data>
+  <data name="EnergySettings" xml:space="preserve">
+    <value>Energieeinstellungen</value>
+  </data>
   <data name="Extra" xml:space="preserve">
     <value>Extra</value>
   </data>
@@ -332,6 +353,9 @@ Trotzdem fortfahren?</value>
   <data name="GPUTempTarget" xml:space="preserve">
     <value>Maximale GPU Temperatur</value>
   </data>
+  <data name="High" xml:space="preserve">
+    <value>Hoch</value>
+  </data>
   <data name="KeyBindings" xml:space="preserve">
     <value>Tastenbelegung</value>
   </data>
@@ -356,8 +380,14 @@ Trotzdem fortfahren?</value>
   <data name="Lightbar" xml:space="preserve">
     <value>Leuchtstreifen</value>
   </data>
+  <data name="Lighting" xml:space="preserve">
+    <value>Beleuchtung</value>
+  </data>
   <data name="Logo" xml:space="preserve">
     <value>Logo</value>
+  </data>
+  <data name="Low" xml:space="preserve">
+    <value>Niedrig</value>
   </data>
   <data name="MatrixAudio" xml:space="preserve">
     <value>Audio Visualisierung</value>
@@ -392,17 +422,47 @@ Trotzdem fortfahren?</value>
   <data name="MinRefreshTooltip" xml:space="preserve">
     <value>60Hz um Strom zu sparen</value>
   </data>
+  <data name="Minute" xml:space="preserve">
+    <value>Minute</value>
+  </data>
+  <data name="Minutes" xml:space="preserve">
+    <value>Minuten</value>
+  </data>
+  <data name="MouseAngleSnapping" xml:space="preserve">
+    <value>Mausglättung</value>
+  </data>
+  <data name="MouseAutoPowerOff" xml:space="preserve">
+    <value>Automatisch abschalten nach</value>
+  </data>
+  <data name="MouseLiftOffDistance" xml:space="preserve">
+    <value>Lift Off Distance</value>
+  </data>
+  <data name="MouseLowBatteryWarning" xml:space="preserve">
+    <value>Batteriewarnung bei</value>
+  </data>
+  <data name="MousePerformance" xml:space="preserve">
+    <value>Leistung</value>
+  </data>
+  <data name="MouseSynchronize" xml:space="preserve">
+    <value>Maus synchronisieren</value>
+  </data>
   <data name="Multizone" xml:space="preserve">
     <value>Multi-Zone</value>
   </data>
   <data name="MuteMic" xml:space="preserve">
     <value>Mikrofon stummschalten</value>
   </data>
+  <data name="Never" xml:space="preserve">
+    <value>Niemals</value>
+  </data>
   <data name="NewUpdates" xml:space="preserve">
     <value>Neue Updates:</value>
   </data>
   <data name="NoNewUpdates" xml:space="preserve">
     <value>Keine Updates verfügbar</value>
+  </data>
+  <data name="NotConnected" xml:space="preserve">
+    <value>Nicht verbunden</value>
   </data>
   <data name="OpenGHelper" xml:space="preserve">
     <value>G-Helper Fenster öffnen</value>
@@ -425,11 +485,17 @@ Trotzdem fortfahren?</value>
   <data name="PerformanceMode" xml:space="preserve">
     <value>Leistungsmodus</value>
   </data>
+  <data name="Peripherals" xml:space="preserve">
+    <value>Zubehör</value>
+  </data>
   <data name="PictureGif" xml:space="preserve">
     <value>Bild / GIF</value>
   </data>
   <data name="PlayPause" xml:space="preserve">
     <value>Wiedergabe / Pause</value>
+  </data>
+  <data name="PollingRate" xml:space="preserve">
+    <value>Abfragerate</value>
   </data>
   <data name="PowerLimits" xml:space="preserve">
     <value>Leistungsbegrenzung</value>
@@ -439,6 +505,9 @@ Trotzdem fortfahren?</value>
   </data>
   <data name="PrintScreen" xml:space="preserve">
     <value>Druck</value>
+  </data>
+  <data name="Profile" xml:space="preserve">
+    <value>Profil</value>
   </data>
   <data name="Quit" xml:space="preserve">
     <value>Schließen</value>
