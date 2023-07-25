@@ -425,7 +425,7 @@ namespace GHelper
             {
                 if (auraDevice is null || !auraDevice.IsConnected) GetAuraDevice();
                 if (auraDevice is null || !auraDevice.IsConnected) return;
-                auraDevice.WriteFeatureData(AuraMessage(0, color, color, 0xf5));
+                auraDevice.WriteFeatureData(AuraMessage(0, color, color, 0));
                 auraDevice.WriteFeatureData(MESSAGE_SET);
                 //auraDevice.WriteFeatureData(MESSAGE_APPLY);
             });
