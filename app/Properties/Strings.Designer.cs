@@ -196,6 +196,15 @@ namespace GHelper.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Battery State.
+        /// </summary>
+        internal static string AuraBatteryState {
+            get {
+                return ResourceManager.GetString("AuraBatteryState", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Breathe.
         /// </summary>
         internal static string AuraBreathe {
@@ -205,11 +214,38 @@ namespace GHelper.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Clockwise.
+        /// </summary>
+        internal static string AuraClockwise {
+            get {
+                return ResourceManager.GetString("AuraClockwise", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Color Cycle.
         /// </summary>
         internal static string AuraColorCycle {
             get {
                 return ResourceManager.GetString("AuraColorCycle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Comet.
+        /// </summary>
+        internal static string AuraComet {
+            get {
+                return ResourceManager.GetString("AuraComet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Counterclockwise.
+        /// </summary>
+        internal static string AuraCounterClockwise {
+            get {
+                return ResourceManager.GetString("AuraCounterClockwise", resourceCulture);
             }
         }
         
@@ -237,6 +273,24 @@ namespace GHelper.Properties {
         internal static string AuraRainbow {
             get {
                 return ResourceManager.GetString("AuraRainbow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Random.
+        /// </summary>
+        internal static string AuraRandomColor {
+            get {
+                return ResourceManager.GetString("AuraRandomColor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to React.
+        /// </summary>
+        internal static string AuraReact {
+            get {
+                return ResourceManager.GetString("AuraReact", resourceCulture);
             }
         }
         
@@ -504,6 +558,15 @@ namespace GHelper.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Energy Settings.
+        /// </summary>
+        internal static string EnergySettings {
+            get {
+                return ResourceManager.GetString("EnergySettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Extra.
         /// </summary>
         internal static string Extra {
@@ -702,6 +765,15 @@ namespace GHelper.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to High.
+        /// </summary>
+        internal static string High {
+            get {
+                return ResourceManager.GetString("High", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Key Bindings.
         /// </summary>
         internal static string KeyBindings {
@@ -774,11 +846,29 @@ namespace GHelper.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Lighting.
+        /// </summary>
+        internal static string Lighting {
+            get {
+                return ResourceManager.GetString("Lighting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Logo.
         /// </summary>
         internal static string Logo {
             get {
                 return ResourceManager.GetString("Logo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Low.
+        /// </summary>
+        internal static string Low {
+            get {
+                return ResourceManager.GetString("Low", resourceCulture);
             }
         }
         
@@ -882,6 +972,78 @@ namespace GHelper.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Minute.
+        /// </summary>
+        internal static string Minute {
+            get {
+                return ResourceManager.GetString("Minute", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Minutes.
+        /// </summary>
+        internal static string Minutes {
+            get {
+                return ResourceManager.GetString("Minutes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Angle Snapping.
+        /// </summary>
+        internal static string MouseAngleSnapping {
+            get {
+                return ResourceManager.GetString("MouseAngleSnapping", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Auto Power Off After.
+        /// </summary>
+        internal static string MouseAutoPowerOff {
+            get {
+                return ResourceManager.GetString("MouseAutoPowerOff", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lift Off Distance.
+        /// </summary>
+        internal static string MouseLiftOffDistance {
+            get {
+                return ResourceManager.GetString("MouseLiftOffDistance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Low Battery Warning at.
+        /// </summary>
+        internal static string MouseLowBatteryWarning {
+            get {
+                return ResourceManager.GetString("MouseLowBatteryWarning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Performance.
+        /// </summary>
+        internal static string MousePerformance {
+            get {
+                return ResourceManager.GetString("MousePerformance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Synchronize with mouse.
+        /// </summary>
+        internal static string MouseSynchronize {
+            get {
+                return ResourceManager.GetString("MouseSynchronize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Multizone.
         /// </summary>
         internal static string Multizone {
@@ -900,6 +1062,15 @@ namespace GHelper.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Never.
+        /// </summary>
+        internal static string Never {
+            get {
+                return ResourceManager.GetString("Never", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to New updates.
         /// </summary>
         internal static string NewUpdates {
@@ -914,6 +1085,15 @@ namespace GHelper.Properties {
         internal static string NoNewUpdates {
             get {
                 return ResourceManager.GetString("NoNewUpdates", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Not Connected.
+        /// </summary>
+        internal static string NotConnected {
+            get {
+                return ResourceManager.GetString("NotConnected", resourceCulture);
             }
         }
         
@@ -981,6 +1161,15 @@ namespace GHelper.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Peripherals.
+        /// </summary>
+        internal static string Peripherals {
+            get {
+                return ResourceManager.GetString("Peripherals", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Picture / Gif.
         /// </summary>
         internal static string PictureGif {
@@ -995,6 +1184,15 @@ namespace GHelper.Properties {
         internal static string PlayPause {
             get {
                 return ResourceManager.GetString("PlayPause", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Polling Rate.
+        /// </summary>
+        internal static string PollingRate {
+            get {
+                return ResourceManager.GetString("PollingRate", resourceCulture);
             }
         }
         
@@ -1022,6 +1220,15 @@ namespace GHelper.Properties {
         internal static string PrintScreen {
             get {
                 return ResourceManager.GetString("PrintScreen", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Profile.
+        /// </summary>
+        internal static string Profile {
+            get {
+                return ResourceManager.GetString("Profile", resourceCulture);
             }
         }
         

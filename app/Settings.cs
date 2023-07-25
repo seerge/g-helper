@@ -6,6 +6,8 @@ using GHelper.Gpu;
 using GHelper.Helpers;
 using GHelper.Input;
 using GHelper.Mode;
+using GHelper.Peripherals;
+using GHelper.Peripherals.Mouse;
 using GHelper.UI;
 using System.Diagnostics;
 using System.Timers;
@@ -70,6 +72,7 @@ namespace GHelper
             labelKeyboard.Text = Properties.Strings.LaptopKeyboard;
             labelMatrix.Text = Properties.Strings.AnimeMatrix;
             labelBatteryTitle.Text = Properties.Strings.BatteryChargeLimit;
+            labelPeripherals.Text = Properties.Strings.Peripherals;
 
             checkMatrix.Text = Properties.Strings.TurnOffOnBattery;
             checkStartup.Text = Properties.Strings.RunOnStartup;
@@ -181,11 +184,22 @@ namespace GHelper
             labelBattery.MouseLeave += PanelBattery_MouseLeave;
             labelBatteryTitle.MouseLeave += PanelBattery_MouseLeave;
 
+            buttonPeripheral1.Click += ButtonPeripheral_Click;
+            buttonPeripheral2.Click += ButtonPeripheral_Click;
+            buttonPeripheral3.Click += ButtonPeripheral_Click;
+
             Text = "G-Helper " + (ProcessHelper.IsUserAdministrator() ? "—" : "-") + " " + AppConfig.GetModelShort();
             TopMost = AppConfig.Is("topmost");
 
+            //This will auto position the window again when it resizes. Might mess with position if people drag the window somewhere else.
+            this.Resize += SettingsForm_Resize;
             SetContextMenu();
+        }
 
+        private void SettingsForm_Resize(object? sender, EventArgs e)
+        {
+            Left = Screen.FromControl(this).WorkingArea.Width - 10 - Width;
+            Top = Screen.FromControl(this).WorkingArea.Height - 10 - Height;
         }
 
         private void PanelBattery_MouseEnter(object? sender, EventArgs e)
@@ -815,6 +829,7 @@ namespace GHelper
                 gpuTemp = $": {HardwareControl.gpuTemp}°C";
             }
 
+            PeripheralsProvider.RefreshBatteryForAllDevices();
 
             Program.settingsForm.BeginInvoke(delegate
             {
@@ -824,6 +839,7 @@ namespace GHelper
                     labelMidFan.Text = "Mid " + HardwareControl.midFan;
 
                 if (!batteryMouseOver) labelBattery.Text = battery;
+                VisualizePeripherals();
             });
 
             string trayTip = "CPU" + cpuTemp + " " + HardwareControl.cpuFan;
@@ -1058,6 +1074,92 @@ namespace GHelper
         }
 
 
+        public void VisualizePeripherals()
+        {
+            if (!PeripheralsProvider.IsAnyPeripheralConnect())
+            {
+                panelPeripherals.Visible = false;
+                return;
+            }
+
+            Button[] buttons = new Button[] { buttonPeripheral1, buttonPeripheral2, buttonPeripheral3 };
+
+            //we only support 4 devces for now. Who has more than 4 mice connected to the same PC anyways....
+            List<IPeripheral> lp = PeripheralsProvider.AllPeripherals();
+
+            for (int i = 0; i < lp.Count && i < buttons.Length; ++i)
+            {
+                IPeripheral m = lp.ElementAt(i);
+                Button b = buttons[i];
+
+                if (m.IsDeviceReady)
+                {
+                    b.Text = m.GetDisplayName() + "\n" + m.Battery + "%"
+                    + (m.Charging ? "(" + Properties.Strings.Charging + ")" : "");
+                    b.Enabled = true;
+                }
+                else
+                {
+                    //Mouse is either not connected or in standby
+                    b.Text = m.GetDisplayName() + "\n(" + Properties.Strings.NotConnected + ")";
+                    b.Enabled = false;
+                }
+
+                switch (m.DeviceType())
+                {
+                    case PeripheralType.Mouse:
+                        b.Image = ControlHelper.TintImage(Properties.Resources.icons8_maus_32, b.ForeColor);
+                        break;
+
+                    case PeripheralType.Keyboard:
+                        b.Image = ControlHelper.TintImage(Properties.Resources.icons8_keyboard_32, b.ForeColor);
+                        break;
+                }
+
+                b.Visible = true;
+            }
+
+            for (int i = lp.Count; i < buttons.Length; ++i)
+            {
+                buttons[i].Visible = false;
+            }
+
+            panelPeripherals.Visible = true;
+        }
+
+        private void ButtonPeripheral_Click(object? sender, EventArgs e)
+        {
+            int index = 0;
+            if (sender == buttonPeripheral2) index = 1;
+            if (sender == buttonPeripheral3) index = 2;
+
+            IPeripheral iph = PeripheralsProvider.AllPeripherals().ElementAt(index);
+
+            if (iph is null)
+            {
+                //Can only happen when the user hits the button in the exact moment a device is disconnected.
+                return;
+            }
+
+            if (iph.DeviceType() == PeripheralType.Mouse)
+            {
+                AsusMouse? am = iph as AsusMouse;
+                if (am is null)
+                {
+                    //Should not happen if all device classes are implemented correctly. But better safe than sorry.
+                    return;
+                }
+                AsusMouseSettings s = new AsusMouseSettings(am);
+                if (!s.IsDisposed)
+                {
+                    s.Show();
+                }
+
+            }
+
+
+
+        }
     }
 
 

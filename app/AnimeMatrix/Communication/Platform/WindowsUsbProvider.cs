@@ -8,6 +8,27 @@ namespace GHelper.AnimeMatrix.Communication.Platform
         protected HidDevice HidDevice { get; }
         protected HidStream HidStream { get; }
 
+        public WindowsUsbProvider(ushort vendorId, ushort productId, string path, int timeout = 500) : base(vendorId, productId)
+        {
+            try
+            {
+                HidDevice = DeviceList.Local.GetHidDevices(vendorId, productId)
+                   .First(x => x.DevicePath.Contains(path));
+            }
+            catch
+            {
+                throw new IOException("HID device was not found on your machine.");
+            }
+
+            var config = new OpenConfiguration();
+            config.SetOption(OpenOption.Interruptible, true);
+            config.SetOption(OpenOption.Exclusive, false);
+            config.SetOption(OpenOption.Priority, 10);
+            HidStream = HidDevice.Open(config);
+            HidStream.ReadTimeout = timeout;
+            HidStream.WriteTimeout = timeout;
+        }
+
         public WindowsUsbProvider(ushort vendorId, ushort productId, int maxFeatureReportLength)
             : base(vendorId, productId)
         {
@@ -51,6 +72,23 @@ namespace GHelper.AnimeMatrix.Communication.Platform
             });
 
             return data;
+        }
+
+        public override void Read(byte[] data)
+        {
+            WrapException(() =>
+            {
+                HidStream.Read(data);
+            });
+        }
+
+        public override void Write(byte[] data)
+        {
+            WrapException(() =>
+            {
+                HidStream.Write(data);
+                HidStream.Flush();
+            });
         }
 
         public override void Dispose()

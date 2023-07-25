@@ -77,6 +77,12 @@ public static class ControlHelper
                 combo.ButtonColor = RForm.buttonMain;
                 combo.ArrowColor = RForm.foreMain;
             }
+            var numbericUpDown = control as NumericUpDown;
+            if(numbericUpDown is not null)
+            {
+                numbericUpDown.ForeColor = RForm.foreMain;
+                numbericUpDown.BackColor = RForm.buttonMain;
+            }
 
             var gb = control as GroupBox;
             if (gb != null)
@@ -170,6 +176,22 @@ public static class ControlHelper
 
         return pic;
 
+    }
+
+    public static Image TintImage(Image image, Color tintColor)
+    {
+        var pic = new Bitmap(image);
+
+        for (int y = 0; (y <= (pic.Height - 1)); y++)
+        {
+            for (int x = 0; (x <= (pic.Width - 1)); x++)
+            {
+                Color col = pic.GetPixel(x, y);
+                pic.SetPixel(x, y, Color.FromArgb(col.A, tintColor.R, tintColor.G, tintColor.B));
+            }
+        }
+        
+        return pic;
     }
 
 }
