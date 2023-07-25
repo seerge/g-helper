@@ -75,16 +75,16 @@ namespace GHelper
             seriesMid.Color = colorEco;
             seriesXGM.Color = Color.Orange;
 
-            chartCPU.MouseMove += ChartCPU_MouseMove;
+            chartCPU.MouseMove += (sender, e) => ChartCPU_MouseMove(sender, e, AsusFan.CPU);
             chartCPU.MouseUp += ChartCPU_MouseUp;
 
-            chartGPU.MouseMove += ChartCPU_MouseMove;
+            chartGPU.MouseMove += (sender, e) => ChartCPU_MouseMove(sender, e, AsusFan.GPU);
             chartGPU.MouseUp += ChartCPU_MouseUp;
 
-            chartMid.MouseMove += ChartCPU_MouseMove;
+            chartMid.MouseMove += (sender, e) => ChartCPU_MouseMove(sender, e, AsusFan.Mid);
             chartMid.MouseUp += ChartCPU_MouseUp;
 
-            chartXGM.MouseMove += ChartCPU_MouseMove;
+            chartXGM.MouseMove += (sender, e) => ChartCPU_MouseMove(sender, e, AsusFan.XGM);
             chartXGM.MouseUp += ChartCPU_MouseUp;
 
             buttonReset.Click += ButtonReset_Click;
@@ -507,11 +507,14 @@ namespace GHelper
             VisualiseGPUSettings();
         }
 
-        static string ChartPercToRPM(int percentage, string unit = "")
+        static string ChartPercToRPM(int percentage, AsusFan device, string unit = "")
         {
             if (percentage == 0) return "OFF";
 
-            return (200 * Math.Round((float)(MinRPM * 100 + (MaxRPM - MinRPM) * percentage) / 200)).ToString() + unit;
+            int Max = MaxRPM;
+            if (device == AsusFan.XGM ) Max = 72;
+
+            return (200 * Math.Round((float)(MinRPM * 100 + (Max - MinRPM) * percentage) / 200)).ToString() + unit;
         }
 
         void SetChart(Chart chart, AsusFan device)
@@ -552,7 +555,7 @@ namespace GHelper
             chart.ChartAreas[0].AxisY.LineColor = chartGrid;
 
             for (int i = 0; i <= fansMax - 10; i += 10)
-                chart.ChartAreas[0].AxisY.CustomLabels.Add(i - 2, i + 2, ChartPercToRPM(i));
+                chart.ChartAreas[0].AxisY.CustomLabels.Add(i - 2, i + 2, ChartPercToRPM(i, device));
 
             chart.ChartAreas[0].AxisY.CustomLabels.Add(fansMax - 2, fansMax + 2, Properties.Strings.RPM);
 
@@ -911,7 +914,7 @@ namespace GHelper
 
         }
 
-        private void ChartCPU_MouseMove(object? sender, MouseEventArgs e)
+        private void ChartCPU_MouseMove(object? sender, MouseEventArgs e, AsusFan device)
         {
 
             if (sender is null) return;
@@ -972,7 +975,7 @@ namespace GHelper
                         tip = true;
                     }
 
-                    labelTip.Text = Math.Round(curPoint.XValue) + "C, " + ChartPercToRPM((int)curPoint.YValues[0], " " + Properties.Strings.RPM);
+                    labelTip.Text = Math.Round(curPoint.XValue) + "C, " + ChartPercToRPM((int)curPoint.YValues[0], device, " " + Properties.Strings.RPM);
                     labelTip.Top = e.Y + ((Control)sender).Top;
                     labelTip.Left = e.X - 50;
 
