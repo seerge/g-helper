@@ -304,6 +304,9 @@ namespace GHelper.Gpu
 
                     if (AppConfig.IsMode("auto_apply"))
                         AsusUSB.SetXGMFan(AppConfig.GetFanConfig(AsusFan.XGM));
+
+                    HardwareControl.RecreateGpuControl();
+
                 }
 
                 settings.Invoke(delegate
