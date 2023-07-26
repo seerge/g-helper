@@ -62,7 +62,7 @@ namespace GHelper.Helpers
         }
         public static void DisableClamshellMode()
         {
-            PowerNative.SetLidAction(1, true);
+            PowerNative.SetLidAction(GetDefaultLidAction(), true);
             Logger.WriteLine("Disengaging Clamshell Mode");
         }
 
@@ -88,6 +88,16 @@ namespace GHelper.Helpers
 
             if (IsClamshellEnabled())
                 ToggleLidAction();
+        }
+
+        //Power users can change that setting.
+        //0 = Do nothing
+        //1 = Sleep (default)
+        //2 = Hibernate
+        //3 = Shutdown
+        private static int GetDefaultLidAction()
+        {
+            return AppConfig.Get("clamshell_default_lid_action", 1);
         }
     }
 }
