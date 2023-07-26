@@ -161,6 +161,7 @@ namespace GHelper.Peripherals.Mouse
 
         public override void Dispose()
         {
+            Logger.WriteLine(GetDisplayName() + ": Disposing");
             HidSharp.DeviceList.Local.Changed -= Device_Changed;
             base.Dispose();
         }
@@ -200,6 +201,7 @@ namespace GHelper.Peripherals.Mouse
 
         protected virtual void OnDisconnect()
         {
+            Logger.WriteLine(GetDisplayName() + ": OnDisconnect()");
             if (Disconnect is not null)
             {
                 Disconnect(this, EventArgs.Empty);
