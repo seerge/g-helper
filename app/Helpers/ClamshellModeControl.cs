@@ -97,7 +97,14 @@ namespace GHelper.Helpers
         //3 = Shutdown
         private static int GetDefaultLidAction()
         {
-            return AppConfig.Get("clamshell_default_lid_action", 1);
+            int val = AppConfig.Get("clamshell_default_lid_action", 1);
+
+            if (val < 0 || val > 3)
+            {
+                val = 1;
+            }
+
+            return val;
         }
     }
 }
