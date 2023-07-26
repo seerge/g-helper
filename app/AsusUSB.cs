@@ -1,5 +1,6 @@
 ﻿using GHelper.Helpers;
 using HidLibrary;
+using System.Drawing;
 using System.Text;
 
 namespace GHelper
@@ -64,8 +65,8 @@ namespace GHelper
         public static readonly byte[] LED_INIT4 = Encoding.ASCII.GetBytes("^ASUS Tech.Inc.");
         public static readonly byte[] LED_INIT5 = new byte[] { 0x5e, 0x05, 0x20, 0x31, 0, 0x08 };
 
-        static byte[] MESSAGE_SET = { AURA_HID_ID, 0xb5, 0, 0, 0 };
         static byte[] MESSAGE_APPLY = { AURA_HID_ID, 0xb4 };
+        static byte[] MESSAGE_SET = { AURA_HID_ID, 0xb5, 0, 0, 0 };
 
         static int[] deviceIds = { 0x1a30, 0x1854, 0x1869, 0x1866, 0x19b6, 0x1822, 0x1837, 0x1854, 0x184a, 0x183d, 0x8502, 0x1807, 0x17e0, 0x18c6, 0x1abe };
 
@@ -423,11 +424,33 @@ namespace GHelper
         {
             Task.Run(async () =>
             {
+                if (AppConfig.ContainsModel("TUF"))
+                {
+                    Program.acpi.TUFKeyboardRGB(0, color, 0);
+                    return;
+                }
+
                 if (auraDevice is null || !auraDevice.IsConnected) GetAuraDevice();
                 if (auraDevice is null || !auraDevice.IsConnected) return;
-                auraDevice.WriteFeatureData(AuraMessage(0, color, color, 0));
-                auraDevice.WriteFeatureData(MESSAGE_SET);
-                //auraDevice.WriteFeatureData(MESSAGE_APPLY);
+
+                byte[] msg = new byte[40];
+                int start = 9;
+
+                msg[0] = AURA_HID_ID;
+                msg[1] = 0xBC;
+                msg[2] = 1;
+                msg[3] = 1;
+                msg[4] = 0;
+
+                for (int i = 0; i < 10; i++)
+                {
+                    msg[start + i * 3] = color.R; // R
+                    msg[start + 1 + i * 3] = color.G; // G
+                    msg[start + 2 + i * 3] = color.B; // B
+                }
+
+                //Logger.WriteLine(BitConverter.ToString(msg));
+                auraDevice.WriteFeatureData(msg);
             });
         }
 
@@ -478,8 +501,8 @@ namespace GHelper
                     if (device.ReadFeatureData(out byte[] data, AURA_HID_ID))
                     {
                         device.WriteFeatureData(msg);
-                        device.WriteFeatureData(MESSAGE_SET);
                         device.WriteFeatureData(MESSAGE_APPLY);
+                        device.WriteFeatureData(MESSAGE_SET);
                         Logger.WriteLine("USB-KB " + device.Capabilities.FeatureReportByteLength + "|" + device.Capabilities.InputReportByteLength + device.Description + device.DevicePath + ":" + BitConverter.ToString(msg));
                     }
                     device.CloseDevice();
@@ -513,6 +536,15 @@ namespace GHelper
             return 0;
         }
 
+        public static void InitXGM()
+        {
+            SetXGM(LED_INIT1);
+            SetXGM(LED_INIT2);
+            SetXGM(LED_INIT3);
+            SetXGM(LED_INIT4);
+            SetXGM(LED_INIT5);
+        }
+
         public static void ApplyXGMLight(bool status)
         {
             SetXGM(new byte[] { 0x5e, 0xc5, status ? (byte)0x50 : (byte)0 });
@@ -528,6 +560,8 @@ namespace GHelper
         {
 
             if (AsusACPI.IsInvalidCurve(curve)) return -1;
+
+            InitXGM();
 
             byte[] msg = new byte[19];
             Array.Copy(new byte[] { 0x5e, 0xd1, 0x01 }, msg, 3);

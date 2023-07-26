@@ -285,7 +285,7 @@ Vis tiek norite tęsti?</value>
     <value>NVIDIA ekrano režimas nenustatytas į Optimus</value>
   </data>
   <data name="EnergySettings" xml:space="preserve">
-    <value>Energy Settings</value>
+    <value>Energijos nustatymai</value>
   </data>
   <data name="Extra" xml:space="preserve">
     <value>Išplėstiniai</value>
@@ -354,7 +354,7 @@ Vis tiek norite tęsti?</value>
     <value>Temperatūros tikslas</value>
   </data>
   <data name="High" xml:space="preserve">
-    <value>High</value>
+    <value>Aukštas</value>
   </data>
   <data name="KeyBindings" xml:space="preserve">
     <value>Klavišų priskyrimas</value>
@@ -387,7 +387,7 @@ Vis tiek norite tęsti?</value>
     <value>Logotipas</value>
   </data>
   <data name="Low" xml:space="preserve">
-    <value>Low</value>
+    <value>Žemas</value>
   </data>
   <data name="MatrixAudio" xml:space="preserve">
     <value>Garso vizualizatorius</value>
@@ -435,19 +435,19 @@ Vis tiek norite tęsti?</value>
     <value>Auto Power Off After</value>
   </data>
   <data name="MouseLiftOffDistance" xml:space="preserve">
-    <value>Lift Off Distance</value>
+    <value>Pakilimo atstumas</value>
   </data>
   <data name="MouseLowBatteryWarning" xml:space="preserve">
     <value>Low Battery Warning at</value>
   </data>
   <data name="MousePerformance" xml:space="preserve">
-    <value>Performance</value>
+    <value>Našumas</value>
   </data>
   <data name="MouseSynchronize" xml:space="preserve">
-    <value>Synchronize with mouse</value>
+    <value>Sinchronizuoti su pele</value>
   </data>
   <data name="Multizone" xml:space="preserve">
-    <value>Daugiazonė</value>
+    <value>Daugiazonis</value>
   </data>
   <data name="MuteMic" xml:space="preserve">
     <value>Mikrofono nutildymas</value>
@@ -507,7 +507,7 @@ Vis tiek norite tęsti?</value>
     <value>Ekrano kopija</value>
   </data>
   <data name="Profile" xml:space="preserve">
-    <value>Profile</value>
+    <value>Profilis</value>
   </data>
   <data name="Quit" xml:space="preserve">
     <value>Išeiti</value>
