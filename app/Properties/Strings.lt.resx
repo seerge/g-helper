@@ -163,13 +163,13 @@
     <value>Veikiančios Asus tarnybos</value>
   </data>
   <data name="AuraBatteryState" xml:space="preserve">
-    <value>Battery State</value>
+    <value>Būsena</value>
   </data>
   <data name="AuraBreathe" xml:space="preserve">
     <value>Kvėpavimas</value>
   </data>
   <data name="AuraClockwise" xml:space="preserve">
-    <value>Clockwise</value>
+    <value>Pagal laikrodžio rodyklę</value>
   </data>
   <data name="AuraColorCycle" xml:space="preserve">
     <value>Spalvų ciklas</value>
@@ -178,7 +178,7 @@
     <value>Comet</value>
   </data>
   <data name="AuraCounterClockwise" xml:space="preserve">
-    <value>Counterclockwise</value>
+    <value>Prieš laikrodžio rodyklę</value>
   </data>
   <data name="AuraFast" xml:space="preserve">
     <value>Greitas</value>
@@ -190,7 +190,7 @@
     <value>Vaivorykštė</value>
   </data>
   <data name="AuraRandomColor" xml:space="preserve">
-    <value>Random</value>
+    <value>Atsitiktinė</value>
   </data>
   <data name="AuraReact" xml:space="preserve">
     <value>React</value>
@@ -211,7 +211,7 @@
     <value>Automatinis</value>
   </data>
   <data name="AutoRefreshTooltip" xml:space="preserve">
-    <value>Nustato 60Hz, kad stokotų akumuliatorių, ir atgal, kai prijungtas prie lizdo</value>
+    <value>Nustato 60Hz, kad taupytų energiją, ir atgal, kai įjungtas į lizdą</value>
   </data>
   <data name="Awake" xml:space="preserve">
     <value>Pabudęs</value>
@@ -271,7 +271,7 @@
     <value>Tvarkyklės ir programinė įranga</value>
   </data>
   <data name="EcoGPUTooltip" xml:space="preserve">
-    <value>Išjungia dGPU, kad stokotų akumuliatorių</value>
+    <value>Išjungia dGPU, kad taupytų energiją</value>
   </data>
   <data name="EcoMode" xml:space="preserve">
     <value>Ekonomiškas</value>
@@ -381,7 +381,7 @@ Vis tiek norite tęsti?</value>
     <value>Šviesos juosta</value>
   </data>
   <data name="Lighting" xml:space="preserve">
-    <value>Lighting</value>
+    <value>Apšvietimas</value>
   </data>
   <data name="Logo" xml:space="preserve">
     <value>Logotipas</value>
@@ -420,25 +420,25 @@ Vis tiek norite tęsti?</value>
     <value>Maksimalus kadrų dažnis už mažesnę delsą</value>
   </data>
   <data name="MinRefreshTooltip" xml:space="preserve">
-    <value>60Hz kadrų dažnis, kad stokotumėte akumuliatorių</value>
+    <value>60Hz kadrų dažnis, kad taupytumėte energiją</value>
   </data>
   <data name="Minute" xml:space="preserve">
-    <value>Minute</value>
+    <value>min.</value>
   </data>
   <data name="Minutes" xml:space="preserve">
-    <value>Minutes</value>
+    <value>min.</value>
   </data>
   <data name="MouseAngleSnapping" xml:space="preserve">
     <value>Angle Snapping</value>
   </data>
   <data name="MouseAutoPowerOff" xml:space="preserve">
-    <value>Auto Power Off After</value>
+    <value>Automatiškai išjungti po</value>
   </data>
   <data name="MouseLiftOffDistance" xml:space="preserve">
     <value>Pakilimo atstumas</value>
   </data>
   <data name="MouseLowBatteryWarning" xml:space="preserve">
-    <value>Low Battery Warning at</value>
+    <value>Senkančio akumuliatoriaus įspėjimas</value>
   </data>
   <data name="MousePerformance" xml:space="preserve">
     <value>Našumas</value>
@@ -453,16 +453,16 @@ Vis tiek norite tęsti?</value>
     <value>Mikrofono nutildymas</value>
   </data>
   <data name="Never" xml:space="preserve">
-    <value>Never</value>
+    <value>Niekada</value>
   </data>
   <data name="NewUpdates" xml:space="preserve">
-    <value>Prieinami naujinimai</value>
+    <value>Nauji naujinimai</value>
   </data>
   <data name="NoNewUpdates" xml:space="preserve">
-    <value>Nėra prieinamų naujinimų</value>
+    <value>Nėra naujų naujinimų</value>
   </data>
   <data name="NotConnected" xml:space="preserve">
-    <value>Not Connected</value>
+    <value>Neprijungta</value>
   </data>
   <data name="OpenGHelper" xml:space="preserve">
     <value>Atidaryti G-Helper langą</value>
@@ -471,7 +471,7 @@ Vis tiek norite tęsti?</value>
     <value>Optimizuotas</value>
   </data>
   <data name="OptimizedGPUTooltip" xml:space="preserve">
-    <value>Perjungti į ekonomišką, kai naudojamas akumuliatorius, ir į standartinį, kai prijungtas prie lizdo</value>
+    <value>Perjungti į ekonomišką, kai naudojamas akumuliatorius, ir į standartinį, kai įjungtas į lizdą</value>
   </data>
   <data name="OptimizedUSBC" xml:space="preserve">
     <value>Neįjungti GPU, kai naudojamas USB-C įkroviklis optimizuotame režime</value>
@@ -486,7 +486,7 @@ Vis tiek norite tęsti?</value>
     <value>Režimas</value>
   </data>
   <data name="Peripherals" xml:space="preserve">
-    <value>Peripherals</value>
+    <value>Išoriniai įrenginiai</value>
   </data>
   <data name="PictureGif" xml:space="preserve">
     <value>Paveikslėlis / GIF</value>
@@ -495,7 +495,7 @@ Vis tiek norite tęsti?</value>
     <value>Paleisti / Pristabdyti</value>
   </data>
   <data name="PollingRate" xml:space="preserve">
-    <value>Polling Rate</value>
+    <value>Iškvietų dažnis</value>
   </data>
   <data name="PowerLimits" xml:space="preserve">
     <value>Galios ribos</value>
