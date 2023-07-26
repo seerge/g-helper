@@ -6,6 +6,13 @@ namespace GHelper.Helpers
 {
     internal class ClamshellModeControl
     {
+
+        public ClamshellModeControl()
+        {
+            //Save current setting if hibernate or shutdown to prevent reverting the user set option.
+            CheckAndSaveLidAction();
+        }
+
         public bool IsExternalDisplayConnected()
         {
             var devices = ScreenInterrogatory.GetAllDevices().ToArray();
@@ -31,7 +38,7 @@ namespace GHelper.Helpers
 
         public bool IsClamshellEnabled()
         {
-            return AppConfig.Get("toggle_clamshell_mode") != 0;
+            return AppConfig.Is("toggle_clamshell_mode");
         }
 
         public bool IsChargerConnected()
@@ -62,7 +69,7 @@ namespace GHelper.Helpers
         }
         public static void DisableClamshellMode()
         {
-            PowerNative.SetLidAction(1, true);
+            PowerNative.SetLidAction(GetDefaultLidAction(), true);
             Logger.WriteLine("Disengaging Clamshell Mode");
         }
 
@@ -88,6 +95,44 @@ namespace GHelper.Helpers
 
             if (IsClamshellEnabled())
                 ToggleLidAction();
+        }
+
+        private static int CheckAndSaveLidAction()
+        {
+            if (AppConfig.Get("clamshell_default_lid_action", -1) != -1)
+            {
+                //Seting was alredy set. Do not touch it
+                return AppConfig.Get("clamshell_default_lid_action", -1);
+            }
+
+            int val = PowerNative.GetLidAction(true);
+            //If it is 0 then it is likely already set by clamshell mdoe
+            //If 0 was set by the user, then why do they even use clamshell mode?
+            //We only care about hibernate or shutdown setting here
+            if (val == 2 || val == 3)
+            {
+                AppConfig.Set("clamshell_default_lid_action", val);
+                return val;
+            }
+
+            return 1;
+        }
+
+        //Power users can change that setting.
+        //0 = Do nothing
+        //1 = Sleep (default)
+        //2 = Hibernate
+        //3 = Shutdown
+        private static int GetDefaultLidAction()
+        {
+            int val = AppConfig.Get("clamshell_default_lid_action", 1);
+
+            if (val < 0 || val > 3)
+            {
+                val = 1;
+            }
+
+            return val;
         }
     }
 }

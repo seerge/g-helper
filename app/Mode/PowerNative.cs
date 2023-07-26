@@ -167,6 +167,28 @@ namespace GHelper.Mode
             }
         }
 
+        public static int GetLidAction(bool ac)
+        {
+            Guid activeSchemeGuid = GetActiveScheme();
+
+            IntPtr activeIndex;
+            if (ac)
+                PowerReadACValueIndex(IntPtr.Zero,
+                     activeSchemeGuid,
+                     GUID_SYSTEM_BUTTON_SUBGROUP,
+                     GUID_LIDACTION, out activeIndex);
+
+            else
+                PowerReadDCValueIndex(IntPtr.Zero,
+                    activeSchemeGuid,
+                    GUID_SYSTEM_BUTTON_SUBGROUP,
+                    GUID_LIDACTION, out activeIndex);
+
+
+            return activeIndex.ToInt32();
+        }
+
+
         public static void SetLidAction(int action, bool acOnly = false)
         {
             /**
