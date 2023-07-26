@@ -99,6 +99,12 @@ namespace GHelper.Helpers
 
         private static int CheckAndSaveLidAction()
         {
+            if (AppConfig.Get("clamshell_default_lid_action", -1) != -1)
+            {
+                //Seting was alredy set. Do not touch it
+                return AppConfig.Get("clamshell_default_lid_action", -1);
+            }
+
             int val = PowerNative.GetLidAction(true);
             //If it is 0 then it is likely already set by clamshell mdoe
             //If 0 was set by the user, then why do they even use clamshell mode?
