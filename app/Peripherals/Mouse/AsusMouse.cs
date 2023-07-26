@@ -107,10 +107,27 @@ namespace GHelper.Peripherals.Mouse
 
         public event EventHandler? Disconnect;
         public event EventHandler? BatteryUpdated;
+        public event EventHandler? MouseReadyChanged;
 
         private readonly string path;
 
         public bool IsDeviceReady { get; protected set; }
+
+        private void SetDeviceReady(bool ready)
+        {
+            bool notify = false;
+            if (IsDeviceReady != ready)
+            {
+                notify = true;
+            }
+            IsDeviceReady = ready;
+
+
+            if (MouseReadyChanged is not null && notify)
+            {
+                MouseReadyChanged(this, EventArgs.Empty);
+            }
+        }
         public bool Wireless { get; protected set; }
         public int Battery { get; protected set; }
         public bool Charging { get; protected set; }
@@ -271,10 +288,10 @@ namespace GHelper.Peripherals.Mouse
             {
                 //Likely only the dongle connected and the mouse is either sleeping or turned off.
                 //The mouse will not respond with proper data, but empty responses at this point
-                IsDeviceReady = false;
+                SetDeviceReady(false);
                 return;
             }
-            IsDeviceReady = true;
+            SetDeviceReady(true);
 
             ReadProfile();
             ReadDPI();
@@ -380,7 +397,13 @@ namespace GHelper.Peripherals.Mouse
                 Charging = ParseChargingState(response);
 
                 //If the device goes to standby it will not report battery state anymore.
-                IsDeviceReady = Battery > 0;
+                SetDeviceReady(Battery > 0);
+
+                if (!IsDeviceReady)
+                {
+                    Logger.WriteLine(GetDisplayName() + ": Device gone");
+                    return;
+                }
 
                 Logger.WriteLine(GetDisplayName() + ": Got Battery Percentage " + Battery + "% - Charging:" + Charging);
 

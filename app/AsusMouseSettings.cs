@@ -89,6 +89,22 @@ namespace GHelper
         {
             mouse.BatteryUpdated -= Mouse_BatteryUpdated;
             mouse.Disconnect -= Mouse_Disconnect;
+            mouse.MouseReadyChanged -= Mouse_MouseReadyChanged;
+        }
+
+        private void Mouse_MouseReadyChanged(object? sender, EventArgs e)
+        {
+            if (!mouse.IsDeviceReady)
+            {
+                this.Invoke(delegate
+                {
+                    if (Disposing || IsDisposed)
+                    {
+                        return;
+                    }
+                    Close();
+                });
+            }
         }
 
         private void Mouse_BatteryUpdated(object? sender, EventArgs e)
@@ -606,6 +622,10 @@ namespace GHelper
             for (int i = 0; i < mouse.DPIProfileCount() && i < 4; ++i)
             {
                 AsusMouseDPI dpi = mouse.DpiSettings[i];
+                if (dpi is null)
+                {
+                    continue;
+                }
                 if (mouse.HasDPIColors())
                 {
                     dpiButtons[i].Image = ControlHelper.TintImage(Properties.Resources.lighting_dot_24, dpi.Color);
@@ -641,6 +661,7 @@ namespace GHelper
 
             mouse.Disconnect += Mouse_Disconnect;
             mouse.BatteryUpdated += Mouse_BatteryUpdated;
+            mouse.MouseReadyChanged += Mouse_MouseReadyChanged;
         }
 
         private void ButtonSync_Click(object sender, EventArgs e)
