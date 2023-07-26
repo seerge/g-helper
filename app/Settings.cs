@@ -1093,13 +1093,11 @@ namespace GHelper
                 {
                     b.Text = m.GetDisplayName() + "\n" + m.Battery + "%"
                     + (m.Charging ? "(" + Properties.Strings.Charging + ")" : "");
-                    b.Enabled = true;
                 }
                 else
                 {
                     //Mouse is either not connected or in standby
                     b.Text = m.GetDisplayName() + "\n(" + Properties.Strings.NotConnected + ")";
-                    b.Enabled = false;
                 }
 
                 switch (m.DeviceType())
@@ -1141,7 +1139,7 @@ namespace GHelper
             if (iph.DeviceType() == PeripheralType.Mouse)
             {
                 AsusMouse? am = iph as AsusMouse;
-                if (am is null)
+                if (am is null || !am.IsDeviceReady)
                 {
                     //Should not happen if all device classes are implemented correctly. But better safe than sorry.
                     return;
