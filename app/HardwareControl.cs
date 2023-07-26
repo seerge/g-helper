@@ -174,22 +174,12 @@ public static class HardwareControl
 
     public static float? GetCPUTemp() {
 
-        if (Math.Abs(DateTimeOffset.Now.ToUnixTimeMilliseconds() - lastUpdate) < 1000) return cpuTemp;
-        lastUpdate = DateTimeOffset.Now.ToUnixTimeMilliseconds();
+        var last = DateTimeOffset.Now.ToUnixTimeSeconds();
+        if (Math.Abs(last - lastUpdate) < 2) return cpuTemp;
+        lastUpdate = last;
 
         cpuTemp = Program.acpi.DeviceGet(AsusACPI.Temp_CPU);
-
-        if (cpuTemp < 0) try
-            {
-                using (var ct = new PerformanceCounter("Thermal Zone Information", "Temperature", @"\_TZ.THRM", true))
-                {
-                    cpuTemp = ct.NextValue() - 273;
-                }
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine("Failed reading CPU temp :" + ex.Message);
-            }
+        //Debug.WriteLine(cpuTemp);
 
         return cpuTemp;
     }

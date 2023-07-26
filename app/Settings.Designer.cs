@@ -1207,6 +1207,7 @@ namespace GHelper
             panelPeripherals.Padding = new Padding(20, 20, 20, 10);
             panelPeripherals.Size = new Size(827, 198);
             panelPeripherals.TabIndex = 4;
+            panelPeripherals.Visible = false;
             // 
             // tableLayoutPeripherals
             // 

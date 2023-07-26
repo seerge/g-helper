@@ -139,6 +139,7 @@ namespace GHelper.Peripherals
             DetectMouse(new ChakramXWired());
             DetectMouse(new GladiusIII());
             DetectMouse(new GladiusIIIWired());
+            UpdateSettingsView();
         }
 
         public static void DetectMouse(AsusMouse am)

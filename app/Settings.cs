@@ -236,6 +236,7 @@ namespace GHelper
             {
                 screenControl.InitScreen();
                 gpuControl.InitXGM();
+                PeripheralsProvider.RefreshBatteryForAllDevices();
                 updateControl.CheckForUpdates();
             }
         }
@@ -823,13 +824,10 @@ namespace GHelper
                 battery = Properties.Strings.Charging + ": " + Math.Round((decimal)HardwareControl.batteryRate, 1).ToString() + "W";
 
 
-
             if (HardwareControl.gpuTemp > 0)
             {
                 gpuTemp = $": {HardwareControl.gpuTemp}°C";
             }
-
-            PeripheralsProvider.RefreshBatteryForAllDevices();
 
             Program.settingsForm.BeginInvoke(delegate
             {
@@ -839,7 +837,6 @@ namespace GHelper
                     labelMidFan.Text = "Mid " + HardwareControl.midFan;
 
                 if (!batteryMouseOver) labelBattery.Text = battery;
-                VisualizePeripherals();
             });
 
             string trayTip = "CPU" + cpuTemp + " " + HardwareControl.cpuFan;

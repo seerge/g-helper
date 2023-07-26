@@ -75,8 +75,11 @@ namespace GHelper
         public static Color Color1 = Color.White;
         public static Color Color2 = Color.Black;
 
+        static bool isTuf = AppConfig.ContainsModel("Tuf");
+        static bool isStrix = AppConfig.ContainsModel("Strix");
 
-        static System.Timers.Timer timer = new System.Timers.Timer(1000);
+
+        static System.Timers.Timer timer = new System.Timers.Timer(2000);
         static HidDevice? auraDevice = null;
 
         static AsusUSB()
@@ -141,7 +144,7 @@ namespace GHelper
 
         public static Dictionary<int, string> GetModes()
         {
-            if (AppConfig.ContainsModel("TUF"))
+            if (isTuf)
             {
                 _modes.Remove(3);
             }
@@ -185,7 +188,7 @@ namespace GHelper
 
         public static bool HasSecondColor()
         {
-            return (mode == 1 && !AppConfig.ContainsModel("TUF"));
+            return (mode == 1 && !isTuf);
         }
 
         public static int Speed
@@ -289,8 +292,7 @@ namespace GHelper
             Task.Run(async () =>
             {
 
-                if (AppConfig.ContainsModel("TUF"))
-                    Program.acpi.TUFKeyboardBrightness(brightness);
+                if (isTuf) Program.acpi.TUFKeyboardBrightness(brightness);
 
                 byte[] msg = { AURA_HID_ID, 0xba, 0xc5, 0xc4, (byte)brightness };
                 byte[] msgBackup = { INPUT_HID_ID, 0xba, 0xc5, 0xc4, (byte)brightness };
@@ -390,7 +392,7 @@ namespace GHelper
                     device.CloseDevice();
                 }
 
-                if (AppConfig.ContainsModel("TUF"))
+                if (isTuf)
                     Program.acpi.TUFKeyboardPower(
                         flags.Contains(AuraDev19b6.AwakeKeyb),
                         flags.Contains(AuraDev19b6.BootKeyb),
@@ -410,6 +412,7 @@ namespace GHelper
                 device.OpenDevice();
                 if (device.ReadFeatureData(out byte[] data, AURA_HID_ID))
                 {
+                    Logger.WriteLine("Aura Device:" + device.DevicePath);
                     auraDevice = device;
                     return;
                 }
@@ -422,36 +425,33 @@ namespace GHelper
 
         public static void ApplyColor(Color color)
         {
-            Task.Run(async () =>
+            if (isTuf)
             {
-                if (AppConfig.ContainsModel("TUF"))
-                {
-                    Program.acpi.TUFKeyboardRGB(0, color, 0);
-                    return;
-                }
+                Program.acpi.TUFKeyboardRGB(0, color, 0);
+                return;
+            }
 
-                if (auraDevice is null || !auraDevice.IsConnected) GetAuraDevice();
-                if (auraDevice is null || !auraDevice.IsConnected) return;
+            if (auraDevice is null || !auraDevice.IsConnected) GetAuraDevice();
+            if (auraDevice is null || !auraDevice.IsConnected) return;
 
-                byte[] msg = new byte[40];
-                int start = 9;
+            byte[] msg = new byte[40];
+            int start = 9;
 
-                msg[0] = AURA_HID_ID;
-                msg[1] = 0xBC;
-                msg[2] = 1;
-                msg[3] = 1;
-                msg[4] = 0;
+            msg[0] = AURA_HID_ID;
+            msg[1] = 0xbc;
+            msg[2] = 1;
+            msg[3] = 1;
+            msg[4] = isStrix ? (byte)4 : (byte)0;
 
-                for (int i = 0; i < 10; i++)
-                {
-                    msg[start + i * 3] = color.R; // R
-                    msg[start + 1 + i * 3] = color.G; // G
-                    msg[start + 2 + i * 3] = color.B; // B
-                }
+            for (int i = 0; i < 10; i++)
+            {
+                msg[start + i * 3] = color.R; // R
+                msg[start + 1 + i * 3] = color.G; // G
+                msg[start + 2 + i * 3] = color.B; // B
+            }
 
-                //Logger.WriteLine(BitConverter.ToString(msg));
-                auraDevice.WriteFeatureData(msg);
-            });
+            //Logger.WriteLine(BitConverter.ToString(msg));
+            //auraDevice.Write(msg);
         }
 
 
@@ -561,7 +561,7 @@ namespace GHelper
 
             if (AsusACPI.IsInvalidCurve(curve)) return -1;
 
-            InitXGM();
+            //InitXGM();
 
             byte[] msg = new byte[19];
             Array.Copy(new byte[] { 0x5e, 0xd1, 0x01 }, msg, 3);
