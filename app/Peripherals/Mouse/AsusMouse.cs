@@ -400,7 +400,9 @@ namespace GHelper.Peripherals.Mouse
 
             if (HasLowBatteryWarning() || HasAutoPowerOff())
             {
-                Logger.WriteLine(GetDisplayName() + ": Got Auto Power Off: " + PowerOffSetting + " - Low Battery Warnning at: " + LowBatteryWarning + "%");
+                string pos = HasAutoPowerOff() ? PowerOffSetting.ToString() : "Not Supported";
+                string lbw = HasLowBatteryWarning() ? LowBatteryWarning.ToString() : "Not Supported";
+                Logger.WriteLine(GetDisplayName() + ": Got Auto Power Off: " + pos + " - Low Battery Warnning at: " + lbw + "%");
             }
 
         }
