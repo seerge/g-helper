@@ -169,7 +169,7 @@
     <value>呼吸</value>
   </data>
   <data name="AuraClockwise" xml:space="preserve">
-    <value>Clockwise</value>
+    <value>順時針</value>
   </data>
   <data name="AuraColorCycle" xml:space="preserve">
     <value>循環</value>
@@ -178,7 +178,7 @@
     <value>彗星</value>
   </data>
   <data name="AuraCounterClockwise" xml:space="preserve">
-    <value>Counterclockwise</value>
+    <value>逆時針</value>
   </data>
   <data name="AuraFast" xml:space="preserve">
     <value>快速</value>
@@ -193,7 +193,7 @@
     <value>隨機</value>
   </data>
   <data name="AuraReact" xml:space="preserve">
-    <value>React</value>
+    <value>觸發</value>
   </data>
   <data name="AuraSlow" xml:space="preserve">
     <value>慢</value>
@@ -423,19 +423,19 @@
     <value>維持60Hz以節省電量</value>
   </data>
   <data name="Minute" xml:space="preserve">
-    <value>Minute</value>
+    <value>分鐘</value>
   </data>
   <data name="Minutes" xml:space="preserve">
-    <value>Minutes</value>
+    <value>分鐘</value>
   </data>
   <data name="MouseAngleSnapping" xml:space="preserve">
-    <value>Angle Snapping</value>
+    <value>角度修正</value>
   </data>
   <data name="MouseAutoPowerOff" xml:space="preserve">
-    <value>Auto Power Off After</value>
+    <value>自動關閉電源</value>
   </data>
   <data name="MouseLiftOffDistance" xml:space="preserve">
-    <value>Lift Off Distance</value>
+    <value>響應高度(LOD)</value>
   </data>
   <data name="MouseLowBatteryWarning" xml:space="preserve">
     <value>低電量警告</value>
