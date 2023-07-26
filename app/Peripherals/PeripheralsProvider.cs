@@ -33,6 +33,8 @@ namespace GHelper.Peripherals
 
         public static void RefreshBatteryForAllDevices()
         {
+            if (!IsAnyPeripheralConnect()) return;
+
             lock (_LOCK)
             {
                 foreach (IPeripheral m in AllPeripherals())
