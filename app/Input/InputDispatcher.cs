@@ -2,7 +2,6 @@
 using GHelper.Helpers;
 using GHelper.Mode;
 using Microsoft.Win32;
-using NAudio.CoreAudioApi;
 using System.Diagnostics;
 using System.Management;
 
@@ -150,9 +149,10 @@ namespace GHelper.Input
 
         public static bool NoMKeys()
         {
-            return AppConfig.ContainsModel("Z13") || 
-                   AppConfig.ContainsModel("FA506") || 
+            return AppConfig.ContainsModel("Z13") ||
+                   AppConfig.ContainsModel("FA506") ||
                    AppConfig.ContainsModel("FX506") ||
+                   AppConfig.ContainsModel("Duo") ||
                    AppConfig.ContainsModel("FX505");
         }
 
@@ -179,7 +179,7 @@ namespace GHelper.Input
                     }
                 }
 
-                if (AppConfig.ContainsModel("Z13")) 
+                if (AppConfig.ContainsModel("Z13") || AppConfig.ContainsModel("Duo"))
                 {
                     switch (e.Key)
                     {
@@ -534,7 +534,7 @@ namespace GHelper.Input
 
             AppConfig.Set("screenpad", brightness);
 
-            Program.acpi.DeviceSet(AsusACPI.ScreenPadBrightness, (brightness*255/100), "Screenpad");
+            Program.acpi.DeviceSet(AsusACPI.ScreenPadBrightness, (brightness * 255 / 100), "Screenpad");
             if (brightness == 0) Program.acpi.DeviceSet(AsusACPI.ScreenPadToggle, brightness, "ScreenpadToggle");
 
             Program.toast.RunToast($"Screen Pad {brightness}", delta > 0 ? ToastIcon.BrightnessUp : ToastIcon.BrightnessDown);

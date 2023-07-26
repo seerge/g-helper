@@ -89,6 +89,11 @@ namespace GHelper
 
         private static void Timer_Elapsed(object? sender, System.Timers.ElapsedEventArgs e)
         {
+            SetHeatmap();
+        }
+
+        static void SetHeatmap(bool init = false)
+        {
             float cpuTemp = (float)HardwareControl.GetCPUTemp();
             int freeze = 20, cold = 40, warm = 65, hot = 90;
             Color color;
@@ -100,7 +105,7 @@ namespace GHelper
             else if (cpuTemp < hot) color = ColorUtilities.GetWeightedAverage(Color.Yellow, Color.Red, ((float)cpuTemp - warm) / (hot - warm));
             else color = Color.Red;
 
-            ApplyColor(color);
+            ApplyColor(color, init);
         }
 
         public static Dictionary<int, string> GetSpeeds()
@@ -423,8 +428,9 @@ namespace GHelper
             }
         }
 
-        public static void ApplyColor(Color color)
+        public static void ApplyColor(Color color, bool init = false)
         {
+
             if (isTuf)
             {
                 Program.acpi.TUFKeyboardRGB(0, color, 0);
@@ -441,7 +447,7 @@ namespace GHelper
             msg[1] = 0xbc;
             msg[2] = 1;
             msg[3] = 1;
-            msg[4] = isStrix ? (byte)4 : (byte)0;
+            msg[4] = 4;
 
             for (int i = 0; i < 10; i++)
             {
@@ -451,6 +457,7 @@ namespace GHelper
             }
 
             //Logger.WriteLine(BitConverter.ToString(msg));
+            if (init) auraDevice.Write(new byte[] { AURA_HID_ID ,0xbc});
             auraDevice.Write(msg);
         }
 
@@ -465,6 +472,7 @@ namespace GHelper
 
             if (Mode == HEATMAP)
             {
+                SetHeatmap(true);
                 timer.Enabled = true;
                 return;
             }
