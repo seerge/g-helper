@@ -31,7 +31,7 @@ namespace GHelper.Helpers
 
         public bool IsClamshellEnabled()
         {
-            return AppConfig.Get("toggle_clamshell_mode") != 0;
+            return AppConfig.Is("toggle_clamshell_mode");
         }
 
         public bool IsChargerConnected()
