@@ -688,6 +688,11 @@ namespace GHelper.Peripherals.Mouse
 
         protected virtual byte[] GetChangeDPIProfilePacket(int profile)
         {
+            return new byte[] { 0x00, 0x51, 0x31, 0x0A, 0x00, (byte)profile };
+        }
+
+        protected virtual byte[] GetChangeDPIProfilePacket2(int profile)
+        {
             return new byte[] { 0x00, 0x51, 0x31, 0x09, 0x00, (byte)profile };
         }
 
@@ -707,6 +712,8 @@ namespace GHelper.Peripherals.Mouse
 
             //The first DPI profile is 1
             WriteForResponse(GetChangeDPIProfilePacket(profile));
+            //For whatever reason that is required or the mouse will not store the change and reverts once you power it off.
+            WriteForResponse(GetChangeDPIProfilePacket2(profile));
             FlushSettings();
 
             Logger.WriteLine(GetDisplayName() + ": DPI Profile set to " + profile);
