@@ -102,15 +102,32 @@ namespace GHelper.Peripherals.Mouse
     public abstract class AsusMouse : Device, IPeripheral
     {
         private static string[] POLLING_RATES = { "125 Hz", "250 Hz", "500 Hz", "1000 Hz", "2000 Hz", "4000 Hz", "8000 Hz", "16000 Hz" };
-
+        internal const bool PACKET_LOGGER_ALWAYS_ON = false;
         internal const int ASUS_MOUSE_PACKET_SIZE = 65;
 
         public event EventHandler? Disconnect;
         public event EventHandler? BatteryUpdated;
+        public event EventHandler? MouseReadyChanged;
 
         private readonly string path;
 
         public bool IsDeviceReady { get; protected set; }
+
+        private void SetDeviceReady(bool ready)
+        {
+            bool notify = false;
+            if (IsDeviceReady != ready)
+            {
+                notify = true;
+            }
+            IsDeviceReady = ready;
+
+
+            if (MouseReadyChanged is not null && notify)
+            {
+                MouseReadyChanged(this, EventArgs.Empty);
+            }
+        }
         public bool Wireless { get; protected set; }
         public int Battery { get; protected set; }
         public bool Charging { get; protected set; }
@@ -161,6 +178,7 @@ namespace GHelper.Peripherals.Mouse
 
         public override void Dispose()
         {
+            Logger.WriteLine(GetDisplayName() + ": Disposing");
             HidSharp.DeviceList.Local.Changed -= Device_Changed;
             base.Dispose();
         }
@@ -200,6 +218,7 @@ namespace GHelper.Peripherals.Mouse
 
         protected virtual void OnDisconnect()
         {
+            Logger.WriteLine(GetDisplayName() + ": OnDisconnect()");
             if (Disconnect is not null)
             {
                 Disconnect(this, EventArgs.Empty);
@@ -212,7 +231,7 @@ namespace GHelper.Peripherals.Mouse
             return true;
 #else
 
-            return AppConfig.Get("usb_packet_logger") == 1;
+            return AppConfig.Get("usb_packet_logger") == 1 || PACKET_LOGGER_ALWAYS_ON;
 #endif
         }
 
@@ -269,10 +288,10 @@ namespace GHelper.Peripherals.Mouse
             {
                 //Likely only the dongle connected and the mouse is either sleeping or turned off.
                 //The mouse will not respond with proper data, but empty responses at this point
-                IsDeviceReady = false;
+                SetDeviceReady(false);
                 return;
             }
-            IsDeviceReady = true;
+            SetDeviceReady(true);
 
             ReadProfile();
             ReadDPI();
@@ -378,7 +397,13 @@ namespace GHelper.Peripherals.Mouse
                 Charging = ParseChargingState(response);
 
                 //If the device goes to standby it will not report battery state anymore.
-                IsDeviceReady = Battery > 0;
+                SetDeviceReady(Battery > 0);
+
+                if (!IsDeviceReady)
+                {
+                    Logger.WriteLine(GetDisplayName() + ": Device gone");
+                    return;
+                }
 
                 Logger.WriteLine(GetDisplayName() + ": Got Battery Percentage " + Battery + "% - Charging:" + Charging);
 
@@ -400,7 +425,9 @@ namespace GHelper.Peripherals.Mouse
 
             if (HasLowBatteryWarning() || HasAutoPowerOff())
             {
-                Logger.WriteLine(GetDisplayName() + ": Got Auto Power Off: " + PowerOffSetting + " - Low Battery Warnning at: " + LowBatteryWarning + "%");
+                string pos = HasAutoPowerOff() ? PowerOffSetting.ToString() : "Not Supported";
+                string lbw = HasLowBatteryWarning() ? LowBatteryWarning.ToString() : "Not Supported";
+                Logger.WriteLine(GetDisplayName() + ": Got Auto Power Off: " + pos + " - Low Battery Warnning at: " + lbw + "%");
             }
 
         }
@@ -684,6 +711,11 @@ namespace GHelper.Peripherals.Mouse
 
         protected virtual byte[] GetChangeDPIProfilePacket(int profile)
         {
+            return new byte[] { 0x00, 0x51, 0x31, 0x0A, 0x00, (byte)profile };
+        }
+
+        protected virtual byte[] GetChangeDPIProfilePacket2(int profile)
+        {
             return new byte[] { 0x00, 0x51, 0x31, 0x09, 0x00, (byte)profile };
         }
 
@@ -703,6 +735,8 @@ namespace GHelper.Peripherals.Mouse
 
             //The first DPI profile is 1
             WriteForResponse(GetChangeDPIProfilePacket(profile));
+            //For whatever reason that is required or the mouse will not store the change and reverts once you power it off.
+            WriteForResponse(GetChangeDPIProfilePacket2(profile));
             FlushSettings();
 
             Logger.WriteLine(GetDisplayName() + ": DPI Profile set to " + profile);

@@ -51,8 +51,6 @@ namespace GHelper
             Shown += AsusMouseSettings_Shown;
             FormClosing += AsusMouseSettings_FormClosing;
 
-            mouse.Disconnect += Mouse_Disconnect;
-            mouse.BatteryUpdated += Mouse_BatteryUpdated;
             comboProfile.DropDownClosed += ComboProfile_DropDownClosed;
 
             sliderDPI.ValueChanged += SliderDPI_ValueChanged;
@@ -83,19 +81,40 @@ namespace GHelper
             comboBoxAutoPowerOff.DropDownClosed += ComboBoxAutoPowerOff_DropDownClosed;
 
             InitMouseCapabilities();
-            RefreshMouseData();
+            Logger.WriteLine(mouse.GetDisplayName() + " (GUI): Initialized capabilities. Synchronizing mouse data");
+            Task task = Task.Run((Action)RefreshMouseData);
         }
 
         private void AsusMouseSettings_FormClosing(object? sender, FormClosingEventArgs e)
         {
             mouse.BatteryUpdated -= Mouse_BatteryUpdated;
             mouse.Disconnect -= Mouse_Disconnect;
+            mouse.MouseReadyChanged -= Mouse_MouseReadyChanged;
+        }
+
+        private void Mouse_MouseReadyChanged(object? sender, EventArgs e)
+        {
+            if (!mouse.IsDeviceReady)
+            {
+                this.Invoke(delegate
+                {
+                    if (Disposing || IsDisposed)
+                    {
+                        return;
+                    }
+                    Close();
+                });
+            }
         }
 
         private void Mouse_BatteryUpdated(object? sender, EventArgs e)
         {
             this.Invoke(delegate
             {
+                if (Disposing || IsDisposed)
+                {
+                    return;
+                }
                 VisualizeBatteryState();
             });
 
@@ -104,7 +123,7 @@ namespace GHelper
         private void ComboProfile_DropDownClosed(object? sender, EventArgs e)
         {
             mouse.SetProfile(comboProfile.SelectedIndex);
-            RefreshMouseData();
+            Task task = Task.Run((Action)RefreshMouseData);
         }
 
         private void ComboBoxPollingRate_DropDownClosed(object? sender, EventArgs e)
@@ -194,6 +213,11 @@ namespace GHelper
 
         private void ComboBoxLightingMode_DropDownClosed(object? sender, EventArgs e)
         {
+            if (!mouse.HasRGB())
+            {
+                return;
+            }
+
             LightingMode lm = supportedLightingModes[comboBoxLightingMode.SelectedIndex];
 
             LightingSetting? ls = mouse.LightingSetting;
@@ -308,6 +332,10 @@ namespace GHelper
             //Mouse disconnected. Bye bye.
             this.Invoke(delegate
             {
+                if (Disposing || IsDisposed)
+                {
+                    return;
+                }
                 this.Close();
             });
 
@@ -316,8 +344,11 @@ namespace GHelper
         private void RefreshMouseData()
         {
             mouse.SynchronizeDevice();
+
+            Logger.WriteLine(mouse.GetDisplayName() + " (GUI): Mouse data synchronized");
             if (!mouse.IsDeviceReady)
             {
+                Logger.WriteLine(mouse.GetDisplayName() + " (GUI): Mouse is not ready. Closing view.");
                 this.Invoke(delegate
                 {
                     this.Close();
@@ -325,9 +356,11 @@ namespace GHelper
                 return;
             }
 
-
-            VisualizeMouseSettings();
-            VisualizeBatteryState();
+            this.Invoke(delegate
+            {
+                VisualizeMouseSettings();
+                VisualizeBatteryState();
+            });
         }
 
         private void InitMouseCapabilities()
@@ -586,19 +619,23 @@ namespace GHelper
 
         private void VisualizeDPIButtons()
         {
-            if (mouse.HasDPIColors())
+            for (int i = 0; i < mouse.DPIProfileCount() && i < 4; ++i)
             {
-                for (int i = 0; i < mouse.DPIProfileCount() && i < 4; ++i)
+                AsusMouseDPI dpi = mouse.DpiSettings[i];
+                if (dpi is null)
                 {
-                    AsusMouseDPI dpi = mouse.DpiSettings[i];
-                    dpiButtons[i].Image = ControlHelper.TintImage(Properties.Resources.lighting_dot_24, dpi.Color);
-                    dpiButtons[i].Activated = (mouse.DpiProfile - 1) == i;
-                    dpiButtons[i].BorderColor = dpi.Color;
-                    dpiButtons[i].Text = "DPI " + (i + 1) + "\n" + dpi.DPI;
+                    continue;
                 }
+                if (mouse.HasDPIColors())
+                {
+                    dpiButtons[i].Image = ControlHelper.TintImage(Properties.Resources.lighting_dot_24, dpi.Color);
+                    dpiButtons[i].BorderColor = dpi.Color;
+                }
+                dpiButtons[i].Activated = (mouse.DpiProfile - 1) == i;
+                dpiButtons[i].Text = "DPI " + (i + 1) + "\n" + dpi.DPI;
             }
-
         }
+
 
         private void VisualizeCurrentDPIProfile()
         {
@@ -620,11 +657,16 @@ namespace GHelper
             }
 
             Left = Program.settingsForm.Left - Width - 5;
+
+
+            mouse.Disconnect += Mouse_Disconnect;
+            mouse.BatteryUpdated += Mouse_BatteryUpdated;
+            mouse.MouseReadyChanged += Mouse_MouseReadyChanged;
         }
 
         private void ButtonSync_Click(object sender, EventArgs e)
         {
-            RefreshMouseData();
+            Task task = Task.Run((Action)RefreshMouseData);
         }
     }
 }
