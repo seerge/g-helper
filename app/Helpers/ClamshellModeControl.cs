@@ -6,6 +6,13 @@ namespace GHelper.Helpers
 {
     internal class ClamshellModeControl
     {
+
+        public ClamshellModeControl()
+        {
+            //Save current setting if hibernate or shutdown to prevent reverting the user set option.
+            CheckAndSaveLidAction();
+        }
+
         public bool IsExternalDisplayConnected()
         {
             var devices = ScreenInterrogatory.GetAllDevices().ToArray();
@@ -88,6 +95,21 @@ namespace GHelper.Helpers
 
             if (IsClamshellEnabled())
                 ToggleLidAction();
+        }
+
+        private static int CheckAndSaveLidAction()
+        {
+            int val = PowerNative.GetLidAction(true);
+            //If it is 0 then it is likely already set by clamshell mdoe
+            //If 0 was set by the user, then why do they even use clamshell mode?
+            //We only care about hibernate or shutdown setting here
+            if (val == 2 || val == 3)
+            {
+                AppConfig.Set("clamshell_default_lid_action", val);
+                return val;
+            }
+
+            return 1;
         }
 
         //Power users can change that setting.
