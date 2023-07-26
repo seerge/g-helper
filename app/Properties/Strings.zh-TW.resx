@@ -163,7 +163,7 @@
     <value>執行中的華碩服務</value>
   </data>
   <data name="AuraBatteryState" xml:space="preserve">
-    <value>Battery State</value>
+    <value>電池狀態</value>
   </data>
   <data name="AuraBreathe" xml:space="preserve">
     <value>呼吸</value>
@@ -175,7 +175,7 @@
     <value>循環</value>
   </data>
   <data name="AuraComet" xml:space="preserve">
-    <value>Comet</value>
+    <value>彗星</value>
   </data>
   <data name="AuraCounterClockwise" xml:space="preserve">
     <value>Counterclockwise</value>
@@ -190,7 +190,7 @@
     <value>彩虹</value>
   </data>
   <data name="AuraRandomColor" xml:space="preserve">
-    <value>Random</value>
+    <value>隨機</value>
   </data>
   <data name="AuraReact" xml:space="preserve">
     <value>React</value>
@@ -285,7 +285,7 @@
     <value>Nvidia顯示模式未設置為自動切換</value>
   </data>
   <data name="EnergySettings" xml:space="preserve">
-    <value>Energy Settings</value>
+    <value>電源設定</value>
   </data>
   <data name="Extra" xml:space="preserve">
     <value>更多</value>
@@ -354,7 +354,7 @@
     <value>GPU溫度上限</value>
   </data>
   <data name="High" xml:space="preserve">
-    <value>High</value>
+    <value>高</value>
   </data>
   <data name="KeyBindings" xml:space="preserve">
     <value>按鍵綁定</value>
@@ -381,13 +381,13 @@
     <value>燈條</value>
   </data>
   <data name="Lighting" xml:space="preserve">
-    <value>Lighting</value>
+    <value>亮度</value>
   </data>
   <data name="Logo" xml:space="preserve">
     <value>Logo</value>
   </data>
   <data name="Low" xml:space="preserve">
-    <value>Low</value>
+    <value>低</value>
   </data>
   <data name="MatrixAudio" xml:space="preserve">
     <value>音效視覺化</value>
@@ -438,13 +438,13 @@
     <value>Lift Off Distance</value>
   </data>
   <data name="MouseLowBatteryWarning" xml:space="preserve">
-    <value>Low Battery Warning at</value>
+    <value>低電量警告</value>
   </data>
   <data name="MousePerformance" xml:space="preserve">
-    <value>Performance</value>
+    <value>性能設定</value>
   </data>
   <data name="MouseSynchronize" xml:space="preserve">
-    <value>Synchronize with mouse</value>
+    <value>與滑鼠同步</value>
   </data>
   <data name="Multizone" xml:space="preserve">
     <value>多區域</value>
@@ -453,7 +453,7 @@
     <value>麥克風開關</value>
   </data>
   <data name="Never" xml:space="preserve">
-    <value>Never</value>
+    <value>永不</value>
   </data>
   <data name="NewUpdates" xml:space="preserve">
     <value>新的更新</value>
@@ -462,7 +462,7 @@
     <value>沒有新的更新</value>
   </data>
   <data name="NotConnected" xml:space="preserve">
-    <value>Not Connected</value>
+    <value>未連線</value>
   </data>
   <data name="OpenGHelper" xml:space="preserve">
     <value>開啟G-Helper視窗</value>
@@ -486,7 +486,7 @@
     <value>性能模式:</value>
   </data>
   <data name="Peripherals" xml:space="preserve">
-    <value>Peripherals</value>
+    <value>週邊設備</value>
   </data>
   <data name="PictureGif" xml:space="preserve">
     <value>圖片/動圖</value>
@@ -495,7 +495,7 @@
     <value>播放/暫停</value>
   </data>
   <data name="PollingRate" xml:space="preserve">
-    <value>Polling Rate</value>
+    <value>輪循率</value>
   </data>
   <data name="PowerLimits" xml:space="preserve">
     <value>功率限制</value>
@@ -507,7 +507,7 @@
     <value>截圖</value>
   </data>
   <data name="Profile" xml:space="preserve">
-    <value>Profile</value>
+    <value>設定檔</value>
   </data>
   <data name="Quit" xml:space="preserve">
     <value>退出</value>
