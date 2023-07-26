@@ -451,7 +451,7 @@ namespace GHelper
             }
 
             //Logger.WriteLine(BitConverter.ToString(msg));
-            //auraDevice.Write(msg);
+            auraDevice.Write(msg);
         }
 
 
