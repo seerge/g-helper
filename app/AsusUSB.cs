@@ -440,7 +440,7 @@ namespace GHelper
                 msg[1] = 0xBC;
                 msg[2] = 1;
                 msg[3] = 1;
-                msg[4] = 4;
+                msg[4] = 0;
 
                 for (int i = 0; i < 10; i++)
                 {
