@@ -95,6 +95,10 @@ namespace GHelper
         {
             this.Invoke(delegate
             {
+                if (Disposing || IsDisposed)
+                {
+                    return;
+                }
                 VisualizeBatteryState();
             });
 
@@ -312,6 +316,10 @@ namespace GHelper
             //Mouse disconnected. Bye bye.
             this.Invoke(delegate
             {
+                if (Disposing || IsDisposed)
+                {
+                    return;
+                }
                 this.Close();
             });
 
