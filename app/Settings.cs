@@ -814,6 +814,7 @@ namespace GHelper
             string battery = "";
 
             HardwareControl.ReadSensors();
+            Task.Run((Action)PeripheralsProvider.RefreshBatteryForAllDevices);
 
             if (HardwareControl.cpuTemp > 0)
                 cpuTemp = ": " + Math.Round((decimal)HardwareControl.cpuTemp).ToString() + "°C";

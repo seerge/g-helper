@@ -63,6 +63,9 @@ namespace GHelper.Peripherals
         {
             lock (_LOCK)
             {
+                am.Disconnect -= Mouse_Disconnect;
+                am.MouseReadyChanged -= MouseReadyChanged;
+                am.BatteryUpdated -= BatteryUpdated;
                 ConnectedMice.Remove(am);
             }
             if (DeviceChanged is not null)
@@ -110,10 +113,22 @@ namespace GHelper.Peripherals
 
 
             am.Disconnect += Mouse_Disconnect;
+            am.MouseReadyChanged += MouseReadyChanged;
+            am.BatteryUpdated += BatteryUpdated;
             if (DeviceChanged is not null)
             {
                 DeviceChanged(am, EventArgs.Empty);
             }
+            UpdateSettingsView();
+        }
+
+        private static void BatteryUpdated(object? sender, EventArgs e)
+        {
+            UpdateSettingsView();
+        }
+
+        private static void MouseReadyChanged(object? sender, EventArgs e)
+        {
             UpdateSettingsView();
         }
 
