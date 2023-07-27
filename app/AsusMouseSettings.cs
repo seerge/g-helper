@@ -82,7 +82,7 @@ namespace GHelper
 
             InitMouseCapabilities();
             Logger.WriteLine(mouse.GetDisplayName() + " (GUI): Initialized capabilities. Synchronizing mouse data");
-            Task task = Task.Run((Action)RefreshMouseData);
+            RefreshMouseData();
         }
 
         private void AsusMouseSettings_FormClosing(object? sender, FormClosingEventArgs e)
