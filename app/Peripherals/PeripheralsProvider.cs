@@ -12,6 +12,14 @@ namespace GHelper.Peripherals
 
         public static event EventHandler? DeviceChanged;
 
+        private static System.Timers.Timer timer = new System.Timers.Timer(1000);
+
+        static PeripheralsProvider()
+        {
+            timer.Elapsed += DeviceTimer_Elapsed;
+        }
+
+
         public static bool IsMouseConnected()
         {
             lock (_LOCK)
@@ -191,8 +199,14 @@ namespace GHelper.Peripherals
 
         private static void Device_Changed(object? sender, HidSharp.DeviceListChangedEventArgs e)
         {
+            timer.Start();
+        }
+
+        private static void DeviceTimer_Elapsed(object? sender, System.Timers.ElapsedEventArgs e)
+        {
+            timer.Stop();
             Logger.WriteLine("HID Device Event: Checking for new ASUS Mice");
-            Task task = Task.Run((Action)DetectAllAsusMice);
+            DetectAllAsusMice();
         }
     }
 }
