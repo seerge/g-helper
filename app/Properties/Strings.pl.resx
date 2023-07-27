@@ -163,7 +163,7 @@
     <value>Uruchomione usługi Asus</value>
   </data>
   <data name="AuraBatteryState" xml:space="preserve">
-    <value>Battery State</value>
+    <value>Stan baterii</value>
   </data>
   <data name="AuraBreathe" xml:space="preserve">
     <value>Oddychanie</value>
@@ -175,7 +175,7 @@
     <value>Pętla kolorów</value>
   </data>
   <data name="AuraComet" xml:space="preserve">
-    <value>Comet</value>
+    <value>Kometa</value>
   </data>
   <data name="AuraCounterClockwise" xml:space="preserve">
     <value>Counterclockwise</value>
@@ -190,7 +190,7 @@
     <value>Tęcza</value>
   </data>
   <data name="AuraRandomColor" xml:space="preserve">
-    <value>Random</value>
+    <value>Losowo</value>
   </data>
   <data name="AuraReact" xml:space="preserve">
     <value>React</value>
@@ -285,7 +285,7 @@ Nadal chcesz kontynuować?</value>
     <value>Tryb wyświetlania NVIDIA nie jest ustawiony na Optimus</value>
   </data>
   <data name="EnergySettings" xml:space="preserve">
-    <value>Energy Settings</value>
+    <value>Ustawienia zasilania</value>
   </data>
   <data name="Extra" xml:space="preserve">
     <value>Ustawienia</value>
@@ -381,7 +381,7 @@ Nadal chcesz kontynuować?</value>
     <value>Lightbar</value>
   </data>
   <data name="Lighting" xml:space="preserve">
-    <value>Lighting</value>
+    <value>Oświetlenie</value>
   </data>
   <data name="Logo" xml:space="preserve">
     <value>Logo</value>
