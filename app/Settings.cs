@@ -763,6 +763,7 @@ namespace GHelper
             this.Hide();
             if (fans != null && fans.Text != "") fans.Close();
             if (keyb != null && keyb.Text != "") keyb.Close();
+            if (updates != null && updates.Text != "") updates.Close();
         }
 
 
