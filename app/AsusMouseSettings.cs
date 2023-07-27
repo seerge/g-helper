@@ -94,14 +94,14 @@ namespace GHelper
 
         private void Mouse_MouseReadyChanged(object? sender, EventArgs e)
         {
+            if (Disposing || IsDisposed)
+            {
+                return;
+            }
             if (!mouse.IsDeviceReady)
             {
                 this.Invoke(delegate
                 {
-                    if (Disposing || IsDisposed)
-                    {
-                        return;
-                    }
                     Close();
                 });
             }
@@ -109,12 +109,12 @@ namespace GHelper
 
         private void Mouse_BatteryUpdated(object? sender, EventArgs e)
         {
+            if (Disposing || IsDisposed)
+            {
+                return;
+            }
             this.Invoke(delegate
             {
-                if (Disposing || IsDisposed)
-                {
-                    return;
-                }
                 VisualizeBatteryState();
             });
 
