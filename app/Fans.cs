@@ -59,7 +59,7 @@ namespace GHelper
             InitTheme(true);
 
             MinRPM = 18;
-            MaxRPM = HardwareControl.GetFanMax();
+            MaxRPM = HardwareControl.fanMax;
             labelTip.Visible = false;
             labelTip.BackColor = Color.Transparent;
 

@@ -96,8 +96,15 @@ public static class AppConfig
     public static int Get(string name, int empty = -1)
     {
         if (config.ContainsKey(name))
+        {
+            //Debug.WriteLine(name);
             return int.Parse(config[name].ToString());
-        else return empty;
+        }
+        else
+        {
+            //Debug.WriteLine(name + "E");
+            return empty;
+        }
     }
 
     public static bool Is(string name)
