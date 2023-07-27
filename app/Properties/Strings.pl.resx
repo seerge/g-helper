@@ -193,7 +193,7 @@
     <value>Losowo</value>
   </data>
   <data name="AuraReact" xml:space="preserve">
-    <value>React</value>
+    <value>Tryb reaktywny</value>
   </data>
   <data name="AuraSlow" xml:space="preserve">
     <value>Powolna</value>
@@ -423,28 +423,28 @@ Nadal chcesz kontynuować?</value>
     <value>Częstotliwość odświeżania 60 Hz dla oszczędzania baterii</value>
   </data>
   <data name="Minute" xml:space="preserve">
-    <value>Minute</value>
+    <value>minuta</value>
   </data>
   <data name="Minutes" xml:space="preserve">
-    <value>Minutes</value>
+    <value>minuty</value>
   </data>
   <data name="MouseAngleSnapping" xml:space="preserve">
-    <value>Angle Snapping</value>
+    <value>Korekcja kąta ruchu</value>
   </data>
   <data name="MouseAutoPowerOff" xml:space="preserve">
-    <value>Auto Power Off After</value>
+    <value>Przejście w tryb uśpienia po</value>
   </data>
   <data name="MouseLiftOffDistance" xml:space="preserve">
     <value>Lift Off Distance</value>
   </data>
   <data name="MouseLowBatteryWarning" xml:space="preserve">
-    <value>Low Battery Warning at</value>
+    <value>Ostrzeżenie o niskim poziomie baterii</value>
   </data>
   <data name="MousePerformance" xml:space="preserve">
-    <value>Performance</value>
+    <value>Wydajność</value>
   </data>
   <data name="MouseSynchronize" xml:space="preserve">
-    <value>Synchronize with mouse</value>
+    <value>Synchronizuj z myszką</value>
   </data>
   <data name="Multizone" xml:space="preserve">
     <value>Multizone</value>
@@ -453,7 +453,7 @@ Nadal chcesz kontynuować?</value>
     <value>Wyciszenie mikrofonu</value>
   </data>
   <data name="Never" xml:space="preserve">
-    <value>Never</value>
+    <value>Nigdy</value>
   </data>
   <data name="NewUpdates" xml:space="preserve">
     <value>Nowe aktualizacje</value>
@@ -462,7 +462,7 @@ Nadal chcesz kontynuować?</value>
     <value>Brak aktualizacji</value>
   </data>
   <data name="NotConnected" xml:space="preserve">
-    <value>Not Connected</value>
+    <value>Nie połączono</value>
   </data>
   <data name="OpenGHelper" xml:space="preserve">
     <value>Otwórz okno G-Helper</value>
@@ -495,7 +495,7 @@ Nadal chcesz kontynuować?</value>
     <value>Odtwórz / Pauza</value>
   </data>
   <data name="PollingRate" xml:space="preserve">
-    <value>Polling Rate</value>
+    <value>Częstotliwość raportowania</value>
   </data>
   <data name="PowerLimits" xml:space="preserve">
     <value>Limit mocy</value>
@@ -507,7 +507,7 @@ Nadal chcesz kontynuować?</value>
     <value>Zrzut ekranu</value>
   </data>
   <data name="Profile" xml:space="preserve">
-    <value>Profile</value>
+    <value>Profil</value>
   </data>
   <data name="Quit" xml:space="preserve">
     <value>Zamknij</value>
