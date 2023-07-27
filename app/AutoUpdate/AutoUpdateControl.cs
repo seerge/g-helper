@@ -41,6 +41,8 @@ namespace GHelper.AutoUpdate
         async void CheckForUpdatesAsync()
         {
 
+            if (AppConfig.Is("skip_updates")) return;
+
             try
             {
 
