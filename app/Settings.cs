@@ -236,7 +236,7 @@ namespace GHelper
             {
                 screenControl.InitScreen();
                 gpuControl.InitXGM();
-                PeripheralsProvider.RefreshBatteryForAllDevices();
+                Task.Run((Action)PeripheralsProvider.RefreshBatteryForAllDevices);
                 updateControl.CheckForUpdates();
             }
         }
