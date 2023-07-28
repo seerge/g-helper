@@ -190,7 +190,7 @@
     <value>彩虹</value>
   </data>
   <data name="AuraRandomColor" xml:space="preserve">
-    <value>Random</value>
+    <value>随机</value>
   </data>
   <data name="AuraReact" xml:space="preserve">
     <value>React</value>
@@ -285,7 +285,7 @@
     <value>nVIDIA显示模式尚未设置至Optimus</value>
   </data>
   <data name="EnergySettings" xml:space="preserve">
-    <value>Energy Settings</value>
+    <value>电源设置</value>
   </data>
   <data name="Extra" xml:space="preserve">
     <value>更多</value>
@@ -354,7 +354,7 @@
     <value>温度目标</value>
   </data>
   <data name="High" xml:space="preserve">
-    <value>High</value>
+    <value>高</value>
   </data>
   <data name="KeyBindings" xml:space="preserve">
     <value>按键绑定</value>
@@ -381,13 +381,13 @@
     <value>灯条</value>
   </data>
   <data name="Lighting" xml:space="preserve">
-    <value>Lighting</value>
+    <value>背光</value>
   </data>
   <data name="Logo" xml:space="preserve">
     <value>徽标</value>
   </data>
   <data name="Low" xml:space="preserve">
-    <value>Low</value>
+    <value>低</value>
   </data>
   <data name="MatrixAudio" xml:space="preserve">
     <value>音频可视化器</value>
@@ -423,28 +423,28 @@
     <value>调整刷新率为60Hz以节省电量</value>
   </data>
   <data name="Minute" xml:space="preserve">
-    <value>Minute</value>
+    <value>分钟</value>
   </data>
   <data name="Minutes" xml:space="preserve">
-    <value>Minutes</value>
+    <value>分组</value>
   </data>
   <data name="MouseAngleSnapping" xml:space="preserve">
-    <value>Angle Snapping</value>
+    <value>角度校正</value>
   </data>
   <data name="MouseAutoPowerOff" xml:space="preserve">
-    <value>Auto Power Off After</value>
+    <value>自动关闭时间</value>
   </data>
   <data name="MouseLiftOffDistance" xml:space="preserve">
-    <value>Lift Off Distance</value>
+    <value>静默高度</value>
   </data>
   <data name="MouseLowBatteryWarning" xml:space="preserve">
-    <value>Low Battery Warning at</value>
+    <value>低于该电量时警告</value>
   </data>
   <data name="MousePerformance" xml:space="preserve">
-    <value>Performance</value>
+    <value>性能</value>
   </data>
   <data name="MouseSynchronize" xml:space="preserve">
-    <value>Synchronize with mouse</value>
+    <value>和鼠标同步</value>
   </data>
   <data name="Multizone" xml:space="preserve">
     <value>多区域设置</value>
@@ -453,7 +453,7 @@
     <value>静音麦克风</value>
   </data>
   <data name="Never" xml:space="preserve">
-    <value>Never</value>
+    <value>从不</value>
   </data>
   <data name="NewUpdates" xml:space="preserve">
     <value>有更新</value>
@@ -462,7 +462,7 @@
     <value>无更新</value>
   </data>
   <data name="NotConnected" xml:space="preserve">
-    <value>Not Connected</value>
+    <value>未连接</value>
   </data>
   <data name="OpenGHelper" xml:space="preserve">
     <value>打开G-Helper窗口</value>
@@ -486,7 +486,7 @@
     <value>性能模式</value>
   </data>
   <data name="Peripherals" xml:space="preserve">
-    <value>Peripherals</value>
+    <value>外设</value>
   </data>
   <data name="PictureGif" xml:space="preserve">
     <value>图片/动图</value>
@@ -495,7 +495,7 @@
     <value>播放/暂停</value>
   </data>
   <data name="PollingRate" xml:space="preserve">
-    <value>Polling Rate</value>
+    <value>回报率</value>
   </data>
   <data name="PowerLimits" xml:space="preserve">
     <value>功率限制</value>
@@ -507,7 +507,7 @@
     <value>截图</value>
   </data>
   <data name="Profile" xml:space="preserve">
-    <value>Profile</value>
+    <value>配置</value>
   </data>
   <data name="Quit" xml:space="preserve">
     <value>退出</value>
