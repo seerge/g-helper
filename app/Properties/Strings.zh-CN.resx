@@ -163,13 +163,13 @@
     <value>正在运行的 Asus 服务</value>
   </data>
   <data name="AuraBatteryState" xml:space="preserve">
-    <value>Battery State</value>
+    <value>电池状态</value>
   </data>
   <data name="AuraBreathe" xml:space="preserve">
     <value>呼吸</value>
   </data>
   <data name="AuraClockwise" xml:space="preserve">
-    <value>Clockwise</value>
+    <value>顺时针</value>
   </data>
   <data name="AuraColorCycle" xml:space="preserve">
     <value>彩色循环</value>
@@ -178,7 +178,7 @@
     <value>Comet</value>
   </data>
   <data name="AuraCounterClockwise" xml:space="preserve">
-    <value>Counterclockwise</value>
+    <value>逆时针</value>
   </data>
   <data name="AuraFast" xml:space="preserve">
     <value>快速</value>
@@ -282,7 +282,7 @@
 确定还要继续吗？</value>
   </data>
   <data name="EnableOptimusTitle" xml:space="preserve">
-    <value>nVIDIA显示模式尚未设置至Optimus</value>
+    <value>NVIDIA 显示模式未设置为自动切换</value>
   </data>
   <data name="EnergySettings" xml:space="preserve">
     <value>电源设置</value>
@@ -318,7 +318,7 @@
     <value>风扇</value>
   </data>
   <data name="FansPower" xml:space="preserve">
-    <value>高级设置</value>
+    <value>风扇 + 电源</value>
   </data>
   <data name="FnLock" xml:space="preserve">
     <value>打开FnLock (无需按下FN使用FN+(F1-F12)热键)</value>
@@ -480,7 +480,7 @@
     <value>其他</value>
   </data>
   <data name="Overdrive" xml:space="preserve">
-    <value>OD</value>
+    <value>超频</value>
   </data>
   <data name="PerformanceMode" xml:space="preserve">
     <value>性能模式</value>
