@@ -169,7 +169,7 @@
     <value>Oddychanie</value>
   </data>
   <data name="AuraClockwise" xml:space="preserve">
-    <value>Clockwise</value>
+    <value>W prawo</value>
   </data>
   <data name="AuraColorCycle" xml:space="preserve">
     <value>Pętla kolorów</value>
@@ -178,7 +178,7 @@
     <value>Kometa</value>
   </data>
   <data name="AuraCounterClockwise" xml:space="preserve">
-    <value>Counterclockwise</value>
+    <value>W lewo</value>
   </data>
   <data name="AuraFast" xml:space="preserve">
     <value>Szybka</value>
@@ -354,7 +354,7 @@ Nadal chcesz kontynuować?</value>
     <value>Temperatura docelowa</value>
   </data>
   <data name="High" xml:space="preserve">
-    <value>High</value>
+    <value>Wysoka</value>
   </data>
   <data name="KeyBindings" xml:space="preserve">
     <value>Ustawienia klawiszy skrótów</value>
@@ -387,7 +387,7 @@ Nadal chcesz kontynuować?</value>
     <value>Logo</value>
   </data>
   <data name="Low" xml:space="preserve">
-    <value>Low</value>
+    <value>Niska</value>
   </data>
   <data name="MatrixAudio" xml:space="preserve">
     <value>Wizualizer muzyki</value>
@@ -423,10 +423,10 @@ Nadal chcesz kontynuować?</value>
     <value>Częstotliwość odświeżania 60 Hz dla oszczędzania baterii</value>
   </data>
   <data name="Minute" xml:space="preserve">
-    <value>minuta</value>
+    <value>min.</value>
   </data>
   <data name="Minutes" xml:space="preserve">
-    <value>minuty</value>
+    <value>min.</value>
   </data>
   <data name="MouseAngleSnapping" xml:space="preserve">
     <value>Korekcja kąta ruchu</value>
@@ -435,7 +435,7 @@ Nadal chcesz kontynuować?</value>
     <value>Przejście w tryb uśpienia po</value>
   </data>
   <data name="MouseLiftOffDistance" xml:space="preserve">
-    <value>Lift Off Distance</value>
+    <value>Wysokość reakcji sensora</value>
   </data>
   <data name="MouseLowBatteryWarning" xml:space="preserve">
     <value>Ostrzeżenie o niskim poziomie baterii</value>
@@ -486,7 +486,7 @@ Nadal chcesz kontynuować?</value>
     <value>Tryb zasilania</value>
   </data>
   <data name="Peripherals" xml:space="preserve">
-    <value>Peripherals</value>
+    <value>Urządzenia peryferyjne</value>
   </data>
   <data name="PictureGif" xml:space="preserve">
     <value>Obraz / GIF</value>
