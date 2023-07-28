@@ -163,7 +163,7 @@
     <value>Кількість запущених сервісів Asus</value>
   </data>
   <data name="AuraBatteryState" xml:space="preserve">
-    <value>Battery State</value>
+    <value>Стан батареї</value>
   </data>
   <data name="AuraBreathe" xml:space="preserve">
     <value>Дихання</value>
