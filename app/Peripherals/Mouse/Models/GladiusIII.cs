@@ -40,6 +40,11 @@
             return 36_000;
         }
 
+        public override bool HasXYDPI()
+        {
+            return true;
+        }
+
         public override bool HasLiftOffSetting()
         {
             return true;

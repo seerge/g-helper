@@ -719,6 +719,11 @@ namespace GHelper.Peripherals.Mouse
             return 100;
         }
 
+        public virtual bool HasXYDPI()
+        {
+            return false;
+        }
+
         protected virtual byte[] GetChangeDPIProfilePacket(int profile)
         {
             return new byte[] { 0x00, 0x51, 0x31, 0x0A, 0x00, (byte)profile };
@@ -795,12 +800,13 @@ namespace GHelper.Peripherals.Mouse
                     DpiSettings[i] = new AsusMouseDPI();
                 }
 
-                int offset = 5 + (i * 4);
+                int offset = HasXYDPI() ? (5 + (i * 4)) : (5 + (i * 2));
+
 
                 uint b1 = packet[offset];
                 uint b2 = packet[offset + 1];
 
-                DpiSettings[i].DPI = (uint)(b2 << 8 | b1) * 50 + 50;
+                DpiSettings[i].DPI = (uint)((b2 << 8 | b1) * DPIIncrements() + DPIIncrements());
             }
         }
 
