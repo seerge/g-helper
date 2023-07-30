@@ -401,6 +401,7 @@ namespace GHelper
                 flags.SleepLid = AppConfig.IsNotFalse("keyboard_sleep_lid");
                 flags.ShutdownLid = AppConfig.IsNotFalse("keyboard_shutdown_lid");
 
+                // Rear Bar
                 flags.AwakeRear = AppConfig.IsNotFalse("keyboard_awake_lid");
                 flags.BootRear = AppConfig.IsNotFalse("keyboard_boot_lid");
                 flags.SleepRear = AppConfig.IsNotFalse("keyboard_sleep_lid");
