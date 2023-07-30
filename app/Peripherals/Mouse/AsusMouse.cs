@@ -748,7 +748,7 @@ namespace GHelper.Peripherals.Mouse
         }
 
         //profiles start to count at 1
-        public void SetDPIProfile(int profile)
+        public virtual void SetDPIProfile(int profile)
         {
             if (!CanChangeDPIProfile())
             {
