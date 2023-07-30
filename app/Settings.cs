@@ -908,7 +908,7 @@ namespace GHelper
         public void AutoKeyboard()
         {
 
-            if (!AppConfig.Is("skip_aura"))
+            if (!AppConfig.Is("skip_aura") && !AppConfig.ContainsModel("Z13"))
             {
                 AsusUSB.ApplyAuraPower();
                 AsusUSB.ApplyAura();
