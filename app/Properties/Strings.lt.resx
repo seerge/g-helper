@@ -183,6 +183,9 @@
   <data name="AuraFast" xml:space="preserve">
     <value>Greitas</value>
   </data>
+  <data name="AuraLightingMode" xml:space="preserve">
+    <value>Lighting Mode</value>
+  </data>
   <data name="AuraNormal" xml:space="preserve">
     <value>Normalus</value>
   </data>
@@ -203,6 +206,21 @@
   </data>
   <data name="AuraStrobe" xml:space="preserve">
     <value>Blyksniai</value>
+  </data>
+  <data name="AuraZoneAll" xml:space="preserve">
+    <value>All</value>
+  </data>
+  <data name="AuraZoneDock" xml:space="preserve">
+    <value>Dock</value>
+  </data>
+  <data name="AuraZoneLogo" xml:space="preserve">
+    <value>Logo</value>
+  </data>
+  <data name="AuraZoneScroll" xml:space="preserve">
+    <value>Scrollwheel</value>
+  </data>
+  <data name="AuraZoneUnderglow" xml:space="preserve">
+    <value>Underglow</value>
   </data>
   <data name="AutoApply" xml:space="preserve">
     <value>Taikyti automatiškai</value>
