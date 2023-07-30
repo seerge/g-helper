@@ -49,11 +49,16 @@ namespace GHelper.Gpu
         }
 
 
-        public void SetGPUMode(int GPUMode)
+        bool NoAutoUltimate()
+        {
+            return AppConfig.ContainsModel("G614") || AppConfig.ContainsModel("M16");
+        }
+
+        public void SetGPUMode(int GPUMode, int auto = 0)
         {
 
             int CurrentGPU = AppConfig.Get("gpu_mode");
-            AppConfig.Set("gpu_auto", 0);
+            AppConfig.Set("gpu_auto", auto);
 
             if (CurrentGPU == GPUMode)
             {
@@ -79,6 +84,11 @@ namespace GHelper.Gpu
                 DialogResult dialogResult = MessageBox.Show(Properties.Strings.AlertUltimateOn, Properties.Strings.AlertUltimateTitle, MessageBoxButtons.YesNo);
                 if (dialogResult == DialogResult.Yes)
                 {
+                    if (NoAutoUltimate())
+                    {
+                        Program.acpi.SetGPUEco(0);
+                        Thread.Sleep(100);
+                    }
                     Program.acpi.DeviceSet(AsusACPI.GPUMux, 0, "GPUMux");
                     restart = true;
                     changed = true;
@@ -188,7 +198,7 @@ namespace GHelper.Gpu
 
             if (mux == 0)
             {
-                if (optimized) SetGPUMode(AsusACPI.GPUModeStandard);
+                if (optimized) SetGPUMode(AsusACPI.GPUModeStandard, 1);
                 return false;
             }
             else

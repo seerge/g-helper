@@ -465,7 +465,7 @@ namespace GHelper
             if (auraDevice is null || !auraDevice.IsConnected) GetAuraDevice();
             if (auraDevice is null || !auraDevice.IsConnected) return;
 
-            byte[] msg = new byte[40];
+            byte[] msg = new byte[0x40];
             int start = 9;
 
             msg[0] = AURA_HID_ID;
@@ -474,7 +474,14 @@ namespace GHelper
             msg[3] = 1;
             msg[4] = 4;
 
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 5; i++)
+            {
+                msg[start + i * 3] = color.R; // R
+                msg[start + 1 + i * 3] = color.G; // G
+                msg[start + 2 + i * 3] = color.B; // B
+            }
+
+            for (int i = 5; i < 12; i++)
             {
                 msg[start + i * 3] = color.R; // R
                 msg[start + 1 + i * 3] = color.G; // G
@@ -484,13 +491,16 @@ namespace GHelper
             //Logger.WriteLine(BitConverter.ToString(msg));
             if (init)
             {
-                auraDevice.WriteFeatureData(AuraMessage(0,Color.Red,color,0));
-                auraDevice.WriteFeatureData(MESSAGE_APPLY);
-                auraDevice.WriteFeatureData(MESSAGE_SET);
-                auraDevice.Write(new byte[] { AURA_HID_ID, 0xbc });
-                auraDevice.Write(new byte[] { AURA_HID_ID, 0xbc, 1, 1, 4 });
+                auraDevice.WriteFeatureData(LED_INIT2);
+                auraDevice.WriteFeatureData(new byte[] { AURA_HID_ID, 0x05, 0x20, 0x31, 0x00, 0x1A});
+                //auraDevice.WriteFeatureData(AuraMessage(0,Color.Red,color,0));
+                //auraDevice.WriteFeatureData(MESSAGE_APPLY);
+                //auraDevice.WriteFeatureData(MESSAGE_SET);
+                auraDevice.WriteFeatureData(new byte[] { AURA_HID_ID, 0xbc, 1, 0, 0, 0 });
+                auraDevice.WriteFeatureData(new byte[] { AURA_HID_ID, 0xbc, 1, 1, 4, 0 });
             }
-            auraDevice.Write(msg);
+
+            auraDevice.WriteFeatureData(msg);
         }
 
 
