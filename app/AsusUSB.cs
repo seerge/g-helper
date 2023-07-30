@@ -5,47 +5,32 @@ using System.Text;
 namespace GHelper
 {
 
-    [Flags]
-    public enum AuraDev19b6 : uint
+
+    public class AuraPower
     {
-        BootLogo = 1,
-        BootKeyb = 1 << 1,
-        AwakeLogo = 1 << 2,
-        AwakeKeyb = 1 << 3,
-        SleepLogo = 1 << 4,
-        SleepKeyb = 1 << 5,
-        ShutdownLogo = 1 << 6,
-        ShutdownKeyb = 1 << 7,
+        public bool BootLogo;
+        public bool BootKeyb;
+        public bool AwakeLogo;
+        public bool AwakeKeyb;
+        public bool SleepLogo;
+        public bool SleepKeyb;
+        public bool ShutdownLogo;
+        public bool ShutdownKeyb;
 
-        BootBar = 1 << (7 + 2),
-        AwakeBar = 1 << (7 + 3),
-        SleepBar = 1 << (7 + 4),
-        ShutdownBar = 1 << (7 + 5),
+        public bool BootBar;
+        public bool AwakeBar;
+        public bool SleepBar;
+        public bool ShutdownBar;
 
-        BootLid = 1 << (15 + 1),
-        AwakeLid = 1 << (15 + 2),
-        SleepLid = 1 << (15 + 3),
-        ShutdownLid = 1 << (15 + 4),
+        public bool BootLid;
+        public bool AwakeLid;
+        public bool SleepLid;
+        public bool ShutdownLid;
 
-        BootRear = 1 << (23 + 1),
-        AwakeRear = 1 << (23 + 2),
-        SleepRear = 1 << (23 + 3),
-        ShutdownRear = 1 << (23 + 4),
-
-    }
-
-    public static class AuraDev19b6Extensions
-    {
-        public static byte[] ToBytes(this AuraDev19b6[] controls)
-        {
-            uint a = 0;
-            foreach (var n in controls)
-            {
-                a |= (uint)n;
-            }
-            return new byte[] { 0x5d, 0xbd, 0x01, (byte)(a & 0xff), (byte)((a & 0xff00) >> 8), (byte)((a & 0xff0000) >> 16), (byte)((a & 0xff000000) >> 24) };
-        }
-
+        public bool BootRear;
+        public bool AwakeRear;
+        public bool SleepRear;
+        public bool ShutdownRear;
     }
 
 
@@ -80,6 +65,37 @@ namespace GHelper
 
         static System.Timers.Timer timer = new System.Timers.Timer(2000);
         static HidDevice? auraDevice = null;
+
+        static byte[] AuraPowerMessage(AuraPower flags)
+        {
+            byte keyb = 0, bar = 0, lid = 0, rear = 0;
+
+            if (flags.BootLogo) keyb |= 1 << 0;
+            if (flags.BootKeyb) keyb |= 1 << 1;
+            if (flags.AwakeLogo) keyb |= 1 << 2;
+            if (flags.AwakeKeyb) keyb |= 1 << 3;
+            if (flags.SleepLogo) keyb |= 1 << 4;
+            if (flags.SleepKeyb) keyb |= 1 << 5;
+            if (flags.ShutdownLogo) keyb |= 1 << 6;
+            if (flags.ShutdownKeyb) keyb |= 1 << 7;
+
+            if (flags.BootBar) bar |= 1 << 1;
+            if (flags.AwakeBar) bar |= 1 << 2;
+            if (flags.SleepBar) bar |= 1 << 3;
+            if (flags.ShutdownBar) bar |= 1 << 4;
+
+            if (flags.BootLid) lid |= 1 << 0;
+            if (flags.AwakeLid) lid |= 1 << 1;
+            if (flags.SleepLid) lid |= 1 << 2;
+            if (flags.ShutdownLid) lid |= 1 << 3;
+
+            if (flags.BootRear) rear |= 1 << 0;
+            if (flags.AwakeRear) rear |= 1 << 1;
+            if (flags.SleepRear) rear |= 1 << 2;
+            if (flags.ShutdownRear) rear |= 1 << 3;
+
+            return new byte[] { 0x5d, 0xbd, 0x01, keyb, bar, lid, rear, 0xFF };
+        }
 
         static AsusUSB()
         {
@@ -349,41 +365,39 @@ namespace GHelper
             Task.Run(async () =>
             {
 
-                List<AuraDev19b6> flags = new();
+                AuraPower flags = new();
 
                 // Keyboard
-                if (AppConfig.IsNotFalse("keyboard_awake")) flags.Add(AuraDev19b6.AwakeKeyb);
-                if (AppConfig.IsNotFalse("keyboard_boot")) flags.Add(AuraDev19b6.BootKeyb);
-                if (AppConfig.IsNotFalse("keyboard_sleep")) flags.Add(AuraDev19b6.SleepKeyb);
-                if (AppConfig.IsNotFalse("keyboard_shutdown")) flags.Add(AuraDev19b6.ShutdownKeyb);
+                flags.AwakeKeyb = AppConfig.IsNotFalse("keyboard_awake");
+                flags.BootKeyb = AppConfig.IsNotFalse("keyboard_boot");
+                flags.SleepKeyb = AppConfig.IsNotFalse("keyboard_sleep");
+                flags.ShutdownKeyb = AppConfig.IsNotFalse("keyboard_shutdown");
 
                 // Logo
-                if (AppConfig.IsNotFalse("keyboard_awake_logo")) flags.Add(AuraDev19b6.AwakeLogo);
-                if (AppConfig.IsNotFalse("keyboard_boot_logo")) flags.Add(AuraDev19b6.BootLogo);
-                if (AppConfig.IsNotFalse("keyboard_sleep_logo")) flags.Add(AuraDev19b6.SleepLogo);
-                if (AppConfig.IsNotFalse("keyboard_shutdown_logo")) flags.Add(AuraDev19b6.ShutdownLogo);
+                flags.AwakeLogo = AppConfig.IsNotFalse("keyboard_awake_logo");
+                flags.BootLogo = AppConfig.IsNotFalse("keyboard_boot_logo");
+                flags.SleepLogo = AppConfig.IsNotFalse("keyboard_sleep_logo");
+                flags.ShutdownLogo = AppConfig.IsNotFalse("keyboard_shutdown_logo");
 
                 // Lightbar
-                if (AppConfig.IsNotFalse("keyboard_awake_bar")) flags.Add(AuraDev19b6.AwakeBar);
-                if (AppConfig.IsNotFalse("keyboard_boot_bar")) flags.Add(AuraDev19b6.BootBar);
-                if (AppConfig.IsNotFalse("keyboard_sleep_bar")) flags.Add(AuraDev19b6.SleepBar);
-                if (AppConfig.IsNotFalse("keyboard_shutdown_bar")) flags.Add(AuraDev19b6.ShutdownBar);
+                flags.AwakeBar = AppConfig.IsNotFalse("keyboard_awake_bar");
+                flags.BootBar = AppConfig.IsNotFalse("keyboard_boot_bar");
+                flags.SleepBar = AppConfig.IsNotFalse("keyboard_sleep_bar");
+                flags.ShutdownBar = AppConfig.IsNotFalse("keyboard_shutdown_bar");
 
                 // Lid
-                if (AppConfig.IsNotFalse("keyboard_awake_lid")) flags.Add(AuraDev19b6.AwakeLid);
-                if (AppConfig.IsNotFalse("keyboard_boot_lid")) flags.Add(AuraDev19b6.BootLid);
-                if (AppConfig.IsNotFalse("keyboard_sleep_lid")) flags.Add(AuraDev19b6.SleepLid);
-                if (AppConfig.IsNotFalse("keyboard_shutdown_lid")) flags.Add(AuraDev19b6.ShutdownLid);
+                flags.AwakeLid = AppConfig.IsNotFalse("keyboard_awake_lid");
+                flags.BootLid = AppConfig.IsNotFalse("keyboard_boot_lid");
+                flags.SleepLid = AppConfig.IsNotFalse("keyboard_sleep_lid");
+                flags.ShutdownLid = AppConfig.IsNotFalse("keyboard_shutdown_lid");
 
-                if (AppConfig.IsNotFalse("keyboard_awake_lid")) flags.Add(AuraDev19b6.AwakeRear);
-                if (AppConfig.IsNotFalse("keyboard_boot_lid")) flags.Add(AuraDev19b6.BootRear);
-                if (AppConfig.IsNotFalse("keyboard_sleep_lid")) flags.Add(AuraDev19b6.SleepRear);
-                if (AppConfig.IsNotFalse("keyboard_shutdown_lid")) flags.Add(AuraDev19b6.ShutdownRear);
-
-                byte[] msg = AuraDev19b6Extensions.ToBytes(flags.ToArray());
-
+                flags.AwakeRear = AppConfig.IsNotFalse("keyboard_awake_lid");
+                flags.BootRear = AppConfig.IsNotFalse("keyboard_boot_lid");
+                flags.SleepRear = AppConfig.IsNotFalse("keyboard_sleep_lid");
+                flags.ShutdownRear = AppConfig.IsNotFalse("keyboard_shutdown_lid");
 
                 var devices = GetHidDevices(deviceIds);
+                byte[] msg = AuraPowerMessage(flags);
 
                 foreach (HidDevice device in devices)
                 {
@@ -398,10 +412,10 @@ namespace GHelper
 
                 if (isTuf)
                     Program.acpi.TUFKeyboardPower(
-                        flags.Contains(AuraDev19b6.AwakeKeyb),
-                        flags.Contains(AuraDev19b6.BootKeyb),
-                        flags.Contains(AuraDev19b6.SleepKeyb),
-                        flags.Contains(AuraDev19b6.ShutdownKeyb));
+                        flags.AwakeKeyb,
+                        flags.BootKeyb,
+                        flags.SleepKeyb,
+                        flags.ShutdownKeyb);
 
             });
 
@@ -458,7 +472,7 @@ namespace GHelper
             //Logger.WriteLine(BitConverter.ToString(msg));
             if (init)
             {
-                auraDevice.Write(AuraMessage(0,color,color, 0xe1));
+                auraDevice.Write(AuraMessage(0, color, color, 0xe1));
                 auraDevice.WriteFeatureData(MESSAGE_APPLY);
                 auraDevice.WriteFeatureData(MESSAGE_SET);
                 auraDevice.Write(new byte[] { AURA_HID_ID, 0xbc });

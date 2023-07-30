@@ -143,7 +143,7 @@ namespace GHelper.Mode
                 }
 
                 // force set PPTs for missbehaving bios on FX507/517 series
-                if ((AppConfig.ContainsModel("FX507") || AppConfig.ContainsModel("FX517") || xgmFan) && !AppConfig.IsMode("auto_apply_power"))
+                if ((AppConfig.ContainsModel("FX507") || AppConfig.ContainsModel("FX517") || AppConfig.ContainsModel("FX707") || xgmFan) && !AppConfig.IsMode("auto_apply_power"))
                 {
                     Task.Run(async () =>
                     {
