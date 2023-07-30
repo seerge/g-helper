@@ -184,7 +184,7 @@
     <value>Schnell</value>
   </data>
   <data name="AuraLightingMode" xml:space="preserve">
-    <value>Lighting Mode</value>
+    <value>Beleuchtungsmodus</value>
   </data>
   <data name="AuraNormal" xml:space="preserve">
     <value>Normal</value>
@@ -208,7 +208,7 @@
     <value>Stroboskop</value>
   </data>
   <data name="AuraZoneAll" xml:space="preserve">
-    <value>All</value>
+    <value>Alle</value>
   </data>
   <data name="AuraZoneDock" xml:space="preserve">
     <value>Dock</value>
@@ -217,10 +217,10 @@
     <value>Logo</value>
   </data>
   <data name="AuraZoneScroll" xml:space="preserve">
-    <value>Scrollwheel</value>
+    <value>Scrollrad</value>
   </data>
   <data name="AuraZoneUnderglow" xml:space="preserve">
-    <value>Underglow</value>
+    <value>Front</value>
   </data>
   <data name="AutoApply" xml:space="preserve">
     <value>Automatisch anwenden</value>
