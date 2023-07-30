@@ -290,6 +290,7 @@ namespace GHelper
             msg[6] = (byte)(color.B); // B
             msg[7] = (byte)speed; // aura.speed as u8;
             msg[8] = 0; // aura.direction as u8;
+            msg[9] = (mode == 1) ? (byte)1 : (byte)0;
             msg[10] = (byte)(color2.R); // R
             msg[11] = (byte)(color2.G); // G
             msg[12] = (byte)(color2.B); // B
@@ -483,10 +484,12 @@ namespace GHelper
             //Logger.WriteLine(BitConverter.ToString(msg));
             if (init)
             {
-                auraDevice.Write(AuraMessage(0, color, color, 0xe1));
-                auraDevice.WriteFeatureData(MESSAGE_APPLY);
-                auraDevice.WriteFeatureData(MESSAGE_SET);
-                auraDevice.Write(new byte[] { AURA_HID_ID, 0xbc });
+                auraDevice.Write(LED_INIT1);
+                auraDevice.Write(LED_INIT2);
+                auraDevice.Write(LED_INIT3);
+                auraDevice.Write(LED_INIT4);
+                auraDevice.Write(LED_INIT5);
+                auraDevice.Write(new byte[] { AURA_HID_ID, 0xbc, 1, 1, 4 });
             }
             auraDevice.Write(msg);
         }
