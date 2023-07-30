@@ -209,7 +209,19 @@ public static class HardwareControl
         lastUpdate = last;
 
         cpuTemp = Program.acpi.DeviceGet(AsusACPI.Temp_CPU);
-        //Debug.WriteLine(cpuTemp);
+
+        if (cpuTemp < 0) try
+            {
+                using (var ct = new PerformanceCounter("Thermal Zone Information", "Temperature", @"\_TZ.THRM", true))
+                {
+                    cpuTemp = ct.NextValue() - 273;
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("Failed reading CPU temp :" + ex.Message);
+            }
+
 
         return cpuTemp;
     }
