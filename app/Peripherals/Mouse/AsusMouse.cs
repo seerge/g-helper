@@ -240,6 +240,10 @@ namespace GHelper.Peripherals.Mouse
 #endif
         }
 
+        protected virtual bool IsMouseError(byte[] packet)
+        {
+            return packet[1] == 0xFF && packet[2] == 0xAA;
+        }
 
         protected virtual long MeasuredIO(Action<byte[]> ioFunc, byte[] param)
         {
@@ -269,6 +273,23 @@ namespace GHelper.Peripherals.Mouse
 
                 if (IsPacketLoggerEnabled())
                     Logger.WriteLine(GetDisplayName() + ": Read packet: " + ByteArrayToString(response));
+
+                if (IsMouseError(response))
+                {
+                    Logger.WriteLine(GetDisplayName() + ": Mouse returned error (FF AA). Packet probably not supported by mouse firmware.");
+                    //Error. Mouse could not understand or process the sent packet
+                    return response;
+                }
+
+                //Not the response we were looking for, continue reading
+                while (response[0] != packet[0] || response[1] != packet[1] || response[2] != packet[2])
+                {
+                    Logger.WriteLine(GetDisplayName() + ": Read wrong packet left in buffer: " + ByteArrayToString(response) + ". Retrying...");
+                    //Read again
+                    time = MeasuredIO(Read, response);
+                    Logger.WriteLine(GetDisplayName() + ": Read took " + time + "ms");
+                }
+
             }
             catch (IOException e)
             {
