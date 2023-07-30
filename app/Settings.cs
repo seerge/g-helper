@@ -188,6 +188,10 @@ namespace GHelper
             buttonPeripheral2.Click += ButtonPeripheral_Click;
             buttonPeripheral3.Click += ButtonPeripheral_Click;
 
+            buttonPeripheral1.MouseEnter += ButtonPeripheral_MouseEnter;
+            buttonPeripheral2.MouseEnter += ButtonPeripheral_MouseEnter;
+            buttonPeripheral3.MouseEnter += ButtonPeripheral_MouseEnter;
+
             Text = "G-Helper " + (ProcessHelper.IsUserAdministrator() ? "—" : "-") + " " + AppConfig.GetModelShort();
             TopMost = AppConfig.Is("topmost");
 
@@ -1127,6 +1131,26 @@ namespace GHelper
             }
 
             panelPeripherals.Visible = true;
+        }
+
+        private void ButtonPeripheral_MouseEnter(object? sender, EventArgs e)
+        {
+            int index = 0;
+            if (sender == buttonPeripheral2) index = 1;
+            if (sender == buttonPeripheral3) index = 2;
+            IPeripheral iph = PeripheralsProvider.AllPeripherals().ElementAt(index);
+
+
+            if (iph is null)
+            {
+                return;
+            }
+
+            if (!iph.IsDeviceReady)
+            {
+                //Refresh battery on hover if the device is marked as "Not Ready"
+                iph.ReadBattery();
+            }
         }
 
         private void ButtonPeripheral_Click(object? sender, EventArgs e)
