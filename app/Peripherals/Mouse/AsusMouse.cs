@@ -794,6 +794,11 @@ namespace GHelper.Peripherals.Mouse
 
         protected virtual byte[] GetReadDPIPacket()
         {
+            if (!HasXYDPI())
+            {
+                return new byte[] { 0x00, 0x12, 0x04, 0x00 };
+            }
+
             return new byte[] { 0x00, 0x12, 0x04, 0x02 };
         }
 
