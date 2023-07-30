@@ -240,6 +240,17 @@ namespace GHelper.Peripherals.Mouse
 #endif
         }
 
+
+        protected virtual long MeasuredIO(Action<byte[]> ioFunc, byte[] param)
+        {
+            var watch = System.Diagnostics.Stopwatch.StartNew();
+
+            ioFunc(param);
+
+            watch.Stop();
+            return watch.ElapsedMilliseconds;
+        }
+
         [MethodImpl(MethodImplOptions.Synchronized)]
         protected virtual byte[]? WriteForResponse(byte[] packet)
         {
@@ -250,9 +261,11 @@ namespace GHelper.Peripherals.Mouse
                 if (IsPacketLoggerEnabled())
                     Logger.WriteLine(GetDisplayName() + ": Sending packet: " + ByteArrayToString(packet));
 
-                Write(packet);
+                long time = MeasuredIO(Write, packet);
+                Logger.WriteLine(GetDisplayName() + ": Write took " + time + "ms");
 
-                Read(response);
+                time = MeasuredIO(Read, response);
+                Logger.WriteLine(GetDisplayName() + ": Read took " + time + "ms");
 
                 if (IsPacketLoggerEnabled())
                     Logger.WriteLine(GetDisplayName() + ": Read packet: " + ByteArrayToString(response));
