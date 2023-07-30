@@ -211,9 +211,14 @@ namespace GHelper.Peripherals.Mouse
             }
         }
 
+        public virtual int USBTimeout()
+        {
+            return 300;
+        }
+
         public override void SetProvider()
         {
-            _usbProvider = new WindowsUsbProvider(_vendorId, _productId, path);
+            _usbProvider = new WindowsUsbProvider(_vendorId, _productId, path, USBTimeout());
         }
 
         protected virtual void OnDisconnect()
@@ -235,6 +240,21 @@ namespace GHelper.Peripherals.Mouse
 #endif
         }
 
+        protected virtual bool IsMouseError(byte[] packet)
+        {
+            return packet[1] == 0xFF && packet[2] == 0xAA;
+        }
+
+        protected virtual long MeasuredIO(Action<byte[]> ioFunc, byte[] param)
+        {
+            var watch = System.Diagnostics.Stopwatch.StartNew();
+
+            ioFunc(param);
+
+            watch.Stop();
+            return watch.ElapsedMilliseconds;
+        }
+
         [MethodImpl(MethodImplOptions.Synchronized)]
         protected virtual byte[]? WriteForResponse(byte[] packet)
         {
@@ -245,12 +265,31 @@ namespace GHelper.Peripherals.Mouse
                 if (IsPacketLoggerEnabled())
                     Logger.WriteLine(GetDisplayName() + ": Sending packet: " + ByteArrayToString(packet));
 
-                Write(packet);
+                long time = MeasuredIO(Write, packet);
+                Logger.WriteLine(GetDisplayName() + ": Write took " + time + "ms");
 
-                Read(response);
+                time = MeasuredIO(Read, response);
+                Logger.WriteLine(GetDisplayName() + ": Read took " + time + "ms");
 
                 if (IsPacketLoggerEnabled())
                     Logger.WriteLine(GetDisplayName() + ": Read packet: " + ByteArrayToString(response));
+
+                if (IsMouseError(response))
+                {
+                    Logger.WriteLine(GetDisplayName() + ": Mouse returned error (FF AA). Packet probably not supported by mouse firmware.");
+                    //Error. Mouse could not understand or process the sent packet
+                    return response;
+                }
+
+                //Not the response we were looking for, continue reading
+                while (response[0] != packet[0] || response[1] != packet[1] || response[2] != packet[2])
+                {
+                    Logger.WriteLine(GetDisplayName() + ": Read wrong packet left in buffer: " + ByteArrayToString(response) + ". Retrying...");
+                    //Read again
+                    time = MeasuredIO(Read, response);
+                    Logger.WriteLine(GetDisplayName() + ": Read took " + time + "ms");
+                }
+
             }
             catch (IOException e)
             {
@@ -258,12 +297,12 @@ namespace GHelper.Peripherals.Mouse
                 OnDisconnect();
                 return null;
             }
-            catch (System.TimeoutException e)
+            catch (TimeoutException e)
             {
                 Logger.WriteLine(GetDisplayName() + ": Timeout reading packet " + e.Message);
                 return null;
             }
-            catch (System.ObjectDisposedException e)
+            catch (ObjectDisposedException)
             {
                 Logger.WriteLine(GetDisplayName() + ": Channel closed ");
                 OnDisconnect();
@@ -295,9 +334,9 @@ namespace GHelper.Peripherals.Mouse
 
             ReadProfile();
             ReadDPI();
-            ReadLightingSetting();
-            ReadLiftOffDistance();
             ReadPollingRate();
+            ReadLiftOffDistance();
+            ReadLightingSetting();
         }
 
         // ------------------------------------------------------------------------------
@@ -695,6 +734,11 @@ namespace GHelper.Peripherals.Mouse
             return false;
         }
 
+        public virtual int DPIIncrements()
+        {
+            return 50;
+        }
+
         public virtual bool CanChangeDPIProfile()
         {
             return DPIProfileCount() > 1;
@@ -709,6 +753,11 @@ namespace GHelper.Peripherals.Mouse
             return 100;
         }
 
+        public virtual bool HasXYDPI()
+        {
+            return false;
+        }
+
         protected virtual byte[] GetChangeDPIProfilePacket(int profile)
         {
             return new byte[] { 0x00, 0x51, 0x31, 0x0A, 0x00, (byte)profile };
@@ -720,7 +769,7 @@ namespace GHelper.Peripherals.Mouse
         }
 
         //profiles start to count at 1
-        public void SetDPIProfile(int profile)
+        public virtual void SetDPIProfile(int profile)
         {
             if (!CanChangeDPIProfile())
             {
@@ -745,6 +794,11 @@ namespace GHelper.Peripherals.Mouse
 
         protected virtual byte[] GetReadDPIPacket()
         {
+            if (!HasXYDPI())
+            {
+                return new byte[] { 0x00, 0x12, 0x04, 0x00 };
+            }
+
             return new byte[] { 0x00, 0x12, 0x04, 0x02 };
         }
 
@@ -758,7 +812,7 @@ namespace GHelper.Peripherals.Mouse
             {
                 return null;
             }
-            ushort dpiEncoded = (ushort)((dpi.DPI - 50) / 50);
+            ushort dpiEncoded = (ushort)((dpi.DPI - DPIIncrements()) / DPIIncrements());
 
             if (HasDPIColors())
             {
@@ -773,7 +827,7 @@ namespace GHelper.Peripherals.Mouse
 
         protected virtual void ParseDPI(byte[] packet)
         {
-            if (packet[1] != 0x12 || packet[2] != 0x04 || packet[3] != 0x02)
+            if (packet[1] != 0x12 || packet[2] != 0x04 || (packet[3] != 0x02 && HasXYDPI()))
             {
                 return;
             }
@@ -785,12 +839,13 @@ namespace GHelper.Peripherals.Mouse
                     DpiSettings[i] = new AsusMouseDPI();
                 }
 
-                int offset = 5 + (i * 4);
+                int offset = HasXYDPI() ? (5 + (i * 4)) : (5 + (i * 2));
+
 
                 uint b1 = packet[offset];
                 uint b2 = packet[offset + 1];
 
-                DpiSettings[i].DPI = (uint)(b2 << 8 | b1) * 50 + 50;
+                DpiSettings[i].DPI = (uint)((b2 << 8 | b1) * DPIIncrements() + DPIIncrements());
             }
         }
 
@@ -929,6 +984,11 @@ namespace GHelper.Peripherals.Mouse
         public virtual bool HasRGB()
         {
             return false;
+        }
+
+        public virtual int MaxBrightness()
+        {
+            return 100;
         }
 
         //Override to remap lighting mode IDs.

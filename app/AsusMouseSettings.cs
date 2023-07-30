@@ -376,9 +376,11 @@ namespace GHelper
 
             sliderDPI.Max = mouse.MaxDPI();
             sliderDPI.Min = mouse.MinDPI();
+            sliderDPI.Step = mouse.DPIIncrements();
 
             numericUpDownCurrentDPI.Minimum = mouse.MinDPI();
             numericUpDownCurrentDPI.Maximum = mouse.MaxDPI();
+            numericUpDownCurrentDPI.Increment = mouse.DPIIncrements();
 
 
             if (!mouse.HasDPIColors())
@@ -391,9 +393,9 @@ namespace GHelper
                 buttonDPI4.Image = ControlHelper.TintImage(Properties.Resources.lighting_dot_24, Color.Green);
 
                 buttonDPI1.BorderColor = Color.Red;
-                buttonDPI1.BorderColor = Color.Purple;
-                buttonDPI1.BorderColor = Color.Blue;
-                buttonDPI1.BorderColor = Color.Green;
+                buttonDPI2.BorderColor = Color.Purple;
+                buttonDPI3.BorderColor = Color.Blue;
+                buttonDPI4.BorderColor = Color.Green;
             }
 
             if (mouse.CanSetPollingRate())
@@ -473,6 +475,8 @@ namespace GHelper
 
             if (mouse.HasRGB())
             {
+                sliderBrightness.Max = mouse.MaxBrightness();
+
                 foreach (LightingMode lm in Enum.GetValues(typeof(LightingMode)))
                 {
                     if (mouse.IsLightingModeSupported(lm))

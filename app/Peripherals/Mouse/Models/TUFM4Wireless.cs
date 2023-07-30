@@ -1,12 +1,9 @@
 ﻿namespace GHelper.Peripherals.Mouse.Models
 {
-    public class GladiusIII : AsusMouse
+    //P306_Wireless
+    public class TUFM4Wirelss : AsusMouse
     {
-        public GladiusIII() : base(0x0B05, 0x1A70, "mi_00", true)
-        {
-        }
-
-        protected GladiusIII(ushort vendorId, bool wireless) : base(0x0B05, vendorId, "mi_00", wireless)
+        public TUFM4Wirelss() : base(0x0B05, 0x19F4, "mi_00", true)
         {
         }
 
@@ -17,7 +14,7 @@
 
         public override string GetDisplayName()
         {
-            return "ROG Gladius III (Wireless)";
+            return "TUF GAMING M4 (Wireless)";
         }
 
 
@@ -33,21 +30,16 @@
 
         public override int ProfileCount()
         {
-            return 5;
+            return 3;
         }
         public override int MaxDPI()
         {
-            return 36_000;
+            return 12_000;
         }
 
         public override bool HasLiftOffSetting()
         {
-            return true;
-        }
-
-        public override bool HasRGB()
-        {
-            return true;
+            return false;
         }
 
         public override bool HasAutoPowerOff()
@@ -62,7 +54,7 @@
 
         public override bool HasAngleTuning()
         {
-            return true;
+            return false;
         }
 
         public override bool HasLowBatteryWarning()
@@ -72,19 +64,17 @@
 
         public override bool HasDPIColors()
         {
+            return false;
+        }
+
+        public override int DPIIncrements()
+        {
+            return 100;
+        }
+
+        public override bool CanChangeDPIProfile()
+        {
             return true;
-        }
-    }
-
-    public class GladiusIIIWired : GladiusIII
-    {
-        public GladiusIIIWired() : base(0x1A72, false)
-        {
-        }
-
-        public override string GetDisplayName()
-        {
-            return "ROG Gladius III (Wired)";
         }
     }
 }
