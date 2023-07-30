@@ -60,6 +60,12 @@
             labelPerformance = new Label();
             panelLighting = new Panel();
             panelLightingContent = new Panel();
+            tableLayoutPanel3 = new TableLayoutPanel();
+            buttonLightingZoneScroll = new UI.RButton();
+            buttonLightingZoneLogo = new UI.RButton();
+            buttonLightingZoneAll = new UI.RButton();
+            buttonLightingZoneUnderglow = new UI.RButton();
+            buttonLightingZoneDock = new UI.RButton();
             comboBoxAnimationDirection = new UI.RComboBox();
             labelAnimationDirection = new Label();
             checkBoxRandomColor = new CheckBox();
@@ -89,6 +95,9 @@
             pictureBoxBatteryState = new PictureBox();
             buttonSync = new UI.RButton();
             panelBottomButtons = new Panel();
+            tableLayoutPanel2 = new TableLayoutPanel();
+            rButton1 = new UI.RButton();
+            rButton2 = new UI.RButton();
             panelProfiles.SuspendLayout();
             panelPerformance.SuspendLayout();
             panelPerformanceOther.SuspendLayout();
@@ -102,6 +111,7 @@
             ((System.ComponentModel.ISupportInitialize)pictureKeyboard).BeginInit();
             panelLighting.SuspendLayout();
             panelLightingContent.SuspendLayout();
+            tableLayoutPanel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBoxLightingColor).BeginInit();
             panelLightingHeader.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBoxLighting).BeginInit();
@@ -112,6 +122,7 @@
             panelBatteryState.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBoxBatteryState).BeginInit();
             panelBottomButtons.SuspendLayout();
+            tableLayoutPanel2.SuspendLayout();
             SuspendLayout();
             // 
             // panelProfiles
@@ -553,12 +564,13 @@
             panelLighting.Location = new Point(11, 476);
             panelLighting.Name = "panelLighting";
             panelLighting.Padding = new Padding(0, 0, 0, 25);
-            panelLighting.Size = new Size(654, 271);
+            panelLighting.Size = new Size(654, 329);
             panelLighting.TabIndex = 42;
             // 
             // panelLightingContent
             // 
             panelLightingContent.AutoSize = true;
+            panelLightingContent.Controls.Add(tableLayoutPanel3);
             panelLightingContent.Controls.Add(comboBoxAnimationDirection);
             panelLightingContent.Controls.Add(labelAnimationDirection);
             panelLightingContent.Controls.Add(checkBoxRandomColor);
@@ -572,8 +584,147 @@
             panelLightingContent.Location = new Point(0, 30);
             panelLightingContent.Name = "panelLightingContent";
             panelLightingContent.Padding = new Padding(0, 0, 0, 11);
-            panelLightingContent.Size = new Size(654, 216);
+            panelLightingContent.Size = new Size(654, 274);
             panelLightingContent.TabIndex = 42;
+            // 
+            // tableLayoutPanel3
+            // 
+            tableLayoutPanel3.AutoSize = true;
+            tableLayoutPanel3.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            tableLayoutPanel3.ColumnCount = 5;
+            tableLayoutPanel3.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20F));
+            tableLayoutPanel3.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20F));
+            tableLayoutPanel3.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20F));
+            tableLayoutPanel3.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20F));
+            tableLayoutPanel3.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20F));
+            tableLayoutPanel3.Controls.Add(buttonLightingZoneScroll, 0, 0);
+            tableLayoutPanel3.Controls.Add(buttonLightingZoneLogo, 0, 0);
+            tableLayoutPanel3.Controls.Add(buttonLightingZoneAll, 0, 0);
+            tableLayoutPanel3.Controls.Add(buttonLightingZoneUnderglow, 1, 0);
+            tableLayoutPanel3.Controls.Add(buttonLightingZoneDock, 2, 0);
+            tableLayoutPanel3.Dock = DockStyle.Top;
+            tableLayoutPanel3.Location = new Point(0, 0);
+            tableLayoutPanel3.Margin = new Padding(6, 3, 6, 3);
+            tableLayoutPanel3.Name = "tableLayoutPanel3";
+            tableLayoutPanel3.RowCount = 1;
+            tableLayoutPanel3.RowStyles.Add(new RowStyle(SizeType.Absolute, 60F));
+            tableLayoutPanel3.Size = new Size(654, 60);
+            tableLayoutPanel3.TabIndex = 56;
+            // 
+            // buttonLightingZoneScroll
+            // 
+            buttonLightingZoneScroll.AccessibleName = "DPI Setting 4";
+            buttonLightingZoneScroll.Activated = false;
+            buttonLightingZoneScroll.AutoSize = true;
+            buttonLightingZoneScroll.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            buttonLightingZoneScroll.BackColor = SystemColors.ControlLightLight;
+            buttonLightingZoneScroll.BorderColor = Color.LightGreen;
+            buttonLightingZoneScroll.BorderRadius = 5;
+            buttonLightingZoneScroll.Dock = DockStyle.Fill;
+            buttonLightingZoneScroll.FlatAppearance.BorderSize = 0;
+            buttonLightingZoneScroll.FlatStyle = FlatStyle.Flat;
+            buttonLightingZoneScroll.ForeColor = SystemColors.ControlText;
+            buttonLightingZoneScroll.ImageAlign = ContentAlignment.BottomCenter;
+            buttonLightingZoneScroll.Location = new Point(263, 3);
+            buttonLightingZoneScroll.Name = "buttonLightingZoneScroll";
+            buttonLightingZoneScroll.Secondary = false;
+            buttonLightingZoneScroll.Size = new Size(124, 54);
+            buttonLightingZoneScroll.TabIndex = 7;
+            buttonLightingZoneScroll.Text = "Scrollwheel";
+            buttonLightingZoneScroll.TextImageRelation = TextImageRelation.ImageAboveText;
+            buttonLightingZoneScroll.UseVisualStyleBackColor = false;
+            // 
+            // buttonLightingZoneLogo
+            // 
+            buttonLightingZoneLogo.AccessibleName = "DPI Setting 2";
+            buttonLightingZoneLogo.Activated = false;
+            buttonLightingZoneLogo.AutoSize = true;
+            buttonLightingZoneLogo.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            buttonLightingZoneLogo.BackColor = SystemColors.ControlLightLight;
+            buttonLightingZoneLogo.BorderColor = Color.LightGreen;
+            buttonLightingZoneLogo.BorderRadius = 5;
+            buttonLightingZoneLogo.Dock = DockStyle.Fill;
+            buttonLightingZoneLogo.FlatAppearance.BorderSize = 0;
+            buttonLightingZoneLogo.FlatStyle = FlatStyle.Flat;
+            buttonLightingZoneLogo.ForeColor = SystemColors.ControlText;
+            buttonLightingZoneLogo.ImageAlign = ContentAlignment.BottomCenter;
+            buttonLightingZoneLogo.Location = new Point(133, 3);
+            buttonLightingZoneLogo.Name = "buttonLightingZoneLogo";
+            buttonLightingZoneLogo.Secondary = false;
+            buttonLightingZoneLogo.Size = new Size(124, 54);
+            buttonLightingZoneLogo.TabIndex = 4;
+            buttonLightingZoneLogo.Text = "Logo";
+            buttonLightingZoneLogo.TextImageRelation = TextImageRelation.ImageAboveText;
+            buttonLightingZoneLogo.UseVisualStyleBackColor = false;
+            // 
+            // buttonLightingZoneAll
+            // 
+            buttonLightingZoneAll.AccessibleName = "DPI Setting 1";
+            buttonLightingZoneAll.Activated = false;
+            buttonLightingZoneAll.AutoSize = true;
+            buttonLightingZoneAll.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            buttonLightingZoneAll.BackColor = SystemColors.ControlLightLight;
+            buttonLightingZoneAll.BorderColor = Color.LightGreen;
+            buttonLightingZoneAll.BorderRadius = 5;
+            buttonLightingZoneAll.CausesValidation = false;
+            buttonLightingZoneAll.Dock = DockStyle.Fill;
+            buttonLightingZoneAll.FlatAppearance.BorderSize = 0;
+            buttonLightingZoneAll.FlatStyle = FlatStyle.Flat;
+            buttonLightingZoneAll.ForeColor = SystemColors.ControlText;
+            buttonLightingZoneAll.Location = new Point(3, 3);
+            buttonLightingZoneAll.Name = "buttonLightingZoneAll";
+            buttonLightingZoneAll.Secondary = false;
+            buttonLightingZoneAll.Size = new Size(124, 54);
+            buttonLightingZoneAll.TabIndex = 4;
+            buttonLightingZoneAll.Text = "All";
+            buttonLightingZoneAll.TextImageRelation = TextImageRelation.ImageAboveText;
+            buttonLightingZoneAll.UseVisualStyleBackColor = false;
+            // 
+            // buttonLightingZoneUnderglow
+            // 
+            buttonLightingZoneUnderglow.AccessibleName = "DPI Setting 3";
+            buttonLightingZoneUnderglow.Activated = false;
+            buttonLightingZoneUnderglow.AutoSize = true;
+            buttonLightingZoneUnderglow.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            buttonLightingZoneUnderglow.BackColor = SystemColors.ControlLightLight;
+            buttonLightingZoneUnderglow.BorderColor = Color.LightGreen;
+            buttonLightingZoneUnderglow.BorderRadius = 5;
+            buttonLightingZoneUnderglow.Dock = DockStyle.Fill;
+            buttonLightingZoneUnderglow.FlatAppearance.BorderSize = 0;
+            buttonLightingZoneUnderglow.FlatStyle = FlatStyle.Flat;
+            buttonLightingZoneUnderglow.ForeColor = SystemColors.ControlText;
+            buttonLightingZoneUnderglow.ImageAlign = ContentAlignment.BottomCenter;
+            buttonLightingZoneUnderglow.Location = new Point(393, 3);
+            buttonLightingZoneUnderglow.Name = "buttonLightingZoneUnderglow";
+            buttonLightingZoneUnderglow.Secondary = false;
+            buttonLightingZoneUnderglow.Size = new Size(124, 54);
+            buttonLightingZoneUnderglow.TabIndex = 5;
+            buttonLightingZoneUnderglow.Text = "Underglow";
+            buttonLightingZoneUnderglow.TextImageRelation = TextImageRelation.ImageAboveText;
+            buttonLightingZoneUnderglow.UseVisualStyleBackColor = false;
+            // 
+            // buttonLightingZoneDock
+            // 
+            buttonLightingZoneDock.AccessibleName = "DPI Setting 4";
+            buttonLightingZoneDock.Activated = false;
+            buttonLightingZoneDock.AutoSize = true;
+            buttonLightingZoneDock.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            buttonLightingZoneDock.BackColor = SystemColors.ControlLightLight;
+            buttonLightingZoneDock.BorderColor = Color.LightGreen;
+            buttonLightingZoneDock.BorderRadius = 5;
+            buttonLightingZoneDock.Dock = DockStyle.Fill;
+            buttonLightingZoneDock.FlatAppearance.BorderSize = 0;
+            buttonLightingZoneDock.FlatStyle = FlatStyle.Flat;
+            buttonLightingZoneDock.ForeColor = SystemColors.ControlText;
+            buttonLightingZoneDock.ImageAlign = ContentAlignment.BottomCenter;
+            buttonLightingZoneDock.Location = new Point(523, 3);
+            buttonLightingZoneDock.Name = "buttonLightingZoneDock";
+            buttonLightingZoneDock.Secondary = false;
+            buttonLightingZoneDock.Size = new Size(128, 54);
+            buttonLightingZoneDock.TabIndex = 6;
+            buttonLightingZoneDock.Text = "Dock";
+            buttonLightingZoneDock.TextImageRelation = TextImageRelation.ImageAboveText;
+            buttonLightingZoneDock.UseVisualStyleBackColor = false;
             // 
             // comboBoxAnimationDirection
             // 
@@ -582,7 +733,7 @@
             comboBoxAnimationDirection.DropDownStyle = ComboBoxStyle.DropDownList;
             comboBoxAnimationDirection.FlatStyle = FlatStyle.Flat;
             comboBoxAnimationDirection.FormattingEnabled = true;
-            comboBoxAnimationDirection.Location = new Point(366, 172);
+            comboBoxAnimationDirection.Location = new Point(366, 230);
             comboBoxAnimationDirection.Margin = new Padding(16, 0, 16, 0);
             comboBoxAnimationDirection.Name = "comboBoxAnimationDirection";
             comboBoxAnimationDirection.Size = new Size(284, 33);
@@ -590,7 +741,7 @@
             // 
             // labelAnimationDirection
             // 
-            labelAnimationDirection.Location = new Point(6, 172);
+            labelAnimationDirection.Location = new Point(6, 230);
             labelAnimationDirection.Margin = new Padding(6, 0, 6, 0);
             labelAnimationDirection.Name = "labelAnimationDirection";
             labelAnimationDirection.Size = new Size(316, 33);
@@ -599,7 +750,7 @@
             // 
             // checkBoxRandomColor
             // 
-            checkBoxRandomColor.Location = new Point(520, 53);
+            checkBoxRandomColor.Location = new Point(520, 111);
             checkBoxRandomColor.Margin = new Padding(6, 0, 6, 0);
             checkBoxRandomColor.Name = "checkBoxRandomColor";
             checkBoxRandomColor.Size = new Size(128, 37);
@@ -614,7 +765,7 @@
             comboBoxAnimationSpeed.DropDownStyle = ComboBoxStyle.DropDownList;
             comboBoxAnimationSpeed.FlatStyle = FlatStyle.Flat;
             comboBoxAnimationSpeed.FormattingEnabled = true;
-            comboBoxAnimationSpeed.Location = new Point(366, 130);
+            comboBoxAnimationSpeed.Location = new Point(366, 188);
             comboBoxAnimationSpeed.Margin = new Padding(16, 0, 16, 0);
             comboBoxAnimationSpeed.Name = "comboBoxAnimationSpeed";
             comboBoxAnimationSpeed.Size = new Size(284, 33);
@@ -622,7 +773,7 @@
             // 
             // labelAnimationSpeed
             // 
-            labelAnimationSpeed.Location = new Point(6, 130);
+            labelAnimationSpeed.Location = new Point(6, 188);
             labelAnimationSpeed.Margin = new Padding(6, 0, 6, 0);
             labelAnimationSpeed.Name = "labelAnimationSpeed";
             labelAnimationSpeed.Size = new Size(316, 33);
@@ -632,7 +783,7 @@
             // pictureBoxLightingColor
             // 
             pictureBoxLightingColor.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            pictureBoxLightingColor.Location = new Point(480, 62);
+            pictureBoxLightingColor.Location = new Point(480, 120);
             pictureBoxLightingColor.Margin = new Padding(6);
             pictureBoxLightingColor.Name = "pictureBoxLightingColor";
             pictureBoxLightingColor.Size = new Size(20, 20);
@@ -649,7 +800,7 @@
             buttonLightingColor.BorderRadius = 2;
             buttonLightingColor.FlatStyle = FlatStyle.Flat;
             buttonLightingColor.ForeColor = SystemColors.ControlText;
-            buttonLightingColor.Location = new Point(373, 53);
+            buttonLightingColor.Location = new Point(373, 111);
             buttonLightingColor.Margin = new Padding(3, 6, 3, 6);
             buttonLightingColor.Name = "buttonLightingColor";
             buttonLightingColor.Secondary = false;
@@ -666,7 +817,7 @@
             comboBoxLightingMode.DropDownStyle = ComboBoxStyle.DropDownList;
             comboBoxLightingMode.FlatStyle = FlatStyle.Flat;
             comboBoxLightingMode.FormattingEnabled = true;
-            comboBoxLightingMode.Location = new Point(367, 14);
+            comboBoxLightingMode.Location = new Point(367, 72);
             comboBoxLightingMode.Margin = new Padding(16, 0, 16, 0);
             comboBoxLightingMode.Name = "comboBoxLightingMode";
             comboBoxLightingMode.Size = new Size(284, 33);
@@ -674,7 +825,7 @@
             // 
             // labelLightingMode
             // 
-            labelLightingMode.Location = new Point(7, 14);
+            labelLightingMode.Location = new Point(7, 72);
             labelLightingMode.Margin = new Padding(6, 0, 6, 0);
             labelLightingMode.Name = "labelLightingMode";
             labelLightingMode.Size = new Size(316, 33);
@@ -739,7 +890,7 @@
             panelEnergy.Controls.Add(labelAutoPowerOff);
             panelEnergy.Controls.Add(panelEnergyHeader);
             panelEnergy.Dock = DockStyle.Top;
-            panelEnergy.Location = new Point(11, 747);
+            panelEnergy.Location = new Point(11, 805);
             panelEnergy.Name = "panelEnergy";
             panelEnergy.Padding = new Padding(0, 0, 0, 25);
             panelEnergy.Size = new Size(654, 143);
@@ -920,10 +1071,71 @@
             panelBottomButtons.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             panelBottomButtons.Controls.Add(buttonSync);
             panelBottomButtons.Dock = DockStyle.Top;
-            panelBottomButtons.Location = new Point(11, 890);
+            panelBottomButtons.Location = new Point(11, 948);
             panelBottomButtons.Name = "panelBottomButtons";
             panelBottomButtons.Size = new Size(654, 67);
             panelBottomButtons.TabIndex = 47;
+            // 
+            // tableLayoutPanel2
+            // 
+            tableLayoutPanel2.AutoSize = true;
+            tableLayoutPanel2.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            tableLayoutPanel2.ColumnCount = 4;
+            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
+            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
+            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
+            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
+            tableLayoutPanel2.Controls.Add(rButton1, 0, 0);
+            tableLayoutPanel2.Location = new Point(0, 0);
+            tableLayoutPanel2.Name = "tableLayoutPanel2";
+            tableLayoutPanel2.RowCount = 1;
+            tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
+            tableLayoutPanel2.Size = new Size(200, 100);
+            tableLayoutPanel2.TabIndex = 0;
+            // 
+            // rButton1
+            // 
+            rButton1.AccessibleName = "DPI Setting 2";
+            rButton1.Activated = false;
+            rButton1.BackColor = SystemColors.ControlLightLight;
+            rButton1.BorderColor = Color.Transparent;
+            rButton1.BorderRadius = 5;
+            rButton1.Dock = DockStyle.Top;
+            rButton1.FlatAppearance.BorderSize = 0;
+            rButton1.FlatStyle = FlatStyle.Flat;
+            rButton1.ForeColor = SystemColors.ControlText;
+            rButton1.Image = Properties.Resources.lighting_dot_32;
+            rButton1.ImageAlign = ContentAlignment.BottomCenter;
+            rButton1.Location = new Point(3, 3);
+            rButton1.Name = "rButton1";
+            rButton1.Secondary = false;
+            rButton1.Size = new Size(44, 90);
+            rButton1.TabIndex = 4;
+            rButton1.Text = "DPI 2\r\n1000";
+            rButton1.TextImageRelation = TextImageRelation.ImageAboveText;
+            rButton1.UseVisualStyleBackColor = false;
+            // 
+            // rButton2
+            // 
+            rButton2.AccessibleName = "DPI Setting 1";
+            rButton2.Activated = false;
+            rButton2.BackColor = SystemColors.ControlLightLight;
+            rButton2.BorderColor = Color.Transparent;
+            rButton2.BorderRadius = 5;
+            rButton2.CausesValidation = false;
+            rButton2.Dock = DockStyle.Top;
+            rButton2.FlatAppearance.BorderSize = 0;
+            rButton2.FlatStyle = FlatStyle.Flat;
+            rButton2.ForeColor = SystemColors.ControlText;
+            rButton2.Image = Properties.Resources.lighting_dot_32;
+            rButton2.Location = new Point(3, 3);
+            rButton2.Name = "rButton2";
+            rButton2.Secondary = false;
+            rButton2.Size = new Size(44, 90);
+            rButton2.TabIndex = 4;
+            rButton2.Text = "DPI 1\r\n800";
+            rButton2.TextImageRelation = TextImageRelation.ImageAboveText;
+            rButton2.UseVisualStyleBackColor = false;
             // 
             // AsusMouseSettings
             // 
@@ -932,7 +1144,7 @@
             AutoScroll = true;
             AutoSize = true;
             AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            ClientSize = new Size(676, 1030);
+            ClientSize = new Size(676, 1072);
             Controls.Add(panelBottomButtons);
             Controls.Add(panelEnergy);
             Controls.Add(panelLighting);
@@ -966,6 +1178,9 @@
             panelLighting.ResumeLayout(false);
             panelLighting.PerformLayout();
             panelLightingContent.ResumeLayout(false);
+            panelLightingContent.PerformLayout();
+            tableLayoutPanel3.ResumeLayout(false);
+            tableLayoutPanel3.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBoxLightingColor).EndInit();
             panelLightingHeader.ResumeLayout(false);
             panelLightingHeader.PerformLayout();
@@ -979,6 +1194,7 @@
             panelBatteryState.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBoxBatteryState).EndInit();
             panelBottomButtons.ResumeLayout(false);
+            tableLayoutPanel2.ResumeLayout(false);
             ResumeLayout(false);
             PerformLayout();
         }
@@ -1047,5 +1263,14 @@
         private UI.RButton buttonSync;
         private Panel panelBottomButtons;
         private NumericUpDown numericUpDownCurrentDPI;
+        private TableLayoutPanel tableLayoutPanel3;
+        private UI.RButton buttonLightingZoneScroll;
+        private UI.RButton buttonLightingZoneLogo;
+        private UI.RButton buttonLightingZoneAll;
+        private UI.RButton buttonLightingZoneUnderglow;
+        private UI.RButton buttonLightingZoneDock;
+        private TableLayoutPanel tableLayoutPanel2;
+        private UI.RButton rButton1;
+        private UI.RButton rButton2;
     }
 }

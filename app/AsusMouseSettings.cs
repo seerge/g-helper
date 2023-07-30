@@ -20,6 +20,7 @@ namespace GHelper
 
         private readonly AsusMouse mouse;
         private readonly RButton[] dpiButtons;
+        private LightingZone visibleZone = LightingZone.All;
 
         private bool updateMouseDPI = true;
 
@@ -33,6 +34,7 @@ namespace GHelper
 
             labelPollingRate.Text = Properties.Strings.PollingRate;
             labelLighting.Text = Properties.Strings.Lighting;
+            labelLightingMode.Text = Properties.Strings.AuraLightingMode;
             labelEnergy.Text = Properties.Strings.EnergySettings;
             labelPerformance.Text = Properties.Strings.MousePerformance;
             checkBoxRandomColor.Text = Properties.Strings.AuraRandomColor;
@@ -43,6 +45,12 @@ namespace GHelper
             labelLiftOffDistance.Text = Properties.Strings.MouseLiftOffDistance;
             labelChargingState.Text = "(" + Properties.Strings.Charging + ")";
             labelProfile.Text = Properties.Strings.Profile;
+
+            buttonLightingZoneLogo.Text = Properties.Strings.AuraZoneLogo;
+            buttonLightingZoneScroll.Text = Properties.Strings.AuraZoneScroll;
+            buttonLightingZoneUnderglow.Text = Properties.Strings.AuraZoneUnderglow;
+            buttonLightingZoneAll.Text = Properties.Strings.AuraZoneAll;
+            buttonLightingZoneDock.Text = Properties.Strings.AuraZoneDock;
 
             InitTheme();
 
@@ -80,9 +88,52 @@ namespace GHelper
             sliderLowBatteryWarning.MouseUp += SliderLowBatteryWarning_MouseUp;
             comboBoxAutoPowerOff.DropDownClosed += ComboBoxAutoPowerOff_DropDownClosed;
 
+
+            buttonLightingZoneAll.Click += ButtonLightingZoneAll_Click;
+            buttonLightingZoneDock.Click += ButtonLightingZoneDock_Click;
+            buttonLightingZoneLogo.Click += ButtonLightingZoneLogo_Click;
+            buttonLightingZoneUnderglow.Click += ButtonLightingZoneUnderglow_Click;
+            buttonLightingZoneScroll.Click += ButtonLightingZoneScroll_Click;
+
             InitMouseCapabilities();
             Logger.WriteLine(mouse.GetDisplayName() + " (GUI): Initialized capabilities. Synchronizing mouse data");
             RefreshMouseData();
+        }
+
+        private void SwitchLightingZone(LightingZone zone)
+        {
+            if (!mouse.HasRGB())
+            {
+                return;
+            }
+            visibleZone = zone;
+            InitLightingModes();
+            VisusalizeLightingSettings();
+        }
+
+        private void ButtonLightingZoneScroll_Click(object? sender, EventArgs e)
+        {
+            SwitchLightingZone(LightingZone.Scrollwheel);
+        }
+
+        private void ButtonLightingZoneUnderglow_Click(object? sender, EventArgs e)
+        {
+            SwitchLightingZone(LightingZone.Underglow);
+        }
+
+        private void ButtonLightingZoneLogo_Click(object? sender, EventArgs e)
+        {
+            SwitchLightingZone(LightingZone.Logo);
+        }
+
+        private void ButtonLightingZoneDock_Click(object? sender, EventArgs e)
+        {
+            SwitchLightingZone(LightingZone.Dock);
+        }
+
+        private void ButtonLightingZoneAll_Click(object? sender, EventArgs e)
+        {
+            SwitchLightingZone(LightingZone.All);
         }
 
         private void AsusMouseSettings_FormClosing(object? sender, FormClosingEventArgs e)
@@ -175,40 +226,42 @@ namespace GHelper
             VisualizeCurrentDPIProfile();
         }
 
+        private void UpdateLightingSettings(LightingSetting settings, LightingZone zone)
+        {
+            mouse.SetLightingSetting(settings, visibleZone);
+            VisusalizeLightingSettings();
+        }
 
         private void CheckBoxRandomColor_CheckedChanged(object? sender, EventArgs e)
         {
-            LightingSetting? ls = mouse.LightingSetting;
+            LightingSetting? ls = mouse.LightingSettingForZone(visibleZone);
             ls.RandomColor = checkBoxRandomColor.Checked;
 
-            mouse.SetLightingSetting(ls);
-            VisusalizeLightingSettings();
+            UpdateLightingSettings(ls, visibleZone);
         }
 
         private void ComboBoxAnimationDirection_DropDownClosed(object? sender, EventArgs e)
         {
-            LightingSetting? ls = mouse.LightingSetting;
+            LightingSetting? ls = mouse.LightingSettingForZone(visibleZone);
             ls.AnimationDirection = (AnimationDirection)comboBoxAnimationDirection.SelectedIndex;
 
-            mouse.SetLightingSetting(ls);
-            VisusalizeLightingSettings();
+            UpdateLightingSettings(ls, visibleZone);
         }
 
         private void ComboBoxAnimationSpeed_DropDownClosed(object? sender, EventArgs e)
         {
-            LightingSetting? ls = mouse.LightingSetting;
+            LightingSetting? ls = mouse.LightingSettingForZone(visibleZone);
             ls.AnimationSpeed = (AnimationSpeed)comboBoxAnimationSpeed.SelectedIndex;
 
-            mouse.SetLightingSetting(ls);
-            VisusalizeLightingSettings();
+            UpdateLightingSettings(ls, visibleZone);
         }
 
         private void SliderBrightness_MouseUp(object? sender, MouseEventArgs e)
         {
-            LightingSetting? ls = mouse.LightingSetting;
+            LightingSetting? ls = mouse.LightingSettingForZone(visibleZone);
             ls.Brightness = sliderBrightness.Value;
 
-            mouse.SetLightingSetting(ls);
+            UpdateLightingSettings(ls, visibleZone);
         }
 
         private void ComboBoxLightingMode_DropDownClosed(object? sender, EventArgs e)
@@ -220,11 +273,16 @@ namespace GHelper
 
             LightingMode lm = supportedLightingModes[comboBoxLightingMode.SelectedIndex];
 
-            LightingSetting? ls = mouse.LightingSetting;
+            LightingSetting? ls = mouse.LightingSettingForZone(visibleZone);
+            if (ls.LightingMode == lm)
+            {
+                //Nothing to do here.
+                return;
+            }
+
             ls.LightingMode = lm;
 
-            mouse.SetLightingSetting(ls);
-            VisusalizeLightingSettings();
+            UpdateLightingSettings(ls, visibleZone);
         }
 
         private void ButtonLightingColor_Click(object? sender, EventArgs e)
@@ -237,11 +295,10 @@ namespace GHelper
 
             if (colorDlg.ShowDialog() == DialogResult.OK)
             {
-                LightingSetting? ls = mouse.LightingSetting;
+                LightingSetting? ls = mouse.LightingSettingForZone(visibleZone);
                 ls.RGBColor = colorDlg.Color;
 
-                mouse.SetLightingSetting(ls);
-                VisusalizeLightingSettings();
+                UpdateLightingSettings(ls, visibleZone);
             }
         }
 
@@ -475,16 +532,14 @@ namespace GHelper
 
             if (mouse.HasRGB())
             {
+                buttonLightingZoneLogo.Visible = mouse.SupportedLightingZones().Contains(LightingZone.Logo);
+                buttonLightingZoneScroll.Visible = mouse.SupportedLightingZones().Contains(LightingZone.Scrollwheel);
+                buttonLightingZoneUnderglow.Visible = mouse.SupportedLightingZones().Contains(LightingZone.Underglow);
+                buttonLightingZoneDock.Visible = mouse.SupportedLightingZones().Contains(LightingZone.Dock);
+
                 sliderBrightness.Max = mouse.MaxBrightness();
 
-                foreach (LightingMode lm in Enum.GetValues(typeof(LightingMode)))
-                {
-                    if (mouse.IsLightingModeSupported(lm))
-                    {
-                        comboBoxLightingMode.Items.Add(lightingModeNames.GetValueOrDefault(lm));
-                        supportedLightingModes.Add(lm);
-                    }
-                }
+                InitLightingModes();
 
                 comboBoxAnimationDirection.Items.AddRange(new string[] {
                     Properties.Strings.AuraClockwise,
@@ -503,10 +558,36 @@ namespace GHelper
             }
         }
 
+        private void InitLightingModes()
+        {
+            comboBoxLightingMode.Items.Clear();
+            supportedLightingModes.Clear();
+            foreach (LightingMode lm in Enum.GetValues(typeof(LightingMode)))
+            {
+                if (mouse.IsLightingModeSupported(lm) && mouse.IsLightingModeSupportedForZone(lm, visibleZone))
+                {
+                    comboBoxLightingMode.Items.Add(lightingModeNames.GetValueOrDefault(lm));
+                    supportedLightingModes.Add(lm);
+                }
+            }
+        }
+
 
         private void VisualizeMouseSettings()
         {
             comboProfile.SelectedIndex = mouse.Profile;
+
+            if (mouse.HasRGB())
+            {
+                //If current lighting mode is zoned, pre-select the first zone and not "All".
+                bool zoned = mouse.IsLightingZoned();
+                if (zoned)
+                {
+                    visibleZone = mouse.SupportedLightingZones()[0];
+                    InitLightingModes();
+                }
+            }
+
 
             VisualizeDPIButtons();
             VisualizeCurrentDPIProfile();
@@ -575,6 +656,29 @@ namespace GHelper
             }
         }
 
+        public void VisusalizeLightingZones()
+        {
+            bool zoned = mouse.IsLightingZoned();
+
+            buttonLightingZoneAll.Activated = visibleZone == LightingZone.All;
+            buttonLightingZoneLogo.Activated = visibleZone == LightingZone.Logo;
+            buttonLightingZoneScroll.Activated = visibleZone == LightingZone.Scrollwheel;
+            buttonLightingZoneUnderglow.Activated = visibleZone == LightingZone.Underglow;
+            buttonLightingZoneDock.Activated = visibleZone == LightingZone.Dock;
+
+            buttonLightingZoneAll.Secondary = zoned;
+            buttonLightingZoneLogo.Secondary = !zoned;
+            buttonLightingZoneScroll.Secondary = !zoned;
+            buttonLightingZoneUnderglow.Secondary = !zoned;
+            buttonLightingZoneDock.Secondary = !zoned;
+
+            buttonLightingZoneAll.BackColor = buttonLightingZoneAll.Secondary ? RForm.buttonSecond : RForm.buttonMain;
+            buttonLightingZoneLogo.BackColor = buttonLightingZoneLogo.Secondary ? RForm.buttonSecond : RForm.buttonMain;
+            buttonLightingZoneScroll.BackColor = buttonLightingZoneScroll.Secondary ? RForm.buttonSecond : RForm.buttonMain;
+            buttonLightingZoneUnderglow.BackColor = buttonLightingZoneUnderglow.Secondary ? RForm.buttonSecond : RForm.buttonMain;
+            buttonLightingZoneDock.BackColor = buttonLightingZoneDock.Secondary ? RForm.buttonSecond : RForm.buttonMain;
+        }
+
         private void VisusalizeLightingSettings()
         {
             if (!mouse.HasRGB())
@@ -582,7 +686,9 @@ namespace GHelper
                 return;
             }
 
-            LightingSetting? ls = mouse.LightingSetting;
+            VisusalizeLightingZones();
+
+            LightingSetting? ls = mouse.LightingSettingForZone(visibleZone);
 
             if (ls is null)
             {

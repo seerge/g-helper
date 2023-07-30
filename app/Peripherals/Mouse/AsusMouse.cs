@@ -56,6 +56,15 @@ namespace GHelper.Peripherals.Mouse
         BatteryState = 0x6
     }
 
+    public enum LightingZone
+    {
+        Logo = 0x00,
+        Scrollwheel = 0x01,
+        Underglow = 0x02,
+        All = 0x03,
+        Dock = 0x04,
+    }
+
     public class LightingSetting
     {
         public LightingSetting()
@@ -77,11 +86,29 @@ namespace GHelper.Peripherals.Mouse
 
         public AnimationDirection AnimationDirection { get; set; }
 
+        public override bool Equals(object? obj)
+        {
+            return obj is LightingSetting setting &&
+                   LightingMode == setting.LightingMode &&
+                   Brightness == setting.Brightness &&
+                   RGBColor.Equals(setting.RGBColor) &&
+                   RandomColor == setting.RandomColor &&
+                   AnimationSpeed == setting.AnimationSpeed &&
+                   AnimationDirection == setting.AnimationDirection;
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(LightingMode, Brightness, RGBColor, RandomColor, AnimationSpeed, AnimationDirection);
+        }
+
         public override string? ToString()
         {
             return "LightingMode: " + LightingMode + ", Color (" + RGBColor.R + ", " + RGBColor.G + ", " + RGBColor.B
                 + "), Brightness: " + Brightness + "%, LightingSpeed: " + AnimationSpeed + ", RandomColor:" + RandomColor + ", AnimationDirection:" + AnimationDirection;
         }
+
+
     }
 
     public class AsusMouseDPI
@@ -102,7 +129,7 @@ namespace GHelper.Peripherals.Mouse
     public abstract class AsusMouse : Device, IPeripheral
     {
         private static string[] POLLING_RATES = { "125 Hz", "250 Hz", "500 Hz", "1000 Hz", "2000 Hz", "4000 Hz", "8000 Hz", "16000 Hz" };
-        internal const bool PACKET_LOGGER_ALWAYS_ON = false;
+        internal const bool PACKET_LOGGER_ALWAYS_ON = true;
         internal const int ASUS_MOUSE_PACKET_SIZE = 65;
 
         public event EventHandler? Disconnect;
@@ -131,7 +158,7 @@ namespace GHelper.Peripherals.Mouse
         public bool Wireless { get; protected set; }
         public int Battery { get; protected set; }
         public bool Charging { get; protected set; }
-        public LightingSetting? LightingSetting { get; protected set; }
+        public LightingSetting[] LightingSetting { get; protected set; }
         public int LowBatteryWarning { get; protected set; }
         public PowerOffSetting PowerOffSetting { get; protected set; }
         public LiftOffDistance LiftOffDistance { get; protected set; }
@@ -147,6 +174,7 @@ namespace GHelper.Peripherals.Mouse
             this.path = path;
             this.Wireless = wireless;
             DpiSettings = new AsusMouseDPI[1];
+            LightingSetting = new LightingSetting[SupportedLightingZones().Length];
         }
 
         public override bool Equals(object? obj)
@@ -1038,31 +1066,97 @@ namespace GHelper.Peripherals.Mouse
                  || lightingMode == LightingMode.React;
         }
 
-        protected virtual byte[] GetReadLightingModePacket()
+        public virtual LightingZone[] SupportedLightingZones()
         {
-            return new byte[] { 0x00, 0x12, 0x03 };
+            return new LightingZone[] { };
         }
 
-        protected virtual byte[] GetUpdateLightingModePacket(LightingSetting lightingSetting)
+        public virtual int IndexForZone(LightingZone zone)
         {
-            if (lightingSetting.Brightness < 0 || lightingSetting.Brightness > 100)
+            LightingZone[] lz = SupportedLightingZones();
+            for (int i = 0; i < lz.Length; ++i)
             {
-                Logger.WriteLine(GetDisplayName() + ": Brightness " + lightingSetting.Brightness + " is out of range [0;100]. Setting to 25.");
-                lightingSetting.Brightness = 25;
+                if (lz[i] == zone)
+                {
+                    return i;
+                }
+            }
+            return 0;
+        }
+
+        public virtual bool IsLightingZoned()
+        {
+            //Check whether all zones are the same or not
+            for (int i = 1; i < LightingSetting.Length; ++i)
+            {
+                if (LightingSetting[i] is null
+                   || LightingSetting[i - 1] is null
+                   || !LightingSetting[i].Equals(LightingSetting[i - 1]))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public virtual bool IsLightingModeSupportedForZone(LightingMode lm, LightingZone lz)
+        {
+            if (lz == LightingZone.All)
+            {
+                return true;
+            }
+
+            return lm == LightingMode.Static
+                || lm == LightingMode.Breathing
+                || lm == LightingMode.ColorCycle
+                || lm == LightingMode.React;
+        }
+
+        public virtual LightingSetting LightingSettingForZone(LightingZone zone)
+        {
+            if (zone == LightingZone.All)
+            {
+                //First zone is treated as ALL for reading purpose
+                return LightingSetting[0];
+            }
+
+            return LightingSetting[IndexForZone(zone)];
+        }
+
+        protected virtual byte[] GetReadLightingModePacket(LightingZone zone)
+        {
+            int idx = 0;
+
+            if (zone != LightingZone.All)
+            {
+                idx = IndexForZone(zone);
+            }
+
+            return new byte[] { 0x00, 0x12, 0x03, (byte)idx };
+        }
+
+        protected virtual byte[] GetUpdateLightingModePacket(LightingSetting lightingSetting, LightingZone zone)
+        {
+            if (lightingSetting.Brightness < 0 || lightingSetting.Brightness > MaxBrightness())
+            {
+                Logger.WriteLine(GetDisplayName() + ": Brightness " + lightingSetting.Brightness
+                    + " is out of range [0;" + MaxBrightness() + "]. Setting to " + (MaxBrightness() / 4) + " .");
+
+                lightingSetting.Brightness = MaxBrightness() / 4; // set t0 25% of max brightness
             }
             if (!IsLightingModeSupported(lightingSetting.LightingMode))
             {
-                Logger.WriteLine(GetDisplayName() + ": Lighting Mode " + lightingSetting.LightingMode + " is not supported. Setting to Rainbow ;)");
-                lightingSetting.LightingMode = LightingMode.Rainbow;
+                Logger.WriteLine(GetDisplayName() + ": Lighting Mode " + lightingSetting.LightingMode + " is not supported. Setting to Color Cycle ;)");
+                lightingSetting.LightingMode = LightingMode.ColorCycle;
             }
 
-            return new byte[] { 0x00, 0x51, 0x28, 0x03, 0x00,
+            return new byte[] { 0x00, 0x51, 0x28, (byte)zone, 0x00,
                 IndexForLightingMode(lightingSetting.LightingMode),
                 (byte)lightingSetting.Brightness,
                 lightingSetting.RGBColor.R, lightingSetting.RGBColor.G, lightingSetting.RGBColor.B,
-                (byte)lightingSetting.AnimationDirection,
-                (byte)(lightingSetting.RandomColor ? 0x01: 0x00),
-                (byte)lightingSetting.AnimationSpeed
+                (byte)(SupportsAnimationDirection(lightingSetting.LightingMode) ? lightingSetting.AnimationDirection : 0x00),
+                (byte)((lightingSetting.RandomColor && SupportsRandomColor(lightingSetting.LightingMode)) ? 0x01: 0x00),
+                (byte)(SupportsAnimationSpeed(lightingSetting.LightingMode) ? lightingSetting.AnimationSpeed : 0x00)
             };
         }
 
@@ -1079,11 +1173,18 @@ namespace GHelper.Peripherals.Mouse
             setting.Brightness = packet[6];
 
             setting.RGBColor = Color.FromArgb(packet[7], packet[8], packet[9]);
-            setting.AnimationDirection = (AnimationDirection)packet[11];
-            setting.RandomColor = packet[12] == 0x01;
-            setting.AnimationSpeed = (AnimationSpeed)packet[13];
 
-            //If the mouse reports 0, which it does when the current setting has no speed option, chose medium as default
+
+            setting.AnimationDirection = SupportsAnimationDirection(setting.LightingMode)
+                ? (AnimationDirection)packet[11]
+                : AnimationDirection.Clockwise;
+
+            setting.RandomColor = SupportsRandomColor(setting.LightingMode) && packet[12] == 0x01;
+            setting.AnimationSpeed = SupportsAnimationSpeed(setting.LightingMode)
+                ? (AnimationSpeed)packet[13]
+                : AnimationSpeed.Medium;
+
+            //If the mouse reports an out of range value, which it does when the current setting has no speed option, chose medium as default
             if (setting.AnimationSpeed != AnimationSpeed.Fast
                 && setting.AnimationSpeed != AnimationSpeed.Medium
                 && setting.AnimationSpeed != AnimationSpeed.Slow)
@@ -1100,33 +1201,47 @@ namespace GHelper.Peripherals.Mouse
             {
                 return;
             }
-            byte[]? response = WriteForResponse(GetReadLightingModePacket());
-            if (response is null) return;
 
-            LightingSetting = ParseLightingSetting(response);
+            LightingZone[] lz = SupportedLightingZones();
+            for (int i = 0; i < lz.Length; ++i)
+            {
+                byte[]? response = WriteForResponse(GetReadLightingModePacket(lz[i]));
+                if (response is null) return;
 
-            if (LightingSetting is not null)
-            {
-                Logger.WriteLine(GetDisplayName() + ": Read RGB Setting" + LightingSetting.ToString());
-            }
-            else
-            {
-                Logger.WriteLine(GetDisplayName() + ": Failed to read RGB Setting");
+                LightingSetting? ls = ParseLightingSetting(response);
+                if (ls is null)
+                {
+                    Logger.WriteLine(GetDisplayName() + ": Failed to read RGB Setting for Zone " + lz[i].ToString());
+                    continue;
+                }
+
+                Logger.WriteLine(GetDisplayName() + ": Read RGB Setting for Zone " + lz[i].ToString() + ": " + ls.ToString());
+                LightingSetting[i] = ls;
             }
         }
 
-        public void SetLightingSetting(LightingSetting lightingSetting)
+        public void SetLightingSetting(LightingSetting lightingSetting, LightingZone zone)
         {
             if (!HasRGB() || lightingSetting is null)
             {
                 return;
             }
 
-            WriteForResponse(GetUpdateLightingModePacket(lightingSetting));
+            WriteForResponse(GetUpdateLightingModePacket(lightingSetting, zone));
             FlushSettings();
 
-            Logger.WriteLine(GetDisplayName() + ": Set RGB Setting " + lightingSetting.ToString());
-            this.LightingSetting = lightingSetting;
+            Logger.WriteLine(GetDisplayName() + ": Set RGB Setting for zone " + zone.ToString() + ": " + lightingSetting.ToString());
+            if (zone == LightingZone.All)
+            {
+                for (int i = 0; i < this.LightingSetting.Length; ++i)
+                {
+                    this.LightingSetting[i] = lightingSetting;
+                }
+            }
+            else
+            {
+                this.LightingSetting[IndexForZone(zone)] = lightingSetting;
+            }
         }
 
         protected virtual byte[] GetSaveProfilePacket()
