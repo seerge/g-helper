@@ -936,6 +936,11 @@ namespace GHelper.Peripherals.Mouse
             return false;
         }
 
+        public virtual int MaxBrightness()
+        {
+            return 100;
+        }
+
         //Override to remap lighting mode IDs.
         //From OpenRGB code it looks like some mice have different orders of the modes or do not support some modes at all.
         protected virtual byte IndexForLightingMode(LightingMode lightingMode)

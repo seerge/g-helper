@@ -473,6 +473,8 @@ namespace GHelper
 
             if (mouse.HasRGB())
             {
+                sliderBrightness.Max = mouse.MaxBrightness();
+
                 foreach (LightingMode lm in Enum.GetValues(typeof(LightingMode)))
                 {
                     if (mouse.IsLightingModeSupported(lm))
