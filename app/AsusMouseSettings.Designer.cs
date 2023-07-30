@@ -60,7 +60,7 @@
             labelPerformance = new Label();
             panelLighting = new Panel();
             panelLightingContent = new Panel();
-            tableLayoutPanel3 = new TableLayoutPanel();
+            tableLayoutLightingZones = new TableLayoutPanel();
             buttonLightingZoneScroll = new UI.RButton();
             buttonLightingZoneLogo = new UI.RButton();
             buttonLightingZoneAll = new UI.RButton();
@@ -111,7 +111,7 @@
             ((System.ComponentModel.ISupportInitialize)pictureKeyboard).BeginInit();
             panelLighting.SuspendLayout();
             panelLightingContent.SuspendLayout();
-            tableLayoutPanel3.SuspendLayout();
+            tableLayoutLightingZones.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBoxLightingColor).BeginInit();
             panelLightingHeader.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBoxLighting).BeginInit();
@@ -570,7 +570,7 @@
             // panelLightingContent
             // 
             panelLightingContent.AutoSize = true;
-            panelLightingContent.Controls.Add(tableLayoutPanel3);
+            panelLightingContent.Controls.Add(tableLayoutLightingZones);
             panelLightingContent.Controls.Add(comboBoxAnimationDirection);
             panelLightingContent.Controls.Add(labelAnimationDirection);
             panelLightingContent.Controls.Add(checkBoxRandomColor);
@@ -587,29 +587,29 @@
             panelLightingContent.Size = new Size(654, 274);
             panelLightingContent.TabIndex = 42;
             // 
-            // tableLayoutPanel3
+            // tableLayoutLightingZones
             // 
-            tableLayoutPanel3.AutoSize = true;
-            tableLayoutPanel3.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            tableLayoutPanel3.ColumnCount = 5;
-            tableLayoutPanel3.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20F));
-            tableLayoutPanel3.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20F));
-            tableLayoutPanel3.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20F));
-            tableLayoutPanel3.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20F));
-            tableLayoutPanel3.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20F));
-            tableLayoutPanel3.Controls.Add(buttonLightingZoneScroll, 0, 0);
-            tableLayoutPanel3.Controls.Add(buttonLightingZoneLogo, 0, 0);
-            tableLayoutPanel3.Controls.Add(buttonLightingZoneAll, 0, 0);
-            tableLayoutPanel3.Controls.Add(buttonLightingZoneUnderglow, 1, 0);
-            tableLayoutPanel3.Controls.Add(buttonLightingZoneDock, 2, 0);
-            tableLayoutPanel3.Dock = DockStyle.Top;
-            tableLayoutPanel3.Location = new Point(0, 0);
-            tableLayoutPanel3.Margin = new Padding(6, 3, 6, 3);
-            tableLayoutPanel3.Name = "tableLayoutPanel3";
-            tableLayoutPanel3.RowCount = 1;
-            tableLayoutPanel3.RowStyles.Add(new RowStyle(SizeType.Absolute, 60F));
-            tableLayoutPanel3.Size = new Size(654, 60);
-            tableLayoutPanel3.TabIndex = 56;
+            tableLayoutLightingZones.AutoSize = true;
+            tableLayoutLightingZones.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            tableLayoutLightingZones.ColumnCount = 5;
+            tableLayoutLightingZones.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20F));
+            tableLayoutLightingZones.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20F));
+            tableLayoutLightingZones.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20F));
+            tableLayoutLightingZones.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20F));
+            tableLayoutLightingZones.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20F));
+            tableLayoutLightingZones.Controls.Add(buttonLightingZoneScroll, 0, 0);
+            tableLayoutLightingZones.Controls.Add(buttonLightingZoneLogo, 0, 0);
+            tableLayoutLightingZones.Controls.Add(buttonLightingZoneAll, 0, 0);
+            tableLayoutLightingZones.Controls.Add(buttonLightingZoneUnderglow, 1, 0);
+            tableLayoutLightingZones.Controls.Add(buttonLightingZoneDock, 2, 0);
+            tableLayoutLightingZones.Dock = DockStyle.Top;
+            tableLayoutLightingZones.Location = new Point(0, 0);
+            tableLayoutLightingZones.Margin = new Padding(6, 3, 6, 3);
+            tableLayoutLightingZones.Name = "tableLayoutLightingZones";
+            tableLayoutLightingZones.RowCount = 1;
+            tableLayoutLightingZones.RowStyles.Add(new RowStyle(SizeType.Absolute, 60F));
+            tableLayoutLightingZones.Size = new Size(654, 60);
+            tableLayoutLightingZones.TabIndex = 56;
             // 
             // buttonLightingZoneScroll
             // 
@@ -1179,8 +1179,8 @@
             panelLighting.PerformLayout();
             panelLightingContent.ResumeLayout(false);
             panelLightingContent.PerformLayout();
-            tableLayoutPanel3.ResumeLayout(false);
-            tableLayoutPanel3.PerformLayout();
+            tableLayoutLightingZones.ResumeLayout(false);
+            tableLayoutLightingZones.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBoxLightingColor).EndInit();
             panelLightingHeader.ResumeLayout(false);
             panelLightingHeader.PerformLayout();
@@ -1263,7 +1263,7 @@
         private UI.RButton buttonSync;
         private Panel panelBottomButtons;
         private NumericUpDown numericUpDownCurrentDPI;
-        private TableLayoutPanel tableLayoutPanel3;
+        private TableLayoutPanel tableLayoutLightingZones;
         private UI.RButton buttonLightingZoneScroll;
         private UI.RButton buttonLightingZoneLogo;
         private UI.RButton buttonLightingZoneAll;
