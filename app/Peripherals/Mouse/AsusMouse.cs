@@ -263,12 +263,12 @@ namespace GHelper.Peripherals.Mouse
                 OnDisconnect();
                 return null;
             }
-            catch (System.TimeoutException e)
+            catch (TimeoutException e)
             {
                 Logger.WriteLine(GetDisplayName() + ": Timeout reading packet " + e.Message);
                 return null;
             }
-            catch (System.ObjectDisposedException e)
+            catch (ObjectDisposedException)
             {
                 Logger.WriteLine(GetDisplayName() + ": Channel closed ");
                 OnDisconnect();
