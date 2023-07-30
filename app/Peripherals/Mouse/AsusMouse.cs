@@ -300,9 +300,9 @@ namespace GHelper.Peripherals.Mouse
 
             ReadProfile();
             ReadDPI();
-            ReadLightingSetting();
-            ReadLiftOffDistance();
             ReadPollingRate();
+            ReadLiftOffDistance();
+            ReadLightingSetting();
         }
 
         // ------------------------------------------------------------------------------
