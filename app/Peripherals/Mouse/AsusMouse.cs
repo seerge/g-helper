@@ -211,9 +211,14 @@ namespace GHelper.Peripherals.Mouse
             }
         }
 
+        public virtual int USBTimeout()
+        {
+            return 300;
+        }
+
         public override void SetProvider()
         {
-            _usbProvider = new WindowsUsbProvider(_vendorId, _productId, path);
+            _usbProvider = new WindowsUsbProvider(_vendorId, _productId, path, USBTimeout());
         }
 
         protected virtual void OnDisconnect()
