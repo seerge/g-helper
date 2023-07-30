@@ -376,9 +376,11 @@ namespace GHelper
 
             sliderDPI.Max = mouse.MaxDPI();
             sliderDPI.Min = mouse.MinDPI();
+            sliderDPI.Step = mouse.DPIIncrements();
 
             numericUpDownCurrentDPI.Minimum = mouse.MinDPI();
             numericUpDownCurrentDPI.Maximum = mouse.MaxDPI();
+            numericUpDownCurrentDPI.Increment = mouse.DPIIncrements();
 
 
             if (!mouse.HasDPIColors())

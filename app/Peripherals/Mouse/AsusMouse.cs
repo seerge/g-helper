@@ -700,6 +700,11 @@ namespace GHelper.Peripherals.Mouse
             return false;
         }
 
+        public virtual int DPIIncrements()
+        {
+            return 50;
+        }
+
         public virtual bool CanChangeDPIProfile()
         {
             return DPIProfileCount() > 1;
@@ -763,7 +768,7 @@ namespace GHelper.Peripherals.Mouse
             {
                 return null;
             }
-            ushort dpiEncoded = (ushort)((dpi.DPI - 50) / 50);
+            ushort dpiEncoded = (ushort)((dpi.DPI - DPIIncrements()) / DPIIncrements());
 
             if (HasDPIColors())
             {
