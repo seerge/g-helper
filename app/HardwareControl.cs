@@ -9,6 +9,10 @@ using System.Management;
 
 public static class HardwareControl
 {
+
+    const int DEFAULT_FAN_MAX = 58;
+    const int INADEQUATE_MAX = 80;
+
     public static IGpuControl? GpuControl;
 
     public static float? cpuTemp = -1;
@@ -26,21 +30,48 @@ public static class HardwareControl
 
     static long lastUpdate;
 
-    public static int GetFanMax()
-    {
-        int max = 58;
-        int configMax = AppConfig.Get("fan_max");
-        if (configMax > 80) configMax = 0; // skipping inadvequate settings
+    static int _fanMax = DEFAULT_FAN_MAX;
+    static bool _fanRpm = false;
 
-        if (AppConfig.ContainsModel("401")) max = 72;
-        else if (AppConfig.ContainsModel("503")) max = 68;
-        return Math.Max(max, configMax);
+    public static int fanMax
+    {
+        get
+        {
+            return _fanMax;
+        }
+        set
+        {
+            AppConfig.Set("fan_max", value);
+            _fanMax = value;
+        }
     }
 
-    public static void SetFanMax(int fan)
+    public static bool fanRpm
     {
-        AppConfig.Set("fan_max", fan);
+        get
+        {
+            return _fanRpm;
+        }
+        set
+        {
+            AppConfig.Set("fan_rpm", value ? 1 : 0);
+            _fanRpm = value;
+        }
     }
+
+    static HardwareControl()
+    {
+        _fanMax = AppConfig.Get("fan_max");
+        if (_fanMax > INADEQUATE_MAX) _fanMax = -1; // skipping inadvequate settings
+
+        if (_fanMax < 0 && AppConfig.ContainsModel("401")) _fanMax = 72;
+        if (_fanMax < 0 && AppConfig.ContainsModel("503")) _fanMax = 68;
+        if (_fanMax < 0) _fanMax = DEFAULT_FAN_MAX;
+
+        _fanRpm = AppConfig.Is("fan_rpm");
+
+    }
+
     public static string FormatFan(int fan)
     {
         // fix for old models 
@@ -50,10 +81,9 @@ public static class HardwareControl
             if (fan <= 0 || fan > 100) return null; //nothing reasonable
         }
 
-        int fanMax = GetFanMax();
-        if (fan > fanMax && fan < 80) SetFanMax(fan);
+        if (fan > fanMax && fan <= INADEQUATE_MAX) fanMax = fan;
 
-        if (AppConfig.Is("fan_rpm"))
+        if (fanRpm)
             return GHelper.Properties.Strings.FanSpeed + ": " + (fan * 100).ToString() + "RPM";
         else
             return GHelper.Properties.Strings.FanSpeed + ": " + Math.Min(Math.Round((float)fan / fanMax * 100), 100).ToString() + "%"; // relatively to 6000 rpm

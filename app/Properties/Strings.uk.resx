@@ -163,7 +163,7 @@
     <value>Кількість запущених сервісів Asus</value>
   </data>
   <data name="AuraBatteryState" xml:space="preserve">
-    <value>Battery State</value>
+    <value>Стан батареї</value>
   </data>
   <data name="AuraBreathe" xml:space="preserve">
     <value>Дихання</value>
@@ -426,25 +426,25 @@
     <value>Minute</value>
   </data>
   <data name="Minutes" xml:space="preserve">
-    <value>Minutes</value>
+    <value>Хвилини</value>
   </data>
   <data name="MouseAngleSnapping" xml:space="preserve">
-    <value>Angle Snapping</value>
+    <value>Привʼязка по куту</value>
   </data>
   <data name="MouseAutoPowerOff" xml:space="preserve">
-    <value>Auto Power Off After</value>
+    <value>Авто-вимикання</value>
   </data>
   <data name="MouseLiftOffDistance" xml:space="preserve">
-    <value>Lift Off Distance</value>
+    <value>Відстань підйому</value>
   </data>
   <data name="MouseLowBatteryWarning" xml:space="preserve">
-    <value>Low Battery Warning at</value>
+    <value>Попередження про низький заряд</value>
   </data>
   <data name="MousePerformance" xml:space="preserve">
     <value>Performance</value>
   </data>
   <data name="MouseSynchronize" xml:space="preserve">
-    <value>Synchronize with mouse</value>
+    <value>Синхронізувати з мишею</value>
   </data>
   <data name="Multizone" xml:space="preserve">
     <value>Мультизони</value>
@@ -453,7 +453,7 @@
     <value>Вимкнути мікрофон</value>
   </data>
   <data name="Never" xml:space="preserve">
-    <value>Never</value>
+    <value>Ніколи</value>
   </data>
   <data name="NewUpdates" xml:space="preserve">
     <value>Є оновлення</value>
@@ -462,7 +462,7 @@
     <value>Немає оновлень</value>
   </data>
   <data name="NotConnected" xml:space="preserve">
-    <value>Not Connected</value>
+    <value>Не під'єднано</value>
   </data>
   <data name="OpenGHelper" xml:space="preserve">
     <value>Відкрити вікно G-Helper</value>
@@ -486,7 +486,7 @@
     <value>Режим</value>
   </data>
   <data name="Peripherals" xml:space="preserve">
-    <value>Peripherals</value>
+    <value>Периферія</value>
   </data>
   <data name="PictureGif" xml:space="preserve">
     <value>Картинка / GIF</value>
@@ -495,7 +495,7 @@
     <value>Відтворення / Пауза</value>
   </data>
   <data name="PollingRate" xml:space="preserve">
-    <value>Polling Rate</value>
+    <value>Частота опитування</value>
   </data>
   <data name="PowerLimits" xml:space="preserve">
     <value>Ліміти Потужності</value>
@@ -507,7 +507,7 @@
     <value>Print Screen</value>
   </data>
   <data name="Profile" xml:space="preserve">
-    <value>Profile</value>
+    <value>Профіль</value>
   </data>
   <data name="Quit" xml:space="preserve">
     <value>Вихід</value>

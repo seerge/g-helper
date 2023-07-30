@@ -530,7 +530,7 @@ namespace GHelper
 
         private void LabelCPUFan_Click(object? sender, EventArgs e)
         {
-            AppConfig.Set("fan_rpm", (AppConfig.Get("fan_rpm") == 1) ? 0 : 1);
+            HardwareControl.fanRpm = !HardwareControl.fanRpm;
             RefreshSensors(true);
         }
 
@@ -768,6 +768,7 @@ namespace GHelper
             this.Hide();
             if (fans != null && fans.Text != "") fans.Close();
             if (keyb != null && keyb.Text != "") keyb.Close();
+            if (updates != null && updates.Text != "") updates.Close();
         }
 
 

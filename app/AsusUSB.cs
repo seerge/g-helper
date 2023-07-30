@@ -1,6 +1,5 @@
 ﻿using GHelper.Helpers;
 using HidLibrary;
-using System.Drawing;
 using System.Text;
 
 namespace GHelper
@@ -457,7 +456,13 @@ namespace GHelper
             }
 
             //Logger.WriteLine(BitConverter.ToString(msg));
-            if (init) auraDevice.Write(new byte[] { AURA_HID_ID ,0xbc});
+            if (init)
+            {
+                auraDevice.Write(AuraMessage(0,color,color, 0xe1));
+                auraDevice.WriteFeatureData(MESSAGE_APPLY);
+                auraDevice.WriteFeatureData(MESSAGE_SET);
+                auraDevice.Write(new byte[] { AURA_HID_ID, 0xbc });
+            }
             auraDevice.Write(msg);
         }
 
