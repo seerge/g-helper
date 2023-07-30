@@ -31,7 +31,7 @@ _If you post about the app - please include a link. Thanks._
 
 1. **Performance modes**: Silent - Balanced - Turbo (built-in, with default fan curves)
 2. **GPU modes**: Eco - Standard - Ultimate - Optimized
-3. Laptop screen refresh rate 60hz or 120hz (144hz, etc) with display overdrive (OD) and miniled multizone switch
+3. Laptop screen refresh rate 60hz or 120hz (144hz, etc) with display overdrive (OD) and mini-led multi-zone switch
 4. Custom fan curve editor, power limits (PPT) and turbo boost selection for every performance mode
 5. Anime matrix control thanks to [Starlight](https://github.com/vddCore/Starlight) + some tweaks from my side including animated GIFs, clock and audio visualizer
 6. Keyboard backlit animation and colors (including sleep animation and support for TUF models)
@@ -95,50 +95,50 @@ Click on them
 Most probably either you are using Eco / Optimized mode and your dGPU is simply off, or your windows has put the dGPU into sleep (to preserve power). In this situations G-helper won't be able to reach your GPU and get readings
 
 #### I don't see app after starting it
-Please check system tray for a (G) icon. By default windows is keen to hide all icons, so you may need to click ^ to see them all. I would advise to right click on Task Bar select Task Bar Settings -> Other System Tray icons -> Mark G-Helper to be always ON.
+Please check the system tray for a (G) icon. By default windows is keen to hide all icons, so you may need to click ^ to see them all. I would advise to right click on Taskbar select TaskBar Settings -> Other System Tray icons -> Mark G-Helper to be always ON.
 
-#### App crash or doesn't work properly what should I do ?
-Open "Event Viewer" from start menu, go to Windows Logs -> Application and check for recent Errors mentioning G-Helper. If you see one - please post a [new issue](https://github.com/seerge/g-helper/issues) with all details from this error.
+#### App crashes or doesn't work properly, what should I do ?
+Open "Event Viewer" from the start menu, go to Windows Logs -> Application and check for recent Errors mentioning G-Helper. If you see one - please post a [new issue](https://github.com/seerge/g-helper/issues) with all details from this error.
 
 #### Battery charge limiter is not working
-It could be that Asus services are overwriting this limit after. You may want to stop them by clicking "Stop" in Asus Services section (under Extra).
+It could be that Asus services are overwriting this limit after. You may want to stop them by clicking "Stop" in the Asus Services section (under Extra).
 
 #### Can I use MyASUS app along with G-Helper?
 You can, the only problem is that MyASUS may override the battery charge limit that you set before. My advice in such a situation would be to set the same limit (i.e. 80%) in both MyASUS and G-Helper.
 
 #### How do I set Mute Microphone to M3?
-If you have Asus Optimization Service running, it's controlled by that service (therefore G-helper doesn't interfere and doesn't touch this function). Alternatively you can stop that service - and you can bind M3 to anything you want.
+If you have the Asus Optimization Service running, it's controlled by that service (therefore G-helper doesn't interfere and doesn't touch this function). Alternatively you can stop that service - and you can bind M3 to anything you want.
 
 #### How do I set different "Visual styles"?
-Personally, i'm not a big fan of them, as they make colors very inaccurate. But if you want so - you can adjust display colors using either Nvidia Control panel or AMD Adrenaline (appropriate display sections). If you really want you can also use [own ASUS utility from MS Store](https://apps.microsoft.com/store/detail/gamevisual/9P4K1LFTXSH8?hl=nl-nl&gl=nl&rtc=1)
+Personally, I'm not a big fan of them, as they make colors very inaccurate. But if you want so - you can adjust display colors using either Nvidia Control panel or AMD Adrenaline (appropriate display sections). If you really want you can also use [own ASUS utility from MS Store](https://apps.microsoft.com/store/detail/gamevisual/9P4K1LFTXSH8?hl=nl-nl&gl=nl&rtc=1)
 
 #### Can I overclock Nvidia GPU core / memory? 
-Make sure that your dGPU is enabled (i.e. it's not in Eco mode). Open Fans + Power section and adjust core / memory clock offsets. They work same as in armoury's manual mode. Please keep in mind that (unfortunately) you need admin permissions for that, and app will ask you for them. (*)
+Make sure that your dGPU is enabled (i.e. it's not in Eco mode). Open Fans + Power section and adjust core / memory clock offsets. They work the same as in armoury's manual mode. Please keep in mind that (unfortunately) you need admin permissions for that, and the app will ask you for them. (*)
 
 #### Windows defender marks app download as malware / virus
-False positives from Windows Defender (or any other similar system that uses machine learning for detection) is possible as application is not digitally signed with a certificate. You can always download a version below or compile app by yourself. All application sources are open and can be monitored from A to Z :)
+False positives from Windows Defender (or any other similar system that uses machine learning for detection) is possible as the application is not digitally signed with a certificate. You can always download a version below or compile the app by yourself. All application sources are open and can be monitored from A to Z :)
 
 #### Where can I find app settings or logs ?
-You can find them under ``%AppData%\GHelper`` folder. Please include them when posting a new bug-report or issue.
+You can find them under the ``%AppData%\GHelper`` folder. Please include them when posting a new bug-report or issue.
 
 #### App refuses to run on startup / runs without icon in tray on startup
-Open app, and uncheck and check again "run on startup". If it still doesn't help (by some reason), you can try to manually edit "GHelper" task in windows Task Scheduler, and add couple of seconds delay to start.
+Open the app, and uncheck and check again "run on startup". If it still doesn't help (for some reason), you can try to manually edit the "GHelper" task in Windows Task Scheduler, and add a couple of seconds delay to start.
 
 #### How do I uninstall G-helper?
 G-helper is a single exe, and it doesn't install anything in the system. To remove it - you can simply delete exe :) If you have applied any custom fan profiles or PPTs - before removing I would recommend selecting your 
 favorite performance mode (for example balanced) and clicking "Factory defaults" under Fans + Power.
 
 #### Can I undervolt my CPU ?
-Currently you can undervolt AMD CPUs. If your model supports that - you will see undervolting slider under ``Fans+Power -> Advanced``. If you don't see slider there, it means your CPU doesn't support undervolting. Full list of models that suppor that [can be found here](https://github.com/seerge/g-helper/discussions/736)
+Currently you can undervolt AMD CPUs. If your model supports that - you will see an undervolting slider under ``Fans+Power -> Advanced``. If you don't see a slider there, it means your CPU doesn't support undervolting. Full list of models that support that [can be found here](https://github.com/seerge/g-helper/discussions/736)
 
 #### I have G14 2023 and my GPU refuses to disable/enable
-It seem to be an issue in older BIOS versions. As [users report](https://github.com/seerge/g-helper/issues/680) - latest BIOS 310 (installable via myasus / g-helper -> updates) resolves all issues :) So please update.
+It seems to be an issue in older BIOS versions. As [users report](https://github.com/seerge/g-helper/issues/680) - latest BIOS 310 (installable via MyASUS or G-Helper -> Updates) resolves all issues :) So please update.
 
-#### I have uninstalled Armoury andmy GPU performance is lower than it was
+#### I have uninstalled Armoury and my GPU performance is lower than it was
 Check your NVidia Experience settings and make sure that you have **Whisper Mode** set to ``OFF``. Also you can go to reset all settings ``Nvidia Control panel -> Manage 3D Settings -> Reset to defaults``
 
 #### How do I do a hardware reset on a laptop?
-All Asus laptops have an option to do a hardware reset that can be handy sometimes. It doesn't touch your data, but resets all main hardware-related things (enables your dGPU, wakes up wifi/bt adapter if it hanged by some reason, etc). Turn OFF laptop. Press and hold "power" button for 30-40 seconds. Then boot normally (it will take a bit longer to boot)
+All Asus laptops have an option to do a hardware reset that can be handy sometimes. It doesn't touch your data, but resets all main hardware-related things (enables your dGPU, wakes up wifi/bt adapter if it hangs for some reason, etc). Turn OFF laptop. Press and hold the "power" button for 30-40 seconds. Then boot normally (it will take a bit longer to boot)
 
 #### What is G-helper ?
 G-Helper is a lightweight Armoury Crate alternative for Asus laptops. A small utility that allows you to do almost everything you could do with Armoury Crate but without extra bloat and unnecessary services.
@@ -164,7 +164,7 @@ G-Helper is a lightweight Armoury Crate alternative for Asus laptops. A small ut
 
 - [Microsoft .NET7](https://dotnet.microsoft.com/en-us/download). Most probably you already have it. Otherwise [download it](https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/sdk-7.0.202-windows-x64-installer) from the official website.
 
-- [Asus System Control Interface v3+](https://dlcdnets.asus.com/pub/ASUS/nb/Image/CustomComponent/ASUSSystemControlInterfaceV3/ASUSSystemControlInterfaceV3.exe). This "driver" from asus should be installed automatically by windows update or along other asus apps. If it's not the case by some reason - you can download and install it manually.
+- [Asus System Control Interface v3+](https://dlcdnets.asus.com/pub/ASUS/nb/Image/CustomComponent/ASUSSystemControlInterfaceV3/ASUSSystemControlInterfaceV3.exe). This "driver" from asus should be installed automatically by windows update or along other asus apps. If it's not the case for some reason - you can download and install it manually.
 
 ### Recommendations (optional)
 
@@ -191,25 +191,25 @@ _GENERAL NOTE: "Power user" settings require some config edits. Before making an
 
 ### Manual app language setting
 
-By default app will use your windows language setting. But you can set language manually (if it supported of course)
+By default the app will use your windows language setting. But you can set language manually (if it supported of course)
 
 Add following line to ``%AppData%\GHelper\config.json`` : ``"language" : "en"`` (by replacing "en" with language of your choice)
 
 ### Custom windows power plans with each mode
 
-In ``%AppData%\GHelper\config.json`` you can manually add custom power plan (or power mode) GUID. It can be either "real" power plan that can be switched or "overlay" power plan like the ones g-helper sets by default.
+In ``%AppData%\GHelper\config.json`` you can manually add a custom power plan (or power mode) GUID. It can be either "real" power plan that can be switched or "overlay" power plan like the ones g-helper sets by default.
 
 Format is following : ``"scheme_<mode>" : "GUID" ``
 Where ``mode = 0 (balanced), 1 (turbo), 2 (silent)``
 
-Default behaviour is :
+Default behavior is :
 ```
 "scheme_0": "00000000-0000-0000-0000-000000000000",
 "scheme_1": "ded574b5-45a0-4f42-8737-46345c09c238",
 "scheme_2": "961cc777-2547-4f9d-8174-7d86181b8a7a",
 ```
 
-Make sure to keep json structure (i.e. not to break it with extra or missing comas, etc) - or app will fail to read it and will just recreate a new config instead.
+Make sure to keep json structure (i.e. not to break it with extra or missing commas, etc) - or the app will fail to read it and will just recreate a new config instead.
 
 ### Custom hotkey actions
 
@@ -218,13 +218,13 @@ App supports custom actions for M3, M4 and FN+F4 hotkeys. To set them select "Cu
 1. To run any custom application - put a full path to exe into "action" text field, for example:
 ``C:\Program Files\EA Games\Battlefield 2042\BF2042.exe``
 
-2. To simulate any windows key - put appropriate keycode into "action" field, for example ``0x2C`` for Print screen. 
+2. To simulate any windows key - put appropriate keycode into the "action" field, for example ``0x2C`` for Print Screen. 
 Full list of keycodes https://learn.microsoft.com/en-us/windows/win32/inputdev/virtual-key-codes
 
 ![Screenshot 2023-07-17 192155](https://github.com/seerge/g-helper/assets/5920850/e450e124-1589-4787-bce8-7c37ffe72fbd)
 
 ### Force Standard mode on shutdown / hibernation
-In some rare cases G14 2023 seem to have issues with enabling / disabling dGPU - i.e. Eco mode. Till we wait for a fix from asus on BIOS level, one of the proposed solutions is to always shutdown laptop in Standard mode (then everything seem to work fine). To enable "forced" Standard mode on shutdown add following line to ``%AppData%\GHelper\config.json``
+In some rare cases G14 2023 seem to have issues with enabling / disabling dGPU - i.e. Eco mode. Till we wait for a fix from asus on BIOS level, one of the proposed solutions is to always shutdown the laptop in Standard mode (then everything seems to work fine). To enable "forced" Standard mode on shutdown add following line to ``%AppData%\GHelper\config.json``
 ```
 "gpu_fix" : 1,
 ```
@@ -237,7 +237,7 @@ You can disable app's OSD (for performance modes, keyboard backlight, etc) by ad
 
 ### Keybinding to toggle performance modes (on external keyboards)
 
-By default app will toggle performance modes with Ctr+Shift+F5. You can change this binding by adding ``"keybind_profile": 116`` in config.json (under ``%AppData%\GHelper``), where 116 is [numerical code for desired key](https://www.oreilly.com/library/view/javascript-dhtml/9780596514082/apb.html). Put 0 to completely disable this binding.
+By default the app will toggle performance modes with Ctr+Shift+F5. You can change this binding by adding ``"keybind_profile": 116`` in config.json (under ``%AppData%\GHelper``), where 116 is [numerical code for desired key](https://www.oreilly.com/library/view/javascript-dhtml/9780596514082/apb.html). Put 0 to completely disable this binding.
 
 ### Keybinding to open G-helper from external keyboards
 Ctrl + Shift + F12
@@ -254,3 +254,5 @@ Ctrl + Shift + F12
 "ROG", "TUF", and "Armoury Crate" are trademarked by and belong to AsusTek Computer, Inc. I make no claims to these or any assets belonging to AsusTek Computer and use them purely for informational purposes only.
 
 THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. MISUSE OF THIS SOFTWARE COULD CAUSE SYSTEM INSTABILITY OR MALFUNCTION.
+
+
