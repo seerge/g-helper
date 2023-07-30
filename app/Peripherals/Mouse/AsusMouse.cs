@@ -174,7 +174,15 @@ namespace GHelper.Peripherals.Mouse
             this.path = path;
             this.Wireless = wireless;
             DpiSettings = new AsusMouseDPI[1];
-            LightingSetting = new LightingSetting[SupportedLightingZones().Length];
+            if (SupportedLightingZones().Length == 0)
+            {
+                LightingSetting = new LightingSetting[1];
+            }
+            else
+            {
+                LightingSetting = new LightingSetting[SupportedLightingZones().Length];
+            }
+
         }
 
         public override bool Equals(object? obj)
@@ -1068,7 +1076,7 @@ namespace GHelper.Peripherals.Mouse
 
         public virtual LightingZone[] SupportedLightingZones()
         {
-            return new LightingZone[] { };
+            return new LightingZone[] { LightingZone.Logo };
         }
 
         public virtual int IndexForZone(LightingZone zone)
@@ -1086,6 +1094,11 @@ namespace GHelper.Peripherals.Mouse
 
         public virtual bool IsLightingZoned()
         {
+            if (LightingSetting.Length < 2)
+            {
+                return false;
+            }
+
             //Check whether all zones are the same or not
             for (int i = 1; i < LightingSetting.Length; ++i)
             {

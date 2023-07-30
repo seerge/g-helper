@@ -532,10 +532,20 @@ namespace GHelper
 
             if (mouse.HasRGB())
             {
-                buttonLightingZoneLogo.Visible = mouse.SupportedLightingZones().Contains(LightingZone.Logo);
-                buttonLightingZoneScroll.Visible = mouse.SupportedLightingZones().Contains(LightingZone.Scrollwheel);
-                buttonLightingZoneUnderglow.Visible = mouse.SupportedLightingZones().Contains(LightingZone.Underglow);
-                buttonLightingZoneDock.Visible = mouse.SupportedLightingZones().Contains(LightingZone.Dock);
+                if (mouse.SupportedLightingZones().Length > 1)
+                {
+                    buttonLightingZoneLogo.Visible = mouse.SupportedLightingZones().Contains(LightingZone.Logo);
+                    buttonLightingZoneScroll.Visible = mouse.SupportedLightingZones().Contains(LightingZone.Scrollwheel);
+                    buttonLightingZoneUnderglow.Visible = mouse.SupportedLightingZones().Contains(LightingZone.Underglow);
+                    buttonLightingZoneDock.Visible = mouse.SupportedLightingZones().Contains(LightingZone.Dock);
+                }
+                else
+                {
+                    buttonLightingZoneLogo.Visible = false;
+                    buttonLightingZoneScroll.Visible = false;
+                    buttonLightingZoneUnderglow.Visible = false;
+                    buttonLightingZoneDock.Visible = false;
+                }
 
                 sliderBrightness.Max = mouse.MaxBrightness();
 
