@@ -173,6 +173,11 @@ namespace GHelper
 
         private void ComboProfile_DropDownClosed(object? sender, EventArgs e)
         {
+            if (mouse.Profile == comboProfile.SelectedIndex)
+            {
+                return;
+            }
+
             mouse.SetProfile(comboProfile.SelectedIndex);
             Task task = Task.Run((Action)RefreshMouseData);
         }
