@@ -484,12 +484,16 @@ namespace GHelper
             //Logger.WriteLine(BitConverter.ToString(msg));
             if (init)
             {
-                auraDevice.Write(LED_INIT1);
-                auraDevice.Write(LED_INIT2);
-                auraDevice.Write(LED_INIT3);
-                auraDevice.Write(LED_INIT4);
-                auraDevice.Write(LED_INIT5);
+                //auraDevice.WriteFeatureData(AuraMessage(0,Color.Red,color,0));
+                //auraDevice.WriteFeatureData(MESSAGE_APPLY);
+                //auraDevice.WriteFeatureData(MESSAGE_SET);
+                //auraDevice.Write(LED_INIT1);
+                //auraDevice.Write(LED_INIT2);
+                //auraDevice.Write(LED_INIT3);
+                //auraDevice.Write(LED_INIT4);
+                //auraDevice.Write(LED_INIT5);
                 auraDevice.Write(new byte[] { AURA_HID_ID, 0xbc, 1, 1, 4 });
+                auraDevice.Write(new byte[] { AURA_HID_ID, 0xbc });
             }
             auraDevice.Write(msg);
         }
