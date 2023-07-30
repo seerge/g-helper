@@ -7,7 +7,7 @@ about: Create a report to help us improve
 
 ## NOTE
 Bug reports without clear information or scenario to reproduce and logs from ``%AppData%\GHelper`` will be closed without answer. 
-Please respect time of the developer. Thanks.
+Please respect the time of the developer. Thanks.
 
 
 **Describe the bug**
@@ -34,7 +34,7 @@ If applicable, add screenshots to help explain your problem.
  - Laptop model
 
 **Asus software**
-- Armoury crate (or it's services installed)
+- Armoury Crate (or it's services installed)
 - MyASUS installed
 - Other Asus services running in background
 
