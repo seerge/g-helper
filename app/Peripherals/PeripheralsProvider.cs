@@ -12,6 +12,8 @@ namespace GHelper.Peripherals
 
         public static event EventHandler? DeviceChanged;
 
+        private static long lastRefresh;
+
         public static bool IsMouseConnected()
         {
             lock (_LOCK)
@@ -43,6 +45,15 @@ namespace GHelper.Peripherals
 
         public static void RefreshBatteryForAllDevices()
         {
+            RefreshBatteryForAllDevices(false);
+        }
+
+        public static void RefreshBatteryForAllDevices(bool force)
+        {
+            //Polling the battery every 20s should be enough
+            if (!force && Math.Abs(DateTimeOffset.Now.ToUnixTimeMilliseconds() - lastRefresh) < 20_000) return;
+            lastRefresh = DateTimeOffset.Now.ToUnixTimeMilliseconds();
+
             List<IPeripheral> l = AllPeripherals();
 
             foreach (IPeripheral m in l)
