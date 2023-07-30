@@ -163,25 +163,28 @@
     <value>Services Asus actifs</value>
   </data>
   <data name="AuraBatteryState" xml:space="preserve">
-    <value>Battery State</value>
+    <value>État de la batterie</value>
   </data>
   <data name="AuraBreathe" xml:space="preserve">
     <value>Pulsation</value>
   </data>
   <data name="AuraClockwise" xml:space="preserve">
-    <value>Clockwise</value>
+    <value>Sens horaire</value>
   </data>
   <data name="AuraColorCycle" xml:space="preserve">
     <value>Cycle de couleur</value>
   </data>
   <data name="AuraComet" xml:space="preserve">
-    <value>Comet</value>
+    <value>Comète</value>
   </data>
   <data name="AuraCounterClockwise" xml:space="preserve">
-    <value>Counterclockwise</value>
+    <value>Sens antihoraire</value>
   </data>
   <data name="AuraFast" xml:space="preserve">
     <value>Rapide</value>
+  </data>
+  <data name="AuraLightingMode" xml:space="preserve">
+    <value>Lighting Mode</value>
   </data>
   <data name="AuraNormal" xml:space="preserve">
     <value>Normal</value>
@@ -190,7 +193,7 @@
     <value>Arc-en-ciel</value>
   </data>
   <data name="AuraRandomColor" xml:space="preserve">
-    <value>Random</value>
+    <value>Aléatoire</value>
   </data>
   <data name="AuraReact" xml:space="preserve">
     <value>React</value>
@@ -204,8 +207,23 @@
   <data name="AuraStrobe" xml:space="preserve">
     <value>Stroboscopique</value>
   </data>
+  <data name="AuraZoneAll" xml:space="preserve">
+    <value>All</value>
+  </data>
+  <data name="AuraZoneDock" xml:space="preserve">
+    <value>Dock</value>
+  </data>
+  <data name="AuraZoneLogo" xml:space="preserve">
+    <value>Logo</value>
+  </data>
+  <data name="AuraZoneScroll" xml:space="preserve">
+    <value>Scrollwheel</value>
+  </data>
+  <data name="AuraZoneUnderglow" xml:space="preserve">
+    <value>Underglow</value>
+  </data>
   <data name="AutoApply" xml:space="preserve">
-    <value>Applicage automatique</value>
+    <value>Appliquer automatiquement</value>
   </data>
   <data name="AutoMode" xml:space="preserve">
     <value>Automatique</value>
@@ -226,7 +244,7 @@
     <value>Limite de charge </value>
   </data>
   <data name="BatteryHealth" xml:space="preserve">
-    <value>Battery Health</value>
+    <value>Santé de la batterie</value>
   </data>
   <data name="BiosAndDriverUpdates" xml:space="preserve">
     <value>Mise à jour BIOS et pilotes</value>
@@ -285,7 +303,7 @@ Voulez-vous continuer ?</value>
     <value>Le mode d'affichage NVIDIA n'est pas réglé sur Optimus</value>
   </data>
   <data name="EnergySettings" xml:space="preserve">
-    <value>Energy Settings</value>
+    <value>Paramètres d'énergie</value>
   </data>
   <data name="Extra" xml:space="preserve">
     <value>+ d'options</value>
@@ -381,7 +399,7 @@ Voulez-vous continuer ?</value>
     <value>Barre lumineuse</value>
   </data>
   <data name="Lighting" xml:space="preserve">
-    <value>Lighting</value>
+    <value>Éclairage</value>
   </data>
   <data name="Logo" xml:space="preserve">
     <value>Logo</value>
@@ -432,19 +450,19 @@ Voulez-vous continuer ?</value>
     <value>Angle Snapping</value>
   </data>
   <data name="MouseAutoPowerOff" xml:space="preserve">
-    <value>Auto Power Off After</value>
+    <value>Arrêt automatique après</value>
   </data>
   <data name="MouseLiftOffDistance" xml:space="preserve">
     <value>Lift Off Distance</value>
   </data>
   <data name="MouseLowBatteryWarning" xml:space="preserve">
-    <value>Low Battery Warning at</value>
+    <value>Avertissement de batterie faible à</value>
   </data>
   <data name="MousePerformance" xml:space="preserve">
     <value>Performance</value>
   </data>
   <data name="MouseSynchronize" xml:space="preserve">
-    <value>Synchronize with mouse</value>
+    <value>Synchroniser avec le pointeur</value>
   </data>
   <data name="Multizone" xml:space="preserve">
     <value>Multi-zone</value>
@@ -453,7 +471,7 @@ Voulez-vous continuer ?</value>
     <value>Désactiver le micro</value>
   </data>
   <data name="Never" xml:space="preserve">
-    <value>Never</value>
+    <value>Jamais</value>
   </data>
   <data name="NewUpdates" xml:space="preserve">
     <value>Nouvelles mises à jour</value>
@@ -462,7 +480,7 @@ Voulez-vous continuer ?</value>
     <value>Aucune mise à jour disponible</value>
   </data>
   <data name="NotConnected" xml:space="preserve">
-    <value>Not Connected</value>
+    <value>Non connecté</value>
   </data>
   <data name="OpenGHelper" xml:space="preserve">
     <value>Ouvrir G-Helper</value>
@@ -486,7 +504,7 @@ Voulez-vous continuer ?</value>
     <value>Mode Performance</value>
   </data>
   <data name="Peripherals" xml:space="preserve">
-    <value>Peripherals</value>
+    <value>Périphériques</value>
   </data>
   <data name="PictureGif" xml:space="preserve">
     <value>Image / Gif</value>
@@ -507,7 +525,7 @@ Voulez-vous continuer ?</value>
     <value>Capture d'écran</value>
   </data>
   <data name="Profile" xml:space="preserve">
-    <value>Profile</value>
+    <value>Profil</value>
   </data>
   <data name="Quit" xml:space="preserve">
     <value>Quitter</value>

@@ -89,10 +89,20 @@ namespace GHelper
             if (flags.SleepLid) lid |= 1 << 2;
             if (flags.ShutdownLid) lid |= 1 << 3;
 
+            if (flags.BootLid) lid |= 1 << 4;
+            if (flags.AwakeLid) lid |= 1 << 5;
+            if (flags.SleepLid) lid |= 1 << 6;
+            if (flags.ShutdownLid) lid |= 1 << 7;
+
             if (flags.BootRear) rear |= 1 << 0;
             if (flags.AwakeRear) rear |= 1 << 1;
             if (flags.SleepRear) rear |= 1 << 2;
             if (flags.ShutdownRear) rear |= 1 << 3;
+
+            if (flags.BootRear) rear |= 1 << 4;
+            if (flags.AwakeRear) rear |= 1 << 5;
+            if (flags.SleepRear) rear |= 1 << 6;
+            if (flags.ShutdownRear) rear |= 1 << 7;
 
             return new byte[] { 0x5d, 0xbd, 0x01, keyb, bar, lid, rear, 0xFF };
         }
@@ -391,6 +401,7 @@ namespace GHelper
                 flags.SleepLid = AppConfig.IsNotFalse("keyboard_sleep_lid");
                 flags.ShutdownLid = AppConfig.IsNotFalse("keyboard_shutdown_lid");
 
+                // Rear Bar
                 flags.AwakeRear = AppConfig.IsNotFalse("keyboard_awake_lid");
                 flags.BootRear = AppConfig.IsNotFalse("keyboard_boot_lid");
                 flags.SleepRear = AppConfig.IsNotFalse("keyboard_sleep_lid");
