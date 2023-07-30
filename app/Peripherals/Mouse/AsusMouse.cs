@@ -827,7 +827,7 @@ namespace GHelper.Peripherals.Mouse
 
         protected virtual void ParseDPI(byte[] packet)
         {
-            if (packet[1] != 0x12 || packet[2] != 0x04 || packet[3] != 0x02)
+            if (packet[1] != 0x12 || packet[2] != 0x04 || (packet[3] != 0x02 && HasXYDPI()))
             {
                 return;
             }
