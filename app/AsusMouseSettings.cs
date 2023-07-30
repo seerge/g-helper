@@ -391,9 +391,9 @@ namespace GHelper
                 buttonDPI4.Image = ControlHelper.TintImage(Properties.Resources.lighting_dot_24, Color.Green);
 
                 buttonDPI1.BorderColor = Color.Red;
-                buttonDPI1.BorderColor = Color.Purple;
-                buttonDPI1.BorderColor = Color.Blue;
-                buttonDPI1.BorderColor = Color.Green;
+                buttonDPI2.BorderColor = Color.Purple;
+                buttonDPI3.BorderColor = Color.Blue;
+                buttonDPI4.BorderColor = Color.Green;
             }
 
             if (mouse.CanSetPollingRate())
