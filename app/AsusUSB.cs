@@ -487,8 +487,8 @@ namespace GHelper
                 auraDevice.WriteFeatureData(AuraMessage(0,Color.Red,color,0));
                 auraDevice.WriteFeatureData(MESSAGE_APPLY);
                 auraDevice.WriteFeatureData(MESSAGE_SET);
-                auraDevice.Write(new byte[] { AURA_HID_ID, 0xbc, 1, 1, 4 });
                 auraDevice.Write(new byte[] { AURA_HID_ID, 0xbc });
+                auraDevice.Write(new byte[] { AURA_HID_ID, 0xbc, 1, 1, 4 });
             }
             auraDevice.Write(msg);
         }
