@@ -259,6 +259,15 @@ namespace GHelper.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Lighting Mode.
+        /// </summary>
+        internal static string AuraLightingMode {
+            get {
+                return ResourceManager.GetString("AuraLightingMode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Normal.
         /// </summary>
         internal static string AuraNormal {
@@ -318,6 +327,51 @@ namespace GHelper.Properties {
         internal static string AuraStrobe {
             get {
                 return ResourceManager.GetString("AuraStrobe", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to All.
+        /// </summary>
+        internal static string AuraZoneAll {
+            get {
+                return ResourceManager.GetString("AuraZoneAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dock.
+        /// </summary>
+        internal static string AuraZoneDock {
+            get {
+                return ResourceManager.GetString("AuraZoneDock", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Logo.
+        /// </summary>
+        internal static string AuraZoneLogo {
+            get {
+                return ResourceManager.GetString("AuraZoneLogo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Scrollwheel.
+        /// </summary>
+        internal static string AuraZoneScroll {
+            get {
+                return ResourceManager.GetString("AuraZoneScroll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Underglow.
+        /// </summary>
+        internal static string AuraZoneUnderglow {
+            get {
+                return ResourceManager.GetString("AuraZoneUnderglow", resourceCulture);
             }
         }
         

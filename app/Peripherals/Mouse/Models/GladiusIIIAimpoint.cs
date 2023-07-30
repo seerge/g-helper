@@ -55,6 +55,11 @@
             return true;
         }
 
+        public override LightingZone[] SupportedLightingZones()
+        {
+            return new LightingZone[] { LightingZone.Logo, LightingZone.Scrollwheel, LightingZone.Underglow };
+        }
+
         public override bool HasAutoPowerOff()
         {
             return true;
