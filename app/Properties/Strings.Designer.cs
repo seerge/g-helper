@@ -1062,6 +1062,15 @@ namespace GHelper.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Button Response.
+        /// </summary>
+        internal static string MouseButtonResponse {
+            get {
+                return ResourceManager.GetString("MouseButtonResponse", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Lift Off Distance.
         /// </summary>
         internal static string MouseLiftOffDistance {

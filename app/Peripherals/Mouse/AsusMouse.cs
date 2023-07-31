@@ -15,6 +15,17 @@ namespace GHelper.Peripherals.Mouse
         Never = 0xFF
     }
 
+    public enum DebounceTime
+    {
+        Disabled = 0x00, //?? not sure because mice with this setting have no "disabled". But the mouse accepts and stores 0x00 just fine
+        MS12 = 0x02,
+        MS16 = 0x03,
+        MS20 = 0x04,
+        MS24 = 0x05,
+        MS28 = 0x06,
+        MS32 = 0x07
+    }
+
     public enum PollingRate
     {
         PR125Hz = 0,
@@ -168,6 +179,8 @@ namespace GHelper.Peripherals.Mouse
         public PollingRate PollingRate { get; protected set; }
         public bool AngleSnapping { get; protected set; }
         public short AngleAdjustmentDegrees { get; protected set; }
+        public DebounceTime Debounce { get; protected set; }
+
 
         public AsusMouse(ushort vendorId, ushort productId, string path, bool wireless) : base(vendorId, productId)
         {
@@ -372,6 +385,7 @@ namespace GHelper.Peripherals.Mouse
             ReadDPI();
             ReadPollingRate();
             ReadLiftOffDistance();
+            ReadDebounce();
             ReadLightingSetting();
         }
 
@@ -809,6 +823,7 @@ namespace GHelper.Peripherals.Mouse
         {
             if (!CanChangeDPIProfile())
             {
+                this.DpiProfile = profile;
                 return;
             }
 
@@ -1011,6 +1026,91 @@ namespace GHelper.Peripherals.Mouse
 
             Logger.WriteLine(GetDisplayName() + ": Set Liftoff Distance to " + liftOffDistance);
             this.LiftOffDistance = liftOffDistance;
+        }
+
+        // ------------------------------------------------------------------------------
+        // Debounce
+        // ------------------------------------------------------------------------------
+
+        public virtual bool HasDebounceSetting()
+        {
+            return false;
+        }
+
+        public virtual int DebounceTimeInMS(DebounceTime dbt)
+        {
+            switch (dbt)
+            {
+                case DebounceTime.MS12: return 12;
+                case DebounceTime.MS16: return 16;
+                case DebounceTime.MS20: return 20;
+                case DebounceTime.MS24: return 24;
+                case DebounceTime.MS28: return 28;
+                case DebounceTime.MS32: return 32;
+
+
+                default: return 0;
+            }
+        }
+
+        protected virtual byte[] GetReadDebouncePacket()
+        {
+            return new byte[] { 0x00, 0x12, 0x04, 0x00 };
+        }
+
+
+        protected virtual byte[] GetUpdateDebouncePacket(DebounceTime debounce)
+        {
+            return new byte[] { 0x00, 0x51, 0x31, 0x05, 0x00, ((byte)debounce) };
+        }
+
+        protected virtual DebounceTime ParseDebounce(byte[] packet)
+        {
+            if (packet[1] != 0x12 || packet[2] != 0x04 || packet[3] != 0x00)
+            {
+                return DebounceTime.MS12;
+            }
+
+            if (packet[15] < 0x02)
+            {
+                return DebounceTime.MS12;
+            }
+
+            if (packet[15] > 0x07)
+            {
+                return DebounceTime.MS32;
+            }
+
+            return (DebounceTime)packet[15];
+        }
+
+        public void ReadDebounce()
+        {
+            if (!HasDebounceSetting())
+            {
+                return;
+            }
+            byte[]? response = WriteForResponse(GetReadDebouncePacket());
+            if (response is null) return;
+
+            Debounce = ParseDebounce(response);
+
+
+            Logger.WriteLine(GetDisplayName() + ": Read Debouce Setting: " + Debounce);
+        }
+
+        public void SetDebounce(DebounceTime debounce)
+        {
+            if (!HasDebounceSetting())
+            {
+                return;
+            }
+
+            WriteForResponse(GetUpdateDebouncePacket(debounce));
+            FlushSettings();
+
+            Logger.WriteLine(GetDisplayName() + ": Set Debouce to " + debounce);
+            this.Debounce = debounce;
         }
 
         // ------------------------------------------------------------------------------

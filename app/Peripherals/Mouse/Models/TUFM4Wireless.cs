@@ -42,6 +42,11 @@
             return false;
         }
 
+        public override bool HasDebounceSetting()
+        {
+            return true;
+        }
+
         public override bool HasAutoPowerOff()
         {
             return true;

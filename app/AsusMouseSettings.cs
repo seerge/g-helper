@@ -45,6 +45,7 @@ namespace GHelper
             labelLiftOffDistance.Text = Properties.Strings.MouseLiftOffDistance;
             labelChargingState.Text = "(" + Properties.Strings.Charging + ")";
             labelProfile.Text = Properties.Strings.Profile;
+            labelButtonDebounce.Text = Properties.Strings.MouseButtonResponse;
 
             buttonLightingZoneLogo.Text = Properties.Strings.AuraZoneLogo;
             buttonLightingZoneScroll.Text = Properties.Strings.AuraZoneScroll;
@@ -76,6 +77,8 @@ namespace GHelper
             sliderAngleAdjustment.ValueChanged += SliderAngleAdjustment_ValueChanged;
             sliderAngleAdjustment.MouseUp += SliderAngleAdjustment_MouseUp;
             comboBoxLiftOffDistance.DropDownClosed += ComboBoxLiftOffDistance_DropDownClosed;
+            sliderButtonDebounce.ValueChanged += SliderButtonDebounce_ValueChanged;
+            sliderButtonDebounce.MouseUp += SliderButtonDebounce_MouseUp;
 
             buttonLightingColor.Click += ButtonLightingColor_Click;
             comboBoxLightingMode.DropDownClosed += ComboBoxLightingMode_DropDownClosed;
@@ -98,6 +101,20 @@ namespace GHelper
             InitMouseCapabilities();
             Logger.WriteLine(mouse.GetDisplayName() + " (GUI): Initialized capabilities. Synchronizing mouse data");
             RefreshMouseData();
+        }
+
+        private void SliderButtonDebounce_MouseUp(object? sender, MouseEventArgs e)
+        {
+            DebounceTime dbt = (DebounceTime)sliderButtonDebounce.Value;
+            mouse.SetDebounce(dbt);
+        }
+
+        private void SliderButtonDebounce_ValueChanged(object? sender, EventArgs e)
+        {
+            DebounceTime dbt = (DebounceTime)sliderButtonDebounce.Value;
+            int time = mouse.DebounceTimeInMS(dbt);
+
+            labelButtonDebounceValue.Text = time + "ms";
         }
 
         private void SwitchLightingZone(LightingZone zone)
@@ -444,6 +461,11 @@ namespace GHelper
             numericUpDownCurrentDPI.Maximum = mouse.MaxDPI();
             numericUpDownCurrentDPI.Increment = mouse.DPIIncrements();
 
+            if (!mouse.HasDebounceSetting())
+            {
+                panelDebounce.Visible = false;
+            }
+
 
             if (!mouse.HasDPIColors())
             {
@@ -470,8 +492,7 @@ namespace GHelper
             }
             else
             {
-                comboBoxPollingRate.Visible = false;
-                labelPollingRate.Visible = false;
+                panelPollingRate.Visible = false;
             }
 
             if (!mouse.HasAngleSnapping())
@@ -485,6 +506,11 @@ namespace GHelper
                 sliderAngleAdjustment.Visible = false;
             }
 
+            if (!mouse.HasAngleTuning() && !mouse.HasAngleSnapping())
+            {
+                panelAngleSnapping.Visible = false;
+            }
+
             if (mouse.HasLiftOffSetting())
             {
                 comboBoxLiftOffDistance.Items.AddRange(new string[] {
@@ -494,8 +520,7 @@ namespace GHelper
             }
             else
             {
-                comboBoxLiftOffDistance.Visible = false;
-                labelLiftOffDistance.Visible = false;
+                panelLiftOffDistance.Visible = false;
             }
 
             if (mouse.DPIProfileCount() < 4)
@@ -648,6 +673,11 @@ namespace GHelper
             if (mouse.HasLiftOffSetting())
             {
                 comboBoxLiftOffDistance.SelectedIndex = (int)mouse.LiftOffDistance;
+            }
+
+            if (mouse.HasDebounceSetting())
+            {
+                sliderButtonDebounce.Value = (int)mouse.Debounce;
             }
         }
 

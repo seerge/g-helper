@@ -145,6 +145,11 @@
             return 4;
         }
 
+        public override bool HasDebounceSetting()
+        {
+            return true;
+        }
+
         protected override byte IndexForLightingMode(LightingMode lightingMode)
         {
             if (lightingMode == LightingMode.Off)
