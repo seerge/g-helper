@@ -190,6 +190,8 @@ namespace GHelper.Peripherals
             DetectMouse(new ROGKerisWireless());
             DetectMouse(new ROGKerisWirelessWired());
             DetectMouse(new TUFM4Wirelss());
+            DetectMouse(new StrixImpactIIWireless());
+            DetectMouse(new StrixImpactIIWirelessWired());
         }
 
         public static void DetectMouse(AsusMouse am)
