@@ -102,6 +102,10 @@
         {
             return 100;
         }
+        public override bool HasDebounceSetting()
+        {
+            return true;
+        }
 
         public override bool CanChangeDPIProfile()
         {

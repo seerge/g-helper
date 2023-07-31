@@ -45,6 +45,11 @@
             return true;
         }
 
+        public override bool HasDebounceSetting()
+        {
+            return true;
+        }
+
         public override bool HasLiftOffSetting()
         {
             return true;
