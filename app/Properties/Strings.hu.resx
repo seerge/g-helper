@@ -452,6 +452,9 @@ Do you still want to continue?</value>
   <data name="MouseAutoPowerOff" xml:space="preserve">
     <value>Auto Power Off After</value>
   </data>
+  <data name="MouseButtonResponse" xml:space="preserve">
+    <value>Button Response</value>
+  </data>
   <data name="MouseLiftOffDistance" xml:space="preserve">
     <value>Lift Off Distance</value>
   </data>

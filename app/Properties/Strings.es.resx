@@ -452,6 +452,9 @@
   <data name="MouseAutoPowerOff" xml:space="preserve">
     <value>Auto-apagar tras</value>
   </data>
+  <data name="MouseButtonResponse" xml:space="preserve">
+    <value>Respuesta del botón</value>
+  </data>
   <data name="MouseLiftOffDistance" xml:space="preserve">
     <value>Distancia de despegue (LOD)</value>
   </data>
