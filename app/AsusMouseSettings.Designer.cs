@@ -33,13 +33,20 @@
             labelProfile = new Label();
             panelPerformance = new Panel();
             panelPerformanceOther = new Panel();
-            comboBoxLiftOffDistance = new UI.RComboBox();
+            panelLiftOffDistance = new Panel();
             labelLiftOffDistance = new Label();
-            labelAngleAdjustmentValue = new Label();
+            comboBoxLiftOffDistance = new UI.RComboBox();
+            panelDebounce = new Panel();
+            labelButtonDebounce = new Label();
+            sliderButtonDebounce = new UI.Slider();
+            labelButtonDebounceValue = new Label();
+            panelAngleSnapping = new Panel();
             sliderAngleAdjustment = new UI.Slider();
             checkBoxAngleSnapping = new CheckBox();
-            comboBoxPollingRate = new UI.RComboBox();
+            labelAngleAdjustmentValue = new Label();
+            panelPollingRate = new Panel();
             labelPollingRate = new Label();
+            comboBoxPollingRate = new UI.RComboBox();
             panelDPISettings = new Panel();
             sliderDPI = new UI.Slider();
             tableLayoutPanel1 = new TableLayoutPanel();
@@ -101,6 +108,10 @@
             panelProfiles.SuspendLayout();
             panelPerformance.SuspendLayout();
             panelPerformanceOther.SuspendLayout();
+            panelLiftOffDistance.SuspendLayout();
+            panelDebounce.SuspendLayout();
+            panelAngleSnapping.SuspendLayout();
+            panelPollingRate.SuspendLayout();
             panelDPISettings.SuspendLayout();
             tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numericUpDownCurrentDPI).BeginInit();
@@ -171,26 +182,45 @@
             panelPerformance.Location = new Point(11, 68);
             panelPerformance.Name = "panelPerformance";
             panelPerformance.Padding = new Padding(0, 11, 0, 25);
-            panelPerformance.Size = new Size(654, 408);
+            panelPerformance.Size = new Size(654, 461);
             panelPerformance.TabIndex = 1;
             // 
             // panelPerformanceOther
             // 
             panelPerformanceOther.AutoSize = true;
             panelPerformanceOther.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            panelPerformanceOther.Controls.Add(comboBoxLiftOffDistance);
-            panelPerformanceOther.Controls.Add(labelLiftOffDistance);
-            panelPerformanceOther.Controls.Add(labelAngleAdjustmentValue);
-            panelPerformanceOther.Controls.Add(sliderAngleAdjustment);
-            panelPerformanceOther.Controls.Add(checkBoxAngleSnapping);
-            panelPerformanceOther.Controls.Add(comboBoxPollingRate);
-            panelPerformanceOther.Controls.Add(labelPollingRate);
+            panelPerformanceOther.Controls.Add(panelLiftOffDistance);
+            panelPerformanceOther.Controls.Add(panelDebounce);
+            panelPerformanceOther.Controls.Add(panelAngleSnapping);
+            panelPerformanceOther.Controls.Add(panelPollingRate);
             panelPerformanceOther.Dock = DockStyle.Top;
             panelPerformanceOther.Location = new Point(0, 240);
             panelPerformanceOther.Name = "panelPerformanceOther";
             panelPerformanceOther.Padding = new Padding(0, 11, 0, 11);
-            panelPerformanceOther.Size = new Size(654, 143);
+            panelPerformanceOther.Size = new Size(654, 196);
             panelPerformanceOther.TabIndex = 49;
+            // 
+            // panelLiftOffDistance
+            // 
+            panelLiftOffDistance.AutoSize = true;
+            panelLiftOffDistance.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            panelLiftOffDistance.Controls.Add(labelLiftOffDistance);
+            panelLiftOffDistance.Controls.Add(comboBoxLiftOffDistance);
+            panelLiftOffDistance.Dock = DockStyle.Top;
+            panelLiftOffDistance.Location = new Point(0, 142);
+            panelLiftOffDistance.Name = "panelLiftOffDistance";
+            panelLiftOffDistance.Padding = new Padding(5);
+            panelLiftOffDistance.Size = new Size(654, 43);
+            panelLiftOffDistance.TabIndex = 56;
+            // 
+            // labelLiftOffDistance
+            // 
+            labelLiftOffDistance.Location = new Point(5, 5);
+            labelLiftOffDistance.Margin = new Padding(6, 0, 6, 0);
+            labelLiftOffDistance.Name = "labelLiftOffDistance";
+            labelLiftOffDistance.Size = new Size(348, 33);
+            labelLiftOffDistance.TabIndex = 48;
+            labelLiftOffDistance.Text = "Lift Off Distance";
             // 
             // comboBoxLiftOffDistance
             // 
@@ -199,35 +229,77 @@
             comboBoxLiftOffDistance.DropDownStyle = ComboBoxStyle.DropDownList;
             comboBoxLiftOffDistance.FlatStyle = FlatStyle.Flat;
             comboBoxLiftOffDistance.FormattingEnabled = true;
-            comboBoxLiftOffDistance.Location = new Point(368, 99);
+            comboBoxLiftOffDistance.Location = new Point(367, 5);
             comboBoxLiftOffDistance.Margin = new Padding(16, 0, 16, 0);
             comboBoxLiftOffDistance.Name = "comboBoxLiftOffDistance";
             comboBoxLiftOffDistance.Size = new Size(281, 33);
             comboBoxLiftOffDistance.TabIndex = 49;
             // 
-            // labelLiftOffDistance
+            // panelDebounce
             // 
-            labelLiftOffDistance.Location = new Point(6, 99);
-            labelLiftOffDistance.Margin = new Padding(6, 0, 6, 0);
-            labelLiftOffDistance.Name = "labelLiftOffDistance";
-            labelLiftOffDistance.Size = new Size(348, 33);
-            labelLiftOffDistance.TabIndex = 48;
-            labelLiftOffDistance.Text = "Lift Off Distance";
+            panelDebounce.AutoSize = true;
+            panelDebounce.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            panelDebounce.Controls.Add(labelButtonDebounce);
+            panelDebounce.Controls.Add(sliderButtonDebounce);
+            panelDebounce.Controls.Add(labelButtonDebounceValue);
+            panelDebounce.Dock = DockStyle.Top;
+            panelDebounce.Location = new Point(0, 95);
+            panelDebounce.Name = "panelDebounce";
+            panelDebounce.Padding = new Padding(5);
+            panelDebounce.Size = new Size(654, 47);
+            panelDebounce.TabIndex = 55;
             // 
-            // labelAngleAdjustmentValue
+            // labelButtonDebounce
             // 
-            labelAngleAdjustmentValue.Location = new Point(598, 61);
-            labelAngleAdjustmentValue.Margin = new Padding(6, 0, 6, 0);
-            labelAngleAdjustmentValue.Name = "labelAngleAdjustmentValue";
-            labelAngleAdjustmentValue.Size = new Size(48, 30);
-            labelAngleAdjustmentValue.TabIndex = 47;
-            labelAngleAdjustmentValue.Text = "0°";
-            labelAngleAdjustmentValue.TextAlign = ContentAlignment.MiddleRight;
+            labelButtonDebounce.Location = new Point(6, 7);
+            labelButtonDebounce.Margin = new Padding(6, 0, 6, 0);
+            labelButtonDebounce.Name = "labelButtonDebounce";
+            labelButtonDebounce.Size = new Size(348, 33);
+            labelButtonDebounce.TabIndex = 52;
+            labelButtonDebounce.Text = "Button Response";
+            // 
+            // sliderButtonDebounce
+            // 
+            sliderButtonDebounce.AccessibleName = "DPI Slider";
+            sliderButtonDebounce.Location = new Point(368, 9);
+            sliderButtonDebounce.Max = 7;
+            sliderButtonDebounce.Min = 2;
+            sliderButtonDebounce.Name = "sliderButtonDebounce";
+            sliderButtonDebounce.Size = new Size(213, 30);
+            sliderButtonDebounce.Step = 1;
+            sliderButtonDebounce.TabIndex = 50;
+            sliderButtonDebounce.TabStop = false;
+            sliderButtonDebounce.Text = "sliderBattery";
+            sliderButtonDebounce.Value = 2;
+            // 
+            // labelButtonDebounceValue
+            // 
+            labelButtonDebounceValue.Location = new Point(590, 9);
+            labelButtonDebounceValue.Margin = new Padding(6, 0, 6, 0);
+            labelButtonDebounceValue.Name = "labelButtonDebounceValue";
+            labelButtonDebounceValue.Size = new Size(60, 30);
+            labelButtonDebounceValue.TabIndex = 51;
+            labelButtonDebounceValue.Text = "12ms";
+            labelButtonDebounceValue.TextAlign = ContentAlignment.MiddleRight;
+            // 
+            // panelAngleSnapping
+            // 
+            panelAngleSnapping.AutoSize = true;
+            panelAngleSnapping.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            panelAngleSnapping.Controls.Add(sliderAngleAdjustment);
+            panelAngleSnapping.Controls.Add(checkBoxAngleSnapping);
+            panelAngleSnapping.Controls.Add(labelAngleAdjustmentValue);
+            panelAngleSnapping.Dock = DockStyle.Top;
+            panelAngleSnapping.Location = new Point(0, 51);
+            panelAngleSnapping.Name = "panelAngleSnapping";
+            panelAngleSnapping.Padding = new Padding(5);
+            panelAngleSnapping.Size = new Size(654, 44);
+            panelAngleSnapping.TabIndex = 54;
             // 
             // sliderAngleAdjustment
             // 
             sliderAngleAdjustment.AccessibleName = "DPI Slider";
-            sliderAngleAdjustment.Location = new Point(397, 61);
+            sliderAngleAdjustment.Location = new Point(396, 6);
             sliderAngleAdjustment.Max = 20;
             sliderAngleAdjustment.Min = -20;
             sliderAngleAdjustment.Name = "sliderAngleAdjustment";
@@ -241,7 +313,7 @@
             // checkBoxAngleSnapping
             // 
             checkBoxAngleSnapping.CheckAlign = ContentAlignment.MiddleRight;
-            checkBoxAngleSnapping.Location = new Point(6, 61);
+            checkBoxAngleSnapping.Location = new Point(5, 6);
             checkBoxAngleSnapping.Margin = new Padding(6, 0, 6, 0);
             checkBoxAngleSnapping.Name = "checkBoxAngleSnapping";
             checkBoxAngleSnapping.Size = new Size(384, 30);
@@ -250,6 +322,38 @@
             checkBoxAngleSnapping.TextAlign = ContentAlignment.TopLeft;
             checkBoxAngleSnapping.UseVisualStyleBackColor = true;
             // 
+            // labelAngleAdjustmentValue
+            // 
+            labelAngleAdjustmentValue.Location = new Point(597, 6);
+            labelAngleAdjustmentValue.Margin = new Padding(6, 0, 6, 0);
+            labelAngleAdjustmentValue.Name = "labelAngleAdjustmentValue";
+            labelAngleAdjustmentValue.Size = new Size(48, 30);
+            labelAngleAdjustmentValue.TabIndex = 47;
+            labelAngleAdjustmentValue.Text = "0°";
+            labelAngleAdjustmentValue.TextAlign = ContentAlignment.MiddleRight;
+            // 
+            // panelPollingRate
+            // 
+            panelPollingRate.AutoSize = true;
+            panelPollingRate.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            panelPollingRate.Controls.Add(labelPollingRate);
+            panelPollingRate.Controls.Add(comboBoxPollingRate);
+            panelPollingRate.Dock = DockStyle.Top;
+            panelPollingRate.Location = new Point(0, 11);
+            panelPollingRate.Name = "panelPollingRate";
+            panelPollingRate.Padding = new Padding(5);
+            panelPollingRate.Size = new Size(654, 40);
+            panelPollingRate.TabIndex = 53;
+            // 
+            // labelPollingRate
+            // 
+            labelPollingRate.Location = new Point(6, 5);
+            labelPollingRate.Margin = new Padding(6, 0, 6, 0);
+            labelPollingRate.Name = "labelPollingRate";
+            labelPollingRate.Size = new Size(348, 30);
+            labelPollingRate.TabIndex = 45;
+            labelPollingRate.Text = "Polling Rate";
+            // 
             // comboBoxPollingRate
             // 
             comboBoxPollingRate.BorderColor = Color.White;
@@ -257,20 +361,11 @@
             comboBoxPollingRate.DropDownStyle = ComboBoxStyle.DropDownList;
             comboBoxPollingRate.FlatStyle = FlatStyle.Flat;
             comboBoxPollingRate.FormattingEnabled = true;
-            comboBoxPollingRate.Location = new Point(368, 8);
+            comboBoxPollingRate.Location = new Point(368, 2);
             comboBoxPollingRate.Margin = new Padding(16, 0, 16, 0);
             comboBoxPollingRate.Name = "comboBoxPollingRate";
             comboBoxPollingRate.Size = new Size(281, 33);
             comboBoxPollingRate.TabIndex = 44;
-            // 
-            // labelPollingRate
-            // 
-            labelPollingRate.Location = new Point(6, 9);
-            labelPollingRate.Margin = new Padding(6, 0, 6, 0);
-            labelPollingRate.Name = "labelPollingRate";
-            labelPollingRate.Size = new Size(348, 30);
-            labelPollingRate.TabIndex = 45;
-            labelPollingRate.Text = "Polling Rate";
             // 
             // panelDPISettings
             // 
@@ -561,7 +656,7 @@
             panelLighting.Controls.Add(panelLightingContent);
             panelLighting.Controls.Add(panelLightingHeader);
             panelLighting.Dock = DockStyle.Top;
-            panelLighting.Location = new Point(11, 476);
+            panelLighting.Location = new Point(11, 529);
             panelLighting.Name = "panelLighting";
             panelLighting.Padding = new Padding(0, 0, 0, 25);
             panelLighting.Size = new Size(654, 329);
@@ -890,7 +985,7 @@
             panelEnergy.Controls.Add(labelAutoPowerOff);
             panelEnergy.Controls.Add(panelEnergyHeader);
             panelEnergy.Dock = DockStyle.Top;
-            panelEnergy.Location = new Point(11, 805);
+            panelEnergy.Location = new Point(11, 858);
             panelEnergy.Name = "panelEnergy";
             panelEnergy.Padding = new Padding(0, 0, 0, 25);
             panelEnergy.Size = new Size(654, 143);
@@ -1071,7 +1166,7 @@
             panelBottomButtons.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             panelBottomButtons.Controls.Add(buttonSync);
             panelBottomButtons.Dock = DockStyle.Top;
-            panelBottomButtons.Location = new Point(11, 948);
+            panelBottomButtons.Location = new Point(11, 1001);
             panelBottomButtons.Name = "panelBottomButtons";
             panelBottomButtons.Size = new Size(654, 67);
             panelBottomButtons.TabIndex = 47;
@@ -1144,7 +1239,7 @@
             AutoScroll = true;
             AutoSize = true;
             AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            ClientSize = new Size(676, 1072);
+            ClientSize = new Size(676, 1183);
             Controls.Add(panelBottomButtons);
             Controls.Add(panelEnergy);
             Controls.Add(panelLighting);
@@ -1164,6 +1259,11 @@
             panelPerformance.ResumeLayout(false);
             panelPerformance.PerformLayout();
             panelPerformanceOther.ResumeLayout(false);
+            panelPerformanceOther.PerformLayout();
+            panelLiftOffDistance.ResumeLayout(false);
+            panelDebounce.ResumeLayout(false);
+            panelAngleSnapping.ResumeLayout(false);
+            panelPollingRate.ResumeLayout(false);
             panelDPISettings.ResumeLayout(false);
             panelDPISettings.PerformLayout();
             tableLayoutPanel1.ResumeLayout(false);
@@ -1272,5 +1372,12 @@
         private TableLayoutPanel tableLayoutPanel2;
         private UI.RButton rButton1;
         private UI.RButton rButton2;
+        private Label labelButtonDebounce;
+        private Label labelButtonDebounceValue;
+        private UI.Slider sliderButtonDebounce;
+        private Panel panelPollingRate;
+        private Panel panelAngleSnapping;
+        private Panel panelLiftOffDistance;
+        private Panel panelDebounce;
     }
 }

@@ -220,7 +220,7 @@
     <value>Ratukas</value>
   </data>
   <data name="AuraZoneUnderglow" xml:space="preserve">
-    <value>Underglow</value>
+    <value>Apatinis apšvietimas</value>
   </data>
   <data name="AutoApply" xml:space="preserve">
     <value>Taikyti automatiškai</value>
@@ -451,6 +451,9 @@ Vis tiek norite tęsti?</value>
   </data>
   <data name="MouseAutoPowerOff" xml:space="preserve">
     <value>Automatiškai išjungti po</value>
+  </data>
+  <data name="MouseButtonResponse" xml:space="preserve">
+    <value>Button Response</value>
   </data>
   <data name="MouseLiftOffDistance" xml:space="preserve">
     <value>Pakilimo atstumas</value>
