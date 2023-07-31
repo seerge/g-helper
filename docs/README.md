@@ -132,7 +132,7 @@ favorite performance mode (for example balanced) and clicking "Factory defaults"
 Currently you can undervolt AMD CPUs. If your model supports that - you will see an undervolting slider under ``Fans+Power -> Advanced``. If you don't see a slider there, it means your CPU doesn't support undervolting. Full list of models that support that [can be found here](https://github.com/seerge/g-helper/discussions/736)
 
 #### I have G14 2023 and my GPU refuses to disable/enable
-It seems to be an issue in older BIOS versions. As [users report](https://github.com/seerge/g-helper/issues/680) - latest BIOS 310 (installable via MyASUS or G-Helper -> Updates) resolves all issues :) So please update.
+It seems to be an issue in older BIOS versions. As [users report](https://github.com/seerge/g-helper/issues/680) - latest BIOS 312 (installable via MyASUS or G-Helper -> Updates) resolves all issues :) So please update.
 
 #### I have uninstalled Armoury and my GPU performance is lower than it was
 Check your NVidia Experience settings and make sure that you have **Whisper Mode** set to ``OFF``. Also you can go to reset all settings ``Nvidia Control panel -> Manage 3D Settings -> Reset to defaults``
