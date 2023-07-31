@@ -1208,7 +1208,7 @@ namespace GHelper.Peripherals.Mouse
             return setting;
         }
 
-        public void ReadLightingSetting()
+        public virtual void ReadLightingSetting()
         {
             if (!HasRGB())
             {
