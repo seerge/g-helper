@@ -184,7 +184,7 @@
     <value>快速</value>
   </data>
   <data name="AuraLightingMode" xml:space="preserve">
-    <value>Lighting Mode</value>
+    <value>灯效模式</value>
   </data>
   <data name="AuraNormal" xml:space="preserve">
     <value>正常</value>
@@ -208,7 +208,7 @@
     <value>闪烁</value>
   </data>
   <data name="AuraZoneAll" xml:space="preserve">
-    <value>All</value>
+    <value>全部</value>
   </data>
   <data name="AuraZoneDock" xml:space="preserve">
     <value>Dock</value>
@@ -217,7 +217,7 @@
     <value>Logo</value>
   </data>
   <data name="AuraZoneScroll" xml:space="preserve">
-    <value>Scrollwheel</value>
+    <value>滚轮</value>
   </data>
   <data name="AuraZoneUnderglow" xml:space="preserve">
     <value>Underglow</value>
@@ -336,7 +336,7 @@
     <value>风扇</value>
   </data>
   <data name="FansPower" xml:space="preserve">
-    <value>风扇 + 电源</value>
+    <value>风扇 + 功率</value>
   </data>
   <data name="FnLock" xml:space="preserve">
     <value>打开FnLock (无需按下FN使用FN+(F1-F12)热键)</value>
