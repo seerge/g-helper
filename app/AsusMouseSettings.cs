@@ -196,7 +196,7 @@ namespace GHelper
             }
 
             mouse.SetProfile(comboProfile.SelectedIndex);
-            Task task = Task.Run((Action)RefreshMouseData);
+            RefreshMouseData();
         }
 
         private void ComboBoxPollingRate_DropDownClosed(object? sender, EventArgs e)
@@ -408,13 +408,13 @@ namespace GHelper
 
         private void Mouse_Disconnect(object? sender, EventArgs e)
         {
+            if (Disposing || IsDisposed)
+            {
+                return;
+            }
             //Mouse disconnected. Bye bye.
             this.Invoke(delegate
             {
-                if (Disposing || IsDisposed)
-                {
-                    return;
-                }
                 this.Close();
             });
 
@@ -428,18 +428,17 @@ namespace GHelper
             if (!mouse.IsDeviceReady)
             {
                 Logger.WriteLine(mouse.GetDisplayName() + " (GUI): Mouse is not ready. Closing view.");
-                this.Invoke(delegate
-                {
-                    this.Close();
-                });
+                Mouse_Disconnect(this, EventArgs.Empty);
                 return;
             }
 
-            this.Invoke(delegate
+            if (Disposing || IsDisposed)
             {
-                VisualizeMouseSettings();
-                VisualizeBatteryState();
-            });
+                return;
+            }
+
+            VisualizeMouseSettings();
+            VisualizeBatteryState();
         }
 
         private void InitMouseCapabilities()
@@ -821,7 +820,7 @@ namespace GHelper
 
         private void ButtonSync_Click(object sender, EventArgs e)
         {
-            Task task = Task.Run((Action)RefreshMouseData);
+            RefreshMouseData();
         }
     }
 }

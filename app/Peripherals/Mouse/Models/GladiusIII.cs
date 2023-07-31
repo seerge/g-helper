@@ -1,13 +1,13 @@
 ﻿namespace GHelper.Peripherals.Mouse.Models
 {
-    //P711
-    public class GladiusIIIAimpoint : AsusMouse
+    //P706_Wireless
+    public class GladiusIII : AsusMouse
     {
-        public GladiusIIIAimpoint() : base(0x0B05, 0x1A70, "mi_00", true)
+        public GladiusIII() : base(0x0B05, 0x197F, "mi_00", true)
         {
         }
 
-        protected GladiusIIIAimpoint(ushort vendorId, bool wireless) : base(0x0B05, vendorId, "mi_00", wireless)
+        protected GladiusIII(ushort vendorId, bool wireless) : base(0x0B05, vendorId, "mi_00", wireless)
         {
         }
 
@@ -18,7 +18,7 @@
 
         public override string GetDisplayName()
         {
-            return "ROG Gladius III Aimpoint (Wireless)";
+            return "ROG Gladius III (Wireless)";
         }
 
 
@@ -38,12 +38,7 @@
         }
         public override int MaxDPI()
         {
-            return 36_000;
-        }
-
-        public override bool HasXYDPI()
-        {
-            return true;
+            return 26_000;
         }
 
         public override bool HasDebounceSetting()
@@ -76,31 +71,21 @@
             return true;
         }
 
-        public override bool HasAngleTuning()
-        {
-            return true;
-        }
-
         public override bool HasLowBatteryWarning()
-        {
-            return true;
-        }
-
-        public override bool HasDPIColors()
         {
             return true;
         }
     }
 
-    public class GladiusIIIAimpointWired : GladiusIIIAimpoint
+    public class GladiusIIIWired : GladiusIII
     {
-        public GladiusIIIAimpointWired() : base(0x1A72, false)
+        public GladiusIIIWired() : base(0x197d, false)
         {
         }
 
         public override string GetDisplayName()
         {
-            return "ROG Gladius III Aimpoint (Wired)";
+            return "ROG Gladius III (Wired)";
         }
     }
 }
