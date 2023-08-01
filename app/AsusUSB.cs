@@ -508,13 +508,16 @@ namespace GHelper
                     auraDevice.WriteFeatureData(LED_INIT3);
                     auraDevice.WriteFeatureData(LED_INIT4);
                     auraDevice.WriteFeatureData(LED_INIT5);
-                    auraDevice.WriteFeatureData(PrepareAuraMessage(new byte[] { AURA_HID_ID, 0xbc, 1, 0, 0, 0 }));
-                    auraDevice.WriteFeatureData(PrepareAuraMessage(new byte[] { AURA_HID_ID, 0xbc, 1, 1, 4, 0 }));
+
+                    auraDevice.WriteFeatureData(new byte[] { AURA_HID_ID, 0xbc, 1, 0, 0 });
+                    auraDevice.WriteFeatureData(new byte[] { AURA_HID_ID, 0xbc, 1, 1, 4 });
                 }
 
+                auraDevice.WriteFeatureData(new byte[] { AURA_HID_ID, 0xbc, 1, 0, 0 });
                 auraDevice.WriteFeatureData(msg);
 
-            } else
+            }
+            else
             {
                 auraDevice.WriteFeatureData(AuraMessage(0, color, color, 0));
                 auraDevice.WriteFeatureData(MESSAGE_SET);
