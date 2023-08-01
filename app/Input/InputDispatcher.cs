@@ -144,7 +144,7 @@ namespace GHelper.Input
 
         static bool IsManualBrightness()
         {
-            return AppConfig.ContainsModel("TUF") && !AppConfig.ContainsModel("FA506");
+            return AppConfig.ContainsModel("TUF") && !AppConfig.ContainsModel("506");
         }
 
         public static bool NoMKeys()
