@@ -235,12 +235,15 @@ You can disable app's OSD (for performance modes, keyboard backlight, etc) by ad
 "disable_osd": 1,
 ```
 
+### Extra Keybindings 
+``Ctrl + Shift + F5`` - Toggle Performance Modes
+``Ctrl + Shift + F12`` - Open G-Helper window 
+``Ctrl + M1 / M2`` - Screen brightness Down / Up
+``Shift + M1 / M2`` - Backlight brightness Down / Up
+
 ### Keybinding to toggle performance modes (on external keyboards)
 
 By default the app will toggle performance modes with Ctr+Shift+F5. You can change this binding by adding ``"keybind_profile": 116`` in config.json (under ``%AppData%\GHelper``), where 116 is [numerical code for desired key](https://www.oreilly.com/library/view/javascript-dhtml/9780596514082/apb.html). Put 0 to completely disable this binding.
-
-### Keybinding to open G-helper from external keyboards
-Ctrl + Shift + F12
 
 ------------
 
