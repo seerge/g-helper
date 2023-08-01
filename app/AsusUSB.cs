@@ -1,6 +1,5 @@
 ﻿using GHelper.Helpers;
 using HidLibrary;
-using System.Diagnostics;
 using System.Text;
 
 namespace GHelper
@@ -38,6 +37,7 @@ namespace GHelper
     public static class AsusUSB
     {
         public const int HEATMAP = 20;
+        public const int HEATMAP_ALT = 21;
 
         public const int ASUS_ID = 0x0b05;
 
@@ -66,6 +66,8 @@ namespace GHelper
 
         static System.Timers.Timer timer = new System.Timers.Timer(2000);
         static HidDevice? auraDevice = null;
+
+        static bool Manual = false;
 
         static byte[] AuraPowerMessage(AuraPower flags)
         {
@@ -169,7 +171,8 @@ namespace GHelper
                 { 10, Properties.Strings.AuraStrobe},
                 { 11, "Comet" },
                 { 12, "Flash" },
-                { HEATMAP, "Heatmap"}
+                { HEATMAP, "Heatmap"},
+                { HEATMAP_ALT, "Heatmap Alt"}
             };
 
 
@@ -473,51 +476,50 @@ namespace GHelper
             if (auraDevice is null || !auraDevice.IsConnected) GetAuraDevice();
             if (auraDevice is null || !auraDevice.IsConnected) return;
 
-            byte[] msg = new byte[0x40];
-            int start = 9;
-
-            msg[0] = AURA_HID_ID;
-            msg[1] = 0xbc;
-            msg[2] = 1;
-            msg[3] = 1;
-            msg[4] = 0;
-
-            msg[9] = color.R; // R
-            msg[10] = color.G; // G
-            msg[11] = color.B; // B
-
-            /*
-            for (int i = 0; i < 5; i++)
+            if (Manual)
             {
-                msg[start + i * 3] = color.R; // R
-                msg[start + 1 + i * 3] = color.G; // G
-                msg[start + 2 + i * 3] = color.B; // B
+                byte[] msg = new byte[0x40];
+                int start = 9;
+
+                msg[0] = AURA_HID_ID;
+                msg[1] = 0xbc;
+                msg[2] = 1;
+                msg[3] = 1;
+                msg[4] = 4;
+
+                for (int i = 0; i < 5; i++)
+                {
+                    msg[start + i * 3] = color.R; // R
+                    msg[start + 1 + i * 3] = color.G; // G
+                    msg[start + 2 + i * 3] = color.B; // B
+                }
+
+                for (int i = 6; i < 12; i++)
+                {
+                    msg[start + i * 3] = color.R; // R
+                    msg[start + 1 + i * 3] = color.G; // G
+                    msg[start + 2 + i * 3] = color.B; // B
+                }
+
+                if (init)
+                {
+                    auraDevice.WriteFeatureData(LED_INIT1);
+                    auraDevice.WriteFeatureData(LED_INIT2);
+                    auraDevice.WriteFeatureData(LED_INIT3);
+                    auraDevice.WriteFeatureData(LED_INIT4);
+                    auraDevice.WriteFeatureData(LED_INIT5);
+                    auraDevice.WriteFeatureData(PrepareAuraMessage(new byte[] { AURA_HID_ID, 0xbc, 1, 0, 0, 0 }));
+                    auraDevice.WriteFeatureData(PrepareAuraMessage(new byte[] { AURA_HID_ID, 0xbc, 1, 1, 4, 0 }));
+                }
+
+                auraDevice.WriteFeatureData(msg);
+
+            } else
+            {
+                auraDevice.WriteFeatureData(AuraMessage(0, color, color, 0));
+                auraDevice.WriteFeatureData(MESSAGE_SET);
             }
 
-            for (int i = 6; i < 12; i++)
-            {
-                msg[start + i * 3] = color.R; // R
-                msg[start + 1 + i * 3] = color.G; // G
-                msg[start + 2 + i * 3] = color.B; // B
-            }
-            */
-
-            if (init)
-            {
-                //auraDevice.WriteFeatureData(AuraMessage(0,Color.Red,color,0));
-                //auraDevice.WriteFeatureData(MESSAGE_APPLY);
-                //auraDevice.WriteFeatureData(MESSAGE_SET);
-
-                auraDevice.WriteFeatureData(LED_INIT1);
-                auraDevice.WriteFeatureData(LED_INIT2);
-                auraDevice.WriteFeatureData(LED_INIT3);
-                auraDevice.WriteFeatureData(LED_INIT4);
-                auraDevice.WriteFeatureData(LED_INIT5);
-                auraDevice.WriteFeatureData(PrepareAuraMessage(new byte[] { AURA_HID_ID, 0xbc, 1, 0, 0, 0 }));
-                auraDevice.WriteFeatureData(PrepareAuraMessage(new byte[] { AURA_HID_ID, 0xbc, 1, 1, 0, 0 }));
-            }
-
-            auraDevice.WriteFeatureData(msg);
         }
 
 
@@ -529,8 +531,9 @@ namespace GHelper
             SetColor(AppConfig.Get("aura_color"));
             SetColor2(AppConfig.Get("aura_color2"));
 
-            if (Mode == HEATMAP)
+            if (Mode == HEATMAP || Mode == HEATMAP_ALT)
             {
+                Manual = (Mode == HEATMAP_ALT);
                 SetHeatmap(true);
                 timer.Enabled = true;
                 return;
