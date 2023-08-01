@@ -150,10 +150,23 @@ namespace GHelper.Input
         public static bool NoMKeys()
         {
             return AppConfig.ContainsModel("Z13") ||
+                   AppConfig.ContainsModel("FX706") || 
                    AppConfig.ContainsModel("FA506") ||
                    AppConfig.ContainsModel("FX506") ||
                    AppConfig.ContainsModel("Duo") ||
                    AppConfig.ContainsModel("FX505");
+        }
+
+        static void BrightnessUp()
+        {
+            if (IsManualBrightness()) Program.toast.RunToast(ScreenBrightness.Adjust(+10) + "%", ToastIcon.BrightnessUp);
+            HandleOptimizationEvent(32);
+        }
+
+        static void BrightnessDown()
+        {
+            if (IsManualBrightness()) Program.toast.RunToast(ScreenBrightness.Adjust(-10) + "%", ToastIcon.BrightnessDown);
+            HandleOptimizationEvent(16);
         }
 
         public void KeyPressed(object sender, KeyPressedEventArgs e)
@@ -227,12 +240,10 @@ namespace GHelper.Input
                         KeyboardHook.KeyPress(Keys.Snapshot);
                         break;
                     case Keys.F7:
-                        if (IsManualBrightness()) Program.toast.RunToast(ScreenBrightness.Adjust(-10) + "%", ToastIcon.BrightnessDown);
-                        HandleOptimizationEvent(16);
+                        BrightnessDown();
                         break;
                     case Keys.F8:
-                        if (IsManualBrightness()) Program.toast.RunToast(ScreenBrightness.Adjust(+10) + "%", ToastIcon.BrightnessUp);
-                        HandleOptimizationEvent(32);
+                        BrightnessUp();
                         break;
                     case Keys.F9:
                         KeyboardHook.KeyWinPress(Keys.P);
@@ -269,11 +280,11 @@ namespace GHelper.Input
                 {
                     case Keys.VolumeDown:
                         // Screen brightness down on CTRL+VolDown
-                        HandleOptimizationEvent(16);
+                        BrightnessDown();
                         break;
                     case Keys.VolumeUp:
                         // Screen brightness up on CTRL+VolUp
-                        HandleOptimizationEvent(32);
+                        BrightnessUp();
                         break;
                 }
             }

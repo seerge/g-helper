@@ -70,6 +70,7 @@ namespace GHelper.AnimeMatrix
             if (brightness == 0 || (auto && SystemInformation.PowerStatus.PowerLineStatus != PowerLineStatus.Online))
             {
                 mat.SetDisplayState(false);
+                mat.SetDisplayState(false); // some devices are dumb
                 Logger.WriteLine("Matrix Off");
             }
             else
