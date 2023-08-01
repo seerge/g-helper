@@ -453,7 +453,7 @@ Vis tiek norite tęsti?</value>
     <value>Automatiškai išjungti po</value>
   </data>
   <data name="MouseButtonResponse" xml:space="preserve">
-    <value>Button Response</value>
+    <value>Klavišo atsakas</value>
   </data>
   <data name="MouseLiftOffDistance" xml:space="preserve">
     <value>Pakilimo atstumas</value>
@@ -477,10 +477,10 @@ Vis tiek norite tęsti?</value>
     <value>Niekada</value>
   </data>
   <data name="NewUpdates" xml:space="preserve">
-    <value>Nauji naujinimai</value>
+    <value>Naujinimai</value>
   </data>
   <data name="NoNewUpdates" xml:space="preserve">
-    <value>Nėra naujų naujinimų</value>
+    <value>Nėra naujinimų</value>
   </data>
   <data name="NotConnected" xml:space="preserve">
     <value>Neprijungta</value>
