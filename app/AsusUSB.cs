@@ -46,9 +46,9 @@ namespace GHelper
 
         public static readonly byte[] LED_INIT1 = new byte[] { AURA_HID_ID, 0xb9 };
         public static readonly byte[] LED_INIT2 = Encoding.ASCII.GetBytes("]ASUS Tech.Inc.");
-        public static readonly byte[] LED_INIT3 = new byte[] { AURA_HID_ID, 0x05, 0x20, 0x31, 0, 0x08 };
+        public static readonly byte[] LED_INIT3 = new byte[] { AURA_HID_ID, 0x05, 0x20, 0x31, 0, 0x1a };
         public static readonly byte[] LED_INIT4 = Encoding.ASCII.GetBytes("^ASUS Tech.Inc.");
-        public static readonly byte[] LED_INIT5 = new byte[] { 0x5e, 0x05, 0x20, 0x31, 0, 0x08 };
+        public static readonly byte[] LED_INIT5 = new byte[] { 0x5e, 0x05, 0x20, 0x31, 0, 0x1a };
 
         static byte[] MESSAGE_APPLY = { AURA_HID_ID, 0xb4 };
         static byte[] MESSAGE_SET = { AURA_HID_ID, 0xb5, 0, 0, 0 };
@@ -480,8 +480,13 @@ namespace GHelper
             msg[1] = 0xbc;
             msg[2] = 1;
             msg[3] = 1;
-            msg[4] = 4;
+            msg[4] = 0;
 
+            msg[9] = color.R; // R
+            msg[10] = color.G; // G
+            msg[11] = color.B; // B
+
+            /*
             for (int i = 0; i < 5; i++)
             {
                 msg[start + i * 3] = color.R; // R
@@ -495,6 +500,7 @@ namespace GHelper
                 msg[start + 1 + i * 3] = color.G; // G
                 msg[start + 2 + i * 3] = color.B; // B
             }
+            */
 
             if (init)
             {
@@ -502,10 +508,13 @@ namespace GHelper
                 //auraDevice.WriteFeatureData(MESSAGE_APPLY);
                 //auraDevice.WriteFeatureData(MESSAGE_SET);
 
+                auraDevice.WriteFeatureData(LED_INIT1);
                 auraDevice.WriteFeatureData(LED_INIT2);
-                auraDevice.WriteFeatureData(PrepareAuraMessage(new byte[] { AURA_HID_ID, 0x05, 0x20, 0x31, 0x00, 0x1A}));
+                auraDevice.WriteFeatureData(LED_INIT3);
+                auraDevice.WriteFeatureData(LED_INIT4);
+                auraDevice.WriteFeatureData(LED_INIT5);
                 auraDevice.WriteFeatureData(PrepareAuraMessage(new byte[] { AURA_HID_ID, 0xbc, 1, 0, 0, 0 }));
-                auraDevice.WriteFeatureData(PrepareAuraMessage(new byte[] { AURA_HID_ID, 0xbc, 1, 1, 4, 0 }));
+                auraDevice.WriteFeatureData(PrepareAuraMessage(new byte[] { AURA_HID_ID, 0xbc, 1, 1, 0, 0 }));
             }
 
             auraDevice.WriteFeatureData(msg);
