@@ -204,8 +204,6 @@ namespace GHelper.Gpu
             else
             {
 
-                if (ReEnableGPU()) return true;
-
                 if (eco == 1)
                     if ((GpuAuto && IsPlugged()) || (ForceGPU && GpuMode == AsusACPI.GPUModeStandard))
                     {
@@ -265,21 +263,6 @@ namespace GHelper.Gpu
 
         }
 
-
-        public bool ReEnableGPU()
-        {
-
-            if (AppConfig.Get("gpu_reenable") != 1) return false;
-            if (Screen.AllScreens.Length <= 1) return false;
-
-            Logger.WriteLine("Re-enabling gpu for 503 model");
-
-            Thread.Sleep(1000);
-            SetGPUEco(1);
-            Thread.Sleep(1000);
-            SetGPUEco(0);
-            return true;
-        }
 
         public void InitXGM()
         {

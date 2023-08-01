@@ -54,6 +54,9 @@ namespace GHelper
                     customActions[""] = Properties.Strings.ToggleFnLock;
                     customActions.Remove("fnlock");
                     break;
+                case "fne":
+                    customActions[""] = "Calculator";
+                    break;
             }
 
             combo.DropDownStyle = ComboBoxStyle.DropDownList;
@@ -129,10 +132,13 @@ namespace GHelper
                 labelM1.Text = "FN+F2";
                 labelM2.Text = "FN+F3";
                 labelM3.Text = "FN+F4";
-                labelM4.Text = "FN+NmEnter";
-
-                //labelM4.Visible = comboM4.Visible = textM4.Visible = false;
+                labelM4.Visible = comboM4.Visible = textM4.Visible = false;
                 labelFNF4.Visible = comboFNF4.Visible = textFNF4.Visible = false;
+            }
+
+            if (!AppConfig.ContainsModel("TUF"))
+            {
+                labelFNE.Visible = comboFNE.Visible = textFNE.Visible = false;
             }
 
             if (Program.acpi.DeviceGet(AsusACPI.GPUEco) < 0)
@@ -149,6 +155,7 @@ namespace GHelper
             SetKeyCombo(comboM4, textM4, "m4");
             SetKeyCombo(comboFNF4, textFNF4, "fnf4");
             SetKeyCombo(comboFNC, textFNC, "fnc");
+            SetKeyCombo(comboFNE, textFNE, "fne");
 
             Shown += Keyboard_Shown;
 

@@ -322,6 +322,8 @@ namespace GHelper.Input
                     action = "micmute";
                 if (name == "fnc")
                     action = "fnlock";
+                if (name == "fne")
+                    action = "calculator";
             }
 
             switch (action)
@@ -362,10 +364,10 @@ namespace GHelper.Input
                     Program.toast.RunToast(muteStatus ? "Muted" : "Unmuted", muteStatus ? ToastIcon.MicrophoneMute : ToastIcon.Microphone);
                     break;
                 case "brightness_up":
-                    HandleOptimizationEvent(32);
+                    BrightnessUp();
                     break;
                 case "brightness_down":
-                    HandleOptimizationEvent(16);
+                    BrightnessDown();
                     break;
                 case "screenpad_up":
                     SetScreenpad(10);
@@ -376,7 +378,9 @@ namespace GHelper.Input
                 case "custom":
                     CustomKey(name);
                     break;
-
+                case "calculator":
+                    LaunchProcess("calc");
+                    break;
                 default:
                     break;
             }
@@ -425,8 +429,10 @@ namespace GHelper.Input
                     KeyProcess("m3");
                     return;
                 case 56:    // M4 / Rog button
-                case 181:    // FN + Numpad Enter
                     KeyProcess("m4");
+                    return;
+                case 181:    // FN + Numpad Enter
+                    KeyProcess("fne");
                     return;
                 case 174:   // FN+F5
                     modeControl.CyclePerformanceMode();

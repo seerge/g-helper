@@ -41,7 +41,10 @@ namespace GHelper
             labelBindings = new Label();
             panelBindings = new Panel();
             tableBindings = new TableLayoutPanel();
-            label1 = new Label();
+            labelFNE = new Label();
+            comboFNE = new RComboBox();
+            textFNE = new TextBox();
+            labelFNC = new Label();
             textBox1 = new TextBox();
             textM1 = new TextBox();
             comboM1 = new RComboBox();
@@ -60,7 +63,6 @@ namespace GHelper
             comboFNC = new RComboBox();
             textFNC = new TextBox();
             tableKeys = new TableLayoutPanel();
-            labelFNC = new Label();
             textM2 = new TextBox();
             panelBacklightHeader = new Panel();
             sliderBrightness = new Slider();
@@ -116,7 +118,6 @@ namespace GHelper
             ((System.ComponentModel.ISupportInitialize)pictureHelp).BeginInit();
             panelBindings.SuspendLayout();
             tableBindings.SuspendLayout();
-            tableKeys.SuspendLayout();
             panelBacklightHeader.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBacklight).BeginInit();
             panelBacklight.SuspendLayout();
@@ -137,7 +138,7 @@ namespace GHelper
             panelServices.Controls.Add(labelServices);
             panelServices.Controls.Add(buttonServices);
             panelServices.Dock = DockStyle.Top;
-            panelServices.Location = new Point(15, 1216);
+            panelServices.Location = new Point(15, 1262);
             panelServices.Name = "panelServices";
             panelServices.Size = new Size(983, 75);
             panelServices.TabIndex = 3;
@@ -235,7 +236,7 @@ namespace GHelper
             panelBindings.Location = new Point(15, 65);
             panelBindings.Name = "panelBindings";
             panelBindings.Padding = new Padding(0, 0, 10, 5);
-            panelBindings.Size = new Size(983, 305);
+            panelBindings.Size = new Size(983, 351);
             panelBindings.TabIndex = 5;
             // 
             // tableBindings
@@ -243,10 +244,13 @@ namespace GHelper
             tableBindings.AutoSize = true;
             tableBindings.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             tableBindings.ColumnCount = 3;
-            tableBindings.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 15.45389F));
-            tableBindings.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 40.94511F));
-            tableBindings.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 43.6010056F));
-            tableBindings.Controls.Add(label1, 0, 5);
+            tableBindings.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 15.4538889F));
+            tableBindings.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 40.9451065F));
+            tableBindings.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 43.601F));
+            tableBindings.Controls.Add(labelFNE, 0, 6);
+            tableBindings.Controls.Add(comboFNE, 0, 6);
+            tableBindings.Controls.Add(textFNE, 0, 6);
+            tableBindings.Controls.Add(labelFNC, 0, 5);
             tableBindings.Controls.Add(textBox1, 2, 1);
             tableBindings.Controls.Add(textM1, 2, 0);
             tableBindings.Controls.Add(comboM1, 1, 0);
@@ -269,26 +273,60 @@ namespace GHelper
             tableBindings.Margin = new Padding(0, 3, 4, 3);
             tableBindings.Name = "tableBindings";
             tableBindings.Padding = new Padding(16, 12, 0, 12);
-            tableBindings.RowCount = 6;
+            tableBindings.RowCount = 7;
             tableBindings.RowStyles.Add(new RowStyle());
             tableBindings.RowStyles.Add(new RowStyle());
             tableBindings.RowStyles.Add(new RowStyle());
             tableBindings.RowStyles.Add(new RowStyle());
             tableBindings.RowStyles.Add(new RowStyle());
             tableBindings.RowStyles.Add(new RowStyle());
-            tableBindings.Size = new Size(973, 300);
+            tableBindings.RowStyles.Add(new RowStyle());
+            tableBindings.Size = new Size(973, 346);
             tableBindings.TabIndex = 12;
             // 
-            // label1
+            // labelFNE
             // 
-            label1.AutoSize = true;
-            label1.Location = new Point(16, 242);
-            label1.Margin = new Padding(0);
-            label1.Name = "label1";
-            label1.Padding = new Padding(5, 10, 0, 0);
-            label1.Size = new Size(85, 42);
-            label1.TabIndex = 15;
-            label1.Text = "FN+C:";
+            labelFNE.AutoSize = true;
+            labelFNE.Location = new Point(16, 288);
+            labelFNE.Margin = new Padding(0);
+            labelFNE.Name = "labelFNE";
+            labelFNE.Padding = new Padding(5, 10, 0, 0);
+            labelFNE.Size = new Size(143, 42);
+            labelFNE.TabIndex = 20;
+            labelFNE.Text = "FN+NmEnt:";
+            // 
+            // comboFNE
+            // 
+            comboFNE.BorderColor = Color.White;
+            comboFNE.ButtonColor = Color.FromArgb(255, 255, 255);
+            comboFNE.Dock = DockStyle.Top;
+            comboFNE.FormattingEnabled = true;
+            comboFNE.Location = new Point(167, 291);
+            comboFNE.Margin = new Padding(4, 3, 4, 3);
+            comboFNE.Name = "comboFNE";
+            comboFNE.Size = new Size(383, 40);
+            comboFNE.TabIndex = 19;
+            // 
+            // textFNE
+            // 
+            textFNE.Dock = DockStyle.Top;
+            textFNE.Location = new Point(558, 291);
+            textFNE.Margin = new Padding(4, 3, 4, 3);
+            textFNE.Name = "textFNE";
+            textFNE.PlaceholderText = "action";
+            textFNE.Size = new Size(411, 39);
+            textFNE.TabIndex = 18;
+            // 
+            // labelFNC
+            // 
+            labelFNC.AutoSize = true;
+            labelFNC.Location = new Point(16, 242);
+            labelFNC.Margin = new Padding(0);
+            labelFNC.Name = "labelFNC";
+            labelFNC.Padding = new Padding(5, 10, 0, 0);
+            labelFNC.Size = new Size(85, 42);
+            labelFNC.TabIndex = 15;
+            labelFNC.Text = "FN+C:";
             // 
             // textBox1
             // 
@@ -487,7 +525,6 @@ namespace GHelper
             tableKeys.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20F));
             tableKeys.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 40F));
             tableKeys.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 40F));
-            tableKeys.Controls.Add(labelFNC, 0, 5);
             tableKeys.Location = new Point(0, 0);
             tableKeys.Name = "tableKeys";
             tableKeys.RowCount = 6;
@@ -499,16 +536,6 @@ namespace GHelper
             tableKeys.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
             tableKeys.Size = new Size(200, 100);
             tableKeys.TabIndex = 0;
-            // 
-            // labelFNC
-            // 
-            labelFNC.AutoSize = true;
-            labelFNC.Location = new Point(4, 100);
-            labelFNC.Margin = new Padding(4, 0, 4, 0);
-            labelFNC.Name = "labelFNC";
-            labelFNC.Size = new Size(32, 20);
-            labelFNC.TabIndex = 15;
-            labelFNC.Text = "FN+C:";
             // 
             // textM2
             // 
@@ -528,7 +555,7 @@ namespace GHelper
             panelBacklightHeader.Controls.Add(pictureBacklight);
             panelBacklightHeader.Controls.Add(labelBacklightTitle);
             panelBacklightHeader.Dock = DockStyle.Top;
-            panelBacklightHeader.Location = new Point(15, 370);
+            panelBacklightHeader.Location = new Point(15, 416);
             panelBacklightHeader.Name = "panelBacklightHeader";
             panelBacklightHeader.Padding = new Padding(10, 5, 10, 5);
             panelBacklightHeader.Size = new Size(983, 50);
@@ -574,7 +601,7 @@ namespace GHelper
             panelBacklight.Controls.Add(panelXMG);
             panelBacklight.Controls.Add(tableBacklight);
             panelBacklight.Dock = DockStyle.Top;
-            panelBacklight.Location = new Point(15, 420);
+            panelBacklight.Location = new Point(15, 466);
             panelBacklight.Name = "panelBacklight";
             panelBacklight.Padding = new Padding(0, 5, 0, 5);
             panelBacklight.Size = new Size(983, 402);
@@ -963,7 +990,7 @@ namespace GHelper
             panelSettingsHeader.Controls.Add(pictureSettings);
             panelSettingsHeader.Controls.Add(labelSettings);
             panelSettingsHeader.Dock = DockStyle.Top;
-            panelSettingsHeader.Location = new Point(15, 822);
+            panelSettingsHeader.Location = new Point(15, 868);
             panelSettingsHeader.Name = "panelSettingsHeader";
             panelSettingsHeader.Padding = new Padding(10, 5, 10, 5);
             panelSettingsHeader.Size = new Size(983, 50);
@@ -1015,7 +1042,7 @@ namespace GHelper
             panelSettings.Controls.Add(checkGpuApps);
             panelSettings.Controls.Add(checkFnLock);
             panelSettings.Dock = DockStyle.Top;
-            panelSettings.Location = new Point(15, 872);
+            panelSettings.Location = new Point(15, 918);
             panelSettings.Name = "panelSettings";
             panelSettings.Padding = new Padding(20, 5, 10, 5);
             panelSettings.Size = new Size(983, 344);
@@ -1163,8 +1190,6 @@ namespace GHelper
             panelBindings.PerformLayout();
             tableBindings.ResumeLayout(false);
             tableBindings.PerformLayout();
-            tableKeys.ResumeLayout(false);
-            tableKeys.PerformLayout();
             panelBacklightHeader.ResumeLayout(false);
             panelBacklightHeader.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBacklight).EndInit();
@@ -1193,7 +1218,7 @@ namespace GHelper
         private Panel panelBindingsHeader;
         private Panel panelBindings;
         private TableLayoutPanel tableBindings;
-        private Label label1;
+        private Label labelFNC;
         private TextBox textBox1;
         private TextBox textM1;
         private RComboBox comboM1;
@@ -1213,7 +1238,6 @@ namespace GHelper
         private TextBox textFNC;
         private PictureBox pictureHelp;
         private TableLayoutPanel tableKeys;
-        private Label labelFNC;
         private TextBox textM2;
         private PictureBox pictureBindings;
         private Label labelBindings;
@@ -1265,5 +1289,8 @@ namespace GHelper
         private Slider sliderBrightness;
         private PictureBox pictureLog;
         private CheckBox checkAutoToggleClamshellMode;
+        private Label labelFNE;
+        private RComboBox comboFNE;
+        private TextBox textFNE;
     }
 }
