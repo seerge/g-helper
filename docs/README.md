@@ -236,10 +236,10 @@ You can disable app's OSD (for performance modes, keyboard backlight, etc) by ad
 ```
 
 ### Extra Keybindings 
-``Ctrl + Shift + F5`` - Toggle Performance Modes
-``Ctrl + Shift + F12`` - Open G-Helper window 
-``Ctrl + M1 / M2`` - Screen brightness Down / Up
-``Shift + M1 / M2`` - Backlight brightness Down / Up
+- ``Ctrl + Shift + F5`` - Toggle Performance Modes
+- ``Ctrl + Shift + F12`` - Open G-Helper window 
+- ``Ctrl + M1 / M2`` - Screen brightness Down / Up
+- ``Shift + M1 / M2`` - Backlight brightness Down / Up
 
 ### Keybinding to toggle performance modes (on external keyboards)
 
