@@ -134,6 +134,9 @@ Currently you can undervolt AMD CPUs. If your model supports that - you will see
 #### I have G14 2023 and my GPU refuses to disable/enable
 It seems to be an issue in older BIOS versions. As [users report](https://github.com/seerge/g-helper/issues/680) - latest BIOS 312 (installable via MyASUS or G-Helper -> Updates) resolves all issues :) So please update.
 
+#### I have G15 2022 and my GPU refuses to disable/enable or my fans missbehave
+G15 2022 is known to have a notoriously bugged BIOS (last one 313). Multiple users have reported that problems can be solved by rolling back to a [revious BIOS 311 from Asus Support website](https://rog.asus.com/nl/laptops/rog-zephyrus/rog-zephyrus-g15-2022-series/helpdesk_bios/).
+
 #### I have uninstalled Armoury and my GPU performance is lower than it was
 Check your NVidia Experience settings and make sure that you have **Whisper Mode** set to ``OFF``. Also you can go to reset all settings ``Nvidia Control panel -> Manage 3D Settings -> Reset to defaults``
 
