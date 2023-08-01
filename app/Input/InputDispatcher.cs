@@ -104,14 +104,19 @@ namespace GHelper.Input
             if (keyProfile != Keys.None) hook.RegisterHotKey(ModifierKeys.Shift | ModifierKeys.Control, keyProfile);
             if (keyApp != Keys.None) hook.RegisterHotKey(ModifierKeys.Shift | ModifierKeys.Control, keyApp);
 
-            hook.RegisterHotKey(ModifierKeys.Control, Keys.VolumeDown);
-            hook.RegisterHotKey(ModifierKeys.Control, Keys.VolumeUp);
-            hook.RegisterHotKey(ModifierKeys.Shift, Keys.VolumeDown);
-            hook.RegisterHotKey(ModifierKeys.Shift, Keys.VolumeUp);
+            if (!AppConfig.Is("skip_hotkeys"))
+            {
+                hook.RegisterHotKey(ModifierKeys.Control, Keys.VolumeDown);
+                hook.RegisterHotKey(ModifierKeys.Control, Keys.VolumeUp);
+                hook.RegisterHotKey(ModifierKeys.Shift, Keys.VolumeDown);
+                hook.RegisterHotKey(ModifierKeys.Shift, Keys.VolumeUp);
+            }
 
             if (!AppConfig.ContainsModel("Z13"))
+            {
                 if (actionM1 is not null && actionM1.Length > 0) hook.RegisterHotKey(ModifierKeys.None, Keys.VolumeDown);
-            if (actionM2 is not null && actionM2.Length > 0) hook.RegisterHotKey(ModifierKeys.None, Keys.VolumeUp);
+                if (actionM2 is not null && actionM2.Length > 0) hook.RegisterHotKey(ModifierKeys.None, Keys.VolumeUp);
+            }
 
             // FN-Lock group
 
