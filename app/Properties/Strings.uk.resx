@@ -169,22 +169,22 @@
     <value>Дихання</value>
   </data>
   <data name="AuraClockwise" xml:space="preserve">
-    <value>Clockwise</value>
+    <value>Направо</value>
   </data>
   <data name="AuraColorCycle" xml:space="preserve">
     <value>Зміна Кольорів</value>
   </data>
   <data name="AuraComet" xml:space="preserve">
-    <value>Comet</value>
+    <value>Комета</value>
   </data>
   <data name="AuraCounterClockwise" xml:space="preserve">
-    <value>Counterclockwise</value>
+    <value>Наліво</value>
   </data>
   <data name="AuraFast" xml:space="preserve">
     <value>Швидка</value>
   </data>
   <data name="AuraLightingMode" xml:space="preserve">
-    <value>Lighting Mode</value>
+    <value>Підсвітка</value>
   </data>
   <data name="AuraNormal" xml:space="preserve">
     <value>Нормальна</value>
@@ -193,10 +193,10 @@
     <value>Веселка</value>
   </data>
   <data name="AuraRandomColor" xml:space="preserve">
-    <value>Random</value>
+    <value>Випадкова</value>
   </data>
   <data name="AuraReact" xml:space="preserve">
-    <value>React</value>
+    <value>Реактивна</value>
   </data>
   <data name="AuraSlow" xml:space="preserve">
     <value>Повільна</value>
@@ -208,19 +208,19 @@
     <value>Стробоскоп</value>
   </data>
   <data name="AuraZoneAll" xml:space="preserve">
-    <value>All</value>
+    <value>Все</value>
   </data>
   <data name="AuraZoneDock" xml:space="preserve">
-    <value>Dock</value>
+    <value>Док</value>
   </data>
   <data name="AuraZoneLogo" xml:space="preserve">
-    <value>Logo</value>
+    <value>Лого</value>
   </data>
   <data name="AuraZoneScroll" xml:space="preserve">
-    <value>Scrollwheel</value>
+    <value>Колесо</value>
   </data>
   <data name="AuraZoneUnderglow" xml:space="preserve">
-    <value>Underglow</value>
+    <value>Низ</value>
   </data>
   <data name="AutoApply" xml:space="preserve">
     <value>Автоматично</value>
@@ -303,7 +303,7 @@
     <value>NVIDIA Display Mode не в режимі Optimus</value>
   </data>
   <data name="EnergySettings" xml:space="preserve">
-    <value>Energy Settings</value>
+    <value>Налаштування Енергії</value>
   </data>
   <data name="Extra" xml:space="preserve">
     <value>Додатково</value>
@@ -372,7 +372,7 @@
     <value>Temperature Target</value>
   </data>
   <data name="High" xml:space="preserve">
-    <value>High</value>
+    <value>Висока</value>
   </data>
   <data name="KeyBindings" xml:space="preserve">
     <value>Прив'язки клавіш</value>
@@ -399,13 +399,13 @@
     <value>Лайтбар</value>
   </data>
   <data name="Lighting" xml:space="preserve">
-    <value>Lighting</value>
+    <value>Ілюмінація</value>
   </data>
   <data name="Logo" xml:space="preserve">
     <value>Лого</value>
   </data>
   <data name="Low" xml:space="preserve">
-    <value>Low</value>
+    <value>Низька</value>
   </data>
   <data name="MatrixAudio" xml:space="preserve">
     <value>Аудіо візуалізатор</value>
@@ -441,16 +441,19 @@
     <value>Частота 60Гц, щоб зберегти заряд батареї</value>
   </data>
   <data name="Minute" xml:space="preserve">
-    <value>Minute</value>
+    <value>Хвил.</value>
   </data>
   <data name="Minutes" xml:space="preserve">
     <value>Хвилини</value>
   </data>
   <data name="MouseAngleSnapping" xml:space="preserve">
-    <value>Привʼязка по куту</value>
+    <value>Фіксація Кута</value>
   </data>
   <data name="MouseAutoPowerOff" xml:space="preserve">
     <value>Авто-вимикання</value>
+  </data>
+  <data name="MouseButtonResponse" xml:space="preserve">
+    <value>Відповідь Кнопок</value>
   </data>
   <data name="MouseLiftOffDistance" xml:space="preserve">
     <value>Відстань підйому</value>
@@ -459,7 +462,7 @@
     <value>Попередження про низький заряд</value>
   </data>
   <data name="MousePerformance" xml:space="preserve">
-    <value>Performance</value>
+    <value>Режим Швидкодії</value>
   </data>
   <data name="MouseSynchronize" xml:space="preserve">
     <value>Синхронізувати з мишею</value>
