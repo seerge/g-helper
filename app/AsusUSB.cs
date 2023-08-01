@@ -503,24 +503,24 @@ namespace GHelper
 
                 if (init)
                 {
-                    auraDevice.WriteFeatureData(LED_INIT1);
-                    auraDevice.WriteFeatureData(LED_INIT2);
-                    auraDevice.WriteFeatureData(LED_INIT3);
-                    auraDevice.WriteFeatureData(LED_INIT4);
-                    auraDevice.WriteFeatureData(LED_INIT5);
+                    auraDevice.Write(LED_INIT1);
+                    auraDevice.Write(LED_INIT2);
+                    auraDevice.Write(LED_INIT3);
+                    auraDevice.Write(LED_INIT4);
+                    auraDevice.Write(LED_INIT5);
 
-                    auraDevice.WriteFeatureData(new byte[] { AURA_HID_ID, 0xbc, 1, 0, 0 });
-                    auraDevice.WriteFeatureData(new byte[] { AURA_HID_ID, 0xbc, 1, 1, 4 });
+                    auraDevice.Write(new byte[] { AURA_HID_ID, 0xbc, 1, 0, 0 });
+                    auraDevice.Write(new byte[] { AURA_HID_ID, 0xbc, 1, 1, 4 });
                 }
 
-                auraDevice.WriteFeatureData(new byte[] { AURA_HID_ID, 0xbc, 1, 0, 0 });
-                auraDevice.WriteFeatureData(msg);
+                //auraDevice.Write(new byte[] { AURA_HID_ID, 0xbc, 1, 0, 0 });
+                auraDevice.Write(msg);
 
             }
             else
             {
-                auraDevice.WriteFeatureData(AuraMessage(0, color, color, 0));
-                auraDevice.WriteFeatureData(MESSAGE_SET);
+                auraDevice.Write(AuraMessage(0, color, color, 0));
+                auraDevice.Write(MESSAGE_SET);
             }
 
         }
