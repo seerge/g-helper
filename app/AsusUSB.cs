@@ -483,23 +483,17 @@ namespace GHelper
 
                 msg[0] = AURA_HID_ID;
                 msg[1] = 0xbc;
-                msg[2] = 1;
+                msg[2] = 0;
                 msg[3] = 1;
                 msg[4] = 4;
 
-                for (int i = 0; i < 5; i++)
+                for (int i = 0; i < 16; i++)
                 {
                     msg[start + i * 3] = color.R; // R
                     msg[start + 1 + i * 3] = color.G; // G
                     msg[start + 2 + i * 3] = color.B; // B
                 }
 
-                for (int i = 6; i < 12; i++)
-                {
-                    msg[start + i * 3] = color.R; // R
-                    msg[start + 1 + i * 3] = color.G; // G
-                    msg[start + 2 + i * 3] = color.B; // B
-                }
 
                 if (init)
                 {
@@ -509,8 +503,8 @@ namespace GHelper
                     auraDevice.Write(LED_INIT4);
                     auraDevice.Write(LED_INIT5);
 
-                    auraDevice.Write(new byte[] { AURA_HID_ID, 0xbc, 1, 0, 0 });
-                    auraDevice.Write(new byte[] { AURA_HID_ID, 0xbc, 1, 1, 4 });
+                    auraDevice.Write(new byte[] { AURA_HID_ID, 0xbc, 0, 0, 0 });
+                    auraDevice.Write(new byte[] { AURA_HID_ID, 0xbc, 0, 1, 1, 1, 0, 16, 0 });
                 }
 
                 //auraDevice.Write(new byte[] { AURA_HID_ID, 0xbc, 1, 0, 0 });
