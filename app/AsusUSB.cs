@@ -1,5 +1,6 @@
 ﻿using GHelper.Helpers;
 using HidLibrary;
+using System.Diagnostics;
 using System.Text;
 
 namespace GHelper
@@ -483,9 +484,12 @@ namespace GHelper
 
                 msg[0] = AURA_HID_ID;
                 msg[1] = 0xbc;
-                msg[2] = 1;
+                msg[2] = 0;
                 msg[3] = 1;
-                msg[4] = 4;
+                msg[4] = 1;
+                msg[5] = 1;
+                msg[6] = 0;
+                msg[7] = 0x10;
 
                 for (int i = 0; i < 16; i++)
                 {
@@ -502,13 +506,23 @@ namespace GHelper
                     auraDevice.Write(LED_INIT3);
                     auraDevice.Write(LED_INIT4);
                     auraDevice.Write(LED_INIT5);
-
                     auraDevice.Write(new byte[] { AURA_HID_ID, 0xbc});
-                    auraDevice.Write(new byte[] { AURA_HID_ID, 0xbc, 1, 1});
                 }
 
-                //auraDevice.Write(new byte[] { AURA_HID_ID, 0xbc, 1, 0, 0 });
+                for (byte b = 0; b < 0xA0; b += 0x10)
+                {
+                    msg[6] = b;
+                    auraDevice.Write(msg);
+                    //Debug.WriteLine(BitConverter.ToString(msg));
+                }
+
+                msg[4] = 4;
+                msg[5] = 0;
+                msg[6] = 0;
                 auraDevice.Write(msg);
+
+                //auraDevice.Write(new byte[] { AURA_HID_ID, 0xbc, 1, 0, 0 });
+
 
             }
             else
