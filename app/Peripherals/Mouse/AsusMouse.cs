@@ -615,6 +615,21 @@ namespace GHelper.Peripherals.Mouse
             return false;
         }
 
+        public virtual int AngleTuningStep()
+        {
+            return 1;
+        }
+
+        public virtual int AngleTuningMin()
+        {
+            return -20;
+        }
+
+        public virtual int AngleTuningMax()
+        {
+            return 20;
+        }
+
         public virtual string PollingRateDisplayString(PollingRate pollingRate)
         {
             return POLLING_RATES[(int)pollingRate];
@@ -762,9 +777,10 @@ namespace GHelper.Peripherals.Mouse
                 return;
             }
 
-            if (angleAdjustment < -20 || angleAdjustment > 20)
+            if (angleAdjustment < AngleTuningMin() || angleAdjustment > AngleTuningMax())
             {
-                Logger.WriteLine(GetDisplayName() + ": Angle Adjustment:" + angleAdjustment + " is outside of range [-20;20].");
+                Logger.WriteLine(GetDisplayName() + ": Angle Adjustment:" + angleAdjustment
+                    + " is outside of range [" + AngleTuningMin() + "; " + AngleTuningMax() + "].");
                 return;
             }
 
