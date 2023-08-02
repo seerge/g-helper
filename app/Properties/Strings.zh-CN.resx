@@ -453,7 +453,7 @@
     <value>自动关闭时间</value>
   </data>
   <data name="MouseButtonResponse" xml:space="preserve">
-    <value>Button Response</value>
+    <value>按键响应</value>
   </data>
   <data name="MouseLiftOffDistance" xml:space="preserve">
     <value>静默高度</value>
