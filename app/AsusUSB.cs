@@ -483,7 +483,7 @@ namespace GHelper
 
                 msg[0] = AURA_HID_ID;
                 msg[1] = 0xbc;
-                msg[2] = 0;
+                msg[2] = 1;
                 msg[3] = 1;
                 msg[4] = 4;
 
@@ -503,8 +503,8 @@ namespace GHelper
                     auraDevice.Write(LED_INIT4);
                     auraDevice.Write(LED_INIT5);
 
-                    auraDevice.Write(new byte[] { AURA_HID_ID, 0xbc, 0, 0, 0 });
-                    auraDevice.Write(new byte[] { AURA_HID_ID, 0xbc, 0, 1, 1, 1, 0, 16, 0 });
+                    auraDevice.Write(new byte[] { AURA_HID_ID, 0xbc});
+                    auraDevice.Write(new byte[] { AURA_HID_ID, 0xbc, 1, 1});
                 }
 
                 //auraDevice.Write(new byte[] { AURA_HID_ID, 0xbc, 1, 0, 0 });
