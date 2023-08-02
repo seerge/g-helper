@@ -491,7 +491,7 @@ namespace GHelper
                 msg[6] = 0;
                 msg[7] = 0x10;
 
-                for (int i = 0; i < 16; i++)
+                for (int i = 0; i < 0x12; i++)
                 {
                     msg[start + i * 3] = color.R; // R
                     msg[start + 1 + i * 3] = color.G; // G
@@ -509,7 +509,7 @@ namespace GHelper
                     auraDevice.Write(new byte[] { AURA_HID_ID, 0xbc});
                 }
 
-                for (byte b = 0; b < 0xA0; b += 0x10)
+                for (byte b = 0; b <= 0xA0; b += 0x10)
                 {
                     msg[6] = b;
                     auraDevice.Write(msg);
@@ -519,6 +519,8 @@ namespace GHelper
                 msg[4] = 4;
                 msg[5] = 0;
                 msg[6] = 0;
+                msg[7] = 0;
+
                 auraDevice.Write(msg);
 
                 //auraDevice.Write(new byte[] { AURA_HID_ID, 0xbc, 1, 0, 0 });
