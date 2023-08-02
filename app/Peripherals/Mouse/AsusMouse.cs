@@ -140,7 +140,7 @@ namespace GHelper.Peripherals.Mouse
     public abstract class AsusMouse : Device, IPeripheral
     {
         private static string[] POLLING_RATES = { "125 Hz", "250 Hz", "500 Hz", "1000 Hz", "2000 Hz", "4000 Hz", "8000 Hz", "16000 Hz" };
-        internal const bool PACKET_LOGGER_ALWAYS_ON = true;
+        internal const bool PACKET_LOGGER_ALWAYS_ON = false;
         internal const int ASUS_MOUSE_PACKET_SIZE = 65;
 
         public event EventHandler? Disconnect;
