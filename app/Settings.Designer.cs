@@ -1199,15 +1199,15 @@ namespace GHelper
             // 
             // labelCharge
             // 
-            labelCharge.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            labelCharge.Dock = DockStyle.Right;
             labelCharge.ForeColor = SystemColors.ControlDark;
-            labelCharge.Location = new Point(476, 10);
-            labelCharge.Margin = new Padding(8, 0, 8, 0);
+            labelCharge.Location = new Point(365, 0);
+            labelCharge.Margin = new Padding(0, 0, 0, 0);
             labelCharge.Name = "labelCharge";
-            labelCharge.Size = new Size(324, 36);
+            labelCharge.Padding = new Padding(0, 0, 20, 0);
+            labelCharge.Size = new Size(462, 56);
             labelCharge.TabIndex = 40;
-            labelCharge.Text = "                ";
-            labelCharge.TextAlign = ContentAlignment.TopRight;
+            labelCharge.TextAlign = ContentAlignment.MiddleRight;
             // 
             // panelPeripherals
             // 

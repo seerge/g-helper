@@ -178,15 +178,8 @@ namespace GHelper
             sensorTimer.Elapsed += OnTimedEvent;
             sensorTimer.Enabled = true;
 
-            panelBattery.MouseEnter += PanelBattery_MouseEnter;
             labelCharge.MouseEnter += PanelBattery_MouseEnter;
-            labelBattery.MouseEnter += PanelBattery_MouseEnter;
-            labelBatteryTitle.MouseEnter += PanelBattery_MouseEnter;
-
-            panelBattery.MouseLeave += PanelBattery_MouseLeave;
             labelCharge.MouseLeave += PanelBattery_MouseLeave;
-            labelBattery.MouseLeave += PanelBattery_MouseLeave;
-            labelBatteryTitle.MouseLeave += PanelBattery_MouseLeave;
 
             buttonPeripheral1.Click += ButtonPeripheral_Click;
             buttonPeripheral2.Click += ButtonPeripheral_Click;
