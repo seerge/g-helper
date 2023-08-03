@@ -520,7 +520,7 @@ namespace GHelper.Input
                     break;
                 case 107: // FN+F10
                     AsusUSB.TouchpadToggle();
-                    Thread.Sleep(50);
+                    Thread.Sleep(200);
                     Program.toast.RunToast(GetTouchpadState() ? "On" : "Off", ToastIcon.Touchpad);
                     break;
                 case 108: // FN+F11

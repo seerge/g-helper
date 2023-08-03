@@ -430,6 +430,15 @@ namespace GHelper.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Charge.
+        /// </summary>
+        internal static string BatteryCharge {
+            get {
+                return ResourceManager.GetString("BatteryCharge", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Battery Charge Limit.
         /// </summary>
         internal static string BatteryChargeLimit {
@@ -437,7 +446,7 @@ namespace GHelper.Properties {
                 return ResourceManager.GetString("BatteryChargeLimit", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Battery Health.
         /// </summary>
@@ -1150,7 +1159,7 @@ namespace GHelper.Properties {
                 return ResourceManager.GetString("NoNewUpdates", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Not Connected.
         /// </summary>
@@ -1456,7 +1465,7 @@ namespace GHelper.Properties {
                 return ResourceManager.GetString("ToggleAura", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Auto Toggle Clamshell Mode.
         /// </summary>

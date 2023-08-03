@@ -56,6 +56,7 @@ namespace GHelper
                     break;
                 case "fne":
                     customActions[""] = "Calculator";
+                    customActions["ghelper"] = Properties.Strings.OpenGHelper;
                     break;
             }
 

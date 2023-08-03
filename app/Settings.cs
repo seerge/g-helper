@@ -178,9 +178,13 @@ namespace GHelper
             sensorTimer.Elapsed += OnTimedEvent;
             sensorTimer.Enabled = true;
 
+            panelBattery.MouseEnter += PanelBattery_MouseEnter;
+            labelCharge.MouseEnter += PanelBattery_MouseEnter;
             labelBattery.MouseEnter += PanelBattery_MouseEnter;
             labelBatteryTitle.MouseEnter += PanelBattery_MouseEnter;
 
+            panelBattery.MouseLeave += PanelBattery_MouseLeave;
+            labelCharge.MouseLeave += PanelBattery_MouseLeave;
             labelBattery.MouseLeave += PanelBattery_MouseLeave;
             labelBatteryTitle.MouseLeave += PanelBattery_MouseLeave;
 
@@ -229,7 +233,7 @@ namespace GHelper
 
             if (HardwareControl.batteryHealth != -1)
             {
-                labelBattery.Text = Properties.Strings.BatteryHealth + ": " + Math.Round(HardwareControl.batteryHealth, 1) + "%";
+                labelCharge.Text = Properties.Strings.BatteryHealth + ": " + Math.Round(HardwareControl.batteryHealth, 1) + "%";
             }
         }
 
@@ -822,12 +826,16 @@ namespace GHelper
             string cpuTemp = "";
             string gpuTemp = "";
             string battery = "";
+            string charge = "";
 
             HardwareControl.ReadSensors();
             Task.Run((Action)PeripheralsProvider.RefreshBatteryForAllDevices);
 
             if (HardwareControl.cpuTemp > 0)
                 cpuTemp = ": " + Math.Round((decimal)HardwareControl.cpuTemp).ToString() + "°C";
+
+            if (HardwareControl.batteryCapacity > 0)
+                charge = Properties.Strings.BatteryCharge + ": " + Math.Round(HardwareControl.batteryCapacity, 1) + "% ";
 
             if (HardwareControl.batteryRate < 0)
                 battery = Properties.Strings.Discharging + ": " + Math.Round(-(decimal)HardwareControl.batteryRate, 1).ToString() + "W";
@@ -847,7 +855,8 @@ namespace GHelper
                 if (HardwareControl.midFan is not null)
                     labelMidFan.Text = "Mid " + HardwareControl.midFan;
 
-                if (!batteryMouseOver) labelBattery.Text = battery;
+                labelBattery.Text = battery;
+                if (!batteryMouseOver) labelCharge.Text = charge;
             });
 
             string trayTip = "CPU" + cpuTemp + " " + HardwareControl.cpuFan;

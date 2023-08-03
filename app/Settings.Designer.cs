@@ -47,8 +47,9 @@ namespace GHelper
             labelBatteryTitle = new Label();
             panelFooter = new Panel();
             tableButtons = new TableLayoutPanel();
-            buttonUpdates = new RButton();
+            labelVersion = new Label();
             buttonQuit = new RButton();
+            buttonUpdates = new RButton();
             checkStartup = new CheckBox();
             panelPerformance = new Panel();
             tablePerf = new TableLayoutPanel();
@@ -95,8 +96,8 @@ namespace GHelper
             panelKeyboardTitle = new Panel();
             pictureKeyboard = new PictureBox();
             labelKeyboard = new Label();
-            labelVersion = new Label();
             panelVersion = new Panel();
+            labelCharge = new Label();
             panelPeripherals = new Panel();
             tableLayoutPeripherals = new TableLayoutPanel();
             buttonPeripheral3 = new RButton();
@@ -365,8 +366,9 @@ namespace GHelper
             tableButtons.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.3333321F));
             tableButtons.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.3333321F));
             tableButtons.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 27F));
-            tableButtons.Controls.Add(buttonUpdates, 0, 0);
+            tableButtons.Controls.Add(labelVersion, 0, 0);
             tableButtons.Controls.Add(buttonQuit, 2, 0);
+            tableButtons.Controls.Add(buttonUpdates, 1, 0);
             tableButtons.Dock = DockStyle.Top;
             tableButtons.Location = new Point(20, 20);
             tableButtons.Margin = new Padding(4);
@@ -376,26 +378,20 @@ namespace GHelper
             tableButtons.Size = new Size(787, 60);
             tableButtons.TabIndex = 25;
             // 
-            // buttonUpdates
+            // labelVersion
             // 
-            buttonUpdates.AccessibleName = "BIOS and Driver Updates";
-            buttonUpdates.Activated = false;
-            buttonUpdates.BackColor = SystemColors.ControlLight;
-            buttonUpdates.BorderColor = Color.Transparent;
-            buttonUpdates.BorderRadius = 2;
-            buttonUpdates.Dock = DockStyle.Top;
-            buttonUpdates.FlatStyle = FlatStyle.Flat;
-            buttonUpdates.Image = Properties.Resources.icons8_software_32_white;
-            buttonUpdates.ImageAlign = ContentAlignment.MiddleRight;
-            buttonUpdates.Location = new Point(4, 6);
-            buttonUpdates.Margin = new Padding(4, 6, 4, 6);
-            buttonUpdates.Name = "buttonUpdates";
-            buttonUpdates.Secondary = true;
-            buttonUpdates.Size = new Size(254, 48);
-            buttonUpdates.TabIndex = 24;
-            buttonUpdates.Text = "Updates";
-            buttonUpdates.TextImageRelation = TextImageRelation.ImageBeforeText;
-            buttonUpdates.UseVisualStyleBackColor = false;
+            labelVersion.Cursor = Cursors.Hand;
+            labelVersion.Dock = DockStyle.Fill;
+            labelVersion.Font = new Font("Segoe UI", 9F, FontStyle.Underline, GraphicsUnit.Point);
+            labelVersion.ForeColor = SystemColors.ControlDark;
+            labelVersion.Location = new Point(0, 0);
+            labelVersion.Margin = new Padding(0);
+            labelVersion.Name = "labelVersion";
+            labelVersion.Padding = new Padding(5);
+            labelVersion.Size = new Size(262, 60);
+            labelVersion.TabIndex = 37;
+            labelVersion.Text = "v.0";
+            labelVersion.TextAlign = ContentAlignment.MiddleLeft;
             // 
             // buttonQuit
             // 
@@ -417,6 +413,27 @@ namespace GHelper
             buttonQuit.TextAlign = ContentAlignment.MiddleRight;
             buttonQuit.TextImageRelation = TextImageRelation.ImageBeforeText;
             buttonQuit.UseVisualStyleBackColor = false;
+            // 
+            // buttonUpdates
+            // 
+            buttonUpdates.AccessibleName = "BIOS and Driver Updates";
+            buttonUpdates.Activated = false;
+            buttonUpdates.BackColor = SystemColors.ControlLight;
+            buttonUpdates.BorderColor = Color.Transparent;
+            buttonUpdates.BorderRadius = 2;
+            buttonUpdates.Dock = DockStyle.Top;
+            buttonUpdates.FlatStyle = FlatStyle.Flat;
+            buttonUpdates.Image = Properties.Resources.icons8_software_32_white;
+            buttonUpdates.ImageAlign = ContentAlignment.MiddleRight;
+            buttonUpdates.Location = new Point(266, 6);
+            buttonUpdates.Margin = new Padding(4, 6, 4, 6);
+            buttonUpdates.Name = "buttonUpdates";
+            buttonUpdates.Secondary = true;
+            buttonUpdates.Size = new Size(254, 48);
+            buttonUpdates.TabIndex = 24;
+            buttonUpdates.Text = "Updates";
+            buttonUpdates.TextImageRelation = TextImageRelation.ImageBeforeText;
+            buttonUpdates.UseVisualStyleBackColor = false;
             // 
             // checkStartup
             // 
@@ -1169,23 +1186,9 @@ namespace GHelper
             labelKeyboard.TabIndex = 34;
             labelKeyboard.Text = "Laptop Keyboard";
             // 
-            // labelVersion
-            // 
-            labelVersion.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            labelVersion.Cursor = Cursors.Hand;
-            labelVersion.Font = new Font("Segoe UI", 9F, FontStyle.Underline, GraphicsUnit.Point);
-            labelVersion.ForeColor = SystemColors.ControlDark;
-            labelVersion.Location = new Point(502, 13);
-            labelVersion.Margin = new Padding(11, 0, 11, 0);
-            labelVersion.Name = "labelVersion";
-            labelVersion.Size = new Size(300, 32);
-            labelVersion.TabIndex = 37;
-            labelVersion.Text = "v.0";
-            labelVersion.TextAlign = ContentAlignment.TopRight;
-            // 
             // panelVersion
             // 
-            panelVersion.Controls.Add(labelVersion);
+            panelVersion.Controls.Add(labelCharge);
             panelVersion.Controls.Add(checkStartup);
             panelVersion.Dock = DockStyle.Top;
             panelVersion.Location = new Point(11, 1379);
@@ -1193,6 +1196,18 @@ namespace GHelper
             panelVersion.Name = "panelVersion";
             panelVersion.Size = new Size(827, 56);
             panelVersion.TabIndex = 6;
+            // 
+            // labelCharge
+            // 
+            labelCharge.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            labelCharge.ForeColor = SystemColors.ControlDark;
+            labelCharge.Location = new Point(476, 10);
+            labelCharge.Margin = new Padding(8, 0, 8, 0);
+            labelCharge.Name = "labelCharge";
+            labelCharge.Size = new Size(324, 36);
+            labelCharge.TabIndex = 40;
+            labelCharge.Text = "                ";
+            labelCharge.TextAlign = ContentAlignment.TopRight;
             // 
             // panelPeripherals
             // 
@@ -1482,7 +1497,6 @@ namespace GHelper
         private Label labelVersion;
         private RButton buttonStopGPU;
         private TableLayoutPanel tableButtons;
-        private RButton buttonUpdates;
         private Panel panelPeripherals;
         private TableLayoutPanel tableLayoutPeripherals;
         private Panel panelPeripheralsTile;
@@ -1492,5 +1506,7 @@ namespace GHelper
         private RButton buttonPeripheral3;
         private RButton buttonPeripheral1;
         private RButton buttonKeyboard;
+        private RButton buttonUpdates;
+        private Label labelCharge;
     }
 }

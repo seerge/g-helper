@@ -18,8 +18,13 @@ public static class HardwareControl
     public static float? cpuTemp = -1;
     public static decimal? batteryRate = 0;
     public static decimal batteryHealth = -1;
+    public static decimal batteryCapacity = -1;
+
     public static decimal? designCapacity;
     public static decimal? fullCapacity;
+    public static decimal? chargeCapacity;
+
+
     public static int? gpuTemp = null;
 
     public static string? cpuFan;
@@ -106,8 +111,11 @@ public static class HardwareControl
     }
 
 
-    public static decimal GetBatteryRate()
+    public static void GetBatteryStatus()
     {
+
+        batteryRate = 0;
+        chargeCapacity = 0;
 
         try
         {
@@ -117,26 +125,29 @@ public static class HardwareControl
             using ManagementObjectSearcher searcher = new ManagementObjectSearcher(scope, query);
             foreach (ManagementObject obj in searcher.Get().Cast<ManagementObject>())
             {
+
+                chargeCapacity = Convert.ToDecimal(obj["RemainingCapacity"]);
+
                 decimal chargeRate = Convert.ToDecimal(obj["ChargeRate"]);
                 decimal dischargeRate = Convert.ToDecimal(obj["DischargeRate"]);
+                
                 if (chargeRate > 0)
-                    return chargeRate;
+                    batteryRate = chargeRate / 1000;
                 else
-                    return -dischargeRate;
-            }
+                    batteryRate = -dischargeRate / 1000;
 
-            return 0;
+            }
 
         }
         catch (Exception ex)
         {
             Logger.WriteLine("Discharge Reading: " + ex.Message);
-            return 0;
         }
 
     }
     public static void ReadFullChargeCapacity()
     {
+        if (fullCapacity > 0) return;
 
         try
         {
@@ -159,6 +170,8 @@ public static class HardwareControl
 
     public static void ReadDesignCapacity()
     {
+        if (designCapacity > 0) return;
+
         try
         {
             ManagementScope scope = new ManagementScope("root\\WMI");
@@ -253,7 +266,15 @@ public static class HardwareControl
         if (gpuTemp is null || gpuTemp < 0)
             gpuTemp = Program.acpi.DeviceGet(AsusACPI.Temp_GPU);
 
-        batteryRate = GetBatteryRate() / 1000;
+        ReadFullChargeCapacity();
+        GetBatteryStatus();
+
+        if (fullCapacity > 0 && chargeCapacity > 0)
+        {
+            batteryCapacity = Math.Min(100, ((decimal)chargeCapacity / (decimal)fullCapacity) * 100);
+        }
+
+
     }
 
     public static bool IsUsedGPU(int threshold = 10)
