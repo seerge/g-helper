@@ -240,6 +240,9 @@
   <data name="Balanced" xml:space="preserve">
     <value>Equilibrado</value>
   </data>
+  <data name="BatteryCharge" xml:space="preserve">
+    <value>Charge</value>
+  </data>
   <data name="BatteryChargeLimit" xml:space="preserve">
     <value>Limite de carga</value>
   </data>
