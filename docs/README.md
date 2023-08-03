@@ -70,7 +70,7 @@ _PPTs are shown for G14 2022, for other models PPTs will be different as they ar
 3. Ultimate mode: iGPU and dGPU enabled, but dGPU drives built in display (supported only on G14 2022 model)
 4. Optimized: disables dGPU on battery (Eco) and enables when plugged (Standard)
 
-![Screenshot 2023-05-07 182519](https://user-images.githubusercontent.com/5920850/236697890-26938ac4-8840-4fed-a7b1-9a7b839fb865.png)
+![Screenshot 2023-08-03 193646](https://github.com/seerge/g-helper/assets/5920850/ac7debcf-163a-4529-b7fd-fb4d2f3bb1da)
 
 ## :question: FAQ
 
