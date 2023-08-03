@@ -90,6 +90,31 @@ namespace GHelper
         {
             InitializeComponent();
 
+            // Change text and hide irrelevant options on the ROG Ally,
+            // which is a bit of a special case piece of hardware.
+            if (AppConfig.ContainsModel("RC71"))
+            {
+                // The back paddles both seem to issue the same code;
+                // so we'll replace "M1/M2" with one field, for now.
+                // (Eventually, we should learn how Asus' software tells the difference.)
+                labelM1.Text = "Back Paddles";
+                labelM2.Visible = false;
+                comboM2.Visible = false;
+                textM2.Visible = false;
+
+                // Re-label M3 and M4 to match the front labels.
+                labelM3.Text = "Ctrl Center";
+                labelM4.Text = "ROG";
+
+                // Hide all of the FN options, as the Ally has no special keyboard FN key.
+                labelFNC.Visible = false;
+                comboFNC.Visible = false;
+                textFNC.Visible = false;
+                labelFNF4.Visible = false;
+                comboFNF4.Visible = false;
+                textFNF4.Visible = false;
+            }
+
             labelBindings.Text = Properties.Strings.KeyBindings;
             labelBacklightTitle.Text = Properties.Strings.LaptopBacklight;
             labelSettings.Text = Properties.Strings.Other;

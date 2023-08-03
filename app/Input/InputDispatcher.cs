@@ -149,7 +149,7 @@ namespace GHelper.Input
 
         static bool IsManualBrightness()
         {
-            return AppConfig.ContainsModel("TUF") && !AppConfig.ContainsModel("506");
+            return AppConfig.ContainsModel("505") || AppConfig.ContainsModel("705");
         }
 
         public static bool NoMKeys()
@@ -165,13 +165,15 @@ namespace GHelper.Input
         static void BrightnessUp()
         {
             if (IsManualBrightness()) Program.toast.RunToast(ScreenBrightness.Adjust(+10) + "%", ToastIcon.BrightnessUp);
-            HandleOptimizationEvent(32);
+            if (AppConfig.ContainsModel("FX506LU")) HandleOptimizationEvent(16);
+            else HandleOptimizationEvent(32);
         }
 
         static void BrightnessDown()
         {
             if (IsManualBrightness()) Program.toast.RunToast(ScreenBrightness.Adjust(-10) + "%", ToastIcon.BrightnessDown);
-            HandleOptimizationEvent(16);
+            if (AppConfig.ContainsModel("FX506LU")) HandleOptimizationEvent(32);
+            else HandleOptimizationEvent(16);
         }
 
         public void KeyPressed(object sender, KeyPressedEventArgs e)
@@ -428,45 +430,74 @@ namespace GHelper.Input
 
         static void HandleEvent(int EventID)
         {
-            switch (EventID)
+            // The ROG Ally uses different M-key codes.
+            // We'll special-case the translation of those.
+            if (AppConfig.ContainsModel("RC71"))
             {
-                case 124:    // M3
-                    KeyProcess("m3");
-                    return;
-                case 56:    // M4 / Rog button
-                    KeyProcess("m4");
-                    return;
-                case 181:    // FN + Numpad Enter
-                    KeyProcess("fne");
-                    return;
-                case 174:   // FN+F5
-                    modeControl.CyclePerformanceMode();
-                    return;
-                case 179:   // FN+F4
-                case 178:   // FN+F4
-                    KeyProcess("fnf4");
-                    return;
-                case 158:   // Fn + C
-                    KeyProcess("fnc");
-                    return;
-                case 78:    // Fn + ESC
-                    ToggleFnLock();
-                    return;
-                case 189: // Tablet mode 
-                    TabletMode();
-                    return;
-                case 197: // FN+F2
-                    SetBacklight(-1);
-                    return;
-                case 196: // FN+F3
-                    SetBacklight(1);
-                    return;
-                case 199: // ON Z13 - FN+F11 - cycles backlight
-                    SetBacklight(4);
-                    return;
-                case 53:    // FN+F6 on GA-502DU model
-                    NativeMethods.TurnOffScreen(Program.settingsForm.Handle);
-                    return;
+                switch(EventID)
+                {
+
+                    // This is both the M1 and M2 keys.
+                    // There's a way to differentiate, apparently, but it isn't over USB or any other obvious protocol.
+                    case 165:
+                        KeyProcess("m1");
+                        return;
+                    // The Command Center ("play-looking") button below the select key.
+                    // We'll call this M3.
+                    case 166:
+                        KeyProcess("m3");
+                        return;
+                    // The M4/ROG key.
+                    case 56:
+                        KeyProcess("m4");
+                        return;
+
+                }
+            }
+            // All other devices seem to use the same HID key-codes,
+            // so we can process them all the same.
+            else
+            {
+                switch (EventID)
+                {
+                    case 124:    // M3
+                        KeyProcess("m3");
+                        return;
+                    case 56:    // M4 / Rog button
+                        KeyProcess("m4");
+                        return;
+                    case 181:    // FN + Numpad Enter
+                        KeyProcess("fne");
+                        return;
+                    case 174:   // FN+F5
+                        modeControl.CyclePerformanceMode();
+                        return;
+                    case 179:   // FN+F4
+                    case 178:   // FN+F4
+                        KeyProcess("fnf4");
+                        return;
+                    case 158:   // Fn + C
+                        KeyProcess("fnc");
+                        return;
+                    case 78:    // Fn + ESC
+                        ToggleFnLock();
+                        return;
+                    case 189: // Tablet mode
+                        TabletMode();
+                        return;
+                    case 197: // FN+F2
+                        SetBacklight(-1);
+                        return;
+                    case 196: // FN+F3
+                        SetBacklight(1);
+                        return;
+                    case 199: // ON Z13 - FN+F11 - cycles backlight
+                        SetBacklight(4);
+                        return;
+                    case 53:    // FN+F6 on GA-502DU model
+                        NativeMethods.TurnOffScreen(Program.settingsForm.Handle);
+                        return;
+                }
             }
 
             if (!OptimizationService.IsRunning())
