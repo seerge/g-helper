@@ -147,11 +147,6 @@ namespace GHelper.Input
 
         }
 
-        static bool IsManualBrightness()
-        {
-            return AppConfig.ContainsModel("505") || AppConfig.ContainsModel("705");
-        }
-
         public static bool NoMKeys()
         {
             return AppConfig.ContainsModel("Z13") ||
@@ -162,18 +157,23 @@ namespace GHelper.Input
                    AppConfig.ContainsModel("FX505");
         }
 
-        static void BrightnessUp()
+        static bool SwappedBrightness()
         {
-            if (IsManualBrightness()) Program.toast.RunToast(ScreenBrightness.Adjust(+10) + "%", ToastIcon.BrightnessUp);
-            if (AppConfig.ContainsModel("FX506LU")) HandleOptimizationEvent(16);
-            else HandleOptimizationEvent(32);
+            return (AppConfig.ContainsModel("FA506IH") || AppConfig.ContainsModel("FX506LU"));
         }
 
-        static void BrightnessDown()
+        static void SetBrightness(int delta)
         {
-            if (IsManualBrightness()) Program.toast.RunToast(ScreenBrightness.Adjust(-10) + "%", ToastIcon.BrightnessDown);
-            if (AppConfig.ContainsModel("FX506LU")) HandleOptimizationEvent(32);
+            var brightness = ScreenBrightness.Get();
+
+            if (delta > 0 || SwappedBrightness()) HandleOptimizationEvent(32);
             else HandleOptimizationEvent(16);
+
+            if (!AppConfig.ContainsModel("TUF")) return;
+
+            Thread.Sleep(100);
+            if (brightness == ScreenBrightness.Get())
+                Program.toast.RunToast(ScreenBrightness.Adjust(delta) + "%", (delta < 0 ) ? ToastIcon.BrightnessDown : ToastIcon.BrightnessUp);
         }
 
         public void KeyPressed(object sender, KeyPressedEventArgs e)
@@ -247,10 +247,10 @@ namespace GHelper.Input
                         KeyboardHook.KeyPress(Keys.Snapshot);
                         break;
                     case Keys.F7:
-                        BrightnessDown();
+                        SetBrightness(-10);
                         break;
                     case Keys.F8:
-                        BrightnessUp();
+                        SetBrightness(+10);
                         break;
                     case Keys.F9:
                         KeyboardHook.KeyWinPress(Keys.P);
@@ -287,11 +287,11 @@ namespace GHelper.Input
                 {
                     case Keys.VolumeDown:
                         // Screen brightness down on CTRL+VolDown
-                        BrightnessDown();
+                        SetBrightness(-10);
                         break;
                     case Keys.VolumeUp:
                         // Screen brightness up on CTRL+VolUp
-                        BrightnessUp();
+                        SetBrightness(+10);
                         break;
                 }
             }
@@ -371,10 +371,10 @@ namespace GHelper.Input
                     Program.toast.RunToast(muteStatus ? "Muted" : "Unmuted", muteStatus ? ToastIcon.MicrophoneMute : ToastIcon.Microphone);
                     break;
                 case "brightness_up":
-                    BrightnessUp();
+                    SetBrightness(+10);
                     break;
                 case "brightness_down":
-                    BrightnessDown();
+                    SetBrightness(-10);
                     break;
                 case "screenpad_up":
                     SetScreenpad(10);
