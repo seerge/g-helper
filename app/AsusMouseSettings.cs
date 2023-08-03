@@ -503,6 +503,9 @@ namespace GHelper
             {
                 labelAngleAdjustmentValue.Visible = false;
                 sliderAngleAdjustment.Visible = false;
+                sliderAngleAdjustment.Max = mouse.AngleTuningMax();
+                sliderAngleAdjustment.Min = mouse.AngleTuningMin();
+                sliderAngleAdjustment.Step = mouse.AngleTuningStep();
             }
 
             if (!mouse.HasAngleTuning() && !mouse.HasAngleSnapping())
