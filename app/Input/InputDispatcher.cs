@@ -149,7 +149,7 @@ namespace GHelper.Input
 
         static bool IsManualBrightness()
         {
-            return AppConfig.ContainsModel("TUF") && !AppConfig.ContainsModel("506");
+            return AppConfig.ContainsModel("505") || AppConfig.ContainsModel("705");
         }
 
         public static bool NoMKeys()
@@ -165,13 +165,15 @@ namespace GHelper.Input
         static void BrightnessUp()
         {
             if (IsManualBrightness()) Program.toast.RunToast(ScreenBrightness.Adjust(+10) + "%", ToastIcon.BrightnessUp);
-            HandleOptimizationEvent(32);
+            if (AppConfig.ContainsModel("FX506LU")) HandleOptimizationEvent(16);
+            else HandleOptimizationEvent(32);
         }
 
         static void BrightnessDown()
         {
             if (IsManualBrightness()) Program.toast.RunToast(ScreenBrightness.Adjust(-10) + "%", ToastIcon.BrightnessDown);
-            HandleOptimizationEvent(16);
+            if (AppConfig.ContainsModel("FX506LU")) HandleOptimizationEvent(32);
+            else HandleOptimizationEvent(16);
         }
 
         public void KeyPressed(object sender, KeyPressedEventArgs e)
