@@ -140,7 +140,7 @@ namespace GHelper.Peripherals.Mouse
     public abstract class AsusMouse : Device, IPeripheral
     {
         private static string[] POLLING_RATES = { "125 Hz", "250 Hz", "500 Hz", "1000 Hz", "2000 Hz", "4000 Hz", "8000 Hz", "16000 Hz" };
-        internal const bool PACKET_LOGGER_ALWAYS_ON = true;
+        internal const bool PACKET_LOGGER_ALWAYS_ON = false;
         internal const int ASUS_MOUSE_PACKET_SIZE = 65;
 
         public event EventHandler? Disconnect;
@@ -615,6 +615,21 @@ namespace GHelper.Peripherals.Mouse
             return false;
         }
 
+        public virtual int AngleTuningStep()
+        {
+            return 1;
+        }
+
+        public virtual int AngleTuningMin()
+        {
+            return -20;
+        }
+
+        public virtual int AngleTuningMax()
+        {
+            return 20;
+        }
+
         public virtual string PollingRateDisplayString(PollingRate pollingRate)
         {
             return POLLING_RATES[(int)pollingRate];
@@ -762,9 +777,10 @@ namespace GHelper.Peripherals.Mouse
                 return;
             }
 
-            if (angleAdjustment < -20 || angleAdjustment > 20)
+            if (angleAdjustment < AngleTuningMin() || angleAdjustment > AngleTuningMax())
             {
-                Logger.WriteLine(GetDisplayName() + ": Angle Adjustment:" + angleAdjustment + " is outside of range [-20;20].");
+                Logger.WriteLine(GetDisplayName() + ": Angle Adjustment:" + angleAdjustment
+                    + " is outside of range [" + AngleTuningMin() + "; " + AngleTuningMax() + "].");
                 return;
             }
 
