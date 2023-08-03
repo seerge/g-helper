@@ -46,10 +46,10 @@ Lightweight Armoury Crate alternative for Asus laptops. A small utility that all
 ![Screenshot 2023-04-13 190951](https://user-images.githubusercontent.com/5920850/231859391-c4963af4-491c-4523-95d4-0bdcfd7cfd6f.png)
 
 ### :gear: Automatic switching when on battery or plugged in
-- Performance modes (app remembers last mode used on battery or when plugged)
+- App remembers last Mode used on battery or when plugged
 - Optimized GPU mode - disables dGPU on battery and enables when plugged
-- Auto Screen refresh rate (60hz on battery, 120+ hz when plugged)
-- Keyboard backlight can be turned off on battery
+- Auto Screen refresh rate (60hz on battery, max hz when plugged)
+- Keyboard backlight timeout on battery or when plugged
 
 To keep auto switching and hotkeys working the app needs to stay running in the tray. It doesn't consume any resources. 
 
@@ -57,18 +57,18 @@ To keep auto switching and hotkeys working the app needs to stay running in the 
 
 Modes are **same** as in Armoury Crate as they are stored in bios including default fan curves
 
-1. Silent (minimal or no fans, 70W PPT total, up to 45W PPT to CPU) + Best power efficiency setting in windows
-2. Balanced (balanced fans, 100W PPT total, up to 45W PPT to CPU) + Balanced setting in windows
-3. Turbo (intense fans, 125W PPT total, up to 80W PPT to CPU) + Best performance setting in windows
+1. **Silent** (minimal or no fans, 70W PPT total, up to 45W PPT to CPU) + Best power efficiency setting in windows
+2. **Balanced** (balanced fans, 100W PPT total, up to 45W PPT to CPU) + Balanced setting in windows
+3. **Turbo** (intense fans, 125W PPT total, up to 80W PPT to CPU) + Best performance setting in windows
 
 _PPTs are shown for G14 2022, for other models PPTs will be different as they are set in bios._
 
 ### :video_game: GPU Modes
 
-1. Eco mode : only low power integrated GPU enabled, iGPU drives built in display
-2. Standard mode (MS Hybrid) : iGPU and dGPU enabled, iGPU drives built in display
-3. Ultimate mode: iGPU and dGPU enabled, but dGPU drives built in display (supported only on G14 2022 model)
-4. Optimized: disables dGPU on battery (Eco) and enables when plugged (Standard)
+1. **Eco** : only low power integrated GPU enabled, iGPU drives built in display
+2. **Standard** (MS Hybrid) : iGPU and dGPU enabled, iGPU drives built in display
+3. **Ultimate**: iGPU and dGPU enabled, but dGPU drives built in display (supported on 2022+ models)
+4. **Optimized**: disables dGPU on battery (Eco) and enables when plugged (Standard)
 
 ![Screenshot 2023-08-03 193646](https://github.com/seerge/g-helper/assets/5920850/ac7debcf-163a-4529-b7fd-fb4d2f3bb1da)
 
