@@ -13,9 +13,11 @@ namespace GHelper
         ScreenControl screenControl = new ScreenControl();
         ClamshellModeControl clamshellControl = new ClamshellModeControl();
 
+        const string EMPTY = "--------------";
+
         Dictionary<string, string> customActions = new Dictionary<string, string>
         {
-          {"","--------------" },
+          {"", EMPTY},
           {"mute", Properties.Strings.VolumeMute},
           {"screenshot", Properties.Strings.PrintScreen},
           {"play", Properties.Strings.PlayPause},
@@ -57,6 +59,12 @@ namespace GHelper
                 case "fne":
                     customActions[""] = "Calculator";
                     customActions["ghelper"] = Properties.Strings.OpenGHelper;
+                    break;
+                case "paddle":
+                    customActions[""] = EMPTY;
+                    break;
+                case "cc":
+                    customActions[""] = EMPTY;
                     break;
             }
 
@@ -128,32 +136,6 @@ namespace GHelper
                 customActions.Add("screenpad_up", Properties.Strings.ScreenPadUp);
             }
 
-
-            // Change text and hide irrelevant options on the ROG Ally,
-            // which is a bit of a special case piece of hardware.
-            if (AppConfig.IsAlly())
-            {
-                // The back paddles both seem to issue the same code;
-                // so we'll replace "M1/M2" with one field, for now.
-                // (Eventually, we should learn how Asus' software tells the difference.)
-                labelM1.Text = "Back Paddles";
-                labelM2.Visible = false;
-                comboM2.Visible = false;
-                textM2.Visible = false;
-
-                // Re-label M3 and M4 to match the front labels.
-                labelM3.Text = "Ctrl Center";
-                labelM4.Text = "ROG";
-
-                // Hide all of the FN options, as the Ally has no special keyboard FN key.
-                labelFNC.Visible = false;
-                comboFNC.Visible = false;
-                textFNC.Visible = false;
-                labelFNF4.Visible = false;
-                comboFNF4.Visible = false;
-                textFNF4.Visible = false;
-            }
-
             if (AppConfig.NoMKeys())
             {
                 labelM1.Text = "FN+F2";
@@ -179,16 +161,45 @@ namespace GHelper
                 checkUSBC.Visible = false;
             }
 
+            // Change text and hide irrelevant options on the ROG Ally,
+            // which is a bit of a special case piece of hardware.
+            if (AppConfig.IsAlly())
+            {
+                labelM1.Visible = comboM1.Visible = textM1.Visible = false;
+                labelM2.Visible = comboM2.Visible = textM2.Visible = false;
+
+                // Re-label M3 and M4 and FNF4 to match the front labels.
+                labelM3.Text = "Ctrl Center";
+                labelM4.Text = "ROG";
+                labelFNF4.Text = "Back Paddles";
+
+                // Hide all of the FN options, as the Ally has no special keyboard FN key.
+                labelFNC.Visible = false;
+                comboFNC.Visible = false;
+                textFNC.Visible = false;
+
+                SetKeyCombo(comboM3, textM3, "cc");
+                SetKeyCombo(comboM4, textM4, "m4");
+                SetKeyCombo(comboFNF4, textFNF4, "paddle");
+
+            }
+
+            else
+            {
+                SetKeyCombo(comboM1, textM1, "m1");
+                SetKeyCombo(comboM2, textM2, "m2");
+
+                SetKeyCombo(comboM3, textM3, "m3");
+                SetKeyCombo(comboM4, textM4, "m4");
+                SetKeyCombo(comboFNF4, textFNF4, "fnf4");
+
+                SetKeyCombo(comboFNC, textFNC, "fnc");
+                SetKeyCombo(comboFNE, textFNE, "fne");
+            }
+
+
+
             InitTheme();
-
-            SetKeyCombo(comboM1, textM1, "m1");
-            SetKeyCombo(comboM2, textM2, "m2");
-            SetKeyCombo(comboM3, textM3, "m3");
-            SetKeyCombo(comboM4, textM4, "m4");
-            SetKeyCombo(comboFNF4, textFNF4, "fnf4");
-            SetKeyCombo(comboFNC, textFNC, "fnc");
-            SetKeyCombo(comboFNE, textFNE, "fne");
-
             Shown += Keyboard_Shown;
 
             comboKeyboardSpeed.DropDownStyle = ComboBoxStyle.DropDownList;

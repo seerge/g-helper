@@ -182,18 +182,18 @@ namespace GHelper
                 _modes.Remove(3);
             }
 
-            if (AppConfig.ContainsModel("401") || AppConfig.ContainsModel("X13"))
+            if (AppConfig.NoAuraColor())
             {
                 _modes.Remove(2);
                 _modes.Remove(3);
             }
 
-            if (AppConfig.ContainsModel("G513QY"))
+            if (AppConfig.IsAdvantageEdition())
             {
                 return _modes;
             }
 
-            if (AppConfig.ContainsModel("Strix") || AppConfig.ContainsModel("Scar"))
+            if (AppConfig.IsStrix())
             {
                 return _modesStrix;
             }

@@ -262,7 +262,7 @@ public static class AppConfig
 
     public static bool IsAlly()
     {
-        return ContainsModel("RC71");
+        return true || ContainsModel("RC71");
     }
 
     public static bool NoMKeys()
@@ -305,7 +305,7 @@ public static class AppConfig
 
     public static bool IsStrix()
     {
-        return ContainsModel("Strix");
+        return ContainsModel("Strix") || ContainsModel("Scar");
     }
 
     public static bool IsZ13()
@@ -316,5 +316,10 @@ public static class AppConfig
     public static bool HasTabletMode()
     {
         return ContainsModel("X16") || ContainsModel("X13");
+    }
+
+    public static bool IsAdvantageEdition()
+    {
+        return ContainsModel("13QY");
     }
 }

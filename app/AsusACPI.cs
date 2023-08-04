@@ -109,7 +109,7 @@ public class AsusACPI
     public const int GPUModeStandard = 1;
     public const int GPUModeUltimate = 2;
 
-    public static int MaxTotal => AppConfig.ContainsModel("13QY") ? 250 : 150;
+    public static int MaxTotal => AppConfig.IsAdvantageEdition() ? 250 : 150;
     public const int MinTotal = 5;
     public const int DefaultTotal = 125;
 
