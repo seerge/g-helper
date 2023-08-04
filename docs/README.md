@@ -24,7 +24,10 @@ Lightweight Armoury Crate alternative for Asus laptops. A small utility that all
 5. FN-Lock
 6. Doesn't need administrator privileges to run (*)
 
+<<<<<<< main
 
+=======
+>>>>>>> main
 ### :zap: Features
 
 1. **Performance modes**: Silent - Balanced - Turbo (built-in, with default fan curves)
