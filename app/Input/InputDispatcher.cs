@@ -433,12 +433,12 @@ namespace GHelper.Input
                     // This is both the M1 and M2 keys.
                     // There's a way to differentiate, apparently, but it isn't over USB or any other obvious protocol.
                     case 165:
-                        KeyProcess("m1");
+                        KeyProcess("paddle");
                         return;
                     // The Command Center ("play-looking") button below the select key.
                     // We'll call this M3.
                     case 166:
-                        KeyProcess("m3");
+                        KeyProcess("cc");
                         return;
                     // The M4/ROG key.
                     case 56:
