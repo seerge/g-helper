@@ -241,7 +241,7 @@
     <value>Balansuotas</value>
   </data>
   <data name="BatteryCharge" xml:space="preserve">
-    <value>Charge</value>
+    <value>Įkrova</value>
   </data>
   <data name="BatteryChargeLimit" xml:space="preserve">
     <value>Įkrovos riba</value>
