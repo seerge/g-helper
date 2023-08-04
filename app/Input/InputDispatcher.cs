@@ -19,6 +19,8 @@ namespace GHelper.Input
         static ModeControl modeControl = Program.modeControl;
         static ScreenControl screenControl = new ScreenControl();
 
+        static bool isTUF = AppConfig.IsTUF();
+
         KeyboardListener listener;
         KeyboardHook hook = new KeyboardHook();
 
@@ -112,7 +114,7 @@ namespace GHelper.Input
                 hook.RegisterHotKey(ModifierKeys.Shift, Keys.VolumeUp);
             }
 
-            if (!AppConfig.ContainsModel("Z13"))
+            if (!AppConfig.IsZ13() && !AppConfig.IsAlly())
             {
                 if (actionM1 is not null && actionM1.Length > 0) hook.RegisterHotKey(ModifierKeys.None, Keys.VolumeDown);
                 if (actionM2 is not null && actionM2.Length > 0) hook.RegisterHotKey(ModifierKeys.None, Keys.VolumeUp);
@@ -147,33 +149,23 @@ namespace GHelper.Input
 
         }
 
-        public static bool NoMKeys()
-        {
-            return AppConfig.ContainsModel("Z13") ||
-                   AppConfig.ContainsModel("FX706") || 
-                   AppConfig.ContainsModel("FA506") ||
-                   AppConfig.ContainsModel("FX506") ||
-                   AppConfig.ContainsModel("Duo") ||
-                   AppConfig.ContainsModel("FX505");
-        }
-
-        static bool SwappedBrightness()
-        {
-            return (AppConfig.ContainsModel("FA506IH") || AppConfig.ContainsModel("FX506LU"));
-        }
 
         static void SetBrightness(int delta)
         {
-            var brightness = ScreenBrightness.Get();
+            int brightness = -1;
+            
+            if (isTUF) brightness = ScreenBrightness.Get();
 
-            if (delta > 0 || SwappedBrightness()) HandleOptimizationEvent(32);
+            if (delta > 0 || AppConfig.SwappedBrightness()) HandleOptimizationEvent(32);
             else HandleOptimizationEvent(16);
 
-            if (!AppConfig.ContainsModel("TUF")) return;
+            if (isTUF)
+            {
+                Thread.Sleep(100);
+                if (brightness == ScreenBrightness.Get())
+                    Program.toast.RunToast(ScreenBrightness.Adjust(delta) + "%", (delta < 0 ) ? ToastIcon.BrightnessDown : ToastIcon.BrightnessUp);
+            }
 
-            Thread.Sleep(100);
-            if (brightness == ScreenBrightness.Get())
-                Program.toast.RunToast(ScreenBrightness.Adjust(delta) + "%", (delta < 0 ) ? ToastIcon.BrightnessDown : ToastIcon.BrightnessUp);
         }
 
         public void KeyPressed(object sender, KeyPressedEventArgs e)
@@ -183,7 +175,7 @@ namespace GHelper.Input
             {
                 Logger.WriteLine(e.Key.ToString());
 
-                if (NoMKeys())
+                if (AppConfig.NoMKeys())
                 {
                     switch (e.Key)
                     {
@@ -199,7 +191,7 @@ namespace GHelper.Input
                     }
                 }
 
-                if (AppConfig.ContainsModel("Z13") || AppConfig.ContainsModel("Duo"))
+                if (AppConfig.IsZ13() || AppConfig.IsDUO())
                 {
                     switch (e.Key)
                     {
@@ -209,7 +201,7 @@ namespace GHelper.Input
                     }
                 }
 
-                if (AppConfig.ContainsModel("GA401I") && !AppConfig.ContainsModel("GA401IHR"))
+                if (AppConfig.NoAura())
                 {
                     switch (e.Key)
                     {
@@ -273,6 +265,7 @@ namespace GHelper.Input
                     default:
                         break;
                 }
+
             }
 
             if (e.Modifier == (ModifierKeys.Control | ModifierKeys.Shift))
@@ -432,7 +425,7 @@ namespace GHelper.Input
         {
             // The ROG Ally uses different M-key codes.
             // We'll special-case the translation of those.
-            if (AppConfig.ContainsModel("RC71"))
+            if (AppConfig.IsAlly())
             {
                 switch(EventID)
                 {

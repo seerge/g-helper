@@ -260,4 +260,61 @@ public static class AppConfig
         Set(name + "_" + Modes.GetCurrent(), value);
     }
 
+    public static bool IsAlly()
+    {
+        return ContainsModel("RC71");
+    }
+
+    public static bool NoMKeys()
+    {
+        return ContainsModel("Z13") ||
+               ContainsModel("FX706") ||
+               ContainsModel("FA506") ||
+               ContainsModel("FX506") ||
+               ContainsModel("Duo") ||
+               ContainsModel("FX505");
+    }
+
+    public static bool IsTUF()
+    {
+        return ContainsModel("TUF");
+    }
+
+    // Devices with bugged bios command to change brightness
+    public static bool SwappedBrightness()
+    {
+        return ContainsModel("FA506IH") || ContainsModel("FX506LU");
+    }
+
+
+    public static bool IsDUO()
+    {
+        return ContainsModel("Duo");
+    }
+
+    // G14 2020 has no aura, but media keys instead
+    public static bool NoAura()
+    {
+        return ContainsModel("GA401I") && !ContainsModel("GA401IHR");
+    }
+
+    public static bool NoAuraColor()
+    {
+        return  ContainsModel("GA401") || ContainsModel("X13");
+    }
+
+    public static bool IsStrix()
+    {
+        return ContainsModel("Strix");
+    }
+
+    public static bool IsZ13()
+    {
+        return ContainsModel("Z13");
+    }
+
+    public static bool HasTabletMode()
+    {
+        return ContainsModel("X16") || ContainsModel("X13");
+    }
 }

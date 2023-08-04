@@ -631,12 +631,12 @@ namespace GHelper
             comboKeyboard.SelectedValueChanged += ComboKeyboard_SelectedValueChanged;
 
 
-            if (AsusUSB.HasColor())
+            if (AppConfig.NoAuraColor())
             {
                 panelColor.Visible = false;
             }
 
-            if (AppConfig.ContainsModel("GA401I"))
+            if (AppConfig.NoAura())
             {
                 comboKeyboard.Visible = false;
             }
@@ -930,7 +930,7 @@ namespace GHelper
             if (Program.acpi.IsXGConnected())
                 AsusUSB.ApplyXGMLight(AppConfig.Is("xmg_light"));
 
-            if (AppConfig.ContainsModel("X16") || AppConfig.ContainsModel("X13")) InputDispatcher.TabletMode();
+            if (AppConfig.HasTabletMode()) InputDispatcher.TabletMode();
 
         }
 

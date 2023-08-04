@@ -91,31 +91,6 @@ namespace GHelper
         {
             InitializeComponent();
 
-            // Change text and hide irrelevant options on the ROG Ally,
-            // which is a bit of a special case piece of hardware.
-            if (AppConfig.ContainsModel("RC71"))
-            {
-                // The back paddles both seem to issue the same code;
-                // so we'll replace "M1/M2" with one field, for now.
-                // (Eventually, we should learn how Asus' software tells the difference.)
-                labelM1.Text = "Back Paddles";
-                labelM2.Visible = false;
-                comboM2.Visible = false;
-                textM2.Visible = false;
-
-                // Re-label M3 and M4 to match the front labels.
-                labelM3.Text = "Ctrl Center";
-                labelM4.Text = "ROG";
-
-                // Hide all of the FN options, as the Ally has no special keyboard FN key.
-                labelFNC.Visible = false;
-                comboFNC.Visible = false;
-                textFNC.Visible = false;
-                labelFNF4.Visible = false;
-                comboFNF4.Visible = false;
-                textFNF4.Visible = false;
-            }
-
             labelBindings.Text = Properties.Strings.KeyBindings;
             labelBacklightTitle.Text = Properties.Strings.LaptopBacklight;
             labelSettings.Text = Properties.Strings.Other;
@@ -147,13 +122,39 @@ namespace GHelper
 
             Text = Properties.Strings.ExtraSettings;
 
-            if (AppConfig.ContainsModel("Duo"))
+            if (AppConfig.IsDUO())
             {
                 customActions.Add("screenpad_down", Properties.Strings.ScreenPadDown);
                 customActions.Add("screenpad_up", Properties.Strings.ScreenPadUp);
             }
 
-            if (InputDispatcher.NoMKeys())
+
+            // Change text and hide irrelevant options on the ROG Ally,
+            // which is a bit of a special case piece of hardware.
+            if (AppConfig.IsAlly())
+            {
+                // The back paddles both seem to issue the same code;
+                // so we'll replace "M1/M2" with one field, for now.
+                // (Eventually, we should learn how Asus' software tells the difference.)
+                labelM1.Text = "Back Paddles";
+                labelM2.Visible = false;
+                comboM2.Visible = false;
+                textM2.Visible = false;
+
+                // Re-label M3 and M4 to match the front labels.
+                labelM3.Text = "Ctrl Center";
+                labelM4.Text = "ROG";
+
+                // Hide all of the FN options, as the Ally has no special keyboard FN key.
+                labelFNC.Visible = false;
+                comboFNC.Visible = false;
+                textFNC.Visible = false;
+                labelFNF4.Visible = false;
+                comboFNF4.Visible = false;
+                textFNF4.Visible = false;
+            }
+
+            if (AppConfig.NoMKeys())
             {
                 labelM1.Text = "FN+F2";
                 labelM2.Text = "FN+F3";
@@ -162,7 +163,12 @@ namespace GHelper
                 labelFNF4.Visible = comboFNF4.Visible = textFNF4.Visible = false;
             }
 
-            if (!AppConfig.ContainsModel("TUF"))
+            if (AppConfig.NoAura())
+            {
+                labelFNF4.Visible = comboFNF4.Visible = textFNF4.Visible = false;
+            }
+
+            if (!AppConfig.IsTUF())
             {
                 labelFNE.Visible = comboFNE.Visible = textFNE.Visible = false;
             }
@@ -236,7 +242,7 @@ namespace GHelper
             checkSleepLogo.CheckedChanged += CheckPower_CheckedChanged;
             checkShutdownLogo.CheckedChanged += CheckPower_CheckedChanged;
 
-            if (!AppConfig.ContainsModel("Strix"))
+            if (!AppConfig.IsStrix())
             {
                 labelBacklightBar.Visible = false;
                 checkAwakeBar.Visible = false;
@@ -244,7 +250,7 @@ namespace GHelper
                 checkSleepBar.Visible = false;
                 checkShutdownBar.Visible = false;
 
-                if (!AppConfig.ContainsModel("Z13"))
+                if (!AppConfig.IsZ13())
                 {
                     labelBacklightLid.Visible = false;
                     checkAwakeLid.Visible = false;

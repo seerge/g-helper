@@ -60,8 +60,8 @@ namespace GHelper
         public static Color Color1 = Color.White;
         public static Color Color2 = Color.Black;
 
-        static bool isTuf = AppConfig.ContainsModel("Tuf");
-        static bool isStrix = AppConfig.ContainsModel("Strix");
+        static bool isTuf = AppConfig.IsTUF();
+        static bool isStrix = AppConfig.IsStrix();
 
 
         static System.Timers.Timer timer = new System.Timers.Timer(2000);
@@ -214,10 +214,6 @@ namespace GHelper
             }
         }
 
-        public static bool HasColor()
-        {
-            return AppConfig.ContainsModel("GA401") || AppConfig.ContainsModel("X13");
-        }
 
         public static bool HasSecondColor()
         {
@@ -581,7 +577,7 @@ namespace GHelper
                     device.CloseDevice();
                 }
 
-                if (AppConfig.ContainsModel("TUF"))
+                if (isTuf)
                     Program.acpi.TUFKeyboardRGB(Mode, Color1, _speed);
             });
 
