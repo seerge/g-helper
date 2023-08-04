@@ -241,7 +241,7 @@
     <value>平衡模式</value>
   </data>
   <data name="BatteryCharge" xml:space="preserve">
-    <value>Charge</value>
+    <value>电池电量</value>
   </data>
   <data name="BatteryChargeLimit" xml:space="preserve">
     <value>电池充电限制</value>
