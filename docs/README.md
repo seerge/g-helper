@@ -1,13 +1,19 @@
-# G-Helper (GHelper)
-[![Github all releases](https://img.shields.io/github/downloads/seerge/g-helper/total.svg)](https://GitHub.com/seerge/g-helper/releases/) [![GitHub release](https://img.shields.io/github/release/seerge/g-helper.svg)](https://GitHub.com/seerge/g-helper/releases/) [![GitHub stars](https://img.shields.io/github/stars/seerge/g-helper.svg?style=social&label=Star)](https://GitHub.com/seerge/g-helper/stargazers/)
-
+# G-Helper - Lightweight control tool for Asus laptops
 [![United24](https://raw.githubusercontent.com/seerge/g-helper/main/docs/ua.png)](https://u24.gov.ua/)
 
-Language: English | [中文](https://github.com/seerge/g-helper/blob/main/docs/README.zh-CN.md)
-
-## Control tool for Asus laptops
+[![GitHub release](https://img.shields.io/github/release/seerge/g-helper.svg)](https://GitHub.com/seerge/g-helper/releases/) 
+[![Github all releases](https://img.shields.io/github/downloads/seerge/g-helper/total.svg)](https://GitHub.com/seerge/g-helper/releases/) [![GitHub stars](https://img.shields.io/github/stars/seerge/g-helper.svg?style=social&label=Star)](https://GitHub.com/seerge/g-helper/stargazers/) <sup>  Language: English | <a href="https://github.com/seerge/g-helper/blob/main/docs/README.zh-CN.md">[中文]</a></sup>
 
 Lightweight Armoury Crate alternative for Asus laptops. A small utility that allows you to do almost everything you could do with Armoury Crate but without extra bloat and unnecessary services. Works on all popular models, such as ROG Zephyrus G14, G15, G16, M16, Flow X13, Flow X16, TUF, Strix, Scar, ProArt and many more! Feel free to try :)
+
+# [:floppy_disk: Download](https://github.com/seerge/g-helper/releases/latest/download/GHelper.zip)
+
+- Don't forget to [Read FAQ](#question-faq)
+- If you like this app, please [star :star: it on Github](https://github.com/seerge/g-helper) and spread the word about it!
+
+#### Support project in [:euro: EUR](https://www.paypal.com/donate/?hosted_button_id=4HMSHS4EBQWTA)  |  [💵 USD](https://www.paypal.com/donate/?hosted_button_id=SRM6QUX6ACXDY)  |  [:credit_card: Stripe](https://buy.stripe.com/00gaFJ9Lf79v7WobII)
+
+![Gihhub](https://github.com/seerge/g-helper/assets/5920850/4d98465a-63a5-4498-ae14-afb3e67e7e82)
 
 ## :gift: Main advantages 
 
@@ -17,16 +23,6 @@ Lightweight Armoury Crate alternative for Asus laptops. A small utility that all
 4. Simple and clean native UI with easy access to all settings
 5. FN-Lock
 6. Doesn't need administrator privileges to run (*)
-
-# [:floppy_disk: Download G-Helper App](https://github.com/seerge/g-helper/releases/latest/download/GHelper.zip)
-
-- Don't forget to read [:question: FAQ ](#question-faq)
-- If you like this app, please [star :star: it on Github](https://github.com/seerge/g-helper) and spread a word about it!
-
-#### Support project in [:euro: EUR](https://www.paypal.com/donate/?hosted_button_id=4HMSHS4EBQWTA) | [💵 USD](https://www.paypal.com/donate/?hosted_button_id=SRM6QUX6ACXDY) | [:credit_card: Stripe](https://buy.stripe.com/00gaFJ9Lf79v7WobII)
-
-
-![Gihhub](https://github.com/seerge/g-helper/assets/5920850/4d98465a-63a5-4498-ae14-afb3e67e7e82)
 
 ### :zap: Features
 
