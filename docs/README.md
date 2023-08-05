@@ -68,7 +68,7 @@ _Default power limits are measured for G14 2022. For other models they will be d
 3. **Ultimate**: iGPU and dGPU enabled, but dGPU drives built in display (supported on 2022+ models)
 4. **Optimized**: disables dGPU on battery (Eco) and enables when plugged in (Standard)
 
-![Screenshot 2023-08-03 193646](https://github.com/seerge/g-helper/assets/5920850/ac7debcf-163a-4529-b7fd-fb4d2f3bb1da)
+![Screenshot 2023-08-05 170159](https://github.com/seerge/g-helper/assets/5920850/84a5beb3-2463-40f1-9188-930d3099aad9)
 
 ## :question: FAQ
 
