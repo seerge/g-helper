@@ -156,8 +156,13 @@ namespace GHelper.Input
             
             if (isTUF) brightness = ScreenBrightness.Get();
 
-            if (delta > 0 || AppConfig.SwappedBrightness()) HandleOptimizationEvent(32);
-            else HandleOptimizationEvent(16);
+            if (AppConfig.SwappedBrightness())
+            {
+                HandleOptimizationEvent(delta > 0 ? 32 : 16);
+            } else
+            {
+                HandleOptimizationEvent(delta > 0 ? 16 : 32);
+            }
 
             if (isTUF)
             {
