@@ -173,7 +173,7 @@
 
     public class ROGKerisWirelessEvaEdition : ROGKerisWireless
     {
-        public ROGKerisWirelessEvaEdition() : base(0x1A59, false)
+        public ROGKerisWirelessEvaEdition() : base(0x1A59, true)
         {
         }
 
