@@ -143,7 +143,7 @@ Check your NVidia Experience settings and make sure that you have **Whisper Mode
 All Asus laptops have an option to do a hardware reset that can be handy sometimes. It doesn't touch your data, but resets all main hardware-related things (enables your dGPU, wakes up wifi/bt adapter if it hangs for some reason, etc.). Turn OFF laptop. Press and hold the "power" button for 30-40 seconds. Then boot normally (it will take a bit longer to boot)
 
 #### What is G-helper ?
-G-Helper is a lightweight Armoury Crate alternative for Asus laptops. A small utility that allows you to do almost everything you could do with Armoury Crate but without extra bloat and unnecessary services.
+Small and lightweight Armoury Crate alternative for Asus laptops offering almost same functionality without extra bloat and unnecessary services. Works on ROG G14, G15, G16, M16, X13, Z13, X16, TUF, Scar, Vivobook, ProArt and all other popular models.
 
 -----------------------------
 
