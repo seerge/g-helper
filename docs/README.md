@@ -1,12 +1,11 @@
 # G-Helper - Lightweight control tool for Asus laptops
 [![United24](https://raw.githubusercontent.com/seerge/g-helper/main/docs/ua.png)](https://u24.gov.ua/)
-
 [![GitHub release](https://img.shields.io/github/release/seerge/g-helper.svg)](https://GitHub.com/seerge/g-helper/releases/) 
 [![Github all releases](https://img.shields.io/github/downloads/seerge/g-helper/total.svg)](https://GitHub.com/seerge/g-helper/releases/) [![GitHub stars](https://img.shields.io/github/stars/seerge/g-helper.svg?style=social&label=Star)](https://GitHub.com/seerge/g-helper/stargazers/) <sup>  Language: English | <a href="https://github.com/seerge/g-helper/blob/main/docs/README.zh-CN.md">[中文]</a></sup>
 
 Small and lightweight Armoury Crate alternative for Asus laptops offering almost same functionality without extra bloat and unnecessary services. Works on all popular models, such as ROG Zephyrus G14, G15, G16, M16, Flow X13, Flow X16, Flow Z13, TUF Series, Strix / Scar Series, ProArt, VivoBook and many more! 
 
-# [:floppy_disk: Download](https://github.com/seerge/g-helper/releases/latest/download/GHelper.zip)
+# [:floppy_disk:Download](https://github.com/seerge/g-helper/releases/latest/download/GHelper.zip)
 
 - Don't forget to [**Read FAQ**](#question-faq)
 - If you like this app, please give it a star :star: and spread the word about it!
@@ -78,14 +77,14 @@ Stop ``ArmouryCrateControlInterface`` service under windows Services app or you 
 #### Battery charge limiter is not working
 It could be that Asus services are overwriting this limit after. You may want to stop them by clicking "Stop" in the Asus Services section (under Extra).
 
-#### Why is Ultimate GPU mode not available on my laptop?
-Ultimate mode is supported (by hardware) only on 2022+ models
-
 ####  I don't see GPU modes section 
 Some older models (for example G14 2020) don't support disabling GPU on hardware level, therefore GPU section makes no sense for them and will be hidden
 
-#### Should I apply custom power limits (PPT) and fan profiles?
-You don't have to, it's purely optional. From my experience built in (in bios) performance modes work well. Limit your power or apply custom fan curves only if you have issues. As soon as you click Apply in the fan + power section bios will be considering the fan profile as "custom"! (no matter if you modified it or not)
+#### Why is Ultimate GPU mode not available on my laptop?
+Ultimate mode is supported (by hardware) only on 2022+ models
+
+#### Should I apply custom power limits (PPT) and fan curves?
+You don't have to, it's purely optional. From my experience built in (in BIOS) performance modes work well. Limit your power or apply custom fan curves only if you have issues. As soon as you click Apply in the ``Fans + Power`` section BIOS will consider your fan curve as "custom"! (no matter if you modified it or not)
 
 #### How does G-helper control my fan speeds?
 **It doesn't.** Your BIOS does (same as in case with Armoury). What G-helper can do - is (optionally) set a custom fan profile to current performance mode consisting of 8 pairs of temperature + fan speed % via same endpoint armoury seem to use.
@@ -99,7 +98,7 @@ Most probably either you are using Eco / Optimized mode and your dGPU is simply 
 #### I don't see app after starting it
 Please check the system tray for a ``(G)`` icon. By default Windows is keen to hide all icons, so you may need to click ``^`` to see them all. I would advise to right click on Taskbar select TaskBar Settings -> Other System Tray icons -> Mark G-Helper to be always ON.
 
-#### App crashes or doesn't work properly, what should I do ?
+#### App crashes or doesn't work properly
 Open "Event Viewer" from the start menu, go to Windows Logs -> Application and check for recent Errors mentioning G-Helper. If you see one - please post a [new issue](https://github.com/seerge/g-helper/issues) with all details from this error.
 
 #### Can I use MyASUS app along with G-Helper?
@@ -114,13 +113,13 @@ Personally, I'm not a big fan of them, as they make colors very inaccurate. But 
 #### Can I overclock Nvidia GPU core / memory? 
 Make sure that your dGPU is enabled (i.e. it's not in Eco mode). Open Fans + Power section and adjust core / memory clock offsets. They work the same as in armoury's manual mode. Please keep in mind that (unfortunately) you need admin permissions for that, and the app will ask you for them. (*)
 
-#### Windows defender marks app download as malware / virus
+#### Windows Defender marks app as malware / virus
 False positives from Windows Defender (or any other similar system that uses machine learning for detection) is possible as the application is not digitally signed with a certificate. You can always download a version below or compile the app by yourself. All application sources are open and can be monitored from A to Z :)
 
 #### Where can I find app settings or logs ?
 You can find them under the ``%AppData%\GHelper`` folder. Please include them when posting a new bug-report or issue.
 
-#### App refuses to run on startup / runs without icon in tray on startup
+#### App refuses to run on startup or runs without any icon in tray on startup
 Open the app, and uncheck and check again "run on startup". If it still doesn't help (for some reason), you can try to manually edit the "GHelper" task in Windows Task Scheduler, and add a couple of seconds delay to start.
 
 #### How do I uninstall G-helper?
@@ -140,7 +139,8 @@ G15 2022 is known to have a notoriously bugged BIOS (last one 313). Multiple use
 Check your NVidia Experience settings and make sure that you have **Whisper Mode** set to ``OFF``. Also you can go to reset all settings ``Nvidia Control panel -> Manage 3D Settings -> Reset to defaults``
 
 #### How do I do a hardware reset on a laptop?
-All Asus laptops have an option to do a hardware reset that can be handy sometimes. It doesn't touch your data, but resets all main hardware-related things (enables your dGPU, wakes up wifi/bt adapter if it hangs for some reason, etc.). Turn OFF laptop. Press and hold the "power" button for 30-40 seconds. Then boot normally (it will take a bit longer to boot)
+All Asus laptops have an option to do a hardware reset that can be handy sometimes. It doesn't touch your data, but resets all main hardware-related things (enables your dGPU, wakes up wifi/bt adapter if it hangs for some reason, etc.). 
+Turn OFF laptop. Press and hold the "power" button for 30-40 seconds. Then boot normally (it will take a bit longer to boot)
 
 #### What is G-helper ?
 Small and lightweight Armoury Crate alternative for Asus laptops offering almost same functionality without extra bloat and unnecessary services. Works on ROG G14, G15, G16, M16, X13, Z13, X16, TUF, Scar, Vivobook, ProArt and all other popular models.
