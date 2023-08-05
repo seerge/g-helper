@@ -7,7 +7,7 @@ Small and lightweight Armoury Crate alternative for Asus laptops offering almost
 
 # [:floppy_disk:Download](https://github.com/seerge/g-helper/releases/latest/download/GHelper.zip)
 
-- Don't forget to [**Read FAQ**](#question-faq)
+- Don't forget to [**Check Requirements**](#requirements-mandatory) and [**Read FAQ**](#question-faq)
 - If you like this app, please give it a star :star: and spread the word about it!
 
 #### Support project in [:euro: EUR](https://www.paypal.com/donate/?hosted_button_id=4HMSHS4EBQWTA)  |  [💵 USD](https://www.paypal.com/donate/?hosted_button_id=SRM6QUX6ACXDY)  |  [:credit_card: Stripe](https://buy.stripe.com/00gaFJ9Lf79v7WobII)
