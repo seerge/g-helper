@@ -92,6 +92,9 @@ You don't have to, it's purely optional. From my experience built in (in BIOS) p
 #### How do I change fan % to fan RPM?
 Click on them
 
+#### When I try to apply a custom fan curve I get "BIOS rejected fan curve"
+TUF models from 2021 and older don't support custom fan curves at all. Most probably you didn't have them in Armoury as well?
+
 #### I don't see a GPU temperature in G-helper
 Most probably either you are using Eco / Optimized mode and your dGPU is simply off, or your windows has put the dGPU into sleep to preserve power. 
 
