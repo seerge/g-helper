@@ -4,74 +4,76 @@
 [![GitHub release](https://img.shields.io/github/release/seerge/g-helper.svg)](https://GitHub.com/seerge/g-helper/releases/) 
 [![Github all releases](https://img.shields.io/github/downloads/seerge/g-helper/total.svg)](https://GitHub.com/seerge/g-helper/releases/) [![GitHub stars](https://img.shields.io/github/stars/seerge/g-helper.svg?style=social&label=Star)](https://GitHub.com/seerge/g-helper/stargazers/) <sup>  Language: English | <a href="https://github.com/seerge/g-helper/blob/main/docs/README.zh-CN.md">[中文]</a></sup>
 
-Lightweight Armoury Crate alternative for Asus laptops. A small utility that allows you to do almost everything you could do with Armoury Crate but without extra bloat and unnecessary services. Works on all popular models, such as ROG Zephyrus G14, G15, G16, M16, Flow X13, Flow X16, TUF, Strix, Scar, ProArt and many more! Feel free to try :)
+Small and lightweight Armoury Crate alternative for Asus laptops offering almost same functionality without extra bloat and unnecessary services. Works on all popular models, such as ROG Zephyrus G14, G15, G16, M16, Flow X13, Flow X16, Flow Z13, TUF Series, Strix / Scar Series, ProArt, VivoBook and many more! 
 
 # [:floppy_disk: Download](https://github.com/seerge/g-helper/releases/latest/download/GHelper.zip)
 
 - Don't forget to [Read FAQ](#question-faq)
-- If you like this app, please [star :star: it on Github](https://github.com/seerge/g-helper) and spread the word about it!
+- If you like this app, please give it a star :star: and spread the word about it!
 
 #### Support project in [:euro: EUR](https://www.paypal.com/donate/?hosted_button_id=4HMSHS4EBQWTA)  |  [💵 USD](https://www.paypal.com/donate/?hosted_button_id=SRM6QUX6ACXDY)  |  [:credit_card: Stripe](https://buy.stripe.com/00gaFJ9Lf79v7WobII)
 
 ![Gihhub](https://github.com/seerge/g-helper/assets/5920850/4d98465a-63a5-4498-ae14-afb3e67e7e82)
 
-## :gift: Main advantages 
+## :gift: Main Advantages 
 
-1. Seamless and automatic GPU switching (without asking you to close all apps, etc)
-2. All performance modes can be fully customized (with fan curves and PPTs)
-3. Very lightweight and consumes almost no resources, doesn't install any services. Just a single exe to run
+1. Seamless and automatic GPU switching
+2. All performance modes can be fully customized with power limits and fan curves
+3. Lightweight. Doesn't install anything in your system. Just a single exe to run
 4. Simple and clean native UI with easy access to all settings
-5. FN-Lock
-6. Doesn't need administrator privileges to run (*)
+5. FN-Lock and custom hotkeys
 
 ### :zap: Features
 
-1. **Performance modes**: Silent - Balanced - Turbo (built-in, with default fan curves)
-2. **GPU modes**: Eco - Standard - Ultimate - Optimized
-3. Laptop screen refresh rate 60hz or 120hz (144hz, etc) with display overdrive (OD) and mini-led multi-zone switch
-4. Custom fan curve editor, power limits (PPT) and turbo boost selection for every performance mode
-5. Anime matrix control thanks to [Starlight](https://github.com/vddCore/Starlight) + some tweaks from my side including animated GIFs, clock and audio visualizer
-6. Keyboard backlit animation and colors (including sleep animation and support for TUF models)
-7. All basic and custom Keyboard hotkeys (M-keys, FN+X keys)
-8. Monitor CPU / GPU temperature, fan speeds and battery discharge rate
+1. Performance modes: Silent - Balanced - Turbo (built-in, with default fan curves)
+2. GPU modes: Eco - Standard - Ultimate - Optimized
+3. Screen refresh rate control with display overdrive (OD) 
+4. Custom fan curve editor, power limits and turbo boost selection for every performance mode
+5. Anime matrix control including animated GIFs, clock and Audio visualizer
+6. Backlight animation modes and colors 
+7. Custom hotkeys (M-keys, FN+X keys)
+8. Monitor CPU / GPU temperature, fan speeds and battery status
 9. Battery charge limit to preserve battery health
 10. NVidia GPU overclocking
 11. XG Mobile Control
 12. AMD CPU Undervolting
+13. BIOS and Driver Updates
+14. Asus Mice settings
+15. Mini-led multi-zone switch
 
 ![Screenshot 2023-04-13 190951](https://user-images.githubusercontent.com/5920850/231859391-c4963af4-491c-4523-95d4-0bdcfd7cfd6f.png)
 
 ### :gear: Automatic switching when on battery or plugged in
 - App remembers last Mode used on battery or when plugged
-- Optimized GPU mode - disables dGPU on battery and enables when plugged
-- Auto Screen refresh rate (60hz on battery, max hz when plugged)
-- Keyboard backlight timeout on battery or when plugged
+- Optimized GPU mode - disables dGPU on battery and enables when plugged in
+- Auto Screen refresh rate (60Hz on battery and max Hz when plugged)
+- Keyboard backlight timeout on battery or when plugged in
 
-To keep auto switching and hotkeys working the app needs to stay running in the tray. It doesn't consume any resources. 
+_To keep auto switching and hotkeys working the app needs to stay running in the tray. It doesn't consume any resources._
 
 ### :rocket: Performance Modes
 
-Modes are **same** as in Armoury Crate as they are stored in bios including default fan curves
+Modes are **baked in BIOS** along with default fan curves and power limits. They are the **same** as in the Armoury Crate.
 
-1. **Silent** (minimal or no fans, 70W PPT total, up to 45W PPT to CPU) + Best power efficiency setting in windows
-2. **Balanced** (balanced fans, 100W PPT total, up to 45W PPT to CPU) + Balanced setting in windows
-3. **Turbo** (intense fans, 125W PPT total, up to 80W PPT to CPU) + Best performance setting in windows
+1. **Silent** (minimal or no fans,  45W CPU) + Best power efficiency setting in windows
+2. **Balanced** (balanced fans,  45W CPU) + Balanced setting in windows
+3. **Turbo** (intense fans, up to 80W CPU) + Best performance setting in windows
 
-_PPTs are shown for G14 2022, for other models PPTs will be different as they are set in bios._
+_Default power limits are measured for G14 2022. For other models they will be different._
 
 ### :video_game: GPU Modes
 
 1. **Eco** : only low power integrated GPU enabled, iGPU drives built in display
 2. **Standard** (MS Hybrid) : iGPU and dGPU enabled, iGPU drives built in display
 3. **Ultimate**: iGPU and dGPU enabled, but dGPU drives built in display (supported on 2022+ models)
-4. **Optimized**: disables dGPU on battery (Eco) and enables when plugged (Standard)
+4. **Optimized**: disables dGPU on battery (Eco) and enables when plugged in (Standard)
 
 ![Screenshot 2023-08-03 193646](https://github.com/seerge/g-helper/assets/5920850/ac7debcf-163a-4529-b7fd-fb4d2f3bb1da)
 
 ## :question: FAQ
 
-#### How do I stop the Armory Crate install popup appearing every time I press the M4 / Rog key?
-Stop ``ArmouryCrateControlInterface`` service under windows Services app or you can stop all asus services all together from ``Extra`` -> ``Stop services``
+#### How do I stop the Armoury Crate install popup appearing every time I press the M4 / Rog key?
+Stop ``ArmouryCrateControlInterface`` service under windows Services app or you can stop all asus services from ``Extra`` -> ``Stop services``
 
 #### Why is Ultimate GPU mode not available on my laptop?
 Ultimate mode is supported (by hardware) only on 2022+ models
@@ -131,14 +133,14 @@ Currently you can undervolt AMD CPUs. If your model supports that - you will see
 #### I have G14 2023 and my GPU refuses to disable/enable
 It seems to be an issue in older BIOS versions. As [users report](https://github.com/seerge/g-helper/issues/680) - latest BIOS 312 (installable via MyASUS or G-Helper -> Updates) resolves all issues :) So please update.
 
-#### I have G15 2022 and my GPU refuses to disable/enable or my fans missbehave
-G15 2022 is known to have a notoriously bugged BIOS (last one 313). Multiple users have reported that problems can be solved by rolling back to a [revious BIOS 311 from Asus Support website](https://rog.asus.com/nl/laptops/rog-zephyrus/rog-zephyrus-g15-2022-series/helpdesk_bios/).
+#### I have G15 2022 and my GPU refuses to disable/enable or my fans misbehave
+G15 2022 is known to have a notoriously bugged BIOS (last one 313). Multiple users have reported that problems can be solved by rolling back to a [previous BIOS 311 from Asus Support website](https://rog.asus.com/nl/laptops/rog-zephyrus/rog-zephyrus-g15-2022-series/helpdesk_bios/).
 
 #### I have uninstalled Armoury and my GPU performance is lower than it was
 Check your NVidia Experience settings and make sure that you have **Whisper Mode** set to ``OFF``. Also you can go to reset all settings ``Nvidia Control panel -> Manage 3D Settings -> Reset to defaults``
 
 #### How do I do a hardware reset on a laptop?
-All Asus laptops have an option to do a hardware reset that can be handy sometimes. It doesn't touch your data, but resets all main hardware-related things (enables your dGPU, wakes up wifi/bt adapter if it hangs for some reason, etc). Turn OFF laptop. Press and hold the "power" button for 30-40 seconds. Then boot normally (it will take a bit longer to boot)
+All Asus laptops have an option to do a hardware reset that can be handy sometimes. It doesn't touch your data, but resets all main hardware-related things (enables your dGPU, wakes up wifi/bt adapter if it hangs for some reason, etc.). Turn OFF laptop. Press and hold the "power" button for 30-40 seconds. Then boot normally (it will take a bit longer to boot)
 
 #### What is G-helper ?
 G-Helper is a lightweight Armoury Crate alternative for Asus laptops. A small utility that allows you to do almost everything you could do with Armoury Crate but without extra bloat and unnecessary services.
@@ -168,7 +170,7 @@ G-Helper is a lightweight Armoury Crate alternative for Asus laptops. A small ut
 
 ### Recommendations (optional)
 
-- It's **not recommended** to use an app in combination with Armoury Crate services, because they adjust the same settings. You can [uninstall it using AC own uninstall tool](https://dlcdnets.asus.com/pub/ASUS/mb/14Utilities/Armoury_Crate_Uninstall_Tool.zip?model=armoury%20crate). Just in case, you can always install it back later.
+- It's **not recommended** to use the app in combination with Armoury Crate services, because they adjust the same settings. You can [uninstall it using AC own uninstall tool](https://dlcdnets.asus.com/pub/ASUS/mb/14Utilities/Armoury_Crate_Uninstall_Tool.zip?model=armoury%20crate). Just in case, you can always install it back later.
 
 - It's **not recommended** to have "ASUS Smart Display Control" app running, as it will try to change refresh rates and fight with g-helper for the same function. You can safely uninstall it.
 
@@ -179,25 +181,29 @@ G-Helper is a lightweight Armoury Crate alternative for Asus laptops. A small ut
 
 -------------------------------
 
-_Designed and developed for Asus Zephyrus G14 2022 (with AMD Radeon iGPU and dGPU). But could and should potentially work for G14 of 2021 and 2020, G15, X FLOW, and other ROG models for relevant and supported features._
-
-I don't have a Microsoft certificate to sign the app yet, so if you get a warning from Windows Defender on launch (Windows Protected your PC), click More Info -> Run anyway. Alternatively you can compile and run project by yourself using Visual Studio :)
+I don't have a Microsoft certificate to sign the app yet, so if you get a warning from Windows Defender on launch (Windows Protected your PC), click More Info -> Run anyway. 
 
 ------------------
 
 ## Power user settings
 
-_GENERAL NOTE: "Power user" settings require some config edits. Before making any changes to ``config.json`` - quit G-Helper. Make your changes. Run G-Helper again._
+GENERAL NOTE: "Power user" settings require editing config located at ``%AppData%\GHelper\config.json``. 
+
+Quit G-Helper
+Make your changes / additions co ``config.json``
+Start G-Helper again
+
+_Make sure to keep json structure (i.e. not to break it with extra or missing commas, etc.) or the app will fail to read it and will just recreate an empty config instead._
 
 ### Manual app language setting
 
 By default the app will use your windows language setting. But you can set language manually (if it supported of course)
 
-Add following line to ``%AppData%\GHelper\config.json`` : ``"language" : "en"`` (by replacing "en" with language of your choice)
+``"language" : "en"`` (by replacing "en" with language of your choice)
 
 ### Custom windows power plans with each mode
 
-In ``%AppData%\GHelper\config.json`` you can manually add a custom power plan (or power mode) GUID. It can be either "real" power plan that can be switched or "overlay" power plan like the ones g-helper sets by default.
+You can manually assign a custom power plan (or power mode) GUID to each mode. It can be either "real" power plan that can be switched or "overlay" power plan like the ones g-helper sets by default.
 
 Format is following : ``"scheme_<mode>" : "GUID" ``
 Where ``mode = 0 (balanced), 1 (turbo), 2 (silent)``
@@ -209,11 +215,9 @@ Default behavior is :
 "scheme_2": "961cc777-2547-4f9d-8174-7d86181b8a7a",
 ```
 
-Make sure to keep json structure (i.e. not to break it with extra or missing commas, etc) - or the app will fail to read it and will just recreate a new config instead.
-
 ### Custom hotkey actions
 
-App supports custom actions for M3, M4 and FN+F4 hotkeys. To set them select "Custom" next to appropriate hotkey and do one of the following:
+Select ``Custom`` next to appropriate hotkey under ``Extra`` settings and do one of the following:
 
 1. To run any custom application - put a full path to exe into "action" text field, for example:
 ``C:\Program Files\EA Games\Battlefield 2042\BF2042.exe``
@@ -224,13 +228,14 @@ Full list of keycodes https://learn.microsoft.com/en-us/windows/win32/inputdev/v
 ![Screenshot 2023-07-17 192155](https://github.com/seerge/g-helper/assets/5920850/e450e124-1589-4787-bce8-7c37ffe72fbd)
 
 ### Force Standard mode on shutdown / hibernation
-In some rare cases G14 2023 seem to have issues with enabling / disabling dGPU - i.e. Eco mode. Till we wait for a fix from asus on BIOS level, one of the proposed solutions is to always shutdown the laptop in Standard mode (then everything seems to work fine). To enable "forced" Standard mode on shutdown add following line to ``%AppData%\GHelper\config.json``
+
+In some rare cases G14 2023 seem to have issues with enabling / disabling dGPU - i.e. Eco mode. Till we wait for a fix from asus on BIOS level, one of the proposed solutions is to always shutdown the laptop in Standard mode (then everything seems to work fine). To enable "forced" Standard mode on shutdown add following line config
 ```
 "gpu_fix" : 1,
 ```
 
 ### Disable OSD
-You can disable app's OSD (for performance modes, keyboard backlight, etc) by adding following line to ``%AppData%\GHelper\config.json``
+Disable app's OSD (for performance modes, keyboard backlight, etc.) 
 ```
 "disable_osd": 1,
 ```
@@ -241,7 +246,7 @@ You can disable app's OSD (for performance modes, keyboard backlight, etc) by ad
 - ``Ctrl + M1 / M2`` - Screen brightness Down / Up
 - ``Shift + M1 / M2`` - Backlight brightness Down / Up
 
-If you don't want this bindings to work you can add ``"skip_hotkeys":1,`` to ``%AppData%\GHelper\config.json``
+If you don't want this bindings to work you can add ``"skip_hotkeys":1,`` 
 
 ### Keybinding to toggle performance modes (on external keyboards)
 
@@ -249,7 +254,7 @@ By default the app will toggle performance modes with Ctr+Shift+F5. You can chan
 
 ------------
 
-**Libraries / projects used**
+**Libraries and projects used**
 - [Linux Kernel](https://github.com/torvalds/linux/blob/master/drivers/platform/x86/asus-wmi.c) for some basic endpoints in ASUS ACPI/WMI interface
 - [NvAPIWrapper](https://github.com/falahati/NvAPIWrapper) for accessing Nvidia API
 - [Starlight](https://github.com/vddCore/Starlight) for anime matrix communication protocol
@@ -258,6 +263,4 @@ By default the app will toggle performance modes with Ctr+Shift+F5. You can chan
 **Disclaimers**
 "ROG", "TUF", and "Armoury Crate" are trademarked by and belong to AsusTek Computer, Inc. I make no claims to these or any assets belonging to AsusTek Computer and use them purely for informational purposes only.
 
-THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. MISUSE OF THIS SOFTWARE COULD CAUSE SYSTEM INSTABILITY OR MALFUNCTION.
-
-
+THE SOFTWARE IS PROVIDED “AS IS” AND WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. MISUSE OF THIS SOFTWARE COULD CAUSE SYSTEM INSTABILITY OR MALFUNCTION.
