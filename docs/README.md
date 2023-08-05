@@ -23,6 +23,8 @@ Small and lightweight Armoury Crate alternative for Asus laptops offering almost
 4. Simple and clean native UI with easy access to all settings
 5. FN-Lock and custom hotkeys
 
+![Screenshot 2023-08-05 190302](https://github.com/seerge/g-helper/assets/5920850/5d32b8d8-0eb8-4da8-9d5f-95120ea921cf)
+
 ### :zap: Features
 
 1. Performance modes: Silent - Balanced - Turbo (built-in, with default fan curves)
@@ -41,10 +43,8 @@ Small and lightweight Armoury Crate alternative for Asus laptops offering almost
 14. Asus Mice settings
 15. Mini-led multi-zone switch
 
-![Screenshot 2023-04-13 190951](https://user-images.githubusercontent.com/5920850/231859391-c4963af4-491c-4523-95d4-0bdcfd7cfd6f.png)
-
 ### :gear: Automatic switching when on battery or plugged in
-- App remembers last Mode used on battery or when plugged
+- Performance Mode switching when on battery or plugged in
 - Optimized GPU mode - disables dGPU on battery and enables when plugged in
 - Auto Screen refresh rate (60Hz on battery and max Hz when plugged)
 - Keyboard backlight timeout on battery or when plugged in
