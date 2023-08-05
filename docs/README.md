@@ -75,6 +75,9 @@ _Default power limits are measured for G14 2022. For other models they will be d
 #### How do I stop the Armoury Crate install popup appearing every time I press the M4 / Rog key?
 Stop ``ArmouryCrateControlInterface`` service under windows Services app or you can stop all asus services from ``Extra`` -> ``Stop services``
 
+#### Battery charge limiter is not working
+It could be that Asus services are overwriting this limit after. You may want to stop them by clicking "Stop" in the Asus Services section (under Extra).
+
 #### Why is Ultimate GPU mode not available on my laptop?
 Ultimate mode is supported (by hardware) only on 2022+ models
 
@@ -85,22 +88,19 @@ Some older models (for example G14 2020) don't support disabling GPU on hardware
 You don't have to, it's purely optional. From my experience built in (in bios) performance modes work well. Limit your power or apply custom fan curves only if you have issues. As soon as you click Apply in the fan + power section bios will be considering the fan profile as "custom"! (no matter if you modified it or not)
 
 #### How does G-helper control my fan speeds?
-It doesn't. Your bios does (same as in case with armoury). What G-helper can do - is (optionally) set a custom fan profile to current performance mode consisting of 8 pairs of temperature + fan speed % via same endpoint armoury seem to use.
+**It doesn't.** Your BIOS does (same as in case with Armoury). What G-helper can do - is (optionally) set a custom fan profile to current performance mode consisting of 8 pairs of temperature + fan speed % via same endpoint armoury seem to use.
 
 #### How do I change fan % to fan RPM?
 Click on them
 
 #### I don't see a GPU temperature in G-helper
-Most probably either you are using Eco / Optimized mode and your dGPU is simply off, or your windows has put the dGPU into sleep (to preserve power). In this situations G-helper won't be able to reach your GPU and get readings
+Most probably either you are using Eco / Optimized mode and your dGPU is simply off, or your windows has put the dGPU into sleep to preserve power. 
 
 #### I don't see app after starting it
-Please check the system tray for a (G) icon. By default windows is keen to hide all icons, so you may need to click ^ to see them all. I would advise to right click on Taskbar select TaskBar Settings -> Other System Tray icons -> Mark G-Helper to be always ON.
+Please check the system tray for a ``(G)`` icon. By default Windows is keen to hide all icons, so you may need to click ``^`` to see them all. I would advise to right click on Taskbar select TaskBar Settings -> Other System Tray icons -> Mark G-Helper to be always ON.
 
 #### App crashes or doesn't work properly, what should I do ?
 Open "Event Viewer" from the start menu, go to Windows Logs -> Application and check for recent Errors mentioning G-Helper. If you see one - please post a [new issue](https://github.com/seerge/g-helper/issues) with all details from this error.
-
-#### Battery charge limiter is not working
-It could be that Asus services are overwriting this limit after. You may want to stop them by clicking "Stop" in the Asus Services section (under Extra).
 
 #### Can I use MyASUS app along with G-Helper?
 You can, the only problem is that MyASUS may override the battery charge limit that you set before. My advice in such a situation would be to set the same limit (i.e. 80%) in both MyASUS and G-Helper.
@@ -189,9 +189,9 @@ I don't have a Microsoft certificate to sign the app yet, so if you get a warnin
 
 GENERAL NOTE: "Power user" settings require editing config located at ``%AppData%\GHelper\config.json``. 
 
-Quit G-Helper
-Make your changes / additions co ``config.json``
-Start G-Helper again
+- Quit G-Helper
+- Make your changes / additions co ``config.json``
+- Start G-Helper again
 
 _Make sure to keep json structure (i.e. not to break it with extra or missing commas, etc.) or the app will fail to read it and will just recreate an empty config instead._
 
