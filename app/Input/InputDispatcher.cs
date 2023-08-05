@@ -161,6 +161,9 @@ namespace GHelper.Input
 
             if (isTUF)
             {
+                if (delta < 0 && brightness <= 0) return;
+                if (delta > 0 && brightness >= 100) return;
+
                 Thread.Sleep(100);
                 if (brightness == ScreenBrightness.Get())
                     Program.toast.RunToast(ScreenBrightness.Adjust(delta) + "%", (delta < 0 ) ? ToastIcon.BrightnessDown : ToastIcon.BrightnessUp);
