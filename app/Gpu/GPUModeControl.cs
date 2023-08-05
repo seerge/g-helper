@@ -176,10 +176,14 @@ namespace GHelper.Gpu
 
         public static bool IsPlugged()
         {
-            bool optimizedUSBC = AppConfig.Get("optimized_usbc") != 1;
+            if (SystemInformation.PowerStatus.PowerLineStatus != PowerLineStatus.Online) return false;
+            if (!AppConfig.Is("optimized_usbc")) return true;
 
-            return SystemInformation.PowerStatus.PowerLineStatus == PowerLineStatus.Online &&
-                   (optimizedUSBC || Program.acpi.DeviceGet(AsusACPI.ChargerMode) < AsusACPI.ChargerUSB);
+            int chargerMode = Program.acpi.DeviceGet(AsusACPI.ChargerMode);
+            Logger.WriteLine("ChargerStatus: " + chargerMode);
+
+            if (chargerMode < 0) return true;
+            return (chargerMode & AsusACPI.ChargerBarrel) > 0;
 
         }
 

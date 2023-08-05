@@ -438,7 +438,7 @@ namespace GHelper
             // checkStartup
             // 
             checkStartup.AutoSize = true;
-            checkStartup.Location = new Point(36, 11);
+            checkStartup.Location = new Point(24, 11);
             checkStartup.Margin = new Padding(11, 5, 11, 5);
             checkStartup.Name = "checkStartup";
             checkStartup.Size = new Size(206, 36);
@@ -1202,7 +1202,7 @@ namespace GHelper
             labelCharge.Dock = DockStyle.Right;
             labelCharge.ForeColor = SystemColors.ControlDark;
             labelCharge.Location = new Point(365, 0);
-            labelCharge.Margin = new Padding(0, 0, 0, 0);
+            labelCharge.Margin = new Padding(0);
             labelCharge.Name = "labelCharge";
             labelCharge.Padding = new Padding(0, 0, 20, 0);
             labelCharge.Size = new Size(462, 56);

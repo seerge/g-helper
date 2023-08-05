@@ -436,7 +436,6 @@ namespace GHelper.Input
                         KeyProcess("paddle");
                         return;
                     // The Command Center ("play-looking") button below the select key.
-                    // We'll call this M3.
                     case 166:
                         KeyProcess("cc");
                         return;
