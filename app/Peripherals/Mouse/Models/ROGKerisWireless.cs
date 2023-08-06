@@ -170,4 +170,28 @@
             return "ROG Keris (Wired)";
         }
     }
+
+    public class ROGKerisWirelessEvaEdition : ROGKerisWireless
+    {
+        public ROGKerisWirelessEvaEdition() : base(0x1A59, true)
+        {
+        }
+
+        public override string GetDisplayName()
+        {
+            return "ROG Keris EVA Edition";
+        }
+    }
+
+    public class ROGKerisWirelessEvaEditionWired : ROGKerisWireless
+    {
+        public ROGKerisWirelessEvaEditionWired() : base(0x1A57, false)
+        {
+        }
+
+        public override string GetDisplayName()
+        {
+            return "ROG Keris EVA Edition (Wired)";
+        }
+    }
 }
