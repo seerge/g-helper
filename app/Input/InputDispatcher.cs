@@ -155,17 +155,13 @@ namespace GHelper.Input
             int brightness = -1;
             
             if (isTUF) brightness = ScreenBrightness.Get();
+            if (AppConfig.SwappedBrightness()) delta = -delta;
 
-            if (AppConfig.SwappedBrightness())
-            {
-                HandleOptimizationEvent(delta > 0 ? 32 : 16);
-            } else
-            {
-                HandleOptimizationEvent(delta > 0 ? 16 : 32);
-            }
+            Program.acpi.DeviceSet(AsusACPI.UniversalControl, delta > 0 ? AsusACPI.Brightness_Up : AsusACPI.Brightness_Down, "Brightness");
 
             if (isTUF)
             {
+                if (AppConfig.SwappedBrightness()) return;
                 if (delta < 0 && brightness <= 0) return;
                 if (delta > 0 && brightness >= 100) return;
 
