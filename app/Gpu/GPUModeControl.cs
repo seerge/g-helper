@@ -49,10 +49,6 @@ namespace GHelper.Gpu
         }
 
 
-        bool NoAutoUltimate()
-        {
-            return AppConfig.ContainsModel("G614") || AppConfig.ContainsModel("M16");
-        }
 
         public void SetGPUMode(int GPUMode, int auto = 0)
         {
@@ -84,7 +80,7 @@ namespace GHelper.Gpu
                 DialogResult dialogResult = MessageBox.Show(Properties.Strings.AlertUltimateOn, Properties.Strings.AlertUltimateTitle, MessageBoxButtons.YesNo);
                 if (dialogResult == DialogResult.Yes)
                 {
-                    if (NoAutoUltimate())
+                    if (AppConfig.NoAutoUltimate())
                     {
                         Program.acpi.SetGPUEco(0);
                         Thread.Sleep(100);

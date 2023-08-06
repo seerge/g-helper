@@ -300,7 +300,7 @@ public static class AppConfig
 
     public static bool NoAuraColor()
     {
-        return  ContainsModel("GA401") || ContainsModel("X13");
+        return  ContainsModel("GA401") || ContainsModel("X13") || ContainsModel("GA503RM");
     }
 
     public static bool IsStrix()
@@ -322,4 +322,33 @@ public static class AppConfig
     {
         return ContainsModel("13QY");
     }
+
+    public static bool NoAutoUltimate()
+    {
+        return ContainsModel("G614") || ContainsModel("GU604");
+    }
+
+
+    public static bool IsManualModeRequired()
+    {
+        if (!IsMode("auto_apply_power"))
+            return false;
+
+        return
+            Is("manual_mode") ||
+            ContainsModel("GU604") ||
+            ContainsModel("G733");
+    }
+
+    public static bool IsFanRequired()
+    {
+        return ContainsModel("GA402X") || ContainsModel("G513");
+    }
+
+    public static bool IsPowerRequired()
+    {
+        return ContainsModel("FX507") || ContainsModel("FX517") || ContainsModel("FX707");
+    }
+
+
 }

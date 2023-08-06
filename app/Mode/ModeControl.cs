@@ -65,7 +65,7 @@ namespace GHelper.Mode
 
             Modes.SetCurrent(mode);
 
-            Program.acpi.DeviceSet(AsusACPI.PerformanceMode, IsManualModeRequired() ? AsusACPI.PerformanceManual : Modes.GetBase(mode), "Mode");
+            Program.acpi.DeviceSet(AsusACPI.PerformanceMode, AppConfig.IsManualModeRequired() ? AsusACPI.PerformanceManual : Modes.GetBase(mode), "Mode");
 
             if (AppConfig.Is("xgm_fan") && Program.acpi.IsXGConnected()) AsusUSB.ResetXGM();
 
@@ -143,7 +143,7 @@ namespace GHelper.Mode
                 }
 
                 // force set PPTs for missbehaving bios on FX507/517 series
-                if ((AppConfig.ContainsModel("FX507") || AppConfig.ContainsModel("FX517") || AppConfig.ContainsModel("FX707") || xgmFan) && !AppConfig.IsMode("auto_apply_power"))
+                if ((AppConfig.IsPowerRequired() || xgmFan) && !AppConfig.IsMode("auto_apply_power"))
                 {
                     Task.Run(async () =>
                     {
@@ -159,22 +159,6 @@ namespace GHelper.Mode
 
         }
 
-        private static bool IsManualModeRequired()
-        {
-            if (!AppConfig.IsMode("auto_apply_power"))
-                return false;
-
-            return
-                AppConfig.Is("manual_mode") ||
-                AppConfig.ContainsModel("GU604") ||
-                AppConfig.ContainsModel("G733");
-        }
-
-        private static bool IsFanRequired()
-        {
-            return AppConfig.ContainsModel("GA402X") || AppConfig.ContainsModel("G513");
-        }
-
         public void AutoPower(int delay = 0)
         {
 
@@ -184,17 +168,17 @@ namespace GHelper.Mode
             bool applyFans = AppConfig.IsMode("auto_apply");
             //bool applyGPU = true;
 
-            if (applyPower)
+            if (applyPower && !applyFans)
             {
                 // force fan curve for misbehaving bios PPTs on some models
-                if (!applyFans && IsFanRequired())
+                if (AppConfig.IsFanRequired())
                 {
                     delay = 500;
                     AutoFans(true);
                 }
 
                 // Fix for models that don't support PPT settings in all modes, setting a "manual" mode for them
-                if (IsManualModeRequired() && !applyFans)
+                if (AppConfig.IsManualModeRequired())
                 {
                     AutoFans(true);
                 }
