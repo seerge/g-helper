@@ -112,6 +112,7 @@ namespace GHelper.Input
                 hook.RegisterHotKey(ModifierKeys.Control, Keys.VolumeUp);
                 hook.RegisterHotKey(ModifierKeys.Shift, Keys.VolumeDown);
                 hook.RegisterHotKey(ModifierKeys.Shift, Keys.VolumeUp);
+                hook.RegisterHotKey(ModifierKeys.Shift | ModifierKeys.Control, Keys.F20);
             }
 
             if (!AppConfig.IsZ13() && !AppConfig.IsAlly())
@@ -276,6 +277,7 @@ namespace GHelper.Input
             {
                 if (e.Key == keyProfile) modeControl.CyclePerformanceMode();
                 if (e.Key == keyApp) Program.SettingsToggle();
+                if (e.Key == Keys.F20) KeyProcess("m3");
             }
 
             if (e.Modifier == (ModifierKeys.Control))
