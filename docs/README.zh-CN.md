@@ -1,3 +1,4 @@
+
 # G-Helper (GHelper)
 
 [![Github all releases](https://img.shields.io/github/downloads/seerge/g-helper/total.svg)](https://GitHub.com/seerge/g-helper/releases/) [![GitHub release](https://img.shields.io/github/release/seerge/g-helper.svg)](https://GitHub.com/seerge/g-helper/releases/) [![GitHub stars](https://img.shields.io/github/stars/seerge/g-helper.svg?style=social&label=Star)](https://GitHub.com/seerge/g-helper/stargazers/)
@@ -10,8 +11,7 @@
 
 这是一个ROG 幻14、幻15，幻13、幻16，飞行堡垒/天选系列，ROG 枪神/魔霸系列或其他ASUS笔记本的控制工具。可以做到几乎所有Armoury Crate(奥创控制中心)能做的事情，而且不需要任何多余的功能或安装不必要的系统服务。
 
-
-## :gift: 主要优点 
+## 🎁 主要优点
 
 1. 自动且无缝的独立显卡模式切换（不需要关闭所有应用或执行其他操作）
 2. 可以手动调整所有的性能模式（包括自定义风扇曲线以及PPTs(Platform Power Threshold,即CPU总功耗,下文简称PPTs--译注))
@@ -19,16 +19,17 @@
 4. 简洁的界面设计，可以轻松调整所有设置。
 5. 运行不需要管理员权限！
 
-## [:floppy_disk: 下载应用](https://github.com/seerge/g-helper/releases/latest/download/GHelper.zip)
+## [💾 下载应用](https://github.com/seerge/g-helper/releases/latest/download/GHelper.zip)
 
-如果你喜欢这个应用，请[给这个项目:star:](https://github.com/seerge/g-helper) 或者向别人推荐它！
-### :euro: [(通过paypal)支持和捐赠G-Helper](https://www.paypal.com/donate/?hosted_button_id=4HMSHS4EBQWTA)
+如果你喜欢这个应用，请[给这个项目⭐️](https://github.com/seerge/g-helper) 或者向别人推荐它！
+
+### 💶 [(通过paypal)支持和捐赠G-Helper](https://www.paypal.com/donate/?hosted_button_id=4HMSHS4EBQWTA)
 
 _如果你在别的地方提到这个软件-请记得加上这个项目的网址。十分感谢。_
 
 ![Screenshot 2023-04-11 221528](https://user-images.githubusercontent.com/5920850/231278828-9bb7f5c3-4ce6-4825-b06d-572f39d3ede8.png)
 
-### :zap: 主要功能
+### ⚡️ 主要功能
 
 1. **性能模式**: 静音模式 - 平衡模式 - 增强模式 （笔电bios内置的性能模式，附带默认的风扇曲线）
 2. **显卡模式**: 集显模式 - 标准模式 - 独显直连 - 自动切换
@@ -40,7 +41,8 @@ _如果你在别的地方提到这个软件-请记得加上这个项目的网址
 8. CPU/GPU温度、风扇转速和电池充放电功率显示
 9. 电池充电上限设置，保护电池健康度
 
-### :gear: 当使用电池供电或插上电源时，自动切换：
+### ⚙️ 当使用电池供电或插上电源时，自动切换：
+
 - 性能模式 (软件会记住上一次使用电池或插上电源时的电源模式)
 - 自动切换独立显卡模式 - 使用电池时停用独显，并在插上电源时重新启用
 - 自动切换屏幕刷新率 (使用电池时切换为 60hz,插入电源后切换为 120+ hz)
@@ -48,7 +50,7 @@ _如果你在别的地方提到这个软件-请记得加上这个项目的网址
 
 为了保证自动切换功能和按键绑定功能的正常工作，软件需要在后台运行并显示一个托盘图标。这并不会消耗其他资源。
 
-### :rocket: 性能模式
+### 🚀 性能模式
 
 性能模式与 Armoury Crate(奥创控制中心)中的 **保持一致**，因为这些设置与其对应的风扇曲线都被保存在bios中
 
@@ -60,70 +62,127 @@ _PPTs 默认在 幻14 2022版上显示, 对于其他型号 PPTs 的显示将会�
 
 ![Screenshot 2023-04-06 142234](https://user-images.githubusercontent.com/5920850/230377635-7032a480-3a94-4e35-9468-d8911e3e55ec.png)
 
-### :video_game: 显卡模式
+### 🎮 显卡模式
 
 1. 集显模式 : 只启用低功耗的内置显卡, 核显连接笔电内置屏幕
 2. 标准模式 (MS Hybrid) : 同时启用核显与独显, 核显连接笔电内置屏幕
 3. 独显直连: 同时启用核显与独显, 但独显直连笔电屏幕 (仅在幻14 2022版等机型上支持)
 4. 自动切换: 使用电池时关闭独显(集显模式)，并在插上电源后重新启用独显(混合输出)
 
-## :question: 常见问题解答(FAQ)
+## ❓ 常见问题解答(FAQ)
 
 #### 当我按下 M4 / Rog键的时候总是弹出安装Armoury Crate的弹窗提示，我该如何关闭它?
+
 删除下列文件或者把它移动(注:剪切+粘贴)到别的目录 ``C:\Windows\System32\ASUSACCI\ArmouryCrateKeyControl.exe``.
 
 如果还是出现弹窗 - 进入 BIOS (开机时按住 F2), 按照屏幕下方的快捷键提示进入 Advanced Settings,然后关闭 "Armoury Crate Control Interface" (注:把它设置为disabled)。
 
-#### 为什么我的笔记本不支持独显输出?
-独显输出只在幻14 2022版上支持(也可能支持2022年以来的其他机型)。
+#### 电池充电限制不起作用
 
-#### 我无法在幻14 2020版上设置集显模式(关闭独显)
-很不幸，2020版的机型在硬件上不支持这个设置。
+这有可能是因为ASUS服务在你设置后又覆写了对应的设置。你可以通过在G-helper中点击"更多"，然后在"正在运行的Asus服务项"右侧点击"停止"来停止ASUS服务。
+
+#### 我没看到显卡模式
+
+在一些旧型号中（比如幻14 2020）从硬件层上不支持禁用显卡，在这些机型中并不需要显卡模式，因此没有显示。
+
+#### 为什么我的电脑上没有独显直连
+
+独显直连（在硬件层面上）只对2022年之后的机型中生效。
 
 #### 我是否应该自行调整功耗设置(PPTs)和风扇曲线?
+
 你可以不那么做，这些操作是可选的。按照经验(bios)内置的性能模式工作的很好。请只在遇到问题的时候限制功耗或者手动设置风扇模式。当你在风扇与功率设置中按下“应用”时，bios将会认为风扇配置文件为“自定义”! (无论你是否真的修改了风扇曲线)
 
 #### G-helper是如何控制我的风扇转速的?
+
 软件并不会修改风扇转速。这个设置实际上由bios控制(与Armoury Crate的情况相同)。G-helper 所能做的 - 就是将一个自定义的风扇配置(可选地)应用到正在使用的性能模式，其中包括8组温度+风扇速度的百分比数值%。软件通过与Armoury Crate看起来相同的WMI endpoint来应用这一设置，
 
 #### 我如何把风扇转速显示从百分比%切换到RPM(每分钟转速)?
+
 点击一下百分比即可切换。
 
+#### 当我修改自定义风扇曲线时，我得到了"BIOS拒绝修改风扇曲线"（"BIOS rejected fan curve"）提示
+
+2021之后的TUF机型不支持自定义风扇曲线。很可能在Armory Crate中也没有这个选项。
+
 #### 我没有在G-helper中看到独显温度
+
 很可能要么你正在使用核显模式/自动切换模式，这种情况下独显只是关闭了；或者你的windows系统为独显设置了睡眠模式(为了省电)。这种情况下，G-helper无法识别到独显，也不能获得温度读数。
 
-#### 弹窗提示"G-Helper已经在运行"
+#### 打开应用后没有看到应用启动/弹窗提示"G-Helper已经在运行"
+
 请在系统托盘里找到 (G) 图标。windows会默认隐藏所有图标，所以你可能需要点击 ^ 来看见它们。建议任务栏右键进入任务栏设置 -> 其他系统图标 -> 将 G-Helper 设置为始终在任务栏上显示。
 
 #### 应用不能启动或者崩溃了，我该怎么做?
+
 从开始菜单里打开“事件管理器”， 进入 Windows日志 -> 应用，然后在最近的错误日志里寻找包含G-helper的日志。如果你找到一个 - 请提出一个 [新的 issue](https://github.com/seerge/g-helper/issues) ，其中包含来自这次错误的所有的详细信息。
 
 #### 我可以在用G-Helper的时候同时用myASUS吗?
+
 当然可以! 唯一的问题是myASUS可能会重置你之前在g-helper里设置的电池充电上限。在这种情况下，建议你在这两个应用(myASUS和g-helper)里设置相同的充电上限(60%/80%/100%)以避免冲突。
 
 #### 我如何将M3键设置为将麦克风静音?
+
 这个功能由 Asus Optimization Service 管理(所以 G-helper 没有这项设置，也不管理这个功能)。请确认这个系统服务是否正常运行
 
 #### 我如何设置不同的视觉风格(即 Armoury Crate 内的gamevisual功能)?
+
 因为这个功能让颜色显示不正确，我个人(注:作者 :) )并不喜欢这些。但是如果你需要这个功能 - 你可以使用 Nvidia 控制面板/GefoeceExperirence滤镜或者AMD控制面板(Radeon Software/AMD Software: Adrenalin Edition)来修改显示颜色(因显示器和配置而异)。如果你真的非常需要这个功能，你也可以使用 [微软商店中ASUS自己的工具](https://apps.microsoft.com/store/detail/gamevisual/9P4K1LFTXSH8?hl=nl-nl&gl=nl&rtc=1)
 
 #### 我能超频 Nvidia GPU 核心或显存吗?
-我(注:作者 :) )现在并没有Nvidia的显卡，所以我不能保证这个功能加入之后是安全的。但是你可以用微星小飞机(msi afterburner) 去超频GPU，毕竟它是为GPU超频专门设计的 :)
+
+首先确保你的独立显卡是启用的，之后打开"风扇 + 电源"选项，在这里即可调整核心和显存频率。这个和Armoury Crate中的设置一样。注意，使用这项功能需要管理员权限，应用也会弹出需要管理员权限的提示。（*）
+
+#### Windows Defender将该应用标记为恶意软件/病毒
+
+这是Windows Defender的误报（其他使用机器学习来检测病毒的杀毒软件可能也出现同样的结果），这可能是因为本应用没有数字签名和证书。如果你不放心的话，你可以自己编译安装本项目，本项目是完全开源的。
+
+#### 我该在哪找到应用的配置文件和日志文件
+
+你可以在 `%AppData%\GHelper` 文件夹找到他们，当你在issue中提交bug的时候，请务必附上应用日志。
+
+#### 应用无法在开机时启动或者启动的时候在任务栏没有提示
+
+打开应用，取消再重新勾选"开机自启"项目。如果还是不行的话，你可以手动在Windows 任务计划程序（Task Scheduler）中为G-helper应用增加几秒延迟后再启动。
 
 #### 我该如何卸载G-helper?
+
 G-helper是一个单文件的exe文件, 而且它不会向系统中安装任何东西。如果要“卸载”它 - 你可以直接删除exe文件 :) 如果你已经设置了自定义的风扇配置或者功耗设置(PPTs) - 在删除软件之前建议你选择你最喜欢的配置模式(比如"平衡")，然后在“风扇与电源设置”里点击“恢复默认设置”。
 
+#### 我如何给我的CPU降压？
+
+目前你只能给AMD CPU降压。如果你的机型支持这个功能 - 你会在“风扇 + 电源”项中看到对应的设置。如果你看不到该项设置，说明你的CPU不支持降压。所有支持的型号可以[点此查询](https://github.com/seerge/g-helper/discussions/736)。
+
+#### 我的机型是幻14 2023并且我无法关闭/开启我的独立显卡
+
+这应该是旧版本的BIOS的问题。根据[用户反馈](https://github.com/seerge/g-helper/issues/680)，更新最近的BIOS 312版本即可解决问题（可以通过MyASUS或者G-helper "更新" 项进行安装）。
+
+#### 我的机型是幻15 2022并且我无法关闭/开启我的独立显卡或者风扇出问题
+
+幻15 2022款在BIOS 313以上版本会有很多小问题。许多用户反馈可以通过[将BIOS版本降级到311版本来解决](https://rog.asus.com/nl/laptops/rog-zephyrus/rog-zephyrus-g15-2022-series/helpdesk_bios/)。
+
+#### 我删除了Armoury之后我的GPU性能降低了
+
+检查你的 Nvidia Experience 设置，确保Whisper Mode项是关闭的。你还可以尝试重置所有设置。`Nvidia 控制面板 -> 管理 3D  设置 -> 恢复`
+
+#### 我如何从硬件层面重启我的笔记本？
+
+所有的华硕笔记本都支持方便的硬重启。它不会影响你的数据，但是会重置所有硬件相关的东西（例如启动独立显卡，唤醒wifi/蓝牙模块等）
+关闭你的电脑，长按“电源”按钮30-40秒。之后正常启动你的电脑（会比正常情况下花更长时间启动）。
+
 #### G-helper 是什么?
-这是一个ASUS笔记本的控制工具。可以做到几乎所有Armoury Crate(奥创控制中心)能做的事情，而且不需要任何多余的功能或安装不必要的系统服务。
 
+这是一个轻量化的Armoury Crate(奥创控制中心)替代工具，而且不需要任何多余的功能或安装不必要的系统服务的。在ROG G14, G15, G16, M16, X13, Z13, X16, TUF, Scar, Vivobook, ProArt等热门笔记本中都适用。
 
-----------------------------
+---
 
-## :euro: [支持这个项目](https://www.paypal.com/donate/?hosted_button_id=4HMSHS4EBQWTA)
+## 💶 [支持这个项目](https://www.paypal.com/donate/?hosted_button_id=4HMSHS4EBQWTA)
+
 #### 如果你喜欢这个项目你可以[通过Paypal捐赠](https://www.paypal.com/donate/?hosted_button_id=4HMSHS4EBQWTA)
+
 [![二维码](https://user-images.githubusercontent.com/5920850/233658717-0441494d-fede-4a2c-b4f2-4b16a184a69a.png)](https://www.paypal.com/donate/?hosted_button_id=4HMSHS4EBQWTA)
 
-----------------
+---
 
 ### 安装指南
 
@@ -134,18 +193,16 @@ G-helper是一个单文件的exe文件, 而且它不会向系统中安装任何�
 ### 运行要求（必须）
 
 - Microsoft [.NET7](https://dotnet.microsoft.com/en-us/download)。 你可能已经安装了。 如果没有的话你可以从官方网站 [立即下载](https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/sdk-7.0.202-windows-x64-installer)。
-
 - [Asus System Control Interface](https://dlcdnets.asus.com/pub/ASUS/nb/Image/CustomComponent/ASUSSystemControlInterfaceV3/ASUSSystemControlInterfaceV3.exe)。 如果你安装了或者安装过myASUS,  那么这个"驱动"应当已经安装(即使myASUS已经卸载)。 或者你可以手动下载安装。
 
 ### 推荐配置（可选）
 
 - 推荐保持 "Asus Optimization Service" 这个windows服务的运行, 它保证基本的键盘快捷键(比如屏幕或键盘亮度)能够使用。
-
 - 可选选项(!) 你可以通过在管理员模式下运行 [这个用于精简的.bat文件](https://raw.githubusercontent.com/seerge/g-helper/main/debloat.bat)来禁用/移除不必要的服务。如果要恢复这些服务，运行 [这个.bat文件](https://raw.githubusercontent.com/seerge/g-helper/main/bloat.bat)。
 
 -这个应用不建议与Armoury Crate(及其服务)同时运行, 因为它们会调整相同的设置。你可以[使用ASUS官方提供的卸载工具卸载](https://dlcdnets.asus.com/pub/ASUS/mb/14Utilities/Armoury_Crate_Uninstall_Tool.zip?model=armoury%20crate)Armoury Crate。以防万一，你总是可以之后再安装回来。
 
--------------------------------
+---
 
 为Asus ROG 幻14 2022 (配置了AMD核显和独显)设计和开发。但应当可能在幻14 2021和2020款, 幻15, X FLOW, 以及其他的ROG机型上使用相关且支持的功能。
 
@@ -153,13 +210,13 @@ G-helper是一个单文件的exe文件, 而且它不会向系统中安装任何�
 
 设置文件保存在 ``%AppData%\GHelper``
 
-------------------
+---
 
 精简你的windows可以帮助延长电池的使用时间，同时让笔电的温度更低一些
 
 ![Helps to save your battery](https://raw.githubusercontent.com/seerge/g-helper/main/docs/screenshots/screen-5w.png)
 
----------
+---
 
 ## 高级用户设置
 
@@ -167,7 +224,7 @@ G-helper是一个单文件的exe文件, 而且它不会向系统中安装任何�
 
 在 config.json (位于 %appdata/GHelper) 中你可以手动添加自定义电源设置的GUID (它既可以是"真正的"可被选择的电源计划，也可以是"覆盖式(overlay)"的电源计划，就像g-helper默认设置的那样)
 
-格式如下 : "scheme_<mode>" : "GUID" 
+格式如下 : "scheme_`<mode>`" : "GUID"
 
 Where ``mode = 0 (balanced), 1 (turbo), 2 (silent)``
 
@@ -183,14 +240,13 @@ Where ``mode = 0 (balanced), 1 (turbo), 2 (silent)``
 软件支持为 M3, M4 和 FN+F4 热键自定义配置。如要设置，在按键旁的选项框中选择"自定义设置"，然后执行下面的操作（任选其一）:
 
 1. 要想运行任意应用 - 向 "action" 文本框中粘贴应用文件exe的完整路径，例如:
-``C:\Program Files\EA Games\Battlefield 2042\BF2042.exe``
-
+   ``C:\Program Files\EA Games\Battlefield 2042\BF2042.exe``
 2. 要想模拟任意windows按键 - 向"action"文本框中粘贴相对应的 keycode，例如 ``0x2C`` 为屏幕截图键。
-Keycodes的完整列表: https://learn.microsoft.com/en-us/windows/win32/inputdev/virtual-key-codes
+   Keycodes的完整列表: https://learn.microsoft.com/en-us/windows/win32/inputdev/virtual-key-codes
 
 ![Screenshot 2023-04-13 172537](https://user-images.githubusercontent.com/5920850/231837470-df913847-cf8a-43e1-80b6-5eb6e9eaee4e.png)
 
-------------
+---
 
 _注:请务必参考下方 **免责声明** 原文，以避免或减小错误或不恰当之翻译引起的负面影响。翻译仅为便于阅读之目的，不具有法律效力，亦不作为发生争端时处理之依据。_
 
