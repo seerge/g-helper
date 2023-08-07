@@ -1,4 +1,3 @@
-
 # G-Helper (GHelper)
 
 [![Github all releases](https://img.shields.io/github/downloads/seerge/g-helper/total.svg)](https://GitHub.com/seerge/g-helper/releases/) [![GitHub release](https://img.shields.io/github/release/seerge/g-helper.svg)](https://GitHub.com/seerge/g-helper/releases/) [![GitHub stars](https://img.shields.io/github/stars/seerge/g-helper.svg?style=social&label=Star)](https://GitHub.com/seerge/g-helper/stargazers/)
@@ -13,8 +12,8 @@
 
 ## 🎁 主要优点
 
-1. 自动且无缝的独立显卡模式切换（不需要关闭所有应用或执行其他操作）
-2. 可以手动调整所有的性能模式（包括自定义风扇曲线以及PPTs(Platform Power Threshold,即CPU总功耗,下文简称PPTs--译注))
+1. 自动且无缝的独立显卡模式切换(不需要关闭所有应用或执行其他操作)
+2. 可以手动调整所有的性能模式(包括自定义风扇曲线以及PPTs(Platform Power Threshold,即CPU总功耗,下文简称PPTs--译注))
 3. 极致的轻量化，几乎不消耗任何资源，也不需要安装系统服务。只需要下载一个exe文件就可以运行。
 4. 简洁的界面设计，可以轻松调整所有设置。
 5. 运行不需要管理员权限！
@@ -31,7 +30,7 @@ _如果你在别的地方提到这个软件-请记得加上这个项目的网址
 
 ### ⚡️ 主要功能
 
-1. **性能模式**: 静音模式 - 平衡模式 - 增强模式 （笔电bios内置的性能模式，附带默认的风扇曲线）
+1. **性能模式**: 静音模式 - 平衡模式 - 增强模式 (笔电bios内置的性能模式，附带默认的风扇曲线)
 2. **显卡模式**: 集显模式 - 标准模式 - 独显直连 - 自动切换
 3. 笔记本屏幕刷新率 60hz 或 120hz 自动调节(或者 144hz 等刷新率)，包括屏幕Overdrive(OD,即ROG系列的屏幕快速响应/快显功能--译注)功能
 4. 可调节的风扇曲线、电源功耗设置(PPTs)(_注:请谨慎调节!_)和CPU超频选项
@@ -83,11 +82,11 @@ _PPTs 默认在 幻14 2022版上显示, 对于其他型号 PPTs 的显示将会�
 
 #### 我没看到显卡模式
 
-在一些旧型号中（比如幻14 2020）从硬件层上不支持禁用显卡，在这些机型中并不需要显卡模式，因此没有显示。
+在一些旧型号中(比如幻14 2020)从硬件层上不支持禁用显卡，在这些机型中并不需要显卡模式，因此没有显示。
 
 #### 为什么我的电脑上没有独显直连
 
-独显直连（在硬件层面上）只对2022年之后的机型中生效。
+独显直连(在硬件层面上)只对2022年之后的机型中生效。
 
 #### 我是否应该自行调整功耗设置(PPTs)和风扇曲线?
 
@@ -101,7 +100,7 @@ _PPTs 默认在 幻14 2022版上显示, 对于其他型号 PPTs 的显示将会�
 
 点击一下百分比即可切换。
 
-#### 当我修改自定义风扇曲线时，我得到了"BIOS拒绝修改风扇曲线"（"BIOS rejected fan curve"）提示
+#### 当我修改自定义风扇曲线时，我得到了"BIOS拒绝修改风扇曲线"("BIOS rejected fan curve")提示
 
 2021之后的TUF机型不支持自定义风扇曲线。很可能在Armory Crate中也没有这个选项。
 
@@ -131,11 +130,11 @@ _PPTs 默认在 幻14 2022版上显示, 对于其他型号 PPTs 的显示将会�
 
 #### 我能超频 Nvidia GPU 核心或显存吗?
 
-首先确保你的独立显卡是启用的，之后打开"风扇 + 电源"选项，在这里即可调整核心和显存频率。这个和Armoury Crate中的设置一样。注意，使用这项功能需要管理员权限，应用也会弹出需要管理员权限的提示。（*）
+首先确保你的独立显卡是启用的，之后打开"风扇 + 电源"选项，在这里即可调整核心和显存频率。这个和Armoury Crate中的设置一样。注意，使用这项功能需要管理员权限，应用也会弹出需要管理员权限的提示。(*)
 
 #### Windows Defender将该应用标记为恶意软件/病毒
 
-这是Windows Defender的误报（其他使用机器学习来检测病毒的杀毒软件可能也出现同样的结果），这可能是因为本应用没有数字签名和证书。如果你不放心的话，你可以自己编译安装本项目，本项目是完全开源的。
+这是Windows Defender的误报(其他使用机器学习来检测病毒的杀毒软件可能也出现同样的结果)，这可能是因为本应用没有数字签名和证书。如果你不放心的话，你可以自己编译安装本项目，本项目是完全开源的。
 
 #### 我该在哪找到应用的配置文件和日志文件
 
@@ -143,7 +142,7 @@ _PPTs 默认在 幻14 2022版上显示, 对于其他型号 PPTs 的显示将会�
 
 #### 应用无法在开机时启动或者启动的时候在任务栏没有提示
 
-打开应用，取消再重新勾选"开机自启"项目。如果还是不行的话，你可以手动在Windows 任务计划程序（Task Scheduler）中为G-helper应用增加几秒延迟后再启动。
+打开应用，取消再重新勾选"开机自启"项目。如果还是不行的话，你可以手动在Windows 任务计划程序(Task Scheduler)中为G-helper应用增加几秒延迟后再启动。
 
 #### 我该如何卸载G-helper?
 
@@ -155,7 +154,7 @@ G-helper是一个单文件的exe文件, 而且它不会向系统中安装任何�
 
 #### 我的机型是幻14 2023并且我无法关闭/开启我的独立显卡
 
-这应该是旧版本的BIOS的问题。根据[用户反馈](https://github.com/seerge/g-helper/issues/680)，更新最近的BIOS 312版本即可解决问题（可以通过MyASUS或者G-helper "更新" 项进行安装）。
+这应该是旧版本的BIOS的问题。根据[用户反馈](https://github.com/seerge/g-helper/issues/680)，更新最近的BIOS 312版本即可解决问题(可以通过MyASUS或者G-helper "更新" 项进行安装)。
 
 #### 我的机型是幻15 2022并且我无法关闭/开启我的独立显卡或者风扇出问题
 
@@ -167,8 +166,8 @@ G-helper是一个单文件的exe文件, 而且它不会向系统中安装任何�
 
 #### 我如何从硬件层面重启我的笔记本？
 
-所有的华硕笔记本都支持方便的硬重启。它不会影响你的数据，但是会重置所有硬件相关的东西（例如启动独立显卡，唤醒wifi/蓝牙模块等）
-关闭你的电脑，长按“电源”按钮30-40秒。之后正常启动你的电脑（会比正常情况下花更长时间启动）。
+所有的华硕笔记本都支持方便的硬重启。它不会影响你的数据，但是会重置所有硬件相关的东西(例如启动独立显卡，唤醒wifi/蓝牙模块等)
+关闭你的电脑，长按“电源”按钮30-40秒。之后正常启动你的电脑(会比正常情况下花更长时间启动)。
 
 #### G-helper 是什么?
 
@@ -190,12 +189,12 @@ G-helper是一个单文件的exe文件, 而且它不会向系统中安装任何�
 2. 解压到你选择的文件夹
 3. 运行 **GHelper.exe**
 
-### 运行要求（必须）
+### 运行要求(必须)
 
 - Microsoft [.NET7](https://dotnet.microsoft.com/en-us/download)。 你可能已经安装了。 如果没有的话你可以从官方网站 [立即下载](https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/sdk-7.0.202-windows-x64-installer)。
 - [Asus System Control Interface](https://dlcdnets.asus.com/pub/ASUS/nb/Image/CustomComponent/ASUSSystemControlInterfaceV3/ASUSSystemControlInterfaceV3.exe)。 如果你安装了或者安装过myASUS,  那么这个"驱动"应当已经安装(即使myASUS已经卸载)。 或者你可以手动下载安装。
 
-### 推荐配置（可选）
+### 推荐配置(可选)
 
 - 推荐保持 "Asus Optimization Service" 这个windows服务的运行, 它保证基本的键盘快捷键(比如屏幕或键盘亮度)能够使用。
 - 可选选项(!) 你可以通过在管理员模式下运行 [这个用于精简的.bat文件](https://raw.githubusercontent.com/seerge/g-helper/main/debloat.bat)来禁用/移除不必要的服务。如果要恢复这些服务，运行 [这个.bat文件](https://raw.githubusercontent.com/seerge/g-helper/main/bloat.bat)。
@@ -237,7 +236,7 @@ Where ``mode = 0 (balanced), 1 (turbo), 2 (silent)``
 
 ### 自定义热键行为
 
-软件支持为 M3, M4 和 FN+F4 热键自定义配置。如要设置，在按键旁的选项框中选择"自定义设置"，然后执行下面的操作（任选其一）:
+软件支持为 M3, M4 和 FN+F4 热键自定义配置。如要设置，在按键旁的选项框中选择"自定义设置"，然后执行下面的操作(任选其一):
 
 1. 要想运行任意应用 - 向 "action" 文本框中粘贴应用文件exe的完整路径，例如:
    ``C:\Program Files\EA Games\Battlefield 2042\BF2042.exe``
