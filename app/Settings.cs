@@ -195,6 +195,8 @@ namespace GHelper
             //This will auto position the window again when it resizes. Might mess with position if people drag the window somewhere else.
             this.Resize += SettingsForm_Resize;
             SetContextMenu();
+
+            panelPerformance.Focus();
         }
 
         private void SettingsForm_Resize(object? sender, EventArgs e)
@@ -841,6 +843,10 @@ namespace GHelper
                 gpuTemp = $": {HardwareControl.gpuTemp}°C";
             }
 
+            string trayTip = "CPU" + cpuTemp + " " + HardwareControl.cpuFan;
+            if (gpuTemp.Length > 0) trayTip += "\nGPU" + gpuTemp + " " + HardwareControl.gpuFan;
+            if (battery.Length > 0) trayTip += "\n" + battery;
+
             Program.settingsForm.BeginInvoke(delegate
             {
                 labelCPUFan.Text = "CPU" + cpuTemp + " " + HardwareControl.cpuFan;
@@ -850,11 +856,10 @@ namespace GHelper
 
                 labelBattery.Text = battery;
                 if (!batteryMouseOver) labelCharge.Text = charge;
+
+                panelPerformance.AccessibleName = labelPerf.Text + " " + trayTip;
             });
 
-            string trayTip = "CPU" + cpuTemp + " " + HardwareControl.cpuFan;
-            if (gpuTemp.Length > 0) trayTip += "\nGPU" + gpuTemp + " " + HardwareControl.gpuFan;
-            if (battery.Length > 0) trayTip += "\n" + battery;
 
             Program.trayIcon.Text = trayTip;
 
@@ -912,6 +917,7 @@ namespace GHelper
             Invoke(delegate
             {
                 labelPerf.Text = modeText;
+                panelPerformance.AccessibleName = labelPerf.Text + ". " + Program.trayIcon.Text;
             });
         }
 

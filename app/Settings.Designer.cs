@@ -143,6 +143,8 @@ namespace GHelper
             // 
             // panelMatrix
             // 
+            panelMatrix.AccessibleName = "Anime Matrix";
+            panelMatrix.AccessibleRole = AccessibleRole.Grouping;
             panelMatrix.AutoSize = true;
             panelMatrix.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             panelMatrix.Controls.Add(tableLayoutMatrix);
@@ -154,7 +156,8 @@ namespace GHelper
             panelMatrix.Name = "panelMatrix";
             panelMatrix.Padding = new Padding(20, 20, 20, 10);
             panelMatrix.Size = new Size(827, 176);
-            panelMatrix.TabIndex = 4;
+            panelMatrix.TabIndex = 3;
+            panelMatrix.TabStop = true;
             // 
             // tableLayoutMatrix
             // 
@@ -296,7 +299,6 @@ namespace GHelper
             sliderBattery.Size = new Size(787, 40);
             sliderBattery.Step = 5;
             sliderBattery.TabIndex = 20;
-            sliderBattery.TabStop = false;
             sliderBattery.Text = "sliderBattery";
             sliderBattery.Value = 80;
             // 
@@ -408,8 +410,8 @@ namespace GHelper
             buttonQuit.Name = "buttonQuit";
             buttonQuit.Secondary = true;
             buttonQuit.Size = new Size(255, 48);
-            buttonQuit.TabIndex = 23;
-            buttonQuit.Text = "Quit";
+            buttonQuit.TabIndex = 2;
+            buttonQuit.Text = "&Quit";
             buttonQuit.TextAlign = ContentAlignment.MiddleRight;
             buttonQuit.TextImageRelation = TextImageRelation.ImageBeforeText;
             buttonQuit.UseVisualStyleBackColor = false;
@@ -430,8 +432,8 @@ namespace GHelper
             buttonUpdates.Name = "buttonUpdates";
             buttonUpdates.Secondary = true;
             buttonUpdates.Size = new Size(254, 48);
-            buttonUpdates.TabIndex = 24;
-            buttonUpdates.Text = "Updates";
+            buttonUpdates.TabIndex = 1;
+            buttonUpdates.Text = "&Updates";
             buttonUpdates.TextImageRelation = TextImageRelation.ImageBeforeText;
             buttonUpdates.UseVisualStyleBackColor = false;
             // 
@@ -448,6 +450,8 @@ namespace GHelper
             // 
             // panelPerformance
             // 
+            panelPerformance.AccessibleName = "Performance";
+            panelPerformance.AccessibleRole = AccessibleRole.Grouping;
             panelPerformance.AutoSize = true;
             panelPerformance.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             panelPerformance.Controls.Add(tablePerf);
@@ -459,6 +463,7 @@ namespace GHelper
             panelPerformance.Padding = new Padding(20);
             panelPerformance.Size = new Size(827, 208);
             panelPerformance.TabIndex = 0;
+            panelPerformance.TabStop = true;
             // 
             // tablePerf
             // 
@@ -502,7 +507,7 @@ namespace GHelper
             buttonSilent.Secondary = false;
             buttonSilent.Size = new Size(188, 120);
             buttonSilent.TabIndex = 1;
-            buttonSilent.Text = Properties.Strings.Silent;
+            buttonSilent.Text = "&Silent";
             buttonSilent.TextImageRelation = TextImageRelation.ImageAboveText;
             buttonSilent.UseVisualStyleBackColor = false;
             // 
@@ -525,7 +530,7 @@ namespace GHelper
             buttonBalanced.Secondary = false;
             buttonBalanced.Size = new Size(188, 120);
             buttonBalanced.TabIndex = 1;
-            buttonBalanced.Text = Properties.Strings.Balanced;
+            buttonBalanced.Text = "&Balanced";
             buttonBalanced.TextImageRelation = TextImageRelation.ImageAboveText;
             buttonBalanced.UseVisualStyleBackColor = false;
             // 
@@ -548,7 +553,7 @@ namespace GHelper
             buttonTurbo.Secondary = false;
             buttonTurbo.Size = new Size(188, 120);
             buttonTurbo.TabIndex = 2;
-            buttonTurbo.Text = Properties.Strings.Turbo;
+            buttonTurbo.Text = "&Turbo";
             buttonTurbo.TextImageRelation = TextImageRelation.ImageAboveText;
             buttonTurbo.UseVisualStyleBackColor = false;
             // 
@@ -570,7 +575,7 @@ namespace GHelper
             buttonFans.Secondary = true;
             buttonFans.Size = new Size(191, 120);
             buttonFans.TabIndex = 3;
-            buttonFans.Text = Properties.Strings.FansPower;
+            buttonFans.Text = "&Fans + Power";
             buttonFans.TextImageRelation = TextImageRelation.ImageAboveText;
             buttonFans.UseVisualStyleBackColor = false;
             // 
@@ -600,8 +605,10 @@ namespace GHelper
             // 
             // labelPerf
             // 
+            labelPerf.AccessibleRole = AccessibleRole.Caret;
             labelPerf.AutoSize = true;
             labelPerf.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            labelPerf.LiveSetting = System.Windows.Forms.Automation.AutomationLiveSetting.Polite;
             labelPerf.Location = new Point(40, 0);
             labelPerf.Margin = new Padding(8, 0, 8, 0);
             labelPerf.Name = "labelPerf";
@@ -611,6 +618,7 @@ namespace GHelper
             // 
             // labelCPUFan
             // 
+            labelCPUFan.AccessibleRole = AccessibleRole.TitleBar;
             labelCPUFan.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             labelCPUFan.Cursor = Cursors.Hand;
             labelCPUFan.Location = new Point(387, 0);
@@ -623,6 +631,8 @@ namespace GHelper
             // 
             // panelGPU
             // 
+            panelGPU.AccessibleName = "GPU";
+            panelGPU.AccessibleRole = AccessibleRole.Grouping;
             panelGPU.AutoSize = true;
             panelGPU.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             panelGPU.Controls.Add(labelTipGPU);
@@ -635,6 +645,7 @@ namespace GHelper
             panelGPU.Padding = new Padding(20, 20, 20, 0);
             panelGPU.Size = new Size(827, 352);
             panelGPU.TabIndex = 1;
+            panelGPU.TabStop = true;
             // 
             // labelTipGPU
             // 
@@ -767,6 +778,7 @@ namespace GHelper
             // 
             // buttonOptimized
             // 
+            buttonOptimized.AccessibleName = "Optimized GPU Mode";
             buttonOptimized.Activated = false;
             buttonOptimized.BackColor = SystemColors.ControlLightLight;
             buttonOptimized.BorderColor = Color.Transparent;
@@ -857,6 +869,8 @@ namespace GHelper
             // 
             // panelScreen
             // 
+            panelScreen.AccessibleName = "Screen";
+            panelScreen.AccessibleRole = AccessibleRole.Grouping;
             panelScreen.AutoSize = true;
             panelScreen.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             panelScreen.Controls.Add(labelTipScreen);
@@ -869,6 +883,7 @@ namespace GHelper
             panelScreen.Padding = new Padding(20, 20, 20, 0);
             panelScreen.Size = new Size(827, 176);
             panelScreen.TabIndex = 2;
+            panelScreen.TabStop = true;
             // 
             // labelTipScreen
             // 
@@ -1030,6 +1045,8 @@ namespace GHelper
             // 
             // panelKeyboard
             // 
+            panelKeyboard.AccessibleName = "Keyboard";
+            panelKeyboard.AccessibleRole = AccessibleRole.Grouping;
             panelKeyboard.AutoSize = true;
             panelKeyboard.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             panelKeyboard.Controls.Add(tableLayoutKeyboard);
@@ -1040,7 +1057,8 @@ namespace GHelper
             panelKeyboard.Name = "panelKeyboard";
             panelKeyboard.Padding = new Padding(20);
             panelKeyboard.Size = new Size(827, 144);
-            panelKeyboard.TabIndex = 3;
+            panelKeyboard.TabIndex = 4;
+            panelKeyboard.TabStop = true;
             // 
             // tableLayoutKeyboard
             // 
@@ -1080,7 +1098,7 @@ namespace GHelper
             buttonKeyboard.Secondary = true;
             buttonKeyboard.Size = new Size(255, 48);
             buttonKeyboard.TabIndex = 37;
-            buttonKeyboard.Text = Properties.Strings.Extra;
+            buttonKeyboard.Text = "&Extra";
             buttonKeyboard.TextImageRelation = TextImageRelation.ImageBeforeText;
             buttonKeyboard.UseVisualStyleBackColor = false;
             // 

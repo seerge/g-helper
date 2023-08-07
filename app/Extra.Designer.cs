@@ -133,6 +133,8 @@ namespace GHelper
             // 
             // panelServices
             // 
+            panelServices.AccessibleName = "Asus Services";
+            panelServices.AccessibleRole = AccessibleRole.Grouping;
             panelServices.Controls.Add(pictureService);
             panelServices.Controls.Add(labelServices);
             panelServices.Controls.Add(buttonServices);
@@ -140,7 +142,7 @@ namespace GHelper
             panelServices.Location = new Point(15, 1267);
             panelServices.Name = "panelServices";
             panelServices.Size = new Size(983, 75);
-            panelServices.TabIndex = 3;
+            panelServices.TabIndex = 4;
             // 
             // pictureService
             // 
@@ -228,6 +230,7 @@ namespace GHelper
             // 
             // panelBindings
             // 
+            panelBindings.AccessibleName = "Key Bindings";
             panelBindings.AutoSize = true;
             panelBindings.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             panelBindings.Controls.Add(tableBindings);
@@ -236,10 +239,13 @@ namespace GHelper
             panelBindings.Name = "panelBindings";
             panelBindings.Padding = new Padding(0, 0, 11, 5);
             panelBindings.Size = new Size(983, 351);
-            panelBindings.TabIndex = 5;
+            panelBindings.TabIndex = 1;
+            panelBindings.TabStop = true;
             // 
             // tableBindings
             // 
+            tableBindings.AccessibleName = "Keyboard Bindings";
+            tableBindings.AccessibleRole = AccessibleRole.Table;
             tableBindings.AutoSize = true;
             tableBindings.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             tableBindings.ColumnCount = 3;
@@ -297,6 +303,7 @@ namespace GHelper
             // 
             // comboFNE
             // 
+            comboFNE.AccessibleName = "Fn+Numpad Action";
             comboFNE.BorderColor = Color.White;
             comboFNE.ButtonColor = Color.FromArgb(255, 255, 255);
             comboFNE.Dock = DockStyle.Top;
@@ -305,7 +312,7 @@ namespace GHelper
             comboFNE.Margin = new Padding(4, 3, 4, 3);
             comboFNE.Name = "comboFNE";
             comboFNE.Size = new Size(374, 40);
-            comboFNE.TabIndex = 19;
+            comboFNE.TabIndex = 7;
             // 
             // textFNE
             // 
@@ -316,6 +323,7 @@ namespace GHelper
             textFNE.PlaceholderText = "action";
             textFNE.Size = new Size(375, 39);
             textFNE.TabIndex = 18;
+            textFNE.TabStop = false;
             // 
             // labelFNC
             // 
@@ -337,6 +345,7 @@ namespace GHelper
             textM2.PlaceholderText = "action";
             textM2.Size = new Size(373, 39);
             textM2.TabIndex = 14;
+            textM2.TabStop = false;
             // 
             // textM1
             // 
@@ -347,9 +356,11 @@ namespace GHelper
             textM1.PlaceholderText = "action";
             textM1.Size = new Size(375, 39);
             textM1.TabIndex = 13;
+            textM1.TabStop = false;
             // 
             // comboM1
             // 
+            comboM1.AccessibleName = "M1 Action";
             comboM1.BorderColor = Color.White;
             comboM1.ButtonColor = Color.FromArgb(255, 255, 255);
             comboM1.Dock = DockStyle.Top;
@@ -359,7 +370,7 @@ namespace GHelper
             comboM1.Margin = new Padding(4, 3, 4, 3);
             comboM1.Name = "comboM1";
             comboM1.Size = new Size(374, 40);
-            comboM1.TabIndex = 11;
+            comboM1.TabIndex = 1;
             // 
             // labelM1
             // 
@@ -374,6 +385,7 @@ namespace GHelper
             // 
             // comboM4
             // 
+            comboM4.AccessibleName = "M4 Action";
             comboM4.BorderColor = Color.White;
             comboM4.ButtonColor = Color.FromArgb(255, 255, 255);
             comboM4.Dock = DockStyle.Top;
@@ -383,10 +395,11 @@ namespace GHelper
             comboM4.Margin = new Padding(4, 3, 4, 3);
             comboM4.Name = "comboM4";
             comboM4.Size = new Size(374, 40);
-            comboM4.TabIndex = 3;
+            comboM4.TabIndex = 4;
             // 
             // comboM3
             // 
+            comboM3.AccessibleName = "M3 Action";
             comboM3.BorderColor = Color.White;
             comboM3.ButtonColor = Color.FromArgb(255, 255, 255);
             comboM3.Dock = DockStyle.Top;
@@ -396,7 +409,7 @@ namespace GHelper
             comboM3.Margin = new Padding(4, 3, 4, 3);
             comboM3.Name = "comboM3";
             comboM3.Size = new Size(374, 40);
-            comboM3.TabIndex = 1;
+            comboM3.TabIndex = 3;
             // 
             // textM4
             // 
@@ -407,6 +420,7 @@ namespace GHelper
             textM4.PlaceholderText = "action";
             textM4.Size = new Size(375, 39);
             textM4.TabIndex = 5;
+            textM4.TabStop = false;
             // 
             // textM3
             // 
@@ -417,6 +431,7 @@ namespace GHelper
             textM3.PlaceholderText = "action";
             textM3.Size = new Size(375, 39);
             textM3.TabIndex = 4;
+            textM3.TabStop = false;
             // 
             // labelM4
             // 
@@ -453,6 +468,7 @@ namespace GHelper
             // 
             // comboM2
             // 
+            comboM2.AccessibleName = "M2 Action";
             comboM2.BorderColor = Color.White;
             comboM2.ButtonColor = Color.FromArgb(255, 255, 255);
             comboM2.Dock = DockStyle.Top;
@@ -462,7 +478,7 @@ namespace GHelper
             comboM2.Margin = new Padding(4, 3, 4, 3);
             comboM2.Name = "comboM2";
             comboM2.Size = new Size(374, 40);
-            comboM2.TabIndex = 12;
+            comboM2.TabIndex = 2;
             // 
             // labelFNF4
             // 
@@ -477,6 +493,7 @@ namespace GHelper
             // 
             // comboFNF4
             // 
+            comboFNF4.AccessibleName = "Fn+F4 Action";
             comboFNF4.BorderColor = Color.White;
             comboFNF4.ButtonColor = Color.FromArgb(255, 255, 255);
             comboFNF4.Dock = DockStyle.Top;
@@ -485,7 +502,7 @@ namespace GHelper
             comboFNF4.Margin = new Padding(4, 3, 4, 3);
             comboFNF4.Name = "comboFNF4";
             comboFNF4.Size = new Size(374, 40);
-            comboFNF4.TabIndex = 7;
+            comboFNF4.TabIndex = 5;
             // 
             // textFNF4
             // 
@@ -496,9 +513,11 @@ namespace GHelper
             textFNF4.PlaceholderText = "action";
             textFNF4.Size = new Size(375, 39);
             textFNF4.TabIndex = 8;
+            textFNF4.TabStop = false;
             // 
             // comboFNC
             // 
+            comboFNC.AccessibleName = "Fn+C Action";
             comboFNC.BorderColor = Color.White;
             comboFNC.ButtonColor = Color.FromArgb(255, 255, 255);
             comboFNC.Dock = DockStyle.Top;
@@ -507,7 +526,7 @@ namespace GHelper
             comboFNC.Margin = new Padding(4, 3, 4, 3);
             comboFNC.Name = "comboFNC";
             comboFNC.Size = new Size(374, 40);
-            comboFNC.TabIndex = 16;
+            comboFNC.TabIndex = 6;
             // 
             // textFNC
             // 
@@ -518,6 +537,7 @@ namespace GHelper
             textFNC.PlaceholderText = "action";
             textFNC.Size = new Size(375, 39);
             textFNC.TabIndex = 17;
+            textFNC.TabStop = false;
             // 
             // tableKeys
             // 
@@ -562,6 +582,7 @@ namespace GHelper
             sliderBrightness.Size = new Size(500, 40);
             sliderBrightness.Step = 1;
             sliderBrightness.TabIndex = 50;
+            sliderBrightness.TabStop = false;
             sliderBrightness.Text = "sliderBrightness";
             sliderBrightness.Value = 3;
             // 
@@ -596,7 +617,7 @@ namespace GHelper
             panelBacklight.Name = "panelBacklight";
             panelBacklight.Padding = new Padding(0, 5, 0, 5);
             panelBacklight.Size = new Size(983, 402);
-            panelBacklight.TabIndex = 6;
+            panelBacklight.TabIndex = 2;
             // 
             // panelBacklightExtra
             // 
@@ -617,23 +638,25 @@ namespace GHelper
             // 
             // numericBacklightPluggedTime
             // 
+            numericBacklightPluggedTime.AccessibleName = "Backlight Timeout when plugged";
             numericBacklightPluggedTime.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             numericBacklightPluggedTime.Location = new Point(670, 63);
             numericBacklightPluggedTime.Margin = new Padding(4, 3, 4, 3);
             numericBacklightPluggedTime.Maximum = new decimal(new int[] { 3600, 0, 0, 0 });
             numericBacklightPluggedTime.Name = "numericBacklightPluggedTime";
             numericBacklightPluggedTime.Size = new Size(140, 39);
-            numericBacklightPluggedTime.TabIndex = 49;
+            numericBacklightPluggedTime.TabIndex = 1;
             // 
             // numericBacklightTime
             // 
+            numericBacklightTime.AccessibleName = "Backlight Timeout when on battery";
             numericBacklightTime.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             numericBacklightTime.Location = new Point(822, 63);
             numericBacklightTime.Margin = new Padding(4, 3, 4, 3);
             numericBacklightTime.Maximum = new decimal(new int[] { 3600, 0, 0, 0 });
             numericBacklightTime.Name = "numericBacklightTime";
             numericBacklightTime.Size = new Size(140, 39);
-            numericBacklightTime.TabIndex = 47;
+            numericBacklightTime.TabIndex = 2;
             // 
             // labelBacklightTimeout
             // 
@@ -655,6 +678,7 @@ namespace GHelper
             // 
             // comboKeyboardSpeed
             // 
+            comboKeyboardSpeed.AccessibleName = "Keyboard Animation Speed";
             comboKeyboardSpeed.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             comboKeyboardSpeed.BorderColor = Color.White;
             comboKeyboardSpeed.ButtonColor = SystemColors.ControlLight;
@@ -667,7 +691,7 @@ namespace GHelper
             comboKeyboardSpeed.Margin = new Padding(4, 12, 4, 9);
             comboKeyboardSpeed.Name = "comboKeyboardSpeed";
             comboKeyboardSpeed.Size = new Size(293, 40);
-            comboKeyboardSpeed.TabIndex = 43;
+            comboKeyboardSpeed.TabIndex = 0;
             comboKeyboardSpeed.TabStop = false;
             // 
             // panelXMG
@@ -747,6 +771,7 @@ namespace GHelper
             // 
             // checkAwake
             // 
+            checkAwake.AccessibleName = "Awake Backlight";
             checkAwake.Dock = DockStyle.Fill;
             checkAwake.Location = new Point(4, 45);
             checkAwake.Margin = new Padding(4, 0, 4, 0);
@@ -759,6 +784,7 @@ namespace GHelper
             // 
             // checkBoot
             // 
+            checkBoot.AccessibleName = "Boot Backlight";
             checkBoot.Dock = DockStyle.Fill;
             checkBoot.Location = new Point(4, 88);
             checkBoot.Margin = new Padding(4, 0, 4, 0);
@@ -771,6 +797,7 @@ namespace GHelper
             // 
             // checkSleep
             // 
+            checkSleep.AccessibleName = "Sleep Backlight";
             checkSleep.Dock = DockStyle.Fill;
             checkSleep.Location = new Point(4, 131);
             checkSleep.Margin = new Padding(4, 0, 4, 0);
@@ -783,6 +810,7 @@ namespace GHelper
             // 
             // checkShutdown
             // 
+            checkShutdown.AccessibleName = "Shutdown Backlight";
             checkShutdown.Dock = DockStyle.Fill;
             checkShutdown.Location = new Point(4, 174);
             checkShutdown.Margin = new Padding(4, 0, 4, 0);
@@ -1022,6 +1050,8 @@ namespace GHelper
             // 
             // panelSettings
             // 
+            panelSettings.AccessibleName = "Extra Settings";
+            panelSettings.AccessibleRole = AccessibleRole.Grouping;
             panelSettings.AutoSize = true;
             panelSettings.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             panelSettings.Controls.Add(checkAutoToggleClamshellMode);
@@ -1037,7 +1067,7 @@ namespace GHelper
             panelSettings.Name = "panelSettings";
             panelSettings.Padding = new Padding(20, 5, 11, 5);
             panelSettings.Size = new Size(983, 346);
-            panelSettings.TabIndex = 46;
+            panelSettings.TabIndex = 3;
             // 
             // checkAutoToggleClamshellMode
             // 
@@ -1047,7 +1077,7 @@ namespace GHelper
             checkAutoToggleClamshellMode.Name = "checkAutoToggleClamshellMode";
             checkAutoToggleClamshellMode.Padding = new Padding(3);
             checkAutoToggleClamshellMode.Size = new Size(952, 42);
-            checkAutoToggleClamshellMode.TabIndex = 58;
+            checkAutoToggleClamshellMode.TabIndex = 8;
             checkAutoToggleClamshellMode.Text = "Auto Toggle Clamshell Mode";
             checkAutoToggleClamshellMode.UseVisualStyleBackColor = true;
             // 
@@ -1060,7 +1090,7 @@ namespace GHelper
             checkAutoApplyWindowsPowerMode.Name = "checkAutoApplyWindowsPowerMode";
             checkAutoApplyWindowsPowerMode.Padding = new Padding(3);
             checkAutoApplyWindowsPowerMode.Size = new Size(952, 42);
-            checkAutoApplyWindowsPowerMode.TabIndex = 54;
+            checkAutoApplyWindowsPowerMode.TabIndex = 7;
             checkAutoApplyWindowsPowerMode.Text = "Auto Adjust Windows Power Mode";
             checkAutoApplyWindowsPowerMode.UseVisualStyleBackColor = true;
             // 
@@ -1073,7 +1103,7 @@ namespace GHelper
             checkTopmost.Name = "checkTopmost";
             checkTopmost.Padding = new Padding(3);
             checkTopmost.Size = new Size(952, 42);
-            checkTopmost.TabIndex = 51;
+            checkTopmost.TabIndex = 6;
             checkTopmost.Text = Strings.WindowTop;
             checkTopmost.UseVisualStyleBackColor = true;
             // 
@@ -1086,7 +1116,7 @@ namespace GHelper
             checkNoOverdrive.Name = "checkNoOverdrive";
             checkNoOverdrive.Padding = new Padding(3);
             checkNoOverdrive.Size = new Size(952, 42);
-            checkNoOverdrive.TabIndex = 52;
+            checkNoOverdrive.TabIndex = 5;
             checkNoOverdrive.Text = Strings.DisableOverdrive;
             checkNoOverdrive.UseVisualStyleBackColor = true;
             // 
@@ -1099,7 +1129,7 @@ namespace GHelper
             checkUSBC.Name = "checkUSBC";
             checkUSBC.Padding = new Padding(3);
             checkUSBC.Size = new Size(952, 42);
-            checkUSBC.TabIndex = 53;
+            checkUSBC.TabIndex = 4;
             checkUSBC.Text = "Keep GPU disabled on USB-C charger in Optimized mode";
             checkUSBC.UseVisualStyleBackColor = true;
             // 
@@ -1112,7 +1142,7 @@ namespace GHelper
             checkVariBright.Name = "checkVariBright";
             checkVariBright.Padding = new Padding(3);
             checkVariBright.Size = new Size(952, 42);
-            checkVariBright.TabIndex = 57;
+            checkVariBright.TabIndex = 3;
             checkVariBright.Text = "AMD Display VariBright";
             checkVariBright.UseVisualStyleBackColor = true;
             // 
@@ -1125,7 +1155,7 @@ namespace GHelper
             checkGpuApps.Name = "checkGpuApps";
             checkGpuApps.Padding = new Padding(3);
             checkGpuApps.Size = new Size(952, 42);
-            checkGpuApps.TabIndex = 55;
+            checkGpuApps.TabIndex = 2;
             checkGpuApps.Text = "Stop all apps using GPU when switching to Eco";
             checkGpuApps.UseVisualStyleBackColor = true;
             // 
@@ -1139,7 +1169,7 @@ namespace GHelper
             checkFnLock.Name = "checkFnLock";
             checkFnLock.Padding = new Padding(3);
             checkFnLock.Size = new Size(800, 42);
-            checkFnLock.TabIndex = 56;
+            checkFnLock.TabIndex = 1;
             checkFnLock.Text = "Process Fn+F hotkeys without Fn";
             checkFnLock.UseVisualStyleBackColor = true;
             // 
