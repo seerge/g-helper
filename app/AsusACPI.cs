@@ -109,12 +109,13 @@ public class AsusACPI
     public const int GPUModeStandard = 1;
     public const int GPUModeUltimate = 2;
 
-    public static int MaxTotal => AppConfig.IsAdvantageEdition() ? 250 : 150;
     public const int MinTotal = 5;
-    public const int DefaultTotal = 125;
 
-    public const int MaxCPU = 100;
+    public static int MaxTotal = 150;
+    public static int DefaultTotal = 125;
+
     public const int MinCPU = 5;
+    public const int MaxCPU = 100;
     public const int DefaultCPU = 80;
 
     public const int MinGPUBoost = 5;
@@ -211,6 +212,14 @@ public class AsusACPI
         {
             throw new Exception("Can't connect to ACPI");
         }
+
+        if (AppConfig.IsAdvantageEdition()) MaxTotal = 250;
+        if (AppConfig.IsX13())
+        {
+            MaxTotal = 75;
+            DefaultTotal = 50;
+        }
+
 
     }
 

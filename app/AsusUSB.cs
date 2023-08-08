@@ -63,6 +63,8 @@ namespace GHelper
         static bool isTuf = AppConfig.IsTUF();
         static bool isStrix = AppConfig.IsStrix();
 
+        static bool isOldHeatmap = AppConfig.Is("old_heatmap");
+
 
         static System.Timers.Timer timer = new System.Timers.Timer(2000);
         static HidDevice? auraDevice = null;
@@ -464,7 +466,7 @@ namespace GHelper
             if (auraDevice is null || !auraDevice.IsConnected) GetAuraDevice();
             if (auraDevice is null || !auraDevice.IsConnected) return;
 
-            if (isStrix)
+            if (isStrix && !isOldHeatmap)
             {
                 byte[] msg = new byte[0x40];
                 

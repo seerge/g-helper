@@ -300,7 +300,7 @@ public static class AppConfig
 
     public static bool NoAuraColor()
     {
-        return  ContainsModel("GA401") || ContainsModel("X13") || ContainsModel("GA503RM");
+        return  ContainsModel("GA401") || ContainsModel("X13");
     }
 
     public static bool IsStrix()
@@ -317,6 +317,12 @@ public static class AppConfig
     {
         return ContainsModel("X16") || ContainsModel("X13");
     }
+
+    public static bool IsX13()
+    {
+        return ContainsModel("X13");
+    }
+
 
     public static bool IsAdvantageEdition()
     {
