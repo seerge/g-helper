@@ -241,7 +241,7 @@
     <value>Balans</value>
   </data>
   <data name="BatteryCharge" xml:space="preserve">
-    <value>Charge</value>
+    <value>Naładowanie</value>
   </data>
   <data name="BatteryChargeLimit" xml:space="preserve">
     <value>Limit ładowania baterii</value>
@@ -456,7 +456,7 @@ Nadal chcesz kontynuować?</value>
     <value>Przejście w tryb uśpienia po</value>
   </data>
   <data name="MouseButtonResponse" xml:space="preserve">
-    <value>Button Response</value>
+    <value>Reakcja przycisków</value>
   </data>
   <data name="MouseLiftOffDistance" xml:space="preserve">
     <value>Wysokość reakcji sensora</value>
@@ -588,7 +588,7 @@ Nadal chcesz kontynuować?</value>
     <value>Przełącz Aura</value>
   </data>
   <data name="ToggleClamshellMode" xml:space="preserve">
-    <value>Automatyczne przełączanie trybu klapki</value>
+    <value>Automatyczny tryb pracy z zamkniętą pokrywą</value>
   </data>
   <data name="ToggleFnLock" xml:space="preserve">
     <value>Przełącz Fn-Lock</value>
