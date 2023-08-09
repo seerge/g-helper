@@ -72,7 +72,7 @@ public class NvidiaGpuControl : IGpuControl
             Logger.WriteLine(ex.Message);
         }
 
-        //NVIDIA.RestartDisplayDriver();
+        //GeneralApi.RestartDisplayDriver();
     }
 
 
@@ -112,7 +112,8 @@ public class NvidiaGpuControl : IGpuControl
     {
         try
         {
-            string script = @"$device = Get-PnpDevice | Where-Object { $_.FriendlyName -imatch 'NVIDIA' -and $_.Class -eq 'Display' }; Disable-PnpDevice $device.InstanceId -Confirm:$false; Start-Sleep -Seconds 3; Enable-PnpDevice $device.InstanceId -Confirm:$false";
+
+            string script = @"$device = Get-PnpDevice | Where-Object { $_.FriendlyName -imatch 'NVIDIA' -and $_.Class -eq 'Display' }; Disable-PnpDevice $device.InstanceId -Confirm:$false; Start-Sleep -Seconds 5; Enable-PnpDevice $device.InstanceId -Confirm:$false";
             Logger.WriteLine(script);
             ProcessHelper.RunCMD("powershell", script);
             //Thread.Sleep(2000);
