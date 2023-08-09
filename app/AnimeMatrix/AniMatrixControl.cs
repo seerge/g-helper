@@ -42,7 +42,7 @@ namespace GHelper.AnimeMatrix
 
         }
 
-        public void SetMatrix()
+        public void SetMatrix(bool wakeUp = false)
         {
 
             if (!IsValid) return;
@@ -66,6 +66,8 @@ namespace GHelper.AnimeMatrix
             StopMatrixAudio();
 
             mat.SetProvider();
+
+            if (wakeUp && AppConfig.ContainsModel("401")) mat.WakeUp();
 
             if (brightness == 0 || (auto && SystemInformation.PowerStatus.PowerLineStatus != PowerLineStatus.Online))
             {

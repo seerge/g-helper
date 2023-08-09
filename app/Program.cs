@@ -193,7 +193,7 @@ namespace GHelper
             BatteryControl.SetBatteryChargeLimit();
 
             settingsForm.AutoKeyboard();
-            settingsForm.matrix.SetMatrix();
+            settingsForm.matrix.SetMatrix(true);
         }
 
         private static void SystemEvents_PowerModeChanged(object sender, PowerModeChangedEventArgs e)

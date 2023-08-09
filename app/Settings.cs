@@ -857,7 +857,7 @@ namespace GHelper
                 labelBattery.Text = battery;
                 if (!batteryMouseOver) labelCharge.Text = charge;
 
-                panelPerformance.AccessibleName = labelPerf.Text + " " + trayTip;
+                //panelPerformance.AccessibleName = labelPerf.Text + " " + trayTip;
             });
 
 
@@ -917,7 +917,7 @@ namespace GHelper
             Invoke(delegate
             {
                 labelPerf.Text = modeText;
-                panelPerformance.AccessibleName = labelPerf.Text + ". " + Program.trayIcon.Text;
+                panelPerformance.AccessibleName = labelPerf.Text; // + ". " + Program.trayIcon.Text;
             });
         }
 
