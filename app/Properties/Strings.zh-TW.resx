@@ -374,6 +374,9 @@
   <data name="GPUTempTarget" xml:space="preserve">
     <value>GPU溫度上限</value>
   </data>
+  <data name="HibernateAfter" xml:space="preserve">
+    <value>Minutes till Hibernation in sleep on battery (0 - OFF)</value>
+  </data>
   <data name="High" xml:space="preserve">
     <value>高</value>
   </data>
