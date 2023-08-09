@@ -131,6 +131,8 @@ namespace GHelper.Gpu
 
                 if (eco == 1)
                 {
+                    
+                    /*
                     if (NvidiaSmi.GetDisplayActiveStatus())
                     {
                         DialogResult dialogResult = MessageBox.Show(Properties.Strings.EnableOptimusText, Properties.Strings.EnableOptimusTitle, MessageBoxButtons.YesNo);
@@ -140,6 +142,7 @@ namespace GHelper.Gpu
                             return;
                         }
                     }
+                    */
 
                     HardwareControl.KillGPUApps();
                 }
@@ -321,7 +324,7 @@ namespace GHelper.Gpu
         // https://github.com/seerge/g-helper/pull/855 
         public void StandardModeFix()
         {
-            if (!AppConfig.Is("gpu_fix")) return; // No config entry
+            if (!AppConfig.IsGPUFix()) return; // No config entry
             if (Program.acpi.DeviceGet(AsusACPI.GPUMux) == 0) return; // Ultimate mode
 
             Logger.WriteLine("Forcing Standard Mode on shutdown / hibernation");

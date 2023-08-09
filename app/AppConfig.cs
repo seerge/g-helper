@@ -356,5 +356,9 @@ public static class AppConfig
         return ContainsModel("FX507") || ContainsModel("FX517") || ContainsModel("FX707");
     }
 
+    public static bool IsGPUFix()
+    {
+        return ContainsModel("GA402X") && (Get("gpu_fix") != 0);
+    }
 
 }

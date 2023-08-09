@@ -322,9 +322,18 @@ namespace GHelper
 
             pictureLog.Click += PictureLog_Click;
 
+            checkGPUFix.Visible = AppConfig.ContainsModel("GA402X");
+            checkGPUFix.Checked = AppConfig.Get("gpu_fix") != 0;
+            checkGPUFix.CheckedChanged += CheckGPUFix_CheckedChanged;
+
             InitVariBright();
             InitServices();
             InitHibernate();
+        }
+
+        private void CheckGPUFix_CheckedChanged(object? sender, EventArgs e)
+        {
+            AppConfig.Set("gpu_fix", (checkGPUFix.Checked ? 1 : 0));
         }
 
         private void InitHibernate()
