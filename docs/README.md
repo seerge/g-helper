@@ -52,13 +52,14 @@ _To keep auto switching and hotkeys working the app needs to stay running in the
 
 ### :rocket: Performance Modes
 
-Modes are **baked in BIOS** along with default fan curves and power limits. They are the **same** as in the Armoury Crate.
+<img align="right" width="200" src="https://github.com/seerge/g-helper/assets/5920850/3e119674-db8d-486b-aa65-2bf9b61f9aa6">
 
-1. **Silent** (minimal or no fans,  45W CPU) + Best power efficiency setting in windows
-2. **Balanced** (balanced fans,  45W CPU) + Balanced setting in windows
-3. **Turbo** (intense fans, up to 80W CPU) + Best performance setting in windows
+All Modes are **baked in BIOS** along with default fan curves and power limits. They are the **same** as in the Armoury Crate.
 
-_Default power limits are measured for G14 2022. For other models they will be different._
+1. **Silent** in BIOS + **Best power efficiency** setting in Windows
+2. **Balanced** (or Performance as it's called in AC) in BIOS  + **Balanced** setting in Windows
+3. **Turbo** in BIOS + **Best performance** setting in Windows
+   
 
 ### :video_game: GPU Modes
 
@@ -181,6 +182,24 @@ Small and lightweight Armoury Crate alternative for Asus laptops offering almost
 
 - It is **strongly recommended** to run app with windows default "balanced" power plan
 ![Screenshot 2023-06-09 153453](https://github.com/seerge/g-helper/assets/5920850/d1d05c53-a0bd-4207-b23a-244653f3e7df)
+
+-------------------------------
+
+## Notice for G14 2023 users who complain about not being able to set Eco mode
+
+It's a known issue with the Nvidia Drivers / Windows that happens for **BOTH Armoury Crate and G-Helper**, as it doesn't depend on them. It appears if you shut down your system with GPU disabled (in Eco mode).
+
+Scenario to reproduce (for both AC / GH):
+1. Set Eco mode and shut down / start or reboot your computer
+2. After booting in Eco set Standard -> ``brightness controls won't work``
+3. Try to set Eco mode -> ``it won't work``
+4. G-Helper would offer you to restart GPU in Device Manager, after that you will be able to set Eco, AC won't be able to do anything
+
+G-Helper offers a "temporary" solution for this in the form of always setting Standard mode when the laptop shuts down. If you want to use this solution - add following line to the beginning of ``%AppData%\GHelper\config.json``
+
+```
+"gpu_fix" : 1,
+```
 
 -------------------------------
 
