@@ -223,5 +223,38 @@ namespace GHelper.Mode
 
             Logger.WriteLine("Changed Lid Action to " + action);
         }
+
+        public static int GetHibernateAfter()
+        {
+            Guid activeSchemeGuid = GetActiveScheme();
+            IntPtr seconds;
+            PowerReadDCValueIndex(IntPtr.Zero,
+                    activeSchemeGuid,
+                    GUID_SLEEP_SUBGROUP,
+                    GUID_HIBERNATEIDLE, out seconds);
+
+            Logger.WriteLine("Hibernate after " + seconds);
+            return (seconds.ToInt32() / 60);
+        }
+
+
+        public static void SetHibernateAfter(int minutes)
+        {
+            int seconds = minutes * 60;
+
+            Guid activeSchemeGuid = GetActiveScheme();
+            var hrAC = PowerWriteDCValueIndex(
+                IntPtr.Zero,
+                activeSchemeGuid,
+                GUID_SLEEP_SUBGROUP,
+                GUID_HIBERNATEIDLE,
+                seconds);
+
+            PowerSetActiveScheme(IntPtr.Zero, activeSchemeGuid);
+
+            Logger.WriteLine("Setting Hibernate after " + seconds + ": " + (hrAC == 0 ? "OK" : hrAC));
+        }
+
+
     }
 }

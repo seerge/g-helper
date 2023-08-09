@@ -110,6 +110,10 @@ namespace GHelper
             checkVariBright = new CheckBox();
             checkGpuApps = new CheckBox();
             checkFnLock = new CheckBox();
+            panelPower = new Panel();
+            numericHibernateAfter = new NumericUpDown();
+            labelHibernateAfter = new Label();
+            pictureHibernate = new PictureBox();
             panelServices.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureService).BeginInit();
             panelBindingsHeader.SuspendLayout();
@@ -129,6 +133,9 @@ namespace GHelper
             ((System.ComponentModel.ISupportInitialize)pictureLog).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureSettings).BeginInit();
             panelSettings.SuspendLayout();
+            panelPower.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numericHibernateAfter).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)pictureHibernate).BeginInit();
             SuspendLayout();
             // 
             // panelServices
@@ -139,10 +146,10 @@ namespace GHelper
             panelServices.Controls.Add(labelServices);
             panelServices.Controls.Add(buttonServices);
             panelServices.Dock = DockStyle.Top;
-            panelServices.Location = new Point(15, 1267);
+            panelServices.Location = new Point(15, 1341);
             panelServices.Name = "panelServices";
             panelServices.Size = new Size(983, 75);
-            panelServices.TabIndex = 4;
+            panelServices.TabIndex = 5;
             // 
             // pictureService
             // 
@@ -1173,15 +1180,58 @@ namespace GHelper
             checkFnLock.Text = "Process Fn+F hotkeys without Fn";
             checkFnLock.UseVisualStyleBackColor = true;
             // 
+            // panelPower
+            // 
+            panelPower.Controls.Add(numericHibernateAfter);
+            panelPower.Controls.Add(labelHibernateAfter);
+            panelPower.Controls.Add(pictureHibernate);
+            panelPower.Dock = DockStyle.Top;
+            panelPower.Location = new Point(15, 1267);
+            panelPower.Name = "panelPower";
+            panelPower.Size = new Size(983, 74);
+            panelPower.TabIndex = 4;
+            // 
+            // numericHibernateAfter
+            // 
+            numericHibernateAfter.AccessibleName = "Minutes till Hibernation in sleep";
+            numericHibernateAfter.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            numericHibernateAfter.Increment = new decimal(new int[] { 10, 0, 0, 0 });
+            numericHibernateAfter.Location = new Point(810, 21);
+            numericHibernateAfter.Margin = new Padding(4, 3, 4, 3);
+            numericHibernateAfter.Maximum = new decimal(new int[] { 3000000, 0, 0, 0 });
+            numericHibernateAfter.Name = "numericHibernateAfter";
+            numericHibernateAfter.Size = new Size(152, 39);
+            numericHibernateAfter.TabIndex = 1;
+            // 
+            // labelHibernateAfter
+            // 
+            labelHibernateAfter.AutoSize = true;
+            labelHibernateAfter.Location = new Point(59, 21);
+            labelHibernateAfter.Margin = new Padding(4, 0, 4, 0);
+            labelHibernateAfter.Name = "labelHibernateAfter";
+            labelHibernateAfter.Size = new Size(457, 32);
+            labelHibernateAfter.TabIndex = 45;
+            labelHibernateAfter.Text = "Minutes till Hibernation in sleep (0 - OFF)";
+            // 
+            // pictureHibernate
+            // 
+            pictureHibernate.BackgroundImage = Resources.icons8_hibernate_32;
+            pictureHibernate.BackgroundImageLayout = ImageLayout.Zoom;
+            pictureHibernate.Location = new Point(20, 21);
+            pictureHibernate.Name = "pictureHibernate";
+            pictureHibernate.Size = new Size(32, 32);
+            pictureHibernate.TabIndex = 22;
+            pictureHibernate.TabStop = false;
+            // 
             // Extra
             // 
             AutoScaleDimensions = new SizeF(192F, 192F);
             AutoScaleMode = AutoScaleMode.Dpi;
-            AutoScroll = true;
             AutoSize = true;
             AutoSizeMode = AutoSizeMode.GrowAndShrink;
             ClientSize = new Size(1013, 1431);
             Controls.Add(panelServices);
+            Controls.Add(panelPower);
             Controls.Add(panelSettings);
             Controls.Add(panelSettingsHeader);
             Controls.Add(panelBacklight);
@@ -1193,7 +1243,7 @@ namespace GHelper
             MaximizeBox = false;
             MdiChildrenMinimizedAnchorBottom = false;
             MinimizeBox = false;
-            MinimumSize = new Size(1033, 71);
+            MinimumSize = new Size(1033, 0);
             Name = "Extra";
             Padding = new Padding(15);
             ShowIcon = false;
@@ -1227,6 +1277,10 @@ namespace GHelper
             ((System.ComponentModel.ISupportInitialize)pictureSettings).EndInit();
             panelSettings.ResumeLayout(false);
             panelSettings.PerformLayout();
+            panelPower.ResumeLayout(false);
+            panelPower.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)numericHibernateAfter).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pictureHibernate).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -1312,5 +1366,9 @@ namespace GHelper
         private RComboBox comboFNE;
         private TextBox textFNE;
         private Slider slider1;
+        private Panel panelPower;
+        private PictureBox pictureHibernate;
+        private Label labelHibernateAfter;
+        private NumericUpDown numericHibernateAfter;
     }
 }

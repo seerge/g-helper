@@ -2,6 +2,7 @@
 using GHelper.Gpu.AMD;
 using GHelper.Helpers;
 using GHelper.Input;
+using GHelper.Mode;
 using GHelper.UI;
 using System.Diagnostics;
 
@@ -127,6 +128,7 @@ namespace GHelper
             labelBacklightLogo.Text = Properties.Strings.Logo;
 
             checkGpuApps.Text = Properties.Strings.KillGpuApps;
+            labelHibernateAfter.Text = Properties.Strings.HibernateAfter;
 
             Text = Properties.Strings.ExtraSettings;
 
@@ -322,6 +324,36 @@ namespace GHelper
 
             InitVariBright();
             InitServices();
+            InitHibernate();
+        }
+
+        private void InitHibernate()
+        {
+            try
+            {
+                Task.Run(() =>
+                {
+                    int hibernate = PowerNative.GetHibernateAfter();
+                    if (hibernate < 0 || hibernate > numericHibernateAfter.Maximum) hibernate = 0;
+                    BeginInvoke(delegate
+                    {
+                        numericHibernateAfter.Value = hibernate;
+                        numericHibernateAfter.ValueChanged += NumericHibernateAfter_ValueChanged;
+                    });
+                });
+
+            }
+            catch (Exception ex)
+            {
+                panelPower.Visible = false;
+                Logger.WriteLine(ex.ToString());
+            }
+
+        }
+
+        private void NumericHibernateAfter_ValueChanged(object? sender, EventArgs e)
+        {
+            PowerNative.SetHibernateAfter((int)numericHibernateAfter.Value);
         }
 
         private void PictureLog_Click(object? sender, EventArgs e)
@@ -406,6 +438,7 @@ namespace GHelper
         {
             try
             {
+
                 using (var amdControl = new AmdGpuControl())
                 {
                     int variBrightSupported = 0, VariBrightEnabled;

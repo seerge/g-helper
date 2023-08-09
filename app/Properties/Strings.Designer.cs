@@ -828,6 +828,15 @@ namespace GHelper.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Minutes till Hibernation in sleep on battery (0 - OFF).
+        /// </summary>
+        internal static string HibernateAfter {
+            get {
+                return ResourceManager.GetString("HibernateAfter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to High.
         /// </summary>
         internal static string High {
