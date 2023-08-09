@@ -57,7 +57,7 @@ _To keep auto switching and hotkeys working the app needs to stay running in the
 All Modes are **baked in BIOS** along with default fan curves and power limits. They are the **same** as in the Armoury Crate.
 
 1. **Silent** in BIOS + **Best power efficiency** setting in Windows
-2. **Balanced** (or Performance as it's called in AC) in BIOS  + **Balanced** setting in Windows
+2. **Balanced** (Performance in AC) in BIOS  + **Balanced** setting in Windows
 3. **Turbo** in BIOS + **Best performance** setting in Windows
    
 
