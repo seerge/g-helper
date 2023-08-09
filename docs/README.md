@@ -187,19 +187,16 @@ Small and lightweight Armoury Crate alternative for Asus laptops offering almost
 
 ## Notice for G14 2023 users who complain about not being able to set Eco mode
 
-It's a known issue with the Nvidia Drivers / Windows that happens for **BOTH Armoury Crate and G-Helper**, as it doesn't depend on them. It appears if you shut down your system with GPU disabled (in Eco mode).
+This is a known issue with the Nvidia Drivers / Windows that occurs if you shutdown or restart a system with dGPU disabled (Eco mode). This situation can happen for **BOTH Armoury Crate and G-Helper** (as it doesn't depend on them in a first place)  
 
 Scenario to reproduce (for both AC / GH):
-1. Set Eco mode and shut down / start or reboot your computer
+1. Set Eco mode and shutdown / start or reboot your computer
 2. After booting in Eco set Standard -> ``brightness controls won't work``
 3. Try to set Eco mode -> ``it won't work``
 4. G-Helper would offer you to restart GPU in Device Manager, after that you will be able to set Eco, AC won't be able to do anything
 
-G-Helper offers a "temporary" solution for this in the form of always setting Standard mode when the laptop shuts down. If you want to use this solution - add following line to the beginning of ``%AppData%\GHelper\config.json``
-
-```
-"gpu_fix" : 1,
-```
+To prevent this from happening, G-Helper by default would try to enable dGPU before shutdown / restart. 
+If you want to turn this feature off uncheck ``Extra`` -> ``Enable GPU on shutdown (prevents issue with Eco mode)``
 
 -------------------------------
 
