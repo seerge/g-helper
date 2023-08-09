@@ -218,7 +218,8 @@ _Make sure to keep json structure (i.e. not to break it with extra or missing co
 
 By default the app will use your windows language setting. But you can set language manually (if it supported of course)
 
-``"language" : "en"`` (by replacing "en" with language of your choice)
+``"language" : "en",`` 
+(by replacing "en" with language of your choice)
 
 ### Custom windows power plans with each mode
 
@@ -246,13 +247,6 @@ Full list of keycodes https://learn.microsoft.com/en-us/windows/win32/inputdev/v
 
 ![Screenshot 2023-07-17 192155](https://github.com/seerge/g-helper/assets/5920850/e450e124-1589-4787-bce8-7c37ffe72fbd)
 
-### Force Standard mode on shutdown / hibernation
-
-In some rare cases G14 2023 seem to have issues with enabling / disabling dGPU - i.e. Eco mode. Till we wait for a fix from asus on BIOS level, one of the proposed solutions is to always shutdown the laptop in Standard mode (then everything seems to work fine). To enable "forced" Standard mode on shutdown add following line config
-```
-"gpu_fix" : 1,
-```
-
 ### Disable OSD
 Disable app's OSD (for performance modes, keyboard backlight, etc.) 
 ```
@@ -265,11 +259,24 @@ Disable app's OSD (for performance modes, keyboard backlight, etc.)
 - ``Ctrl + M1 / M2`` - Screen brightness Down / Up
 - ``Shift + M1 / M2`` - Backlight brightness Down / Up
 
-If you don't want this bindings to work you can add ``"skip_hotkeys":1,`` 
+If you don't want this bindings to work you can add 
+```"skip_hotkeys":1,``` 
 
-### Keybinding to toggle performance modes (on external keyboards)
+### Toggle Performance Mode key binding
 
-By default the app will toggle performance modes with Ctr+Shift+F5. You can change this binding by adding ``"keybind_profile": 116`` in config.json (under ``%AppData%\GHelper``), where 116 is [numerical code for desired key](https://www.oreilly.com/library/view/javascript-dhtml/9780596514082/apb.html). Put 0 to completely disable this binding.
+To change binding for Toggle Performance Modes to ``Ctrl + Shift + KEY`` 
+```"keybind_profile": 116, ``` 
+Where 116 is [numerical code for desired key](https://www.oreilly.com/library/view/javascript-dhtml/9780596514082/apb.html). Put 0 to completely disable this binding.
+
+
+### Higher Maximum GPU Clock / Memory Offsets
+
+By default under GPU section you can set up to +250/+250 for Core and Memory Clock Offset. To increase this value:
+```
+  "max_gpu_core": 300,
+  "max_gpu_memory": 1500,
+```
+
 
 ------------
 
