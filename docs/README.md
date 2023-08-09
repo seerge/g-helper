@@ -218,7 +218,9 @@ _Make sure to keep json structure (i.e. not to break it with extra or missing co
 
 By default the app will use your windows language setting. But you can set language manually (if it supported of course)
 
-``"language" : "en",`` 
+```
+"language" : "en",
+``` 
 (by replacing "en" with language of your choice)
 
 ### Custom windows power plans with each mode
@@ -235,18 +237,6 @@ Default behavior is :
 "scheme_2": "961cc777-2547-4f9d-8174-7d86181b8a7a",
 ```
 
-### Custom hotkey actions
-
-Select ``Custom`` next to appropriate hotkey under ``Extra`` settings and do one of the following:
-
-1. To run any custom application - put a full path to exe into "action" text field, for example:
-``C:\Program Files\EA Games\Battlefield 2042\BF2042.exe``
-
-2. To simulate any windows key - put appropriate keycode into the "action" field, for example ``0x2C`` for Print Screen. 
-Full list of keycodes https://learn.microsoft.com/en-us/windows/win32/inputdev/virtual-key-codes
-
-![Screenshot 2023-07-17 192155](https://github.com/seerge/g-helper/assets/5920850/e450e124-1589-4787-bce8-7c37ffe72fbd)
-
 ### Disable OSD
 Disable app's OSD (for performance modes, keyboard backlight, etc.) 
 ```
@@ -260,12 +250,18 @@ Disable app's OSD (for performance modes, keyboard backlight, etc.)
 - ``Shift + M1 / M2`` - Backlight brightness Down / Up
 
 If you don't want this bindings to work you can add 
-```"skip_hotkeys":1,``` 
+```
+"skip_hotkeys":1,
+``` 
 
 ### Toggle Performance Mode key binding
 
-To change binding for Toggle Performance Modes to ``Ctrl + Shift + KEY`` 
-```"keybind_profile": 116, ``` 
+To change binding for Toggle Performance Modes to ``Ctrl + Shift + KEY``
+
+```
+"keybind_profile": 116,
+``` 
+
 Where 116 is [numerical code for desired key](https://www.oreilly.com/library/view/javascript-dhtml/9780596514082/apb.html). Put 0 to completely disable this binding.
 
 
@@ -277,6 +273,17 @@ By default under GPU section you can set up to +250/+250 for Core and Memory Clo
   "max_gpu_memory": 1500,
 ```
 
+### Custom hotkey actions
+
+Select ``Custom`` next to appropriate hotkey under ``Extra`` settings and do one of the following:
+
+1. To run any custom application - put a full path to exe into "action" text field, for example:
+``C:\Program Files\EA Games\Battlefield 2042\BF2042.exe``
+
+2. To simulate any windows key - put appropriate keycode into the "action" field, for example ``0x2C`` for Print Screen. 
+Full list of keycodes https://learn.microsoft.com/en-us/windows/win32/inputdev/virtual-key-codes
+
+![Screenshot 2023-07-17 192155](https://github.com/seerge/g-helper/assets/5920850/e450e124-1589-4787-bce8-7c37ffe72fbd)
 
 ------------
 
