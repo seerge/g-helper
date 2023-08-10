@@ -374,6 +374,9 @@ Nadal chcesz kontynuować?</value>
   <data name="GPUTempTarget" xml:space="preserve">
     <value>Temperatura docelowa</value>
   </data>
+  <data name="HibernateAfter" xml:space="preserve">
+    <value>Minutes till Hibernation in sleep on battery (0 - OFF)</value>
+  </data>
   <data name="High" xml:space="preserve">
     <value>Wysoka</value>
   </data>

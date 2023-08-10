@@ -57,7 +57,7 @@ _To keep auto switching and hotkeys working the app needs to stay running in the
 All Modes are **baked in BIOS** along with default fan curves and power limits. They are the **same** as in the Armoury Crate.
 
 1. **Silent** in BIOS + **Best power efficiency** setting in Windows
-2. **Balanced** (or Performance as it's called in AC) in BIOS  + **Balanced** setting in Windows
+2. **Balanced** (Performance in AC) in BIOS  + **Balanced** setting in Windows
 3. **Turbo** in BIOS + **Best performance** setting in Windows
    
 
@@ -187,19 +187,16 @@ Small and lightweight Armoury Crate alternative for Asus laptops offering almost
 
 ## Notice for G14 2023 users who complain about not being able to set Eco mode
 
-It's a known issue with the Nvidia Drivers / Windows that happens for **BOTH Armoury Crate and G-Helper**, as it doesn't depend on them. It appears if you shut down your system with GPU disabled (in Eco mode).
+This is a known issue with the Nvidia Drivers / Windows that occurs if you shutdown or restart a system with dGPU disabled (Eco mode). This situation can happen for **BOTH Armoury Crate and G-Helper** (as it doesn't depend on them in a first place)  
 
 Scenario to reproduce (for both AC / GH):
-1. Set Eco mode and shut down / start or reboot your computer
+1. Set Eco mode and shutdown / start or reboot your computer
 2. After booting in Eco set Standard -> ``brightness controls won't work``
 3. Try to set Eco mode -> ``it won't work``
 4. G-Helper would offer you to restart GPU in Device Manager, after that you will be able to set Eco, AC won't be able to do anything
 
-G-Helper offers a "temporary" solution for this in the form of always setting Standard mode when the laptop shuts down. If you want to use this solution - add following line to the beginning of ``%AppData%\GHelper\config.json``
-
-```
-"gpu_fix" : 1,
-```
+To prevent this from happening, G-Helper by default would try to enable dGPU before shutdown / restart. 
+If you want to turn this feature off uncheck ``Extra`` -> ``Enable GPU on shutdown (prevents issue with Eco mode)``
 
 -------------------------------
 
@@ -221,7 +218,10 @@ _Make sure to keep json structure (i.e. not to break it with extra or missing co
 
 By default the app will use your windows language setting. But you can set language manually (if it supported of course)
 
-``"language" : "en"`` (by replacing "en" with language of your choice)
+```
+"language" : "en",
+``` 
+(by replacing "en" with language of your choice)
 
 ### Custom windows power plans with each mode
 
@@ -237,25 +237,6 @@ Default behavior is :
 "scheme_2": "961cc777-2547-4f9d-8174-7d86181b8a7a",
 ```
 
-### Custom hotkey actions
-
-Select ``Custom`` next to appropriate hotkey under ``Extra`` settings and do one of the following:
-
-1. To run any custom application - put a full path to exe into "action" text field, for example:
-``C:\Program Files\EA Games\Battlefield 2042\BF2042.exe``
-
-2. To simulate any windows key - put appropriate keycode into the "action" field, for example ``0x2C`` for Print Screen. 
-Full list of keycodes https://learn.microsoft.com/en-us/windows/win32/inputdev/virtual-key-codes
-
-![Screenshot 2023-07-17 192155](https://github.com/seerge/g-helper/assets/5920850/e450e124-1589-4787-bce8-7c37ffe72fbd)
-
-### Force Standard mode on shutdown / hibernation
-
-In some rare cases G14 2023 seem to have issues with enabling / disabling dGPU - i.e. Eco mode. Till we wait for a fix from asus on BIOS level, one of the proposed solutions is to always shutdown the laptop in Standard mode (then everything seems to work fine). To enable "forced" Standard mode on shutdown add following line config
-```
-"gpu_fix" : 1,
-```
-
 ### Disable OSD
 Disable app's OSD (for performance modes, keyboard backlight, etc.) 
 ```
@@ -268,11 +249,41 @@ Disable app's OSD (for performance modes, keyboard backlight, etc.)
 - ``Ctrl + M1 / M2`` - Screen brightness Down / Up
 - ``Shift + M1 / M2`` - Backlight brightness Down / Up
 
-If you don't want this bindings to work you can add ``"skip_hotkeys":1,`` 
+If you don't want this bindings to work you can add 
+```
+"skip_hotkeys":1,
+``` 
 
-### Keybinding to toggle performance modes (on external keyboards)
+### Toggle Performance Mode key binding
 
-By default the app will toggle performance modes with Ctr+Shift+F5. You can change this binding by adding ``"keybind_profile": 116`` in config.json (under ``%AppData%\GHelper``), where 116 is [numerical code for desired key](https://www.oreilly.com/library/view/javascript-dhtml/9780596514082/apb.html). Put 0 to completely disable this binding.
+To change binding for Toggle Performance Modes to ``Ctrl + Shift + KEY``
+
+```
+"keybind_profile": 116,
+``` 
+
+Where 116 is [numerical code for desired key](https://www.oreilly.com/library/view/javascript-dhtml/9780596514082/apb.html). Put 0 to completely disable this binding.
+
+
+### Higher Maximum GPU Clock / Memory Offsets
+
+By default under GPU section you can set up to +250/+250 for Core and Memory Clock Offset. To increase this value:
+```
+  "max_gpu_core": 300,
+  "max_gpu_memory": 1500,
+```
+
+### Custom hotkey actions
+
+Select ``Custom`` next to appropriate hotkey under ``Extra`` settings and do one of the following:
+
+1. To run any custom application - put a full path to exe into "action" text field, for example:
+``C:\Program Files\EA Games\Battlefield 2042\BF2042.exe``
+
+2. To simulate any windows key - put appropriate keycode into the "action" field, for example ``0x2C`` for Print Screen. 
+Full list of keycodes https://learn.microsoft.com/en-us/windows/win32/inputdev/virtual-key-codes
+
+![Screenshot 2023-07-17 192155](https://github.com/seerge/g-helper/assets/5920850/e450e124-1589-4787-bce8-7c37ffe72fbd)
 
 ------------
 
