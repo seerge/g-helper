@@ -374,6 +374,9 @@
   <data name="GPUTempTarget" xml:space="preserve">
     <value>Temperatura țintă</value>
   </data>
+  <data name="HibernateAfter" xml:space="preserve">
+    <value>Minutes till Hibernation in sleep on battery (0 - OFF)</value>
+  </data>
   <data name="High" xml:space="preserve">
     <value>High</value>
   </data>
@@ -537,7 +540,7 @@
     <value>Închide</value>
   </data>
   <data name="RestartGPU" xml:space="preserve">
-    <value>O aplicație folosește dGPU și previne pornirea modului Eco. Reporniți dGPU în device manager? * Continuați pe propriul risc.</value>
+    <value>Something is using dGPU and preventing Eco mode. Let G-Helper try to restart dGPU in device manager? (Please proceed at your own risk)</value>
   </data>
   <data name="RPM" xml:space="preserve">
     <value>RPM</value>
