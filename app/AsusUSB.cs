@@ -69,8 +69,6 @@ namespace GHelper
         static System.Timers.Timer timer = new System.Timers.Timer(2000);
         static HidDevice? auraDevice = null;
 
-        static bool Manual = false;
-
         static byte[] AuraPowerMessage(AuraPower flags)
         {
             byte keyb = 0, bar = 0, lid = 0, rear = 0;
@@ -571,7 +569,7 @@ namespace GHelper
                     device.OpenDevice();
                     if (device.ReadFeatureData(out byte[] data, AURA_HID_ID))
                     {
-                        msg = AuraMessage(Mode, Color1, Color2, _speed, device.Attributes.Version == 22);
+                        msg = AuraMessage(Mode, Color1, Color2, _speed, device.Attributes.Version == 22 && AppConfig.ContainsModel("GA402X"));
                         device.WriteFeatureData(msg);
                         device.WriteFeatureData(MESSAGE_APPLY);
                         device.WriteFeatureData(MESSAGE_SET);
