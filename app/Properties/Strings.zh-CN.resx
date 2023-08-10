@@ -375,7 +375,7 @@
     <value>温度目标</value>
   </data>
   <data name="HibernateAfter" xml:space="preserve">
-    <value>Minutes till Hibernation in sleep on battery (0 - OFF)</value>
+    <value>在使用电池时几分钟后进入休眠状态 (0 - 关闭)</value>
   </data>
   <data name="High" xml:space="preserve">
     <value>高</value>
