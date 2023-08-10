@@ -163,28 +163,28 @@
     <value>Servizi Asus in Esecuzione</value>
   </data>
   <data name="AuraBatteryState" xml:space="preserve">
-    <value>Battery State</value>
+    <value>Stato Batteria</value>
   </data>
   <data name="AuraBreathe" xml:space="preserve">
     <value>Respiro</value>
   </data>
   <data name="AuraClockwise" xml:space="preserve">
-    <value>Clockwise</value>
+    <value>Senso orario</value>
   </data>
   <data name="AuraColorCycle" xml:space="preserve">
     <value>Ciclo Colori</value>
   </data>
   <data name="AuraComet" xml:space="preserve">
-    <value>Comet</value>
+    <value>Cometa</value>
   </data>
   <data name="AuraCounterClockwise" xml:space="preserve">
-    <value>Counterclockwise</value>
+    <value>Senso antiorario</value>
   </data>
   <data name="AuraFast" xml:space="preserve">
     <value>Veloce</value>
   </data>
   <data name="AuraLightingMode" xml:space="preserve">
-    <value>Lighting Mode</value>
+    <value>Modalità illuminazione</value>
   </data>
   <data name="AuraNormal" xml:space="preserve">
     <value>Normale</value>
@@ -193,10 +193,10 @@
     <value>Arcobaleno</value>
   </data>
   <data name="AuraRandomColor" xml:space="preserve">
-    <value>Random</value>
+    <value>Casuale</value>
   </data>
   <data name="AuraReact" xml:space="preserve">
-    <value>React</value>
+    <value>Reazione</value>
   </data>
   <data name="AuraSlow" xml:space="preserve">
     <value>Lenta</value>
@@ -208,7 +208,7 @@
     <value>Strobo</value>
   </data>
   <data name="AuraZoneAll" xml:space="preserve">
-    <value>All</value>
+    <value>Tutte</value>
   </data>
   <data name="AuraZoneDock" xml:space="preserve">
     <value>Dock</value>
@@ -217,7 +217,7 @@
     <value>Logo</value>
   </data>
   <data name="AuraZoneScroll" xml:space="preserve">
-    <value>Scrollwheel</value>
+    <value>Rotellina</value>
   </data>
   <data name="AuraZoneUnderglow" xml:space="preserve">
     <value>Underglow</value>
