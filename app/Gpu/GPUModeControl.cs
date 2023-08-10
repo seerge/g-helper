@@ -132,7 +132,7 @@ namespace GHelper.Gpu
                 if (eco == 1)
                 {
                     
-                    /*
+                    
                     if (NvidiaSmi.GetDisplayActiveStatus())
                     {
                         DialogResult dialogResult = MessageBox.Show(Properties.Strings.EnableOptimusText, Properties.Strings.EnableOptimusTitle, MessageBoxButtons.YesNo);
@@ -142,7 +142,7 @@ namespace GHelper.Gpu
                             return;
                         }
                     }
-                    */
+                    
 
                     HardwareControl.KillGPUApps();
                 }

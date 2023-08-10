@@ -322,8 +322,8 @@ namespace GHelper
 
             pictureLog.Click += PictureLog_Click;
 
-            checkGPUFix.Visible = AppConfig.ContainsModel("GA402X");
-            checkGPUFix.Checked = AppConfig.Get("gpu_fix") != 0;
+            checkGPUFix.Visible = AppConfig.IsGPUFixNeeded();
+            checkGPUFix.Checked = AppConfig.IsGPUFix();
             checkGPUFix.CheckedChanged += CheckGPUFix_CheckedChanged;
 
             InitVariBright();

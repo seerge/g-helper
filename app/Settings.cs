@@ -622,7 +622,7 @@ namespace GHelper
         {
             AsusUSB.Mode = AppConfig.Get("aura_mode");
             AsusUSB.Speed = AppConfig.Get("aura_speed");
-            AsusUSB.SetColor(AppConfig.Get("aura_color"));
+            AsusUSB.SetColor(AppConfig.Get("aura_color", Color.Red.ToArgb()));
             AsusUSB.SetColor2(AppConfig.Get("aura_color2"));
 
             comboKeyboard.DropDownStyle = ComboBoxStyle.DropDownList;

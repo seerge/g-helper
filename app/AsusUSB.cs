@@ -278,7 +278,7 @@ namespace GHelper
         }
 
 
-        public static byte[] AuraMessage(int mode, Color color, Color color2, int speed)
+        public static byte[] AuraMessage(int mode, Color color, Color color2, int speed, bool mono = false)
         {
 
             byte[] msg = new byte[17];
@@ -286,15 +286,15 @@ namespace GHelper
             msg[1] = 0xb3;
             msg[2] = 0x00; // Zone 
             msg[3] = (byte)mode; // Aura Mode
-            msg[4] = (byte)(color.R); // R
-            msg[5] = (byte)(color.G); // G
-            msg[6] = (byte)(color.B); // B
+            msg[4] = color.R; // R
+            msg[5] = mono ? (byte)0 : color.G; // G
+            msg[6] = mono ? (byte)0 : color.B; // B
             msg[7] = (byte)speed; // aura.speed as u8;
             msg[8] = 0; // aura.direction as u8;
             msg[9] = (mode == 1) ? (byte)1 : (byte)0;
-            msg[10] = (byte)(color2.R); // R
-            msg[11] = (byte)(color2.G); // G
-            msg[12] = (byte)(color2.B); // B
+            msg[10] = color2.R; // R
+            msg[11] = mono ? (byte)0 : color2.G; // G
+            msg[12] = mono ? (byte)0 : color2.B; // B
             return msg;
         }
 
@@ -530,7 +530,7 @@ namespace GHelper
 
             Mode = AppConfig.Get("aura_mode");
             Speed = AppConfig.Get("aura_speed");
-            SetColor(AppConfig.Get("aura_color"));
+            SetColor(AppConfig.Get("aura_color", Color.Red.ToArgb()));
             SetColor2(AppConfig.Get("aura_color2"));
 
             if (Mode == HEATMAP)
@@ -563,7 +563,7 @@ namespace GHelper
                         break;
                 }
 
-                byte[] msg = AuraMessage(Mode, Color1, Color2, _speed);
+                byte[] msg;
                 var devices = GetHidDevices(deviceIds);
 
                 foreach (HidDevice device in devices)
@@ -571,6 +571,7 @@ namespace GHelper
                     device.OpenDevice();
                     if (device.ReadFeatureData(out byte[] data, AURA_HID_ID))
                     {
+                        msg = AuraMessage(Mode, Color1, Color2, _speed, device.Attributes.Version == 22);
                         device.WriteFeatureData(msg);
                         device.WriteFeatureData(MESSAGE_APPLY);
                         device.WriteFeatureData(MESSAGE_SET);

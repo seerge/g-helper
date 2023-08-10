@@ -1323,7 +1323,7 @@ namespace GHelper.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Something is using dGPU and preventing Eco mode. Restart dGPU in device manager? * Please proceed at your own risk..
+        ///   Looks up a localized string similar to Something is using dGPU and preventing Eco mode. Let G-Helper try to restart dGPU in device manager? (Please proceed at your own risk).
         /// </summary>
         internal static string RestartGPU {
             get {
