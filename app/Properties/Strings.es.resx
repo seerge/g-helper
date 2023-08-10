@@ -375,7 +375,7 @@
     <value>Temperatura objetivo</value>
   </data>
   <data name="HibernateAfter" xml:space="preserve">
-    <value>Minutes till Hibernation in sleep on battery (0 - OFF)</value>
+    <value>Minutos hasta hibernación en suspensión con batería (0 - OFF)</value>
   </data>
   <data name="High" xml:space="preserve">
     <value>Alto</value>
@@ -540,7 +540,7 @@
     <value>Quitar</value>
   </data>
   <data name="RestartGPU" xml:space="preserve">
-    <value>Algo está usando la dGPU e impide usar Modo Eco. ¿Reiniciar dGPU en administrador de dispositivos? * Proceda bajo su propio riesgo.</value>
+    <value>Something is using dGPU and preventing Eco mode. Let G-Helper try to restart dGPU in device manager? (Please proceed at your own risk)</value>
   </data>
   <data name="RPM" xml:space="preserve">
     <value>RPM</value>
