@@ -540,7 +540,7 @@ Vis tiek norite tęsti?</value>
     <value>Išeiti</value>
   </data>
   <data name="RestartGPU" xml:space="preserve">
-    <value>Kažkas naudoja dGPU ir neleidžia nustatyti ekonomiško režimo. Iš naujo paleisti dGPU įrenginių tvarkytuvėje? * Tęskite savo rizika.</value>
+    <value>Something is using dGPU and preventing Eco mode. Let G-Helper try to restart dGPU in device manager? (Please proceed at your own risk)</value>
   </data>
   <data name="RPM" xml:space="preserve">
     <value>RPM</value>
