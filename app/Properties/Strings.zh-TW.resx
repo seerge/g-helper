@@ -375,7 +375,7 @@
     <value>GPU溫度上限</value>
   </data>
   <data name="HibernateAfter" xml:space="preserve">
-    <value>Minutes till Hibernation in sleep on battery (0 - OFF)</value>
+    <value>使用電池下何時進入休眠(0=關閉此功能)</value>
   </data>
   <data name="High" xml:space="preserve">
     <value>高</value>

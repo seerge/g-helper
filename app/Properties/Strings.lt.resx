@@ -375,7 +375,7 @@ Vis tiek norite tęsti?</value>
     <value>Temperatūros tikslas</value>
   </data>
   <data name="HibernateAfter" xml:space="preserve">
-    <value>Minutes till Hibernation in sleep on battery (0 - OFF)</value>
+    <value>Minutės iki miego su akumuliatoriumi (0 – IŠJUNGTA)</value>
   </data>
   <data name="High" xml:space="preserve">
     <value>Aukštas</value>
