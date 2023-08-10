@@ -540,7 +540,7 @@ Sei sicuro di voler continuare?</value>
     <value>Esci</value>
   </data>
   <data name="RestartGPU" xml:space="preserve">
-    <value>Qualcosa sta utilizzando la dGPU e impedendo la modalità Eco. Riavviare la dGPU da Gestione dispositivi? * Procedere a proprio rischio e pericolo.</value>
+    <value>Something is using dGPU and preventing Eco mode. Let G-Helper try to restart dGPU in device manager? (Please proceed at your own risk)</value>
   </data>
   <data name="RPM" xml:space="preserve">
     <value>RPM</value>
