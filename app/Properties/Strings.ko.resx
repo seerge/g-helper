@@ -540,7 +540,7 @@
     <value>종료</value>
   </data>
   <data name="RestartGPU" xml:space="preserve">
-    <value>dGPU가 사용중이기 때문에 Eco 모드로 전환할 수 없습니다. 장치 관리자에서 dGPU를 재시작하시겠습니까?</value>
+    <value>Something is using dGPU and preventing Eco mode. Let G-Helper try to restart dGPU in device manager? (Please proceed at your own risk)</value>
   </data>
   <data name="RPM" xml:space="preserve">
     <value>RPM</value>
