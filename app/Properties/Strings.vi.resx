@@ -286,7 +286,7 @@
     <value>Đang không sạc</value>
   </data>
   <data name="DownloadUpdate" xml:space="preserve">
-    <value>Tải xuống bản cập nhật</value>
+    <value>Download</value>
   </data>
   <data name="DriverAndSoftware" xml:space="preserve">
     <value>Driver và phần mềm</value>
