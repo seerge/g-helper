@@ -286,7 +286,7 @@
     <value>Iškrovimas</value>
   </data>
   <data name="DownloadUpdate" xml:space="preserve">
-    <value>Atsisiųsti naujinimą</value>
+    <value>Download</value>
   </data>
   <data name="DriverAndSoftware" xml:space="preserve">
     <value>Tvarkyklės ir programinė įranga</value>
