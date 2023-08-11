@@ -286,7 +286,7 @@
     <value>Se descarcă</value>
   </data>
   <data name="DownloadUpdate" xml:space="preserve">
-    <value>Descărcați actualizarea</value>
+    <value>Download</value>
   </data>
   <data name="DriverAndSoftware" xml:space="preserve">
     <value>Drivers și Aplicații</value>
