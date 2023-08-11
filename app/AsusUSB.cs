@@ -1,6 +1,5 @@
 ﻿using GHelper.Helpers;
 using HidLibrary;
-using System.Diagnostics;
 using System.Text;
 
 namespace GHelper
@@ -63,11 +62,14 @@ namespace GHelper
         static bool isTuf = AppConfig.IsTUF();
         static bool isStrix = AppConfig.IsStrix();
 
+        static public bool isSingleColor = false;
+
         static bool isOldHeatmap = AppConfig.Is("old_heatmap");
 
 
         static System.Timers.Timer timer = new System.Timers.Timer(2000);
         static HidDevice? auraDevice = null;
+
 
         static byte[] AuraPowerMessage(AuraPower flags)
         {
@@ -113,6 +115,11 @@ namespace GHelper
         static AsusUSB()
         {
             timer.Elapsed += Timer_Elapsed;
+
+            isSingleColor = AppConfig.IsSingleColor();
+
+            var device = GetDevice(AURA_HID_ID);
+            if (device is not null && device.Attributes.Version == 22 && AppConfig.ContainsModel("GA402X")) isSingleColor = true;
         }
 
         private static void Timer_Elapsed(object? sender, System.Timers.ElapsedEventArgs e)
@@ -182,10 +189,11 @@ namespace GHelper
                 _modes.Remove(3);
             }
 
-            if (AppConfig.NoAuraColor())
+            if (isSingleColor)
             {
                 _modes.Remove(2);
                 _modes.Remove(3);
+                _modes.Remove(HEATMAP);
             }
 
             if (AppConfig.IsAdvantageEdition())
@@ -467,7 +475,7 @@ namespace GHelper
             if (isStrix && !isOldHeatmap)
             {
                 byte[] msg = new byte[0x40];
-                
+
                 byte start = 9;
                 byte maxLeds = 0x93;
 
@@ -495,7 +503,7 @@ namespace GHelper
                     auraDevice.Write(LED_INIT3);
                     auraDevice.Write(LED_INIT4);
                     auraDevice.Write(LED_INIT5);
-                    auraDevice.Write(new byte[] { AURA_HID_ID, 0xbc});
+                    auraDevice.Write(new byte[] { AURA_HID_ID, 0xbc });
                 }
 
                 for (byte b = 0; b < maxLeds; b += 0x10)
@@ -569,11 +577,11 @@ namespace GHelper
                     device.OpenDevice();
                     if (device.ReadFeatureData(out byte[] data, AURA_HID_ID))
                     {
-                        msg = AuraMessage(Mode, Color1, Color2, _speed, device.Attributes.Version == 22 && AppConfig.ContainsModel("GA402X"));
+                        msg = AuraMessage(Mode, Color1, Color2, _speed, isSingleColor);
                         device.WriteFeatureData(msg);
                         device.WriteFeatureData(MESSAGE_APPLY);
                         device.WriteFeatureData(MESSAGE_SET);
-                        Logger.WriteLine("USB-KB " + device.Capabilities.FeatureReportByteLength + "|" + device.Capabilities.InputReportByteLength + device.Description + device.DevicePath + ":" + BitConverter.ToString(msg));
+                        Logger.WriteLine("USB-KB " + device.Attributes.Version + device.Description + device.DevicePath + ":" + BitConverter.ToString(msg));
                     }
                     device.CloseDevice();
                 }

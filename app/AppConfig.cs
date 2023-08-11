@@ -298,7 +298,7 @@ public static class AppConfig
         return ContainsModel("GA401I") && !ContainsModel("GA401IHR");
     }
 
-    public static bool NoAuraColor()
+    public static bool IsSingleColor()
     {
         return  ContainsModel("GA401") || ContainsModel("X13");
     }
