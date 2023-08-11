@@ -286,7 +286,7 @@
     <value>正在釋放電力</value>
   </data>
   <data name="DownloadUpdate" xml:space="preserve">
-    <value>下載更新</value>
+    <value>Download</value>
   </data>
   <data name="DriverAndSoftware" xml:space="preserve">
     <value>驅動程式與軟體</value>
@@ -540,7 +540,7 @@
     <value>退出</value>
   </data>
   <data name="RestartGPU" xml:space="preserve">
-    <value>有其他程式正在使用獨顯導致無法切換至節能模式. 是否在裝置管理員中重啟獨顯? * 請自行評估風險</value>
+    <value>Something is using dGPU and preventing Eco mode. Let G-Helper try to restart dGPU in device manager? (Please proceed at your own risk)</value>
   </data>
   <data name="RPM" xml:space="preserve">
     <value>每分鐘轉數</value>

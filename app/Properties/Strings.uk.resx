@@ -286,7 +286,7 @@
     <value>Розрядка</value>
   </data>
   <data name="DownloadUpdate" xml:space="preserve">
-    <value>Завантажити</value>
+    <value>Download</value>
   </data>
   <data name="DriverAndSoftware" xml:space="preserve">
     <value>Драйвери та програми</value>
@@ -540,7 +540,7 @@
     <value>Вихід</value>
   </data>
   <data name="RestartGPU" xml:space="preserve">
-    <value>Щось використовує dGPU та не дає перейти в режимі Еко. Перезапустити dGPU у менеджері пристроїв? * Будь ласка, продовжуйте на свій страх і ризик.</value>
+    <value>Something is using dGPU and preventing Eco mode. Let G-Helper try to restart dGPU in device manager? (Please proceed at your own risk)</value>
   </data>
   <data name="RPM" xml:space="preserve">
     <value>Оберти</value>

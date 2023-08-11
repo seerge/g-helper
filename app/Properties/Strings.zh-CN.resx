@@ -286,7 +286,7 @@
     <value>正在放电</value>
   </data>
   <data name="DownloadUpdate" xml:space="preserve">
-    <value>下载更新</value>
+    <value>Download</value>
   </data>
   <data name="DriverAndSoftware" xml:space="preserve">
     <value>驱动程序和软件</value>
@@ -540,7 +540,7 @@
     <value>退出</value>
   </data>
   <data name="RestartGPU" xml:space="preserve">
-    <value>有程序正在使用独立显卡阻止进入节能模式。要在设备管理器中重新启动dGPU 吗？* 请自行承担风险。</value>
+    <value>Something is using dGPU and preventing Eco mode. Let G-Helper try to restart dGPU in device manager? (Please proceed at your own risk)</value>
   </data>
   <data name="RPM" xml:space="preserve">
     <value>转/分钟</value>
