@@ -286,7 +286,7 @@
     <value>방전 중</value>
   </data>
   <data name="DownloadUpdate" xml:space="preserve">
-    <value>업데이트 다운로드</value>
+    <value>Download</value>
   </data>
   <data name="DriverAndSoftware" xml:space="preserve">
     <value>드라이버와 소프트웨어</value>
