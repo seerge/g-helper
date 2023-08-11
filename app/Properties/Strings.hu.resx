@@ -286,7 +286,7 @@
     <value>Merülés</value>
   </data>
   <data name="DownloadUpdate" xml:space="preserve">
-    <value>Frissítés letöltése</value>
+    <value>Download</value>
   </data>
   <data name="DriverAndSoftware" xml:space="preserve">
     <value>Illesztőprogramok és alkalmazások</value>
