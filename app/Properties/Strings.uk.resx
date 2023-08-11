@@ -286,7 +286,7 @@
     <value>Розрядка</value>
   </data>
   <data name="DownloadUpdate" xml:space="preserve">
-    <value>Завантажити</value>
+    <value>Download</value>
   </data>
   <data name="DriverAndSoftware" xml:space="preserve">
     <value>Драйвери та програми</value>
