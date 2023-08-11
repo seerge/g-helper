@@ -286,7 +286,7 @@
     <value>Descargando</value>
   </data>
   <data name="DownloadUpdate" xml:space="preserve">
-    <value>Download</value>
+    <value>Descargar</value>
   </data>
   <data name="DriverAndSoftware" xml:space="preserve">
     <value>Drivers y Software</value>
@@ -540,7 +540,7 @@
     <value>Quitar</value>
   </data>
   <data name="RestartGPU" xml:space="preserve">
-    <value>Something is using dGPU and preventing Eco mode. Let G-Helper try to restart dGPU in device manager? (Please proceed at your own risk)</value>
+    <value>Algo está usando la dGPU e impide el modo Eco. ¿Reiniciar dGPU en el administrador de dispositivos? (Proceda bajo su propio riesgo)</value>
   </data>
   <data name="RPM" xml:space="preserve">
     <value>RPM</value>
