@@ -286,7 +286,7 @@
     <value>Zużycie mocy</value>
   </data>
   <data name="DownloadUpdate" xml:space="preserve">
-    <value>Pobierz aktualizację</value>
+    <value>Download</value>
   </data>
   <data name="DriverAndSoftware" xml:space="preserve">
     <value>Sterowniki i oprogramowanie</value>
