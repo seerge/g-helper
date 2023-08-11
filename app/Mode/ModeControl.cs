@@ -280,35 +280,38 @@ namespace GHelper.Mode
 
         public void SetGPUClocks(bool launchAsAdmin = true)
         {
-
-            int gpu_core = AppConfig.GetMode("gpu_core");
-            int gpu_memory = AppConfig.GetMode("gpu_memory");
-
-            if (gpu_core == -1 && gpu_memory == -1) return;
-
-            //if ((gpu_core > -5 && gpu_core < 5) && (gpu_memory > -5 && gpu_memory < 5)) launchAsAdmin = false;
-
-            if (Program.acpi.DeviceGet(AsusACPI.GPUEco) == 1) return;
-            if (HardwareControl.GpuControl is null) return;
-            if (!HardwareControl.GpuControl!.IsNvidia) return;
-
-            using NvidiaGpuControl nvControl = (NvidiaGpuControl)HardwareControl.GpuControl;
-            try
+            Task.Run(() =>
             {
-                int getStatus = nvControl.GetClocks(out int current_core, out int current_memory);
-                if (getStatus != -1)
+
+                int gpu_core = AppConfig.GetMode("gpu_core");
+                int gpu_memory = AppConfig.GetMode("gpu_memory");
+
+                if (gpu_core == -1 && gpu_memory == -1) return;
+
+                //if ((gpu_core > -5 && gpu_core < 5) && (gpu_memory > -5 && gpu_memory < 5)) launchAsAdmin = false;
+
+                if (Program.acpi.DeviceGet(AsusACPI.GPUEco) == 1) return;
+                if (HardwareControl.GpuControl is null) return;
+                if (!HardwareControl.GpuControl!.IsNvidia) return;
+
+                using NvidiaGpuControl nvControl = (NvidiaGpuControl)HardwareControl.GpuControl;
+                try
                 {
-                    if (Math.Abs(gpu_core - current_core) < 5 && Math.Abs(gpu_memory - current_memory) < 5) return;
+                    int getStatus = nvControl.GetClocks(out int current_core, out int current_memory);
+                    if (getStatus != -1)
+                    {
+                        if (Math.Abs(gpu_core - current_core) < 5 && Math.Abs(gpu_memory - current_memory) < 5) return;
+                    }
+
+                    int setStatus = nvControl.SetClocks(gpu_core, gpu_memory);
+                    if (launchAsAdmin && setStatus == -1) ProcessHelper.RunAsAdmin("gpu");
+
                 }
-
-                int setStatus = nvControl.SetClocks(gpu_core, gpu_memory);
-                if (launchAsAdmin && setStatus == -1) ProcessHelper.RunAsAdmin("gpu");
-
-            }
-            catch (Exception ex)
-            {
-                Logger.WriteLine(ex.ToString());
-            }
+                catch (Exception ex)
+                {
+                    Logger.WriteLine(ex.ToString());
+                }
+            });
         }
 
         public void SetGPUPower()

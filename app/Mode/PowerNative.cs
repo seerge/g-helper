@@ -72,7 +72,12 @@ namespace GHelper.Mode
         [DllImportAttribute("powrprof.dll", EntryPoint = "PowerSetActiveOverlayScheme")]
         public static extern uint PowerSetActiveOverlayScheme(Guid OverlaySchemeGuid);
 
-
+        public static Dictionary<string, string> powerModes = new Dictionary<string, string>
+            {
+                { "961cc777-2547-4f9d-8174-7d86181b8a7a", "Best Power Efficiency" },
+                { "00000000-0000-0000-0000-000000000000", "Balanced" },
+                { "ded574b5-45a0-4f42-8737-46345c09c238", "Best Performance" },
+            };
         static Guid GetActiveScheme()
         {
             IntPtr pActiveSchemeGuid;
@@ -135,17 +140,27 @@ namespace GHelper.Mode
 
             if (overlays.Contains(scheme))
             {
+
+                Guid activeSchemeGuid = GetActiveScheme();
+                Guid balanced = new Guid("381b4222-f694-41f0-9685-ff5bb260df2e");
+
+                if (activeSchemeGuid != balanced && !AppConfig.Is("skip_power_plan"))
+                {
+                    PowerSetActiveScheme(IntPtr.Zero, balanced);
+                    Logger.WriteLine("Balanced Plan: " + balanced);
+                }
+
                 uint status = PowerGetEffectiveOverlayScheme(out Guid activeScheme);
                 if (status != 0 || activeScheme != guidScheme)
                 {
                     PowerSetActiveOverlayScheme(guidScheme);
-                    Logger.WriteLine("Power mode: " + scheme);
+                    Logger.WriteLine("Power Mode: " + scheme);
                 }
             }
             else
             {
                 PowerSetActiveScheme(IntPtr.Zero, guidScheme);
-                Logger.WriteLine("Power plan: " + scheme);
+                Logger.WriteLine("Power Plan: " + scheme);
             }
 
 
