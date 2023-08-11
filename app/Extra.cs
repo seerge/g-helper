@@ -119,7 +119,6 @@ namespace GHelper
             checkTopmost.Text = Properties.Strings.WindowTop;
             checkUSBC.Text = Properties.Strings.OptimizedUSBC;
             checkAutoApplyWindowsPowerMode.Text = Properties.Strings.ApplyWindowsPowerPlan;
-            checkFnLock.Text = Properties.Strings.FnLock;
             checkAutoToggleClamshellMode.Text = Properties.Strings.ToggleClamshellMode;
 
             labelBacklightKeyboard.Text = Properties.Strings.Keyboard;
@@ -313,11 +312,7 @@ namespace GHelper
             checkGpuApps.Checked = AppConfig.Is("kill_gpu_apps");
             checkGpuApps.CheckedChanged += CheckGpuApps_CheckedChanged;
 
-            checkFnLock.Checked = AppConfig.Is("fn_lock");
-            checkFnLock.CheckedChanged += CheckFnLock_CheckedChanged; ;
-
             pictureHelp.Click += PictureHelp_Click;
-
             buttonServices.Click += ButtonServices_Click;
 
             pictureLog.Click += PictureLog_Click;
@@ -478,15 +473,6 @@ namespace GHelper
                 amdControl.SetVariBright(checkVariBright.Checked ? 1 : 0);
                 ProcessHelper.KillByName("RadeonSoftware");
             }
-        }
-
-        private void CheckFnLock_CheckedChanged(object? sender, EventArgs e)
-        {
-            int fnLock = checkFnLock.Checked ? 1 : 0;
-            AppConfig.Set("fn_lock", fnLock);
-            Program.acpi.DeviceSet(AsusACPI.FnLock, (fnLock == 1) ? 0 : 1, "FnLock");
-
-            Program.inputDispatcher.RegisterKeys();
         }
 
         private void CheckGpuApps_CheckedChanged(object? sender, EventArgs e)

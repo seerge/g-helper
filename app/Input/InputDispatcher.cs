@@ -401,7 +401,7 @@ namespace GHelper.Input
             }
         }
 
-        static void ToggleFnLock()
+        public static void ToggleFnLock()
         {
             int fnLock = AppConfig.Is("fn_lock") ? 0 : 1;
             AppConfig.Set("fn_lock", fnLock);
@@ -410,6 +410,8 @@ namespace GHelper.Input
                 Program.acpi.DeviceSet(AsusACPI.FnLock, fnLock == 1 ? 0 : 1, "FnLock");
             else
                 Program.settingsForm.BeginInvoke(Program.inputDispatcher.RegisterKeys);
+
+            Program.settingsForm.BeginInvoke(Program.settingsForm.VisualiseFnLock);
 
             Program.toast.RunToast("Fn-Lock " + (fnLock == 1 ? "On" : "Off"), ToastIcon.FnLock);
         }

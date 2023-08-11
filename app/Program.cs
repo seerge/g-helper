@@ -128,6 +128,7 @@ namespace GHelper
         private static void SystemEvents_SessionEnding(object sender, SessionEndingEventArgs e)
         {
             gpuControl.StandardModeFix();
+            BatteryControl.SetBatteryChargeLimit();
         }
 
         private static void SystemEvents_SessionSwitch(object sender, SessionSwitchEventArgs e)

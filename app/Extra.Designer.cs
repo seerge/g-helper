@@ -110,7 +110,6 @@ namespace GHelper
             checkVariBright = new CheckBox();
             checkGpuApps = new CheckBox();
             checkGPUFix = new CheckBox();
-            checkFnLock = new CheckBox();
             panelPower = new Panel();
             numericHibernateAfter = new NumericUpDown();
             labelHibernateAfter = new Label();
@@ -147,7 +146,7 @@ namespace GHelper
             panelServices.Controls.Add(labelServices);
             panelServices.Controls.Add(buttonServices);
             panelServices.Dock = DockStyle.Top;
-            panelServices.Location = new Point(15, 1383);
+            panelServices.Location = new Point(15, 1321);
             panelServices.Name = "panelServices";
             panelServices.Size = new Size(983, 75);
             panelServices.TabIndex = 5;
@@ -1070,19 +1069,18 @@ namespace GHelper
             panelSettings.Controls.Add(checkVariBright);
             panelSettings.Controls.Add(checkGpuApps);
             panelSettings.Controls.Add(checkGPUFix);
-            panelSettings.Controls.Add(checkFnLock);
             panelSettings.Dock = DockStyle.Top;
             panelSettings.Location = new Point(15, 921);
             panelSettings.Name = "panelSettings";
             panelSettings.Padding = new Padding(20, 5, 11, 5);
-            panelSettings.Size = new Size(983, 388);
+            panelSettings.Size = new Size(983, 346);
             panelSettings.TabIndex = 3;
             // 
             // checkAutoToggleClamshellMode
             // 
             checkAutoToggleClamshellMode.AutoSize = true;
             checkAutoToggleClamshellMode.Dock = DockStyle.Top;
-            checkAutoToggleClamshellMode.Location = new Point(20, 341);
+            checkAutoToggleClamshellMode.Location = new Point(20, 299);
             checkAutoToggleClamshellMode.Name = "checkAutoToggleClamshellMode";
             checkAutoToggleClamshellMode.Padding = new Padding(3);
             checkAutoToggleClamshellMode.Size = new Size(952, 42);
@@ -1094,7 +1092,7 @@ namespace GHelper
             // 
             checkAutoApplyWindowsPowerMode.AutoSize = true;
             checkAutoApplyWindowsPowerMode.Dock = DockStyle.Top;
-            checkAutoApplyWindowsPowerMode.Location = new Point(20, 299);
+            checkAutoApplyWindowsPowerMode.Location = new Point(20, 257);
             checkAutoApplyWindowsPowerMode.Margin = new Padding(4, 3, 4, 3);
             checkAutoApplyWindowsPowerMode.Name = "checkAutoApplyWindowsPowerMode";
             checkAutoApplyWindowsPowerMode.Padding = new Padding(3);
@@ -1107,7 +1105,7 @@ namespace GHelper
             // 
             checkTopmost.AutoSize = true;
             checkTopmost.Dock = DockStyle.Top;
-            checkTopmost.Location = new Point(20, 257);
+            checkTopmost.Location = new Point(20, 215);
             checkTopmost.Margin = new Padding(4, 3, 4, 3);
             checkTopmost.Name = "checkTopmost";
             checkTopmost.Padding = new Padding(3);
@@ -1120,7 +1118,7 @@ namespace GHelper
             // 
             checkNoOverdrive.AutoSize = true;
             checkNoOverdrive.Dock = DockStyle.Top;
-            checkNoOverdrive.Location = new Point(20, 215);
+            checkNoOverdrive.Location = new Point(20, 173);
             checkNoOverdrive.Margin = new Padding(4, 3, 4, 3);
             checkNoOverdrive.Name = "checkNoOverdrive";
             checkNoOverdrive.Padding = new Padding(3);
@@ -1133,7 +1131,7 @@ namespace GHelper
             // 
             checkUSBC.AutoSize = true;
             checkUSBC.Dock = DockStyle.Top;
-            checkUSBC.Location = new Point(20, 173);
+            checkUSBC.Location = new Point(20, 131);
             checkUSBC.Margin = new Padding(4, 3, 4, 3);
             checkUSBC.Name = "checkUSBC";
             checkUSBC.Padding = new Padding(3);
@@ -1146,7 +1144,7 @@ namespace GHelper
             // 
             checkVariBright.AutoSize = true;
             checkVariBright.Dock = DockStyle.Top;
-            checkVariBright.Location = new Point(20, 131);
+            checkVariBright.Location = new Point(20, 89);
             checkVariBright.Margin = new Padding(4, 3, 4, 3);
             checkVariBright.Name = "checkVariBright";
             checkVariBright.Padding = new Padding(3);
@@ -1159,7 +1157,7 @@ namespace GHelper
             // 
             checkGpuApps.AutoSize = true;
             checkGpuApps.Dock = DockStyle.Top;
-            checkGpuApps.Location = new Point(20, 89);
+            checkGpuApps.Location = new Point(20, 47);
             checkGpuApps.Margin = new Padding(4, 3, 4, 3);
             checkGpuApps.Name = "checkGpuApps";
             checkGpuApps.Padding = new Padding(3);
@@ -1172,7 +1170,7 @@ namespace GHelper
             // 
             checkGPUFix.AutoSize = true;
             checkGPUFix.Dock = DockStyle.Top;
-            checkGPUFix.Location = new Point(20, 47);
+            checkGPUFix.Location = new Point(20, 5);
             checkGPUFix.Margin = new Padding(4, 3, 4, 3);
             checkGPUFix.Name = "checkGPUFix";
             checkGPUFix.Padding = new Padding(3);
@@ -1181,29 +1179,15 @@ namespace GHelper
             checkGPUFix.Text = "Enable GPU on shutdown (prevents issue with Eco mode)";
             checkGPUFix.UseVisualStyleBackColor = true;
             // 
-            // checkFnLock
-            // 
-            checkFnLock.AutoSize = true;
-            checkFnLock.Dock = DockStyle.Top;
-            checkFnLock.Location = new Point(20, 5);
-            checkFnLock.Margin = new Padding(4, 3, 4, 3);
-            checkFnLock.MaximumSize = new Size(800, 0);
-            checkFnLock.Name = "checkFnLock";
-            checkFnLock.Padding = new Padding(3);
-            checkFnLock.Size = new Size(800, 42);
-            checkFnLock.TabIndex = 1;
-            checkFnLock.Text = "Process Fn+F hotkeys without Fn";
-            checkFnLock.UseVisualStyleBackColor = true;
-            // 
             // panelPower
             // 
             panelPower.Controls.Add(numericHibernateAfter);
             panelPower.Controls.Add(labelHibernateAfter);
             panelPower.Controls.Add(pictureHibernate);
             panelPower.Dock = DockStyle.Top;
-            panelPower.Location = new Point(15, 1309);
+            panelPower.Location = new Point(15, 1267);
             panelPower.Name = "panelPower";
-            panelPower.Size = new Size(983, 74);
+            panelPower.Size = new Size(983, 54);
             panelPower.TabIndex = 4;
             // 
             // numericHibernateAfter
@@ -1211,7 +1195,7 @@ namespace GHelper
             numericHibernateAfter.AccessibleName = "Minutes till Hibernation in sleep";
             numericHibernateAfter.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             numericHibernateAfter.Increment = new decimal(new int[] { 10, 0, 0, 0 });
-            numericHibernateAfter.Location = new Point(810, 21);
+            numericHibernateAfter.Location = new Point(810, 7);
             numericHibernateAfter.Margin = new Padding(4, 3, 4, 3);
             numericHibernateAfter.Maximum = new decimal(new int[] { 3000000, 0, 0, 0 });
             numericHibernateAfter.Name = "numericHibernateAfter";
@@ -1221,7 +1205,7 @@ namespace GHelper
             // labelHibernateAfter
             // 
             labelHibernateAfter.AutoSize = true;
-            labelHibernateAfter.Location = new Point(59, 21);
+            labelHibernateAfter.Location = new Point(59, 10);
             labelHibernateAfter.Margin = new Padding(4, 0, 4, 0);
             labelHibernateAfter.Name = "labelHibernateAfter";
             labelHibernateAfter.Size = new Size(457, 32);
@@ -1232,7 +1216,7 @@ namespace GHelper
             // 
             pictureHibernate.BackgroundImage = Resources.icons8_hibernate_32;
             pictureHibernate.BackgroundImageLayout = ImageLayout.Zoom;
-            pictureHibernate.Location = new Point(20, 21);
+            pictureHibernate.Location = new Point(20, 10);
             pictureHibernate.Name = "pictureHibernate";
             pictureHibernate.Size = new Size(32, 32);
             pictureHibernate.TabIndex = 22;
@@ -1370,7 +1354,6 @@ namespace GHelper
         private CheckBox checkUSBC;
         private CheckBox checkVariBright;
         private CheckBox checkGpuApps;
-        private CheckBox checkFnLock;
         private PictureBox pictureBacklight;
         private Label labelBacklightTitle;
         private PictureBox pictureService;

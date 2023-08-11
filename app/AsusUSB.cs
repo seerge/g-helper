@@ -536,7 +536,7 @@ namespace GHelper
 
             Mode = AppConfig.Get("aura_mode");
             Speed = AppConfig.Get("aura_speed");
-            SetColor(AppConfig.Get("aura_color", Color.Red.ToArgb()));
+            SetColor(AppConfig.Get("aura_color"));
             SetColor2(AppConfig.Get("aura_color2"));
 
             if (Mode == HEATMAP)

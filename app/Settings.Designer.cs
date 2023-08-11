@@ -94,6 +94,7 @@ namespace GHelper
             buttonKeyboardColor = new RButton();
             comboKeyboard = new RComboBox();
             panelKeyboardTitle = new Panel();
+            buttonFnLock = new RButton();
             pictureKeyboard = new PictureBox();
             labelKeyboard = new Label();
             panelVersion = new Panel();
@@ -1173,14 +1174,36 @@ namespace GHelper
             // 
             // panelKeyboardTitle
             // 
+            panelKeyboardTitle.Controls.Add(buttonFnLock);
             panelKeyboardTitle.Controls.Add(pictureKeyboard);
             panelKeyboardTitle.Controls.Add(labelKeyboard);
             panelKeyboardTitle.Dock = DockStyle.Top;
             panelKeyboardTitle.Location = new Point(20, 20);
-            panelKeyboardTitle.Margin = new Padding(4);
+            panelKeyboardTitle.Margin = new Padding(0);
             panelKeyboardTitle.Name = "panelKeyboardTitle";
+            panelKeyboardTitle.Padding = new Padding(0, 2, 4, 2);
             panelKeyboardTitle.Size = new Size(787, 40);
             panelKeyboardTitle.TabIndex = 40;
+            // 
+            // buttonFnLock
+            // 
+            buttonFnLock.Activated = false;
+            buttonFnLock.BackColor = SystemColors.ControlLight;
+            buttonFnLock.BorderColor = Color.Transparent;
+            buttonFnLock.BorderRadius = 2;
+            buttonFnLock.Dock = DockStyle.Right;
+            buttonFnLock.FlatAppearance.BorderSize = 0;
+            buttonFnLock.FlatStyle = FlatStyle.Flat;
+            buttonFnLock.Font = new Font("Segoe UI", 7.125F, FontStyle.Bold, GraphicsUnit.Point);
+            buttonFnLock.ForeColor = SystemColors.ControlDark;
+            buttonFnLock.Location = new Point(676, 2);
+            buttonFnLock.Margin = new Padding(0);
+            buttonFnLock.Name = "buttonFnLock";
+            buttonFnLock.Secondary = true;
+            buttonFnLock.Size = new Size(107, 36);
+            buttonFnLock.TabIndex = 4;
+            buttonFnLock.Text = "FN-Lock";
+            buttonFnLock.UseVisualStyleBackColor = false;
             // 
             // pictureKeyboard
             // 
@@ -1197,7 +1220,7 @@ namespace GHelper
             // 
             labelKeyboard.AutoSize = true;
             labelKeyboard.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            labelKeyboard.Location = new Point(44, 0);
+            labelKeyboard.Location = new Point(40, -2);
             labelKeyboard.Margin = new Padding(8, 0, 8, 0);
             labelKeyboard.Name = "labelKeyboard";
             labelKeyboard.Size = new Size(210, 32);
@@ -1526,5 +1549,6 @@ namespace GHelper
         private RButton buttonKeyboard;
         private RButton buttonUpdates;
         private Label labelCharge;
+        private RButton buttonFnLock;
     }
 }

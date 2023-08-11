@@ -196,8 +196,12 @@ namespace GHelper
             this.Resize += SettingsForm_Resize;
             SetContextMenu();
 
+            VisualiseFnLock();
+            buttonFnLock.Click += ButtonFnLock_Click;
+
             panelPerformance.Focus();
         }
+
 
         private void SettingsForm_Resize(object? sender, EventArgs e)
         {
@@ -622,7 +626,7 @@ namespace GHelper
         {
             AsusUSB.Mode = AppConfig.Get("aura_mode");
             AsusUSB.Speed = AppConfig.Get("aura_speed");
-            AsusUSB.SetColor(AppConfig.Get("aura_color", Color.Red.ToArgb()));
+            AsusUSB.SetColor(AppConfig.Get("aura_color"));
             AsusUSB.SetColor2(AppConfig.Get("aura_color2"));
 
             comboKeyboard.DropDownStyle = ComboBoxStyle.DropDownList;
@@ -1194,6 +1198,28 @@ namespace GHelper
 
 
         }
+
+        public void VisualiseFnLock()
+        {
+
+            if (AppConfig.Is("fn_lock"))
+            {
+                buttonFnLock.BackColor = colorStandard;
+                buttonFnLock.ForeColor = SystemColors.ControlLightLight;
+            }
+            else
+            {
+                buttonFnLock.BackColor = buttonSecond;
+                buttonFnLock.ForeColor = SystemColors.ControlDark;
+            }
+        }
+
+
+        private void ButtonFnLock_Click(object? sender, EventArgs e)
+        {
+            InputDispatcher.ToggleFnLock();
+        }
+
     }
 
 
