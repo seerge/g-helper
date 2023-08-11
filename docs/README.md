@@ -1,7 +1,7 @@
 # G-Helper - Lightweight control tool for Asus laptops
 [![United24](https://raw.githubusercontent.com/seerge/g-helper/main/docs/ua.png)](https://u24.gov.ua/)
-[![GitHub release](https://img.shields.io/github/release/seerge/g-helper.svg)](https://GitHub.com/seerge/g-helper/releases/) 
-[![Github all releases](https://img.shields.io/github/downloads/seerge/g-helper/total.svg)](https://GitHub.com/seerge/g-helper/releases/) [![GitHub stars](https://img.shields.io/github/stars/seerge/g-helper.svg?style=social&label=Star)](https://GitHub.com/seerge/g-helper/stargazers/) <sup>  Language: English | <a href="https://github.com/seerge/g-helper/blob/main/docs/README.zh-CN.md">[中文]</a></sup>
+[![GitHub release](https://img.shields.io/github/release/seerge/g-helper.svg?style=flat-square)](https://GitHub.com/seerge/g-helper/releases/) 
+[![Github all releases](https://img.shields.io/github/downloads/seerge/g-helper/total.svg?style=flat-square)](https://GitHub.com/seerge/g-helper/releases/) [![GitHub stars](https://img.shields.io/github/stars/seerge/g-helper.svg?style=social)](https://GitHub.com/seerge/g-helper/stargazers/) <sup>  Language: English | <a href="https://github.com/seerge/g-helper/blob/main/docs/README.zh-CN.md">[中文]</a></sup>
 
 Small and lightweight Armoury Crate alternative for Asus laptops offering almost same functionality without extra bloat and unnecessary services. Works on all popular models, such as ROG Zephyrus G14, G15, G16, M16, Flow X13, Flow X16, Flow Z13, TUF Series, Strix / Scar Series, ProArt, VivoBook and many more! 
 
@@ -52,13 +52,15 @@ _To keep auto switching and hotkeys working the app needs to stay running in the
 
 ### :rocket: Performance Modes
 
-<img align="right" width="200" src="https://github.com/seerge/g-helper/assets/5920850/3e119674-db8d-486b-aa65-2bf9b61f9aa6">
+<img align="right" width="300" src="https://github.com/seerge/g-helper/assets/5920850/3e119674-db8d-486b-aa65-2bf9b61f9aa6">
 
-All Modes are **baked in BIOS** along with default fan curves and power limits. They are the **same** as in the Armoury Crate.
+All Modes are **baked in BIOS** along with default fan curves and power limits and they are the **same** as in the Armoury Crate.
 
-1. **Silent** in BIOS + **Best power efficiency** setting in Windows
-2. **Balanced** (Performance in AC) in BIOS  + **Balanced** setting in Windows
-3. **Turbo** in BIOS + **Best performance** setting in Windows
+Each BIOS mode is paired with matching Windows Power Mode. If you don't want app to set Power Modes uncheck ``Extra``->``Auto adjust Windows Power Modes``
+
+1. **Silent** in BIOS + **Best power efficiency** power mode
+2. **Balanced** (Performance in AC) in BIOS  + **Balanced** power mode
+3. **Turbo** in BIOS + **Best performance** power mode
    
 
 ### :video_game: GPU Modes
