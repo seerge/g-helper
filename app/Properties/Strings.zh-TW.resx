@@ -286,7 +286,7 @@
     <value>正在釋放電力</value>
   </data>
   <data name="DownloadUpdate" xml:space="preserve">
-    <value>下載更新</value>
+    <value>Download</value>
   </data>
   <data name="DriverAndSoftware" xml:space="preserve">
     <value>驅動程式與軟體</value>
