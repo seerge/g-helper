@@ -286,7 +286,7 @@
     <value>Scaricamento</value>
   </data>
   <data name="DownloadUpdate" xml:space="preserve">
-    <value>Download</value>
+    <value>Scarica</value>
   </data>
   <data name="DriverAndSoftware" xml:space="preserve">
     <value>Driver e Software</value>
@@ -306,7 +306,7 @@ Sei sicuro di voler continuare?</value>
     <value>Modalità schermo NVIDIA non impostata su Optimus</value>
   </data>
   <data name="EnergySettings" xml:space="preserve">
-    <value>Energy Settings</value>
+    <value>Risparmio Energia</value>
   </data>
   <data name="Extra" xml:space="preserve">
     <value>Extra</value>
@@ -540,7 +540,7 @@ Sei sicuro di voler continuare?</value>
     <value>Esci</value>
   </data>
   <data name="RestartGPU" xml:space="preserve">
-    <value>Something is using dGPU and preventing Eco mode. Let G-Helper try to restart dGPU in device manager? (Please proceed at your own risk)</value>
+    <value>Qualcosa sta utilizzando la dGPU e impedisce il passaggio alla modalità Eco. Vuoi che G-Helper provi a riavviare la dGPU in gestione dispositivi? (Procedi a tuo rischio)</value>
   </data>
   <data name="RPM" xml:space="preserve">
     <value>RPM</value>
