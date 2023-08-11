@@ -286,7 +286,7 @@
     <value>Taux décharge </value>
   </data>
   <data name="DownloadUpdate" xml:space="preserve">
-    <value>Télécharger la mise à jour</value>
+    <value>Download</value>
   </data>
   <data name="DriverAndSoftware" xml:space="preserve">
     <value>Pilotes et Logiciels</value>
