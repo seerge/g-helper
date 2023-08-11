@@ -286,7 +286,7 @@
     <value>正在放电</value>
   </data>
   <data name="DownloadUpdate" xml:space="preserve">
-    <value>下载更新</value>
+    <value>Download</value>
   </data>
   <data name="DriverAndSoftware" xml:space="preserve">
     <value>驱动程序和软件</value>
