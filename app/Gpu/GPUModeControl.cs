@@ -189,7 +189,7 @@ namespace GHelper.Gpu
         {
 
             bool GpuAuto = AppConfig.Is("gpu_auto");
-            bool ForceGPU = AppConfig.ContainsModel("503") || AppConfig.Is("gpu_fix");
+            bool ForceGPU = AppConfig.ContainsModel("503");
 
             int GpuMode = AppConfig.Get("gpu_mode");
 
