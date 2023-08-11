@@ -286,7 +286,7 @@
     <value>Descargando</value>
   </data>
   <data name="DownloadUpdate" xml:space="preserve">
-    <value>Descargar actualización</value>
+    <value>Download</value>
   </data>
   <data name="DriverAndSoftware" xml:space="preserve">
     <value>Drivers y Software</value>
