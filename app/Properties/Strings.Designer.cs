@@ -565,7 +565,7 @@ namespace GHelper.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Download Update.
+        ///   Looks up a localized string similar to Download.
         /// </summary>
         internal static string DownloadUpdate {
             get {

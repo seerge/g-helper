@@ -116,7 +116,7 @@ namespace GHelper
         {
             timer.Elapsed += Timer_Elapsed;
 
-            isSingleColor = AppConfig.IsSingleColor();
+            isSingleColor = AppConfig.ContainsModel("GA401") || AppConfig.ContainsModel("X13"); // Mono Color
 
             var device = GetDevice(AURA_HID_ID);
             if (device is not null && device.Attributes.Version == 22 && AppConfig.ContainsModel("GA402X")) isSingleColor = true;

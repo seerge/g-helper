@@ -300,7 +300,7 @@ public static class AppConfig
 
     public static bool IsSingleColor()
     {
-        return  ContainsModel("GA401") || ContainsModel("X13");
+        return  ContainsModel("GA401");
     }
 
     public static bool IsStrix()

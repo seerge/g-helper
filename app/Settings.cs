@@ -633,7 +633,7 @@ namespace GHelper
             comboKeyboard.SelectedValueChanged += ComboKeyboard_SelectedValueChanged;
 
 
-            if (AsusUSB.isSingleColor)
+            if (AppConfig.IsSingleColor())
             {
                 panelColor.Visible = false;
             }
