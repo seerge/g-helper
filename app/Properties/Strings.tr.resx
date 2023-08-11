@@ -286,7 +286,7 @@
     <value>Pil boşalıyor</value>
   </data>
   <data name="DownloadUpdate" xml:space="preserve">
-    <value>Güncelleştirmeyi İndir</value>
+    <value>Download</value>
   </data>
   <data name="DriverAndSoftware" xml:space="preserve">
     <value>Drivers and Software</value>
