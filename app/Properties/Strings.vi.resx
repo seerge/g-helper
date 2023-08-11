@@ -286,7 +286,7 @@
     <value>Đang không sạc</value>
   </data>
   <data name="DownloadUpdate" xml:space="preserve">
-    <value>Tải xuống bản cập nhật</value>
+    <value>Download</value>
   </data>
   <data name="DriverAndSoftware" xml:space="preserve">
     <value>Driver và phần mềm</value>
@@ -540,7 +540,7 @@ Do you still want to continue?</value>
     <value>Thoát</value>
   </data>
   <data name="RestartGPU" xml:space="preserve">
-    <value>Không thể chuyển về Chế độ Tiết kiệm do có gì đó đang dùng GPU rời. Khởi động lại GPU rời trong Quản lý Thiết bị? * Bạn sẽ chịu mọi rủi ro.</value>
+    <value>Something is using dGPU and preventing Eco mode. Let G-Helper try to restart dGPU in device manager? (Please proceed at your own risk)</value>
   </data>
   <data name="RPM" xml:space="preserve">
     <value>VTP</value>

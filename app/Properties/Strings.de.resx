@@ -286,7 +286,7 @@
     <value>Entlädt</value>
   </data>
   <data name="DownloadUpdate" xml:space="preserve">
-    <value>Updates herunterladen</value>
+    <value>Download</value>
   </data>
   <data name="DriverAndSoftware" xml:space="preserve">
     <value>Treiber und Software</value>
@@ -540,7 +540,7 @@ Trotzdem fortfahren?</value>
     <value>Schließen</value>
   </data>
   <data name="RestartGPU" xml:space="preserve">
-    <value>Ein Prozess verhindert den Wechsel in den Eco-Modus. dGPU neu starten? Fortfahren auf eigene Gefahr.</value>
+    <value>Something is using dGPU and preventing Eco mode. Let G-Helper try to restart dGPU in device manager? (Please proceed at your own risk)</value>
   </data>
   <data name="RPM" xml:space="preserve">
     <value>U/Min</value>

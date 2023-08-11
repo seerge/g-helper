@@ -286,7 +286,7 @@
     <value>Zużycie mocy</value>
   </data>
   <data name="DownloadUpdate" xml:space="preserve">
-    <value>Pobierz aktualizację</value>
+    <value>Download</value>
   </data>
   <data name="DriverAndSoftware" xml:space="preserve">
     <value>Sterowniki i oprogramowanie</value>
@@ -540,7 +540,7 @@ Nadal chcesz kontynuować?</value>
     <value>Zamknij</value>
   </data>
   <data name="RestartGPU" xml:space="preserve">
-    <value>Coś korzysta z dedykowanego GPU i uniemożliwia włączenie trybu Eco. Zresetować dedykowany GPU w Menadżerze Urządzeń? * Używaj na własną odpowiedzialność</value>
+    <value>Something is using dGPU and preventing Eco mode. Let G-Helper try to restart dGPU in device manager? (Please proceed at your own risk)</value>
   </data>
   <data name="RPM" xml:space="preserve">
     <value>RPM</value>

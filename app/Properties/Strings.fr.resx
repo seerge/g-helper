@@ -286,7 +286,7 @@
     <value>Taux décharge </value>
   </data>
   <data name="DownloadUpdate" xml:space="preserve">
-    <value>Télécharger la mise à jour</value>
+    <value>Download</value>
   </data>
   <data name="DriverAndSoftware" xml:space="preserve">
     <value>Pilotes et Logiciels</value>
@@ -540,7 +540,7 @@ Voulez-vous continuer ?</value>
     <value>Quitter</value>
   </data>
   <data name="RestartGPU" xml:space="preserve">
-    <value>Un processus utilisant le dGPU empêche le passage en mode Éco. Redémarrer le dGPU ? * Procédez à vos risques.</value>
+    <value>Something is using dGPU and preventing Eco mode. Let G-Helper try to restart dGPU in device manager? (Please proceed at your own risk)</value>
   </data>
   <data name="RPM" xml:space="preserve">
     <value> RPM</value>

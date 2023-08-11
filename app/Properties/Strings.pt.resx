@@ -286,7 +286,7 @@
     <value>Descarregando</value>
   </data>
   <data name="DownloadUpdate" xml:space="preserve">
-    <value>Baixar a atualização</value>
+    <value>Download</value>
   </data>
   <data name="DriverAndSoftware" xml:space="preserve">
     <value>Drivers and Software</value>
@@ -540,7 +540,7 @@ Do you still want to continue?</value>
     <value>Sair</value>
   </data>
   <data name="RestartGPU" xml:space="preserve">
-    <value>Algum processo está usando o dGPU e impedindo o modo Econômico. Reinicialize o dGPU no gerenciador de dispositivos. Por favor, proceda por sua conta e risco. </value>
+    <value>Something is using dGPU and preventing Eco mode. Let G-Helper try to restart dGPU in device manager? (Please proceed at your own risk)</value>
   </data>
   <data name="RPM" xml:space="preserve">
     <value>RPM</value>
