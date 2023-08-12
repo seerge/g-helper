@@ -31,14 +31,14 @@ namespace GHelper
         /// </summary>
         private void InitializeComponent()
         {
-            ChartArea chartArea1 = new ChartArea();
-            Title title1 = new Title();
-            ChartArea chartArea2 = new ChartArea();
-            Title title2 = new Title();
-            ChartArea chartArea3 = new ChartArea();
-            Title title3 = new Title();
-            ChartArea chartArea4 = new ChartArea();
-            Title title4 = new Title();
+            ChartArea chartArea9 = new ChartArea();
+            Title title9 = new Title();
+            ChartArea chartArea10 = new ChartArea();
+            Title title10 = new Title();
+            ChartArea chartArea11 = new ChartArea();
+            Title title11 = new Title();
+            ChartArea chartArea12 = new ChartArea();
+            Title title12 = new Title();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Fans));
             panelFans = new Panel();
             labelTip = new Label();
@@ -103,6 +103,8 @@ namespace GHelper
             pictureBoxCPU = new PictureBox();
             labelPowerLimits = new Label();
             panelBoost = new Panel();
+            panelPowerMode = new Panel();
+            comboPowerMode = new RComboBox();
             panelBoostTitle = new Panel();
             pictureBoost = new PictureBox();
             labelBoost = new Label();
@@ -131,6 +133,9 @@ namespace GHelper
             buttonAdvanced = new RButton();
             buttonGPU = new RButton();
             buttonCPU = new RButton();
+            panelPowerModeTItle = new Panel();
+            picturePowerMode = new PictureBox();
+            labelPowerModeTitle = new Label();
             panelFans.SuspendLayout();
             tableFanCharts.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)chartGPU).BeginInit();
@@ -165,6 +170,7 @@ namespace GHelper
             panelTitleCPU.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBoxCPU).BeginInit();
             panelBoost.SuspendLayout();
+            panelPowerMode.SuspendLayout();
             panelBoostTitle.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBoost).BeginInit();
             panelGPU.SuspendLayout();
@@ -180,6 +186,8 @@ namespace GHelper
             ((System.ComponentModel.ISupportInitialize)pictureGPU).BeginInit();
             panelNav.SuspendLayout();
             tableNav.SuspendLayout();
+            panelPowerModeTItle.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)picturePowerMode).BeginInit();
             SuspendLayout();
             // 
             // panelFans
@@ -236,8 +244,8 @@ namespace GHelper
             // 
             // chartGPU
             // 
-            chartArea1.Name = "ChartArea1";
-            chartGPU.ChartAreas.Add(chartArea1);
+            chartArea9.Name = "ChartArea1";
+            chartGPU.ChartAreas.Add(chartArea9);
             chartGPU.Dock = DockStyle.Fill;
             chartGPU.Location = new Point(12, 491);
             chartGPU.Margin = new Padding(2, 10, 2, 10);
@@ -245,13 +253,13 @@ namespace GHelper
             chartGPU.Size = new Size(782, 461);
             chartGPU.TabIndex = 17;
             chartGPU.Text = "chartGPU";
-            title1.Name = "Title1";
-            chartGPU.Titles.Add(title1);
+            title9.Name = "Title1";
+            chartGPU.Titles.Add(title9);
             // 
             // chartCPU
             // 
-            chartArea2.Name = "ChartArea1";
-            chartCPU.ChartAreas.Add(chartArea2);
+            chartArea10.Name = "ChartArea1";
+            chartCPU.ChartAreas.Add(chartArea10);
             chartCPU.Dock = DockStyle.Fill;
             chartCPU.Location = new Point(12, 10);
             chartCPU.Margin = new Padding(2, 10, 2, 10);
@@ -259,13 +267,13 @@ namespace GHelper
             chartCPU.Size = new Size(782, 461);
             chartCPU.TabIndex = 14;
             chartCPU.Text = "chartCPU";
-            title2.Name = "Title1";
-            chartCPU.Titles.Add(title2);
+            title10.Name = "Title1";
+            chartCPU.Titles.Add(title10);
             // 
             // chartXGM
             // 
-            chartArea3.Name = "ChartAreaXGM";
-            chartXGM.ChartAreas.Add(chartArea3);
+            chartArea11.Name = "ChartAreaXGM";
+            chartXGM.ChartAreas.Add(chartArea11);
             chartXGM.Dock = DockStyle.Fill;
             chartXGM.Location = new Point(12, 1453);
             chartXGM.Margin = new Padding(2, 10, 2, 10);
@@ -273,14 +281,14 @@ namespace GHelper
             chartXGM.Size = new Size(782, 464);
             chartXGM.TabIndex = 14;
             chartXGM.Text = "chartXGM";
-            title3.Name = "Title4";
-            chartXGM.Titles.Add(title3);
+            title11.Name = "Title4";
+            chartXGM.Titles.Add(title11);
             chartXGM.Visible = false;
             // 
             // chartMid
             // 
-            chartArea4.Name = "ChartArea3";
-            chartMid.ChartAreas.Add(chartArea4);
+            chartArea12.Name = "ChartArea3";
+            chartMid.ChartAreas.Add(chartArea12);
             chartMid.Dock = DockStyle.Fill;
             chartMid.Location = new Point(12, 972);
             chartMid.Margin = new Padding(2, 10, 2, 10);
@@ -288,8 +296,8 @@ namespace GHelper
             chartMid.Size = new Size(782, 461);
             chartMid.TabIndex = 14;
             chartMid.Text = "chartMid";
-            title4.Name = "Title3";
-            chartMid.Titles.Add(title4);
+            title12.Name = "Title3";
+            chartMid.Titles.Add(title12);
             chartMid.Visible = false;
             // 
             // panelTitleFans
@@ -491,7 +499,7 @@ namespace GHelper
             panelAdvanced.Controls.Add(panelTemperature);
             panelAdvanced.Controls.Add(panelTitleTemp);
             panelAdvanced.Dock = DockStyle.Top;
-            panelAdvanced.Location = new Point(10, 1272);
+            panelAdvanced.Location = new Point(10, 1396);
             panelAdvanced.Name = "panelAdvanced";
             panelAdvanced.Size = new Size(520, 888);
             panelAdvanced.TabIndex = 14;
@@ -786,11 +794,13 @@ namespace GHelper
             panelPower.Controls.Add(panelTitleCPU);
             panelPower.Controls.Add(panelBoost);
             panelPower.Controls.Add(panelBoostTitle);
+            panelPower.Controls.Add(panelPowerMode);
+            panelPower.Controls.Add(panelPowerModeTItle);
             panelPower.Dock = DockStyle.Top;
             panelPower.Location = new Point(10, 640);
             panelPower.Margin = new Padding(4);
             panelPower.Name = "panelPower";
-            panelPower.Size = new Size(520, 632);
+            panelPower.Size = new Size(520, 756);
             panelPower.TabIndex = 43;
             // 
             // panelApplyPower
@@ -798,7 +808,7 @@ namespace GHelper
             panelApplyPower.AutoSize = true;
             panelApplyPower.Controls.Add(checkApplyPower);
             panelApplyPower.Dock = DockStyle.Top;
-            panelApplyPower.Location = new Point(0, 556);
+            panelApplyPower.Location = new Point(0, 680);
             panelApplyPower.Name = "panelApplyPower";
             panelApplyPower.Padding = new Padding(15);
             panelApplyPower.Size = new Size(520, 76);
@@ -825,7 +835,7 @@ namespace GHelper
             panelB0.Controls.Add(labelLeftB0);
             panelB0.Controls.Add(trackB0);
             panelB0.Dock = DockStyle.Top;
-            panelB0.Location = new Point(0, 432);
+            panelB0.Location = new Point(0, 556);
             panelB0.Margin = new Padding(4);
             panelB0.MaximumSize = new Size(0, 124);
             panelB0.Name = "panelB0";
@@ -874,7 +884,7 @@ namespace GHelper
             panelC1.Controls.Add(labelLeftC1);
             panelC1.Controls.Add(trackC1);
             panelC1.Dock = DockStyle.Top;
-            panelC1.Location = new Point(0, 308);
+            panelC1.Location = new Point(0, 432);
             panelC1.Margin = new Padding(4);
             panelC1.MaximumSize = new Size(0, 124);
             panelC1.Name = "panelC1";
@@ -923,7 +933,7 @@ namespace GHelper
             panelA0.Controls.Add(labelLeftA0);
             panelA0.Controls.Add(trackA0);
             panelA0.Dock = DockStyle.Top;
-            panelA0.Location = new Point(0, 184);
+            panelA0.Location = new Point(0, 308);
             panelA0.Margin = new Padding(4);
             panelA0.MaximumSize = new Size(0, 124);
             panelA0.Name = "panelA0";
@@ -971,7 +981,7 @@ namespace GHelper
             panelTitleCPU.Controls.Add(pictureBoxCPU);
             panelTitleCPU.Controls.Add(labelPowerLimits);
             panelTitleCPU.Dock = DockStyle.Top;
-            panelTitleCPU.Location = new Point(0, 124);
+            panelTitleCPU.Location = new Point(0, 248);
             panelTitleCPU.Margin = new Padding(4);
             panelTitleCPU.Name = "panelTitleCPU";
             panelTitleCPU.Size = new Size(520, 60);
@@ -1004,11 +1014,35 @@ namespace GHelper
             // 
             panelBoost.Controls.Add(comboBoost);
             panelBoost.Dock = DockStyle.Top;
-            panelBoost.Location = new Point(0, 60);
+            panelBoost.Location = new Point(0, 184);
             panelBoost.Margin = new Padding(4);
             panelBoost.Name = "panelBoost";
             panelBoost.Size = new Size(520, 64);
             panelBoost.TabIndex = 13;
+            // 
+            // panelPowerMode
+            // 
+            panelPowerMode.Controls.Add(comboPowerMode);
+            panelPowerMode.Dock = DockStyle.Top;
+            panelPowerMode.Location = new Point(0, 60);
+            panelPowerMode.Margin = new Padding(4);
+            panelPowerMode.Name = "panelPowerMode";
+            panelPowerMode.Size = new Size(520, 64);
+            panelPowerMode.TabIndex = 49;
+            // 
+            // comboPowerMode
+            // 
+            comboPowerMode.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            comboPowerMode.BorderColor = Color.White;
+            comboPowerMode.ButtonColor = Color.FromArgb(255, 255, 255);
+            comboPowerMode.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboPowerMode.FormattingEnabled = true;
+            comboPowerMode.Items.AddRange(new object[] { "Disabled", "Enabled", "Aggressive", "Efficient Enabled", "Efficient Aggressive", "Aggressive at Guaranteed", "Efficient at Guaranteed" });
+            comboPowerMode.Location = new Point(13, 12);
+            comboPowerMode.Margin = new Padding(4);
+            comboPowerMode.Name = "comboPowerMode";
+            comboPowerMode.Size = new Size(329, 40);
+            comboPowerMode.TabIndex = 42;
             // 
             // panelBoostTitle
             // 
@@ -1017,7 +1051,7 @@ namespace GHelper
             panelBoostTitle.Controls.Add(pictureBoost);
             panelBoostTitle.Controls.Add(labelBoost);
             panelBoostTitle.Dock = DockStyle.Top;
-            panelBoostTitle.Location = new Point(0, 0);
+            panelBoostTitle.Location = new Point(0, 124);
             panelBoostTitle.Margin = new Padding(4);
             panelBoostTitle.Name = "panelBoostTitle";
             panelBoostTitle.Size = new Size(520, 60);
@@ -1382,6 +1416,42 @@ namespace GHelper
             buttonCPU.TextImageRelation = TextImageRelation.ImageBeforeText;
             buttonCPU.UseVisualStyleBackColor = false;
             // 
+            // panelPowerModeTItle
+            // 
+            panelPowerModeTItle.AutoSize = true;
+            panelPowerModeTItle.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            panelPowerModeTItle.Controls.Add(picturePowerMode);
+            panelPowerModeTItle.Controls.Add(labelPowerModeTitle);
+            panelPowerModeTItle.Dock = DockStyle.Top;
+            panelPowerModeTItle.Location = new Point(0, 0);
+            panelPowerModeTItle.Margin = new Padding(4);
+            panelPowerModeTItle.Name = "panelPowerModeTItle";
+            panelPowerModeTItle.Size = new Size(520, 60);
+            panelPowerModeTItle.TabIndex = 50;
+            // 
+            // picturePowerMode
+            // 
+            picturePowerMode.BackgroundImage = Properties.Resources.icons8_gauge_32;
+            picturePowerMode.BackgroundImageLayout = ImageLayout.Zoom;
+            picturePowerMode.InitialImage = null;
+            picturePowerMode.Location = new Point(10, 18);
+            picturePowerMode.Margin = new Padding(4, 2, 4, 10);
+            picturePowerMode.Name = "picturePowerMode";
+            picturePowerMode.Size = new Size(32, 32);
+            picturePowerMode.TabIndex = 40;
+            picturePowerMode.TabStop = false;
+            // 
+            // labelPowerModeTitle
+            // 
+            labelPowerModeTitle.AutoSize = true;
+            labelPowerModeTitle.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            labelPowerModeTitle.Location = new Point(46, 18);
+            labelPowerModeTitle.Margin = new Padding(4, 0, 4, 0);
+            labelPowerModeTitle.Name = "labelPowerModeTitle";
+            labelPowerModeTitle.Size = new Size(271, 32);
+            labelPowerModeTitle.TabIndex = 39;
+            labelPowerModeTitle.Text = "Windows Power Mode";
+            // 
             // Fans
             // 
             AutoScaleDimensions = new SizeF(192F, 192F);
@@ -1449,6 +1519,7 @@ namespace GHelper
             panelTitleCPU.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBoxCPU).EndInit();
             panelBoost.ResumeLayout(false);
+            panelPowerMode.ResumeLayout(false);
             panelBoostTitle.ResumeLayout(false);
             panelBoostTitle.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBoost).EndInit();
@@ -1471,6 +1542,9 @@ namespace GHelper
             ((System.ComponentModel.ISupportInitialize)pictureGPU).EndInit();
             panelNav.ResumeLayout(false);
             tableNav.ResumeLayout(false);
+            panelPowerModeTItle.ResumeLayout(false);
+            panelPowerModeTItle.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)picturePowerMode).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -1568,5 +1642,10 @@ namespace GHelper
         private TrackBar trackTemp;
         private Panel panelAdvancedAlways;
         private RCheckBox checkApplyUV;
+        private Panel panelPowerMode;
+        private RComboBox comboPowerMode;
+        private Panel panelPowerModeTItle;
+        private PictureBox picturePowerMode;
+        private Label labelPowerModeTitle;
     }
 }

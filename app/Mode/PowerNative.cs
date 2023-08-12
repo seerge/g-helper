@@ -72,11 +72,23 @@ namespace GHelper.Mode
         [DllImportAttribute("powrprof.dll", EntryPoint = "PowerSetActiveOverlayScheme")]
         public static extern uint PowerSetActiveOverlayScheme(Guid OverlaySchemeGuid);
 
+        const string POWER_SILENT = "961cc777-2547-4f9d-8174-7d86181b8a7a";
+        const string POWER_BALANCED = "00000000-0000-0000-0000-000000000000";
+        const string POWER_TURBO = "ded574b5-45a0-4f42-8737-46345c09c238";
+        const string POWER_BETTERPERFORMANCE = "ded574b5-45a0-4f42-8737-46345c09c238";
+
+        static List<string> overlays = new() {
+                POWER_BALANCED,
+                POWER_TURBO,
+                POWER_SILENT,
+                POWER_BETTERPERFORMANCE
+            };
+
         public static Dictionary<string, string> powerModes = new Dictionary<string, string>
             {
-                { "961cc777-2547-4f9d-8174-7d86181b8a7a", "Best Power Efficiency" },
-                { "00000000-0000-0000-0000-000000000000", "Balanced" },
-                { "ded574b5-45a0-4f42-8737-46345c09c238", "Best Performance" },
+                { POWER_SILENT, "Best Power Efficiency" },
+                { POWER_BALANCED, "Balanced" },
+                { POWER_TURBO, "Best Performance" },
             };
         static Guid GetActiveScheme()
         {
@@ -127,59 +139,65 @@ namespace GHelper.Mode
             Logger.WriteLine("Boost " + boost);
         }
 
-        public static void SetPowerScheme(string scheme)
+        public static string GetPowerMode()
         {
-            List<string> overlays = new() {
-                "00000000-0000-0000-0000-000000000000",
-                "ded574b5-45a0-4f42-8737-46345c09c238",
-                "961cc777-2547-4f9d-8174-7d86181b8a7a",
-                "3af9B8d9-7c97-431d-ad78-34a8bfea439f"
-            };
+            PowerGetEffectiveOverlayScheme(out Guid activeScheme);
+            return activeScheme.ToString();
+        }
+
+        public static void SetPowerMode(string scheme)
+        {
+
+            if (!overlays.Contains(scheme)) return;
 
             Guid guidScheme = new Guid(scheme);
 
-            if (overlays.Contains(scheme))
+            uint status = PowerGetEffectiveOverlayScheme(out Guid activeScheme);
+            if (status != 0 || activeScheme != guidScheme)
             {
-
-                Guid activeSchemeGuid = GetActiveScheme();
-                Guid balanced = new Guid("381b4222-f694-41f0-9685-ff5bb260df2e");
-
-                if (activeSchemeGuid != balanced && !AppConfig.Is("skip_power_plan"))
-                {
-                    PowerSetActiveScheme(IntPtr.Zero, balanced);
-                    Logger.WriteLine("Balanced Plan: " + balanced);
-                }
-
-                uint status = PowerGetEffectiveOverlayScheme(out Guid activeScheme);
-                if (status != 0 || activeScheme != guidScheme)
-                {
-                    PowerSetActiveOverlayScheme(guidScheme);
-                    Logger.WriteLine("Power Mode: " + scheme);
-                }
+                status = PowerSetActiveOverlayScheme(guidScheme);
+                Logger.WriteLine("Power Mode " + scheme + ":" + (status == 0 ? "OK" : status));
             }
-            else
-            {
-                PowerSetActiveScheme(IntPtr.Zero, guidScheme);
-                Logger.WriteLine("Power Plan: " + scheme);
-            }
-
 
         }
 
-        public static void SetPowerScheme(int mode)
+        public static void SetBalancedPowerPlan()
+        {
+            Guid activeSchemeGuid = GetActiveScheme();
+            string balanced = "381b4222-f694-41f0-9685-ff5bb260df2e";
+
+            if (activeSchemeGuid.ToString() != balanced && !AppConfig.Is("skip_power_plan"))
+            {
+                SetPowerPlan(balanced);
+            }
+        }
+
+        public static void SetPowerPlan(string scheme)
+        {
+            // Skipping power modes
+            if (overlays.Contains(scheme)) return;
+
+            Guid guidScheme = new Guid(scheme);
+            uint status = PowerSetActiveScheme(IntPtr.Zero, guidScheme);
+            Logger.WriteLine("Power Plan " + scheme + ":" + (status == 0 ? "OK" : status));
+        }
+
+        public static string GetDefaultPowerMode(int mode)
         {
             switch (mode)
             {
-                case 0: // balanced
-                    SetPowerScheme("00000000-0000-0000-0000-000000000000");
-                    break;
                 case 1: // turbo
-                    SetPowerScheme("ded574b5-45a0-4f42-8737-46345c09c238");
-                    break;
+                    return POWER_TURBO;
                 case 2: //silent
-                    SetPowerScheme("961cc777-2547-4f9d-8174-7d86181b8a7a");
-                    break;
+                    return POWER_SILENT;
+                default: // balanced
+                    return POWER_BALANCED;
             }
+        }
+
+        public static void SetPowerMode(int mode)
+        {
+            SetPowerMode(GetDefaultPowerMode(mode));
         }
 
         public static int GetLidAction(bool ac)

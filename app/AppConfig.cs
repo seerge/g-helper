@@ -154,6 +154,11 @@ public static class AppConfig
         Write();
     }
 
+    public static void RemoveMode(string name)
+    {
+        Remove(name + "_" + Modes.GetCurrent());
+    }
+
     public static string GgetParamName(AsusFan device, string paramName = "fan_profile")
     {
         int mode = Modes.GetCurrent();

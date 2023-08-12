@@ -118,7 +118,6 @@ namespace GHelper
             checkNoOverdrive.Text = Properties.Strings.DisableOverdrive;
             checkTopmost.Text = Properties.Strings.WindowTop;
             checkUSBC.Text = Properties.Strings.OptimizedUSBC;
-            checkAutoApplyWindowsPowerMode.Text = Properties.Strings.ApplyWindowsPowerPlan;
             checkAutoToggleClamshellMode.Text = Properties.Strings.ToggleClamshellMode;
 
             labelBacklightKeyboard.Text = Properties.Strings.Keyboard;
@@ -292,9 +291,6 @@ namespace GHelper
 
             checkUSBC.Checked = AppConfig.Is("optimized_usbc");
             checkUSBC.CheckedChanged += CheckUSBC_CheckedChanged;
-
-            checkAutoApplyWindowsPowerMode.Checked = (AppConfig.Get("auto_apply_power_plan") != 0);
-            checkAutoApplyWindowsPowerMode.CheckedChanged += checkAutoApplyWindowsPowerMode_CheckedChanged;
 
             sliderBrightness.Value = InputDispatcher.GetBacklight();
             sliderBrightness.ValueChanged += SliderBrightness_ValueChanged;
@@ -563,10 +559,6 @@ namespace GHelper
             Left = Program.settingsForm.Left - Width - 5;
         }
 
-        private void checkAutoApplyWindowsPowerMode_CheckedChanged(object? sender, EventArgs e)
-        {
-            AppConfig.Set("auto_apply_power_plan", checkAutoApplyWindowsPowerMode.Checked ? 1 : 0);
-        }
 
         private void checkAutoToggleClamshellMode_CheckedChanged(object? sender, EventArgs e)
         {
