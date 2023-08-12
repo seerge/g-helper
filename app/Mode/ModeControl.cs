@@ -46,7 +46,12 @@ namespace GHelper.Mode
         public void ResetPerformanceMode()
         {
             ResetRyzen();
+
             Program.acpi.DeviceSet(AsusACPI.PerformanceMode, Modes.GetCurrentBase(), "Mode");
+
+            // Default power mode
+            AppConfig.RemoveMode("powermode");
+            PowerNative.SetPowerMode(Modes.GetCurrentBase());
         }
 
         public void SetPerformanceMode(int mode = -1, bool notify = false)
@@ -76,18 +81,21 @@ namespace GHelper.Mode
             AutoFans();
             AutoPower(1000);
 
-            if (AppConfig.Get("auto_apply_power_plan") != 0)
-            {
-                if (AppConfig.GetModeString("scheme") is not null)
-                    PowerNative.SetPowerScheme(AppConfig.GetModeString("scheme"));
-                else
-                    PowerNative.SetPowerScheme(Modes.GetBase(mode));
-            }
+            // Power plan from config or defaulting to balanced
+            if (AppConfig.GetModeString("scheme") is not null)
+                PowerNative.SetPowerPlan(AppConfig.GetModeString("scheme"));
+            else
+                PowerNative.SetBalancedPowerPlan();
 
+            // Windows power mode
+            if (AppConfig.GetModeString("powermode") is not null)
+                PowerNative.SetPowerMode(AppConfig.GetModeString("powermode"));
+            else
+                PowerNative.SetPowerMode(Modes.GetBase(mode));
+
+            // CPU Boost setting override
             if (AppConfig.GetMode("auto_boost") != -1)
-            {
                 PowerNative.SetCPUBoost(AppConfig.GetMode("auto_boost"));
-            }
 
             //BatteryControl.SetBatteryChargeLimit();
 

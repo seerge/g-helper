@@ -103,7 +103,6 @@ namespace GHelper
             labelSettings = new Label();
             panelSettings = new Panel();
             checkAutoToggleClamshellMode = new CheckBox();
-            checkAutoApplyWindowsPowerMode = new CheckBox();
             checkTopmost = new CheckBox();
             checkNoOverdrive = new CheckBox();
             checkUSBC = new CheckBox();
@@ -146,7 +145,7 @@ namespace GHelper
             panelServices.Controls.Add(labelServices);
             panelServices.Controls.Add(buttonServices);
             panelServices.Dock = DockStyle.Top;
-            panelServices.Location = new Point(15, 1321);
+            panelServices.Location = new Point(15, 1279);
             panelServices.Name = "panelServices";
             panelServices.Size = new Size(983, 75);
             panelServices.TabIndex = 5;
@@ -1062,7 +1061,6 @@ namespace GHelper
             panelSettings.AutoSize = true;
             panelSettings.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             panelSettings.Controls.Add(checkAutoToggleClamshellMode);
-            panelSettings.Controls.Add(checkAutoApplyWindowsPowerMode);
             panelSettings.Controls.Add(checkTopmost);
             panelSettings.Controls.Add(checkNoOverdrive);
             panelSettings.Controls.Add(checkUSBC);
@@ -1073,33 +1071,20 @@ namespace GHelper
             panelSettings.Location = new Point(15, 921);
             panelSettings.Name = "panelSettings";
             panelSettings.Padding = new Padding(20, 5, 11, 5);
-            panelSettings.Size = new Size(983, 346);
+            panelSettings.Size = new Size(983, 304);
             panelSettings.TabIndex = 3;
             // 
             // checkAutoToggleClamshellMode
             // 
             checkAutoToggleClamshellMode.AutoSize = true;
             checkAutoToggleClamshellMode.Dock = DockStyle.Top;
-            checkAutoToggleClamshellMode.Location = new Point(20, 299);
+            checkAutoToggleClamshellMode.Location = new Point(20, 257);
             checkAutoToggleClamshellMode.Name = "checkAutoToggleClamshellMode";
             checkAutoToggleClamshellMode.Padding = new Padding(3);
             checkAutoToggleClamshellMode.Size = new Size(952, 42);
             checkAutoToggleClamshellMode.TabIndex = 8;
             checkAutoToggleClamshellMode.Text = "Auto Toggle Clamshell Mode";
             checkAutoToggleClamshellMode.UseVisualStyleBackColor = true;
-            // 
-            // checkAutoApplyWindowsPowerMode
-            // 
-            checkAutoApplyWindowsPowerMode.AutoSize = true;
-            checkAutoApplyWindowsPowerMode.Dock = DockStyle.Top;
-            checkAutoApplyWindowsPowerMode.Location = new Point(20, 257);
-            checkAutoApplyWindowsPowerMode.Margin = new Padding(4, 3, 4, 3);
-            checkAutoApplyWindowsPowerMode.Name = "checkAutoApplyWindowsPowerMode";
-            checkAutoApplyWindowsPowerMode.Padding = new Padding(3);
-            checkAutoApplyWindowsPowerMode.Size = new Size(952, 42);
-            checkAutoApplyWindowsPowerMode.TabIndex = 7;
-            checkAutoApplyWindowsPowerMode.Text = "Auto Adjust Windows Power Mode";
-            checkAutoApplyWindowsPowerMode.UseVisualStyleBackColor = true;
             // 
             // checkTopmost
             // 
@@ -1185,7 +1170,7 @@ namespace GHelper
             panelPower.Controls.Add(labelHibernateAfter);
             panelPower.Controls.Add(pictureHibernate);
             panelPower.Dock = DockStyle.Top;
-            panelPower.Location = new Point(15, 1267);
+            panelPower.Location = new Point(15, 1225);
             panelPower.Name = "panelPower";
             panelPower.Size = new Size(983, 54);
             panelPower.TabIndex = 4;
@@ -1348,7 +1333,6 @@ namespace GHelper
         private PictureBox pictureSettings;
         private Label labelSettings;
         private Panel panelSettings;
-        private CheckBox checkAutoApplyWindowsPowerMode;
         private CheckBox checkTopmost;
         private CheckBox checkNoOverdrive;
         private CheckBox checkUSBC;

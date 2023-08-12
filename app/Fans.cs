@@ -145,11 +145,17 @@ namespace GHelper
             trackTemp.Minimum = RyzenControl.MinTemp;
             trackTemp.Maximum = RyzenControl.MaxTemp;
 
+            comboPowerMode.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboPowerMode.DataSource = new BindingSource(PowerNative.powerModes, null);
+            comboPowerMode.DisplayMember = "Value";
+            comboPowerMode.ValueMember = "Key";
 
             FillModes();
             InitAll();
 
             comboBoost.SelectedValueChanged += ComboBoost_Changed;
+            comboPowerMode.SelectedValueChanged += ComboPowerMode_Changed;
+
 
             comboModes.SelectionChangeCommitted += ComboModes_SelectedValueChanged;
             comboModes.TextChanged += ComboModes_TextChanged;
@@ -201,7 +207,7 @@ namespace GHelper
             InitMode();
             InitFans();
             InitPower();
-            InitBoost();
+            InitPowerPlan();
             InitUV();
             InitGPU();
         }
@@ -512,7 +518,7 @@ namespace GHelper
             if (percentage == 0) return "OFF";
 
             int Max = MaxRPM;
-            if (device == AsusFan.XGM ) Max = 72;
+            if (device == AsusFan.XGM) Max = 72;
 
             return (200 * Math.Round((float)(MinRPM * 100 + (Max - MinRPM) * percentage) / 200)).ToString() + unit;
         }
@@ -594,11 +600,24 @@ namespace GHelper
         }
 
 
-        public void InitBoost()
+        public void InitPowerPlan()
         {
             int boost = PowerNative.GetCPUBoost();
             if (boost >= 0)
                 comboBoost.SelectedIndex = Math.Min(boost, comboBoost.Items.Count - 1);
+
+            string powerMode = PowerNative.GetPowerMode();
+            comboPowerMode.SelectedValue = powerMode;
+
+        }
+
+        private void ComboPowerMode_Changed(object? sender, EventArgs e)
+        {
+            string powerMode = (string)comboPowerMode.SelectedValue;
+            PowerNative.SetPowerMode(powerMode);
+            
+            if (PowerNative.GetDefaultPowerMode(Modes.GetCurrentBase()) != powerMode)
+                AppConfig.SetMode("powermode", powerMode);
         }
 
         private void ComboBoost_Changed(object? sender, EventArgs e)
@@ -870,6 +889,8 @@ namespace GHelper
             AppConfig.SetMode("cpu_temp", -1);
 
             modeControl.ResetPerformanceMode();
+
+            InitPowerPlan();
 
             if (Program.acpi.IsXGConnected()) AsusUSB.ResetXGM();
 

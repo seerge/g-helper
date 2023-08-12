@@ -51,7 +51,8 @@
                 "gpu_memory",
                 "auto_boost",
                 "auto_apply",
-                "auto_apply_power"
+                "auto_apply_power",
+                "powermode"
             };
 
             foreach (string clean in cleanup)
