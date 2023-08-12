@@ -56,7 +56,7 @@ _To keep auto switching and hotkeys working the app needs to stay running in the
 
 All Modes are **baked in BIOS** along with default fan curves and power limits and they are the **same** as in the Armoury Crate.
 
-Each BIOS mode is paired with matching Windows Power Mode. If you don't want app to set Power Modes uncheck ``Extra``->``Auto adjust Windows Power Modes``
+Each BIOS mode is paired with matching Windows Power Mode. You can adjust this setting under ``Fans + Power``
 
 1. **Silent** in BIOS + **Best power efficiency** power mode
 2. **Balanced** (Performance in AC) in BIOS  + **Balanced** power mode
@@ -227,16 +227,16 @@ By default the app will use your windows language setting. But you can set langu
 
 ### Custom windows power plans with each mode
 
-You can manually assign a custom power plan (or power mode) GUID to each mode. It can be either "real" power plan that can be switched or "overlay" power plan like the ones g-helper sets by default.
+You can manually assign a custom power plan GUID to each mode. 
 
 Format is following : ``"scheme_<mode>" : "GUID" ``
 Where ``mode = 0 (balanced), 1 (turbo), 2 (silent)``
 
-Default behavior is :
+Example (for default windows "balanced" power plan):
 ```
-"scheme_0": "00000000-0000-0000-0000-000000000000",
-"scheme_1": "ded574b5-45a0-4f42-8737-46345c09c238",
-"scheme_2": "961cc777-2547-4f9d-8174-7d86181b8a7a",
+"scheme_0": "381b4222-f694-41f0-9685-ff5bb260df2e",
+"scheme_1": "381b4222-f694-41f0-9685-ff5bb260df2e",
+"scheme_2": "381b4222-f694-41f0-9685-ff5bb260df2e",
 ```
 
 ### Disable OSD
