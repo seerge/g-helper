@@ -286,7 +286,7 @@
     <value>Zużycie mocy</value>
   </data>
   <data name="DownloadUpdate" xml:space="preserve">
-    <value>Download</value>
+    <value>Pobierz</value>
   </data>
   <data name="DriverAndSoftware" xml:space="preserve">
     <value>Sterowniki i oprogramowanie</value>
@@ -540,13 +540,13 @@ Nadal chcesz kontynuować?</value>
     <value>Zamknij</value>
   </data>
   <data name="RestartGPU" xml:space="preserve">
-    <value>Something is using dGPU and preventing Eco mode. Let G-Helper try to restart dGPU in device manager? (Please proceed at your own risk)</value>
+    <value>Coś korzysta z dGPU, uniemożliwiając włączenie trybu Eco. Czy G-Helper ma zresetować dGPU w Menadżerze Urządzeń? (Korzystasz na własne ryzyko)</value>
   </data>
   <data name="RPM" xml:space="preserve">
     <value>RPM</value>
   </data>
   <data name="RunOnStartup" xml:space="preserve">
-    <value>Uruchom przy starcie systemu</value>
+    <value>Uruchom przy starcie</value>
   </data>
   <data name="ScreenPadDown" xml:space="preserve">
     <value>Zmniejsz jasność ScreenPad</value>
