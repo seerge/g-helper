@@ -348,7 +348,8 @@ public static class AppConfig
         return
             Is("manual_mode") ||
             ContainsModel("GU604") ||
-            ContainsModel("G733");
+            ContainsModel("G733") ||
+            ContainsModel("FX507Z");
     }
 
     public static bool IsFanRequired()

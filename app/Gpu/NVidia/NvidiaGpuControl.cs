@@ -18,8 +18,12 @@ public class NvidiaGpuControl : IGpuControl
     public const int MinCoreOffset = -250;
     public const int MinMemoryOffset = -250;
 
+    public const int MinClockLimit = 1000;
+    public const int MaxClockLimit = 3000;
+
     private static PhysicalGPU? _internalGpu;
 
+    private static int _maxClock = -1;
     public NvidiaGpuControl()
     {
         _internalGpu = GetInternalDiscreteGpu();
@@ -108,15 +112,11 @@ public class NvidiaGpuControl : IGpuControl
     }
 
 
-    public bool RestartGPU()
+    private bool RunPowershellCommand(string script)
     {
         try
         {
-
-            string script = @"$device = Get-PnpDevice | Where-Object { $_.FriendlyName -imatch 'NVIDIA' -and $_.Class -eq 'Display' }; Disable-PnpDevice $device.InstanceId -Confirm:$false; Start-Sleep -Seconds 5; Enable-PnpDevice $device.InstanceId -Confirm:$false";
-            Logger.WriteLine(script);
             ProcessHelper.RunCMD("powershell", script);
-            //Thread.Sleep(2000);
             return true;
         }
         catch (Exception ex)
@@ -124,6 +124,30 @@ public class NvidiaGpuControl : IGpuControl
             Logger.WriteLine(ex.ToString());
             return false;
         }
+
+    }
+
+    public bool SetMaxGPUClock (int clock)
+    {
+        int oldClock = _maxClock;
+
+        if (clock >= MinClockLimit && clock < MaxClockLimit) 
+            RunPowershellCommand($"nvidia-smi -lgc 0,{clock}");
+        else
+        {
+            clock = -1;
+            RunPowershellCommand($"nvidia-smi -rgc");
+        }
+
+        _maxClock = clock;
+
+        return (oldClock != clock);
+
+    }
+
+    public bool RestartGPU()
+    {
+        return RunPowershellCommand(@"$device = Get-PnpDevice | Where-Object { $_.FriendlyName -imatch 'NVIDIA' -and $_.Class -eq 'Display' }; Disable-PnpDevice $device.InstanceId -Confirm:$false; Start-Sleep -Seconds 5; Enable-PnpDevice $device.InstanceId -Confirm:$false");
     }
 
     public int SetClocksFromConfig()
