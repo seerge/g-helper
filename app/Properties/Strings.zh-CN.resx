@@ -151,7 +151,7 @@
     <value>应用</value>
   </data>
   <data name="ApplyFanCurve" xml:space="preserve">
-    <value>应用自定义扇形曲线</value>
+    <value>应用自定义风扇曲线</value>
   </data>
   <data name="ApplyPowerLimits" xml:space="preserve">
     <value>应用功率限制</value>
@@ -286,7 +286,7 @@
     <value>正在放电</value>
   </data>
   <data name="DownloadUpdate" xml:space="preserve">
-    <value>Download</value>
+    <value>下载</value>
   </data>
   <data name="DriverAndSoftware" xml:space="preserve">
     <value>驱动程序和软件</value>
@@ -540,7 +540,7 @@
     <value>退出</value>
   </data>
   <data name="RestartGPU" xml:space="preserve">
-    <value>Something is using dGPU and preventing Eco mode. Let G-Helper try to restart dGPU in device manager? (Please proceed at your own risk)</value>
+    <value>有程序正在使用独显并阻止进入集显模式。要让 G-Helper 在设备管理器中重新启动独显吗？（请自行承担风险）</value>
   </data>
   <data name="RPM" xml:space="preserve">
     <value>转/分钟</value>
