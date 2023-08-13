@@ -375,7 +375,7 @@ Nadal chcesz kontynuować?</value>
     <value>Temperatura docelowa</value>
   </data>
   <data name="HibernateAfter" xml:space="preserve">
-    <value>Minutes till Hibernation in sleep on battery (0 - OFF)</value>
+    <value>Czas przejścia w hibernację na baterii (0 - wcale)</value>
   </data>
   <data name="High" xml:space="preserve">
     <value>Wysoka</value>
