@@ -291,11 +291,11 @@ namespace GHelper.Mode
             Task.Run(() =>
             {
 
-                int gpu_core = AppConfig.GetMode("gpu_core");
-                int gpu_memory = AppConfig.GetMode("gpu_memory");
-                int gpu_clock_limit = AppConfig.GetMode("gpu_clock_limit");
+                int core = AppConfig.GetMode("gpu_core");
+                int memory = AppConfig.GetMode("gpu_memory");
+                int clock_limit = AppConfig.GetMode("gpu_clock_limit");
 
-                if (gpu_core == -1 && gpu_memory == -1) return;
+                if (core == -1 && memory == -1) return;
 
                 //if ((gpu_core > -5 && gpu_core < 5) && (gpu_memory > -5 && gpu_memory < 5)) launchAsAdmin = false;
 
@@ -306,21 +306,9 @@ namespace GHelper.Mode
                 using NvidiaGpuControl nvControl = (NvidiaGpuControl)HardwareControl.GpuControl;
                 try
                 {
-
-                    bool changed = nvControl.SetMaxGPUClock(gpu_clock_limit);
-                    if (changed && launchAsAdmin) ProcessHelper.RunAsAdmin("gpu");
-
-
-                    int getStatus = nvControl.GetClocks(out int current_core, out int current_memory);
-                    if (getStatus != -1)
-                    {
-                        if (Math.Abs(gpu_core - current_core) < 5 && Math.Abs(gpu_memory - current_memory) < 5) return;
-                    }
-
-                    int setStatus = nvControl.SetClocks(gpu_core, gpu_memory);
-                    if (launchAsAdmin) ProcessHelper.RunAsAdmin("gpu");
-
-
+                    int statusLimit = nvControl.SetMaxGPUClock(clock_limit);
+                    int statusClocks = nvControl.SetClocks(core, memory);
+                    if ((statusLimit != 0 || statusClocks != 0) && launchAsAdmin) ProcessHelper.RunAsAdmin("gpu");
                 }
                 catch (Exception ex)
                 {

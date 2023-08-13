@@ -23,7 +23,6 @@ public class NvidiaGpuControl : IGpuControl
 
     private static PhysicalGPU? _internalGpu;
 
-    private static int _maxClock = -1;
     public NvidiaGpuControl()
     {
         _internalGpu = GetInternalDiscreteGpu();
@@ -80,7 +79,7 @@ public class NvidiaGpuControl : IGpuControl
     }
 
 
-    public int GetClocks(out int core, out int memory)
+    public bool GetClocks(out int core, out int memory)
     {
         PhysicalGPU internalGpu = _internalGpu!;
 
@@ -99,14 +98,14 @@ public class NvidiaGpuControl : IGpuControl
                 Logger.WriteLine("GPU VOLT:" + delta.IsEditable + " - " + delta.ValueDeltaInMicroVolt.DeltaValue);
             }
 
-            return 0;
+            return true;
 
         }
         catch (Exception ex)
         {
             Logger.WriteLine("GET GPU CLOCKS:" + ex.Message);
             core = memory = 0;
-            return -1;
+            return false;
         }
 
     }
@@ -127,21 +126,43 @@ public class NvidiaGpuControl : IGpuControl
 
     }
 
-    public bool SetMaxGPUClock (int clock)
+    public int GetMaxGPUCLock()
     {
-        int oldClock = _maxClock;
+        PhysicalGPU internalGpu = _internalGpu!;
+        try
+        {
+            PrivateClockBoostLockV2 data = GPUApi.GetClockBoostLock(internalGpu.Handle);
+            int limit = (int)data.ClockBoostLocks[0].VoltageInMicroV / 1000;
+            Logger.WriteLine("GET CLOCK LIMIT: " + limit);
+            return limit;
+        }
+        catch (Exception ex)
+        {
+            Logger.WriteLine("GET CLOCK LIMIT: " + ex.Message);
+            return -1;
 
-        if (clock >= MinClockLimit && clock < MaxClockLimit) 
-            RunPowershellCommand($"nvidia-smi -lgc 0,{clock}");
+        }
+    }
+
+
+    public int SetMaxGPUClock(int clock)
+    {
+
+        if (clock < MinClockLimit || clock >= MaxClockLimit) clock = 0;
+
+        int _clockLimit = GetMaxGPUCLock();
+
+        if (_clockLimit != clock)
+        {
+            if (clock > 0) RunPowershellCommand($"nvidia-smi -lgc 0,{clock}");
+            else RunPowershellCommand($"nvidia-smi -rgc");
+            return 1;
+        }
         else
         {
-            clock = -1;
-            RunPowershellCommand($"nvidia-smi -rgc");
+            return 0;
         }
 
-        _maxClock = clock;
-
-        return (oldClock != clock);
 
     }
 
@@ -150,25 +171,23 @@ public class NvidiaGpuControl : IGpuControl
         return RunPowershellCommand(@"$device = Get-PnpDevice | Where-Object { $_.FriendlyName -imatch 'NVIDIA' -and $_.Class -eq 'Display' }; Disable-PnpDevice $device.InstanceId -Confirm:$false; Start-Sleep -Seconds 5; Enable-PnpDevice $device.InstanceId -Confirm:$false");
     }
 
-    public int SetClocksFromConfig()
-    {
-        int core = AppConfig.Get("gpu_core", 0);
-        int memory = AppConfig.Get("gpu_memory", 0);
-        int status = SetClocks(core, memory);
-        return status;
-    }
 
-    public int SetClocks(int core, int memory, int voltage = 0)
+    public int SetClocks(int core, int memory)
     {
 
         if (core < MinCoreOffset || core > MaxCoreOffset) return 0;
         if (memory < MinMemoryOffset || memory > MaxMemoryOffset) return 0;
 
+        if (GetClocks(out int currentCore, out int currentMemory))
+        {
+            if (Math.Abs(core - currentCore) < 5 && Math.Abs(memory - currentMemory) < 5) return 0;
+        }
+
         PhysicalGPU internalGpu = _internalGpu!;
 
         var coreClock = new PerformanceStates20ClockEntryV1(PublicClockDomain.Graphics, new PerformanceStates20ParameterDelta(core * 1000));
         var memoryClock = new PerformanceStates20ClockEntryV1(PublicClockDomain.Memory, new PerformanceStates20ParameterDelta(memory * 1000));
-        var voltageEntry = new PerformanceStates20BaseVoltageEntryV1(PerformanceVoltageDomain.Core, new PerformanceStates20ParameterDelta(voltage));
+        //var voltageEntry = new PerformanceStates20BaseVoltageEntryV1(PerformanceVoltageDomain.Core, new PerformanceStates20ParameterDelta(voltage));
 
         PerformanceStates20ClockEntryV1[] clocks = { coreClock, memoryClock };
         PerformanceStates20BaseVoltageEntryV1[] voltages = { };
@@ -187,8 +206,6 @@ public class NvidiaGpuControl : IGpuControl
             Logger.WriteLine("SET GPU CLOCKS: " + ex.Message);
             return -1;
         }
-
-
 
         return 1;
     }

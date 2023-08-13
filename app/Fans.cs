@@ -443,7 +443,6 @@ namespace GHelper
 
                 int core = AppConfig.GetMode("gpu_core");
                 int memory = AppConfig.GetMode("gpu_memory");
-
                 int clock_limit = AppConfig.GetMode("gpu_clock_limit");
 
                 if (gpu_boost < 0) gpu_boost = AsusACPI.MaxGPUBoost;
@@ -453,14 +452,16 @@ namespace GHelper
                 if (memory == -1) memory = 0;
                 if (clock_limit == -1) clock_limit = NvidiaGpuControl.MaxClockLimit;
 
-                //if (readClocks)
-                //{
-                int status = nvControl.GetClocks(out int current_core, out int current_memory);
-                if (status != -1)
+                if (nvControl.GetClocks(out int current_core, out int current_memory))
                 {
                     core = current_core;
                     memory = current_memory;
                 }
+
+                int _clockLimit = nvControl.GetMaxGPUCLock();
+
+                if (_clockLimit == 0) clock_limit = NvidiaGpuControl.MaxClockLimit;
+                else if (_clockLimit > 0) clock_limit = _clockLimit;
 
                 try
                 {
