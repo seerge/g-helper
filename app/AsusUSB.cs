@@ -157,34 +157,40 @@ namespace GHelper
             };
         }
 
+        static Dictionary<int, string> _modesSingleColor = new Dictionary<int, string>
+        {
+            { 0, Properties.Strings.AuraStatic },
+            { 1, Properties.Strings.AuraBreathe },
+            { 10, Properties.Strings.AuraStrobe },
+        };
 
         static Dictionary<int, string> _modes = new Dictionary<int, string>
-            {
-                { 0, Properties.Strings.AuraStatic },
-                { 1, Properties.Strings.AuraBreathe },
-                { 2, Properties.Strings.AuraColorCycle },
-                { 3, Properties.Strings.AuraRainbow },
-                { 10, Properties.Strings.AuraStrobe },
-                { HEATMAP, "Heatmap"},
-                { GPUMODE, "GPU Mode" }
-            };
+        {
+            { 0, Properties.Strings.AuraStatic },
+            { 1, Properties.Strings.AuraBreathe },
+            { 2, Properties.Strings.AuraColorCycle },
+            { 3, Properties.Strings.AuraRainbow },
+            { 10, Properties.Strings.AuraStrobe },
+            { HEATMAP, "Heatmap"},
+            { GPUMODE, "GPU Mode" }
+        };
 
         static Dictionary<int, string> _modesStrix = new Dictionary<int, string>
-            {
-                { 0, Properties.Strings.AuraStatic },
-                { 1, Properties.Strings.AuraBreathe },
-                { 2, Properties.Strings.AuraColorCycle },
-                { 3, Properties.Strings.AuraRainbow },
-                { 4, "Star" },
-                { 5, "Rain" },
-                { 6, "Highlight" },
-                { 7, "Laser" },
-                { 8, "Ripple" },
-                { 10, Properties.Strings.AuraStrobe},
-                { 11, "Comet" },
-                { 12, "Flash" },
-                { HEATMAP, "Heatmap"}
-            };
+        {
+            { 0, Properties.Strings.AuraStatic },
+            { 1, Properties.Strings.AuraBreathe },
+            { 2, Properties.Strings.AuraColorCycle },
+            { 3, Properties.Strings.AuraRainbow },
+            { 4, "Star" },
+            { 5, "Rain" },
+            { 6, "Highlight" },
+            { 7, "Laser" },
+            { 8, "Ripple" },
+            { 10, Properties.Strings.AuraStrobe},
+            { 11, "Comet" },
+            { 12, "Flash" },
+            { HEATMAP, "Heatmap"}
+        };
 
 
         public static Dictionary<int, string> GetModes()
@@ -196,10 +202,7 @@ namespace GHelper
 
             if (isSingleColor)
             {
-                _modes.Remove(2);
-                _modes.Remove(3);
-                _modes.Remove(HEATMAP);
-                _modes.Remove(GPUMODE);
+                return _modesSingleColor;
             }
 
             if (AppConfig.IsAdvantageEdition())
