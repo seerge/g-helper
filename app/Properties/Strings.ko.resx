@@ -208,16 +208,16 @@
     <value>Strobe</value>
   </data>
   <data name="AuraZoneAll" xml:space="preserve">
-    <value>All</value>
+    <value>전체</value>
   </data>
   <data name="AuraZoneDock" xml:space="preserve">
-    <value>Dock</value>
+    <value>독</value>
   </data>
   <data name="AuraZoneLogo" xml:space="preserve">
-    <value>Logo</value>
+    <value>로고</value>
   </data>
   <data name="AuraZoneScroll" xml:space="preserve">
-    <value>Scrollwheel</value>
+    <value>스크롤 휠</value>
   </data>
   <data name="AuraZoneUnderglow" xml:space="preserve">
     <value>Underglow</value>
@@ -247,7 +247,7 @@
     <value>배터리 충전 제한</value>
   </data>
   <data name="BatteryHealth" xml:space="preserve">
-    <value>Battery Health</value>
+    <value>배터리 수명</value>
   </data>
   <data name="BiosAndDriverUpdates" xml:space="preserve">
     <value>바이오스/드라이버 업데이트</value>
@@ -375,7 +375,7 @@
     <value>목표 온도</value>
   </data>
   <data name="HibernateAfter" xml:space="preserve">
-    <value>Minutes till Hibernation in sleep on battery (0 - OFF)</value>
+    <value>최대 절전 모드 전환 시간 (0 - 꺼짐)</value>
   </data>
   <data name="High" xml:space="preserve">
     <value>High</value>
@@ -405,7 +405,7 @@
     <value>라이트바</value>
   </data>
   <data name="Lighting" xml:space="preserve">
-    <value>Lighting</value>
+    <value>조명</value>
   </data>
   <data name="Logo" xml:space="preserve">
     <value>로고</value>
@@ -465,10 +465,10 @@
     <value>Lift Off Distance</value>
   </data>
   <data name="MouseLowBatteryWarning" xml:space="preserve">
-    <value>Low Battery Warning at</value>
+    <value>배터리 부족 경고 알림</value>
   </data>
   <data name="MousePerformance" xml:space="preserve">
-    <value>Performance</value>
+    <value>성능</value>
   </data>
   <data name="MouseSynchronize" xml:space="preserve">
     <value>마우스와 동기화</value>
@@ -588,19 +588,19 @@
     <value>서비스 중지 중</value>
   </data>
   <data name="ToggleAura" xml:space="preserve">
-    <value>Aura 토글 키</value>
+    <value>Aura 전환 키</value>
   </data>
   <data name="ToggleClamshellMode" xml:space="preserve">
     <value>Auto Toggle Clamshell Mode</value>
   </data>
   <data name="ToggleFnLock" xml:space="preserve">
-    <value>Fn-Lock 토글 키</value>
+    <value>Fn-Lock 전환 키</value>
   </data>
   <data name="ToggleMiniled" xml:space="preserve">
-    <value>Miniled 토글 키 (지원하는 기기만)</value>
+    <value>Miniled 전환 키 (지원하는 기기만)</value>
   </data>
   <data name="ToggleScreen" xml:space="preserve">
-    <value>화면 토글 키</value>
+    <value>화면 전환 키</value>
   </data>
   <data name="Turbo" xml:space="preserve">
     <value>터보</value>
@@ -618,7 +618,7 @@
     <value>Ultimate</value>
   </data>
   <data name="UndervoltingRisky" xml:space="preserve">
-    <value>언더볼팅은 실험적이며 위험한 기능입니다. 적용 값이 너무 낮은 경우 시스템이 불안정해지고, 종료되거나 데이터 손상을 유발할 수 있습니다. 작은 값부터 적용하여 잘 작동하는지 확인해 보십시오.</value>
+    <value>언더볼팅은 실험적이며 위험한 기능입니다. 적용 값이 너무 낮은 경우 시스템이 불안정해지고, 강제 종료되거나 데이터 손상을 유발할 수 있습니다. 낮은 값부터 적용하여 잘 작동하는지 확인해 보십시오.</value>
   </data>
   <data name="Updates" xml:space="preserve">
     <value>업데이트</value>
