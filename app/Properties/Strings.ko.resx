@@ -232,7 +232,7 @@
     <value>배터리 사용 중에만 60Hz 설정</value>
   </data>
   <data name="Awake" xml:space="preserve">
-    <value>Awake</value>
+    <value>절전 모드 해제</value>
   </data>
   <data name="BacklightTimeout" xml:space="preserve">
     <value>전원 / 배터리 사용 중 자동 꺼짐 시간 (0 - 항상 켜짐)</value>
@@ -253,7 +253,7 @@
     <value>바이오스/드라이버 업데이트</value>
   </data>
   <data name="Boot" xml:space="preserve">
-    <value>Boot</value>
+    <value>부팅</value>
   </data>
   <data name="Brightness" xml:space="preserve">
     <value>밝기</value>
@@ -555,13 +555,13 @@
     <value>Screenpad 밝기 증가</value>
   </data>
   <data name="Shutdown" xml:space="preserve">
-    <value>꺼짐</value>
+    <value>시스템 종료</value>
   </data>
   <data name="Silent" xml:space="preserve">
     <value>조용</value>
   </data>
   <data name="Sleep" xml:space="preserve">
-    <value>Sleep</value>
+    <value>절전 모드</value>
   </data>
   <data name="StandardGPUTooltip" xml:space="preserve">
     <value>Standard 모드에서 dGPU 켜기</value>
