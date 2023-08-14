@@ -10,6 +10,8 @@ namespace GHelper.Gpu
         SettingsForm settings;
         ScreenControl screenControl = new ScreenControl();
 
+        public static int GpuMode;
+
         public GPUModeControl(SettingsForm settingsForm)
         {
             settings = settingsForm;
@@ -22,8 +24,6 @@ namespace GHelper.Gpu
 
             Logger.WriteLine("Eco flag : " + eco);
             Logger.WriteLine("Mux flag : " + mux);
-
-            int GpuMode;
 
             if (mux == 0)
             {

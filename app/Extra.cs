@@ -331,16 +331,10 @@ namespace GHelper
         {
             try
             {
-                Task.Run(() =>
-                {
-                    int hibernate = PowerNative.GetHibernateAfter();
-                    if (hibernate < 0 || hibernate > numericHibernateAfter.Maximum) hibernate = 0;
-                    BeginInvoke(delegate
-                    {
-                        numericHibernateAfter.Value = hibernate;
-                        numericHibernateAfter.ValueChanged += NumericHibernateAfter_ValueChanged;
-                    });
-                });
+                int hibernate = PowerNative.GetHibernateAfter();
+                if (hibernate < 0 || hibernate > numericHibernateAfter.Maximum) hibernate = 0;
+                numericHibernateAfter.Value = hibernate;
+                numericHibernateAfter.ValueChanged += NumericHibernateAfter_ValueChanged;
 
             }
             catch (Exception ex)

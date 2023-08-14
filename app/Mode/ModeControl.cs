@@ -314,6 +314,8 @@ namespace GHelper.Mode
                 {
                     Logger.WriteLine(ex.ToString());
                 }
+
+                settings.GPUInit();
             });
         }
 

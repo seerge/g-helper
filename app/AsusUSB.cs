@@ -1,5 +1,8 @@
-﻿using GHelper.Helpers;
+﻿using GHelper.Gpu;
+using GHelper.Helpers;
 using HidLibrary;
+using NAudio.Gui;
+using System.Drawing;
 using System.Text;
 
 namespace GHelper
@@ -37,6 +40,7 @@ namespace GHelper
     public static class AsusUSB
     {
         public const int HEATMAP = 20;
+        public const int GPUMODE = 21;
 
         public const int ASUS_ID = 0x0b05;
 
@@ -161,7 +165,8 @@ namespace GHelper
                 { 2, Properties.Strings.AuraColorCycle },
                 { 3, Properties.Strings.AuraRainbow },
                 { 10, Properties.Strings.AuraStrobe },
-                { HEATMAP, "Heatmap"}
+                { HEATMAP, "Heatmap"},
+                { GPUMODE, "GPU Mode" }
             };
 
         static Dictionary<int, string> _modesStrix = new Dictionary<int, string>
@@ -194,6 +199,7 @@ namespace GHelper
                 _modes.Remove(2);
                 _modes.Remove(3);
                 _modes.Remove(HEATMAP);
+                _modes.Remove(GPUMODE);
             }
 
             if (AppConfig.IsAdvantageEdition())
@@ -531,6 +537,25 @@ namespace GHelper
         }
 
 
+        public static void ApplyGPUColor()
+        {
+            if (AppConfig.Get("aura_mode") != GPUMODE) return;
+
+            switch (GPUModeControl.GpuMode)
+            {
+                case AsusACPI.GPUModeUltimate:
+                    ApplyColor(Color.Red, true);
+                    break;
+                case AsusACPI.GPUModeEco:
+                    ApplyColor(Color.Green, true);
+                    break;
+                default:
+                    ApplyColor(Color.Yellow, true);
+                    break;
+            }
+        }
+
+
         public static void ApplyAura()
         {
 
@@ -539,16 +564,21 @@ namespace GHelper
             SetColor(AppConfig.Get("aura_color"));
             SetColor2(AppConfig.Get("aura_color2"));
 
+            timer.Enabled = false;
+
             if (Mode == HEATMAP)
             {
                 SetHeatmap(true);
                 timer.Enabled = true;
                 return;
-            }
-            else
+            } 
+
+            if (Mode == GPUMODE)
             {
-                timer.Enabled = false;
+                ApplyGPUColor();
+                return;
             }
+
 
             Task.Run(async () =>
             {
