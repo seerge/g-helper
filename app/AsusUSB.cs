@@ -2,6 +2,7 @@
 using GHelper.Helpers;
 using HidLibrary;
 using NAudio.Gui;
+using System.Diagnostics;
 using System.Drawing;
 using System.Text;
 
@@ -389,63 +390,58 @@ namespace GHelper
         public static void ApplyAuraPower()
         {
 
-            Task.Run(async () =>
+            AuraPower flags = new();
+
+            // Keyboard
+            flags.AwakeKeyb = AppConfig.IsNotFalse("keyboard_awake");
+            flags.BootKeyb = AppConfig.IsNotFalse("keyboard_boot");
+            flags.SleepKeyb = AppConfig.IsNotFalse("keyboard_sleep");
+            flags.ShutdownKeyb = AppConfig.IsNotFalse("keyboard_shutdown");
+
+            // Logo
+            flags.AwakeLogo = AppConfig.IsNotFalse("keyboard_awake_logo");
+            flags.BootLogo = AppConfig.IsNotFalse("keyboard_boot_logo");
+            flags.SleepLogo = AppConfig.IsNotFalse("keyboard_sleep_logo");
+            flags.ShutdownLogo = AppConfig.IsNotFalse("keyboard_shutdown_logo");
+
+            // Lightbar
+            flags.AwakeBar = AppConfig.IsNotFalse("keyboard_awake_bar");
+            flags.BootBar = AppConfig.IsNotFalse("keyboard_boot_bar");
+            flags.SleepBar = AppConfig.IsNotFalse("keyboard_sleep_bar");
+            flags.ShutdownBar = AppConfig.IsNotFalse("keyboard_shutdown_bar");
+
+            // Lid
+            flags.AwakeLid = AppConfig.IsNotFalse("keyboard_awake_lid");
+            flags.BootLid = AppConfig.IsNotFalse("keyboard_boot_lid");
+            flags.SleepLid = AppConfig.IsNotFalse("keyboard_sleep_lid");
+            flags.ShutdownLid = AppConfig.IsNotFalse("keyboard_shutdown_lid");
+
+            // Rear Bar
+            flags.AwakeRear = AppConfig.IsNotFalse("keyboard_awake_lid");
+            flags.BootRear = AppConfig.IsNotFalse("keyboard_boot_lid");
+            flags.SleepRear = AppConfig.IsNotFalse("keyboard_sleep_lid");
+            flags.ShutdownRear = AppConfig.IsNotFalse("keyboard_shutdown_lid");
+
+            var devices = GetHidDevices(deviceIds);
+            byte[] msg = AuraPowerMessage(flags);
+
+            foreach (HidDevice device in devices)
             {
-
-                AuraPower flags = new();
-
-                // Keyboard
-                flags.AwakeKeyb = AppConfig.IsNotFalse("keyboard_awake");
-                flags.BootKeyb = AppConfig.IsNotFalse("keyboard_boot");
-                flags.SleepKeyb = AppConfig.IsNotFalse("keyboard_sleep");
-                flags.ShutdownKeyb = AppConfig.IsNotFalse("keyboard_shutdown");
-
-                // Logo
-                flags.AwakeLogo = AppConfig.IsNotFalse("keyboard_awake_logo");
-                flags.BootLogo = AppConfig.IsNotFalse("keyboard_boot_logo");
-                flags.SleepLogo = AppConfig.IsNotFalse("keyboard_sleep_logo");
-                flags.ShutdownLogo = AppConfig.IsNotFalse("keyboard_shutdown_logo");
-
-                // Lightbar
-                flags.AwakeBar = AppConfig.IsNotFalse("keyboard_awake_bar");
-                flags.BootBar = AppConfig.IsNotFalse("keyboard_boot_bar");
-                flags.SleepBar = AppConfig.IsNotFalse("keyboard_sleep_bar");
-                flags.ShutdownBar = AppConfig.IsNotFalse("keyboard_shutdown_bar");
-
-                // Lid
-                flags.AwakeLid = AppConfig.IsNotFalse("keyboard_awake_lid");
-                flags.BootLid = AppConfig.IsNotFalse("keyboard_boot_lid");
-                flags.SleepLid = AppConfig.IsNotFalse("keyboard_sleep_lid");
-                flags.ShutdownLid = AppConfig.IsNotFalse("keyboard_shutdown_lid");
-
-                // Rear Bar
-                flags.AwakeRear = AppConfig.IsNotFalse("keyboard_awake_lid");
-                flags.BootRear = AppConfig.IsNotFalse("keyboard_boot_lid");
-                flags.SleepRear = AppConfig.IsNotFalse("keyboard_sleep_lid");
-                flags.ShutdownRear = AppConfig.IsNotFalse("keyboard_shutdown_lid");
-
-                var devices = GetHidDevices(deviceIds);
-                byte[] msg = AuraPowerMessage(flags);
-
-                foreach (HidDevice device in devices)
+                device.OpenDevice();
+                if (device.ReadFeatureData(out byte[] data, AURA_HID_ID))
                 {
-                    device.OpenDevice();
-                    if (device.ReadFeatureData(out byte[] data, AURA_HID_ID))
-                    {
-                        device.WriteFeatureData(msg);
-                        Logger.WriteLine("USB-KB " + device.Attributes.ProductHexId + ":" + BitConverter.ToString(msg));
-                    }
-                    device.CloseDevice();
+                    device.WriteFeatureData(msg);
+                    Logger.WriteLine("USB-KB " + device.Attributes.ProductHexId + ":" + BitConverter.ToString(msg));
                 }
+                device.CloseDevice();
+            }
 
-                if (isTuf)
-                    Program.acpi.TUFKeyboardPower(
-                        flags.AwakeKeyb,
-                        flags.BootKeyb,
-                        flags.SleepKeyb,
-                        flags.ShutdownKeyb);
-
-            });
+            if (isTuf)
+                Program.acpi.TUFKeyboardPower(
+                    flags.AwakeKeyb,
+                    flags.BootKeyb,
+                    flags.SleepKeyb,
+                    flags.ShutdownKeyb);
 
         }
 
@@ -533,6 +529,7 @@ namespace GHelper
 
             else
             {
+                Debug.WriteLine(color.ToString());
                 auraDevice.Write(AuraMessage(0, color, color, 0));
                 auraDevice.Write(MESSAGE_SET);
             }
@@ -544,7 +541,9 @@ namespace GHelper
         {
             if (AppConfig.Get("aura_mode") != GPUMODE) return;
 
-            switch (GPUModeControl.GpuMode)
+            Logger.WriteLine(GPUModeControl.gpuMode.ToString());
+
+            switch (GPUModeControl.gpuMode)
             {
                 case AsusACPI.GPUModeUltimate:
                     ApplyColor(Color.Red, true);
@@ -582,46 +581,39 @@ namespace GHelper
                 return;
             }
 
-
-            Task.Run(async () =>
+            int _speed;
+            switch (Speed)
             {
+                case 1:
+                    _speed = 0xeb;
+                    break;
+                case 2:
+                    _speed = 0xf5;
+                    break;
+                default:
+                    _speed = 0xe1;
+                    break;
+            }
 
+            byte[] msg;
+            var devices = GetHidDevices(deviceIds);
 
-                int _speed;
-
-                switch (Speed)
+            foreach (HidDevice device in devices)
+            {
+                device.OpenDevice();
+                if (device.ReadFeatureData(out byte[] data, AURA_HID_ID))
                 {
-                    case 1:
-                        _speed = 0xeb;
-                        break;
-                    case 2:
-                        _speed = 0xf5;
-                        break;
-                    default:
-                        _speed = 0xe1;
-                        break;
+                    msg = AuraMessage(Mode, Color1, Color2, _speed, isSingleColor);
+                    device.WriteFeatureData(msg);
+                    device.WriteFeatureData(MESSAGE_APPLY);
+                    device.WriteFeatureData(MESSAGE_SET);
+                    Logger.WriteLine("USB-KB " + device.Attributes.Version + device.Description + device.DevicePath + ":" + BitConverter.ToString(msg));
                 }
+                device.CloseDevice();
+            }
 
-                byte[] msg;
-                var devices = GetHidDevices(deviceIds);
-
-                foreach (HidDevice device in devices)
-                {
-                    device.OpenDevice();
-                    if (device.ReadFeatureData(out byte[] data, AURA_HID_ID))
-                    {
-                        msg = AuraMessage(Mode, Color1, Color2, _speed, isSingleColor);
-                        device.WriteFeatureData(msg);
-                        device.WriteFeatureData(MESSAGE_APPLY);
-                        device.WriteFeatureData(MESSAGE_SET);
-                        Logger.WriteLine("USB-KB " + device.Attributes.Version + device.Description + device.DevicePath + ":" + BitConverter.ToString(msg));
-                    }
-                    device.CloseDevice();
-                }
-
-                if (isTuf)
-                    Program.acpi.TUFKeyboardRGB(Mode, Color1, _speed);
-            });
+            if (isTuf)
+                Program.acpi.TUFKeyboardRGB(Mode, Color1, _speed);
 
         }
 

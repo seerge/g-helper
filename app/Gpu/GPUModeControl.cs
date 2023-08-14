@@ -10,7 +10,7 @@ namespace GHelper.Gpu
         SettingsForm settings;
         ScreenControl screenControl = new ScreenControl();
 
-        public static int GpuMode;
+        public static int gpuMode;
 
         public GPUModeControl(SettingsForm settingsForm)
         {
@@ -27,14 +27,14 @@ namespace GHelper.Gpu
 
             if (mux == 0)
             {
-                GpuMode = AsusACPI.GPUModeUltimate;
+                gpuMode = AsusACPI.GPUModeUltimate;
             }
             else
             {
                 if (eco == 1)
-                    GpuMode = AsusACPI.GPUModeEco;
+                    gpuMode = AsusACPI.GPUModeEco;
                 else
-                    GpuMode = AsusACPI.GPUModeStandard;
+                    gpuMode = AsusACPI.GPUModeStandard;
 
                 // Ultimate mode not supported
                 if (mux != 1) settings.HideUltimateMode();
@@ -42,10 +42,13 @@ namespace GHelper.Gpu
                 if (eco < 0 && mux < 0) settings.HideGPUModes();
             }
 
-            AppConfig.Set("gpu_mode", GpuMode);
+            AppConfig.Set("gpu_mode", gpuMode);
 
             InitXGM();
-            settings.VisualiseGPUMode(GpuMode);
+            settings.VisualiseGPUMode(gpuMode);
+
+            AsusUSB.ApplyGPUColor();
+
         }
 
 

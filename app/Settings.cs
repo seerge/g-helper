@@ -551,8 +551,7 @@ namespace GHelper
             if (colorDlg.ShowDialog() == DialogResult.OK)
             {
                 AppConfig.Set("aura_color2", colorDlg.Color.ToArgb());
-                AsusUSB.ApplyAura();
-                VisualiseAura();
+                SetAura();
             }
         }
 
@@ -625,8 +624,7 @@ namespace GHelper
             if (colorDlg.ShowDialog() == DialogResult.OK)
             {
                 AppConfig.Set("aura_color", colorDlg.Color.ToArgb());
-                AsusUSB.ApplyAura();
-                VisualiseAura();
+                SetAura();
             }
         }
 
@@ -659,11 +657,23 @@ namespace GHelper
 
         }
 
+        public void SetAura()
+        {
+            Task.Run(() =>
+            {
+                AsusUSB.ApplyAura();
+                VisualiseAura();
+            });
+        }
+
         public void VisualiseAura()
         {
-            pictureColor.BackColor = AsusUSB.Color1;
-            pictureColor2.BackColor = AsusUSB.Color2;
-            pictureColor2.Visible = AsusUSB.HasSecondColor();
+            Invoke(delegate
+            {
+                pictureColor.BackColor = AsusUSB.Color1;
+                pictureColor2.BackColor = AsusUSB.Color2;
+                pictureColor2.Visible = AsusUSB.HasSecondColor();
+            });
         }
 
         public void InitMatrix()
@@ -695,8 +705,7 @@ namespace GHelper
         private void ComboKeyboard_SelectedValueChanged(object? sender, EventArgs e)
         {
             AppConfig.Set("aura_mode", (int)comboKeyboard.SelectedValue);
-            AsusUSB.ApplyAura();
-            VisualiseAura();
+            SetAura();
         }
 
 
