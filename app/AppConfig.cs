@@ -348,7 +348,8 @@ public static class AppConfig
         return
             Is("manual_mode") ||
             ContainsModel("GU604") ||
-            ContainsModel("G733");
+            ContainsModel("G733") ||
+            ContainsModel("FX507Z");
     }
 
     public static bool IsFanRequired()
@@ -363,7 +364,7 @@ public static class AppConfig
 
     public static bool IsGPUFixNeeded()
     {
-        return ContainsModel("GA402X") || ContainsModel("GV302");
+        return ContainsModel("GA402X") || ContainsModel("GV302") || ContainsModel("FX506") || ContainsModel("GU603V");
     }
 
     public static bool IsGPUFix()

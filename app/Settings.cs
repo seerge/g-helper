@@ -582,6 +582,14 @@ namespace GHelper
             });
         }
 
+        public void GPUInit()
+        {
+            Invoke(delegate
+            {
+                if (fans != null && fans.Text != "") fans.InitGPU();
+            });
+        }
+
         public void FansToggle(int index = 0)
         {
             if (fans == null || fans.Text == "")

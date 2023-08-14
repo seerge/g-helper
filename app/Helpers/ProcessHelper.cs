@@ -132,7 +132,12 @@ namespace GHelper.Helpers
             cmd.StartInfo.FileName = name;
             cmd.StartInfo.Arguments = args;
             cmd.Start();
-            Logger.WriteLine(cmd.StandardOutput.ReadToEnd());
+
+            string result = cmd.StandardOutput.ReadToEnd().Replace(Environment.NewLine, " ").Trim(' ');
+
+            Logger.WriteLine(args);
+            Logger.WriteLine(result);
+            
             cmd.WaitForExit();
         }
 

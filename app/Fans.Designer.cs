@@ -103,11 +103,14 @@ namespace GHelper
             pictureBoxCPU = new PictureBox();
             labelPowerLimits = new Label();
             panelBoost = new Panel();
-            panelPowerMode = new Panel();
-            comboPowerMode = new RComboBox();
             panelBoostTitle = new Panel();
             pictureBoost = new PictureBox();
             labelBoost = new Label();
+            panelPowerMode = new Panel();
+            comboPowerMode = new RComboBox();
+            panelPowerModeTItle = new Panel();
+            picturePowerMode = new PictureBox();
+            labelPowerModeTitle = new Label();
             panelGPU = new Panel();
             panelGPUTemp = new Panel();
             labelGPUTemp = new Label();
@@ -133,9 +136,10 @@ namespace GHelper
             buttonAdvanced = new RButton();
             buttonGPU = new RButton();
             buttonCPU = new RButton();
-            panelPowerModeTItle = new Panel();
-            picturePowerMode = new PictureBox();
-            labelPowerModeTitle = new Label();
+            panelGPUClockLimit = new Panel();
+            labelGPUClockLimit = new Label();
+            trackGPUClockLimit = new TrackBar();
+            labelGPUClockLimitTitle = new Label();
             panelFans.SuspendLayout();
             tableFanCharts.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)chartGPU).BeginInit();
@@ -170,9 +174,11 @@ namespace GHelper
             panelTitleCPU.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBoxCPU).BeginInit();
             panelBoost.SuspendLayout();
-            panelPowerMode.SuspendLayout();
             panelBoostTitle.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBoost).BeginInit();
+            panelPowerMode.SuspendLayout();
+            panelPowerModeTItle.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)picturePowerMode).BeginInit();
             panelGPU.SuspendLayout();
             panelGPUTemp.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)trackGPUTemp).BeginInit();
@@ -186,8 +192,8 @@ namespace GHelper
             ((System.ComponentModel.ISupportInitialize)pictureGPU).BeginInit();
             panelNav.SuspendLayout();
             tableNav.SuspendLayout();
-            panelPowerModeTItle.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)picturePowerMode).BeginInit();
+            panelGPUClockLimit.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)trackGPUClockLimit).BeginInit();
             SuspendLayout();
             // 
             // panelFans
@@ -499,7 +505,7 @@ namespace GHelper
             panelAdvanced.Controls.Add(panelTemperature);
             panelAdvanced.Controls.Add(panelTitleTemp);
             panelAdvanced.Dock = DockStyle.Top;
-            panelAdvanced.Location = new Point(10, 1396);
+            panelAdvanced.Location = new Point(10, 1520);
             panelAdvanced.Name = "panelAdvanced";
             panelAdvanced.Size = new Size(520, 888);
             panelAdvanced.TabIndex = 14;
@@ -797,7 +803,7 @@ namespace GHelper
             panelPower.Controls.Add(panelPowerMode);
             panelPower.Controls.Add(panelPowerModeTItle);
             panelPower.Dock = DockStyle.Top;
-            panelPower.Location = new Point(10, 640);
+            panelPower.Location = new Point(10, 764);
             panelPower.Margin = new Padding(4);
             panelPower.Name = "panelPower";
             panelPower.Size = new Size(520, 756);
@@ -1020,30 +1026,6 @@ namespace GHelper
             panelBoost.Size = new Size(520, 64);
             panelBoost.TabIndex = 13;
             // 
-            // panelPowerMode
-            // 
-            panelPowerMode.Controls.Add(comboPowerMode);
-            panelPowerMode.Dock = DockStyle.Top;
-            panelPowerMode.Location = new Point(0, 60);
-            panelPowerMode.Margin = new Padding(4);
-            panelPowerMode.Name = "panelPowerMode";
-            panelPowerMode.Size = new Size(520, 64);
-            panelPowerMode.TabIndex = 49;
-            // 
-            // comboPowerMode
-            // 
-            comboPowerMode.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            comboPowerMode.BorderColor = Color.White;
-            comboPowerMode.ButtonColor = Color.FromArgb(255, 255, 255);
-            comboPowerMode.DropDownStyle = ComboBoxStyle.DropDownList;
-            comboPowerMode.FormattingEnabled = true;
-            comboPowerMode.Items.AddRange(new object[] { "Disabled", "Enabled", "Aggressive", "Efficient Enabled", "Efficient Aggressive", "Aggressive at Guaranteed", "Efficient at Guaranteed" });
-            comboPowerMode.Location = new Point(13, 12);
-            comboPowerMode.Margin = new Padding(4);
-            comboPowerMode.Name = "comboPowerMode";
-            comboPowerMode.Size = new Size(329, 40);
-            comboPowerMode.TabIndex = 42;
-            // 
             // panelBoostTitle
             // 
             panelBoostTitle.AutoSize = true;
@@ -1080,6 +1062,66 @@ namespace GHelper
             labelBoost.TabIndex = 39;
             labelBoost.Text = "CPU Boost";
             // 
+            // panelPowerMode
+            // 
+            panelPowerMode.Controls.Add(comboPowerMode);
+            panelPowerMode.Dock = DockStyle.Top;
+            panelPowerMode.Location = new Point(0, 60);
+            panelPowerMode.Margin = new Padding(4);
+            panelPowerMode.Name = "panelPowerMode";
+            panelPowerMode.Size = new Size(520, 64);
+            panelPowerMode.TabIndex = 49;
+            // 
+            // comboPowerMode
+            // 
+            comboPowerMode.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            comboPowerMode.BorderColor = Color.White;
+            comboPowerMode.ButtonColor = Color.FromArgb(255, 255, 255);
+            comboPowerMode.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboPowerMode.FormattingEnabled = true;
+            comboPowerMode.Items.AddRange(new object[] { "Disabled", "Enabled", "Aggressive", "Efficient Enabled", "Efficient Aggressive", "Aggressive at Guaranteed", "Efficient at Guaranteed" });
+            comboPowerMode.Location = new Point(13, 12);
+            comboPowerMode.Margin = new Padding(4);
+            comboPowerMode.Name = "comboPowerMode";
+            comboPowerMode.Size = new Size(329, 40);
+            comboPowerMode.TabIndex = 42;
+            // 
+            // panelPowerModeTItle
+            // 
+            panelPowerModeTItle.AutoSize = true;
+            panelPowerModeTItle.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            panelPowerModeTItle.Controls.Add(picturePowerMode);
+            panelPowerModeTItle.Controls.Add(labelPowerModeTitle);
+            panelPowerModeTItle.Dock = DockStyle.Top;
+            panelPowerModeTItle.Location = new Point(0, 0);
+            panelPowerModeTItle.Margin = new Padding(4);
+            panelPowerModeTItle.Name = "panelPowerModeTItle";
+            panelPowerModeTItle.Size = new Size(520, 60);
+            panelPowerModeTItle.TabIndex = 50;
+            // 
+            // picturePowerMode
+            // 
+            picturePowerMode.BackgroundImage = Properties.Resources.icons8_gauge_32;
+            picturePowerMode.BackgroundImageLayout = ImageLayout.Zoom;
+            picturePowerMode.InitialImage = null;
+            picturePowerMode.Location = new Point(10, 18);
+            picturePowerMode.Margin = new Padding(4, 2, 4, 10);
+            picturePowerMode.Name = "picturePowerMode";
+            picturePowerMode.Size = new Size(32, 32);
+            picturePowerMode.TabIndex = 40;
+            picturePowerMode.TabStop = false;
+            // 
+            // labelPowerModeTitle
+            // 
+            labelPowerModeTitle.AutoSize = true;
+            labelPowerModeTitle.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            labelPowerModeTitle.Location = new Point(46, 18);
+            labelPowerModeTitle.Margin = new Padding(4, 0, 4, 0);
+            labelPowerModeTitle.Name = "labelPowerModeTitle";
+            labelPowerModeTitle.Size = new Size(271, 32);
+            labelPowerModeTitle.TabIndex = 39;
+            labelPowerModeTitle.Text = "Windows Power Mode";
+            // 
             // panelGPU
             // 
             panelGPU.AutoSize = true;
@@ -1087,13 +1129,14 @@ namespace GHelper
             panelGPU.Controls.Add(panelGPUBoost);
             panelGPU.Controls.Add(panelGPUMemory);
             panelGPU.Controls.Add(panelGPUCore);
+            panelGPU.Controls.Add(panelGPUClockLimit);
             panelGPU.Controls.Add(panelTitleGPU);
             panelGPU.Dock = DockStyle.Top;
             panelGPU.Location = new Point(10, 66);
             panelGPU.Margin = new Padding(4);
             panelGPU.Name = "panelGPU";
             panelGPU.Padding = new Padding(0, 0, 0, 18);
-            panelGPU.Size = new Size(520, 574);
+            panelGPU.Size = new Size(520, 698);
             panelGPU.TabIndex = 44;
             panelGPU.Visible = false;
             // 
@@ -1105,7 +1148,7 @@ namespace GHelper
             panelGPUTemp.Controls.Add(labelGPUTempTitle);
             panelGPUTemp.Controls.Add(trackGPUTemp);
             panelGPUTemp.Dock = DockStyle.Top;
-            panelGPUTemp.Location = new Point(0, 432);
+            panelGPUTemp.Location = new Point(0, 556);
             panelGPUTemp.Margin = new Padding(4);
             panelGPUTemp.MaximumSize = new Size(0, 124);
             panelGPUTemp.Name = "panelGPUTemp";
@@ -1154,7 +1197,7 @@ namespace GHelper
             panelGPUBoost.Controls.Add(labelGPUBoostTitle);
             panelGPUBoost.Controls.Add(trackGPUBoost);
             panelGPUBoost.Dock = DockStyle.Top;
-            panelGPUBoost.Location = new Point(0, 308);
+            panelGPUBoost.Location = new Point(0, 432);
             panelGPUBoost.Margin = new Padding(4);
             panelGPUBoost.MaximumSize = new Size(0, 124);
             panelGPUBoost.Name = "panelGPUBoost";
@@ -1203,7 +1246,7 @@ namespace GHelper
             panelGPUMemory.Controls.Add(labelGPUMemoryTitle);
             panelGPUMemory.Controls.Add(trackGPUMemory);
             panelGPUMemory.Dock = DockStyle.Top;
-            panelGPUMemory.Location = new Point(0, 184);
+            panelGPUMemory.Location = new Point(0, 308);
             panelGPUMemory.Margin = new Padding(4);
             panelGPUMemory.MaximumSize = new Size(0, 124);
             panelGPUMemory.Name = "panelGPUMemory";
@@ -1252,7 +1295,7 @@ namespace GHelper
             panelGPUCore.Controls.Add(trackGPUCore);
             panelGPUCore.Controls.Add(labelGPUCoreTitle);
             panelGPUCore.Dock = DockStyle.Top;
-            panelGPUCore.Location = new Point(0, 60);
+            panelGPUCore.Location = new Point(0, 184);
             panelGPUCore.Margin = new Padding(4);
             panelGPUCore.MaximumSize = new Size(0, 124);
             panelGPUCore.Name = "panelGPUCore";
@@ -1416,41 +1459,55 @@ namespace GHelper
             buttonCPU.TextImageRelation = TextImageRelation.ImageBeforeText;
             buttonCPU.UseVisualStyleBackColor = false;
             // 
-            // panelPowerModeTItle
+            // panelGPUClockLimit
             // 
-            panelPowerModeTItle.AutoSize = true;
-            panelPowerModeTItle.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            panelPowerModeTItle.Controls.Add(picturePowerMode);
-            panelPowerModeTItle.Controls.Add(labelPowerModeTitle);
-            panelPowerModeTItle.Dock = DockStyle.Top;
-            panelPowerModeTItle.Location = new Point(0, 0);
-            panelPowerModeTItle.Margin = new Padding(4);
-            panelPowerModeTItle.Name = "panelPowerModeTItle";
-            panelPowerModeTItle.Size = new Size(520, 60);
-            panelPowerModeTItle.TabIndex = 50;
+            panelGPUClockLimit.AutoSize = true;
+            panelGPUClockLimit.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            panelGPUClockLimit.Controls.Add(labelGPUClockLimit);
+            panelGPUClockLimit.Controls.Add(trackGPUClockLimit);
+            panelGPUClockLimit.Controls.Add(labelGPUClockLimitTitle);
+            panelGPUClockLimit.Dock = DockStyle.Top;
+            panelGPUClockLimit.Location = new Point(0, 60);
+            panelGPUClockLimit.Margin = new Padding(4);
+            panelGPUClockLimit.MaximumSize = new Size(0, 124);
+            panelGPUClockLimit.Name = "panelGPUClockLimit";
+            panelGPUClockLimit.Size = new Size(520, 124);
+            panelGPUClockLimit.TabIndex = 48;
             // 
-            // picturePowerMode
+            // labelGPUClockLimit
             // 
-            picturePowerMode.BackgroundImage = Properties.Resources.icons8_gauge_32;
-            picturePowerMode.BackgroundImageLayout = ImageLayout.Zoom;
-            picturePowerMode.InitialImage = null;
-            picturePowerMode.Location = new Point(10, 18);
-            picturePowerMode.Margin = new Padding(4, 2, 4, 10);
-            picturePowerMode.Name = "picturePowerMode";
-            picturePowerMode.Size = new Size(32, 32);
-            picturePowerMode.TabIndex = 40;
-            picturePowerMode.TabStop = false;
+            labelGPUClockLimit.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            labelGPUClockLimit.Location = new Point(326, 16);
+            labelGPUClockLimit.Margin = new Padding(4, 0, 4, 0);
+            labelGPUClockLimit.Name = "labelGPUClockLimit";
+            labelGPUClockLimit.Size = new Size(176, 32);
+            labelGPUClockLimit.TabIndex = 29;
+            labelGPUClockLimit.Text = "1500 MHz";
+            labelGPUClockLimit.TextAlign = ContentAlignment.TopRight;
             // 
-            // labelPowerModeTitle
+            // trackGPUClockLimit
             // 
-            labelPowerModeTitle.AutoSize = true;
-            labelPowerModeTitle.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            labelPowerModeTitle.Location = new Point(46, 18);
-            labelPowerModeTitle.Margin = new Padding(4, 0, 4, 0);
-            labelPowerModeTitle.Name = "labelPowerModeTitle";
-            labelPowerModeTitle.Size = new Size(271, 32);
-            labelPowerModeTitle.TabIndex = 39;
-            labelPowerModeTitle.Text = "Windows Power Mode";
+            trackGPUClockLimit.LargeChange = 100;
+            trackGPUClockLimit.Location = new Point(6, 48);
+            trackGPUClockLimit.Margin = new Padding(4, 2, 4, 2);
+            trackGPUClockLimit.Maximum = 3000;
+            trackGPUClockLimit.Name = "trackGPUClockLimit";
+            trackGPUClockLimit.RightToLeft = RightToLeft.No;
+            trackGPUClockLimit.Size = new Size(496, 90);
+            trackGPUClockLimit.SmallChange = 10;
+            trackGPUClockLimit.TabIndex = 18;
+            trackGPUClockLimit.TickFrequency = 50;
+            trackGPUClockLimit.TickStyle = TickStyle.TopLeft;
+            // 
+            // labelGPUClockLimitTitle
+            // 
+            labelGPUClockLimitTitle.AutoSize = true;
+            labelGPUClockLimitTitle.Location = new Point(10, 16);
+            labelGPUClockLimitTitle.Margin = new Padding(4, 0, 4, 0);
+            labelGPUClockLimitTitle.Name = "labelGPUClockLimitTitle";
+            labelGPUClockLimitTitle.Size = new Size(188, 32);
+            labelGPUClockLimitTitle.TabIndex = 17;
+            labelGPUClockLimitTitle.Text = "Core Clock Limit";
             // 
             // Fans
             // 
@@ -1519,10 +1576,13 @@ namespace GHelper
             panelTitleCPU.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBoxCPU).EndInit();
             panelBoost.ResumeLayout(false);
-            panelPowerMode.ResumeLayout(false);
             panelBoostTitle.ResumeLayout(false);
             panelBoostTitle.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBoost).EndInit();
+            panelPowerMode.ResumeLayout(false);
+            panelPowerModeTItle.ResumeLayout(false);
+            panelPowerModeTItle.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)picturePowerMode).EndInit();
             panelGPU.ResumeLayout(false);
             panelGPU.PerformLayout();
             panelGPUTemp.ResumeLayout(false);
@@ -1542,9 +1602,9 @@ namespace GHelper
             ((System.ComponentModel.ISupportInitialize)pictureGPU).EndInit();
             panelNav.ResumeLayout(false);
             tableNav.ResumeLayout(false);
-            panelPowerModeTItle.ResumeLayout(false);
-            panelPowerModeTItle.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)picturePowerMode).EndInit();
+            panelGPUClockLimit.ResumeLayout(false);
+            panelGPUClockLimit.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)trackGPUClockLimit).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -1647,5 +1707,9 @@ namespace GHelper
         private Panel panelPowerModeTItle;
         private PictureBox picturePowerMode;
         private Label labelPowerModeTitle;
+        private Panel panelGPUClockLimit;
+        private Label labelGPUClockLimit;
+        private TrackBar trackGPUClockLimit;
+        private Label labelGPUClockLimitTitle;
     }
 }
