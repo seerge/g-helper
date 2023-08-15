@@ -90,8 +90,6 @@ namespace Starlight.AnimeMatrix
         //public int FullEvenRows = -1;
 
         public int dx = 0;
-        //Shifts the whole frame to the left or right to align with the diagonal cut
-        public int frameShiftX = 0;
         public int MaxColumns = 34;
 
         private int frameIndex = 0;
@@ -124,7 +122,6 @@ namespace Starlight.AnimeMatrix
                 MaxColumns = 39;
                 MaxRows = 92;
                 LedCount = 1711;
-                frameShiftX = -5;
                 UpdatePageLength = 630;
             }
 
@@ -189,6 +186,10 @@ namespace Starlight.AnimeMatrix
                         return (y + 1) / 2 - 3;
                     }
                 case AnimeType.GU604:
+                    if (y < 9 && y % 2 == 0)
+                    {
+                        return 1;
+                    }
                     return (int)Math.Ceiling(Math.Max(0, y - 9) / 2F);
 
                 default:
@@ -226,6 +227,29 @@ namespace Starlight.AnimeMatrix
                         default:
                             return 36 - y / 2;
                     }
+
+                case AnimeType.GU604:
+                    switch (y)
+                    {
+                        case 0:
+                        case 2:
+                        case 4:
+                        case 6:
+                        case 8:
+                            return 38;
+
+                        case 1:
+                        case 3:
+                        case 5:
+                        case 7:
+                        case 9:
+                            return 39;
+
+                        default:
+                            return Width(y) - FirstX(y);
+                    }
+
+
                 default:
                     return Width(y) - FirstX(y);
             }
@@ -246,7 +270,7 @@ namespace Starlight.AnimeMatrix
             if (!IsRowInRange(y)) return;
 
             if (x >= FirstX(y) && x < Width(y))
-                SetLedLinear(RowToLinearAddress(y) - FirstX(y) + x + dx + frameShiftX, value);
+                SetLedLinear(RowToLinearAddress(y) - FirstX(y) + x + dx, value);
         }
 
         public void WakeUp()
