@@ -133,7 +133,7 @@
     <value>Ультимативний режим потребує перезавантаження</value>
   </data>
   <data name="AlertUltimateTitle" xml:space="preserve">
-    <value>Перезавантажитися зараз?</value>
+    <value>Перезавантажити зараз?</value>
   </data>
   <data name="AnimationSpeed" xml:space="preserve">
     <value>Швидкість Анімації</value>
@@ -286,7 +286,7 @@
     <value>Розрядка</value>
   </data>
   <data name="DownloadUpdate" xml:space="preserve">
-    <value>Download</value>
+    <value>Завантажити</value>
   </data>
   <data name="DriverAndSoftware" xml:space="preserve">
     <value>Драйвери та програми</value>
@@ -375,7 +375,7 @@
     <value>Temperature Target</value>
   </data>
   <data name="HibernateAfter" xml:space="preserve">
-    <value>Minutes till Hibernation in sleep on battery (0 - OFF)</value>
+    <value>Хвилин до режиму глибокого сну з акумулятором (0 - Вимкнено)</value>
   </data>
   <data name="High" xml:space="preserve">
     <value>Висока</value>
@@ -540,7 +540,7 @@
     <value>Вихід</value>
   </data>
   <data name="RestartGPU" xml:space="preserve">
-    <value>Something is using dGPU and preventing Eco mode. Let G-Helper try to restart dGPU in device manager? (Please proceed at your own risk)</value>
+    <value>Щось використовує dGPU та запобігає Еко-режиму. Дозвольте G-Helper спробувати перезапустити dGPU у менеджері пристрою? (Будь ласка, продовжуйте на власний ризик)</value>
   </data>
   <data name="RPM" xml:space="preserve">
     <value>Оберти</value>
