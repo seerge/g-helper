@@ -71,7 +71,7 @@ namespace GHelper.UI
 
         public bool InitTheme(bool setDPI = false)
         {
-            bool newDarkTheme = CheckSystemDarkModeStatus();
+            bool newDarkTheme = IsDarkTheme();
             bool changed = darkTheme != newDarkTheme;
             darkTheme = newDarkTheme;
 

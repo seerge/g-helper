@@ -376,7 +376,7 @@ namespace GHelper
             //contextMenuStrip.ShowCheckMargin = true;
             contextMenuStrip.RenderMode = ToolStripRenderMode.System;
 
-            if (CheckSystemDarkModeStatus())
+            if (darkTheme)
             {
                 contextMenuStrip.BackColor = this.BackColor;
                 contextMenuStrip.ForeColor = this.ForeColor;
