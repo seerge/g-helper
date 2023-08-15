@@ -70,7 +70,13 @@ namespace GHelper.Mode
 
             Modes.SetCurrent(mode);
 
-            Program.acpi.DeviceSet(AsusACPI.PerformanceMode, AppConfig.IsManualModeRequired() ? AsusACPI.PerformanceManual : Modes.GetBase(mode), "Mode");
+            int status = Program.acpi.DeviceSet(AsusACPI.PerformanceMode, AppConfig.IsManualModeRequired() ? AsusACPI.PerformanceManual : Modes.GetBase(mode), "Mode");
+            
+            // Vivobook fallback
+            if (status != 1)
+            {
+                Program.acpi.DeviceSet(AsusACPI.VivoBookMode, Modes.GetBase(mode), "VivoMode");
+            }
 
             if (AppConfig.Is("xgm_fan") && Program.acpi.IsXGConnected()) AsusUSB.ResetXGM();
 

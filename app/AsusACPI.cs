@@ -55,7 +55,8 @@ public class AsusACPI
     public const uint GPU_Fan = 0x00110014;
     public const uint Mid_Fan = 0x00110031;
 
-    public const uint PerformanceMode = 0x00120075; // Thermal Control
+    public const uint PerformanceMode = 0x00120075; // Performance modes
+    public const uint VivoBookMode = 0x00110019; // Vivobook performance modes
 
     public const uint GPUEco = 0x00090020;
     public const uint GPUXGConnected = 0x00090018;

@@ -1,8 +1,19 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections;
+using System.Runtime.InteropServices;
 using static GHelper.Display.ScreenInterrogatory;
 
 namespace GHelper.Display
 {
+
+    class ScreenComparer : IComparer
+    {
+        public int Compare(object x, object y)
+        {
+            int displayX = Int32.Parse(((Screen)x).DeviceName.Replace(@"\\.\DISPLAY", ""));
+            int displayY = Int32.Parse(((Screen)y).DeviceName.Replace(@"\\.\DISPLAY", ""));
+            return (new CaseInsensitiveComparer()).Compare(displayX, displayY);
+        }
+    }
     internal class ScreenNative
     {
         [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
@@ -165,6 +176,8 @@ namespace GHelper.Display
                     if (log) Logger.WriteLine(device.monitorFriendlyDeviceName + ":" + device.outputTechnology.ToString() + ": " + ((count < screens.Length) ? screens[count].DeviceName : ""));
                     count++;
                 }
+
+                Array.Sort(screens, new ScreenComparer());
 
                 count = 0;
                 foreach (var screen in screens)

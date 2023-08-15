@@ -183,7 +183,6 @@ namespace GHelper
                 SetKeyCombo(comboFNF4, textFNF4, "paddle");
 
             }
-
             else
             {
                 SetKeyCombo(comboM1, textM1, "m1");
@@ -197,6 +196,10 @@ namespace GHelper
                 SetKeyCombo(comboFNE, textFNE, "fne");
             }
 
+            if (AppConfig.IsStrix())
+            {
+                labelM4.Text = "M5/ROG";
+            }
 
 
             InitTheme();
