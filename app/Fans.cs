@@ -643,7 +643,11 @@ namespace GHelper
         {
             string powerMode = (string)comboPowerMode.SelectedValue;
             PowerNative.SetPowerMode(powerMode);
-            AppConfig.SetMode("powermode", powerMode);
+
+            if (PowerNative.GetDefaultPowerMode(Modes.GetCurrentBase()) != powerMode)
+                AppConfig.SetMode("powermode", powerMode);
+            else
+                AppConfig.RemoveMode("powermode");
         }
 
         private void ComboBoost_Changed(object? sender, EventArgs e)
