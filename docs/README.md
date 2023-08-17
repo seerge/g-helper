@@ -78,8 +78,8 @@ Each BIOS mode is paired with matching Windows Power Mode. You can adjust this s
 Stop ``ArmouryCrateControlInterface`` service under windows Services app or you can stop all asus services from ``Extra`` -> ``Stop services``
 
 #### Battery charge limiter is not working
-It could be that Asus services are overwriting this limit after. You may want to stop them by clicking "Stop" in the Asus Services section (under Extra).
-Also please not that for some devices, not every charge limit % will may be working. Try to set standard **80%** to be sure.
+It could be that Asus services are overwriting this limit after. You may want to stop them by clicking "Stop" in the Asus Services section (under Extra). 
+Please note: For some devices not every charge limit % may be working. Try to set standard **80%** to be sure.
 
 ####  I don't see GPU modes section 
 Some older models (for example G14 2020) don't support disabling GPU on hardware level, therefore GPU section makes no sense for them and will be hidden
