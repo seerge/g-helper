@@ -797,6 +797,10 @@ namespace GHelper
         private void VisualizeCurrentDPIProfile()
         {
             AsusMouseDPI dpi = mouse.DpiSettings[mouse.DpiProfile - 1];
+            if (dpi is null)
+            {
+                return;
+            }
             sliderDPI.Value = (int)dpi.DPI;
             pictureDPIColor.BackColor = dpi.Color;
         }
