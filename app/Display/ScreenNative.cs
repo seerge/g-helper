@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using System.Runtime.InteropServices;
-using System.Windows.Forms;
 using static GHelper.Display.ScreenInterrogatory;
 
 namespace GHelper.Display
