@@ -79,7 +79,6 @@ public static class AppConfig
 
     public static bool ContainsModel(string contains)
     {
-
         GetModel();
         return (_model is not null && _model.ToLower().Contains(contains.ToLower()));
     }
@@ -354,7 +353,7 @@ public static class AppConfig
 
     public static bool IsFanRequired()
     {
-        return ContainsModel("GA402X") || ContainsModel("G513");
+        return ContainsModel("GA402X") || ContainsModel("G513") || ContainsModel("G713R");
     }
 
     public static bool IsPowerRequired()

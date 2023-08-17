@@ -7,7 +7,7 @@ using System.Text.Json;
 namespace GHelper
 {
 
-    struct DriverDownload
+    public struct DriverDownload
     {
         public string categoryName;
         public string title;
@@ -140,7 +140,63 @@ namespace GHelper
             }
         }
 
-        public async void DriversAsync(string url, int type, TableLayoutPanel table)
+        public void VisualiseDriver(DriverDownload driver, TableLayoutPanel table)
+        {
+            Invoke(delegate
+            {
+                string versionText = driver.version.Replace("latest version at the ", "");
+                Label versionLabel = new Label { Text = versionText, Anchor = AnchorStyles.Left, AutoSize = true };
+                versionLabel.Cursor = Cursors.Hand;
+                versionLabel.Font = new Font(versionLabel.Font, FontStyle.Underline);
+                versionLabel.ForeColor = colorEco;
+                versionLabel.Padding = new Padding(5, 5, 5, 5);
+                versionLabel.Click += delegate
+                {
+                    Process.Start(new ProcessStartInfo(driver.downloadUrl) { UseShellExecute = true });
+                };
+
+                table.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+                table.Controls.Add(new Label { Text = driver.categoryName, Anchor = AnchorStyles.Left, Dock = DockStyle.Fill, Padding = new Padding(5, 5, 5, 5) }, 0, table.RowCount);
+                table.Controls.Add(new Label { Text = driver.title, Anchor = AnchorStyles.Left, Dock = DockStyle.Fill, Padding = new Padding(5, 5, 5, 5) }, 1, table.RowCount);
+                table.Controls.Add(versionLabel, 2, table.RowCount);
+                table.RowCount++;
+            });
+        }
+
+        public void ShowTable(TableLayoutPanel table)
+        {
+            Invoke(delegate
+            {
+                table.Visible = true;
+                ResumeLayout(false);
+                PerformLayout();
+            });
+        }
+
+        public void VisualiseNewDriver(int position, TableLayoutPanel table)
+        {
+            var label = table.GetControlFromPosition(2, position) as Label;
+            if (label != null)
+            {
+                Invoke(delegate
+                {
+                    label.Font = new Font(label.Font, FontStyle.Underline | FontStyle.Bold);
+                    label.ForeColor = colorTurbo;
+                });
+            }
+        }
+
+        public void VisualiseNewCount(int updatesCount, TableLayoutPanel table)
+        {
+            Invoke(delegate
+            {
+                labelUpdates.Text = $"{Properties.Strings.NewUpdates}: {updatesCount}";
+                labelUpdates.ForeColor = colorTurbo;
+                labelUpdates.Font = new Font(labelUpdates.Font, FontStyle.Bold);
+            });
+        }
+
+    public async void DriversAsync(string url, int type, TableLayoutPanel table)
         {
 
             try
@@ -185,39 +241,14 @@ namespace GHelper
                                 driver.hardwares = file.GetProperty("HardwareInfoList");
                                 drivers.Add(driver);
 
-
-                                Invoke(delegate
-                                {
-                                    string versionText = driver.version.Replace("latest version at the ", "");
-                                    Label versionLabel = new Label { Text = versionText, Anchor = AnchorStyles.Left, AutoSize = true };
-                                    versionLabel.Cursor = Cursors.Hand;
-                                    versionLabel.Font = new Font(versionLabel.Font, FontStyle.Underline);
-                                    versionLabel.ForeColor = colorEco;
-                                    versionLabel.Padding = new Padding(5, 5, 5, 5);
-                                    versionLabel.Click += delegate
-                                    {
-                                        Process.Start(new ProcessStartInfo(driver.downloadUrl) { UseShellExecute = true });
-                                    };
-
-                                    table.RowStyles.Add(new RowStyle(SizeType.AutoSize));
-                                    table.Controls.Add(new Label { Text = driver.categoryName, Anchor = AnchorStyles.Left, Dock = DockStyle.Fill, Padding = new Padding(5, 5, 5, 5) }, 0, table.RowCount);
-                                    table.Controls.Add(new Label { Text = driver.title, Anchor = AnchorStyles.Left, Dock = DockStyle.Fill, Padding = new Padding(5, 5, 5, 5) }, 1, table.RowCount);
-                                    table.Controls.Add(versionLabel, 2, table.RowCount);
-                                    table.RowCount++;
-                                });
+                                VisualiseDriver(driver, table);
                             }
 
                             oldTitle = title;
                         }
                     }
 
-
-                    Invoke(delegate
-                    {
-                        table.Visible = true;
-                        ResumeLayout(false);
-                        PerformLayout();
-                    });
+                    ShowTable(table);
 
 
                     Dictionary<string, string> devices = new();
@@ -246,20 +277,9 @@ namespace GHelper
 
                         if (newer > 0)
                         {
-                            var label = table.GetControlFromPosition(2, count) as Label;
-                            if (label != null)
-                            {
-                                Invoke(delegate
-                                {
-                                    updatesCount++;
-                                    label.Font = new Font(label.Font, FontStyle.Underline | FontStyle.Bold);
-                                    label.ForeColor = colorTurbo;
-
-                                    labelUpdates.Text = $"{Properties.Strings.NewUpdates}: {updatesCount}";
-                                    labelUpdates.ForeColor = colorTurbo;
-                                    labelUpdates.Font = new Font(label.Font, FontStyle.Bold);
-                                });
-                            }
+                            updatesCount++;
+                            VisualiseNewDriver(count, table);
+                            VisualiseNewCount(updatesCount, table);
                         }
 
                         count++;
