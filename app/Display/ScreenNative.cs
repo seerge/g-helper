@@ -1,9 +1,26 @@
 ﻿using System.Collections;
 using System.Runtime.InteropServices;
+using System.Windows.Forms;
 using static GHelper.Display.ScreenInterrogatory;
 
 namespace GHelper.Display
 {
+
+    class DeviceComparer : IComparer
+    {
+        public int Compare(object x, object y)
+        {
+            uint displayX = ((DISPLAYCONFIG_TARGET_DEVICE_NAME)x).connectorInstance;
+            uint displayY = ((DISPLAYCONFIG_TARGET_DEVICE_NAME)y).connectorInstance;
+
+            if (displayX > displayY)
+                return 1;
+            if (displayX < displayY)
+                return -1;
+            else
+                return 0;
+        }
+    }
 
     class ScreenComparer : IComparer
     {
@@ -129,38 +146,19 @@ namespace GHelper.Display
         public const int ENUM_CURRENT_SETTINGS = -1;
         public const string defaultDevice = @"\\.\DISPLAY1";
 
-        static bool? _ultimate = null;
-
-        static bool isUltimate
-        {
-            get
-            {
-                if (_ultimate is null) _ultimate = (Program.acpi.DeviceGet(AsusACPI.GPUMux) == 0);
-                return (bool)_ultimate;
-            }
-        }
-
         public static string? FindLaptopScreen(bool log = false)
         {
             string? laptopScreen = null;
             var screens = Screen.AllScreens;
 
-            /*
-            if (!isUltimate)
-            {
-                foreach (var screen in screens )
-                {
-                    if (log) Logger.WriteLine(screen.DeviceName);
-                    if (screen.DeviceName == defaultDevice) return defaultDevice;
-                }
-            }
-            */
-
             try
             {
                 var devices = GetAllDevices().ToArray();
 
-                int count = 0, displayNum = -1;
+                Array.Sort(devices, new DeviceComparer());
+                Array.Sort(screens, new ScreenComparer());
+
+                int count = 0;
 
                 string internalName = AppConfig.GetString("internal_display");
 
@@ -170,23 +168,23 @@ namespace GHelper.Display
                         device.outputTechnology == DISPLAYCONFIG_VIDEO_OUTPUT_TECHNOLOGY.DISPLAYCONFIG_OUTPUT_TECHNOLOGY_DISPLAYPORT_EMBEDDED ||
                         device.monitorFriendlyDeviceName == internalName)
                     {
-                        displayNum = count;
                         AppConfig.Set("internal_display", device.monitorFriendlyDeviceName);
+
+                        if (count < screens.Length)
+                        {
+                            laptopScreen = screens[count].DeviceName;
+                        }
+                        else
+                        {
+                            laptopScreen = defaultDevice;
+                        }
                     }
-                    if (log) Logger.WriteLine(device.monitorFriendlyDeviceName + ":" + device.outputTechnology.ToString() + ": " + ((count < screens.Length) ? screens[count].DeviceName : ""));
+
+
+                    if (log) Logger.WriteLine(device.monitorFriendlyDeviceName + ":" + device.outputTechnology.ToString() + device.connectorInstance.ToString() + ": " + ((count < screens.Length) ? screens[count].DeviceName : ""));
                     count++;
                 }
 
-                Array.Sort(screens, new ScreenComparer());
-
-                count = 0;
-                foreach (var screen in screens)
-                {
-                    if (count == displayNum) laptopScreen = screen.DeviceName;
-                    count++;
-                }
-
-                if (displayNum > 0 && count == 0) laptopScreen = defaultDevice;
             }
             catch (Exception ex)
             {
