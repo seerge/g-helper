@@ -62,12 +62,14 @@ namespace GHelper.UI
 
         private static bool IsDarkTheme()
         {
-            if (AppConfig.GetString("ui_mode").ToLower() == "dark")
+            string? uiMode = AppConfig.GetString("ui_mode");
+
+            if (uiMode is not null && uiMode.ToLower() == "dark")
             {
                 return true;
             }
 
-            if (AppConfig.GetString("ui_mode").ToLower() == "light")
+            if (uiMode is not null && uiMode.ToLower() == "light")
             {
                 return false;
             }
