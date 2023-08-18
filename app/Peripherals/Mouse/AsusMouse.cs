@@ -575,7 +575,7 @@ namespace GHelper.Peripherals.Mouse
                 return packet[11];
             }
             Logger.WriteLine(GetDisplayName() + ": Failed to decode active profile");
-            return 1;
+            return 0;
         }
 
         protected virtual int ParseDPIProfile(byte[] packet)
