@@ -7,15 +7,6 @@ using System.Text.Json;
 namespace GHelper
 {
 
-    public struct DriverDownload
-    {
-        public string categoryName;
-        public string title;
-        public string version;
-        public string downloadUrl;
-        public JsonElement hardwares;
-    }
-
     public partial class Updates : RForm
     {
         //static int rowCount = 0;
@@ -24,7 +15,14 @@ namespace GHelper
 
         static int updatesCount = 0;
         private static long lastUpdate;
-
+        public struct DriverDownload
+        {
+            public string categoryName;
+            public string title;
+            public string version;
+            public string downloadUrl;
+            public JsonElement hardwares;
+        }
         private void LoadUpdates(bool force = false)
         {
 
