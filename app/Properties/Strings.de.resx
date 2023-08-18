@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Acceleration" xml:space="preserve">
-    <value>Acceleration</value>
+    <value>Beschleunigung</value>
   </data>
   <data name="ACPIError" xml:space="preserve">
     <value>Verbindung zu ASUS ACPI fehlgeschlagen. G-Helper kann nicht ausgeführt werden. Bitte installiere ASUS System Control Interface.</value>
@@ -280,7 +280,7 @@
     <value>Benutzerdefiniert</value>
   </data>
   <data name="Deceleration" xml:space="preserve">
-    <value>Deceleration</value>
+    <value>Verlangsamung</value>
   </data>
   <data name="Default" xml:space="preserve">
     <value>Standard</value>
@@ -381,7 +381,7 @@ Trotzdem fortfahren?</value>
     <value>Maximale GPU Temperatur</value>
   </data>
   <data name="HibernateAfter" xml:space="preserve">
-    <value>Minutes till Hibernation in sleep on battery (0 - OFF)</value>
+    <value>Minuten bis zum Ruhezustand im Standby (0 = Aus)</value>
   </data>
   <data name="High" xml:space="preserve">
     <value>Hoch</value>
@@ -546,7 +546,7 @@ Trotzdem fortfahren?</value>
     <value>Schließen</value>
   </data>
   <data name="RestartGPU" xml:space="preserve">
-    <value>Something is using dGPU and preventing Eco mode. Let G-Helper try to restart dGPU in device manager? (Please proceed at your own risk)</value>
+    <value>Ein Prozess verhindert den Wechsel in den Eco-Modus. dGPU neu starten? Fortfahren auf eigene Gefahr.</value>
   </data>
   <data name="RPM" xml:space="preserve">
     <value>U/Min</value>
