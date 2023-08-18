@@ -314,59 +314,86 @@ namespace GHelper.Peripherals.Mouse
         [MethodImpl(MethodImplOptions.Synchronized)]
         protected virtual byte[]? WriteForResponse(byte[] packet)
         {
+            Array.Resize(ref packet, ASUS_MOUSE_PACKET_SIZE);
+
+
             byte[] response = new byte[ASUS_MOUSE_PACKET_SIZE];
 
-            try
+            int retries = 3;
+
+            while (retries > 0)
             {
-                if (IsPacketLoggerEnabled())
-                    Logger.WriteLine(GetDisplayName() + ": Sending packet: " + ByteArrayToString(packet));
+                response = new byte[ASUS_MOUSE_PACKET_SIZE];
 
-                long time = MeasuredIO(Write, packet);
-                Logger.WriteLine(GetDisplayName() + ": Write took " + time + "ms");
-
-                time = MeasuredIO(Read, response);
-                Logger.WriteLine(GetDisplayName() + ": Read took " + time + "ms");
-
-                if (IsPacketLoggerEnabled())
-                    Logger.WriteLine(GetDisplayName() + ": Read packet: " + ByteArrayToString(response));
-
-                if (IsMouseError(response))
+                try
                 {
-                    Logger.WriteLine(GetDisplayName() + ": Mouse returned error (FF AA). Packet probably not supported by mouse firmware.");
-                    //Error. Mouse could not understand or process the sent packet
-                    return response;
-                }
+                    if (IsPacketLoggerEnabled())
+                        Logger.WriteLine(GetDisplayName() + ": Sending packet: " + ByteArrayToString(packet)
+                            + " Try " + (retries - 2) + " of 3");
 
-                //Not the response we were looking for, continue reading
-                while (response[0] != packet[0] || response[1] != packet[1] || response[2] != packet[2])
-                {
-                    Logger.WriteLine(GetDisplayName() + ": Read wrong packet left in buffer: " + ByteArrayToString(response) + ". Retrying...");
-                    //Read again
+                    long time = MeasuredIO(Write, packet);
+                    Logger.WriteLine(GetDisplayName() + ": Write took " + time + "ms");
+
                     time = MeasuredIO(Read, response);
                     Logger.WriteLine(GetDisplayName() + ": Read took " + time + "ms");
+
+
+                    if (IsMouseError(response))
+                    {
+                        if (IsPacketLoggerEnabled())
+                            Logger.WriteLine(GetDisplayName() + ": Read packet: " + ByteArrayToString(response));
+
+                        Logger.WriteLine(GetDisplayName() + ": Mouse returned error (FF AA). Packet probably not supported by mouse firmware.");
+                        //Error. Mouse could not understand or process the sent packet
+                        return response;
+                    }
+
+                    if (response[1] == 0 && response[2] == 0 && response[3] == 0)
+                    {
+                        if (IsPacketLoggerEnabled())
+                            Logger.WriteLine(GetDisplayName() + ": Read packet: " + ByteArrayToString(response));
+                        Logger.WriteLine(GetDisplayName() + ": Received empty packet. Stopping here.");
+                        //Empty packet
+                        return null;
+                    }
+
+                    //Not the response we were looking for, continue reading
+                    while (response[0] != packet[0] || response[1] != packet[1] || response[2] != packet[2])
+                    {
+                        if (IsPacketLoggerEnabled())
+                            Logger.WriteLine(GetDisplayName() + ": Read wrong packet left in buffer: " + ByteArrayToString(response) + ". Retrying...");
+                        //Read again
+                        time = MeasuredIO(Read, response);
+                        Logger.WriteLine(GetDisplayName() + ": Read took " + time + "ms");
+                    }
+
+                    if (IsPacketLoggerEnabled())
+                        Logger.WriteLine(GetDisplayName() + ": Read packet: " + ByteArrayToString(response));
+
+
+                    return response;
+
                 }
-
+                catch (IOException e)
+                {
+                    Logger.WriteLine(GetDisplayName() + ": Failed to read packet " + e.Message);
+                    OnDisconnect();
+                    return null;
+                }
+                catch (TimeoutException e)
+                {
+                    Logger.WriteLine(GetDisplayName() + ": Timeout reading packet " + e.Message + " Trying again.");
+                    retries--;
+                    continue;
+                }
+                catch (ObjectDisposedException)
+                {
+                    Logger.WriteLine(GetDisplayName() + ": Channel closed ");
+                    OnDisconnect();
+                    return null;
+                }
             }
-            catch (IOException e)
-            {
-                Logger.WriteLine(GetDisplayName() + ": Failed to read packet " + e.Message);
-                OnDisconnect();
-                return null;
-            }
-            catch (TimeoutException e)
-            {
-                Logger.WriteLine(GetDisplayName() + ": Timeout reading packet " + e.Message);
-                return null;
-            }
-            catch (ObjectDisposedException)
-            {
-                Logger.WriteLine(GetDisplayName() + ": Channel closed ");
-                OnDisconnect();
-                return null;
-            }
-
-
-            return response;
+            return null;
         }
         public abstract string GetDisplayName();
 
