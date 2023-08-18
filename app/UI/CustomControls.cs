@@ -62,6 +62,18 @@ namespace GHelper.UI
 
         private static bool IsDarkTheme()
         {
+            string? uiMode = AppConfig.GetString("ui_mode");
+
+            if (uiMode is not null && uiMode.ToLower() == "dark")
+            {
+                return true;
+            }
+
+            if (uiMode is not null && uiMode.ToLower() == "light")
+            {
+                return false;
+            }
+
             using var key = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Themes\Personalize");
             var registryValueObject = key?.GetValue("AppsUseLightTheme");
 
