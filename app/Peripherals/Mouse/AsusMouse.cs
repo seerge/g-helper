@@ -182,6 +182,8 @@ namespace GHelper.Peripherals.Mouse
         public bool AngleSnapping { get; protected set; }
         public short AngleAdjustmentDegrees { get; protected set; }
         public DebounceTime Debounce { get; protected set; }
+        public int Acceleration { get; protected set; }
+        public int Deceleration { get; protected set; }
 
 
         public AsusMouse(ushort vendorId, ushort productId, string path, bool wireless) : base(vendorId, productId)
@@ -420,6 +422,7 @@ namespace GHelper.Peripherals.Mouse
             ReadPollingRate();
             ReadLiftOffDistance();
             ReadDebounce();
+            ReadAcceleration();
             ReadLightingSetting();
         }
 
@@ -824,6 +827,125 @@ namespace GHelper.Peripherals.Mouse
             Logger.WriteLine(GetDisplayName() + ": Angle Adjustment set to " + angleAdjustment);
             this.AngleAdjustmentDegrees = angleAdjustment;
         }
+
+        // ------------------------------------------------------------------------------
+        // Acceleration/Deceleration
+        // ------------------------------------------------------------------------------
+        public virtual bool HasAcceleration()
+        {
+            return false;
+        }
+
+        public virtual bool HasDeceleration()
+        {
+            return false;
+        }
+
+        public virtual int MaxAcceleration()
+        {
+            return 0;
+        }
+        public virtual int MaxDeceleration()
+        {
+            return 0;
+        }
+
+        protected virtual byte[] GetChangeAccelerationPacket(int acceleration)
+        {
+            return new byte[] { reportId, 0x51, 0x31, 0x07, 0x00, (byte)acceleration };
+        }
+
+        protected virtual byte[] GetChangeDecelerationPacket(int deceleration)
+        {
+            return new byte[] { reportId, 0x51, 0x31, 0x08, 0x00, (byte)deceleration };
+        }
+
+        public virtual void SetAcceleration(int acceleration)
+        {
+            if (!HasAcceleration())
+            {
+                return;
+            }
+
+            if (acceleration > MaxAcceleration() || acceleration < 0)
+            {
+                Logger.WriteLine(GetDisplayName() + ": Acceleration " + acceleration + " is invalid.");
+                return;
+            }
+
+            WriteForResponse(GetChangeAccelerationPacket(acceleration));
+            FlushSettings();
+
+            Logger.WriteLine(GetDisplayName() + ": Acceleration set to " + acceleration);
+            this.Acceleration = acceleration;
+        }
+
+        public virtual void SetDeceleration(int deceleration)
+        {
+            if (!HasDeceleration())
+            {
+                return;
+            }
+
+            if (deceleration > MaxDeceleration() || deceleration < 0)
+            {
+                Logger.WriteLine(GetDisplayName() + ": Deceleration " + deceleration + " is invalid.");
+                return;
+            }
+
+            WriteForResponse(GetChangeDecelerationPacket(deceleration));
+            FlushSettings();
+
+            Logger.WriteLine(GetDisplayName() + ": Deceleration set to " + deceleration);
+            this.Deceleration = deceleration;
+        }
+
+        protected virtual byte[] GetReadAccelerationPacket()
+        {
+            return new byte[] { reportId, 0x12, 0x04, 0x01 };
+        }
+
+        protected virtual int ParseAcceleration(byte[] packet)
+        {
+            if (packet[1] != 0x12 || packet[2] != 0x04 || packet[3] != 0x01)
+            {
+                return 0;
+            }
+
+            return packet[5];
+        }
+
+        protected virtual int ParseDeceleration(byte[] packet)
+        {
+            if (packet[1] != 0x12 || packet[2] != 0x04 || packet[3] != 0x01)
+            {
+                return 0;
+            }
+
+            return packet[7];
+        }
+
+        public virtual void ReadAcceleration()
+        {
+            if (!HasAcceleration() && !HasDeceleration())
+            {
+                return;
+            }
+
+            byte[]? response = WriteForResponse(GetReadAccelerationPacket());
+            if (response is null) return;
+
+            if (HasAcceleration()) Acceleration = ParseAcceleration(response);
+            if (HasDeceleration()) Deceleration = ParseDeceleration(response);
+
+            for (int i = 0; i < DPIProfileCount(); ++i)
+            {
+                Logger.WriteLine(GetDisplayName() + ": Read DPI Setting " + (i + 1) + ": " + DpiSettings[i].ToString());
+            }
+
+        }
+
+        //TODO: Implement Acceleration Reading
 
         // ------------------------------------------------------------------------------
         // DPI

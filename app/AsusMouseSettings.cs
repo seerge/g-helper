@@ -46,6 +46,8 @@ namespace GHelper
             labelChargingState.Text = "(" + Properties.Strings.Charging + ")";
             labelProfile.Text = Properties.Strings.Profile;
             labelButtonDebounce.Text = Properties.Strings.MouseButtonResponse;
+            labelAcceleration.Text = Properties.Strings.Acceleration;
+            labelDeceleration.Text = Properties.Strings.Deceleration;
 
             buttonLightingZoneLogo.Text = Properties.Strings.AuraZoneLogo;
             buttonLightingZoneScroll.Text = Properties.Strings.AuraZoneScroll;
@@ -80,6 +82,12 @@ namespace GHelper
             sliderButtonDebounce.ValueChanged += SliderButtonDebounce_ValueChanged;
             sliderButtonDebounce.MouseUp += SliderButtonDebounce_MouseUp;
 
+            sliderAcceleration.MouseUp += SliderAcceleration_MouseUp;
+            sliderAcceleration.ValueChanged += SliderAcceleration_ValueChanged;
+
+            sliderDeceleration.MouseUp += SliderDeceleration_MouseUp;
+            sliderDeceleration.ValueChanged += SliderDeceleration_ValueChanged;
+
             buttonLightingColor.Click += ButtonLightingColor_Click;
             comboBoxLightingMode.DropDownClosed += ComboBoxLightingMode_DropDownClosed;
             sliderBrightness.MouseUp += SliderBrightness_MouseUp;
@@ -101,6 +109,26 @@ namespace GHelper
             InitMouseCapabilities();
             Logger.WriteLine(mouse.GetDisplayName() + " (GUI): Initialized capabilities. Synchronizing mouse data");
             RefreshMouseData();
+        }
+
+        private void SliderAcceleration_MouseUp(object? sender, MouseEventArgs e)
+        {
+            mouse.SetAcceleration(sliderAcceleration.Value);
+        }
+
+        private void SliderAcceleration_ValueChanged(object? sender, EventArgs e)
+        {
+            labelAccelerationValue.Text = sliderAcceleration.Value.ToString();
+        }
+
+        private void SliderDeceleration_MouseUp(object? sender, MouseEventArgs e)
+        {
+            mouse.SetDeceleration(sliderDeceleration.Value);
+        }
+
+        private void SliderDeceleration_ValueChanged(object? sender, EventArgs e)
+        {
+            labelDecelerationValue.Text = sliderDeceleration.Value.ToString();
         }
 
         private void SliderButtonDebounce_MouseUp(object? sender, MouseEventArgs e)
@@ -513,6 +541,24 @@ namespace GHelper
                 panelAngleSnapping.Visible = false;
             }
 
+            if (mouse.HasAcceleration())
+            {
+                sliderAcceleration.Max = mouse.MaxAcceleration();
+            }
+            else
+            {
+                panelAcceleration.Visible = false;
+            }
+
+            if (mouse.HasDeceleration())
+            {
+                sliderDeceleration.Max = mouse.MaxDeceleration();
+            }
+            else
+            {
+                panelDeceleration.Visible = false;
+            }
+
             if (mouse.HasLiftOffSetting())
             {
                 comboBoxLiftOffDistance.Items.AddRange(new string[] {
@@ -680,6 +726,16 @@ namespace GHelper
             if (mouse.HasDebounceSetting())
             {
                 sliderButtonDebounce.Value = (int)mouse.Debounce;
+            }
+
+            if (mouse.HasAcceleration())
+            {
+                sliderAcceleration.Value = mouse.Acceleration;
+            }
+
+            if (mouse.HasDeceleration())
+            {
+                sliderDeceleration.Value = mouse.Deceleration;
             }
         }
 

@@ -33,6 +33,14 @@
             labelProfile = new Label();
             panelPerformance = new Panel();
             panelPerformanceOther = new Panel();
+            panelDeceleration = new Panel();
+            labelDeceleration = new Label();
+            sliderDeceleration = new UI.Slider();
+            labelDecelerationValue = new Label();
+            panelAcceleration = new Panel();
+            labelAcceleration = new Label();
+            sliderAcceleration = new UI.Slider();
+            labelAccelerationValue = new Label();
             panelLiftOffDistance = new Panel();
             labelLiftOffDistance = new Label();
             comboBoxLiftOffDistance = new UI.RComboBox();
@@ -108,6 +116,8 @@
             panelProfiles.SuspendLayout();
             panelPerformance.SuspendLayout();
             panelPerformanceOther.SuspendLayout();
+            panelDeceleration.SuspendLayout();
+            panelAcceleration.SuspendLayout();
             panelLiftOffDistance.SuspendLayout();
             panelDebounce.SuspendLayout();
             panelAngleSnapping.SuspendLayout();
@@ -182,13 +192,15 @@
             panelPerformance.Location = new Point(11, 68);
             panelPerformance.Name = "panelPerformance";
             panelPerformance.Padding = new Padding(0, 11, 0, 25);
-            panelPerformance.Size = new Size(654, 461);
+            panelPerformance.Size = new Size(654, 555);
             panelPerformance.TabIndex = 1;
             // 
             // panelPerformanceOther
             // 
             panelPerformanceOther.AutoSize = true;
             panelPerformanceOther.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            panelPerformanceOther.Controls.Add(panelDeceleration);
+            panelPerformanceOther.Controls.Add(panelAcceleration);
             panelPerformanceOther.Controls.Add(panelLiftOffDistance);
             panelPerformanceOther.Controls.Add(panelDebounce);
             panelPerformanceOther.Controls.Add(panelAngleSnapping);
@@ -197,8 +209,102 @@
             panelPerformanceOther.Location = new Point(0, 240);
             panelPerformanceOther.Name = "panelPerformanceOther";
             panelPerformanceOther.Padding = new Padding(0, 11, 0, 11);
-            panelPerformanceOther.Size = new Size(654, 196);
+            panelPerformanceOther.Size = new Size(654, 290);
             panelPerformanceOther.TabIndex = 49;
+            // 
+            // panelDeceleration
+            // 
+            panelDeceleration.AutoSize = true;
+            panelDeceleration.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            panelDeceleration.Controls.Add(labelDeceleration);
+            panelDeceleration.Controls.Add(sliderDeceleration);
+            panelDeceleration.Controls.Add(labelDecelerationValue);
+            panelDeceleration.Dock = DockStyle.Top;
+            panelDeceleration.Location = new Point(0, 232);
+            panelDeceleration.Name = "panelDeceleration";
+            panelDeceleration.Padding = new Padding(5);
+            panelDeceleration.Size = new Size(654, 47);
+            panelDeceleration.TabIndex = 58;
+            // 
+            // labelDeceleration
+            // 
+            labelDeceleration.Location = new Point(6, 7);
+            labelDeceleration.Margin = new Padding(6, 0, 6, 0);
+            labelDeceleration.Name = "labelDeceleration";
+            labelDeceleration.Size = new Size(348, 33);
+            labelDeceleration.TabIndex = 52;
+            labelDeceleration.Text = "Deceleration";
+            // 
+            // sliderDeceleration
+            // 
+            sliderDeceleration.AccessibleName = "DPI Slider";
+            sliderDeceleration.Location = new Point(368, 9);
+            sliderDeceleration.Max = 9;
+            sliderDeceleration.Min = 0;
+            sliderDeceleration.Name = "sliderDeceleration";
+            sliderDeceleration.Size = new Size(213, 30);
+            sliderDeceleration.Step = 1;
+            sliderDeceleration.TabIndex = 50;
+            sliderDeceleration.TabStop = false;
+            sliderDeceleration.Text = "sliderBattery";
+            sliderDeceleration.Value = 0;
+            // 
+            // labelDecelerationValue
+            // 
+            labelDecelerationValue.Location = new Point(590, 9);
+            labelDecelerationValue.Margin = new Padding(6, 0, 6, 0);
+            labelDecelerationValue.Name = "labelDecelerationValue";
+            labelDecelerationValue.Size = new Size(60, 30);
+            labelDecelerationValue.TabIndex = 51;
+            labelDecelerationValue.Text = "0";
+            labelDecelerationValue.TextAlign = ContentAlignment.MiddleRight;
+            // 
+            // panelAcceleration
+            // 
+            panelAcceleration.AutoSize = true;
+            panelAcceleration.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            panelAcceleration.Controls.Add(labelAcceleration);
+            panelAcceleration.Controls.Add(sliderAcceleration);
+            panelAcceleration.Controls.Add(labelAccelerationValue);
+            panelAcceleration.Dock = DockStyle.Top;
+            panelAcceleration.Location = new Point(0, 185);
+            panelAcceleration.Name = "panelAcceleration";
+            panelAcceleration.Padding = new Padding(5);
+            panelAcceleration.Size = new Size(654, 47);
+            panelAcceleration.TabIndex = 57;
+            // 
+            // labelAcceleration
+            // 
+            labelAcceleration.Location = new Point(6, 7);
+            labelAcceleration.Margin = new Padding(6, 0, 6, 0);
+            labelAcceleration.Name = "labelAcceleration";
+            labelAcceleration.Size = new Size(348, 33);
+            labelAcceleration.TabIndex = 52;
+            labelAcceleration.Text = "Acceleration";
+            // 
+            // sliderAcceleration
+            // 
+            sliderAcceleration.AccessibleName = "DPI Slider";
+            sliderAcceleration.Location = new Point(368, 9);
+            sliderAcceleration.Max = 9;
+            sliderAcceleration.Min = 0;
+            sliderAcceleration.Name = "sliderAcceleration";
+            sliderAcceleration.Size = new Size(213, 30);
+            sliderAcceleration.Step = 1;
+            sliderAcceleration.TabIndex = 50;
+            sliderAcceleration.TabStop = false;
+            sliderAcceleration.Text = "sliderBattery";
+            sliderAcceleration.Value = 0;
+            // 
+            // labelAccelerationValue
+            // 
+            labelAccelerationValue.Location = new Point(590, 9);
+            labelAccelerationValue.Margin = new Padding(6, 0, 6, 0);
+            labelAccelerationValue.Name = "labelAccelerationValue";
+            labelAccelerationValue.Size = new Size(60, 30);
+            labelAccelerationValue.TabIndex = 51;
+            labelAccelerationValue.Text = "0";
+            labelAccelerationValue.TextAlign = ContentAlignment.MiddleRight;
             // 
             // panelLiftOffDistance
             // 
@@ -656,7 +762,7 @@
             panelLighting.Controls.Add(panelLightingContent);
             panelLighting.Controls.Add(panelLightingHeader);
             panelLighting.Dock = DockStyle.Top;
-            panelLighting.Location = new Point(11, 529);
+            panelLighting.Location = new Point(11, 623);
             panelLighting.Name = "panelLighting";
             panelLighting.Padding = new Padding(0, 0, 0, 25);
             panelLighting.Size = new Size(654, 329);
@@ -985,7 +1091,7 @@
             panelEnergy.Controls.Add(labelAutoPowerOff);
             panelEnergy.Controls.Add(panelEnergyHeader);
             panelEnergy.Dock = DockStyle.Top;
-            panelEnergy.Location = new Point(11, 858);
+            panelEnergy.Location = new Point(11, 952);
             panelEnergy.Name = "panelEnergy";
             panelEnergy.Padding = new Padding(0, 0, 0, 25);
             panelEnergy.Size = new Size(654, 143);
@@ -1166,7 +1272,7 @@
             panelBottomButtons.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             panelBottomButtons.Controls.Add(buttonSync);
             panelBottomButtons.Dock = DockStyle.Top;
-            panelBottomButtons.Location = new Point(11, 1001);
+            panelBottomButtons.Location = new Point(11, 1095);
             panelBottomButtons.Name = "panelBottomButtons";
             panelBottomButtons.Size = new Size(654, 67);
             panelBottomButtons.TabIndex = 47;
@@ -1260,6 +1366,8 @@
             panelPerformance.PerformLayout();
             panelPerformanceOther.ResumeLayout(false);
             panelPerformanceOther.PerformLayout();
+            panelDeceleration.ResumeLayout(false);
+            panelAcceleration.ResumeLayout(false);
             panelLiftOffDistance.ResumeLayout(false);
             panelDebounce.ResumeLayout(false);
             panelAngleSnapping.ResumeLayout(false);
@@ -1379,5 +1487,13 @@
         private Panel panelAngleSnapping;
         private Panel panelLiftOffDistance;
         private Panel panelDebounce;
+        private Panel panelDeceleration;
+        private Label labelDeceleration;
+        private UI.Slider sliderDeceleration;
+        private Label labelDecelerationValue;
+        private Panel panelAcceleration;
+        private Label labelAcceleration;
+        private UI.Slider sliderAcceleration;
+        private Label labelAccelerationValue;
     }
 }
