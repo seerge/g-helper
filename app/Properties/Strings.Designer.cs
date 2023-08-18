@@ -61,6 +61,15 @@ namespace GHelper.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Acceleration.
+        /// </summary>
+        internal static string Acceleration {
+            get {
+                return ResourceManager.GetString("Acceleration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Can&apos;t connect to ASUS ACPI. Application can&apos;t function without it. Try to install Asus System Control Interface.
         /// </summary>
         internal static string ACPIError {
@@ -534,6 +543,15 @@ namespace GHelper.Properties {
         internal static string Custom {
             get {
                 return ResourceManager.GetString("Custom", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Deceleration.
+        /// </summary>
+        internal static string Deceleration {
+            get {
+                return ResourceManager.GetString("Deceleration", resourceCulture);
             }
         }
         
