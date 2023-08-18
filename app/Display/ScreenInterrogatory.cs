@@ -1,4 +1,6 @@
-﻿using System.ComponentModel;
+﻿using GHelper.Helpers;
+using NvAPIWrapper.Display;
+using System.ComponentModel;
 using System.Runtime.InteropServices;
 
 namespace GHelper.Display
@@ -259,6 +261,49 @@ namespace GHelper.Display
 
         #endregion
 
+
+        [Flags]
+        public enum DisplayDeviceStates : int
+        {
+            ATTACHED_TO_DESKTOP = 0x01,
+            PRIMARY_DEVICE = 0x04,
+            MIRRORING_DRIVER = 0x08,
+            VGA_COMPATIBLE = 0x10,
+            REMOVABLE = 0x20,
+            DISCONNECTED = 0x2000000,
+            REMOTE = 0x4000000,
+            MODESPRUNED = 0x8000000
+        }
+
+        [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+        public struct DISPLAY_DEVICE
+        {
+            public int cb;
+
+            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)]
+            public string DeviceName;
+
+            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 128)]
+            public string DeviceString;
+
+            public DisplayDeviceStates StateFlags;
+
+            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 128)]
+            public string DeviceID;
+
+            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 128)]
+            public string DeviceKey;
+        }
+
+
+        [DllImport(nameof(User32), CharSet = CharSet.Unicode, SetLastError = true)]
+        public static extern bool EnumDisplayDevices(
+            string? lpDevice,
+            uint iDevNum,
+            ref DISPLAY_DEVICE lpDisplayDevice,
+            uint dwFlags);
+
+
         private static DISPLAYCONFIG_TARGET_DEVICE_NAME DeviceName(LUID adapterId, uint targetId)
         {
             var deviceName = new DISPLAYCONFIG_TARGET_DEVICE_NAME
@@ -295,6 +340,33 @@ namespace GHelper.Display
             for (var i = 0; i < modeCount; i++)
                 if (displayModes[i].infoType == DISPLAYCONFIG_MODE_INFO_TYPE.DISPLAYCONFIG_MODE_INFO_TYPE_TARGET)
                     yield return DeviceName(displayModes[i].adapterId, displayModes[i].id);
+        }
+
+
+        public static IEnumerable<DISPLAY_DEVICE> GetDisplayDevices()
+        {
+
+            var displayAdapter = new DISPLAY_DEVICE();
+            displayAdapter.cb = Marshal.SizeOf<DISPLAY_DEVICE>();
+
+            var displayAdapterNumber = default(uint);
+            while (EnumDisplayDevices(null, displayAdapterNumber, ref displayAdapter, 1))
+            {
+                var displayMonitor = new DISPLAY_DEVICE();
+                displayMonitor.cb = Marshal.SizeOf<DISPLAY_DEVICE>();
+
+                var displayMonitorNumber = default(uint);
+                while (EnumDisplayDevices(displayAdapter.DeviceName, displayMonitorNumber, ref displayMonitor, 1))
+                {
+                    var isAttached = (displayMonitor.StateFlags & DisplayDeviceStates.ATTACHED_TO_DESKTOP) == DisplayDeviceStates.ATTACHED_TO_DESKTOP;
+                    var isMirroring = (displayMonitor.StateFlags & DisplayDeviceStates.MIRRORING_DRIVER) == DisplayDeviceStates.MIRRORING_DRIVER;
+                    if (isAttached && !isMirroring) yield return displayMonitor;
+                    displayMonitorNumber++;
+                    
+                }
+
+                displayAdapterNumber++;
+            }
         }
 
 

@@ -1,5 +1,8 @@
-﻿using System.Collections;
+﻿using Microsoft.VisualBasic.Logging;
+using System.Collections;
+using System.Diagnostics.Metrics;
 using System.Runtime.InteropServices;
+using System.Windows.Forms;
 using static GHelper.Display.ScreenInterrogatory;
 
 namespace GHelper.Display
@@ -145,20 +148,12 @@ namespace GHelper.Display
         public const int ENUM_CURRENT_SETTINGS = -1;
         public const string defaultDevice = @"\\.\DISPLAY1";
 
-        public static string? FindLaptopScreen(bool log = false)
-        {
-            string? laptopScreen = null;
-            var screens = Screen.AllScreens;
 
+        private static string? FindInternalName(bool log = false)
+        {
             try
             {
                 var devices = GetAllDevices().ToArray();
-
-                Array.Sort(devices, new DeviceComparer());
-                Array.Sort(screens, new ScreenComparer());
-
-                int count = 0;
-
                 string internalName = AppConfig.GetString("internal_display");
 
                 foreach (var device in devices)
@@ -167,31 +162,68 @@ namespace GHelper.Display
                         device.outputTechnology == DISPLAYCONFIG_VIDEO_OUTPUT_TECHNOLOGY.DISPLAYCONFIG_OUTPUT_TECHNOLOGY_DISPLAYPORT_EMBEDDED ||
                         device.monitorFriendlyDeviceName == internalName)
                     {
+                        if (log) Logger.WriteLine(device.monitorDevicePath + " " + device.outputTechnology);
                         AppConfig.Set("internal_display", device.monitorFriendlyDeviceName);
-
-                        if (count < screens.Length)
-                        {
-                            laptopScreen = screens[count].DeviceName;
-                        }
-                        else
-                        {
-                            laptopScreen = defaultDevice;
-                        }
+                        var names = device.monitorDevicePath.Split("#");
+                        return names[1];
                     }
-
-
-                    if (log) Logger.WriteLine(device.monitorFriendlyDeviceName + ":" + device.outputTechnology.ToString() + device.connectorInstance.ToString() + ": " + ((count < screens.Length) ? screens[count].DeviceName : ""));
-                    count++;
                 }
-
             }
             catch (Exception ex)
             {
                 Logger.WriteLine(ex.ToString());
-                Logger.WriteLine("Can't detect internal screen");
-                laptopScreen = Screen.PrimaryScreen.DeviceName;
             }
 
+            return null;
+        }
+
+        static string ExtractDisplay(string input)
+        {
+            int index = input.IndexOf('\\', 4); // Start searching from index 4 to skip ""
+
+            if (index != -1)
+            {
+                string extracted = input.Substring(0, index);
+                return extracted;
+            }
+
+            return input;
+        }
+
+        public static string? FindLaptopScreen(bool log = false)
+        {
+            string? laptopScreen = null;
+            string? internalName = FindInternalName(log);
+
+            if (internalName == null)
+            {
+                Logger.WriteLine("Internal screen off");
+                return null;
+            }
+
+            try
+            {
+                var displays = GetDisplayDevices().ToArray();
+                foreach (var display in displays)
+                {
+                    if (log) Logger.WriteLine(display.DeviceID + " " + display.DeviceName);
+                    if (display.DeviceID.Contains(internalName))
+                    {
+                        laptopScreen = ExtractDisplay(display.DeviceName);
+                        break;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLine(ex.ToString());
+            }
+
+            if (laptopScreen is null)
+            {
+                Logger.WriteLine("Default internal screen");
+                laptopScreen = Screen.PrimaryScreen.DeviceName;
+            }
 
             return laptopScreen;
         }
