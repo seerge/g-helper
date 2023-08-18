@@ -288,7 +288,7 @@ namespace GHelper.Peripherals.Mouse
             }
         }
 
-        private static bool IsPacketLoggerEnabled()
+        protected static bool IsPacketLoggerEnabled()
         {
 #if DEBUG
             return true;
