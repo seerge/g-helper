@@ -149,6 +149,8 @@ namespace GHelper.Peripherals.Mouse
 
         private readonly string path;
 
+        protected byte reportId = 0x00;
+
         public bool IsDeviceReady { get; protected set; }
 
         private void SetDeviceReady(bool ready)
@@ -180,6 +182,8 @@ namespace GHelper.Peripherals.Mouse
         public bool AngleSnapping { get; protected set; }
         public short AngleAdjustmentDegrees { get; protected set; }
         public DebounceTime Debounce { get; protected set; }
+        public int Acceleration { get; protected set; }
+        public int Deceleration { get; protected set; }
 
 
         public AsusMouse(ushort vendorId, ushort productId, string path, bool wireless) : base(vendorId, productId)
@@ -195,7 +199,12 @@ namespace GHelper.Peripherals.Mouse
             {
                 LightingSetting = new LightingSetting[SupportedLightingZones().Length];
             }
+            this.reportId = 0x00;
+        }
 
+        public AsusMouse(ushort vendorId, ushort productId, string path, bool wireless, byte reportId) : this(vendorId, productId, path, wireless)
+        {
+            this.reportId = reportId;
         }
 
         public override bool Equals(object? obj)
@@ -279,7 +288,7 @@ namespace GHelper.Peripherals.Mouse
             }
         }
 
-        private static bool IsPacketLoggerEnabled()
+        protected static bool IsPacketLoggerEnabled()
         {
 #if DEBUG
             return true;
@@ -307,59 +316,86 @@ namespace GHelper.Peripherals.Mouse
         [MethodImpl(MethodImplOptions.Synchronized)]
         protected virtual byte[]? WriteForResponse(byte[] packet)
         {
+            Array.Resize(ref packet, ASUS_MOUSE_PACKET_SIZE);
+
+
             byte[] response = new byte[ASUS_MOUSE_PACKET_SIZE];
 
-            try
+            int retries = 3;
+
+            while (retries > 0)
             {
-                if (IsPacketLoggerEnabled())
-                    Logger.WriteLine(GetDisplayName() + ": Sending packet: " + ByteArrayToString(packet));
+                response = new byte[ASUS_MOUSE_PACKET_SIZE];
 
-                long time = MeasuredIO(Write, packet);
-                Logger.WriteLine(GetDisplayName() + ": Write took " + time + "ms");
-
-                time = MeasuredIO(Read, response);
-                Logger.WriteLine(GetDisplayName() + ": Read took " + time + "ms");
-
-                if (IsPacketLoggerEnabled())
-                    Logger.WriteLine(GetDisplayName() + ": Read packet: " + ByteArrayToString(response));
-
-                if (IsMouseError(response))
+                try
                 {
-                    Logger.WriteLine(GetDisplayName() + ": Mouse returned error (FF AA). Packet probably not supported by mouse firmware.");
-                    //Error. Mouse could not understand or process the sent packet
-                    return response;
-                }
+                    if (IsPacketLoggerEnabled())
+                        Logger.WriteLine(GetDisplayName() + ": Sending packet: " + ByteArrayToString(packet)
+                            + " Try " + (retries - 2) + " of 3");
 
-                //Not the response we were looking for, continue reading
-                while (response[0] != packet[0] || response[1] != packet[1] || response[2] != packet[2])
-                {
-                    Logger.WriteLine(GetDisplayName() + ": Read wrong packet left in buffer: " + ByteArrayToString(response) + ". Retrying...");
-                    //Read again
+                    long time = MeasuredIO(Write, packet);
+                    Logger.WriteLine(GetDisplayName() + ": Write took " + time + "ms");
+
                     time = MeasuredIO(Read, response);
                     Logger.WriteLine(GetDisplayName() + ": Read took " + time + "ms");
+
+
+                    if (IsMouseError(response))
+                    {
+                        if (IsPacketLoggerEnabled())
+                            Logger.WriteLine(GetDisplayName() + ": Read packet: " + ByteArrayToString(response));
+
+                        Logger.WriteLine(GetDisplayName() + ": Mouse returned error (FF AA). Packet probably not supported by mouse firmware.");
+                        //Error. Mouse could not understand or process the sent packet
+                        return response;
+                    }
+
+                    if (response[1] == 0 && response[2] == 0 && response[3] == 0)
+                    {
+                        if (IsPacketLoggerEnabled())
+                            Logger.WriteLine(GetDisplayName() + ": Read packet: " + ByteArrayToString(response));
+                        Logger.WriteLine(GetDisplayName() + ": Received empty packet. Stopping here.");
+                        //Empty packet
+                        return null;
+                    }
+
+                    //Not the response we were looking for, continue reading
+                    while (response[0] != packet[0] || response[1] != packet[1] || response[2] != packet[2])
+                    {
+                        if (IsPacketLoggerEnabled())
+                            Logger.WriteLine(GetDisplayName() + ": Read wrong packet left in buffer: " + ByteArrayToString(response) + ". Retrying...");
+                        //Read again
+                        time = MeasuredIO(Read, response);
+                        Logger.WriteLine(GetDisplayName() + ": Read took " + time + "ms");
+                    }
+
+                    if (IsPacketLoggerEnabled())
+                        Logger.WriteLine(GetDisplayName() + ": Read packet: " + ByteArrayToString(response));
+
+
+                    return response;
+
                 }
-
+                catch (IOException e)
+                {
+                    Logger.WriteLine(GetDisplayName() + ": Failed to read packet " + e.Message);
+                    OnDisconnect();
+                    return null;
+                }
+                catch (TimeoutException e)
+                {
+                    Logger.WriteLine(GetDisplayName() + ": Timeout reading packet " + e.Message + " Trying again.");
+                    retries--;
+                    continue;
+                }
+                catch (ObjectDisposedException)
+                {
+                    Logger.WriteLine(GetDisplayName() + ": Channel closed ");
+                    OnDisconnect();
+                    return null;
+                }
             }
-            catch (IOException e)
-            {
-                Logger.WriteLine(GetDisplayName() + ": Failed to read packet " + e.Message);
-                OnDisconnect();
-                return null;
-            }
-            catch (TimeoutException e)
-            {
-                Logger.WriteLine(GetDisplayName() + ": Timeout reading packet " + e.Message);
-                return null;
-            }
-            catch (ObjectDisposedException)
-            {
-                Logger.WriteLine(GetDisplayName() + ": Channel closed ");
-                OnDisconnect();
-                return null;
-            }
-
-
-            return response;
+            return null;
         }
         public abstract string GetDisplayName();
 
@@ -386,6 +422,7 @@ namespace GHelper.Peripherals.Mouse
             ReadPollingRate();
             ReadLiftOffDistance();
             ReadDebounce();
+            ReadAcceleration();
             ReadLightingSetting();
         }
 
@@ -410,7 +447,7 @@ namespace GHelper.Peripherals.Mouse
 
         protected virtual byte[] GetBatteryReportPacket()
         {
-            return new byte[] { 0x00, 0x12, 0x07 };
+            return new byte[] { reportId, 0x12, 0x07 };
         }
 
         protected virtual int ParseBattery(byte[] packet)
@@ -452,7 +489,7 @@ namespace GHelper.Peripherals.Mouse
         }
         protected virtual byte[] GetUpdateEnergySettingsPacket(int lowBatteryWarning, PowerOffSetting powerOff)
         {
-            return new byte[] { 0x00, 0x51, 0x37, 0x00, 0x00, (byte)powerOff, 0x00, (byte)lowBatteryWarning };
+            return new byte[] { reportId, 0x51, 0x37, 0x00, 0x00, (byte)powerOff, 0x00, (byte)lowBatteryWarning };
         }
 
         public void SetEnergySettings(int lowBatteryWarning, PowerOffSetting powerOff)
@@ -538,7 +575,7 @@ namespace GHelper.Peripherals.Mouse
                 return packet[11];
             }
             Logger.WriteLine(GetDisplayName() + ": Failed to decode active profile");
-            return 1;
+            return 0;
         }
 
         protected virtual int ParseDPIProfile(byte[] packet)
@@ -553,12 +590,12 @@ namespace GHelper.Peripherals.Mouse
 
         protected virtual byte[] GetReadProfilePacket()
         {
-            return new byte[] { 0x00, 0x12, 0x00 };
+            return new byte[] { reportId, 0x12, 0x00 };
         }
 
         protected virtual byte[] GetUpdateProfilePacket(int profile)
         {
-            return new byte[] { 0x00, 0x50, 0x02, (byte)profile };
+            return new byte[] { reportId, 0x50, 0x02, (byte)profile };
         }
 
         public void ReadProfile()
@@ -667,20 +704,20 @@ namespace GHelper.Peripherals.Mouse
 
         protected virtual byte[] GetReadPollingRatePacket()
         {
-            return new byte[] { 0x00, 0x12, 0x04, 0x00 };
+            return new byte[] { reportId, 0x12, 0x04, 0x00 };
         }
 
         protected virtual byte[] GetUpdatePollingRatePacket(PollingRate pollingRate)
         {
-            return new byte[] { 0x00, 0x51, 0x31, 0x04, 0x00, (byte)pollingRate };
+            return new byte[] { reportId, 0x51, 0x31, 0x04, 0x00, (byte)pollingRate };
         }
         protected virtual byte[] GetUpdateAngleSnappingPacket(bool angleSnapping)
         {
-            return new byte[] { 0x00, 0x51, 0x31, 0x06, 0x00, (byte)(angleSnapping ? 0x01 : 0x00) };
+            return new byte[] { reportId, 0x51, 0x31, 0x06, 0x00, (byte)(angleSnapping ? 0x01 : 0x00) };
         }
         protected virtual byte[] GetUpdateAngleAdjustmentPacket(short angleAdjustment)
         {
-            return new byte[] { 0x00, 0x51, 0x31, 0x0B, 0x00, (byte)(angleAdjustment & 0xFF), (byte)((angleAdjustment >> 8) & 0xFF) };
+            return new byte[] { reportId, 0x51, 0x31, 0x0B, 0x00, (byte)(angleAdjustment & 0xFF), (byte)((angleAdjustment >> 8) & 0xFF) };
         }
 
         protected virtual PollingRate ParsePollingRate(byte[] packet)
@@ -792,6 +829,126 @@ namespace GHelper.Peripherals.Mouse
         }
 
         // ------------------------------------------------------------------------------
+        // Acceleration/Deceleration
+        // ------------------------------------------------------------------------------
+        public virtual bool HasAcceleration()
+        {
+            return false;
+        }
+
+        public virtual bool HasDeceleration()
+        {
+            return false;
+        }
+
+        public virtual int MaxAcceleration()
+        {
+            return 0;
+        }
+        public virtual int MaxDeceleration()
+        {
+            return 0;
+        }
+
+        protected virtual byte[] GetChangeAccelerationPacket(int acceleration)
+        {
+            return new byte[] { reportId, 0x51, 0x31, 0x07, 0x00, (byte)acceleration };
+        }
+
+        protected virtual byte[] GetChangeDecelerationPacket(int deceleration)
+        {
+            return new byte[] { reportId, 0x51, 0x31, 0x08, 0x00, (byte)deceleration };
+        }
+
+        public virtual void SetAcceleration(int acceleration)
+        {
+            if (!HasAcceleration())
+            {
+                return;
+            }
+
+            if (acceleration > MaxAcceleration() || acceleration < 0)
+            {
+                Logger.WriteLine(GetDisplayName() + ": Acceleration " + acceleration + " is invalid.");
+                return;
+            }
+
+            WriteForResponse(GetChangeAccelerationPacket(acceleration));
+            FlushSettings();
+
+            Logger.WriteLine(GetDisplayName() + ": Acceleration set to " + acceleration);
+            this.Acceleration = acceleration;
+        }
+
+        public virtual void SetDeceleration(int deceleration)
+        {
+            if (!HasDeceleration())
+            {
+                return;
+            }
+
+            if (deceleration > MaxDeceleration() || deceleration < 0)
+            {
+                Logger.WriteLine(GetDisplayName() + ": Deceleration " + deceleration + " is invalid.");
+                return;
+            }
+
+            WriteForResponse(GetChangeDecelerationPacket(deceleration));
+            FlushSettings();
+
+            Logger.WriteLine(GetDisplayName() + ": Deceleration set to " + deceleration);
+            this.Deceleration = deceleration;
+        }
+
+        protected virtual byte[] GetReadAccelerationPacket()
+        {
+            return new byte[] { reportId, 0x12, 0x04, 0x01 };
+        }
+
+        protected virtual int ParseAcceleration(byte[] packet)
+        {
+            if (packet[1] != 0x12 || packet[2] != 0x04 || packet[3] != 0x01)
+            {
+                return 0;
+            }
+
+            return packet[5];
+        }
+
+        protected virtual int ParseDeceleration(byte[] packet)
+        {
+            if (packet[1] != 0x12 || packet[2] != 0x04 || packet[3] != 0x01)
+            {
+                return 0;
+            }
+
+            return packet[7];
+        }
+
+        public virtual void ReadAcceleration()
+        {
+            if (!HasAcceleration() && !HasDeceleration())
+            {
+                return;
+            }
+
+            byte[]? response = WriteForResponse(GetReadAccelerationPacket());
+            if (response is null) return;
+
+            if (HasAcceleration())
+            {
+                Acceleration = ParseAcceleration(response);
+                Logger.WriteLine(GetDisplayName() + ": Read Acceleration: " + Acceleration);
+            }
+
+            if (HasDeceleration())
+            {
+                Deceleration = ParseDeceleration(response);
+                Logger.WriteLine(GetDisplayName() + ": Read Deceleration: " + Deceleration);
+            }
+        }
+
+        // ------------------------------------------------------------------------------
         // DPI
         // ------------------------------------------------------------------------------
         public abstract int DPIProfileCount();
@@ -826,12 +983,12 @@ namespace GHelper.Peripherals.Mouse
 
         protected virtual byte[] GetChangeDPIProfilePacket(int profile)
         {
-            return new byte[] { 0x00, 0x51, 0x31, 0x0A, 0x00, (byte)profile };
+            return new byte[] { reportId, 0x51, 0x31, 0x0A, 0x00, (byte)profile };
         }
 
         protected virtual byte[] GetChangeDPIProfilePacket2(int profile)
         {
-            return new byte[] { 0x00, 0x51, 0x31, 0x09, 0x00, (byte)profile };
+            return new byte[] { reportId, 0x51, 0x31, 0x09, 0x00, (byte)profile };
         }
 
         //profiles start to count at 1
@@ -863,10 +1020,10 @@ namespace GHelper.Peripherals.Mouse
         {
             if (!HasXYDPI())
             {
-                return new byte[] { 0x00, 0x12, 0x04, 0x00 };
+                return new byte[] { reportId, 0x12, 0x04, 0x00 };
             }
 
-            return new byte[] { 0x00, 0x12, 0x04, 0x02 };
+            return new byte[] { reportId, 0x12, 0x04, 0x02 };
         }
 
         protected virtual byte[]? GetUpdateDPIPacket(AsusMouseDPI dpi, int profile)
@@ -883,11 +1040,11 @@ namespace GHelper.Peripherals.Mouse
 
             if (HasDPIColors())
             {
-                return new byte[] { 0x00, 0x51, 0x31, (byte)(profile - 1), 0x00, (byte)(dpiEncoded & 0xFF), (byte)((dpiEncoded >> 8) & 0xFF), dpi.Color.R, dpi.Color.G, dpi.Color.B };
+                return new byte[] { reportId, 0x51, 0x31, (byte)(profile - 1), 0x00, (byte)(dpiEncoded & 0xFF), (byte)((dpiEncoded >> 8) & 0xFF), dpi.Color.R, dpi.Color.G, dpi.Color.B };
             }
             else
             {
-                return new byte[] { 0x00, 0x51, 0x31, (byte)(profile - 1), 0x00, (byte)(dpiEncoded & 0xFF), (byte)((dpiEncoded >> 8) & 0xFF) };
+                return new byte[] { reportId, 0x51, 0x31, (byte)(profile - 1), 0x00, (byte)(dpiEncoded & 0xFF), (byte)((dpiEncoded >> 8) & 0xFF) };
             }
 
         }
@@ -918,7 +1075,7 @@ namespace GHelper.Peripherals.Mouse
 
         protected virtual byte[] GetReadDPIColorsPacket()
         {
-            return new byte[] { 0x00, 0x12, 0x04, 0x03 };
+            return new byte[] { reportId, 0x12, 0x04, 0x03 };
         }
 
         protected virtual void ParseDPIColors(byte[] packet)
@@ -996,13 +1153,13 @@ namespace GHelper.Peripherals.Mouse
 
         protected virtual byte[] GetReadLiftOffDistancePacket()
         {
-            return new byte[] { 0x00, 0x12, 0x06 };
+            return new byte[] { reportId, 0x12, 0x06 };
         }
 
         //This also resets the "calibration" to default. There is no seperate command to only set the lift off distance
         protected virtual byte[] GetUpdateLiftOffDistancePacket(LiftOffDistance liftOffDistance)
         {
-            return new byte[] { 0x00, 0x51, 0x35, 0xFF, 0x00, 0xFF, ((byte)liftOffDistance) };
+            return new byte[] { reportId, 0x51, 0x35, 0xFF, 0x00, 0xFF, ((byte)liftOffDistance) };
         }
 
         protected virtual LiftOffDistance ParseLiftOffDistance(byte[] packet)
@@ -1071,13 +1228,13 @@ namespace GHelper.Peripherals.Mouse
 
         protected virtual byte[] GetReadDebouncePacket()
         {
-            return new byte[] { 0x00, 0x12, 0x04, 0x00 };
+            return new byte[] { reportId, 0x12, 0x04, 0x00 };
         }
 
 
         protected virtual byte[] GetUpdateDebouncePacket(DebounceTime debounce)
         {
-            return new byte[] { 0x00, 0x51, 0x31, 0x05, 0x00, ((byte)debounce) };
+            return new byte[] { reportId, 0x51, 0x31, 0x05, 0x00, ((byte)debounce) };
         }
 
         protected virtual DebounceTime ParseDebounce(byte[] packet)
@@ -1261,7 +1418,7 @@ namespace GHelper.Peripherals.Mouse
                 idx = IndexForZone(zone);
             }
 
-            return new byte[] { 0x00, 0x12, 0x03, (byte)idx };
+            return new byte[] { reportId, 0x12, 0x03, (byte)idx };
         }
 
         protected virtual byte[] GetUpdateLightingModePacket(LightingSetting lightingSetting, LightingZone zone)
@@ -1279,7 +1436,7 @@ namespace GHelper.Peripherals.Mouse
                 lightingSetting.LightingMode = LightingMode.ColorCycle;
             }
 
-            return new byte[] { 0x00, 0x51, 0x28, (byte)zone, 0x00,
+            return new byte[] { reportId, 0x51, 0x28, (byte)zone, 0x00,
                 IndexForLightingMode(lightingSetting.LightingMode),
                 (byte)lightingSetting.Brightness,
                 lightingSetting.RGBColor.R, lightingSetting.RGBColor.G, lightingSetting.RGBColor.B,
@@ -1375,7 +1532,7 @@ namespace GHelper.Peripherals.Mouse
 
         protected virtual byte[] GetSaveProfilePacket()
         {
-            return new byte[] { 0x00, 0x50, 0x03 };
+            return new byte[] { reportId, 0x50, 0x03 };
         }
 
         public void FlushSettings()
