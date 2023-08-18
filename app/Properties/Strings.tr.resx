@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Acceleration" xml:space="preserve">
+    <value>Acceleration</value>
+  </data>
   <data name="ACPIError" xml:space="preserve">
     <value>ASUS ACPI'ye bağlanılamıyor. Uygulama o olmadan çalışamaz. Asus Sistem Kontrol Arayüzü'nü yüklemeyi deneyin.</value>
   </data>
@@ -275,6 +278,9 @@
   </data>
   <data name="Custom" xml:space="preserve">
     <value>Özel</value>
+  </data>
+  <data name="Deceleration" xml:space="preserve">
+    <value>Deceleration</value>
   </data>
   <data name="Default" xml:space="preserve">
     <value>Varsayılan</value>
