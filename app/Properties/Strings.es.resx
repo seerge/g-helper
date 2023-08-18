@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Acceleration" xml:space="preserve">
-    <value>Acceleration</value>
+    <value>Aceleración</value>
   </data>
   <data name="ACPIError" xml:space="preserve">
     <value>No se pudo conectar con ASUS ACPI. La aplicación no puede funcionar sin el recurso. Instale Asus System Control Interface</value>
@@ -280,7 +280,7 @@
     <value>Personalizado</value>
   </data>
   <data name="Deceleration" xml:space="preserve">
-    <value>Deceleration</value>
+    <value>Desaceleración</value>
   </data>
   <data name="Default" xml:space="preserve">
     <value>Por defecto</value>
