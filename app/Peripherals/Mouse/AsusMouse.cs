@@ -149,6 +149,8 @@ namespace GHelper.Peripherals.Mouse
 
         private readonly string path;
 
+        protected byte reportId = 0x00;
+
         public bool IsDeviceReady { get; protected set; }
 
         private void SetDeviceReady(bool ready)
@@ -195,7 +197,12 @@ namespace GHelper.Peripherals.Mouse
             {
                 LightingSetting = new LightingSetting[SupportedLightingZones().Length];
             }
+            this.reportId = 0x00;
+        }
 
+        public AsusMouse(ushort vendorId, ushort productId, string path, bool wireless, byte reportId) : this(vendorId, productId, path, wireless)
+        {
+            this.reportId = reportId;
         }
 
         public override bool Equals(object? obj)
@@ -410,7 +417,7 @@ namespace GHelper.Peripherals.Mouse
 
         protected virtual byte[] GetBatteryReportPacket()
         {
-            return new byte[] { 0x00, 0x12, 0x07 };
+            return new byte[] { reportId, 0x12, 0x07 };
         }
 
         protected virtual int ParseBattery(byte[] packet)
@@ -452,7 +459,7 @@ namespace GHelper.Peripherals.Mouse
         }
         protected virtual byte[] GetUpdateEnergySettingsPacket(int lowBatteryWarning, PowerOffSetting powerOff)
         {
-            return new byte[] { 0x00, 0x51, 0x37, 0x00, 0x00, (byte)powerOff, 0x00, (byte)lowBatteryWarning };
+            return new byte[] { reportId, 0x51, 0x37, 0x00, 0x00, (byte)powerOff, 0x00, (byte)lowBatteryWarning };
         }
 
         public void SetEnergySettings(int lowBatteryWarning, PowerOffSetting powerOff)
@@ -553,12 +560,12 @@ namespace GHelper.Peripherals.Mouse
 
         protected virtual byte[] GetReadProfilePacket()
         {
-            return new byte[] { 0x00, 0x12, 0x00 };
+            return new byte[] { reportId, 0x12, 0x00 };
         }
 
         protected virtual byte[] GetUpdateProfilePacket(int profile)
         {
-            return new byte[] { 0x00, 0x50, 0x02, (byte)profile };
+            return new byte[] { reportId, 0x50, 0x02, (byte)profile };
         }
 
         public void ReadProfile()
@@ -667,20 +674,20 @@ namespace GHelper.Peripherals.Mouse
 
         protected virtual byte[] GetReadPollingRatePacket()
         {
-            return new byte[] { 0x00, 0x12, 0x04, 0x00 };
+            return new byte[] { reportId, 0x12, 0x04, 0x00 };
         }
 
         protected virtual byte[] GetUpdatePollingRatePacket(PollingRate pollingRate)
         {
-            return new byte[] { 0x00, 0x51, 0x31, 0x04, 0x00, (byte)pollingRate };
+            return new byte[] { reportId, 0x51, 0x31, 0x04, 0x00, (byte)pollingRate };
         }
         protected virtual byte[] GetUpdateAngleSnappingPacket(bool angleSnapping)
         {
-            return new byte[] { 0x00, 0x51, 0x31, 0x06, 0x00, (byte)(angleSnapping ? 0x01 : 0x00) };
+            return new byte[] { reportId, 0x51, 0x31, 0x06, 0x00, (byte)(angleSnapping ? 0x01 : 0x00) };
         }
         protected virtual byte[] GetUpdateAngleAdjustmentPacket(short angleAdjustment)
         {
-            return new byte[] { 0x00, 0x51, 0x31, 0x0B, 0x00, (byte)(angleAdjustment & 0xFF), (byte)((angleAdjustment >> 8) & 0xFF) };
+            return new byte[] { reportId, 0x51, 0x31, 0x0B, 0x00, (byte)(angleAdjustment & 0xFF), (byte)((angleAdjustment >> 8) & 0xFF) };
         }
 
         protected virtual PollingRate ParsePollingRate(byte[] packet)
@@ -826,12 +833,12 @@ namespace GHelper.Peripherals.Mouse
 
         protected virtual byte[] GetChangeDPIProfilePacket(int profile)
         {
-            return new byte[] { 0x00, 0x51, 0x31, 0x0A, 0x00, (byte)profile };
+            return new byte[] { reportId, 0x51, 0x31, 0x0A, 0x00, (byte)profile };
         }
 
         protected virtual byte[] GetChangeDPIProfilePacket2(int profile)
         {
-            return new byte[] { 0x00, 0x51, 0x31, 0x09, 0x00, (byte)profile };
+            return new byte[] { reportId, 0x51, 0x31, 0x09, 0x00, (byte)profile };
         }
 
         //profiles start to count at 1
@@ -863,10 +870,10 @@ namespace GHelper.Peripherals.Mouse
         {
             if (!HasXYDPI())
             {
-                return new byte[] { 0x00, 0x12, 0x04, 0x00 };
+                return new byte[] { reportId, 0x12, 0x04, 0x00 };
             }
 
-            return new byte[] { 0x00, 0x12, 0x04, 0x02 };
+            return new byte[] { reportId, 0x12, 0x04, 0x02 };
         }
 
         protected virtual byte[]? GetUpdateDPIPacket(AsusMouseDPI dpi, int profile)
@@ -883,11 +890,11 @@ namespace GHelper.Peripherals.Mouse
 
             if (HasDPIColors())
             {
-                return new byte[] { 0x00, 0x51, 0x31, (byte)(profile - 1), 0x00, (byte)(dpiEncoded & 0xFF), (byte)((dpiEncoded >> 8) & 0xFF), dpi.Color.R, dpi.Color.G, dpi.Color.B };
+                return new byte[] { reportId, 0x51, 0x31, (byte)(profile - 1), 0x00, (byte)(dpiEncoded & 0xFF), (byte)((dpiEncoded >> 8) & 0xFF), dpi.Color.R, dpi.Color.G, dpi.Color.B };
             }
             else
             {
-                return new byte[] { 0x00, 0x51, 0x31, (byte)(profile - 1), 0x00, (byte)(dpiEncoded & 0xFF), (byte)((dpiEncoded >> 8) & 0xFF) };
+                return new byte[] { reportId, 0x51, 0x31, (byte)(profile - 1), 0x00, (byte)(dpiEncoded & 0xFF), (byte)((dpiEncoded >> 8) & 0xFF) };
             }
 
         }
@@ -918,7 +925,7 @@ namespace GHelper.Peripherals.Mouse
 
         protected virtual byte[] GetReadDPIColorsPacket()
         {
-            return new byte[] { 0x00, 0x12, 0x04, 0x03 };
+            return new byte[] { reportId, 0x12, 0x04, 0x03 };
         }
 
         protected virtual void ParseDPIColors(byte[] packet)
@@ -996,13 +1003,13 @@ namespace GHelper.Peripherals.Mouse
 
         protected virtual byte[] GetReadLiftOffDistancePacket()
         {
-            return new byte[] { 0x00, 0x12, 0x06 };
+            return new byte[] { reportId, 0x12, 0x06 };
         }
 
         //This also resets the "calibration" to default. There is no seperate command to only set the lift off distance
         protected virtual byte[] GetUpdateLiftOffDistancePacket(LiftOffDistance liftOffDistance)
         {
-            return new byte[] { 0x00, 0x51, 0x35, 0xFF, 0x00, 0xFF, ((byte)liftOffDistance) };
+            return new byte[] { reportId, 0x51, 0x35, 0xFF, 0x00, 0xFF, ((byte)liftOffDistance) };
         }
 
         protected virtual LiftOffDistance ParseLiftOffDistance(byte[] packet)
@@ -1071,13 +1078,13 @@ namespace GHelper.Peripherals.Mouse
 
         protected virtual byte[] GetReadDebouncePacket()
         {
-            return new byte[] { 0x00, 0x12, 0x04, 0x00 };
+            return new byte[] { reportId, 0x12, 0x04, 0x00 };
         }
 
 
         protected virtual byte[] GetUpdateDebouncePacket(DebounceTime debounce)
         {
-            return new byte[] { 0x00, 0x51, 0x31, 0x05, 0x00, ((byte)debounce) };
+            return new byte[] { reportId, 0x51, 0x31, 0x05, 0x00, ((byte)debounce) };
         }
 
         protected virtual DebounceTime ParseDebounce(byte[] packet)
@@ -1261,7 +1268,7 @@ namespace GHelper.Peripherals.Mouse
                 idx = IndexForZone(zone);
             }
 
-            return new byte[] { 0x00, 0x12, 0x03, (byte)idx };
+            return new byte[] { reportId, 0x12, 0x03, (byte)idx };
         }
 
         protected virtual byte[] GetUpdateLightingModePacket(LightingSetting lightingSetting, LightingZone zone)
@@ -1279,7 +1286,7 @@ namespace GHelper.Peripherals.Mouse
                 lightingSetting.LightingMode = LightingMode.ColorCycle;
             }
 
-            return new byte[] { 0x00, 0x51, 0x28, (byte)zone, 0x00,
+            return new byte[] { reportId, 0x51, 0x28, (byte)zone, 0x00,
                 IndexForLightingMode(lightingSetting.LightingMode),
                 (byte)lightingSetting.Brightness,
                 lightingSetting.RGBColor.R, lightingSetting.RGBColor.G, lightingSetting.RGBColor.B,
@@ -1375,7 +1382,7 @@ namespace GHelper.Peripherals.Mouse
 
         protected virtual byte[] GetSaveProfilePacket()
         {
-            return new byte[] { 0x00, 0x50, 0x03 };
+            return new byte[] { reportId, 0x50, 0x03 };
         }
 
         public void FlushSettings()
