@@ -215,6 +215,7 @@ public class AsusACPI
         }
 
         if (AppConfig.IsAdvantageEdition()) MaxTotal = 250;
+        if (AppConfig.IsAlly()) MaxTotal = 30;
         if (AppConfig.IsX13())
         {
             MaxTotal = 75;
