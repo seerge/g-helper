@@ -1008,7 +1008,11 @@ namespace GHelper
             buttonStopGPU.Visible = true;
 
             SetContextMenu();
-            if (HardwareControl.FormatFan(Program.acpi.DeviceGet(AsusACPI.GPU_Fan)) is null) panelGPU.Visible = false;
+
+            var gpuFan = Program.acpi.DeviceGet(AsusACPI.GPU_Fan);
+            Logger.WriteLine("GPU check:" + gpuFan);
+
+            if (HardwareControl.FormatFan(gpuFan) is null) panelGPU.Visible = false;
 
         }
 

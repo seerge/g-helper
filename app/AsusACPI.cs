@@ -221,6 +221,11 @@ public class AsusACPI
             DefaultTotal = 50;
         }
 
+        if (AppConfig.IsAlly())
+        {
+            MaxTotal = 50;
+            DefaultTotal = 30;
+        }
 
     }
 
