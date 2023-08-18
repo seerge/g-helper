@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Acceleration" xml:space="preserve">
+    <value>Acceleration</value>
+  </data>
   <data name="ACPIError" xml:space="preserve">
     <value>ASUS ACPI에 연결할 수 없어 응용 프로그램이 작동하지 않습니다. Asus System Control Interface를 먼저 설치하십시오.</value>
   </data>
@@ -275,6 +278,9 @@
   </data>
   <data name="Custom" xml:space="preserve">
     <value>사용자 설정</value>
+  </data>
+  <data name="Deceleration" xml:space="preserve">
+    <value>Deceleration</value>
   </data>
   <data name="Default" xml:space="preserve">
     <value>기본</value>

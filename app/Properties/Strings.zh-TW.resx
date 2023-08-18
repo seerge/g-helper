@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Acceleration" xml:space="preserve">
+    <value>Acceleration</value>
+  </data>
   <data name="ACPIError" xml:space="preserve">
     <value>無法連結到華碩 ACPI。 没有它，應用程式將無法執行。 嘗試安裝Asus System Control Interface</value>
   </data>
@@ -235,7 +238,7 @@
     <value>喚醒時</value>
   </data>
   <data name="BacklightTimeout" xml:space="preserve">
-    <value>超時插入/使用電池 (0 = 不關閉)</value>
+    <value>閒置幾秒後關閉燈光：插電時 / 使用電池 (0 = 不關閉)</value>
   </data>
   <data name="Balanced" xml:space="preserve">
     <value>平衡模式</value>
@@ -275,6 +278,9 @@
   </data>
   <data name="Custom" xml:space="preserve">
     <value>自定義設置</value>
+  </data>
+  <data name="Deceleration" xml:space="preserve">
+    <value>Deceleration</value>
   </data>
   <data name="Default" xml:space="preserve">
     <value>預設</value>

@@ -117,8 +117,11 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Acceleration" xml:space="preserve">
+    <value>Acceleration</value>
+  </data>
   <data name="ACPIError" xml:space="preserve">
-    <value>Impossibile connettersi ad ASUS ACPI. Senza di essa l'applicazione non può funzionare. Prova a installare Asus Satem Contro Interfacce</value>
+    <value>Impossibile connettersi ad ASUS ACPI. Senza di essa l'applicazione non può funzionare. Prova ad installare Asus System Control Interfacce</value>
   </data>
   <data name="AlertDGPU" xml:space="preserve">
     <value>Uso intensivo della GPU, disabilitare?</value>
@@ -275,6 +278,9 @@
   </data>
   <data name="Custom" xml:space="preserve">
     <value>Personalizzato</value>
+  </data>
+  <data name="Deceleration" xml:space="preserve">
+    <value>Deceleration</value>
   </data>
   <data name="Default" xml:space="preserve">
     <value>Default</value>
