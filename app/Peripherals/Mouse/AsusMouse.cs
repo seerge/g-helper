@@ -935,17 +935,18 @@ namespace GHelper.Peripherals.Mouse
             byte[]? response = WriteForResponse(GetReadAccelerationPacket());
             if (response is null) return;
 
-            if (HasAcceleration()) Acceleration = ParseAcceleration(response);
-            if (HasDeceleration()) Deceleration = ParseDeceleration(response);
-
-            for (int i = 0; i < DPIProfileCount(); ++i)
+            if (HasAcceleration())
             {
-                Logger.WriteLine(GetDisplayName() + ": Read DPI Setting " + (i + 1) + ": " + DpiSettings[i].ToString());
+                Acceleration = ParseAcceleration(response);
+                Logger.WriteLine(GetDisplayName() + ": Read Acceleration: " + Acceleration);
             }
 
+            if (HasDeceleration())
+            {
+                Deceleration = ParseDeceleration(response);
+                Logger.WriteLine(GetDisplayName() + ": Read Deceleration: " + Deceleration);
+            }
         }
-
-        //TODO: Implement Acceleration Reading
 
         // ------------------------------------------------------------------------------
         // DPI
