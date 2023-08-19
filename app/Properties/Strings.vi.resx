@@ -199,7 +199,7 @@
     <value>Ngẫu nhiên</value>
   </data>
   <data name="AuraReact" xml:space="preserve">
-    <value>React</value>
+    <value>Phản ứng</value>
   </data>
   <data name="AuraSlow" xml:space="preserve">
     <value>Chậm</value>
@@ -211,7 +211,7 @@
     <value>Nhấp nháy</value>
   </data>
   <data name="AuraZoneAll" xml:space="preserve">
-    <value>All</value>
+    <value>Tất cả</value>
   </data>
   <data name="AuraZoneDock" xml:space="preserve">
     <value>Dock</value>
@@ -244,13 +244,13 @@
     <value>Cân bằng</value>
   </data>
   <data name="BatteryCharge" xml:space="preserve">
-    <value>Charge</value>
+    <value>Sạc</value>
   </data>
   <data name="BatteryChargeLimit" xml:space="preserve">
     <value>Giới hạn sạc</value>
   </data>
   <data name="BatteryHealth" xml:space="preserve">
-    <value>Battery Health</value>
+    <value>Sức khoẻ pin</value>
   </data>
   <data name="BiosAndDriverUpdates" xml:space="preserve">
     <value>Cập nhật BIOS và driver</value>
@@ -268,7 +268,7 @@
     <value>Tăng độ sáng</value>
   </data>
   <data name="Charging" xml:space="preserve">
-    <value>Charging</value>
+    <value>Đang sạc</value>
   </data>
   <data name="Color" xml:space="preserve">
     <value>Màu</value>
@@ -280,7 +280,7 @@
     <value>Tuỳ chỉnh</value>
   </data>
   <data name="Deceleration" xml:space="preserve">
-    <value>Deceleration</value>
+    <value>Giảm tốc</value>
   </data>
   <data name="Default" xml:space="preserve">
     <value>Mặc định</value>
@@ -292,7 +292,7 @@
     <value>Đang không sạc</value>
   </data>
   <data name="DownloadUpdate" xml:space="preserve">
-    <value>Download</value>
+    <value>Tải xuống</value>
   </data>
   <data name="DriverAndSoftware" xml:space="preserve">
     <value>Driver và phần mềm</value>
