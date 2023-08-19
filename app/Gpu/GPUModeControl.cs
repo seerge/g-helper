@@ -285,7 +285,9 @@ namespace GHelper.Gpu
 
                 if (Program.acpi.DeviceGet(AsusACPI.GPUXG) == 1)
                 {
+                    AsusUSB.ResetXGM();
                     HardwareControl.KillGPUApps();
+
                     DialogResult dialogResult = MessageBox.Show("Did you close all applications running on XG Mobile?", "Disabling XG Mobile", MessageBoxButtons.YesNo);
                     if (dialogResult == DialogResult.Yes)
                     {
@@ -296,6 +298,8 @@ namespace GHelper.Gpu
                 else
                 {
                     Program.acpi.DeviceSet(AsusACPI.GPUXG, 1, "GPU XGM");
+
+                    AsusUSB.ResetXGM();
                     AsusUSB.ApplyXGMLight(AppConfig.Is("xmg_light"));
 
                     await Task.Delay(TimeSpan.FromSeconds(15));

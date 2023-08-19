@@ -83,7 +83,7 @@ public static class HardwareControl
         if (fan < 0)
         {
             fan += 65536;
-            if (fan <= 0 || fan > 100) return null; //nothing reasonable
+            if (fan < 0 || fan > 100) return null; //nothing reasonable
         }
 
         if (fan > fanMax && fan <= INADEQUATE_MAX) fanMax = fan;
