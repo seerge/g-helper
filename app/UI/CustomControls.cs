@@ -74,6 +74,11 @@ namespace GHelper.UI
                 return false;
             }
 
+            if (uiMode is not null && uiMode.ToLower() == "windows")
+            {
+                return CheckSystemDarkModeStatus();
+            }
+
             using var key = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Themes\Personalize");
             var registryValueObject = key?.GetValue("AppsUseLightTheme");
 
