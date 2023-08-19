@@ -996,7 +996,7 @@ namespace GHelper
             menuUltimate.Visible = false;
         }
 
-        public void HideGPUModes()
+        public void HideGPUModes(bool gpuExists)
         {
             isGpuSection = false;
 
@@ -1009,10 +1009,7 @@ namespace GHelper
 
             SetContextMenu();
 
-            var gpuFan = Program.acpi.DeviceGet(AsusACPI.GPU_Fan);
-            Logger.WriteLine("GPU check:" + gpuFan);
-
-            if (HardwareControl.FormatFan(gpuFan) is null) panelGPU.Visible = false;
+            panelGPU.Visible = gpuExists;
 
         }
 

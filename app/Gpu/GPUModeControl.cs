@@ -11,6 +11,8 @@ namespace GHelper.Gpu
         ScreenControl screenControl = new ScreenControl();
 
         public static int gpuMode;
+        public static bool? gpuExists = null;
+
 
         public GPUModeControl(SettingsForm settingsForm)
         {
@@ -38,8 +40,15 @@ namespace GHelper.Gpu
 
                 // Ultimate mode not supported
                 if (mux != 1) settings.HideUltimateMode();
+
                 // GPU mode not supported
-                if (eco < 0 && mux < 0) settings.HideGPUModes();
+                if (eco < 0 && mux < 0)
+                {
+                    if (gpuExists is null)
+                        gpuExists = HardwareControl.FormatFan(Program.acpi.DeviceGet(AsusACPI.GPU_Fan)) is not null;
+
+                    settings.HideGPUModes((bool)gpuExists);
+                }
             }
 
             AppConfig.Set("gpu_mode", gpuMode);
