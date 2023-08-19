@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Acceleration" xml:space="preserve">
+    <value>Acceleration</value>
+  </data>
   <data name="ACPIError" xml:space="preserve">
     <value>无法连接到ASUS ACPI。 没有它应用程序将无法运行。 请尝试安装Asus System Control Interface驱动。</value>
   </data>
@@ -275,6 +278,9 @@
   </data>
   <data name="Custom" xml:space="preserve">
     <value>自定义设置</value>
+  </data>
+  <data name="Deceleration" xml:space="preserve">
+    <value>Deceleration</value>
   </data>
   <data name="Default" xml:space="preserve">
     <value>默认</value>
@@ -600,7 +606,7 @@
     <value>切换 MiniLED (如果支持)</value>
   </data>
   <data name="ToggleScreen" xml:space="preserve">
-    <value>切换屏幕</value>
+    <value>关闭屏幕</value>
   </data>
   <data name="Turbo" xml:space="preserve">
     <value>增强模式</value>
