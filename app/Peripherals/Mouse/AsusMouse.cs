@@ -141,7 +141,6 @@ namespace GHelper.Peripherals.Mouse
     {
         private static string[] POLLING_RATES = { "125 Hz", "250 Hz", "500 Hz", "1000 Hz", "2000 Hz", "4000 Hz", "8000 Hz", "16000 Hz" };
         internal const bool PACKET_LOGGER_ALWAYS_ON = false;
-        internal const int ASUS_MOUSE_PACKET_SIZE = 65;
 
         public event EventHandler? Disconnect;
         public event EventHandler? BatteryUpdated;
@@ -274,6 +273,11 @@ namespace GHelper.Peripherals.Mouse
             return 300;
         }
 
+        public virtual int USBPacketSize()
+        {
+            return 65;
+        }
+
         public override void SetProvider()
         {
             _usbProvider = new WindowsUsbProvider(_vendorId, _productId, path, USBTimeout());
@@ -316,16 +320,17 @@ namespace GHelper.Peripherals.Mouse
         [MethodImpl(MethodImplOptions.Synchronized)]
         protected virtual byte[]? WriteForResponse(byte[] packet)
         {
-            Array.Resize(ref packet, ASUS_MOUSE_PACKET_SIZE);
+            Array.Resize(ref packet, USBPacketSize());
 
 
-            byte[] response = new byte[ASUS_MOUSE_PACKET_SIZE];
+            byte[] response = new byte[USBPacketSize()];
+            response[0] = reportId;
 
             int retries = 3;
 
             while (retries > 0)
             {
-                response = new byte[ASUS_MOUSE_PACKET_SIZE];
+                response = new byte[USBPacketSize()];
 
                 try
                 {
