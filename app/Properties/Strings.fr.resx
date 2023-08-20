@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Acceleration" xml:space="preserve">
-    <value>Acceleration</value>
+    <value>Accélération</value>
   </data>
   <data name="ACPIError" xml:space="preserve">
     <value>Connexion impossible avec ASUS ACPI. L'application ne peut fonctionner sans. Veuillez installer Asus System Control Interface</value>
@@ -187,7 +187,7 @@
     <value>Rapide</value>
   </data>
   <data name="AuraLightingMode" xml:space="preserve">
-    <value>Lighting Mode</value>
+    <value>Mode d’Éclairage</value>
   </data>
   <data name="AuraNormal" xml:space="preserve">
     <value>Normal</value>
@@ -211,7 +211,7 @@
     <value>Stroboscopique</value>
   </data>
   <data name="AuraZoneAll" xml:space="preserve">
-    <value>All</value>
+    <value>Tout</value>
   </data>
   <data name="AuraZoneDock" xml:space="preserve">
     <value>Dock</value>
@@ -220,7 +220,7 @@
     <value>Logo</value>
   </data>
   <data name="AuraZoneScroll" xml:space="preserve">
-    <value>Scrollwheel</value>
+    <value>Molette</value>
   </data>
   <data name="AuraZoneUnderglow" xml:space="preserve">
     <value>Underglow</value>
@@ -280,7 +280,7 @@
     <value>Personnalisé</value>
   </data>
   <data name="Deceleration" xml:space="preserve">
-    <value>Deceleration</value>
+    <value>Décélération</value>
   </data>
   <data name="Default" xml:space="preserve">
     <value>Par défaut</value>
@@ -292,7 +292,7 @@
     <value>Taux décharge </value>
   </data>
   <data name="DownloadUpdate" xml:space="preserve">
-    <value>Download</value>
+    <value>Télécharger</value>
   </data>
   <data name="DriverAndSoftware" xml:space="preserve">
     <value>Pilotes et Logiciels</value>
@@ -381,10 +381,10 @@ Voulez-vous continuer ?</value>
     <value>Température cible</value>
   </data>
   <data name="HibernateAfter" xml:space="preserve">
-    <value>Minutes till Hibernation in sleep on battery (0 - OFF)</value>
+    <value>Minutes jusqu'à la mise en veille prolongée sur la batterie (0 - OFF)</value>
   </data>
   <data name="High" xml:space="preserve">
-    <value>High</value>
+    <value>Élevé</value>
   </data>
   <data name="KeyBindings" xml:space="preserve">
     <value>Raccourcis clavier</value>
@@ -417,7 +417,7 @@ Voulez-vous continuer ?</value>
     <value>Logo</value>
   </data>
   <data name="Low" xml:space="preserve">
-    <value>Low</value>
+    <value>Faible</value>
   </data>
   <data name="MatrixAudio" xml:space="preserve">
     <value>Visualiseur Audio</value>
@@ -546,7 +546,7 @@ Voulez-vous continuer ?</value>
     <value>Quitter</value>
   </data>
   <data name="RestartGPU" xml:space="preserve">
-    <value>Something is using dGPU and preventing Eco mode. Let G-Helper try to restart dGPU in device manager? (Please proceed at your own risk)</value>
+    <value>Un programme utilise le dGPU et empêche le passage en mode Éco. Laissez G-Helper tenter un redémarrage du dGPU dans le gestionnaire de tâches ? (Procéder à vos propres risques)</value>
   </data>
   <data name="RPM" xml:space="preserve">
     <value> RPM</value>
