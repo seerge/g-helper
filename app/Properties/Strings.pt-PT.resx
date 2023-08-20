@@ -166,7 +166,7 @@
     <value>Serviços da Asus em execução</value>
   </data>
   <data name="AuraBatteryState" xml:space="preserve">
-    <value>Battery State</value>
+    <value>Estado da bateria</value>
   </data>
   <data name="AuraBreathe" xml:space="preserve">
     <value>Repiração</value>
@@ -196,7 +196,7 @@
     <value>Arco-íris</value>
   </data>
   <data name="AuraRandomColor" xml:space="preserve">
-    <value>Random</value>
+    <value>Aleatório</value>
   </data>
   <data name="AuraReact" xml:space="preserve">
     <value>React</value>
@@ -250,10 +250,10 @@
     <value>Limite de carga</value>
   </data>
   <data name="BatteryHealth" xml:space="preserve">
-    <value>Battery Health</value>
+    <value>Estado da bateria</value>
   </data>
   <data name="BiosAndDriverUpdates" xml:space="preserve">
-    <value>BIOS and Driver Updates</value>
+    <value>Atualizações de Drivers e da BIOS</value>
   </data>
   <data name="Boot" xml:space="preserve">
     <value>Ao ligar</value>
@@ -292,7 +292,7 @@
     <value>Descarregando</value>
   </data>
   <data name="DownloadUpdate" xml:space="preserve">
-    <value>Download</value>
+    <value>Transferir</value>
   </data>
   <data name="DriverAndSoftware" xml:space="preserve">
     <value>Drivers and Software</value>
@@ -477,7 +477,7 @@ Do you still want to continue?</value>
     <value>Performance</value>
   </data>
   <data name="MouseSynchronize" xml:space="preserve">
-    <value>Synchronize with mouse</value>
+    <value>Sincronizar com o rato</value>
   </data>
   <data name="Multizone" xml:space="preserve">
     <value>Multizona</value>
@@ -519,7 +519,7 @@ Do you still want to continue?</value>
     <value>Modo</value>
   </data>
   <data name="Peripherals" xml:space="preserve">
-    <value>Peripherals</value>
+    <value>Periféricos</value>
   </data>
   <data name="PictureGif" xml:space="preserve">
     <value>Imagem / Gif</value>
