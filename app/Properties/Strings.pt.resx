@@ -121,7 +121,7 @@
     <value>Acceleration</value>
   </data>
   <data name="ACPIError" xml:space="preserve">
-    <value>Não foi possível conectar ao ASUS ACPI. O applicativo não pode funcionar sem isso. Tente instalar Asus System Controle Interface</value>
+    <value>Não foi possível conectar ao ASUS ACPI. O aplicativo não pode funcionar sem isso. Tente instalar Asus System Controle Interface</value>
   </data>
   <data name="AlertDGPU" xml:space="preserve">
     <value>Parece que o GPU está em uso pesado.</value>
