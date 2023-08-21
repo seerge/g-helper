@@ -366,8 +366,13 @@ namespace GHelper
 
         private void SliderBrightness_ValueChanged(object? sender, EventArgs e)
         {
-            AppConfig.Set("keyboard_brightness", sliderBrightness.Value);
-            AppConfig.Set("keyboard_brightness_ac", sliderBrightness.Value);
+            bool onBattery = SystemInformation.PowerStatus.PowerLineStatus != PowerLineStatus.Online;
+
+            if (onBattery)
+                AppConfig.Set("keyboard_brightness_ac", sliderBrightness.Value);
+            else
+                AppConfig.Set("keyboard_brightness", sliderBrightness.Value);
+
             AsusUSB.ApplyBrightness(sliderBrightness.Value, "Slider");
         }
 
