@@ -240,6 +240,13 @@ Example (for default windows "balanced" power plan):
 "scheme_2": "381b4222-f694-41f0-9685-ff5bb260df2e",
 ```
 
+### Skip keyboard Aura initialisation on startup
+By default app would set last remembered RGB mode for keyboard on each launch. To disable it completely 
+
+```
+"skip_aura" : 1,
+````
+
 ### Disable OSD
 Disable app's OSD (for performance modes, keyboard backlight, etc.) 
 ```
