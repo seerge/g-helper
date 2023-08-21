@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Acceleration" xml:space="preserve">
-    <value>Acceleration</value>
+    <value>Przyśpieszenie</value>
   </data>
   <data name="ACPIError" xml:space="preserve">
     <value>Nie można odnaleźć sterownika ASUS ACPI. Aplikacja nie może bez niego funkcjonować. Spróbuj zainstalować Asus System Control Interface</value>
@@ -280,7 +280,7 @@
     <value>Niestandardowy</value>
   </data>
   <data name="Deceleration" xml:space="preserve">
-    <value>Deceleration</value>
+    <value>Spowolnienie</value>
   </data>
   <data name="Default" xml:space="preserve">
     <value>Domyślny</value>
