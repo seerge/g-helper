@@ -142,7 +142,7 @@
     <value>Velocidade da Animação</value>
   </data>
   <data name="AnimeMatrix" xml:space="preserve">
-    <value>Anime Matrix</value>
+    <value>AniMe Matrix</value>
   </data>
   <data name="AppAlreadyRunning" xml:space="preserve">
     <value>O programa já está em execução</value>
@@ -211,7 +211,7 @@
     <value>Estroboscópio</value>
   </data>
   <data name="AuraZoneAll" xml:space="preserve">
-    <value>All</value>
+    <value>Todos</value>
   </data>
   <data name="AuraZoneDock" xml:space="preserve">
     <value>Dock</value>
@@ -220,7 +220,7 @@
     <value>Logo</value>
   </data>
   <data name="AuraZoneScroll" xml:space="preserve">
-    <value>Scrollwheel</value>
+    <value>Roda de Deslocamento</value>
   </data>
   <data name="AuraZoneUnderglow" xml:space="preserve">
     <value>Underglow</value>
@@ -304,15 +304,15 @@
     <value>Económico</value>
   </data>
   <data name="EnableOptimusText" xml:space="preserve">
-    <value>Disabling the dGPU by going into Eco mode while Display Mode in NVIDIA Control Panel is not set to Optimus might cause problems with brightness controls until after the next reboot. 
+    <value>Desativar a dGPU por ativar o modo ECO enquanto o Modo de Ecrã no Painel de Controlo da NVIDIA não está definido para Optimus pode causar problemas com os controlos do brilho do painel até ao próximo reinício.
 
-Do you still want to continue?</value>
+Quer prosseguir?</value>
   </data>
   <data name="EnableOptimusTitle" xml:space="preserve">
-    <value>NVIDIA Display Mode is not set to Optimus</value>
+    <value>O Modo de Ecrã da NVIDIA não está definido para Optimus</value>
   </data>
   <data name="EnergySettings" xml:space="preserve">
-    <value>Energy Settings</value>
+    <value>Configurações de Energia</value>
   </data>
   <data name="Extra" xml:space="preserve">
     <value>Adicional</value>
@@ -408,7 +408,7 @@ Do you still want to continue?</value>
     <value>Tampa</value>
   </data>
   <data name="Lightbar" xml:space="preserve">
-    <value>Lightbar</value>
+    <value>Barra de Luz</value>
   </data>
   <data name="Lighting" xml:space="preserve">
     <value>Lighting</value>
@@ -417,7 +417,7 @@ Do you still want to continue?</value>
     <value>Logo</value>
   </data>
   <data name="Low" xml:space="preserve">
-    <value>Low</value>
+    <value>Baixo</value>
   </data>
   <data name="MatrixAudio" xml:space="preserve">
     <value>Audio Visualizer</value>
@@ -462,13 +462,13 @@ Do you still want to continue?</value>
     <value>Angle Snapping</value>
   </data>
   <data name="MouseAutoPowerOff" xml:space="preserve">
-    <value>Auto Power Off After</value>
+    <value>Desligar automaticamente após</value>
   </data>
   <data name="MouseButtonResponse" xml:space="preserve">
     <value>Button Response</value>
   </data>
   <data name="MouseLiftOffDistance" xml:space="preserve">
-    <value>Lift Off Distance</value>
+    <value>Distância de Lift Off</value>
   </data>
   <data name="MouseLowBatteryWarning" xml:space="preserve">
     <value>Aviso de bateria fraca</value>
@@ -495,7 +495,7 @@ Do you still want to continue?</value>
     <value>Sem novas atualizações</value>
   </data>
   <data name="NotConnected" xml:space="preserve">
-    <value>Not Connected</value>
+    <value>Não conectado</value>
   </data>
   <data name="OpenGHelper" xml:space="preserve">
     <value>Abrir G-Helper</value>
@@ -540,7 +540,7 @@ Do you still want to continue?</value>
     <value>Captura de ecrã</value>
   </data>
   <data name="Profile" xml:space="preserve">
-    <value>Profile</value>
+    <value>Perfil</value>
   </data>
   <data name="Quit" xml:space="preserve">
     <value>Sair</value>
@@ -600,7 +600,7 @@ Do you still want to continue?</value>
     <value>Auto Toggle Clamshell Mode</value>
   </data>
   <data name="ToggleFnLock" xml:space="preserve">
-    <value>Toggle Fn-Lock</value>
+    <value>Alternar Fn-Lock</value>
   </data>
   <data name="ToggleMiniled" xml:space="preserve">
     <value>Alternar MiniLED (se suportado)</value>
