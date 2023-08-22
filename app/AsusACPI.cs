@@ -254,7 +254,7 @@ public class AsusACPI
     protected byte[] CallMethod(uint MethodID, byte[] args)
     {
         byte[] acpiBuf = new byte[8 + args.Length];
-        byte[] outBuffer = new byte[20];
+        byte[] outBuffer = new byte[16];
 
         BitConverter.GetBytes((uint)MethodID).CopyTo(acpiBuf, 0);
         BitConverter.GetBytes((uint)args.Length).CopyTo(acpiBuf, 4);
