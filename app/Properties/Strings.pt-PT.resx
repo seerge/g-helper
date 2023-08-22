@@ -345,7 +345,7 @@ Do you still want to continue?</value>
     <value>Fan</value>
   </data>
   <data name="FansPower" xml:space="preserve">
-    <value>Ventiladores + Energía</value>
+    <value>Ventoinhas + Potência</value>
   </data>
   <data name="FnLock" xml:space="preserve">
     <value>Processar teclas de atalho Fn+F sem pressionar Fn</value>
