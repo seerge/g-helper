@@ -407,7 +407,14 @@ public class AsusACPI
         if (curve.Length != 16) throw new Exception("Incorrect curve");
 
         var points = new Dictionary<byte, byte>();
-        for (int i = 0; i < 8; i++) points[curve[i]] = curve[i + 8];
+        byte old = 0;
+
+        for (int i = 0; i < 8; i++)
+        {
+            if (curve[i] == old) curve[i]++; // preventing 2 points in same spot from default asus profiles
+            points[curve[i]] = curve[i + 8];
+            old = curve[i];
+        }
 
         var pointsFixed = new Dictionary<byte, byte>();
         bool fix = false;
