@@ -122,8 +122,8 @@ Make sure that your dGPU is enabled (i.e. it's not in Eco mode). Open Fans + Pow
 
 #### How to Undervolt GPU
 Due to the way of how Core Clock offset works for GPU. When you increase clock offset you undervolt it at the same time (see picture)
-1. Increase ``Core Clock Offset`` under ``Fans + Power -> GPU`` until your 3dmark / furmark / game runs stable. Start with +100, +150, +200 ... This should make your scores / **fps better within same power** / heat as before.
-2. Limit your Core Clock to a certain value (it really depends on application / game that you use) ** to lower your power** / heat consumption
+1. Increase ``Core Clock Offset`` under ``Fans + Power -> GPU`` until your 3dmark / furmark / game runs stable. Start with +100, +150, +200 ... This should make your **scores / fps better within same power** / heat as before.
+2. Set ``Core Clock Limit`` to a certain value (it really depends on application / game that you use) **to lower your power** / heat consumption
 
 ![Undervolting](https://github.com/seerge/g-helper/assets/5920850/6cadd219-fa92-4260-8bae-cb24c284b8cf)
 
