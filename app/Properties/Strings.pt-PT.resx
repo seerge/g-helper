@@ -121,10 +121,10 @@
     <value>Aceleração</value>
   </data>
   <data name="ACPIError" xml:space="preserve">
-    <value>Não foi possível conectar ao ASUS ACPI. O programa não funciona sem esse serviço. Tente instalar Asus System Controle Interface</value>
+    <value>Não foi possível conectar ao ASUS ACPI. O programa não funciona sem esse serviço. Tente instalar Asus System Control Interface</value>
   </data>
   <data name="AlertDGPU" xml:space="preserve">
-    <value>Parece que o GPU está em uso pesado.</value>
+    <value>Parece que o GPU está em uso pesado, desativá-lo?</value>
   </data>
   <data name="AlertDGPUTitle" xml:space="preserve">
     <value>Modo económico</value>
@@ -148,7 +148,7 @@
     <value>O programa já está em execução</value>
   </data>
   <data name="AppAlreadyRunningText" xml:space="preserve">
-    <value>G-Helper já está em execução. Verifique a barra de sistema</value>
+    <value>G-Helper já está em execução. Verifique o tabuleiro do sistema pelo ícone.</value>
   </data>
   <data name="Apply" xml:space="preserve">
     <value>Aplicar</value>
@@ -178,7 +178,7 @@
     <value>Ciclo de cores</value>
   </data>
   <data name="AuraComet" xml:space="preserve">
-    <value>Comet</value>
+    <value>Cometa</value>
   </data>
   <data name="AuraCounterClockwise" xml:space="preserve">
     <value>No sentido anti-horário</value>
@@ -187,7 +187,7 @@
     <value>Rápido</value>
   </data>
   <data name="AuraLightingMode" xml:space="preserve">
-    <value>Lighting Mode</value>
+    <value>Modo de iluminação</value>
   </data>
   <data name="AuraNormal" xml:space="preserve">
     <value>Normal</value>
@@ -304,7 +304,7 @@
     <value>Económico</value>
   </data>
   <data name="EnableOptimusText" xml:space="preserve">
-    <value>Desativar a dGPU por ativar o modo ECO enquanto o Modo de Ecrã no Painel de Controlo da NVIDIA não está definido para Optimus pode causar problemas com os controlos do brilho do painel até ao próximo reinício.
+    <value>Desativar a dGPU por ativar o modo Eco enquanto o Modo de Ecrã no Painel de Controlo da NVIDIA não está definido para Optimus pode causar problemas com os controlos do brilho do painel até ao próximo reinício.
 
 Quer prosseguir?</value>
   </data>
@@ -384,7 +384,7 @@ Quer prosseguir?</value>
     <value>Minutos para a hibernação em suspensão, na bateria (0 - OFF)</value>
   </data>
   <data name="High" xml:space="preserve">
-    <value>High</value>
+    <value>Alto</value>
   </data>
   <data name="KeyBindings" xml:space="preserve">
     <value>Combinações de teclas</value>
@@ -546,7 +546,7 @@ Quer prosseguir?</value>
     <value>Sair</value>
   </data>
   <data name="RestartGPU" xml:space="preserve">
-    <value>Something is using dGPU and preventing Eco mode. Let G-Helper try to restart dGPU in device manager? (Please proceed at your own risk)</value>
+    <value>Algum processo está a utilizar a dGPU, impedindo o modo Eco. Deixar o G-Helper tentar reiniciar a dGPU no gestor de dispositivos? (Proceda por sua conta e risco)</value>
   </data>
   <data name="RPM" xml:space="preserve">
     <value>RPM</value>
@@ -555,10 +555,10 @@ Quer prosseguir?</value>
     <value>Executar ao iniciar</value>
   </data>
   <data name="ScreenPadDown" xml:space="preserve">
-    <value>Screenpad Brightness Down</value>
+    <value>Diminuir o brilho do ScreenPad</value>
   </data>
   <data name="ScreenPadUp" xml:space="preserve">
-    <value>Screenpad Brightness Up</value>
+    <value>Aumentar o brilho do ScreenPad</value>
   </data>
   <data name="Shutdown" xml:space="preserve">
     <value>Desligar</value>
@@ -588,7 +588,7 @@ Quer prosseguir?</value>
     <value>Parar</value>
   </data>
   <data name="StopGPUApps" xml:space="preserve">
-    <value>Stop GPU Applications</value>
+    <value>Parar programas que usem a GPU</value>
   </data>
   <data name="StoppingServices" xml:space="preserve">
     <value>Parando os serviços</value>
@@ -597,7 +597,7 @@ Quer prosseguir?</value>
     <value>Alternar Aura</value>
   </data>
   <data name="ToggleClamshellMode" xml:space="preserve">
-    <value>Auto Toggle Clamshell Mode</value>
+    <value>Alternar automaticamente o Modo Clamshell</value>
   </data>
   <data name="ToggleFnLock" xml:space="preserve">
     <value>Alternar Fn-Lock</value>
