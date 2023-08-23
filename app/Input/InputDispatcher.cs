@@ -14,6 +14,7 @@ namespace GHelper.Input
         public static bool backlightActivity = true;
 
         public static Keys keyProfile = Keys.F5;
+        public static Keys keyProfilePrevious = Keys.F21;
         public static Keys keyApp = Keys.F12;
 
         static ModeControl modeControl = Program.modeControl;
@@ -98,12 +99,14 @@ namespace GHelper.Input
 
             // CTRL + SHIFT + F5 to cycle profiles
             if (AppConfig.Get("keybind_profile") != -1) keyProfile = (Keys)AppConfig.Get("keybind_profile");
+            if (AppConfig.Get("keybind_profile_previous") != -1) keyProfilePrevious = (Keys)AppConfig.Get("keybind_profile_previous");
             if (AppConfig.Get("keybind_app") != -1) keyApp = (Keys)AppConfig.Get("keybind_app");
 
             string actionM1 = AppConfig.GetString("m1");
             string actionM2 = AppConfig.GetString("m2");
 
             if (keyProfile != Keys.None) hook.RegisterHotKey(ModifierKeys.Shift | ModifierKeys.Control, keyProfile);
+            if (keyProfilePrevious != Keys.None) hook.RegisterHotKey(ModifierKeys.Shift | ModifierKeys.Control, keyProfilePrevious);
             if (keyApp != Keys.None) hook.RegisterHotKey(ModifierKeys.Shift | ModifierKeys.Control, keyApp);
 
             if (!AppConfig.Is("skip_hotkeys"))
@@ -276,6 +279,8 @@ namespace GHelper.Input
             if (e.Modifier == (ModifierKeys.Control | ModifierKeys.Shift))
             {
                 if (e.Key == keyProfile) modeControl.CyclePerformanceMode();
+                if (e.Key == keyProfilePrevious) modeControl.ForcePreviousCyclePerformanceMode();//for ROG Ally, which doesn't have a FN key
+
                 if (e.Key == keyApp) Program.SettingsToggle();
                 if (e.Key == Keys.F20) KeyProcess("m3");
             }

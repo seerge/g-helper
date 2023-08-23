@@ -121,6 +121,12 @@ namespace GHelper.Mode
             SetPerformanceMode(Modes.GetNext(Control.ModifierKeys == Keys.Shift), true);
         }
 
+        //for ROG Ally, which doesn't have a FN key
+        public void ForcePreviousCyclePerformanceMode()
+        {
+            SetPerformanceMode(Modes.GetNext(true), true);
+        }
+
         public void AutoFans(bool force = false)
         {
             customFans = false;
