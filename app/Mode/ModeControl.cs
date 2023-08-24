@@ -77,7 +77,7 @@ namespace GHelper.Mode
             {
                 int vivoMode = Modes.GetBase(mode);
                 if (vivoMode == 1) vivoMode = 2;
-                if (vivoMode == 2) vivoMode = 1;
+                else if (vivoMode == 2) vivoMode = 1;
                 Program.acpi.DeviceSet(AsusACPI.VivoBookMode, vivoMode, "VivoMode");
             }
 
