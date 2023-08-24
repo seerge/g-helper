@@ -116,9 +116,9 @@ namespace GHelper.Mode
         }
 
 
-        public void CyclePerformanceMode()
+        public void CyclePerformanceMode(bool back = false)
         {
-            SetPerformanceMode(Modes.GetNext(Control.ModifierKeys == Keys.Shift), true);
+            SetPerformanceMode(Modes.GetNext(back), true);
         }
 
         public void AutoFans(bool force = false)

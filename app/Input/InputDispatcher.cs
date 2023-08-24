@@ -103,7 +103,12 @@ namespace GHelper.Input
             string actionM1 = AppConfig.GetString("m1");
             string actionM2 = AppConfig.GetString("m2");
 
-            if (keyProfile != Keys.None) hook.RegisterHotKey(ModifierKeys.Shift | ModifierKeys.Control, keyProfile);
+            if (keyProfile != Keys.None)
+            {
+                hook.RegisterHotKey(ModifierKeys.Shift | ModifierKeys.Control, keyProfile);
+                hook.RegisterHotKey(ModifierKeys.Shift | ModifierKeys.Control | ModifierKeys.Alt, keyProfile);
+            }
+
             if (keyApp != Keys.None) hook.RegisterHotKey(ModifierKeys.Shift | ModifierKeys.Control, keyApp);
 
             if (!AppConfig.Is("skip_hotkeys"))
@@ -280,6 +285,11 @@ namespace GHelper.Input
                 if (e.Key == Keys.F20) KeyProcess("m3");
             }
 
+            if (e.Modifier == (ModifierKeys.Control | ModifierKeys.Shift | ModifierKeys.Alt))
+            {
+                if (e.Key == keyProfile) modeControl.CyclePerformanceMode(true);
+            }
+
             if (e.Modifier == (ModifierKeys.Control))
             {
                 switch (e.Key)
@@ -354,7 +364,7 @@ namespace GHelper.Input
                     Program.settingsForm.BeginInvoke(Program.settingsForm.CycleAuraMode);
                     break;
                 case "performance":
-                    modeControl.CyclePerformanceMode();
+                    modeControl.CyclePerformanceMode(Control.ModifierKeys == Keys.Shift);
                     break;
                 case "ghelper":
                     Program.settingsForm.BeginInvoke(delegate
@@ -470,7 +480,7 @@ namespace GHelper.Input
                         KeyProcess("fne");
                         return;
                     case 174:   // FN+F5
-                        modeControl.CyclePerformanceMode();
+                        modeControl.CyclePerformanceMode(Control.ModifierKeys == Keys.Shift);
                         return;
                     case 179:   // FN+F4
                     case 178:   // FN+F4

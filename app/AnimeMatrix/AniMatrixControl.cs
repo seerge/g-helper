@@ -65,7 +65,13 @@ namespace GHelper.AnimeMatrix
             StopMatrixTimer();
             StopMatrixAudio();
 
-            mat.SetProvider();
+            try
+            {
+                mat.SetProvider();
+            } catch (Exception ex) {
+                Logger.WriteLine(ex.Message);
+                return;
+            }
 
             if (wakeUp && AppConfig.ContainsModel("401")) mat.WakeUp();
 

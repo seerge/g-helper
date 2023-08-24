@@ -21,6 +21,7 @@ namespace GHelper
         static int MinRPM, MaxRPM;
 
         static bool gpuVisible = true;
+        static bool fanRpm = true;
 
         const int fansMax = 100;
 
@@ -86,6 +87,11 @@ namespace GHelper
 
             chartXGM.MouseMove += (sender, e) => ChartCPU_MouseMove(sender, e, AsusFan.XGM);
             chartXGM.MouseUp += ChartCPU_MouseUp;
+
+            chartCPU.MouseClick += ChartCPU_MouseClick;
+            chartGPU.MouseClick += ChartCPU_MouseClick;
+            chartMid.MouseClick += ChartCPU_MouseClick;
+            chartXGM.MouseClick += ChartCPU_MouseClick;
 
             buttonReset.Click += ButtonReset_Click;
 
@@ -192,6 +198,24 @@ namespace GHelper
             ToggleNavigation(0);
 
             FormClosed += Fans_FormClosed;
+
+        }
+
+        private void ChartCPU_MouseClick(object? sender, MouseEventArgs e)
+        {
+            if (sender is null) return;
+            Chart chart = (Chart)sender;
+
+            HitTestResult result = chart.HitTest(e.X, e.Y);
+
+            if ((result.ChartElementType == ChartElementType.AxisLabels || result.ChartElementType == ChartElementType.Axis) && result.Axis == chart.ChartAreas[0].AxisY)
+            {
+                fanRpm = !fanRpm;
+                SetAxis(chartCPU, AsusFan.CPU);
+                SetAxis(chartGPU, AsusFan.GPU);
+                if (chartMid.Visible) SetAxis(chartMid, AsusFan.Mid);
+                if (chartXGM.Visible) SetAxis(chartXGM, AsusFan.XGM);
+            }
 
         }
 
@@ -548,7 +572,24 @@ namespace GHelper
             int Max = MaxRPM;
             if (device == AsusFan.XGM) Max = 72;
 
-            return (200 * Math.Round((float)(MinRPM * 100 + (Max - MinRPM) * percentage) / 200)).ToString() + unit;
+            if (fanRpm)
+                return (200 * Math.Round((float)(MinRPM * 100 + (Max - MinRPM) * percentage) / 200)).ToString() + unit;
+            else
+                return percentage + "%";
+        }
+
+        void SetAxis(Chart chart, AsusFan device)
+        {
+
+            chart.ChartAreas[0].AxisY.CustomLabels.Clear();
+
+            for (int i = 0; i <= fansMax - 10; i += 10)
+            {
+                chart.ChartAreas[0].AxisY.CustomLabels.Add(i - 2, i + 2, ChartPercToRPM(i, device));
+            }
+
+            chart.ChartAreas[0].AxisY.CustomLabels.Add(fansMax - 2, fansMax + 2, Properties.Strings.RPM);
+            chart.ChartAreas[0].AxisY.Interval = 10;
         }
 
         void SetChart(Chart chart, AsusFan device)
@@ -588,12 +629,7 @@ namespace GHelper
             chart.ChartAreas[0].AxisX.LineColor = chartGrid;
             chart.ChartAreas[0].AxisY.LineColor = chartGrid;
 
-            for (int i = 0; i <= fansMax - 10; i += 10)
-                chart.ChartAreas[0].AxisY.CustomLabels.Add(i - 2, i + 2, ChartPercToRPM(i, device));
-
-            chart.ChartAreas[0].AxisY.CustomLabels.Add(fansMax - 2, fansMax + 2, Properties.Strings.RPM);
-
-            chart.ChartAreas[0].AxisY.Interval = 10;
+            SetAxis(chart, device);
 
             if (chart.Legends.Count > 0)
                 chart.Legends[0].Enabled = false;
