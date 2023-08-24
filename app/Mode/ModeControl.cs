@@ -75,7 +75,10 @@ namespace GHelper.Mode
             // Vivobook fallback
             if (status != 1)
             {
-                Program.acpi.DeviceSet(AsusACPI.VivoBookMode, Modes.GetBase(mode), "VivoMode");
+                int vivoMode = Modes.GetBase(mode);
+                if (vivoMode == 1) vivoMode = 2;
+                if (vivoMode == 2) vivoMode = 1;
+                Program.acpi.DeviceSet(AsusACPI.VivoBookMode, vivoMode, "VivoMode");
             }
 
             if (AppConfig.Is("xgm_fan") && Program.acpi.IsXGConnected()) AsusUSB.ResetXGM();
