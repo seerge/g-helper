@@ -217,15 +217,18 @@ namespace GHelper
             if (settingsForm.Visible) settingsForm.HideAll();
             else
             {
+                Rectangle CurrentScreen = Screen.FromControl(settingsForm).WorkingArea;
+                Point CurrentScreenOffset = Screen.FromControl(settingsForm).WorkingArea.Location;
 
-                settingsForm.Left = Screen.FromControl(settingsForm).WorkingArea.Width - 10 - settingsForm.Width;
-                settingsForm.Top = Screen.FromControl(settingsForm).WorkingArea.Height - 10 - settingsForm.Height;
+
+                settingsForm.Left = Screen.FromControl(settingsForm).WorkingArea.Width - 10 - settingsForm.Width + CurrentScreenOffset.X;
+                settingsForm.Top = Screen.FromControl(settingsForm).WorkingArea.Height - 10 - settingsForm.Height + CurrentScreenOffset.Y;
 
                 settingsForm.Show();
                 settingsForm.Activate();
 
-                settingsForm.Left = Screen.FromControl(settingsForm).WorkingArea.Width - 10 - settingsForm.Width;
-                settingsForm.Top = Screen.FromControl(settingsForm).WorkingArea.Height - 10 - settingsForm.Height;
+                settingsForm.Left = Screen.FromControl(settingsForm).WorkingArea.Width - 10 - settingsForm.Width + CurrentScreenOffset.X;
+                settingsForm.Top = Screen.FromControl(settingsForm).WorkingArea.Height - 10 - settingsForm.Height + CurrentScreenOffset.Y;
 
                 settingsForm.VisualiseGPUMode();
 

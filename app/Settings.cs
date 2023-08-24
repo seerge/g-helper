@@ -39,6 +39,8 @@ namespace GHelper
         bool isGpuSection = true;
         bool batteryMouseOver = false;
 
+        string LastScreenName;
+
         public SettingsForm()
         {
 
@@ -200,13 +202,29 @@ namespace GHelper
             buttonFnLock.Click += ButtonFnLock_Click;
 
             panelPerformance.Focus();
+
+            LastScreenName = Screen.FromControl(this).DeviceName;
         }
 
-
-        private void SettingsForm_Resize(object? sender, EventArgs e)
+        private async void SettingsForm_Resize(object? sender, EventArgs e)
         {
-            Left = Screen.FromControl(this).WorkingArea.Width - 10 - Width;
-            Top = Screen.FromControl(this).WorkingArea.Height - 10 - Height;
+            // <dpiAwareness>PerMonitorV2</dpiAwareness> 
+            // Will resize Form for 5 times to find a suitable render size
+            // Relocation must wait for resize actions finished.
+
+            string ScreenName = Screen.FromControl(this).DeviceName;
+            if (ScreenName!= LastScreenName)
+            {
+                Rectangle CurrentScreen = Screen.FromControl(this).WorkingArea;
+                Point CurrentScreenOffset = Screen.FromControl(this).WorkingArea.Location;
+
+                await Task.Delay(500);
+
+                Left = Screen.FromControl(this).WorkingArea.Width - 10 - Width + CurrentScreenOffset.X;
+                Top = Screen.FromControl(this).WorkingArea.Height - 10 - Height + CurrentScreenOffset.Y;
+
+                LastScreenName = ScreenName;
+            }
         }
 
         private void PanelBattery_MouseEnter(object? sender, EventArgs e)
