@@ -247,6 +247,16 @@ Example (for default windows "balanced" power plan):
 "scheme_2": "381b4222-f694-41f0-9685-ff5bb260df2e",
 ```
 
+### Override UI theme
+
+By default app would set UI theme from "app" theme in windows setting. You can override it to specific theme, or general windows theme
+
+```
+"ui_mode" : "dark",
+"ui_mode" : "light",
+"ui_mode" : "windows",
+```
+
 ### Skip keyboard Aura initialisation on startup
 By default app would set last remembered RGB mode for keyboard on each launch. To disable it completely 
 
