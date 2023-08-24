@@ -199,7 +199,7 @@
     <value>Aleatório</value>
   </data>
   <data name="AuraReact" xml:space="preserve">
-    <value>React</value>
+    <value>Reagir</value>
   </data>
   <data name="AuraSlow" xml:space="preserve">
     <value>Lento</value>
@@ -411,7 +411,7 @@ Quer prosseguir?</value>
     <value>Barra de Luz</value>
   </data>
   <data name="Lighting" xml:space="preserve">
-    <value>Lighting</value>
+    <value>Iluminação</value>
   </data>
   <data name="Logo" xml:space="preserve">
     <value>Logo</value>
@@ -420,7 +420,7 @@ Quer prosseguir?</value>
     <value>Baixo</value>
   </data>
   <data name="MatrixAudio" xml:space="preserve">
-    <value>Audio Visualizer</value>
+    <value>Visualizador de áudio</value>
   </data>
   <data name="MatrixBanner" xml:space="preserve">
     <value>Bandeira Binária</value>
