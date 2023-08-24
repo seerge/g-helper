@@ -202,7 +202,7 @@ namespace GHelper
 
             if (e.Mode == PowerModes.Suspend)
             {
-                Logger.WriteLine("Power Mode:" + e.Mode.ToString());
+                Logger.WriteLine("Power Mode Changed:" + e.Mode.ToString());
                 gpuControl.StandardModeFix();
             }
 
