@@ -120,6 +120,13 @@ Personally, I'm not a big fan of them, as they make colors very inaccurate. But 
 #### Can I overclock Nvidia GPU core / memory? 
 Make sure that your dGPU is enabled (i.e. it's not in Eco mode). Open Fans + Power section and adjust core / memory clock offsets. They work the same as in armoury's manual mode. Please keep in mind that (unfortunately) you need admin permissions for that, and the app will ask you for them. (*)
 
+#### How to Undervolt GPU
+Due to the way of how Core Clock offset works for GPU. When you increase clock offset you undervolt it at the same time (see picture)
+1. Increase ``Core Clock Offset`` under ``Fans + Power -> GPU`` until your 3dmark / furmark / game runs stable. Start with +100, +150, +200 ... This should make your **scores / fps better within same power** / heat as before.
+2. Set ``Core Clock Limit`` to a certain value (it really depends on application / game that you use) **to lower your power** / heat consumption
+
+![Undervolting](https://github.com/seerge/g-helper/assets/5920850/6cadd219-fa92-4260-8bae-cb24c284b8cf)
+
 #### Windows Defender marks app as malware / virus
 False positives from Windows Defender (or any other similar system that uses machine learning for detection) is possible as the application is not digitally signed with a certificate. You can always download a version below or compile the app by yourself. All application sources are open and can be monitored from A to Z :)
 
