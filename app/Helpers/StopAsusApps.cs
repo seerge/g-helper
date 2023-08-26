@@ -10,15 +10,17 @@ namespace GHelper.Helpers
     {
         public StopAsusApps() 
         {
+            int servicesCount = OptimizationService.GetRunningCount();
             if (!IsStopAsusAppsEnabled())
             {
                 return;
             }
-            else
+            else if (servicesCount > 0)
             {
                 Extra keyb = new();
-                if (ProcessHelper.IsUserAdministrator())
-                    keyb.ServiesToggle();
+                if (ProcessHelper.IsUserAdministrator() &&
+                    OptimizationService.IsRunning())
+                    keyb.ServicesToggle();
                 else
                     ProcessHelper.RunAsAdmin("services");
             }

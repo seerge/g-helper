@@ -1097,7 +1097,7 @@ namespace GHelper
             checkAutoToggleStopAsusApps.Padding = new Padding(3);
             checkAutoToggleStopAsusApps.Size = new Size(952, 42);
             checkAutoToggleStopAsusApps.TabIndex = 8;
-            checkAutoToggleStopAsusApps.Text = "Auto Toggle Stop Asus Apps on Lauch";
+            checkAutoToggleStopAsusApps.Text = "Auto Toggle Stop Asus Apps on Launch";
             checkAutoToggleStopAsusApps.UseVisualStyleBackColor = true;
             // 
             // checkTopmost

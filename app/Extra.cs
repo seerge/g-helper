@@ -404,7 +404,7 @@ namespace GHelper
 
         }
 
-        public void ServiesToggle()
+        public void ServicesToggle()
         {
             buttonServices.Enabled = false;
 
@@ -438,7 +438,7 @@ namespace GHelper
         private void ButtonServices_Click(object? sender, EventArgs e)
         {
             if (ProcessHelper.IsUserAdministrator())
-                ServiesToggle();
+                ServicesToggle();
             else
                 ProcessHelper.RunAsAdmin("services");
         }
