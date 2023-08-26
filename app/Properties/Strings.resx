@@ -608,6 +608,9 @@ Do you still want to continue?</value>
   <data name="ToggleScreen" xml:space="preserve">
     <value>Toggle Screen</value>
   </data>
+  <data name="ToggleStopAsusApps" xml:space="preserve">
+    <value>Auto Toggle Stop Asus Apps on Launch</value>
+  </data>
   <data name="Turbo" xml:space="preserve">
     <value>Turbo</value>
   </data>

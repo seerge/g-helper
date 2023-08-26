@@ -119,9 +119,7 @@ namespace GHelper
             checkTopmost.Text = Properties.Strings.WindowTop;
             checkUSBC.Text = Properties.Strings.OptimizedUSBC;
             checkAutoToggleClamshellMode.Text = Properties.Strings.ToggleClamshellMode;
-            checkAutoToggleStopAsusApps.Text = 
-                Properties.Strings.ToggleStopAsusApps == "" ?
-                Properties.Strings.ToggleStopAsusApps : checkAutoToggleStopAsusApps.Text;
+            checkAutoToggleStopAsusApps.Text = Properties.Strings.ToggleStopAsusApps;
 
             labelBacklightKeyboard.Text = Properties.Strings.Keyboard;
             labelBacklightBar.Text = Properties.Strings.Lightbar;

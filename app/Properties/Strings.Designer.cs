@@ -1501,19 +1501,7 @@ namespace GHelper.Properties {
                 return ResourceManager.GetString("ToggleClamshellMode", resourceCulture);
             }
         }
-
-        /// <summary>
-        ///   Looks up a localized string for Toggle Stop Asus Apps similar to Auto Toggle Clamshell Mode.
-        /// </summary>
-        internal static string ToggleStopAsusApps
-        {
-            get
-            {
-                return ResourceManager.GetString("ToggleStopAsusApps", resourceCulture);
-            }
-        }
-
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Toggle Fn-Lock.
         /// </summary>
@@ -1538,6 +1526,15 @@ namespace GHelper.Properties {
         internal static string ToggleScreen {
             get {
                 return ResourceManager.GetString("ToggleScreen", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Auto Toggle Stop Asus Apps on Launch.
+        /// </summary>
+        internal static string ToggleStopAsusApps {
+            get {
+                return ResourceManager.GetString("ToggleStopAsusApps", resourceCulture);
             }
         }
         
