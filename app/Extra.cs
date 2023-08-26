@@ -119,6 +119,9 @@ namespace GHelper
             checkTopmost.Text = Properties.Strings.WindowTop;
             checkUSBC.Text = Properties.Strings.OptimizedUSBC;
             checkAutoToggleClamshellMode.Text = Properties.Strings.ToggleClamshellMode;
+            checkAutoToggleStopAsusApps.Text = 
+                Properties.Strings.ToggleStopAsusApps == "" ?
+                Properties.Strings.ToggleStopAsusApps : checkAutoToggleStopAsusApps.Text;
 
             labelBacklightKeyboard.Text = Properties.Strings.Keyboard;
             labelBacklightBar.Text = Properties.Strings.Lightbar;
@@ -286,6 +289,10 @@ namespace GHelper
             checkAutoToggleClamshellMode.Checked = AppConfig.Is("toggle_clamshell_mode");
             checkAutoToggleClamshellMode.CheckedChanged += checkAutoToggleClamshellMode_CheckedChanged;
 
+            //Auto Stop Asus Apps
+            checkAutoToggleStopAsusApps.Checked = AppConfig.Is("toggle_stopasusapps_mode");
+            checkAutoToggleStopAsusApps.CheckedChanged += checkAutoToggleStopAsusApps_CheckedChanged;
+
             checkTopmost.Checked = AppConfig.Is("topmost");
             checkTopmost.CheckedChanged += CheckTopmost_CheckedChanged; ;
 
@@ -397,7 +404,7 @@ namespace GHelper
 
         }
 
-        public void ServiesToggle()
+        public void ServicesToggle()
         {
             buttonServices.Enabled = false;
 
@@ -431,7 +438,7 @@ namespace GHelper
         private void ButtonServices_Click(object? sender, EventArgs e)
         {
             if (ProcessHelper.IsUserAdministrator())
-                ServiesToggle();
+                ServicesToggle();
             else
                 ProcessHelper.RunAsAdmin("services");
         }
@@ -573,6 +580,22 @@ namespace GHelper
             else
             {
                 ClamshellModeControl.DisableClamshellMode();
+            }
+
+        }
+        private void checkAutoToggleStopAsusApps_CheckedChanged(object? sender, EventArgs e)
+        {
+            AppConfig.Set("toggle_stopasusapps_mode", checkAutoToggleStopAsusApps.Checked ? 1 : 0);
+
+            if (checkAutoToggleStopAsusApps.Checked)
+            {
+                //clamshellControl.ToggleLidAction();
+                //ToDo: Functionality that implements that StopAsusApps
+            }
+            else
+            {
+                //ClamshellModeControl.DisableClamshellMode();
+                //ToDo: Functionlity to disable stopasusapps
             }
 
         }

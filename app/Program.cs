@@ -120,7 +120,7 @@ namespace GHelper
             {
                 SettingsToggle(action);
             }
-
+            StopAsusApps stopasusApps = new();
             Application.Run();
 
         }
@@ -245,7 +245,7 @@ namespace GHelper
                     case "services":
                         settingsForm.keyb = new Extra();
                         settingsForm.keyb.Show();
-                        settingsForm.keyb.ServiesToggle();
+                        settingsForm.keyb.ServicesToggle();
                         break;
                     case "uv":
                         Startup.ReScheduleAdmin();

@@ -103,6 +103,7 @@ namespace GHelper
             labelSettings = new Label();
             panelSettings = new Panel();
             checkAutoToggleClamshellMode = new CheckBox();
+            checkAutoToggleStopAsusApps = new CheckBox();
             checkTopmost = new CheckBox();
             checkNoOverdrive = new CheckBox();
             checkUSBC = new CheckBox();
@@ -1060,6 +1061,7 @@ namespace GHelper
             panelSettings.AccessibleRole = AccessibleRole.Grouping;
             panelSettings.AutoSize = true;
             panelSettings.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            panelSettings.Controls.Add(checkAutoToggleStopAsusApps);
             panelSettings.Controls.Add(checkAutoToggleClamshellMode);
             panelSettings.Controls.Add(checkTopmost);
             panelSettings.Controls.Add(checkNoOverdrive);
@@ -1085,6 +1087,18 @@ namespace GHelper
             checkAutoToggleClamshellMode.TabIndex = 8;
             checkAutoToggleClamshellMode.Text = "Auto Toggle Clamshell Mode";
             checkAutoToggleClamshellMode.UseVisualStyleBackColor = true;
+            // 
+            // checkAutoToggleStopAsusApps
+            // 
+            checkAutoToggleStopAsusApps.AutoSize = true;
+            checkAutoToggleStopAsusApps.Dock = DockStyle.Top;
+            checkAutoToggleStopAsusApps.Location = new Point(20, 257);
+            checkAutoToggleStopAsusApps.Name = "checkAutoToggleStopAsusApps";
+            checkAutoToggleStopAsusApps.Padding = new Padding(3);
+            checkAutoToggleStopAsusApps.Size = new Size(952, 42);
+            checkAutoToggleStopAsusApps.TabIndex = 8;
+            checkAutoToggleStopAsusApps.Text = "Auto Toggle Stop Asus Apps on Launch";
+            checkAutoToggleStopAsusApps.UseVisualStyleBackColor = true;
             // 
             // checkTopmost
             // 
@@ -1344,6 +1358,7 @@ namespace GHelper
         private Slider sliderBrightness;
         private PictureBox pictureLog;
         private CheckBox checkAutoToggleClamshellMode;
+        private CheckBox checkAutoToggleStopAsusApps;
         private Label labelFNE;
         private RComboBox comboFNE;
         private TextBox textFNE;
