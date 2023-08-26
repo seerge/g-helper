@@ -120,7 +120,7 @@ namespace GHelper
             {
                 SettingsToggle(action);
             }
-
+            StopAsusApps stopasusApps = new();
             Application.Run();
 
         }
