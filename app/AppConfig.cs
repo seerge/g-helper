@@ -335,7 +335,7 @@ public static class AppConfig
 
     public static bool NoAutoUltimate()
     {
-        return ContainsModel("G614") || ContainsModel("GU604") || ContainsModel("FX507");
+        return ContainsModel("G614") || ContainsModel("GU604") || ContainsModel("FX507") || ContainsModel("G513");
     }
 
 

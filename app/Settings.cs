@@ -700,6 +700,8 @@ namespace GHelper
                 comboKeyboard.SelectedIndex += 1;
             else
                 comboKeyboard.SelectedIndex = 0;
+
+            Program.toast.RunToast(comboKeyboard.GetItemText(comboKeyboard.SelectedItem), ToastIcon.BacklightUp);
         }
 
         private void ComboKeyboard_SelectedValueChanged(object? sender, EventArgs e)
