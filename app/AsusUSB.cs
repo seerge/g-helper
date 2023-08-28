@@ -64,7 +64,7 @@ namespace GHelper
         public static Color Color1 = Color.White;
         public static Color Color2 = Color.Black;
 
-        static bool isTuf = AppConfig.IsTUF();
+        static bool isTuf = AppConfig.IsTUF() || AppConfig.IsVivobook();
         static bool isStrix = AppConfig.IsStrix();
 
         static public bool isSingleColor = false;

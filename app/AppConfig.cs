@@ -284,6 +284,11 @@ public static class AppConfig
         return ContainsModel("TUF");
     }
 
+    public static bool IsVivobook()
+    {
+        return ContainsModel("Vivobook");
+    }
+
     // Devices with bugged bios command to change brightness
     public static bool SwappedBrightness()
     {

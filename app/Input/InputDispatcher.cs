@@ -378,6 +378,7 @@ namespace GHelper.Input
                 case "micmute":
                     bool muteStatus = Audio.ToggleMute();
                     Program.toast.RunToast(muteStatus ? "Muted" : "Unmuted", muteStatus ? ToastIcon.MicrophoneMute : ToastIcon.Microphone);
+                    if (AppConfig.IsVivobook()) Program.acpi.DeviceSet(AsusACPI.MICMUTE_LED, muteStatus ? 1 : 0, "MicmuteLed");
                     break;
                 case "brightness_up":
                     SetBrightness(+10);

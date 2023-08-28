@@ -93,6 +93,8 @@ public class AsusACPI
     public const int TUF_KB = 0x00100056;
     public const int TUF_KB_STATE = 0x00100057;
 
+    public const int MICMUTE_LED = 0x00040017;
+
     public const int TabletState = 0x00060077;
     public const int FnLock = 0x00100023;
 
