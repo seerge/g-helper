@@ -148,10 +148,16 @@ namespace GHelper.Mode
                 // something went wrong, resetting to default profile
                 if (cpuResult != 1 || gpuResult != 1)
                 {
-                    int mode = Modes.GetCurrentBase();
-                    Logger.WriteLine("ASUS BIOS rejected fan curve, resetting mode to " + mode);
-                    Program.acpi.DeviceSet(AsusACPI.PerformanceMode, mode, "Reset Mode");
-                    settings.LabelFansResult("ASUS BIOS rejected fan curve");
+                    cpuResult = Program.acpi.SetFanRange(AsusFan.CPU, AppConfig.GetFanConfig(AsusFan.CPU));
+                    gpuResult = Program.acpi.SetFanRange(AsusFan.GPU, AppConfig.GetFanConfig(AsusFan.GPU));
+
+                    if (cpuResult != 1 || gpuResult != 1)
+                    {
+                        int mode = Modes.GetCurrentBase();
+                        Logger.WriteLine("ASUS BIOS rejected fan curve, resetting mode to " + mode);
+                        Program.acpi.DeviceSet(AsusACPI.PerformanceMode, mode, "Reset Mode");
+                        settings.LabelFansResult("ASUS BIOS rejected fan curve");
+                    }
                 }
                 else
                 {
