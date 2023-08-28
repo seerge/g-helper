@@ -73,7 +73,7 @@ public static class HardwareControl
         if (_fanMax < 0 && AppConfig.ContainsModel("503")) _fanMax = 68;
         if (_fanMax < 0) _fanMax = DEFAULT_FAN_MAX;
 
-        _fanRpm = AppConfig.Is("fan_rpm");
+        _fanRpm = AppConfig.IsNotFalse("fan_rpm");
 
     }
 
