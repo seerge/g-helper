@@ -131,6 +131,15 @@ namespace GHelper.Input
             if (AppConfig.Is("fn_lock") && !AppConfig.ContainsModel("VivoBook"))
                 for (Keys i = Keys.F1; i <= Keys.F11; i++) hook.RegisterHotKey(ModifierKeys.None, i);
 
+            // Arrow-lock group
+            if (AppConfig.Is("arrow_lock") && AppConfig.IsDUO())
+            {
+                hook.RegisterHotKey(ModifierKeys.None, Keys.Left);
+                hook.RegisterHotKey(ModifierKeys.None, Keys.Right);
+                hook.RegisterHotKey(ModifierKeys.None, Keys.Up);
+                hook.RegisterHotKey(ModifierKeys.None, Keys.Down);
+            }
+
         }
 
         static void CustomKey(string configKey = "m3")
@@ -272,6 +281,18 @@ namespace GHelper.Input
                     case Keys.VolumeUp:
                         KeyProcess("m2");
                         break;
+                    case Keys.Left:
+                        KeyboardHook.KeyPress(Keys.Home);
+                        break;
+                    case Keys.Right:
+                        KeyboardHook.KeyPress(Keys.End);
+                        break;
+                    case Keys.Up:
+                        KeyboardHook.KeyPress(Keys.PageUp);
+                        break;
+                    case Keys.Down:
+                        KeyboardHook.KeyPress(Keys.PageDown);
+                        break;
                     default:
                         break;
                 }
@@ -412,6 +433,15 @@ namespace GHelper.Input
             }
         }
 
+        public static void ToggleArrowLock()
+        {
+            int arLock = AppConfig.Is("arrow_lock") ? 0 : 1;
+            AppConfig.Set("arrow_lock", arLock);
+
+            Program.settingsForm.BeginInvoke(Program.inputDispatcher.RegisterKeys);
+            Program.toast.RunToast("Arrow-Lock " + (arLock == 1 ? "On" : "Off"), ToastIcon.FnLock);
+        }
+
         public static void ToggleFnLock()
         {
             int fnLock = AppConfig.Is("fn_lock") ? 0 : 1;
@@ -492,6 +522,9 @@ namespace GHelper.Input
                         return;
                     case 78:    // Fn + ESC
                         ToggleFnLock();
+                        return;
+                    case 75:    // Fn + ESC
+                        ToggleArrowLock();
                         return;
                     case 189: // Tablet mode
                         TabletMode();
