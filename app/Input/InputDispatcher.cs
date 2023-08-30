@@ -355,7 +355,7 @@ namespace GHelper.Input
                     break;
                 case "screen":
                     Logger.WriteLine("Screen off toggle");
-                    NativeMethods.TurnOffScreen(Program.settingsForm.Handle);
+                    NativeMethods.TurnOffScreen();
                     break;
                 case "miniled":
                     screenControl.ToogleMiniled();
@@ -506,7 +506,7 @@ namespace GHelper.Input
                         SetBacklight(4);
                         return;
                     case 53:    // FN+F6 on GA-502DU model
-                        NativeMethods.TurnOffScreen(Program.settingsForm.Handle);
+                        NativeMethods.TurnOffScreen();
                         return;
                 }
             }
@@ -537,6 +537,11 @@ namespace GHelper.Input
                 case 108: // FN+F11
                     Program.acpi.DeviceSet(AsusACPI.UniversalControl, AsusACPI.KB_Sleep, "Sleep");
                     break;
+                case 106: // Screenpad button on DUO
+                    SetScreenpad(100);
+                    break;
+
+
             }
         }
 
@@ -594,14 +599,28 @@ namespace GHelper.Input
         public static void SetScreenpad(int delta)
         {
             int brightness = AppConfig.Get("screenpad", 100);
-            brightness = Math.Max(Math.Min(100, brightness + delta), 0);
+
+            if (delta == 100)
+            {
+                if (brightness < 0) brightness = 0;
+                else if (brightness < 100) brightness = 100;
+                else brightness = -10;
+
+            } else
+            {
+                brightness = Math.Max(Math.Min(100, brightness + delta), -10);
+            }
 
             AppConfig.Set("screenpad", brightness);
 
-            Program.acpi.DeviceSet(AsusACPI.ScreenPadBrightness, (brightness * 255 / 100), "Screenpad");
-            if (brightness == 0) Program.acpi.DeviceSet(AsusACPI.ScreenPadToggle, brightness, "ScreenpadToggle");
+            Program.acpi.DeviceSet(AsusACPI.ScreenPadBrightness, Math.Min(brightness * 255 / 100, 0 ), "Screenpad");
+            if (brightness < 0) Program.acpi.DeviceSet(AsusACPI.ScreenPadToggle, brightness, "ScreenpadToggle");
 
-            Program.toast.RunToast($"Screen Pad {brightness}", delta > 0 ? ToastIcon.BrightnessUp : ToastIcon.BrightnessDown);
+            string toast;
+
+            if (brightness < 0) toast = "Off"; else toast = brightness.ToString() + "%";
+
+            Program.toast.RunToast($"Screen Pad {toast}", delta > 0 ? ToastIcon.BrightnessUp : ToastIcon.BrightnessDown);
 
         }
 

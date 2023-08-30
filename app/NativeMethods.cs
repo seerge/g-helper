@@ -32,9 +32,9 @@ public class NativeMethods
     [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
     private static extern uint FormatMessage(uint dwFlags, IntPtr lpSource, uint dwMessageId, uint dwLanguageId, out string lpBuffer, uint nSize, IntPtr Arguments);
 
-    public static void TurnOffScreen(IntPtr handle)
+    public static void TurnOffScreen()
     {
-        IntPtr result = SendMessage(handle, WM_SYSCOMMAND, (IntPtr)SC_MONITORPOWER, (IntPtr)MONITOR_OFF);
+        IntPtr result = SendMessage(-1, WM_SYSCOMMAND, (IntPtr)SC_MONITORPOWER, (IntPtr)MONITOR_OFF);
         if (result == IntPtr.Zero)
         {
             int error = Marshal.GetLastWin32Error();
