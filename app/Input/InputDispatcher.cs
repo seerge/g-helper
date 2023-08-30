@@ -602,8 +602,8 @@ namespace GHelper.Input
 
             if (delta == 100)
             {
-                if (brightness < 0) brightness = 0;
-                else if (brightness < 100) brightness = 100;
+                if (brightness < 0) brightness = 100;
+                else if (brightness >= 100) brightness = 0;
                 else brightness = -10;
 
             } else
@@ -613,12 +613,17 @@ namespace GHelper.Input
 
             AppConfig.Set("screenpad", brightness);
 
-            Program.acpi.DeviceSet(AsusACPI.ScreenPadBrightness, Math.Min(brightness * 255 / 100, 0 ), "Screenpad");
-            if (brightness < 0) Program.acpi.DeviceSet(AsusACPI.ScreenPadToggle, brightness, "ScreenpadToggle");
+            if (brightness >= 0) Program.acpi.DeviceSet(AsusACPI.ScreenPadToggle, 1, "ScreenpadOn");
+
+            Program.acpi.DeviceSet(AsusACPI.ScreenPadBrightness, Math.Max(brightness * 255 / 100, 0 ), "Screenpad");
+
+            if (brightness < 0)  Program.acpi.DeviceSet(AsusACPI.ScreenPadToggle, 0, "ScreenpadOff");
 
             string toast;
 
-            if (brightness < 0) toast = "Off"; else toast = brightness.ToString() + "%";
+            if (brightness < 0) toast = "Off";
+            else if (brightness == 0) toast = "Hidden";
+            else toast = brightness.ToString() + "%";
 
             Program.toast.RunToast($"Screen Pad {toast}", delta > 0 ? ToastIcon.BrightnessUp : ToastIcon.BrightnessDown);
 
