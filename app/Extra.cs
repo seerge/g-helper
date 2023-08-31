@@ -104,10 +104,10 @@ namespace GHelper
             labelBacklightTitle.Text = Properties.Strings.LaptopBacklight;
             labelSettings.Text = Properties.Strings.Other;
 
-            checkAwake.Text = Properties.Strings.Awake;
-            checkSleep.Text = Properties.Strings.Sleep;
-            checkBoot.Text = Properties.Strings.Boot;
-            checkShutdown.Text = Properties.Strings.Shutdown;
+            checkAwakeKeyboard.Text = Properties.Strings.Awake;
+            checkSleepKeyboard.Text = Properties.Strings.Sleep;
+            checkBootKeyboard.Text = Properties.Strings.Boot;
+            checkShutdownKeyboard.Text = Properties.Strings.Shutdown;
 
             labelSpeed.Text = Properties.Strings.AnimationSpeed;
             //labelBrightness.Text = Properties.Strings.Brightness;
@@ -213,10 +213,10 @@ namespace GHelper
             comboKeyboardSpeed.SelectedValueChanged += ComboKeyboardSpeed_SelectedValueChanged;
 
             // Keyboard
-            checkAwake.Checked = AppConfig.IsNotFalse("keyboard_awake");
-            checkBoot.Checked = AppConfig.IsNotFalse("keyboard_boot");
-            checkSleep.Checked = AppConfig.IsNotFalse("keyboard_sleep");
-            checkShutdown.Checked = AppConfig.IsNotFalse("keyboard_shutdown");
+            checkAwakeKeyboard.Checked = AppConfig.IsNotFalse("keyboard_awake");
+            checkBootKeyboard.Checked = AppConfig.IsNotFalse("keyboard_boot");
+            checkSleepKeyboard.Checked = AppConfig.IsNotFalse("keyboard_sleep");
+            checkShutdownKeyboard.Checked = AppConfig.IsNotFalse("keyboard_shutdown");
 
             // Lightbar
             checkAwakeBar.Checked = AppConfig.IsNotFalse("keyboard_awake_bar");
@@ -236,10 +236,10 @@ namespace GHelper
             checkSleepLogo.Checked = AppConfig.IsNotFalse("keyboard_sleep_logo");
             checkShutdownLogo.Checked = AppConfig.IsNotFalse("keyboard_shutdown_logo");
 
-            checkAwake.CheckedChanged += CheckPower_CheckedChanged;
-            checkBoot.CheckedChanged += CheckPower_CheckedChanged;
-            checkSleep.CheckedChanged += CheckPower_CheckedChanged;
-            checkShutdown.CheckedChanged += CheckPower_CheckedChanged;
+            checkAwakeKeyboard.CheckedChanged += CheckPower_CheckedChanged;
+            checkBootKeyboard.CheckedChanged += CheckPower_CheckedChanged;
+            checkSleepKeyboard.CheckedChanged += CheckPower_CheckedChanged;
+            checkShutdownKeyboard.CheckedChanged += CheckPower_CheckedChanged;
 
             checkAwakeBar.CheckedChanged += CheckPower_CheckedChanged;
             checkBootBar.CheckedChanged += CheckPower_CheckedChanged;
@@ -522,10 +522,10 @@ namespace GHelper
 
         private void CheckPower_CheckedChanged(object? sender, EventArgs e)
         {
-            AppConfig.Set("keyboard_awake", (checkAwake.Checked ? 1 : 0));
-            AppConfig.Set("keyboard_boot", (checkBoot.Checked ? 1 : 0));
-            AppConfig.Set("keyboard_sleep", (checkSleep.Checked ? 1 : 0));
-            AppConfig.Set("keyboard_shutdown", (checkShutdown.Checked ? 1 : 0));
+            AppConfig.Set("keyboard_awake", (checkAwakeKeyboard.Checked ? 1 : 0));
+            AppConfig.Set("keyboard_boot", (checkBootKeyboard.Checked ? 1 : 0));
+            AppConfig.Set("keyboard_sleep", (checkSleepKeyboard.Checked ? 1 : 0));
+            AppConfig.Set("keyboard_shutdown", (checkShutdownKeyboard.Checked ? 1 : 0));
 
             AppConfig.Set("keyboard_awake_bar", (checkAwakeBar.Checked ? 1 : 0));
             AppConfig.Set("keyboard_boot_bar", (checkBootBar.Checked ? 1 : 0));
