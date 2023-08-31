@@ -256,8 +256,7 @@ namespace GHelper
             checkSleepLogo.CheckedChanged += CheckPower_CheckedChanged;
             checkShutdownLogo.CheckedChanged += CheckPower_CheckedChanged;
 
-            // Design debug purpose, needs to be removed before applying changes
-            if (!AppConfig.IsStrix() && false)
+            if (!AppConfig.IsStrix())
             {
                 groupBoxBacklightBar.Visible = false;
                 //labelBacklightBar.Visible = false;
