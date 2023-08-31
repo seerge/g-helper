@@ -120,10 +120,10 @@ namespace GHelper
             checkUSBC.Text = Properties.Strings.OptimizedUSBC;
             checkAutoToggleClamshellMode.Text = Properties.Strings.ToggleClamshellMode;
 
-            labelBacklightKeyboard.Text = Properties.Strings.Keyboard;
-            labelBacklightBar.Text = Properties.Strings.Lightbar;
-            labelBacklightLid.Text = Properties.Strings.Lid;
-            labelBacklightLogo.Text = Properties.Strings.Logo;
+            groupBoxBacklightKeyboard.Text = Properties.Strings.Keyboard;
+            groupBoxBacklightBar.Text = Properties.Strings.Lightbar;
+            groupBoxBacklightLid.Text = Properties.Strings.Lid;
+            groupBoxBacklightLogo.Text = Properties.Strings.Logo;
 
             checkGpuApps.Text = Properties.Strings.KillGpuApps;
             labelHibernateAfter.Text = Properties.Strings.HibernateAfter;
@@ -256,29 +256,33 @@ namespace GHelper
             checkSleepLogo.CheckedChanged += CheckPower_CheckedChanged;
             checkShutdownLogo.CheckedChanged += CheckPower_CheckedChanged;
 
-            if (!AppConfig.IsStrix())
+            // Design debug purpose, needs to be removed before applying changes
+            if (!AppConfig.IsStrix() && false)
             {
-                labelBacklightBar.Visible = false;
-                checkAwakeBar.Visible = false;
-                checkBootBar.Visible = false;
-                checkSleepBar.Visible = false;
-                checkShutdownBar.Visible = false;
+                groupBoxBacklightBar.Visible = false;
+                //labelBacklightBar.Visible = false;
+                //checkAwakeBar.Visible = false;
+                //checkBootBar.Visible = false;
+                //checkSleepBar.Visible = false;
+                //checkShutdownBar.Visible = false;
 
                 if (!AppConfig.IsZ13())
                 {
-                    labelBacklightLid.Visible = false;
-                    checkAwakeLid.Visible = false;
-                    checkBootLid.Visible = false;
-                    checkSleepLid.Visible = false;
-                    checkShutdownLid.Visible = false;
+                    groupBoxBacklightLid.Visible = false;
+                    //labelBacklightLid.Visible = false;
+                    //checkAwakeLid.Visible = false;
+                    //checkBootLid.Visible = false;
+                    //checkSleepLid.Visible = false;
+                    //checkShutdownLid.Visible = false;
 
-                    labelBacklightLogo.Visible = false;
-                    checkAwakeLogo.Visible = false;
-                    checkBootLogo.Visible = false;
-                    checkSleepLogo.Visible = false;
-                    checkShutdownLogo.Visible = false;
+                    groupBoxBacklightLogo.Visible = false;
+                    //labelBacklightLogo.Visible = false;
+                    //checkAwakeLogo.Visible = false;
+                    //checkBootLogo.Visible = false;
+                    //checkSleepLogo.Visible = false;
+                    //checkShutdownLogo.Visible = false;
 
-                    labelBacklightKeyboard.Visible = false;
+                    //labelBacklightKeyboard.Visible = false;
                 }
             }
 
