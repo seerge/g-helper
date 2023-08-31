@@ -256,7 +256,7 @@
     <value>Aktualizacje BIOS i sterowników</value>
   </data>
   <data name="Boot" xml:space="preserve">
-    <value>Podczas uruchamiania</value>
+    <value>Uruchamianie</value>
   </data>
   <data name="Brightness" xml:space="preserve">
     <value>Jasność</value>
