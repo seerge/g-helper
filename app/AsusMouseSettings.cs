@@ -301,8 +301,10 @@ namespace GHelper
         private void ComboBoxAnimationSpeed_DropDownClosed(object? sender, EventArgs e)
         {
             LightingSetting? ls = mouse.LightingSettingForZone(visibleZone);
-            ls.AnimationSpeed = (AnimationSpeed)comboBoxAnimationSpeed.SelectedIndex;
-
+            // 0 => 0x9
+            // 1 => 0x7
+            // 2 => 0x5
+            ls.AnimationSpeed = (AnimationSpeed)(0x9 - (comboBoxAnimationSpeed.SelectedIndex * 0x2));
             UpdateLightingSettings(ls, visibleZone);
         }
 
@@ -830,8 +832,10 @@ namespace GHelper
             else
                 pictureBoxLightingColor.BackColor = ls.RGBColor;
 
-
-            comboBoxAnimationSpeed.SelectedIndex = (((int)ls.AnimationSpeed) - 5) / 2;
+            //0x09 => 0
+            //0x07 => 1
+            //0x05 => 2
+            comboBoxAnimationSpeed.SelectedIndex = 2 - ((((int)ls.AnimationSpeed) - 5) / 2);
             comboBoxAnimationDirection.SelectedIndex = (int)ls.AnimationDirection;
         }
 
