@@ -25,6 +25,8 @@ namespace GHelper
         ScreenControl screenControl = new ScreenControl();
         AutoUpdateControl updateControl;
 
+        AsusMouseSettings? mouseSettings;
+
         public AniMatrixControl matrix;
 
         public static System.Timers.Timer sensorTimer = default!;
@@ -1187,6 +1189,12 @@ namespace GHelper
 
         private void ButtonPeripheral_Click(object? sender, EventArgs e)
         {
+            if (mouseSettings is not null)
+            {
+                mouseSettings.Close();
+                return;
+            }
+
             int index = 0;
             if (sender == buttonPeripheral2) index = 1;
             if (sender == buttonPeripheral3) index = 2;
@@ -1207,16 +1215,30 @@ namespace GHelper
                     //Should not happen if all device classes are implemented correctly. But better safe than sorry.
                     return;
                 }
-                AsusMouseSettings s = new AsusMouseSettings(am);
-                if (!s.IsDisposed)
+                mouseSettings = new AsusMouseSettings(am);
+                mouseSettings.TopMost = true;
+                mouseSettings.FormClosed += MouseSettings_FormClosed;
+                mouseSettings.Disposed += MouseSettings_Disposed;
+                if (!mouseSettings.IsDisposed)
                 {
-                    s.Show();
+                    mouseSettings.Show();
+                }
+                else
+                {
+                    mouseSettings = null;
                 }
 
             }
+        }
 
+        private void MouseSettings_Disposed(object? sender, EventArgs e)
+        {
+            mouseSettings = null;
+        }
 
-
+        private void MouseSettings_FormClosed(object? sender, FormClosedEventArgs e)
+        {
+            mouseSettings = null;
         }
 
         public void VisualiseFnLock()
