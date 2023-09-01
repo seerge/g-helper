@@ -31,6 +31,7 @@ namespace GHelper
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             panelServices = new Panel();
             pictureService = new PictureBox();
             labelServices = new Label();
@@ -114,6 +115,7 @@ namespace GHelper
             numericHibernateAfter = new NumericUpDown();
             labelHibernateAfter = new Label();
             pictureHibernate = new PictureBox();
+            toolTip = new ToolTip(components);
             panelServices.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureService).BeginInit();
             panelBindingsHeader.SuspendLayout();
@@ -1368,5 +1370,6 @@ namespace GHelper
         private Label labelHibernateAfter;
         private NumericUpDown numericHibernateAfter;
         private CheckBox checkGPUFix;
+        private ToolTip toolTip;
     }
 }

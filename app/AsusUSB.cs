@@ -64,7 +64,7 @@ namespace GHelper
         public static Color Color1 = Color.White;
         public static Color Color2 = Color.Black;
 
-        static bool isTuf = AppConfig.IsTUF();
+        static bool isTuf = AppConfig.IsTUF() || AppConfig.IsVivobook();
         static bool isStrix = AppConfig.IsStrix();
 
         static public bool isSingleColor = false;
@@ -124,7 +124,7 @@ namespace GHelper
             isSingleColor = AppConfig.ContainsModel("GA401") || AppConfig.ContainsModel("X13"); // Mono Color
 
             var device = GetDevice(AURA_HID_ID);
-            if (device is not null && device.Attributes.Version == 22 && AppConfig.ContainsModel("GA402X")) isSingleColor = true;
+            if (device is not null && (device.Attributes.Version == 22 || device.Attributes.Version == 23) && (AppConfig.ContainsModel("GA402X") || AppConfig.ContainsModel("GA402N"))) isSingleColor = true;
         }
 
         private static void Timer_Elapsed(object? sender, System.Timers.ElapsedEventArgs e)

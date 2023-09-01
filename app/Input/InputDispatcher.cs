@@ -131,6 +131,15 @@ namespace GHelper.Input
             if (AppConfig.Is("fn_lock") && !AppConfig.ContainsModel("VivoBook"))
                 for (Keys i = Keys.F1; i <= Keys.F11; i++) hook.RegisterHotKey(ModifierKeys.None, i);
 
+            // Arrow-lock group
+            if (AppConfig.Is("arrow_lock") && AppConfig.IsDUO())
+            {
+                hook.RegisterHotKey(ModifierKeys.None, Keys.Left);
+                hook.RegisterHotKey(ModifierKeys.None, Keys.Right);
+                hook.RegisterHotKey(ModifierKeys.None, Keys.Up);
+                hook.RegisterHotKey(ModifierKeys.None, Keys.Down);
+            }
+
         }
 
         static void CustomKey(string configKey = "m3")
@@ -272,6 +281,18 @@ namespace GHelper.Input
                     case Keys.VolumeUp:
                         KeyProcess("m2");
                         break;
+                    case Keys.Left:
+                        KeyboardHook.KeyPress(Keys.Home);
+                        break;
+                    case Keys.Right:
+                        KeyboardHook.KeyPress(Keys.End);
+                        break;
+                    case Keys.Up:
+                        KeyboardHook.KeyPress(Keys.PageUp);
+                        break;
+                    case Keys.Down:
+                        KeyboardHook.KeyPress(Keys.PageDown);
+                        break;
                     default:
                         break;
                 }
@@ -355,7 +376,7 @@ namespace GHelper.Input
                     break;
                 case "screen":
                     Logger.WriteLine("Screen off toggle");
-                    NativeMethods.TurnOffScreen(Program.settingsForm.Handle);
+                    NativeMethods.TurnOffScreen();
                     break;
                 case "miniled":
                     screenControl.ToogleMiniled();
@@ -378,6 +399,7 @@ namespace GHelper.Input
                 case "micmute":
                     bool muteStatus = Audio.ToggleMute();
                     Program.toast.RunToast(muteStatus ? "Muted" : "Unmuted", muteStatus ? ToastIcon.MicrophoneMute : ToastIcon.Microphone);
+                    if (AppConfig.IsVivobook()) Program.acpi.DeviceSet(AsusACPI.MICMUTE_LED, muteStatus ? 1 : 0, "MicmuteLed");
                     break;
                 case "brightness_up":
                     SetBrightness(+10);
@@ -409,6 +431,15 @@ namespace GHelper.Input
                 Logger.WriteLine("Touchpad status:" + key?.GetValue("Enabled")?.ToString());
                 return key?.GetValue("Enabled")?.ToString() == "1";
             }
+        }
+
+        public static void ToggleArrowLock()
+        {
+            int arLock = AppConfig.Is("arrow_lock") ? 0 : 1;
+            AppConfig.Set("arrow_lock", arLock);
+
+            Program.settingsForm.BeginInvoke(Program.inputDispatcher.RegisterKeys);
+            Program.toast.RunToast("Arrow-Lock " + (arLock == 1 ? "On" : "Off"), ToastIcon.FnLock);
         }
 
         public static void ToggleFnLock()
@@ -492,6 +523,9 @@ namespace GHelper.Input
                     case 78:    // Fn + ESC
                         ToggleFnLock();
                         return;
+                    case 75:    // Fn + ESC
+                        ToggleArrowLock();
+                        return;
                     case 189: // Tablet mode
                         TabletMode();
                         return;
@@ -505,7 +539,7 @@ namespace GHelper.Input
                         SetBacklight(4);
                         return;
                     case 53:    // FN+F6 on GA-502DU model
-                        NativeMethods.TurnOffScreen(Program.settingsForm.Handle);
+                        NativeMethods.TurnOffScreen();
                         return;
                 }
             }
@@ -536,6 +570,11 @@ namespace GHelper.Input
                 case 108: // FN+F11
                     Program.acpi.DeviceSet(AsusACPI.UniversalControl, AsusACPI.KB_Sleep, "Sleep");
                     break;
+                case 106: // Screenpad button on DUO
+                    SetScreenpad(100);
+                    break;
+
+
             }
         }
 
@@ -593,14 +632,33 @@ namespace GHelper.Input
         public static void SetScreenpad(int delta)
         {
             int brightness = AppConfig.Get("screenpad", 100);
-            brightness = Math.Max(Math.Min(100, brightness + delta), 0);
+
+            if (delta == 100)
+            {
+                if (brightness < 0) brightness = 100;
+                else if (brightness >= 100) brightness = 0;
+                else brightness = -10;
+
+            } else
+            {
+                brightness = Math.Max(Math.Min(100, brightness + delta), -10);
+            }
 
             AppConfig.Set("screenpad", brightness);
 
-            Program.acpi.DeviceSet(AsusACPI.ScreenPadBrightness, (brightness * 255 / 100), "Screenpad");
-            if (brightness == 0) Program.acpi.DeviceSet(AsusACPI.ScreenPadToggle, brightness, "ScreenpadToggle");
+            if (brightness >= 0) Program.acpi.DeviceSet(AsusACPI.ScreenPadToggle, 1, "ScreenpadOn");
 
-            Program.toast.RunToast($"Screen Pad {brightness}", delta > 0 ? ToastIcon.BrightnessUp : ToastIcon.BrightnessDown);
+            Program.acpi.DeviceSet(AsusACPI.ScreenPadBrightness, Math.Max(brightness * 255 / 100, 0 ), "Screenpad");
+
+            if (brightness < 0)  Program.acpi.DeviceSet(AsusACPI.ScreenPadToggle, 0, "ScreenpadOff");
+
+            string toast;
+
+            if (brightness < 0) toast = "Off";
+            else if (brightness == 0) toast = "Hidden";
+            else toast = brightness.ToString() + "%";
+
+            Program.toast.RunToast($"Screen Pad {toast}", delta > 0 ? ToastIcon.BrightnessUp : ToastIcon.BrightnessDown);
 
         }
 
