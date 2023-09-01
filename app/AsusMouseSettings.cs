@@ -602,6 +602,12 @@ namespace GHelper
                 labelLowBatteryWarningValue.Visible = false;
                 sliderLowBatteryWarning.Visible = false;
             }
+            else
+            {
+                sliderLowBatteryWarning.Min = 0;
+                sliderLowBatteryWarning.Step = mouse.LowBatteryWarningStep();
+                sliderLowBatteryWarning.Max = mouse.LowBatteryWarningMax();
+            }
 
             if (!mouse.HasAutoPowerOff() && !mouse.HasLowBatteryWarning())
             {

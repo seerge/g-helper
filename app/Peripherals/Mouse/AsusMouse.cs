@@ -445,6 +445,16 @@ namespace GHelper.Peripherals.Mouse
             return false;
         }
 
+        public virtual int LowBatteryWarningStep()
+        {
+            return 10;
+        }
+
+        public virtual int LowBatteryWarningMax()
+        {
+            return 50;
+        }
+
         public virtual bool HasLowBatteryWarning()
         {
             return false;
