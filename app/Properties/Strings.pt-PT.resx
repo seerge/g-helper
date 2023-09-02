@@ -357,10 +357,10 @@ Quer prosseguir?</value>
     <value>Carregando</value>
   </data>
   <data name="GPUCoreClockOffset" xml:space="preserve">
-    <value>Aumento da frequência básica</value>
+    <value>Frequência da GPU</value>
   </data>
   <data name="GPUMemoryClockOffset" xml:space="preserve">
-    <value>Aumento da frequência da memória</value>
+    <value>Frequência da Memória</value>
   </data>
   <data name="GPUMode" xml:space="preserve">
     <value>Modo da GPU</value>
