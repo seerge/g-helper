@@ -55,6 +55,12 @@ namespace GHelper.Helpers
             return Process.GetProcessesByName("AsusOptimization").Count() > 0;
         }
 
+        public static bool IsOSDRunning()
+        {
+            return Process.GetProcessesByName("AsusOSD").Count() > 0;
+        }
+
+
         public static int GetRunningCount()
         {
             int count = 0;

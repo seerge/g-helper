@@ -624,8 +624,11 @@ namespace GHelper.Input
                 AsusUSB.ApplyBrightness(backlight, "HotKey");
             }
 
-            string[] backlightNames = new string[] { "Off", "Low", "Mid", "Max" };
-            Program.toast.RunToast(backlightNames[backlight], delta > 0 ? ToastIcon.BacklightUp : ToastIcon.BacklightDown);
+            if (!OptimizationService.IsOSDRunning())
+            {
+                string[] backlightNames = new string[] { "Off", "Low", "Mid", "Max" };
+                Program.toast.RunToast(backlightNames[backlight], delta > 0 ? ToastIcon.BacklightUp : ToastIcon.BacklightDown);
+            }
 
         }
 

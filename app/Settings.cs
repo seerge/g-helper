@@ -1057,7 +1057,6 @@ namespace GHelper
                     buttonOptimized.Activated = GPUAuto;
                     labelGPU.Text = Properties.Strings.GPUMode + ": " + Properties.Strings.GPUModeEco;
                     Program.trayIcon.Icon = Properties.Resources.eco;
-                    ButtonEnabled(buttonXGM, false);
                     break;
                 case AsusACPI.GPUModeUltimate:
                     buttonUltimate.Activated = true;
@@ -1070,9 +1069,10 @@ namespace GHelper
                     buttonOptimized.Activated = GPUAuto;
                     labelGPU.Text = Properties.Strings.GPUMode + ": " + Properties.Strings.GPUModeStandard;
                     Program.trayIcon.Icon = Properties.Resources.standard;
-                    ButtonEnabled(buttonXGM, true);
                     break;
             }
+
+            ButtonEnabled(buttonXGM, AppConfig.ContainsModel("GV301RA") || GPUMode != AsusACPI.GPUModeEco);
 
             if (isGpuSection)
             {
