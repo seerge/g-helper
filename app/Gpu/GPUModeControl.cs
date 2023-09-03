@@ -52,8 +52,6 @@ namespace GHelper.Gpu
             }
 
             AppConfig.Set("gpu_mode", gpuMode);
-
-            InitXGM();
             settings.VisualiseGPUMode(gpuMode);
 
             AsusUSB.ApplyGPUColor();
@@ -277,13 +275,6 @@ namespace GHelper.Gpu
 
         }
 
-
-        public void InitXGM()
-        {
-            bool connected = Program.acpi.IsXGConnected();
-            int activated = Program.acpi.DeviceGet(AsusACPI.GPUXG);
-            settings.VisualizeXGM(connected, activated == 1);
-        }
 
         public void ToggleXGM()
         {

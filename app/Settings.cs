@@ -244,7 +244,8 @@ namespace GHelper
             if (this.Visible)
             {
                 screenControl.InitScreen();
-                gpuControl.InitXGM();
+                VisualizeXGM();
+
                 Task.Run((Action)RefreshPeripheralsBattery);
                 updateControl.CheckForUpdates();
             }
@@ -966,15 +967,24 @@ namespace GHelper
         }
 
 
-        public void VisualizeXGM(bool connected, bool activated)
+        public void VisualizeXGM(int GPUMode = -1)
         {
 
+            bool connected = Program.acpi.IsXGConnected();
             buttonXGM.Enabled = buttonXGM.Visible = connected;
+
             if (!connected) return;
 
-            buttonXGM.Activated = activated;
+            if (GPUMode != -1)
+                ButtonEnabled(buttonXGM, AppConfig.IsNoGPUModes() || GPUMode != AsusACPI.GPUModeEco);
 
-            if (activated)
+
+            int activated = Program.acpi.DeviceGet(AsusACPI.GPUXG);
+            Logger.WriteLine("XGM Activated flag: " + activated);
+
+            buttonXGM.Activated = activated == 1;
+
+            if (activated == 1)
             {
                 ButtonEnabled(buttonOptimized, false);
                 ButtonEnabled(buttonEco, false);
@@ -1074,7 +1084,8 @@ namespace GHelper
                     break;
             }
 
-            ButtonEnabled(buttonXGM, AppConfig.ContainsModel("GV301RA") || GPUMode != AsusACPI.GPUModeEco);
+            VisualizeXGM(GPUMode);
+
 
             if (isGpuSection)
             {
