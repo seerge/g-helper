@@ -26,8 +26,6 @@ namespace GHelper.AnimeMatrix
         private long lastPresent;
         private List<double> maxes = new List<double>();
 
-        private MemoryStream ms = new MemoryStream();
-
         public AniMatrixControl(SettingsForm settingsForm)
         {
             settings = settingsForm;
@@ -317,18 +315,21 @@ namespace GHelper.AnimeMatrix
             try
             {
                 using (var fs = new FileStream(fileName, FileMode.Open))
+                //using (var ms = new MemoryStream())
                 {
+                    /*
                     ms.SetLength(0);
                     fs.CopyTo(ms);
                     ms.Position = 0;
-
-                    using (Image image = Image.FromStream(ms))
+                    */
+                    using (Image image = Image.FromStream(fs))
                     {
                         ProcessPicture(image);
                         Logger.WriteLine("Matrix " + fileName);
-                        if (visualise) settings.VisualiseMatrix(image);
                     }
 
+                    fs.Close();
+                    if (visualise) settings.VisualiseMatrix(fileName);
                 }
             }
             catch
@@ -347,6 +348,8 @@ namespace GHelper.AnimeMatrix
             int matrixX = AppConfig.Get("matrix_x", 0);
             int matrixY = AppConfig.Get("matrix_y", 0);
             int matrixZoom = AppConfig.Get("matrix_zoom", 100);
+            int matrixSpeed = AppConfig.Get("matrix_speed", 50);
+
             InterpolationMode matrixQuality = (InterpolationMode)AppConfig.Get("matrix_quality", 0);
 
 
@@ -367,7 +370,7 @@ namespace GHelper.AnimeMatrix
 
 
                 Logger.WriteLine("GIF Delay:" + frameDelay);
-                StartMatrixTimer(Math.Max(50, frameDelay));
+                StartMatrixTimer(Math.Max(matrixSpeed, frameDelay));
 
                 //image.SelectActiveFrame(dimension, 0);
 

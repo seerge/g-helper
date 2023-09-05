@@ -17,6 +17,9 @@ namespace GHelper
 
         private float uiScale;
 
+        Image picture;
+        MemoryStream ms = new MemoryStream();
+
         public Matrix()
         {
             InitializeComponent();
@@ -55,9 +58,11 @@ namespace GHelper
 
         private void Matrix_FormClosed(object? sender, FormClosingEventArgs e)
         {
-            if (pictureMatrix.Image is not null) pictureMatrix.Image.Dispose();
+            if (picture is not null) picture.Dispose();
+            if (ms is not null) ms.Dispose();
+
             pictureMatrix.Dispose();
-            Dispose();
+
             GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced);
         }
 
@@ -157,32 +162,48 @@ namespace GHelper
             Left = Program.settingsForm.Left - Width - 5;
         }
 
-        public void VisualiseMatrix(Image picture)
+        public void VisualiseMatrix(string fileName)
         {
 
-            if (pictureMatrix.Image is not null) pictureMatrix.Image.Dispose();
+            if (picture is not null) picture.Dispose();
 
-            int width = picture.Width;
-            int height = picture.Height;
+            using (var fs = new FileStream(fileName, FileMode.Open))
+            {
 
-            int matrixX = AppConfig.Get("matrix_x", 0);
-            int matrixY = AppConfig.Get("matrix_y", 0);
-            int matrixZoom = AppConfig.Get("matrix_zoom", 100);
+                ms.SetLength(0);
+                fs.CopyTo(ms);
+                ms.Position = 0;
+                fs.Close();
+
+                picture = Image.FromStream(ms);
+
+                int width = picture.Width;
+                int height = picture.Height;
+
+                int matrixX = AppConfig.Get("matrix_x", 0);
+                int matrixY = AppConfig.Get("matrix_y", 0);
+                int matrixZoom = AppConfig.Get("matrix_zoom", 100);
 
 
-            float scale = Math.Min((float)panelPicture.Width / (float)width, (float)panelPicture.Height / (float)height) * matrixZoom / 100;
+                float scale = Math.Min((float)panelPicture.Width / (float)width, (float)panelPicture.Height / (float)height) * matrixZoom / 100;
 
-            pictureMatrix.Width = (int)(width * scale);
-            pictureMatrix.Height = (int)(height * scale);
+                pictureMatrix.Width = (int)(width * scale);
+                pictureMatrix.Height = (int)(height * scale);
 
-            baseX = panelPicture.Width - pictureMatrix.Width;
-            baseY = 0;
+                baseX = panelPicture.Width - pictureMatrix.Width;
+                baseY = 0;
 
-            pictureMatrix.Left = baseX - (int)(matrixX * uiScale);
-            pictureMatrix.Top = baseY - (int)(matrixY * uiScale);
+                pictureMatrix.Left = baseX - (int)(matrixX * uiScale);
+                pictureMatrix.Top = baseY - (int)(matrixY * uiScale);
 
-            pictureMatrix.SizeMode = PictureBoxSizeMode.Zoom;
-            pictureMatrix.Image = (Image)picture.Clone();
+                pictureMatrix.SizeMode = PictureBoxSizeMode.Zoom;
+                pictureMatrix.Image = picture;
+
+
+            }
+
+
+
 
         }
 

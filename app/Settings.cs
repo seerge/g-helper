@@ -271,7 +271,7 @@ namespace GHelper
             }
         }
 
-        public void VisualiseMatrix(Image image)
+        public void VisualiseMatrix(string image)
         {
             if (matrix == null || matrix.Text == "") return;
             matrix.VisualiseMatrix(image);
