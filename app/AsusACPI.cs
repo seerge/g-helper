@@ -59,8 +59,11 @@ public class AsusACPI
     public const uint VivoBookMode = 0x00110019; // Vivobook performance modes
 
     public const uint GPUEco = 0x00090020;
+
+    public const uint GPUXGInit = 0x00090017;
     public const uint GPUXGConnected = 0x00090018;
     public const uint GPUXG = 0x00090019;
+
     public const uint GPUMux = 0x00090016;
 
     public const uint BatteryLimit = 0x00120057;
@@ -508,8 +511,9 @@ public class AsusACPI
     public void TUFKeyboardRGB(int mode, Color color, int speed)
     {
 
-        byte[] setting = new byte[12];
-        setting[0] = (byte)0xB4;
+        byte[] setting = new byte[6];
+        
+        setting[0] = (byte)0xb4;
         setting[1] = (byte)mode;
         setting[2] = color.R;
         setting[3] = color.G;
@@ -517,6 +521,12 @@ public class AsusACPI
         setting[5] = (byte)speed;
 
         DeviceSet(TUF_KB, setting, "TUF RGB");
+
+        /*
+        setting[0] = (byte)0xb4;
+        DeviceSet(TUF_KB, setting, "TUF RGB");
+        */
+
         //Debug.WriteLine(BitConverter.ToString(setting));
 
     }

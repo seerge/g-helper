@@ -276,6 +276,16 @@ namespace GHelper.Gpu
         }
 
 
+        public void InitXGM()
+        {
+            if (Program.acpi.IsXGConnected())
+            {
+                //Program.acpi.DeviceSet(AsusACPI.GPUXGInit, 1, "XG Init");
+                AsusUSB.InitXGM();
+            }
+
+        }
+
         public void ToggleXGM()
         {
 
@@ -299,7 +309,8 @@ namespace GHelper.Gpu
                 {
                     Program.acpi.DeviceSet(AsusACPI.GPUXG, 1, "GPU XGM");
 
-                    AsusUSB.ResetXGM();
+                    InitXGM();
+
                     AsusUSB.ApplyXGMLight(AppConfig.Is("xmg_light"));
 
                     await Task.Delay(TimeSpan.FromSeconds(15));

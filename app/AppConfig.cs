@@ -383,7 +383,7 @@ public static class AppConfig
 
     public static bool IsNoGPUModes()
     {
-        return ContainsModel("GV301RA");
+        return ContainsModel("GV301RA") || ContainsModel("GV302XA");
     }
 
 }

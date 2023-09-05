@@ -507,6 +507,9 @@ namespace GHelper.Input
                     case 56:    // M4 / Rog button
                         KeyProcess("m4");
                         return;
+                    case 55:    // Arconym
+                        KeyProcess("m6");
+                        return;
                     case 181:    // FN + Numpad Enter
                         KeyProcess("fne");
                         return;

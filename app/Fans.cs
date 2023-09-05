@@ -78,15 +78,19 @@ namespace GHelper
 
             chartCPU.MouseMove += (sender, e) => ChartCPU_MouseMove(sender, e, AsusFan.CPU);
             chartCPU.MouseUp += ChartCPU_MouseUp;
+            chartCPU.MouseLeave += ChartCPU_MouseLeave;
 
             chartGPU.MouseMove += (sender, e) => ChartCPU_MouseMove(sender, e, AsusFan.GPU);
             chartGPU.MouseUp += ChartCPU_MouseUp;
+            chartGPU.MouseLeave += ChartCPU_MouseLeave;
 
             chartMid.MouseMove += (sender, e) => ChartCPU_MouseMove(sender, e, AsusFan.Mid);
             chartMid.MouseUp += ChartCPU_MouseUp;
+            chartMid.MouseLeave += ChartCPU_MouseLeave;
 
             chartXGM.MouseMove += (sender, e) => ChartCPU_MouseMove(sender, e, AsusFan.XGM);
             chartXGM.MouseUp += ChartCPU_MouseUp;
+            chartXGM.MouseLeave += ChartCPU_MouseLeave;
 
             chartCPU.MouseClick += ChartCPU_MouseClick;
             chartGPU.MouseClick += ChartCPU_MouseClick;
@@ -141,6 +145,7 @@ namespace GHelper
             trackGPUMemory.MouseUp += TrackGPU_MouseUp;
             trackGPUBoost.MouseUp += TrackGPU_MouseUp;
             trackGPUTemp.MouseUp += TrackGPU_MouseUp;
+
             trackGPUClockLimit.MouseUp += TrackGPU_MouseUp;
 
             //labelInfo.MaximumSize = new Size(280, 0);
@@ -201,6 +206,7 @@ namespace GHelper
 
         }
 
+ 
         private void ChartCPU_MouseClick(object? sender, MouseEventArgs e)
         {
             if (sender is null) return;
@@ -984,7 +990,7 @@ namespace GHelper
 
         }
 
-        private void ChartCPU_MouseUp(object? sender, MouseEventArgs e)
+        private void Chart_Save()
         {
             curPoint = null;
             curIndex = -1;
@@ -1001,8 +1007,17 @@ namespace GHelper
                 SaveProfile(seriesXGM, AsusFan.XGM);
 
             modeControl.AutoFans();
+        }
+
+        private void ChartCPU_MouseUp(object? sender, MouseEventArgs e)
+        {
+            Chart_Save();
+        }
 
 
+        private void ChartCPU_MouseLeave(object? sender, EventArgs e)
+        {
+            Chart_Save();
         }
 
         private void ChartCPU_MouseMove(object? sender, MouseEventArgs e, AsusFan device)

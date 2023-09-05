@@ -10,6 +10,7 @@ using GHelper.Peripherals;
 using GHelper.Peripherals.Mouse;
 using GHelper.UI;
 using System.Diagnostics;
+using System.Drawing.Imaging;
 using System.Timers;
 
 namespace GHelper
@@ -27,10 +28,11 @@ namespace GHelper
 
         AsusMouseSettings? mouseSettings;
 
-        public AniMatrixControl matrix;
+        public AniMatrixControl matrixControl;
 
         public static System.Timers.Timer sensorTimer = default!;
 
+        public Matrix? matrix;
         public Fans? fans;
         public Extra? keyb;
         public Updates? updates;
@@ -49,7 +51,7 @@ namespace GHelper
 
             gpuControl = new GPUModeControl(this);
             updateControl = new AutoUpdateControl(this);
-            matrix = new AniMatrixControl(this);
+            matrixControl = new AniMatrixControl(this);
 
             buttonSilent.Text = Properties.Strings.Silent;
             buttonBalanced.Text = Properties.Strings.Balanced;
@@ -267,6 +269,12 @@ namespace GHelper
             {
                 updates.Close();
             }
+        }
+
+        public void VisualiseMatrix(Image image)
+        {
+            if (matrix == null || matrix.Text == "") return;
+            matrix.VisualiseMatrix(image);
         }
 
         protected override void WndProc(ref Message m)
@@ -506,14 +514,29 @@ namespace GHelper
         private void CheckMatrix_CheckedChanged(object? sender, EventArgs e)
         {
             AppConfig.Set("matrix_auto", checkMatrix.Checked ? 1 : 0);
-            matrix.SetMatrix();
+            matrixControl.SetMatrix();
         }
 
 
 
         private void ButtonMatrix_Click(object? sender, EventArgs e)
         {
-            matrix.OpenMatrixPicture();
+
+            if (matrix == null || matrix.Text == "")
+            {
+                matrix = new Matrix();
+            }
+
+            if (matrix.Visible)
+            {
+                matrix.Close();
+            }
+            else
+            {
+                matrix.FormPosition();
+                matrix.Show();
+            }
+
         }
 
         public void SetMatrixRunning(int mode)
@@ -527,14 +550,14 @@ namespace GHelper
         private void ComboMatrixRunning_SelectedValueChanged(object? sender, EventArgs e)
         {
             AppConfig.Set("matrix_running", comboMatrixRunning.SelectedIndex);
-            matrix.SetMatrix();
+            matrixControl.SetMatrix();
         }
 
 
         private void ComboMatrix_SelectedValueChanged(object? sender, EventArgs e)
         {
             AppConfig.Set("matrix_brightness", comboMatrix.SelectedIndex);
-            matrix.SetMatrix();
+            matrixControl.SetMatrix();
         }
 
 
@@ -682,7 +705,7 @@ namespace GHelper
         public void InitMatrix()
         {
 
-            if (!matrix.IsValid)
+            if (!matrixControl.IsValid)
             {
                 panelMatrix.Visible = false;
                 return;
@@ -786,7 +809,7 @@ namespace GHelper
 
         private void ButtonQuit_Click(object? sender, EventArgs e)
         {
-            matrix.Dispose();
+            matrixControl.Dispose();
             Close();
             Program.trayIcon.Visible = false;
             Application.Exit();
