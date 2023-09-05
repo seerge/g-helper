@@ -72,6 +72,8 @@ Each BIOS mode is paired with matching Windows Power Mode. You can adjust this s
 
 ![Screenshot 2023-08-05 170159](https://github.com/seerge/g-helper/assets/5920850/84a5beb3-2463-40f1-9188-930d3099aad9)
 
+![GPU Modes](https://github.com/seerge/g-helper/assets/5920850/65c6bdd5-728c-4965-b544-fcf5a85ed6a2)
+
 ## :question: FAQ
 
 #### How do I stop the Armoury Crate install popup appearing every time I press the M4 / Rog key?
