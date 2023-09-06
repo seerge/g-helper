@@ -60,7 +60,7 @@ public class AsusACPI
 
     public const uint GPUEco = 0x00090020;
 
-    public const uint GPUXGInit = 0x00090017;
+    public const uint GPUXGFlag = 0x00090017;
     public const uint GPUXGConnected = 0x00090018;
     public const uint GPUXG = 0x00090019;
 
