@@ -235,7 +235,7 @@
     <value>Automatycznie ustaw odświeżanie 60 Hz w czasie pracy na baterii</value>
   </data>
   <data name="Awake" xml:space="preserve">
-    <value>Aktywność</value>
+    <value>Włączone</value>
   </data>
   <data name="BacklightTimeout" xml:space="preserve">
     <value>Limit czasu podłączonego / na baterii (0 - Włączony)</value>
@@ -256,7 +256,7 @@
     <value>Aktualizacje BIOS i sterowników</value>
   </data>
   <data name="Boot" xml:space="preserve">
-    <value>Podczas uruchamiania</value>
+    <value>Uruchamianie</value>
   </data>
   <data name="Brightness" xml:space="preserve">
     <value>Jasność</value>
