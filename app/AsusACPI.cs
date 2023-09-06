@@ -94,6 +94,7 @@ public class AsusACPI
 
     public const int TUF_KB_BRIGHTNESS = 0x00050021;
     public const int TUF_KB = 0x00100056;
+    public const int TUF_KB2 = 0x0010005a;
     public const int TUF_KB_STATE = 0x00100057;
 
     public const int MICMUTE_LED = 0x00040017;
@@ -520,14 +521,8 @@ public class AsusACPI
         setting[4] = color.B;
         setting[5] = (byte)speed;
 
-        DeviceSet(TUF_KB, setting, "TUF RGB");
-
-        /*
-        setting[0] = (byte)0xb4;
-        DeviceSet(TUF_KB, setting, "TUF RGB");
-        */
-
-        //Debug.WriteLine(BitConverter.ToString(setting));
+        int result = DeviceSet(TUF_KB, setting, "TUF RGB");
+        if (result != 1) DeviceSet(TUF_KB2, setting, "TUF RGB");
 
     }
 
