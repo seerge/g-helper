@@ -10,7 +10,6 @@ using GHelper.Peripherals;
 using GHelper.Peripherals.Mouse;
 using GHelper.UI;
 using System.Diagnostics;
-using System.Drawing.Imaging;
 using System.Timers;
 
 namespace GHelper

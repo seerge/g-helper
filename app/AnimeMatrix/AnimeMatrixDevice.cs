@@ -1,6 +1,5 @@
 ﻿// Source thanks to https://github.com/vddCore/Starlight with some adjustments from me
 
-using GHelper;
 using GHelper.AnimeMatrix.Communication;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
@@ -8,7 +7,6 @@ using System.Drawing.Text;
 using System.Globalization;
 using System.Management;
 using System.Text;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 
 namespace Starlight.AnimeMatrix
 {
@@ -80,6 +78,7 @@ namespace Starlight.AnimeMatrix
     }
 
 
+
     public class AnimeMatrixDevice : Device
     {
         int UpdatePageLength = 490;
@@ -99,6 +98,9 @@ namespace Starlight.AnimeMatrix
 
         private static AnimeType _model = AnimeType.GA402;
 
+        [System.Runtime.InteropServices.DllImport("gdi32.dll")]
+        private static extern IntPtr AddFontMemResourceEx(IntPtr pbFont, uint cbFont, IntPtr pdv, [System.Runtime.InteropServices.In] ref uint pcFonts);
+        private PrivateFontCollection fonts = new PrivateFontCollection();
 
         public AnimeMatrixDevice()
             : base(0x0B05, 0x193B, 640)
@@ -128,8 +130,21 @@ namespace Starlight.AnimeMatrix
 
             _displayBuffer = new byte[LedCount];
 
+            LoadMFont();
+
         }
 
+        private void LoadMFont()
+        {
+            byte[] fontData = GHelper.Properties.Resources.MFont;
+            IntPtr fontPtr = System.Runtime.InteropServices.Marshal.AllocCoTaskMem(fontData.Length);
+            System.Runtime.InteropServices.Marshal.Copy(fontData, 0, fontPtr, fontData.Length);
+            uint dummy = 0;
+
+            fonts.AddMemoryFont(fontPtr, GHelper.Properties.Resources.MFont.Length);
+            AddFontMemResourceEx(fontPtr, (uint)GHelper.Properties.Resources.MFont.Length, IntPtr.Zero, ref dummy);
+            System.Runtime.InteropServices.Marshal.FreeCoTaskMem(fontPtr);
+        }
 
         public string GetModel()
         {
@@ -369,20 +384,57 @@ namespace Starlight.AnimeMatrix
 
         public void PresentClock()
         {
-            int second = DateTime.Now.Second;
-            string time;
+            string second = (DateTime.Now.Second % 2 == 0) ? ":" : "  ";
+            string time = DateTime.Now.ToString("HH" + second + "mm");
 
-            if (CultureInfo.CurrentCulture.DateTimeFormat.ShortTimePattern.Contains("H"))
-                time = DateTime.Now.ToString("H" + ((second % 2 == 0) ? ":" : " ") + "mm");
-            else
-                time = DateTime.Now.ToString("h" + ((second % 2 == 0) ? ":" : " ") + "mmtt");
-
+            /*
             if (_model == AnimeType.GA401)
+            {
                 PresentText(time);
-            else
-                PresentTextDiagonal(time);
+                return;
+            }
+            */
+
+            Clear();
+            TextDiagonal(time, 16, 12, 22);
+            TextDiagonal(DateTime.Now.ToString("yyyy'. 'MM'. 'dd"), 11F, 2, 8);
+            Present();
+
         }
 
+        public void TextDiagonal(string text, float fontSize = 10, int deltaX = 0, int deltaY = 10)
+        {
+
+            int maxX = (int)Math.Sqrt(MaxRows * MaxRows + MaxColumns * MaxColumns);
+            int textHeight;
+
+            using (Bitmap bmp = new Bitmap(maxX, MaxRows))
+            {
+                using (Graphics g = Graphics.FromImage(bmp))
+                {
+                    g.CompositingQuality = CompositingQuality.HighQuality;
+                    g.SmoothingMode = SmoothingMode.AntiAlias;
+                    g.TextRenderingHint = TextRenderingHint.SingleBitPerPixel;
+
+                    using (Font font = new Font(fonts.Families[0], fontSize, FontStyle.Regular, GraphicsUnit.Pixel))
+                    {
+                        SizeF textSize = g.MeasureString(text, font);
+                        textHeight = (int)textSize.Height;
+                        g.DrawString(text, font, Brushes.White, 0, 0);
+                    }
+                }
+
+                for (int y = 0; y < bmp.Height; y++)
+                {
+                    for (int x = 0; x < bmp.Width; x++)
+                    {
+                        var pixel = bmp.GetPixel(x, y);
+                        var color = (pixel.R + pixel.G + pixel.B) / 3;
+                        if (color > 100) SetLedDiagonal(x, y, (byte)color, deltaX, deltaY);
+                    }
+                }
+            }
+        }
 
 
         public void PresentText(string text1, string text2 = "")
@@ -410,16 +462,41 @@ namespace Starlight.AnimeMatrix
 
                 }
 
+                bmp.Save("test.bmp", ImageFormat.Bmp);
+
                 GenerateFrame(bmp);
                 Present();
             }
 
         }
 
-        public void GenerateFrame(Image image, float zoom = 1, int panX = 0, int panY = 0, InterpolationMode quality = InterpolationMode.Default)
+        public void GenerateFrame(Image image, float zoom = 100, int panX = 0, int panY = 0, InterpolationMode quality = InterpolationMode.Default)
         {
-            using (Bitmap bmp = GeneratePicture(image, zoom, panX, panY, quality))
+
+            int width = MaxColumns / 2 * 6;
+            int height = MaxRows;
+
+            int targetWidth = MaxColumns * 2;
+
+            float scale;
+
+            using (Bitmap bmp = new Bitmap(targetWidth, height))
             {
+                scale = Math.Min((float)width / (float)image.Width, (float)height / (float)image.Height) * zoom / 100;
+
+                using (var graph = Graphics.FromImage(bmp))
+                {
+                    var scaleWidth = (float)(image.Width * scale);
+                    var scaleHeight = (float)(image.Height * scale);
+
+                    graph.InterpolationMode = quality;
+                    graph.CompositingQuality = CompositingQuality.HighQuality;
+                    graph.SmoothingMode = SmoothingMode.AntiAlias;
+
+                    graph.DrawImage(image, (float)Math.Round(targetWidth - (scaleWidth + panX) * targetWidth / width), -panY, (float)Math.Round(scaleWidth * targetWidth / width), scaleHeight);
+
+                }
+
                 for (int y = 0; y < bmp.Height; y++)
                 {
                     for (int x = 0; x < bmp.Width; x++)
@@ -435,84 +512,16 @@ namespace Starlight.AnimeMatrix
         }
 
 
-        public Bitmap GeneratePicture(Image image, float zoom = 100, int panX = 0, int panY = 0, InterpolationMode quality = InterpolationMode.Default)
+        public void SetLedDiagonal(int x, int y, byte color, int deltaX = 0, int deltaY = 10)
         {
+            x += deltaX;
+            y -= deltaY;
 
-            int width = MaxColumns * 3;
-            int height = MaxRows;
-
-            int targetWidth = MaxColumns * 2;
-
-            float scale;
-
-            Bitmap bmp = new Bitmap(targetWidth, height);
-            {
-                scale = Math.Min((float)width / (float)image.Width, (float)height / (float)image.Height) * zoom / 100;
-
-                using (var graph = Graphics.FromImage(bmp))
-                {
-                    var scaleWidth = (float)(image.Width * scale);
-                    var scaleHeight = (float)(image.Height * scale);
-
-                    graph.InterpolationMode = quality;
-                    graph.CompositingQuality = CompositingQuality.HighQuality;
-                    graph.SmoothingMode = SmoothingMode.AntiAlias;
-
-                    graph.DrawImage(image, (float)Math.Round(targetWidth - (scaleWidth + panX) * targetWidth / width), -panY, (float)Math.Round(scaleWidth * targetWidth / width), scaleHeight);
-                    return bmp;
-                }
-
-            }
+            int plX = (x - y) / 2;
+            int plY = x + y;
+            SetLedPlanar(plX, plY, color);
         }
 
-
-        public void SetLedDiagonal(int x, int y, byte color, int delta = 10)
-        {
-            //x += delta;
-            y -= delta;
-
-            int dx = (x - y) / 2;
-            int dy = x + y;
-            SetLedPlanar(dx, dy, color);
-        }
-
-        public void PresentTextDiagonal(string text)
-        {
-
-            Clear();
-
-            int maxX = (int)Math.Sqrt(MaxRows * MaxRows + MaxColumns * MaxColumns);
-            int textHeight;
-
-            using (Bitmap bmp = new Bitmap(maxX, MaxRows))
-            {
-                using (Graphics g = Graphics.FromImage(bmp))
-                {
-                    g.CompositingQuality = CompositingQuality.HighQuality;
-                    g.SmoothingMode = SmoothingMode.AntiAlias;
-                    g.TextRenderingHint = TextRenderingHint.SingleBitPerPixel;
-
-                    using (Font font = new Font("Consolas", 11, FontStyle.Regular, GraphicsUnit.Pixel))
-                    {
-                        SizeF textSize = g.MeasureString(text, font);
-                        textHeight = (int)textSize.Height;
-                        g.DrawString(text, font, Brushes.White, 4, 0);
-                    }
-                }
-
-                for (int y = 0; y < bmp.Height; y++)
-                {
-                    for (int x = 0; x < bmp.Width; x++)
-                    {
-                        var pixel = bmp.GetPixel(x, y);
-                        var color = (pixel.R + pixel.G + pixel.B) / 3;
-                        SetLedDiagonal(x, y, (byte)color, textHeight - 8);
-                    }
-                }
-            }
-
-            Present();
-        }
 
         private bool IsRowInRange(int row)
         {
