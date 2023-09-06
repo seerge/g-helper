@@ -308,8 +308,7 @@ namespace GHelper.Gpu
                 else
                 {
 
-                    // To be verified on XGM 3080 / 4080
-                    if (Program.acpi.DeviceGet(AsusACPI.GPUXGFlag) == 1)
+                    if (AppConfig.Is("xgm_special"))
                         Program.acpi.DeviceSet(AsusACPI.GPUXG, 0x101, "GPU XGM");
                     else
                         Program.acpi.DeviceSet(AsusACPI.GPUXG, 1, "GPU XGM");
