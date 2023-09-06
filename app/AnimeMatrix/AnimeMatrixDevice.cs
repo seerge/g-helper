@@ -4,7 +4,6 @@ using GHelper.AnimeMatrix.Communication;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Drawing.Text;
-using System.Globalization;
 using System.Management;
 using System.Text;
 
@@ -88,11 +87,10 @@ namespace Starlight.AnimeMatrix
         List<byte[]> frames = new List<byte[]>();
 
         public int MaxRows = 61;
-        //public int FullRows = 11;
-        //public int FullEvenRows = -1;
-
-        public int dx = 0;
         public int MaxColumns = 34;
+        public int LedStart = 0;
+
+        public int TextShift = 8;
 
         private int frameIndex = 0;
 
@@ -102,20 +100,23 @@ namespace Starlight.AnimeMatrix
         private static extern IntPtr AddFontMemResourceEx(IntPtr pbFont, uint cbFont, IntPtr pdv, [System.Runtime.InteropServices.In] ref uint pcFonts);
         private PrivateFontCollection fonts = new PrivateFontCollection();
 
-        public AnimeMatrixDevice()
-            : base(0x0B05, 0x193B, 640)
+        public AnimeMatrixDevice() : base(0x0B05, 0x193B, 640)
         {
             string model = GetModel();
+
             if (model.Contains("401"))
             {
                 _model = AnimeType.GA401;
 
                 MaxColumns = 33;
-                dx = 1;
                 MaxRows = 55;
                 LedCount = 1245;
 
                 UpdatePageLength = 410;
+
+                TextShift = 11;
+
+                LedStart = 1;
             }
 
             if (model.Contains("GU604"))
@@ -126,9 +127,19 @@ namespace Starlight.AnimeMatrix
                 MaxRows = 92;
                 LedCount = 1711;
                 UpdatePageLength = 630;
+
+                TextShift = 10;
             }
 
             _displayBuffer = new byte[LedCount];
+
+            /*
+            for (int i = 0; i < MaxRows; i++)
+            {
+                _model = AnimeType.GA401;
+                Logger.WriteLine(FirstX(i) + " " + Pitch(i));
+            }
+            */
 
             LoadMFont();
 
@@ -188,32 +199,7 @@ namespace Starlight.AnimeMatrix
         }
 
 
-        public static int FirstX(int y)
-        {
-            switch (_model)
-            {
-                case AnimeType.GA401:
-                    if (y < 5)
-                    {
-                        return 0;
-                    }
-                    else
-                    {
-                        return (y + 1) / 2 - 3;
-                    }
-                case AnimeType.GU604:
-                    if (y < 9 && y % 2 == 0)
-                    {
-                        return 1;
-                    }
-                    return (int)Math.Ceiling(Math.Max(0, y - 9) / 2F);
-
-                default:
-                    return (int)Math.Ceiling(Math.Max(0, y - 11) / 2F);
-            }
-        }
-
-        public static int Width(int y)
+        public int Width()
         {
             switch (_model)
             {
@@ -226,7 +212,30 @@ namespace Starlight.AnimeMatrix
             }
         }
 
-        public static int Pitch(int y)
+        public int FirstX(int y)
+        {
+            switch (_model)
+            {
+                case AnimeType.GA401:
+                    if (y < 5 && y % 2 == 0)
+                    {
+                        return 1;
+                    }
+                    return (int)Math.Ceiling(Math.Max(0, y - 5) / 2F);
+                case AnimeType.GU604:
+                    if (y < 9 && y % 2 == 0)
+                    {
+                        return 1;
+                    }
+                    return (int)Math.Ceiling(Math.Max(0, y - 9) / 2F);
+
+                default:
+                    return (int)Math.Ceiling(Math.Max(0, y - 11) / 2F);
+            }
+        }
+
+
+        public int Pitch(int y)
         {
             switch (_model)
             {
@@ -262,19 +271,19 @@ namespace Starlight.AnimeMatrix
                             return 39;
 
                         default:
-                            return Width(y) - FirstX(y);
+                            return Width() - FirstX(y);
                     }
 
 
                 default:
-                    return Width(y) - FirstX(y);
+                    return Width() - FirstX(y);
             }
         }
 
 
         public int RowToLinearAddress(int y)
         {
-            int ret = 0;
+            int ret = LedStart;
             for (var i = 0; i < y; i++)
                 ret += Pitch(i);
 
@@ -285,8 +294,8 @@ namespace Starlight.AnimeMatrix
         {
             if (!IsRowInRange(y)) return;
 
-            if (x >= FirstX(y) && x < Width(y))
-                SetLedLinear(RowToLinearAddress(y) - FirstX(y) + x + dx, value);
+            if (x >= FirstX(y) && x < Width())
+                SetLedLinear(RowToLinearAddress(y) - FirstX(y) + x, value);
         }
 
         public void WakeUp()
@@ -387,17 +396,9 @@ namespace Starlight.AnimeMatrix
             string second = (DateTime.Now.Second % 2 == 0) ? ":" : "  ";
             string time = DateTime.Now.ToString("HH" + second + "mm");
 
-            /*
-            if (_model == AnimeType.GA401)
-            {
-                PresentText(time);
-                return;
-            }
-            */
-
             Clear();
-            TextDiagonal(time, 16, 12, 22);
-            TextDiagonal(DateTime.Now.ToString("yyyy'. 'MM'. 'dd"), 11F, 2, 8);
+            TextDiagonal(time, 15, 12, TextShift + 11);
+            TextDiagonal(DateTime.Now.ToString("yy'. 'MM'. 'dd"), 11.5F, 3, TextShift);
             Present();
 
         }
@@ -500,7 +501,7 @@ namespace Starlight.AnimeMatrix
                 for (int y = 0; y < bmp.Height; y++)
                 {
                     for (int x = 0; x < bmp.Width; x++)
-                        if (x % 2 == (y + dx) % 2)
+                        if (x % 2 == y % 2)
                         {
                             var pixel = bmp.GetPixel(x, y);
                             var color = (pixel.R + pixel.G + pixel.B) / 3;
