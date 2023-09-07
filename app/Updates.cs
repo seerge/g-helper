@@ -278,7 +278,7 @@ namespace GHelper
                                 foreach (var localVersion in localVersions)
                                 {
                                     newer = Math.Min(newer, new Version(driver.version).CompareTo(new Version(localVersion)));
-                                    Logger.WriteLine(driver.title + " " + driver.version + " vs " + localVersion + " = " + newer);
+                                    Logger.WriteLine(driver.title + " " + deviceID  + " "+ driver.version + " vs " + localVersion + " = " + newer);
                                 }
 
                             }
