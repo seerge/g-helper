@@ -308,10 +308,8 @@ namespace GHelper.Gpu
                 else
                 {
 
-                    if (AppConfig.Is("xgm_special"))
-                        Program.acpi.DeviceSet(AsusACPI.GPUXG, 0x101, "GPU XGM");
-                    else
-                        Program.acpi.DeviceSet(AsusACPI.GPUXG, 1, "GPU XGM");
+                    int status = Program.acpi.DeviceSet(AsusACPI.GPUXG, 0x101, "GPU XGM");
+                    if (status != 1) Program.acpi.DeviceSet(AsusACPI.GPUXG, 1, "GPU XGM");
 
                     InitXGM();
 
