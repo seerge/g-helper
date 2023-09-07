@@ -115,6 +115,7 @@ namespace GHelper
             labelHibernateAfter = new Label();
             pictureHibernate = new PictureBox();
             toolTip = new ToolTip(components);
+            checkBootSound = new CheckBox();
             panelServices.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureService).BeginInit();
             panelBindingsHeader.SuspendLayout();
@@ -147,7 +148,7 @@ namespace GHelper
             panelServices.Controls.Add(labelServices);
             panelServices.Controls.Add(buttonServices);
             panelServices.Dock = DockStyle.Top;
-            panelServices.Location = new Point(15, 1279);
+            panelServices.Location = new Point(15, 1321);
             panelServices.Name = "panelServices";
             panelServices.Size = new Size(983, 75);
             panelServices.TabIndex = 5;
@@ -1065,6 +1066,7 @@ namespace GHelper
             panelSettings.Controls.Add(checkAutoToggleClamshellMode);
             panelSettings.Controls.Add(checkTopmost);
             panelSettings.Controls.Add(checkNoOverdrive);
+            panelSettings.Controls.Add(checkBootSound);
             panelSettings.Controls.Add(checkUSBC);
             panelSettings.Controls.Add(checkVariBright);
             panelSettings.Controls.Add(checkGpuApps);
@@ -1073,14 +1075,14 @@ namespace GHelper
             panelSettings.Location = new Point(15, 921);
             panelSettings.Name = "panelSettings";
             panelSettings.Padding = new Padding(20, 5, 11, 5);
-            panelSettings.Size = new Size(983, 304);
+            panelSettings.Size = new Size(983, 346);
             panelSettings.TabIndex = 3;
             // 
             // checkAutoToggleClamshellMode
             // 
             checkAutoToggleClamshellMode.AutoSize = true;
             checkAutoToggleClamshellMode.Dock = DockStyle.Top;
-            checkAutoToggleClamshellMode.Location = new Point(20, 257);
+            checkAutoToggleClamshellMode.Location = new Point(20, 299);
             checkAutoToggleClamshellMode.Name = "checkAutoToggleClamshellMode";
             checkAutoToggleClamshellMode.Padding = new Padding(3);
             checkAutoToggleClamshellMode.Size = new Size(952, 42);
@@ -1092,7 +1094,7 @@ namespace GHelper
             // 
             checkTopmost.AutoSize = true;
             checkTopmost.Dock = DockStyle.Top;
-            checkTopmost.Location = new Point(20, 215);
+            checkTopmost.Location = new Point(20, 257);
             checkTopmost.Margin = new Padding(4, 3, 4, 3);
             checkTopmost.Name = "checkTopmost";
             checkTopmost.Padding = new Padding(3);
@@ -1105,7 +1107,7 @@ namespace GHelper
             // 
             checkNoOverdrive.AutoSize = true;
             checkNoOverdrive.Dock = DockStyle.Top;
-            checkNoOverdrive.Location = new Point(20, 173);
+            checkNoOverdrive.Location = new Point(20, 215);
             checkNoOverdrive.Margin = new Padding(4, 3, 4, 3);
             checkNoOverdrive.Name = "checkNoOverdrive";
             checkNoOverdrive.Padding = new Padding(3);
@@ -1172,7 +1174,7 @@ namespace GHelper
             panelPower.Controls.Add(labelHibernateAfter);
             panelPower.Controls.Add(pictureHibernate);
             panelPower.Dock = DockStyle.Top;
-            panelPower.Location = new Point(15, 1225);
+            panelPower.Location = new Point(15, 1267);
             panelPower.Name = "panelPower";
             panelPower.Size = new Size(983, 54);
             panelPower.TabIndex = 4;
@@ -1208,6 +1210,19 @@ namespace GHelper
             pictureHibernate.Size = new Size(32, 32);
             pictureHibernate.TabIndex = 22;
             pictureHibernate.TabStop = false;
+            // 
+            // checkBootSound
+            // 
+            checkBootSound.AutoSize = true;
+            checkBootSound.Dock = DockStyle.Top;
+            checkBootSound.Location = new Point(20, 173);
+            checkBootSound.Margin = new Padding(4, 3, 4, 3);
+            checkBootSound.Name = "checkBootSound";
+            checkBootSound.Padding = new Padding(3);
+            checkBootSound.Size = new Size(952, 42);
+            checkBootSound.TabIndex = 10;
+            checkBootSound.Text = "Boot Sound";
+            checkBootSound.UseVisualStyleBackColor = true;
             // 
             // Extra
             // 
@@ -1356,5 +1371,6 @@ namespace GHelper
         private NumericUpDown numericHibernateAfter;
         private CheckBox checkGPUFix;
         private ToolTip toolTip;
+        private CheckBox checkBootSound;
     }
 }

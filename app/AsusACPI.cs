@@ -104,6 +104,8 @@ public class AsusACPI
     public const int ScreenPadToggle = 0x00050031;
     public const int ScreenPadBrightness = 0x00050032;
 
+    public const int BootSound = 0x00130022;
+
     public const int Tablet_Notebook = 0;
     public const int Tablet_Tablet = 1;
     public const int Tablet_Tent = 2;
