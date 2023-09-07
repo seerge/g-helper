@@ -543,6 +543,7 @@ namespace GHelper
             Invoke(delegate
             {
                 comboMatrixRunning.SelectedIndex = mode;
+                if (comboMatrix.SelectedIndex == 0) comboMatrix.SelectedIndex = 3;
             });
         }
 

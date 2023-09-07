@@ -54,16 +54,17 @@ namespace GHelper
             // 
             tableBios.AutoSize = true;
             tableBios.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            tableBios.ColumnCount = 3;
-            tableBios.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
-            tableBios.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+            tableBios.ColumnCount = 4;
+            tableBios.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20F));
+            tableBios.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 40F));
+            tableBios.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 15F));
             tableBios.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
             tableBios.Dock = DockStyle.Top;
             tableBios.Location = new Point(20, 20);
             tableBios.Margin = new Padding(4);
-            tableBios.MinimumSize = new Size(1100, 0);
+            tableBios.MinimumSize = new Size(1300, 0);
             tableBios.Name = "tableBios";
-            tableBios.Size = new Size(1216, 0);
+            tableBios.Size = new Size(1300, 0);
             tableBios.TabIndex = 0;
             // 
             // labelBIOS
@@ -105,7 +106,7 @@ namespace GHelper
             // 
             labelUpdates.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             labelUpdates.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            labelUpdates.Location = new Point(941, 23);
+            labelUpdates.Location = new Point(810, 23);
             labelUpdates.Name = "labelUpdates";
             labelUpdates.Size = new Size(245, 32);
             labelUpdates.TabIndex = 4;
@@ -156,16 +157,17 @@ namespace GHelper
             // 
             tableDrivers.AutoSize = true;
             tableDrivers.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            tableDrivers.ColumnCount = 3;
-            tableDrivers.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
-            tableDrivers.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+            tableDrivers.ColumnCount = 4;
+            tableDrivers.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20F));
+            tableDrivers.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 40F));
+            tableDrivers.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 15F));
             tableDrivers.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
             tableDrivers.Dock = DockStyle.Top;
             tableDrivers.Location = new Point(20, 20);
             tableDrivers.Margin = new Padding(4);
-            tableDrivers.MinimumSize = new Size(1100, 0);
+            tableDrivers.MinimumSize = new Size(1300, 0);
             tableDrivers.Name = "tableDrivers";
-            tableDrivers.Size = new Size(1216, 0);
+            tableDrivers.Size = new Size(1300, 0);
             tableDrivers.TabIndex = 0;
             // 
             // panelDriversTitle
