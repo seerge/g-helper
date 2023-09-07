@@ -258,6 +258,9 @@
   <data name="Boot" xml:space="preserve">
     <value>Старт</value>
   </data>
+  <data name="BootSound" xml:space="preserve">
+    <value>Boot Sound</value>
+  </data>
   <data name="Brightness" xml:space="preserve">
     <value>Яскравість</value>
   </data>
