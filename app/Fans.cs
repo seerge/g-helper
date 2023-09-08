@@ -57,6 +57,8 @@ namespace GHelper
             buttonApplyAdvanced.Text = Properties.Strings.Apply;
             checkApplyUV.Text = Properties.Strings.AutoApply;
 
+            buttonCalibrate.Text = Properties.Strings.Calibrate;
+
             InitTheme(true);
 
             labelTip.Visible = false;
