@@ -284,6 +284,8 @@ namespace GHelper
                 AppConfig.Remove("fan_max_" + i);
             }
 
+            Program.acpi.DeviceSet(AsusACPI.PerformanceMode, AsusACPI.PerformanceTurbo, "ModeCalibration");
+            
             for (int i = 0; i < FAN_COUNT; i++)
                 Program.acpi.SetFanCurve((AsusFan)i, new byte[] { 20, 30, 40, 50, 60, 70, 80, 90, 100, 100, 100, 100, 100, 100, 100, 100 });
         }
