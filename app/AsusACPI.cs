@@ -1,4 +1,5 @@
-﻿using System.Management;
+﻿using GHelper;
+using System.Management;
 using System.Runtime.InteropServices;
 
 public enum AsusFan
@@ -346,6 +347,32 @@ public class AsusACPI
         return -1;
     }
 
+    public int GetFan(AsusFan device)
+    {
+        int fan = -1;
+
+        switch (device)
+        {
+            case AsusFan.GPU:
+                fan = Program.acpi.DeviceGet(GPU_Fan);
+                break;
+            case AsusFan.Mid:
+                fan = Program.acpi.DeviceGet(Mid_Fan);
+                break;
+            default:
+                fan = Program.acpi.DeviceGet(CPU_Fan);
+                break;
+        }
+
+        if (fan < 0)
+        {
+            fan += 65536;
+            if (fan <= 0 || fan > 100) fan = -1;
+        }
+
+        return fan;
+    }
+
     public int SetFanRange(AsusFan device, byte[] curve)
     {
         byte min = (byte)(curve[8] * 255 / 100);
@@ -379,7 +406,7 @@ public class AsusACPI
 
         // it seems to be a bug, when some old model's bios can go nuts if fan is set to 100% 
 
-        for (int i = 8; i < curve.Length; i++) curve[i] = (byte)(Math.Max((byte)0, Math.Min((byte)99, curve[i])) * fanScale / 100); 
+        for (int i = 8; i < curve.Length; i++) curve[i] = (byte)(Math.Max((byte)0, Math.Min((byte)100, curve[i])) * fanScale / 100); 
 
         switch (device)
         {
