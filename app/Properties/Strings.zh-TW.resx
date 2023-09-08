@@ -259,7 +259,7 @@
     <value>開機時</value>
   </data>
   <data name="BootSound" xml:space="preserve">
-    <value>Boot Sound</value>
+    <value>開機音效</value>
   </data>
   <data name="Brightness" xml:space="preserve">
     <value>亮度</value>
