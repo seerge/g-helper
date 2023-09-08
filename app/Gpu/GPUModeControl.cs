@@ -44,9 +44,7 @@ namespace GHelper.Gpu
                 // GPU mode not supported
                 if (eco < 0 && mux < 0)
                 {
-                    if (gpuExists is null)
-                        gpuExists = HardwareControl.FormatFan(Program.acpi.DeviceGet(AsusACPI.GPU_Fan)) is not null;
-
+                    if (gpuExists is null) gpuExists = Program.acpi.GetFan(AsusFan.GPU) >= 0;
                     settings.HideGPUModes((bool)gpuExists);
                 }
             }

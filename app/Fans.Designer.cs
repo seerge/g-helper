@@ -31,14 +31,14 @@ namespace GHelper
         /// </summary>
         private void InitializeComponent()
         {
-            ChartArea chartArea9 = new ChartArea();
-            Title title9 = new Title();
-            ChartArea chartArea10 = new ChartArea();
-            Title title10 = new Title();
-            ChartArea chartArea11 = new ChartArea();
-            Title title11 = new Title();
-            ChartArea chartArea12 = new ChartArea();
-            Title title12 = new Title();
+            ChartArea chartArea1 = new ChartArea();
+            Title title1 = new Title();
+            ChartArea chartArea2 = new ChartArea();
+            Title title2 = new Title();
+            ChartArea chartArea3 = new ChartArea();
+            Title title3 = new Title();
+            ChartArea chartArea4 = new ChartArea();
+            Title title4 = new Title();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Fans));
             panelFans = new Panel();
             labelTip = new Label();
@@ -55,6 +55,7 @@ namespace GHelper
             picturePerf = new PictureBox();
             labelFans = new Label();
             panelApplyFans = new Panel();
+            buttonCalibrate = new RButton();
             labelFansResult = new Label();
             checkApplyFans = new RCheckBox();
             buttonReset = new RButton();
@@ -128,6 +129,10 @@ namespace GHelper
             labelGPUCore = new Label();
             trackGPUCore = new TrackBar();
             labelGPUCoreTitle = new Label();
+            panelGPUClockLimit = new Panel();
+            labelGPUClockLimit = new Label();
+            trackGPUClockLimit = new TrackBar();
+            labelGPUClockLimitTitle = new Label();
             panelTitleGPU = new Panel();
             pictureGPU = new PictureBox();
             labelGPU = new Label();
@@ -136,10 +141,6 @@ namespace GHelper
             buttonAdvanced = new RButton();
             buttonGPU = new RButton();
             buttonCPU = new RButton();
-            panelGPUClockLimit = new Panel();
-            labelGPUClockLimit = new Label();
-            trackGPUClockLimit = new TrackBar();
-            labelGPUClockLimitTitle = new Label();
             panelFans.SuspendLayout();
             tableFanCharts.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)chartGPU).BeginInit();
@@ -188,12 +189,12 @@ namespace GHelper
             ((System.ComponentModel.ISupportInitialize)trackGPUMemory).BeginInit();
             panelGPUCore.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)trackGPUCore).BeginInit();
+            panelGPUClockLimit.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)trackGPUClockLimit).BeginInit();
             panelTitleGPU.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureGPU).BeginInit();
             panelNav.SuspendLayout();
             tableNav.SuspendLayout();
-            panelGPUClockLimit.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)trackGPUClockLimit).BeginInit();
             SuspendLayout();
             // 
             // panelFans
@@ -239,7 +240,7 @@ namespace GHelper
             tableFanCharts.Location = new Point(0, 66);
             tableFanCharts.Margin = new Padding(4);
             tableFanCharts.Name = "tableFanCharts";
-            tableFanCharts.Padding = new Padding(10, 0, 10, 10);
+            tableFanCharts.Padding = new Padding(10, 0, 10, 5);
             tableFanCharts.RowCount = 2;
             tableFanCharts.RowStyles.Add(new RowStyle(SizeType.Percent, 25F));
             tableFanCharts.RowStyles.Add(new RowStyle(SizeType.Percent, 25F));
@@ -250,60 +251,60 @@ namespace GHelper
             // 
             // chartGPU
             // 
-            chartArea9.Name = "ChartArea1";
-            chartGPU.ChartAreas.Add(chartArea9);
+            chartArea1.Name = "ChartArea1";
+            chartGPU.ChartAreas.Add(chartArea1);
             chartGPU.Dock = DockStyle.Fill;
-            chartGPU.Location = new Point(12, 491);
+            chartGPU.Location = new Point(12, 493);
             chartGPU.Margin = new Padding(2, 10, 2, 10);
             chartGPU.Name = "chartGPU";
-            chartGPU.Size = new Size(782, 461);
+            chartGPU.Size = new Size(782, 463);
             chartGPU.TabIndex = 17;
             chartGPU.Text = "chartGPU";
-            title9.Name = "Title1";
-            chartGPU.Titles.Add(title9);
+            title1.Name = "Title1";
+            chartGPU.Titles.Add(title1);
             // 
             // chartCPU
             // 
-            chartArea10.Name = "ChartArea1";
-            chartCPU.ChartAreas.Add(chartArea10);
+            chartArea2.Name = "ChartArea1";
+            chartCPU.ChartAreas.Add(chartArea2);
             chartCPU.Dock = DockStyle.Fill;
             chartCPU.Location = new Point(12, 10);
             chartCPU.Margin = new Padding(2, 10, 2, 10);
             chartCPU.Name = "chartCPU";
-            chartCPU.Size = new Size(782, 461);
+            chartCPU.Size = new Size(782, 463);
             chartCPU.TabIndex = 14;
             chartCPU.Text = "chartCPU";
-            title10.Name = "Title1";
-            chartCPU.Titles.Add(title10);
+            title2.Name = "Title1";
+            chartCPU.Titles.Add(title2);
             // 
             // chartXGM
             // 
-            chartArea11.Name = "ChartAreaXGM";
-            chartXGM.ChartAreas.Add(chartArea11);
+            chartArea3.Name = "ChartAreaXGM";
+            chartXGM.ChartAreas.Add(chartArea3);
             chartXGM.Dock = DockStyle.Fill;
-            chartXGM.Location = new Point(12, 1453);
+            chartXGM.Location = new Point(12, 1459);
             chartXGM.Margin = new Padding(2, 10, 2, 10);
             chartXGM.Name = "chartXGM";
-            chartXGM.Size = new Size(782, 464);
+            chartXGM.Size = new Size(782, 463);
             chartXGM.TabIndex = 14;
             chartXGM.Text = "chartXGM";
-            title11.Name = "Title4";
-            chartXGM.Titles.Add(title11);
+            title3.Name = "Title4";
+            chartXGM.Titles.Add(title3);
             chartXGM.Visible = false;
             // 
             // chartMid
             // 
-            chartArea12.Name = "ChartArea3";
-            chartMid.ChartAreas.Add(chartArea12);
+            chartArea4.Name = "ChartArea3";
+            chartMid.ChartAreas.Add(chartArea4);
             chartMid.Dock = DockStyle.Fill;
-            chartMid.Location = new Point(12, 972);
+            chartMid.Location = new Point(12, 976);
             chartMid.Margin = new Padding(2, 10, 2, 10);
             chartMid.Name = "chartMid";
-            chartMid.Size = new Size(782, 461);
+            chartMid.Size = new Size(782, 463);
             chartMid.TabIndex = 14;
             chartMid.Text = "chartMid";
-            title12.Name = "Title3";
-            chartMid.Titles.Add(title12);
+            title4.Name = "Title3";
+            chartMid.Titles.Add(title4);
             chartMid.Visible = false;
             // 
             // panelTitleFans
@@ -410,6 +411,7 @@ namespace GHelper
             // 
             // panelApplyFans
             // 
+            panelApplyFans.Controls.Add(buttonCalibrate);
             panelApplyFans.Controls.Add(labelFansResult);
             panelApplyFans.Controls.Add(checkApplyFans);
             panelApplyFans.Controls.Add(buttonReset);
@@ -420,16 +422,32 @@ namespace GHelper
             panelApplyFans.Size = new Size(806, 116);
             panelApplyFans.TabIndex = 43;
             // 
+            // buttonCalibrate
+            // 
+            buttonCalibrate.Activated = false;
+            buttonCalibrate.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            buttonCalibrate.BackColor = SystemColors.ControlLight;
+            buttonCalibrate.BorderColor = Color.Transparent;
+            buttonCalibrate.BorderRadius = 2;
+            buttonCalibrate.FlatStyle = FlatStyle.Flat;
+            buttonCalibrate.Location = new Point(239, 40);
+            buttonCalibrate.Margin = new Padding(4, 2, 4, 2);
+            buttonCalibrate.Name = "buttonCalibrate";
+            buttonCalibrate.Secondary = true;
+            buttonCalibrate.Size = new Size(141, 50);
+            buttonCalibrate.TabIndex = 43;
+            buttonCalibrate.Text = "Calibrate";
+            buttonCalibrate.UseVisualStyleBackColor = false;
+            // 
             // labelFansResult
             // 
-            labelFansResult.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            labelFansResult.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             labelFansResult.ForeColor = Color.Red;
-            labelFansResult.Location = new Point(24, 4);
+            labelFansResult.Location = new Point(18, 2);
             labelFansResult.Margin = new Padding(4, 0, 4, 0);
             labelFansResult.Name = "labelFansResult";
-            labelFansResult.Size = new Size(762, 32);
+            labelFansResult.Size = new Size(771, 32);
             labelFansResult.TabIndex = 42;
-            labelFansResult.TextAlign = ContentAlignment.TopRight;
             labelFansResult.Visible = false;
             // 
             // checkApplyFans
@@ -458,7 +476,7 @@ namespace GHelper
             buttonReset.Margin = new Padding(4, 2, 4, 2);
             buttonReset.Name = "buttonReset";
             buttonReset.Secondary = true;
-            buttonReset.Size = new Size(274, 50);
+            buttonReset.Size = new Size(216, 50);
             buttonReset.TabIndex = 18;
             buttonReset.Text = Properties.Strings.FactoryDefaults;
             buttonReset.UseVisualStyleBackColor = false;
@@ -1337,6 +1355,56 @@ namespace GHelper
             labelGPUCoreTitle.TabIndex = 17;
             labelGPUCoreTitle.Text = "Core Clock Offset";
             // 
+            // panelGPUClockLimit
+            // 
+            panelGPUClockLimit.AutoSize = true;
+            panelGPUClockLimit.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            panelGPUClockLimit.Controls.Add(labelGPUClockLimit);
+            panelGPUClockLimit.Controls.Add(trackGPUClockLimit);
+            panelGPUClockLimit.Controls.Add(labelGPUClockLimitTitle);
+            panelGPUClockLimit.Dock = DockStyle.Top;
+            panelGPUClockLimit.Location = new Point(0, 60);
+            panelGPUClockLimit.Margin = new Padding(4);
+            panelGPUClockLimit.MaximumSize = new Size(0, 124);
+            panelGPUClockLimit.Name = "panelGPUClockLimit";
+            panelGPUClockLimit.Size = new Size(520, 124);
+            panelGPUClockLimit.TabIndex = 48;
+            // 
+            // labelGPUClockLimit
+            // 
+            labelGPUClockLimit.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            labelGPUClockLimit.Location = new Point(326, 16);
+            labelGPUClockLimit.Margin = new Padding(4, 0, 4, 0);
+            labelGPUClockLimit.Name = "labelGPUClockLimit";
+            labelGPUClockLimit.Size = new Size(176, 32);
+            labelGPUClockLimit.TabIndex = 29;
+            labelGPUClockLimit.Text = "1500 MHz";
+            labelGPUClockLimit.TextAlign = ContentAlignment.TopRight;
+            // 
+            // trackGPUClockLimit
+            // 
+            trackGPUClockLimit.LargeChange = 100;
+            trackGPUClockLimit.Location = new Point(6, 48);
+            trackGPUClockLimit.Margin = new Padding(4, 2, 4, 2);
+            trackGPUClockLimit.Maximum = 3000;
+            trackGPUClockLimit.Name = "trackGPUClockLimit";
+            trackGPUClockLimit.RightToLeft = RightToLeft.No;
+            trackGPUClockLimit.Size = new Size(496, 90);
+            trackGPUClockLimit.SmallChange = 10;
+            trackGPUClockLimit.TabIndex = 18;
+            trackGPUClockLimit.TickFrequency = 50;
+            trackGPUClockLimit.TickStyle = TickStyle.TopLeft;
+            // 
+            // labelGPUClockLimitTitle
+            // 
+            labelGPUClockLimitTitle.AutoSize = true;
+            labelGPUClockLimitTitle.Location = new Point(10, 16);
+            labelGPUClockLimitTitle.Margin = new Padding(4, 0, 4, 0);
+            labelGPUClockLimitTitle.Name = "labelGPUClockLimitTitle";
+            labelGPUClockLimitTitle.Size = new Size(188, 32);
+            labelGPUClockLimitTitle.TabIndex = 17;
+            labelGPUClockLimitTitle.Text = "Core Clock Limit";
+            // 
             // panelTitleGPU
             // 
             panelTitleGPU.AutoSize = true;
@@ -1459,56 +1527,6 @@ namespace GHelper
             buttonCPU.TextImageRelation = TextImageRelation.ImageBeforeText;
             buttonCPU.UseVisualStyleBackColor = false;
             // 
-            // panelGPUClockLimit
-            // 
-            panelGPUClockLimit.AutoSize = true;
-            panelGPUClockLimit.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            panelGPUClockLimit.Controls.Add(labelGPUClockLimit);
-            panelGPUClockLimit.Controls.Add(trackGPUClockLimit);
-            panelGPUClockLimit.Controls.Add(labelGPUClockLimitTitle);
-            panelGPUClockLimit.Dock = DockStyle.Top;
-            panelGPUClockLimit.Location = new Point(0, 60);
-            panelGPUClockLimit.Margin = new Padding(4);
-            panelGPUClockLimit.MaximumSize = new Size(0, 124);
-            panelGPUClockLimit.Name = "panelGPUClockLimit";
-            panelGPUClockLimit.Size = new Size(520, 124);
-            panelGPUClockLimit.TabIndex = 48;
-            // 
-            // labelGPUClockLimit
-            // 
-            labelGPUClockLimit.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            labelGPUClockLimit.Location = new Point(326, 16);
-            labelGPUClockLimit.Margin = new Padding(4, 0, 4, 0);
-            labelGPUClockLimit.Name = "labelGPUClockLimit";
-            labelGPUClockLimit.Size = new Size(176, 32);
-            labelGPUClockLimit.TabIndex = 29;
-            labelGPUClockLimit.Text = "1500 MHz";
-            labelGPUClockLimit.TextAlign = ContentAlignment.TopRight;
-            // 
-            // trackGPUClockLimit
-            // 
-            trackGPUClockLimit.LargeChange = 100;
-            trackGPUClockLimit.Location = new Point(6, 48);
-            trackGPUClockLimit.Margin = new Padding(4, 2, 4, 2);
-            trackGPUClockLimit.Maximum = 3000;
-            trackGPUClockLimit.Name = "trackGPUClockLimit";
-            trackGPUClockLimit.RightToLeft = RightToLeft.No;
-            trackGPUClockLimit.Size = new Size(496, 90);
-            trackGPUClockLimit.SmallChange = 10;
-            trackGPUClockLimit.TabIndex = 18;
-            trackGPUClockLimit.TickFrequency = 50;
-            trackGPUClockLimit.TickStyle = TickStyle.TopLeft;
-            // 
-            // labelGPUClockLimitTitle
-            // 
-            labelGPUClockLimitTitle.AutoSize = true;
-            labelGPUClockLimitTitle.Location = new Point(10, 16);
-            labelGPUClockLimitTitle.Margin = new Padding(4, 0, 4, 0);
-            labelGPUClockLimitTitle.Name = "labelGPUClockLimitTitle";
-            labelGPUClockLimitTitle.Size = new Size(188, 32);
-            labelGPUClockLimitTitle.TabIndex = 17;
-            labelGPUClockLimitTitle.Text = "Core Clock Limit";
-            // 
             // Fans
             // 
             AutoScaleDimensions = new SizeF(192F, 192F);
@@ -1597,14 +1615,14 @@ namespace GHelper
             panelGPUCore.ResumeLayout(false);
             panelGPUCore.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)trackGPUCore).EndInit();
+            panelGPUClockLimit.ResumeLayout(false);
+            panelGPUClockLimit.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)trackGPUClockLimit).EndInit();
             panelTitleGPU.ResumeLayout(false);
             panelTitleGPU.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)pictureGPU).EndInit();
             panelNav.ResumeLayout(false);
             tableNav.ResumeLayout(false);
-            panelGPUClockLimit.ResumeLayout(false);
-            panelGPUClockLimit.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)trackGPUClockLimit).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -1711,5 +1729,6 @@ namespace GHelper
         private Label labelGPUClockLimit;
         private TrackBar trackGPUClockLimit;
         private Label labelGPUClockLimitTitle;
+        private RButton buttonCalibrate;
     }
 }

@@ -18,8 +18,6 @@ namespace GHelper
         Series seriesMid;
         Series seriesXGM;
 
-        static int MinRPM, MaxRPM;
-
         static bool gpuVisible = true;
         static bool fanRpm = true;
 
@@ -27,6 +25,8 @@ namespace GHelper
 
         NvidiaGpuControl? nvControl = null;
         ModeControl modeControl = Program.modeControl;
+
+        public static System.Timers.Timer timer = default!;
 
         public Fans()
         {
@@ -57,10 +57,10 @@ namespace GHelper
             buttonApplyAdvanced.Text = Properties.Strings.Apply;
             checkApplyUV.Text = Properties.Strings.AutoApply;
 
+            buttonCalibrate.Text = Properties.Strings.Calibrate;
+
             InitTheme(true);
 
-            MinRPM = 18;
-            MaxRPM = HardwareControl.fanMax;
             labelTip.Visible = false;
             labelTip.BackColor = Color.Transparent;
 
@@ -200,13 +200,98 @@ namespace GHelper
 
             checkApplyUV.Click += CheckApplyUV_Click;
 
+            timer = new System.Timers.Timer(1000);
+            timer.Elapsed += Timer_Elapsed;
+            buttonCalibrate.Click += ButtonCalibrate_Click;
+
             ToggleNavigation(0);
 
             FormClosed += Fans_FormClosed;
 
         }
 
- 
+        const int FAN_COUNT = 3;
+        static int[] fanMax;
+        static int sameCount = 0;
+
+        private void Timer_Elapsed(object? sender, System.Timers.ElapsedEventArgs e)
+        {
+            int fan;
+            bool same = true;
+
+            for (int i = 0; i < FAN_COUNT; i++)
+            {
+                fan = Program.acpi.GetFan((AsusFan)i);
+                if (fan > fanMax[i])
+                {
+                    fanMax[i] = fan;
+                    same = false;
+                }
+            }
+
+            if (same) sameCount++;
+            else sameCount = 0;
+
+            LabelFansResult("Max Speed - CPU: " + fanMax[(int)AsusFan.CPU] * 100 + ", GPU: " + fanMax[(int)AsusFan.GPU] * 100 + " (" + sameCount + "s)");
+
+            if (sameCount >= 15)
+            {
+                for (int i = 0; i < FAN_COUNT; i++)
+                {
+                    if (fanMax[i] > 30 && fanMax[i] < 80) AppConfig.Set("fan_max_" + i, fanMax[i]);
+                }
+
+                sameCount = 0;
+                CalibrateNext();
+            }
+
+        }
+
+        private void CalibrateNext()
+        {
+
+            timer.Enabled = false;
+            modeControl.SetPerformanceMode();
+
+            string label = "Measured - CPU: " + AppConfig.Get("fan_max_" + (int)AsusFan.CPU) * 100;
+
+            if (AppConfig.Get("fan_max_" + (int)AsusFan.GPU) > 0)
+                label = label + ", GPU: " + AppConfig.Get("fan_max_" + (int)AsusFan.GPU) * 100;
+
+            if (AppConfig.Get("fan_max_" + (int)AsusFan.Mid) > 0)
+                label = label + ", Mid: " + AppConfig.Get("fan_max_" + (int)AsusFan.Mid) * 100;
+
+            LabelFansResult(label);
+
+            Invoke(delegate
+            {
+                buttonCalibrate.Enabled = true;
+                SetAxis(chartCPU, AsusFan.CPU);
+                SetAxis(chartGPU, AsusFan.GPU);
+                if (chartMid.Visible) SetAxis(chartMid, AsusFan.Mid);
+
+            });
+
+        }
+
+        private void ButtonCalibrate_Click(object? sender, EventArgs e)
+        {
+            fanMax = new int[] { 0, 0, 0 };
+
+            buttonCalibrate.Enabled = false;
+            timer.Enabled = true;
+
+            for (int i = 0; i < FAN_COUNT; i++)
+            {
+                AppConfig.Remove("fan_max_" + i);
+            }
+
+            Program.acpi.DeviceSet(AsusACPI.PerformanceMode, AsusACPI.PerformanceTurbo, "ModeCalibration");
+            
+            for (int i = 0; i < FAN_COUNT; i++)
+                Program.acpi.SetFanCurve((AsusFan)i, new byte[] { 20, 30, 40, 50, 60, 70, 80, 90, 100, 100, 100, 100, 100, 100, 100, 100 });
+        }
+
         private void ChartCPU_MouseClick(object? sender, MouseEventArgs e)
         {
             if (sender is null) return;
@@ -571,15 +656,17 @@ namespace GHelper
             VisualiseGPUSettings();
         }
 
-        static string ChartPercToRPM(int percentage, AsusFan device, string unit = "")
+        static string ChartYLabel(int percentage, AsusFan device, string unit = "")
         {
             if (percentage == 0) return "OFF";
 
-            int Max = MaxRPM;
+            int Min = HardwareControl.DEFAULT_FAN_MIN;
+            int Max = AppConfig.Get("fan_max_" + (int)device, HardwareControl.DEFAULT_FAN_MAX);
+
             if (device == AsusFan.XGM) Max = 72;
 
             if (fanRpm)
-                return (200 * Math.Round((float)(MinRPM * 100 + (Max - MinRPM) * percentage) / 200)).ToString() + unit;
+                return (200 * Math.Round((float)(Min * 100 + (Max - Min) * percentage) / 200)).ToString() + unit;
             else
                 return percentage + "%";
         }
@@ -589,12 +676,12 @@ namespace GHelper
 
             chart.ChartAreas[0].AxisY.CustomLabels.Clear();
 
-            for (int i = 0; i <= fansMax - 10; i += 10)
+            for (int i = 0; i <= fansMax; i += 10)
             {
-                chart.ChartAreas[0].AxisY.CustomLabels.Add(i - 2, i + 2, ChartPercToRPM(i, device));
+                chart.ChartAreas[0].AxisY.CustomLabels.Add(i - 2, i + 2, ChartYLabel(i, device));
             }
 
-            chart.ChartAreas[0].AxisY.CustomLabels.Add(fansMax - 2, fansMax + 2, Properties.Strings.RPM);
+            //chart.ChartAreas[0].AxisY.CustomLabels.Add(fansMax -2, fansMax + 2, Properties.Strings.RPM);
             chart.ChartAreas[0].AxisY.Interval = 10;
         }
 
@@ -602,20 +689,21 @@ namespace GHelper
         {
 
             string title = "";
+            string scale = ", RPM/°C";
 
             switch (device)
             {
                 case AsusFan.CPU:
-                    title = Properties.Strings.FanProfileCPU;
+                    title = Properties.Strings.FanProfileCPU + scale;
                     break;
                 case AsusFan.GPU:
-                    title = Properties.Strings.FanProfileGPU;
+                    title = Properties.Strings.FanProfileGPU + scale;
                     break;
                 case AsusFan.Mid:
-                    title = Properties.Strings.FanProfileMid;
+                    title = Properties.Strings.FanProfileMid + scale;
                     break;
                 case AsusFan.XGM:
-                    title = "XG Mobile";
+                    title = "XG Mobile" + scale;
                     break;
             }
 
@@ -724,8 +812,11 @@ namespace GHelper
 
         public void LabelFansResult(string text)
         {
-            labelFansResult.Text = text;
-            labelFansResult.Visible = (text.Length > 0);
+            Invoke(delegate
+            {
+                labelFansResult.Text = text;
+                labelFansResult.Visible = (text.Length > 0);
+            });
         }
 
         private void Fans_FormClosing(object? sender, FormClosingEventArgs e)
@@ -994,7 +1085,6 @@ namespace GHelper
         {
             curPoint = null;
             curIndex = -1;
-
             labelTip.Visible = false;
 
             SaveProfile(seriesCPU, AsusFan.CPU);
@@ -1017,7 +1107,9 @@ namespace GHelper
 
         private void ChartCPU_MouseLeave(object? sender, EventArgs e)
         {
-            Chart_Save();
+            curPoint = null;
+            curIndex = -1;
+            labelTip.Visible = false;
         }
 
         private void ChartCPU_MouseMove(object? sender, MouseEventArgs e, AsusFan device)
@@ -1081,7 +1173,7 @@ namespace GHelper
                         tip = true;
                     }
 
-                    labelTip.Text = Math.Round(curPoint.XValue) + "C, " + ChartPercToRPM((int)curPoint.YValues[0], device, " " + Properties.Strings.RPM);
+                    labelTip.Text = Math.Round(curPoint.XValue) + "C, " + ChartYLabel((int)curPoint.YValues[0], device, " " + Properties.Strings.RPM);
                     labelTip.Top = e.Y + ((Control)sender).Top;
                     labelTip.Left = e.X - 50;
 

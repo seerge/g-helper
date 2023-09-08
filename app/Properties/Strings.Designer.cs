@@ -520,6 +520,15 @@ namespace GHelper.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Calibrate.
+        /// </summary>
+        internal static string Calibrate {
+            get {
+                return ResourceManager.GetString("Calibrate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Charging.
         /// </summary>
         internal static string Charging {
