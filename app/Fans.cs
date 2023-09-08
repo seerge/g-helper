@@ -209,9 +209,8 @@ namespace GHelper
         }
 
         const int FAN_COUNT = 3;
-        static int[] fanMin, fanMax;
+        static int[] fanMax;
         static int sameCount = 0;
-        static int calibrationStep = 0;
 
         private void Timer_Elapsed(object? sender, System.Timers.ElapsedEventArgs e)
         {
@@ -221,47 +220,22 @@ namespace GHelper
             for (int i = 0; i < FAN_COUNT; i++)
             {
                 fan = Program.acpi.GetFan((AsusFan)i);
-
-                if (calibrationStep == 1)
+                if (fan > fanMax[i])
                 {
-                    if (fan < fanMin[i])
-                    {
-                        fanMin[i] = fan;
-                        same = false;
-                    }
-
-                }
-
-                if (calibrationStep == 2)
-                {
-                    if (fan > fanMax[i])
-                    {
-                        fanMax[i] = fan;
-                        same = false;
-                    }
+                    fanMax[i] = fan;
+                    same = false;
                 }
             }
 
             if (same) sameCount++;
             else sameCount = 0;
 
-            if (calibrationStep == 1)
-            {
-                LabelFansResult("Measuring Min Speed - CPU: " + fanMin[(int)AsusFan.CPU]*100 + ", GPU: " + fanMin[(int)AsusFan.GPU] * 100 + " (" + sameCount + "s)");
-            }
-
-            if (calibrationStep == 2)
-            {
-                LabelFansResult("Measuring Max Speed - CPU: " + fanMax[(int)AsusFan.CPU] * 100 + ", GPU: " + fanMax[(int)AsusFan.GPU] * 100 + " (" + sameCount + "s)");
-            }
-
+            LabelFansResult("Max Speed - CPU: " + fanMax[(int)AsusFan.CPU] * 100 + ", GPU: " + fanMax[(int)AsusFan.GPU] * 100 + " (" + sameCount + "s)");
 
             if (sameCount >= 15)
             {
-
                 for (int i = 0; i < FAN_COUNT; i++)
                 {
-                    if (fanMin[i] > 0 && fanMin[i] < 30) AppConfig.Set("fan_min_" + i, fanMin[i]);
                     if (fanMax[i] > 30 && fanMax[i] < 80) AppConfig.Set("fan_max_" + i, fanMax[i]);
                 }
 
@@ -273,32 +247,17 @@ namespace GHelper
 
         private void CalibrateNext()
         {
-            calibrationStep++;
-
-            if (calibrationStep == 1)
-            {
-                for (int i = 0; i < FAN_COUNT; i++)
-                    Program.acpi.SetFanCurve((AsusFan)i, new byte[] { 20, 30, 40, 50, 60, 70, 80, 90, 1, 1, 1, 1, 1, 1, 1, 1 });
-                return;
-            }
-
-            if (calibrationStep == 2)
-            {
-                for (int i = 0; i < FAN_COUNT; i++)
-                    Program.acpi.SetFanCurve((AsusFan)i, new byte[] { 20, 30, 40, 50, 60, 70, 80, 90, 100, 100, 100, 100, 100, 100, 100, 100 });
-                return;
-            }
 
             timer.Enabled = false;
             modeControl.SetPerformanceMode();
 
-            string label = "Measured - CPU: " + AppConfig.Get("fan_min_" + (int)AsusFan.CPU) * 100 + ".." + AppConfig.Get("fan_max_" + (int)AsusFan.CPU) * 100;
+            string label = "Measured - CPU: " + AppConfig.Get("fan_max_" + (int)AsusFan.CPU) * 100;
 
             if (AppConfig.Get("fan_max_" + (int)AsusFan.GPU) > 0)
-                label = label + ", GPU: " + AppConfig.Get("fan_min_" + (int)AsusFan.GPU) * 100 + ".." + AppConfig.Get("fan_max_" + (int)AsusFan.GPU) * 100;
+                label = label + ", GPU: " + AppConfig.Get("fan_max_" + (int)AsusFan.GPU) * 100;
 
             if (AppConfig.Get("fan_max_" + (int)AsusFan.Mid) > 0)
-                label = label + ", Mid: " + AppConfig.Get("fan_min_" + (int)AsusFan.Mid) * 100 + ".." + AppConfig.Get("fan_max_" + (int)AsusFan.Mid) * 100;
+                label = label + ", Mid: " + AppConfig.Get("fan_max_" + (int)AsusFan.Mid) * 100;
 
             LabelFansResult(label);
 
@@ -315,20 +274,18 @@ namespace GHelper
 
         private void ButtonCalibrate_Click(object? sender, EventArgs e)
         {
-            fanMin = new int[] { 100, 100, 100 };
             fanMax = new int[] { 0, 0, 0 };
 
-            calibrationStep = 0;
             buttonCalibrate.Enabled = false;
             timer.Enabled = true;
 
             for (int i = 0; i < FAN_COUNT; i++)
             {
-                AppConfig.Remove("fan_min_" + i);
                 AppConfig.Remove("fan_max_" + i);
             }
 
-            CalibrateNext();
+            for (int i = 0; i < FAN_COUNT; i++)
+                Program.acpi.SetFanCurve((AsusFan)i, new byte[] { 20, 30, 40, 50, 60, 70, 80, 90, 100, 100, 100, 100, 100, 100, 100, 100 });
         }
 
         private void ChartCPU_MouseClick(object? sender, MouseEventArgs e)
@@ -699,7 +656,7 @@ namespace GHelper
         {
             if (percentage == 0) return "OFF";
 
-            int Min = AppConfig.Get("fan_min_" + (int)device, HardwareControl.DEFAULT_FAN_MIN);
+            int Min = HardwareControl.DEFAULT_FAN_MIN;
             int Max = AppConfig.Get("fan_max_" + (int)device, HardwareControl.DEFAULT_FAN_MAX);
 
             if (device == AsusFan.XGM) Max = 72;
