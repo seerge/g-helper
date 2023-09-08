@@ -259,7 +259,7 @@
     <value>Uruchamianie</value>
   </data>
   <data name="BootSound" xml:space="preserve">
-    <value>Boot Sound</value>
+    <value>Dźwięk podczas rozruchu</value>
   </data>
   <data name="Brightness" xml:space="preserve">
     <value>Jasność</value>
