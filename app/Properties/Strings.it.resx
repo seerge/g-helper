@@ -270,6 +270,9 @@
   <data name="BrightnessUp" xml:space="preserve">
     <value>Aumenta Luminosità</value>
   </data>
+  <data name="Calibrate" xml:space="preserve">
+    <value>Calibrate</value>
+  </data>
   <data name="Charging" xml:space="preserve">
     <value>In carica</value>
   </data>
