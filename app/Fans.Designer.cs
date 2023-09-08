@@ -430,11 +430,11 @@ namespace GHelper
             buttonCalibrate.BorderColor = Color.Transparent;
             buttonCalibrate.BorderRadius = 2;
             buttonCalibrate.FlatStyle = FlatStyle.Flat;
-            buttonCalibrate.Location = new Point(239, 42);
+            buttonCalibrate.Location = new Point(239, 40);
             buttonCalibrate.Margin = new Padding(4, 2, 4, 2);
             buttonCalibrate.Name = "buttonCalibrate";
             buttonCalibrate.Secondary = true;
-            buttonCalibrate.Size = new Size(135, 50);
+            buttonCalibrate.Size = new Size(141, 50);
             buttonCalibrate.TabIndex = 43;
             buttonCalibrate.Text = "Calibrate";
             buttonCalibrate.UseVisualStyleBackColor = false;
@@ -443,7 +443,7 @@ namespace GHelper
             // 
             labelFansResult.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             labelFansResult.ForeColor = Color.Red;
-            labelFansResult.Location = new Point(18, 6);
+            labelFansResult.Location = new Point(18, 2);
             labelFansResult.Margin = new Padding(4, 0, 4, 0);
             labelFansResult.Name = "labelFansResult";
             labelFansResult.Size = new Size(771, 32);

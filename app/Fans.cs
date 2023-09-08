@@ -715,12 +715,12 @@ namespace GHelper
 
             chart.ChartAreas[0].AxisY.CustomLabels.Clear();
 
-            for (int i = 0; i <= fansMax - 10; i += 10)
+            for (int i = 0; i <= fansMax; i += 10)
             {
                 chart.ChartAreas[0].AxisY.CustomLabels.Add(i - 2, i + 2, ChartYLabel(i, device));
             }
 
-            chart.ChartAreas[0].AxisY.CustomLabels.Add(fansMax - 2, fansMax + 2, Properties.Strings.RPM);
+            //chart.ChartAreas[0].AxisY.CustomLabels.Add(fansMax -2, fansMax + 2, Properties.Strings.RPM);
             chart.ChartAreas[0].AxisY.Interval = 10;
         }
 
@@ -728,20 +728,21 @@ namespace GHelper
         {
 
             string title = "";
+            string scale = ", RPM/°C";
 
             switch (device)
             {
                 case AsusFan.CPU:
-                    title = Properties.Strings.FanProfileCPU;
+                    title = Properties.Strings.FanProfileCPU + scale;
                     break;
                 case AsusFan.GPU:
-                    title = Properties.Strings.FanProfileGPU;
+                    title = Properties.Strings.FanProfileGPU + scale;
                     break;
                 case AsusFan.Mid:
-                    title = Properties.Strings.FanProfileMid;
+                    title = Properties.Strings.FanProfileMid + scale;
                     break;
                 case AsusFan.XGM:
-                    title = "XG Mobile";
+                    title = "XG Mobile" + scale;
                     break;
             }
 
