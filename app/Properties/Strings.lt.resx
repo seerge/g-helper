@@ -259,7 +259,7 @@
     <value>Paleidimas</value>
   </data>
   <data name="BootSound" xml:space="preserve">
-    <value>Boot Sound</value>
+    <value>Paleidimo garsas</value>
   </data>
   <data name="Brightness" xml:space="preserve">
     <value>Ryškumas</value>
@@ -269,6 +269,9 @@
   </data>
   <data name="BrightnessUp" xml:space="preserve">
     <value>Ryškumo didinimas</value>
+  </data>
+  <data name="Calibrate" xml:space="preserve">
+    <value>Kalibruoti</value>
   </data>
   <data name="Charging" xml:space="preserve">
     <value>Įkrovimas</value>
