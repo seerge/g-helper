@@ -2,6 +2,7 @@
 using GHelper.AutoUpdate;
 using GHelper.Battery;
 using GHelper.Display;
+using GHelper.Fan;
 using GHelper.Gpu;
 using GHelper.Helpers;
 using GHelper.Input;
@@ -563,7 +564,7 @@ namespace GHelper
 
         private void LabelCPUFan_Click(object? sender, EventArgs e)
         {
-            HardwareControl.fanRpm = !HardwareControl.fanRpm;
+            FanSensorControl.fanRpm = !FanSensorControl.fanRpm;
             RefreshSensors(true);
         }
 

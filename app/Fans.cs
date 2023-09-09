@@ -587,8 +587,8 @@ namespace GHelper
         {
             if (percentage == 0) return "OFF";
 
-            int Min = HardwareControl.DEFAULT_FAN_MIN;
-            int Max = AppConfig.Get("fan_max_" + (int)device, HardwareControl.DEFAULT_FAN_MAX);
+            int Min = FanSensorControl.DEFAULT_FAN_MIN;
+            int Max = FanSensorControl.GetFanMax(device);
 
             if (device == AsusFan.XGM) Max = 72;
 

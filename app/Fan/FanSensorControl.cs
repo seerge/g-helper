@@ -4,30 +4,82 @@ namespace GHelper.Fan
 {
     public class FanSensorControl
     {
+        public const int DEFAULT_FAN_MIN = 18;
+        public const int DEFAULT_FAN_MAX = 58;
+
+        public const int INADEQUATE_MAX = 90;
+
         Fans fansForm;
         ModeControl modeControl = Program.modeControl;
 
+        static int[] measuredMax;
         const int FAN_COUNT = 3;
-        static int[] fanMax;
         static int sameCount = 0;
 
         static System.Timers.Timer timer = default!;
 
-        public FanSensorControl(Fans fansForm) { 
+        static int[] _fanMax = new int[3] { 
+            AppConfig.Get("fan_max_" + (int)AsusFan.CPU, DEFAULT_FAN_MAX), 
+            AppConfig.Get("fan_max_" + (int)AsusFan.GPU, DEFAULT_FAN_MAX), 
+            AppConfig.Get("fan_max_" + (int)AsusFan.Mid, DEFAULT_FAN_MAX) 
+        };
 
+        static bool _fanRpm = AppConfig.IsNotFalse("fan_rpm");
+
+        public FanSensorControl(Fans fansForm)
+        {
             this.fansForm = fansForm;
-
             timer = new System.Timers.Timer(1000);
             timer.Elapsed += Timer_Elapsed;
-
         }
 
-        public void StartCalibration() {
 
-            fanMax = new int[] { 0, 0, 0 };
+        public static int GetFanMax(AsusFan device)
+        {
+            if (_fanMax[(int)device] < 0 || _fanMax[(int)device] > INADEQUATE_MAX)
+                SetFanMax(device, DEFAULT_FAN_MAX);
+
+            return _fanMax[(int)device];
+        }
+
+        public static void SetFanMax(AsusFan device, int value)
+        {
+            _fanMax[(int)device] = value;
+            AppConfig.Set("fan_max_" + (int)device, value);
+        }
+
+        public static bool fanRpm
+        {
+            get
+            {
+                return _fanRpm;
+            }
+            set
+            {
+                AppConfig.Set("fan_rpm", value ? 1 : 0);
+                _fanRpm = value;
+            }
+        }
+
+        public static string FormatFan(AsusFan device, int value)
+        {
+            if (value < 0) return null;
+
+            if (value > GetFanMax(device) && value <= INADEQUATE_MAX) SetFanMax(device, value);
+
+            if (fanRpm)
+                return Properties.Strings.FanSpeed + ": " + (value * 100).ToString() + "RPM";
+            else
+                return Properties.Strings.FanSpeed + ": " + Math.Min(Math.Round((float)value / GetFanMax(device) * 100), 100).ToString() + "%"; // relatively to max RPM
+        }
+
+        public void StartCalibration()
+        {
+
+            measuredMax = new int[] { 0, 0, 0 };
             timer.Enabled = true;
 
-            for (int i = 0; i < FAN_COUNT; i++) 
+            for (int i = 0; i < FAN_COUNT; i++)
                 AppConfig.Remove("fan_max_" + i);
 
             Program.acpi.DeviceSet(AsusACPI.PerformanceMode, AsusACPI.PerformanceTurbo, "ModeCalibration");
@@ -45,9 +97,9 @@ namespace GHelper.Fan
             for (int i = 0; i < FAN_COUNT; i++)
             {
                 fan = Program.acpi.GetFan((AsusFan)i);
-                if (fan > fanMax[i])
+                if (fan > measuredMax[i])
                 {
-                    fanMax[i] = fan;
+                    measuredMax[i] = fan;
                     same = false;
                 }
             }
@@ -55,8 +107,8 @@ namespace GHelper.Fan
             if (same) sameCount++;
             else sameCount = 0;
 
-            string label = "Measuring Max Speed - CPU: " + fanMax[(int)AsusFan.CPU] * 100 + ", GPU: " + fanMax[(int)AsusFan.GPU] * 100;
-            if (fanMax[(int)AsusFan.Mid] > 10) label = label + ", Mid: " + fanMax[(int)AsusFan.Mid] * 100;
+            string label = "Measuring Max Speed - CPU: " + measuredMax[(int)AsusFan.CPU] * 100 + ", GPU: " + measuredMax[(int)AsusFan.GPU] * 100;
+            if (measuredMax[(int)AsusFan.Mid] > 10) label = label + ", Mid: " + measuredMax[(int)AsusFan.Mid] * 100;
             label = label + " (" + sameCount + "s)";
 
             fansForm.LabelFansResult(label);
@@ -65,16 +117,16 @@ namespace GHelper.Fan
             {
                 for (int i = 0; i < FAN_COUNT; i++)
                 {
-                    if (fanMax[i] > 30 && fanMax[i] < HardwareControl.INADEQUATE_MAX) AppConfig.Set("fan_max_" + i, fanMax[i]);
+                    if (measuredMax[i] > 30 && measuredMax[i] < INADEQUATE_MAX) SetFanMax((AsusFan)i, measuredMax[i]);
                 }
 
                 sameCount = 0;
-                CalibrateNext();
+                FinishCalibration();
             }
 
         }
 
-        private void CalibrateNext()
+        private void FinishCalibration()
         {
 
             timer.Enabled = false;

@@ -1,4 +1,5 @@
 ﻿using GHelper;
+using GHelper.Fan;
 using GHelper.Gpu;
 using GHelper.Gpu.NVidia;
 using GHelper.Gpu.AMD;
@@ -9,11 +10,6 @@ using System.Management;
 
 public static class HardwareControl
 {
-
-    public const int DEFAULT_FAN_MIN = 18;
-    public const int DEFAULT_FAN_MAX = 58;
-
-    public const int INADEQUATE_MAX = 85;
 
     public static IGpuControl? GpuControl;
 
@@ -36,57 +32,6 @@ public static class HardwareControl
     public static int? gpuUse;
 
     static long lastUpdate;
-
-    static int[] _fanMax = new int[3] { DEFAULT_FAN_MAX, DEFAULT_FAN_MAX, DEFAULT_FAN_MAX };
-    static bool _fanRpm = false;
-
-    public static int GetFanMax(AsusFan device)
-    {
-        return _fanMax[(int)device];
-    }
-
-    public static void SetFanMax(AsusFan device, int value)
-    {
-        AppConfig.Set("fan_max_" + (int)device, value);
-    }
-
-    public static bool fanRpm
-    {
-        get
-        {
-            return _fanRpm;
-        }
-        set
-        {
-            AppConfig.Set("fan_rpm", value ? 1 : 0);
-            _fanRpm = value;
-        }
-    }
-
-    static HardwareControl()
-    {
-        for (int i = 0; i < 3; i++)
-        {
-            _fanMax[i] = AppConfig.Get("fan_max_" + i);
-            if (_fanMax[i] > INADEQUATE_MAX) _fanMax[i] = -1; 
-            if (_fanMax[i] < 0) _fanMax[i] = DEFAULT_FAN_MAX;
-        }
-
-        _fanRpm = AppConfig.IsNotFalse("fan_rpm");
-
-    }
-
-    public static string FormatFan(AsusFan device, int value)
-    {
-        if (value < 0) return null;
-
-        if (value > GetFanMax(device) && value <= INADEQUATE_MAX) SetFanMax(device, value);
-
-        if (fanRpm)
-            return GHelper.Properties.Strings.FanSpeed + ": " + (value * 100).ToString() + "RPM";
-        else
-            return GHelper.Properties.Strings.FanSpeed + ": " + Math.Min(Math.Round((float)value / GetFanMax(device) * 100), 100).ToString() + "%"; // relatively to 6000 rpm
-    }
 
     private static int GetGpuUse()
     {
@@ -240,9 +185,9 @@ public static class HardwareControl
         gpuTemp = -1;
         gpuUse = -1;
 
-        cpuFan = FormatFan(AsusFan.CPU, Program.acpi.GetFan(AsusFan.CPU));
-        gpuFan = FormatFan(AsusFan.GPU, Program.acpi.GetFan(AsusFan.GPU));
-        midFan = FormatFan(AsusFan.Mid, Program.acpi.GetFan(AsusFan.Mid));
+        cpuFan = FanSensorControl.FormatFan(AsusFan.CPU, Program.acpi.GetFan(AsusFan.CPU));
+        gpuFan = FanSensorControl.FormatFan(AsusFan.GPU, Program.acpi.GetFan(AsusFan.GPU));
+        midFan = FanSensorControl.FormatFan(AsusFan.Mid, Program.acpi.GetFan(AsusFan.Mid));
 
         cpuTemp = GetCPUTemp();
 
