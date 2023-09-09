@@ -1,4 +1,5 @@
-﻿using GHelper.Gpu.NVidia;
+﻿using GHelper.Fan;
+using GHelper.Gpu.NVidia;
 using GHelper.Mode;
 using GHelper.UI;
 using Ryzen;
@@ -26,12 +27,14 @@ namespace GHelper
         NvidiaGpuControl? nvControl = null;
         ModeControl modeControl = Program.modeControl;
 
-        public static System.Timers.Timer timer = default!;
+        FanSensorControl fanSensorControl;
 
         public Fans()
         {
 
             InitializeComponent();
+
+            fanSensorControl = new FanSensorControl(this);
 
             //float dpi = ControlHelper.GetDpiScale(this).Value;
             //comboModes.Size = new Size(comboModes.Width, (int)dpi * 18);
@@ -200,8 +203,6 @@ namespace GHelper
 
             checkApplyUV.Click += CheckApplyUV_Click;
 
-            timer = new System.Timers.Timer(1000);
-            timer.Elapsed += Timer_Elapsed;
             buttonCalibrate.Click += ButtonCalibrate_Click;
 
             ToggleNavigation(0);
@@ -210,90 +211,12 @@ namespace GHelper
 
         }
 
-        const int FAN_COUNT = 3;
-        static int[] fanMax;
-        static int sameCount = 0;
 
-        private void Timer_Elapsed(object? sender, System.Timers.ElapsedEventArgs e)
-        {
-            int fan;
-            bool same = true;
-
-            for (int i = 0; i < FAN_COUNT; i++)
-            {
-                fan = Program.acpi.GetFan((AsusFan)i);
-                if (fan > fanMax[i])
-                {
-                    fanMax[i] = fan;
-                    same = false;
-                }
-            }
-
-            if (same) sameCount++;
-            else sameCount = 0;
-
-            string label = "Measuring Max Speed - CPU: " + fanMax[(int)AsusFan.CPU] * 100 + ", GPU: " + fanMax[(int)AsusFan.GPU] * 100;
-            if (fanMax[(int)AsusFan.Mid] > 10) label = label + ", Mid: " + fanMax[(int)AsusFan.Mid] * 100;
-            label = label + " (" + sameCount + "s)";
-
-            LabelFansResult(label);
-
-            if (sameCount >= 15)
-            {
-                for (int i = 0; i < FAN_COUNT; i++)
-                {
-                    if (fanMax[i] > 30 && fanMax[i] < HardwareControl.INADEQUATE_MAX) AppConfig.Set("fan_max_" + i, fanMax[i]);
-                }
-
-                sameCount = 0;
-                CalibrateNext();
-            }
-
-        }
-
-        private void CalibrateNext()
-        {
-
-            timer.Enabled = false;
-            modeControl.SetPerformanceMode();
-
-            string label = "Measured - CPU: " + AppConfig.Get("fan_max_" + (int)AsusFan.CPU) * 100;
-
-            if (AppConfig.Get("fan_max_" + (int)AsusFan.GPU) > 0)
-                label = label + ", GPU: " + AppConfig.Get("fan_max_" + (int)AsusFan.GPU) * 100;
-
-            if (AppConfig.Get("fan_max_" + (int)AsusFan.Mid) > 0)
-                label = label + ", Mid: " + AppConfig.Get("fan_max_" + (int)AsusFan.Mid) * 100;
-
-            LabelFansResult(label);
-
-            Invoke(delegate
-            {
-                buttonCalibrate.Enabled = true;
-                SetAxis(chartCPU, AsusFan.CPU);
-                SetAxis(chartGPU, AsusFan.GPU);
-                if (chartMid.Visible) SetAxis(chartMid, AsusFan.Mid);
-
-            });
-
-        }
 
         private void ButtonCalibrate_Click(object? sender, EventArgs e)
         {
-            fanMax = new int[] { 0, 0, 0 };
-
             buttonCalibrate.Enabled = false;
-            timer.Enabled = true;
-
-            for (int i = 0; i < FAN_COUNT; i++)
-            {
-                AppConfig.Remove("fan_max_" + i);
-            }
-
-            Program.acpi.DeviceSet(AsusACPI.PerformanceMode, AsusACPI.PerformanceTurbo, "ModeCalibration");
-            
-            for (int i = 0; i < FAN_COUNT; i++)
-                Program.acpi.SetFanCurve((AsusFan)i, new byte[] { 20, 30, 40, 50, 60, 70, 80, 90, 100, 100, 100, 100, 100, 100, 100, 100 });
+            fanSensorControl.StartCalibration();
         }
 
         private void ChartCPU_MouseClick(object? sender, MouseEventArgs e)
@@ -813,9 +736,25 @@ namespace GHelper
 
         }
 
+        public void InitAxis()
+        {
+            if (this == null || this.Text == "") return;
+
+            Invoke(delegate
+            {
+                buttonCalibrate.Enabled = true;
+                SetAxis(chartCPU, AsusFan.CPU);
+                SetAxis(chartGPU, AsusFan.GPU);
+                if (chartMid.Visible) SetAxis(chartMid, AsusFan.Mid);
+            });
+        }
 
         public void LabelFansResult(string text)
         {
+            if (text.Length > 0) Logger.WriteLine(text);
+
+            if (this == null || this.Text == "") return;
+
             Invoke(delegate
             {
                 labelFansResult.Text = text;
@@ -825,7 +764,6 @@ namespace GHelper
 
         private void Fans_FormClosing(object? sender, FormClosingEventArgs e)
         {
-
             /*
             if (e.CloseReason == CloseReason.UserClosing)
             {
