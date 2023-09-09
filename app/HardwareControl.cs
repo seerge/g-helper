@@ -13,7 +13,7 @@ public static class HardwareControl
     public const int DEFAULT_FAN_MIN = 18;
     public const int DEFAULT_FAN_MAX = 58;
 
-    const int INADEQUATE_MAX = 72;
+    public const int INADEQUATE_MAX = 85;
 
     public static IGpuControl? GpuControl;
 
@@ -68,14 +68,9 @@ public static class HardwareControl
         for (int i = 0; i < 3; i++)
         {
             _fanMax[i] = AppConfig.Get("fan_max_" + i);
-
-            if (_fanMax[i] > INADEQUATE_MAX) _fanMax[i] = -1; // skipping inadvequate settings
-
-            if (_fanMax[i] < 0 && AppConfig.ContainsModel("401")) _fanMax[i] = 72;
-            if (_fanMax[i] < 0 && AppConfig.ContainsModel("503")) _fanMax[i] = 68;
+            if (_fanMax[i] > INADEQUATE_MAX) _fanMax[i] = -1; 
             if (_fanMax[i] < 0) _fanMax[i] = DEFAULT_FAN_MAX;
         }
-
 
         _fanRpm = AppConfig.IsNotFalse("fan_rpm");
 

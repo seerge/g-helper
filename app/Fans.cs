@@ -232,13 +232,17 @@ namespace GHelper
             if (same) sameCount++;
             else sameCount = 0;
 
-            LabelFansResult("Max Speed - CPU: " + fanMax[(int)AsusFan.CPU] * 100 + ", GPU: " + fanMax[(int)AsusFan.GPU] * 100 + " (" + sameCount + "s)");
+            string label = "Measuring Max Speed - CPU: " + fanMax[(int)AsusFan.CPU] * 100 + ", GPU: " + fanMax[(int)AsusFan.GPU] * 100;
+            if (fanMax[(int)AsusFan.Mid] > 10) label = label + ", Mid: " + fanMax[(int)AsusFan.Mid] * 100;
+            label = label + " (" + sameCount + "s)";
+
+            LabelFansResult(label);
 
             if (sameCount >= 15)
             {
                 for (int i = 0; i < FAN_COUNT; i++)
                 {
-                    if (fanMax[i] > 30 && fanMax[i] < 80) AppConfig.Set("fan_max_" + i, fanMax[i]);
+                    if (fanMax[i] > 30 && fanMax[i] < HardwareControl.INADEQUATE_MAX) AppConfig.Set("fan_max_" + i, fanMax[i]);
                 }
 
                 sameCount = 0;
