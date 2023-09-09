@@ -599,9 +599,7 @@ namespace GHelper.Input
         public static void SetBacklightAuto(bool init = false)
         {
             if (init) AsusUSB.Init();
-
-            //if (!OptimizationService.IsRunning()) 
-            AsusUSB.ApplyBrightness(GetBacklight(), "Auto");
+            AsusUSB.ApplyBrightness(GetBacklight(), "Auto", init);
         }
 
         public static void SetBacklight(int delta, bool force = false)

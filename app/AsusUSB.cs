@@ -333,12 +333,14 @@ namespace GHelper
         }
 
 
-        public static void ApplyBrightness(int brightness, string log = "Backlight")
+        public static void ApplyBrightness(int brightness, string log = "Backlight", bool delay = false)
         {
 
 
             Task.Run(async () =>
             {
+
+                if (delay) await Task.Delay(TimeSpan.FromSeconds(1));
 
                 if (isTuf) Program.acpi.TUFKeyboardBrightness(brightness);
 
