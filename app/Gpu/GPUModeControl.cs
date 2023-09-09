@@ -44,16 +44,12 @@ namespace GHelper.Gpu
                 // GPU mode not supported
                 if (eco < 0 && mux < 0)
                 {
-                    if (gpuExists is null)
-                        gpuExists = HardwareControl.FormatFan(Program.acpi.DeviceGet(AsusACPI.GPU_Fan)) is not null;
-
+                    if (gpuExists is null) gpuExists = Program.acpi.GetFan(AsusFan.GPU) >= 0;
                     settings.HideGPUModes((bool)gpuExists);
                 }
             }
 
             AppConfig.Set("gpu_mode", gpuMode);
-
-            InitXGM();
             settings.VisualiseGPUMode(gpuMode);
 
             AsusUSB.ApplyGPUColor();
@@ -280,9 +276,12 @@ namespace GHelper.Gpu
 
         public void InitXGM()
         {
-            bool connected = Program.acpi.IsXGConnected();
-            int activated = Program.acpi.DeviceGet(AsusACPI.GPUXG);
-            settings.VisualizeXGM(connected, activated == 1);
+            if (Program.acpi.IsXGConnected())
+            {
+                //Program.acpi.DeviceSet(AsusACPI.GPUXGInit, 1, "XG Init");
+                AsusUSB.InitXGM();
+            }
+
         }
 
         public void ToggleXGM()
@@ -306,9 +305,14 @@ namespace GHelper.Gpu
                 }
                 else
                 {
-                    Program.acpi.DeviceSet(AsusACPI.GPUXG, 1, "GPU XGM");
 
-                    AsusUSB.ResetXGM();
+                    if (AppConfig.Is("xgm_special"))
+                        Program.acpi.DeviceSet(AsusACPI.GPUXG, 0x101, "GPU XGM");
+                    else
+                        Program.acpi.DeviceSet(AsusACPI.GPUXG, 1, "GPU XGM");
+
+                    InitXGM();
+
                     AsusUSB.ApplyXGMLight(AppConfig.Is("xmg_light"));
 
                     await Task.Delay(TimeSpan.FromSeconds(15));

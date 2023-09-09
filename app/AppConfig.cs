@@ -380,4 +380,10 @@ public static class AppConfig
     {
         return Is("gpu_mode_force_set") || ContainsModel("503");
     }
+
+    public static bool IsNoGPUModes()
+    {
+        return ContainsModel("GV301RA") || ContainsModel("GV302XA") || IsAlly();
+    }
+
 }

@@ -258,6 +258,9 @@
   <data name="Boot" xml:space="preserve">
     <value>Ao ligar</value>
   </data>
+  <data name="BootSound" xml:space="preserve">
+    <value>Boot Sound</value>
+  </data>
   <data name="Brightness" xml:space="preserve">
     <value>Nível do brilho</value>
   </data>
@@ -266,6 +269,9 @@
   </data>
   <data name="BrightnessUp" xml:space="preserve">
     <value>Brightness Up</value>
+  </data>
+  <data name="Calibrate" xml:space="preserve">
+    <value>Calibrate</value>
   </data>
   <data name="Charging" xml:space="preserve">
     <value>Charging</value>

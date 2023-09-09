@@ -95,6 +95,7 @@ namespace GHelper
             settingsForm.InitAura();
             settingsForm.InitMatrix();
 
+            gpuControl.InitXGM();
 
             SetAutoModes();
 
@@ -164,6 +165,8 @@ namespace GHelper
                     if (settingsForm.updates is not null && settingsForm.updates.Text != "")
                         settingsForm.updates.InitTheme();
 
+                    if (settingsForm.matrix is not null && settingsForm.matrix.Text != "")
+                        settingsForm.matrix.InitTheme();
                     break;
             }
         }
@@ -194,7 +197,7 @@ namespace GHelper
             BatteryControl.SetBatteryChargeLimit();
 
             settingsForm.AutoKeyboard();
-            settingsForm.matrix.SetMatrix(true);
+            settingsForm.matrixControl.SetMatrix(true);
         }
 
         private static void SystemEvents_PowerModeChanged(object sender, PowerModeChangedEventArgs e)

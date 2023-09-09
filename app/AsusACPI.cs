@@ -1,4 +1,5 @@
-﻿using System.Management;
+﻿using GHelper;
+using System.Management;
 using System.Runtime.InteropServices;
 
 public enum AsusFan
@@ -59,8 +60,10 @@ public class AsusACPI
     public const uint VivoBookMode = 0x00110019; // Vivobook performance modes
 
     public const uint GPUEco = 0x00090020;
+
     public const uint GPUXGConnected = 0x00090018;
     public const uint GPUXG = 0x00090019;
+
     public const uint GPUMux = 0x00090016;
 
     public const uint BatteryLimit = 0x00120057;
@@ -91,6 +94,7 @@ public class AsusACPI
 
     public const int TUF_KB_BRIGHTNESS = 0x00050021;
     public const int TUF_KB = 0x00100056;
+    public const int TUF_KB2 = 0x0010005a;
     public const int TUF_KB_STATE = 0x00100057;
 
     public const int MICMUTE_LED = 0x00040017;
@@ -100,6 +104,8 @@ public class AsusACPI
 
     public const int ScreenPadToggle = 0x00050031;
     public const int ScreenPadBrightness = 0x00050032;
+
+    public const int BootSound = 0x00130022;
 
     public const int Tablet_Notebook = 0;
     public const int Tablet_Tablet = 1;
@@ -341,6 +347,32 @@ public class AsusACPI
         return -1;
     }
 
+    public int GetFan(AsusFan device)
+    {
+        int fan = -1;
+
+        switch (device)
+        {
+            case AsusFan.GPU:
+                fan = Program.acpi.DeviceGet(GPU_Fan);
+                break;
+            case AsusFan.Mid:
+                fan = Program.acpi.DeviceGet(Mid_Fan);
+                break;
+            default:
+                fan = Program.acpi.DeviceGet(CPU_Fan);
+                break;
+        }
+
+        if (fan < 0)
+        {
+            fan += 65536;
+            if (fan <= 0 || fan > 100) fan = -1;
+        }
+
+        return fan;
+    }
+
     public int SetFanRange(AsusFan device, byte[] curve)
     {
         byte min = (byte)(curve[8] * 255 / 100);
@@ -374,7 +406,7 @@ public class AsusACPI
 
         // it seems to be a bug, when some old model's bios can go nuts if fan is set to 100% 
 
-        for (int i = 8; i < curve.Length; i++) curve[i] = (byte)(Math.Max((byte)0, Math.Min((byte)99, curve[i])) * fanScale / 100); 
+        for (int i = 8; i < curve.Length; i++) curve[i] = (byte)(Math.Max((byte)0, Math.Min((byte)100, curve[i])) * fanScale / 100); 
 
         switch (device)
         {
@@ -508,16 +540,17 @@ public class AsusACPI
     public void TUFKeyboardRGB(int mode, Color color, int speed)
     {
 
-        byte[] setting = new byte[12];
-        setting[0] = (byte)0xB4;
+        byte[] setting = new byte[6];
+        
+        setting[0] = (byte)0xb4;
         setting[1] = (byte)mode;
         setting[2] = color.R;
         setting[3] = color.G;
         setting[4] = color.B;
         setting[5] = (byte)speed;
 
-        DeviceSet(TUF_KB, setting, "TUF RGB");
-        //Debug.WriteLine(BitConverter.ToString(setting));
+        int result = DeviceSet(TUF_KB, setting, "TUF RGB");
+        if (result != 1) DeviceSet(TUF_KB2, setting, "TUF RGB");
 
     }
 

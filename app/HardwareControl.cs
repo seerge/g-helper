@@ -10,8 +10,10 @@ using System.Management;
 public static class HardwareControl
 {
 
-    const int DEFAULT_FAN_MAX = 58;
-    const int INADEQUATE_MAX = 80;
+    public const int DEFAULT_FAN_MIN = 18;
+    public const int DEFAULT_FAN_MAX = 58;
+
+    const int INADEQUATE_MAX = 72;
 
     public static IGpuControl? GpuControl;
 
@@ -35,20 +37,17 @@ public static class HardwareControl
 
     static long lastUpdate;
 
-    static int _fanMax = DEFAULT_FAN_MAX;
+    static int[] _fanMax = new int[3] { DEFAULT_FAN_MAX, DEFAULT_FAN_MAX, DEFAULT_FAN_MAX };
     static bool _fanRpm = false;
 
-    public static int fanMax
+    public static int GetFanMax(AsusFan device)
     {
-        get
-        {
-            return _fanMax;
-        }
-        set
-        {
-            AppConfig.Set("fan_max", value);
-            _fanMax = value;
-        }
+        return _fanMax[(int)device];
+    }
+
+    public static void SetFanMax(AsusFan device, int value)
+    {
+        AppConfig.Set("fan_max_" + (int)device, value);
     }
 
     public static bool fanRpm
@@ -66,32 +65,32 @@ public static class HardwareControl
 
     static HardwareControl()
     {
-        _fanMax = AppConfig.Get("fan_max");
-        if (_fanMax > INADEQUATE_MAX) _fanMax = -1; // skipping inadvequate settings
+        for (int i = 0; i < 3; i++)
+        {
+            _fanMax[i] = AppConfig.Get("fan_max_" + i);
 
-        if (_fanMax < 0 && AppConfig.ContainsModel("401")) _fanMax = 72;
-        if (_fanMax < 0 && AppConfig.ContainsModel("503")) _fanMax = 68;
-        if (_fanMax < 0) _fanMax = DEFAULT_FAN_MAX;
+            if (_fanMax[i] > INADEQUATE_MAX) _fanMax[i] = -1; // skipping inadvequate settings
+
+            if (_fanMax[i] < 0 && AppConfig.ContainsModel("401")) _fanMax[i] = 72;
+            if (_fanMax[i] < 0 && AppConfig.ContainsModel("503")) _fanMax[i] = 68;
+            if (_fanMax[i] < 0) _fanMax[i] = DEFAULT_FAN_MAX;
+        }
+
 
         _fanRpm = AppConfig.IsNotFalse("fan_rpm");
 
     }
 
-    public static string FormatFan(int fan)
+    public static string FormatFan(AsusFan device, int value)
     {
-        // fix for old models 
-        if (fan < 0)
-        {
-            fan += 65536;
-            if (fan <= 0 || fan > 100) return null; //nothing reasonable
-        }
+        if (value < 0) return null;
 
-        if (fan > fanMax && fan <= INADEQUATE_MAX) fanMax = fan;
+        if (value > GetFanMax(device) && value <= INADEQUATE_MAX) SetFanMax(device, value);
 
         if (fanRpm)
-            return GHelper.Properties.Strings.FanSpeed + ": " + (fan * 100).ToString() + "RPM";
+            return GHelper.Properties.Strings.FanSpeed + ": " + (value * 100).ToString() + "RPM";
         else
-            return GHelper.Properties.Strings.FanSpeed + ": " + Math.Min(Math.Round((float)fan / fanMax * 100), 100).ToString() + "%"; // relatively to 6000 rpm
+            return GHelper.Properties.Strings.FanSpeed + ": " + Math.Min(Math.Round((float)value / GetFanMax(device) * 100), 100).ToString() + "%"; // relatively to 6000 rpm
     }
 
     private static int GetGpuUse()
@@ -246,9 +245,9 @@ public static class HardwareControl
         gpuTemp = -1;
         gpuUse = -1;
 
-        cpuFan = FormatFan(Program.acpi.DeviceGet(AsusACPI.CPU_Fan));
-        gpuFan = FormatFan(Program.acpi.DeviceGet(AsusACPI.GPU_Fan));
-        midFan = FormatFan(Program.acpi.DeviceGet(AsusACPI.Mid_Fan));
+        cpuFan = FormatFan(AsusFan.CPU, Program.acpi.GetFan(AsusFan.CPU));
+        gpuFan = FormatFan(AsusFan.GPU, Program.acpi.GetFan(AsusFan.GPU));
+        midFan = FormatFan(AsusFan.Mid, Program.acpi.GetFan(AsusFan.Mid));
 
         cpuTemp = GetCPUTemp();
 

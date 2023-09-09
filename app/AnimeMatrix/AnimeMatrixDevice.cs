@@ -2,8 +2,8 @@
 
 using GHelper.AnimeMatrix.Communication;
 using System.Drawing.Drawing2D;
+using System.Drawing.Imaging;
 using System.Drawing.Text;
-using System.Globalization;
 using System.Management;
 using System.Text;
 
@@ -77,6 +77,7 @@ namespace Starlight.AnimeMatrix
     }
 
 
+
     public class AnimeMatrixDevice : Device
     {
         int UpdatePageLength = 490;
@@ -86,33 +87,36 @@ namespace Starlight.AnimeMatrix
         List<byte[]> frames = new List<byte[]>();
 
         public int MaxRows = 61;
-        //public int FullRows = 11;
-        //public int FullEvenRows = -1;
-
-        public int dx = 0;
         public int MaxColumns = 34;
+        public int LedStart = 0;
+
+        public int TextShift = 8;
 
         private int frameIndex = 0;
 
         private static AnimeType _model = AnimeType.GA402;
 
+        [System.Runtime.InteropServices.DllImport("gdi32.dll")]
+        private static extern IntPtr AddFontMemResourceEx(IntPtr pbFont, uint cbFont, IntPtr pdv, [System.Runtime.InteropServices.In] ref uint pcFonts);
+        private PrivateFontCollection fonts = new PrivateFontCollection();
 
-        public AnimeMatrixDevice()
-            : base(0x0B05, 0x193B, 640)
+        public AnimeMatrixDevice() : base(0x0B05, 0x193B, 640)
         {
             string model = GetModel();
+
             if (model.Contains("401"))
             {
-
                 _model = AnimeType.GA401;
 
                 MaxColumns = 33;
-                dx = 1;
-
                 MaxRows = 55;
                 LedCount = 1245;
 
                 UpdatePageLength = 410;
+
+                TextShift = 11;
+
+                LedStart = 1;
             }
 
             if (model.Contains("GU604"))
@@ -123,12 +127,35 @@ namespace Starlight.AnimeMatrix
                 MaxRows = 92;
                 LedCount = 1711;
                 UpdatePageLength = 630;
+
+                TextShift = 10;
             }
 
             _displayBuffer = new byte[LedCount];
 
+            /*
+            for (int i = 0; i < MaxRows; i++)
+            {
+                _model = AnimeType.GA401;
+                Logger.WriteLine(FirstX(i) + " " + Pitch(i));
+            }
+            */
+
+            LoadMFont();
+
         }
 
+        private void LoadMFont()
+        {
+            byte[] fontData = GHelper.Properties.Resources.MFont;
+            IntPtr fontPtr = System.Runtime.InteropServices.Marshal.AllocCoTaskMem(fontData.Length);
+            System.Runtime.InteropServices.Marshal.Copy(fontData, 0, fontPtr, fontData.Length);
+            uint dummy = 0;
+
+            fonts.AddMemoryFont(fontPtr, GHelper.Properties.Resources.MFont.Length);
+            AddFontMemResourceEx(fontPtr, (uint)GHelper.Properties.Resources.MFont.Length, IntPtr.Zero, ref dummy);
+            System.Runtime.InteropServices.Marshal.FreeCoTaskMem(fontPtr);
+        }
 
         public string GetModel()
         {
@@ -172,32 +199,7 @@ namespace Starlight.AnimeMatrix
         }
 
 
-        public static int FirstX(int y)
-        {
-            switch (_model)
-            {
-                case AnimeType.GA401:
-                    if (y < 5)
-                    {
-                        return 0;
-                    }
-                    else
-                    {
-                        return (y + 1) / 2 - 3;
-                    }
-                case AnimeType.GU604:
-                    if (y < 9 && y % 2 == 0)
-                    {
-                        return 1;
-                    }
-                    return (int)Math.Ceiling(Math.Max(0, y - 9) / 2F);
-
-                default:
-                    return (int)Math.Ceiling(Math.Max(0, y - 11) / 2F);
-            }
-        }
-
-        public static int Width(int y)
+        public int Width()
         {
             switch (_model)
             {
@@ -210,7 +212,30 @@ namespace Starlight.AnimeMatrix
             }
         }
 
-        public static int Pitch(int y)
+        public int FirstX(int y)
+        {
+            switch (_model)
+            {
+                case AnimeType.GA401:
+                    if (y < 5 && y % 2 == 0)
+                    {
+                        return 1;
+                    }
+                    return (int)Math.Ceiling(Math.Max(0, y - 5) / 2F);
+                case AnimeType.GU604:
+                    if (y < 9 && y % 2 == 0)
+                    {
+                        return 1;
+                    }
+                    return (int)Math.Ceiling(Math.Max(0, y - 9) / 2F);
+
+                default:
+                    return (int)Math.Ceiling(Math.Max(0, y - 11) / 2F);
+            }
+        }
+
+
+        public int Pitch(int y)
         {
             switch (_model)
             {
@@ -246,19 +271,19 @@ namespace Starlight.AnimeMatrix
                             return 39;
 
                         default:
-                            return Width(y) - FirstX(y);
+                            return Width() - FirstX(y);
                     }
 
 
                 default:
-                    return Width(y) - FirstX(y);
+                    return Width() - FirstX(y);
             }
         }
 
 
         public int RowToLinearAddress(int y)
         {
-            int ret = 0;
+            int ret = LedStart;
             for (var i = 0; i < y; i++)
                 ret += Pitch(i);
 
@@ -269,8 +294,8 @@ namespace Starlight.AnimeMatrix
         {
             if (!IsRowInRange(y)) return;
 
-            if (x >= FirstX(y) && x < Width(y))
-                SetLedLinear(RowToLinearAddress(y) - FirstX(y) + x + dx, value);
+            if (x >= FirstX(y) && x < Width())
+                SetLedLinear(RowToLinearAddress(y) - FirstX(y) + x, value);
         }
 
         public void WakeUp()
@@ -368,20 +393,49 @@ namespace Starlight.AnimeMatrix
 
         public void PresentClock()
         {
-            int second = DateTime.Now.Second;
-            string time;
+            string second = (DateTime.Now.Second % 2 == 0) ? ":" : "  ";
+            string time = DateTime.Now.ToString("HH" + second + "mm");
 
-            if (CultureInfo.CurrentCulture.DateTimeFormat.ShortTimePattern.Contains("H"))
-                time = DateTime.Now.ToString("H" + ((second % 2 == 0) ? ":" : " ") + "mm");
-            else
-                time = DateTime.Now.ToString("h" + ((second % 2 == 0) ? ":" : " ") + "mmtt");
+            Clear();
+            TextDiagonal(time, 15, 12, TextShift + 11);
+            TextDiagonal(DateTime.Now.ToString("yy'. 'MM'. 'dd"), 11.5F, 3, TextShift);
+            Present();
 
-            if (_model == AnimeType.GA401)
-                PresentText(time);
-            else
-                PresentTextDiagonal(time);
         }
 
+        public void TextDiagonal(string text, float fontSize = 10, int deltaX = 0, int deltaY = 10)
+        {
+
+            int maxX = (int)Math.Sqrt(MaxRows * MaxRows + MaxColumns * MaxColumns);
+            int textHeight;
+
+            using (Bitmap bmp = new Bitmap(maxX, MaxRows))
+            {
+                using (Graphics g = Graphics.FromImage(bmp))
+                {
+                    g.CompositingQuality = CompositingQuality.HighQuality;
+                    g.SmoothingMode = SmoothingMode.AntiAlias;
+                    g.TextRenderingHint = TextRenderingHint.SingleBitPerPixel;
+
+                    using (Font font = new Font(fonts.Families[0], fontSize, FontStyle.Regular, GraphicsUnit.Pixel))
+                    {
+                        SizeF textSize = g.MeasureString(text, font);
+                        textHeight = (int)textSize.Height;
+                        g.DrawString(text, font, Brushes.White, 0, 0);
+                    }
+                }
+
+                for (int y = 0; y < bmp.Height; y++)
+                {
+                    for (int x = 0; x < bmp.Width; x++)
+                    {
+                        var pixel = bmp.GetPixel(x, y);
+                        var color = (pixel.R + pixel.G + pixel.B) / 3;
+                        if (color > 100) SetLedDiagonal(x, y, (byte)color, deltaX, deltaY);
+                    }
+                }
+            }
+        }
 
 
         public void PresentText(string text1, string text2 = "")
@@ -392,8 +446,9 @@ namespace Starlight.AnimeMatrix
                 {
                     g.CompositingQuality = CompositingQuality.HighQuality;
                     g.SmoothingMode = SmoothingMode.AntiAlias;
+                    g.TextRenderingHint = TextRenderingHint.SingleBitPerPixel;
 
-                    using (Font font = new Font("Consolas", 21F, FontStyle.Regular, GraphicsUnit.Pixel))
+                    using (Font font = new Font("Consolas", 22F, FontStyle.Regular, GraphicsUnit.Pixel))
                     {
                         SizeF textSize = g.MeasureString(text1, font);
                         g.DrawString(text1, font, Brushes.White, (MaxColumns * 3 - textSize.Width) + 3, -4);
@@ -408,13 +463,15 @@ namespace Starlight.AnimeMatrix
 
                 }
 
-                GenerateFrame(bmp, InterpolationMode.Bicubic);
+                bmp.Save("test.bmp", ImageFormat.Bmp);
+
+                GenerateFrame(bmp);
                 Present();
             }
 
         }
 
-        public void GenerateFrame(Image image, InterpolationMode interpolation = InterpolationMode.High)
+        public void GenerateFrame(Image image, float zoom = 100, int panX = 0, int panY = 0, InterpolationMode quality = InterpolationMode.Default)
         {
 
             int width = MaxColumns / 2 * 6;
@@ -426,25 +483,25 @@ namespace Starlight.AnimeMatrix
 
             using (Bitmap bmp = new Bitmap(targetWidth, height))
             {
-                scale = Math.Min((float)width / (float)image.Width, (float)height / (float)image.Height);
+                scale = Math.Min((float)width / (float)image.Width, (float)height / (float)image.Height) * zoom / 100;
 
                 using (var graph = Graphics.FromImage(bmp))
                 {
                     var scaleWidth = (float)(image.Width * scale);
                     var scaleHeight = (float)(image.Height * scale);
 
-                    graph.InterpolationMode = interpolation;
+                    graph.InterpolationMode = quality;
                     graph.CompositingQuality = CompositingQuality.HighQuality;
                     graph.SmoothingMode = SmoothingMode.AntiAlias;
 
-                    graph.DrawImage(image, (float)Math.Round(targetWidth - scaleWidth * targetWidth / width), 0, (float)Math.Round(scaleWidth * targetWidth / width), scaleHeight);
+                    graph.DrawImage(image, (float)Math.Round(targetWidth - (scaleWidth + panX) * targetWidth / width), -panY, (float)Math.Round(scaleWidth * targetWidth / width), scaleHeight);
 
                 }
 
                 for (int y = 0; y < bmp.Height; y++)
                 {
                     for (int x = 0; x < bmp.Width; x++)
-                        if (x % 2 == (y + dx) % 2)
+                        if (x % 2 == y % 2)
                         {
                             var pixel = bmp.GetPixel(x, y);
                             var color = (pixel.R + pixel.G + pixel.B) / 3;
@@ -456,68 +513,16 @@ namespace Starlight.AnimeMatrix
         }
 
 
-        public void SetLedDiagonal(int x, int y, byte color, int delta = 10)
+        public void SetLedDiagonal(int x, int y, byte color, int deltaX = 0, int deltaY = 10)
         {
-            //x+=delta;
-            y -= delta;
+            x += deltaX;
+            y -= deltaY;
 
-            int dx = (x - y) / 2;
-            int dy = x + y;
-            SetLedPlanar(dx, dy, color);
+            int plX = (x - y) / 2;
+            int plY = x + y;
+            SetLedPlanar(plX, plY, color);
         }
 
-        public void PresentTextDiagonal(string text)
-        {
-
-            Clear();
-
-
-            InstalledFontCollection installedFontCollection = new InstalledFontCollection();
-
-
-            string familyName;
-            string familyList = "";
-            FontFamily[] fontFamilies;
-            // Get the array of FontFamily objects.
-            fontFamilies = installedFontCollection.Families;
-
-            int count = fontFamilies.Length;
-            for (int j = 0; j < count; ++j)
-            {
-                familyName = fontFamilies[j].Name;
-                familyList = familyList + familyName;
-                familyList = familyList + ",  ";
-            }
-
-            int maxX = (int)Math.Sqrt(MaxRows * MaxRows + MaxColumns * MaxColumns);
-
-            using (Bitmap bmp = new Bitmap(maxX, MaxRows))
-            {
-                using (Graphics g = Graphics.FromImage(bmp))
-                {
-                    g.CompositingQuality = CompositingQuality.HighQuality;
-                    g.SmoothingMode = SmoothingMode.AntiAlias;
-
-                    using (Font font = new Font("Consolas", 13F, FontStyle.Regular, GraphicsUnit.Pixel))
-                    {
-                        SizeF textSize = g.MeasureString(text, font);
-                        g.DrawString(text, font, Brushes.White, 4, 1);
-                    }
-                }
-
-                for (int y = 0; y < bmp.Height; y++)
-                {
-                    for (int x = 0; x < bmp.Width; x++)
-                    {
-                        var pixel = bmp.GetPixel(x, y);
-                        var color = (pixel.R + pixel.G + pixel.B) / 3;
-                        SetLedDiagonal(x, y, (byte)color);
-                    }
-                }
-            }
-
-            Present();
-        }
 
         private bool IsRowInRange(int row)
         {

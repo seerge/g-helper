@@ -25,10 +25,13 @@ namespace GHelper
         ScreenControl screenControl = new ScreenControl();
         AutoUpdateControl updateControl;
 
-        public AniMatrixControl matrix;
+        AsusMouseSettings? mouseSettings;
+
+        public AniMatrixControl matrixControl;
 
         public static System.Timers.Timer sensorTimer = default!;
 
+        public Matrix? matrix;
         public Fans? fans;
         public Extra? keyb;
         public Updates? updates;
@@ -47,7 +50,7 @@ namespace GHelper
 
             gpuControl = new GPUModeControl(this);
             updateControl = new AutoUpdateControl(this);
-            matrix = new AniMatrixControl(this);
+            matrixControl = new AniMatrixControl(this);
 
             buttonSilent.Text = Properties.Strings.Silent;
             buttonBalanced.Text = Properties.Strings.Balanced;
@@ -242,7 +245,8 @@ namespace GHelper
             if (this.Visible)
             {
                 screenControl.InitScreen();
-                gpuControl.InitXGM();
+                VisualizeXGM();
+
                 Task.Run((Action)RefreshPeripheralsBattery);
                 updateControl.CheckForUpdates();
             }
@@ -264,6 +268,12 @@ namespace GHelper
             {
                 updates.Close();
             }
+        }
+
+        public void VisualiseMatrix(string image)
+        {
+            if (matrix == null || matrix.Text == "") return;
+            matrix.VisualiseMatrix(image);
         }
 
         protected override void WndProc(ref Message m)
@@ -503,14 +513,29 @@ namespace GHelper
         private void CheckMatrix_CheckedChanged(object? sender, EventArgs e)
         {
             AppConfig.Set("matrix_auto", checkMatrix.Checked ? 1 : 0);
-            matrix.SetMatrix();
+            matrixControl.SetMatrix();
         }
 
 
 
         private void ButtonMatrix_Click(object? sender, EventArgs e)
         {
-            matrix.OpenMatrixPicture();
+
+            if (matrix == null || matrix.Text == "")
+            {
+                matrix = new Matrix();
+            }
+
+            if (matrix.Visible)
+            {
+                matrix.Close();
+            }
+            else
+            {
+                matrix.FormPosition();
+                matrix.Show();
+            }
+
         }
 
         public void SetMatrixRunning(int mode)
@@ -518,20 +543,21 @@ namespace GHelper
             Invoke(delegate
             {
                 comboMatrixRunning.SelectedIndex = mode;
+                if (comboMatrix.SelectedIndex == 0) comboMatrix.SelectedIndex = 3;
             });
         }
 
         private void ComboMatrixRunning_SelectedValueChanged(object? sender, EventArgs e)
         {
             AppConfig.Set("matrix_running", comboMatrixRunning.SelectedIndex);
-            matrix.SetMatrix();
+            matrixControl.SetMatrix();
         }
 
 
         private void ComboMatrix_SelectedValueChanged(object? sender, EventArgs e)
         {
             AppConfig.Set("matrix_brightness", comboMatrix.SelectedIndex);
-            matrix.SetMatrix();
+            matrixControl.SetMatrix();
         }
 
 
@@ -679,7 +705,7 @@ namespace GHelper
         public void InitMatrix()
         {
 
-            if (!matrix.IsValid)
+            if (!matrixControl.IsValid)
             {
                 panelMatrix.Visible = false;
                 return;
@@ -783,7 +809,7 @@ namespace GHelper
 
         private void ButtonQuit_Click(object? sender, EventArgs e)
         {
-            matrix.Dispose();
+            matrixControl.Dispose();
             Close();
             Program.trayIcon.Visible = false;
             Application.Exit();
@@ -964,15 +990,24 @@ namespace GHelper
         }
 
 
-        public void VisualizeXGM(bool connected, bool activated)
+        public void VisualizeXGM(int GPUMode = -1)
         {
 
+            bool connected = Program.acpi.IsXGConnected();
             buttonXGM.Enabled = buttonXGM.Visible = connected;
+
             if (!connected) return;
 
-            buttonXGM.Activated = activated;
+            if (GPUMode != -1)
+                ButtonEnabled(buttonXGM, AppConfig.IsNoGPUModes() || GPUMode != AsusACPI.GPUModeEco);
 
-            if (activated)
+
+            int activated = Program.acpi.DeviceGet(AsusACPI.GPUXG);
+            Logger.WriteLine("XGM Activated flag: " + activated);
+
+            buttonXGM.Activated = activated == 1;
+
+            if (activated == 1)
             {
                 ButtonEnabled(buttonOptimized, false);
                 ButtonEnabled(buttonEco, false);
@@ -1057,7 +1092,6 @@ namespace GHelper
                     buttonOptimized.Activated = GPUAuto;
                     labelGPU.Text = Properties.Strings.GPUMode + ": " + Properties.Strings.GPUModeEco;
                     Program.trayIcon.Icon = Properties.Resources.eco;
-                    ButtonEnabled(buttonXGM, false);
                     break;
                 case AsusACPI.GPUModeUltimate:
                     buttonUltimate.Activated = true;
@@ -1070,9 +1104,11 @@ namespace GHelper
                     buttonOptimized.Activated = GPUAuto;
                     labelGPU.Text = Properties.Strings.GPUMode + ": " + Properties.Strings.GPUModeStandard;
                     Program.trayIcon.Icon = Properties.Resources.standard;
-                    ButtonEnabled(buttonXGM, true);
                     break;
             }
+
+            VisualizeXGM(GPUMode);
+
 
             if (isGpuSection)
             {
@@ -1187,6 +1223,12 @@ namespace GHelper
 
         private void ButtonPeripheral_Click(object? sender, EventArgs e)
         {
+            if (mouseSettings is not null)
+            {
+                mouseSettings.Close();
+                return;
+            }
+
             int index = 0;
             if (sender == buttonPeripheral2) index = 1;
             if (sender == buttonPeripheral3) index = 2;
@@ -1207,16 +1249,30 @@ namespace GHelper
                     //Should not happen if all device classes are implemented correctly. But better safe than sorry.
                     return;
                 }
-                AsusMouseSettings s = new AsusMouseSettings(am);
-                if (!s.IsDisposed)
+                mouseSettings = new AsusMouseSettings(am);
+                mouseSettings.TopMost = true;
+                mouseSettings.FormClosed += MouseSettings_FormClosed;
+                mouseSettings.Disposed += MouseSettings_Disposed;
+                if (!mouseSettings.IsDisposed)
                 {
-                    s.Show();
+                    mouseSettings.Show();
+                }
+                else
+                {
+                    mouseSettings = null;
                 }
 
             }
+        }
 
+        private void MouseSettings_Disposed(object? sender, EventArgs e)
+        {
+            mouseSettings = null;
+        }
 
-
+        private void MouseSettings_FormClosed(object? sender, FormClosedEventArgs e)
+        {
+            mouseSettings = null;
         }
 
         public void VisualiseFnLock()

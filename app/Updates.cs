@@ -9,6 +9,9 @@ namespace GHelper
 
     public partial class Updates : RForm
     {
+        const int DRIVER_NOT_FOUND = 2;
+        const int DRIVER_NEWER = 1;
+
         //static int rowCount = 0;
         static string model;
         static string bios;
@@ -21,6 +24,7 @@ namespace GHelper
             public string title;
             public string version;
             public string downloadUrl;
+            public string date;
             public JsonElement hardwares;
         }
         private void LoadUpdates(bool force = false)
@@ -156,7 +160,8 @@ namespace GHelper
                 table.RowStyles.Add(new RowStyle(SizeType.AutoSize));
                 table.Controls.Add(new Label { Text = driver.categoryName, Anchor = AnchorStyles.Left, Dock = DockStyle.Fill, Padding = new Padding(5, 5, 5, 5) }, 0, table.RowCount);
                 table.Controls.Add(new Label { Text = driver.title, Anchor = AnchorStyles.Left, Dock = DockStyle.Fill, Padding = new Padding(5, 5, 5, 5) }, 1, table.RowCount);
-                table.Controls.Add(versionLabel, 2, table.RowCount);
+                table.Controls.Add(new Label { Text = driver.date, Anchor = AnchorStyles.Left, Dock = DockStyle.Fill, Padding = new Padding(5, 5, 5, 5) }, 2, table.RowCount);
+                table.Controls.Add(versionLabel, 3, table.RowCount);
                 table.RowCount++;
             });
         }
@@ -171,15 +176,21 @@ namespace GHelper
             });
         }
 
-        public void VisualiseNewDriver(int position, TableLayoutPanel table)
+        public void VisualiseNewDriver(int position, int newer, TableLayoutPanel table)
         {
-            var label = table.GetControlFromPosition(2, position) as Label;
+            var label = table.GetControlFromPosition(3, position) as Label;
             if (label != null)
             {
                 Invoke(delegate
                 {
-                    label.Font = new Font(label.Font, FontStyle.Underline | FontStyle.Bold);
-                    label.ForeColor = colorTurbo;
+                    if (newer == DRIVER_NEWER)
+                    {
+                        label.Font = new Font(label.Font, FontStyle.Underline | FontStyle.Bold);
+                        label.ForeColor = colorTurbo;
+                    }
+
+                    if (newer == DRIVER_NOT_FOUND) label.ForeColor = Color.Gray;
+
                 });
             }
         }
@@ -237,6 +248,7 @@ namespace GHelper
                                 driver.version = file.GetProperty("Version").ToString().Replace("V", "");
                                 driver.downloadUrl = file.GetProperty("DownloadUrl").GetProperty("Global").ToString();
                                 driver.hardwares = file.GetProperty("HardwareInfoList");
+                                driver.date = file.GetProperty("ReleaseDate").ToString();
                                 drivers.Add(driver);
 
                                 VisualiseDriver(driver, table);
@@ -257,26 +269,28 @@ namespace GHelper
                     int count = 0;
                     foreach (var driver in drivers)
                     {
-                        int newer = -2;
+                        int newer = DRIVER_NOT_FOUND;
                         if (type == 0 && driver.hardwares.ToString().Length > 0)
                             for (int k = 0; k < driver.hardwares.GetArrayLength(); k++)
                             {
                                 var deviceID = driver.hardwares[k].GetProperty("hardwareid").ToString();
-                                var localVersion = devices.Where(p => p.Key.Contains(deviceID)).Select(p => p.Value).FirstOrDefault();
-                                if (localVersion is not null)
+                                var localVersions = devices.Where(p => p.Key.Contains(deviceID)).Select(p => p.Value);
+                                foreach (var localVersion in localVersions)
                                 {
-                                    newer = new Version(driver.version).CompareTo(new Version(localVersion));
-                                    break;
+                                    newer = Math.Min(newer, new Version(driver.version).CompareTo(new Version(localVersion)));
+                                    Logger.WriteLine(driver.title + " " + deviceID  + " "+ driver.version + " vs " + localVersion + " = " + newer);
                                 }
+
                             }
 
                         if (type == 1)
                             newer = Int32.Parse(driver.version) > Int32.Parse(bios) ? 1 : -1;
 
-                        if (newer > 0)
+                        VisualiseNewDriver(count, newer, table);
+
+                        if (newer == DRIVER_NEWER)
                         {
                             updatesCount++;
-                            VisualiseNewDriver(count, table);
                             VisualiseNewCount(updatesCount, table);
                         }
 

@@ -72,6 +72,8 @@ Each BIOS mode is paired with matching Windows Power Mode. You can adjust this s
 
 ![Screenshot 2023-08-05 170159](https://github.com/seerge/g-helper/assets/5920850/84a5beb3-2463-40f1-9188-930d3099aad9)
 
+![GPU Modes](https://github.com/seerge/g-helper/assets/5920850/65c6bdd5-728c-4965-b544-fcf5a85ed6a2)
+
 ## :question: FAQ
 
 #### How do I stop the Armoury Crate install popup appearing every time I press the M4 / Rog key?
@@ -245,6 +247,13 @@ Example (for default windows "balanced" power plan):
 "scheme_0": "381b4222-f694-41f0-9685-ff5bb260df2e",
 "scheme_1": "381b4222-f694-41f0-9685-ff5bb260df2e",
 "scheme_2": "381b4222-f694-41f0-9685-ff5bb260df2e",
+```
+
+### Alternative Activation for XG Mobile 6850XT
+If you experience situation when your XG Mobile doesn't work on full power when Activated. It's possible it needs "alternative" command to get activated. 
+To turn it on, add following line to config :
+```
+"xgm_special" : 1,
 ```
 
 ### Override UI theme

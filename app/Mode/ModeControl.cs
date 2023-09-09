@@ -134,6 +134,7 @@ namespace GHelper.Mode
                 bool xgmFan = false;
                 if (AppConfig.Is("xgm_fan") && Program.acpi.IsXGConnected())
                 {
+                    //AsusUSB.InitXGM();
                     AsusUSB.SetXGMFan(AppConfig.GetFanConfig(AsusFan.XGM));
                     xgmFan = true;
                 }

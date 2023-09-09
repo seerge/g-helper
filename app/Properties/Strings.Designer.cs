@@ -484,6 +484,15 @@ namespace GHelper.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Boot Sound.
+        /// </summary>
+        internal static string BootSound {
+            get {
+                return ResourceManager.GetString("BootSound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Brightness.
         /// </summary>
         internal static string Brightness {
@@ -507,6 +516,15 @@ namespace GHelper.Properties {
         internal static string BrightnessUp {
             get {
                 return ResourceManager.GetString("BrightnessUp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Calibrate.
+        /// </summary>
+        internal static string Calibrate {
+            get {
+                return ResourceManager.GetString("Calibrate", resourceCulture);
             }
         }
         

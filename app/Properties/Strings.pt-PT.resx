@@ -258,6 +258,9 @@
   <data name="Boot" xml:space="preserve">
     <value>Ao ligar</value>
   </data>
+  <data name="BootSound" xml:space="preserve">
+    <value>Boot Sound</value>
+  </data>
   <data name="Brightness" xml:space="preserve">
     <value>Nível do brilho</value>
   </data>
@@ -266,6 +269,9 @@
   </data>
   <data name="BrightnessUp" xml:space="preserve">
     <value>Aumentar o brilho</value>
+  </data>
+  <data name="Calibrate" xml:space="preserve">
+    <value>Calibrate</value>
   </data>
   <data name="Charging" xml:space="preserve">
     <value>Carregando</value>
@@ -357,10 +363,10 @@ Quer prosseguir?</value>
     <value>Carregando</value>
   </data>
   <data name="GPUCoreClockOffset" xml:space="preserve">
-    <value>Aumento da frequência básica</value>
+    <value>Frequência da GPU</value>
   </data>
   <data name="GPUMemoryClockOffset" xml:space="preserve">
-    <value>Aumento da frequência da memória</value>
+    <value>Frequência da Memória</value>
   </data>
   <data name="GPUMode" xml:space="preserve">
     <value>Modo da GPU</value>

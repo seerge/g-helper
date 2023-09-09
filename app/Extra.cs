@@ -108,6 +108,7 @@ namespace GHelper
             checkSleep.Text = Properties.Strings.Sleep;
             checkBoot.Text = Properties.Strings.Boot;
             checkShutdown.Text = Properties.Strings.Shutdown;
+            checkBootSound.Text = Properties.Strings.BootSound;
 
             labelSpeed.Text = Properties.Strings.AnimationSpeed;
             //labelBrightness.Text = Properties.Strings.Brightness;
@@ -316,6 +317,9 @@ namespace GHelper
             checkGpuApps.Checked = AppConfig.Is("kill_gpu_apps");
             checkGpuApps.CheckedChanged += CheckGpuApps_CheckedChanged;
 
+            checkBootSound.Checked = (Program.acpi.DeviceGet(AsusACPI.BootSound) == 1);
+            checkBootSound.CheckedChanged += CheckBootSound_CheckedChanged;
+
             pictureHelp.Click += PictureHelp_Click;
             buttonServices.Click += ButtonServices_Click;
 
@@ -330,6 +334,11 @@ namespace GHelper
             InitVariBright();
             InitServices();
             InitHibernate();
+        }
+
+        private void CheckBootSound_CheckedChanged(object? sender, EventArgs e)
+        {
+            Program.acpi.DeviceSet(AsusACPI.BootSound, (checkBootSound.Checked ? 1 : 0), "BootSound");
         }
 
         private void CheckGPUFix_CheckedChanged(object? sender, EventArgs e)

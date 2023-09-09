@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Acceleration" xml:space="preserve">
-    <value>Acceleration</value>
+    <value>滑鼠加速</value>
   </data>
   <data name="ACPIError" xml:space="preserve">
     <value>無法連結到華碩 ACPI。 没有它，應用程式將無法執行。 嘗試安裝Asus System Control Interface</value>
@@ -175,7 +175,7 @@
     <value>順時針</value>
   </data>
   <data name="AuraColorCycle" xml:space="preserve">
-    <value>循環</value>
+    <value>彩色循環</value>
   </data>
   <data name="AuraComet" xml:space="preserve">
     <value>彗星</value>
@@ -205,7 +205,7 @@
     <value>慢</value>
   </data>
   <data name="AuraStatic" xml:space="preserve">
-    <value>靜態</value>
+    <value>靜態恆亮</value>
   </data>
   <data name="AuraStrobe" xml:space="preserve">
     <value>閃爍</value>
@@ -258,6 +258,9 @@
   <data name="Boot" xml:space="preserve">
     <value>開機時</value>
   </data>
+  <data name="BootSound" xml:space="preserve">
+    <value>開機音效</value>
+  </data>
   <data name="Brightness" xml:space="preserve">
     <value>亮度</value>
   </data>
@@ -280,7 +283,7 @@
     <value>自定義設置</value>
   </data>
   <data name="Deceleration" xml:space="preserve">
-    <value>Deceleration</value>
+    <value>滑鼠減速</value>
   </data>
   <data name="Default" xml:space="preserve">
     <value>預設</value>

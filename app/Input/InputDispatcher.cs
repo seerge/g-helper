@@ -507,6 +507,9 @@ namespace GHelper.Input
                     case 56:    // M4 / Rog button
                         KeyProcess("m4");
                         return;
+                    case 55:    // Arconym
+                        KeyProcess("m6");
+                        return;
                     case 181:    // FN + Numpad Enter
                         KeyProcess("fne");
                         return;
@@ -624,8 +627,11 @@ namespace GHelper.Input
                 AsusUSB.ApplyBrightness(backlight, "HotKey");
             }
 
-            string[] backlightNames = new string[] { "Off", "Low", "Mid", "Max" };
-            Program.toast.RunToast(backlightNames[backlight], delta > 0 ? ToastIcon.BacklightUp : ToastIcon.BacklightDown);
+            if (!OptimizationService.IsOSDRunning())
+            {
+                string[] backlightNames = new string[] { "Off", "Low", "Mid", "Max" };
+                Program.toast.RunToast(backlightNames[backlight], delta > 0 ? ToastIcon.BacklightUp : ToastIcon.BacklightDown);
+            }
 
         }
 
