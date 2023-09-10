@@ -9,21 +9,17 @@ namespace GHelper.Fan
 
         public const int INADEQUATE_MAX = 90;
 
+        const int FAN_COUNT = 3;
+
         Fans fansForm;
         ModeControl modeControl = Program.modeControl;
 
         static int[] measuredMax;
-        const int FAN_COUNT = 3;
         static int sameCount = 0;
 
         static System.Timers.Timer timer = default!;
 
-        static int[] _fanMax = new int[3] { 
-            AppConfig.Get("fan_max_" + (int)AsusFan.CPU, DEFAULT_FAN_MAX), 
-            AppConfig.Get("fan_max_" + (int)AsusFan.GPU, DEFAULT_FAN_MAX), 
-            AppConfig.Get("fan_max_" + (int)AsusFan.Mid, DEFAULT_FAN_MAX) 
-        };
-
+        static int[] _fanMax = InitFanMax();
         static bool _fanRpm = AppConfig.IsNotFalse("fan_rpm");
 
         public FanSensorControl(Fans fansForm)
@@ -33,6 +29,44 @@ namespace GHelper.Fan
             timer.Elapsed += Timer_Elapsed;
         }
 
+        static int[] InitFanMax()
+        {
+            int[] defaultMax = GetDefaultMax();
+
+            return new int[3] {
+                AppConfig.Get("fan_max_" + (int)AsusFan.CPU, defaultMax[(int)AsusFan.CPU]),
+                AppConfig.Get("fan_max_" + (int)AsusFan.GPU, defaultMax[(int)AsusFan.GPU]),
+                AppConfig.Get("fan_max_" + (int)AsusFan.Mid, defaultMax[(int)AsusFan.Mid])
+            };
+        }
+
+
+        static int[] GetDefaultMax()
+        {
+            if (AppConfig.ContainsModel("GA401I")) return new int[3] { 78, 76, DEFAULT_FAN_MAX };
+            if (AppConfig.ContainsModel("GA401")) return new int[3] { 71, 73, DEFAULT_FAN_MAX };
+            if (AppConfig.ContainsModel("GA402")) return new int[3] { 55, 56, DEFAULT_FAN_MAX };
+
+            if (AppConfig.ContainsModel("G513R")) return new int[3] { 58, 60, DEFAULT_FAN_MAX };
+            if (AppConfig.ContainsModel("G513Q")) return new int[3] { 69, 69, DEFAULT_FAN_MAX };
+            if (AppConfig.ContainsModel("GA503")) return new int[3] { 64, 64, DEFAULT_FAN_MAX };
+
+            if (AppConfig.ContainsModel("GU603")) return new int[3] { 62, 64, DEFAULT_FAN_MAX };
+
+            if (AppConfig.ContainsModel("FA507R")) return new int[3] { 63, 57, DEFAULT_FAN_MAX };
+            if (AppConfig.ContainsModel("FA507X")) return new int[3] { 63, 68, DEFAULT_FAN_MAX };
+
+            if (AppConfig.ContainsModel("GX650")) return new int[3] { 62, 62, DEFAULT_FAN_MAX };
+
+            if (AppConfig.ContainsModel("G732")) return new int[3] { 61, 60, DEFAULT_FAN_MAX };
+            if (AppConfig.ContainsModel("G713")) return new int[3] { 56, 60, DEFAULT_FAN_MAX };
+
+            if (AppConfig.ContainsModel("Z301")) return new int[3] { 72, 64, DEFAULT_FAN_MAX };
+
+            if (AppConfig.ContainsModel("GV601")) return new int[3] { 78, 59, 85 };
+
+            return new int[3] { DEFAULT_FAN_MAX, DEFAULT_FAN_MAX, DEFAULT_FAN_MAX };
+        }
 
         public static int GetFanMax(AsusFan device)
         {

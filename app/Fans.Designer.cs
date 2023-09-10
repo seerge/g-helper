@@ -430,7 +430,7 @@ namespace GHelper
             buttonCalibrate.BorderColor = Color.Transparent;
             buttonCalibrate.BorderRadius = 2;
             buttonCalibrate.FlatStyle = FlatStyle.Flat;
-            buttonCalibrate.Location = new Point(239, 40);
+            buttonCalibrate.Location = new Point(275, 40);
             buttonCalibrate.Margin = new Padding(4, 2, 4, 2);
             buttonCalibrate.Name = "buttonCalibrate";
             buttonCalibrate.Secondary = true;
@@ -476,7 +476,7 @@ namespace GHelper
             buttonReset.Margin = new Padding(4, 2, 4, 2);
             buttonReset.Name = "buttonReset";
             buttonReset.Secondary = true;
-            buttonReset.Size = new Size(216, 50);
+            buttonReset.Size = new Size(252, 50);
             buttonReset.TabIndex = 18;
             buttonReset.Text = Properties.Strings.FactoryDefaults;
             buttonReset.UseVisualStyleBackColor = false;
