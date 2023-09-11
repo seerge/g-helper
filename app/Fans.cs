@@ -207,6 +207,8 @@ namespace GHelper
 
             ToggleNavigation(0);
 
+            if (Program.acpi.DeviceGet(AsusACPI.DevsCPUFanCurve) < 0) buttonCalibrate.Visible = false;
+
             FormClosed += Fans_FormClosed;
 
         }
