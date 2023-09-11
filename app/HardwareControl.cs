@@ -267,6 +267,7 @@ public static class HardwareControl
             if (_gpuControl.IsValid)
             {
                 GpuControl = _gpuControl;
+                if (GpuControl.FullName.Contains("6850M")) AppConfig.Set("xgm_special", 1);
                 Logger.WriteLine(GpuControl.FullName);
                 return;
             }

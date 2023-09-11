@@ -675,11 +675,14 @@ namespace GHelper.Input
 
                 //string executable = command.Split(' ')[0];
                 //string arguments = command.Substring(executable.Length).Trim();
+                ProcessStartInfo startInfo = new ProcessStartInfo("cmd", "/C " + command);
 
-                ProcessStartInfo startInfo = new ProcessStartInfo();
-                startInfo.UseShellExecute = true;
+                startInfo.RedirectStandardOutput = true;
+                startInfo.RedirectStandardError = true;
+                startInfo.UseShellExecute = false;
+                startInfo.CreateNoWindow = true;
+
                 startInfo.WorkingDirectory = Environment.CurrentDirectory;
-                startInfo.FileName = command;
                 //startInfo.Arguments = arguments;
                 Process proc = Process.Start(startInfo);
             }
