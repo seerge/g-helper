@@ -356,6 +356,11 @@ public static class AppConfig
             ContainsModel("FX507Z");
     }
 
+    public static bool IsFanScale()
+    {
+        return ContainsModel("GU604");
+    }
+
     public static bool IsFanRequired()
     {
         return ContainsModel("GA402X") || ContainsModel("G513") || ContainsModel("G713R");

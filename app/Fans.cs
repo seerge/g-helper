@@ -592,8 +592,6 @@ namespace GHelper
             int Min = FanSensorControl.DEFAULT_FAN_MIN;
             int Max = FanSensorControl.GetFanMax(device);
 
-            if (device == AsusFan.XGM) Max = 72;
-
             if (fanRpm)
                 return (200 * Math.Round((float)(Min * 100 + (Max - Min) * percentage) / 200)).ToString() + unit;
             else

@@ -7,6 +7,8 @@ namespace GHelper.Fan
         public const int DEFAULT_FAN_MIN = 18;
         public const int DEFAULT_FAN_MAX = 58;
 
+        public const int XGM_FAN_MAX = 72;
+
         public const int INADEQUATE_MAX = 90;
 
         const int FAN_COUNT = 3;
@@ -70,6 +72,8 @@ namespace GHelper.Fan
 
         public static int GetFanMax(AsusFan device)
         {
+            if (device == AsusFan.XGM) return XGM_FAN_MAX;
+
             if (_fanMax[(int)device] < 0 || _fanMax[(int)device] > INADEQUATE_MAX)
                 SetFanMax(device, DEFAULT_FAN_MAX);
 
