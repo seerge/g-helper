@@ -24,8 +24,12 @@ namespace GHelper.Gpu
             int eco = Program.acpi.DeviceGet(AsusACPI.GPUEco);
             int mux = Program.acpi.DeviceGet(AsusACPI.GPUMux);
 
+            if (mux < 0) mux = Program.acpi.DeviceGet(AsusACPI.GPUMuxVivo);
+
             Logger.WriteLine("Eco flag : " + eco);
             Logger.WriteLine("Mux flag : " + mux);
+
+            settings.VisualiseGPUButtons(eco >= 0, mux >= 0);
 
             if (mux == 0)
             {
@@ -37,9 +41,6 @@ namespace GHelper.Gpu
                     gpuMode = AsusACPI.GPUModeEco;
                 else
                     gpuMode = AsusACPI.GPUModeStandard;
-
-                // Ultimate mode not supported
-                if (mux != 1) settings.HideUltimateMode();
 
                 // GPU mode not supported
                 if (eco < 0 && mux < 0)
@@ -73,12 +74,15 @@ namespace GHelper.Gpu
             var restart = false;
             var changed = false;
 
+            int status;
+
             if (CurrentGPU == AsusACPI.GPUModeUltimate)
             {
                 DialogResult dialogResult = MessageBox.Show(Properties.Strings.AlertUltimateOff, Properties.Strings.AlertUltimateTitle, MessageBoxButtons.YesNo);
                 if (dialogResult == DialogResult.Yes)
                 {
-                    Program.acpi.DeviceSet(AsusACPI.GPUMux, 1, "GPUMux");
+                    status = Program.acpi.DeviceSet(AsusACPI.GPUMux, 1, "GPUMux");
+                    if (status != 1) Program.acpi.DeviceSet(AsusACPI.GPUMuxVivo, 1, "GPUMuxVivo");
                     restart = true;
                     changed = true;
                 }
@@ -93,7 +97,8 @@ namespace GHelper.Gpu
                         Program.acpi.SetGPUEco(0);
                         Thread.Sleep(100);
                     }
-                    Program.acpi.DeviceSet(AsusACPI.GPUMux, 0, "GPUMux");
+                    status = Program.acpi.DeviceSet(AsusACPI.GPUMux, 0, "GPUMux");
+                    if (status != 1) Program.acpi.DeviceSet(AsusACPI.GPUMuxVivo, 0, "GPUMuxVivo");
                     restart = true;
                     changed = true;
                 }

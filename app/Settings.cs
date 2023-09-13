@@ -1025,13 +1025,26 @@ namespace GHelper
 
         }
 
-        public void HideUltimateMode()
+        public void VisualiseGPUButtons(bool eco = true, bool ultimate = true)
         {
-            tableGPU.Controls.Remove(buttonUltimate);
-            tablePerf.ColumnCount = 0;
-            tableGPU.ColumnCount = 0;
-            tableScreen.ColumnCount = 0;
-            menuUltimate.Visible = false;
+            if (!eco)
+            {
+                menuEco.Visible = buttonEco.Visible = false;
+                menuOptimized.Visible = buttonOptimized.Visible = false;
+                buttonStopGPU.Visible = true;
+                tableGPU.ColumnCount = 3;
+                tableScreen.ColumnCount = 3;
+            } else
+            {
+                buttonStopGPU.Visible = false;
+            }
+
+            if (!ultimate)
+            {
+                menuUltimate.Visible = buttonUltimate.Visible = false;
+                tableGPU.ColumnCount = 3;
+                tableScreen.ColumnCount = 3;
+            }
         }
 
         public void HideGPUModes(bool gpuExists)
@@ -1042,14 +1055,16 @@ namespace GHelper
             buttonStandard.Visible = false;
             buttonUltimate.Visible = false;
             buttonOptimized.Visible = false;
-
             buttonStopGPU.Visible = true;
+
+            tableGPU.ColumnCount = 0;
 
             SetContextMenu();
 
             panelGPU.Visible = gpuExists;
 
         }
+
 
         public void LockGPUModes(string text = null)
         {
