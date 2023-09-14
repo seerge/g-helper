@@ -279,6 +279,12 @@ Disable app's OSD (for performance modes, keyboard backlight, etc.)
 "disable_osd": 1,
 ```
 
+### Disable "Tablet mode" on X13/X16
+To disable automatic touchpad toggling when laptop enteres / leaves tabled mode
+```
+"disable_tablet": 1,
+```
+
 ### Extra Keybindings 
 - ``Ctrl + Shift + F5`` - Toggle Performance Modes
 - ``Ctrl + Shift + F12`` - Open G-Helper window 
