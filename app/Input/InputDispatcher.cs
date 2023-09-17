@@ -168,7 +168,7 @@ namespace GHelper.Input
         static void SetBrightness(int delta)
         {
             int brightness = -1;
-            
+
             if (isTUF) brightness = ScreenBrightness.Get();
             if (AppConfig.SwappedBrightness()) delta = -delta;
 
@@ -182,7 +182,7 @@ namespace GHelper.Input
 
                 Thread.Sleep(100);
                 if (brightness == ScreenBrightness.Get())
-                    Program.toast.RunToast(ScreenBrightness.Adjust(delta) + "%", (delta < 0 ) ? ToastIcon.BrightnessDown : ToastIcon.BrightnessUp);
+                    Program.toast.RunToast(ScreenBrightness.Adjust(delta) + "%", (delta < 0) ? ToastIcon.BrightnessDown : ToastIcon.BrightnessUp);
             }
 
         }
@@ -388,10 +388,17 @@ namespace GHelper.Input
                     modeControl.CyclePerformanceMode(Control.ModifierKeys == Keys.Shift);
                     break;
                 case "ghelper":
-                    Program.settingsForm.BeginInvoke(delegate
+                    try
                     {
-                        Program.SettingsToggle();
-                    });
+                        Program.settingsForm.BeginInvoke(delegate
+                        {
+                            Program.SettingsToggle();
+                        });
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug.WriteLine(ex);
+                    }
                     break;
                 case "fnlock":
                     ToggleFnLock();
@@ -431,6 +438,11 @@ namespace GHelper.Input
                 Logger.WriteLine("Touchpad status:" + key?.GetValue("Enabled")?.ToString());
                 return key?.GetValue("Enabled")?.ToString() == "1";
             }
+        }
+
+        static void ToggleTouchpad()
+        {
+            KeyboardHook.KeyCtrlWinPress(Keys.F24);
         }
 
         public static void ToggleArrowLock()
@@ -476,7 +488,7 @@ namespace GHelper.Input
             // We'll special-case the translation of those.
             if (AppConfig.IsAlly())
             {
-                switch(EventID)
+                switch (EventID)
                 {
 
                     // This is both the M1 and M2 keys.
@@ -566,7 +578,7 @@ namespace GHelper.Input
                     Program.acpi.DeviceSet(AsusACPI.UniversalControl, AsusACPI.Brightness_Up, "Brightness");
                     break;
                 case 107: // FN+F10
-                    AsusUSB.TouchpadToggle();
+                    ToggleTouchpad();
                     Thread.Sleep(200);
                     Program.toast.RunToast(GetTouchpadState() ? "On" : "Off", ToastIcon.Touchpad);
                     break;
@@ -643,7 +655,8 @@ namespace GHelper.Input
                 else if (brightness >= 100) brightness = 0;
                 else brightness = -10;
 
-            } else
+            }
+            else
             {
                 brightness = Math.Max(Math.Min(100, brightness + delta), -10);
             }
@@ -652,9 +665,9 @@ namespace GHelper.Input
 
             if (brightness >= 0) Program.acpi.DeviceSet(AsusACPI.ScreenPadToggle, 1, "ScreenpadOn");
 
-            Program.acpi.DeviceSet(AsusACPI.ScreenPadBrightness, Math.Max(brightness * 255 / 100, 0 ), "Screenpad");
+            Program.acpi.DeviceSet(AsusACPI.ScreenPadBrightness, Math.Max(brightness * 255 / 100, 0), "Screenpad");
 
-            if (brightness < 0)  Program.acpi.DeviceSet(AsusACPI.ScreenPadToggle, 0, "ScreenpadOff");
+            if (brightness < 0) Program.acpi.DeviceSet(AsusACPI.ScreenPadToggle, 0, "ScreenpadOff");
 
             string toast;
 
