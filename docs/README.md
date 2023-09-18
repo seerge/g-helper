@@ -280,7 +280,7 @@ Disable app's OSD (for performance modes, keyboard backlight, etc.)
 ```
 
 ### Disable "Tablet mode" on X13/X16
-To disable automatic touchpad toggling when laptop enteres / leaves tabled mode
+To disable automatic touchpad toggling when laptop enteres / leaves tablet mode
 ```
 "disable_tablet": 1,
 ```
