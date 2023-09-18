@@ -153,6 +153,13 @@ namespace GHelper.Mode
             Guid guidScheme = new Guid(scheme);
 
             uint status = PowerGetEffectiveOverlayScheme(out Guid activeScheme);
+            
+            if (GetBatterySaverStatus())
+            {
+                Logger.WriteLine("Battery Saver detected");
+                return;
+            }
+
             if (status != 0 || activeScheme != guidScheme)
             {
                 status = PowerSetActiveOverlayScheme(guidScheme);
@@ -288,6 +295,48 @@ namespace GHelper.Mode
             Logger.WriteLine("Setting Hibernate after " + seconds + ": " + (hrAC == 0 ? "OK" : hrAC));
         }
 
+        [DllImport("Kernel32")]
+        private static extern bool GetSystemPowerStatus(SystemPowerStatus sps);
+        public enum ACLineStatus : byte
+        {
+            Offline = 0, Online = 1, Unknown = 255
+        }
+
+        public enum BatteryFlag : byte
+        {
+            High = 1,
+            Low = 2,
+            Critical = 4,
+            Charging = 8,
+            NoSystemBattery = 128,
+            Unknown = 255
+        }
+
+        // Fields must mirror their unmanaged counterparts, in order
+        [StructLayout(LayoutKind.Sequential)]
+        public class SystemPowerStatus
+        {
+            public ACLineStatus ACLineStatus;
+            public BatteryFlag BatteryFlag;
+            public Byte BatteryLifePercent;
+            public Byte SystemStatusFlag;
+            public Int32 BatteryLifeTime;
+            public Int32 BatteryFullLifeTime;
+        }
+
+        public static bool GetBatterySaverStatus()
+        {
+            SystemPowerStatus sps = new SystemPowerStatus();
+            try
+            {
+                GetSystemPowerStatus(sps);
+                return (sps.SystemStatusFlag > 0);
+            } catch (Exception ex)
+            {
+                return false;
+            }
+
+        }
 
     }
 }

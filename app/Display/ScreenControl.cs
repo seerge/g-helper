@@ -77,8 +77,12 @@ namespace GHelper.Display
             int overdrive = Program.acpi.DeviceGet(AsusACPI.ScreenOverdrive);
             int miniled = Program.acpi.DeviceGet(AsusACPI.ScreenMiniled);
 
+            bool hdr = false;
+
             if (miniled >= 0)
+            {
                 AppConfig.Set("miniled", miniled);
+            }
 
             bool screenEnabled = (frequency >= 0);
 
@@ -94,7 +98,8 @@ namespace GHelper.Display
                     maxFrequency: maxFrequency,
                     overdrive: overdrive,
                     overdriveSetting: overdriveSetting,
-                    miniled: miniled
+                    miniled: miniled,
+                    hdr: hdr
                 );
             });
 

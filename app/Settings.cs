@@ -758,7 +758,7 @@ namespace GHelper
 
 
 
-        public void VisualiseScreen(bool screenEnabled, bool screenAuto, int frequency, int maxFrequency, int overdrive, bool overdriveSetting, int miniled)
+        public void VisualiseScreen(bool screenEnabled, bool screenAuto, int frequency, int maxFrequency, int overdrive, bool overdriveSetting, int miniled, bool hdr)
         {
 
             ButtonEnabled(button60Hz, screenEnabled);
@@ -800,6 +800,7 @@ namespace GHelper
             if (miniled >= 0)
             {
                 buttonMiniled.Activated = (miniled == 1);
+                buttonMiniled.Enabled = !hdr;
             }
             else
             {

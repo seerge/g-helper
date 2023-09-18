@@ -1,8 +1,6 @@
-﻿using Microsoft.VisualBasic.Logging;
-using System.Collections;
-using System.Diagnostics.Metrics;
+﻿using System.Collections;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
-using System.Windows.Forms;
 using static GHelper.Display.ScreenInterrogatory;
 
 namespace GHelper.Display

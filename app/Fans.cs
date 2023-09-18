@@ -692,7 +692,14 @@ namespace GHelper
                 comboBoost.SelectedIndex = Math.Min(boost, comboBoost.Items.Count - 1);
 
             string powerMode = PowerNative.GetPowerMode();
-            comboPowerMode.SelectedValue = powerMode;
+            bool batterySaver = PowerNative.GetBatterySaverStatus();
+
+            comboPowerMode.Enabled = !batterySaver;
+
+            if (batterySaver) 
+                comboPowerMode.SelectedIndex = 0;
+            else
+                comboPowerMode.SelectedValue = powerMode;
 
         }
 
