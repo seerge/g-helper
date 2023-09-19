@@ -799,7 +799,7 @@ namespace GHelper
 
             if (miniled >= 0)
             {
-                buttonMiniled.Activated = (miniled == 1);
+                buttonMiniled.Activated = (miniled == 1) || hdr;
                 buttonMiniled.Enabled = !hdr;
             }
             else

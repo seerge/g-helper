@@ -95,6 +95,10 @@ namespace GHelper.Helpers
 
             if (IsClamshellEnabled())
                 ToggleLidAction();
+
+            if (Program.settingsForm.Visible)
+                Program.screenControl.InitScreen();
+
         }
 
         private static int CheckAndSaveLidAction()

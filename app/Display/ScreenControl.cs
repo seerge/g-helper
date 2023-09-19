@@ -82,6 +82,7 @@ namespace GHelper.Display
             if (miniled >= 0)
             {
                 AppConfig.Set("miniled", miniled);
+                hdr = ScreenCCD.GetHDRStatus();
             }
 
             bool screenEnabled = (frequency >= 0);

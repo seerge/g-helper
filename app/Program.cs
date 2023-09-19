@@ -29,9 +29,9 @@ namespace GHelper
         public static SettingsForm settingsForm = new SettingsForm();
 
         public static ModeControl modeControl = new ModeControl();
-        static GPUModeControl gpuControl = new GPUModeControl(settingsForm);
-        static ScreenControl screenControl = new ScreenControl();
-        static ClamshellModeControl clamshellControl = new ClamshellModeControl();
+        public static GPUModeControl gpuControl = new GPUModeControl(settingsForm);
+        public static ScreenControl screenControl = new ScreenControl();
+        public static ClamshellModeControl clamshellControl = new ClamshellModeControl();
 
         public static ToastForm toast = new ToastForm();
 
