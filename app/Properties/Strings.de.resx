@@ -130,10 +130,10 @@
     <value>Eco Modus</value>
   </data>
   <data name="AlertUltimateOff" xml:space="preserve">
-    <value>Wechseln in den Ultimate Modus benötigt einen Neustart. Jetzt neustarten?</value>
+    <value>Deaktivieren des Ultimate Modus benötigt einen Neustart.</value>
   </data>
   <data name="AlertUltimateOn" xml:space="preserve">
-    <value>Ultimate Modus benötigt einen Neustart</value>
+    <value>Aktivieren des Ultimate Modus benötigt einen Neustart.</value>
   </data>
   <data name="AlertUltimateTitle" xml:space="preserve">
     <value>Jetzt neu starten?</value>
@@ -271,7 +271,7 @@
     <value>Helligkeit erhöhen</value>
   </data>
   <data name="Calibrate" xml:space="preserve">
-    <value>Calibrate</value>
+    <value>Kalibrieren</value>
   </data>
   <data name="Charging" xml:space="preserve">
     <value>Lädt</value>
@@ -292,7 +292,7 @@
     <value>Standard</value>
   </data>
   <data name="DisableOverdrive" xml:space="preserve">
-    <value>Overdrive abschalten</value>
+    <value>Bildschirm: Overdrive abschalten</value>
   </data>
   <data name="Discharging" xml:space="preserve">
     <value>Entlädt</value>
@@ -310,7 +310,7 @@
     <value>Eco</value>
   </data>
   <data name="EnableOptimusText" xml:space="preserve">
-    <value>Wenn Sie die dGPU deaktivieren, indem Sie in den Eco-Modus wechseln, kann zu Problemen mit der Helligkeitseinstellung führen, wenn der Anzeigemodus nicht auf Optimus eingestellt ist.
+    <value>Wenn Sie die dGPU deaktivieren, indem Sie in den Eco-Modus wechseln während der Anzeigemodus nicht auf Optimus eingestellt ist, können Probleme mit der Helligkeitseinstellung auftreten.
 
 Trotzdem fortfahren?</value>
   </data>
@@ -402,7 +402,7 @@ Trotzdem fortfahren?</value>
     <value>Alle Anwendungen auf der dGPU beim Wechsel in den Eco Modus beenden.</value>
   </data>
   <data name="LaptopBacklight" xml:space="preserve">
-    <value>Laptopbelechtung</value>
+    <value>Laptopbeleuchtung</value>
   </data>
   <data name="LaptopKeyboard" xml:space="preserve">
     <value>Laptoptastatur</value>
@@ -498,7 +498,7 @@ Trotzdem fortfahren?</value>
     <value>Neue Updates:</value>
   </data>
   <data name="NoNewUpdates" xml:space="preserve">
-    <value>Keine Updates verfügbar</value>
+    <value>Keine Updates</value>
   </data>
   <data name="NotConnected" xml:space="preserve">
     <value>Nicht verbunden</value>
@@ -630,7 +630,7 @@ Trotzdem fortfahren?</value>
     <value>Ultimativ</value>
   </data>
   <data name="UndervoltingRisky" xml:space="preserve">
-    <value>Die Spannungsabsenkung (Undervolting) ist experimentell und birgt u.U. ein Risik. Wenn die Spannung zu weit abgesenkt wird, wird der Computer instabil und kann abstürzen, was zu Datenverlust führen kann. Es empfiehlt sich mit kleinen Werten anzufangen und es ausgiebig zu testen, um den idealen Wert zu finden.</value>
+    <value>Die Spannungsabsenkung (Undervolting) ist experimentell und birgt Risiken. Wenn die Spannung zu weit abgesenkt wird, wird der Computer instabil und kann abstürzen, was zu Datenverlust führen kann. Es empfiehlt sich mit kleinen Werten anzufangen und es ausgiebig zu testen, um den idealen Wert zu finden.</value>
   </data>
   <data name="Updates" xml:space="preserve">
     <value>Aktualisierungen</value>
