@@ -630,7 +630,7 @@ Trotzdem fortfahren?</value>
     <value>Ultimativ</value>
   </data>
   <data name="UndervoltingRisky" xml:space="preserve">
-    <value>Die Spannungsabsenkung (Undervolting) ist experimentell und birgt u.U. ein Risik. Wenn die Spannung zu weit abgesenkt wird, wird der Computer instabil und kann abstürzen, was zu Datenverlust führen kann. Es empfiehlt sich mit kleinen Werten anzufangen und es ausgiebig zu testen, um den idealen Wert zu finden.</value>
+    <value>Die Spannungsabsenkung (Undervolting) ist experimentell und birgt Risiken. Wenn die Spannung zu weit abgesenkt wird, wird der Computer instabil und kann abstürzen, was zu Datenverlust führen kann. Es empfiehlt sich mit kleinen Werten anzufangen und ausgiebig zu testen, um den idealen Wert zu finden.</value>
   </data>
   <data name="Updates" xml:space="preserve">
     <value>Aktualisierungen</value>
