@@ -259,7 +259,7 @@
     <value>Al arrancar</value>
   </data>
   <data name="BootSound" xml:space="preserve">
-    <value>Boot Sound</value>
+    <value>Sonido al arranque</value>
   </data>
   <data name="Brightness" xml:space="preserve">
     <value>Brillo</value>
@@ -271,7 +271,7 @@
     <value>Subir brillo</value>
   </data>
   <data name="Calibrate" xml:space="preserve">
-    <value>Calibrate</value>
+    <value>Calibrar</value>
   </data>
   <data name="Charging" xml:space="preserve">
     <value>Cargando</value>

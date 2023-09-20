@@ -270,6 +270,9 @@
   <data name="BrightnessUp" xml:space="preserve">
     <value>螢幕亮度提高</value>
   </data>
+  <data name="Calibrate" xml:space="preserve">
+    <value>校準</value>
+  </data>
   <data name="Charging" xml:space="preserve">
     <value>充電中</value>
   </data>
