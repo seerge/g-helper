@@ -137,6 +137,15 @@ namespace GHelper
                 customActions.Add("screenpad_up", Properties.Strings.ScreenPadUp);
             }
 
+            if (AppConfig.IsARCNM())
+            {
+                labelM3.Text = "FN+F6";
+                labelM1.Visible = comboM1.Visible = textM1.Visible = false;
+                labelM2.Visible = comboM2.Visible = textM2.Visible = false;
+                labelM4.Visible = comboM4.Visible = textM4.Visible = false;
+                labelFNF4.Visible = comboFNF4.Visible = textFNF4.Visible = false;
+            } 
+            
             if (AppConfig.NoMKeys())
             {
                 labelM1.Text = "FN+F2";

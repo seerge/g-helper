@@ -271,12 +271,17 @@ public static class AppConfig
 
     public static bool NoMKeys()
     {
-        return ContainsModel("Z13") ||
+        return (ContainsModel("Z13") && !IsARCNM()) ||
                ContainsModel("FX706") ||
                ContainsModel("FA506") ||
                ContainsModel("FX506") ||
                ContainsModel("Duo") ||
                ContainsModel("FX505");
+    }
+
+    public static bool IsARCNM()
+    {
+        return ContainsModel("GZ301VIC");
     }
 
     public static bool IsTUF()
