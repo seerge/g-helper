@@ -35,6 +35,7 @@
             panelMain = new Panel();
             panelButtons = new Panel();
             buttonReset = new UI.RButton();
+            checkDiagonal = new UI.RCheckBox();
             panelScaling = new Panel();
             comboScaling = new UI.RComboBox();
             labelScaling = new Label();
@@ -119,6 +120,7 @@
             // 
             panelButtons.Controls.Add(buttonReset);
             panelButtons.Controls.Add(buttonPicture);
+            panelButtons.Controls.Add(checkDiagonal);
             panelButtons.Dock = DockStyle.Top;
             panelButtons.Location = new Point(0, 642);
             panelButtons.Name = "panelButtons";
@@ -143,6 +145,19 @@
             buttonReset.TextAlign = ContentAlignment.MiddleRight;
             buttonReset.TextImageRelation = TextImageRelation.ImageBeforeText;
             buttonReset.UseVisualStyleBackColor = false;
+            // 
+            // checkDiagonal
+            // 
+            checkDiagonal.BackColor = SystemColors.ControlLight;
+            checkDiagonal.FlatAppearance.BorderSize = 0;
+            checkDiagonal.Location = new Point(567, 21);
+            checkDiagonal.Margin = new Padding(0);
+            checkDiagonal.Name = "checkDiagonal";
+            checkDiagonal.Size = new Size(255, 53);
+            checkDiagonal.Padding = new Padding(16, 6, 16, 6);
+            checkDiagonal.TabIndex = 5;
+            checkDiagonal.Text = "Diagonal Align";
+            checkDiagonal.UseVisualStyleBackColor = false;
             // 
             // panelScaling
             // 
@@ -251,6 +266,7 @@
         private Label labelZoomTitle;
         private Panel panelButtons;
         private UI.RButton buttonReset;
+        private UI.RCheckBox checkDiagonal;
         private Panel panelScaling;
         private Label labelScaling;
         private UI.RComboBox comboScaling;

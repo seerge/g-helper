@@ -473,6 +473,7 @@ namespace Starlight.AnimeMatrix
 
         public void GenerateFrame(Image image, float zoom = 100, int panX = 0, int panY = 0, InterpolationMode quality = InterpolationMode.Default)
         {
+            bool matrixDiagonal = AppConfig.Get("matrix_diagonal", 0) == 0;
 
             int width = MaxColumns / 2 * 6;
             int height = MaxRows;
@@ -501,13 +502,14 @@ namespace Starlight.AnimeMatrix
                 for (int y = 0; y < bmp.Height; y++)
                 {
                     for (int x = 0; x < bmp.Width; x++)
-                        if (x % 2 == y % 2)
-                        {
-                            var pixel = bmp.GetPixel(x, y);
-                            var color = (pixel.R + pixel.G + pixel.B) / 3;
-                            if (color < 10) color = 0;
-                            SetLedPlanar(x / 2, y, (byte)color);
-                        }
+                    {
+                        if (!matrixDiagonal && x % 2 != y % 2) continue;
+                        var pixel = bmp.GetPixel(x, y);
+                        var color = (pixel.R + pixel.G + pixel.B) / 3;
+                        if (color < 10) color = 0;
+                        if (matrixDiagonal) SetLedDiagonal(x, y, (byte)color, 0, 34);
+                        else SetLedPlanar(x / 2, y, (byte)color);
+                    }
                 }
             }
         }

@@ -31,6 +31,10 @@ namespace GHelper
             buttonPicture.Click += ButtonPicture_Click;
             buttonReset.Click += ButtonReset_Click;
 
+            checkDiagonal.Click += CheckDiagonal_Click;
+
+            checkDiagonal.Checked = !(AppConfig.Get("matrix_diagonal") == 1);
+
             pictureMatrix.MouseUp += PictureMatrix_MouseUp;
             pictureMatrix.MouseMove += PictureMatrix_MouseMove;
             pictureMatrix.MouseDown += PictureMatrix_MouseDown;
@@ -79,6 +83,13 @@ namespace GHelper
 
             trackZoom.Value = 100;
 
+            SetMatrixPicture();
+
+        }
+
+        private void CheckDiagonal_Click(object? sender, EventArgs e)
+        {
+            AppConfig.Set("matrix_diagonal", checkDiagonal.Checked ? 0 : 1);
             SetMatrixPicture();
 
         }
