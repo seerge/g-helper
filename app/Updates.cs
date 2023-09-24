@@ -13,8 +13,8 @@ namespace GHelper
         const int DRIVER_NEWER = 1;
 
         //static int rowCount = 0;
-        static string model;
         static string bios;
+        static string model;
 
         static int updatesCount = 0;
         private static long lastUpdate;
@@ -33,7 +33,7 @@ namespace GHelper
             if (!force && (Math.Abs(DateTimeOffset.Now.ToUnixTimeMilliseconds() - lastUpdate) < 5000)) return;
             lastUpdate = DateTimeOffset.Now.ToUnixTimeMilliseconds();
 
-            InitBiosAndModel();
+            (bios, model) = AppConfig.GetBiosAndModel();
 
             updatesCount = 0;
             labelUpdates.ForeColor = colorEco;
@@ -116,31 +116,6 @@ namespace GHelper
             }
         }
 
-        private string InitBiosAndModel()
-        {
-            using (ManagementObjectSearcher objSearcher = new ManagementObjectSearcher("SELECT * FROM Win32_BIOS"))
-            {
-                using (ManagementObjectCollection objCollection = objSearcher.Get())
-                {
-                    foreach (ManagementObject obj in objCollection)
-                        if (obj["SMBIOSBIOSVersion"] is not null)
-                        {
-                            string[] results = obj["SMBIOSBIOSVersion"].ToString().Split(".");
-                            if (results.Length > 1)
-                            {
-                                model = results[0];
-                                bios = results[1];
-                            }
-                            else
-                            {
-                                model = obj["SMBIOSBIOSVersion"].ToString();
-                            }
-                        }
-
-                    return "";
-                }
-            }
-        }
 
         public void VisualiseDriver(DriverDownload driver, TableLayoutPanel table)
         {

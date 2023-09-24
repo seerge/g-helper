@@ -7,7 +7,9 @@ public static class AppConfig
 {
 
     private static string configFile;
+
     private static string? _model;
+    private static string? _bios;
 
     private static Dictionary<string, object> config = new Dictionary<string, object>();
 
@@ -67,6 +69,34 @@ public static class AppConfig
         }
 
         return _model;
+    }
+
+    public static (string, string) GetBiosAndModel()
+    {
+        if (_bios is not null && _model is not null) return (_bios, _model);
+
+        using (ManagementObjectSearcher objSearcher = new ManagementObjectSearcher(@"SELECT * FROM Win32_BIOS"))
+        {
+            using (ManagementObjectCollection objCollection = objSearcher.Get())
+            {
+                foreach (ManagementObject obj in objCollection)
+                    if (obj["SMBIOSBIOSVersion"] is not null)
+                    {
+                        string[] results = obj["SMBIOSBIOSVersion"].ToString().Split(".");
+                        if (results.Length > 1)
+                        {
+                            _model = results[0];
+                            _bios = results[1];
+                        }
+                        else
+                        {
+                            _model = obj["SMBIOSBIOSVersion"].ToString();
+                        }
+                    }
+
+                return (_bios, _model);
+            }
+        }
     }
 
     public static string GetModelShort()
@@ -363,12 +393,21 @@ public static class AppConfig
 
     public static bool IsFanScale()
     {
-        return ContainsModel("GU604");
+        if (!ContainsModel("GU604")) return false; 
+
+        try
+        {
+            var (bios, model) = GetBiosAndModel();
+            return (Int32.Parse(bios) < 312);
+        } catch
+        {
+            return false;
+        }
     }
 
     public static bool IsFanRequired()
     {
-        return ContainsModel("GA402X") || ContainsModel("G513") || ContainsModel("G713R");
+        return ContainsModel("GA402X") || ContainsModel("G513") || ContainsModel("G713R") || ContainsModel("G713P");
     }
 
     public static bool IsPowerRequired()
