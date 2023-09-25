@@ -1187,8 +1187,16 @@ namespace GHelper
 
                 if (m.IsDeviceReady)
                 {
-                    b.Text = m.GetDisplayName() + "\n" + m.Battery + "%"
-                    + (m.Charging ? "(" + Properties.Strings.Charging + ")" : "");
+                    if (m.HasBattery())
+                    {
+                        b.Text = m.GetDisplayName() + "\n" + m.Battery + "%"
+                                            + (m.Charging ? "(" + Properties.Strings.Charging + ")" : "");
+                    }
+                    else
+                    {
+                        b.Text = m.GetDisplayName();
+                    }
+
                 }
                 else
                 {
