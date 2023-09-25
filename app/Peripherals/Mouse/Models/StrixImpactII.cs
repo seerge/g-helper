@@ -156,7 +156,6 @@
             }
             //Mouse sends all lighting zones in one response
             //00 12 03 00 00 [00 04 ff 00 80] [00 04 00 ff ff] [00 04 ff ff ff] 00 00 00 00 00 00 00 00 00 00 00 00 00 0
-            //No idea what the 3rd zone is as the mouse only has 2
             byte[]? response = WriteForResponse(GetReadLightingModePacket(LightingZone.All));
             if (response is null) return;
 
