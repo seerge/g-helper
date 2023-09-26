@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Acceleration" xml:space="preserve">
-    <value>Acceleration</value>
+    <value>Gyorsítás</value>
   </data>
   <data name="ACPIError" xml:space="preserve">
     <value>Nem sikerült csatlakozni az ASUS ACPI-hez, az alkalmazás nem működik enélkül. Próbáld meg telepíteni az ASUS rendszervezérlő interfész-t</value>
@@ -166,28 +166,28 @@
     <value>Asus szolgáltatások futnak</value>
   </data>
   <data name="AuraBatteryState" xml:space="preserve">
-    <value>Battery State</value>
+    <value>Akkuállapot</value>
   </data>
   <data name="AuraBreathe" xml:space="preserve">
     <value>Lélegző</value>
   </data>
   <data name="AuraClockwise" xml:space="preserve">
-    <value>Clockwise</value>
+    <value>Jobbra forog</value>
   </data>
   <data name="AuraColorCycle" xml:space="preserve">
     <value>Színváltás</value>
   </data>
   <data name="AuraComet" xml:space="preserve">
-    <value>Comet</value>
+    <value>Üstökös</value>
   </data>
   <data name="AuraCounterClockwise" xml:space="preserve">
-    <value>Counterclockwise</value>
+    <value>Balra forog</value>
   </data>
   <data name="AuraFast" xml:space="preserve">
     <value>Gyors</value>
   </data>
   <data name="AuraLightingMode" xml:space="preserve">
-    <value>Lighting Mode</value>
+    <value>Világítás típusa</value>
   </data>
   <data name="AuraNormal" xml:space="preserve">
     <value>Normál</value>
@@ -196,10 +196,10 @@
     <value>Szivárvány</value>
   </data>
   <data name="AuraRandomColor" xml:space="preserve">
-    <value>Random</value>
+    <value>Véletlen</value>
   </data>
   <data name="AuraReact" xml:space="preserve">
-    <value>React</value>
+    <value>Reagál</value>
   </data>
   <data name="AuraSlow" xml:space="preserve">
     <value>Lassú</value>
@@ -211,16 +211,16 @@
     <value>Stroboszkóp</value>
   </data>
   <data name="AuraZoneAll" xml:space="preserve">
-    <value>All</value>
+    <value>Mindegyik</value>
   </data>
   <data name="AuraZoneDock" xml:space="preserve">
-    <value>Dock</value>
+    <value>Dokk</value>
   </data>
   <data name="AuraZoneLogo" xml:space="preserve">
-    <value>Logo</value>
+    <value>Logó</value>
   </data>
   <data name="AuraZoneScroll" xml:space="preserve">
-    <value>Scrollwheel</value>
+    <value>Görgetés</value>
   </data>
   <data name="AuraZoneUnderglow" xml:space="preserve">
     <value>Underglow</value>
@@ -238,19 +238,19 @@
     <value>Ébren</value>
   </data>
   <data name="BacklightTimeout" xml:space="preserve">
-    <value>Timeout plugged / on battery (0 - ON)</value>
+    <value>Késleltetés töltés / akku módban (0 - BE)</value>
   </data>
   <data name="Balanced" xml:space="preserve">
     <value>Teljesítmény</value>
   </data>
   <data name="BatteryCharge" xml:space="preserve">
-    <value>Charge</value>
+    <value>Töltés</value>
   </data>
   <data name="BatteryChargeLimit" xml:space="preserve">
     <value>Töltési korlát</value>
   </data>
   <data name="BatteryHealth" xml:space="preserve">
-    <value>Battery Health</value>
+    <value>Akku állapot</value>
   </data>
   <data name="BiosAndDriverUpdates" xml:space="preserve">
     <value>BIOS és illesztőprogram frissítések</value>
@@ -259,7 +259,7 @@
     <value>Rendszerbetöltés</value>
   </data>
   <data name="BootSound" xml:space="preserve">
-    <value>Boot Sound</value>
+    <value>Rendszerindítási hang</value>
   </data>
   <data name="Brightness" xml:space="preserve">
     <value>Fényerő</value>
@@ -271,10 +271,10 @@
     <value>Fényerő növelése</value>
   </data>
   <data name="Calibrate" xml:space="preserve">
-    <value>Calibrate</value>
+    <value>Kalibrálás</value>
   </data>
   <data name="Charging" xml:space="preserve">
-    <value>Charging</value>
+    <value>Töltés</value>
   </data>
   <data name="Color" xml:space="preserve">
     <value>Szín</value>
@@ -286,7 +286,7 @@
     <value>Egyéni</value>
   </data>
   <data name="Deceleration" xml:space="preserve">
-    <value>Deceleration</value>
+    <value>Lassítás</value>
   </data>
   <data name="Default" xml:space="preserve">
     <value>Alapért.</value>
@@ -298,7 +298,7 @@
     <value>Merülés</value>
   </data>
   <data name="DownloadUpdate" xml:space="preserve">
-    <value>Download</value>
+    <value>Letöltés</value>
   </data>
   <data name="DriverAndSoftware" xml:space="preserve">
     <value>Illesztőprogramok és alkalmazások</value>
@@ -318,7 +318,7 @@ Do you still want to continue?</value>
     <value>NVIDIA kijelzőmód nincs Optimus-ra állítva</value>
   </data>
   <data name="EnergySettings" xml:space="preserve">
-    <value>Energy Settings</value>
+    <value>Energia beállítások</value>
   </data>
   <data name="Extra" xml:space="preserve">
     <value>Extra</value>
@@ -354,7 +354,7 @@ Do you still want to continue?</value>
     <value>Venti + energia</value>
   </data>
   <data name="FnLock" xml:space="preserve">
-    <value>Process Fn+F hotkeys without Fn</value>
+    <value>Fn + F gyorsgombok feldolgozása Fn nélkül</value>
   </data>
   <data name="GPUBoost" xml:space="preserve">
     <value>Dinamikus gyorsítás</value>
@@ -387,10 +387,10 @@ Do you still want to continue?</value>
     <value>Célhőmérséklet</value>
   </data>
   <data name="HibernateAfter" xml:space="preserve">
-    <value>Minutes till Hibernation in sleep on battery (0 - OFF)</value>
+    <value>Akku módban az alvó módból Hibernálásig eltelt idő (0 - KI)</value>
   </data>
   <data name="High" xml:space="preserve">
-    <value>High</value>
+    <value>Magas</value>
   </data>
   <data name="KeyBindings" xml:space="preserve">
     <value>Gyorsbillentyűk</value>
@@ -399,7 +399,7 @@ Do you still want to continue?</value>
     <value>Billentyűzet</value>
   </data>
   <data name="KillGpuApps" xml:space="preserve">
-    <value>Stop all apps using GPU when switching to Eco</value>
+    <value>Eco módba lépéskor minden alkalmazást leállít, ami a GPU-t használja</value>
   </data>
   <data name="LaptopBacklight" xml:space="preserve">
     <value>Laptop háttérvilágítás</value>
@@ -417,19 +417,19 @@ Do you still want to continue?</value>
     <value>Fénysáv</value>
   </data>
   <data name="Lighting" xml:space="preserve">
-    <value>Lighting</value>
+    <value>Világítás</value>
   </data>
   <data name="Logo" xml:space="preserve">
     <value>Logó</value>
   </data>
   <data name="Low" xml:space="preserve">
-    <value>Low</value>
+    <value>Alacsony</value>
   </data>
   <data name="MatrixAudio" xml:space="preserve">
     <value>Hang vizualizáció</value>
   </data>
   <data name="MatrixBanner" xml:space="preserve">
-    <value>Binary Banner</value>
+    <value>Bináris logó</value>
   </data>
   <data name="MatrixBright" xml:space="preserve">
     <value>Fényes</value>
@@ -459,19 +459,19 @@ Do you still want to continue?</value>
     <value>60Hz-s frissítési gyakoriság, hogy spóroljon az akkuval</value>
   </data>
   <data name="Minute" xml:space="preserve">
-    <value>Minute</value>
+    <value>perc</value>
   </data>
   <data name="Minutes" xml:space="preserve">
-    <value>Minutes</value>
+    <value>perc</value>
   </data>
   <data name="MouseAngleSnapping" xml:space="preserve">
     <value>Angle Snapping</value>
   </data>
   <data name="MouseAutoPowerOff" xml:space="preserve">
-    <value>Auto Power Off After</value>
+    <value>Automatikus kikapcsolás idő múlva</value>
   </data>
   <data name="MouseButtonResponse" xml:space="preserve">
-    <value>Button Response</value>
+    <value>Gomb funkciója</value>
   </data>
   <data name="MouseLiftOffDistance" xml:space="preserve">
     <value>Lift Off Distance</value>
@@ -480,10 +480,10 @@ Do you still want to continue?</value>
     <value>Low Battery Warning at</value>
   </data>
   <data name="MousePerformance" xml:space="preserve">
-    <value>Performance</value>
+    <value>Teljesítmény</value>
   </data>
   <data name="MouseSynchronize" xml:space="preserve">
-    <value>Synchronize with mouse</value>
+    <value>Szinkronizálás egérrel</value>
   </data>
   <data name="Multizone" xml:space="preserve">
     <value>Többzónás</value>
@@ -492,7 +492,7 @@ Do you still want to continue?</value>
     <value>Mikrofon némítása</value>
   </data>
   <data name="Never" xml:space="preserve">
-    <value>Never</value>
+    <value>Soha</value>
   </data>
   <data name="NewUpdates" xml:space="preserve">
     <value>Új frissítés</value>
@@ -501,7 +501,7 @@ Do you still want to continue?</value>
     <value>Nincs új frissítés</value>
   </data>
   <data name="NotConnected" xml:space="preserve">
-    <value>Not Connected</value>
+    <value>Nincs csatlakoztatva</value>
   </data>
   <data name="OpenGHelper" xml:space="preserve">
     <value>G-Helper ablak megnyitása</value>
@@ -510,7 +510,7 @@ Do you still want to continue?</value>
     <value>Optimalizált</value>
   </data>
   <data name="OptimizedGPUTooltip" xml:space="preserve">
-    <value>Akkus módban váltson Eco módra, töltés közben pedig Standard-ra</value>
+    <value>Akkus módban váltson Eco módra, töltéskor pedig Standard-ra</value>
   </data>
   <data name="OptimizedUSBC" xml:space="preserve">
     <value>Optimalizált módban USB-C-s töltés közben tartsa letiltva a GPU-t</value>
@@ -525,7 +525,7 @@ Do you still want to continue?</value>
     <value>Üzemmód</value>
   </data>
   <data name="Peripherals" xml:space="preserve">
-    <value>Peripherals</value>
+    <value>Perifériák</value>
   </data>
   <data name="PictureGif" xml:space="preserve">
     <value>Kép / Gif</value>
@@ -546,19 +546,19 @@ Do you still want to continue?</value>
     <value>PrintScreen</value>
   </data>
   <data name="Profile" xml:space="preserve">
-    <value>Profile</value>
+    <value>Profil</value>
   </data>
   <data name="Quit" xml:space="preserve">
     <value>Bezárás</value>
   </data>
   <data name="RestartGPU" xml:space="preserve">
-    <value>Something is using dGPU and preventing Eco mode. Let G-Helper try to restart dGPU in device manager? (Please proceed at your own risk)</value>
+    <value>Valami használja még a dGPU-t, ezzel megakadályozva az Eco móda lépést. Próbálja meg a G-Helper újraindítani a dGPU-t az eszközkezelőben? (Kérjük, saját felelősségére folytassa)</value>
   </data>
   <data name="RPM" xml:space="preserve">
     <value>Fordulatszám</value>
   </data>
   <data name="RunOnStartup" xml:space="preserve">
-    <value>Futtatás rendszerindításkor</value>
+    <value>Indítás a rendszerrel</value>
   </data>
   <data name="ScreenPadDown" xml:space="preserve">
     <value>Screenpad Brightness Down</value>
@@ -624,7 +624,7 @@ Do you still want to continue?</value>
     <value>Akkus üzemmódban kikapcsol</value>
   </data>
   <data name="UltimateGPUTooltip" xml:space="preserve">
-    <value>Routes laptop screen to dGPU, maximizing FPS</value>
+    <value>A jobb FPS érdekében a laptop kijelzőt közvetlenül a GPU-n keresztül működteti</value>
   </data>
   <data name="UltimateMode" xml:space="preserve">
     <value>Ultimate</value>
