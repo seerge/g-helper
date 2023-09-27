@@ -387,7 +387,7 @@ Yine de devam etmek istiyor musunuz?</value>
     <value>Sıcaklık Hedefi</value>
   </data>
   <data name="HibernateAfter" xml:space="preserve">
-    <value>Minutes till Hibernation in sleep on battery (0 - OFF)</value>
+    <value>Uyku modunda, Hazırda Bekleme Moduna geçiş dakikası (0 - KAPALI)</value>
   </data>
   <data name="High" xml:space="preserve">
     <value>Yüksek</value>
