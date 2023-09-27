@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Acceleration" xml:space="preserve">
-    <value>Acceleration</value>
+    <value>Hızlandırma</value>
   </data>
   <data name="ACPIError" xml:space="preserve">
     <value>ASUS ACPI'ye bağlanılamıyor. Uygulama o olmadan çalışamaz. Asus Sistem Kontrol Arayüzü'nü yüklemeyi deneyin.</value>
@@ -151,7 +151,7 @@
     <value>G-Helper zaten çalışıyor. Simge için görev çubuğunu kontrol edin.</value>
   </data>
   <data name="Apply" xml:space="preserve">
-    <value>Apply</value>
+    <value>Uygula</value>
   </data>
   <data name="ApplyFanCurve" xml:space="preserve">
     <value>Özel Fan Eğrisini Uygula</value>
@@ -163,31 +163,31 @@
     <value>Windows Güç Modunu otomatik ayarla</value>
   </data>
   <data name="AsusServicesRunning" xml:space="preserve">
-    <value>Asus Services Running</value>
+    <value>Çalışan Asus Hizmetleri</value>
   </data>
   <data name="AuraBatteryState" xml:space="preserve">
-    <value>Battery State</value>
+    <value>Pil Durumu</value>
   </data>
   <data name="AuraBreathe" xml:space="preserve">
     <value>Nefes</value>
   </data>
   <data name="AuraClockwise" xml:space="preserve">
-    <value>Clockwise</value>
+    <value>Saat Yönünde</value>
   </data>
   <data name="AuraColorCycle" xml:space="preserve">
     <value>Renk Döngüsü</value>
   </data>
   <data name="AuraComet" xml:space="preserve">
-    <value>Comet</value>
+    <value>Kuyruklu Yıldız</value>
   </data>
   <data name="AuraCounterClockwise" xml:space="preserve">
-    <value>Counterclockwise</value>
+    <value>Saat Yönünün Tersine</value>
   </data>
   <data name="AuraFast" xml:space="preserve">
     <value>Hızlı</value>
   </data>
   <data name="AuraLightingMode" xml:space="preserve">
-    <value>Lighting Mode</value>
+    <value>Işıklandırma Modu</value>
   </data>
   <data name="AuraNormal" xml:space="preserve">
     <value>Normal</value>
@@ -196,10 +196,10 @@
     <value>Gökkuşağı</value>
   </data>
   <data name="AuraRandomColor" xml:space="preserve">
-    <value>Random</value>
+    <value>Rastgele</value>
   </data>
   <data name="AuraReact" xml:space="preserve">
-    <value>React</value>
+    <value>Reaksiyon</value>
   </data>
   <data name="AuraSlow" xml:space="preserve">
     <value>Yavaş</value>
@@ -211,22 +211,22 @@
     <value>Flaş</value>
   </data>
   <data name="AuraZoneAll" xml:space="preserve">
-    <value>All</value>
+    <value>Tümü</value>
   </data>
   <data name="AuraZoneDock" xml:space="preserve">
-    <value>Dock</value>
+    <value>Yuva</value>
   </data>
   <data name="AuraZoneLogo" xml:space="preserve">
     <value>Logo</value>
   </data>
   <data name="AuraZoneScroll" xml:space="preserve">
-    <value>Scrollwheel</value>
+    <value>Kaydırma Tekerleği</value>
   </data>
   <data name="AuraZoneUnderglow" xml:space="preserve">
-    <value>Underglow</value>
+    <value>Alttan Aydınlatma</value>
   </data>
   <data name="AutoApply" xml:space="preserve">
-    <value>Auto Apply</value>
+    <value>Otomatik Uygula</value>
   </data>
   <data name="AutoMode" xml:space="preserve">
     <value>Otomatik</value>
@@ -244,49 +244,49 @@
     <value>Dengeli</value>
   </data>
   <data name="BatteryCharge" xml:space="preserve">
-    <value>Charge</value>
+    <value>Şarj</value>
   </data>
   <data name="BatteryChargeLimit" xml:space="preserve">
     <value>Pil Şarj Limiti</value>
   </data>
   <data name="BatteryHealth" xml:space="preserve">
-    <value>Battery Health</value>
+    <value>Pil Sağlığı</value>
   </data>
   <data name="BiosAndDriverUpdates" xml:space="preserve">
-    <value>BIOS and Driver Updates</value>
+    <value>BIOS ve Sürücü Güncellemeleri</value>
   </data>
   <data name="Boot" xml:space="preserve">
     <value>Önyükleme</value>
   </data>
   <data name="BootSound" xml:space="preserve">
-    <value>Boot Sound</value>
+    <value>Boot Sesi</value>
   </data>
   <data name="Brightness" xml:space="preserve">
     <value>Parlaklığı</value>
   </data>
   <data name="BrightnessDown" xml:space="preserve">
-    <value>Brightness Down</value>
+    <value>Parlaklığı Azalt</value>
   </data>
   <data name="BrightnessUp" xml:space="preserve">
-    <value>Brightness Up</value>
+    <value>Parlaklığı Artır</value>
   </data>
   <data name="Calibrate" xml:space="preserve">
-    <value>Calibrate</value>
+    <value>Kalibre Et</value>
   </data>
   <data name="Charging" xml:space="preserve">
-    <value>Charging</value>
+    <value>Şarj oluyor</value>
   </data>
   <data name="Color" xml:space="preserve">
     <value>Renk</value>
   </data>
   <data name="CPUBoost" xml:space="preserve">
-    <value>CPU Boost</value>
+    <value>CPU Desteği</value>
   </data>
   <data name="Custom" xml:space="preserve">
     <value>Özel</value>
   </data>
   <data name="Deceleration" xml:space="preserve">
-    <value>Deceleration</value>
+    <value>Yavaşlama</value>
   </data>
   <data name="Default" xml:space="preserve">
     <value>Varsayılan</value>
@@ -298,10 +298,10 @@
     <value>Pil boşalıyor</value>
   </data>
   <data name="DownloadUpdate" xml:space="preserve">
-    <value>Download</value>
+    <value>İndir</value>
   </data>
   <data name="DriverAndSoftware" xml:space="preserve">
-    <value>Drivers and Software</value>
+    <value>Sürücüler ve Yazılımlar</value>
   </data>
   <data name="EcoGPUTooltip" xml:space="preserve">
     <value>Pil tasarrufu için harici GPU'yu devre dışı bırakır</value>
@@ -310,15 +310,15 @@
     <value>Eko</value>
   </data>
   <data name="EnableOptimusText" xml:space="preserve">
-    <value>Disabling the dGPU by going into Eco mode while Display Mode in NVIDIA Control Panel is not set to Optimus might cause problems with brightness controls until after the next reboot. 
+    <value>NVIDIA Denetim Masası'ndaki Görüntü Modu Optimus olarak ayarlı değilken Eko moduna geçilerek harici GPU'nun devre dışı bırakılması, bir sonraki yeniden başlatmaya kadar parlaklık ayarlarında sorunlara neden olabilir. 
 
-Do you still want to continue?</value>
+Yine de devam etmek istiyor musunuz?</value>
   </data>
   <data name="EnableOptimusTitle" xml:space="preserve">
-    <value>NVIDIA Display Mode is not set to Optimus</value>
+    <value>NVIDIA Görüntü Modu Optimus olarak ayarlanmamış</value>
   </data>
   <data name="EnergySettings" xml:space="preserve">
-    <value>Energy Settings</value>
+    <value>Enerji Ayarları</value>
   </data>
   <data name="Extra" xml:space="preserve">
     <value>Ekstra</value>
@@ -363,10 +363,10 @@ Do you still want to continue?</value>
     <value>Değiştiriliyor</value>
   </data>
   <data name="GPUCoreClockOffset" xml:space="preserve">
-    <value>Core Clock Offset</value>
+    <value>Çekirdek Frekans Dengesi</value>
   </data>
   <data name="GPUMemoryClockOffset" xml:space="preserve">
-    <value>Memory Clock Offset</value>
+    <value>Hafıza Frekans Dengesi</value>
   </data>
   <data name="GPUMode" xml:space="preserve">
     <value>GPU Modu</value>
@@ -381,16 +381,16 @@ Do you still want to continue?</value>
     <value>sadece harici GPU</value>
   </data>
   <data name="GPUSettings" xml:space="preserve">
-    <value>GPU Settings</value>
+    <value>GPU Ayarları</value>
   </data>
   <data name="GPUTempTarget" xml:space="preserve">
-    <value>Temperature Target</value>
+    <value>Sıcaklık Hedefi</value>
   </data>
   <data name="HibernateAfter" xml:space="preserve">
     <value>Minutes till Hibernation in sleep on battery (0 - OFF)</value>
   </data>
   <data name="High" xml:space="preserve">
-    <value>High</value>
+    <value>Yüksek</value>
   </data>
   <data name="KeyBindings" xml:space="preserve">
     <value>Tuş Bağlantıları</value>
@@ -411,22 +411,22 @@ Do you still want to continue?</value>
     <value>Laptop Ekranı</value>
   </data>
   <data name="Lid" xml:space="preserve">
-    <value>Lid</value>
+    <value>Kapak</value>
   </data>
   <data name="Lightbar" xml:space="preserve">
-    <value>Lightbar</value>
+    <value>Işık Çubuğu</value>
   </data>
   <data name="Lighting" xml:space="preserve">
-    <value>Lighting</value>
+    <value>Işıklandırma</value>
   </data>
   <data name="Logo" xml:space="preserve">
     <value>Logo</value>
   </data>
   <data name="Low" xml:space="preserve">
-    <value>Low</value>
+    <value>Düşük</value>
   </data>
   <data name="MatrixAudio" xml:space="preserve">
-    <value>Audio Visualizer</value>
+    <value>Ses Görselleştirici</value>
   </data>
   <data name="MatrixBanner" xml:space="preserve">
     <value>Matrix Banner</value>
@@ -459,49 +459,49 @@ Do you still want to continue?</value>
     <value>Pil tasarrufu için 60Hz yenileme hızı</value>
   </data>
   <data name="Minute" xml:space="preserve">
-    <value>Minute</value>
+    <value>Dakika</value>
   </data>
   <data name="Minutes" xml:space="preserve">
-    <value>Minutes</value>
+    <value>Dakika</value>
   </data>
   <data name="MouseAngleSnapping" xml:space="preserve">
     <value>Angle Snapping</value>
   </data>
   <data name="MouseAutoPowerOff" xml:space="preserve">
-    <value>Auto Power Off After</value>
+    <value>Sonrasında Otomatik Kapat</value>
   </data>
   <data name="MouseButtonResponse" xml:space="preserve">
-    <value>Button Response</value>
+    <value>Tuş Tepkisi</value>
   </data>
   <data name="MouseLiftOffDistance" xml:space="preserve">
-    <value>Lift Off Distance</value>
+    <value>Havalanma Mesafesi</value>
   </data>
   <data name="MouseLowBatteryWarning" xml:space="preserve">
-    <value>Low Battery Warning at</value>
+    <value>Düşük Pil Uyarısı seviyesi</value>
   </data>
   <data name="MousePerformance" xml:space="preserve">
-    <value>Performance</value>
+    <value>Performans</value>
   </data>
   <data name="MouseSynchronize" xml:space="preserve">
-    <value>Synchronize with mouse</value>
+    <value>Fare ile senkronize edin</value>
   </data>
   <data name="Multizone" xml:space="preserve">
     <value>Çoklu Bölge</value>
   </data>
   <data name="MuteMic" xml:space="preserve">
-    <value>Mute Mic</value>
+    <value>Mikrofonu Sustur</value>
   </data>
   <data name="Never" xml:space="preserve">
-    <value>Never</value>
+    <value>Asla</value>
   </data>
   <data name="NewUpdates" xml:space="preserve">
-    <value>New updates</value>
+    <value>Yeni güncellemeler</value>
   </data>
   <data name="NoNewUpdates" xml:space="preserve">
-    <value>No new updates</value>
+    <value>Yeni güncelleme yok</value>
   </data>
   <data name="NotConnected" xml:space="preserve">
-    <value>Not Connected</value>
+    <value>Bağlantı Yok</value>
   </data>
   <data name="OpenGHelper" xml:space="preserve">
     <value>G-Helper penceresini aç</value>
@@ -525,7 +525,7 @@ Do you still want to continue?</value>
     <value>Performans Modu</value>
   </data>
   <data name="Peripherals" xml:space="preserve">
-    <value>Peripherals</value>
+    <value>Çevre Birimleri</value>
   </data>
   <data name="PictureGif" xml:space="preserve">
     <value>Resim / Gif</value>
@@ -534,7 +534,7 @@ Do you still want to continue?</value>
     <value>Oynat / Duraklat</value>
   </data>
   <data name="PollingRate" xml:space="preserve">
-    <value>Polling Rate</value>
+    <value>Yoklama Sıklığı</value>
   </data>
   <data name="PowerLimits" xml:space="preserve">
     <value>Güç Sınırları</value>
@@ -546,13 +546,13 @@ Do you still want to continue?</value>
     <value>Ekran Görüntüsü Al</value>
   </data>
   <data name="Profile" xml:space="preserve">
-    <value>Profile</value>
+    <value>Profil</value>
   </data>
   <data name="Quit" xml:space="preserve">
     <value>Çıkış Yap</value>
   </data>
   <data name="RestartGPU" xml:space="preserve">
-    <value>Something is using dGPU and preventing Eco mode. Let G-Helper try to restart dGPU in device manager? (Please proceed at your own risk)</value>
+    <value>Bir şey harici GPU'yu kullanıyor ve Eco modunu engelliyor. G-Helper aygıt yöneticisinde harici Gpu'yu yeniden başlatmayı denesin mi? (Kendi sorumluluğunuzdadır)</value>
   </data>
   <data name="RPM" xml:space="preserve">
     <value>RPM</value>
@@ -561,10 +561,10 @@ Do you still want to continue?</value>
     <value>Başlangıçta Çalıştır</value>
   </data>
   <data name="ScreenPadDown" xml:space="preserve">
-    <value>Screenpad Brightness Down</value>
+    <value>Screenpad Parlaklığını Azalt</value>
   </data>
   <data name="ScreenPadUp" xml:space="preserve">
-    <value>Screenpad Brightness Up</value>
+    <value>Screenpad Parlaklığını Arttır</value>
   </data>
   <data name="Shutdown" xml:space="preserve">
     <value>Kapalı</value>
@@ -582,37 +582,37 @@ Do you still want to continue?</value>
     <value>Standart</value>
   </data>
   <data name="Start" xml:space="preserve">
-    <value>Start</value>
+    <value>Başlat</value>
   </data>
   <data name="StartingServices" xml:space="preserve">
-    <value>Starting Services</value>
+    <value>Hizmetler Başlatılıyor</value>
   </data>
   <data name="StartupError" xml:space="preserve">
     <value>Başlatma Hatası</value>
   </data>
   <data name="Stop" xml:space="preserve">
-    <value>Stop</value>
+    <value>Durdur</value>
   </data>
   <data name="StopGPUApps" xml:space="preserve">
-    <value>Stop GPU Applications</value>
+    <value>GPU Uygulamalarını Durdur</value>
   </data>
   <data name="StoppingServices" xml:space="preserve">
-    <value>Stopping Services</value>
+    <value>Hizmetler Durduruluyor</value>
   </data>
   <data name="ToggleAura" xml:space="preserve">
     <value>Aura'yı Değiştir</value>
   </data>
   <data name="ToggleClamshellMode" xml:space="preserve">
-    <value>Auto Toggle Clamshell Mode</value>
+    <value>Otomatik Clamshell Modunu Aç</value>
   </data>
   <data name="ToggleFnLock" xml:space="preserve">
-    <value>Toggle Fn-Lock</value>
+    <value>Fn-Lock'u Aç</value>
   </data>
   <data name="ToggleMiniled" xml:space="preserve">
-    <value>Toggle Miniled (if supported)</value>
+    <value>Miniled'i Aç (destekliyorsa)</value>
   </data>
   <data name="ToggleScreen" xml:space="preserve">
-    <value>Toggle Screen</value>
+    <value>Ekranı Değiştir</value>
   </data>
   <data name="Turbo" xml:space="preserve">
     <value>Turbo</value>
@@ -630,22 +630,22 @@ Do you still want to continue?</value>
     <value>Ultimate</value>
   </data>
   <data name="UndervoltingRisky" xml:space="preserve">
-    <value>Undervolting is an experimental and risky feature. If applied values are too low for your hardware, it can become unstable, shut down or cause data corruption. If you want to try - start from small values first, click Apply and test what works for you.</value>
+    <value>Undervolting deneysel ve riskli bir özelliktir. Uygulanan değerler cihazınız için çok düşükse, cihazınız stabil çalışmayabilir, kapanabilir veya veri kaybına uğrayabilir. Yine de denemek istiyorsanız, önce küçük değerlerden başlayıp Uygula'ya tıklayın ve sizin için uygun olanı test edin.</value>
   </data>
   <data name="Updates" xml:space="preserve">
-    <value>Updates</value>
+    <value>Güncellemeler</value>
   </data>
   <data name="VersionLabel" xml:space="preserve">
     <value>Sürüm</value>
   </data>
   <data name="VolumeDown" xml:space="preserve">
-    <value>Volume Down</value>
+    <value>Sesi Azalt</value>
   </data>
   <data name="VolumeMute" xml:space="preserve">
     <value>Ses Kısma</value>
   </data>
   <data name="VolumeUp" xml:space="preserve">
-    <value>Volume Up</value>
+    <value>Sesi Arttır</value>
   </data>
   <data name="WindowTop" xml:space="preserve">
     <value>Uygulama penceresini her zaman en üstte tut</value>
