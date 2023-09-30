@@ -41,6 +41,9 @@
             panelZoom = new Panel();
             labelZoom = new Label();
             labelZoomTitle = new Label();
+            panelRotation = new Panel();
+            comboRotation = new UI.RComboBox();
+            labelRotation = new Label();
             ((System.ComponentModel.ISupportInitialize)pictureMatrix).BeginInit();
             ((System.ComponentModel.ISupportInitialize)trackZoom).BeginInit();
             panelPicture.SuspendLayout();
@@ -48,6 +51,7 @@
             panelButtons.SuspendLayout();
             panelScaling.SuspendLayout();
             panelZoom.SuspendLayout();
+            panelRotation.SuspendLayout();
             SuspendLayout();
             // 
             // pictureMatrix
@@ -106,6 +110,7 @@
             // panelMain
             // 
             panelMain.Controls.Add(panelButtons);
+            panelMain.Controls.Add(panelRotation);
             panelMain.Controls.Add(panelScaling);
             panelMain.Controls.Add(panelZoom);
             panelMain.Controls.Add(panelPicture);
@@ -120,7 +125,7 @@
             panelButtons.Controls.Add(buttonReset);
             panelButtons.Controls.Add(buttonPicture);
             panelButtons.Dock = DockStyle.Top;
-            panelButtons.Location = new Point(0, 642);
+            panelButtons.Location = new Point(0, 720);
             panelButtons.Name = "panelButtons";
             panelButtons.Size = new Size(834, 94);
             panelButtons.TabIndex = 6;
@@ -211,6 +216,40 @@
             labelZoomTitle.TabIndex = 3;
             labelZoomTitle.Text = "Zoom";
             // 
+            // panelRotation
+            // 
+            panelRotation.Controls.Add(comboRotation);
+            panelRotation.Controls.Add(labelRotation);
+            panelRotation.Dock = DockStyle.Top;
+            panelRotation.Location = new Point(0, 642);
+            panelRotation.Name = "panelRotation";
+            panelRotation.Size = new Size(834, 78);
+            panelRotation.TabIndex = 8;
+            // 
+            // comboRotation
+            // 
+            comboRotation.BorderColor = Color.White;
+            comboRotation.ButtonColor = Color.FromArgb(255, 255, 255);
+            comboRotation.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            comboRotation.FormattingEnabled = true;
+            comboRotation.ItemHeight = 32;
+            comboRotation.Items.AddRange(new object[] { "Straight", "Diagonal" });
+            comboRotation.Location = new Point(229, 17);
+            comboRotation.Margin = new Padding(4, 11, 4, 8);
+            comboRotation.Name = "comboRotation";
+            comboRotation.Size = new Size(322, 40);
+            comboRotation.TabIndex = 17;
+            // 
+            // labelRotation
+            // 
+            labelRotation.AutoSize = true;
+            labelRotation.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            labelRotation.Location = new Point(16, 20);
+            labelRotation.Name = "labelRotation";
+            labelRotation.Size = new Size(190, 32);
+            labelRotation.TabIndex = 4;
+            labelRotation.Text = "Image Rotation";
+            // 
             // Matrix
             // 
             AutoScaleDimensions = new SizeF(192F, 192F);
@@ -236,6 +275,8 @@
             panelScaling.PerformLayout();
             panelZoom.ResumeLayout(false);
             panelZoom.PerformLayout();
+            panelRotation.ResumeLayout(false);
+            panelRotation.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -254,5 +295,8 @@
         private Panel panelScaling;
         private Label labelScaling;
         private UI.RComboBox comboScaling;
+        private Panel panelRotation;
+        private UI.RComboBox comboRotation;
+        private Label labelRotation;
     }
 }

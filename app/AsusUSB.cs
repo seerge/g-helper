@@ -472,7 +472,7 @@ namespace GHelper
 
             if (isTuf)
             {
-                Program.acpi.TUFKeyboardRGB(0, color, 0);
+                Program.acpi.TUFKeyboardRGB(0, color, 0, null);
                 return;
             }
 
@@ -531,7 +531,7 @@ namespace GHelper
 
             else
             {
-                Debug.WriteLine(color.ToString());
+                //Debug.WriteLine(color.ToString());
                 auraDevice.Write(AuraMessage(0, color, color, 0));
                 auraDevice.Write(MESSAGE_SET);
             }

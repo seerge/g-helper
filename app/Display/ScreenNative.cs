@@ -162,7 +162,8 @@ namespace GHelper.Display
                         if (log) Logger.WriteLine(device.monitorDevicePath + " " + device.outputTechnology);
                         AppConfig.Set("internal_display", device.monitorFriendlyDeviceName);
                         var names = device.monitorDevicePath.Split("#");
-                        return names[1];
+                        if (names.Length > 0) return names[1];
+                        else return "";
                     }
                 }
             }

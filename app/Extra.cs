@@ -16,24 +16,32 @@ namespace GHelper
 
         const string EMPTY = "--------------";
 
-        Dictionary<string, string> customActions = new Dictionary<string, string>
-        {
-          {"", EMPTY},
-          {"mute", Properties.Strings.VolumeMute},
-          {"screenshot", Properties.Strings.PrintScreen},
-          {"play", Properties.Strings.PlayPause},
-          {"aura", Properties.Strings.ToggleAura},
-          {"performance", Properties.Strings.PerformanceMode},
-          {"screen", Properties.Strings.ToggleScreen},
-          {"miniled", Properties.Strings.ToggleMiniled},
-          {"fnlock", Properties.Strings.ToggleFnLock},
-          {"brightness_down", Properties.Strings.BrightnessDown},
-          {"brightness_up", Properties.Strings.BrightnessUp},
-          {"custom", Properties.Strings.Custom}
-        };
 
         private void SetKeyCombo(ComboBox combo, TextBox txbox, string name)
         {
+
+            Dictionary<string, string> customActions = new Dictionary<string, string>
+            {
+              {"", EMPTY},
+              {"mute", Properties.Strings.VolumeMute},
+              {"screenshot", Properties.Strings.PrintScreen},
+              {"play", Properties.Strings.PlayPause},
+              {"aura", Properties.Strings.ToggleAura},
+              {"performance", Properties.Strings.PerformanceMode},
+              {"screen", Properties.Strings.ToggleScreen},
+              {"miniled", Properties.Strings.ToggleMiniled},
+              {"fnlock", Properties.Strings.ToggleFnLock},
+              {"brightness_down", Properties.Strings.BrightnessDown},
+              {"brightness_up", Properties.Strings.BrightnessUp},
+              {"ghelper", Properties.Strings.OpenGHelper},
+              {"custom", Properties.Strings.Custom}
+            };
+
+            if (AppConfig.IsDUO())
+            {
+                customActions.Add("screenpad_down", Properties.Strings.ScreenPadDown);
+                customActions.Add("screenpad_up", Properties.Strings.ScreenPadUp);
+            }
 
             switch (name)
             {
@@ -48,6 +56,7 @@ namespace GHelper
                     break;
                 case "m4":
                     customActions[""] = Properties.Strings.OpenGHelper;
+                    customActions.Remove("ghelper");
                     break;
                 case "fnf4":
                     customActions[""] = Properties.Strings.ToggleAura;
@@ -59,7 +68,6 @@ namespace GHelper
                     break;
                 case "fne":
                     customActions[""] = "Calculator";
-                    customActions["ghelper"] = Properties.Strings.OpenGHelper;
                     break;
                 case "paddle":
                     customActions[""] = EMPTY;
@@ -130,12 +138,6 @@ namespace GHelper
             labelHibernateAfter.Text = Properties.Strings.HibernateAfter;
 
             Text = Properties.Strings.ExtraSettings;
-
-            if (AppConfig.IsDUO())
-            {
-                customActions.Add("screenpad_down", Properties.Strings.ScreenPadDown);
-                customActions.Add("screenpad_up", Properties.Strings.ScreenPadUp);
-            }
 
             if (AppConfig.IsARCNM())
             {

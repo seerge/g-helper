@@ -80,7 +80,7 @@ public static class HardwareControl
         }
         catch (Exception ex)
         {
-            Logger.WriteLine("Discharge Reading: " + ex.Message);
+            Debug.WriteLine("Discharge Reading: " + ex.Message);
         }
 
     }
@@ -102,7 +102,7 @@ public static class HardwareControl
         }
         catch (Exception ex)
         {
-            Logger.WriteLine("Full Charge Reading: " + ex.Message);
+            Debug.WriteLine("Full Charge Reading: " + ex.Message);
         }
 
     }
@@ -125,7 +125,7 @@ public static class HardwareControl
         }
         catch (Exception ex)
         {
-            Logger.WriteLine("Design Capacity Reading: " + ex.Message);
+            Debug.WriteLine("Design Capacity Reading: " + ex.Message);
         }
     }
 

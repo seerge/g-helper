@@ -301,7 +301,7 @@ public class AsusACPI
     }
 
 
-    public int DeviceSet(uint DeviceID, byte[] Params, string logName)
+    public int DeviceSet(uint DeviceID, byte[] Params, string? logName)
     {
         byte[] args = new byte[4 + Params.Length];
         BitConverter.GetBytes((uint)DeviceID).CopyTo(args, 0);
@@ -310,7 +310,9 @@ public class AsusACPI
         byte[] status = CallMethod(DEVS, args);
         int result = BitConverter.ToInt32(status, 0);
 
-        Logger.WriteLine(logName + " = " + BitConverter.ToString(Params) + " : " + (result == 1 ? "OK" : result));
+        if (logName is not null)
+            Logger.WriteLine(logName + " = " + BitConverter.ToString(Params) + " : " + (result == 1 ? "OK" : result));
+
         return BitConverter.ToInt32(status, 0);
     }
 
@@ -540,7 +542,7 @@ public class AsusACPI
         DeviceSet(TUF_KB_BRIGHTNESS, param, "TUF Brightness");
     }
 
-    public void TUFKeyboardRGB(int mode, Color color, int speed)
+    public void TUFKeyboardRGB(int mode, Color color, int speed, string? log = "TUF RGB")
     {
 
         byte[] setting = new byte[6];
@@ -552,8 +554,8 @@ public class AsusACPI
         setting[4] = color.B;
         setting[5] = (byte)speed;
 
-        int result = DeviceSet(TUF_KB, setting, "TUF RGB");
-        if (result != 1) DeviceSet(TUF_KB2, setting, "TUF RGB");
+        int result = DeviceSet(TUF_KB, setting, log);
+        if (result != 1) DeviceSet(TUF_KB2, setting, log);
 
     }
 

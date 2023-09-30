@@ -45,9 +45,20 @@ namespace GHelper
             comboScaling.SelectedIndex = AppConfig.Get("matrix_quality", 0);
             comboScaling.SelectedValueChanged += ComboScaling_SelectedValueChanged;
 
+            comboRotation.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboRotation.SelectedIndex = AppConfig.Get("matrix_rotation", 0);
+            comboRotation.SelectedValueChanged += ComboRotation_SelectedValueChanged; ;
+
+
             uiScale = panelPicture.Width / matrixControl.device.MaxColumns / 3;
             panelPicture.Height = (int)(matrixControl.device.MaxRows * uiScale);
 
+        }
+
+        private void ComboRotation_SelectedValueChanged(object? sender, EventArgs e)
+        {
+            AppConfig.Set("matrix_rotation", comboRotation.SelectedIndex);
+            SetMatrixPicture(false);
         }
 
         private void ComboScaling_SelectedValueChanged(object? sender, EventArgs e)

@@ -2,7 +2,6 @@
 
 using GHelper.AnimeMatrix.Communication;
 using System.Drawing.Drawing2D;
-using System.Drawing.Imaging;
 using System.Drawing.Text;
 using System.Management;
 using System.Text;
@@ -51,6 +50,12 @@ namespace Starlight.AnimeMatrix
         }
     }
 
+    public enum MatrixRotation
+    {
+        Planar,
+        Diagonal
+    }
+
     internal class AnimeMatrixPacket : Packet
     {
         public AnimeMatrixPacket(byte[] command)
@@ -90,7 +95,7 @@ namespace Starlight.AnimeMatrix
         public int MaxColumns = 34;
         public int LedStart = 0;
 
-        public int TextShift = 8;
+        public int FullRows = 11;
 
         private int frameIndex = 0;
 
@@ -114,7 +119,7 @@ namespace Starlight.AnimeMatrix
 
                 UpdatePageLength = 410;
 
-                TextShift = 11;
+                FullRows = 5;
 
                 LedStart = 1;
             }
@@ -128,18 +133,10 @@ namespace Starlight.AnimeMatrix
                 LedCount = 1711;
                 UpdatePageLength = 630;
 
-                TextShift = 10;
+                FullRows = 9;
             }
 
             _displayBuffer = new byte[LedCount];
-
-            /*
-            for (int i = 0; i < MaxRows; i++)
-            {
-                _model = AnimeType.GA401;
-                Logger.WriteLine(FirstX(i) + " " + Pitch(i));
-            }
-            */
 
             LoadMFont();
 
@@ -397,19 +394,49 @@ namespace Starlight.AnimeMatrix
             string time = DateTime.Now.ToString("HH" + second + "mm");
 
             Clear();
-            TextDiagonal(time, 15, 12, TextShift + 11);
-            TextDiagonal(DateTime.Now.ToString("yy'. 'MM'. 'dd"), 11.5F, 3, TextShift);
+            Text(time, 15, 0, 24);
+            Text(DateTime.Now.ToString("yy'. 'MM'. 'dd"), 11F, 0, 14);
             Present();
 
         }
 
-        public void TextDiagonal(string text, float fontSize = 10, int deltaX = 0, int deltaY = 10)
+        private void SetBitmapDiagonal(Bitmap bmp, int deltaX = 0, int deltaY = 0)
+        {
+            for (int y = 0; y < bmp.Height; y++)
+            {
+                for (int x = 0; x < bmp.Width; x++)
+                {
+                    var pixel = bmp.GetPixel(x, y);
+                    var color = (pixel.R + pixel.G + pixel.B) / 3;
+                    if (color > 20)
+                        SetLedDiagonal(x, y, (byte)color, deltaX + (FullRows / 2) + 1, deltaY - (FullRows / 2) - 1);
+                }
+            }
+        }
+
+        private void SetBitmapLinear(Bitmap bmp)
+        {
+            for (int y = 0; y < bmp.Height; y++)
+            {
+                for (int x = 0; x < bmp.Width; x++)
+                    if (x % 2 == y % 2)
+                    {
+                        var pixel = bmp.GetPixel(x, y);
+                        var color = (pixel.R + pixel.G + pixel.B) / 3;
+                        if (color > 20)
+                            SetLedPlanar(x / 2, y, (byte)color);
+                    }
+            }
+        }
+
+        public void Text(string text, float fontSize = 10, int x = 0, int y = 0)
         {
 
-            int maxX = (int)Math.Sqrt(MaxRows * MaxRows + MaxColumns * MaxColumns);
-            int textHeight;
+            int width = MaxRows - FullRows;
+            int height = MaxRows - FullRows;
+            int textHeight, textWidth;
 
-            using (Bitmap bmp = new Bitmap(maxX, MaxRows))
+            using (Bitmap bmp = new Bitmap(width, height))
             {
                 using (Graphics g = Graphics.FromImage(bmp))
                 {
@@ -421,59 +448,19 @@ namespace Starlight.AnimeMatrix
                     {
                         SizeF textSize = g.MeasureString(text, font);
                         textHeight = (int)textSize.Height;
-                        g.DrawString(text, font, Brushes.White, 0, 0);
+                        textWidth = (int)textSize.Width;
+                        g.DrawString(text, font, Brushes.White, x, height - y);
                     }
                 }
 
-                for (int y = 0; y < bmp.Height; y++)
-                {
-                    for (int x = 0; x < bmp.Width; x++)
-                    {
-                        var pixel = bmp.GetPixel(x, y);
-                        var color = (pixel.R + pixel.G + pixel.B) / 3;
-                        if (color > 100) SetLedDiagonal(x, y, (byte)color, deltaX, deltaY);
-                    }
-                }
+                SetBitmapDiagonal(bmp, (width - textWidth), height);
+
             }
         }
 
-
-        public void PresentText(string text1, string text2 = "")
-        {
-            using (Bitmap bmp = new Bitmap(MaxColumns * 3, MaxRows))
-            {
-                using (Graphics g = Graphics.FromImage(bmp))
-                {
-                    g.CompositingQuality = CompositingQuality.HighQuality;
-                    g.SmoothingMode = SmoothingMode.AntiAlias;
-                    g.TextRenderingHint = TextRenderingHint.SingleBitPerPixel;
-
-                    using (Font font = new Font("Consolas", 22F, FontStyle.Regular, GraphicsUnit.Pixel))
-                    {
-                        SizeF textSize = g.MeasureString(text1, font);
-                        g.DrawString(text1, font, Brushes.White, (MaxColumns * 3 - textSize.Width) + 3, -4);
-                    }
-
-                    if (text2.Length > 0)
-                        using (Font font = new Font("Consolas", 18F, GraphicsUnit.Pixel))
-                        {
-                            SizeF textSize = g.MeasureString(text2, font);
-                            g.DrawString(text2, font, Brushes.White, (MaxColumns * 3 - textSize.Width) + 1, 25);
-                        }
-
-                }
-
-                bmp.Save("test.bmp", ImageFormat.Bmp);
-
-                GenerateFrame(bmp);
-                Present();
-            }
-
-        }
 
         public void GenerateFrame(Image image, float zoom = 100, int panX = 0, int panY = 0, InterpolationMode quality = InterpolationMode.Default)
         {
-
             int width = MaxColumns / 2 * 6;
             int height = MaxRows;
 
@@ -498,22 +485,42 @@ namespace Starlight.AnimeMatrix
 
                 }
 
-                for (int y = 0; y < bmp.Height; y++)
+                Clear();
+                SetBitmapLinear(bmp);
+            }
+        }
+
+        public void GenerateFrameDiagonal(Image image, float zoom = 100, int panX = 0, int panY = 0, InterpolationMode quality = InterpolationMode.Default)
+        {
+            int width = MaxRows - FullRows;
+            int height = MaxRows - FullRows*2;
+            float scale;
+
+            using (Bitmap bmp = new Bitmap(width, height))
+            {
+                scale = Math.Min((float)width / (float)image.Width, (float)height / (float)image.Height) * zoom / 100;
+
+                using (var graph = Graphics.FromImage(bmp))
                 {
-                    for (int x = 0; x < bmp.Width; x++)
-                        if (x % 2 == y % 2)
-                        {
-                            var pixel = bmp.GetPixel(x, y);
-                            var color = (pixel.R + pixel.G + pixel.B) / 3;
-                            if (color < 10) color = 0;
-                            SetLedPlanar(x / 2, y, (byte)color);
-                        }
+                    var scaleWidth = (float)(image.Width * scale);
+                    var scaleHeight = (float)(image.Height * scale);
+
+                    graph.InterpolationMode = quality;
+                    graph.CompositingQuality = CompositingQuality.HighQuality;
+                    graph.SmoothingMode = SmoothingMode.AntiAlias;
+
+                    graph.DrawImage(image, width - scaleWidth, height - scaleHeight, scaleWidth, scaleHeight);
+
                 }
+
+                Clear();
+                SetBitmapDiagonal(bmp, -panX, height + panY);
             }
         }
 
 
-        public void SetLedDiagonal(int x, int y, byte color, int deltaX = 0, int deltaY = 10)
+
+        public void SetLedDiagonal(int x, int y, byte color, int deltaX = 0, int deltaY = 0)
         {
             x += deltaX;
             y -= deltaY;
