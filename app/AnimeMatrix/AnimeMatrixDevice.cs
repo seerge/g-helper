@@ -463,8 +463,8 @@ namespace Starlight.AnimeMatrix
             string time = DateTime.Now.ToString("HH" + second + "mm");
 
             Clear();
-            Text(time, 15, 0, 24);
-            Text(DateTime.Now.ToString("yy'. 'MM'. 'dd"), 11F, 0, 14);
+            Text(time, 15, 0, 25);
+            Text(DateTime.Now.ToString("yy'. 'MM'. 'dd"), 11.5F, 0, 14);
             Present();
 
         }
