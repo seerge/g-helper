@@ -252,6 +252,9 @@
   <data name="BatteryHealth" xml:space="preserve">
     <value>Santé de la batterie</value>
   </data>
+  <data name="BatteryLimitFull" xml:space="preserve">
+    <value>One time charge to 100%</value>
+  </data>
   <data name="BiosAndDriverUpdates" xml:space="preserve">
     <value>Mise à jour BIOS et pilotes</value>
   </data>
