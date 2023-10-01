@@ -99,7 +99,7 @@ You don't have to, it's purely optional. From my experience built in (in BIOS) p
 Click on them
 
 #### When I try to apply a custom fan curve I get "BIOS rejected fan curve"
-TUF models from 2021 and older don't support custom fan curves at all. Most probably you didn't have them in Armoury as well?
+TUF models from 2021 and older don't support custom fan curves at all. Most probably you didn't have them in the Armoury as well?
 
 #### I don't see a GPU temperature in G-helper
 Most probably either you are using Eco / Optimized mode and your dGPU is simply off, or your windows has put the dGPU into sleep to preserve power. 
@@ -110,7 +110,7 @@ Please check the system tray for a ``(G)`` icon. By default Windows is keen to h
 #### App crashes or doesn't work properly
 Open "Event Viewer" from the start menu, go to Windows Logs -> Application and check for recent Errors mentioning G-Helper. If you see one - please post a [new issue](https://github.com/seerge/g-helper/issues) with all details from this error.
 
-#### Can I use MyASUS app along with G-Helper?
+#### Can I use the MyASUS app along with G-Helper?
 You can, the only problem is that MyASUS may override the battery charge limit that you set before. My advice in such a situation would be to set the same limit (i.e. 80%) in both MyASUS and G-Helper.
 
 #### How do I set Mute Microphone to M3?
@@ -123,7 +123,7 @@ Personally, I'm not a big fan of them, as they make colors very inaccurate. But 
 Make sure that your dGPU is enabled (i.e. it's not in Eco mode). Open Fans + Power section and adjust core / memory clock offsets. They work the same as in armoury's manual mode. Please keep in mind that (unfortunately) you need admin permissions for that, and the app will ask you for them. (*)
 
 #### How to Undervolt GPU
-Due to the way of how Core Clock offset works for GPU. When you increase clock offset you undervolt it at the same time (see picture)
+Due to the way the Core Clock offset works for the GPU. When you increase clock offset you undervolt it at the same time (see picture)
 1. Increase ``Core Clock Offset`` under ``Fans + Power -> GPU`` until your 3dmark / furmark / game runs stable. Start with +100, +150, +200 ... This should make your **scores / fps better within same power** / heat as before.
 2. Set ``Core Clock Limit`` to a certain value (it really depends on application / game that you use) **to lower your power** / heat consumption
 
@@ -250,7 +250,7 @@ Example (for default windows "balanced" power plan):
 ```
 
 ### Alternative Activation for XG Mobile 6850XT
-If you experience situation when your XG Mobile doesn't work on full power when Activated. It's possible it needs "alternative" command to get activated. 
+If you experience a situation when your XG Mobile doesn't work on full power when Activated. It's possible it needs an "alternative" command to get activated. 
 To turn it on, add following line to config :
 ```
 "xgm_special" : 1,
@@ -258,7 +258,7 @@ To turn it on, add following line to config :
 
 ### Override UI theme
 
-By default app would set UI theme from "app" theme in windows setting. You can override it to specific theme, or general windows theme
+By default the app would set the UI theme from the "app" theme in Windows setting. You can override it to specific theme, or general windows theme
 
 ```
 "ui_mode" : "dark",
@@ -267,7 +267,7 @@ By default app would set UI theme from "app" theme in windows setting. You can o
 ```
 
 ### Skip keyboard Aura initialisation on startup
-By default app would set last remembered RGB mode for keyboard on each launch. To disable it completely 
+By default the app would set the last remembered RGB mode for the keyboard on each launch. To disable it completely 
 
 ```
 "skip_aura" : 1,
@@ -280,7 +280,7 @@ Disable app's OSD (for performance modes, keyboard backlight, etc.)
 ```
 
 ### Disable "Tablet mode" on X13/X16
-To disable automatic touchpad toggling when laptop enteres / leaves tablet mode
+To disable automatic touchpad toggling when laptop enters / leaves tablet mode
 ```
 "disable_tablet": 1,
 ```
@@ -309,7 +309,7 @@ Where 116 is [numerical code for desired key](https://www.oreilly.com/library/vi
 
 ### Higher Maximum GPU Clock / Memory Offsets
 
-By default under GPU section you can set up to +250/+250 for Core and Memory Clock Offset. To increase this value:
+By default under the GPU section you can set up to +250/+250 for Core and Memory Clock Offset. To increase this value:
 ```
   "max_gpu_core": 300,
   "max_gpu_memory": 1500,
