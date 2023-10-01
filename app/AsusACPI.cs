@@ -287,7 +287,7 @@ public class AsusACPI
 
     }
 
-    public int DeviceSet(uint DeviceID, int Status, string logName)
+    public int DeviceSet(uint DeviceID, int Status, string? logName)
     {
         byte[] args = new byte[8];
         BitConverter.GetBytes((uint)DeviceID).CopyTo(args, 0);
@@ -296,7 +296,9 @@ public class AsusACPI
         byte[] status = CallMethod(DEVS, args);
         int result = BitConverter.ToInt32(status, 0);
 
-        Logger.WriteLine(logName + " = " + Status + " : " + (result == 1 ? "OK" : result));
+        if (logName is not null)
+            Logger.WriteLine(logName + " = " + Status + " : " + (result == 1 ? "OK" : result));
+
         return result;
     }
 
@@ -378,6 +380,10 @@ public class AsusACPI
 
     public int SetFanRange(AsusFan device, byte[] curve)
     {
+
+        if (curve.Length != 16) return -1;
+        if (curve.All(singleByte => singleByte == 0)) return -1;
+
         byte min = (byte)(curve[8] * 255 / 100);
         byte max = (byte)(curve[15] * 255 / 100);
         byte[] range = { min, max};
@@ -392,6 +398,7 @@ public class AsusACPI
                 result = DeviceSet(DevsCPUFan, range, "FanRangeCPU");
                 break;
         }
+
         return result;
     }
 

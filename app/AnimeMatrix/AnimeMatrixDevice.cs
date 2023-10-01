@@ -295,6 +295,17 @@ namespace Starlight.AnimeMatrix
                 SetLedLinear(RowToLinearAddress(y) - FirstX(y) + x, value);
         }
 
+        public void SetLedDiagonal(int x, int y, byte color, int deltaX = 0, int deltaY = 0)
+        {
+            x += deltaX;
+            y -= deltaY;
+
+            int plX = (x - y) / 2;
+            int plY = x + y;
+            SetLedPlanar(plX, plY, color);
+        }
+
+
         public void WakeUp()
         {
             Set(Packet<AnimeMatrixPacket>(Encoding.ASCII.GetBytes("ASUS Tech.Inc.")));
@@ -388,18 +399,6 @@ namespace Starlight.AnimeMatrix
         }
 
 
-        public void PresentClock()
-        {
-            string second = (DateTime.Now.Second % 2 == 0) ? ":" : "  ";
-            string time = DateTime.Now.ToString("HH" + second + "mm");
-
-            Clear();
-            Text(time, 15, 0, 24);
-            Text(DateTime.Now.ToString("yy'. 'MM'. 'dd"), 11F, 0, 14);
-            Present();
-
-        }
-
         private void SetBitmapDiagonal(Bitmap bmp, int deltaX = 0, int deltaY = 0)
         {
             for (int y = 0; y < bmp.Height; y++)
@@ -458,7 +457,17 @@ namespace Starlight.AnimeMatrix
             }
         }
 
+        public void PresentClock()
+        {
+            string second = (DateTime.Now.Second % 2 == 0) ? ":" : "  ";
+            string time = DateTime.Now.ToString("HH" + second + "mm");
 
+            Clear();
+            Text(time, 15, 0, 24);
+            Text(DateTime.Now.ToString("yy'. 'MM'. 'dd"), 11F, 0, 14);
+            Present();
+
+        }
         public void GenerateFrame(Image image, float zoom = 100, int panX = 0, int panY = 0, InterpolationMode quality = InterpolationMode.Default)
         {
             int width = MaxColumns / 2 * 6;
@@ -516,18 +525,6 @@ namespace Starlight.AnimeMatrix
                 Clear();
                 SetBitmapDiagonal(bmp, -panX, height + panY);
             }
-        }
-
-
-
-        public void SetLedDiagonal(int x, int y, byte color, int deltaX = 0, int deltaY = 0)
-        {
-            x += deltaX;
-            y -= deltaY;
-
-            int plX = (x - y) / 2;
-            int plY = x + y;
-            SetLedPlanar(plX, plY, color);
         }
 
 
