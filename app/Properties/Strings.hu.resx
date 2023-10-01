@@ -252,6 +252,9 @@
   <data name="BatteryHealth" xml:space="preserve">
     <value>Akku állapot</value>
   </data>
+  <data name="BatteryLimitFull" xml:space="preserve">
+    <value>One time charge to 100%</value>
+  </data>
   <data name="BiosAndDriverUpdates" xml:space="preserve">
     <value>BIOS és illesztőprogram frissítések</value>
   </data>

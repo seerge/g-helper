@@ -252,6 +252,9 @@
   <data name="BatteryHealth" xml:space="preserve">
     <value>배터리 수명</value>
   </data>
+  <data name="BatteryLimitFull" xml:space="preserve">
+    <value>One time charge to 100%</value>
+  </data>
   <data name="BiosAndDriverUpdates" xml:space="preserve">
     <value>바이오스/드라이버 업데이트</value>
   </data>

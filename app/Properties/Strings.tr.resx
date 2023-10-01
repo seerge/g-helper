@@ -252,11 +252,14 @@
   <data name="BatteryHealth" xml:space="preserve">
     <value>Pil Sağlığı</value>
   </data>
+  <data name="BatteryLimitFull" xml:space="preserve">
+    <value>One time charge to 100%</value>
+  </data>
   <data name="BiosAndDriverUpdates" xml:space="preserve">
     <value>BIOS ve Sürücü Güncellemeleri</value>
   </data>
   <data name="Boot" xml:space="preserve">
-    <value>Önyükleme</value>
+    <value>Boot</value>
   </data>
   <data name="BootSound" xml:space="preserve">
     <value>Boot Sesi</value>
@@ -399,10 +402,10 @@ Yine de devam etmek istiyor musunuz?</value>
     <value>Klavye</value>
   </data>
   <data name="KillGpuApps" xml:space="preserve">
-    <value>Eco'ya geçerken dGPU kullanan tüm uygulamaları durdur</value>
+    <value>Eco'ya geçerken harici GPU'yu kullanan tüm uygulamaları durdur</value>
   </data>
   <data name="LaptopBacklight" xml:space="preserve">
-    <value>Aydınlatması</value>
+    <value>Laptop Aydınlatması</value>
   </data>
   <data name="LaptopKeyboard" xml:space="preserve">
     <value>Laptop Klavyesi</value>
@@ -498,7 +501,7 @@ Yine de devam etmek istiyor musunuz?</value>
     <value>Yeni güncellemeler</value>
   </data>
   <data name="NoNewUpdates" xml:space="preserve">
-    <value>Yeni güncelleme yok</value>
+    <value>Güncelleme yok</value>
   </data>
   <data name="NotConnected" xml:space="preserve">
     <value>Bağlantı Yok</value>
@@ -552,7 +555,7 @@ Yine de devam etmek istiyor musunuz?</value>
     <value>Çıkış Yap</value>
   </data>
   <data name="RestartGPU" xml:space="preserve">
-    <value>Bir şey harici GPU'yu kullanıyor ve Eco modunu engelliyor. G-Helper aygıt yöneticisinde harici Gpu'yu yeniden başlatmayı denesin mi? (Kendi sorumluluğunuzdadır)</value>
+    <value>Bir şey harici GPU'yu kullanıyor ve Eco modunu engelliyor. G-Helper aygıt yöneticisinde harici GPU'yu yeniden başlatmayı denesin mi? (Kendi sorumluluğunuzdadır)</value>
   </data>
   <data name="RPM" xml:space="preserve">
     <value>RPM</value>
@@ -642,7 +645,7 @@ Yine de devam etmek istiyor musunuz?</value>
     <value>Sesi Azalt</value>
   </data>
   <data name="VolumeMute" xml:space="preserve">
-    <value>Ses Kısma</value>
+    <value>Sesi Kapat</value>
   </data>
   <data name="VolumeUp" xml:space="preserve">
     <value>Sesi Arttır</value>
