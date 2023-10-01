@@ -4,6 +4,7 @@ using GHelper.Mode;
 using Microsoft.Win32;
 using System.Diagnostics;
 using System.Management;
+using System.Text.RegularExpressions;
 
 namespace GHelper.Input
 {
@@ -142,25 +143,59 @@ namespace GHelper.Input
 
         }
 
+
+        public static int[] ParseHexValues(string input)
+        {
+            string pattern = @"\b(0x[0-9A-Fa-f]{1,2}|[0-9A-Fa-f]{1,2})\b";
+
+            if (!Regex.IsMatch(input, $"^{pattern}(\\s+{pattern})*$")) return new int[0];
+
+            MatchCollection matches = Regex.Matches(input, pattern);
+
+            int[] hexValues = new int[matches.Count];
+
+            for (int i = 0; i < matches.Count; i++)
+            {
+                string hexValueStr = matches[i].Value;
+                int hexValue = int.Parse(hexValueStr.StartsWith("0x", StringComparison.OrdinalIgnoreCase)
+                    ? hexValueStr.Substring(2)
+                    : hexValueStr, System.Globalization.NumberStyles.HexNumber);
+
+                hexValues[i] = hexValue;
+            }
+
+            return hexValues;
+        }
+
+
         static void CustomKey(string configKey = "m3")
         {
             string command = AppConfig.GetString(configKey + "_custom");
-            int intKey;
+            int[] hexKeys = new int[0];
 
             try
             {
-                intKey = Convert.ToInt32(command, 16);
+                hexKeys = ParseHexValues(command);
             }
             catch
             {
-                intKey = -1;
             }
 
-
-            if (intKey > 0)
-                KeyboardHook.KeyPress((Keys)intKey);
-            else
-                LaunchProcess(command);
+            switch (hexKeys.Length)
+            {
+                case 1:
+                    KeyboardHook.KeyPress((Keys)hexKeys[0]);
+                    break;
+                case 2:
+                    KeyboardHook.KeyKeyPress((Keys)hexKeys[0], (Keys)hexKeys[1]);
+                    break;
+                case 3:
+                    KeyboardHook.KeyKeyKeyPress((Keys)hexKeys[0], (Keys)hexKeys[1], (Keys)hexKeys[3]);
+                    break;
+                default:
+                    LaunchProcess(command);
+                    break;
+            }
 
         }
 
@@ -264,7 +299,7 @@ namespace GHelper.Input
                         SetBrightness(+10);
                         break;
                     case Keys.F9:
-                        KeyboardHook.KeyWinPress(Keys.P);
+                        KeyboardHook.KeyKeyPress(Keys.LWin, Keys.P);
                         break;
                     case Keys.F10:
                         HandleOptimizationEvent(107);
@@ -273,7 +308,7 @@ namespace GHelper.Input
                         HandleOptimizationEvent(108);
                         break;
                     case Keys.F12:
-                        KeyboardHook.KeyWinPress(Keys.A);
+                        KeyboardHook.KeyKeyPress(Keys.LWin, Keys.A);
                         break;
                     case Keys.VolumeDown:
                         KeyProcess("m1");
@@ -442,7 +477,7 @@ namespace GHelper.Input
 
         static void ToggleTouchpad()
         {
-            KeyboardHook.KeyCtrlWinPress(Keys.F24);
+            KeyboardHook.KeyKeyKeyPress(Keys.ControlKey, Keys.LWin, Keys.F24);
         }
 
         public static void ToggleArrowLock()

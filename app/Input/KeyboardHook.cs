@@ -26,23 +26,23 @@ public sealed class KeyboardHook : IDisposable
         keybd_event((byte)key, 0, KEYEVENTF_EXTENDEDKEY, IntPtr.Zero);
     }
 
-    public static void KeyWinPress(Keys key)
+    public static void KeyKeyPress(Keys key, Keys key2)
     {
-        keybd_event(VK_LWIN, 0, KEYEVENTF_EXTENDEDKEY, IntPtr.Zero);
         keybd_event((byte)key, 0, KEYEVENTF_EXTENDEDKEY, IntPtr.Zero);
+        keybd_event((byte)key2, 0, KEYEVENTF_EXTENDEDKEY, IntPtr.Zero);
+        keybd_event((byte)key2, 0, KEYEVENTF_EXTENDEDKEY | KEYEVENTF_KEYUP, IntPtr.Zero);
         keybd_event((byte)key, 0, KEYEVENTF_EXTENDEDKEY | KEYEVENTF_KEYUP, IntPtr.Zero);
-        keybd_event(VK_LWIN, 0, KEYEVENTF_EXTENDEDKEY | KEYEVENTF_KEYUP, IntPtr.Zero);
     }
 
-    public static void KeyCtrlWinPress(Keys key)
+    public static void KeyKeyKeyPress(Keys key, Keys key2, Keys key3)
     {
-        keybd_event(VK_LCONTROL, 0, KEYEVENTF_EXTENDEDKEY, IntPtr.Zero);
-        keybd_event(VK_LWIN, 0, KEYEVENTF_EXTENDEDKEY, IntPtr.Zero);
         keybd_event((byte)key, 0, KEYEVENTF_EXTENDEDKEY, IntPtr.Zero);
+        keybd_event((byte)key2, 0, KEYEVENTF_EXTENDEDKEY, IntPtr.Zero);
+        keybd_event((byte)key3, 0, KEYEVENTF_EXTENDEDKEY, IntPtr.Zero);
 
+        keybd_event((byte)key3, 0, KEYEVENTF_EXTENDEDKEY | KEYEVENTF_KEYUP, IntPtr.Zero);
+        keybd_event((byte)key2, 0, KEYEVENTF_EXTENDEDKEY | KEYEVENTF_KEYUP, IntPtr.Zero);
         keybd_event((byte)key, 0, KEYEVENTF_EXTENDEDKEY | KEYEVENTF_KEYUP, IntPtr.Zero);
-        keybd_event(VK_LWIN, 0, KEYEVENTF_EXTENDEDKEY | KEYEVENTF_KEYUP, IntPtr.Zero);
-        keybd_event(VK_LCONTROL, 0, KEYEVENTF_EXTENDEDKEY | KEYEVENTF_KEYUP, IntPtr.Zero);
     }
 
     /// <summary>
