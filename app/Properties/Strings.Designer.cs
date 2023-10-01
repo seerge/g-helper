@@ -466,6 +466,15 @@ namespace GHelper.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to One time charge to 100%.
+        /// </summary>
+        internal static string BatteryLimitFull {
+            get {
+                return ResourceManager.GetString("BatteryLimitFull", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to BIOS and Driver Updates.
         /// </summary>
         internal static string BiosAndDriverUpdates {

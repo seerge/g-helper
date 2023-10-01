@@ -40,6 +40,7 @@ namespace GHelper
             labelMatrix = new Label();
             checkMatrix = new CheckBox();
             panelBattery = new Panel();
+            buttonBatteryFull = new RButton();
             sliderBattery = new Slider();
             panelBatteryTitle = new Panel();
             labelBattery = new Label();
@@ -278,6 +279,7 @@ namespace GHelper
             // 
             panelBattery.AutoSize = true;
             panelBattery.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            panelBattery.Controls.Add(buttonBatteryFull);
             panelBattery.Controls.Add(sliderBattery);
             panelBattery.Controls.Add(panelBatteryTitle);
             panelBattery.Dock = DockStyle.Top;
@@ -285,19 +287,39 @@ namespace GHelper
             panelBattery.Margin = new Padding(0);
             panelBattery.Name = "panelBattery";
             panelBattery.Padding = new Padding(20, 20, 20, 10);
-            panelBattery.Size = new Size(827, 114);
+            panelBattery.Size = new Size(827, 119);
             panelBattery.TabIndex = 5;
+            // 
+            // buttonBatteryFull
+            // 
+            buttonBatteryFull.Activated = false;
+            buttonBatteryFull.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            buttonBatteryFull.BackColor = SystemColors.ControlLight;
+            buttonBatteryFull.BorderColor = Color.Transparent;
+            buttonBatteryFull.BorderRadius = 2;
+            buttonBatteryFull.FlatAppearance.BorderSize = 0;
+            buttonBatteryFull.FlatStyle = FlatStyle.Flat;
+            buttonBatteryFull.Font = new Font("Segoe UI", 7.125F, FontStyle.Bold, GraphicsUnit.Point);
+            buttonBatteryFull.ForeColor = SystemColors.ControlDark;
+            buttonBatteryFull.Location = new Point(730, 66);
+            buttonBatteryFull.Margin = new Padding(0);
+            buttonBatteryFull.Name = "buttonBatteryFull";
+            buttonBatteryFull.Secondary = true;
+            buttonBatteryFull.Size = new Size(73, 36);
+            buttonBatteryFull.TabIndex = 41;
+            buttonBatteryFull.Text = "100%";
+            buttonBatteryFull.UseVisualStyleBackColor = false;
             // 
             // sliderBattery
             // 
             sliderBattery.AccessibleName = "Battery Charge Limit";
-            sliderBattery.Dock = DockStyle.Top;
-            sliderBattery.Location = new Point(20, 64);
+            sliderBattery.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            sliderBattery.Location = new Point(20, 65);
             sliderBattery.Margin = new Padding(4);
             sliderBattery.Max = 100;
             sliderBattery.Min = 40;
             sliderBattery.Name = "sliderBattery";
-            sliderBattery.Size = new Size(787, 40);
+            sliderBattery.Size = new Size(716, 40);
             sliderBattery.Step = 5;
             sliderBattery.TabIndex = 20;
             sliderBattery.Text = "sliderBattery";
@@ -354,7 +376,7 @@ namespace GHelper
             panelFooter.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             panelFooter.Controls.Add(tableButtons);
             panelFooter.Dock = DockStyle.Top;
-            panelFooter.Location = new Point(11, 1435);
+            panelFooter.Location = new Point(11, 1440);
             panelFooter.Margin = new Padding(0);
             panelFooter.Name = "panelFooter";
             panelFooter.Padding = new Padding(20);
@@ -1232,7 +1254,7 @@ namespace GHelper
             panelVersion.Controls.Add(labelCharge);
             panelVersion.Controls.Add(checkStartup);
             panelVersion.Dock = DockStyle.Top;
-            panelVersion.Location = new Point(11, 1379);
+            panelVersion.Location = new Point(11, 1384);
             panelVersion.Margin = new Padding(4);
             panelVersion.Name = "panelVersion";
             panelVersion.Size = new Size(827, 56);
@@ -1550,5 +1572,6 @@ namespace GHelper
         private RButton buttonUpdates;
         private Label labelCharge;
         private RButton buttonFnLock;
+        private RButton buttonBatteryFull;
     }
 }

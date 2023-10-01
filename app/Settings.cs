@@ -41,7 +41,9 @@ namespace GHelper
         static long lastBatteryRefresh;
 
         bool isGpuSection = true;
+
         bool batteryMouseOver = false;
+        bool batteryFullMouseOver = false;
 
         public SettingsForm()
         {
@@ -193,6 +195,10 @@ namespace GHelper
             buttonPeripheral2.MouseEnter += ButtonPeripheral_MouseEnter;
             buttonPeripheral3.MouseEnter += ButtonPeripheral_MouseEnter;
 
+            buttonBatteryFull.MouseEnter += ButtonBatteryFull_MouseEnter;
+            buttonBatteryFull.MouseLeave += ButtonBatteryFull_MouseLeave;
+            buttonBatteryFull.Click += ButtonBatteryFull_Click;
+
             Text = "G-Helper " + (ProcessHelper.IsUserAdministrator() ? "—" : "-") + " " + AppConfig.GetModelShort();
             TopMost = AppConfig.Is("topmost");
 
@@ -206,6 +212,22 @@ namespace GHelper
             panelPerformance.Focus();
         }
 
+        private void ButtonBatteryFull_Click(object? sender, EventArgs e)
+        {
+            BatteryControl.SetBatteryLimitFull();
+        }
+
+        private void ButtonBatteryFull_MouseLeave(object? sender, EventArgs e)
+        {
+            batteryFullMouseOver = false;
+            RefreshSensors(true);
+        }
+
+        private void ButtonBatteryFull_MouseEnter(object? sender, EventArgs e)
+        {
+            batteryFullMouseOver = true;
+            labelCharge.Text = Properties.Strings.BatteryLimitFull;
+        }
 
         private void SettingsForm_Resize(object? sender, EventArgs e)
         {
@@ -906,7 +928,7 @@ namespace GHelper
                     labelMidFan.Text = "Mid " + HardwareControl.midFan;
 
                 labelBattery.Text = battery;
-                if (!batteryMouseOver) labelCharge.Text = charge;
+                if (!batteryMouseOver && !batteryFullMouseOver) labelCharge.Text = charge;
 
                 //panelPerformance.AccessibleName = labelPerf.Text + " " + trayTip;
             });
@@ -1035,7 +1057,8 @@ namespace GHelper
                 buttonStopGPU.Visible = true;
                 tableGPU.ColumnCount = 3;
                 tableScreen.ColumnCount = 3;
-            } else
+            }
+            else
             {
                 buttonStopGPU.Visible = false;
             }
@@ -1164,6 +1187,22 @@ namespace GHelper
         {
             labelBatteryTitle.Text = Properties.Strings.BatteryChargeLimit + ": " + limit.ToString() + "%";
             sliderBattery.Value = limit;
+            VisualiseBatteryFull();
+        }
+
+        public void VisualiseBatteryFull()
+        {
+            if (AppConfig.Is("charge_full"))
+            {
+                buttonBatteryFull.BackColor = colorStandard;
+                buttonBatteryFull.ForeColor = SystemColors.ControlLightLight;
+            }
+            else
+            {
+                buttonBatteryFull.BackColor = buttonSecond;
+                buttonBatteryFull.ForeColor = SystemColors.ControlDark;
+            }
+
         }
 
 

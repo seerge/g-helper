@@ -3,6 +3,15 @@
     internal class BatteryControl
     {
 
+        public static void SetBatteryLimitFull()
+        {
+            AppConfig.Set("charge_full", 1);
+            Program.acpi.DeviceSet(AsusACPI.BatteryLimit, 100, "BatteryLimit");
+
+            Program.settingsForm.VisualiseBatteryFull();
+        }
+
+
         public static void SetBatteryChargeLimit(int limit = -1)
         {
 
@@ -10,10 +19,11 @@
             if (limit < 40 || limit > 100) return;
 
             Program.acpi.DeviceSet(AsusACPI.BatteryLimit, limit, "BatteryLimit");
-            Program.settingsForm.VisualiseBattery(limit);
 
             AppConfig.Set("charge_limit", limit);
+            AppConfig.Set("charge_full", 0);
 
+            Program.settingsForm.VisualiseBattery(limit);
         }
 
     }
