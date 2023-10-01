@@ -252,6 +252,9 @@
   <data name="BatteryHealth" xml:space="preserve">
     <value>电池健康</value>
   </data>
+  <data name="BatteryLimitFull" xml:space="preserve">
+    <value>One time charge to 100%</value>
+  </data>
   <data name="BiosAndDriverUpdates" xml:space="preserve">
     <value>BIOS 和驱动程序更新</value>
   </data>
