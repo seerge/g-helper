@@ -322,7 +322,9 @@ Select ``Custom`` next to appropriate hotkey under ``Extra`` settings and do one
 1. To run any custom application - put a full path to exe into "action" text field, for example:
 ``C:\Program Files\EA Games\Battlefield 2042\BF2042.exe``
 
-2. To simulate any windows key - put appropriate keycode into the "action" field, for example ``0x2C`` for Print Screen. 
+2. To simulate any windows key or key-combination - put appropriate keycode(s) into the "action" field separated by space.
+For example ``0x2C`` for ``Print Screen`` or ``0x11 0xA0 0x31`` for ``Ctrl+Shift+1``
+
 Full list of keycodes https://learn.microsoft.com/en-us/windows/win32/inputdev/virtual-key-codes
 
 ![Screenshot 2023-07-17 192155](https://github.com/seerge/g-helper/assets/5920850/e450e124-1589-4787-bce8-7c37ffe72fbd)
