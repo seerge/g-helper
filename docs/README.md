@@ -296,12 +296,16 @@ If you don't want this bindings to work you can add
 "skip_hotkeys":1,
 ``` 
 
-### Toggle Performance Mode key binding
+### Toggle Performance Mode or Toggle App Window key binding
 
 To change binding for Toggle Performance Modes to ``Ctrl + Shift + KEY``
-
 ```
 "keybind_profile": 116,
+``` 
+
+To change binding for Toggle App Window  to ``Ctrl + Shift + KEY``
+```
+"keybind_app": 123,
 ``` 
 
 Where 116 is [numerical code for desired key](https://www.oreilly.com/library/view/javascript-dhtml/9780596514082/apb.html). Put 0 to completely disable this binding.
