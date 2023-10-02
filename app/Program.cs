@@ -213,11 +213,21 @@ namespace GHelper
             SetAutoModes(true);
         }
 
-
-
         public static void SettingsToggle(string action = "")
         {
-            if (settingsForm.Visible) settingsForm.HideAll();
+            if (settingsForm.Visible)
+            {
+                // If helper window is not on top, this just focuses on the app again
+                // Pressing the ghelper button again will hide the app
+                if (!settingsForm.HasAnyFocus())
+                {
+                    settingsForm.ShowAll();
+                }
+                else
+                {
+                    settingsForm.HideAll();
+                }
+            }
             else
             {
 
@@ -279,5 +289,4 @@ namespace GHelper
 
 
     }
-
 }

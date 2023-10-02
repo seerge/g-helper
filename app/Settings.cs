@@ -847,6 +847,27 @@ namespace GHelper
             if (updates != null && updates.Text != "") updates.Close();
         }
 
+        /// <summary>
+        /// Brings all visible windows to the top, with settings being the focus
+        /// <br/>
+        /// Note: this will not respect previous focus i.e. will always focus settings
+        /// </summary>
+        public void ShowAll()
+        {
+            if (fans != null && fans.Visible) fans.Activate();
+            if (keyb != null && keyb.Visible) keyb.Activate();
+            if (updates != null && updates.Visible) updates.Activate();
+            this.Activate();
+        }
+
+        /// <summary>
+        /// Check if any of fans, keyboard, update, or itself has focus
+        /// </summary>
+        /// <returns>Focus state</returns>
+        public bool HasAnyFocus()
+        {
+            return (fans != null && fans.ContainsFocus) || (keyb != null && keyb.ContainsFocus) || (updates != null && updates.ContainsFocus) || this.ContainsFocus;
+        }
 
         private void SettingsForm_FormClosing(object? sender, FormClosingEventArgs e)
         {
