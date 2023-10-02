@@ -547,6 +547,7 @@ namespace GHelper
             if (matrix == null || matrix.Text == "")
             {
                 matrix = new Matrix();
+                AddOwnedForm(matrix);
             }
 
             if (matrix.Visible)
@@ -615,6 +616,7 @@ namespace GHelper
             {
                 keyb = new Extra();
                 keyb.Show();
+                AddOwnedForm(keyb);
             }
             else
             {
@@ -643,6 +645,7 @@ namespace GHelper
             if (fans == null || fans.Text == "")
             {
                 fans = new Fans();
+                AddOwnedForm(fans);
             }
 
             if (fans.Visible)
@@ -839,6 +842,9 @@ namespace GHelper
             Application.Exit();
         }
 
+        /// <summary>
+        /// Closes all forms except the settings. Hides the settings
+        /// </summary>
         public void HideAll()
         {
             this.Hide();
@@ -849,14 +855,9 @@ namespace GHelper
 
         /// <summary>
         /// Brings all visible windows to the top, with settings being the focus
-        /// <br/>
-        /// Note: this will not respect previous focus i.e. will always focus settings
         /// </summary>
         public void ShowAll()
         {
-            if (fans != null && fans.Visible) fans.Activate();
-            if (keyb != null && keyb.Visible) keyb.Activate();
-            if (updates != null && updates.Visible) updates.Activate();
             this.Activate();
         }
 
