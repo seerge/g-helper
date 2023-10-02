@@ -547,6 +547,7 @@ namespace GHelper
             if (matrix == null || matrix.Text == "")
             {
                 matrix = new Matrix();
+                AddOwnedForm(matrix);
             }
 
             if (matrix.Visible)
@@ -615,6 +616,7 @@ namespace GHelper
             {
                 keyb = new Extra();
                 keyb.Show();
+                AddOwnedForm(keyb);
             }
             else
             {
@@ -643,6 +645,7 @@ namespace GHelper
             if (fans == null || fans.Text == "")
             {
                 fans = new Fans();
+                AddOwnedForm(fans);
             }
 
             if (fans.Visible)
@@ -839,6 +842,9 @@ namespace GHelper
             Application.Exit();
         }
 
+        /// <summary>
+        /// Closes all forms except the settings. Hides the settings
+        /// </summary>
         public void HideAll()
         {
             this.Hide();
@@ -847,6 +853,22 @@ namespace GHelper
             if (updates != null && updates.Text != "") updates.Close();
         }
 
+        /// <summary>
+        /// Brings all visible windows to the top, with settings being the focus
+        /// </summary>
+        public void ShowAll()
+        {
+            this.Activate();
+        }
+
+        /// <summary>
+        /// Check if any of fans, keyboard, update, or itself has focus
+        /// </summary>
+        /// <returns>Focus state</returns>
+        public bool HasAnyFocus()
+        {
+            return (fans != null && fans.ContainsFocus) || (keyb != null && keyb.ContainsFocus) || (updates != null && updates.ContainsFocus) || this.ContainsFocus;
+        }
 
         private void SettingsForm_FormClosing(object? sender, FormClosingEventArgs e)
         {
