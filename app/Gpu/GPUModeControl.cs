@@ -165,7 +165,7 @@ namespace GHelper.Gpu
 
                 if (status == 0 && eco == 1 && hardWay) RestartGPU();
 
-                await Task.Delay(TimeSpan.FromMilliseconds(100));
+                await Task.Delay(TimeSpan.FromMilliseconds(AppConfig.Get("refresh_delay", 500)));
 
                 settings.Invoke(delegate
                 {
