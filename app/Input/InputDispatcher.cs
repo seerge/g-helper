@@ -337,7 +337,7 @@ namespace GHelper.Input
             if (e.Modifier == (ModifierKeys.Control | ModifierKeys.Shift))
             {
                 if (e.Key == keyProfile) modeControl.CyclePerformanceMode();
-                if (e.Key == keyApp) Program.SettingsToggle("", true);
+                if (e.Key == keyApp) Program.SettingsToggle();
                 if (e.Key == Keys.F20) KeyProcess("m3");
             }
 
@@ -427,7 +427,7 @@ namespace GHelper.Input
                     {
                         Program.settingsForm.BeginInvoke(delegate
                         {
-                            Program.SettingsToggle("", true);
+                            Program.SettingsToggle();
                         });
                     }
                     catch (Exception ex)

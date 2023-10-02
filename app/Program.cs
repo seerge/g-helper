@@ -119,7 +119,7 @@ namespace GHelper
 
             if (Environment.CurrentDirectory.Trim('\\') == Application.StartupPath.Trim('\\') || action.Length > 0)
             {
-                SettingsToggle(action);
+                SettingsToggle(action, false);
             }
 
             Application.Run();
@@ -156,17 +156,17 @@ namespace GHelper
                         lastTheme = DateTimeOffset.Now.ToUnixTimeMilliseconds();
                     }
 
-                    if (settingsForm.fans is not null && settingsForm.fans.Text != "")
-                        settingsForm.fans.InitTheme();
+                    if (settingsForm.fansForm is not null && settingsForm.fansForm.Text != "")
+                        settingsForm.fansForm.InitTheme();
 
-                    if (settingsForm.keyb is not null && settingsForm.keyb.Text != "")
-                        settingsForm.keyb.InitTheme();
+                    if (settingsForm.extraForm is not null && settingsForm.extraForm.Text != "")
+                        settingsForm.extraForm.InitTheme();
 
-                    if (settingsForm.updates is not null && settingsForm.updates.Text != "")
-                        settingsForm.updates.InitTheme();
+                    if (settingsForm.updatesForm is not null && settingsForm.updatesForm.Text != "")
+                        settingsForm.updatesForm.InitTheme();
 
-                    if (settingsForm.matrix is not null && settingsForm.matrix.Text != "")
-                        settingsForm.matrix.InitTheme();
+                    if (settingsForm.matrixForm is not null && settingsForm.matrixForm.Text != "")
+                        settingsForm.matrixForm.InitTheme();
                     break;
             }
         }
@@ -213,7 +213,7 @@ namespace GHelper
             SetAutoModes(true);
         }
 
-        public static void SettingsToggle(string action = "", bool checkForFocus = false)
+        public static void SettingsToggle(string action = "", bool checkForFocus = true)
         {
             if (settingsForm.Visible)
             {
@@ -256,9 +256,9 @@ namespace GHelper
                         gpuControl.RestartGPU(false);
                         break;
                     case "services":
-                        settingsForm.keyb = new Extra();
-                        settingsForm.keyb.Show();
-                        settingsForm.keyb.ServiesToggle();
+                        settingsForm.extraForm = new Extra();
+                        settingsForm.extraForm.Show();
+                        settingsForm.extraForm.ServiesToggle();
                         break;
                     case "uv":
                         Startup.ReScheduleAdmin();

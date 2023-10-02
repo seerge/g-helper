@@ -32,10 +32,10 @@ namespace GHelper
 
         public static System.Timers.Timer sensorTimer = default!;
 
-        public Matrix? matrix;
-        public Fans? fans;
-        public Extra? keyb;
-        public Updates? updates;
+        public Matrix? matrixForm;
+        public Fans? fansForm;
+        public Extra? extraForm;
+        public Updates? updatesForm;
 
         static long lastRefresh;
         static long lastBatteryRefresh;
@@ -282,21 +282,26 @@ namespace GHelper
 
         private void ButtonUpdates_Click(object? sender, EventArgs e)
         {
-            if (updates == null || updates.Text == "")
+            if (updatesForm == null || updatesForm.Text == "")
             {
-                updates = new Updates();
-                updates.Show();
+                updatesForm = new Updates();
+                AddOwnedForm(updatesForm);
+            }
+
+            if (updatesForm.Visible)
+            {
+                updatesForm.Close();
             }
             else
             {
-                updates.Close();
+                updatesForm.Show();
             }
         }
 
         public void VisualiseMatrix(string image)
         {
-            if (matrix == null || matrix.Text == "") return;
-            matrix.VisualiseMatrix(image);
+            if (matrixForm == null || matrixForm.Text == "") return;
+            matrixForm.VisualiseMatrix(image);
         }
 
         protected override void WndProc(ref Message m)
@@ -544,20 +549,20 @@ namespace GHelper
         private void ButtonMatrix_Click(object? sender, EventArgs e)
         {
 
-            if (matrix == null || matrix.Text == "")
+            if (matrixForm == null || matrixForm.Text == "")
             {
-                matrix = new Matrix();
-                AddOwnedForm(matrix);
+                matrixForm = new Matrix();
+                AddOwnedForm(matrixForm);
             }
 
-            if (matrix.Visible)
+            if (matrixForm.Visible)
             {
-                matrix.Close();
+                matrixForm.Close();
             }
             else
             {
-                matrix.FormPosition();
-                matrix.Show();
+                matrixForm.FormPosition();
+                matrixForm.Show();
             }
 
         }
@@ -612,15 +617,19 @@ namespace GHelper
 
         private void ButtonKeyboard_Click(object? sender, EventArgs e)
         {
-            if (keyb == null || keyb.Text == "")
+            if (extraForm == null || extraForm.Text == "")
             {
-                keyb = new Extra();
-                keyb.Show();
-                AddOwnedForm(keyb);
+                extraForm = new Extra();
+                AddOwnedForm(extraForm);
+            }
+
+            if (extraForm.Visible)
+            {
+                extraForm.Close();
             }
             else
             {
-                keyb.Close();
+                extraForm.Show();
             }
         }
 
@@ -628,7 +637,7 @@ namespace GHelper
         {
             Invoke(delegate
             {
-                if (fans != null && fans.Text != "") fans.InitAll();
+                if (fansForm != null && fansForm.Text != "") fansForm.InitAll();
             });
         }
 
@@ -636,27 +645,27 @@ namespace GHelper
         {
             Invoke(delegate
             {
-                if (fans != null && fans.Text != "") fans.InitGPU();
+                if (fansForm != null && fansForm.Text != "") fansForm.InitGPU();
             });
         }
 
         public void FansToggle(int index = 0)
         {
-            if (fans == null || fans.Text == "")
+            if (fansForm == null || fansForm.Text == "")
             {
-                fans = new Fans();
-                AddOwnedForm(fans);
+                fansForm = new Fans();
+                AddOwnedForm(fansForm);
             }
 
-            if (fans.Visible)
+            if (fansForm.Visible)
             {
-                fans.Close();
+                fansForm.Close();
             }
             else
             {
-                fans.FormPosition();
-                fans.Show();
-                fans.ToggleNavigation(index);
+                fansForm.FormPosition();
+                fansForm.Show();
+                fansForm.ToggleNavigation(index);
             }
 
         }
@@ -848,9 +857,10 @@ namespace GHelper
         public void HideAll()
         {
             this.Hide();
-            if (fans != null && fans.Text != "") fans.Close();
-            if (keyb != null && keyb.Text != "") keyb.Close();
-            if (updates != null && updates.Text != "") updates.Close();
+            if (fansForm != null && fansForm.Text != "") fansForm.Close();
+            if (extraForm != null && extraForm.Text != "") extraForm.Close();
+            if (updatesForm != null && updatesForm.Text != "") updatesForm.Close();
+            if (matrixForm != null && matrixForm.Text != "") matrixForm.Close();
         }
 
         /// <summary>
@@ -867,7 +877,11 @@ namespace GHelper
         /// <returns>Focus state</returns>
         public bool HasAnyFocus()
         {
-            return (fans != null && fans.ContainsFocus) || (keyb != null && keyb.ContainsFocus) || (updates != null && updates.ContainsFocus) || this.ContainsFocus;
+            return (fansForm != null && fansForm.ContainsFocus) || 
+                   (extraForm != null && extraForm.ContainsFocus) || 
+                   (updatesForm != null && updatesForm.ContainsFocus) ||
+                   (matrixForm != null && matrixForm.ContainsFocus) ||
+                   this.ContainsFocus;
         }
 
         private void SettingsForm_FormClosing(object? sender, FormClosingEventArgs e)
@@ -962,8 +976,8 @@ namespace GHelper
 
         public void LabelFansResult(string text)
         {
-            if (fans != null && fans.Text != "")
-                fans.LabelFansResult(text);
+            if (fansForm != null && fansForm.Text != "")
+                fansForm.LabelFansResult(text);
         }
 
         public void ShowMode(int mode)
