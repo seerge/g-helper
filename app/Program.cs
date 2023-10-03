@@ -265,6 +265,9 @@ namespace GHelper
                         settingsForm.FansToggle(2);
                         modeControl.SetRyzen();
                         break;
+                    default:
+                        Startup.StartupCheck();
+                        break;
                 }
             }
         }

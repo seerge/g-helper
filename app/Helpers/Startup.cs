@@ -10,8 +10,8 @@ public class Startup
 
     public static bool IsScheduled()
     {
-        TaskService taskService = new TaskService();
-        return (taskService.RootFolder.AllTasks.Any(t => t.Name == taskName));
+        using (TaskService taskService = new TaskService())
+            return (taskService.RootFolder.AllTasks.Any(t => t.Name == taskName));
     }
 
     public static void ReScheduleAdmin()
@@ -20,6 +20,26 @@ public class Startup
         {
             UnSchedule();
             Schedule();
+        }
+    }
+
+    public static void StartupCheck()
+    {
+        using (TaskService taskService = new TaskService())
+        {
+            var task = taskService.RootFolder.AllTasks.FirstOrDefault(t => t.Name == taskName);
+            if (task != null)
+            {
+                string strExeFilePath = Application.ExecutablePath.Trim();
+                string action = task.Definition.Actions.FirstOrDefault()!.ToString().Trim();
+                if (!strExeFilePath.Equals(action, StringComparison.OrdinalIgnoreCase))
+                {
+                    Logger.WriteLine(action);
+                    Logger.WriteLine("Rescheduling to: " + strExeFilePath);
+                    UnSchedule();
+                    Schedule();
+                }
+            }
         }
     }
 
