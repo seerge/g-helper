@@ -214,7 +214,7 @@ namespace GHelper
 
         private void ButtonBatteryFull_Click(object? sender, EventArgs e)
         {
-            BatteryControl.SetBatteryLimitFull();
+            BatteryControl.ToggleBatteryLimitFull();
         }
 
         private void ButtonBatteryFull_MouseLeave(object? sender, EventArgs e)

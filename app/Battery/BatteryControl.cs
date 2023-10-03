@@ -3,6 +3,12 @@
     internal class BatteryControl
     {
 
+        public static void ToggleBatteryLimitFull()
+        {
+            if (AppConfig.Is("charge_full")) SetBatteryChargeLimit();
+            else SetBatteryLimitFull();
+        }
+
         public static void SetBatteryLimitFull()
         {
             AppConfig.Set("charge_full", 1);
