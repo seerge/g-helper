@@ -32,9 +32,9 @@ public class Startup
             {
                 string strExeFilePath = Application.ExecutablePath.Trim();
                 string action = task.Definition.Actions.FirstOrDefault()!.ToString().Trim();
-                if (!strExeFilePath.Equals(action, StringComparison.OrdinalIgnoreCase))
+                if (!strExeFilePath.Equals(action, StringComparison.OrdinalIgnoreCase) && !File.Exists(action))
                 {
-                    Logger.WriteLine(action);
+                    Logger.WriteLine("File doesn't exist: " + action);
                     Logger.WriteLine("Rescheduling to: " + strExeFilePath);
                     UnSchedule();
                     Schedule();
