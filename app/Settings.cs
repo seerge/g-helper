@@ -39,6 +39,7 @@ namespace GHelper
 
         static long lastRefresh;
         static long lastBatteryRefresh;
+        static long lastLostFocus;
 
         bool isGpuSection = true;
 
@@ -88,6 +89,7 @@ namespace GHelper
             buttonUpdates.Text = Properties.Strings.Updates;
 
             FormClosing += SettingsForm_FormClosing;
+            Deactivate += SettingsForm_LostFocus;
 
             buttonSilent.BorderColor = colorEco;
             buttonBalanced.BorderColor = colorStandard;
@@ -210,6 +212,11 @@ namespace GHelper
             buttonFnLock.Click += ButtonFnLock_Click;
 
             panelPerformance.Focus();
+        }
+
+        private void SettingsForm_LostFocus(object? sender, EventArgs e)
+        {
+            lastLostFocus = DateTimeOffset.Now.ToUnixTimeMilliseconds();
         }
 
         private void ButtonBatteryFull_Click(object? sender, EventArgs e)
@@ -881,7 +888,8 @@ namespace GHelper
                    (extraForm != null && extraForm.ContainsFocus) || 
                    (updatesForm != null && updatesForm.ContainsFocus) ||
                    (matrixForm != null && matrixForm.ContainsFocus) ||
-                   this.ContainsFocus;
+                   this.ContainsFocus ||
+                   Math.Abs(DateTimeOffset.Now.ToUnixTimeMilliseconds() - lastLostFocus) < 300;
         }
 
         private void SettingsForm_FormClosing(object? sender, FormClosingEventArgs e)
