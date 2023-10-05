@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Acceleration" xml:space="preserve">
-    <value>Acceleration</value>
+    <value>加速</value>
   </data>
   <data name="ACPIError" xml:space="preserve">
     <value>无法连接到ASUS ACPI。 没有它应用程序将无法运行。 请尝试安装Asus System Control Interface驱动。</value>
@@ -223,7 +223,7 @@
     <value>滚轮</value>
   </data>
   <data name="AuraZoneUnderglow" xml:space="preserve">
-    <value>Underglow</value>
+    <value>底灯</value>
   </data>
   <data name="AutoApply" xml:space="preserve">
     <value>自动应用</value>
@@ -253,7 +253,7 @@
     <value>电池健康</value>
   </data>
   <data name="BatteryLimitFull" xml:space="preserve">
-    <value>One time charge to 100%</value>
+    <value>一次性充电至 100%</value>
   </data>
   <data name="BiosAndDriverUpdates" xml:space="preserve">
     <value>BIOS 和驱动程序更新</value>
@@ -274,7 +274,7 @@
     <value>提高亮度</value>
   </data>
   <data name="Calibrate" xml:space="preserve">
-    <value>Calibrate</value>
+    <value>校准</value>
   </data>
   <data name="Charging" xml:space="preserve">
     <value>充电中</value>
@@ -289,7 +289,7 @@
     <value>自定义设置</value>
   </data>
   <data name="Deceleration" xml:space="preserve">
-    <value>Deceleration</value>
+    <value>减速</value>
   </data>
   <data name="Default" xml:space="preserve">
     <value>默认</value>
@@ -318,7 +318,7 @@
 确定还要继续吗？</value>
   </data>
   <data name="EnableOptimusTitle" xml:space="preserve">
-    <value>NVIDIA 显示模式未设置为自动切换</value>
+    <value>NVIDIA 显示模式未设置为 Optimus</value>
   </data>
   <data name="EnergySettings" xml:space="preserve">
     <value>电源设置</value>
@@ -342,7 +342,7 @@
     <value>GPU 风扇配置文件</value>
   </data>
   <data name="FanProfileMid" xml:space="preserve">
-    <value>中等风扇配置</value>
+    <value>Mid 风扇配置文件</value>
   </data>
   <data name="FanProfiles" xml:space="preserve">
     <value>风扇配置</value>
@@ -465,7 +465,7 @@
     <value>分钟</value>
   </data>
   <data name="Minutes" xml:space="preserve">
-    <value>分组</value>
+    <value>分钟</value>
   </data>
   <data name="MouseAngleSnapping" xml:space="preserve">
     <value>角度校正</value>
