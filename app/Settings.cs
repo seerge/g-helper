@@ -882,14 +882,14 @@ namespace GHelper
         /// Check if any of fans, keyboard, update, or itself has focus
         /// </summary>
         /// <returns>Focus state</returns>
-        public bool HasAnyFocus()
+        public bool HasAnyFocus(bool lostFocusCheck = false)
         {
             return (fansForm != null && fansForm.ContainsFocus) || 
                    (extraForm != null && extraForm.ContainsFocus) || 
                    (updatesForm != null && updatesForm.ContainsFocus) ||
                    (matrixForm != null && matrixForm.ContainsFocus) ||
                    this.ContainsFocus ||
-                   Math.Abs(DateTimeOffset.Now.ToUnixTimeMilliseconds() - lastLostFocus) < 300;
+                   (lostFocusCheck && Math.Abs(DateTimeOffset.Now.ToUnixTimeMilliseconds() - lastLostFocus) < 300);
         }
 
         private void SettingsForm_FormClosing(object? sender, FormClosingEventArgs e)

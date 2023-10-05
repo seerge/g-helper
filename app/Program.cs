@@ -213,13 +213,13 @@ namespace GHelper
             SetAutoModes(true);
         }
 
-        public static void SettingsToggle(string action = "", bool checkForFocus = true)
+        public static void SettingsToggle(string action = "", bool checkForFocus = true, bool trayClick = false)
         {
             if (settingsForm.Visible)
             {
                 // If helper window is not on top, this just focuses on the app again
                 // Pressing the ghelper button again will hide the app
-                if (checkForFocus && !settingsForm.HasAnyFocus())
+                if (checkForFocus && !settingsForm.HasAnyFocus(trayClick))
                 {
                     settingsForm.ShowAll();
                 }
@@ -275,7 +275,7 @@ namespace GHelper
         static void TrayIcon_MouseClick(object? sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
-                SettingsToggle();
+                SettingsToggle(trayClick: true);
 
         }
 
