@@ -9,6 +9,7 @@ public static class AppConfig
     private static string configFile;
 
     private static string? _model;
+    private static string? _modelShort;
     private static string? _bios;
 
     private static Dictionary<string, object> config = new Dictionary<string, object>();
@@ -73,7 +74,7 @@ public static class AppConfig
 
     public static (string, string) GetBiosAndModel()
     {
-        if (_bios is not null && _model is not null) return (_bios, _model);
+        if (_bios is not null && _modelShort is not null) return (_bios, _modelShort);
 
         using (ManagementObjectSearcher objSearcher = new ManagementObjectSearcher(@"SELECT * FROM Win32_BIOS"))
         {
@@ -85,16 +86,16 @@ public static class AppConfig
                         string[] results = obj["SMBIOSBIOSVersion"].ToString().Split(".");
                         if (results.Length > 1)
                         {
-                            _model = results[0];
+                            _modelShort = results[0];
                             _bios = results[1];
                         }
                         else
                         {
-                            _model = obj["SMBIOSBIOSVersion"].ToString();
+                            _modelShort = obj["SMBIOSBIOSVersion"].ToString();
                         }
                     }
 
-                return (_bios, _model);
+                return (_bios, _modelShort);
             }
         }
     }

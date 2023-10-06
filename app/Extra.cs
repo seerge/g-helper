@@ -276,22 +276,23 @@ namespace GHelper
                 checkSleepBar.Visible = false;
                 checkShutdownBar.Visible = false;
 
-                if (!AppConfig.IsZ13())
-                {
-                    labelBacklightLid.Visible = false;
-                    checkAwakeLid.Visible = false;
-                    checkBootLid.Visible = false;
-                    checkSleepLid.Visible = false;
-                    checkShutdownLid.Visible = false;
+            }
 
-                    labelBacklightLogo.Visible = false;
-                    checkAwakeLogo.Visible = false;
-                    checkBootLogo.Visible = false;
-                    checkSleepLogo.Visible = false;
-                    checkShutdownLogo.Visible = false;
+            if ((!AppConfig.IsStrix() && !AppConfig.IsZ13()) || AppConfig.IsStrixLimitedRGB())
+            {
+                labelBacklightLid.Visible = false;
+                checkAwakeLid.Visible = false;
+                checkBootLid.Visible = false;
+                checkSleepLid.Visible = false;
+                checkShutdownLid.Visible = false;
 
-                    labelBacklightKeyboard.Visible = false;
-                }
+                labelBacklightLogo.Visible = false;
+                checkAwakeLogo.Visible = false;
+                checkBootLogo.Visible = false;
+                checkSleepLogo.Visible = false;
+                checkShutdownLogo.Visible = false;
+
+                labelBacklightKeyboard.Visible = false;
             }
 
             //checkAutoToggleClamshellMode.Visible = clamshellControl.IsExternalDisplayConnected();
