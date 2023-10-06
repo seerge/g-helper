@@ -235,7 +235,7 @@
     <value>Pil tasarrufu için 60Hz kullanılır ve şarja takıldığında eski haline getirir</value>
   </data>
   <data name="Awake" xml:space="preserve">
-    <value>Uyanık</value>
+    <value>Uyanırken</value>
   </data>
   <data name="BacklightTimeout" xml:space="preserve">
     <value>Pildeyken klavye ışığının kapanma süresi</value>
@@ -396,7 +396,7 @@ Yine de devam etmek istiyor musunuz?</value>
     <value>Yüksek</value>
   </data>
   <data name="KeyBindings" xml:space="preserve">
-    <value>Tuş Bağlantıları</value>
+    <value>Tuş Atamaları</value>
   </data>
   <data name="Keyboard" xml:space="preserve">
     <value>Klavye</value>
@@ -432,7 +432,7 @@ Yine de devam etmek istiyor musunuz?</value>
     <value>Ses Görselleştirici</value>
   </data>
   <data name="MatrixBanner" xml:space="preserve">
-    <value>Matrix Banner</value>
+    <value>Binary Banner</value>
   </data>
   <data name="MatrixBright" xml:space="preserve">
     <value>Parlak</value>
@@ -567,10 +567,10 @@ Yine de devam etmek istiyor musunuz?</value>
     <value>Screenpad Parlaklığını Azalt</value>
   </data>
   <data name="ScreenPadUp" xml:space="preserve">
-    <value>Screenpad Parlaklığını Arttır</value>
+    <value>Screenpad Parlaklığını Artır</value>
   </data>
   <data name="Shutdown" xml:space="preserve">
-    <value>Kapalı</value>
+    <value>Kapatma</value>
   </data>
   <data name="Silent" xml:space="preserve">
     <value>Sessiz</value>
