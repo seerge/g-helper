@@ -235,7 +235,7 @@
     <value>Pil tasarrufu için 60Hz kullanılır ve şarja takıldığında eski haline getirir</value>
   </data>
   <data name="Awake" xml:space="preserve">
-    <value>Uyanık</value>
+    <value>Uyanırken</value>
   </data>
   <data name="BacklightTimeout" xml:space="preserve">
     <value>Pildeyken klavye ışığının kapanma süresi</value>
@@ -253,7 +253,7 @@
     <value>Pil Sağlığı</value>
   </data>
   <data name="BatteryLimitFull" xml:space="preserve">
-    <value>One time charge to 100%</value>
+    <value>Bir seferlik %100 şarj etme</value>
   </data>
   <data name="BiosAndDriverUpdates" xml:space="preserve">
     <value>BIOS ve Sürücü Güncellemeleri</value>
@@ -298,7 +298,7 @@
     <value>Ekran overdrive özelliğini devre dışı bırak</value>
   </data>
   <data name="Discharging" xml:space="preserve">
-    <value>Pil boşalıyor</value>
+    <value>Şarj azalıyor</value>
   </data>
   <data name="DownloadUpdate" xml:space="preserve">
     <value>İndir</value>
@@ -396,7 +396,7 @@ Yine de devam etmek istiyor musunuz?</value>
     <value>Yüksek</value>
   </data>
   <data name="KeyBindings" xml:space="preserve">
-    <value>Tuş Bağlantıları</value>
+    <value>Tuş Atamaları</value>
   </data>
   <data name="Keyboard" xml:space="preserve">
     <value>Klavye</value>
@@ -432,7 +432,7 @@ Yine de devam etmek istiyor musunuz?</value>
     <value>Ses Görselleştirici</value>
   </data>
   <data name="MatrixBanner" xml:space="preserve">
-    <value>Matrix Banner</value>
+    <value>Binary Banner</value>
   </data>
   <data name="MatrixBright" xml:space="preserve">
     <value>Parlak</value>
@@ -567,10 +567,10 @@ Yine de devam etmek istiyor musunuz?</value>
     <value>Screenpad Parlaklığını Azalt</value>
   </data>
   <data name="ScreenPadUp" xml:space="preserve">
-    <value>Screenpad Parlaklığını Arttır</value>
+    <value>Screenpad Parlaklığını Artır</value>
   </data>
   <data name="Shutdown" xml:space="preserve">
-    <value>Kapalı</value>
+    <value>Kapatma</value>
   </data>
   <data name="Silent" xml:space="preserve">
     <value>Sessiz</value>
@@ -603,7 +603,7 @@ Yine de devam etmek istiyor musunuz?</value>
     <value>Hizmetler Durduruluyor</value>
   </data>
   <data name="ToggleAura" xml:space="preserve">
-    <value>Aura'yı Değiştir</value>
+    <value>Aura'yı Kullan</value>
   </data>
   <data name="ToggleClamshellMode" xml:space="preserve">
     <value>Otomatik Clamshell Modunu Aç</value>
@@ -648,7 +648,7 @@ Yine de devam etmek istiyor musunuz?</value>
     <value>Sesi Kapat</value>
   </data>
   <data name="VolumeUp" xml:space="preserve">
-    <value>Sesi Arttır</value>
+    <value>Sesi Artır</value>
   </data>
   <data name="WindowTop" xml:space="preserve">
     <value>Uygulama penceresini her zaman en üstte tut</value>
