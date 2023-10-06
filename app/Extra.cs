@@ -292,6 +292,10 @@ namespace GHelper
                 checkSleepLogo.Visible = false;
                 checkShutdownLogo.Visible = false;
 
+            }
+
+            if (!AppConfig.IsStrix() && !AppConfig.IsZ13())
+            {
                 labelBacklightKeyboard.Visible = false;
             }
 
