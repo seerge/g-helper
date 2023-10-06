@@ -211,7 +211,7 @@ namespace GHelper
                 return _modes;
             }
 
-            if (AppConfig.IsStrix())
+            if (AppConfig.IsStrix() && !AppConfig.IsStrixLimitedRGB())
             {
                 return _modesStrix;
             }

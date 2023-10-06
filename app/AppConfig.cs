@@ -352,6 +352,11 @@ public static class AppConfig
         return ContainsModel("Strix") || ContainsModel("Scar");
     }
 
+    public static bool IsStrixLimitedRGB()
+    {
+        return ContainsModel("G614JV") || ContainsModel("G614JZ");
+    }
+
     public static bool IsZ13()
     {
         return ContainsModel("Z13");
