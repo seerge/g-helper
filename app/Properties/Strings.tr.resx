@@ -253,7 +253,7 @@
     <value>Pil Sağlığı</value>
   </data>
   <data name="BatteryLimitFull" xml:space="preserve">
-    <value>One time charge to 100%</value>
+    <value>Bir seferlik %100 şarj etme</value>
   </data>
   <data name="BiosAndDriverUpdates" xml:space="preserve">
     <value>BIOS ve Sürücü Güncellemeleri</value>
@@ -298,7 +298,7 @@
     <value>Ekran overdrive özelliğini devre dışı bırak</value>
   </data>
   <data name="Discharging" xml:space="preserve">
-    <value>Pil boşalıyor</value>
+    <value>Şarj azalıyor</value>
   </data>
   <data name="DownloadUpdate" xml:space="preserve">
     <value>İndir</value>
@@ -603,7 +603,7 @@ Yine de devam etmek istiyor musunuz?</value>
     <value>Hizmetler Durduruluyor</value>
   </data>
   <data name="ToggleAura" xml:space="preserve">
-    <value>Aura'yı Değiştir</value>
+    <value>Aura'yı Kullan</value>
   </data>
   <data name="ToggleClamshellMode" xml:space="preserve">
     <value>Otomatik Clamshell Modunu Aç</value>
@@ -648,7 +648,7 @@ Yine de devam etmek istiyor musunuz?</value>
     <value>Sesi Kapat</value>
   </data>
   <data name="VolumeUp" xml:space="preserve">
-    <value>Sesi Arttır</value>
+    <value>Sesi Artır</value>
   </data>
   <data name="WindowTop" xml:space="preserve">
     <value>Uygulama penceresini her zaman en üstte tut</value>
