@@ -66,6 +66,15 @@
             return new LightingZone[] { LightingZone.Logo };
         }
 
+        public override bool IsLightingModeSupported(LightingMode lightingMode)
+        {
+            return lightingMode == LightingMode.Static
+                || lightingMode == LightingMode.Breathing
+                || lightingMode == LightingMode.ColorCycle
+                || lightingMode == LightingMode.BatteryState
+                || lightingMode == LightingMode.React;
+        }
+
         public override bool HasAutoPowerOff()
         {
             return true;
