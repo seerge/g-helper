@@ -671,7 +671,8 @@ namespace GHelper
 
         private void VisualizeMouseSettings()
         {
-            comboProfile.SelectedIndex = mouse.Profile;
+            if (mouse.Profile < comboProfile.Items.Count)
+                comboProfile.SelectedIndex = mouse.Profile;
 
             if (mouse.HasRGB())
             {
