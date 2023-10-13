@@ -118,539 +118,539 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Acceleration" xml:space="preserve">
-    <value>Greitėjimas</value>
+    <value>Akselerasi</value>
   </data>
   <data name="ACPIError" xml:space="preserve">
-    <value>Nepavyko prisijungti prie ASUS ACPI. Programėlė be jo negali veikti. Pabandykite įdiegti Asus System Control Interface</value>
+    <value>Tidak dapat terhubung ke ASUS ACPI. tanpanya aplikasi tidak dapat berfungsi. Cobalah untuk menginstal Asus System Control Interface.</value>
   </data>
   <data name="AlertDGPU" xml:space="preserve">
-    <value>Panašu, kad jūsų GPU yra intensyviai naudojamas. Išjungti jį?</value>
+    <value>Tampaknya GPU sedang digunakan intensif, nonaktifkan?</value>
   </data>
   <data name="AlertDGPUTitle" xml:space="preserve">
-    <value>Ekonomiškas režimas</value>
+    <value>Mode Eco</value>
   </data>
   <data name="AlertUltimateOff" xml:space="preserve">
-    <value>Maksimalaus režimo išjungimas reikalauja paleidimo iš naujo</value>
+    <value>Mematikan Mode Ultimate memerlukan restart.</value>
   </data>
   <data name="AlertUltimateOn" xml:space="preserve">
-    <value>Maksimalus režimas reikalauja paleidimo iš naujo</value>
+    <value>Ultimate Mode memerlukan restart</value>
   </data>
   <data name="AlertUltimateTitle" xml:space="preserve">
-    <value>Paleisti iš naujo dabar?</value>
+    <value>Restart sekarang?</value>
   </data>
   <data name="AnimationSpeed" xml:space="preserve">
-    <value>Animacijos greitis</value>
+    <value>Kecepatan Animasi</value>
   </data>
   <data name="AnimeMatrix" xml:space="preserve">
-    <value>Anime matrica</value>
+    <value>Anime Matrix</value>
   </data>
   <data name="AppAlreadyRunning" xml:space="preserve">
-    <value>Programėlė jau paleista</value>
+    <value>Aplikasi sudah berjalan</value>
   </data>
   <data name="AppAlreadyRunningText" xml:space="preserve">
-    <value>G-Helper jau paleistas. Patikrinkite, ar sistemos juostelėje nėra piktogramos.</value>
+    <value>G-Helper sudah berjalan. Periksa system tray untuk menemukan ikonnya.</value>
   </data>
   <data name="Apply" xml:space="preserve">
-    <value>Taikyti</value>
+    <value>Terapkan</value>
   </data>
   <data name="ApplyFanCurve" xml:space="preserve">
-    <value>Taikyti tinkintą aušintuvo kreivę</value>
+    <value>Terapkan Custom Fan Curve</value>
   </data>
   <data name="ApplyPowerLimits" xml:space="preserve">
-    <value>Taikyti galios ribas</value>
+    <value>Terapkan Batas Daya</value>
   </data>
   <data name="ApplyWindowsPowerPlan" xml:space="preserve">
-    <value>Automatiškai derinti Windows energijos režimus</value>
+    <value>Otomatis sesuaikan Mode Daya Windows</value>
   </data>
   <data name="AsusServicesRunning" xml:space="preserve">
-    <value>Veikiančios Asus tarnybos</value>
+    <value>Layanan Asus Berjalan</value>
   </data>
   <data name="AuraBatteryState" xml:space="preserve">
-    <value>Būsena</value>
+    <value>Status Baterai</value>
   </data>
   <data name="AuraBreathe" xml:space="preserve">
-    <value>Kvėpavimas</value>
+    <value>Nafas</value>
   </data>
   <data name="AuraClockwise" xml:space="preserve">
-    <value>Pagal laikrodžio rodyklę</value>
+    <value>Clockwise</value>
   </data>
   <data name="AuraColorCycle" xml:space="preserve">
-    <value>Spalvų ciklas</value>
+    <value>Siklus Warna</value>
   </data>
   <data name="AuraComet" xml:space="preserve">
-    <value>Comet</value>
+    <value>Komet</value>
   </data>
   <data name="AuraCounterClockwise" xml:space="preserve">
-    <value>Prieš laikrodžio rodyklę</value>
+    <value>Counterclockwise</value>
   </data>
   <data name="AuraFast" xml:space="preserve">
-    <value>Greitas</value>
+    <value>Cepat</value>
   </data>
   <data name="AuraLightingMode" xml:space="preserve">
-    <value>Apšvietimo režimas</value>
+    <value>Lighting Mode</value>
   </data>
   <data name="AuraNormal" xml:space="preserve">
-    <value>Normalus</value>
+    <value>Normal</value>
   </data>
   <data name="AuraRainbow" xml:space="preserve">
-    <value>Vaivorykštė</value>
+    <value>Pelangi</value>
   </data>
   <data name="AuraRandomColor" xml:space="preserve">
-    <value>Atsitiktinė</value>
+    <value>Acak</value>
   </data>
   <data name="AuraReact" xml:space="preserve">
-    <value>React</value>
+    <value>Reaksi</value>
   </data>
   <data name="AuraSlow" xml:space="preserve">
-    <value>Lėtas</value>
+    <value>Pelan</value>
   </data>
   <data name="AuraStatic" xml:space="preserve">
-    <value>Statinis</value>
+    <value>Statis</value>
   </data>
   <data name="AuraStrobe" xml:space="preserve">
-    <value>Blyksniai</value>
+    <value>Berkedip</value>
   </data>
   <data name="AuraZoneAll" xml:space="preserve">
-    <value>Visi</value>
+    <value>Semua</value>
   </data>
   <data name="AuraZoneDock" xml:space="preserve">
-    <value>Jungčių stotelė</value>
+    <value>Dok</value>
   </data>
   <data name="AuraZoneLogo" xml:space="preserve">
-    <value>Logotipas</value>
+    <value>Logo</value>
   </data>
   <data name="AuraZoneScroll" xml:space="preserve">
-    <value>Ratukas</value>
+    <value>Scrollwheel</value>
   </data>
   <data name="AuraZoneUnderglow" xml:space="preserve">
-    <value>Apatinis apšvietimas</value>
+    <value>Underglow</value>
   </data>
   <data name="AutoApply" xml:space="preserve">
-    <value>Taikyti automatiškai</value>
+    <value>Terapkan Secara Otomatis</value>
   </data>
   <data name="AutoMode" xml:space="preserve">
-    <value>Automatinis</value>
+    <value>Otomatis</value>
   </data>
   <data name="AutoRefreshTooltip" xml:space="preserve">
-    <value>Nustato 60Hz, kad taupytų energiją, ir atgal, kai įjungtas į lizdą</value>
+    <value>Atur ke 60Hz untuk menghemat baterai, dan kembalikan saat mengisi daya</value>
   </data>
   <data name="Awake" xml:space="preserve">
-    <value>Pabudęs</value>
+    <value>Bangun</value>
   </data>
   <data name="BacklightTimeout" xml:space="preserve">
-    <value>Laiko riba su lizdu / akumuliatoriumi (0 – ĮJUNGTA)</value>
+    <value>Timeout plugged / on battery (0 - Hidup)</value>
   </data>
   <data name="Balanced" xml:space="preserve">
-    <value>Balansuotas</value>
+    <value>Seimbang</value>
   </data>
   <data name="BatteryCharge" xml:space="preserve">
-    <value>Įkrova</value>
+    <value>Baterai</value>
   </data>
   <data name="BatteryChargeLimit" xml:space="preserve">
-    <value>Įkrovos riba</value>
+    <value>Batas Pengisian Baterai</value>
   </data>
   <data name="BatteryHealth" xml:space="preserve">
-    <value>Sveikata</value>
+    <value>Kesehatan Baterai</value>
   </data>
   <data name="BatteryLimitFull" xml:space="preserve">
-    <value>Vienkartinė įkrova iki 100%</value>
+    <value>Isi daya sekali hingga mencapai 100%</value>
   </data>
   <data name="BiosAndDriverUpdates" xml:space="preserve">
-    <value>BIOS ir tvarkyklių naujinimai</value>
+    <value>Pembaruan BIOS dan Driver</value>
   </data>
   <data name="Boot" xml:space="preserve">
-    <value>Paleidimas</value>
+    <value>Boot</value>
   </data>
   <data name="BootSound" xml:space="preserve">
-    <value>Paleidimo garsas</value>
+    <value>Suara Boot</value>
   </data>
   <data name="Brightness" xml:space="preserve">
-    <value>Ryškumas</value>
+    <value>Kecerahan</value>
   </data>
   <data name="BrightnessDown" xml:space="preserve">
-    <value>Ryškumo mažinimas</value>
+    <value>Kurangi Kecerahan</value>
   </data>
   <data name="BrightnessUp" xml:space="preserve">
-    <value>Ryškumo didinimas</value>
+    <value>Tingkatkan Kecerahan</value>
   </data>
   <data name="Calibrate" xml:space="preserve">
-    <value>Kalibruoti</value>
+    <value>Kalibrasi</value>
   </data>
   <data name="Charging" xml:space="preserve">
-    <value>Įkrovimas</value>
+    <value>Mengisi Daya</value>
   </data>
   <data name="Color" xml:space="preserve">
-    <value>Spalva</value>
+    <value>Warna</value>
   </data>
   <data name="CPUBoost" xml:space="preserve">
-    <value>CPU spartinimas</value>
+    <value>CPU Boost</value>
   </data>
   <data name="Custom" xml:space="preserve">
-    <value>Tinkintas</value>
+    <value>Kustom</value>
   </data>
   <data name="Deceleration" xml:space="preserve">
-    <value>Lėtėjimas</value>
+    <value>Perlambatan</value>
   </data>
   <data name="Default" xml:space="preserve">
-    <value>Numatytas</value>
+    <value>Standar</value>
   </data>
   <data name="DisableOverdrive" xml:space="preserve">
-    <value>Išjungti ekrano pikselių spartinimą</value>
+    <value>Nonaktifkan screen overdrive</value>
   </data>
   <data name="Discharging" xml:space="preserve">
-    <value>Iškrovimas</value>
+    <value>Discharging</value>
   </data>
   <data name="DownloadUpdate" xml:space="preserve">
-    <value>Atsisiųsti</value>
+    <value>Unduh</value>
   </data>
   <data name="DriverAndSoftware" xml:space="preserve">
-    <value>Tvarkyklės ir programinė įranga</value>
+    <value>Driver dan Software</value>
   </data>
   <data name="EcoGPUTooltip" xml:space="preserve">
-    <value>Išjungia dGPU, kad taupytų energiją</value>
+    <value>Menonaktikan dGPU untuk menghemat baterai</value>
   </data>
   <data name="EcoMode" xml:space="preserve">
-    <value>Ekonomiškas</value>
+    <value>Eco</value>
   </data>
   <data name="EnableOptimusText" xml:space="preserve">
-    <value>Jei ekrano režimas NVIDIA valdymo skyde yra nenustatytas į Optimus, kai dGPU yra išjungtas perjungus į ekonominį režimą, gali kilti problemų su ryškumo valdymu iki kito paleidimo iš naujo. 
+    <value>Menonaktikan dGPU dengan masuk ke mode Eco saat Mode Tampilan di Panel Kontrol NVIDIA tidak diatur ke Optimus mungkin dapat menyebabkan masalah dengan kontrol kecerahan hingga mulai ulang berikutnya. 
 
-Vis tiek norite tęsti?</value>
+Apakah Anda masih ingin melanjutkan?</value>
   </data>
   <data name="EnableOptimusTitle" xml:space="preserve">
-    <value>NVIDIA ekrano režimas nenustatytas į Optimus</value>
+    <value>Mode Tampilan NVIDIA tidak diatur ke Optimus</value>
   </data>
   <data name="EnergySettings" xml:space="preserve">
-    <value>Energijos nustatymai</value>
+    <value>Pengaturan Energi</value>
   </data>
   <data name="Extra" xml:space="preserve">
-    <value>Išplėstiniai</value>
+    <value>Ekstra</value>
   </data>
   <data name="ExtraSettings" xml:space="preserve">
-    <value>Išplėstiniai nustatymai</value>
+    <value>Pengaturan Ekstra</value>
   </data>
   <data name="FactoryDefaults" xml:space="preserve">
-    <value>Numatytieji</value>
+    <value>Setelan Pabrik</value>
   </data>
   <data name="FanCurves" xml:space="preserve">
-    <value>Aušintuvų kreivės</value>
+    <value>Fan Curves</value>
   </data>
   <data name="FanProfileCPU" xml:space="preserve">
-    <value>CPU aušintuvo profilis</value>
+    <value>Profil Kipas CPU</value>
   </data>
   <data name="FanProfileGPU" xml:space="preserve">
-    <value>GPU aušintuvo profilis</value>
+    <value>Profil Kipas GPU</value>
   </data>
   <data name="FanProfileMid" xml:space="preserve">
-    <value>Vidurinio aušintuvo profilis</value>
+    <value>Mid Fan Profile</value>
   </data>
   <data name="FanProfiles" xml:space="preserve">
-    <value>Aušintuvų profiliai</value>
+    <value>Profil Kipas</value>
   </data>
   <data name="FansAndPower" xml:space="preserve">
-    <value>Aušintuvai ir galia</value>
+    <value>Kipas dan Daya</value>
   </data>
   <data name="FanSpeed" xml:space="preserve">
-    <value>Aušintuvas</value>
+    <value>Kipas</value>
   </data>
   <data name="FansPower" xml:space="preserve">
-    <value>Aušintuvai + galia</value>
+    <value>Kipas + Daya</value>
   </data>
   <data name="FnLock" xml:space="preserve">
-    <value>Apdoroti Fn+F sparčiuosius klavišus be Fn</value>
+    <value>Proses tombol pintas Fn+F tanpa Fn</value>
   </data>
   <data name="GPUBoost" xml:space="preserve">
-    <value>Dinaminis spartinimas</value>
+    <value>Dynamic Boost</value>
   </data>
   <data name="GPUChanging" xml:space="preserve">
-    <value>Keičiamas</value>
+    <value>Mengubah</value>
   </data>
   <data name="GPUCoreClockOffset" xml:space="preserve">
-    <value>Branduolių taktų poslinkis</value>
+    <value>Core Clock Offset</value>
   </data>
   <data name="GPUMemoryClockOffset" xml:space="preserve">
-    <value>Atminties taktų poslinkis</value>
+    <value>Memory Clock Offset</value>
   </data>
   <data name="GPUMode" xml:space="preserve">
-    <value>GPU režimas</value>
+    <value>Mode GPU</value>
   </data>
   <data name="GPUModeEco" xml:space="preserve">
-    <value>Tik iGPU</value>
+    <value>Hanya iGPU</value>
   </data>
   <data name="GPUModeStandard" xml:space="preserve">
     <value>iGPU + dGPU</value>
   </data>
   <data name="GPUModeUltimate" xml:space="preserve">
-    <value>Tik dGPU</value>
+    <value>dGPU eksklusif</value>
   </data>
   <data name="GPUSettings" xml:space="preserve">
-    <value>GPU nustatymai</value>
+    <value>Pengaturan GPU</value>
   </data>
   <data name="GPUTempTarget" xml:space="preserve">
-    <value>Temperatūros tikslas</value>
+    <value>Target Suhu</value>
   </data>
   <data name="HibernateAfter" xml:space="preserve">
-    <value>Minutės iki miego su akumuliatoriumi (0 – IŠJUNGTA)</value>
+    <value>Menit hingga Hibernasi dalam mode tidur saat menggunakan baterai (0 - Mati)</value>
   </data>
   <data name="High" xml:space="preserve">
-    <value>Aukštas</value>
+    <value>Tinggi</value>
   </data>
   <data name="KeyBindings" xml:space="preserve">
-    <value>Klavišų priskyrimas</value>
+    <value>Key Bindings</value>
   </data>
   <data name="Keyboard" xml:space="preserve">
-    <value>Klaviatūra</value>
+    <value>Keyboard</value>
   </data>
   <data name="KillGpuApps" xml:space="preserve">
-    <value>Sustabdyti visas GPU naudojančias programėles, kai perjungiama į ekonomišką režimą</value>
+    <value>Hentikan semua aplikasi yang menggunakan GPU saat beralih ke mode Eco</value>
   </data>
   <data name="LaptopBacklight" xml:space="preserve">
-    <value>Apšvietimas</value>
+    <value>Laptop Backlight</value>
   </data>
   <data name="LaptopKeyboard" xml:space="preserve">
-    <value>Klaviatūra</value>
+    <value>Laptop Keyboard</value>
   </data>
   <data name="LaptopScreen" xml:space="preserve">
-    <value>Ekranas</value>
+    <value>Layar Laptop</value>
   </data>
   <data name="Lid" xml:space="preserve">
-    <value>Dangtis</value>
+    <value>Lid</value>
   </data>
   <data name="Lightbar" xml:space="preserve">
-    <value>Šviesos juosta</value>
+    <value>Lightbar</value>
   </data>
   <data name="Lighting" xml:space="preserve">
-    <value>Apšvietimas</value>
+    <value>Lighting</value>
   </data>
   <data name="Logo" xml:space="preserve">
-    <value>Logotipas</value>
+    <value>Logo</value>
   </data>
   <data name="Low" xml:space="preserve">
-    <value>Žemas</value>
+    <value>Rendah</value>
   </data>
   <data name="MatrixAudio" xml:space="preserve">
-    <value>Garso vizualizatorius</value>
+    <value>Visualisasi Audio</value>
   </data>
   <data name="MatrixBanner" xml:space="preserve">
-    <value>Dvejetainė vėliava</value>
+    <value>Binary Banner</value>
   </data>
   <data name="MatrixBright" xml:space="preserve">
-    <value>Šviesi</value>
+    <value>Terang</value>
   </data>
   <data name="MatrixClock" xml:space="preserve">
-    <value>Laikrodis</value>
+    <value>Jam</value>
   </data>
   <data name="MatrixDim" xml:space="preserve">
-    <value>Temdymas</value>
+    <value>Redup</value>
   </data>
   <data name="MatrixLogo" xml:space="preserve">
-    <value>Rog logotipas</value>
+    <value>Logo Rog</value>
   </data>
   <data name="MatrixMedium" xml:space="preserve">
-    <value>Vidutinis</value>
+    <value>Sedang</value>
   </data>
   <data name="MatrixOff" xml:space="preserve">
-    <value>Išjungta</value>
+    <value>Mati</value>
   </data>
   <data name="MatrixPicture" xml:space="preserve">
-    <value>Paveikslėlis</value>
+    <value>Gambar</value>
   </data>
   <data name="MaxRefreshTooltip" xml:space="preserve">
-    <value>Maksimalus kadrų dažnis už mažesnę delsą</value>
+    <value>Maks refresh rate untuk mengurangi latensi</value>
   </data>
   <data name="MinRefreshTooltip" xml:space="preserve">
-    <value>60Hz kadrų dažnis, kad taupytumėte energiją</value>
+    <value>60Hz refresh rate untuk menghemat baterai</value>
   </data>
   <data name="Minute" xml:space="preserve">
-    <value>min.</value>
+    <value>Menit</value>
   </data>
   <data name="Minutes" xml:space="preserve">
-    <value>min.</value>
+    <value>Menit</value>
   </data>
   <data name="MouseAngleSnapping" xml:space="preserve">
     <value>Angle Snapping</value>
   </data>
   <data name="MouseAutoPowerOff" xml:space="preserve">
-    <value>Automatiškai išjungti po</value>
+    <value>Mati Otomatis Setelah</value>
   </data>
   <data name="MouseButtonResponse" xml:space="preserve">
-    <value>Klavišo atsakas</value>
+    <value>Respon Tombol</value>
   </data>
   <data name="MouseLiftOffDistance" xml:space="preserve">
-    <value>Pakilimo atstumas</value>
+    <value>Jarak Angkat</value>
   </data>
   <data name="MouseLowBatteryWarning" xml:space="preserve">
-    <value>Senkančio akumuliatoriaus įspėjimas</value>
+    <value>Peringatan Baterai Rendah pada</value>
   </data>
   <data name="MousePerformance" xml:space="preserve">
-    <value>Našumas</value>
+    <value>Performance</value>
   </data>
   <data name="MouseSynchronize" xml:space="preserve">
-    <value>Sinchronizuoti su pele</value>
+    <value>Sinkronkan dengan mouse</value>
   </data>
   <data name="Multizone" xml:space="preserve">
-    <value>Daugiazonis</value>
+    <value>Multizona</value>
   </data>
   <data name="MuteMic" xml:space="preserve">
-    <value>Mikrofono nutildymas</value>
+    <value>Bisukan Mic</value>
   </data>
   <data name="Never" xml:space="preserve">
-    <value>Niekada</value>
+    <value>Jangan Pernah</value>
   </data>
   <data name="NewUpdates" xml:space="preserve">
-    <value>Naujinimai</value>
+    <value>Pembaruan Terbaru</value>
   </data>
   <data name="NoNewUpdates" xml:space="preserve">
-    <value>Nėra naujinimų</value>
+    <value>Tidak ada pembaruan</value>
   </data>
   <data name="NotConnected" xml:space="preserve">
-    <value>Neprijungta</value>
+    <value>Tidak Tersambung</value>
   </data>
   <data name="OpenGHelper" xml:space="preserve">
-    <value>Atidaryti G-Helper langą</value>
+    <value>Buka Jendela G-Helper</value>
   </data>
   <data name="Optimized" xml:space="preserve">
-    <value>Optimizuotas</value>
+    <value>Dioptimalkan</value>
   </data>
   <data name="OptimizedGPUTooltip" xml:space="preserve">
-    <value>Perjungti į ekonomišką, kai naudojamas akumuliatorius, ir į standartinį, kai įjungtas į lizdą</value>
+    <value>Beralih ke Mode Eco saat menggunakan baterai dan ke Mode Standar saat mengisi daya.</value>
   </data>
   <data name="OptimizedUSBC" xml:space="preserve">
-    <value>Neįjungti GPU, kai naudojamas USB-C įkroviklis optimizuotame režime</value>
+    <value>Tetap matikan GPU pada pengisi daya USB-C dalam mode Dioptimalkan</value>
   </data>
   <data name="Other" xml:space="preserve">
-    <value>Kita</value>
+    <value>Lainnya</value>
   </data>
   <data name="Overdrive" xml:space="preserve">
-    <value>Pikselių spartinimas</value>
+    <value>Overdrive</value>
   </data>
   <data name="PerformanceMode" xml:space="preserve">
-    <value>Režimas</value>
+    <value>Mode</value>
   </data>
   <data name="Peripherals" xml:space="preserve">
-    <value>Išoriniai įrenginiai</value>
+    <value>Periferal</value>
   </data>
   <data name="PictureGif" xml:space="preserve">
-    <value>Paveikslėlis / GIF</value>
+    <value>Gambar / Gif</value>
   </data>
   <data name="PlayPause" xml:space="preserve">
-    <value>Paleisti / Pristabdyti</value>
+    <value>Putar / Jeda</value>
   </data>
   <data name="PollingRate" xml:space="preserve">
-    <value>Iškvietų dažnis</value>
+    <value>Polling Rate</value>
   </data>
   <data name="PowerLimits" xml:space="preserve">
-    <value>Galios ribos</value>
+    <value>Batas Daya</value>
   </data>
   <data name="PPTExperimental" xml:space="preserve">
-    <value>Galios ribos yra eksperimentinė funkcija. Naudokitės atsargiai!</value>
+    <value>Batas Daya adalah fitur eksperimental. Gunakan dengan hati-hati dan atas risiko Anda sendiri!</value>
   </data>
   <data name="PrintScreen" xml:space="preserve">
-    <value>Ekrano kopija</value>
+    <value>PrintScreen</value>
   </data>
   <data name="Profile" xml:space="preserve">
-    <value>Profilis</value>
+    <value>Profil</value>
   </data>
   <data name="Quit" xml:space="preserve">
-    <value>Išeiti</value>
+    <value>Keluar</value>
   </data>
   <data name="RestartGPU" xml:space="preserve">
-    <value>Kažkas naudoja dGPU ir neleidžia įjungti ekonomiško režimo. Norite leisti G-Helper bandyti iš naujo paleisti dGPU įrenginių tvarkytuvėje? (Tęskite savo rizika)</value>
+    <value>Ada yang menggunakan dGPU dan mencegah mode Eco. Biarkan G-Helper mencoba memulai ulang dGPU di pengelola perangkat? (Silakan lanjutkan dengan risiko Anda sendiri)</value>
   </data>
   <data name="RPM" xml:space="preserve">
     <value>RPM</value>
   </data>
   <data name="RunOnStartup" xml:space="preserve">
-    <value>Paleisti įjungus sistemą</value>
+    <value>Jalankan di Startup</value>
   </data>
   <data name="ScreenPadDown" xml:space="preserve">
-    <value>Ekrano skydelio ryškumo mažinimas</value>
+    <value>Kurangi Kecerahan Screenpad</value>
   </data>
   <data name="ScreenPadUp" xml:space="preserve">
-    <value>Ekrano skydelio ryškumo didinimas</value>
+    <value>Tingkatkan Kecerahan Screenpad</value>
   </data>
   <data name="Shutdown" xml:space="preserve">
-    <value>Išjungimas</value>
+    <value>Matikan</value>
   </data>
   <data name="Silent" xml:space="preserve">
-    <value>Tylus</value>
+    <value>Diam</value>
   </data>
   <data name="Sleep" xml:space="preserve">
-    <value>Miegas</value>
+    <value>Tidur</value>
   </data>
   <data name="StandardGPUTooltip" xml:space="preserve">
-    <value>Įjungia dGPU įprastam naudojimui</value>
+    <value>Mengaktifkan dGPU untuk penggunaan standar</value>
   </data>
   <data name="StandardMode" xml:space="preserve">
-    <value>Įprastas</value>
+    <value>Standar</value>
   </data>
   <data name="Start" xml:space="preserve">
-    <value>Paleisti</value>
+    <value>Mulai</value>
   </data>
   <data name="StartingServices" xml:space="preserve">
-    <value>Paleidžiamos tarnybos</value>
+    <value>Memulai Services</value>
   </data>
   <data name="StartupError" xml:space="preserve">
-    <value>Paleidimo klaida</value>
+    <value>Startup Error</value>
   </data>
   <data name="Stop" xml:space="preserve">
-    <value>Stabdyti</value>
+    <value>Berhenti</value>
   </data>
   <data name="StopGPUApps" xml:space="preserve">
-    <value>Stabdyti GPU programėles</value>
+    <value>Hentikan Aplikasi GPU</value>
   </data>
   <data name="StoppingServices" xml:space="preserve">
-    <value>Stabdomos tarnybos</value>
+    <value>Menghentikan Services</value>
   </data>
   <data name="ToggleAura" xml:space="preserve">
-    <value>Perjungti Aura</value>
+    <value>Toggle Aura</value>
   </data>
   <data name="ToggleClamshellMode" xml:space="preserve">
-    <value>Automatiškai perjungti Clamshell režimą</value>
+    <value>Auto Toggle Clamshell Mode</value>
   </data>
   <data name="ToggleFnLock" xml:space="preserve">
-    <value>Perjungti Fn-Lock</value>
+    <value>Toggle Fn-Lock</value>
   </data>
   <data name="ToggleMiniled" xml:space="preserve">
-    <value>Perjungti Miniled (jei palaikoma)</value>
+    <value>Toggle Miniled (jika didukung)</value>
   </data>
   <data name="ToggleScreen" xml:space="preserve">
-    <value>Perjungti ekraną</value>
+    <value>Toggle Screen</value>
   </data>
   <data name="Turbo" xml:space="preserve">
     <value>Turbo</value>
   </data>
   <data name="TurnedOff" xml:space="preserve">
-    <value>Išjungta</value>
+    <value>Dimatikan</value>
   </data>
   <data name="TurnOffOnBattery" xml:space="preserve">
-    <value>Išjungti naudojant akumuliatorių</value>
+    <value>Matikan saat menggunakan baterai</value>
   </data>
   <data name="UltimateGPUTooltip" xml:space="preserve">
-    <value>Nukreipia ekraną į dGPU, kad maksimizuotų kadrų dažnį</value>
+    <value>Merutekan layar laptop ke dGPU, memaksimalkan FPS</value>
   </data>
   <data name="UltimateMode" xml:space="preserve">
-    <value>Maksimalus</value>
+    <value>Ultimate</value>
   </data>
   <data name="UndervoltingRisky" xml:space="preserve">
-    <value>Įtampos mažinimas yra eksperimentinė ir pavojinga funkcija. Jei pritaikytos reikšmės yra per mažos jūsų aparatinei įrangai, ji gali tapti nestabili, išsijungti arba pažeisti duomenų vientisumą. Jei norite pabandyti, iš pirmo pradėkite nuo mažų reikšmių, spustelėkite „Taikyti“ ir išbandykite, kas jums tinka.</value>
+    <value>Undervolting adalah fitur eksperimental dan berisiko. Jika nilai yang diterapkan terlalu rendah untuk perangkat keras Anda, ini dapat menjadi tidak stabil, mati mendadak, atau menyebabkan kerusakan data. Jika Anda ingin mencobanya, mulailah dengan nilai kecil terlebih dahulu, klik Terapkan, dan uji apa yang cocok untuk Anda.</value>
   </data>
   <data name="Updates" xml:space="preserve">
-    <value>Naujinimai</value>
+    <value>Pembaruan</value>
   </data>
   <data name="VersionLabel" xml:space="preserve">
-    <value>Versija</value>
+    <value>Versi</value>
   </data>
   <data name="VolumeDown" xml:space="preserve">
-    <value>Garsumo mažinimas</value>
+    <value>Volume Turun</value>
   </data>
   <data name="VolumeMute" xml:space="preserve">
-    <value>Garsumo nutildymas</value>
+    <value>Volume Bisu</value>
   </data>
   <data name="VolumeUp" xml:space="preserve">
-    <value>Garsumo didinimas</value>
+    <value>Volume Naik</value>
   </data>
   <data name="WindowTop" xml:space="preserve">
-    <value>Visada rodyti programėlės langą viršuje</value>
+    <value>Jaga agar jendela aplikasi selalu di atas</value>
   </data>
 </root>

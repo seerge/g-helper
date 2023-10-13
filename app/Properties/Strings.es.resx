@@ -253,7 +253,7 @@
     <value>Salud de la batería</value>
   </data>
   <data name="BatteryLimitFull" xml:space="preserve">
-    <value>One time charge to 100%</value>
+    <value>Cargar una vez al 100%</value>
   </data>
   <data name="BiosAndDriverUpdates" xml:space="preserve">
     <value>Actualizaciones de BIOS y Drivers</value>
