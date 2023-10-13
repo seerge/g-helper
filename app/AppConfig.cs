@@ -328,7 +328,7 @@ public static class AppConfig
     // Devices with bugged bios command to change brightness
     public static bool SwappedBrightness()
     {
-        return ContainsModel("FA506IH") || ContainsModel("FX506LU") || ContainsModel("FX506IC") || ContainsModel("FX506LH");
+        return ContainsModel("FA506IH") || ContainsModel("FA506IC") || ContainsModel("FX506LU") || ContainsModel("FX506IC") || ContainsModel("FX506LH");
     }
 
 
@@ -423,7 +423,7 @@ public static class AppConfig
 
     public static bool IsGPUFixNeeded()
     {
-        return ContainsModel("GA402X") || ContainsModel("GV302") || ContainsModel("GZ301") || ContainsModel("FX506") || ContainsModel("GU603V");
+        return ContainsModel("GA402X") || ContainsModel("GV302") || ContainsModel("GZ301") || ContainsModel("FX506") || ContainsModel("GU603V") ||  ContainsModel("GU603Z");
     }
 
     public static bool IsGPUFix()
