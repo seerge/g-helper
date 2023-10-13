@@ -253,7 +253,7 @@
     <value>Batteriezustand</value>
   </data>
   <data name="BatteryLimitFull" xml:space="preserve">
-    <value>One time charge to 100%</value>
+    <value>Einmalig auf 100% aufladen</value>
   </data>
   <data name="BiosAndDriverUpdates" xml:space="preserve">
     <value>BIOS und Treiber Updates</value>
