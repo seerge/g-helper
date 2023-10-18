@@ -97,7 +97,7 @@ namespace GHelper
 
             gpuControl.InitXGM();
 
-            SetAutoModes();
+            SetAutoModes(init : true);
 
             // Subscribing for system power change events
             SystemEvents.PowerModeChanged += SystemEvents_PowerModeChanged;
@@ -129,7 +129,7 @@ namespace GHelper
         private static void SystemEvents_SessionEnding(object sender, SessionEndingEventArgs e)
         {
             gpuControl.StandardModeFix();
-            BatteryControl.SetBatteryChargeLimit();
+            BatteryControl.AutoBattery();
         }
 
         private static void SystemEvents_SessionSwitch(object sender, SessionSwitchEventArgs e)
@@ -173,7 +173,7 @@ namespace GHelper
 
 
 
-        public static void SetAutoModes(bool powerChanged = false)
+        public static void SetAutoModes(bool powerChanged = false, bool init = false)
         {
 
             if (Math.Abs(DateTimeOffset.Now.ToUnixTimeMilliseconds() - lastAuto) < 3000) return;
@@ -194,7 +194,7 @@ namespace GHelper
                 screenControl.AutoScreen();
             }
 
-            BatteryControl.SetBatteryChargeLimit();
+            BatteryControl.AutoBattery(init);
 
             settingsForm.AutoKeyboard();
             settingsForm.matrixControl.SetMatrix(true);

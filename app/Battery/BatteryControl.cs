@@ -18,6 +18,12 @@
         }
 
 
+        public static void AutoBattery(bool init = false)
+        {
+            if (AppConfig.Is("charge_full") && !init) SetBatteryLimitFull();
+            else SetBatteryChargeLimit();
+        }
+
         public static void SetBatteryChargeLimit(int limit = -1)
         {
 
