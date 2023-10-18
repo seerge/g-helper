@@ -884,8 +884,8 @@ namespace GHelper
         /// <returns>Focus state</returns>
         public bool HasAnyFocus(bool lostFocusCheck = false)
         {
-            return (fansForm != null && fansForm.ContainsFocus) || 
-                   (extraForm != null && extraForm.ContainsFocus) || 
+            return (fansForm != null && fansForm.ContainsFocus) ||
+                   (extraForm != null && extraForm.ContainsFocus) ||
                    (updatesForm != null && updatesForm.ContainsFocus) ||
                    (matrixForm != null && matrixForm.ContainsFocus) ||
                    this.ContainsFocus ||
