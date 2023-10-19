@@ -13,10 +13,14 @@
         {
             AppConfig.Set("charge_full", 1);
             Program.acpi.DeviceSet(AsusACPI.BatteryLimit, 100, "BatteryLimit");
-
             Program.settingsForm.VisualiseBatteryFull();
         }
 
+        public static void UnSetBatteryLimitFull()
+        {
+            AppConfig.Set("charge_full", 0);
+            Program.settingsForm.VisualiseBatteryFull();
+        }
 
         public static void AutoBattery(bool init = false)
         {

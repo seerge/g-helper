@@ -7,6 +7,7 @@ using GHelper.Gpu.AMD;
 using GHelper.Helpers;
 using System.Diagnostics;
 using System.Management;
+using GHelper.Battery;
 
 public static class HardwareControl
 {
@@ -211,6 +212,7 @@ public static class HardwareControl
         if (fullCapacity > 0 && chargeCapacity > 0)
         {
             batteryCapacity = Math.Min(100, ((decimal)chargeCapacity / (decimal)fullCapacity) * 100);
+            if (batteryCapacity > 99) BatteryControl.UnSetBatteryLimitFull();
         }
 
 
