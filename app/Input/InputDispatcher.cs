@@ -346,6 +346,7 @@ namespace GHelper.Input
                 if (e.Key == keyProfile) modeControl.CyclePerformanceMode(true);
             }
 
+
             if (e.Modifier == (ModifierKeys.Control))
             {
                 switch (e.Key)
@@ -606,12 +607,16 @@ namespace GHelper.Input
             switch (EventID)
             {
                 case 16: // FN+F7
-                    //ScreenBrightness.Adjust(-10);
-                    Program.acpi.DeviceSet(AsusACPI.UniversalControl, AsusACPI.Brightness_Down, "Brightness");
+                    if (Control.ModifierKeys == Keys.Shift)
+                        SetScreenpad(-10);
+                    else
+                        Program.acpi.DeviceSet(AsusACPI.UniversalControl, AsusACPI.Brightness_Down, "Brightness");
                     break;
                 case 32: // FN+F8
-                    //ScreenBrightness.Adjust(+10);
-                    Program.acpi.DeviceSet(AsusACPI.UniversalControl, AsusACPI.Brightness_Up, "Brightness");
+                    if (Control.ModifierKeys == Keys.Shift)
+                        SetScreenpad(10);
+                    else
+                        Program.acpi.DeviceSet(AsusACPI.UniversalControl, AsusACPI.Brightness_Up, "Brightness");
                     break;
                 case 107: // FN+F10
                     ToggleTouchpad();
