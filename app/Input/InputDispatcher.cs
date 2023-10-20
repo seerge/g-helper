@@ -627,7 +627,10 @@ namespace GHelper.Input
                     Program.acpi.DeviceSet(AsusACPI.UniversalControl, AsusACPI.KB_Sleep, "Sleep");
                     break;
                 case 106: // Screenpad button on DUO
-                    SetScreenpad(100);
+                    if (Control.ModifierKeys == Keys.Shift)
+                        ToggleScreenpad();
+                    else 
+                        SetScreenpad(100);
                     break;
 
 
@@ -685,6 +688,16 @@ namespace GHelper.Input
             }
 
         }
+
+        public static void ToggleScreenpad()
+        {
+            int toggle = AppConfig.Is("screenpad_toggle") ? 0 : 1;
+
+            Program.acpi.DeviceSet(AsusACPI.ScreenPadToggle, toggle, "ScreenpadToggle");
+            AppConfig.Set("screenpad_toggle", toggle);
+            Program.toast.RunToast($"Screen Pad " + (toggle == 1 ? "On" : "Off"), toggle > 0 ? ToastIcon.BrightnessUp : ToastIcon.BrightnessDown);
+        }
+
 
         public static void SetScreenpad(int delta)
         {
