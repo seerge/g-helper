@@ -35,23 +35,23 @@
             panelMain = new Panel();
             panelButtons = new Panel();
             buttonReset = new UI.RButton();
+            panelRotation = new Panel();
+            comboRotation = new UI.RComboBox();
+            labelRotation = new Label();
             panelScaling = new Panel();
             comboScaling = new UI.RComboBox();
             labelScaling = new Label();
             panelZoom = new Panel();
             labelZoom = new Label();
             labelZoomTitle = new Label();
-            panelRotation = new Panel();
-            comboRotation = new UI.RComboBox();
-            labelRotation = new Label();
             ((System.ComponentModel.ISupportInitialize)pictureMatrix).BeginInit();
             ((System.ComponentModel.ISupportInitialize)trackZoom).BeginInit();
             panelPicture.SuspendLayout();
             panelMain.SuspendLayout();
             panelButtons.SuspendLayout();
+            panelRotation.SuspendLayout();
             panelScaling.SuspendLayout();
             panelZoom.SuspendLayout();
-            panelRotation.SuspendLayout();
             SuspendLayout();
             // 
             // pictureMatrix
@@ -109,6 +109,7 @@
             // 
             // panelMain
             // 
+            panelMain.AutoSize = true;
             panelMain.Controls.Add(panelButtons);
             panelMain.Controls.Add(panelRotation);
             panelMain.Controls.Add(panelScaling);
@@ -117,7 +118,7 @@
             panelMain.Dock = DockStyle.Top;
             panelMain.Location = new Point(20, 20);
             panelMain.Name = "panelMain";
-            panelMain.Size = new Size(834, 924);
+            panelMain.Size = new Size(834, 814);
             panelMain.TabIndex = 5;
             // 
             // panelButtons
@@ -148,6 +149,40 @@
             buttonReset.TextAlign = ContentAlignment.MiddleRight;
             buttonReset.TextImageRelation = TextImageRelation.ImageBeforeText;
             buttonReset.UseVisualStyleBackColor = false;
+            // 
+            // panelRotation
+            // 
+            panelRotation.Controls.Add(comboRotation);
+            panelRotation.Controls.Add(labelRotation);
+            panelRotation.Dock = DockStyle.Top;
+            panelRotation.Location = new Point(0, 642);
+            panelRotation.Name = "panelRotation";
+            panelRotation.Size = new Size(834, 78);
+            panelRotation.TabIndex = 8;
+            // 
+            // comboRotation
+            // 
+            comboRotation.BorderColor = Color.White;
+            comboRotation.ButtonColor = Color.FromArgb(255, 255, 255);
+            comboRotation.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            comboRotation.FormattingEnabled = true;
+            comboRotation.ItemHeight = 32;
+            comboRotation.Items.AddRange(new object[] { "Straight", "Diagonal" });
+            comboRotation.Location = new Point(229, 17);
+            comboRotation.Margin = new Padding(4, 11, 4, 8);
+            comboRotation.Name = "comboRotation";
+            comboRotation.Size = new Size(322, 40);
+            comboRotation.TabIndex = 17;
+            // 
+            // labelRotation
+            // 
+            labelRotation.AutoSize = true;
+            labelRotation.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            labelRotation.Location = new Point(16, 20);
+            labelRotation.Name = "labelRotation";
+            labelRotation.Size = new Size(190, 32);
+            labelRotation.TabIndex = 4;
+            labelRotation.Text = "Image Rotation";
             // 
             // panelScaling
             // 
@@ -216,40 +251,6 @@
             labelZoomTitle.TabIndex = 3;
             labelZoomTitle.Text = "Zoom";
             // 
-            // panelRotation
-            // 
-            panelRotation.Controls.Add(comboRotation);
-            panelRotation.Controls.Add(labelRotation);
-            panelRotation.Dock = DockStyle.Top;
-            panelRotation.Location = new Point(0, 642);
-            panelRotation.Name = "panelRotation";
-            panelRotation.Size = new Size(834, 78);
-            panelRotation.TabIndex = 8;
-            // 
-            // comboRotation
-            // 
-            comboRotation.BorderColor = Color.White;
-            comboRotation.ButtonColor = Color.FromArgb(255, 255, 255);
-            comboRotation.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            comboRotation.FormattingEnabled = true;
-            comboRotation.ItemHeight = 32;
-            comboRotation.Items.AddRange(new object[] { "Straight", "Diagonal" });
-            comboRotation.Location = new Point(229, 17);
-            comboRotation.Margin = new Padding(4, 11, 4, 8);
-            comboRotation.Name = "comboRotation";
-            comboRotation.Size = new Size(322, 40);
-            comboRotation.TabIndex = 17;
-            // 
-            // labelRotation
-            // 
-            labelRotation.AutoSize = true;
-            labelRotation.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            labelRotation.Location = new Point(16, 20);
-            labelRotation.Name = "labelRotation";
-            labelRotation.Size = new Size(190, 32);
-            labelRotation.TabIndex = 4;
-            labelRotation.Text = "Image Rotation";
-            // 
             // Matrix
             // 
             AutoScaleDimensions = new SizeF(192F, 192F);
@@ -271,13 +272,14 @@
             panelMain.ResumeLayout(false);
             panelMain.PerformLayout();
             panelButtons.ResumeLayout(false);
+            panelRotation.ResumeLayout(false);
+            panelRotation.PerformLayout();
             panelScaling.ResumeLayout(false);
             panelScaling.PerformLayout();
             panelZoom.ResumeLayout(false);
             panelZoom.PerformLayout();
-            panelRotation.ResumeLayout(false);
-            panelRotation.PerformLayout();
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion

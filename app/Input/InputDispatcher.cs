@@ -478,7 +478,7 @@ namespace GHelper.Input
 
         static void ToggleTouchpad()
         {
-            KeyboardHook.KeyKeyKeyPress(Keys.ControlKey, Keys.LWin, Keys.F24);
+            KeyboardHook.KeyKeyKeyPress(Keys.LWin, Keys.LControlKey, Keys.F24);
         }
 
         public static void ToggleArrowLock()
