@@ -22,7 +22,7 @@ jobs:
     - name: Publish
       run: |
         dotnet publish app/GHelper.sln --configuration Release --runtime win-x64 -p:PublishSingleFile=true --no-self-contained
-        powershell Compress-Archive app/bin/x64/Release/net7.0-windows/win-x64/publish/* GHelper-${{ github.sha }}.zip
+        powershell Compress-Archive app/bin/x64/Release/net7.0-windows/win-x64/publish/* GHelper.zip
     
     - name: Upload
       if: github.event_name != 'workflow_dispatch'
