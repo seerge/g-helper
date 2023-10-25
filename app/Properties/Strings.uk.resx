@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Acceleration" xml:space="preserve">
-    <value>Acceleration</value>
+    <value>Прискорення</value>
   </data>
   <data name="ACPIError" xml:space="preserve">
     <value>Не вдається під'єднатися до ASUS ACPI. Програма не може працювати без нього. Спробуйте встановити Asus System Control Interface</value>
@@ -253,7 +253,7 @@
     <value>Стан батареї</value>
   </data>
   <data name="BatteryLimitFull" xml:space="preserve">
-    <value>One time charge to 100%</value>
+    <value>Одноразовий заряд до 100%</value>
   </data>
   <data name="BiosAndDriverUpdates" xml:space="preserve">
     <value>Оновлення BIOS та драйверів</value>
@@ -262,7 +262,7 @@
     <value>Старт</value>
   </data>
   <data name="BootSound" xml:space="preserve">
-    <value>Boot Sound</value>
+    <value>Звук завантаження</value>
   </data>
   <data name="Brightness" xml:space="preserve">
     <value>Яскравість</value>
@@ -274,7 +274,7 @@
     <value>Підвищити яскравість</value>
   </data>
   <data name="Calibrate" xml:space="preserve">
-    <value>Calibrate</value>
+    <value>Калібрування</value>
   </data>
   <data name="Charging" xml:space="preserve">
     <value>Зарядка</value>
@@ -289,7 +289,7 @@
     <value>Своє</value>
   </data>
   <data name="Deceleration" xml:space="preserve">
-    <value>Deceleration</value>
+    <value>Уповільнення</value>
   </data>
   <data name="Default" xml:space="preserve">
     <value>За замовчуванням</value>
