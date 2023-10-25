@@ -298,7 +298,7 @@ If you don't want this bindings to work you can add
 
 ### Toggle Performance Mode or Toggle App Window key binding
 
-To change binding for Toggle Performance Modes to ``Ctrl + Shift + KEY``
+To change binding for Toggle Performance Modes forward / backward to ``Ctrl + Shift + KEY`` / ``Ctrl + Shift + Alt + KEY``
 ```
 "keybind_profile": 116,
 ``` 
