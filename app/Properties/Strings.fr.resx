@@ -244,7 +244,7 @@
     <value>Équilibré</value>
   </data>
   <data name="BatteryCharge" xml:space="preserve">
-    <value>Charge</value>
+    <value>Charge de la batterie</value>
   </data>
   <data name="BatteryChargeLimit" xml:space="preserve">
     <value>Limite de charge </value>
@@ -253,7 +253,7 @@
     <value>Santé de la batterie</value>
   </data>
   <data name="BatteryLimitFull" xml:space="preserve">
-    <value>One time charge to 100%</value>
+    <value>Charge unique à 100%</value>
   </data>
   <data name="BiosAndDriverUpdates" xml:space="preserve">
     <value>Mise à jour BIOS et pilotes</value>
@@ -262,7 +262,7 @@
     <value>Au démarrage</value>
   </data>
   <data name="BootSound" xml:space="preserve">
-    <value>Boot Sound</value>
+    <value>Son au démarrage</value>
   </data>
   <data name="Brightness" xml:space="preserve">
     <value>Luminosité</value>
@@ -274,7 +274,7 @@
     <value>Augmenter la luminosité</value>
   </data>
   <data name="Calibrate" xml:space="preserve">
-    <value>Calibrate</value>
+    <value>Calibrer</value>
   </data>
   <data name="Charging" xml:space="preserve">
     <value>Chargement en cours</value>
