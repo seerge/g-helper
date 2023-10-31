@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Acceleration" xml:space="preserve">
-    <value>Acceleration</value>
+    <value>Aceleração</value>
   </data>
   <data name="ACPIError" xml:space="preserve">
     <value>Não foi possível conectar ao ASUS ACPI. O aplicativo não pode funcionar sem isso. Tente instalar Asus System Controle Interface</value>
@@ -151,7 +151,7 @@
     <value>G-Helper já está em execução. Verifique a barra de sistema</value>
   </data>
   <data name="Apply" xml:space="preserve">
-    <value>Apply</value>
+    <value>Aplicar</value>
   </data>
   <data name="ApplyFanCurve" xml:space="preserve">
     <value>Aplicar a curva personalizada</value>
@@ -172,7 +172,7 @@
     <value>Repiração</value>
   </data>
   <data name="AuraClockwise" xml:space="preserve">
-    <value>Clockwise</value>
+    <value>Sentido horário</value>
   </data>
   <data name="AuraColorCycle" xml:space="preserve">
     <value>Ciclo de cores</value>
@@ -181,7 +181,7 @@
     <value>Comet</value>
   </data>
   <data name="AuraCounterClockwise" xml:space="preserve">
-    <value>Counterclockwise</value>
+    <value>Sentido anti-horário</value>
   </data>
   <data name="AuraFast" xml:space="preserve">
     <value>Rápido</value>
@@ -196,7 +196,7 @@
     <value>Arco-íris</value>
   </data>
   <data name="AuraRandomColor" xml:space="preserve">
-    <value>Random</value>
+    <value>Aleatório</value>
   </data>
   <data name="AuraReact" xml:space="preserve">
     <value>React</value>
@@ -211,7 +211,7 @@
     <value>Estroboscópio</value>
   </data>
   <data name="AuraZoneAll" xml:space="preserve">
-    <value>All</value>
+    <value>Tudo</value>
   </data>
   <data name="AuraZoneDock" xml:space="preserve">
     <value>Dock</value>
@@ -226,7 +226,7 @@
     <value>Underglow</value>
   </data>
   <data name="AutoApply" xml:space="preserve">
-    <value>Auto Apply</value>
+    <value>Aplicar automaticamente</value>
   </data>
   <data name="AutoMode" xml:space="preserve">
     <value>Automático</value>
@@ -250,7 +250,7 @@
     <value>Limite de carga</value>
   </data>
   <data name="BatteryHealth" xml:space="preserve">
-    <value>Battery Health</value>
+    <value>Saúde da bateria</value>
   </data>
   <data name="BatteryLimitFull" xml:space="preserve">
     <value>One time charge to 100%</value>
@@ -262,7 +262,7 @@
     <value>Ao ligar</value>
   </data>
   <data name="BootSound" xml:space="preserve">
-    <value>Boot Sound</value>
+    <value>Som de inicialização</value>
   </data>
   <data name="Brightness" xml:space="preserve">
     <value>Nível do brilho</value>
@@ -289,7 +289,7 @@
     <value>Personalizado</value>
   </data>
   <data name="Deceleration" xml:space="preserve">
-    <value>Deceleration</value>
+    <value>Desaceleração</value>
   </data>
   <data name="Default" xml:space="preserve">
     <value>Padrão</value>
@@ -301,7 +301,7 @@
     <value>Descarregando</value>
   </data>
   <data name="DownloadUpdate" xml:space="preserve">
-    <value>Download</value>
+    <value>Baixar</value>
   </data>
   <data name="DriverAndSoftware" xml:space="preserve">
     <value>Drivers and Software</value>
