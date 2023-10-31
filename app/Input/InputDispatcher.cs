@@ -514,7 +514,7 @@ namespace GHelper.Input
 
             Logger.WriteLine("Tablet: " + tabletState + " Touchpad: " + touchpadState);
 
-            if (tabletState && touchpadState || !tabletState && !touchpadState) AsusUSB.TouchpadToggle();
+            if (tabletState && touchpadState || !tabletState && !touchpadState) ToggleTouchpad();
 
         }
 

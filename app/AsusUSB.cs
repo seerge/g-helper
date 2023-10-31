@@ -1,10 +1,7 @@
 ﻿using GHelper.Gpu;
 using GHelper.Helpers;
-using HidLibrary;
-using NAudio.Gui;
-using System.Diagnostics;
-using System.Drawing;
 using System.Text;
+using HidLibrary;
 
 namespace GHelper
 {
@@ -281,16 +278,10 @@ namespace GHelper
                 {
                     input = device;
                     //Logger.WriteLine("HID Device("+ reportID + ")" +  + device.Capabilities.FeatureReportByteLength + "|" + device.Capabilities.InputReportByteLength + device.DevicePath);
+                    if (reportID == INPUT_HID_ID && device.Attributes.ProductId == 0x1a30) return input;
                 }
 
             return input;
-        }
-
-        public static bool TouchpadToggle()
-        {
-            HidDevice? input = GetDevice();
-            if (input != null) return input.WriteFeatureData(new byte[] { INPUT_HID_ID, 0xf4, 0x6b });
-            return false;
         }
 
 
@@ -575,7 +566,7 @@ namespace GHelper
                 SetHeatmap(true);
                 timer.Enabled = true;
                 return;
-            } 
+            }
 
             if (Mode == GPUMODE)
             {
