@@ -1004,7 +1004,7 @@ namespace GHelper
 
             InitPowerPlan();
 
-            if (Program.acpi.IsXGConnected()) AsusUSB.ResetXGM();
+            if (Program.acpi.IsXGConnected()) USB.XGM.Reset();
 
 
             if (gpuVisible)

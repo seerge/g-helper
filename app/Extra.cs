@@ -218,10 +218,10 @@ namespace GHelper
             Shown += Keyboard_Shown;
 
             comboKeyboardSpeed.DropDownStyle = ComboBoxStyle.DropDownList;
-            comboKeyboardSpeed.DataSource = new BindingSource(AsusUSB.GetSpeeds(), null);
+            comboKeyboardSpeed.DataSource = new BindingSource(USB.Aura.GetSpeeds(), null);
             comboKeyboardSpeed.DisplayMember = "Value";
             comboKeyboardSpeed.ValueMember = "Key";
-            comboKeyboardSpeed.SelectedValue = AsusUSB.Speed;
+            comboKeyboardSpeed.SelectedValue = USB.Aura.Speed;
             comboKeyboardSpeed.SelectedValueChanged += ComboKeyboardSpeed_SelectedValueChanged;
 
             // Keyboard
@@ -400,7 +400,7 @@ namespace GHelper
             else
                 AppConfig.Set("keyboard_brightness", sliderBrightness.Value);
 
-            AsusUSB.ApplyBrightness(sliderBrightness.Value, "Slider");
+            USB.LightControl.ApplyBrightness(sliderBrightness.Value, "Slider");
         }
 
         private void InitServices()
@@ -515,7 +515,7 @@ namespace GHelper
         private void CheckXMG_CheckedChanged(object? sender, EventArgs e)
         {
             AppConfig.Set("xmg_light", (checkXMG.Checked ? 1 : 0));
-            AsusUSB.ApplyXGMLight(checkXMG.Checked);
+            USB.XGM.ApplyLight(checkXMG.Checked);
         }
 
         private void CheckUSBC_CheckedChanged(object? sender, EventArgs e)
@@ -563,14 +563,14 @@ namespace GHelper
             AppConfig.Set("keyboard_sleep_logo", (checkSleepLogo.Checked ? 1 : 0));
             AppConfig.Set("keyboard_shutdown_logo", (checkShutdownLogo.Checked ? 1 : 0));
 
-            AsusUSB.ApplyAuraPower();
+            USB.LightControl.ApplyAuraPower();
 
         }
 
         private void ComboKeyboardSpeed_SelectedValueChanged(object? sender, EventArgs e)
         {
             AppConfig.Set("aura_speed", (int)comboKeyboardSpeed.SelectedValue);
-            AsusUSB.ApplyAura();
+            USB.LightControl.ApplyAura();
         }
 
 

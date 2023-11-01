@@ -59,7 +59,7 @@ namespace GHelper.Input
             if (backlightActivity && iddle.TotalSeconds > kb_timeout)
             {
                 backlightActivity = false;
-                AsusUSB.ApplyBrightness(0, "Timeout");
+                USB.LightControl.ApplyBrightness(0, "Timeout");
             }
 
             if (!backlightActivity && iddle.TotalSeconds < kb_timeout)
@@ -514,7 +514,7 @@ namespace GHelper.Input
 
             Logger.WriteLine("Tablet: " + tabletState + " Touchpad: " + touchpadState);
 
-            if (tabletState && touchpadState || !tabletState && !touchpadState) AsusUSB.TouchpadToggle();
+            if (tabletState && touchpadState || !tabletState && !touchpadState) USB.Device.TouchpadToggle();
 
         }
 
@@ -654,8 +654,8 @@ namespace GHelper.Input
 
         public static void SetBacklightAuto(bool init = false)
         {
-            if (init) AsusUSB.Init();
-            AsusUSB.ApplyBrightness(GetBacklight(), "Auto", init);
+            if (init) USB.Device.Init();
+            USB.LightControl.ApplyBrightness(GetBacklight(), "Auto", init);
         }
 
         public static void SetBacklight(int delta, bool force = false)
@@ -678,7 +678,7 @@ namespace GHelper.Input
 
             if (force || !OptimizationService.IsRunning())
             {
-                AsusUSB.ApplyBrightness(backlight, "HotKey");
+                USB.LightControl.ApplyBrightness(backlight, "HotKey");
             }
 
             if (!OptimizationService.IsOSDRunning())

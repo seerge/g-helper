@@ -133,6 +133,8 @@ namespace GHelper
 
             pictureColor.Click += PictureColor_Click;
             pictureColor2.Click += PictureColor2_Click;
+            pictureColor3.Click += PictureColor3_Click;
+            pictureColor4.Click += PictureColor4_Click;
 
             labelCPUFan.Click += LabelCPUFan_Click;
             labelGPUFan.Click += LabelCPUFan_Click;
@@ -324,7 +326,7 @@ namespace GHelper
                         {
                             case 0:
                                 Logger.WriteLine("Monitor Power Off");
-                                AsusUSB.ApplyBrightness(0);
+                                USB.LightControl.ApplyBrightness(0);
                                 break;
                             case 1:
                                 Logger.WriteLine("Monitor Power On");
@@ -605,16 +607,15 @@ namespace GHelper
 
         private void PictureColor2_Click(object? sender, EventArgs e)
         {
-
-            ColorDialog colorDlg = new ColorDialog();
-            colorDlg.AllowFullOpen = true;
-            colorDlg.Color = pictureColor2.BackColor;
-
-            if (colorDlg.ShowDialog() == DialogResult.OK)
-            {
-                AppConfig.Set("aura_color2", colorDlg.Color.ToArgb());
-                SetAura();
-            }
+            OpendColorDialogAndSave("aura_color2");
+        }
+        private void PictureColor3_Click(object? sender, EventArgs e)
+        {
+            OpendColorDialogAndSave("aura_color3");
+        }
+        private void PictureColor4_Click(object? sender, EventArgs e)
+        {
+            OpendColorDialogAndSave("aura_color4");
         }
 
         private void PictureColor_Click(object? sender, EventArgs e)
@@ -682,32 +683,35 @@ namespace GHelper
             FansToggle();
         }
 
-        private void ButtonKeyboardColor_Click(object? sender, EventArgs e)
+        private void OpendColorDialogAndSave(String config_name)
         {
-
             ColorDialog colorDlg = new ColorDialog();
             colorDlg.AllowFullOpen = true;
             colorDlg.Color = pictureColor.BackColor;
 
             if (colorDlg.ShowDialog() == DialogResult.OK)
             {
-                AppConfig.Set("aura_color", colorDlg.Color.ToArgb());
+                AppConfig.Set(config_name, colorDlg.Color.ToArgb());
                 SetAura();
             }
         }
 
+        private void ButtonKeyboardColor_Click(object? sender, EventArgs e)
+        {
+            OpendColorDialogAndSave("aura_color");
+        }
+
         public void InitAura()
         {
-            AsusUSB.Mode = AppConfig.Get("aura_mode");
-            AsusUSB.Speed = AppConfig.Get("aura_speed");
-            AsusUSB.SetColor(AppConfig.Get("aura_color"));
-            AsusUSB.SetColor2(AppConfig.Get("aura_color2"));
+            USB.Aura.Speed = AppConfig.Get("aura_speed");
+            USB.Aura.Mode = (USB.AuraMode)AppConfig.Get("aura_mode");
+            USB.Aura.SetColors();
 
             comboKeyboard.DropDownStyle = ComboBoxStyle.DropDownList;
-            comboKeyboard.DataSource = new BindingSource(AsusUSB.GetModes(), null);
+            comboKeyboard.DataSource = new BindingSource(USB.Aura.GetModes(), null);
             comboKeyboard.DisplayMember = "Value";
             comboKeyboard.ValueMember = "Key";
-            comboKeyboard.SelectedValue = AsusUSB.Mode;
+            comboKeyboard.SelectedValue = USB.Aura.Mode;
             comboKeyboard.SelectedValueChanged += ComboKeyboard_SelectedValueChanged;
 
 
@@ -729,7 +733,7 @@ namespace GHelper
         {
             Task.Run(() =>
             {
-                AsusUSB.ApplyAura();
+                USB.LightControl.ApplyAura();
                 VisualiseAura();
             });
         }
@@ -738,9 +742,14 @@ namespace GHelper
         {
             Invoke(delegate
             {
-                pictureColor.BackColor = AsusUSB.Color1;
-                pictureColor2.BackColor = AsusUSB.Color2;
-                pictureColor2.Visible = AsusUSB.HasSecondColor();
+                pictureColor.BackColor = USB.Aura.Colors[0];
+                pictureColor2.BackColor = USB.Aura.Colors[1];
+                pictureColor3.BackColor = USB.Aura.Colors[2];
+                pictureColor4.BackColor = USB.Aura.Colors[3];
+
+                pictureColor2.Visible = USB.Aura.HasSecondColor();
+                pictureColor3.Visible = USB.Aura.Has4Colors();
+                pictureColor4.Visible = USB.Aura.Has4Colors();
             });
         }
 
@@ -1044,14 +1053,14 @@ namespace GHelper
 
             if (!AppConfig.Is("skip_aura"))
             {
-                AsusUSB.ApplyAuraPower();
-                AsusUSB.ApplyAura();
+                USB.LightControl.ApplyAuraPower();
+                USB.LightControl.ApplyAura();
             }
 
             InputDispatcher.SetBacklightAuto(true);
 
             if (Program.acpi.IsXGConnected())
-                AsusUSB.ApplyXGMLight(AppConfig.Is("xmg_light"));
+                USB.XGM.ApplyLight(AppConfig.Is("xmg_light"));
 
             if (AppConfig.HasTabletMode()) InputDispatcher.TabletMode();
 
