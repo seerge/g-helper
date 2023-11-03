@@ -15,10 +15,10 @@ public class NvidiaGpuControl : IGpuControl
     public static int MaxCoreOffset => AppConfig.Get("max_gpu_core", 250);
     public static int MaxMemoryOffset => AppConfig.Get("max_gpu_memory", 250);
 
-    public const int MinCoreOffset = -250;
-    public const int MinMemoryOffset = -250;
+    public static int MinCoreOffset = AppConfig.Get("min_gpu_core", -250);
+    public static int MinMemoryOffset = AppConfig.Get("min_gpu_memory", -250);
 
-    public const int MinClockLimit = 1000;
+    public const int MinClockLimit = 400;
     public const int MaxClockLimit = 3000;
 
     private static PhysicalGPU? _internalGpu;
