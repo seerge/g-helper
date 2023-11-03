@@ -153,7 +153,7 @@ namespace GHelper
                 labelM1.Text = "FN+F2";
                 labelM2.Text = "FN+F3";
                 labelM3.Text = "FN+F4";
-                labelM4.Visible = comboM4.Visible = textM4.Visible = false;
+                labelM4.Visible = comboM4.Visible = textM4.Visible = AppConfig.IsDUO();
                 labelFNF4.Visible = comboFNF4.Visible = textFNF4.Visible = false;
             }
 

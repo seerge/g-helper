@@ -1,5 +1,4 @@
-﻿using GHelper.Battery;
-using GHelper.Gpu.NVidia;
+﻿using GHelper.Gpu.NVidia;
 using GHelper.Helpers;
 using Ryzen;
 
@@ -71,7 +70,7 @@ namespace GHelper.Mode
             Modes.SetCurrent(mode);
 
             int status = Program.acpi.DeviceSet(AsusACPI.PerformanceMode, AppConfig.IsManualModeRequired() ? AsusACPI.PerformanceManual : Modes.GetBase(mode), "Mode");
-            
+
             // Vivobook fallback
             if (status != 1)
             {
@@ -311,13 +310,13 @@ namespace GHelper.Mode
                 int memory = AppConfig.GetMode("gpu_memory");
                 int clock_limit = AppConfig.GetMode("gpu_clock_limit");
 
-                if (core == -1 && memory == -1) return;
+                if (core == -1 && memory == -1 && clock_limit == -1) return;
 
                 //if ((gpu_core > -5 && gpu_core < 5) && (gpu_memory > -5 && gpu_memory < 5)) launchAsAdmin = false;
 
-                if (Program.acpi.DeviceGet(AsusACPI.GPUEco) == 1) return;
-                if (HardwareControl.GpuControl is null) return;
-                if (!HardwareControl.GpuControl!.IsNvidia) return;
+                if (Program.acpi.DeviceGet(AsusACPI.GPUEco) == 1) { Logger.WriteLine("Clocks: Eco"); return; }
+                if (HardwareControl.GpuControl is null) { Logger.WriteLine("Clocks: NoGPUControl"); return; }
+                if (!HardwareControl.GpuControl!.IsNvidia) { Logger.WriteLine("Clocks: NotNvidia"); return; }
 
                 using NvidiaGpuControl nvControl = (NvidiaGpuControl)HardwareControl.GpuControl;
                 try
@@ -328,7 +327,7 @@ namespace GHelper.Mode
                 }
                 catch (Exception ex)
                 {
-                    Logger.WriteLine(ex.ToString());
+                    Logger.WriteLine("Clocks Error:" + ex.ToString());
                 }
 
                 settings.GPUInit();
