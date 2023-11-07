@@ -133,9 +133,10 @@ namespace GHelper.Helpers
             cmd.StartInfo.Arguments = args;
             cmd.Start();
 
+            Logger.WriteLine(args);
+
             string result = cmd.StandardOutput.ReadToEnd().Replace(Environment.NewLine, " ").Trim(' ');
 
-            Logger.WriteLine(args);
             Logger.WriteLine(result);
             
             cmd.WaitForExit();

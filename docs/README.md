@@ -74,6 +74,21 @@ Each BIOS mode is paired with matching Windows Power Mode. You can adjust this s
 
 ![GPU Modes](https://github.com/seerge/g-helper/assets/5920850/65c6bdd5-728c-4965-b544-fcf5a85ed6a2)
 
+### :mouse: Asus Mouse and other peripherals support
+
+[Currently supported models](https://github.com/seerge/g-helper/discussions/900)
+- ROG Harpe Ace Aim Lab Edition
+- ROG Keris Wireless
+- ROG Chakram X (P708)
+- ROG Strix III Gladius III Aimpoint Wireless (P711)
+- ROG Gladius III
+- ROG Gladius III Wireless
+- ROG Strix Impact II Wireless
+- TUF Gaming M4 Wireless (P306)
+- TUF Gaming M3
+
+Huge thanks to [@IceStormNG](https://github.com/IceStormNG) 👑 for contribution and research (!).
+
 ## :question: FAQ
 
 #### How do I stop the Armoury Crate install popup appearing every time I press the M4 / Rog key?

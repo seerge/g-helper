@@ -68,7 +68,7 @@ namespace GHelper.Input
                 SetBacklightAuto();
             }
 
-            //Debug.WriteLine(iddle.TotalSeconds);
+            //Logger.WriteLine("Iddle: " + iddle.TotalSeconds);
         }
 
         public void Init()
