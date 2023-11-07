@@ -1,9 +1,8 @@
 ﻿using System.Diagnostics;
 using System.Text;
 using GHelper.Gpu;
+using GHelper.Input;
 using HidLibrary;
-using static GHelper.UI.RComboBox;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace GHelper.USB
 {
@@ -54,6 +53,9 @@ namespace GHelper.USB
 
         private static void Timer_Elapsed(object? sender, System.Timers.ElapsedEventArgs e)
         {
+            if (!InputDispatcher.backlightActivity)
+                return;
+
             if (Aura.Mode == AuraMode.AMBIENT)
                 ApplyColorListFast(Aura.CustomRGB.Ambient());
             else
@@ -98,7 +100,7 @@ namespace GHelper.USB
             if (flags.SleepRear) rear |= 1 << 6;
             if (flags.ShutdownRear) rear |= 1 << 7;
 
-            return Device.Rog.PowerMsg(keyb, bar, lid, rear);
+            return Device.Msg.Power(keyb, bar, lid, rear);
         }
 
         public static void ApplyAuraPower()
@@ -169,8 +171,8 @@ namespace GHelper.USB
 
                 if (Device.isTuf) Program.acpi.TUFKeyboardBrightness(brightness);
 
-                byte[] msg = Device.Rog.BrightnessMsg((byte)brightness);
-                byte[] msgBackup = Device.Rog.BrightnessMsg((byte)brightness);
+                byte[] msg = Device.Msg.Brightness((byte)brightness);
+                byte[] msgBackup = Device.Msg.Brightness((byte)brightness);
 
                 var devices = Device.GetHidDevices(Device.deviceIds);
                 foreach (HidDevice device in devices)
@@ -213,7 +215,6 @@ namespace GHelper.USB
 
         }
 
-
         public static void ApplyColor(Color color, bool init = false)
         {
 
@@ -228,14 +229,14 @@ namespace GHelper.USB
 
             if (Device.isStrix && !Aura.isOldHeatmap)
             {
-                Color[] clrs = Enumerable.Repeat(color, Device.Rog.Strix.zones).ToArray();
-                Device.Rog.Strix.AuraMsg(clrs, init);
+                Color[] clrs = Enumerable.Repeat(color, Device.Msg.Strix.zones).ToArray();
+                Device.Msg.Strix.Aura(clrs, init);
             }
             else
             {
                 //Debug.WriteLine(color.ToString());
-                Device.auraDevice.Write(Device.Rog.AuraMsg(0, color, color, 0));
-                Device.auraDevice.Write(Device.MESSAGE_SET);
+                Device.auraDevice.Write(Device.Msg.Aura(0, color, color, 0));
+                Device.auraDevice.Write(Device.Msg.MESSAGE_SET);
             }
 
         }
@@ -246,9 +247,7 @@ namespace GHelper.USB
             if (Device.auraDevice is null) Device.GetAuraDevice();
             if (Device.auraDevice is null || !Device.isStrix) return;
 
-            Device.Rog.Strix.AuraMsg(color, init, true);
-
-            return;
+            Device.Msg.Strix.Aura(color, init);
         }
 
         public static void ApplyGPUColor()
@@ -290,6 +289,12 @@ namespace GHelper.USB
             {
                 ApplyGPUColor();
                 return;
+            } 
+            
+            if (Aura.Mode == AuraMode.STRIX4Color)
+            {
+                ApplyColorListFast(Aura.CustomRGB.Strix4Color(), true);
+                return;
             }
 
             int _speed = Aura.SpeedToHex();
@@ -302,10 +307,10 @@ namespace GHelper.USB
                 device.OpenDevice();
                 if (device.ReadFeatureData(out byte[] data, Device.AURA_HID_ID))
                 {
-                    msg = Device.Rog.AuraMsg((int)Aura.Mode, Aura.Colors[0], Aura.Colors[1], _speed, Aura.isSingleColor);
+                    msg = Device.Msg.Aura((byte)Aura.Mode, Aura.Colors[0], Aura.Colors[1], _speed, Aura.isSingleColor);
                     device.WriteFeatureData(msg);
-                    device.WriteFeatureData(Device.MESSAGE_APPLY);
-                    device.WriteFeatureData(Device.MESSAGE_SET);
+                    device.WriteFeatureData(Device.Msg.MESSAGE_APPLY);
+                    device.WriteFeatureData(Device.Msg.MESSAGE_SET);
                     Logger.WriteLine("USB-KB " + device.Attributes.Version + device.Description + device.DevicePath + ":" + BitConverter.ToString(msg));
                 }
                 device.CloseDevice();

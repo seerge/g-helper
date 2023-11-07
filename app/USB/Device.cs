@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
+﻿using System.Runtime.CompilerServices;
 using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 using HidLibrary;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace GHelper.USB
 {
@@ -19,17 +13,16 @@ namespace GHelper.USB
         public const byte INPUT_HID_ID = 0x5a;
         public const byte AURA_HID_ID = 0x5d;
 
-        public static byte[] MESSAGE_APPLY = { AURA_HID_ID, 0xb4 };
-        public static byte[] MESSAGE_SET = { AURA_HID_ID, 0xb5, 0, 0, 0 };
+        static readonly byte[][] LEDS_INIT = new byte[][] {
+            new byte[] { AURA_HID_ID, 0xb9 },
+            Encoding.ASCII.GetBytes("]ASUS Tech.Inc."),
+            new byte[] { AURA_HID_ID, 0x05, 0x20, 0x31, 0, 0x1a  },
+            Encoding.ASCII.GetBytes("^ASUS Tech.Inc."),
+            new byte[] { 0x5e, 0x05, 0x20, 0x31, 0, 0x1a }
+        };
 
         static public bool isTuf = AppConfig.IsTUF() || AppConfig.IsVivobook();
         static public bool isStrix = AppConfig.IsStrix();
-
-        public static readonly byte[] LED_INIT1 = new byte[] { AURA_HID_ID, 0xb9 };
-        public static readonly byte[] LED_INIT2 = Encoding.ASCII.GetBytes("]ASUS Tech.Inc.");
-        public static readonly byte[] LED_INIT3 = new byte[] { AURA_HID_ID, 0x05, 0x20, 0x31, 0, 0x1a };
-        public static readonly byte[] LED_INIT4 = Encoding.ASCII.GetBytes("^ASUS Tech.Inc.");
-        public static readonly byte[] LED_INIT5 = new byte[] { 0x5e, 0x05, 0x20, 0x31, 0, 0x1a };
 
         public static HidDevice? auraDevice = null;
         public static IEnumerable<HidDevice> GetHidDevices(int[] deviceIds, int minFeatures = 1)
@@ -50,6 +43,7 @@ namespace GHelper.USB
                 {
                     input = device;
                     //Logger.WriteLine("HID Device("+ reportID + ")" +  + device.Capabilities.FeatureReportByteLength + "|" + device.Capabilities.InputReportByteLength + device.DevicePath);
+                    if (reportID == INPUT_HID_ID && device.Attributes.ProductId == 0x1a30) return input;
                 }
 
             return input;
@@ -82,31 +76,24 @@ namespace GHelper.USB
                 foreach (HidDevice device in devices)
                 {
                     device.OpenDevice();
-                    device.WriteFeatureData(LED_INIT1);
-                    device.WriteFeatureData(LED_INIT2);
-                    device.WriteFeatureData(LED_INIT3);
-                    device.WriteFeatureData(LED_INIT4);
-                    device.WriteFeatureData(LED_INIT5);
+                    foreach (byte[] led in LEDS_INIT)
+                        device.WriteFeatureData(led);
                     device.CloseDevice();
                 }
             });
         }
 
-        public static bool TouchpadToggle()
-        {
-            HidDevice? input = GetDevice();
-            if (input != null) return input.WriteFeatureData(new byte[] { INPUT_HID_ID, 0xf4, 0x6b });
-            return false;
-        }
+        public static class Msg {
 
 
-        public static class Rog {
+            public static readonly byte[] MESSAGE_APPLY = { AURA_HID_ID, (byte)AuraCommand.APPLY };
+            public static readonly byte[] MESSAGE_SET = { AURA_HID_ID, (byte)AuraCommand.SET, 0, 0, 0 };
 
-            public static byte[] AuraMsg(int mode, Color color, Color color2, int speed, bool mono = false)
+            public static byte[] Aura(byte mode, Color color, Color color2, int speed, bool mono = false)
             {
                 byte[] msg = new byte[17];
-                msg[0] = Device.AURA_HID_ID;
-                msg[1] = 0xb3;
+                msg[0] = AURA_HID_ID;
+                msg[1] = (byte)AuraCommand.UPDATE; // CMD
                 msg[2] = 0x00; // Zone 
                 msg[3] = (byte)mode; // Aura Mode
                 msg[4] = color.R; // R
@@ -118,16 +105,17 @@ namespace GHelper.USB
                 msg[10] = color2.R; // R
                 msg[11] = mono ? (byte)0 : color2.G; // G
                 msg[12] = mono ? (byte)0 : color2.B; // B
+
                 return msg;
             }
 
-            public static byte[] PowerMsg(byte keyb, byte bar, byte lid, byte rear) {
-                byte[] msg = new byte[] { 0x5d, 0xbd, 0x01, keyb, bar, lid, rear, 0xFF };
+            public static byte[] Power(byte keyb, byte bar, byte lid, byte rear) {
+                byte[] msg = new byte[] { AURA_HID_ID, (byte)AuraCommand.POWER, 0x01, keyb, bar, lid, rear, 0xFF };
                 return msg;
             }
 
-            public static byte[] BrightnessMsg(byte brightness) {
-                byte[] msg = new byte[] { Device.AURA_HID_ID, 0xba, 0xc5, 0xc4, (byte)brightness };
+            public static byte[] Brightness(byte brightness) {
+                byte[] msg = new byte[] { AURA_HID_ID, (byte)AuraCommand.BRIGHTNESS, 0xc5, 0xc4, (byte)brightness };
                 return msg;
             }
 
@@ -136,23 +124,20 @@ namespace GHelper.USB
                 static public readonly int zones = 0x12;
                 static readonly byte start_zone = 9;
 
-                [MethodImpl(MethodImplOptions.AggressiveInlining)] //little bit up speed
-                public static void AuraMsg(Color[] colors, bool init = false, bool ignore_keyboard = false) {
+                [MethodImpl(MethodImplOptions.AggressiveInlining)]
+                public static void Aura(Color[] colors, bool init = false) {
 
                     if (init)
                     {
-                        auraDevice.Write(LED_INIT1);
-                        auraDevice.Write(LED_INIT2);
-                        auraDevice.Write(LED_INIT3);
-                        auraDevice.Write(LED_INIT4);
-                        auraDevice.Write(LED_INIT5);
-                        auraDevice.Write(new byte[] { Device.AURA_HID_ID, 0xbc });
+                        foreach (byte[] led in LEDS_INIT)
+                            auraDevice.Write(led);
+                        auraDevice.Write(new byte[] { AURA_HID_ID, 0xbc });
                     }
 
                     byte[] msg = new byte[0x40];
 
                     msg[0] = AURA_HID_ID;
-                    msg[1] = 0xbc;          //CMD
+                    msg[1] = (byte)AuraCommand.DIRECT;
                     msg[2] = 0;             //ZONE
                     msg[3] = 1;             //MODE
                     msg[4] = 1;             //R
@@ -167,8 +152,7 @@ namespace GHelper.USB
                         msg[start_zone + 2 + i * 3] = colors[i].B;
                     }
 
-                    //strix version with per key rgb ...
-                    if (!ignore_keyboard) {
+                    if (init) {
                         byte maxLeds = 0x93;
                         for (byte b = 0; b < maxLeds; b += 0x10)
                         {

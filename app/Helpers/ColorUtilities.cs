@@ -1,6 +1,8 @@
 ﻿using System.Drawing;
+using System.Drawing.Imaging;
 using System.Runtime.CompilerServices;
 using System.Runtime.ConstrainedExecution;
+using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
 namespace GHelper.Helpers
@@ -155,7 +157,6 @@ namespace GHelper.Helpers
 
         }
 
-       
     }
 
 }

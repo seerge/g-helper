@@ -1,10 +1,23 @@
 ﻿using GHelper.Gpu;
 using GHelper.Helpers;
+using Microsoft.Win32;
+using System;
+using System.Diagnostics;
 using System.Drawing.Imaging;
-using static System.Windows.Forms.AxHost;
+using System.Runtime.InteropServices;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace GHelper.USB
 {
+    enum AuraCommand : byte
+    {
+        UPDATE = 0xB3,  
+        SET = 0xB5,    
+        APPLY = 0xB4,    
+        BRIGHTNESS = 0xBA,    
+        DIRECT = 0xBC,
+        POWER = 0xBD,
+    };
     public enum AuraMode : int
     {
         AuraStatic = 0,
@@ -22,6 +35,7 @@ namespace GHelper.USB
         HEATMAP = 20,
         GPUMODE = 21,
         AMBIENT = 22,
+        STRIX4Color = 23,
     }
 
     public static class Aura
@@ -70,6 +84,7 @@ namespace GHelper.USB
             { AuraMode.Flash, "Flash" },
             { AuraMode.HEATMAP, "Heatmap"},
             { AuraMode.AMBIENT, "Ambient"},
+            { AuraMode.STRIX4Color, "Custom Colors"},
         };
 
         public static AuraMode Mode
@@ -77,10 +92,7 @@ namespace GHelper.USB
             get { return mode; }
             set
             {
-                if (GetModes().ContainsKey(value))
-                    mode = value;
-                else
-                    mode = 0;
+                mode = GetModes().ContainsKey(value) ? value : 0;
             }
         }
 
@@ -115,7 +127,7 @@ namespace GHelper.USB
         }
         public static bool Has4Colors()
         {
-            return (mode == AuraMode.AMBIENT && Device.isStrix);
+            return ((mode == AuraMode.AMBIENT || mode == AuraMode.STRIX4Color) && Device.isStrix);
         }
 
         public static void SetColors()
@@ -143,10 +155,7 @@ namespace GHelper.USB
             get { return speed; }
             set
             {
-                if (GetSpeeds().ContainsKey(value))
-                    speed = value;
-                else
-                    speed = 1;
+                speed = GetSpeeds().ContainsKey(value) ? value : 0;
             }
 
         }
@@ -198,14 +207,31 @@ namespace GHelper.USB
                 return color;
             }
 
+            public static Color[] Strix4Color() {
+
+                AmbientData.result[6] = Colors[0]; // right bck
+                AmbientData.result[11] = Colors[3]; // left bck
+
+                AmbientData.result[7] = Colors[1];   // right
+                AmbientData.result[10] = Colors[2]; // left
+
+                AmbientData.result[8] = Colors[1]; // center right
+                AmbientData.result[9] = Colors[2];  // center left
+
+                for (int i = 0; i < 4; i++)
+                    AmbientData.result[i] = Colors[3 - i];
+
+                return AmbientData.result;
+            }
+
             public static Color[] Ambient()
             {
                 Rectangle bound = Screen.GetBounds(Point.Empty);
                 bound.Y += bound.Height / 3;
-                bound.Height -= (int)Math.Round(bound.Height * (0.66f + 0.022f)); // + remove bot windows panel
+                bound.Height -= (int)Math.Round(bound.Height * (0.33f + 0.022f)); // + remove bot windows panel
 
                 var screenshot = new Bitmap(bound.Width, bound.Height, PixelFormat.Format16bppRgb555);
-                var g = Graphics.FromImage(screenshot);
+                var g = Graphics.FromImage(screenshot); //native api with perfomance problem
                 g.CopyFromScreen(bound.X, bound.Y, 0, 0, screenshot.Size, CopyPixelOperation.SourceCopy);
 
                 var mid_rec = new Rectangle(bound.X, 0, bound.Width, bound.Height);
@@ -216,36 +242,55 @@ namespace GHelper.USB
                 var mid_left = ColorUtils.GetMidColor(mid_pxl.GetPixel(0, 1), mid_pxl.GetPixel(1, 1));
                 var mid_right = ColorUtils.GetMidColor(mid_pxl.GetPixel(2, 1), mid_pxl.GetPixel(3, 1));
 
+
+                AmbientData.Amb test = AmbientData.GetScreenShot();
+                int zz = test.Width;
+
                 AmbientData.Colors[6].RGB = ColorUtils.HSV.UpSaturation(mid_pxl.GetPixel(3, 1)); // right bck
-                AmbientData.Colors[12].RGB = ColorUtils.HSV.UpSaturation(mid_pxl.GetPixel(1, 1)); // left bck
+                AmbientData.Colors[11].RGB = ColorUtils.HSV.UpSaturation(mid_pxl.GetPixel(1, 1)); // left bck
 
                 AmbientData.Colors[7].RGB = AmbientData.Colors[6].RGB;   // right
-                AmbientData.Colors[11].RGB = AmbientData.Colors[12].RGB; // left
+                AmbientData.Colors[10].RGB = AmbientData.Colors[11].RGB; // left
 
-                AmbientData.Colors[9].RGB = ColorUtils.HSV.UpSaturation(mid_left);  // center
-                AmbientData.Colors[8].RGB = ColorUtils.HSV.UpSaturation(mid_right); // center
+                AmbientData.Colors[8].RGB = ColorUtils.HSV.UpSaturation(mid_right); // center right
+                AmbientData.Colors[9].RGB = ColorUtils.HSV.UpSaturation(mid_left);  // center left
 
                 //KeyBoard
                 for (int i = 0; i < 4; i++)
                     AmbientData.Colors[i].RGB = (Colors[3 - i].ToArgb() == Color.Black.ToArgb())
                         ? ColorUtils.HSV.UpSaturation(mid_pxl.GetPixel(i, 0)) : Colors[3 - i];
 
-                //mid.Save("test.jpg", ImageFormat.Jpeg);
+                //screenshot.Save("test.jpg", ImageFormat.Jpeg);
 
                 screenshot.Dispose();
                 mid_bmp.Dispose();
                 mid_pxl.Dispose();
                 g.Dispose();
 
-                for (int i = 0; i < Device.Rog.Strix.zones; i++)
+                //bool is_refresh = false;
+
+                for (int i = 0; i < Device.Msg.Strix.zones; i++)
                     AmbientData.result[i] = AmbientData.Colors[i].RGB;
 
                 return AmbientData.result;
             }
 
             static class AmbientData {
-                static public Color[] result = new Color[Device.Rog.Strix.zones];
-                static public ColorUtils.SmoothColor[] Colors = Enumerable.Repeat(0, Device.Rog.Strix.zones).
+
+                public struct Amb
+                {
+                    public int Width;
+                    public int Height;
+                    public byte[] data;
+                };
+
+
+                [DllImport(@"Ambient.dll", CallingConvention = CallingConvention.Cdecl)]
+                static public extern Amb GetScreenShot();
+
+
+                static public Color[] result = new Color[Device.Msg.Strix.zones];
+                static public ColorUtils.SmoothColor[] Colors = Enumerable.Repeat(0, Device.Msg.Strix.zones).
                     Select(h => new ColorUtils.SmoothColor()).ToArray();
             }
 
