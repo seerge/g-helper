@@ -345,7 +345,7 @@ public static class AppConfig
 
     public static bool IsSingleColor()
     {
-        return  ContainsModel("GA401") || ContainsModel("FX517Z") || ContainsModel("X13");
+        return  ContainsModel("GA401") || ContainsModel("FX517Z") || ContainsModel("FX516P") || ContainsModel("X13");
     }
 
     public static bool IsStrix()
@@ -355,7 +355,7 @@ public static class AppConfig
 
     public static bool IsStrixLimitedRGB()
     {
-        return ContainsModel("G614JV") || ContainsModel("G614JZ");
+        return ContainsModel("G614JV") || ContainsModel("G614JZ") || ContainsModel("G512LI");
     }
 
     public static bool IsZ13()
