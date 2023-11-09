@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Runtime.CompilerServices;
 using System.Text;
 using GHelper.Gpu;
 using GHelper.Input;
@@ -100,7 +101,7 @@ namespace GHelper.USB
             if (flags.SleepRear) rear |= 1 << 6;
             if (flags.ShutdownRear) rear |= 1 << 7;
 
-            return Device.Msg.Power(keyb, bar, lid, rear);
+            return AuraMsg.Power(keyb, bar, lid, rear);
         }
 
         public static void ApplyAuraPower()
@@ -171,8 +172,8 @@ namespace GHelper.USB
 
                 if (Device.isTuf) Program.acpi.TUFKeyboardBrightness(brightness);
 
-                byte[] msg = Device.Msg.Brightness((byte)brightness);
-                byte[] msgBackup = Device.Msg.Brightness((byte)brightness);
+                byte[] msg = AuraMsg.Brightness((byte)brightness);
+                byte[] msgBackup = AuraMsg.Brightness((byte)brightness);
 
                 var devices = Device.GetHidDevices(Device.deviceIds);
                 foreach (HidDevice device in devices)
@@ -229,25 +230,26 @@ namespace GHelper.USB
 
             if (Device.isStrix && !Aura.isOldHeatmap)
             {
-                Color[] clrs = Enumerable.Repeat(color, Device.Msg.Strix.zones).ToArray();
-                Device.Msg.Strix.Aura(clrs, init);
+                Color[] clrs = Enumerable.Repeat(color, AuraMsg.Strix.zones).ToArray();
+                AuraMsg.Strix.Aura(clrs, init);
             }
             else
             {
                 //Debug.WriteLine(color.ToString());
-                Device.auraDevice.Write(Device.Msg.Aura(0, color, color, 0));
-                Device.auraDevice.Write(Device.Msg.MESSAGE_SET);
+                Device.auraDevice.Write(AuraMsg.Aura(0, color, color, 0));
+                Device.auraDevice.Write(AuraMsg.MESSAGE_SET);
             }
 
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void ApplyColorListFast(Color[] color, bool init = false)
         {
 
             if (Device.auraDevice is null) Device.GetAuraDevice();
             if (Device.auraDevice is null || !Device.isStrix) return;
 
-            Device.Msg.Strix.Aura(color, init);
+            AuraMsg.Strix.Aura(color, init);
         }
 
         public static void ApplyGPUColor()
@@ -281,7 +283,7 @@ namespace GHelper.USB
             {
                 ApplyColorListFast(Aura.CustomRGB.Ambient(), true);
                 timer.Enabled = true;
-                timer.Interval = 50;
+                timer.Interval = 80;
                 return;
             }
 
@@ -307,10 +309,10 @@ namespace GHelper.USB
                 device.OpenDevice();
                 if (device.ReadFeatureData(out byte[] data, Device.AURA_HID_ID))
                 {
-                    msg = Device.Msg.Aura((byte)Aura.Mode, Aura.Colors[0], Aura.Colors[1], _speed, Aura.isSingleColor);
+                    msg = AuraMsg.Aura((byte)Aura.Mode, Aura.Colors[0], Aura.Colors[1], _speed, Aura.isSingleColor);
                     device.WriteFeatureData(msg);
-                    device.WriteFeatureData(Device.Msg.MESSAGE_APPLY);
-                    device.WriteFeatureData(Device.Msg.MESSAGE_SET);
+                    device.WriteFeatureData(AuraMsg.MESSAGE_APPLY);
+                    device.WriteFeatureData(AuraMsg.MESSAGE_SET);
                     Logger.WriteLine("USB-KB " + device.Attributes.Version + device.Description + device.DevicePath + ":" + BitConverter.ToString(msg));
                 }
                 device.CloseDevice();

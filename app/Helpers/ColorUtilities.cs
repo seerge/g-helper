@@ -23,11 +23,13 @@ namespace GHelper.Helpers
 
             return Color.FromArgb(red, green, blue);
         }
+
         public static Color GetMidColor(Color color1, Color color2) {
             return Color.FromArgb((byte)((color1.R + color2.R) / 2),
                 (byte)((color1.G + color2.G) / 2),
                 (byte)((color1.B + color2.B) / 2));
         }
+
         public class HSV
         {
             public double Hue { get; set; }
@@ -120,7 +122,7 @@ namespace GHelper.Helpers
                 return clr_;
             }
 
-            private float smooth = 0.75f;
+            private float smooth = 0.65f;
             private Color clr = new Color();
             private Color clr_ = new Color();
 

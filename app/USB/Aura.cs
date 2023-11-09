@@ -230,21 +230,10 @@ namespace GHelper.USB
                 bound.Y += bound.Height / 3;
                 bound.Height -= (int)Math.Round(bound.Height * (0.33f + 0.022f)); // + remove bot windows panel
 
-                var screenshot = new Bitmap(bound.Width, bound.Height, PixelFormat.Format16bppRgb555);
-                var g = Graphics.FromImage(screenshot); //native api with perfomance problem
-                g.CopyFromScreen(bound.X, bound.Y, 0, 0, screenshot.Size, CopyPixelOperation.SourceCopy);
-
-                var mid_rec = new Rectangle(bound.X, 0, bound.Width, bound.Height);
-
-                var mid_bmp = screenshot.Clone(mid_rec, screenshot.PixelFormat);
-                var mid_pxl = new Bitmap(mid_bmp, new Size(4, 2)); //low pixel img
+                var mid_pxl = AmbientData.Take(bound, 4, 2); //low pixel img
 
                 var mid_left = ColorUtils.GetMidColor(mid_pxl.GetPixel(0, 1), mid_pxl.GetPixel(1, 1));
                 var mid_right = ColorUtils.GetMidColor(mid_pxl.GetPixel(2, 1), mid_pxl.GetPixel(3, 1));
-
-
-                AmbientData.Amb test = AmbientData.GetScreenShot();
-                int zz = test.Width;
 
                 AmbientData.Colors[6].RGB = ColorUtils.HSV.UpSaturation(mid_pxl.GetPixel(3, 1)); // right bck
                 AmbientData.Colors[11].RGB = ColorUtils.HSV.UpSaturation(mid_pxl.GetPixel(1, 1)); // left bck
@@ -260,16 +249,12 @@ namespace GHelper.USB
                     AmbientData.Colors[i].RGB = (Colors[3 - i].ToArgb() == Color.Black.ToArgb())
                         ? ColorUtils.HSV.UpSaturation(mid_pxl.GetPixel(i, 0)) : Colors[3 - i];
 
-                //screenshot.Save("test.jpg", ImageFormat.Jpeg);
-
-                screenshot.Dispose();
-                mid_bmp.Dispose();
+                //mid_pxl.Save("test.jpg", ImageFormat.Jpeg);
                 mid_pxl.Dispose();
-                g.Dispose();
 
                 //bool is_refresh = false;
 
-                for (int i = 0; i < Device.Msg.Strix.zones; i++)
+                for (int i = 0; i < AuraMsg.Strix.zones; i++)
                     AmbientData.result[i] = AmbientData.Colors[i].RGB;
 
                 return AmbientData.result;
@@ -277,20 +262,70 @@ namespace GHelper.USB
 
             static class AmbientData {
 
-                public struct Amb
+                public enum StretchMode
                 {
-                    public int Width;
-                    public int Height;
-                    public byte[] data;
-                };
+                    STRETCH_ANDSCANS = 1,
+                    STRETCH_ORSCANS = 2,
+                    STRETCH_DELETESCANS = 3,
+                    STRETCH_HALFTONE = 4,
+                }
+
+                [DllImport("user32.dll")]
+                private static extern IntPtr GetDesktopWindow();
+
+                [DllImport("user32.dll")]
+                private static extern IntPtr GetWindowDC(IntPtr hWnd);
+
+                [DllImport("gdi32.dll")]
+                private static extern IntPtr CreateCompatibleDC(IntPtr hDC);
+
+                [DllImport("gdi32.dll")]
+                private static extern IntPtr CreateCompatibleBitmap(IntPtr hDC, int nWidth, int nHeight);
+
+                [DllImport("gdi32.dll")]
+                private static extern IntPtr SelectObject(IntPtr hDC, IntPtr hObject);
+
+                [DllImport("user32.dll")]
+                private static extern bool ReleaseDC(IntPtr hWnd, IntPtr hDC);
+
+                [DllImport("gdi32.dll")]
+                private static extern bool DeleteDC(IntPtr hdc);
+
+                [DllImport("gdi32.dll")]
+                private static extern bool DeleteObject(IntPtr hObject);
+
+                [DllImport("gdi32.dll")]
+                private static extern bool StretchBlt(IntPtr hdcDest, int nXOriginDest, int nYOriginDest,
+                int nWidthDest, int nHeightDest,
+                IntPtr hdcSrc, int nXOriginSrc, int nYOriginSrc, int nWidthSrc, int nHeightSrc,
+                Int32 dwRop);
+
+                [DllImport("gdi32.dll")]
+                static extern bool SetStretchBltMode(IntPtr hdc, StretchMode iStretchMode);
+
+                /// <summary>
+                /// Captures a screenshot of the entire desktop and saves it to a PNG file in the "My Pictures" folder.
+                /// </summary>
+                public static Bitmap Take(Rectangle rec, int out_w, int out_h)
+                {
+                    IntPtr desktop = GetDesktopWindow();
+                    IntPtr hdc = GetWindowDC(desktop);
+                    IntPtr hdcMem = CreateCompatibleDC(hdc);
+
+                    IntPtr hBitmap = CreateCompatibleBitmap(hdc, out_w, out_h);
+                    IntPtr hOld = SelectObject(hdcMem, hBitmap);
+                    SetStretchBltMode(hdcMem, StretchMode.STRETCH_HALFTONE);
+                    StretchBlt(hdcMem, 0, 0, out_w, out_h, hdc, rec.X, rec.Y, rec.Width, rec.Height, 0x00CC0020);
+                    SelectObject(hdcMem, hOld);
+
+                    DeleteDC(hdcMem);
+                    ReleaseDC(desktop, hdc);
+                    return Image.FromHbitmap(hBitmap);
+                }
 
 
-                [DllImport(@"Ambient.dll", CallingConvention = CallingConvention.Cdecl)]
-                static public extern Amb GetScreenShot();
-
-
-                static public Color[] result = new Color[Device.Msg.Strix.zones];
-                static public ColorUtils.SmoothColor[] Colors = Enumerable.Repeat(0, Device.Msg.Strix.zones).
+                static public Color[] result = new Color[AuraMsg.Strix.zones];
+                static public ColorUtils.SmoothColor[] Colors = Enumerable.Repeat(0, AuraMsg.Strix.zones).
                     Select(h => new ColorUtils.SmoothColor()).ToArray();
             }
 

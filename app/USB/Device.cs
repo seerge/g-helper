@@ -13,7 +13,7 @@ namespace GHelper.USB
         public const byte INPUT_HID_ID = 0x5a;
         public const byte AURA_HID_ID = 0x5d;
 
-        static readonly byte[][] LEDS_INIT = new byte[][] {
+        public static readonly byte[][] LEDS_INIT = new byte[][] {
             new byte[] { AURA_HID_ID, 0xb9 },
             Encoding.ASCII.GetBytes("]ASUS Tech.Inc."),
             new byte[] { AURA_HID_ID, 0x05, 0x20, 0x31, 0, 0x1a  },
@@ -81,96 +81,6 @@ namespace GHelper.USB
                     device.CloseDevice();
                 }
             });
-        }
-
-        public static class Msg {
-
-
-            public static readonly byte[] MESSAGE_APPLY = { AURA_HID_ID, (byte)AuraCommand.APPLY };
-            public static readonly byte[] MESSAGE_SET = { AURA_HID_ID, (byte)AuraCommand.SET, 0, 0, 0 };
-
-            public static byte[] Aura(byte mode, Color color, Color color2, int speed, bool mono = false)
-            {
-                byte[] msg = new byte[17];
-                msg[0] = AURA_HID_ID;
-                msg[1] = (byte)AuraCommand.UPDATE; // CMD
-                msg[2] = 0x00; // Zone 
-                msg[3] = (byte)mode; // Aura Mode
-                msg[4] = color.R; // R
-                msg[5] = mono ? (byte)0 : color.G; // G
-                msg[6] = mono ? (byte)0 : color.B; // B
-                msg[7] = (byte)speed; // aura.speed as u8;
-                msg[8] = 0; // aura.direction as u8;
-                msg[9] = mode == 1 ? (byte)1 : (byte)0;
-                msg[10] = color2.R; // R
-                msg[11] = mono ? (byte)0 : color2.G; // G
-                msg[12] = mono ? (byte)0 : color2.B; // B
-
-                return msg;
-            }
-
-            public static byte[] Power(byte keyb, byte bar, byte lid, byte rear) {
-                byte[] msg = new byte[] { AURA_HID_ID, (byte)AuraCommand.POWER, 0x01, keyb, bar, lid, rear, 0xFF };
-                return msg;
-            }
-
-            public static byte[] Brightness(byte brightness) {
-                byte[] msg = new byte[] { AURA_HID_ID, (byte)AuraCommand.BRIGHTNESS, 0xc5, 0xc4, (byte)brightness };
-                return msg;
-            }
-
-            public static class Strix
-            {
-                static public readonly int zones = 0x12;
-                static readonly byte start_zone = 9;
-
-                [MethodImpl(MethodImplOptions.AggressiveInlining)]
-                public static void Aura(Color[] colors, bool init = false) {
-
-                    if (init)
-                    {
-                        foreach (byte[] led in LEDS_INIT)
-                            auraDevice.Write(led);
-                        auraDevice.Write(new byte[] { AURA_HID_ID, 0xbc });
-                    }
-
-                    byte[] msg = new byte[0x40];
-
-                    msg[0] = AURA_HID_ID;
-                    msg[1] = (byte)AuraCommand.DIRECT;
-                    msg[2] = 0;             //ZONE
-                    msg[3] = 1;             //MODE
-                    msg[4] = 1;             //R
-                    msg[5] = 1;             //G
-                    msg[6] = 0;             //B
-                    msg[7] = 16;            //Leds per packet
-
-                    for (byte i = 0; i < zones; i++)
-                    {
-                        msg[start_zone + i * 3] = colors[i].R;   
-                        msg[start_zone + 1 + i * 3] = colors[i].G;
-                        msg[start_zone + 2 + i * 3] = colors[i].B;
-                    }
-
-                    if (init) {
-                        byte maxLeds = 0x93;
-                        for (byte b = 0; b < maxLeds; b += 0x10)
-                        {
-                            msg[6] = b;
-                            auraDevice.Write(msg);
-                        }
-                        msg[6] = maxLeds;
-                        auraDevice.Write(msg);
-                    }
-
-                    msg[4] = 4;
-                    msg[5] = 0;
-                    msg[6] = 0;
-                    msg[7] = 0;
-                    auraDevice.Write(msg);
-                }
-            }
-
         }
 
     }
