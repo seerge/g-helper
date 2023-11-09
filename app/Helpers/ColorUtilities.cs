@@ -99,7 +99,7 @@ namespace GHelper.Helpers
                 return new HSV { Hue = hue, Saturation = saturation, Value = value };
             }
 
-            public static Color UpSaturation(Color rgb, float increse = 0.3f)
+            public static Color UpSaturation(Color rgb, float increse = 0.25f)
             {
                 if (rgb.R == rgb.G && rgb.G == rgb.B)
                     return rgb;

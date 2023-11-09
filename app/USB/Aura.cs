@@ -3,6 +3,7 @@ using GHelper.Helpers;
 using Microsoft.Win32;
 using System;
 using System.Diagnostics;
+using System.Drawing;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 using static System.Runtime.InteropServices.JavaScript.JSType;
@@ -246,8 +247,7 @@ namespace GHelper.USB
 
                 //KeyBoard
                 for (int i = 0; i < 4; i++)
-                    AmbientData.Colors[i].RGB = (Colors[3 - i].ToArgb() == Color.Black.ToArgb())
-                        ? ColorUtils.HSV.UpSaturation(mid_pxl.GetPixel(i, 0)) : Colors[3 - i];
+                    AmbientData.Colors[i].RGB = ColorUtils.HSV.UpSaturation(mid_pxl.GetPixel(i, 0));
 
                 //mid_pxl.Save("test.jpg", ImageFormat.Jpeg);
                 mid_pxl.Dispose();
@@ -320,7 +320,9 @@ namespace GHelper.USB
 
                     DeleteDC(hdcMem);
                     ReleaseDC(desktop, hdc);
-                    return Image.FromHbitmap(hBitmap);
+                    var result = Image.FromHbitmap(hBitmap);
+                    DeleteObject(hBitmap);
+                    return result;
                 }
 
 
