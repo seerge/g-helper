@@ -25,9 +25,9 @@ namespace GHelper.Helpers
         }
 
         public static Color GetMidColor(Color color1, Color color2) {
-            return Color.FromArgb((byte)((color1.R + color2.R) / 2),
-                (byte)((color1.G + color2.G) / 2),
-                (byte)((color1.B + color2.B) / 2));
+            return Color.FromArgb((color1.R + color2.R) / 2,
+                (color1.G + color2.G) / 2,
+                (color1.B + color2.B) / 2);
         }
 
         public class HSV

@@ -162,19 +162,12 @@ namespace GHelper.USB
         }
 
         public static int SpeedToHex() {
-            int _speed;
-            switch (Speed)
+            var _speed = Speed switch
             {
-                case 1:
-                    _speed = 0xeb;
-                    break;
-                case 2:
-                    _speed = 0xf5;
-                    break;
-                default:
-                    _speed = 0xe1;
-                    break;
-            }
+                1 => 0xeb,
+                2 => 0xf5,
+                _ => 0xe1,
+            };
             return _speed;
         }
 
@@ -231,7 +224,7 @@ namespace GHelper.USB
                 bound.Y += bound.Height / 3;
                 bound.Height -= (int)Math.Round(bound.Height * (0.33f + 0.022f)); // + remove bot windows panel
 
-                var mid_pxl = AmbientData.Take(bound, 4, 2); //low pixel img
+                var mid_pxl = AmbientData.Take(bound, 4, 2); // X5 speed up compared to native c# graphic class.
 
                 var mid_left = ColorUtils.GetMidColor(mid_pxl.GetPixel(0, 1), mid_pxl.GetPixel(1, 1));
                 var mid_right = ColorUtils.GetMidColor(mid_pxl.GetPixel(2, 1), mid_pxl.GetPixel(3, 1));
@@ -297,14 +290,13 @@ namespace GHelper.USB
                 [DllImport("gdi32.dll")]
                 private static extern bool StretchBlt(IntPtr hdcDest, int nXOriginDest, int nYOriginDest,
                 int nWidthDest, int nHeightDest,
-                IntPtr hdcSrc, int nXOriginSrc, int nYOriginSrc, int nWidthSrc, int nHeightSrc,
-                Int32 dwRop);
+                IntPtr hdcSrc, int nXOriginSrc, int nYOriginSrc, int nWidthSrc, int nHeightSrc,Int32 dwRop);
 
                 [DllImport("gdi32.dll")]
                 static extern bool SetStretchBltMode(IntPtr hdc, StretchMode iStretchMode);
 
                 /// <summary>
-                /// Captures a screenshot of the entire desktop and saves it to a PNG file in the "My Pictures" folder.
+                /// Captures a screenshot. 
                 /// </summary>
                 public static Bitmap Take(Rectangle rec, int out_w, int out_h)
                 {

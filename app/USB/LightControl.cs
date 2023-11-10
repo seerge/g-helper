@@ -107,37 +107,38 @@ namespace GHelper.USB
         public static void ApplyAuraPower()
         {
 
-            AuraPower flags = new();
+            AuraPower flags = new()
+            {
+                // Keyboard
+                AwakeKeyb = AppConfig.IsNotFalse("keyboard_awake"),
+                BootKeyb = AppConfig.IsNotFalse("keyboard_boot"),
+                SleepKeyb = AppConfig.IsNotFalse("keyboard_sleep"),
+                ShutdownKeyb = AppConfig.IsNotFalse("keyboard_shutdown"),
 
-            // Keyboard
-            flags.AwakeKeyb = AppConfig.IsNotFalse("keyboard_awake");
-            flags.BootKeyb = AppConfig.IsNotFalse("keyboard_boot");
-            flags.SleepKeyb = AppConfig.IsNotFalse("keyboard_sleep");
-            flags.ShutdownKeyb = AppConfig.IsNotFalse("keyboard_shutdown");
+                // Logo
+                AwakeLogo = AppConfig.IsNotFalse("keyboard_awake_logo"),
+                BootLogo = AppConfig.IsNotFalse("keyboard_boot_logo"),
+                SleepLogo = AppConfig.IsNotFalse("keyboard_sleep_logo"),
+                ShutdownLogo = AppConfig.IsNotFalse("keyboard_shutdown_logo"),
 
-            // Logo
-            flags.AwakeLogo = AppConfig.IsNotFalse("keyboard_awake_logo");
-            flags.BootLogo = AppConfig.IsNotFalse("keyboard_boot_logo");
-            flags.SleepLogo = AppConfig.IsNotFalse("keyboard_sleep_logo");
-            flags.ShutdownLogo = AppConfig.IsNotFalse("keyboard_shutdown_logo");
+                // Lightbar
+                AwakeBar = AppConfig.IsNotFalse("keyboard_awake_bar"),
+                BootBar = AppConfig.IsNotFalse("keyboard_boot_bar"),
+                SleepBar = AppConfig.IsNotFalse("keyboard_sleep_bar"),
+                ShutdownBar = AppConfig.IsNotFalse("keyboard_shutdown_bar"),
 
-            // Lightbar
-            flags.AwakeBar = AppConfig.IsNotFalse("keyboard_awake_bar");
-            flags.BootBar = AppConfig.IsNotFalse("keyboard_boot_bar");
-            flags.SleepBar = AppConfig.IsNotFalse("keyboard_sleep_bar");
-            flags.ShutdownBar = AppConfig.IsNotFalse("keyboard_shutdown_bar");
+                // Lid
+                AwakeLid = AppConfig.IsNotFalse("keyboard_awake_lid"),
+                BootLid = AppConfig.IsNotFalse("keyboard_boot_lid"),
+                SleepLid = AppConfig.IsNotFalse("keyboard_sleep_lid"),
+                ShutdownLid = AppConfig.IsNotFalse("keyboard_shutdown_lid"),
 
-            // Lid
-            flags.AwakeLid = AppConfig.IsNotFalse("keyboard_awake_lid");
-            flags.BootLid = AppConfig.IsNotFalse("keyboard_boot_lid");
-            flags.SleepLid = AppConfig.IsNotFalse("keyboard_sleep_lid");
-            flags.ShutdownLid = AppConfig.IsNotFalse("keyboard_shutdown_lid");
-
-            // Rear Bar
-            flags.AwakeRear = AppConfig.IsNotFalse("keyboard_awake_lid");
-            flags.BootRear = AppConfig.IsNotFalse("keyboard_boot_lid");
-            flags.SleepRear = AppConfig.IsNotFalse("keyboard_sleep_lid");
-            flags.ShutdownRear = AppConfig.IsNotFalse("keyboard_shutdown_lid");
+                // Rear Bar
+                AwakeRear = AppConfig.IsNotFalse("keyboard_awake_lid"),
+                BootRear = AppConfig.IsNotFalse("keyboard_boot_lid"),
+                SleepRear = AppConfig.IsNotFalse("keyboard_sleep_lid"),
+                ShutdownRear = AppConfig.IsNotFalse("keyboard_shutdown_lid")
+            };
 
             var devices = Device.GetHidDevices(Device.deviceIds);
             byte[] msg = AuraPowerMessage(flags);
@@ -145,7 +146,7 @@ namespace GHelper.USB
             foreach (HidDevice device in devices)
             {
                 device.OpenDevice();
-                if (device.ReadFeatureData(out byte[] data, Device.AURA_HID_ID))
+                if (device.ReadFeatureData(out _, Device.AURA_HID_ID))
                 {
                     device.WriteFeatureData(msg);
                     Logger.WriteLine("USB-KB " + device.Attributes.ProductHexId + ":" + BitConverter.ToString(msg));
@@ -242,7 +243,7 @@ namespace GHelper.USB
 
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)] //for Rog-Strix custom effects
         public static void ApplyColorListFast(Color[] color, bool init = false)
         {
 
