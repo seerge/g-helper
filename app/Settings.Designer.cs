@@ -1147,10 +1147,10 @@ namespace GHelper
             // pictureColor4
             // 
             pictureColor4.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            pictureColor4.Location = new Point(40, 20);
-            pictureColor4.Margin = new Padding(5);
+            pictureColor4.Location = new Point(40, 15);
+            pictureColor4.Margin = new Padding(8);
             pictureColor4.Name = "pictureColor4";
-            pictureColor4.Size = new Size(12, 12);
+            pictureColor4.Size = new Size(20, 20);
             pictureColor4.TabIndex = 43;
             pictureColor4.TabStop = false;
             pictureColor4.Visible = false;
@@ -1158,10 +1158,10 @@ namespace GHelper
             // pictureColor3
             // 
             pictureColor3.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            pictureColor3.Location = new Point(69, 20);
-            pictureColor3.Margin = new Padding(5);
+            pictureColor3.Location = new Point(69, 15);
+            pictureColor3.Margin = new Padding(8);
             pictureColor3.Name = "pictureColor3";
-            pictureColor3.Size = new Size(12, 12);
+            pictureColor3.Size = new Size(20, 20);
             pictureColor3.TabIndex = 42;
             pictureColor3.TabStop = false;
             pictureColor3.Visible = false;
@@ -1169,20 +1169,20 @@ namespace GHelper
             // pictureColor2
             // 
             pictureColor2.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            pictureColor2.Location = new Point(186, 20);
-            pictureColor2.Margin = new Padding(5);
+            pictureColor2.Location = new Point(186, 15);
+            pictureColor2.Margin = new Padding(8);
             pictureColor2.Name = "pictureColor2";
-            pictureColor2.Size = new Size(12, 12);
+            pictureColor2.Size = new Size(20, 20);
             pictureColor2.TabIndex = 41;
             pictureColor2.TabStop = false;
             // 
             // pictureColor
             // 
             pictureColor.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            pictureColor.Location = new Point(217, 20);
-            pictureColor.Margin = new Padding(5);
+            pictureColor.Location = new Point(217, 15);
+            pictureColor.Margin = new Padding(8);
             pictureColor.Name = "pictureColor";
-            pictureColor.Size = new Size(12, 12);
+            pictureColor.Size = new Size(20, 20);
             pictureColor.TabIndex = 40;
             pictureColor.TabStop = false;
             // 
