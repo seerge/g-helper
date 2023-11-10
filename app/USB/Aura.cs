@@ -128,7 +128,7 @@ namespace GHelper.USB
         }
         public static bool Has4Colors()
         {
-            return ((mode == AuraMode.AMBIENT || mode == AuraMode.STRIX4Color) && Device.isStrix);
+            return ((mode == AuraMode.STRIX4Color) && Device.isStrix);
         }
 
         public static void SetColors()
