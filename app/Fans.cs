@@ -2,6 +2,7 @@
 using GHelper.Gpu.NVidia;
 using GHelper.Mode;
 using GHelper.UI;
+using GHelper.USB;
 using Ryzen;
 using System.Diagnostics;
 using System.Windows.Forms.DataVisualization.Charting;
@@ -1004,7 +1005,7 @@ namespace GHelper
 
             InitPowerPlan();
 
-            if (Program.acpi.IsXGConnected()) AsusUSB.ResetXGM();
+            if (Program.acpi.IsXGConnected()) XGM.Reset();
 
 
             if (gpuVisible)

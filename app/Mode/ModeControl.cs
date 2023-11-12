@@ -1,5 +1,6 @@
 ﻿using GHelper.Gpu.NVidia;
 using GHelper.Helpers;
+using GHelper.USB;
 using Ryzen;
 
 namespace GHelper.Mode
@@ -80,7 +81,7 @@ namespace GHelper.Mode
                 Program.acpi.DeviceSet(AsusACPI.VivoBookMode, vivoMode, "VivoMode");
             }
 
-            if (AppConfig.Is("xgm_fan") && Program.acpi.IsXGConnected()) AsusUSB.ResetXGM();
+            if (AppConfig.Is("xgm_fan") && Program.acpi.IsXGConnected()) XGM.Reset();
 
             if (notify)
                 Program.toast.RunToast(Modes.GetCurrentName(), SystemInformation.PowerStatus.PowerLineStatus == PowerLineStatus.Online ? ToastIcon.Charger : ToastIcon.Battery);
@@ -133,8 +134,7 @@ namespace GHelper.Mode
                 bool xgmFan = false;
                 if (AppConfig.Is("xgm_fan") && Program.acpi.IsXGConnected())
                 {
-                    //AsusUSB.InitXGM();
-                    AsusUSB.SetXGMFan(AppConfig.GetFanConfig(AsusFan.XGM));
+                    XGM.SetFan(AppConfig.GetFanConfig(AsusFan.XGM));
                     xgmFan = true;
                 }
 
