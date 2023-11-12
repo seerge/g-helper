@@ -699,8 +699,8 @@ namespace GHelper
 
         public void InitAura()
         {
-            Aura.Mode = AppConfig.Get("aura_mode");
-            Aura.Speed = AppConfig.Get("aura_speed");
+            Aura.Mode = (AuraMode)AppConfig.Get("aura_mode");
+            Aura.Speed = (AuraSpeed)AppConfig.Get("aura_speed");
             Aura.SetColor(AppConfig.Get("aura_color"));
             Aura.SetColor2(AppConfig.Get("aura_color2"));
 
