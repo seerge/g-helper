@@ -1,6 +1,7 @@
 ﻿using GHelper.Display;
 using GHelper.Helpers;
 using GHelper.Mode;
+using GHelper.USB;
 using Microsoft.Win32;
 using System.Diagnostics;
 using System.Management;
@@ -59,7 +60,7 @@ namespace GHelper.Input
             if (backlightActivity && iddle.TotalSeconds > kb_timeout)
             {
                 backlightActivity = false;
-                AsusUSB.ApplyBrightness(0, "Timeout");
+                Aura.ApplyBrightness(0, "Timeout");
             }
 
             if (!backlightActivity && iddle.TotalSeconds < kb_timeout)
@@ -478,7 +479,7 @@ namespace GHelper.Input
 
         static void ToggleTouchpad()
         {
-            KeyboardHook.KeyKeyKeyPress(Keys.LWin, Keys.LControlKey, Keys.F24);
+            KeyboardHook.KeyKeyKeyPress(Keys.LWin, Keys.LControlKey, Keys.F24, 50);
         }
 
         public static void ToggleArrowLock()
@@ -654,8 +655,8 @@ namespace GHelper.Input
 
         public static void SetBacklightAuto(bool init = false)
         {
-            if (init) AsusUSB.Init();
-            AsusUSB.ApplyBrightness(GetBacklight(), "Auto", init);
+            if (init) Aura.Init();
+            Aura.ApplyBrightness(GetBacklight(), "Auto", init);
         }
 
         public static void SetBacklight(int delta, bool force = false)
@@ -678,7 +679,7 @@ namespace GHelper.Input
 
             if (force || !OptimizationService.IsRunning())
             {
-                AsusUSB.ApplyBrightness(backlight, "HotKey");
+                Aura.ApplyBrightness(backlight, "HotKey");
             }
 
             if (!OptimizationService.IsOSDRunning())
