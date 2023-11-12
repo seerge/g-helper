@@ -355,7 +355,7 @@ public static class AppConfig
 
     public static bool IsStrixLimitedRGB()
     {
-        return ContainsModel("G614JV") || ContainsModel("G614JZ") || ContainsModel("G512LI");
+        return ContainsModel("G614JV") || ContainsModel("G614JZ") || ContainsModel("G512LI") || ContainsModel("G513RS");
     }
 
     public static bool IsZ13()
@@ -439,6 +439,11 @@ public static class AppConfig
     public static bool IsNoGPUModes()
     {
         return ContainsModel("GV301RA") || ContainsModel("GV302XA") || IsAlly();
+    }
+
+    public static bool IsHardwareTouchpadToggle()
+    {
+        return ContainsModel("FA507");
     }
 
 }

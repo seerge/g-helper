@@ -58,7 +58,7 @@ namespace GHelper.USB
 
         static bool isOldHeatmap = AppConfig.Is("old_heatmap");
 
-        static System.Timers.Timer timer = new System.Timers.Timer(80);
+        static System.Timers.Timer timer = new System.Timers.Timer(1000);
 
         static byte[] AuraPowerMessage(AuraPower flags)
         {
@@ -286,15 +286,15 @@ namespace GHelper.USB
                 if (delay) await Task.Delay(TimeSpan.FromSeconds(1));
                 if (isTuf) Program.acpi.TUFKeyboardBrightness(brightness);
 
-                AsusHid.Write(new byte[] { AsusHid.AURA_ID, 0xba, 0xc5, 0xc4, (byte)brightness });
-                if (AppConfig.ContainsModel("GA503")) AsusHid.Write(new byte[] { AsusHid.INPUT_ID, 0xba, 0xc5, 0xc4, (byte)brightness }, AsusHid.INPUT_ID);
+                AsusHid.Write(new byte[] { AsusHid.AURA_ID, 0xba, 0xc5, 0xc4, (byte)brightness }, AsusHid.AURA_ID, log);
+                if (AppConfig.ContainsModel("GA503")) AsusHid.Write(new byte[] { AsusHid.INPUT_ID, 0xba, 0xc5, 0xc4, (byte)brightness }, AsusHid.INPUT_ID, log);
             });
 
 
         }
 
 
-        public static void ApplyAuraPower()
+        public static void ApplyPower()
         {
 
             AuraPower flags = new();

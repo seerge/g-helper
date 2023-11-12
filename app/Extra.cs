@@ -564,7 +564,7 @@ namespace GHelper
             AppConfig.Set("keyboard_sleep_logo", (checkSleepLogo.Checked ? 1 : 0));
             AppConfig.Set("keyboard_shutdown_logo", (checkShutdownLogo.Checked ? 1 : 0));
 
-            Aura.ApplyAuraPower();
+            Aura.ApplyPower();
 
         }
 

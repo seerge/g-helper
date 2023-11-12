@@ -303,10 +303,10 @@ namespace GHelper.Input
                         KeyboardHook.KeyKeyPress(Keys.LWin, Keys.P);
                         break;
                     case Keys.F10:
-                        HandleOptimizationEvent(107);
+                        ToggleTouchpadEvent(true);
                         break;
                     case Keys.F11:
-                        HandleOptimizationEvent(108);
+                        SleepEvent();
                         break;
                     case Keys.F12:
                         KeyboardHook.KeyKeyPress(Keys.LWin, Keys.A);
@@ -477,9 +477,21 @@ namespace GHelper.Input
             }
         }
 
+        static void ToggleTouchpadEvent(bool hotkey = false)
+        {
+            if (hotkey || !AppConfig.IsHardwareTouchpadToggle()) ToggleTouchpad();
+            Thread.Sleep(200);
+            Program.toast.RunToast(GetTouchpadState() ? "On" : "Off", ToastIcon.Touchpad);
+        }
+
         static void ToggleTouchpad()
         {
             KeyboardHook.KeyKeyKeyPress(Keys.LWin, Keys.LControlKey, Keys.F24, 50);
+        }
+
+        static void SleepEvent()
+        {
+            Program.acpi.DeviceSet(AsusACPI.UniversalControl, AsusACPI.KB_Sleep, "Sleep");
         }
 
         public static void ToggleArrowLock()
@@ -620,12 +632,10 @@ namespace GHelper.Input
                         Program.acpi.DeviceSet(AsusACPI.UniversalControl, AsusACPI.Brightness_Up, "Brightness");
                     break;
                 case 107: // FN+F10
-                    ToggleTouchpad();
-                    Thread.Sleep(200);
-                    Program.toast.RunToast(GetTouchpadState() ? "On" : "Off", ToastIcon.Touchpad);
+                    ToggleTouchpadEvent();
                     break;
                 case 108: // FN+F11
-                    Program.acpi.DeviceSet(AsusACPI.UniversalControl, AsusACPI.KB_Sleep, "Sleep");
+                    SleepEvent();
                     break;
                 case 106: // Screenpad button on DUO
                     if (Control.ModifierKeys == Keys.Shift)

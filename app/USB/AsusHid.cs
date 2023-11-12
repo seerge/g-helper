@@ -12,7 +12,7 @@ public static class AsusHid
 
     static int[] deviceIds = { 0x1a30, 0x1854, 0x1869, 0x1866, 0x19b6, 0x1822, 0x1837, 0x1854, 0x184a, 0x183d, 0x8502, 0x1807, 0x17e0, 0x18c6, 0x1abe };
 
-    static HidStream _stream;
+    static HidStream auraStream;
 
     public static HidStream FindHidStream(byte reportId, int minFeatureLength = 1)
     {
@@ -50,23 +50,23 @@ public static class AsusHid
         return null;
     }
 
-    static void WriteData(HidStream stream, byte[] data)
+    static void WriteData(HidStream stream, byte[] data, string log = "USB")
     {
         try
         {
             stream.Write(data);
-            Logger.WriteLine("USB " + stream.Device.ProductID + ": " + BitConverter.ToString(data));
+            Logger.WriteLine($"{log} " + stream.Device.ProductID + ": " + BitConverter.ToString(data));
         }
         catch (Exception ex)
         {
-            Debug.WriteLine($"Error writing to HID device: {ex.Message} {BitConverter.ToString(data)}");
+            Debug.WriteLine($"Error writing {log} to HID device: {ex.Message} {BitConverter.ToString(data)}");
         }
     }
 
-    public static void Write(byte[] data, byte reportId = AURA_ID)
+    public static void Write(byte[] data, byte reportId = AURA_ID, string log = "USB")
     {
         using (var stream = FindHidStream(reportId))
-            WriteData(stream, data);
+            WriteData(stream, data, log);
     }
     public static void Write(List<byte[]> dataList, byte reportId = AURA_ID)
     {
@@ -75,19 +75,19 @@ public static class AsusHid
                 WriteData(stream, data);
     }
 
-    public static void WriteAura(byte[] data, byte reportId = AURA_ID)
+    public static void WriteAura(byte[] data)
     {
 
-        if (_stream == null) _stream = FindHidStream(reportId);
-        if (_stream == null) return;
+        if (auraStream == null) auraStream = FindHidStream(AURA_ID);
+        if (auraStream == null) return;
 
         try
         {
-            _stream.Write(data);
+            auraStream.Write(data);
         }
         catch (Exception ex)
         {
-            _stream.Dispose();
+            auraStream.Dispose();
             Debug.WriteLine($"Error writing data to HID device: {ex.Message}");
         }
     }

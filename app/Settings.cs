@@ -1045,7 +1045,7 @@ namespace GHelper
 
             if (!AppConfig.Is("skip_aura"))
             {
-                Aura.ApplyAuraPower();
+                Aura.ApplyPower();
                 Aura.ApplyAura();
             }
 
