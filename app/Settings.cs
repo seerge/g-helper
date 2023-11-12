@@ -50,6 +50,22 @@ namespace GHelper
         {
 
             InitializeComponent();
+
+            int GPUMode = AppConfig.Get("gpu_mode");
+
+            switch (GPUMode)
+            {
+                case AsusACPI.GPUModeEco:
+                    this.Icon = Properties.Resources.eco;
+                    break;
+                case AsusACPI.GPUModeUltimate:
+                    this.Icon = Properties.Resources.ultimate;
+                    break;
+                default:
+                    this.Icon = Properties.Resources.standard;
+                    break;
+            }
+
             InitTheme(true);
 
             gpuControl = new GPUModeControl(this);
