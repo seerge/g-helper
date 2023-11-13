@@ -213,7 +213,7 @@ namespace GHelper.USB
                 return;
 
             if (Mode == AuraMode.HEATMAP)
-            {
+        {
                 CustomRGB.ApplyHeatmap();
             }
             else if (Mode == AuraMode.AMBIENT)
@@ -472,22 +472,22 @@ namespace GHelper.USB
         public static class CustomRGB {
 
             public static void ApplyGPUColor()
-            {
-                if ((AuraMode)AppConfig.Get("aura_mode") != AuraMode.GPUMODE) return;
+        {
+            if ((AuraMode)AppConfig.Get("aura_mode") != AuraMode.GPUMODE) return;
 
-                switch (GPUModeControl.gpuMode)
-                {
-                    case AsusACPI.GPUModeUltimate:
-                        ApplyColor(Color.Red, true);
-                        break;
-                    case AsusACPI.GPUModeEco:
-                        ApplyColor(Color.Green, true);
-                        break;
-                    default:
-                        ApplyColor(Color.Yellow, true);
-                        break;
-                }
+            switch (GPUModeControl.gpuMode)
+            {
+                case AsusACPI.GPUModeUltimate:
+                    ApplyColor(Color.Red, true);
+                    break;
+                case AsusACPI.GPUModeEco:
+                    ApplyColor(Color.Green, true);
+                    break;
+                default:
+                    ApplyColor(Color.Yellow, true);
+                    break;
             }
+        }
 
             public static void ApplyHeatmap(bool init = false)
             {
@@ -532,7 +532,7 @@ namespace GHelper.USB
                         AmbientData.Colors[i].RGB = ColorUtils.HSV.UpSaturation(screeb_pxl.GetPixel(i, 0));
                 }
                 else 
-                { 
+                {
                     for (int i = 0; i < 4; i++)  //just color transfer from the bottom screen on keyboard
                         AmbientData.Colors[i].RGB = ColorUtils.HSV.UpSaturation(screeb_pxl.GetPixel(i, 1));
                 }
@@ -620,7 +620,6 @@ namespace GHelper.USB
                     return result;
                 }
 
-
                 public static Bitmap ResizeImage(Image image, int width, int height)
                 {
                     var destRect = new Rectangle(0, 0, width, height);
@@ -645,7 +644,6 @@ namespace GHelper.USB
 
                     return destImage;
                 }
-
 
                 static public Color[] result = new Color[AURA_ZONES];
                 static public ColorUtils.SmoothColor[] Colors = Enumerable.Repeat(0, AURA_ZONES).
