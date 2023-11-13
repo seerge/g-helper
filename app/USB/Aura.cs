@@ -102,7 +102,8 @@ namespace GHelper.USB
             { AuraMode.AuraRainbow, Properties.Strings.AuraRainbow },
             { AuraMode.AuraStrobe, Properties.Strings.AuraStrobe },
             { AuraMode.HEATMAP, "Heatmap"},
-            { AuraMode.GPUMODE, "GPU Mode" }
+            { AuraMode.GPUMODE, "GPU Mode" },
+            { AuraMode.AMBIENT, "Ambient"},
         };
 
         private static Dictionary<AuraMode, string> _modesStrix = new Dictionary<AuraMode, string>
@@ -505,6 +506,8 @@ namespace GHelper.USB
                 ApplyColor(color, init);
             }
 
+
+
             public static void ApplyAmbient(bool init = false)
             {
                 var bound = Screen.GetBounds(Point.Empty);
@@ -534,9 +537,9 @@ namespace GHelper.USB
                 }
                 else
                 {
-                    screeb_pxl = AmbientData.ResizeImage(screen_low, 4, 1);
+                    screeb_pxl = AmbientData.ResizeImage(screen_low, 1, 1);
                     for (int i = 0; i < 4; i++)  //just color transfer from the bottom screen on keyboard
-                        AmbientData.Colors[i].RGB = ColorUtils.HSV.UpSaturation(ColorUtils.GetMidColor(screeb_pxl.GetPixel(1, 0), screeb_pxl.GetPixel(2, 0)), (float)0.7);
+                        AmbientData.Colors[i].RGB = ColorUtils.HSV.UpSaturation(screeb_pxl.GetPixel(0, 0), (float)0.7);
                 }
 
 
@@ -650,6 +653,21 @@ namespace GHelper.USB
                 static public Color[] result = new Color[AURA_ZONES];
                 static public ColorUtils.SmoothColor[] Colors = Enumerable.Repeat(0, AURA_ZONES).
                     Select(h => new ColorUtils.SmoothColor()).ToArray();
+
+                public static Color GetMostUsedColor(Bitmap bitMap)
+                {
+                    var colorIncidence = new Dictionary<int, int>();
+                    for (var x = 0; x < bitMap.Size.Width; x++)
+                        for (var y = 0; y < bitMap.Size.Height; y++)
+                        {
+                            var pixelColor = bitMap.GetPixel(x, y).ToArgb();
+                            if (colorIncidence.Keys.Contains(pixelColor))
+                                colorIncidence[pixelColor]++;
+                            else
+                                colorIncidence.Add(pixelColor, 1);
+                        }
+                    return Color.FromArgb(colorIncidence.OrderByDescending(x => x.Value).ToDictionary(x => x.Key, x => x.Value).First().Key);
+                }
             }
 
         }
