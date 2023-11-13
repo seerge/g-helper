@@ -26,8 +26,6 @@ namespace GHelper.Input
                 return;
             }
 
-            input.ReadTimeout = int.MaxValue;
-
             Logger.WriteLine($"Input: {input.Device.DevicePath}");
 
             var task = Task.Run(() =>
@@ -44,6 +42,7 @@ namespace GHelper.Input
                             break;
                         }
 
+                        input.ReadTimeout = int.MaxValue;
 
                         var data = input.Read();
                         if (data.Length > 1 && data[0] == AsusHid.INPUT_ID && data[1] > 0 && data[1] != 236)
