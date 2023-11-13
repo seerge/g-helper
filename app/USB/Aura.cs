@@ -4,6 +4,7 @@ using Microsoft.Win32;
 using System;
 using System.Diagnostics;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 using static System.Runtime.InteropServices.JavaScript.JSType;
@@ -218,19 +219,21 @@ namespace GHelper.USB
                 return AmbientData.result;
             }
 
-            public static Color[] Ambient()
+            public static bool Ambient(out Color[] clrs)
             {
-                Rectangle bound = Screen.GetBounds(Point.Empty);
+                var bound = Screen.GetBounds(Point.Empty);
                 bound.Y += bound.Height / 3;
-                bound.Height -= (int)Math.Round(bound.Height * (0.33f + 0.022f)); // + remove bot windows panel
+                bound.Height -= (int)Math.Round(bound.Height * (0.33f + 0.022f)); // cut 1/3 of the top screen + windows panel
 
-                var mid_pxl = AmbientData.Take(bound, 4, 2); // X5 speed up compared to native c# graphic class.
+                var screen_low = AmbientData.CamptureScreen(bound, 512, 288);
+                Bitmap screeb_pxl = AmbientData.ResizeImage(screen_low, 4, 2); // 4x2 zone. top for keyboard and bot for lightbar
 
-                var mid_left = ColorUtils.GetMidColor(mid_pxl.GetPixel(0, 1), mid_pxl.GetPixel(1, 1));
-                var mid_right = ColorUtils.GetMidColor(mid_pxl.GetPixel(2, 1), mid_pxl.GetPixel(3, 1));
 
-                AmbientData.Colors[6].RGB = ColorUtils.HSV.UpSaturation(mid_pxl.GetPixel(3, 1)); // right bck
-                AmbientData.Colors[11].RGB = ColorUtils.HSV.UpSaturation(mid_pxl.GetPixel(1, 1)); // left bck
+                var mid_left = ColorUtils.GetMidColor(screeb_pxl.GetPixel(0, 1), screeb_pxl.GetPixel(1, 1));
+                var mid_right = ColorUtils.GetMidColor(screeb_pxl.GetPixel(2, 1), screeb_pxl.GetPixel(3, 1));
+
+                AmbientData.Colors[6].RGB = ColorUtils.HSV.UpSaturation(screeb_pxl.GetPixel(3, 1)); // right bck
+                AmbientData.Colors[11].RGB = ColorUtils.HSV.UpSaturation(screeb_pxl.GetPixel(1, 1)); // left bck
 
                 AmbientData.Colors[7].RGB = AmbientData.Colors[6].RGB;   // right
                 AmbientData.Colors[10].RGB = AmbientData.Colors[11].RGB; // left
@@ -238,22 +241,28 @@ namespace GHelper.USB
                 AmbientData.Colors[8].RGB = ColorUtils.HSV.UpSaturation(mid_right); // center right
                 AmbientData.Colors[9].RGB = ColorUtils.HSV.UpSaturation(mid_left);  // center left
 
-                //KeyBoard
-                for (int i = 0; i < 4; i++)
-                    AmbientData.Colors[i].RGB = ColorUtils.HSV.UpSaturation(mid_pxl.GetPixel(i, 0));
+                for (int i = 0; i < 4; i++) //KeyBoard
+                    AmbientData.Colors[i].RGB = ColorUtils.HSV.UpSaturation(screeb_pxl.GetPixel(i, 0));
 
-                //mid_pxl.Save("test.jpg", ImageFormat.Jpeg);
-                mid_pxl.Dispose();
+                //mid_pxl_.Save("test.jpg", ImageFormat.Jpeg);
+                screen_low.Dispose();
+                screeb_pxl.Dispose();
 
-                //bool is_refresh = false;
+                bool is_fresh = false;
 
                 for (int i = 0; i < AuraMsg.Strix.zones; i++)
+                {
+                    if (AmbientData.result[i].ToArgb() != AmbientData.Colors[i].RGB.ToArgb())
+                        is_fresh = true;
                     AmbientData.result[i] = AmbientData.Colors[i].RGB;
+                }
 
-                return AmbientData.result;
+                clrs = AmbientData.result;
+                return is_fresh;
             }
 
-            static class AmbientData {
+            static class AmbientData
+            {
 
                 public enum StretchMode
                 {
@@ -290,7 +299,7 @@ namespace GHelper.USB
                 [DllImport("gdi32.dll")]
                 private static extern bool StretchBlt(IntPtr hdcDest, int nXOriginDest, int nYOriginDest,
                 int nWidthDest, int nHeightDest,
-                IntPtr hdcSrc, int nXOriginSrc, int nYOriginSrc, int nWidthSrc, int nHeightSrc,Int32 dwRop);
+                IntPtr hdcSrc, int nXOriginSrc, int nYOriginSrc, int nWidthSrc, int nHeightSrc, Int32 dwRop);
 
                 [DllImport("gdi32.dll")]
                 static extern bool SetStretchBltMode(IntPtr hdc, StretchMode iStretchMode);
@@ -298,7 +307,7 @@ namespace GHelper.USB
                 /// <summary>
                 /// Captures a screenshot. 
                 /// </summary>
-                public static Bitmap Take(Rectangle rec, int out_w, int out_h)
+                public static Bitmap CamptureScreen(Rectangle rec, int out_w, int out_h)
                 {
                     IntPtr desktop = GetDesktopWindow();
                     IntPtr hdc = GetWindowDC(desktop);
@@ -306,7 +315,7 @@ namespace GHelper.USB
 
                     IntPtr hBitmap = CreateCompatibleBitmap(hdc, out_w, out_h);
                     IntPtr hOld = SelectObject(hdcMem, hBitmap);
-                    SetStretchBltMode(hdcMem, StretchMode.STRETCH_HALFTONE);
+                    SetStretchBltMode(hdcMem, StretchMode.STRETCH_DELETESCANS);
                     StretchBlt(hdcMem, 0, 0, out_w, out_h, hdc, rec.X, rec.Y, rec.Width, rec.Height, 0x00CC0020);
                     SelectObject(hdcMem, hOld);
 
@@ -315,6 +324,32 @@ namespace GHelper.USB
                     var result = Image.FromHbitmap(hBitmap);
                     DeleteObject(hBitmap);
                     return result;
+                }
+
+
+                public static Bitmap ResizeImage(Image image, int width, int height)
+                {
+                    var destRect = new Rectangle(0, 0, width, height);
+                    var destImage = new Bitmap(width, height);
+
+                    destImage.SetResolution(image.HorizontalResolution, image.VerticalResolution);
+
+                    using (var graphics = Graphics.FromImage(destImage))
+                    {
+                        graphics.CompositingMode = CompositingMode.SourceCopy;
+                        graphics.CompositingQuality = CompositingQuality.HighQuality;
+                        graphics.InterpolationMode = InterpolationMode.Bicubic;
+                        graphics.SmoothingMode = SmoothingMode.None;
+                        graphics.PixelOffsetMode = PixelOffsetMode.None;
+
+                        using (var wrapMode = new ImageAttributes())
+                        {
+                            wrapMode.SetWrapMode(WrapMode.TileFlipXY);
+                            graphics.DrawImage(image, destRect, 0, 0, image.Width, image.Height, GraphicsUnit.Pixel, wrapMode);
+                        }
+                    }
+
+                    return destImage;
                 }
 
 

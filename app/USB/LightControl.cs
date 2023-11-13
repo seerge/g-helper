@@ -57,10 +57,12 @@ namespace GHelper.USB
             if (!InputDispatcher.backlightActivity)
                 return;
 
-            if (Aura.Mode == AuraMode.AMBIENT)
-                ApplyColorListFast(Aura.CustomRGB.Ambient());
-            else
+            if (Aura.Mode == AuraMode.HEATMAP) {
                 ApplyColor(Aura.CustomRGB.Heap());
+            } else if (Aura.Mode == AuraMode.AMBIENT) {
+                if (Aura.CustomRGB.Ambient(out Color[] clr))
+                    ApplyColorListFast(clr);
+            }
         }
 
         private static byte[] AuraPowerMessage(AuraPower flags)
@@ -282,7 +284,8 @@ namespace GHelper.USB
 
             if (Aura.Mode == AuraMode.AMBIENT)
             {
-                ApplyColorListFast(Aura.CustomRGB.Ambient(), true);
+                Aura.CustomRGB.Ambient(out Color[] clrs);
+                ApplyColorListFast(clrs, true);
                 timer.Enabled = true;
                 timer.Interval = 80;
                 return;

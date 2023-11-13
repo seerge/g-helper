@@ -85,17 +85,17 @@ namespace GHelper.USB
                     for (byte b = 0; b < maxLeds; b += 0x10)
                     {
                         msg[6] = b;
-                        Device.auraDevice.Write(msg,0);
+                        Device.auraDevice.Write(msg);
                     }
                     msg[6] = maxLeds;
-                    Device.auraDevice.Write(msg, 0);
+                    Device.auraDevice.Write(msg);
                 }
 
                 msg[4] = 4;
                 msg[5] = 0;
                 msg[6] = 0;
                 msg[7] = 0;
-                Device.auraDevice.Write(msg, 0);
+                Device.auraDevice.WriteFeatureData(msg);
             }
         }
     }
