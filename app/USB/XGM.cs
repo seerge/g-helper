@@ -1,71 +1,65 @@
-﻿using System.Text;
-using HidLibrary;
+﻿// Reference : thanks to https://github.com/RomanYazvinsky/ for initial discovery of XGM payloads
+
+using HidSharp;
+using System.Diagnostics;
+using System.Text;
 
 namespace GHelper.USB
 {
-    // Reference : thanks to https://github.com/RomanYazvinsky/ for initial discovery of XGM payloads
     public static class XGM
     {
-        private static int Set(byte[] msg)
+        const int XGM_ID = 0x1970;
+        public const int ASUS_ID = 0x0b05;
+        public static void Write(byte[] data)
         {
+            HidDeviceLoader loader = new HidDeviceLoader();
+            HidDevice device = loader.GetDevices(ASUS_ID, XGM_ID).Where(device => device.GetMaxFeatureReportLength() >= 300).FirstOrDefault();
+            if (device is null) return;
 
-            //Logger.WriteLine("XGM Payload :" + BitConverter.ToString(msg));
-
-            var payload = new byte[300];
-            Array.Copy(msg, payload, msg.Length);
-
-            foreach (HidDevice device in Device.GetHidDevices(new int[] { 0x1970 }, 300))
+            try
             {
-                device.OpenDevice();
-                Logger.WriteLine("XGM " + device.Attributes.ProductHexId + "|" + device.Capabilities.FeatureReportByteLength + ":" + BitConverter.ToString(msg));
-                device.WriteFeatureData(payload);
-                device.CloseDevice();
-                //return 1;
-            }
+                using (HidStream hidStream = device.Open())
+                {
+                    var payload = new byte[300];
+                    Array.Copy(data, payload, data.Length);
 
-            return 0;
+                    hidStream.Write(payload);
+                    Logger.WriteLine("XGM " + device.ProductID + "|" + device.GetMaxFeatureReportLength() + ":" + BitConverter.ToString(data));
+
+                    hidStream.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error accessing HID device: {ex.Message}");
+            }
         }
+
         public static void Init()
         {
-            byte[] ASUS_INIT = Encoding.ASCII.GetBytes("^ASUS Tech.Inc.");
-
-            Set(ASUS_INIT);
-
-            /*
-            SetXGM(new byte[] { 0x5e, 0xd0, 0x02 });
-            SetXGM(new byte[] { 0x5e, 0xd0, 0x03 });
-            SetXGM(ASUS_INIT);
-            SetXGM(new byte[] { 0x5e, 0xd1, 0x02 }); // reset fan
-            SetXGM(ASUS_INIT);
-            SetXGM(new byte[] { 0x5e, 0xce, 0x03 }); 
-            SetXGM(new byte[] { 0x5e, 0xd0, 0x04 });
-            SetXGM(new byte[] { 0x5e, 0xd0, 0x01 });
-            */
+            Write(Encoding.ASCII.GetBytes("^ASUS Tech.Inc."));
         }
 
-        public static void ApplyLight(bool status)
+        public static void Light(bool status)
         {
-            Set(new byte[] { 0x5e, 0xc5, status ? (byte)0x50 : (byte)0 });
+            Write(new byte[] { 0x5e, 0xc5, status ? (byte)0x50 : (byte)0 });
         }
 
 
-        public static int Reset()
+        public static void Reset()
         {
-            return Set(new byte[] { 0x5e, 0xd1, 0x02 });
+            Write(new byte[] { 0x5e, 0xd1, 0x02 });
         }
 
-        public static int SetFan(byte[] curve)
+        public static void SetFan(byte[] curve)
         {
-
-            if (AsusACPI.IsInvalidCurve(curve)) return -1;
-
-            //InitXGM();
+            if (AsusACPI.IsInvalidCurve(curve)) return;
 
             byte[] msg = new byte[19];
             Array.Copy(new byte[] { 0x5e, 0xd1, 0x01 }, msg, 3);
             Array.Copy(curve, 0, msg, 3, curve.Length);
 
-            return Set(msg);
+            Write(msg);
         }
     }
 }

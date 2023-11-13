@@ -90,8 +90,6 @@ namespace GHelper
             tableLayoutKeyboard = new TableLayoutPanel();
             buttonKeyboard = new RButton();
             panelColor = new Panel();
-            pictureColor4 = new PictureBox();
-            pictureColor3 = new PictureBox();
             pictureColor2 = new PictureBox();
             pictureColor = new PictureBox();
             buttonKeyboardColor = new RButton();
@@ -134,8 +132,6 @@ namespace GHelper
             panelKeyboard.SuspendLayout();
             tableLayoutKeyboard.SuspendLayout();
             panelColor.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)pictureColor4).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)pictureColor3).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureColor2).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureColor).BeginInit();
             panelKeyboardTitle.SuspendLayout();
@@ -1132,8 +1128,6 @@ namespace GHelper
             // panelColor
             // 
             panelColor.AutoSize = true;
-            panelColor.Controls.Add(pictureColor4);
-            panelColor.Controls.Add(pictureColor3);
             panelColor.Controls.Add(pictureColor2);
             panelColor.Controls.Add(pictureColor);
             panelColor.Controls.Add(buttonKeyboardColor);
@@ -1143,28 +1137,6 @@ namespace GHelper
             panelColor.Name = "panelColor";
             panelColor.Size = new Size(254, 48);
             panelColor.TabIndex = 36;
-            // 
-            // pictureColor4
-            // 
-            pictureColor4.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            pictureColor4.Location = new Point(40, 15);
-            pictureColor4.Margin = new Padding(8);
-            pictureColor4.Name = "pictureColor4";
-            pictureColor4.Size = new Size(20, 20);
-            pictureColor4.TabIndex = 43;
-            pictureColor4.TabStop = false;
-            pictureColor4.Visible = false;
-            // 
-            // pictureColor3
-            // 
-            pictureColor3.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            pictureColor3.Location = new Point(69, 15);
-            pictureColor3.Margin = new Padding(8);
-            pictureColor3.Name = "pictureColor3";
-            pictureColor3.Size = new Size(20, 20);
-            pictureColor3.TabIndex = 42;
-            pictureColor3.TabStop = false;
-            pictureColor3.Visible = false;
             // 
             // pictureColor2
             // 
@@ -1467,7 +1439,7 @@ namespace GHelper
             MinimumSize = new Size(822, 71);
             Name = "SettingsForm";
             Padding = new Padding(11);
-            ShowIcon = false;
+            ShowIcon = true;
             StartPosition = FormStartPosition.CenterScreen;
             Text = "G-Helper";
             panelMatrix.ResumeLayout(false);
@@ -1505,8 +1477,6 @@ namespace GHelper
             tableLayoutKeyboard.ResumeLayout(false);
             tableLayoutKeyboard.PerformLayout();
             panelColor.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)pictureColor4).EndInit();
-            ((System.ComponentModel.ISupportInitialize)pictureColor3).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureColor2).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureColor).EndInit();
             panelKeyboardTitle.ResumeLayout(false);
@@ -1603,7 +1573,5 @@ namespace GHelper
         private Label labelCharge;
         private RButton buttonFnLock;
         private RButton buttonBatteryFull;
-        private PictureBox pictureColor4;
-        private PictureBox pictureColor3;
     }
 }

@@ -15,7 +15,7 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <ProduceReferenceAssembly>False</ProduceReferenceAssembly>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
-    <AssemblyVersion>0.130</AssemblyVersion>
+    <AssemblyVersion>0.131</AssemblyVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -59,7 +59,6 @@
 
   <ItemGroup>
     <PackageReference Include="FftSharp" Version="2.0.0" />
-    <PackageReference Include="hidlibrary" Version="3.3.40" />
     <PackageReference Include="HidSharpCore" Version="1.2.1.1" />
     <PackageReference Include="NAudio" Version="2.1.0" />
     <PackageReference Include="NvAPIWrapper.Net" Version="0.8.1.101" />

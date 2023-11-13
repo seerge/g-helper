@@ -1,9 +1,4 @@
-﻿using System.Drawing;
-using System.Drawing.Imaging;
-using System.Runtime.CompilerServices;
-using System.Runtime.ConstrainedExecution;
-using System.Runtime.InteropServices;
-using System.Windows.Forms;
+﻿using System.Runtime.CompilerServices;
 
 namespace GHelper.Helpers
 {
@@ -24,7 +19,8 @@ namespace GHelper.Helpers
             return Color.FromArgb(red, green, blue);
         }
 
-        public static Color GetMidColor(Color color1, Color color2) {
+        public static Color GetMidColor(Color color1, Color color2)
+        {
             return Color.FromArgb((color1.R + color2.R) / 2,
                 (color1.G + color2.G) / 2,
                 (color1.B + color2.B) / 2);
@@ -99,34 +95,36 @@ namespace GHelper.Helpers
                 return new HSV { Hue = hue, Saturation = saturation, Value = value };
             }
 
-            public static Color UpSaturation(Color rgb, float increse = 0.25f)
+            public static Color UpSaturation(Color rgb, float increse = 0.2f) //make color more colored
             {
                 if (rgb.R == rgb.G && rgb.G == rgb.B)
                     return rgb;
                 var hsv_color = ToHSV(rgb);
-                hsv_color.Saturation = Math.Min(hsv_color.Saturation + increse,1.00f);
+                hsv_color.Saturation = Math.Min(hsv_color.Saturation + increse, 1.00f);
                 return hsv_color.ToRGB();
             }
 
         }
 
-        public class SmoothColor {
+        public class SmoothColor
+        {
             public Color RGB
             {
                 get { return Interpolate(); }
                 set { clr = value; }
             }
 
-            Color Interpolate() {
+            Color Interpolate()
+            {
                 clr_ = ColorInterpolator.InterpolateBetween(clr, clr_, smooth);
                 return clr_;
             }
 
-            private float smooth = 0.65f;
+            private float smooth = 0.65f; //smooth
             private Color clr = new Color();
             private Color clr_ = new Color();
 
-            static class ColorInterpolator 
+            static class ColorInterpolator
             {
                 delegate byte ComponentSelector(Color color);
                 static ComponentSelector _redSelector = color => color.R;
@@ -158,7 +156,6 @@ namespace GHelper.Helpers
             }
 
         }
-
     }
 
 }

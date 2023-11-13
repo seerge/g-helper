@@ -1,4 +1,5 @@
-﻿using HidLibrary;
+﻿using HidSharp;
+using GHelper.USB;
 
 namespace GHelper.Input
 {
@@ -9,14 +10,14 @@ namespace GHelper.Input
 
         public KeyboardListener(Action<int> KeyHandler)
         {
-            HidDevice? input = USB.Device.GetDevice();
+            HidStream? input = AsusHid.FindHidStream(AsusHid.INPUT_ID);
             
             // Fallback
             if (input == null)
             {
-                USB.Device.Init();
+                Aura.Init();
                 Thread.Sleep(1000);
-                input = USB.Device.GetDevice();
+                input = input = AsusHid.FindHidStream(AsusHid.INPUT_ID);
             }
 
             if (input == null)
@@ -25,7 +26,7 @@ namespace GHelper.Input
                 return;
             }
 
-            Logger.WriteLine($"Input: {input.DevicePath}");
+            Logger.WriteLine($"Input: {input.Device.DevicePath}");
 
             var task = Task.Run(() =>
             {
@@ -35,14 +36,16 @@ namespace GHelper.Input
                     {
 
                         // Emergency break
-                        if (input == null || !input.IsConnected)
+                        if (input == null || !input.CanRead)
                         {
                             Logger.WriteLine("Listener terminated");
                             break;
                         }
 
-                        var data = input.Read().Data;
-                        if (data.Length > 1 && data[0] == USB.Device.INPUT_HID_ID && data[1] > 0 && data[1] != 236)
+                        input.ReadTimeout = int.MaxValue;
+
+                        var data = input.Read();
+                        if (data.Length > 1 && data[0] == AsusHid.INPUT_ID && data[1] > 0 && data[1] != 236)
                         {
                             Logger.WriteLine($"Key: {data[1]}");
                             KeyHandler(data[1]);

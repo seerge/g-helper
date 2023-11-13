@@ -292,4 +292,13 @@
   <data name="MFont" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Font.otf;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="dot_eco" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\dot-eco.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="dot_standard" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\dot-standard.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="dot_ultimate" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\dot-ultimate.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>

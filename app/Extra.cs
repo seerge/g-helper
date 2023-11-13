@@ -4,6 +4,7 @@ using GHelper.Helpers;
 using GHelper.Input;
 using GHelper.Mode;
 using GHelper.UI;
+using GHelper.USB;
 using System.Diagnostics;
 
 namespace GHelper
@@ -146,8 +147,8 @@ namespace GHelper
                 labelM2.Visible = comboM2.Visible = textM2.Visible = false;
                 labelM4.Visible = comboM4.Visible = textM4.Visible = false;
                 labelFNF4.Visible = comboFNF4.Visible = textFNF4.Visible = false;
-            }
-
+            } 
+            
             if (AppConfig.NoMKeys())
             {
                 labelM1.Text = "FN+F2";
@@ -218,10 +219,10 @@ namespace GHelper
             Shown += Keyboard_Shown;
 
             comboKeyboardSpeed.DropDownStyle = ComboBoxStyle.DropDownList;
-            comboKeyboardSpeed.DataSource = new BindingSource(USB.Aura.GetSpeeds(), null);
+            comboKeyboardSpeed.DataSource = new BindingSource(Aura.GetSpeeds(), null);
             comboKeyboardSpeed.DisplayMember = "Value";
             comboKeyboardSpeed.ValueMember = "Key";
-            comboKeyboardSpeed.SelectedValue = USB.Aura.Speed;
+            comboKeyboardSpeed.SelectedValue = Aura.Speed;
             comboKeyboardSpeed.SelectedValueChanged += ComboKeyboardSpeed_SelectedValueChanged;
 
             // Keyboard
@@ -400,7 +401,7 @@ namespace GHelper
             else
                 AppConfig.Set("keyboard_brightness", sliderBrightness.Value);
 
-            USB.LightControl.ApplyBrightness(sliderBrightness.Value, "Slider");
+            Aura.ApplyBrightness(sliderBrightness.Value, "Slider");
         }
 
         private void InitServices()
@@ -515,7 +516,7 @@ namespace GHelper
         private void CheckXMG_CheckedChanged(object? sender, EventArgs e)
         {
             AppConfig.Set("xmg_light", (checkXMG.Checked ? 1 : 0));
-            USB.XGM.ApplyLight(checkXMG.Checked);
+            XGM.Light(checkXMG.Checked);
         }
 
         private void CheckUSBC_CheckedChanged(object? sender, EventArgs e)
@@ -563,14 +564,14 @@ namespace GHelper
             AppConfig.Set("keyboard_sleep_logo", (checkSleepLogo.Checked ? 1 : 0));
             AppConfig.Set("keyboard_shutdown_logo", (checkShutdownLogo.Checked ? 1 : 0));
 
-            USB.LightControl.ApplyAuraPower();
+            Aura.ApplyPower();
 
         }
 
         private void ComboKeyboardSpeed_SelectedValueChanged(object? sender, EventArgs e)
         {
             AppConfig.Set("aura_speed", (int)comboKeyboardSpeed.SelectedValue);
-            USB.LightControl.ApplyAura();
+            Aura.ApplyAura();
         }
 
 

@@ -1,6 +1,7 @@
 ﻿using GHelper.Display;
 using GHelper.Gpu.NVidia;
 using GHelper.Helpers;
+using GHelper.USB;
 using System.Diagnostics;
 
 namespace GHelper.Gpu
@@ -53,7 +54,7 @@ namespace GHelper.Gpu
             AppConfig.Set("gpu_mode", gpuMode);
             settings.VisualiseGPUMode(gpuMode);
 
-            USB.LightControl.ApplyGPUColor();
+            Aura.CustomRGB.ApplyGPUColor();
 
         }
 
@@ -284,7 +285,7 @@ namespace GHelper.Gpu
             if (Program.acpi.IsXGConnected())
             {
                 //Program.acpi.DeviceSet(AsusACPI.GPUXGInit, 1, "XG Init");
-                USB.XGM.Init();
+                XGM.Init();
             }
 
         }
@@ -298,7 +299,7 @@ namespace GHelper.Gpu
 
                 if (Program.acpi.DeviceGet(AsusACPI.GPUXG) == 1)
                 {
-                    USB.XGM.Reset();
+                    XGM.Reset();
                     HardwareControl.KillGPUApps();
 
                     DialogResult dialogResult = MessageBox.Show("Did you close all applications running on XG Mobile?", "Disabling XG Mobile", MessageBoxButtons.YesNo);
@@ -318,12 +319,12 @@ namespace GHelper.Gpu
 
                     InitXGM();
 
-                    USB.XGM.ApplyLight(AppConfig.Is("xmg_light"));
+                    XGM.Light(AppConfig.Is("xmg_light"));
 
                     await Task.Delay(TimeSpan.FromSeconds(15));
 
                     if (AppConfig.IsMode("auto_apply"))
-                        USB.XGM.SetFan(AppConfig.GetFanConfig(AsusFan.XGM));
+                        XGM.SetFan(AppConfig.GetFanConfig(AsusFan.XGM));
 
                     HardwareControl.RecreateGpuControl();
 

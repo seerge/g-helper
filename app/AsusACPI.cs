@@ -1,4 +1,5 @@
 ﻿using GHelper;
+using GHelper.USB;
 using System.Management;
 using System.Runtime.InteropServices;
 
@@ -549,7 +550,7 @@ public class AsusACPI
         DeviceSet(TUF_KB_BRIGHTNESS, param, "TUF Brightness");
     }
 
-    public void TUFKeyboardRGB(int mode, Color color, int speed, string? log = "TUF RGB")
+    public void TUFKeyboardRGB(AuraMode mode, Color color, int speed, string? log = "TUF RGB")
     {
 
         byte[] setting = new byte[6];

@@ -10,6 +10,7 @@ using GHelper.Mode;
 using GHelper.Peripherals;
 using GHelper.Peripherals.Mouse;
 using GHelper.UI;
+using GHelper.USB;
 using System.Diagnostics;
 using System.Timers;
 
@@ -133,8 +134,6 @@ namespace GHelper
 
             pictureColor.Click += PictureColor_Click;
             pictureColor2.Click += PictureColor2_Click;
-            pictureColor3.Click += PictureColor3_Click;
-            pictureColor4.Click += PictureColor4_Click;
 
             labelCPUFan.Click += LabelCPUFan_Click;
             labelGPUFan.Click += LabelCPUFan_Click;
@@ -326,7 +325,7 @@ namespace GHelper
                         {
                             case 0:
                                 Logger.WriteLine("Monitor Power Off");
-                                USB.LightControl.ApplyBrightness(0);
+                                Aura.ApplyBrightness(0);
                                 break;
                             case 1:
                                 Logger.WriteLine("Monitor Power On");
@@ -607,15 +606,16 @@ namespace GHelper
 
         private void PictureColor2_Click(object? sender, EventArgs e)
         {
-            OpendColorDialogAndSave("aura_color2");
-        }
-        private void PictureColor3_Click(object? sender, EventArgs e)
-        {
-            OpendColorDialogAndSave("aura_color3");
-        }
-        private void PictureColor4_Click(object? sender, EventArgs e)
-        {
-            OpendColorDialogAndSave("aura_color4");
+
+            ColorDialog colorDlg = new ColorDialog();
+            colorDlg.AllowFullOpen = true;
+            colorDlg.Color = pictureColor2.BackColor;
+
+            if (colorDlg.ShowDialog() == DialogResult.OK)
+            {
+                AppConfig.Set("aura_color2", colorDlg.Color.ToArgb());
+                SetAura();
+            }
         }
 
         private void PictureColor_Click(object? sender, EventArgs e)
@@ -683,35 +683,32 @@ namespace GHelper
             FansToggle();
         }
 
-        private void OpendColorDialogAndSave(String config_name)
+        private void ButtonKeyboardColor_Click(object? sender, EventArgs e)
         {
+
             ColorDialog colorDlg = new ColorDialog();
             colorDlg.AllowFullOpen = true;
             colorDlg.Color = pictureColor.BackColor;
 
             if (colorDlg.ShowDialog() == DialogResult.OK)
             {
-                AppConfig.Set(config_name, colorDlg.Color.ToArgb());
+                AppConfig.Set("aura_color", colorDlg.Color.ToArgb());
                 SetAura();
             }
         }
 
-        private void ButtonKeyboardColor_Click(object? sender, EventArgs e)
-        {
-            OpendColorDialogAndSave("aura_color");
-        }
-
         public void InitAura()
         {
-            USB.Aura.Speed = AppConfig.Get("aura_speed");
-            USB.Aura.Mode = (USB.AuraMode)AppConfig.Get("aura_mode");
-            USB.Aura.SetColors();
+            Aura.Mode = (AuraMode)AppConfig.Get("aura_mode");
+            Aura.Speed = (AuraSpeed)AppConfig.Get("aura_speed");
+            Aura.SetColor(AppConfig.Get("aura_color"));
+            Aura.SetColor2(AppConfig.Get("aura_color2"));
 
             comboKeyboard.DropDownStyle = ComboBoxStyle.DropDownList;
-            comboKeyboard.DataSource = new BindingSource(USB.Aura.GetModes(), null);
+            comboKeyboard.DataSource = new BindingSource(Aura.GetModes(), null);
             comboKeyboard.DisplayMember = "Value";
             comboKeyboard.ValueMember = "Key";
-            comboKeyboard.SelectedValue = USB.Aura.Mode;
+            comboKeyboard.SelectedValue = Aura.Mode;
             comboKeyboard.SelectedValueChanged += ComboKeyboard_SelectedValueChanged;
 
 
@@ -733,7 +730,7 @@ namespace GHelper
         {
             Task.Run(() =>
             {
-                USB.LightControl.ApplyAura();
+                Aura.ApplyAura();
                 VisualiseAura();
             });
         }
@@ -742,14 +739,9 @@ namespace GHelper
         {
             Invoke(delegate
             {
-                pictureColor.BackColor = USB.Aura.Colors[0];
-                pictureColor2.BackColor = USB.Aura.Colors[1];
-                pictureColor3.BackColor = USB.Aura.Colors[2];
-                pictureColor4.BackColor = USB.Aura.Colors[3];
-
-                pictureColor2.Visible = USB.Aura.HasSecondColor();
-                pictureColor3.Visible = USB.Aura.Has4Colors();
-                pictureColor4.Visible = USB.Aura.Has4Colors();
+                pictureColor.BackColor = Aura.Color1;
+                pictureColor2.BackColor = Aura.Color2;
+                pictureColor2.Visible = Aura.HasSecondColor();
             });
         }
 
@@ -1053,14 +1045,14 @@ namespace GHelper
 
             if (!AppConfig.Is("skip_aura"))
             {
-                USB.LightControl.ApplyAuraPower();
-                USB.LightControl.ApplyAura();
+                Aura.ApplyPower();
+                Aura.ApplyAura();
             }
 
             InputDispatcher.SetBacklightAuto(true);
 
             if (Program.acpi.IsXGConnected())
-                USB.XGM.ApplyLight(AppConfig.Is("xmg_light"));
+                XGM.Light(AppConfig.Is("xmg_light"));
 
             if (AppConfig.HasTabletMode()) InputDispatcher.TabletMode();
 
@@ -1185,11 +1177,13 @@ namespace GHelper
                     buttonOptimized.Activated = GPUAuto;
                     labelGPU.Text = Properties.Strings.GPUMode + ": " + Properties.Strings.GPUModeEco;
                     Program.trayIcon.Icon = Properties.Resources.eco;
+                    Icon = Properties.Resources.dot_eco;
                     break;
                 case AsusACPI.GPUModeUltimate:
                     buttonUltimate.Activated = true;
                     labelGPU.Text = Properties.Strings.GPUMode + ": " + Properties.Strings.GPUModeUltimate;
                     Program.trayIcon.Icon = Properties.Resources.ultimate;
+                    Icon = Properties.Resources.dot_ultimate;
                     break;
                 default:
                     buttonOptimized.BorderColor = colorStandard;
@@ -1197,6 +1191,7 @@ namespace GHelper
                     buttonOptimized.Activated = GPUAuto;
                     labelGPU.Text = Properties.Strings.GPUMode + ": " + Properties.Strings.GPUModeStandard;
                     Program.trayIcon.Icon = Properties.Resources.standard;
+                    Icon = Properties.Resources.dot_standard;
                     break;
             }
 

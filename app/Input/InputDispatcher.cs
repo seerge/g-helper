@@ -1,6 +1,7 @@
 ﻿using GHelper.Display;
 using GHelper.Helpers;
 using GHelper.Mode;
+using GHelper.USB;
 using Microsoft.Win32;
 using System.Diagnostics;
 using System.Management;
@@ -59,7 +60,7 @@ namespace GHelper.Input
             if (backlightActivity && iddle.TotalSeconds > kb_timeout)
             {
                 backlightActivity = false;
-                USB.LightControl.ApplyBrightness(0, "Timeout");
+                Aura.ApplyBrightness(0, "Timeout");
             }
 
             if (!backlightActivity && iddle.TotalSeconds < kb_timeout)
@@ -302,10 +303,10 @@ namespace GHelper.Input
                         KeyboardHook.KeyKeyPress(Keys.LWin, Keys.P);
                         break;
                     case Keys.F10:
-                        HandleOptimizationEvent(107);
+                        ToggleTouchpadEvent(true);
                         break;
                     case Keys.F11:
-                        HandleOptimizationEvent(108);
+                        SleepEvent();
                         break;
                     case Keys.F12:
                         KeyboardHook.KeyKeyPress(Keys.LWin, Keys.A);
@@ -476,9 +477,21 @@ namespace GHelper.Input
             }
         }
 
+        static void ToggleTouchpadEvent(bool hotkey = false)
+        {
+            if (hotkey || !AppConfig.IsHardwareTouchpadToggle()) ToggleTouchpad();
+            Thread.Sleep(200);
+            Program.toast.RunToast(GetTouchpadState() ? "On" : "Off", ToastIcon.Touchpad);
+        }
+
         static void ToggleTouchpad()
         {
-            KeyboardHook.KeyKeyKeyPress(Keys.LWin, Keys.LControlKey, Keys.F24);
+            KeyboardHook.KeyKeyKeyPress(Keys.LWin, Keys.LControlKey, Keys.F24, 50);
+        }
+
+        static void SleepEvent()
+        {
+            Program.acpi.DeviceSet(AsusACPI.UniversalControl, AsusACPI.KB_Sleep, "Sleep");
         }
 
         public static void ToggleArrowLock()
@@ -619,12 +632,10 @@ namespace GHelper.Input
                         Program.acpi.DeviceSet(AsusACPI.UniversalControl, AsusACPI.Brightness_Up, "Brightness");
                     break;
                 case 107: // FN+F10
-                    ToggleTouchpad();
-                    Thread.Sleep(200);
-                    Program.toast.RunToast(GetTouchpadState() ? "On" : "Off", ToastIcon.Touchpad);
+                    ToggleTouchpadEvent();
                     break;
                 case 108: // FN+F11
-                    Program.acpi.DeviceSet(AsusACPI.UniversalControl, AsusACPI.KB_Sleep, "Sleep");
+                    SleepEvent();
                     break;
                 case 106: // Screenpad button on DUO
                     if (Control.ModifierKeys == Keys.Shift)
@@ -654,8 +665,8 @@ namespace GHelper.Input
 
         public static void SetBacklightAuto(bool init = false)
         {
-            if (init) USB.Device.Init();
-            USB.LightControl.ApplyBrightness(GetBacklight(), "Auto", init);
+            if (init) Aura.Init();
+            Aura.ApplyBrightness(GetBacklight(), "Auto", init);
         }
 
         public static void SetBacklight(int delta, bool force = false)
@@ -678,7 +689,7 @@ namespace GHelper.Input
 
             if (force || !OptimizationService.IsRunning())
             {
-                USB.LightControl.ApplyBrightness(backlight, "HotKey");
+                Aura.ApplyBrightness(backlight, "HotKey");
             }
 
             if (!OptimizationService.IsOSDRunning())
