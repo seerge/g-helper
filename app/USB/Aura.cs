@@ -127,27 +127,6 @@ namespace GHelper.USB
                 }
         }
 
-        private static void Timer_Elapsed(object? sender, System.Timers.ElapsedEventArgs e)
-        {
-            SetHeatmap();
-        }
-
-        static void SetHeatmap(bool init = false)
-        {
-            float cpuTemp = (float)HardwareControl.GetCPUTemp();
-            int freeze = 20, cold = 40, warm = 65, hot = 90;
-            Color color;
-
-            //Debug.WriteLine(cpuTemp);
-
-            if (cpuTemp < cold) color = ColorUtilities.GetWeightedAverage(Color.Blue, Color.Green, ((float)cpuTemp - freeze) / (cold - freeze));
-            else if (cpuTemp < warm) color = ColorUtilities.GetWeightedAverage(Color.Green, Color.Yellow, ((float)cpuTemp - cold) / (warm - cold));
-            else if (cpuTemp < hot) color = ColorUtilities.GetWeightedAverage(Color.Yellow, Color.Red, ((float)cpuTemp - warm) / (hot - warm));
-            else color = Color.Red;
-
-            ApplyColor(color, init);
-        }
-
         public static Dictionary<AuraSpeed, string> GetSpeeds()
         {
             return new Dictionary<AuraSpeed, string>
@@ -217,6 +196,28 @@ namespace GHelper.USB
         {
             return mode == AuraMode.AuraBreathe && !isACPI;
         }
+
+        private static void Timer_Elapsed(object? sender, System.Timers.ElapsedEventArgs e)
+        {
+            SetHeatmap();
+        }
+
+        static void SetHeatmap(bool init = false)
+        {
+            float cpuTemp = (float)HardwareControl.GetCPUTemp();
+            int freeze = 20, cold = 40, warm = 65, hot = 90;
+            Color color;
+
+            //Debug.WriteLine(cpuTemp);
+
+            if (cpuTemp < cold) color = ColorUtilities.GetWeightedAverage(Color.Blue, Color.Green, ((float)cpuTemp - freeze) / (cold - freeze));
+            else if (cpuTemp < warm) color = ColorUtilities.GetWeightedAverage(Color.Green, Color.Yellow, ((float)cpuTemp - cold) / (warm - cold));
+            else if (cpuTemp < hot) color = ColorUtilities.GetWeightedAverage(Color.Yellow, Color.Red, ((float)cpuTemp - warm) / (hot - warm));
+            else color = Color.Red;
+
+            ApplyColor(color, init);
+        }
+
 
         public static byte[] AuraMessage(AuraMode mode, Color color, Color color2, int speed, bool mono = false)
         {
