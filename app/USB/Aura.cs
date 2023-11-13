@@ -447,7 +447,7 @@ namespace GHelper.USB
 
             if (Mode == AuraMode.AMBIENT)
             {
-                CustomRGB.ApplyAmbient();
+                CustomRGB.ApplyAmbient(true);
                 timer.Enabled = true;
                 timer.Interval = 80;
                 return;
@@ -472,22 +472,22 @@ namespace GHelper.USB
         public static class CustomRGB {
 
             public static void ApplyGPUColor()
-        {
-            if ((AuraMode)AppConfig.Get("aura_mode") != AuraMode.GPUMODE) return;
-
-            switch (GPUModeControl.gpuMode)
             {
-                case AsusACPI.GPUModeUltimate:
-                    ApplyColor(Color.Red, true);
-                    break;
-                case AsusACPI.GPUModeEco:
-                    ApplyColor(Color.Green, true);
-                    break;
-                default:
-                    ApplyColor(Color.Yellow, true);
-                    break;
+                if ((AuraMode)AppConfig.Get("aura_mode") != AuraMode.GPUMODE) return;
+
+                switch (GPUModeControl.gpuMode)
+                {
+                    case AsusACPI.GPUModeUltimate:
+                        ApplyColor(Color.Red, true);
+                        break;
+                    case AsusACPI.GPUModeEco:
+                        ApplyColor(Color.Green, true);
+                        break;
+                    default:
+                        ApplyColor(Color.Yellow, true);
+                        break;
+                }
             }
-        }
 
             public static void ApplyHeatmap(bool init = false)
             {
