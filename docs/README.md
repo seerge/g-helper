@@ -108,7 +108,9 @@ Ultimate mode is supported (by hardware) only on 2022+ models
 You don't have to, it's purely optional. From my experience built in (in BIOS) performance modes work well. Limit your power or apply custom fan curves only if you have issues. As soon as you click Apply in the ``Fans + Power`` section BIOS will consider your fan curve as "custom"! (no matter if you modified it or not)
 
 #### How does G-helper control my fan speeds?
-**It doesn't.** Your BIOS does (same as in case with Armoury). What G-helper can do - is (optionally) set a custom fan profile to current performance mode consisting of 8 pairs of temperature + fan speed % via same endpoint armoury seem to use.
+**It doesn't.** Your firmware / BIOS controls them in real-time. Armoury also doesn't control fans in real time anyhow.
+
+What G-helper can do - is (optionally) set a custom fan profile to the current performance mode consisting of 8 pairs of temperature + fan speed % via the same endpoint Armoury seems to use. How it will be interpreted - is still up to the firmware.
 
 #### How do I change fan % to fan RPM?
 Click on them
