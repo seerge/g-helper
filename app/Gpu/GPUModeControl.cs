@@ -54,7 +54,7 @@ namespace GHelper.Gpu
             AppConfig.Set("gpu_mode", gpuMode);
             settings.VisualiseGPUMode(gpuMode);
 
-            Aura.ApplyGPUColor();
+            Aura.CustomRGB.ApplyGPUColor();
 
         }
 

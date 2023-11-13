@@ -1,5 +1,11 @@
 ﻿using GHelper.Gpu;
 using GHelper.Helpers;
+using GHelper.Input;
+using Microsoft.VisualBasic.Devices;
+using System.Drawing;
+using System.Drawing.Drawing2D;
+using System.Drawing.Imaging;
+using System.Runtime.InteropServices;
 using System.Text;
 
 namespace GHelper.USB
@@ -47,6 +53,7 @@ namespace GHelper.USB
         Flash = 12,
         HEATMAP = 20,
         GPUMODE = 21,
+        AMBIENT = 22,
     }
 
     public enum AuraSpeed : int
@@ -62,6 +69,8 @@ namespace GHelper.USB
 
         static byte[] MESSAGE_APPLY = { AsusHid.AURA_ID, 0xb4 };
         static byte[] MESSAGE_SET = { AsusHid.AURA_ID, 0xb5, 0, 0, 0 };
+
+        static readonly int AURA_ZONES = 0x12;
 
         private static AuraMode mode = AuraMode.AuraStatic;
         private static AuraSpeed speed = AuraSpeed.Normal;
@@ -111,6 +120,7 @@ namespace GHelper.USB
             { AuraMode.Comet, "Comet" },
             { AuraMode.Flash, "Flash" },
             { AuraMode.HEATMAP, "Heatmap"},
+            { AuraMode.AMBIENT, "Ambient"},
         };
 
         static Aura()
@@ -199,23 +209,17 @@ namespace GHelper.USB
 
         private static void Timer_Elapsed(object? sender, System.Timers.ElapsedEventArgs e)
         {
-            SetHeatmap();
-        }
+            if (!InputDispatcher.backlightActivity)
+                return;
 
-        static void SetHeatmap(bool init = false)
+            if (Mode == AuraMode.HEATMAP)
         {
-            float cpuTemp = (float)HardwareControl.GetCPUTemp();
-            int freeze = 20, cold = 40, warm = 65, hot = 90;
-            Color color;
-
-            //Debug.WriteLine(cpuTemp);
-
-            if (cpuTemp < cold) color = ColorUtilities.GetWeightedAverage(Color.Blue, Color.Green, ((float)cpuTemp - freeze) / (cold - freeze));
-            else if (cpuTemp < warm) color = ColorUtilities.GetWeightedAverage(Color.Green, Color.Yellow, ((float)cpuTemp - cold) / (warm - cold));
-            else if (cpuTemp < hot) color = ColorUtilities.GetWeightedAverage(Color.Yellow, Color.Red, ((float)cpuTemp - warm) / (hot - warm));
-            else color = Color.Red;
-
-            ApplyColor(color, init);
+                CustomRGB.ApplyHeatmap();
+            }
+            else if (Mode == AuraMode.AMBIENT)
+            {
+                CustomRGB.ApplyAmbient();
+            }
         }
 
 
@@ -356,12 +360,17 @@ namespace GHelper.USB
 
         }
 
-        public static void ApplyColor(Color color, bool init = false)
+        public static void ApplyColor(Color color, bool init = false) {
+            Color[] color_list = Enumerable.Repeat(color, 0x12).ToArray();
+            ApplyColor(color_list, init);
+        }
+
+        public static void ApplyColor(Color[] color, bool init = false)
         {
 
             if (isACPI)
             {
-                Program.acpi.TUFKeyboardRGB(0, color, 0, null);
+                Program.acpi.TUFKeyboardRGB(0, color[0], 0, null);
                 return;
             }
 
@@ -381,11 +390,11 @@ namespace GHelper.USB
                 msg[6] = 0;
                 msg[7] = 0x10;
 
-                for (byte i = 0; i < 0x12; i++)
+                for (byte i = 0; i < AURA_ZONES; i++)
                 {
-                    msg[start + i * 3] = color.R; // R
-                    msg[start + 1 + i * 3] = color.G; // G
-                    msg[start + 2 + i * 3] = color.B; // B
+                    msg[start + i * 3] = color[i].R; // R
+                    msg[start + 1 + i * 3] = color[i].G; // G
+                    msg[start + 2 + i * 3] = color[i].B; // B
                 }
 
                 if (init)
@@ -412,31 +421,11 @@ namespace GHelper.USB
 
             else
             {
-                AsusHid.WriteAura(AuraMessage(0, color, color, 0));
+                AsusHid.WriteAura(AuraMessage(0, color[0], color[0], 0));
                 AsusHid.WriteAura(MESSAGE_SET);
             }
 
         }
-
-
-        public static void ApplyGPUColor()
-        {
-            if ((AuraMode)AppConfig.Get("aura_mode") != AuraMode.GPUMODE) return;
-
-            switch (GPUModeControl.gpuMode)
-            {
-                case AsusACPI.GPUModeUltimate:
-                    ApplyColor(Color.Red, true);
-                    break;
-                case AsusACPI.GPUModeEco:
-                    ApplyColor(Color.Green, true);
-                    break;
-                default:
-                    ApplyColor(Color.Yellow, true);
-                    break;
-            }
-        }
-
 
         public static void ApplyAura()
         {
@@ -450,14 +439,23 @@ namespace GHelper.USB
 
             if (Mode == AuraMode.HEATMAP)
             {
-                SetHeatmap(true);
+                CustomRGB.ApplyHeatmap(true);
                 timer.Enabled = true;
+                timer.Interval = 2000;
+                return;
+            }
+
+            if (Mode == AuraMode.AMBIENT)
+            {
+                CustomRGB.ApplyAmbient(true);
+                timer.Enabled = true;
+                timer.Interval = 80;
                 return;
             }
 
             if (Mode == AuraMode.GPUMODE)
             {
-                ApplyGPUColor();
+                CustomRGB.ApplyGPUColor();
                 return;
             }
 
@@ -470,6 +468,189 @@ namespace GHelper.USB
 
         }
 
+
+        public static class CustomRGB {
+
+            public static void ApplyGPUColor()
+            {
+                if ((AuraMode)AppConfig.Get("aura_mode") != AuraMode.GPUMODE) return;
+
+                switch (GPUModeControl.gpuMode)
+                {
+                    case AsusACPI.GPUModeUltimate:
+                        ApplyColor(Color.Red, true);
+                        break;
+                    case AsusACPI.GPUModeEco:
+                        ApplyColor(Color.Green, true);
+                        break;
+                    default:
+                        ApplyColor(Color.Yellow, true);
+                        break;
+                }
+            }
+
+            public static void ApplyHeatmap(bool init = false)
+            {
+                float cpuTemp = (float)HardwareControl.GetCPUTemp();
+                int freeze = 20, cold = 40, warm = 65, hot = 90;
+                Color color;
+
+                //Debug.WriteLine(cpuTemp);
+
+                if (cpuTemp < cold) color = ColorUtils.GetWeightedAverage(Color.Blue, Color.Green, ((float)cpuTemp - freeze) / (cold - freeze));
+                else if (cpuTemp < warm) color = ColorUtils.GetWeightedAverage(Color.Green, Color.Yellow, ((float)cpuTemp - cold) / (warm - cold));
+                else if (cpuTemp < hot) color = ColorUtils.GetWeightedAverage(Color.Yellow, Color.Red, ((float)cpuTemp - warm) / (hot - warm));
+                else color = Color.Red;
+
+                ApplyColor(color, init);
+            }
+
+            public static void ApplyAmbient(bool init = false)
+            {
+                var bound = Screen.GetBounds(Point.Empty);
+                bound.Y += bound.Height / 3;
+                bound.Height -= (int)Math.Round(bound.Height * (0.33f + 0.022f)); // cut 1/3 of the top screen + windows panel
+
+                var screen_low = AmbientData.CamptureScreen(bound, 512, 288);
+                Bitmap screeb_pxl = AmbientData.ResizeImage(screen_low, 4, 2); // 4x2 zone. top for keyboard and bot for lightbar
+
+                if (isStrix) //laptop with lightbar
+                {
+                    var mid_left = ColorUtils.GetMidColor(screeb_pxl.GetPixel(0, 1), screeb_pxl.GetPixel(1, 1));
+                    var mid_right = ColorUtils.GetMidColor(screeb_pxl.GetPixel(2, 1), screeb_pxl.GetPixel(3, 1));
+
+                    AmbientData.Colors[6].RGB = ColorUtils.HSV.UpSaturation(screeb_pxl.GetPixel(3, 1)); // right bck
+                    AmbientData.Colors[11].RGB = ColorUtils.HSV.UpSaturation(screeb_pxl.GetPixel(1, 1)); // left bck
+
+                    AmbientData.Colors[7].RGB = AmbientData.Colors[6].RGB;   // right
+                    AmbientData.Colors[10].RGB = AmbientData.Colors[11].RGB; // left
+
+                    AmbientData.Colors[8].RGB = ColorUtils.HSV.UpSaturation(mid_right); // center right
+                    AmbientData.Colors[9].RGB = ColorUtils.HSV.UpSaturation(mid_left);  // center left
+
+                    for (int i = 0; i < 4; i++) // keyboard
+                        AmbientData.Colors[i].RGB = ColorUtils.HSV.UpSaturation(screeb_pxl.GetPixel(i, 0));
+                }
+                else 
+                {
+                    for (int i = 0; i < 4; i++)  //just color transfer from the bottom screen on keyboard
+                        AmbientData.Colors[i].RGB = ColorUtils.HSV.UpSaturation(screeb_pxl.GetPixel(i, 1));
+                }
+
+
+                //screeb_pxl.Save("test.jpg", ImageFormat.Jpeg);
+                screen_low.Dispose();
+                screeb_pxl.Dispose();
+
+                bool is_fresh = false;
+
+                for (int i = 0; i < AURA_ZONES; i++)
+                {
+                    if (AmbientData.result[i].ToArgb() != AmbientData.Colors[i].RGB.ToArgb())
+                        is_fresh = true;
+                    AmbientData.result[i] = AmbientData.Colors[i].RGB;
+                }
+
+                if (is_fresh)
+                    ApplyColor(AmbientData.result, init);
+            }
+
+            static class AmbientData
+            {
+
+                public enum StretchMode
+                {
+                    STRETCH_ANDSCANS = 1,
+                    STRETCH_ORSCANS = 2,
+                    STRETCH_DELETESCANS = 3,
+                    STRETCH_HALFTONE = 4,
+                }
+
+                [DllImport("user32.dll")]
+                private static extern IntPtr GetDesktopWindow();
+
+                [DllImport("user32.dll")]
+                private static extern IntPtr GetWindowDC(IntPtr hWnd);
+
+                [DllImport("gdi32.dll")]
+                private static extern IntPtr CreateCompatibleDC(IntPtr hDC);
+
+                [DllImport("gdi32.dll")]
+                private static extern IntPtr CreateCompatibleBitmap(IntPtr hDC, int nWidth, int nHeight);
+
+                [DllImport("gdi32.dll")]
+                private static extern IntPtr SelectObject(IntPtr hDC, IntPtr hObject);
+
+                [DllImport("user32.dll")]
+                private static extern bool ReleaseDC(IntPtr hWnd, IntPtr hDC);
+
+                [DllImport("gdi32.dll")]
+                private static extern bool DeleteDC(IntPtr hdc);
+
+                [DllImport("gdi32.dll")]
+                private static extern bool DeleteObject(IntPtr hObject);
+
+                [DllImport("gdi32.dll")]
+                private static extern bool StretchBlt(IntPtr hdcDest, int nXOriginDest, int nYOriginDest,
+                int nWidthDest, int nHeightDest,
+                IntPtr hdcSrc, int nXOriginSrc, int nYOriginSrc, int nWidthSrc, int nHeightSrc, Int32 dwRop);
+
+                [DllImport("gdi32.dll")]
+                static extern bool SetStretchBltMode(IntPtr hdc, StretchMode iStretchMode);
+
+                /// <summary>
+                /// Captures a screenshot. 
+                /// </summary>
+                public static Bitmap CamptureScreen(Rectangle rec, int out_w, int out_h)
+                {
+                    IntPtr desktop = GetDesktopWindow();
+                    IntPtr hdc = GetWindowDC(desktop);
+                    IntPtr hdcMem = CreateCompatibleDC(hdc);
+
+                    IntPtr hBitmap = CreateCompatibleBitmap(hdc, out_w, out_h);
+                    IntPtr hOld = SelectObject(hdcMem, hBitmap);
+                    SetStretchBltMode(hdcMem, StretchMode.STRETCH_DELETESCANS);
+                    StretchBlt(hdcMem, 0, 0, out_w, out_h, hdc, rec.X, rec.Y, rec.Width, rec.Height, 0x00CC0020);
+                    SelectObject(hdcMem, hOld);
+
+                    DeleteDC(hdcMem);
+                    ReleaseDC(desktop, hdc);
+                    var result = Image.FromHbitmap(hBitmap, IntPtr.Zero);
+                    DeleteObject(hBitmap);
+                    return result;
+                }
+
+                public static Bitmap ResizeImage(Image image, int width, int height)
+                {
+                    var destRect = new Rectangle(0, 0, width, height);
+                    var destImage = new Bitmap(width, height);
+
+                    destImage.SetResolution(image.HorizontalResolution, image.VerticalResolution);
+
+                    using (var graphics = Graphics.FromImage(destImage))
+                    {
+                        graphics.CompositingMode = CompositingMode.SourceCopy;
+                        graphics.CompositingQuality = CompositingQuality.HighQuality;
+                        graphics.InterpolationMode = InterpolationMode.Bicubic;
+                        graphics.SmoothingMode = SmoothingMode.None;
+                        graphics.PixelOffsetMode = PixelOffsetMode.None;
+
+                        using (var wrapMode = new ImageAttributes())
+                        {
+                            wrapMode.SetWrapMode(WrapMode.TileFlipXY);
+                            graphics.DrawImage(image, destRect, 0, 0, image.Width, image.Height, GraphicsUnit.Pixel, wrapMode);
+                        }
+                    }
+
+                    return destImage;
+                }
+
+                static public Color[] result = new Color[AURA_ZONES];
+                static public ColorUtils.SmoothColor[] Colors = Enumerable.Repeat(0, AURA_ZONES).
+                    Select(h => new ColorUtils.SmoothColor()).ToArray();
+            }
+
+        }
 
     }
 
