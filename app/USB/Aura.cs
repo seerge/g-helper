@@ -538,8 +538,9 @@ namespace GHelper.USB
                 else
                 {
                     screeb_pxl = AmbientData.ResizeImage(screen_low, 1, 1);
+                    var average = ColorUtils.HSV.UpSaturation(screeb_pxl.GetPixel(0, 0), (float)0.7);
                     for (int i = 0; i < 4; i++)  //just color transfer from the bottom screen on keyboard
-                        AmbientData.Colors[i].RGB = ColorUtils.HSV.UpSaturation(screeb_pxl.GetPixel(0, 0), (float)0.7);
+                        AmbientData.Colors[i].RGB = average;
                 }
 
 

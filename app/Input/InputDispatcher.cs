@@ -35,6 +35,8 @@ namespace GHelper.Input
             Program.acpi.SubscribeToEvents(WatcherEventArrived);
             //Task.Run(Program.acpi.RunListener);
 
+            if (AppConfig.ContainsModel("VivoBook")) Program.acpi.DeviceSet(AsusACPI.FnLock, AppConfig.Is("fn_lock") ? 1 : 0, "FnLock");
+
             hook.KeyPressed += new EventHandler<KeyPressedEventArgs>(KeyPressed);
 
             RegisterKeys();
