@@ -213,7 +213,7 @@ namespace GHelper.USB
                 return;
 
             if (Mode == AuraMode.HEATMAP)
-        {
+            {
                 CustomRGB.ApplyHeatmap();
             }
             else if (Mode == AuraMode.AMBIENT)
@@ -449,7 +449,7 @@ namespace GHelper.USB
             {
                 CustomRGB.ApplyAmbient(true);
                 timer.Enabled = true;
-                timer.Interval = 80;
+                timer.Interval = 100;
                 return;
             }
 
@@ -512,10 +512,11 @@ namespace GHelper.USB
                 bound.Height -= (int)Math.Round(bound.Height * (0.33f + 0.022f)); // cut 1/3 of the top screen + windows panel
 
                 var screen_low = AmbientData.CamptureScreen(bound, 512, 288);
-                Bitmap screeb_pxl = AmbientData.ResizeImage(screen_low, 4, 2); // 4x2 zone. top for keyboard and bot for lightbar
+                Bitmap screeb_pxl;
 
                 if (isStrix) //laptop with lightbar
                 {
+                    screeb_pxl = AmbientData.ResizeImage(screen_low, 4, 2); // 4x2 zone. top for keyboard and bot for lightbar
                     var mid_left = ColorUtils.GetMidColor(screeb_pxl.GetPixel(0, 1), screeb_pxl.GetPixel(1, 1));
                     var mid_right = ColorUtils.GetMidColor(screeb_pxl.GetPixel(2, 1), screeb_pxl.GetPixel(3, 1));
 
@@ -533,8 +534,9 @@ namespace GHelper.USB
                 }
                 else 
                 {
+                    screeb_pxl = AmbientData.ResizeImage(screen_low, 1, 1);
                     for (int i = 0; i < 4; i++)  //just color transfer from the bottom screen on keyboard
-                        AmbientData.Colors[i].RGB = ColorUtils.HSV.UpSaturation(screeb_pxl.GetPixel(i, 1));
+                        AmbientData.Colors[i].RGB = ColorUtils.HSV.UpSaturation(screeb_pxl.GetPixel(0, 0), (float)0.7);
                 }
 
 
