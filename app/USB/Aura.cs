@@ -1,8 +1,6 @@
 ﻿using GHelper.Gpu;
 using GHelper.Helpers;
 using GHelper.Input;
-using Microsoft.VisualBasic.Devices;
-using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
@@ -214,7 +212,7 @@ namespace GHelper.USB
                 return;
 
             if (Mode == AuraMode.HEATMAP)
-        {
+            {
                 CustomRGB.ApplyHeatmap();
             }
             else if (Mode == AuraMode.AMBIENT)
@@ -267,7 +265,7 @@ namespace GHelper.USB
                 if (isACPI) Program.acpi.TUFKeyboardBrightness(brightness);
 
                 AsusHid.Write(new byte[] { AsusHid.AURA_ID, 0xba, 0xc5, 0xc4, (byte)brightness }, AsusHid.AURA_ID, log);
-                if (AppConfig.ContainsModel("GA503")) 
+                if (AppConfig.ContainsModel("GA503"))
                     AsusHid.Write(new byte[] { AsusHid.INPUT_ID, 0xba, 0xc5, 0xc4, (byte)brightness }, AsusHid.INPUT_ID, log);
             });
 
@@ -361,7 +359,8 @@ namespace GHelper.USB
 
         }
 
-        public static void ApplyColor(Color color, bool init = false) {
+        public static void ApplyColor(Color color, bool init = false)
+        {
             Color[] color_list = Enumerable.Repeat(color, 0x12).ToArray();
             ApplyColor(color_list, init);
         }
@@ -470,7 +469,8 @@ namespace GHelper.USB
         }
 
 
-        public static class CustomRGB {
+        public static class CustomRGB
+        {
 
             public static void ApplyGPUColor()
             {
@@ -538,7 +538,7 @@ namespace GHelper.USB
                 else
                 {
                     screeb_pxl = AmbientData.ResizeImage(screen_low, 1, 1);
-                    var average = ColorUtils.HSV.UpSaturation(screeb_pxl.GetPixel(0, 0), (float)0.7);
+                    var average = ColorUtils.HSV.UpSaturation(screeb_pxl.GetPixel(0, 0), (float)0.3);
                     for (int i = 0; i < 4; i++)  //just color transfer from the bottom screen on keyboard
                         AmbientData.Colors[i].RGB = average;
                 }
