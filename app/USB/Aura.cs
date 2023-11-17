@@ -359,69 +359,69 @@ namespace GHelper.USB
 
         }
 
-        public static void ApplyColor(Color color, bool init = false)
+        public static void ApplyColorStrix(Color[] color, bool init = false)
         {
-            Color[] color_list = Enumerable.Repeat(color, 0x12).ToArray();
-            ApplyColor(color_list, init);
+            byte[] msg = new byte[0x40];
+
+            byte start = 9;
+            byte maxLeds = 0x93;
+
+            msg[0] = AsusHid.AURA_ID;
+            msg[1] = 0xbc;
+            msg[2] = 0;
+            msg[3] = 1;
+            msg[4] = 1;
+            msg[5] = 1;
+            msg[6] = 0;
+            msg[7] = 0x10;
+
+            for (byte i = 0; i < AURA_ZONES; i++)
+            {
+                msg[start + i * 3] = color[i].R; // R
+                msg[start + 1 + i * 3] = color[i].G; // G
+                msg[start + 2 + i * 3] = color[i].B; // B
+            }
+
+            if (init)
+            {
+                Init();
+                AsusHid.WriteAura(new byte[] { AsusHid.AURA_ID, 0xbc });
+            }
+
+            for (byte b = 0; b < maxLeds; b += 0x10)
+            {
+                msg[6] = b;
+                AsusHid.WriteAura(msg);
+            }
+
+            msg[6] = maxLeds;
+            AsusHid.WriteAura(msg);
+
+            msg[4] = 4;
+            msg[5] = 0;
+            msg[6] = 0;
+            msg[7] = 0;
+            AsusHid.WriteAura(msg);
         }
 
-        public static void ApplyColor(Color[] color, bool init = false)
+        public static void ApplyColor(Color color, bool init = false)
         {
 
             if (isACPI)
             {
-                Program.acpi.TUFKeyboardRGB(0, color[0], 0, null);
+                Program.acpi.TUFKeyboardRGB(0, color, 0, null);
                 return;
             }
 
             if (isStrix && !isOldHeatmap)
             {
-                byte[] msg = new byte[0x40];
-
-                byte start = 9;
-                byte maxLeds = 0x93;
-
-                msg[0] = AsusHid.AURA_ID;
-                msg[1] = 0xbc;
-                msg[2] = 0;
-                msg[3] = 1;
-                msg[4] = 1;
-                msg[5] = 1;
-                msg[6] = 0;
-                msg[7] = 0x10;
-
-                for (byte i = 0; i < AURA_ZONES; i++)
-                {
-                    msg[start + i * 3] = color[i].R; // R
-                    msg[start + 1 + i * 3] = color[i].G; // G
-                    msg[start + 2 + i * 3] = color[i].B; // B
-                }
-
-                if (init)
-                {
-                    Init();
-                    AsusHid.WriteAura(new byte[] { AsusHid.AURA_ID, 0xbc });
-                }
-
-                for (byte b = 0; b < maxLeds; b += 0x10)
-                {
-                    msg[6] = b;
-                    AsusHid.WriteAura(msg);
-                }
-
-                msg[6] = maxLeds;
-                AsusHid.WriteAura(msg);
-
-                msg[4] = 4;
-                msg[5] = 0;
-                msg[6] = 0;
-                msg[7] = 0;
-                AsusHid.WriteAura(msg);
+                ApplyColorStrix(Enumerable.Repeat(color, AURA_ZONES).ToArray(), init);
+                return;
             }
 
             else
             {
-                AsusHid.WriteAura(AuraMessage(0, color[0], color[0], 0));
+                AsusHid.WriteAura(AuraMessage(0, color, color, 0));
                 AsusHid.WriteAura(MESSAGE_SET);
             }
 
@@ -514,8 +514,10 @@ namespace GHelper.USB
                 bound.Y += bound.Height / 3;
                 bound.Height -= (int)Math.Round(bound.Height * (0.33f + 0.022f)); // cut 1/3 of the top screen + windows panel
 
-                var screen_low = AmbientData.CamptureScreen(bound, 512, 288);
+                var screen_low = AmbientData.CamptureScreen(bound, 256, 144);
                 Bitmap screeb_pxl;
+
+                int zones = AURA_ZONES;
 
                 if (isStrix) //laptop with lightbar
                 {
@@ -537,10 +539,9 @@ namespace GHelper.USB
                 }
                 else
                 {
+                    zones = 1;
                     screeb_pxl = AmbientData.ResizeImage(screen_low, 1, 1);
-                    var average = ColorUtils.HSV.UpSaturation(screeb_pxl.GetPixel(0, 0), (float)0.3);
-                    for (int i = 0; i < 4; i++)  //just color transfer from the bottom screen on keyboard
-                        AmbientData.Colors[i].RGB = average;
+                    AmbientData.Colors[0].RGB = ColorUtils.HSV.UpSaturation(screeb_pxl.GetPixel(0, 0), (float)0.3);
                 }
 
 
@@ -550,15 +551,18 @@ namespace GHelper.USB
 
                 bool is_fresh = false;
 
-                for (int i = 0; i < AURA_ZONES; i++)
+                for (int i = 0; i < zones; i++)
                 {
-                    if (AmbientData.result[i].ToArgb() != AmbientData.Colors[i].RGB.ToArgb())
-                        is_fresh = true;
+                    if (AmbientData.result[i].ToArgb() != AmbientData.Colors[i].RGB.ToArgb()) is_fresh = true;
                     AmbientData.result[i] = AmbientData.Colors[i].RGB;
                 }
 
                 if (is_fresh)
-                    ApplyColor(AmbientData.result, init);
+                {
+                    if (isStrix) ApplyColorStrix(AmbientData.result, init);
+                    else ApplyColor(AmbientData.result[0], init);
+                }
+
             }
 
             static class AmbientData
