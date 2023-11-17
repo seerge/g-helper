@@ -17,35 +17,34 @@ public static class AsusHid
     public static HidStream FindHidStream(byte reportId, int minFeatureLength = 1)
     {
         HidDeviceLoader loader = new HidDeviceLoader();
-        var deviceList = loader.GetDevices(ASUS_ID).Where(device => deviceIds.Contains(device.ProductID));
-
-        foreach (var device in deviceList) if (device.CanOpen)
+        try
+        {
+            var deviceList = loader.GetDevices(ASUS_ID).Where(device => deviceIds.Contains(device.ProductID) && device.CanOpen);
+            foreach (var device in deviceList)
             {
-                try
-                {
-                    var config = new OpenConfiguration();
-                    config.SetOption(OpenOption.Interruptible, false);
-                    config.SetOption(OpenOption.Exclusive, false);
-                    config.SetOption(OpenOption.Priority, 10);
-                    HidStream hidStream = device.Open();
+                var config = new OpenConfiguration();
+                config.SetOption(OpenOption.Interruptible, false);
+                config.SetOption(OpenOption.Exclusive, false);
+                config.SetOption(OpenOption.Priority, 10);
+                HidStream hidStream = device.Open();
 
-                    if (device.GetMaxFeatureReportLength() >= minFeatureLength)
+                if (device.GetMaxFeatureReportLength() >= minFeatureLength)
+                {
+                    var reportDescriptor = device.GetReportDescriptor();
+                    if (reportDescriptor.TryGetReport(ReportType.Feature, reportId, out _))
                     {
-                        var reportDescriptor = device.GetReportDescriptor();
-                        if (reportDescriptor.TryGetReport(ReportType.Feature, reportId, out _))
-                        {
-                            return hidStream;
-                        }
+                        return hidStream;
                     }
+                }
 
-                    hidStream.Close();
-                    hidStream.Dispose();
-                }
-                catch (Exception ex)
-                {
-                    Debug.WriteLine($"Error accessing HID device: {ex.Message}");
-                }
+                hidStream.Close();
+                hidStream.Dispose();
             }
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine($"Error accessing HID device: {ex.Message}");
+        }
 
         return null;
     }
