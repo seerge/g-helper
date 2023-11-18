@@ -311,9 +311,6 @@ namespace GHelper.Input
                     case Keys.F11:
                         SleepEvent();
                         break;
-                    case Keys.F12:
-                        KeyboardHook.KeyKeyPress(Keys.LWin, Keys.A);
-                        break;
                     case Keys.VolumeDown:
                         KeyProcess("m1");
                         break;
