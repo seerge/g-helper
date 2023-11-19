@@ -68,7 +68,7 @@ namespace GHelper.USB
         static byte[] MESSAGE_APPLY = { AsusHid.AURA_ID, 0xb4 };
         static byte[] MESSAGE_SET = { AsusHid.AURA_ID, 0xb5, 0, 0, 0 };
 
-        static readonly int AURA_ZONES = 0x12;
+        static readonly int AURA_ZONES = 8;
 
         private static AuraMode mode = AuraMode.AuraStatic;
         private static AuraSpeed speed = AuraSpeed.Normal;
@@ -77,7 +77,7 @@ namespace GHelper.USB
         public static Color Color2 = Color.Black;
 
         static bool isACPI = AppConfig.IsTUF() || AppConfig.IsVivobook();
-        static bool isStrix = AppConfig.IsStrix();
+        static bool isStrix = true || AppConfig.IsStrix();
 
         static public bool isSingleColor = false;
 
@@ -385,14 +385,50 @@ namespace GHelper.USB
            116, 119, 139, 121, 126, 127, 128, 129, 131, 135,
 
 /*80       RCTL  LFT  DWN  RGT  PRT KSTN  VDN  VUP MICM HPFN */
-           137, 159, 160, 161, 142, 175,   2,   3,   4,   5,
+           137, 159, 160, 161, 142,  0,   2,   3,   4,   5,
 
 /*90       ARMC  LB1  LB2  LB3  LB4  LB5  LB6 LOGO LIDL LIDR */
              6, 174, 173, 172, 171, 170, 169, 167, 176, 177,
 
 };
 
-        public static void SetLedsDirect(Color color, bool init = false)
+
+        static byte[] packetZone = new byte[]
+        {
+/*00        ESC  F1   F2   F3   F4   F5   F6   F7   F8   F9  */
+            0,   0,   0,   1,   1,   1,   1,   2,   2,   2,
+
+/*10        F10  F11  F12  DEL   `    1    2    3    4    5  */
+            2,   3,   3,   3,   0,   0,    0,   0,   1 ,  1,
+
+/*20         6    7    8    9    0    -    =   BSP  BSP  BSP */
+            2,   2,    2,   2,   2,  2,    3,  3,   3,   3,
+
+/*30        PLY  TAB   Q    W    E    R    T    Y    U    I  */
+            3,   0,    0,   0,   1,   1,   1,   1,   2,   2,
+
+/*40         O    P    [    ]    \   STP  CAP   A    S    D  */
+             2,   2,   3,   3,   3,   3,   0,   0,   0,   1,
+
+/*50         F    G    H    J    K    L    ;    '   ENT  PRV */
+             1,   1,   1,   2,   2,   2,   2,   3,  3,   3,
+
+/*60        LSH   Z    X    C    V    B    N    M    ,    .  */
+             0,   0,   0,   1,   1,   1,   1,   2,   2,   2,
+
+/*70         /   RSH  UP   NXT LCTL  LFN LWIN LALT  SPC RALT */
+            3,   3,   3,   3,  0,    0,    0,  0,   1,   2,
+
+/*80       RCTL  LFT  DWN  RGT  PRT KSTN  VDN  VUP MICM HPFN */
+            2,   3,   3,    3,  3,   3,   0,   0,   1,   1,
+
+/*90       ARMC  LB1  LB2  LB3  LB4  LB5  LB6 LOGO LIDL LIDR */
+             2,   4,   4,   5,   6,   7,   7,   0,  0,   3,
+
+};
+
+
+        public static void SetLedsDirect(Color[] color, bool init = false)
         {
             const byte keySet = 167;
             const byte ledCount = 178;
@@ -413,7 +449,7 @@ namespace GHelper.USB
 
             if (init)
             {
-                //Init();
+                Init();
                 AsusHid.WriteAura(new byte[] { AsusHid.AURA_ID, 0xbc });
             }
 
@@ -422,10 +458,11 @@ namespace GHelper.USB
             for (int ledIndex = 0; ledIndex < packetMap.Count(); ledIndex++)
             {
                 ushort offset = (ushort)(3 * packetMap[ledIndex]);
+                byte zone = packetZone[ledIndex];
 
-                keyBuf[offset] = color.R;
-                keyBuf[offset + 1] = color.G;
-                keyBuf[offset + 2] = color.B;
+                keyBuf[offset] = color[zone].R;
+                keyBuf[offset + 1] = color[zone].G;
+                keyBuf[offset + 2] = color[zone].B;
             }
 
             for (int i = 0; i < keySet; i += ledsPerPacket)
@@ -507,8 +544,8 @@ namespace GHelper.USB
 
             if (isStrix && !isOldHeatmap)
             {
-                //SetLedsDirect(color, init);
-                ApplyColorStrix(Enumerable.Repeat(color, AURA_ZONES).ToArray(), init);
+                SetLedsDirect(Enumerable.Repeat(color, AURA_ZONES).ToArray(), init);
+                //ApplyColorStrix(Enumerable.Repeat(color, AURA_ZONES).ToArray(), init);
                 return;
             }
 
@@ -612,20 +649,16 @@ namespace GHelper.USB
 
                 int zones = AURA_ZONES;
 
-                if (isStrix) //laptop with lightbar
+                if (isStrix) // laptop with lightbar
                 {
                     screeb_pxl = AmbientData.ResizeImage(screen_low, 4, 2); // 4x2 zone. top for keyboard and bot for lightbar
                     var mid_left = ColorUtils.GetMidColor(screeb_pxl.GetPixel(0, 1), screeb_pxl.GetPixel(1, 1));
                     var mid_right = ColorUtils.GetMidColor(screeb_pxl.GetPixel(2, 1), screeb_pxl.GetPixel(3, 1));
 
-                    AmbientData.Colors[6].RGB = ColorUtils.HSV.UpSaturation(screeb_pxl.GetPixel(3, 1)); // right bck
-                    AmbientData.Colors[11].RGB = ColorUtils.HSV.UpSaturation(screeb_pxl.GetPixel(1, 1)); // left bck
-
-                    AmbientData.Colors[7].RGB = AmbientData.Colors[6].RGB;   // right
-                    AmbientData.Colors[10].RGB = AmbientData.Colors[11].RGB; // left
-
-                    AmbientData.Colors[8].RGB = ColorUtils.HSV.UpSaturation(mid_right); // center right
-                    AmbientData.Colors[9].RGB = ColorUtils.HSV.UpSaturation(mid_left);  // center left
+                    AmbientData.Colors[4].RGB = ColorUtils.HSV.UpSaturation(screeb_pxl.GetPixel(1, 1)); // left bck
+                    AmbientData.Colors[5].RGB = ColorUtils.HSV.UpSaturation(mid_left);  // center left
+                    AmbientData.Colors[6].RGB = ColorUtils.HSV.UpSaturation(mid_right); // center right
+                    AmbientData.Colors[7].RGB = ColorUtils.HSV.UpSaturation(screeb_pxl.GetPixel(3, 1)); // right bck
 
                     for (int i = 0; i < 4; i++) // keyboard
                         AmbientData.Colors[i].RGB = ColorUtils.HSV.UpSaturation(screeb_pxl.GetPixel(i, 0));
@@ -652,7 +685,7 @@ namespace GHelper.USB
 
                 if (is_fresh)
                 {
-                    if (isStrix) ApplyColorStrix(AmbientData.result, init);
+                    if (isStrix) SetLedsDirect(AmbientData.result, init);
                     else ApplyColor(AmbientData.result[0], init);
                 }
 
