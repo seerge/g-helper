@@ -68,7 +68,7 @@ namespace GHelper.USB
         static byte[] MESSAGE_APPLY = { AsusHid.AURA_ID, 0xb4 };
         static byte[] MESSAGE_SET = { AsusHid.AURA_ID, 0xb5, 0, 0, 0 };
 
-        static readonly int AURA_ZONES = 0x12;
+        static readonly int AURA_ZONES = 8;
 
         private static AuraMode mode = AuraMode.AuraStatic;
         private static AuraSpeed speed = AuraSpeed.Normal;
@@ -263,9 +263,9 @@ namespace GHelper.USB
                 if (delay) await Task.Delay(TimeSpan.FromSeconds(1));
                 if (isACPI) Program.acpi.TUFKeyboardBrightness(brightness);
 
-                AsusHid.Write(new byte[] { AsusHid.AURA_ID, 0xba, 0xc5, 0xc4, (byte)brightness }, AsusHid.AURA_ID, log);
+                AsusHid.Write(new byte[] { AsusHid.AURA_ID, 0xba, 0xc5, 0xc4, (byte)brightness }, log);
                 if (AppConfig.ContainsModel("GA503"))
-                    AsusHid.Write(new byte[] { AsusHid.INPUT_ID, 0xba, 0xc5, 0xc4, (byte)brightness }, AsusHid.INPUT_ID, log);
+                    AsusHid.WriteInput(new byte[] { AsusHid.INPUT_ID, 0xba, 0xc5, 0xc4, (byte)brightness }, log);
             });
 
 
@@ -358,28 +358,94 @@ namespace GHelper.USB
 
         }
 
-        public static void ApplyColorStrix(Color[] color, bool init = false)
+        static byte[] packetMap = new byte[]
         {
-            byte[] msg = new byte[0x40];
+/*00        ESC  F1   F2   F3   F4   F5   F6   F7   F8   F9  */
+            21,  23,  24,  25,  26,  28,  29,  30,  31,  33,
 
-            byte start = 9;
-            byte maxLeds = 0x93;
+/*10        F10  F11  F12  DEL   `    1    2    3    4    5  */
+            34,  35,  36,  37,  42,  43,  44,  45,  46,  47,
 
-            msg[0] = AsusHid.AURA_ID;
-            msg[1] = 0xbc;
-            msg[2] = 0;
-            msg[3] = 1;
-            msg[4] = 1;
-            msg[5] = 1;
-            msg[6] = 0;
-            msg[7] = 0x10;
+/*20         6    7    8    9    0    -    =   BSP  BSP  BSP */
+            48,  49,  50,  51,  52,  53,  54,  55,  56,  57,
 
-            for (byte i = 0; i < AURA_ZONES; i++)
-            {
-                msg[start + i * 3] = color[i].R; // R
-                msg[start + 1 + i * 3] = color[i].G; // G
-                msg[start + 2 + i * 3] = color[i].B; // B
-            }
+/*30        PLY  TAB   Q    W    E    R    T    Y    U    I  */
+            58,  63,  64,  65,  66,  67,  68,  69,  70,  71,
+
+/*40         O    P    [    ]    \   STP  CAP   A    S    D  */
+            72,  73,  74,  75,  76,  79,  84,  85,  86,  87,
+
+/*50         F    G    H    J    K    L    ;    '   ENT  PRV */
+            88,  89,  90,  91,  92,  93,  94,  95,  98, 100,
+
+/*60        LSH   Z    X    C    V    B    N    M    ,    .  */
+           105, 107, 108, 109, 110, 111, 112, 113, 114, 115,
+
+/*70         /   RSH  UP   NXT LCTL  LFN LWIN LALT  SPC RALT */
+           116, 119, 139, 121, 126, 127, 128, 129, 131, 135,
+
+/*80       RCTL  LFT  DWN  RGT  PRT KSTN  VDN  VUP MICM HPFN */
+           137, 159, 160, 161, 142,  0,   2,   3,   4,   5,
+
+/*90       ARMC  LB1  LB2  LB3  LB4  LB5  LB6 LOGO LIDL LIDR */
+             6, 174, 173, 172, 171, 170, 169, 167, 176, 177,
+
+};
+
+
+        static byte[] packetZone = new byte[]
+        {
+/*00        ESC  F1   F2   F3   F4   F5   F6   F7   F8   F9  */
+            0,   0,   0,   1,   1,   1,   1,   1,   2,   2,
+
+/*10        F10  F11  F12  DEL   `    1    2    3    4    5  */
+            2,   3,   3,   3,   0,   0,    0,   0,   1 ,  1,
+
+/*20         6    7    8    9    0    -    =   BSP  BSP  BSP */
+            1,   2,    2,   2,   2,  2,    3,  3,   3,   3,
+
+/*30        PLY  TAB   Q    W    E    R    T    Y    U    I  */
+            3,   0,    0,   0,   1,   1,   1,   1,   2,   2,
+
+/*40         O    P    [    ]    \   STP  CAP   A    S    D  */
+             2,   2,   3,   3,   3,   3,   0,   0,   0,   1,
+
+/*50         F    G    H    J    K    L    ;    '   ENT  PRV */
+             1,   1,   1,   2,   2,   2,   2,   3,  3,   3,
+
+/*60        LSH   Z    X    C    V    B    N    M    ,    .  */
+             0,   0,   0,   1,   1,   1,   1,   2,   2,   2,
+
+/*70         /   RSH  UP   NXT LCTL  LFN LWIN LALT  SPC RALT */
+            3,   3,   3,   3,  0,    0,    0,  0,   1,   2,
+
+/*80       RCTL  LFT  DWN  RGT  PRT KSTN  VDN  VUP MICM HPFN */
+            2,   3,   3,    3,  3,   3,   0,   0,   1,   1,
+
+/*90       ARMC  LB1  LB2  LB3  LB4  LB5  LB6 LOGO LIDL LIDR */
+             2,   4,   4,   5,   6,   7,   7,   0,  0,   3,
+
+};
+
+
+        public static void ApplyDirect(Color[] color, bool init = false)
+        {
+            const byte keySet = 167;
+            const byte ledCount = 178;
+            const ushort mapSize = 3 * ledCount;
+            const byte ledsPerPacket = 16;
+
+            byte[] buffer = new byte[64];
+            byte[] keyBuf = new byte[mapSize];
+
+            buffer[0] = AsusHid.AURA_ID;
+            buffer[1] = 0xbc;
+            buffer[2] = 0;
+            buffer[3] = 1;
+            buffer[4] = 1;
+            buffer[5] = 1;
+            buffer[6] = 0;
+            buffer[7] = 0x10;
 
             if (init)
             {
@@ -387,21 +453,41 @@ namespace GHelper.USB
                 AsusHid.WriteAura(new byte[] { AsusHid.AURA_ID, 0xbc });
             }
 
-            for (byte b = 0; b < maxLeds; b += 0x10)
+            Array.Clear(keyBuf, 0, keyBuf.Length);
+
+            for (int ledIndex = 0; ledIndex < packetMap.Count(); ledIndex++)
             {
-                msg[6] = b;
-                AsusHid.WriteAura(msg);
+                ushort offset = (ushort)(3 * packetMap[ledIndex]);
+                byte zone = packetZone[ledIndex];
+
+                keyBuf[offset] = color[zone].R;
+                keyBuf[offset + 1] = color[zone].G;
+                keyBuf[offset + 2] = color[zone].B;
             }
 
-            msg[6] = maxLeds;
-            AsusHid.WriteAura(msg);
+            for (int i = 0; i < keySet; i += ledsPerPacket)
+            {
+                byte ledsRemaining = (byte)(keySet - i);
 
-            msg[4] = 4;
-            msg[5] = 0;
-            msg[6] = 0;
-            msg[7] = 0;
-            AsusHid.WriteAura(msg);
+                if (ledsRemaining < ledsPerPacket)
+                {
+                    buffer[7] = ledsRemaining;
+                }
+
+                buffer[6] = (byte)i;
+                Buffer.BlockCopy(keyBuf, 3 * i, buffer, 9, 3 * buffer[7]);
+                AsusHid.WriteAura(buffer);
+            }
+
+            buffer[4] = 0x04;
+            buffer[5] = 0x00;
+            buffer[6] = 0x00;
+            buffer[7] = 0x00;
+            Buffer.BlockCopy(keyBuf, 3 * keySet, buffer, 9, 3 * (ledCount - keySet));
+
+            AsusHid.WriteAura(buffer);
         }
+
 
         public static void ApplyColor(Color color, bool init = false)
         {
@@ -414,7 +500,7 @@ namespace GHelper.USB
 
             if (isStrix && !isOldHeatmap)
             {
-                ApplyColorStrix(Enumerable.Repeat(color, AURA_ZONES).ToArray(), init);
+                ApplyDirect(Enumerable.Repeat(color, AURA_ZONES).ToArray(), init);
                 return;
             }
 
@@ -518,20 +604,16 @@ namespace GHelper.USB
 
                 int zones = AURA_ZONES;
 
-                if (isStrix) //laptop with lightbar
+                if (isStrix) // laptop with lightbar
                 {
                     screeb_pxl = AmbientData.ResizeImage(screen_low, 4, 2); // 4x2 zone. top for keyboard and bot for lightbar
                     var mid_left = ColorUtils.GetMidColor(screeb_pxl.GetPixel(0, 1), screeb_pxl.GetPixel(1, 1));
                     var mid_right = ColorUtils.GetMidColor(screeb_pxl.GetPixel(2, 1), screeb_pxl.GetPixel(3, 1));
 
-                    AmbientData.Colors[6].RGB = ColorUtils.HSV.UpSaturation(screeb_pxl.GetPixel(3, 1)); // right bck
-                    AmbientData.Colors[11].RGB = ColorUtils.HSV.UpSaturation(screeb_pxl.GetPixel(1, 1)); // left bck
-
-                    AmbientData.Colors[7].RGB = AmbientData.Colors[6].RGB;   // right
-                    AmbientData.Colors[10].RGB = AmbientData.Colors[11].RGB; // left
-
-                    AmbientData.Colors[8].RGB = ColorUtils.HSV.UpSaturation(mid_right); // center right
-                    AmbientData.Colors[9].RGB = ColorUtils.HSV.UpSaturation(mid_left);  // center left
+                    AmbientData.Colors[4].RGB = ColorUtils.HSV.UpSaturation(screeb_pxl.GetPixel(1, 1)); // left bck
+                    AmbientData.Colors[5].RGB = ColorUtils.HSV.UpSaturation(mid_left);  // center left
+                    AmbientData.Colors[6].RGB = ColorUtils.HSV.UpSaturation(mid_right); // center right
+                    AmbientData.Colors[7].RGB = ColorUtils.HSV.UpSaturation(screeb_pxl.GetPixel(3, 1)); // right bck
 
                     for (int i = 0; i < 4; i++) // keyboard
                         AmbientData.Colors[i].RGB = ColorUtils.HSV.UpSaturation(screeb_pxl.GetPixel(i, 0));
@@ -558,7 +640,7 @@ namespace GHelper.USB
 
                 if (is_fresh)
                 {
-                    if (isStrix) ApplyColorStrix(AmbientData.result, init);
+                    if (isStrix) ApplyDirect(AmbientData.result, init);
                     else ApplyColor(AmbientData.result[0], init);
                 }
 
