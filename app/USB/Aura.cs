@@ -128,12 +128,11 @@ namespace GHelper.USB
             isSingleColor = AppConfig.IsSingleColor(); // Mono Color
 
             if (AppConfig.ContainsModel("GA402X") || AppConfig.ContainsModel("GA402N"))
-                using (var stream = AsusHid.FindHidStream(AsusHid.AURA_ID))
-                {
-                    if (stream is null) return;
-                    if (stream.Device.ReleaseNumberBcd == 22 || stream.Device.ReleaseNumberBcd == 23) isSingleColor = true;
-                    stream.Close();
-                }
+            {
+                var device = AsusHid.FindDevices(AsusHid.AURA_ID).FirstOrDefault();
+                if (device is null) return;
+                if (device.ReleaseNumberBcd == 22 || device.ReleaseNumberBcd == 23) isSingleColor = true;
+            }
         }
 
         public static Dictionary<AuraSpeed, string> GetSpeeds()

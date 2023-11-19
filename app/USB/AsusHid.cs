@@ -12,34 +12,36 @@ public static class AsusHid
 
     static int[] deviceIds = { 0x1a30, 0x1854, 0x1869, 0x1866, 0x19b6, 0x1822, 0x1837, 0x1854, 0x184a, 0x183d, 0x8502, 0x1807, 0x17e0, 0x18c6, 0x1abe };
 
-    static HidStream auraStream;
+    static HidStream? auraStream;
 
-    public static HidStream FindHidStream(byte reportId, int minFeatureLength = 1)
+    public static IEnumerable<HidDevice>? FindDevices(byte reportId, int minFeatureLength = 1)
     {
         HidDeviceLoader loader = new HidDeviceLoader();
+        IEnumerable<HidDevice> deviceList;
+
         try
         {
-            var deviceList = loader.GetDevices(ASUS_ID).Where(device => deviceIds.Contains(device.ProductID) && device.CanOpen);
-            foreach (var device in deviceList)
-            {
-                var config = new OpenConfiguration();
-                config.SetOption(OpenOption.Interruptible, false);
-                config.SetOption(OpenOption.Exclusive, false);
-                config.SetOption(OpenOption.Priority, 10);
-                HidStream hidStream = device.Open();
+            deviceList = loader.GetDevices(ASUS_ID).Where(
+                device => deviceIds.Contains(device.ProductID) &&
+                device.CanOpen &&
+                device.GetMaxFeatureReportLength() >= minFeatureLength);
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine($"Error enumerating HID devices: {ex.Message}");
+            yield break;
+        }
 
-                if (device.GetMaxFeatureReportLength() >= minFeatureLength)
-                {
-                    var reportDescriptor = device.GetReportDescriptor();
-                    if (reportDescriptor.TryGetReport(ReportType.Feature, reportId, out _))
-                    {
-                        return hidStream;
-                    }
-                }
+        foreach (var device in deviceList)
+            if (device.GetReportDescriptor().TryGetReport(ReportType.Feature, reportId, out _))
+                yield return device;
+    }
 
-                hidStream.Close();
-                hidStream.Dispose();
-            }
+    public static HidStream? FindHidStream(byte reportId, int minFeatureLength = 1)
+    {
+        try
+        {
+            return FindDevices(reportId, minFeatureLength)?.FirstOrDefault()?.Open();
         }
         catch (Exception ex)
         {
@@ -49,29 +51,31 @@ public static class AsusHid
         return null;
     }
 
-    static void WriteData(HidStream stream, byte[] data, string log = "USB")
+    public static void Write(byte[] data, byte reportId = AURA_ID, string log = "USB")
     {
+        Write(new List<byte[]> { data }, reportId, log);
+    }
+
+    public static void Write(List<byte[]> dataList, byte reportId = AURA_ID, string log = "USB")
+    {
+        var devices = FindDevices(reportId);
+        if (devices is null) return;
+
         try
         {
-            stream.Write(data);
-            Logger.WriteLine($"{log} " + stream.Device.ProductID + ": " + BitConverter.ToString(data));
+            foreach (var device in devices)
+                using (var stream = device.Open())
+                    foreach (var data in dataList)
+                    {
+                        stream.Write(data);
+                        Logger.WriteLine($"{log} " + device.ProductID.ToString("X") + ": " + BitConverter.ToString(data));
+                    }
         }
         catch (Exception ex)
         {
-            Debug.WriteLine($"Error writing {log} to HID device: {ex.Message} {BitConverter.ToString(data)}");
+            Debug.WriteLine($"Error writing {log} to HID device: {ex.Message}");
         }
-    }
 
-    public static void Write(byte[] data, byte reportId = AURA_ID, string log = "USB")
-    {
-        using (var stream = FindHidStream(reportId))
-            WriteData(stream, data, log);
-    }
-    public static void Write(List<byte[]> dataList, byte reportId = AURA_ID)
-    {
-        using (var stream = FindHidStream(reportId))
-            foreach (var data in dataList)
-                WriteData(stream, data);
     }
 
     public static void WriteAura(byte[] data)
