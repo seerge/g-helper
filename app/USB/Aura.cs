@@ -78,6 +78,7 @@ namespace GHelper.USB
 
         static bool isACPI = AppConfig.IsTUF() || AppConfig.IsVivobook();
         static bool isStrix = AppConfig.IsStrix();
+        static bool isStrix4Zone = AppConfig.IsStrixLimitedRGB();
 
         static public bool isSingleColor = false;
 
@@ -427,6 +428,16 @@ namespace GHelper.USB
 
 };
 
+        static byte[] packet4Zone = new byte[]
+        {
+/*01        Z1  Z2  Z3  Z4  NA  NA  KeyZone */
+            0,  1,  2,  3,  0,  0, 
+
+/*02        RR  R   RM  LM  L   LL  LighBar */
+            7,  7,  6,  5,  4,  4, 
+
+};
+
 
         public static void ApplyDirect(Color[] color, bool init = false)
         {
@@ -455,36 +466,53 @@ namespace GHelper.USB
 
             Array.Clear(keyBuf, 0, keyBuf.Length);
 
-            for (int ledIndex = 0; ledIndex < packetMap.Count(); ledIndex++)
+            if (!isStrix4Zone) // per key
             {
-                ushort offset = (ushort)(3 * packetMap[ledIndex]);
-                byte zone = packetZone[ledIndex];
-
-                keyBuf[offset] = color[zone].R;
-                keyBuf[offset + 1] = color[zone].G;
-                keyBuf[offset + 2] = color[zone].B;
-            }
-
-            for (int i = 0; i < keySet; i += ledsPerPacket)
-            {
-                byte ledsRemaining = (byte)(keySet - i);
-
-                if (ledsRemaining < ledsPerPacket)
+                for (int ledIndex = 0; ledIndex < packetMap.Count(); ledIndex++)
                 {
-                    buffer[7] = ledsRemaining;
+                    ushort offset = (ushort)(3 * packetMap[ledIndex]);
+                    byte zone = packetZone[ledIndex];
+
+                    keyBuf[offset] = color[zone].R;
+                    keyBuf[offset + 1] = color[zone].G;
+                    keyBuf[offset + 2] = color[zone].B;
                 }
 
-                buffer[6] = (byte)i;
-                Buffer.BlockCopy(keyBuf, 3 * i, buffer, 9, 3 * buffer[7]);
-                AsusHid.WriteAura(buffer);
+                for (int i = 0; i < keySet; i += ledsPerPacket)
+                {
+                    byte ledsRemaining = (byte)(keySet - i);
+
+                    if (ledsRemaining < ledsPerPacket)
+                    {
+                        buffer[7] = ledsRemaining;
+                    }
+
+                    buffer[6] = (byte)i;
+                    Buffer.BlockCopy(keyBuf, 3 * i, buffer, 9, 3 * buffer[7]);
+                    AsusHid.WriteAura(buffer);
+                }
             }
 
             buffer[4] = 0x04;
             buffer[5] = 0x00;
             buffer[6] = 0x00;
             buffer[7] = 0x00;
-            Buffer.BlockCopy(keyBuf, 3 * keySet, buffer, 9, 3 * (ledCount - keySet));
 
+            if (isStrix4Zone) { // per zone
+                var leds_4_zone = packet4Zone.Count();
+                for (int ledIndex = 0; ledIndex < leds_4_zone; ledIndex++)
+                {
+                    byte zone = packet4Zone[ledIndex];
+                    keyBuf[ledIndex * 3] = color[zone].R;
+                    keyBuf[ledIndex * 3 + 1] = color[zone].G;
+                    keyBuf[ledIndex * 3 + 2] = color[zone].B;
+                }
+                Buffer.BlockCopy(keyBuf, 0, buffer, 9, 3 * leds_4_zone);
+                AsusHid.WriteAura(buffer);
+                return;
+            }
+
+            Buffer.BlockCopy(keyBuf, 3 * keySet, buffer, 9, 3 * (ledCount - keySet));
             AsusHid.WriteAura(buffer);
         }
 
@@ -599,14 +627,15 @@ namespace GHelper.USB
                 bound.Y += bound.Height / 3;
                 bound.Height -= (int)Math.Round(bound.Height * (0.33f + 0.022f)); // cut 1/3 of the top screen + windows panel
 
-                var screen_low = AmbientData.CamptureScreen(bound, 256, 144);
+                Bitmap screen_low;
                 Bitmap screeb_pxl;
 
                 int zones = AURA_ZONES;
 
                 if (isStrix) // laptop with lightbar
                 {
-                    screeb_pxl = AmbientData.ResizeImage(screen_low, 4, 2); // 4x2 zone. top for keyboard and bot for lightbar
+                    screen_low = AmbientData.CamptureScreen(bound, 512, 288);   //quality decreases greatly if it is less 512 
+                    screeb_pxl = AmbientData.ResizeImage(screen_low, 4, 2);     // 4x2 zone. top for keyboard and bot for lightbar
                     var mid_left = ColorUtils.GetMidColor(screeb_pxl.GetPixel(0, 1), screeb_pxl.GetPixel(1, 1));
                     var mid_right = ColorUtils.GetMidColor(screeb_pxl.GetPixel(2, 1), screeb_pxl.GetPixel(3, 1));
 
@@ -621,6 +650,7 @@ namespace GHelper.USB
                 else
                 {
                     zones = 1;
+                    screen_low = AmbientData.CamptureScreen(bound, 256, 144);
                     screeb_pxl = AmbientData.ResizeImage(screen_low, 1, 1);
                     AmbientData.Colors[0].RGB = ColorUtils.HSV.UpSaturation(screeb_pxl.GetPixel(0, 0), (float)0.3);
                 }
