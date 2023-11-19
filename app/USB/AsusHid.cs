@@ -92,7 +92,7 @@ public static class AsusHid
         }
         catch (Exception ex)
         {
-            Logger.WriteLine($"Error writing {log}: {ex.Message}");
+            Logger.WriteLine($"Error writing {log}: {ex.Message} ");
         }
 
     }
@@ -110,7 +110,7 @@ public static class AsusHid
         catch (Exception ex)
         {
             auraStream.Dispose();
-            Debug.WriteLine($"Error writing data to HID device: {ex.Message}");
+            Debug.WriteLine($"Error writing data to HID device: {ex.Message} {BitConverter.ToString(data)}");
         }
     }
 

@@ -358,6 +358,99 @@ namespace GHelper.USB
 
         }
 
+        static byte[] packetMap = new byte[]
+        {
+/*00        ESC  F1   F2   F3   F4   F5   F6   F7   F8   F9  */
+            21,  23,  24,  25,  26,  28,  29,  30,  31,  33,
+
+/*10        F10  F11  F12  DEL   `    1    2    3    4    5  */
+            34,  35,  36,  37,  42,  43,  44,  45,  46,  47,
+
+/*20         6    7    8    9    0    -    =   BSP  BSP  BSP */
+            48,  49,  50,  51,  52,  53,  54,  55,  56,  57,
+
+/*30        PLY  TAB   Q    W    E    R    T    Y    U    I  */
+            58,  63,  64,  65,  66,  67,  68,  69,  70,  71,
+
+/*40         O    P    [    ]    \   STP  CAP   A    S    D  */
+            72,  73,  74,  75,  76,  79,  84,  85,  86,  87,
+
+/*50         F    G    H    J    K    L    ;    '   ENT  PRV */
+            88,  89,  90,  91,  92,  93,  94,  95,  98, 100,
+
+/*60        LSH   Z    X    C    V    B    N    M    ,    .  */
+           105, 107, 108, 109, 110, 111, 112, 113, 114, 115,
+
+/*70         /   RSH  UP   NXT LCTL  LFN LWIN LALT  SPC RALT */
+           116, 119, 139, 121, 126, 127, 128, 129, 131, 135,
+
+/*80       RCTL  LFT  DWN  RGT  PRT KSTN  VDN  VUP MICM HPFN */
+           137, 159, 160, 161, 142, 175,   2,   3,   4,   5,
+
+/*90       ARMC  LB1  LB2  LB3  LB4  LB5  LB6 LOGO LIDL LIDR */
+             6, 174, 173, 172, 171, 170, 169, 167, 176, 177,
+
+};
+
+        public static void SetLedsDirect(Color color, bool init = false)
+        {
+            const byte keySet = 167;
+            const byte ledCount = 178;
+            const ushort mapSize = 3 * ledCount;
+            const byte ledsPerPacket = 16;
+
+            byte[] buffer = new byte[64];
+            byte[] keyBuf = new byte[mapSize];
+
+            buffer[0] = AsusHid.AURA_ID;
+            buffer[1] = 0xbc;
+            buffer[2] = 0;
+            buffer[3] = 1;
+            buffer[4] = 1;
+            buffer[5] = 1;
+            buffer[6] = 0;
+            buffer[7] = 0x10;
+
+            if (init)
+            {
+                //Init();
+                AsusHid.WriteAura(new byte[] { AsusHid.AURA_ID, 0xbc });
+            }
+
+            Array.Clear(keyBuf, 0, keyBuf.Length);
+
+            for (int ledIndex = 0; ledIndex < packetMap.Count(); ledIndex++)
+            {
+                ushort offset = (ushort)(3 * packetMap[ledIndex]);
+
+                keyBuf[offset] = color.R;
+                keyBuf[offset + 1] = color.G;
+                keyBuf[offset + 2] = color.B;
+            }
+
+            for (int i = 0; i < keySet; i += ledsPerPacket)
+            {
+                byte ledsRemaining = (byte)(keySet - i);
+
+                if (ledsRemaining < ledsPerPacket)
+                {
+                    buffer[7] = ledsRemaining;
+                }
+
+                buffer[6] = (byte)i;
+                Buffer.BlockCopy(keyBuf, 3 * i, buffer, 9, 3 * buffer[7]);
+                AsusHid.WriteAura(buffer);
+            }
+
+            buffer[4] = 0x04;
+            buffer[5] = 0x00;
+            buffer[6] = 0x00;
+            buffer[7] = 0x00;
+            Buffer.BlockCopy(keyBuf, 3 * keySet, buffer, 9, 3 * (ledCount - keySet));
+
+            AsusHid.WriteAura(buffer);
+        }
+
         public static void ApplyColorStrix(Color[] color, bool init = false)
         {
             byte[] msg = new byte[0x40];
@@ -414,6 +507,7 @@ namespace GHelper.USB
 
             if (isStrix && !isOldHeatmap)
             {
+                //SetLedsDirect(color, init);
                 ApplyColorStrix(Enumerable.Repeat(color, AURA_ZONES).ToArray(), init);
                 return;
             }
