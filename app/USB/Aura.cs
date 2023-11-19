@@ -396,13 +396,13 @@ namespace GHelper.USB
         static byte[] packetZone = new byte[]
         {
 /*00        ESC  F1   F2   F3   F4   F5   F6   F7   F8   F9  */
-            0,   0,   0,   1,   1,   1,   1,   2,   2,   2,
+            0,   0,   0,   1,   1,   1,   1,   1,   2,   2,
 
 /*10        F10  F11  F12  DEL   `    1    2    3    4    5  */
             2,   3,   3,   3,   0,   0,    0,   0,   1 ,  1,
 
 /*20         6    7    8    9    0    -    =   BSP  BSP  BSP */
-            2,   2,    2,   2,   2,  2,    3,  3,   3,   3,
+            1,   2,    2,   2,   2,  2,    3,  3,   3,   3,
 
 /*30        PLY  TAB   Q    W    E    R    T    Y    U    I  */
             3,   0,    0,   0,   1,   1,   1,   1,   2,   2,
@@ -428,7 +428,7 @@ namespace GHelper.USB
 };
 
 
-        public static void SetLedsDirect(Color[] color, bool init = false)
+        public static void ApplyDirect(Color[] color, bool init = false)
         {
             const byte keySet = 167;
             const byte ledCount = 178;
@@ -488,50 +488,6 @@ namespace GHelper.USB
             AsusHid.WriteAura(buffer);
         }
 
-        public static void ApplyColorStrix(Color[] color, bool init = false)
-        {
-            byte[] msg = new byte[0x40];
-
-            byte start = 9;
-            byte maxLeds = 0x93;
-
-            msg[0] = AsusHid.AURA_ID;
-            msg[1] = 0xbc;
-            msg[2] = 0;
-            msg[3] = 1;
-            msg[4] = 1;
-            msg[5] = 1;
-            msg[6] = 0;
-            msg[7] = 0x10;
-
-            for (byte i = 0; i < AURA_ZONES; i++)
-            {
-                msg[start + i * 3] = color[i].R; // R
-                msg[start + 1 + i * 3] = color[i].G; // G
-                msg[start + 2 + i * 3] = color[i].B; // B
-            }
-
-            if (init)
-            {
-                Init();
-                AsusHid.WriteAura(new byte[] { AsusHid.AURA_ID, 0xbc });
-            }
-
-            for (byte b = 0; b < maxLeds; b += 0x10)
-            {
-                msg[6] = b;
-                AsusHid.WriteAura(msg);
-            }
-
-            msg[6] = maxLeds;
-            AsusHid.WriteAura(msg);
-
-            msg[4] = 4;
-            msg[5] = 0;
-            msg[6] = 0;
-            msg[7] = 0;
-            AsusHid.WriteAura(msg);
-        }
 
         public static void ApplyColor(Color color, bool init = false)
         {
@@ -544,8 +500,7 @@ namespace GHelper.USB
 
             if (isStrix && !isOldHeatmap)
             {
-                SetLedsDirect(Enumerable.Repeat(color, AURA_ZONES).ToArray(), init);
-                //ApplyColorStrix(Enumerable.Repeat(color, AURA_ZONES).ToArray(), init);
+                ApplyDirect(Enumerable.Repeat(color, AURA_ZONES).ToArray(), init);
                 return;
             }
 
@@ -685,7 +640,7 @@ namespace GHelper.USB
 
                 if (is_fresh)
                 {
-                    if (isStrix) SetLedsDirect(AmbientData.result, init);
+                    if (isStrix) ApplyDirect(AmbientData.result, init);
                     else ApplyColor(AmbientData.result[0], init);
                 }
 
