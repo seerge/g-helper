@@ -77,7 +77,7 @@ namespace GHelper.USB
         public static Color Color2 = Color.Black;
 
         static bool isACPI = AppConfig.IsTUF() || AppConfig.IsVivobook();
-        static bool isStrix = true || AppConfig.IsStrix();
+        static bool isStrix = AppConfig.IsStrix();
 
         static public bool isSingleColor = false;
 
