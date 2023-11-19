@@ -84,6 +84,9 @@ namespace GHelper.Input
                 Logger.WriteLine("Optimization service is running");
 
             InitBacklightTimer();
+
+            if (AppConfig.ContainsModel("VivoBook")) Program.acpi.DeviceSet(AsusACPI.FnLock, AppConfig.Is("fn_lock") ? 1 : 0, "FnLock");
+
         }
 
         public void InitBacklightTimer()
@@ -191,7 +194,7 @@ namespace GHelper.Input
                     KeyboardHook.KeyKeyPress((Keys)hexKeys[0], (Keys)hexKeys[1]);
                     break;
                 case 3:
-                    KeyboardHook.KeyKeyKeyPress((Keys)hexKeys[0], (Keys)hexKeys[1], (Keys)hexKeys[3]);
+                    KeyboardHook.KeyKeyKeyPress((Keys)hexKeys[0], (Keys)hexKeys[1], (Keys)hexKeys[2]);
                     break;
                 default:
                     LaunchProcess(command);
@@ -307,9 +310,6 @@ namespace GHelper.Input
                         break;
                     case Keys.F11:
                         SleepEvent();
-                        break;
-                    case Keys.F12:
-                        KeyboardHook.KeyKeyPress(Keys.LWin, Keys.A);
                         break;
                     case Keys.VolumeDown:
                         KeyProcess("m1");
@@ -509,7 +509,7 @@ namespace GHelper.Input
             AppConfig.Set("fn_lock", fnLock);
 
             if (AppConfig.ContainsModel("VivoBook"))
-                Program.acpi.DeviceSet(AsusACPI.FnLock, fnLock == 1 ? 0 : 1, "FnLock");
+                Program.acpi.DeviceSet(AsusACPI.FnLock, fnLock == 1 ? 1 : 0, "FnLock");
             else
                 Program.settingsForm.BeginInvoke(Program.inputDispatcher.RegisterKeys);
 

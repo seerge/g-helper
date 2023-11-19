@@ -1,7 +1,6 @@
 ﻿// Reference : thanks to https://github.com/RomanYazvinsky/ for initial discovery of XGM payloads
 
 using HidSharp;
-using System.Diagnostics;
 using System.Text;
 
 namespace GHelper.USB
@@ -9,30 +8,37 @@ namespace GHelper.USB
     public static class XGM
     {
         const int XGM_ID = 0x1970;
-        public const int ASUS_ID = 0x0b05;
+        const int ASUS_ID = 0x0b05;
+
         public static void Write(byte[] data)
         {
             HidDeviceLoader loader = new HidDeviceLoader();
-            HidDevice device = loader.GetDevices(ASUS_ID, XGM_ID).Where(device => device.GetMaxFeatureReportLength() >= 300).FirstOrDefault();
-            if (device is null) return;
-
             try
             {
+                HidDevice device = loader.GetDevices(ASUS_ID, XGM_ID).Where(device => device.CanOpen && device.GetMaxFeatureReportLength() >= 300).FirstOrDefault();
+
+                if (device is null)
+                {
+                    Logger.WriteLine("XGM SUB device not found");
+                    return;
+                }
+
                 using (HidStream hidStream = device.Open())
                 {
                     var payload = new byte[300];
                     Array.Copy(data, payload, data.Length);
 
-                    hidStream.Write(payload);
-                    Logger.WriteLine("XGM " + device.ProductID + "|" + device.GetMaxFeatureReportLength() + ":" + BitConverter.ToString(data));
+                    hidStream.SetFeature(payload);
+                    Logger.WriteLine("XGM-" + device.ProductID + "|" + device.GetMaxFeatureReportLength() + ":" + BitConverter.ToString(data));
 
                     hidStream.Close();
                 }
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"Error accessing HID device: {ex.Message}");
+                Logger.WriteLine($"Error accessing XGM device: {ex}");
             }
+
         }
 
         public static void Init()

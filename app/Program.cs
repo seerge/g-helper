@@ -97,7 +97,7 @@ namespace GHelper
 
             gpuControl.InitXGM();
 
-            SetAutoModes(init : true);
+            SetAutoModes(init: true);
 
             // Subscribing for system power change events
             SystemEvents.PowerModeChanged += SystemEvents_PowerModeChanged;
