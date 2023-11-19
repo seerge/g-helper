@@ -1164,6 +1164,9 @@ namespace GHelper
             ButtonEnabled(buttonStandard, true);
             ButtonEnabled(buttonUltimate, true);
 
+            Bitmap? smallBmp = null;
+            Bitmap? bigBmp = null;
+
             if (GPUMode == -1)
                 GPUMode = AppConfig.Get("gpu_mode");
 
@@ -1183,8 +1186,8 @@ namespace GHelper
                     labelGPU.Text = Properties.Strings.GPUMode + ": " + Properties.Strings.GPUModeEco;
                     Program.trayIcon.Icon = Properties.Resources.eco;
 
-                    Bitmap smallBmp = Properties.Resources.dot_eco.ToBitmap();
-                    Bitmap bigBmp = Properties.Resources.eco.ToBitmap();
+                    smallBmp = Properties.Resources.dot_eco.ToBitmap();
+                    bigBmp = Properties.Resources.eco.ToBitmap();
 
                     SendMessage(this.Handle, WM_SETICON, ICON_SMALL, smallBmp.GetHicon());
                     SendMessage(this.Handle, WM_SETICON, ICON_BIG, bigBmp.GetHicon());
@@ -1194,8 +1197,8 @@ namespace GHelper
                     labelGPU.Text = Properties.Strings.GPUMode + ": " + Properties.Strings.GPUModeUltimate;
                     Program.trayIcon.Icon = Properties.Resources.ultimate;
 
-                    Bitmap smallBmp = Properties.Resources.dot_ultimate.ToBitmap();
-                    Bitmap bigBmp = Properties.Resources.ultimate.ToBitmap();
+                    smallBmp = Properties.Resources.dot_ultimate.ToBitmap();
+                    bigBmp = Properties.Resources.ultimate.ToBitmap();
 
                     SendMessage(this.Handle, WM_SETICON, ICON_SMALL, smallBmp.GetHicon());
                     SendMessage(this.Handle, WM_SETICON, ICON_BIG, bigBmp.GetHicon());
@@ -1207,8 +1210,8 @@ namespace GHelper
                     labelGPU.Text = Properties.Strings.GPUMode + ": " + Properties.Strings.GPUModeStandard;
                     Program.trayIcon.Icon = Properties.Resources.standard;
 
-                    Bitmap smallBmp = Properties.Resources.dot_standard.ToBitmap();
-                    Bitmap bigBmp = Properties.Resources.standard.ToBitmap();
+                    smallBmp = Properties.Resources.dot_standard.ToBitmap();
+                    bigBmp = Properties.Resources.standard.ToBitmap();
 
                     SendMessage(this.Handle, WM_SETICON, ICON_SMALL, smallBmp.GetHicon());
                     SendMessage(this.Handle, WM_SETICON, ICON_BIG, bigBmp.GetHicon());
