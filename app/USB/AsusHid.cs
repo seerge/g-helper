@@ -38,7 +38,16 @@ public static class AsusHid
     {
         try
         {
-            return FindDevices(reportId)?.FirstOrDefault()?.Open();
+            var devices = FindDevices(reportId);
+            if (devices is null) return null;
+
+            if (AppConfig.IsZ13())
+            {
+                var z13 = devices.Where(device => device.ProductID == 0x1a30).FirstOrDefault();
+                if (z13 is not null) return z13.Open();
+            }
+
+            return devices.FirstOrDefault()?.Open();
         }
         catch (Exception ex)
         {
