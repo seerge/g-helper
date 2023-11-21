@@ -1,4 +1,4 @@
-﻿using System.Reflection;
+﻿using System.Diagnostics;
 using System.Runtime.InteropServices;
 
 namespace GHelper.UI
@@ -16,8 +16,15 @@ namespace GHelper.UI
 
         public static void SetIcon(Form form, Bitmap icon)
         {
-            SendMessage(form.Handle, WM_SETICON, ICON_SMALL, icon.GetHicon());
-            SendMessage(form.Handle, WM_SETICON, ICON_BIG, Icon.ExtractAssociatedIcon(Assembly.GetExecutingAssembly().Location)!.Handle);
+            try
+            {
+                SendMessage(form.Handle, WM_SETICON, ICON_BIG, Icon.ExtractAssociatedIcon(Application.ExecutablePath)!.Handle);
+                SendMessage(form.Handle, WM_SETICON, ICON_SMALL, icon.GetHicon());
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error setting icon {ex.Message}");
+            }
         }
 
     }
