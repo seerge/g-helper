@@ -89,20 +89,18 @@ public static class AsusHid
         var devices = FindDevices(AURA_ID);
         if (devices is null) return;
 
-        try
-        {
-            foreach (var device in devices)
-                using (var stream = device.Open())
-                    foreach (var data in dataList)
+        foreach (var device in devices)
+            using (var stream = device.Open())
+                foreach (var data in dataList)
+                    try
                     {
                         stream.Write(data);
                         Logger.WriteLine($"{log} {device.ProductID.ToString("X")}: {BitConverter.ToString(data)}");
                     }
-        }
-        catch (Exception ex)
-        {
-            Logger.WriteLine($"Error writing {log}: {ex.Message} ");
-        }
+                    catch (Exception ex)
+                    {
+                        Logger.WriteLine($"Error writing {log} {device.ProductID.ToString("X")}: {ex.Message} {BitConverter.ToString(data)} ");
+                    }
 
     }
 
