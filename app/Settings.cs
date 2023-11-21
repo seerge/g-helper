@@ -13,13 +13,12 @@ using GHelper.UI;
 using GHelper.USB;
 using System.Diagnostics;
 using System.Timers;
+using System.Runtime.InteropServices;
 
 namespace GHelper
 {
-
     public partial class SettingsForm : RForm
     {
-
         ContextMenuStrip contextMenuStrip = new CustomContextMenu();
         ToolStripMenuItem menuSilent, menuBalanced, menuTurbo, menuEco, menuStandard, menuUltimate, menuOptimized;
 
@@ -1151,6 +1150,12 @@ namespace GHelper
             });
         }
 
+        [DllImport("user32.dll", CharSet = CharSet.Auto)]
+        private static extern IntPtr SendMessage(IntPtr hWnd, uint Msg, IntPtr wParam, IntPtr lParam);
+
+        private const uint WM_SETICON = 0x80u;
+        private const int ICON_SMALL = 0;
+        private const int ICON_BIG = 1;
 
         public void VisualiseGPUMode(int GPUMode = -1)
         {
@@ -1158,6 +1163,9 @@ namespace GHelper
             ButtonEnabled(buttonEco, true);
             ButtonEnabled(buttonStandard, true);
             ButtonEnabled(buttonUltimate, true);
+
+            Bitmap? smallBmp = null;
+            Bitmap? bigBmp = null;
 
             if (GPUMode == -1)
                 GPUMode = AppConfig.Get("gpu_mode");
@@ -1177,13 +1185,23 @@ namespace GHelper
                     buttonOptimized.Activated = GPUAuto;
                     labelGPU.Text = Properties.Strings.GPUMode + ": " + Properties.Strings.GPUModeEco;
                     Program.trayIcon.Icon = Properties.Resources.eco;
-                    Icon = Properties.Resources.dot_eco;
+
+                    smallBmp = Properties.Resources.dot_eco.ToBitmap();
+                    bigBmp = Properties.Resources.eco.ToBitmap();
+
+                    SendMessage(this.Handle, WM_SETICON, ICON_SMALL, smallBmp.GetHicon());
+                    SendMessage(this.Handle, WM_SETICON, ICON_BIG, bigBmp.GetHicon());
                     break;
                 case AsusACPI.GPUModeUltimate:
                     buttonUltimate.Activated = true;
                     labelGPU.Text = Properties.Strings.GPUMode + ": " + Properties.Strings.GPUModeUltimate;
                     Program.trayIcon.Icon = Properties.Resources.ultimate;
-                    Icon = Properties.Resources.dot_ultimate;
+
+                    smallBmp = Properties.Resources.dot_ultimate.ToBitmap();
+                    bigBmp = Properties.Resources.ultimate.ToBitmap();
+
+                    SendMessage(this.Handle, WM_SETICON, ICON_SMALL, smallBmp.GetHicon());
+                    SendMessage(this.Handle, WM_SETICON, ICON_BIG, bigBmp.GetHicon());
                     break;
                 default:
                     buttonOptimized.BorderColor = colorStandard;
@@ -1191,7 +1209,12 @@ namespace GHelper
                     buttonOptimized.Activated = GPUAuto;
                     labelGPU.Text = Properties.Strings.GPUMode + ": " + Properties.Strings.GPUModeStandard;
                     Program.trayIcon.Icon = Properties.Resources.standard;
-                    Icon = Properties.Resources.dot_standard;
+
+                    smallBmp = Properties.Resources.dot_standard.ToBitmap();
+                    bigBmp = Properties.Resources.standard.ToBitmap();
+
+                    SendMessage(this.Handle, WM_SETICON, ICON_SMALL, smallBmp.GetHicon());
+                    SendMessage(this.Handle, WM_SETICON, ICON_BIG, bigBmp.GetHicon());
                     break;
             }
 
