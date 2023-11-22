@@ -68,7 +68,7 @@ namespace GHelper.USB
         static byte[] MESSAGE_APPLY = { AsusHid.AURA_ID, 0xb4 };
         static byte[] MESSAGE_SET = { AsusHid.AURA_ID, 0xb5, 0, 0, 0 };
 
-        static readonly int AURA_ZONES = 0x12;
+        static readonly int AURA_ZONES = 8;
 
         private static AuraMode mode = AuraMode.AuraStatic;
         private static AuraSpeed speed = AuraSpeed.Normal;
@@ -78,6 +78,7 @@ namespace GHelper.USB
 
         static bool isACPI = AppConfig.IsTUF() || AppConfig.IsVivobook();
         static bool isStrix = AppConfig.IsStrix();
+        static bool isStrix4Zone = AppConfig.IsStrixLimitedRGB();
 
         static public bool isSingleColor = false;
 
@@ -249,8 +250,8 @@ namespace GHelper.USB
                     new byte[] { AsusHid.AURA_ID, 0xb9 },
                     Encoding.ASCII.GetBytes("]ASUS Tech.Inc."),
                     new byte[] { AsusHid.AURA_ID, 0x05, 0x20, 0x31, 0, 0x1a },
-                    Encoding.ASCII.GetBytes("^ASUS Tech.Inc."),
-                    new byte[] { 0x5e, 0x05, 0x20, 0x31, 0, 0x1a }
+                    //Encoding.ASCII.GetBytes("^ASUS Tech.Inc."),
+                    //new byte[] { 0x5e, 0x05, 0x20, 0x31, 0, 0x1a }
                 });
             });
         }
@@ -263,9 +264,9 @@ namespace GHelper.USB
                 if (delay) await Task.Delay(TimeSpan.FromSeconds(1));
                 if (isACPI) Program.acpi.TUFKeyboardBrightness(brightness);
 
-                AsusHid.Write(new byte[] { AsusHid.AURA_ID, 0xba, 0xc5, 0xc4, (byte)brightness }, AsusHid.AURA_ID, log);
+                AsusHid.Write(new byte[] { AsusHid.AURA_ID, 0xba, 0xc5, 0xc4, (byte)brightness }, log);
                 if (AppConfig.ContainsModel("GA503"))
-                    AsusHid.Write(new byte[] { AsusHid.INPUT_ID, 0xba, 0xc5, 0xc4, (byte)brightness }, AsusHid.INPUT_ID, log);
+                    AsusHid.WriteInput(new byte[] { AsusHid.INPUT_ID, 0xba, 0xc5, 0xc4, (byte)brightness }, log);
             });
 
 
@@ -358,28 +359,104 @@ namespace GHelper.USB
 
         }
 
-        public static void ApplyColorStrix(Color[] color, bool init = false)
+        static byte[] packetMap = new byte[]
         {
-            byte[] msg = new byte[0x40];
+/*00        ESC  F1   F2   F3   F4   F5   F6   F7   F8   F9  */
+            21,  23,  24,  25,  26,  28,  29,  30,  31,  33,
 
-            byte start = 9;
-            byte maxLeds = 0x93;
+/*10        F10  F11  F12  DEL  N?   N?   N?   N?   `    1    2    3    4    5  */
+            34,  35,  36,  37,  38,  39,  40,  41,  42,  43,  44,  45,  46,  47,
 
-            msg[0] = AsusHid.AURA_ID;
-            msg[1] = 0xbc;
-            msg[2] = 0;
-            msg[3] = 1;
-            msg[4] = 1;
-            msg[5] = 1;
-            msg[6] = 0;
-            msg[7] = 0x10;
+/*20         6    7    8    9    0    -    =   BSP  BSP  BSP */
+            48,  49,  50,  51,  52,  53,  54,  55,  56,  57,
 
-            for (byte i = 0; i < AURA_ZONES; i++)
-            {
-                msg[start + i * 3] = color[i].R; // R
-                msg[start + 1 + i * 3] = color[i].G; // G
-                msg[start + 2 + i * 3] = color[i].B; // B
-            }
+/*30        PLY  NML  N/   N*   N-   TAB  Q    W    E    R    T    Y    U    I  */
+            58,  59,  60,  61,  62,  63,  64,  65,  66,  67,  68,  69,  70,  71,
+
+/*40         O    P    [    ]    \   STP  N7   N8   N9   N+   CAP   A    S    D  */
+            72,  73,  74,  75,  76,  79,  80,  81,  82,  83,  84,  85,  86,  87,
+
+/*50         F    G    H    J    K    L    ;    '   ENT  PRV  N4   N5   N6   N+  */
+            88,  89,  90,  91,  92,  93,  94,  95,  98, 100, 101, 102, 103, 104,
+
+/*60        LSH   Z    X    C    V    B    N    M    ,    .  */
+           105, 107, 108, 109, 110, 111, 112, 113, 114, 115,
+
+/*70         /   RSH  UP   NXT LCTL  N1   N2   N3   NE  LFN LWIN LALT  SPC RALT */
+           116, 119, 139, 121, 122, 123, 124, 125 ,126, 127, 128, 129, 131, 135,
+
+/*80       RCTL  LFT  DWN  RGT  PRT KSTN  VDN  VUP MICM HPFN */
+           137, 159, 160, 161, 142,  0,   2,   3,   4,   5,
+
+/*90       ARMC  LB1  LB2  LB3  LB4  LB5  LB6 LOGO LIDL LIDR */
+             6, 174, 173, 172, 171, 170, 169, 167, 176, 177,
+
+};
+
+
+        static byte[] packetZone = new byte[]
+        {
+/*00        ESC  F1   F2   F3   F4   F5   F6   F7   F8   F9  */
+            0,   0,   0,   1,   1,   1,   1,   1,   2,   2,
+
+/*10        F10  F11  F12  DEL  N?   N?   N?   N?   `    1    2    3    4    5  */
+            2,   3,   3,   3,   3,   3,   3,   3,   0,   0,   0,   0,   1,   1,
+
+/*20         6    7    8    9    0    -    =   BSP  BSP  BSP */
+            1,   2,    2,   2,   2,  2,    3,  3,   3,   3,
+
+/*30        PLY  NML  N/   N*   N-   TAB  Q    W    E    R    T    Y    U    I  */
+            3,   3,   3,   3,   3,   0,   0,   0,   1,   1,   1,   1,   2,   2,
+
+/*40         O    P    [    ]    \   STP  N7   N8   N9   N+   CAP   A    S    D  */
+             2,   2,   3,   3,   3,   3,   3,   3,   3,  3,    0,   0,   0,   1,
+
+/*50         F    G    H    J    K    L    ;    '   ENT  PRV  N4   N5   N6   N+  */
+             1,   1,   1,   2,   2,   2,   2,   3,  3,   3,   3,   3,   3,   3,
+
+/*60        LSH   Z    X    C    V    B    N    M    ,    .  */
+             0,   0,   0,   1,   1,   1,   1,   2,   2,   2,
+
+/*70         /   RSH  UP   NXT LCTL  N1   N2   N3   NE  LFN LWIN LALT  SPC RALT */
+            3,   3,   3,   3,  0,    3,   3,   3,   3,  0,    0,  0,   1,   2,
+
+/*80       RCTL  LFT  DWN  RGT  PRT KSTN  VDN  VUP MICM HPFN */
+            2,   3,   3,    3,  3,   3,   0,   0,   1,   1,
+
+/*90       ARMC  LB1  LB2  LB3  LB4  LB5  LB6 LOGO LIDL LIDR */
+             2,   4,   4,   5,   6,   7,   7,   0,  0,   3,
+
+};
+
+        static byte[] packet4Zone = new byte[]
+        {
+/*01        Z1  Z2  Z3  Z4  NA  NA  KeyZone */
+            0,  1,  2,  3,  0,  0, 
+
+/*02        RR  R   RM  LM  L   LL  LighBar */
+            7,  7,  6,  5,  4,  4, 
+
+};
+
+
+        public static void ApplyDirect(Color[] color, bool init = false)
+        {
+            const byte keySet = 167;
+            const byte ledCount = 178;
+            const ushort mapSize = 3 * ledCount;
+            const byte ledsPerPacket = 16;
+
+            byte[] buffer = new byte[64];
+            byte[] keyBuf = new byte[mapSize];
+
+            buffer[0] = AsusHid.AURA_ID;
+            buffer[1] = 0xbc;
+            buffer[2] = 0;
+            buffer[3] = 1;
+            buffer[4] = 1;
+            buffer[5] = 1;
+            buffer[6] = 0;
+            buffer[7] = 0x10;
 
             if (init)
             {
@@ -387,21 +464,58 @@ namespace GHelper.USB
                 AsusHid.WriteAura(new byte[] { AsusHid.AURA_ID, 0xbc });
             }
 
-            for (byte b = 0; b < maxLeds; b += 0x10)
+            Array.Clear(keyBuf, 0, keyBuf.Length);
+
+            if (!isStrix4Zone) // per key
             {
-                msg[6] = b;
-                AsusHid.WriteAura(msg);
+                for (int ledIndex = 0; ledIndex < packetMap.Count(); ledIndex++)
+                {
+                    ushort offset = (ushort)(3 * packetMap[ledIndex]);
+                    byte zone = packetZone[ledIndex];
+
+                    keyBuf[offset] = color[zone].R;
+                    keyBuf[offset + 1] = color[zone].G;
+                    keyBuf[offset + 2] = color[zone].B;
+                }
+
+                for (int i = 0; i < keySet; i += ledsPerPacket)
+                {
+                    byte ledsRemaining = (byte)(keySet - i);
+
+                    if (ledsRemaining < ledsPerPacket)
+                    {
+                        buffer[7] = ledsRemaining;
+                    }
+
+                    buffer[6] = (byte)i;
+                    Buffer.BlockCopy(keyBuf, 3 * i, buffer, 9, 3 * buffer[7]);
+                    AsusHid.WriteAura(buffer);
+                }
             }
 
-            msg[6] = maxLeds;
-            AsusHid.WriteAura(msg);
+            buffer[4] = 0x04;
+            buffer[5] = 0x00;
+            buffer[6] = 0x00;
+            buffer[7] = 0x00;
 
-            msg[4] = 4;
-            msg[5] = 0;
-            msg[6] = 0;
-            msg[7] = 0;
-            AsusHid.WriteAura(msg);
+            if (isStrix4Zone) { // per zone
+                var leds_4_zone = packet4Zone.Count();
+                for (int ledIndex = 0; ledIndex < leds_4_zone; ledIndex++)
+                {
+                    byte zone = packet4Zone[ledIndex];
+                    keyBuf[ledIndex * 3] = color[zone].R;
+                    keyBuf[ledIndex * 3 + 1] = color[zone].G;
+                    keyBuf[ledIndex * 3 + 2] = color[zone].B;
+                }
+                Buffer.BlockCopy(keyBuf, 0, buffer, 9, 3 * leds_4_zone);
+                AsusHid.WriteAura(buffer);
+                return;
+            }
+
+            Buffer.BlockCopy(keyBuf, 3 * keySet, buffer, 9, 3 * (ledCount - keySet));
+            AsusHid.WriteAura(buffer);
         }
+
 
         public static void ApplyColor(Color color, bool init = false)
         {
@@ -414,7 +528,7 @@ namespace GHelper.USB
 
             if (isStrix && !isOldHeatmap)
             {
-                ApplyColorStrix(Enumerable.Repeat(color, AURA_ZONES).ToArray(), init);
+                ApplyDirect(Enumerable.Repeat(color, AURA_ZONES).ToArray(), init);
                 return;
             }
 
@@ -513,25 +627,22 @@ namespace GHelper.USB
                 bound.Y += bound.Height / 3;
                 bound.Height -= (int)Math.Round(bound.Height * (0.33f + 0.022f)); // cut 1/3 of the top screen + windows panel
 
-                var screen_low = AmbientData.CamptureScreen(bound, 256, 144);
+                Bitmap screen_low;
                 Bitmap screeb_pxl;
 
                 int zones = AURA_ZONES;
 
-                if (isStrix) //laptop with lightbar
+                if (isStrix) // laptop with lightbar
                 {
-                    screeb_pxl = AmbientData.ResizeImage(screen_low, 4, 2); // 4x2 zone. top for keyboard and bot for lightbar
+                    screen_low = AmbientData.CamptureScreen(bound, 512, 288);   //quality decreases greatly if it is less 512 
+                    screeb_pxl = AmbientData.ResizeImage(screen_low, 4, 2);     // 4x2 zone. top for keyboard and bot for lightbar
                     var mid_left = ColorUtils.GetMidColor(screeb_pxl.GetPixel(0, 1), screeb_pxl.GetPixel(1, 1));
                     var mid_right = ColorUtils.GetMidColor(screeb_pxl.GetPixel(2, 1), screeb_pxl.GetPixel(3, 1));
 
-                    AmbientData.Colors[6].RGB = ColorUtils.HSV.UpSaturation(screeb_pxl.GetPixel(3, 1)); // right bck
-                    AmbientData.Colors[11].RGB = ColorUtils.HSV.UpSaturation(screeb_pxl.GetPixel(1, 1)); // left bck
-
-                    AmbientData.Colors[7].RGB = AmbientData.Colors[6].RGB;   // right
-                    AmbientData.Colors[10].RGB = AmbientData.Colors[11].RGB; // left
-
-                    AmbientData.Colors[8].RGB = ColorUtils.HSV.UpSaturation(mid_right); // center right
-                    AmbientData.Colors[9].RGB = ColorUtils.HSV.UpSaturation(mid_left);  // center left
+                    AmbientData.Colors[4].RGB = ColorUtils.HSV.UpSaturation(screeb_pxl.GetPixel(1, 1)); // left bck
+                    AmbientData.Colors[5].RGB = ColorUtils.HSV.UpSaturation(mid_left);  // center left
+                    AmbientData.Colors[6].RGB = ColorUtils.HSV.UpSaturation(mid_right); // center right
+                    AmbientData.Colors[7].RGB = ColorUtils.HSV.UpSaturation(screeb_pxl.GetPixel(3, 1)); // right bck
 
                     for (int i = 0; i < 4; i++) // keyboard
                         AmbientData.Colors[i].RGB = ColorUtils.HSV.UpSaturation(screeb_pxl.GetPixel(i, 0));
@@ -539,6 +650,7 @@ namespace GHelper.USB
                 else
                 {
                     zones = 1;
+                    screen_low = AmbientData.CamptureScreen(bound, 256, 144);
                     screeb_pxl = AmbientData.ResizeImage(screen_low, 1, 1);
                     AmbientData.Colors[0].RGB = ColorUtils.HSV.UpSaturation(screeb_pxl.GetPixel(0, 0), (float)0.3);
                 }
@@ -558,7 +670,7 @@ namespace GHelper.USB
 
                 if (is_fresh)
                 {
-                    if (isStrix) ApplyColorStrix(AmbientData.result, init);
+                    if (isStrix) ApplyDirect(AmbientData.result, init);
                     else ApplyColor(AmbientData.result[0], init);
                 }
 

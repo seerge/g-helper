@@ -303,7 +303,7 @@ To disable automatic touchpad toggling when laptop enters / leaves tablet mode
 ```
 
 ### Extra Keybindings 
-- ``Ctrl + Shift + F5`` - Toggle Performance Modes
+- ``Ctrl + Shift + F5`` / ``Ctrl + Shift + Alt + F5``  - Toggle Performance Modes
 - ``Ctrl + Shift + F12`` - Open G-Helper window 
 - ``Ctrl + M1 / M2`` - Screen brightness Down / Up
 - ``Shift + M1 / M2`` - Backlight brightness Down / Up

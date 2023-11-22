@@ -355,7 +355,7 @@ public static class AppConfig
 
     public static bool IsStrixLimitedRGB()
     {
-        return ContainsModel("G614JV") || ContainsModel("G614JZ") || ContainsModel("G512LI") || ContainsModel("G513RS") || ContainsModel("G513RM");
+        return ContainsModel("G614JV") || ContainsModel("G614JZ") || ContainsModel("G512LI") || ContainsModel("G513RS") || ContainsModel("G513RM") || ContainsModel("G713PV") || ContainsModel("G513IE");
     }
 
     public static bool IsZ13()

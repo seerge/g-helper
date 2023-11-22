@@ -14,21 +14,18 @@ public static class AsusHid
 
     static HidStream? auraStream;
 
-    public static IEnumerable<HidDevice>? FindDevices(byte reportId, int minFeatureLength = 1)
+    public static IEnumerable<HidDevice>? FindDevices(byte reportId)
     {
         HidDeviceLoader loader = new HidDeviceLoader();
         IEnumerable<HidDevice> deviceList;
 
         try
         {
-            deviceList = loader.GetDevices(ASUS_ID).Where(
-                device => deviceIds.Contains(device.ProductID) &&
-                device.CanOpen &&
-                device.GetMaxFeatureReportLength() >= minFeatureLength);
+            deviceList = loader.GetDevices(ASUS_ID).Where(device => deviceIds.Contains(device.ProductID) && device.CanOpen && device.GetMaxFeatureReportLength() > 0);
         }
         catch (Exception ex)
         {
-            Debug.WriteLine($"Error enumerating HID devices: {ex.Message}");
+            Logger.WriteLine($"Error enumerating HID devices: {ex.Message}");
             yield break;
         }
 
@@ -37,44 +34,73 @@ public static class AsusHid
                 yield return device;
     }
 
-    public static HidStream? FindHidStream(byte reportId, int minFeatureLength = 1)
+    public static HidStream? FindHidStream(byte reportId)
     {
         try
         {
-            return FindDevices(reportId, minFeatureLength)?.FirstOrDefault()?.Open();
+            var devices = FindDevices(reportId);
+            if (devices is null) return null;
+
+            if (AppConfig.IsZ13())
+            {
+                var z13 = devices.Where(device => device.ProductID == 0x1a30).FirstOrDefault();
+                if (z13 is not null) return z13.Open();
+            }
+
+            return devices.FirstOrDefault()?.Open();
         }
         catch (Exception ex)
         {
-            Debug.WriteLine($"Error accessing HID device: {ex.Message}");
+            Logger.WriteLine($"Error accessing HID device: {ex.Message}");
         }
 
         return null;
     }
 
-    public static void Write(byte[] data, byte reportId = AURA_ID, string log = "USB")
+    public static void WriteInput(byte[] data, string log = "USB")
     {
-        Write(new List<byte[]> { data }, reportId, log);
+        foreach (var device in FindDevices(INPUT_ID))
+        {
+            try
+            {
+                using (var stream = device.Open())
+                {
+                    var payload = new byte[device.GetMaxFeatureReportLength()];
+                    Array.Copy(data, payload, data.Length);
+                    stream.SetFeature(payload);
+                    Logger.WriteLine($"{log} Feature {device.ProductID.ToString("X")}|{device.GetMaxFeatureReportLength()}: {BitConverter.ToString(data)}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLine($"Error setting feature {device.GetMaxFeatureReportLength()} {device.DevicePath}: {BitConverter.ToString(data)} {ex.Message}");
+
+            }
+        }
     }
 
-    public static void Write(List<byte[]> dataList, byte reportId = AURA_ID, string log = "USB")
+    public static void Write(byte[] data, string log = "USB")
     {
-        var devices = FindDevices(reportId);
+        Write(new List<byte[]> { data }, log);
+    }
+
+    public static void Write(List<byte[]> dataList, string log = "USB")
+    {
+        var devices = FindDevices(AURA_ID);
         if (devices is null) return;
 
-        try
-        {
-            foreach (var device in devices)
-                using (var stream = device.Open())
-                    foreach (var data in dataList)
+        foreach (var device in devices)
+            using (var stream = device.Open())
+                foreach (var data in dataList)
+                    try
                     {
                         stream.Write(data);
-                        Logger.WriteLine($"{log} " + device.ProductID.ToString("X") + ": " + BitConverter.ToString(data));
+                        Logger.WriteLine($"{log} {device.ProductID.ToString("X")}: {BitConverter.ToString(data)}");
                     }
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine($"Error writing {log} to HID device: {ex.Message}");
-        }
+                    catch (Exception ex)
+                    {
+                        Logger.WriteLine($"Error writing {log} {device.ProductID.ToString("X")}: {ex.Message} {BitConverter.ToString(data)} ");
+                    }
 
     }
 
@@ -91,7 +117,7 @@ public static class AsusHid
         catch (Exception ex)
         {
             auraStream.Dispose();
-            Debug.WriteLine($"Error writing data to HID device: {ex.Message}");
+            Debug.WriteLine($"Error writing data to HID device: {ex.Message} {BitConverter.ToString(data)}");
         }
     }
 
