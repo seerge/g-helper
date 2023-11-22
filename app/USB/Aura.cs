@@ -361,72 +361,50 @@ namespace GHelper.USB
 
         static byte[] packetMap = new byte[]
         {
-/*00        ESC  F1   F2   F3   F4   F5   F6   F7   F8   F9  */
-            21,  23,  24,  25,  26,  28,  29,  30,  31,  33,
+                    /* VDN   VUP   MICM  HPFN  ARMC  */
+                         2,    3,    4,    5,    6,
+        /* ESC          F1    F2    F3    F4    F5    F6    F7    F8    F9   F10   F11   F12               NULL   DEL   PAUS  PRT   HOME  */
+            21,         23,   24,   25,   26,   28,   29,   30,   31,   33,   34,   35,   36,               37,   38,   39,   40,   41,
+        /* BKTK    1     2     3     4     5     6     7     8     9     0     -     =   BSPC  BSPC  BSPC  PLY   NMLK  NMDV  NMTM  NMMI  */
+            42,   43,   44,   45,   46,   47,   48,   49,   50,   51,   52,   53,   54,   55,   56,   57,   58,   59,   60,   61,   62,
+        /* TAB     Q     W     E     R     T     Y     U     I     O     P     [     ]     \               STP   NM7   NM8   NM9   NMPL  */
+            63,   64,   65,   66,   67,   68,   69,   70,   71,   72,   73,   74,   75,   76,               79,   80,   81,   82,   83,
+        /* CPLK    A     S     D     F     G     H     J     K     L     ;     "     #   ENTR  ENTR  ENTR  PRV   NM4   NM5   NM6   NMPL  */
+            84,   85,   86,   87,   88,   89,   90,   91,   92,   93,   94,   95,   96,   97,   98,   99,  100,  101,  102,  103,  104,
+        /* LSFT  ISO\    Z     X     C     V     B     N     M     ,     .     /   RSFT  RSFT  RSFT  ARWU        NM1   NM2   NM3   NMER  */
+           105,  106,  107,  108,  109,  110,  111,  112,  113,  114,  115,  116,  117,  118,  119,  139,        122,  123,  124,  125,
+        /* LCTL  LFNC  LWIN  LALT              SPC               RALT  RFNC  RCTL              ARWL  ARWD  ARWR        NM0   NMPD  NMER  */
+           126,  127,  128,  129,              131,              135,  136,  137,              159,  160,  161,        144,  145,  146,
+        /* LB1   LB2   LB3                                                                                             LB4   LB5   LB6   */
+           174,  173,  172,                                                                                            171,  170,  169,
+        /* PRT   KSTN  LOGO  LIDL  LIDR  */
+           142,    0,  167,  176,  177,
 
-/*10        F10  F11  F12  DEL  N?   N?   N?   N?   `    1    2    3    4    5  */
-            34,  35,  36,  37,  38,  39,  40,  41,  42,  43,  44,  45,  46,  47,
-
-/*20         6    7    8    9    0    -    =   BSP  BSP  BSP */
-            48,  49,  50,  51,  52,  53,  54,  55,  56,  57,
-
-/*30        PLY  NML  N/   N*   N-   TAB  Q    W    E    R    T    Y    U    I  */
-            58,  59,  60,  61,  62,  63,  64,  65,  66,  67,  68,  69,  70,  71,
-
-/*40         O    P    [    ]    \   STP  N7   N8   N9   N+   CAP   A    S    D  */
-            72,  73,  74,  75,  76,  79,  80,  81,  82,  83,  84,  85,  86,  87,
-
-/*50         F    G    H    J    K    L    ;    '   ENT  PRV  N4   N5   N6   N+  */
-            88,  89,  90,  91,  92,  93,  94,  95,  98, 100, 101, 102, 103, 104,
-
-/*60        LSH   Z    X    C    V    B    N    M    ,    .  */
-           105, 107, 108, 109, 110, 111, 112, 113, 114, 115,
-
-/*70         /   RSH  UP   NXT LCTL  N1   N2   N3   NE  LFN LWIN LALT  SPC RALT */
-           116, 119, 139, 121, 122, 123, 124, 125 ,126, 127, 128, 129, 131, 135,
-
-/*80       RCTL  LFT  DWN  RGT  PRT KSTN  VDN  VUP MICM HPFN */
-           137, 159, 160, 161, 142,  0,   2,   3,   4,   5,
-
-/*90       ARMC  LB1  LB2  LB3  LB4  LB5  LB6 LOGO LIDL LIDR */
-             6, 174, 173, 172, 171, 170, 169, 167, 176, 177,
-
-};
+        };
 
 
         static byte[] packetZone = new byte[]
         {
-/*00        ESC  F1   F2   F3   F4   F5   F6   F7   F8   F9  */
-            0,   0,   0,   1,   1,   1,   1,   1,   2,   2,
+                    /* VDN   VUP   MICM  HPFN  ARMC  */
+                         0,    0,    0,    1,    1,
+        /* ESC          F0    F0    F3    F4    F5    F6    F7    F8    F9   F10   F11   F12               NULL  DEL   PAUS  PRT   HOM   */
+             0,          0,    0,    0,    1,    1,    1,    1,    1,    2,    2,    2,    2,                3,   3,    3,    3,    3,
+        /* BKTK    1     2     3     4     5     6     7     8     9     0     -     =   BSPC  BSPC  BSPC  PLY   NMLK  NMDV  NMTM  NMMI  */
+             0,    0,    0,    0,    5,    4,    6,    7,    1,    1,    2,    2,    2,    2,    2,    2,    3,    3,    3,    3,    3,
+        /* TAB     Q     W     E     R     T     Y     U     I     O     P     [     ]     \               STP   NM7   NM8   NM9   NMPL  */
+             0,    0,    0,    0,    0,    1,    1,    1,    1,    1,    2,    2,    2,    2,                3,    3,    3,    3,    3,
+        /* CPLK    A     S     D     F     G     H     J     K     L     ;     "     #   ENTR  ENTR  ENTR  PRV   NM4   NM5   NM6   NMPL  */
+             0,    0,    0,    0,    0,    1,    1,    1,    1,    1,    2,    2,    2,    2,    2,    2,    3,    3,    3,    3,    3,
+        /* LSFT  ISO\    Z     X     C     V     B     N     M     ,     .     /   RSFT  RSFT  RSFT  ARWU        NM1   NM2   NM3   NMER  */
+             0,    0,    0,    0,    0,    1,    1,    1,    1,    1,    2,    2,    2,    2,    2,     2,         3,    3,    3,    3,
+        /* LCTL  LFNC  LWIN  LALT              SPC               RALT  RFNC  RCTL        ARWL  ARWD  ARWR              NM0   NMPD  NMER  */
+             0,    0,    0,    0,              1,                  1,    2,    2,          2,    2,    2,                3,    3,    3,
+        /* LB1   LB1   LB3                                                                                             LB4   LB5   LB6   */
+             5,    5,    4,                                                                                              6,    7,    7,
+        /* PRT   KSTN  LOGO  LIDL  LIDR  */
+             3,    3,    0,    0,    3,
 
-/*10        F10  F11  F12  DEL  N?   N?   N?   N?   `    1    2    3    4    5  */
-            2,   3,   3,   3,   3,   3,   3,   3,   0,   0,   0,   0,   1,   1,
-
-/*20         6    7    8    9    0    -    =   BSP  BSP  BSP */
-            1,   2,    2,   2,   2,  2,    3,  3,   3,   3,
-
-/*30        PLY  NML  N/   N*   N-   TAB  Q    W    E    R    T    Y    U    I  */
-            3,   3,   3,   3,   3,   0,   0,   0,   1,   1,   1,   1,   2,   2,
-
-/*40         O    P    [    ]    \   STP  N7   N8   N9   N+   CAP   A    S    D  */
-             2,   2,   3,   3,   3,   3,   3,   3,   3,  3,    0,   0,   0,   1,
-
-/*50         F    G    H    J    K    L    ;    '   ENT  PRV  N4   N5   N6   N+  */
-             1,   1,   1,   2,   2,   2,   2,   3,  3,   3,   3,   3,   3,   3,
-
-/*60        LSH   Z    X    C    V    B    N    M    ,    .  */
-             0,   0,   0,   1,   1,   1,   1,   2,   2,   2,
-
-/*70         /   RSH  UP   NXT LCTL  N1   N2   N3   NE  LFN LWIN LALT  SPC RALT */
-            3,   3,   3,   3,  0,    3,   3,   3,   3,  0,    0,  0,   1,   2,
-
-/*80       RCTL  LFT  DWN  RGT  PRT KSTN  VDN  VUP MICM HPFN */
-            2,   3,   3,    3,  3,   3,   0,   0,   1,   1,
-
-/*90       ARMC  LB1  LB2  LB3  LB4  LB5  LB6 LOGO LIDL LIDR */
-             2,   4,   4,   5,   6,   7,   7,   0,  0,   3,
-
-};
+        };
 
         static byte[] packet4Zone = new byte[]
         {
@@ -434,9 +412,9 @@ namespace GHelper.USB
             0,  1,  2,  3,  0,  0, 
 
 /*02        RR  R   RM  LM  L   LL  LighBar */
-            7,  7,  6,  5,  4,  4, 
+            7,  7,  6,  5,  4,  4,
 
-};
+        };
 
 
         public static void ApplyDirect(Color[] color, bool init = false)
