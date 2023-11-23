@@ -355,7 +355,7 @@ public static class AppConfig
 
     public static bool IsStrixLimitedRGB()
     {
-        return ContainsModel("G614JV") || ContainsModel("G614JZ") || ContainsModel("G512LI") || ContainsModel("G513RS") || ContainsModel("G513RM") || ContainsModel("G713PV") || ContainsModel("G513IE");
+        return ContainsModel("G614JV") || ContainsModel("G614JZ") || ContainsModel("G512LI") || ContainsModel("G513RS") || ContainsModel("G513RM") || ContainsModel("G713PV") || ContainsModel("G513IE") || ContainsModel("G513QM");
     }
 
     public static bool IsStrixNumpad()
