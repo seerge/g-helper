@@ -363,22 +363,23 @@ namespace GHelper.USB
         {
                     /* VDN   VUP   MICM  HPFN  ARMC  */
                          2,    3,    4,    5,    6,
-        /* ESC          F1    F2    F3    F4    F5    F6    F7    F8    F9   F10   F11   F12               NULL   DEL   PAUS  PRT   HOME  */
+        /* ESC          F1    F2    F3    F4    F5    F6    F7    F8    F9   F10   F11   F12              DEL15 DEL17  PAUS  PRT   HOME  */
             21,         23,   24,   25,   26,   28,   29,   30,   31,   33,   34,   35,   36,               37,   38,   39,   40,   41,
-        /* BKTK    1     2     3     4     5     6     7     8     9     0     -     =   BSPC  BSPC  BSPC  PLY   NMLK  NMDV  NMTM  NMMI  */
+        /* BKTK    1     2     3     4     5     6     7     8     9     0     -     =   BSPC  BSPC  BSPC PLY15  NMLK  NMDV  NMTM  NMMI  */
             42,   43,   44,   45,   46,   47,   48,   49,   50,   51,   52,   53,   54,   55,   56,   57,   58,   59,   60,   61,   62,
-        /* TAB     Q     W     E     R     T     Y     U     I     O     P     [     ]     \               STP   NM7   NM8   NM9   NMPL  */
+        /* TAB     Q     W     E     R     T     Y     U     I     O     P     [     ]     \              STP15  NM7   NM8   NM9   NMPL  */
             63,   64,   65,   66,   67,   68,   69,   70,   71,   72,   73,   74,   75,   76,               79,   80,   81,   82,   83,
-        /* CPLK    A     S     D     F     G     H     J     K     L     ;     "     #   ENTR  ENTR  ENTR  PRV   NM4   NM5   NM6   NMPL  */
+        /* CPLK    A     S     D     F     G     H     J     K     L     ;     "     #   ENTR  ENTR  ENTR PRV15  NM4   NM5   NM6   NMPL  */
             84,   85,   86,   87,   88,   89,   90,   91,   92,   93,   94,   95,   96,   97,   98,   99,  100,  101,  102,  103,  104,
-        /* LSFT  ISO\    Z     X     C     V     B     N     M     ,     .     /   RSFT  RSFT  RSFT  ARWU        NM1   NM2   NM3   NMER  */
-           105,  106,  107,  108,  109,  110,  111,  112,  113,  114,  115,  116,  117,  118,  119,  139,        122,  123,  124,  125,
-        /* LCTL  LFNC  LWIN  LALT              SPC               RALT  RFNC  RCTL              ARWL  ARWD  ARWR        NM0   NMPD  NMER  */
-           126,  127,  128,  129,              131,              135,  136,  137,              159,  160,  161,        144,  145,  146,
+        /* LSFT  ISO\    Z     X     C     V     B     N     M     ,     .     /   RSFT  RSFT  RSFT  ARWU NXT15  NM1   NM2   NM3   NMER  */
+           105,  106,  107,  108,  109,  110,  111,  112,  113,  114,  115,  116,  117,  118,  119,  139,  121,  122,  123,  124,  125,
+        /* LCTL  LFNC  LWIN  LALT              SPC               RALT  RFNC  RCTL        ARWL  ARWD  ARWR PRT15        NM0   NMPD  NMER  */
+           126,  127,  128,  129,              131,              135,  136,  137,        159,  160,  161,  142,        144,  145,  146,
         /* LB1   LB2   LB3                                                                                             LB4   LB5   LB6   */
            174,  173,  172,                                                                                            171,  170,  169,
-        /* PRT   KSTN  LOGO  LIDL  LIDR  */
-           142,    0,  167,  176,  177,
+        /* KSTN  LOGO  LIDL  LIDR  */
+             0,  167,  176,  177,
+=
 
         };
 
@@ -387,22 +388,22 @@ namespace GHelper.USB
         {
                     /* VDN   VUP   MICM  HPFN  ARMC  */
                          0,    0,    0,    1,    1,
-        /* ESC          F0    F0    F3    F4    F5    F6    F7    F8    F9   F10   F11   F12               NULL  DEL   PAUS  PRT   HOM   */
+        /* ESC          F0    F0    F3    F4    F5    F6    F7    F8    F9   F10   F11   F12              DEL15 DEL17  PAUS  PRT   HOM   */
              0,          0,    0,    0,    1,    1,    1,    1,    1,    2,    2,    2,    2,                3,   3,    3,    3,    3,
-        /* BKTK    1     2     3     4     5     6     7     8     9     0     -     =   BSPC  BSPC  BSPC  PLY   NMLK  NMDV  NMTM  NMMI  */
-             0,    0,    0,    0,    5,    4,    6,    7,    1,    1,    2,    2,    2,    2,    2,    2,    3,    3,    3,    3,    3,
-        /* TAB     Q     W     E     R     T     Y     U     I     O     P     [     ]     \               STP   NM7   NM8   NM9   NMPL  */
-             0,    0,    0,    0,    0,    1,    1,    1,    1,    1,    2,    2,    2,    2,                3,    3,    3,    3,    3,
-        /* CPLK    A     S     D     F     G     H     J     K     L     ;     "     #   ENTR  ENTR  ENTR  PRV   NM4   NM5   NM6   NMPL  */
+        /* BKTK    1     2     3     4     5     6     7     8     9     0     -     =   BSPC  BSPC  BSPC PLY15  NMLK  NMDV  NMTM  NMMI  */
              0,    0,    0,    0,    0,    1,    1,    1,    1,    1,    2,    2,    2,    2,    2,    2,    3,    3,    3,    3,    3,
-        /* LSFT  ISO\    Z     X     C     V     B     N     M     ,     .     /   RSFT  RSFT  RSFT  ARWU        NM1   NM2   NM3   NMER  */
-             0,    0,    0,    0,    0,    1,    1,    1,    1,    1,    2,    2,    2,    2,    2,     2,         3,    3,    3,    3,
-        /* LCTL  LFNC  LWIN  LALT              SPC               RALT  RFNC  RCTL        ARWL  ARWD  ARWR              NM0   NMPD  NMER  */
-             0,    0,    0,    0,              1,                  1,    2,    2,          2,    2,    2,                3,    3,    3,
+        /* TAB     Q     W     E     R     T     Y     U     I     O     P     [     ]     \              STP15  NM7   NM8   NM9   NMPL  */
+             0,    0,    0,    0,    0,    1,    1,    1,    1,    1,    2,    2,    2,    2,                3,    3,    3,    3,    3,
+        /* CPLK    A     S     D     F     G     H     J     K     L     ;     "     #   ENTR  ENTR  ENTR PRV15  NM4   NM5   NM6   NMPL  */
+             0,    0,    0,    0,    0,    1,    1,    1,    1,    1,    2,    2,    2,    2,    2,    2,    3,    3,    3,    3,    3,
+        /* LSFT  ISO\    Z     X     C     V     B     N     M     ,     .     /   RSFT  RSFT  RSFT  ARWU NXT15  NM1   NM2   NM3   NMER  */
+             0,    0,    0,    0,    0,    1,    1,    1,    1,    1,    2,    2,    2,    2,    2,     2,   3,    3,    3,    3,    3,
+        /* LCTL  LFNC  LWIN  LALT              SPC               RALT  RFNC  RCTL        ARWL  ARWD  ARWR PRT15        NM0   NMPD  NMER  */
+             0,    0,    0,    0,              1,                  1,    2,    2,          2,    2,    2,    3,          3,    3,    3,
         /* LB1   LB1   LB3                                                                                             LB4   LB5   LB6   */
              5,    5,    4,                                                                                              6,    7,    7,
-        /* PRT   KSTN  LOGO  LIDL  LIDR  */
-             3,    3,    0,    0,    3,
+        /* KSTN  LOGO  LIDL  LIDR  */
+             3,    0,    0,    3,
 
         };
 
