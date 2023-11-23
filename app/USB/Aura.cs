@@ -399,11 +399,11 @@ namespace GHelper.USB
         /* LSFT  ISO\    Z     X     C     V     B     N     M     ,     .     /   RSFT  RSFT  RSFT  ARWU NXT15  NM1   NM2   NM3   NMER  */
              0,    0,    0,    0,    0,    1,    1,    1,    1,    1,    2,    2,    2,    2,    2,     2,   3,    3,    3,    3,    3,
         /* LCTL  LFNC  LWIN  LALT              SPC               RALT  RFNC  RCTL        ARWL  ARWD  ARWR PRT15        NM0   NMPD  NMER  */
-             0,    0,    0,    0,              1,                  1,    2,    2,          2,    2,    2,    3,          3,    3,    3,
+             0,    0,    0,    0,                1,                1,    2,    2,          2,    2,    2,    3,          3,    3,    3,
         /* LB1   LB1   LB3                                                                                             LB4   LB5   LB6   */
              5,    5,    4,                                                                                              6,    7,    7,
         /* KSTN  LOGO  LIDL  LIDR  */
-             3,    0,    0,    3,
+             3,    0,    2,    3,
 
         };
 
