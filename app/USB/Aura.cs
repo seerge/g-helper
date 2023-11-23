@@ -379,6 +379,7 @@ namespace GHelper.USB
            174,  173,  172,                                                                                            171,  170,  169,
         /* KSTN  LOGO  LIDL  LIDR  */
              0,  167,  176,  177,
+=
 
         };
 

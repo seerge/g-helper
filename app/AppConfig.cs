@@ -423,7 +423,7 @@ public static class AppConfig
 
     public static bool IsGPUFixNeeded()
     {
-        return ContainsModel("GA402X") || ContainsModel("GV302") || ContainsModel("GZ301") || ContainsModel("FX506") || ContainsModel("GU603V") ||  ContainsModel("GU603Z");
+        return ContainsModel("GA402X") || ContainsModel("GV302") || ContainsModel("GV301") || ContainsModel("GZ301") || ContainsModel("FX506") || ContainsModel("GU603V") ||  ContainsModel("GU603Z");
     }
 
     public static bool IsGPUFix()
