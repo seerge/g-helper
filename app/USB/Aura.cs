@@ -78,7 +78,9 @@ namespace GHelper.USB
 
         static bool isACPI = AppConfig.IsTUF() || AppConfig.IsVivobook();
         static bool isStrix = AppConfig.IsStrix();
+
         static bool isStrix4Zone = AppConfig.IsStrixLimitedRGB();
+        static bool isStrixNumpad = AppConfig.IsStrixNumpad();
 
         static public bool isSingleColor = false;
 
@@ -379,7 +381,6 @@ namespace GHelper.USB
            174,  173,  172,                                                                                            171,  170,  169,
         /* KSTN  LOGO  LIDL  LIDR  */
              0,  167,  176,  177,
-=
 
         };
 
@@ -387,8 +388,32 @@ namespace GHelper.USB
         static byte[] packetZone = new byte[]
         {
                     /* VDN   VUP   MICM  HPFN  ARMC  */
+                         0,    0,    1,    1,    1,
+        /* ESC          F1    F2    F3    F4    F5    F6    F7    F8    F9   F10   F11   F12              DEL15 DEL17  PAUS  PRT   HOM   */
+             0,          0,    0,    1,    1,    1,    1,    2,    2,    2,    2,    3,    3,                3,   3,    3,    3,    3,
+        /* BKTK    1     2     3     4     5     6     7     8     9     0     -     =   BSPC  BSPC  BSPC PLY15  NMLK  NMDV  NMTM  NMMI  */
+             0,    0,    0,    0,    1,    1,    1,    1,    2,    2,    2,    2,    3,    3,    3,    3,    3,    3,    3,    3,    3,
+        /* TAB     Q     W     E     R     T     Y     U     I     O     P     [     ]     \              STP15  NM7   NM8   NM9   NMPL  */
+             0,    0,    0,    0,    1,    1,    1,    1,    2,    2,    2,    2,    3,    3,                3,    3,    3,    3,    3,
+        /* CPLK    A     S     D     F     G     H     J     K     L     ;     "     #   ENTR  ENTR  ENTR PRV15  NM4   NM5   NM6   NMPL  */
+             0,    0,    0,    0,    1,    1,    1,    1,    2,    2,    2,    2,    3,    3,    3,    3,    3,    3,    3,    3,    3,
+        /* LSFT  ISO\    Z     X     C     V     B     N     M     ,     .     /   RSFT  RSFT  RSFT  ARWU NXT15  NM1   NM2   NM3   NMER  */
+             0,    0,    0,    0,    1,    1,    1,    1,    2,    2,    2,    2,    3,    3,    3,    3,    3,    3,    3,    3,    3,
+        /* LCTL  LFNC  LWIN  LALT              SPC               RALT  RFNC  RCTL        ARWL  ARWD  ARWR PRT15        NM0   NMPD  NMER  */
+             0,    0,    0,    0,              1,                  2,    2,    2,          3,    3,    3,    3,          3,    3,    3,
+        /* LB1   LB1   LB3                                                                                             LB4   LB5   LB6   */
+             5,    5,    4,                                                                                              6,    7,    7,
+        /* KSTN  LOGO  LIDL  LIDR  */
+             3,    0,    0,    3,
+
+        };
+
+
+        static byte[] packetZoneNumpad = new byte[]
+        {
+                    /* VDN   VUP   MICM  HPFN  ARMC  */
                          0,    0,    0,    1,    1,
-        /* ESC          F0    F0    F3    F4    F5    F6    F7    F8    F9   F10   F11   F12              DEL15 DEL17  PAUS  PRT   HOM   */
+        /* ESC          F1    F2    F3    F4    F5    F6    F7    F8    F9   F10   F11   F12              DEL15 DEL17  PAUS  PRT   HOM   */
              0,          0,    0,    0,    1,    1,    1,    1,    1,    2,    2,    2,    2,                3,   3,    3,    3,    3,
         /* BKTK    1     2     3     4     5     6     7     8     9     0     -     =   BSPC  BSPC  BSPC PLY15  NMLK  NMDV  NMTM  NMMI  */
              0,    0,    0,    0,    0,    1,    1,    1,    1,    1,    2,    2,    2,    2,    2,    2,    3,    3,    3,    3,    3,
@@ -450,7 +475,7 @@ namespace GHelper.USB
                 for (int ledIndex = 0; ledIndex < packetMap.Count(); ledIndex++)
                 {
                     ushort offset = (ushort)(3 * packetMap[ledIndex]);
-                    byte zone = packetZone[ledIndex];
+                    byte zone = isStrixNumpad ? packetZoneNumpad[ledIndex] : packetZone[ledIndex];
 
                     keyBuf[offset] = color[zone].R;
                     keyBuf[offset + 1] = color[zone].G;

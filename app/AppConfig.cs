@@ -358,6 +358,11 @@ public static class AppConfig
         return ContainsModel("G614JV") || ContainsModel("G614JZ") || ContainsModel("G512LI") || ContainsModel("G513RS") || ContainsModel("G513RM") || ContainsModel("G713PV") || ContainsModel("G513IE");
     }
 
+    public static bool IsStrixNumpad()
+    {
+        return ContainsModel("G713R");
+    }
+
     public static bool IsZ13()
     {
         return ContainsModel("Z13");
