@@ -13,7 +13,6 @@ using GHelper.UI;
 using GHelper.USB;
 using System.Diagnostics;
 using System.Timers;
-using System.Runtime.InteropServices;
 
 namespace GHelper
 {
@@ -22,7 +21,7 @@ namespace GHelper
         ContextMenuStrip contextMenuStrip = new CustomContextMenu();
         ToolStripMenuItem menuSilent, menuBalanced, menuTurbo, menuEco, menuStandard, menuUltimate, menuOptimized;
 
-        GPUModeControl gpuControl;
+        public GPUModeControl gpuControl;
         ScreenControl screenControl = new ScreenControl();
         AutoUpdateControl updateControl;
 

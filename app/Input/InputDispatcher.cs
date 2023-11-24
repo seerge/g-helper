@@ -116,6 +116,9 @@ namespace GHelper.Input
 
             if (keyApp != Keys.None) hook.RegisterHotKey(ModifierKeys.Shift | ModifierKeys.Control, keyApp);
 
+            hook.RegisterHotKey(ModifierKeys.Shift | ModifierKeys.Control | ModifierKeys.Alt, Keys.F14);
+            hook.RegisterHotKey(ModifierKeys.Shift | ModifierKeys.Control | ModifierKeys.Alt, Keys.F15);
+
             if (!AppConfig.Is("skip_hotkeys"))
             {
                 hook.RegisterHotKey(ModifierKeys.Control, Keys.VolumeDown);
@@ -345,6 +348,16 @@ namespace GHelper.Input
             if (e.Modifier == (ModifierKeys.Control | ModifierKeys.Shift | ModifierKeys.Alt))
             {
                 if (e.Key == keyProfile) modeControl.CyclePerformanceMode(true);
+
+                switch (e.Key)
+                {
+                    case Keys.F14:
+                        Program.settingsForm.gpuControl.SetGPUMode(AsusACPI.GPUModeEco);
+                        break;
+                    case Keys.F15:
+                        Program.settingsForm.gpuControl.SetGPUMode(AsusACPI.GPUModeStandard);
+                        break;
+                }
             }
 
 
@@ -640,7 +653,7 @@ namespace GHelper.Input
                 case 106: // Screenpad button on DUO
                     if (Control.ModifierKeys == Keys.Shift)
                         ToggleScreenpad();
-                    else 
+                    else
                         SetScreenpad(100);
                     break;
 
