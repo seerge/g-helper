@@ -122,6 +122,8 @@ namespace GHelper
                 SettingsToggle(action, false);
             }
 
+            Startup.StartupCheck();
+            
             Application.Run();
 
         }
@@ -264,9 +266,6 @@ namespace GHelper
                         Startup.ReScheduleAdmin();
                         settingsForm.FansToggle(2);
                         modeControl.SetRyzen();
-                        break;
-                    default:
-                        Startup.StartupCheck();
                         break;
                 }
             }
