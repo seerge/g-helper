@@ -134,6 +134,7 @@ namespace GHelper.USB
             {
                 var device = AsusHid.FindDevices(AsusHid.AURA_ID).FirstOrDefault();
                 if (device is null) return;
+                Logger.WriteLine($"GA402: {device.ReleaseNumberBcd} {device.ReleaseNumber}");
                 if (device.ReleaseNumberBcd == 22 || device.ReleaseNumberBcd == 23) isSingleColor = true;
             }
         }

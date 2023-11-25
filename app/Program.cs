@@ -119,7 +119,35 @@ namespace GHelper
 
             if (Environment.CurrentDirectory.Trim('\\') == Application.StartupPath.Trim('\\') || action.Length > 0)
             {
-                SettingsToggle(action, false);
+                SettingsToggle(false);
+            }
+
+            switch (action)
+            {
+                case "cpu":
+                    Startup.ReScheduleAdmin();
+                    settingsForm.FansToggle();
+                    break;
+                case "gpu":
+                    Startup.ReScheduleAdmin();
+                    settingsForm.FansToggle(1);
+                    break;
+                case "gpurestart":
+                    gpuControl.RestartGPU(false);
+                    break;
+                case "services":
+                    settingsForm.extraForm = new Extra();
+                    settingsForm.extraForm.Show();
+                    settingsForm.extraForm.ServiesToggle();
+                    break;
+                case "uv":
+                    Startup.ReScheduleAdmin();
+                    settingsForm.FansToggle(2);
+                    modeControl.SetRyzen();
+                    break;
+                default:
+                    Startup.StartupCheck();
+                    break;
             }
 
             Application.Run();
@@ -213,7 +241,7 @@ namespace GHelper
             SetAutoModes(true);
         }
 
-        public static void SettingsToggle(string action = "", bool checkForFocus = true, bool trayClick = false)
+        public static void SettingsToggle(bool checkForFocus = true, bool trayClick = false)
         {
             if (settingsForm.Visible)
             {
@@ -241,34 +269,6 @@ namespace GHelper
                 settingsForm.Top = Screen.FromControl(settingsForm).WorkingArea.Height - 10 - settingsForm.Height;
 
                 settingsForm.VisualiseGPUMode();
-
-                switch (action)
-                {
-                    case "cpu":
-                        Startup.ReScheduleAdmin();
-                        settingsForm.FansToggle();
-                        break;
-                    case "gpu":
-                        Startup.ReScheduleAdmin();
-                        settingsForm.FansToggle(1);
-                        break;
-                    case "gpurestart":
-                        gpuControl.RestartGPU(false);
-                        break;
-                    case "services":
-                        settingsForm.extraForm = new Extra();
-                        settingsForm.extraForm.Show();
-                        settingsForm.extraForm.ServiesToggle();
-                        break;
-                    case "uv":
-                        Startup.ReScheduleAdmin();
-                        settingsForm.FansToggle(2);
-                        modeControl.SetRyzen();
-                        break;
-                    default:
-                        Startup.StartupCheck();
-                        break;
-                }
             }
         }
 
