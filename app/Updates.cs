@@ -13,8 +13,8 @@ namespace GHelper
         const int DRIVER_NEWER = 1;
 
         //static int rowCount = 0;
-        static string bios;
-        static string model;
+        static string? bios;
+        static string? model;
 
         static int updatesCount = 0;
         private static long lastUpdate;
@@ -108,7 +108,7 @@ namespace GHelper
                     foreach (ManagementObject obj in objCollection)
                     {
                         if (obj["DeviceID"] is not null && obj["DriverVersion"] is not null)
-                            list[obj["DeviceID"].ToString()] = obj["DriverVersion"].ToString();
+                            list[obj["DeviceID"].ToString() ?? string.Empty] = obj["DriverVersion"].ToString() ?? string.Empty;
                     }
 
                     return list;
@@ -259,7 +259,7 @@ namespace GHelper
                             }
 
                         if (type == 1)
-                            newer = Int32.Parse(driver.version) > Int32.Parse(bios) ? 1 : -1;
+                            newer = bios != null && Int32.Parse(driver.version) > Int32.Parse(bios) ? 1 : -1;
 
                         VisualiseNewDriver(count, newer, table);
 

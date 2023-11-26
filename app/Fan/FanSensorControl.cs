@@ -16,7 +16,7 @@ namespace GHelper.Fan
         Fans fansForm;
         ModeControl modeControl = Program.modeControl;
 
-        static int[] measuredMax;
+        static int[] measuredMax = { 0, 0, 0 };
         static int sameCount = 0;
 
         static System.Timers.Timer timer = default!;
@@ -99,7 +99,7 @@ namespace GHelper.Fan
             }
         }
 
-        public static string FormatFan(AsusFan device, int value)
+        public static string? FormatFan(AsusFan device, int value)
         {
             if (value < 0) return null;
 
@@ -129,6 +129,8 @@ namespace GHelper.Fan
 
         private void Timer_Elapsed(object? sender, System.Timers.ElapsedEventArgs e)
         {
+            if (Program.acpi == null) return;
+
             int fan;
             bool same = true;
 

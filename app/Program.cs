@@ -24,7 +24,7 @@ namespace GHelper
             Visible = true
         };
 
-        public static AsusACPI acpi;
+        public static AsusACPI acpi = default!;
 
         public static SettingsForm settingsForm = new SettingsForm();
 
@@ -40,7 +40,7 @@ namespace GHelper
         private static long lastAuto;
         private static long lastTheme;
 
-        public static InputDispatcher? inputDispatcher;
+        public static InputDispatcher inputDispatcher = default!;
 
         private static PowerLineStatus isPlugged = SystemInformation.PowerStatus.PowerLineStatus;
 
@@ -51,9 +51,9 @@ namespace GHelper
             string action = "";
             if (args.Length > 0) action = args[0];
 
-            string language = AppConfig.GetString("language");
+            var language = AppConfig.GetString("language");
 
-            if (language != null && language.Length > 0)
+            if (language is { Length: > 0 })
                 Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo(language);
             else
             {
@@ -81,7 +81,7 @@ namespace GHelper
             }
 
             Logger.WriteLine("------------");
-            Logger.WriteLine("App launched: " + AppConfig.GetModel() + " :" + Assembly.GetExecutingAssembly().GetName().Version.ToString() + CultureInfo.CurrentUICulture + (ProcessHelper.IsUserAdministrator() ? "." : ""));
+            Logger.WriteLine("App launched: " + AppConfig.GetModel() + " :" + Assembly.GetExecutingAssembly().GetName().Version + CultureInfo.CurrentUICulture + (ProcessHelper.IsUserAdministrator() ? "." : ""));
 
             Application.EnableVisualStyles();
 

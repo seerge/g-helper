@@ -23,7 +23,7 @@ namespace GHelper.Input
 
         static bool isTUF = AppConfig.IsTUF();
 
-        KeyboardListener listener;
+        KeyboardListener? listener;
         KeyboardHook hook = new KeyboardHook();
 
         public InputDispatcher()
@@ -105,8 +105,8 @@ namespace GHelper.Input
             if (AppConfig.Get("keybind_profile") != -1) keyProfile = (Keys)AppConfig.Get("keybind_profile");
             if (AppConfig.Get("keybind_app") != -1) keyApp = (Keys)AppConfig.Get("keybind_app");
 
-            string actionM1 = AppConfig.GetString("m1");
-            string actionM2 = AppConfig.GetString("m2");
+            var actionM1 = AppConfig.GetString("m1");
+            var actionM2 = AppConfig.GetString("m2");
 
             if (keyProfile != Keys.None)
             {
@@ -177,16 +177,15 @@ namespace GHelper.Input
 
         static void CustomKey(string configKey = "m3")
         {
-            string command = AppConfig.GetString(configKey + "_custom");
-            int[] hexKeys = new int[0];
+            var command = AppConfig.GetString(configKey + "_custom");
+            int[] hexKeys = Array.Empty<int>();
 
-            try
-            {
-                hexKeys = ParseHexValues(command);
-            }
-            catch
-            {
-            }
+            if (command != null)
+                try
+                {
+                    hexKeys = ParseHexValues(command);
+                }
+                catch { }
 
             switch (hexKeys.Length)
             {
@@ -229,7 +228,7 @@ namespace GHelper.Input
 
         }
 
-        public void KeyPressed(object sender, KeyPressedEventArgs e)
+        public void KeyPressed(object? sender, KeyPressedEventArgs e)
         {
 
             if (e.Modifier == ModifierKeys.None)
@@ -395,7 +394,7 @@ namespace GHelper.Input
 
         public static void KeyProcess(string name = "m3")
         {
-            string action = AppConfig.GetString(name);
+            var action = AppConfig.GetString(name);
 
             if (action is null || action.Length <= 1)
             {
@@ -627,7 +626,7 @@ namespace GHelper.Input
 
         }
 
-        // Asus Optimization service Events 
+        // Asus Optimization service Events
         static void HandleOptimizationEvent(int EventID)
         {
             switch (EventID)
@@ -758,7 +757,7 @@ namespace GHelper.Input
         }
 
 
-        static void LaunchProcess(string command = "")
+        static void LaunchProcess(string? command = "")
         {
 
             try
@@ -775,7 +774,7 @@ namespace GHelper.Input
 
                 startInfo.WorkingDirectory = Environment.CurrentDirectory;
                 //startInfo.Arguments = arguments;
-                Process proc = Process.Start(startInfo);
+                var proc = Process.Start(startInfo);
             }
             catch
             {
@@ -789,8 +788,8 @@ namespace GHelper.Input
 
         static void WatcherEventArrived(object sender, EventArrivedEventArgs e)
         {
-            if (e.NewEvent is null) return;
-            int EventID = int.Parse(e.NewEvent["EventID"].ToString());
+            if (e.NewEvent?["EventID"].ToString() is not {} str) return;
+            int EventID = int.Parse(str);
             Logger.WriteLine("WMI event " + EventID);
             HandleEvent(EventID);
         }

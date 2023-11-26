@@ -19,7 +19,7 @@ namespace GHelper
     public partial class SettingsForm : RForm
     {
         ContextMenuStrip contextMenuStrip = new CustomContextMenu();
-        ToolStripMenuItem menuSilent, menuBalanced, menuTurbo, menuEco, menuStandard, menuUltimate, menuOptimized;
+        ToolStripMenuItem? menuSilent, menuBalanced, menuTurbo, menuEco, menuStandard, menuUltimate, menuOptimized;
 
         public GPUModeControl gpuControl;
         ScreenControl screenControl = new ScreenControl();
@@ -318,7 +318,7 @@ namespace GHelper
                 case NativeMethods.WM_POWERBROADCAST:
                     if (m.WParam == (IntPtr)NativeMethods.PBT_POWERSETTINGCHANGE)
                     {
-                        var settings = (NativeMethods.POWERBROADCAST_SETTING)m.GetLParam(typeof(NativeMethods.POWERBROADCAST_SETTING));
+                        var settings = (NativeMethods.POWERBROADCAST_SETTING?)m.GetLParam(typeof(NativeMethods.POWERBROADCAST_SETTING)) ?? default;
                         switch (settings.Data)
                         {
                             case 0:
@@ -773,6 +773,8 @@ namespace GHelper
 
         private void ComboKeyboard_SelectedValueChanged(object? sender, EventArgs e)
         {
+            if (comboKeyboard.SelectedValue == null) return;
+
             AppConfig.Set("aura_mode", (int)comboKeyboard.SelectedValue);
             SetAura();
         }
@@ -996,23 +998,23 @@ namespace GHelper
                 buttonTurbo.Activated = false;
                 buttonFans.Activated = false;
 
-                menuSilent.Checked = false;
-                menuBalanced.Checked = false;
-                menuTurbo.Checked = false;
+                if (menuSilent != null) menuSilent.Checked = false;
+                if (menuBalanced != null) menuBalanced.Checked = false;
+                if (menuTurbo != null) menuTurbo.Checked = false;
 
                 switch (mode)
                 {
                     case AsusACPI.PerformanceSilent:
                         buttonSilent.Activated = true;
-                        menuSilent.Checked = true;
+                        if (menuSilent != null) menuSilent.Checked = true;
                         break;
                     case AsusACPI.PerformanceTurbo:
                         buttonTurbo.Activated = true;
-                        menuTurbo.Checked = true;
+                        if (menuTurbo != null) menuTurbo.Checked = true;
                         break;
                     case AsusACPI.PerformanceBalanced:
                         buttonBalanced.Activated = true;
-                        menuBalanced.Checked = true;
+                        if (menuBalanced != null) menuBalanced.Checked = true;
                         break;
                     default:
                         buttonFans.Activated = true;
@@ -1095,8 +1097,10 @@ namespace GHelper
         {
             if (!eco)
             {
-                menuEco.Visible = buttonEco.Visible = false;
-                menuOptimized.Visible = buttonOptimized.Visible = false;
+                if (menuEco != null) menuEco.Visible = false;
+                buttonEco.Visible = false;
+                if (menuOptimized != null) menuOptimized.Visible = false;
+                buttonOptimized.Visible = false;
                 buttonStopGPU.Visible = true;
                 tableGPU.ColumnCount = 3;
                 tableScreen.ColumnCount = 3;
@@ -1108,7 +1112,8 @@ namespace GHelper
 
             if (!ultimate)
             {
-                menuUltimate.Visible = buttonUltimate.Visible = false;
+                if (menuUltimate != null) menuUltimate.Visible = false;
+                buttonUltimate.Visible = false;
                 tableGPU.ColumnCount = 3;
                 tableScreen.ColumnCount = 3;
             }
@@ -1133,7 +1138,7 @@ namespace GHelper
         }
 
 
-        public void LockGPUModes(string text = null)
+        public void LockGPUModes(string? text = null)
         {
             Invoke(delegate
             {
@@ -1197,10 +1202,10 @@ namespace GHelper
 
             if (isGpuSection)
             {
-                menuEco.Checked = buttonEco.Activated;
-                menuStandard.Checked = buttonStandard.Activated;
-                menuUltimate.Checked = buttonUltimate.Activated;
-                menuOptimized.Checked = buttonOptimized.Activated;
+                if (menuEco != null) menuEco.Checked = buttonEco.Activated;
+                if (menuStandard != null) menuStandard.Checked = buttonStandard.Activated;
+                if (menuUltimate != null) menuUltimate.Checked = buttonUltimate.Activated;
+                if (menuOptimized != null) menuOptimized.Checked = buttonOptimized.Activated;
             }
 
         }

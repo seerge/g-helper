@@ -16,8 +16,8 @@ namespace GHelper.AutoUpdate
         public AutoUpdateControl(SettingsForm settingsForm)
         {
             settings = settingsForm;
-            var appVersion = new Version(Assembly.GetExecutingAssembly().GetName().Version.ToString());
-            settings.SetVersionLabel(Properties.Strings.VersionLabel + $": {appVersion.Major}.{appVersion.Minor}.{appVersion.Build}");
+            var appVersion = Assembly.GetExecutingAssembly().GetName().Version;
+            settings.SetVersionLabel(Properties.Strings.VersionLabel + $": {appVersion?.Major}.{appVersion?.Minor}.{appVersion?.Build}");
         }
 
         public void CheckForUpdates()
@@ -54,7 +54,7 @@ namespace GHelper.AutoUpdate
                     var tag = config.GetProperty("tag_name").ToString().Replace("v", "");
                     var assets = config.GetProperty("assets");
 
-                    string url = null;
+                    string? url = null;
 
                     for (int i = 0; i < assets.GetArrayLength(); i++)
                     {
@@ -66,8 +66,8 @@ namespace GHelper.AutoUpdate
                         url = assets[0].GetProperty("browser_download_url").ToString();
 
                     var gitVersion = new Version(tag);
-                    var appVersion = new Version(Assembly.GetExecutingAssembly().GetName().Version.ToString());
-                    //appVersion = new Version("0.50.0.0"); 
+                    var appVersion = Assembly.GetExecutingAssembly().GetName().Version;
+                    //appVersion = new Version("0.50.0.0");
 
                     if (gitVersion.CompareTo(appVersion) > 0)
                     {
@@ -106,7 +106,7 @@ namespace GHelper.AutoUpdate
             string zipName = Path.GetFileName(uri.LocalPath);
 
             string exeLocation = Application.ExecutablePath;
-            string exeDir = Path.GetDirectoryName(exeLocation);
+            var exeDir = Path.GetDirectoryName(exeLocation);
             string zipLocation = exeDir + "\\" + zipName;
 
             using (WebClient client = new WebClient())

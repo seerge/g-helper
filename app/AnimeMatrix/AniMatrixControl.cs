@@ -2,6 +2,7 @@
 using NAudio.Wave;
 using Starlight.AnimeMatrix;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.IO;
@@ -21,6 +22,7 @@ namespace GHelper.AnimeMatrix
         double[]? AudioValues;
         WasapiCapture? AudioDevice;
 
+        [MemberNotNullWhen(true, nameof(device))]
         public bool IsValid => device != null;
 
         private long lastPresent;
@@ -96,7 +98,7 @@ namespace GHelper.AnimeMatrix
                         SetMatrixPicture(AppConfig.GetString("matrix_picture"));
                         break;
                     case 3:
-                        SetMatrixClock();
+                        SetMatrixClock(device);
                         break;
                     case 4:
                         SetMatrixAudio();
@@ -126,7 +128,7 @@ namespace GHelper.AnimeMatrix
 
         private void MatrixTimer_Elapsed(object? sender, ElapsedEventArgs e)
         {
-            //if (!IsValid) return;
+            if (!IsValid) return;
 
             switch (AppConfig.Get("matrix_running"))
             {
@@ -141,9 +143,9 @@ namespace GHelper.AnimeMatrix
         }
 
 
-        public void SetMatrixClock()
+        public void SetMatrixClock(AnimeMatrixDevice d)
         {
-            device.SetBuiltInAnimation(false);
+            d.SetBuiltInAnimation(false);
             StartMatrixTimer(1000);
             Logger.WriteLine("Matrix Clock");
         }
@@ -200,6 +202,8 @@ namespace GHelper.AnimeMatrix
 
         private void WaveIn_DataAvailable(object? sender, WaveInEventArgs e)
         {
+            if (AudioDevice == null || AudioValues == null) return;
+
             int bytesPerSamplePerChannel = AudioDevice.WaveFormat.BitsPerSample / 8;
             int bytesPerSample = bytesPerSamplePerChannel * AudioDevice.WaveFormat.Channels;
             int bufferSampleCount = e.Buffer.Length / bytesPerSample;
@@ -242,8 +246,8 @@ namespace GHelper.AnimeMatrix
                 for (int x = 0; x < 2 - (y % 2); x++)
                 {
                     //color = (byte)(Math.Min(1,(h - y - 2)*2) * 255);
-                    device.SetLedPlanar(x + dx, dy + y, (byte)(h * 255 / 30));
-                    device.SetLedPlanar(x + dx, dy - y, 255);
+                    device?.SetLedPlanar(x + dx, dy + y, (byte)(h * 255 / 30));
+                    device?.SetLedPlanar(x + dx, dy - y, 255);
                 }
         }
 
@@ -253,7 +257,7 @@ namespace GHelper.AnimeMatrix
             if (Math.Abs(DateTimeOffset.Now.ToUnixTimeMilliseconds() - lastPresent) < 70) return;
             lastPresent = DateTimeOffset.Now.ToUnixTimeMilliseconds();
 
-            device.Clear();
+            device?.Clear();
 
             int size = 20;
             double[] bars = new double[size];
@@ -271,13 +275,13 @@ namespace GHelper.AnimeMatrix
 
             for (int i = 0; i < size; i++) DrawBar(20 - i, bars[i] * 20 / maxAverage);
 
-            device.Present();
+            device?.Present();
         }
 
 
         public void OpenMatrixPicture()
         {
-            string fileName = null;
+            string? fileName = null;
 
             Thread t = new Thread(() =>
             {
@@ -306,10 +310,10 @@ namespace GHelper.AnimeMatrix
 
         }
 
-        public void SetMatrixPicture(string fileName, bool visualise = true)
+        public void SetMatrixPicture(string? fileName, bool visualise = true)
         {
 
-            if (!IsValid) return;
+            if (!IsValid || fileName == null) return;
             StopMatrixTimer();
 
             try
@@ -342,6 +346,8 @@ namespace GHelper.AnimeMatrix
 
         protected void ProcessPicture(Image image)
         {
+            if (!IsValid) return;
+
             device.SetBuiltInAnimation(false);
             device.ClearFrames();
 
@@ -350,7 +356,7 @@ namespace GHelper.AnimeMatrix
             int matrixZoom = AppConfig.Get("matrix_zoom", 100);
             int matrixSpeed = AppConfig.Get("matrix_speed", 50);
 
-            MatrixRotation rotation = (MatrixRotation)AppConfig.Get("matrix_rotation", 0); 
+            MatrixRotation rotation = (MatrixRotation)AppConfig.Get("matrix_rotation", 0);
 
             InterpolationMode matrixQuality = (InterpolationMode)AppConfig.Get("matrix_quality", 0);
 
@@ -360,7 +366,7 @@ namespace GHelper.AnimeMatrix
 
             if (frameCount > 1)
             {
-                var delayPropertyBytes = image.GetPropertyItem(0x5100).Value;
+                var delayPropertyBytes = image.GetPropertyItem(0x5100)?.Value;
                 var frameDelay = BitConverter.ToInt32(delayPropertyBytes) * 10;
 
                 for (int i = 0; i < frameCount; i++)
@@ -371,7 +377,7 @@ namespace GHelper.AnimeMatrix
                         device.GenerateFrame(image, matrixZoom, matrixX, matrixY, matrixQuality);
                     else
                         device.GenerateFrameDiagonal(image, matrixZoom, matrixX, matrixY, matrixQuality);
-                    
+
                     device.AddFrame();
                 }
 
@@ -391,9 +397,6 @@ namespace GHelper.AnimeMatrix
 
                 device.Present();
             }
-
         }
-
-
     }
 }

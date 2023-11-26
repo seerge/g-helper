@@ -49,8 +49,8 @@ namespace Ryzen
                 ManagementObjectSearcher myProcessorObject = new ManagementObjectSearcher("select * from Win32_Processor");
                 foreach (ManagementObject obj in myProcessorObject.Get())
                 {
-                    CPUName = obj["Name"].ToString();
-                    CPUModel = obj["Caption"].ToString();
+                    CPUName = obj["Name"].ToString() ?? string.Empty;
+                    CPUModel = obj["Caption"].ToString() ?? string.Empty;
                 }
             } catch (Exception ex)
             {
@@ -106,7 +106,7 @@ namespace Ryzen
 
             if (CPUModel.Contains("Model " + Convert.ToString(116)))
             {
-                FAMID = 9; //PHEONIX 
+                FAMID = 9; //PHEONIX
             }
 
             if (CPUModel.Contains("Model " + Convert.ToString(97)))
@@ -116,7 +116,7 @@ namespace Ryzen
 
             if (CPUModel.Contains("Model " + Convert.ToString(160)))
             {
-                FAMID = 11; //MENDOCINO 
+                FAMID = 11; //MENDOCINO
             }
 
             Logger.WriteLine($"CPU: {FAMID} - {CPUName} - {CPUModel}");

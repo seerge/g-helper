@@ -107,9 +107,9 @@ namespace Starlight.AnimeMatrix
 
         public AnimeMatrixDevice() : base(0x0B05, 0x193B, 640)
         {
-            string model = GetModel();
+            var model = GetModel();
 
-            if (model.Contains("401"))
+            if (model != null && model.Contains("401"))
             {
                 _model = AnimeType.GA401;
 
@@ -124,7 +124,7 @@ namespace Starlight.AnimeMatrix
                 LedStart = 1;
             }
 
-            if (model.Contains("GU604"))
+            if (model != null && model.Contains("GU604"))
             {
                 _model = AnimeType.GU604;
 
@@ -154,7 +154,7 @@ namespace Starlight.AnimeMatrix
             System.Runtime.InteropServices.Marshal.FreeCoTaskMem(fontPtr);
         }
 
-        public string GetModel()
+        public string? GetModel()
         {
             using (var searcher = new ManagementObjectSearcher(@"Select * from Win32_ComputerSystem"))
             {

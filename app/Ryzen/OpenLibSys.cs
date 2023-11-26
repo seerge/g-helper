@@ -8,6 +8,7 @@
 //-----------------------------------------------------------------------------
 // This is support library for WinRing0 1.3.x.
 
+using System.ComponentModel;
 using System.Runtime.InteropServices;
 
 namespace Ryzen
@@ -250,7 +251,7 @@ namespace Ryzen
                     status = (uint)Status.DLL_INCORRECT_VERSION;
                 }
 
-                if (InitializeOls() == 0)
+                if (InitializeOls?.Invoke() == 0)
                 {
                     status = (uint)Status.DLL_INITIALIZE_ERROR;
                 }
@@ -266,7 +267,7 @@ namespace Ryzen
         {
             if (module != nint.Zero)
             {
-                DeinitializeOls();
+                DeinitializeOls?.Invoke();
                 FreeLibrary(module);
                 module = nint.Zero;
             }
@@ -282,7 +283,7 @@ namespace Ryzen
             }
 
             int result = Marshal.GetHRForLastWin32Error();
-            throw Marshal.GetExceptionForHR(result);
+            throw Marshal.GetExceptionForHR(result) ?? new Win32Exception(result);
         }
 
         //-----------------------------------------------------------------------------
@@ -296,13 +297,13 @@ namespace Ryzen
         public delegate int _InitializeOls();
         public delegate void _DeinitializeOls();
 
-        public _GetDllStatus GetDllStatus = null;
-        public _GetDriverType GetDriverType = null;
-        public _GetDllVersion GetDllVersion = null;
-        public _GetDriverVersion GetDriverVersion = null;
+        public _GetDllStatus? GetDllStatus = null;
+        public _GetDriverType? GetDriverType = null;
+        public _GetDllVersion? GetDllVersion = null;
+        public _GetDriverVersion? GetDriverVersion = null;
 
-        public _InitializeOls InitializeOls = null;
-        public _DeinitializeOls DeinitializeOls = null;
+        public _InitializeOls? InitializeOls = null;
+        public _DeinitializeOls? DeinitializeOls = null;
 
         //-----------------------------------------------------------------------------
         // CPU
@@ -329,27 +330,27 @@ namespace Ryzen
         public delegate int _RdtscTx(ref uint eax, ref uint edx, nuint threadAffinityMask);
         public delegate int _RdtscPx(ref uint eax, ref uint edx, nuint processAffinityMask);
 
-        public _IsCpuid IsCpuid = null;
-        public _IsMsr IsMsr = null;
-        public _IsTsc IsTsc = null;
-        public _Hlt Hlt = null;
-        public _HltTx HltTx = null;
-        public _HltPx HltPx = null;
-        public _Rdmsr Rdmsr = null;
-        public _RdmsrTx RdmsrTx = null;
-        public _RdmsrPx RdmsrPx = null;
-        public _Wrmsr Wrmsr = null;
-        public _WrmsrTx WrmsrTx = null;
-        public _WrmsrPx WrmsrPx = null;
-        public _Rdpmc Rdpmc = null;
-        public _RdpmcTx RdpmcTx = null;
-        public _RdpmcPx RdpmcPx = null;
-        public _Cpuid Cpuid = null;
-        public _CpuidTx CpuidTx = null;
-        public _CpuidPx CpuidPx = null;
-        public _Rdtsc Rdtsc = null;
-        public _RdtscTx RdtscTx = null;
-        public _RdtscPx RdtscPx = null;
+        public _IsCpuid? IsCpuid = null;
+        public _IsMsr? IsMsr = null;
+        public _IsTsc? IsTsc = null;
+        public _Hlt? Hlt = null;
+        public _HltTx? HltTx = null;
+        public _HltPx? HltPx = null;
+        public _Rdmsr? Rdmsr = null;
+        public _RdmsrTx? RdmsrTx = null;
+        public _RdmsrPx? RdmsrPx = null;
+        public _Wrmsr? Wrmsr = null;
+        public _WrmsrTx? WrmsrTx = null;
+        public _WrmsrPx? WrmsrPx = null;
+        public _Rdpmc? Rdpmc = null;
+        public _RdpmcTx? RdpmcTx = null;
+        public _RdpmcPx? RdpmcPx = null;
+        public _Cpuid? Cpuid = null;
+        public _CpuidTx? CpuidTx = null;
+        public _CpuidPx? CpuidPx = null;
+        public _Rdtsc? Rdtsc = null;
+        public _RdtscTx? RdtscTx = null;
+        public _RdtscPx? RdtscPx = null;
 
         //-----------------------------------------------------------------------------
         // I/O
@@ -357,76 +358,76 @@ namespace Ryzen
         public delegate byte _ReadIoPortByte(ushort port);
         public delegate ushort _ReadIoPortWord(ushort port);
         public delegate uint _ReadIoPortDword(ushort port);
-        public _ReadIoPortByte ReadIoPortByte;
-        public _ReadIoPortWord ReadIoPortWord;
-        public _ReadIoPortDword ReadIoPortDword;
+        public _ReadIoPortByte? ReadIoPortByte;
+        public _ReadIoPortWord? ReadIoPortWord;
+        public _ReadIoPortDword? ReadIoPortDword;
 
         public delegate int _ReadIoPortByteEx(ushort port, ref byte value);
         public delegate int _ReadIoPortWordEx(ushort port, ref ushort value);
         public delegate int _ReadIoPortDwordEx(ushort port, ref uint value);
-        public _ReadIoPortByteEx ReadIoPortByteEx;
-        public _ReadIoPortWordEx ReadIoPortWordEx;
-        public _ReadIoPortDwordEx ReadIoPortDwordEx;
+        public _ReadIoPortByteEx? ReadIoPortByteEx;
+        public _ReadIoPortWordEx? ReadIoPortWordEx;
+        public _ReadIoPortDwordEx? ReadIoPortDwordEx;
 
         public delegate void _WriteIoPortByte(ushort port, byte value);
         public delegate void _WriteIoPortWord(ushort port, ushort value);
         public delegate void _WriteIoPortDword(ushort port, uint value);
-        public _WriteIoPortByte WriteIoPortByte;
-        public _WriteIoPortWord WriteIoPortWord;
-        public _WriteIoPortDword WriteIoPortDword;
+        public _WriteIoPortByte? WriteIoPortByte;
+        public _WriteIoPortWord? WriteIoPortWord;
+        public _WriteIoPortDword? WriteIoPortDword;
 
         public delegate int _WriteIoPortByteEx(ushort port, byte value);
         public delegate int _WriteIoPortWordEx(ushort port, ushort value);
         public delegate int _WriteIoPortDwordEx(ushort port, uint value);
-        public _WriteIoPortByteEx WriteIoPortByteEx;
-        public _WriteIoPortWordEx WriteIoPortWordEx;
-        public _WriteIoPortDwordEx WriteIoPortDwordEx;
+        public _WriteIoPortByteEx? WriteIoPortByteEx;
+        public _WriteIoPortWordEx? WriteIoPortWordEx;
+        public _WriteIoPortDwordEx? WriteIoPortDwordEx;
 
         //-----------------------------------------------------------------------------
         // PCI
         //-----------------------------------------------------------------------------
         public delegate void _SetPciMaxBusIndex(byte max);
-        public _SetPciMaxBusIndex SetPciMaxBusIndex;
+        public _SetPciMaxBusIndex? SetPciMaxBusIndex;
 
         public delegate byte _ReadPciConfigByte(uint pciAddress, byte regAddress);
         public delegate ushort _ReadPciConfigWord(uint pciAddress, byte regAddress);
         public delegate uint _ReadPciConfigDword(uint pciAddress, byte regAddress);
-        public _ReadPciConfigByte ReadPciConfigByte;
-        public _ReadPciConfigWord ReadPciConfigWord;
-        public _ReadPciConfigDword ReadPciConfigDword;
+        public _ReadPciConfigByte? ReadPciConfigByte;
+        public _ReadPciConfigWord? ReadPciConfigWord;
+        public _ReadPciConfigDword? ReadPciConfigDword;
 
         public delegate int _ReadPciConfigByteEx(uint pciAddress, uint regAddress, ref byte value);
         public delegate int _ReadPciConfigWordEx(uint pciAddress, uint regAddress, ref ushort value);
         public delegate int _ReadPciConfigDwordEx(uint pciAddress, uint regAddress, ref uint value);
-        public _ReadPciConfigByteEx ReadPciConfigByteEx;
-        public _ReadPciConfigWordEx ReadPciConfigWordEx;
-        public _ReadPciConfigDwordEx ReadPciConfigDwordEx;
+        public _ReadPciConfigByteEx? ReadPciConfigByteEx;
+        public _ReadPciConfigWordEx? ReadPciConfigWordEx;
+        public _ReadPciConfigDwordEx? ReadPciConfigDwordEx;
 
 
         public delegate int _ReadPciConfigDwordEx64(uint pciAddress, uint regAddress, ref ulong value);
-        public _ReadPciConfigDwordEx64 ReadPciConfigDwordEx64;
+        public _ReadPciConfigDwordEx64? ReadPciConfigDwordEx64;
 
         public delegate void _WritePciConfigByte(uint pciAddress, byte regAddress, byte value);
         public delegate void _WritePciConfigWord(uint pciAddress, byte regAddress, ushort value);
         public delegate void _WritePciConfigDword(uint pciAddress, byte regAddress, uint value);
-        public _WritePciConfigByte WritePciConfigByte;
-        public _WritePciConfigWord WritePciConfigWord;
-        public _WritePciConfigDword WritePciConfigDword;
+        public _WritePciConfigByte? WritePciConfigByte;
+        public _WritePciConfigWord? WritePciConfigWord;
+        public _WritePciConfigDword? WritePciConfigDword;
 
         public delegate int _WritePciConfigByteEx(uint pciAddress, uint regAddress, byte value);
         public delegate int _WritePciConfigWordEx(uint pciAddress, uint regAddress, ushort value);
         public delegate int _WritePciConfigDwordEx(uint pciAddress, uint regAddress, uint value);
-        public _WritePciConfigByteEx WritePciConfigByteEx;
-        public _WritePciConfigWordEx WritePciConfigWordEx;
-        public _WritePciConfigDwordEx WritePciConfigDwordEx;
+        public _WritePciConfigByteEx? WritePciConfigByteEx;
+        public _WritePciConfigWordEx? WritePciConfigWordEx;
+        public _WritePciConfigDwordEx? WritePciConfigDwordEx;
 
         public delegate int _WritePciConfigDwordEx64(uint pciAddress, uint regAddress, ulong value);
-        public _WritePciConfigDwordEx64 WritePciConfigDwordEx64;
+        public _WritePciConfigDwordEx64? WritePciConfigDwordEx64;
 
         public delegate uint _FindPciDeviceById(ushort vendorId, ushort deviceId, byte index);
         public delegate uint _FindPciDeviceByClass(byte baseClass, byte subClass, byte programIf, byte index);
-        public _FindPciDeviceById FindPciDeviceById;
-        public _FindPciDeviceByClass FindPciDeviceByClass;
+        public _FindPciDeviceById? FindPciDeviceById;
+        public _FindPciDeviceByClass? FindPciDeviceByClass;
 
         //-----------------------------------------------------------------------------
         // Physical Memory (unsafe)

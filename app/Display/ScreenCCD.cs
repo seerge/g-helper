@@ -18,7 +18,7 @@ namespace GHelper.Display
             if (err != 0)
                 throw new Win32Exception(err);
 
-            string internalName = AppConfig.GetString("internal_display");
+            var internalName = AppConfig.GetString("internal_display");
 
             foreach (var path in paths)
             {

@@ -4,13 +4,19 @@ using static GHelper.Display.ScreenInterrogatory;
 
 namespace GHelper.Display
 {
-
-    class DeviceComparer : IComparer
+    class DeviceComparer : IComparer, IComparer<DISPLAYCONFIG_TARGET_DEVICE_NAME>
     {
-        public int Compare(object x, object y)
+        int IComparer.Compare(object? x, object? y)
         {
-            uint displayX = ((DISPLAYCONFIG_TARGET_DEVICE_NAME)x).connectorInstance;
-            uint displayY = ((DISPLAYCONFIG_TARGET_DEVICE_NAME)y).connectorInstance;
+            if (x == null) return y == null ? 0 : -1;
+
+            return y == null ? 1 : Compare((DISPLAYCONFIG_TARGET_DEVICE_NAME)x, (DISPLAYCONFIG_TARGET_DEVICE_NAME)y);
+        }
+
+        public int Compare(DISPLAYCONFIG_TARGET_DEVICE_NAME x, DISPLAYCONFIG_TARGET_DEVICE_NAME y)
+        {
+            uint displayX = x.connectorInstance;
+            uint displayY = y.connectorInstance;
 
             if (displayX > displayY)
                 return 1;
@@ -21,12 +27,18 @@ namespace GHelper.Display
         }
     }
 
-    class ScreenComparer : IComparer
+    class ScreenComparer : IComparer, IComparer<Screen>
     {
-        public int Compare(object x, object y)
+        int IComparer.Compare(object? x, object? y) => Compare((Screen?)x, (Screen?)y);
+
+        public int Compare(Screen? x, Screen? y)
         {
-            int displayX = Int32.Parse(((Screen)x).DeviceName.Replace(@"\\.\DISPLAY", ""));
-            int displayY = Int32.Parse(((Screen)y).DeviceName.Replace(@"\\.\DISPLAY", ""));
+            if (ReferenceEquals(x, y)) return 0;
+            if (ReferenceEquals(null, y)) return 1;
+            if (ReferenceEquals(null, x)) return -1;
+
+            int displayX = Int32.Parse(x.DeviceName.Replace(@"\\.\DISPLAY", ""));
+            int displayY = Int32.Parse(y.DeviceName.Replace(@"\\.\DISPLAY", ""));
             return (new CaseInsensitiveComparer()).Compare(displayX, displayY);
         }
     }
@@ -151,7 +163,7 @@ namespace GHelper.Display
             try
             {
                 var devices = GetAllDevices().ToArray();
-                string internalName = AppConfig.GetString("internal_display");
+                var internalName = AppConfig.GetString("internal_display");
 
                 foreach (var device in devices)
                 {
@@ -163,7 +175,7 @@ namespace GHelper.Display
 
                         AppConfig.Set("internal_display", device.monitorFriendlyDeviceName);
                         var names = device.monitorDevicePath.Split("#");
-                        
+
                         if (names.Length > 1) return names[1];
                         else return "";
                     }
@@ -222,7 +234,7 @@ namespace GHelper.Display
             if (laptopScreen is null)
             {
                 Logger.WriteLine("Default internal screen");
-                laptopScreen = Screen.PrimaryScreen.DeviceName;
+                laptopScreen = Screen.PrimaryScreen?.DeviceName;
             }
 
             return laptopScreen;

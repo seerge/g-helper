@@ -697,7 +697,7 @@ namespace GHelper
 
             comboPowerMode.Enabled = !batterySaver;
 
-            if (batterySaver) 
+            if (batterySaver)
                 comboPowerMode.SelectedIndex = 0;
             else
                 comboPowerMode.SelectedValue = powerMode;
@@ -706,7 +706,7 @@ namespace GHelper
 
         private void ComboPowerMode_Changed(object? sender, EventArgs e)
         {
-            string powerMode = (string)comboPowerMode.SelectedValue;
+            var powerMode = (string?)comboPowerMode.SelectedValue ?? string.Empty;
             PowerNative.SetPowerMode(powerMode);
 
             if (PowerNative.GetDefaultPowerMode(Modes.GetCurrentBase()) != powerMode)

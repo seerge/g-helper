@@ -70,7 +70,7 @@ public static class HardwareControl
 
                 decimal chargeRate = Convert.ToDecimal(obj["ChargeRate"]);
                 decimal dischargeRate = Convert.ToDecimal(obj["DischargeRate"]);
-                
+
                 if (chargeRate > 0)
                     batteryRate = chargeRate / 1000;
                 else
@@ -231,7 +231,7 @@ public static class HardwareControl
 
     public static NvidiaGpuControl? GetNvidiaGpuControl()
     {
-        if ((bool)GpuControl?.IsNvidia)
+        if (GpuControl != null && GpuControl.IsNvidia)
             return (NvidiaGpuControl)GpuControl;
         else
             return null;
@@ -255,7 +255,7 @@ public static class HardwareControl
             GpuControl?.Dispose();
 
             IGpuControl _gpuControl = new NvidiaGpuControl();
-            
+
             if (_gpuControl.IsValid)
             {
                 GpuControl = _gpuControl;

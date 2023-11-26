@@ -38,7 +38,7 @@ public static class AppConfig
             string text = File.ReadAllText(configFile);
             try
             {
-                config = JsonSerializer.Deserialize<Dictionary<string, object>>(text);
+                config = JsonSerializer.Deserialize<Dictionary<string, object>>(text) ?? config;
             }
             catch
             {
@@ -69,10 +69,10 @@ public static class AppConfig
             }
         }
 
-        return _model;
+        return _model!;
     }
 
-    public static (string, string) GetBiosAndModel()
+    public static (string?, string?) GetBiosAndModel()
     {
         if (_bios is not null && _modelShort is not null) return (_bios, _modelShort);
 
@@ -83,8 +83,8 @@ public static class AppConfig
                 foreach (ManagementObject obj in objCollection)
                     if (obj["SMBIOSBIOSVersion"] is not null)
                     {
-                        string[] results = obj["SMBIOSBIOSVersion"].ToString().Split(".");
-                        if (results.Length > 1)
+                        var results = obj["SMBIOSBIOSVersion"].ToString()?.Split(".");
+                        if (results is { Length: > 1 })
                         {
                             _modelShort = results[0];
                             _bios = results[1];
@@ -125,10 +125,10 @@ public static class AppConfig
 
     public static int Get(string name, int empty = -1)
     {
-        if (config.ContainsKey(name))
+        if (config.TryGetValue(name, out var value) && value?.ToString() is {} str)
         {
             //Debug.WriteLine(name);
-            return int.Parse(config[name].ToString());
+            return int.Parse(str);
         }
         else
         {
@@ -147,10 +147,10 @@ public static class AppConfig
         return Get(name) != 0;
     }
 
-    public static string GetString(string name, string empty = null)
+    public static string? GetString(string name, string? empty = null)
     {
-        if (config.ContainsKey(name))
-            return config[name].ToString();
+        if (config.TryGetValue(name, out var value))
+            return value.ToString();
         else return empty;
     }
 
@@ -216,7 +216,7 @@ public static class AppConfig
 
     public static byte[] GetFanConfig(AsusFan device)
     {
-        string curveString = GetString(GgetParamName(device));
+        var curveString = GetString(GgetParamName(device));
         byte[] curve = { };
 
         if (curveString is not null)
@@ -270,7 +270,7 @@ public static class AppConfig
         return curve;
     }
 
-    public static string GetModeString(string name)
+    public static string? GetModeString(string name)
     {
         return GetString(name + "_" + Modes.GetCurrent());
     }
@@ -404,12 +404,12 @@ public static class AppConfig
 
     public static bool IsFanScale()
     {
-        if (!ContainsModel("GU604")) return false; 
+        if (!ContainsModel("GU604")) return false;
 
         try
         {
             var (bios, model) = GetBiosAndModel();
-            return (Int32.Parse(bios) < 312);
+            return (bios!= null && Int32.Parse(bios) < 312);
         } catch
         {
             return false;

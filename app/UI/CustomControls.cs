@@ -384,16 +384,19 @@ namespace GHelper.UI
 
             Color borderDrawColor = activated ? borderColor : Color.Transparent;
 
-            using (GraphicsPath pathSurface = GetFigurePath(rectSurface, borderRadius + border))
-            using (GraphicsPath pathBorder = GetFigurePath(rectBorder, borderRadius))
-            using (Pen penSurface = new Pen(Parent.BackColor, border))
-            using (Pen penBorder = new Pen(borderDrawColor, border))
+            if (Parent != null)
             {
-                penBorder.Alignment = PenAlignment.Outset;
-                pevent.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
-                Region = new Region(pathSurface);
-                pevent.Graphics.DrawPath(penSurface, pathSurface);
-                pevent.Graphics.DrawPath(penBorder, pathBorder);
+                using (GraphicsPath pathSurface = GetFigurePath(rectSurface, borderRadius + border))
+                using (GraphicsPath pathBorder = GetFigurePath(rectBorder, borderRadius))
+                using (Pen penSurface = new Pen(Parent.BackColor, border))
+                using (Pen penBorder = new Pen(borderDrawColor, border))
+                {
+                    penBorder.Alignment = PenAlignment.Outset;
+                    pevent.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
+                    Region = new Region(pathSurface);
+                    pevent.Graphics.DrawPath(penSurface, pathSurface);
+                    pevent.Graphics.DrawPath(penBorder, pathBorder);
+                }
             }
 
             if (!Enabled && ForeColor != SystemColors.ControlText)

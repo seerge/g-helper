@@ -92,10 +92,9 @@ namespace GHelper.Mode
             };
         static Guid GetActiveScheme()
         {
-            IntPtr pActiveSchemeGuid;
-            var hr = PowerGetActiveScheme(IntPtr.Zero, out pActiveSchemeGuid);
-            Guid activeSchemeGuid = (Guid)Marshal.PtrToStructure(pActiveSchemeGuid, typeof(Guid));
-            return activeSchemeGuid;
+            var hr = PowerGetActiveScheme(IntPtr.Zero, out var pActiveSchemeGuid);
+
+            return (Guid?)Marshal.PtrToStructure(pActiveSchemeGuid, typeof(Guid)) ?? default;
         }
 
         public static int GetCPUBoost()
@@ -145,15 +144,15 @@ namespace GHelper.Mode
             return activeScheme.ToString();
         }
 
-        public static void SetPowerMode(string scheme)
+        public static void SetPowerMode(string? scheme)
         {
 
-            if (!overlays.Contains(scheme)) return;
+            if (scheme == null || !overlays.Contains(scheme)) return;
 
             Guid guidScheme = new Guid(scheme);
 
             uint status = PowerGetEffectiveOverlayScheme(out Guid activeScheme);
-            
+
             if (GetBatterySaverStatus())
             {
                 Logger.WriteLine("Battery Saver detected");
@@ -179,10 +178,10 @@ namespace GHelper.Mode
             }
         }
 
-        public static void SetPowerPlan(string scheme)
+        public static void SetPowerPlan(string? scheme)
         {
             // Skipping power modes
-            if (overlays.Contains(scheme)) return;
+            if (scheme == null || overlays.Contains(scheme)) return;
 
             Guid guidScheme = new Guid(scheme);
             uint status = PowerSetActiveScheme(IntPtr.Zero, guidScheme);

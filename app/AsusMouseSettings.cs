@@ -660,9 +660,9 @@ namespace GHelper
             supportedLightingModes.Clear();
             foreach (LightingMode lm in Enum.GetValues(typeof(LightingMode)))
             {
-                if (mouse.IsLightingModeSupported(lm) && mouse.IsLightingModeSupportedForZone(lm, visibleZone))
+                if (mouse.IsLightingModeSupported(lm) && mouse.IsLightingModeSupportedForZone(lm, visibleZone) && lightingModeNames.GetValueOrDefault(lm) is {} str)
                 {
-                    comboBoxLightingMode.Items.Add(lightingModeNames.GetValueOrDefault(lm));
+                    comboBoxLightingMode.Items.Add(str);
                     supportedLightingModes.Add(lm);
                 }
             }

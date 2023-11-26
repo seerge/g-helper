@@ -15,7 +15,7 @@ namespace GHelper.USB
             HidDeviceLoader loader = new HidDeviceLoader();
             try
             {
-                HidDevice device = loader.GetDevices(ASUS_ID, XGM_ID).Where(device => device.CanOpen && device.GetMaxFeatureReportLength() >= 300).FirstOrDefault();
+                var device = loader.GetDevices(ASUS_ID, XGM_ID).FirstOrDefault(device => device.CanOpen && device.GetMaxFeatureReportLength() >= 300);
 
                 if (device is null)
                 {

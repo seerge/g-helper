@@ -30,7 +30,7 @@ namespace GHelper.UI
         public Color accentColor = Color.FromArgb(255, 58, 174, 239);
         public Color borderColor = Color.White;
 
-        public event EventHandler ValueChanged;
+        public event EventHandler? ValueChanged;
 
         public Slider()
         {

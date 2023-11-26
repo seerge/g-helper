@@ -5,9 +5,9 @@
 
         const int maxModes = 20;
 
-        public static Dictionary<int, string> GetDictonary()
+        public static Dictionary<int, string?> GetDictonary()
         {
-            Dictionary<int, string> modes = new Dictionary<int, string>
+            var modes = new Dictionary<int, string?>
             {
               {2, Properties.Strings.Silent},
               {0, Properties.Strings.Balanced},
@@ -99,7 +99,7 @@
             return GetBase(GetCurrent());
         }
 
-        public static string GetCurrentName()
+        public static string? GetCurrentName()
         {
             return GetName(GetCurrent());
         }
@@ -117,7 +117,7 @@
                 return AppConfig.Get("mode_base_" + mode);
         }
 
-        public static string GetName(int mode)
+        public static string? GetName(int mode)
         {
             switch (mode)
             {

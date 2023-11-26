@@ -130,7 +130,7 @@ namespace GHelper.Helpers
 
         }
 
-        public void RunToast(string text, ToastIcon? icon = null)
+        public void RunToast(string? text, ToastIcon? icon = null)
         {
 
             if (AppConfig.Is("disable_osd")) return;
@@ -140,7 +140,7 @@ namespace GHelper.Helpers
                 //Hide();
                 timer.Stop();
 
-                toastText = text;
+                toastText = text ?? string.Empty;
                 toastIcon = icon;
 
                 Screen screen1 = Screen.FromHandle(Handle);

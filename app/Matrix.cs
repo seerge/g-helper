@@ -17,7 +17,7 @@ namespace GHelper
 
         private float uiScale;
 
-        Image picture;
+        Image? picture;
         MemoryStream ms = new MemoryStream();
 
         public Matrix()
@@ -49,10 +49,10 @@ namespace GHelper
             comboRotation.SelectedIndex = AppConfig.Get("matrix_rotation", 0);
             comboRotation.SelectedValueChanged += ComboRotation_SelectedValueChanged; ;
 
+            if (matrixControl.device == null) return;
 
             uiScale = panelPicture.Width / matrixControl.device.MaxColumns / 3;
             panelPicture.Height = (int)(matrixControl.device.MaxRows * uiScale);
-
         }
 
         private void ComboRotation_SelectedValueChanged(object? sender, EventArgs e)
@@ -118,8 +118,7 @@ namespace GHelper
 
         private void PictureMatrix_MouseMove(object? sender, MouseEventArgs e)
         {
-            Control c = sender as Control;
-            if (Dragging && c != null)
+            if (Dragging && sender is Control c)
             {
                 c.Top = e.Y + c.Top - yPos;
                 c.Left = e.X + c.Left - xPos;
@@ -131,7 +130,7 @@ namespace GHelper
 
             Dragging = false;
 
-            Control c = sender as Control;
+            var c = (Control)sender!;
 
             int matrixX = (int)((baseX - c.Left) / uiScale);
             int matrixY = (int)((baseY - c.Top) / uiScale);

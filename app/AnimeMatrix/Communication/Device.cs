@@ -49,7 +49,7 @@ namespace GHelper.AnimeMatrix.Communication
         public void Set(Packet packet)
             => _usbProvider?.Set(packet.Data);
 
-        public byte[] Get(Packet packet)
+        public byte[]? Get(Packet packet)
             => _usbProvider?.Get(packet.Data);
 
         public void Read(byte[] data)

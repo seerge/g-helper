@@ -59,7 +59,7 @@ public static class AsusHid
 
     public static void WriteInput(byte[] data, string log = "USB")
     {
-        foreach (var device in FindDevices(INPUT_ID))
+        foreach (var device in FindDevices(INPUT_ID) ?? Enumerable.Empty<HidDevice>())
         {
             try
             {

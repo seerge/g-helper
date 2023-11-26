@@ -76,7 +76,7 @@ namespace GHelper.Helpers
         {
             try
             {
-                RegistryKey myKey = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\ASUS\ASUS System Control Interface\AsusOptimization\ASUS Keyboard Hotkeys", true);
+                var myKey = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\ASUS\ASUS System Control Interface\AsusOptimization\ASUS Keyboard Hotkeys", true);
                 if (myKey != null)
                 {
                     myKey.SetValue("TurnOffKeybdLight", value, RegistryValueKind.DWord);

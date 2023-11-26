@@ -85,7 +85,7 @@ public sealed class KeyboardHook : IDisposable
             }
         }
 
-        public event EventHandler<KeyPressedEventArgs> KeyPressed;
+        public event EventHandler<KeyPressedEventArgs>? KeyPressed;
 
         #region IDisposable Members
 
@@ -103,7 +103,7 @@ public sealed class KeyboardHook : IDisposable
     public KeyboardHook()
     {
         // register the event of the inner native window.
-        _window.KeyPressed += delegate (object sender, KeyPressedEventArgs args)
+        _window.KeyPressed += delegate (object? sender, KeyPressedEventArgs args)
         {
             if (KeyPressed != null)
                 KeyPressed(this, args);
@@ -128,7 +128,7 @@ public sealed class KeyboardHook : IDisposable
     /// <summary>
     /// A hot key has been pressed.
     /// </summary>
-    public event EventHandler<KeyPressedEventArgs> KeyPressed;
+    public event EventHandler<KeyPressedEventArgs>? KeyPressed;
 
     #region IDisposable Members
 

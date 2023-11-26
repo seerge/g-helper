@@ -83,18 +83,18 @@ namespace GHelper
             combo.DisplayMember = "Value";
             combo.ValueMember = "Key";
 
-            string action = AppConfig.GetString(name);
+            var action = AppConfig.GetString(name);
 
-            combo.SelectedValue = (action is not null) ? action : "";
+            combo.SelectedValue = action ?? "";
             if (combo.SelectedValue is null) combo.SelectedValue = "";
 
             combo.SelectedValueChanged += delegate
             {
-                if (combo.SelectedValue is not null)
-                    AppConfig.Set(name, combo.SelectedValue.ToString());
+                if (combo.SelectedValue?.ToString() is {} str)
+                    AppConfig.Set(name, str);
 
-                if (name == "m1" || name == "m2")
-                    Program.inputDispatcher.RegisterKeys();
+                if (name is "m1" or "m2")
+                    Program.inputDispatcher?.RegisterKeys();
 
             };
 
@@ -147,14 +147,14 @@ namespace GHelper
                 labelM2.Visible = comboM2.Visible = textM2.Visible = false;
                 labelM4.Visible = comboM4.Visible = textM4.Visible = false;
                 labelFNF4.Visible = comboFNF4.Visible = textFNF4.Visible = false;
-            } 
-            
+            }
+
             if (AppConfig.NoMKeys())
             {
                 labelM1.Text = "FN+F2";
                 labelM2.Text = "FN+F3";
                 labelM3.Text = "FN+F4";
-                labelM4.Visible = comboM4.Visible = textM4.Visible = AppConfig.IsDUO(); 
+                labelM4.Visible = comboM4.Visible = textM4.Visible = AppConfig.IsDUO();
                 labelFNF4.Visible = comboFNF4.Visible = textFNF4.Visible = false;
             }
 
@@ -439,7 +439,7 @@ namespace GHelper
                     {
                         InitServices();
                     });
-                    Program.inputDispatcher.Init();
+                    Program.inputDispatcher?.Init();
                 });
             }
             else
@@ -570,6 +570,8 @@ namespace GHelper
 
         private void ComboKeyboardSpeed_SelectedValueChanged(object? sender, EventArgs e)
         {
+            if (comboKeyboardSpeed.SelectedValue == null) return;
+
             AppConfig.Set("aura_speed", (int)comboKeyboardSpeed.SelectedValue);
             Aura.ApplyAura();
         }

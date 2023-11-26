@@ -42,7 +42,7 @@ namespace Ryzen
             RyzenNbAccesss = new Ols();
 
             // Check WinRing0 status
-            switch (RyzenNbAccesss.GetDllStatus())
+            switch (RyzenNbAccesss.GetDllStatus?.Invoke())
             {
                 case (uint)Ols.OlsDllStatus.OLS_DLL_NO_ERROR:
                     if (ShowDebug)
@@ -80,7 +80,7 @@ namespace Ryzen
         public void Initialize()
         {
             amdSmuMutex = new Mutex();
-            RyzenNbAccesss.InitializeOls();
+            RyzenNbAccesss.InitializeOls?.Invoke();
 
             // Check WinRing0 status
             switch (RyzenNbAccesss.GetStatus())
@@ -112,7 +112,7 @@ namespace Ryzen
 
         public void Deinitialize()
         {
-            RyzenNbAccesss.DeinitializeOls();
+            RyzenNbAccesss.DeinitializeOls?.Invoke();
         }
 
         public static uint SMU_PCI_ADDR { get; set; }
@@ -126,11 +126,11 @@ namespace Ryzen
         public static uint PSMU_ADDR_MSG { get; set; }
         public static uint PSMU_ADDR_RSP { get; set; }
         public static uint PSMU_ADDR_ARG { get; set; }
-        public static uint[] args { get; set; }
+        public static uint[]? args { get; set; }
 
         public bool ShowDebug { get; set; }
 
-        private static Mutex amdSmuMutex;
+        private static Mutex? amdSmuMutex;
         private const ushort SMU_TIMEOUT = 8192;
 
         public Status SendMp1(uint message, ref uint[] arguments)
@@ -161,7 +161,7 @@ namespace Ryzen
             for (int i = 0; i < argsLength; ++i)
                 cmdArgs[i] = args[i];
 
-            if (amdSmuMutex.WaitOne(5000))
+            if (amdSmuMutex == null || amdSmuMutex.WaitOne(5000))
             {
                 // Clear response register
                 bool temp;
@@ -171,7 +171,7 @@ namespace Ryzen
 
                 if (timeout == 0)
                 {
-                    amdSmuMutex.ReleaseMutex();
+                    amdSmuMutex?.ReleaseMutex();
                     SmuReadReg(SMU_ADDR_RSP, ref status);
                     return (Status)status;
                 }
@@ -186,7 +186,7 @@ namespace Ryzen
                 // Wait done
                 if (!SmuWaitDone(SMU_ADDR_RSP))
                 {
-                    amdSmuMutex.ReleaseMutex();
+                    amdSmuMutex?.ReleaseMutex();
                     SmuReadReg(SMU_ADDR_RSP, ref status);
                     return (Status)status;
                 }
@@ -196,7 +196,7 @@ namespace Ryzen
                     SmuReadReg(SMU_ADDR_ARG + (uint)(i * 4), ref args[i]);
             }
 
-            amdSmuMutex.ReleaseMutex();
+            amdSmuMutex?.ReleaseMutex();
             SmuReadReg(SMU_ADDR_RSP, ref status);
 
             return (Status)status;
@@ -221,7 +221,8 @@ namespace Ryzen
 
         private bool SmuWriteReg(uint addr, uint data)
         {
-            if (RyzenNbAccesss.WritePciConfigDwordEx(SMU_PCI_ADDR, SMU_OFFSET_ADDR, addr) == 1)
+            if (RyzenNbAccesss is { WritePciConfigDwordEx: not null, ReadPciConfigDwordEx: not null } &&
+                RyzenNbAccesss.WritePciConfigDwordEx(SMU_PCI_ADDR, SMU_OFFSET_ADDR, addr) == 1)
             {
                 return RyzenNbAccesss.WritePciConfigDwordEx(SMU_PCI_ADDR, SMU_OFFSET_DATA, data) == 1;
             }
@@ -230,10 +231,12 @@ namespace Ryzen
 
         private bool SmuReadReg(uint addr, ref uint data)
         {
-            if (RyzenNbAccesss.WritePciConfigDwordEx(SMU_PCI_ADDR, SMU_OFFSET_ADDR, addr) == 1)
+            if (RyzenNbAccesss is { WritePciConfigDwordEx: not null, ReadPciConfigDwordEx: not null } &&
+                RyzenNbAccesss.WritePciConfigDwordEx(SMU_PCI_ADDR, SMU_OFFSET_ADDR, addr) == 1)
             {
                 return RyzenNbAccesss.ReadPciConfigDwordEx(SMU_PCI_ADDR, SMU_OFFSET_DATA, ref data) == 1;
             }
+
             return false;
         }
 

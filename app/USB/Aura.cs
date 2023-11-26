@@ -132,7 +132,7 @@ namespace GHelper.USB
 
             if (AppConfig.ContainsModel("GA402X") || AppConfig.ContainsModel("GA402N"))
             {
-                var device = AsusHid.FindDevices(AsusHid.AURA_ID).FirstOrDefault();
+                var device = AsusHid.FindDevices(AsusHid.AURA_ID)?.FirstOrDefault();
                 if (device is null) return;
                 Logger.WriteLine($"GA402: {device.ReleaseNumberBcd} {device.ReleaseNumber}");
                 if (device.ReleaseNumberBcd == 22 || device.ReleaseNumberBcd == 23) isSingleColor = true;
@@ -610,7 +610,7 @@ namespace GHelper.USB
 
             public static void ApplyHeatmap(bool init = false)
             {
-                float cpuTemp = (float)HardwareControl.GetCPUTemp();
+                var cpuTemp = HardwareControl.GetCPUTemp();
                 int freeze = 20, cold = 40, warm = 65, hot = 90;
                 Color color;
 

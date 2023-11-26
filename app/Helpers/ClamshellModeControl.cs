@@ -17,7 +17,7 @@ namespace GHelper.Helpers
         {
             var devices = ScreenInterrogatory.GetAllDevices().ToArray();
 
-            string internalName = AppConfig.GetString("internal_display");
+            var internalName = AppConfig.GetString("internal_display");
 
             foreach (var device in devices)
             {
