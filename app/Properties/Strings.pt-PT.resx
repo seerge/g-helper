@@ -253,7 +253,7 @@
     <value>Estado da bateria</value>
   </data>
   <data name="BatteryLimitFull" xml:space="preserve">
-    <value>One time charge to 100%</value>
+    <value>Carregamento único até 100%</value>
   </data>
   <data name="BiosAndDriverUpdates" xml:space="preserve">
     <value>Atualizações de Drivers e da BIOS</value>
@@ -262,7 +262,7 @@
     <value>Ao ligar</value>
   </data>
   <data name="BootSound" xml:space="preserve">
-    <value>Boot Sound</value>
+    <value>Som de ligar</value>
   </data>
   <data name="Brightness" xml:space="preserve">
     <value>Nível do brilho</value>
@@ -274,7 +274,7 @@
     <value>Aumentar o brilho</value>
   </data>
   <data name="Calibrate" xml:space="preserve">
-    <value>Calibrate</value>
+    <value>Calibrar</value>
   </data>
   <data name="Charging" xml:space="preserve">
     <value>Carregando</value>
