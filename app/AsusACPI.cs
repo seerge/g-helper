@@ -96,7 +96,6 @@ public class AsusACPI
     public const int PPT_GPUC2 = 0x001200C2;  // NVIDIA GPU Temp Target (75.. 87 C) 
 
     public const int APU_MEM = 0x000600C1;
-    public const int APU_MEM_OFFSET = 258;
 
     public const int TUF_KB_BRIGHTNESS = 0x00050021;
     public const int TUF_KB = 0x00100056;
@@ -532,12 +531,71 @@ public class AsusACPI
     public void SetAPUMem(int memory = 4)
     {
         if (memory < 0 || memory > 8) return;
-        Program.acpi.DeviceSet(APU_MEM, memory + APU_MEM_OFFSET, "APU Mem");
+
+        int mem = 0;
+
+        switch (memory)
+        {
+            case 0:
+                mem = 0;
+                break;
+            case 1:
+                mem = 258;
+                break;
+            case 2:
+                mem = 259;
+                break;
+            case 3:
+                mem = 260;
+                break;
+            case 4:
+                mem = 261;
+                break;
+            case 5:
+                mem = 263;
+                break;
+            case 6:
+                mem = 264;
+                break;
+            case 7:
+                mem = 265;
+                break;
+            case 8:
+                mem = 262;
+                break;
+        }
+
+        Program.acpi.DeviceSet(APU_MEM, mem, "APU Mem");
     }
 
     public int GetAPUMem()
     {
-        return Program.acpi.DeviceGet(APU_MEM) - APU_MEM_OFFSET;
+        int memory = Program.acpi.DeviceGet(APU_MEM);
+        if (memory < 0) return -1;
+
+        switch (memory)
+        {
+            case 256: 
+                return 0;
+            case 258:
+                return 1;
+            case 259:
+                return 2;
+            case 260:
+                return 3;
+            case 261:
+                return 4;
+            case 262:
+                return 8;
+            case 263:
+                return 5;
+            case 264:
+                return 6;
+            case 265:
+                return 7;
+            default:
+                return 4;
+        }
     }
 
     public void ScanRange()
