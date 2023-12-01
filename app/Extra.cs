@@ -177,16 +177,6 @@ namespace GHelper
                 checkUSBC.Visible = false;
             }
 
-            int apuMem = Program.acpi.GetAPUMem();
-            if (apuMem >= 0)
-            {
-                panelAPU.Visible = true;
-                comboAPU.DropDownStyle = ComboBoxStyle.DropDownList;
-                comboAPU.SelectedIndex = apuMem;
-            }
-
-            comboAPU.SelectedIndexChanged += ComboAPU_SelectedIndexChanged;
-
             // Change text and hide irrelevant options on the ROG Ally,
             // which is a bit of a special case piece of hardware.
             if (AppConfig.IsAlly())
@@ -207,6 +197,17 @@ namespace GHelper
                 SetKeyCombo(comboM3, textM3, "cc");
                 SetKeyCombo(comboM4, textM4, "m4");
                 SetKeyCombo(comboFNF4, textFNF4, "paddle");
+
+
+                int apuMem = Program.acpi.GetAPUMem();
+                if (apuMem >= 0)
+                {
+                    panelAPU.Visible = true;
+                    comboAPU.DropDownStyle = ComboBoxStyle.DropDownList;
+                    comboAPU.SelectedIndex = apuMem;
+                }
+
+                comboAPU.SelectedIndexChanged += ComboAPU_SelectedIndexChanged;
 
             }
             else
