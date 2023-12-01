@@ -123,6 +123,12 @@
   <data name="ACPIError" xml:space="preserve">
     <value>无法连接到ASUS ACPI。 没有它应用程序将无法运行。 请尝试安装Asus System Control Interface驱动。</value>
   </data>
+  <data name="AlertAPUMemoryRestart" xml:space="preserve">
+    <value>Restart your device to apply changes</value>
+  </data>
+  <data name="AlertAPUMemoryRestartTitle" xml:space="preserve">
+    <value>Restart now?</value>
+  </data>
   <data name="AlertDGPU" xml:space="preserve">
     <value>看起来 GPU 正在被重度使用，是否禁用？</value>
   </data>
@@ -161,6 +167,9 @@
   </data>
   <data name="ApplyWindowsPowerPlan" xml:space="preserve">
     <value>自动调整Windows电源模式</value>
+  </data>
+  <data name="APUMemory" xml:space="preserve">
+    <value>Memory Assigned to GPU</value>
   </data>
   <data name="AsusServicesRunning" xml:space="preserve">
     <value>正在运行的 Asus 服务</value>
