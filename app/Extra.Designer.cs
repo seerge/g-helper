@@ -106,6 +106,7 @@ namespace GHelper
             checkAutoToggleClamshellMode = new CheckBox();
             checkTopmost = new CheckBox();
             checkNoOverdrive = new CheckBox();
+            checkBootSound = new CheckBox();
             checkUSBC = new CheckBox();
             checkVariBright = new CheckBox();
             checkGpuApps = new CheckBox();
@@ -115,7 +116,10 @@ namespace GHelper
             labelHibernateAfter = new Label();
             pictureHibernate = new PictureBox();
             toolTip = new ToolTip(components);
-            checkBootSound = new CheckBox();
+            panelAPU = new Panel();
+            comboAPU = new RComboBox();
+            pictureAPUMem = new PictureBox();
+            labelAPUMem = new Label();
             panelServices.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureService).BeginInit();
             panelBindingsHeader.SuspendLayout();
@@ -138,6 +142,8 @@ namespace GHelper
             panelPower.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numericHibernateAfter).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureHibernate).BeginInit();
+            panelAPU.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureAPUMem).BeginInit();
             SuspendLayout();
             // 
             // panelServices
@@ -148,7 +154,7 @@ namespace GHelper
             panelServices.Controls.Add(labelServices);
             panelServices.Controls.Add(buttonServices);
             panelServices.Dock = DockStyle.Top;
-            panelServices.Location = new Point(15, 1321);
+            panelServices.Location = new Point(15, 1378);
             panelServices.Name = "panelServices";
             panelServices.Size = new Size(983, 75);
             panelServices.TabIndex = 5;
@@ -1072,7 +1078,7 @@ namespace GHelper
             panelSettings.Controls.Add(checkGpuApps);
             panelSettings.Controls.Add(checkGPUFix);
             panelSettings.Dock = DockStyle.Top;
-            panelSettings.Location = new Point(15, 921);
+            panelSettings.Location = new Point(15, 978);
             panelSettings.Name = "panelSettings";
             panelSettings.Padding = new Padding(20, 5, 11, 5);
             panelSettings.Size = new Size(983, 346);
@@ -1115,6 +1121,19 @@ namespace GHelper
             checkNoOverdrive.TabIndex = 5;
             checkNoOverdrive.Text = Strings.DisableOverdrive;
             checkNoOverdrive.UseVisualStyleBackColor = true;
+            // 
+            // checkBootSound
+            // 
+            checkBootSound.AutoSize = true;
+            checkBootSound.Dock = DockStyle.Top;
+            checkBootSound.Location = new Point(20, 173);
+            checkBootSound.Margin = new Padding(4, 3, 4, 3);
+            checkBootSound.Name = "checkBootSound";
+            checkBootSound.Padding = new Padding(3);
+            checkBootSound.Size = new Size(952, 42);
+            checkBootSound.TabIndex = 10;
+            checkBootSound.Text = "Boot Sound";
+            checkBootSound.UseVisualStyleBackColor = true;
             // 
             // checkUSBC
             // 
@@ -1174,7 +1193,7 @@ namespace GHelper
             panelPower.Controls.Add(labelHibernateAfter);
             panelPower.Controls.Add(pictureHibernate);
             panelPower.Dock = DockStyle.Top;
-            panelPower.Location = new Point(15, 1267);
+            panelPower.Location = new Point(15, 1324);
             panelPower.Name = "panelPower";
             panelPower.Size = new Size(983, 54);
             panelPower.TabIndex = 4;
@@ -1211,18 +1230,58 @@ namespace GHelper
             pictureHibernate.TabIndex = 22;
             pictureHibernate.TabStop = false;
             // 
-            // checkBootSound
+            // panelAPU
             // 
-            checkBootSound.AutoSize = true;
-            checkBootSound.Dock = DockStyle.Top;
-            checkBootSound.Location = new Point(20, 173);
-            checkBootSound.Margin = new Padding(4, 3, 4, 3);
-            checkBootSound.Name = "checkBootSound";
-            checkBootSound.Padding = new Padding(3);
-            checkBootSound.Size = new Size(952, 42);
-            checkBootSound.TabIndex = 10;
-            checkBootSound.Text = "Boot Sound";
-            checkBootSound.UseVisualStyleBackColor = true;
+            panelAPU.AutoSize = true;
+            panelAPU.Controls.Add(comboAPU);
+            panelAPU.Controls.Add(pictureAPUMem);
+            panelAPU.Controls.Add(labelAPUMem);
+            panelAPU.Dock = DockStyle.Top;
+            panelAPU.Location = new Point(15, 921);
+            panelAPU.Name = "panelAPU";
+            panelAPU.Padding = new Padding(11, 5, 11, 0);
+            panelAPU.Size = new Size(983, 57);
+            panelAPU.TabIndex = 46;
+            panelAPU.Visible = false;
+            panelAPU.Paint += panelAPU_Paint;
+            // 
+            // comboAPU
+            // 
+            comboAPU.AccessibleName = "Keyboard Animation Speed";
+            comboAPU.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            comboAPU.BorderColor = Color.White;
+            comboAPU.ButtonColor = SystemColors.ControlLight;
+            comboAPU.FlatStyle = FlatStyle.Flat;
+            comboAPU.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            comboAPU.FormattingEnabled = true;
+            comboAPU.ItemHeight = 32;
+            comboAPU.Items.AddRange(new object[] { "Auto", "1G", "2G", "3G", "4G", "5G", "6G", "7G", "8G" });
+            comboAPU.Location = new Point(663, 8);
+            comboAPU.Margin = new Padding(4, 12, 4, 9);
+            comboAPU.Name = "comboAPU";
+            comboAPU.Size = new Size(293, 40);
+            comboAPU.TabIndex = 12;
+            comboAPU.TabStop = false;
+            // 
+            // pictureAPUMem
+            // 
+            pictureAPUMem.BackgroundImage = Resources.icons8_video_48;
+            pictureAPUMem.BackgroundImageLayout = ImageLayout.Zoom;
+            pictureAPUMem.Location = new Point(20, 11);
+            pictureAPUMem.Name = "pictureAPUMem";
+            pictureAPUMem.Size = new Size(32, 32);
+            pictureAPUMem.TabIndex = 1;
+            pictureAPUMem.TabStop = false;
+            // 
+            // labelAPUMem
+            // 
+            labelAPUMem.AutoSize = true;
+            labelAPUMem.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            labelAPUMem.Location = new Point(56, 11);
+            labelAPUMem.Name = "labelAPUMem";
+            labelAPUMem.Size = new Size(309, 32);
+            labelAPUMem.TabIndex = 0;
+            labelAPUMem.Text = "Memory Assigned to GPU";
             // 
             // Extra
             // 
@@ -1230,10 +1289,11 @@ namespace GHelper
             AutoScaleMode = AutoScaleMode.Dpi;
             AutoSize = true;
             AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            ClientSize = new Size(1013, 1467);
+            ClientSize = new Size(1013, 1515);
             Controls.Add(panelServices);
             Controls.Add(panelPower);
             Controls.Add(panelSettings);
+            Controls.Add(panelAPU);
             Controls.Add(panelSettingsHeader);
             Controls.Add(panelBacklight);
             Controls.Add(panelBacklightHeader);
@@ -1282,6 +1342,9 @@ namespace GHelper
             panelPower.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)numericHibernateAfter).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureHibernate).EndInit();
+            panelAPU.ResumeLayout(false);
+            panelAPU.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureAPUMem).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -1372,5 +1435,9 @@ namespace GHelper
         private CheckBox checkGPUFix;
         private ToolTip toolTip;
         private CheckBox checkBootSound;
+        private Panel panelAPU;
+        private PictureBox pictureAPUMem;
+        private Label labelAPUMem;
+        private RComboBox comboAPU;
     }
 }

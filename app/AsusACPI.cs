@@ -1,4 +1,5 @@
-﻿using GHelper;
+﻿using FftSharp;
+using GHelper;
 using GHelper.USB;
 using System.Management;
 using System.Runtime.InteropServices;
@@ -93,6 +94,9 @@ public class AsusACPI
     public const int PPT_GPUC0 = 0x001200C0;  // NVIDIA GPU Boost
     public const int PPT_APUC1 = 0x001200C1;  // fPPT (fast boost limit)
     public const int PPT_GPUC2 = 0x001200C2;  // NVIDIA GPU Temp Target (75.. 87 C) 
+
+    public const int APU_MEM = 0x000600C1;
+    public const int APU_MEM_OFFSET = 258;
 
     public const int TUF_KB_BRIGHTNESS = 0x00050021;
     public const int TUF_KB = 0x00100056;
@@ -525,6 +529,16 @@ public class AsusACPI
         return DeviceGet(PPT_CPUB0) >= 0 && DeviceGet(PPT_GPUC0) < 0;
     }
 
+    public void SetAPUMem(int memory = 4)
+    {
+        if (memory < 0 || memory > 8) return;
+        Program.acpi.DeviceSet(APU_MEM, memory + APU_MEM_OFFSET, "APU Mem");
+    }
+
+    public int GetAPUMem()
+    {
+        return Program.acpi.DeviceGet(APU_MEM) - APU_MEM_OFFSET;
+    }
 
     public void ScanRange()
     {

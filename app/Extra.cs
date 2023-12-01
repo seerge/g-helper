@@ -13,6 +13,7 @@ namespace GHelper
     {
 
         ScreenControl screenControl = new ScreenControl();
+        ModeControl modeControl = new ModeControl();
         ClamshellModeControl clamshellControl = new ClamshellModeControl();
 
         const string EMPTY = "--------------";
@@ -138,6 +139,8 @@ namespace GHelper
             checkGpuApps.Text = Properties.Strings.KillGpuApps;
             labelHibernateAfter.Text = Properties.Strings.HibernateAfter;
 
+            labelAPUMem.Text = Properties.Strings.APUMemory;
+
             Text = Properties.Strings.ExtraSettings;
 
             if (AppConfig.IsARCNM())
@@ -147,14 +150,14 @@ namespace GHelper
                 labelM2.Visible = comboM2.Visible = textM2.Visible = false;
                 labelM4.Visible = comboM4.Visible = textM4.Visible = false;
                 labelFNF4.Visible = comboFNF4.Visible = textFNF4.Visible = false;
-            } 
-            
+            }
+
             if (AppConfig.NoMKeys())
             {
                 labelM1.Text = "FN+F2";
                 labelM2.Text = "FN+F3";
                 labelM3.Text = "FN+F4";
-                labelM4.Visible = comboM4.Visible = textM4.Visible = AppConfig.IsDUO(); 
+                labelM4.Visible = comboM4.Visible = textM4.Visible = AppConfig.IsDUO();
                 labelFNF4.Visible = comboFNF4.Visible = textFNF4.Visible = false;
             }
 
@@ -173,6 +176,16 @@ namespace GHelper
                 checkGpuApps.Visible = false;
                 checkUSBC.Visible = false;
             }
+
+            int apuMem = Program.acpi.GetAPUMem();
+            if (apuMem >= 0)
+            {
+                panelAPU.Visible = true;
+                comboAPU.DropDownStyle = ComboBoxStyle.DropDownList;
+                comboAPU.SelectedIndex = apuMem;
+            }
+
+            comboAPU.SelectedIndexChanged += ComboAPU_SelectedIndexChanged;
 
             // Change text and hide irrelevant options on the ROG Ally,
             // which is a bit of a special case piece of hardware.
@@ -346,6 +359,19 @@ namespace GHelper
             InitVariBright();
             InitServices();
             InitHibernate();
+        }
+
+        private void ComboAPU_SelectedIndexChanged(object? sender, EventArgs e)
+        {
+            int mem = comboAPU.SelectedIndex;
+            Program.acpi.SetAPUMem(mem);
+
+            DialogResult dialogResult = MessageBox.Show(Properties.Strings.AlertAPUMemoryRestart, Properties.Strings.AlertAPUMemoryRestartTitle, MessageBoxButtons.YesNo);
+            if (dialogResult == DialogResult.Yes)
+            {
+                Process.Start("shutdown", "/r /t 1");
+            }
+
         }
 
         private void CheckBootSound_CheckedChanged(object? sender, EventArgs e)
@@ -602,6 +628,11 @@ namespace GHelper
             {
                 ClamshellModeControl.DisableClamshellMode();
             }
+
+        }
+
+        private void panelAPU_Paint(object sender, PaintEventArgs e)
+        {
 
         }
     }
