@@ -123,6 +123,12 @@
   <data name="ACPIError" xml:space="preserve">
     <value>無法連結到華碩 ACPI。 没有它，應用程式將無法執行。 嘗試安裝Asus System Control Interface</value>
   </data>
+  <data name="AlertAPUMemoryRestart" xml:space="preserve">
+    <value>Restart your device to apply changes</value>
+  </data>
+  <data name="AlertAPUMemoryRestartTitle" xml:space="preserve">
+    <value>Restart now?</value>
+  </data>
   <data name="AlertDGPU" xml:space="preserve">
     <value>看起来 GPU 正在大量使用，是否禁用它?</value>
   </data>
@@ -161,6 +167,9 @@
   </data>
   <data name="ApplyWindowsPowerPlan" xml:space="preserve">
     <value>自動調整Windows電源模式</value>
+  </data>
+  <data name="APUMemory" xml:space="preserve">
+    <value>Memory Assigned to GPU</value>
   </data>
   <data name="AsusServicesRunning" xml:space="preserve">
     <value>執行中的華碩服務</value>
