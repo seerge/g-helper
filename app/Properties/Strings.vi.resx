@@ -123,6 +123,12 @@
   <data name="ACPIError" xml:space="preserve">
     <value>Không thể kết nối đến ASUS ACPI. Chương trình cần nó để có thể hoạt động. Hãy thử cài lại Asus System Control Interface</value>
   </data>
+  <data name="AlertAPUMemoryRestart" xml:space="preserve">
+    <value>Restart your device to apply changes</value>
+  </data>
+  <data name="AlertAPUMemoryRestartTitle" xml:space="preserve">
+    <value>Restart now?</value>
+  </data>
   <data name="AlertDGPU" xml:space="preserve">
     <value>Có vẻ như GPU rời đang được sử dụng nhiều, tắt nó?</value>
   </data>
@@ -161,6 +167,9 @@
   </data>
   <data name="ApplyWindowsPowerPlan" xml:space="preserve">
     <value>Tự động điều chỉnh Kế hoạch nguồn của Windows</value>
+  </data>
+  <data name="APUMemory" xml:space="preserve">
+    <value>Memory Assigned to GPU</value>
   </data>
   <data name="AsusServicesRunning" xml:space="preserve">
     <value>Dịch vụ Asus đang chạy</value>

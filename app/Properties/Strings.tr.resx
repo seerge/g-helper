@@ -123,6 +123,12 @@
   <data name="ACPIError" xml:space="preserve">
     <value>ASUS ACPI'ye bağlanılamıyor. Uygulama o olmadan çalışamaz. Asus Sistem Kontrol Arayüzü'nü yüklemeyi deneyin.</value>
   </data>
+  <data name="AlertAPUMemoryRestart" xml:space="preserve">
+    <value>Restart your device to apply changes</value>
+  </data>
+  <data name="AlertAPUMemoryRestartTitle" xml:space="preserve">
+    <value>Restart now?</value>
+  </data>
   <data name="AlertDGPU" xml:space="preserve">
     <value>Görünüşe göre GPU yoğun bir şekilde kullanılıyor, devre dışı bırakılsın mı?</value>
   </data>
@@ -161,6 +167,9 @@
   </data>
   <data name="ApplyWindowsPowerPlan" xml:space="preserve">
     <value>Windows Güç Modunu otomatik ayarla</value>
+  </data>
+  <data name="APUMemory" xml:space="preserve">
+    <value>Memory Assigned to GPU</value>
   </data>
   <data name="AsusServicesRunning" xml:space="preserve">
     <value>Çalışan Asus Hizmetleri</value>

@@ -123,6 +123,12 @@
   <data name="ACPIError" xml:space="preserve">
     <value>ASUS ACPI에 연결할 수 없어 응용 프로그램이 작동하지 않습니다. Asus System Control Interface를 먼저 설치하십시오.</value>
   </data>
+  <data name="AlertAPUMemoryRestart" xml:space="preserve">
+    <value>Restart your device to apply changes</value>
+  </data>
+  <data name="AlertAPUMemoryRestartTitle" xml:space="preserve">
+    <value>Restart now?</value>
+  </data>
   <data name="AlertDGPU" xml:space="preserve">
     <value>GPU 사용량이 높습니다. 비활성화 하시겠습니까?</value>
   </data>
@@ -161,6 +167,9 @@
   </data>
   <data name="ApplyWindowsPowerPlan" xml:space="preserve">
     <value>윈도우 전원 모드 자동조절</value>
+  </data>
+  <data name="APUMemory" xml:space="preserve">
+    <value>Memory Assigned to GPU</value>
   </data>
   <data name="AsusServicesRunning" xml:space="preserve">
     <value>실행중인 Asus 서비스</value>

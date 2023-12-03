@@ -123,6 +123,12 @@
   <data name="ACPIError" xml:space="preserve">
     <value>Tidak dapat terhubung ke ASUS ACPI. tanpanya aplikasi tidak dapat berfungsi. Cobalah untuk menginstal Asus System Control Interface</value>
   </data>
+  <data name="AlertAPUMemoryRestart" xml:space="preserve">
+    <value>Restart your device to apply changes</value>
+  </data>
+  <data name="AlertAPUMemoryRestartTitle" xml:space="preserve">
+    <value>Restart now?</value>
+  </data>
   <data name="AlertDGPU" xml:space="preserve">
     <value>Tampaknya GPU sedang digunakan intensif, nonaktifkan?</value>
   </data>
@@ -161,6 +167,9 @@
   </data>
   <data name="ApplyWindowsPowerPlan" xml:space="preserve">
     <value>Otomatis sesuaikan Mode Daya Windows</value>
+  </data>
+  <data name="APUMemory" xml:space="preserve">
+    <value>Memory Assigned to GPU</value>
   </data>
   <data name="AsusServicesRunning" xml:space="preserve">
     <value>Layanan Asus Berjalan</value>
