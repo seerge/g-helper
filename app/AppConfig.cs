@@ -451,4 +451,8 @@ public static class AppConfig
         return ContainsModel("FA507");
     }
 
+    public static bool IsASUS()
+    {
+        return ContainsModel("ROG") || ContainsModel("TUF") || ContainsModel("Vivobook") || ContainsModel("Zenbook");
+    }
 }

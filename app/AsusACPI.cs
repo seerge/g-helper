@@ -1,5 +1,4 @@
-﻿using FftSharp;
-using GHelper;
+﻿using GHelper;
 using GHelper.USB;
 using System.Management;
 using System.Runtime.InteropServices;
@@ -37,7 +36,7 @@ public class AsusACPI
     const uint INIT = 0x54494E49;
 
     public const uint UniversalControl = 0x00100021;
-    
+
     public const int KB_Light_Up = 0xc4;
     public const int KB_Light_Down = 0xc5;
     public const int Brightness_Down = 0x10;
@@ -186,6 +185,7 @@ public class AsusACPI
     private static extern bool WaitForSingleObject(IntPtr hHandle, int dwMilliseconds);
 
     private IntPtr eventHandle;
+    private bool _connected = false;
 
     // still works only with asus optimization service on , if someone knows how to get ACPI events from asus without that - let me know
     public void RunListener()
@@ -212,22 +212,33 @@ public class AsusACPI
         }
     }
 
+    public bool IsConnected()
+    {
+        return _connected;
+    }
 
     public AsusACPI()
     {
-        handle = CreateFile(
-            FILE_NAME,
-            GENERIC_READ | GENERIC_WRITE,
-            FILE_SHARE_READ | FILE_SHARE_WRITE,
-            IntPtr.Zero,
-            OPEN_EXISTING,
-            FILE_ATTRIBUTE_NORMAL,
-            IntPtr.Zero
-        );
-
-        if (handle == new IntPtr(-1))
+        try
         {
-            throw new Exception("Can't connect to ACPI");
+            handle = CreateFile(
+                FILE_NAME,
+                GENERIC_READ | GENERIC_WRITE,
+                FILE_SHARE_READ | FILE_SHARE_WRITE,
+                IntPtr.Zero,
+                OPEN_EXISTING,
+                FILE_ATTRIBUTE_NORMAL,
+                IntPtr.Zero
+            );
+
+            //handle = new IntPtr(-1);
+            //throw new Exception("ERROR");
+            _connected = true;
+
+        }
+        catch (Exception ex)
+        {
+            Logger.WriteLine($"Can't connect to ACPI: {ex.Message}");
         }
 
         if (AppConfig.IsAdvantageEdition()) MaxTotal = 250;
@@ -390,7 +401,7 @@ public class AsusACPI
 
         byte min = (byte)(curve[8] * 255 / 100);
         byte max = (byte)(curve[15] * 255 / 100);
-        byte[] range = { min, max};
+        byte[] range = { min, max };
 
         int result;
         switch (device)
@@ -422,7 +433,7 @@ public class AsusACPI
 
         // it seems to be a bug, when some old model's bios can go nuts if fan is set to 100% 
 
-        for (int i = 8; i < curve.Length; i++) curve[i] = (byte)(Math.Max((byte)0, Math.Min((byte)100, curve[i])) * fanScale / 100); 
+        for (int i = 8; i < curve.Length; i++) curve[i] = (byte)(Math.Max((byte)0, Math.Min((byte)100, curve[i])) * fanScale / 100);
 
         switch (device)
         {
@@ -575,7 +586,7 @@ public class AsusACPI
 
         switch (memory)
         {
-            case 256: 
+            case 256:
                 return 0;
             case 258:
                 return 1;
@@ -626,7 +637,7 @@ public class AsusACPI
     {
 
         byte[] setting = new byte[6];
-        
+
         setting[0] = (byte)0xb4;
         setting[1] = (byte)mode;
         setting[2] = color.R;
