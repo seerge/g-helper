@@ -181,6 +181,12 @@ namespace GHelper.Gpu
                     Program.modeControl.SetGPUClocks(false);
                 }
 
+                if (AppConfig.Is("mode_reapply"))
+                {
+                    await Task.Delay(TimeSpan.FromMilliseconds(3000));
+                    Program.modeControl.AutoPerformance();
+                }
+
             });
 
 
