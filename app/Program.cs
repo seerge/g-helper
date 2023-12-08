@@ -33,7 +33,7 @@ namespace GHelper
         public static ScreenControl screenControl = new ScreenControl();
         public static ClamshellModeControl clamshellControl = new ClamshellModeControl();
 
-        public static ToastForm toast = new ToastForm();
+        public static IToastWindow toast;
 
         public static IntPtr unRegPowerNotify;
 
@@ -45,6 +45,7 @@ namespace GHelper
         private static PowerLineStatus isPlugged = SystemInformation.PowerStatus.PowerLineStatus;
 
         // The main entry point for the application
+        [STAThread]
         public static void Main(string[] args)
         {
 
@@ -80,6 +81,14 @@ namespace GHelper
                 Application.Exit();
                 return;
             }
+
+            int toastMode = AppConfig.Get("toast_mode");
+            if (toastMode == -1)
+            {
+                toastMode = 0;
+                AppConfig.Set("toast_mode", 0);
+            }
+            toast = IToastWindow.BuildToastWindow((ToastMode)toastMode);
 
             Application.EnableVisualStyles();
 

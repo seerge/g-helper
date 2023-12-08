@@ -708,7 +708,7 @@ namespace GHelper.Input
             if (!OptimizationService.IsOSDRunning())
             {
                 string[] backlightNames = new string[] { "Off", "Low", "Mid", "Max" };
-                Program.toast.RunToast(backlightNames[backlight], delta > 0 ? ToastIcon.BacklightUp : ToastIcon.BacklightDown);
+                Program.toast.RunToast(backlightNames[backlight], delta > 0 ? ToastIcon.BacklightUp : ToastIcon.BacklightDown, 3, backlight);
             }
 
         }

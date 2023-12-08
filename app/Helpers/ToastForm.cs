@@ -53,7 +53,7 @@ namespace GHelper.Helpers
         Charger
     }
 
-    public class ToastForm : OSDNativeForm
+    public class ToastForm : OSDNativeForm, IToastWindow
     {
 
         protected static string toastText = "Balanced";
@@ -155,6 +155,7 @@ namespace GHelper.Helpers
             });
 
         }
+        public void RunToast(string text, ToastIcon? icon = null, double? maxValue = null, double? value = null) => RunToast(text, icon);
 
         private void timer_Tick(object? sender, EventArgs e)
         {
