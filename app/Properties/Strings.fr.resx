@@ -414,7 +414,7 @@ Voulez-vous continuer ?</value>
     <value>Arrêter toutes les applications utilisant la dGPU lors du passage au mode Eco</value>
   </data>
   <data name="LaptopBacklight" xml:space="preserve">
-    <value>Rétroéclairage de l'ordinateur</value>
+    <value>Rétroéclairage du clavier</value>
   </data>
   <data name="LaptopKeyboard" xml:space="preserve">
     <value>Clavier de l'ordinateur</value>
