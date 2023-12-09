@@ -347,7 +347,10 @@ namespace GHelper.AnimeMatrix
 
             int matrixX = AppConfig.Get("matrix_x", 0);
             int matrixY = AppConfig.Get("matrix_y", 0);
+
             int matrixZoom = AppConfig.Get("matrix_zoom", 100);
+            int matrixContrast = AppConfig.Get("matrix_contrast", 100);
+            
             int matrixSpeed = AppConfig.Get("matrix_speed", 50);
 
             MatrixRotation rotation = (MatrixRotation)AppConfig.Get("matrix_rotation", 0); 
@@ -368,9 +371,9 @@ namespace GHelper.AnimeMatrix
                     image.SelectActiveFrame(dimension, i);
 
                     if (rotation == MatrixRotation.Planar)
-                        device.GenerateFrame(image, matrixZoom, matrixX, matrixY, matrixQuality);
+                        device.GenerateFrame(image, matrixZoom, matrixX, matrixY, matrixQuality, matrixContrast);
                     else
-                        device.GenerateFrameDiagonal(image, matrixZoom, matrixX, matrixY, matrixQuality);
+                        device.GenerateFrameDiagonal(image, matrixZoom, matrixX, matrixY, matrixQuality, matrixContrast);
                     
                     device.AddFrame();
                 }
@@ -385,9 +388,9 @@ namespace GHelper.AnimeMatrix
             else
             {
                 if (rotation == MatrixRotation.Planar)
-                    device.GenerateFrame(image, matrixZoom, matrixX, matrixY, matrixQuality);
+                    device.GenerateFrame(image, matrixZoom, matrixX, matrixY, matrixQuality, matrixContrast);
                 else
-                    device.GenerateFrameDiagonal(image, matrixZoom, matrixX, matrixY, matrixQuality);
+                    device.GenerateFrameDiagonal(image, matrixZoom, matrixX, matrixY, matrixQuality, matrixContrast);
 
                 device.Present();
             }
