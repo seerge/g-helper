@@ -135,7 +135,9 @@ namespace GHelper.USB
                 var device = AsusHid.FindDevices(AsusHid.AURA_ID).FirstOrDefault();
                 if (device is null) return;
                 Logger.WriteLine($"USB Version: {device.ReleaseNumberBcd} {device.ReleaseNumber}");
+
                 if (device.ReleaseNumberBcd >= 22 && device.ReleaseNumberBcd <= 25) isSingleColor = true;
+                if (AppConfig.ContainsModel("GA503R") && device.ReleaseNumberBcd == 3) isSingleColor = true;
             }
         }
 
