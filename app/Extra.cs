@@ -293,7 +293,7 @@ namespace GHelper
 
             }
 
-            if ((!AppConfig.IsStrix() && !AppConfig.IsZ13()) || AppConfig.IsStrixLimitedRGB())
+            if ((!AppConfig.IsStrix() && !AppConfig.IsZ13()) || AppConfig.IsStrixLimitedRGB() || AppConfig.IsARCNM())
             {
                 labelBacklightLid.Visible = false;
                 checkAwakeLid.Visible = false;
