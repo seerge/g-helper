@@ -630,8 +630,8 @@ namespace GHelper.USB
             public static void ApplyAmbient(bool init = false)
             {
                 var bound = Screen.GetBounds(Point.Empty);
-                //bound.Y += bound.Height / 3;
-                //bound.Height -= (int)Math.Round(bound.Height * (0.33f + 0.022f)); // cut 1/3 of the top screen + windows panel
+                bound.Y += bound.Height / 3;
+                bound.Height -= (int)Math.Round(bound.Height * (0.33f + 0.022f)); // cut 1/3 of the top screen + windows panel
 
                 Bitmap screen_low  = AmbientData.CamptureScreen(bound, 512, 288);   //quality decreases greatly if it is less 512 ;
                 Bitmap screeb_pxl = AmbientData.ResizeImage(screen_low, 4, 2);     // 4x2 zone. top for keyboard and bot for lightbar;
@@ -656,7 +656,6 @@ namespace GHelper.USB
                     zones = 1;
                     AmbientData.Colors[0].RGB = ColorUtils.HSV.UpSaturation(ColorUtils.GetDominantColor(screeb_pxl), (float)0.3);
                 }
-
 
                 //screen_low.Save("big.jpg", ImageFormat.Jpeg);
                 //screeb_pxl.Save("small.jpg", ImageFormat.Jpeg);
@@ -756,7 +755,7 @@ namespace GHelper.USB
                     {
                         graphics.CompositingMode = CompositingMode.SourceCopy;
                         graphics.CompositingQuality = CompositingQuality.HighQuality;
-                        graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
+                        graphics.InterpolationMode = InterpolationMode.Bicubic;
                         graphics.SmoothingMode = SmoothingMode.None;
                         graphics.PixelOffsetMode = PixelOffsetMode.None;
 
