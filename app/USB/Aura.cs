@@ -130,14 +130,13 @@ namespace GHelper.USB
             timer.Elapsed += Timer_Elapsed;
             isSingleColor = AppConfig.IsSingleColor(); // Mono Color
 
-            if (AppConfig.ContainsModel("GA402X") || AppConfig.ContainsModel("GA402N") || AppConfig.ContainsModel("GA503R"))
+            if (AppConfig.ContainsModel("GA402X") || AppConfig.ContainsModel("GA402N"))
             {
                 var device = AsusHid.FindDevices(AsusHid.AURA_ID).FirstOrDefault();
                 if (device is null) return;
                 Logger.WriteLine($"USB Version: {device.ReleaseNumberBcd} {device.ReleaseNumber}");
 
                 if (device.ReleaseNumberBcd >= 22 && device.ReleaseNumberBcd <= 25) isSingleColor = true;
-                if (AppConfig.ContainsModel("GA503R") && device.ReleaseNumberBcd == 3) isSingleColor = true;
             }
         }
 
