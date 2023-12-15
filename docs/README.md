@@ -97,7 +97,7 @@ Stop ``ArmouryCrateControlInterface`` service under windows Services app or you 
 
 #### Battery charge limiter is not working
 It could be that Asus services are overwriting this limit after. You may want to stop them by clicking "Stop" in the Asus Services section (under Extra). 
-Please note: For some devices not every charge limit % may be working. Try to set standard **80%** to be sure.
+Please note: For some devices not every charge limit % may be working. Some models support only 80% limit, so try to set standard **80%** to be sure.
 
 ####  I don't see GPU modes section 
 Some older models (for example G14 2020) don't support disabling GPU on hardware level, therefore GPU section makes no sense for them and will be hidden
