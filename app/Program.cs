@@ -64,11 +64,12 @@ namespace GHelper
 
             ProcessHelper.CheckAlreadyRunning();
 
-            try
-            {
-                acpi = new AsusACPI();
-            }
-            catch
+            Logger.WriteLine("------------");
+            Logger.WriteLine("App launched: " + AppConfig.GetModel() + " :" + Assembly.GetExecutingAssembly().GetName().Version.ToString() + CultureInfo.CurrentUICulture + (ProcessHelper.IsUserAdministrator() ? "." : ""));
+
+            acpi = new AsusACPI();
+
+            if (!acpi.IsConnected() && AppConfig.IsASUS())
             {
                 DialogResult dialogResult = MessageBox.Show(Properties.Strings.ACPIError, Properties.Strings.StartupError, MessageBoxButtons.YesNo);
                 if (dialogResult == DialogResult.Yes)
@@ -79,9 +80,6 @@ namespace GHelper
                 Application.Exit();
                 return;
             }
-
-            Logger.WriteLine("------------");
-            Logger.WriteLine("App launched: " + AppConfig.GetModel() + " :" + Assembly.GetExecutingAssembly().GetName().Version.ToString() + CultureInfo.CurrentUICulture + (ProcessHelper.IsUserAdministrator() ? "." : ""));
 
             Application.EnableVisualStyles();
 
@@ -153,6 +151,7 @@ namespace GHelper
             Application.Run();
 
         }
+
 
         private static void SystemEvents_SessionEnding(object sender, SessionEndingEventArgs e)
         {

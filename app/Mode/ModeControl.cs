@@ -239,9 +239,14 @@ namespace GHelper.Mode
         public void SetPower(bool launchAsAdmin = false)
         {
 
+            bool allAMD = Program.acpi.IsAllAmdPPT();
+
             int limit_total = AppConfig.GetMode("limit_total");
             int limit_cpu = AppConfig.GetMode("limit_cpu");
+            int limit_slow = AppConfig.GetMode("limit_slow");
             int limit_fast = AppConfig.GetMode("limit_fast");
+
+            if (limit_slow < 0 || allAMD) limit_slow = limit_total;
 
             if (limit_total > AsusACPI.MaxTotal) return;
             if (limit_total < AsusACPI.MinTotal) return;
@@ -252,11 +257,14 @@ namespace GHelper.Mode
             if (limit_fast > AsusACPI.MaxTotal) return;
             if (limit_fast < AsusACPI.MinTotal) return;
 
-            // SPL + SPPT togeher in one slider
+            if (limit_slow > AsusACPI.MaxTotal) return;
+            if (limit_slow < AsusACPI.MinTotal) return;
+
+            // SPL and SPPT 
             if (Program.acpi.DeviceGet(AsusACPI.PPT_TotalA0) >= 0)
             {
                 Program.acpi.DeviceSet(AsusACPI.PPT_TotalA0, limit_total, "PowerLimit A0");
-                Program.acpi.DeviceSet(AsusACPI.PPT_APUA3, limit_total, "PowerLimit A3");
+                Program.acpi.DeviceSet(AsusACPI.PPT_APUA3, limit_slow, "PowerLimit A3");
                 customPower = limit_total;
             }
             else if (RyzenControl.IsAMD())

@@ -36,7 +36,7 @@ public class AsusACPI
     const uint INIT = 0x54494E49;
 
     public const uint UniversalControl = 0x00100021;
-    
+
     public const int KB_Light_Up = 0xc4;
     public const int KB_Light_Down = 0xc5;
     public const int Brightness_Down = 0x10;
@@ -93,6 +93,8 @@ public class AsusACPI
     public const int PPT_GPUC0 = 0x001200C0;  // NVIDIA GPU Boost
     public const int PPT_APUC1 = 0x001200C1;  // fPPT (fast boost limit)
     public const int PPT_GPUC2 = 0x001200C2;  // NVIDIA GPU Temp Target (75.. 87 C) 
+
+    public const int APU_MEM = 0x000600C1;
 
     public const int TUF_KB_BRIGHTNESS = 0x00050021;
     public const int TUF_KB = 0x00100056;
@@ -183,6 +185,7 @@ public class AsusACPI
     private static extern bool WaitForSingleObject(IntPtr hHandle, int dwMilliseconds);
 
     private IntPtr eventHandle;
+    private bool _connected = false;
 
     // still works only with asus optimization service on , if someone knows how to get ACPI events from asus without that - let me know
     public void RunListener()
@@ -209,22 +212,33 @@ public class AsusACPI
         }
     }
 
+    public bool IsConnected()
+    {
+        return _connected;
+    }
 
     public AsusACPI()
     {
-        handle = CreateFile(
-            FILE_NAME,
-            GENERIC_READ | GENERIC_WRITE,
-            FILE_SHARE_READ | FILE_SHARE_WRITE,
-            IntPtr.Zero,
-            OPEN_EXISTING,
-            FILE_ATTRIBUTE_NORMAL,
-            IntPtr.Zero
-        );
-
-        if (handle == new IntPtr(-1))
+        try
         {
-            throw new Exception("Can't connect to ACPI");
+            handle = CreateFile(
+                FILE_NAME,
+                GENERIC_READ | GENERIC_WRITE,
+                FILE_SHARE_READ | FILE_SHARE_WRITE,
+                IntPtr.Zero,
+                OPEN_EXISTING,
+                FILE_ATTRIBUTE_NORMAL,
+                IntPtr.Zero
+            );
+
+            //handle = new IntPtr(-1);
+            //throw new Exception("ERROR");
+            _connected = true;
+
+        }
+        catch (Exception ex)
+        {
+            Logger.WriteLine($"Can't connect to ACPI: {ex.Message}");
         }
 
         if (AppConfig.IsAdvantageEdition()) MaxTotal = 250;
@@ -387,7 +401,7 @@ public class AsusACPI
 
         byte min = (byte)(curve[8] * 255 / 100);
         byte max = (byte)(curve[15] * 255 / 100);
-        byte[] range = { min, max};
+        byte[] range = { min, max };
 
         int result;
         switch (device)
@@ -419,7 +433,7 @@ public class AsusACPI
 
         // it seems to be a bug, when some old model's bios can go nuts if fan is set to 100% 
 
-        for (int i = 8; i < curve.Length; i++) curve[i] = (byte)(Math.Max((byte)0, Math.Min((byte)100, curve[i])) * fanScale / 100); 
+        for (int i = 8; i < curve.Length; i++) curve[i] = (byte)(Math.Max((byte)0, Math.Min((byte)100, curve[i])) * fanScale / 100);
 
         switch (device)
         {
@@ -522,9 +536,79 @@ public class AsusACPI
 
     public bool IsAllAmdPPT()
     {
+        //return false; 
         return DeviceGet(PPT_CPUB0) >= 0 && DeviceGet(PPT_GPUC0) < 0;
     }
 
+    public void SetAPUMem(int memory = 4)
+    {
+        if (memory < 0 || memory > 8) return;
+
+        int mem = 0;
+
+        switch (memory)
+        {
+            case 0:
+                mem = 0;
+                break;
+            case 1:
+                mem = 258;
+                break;
+            case 2:
+                mem = 259;
+                break;
+            case 3:
+                mem = 260;
+                break;
+            case 4:
+                mem = 261;
+                break;
+            case 5:
+                mem = 263;
+                break;
+            case 6:
+                mem = 264;
+                break;
+            case 7:
+                mem = 265;
+                break;
+            case 8:
+                mem = 262;
+                break;
+        }
+
+        Program.acpi.DeviceSet(APU_MEM, mem, "APU Mem");
+    }
+
+    public int GetAPUMem()
+    {
+        int memory = Program.acpi.DeviceGet(APU_MEM);
+        if (memory < 0) return -1;
+
+        switch (memory)
+        {
+            case 256:
+                return 0;
+            case 258:
+                return 1;
+            case 259:
+                return 2;
+            case 260:
+                return 3;
+            case 261:
+                return 4;
+            case 262:
+                return 8;
+            case 263:
+                return 5;
+            case 264:
+                return 6;
+            case 265:
+                return 7;
+            default:
+                return 4;
+        }
+    }
 
     public void ScanRange()
     {
@@ -554,7 +638,7 @@ public class AsusACPI
     {
 
         byte[] setting = new byte[6];
-        
+
         setting[0] = (byte)0xb4;
         setting[1] = (byte)mode;
         setting[2] = color.R;

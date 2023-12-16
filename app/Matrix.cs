@@ -37,9 +37,13 @@ namespace GHelper
 
             trackZoom.MouseUp += TrackZoom_MouseUp;
             trackZoom.ValueChanged += TrackZoom_Changed;
-
             trackZoom.Value = Math.Min(trackZoom.Maximum, AppConfig.Get("matrix_zoom", 100));
-            VisualiseZoom();
+
+            trackContrast.MouseUp += TrackContrast_MouseUp; ;
+            trackContrast.ValueChanged += TrackContrast_ValueChanged; ;
+            trackContrast.Value = Math.Min(trackContrast.Maximum, AppConfig.Get("matrix_contrast", 100));
+
+            VisualiseMatrix();
 
             comboScaling.DropDownStyle = ComboBoxStyle.DropDownList;
             comboScaling.SelectedIndex = AppConfig.Get("matrix_quality", 0);
@@ -53,6 +57,17 @@ namespace GHelper
             uiScale = panelPicture.Width / matrixControl.device.MaxColumns / 3;
             panelPicture.Height = (int)(matrixControl.device.MaxRows * uiScale);
 
+        }
+
+        private void TrackContrast_ValueChanged(object? sender, EventArgs e)
+        {
+            VisualiseMatrix();
+        }
+
+        private void TrackContrast_MouseUp(object? sender, MouseEventArgs e)
+        {
+            AppConfig.Set("matrix_contrast", trackContrast.Value);
+            SetMatrixPicture();
         }
 
         private void ComboRotation_SelectedValueChanged(object? sender, EventArgs e)
@@ -77,18 +92,21 @@ namespace GHelper
             GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced);
         }
 
-        private void VisualiseZoom()
+        private void VisualiseMatrix()
         {
             labelZoom.Text = trackZoom.Value + "%";
+            labelContrast.Text = trackContrast.Value + "%";
         }
 
         private void ButtonReset_Click(object? sender, EventArgs e)
         {
+            AppConfig.Set("matrix_contrast", 100);
             AppConfig.Set("matrix_zoom", 100);
             AppConfig.Set("matrix_x", 0);
             AppConfig.Set("matrix_y", 0);
 
             trackZoom.Value = 100;
+            trackContrast.Value = 100;
 
             SetMatrixPicture();
 
@@ -102,7 +120,7 @@ namespace GHelper
 
         private void TrackZoom_Changed(object? sender, EventArgs e)
         {
-            VisualiseZoom();
+            VisualiseMatrix();
         }
 
 
@@ -194,7 +212,6 @@ namespace GHelper
                 int matrixX = AppConfig.Get("matrix_x", 0);
                 int matrixY = AppConfig.Get("matrix_y", 0);
                 int matrixZoom = AppConfig.Get("matrix_zoom", 100);
-
 
                 float scale = Math.Min((float)panelPicture.Width / (float)width, (float)panelPicture.Height / (float)height) * matrixZoom / 100;
 

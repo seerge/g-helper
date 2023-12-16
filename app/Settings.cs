@@ -761,6 +761,15 @@ namespace GHelper
         }
 
 
+        public void CycleMatrix(int delta)
+        {
+            comboMatrix.SelectedIndex = Math.Min(Math.Max(0, comboMatrix.SelectedIndex + delta), comboMatrix.Items.Count - 1);
+            AppConfig.Set("matrix_brightness", comboMatrix.SelectedIndex);
+            matrixControl.SetMatrix();
+            Program.toast.RunToast(comboMatrix.GetItemText(comboMatrix.SelectedItem), delta > 0 ? ToastIcon.BacklightUp : ToastIcon.BacklightDown);
+        }
+
+
         public void CycleAuraMode()
         {
             if (comboKeyboard.SelectedIndex < comboKeyboard.Items.Count - 1)

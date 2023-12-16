@@ -123,6 +123,12 @@
   <data name="ACPIError" xml:space="preserve">
     <value>Nie można odnaleźć sterownika ASUS ACPI. Aplikacja nie może bez niego funkcjonować. Spróbuj zainstalować Asus System Control Interface</value>
   </data>
+  <data name="AlertAPUMemoryRestart" xml:space="preserve">
+    <value>Uruchom ponownie, aby zastosować ustawienia</value>
+  </data>
+  <data name="AlertAPUMemoryRestartTitle" xml:space="preserve">
+    <value>Uruchomić ponownie teraz?</value>
+  </data>
   <data name="AlertDGPU" xml:space="preserve">
     <value>Wygląda na to, że GPU jest mocno obciążone. Wyłączyć?</value>
   </data>
@@ -161,6 +167,9 @@
   </data>
   <data name="ApplyWindowsPowerPlan" xml:space="preserve">
     <value>Dostosuj systemowy Tryb Zasilania</value>
+  </data>
+  <data name="APUMemory" xml:space="preserve">
+    <value>Pamięć przypisana do GPU</value>
   </data>
   <data name="AsusServicesRunning" xml:space="preserve">
     <value>Uruchomione usługi Asus</value>

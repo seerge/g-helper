@@ -79,6 +79,24 @@ namespace GHelper.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Restart your device to apply changes.
+        /// </summary>
+        internal static string AlertAPUMemoryRestart {
+            get {
+                return ResourceManager.GetString("AlertAPUMemoryRestart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Restart now?.
+        /// </summary>
+        internal static string AlertAPUMemoryRestartTitle {
+            get {
+                return ResourceManager.GetString("AlertAPUMemoryRestartTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Looks like GPU is in heavy use, disable it?.
         /// </summary>
         internal static string AlertDGPU {
@@ -192,6 +210,15 @@ namespace GHelper.Properties {
         internal static string ApplyWindowsPowerPlan {
             get {
                 return ResourceManager.GetString("ApplyWindowsPowerPlan", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Memory Assigned to GPU.
+        /// </summary>
+        internal static string APUMemory {
+            get {
+                return ResourceManager.GetString("APUMemory", resourceCulture);
             }
         }
         

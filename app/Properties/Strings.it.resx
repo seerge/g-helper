@@ -123,6 +123,12 @@
   <data name="ACPIError" xml:space="preserve">
     <value>Impossibile connettersi ad ASUS ACPI. Senza di essa l'applicazione non può funzionare. Prova ad installare Asus System Control Interface</value>
   </data>
+  <data name="AlertAPUMemoryRestart" xml:space="preserve">
+    <value>Restart your device to apply changes</value>
+  </data>
+  <data name="AlertAPUMemoryRestartTitle" xml:space="preserve">
+    <value>Restart now?</value>
+  </data>
   <data name="AlertDGPU" xml:space="preserve">
     <value>Uso intensivo della GPU, disabilitare?</value>
   </data>
@@ -161,6 +167,9 @@
   </data>
   <data name="ApplyWindowsPowerPlan" xml:space="preserve">
     <value>Regola Piano Energetico di Windows in automatico</value>
+  </data>
+  <data name="APUMemory" xml:space="preserve">
+    <value>Memory Assigned to GPU</value>
   </data>
   <data name="AsusServicesRunning" xml:space="preserve">
     <value>Servizi Asus in Esecuzione</value>

@@ -206,10 +206,10 @@ namespace GHelper
             comboMatrixRunning.FormattingEnabled = true;
             comboMatrixRunning.ItemHeight = 32;
             comboMatrixRunning.Items.AddRange(new object[] { Properties.Strings.MatrixBanner, Properties.Strings.MatrixLogo, Properties.Strings.MatrixPicture, Properties.Strings.MatrixClock, Properties.Strings.MatrixAudio });
-            comboMatrixRunning.Location = new Point(266, 11);
-            comboMatrixRunning.Margin = new Padding(4, 11, 4, 8);
+            comboMatrixRunning.Location = new Point(269, 11);
+            comboMatrixRunning.Margin = new Padding(7, 11, 7, 8);
             comboMatrixRunning.Name = "comboMatrixRunning";
-            comboMatrixRunning.Size = new Size(254, 40);
+            comboMatrixRunning.Size = new Size(248, 40);
             comboMatrixRunning.TabIndex = 17;
             // 
             // buttonMatrix
@@ -1439,7 +1439,6 @@ namespace GHelper
             MinimumSize = new Size(822, 71);
             Name = "SettingsForm";
             Padding = new Padding(11);
-            ShowIcon = true;
             StartPosition = FormStartPosition.CenterScreen;
             Text = "G-Helper";
             panelMatrix.ResumeLayout(false);

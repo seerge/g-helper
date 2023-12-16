@@ -399,21 +399,21 @@ namespace Starlight.AnimeMatrix
         }
 
 
-        private void SetBitmapDiagonal(Bitmap bmp, int deltaX = 0, int deltaY = 0)
+        private void SetBitmapDiagonal(Bitmap bmp, int deltaX = 0, int deltaY = 0, int contrast = 100)
         {
             for (int y = 0; y < bmp.Height; y++)
             {
                 for (int x = 0; x < bmp.Width; x++)
                 {
                     var pixel = bmp.GetPixel(x, y);
-                    var color = (pixel.R + pixel.G + pixel.B) / 3;
+                    var color = Math.Min((pixel.R + pixel.G + pixel.B) * contrast / 300, 255);
                     if (color > 20)
                         SetLedDiagonal(x, y, (byte)color, deltaX + (FullRows / 2) + 1, deltaY - (FullRows / 2) - 1);
                 }
             }
         }
 
-        private void SetBitmapLinear(Bitmap bmp)
+        private void SetBitmapLinear(Bitmap bmp, int contrast = 100)
         {
             for (int y = 0; y < bmp.Height; y++)
             {
@@ -421,7 +421,7 @@ namespace Starlight.AnimeMatrix
                     if (x % 2 == y % 2)
                     {
                         var pixel = bmp.GetPixel(x, y);
-                        var color = (pixel.R + pixel.G + pixel.B) / 3;
+                        var color = Math.Min((pixel.R + pixel.G + pixel.B) * contrast / 300, 255);
                         if (color > 20)
                             SetLedPlanar(x / 2, y, (byte)color);
                     }
@@ -468,7 +468,7 @@ namespace Starlight.AnimeMatrix
             Present();
 
         }
-        public void GenerateFrame(Image image, float zoom = 100, int panX = 0, int panY = 0, InterpolationMode quality = InterpolationMode.Default)
+        public void GenerateFrame(Image image, float zoom = 100, int panX = 0, int panY = 0, InterpolationMode quality = InterpolationMode.Default, int contrast = 100)
         {
             int width = MaxColumns / 2 * 6;
             int height = MaxRows;
@@ -495,11 +495,11 @@ namespace Starlight.AnimeMatrix
                 }
 
                 Clear();
-                SetBitmapLinear(bmp);
+                SetBitmapLinear(bmp, contrast);
             }
         }
 
-        public void GenerateFrameDiagonal(Image image, float zoom = 100, int panX = 0, int panY = 0, InterpolationMode quality = InterpolationMode.Default)
+        public void GenerateFrameDiagonal(Image image, float zoom = 100, int panX = 0, int panY = 0, InterpolationMode quality = InterpolationMode.Default, int contrast = 100)
         {
             int width = MaxRows - FullRows;
             int height = MaxRows - FullRows*2;
@@ -523,7 +523,7 @@ namespace Starlight.AnimeMatrix
                 }
 
                 Clear();
-                SetBitmapDiagonal(bmp, -panX, height + panY);
+                SetBitmapDiagonal(bmp, -panX, height + panY, contrast);
             }
         }
 

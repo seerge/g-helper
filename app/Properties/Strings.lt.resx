@@ -123,6 +123,12 @@
   <data name="ACPIError" xml:space="preserve">
     <value>Nepavyko prisijungti prie ASUS ACPI. Programėlė be jo negali veikti. Pabandykite įdiegti Asus System Control Interface</value>
   </data>
+  <data name="AlertAPUMemoryRestart" xml:space="preserve">
+    <value>Restart your device to apply changes</value>
+  </data>
+  <data name="AlertAPUMemoryRestartTitle" xml:space="preserve">
+    <value>Restart now?</value>
+  </data>
   <data name="AlertDGPU" xml:space="preserve">
     <value>Panašu, kad jūsų GPU yra intensyviai naudojamas. Išjungti jį?</value>
   </data>
@@ -161,6 +167,9 @@
   </data>
   <data name="ApplyWindowsPowerPlan" xml:space="preserve">
     <value>Automatiškai derinti Windows energijos režimus</value>
+  </data>
+  <data name="APUMemory" xml:space="preserve">
+    <value>Memory Assigned to GPU</value>
   </data>
   <data name="AsusServicesRunning" xml:space="preserve">
     <value>Veikiančios Asus tarnybos</value>

@@ -345,7 +345,7 @@ public static class AppConfig
 
     public static bool IsSingleColor()
     {
-        return  ContainsModel("GA401") || ContainsModel("FX517Z") || ContainsModel("FX516P") || ContainsModel("X13");
+        return  ContainsModel("GA401") || ContainsModel("FX517Z") || ContainsModel("FX516P") || ContainsModel("X13") || IsARCNM() || ContainsModel("GA502IU");
     }
 
     public static bool IsStrix()
@@ -355,7 +355,7 @@ public static class AppConfig
 
     public static bool IsStrixLimitedRGB()
     {
-        return ContainsModel("G614JV") || ContainsModel("G614JZ") || ContainsModel("G512LI") || ContainsModel("G513RS") || ContainsModel("G513RM") || ContainsModel("G713PV") || ContainsModel("G513IE") || ContainsModel("G513QM");
+        return ContainsModel("G614JV") || ContainsModel("G614JZ") || ContainsModel("G512LI") || ContainsModel("G513R") || ContainsModel("G713PV") || ContainsModel("G513IE") || ContainsModel("G513QM") || ContainsModel("G713RC");
     }
 
     public static bool IsStrixNumpad()
@@ -386,7 +386,7 @@ public static class AppConfig
 
     public static bool NoAutoUltimate()
     {
-        return ContainsModel("G614") || ContainsModel("GU604") || ContainsModel("FX507") || ContainsModel("G513");
+        return ContainsModel("G614") || ContainsModel("GU604") || ContainsModel("FX507") || ContainsModel("G513") || ContainsModel("FA617");
     }
 
 
@@ -428,7 +428,7 @@ public static class AppConfig
 
     public static bool IsGPUFixNeeded()
     {
-        return ContainsModel("GA402X") || ContainsModel("GV302") || ContainsModel("GV301") || ContainsModel("GZ301") || ContainsModel("FX506") || ContainsModel("GU603V") ||  ContainsModel("GU603Z");
+        return ContainsModel("GA402X") || ContainsModel("GV302") || ContainsModel("GV301") || ContainsModel("GZ301") || ContainsModel("FX506") || ContainsModel("GU603") || ContainsModel("GU604") || ContainsModel("G614J");
     }
 
     public static bool IsGPUFix()
@@ -451,4 +451,8 @@ public static class AppConfig
         return ContainsModel("FA507");
     }
 
+    public static bool IsASUS()
+    {
+        return ContainsModel("ROG") || ContainsModel("TUF") || ContainsModel("Vivobook") || ContainsModel("Zenbook");
+    }
 }

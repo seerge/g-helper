@@ -55,10 +55,10 @@ namespace GHelper
             tableBios.AutoSize = true;
             tableBios.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             tableBios.ColumnCount = 4;
-            tableBios.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20F));
+            tableBios.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 23F));
             tableBios.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 40F));
             tableBios.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 15F));
-            tableBios.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
+            tableBios.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 22F));
             tableBios.Dock = DockStyle.Top;
             tableBios.Location = new Point(20, 20);
             tableBios.Margin = new Padding(4);
@@ -99,14 +99,14 @@ namespace GHelper
             panelBiosTitle.Location = new Point(0, 0);
             panelBiosTitle.Margin = new Padding(4);
             panelBiosTitle.Name = "panelBiosTitle";
-            panelBiosTitle.Size = new Size(1256, 62);
+            panelBiosTitle.Size = new Size(1294, 62);
             panelBiosTitle.TabIndex = 3;
             // 
             // labelUpdates
             // 
             labelUpdates.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             labelUpdates.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            labelUpdates.Location = new Point(810, 23);
+            labelUpdates.Location = new Point(848, 23);
             labelUpdates.Name = "labelUpdates";
             labelUpdates.Size = new Size(245, 32);
             labelUpdates.TabIndex = 4;
@@ -122,7 +122,7 @@ namespace GHelper
             buttonRefresh.FlatAppearance.BorderSize = 0;
             buttonRefresh.FlatStyle = FlatStyle.Flat;
             buttonRefresh.Image = Properties.Resources.icons8_refresh_32;
-            buttonRefresh.Location = new Point(1183, 14);
+            buttonRefresh.Location = new Point(1221, 14);
             buttonRefresh.Name = "buttonRefresh";
             buttonRefresh.Secondary = true;
             buttonRefresh.Size = new Size(52, 46);
@@ -138,7 +138,7 @@ namespace GHelper
             panelBios.Margin = new Padding(4);
             panelBios.Name = "panelBios";
             panelBios.Padding = new Padding(20);
-            panelBios.Size = new Size(1256, 40);
+            panelBios.Size = new Size(1294, 40);
             panelBios.TabIndex = 4;
             // 
             // panelDrivers
@@ -150,7 +150,7 @@ namespace GHelper
             panelDrivers.Margin = new Padding(4);
             panelDrivers.Name = "panelDrivers";
             panelDrivers.Padding = new Padding(20);
-            panelDrivers.Size = new Size(1256, 40);
+            panelDrivers.Size = new Size(1294, 40);
             panelDrivers.TabIndex = 6;
             // 
             // tableDrivers
@@ -158,10 +158,10 @@ namespace GHelper
             tableDrivers.AutoSize = true;
             tableDrivers.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             tableDrivers.ColumnCount = 4;
-            tableDrivers.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20F));
+            tableDrivers.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 23F));
             tableDrivers.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 40F));
             tableDrivers.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 15F));
-            tableDrivers.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
+            tableDrivers.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 22F));
             tableDrivers.Dock = DockStyle.Top;
             tableDrivers.Location = new Point(20, 20);
             tableDrivers.Margin = new Padding(4);
@@ -178,7 +178,7 @@ namespace GHelper
             panelDriversTitle.Location = new Point(0, 102);
             panelDriversTitle.Margin = new Padding(4);
             panelDriversTitle.Name = "panelDriversTitle";
-            panelDriversTitle.Size = new Size(1256, 44);
+            panelDriversTitle.Size = new Size(1294, 44);
             panelDriversTitle.TabIndex = 5;
             // 
             // labelDrivers
@@ -208,7 +208,7 @@ namespace GHelper
             AutoScaleDimensions = new SizeF(192F, 192F);
             AutoScaleMode = AutoScaleMode.Dpi;
             AutoScroll = true;
-            ClientSize = new Size(1256, 690);
+            ClientSize = new Size(1294, 690);
             Controls.Add(panelDrivers);
             Controls.Add(panelDriversTitle);
             Controls.Add(panelBios);

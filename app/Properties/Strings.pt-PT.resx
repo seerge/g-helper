@@ -123,6 +123,12 @@
   <data name="ACPIError" xml:space="preserve">
     <value>Não foi possível conectar ao ASUS ACPI. O programa não funciona sem esse serviço. Tente instalar Asus System Control Interface</value>
   </data>
+  <data name="AlertAPUMemoryRestart" xml:space="preserve">
+    <value>Restart your device to apply changes</value>
+  </data>
+  <data name="AlertAPUMemoryRestartTitle" xml:space="preserve">
+    <value>Restart now?</value>
+  </data>
   <data name="AlertDGPU" xml:space="preserve">
     <value>Parece que o GPU está em uso pesado, desativá-lo?</value>
   </data>
@@ -161,6 +167,9 @@
   </data>
   <data name="ApplyWindowsPowerPlan" xml:space="preserve">
     <value>Ajuste automático dos modos de energia do Windows</value>
+  </data>
+  <data name="APUMemory" xml:space="preserve">
+    <value>Memory Assigned to GPU</value>
   </data>
   <data name="AsusServicesRunning" xml:space="preserve">
     <value>Serviços da Asus em execução</value>
@@ -253,7 +262,7 @@
     <value>Estado da bateria</value>
   </data>
   <data name="BatteryLimitFull" xml:space="preserve">
-    <value>One time charge to 100%</value>
+    <value>Carregamento único até 100%</value>
   </data>
   <data name="BiosAndDriverUpdates" xml:space="preserve">
     <value>Atualizações de Drivers e da BIOS</value>
@@ -262,7 +271,7 @@
     <value>Ao ligar</value>
   </data>
   <data name="BootSound" xml:space="preserve">
-    <value>Boot Sound</value>
+    <value>Som de ligar</value>
   </data>
   <data name="Brightness" xml:space="preserve">
     <value>Nível do brilho</value>
@@ -274,7 +283,7 @@
     <value>Aumentar o brilho</value>
   </data>
   <data name="Calibrate" xml:space="preserve">
-    <value>Calibrate</value>
+    <value>Calibrar</value>
   </data>
   <data name="Charging" xml:space="preserve">
     <value>Carregando</value>
