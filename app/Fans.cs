@@ -793,7 +793,7 @@ namespace GHelper
             bool modeB0 = Program.acpi.IsAllAmdPPT();
             bool modeC1 = Program.acpi.DeviceGet(AsusACPI.PPT_APUC1) >= 0;
 
-            panelA0.Visible = modeA0;
+            panelA0.Visible = panelA3.Visible = modeA0;
             panelB0.Visible = modeB0;
 
             panelApplyPower.Visible = panelTitleCPU.Visible = modeA0 || modeB0 || modeC1;
