@@ -354,7 +354,7 @@ Voulez-vous continuer ?</value>
     <value>Profil du ventilateur central</value>
   </data>
   <data name="FanProfiles" xml:space="preserve">
-    <value>Profil</value>
+    <value>Profil des ventilateurs</value>
   </data>
   <data name="FansAndPower" xml:space="preserve">
     <value>Ventilateurs + Puissance</value>
@@ -399,7 +399,7 @@ Voulez-vous continuer ?</value>
     <value>Température cible</value>
   </data>
   <data name="HibernateAfter" xml:space="preserve">
-    <value>Minutes jusqu'à la mise en veille prolongée sur la batterie (0 - OFF)</value>
+    <value>Minutes avant mise en veille prolongée sur batterie (0 - OFF)</value>
   </data>
   <data name="High" xml:space="preserve">
     <value>Élevé</value>
