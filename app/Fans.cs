@@ -790,6 +790,7 @@ namespace GHelper
         {
 
             bool modeA0 = (Program.acpi.DeviceGet(AsusACPI.PPT_TotalA0) >= 0 || RyzenControl.IsAMD());
+            bool modeA3 = Program.acpi.DeviceGet(AsusACPI.PPT_APUA3) >= 0;
             bool modeB0 = Program.acpi.IsAllAmdPPT();
             bool modeC1 = Program.acpi.DeviceGet(AsusACPI.PPT_APUC1) >= 0;
 
@@ -815,6 +816,7 @@ namespace GHelper
                     labelLeftA3.Text = "CPU Slow (sPPT)";
                     labelLeftC1.Text = "CPU Fast (fPPT)";
                     panelC1.Visible = modeC1;
+                    panelA3.Visible = modeA3;
                 }
                 else
                 {
