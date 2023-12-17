@@ -599,7 +599,7 @@ namespace GHelper
             int Max = FanSensorControl.GetFanMax(device);
 
             if (fanRpm)
-                return (200 * Math.Round((float)(Min * 100 + (Max - Min) * percentage) / 200)).ToString() + unit;
+                return (200 * Math.Floor((float)(Min * 100 + (Max - Min) * percentage) / 200)).ToString() + unit;
             else
                 return percentage + "%";
         }
@@ -1146,7 +1146,7 @@ namespace GHelper
                         tip = true;
                     }
 
-                    labelTip.Text = Math.Round(curPoint.XValue) + "C, " + ChartYLabel((int)curPoint.YValues[0], device, " " + Properties.Strings.RPM);
+                    labelTip.Text = Math.Floor(curPoint.XValue) + "C, " + ChartYLabel((int)curPoint.YValues[0], device, " " + Properties.Strings.RPM);
                     labelTip.Top = e.Y + ((Control)sender).Top;
                     labelTip.Left = e.X - 50;
 
