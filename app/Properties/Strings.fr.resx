@@ -124,10 +124,10 @@
     <value>Connexion impossible avec ASUS ACPI. L'application ne peut fonctionner sans. Veuillez installer Asus System Control Interface</value>
   </data>
   <data name="AlertAPUMemoryRestart" xml:space="preserve">
-    <value>Restart your device to apply changes</value>
+    <value>Redémarrez votre appareil pour appliquer les modifications</value>
   </data>
   <data name="AlertAPUMemoryRestartTitle" xml:space="preserve">
-    <value>Restart now?</value>
+    <value>Redémarrer maintenant ?</value>
   </data>
   <data name="AlertDGPU" xml:space="preserve">
     <value>Le GPU semble être surchargé, voulez vous le désactiver ?</value>
@@ -169,7 +169,7 @@
     <value>Ajustement auto des modes de gestion alim. Windows</value>
   </data>
   <data name="APUMemory" xml:space="preserve">
-    <value>Memory Assigned to GPU</value>
+    <value>Mémoire attribuée au GPU</value>
   </data>
   <data name="AsusServicesRunning" xml:space="preserve">
     <value>Services Asus actifs</value>
@@ -247,7 +247,7 @@
     <value>Allumé</value>
   </data>
   <data name="BacklightTimeout" xml:space="preserve">
-    <value>Délai d'activation de la batterie (0 - ON)</value>
+    <value>Délai branché / sur batterie (0 - ON)</value>
   </data>
   <data name="Balanced" xml:space="preserve">
     <value>Équilibré</value>
