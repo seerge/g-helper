@@ -794,7 +794,7 @@ namespace GHelper
             bool modeB0 = Program.acpi.IsAllAmdPPT();
             bool modeC1 = Program.acpi.DeviceGet(AsusACPI.PPT_APUC1) >= 0;
 
-            panelA0.Visible = panelA3.Visible = modeA0;
+            panelA0.Visible = modeA0;
             panelB0.Visible = modeB0;
 
             panelApplyPower.Visible = panelTitleCPU.Visible = modeA0 || modeB0 || modeC1;
@@ -810,13 +810,15 @@ namespace GHelper
             }
             else
             {
+                panelA3.Visible = modeA3;
+
                 if (RyzenControl.IsAMD())
                 {
                     labelLeftA0.Text = "CPU Sustained (SPL)";
                     labelLeftA3.Text = "CPU Slow (sPPT)";
                     labelLeftC1.Text = "CPU Fast (fPPT)";
                     panelC1.Visible = modeC1;
-                    panelA3.Visible = modeA3;
+                    
                 }
                 else
                 {
