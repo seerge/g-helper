@@ -9,6 +9,7 @@ Small and lightweight Armoury Crate alternative for Asus laptops offering almost
 
 - Don't forget to [**Check Requirements**](#requirements-mandatory) and [**Read FAQ**](#question-faq)
 - If you like this app, please give it a star :star: and spread the word about it!
+- If you have general problems, you may check [**Troubleshooting section**](https://github.com/seerge/g-helper?tab=readme-ov-file#wrench-troubleshooting)
 
 #### Support project in [:euro: EUR](https://www.paypal.com/donate/?hosted_button_id=4HMSHS4EBQWTA)  |  [💵 USD](https://www.paypal.com/donate/?hosted_button_id=SRM6QUX6ACXDY) 
 
