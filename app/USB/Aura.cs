@@ -532,7 +532,7 @@ namespace GHelper.USB
                 return;
             }
 
-            if (isStrix && !isOldHeatmap)
+            if (isStrix)
             {
                 ApplyDirect(Enumerable.Repeat(color, AURA_ZONES).ToArray(), init);
                 return;
@@ -540,8 +540,18 @@ namespace GHelper.USB
 
             else
             {
-                AsusHid.WriteAura(AuraMessage(0, color, color, 0));
-                AsusHid.WriteAura(MESSAGE_SET);
+                if (init) AsusHid.WriteAura(new byte[] { AsusHid.AURA_ID, 0xbc });
+
+                byte[] buffer = new byte[64];
+                buffer[0] = AsusHid.AURA_ID;
+                buffer[1] = 0xbc;
+                buffer[2] = 1;
+                buffer[3] = 1;
+                buffer[9] = color.R;
+                buffer[10] = color.G;
+                buffer[11] = color.B;
+
+                AsusHid.WriteAura(buffer);
             }
 
         }
