@@ -7,6 +7,10 @@
         {
         }
 
+        public TUFM3(ushort productId, string path) : base(0x0B05, productId, path, false)
+        {
+        }
+
         public override int DPIProfileCount()
         {
             return 4;
@@ -107,6 +111,18 @@
                 || lightingMode == LightingMode.Breathing
                 || lightingMode == LightingMode.ColorCycle
                 || lightingMode == LightingMode.React;
+        }
+    }
+
+    public class TUFM3GenII : TUFM3
+    {
+        public TUFM3GenII() : base(0x1A9B, "mi_02")
+        {
+        }
+
+        public override string GetDisplayName()
+        {
+            return "TUF GAMING M3 (Gen II)";
         }
     }
 }
