@@ -182,8 +182,7 @@ Small and lightweight Armoury Crate alternative for Asus laptops offering almost
 -----------------------------
 ## :wrench: Troubleshooting
 
-_NOTE: This section is not related to G-Helper anyhow, but since people often come to this repository asking about general problems with their laptops I have listed the most frequent troubleshooting advice that I can give.
-_
+_NOTE: This section is not related to G-Helper anyhow, but since people often come to this repository asking about general problems with their laptops I have listed the most frequent troubleshooting advice that I can give._
 
 ### Hardware reset / CMOS reset
 All Asus laptops have an option to do a hardware reset that can be handy sometimes. It doesn't touch your data, but resets all main hardware-related things (enables your dGPU, wakes up wifi/bt adapter if it hangs for some reason, etc.). 
