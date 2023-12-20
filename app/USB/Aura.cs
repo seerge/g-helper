@@ -571,6 +571,8 @@ namespace GHelper.USB
 
             timer.Enabled = false;
 
+            Logger.WriteLine($"AuraMode: {Mode}");
+
             if (Mode == AuraMode.HEATMAP)
             {
                 CustomRGB.ApplyHeatmap(true);
@@ -678,7 +680,7 @@ namespace GHelper.USB
                 screen_low.Dispose();
                 screeb_pxl.Dispose();
 
-                bool is_fresh = false;
+                bool is_fresh = init;
 
                 for (int i = 0; i < zones; i++)
                 {
