@@ -468,6 +468,7 @@ namespace GHelper.USB
             {
                 Init();
                 AsusHid.WriteAura(new byte[] { AsusHid.AURA_ID, 0xbc });
+                AsusHid.WriteAura(MESSAGE_APPLY);
             }
 
             Array.Clear(keyBuf, 0, keyBuf.Length);
@@ -537,10 +538,14 @@ namespace GHelper.USB
                 ApplyDirect(Enumerable.Repeat(color, AURA_ZONES).ToArray(), init);
                 return;
             }
-
             else
             {
-                if (init) AsusHid.WriteAura(new byte[] { AsusHid.AURA_ID, 0xbc });
+                if (init)
+                {
+                    Init();
+                    AsusHid.WriteAura(new byte[] { AsusHid.AURA_ID, 0xbc });
+                    AsusHid.WriteAura(MESSAGE_APPLY);
+                }
 
                 byte[] buffer = new byte[64];
                 buffer[0] = AsusHid.AURA_ID;
