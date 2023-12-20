@@ -248,8 +248,8 @@ namespace GHelper.USB
 
         public static void Init()
         {
-            Task.Run(async () =>
-            {
+            //Task.Run(async () =>
+            //{
                 AsusHid.Write(new List<byte[]> {
                     new byte[] { AsusHid.AURA_ID, 0xb9 },
                     Encoding.ASCII.GetBytes("]ASUS Tech.Inc."),
@@ -257,7 +257,7 @@ namespace GHelper.USB
                     //Encoding.ASCII.GetBytes("^ASUS Tech.Inc."),
                     //new byte[] { 0x5e, 0x05, 0x20, 0x31, 0, 0x1a }
                 });
-            });
+            //});
         }
 
 
