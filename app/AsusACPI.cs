@@ -37,6 +37,7 @@ public class AsusACPI
 
     public const uint UniversalControl = 0x00100021;
 
+    public const int Airplane = 0x88;
     public const int KB_Light_Up = 0xc4;
     public const int KB_Light_Down = 0xc5;
     public const int Brightness_Down = 0x10;
