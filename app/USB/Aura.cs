@@ -605,18 +605,23 @@ namespace GHelper.USB
             {
                 if ((AuraMode)AppConfig.Get("aura_mode") != AuraMode.GPUMODE) return;
 
+                Color color;
+
                 switch (GPUModeControl.gpuMode)
                 {
                     case AsusACPI.GPUModeUltimate:
-                        ApplyDirect(Color.Red, true);
+                        color = Color.Red;
                         break;
                     case AsusACPI.GPUModeEco:
-                        ApplyDirect(Color.Green, true);
+                        color = Color.Green;
                         break;
                     default:
-                        ApplyDirect(Color.Yellow, true);
+                        color = Color.Yellow;
                         break;
                 }
+
+                AsusHid.Write(new List<byte[]> { AuraMessage(AuraMode.AuraStatic, color, color, 0xeb, isSingleColor), MESSAGE_APPLY, MESSAGE_SET });
+
             }
 
             public static void ApplyHeatmap(bool init = false)
