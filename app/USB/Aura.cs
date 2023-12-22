@@ -465,7 +465,6 @@ namespace GHelper.USB
             {
                 Init();
                 AsusHid.WriteAura(new byte[] { AsusHid.AURA_ID, 0xbc });
-                AsusHid.WriteAura(MESSAGE_APPLY);
             }
 
             Array.Clear(keyBuf, 0, keyBuf.Length);
@@ -521,7 +520,7 @@ namespace GHelper.USB
         }
 
 
-        public static void ApplyColor(Color color, bool init = false)
+        public static void ApplyDirect(Color color, bool init = false)
         {
 
             if (isACPI)
@@ -535,26 +534,23 @@ namespace GHelper.USB
                 ApplyDirect(Enumerable.Repeat(color, AURA_ZONES).ToArray(), init);
                 return;
             }
-            else
+
+            if (init)
             {
-                if (init)
-                {
-                    Init();
-                    AsusHid.WriteAura(new byte[] { AsusHid.AURA_ID, 0xbc });
-                    AsusHid.WriteAura(MESSAGE_APPLY);
-                }
-
-                byte[] buffer = new byte[64];
-                buffer[0] = AsusHid.AURA_ID;
-                buffer[1] = 0xbc;
-                buffer[2] = 1;
-                buffer[3] = 1;
-                buffer[9] = color.R;
-                buffer[10] = color.G;
-                buffer[11] = color.B;
-
-                AsusHid.WriteAura(buffer);
+                Init();
+                AsusHid.WriteAura(new byte[] { AsusHid.AURA_ID, 0xbc, 1 });
             }
+
+            byte[] buffer = new byte[64];
+            buffer[0] = AsusHid.AURA_ID;
+            buffer[1] = 0xbc;
+            buffer[2] = 1;
+            buffer[3] = 1;
+            buffer[9] = color.R;
+            buffer[10] = color.G;
+            buffer[11] = color.B;
+
+            AsusHid.WriteAura(buffer);
 
         }
 
@@ -582,7 +578,7 @@ namespace GHelper.USB
             {
                 CustomRGB.ApplyAmbient(true);
                 timer.Enabled = true;
-                timer.Interval = 100;
+                timer.Interval = 120;
                 return;
             }
 
@@ -612,13 +608,13 @@ namespace GHelper.USB
                 switch (GPUModeControl.gpuMode)
                 {
                     case AsusACPI.GPUModeUltimate:
-                        ApplyColor(Color.Red, true);
+                        ApplyDirect(Color.Red, true);
                         break;
                     case AsusACPI.GPUModeEco:
-                        ApplyColor(Color.Green, true);
+                        ApplyDirect(Color.Green, true);
                         break;
                     default:
-                        ApplyColor(Color.Yellow, true);
+                        ApplyDirect(Color.Yellow, true);
                         break;
                 }
             }
@@ -636,7 +632,7 @@ namespace GHelper.USB
                 else if (cpuTemp < hot) color = ColorUtils.GetWeightedAverage(Color.Yellow, Color.Red, ((float)cpuTemp - warm) / (hot - warm));
                 else color = Color.Red;
 
-                ApplyColor(color, init);
+                ApplyDirect(color, init);
             }
 
 
@@ -688,7 +684,7 @@ namespace GHelper.USB
                 if (is_fresh)
                 {
                     if (isStrix) ApplyDirect(AmbientData.result, init);
-                    else ApplyColor(AmbientData.result[0], init);
+                    else ApplyDirect(AmbientData.result[0], init);
                 }
 
             }
