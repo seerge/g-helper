@@ -322,7 +322,7 @@
     <value>Éco</value>
   </data>
   <data name="EnableOptimusText" xml:space="preserve">
-    <value>Désactiver la dGPU en passant au mode Eco pendant que le mode d'affichage dans le panneau de configuration NVIDIA n'est pas réglé sur Optimus peut causer des problèmes avec les commandes de luminosité jusqu'au prochain redémarrage.
+    <value>Désactiver le dGPU en passant au mode Eco pendant que le mode d'affichage dans le panneau de configuration NVIDIA n'est pas réglé sur Optimus peut causer des problèmes avec les commandes de luminosité jusqu'au prochain redémarrage.
 
 Voulez-vous continuer ?</value>
   </data>
