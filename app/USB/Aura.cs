@@ -84,8 +84,6 @@ namespace GHelper.USB
 
         static public bool isSingleColor = false;
 
-        static bool isOldHeatmap = AppConfig.Is("old_heatmap");
-
         static System.Timers.Timer timer = new System.Timers.Timer(1000);
 
         private static Dictionary<AuraMode, string> _modesSingleColor = new Dictionary<AuraMode, string>
@@ -543,11 +541,11 @@ namespace GHelper.USB
 
             if (init)
             {
-                Init();
+                //Init();
                 AsusHid.WriteAura(new byte[] { AsusHid.AURA_ID, 0xbc, 1 });
             }
 
-            byte[] buffer = new byte[64];
+            byte[] buffer = new byte[12];
             buffer[0] = AsusHid.AURA_ID;
             buffer[1] = 0xbc;
             buffer[2] = 1;
