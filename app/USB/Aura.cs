@@ -254,7 +254,7 @@ namespace GHelper.USB
                 new byte[] { AsusHid.AURA_ID, 0x05, 0x20, 0x31, 0, 0x1a },
                 //Encoding.ASCII.GetBytes("^ASUS Tech.Inc."),
                 //new byte[] { 0x5e, 0x05, 0x20, 0x31, 0, 0x1a }
-            });
+            }, "Init");
         }
 
 
@@ -532,6 +532,12 @@ namespace GHelper.USB
             if (isStrix)
             {
                 ApplyDirect(Enumerable.Repeat(color, AURA_ZONES).ToArray(), init);
+                return;
+            }
+
+            if (AppConfig.ContainsModel("GA503"))
+            {
+                AsusHid.Write(new List<byte[]> { AuraMessage(AuraMode.AuraStatic, color, color, 0xeb, isSingleColor), MESSAGE_SET });
                 return;
             }
 
