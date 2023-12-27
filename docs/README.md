@@ -190,14 +190,22 @@ All Asus laptops have an option to do a hardware reset that can be handy sometim
 Turn OFF laptop. Press and hold the "power" button for 30-40 seconds. Then boot normally (it will take a bit longer to boot)
 
 ### Resetting windows power plan to defaults
-Copy and paste the command below into Windows Terminal, and press Enter. 
+Copy and paste the command below into Windows Terminal or Powershell, and press Enter. 
 ```
 powercfg -restoredefaultschemes​
 ```
+
 ### Reinstalling GPU drivers
 - For AMD devices (including ones who use integrated graphics) you can use [AMD official cleanup utility](https://www.amd.com/en/support/kb/faq/gpu-601) to completely uninstall existing drivers from safe mode. After that you can download and install latest official drivers from [AMD website](https://www.amd.com/en/support)
 
 - For NVidia / Intel devices you can use the [Display Driver Uninstaller](https://www.guru3d.com/download/display-driver-uninstaller-download/) app to completely uninstall existing drivers. After that you can download and install latest official drivers from [Nvidia website](https://www.nvidia.com/download/index.aspx)
+
+### Repair corrupted system fails
+Run following commands in Windows Terminal or Powershell
+```
+DISM.exe /Online /Cleanup-image /Restorehealth
+sfc /scannow
+```
 
 ## :euro: [Support Project](https://www.paypal.com/donate/?hosted_button_id=4HMSHS4EBQWTA)
 #### If you like the app you can make a Donation 
