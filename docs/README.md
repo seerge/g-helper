@@ -19,6 +19,7 @@ Works with all popular models, such as ROG Zephyrus G14, G15, G16, M16, Flow X13
 
 ## :loudspeaker: YouTube Reviews and Guides
 [![Youtube review Josh Cravey](https://i.ytimg.com/vi/hqe-PjuE-K8/hqdefault.jpg)](https://youtu.be/hqe-PjuE-K8?si=YJKJmkKHOIMYJeGE)
+[![Youtube review cbutters Tech](https://i.ytimg.com/vi/6aVdwJKZSSc/hqdefault.jpg)](https://www.youtube.com/watch?v=6aVdwJKZSSc)
 
 ## :gift: Advantages 
 
