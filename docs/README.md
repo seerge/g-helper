@@ -189,7 +189,7 @@ Small and lightweight Armoury Crate alternative for Asus laptops offering almost
 
 ### Requirements (mandatory)
 
-- [Microsoft .NET 7](https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/sdk-7.0.404-windows-x64-installer)
+- [Microsoft .NET 7](https://dotnet.microsoft.com/en-us/download/dotnet/7.0)
 - [Asus System Control Interface](https://dlcdnets.asus.com/pub/ASUS/nb/Image/CustomComponent/ASUSSystemControlInterfaceV3/ASUSSystemControlInterfaceV3.exe)
 
 ### Recommendations (optional)
