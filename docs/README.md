@@ -3,19 +3,18 @@
 [![GitHub release](https://img.shields.io/github/release/seerge/g-helper.svg?style=flat-square)](https://GitHub.com/seerge/g-helper/releases/) 
 [![Github all releases](https://img.shields.io/github/downloads/seerge/g-helper/total.svg?style=flat-square)](https://GitHub.com/seerge/g-helper/releases/) [![GitHub stars](https://img.shields.io/github/stars/seerge/g-helper.svg?style=social)](https://GitHub.com/seerge/g-helper/stargazers/) <sup>  Language: English | <a href="https://github.com/seerge/g-helper/blob/main/docs/README.zh-CN.md">[中文]</a></sup>
 
-Small and lightweight Armoury Crate alternative for Asus laptops offering almost same functionality without extra bloat and unnecessary services. Works on all popular models, such as ROG Zephyrus G14, G15, G16, M16, Flow X13, Flow X16, Flow Z13, TUF Series, Strix / Scar Series, ProArt, VivoBook and many more! 
+Small and lightweight Armoury Crate alternative for Asus laptops offering almost same functionality without extra bloat and unnecessary services. 
+Works on all popular models, such as ROG Zephyrus G14, G15, G16, M16, Flow X13, Flow X16, Flow Z13, TUF Series, Strix / Scar Series, ProArt, VivoBook and many more! 
 
-# [:floppy_disk:Download](https://github.com/seerge/g-helper/releases/latest/download/GHelper.zip)
+# [:floppy_disk: Download](https://github.com/seerge/g-helper/releases/latest/download/GHelper.zip)
 
-- Don't forget to [**Check Requirements**](#requirements-mandatory) and [**Read FAQ**](#question-faq)
-- If you have general problems, you may check [**Troubleshooting section**](https://github.com/seerge/g-helper?tab=readme-ov-file#wrench-troubleshooting)
-- If you like this app, please give it a star :star: and spread the word about it!
+[**Requirements**](#requirements-mandatory) | [**FAQ**](#question-faq) | [**Windows Troubleshooting**](https://github.com/seerge/g-helper?tab=readme-ov-file#wrench-troubleshooting) | [**Power User Settings**](https://github.com/seerge/g-helper/wiki/Power-user-settings)
 
-#### Support project in [:euro: EUR](https://www.paypal.com/donate/?hosted_button_id=4HMSHS4EBQWTA)  |  [💵 USD](https://www.paypal.com/donate/?hosted_button_id=SRM6QUX6ACXDY) 
+#### Support project in [:euro: EUR](https://www.paypal.com/donate/?hosted_button_id=4HMSHS4EBQWTA)  or  [💵 USD](https://www.paypal.com/donate/?hosted_button_id=SRM6QUX6ACXDY) 
 
 ![Gihhub](https://github.com/seerge/g-helper/assets/5920850/4d98465a-63a5-4498-ae14-afb3e67e7e82)
 
-## :gift: Main Advantages 
+## :gift: Advantages 
 
 1. Seamless and automatic GPU switching
 2. All performance modes can be fully customized with power limits and fan curves
@@ -43,7 +42,7 @@ Small and lightweight Armoury Crate alternative for Asus laptops offering almost
 14. Asus Mice settings
 15. Mini-led multi-zone switch
 
-### :gear: Automatic switching when on battery or plugged in
+### :gear: Automation
 - Performance Mode switching when on battery or plugged in
 - Optimized GPU mode - disables dGPU on battery and enables when plugged in
 - Auto Screen refresh rate (60Hz on battery and max Hz when plugged)
@@ -206,17 +205,9 @@ Run following commands in Windows Terminal or Powershell
 DISM.exe /Online /Cleanup-image /Restorehealth
 sfc /scannow
 ```
-
-## :euro: [Support Project](https://www.paypal.com/donate/?hosted_button_id=4HMSHS4EBQWTA)
-#### If you like the app you can make a Donation 
-
-| [Paypal in EUR](https://www.paypal.com/donate/?hosted_button_id=4HMSHS4EBQWTA) | [Paypal in USD](https://www.paypal.com/donate/?hosted_button_id=SRM6QUX6ACXDY) |
-| ------------------------------------------ | ----------------------------------------------- |
-| [![QR Code](https://user-images.githubusercontent.com/5920850/233658717-0441494d-fede-4a2c-b4f2-4b16a184a69a.png)](https://www.paypal.com/donate/?hosted_button_id=4HMSHS4EBQWTA) | [![QR Code](https://github-production-user-asset-6210df.s3.amazonaws.com/5920850/239492811-b487e89a-3df6-42ea-bdb8-24c455ab2310.png)](https://www.paypal.com/donate/?hosted_button_id=SRM6QUX6ACXDY) |
-
 ----------------
 
-### How to run
+### How to Start
 
 1. Download [**latest release**](https://github.com/seerge/g-helper/releases/latest/download/GHelper.zip)
 2. Unzip to a folder of your choice _(don't run exe from zip directly, as windows will put it into temp folder and delete after)_
@@ -239,145 +230,11 @@ sfc /scannow
 - It is **strongly recommended** to run app with windows default "balanced" power plan
 ![Screenshot 2023-06-09 153453](https://github.com/seerge/g-helper/assets/5920850/d1d05c53-a0bd-4207-b23a-244653f3e7df)
 
--------------------------------
 
-## Notice for G14 2023 users who complain about not being able to set Eco mode
-
-This is a known issue with the Nvidia Drivers / Windows that occurs if you shutdown or restart a system with dGPU disabled (Eco mode). This situation can happen for **BOTH Armoury Crate and G-Helper** (as it doesn't depend on them in a first place)  
-
-Scenario to reproduce (for both AC / GH):
-1. Set Eco mode and shutdown / start or reboot your computer
-2. After booting in Eco set Standard -> ``brightness controls won't work``
-3. Try to set Eco mode -> ``it won't work``
-4. G-Helper would offer you to restart GPU in Device Manager, after that you will be able to set Eco, AC won't be able to do anything
-
-To prevent this from happening, G-Helper by default would try to enable dGPU before shutdown / restart. 
-If you want to turn this feature off uncheck ``Extra`` -> ``Enable GPU on shutdown (prevents issue with Eco mode)``
-
--------------------------------
-
+------------------
 I don't have a Microsoft certificate to sign the app yet, so if you get a warning from Windows Defender on launch (Windows Protected your PC), click More Info -> Run anyway. 
 
 ------------------
-
-## Power user settings
-
-GENERAL NOTE: "Power user" settings require editing config located at ``%AppData%\GHelper\config.json``. 
-
-- Quit G-Helper
-- Make your changes / additions co ``config.json``
-- Start G-Helper again
-
-_Make sure to keep json structure (i.e. not to break it with extra or missing commas, etc.) or the app will fail to read it and will just recreate an empty config instead._
-
-### Manual app language setting
-
-By default the app will use your windows language setting. But you can set language manually (if it supported of course)
-
-```
-"language" : "en",
-``` 
-(by replacing "en" with language of your choice)
-
-### Custom windows power plans with each mode
-
-You can manually assign a custom power plan GUID to each mode. 
-
-Format is following : ``"scheme_<mode>" : "GUID" ``
-Where ``mode = 0 (balanced), 1 (turbo), 2 (silent)``
-
-Example (for default windows "balanced" power plan):
-```
-"scheme_0": "381b4222-f694-41f0-9685-ff5bb260df2e",
-"scheme_1": "381b4222-f694-41f0-9685-ff5bb260df2e",
-"scheme_2": "381b4222-f694-41f0-9685-ff5bb260df2e",
-```
-
-### Alternative Activation for XG Mobile 6850XT
-If you experience a situation when your XG Mobile doesn't work on full power when Activated. It's possible it needs an "alternative" command to get activated. 
-To turn it on, add following line to config :
-```
-"xgm_special" : 1,
-```
-
-### Override UI theme
-
-By default the app would set the UI theme from the "app" theme in Windows setting. You can override it to specific theme, or general windows theme
-
-```
-"ui_mode" : "dark",
-"ui_mode" : "light",
-"ui_mode" : "windows",
-```
-
-### Skip keyboard Aura initialisation on startup
-By default the app would set the last remembered RGB mode for the keyboard on each launch. To disable it completely 
-
-```
-"skip_aura" : 1,
-````
-
-### Disable OSD
-Disable app's OSD (for performance modes, keyboard backlight, etc.) 
-```
-"disable_osd": 1,
-```
-
-### Disable "Tablet mode" on X13/X16
-To disable automatic touchpad toggling when laptop enters / leaves tablet mode
-```
-"disable_tablet": 1,
-```
-
-### Extra Keybindings 
-- ``Ctrl + Shift + F5`` / ``Ctrl + Shift + Alt + F5``  - Toggle Performance Modes
-- ``Ctrl + Shift + F12`` - Open G-Helper window 
-- ``Ctrl + M1 / M2`` - Screen brightness Down / Up
-- ``Shift + M1 / M2`` - Backlight brightness Down / Up
-
-If you don't want this bindings to work you can add 
-```
-"skip_hotkeys":1,
-``` 
-
-### Toggle Performance Mode or Toggle App Window key binding
-
-To change binding for Toggle Performance Modes forward / backward to ``Ctrl + Shift + KEY`` / ``Ctrl + Shift + Alt + KEY``
-```
-"keybind_profile": 116,
-``` 
-
-To change binding for Toggle App Window  to ``Ctrl + Shift + KEY``
-```
-"keybind_app": 123,
-``` 
-
-Where 116 is [numerical code for desired key](https://www.oreilly.com/library/view/javascript-dhtml/9780596514082/apb.html). Put 0 to completely disable this binding.
-
-
-### Higher Maximum GPU Clock / Memory Offsets
-
-By default under the GPU section you can set up to +250/+250 for Core and Memory Clock Offset. To increase this value:
-```
-  "max_gpu_core": 300,
-  "max_gpu_memory": 1500,
-```
-
-### Custom hotkey actions
-
-Select ``Custom`` next to appropriate hotkey under ``Extra`` settings and do one of the following:
-
-1. To run any custom application - put a full path to exe into "action" text field, for example:
-``C:\Program Files\EA Games\Battlefield 2042\BF2042.exe``
-
-2. To simulate any windows key or key-combination - put appropriate keycode(s) into the "action" field separated by space.
-For example ``0x2C`` for ``Print Screen`` or ``0x11 0xA0 0x31`` for ``Ctrl+Shift+1``
-
-Full list of keycodes https://learn.microsoft.com/en-us/windows/win32/inputdev/virtual-key-codes
-
-![Screenshot 2023-07-17 192155](https://github.com/seerge/g-helper/assets/5920850/e450e124-1589-4787-bce8-7c37ffe72fbd)
-
-------------
 
 **Libraries and projects used**
 - [Linux Kernel](https://github.com/torvalds/linux/blob/master/drivers/platform/x86/asus-wmi.c) for some basic endpoints in ASUS ACPI/WMI interface
