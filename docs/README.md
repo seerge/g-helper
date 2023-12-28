@@ -18,8 +18,8 @@ Works with all popular models, such as ROG Zephyrus G14, G15, G16, M16, Flow X13
 [![G-Helper Download](https://github.com/seerge/g-helper/assets/5920850/4d98465a-63a5-4498-ae14-afb3e67e7e82)](https://github.com/seerge/g-helper/releases/latest/download/GHelper.zip)
 
 ## :loudspeaker: YouTube Reviews and Guides
-[![Youtube review Josh Cravey](https://i.ytimg.com/vi/hqe-PjuE-K8/hqdefault.jpg)](https://youtu.be/hqe-PjuE-K8?si=YJKJmkKHOIMYJeGE)
-[![Youtube review cbutters Tech](https://i.ytimg.com/vi/6aVdwJKZSSc/hqdefault.jpg)](https://www.youtube.com/watch?v=6aVdwJKZSSc)
+| [![Youtube review Josh Cravey](https://i.ytimg.com/vi/hqe-PjuE-K8/hqdefault.jpg)](https://youtu.be/hqe-PjuE-K8?si=YJKJmkKHOIMYJeGE) | [![Youtube review cbutters Tech](https://i.ytimg.com/vi/6aVdwJKZSSc/hqdefault.jpg)](https://www.youtube.com/watch?v=6aVdwJKZSSc) |
+| ----------------- | ---------------- | 
 
 ## :gift: Advantages 
 
