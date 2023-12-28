@@ -8,7 +8,7 @@ Works on all popular models, such as ROG Zephyrus G14, G15, G16, M16, Flow X13, 
 
 # [:floppy_disk: Download](https://github.com/seerge/g-helper/releases/latest/download/GHelper.zip)
 
- [**FAQ**](#question-faq) | [**Requirements**](#requirements-mandatory) | [**Troubleshooting**](https://github.com/seerge/g-helper/wiki/Troubleshooting) | [**Power User Settings**](https://github.com/seerge/g-helper/wiki/Power-user-settings)
+ [**FAQ**](#question-faq) | [**Requirements**](https://github.com/seerge/g-helper/wiki/Requirements) | [**Troubleshooting**](https://github.com/seerge/g-helper/wiki/Troubleshooting) | [**Power User Settings**](https://github.com/seerge/g-helper/wiki/Power-user-settings)
 
 #### Support project in [:euro: EUR](https://www.paypal.com/donate/?hosted_button_id=4HMSHS4EBQWTA)  or  [💵 USD](https://www.paypal.com/donate/?hosted_button_id=SRM6QUX6ACXDY) 
 
