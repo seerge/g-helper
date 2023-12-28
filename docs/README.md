@@ -90,6 +90,7 @@ Each BIOS mode is paired with matching Windows Power Mode. You can adjust this s
 - ROG Strix Impact II Wireless
 - TUF Gaming M4 Wireless (P306)
 - TUF Gaming M3
+- TUF Gaming M3 Gen II
 
 Huge thanks to [@IceStormNG](https://github.com/IceStormNG) 👑 for contribution and research (!).
 
