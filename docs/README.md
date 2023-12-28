@@ -8,7 +8,7 @@ Works on all popular models, such as ROG Zephyrus G14, G15, G16, M16, Flow X13, 
 
 # [:floppy_disk: Download](https://github.com/seerge/g-helper/releases/latest/download/GHelper.zip)
 
-[**Requirements**](#requirements-mandatory) | [**FAQ**](#question-faq) | [**Windows Troubleshooting**](https://github.com/seerge/g-helper?tab=readme-ov-file#wrench-troubleshooting) | [**Power User Settings**](https://github.com/seerge/g-helper/wiki/Power-user-settings)
+ [**FAQ**](#question-faq) | [**Requirements**](#requirements-mandatory) | [**Troubleshooting**](https://github.com/seerge/g-helper/wiki/Troubleshooting) | [**Power User Settings**](https://github.com/seerge/g-helper/wiki/Power-user-settings)
 
 #### Support project in [:euro: EUR](https://www.paypal.com/donate/?hosted_button_id=4HMSHS4EBQWTA)  or  [💵 USD](https://www.paypal.com/donate/?hosted_button_id=SRM6QUX6ACXDY) 
 
@@ -179,33 +179,7 @@ Turn OFF laptop. Press and hold the "power" button for 30-40 seconds. Then boot 
 #### What is G-helper ?
 Small and lightweight Armoury Crate alternative for Asus laptops offering almost same functionality without extra bloat and unnecessary services. Works on ROG G14, G15, G16, M16, X13, Z13, X16, TUF, Scar, Vivobook, ProArt and all other popular models.
 
------------------------------
-## :wrench: Troubleshooting
-
-_NOTE: This section is not related to G-Helper anyhow, but since people often come to this repository asking about general problems with their laptops I have listed the most frequent troubleshooting advice that I can give._
-
-### Hardware reset / CMOS reset
-All Asus laptops have an option to do a hardware reset that can be handy sometimes. It doesn't touch your data, but resets all main hardware-related things (enables your dGPU, wakes up wifi/bt adapter if it hangs for some reason, etc.). 
-Turn OFF laptop. Press and hold the "power" button for 30-40 seconds. Then boot normally (it will take a bit longer to boot)
-
-### Resetting windows power plan to defaults
-Copy and paste the command below into Windows Terminal or Powershell, and press Enter. 
-```
-powercfg -restoredefaultschemes​
-```
-
-### Reinstalling GPU drivers
-- For AMD devices (including ones who use integrated graphics) you can use [AMD official cleanup utility](https://www.amd.com/en/support/kb/faq/gpu-601) to completely uninstall existing drivers from safe mode. After that you can download and install latest official drivers from [AMD website](https://www.amd.com/en/support)
-
-- For NVidia / Intel devices you can use the [Display Driver Uninstaller](https://www.guru3d.com/download/display-driver-uninstaller-download/) app to completely uninstall existing drivers. After that you can download and install latest official drivers from [Nvidia website](https://www.nvidia.com/download/index.aspx)
-
-### Repair corrupted system fails
-Run following commands in Windows Terminal or Powershell
-```
-DISM.exe /Online /Cleanup-image /Restorehealth
-sfc /scannow
-```
-----------------
+---------
 
 ### How to Start
 
@@ -215,9 +189,8 @@ sfc /scannow
 
 ### Requirements (mandatory)
 
-- [Microsoft .NET7](https://dotnet.microsoft.com/en-us/download). Most probably you already have it. Otherwise [download it](https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/sdk-7.0.202-windows-x64-installer) from the official website.
-
-- [Asus System Control Interface v3+](https://dlcdnets.asus.com/pub/ASUS/nb/Image/CustomComponent/ASUSSystemControlInterfaceV3/ASUSSystemControlInterfaceV3.exe). This "driver" from asus should be installed automatically by windows update or along other asus apps. If it's not the case for some reason - you can download and install it manually.
+- [Microsoft .NET 7](https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/sdk-7.0.404-windows-x64-installer)
+- [Asus System Control Interface](https://dlcdnets.asus.com/pub/ASUS/nb/Image/CustomComponent/ASUSSystemControlInterfaceV3/ASUSSystemControlInterfaceV3.exe)
 
 ### Recommendations (optional)
 
