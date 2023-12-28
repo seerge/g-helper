@@ -9,7 +9,7 @@ Works with all popular models, such as ROG Zephyrus G14, G15, G16, M16, Flow X13
 # [:floppy_disk:Download](https://github.com/seerge/g-helper/releases/latest/download/GHelper.zip) 
 
 - [FAQ](https://github.com/seerge/g-helper/wiki/FAQ)
-- [Requirements](https://github.com/seerge/g-helper/wiki/Requirements)
+- [Setup and Requirements](https://github.com/seerge/g-helper/wiki/Requirements)
 - [Troubleshooting](https://github.com/seerge/g-helper/wiki/Troubleshooting)
 - [Power User Settings](https://github.com/seerge/g-helper/wiki/Power-user-settings)
 
