@@ -93,8 +93,21 @@ Each BIOS mode is paired with matching Windows Power Mode. You can adjust this s
 
 Huge thanks to [@IceStormNG](https://github.com/IceStormNG) 👑 for contribution and research (!).
 
+### ⌨️ Keybindings
+
+- ``Fn + F5 / Fn + Shift + F5`` - Toggle Performance Modes forwards / backwards
+- ``Ctrl + Shift + F5 / Ctrl + Shift + Alt + F5`` - Toggle Performance Modes forwards / backwards
+- ``Ctrl + Shift + F12`` - Open G-Helper window
+- ``Ctrl + M1 / M2`` - Screen brightness Down / Up
+- ``Shift + M1 / M2`` - Backlight brightness Down / Up
+- ``Fn + C`` - Fn-Lock
+- ``Fn + Shift + F7 / F8`` - Matrix brightness Down / Up
+- ``Ctrl + Shift + F20`` - Mute Microphone
+- ``Ctrl + Shift + Alt + F14`` - Eco Mode
+- ``Ctrl + Shift + Alt + F15`` - Standard Mode
+
 ------------------
-I don't have a Microsoft certificate to sign the app yet, so if you get a warning from Windows Defender on launch (Windows Protected your PC), click More Info -> Run anyway. 
+I don't have a Microsoft certificate to sign the app yet, so if you get a warning from Windows Defender on launch (Windows Protected your PC), click ``More Info`` -> ``Run anyway``. 
 
 ------------------
 #### If you like the app you can make a Donation 
