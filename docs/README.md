@@ -6,16 +6,21 @@
 Small and lightweight Armoury Crate alternative for Asus laptops offering almost same functionality without extra bloat and unnecessary services. 
 Works with all popular models, such as ROG Zephyrus G14, G15, G16, M16, Flow X13, Flow X16, Flow Z13, TUF Series, Strix / Scar Series, ProArt, VivoBook and many more! 
 
-## [:floppy_disk: Download](https://github.com/seerge/g-helper/releases/latest/download/GHelper.zip) 
+# [:floppy_disk:Download](https://github.com/seerge/g-helper/releases/latest/download/GHelper.zip) 
 
 - [FAQ](https://github.com/seerge/g-helper/wiki/FAQ)
-- [Requirements](https://github.com/seerge/g-helper/wiki/Requirements)
+- [Setup and Requirements](https://github.com/seerge/g-helper/wiki/Requirements)
 - [Troubleshooting](https://github.com/seerge/g-helper/wiki/Troubleshooting)
 - [Power User Settings](https://github.com/seerge/g-helper/wiki/Power-user-settings)
 
 ### Support project in [:euro: EUR](https://www.paypal.com/donate/?hosted_button_id=4HMSHS4EBQWTA) or [💵 USD](https://www.paypal.com/donate/?hosted_button_id=SRM6QUX6ACXDY) 
 
-![Gihhub](https://github.com/seerge/g-helper/assets/5920850/4d98465a-63a5-4498-ae14-afb3e67e7e82)
+[![G-Helper Download](https://github.com/seerge/g-helper/assets/5920850/4d98465a-63a5-4498-ae14-afb3e67e7e82)](https://github.com/seerge/g-helper/releases/latest/download/GHelper.zip)
+
+## :loudspeaker: YouTube Reviews and Guides
+| [![Youtube review Josh Cravey](https://i.ytimg.com/vi/hqe-PjuE-K8/hqdefault.jpg)](https://www.youtube.com/watch?v=hqe-PjuE-K8) | [![Youtube review cbutters Tech](https://i.ytimg.com/vi/6aVdwJKZSSc/hqdefault.jpg)](https://www.youtube.com/watch?v=6aVdwJKZSSc) |
+| ----------------- | ---------------- | 
+| [Josh Cravey](https://www.youtube.com/watch?v=hqe-PjuE-K8) | [cbutters Tech](https://www.youtube.com/watch?v=6aVdwJKZSSc) | 
 
 ## :gift: Advantages 
 
@@ -90,11 +95,26 @@ Each BIOS mode is paired with matching Windows Power Mode. You can adjust this s
 - ROG Strix Impact II Wireless
 - TUF Gaming M4 Wireless (P306)
 - TUF Gaming M3
+- TUF Gaming M3 Gen II
 
 Huge thanks to [@IceStormNG](https://github.com/IceStormNG) 👑 for contribution and research (!).
 
+### ⌨️ Keybindings
+
+- ``Fn + F5 / Fn + Shift + F5`` - Toggle Performance Modes forwards / backwards
+- ``Ctrl + Shift + F5 / Ctrl + Shift + Alt + F5`` - Toggle Performance Modes forwards / backwards
+- ``Ctrl + Shift + F12`` - Open G-Helper window
+- ``Ctrl + M1 / M2`` - Screen brightness Down / Up
+- ``Shift + M1 / M2`` - Backlight brightness Down / Up
+- ``Fn + C`` - Fn-Lock
+- ``Fn + Shift + F7 / F8`` - Matrix brightness Down / Up
+- ``Ctrl + Shift + F20`` - Mute Microphone
+- ``Ctrl + Shift + Alt + F14`` - Eco Mode
+- ``Ctrl + Shift + Alt + F15`` - Standard Mode
+- [Custom keybindings / hotkeys](https://github.com/seerge/g-helper/wiki/Power-user-settings#custom-hotkey-actions)
+
 ------------------
-I don't have a Microsoft certificate to sign the app yet, so if you get a warning from Windows Defender on launch (Windows Protected your PC), click More Info -> Run anyway. 
+I don't have a Microsoft certificate to sign the app yet, so if you get a warning from Windows Defender on launch (Windows Protected your PC), click ``More Info`` -> ``Run anyway``. 
 
 ------------------
 #### If you like the app you can make a Donation 

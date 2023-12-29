@@ -4,11 +4,8 @@ about: Create a report to help us improve
 
 ---
 
-
 ## NOTE
-Bug reports without clear information or scenario to reproduce and logs from ``%AppData%\GHelper`` will be closed without answer. 
-Please respect the time of the developer. Thanks.
-
+Bug reports without clear information or scenario to reproduce and logs from ``%AppData%\GHelper`` will be closed without answer. Please respect the time of the developer. Thanks.
 
 **Describe the bug**
 A clear and concise description of what the bug is.
