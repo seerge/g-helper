@@ -136,7 +136,7 @@ public class AsusACPI
     public const int DefaultCPU = 80;
 
     public const int MinGPUBoost = 5;
-    public const int MaxGPUBoost = 25;
+    public static int MaxGPUBoost = 25;
 
     public const int MinGPUTemp = 75;
     public const int MaxGPUTemp = 87;
@@ -242,7 +242,11 @@ public class AsusACPI
             Logger.WriteLine($"Can't connect to ACPI: {ex.Message}");
         }
 
-        if (AppConfig.IsAdvantageEdition()) MaxTotal = 250;
+        if (AppConfig.IsAdvantageEdition())
+        {
+            MaxTotal = 250;
+        }
+
         if (AppConfig.IsX13())
         {
             MaxTotal = 75;
@@ -255,6 +259,15 @@ public class AsusACPI
             DefaultTotal = 30;
         }
 
+        if (AppConfig.DynamicBoost5())
+        {
+            MaxGPUBoost = 5;
+        }
+
+        if (AppConfig.DynamicBoost15())
+        {
+            MaxGPUBoost = 15;
+        }
     }
 
     public void Control(uint dwIoControlCode, byte[] lpInBuffer, byte[] lpOutBuffer)

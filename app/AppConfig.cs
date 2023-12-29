@@ -378,6 +378,15 @@ public static class AppConfig
         return ContainsModel("X13");
     }
 
+    public static bool DynamicBoost5()
+    {
+        return ContainsModel("GZ301ZE");
+    }
+
+    public static bool DynamicBoost15()
+    {
+        return ContainsModel("FX507ZC4");
+    }
 
     public static bool IsAdvantageEdition()
     {
