@@ -145,7 +145,6 @@ namespace GHelper
             // 
             // panelMatrix
             // 
-            panelMatrix.AccessibleName = "Anime Matrix";
             panelMatrix.AccessibleRole = AccessibleRole.Grouping;
             panelMatrix.AutoSize = true;
             panelMatrix.AutoSizeMode = AutoSizeMode.GrowAndShrink;
@@ -312,7 +311,6 @@ namespace GHelper
             // 
             // sliderBattery
             // 
-            sliderBattery.AccessibleName = "Battery Charge Limit";
             sliderBattery.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             sliderBattery.Location = new Point(20, 65);
             sliderBattery.Margin = new Padding(4);
@@ -420,7 +418,6 @@ namespace GHelper
             // 
             // buttonQuit
             // 
-            buttonQuit.AccessibleName = "Quit Application";
             buttonQuit.Activated = false;
             buttonQuit.BackColor = SystemColors.ControlLight;
             buttonQuit.BorderColor = Color.Transparent;
@@ -441,7 +438,6 @@ namespace GHelper
             // 
             // buttonUpdates
             // 
-            buttonUpdates.AccessibleName = "BIOS and Driver Updates";
             buttonUpdates.Activated = false;
             buttonUpdates.BackColor = SystemColors.ControlLight;
             buttonUpdates.BorderColor = Color.Transparent;
@@ -473,7 +469,6 @@ namespace GHelper
             // 
             // panelPerformance
             // 
-            panelPerformance.AccessibleName = "Performance";
             panelPerformance.AccessibleRole = AccessibleRole.Grouping;
             panelPerformance.AutoSize = true;
             panelPerformance.AutoSizeMode = AutoSizeMode.GrowAndShrink;
@@ -512,7 +507,6 @@ namespace GHelper
             // 
             // buttonSilent
             // 
-            buttonSilent.AccessibleName = "Silent Mode";
             buttonSilent.Activated = false;
             buttonSilent.BackColor = SystemColors.ControlLightLight;
             buttonSilent.BackgroundImageLayout = ImageLayout.None;
@@ -536,7 +530,6 @@ namespace GHelper
             // 
             // buttonBalanced
             // 
-            buttonBalanced.AccessibleName = "Balanced Mode";
             buttonBalanced.Activated = false;
             buttonBalanced.BackColor = SystemColors.ControlLightLight;
             buttonBalanced.BorderColor = Color.Transparent;
@@ -559,7 +552,6 @@ namespace GHelper
             // 
             // buttonTurbo
             // 
-            buttonTurbo.AccessibleName = "Turbo Mode";
             buttonTurbo.Activated = false;
             buttonTurbo.BackColor = SystemColors.ControlLightLight;
             buttonTurbo.BorderColor = Color.Transparent;
@@ -582,7 +574,6 @@ namespace GHelper
             // 
             // buttonFans
             // 
-            buttonFans.AccessibleName = "Fans and Power Settings";
             buttonFans.Activated = false;
             buttonFans.BackColor = SystemColors.ControlLight;
             buttonFans.BorderColor = Color.Transparent;
@@ -654,7 +645,6 @@ namespace GHelper
             // 
             // panelGPU
             // 
-            panelGPU.AccessibleName = "GPU";
             panelGPU.AccessibleRole = AccessibleRole.Grouping;
             panelGPU.AutoSize = true;
             panelGPU.AutoSizeMode = AutoSizeMode.GrowAndShrink;
@@ -731,7 +721,6 @@ namespace GHelper
             // 
             // buttonEco
             // 
-            buttonEco.AccessibleName = "Eco GPU Mode";
             buttonEco.Activated = false;
             buttonEco.BackColor = SystemColors.ControlLightLight;
             buttonEco.BorderColor = Color.Transparent;
@@ -755,7 +744,6 @@ namespace GHelper
             // 
             // buttonStandard
             // 
-            buttonStandard.AccessibleName = "Standard GPU Mode";
             buttonStandard.Activated = false;
             buttonStandard.BackColor = SystemColors.ControlLightLight;
             buttonStandard.BorderColor = Color.Transparent;
@@ -801,7 +789,6 @@ namespace GHelper
             // 
             // buttonOptimized
             // 
-            buttonOptimized.AccessibleName = "Optimized GPU Mode";
             buttonOptimized.Activated = false;
             buttonOptimized.BackColor = SystemColors.ControlLightLight;
             buttonOptimized.BorderColor = Color.Transparent;
@@ -824,7 +811,6 @@ namespace GHelper
             // 
             // buttonUltimate
             // 
-            buttonUltimate.AccessibleName = "Ultimate GPU Mode";
             buttonUltimate.Activated = false;
             buttonUltimate.BackColor = SystemColors.ControlLightLight;
             buttonUltimate.BorderColor = Color.Transparent;
@@ -892,7 +878,6 @@ namespace GHelper
             // 
             // panelScreen
             // 
-            panelScreen.AccessibleName = "Screen";
             panelScreen.AccessibleRole = AccessibleRole.Grouping;
             panelScreen.AutoSize = true;
             panelScreen.AutoSizeMode = AutoSizeMode.GrowAndShrink;
@@ -942,7 +927,6 @@ namespace GHelper
             // 
             // buttonScreenAuto
             // 
-            buttonScreenAuto.AccessibleName = "Auto Screen Refresh Rate";
             buttonScreenAuto.Activated = false;
             buttonScreenAuto.BackColor = SystemColors.ControlLightLight;
             buttonScreenAuto.BorderColor = Color.Transparent;
@@ -962,7 +946,6 @@ namespace GHelper
             // 
             // button60Hz
             // 
-            button60Hz.AccessibleName = "60Hz Refresh Rate";
             button60Hz.Activated = false;
             button60Hz.BackColor = SystemColors.ControlLightLight;
             button60Hz.BorderColor = Color.Transparent;
@@ -983,7 +966,6 @@ namespace GHelper
             // 
             // button120Hz
             // 
-            button120Hz.AccessibleName = "Maximum Refresh Rate";
             button120Hz.Activated = false;
             button120Hz.BackColor = SystemColors.ControlLightLight;
             button120Hz.BorderColor = Color.Transparent;
@@ -1068,7 +1050,6 @@ namespace GHelper
             // 
             // panelKeyboard
             // 
-            panelKeyboard.AccessibleName = "Keyboard";
             panelKeyboard.AccessibleRole = AccessibleRole.Grouping;
             panelKeyboard.AutoSize = true;
             panelKeyboard.AutoSizeMode = AutoSizeMode.GrowAndShrink;
@@ -1105,7 +1086,6 @@ namespace GHelper
             // 
             // buttonKeyboard
             // 
-            buttonKeyboard.AccessibleName = "Extra Settings";
             buttonKeyboard.Activated = false;
             buttonKeyboard.BackColor = SystemColors.ControlLight;
             buttonKeyboard.BorderColor = Color.Transparent;
@@ -1160,7 +1140,6 @@ namespace GHelper
             // 
             // buttonKeyboardColor
             // 
-            buttonKeyboardColor.AccessibleName = "Keyboard Color";
             buttonKeyboardColor.Activated = false;
             buttonKeyboardColor.BackColor = SystemColors.ButtonHighlight;
             buttonKeyboardColor.BorderColor = Color.Transparent;
@@ -1179,7 +1158,6 @@ namespace GHelper
             // 
             // comboKeyboard
             // 
-            comboKeyboard.AccessibleName = "Keyboard Backlight Mode";
             comboKeyboard.BorderColor = Color.White;
             comboKeyboard.ButtonColor = Color.FromArgb(255, 255, 255);
             comboKeyboard.Dock = DockStyle.Top;
@@ -1310,7 +1288,6 @@ namespace GHelper
             // 
             // buttonPeripheral3
             // 
-            buttonPeripheral3.AccessibleName = "Peripheral 3";
             buttonPeripheral3.Activated = false;
             buttonPeripheral3.BackColor = SystemColors.ControlLightLight;
             buttonPeripheral3.BorderColor = Color.Transparent;
@@ -1335,7 +1312,6 @@ namespace GHelper
             // 
             // buttonPeripheral2
             // 
-            buttonPeripheral2.AccessibleName = "Peripheral 2";
             buttonPeripheral2.Activated = false;
             buttonPeripheral2.BackColor = SystemColors.ControlLightLight;
             buttonPeripheral2.BorderColor = Color.Transparent;
@@ -1360,7 +1336,6 @@ namespace GHelper
             // 
             // buttonPeripheral1
             // 
-            buttonPeripheral1.AccessibleName = "Peripheral 1";
             buttonPeripheral1.Activated = false;
             buttonPeripheral1.BackColor = SystemColors.ControlLightLight;
             buttonPeripheral1.BorderColor = Color.Transparent;

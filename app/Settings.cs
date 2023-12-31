@@ -87,6 +87,33 @@ namespace GHelper
             buttonQuit.Text = Properties.Strings.Quit;
             buttonUpdates.Text = Properties.Strings.Updates;
 
+            // Accessible Labels
+
+            panelMatrix.AccessibleName = Properties.Strings.AnimeMatrix;
+            sliderBattery.AccessibleName = Properties.Strings.BatteryChargeLimit;
+            buttonQuit.AccessibleName = Properties.Strings.Quit;
+            buttonUpdates.AccessibleName = Properties.Strings.BiosAndDriverUpdates;
+            panelPerformance.AccessibleName = Properties.Strings.PerformanceMode;
+            buttonSilent.AccessibleName = Properties.Strings.Silent;
+            buttonBalanced.AccessibleName = Properties.Strings.Balanced;
+            buttonTurbo.AccessibleName = Properties.Strings.Turbo;
+            buttonFans.AccessibleName = Properties.Strings.FansAndPower;
+            panelGPU.AccessibleName = Properties.Strings.GPUMode;
+            buttonEco.AccessibleName = Properties.Strings.EcoMode;
+            buttonStandard.AccessibleName = Properties.Strings.StandardMode;
+            buttonOptimized.AccessibleName = Properties.Strings.Optimized;
+            buttonUltimate.AccessibleName = Properties.Strings.UltimateMode;
+            panelScreen.AccessibleName = Properties.Strings.LaptopScreen;
+
+            buttonScreenAuto.AccessibleName = Properties.Strings.AutoMode;
+            //button60Hz.AccessibleName = "60Hz Refresh Rate";
+            //button120Hz.AccessibleName = "Maximum Refresh Rate";
+            
+            panelKeyboard.AccessibleName = Properties.Strings.LaptopKeyboard;
+            buttonKeyboard.AccessibleName = Properties.Strings.ExtraSettings;
+            buttonKeyboardColor.AccessibleName = Properties.Strings.LaptopKeyboard + " " + Properties.Strings.Color;
+            comboKeyboard.AccessibleName = Properties.Strings.LaptopBacklight;
+
             FormClosing += SettingsForm_FormClosing;
             Deactivate += SettingsForm_LostFocus;
 
@@ -1044,7 +1071,7 @@ namespace GHelper
             Invoke(delegate
             {
                 labelPerf.Text = modeText;
-                panelPerformance.AccessibleName = labelPerf.Text; // + ". " + Program.trayIcon.Text;
+                panelPerformance.AccessibleName = labelPerf.Text;
             });
         }
 

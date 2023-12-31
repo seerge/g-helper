@@ -143,6 +143,34 @@ namespace GHelper
 
             Text = Properties.Strings.ExtraSettings;
 
+            // Accessible Labels
+
+            panelServices.AccessibleName = Properties.Strings.AsusServicesRunning;
+            panelBindings.AccessibleName = Properties.Strings.KeyBindings;
+            tableBindings.AccessibleName = Properties.Strings.KeyBindings;
+
+            comboM1.AccessibleName = "M1 Action";
+            comboM2.AccessibleName = "M2 Action";
+            comboM3.AccessibleName = "M3 Action";
+            comboM4.AccessibleName = "M4 Action";
+            comboFNF4.AccessibleName = "Fn+F4 Action";
+            comboFNC.AccessibleName = "Fn+C Action";
+            comboFNE.AccessibleName = "Fn+Numpad Action";
+
+            numericBacklightPluggedTime.AccessibleName = Properties.Strings.BacklightTimeoutPlugged;
+            numericBacklightTime.AccessibleName = Properties.Strings.BacklightTimeoutBattery;
+
+            comboKeyboardSpeed.AccessibleName = Properties.Strings.LaptopBacklight + " " +Properties.Strings.AnimationSpeed;
+            comboAPU.AccessibleName = Properties.Strings.LaptopBacklight + " " + Properties.Strings.AnimationSpeed;
+
+            checkBoot.AccessibleName = Properties.Strings.Boot + " " + Properties.Strings.LaptopBacklight;
+            checkAwake.AccessibleName = Properties.Strings.Awake + " " + Properties.Strings.LaptopBacklight;
+            checkSleep.AccessibleName = Properties.Strings.Sleep + " " + Properties.Strings.LaptopBacklight;
+            checkShutdown.AccessibleName = Properties.Strings.Shutdown + " " + Properties.Strings.LaptopBacklight;
+
+            panelSettings.AccessibleName = Properties.Strings.ExtraSettings;
+            numericHibernateAfter.AccessibleName = Properties.Strings.HibernateAfter;
+
             if (AppConfig.IsARCNM())
             {
                 labelM3.Text = "FN+F6";

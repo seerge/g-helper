@@ -457,6 +457,24 @@ namespace GHelper.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Backlight Timeout when on battery.
+        /// </summary>
+        internal static string BacklightTimeoutBattery {
+            get {
+                return ResourceManager.GetString("BacklightTimeoutBattery", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Backlight Timeout when plugged.
+        /// </summary>
+        internal static string BacklightTimeoutPlugged {
+            get {
+                return ResourceManager.GetString("BacklightTimeoutPlugged", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Balanced.
         /// </summary>
         internal static string Balanced {
