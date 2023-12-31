@@ -249,6 +249,12 @@
   <data name="BacklightTimeout" xml:space="preserve">
     <value>Số giây để tắt đèn nền bàn phím(khi dùng pin)</value>
   </data>
+  <data name="BacklightTimeoutBattery" xml:space="preserve">
+    <value>Backlight Timeout when on battery</value>
+  </data>
+  <data name="BacklightTimeoutPlugged" xml:space="preserve">
+    <value>Backlight Timeout when plugged</value>
+  </data>
   <data name="Balanced" xml:space="preserve">
     <value>Cân bằng</value>
   </data>
