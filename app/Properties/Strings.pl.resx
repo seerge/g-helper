@@ -249,6 +249,12 @@
   <data name="BacklightTimeout" xml:space="preserve">
     <value>Limit czasu podłączonego / na baterii (0 - Włączony)</value>
   </data>
+  <data name="BacklightTimeoutBattery" xml:space="preserve">
+    <value>Backlight Timeout when on battery</value>
+  </data>
+  <data name="BacklightTimeoutPlugged" xml:space="preserve">
+    <value>Backlight Timeout when plugged</value>
+  </data>
   <data name="Balanced" xml:space="preserve">
     <value>Balans</value>
   </data>
