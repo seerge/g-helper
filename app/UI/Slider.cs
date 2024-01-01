@@ -36,6 +36,7 @@ namespace GHelper.UI
         {
             // This reduces flicker
             DoubleBuffered = true;
+            TabStop = true;
         }
 
 
@@ -89,6 +90,41 @@ namespace GHelper.UI
             }
         }
 
+
+        protected override bool IsInputKey(Keys keyData)
+        {
+            switch (keyData)
+            {
+                case Keys.Right:
+                case Keys.Left:
+                case Keys.Up:
+                case Keys.Down:
+                    return true;
+            }
+
+            return base.IsInputKey(keyData);
+        }
+
+        protected override void OnKeyDown(KeyEventArgs e)
+        {
+
+            switch (e.KeyCode)
+            {
+                case Keys.Right:
+                case Keys.Up:
+                    Value = Math.Min(Max, Value + Step);
+                    break;
+                case Keys.Left:
+                case Keys.Down:
+                    Value = Math.Max(Min, Value - Step);
+                    break;
+            }
+
+            AccessibilityNotifyClients(AccessibleEvents.Focus, 0);
+
+            base.OnKeyDown(e);
+        }
+
         protected override void OnPaint(PaintEventArgs e)
         {
             base.OnPaint(e);
@@ -130,6 +166,8 @@ namespace GHelper.UI
         protected override void OnMouseDown(MouseEventArgs e)
         {
             base.OnMouseDown(e);
+
+            Focus();
 
             // Difference between tumb and mouse position.
             _delta = new SizeF(e.Location.X - _thumbPos.X, e.Location.Y - _thumbPos.Y);

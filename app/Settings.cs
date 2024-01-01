@@ -1263,6 +1263,10 @@ namespace GHelper
         {
             labelBatteryTitle.Text = Properties.Strings.BatteryChargeLimit + ": " + limit.ToString() + "%";
             sliderBattery.Value = limit;
+
+            sliderBattery.AccessibleName = Properties.Strings.BatteryChargeLimit + ": " + limit.ToString() + "%";
+            sliderBattery.AccessibilityObject.Select(AccessibleSelection.TakeFocus);
+
             VisualiseBatteryFull();
         }
 
@@ -1272,11 +1276,13 @@ namespace GHelper
             {
                 buttonBatteryFull.BackColor = colorStandard;
                 buttonBatteryFull.ForeColor = SystemColors.ControlLightLight;
+                buttonBatteryFull.AccessibleName = Properties.Strings.BatteryChargeLimit + "100% on";
             }
             else
             {
                 buttonBatteryFull.BackColor = buttonSecond;
                 buttonBatteryFull.ForeColor = SystemColors.ControlDark;
+                buttonBatteryFull.AccessibleName = Properties.Strings.BatteryChargeLimit + "100% off";
             }
 
         }
@@ -1422,11 +1428,13 @@ namespace GHelper
             {
                 buttonFnLock.BackColor = colorStandard;
                 buttonFnLock.ForeColor = SystemColors.ControlLightLight;
+                buttonFnLock.AccessibleName = "Fn-Lock on";
             }
             else
             {
                 buttonFnLock.BackColor = buttonSecond;
                 buttonFnLock.ForeColor = SystemColors.ControlDark;
+                buttonFnLock.AccessibleName = "Fn-Lock off";
             }
         }
 
