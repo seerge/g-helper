@@ -471,11 +471,17 @@ namespace GHelper
 
         public void SetVersionLabel(string label, bool update = false)
         {
-            Invoke(delegate
+            if (InvokeRequired)
+                Invoke(delegate
+                {
+                    labelVersion.Text = label;
+                    if (update) labelVersion.ForeColor = colorTurbo;
+                });
+            else
             {
                 labelVersion.Text = label;
                 if (update) labelVersion.ForeColor = colorTurbo;
-            });
+            }
         }
 
 
@@ -659,18 +665,14 @@ namespace GHelper
 
         public void FansInit()
         {
-            Invoke(delegate
-            {
-                if (fansForm != null && fansForm.Text != "") fansForm.InitAll();
-            });
+            if (fansForm == null || fansForm.Text == "") return;
+            Invoke(fansForm.InitAll);
         }
 
         public void GPUInit()
         {
-            Invoke(delegate
-            {
-                if (fansForm != null && fansForm.Text != "") fansForm.InitGPU();
-            });
+            if (fansForm == null || fansForm.Text == "") return;
+            Invoke(fansForm.InitGPU);
         }
 
         public void FansToggle(int index = 0)
@@ -764,12 +766,19 @@ namespace GHelper
 
         public void VisualiseAura()
         {
-            Invoke(delegate
+            if (InvokeRequired)
+                Invoke(delegate
+                {
+                    pictureColor.BackColor = Aura.Color1;
+                    pictureColor2.BackColor = Aura.Color2;
+                    pictureColor2.Visible = Aura.HasSecondColor();
+                });
+            else
             {
                 pictureColor.BackColor = Aura.Color1;
                 pictureColor2.BackColor = Aura.Color2;
                 pictureColor2.Visible = Aura.HasSecondColor();
-            });
+            }
         }
 
         public void InitMatrix()
@@ -1028,42 +1037,50 @@ namespace GHelper
 
         public void ShowMode(int mode)
         {
-            Invoke(delegate
-            {
-                buttonSilent.Activated = false;
-                buttonBalanced.Activated = false;
-                buttonTurbo.Activated = false;
-                buttonFans.Activated = false;
-
-                menuSilent.Checked = false;
-                menuBalanced.Checked = false;
-                menuTurbo.Checked = false;
-
-                switch (mode)
+            if (InvokeRequired)
+                Invoke(delegate
                 {
-                    case AsusACPI.PerformanceSilent:
-                        buttonSilent.Activated = true;
-                        menuSilent.Checked = true;
-                        break;
-                    case AsusACPI.PerformanceTurbo:
-                        buttonTurbo.Activated = true;
-                        menuTurbo.Checked = true;
-                        break;
-                    case AsusACPI.PerformanceBalanced:
-                        buttonBalanced.Activated = true;
-                        menuBalanced.Checked = true;
-                        break;
-                    default:
-                        buttonFans.Activated = true;
-                        buttonFans.BorderColor = Modes.GetBase(mode) switch
-                        {
-                            AsusACPI.PerformanceSilent => colorEco,
-                            AsusACPI.PerformanceTurbo => colorTurbo,
-                            _ => colorStandard,
-                        };
-                        break;
-                }
-            });
+                    VisualiseMode(mode);
+                });
+            else
+                VisualiseMode(mode);
+        }
+
+        protected void VisualiseMode(int mode)
+        {
+            buttonSilent.Activated = false;
+            buttonBalanced.Activated = false;
+            buttonTurbo.Activated = false;
+            buttonFans.Activated = false;
+
+            menuSilent.Checked = false;
+            menuBalanced.Checked = false;
+            menuTurbo.Checked = false;
+
+            switch (mode)
+            {
+                case AsusACPI.PerformanceSilent:
+                    buttonSilent.Activated = true;
+                    menuSilent.Checked = true;
+                    break;
+                case AsusACPI.PerformanceTurbo:
+                    buttonTurbo.Activated = true;
+                    menuTurbo.Checked = true;
+                    break;
+                case AsusACPI.PerformanceBalanced:
+                    buttonBalanced.Activated = true;
+                    menuBalanced.Checked = true;
+                    break;
+                default:
+                    buttonFans.Activated = true;
+                    buttonFans.BorderColor = Modes.GetBase(mode) switch
+                    {
+                        AsusACPI.PerformanceSilent => colorEco,
+                        AsusACPI.PerformanceTurbo => colorTurbo,
+                        _ => colorStandard,
+                    };
+                    break;
+            }
         }
 
 
