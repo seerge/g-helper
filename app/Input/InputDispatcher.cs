@@ -429,6 +429,7 @@ namespace GHelper.Input
                     NativeMethods.TurnOffScreen();
                     break;
                 case "miniled":
+                    if (ScreenCCD.GetHDRStatus()) return;
                     int miniled = screenControl.ToogleMiniled();
                     Program.toast.RunToast(miniled == 1 ? "Multi-Zone" : "Single-Zone", miniled == 1 ? ToastIcon.BrightnessUp : ToastIcon.BrightnessDown);
                     break;
