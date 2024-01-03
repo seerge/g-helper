@@ -379,7 +379,7 @@ namespace GHelper
 
             pictureLog.Click += PictureLog_Click;
 
-            checkGPUFix.Visible = AppConfig.IsGPUFixNeeded();
+            checkGPUFix.Visible = Program.acpi.IsNVidiaGPU();
             checkGPUFix.Checked = AppConfig.IsGPUFix();
             checkGPUFix.CheckedChanged += CheckGPUFix_CheckedChanged;
 
