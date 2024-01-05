@@ -90,6 +90,7 @@ Each BIOS mode is paired with matching Windows Power Mode. You can adjust this s
 - ROG Chakram X (P708)
 - ROG Chakram Core (P511)
 - ROG Strix III Gladius III Aimpoint Wireless (P711)
+- ROG Gladius II and Gladius II Origin (P502 and P504)
 - ROG Gladius III
 - ROG Gladius III Wireless
 - ROG Strix Impact II Wireless
