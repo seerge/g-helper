@@ -84,8 +84,6 @@ namespace GHelper.USB
 
         static public bool isSingleColor = false;
 
-        static bool isOldHeatmap = AppConfig.Is("old_heatmap");
-
         static System.Timers.Timer timer = new System.Timers.Timer(1000);
 
         private static Dictionary<AuraMode, string> _modesSingleColor = new Dictionary<AuraMode, string>
@@ -248,16 +246,13 @@ namespace GHelper.USB
 
         public static void Init()
         {
-            Task.Run(async () =>
-            {
-                AsusHid.Write(new List<byte[]> {
-                    new byte[] { AsusHid.AURA_ID, 0xb9 },
-                    Encoding.ASCII.GetBytes("]ASUS Tech.Inc."),
-                    new byte[] { AsusHid.AURA_ID, 0x05, 0x20, 0x31, 0, 0x1a },
-                    //Encoding.ASCII.GetBytes("^ASUS Tech.Inc."),
-                    //new byte[] { 0x5e, 0x05, 0x20, 0x31, 0, 0x1a }
-                });
-            });
+            AsusHid.Write(new List<byte[]> {
+                new byte[] { AsusHid.AURA_ID, 0xb9 },
+                Encoding.ASCII.GetBytes("]ASUS Tech.Inc."),
+                new byte[] { AsusHid.AURA_ID, 0x05, 0x20, 0x31, 0, 0x1a },
+                //Encoding.ASCII.GetBytes("^ASUS Tech.Inc."),
+                //new byte[] { 0x5e, 0x05, 0x20, 0x31, 0, 0x1a }
+            }, "Init");
         }
 
 
@@ -523,7 +518,7 @@ namespace GHelper.USB
         }
 
 
-        public static void ApplyColor(Color color, bool init = false)
+        public static void ApplyDirect(Color color, bool init = false)
         {
 
             if (isACPI)
@@ -532,17 +527,34 @@ namespace GHelper.USB
                 return;
             }
 
-            if (isStrix && !isOldHeatmap)
+            if (isStrix)
             {
                 ApplyDirect(Enumerable.Repeat(color, AURA_ZONES).ToArray(), init);
                 return;
             }
 
-            else
+            if (AppConfig.ContainsModel("GA503"))
             {
-                AsusHid.WriteAura(AuraMessage(0, color, color, 0));
-                AsusHid.WriteAura(MESSAGE_SET);
+                AsusHid.Write(new List<byte[]> { AuraMessage(AuraMode.AuraStatic, color, color, 0xeb, isSingleColor), MESSAGE_SET });
+                return;
             }
+
+            if (init)
+            {
+                //Init();
+                AsusHid.WriteAura(new byte[] { AsusHid.AURA_ID, 0xbc, 1 });
+            }
+
+            byte[] buffer = new byte[12];
+            buffer[0] = AsusHid.AURA_ID;
+            buffer[1] = 0xbc;
+            buffer[2] = 1;
+            buffer[3] = 1;
+            buffer[9] = color.R;
+            buffer[10] = color.G;
+            buffer[11] = color.B;
+
+            AsusHid.WriteAura(buffer);
 
         }
 
@@ -556,6 +568,8 @@ namespace GHelper.USB
 
             timer.Enabled = false;
 
+            Logger.WriteLine($"AuraMode: {Mode}");
+
             if (Mode == AuraMode.HEATMAP)
             {
                 CustomRGB.ApplyHeatmap(true);
@@ -568,7 +582,7 @@ namespace GHelper.USB
             {
                 CustomRGB.ApplyAmbient(true);
                 timer.Enabled = true;
-                timer.Interval = 100;
+                timer.Interval = AppConfig.Get("aura_refresh", 120);
                 return;
             }
 
@@ -595,18 +609,23 @@ namespace GHelper.USB
             {
                 if ((AuraMode)AppConfig.Get("aura_mode") != AuraMode.GPUMODE) return;
 
+                Color color;
+
                 switch (GPUModeControl.gpuMode)
                 {
                     case AsusACPI.GPUModeUltimate:
-                        ApplyColor(Color.Red, true);
+                        color = Color.Red;
                         break;
                     case AsusACPI.GPUModeEco:
-                        ApplyColor(Color.Green, true);
+                        color = Color.Green;
                         break;
                     default:
-                        ApplyColor(Color.Yellow, true);
+                        color = Color.Yellow;
                         break;
                 }
+
+                AsusHid.Write(new List<byte[]> { AuraMessage(AuraMode.AuraStatic, color, color, 0xeb, isSingleColor), MESSAGE_APPLY, MESSAGE_SET });
+
             }
 
             public static void ApplyHeatmap(bool init = false)
@@ -622,7 +641,7 @@ namespace GHelper.USB
                 else if (cpuTemp < hot) color = ColorUtils.GetWeightedAverage(Color.Yellow, Color.Red, ((float)cpuTemp - warm) / (hot - warm));
                 else color = Color.Red;
 
-                ApplyColor(color, init);
+                ApplyDirect(color, init);
             }
 
 
@@ -663,7 +682,7 @@ namespace GHelper.USB
                 screen_low.Dispose();
                 screeb_pxl.Dispose();
 
-                bool is_fresh = false;
+                bool is_fresh = init;
 
                 for (int i = 0; i < zones; i++)
                 {
@@ -674,7 +693,7 @@ namespace GHelper.USB
                 if (is_fresh)
                 {
                     if (isStrix) ApplyDirect(AmbientData.result, init);
-                    else ApplyColor(AmbientData.result[0], init);
+                    else ApplyDirect(AmbientData.result[0], init);
                 }
 
             }

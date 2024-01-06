@@ -124,10 +124,10 @@
     <value>ASUS ACPI'ye bağlanılamıyor. Uygulama o olmadan çalışamaz. Asus Sistem Kontrol Arayüzü'nü yüklemeyi deneyin.</value>
   </data>
   <data name="AlertAPUMemoryRestart" xml:space="preserve">
-    <value>Restart your device to apply changes</value>
+    <value>Değişiklikleri uygulamak için cihazınızı yeniden başlatın</value>
   </data>
   <data name="AlertAPUMemoryRestartTitle" xml:space="preserve">
-    <value>Restart now?</value>
+    <value>Şimdi yeniden başlatılsın mı?</value>
   </data>
   <data name="AlertDGPU" xml:space="preserve">
     <value>Görünüşe göre GPU yoğun bir şekilde kullanılıyor, devre dışı bırakılsın mı?</value>
@@ -169,7 +169,7 @@
     <value>Windows Güç Modunu otomatik ayarla</value>
   </data>
   <data name="APUMemory" xml:space="preserve">
-    <value>Memory Assigned to GPU</value>
+    <value>GPU'ya Atanan Bellek</value>
   </data>
   <data name="AsusServicesRunning" xml:space="preserve">
     <value>Çalışan Asus Hizmetleri</value>
@@ -248,6 +248,12 @@
   </data>
   <data name="BacklightTimeout" xml:space="preserve">
     <value>Pildeyken klavye ışığının kapanma süresi</value>
+  </data>
+  <data name="BacklightTimeoutBattery" xml:space="preserve">
+    <value>Backlight Timeout when on battery</value>
+  </data>
+  <data name="BacklightTimeoutPlugged" xml:space="preserve">
+    <value>Backlight Timeout when plugged</value>
   </data>
   <data name="Balanced" xml:space="preserve">
     <value>Dengeli</value>
@@ -378,7 +384,7 @@ Yine de devam etmek istiyor musunuz?</value>
     <value>Çekirdek Frekans Dengesi</value>
   </data>
   <data name="GPUMemoryClockOffset" xml:space="preserve">
-    <value>Hafıza Frekans Dengesi</value>
+    <value>Bellek Frekans Dengesi</value>
   </data>
   <data name="GPUMode" xml:space="preserve">
     <value>GPU Modu</value>

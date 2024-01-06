@@ -50,6 +50,9 @@ public static class ControlHelper
     {
         foreach (Control control in controls)
         {
+
+            AdjustControls(control.Controls);
+
             var button = control as RButton;
             if (button != null)
             {
@@ -132,7 +135,6 @@ public static class ControlHelper
 
             }
 
-            AdjustControls(control.Controls);
         }
     }
 

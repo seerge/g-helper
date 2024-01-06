@@ -37,6 +37,7 @@ public class AsusACPI
 
     public const uint UniversalControl = 0x00100021;
 
+    public const int Airplane = 0x88;
     public const int KB_Light_Up = 0xc4;
     public const int KB_Light_Down = 0xc5;
     public const int Brightness_Down = 0x10;
@@ -135,7 +136,7 @@ public class AsusACPI
     public const int DefaultCPU = 80;
 
     public const int MinGPUBoost = 5;
-    public const int MaxGPUBoost = 25;
+    public static int MaxGPUBoost = 25;
 
     public const int MinGPUTemp = 75;
     public const int MaxGPUTemp = 87;
@@ -241,7 +242,11 @@ public class AsusACPI
             Logger.WriteLine($"Can't connect to ACPI: {ex.Message}");
         }
 
-        if (AppConfig.IsAdvantageEdition()) MaxTotal = 250;
+        if (AppConfig.IsAdvantageEdition())
+        {
+            MaxTotal = 250;
+        }
+
         if (AppConfig.IsX13())
         {
             MaxTotal = 75;
@@ -254,6 +259,15 @@ public class AsusACPI
             DefaultTotal = 30;
         }
 
+        if (AppConfig.DynamicBoost5())
+        {
+            MaxGPUBoost = 5;
+        }
+
+        if (AppConfig.DynamicBoost15())
+        {
+            MaxGPUBoost = 15;
+        }
     }
 
     public void Control(uint dwIoControlCode, byte[] lpInBuffer, byte[] lpOutBuffer)
@@ -538,6 +552,11 @@ public class AsusACPI
     {
         //return false; 
         return DeviceGet(PPT_CPUB0) >= 0 && DeviceGet(PPT_GPUC0) < 0;
+    }
+
+    public bool IsNVidiaGPU()
+    {
+        return (!IsAllAmdPPT() && Program.acpi.DeviceGet(GPUEco) >= 0);
     }
 
     public void SetAPUMem(int memory = 4)

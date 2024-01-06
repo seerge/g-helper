@@ -429,7 +429,9 @@ namespace GHelper.Input
                     NativeMethods.TurnOffScreen();
                     break;
                 case "miniled":
-                    screenControl.ToogleMiniled();
+                    if (ScreenCCD.GetHDRStatus()) return;
+                    int miniled = screenControl.ToogleMiniled();
+                    Program.toast.RunToast(miniled == 1 ? "Multi-Zone" : "Single-Zone", miniled == 1 ? ToastIcon.BrightnessUp : ToastIcon.BrightnessDown);
                     break;
                 case "aura":
                     Program.settingsForm.BeginInvoke(Program.settingsForm.CycleAuraMode);
@@ -583,6 +585,9 @@ namespace GHelper.Input
                         return;
                     case 55:    // Arconym
                         KeyProcess("m6");
+                        return;
+                    case 136:    // FN + F12
+                        Program.acpi.DeviceSet(AsusACPI.UniversalControl, AsusACPI.Airplane, "Airplane");
                         return;
                     case 181:    // FN + Numpad Enter
                         KeyProcess("fne");

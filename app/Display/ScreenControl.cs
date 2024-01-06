@@ -57,11 +57,12 @@ namespace GHelper.Display
         }
 
 
-        public void ToogleMiniled()
+        public int ToogleMiniled()
         {
             int miniled = (Program.acpi.DeviceGet(AsusACPI.ScreenMiniled) == 1) ? 0 : 1;
             AppConfig.Set("miniled", miniled);
             SetScreen(-1, -1, miniled);
+            return miniled;
         }
 
         public void InitScreen()

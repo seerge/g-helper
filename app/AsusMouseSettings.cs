@@ -863,7 +863,14 @@ namespace GHelper
 
         private void VisualizeCurrentDPIProfile()
         {
+            if (mouse.DpiProfile > mouse.DpiSettings.Count())
+            {
+                Logger.WriteLine($"Wrong mouse DPI: {mouse.DpiProfile}");
+                return;
+            }
+
             AsusMouseDPI dpi = mouse.DpiSettings[mouse.DpiProfile - 1];
+            
             if (dpi is null)
             {
                 return;

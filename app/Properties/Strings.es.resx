@@ -249,6 +249,12 @@
   <data name="BacklightTimeout" xml:space="preserve">
     <value>Tiempo de espera conectado / con batería (0 - ON)</value>
   </data>
+  <data name="BacklightTimeoutBattery" xml:space="preserve">
+    <value>Tiempo de retroiluminación con batería</value>
+  </data>
+  <data name="BacklightTimeoutPlugged" xml:space="preserve">
+    <value>Tiempo de retroiluminación conectado</value>
+  </data>
   <data name="Balanced" xml:space="preserve">
     <value>Equilibrado</value>
   </data>

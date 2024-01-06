@@ -348,15 +348,19 @@ namespace GHelper.Mode
             int gpu_boost = AppConfig.GetMode("gpu_boost");
             int gpu_temp = AppConfig.GetMode("gpu_temp");
 
+            int boostResult = -1;
 
             if (gpu_boost < AsusACPI.MinGPUBoost || gpu_boost > AsusACPI.MaxGPUBoost) return;
             if (gpu_temp < AsusACPI.MinGPUTemp || gpu_temp > AsusACPI.MaxGPUTemp) return;
 
             if (Program.acpi.DeviceGet(AsusACPI.PPT_GPUC0) >= 0)
-                Program.acpi.DeviceSet(AsusACPI.PPT_GPUC0, gpu_boost, "PowerLimit C0");
+                boostResult = Program.acpi.DeviceSet(AsusACPI.PPT_GPUC0, gpu_boost, "PowerLimit C0");
 
             if (Program.acpi.DeviceGet(AsusACPI.PPT_GPUC2) >= 0)
                 Program.acpi.DeviceSet(AsusACPI.PPT_GPUC2, gpu_temp, "PowerLimit C2");
+
+            if (boostResult == 0)
+                Program.acpi.DeviceSet(AsusACPI.PPT_GPUC0, gpu_boost, "PowerLimit C0");
 
         }
 

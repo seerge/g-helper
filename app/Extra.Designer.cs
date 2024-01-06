@@ -148,7 +148,6 @@ namespace GHelper
             // 
             // panelServices
             // 
-            panelServices.AccessibleName = "Asus Services";
             panelServices.AccessibleRole = AccessibleRole.Grouping;
             panelServices.Controls.Add(pictureService);
             panelServices.Controls.Add(labelServices);
@@ -245,7 +244,6 @@ namespace GHelper
             // 
             // panelBindings
             // 
-            panelBindings.AccessibleName = "Key Bindings";
             panelBindings.AutoSize = true;
             panelBindings.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             panelBindings.Controls.Add(tableBindings);
@@ -259,7 +257,6 @@ namespace GHelper
             // 
             // tableBindings
             // 
-            tableBindings.AccessibleName = "Keyboard Bindings";
             tableBindings.AccessibleRole = AccessibleRole.Table;
             tableBindings.AutoSize = true;
             tableBindings.AutoSizeMode = AutoSizeMode.GrowAndShrink;
@@ -318,7 +315,6 @@ namespace GHelper
             // 
             // comboFNE
             // 
-            comboFNE.AccessibleName = "Fn+Numpad Action";
             comboFNE.BorderColor = Color.White;
             comboFNE.ButtonColor = Color.FromArgb(255, 255, 255);
             comboFNE.Dock = DockStyle.Top;
@@ -375,7 +371,6 @@ namespace GHelper
             // 
             // comboM1
             // 
-            comboM1.AccessibleName = "M1 Action";
             comboM1.BorderColor = Color.White;
             comboM1.ButtonColor = Color.FromArgb(255, 255, 255);
             comboM1.Dock = DockStyle.Top;
@@ -400,7 +395,6 @@ namespace GHelper
             // 
             // comboM4
             // 
-            comboM4.AccessibleName = "M4 Action";
             comboM4.BorderColor = Color.White;
             comboM4.ButtonColor = Color.FromArgb(255, 255, 255);
             comboM4.Dock = DockStyle.Top;
@@ -414,7 +408,6 @@ namespace GHelper
             // 
             // comboM3
             // 
-            comboM3.AccessibleName = "M3 Action";
             comboM3.BorderColor = Color.White;
             comboM3.ButtonColor = Color.FromArgb(255, 255, 255);
             comboM3.Dock = DockStyle.Top;
@@ -483,7 +476,6 @@ namespace GHelper
             // 
             // comboM2
             // 
-            comboM2.AccessibleName = "M2 Action";
             comboM2.BorderColor = Color.White;
             comboM2.ButtonColor = Color.FromArgb(255, 255, 255);
             comboM2.Dock = DockStyle.Top;
@@ -508,7 +500,6 @@ namespace GHelper
             // 
             // comboFNF4
             // 
-            comboFNF4.AccessibleName = "Fn+F4 Action";
             comboFNF4.BorderColor = Color.White;
             comboFNF4.ButtonColor = Color.FromArgb(255, 255, 255);
             comboFNF4.Dock = DockStyle.Top;
@@ -532,7 +523,6 @@ namespace GHelper
             // 
             // comboFNC
             // 
-            comboFNC.AccessibleName = "Fn+C Action";
             comboFNC.BorderColor = Color.White;
             comboFNC.ButtonColor = Color.FromArgb(255, 255, 255);
             comboFNC.Dock = DockStyle.Top;
@@ -653,7 +643,6 @@ namespace GHelper
             // 
             // numericBacklightPluggedTime
             // 
-            numericBacklightPluggedTime.AccessibleName = "Backlight Timeout when plugged";
             numericBacklightPluggedTime.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             numericBacklightPluggedTime.Location = new Point(670, 63);
             numericBacklightPluggedTime.Margin = new Padding(4, 3, 4, 3);
@@ -664,7 +653,6 @@ namespace GHelper
             // 
             // numericBacklightTime
             // 
-            numericBacklightTime.AccessibleName = "Backlight Timeout when on battery";
             numericBacklightTime.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             numericBacklightTime.Location = new Point(822, 63);
             numericBacklightTime.Margin = new Padding(4, 3, 4, 3);
@@ -693,7 +681,6 @@ namespace GHelper
             // 
             // comboKeyboardSpeed
             // 
-            comboKeyboardSpeed.AccessibleName = "Keyboard Animation Speed";
             comboKeyboardSpeed.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             comboKeyboardSpeed.BorderColor = Color.White;
             comboKeyboardSpeed.ButtonColor = SystemColors.ControlLight;
@@ -786,7 +773,6 @@ namespace GHelper
             // 
             // checkAwake
             // 
-            checkAwake.AccessibleName = "Awake Backlight";
             checkAwake.Dock = DockStyle.Fill;
             checkAwake.Location = new Point(4, 45);
             checkAwake.Margin = new Padding(4, 0, 4, 0);
@@ -799,7 +785,6 @@ namespace GHelper
             // 
             // checkBoot
             // 
-            checkBoot.AccessibleName = "Boot Backlight";
             checkBoot.Dock = DockStyle.Fill;
             checkBoot.Location = new Point(4, 88);
             checkBoot.Margin = new Padding(4, 0, 4, 0);
@@ -812,7 +797,6 @@ namespace GHelper
             // 
             // checkSleep
             // 
-            checkSleep.AccessibleName = "Sleep Backlight";
             checkSleep.Dock = DockStyle.Fill;
             checkSleep.Location = new Point(4, 131);
             checkSleep.Margin = new Padding(4, 0, 4, 0);
@@ -825,7 +809,6 @@ namespace GHelper
             // 
             // checkShutdown
             // 
-            checkShutdown.AccessibleName = "Shutdown Backlight";
             checkShutdown.Dock = DockStyle.Fill;
             checkShutdown.Location = new Point(4, 174);
             checkShutdown.Margin = new Padding(4, 0, 4, 0);
@@ -1065,7 +1048,6 @@ namespace GHelper
             // 
             // panelSettings
             // 
-            panelSettings.AccessibleName = "Extra Settings";
             panelSettings.AccessibleRole = AccessibleRole.Grouping;
             panelSettings.AutoSize = true;
             panelSettings.AutoSizeMode = AutoSizeMode.GrowAndShrink;
@@ -1200,7 +1182,6 @@ namespace GHelper
             // 
             // numericHibernateAfter
             // 
-            numericHibernateAfter.AccessibleName = "Minutes till Hibernation in sleep";
             numericHibernateAfter.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             numericHibernateAfter.Increment = new decimal(new int[] { 10, 0, 0, 0 });
             numericHibernateAfter.Location = new Point(810, 7);
@@ -1247,7 +1228,6 @@ namespace GHelper
             // 
             // comboAPU
             // 
-            comboAPU.AccessibleName = "Keyboard Animation Speed";
             comboAPU.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             comboAPU.BorderColor = Color.White;
             comboAPU.ButtonColor = SystemColors.ControlLight;

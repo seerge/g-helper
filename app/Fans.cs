@@ -599,7 +599,7 @@ namespace GHelper
             int Max = FanSensorControl.GetFanMax(device);
 
             if (fanRpm)
-                return (200 * Math.Round((float)(Min * 100 + (Max - Min) * percentage) / 200)).ToString() + unit;
+                return (200 * Math.Floor((float)(Min * 100 + (Max - Min) * percentage) / 200)).ToString() + unit;
             else
                 return percentage + "%";
         }
@@ -790,10 +790,11 @@ namespace GHelper
         {
 
             bool modeA0 = (Program.acpi.DeviceGet(AsusACPI.PPT_TotalA0) >= 0 || RyzenControl.IsAMD());
+            bool modeA3 = Program.acpi.DeviceGet(AsusACPI.PPT_APUA3) >= 0;
             bool modeB0 = Program.acpi.IsAllAmdPPT();
             bool modeC1 = Program.acpi.DeviceGet(AsusACPI.PPT_APUC1) >= 0;
 
-            panelA0.Visible = panelA3.Visible = modeA0;
+            panelA0.Visible = modeA0;
             panelB0.Visible = modeB0;
 
             panelApplyPower.Visible = panelTitleCPU.Visible = modeA0 || modeB0 || modeC1;
@@ -809,12 +810,15 @@ namespace GHelper
             }
             else
             {
+                panelA3.Visible = modeA3;
+
                 if (RyzenControl.IsAMD())
                 {
                     labelLeftA0.Text = "CPU Sustained (SPL)";
                     labelLeftA3.Text = "CPU Slow (sPPT)";
                     labelLeftC1.Text = "CPU Fast (fPPT)";
                     panelC1.Visible = modeC1;
+                    
                 }
                 else
                 {
@@ -1146,7 +1150,7 @@ namespace GHelper
                         tip = true;
                     }
 
-                    labelTip.Text = Math.Round(curPoint.XValue) + "C, " + ChartYLabel((int)curPoint.YValues[0], device, " " + Properties.Strings.RPM);
+                    labelTip.Text = Math.Floor(curPoint.XValue) + "C, " + ChartYLabel((int)curPoint.YValues[0], device, " " + Properties.Strings.RPM);
                     labelTip.Top = e.Y + ((Control)sender).Top;
                     labelTip.Left = e.X - 50;
 

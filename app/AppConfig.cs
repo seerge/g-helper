@@ -355,7 +355,7 @@ public static class AppConfig
 
     public static bool IsStrixLimitedRGB()
     {
-        return ContainsModel("G614JV") || ContainsModel("G614JZ") || ContainsModel("G512LI") || ContainsModel("G513R") || ContainsModel("G713PV") || ContainsModel("G513IE") || ContainsModel("G513QM") || ContainsModel("G713RC");
+        return ContainsModel("G614JV") || ContainsModel("G614JZ") || ContainsModel("G512LI") || ContainsModel("G513R") || ContainsModel("G713PV") || ContainsModel("G513IE") || ContainsModel("G713RC");
     }
 
     public static bool IsStrixNumpad()
@@ -378,6 +378,15 @@ public static class AppConfig
         return ContainsModel("X13");
     }
 
+    public static bool DynamicBoost5()
+    {
+        return ContainsModel("GZ301ZE");
+    }
+
+    public static bool DynamicBoost15()
+    {
+        return ContainsModel("FX507ZC4");
+    }
 
     public static bool IsAdvantageEdition()
     {
@@ -386,7 +395,7 @@ public static class AppConfig
 
     public static bool NoAutoUltimate()
     {
-        return ContainsModel("G614") || ContainsModel("GU604") || ContainsModel("FX507") || ContainsModel("G513") || ContainsModel("FA617");
+        return ContainsModel("G614") || ContainsModel("GU604") || ContainsModel("FX507") || ContainsModel("G513") || ContainsModel("FA617") || ContainsModel("G834");
     }
 
 
@@ -424,11 +433,6 @@ public static class AppConfig
     public static bool IsPowerRequired()
     {
         return ContainsModel("FX507") || ContainsModel("FX517") || ContainsModel("FX707");
-    }
-
-    public static bool IsGPUFixNeeded()
-    {
-        return ContainsModel("GA402X") || ContainsModel("GV302") || ContainsModel("GV301") || ContainsModel("GZ301") || ContainsModel("FX506") || ContainsModel("GU603") || ContainsModel("GU604") || ContainsModel("G614J");
     }
 
     public static bool IsGPUFix()
