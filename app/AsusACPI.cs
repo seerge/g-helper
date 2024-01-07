@@ -556,7 +556,7 @@ public class AsusACPI
 
     public bool IsNVidiaGPU()
     {
-        return (!IsAllAmdPPT() && Program.acpi.DeviceGet(GPUEco) >= 0);
+        return (!IsAllAmdPPT() && Program.acpi.DeviceGet(GPUEco) >= 0 && !AppConfig.IsAlly());
     }
 
     public void SetAPUMem(int memory = 4)

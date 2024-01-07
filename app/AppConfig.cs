@@ -1,5 +1,4 @@
 ﻿using GHelper.Mode;
-using System.Diagnostics;
 using System.Management;
 using System.Text.Json;
 
@@ -13,6 +12,7 @@ public static class AppConfig
     private static string? _bios;
 
     private static Dictionary<string, object> config = new Dictionary<string, object>();
+    private static System.Timers.Timer timer = new System.Timers.Timer(1000);
 
     static AppConfig()
     {
@@ -52,8 +52,39 @@ public static class AppConfig
             Init();
         }
 
+        timer.Elapsed += Timer_Elapsed;
+
     }
 
+    private static void Timer_Elapsed(object? sender, System.Timers.ElapsedEventArgs e)
+    {
+
+        timer.Stop();
+        string jsonString = JsonSerializer.Serialize(config, new JsonSerializerOptions { WriteIndented = true });
+        var backup = configFile + ".bak";
+
+        try
+        {
+            File.WriteAllText(backup, jsonString);
+        }
+        catch (Exception ex)
+        {
+            Logger.WriteLine(ex.ToString());
+            return;
+        }
+
+        Thread.Sleep(500);
+
+        if (File.ReadAllText(backup).Contains("}"))
+        {
+            File.Copy(backup, configFile, true);
+        }
+        else
+        {
+            Logger.WriteLine("Error writing config");
+        }
+
+    }
 
     public static string GetModel()
     {
@@ -157,16 +188,7 @@ public static class AppConfig
 
     private static void Write()
     {
-        string jsonString = JsonSerializer.Serialize(config, new JsonSerializerOptions { WriteIndented = true });
-        try
-        {
-            File.WriteAllText(configFile + ".bak", jsonString);
-            File.Copy(configFile + ".bak", configFile, true);
-        }
-        catch (Exception e)
-        {
-            Debug.Write(e.ToString());
-        }
+        timer.Start();
     }
 
     public static void Set(string name, int value)
