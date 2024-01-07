@@ -24,7 +24,8 @@ public static class AppConfig
         if (File.Exists(startupPath + configName))
         {
             configFile = startupPath + configName;
-        } else
+        }
+        else
         {
             configFile = appPath + configName;
         }
@@ -159,7 +160,8 @@ public static class AppConfig
         string jsonString = JsonSerializer.Serialize(config, new JsonSerializerOptions { WriteIndented = true });
         try
         {
-            File.WriteAllText(configFile, jsonString);
+            File.WriteAllText(configFile + ".bak", jsonString);
+            File.Copy(configFile + ".bak", configFile, true);
         }
         catch (Exception e)
         {
@@ -345,7 +347,7 @@ public static class AppConfig
 
     public static bool IsSingleColor()
     {
-        return  ContainsModel("GA401") || ContainsModel("FX517Z") || ContainsModel("FX516P") || ContainsModel("X13") || IsARCNM() || ContainsModel("GA502IU");
+        return ContainsModel("GA401") || ContainsModel("FX517Z") || ContainsModel("FX516P") || ContainsModel("X13") || IsARCNM() || ContainsModel("GA502IU");
     }
 
     public static bool IsStrix()
@@ -413,13 +415,14 @@ public static class AppConfig
 
     public static bool IsFanScale()
     {
-        if (!ContainsModel("GU604")) return false; 
+        if (!ContainsModel("GU604")) return false;
 
         try
         {
             var (bios, model) = GetBiosAndModel();
             return (Int32.Parse(bios) < 312);
-        } catch
+        }
+        catch
         {
             return false;
         }
