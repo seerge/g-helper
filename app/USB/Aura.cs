@@ -533,7 +533,7 @@ namespace GHelper.USB
                 return;
             }
 
-            if (AppConfig.ContainsModel("GA503"))
+            if (AppConfig.IsNoDirectRGB())
             {
                 AsusHid.Write(new List<byte[]> { AuraMessage(AuraMode.AuraStatic, color, color, 0xeb, isSingleColor), MESSAGE_SET });
                 return;
