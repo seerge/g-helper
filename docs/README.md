@@ -115,9 +115,6 @@ Huge thanks to [@IceStormNG](https://github.com/IceStormNG) 👑 for contributio
 - [Custom keybindings / hotkeys](https://github.com/seerge/g-helper/wiki/Power-user-settings#custom-hotkey-actions)
 
 ------------------
-I don't have a Microsoft certificate to sign the app yet, so if you get a warning from Windows Defender on launch (Windows Protected your PC), click ``More Info`` -> ``Run anyway``. 
-
-------------------
 #### If you like the app you can make a Donation 
 
 | [Paypal in EUR](https://www.paypal.com/donate/?hosted_button_id=4HMSHS4EBQWTA) | [Paypal in USD](https://www.paypal.com/donate/?hosted_button_id=SRM6QUX6ACXDY) |
