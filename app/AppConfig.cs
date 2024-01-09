@@ -384,7 +384,7 @@ public static class AppConfig
 
     public static bool IsNoDirectRGB()
     {
-        return ContainsModel("GA503") || ContainsModel("G533");
+        return ContainsModel("GA503");
     }
 
     public static bool IsStrixNumpad()
