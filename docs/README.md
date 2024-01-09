@@ -82,6 +82,14 @@ Each BIOS mode is paired with matching Windows Power Mode. You can adjust this s
 
 ![GPU Modes](https://github.com/seerge/g-helper/assets/5920850/65c6bdd5-728c-4965-b544-fcf5a85ed6a2)
 
+### 🔖 Important Notice
+
+G-Helper is **not** an operating system, firmware or a driver. It doesn't "run" or control your hardware in realtime anyhow. 
+
+It's an app that lets you select (already predefined and stored in BIOS) operating modes and (optionally) set some settings that already exist on your device (same as Armoury Crate). 
+
+Role of G-Helper for your laptop is similar to a role of a remote control for your TV.
+
 ### :mouse: Asus Mouse and other peripherals support
 
 [Currently supported models](https://github.com/seerge/g-helper/discussions/900)
