@@ -84,7 +84,7 @@ Each BIOS mode is paired with matching Windows Power Mode. You can adjust this s
 
 ### 🔖 Important Notice
 
-G-Helper is **not** an operating system, firmware or a driver. It doesn't "run" or control your hardware in realtime anyhow. 
+G-Helper is **not** an operating system, firmware or a driver. It doesn't "run" your hardware in realtime anyhow. 
 
 It's an app that lets you select (already predefined and stored in BIOS) operating modes and (optionally) set some settings that already exist on your device (same as Armoury Crate). 
 
