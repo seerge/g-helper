@@ -83,10 +83,10 @@ public class AsusACPI
     public const int Temp_CPU = 0x00120094;
     public const int Temp_GPU = 0x00120097;
 
-    public const int PPT_TotalA0 = 0x001200A0;  // SPL (Total limit for all-AMD models) / PL1
+    public const int PPT_APUA0 = 0x001200A0;  // sPPT (slow boost limit) / PL2
     public const int PPT_EDCA1 = 0x001200A1;  // CPU EDC
     public const int PPT_TDCA2 = 0x001200A2;  // CPU TDC
-    public const int PPT_APUA3 = 0x001200A3;  // sPPT (long boost limit) / PL2
+    public const int PPT_APUA3 = 0x001200A3;  // SPL (sustained limit) / PL1
 
     public const int PPT_CPUB0 = 0x001200B0;  // CPU PPT on 2022 (PPT_LIMIT_APU)
     public const int PPT_CPUB1 = 0x001200B1;  // Total PPT on 2022 (PPT_LIMIT_SLOW)

@@ -344,6 +344,11 @@ public static class AppConfig
         return ContainsModel("TUF");
     }
 
+    public static bool IsProArt()
+    {
+        return ContainsModel("ProArt");
+    }
+
     public static bool IsVivobook()
     {
         return ContainsModel("Vivobook");
@@ -379,7 +384,7 @@ public static class AppConfig
 
     public static bool IsStrixLimitedRGB()
     {
-        return ContainsModel("G614JV") || ContainsModel("G614JZ") || ContainsModel("G512LI") || ContainsModel("G513R") || ContainsModel("G713PV") || ContainsModel("G513IE") || ContainsModel("G713RC") || ContainsModel("G513QM");
+        return ContainsModel("G614JV") || ContainsModel("G614JZ") || ContainsModel("G512LI") || ContainsModel("G513R") || ContainsModel("G713PV") || ContainsModel("G513IE") || ContainsModel("G713RC") || ContainsModel("G513QM") || ContainsModel("G533Q");
     }
 
     public static bool IsNoDirectRGB()

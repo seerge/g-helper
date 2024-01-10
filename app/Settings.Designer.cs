@@ -1414,6 +1414,7 @@ namespace GHelper
             MinimumSize = new Size(822, 71);
             Name = "SettingsForm";
             Padding = new Padding(11);
+            ShowIcon = false;
             StartPosition = FormStartPosition.CenterScreen;
             Text = "G-Helper";
             panelMatrix.ResumeLayout(false);
