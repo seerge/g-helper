@@ -117,6 +117,7 @@ Huge thanks to [@IceStormNG](https://github.com/IceStormNG) 👑 for contributio
 - ``Shift + M1 / M2`` - Backlight brightness Down / Up
 - ``Fn + C`` - Fn-Lock
 - ``Fn + Shift + F7 / F8`` - Matrix brightness Down / Up
+- ``Fn + Shift + F7 / F8`` - Screenpad brightness Down / Up
 - ``Ctrl + Shift + F20`` - Mute Microphone
 - ``Ctrl + Shift + Alt + F14`` - Eco Mode
 - ``Ctrl + Shift + Alt + F15`` - Standard Mode
