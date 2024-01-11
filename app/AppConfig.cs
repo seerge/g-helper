@@ -384,12 +384,12 @@ public static class AppConfig
 
     public static bool IsStrixLimitedRGB()
     {
-        return ContainsModel("G614JV") || ContainsModel("G614JZ") || ContainsModel("G512LI") || ContainsModel("G513R") || ContainsModel("G713PV") || ContainsModel("G513IE") || ContainsModel("G713RC") || ContainsModel("G513QM") || ContainsModel("G533Q");
+        return ContainsModel("G614JV") || ContainsModel("G614JZ") || ContainsModel("G512LI") || ContainsModel("G513R") || ContainsModel("G713PV") || ContainsModel("G513IE") || ContainsModel("G713RC") || ContainsModel("G513QM");
     }
 
     public static bool IsNoDirectRGB()
     {
-        return ContainsModel("GA503");
+        return ContainsModel("GA503") || ContainsModel("G533Q");
     }
 
     public static bool IsStrixNumpad()

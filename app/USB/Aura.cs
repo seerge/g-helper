@@ -527,15 +527,15 @@ namespace GHelper.USB
                 return;
             }
 
-            if (isStrix)
-            {
-                ApplyDirect(Enumerable.Repeat(color, AURA_ZONES).ToArray(), init);
-                return;
-            }
-
             if (AppConfig.IsNoDirectRGB())
             {
                 AsusHid.Write(new List<byte[]> { AuraMessage(AuraMode.AuraStatic, color, color, 0xeb, isSingleColor), MESSAGE_SET });
+                return;
+            }
+
+            if (isStrix)
+            {
+                ApplyDirect(Enumerable.Repeat(color, AURA_ZONES).ToArray(), init);
                 return;
             }
 
