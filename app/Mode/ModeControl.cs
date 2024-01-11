@@ -171,7 +171,7 @@ namespace GHelper.Mode
                     Task.Run(async () =>
                     {
                         await Task.Delay(TimeSpan.FromSeconds(1));
-                        Program.acpi.DeviceSet(AsusACPI.PPT_TotalA0, 80, "PowerLimit Fix A0");
+                        Program.acpi.DeviceSet(AsusACPI.PPT_APUA0, 80, "PowerLimit Fix A0");
                         Program.acpi.DeviceSet(AsusACPI.PPT_APUA3, 80, "PowerLimit Fix A3");
                     });
                 }
@@ -261,10 +261,10 @@ namespace GHelper.Mode
             if (limit_slow < AsusACPI.MinTotal) return;
 
             // SPL and SPPT 
-            if (Program.acpi.DeviceGet(AsusACPI.PPT_TotalA0) >= 0)
+            if (Program.acpi.DeviceGet(AsusACPI.PPT_APUA0) >= 0)
             {
-                Program.acpi.DeviceSet(AsusACPI.PPT_TotalA0, limit_total, "PowerLimit A0");
-                Program.acpi.DeviceSet(AsusACPI.PPT_APUA3, limit_slow, "PowerLimit A3");
+                Program.acpi.DeviceSet(AsusACPI.PPT_APUA3, limit_total, "PowerLimit A3");
+                Program.acpi.DeviceSet(AsusACPI.PPT_APUA0, limit_slow, "PowerLimit A0");
                 customPower = limit_total;
             }
             else if (RyzenControl.IsAMD())

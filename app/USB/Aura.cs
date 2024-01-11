@@ -76,7 +76,7 @@ namespace GHelper.USB
         public static Color Color1 = Color.White;
         public static Color Color2 = Color.Black;
 
-        static bool isACPI = AppConfig.IsTUF() || AppConfig.IsVivobook();
+        static bool isACPI = AppConfig.IsTUF() || AppConfig.IsVivobook() || AppConfig.IsProArt();
         static bool isStrix = AppConfig.IsStrix();
 
         static bool isStrix4Zone = AppConfig.IsStrixLimitedRGB();
@@ -527,15 +527,15 @@ namespace GHelper.USB
                 return;
             }
 
-            if (isStrix)
+            if (AppConfig.IsNoDirectRGB())
             {
-                ApplyDirect(Enumerable.Repeat(color, AURA_ZONES).ToArray(), init);
+                AsusHid.Write(new List<byte[]> { AuraMessage(AuraMode.AuraStatic, color, color, 0xeb, isSingleColor), MESSAGE_SET });
                 return;
             }
 
-            if (AppConfig.ContainsModel("GA503"))
+            if (isStrix)
             {
-                AsusHid.Write(new List<byte[]> { AuraMessage(AuraMode.AuraStatic, color, color, 0xeb, isSingleColor), MESSAGE_SET });
+                ApplyDirect(Enumerable.Repeat(color, AURA_ZONES).ToArray(), init);
                 return;
             }
 
@@ -582,7 +582,7 @@ namespace GHelper.USB
             {
                 CustomRGB.ApplyAmbient(true);
                 timer.Enabled = true;
-                timer.Interval = AppConfig.Get("aura_refresh", 120);
+                timer.Interval = AppConfig.Get("aura_refresh", AppConfig.ContainsModel("GU604") ? 400 : 120);
                 return;
             }
 

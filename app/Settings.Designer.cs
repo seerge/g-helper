@@ -321,7 +321,7 @@ namespace GHelper
             sliderBattery.Step = 5;
             sliderBattery.TabIndex = 20;
             sliderBattery.Text = "sliderBattery";
-            sliderBattery.Value = 80;
+            sliderBattery.Value = 100;
             // 
             // panelBatteryTitle
             // 
@@ -1414,6 +1414,7 @@ namespace GHelper
             MinimumSize = new Size(822, 71);
             Name = "SettingsForm";
             Padding = new Padding(11);
+            ShowIcon = false;
             StartPosition = FormStartPosition.CenterScreen;
             Text = "G-Helper";
             panelMatrix.ResumeLayout(false);

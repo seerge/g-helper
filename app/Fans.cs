@@ -5,6 +5,7 @@ using GHelper.UI;
 using GHelper.USB;
 using Ryzen;
 using System.Diagnostics;
+using System.Management;
 using System.Windows.Forms.DataVisualization.Charting;
 
 namespace GHelper
@@ -103,27 +104,27 @@ namespace GHelper
 
             buttonReset.Click += ButtonReset_Click;
 
-            trackA0.Maximum = AsusACPI.MaxTotal;
-            trackA0.Minimum = AsusACPI.MinTotal;
+            trackTotal.Maximum = AsusACPI.MaxTotal;
+            trackTotal.Minimum = AsusACPI.MinTotal;
 
-            trackA3.Maximum = AsusACPI.MaxTotal;
-            trackA3.Minimum = AsusACPI.MinTotal;
+            trackSlow.Maximum = AsusACPI.MaxTotal;
+            trackSlow.Minimum = AsusACPI.MinTotal;
 
-            trackB0.Maximum = AsusACPI.MaxCPU;
-            trackB0.Minimum = AsusACPI.MinCPU;
+            trackCPU.Maximum = AsusACPI.MaxCPU;
+            trackCPU.Minimum = AsusACPI.MinCPU;
 
-            trackC1.Maximum = AsusACPI.MaxTotal;
-            trackC1.Minimum = AsusACPI.MinTotal;
+            trackFast.Maximum = AsusACPI.MaxTotal;
+            trackFast.Minimum = AsusACPI.MinTotal;
 
-            trackC1.Scroll += TrackPower_Scroll;
-            trackB0.Scroll += TrackPower_Scroll;
-            trackA0.Scroll += TrackPower_Scroll;
-            trackA3.Scroll += TrackPower_Scroll;
+            trackFast.Scroll += TrackPower_Scroll;
+            trackCPU.Scroll += TrackPower_Scroll;
+            trackTotal.Scroll += TrackPower_Scroll;
+            trackSlow.Scroll += TrackPower_Scroll;
 
-            trackC1.MouseUp += TrackPower_MouseUp;
-            trackB0.MouseUp += TrackPower_MouseUp;
-            trackA0.MouseUp += TrackPower_MouseUp;
-            trackA3.MouseUp += TrackPower_MouseUp;
+            trackFast.MouseUp += TrackPower_MouseUp;
+            trackCPU.MouseUp += TrackPower_MouseUp;
+            trackTotal.MouseUp += TrackPower_MouseUp;
+            trackSlow.MouseUp += TrackPower_MouseUp;
 
             checkApplyFans.Click += CheckApplyFans_Click;
             checkApplyPower.Click += CheckApplyPower_Click;
@@ -177,6 +178,7 @@ namespace GHelper
 
             FillModes();
             InitAll();
+            InitCPU();
 
             comboBoost.SelectedValueChanged += ComboBoost_Changed;
             comboPowerMode.SelectedValueChanged += ComboPowerMode_Changed;
@@ -265,6 +267,23 @@ namespace GHelper
             InitPowerPlan();
             InitUV();
             InitGPU();
+        }
+
+        public void InitCPU()
+        {
+            Task.Run(async () =>
+            {
+                string CPUName;
+                using (ManagementObjectSearcher myProcessorObject = new ManagementObjectSearcher("select * from Win32_Processor"))
+                    foreach (ManagementObject obj in myProcessorObject.Get())
+                    {
+                        CPUName = obj["Name"].ToString();
+                        Invoke(delegate
+                        {
+                            Text = Properties.Strings.FansAndPower + " - " + CPUName;
+                        });
+                    }
+            });
         }
 
         public void ToggleNavigation(int index = 0)
@@ -789,42 +808,41 @@ namespace GHelper
         public void InitPower(bool changed = false)
         {
 
-            bool modeA0 = (Program.acpi.DeviceGet(AsusACPI.PPT_TotalA0) >= 0 || RyzenControl.IsAMD());
-            bool modeA3 = Program.acpi.DeviceGet(AsusACPI.PPT_APUA3) >= 0;
+            bool modeA = Program.acpi.DeviceGet(AsusACPI.PPT_APUA0) >= 0 || RyzenControl.IsAMD();
             bool modeB0 = Program.acpi.IsAllAmdPPT();
             bool modeC1 = Program.acpi.DeviceGet(AsusACPI.PPT_APUC1) >= 0;
 
-            panelA0.Visible = modeA0;
-            panelB0.Visible = modeB0;
+            panelTotal.Visible = modeA;
+            panelCPU.Visible = modeB0;
 
-            panelApplyPower.Visible = panelTitleCPU.Visible = modeA0 || modeB0 || modeC1;
+            panelApplyPower.Visible = panelTitleCPU.Visible = modeA || modeB0 || modeC1;
 
 
             // All AMD version has B0 but doesn't have C0 (Nvidia GPU) settings
             if (modeB0)
             {
-                labelLeftA0.Text = "Platform (CPU + GPU)";
-                labelLeftB0.Text = "CPU";
-                panelC1.Visible = false;
-                panelA3.Visible = false;
+                labelLeftTotal.Text = "Platform (CPU + GPU)";
+                labelLeftCPU.Text = "CPU";
+                panelFast.Visible = false;
+                panelSlow.Visible = false;
             }
             else
             {
-                panelA3.Visible = modeA3;
+                panelSlow.Visible = true;
 
                 if (RyzenControl.IsAMD())
                 {
-                    labelLeftA0.Text = "CPU Sustained (SPL)";
-                    labelLeftA3.Text = "CPU Slow (sPPT)";
-                    labelLeftC1.Text = "CPU Fast (fPPT)";
-                    panelC1.Visible = modeC1;
+                    labelLeftTotal.Text = "CPU Sustained (SPL)";
+                    labelLeftSlow.Text = "CPU Slow (sPPT)";
+                    labelLeftFast.Text = "CPU Fast (fPPT)";
+                    panelFast.Visible = modeC1;
                     
                 }
                 else
                 {
-                    labelLeftA0.Text = "CPU Slow (PL1)";
-                    labelLeftA3.Text = "CPU Fast (PL2)";
-                    panelC1.Visible = false;
+                    labelLeftTotal.Text = "CPU Slow (PL1)";
+                    labelLeftSlow.Text = "CPU Fast (PL2)";
+                    panelFast.Visible = false;
                 }
 
             }
@@ -838,10 +856,10 @@ namespace GHelper
 
             if (changed)
             {
-                limit_total = trackA0.Value;
-                limit_slow = trackA3.Value;
-                limit_cpu = trackB0.Value;
-                limit_fast = trackC1.Value;
+                limit_total = trackTotal.Value;
+                limit_slow = trackSlow.Value;
+                limit_cpu = trackCPU.Value;
+                limit_fast = trackFast.Value;
             }
             else
             {
@@ -868,17 +886,17 @@ namespace GHelper
             if (limit_fast > AsusACPI.MaxTotal) limit_fast = AsusACPI.MaxTotal;
             if (limit_fast < AsusACPI.MinTotal) limit_fast = AsusACPI.MinTotal;
 
-            trackA0.Value = limit_total;
-            trackA3.Value = limit_slow;
-            trackB0.Value = limit_cpu;
-            trackC1.Value = limit_fast;
+            trackTotal.Value = limit_total;
+            trackSlow.Value = limit_slow;
+            trackCPU.Value = limit_cpu;
+            trackFast.Value = limit_fast;
 
             checkApplyPower.Checked = apply;
 
-            labelA0.Text = trackA0.Value.ToString() + "W";
-            labelA3.Text = trackA3.Value.ToString() + "W";
-            labelB0.Text = trackB0.Value.ToString() + "W";
-            labelC1.Text = trackC1.Value.ToString() + "W";
+            labelTotal.Text = trackTotal.Value.ToString() + "W";
+            labelSlow.Text = trackSlow.Value.ToString() + "W";
+            labelCPU.Text = trackCPU.Value.ToString() + "W";
+            labelFast.Text = trackFast.Value.ToString() + "W";
 
             AppConfig.SetMode("limit_total", limit_total);
             AppConfig.SetMode("limit_slow", limit_slow);

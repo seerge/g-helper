@@ -634,7 +634,17 @@ namespace GHelper
         {
             if (Height > Program.settingsForm.Height)
             {
-                Top = Program.settingsForm.Top + Program.settingsForm.Height - Height;
+                var top = Program.settingsForm.Top + Program.settingsForm.Height - Height;
+
+                if (top < 0)
+                {
+                    MaximumSize = new Size(Width, Program.settingsForm.Height);
+                    Top = Program.settingsForm.Top;
+                } else
+                {
+                    Top = top;
+                }
+
             }
             else
             {

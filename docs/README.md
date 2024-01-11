@@ -82,6 +82,14 @@ Each BIOS mode is paired with matching Windows Power Mode. You can adjust this s
 
 ![GPU Modes](https://github.com/seerge/g-helper/assets/5920850/65c6bdd5-728c-4965-b544-fcf5a85ed6a2)
 
+### 🔖 Important Notice
+
+G-Helper is **NOT** an operating system, firmware or a driver. It **DOESN'T** "run" your hardware in realtime anyhow. 
+
+It's an app that lets you select (already predefined and stored in BIOS) operating modes and (optionally) set some settings that already exist on your device (same as Armoury Crate). If you use same mode / settings as in Armoury Crate - performance of your device won't be different.
+
+Role of G-Helper for your laptop is similar to a role of a remote control for your TV.
+
 ### :mouse: Asus Mouse and other peripherals support
 
 [Currently supported models](https://github.com/seerge/g-helper/discussions/900)
@@ -109,13 +117,11 @@ Huge thanks to [@IceStormNG](https://github.com/IceStormNG) 👑 for contributio
 - ``Shift + M1 / M2`` - Backlight brightness Down / Up
 - ``Fn + C`` - Fn-Lock
 - ``Fn + Shift + F7 / F8`` - Matrix brightness Down / Up
+- ``Fn + Shift + F7 / F8`` - Screenpad brightness Down / Up
 - ``Ctrl + Shift + F20`` - Mute Microphone
 - ``Ctrl + Shift + Alt + F14`` - Eco Mode
 - ``Ctrl + Shift + Alt + F15`` - Standard Mode
 - [Custom keybindings / hotkeys](https://github.com/seerge/g-helper/wiki/Power-user-settings#custom-hotkey-actions)
-
-------------------
-I don't have a Microsoft certificate to sign the app yet, so if you get a warning from Windows Defender on launch (Windows Protected your PC), click ``More Info`` -> ``Run anyway``. 
 
 ------------------
 #### If you like the app you can make a Donation 

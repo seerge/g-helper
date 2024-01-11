@@ -1,5 +1,4 @@
 ﻿using GHelper.Mode;
-using System.Diagnostics;
 using System.Management;
 using System.Text.Json;
 
@@ -13,6 +12,7 @@ public static class AppConfig
     private static string? _bios;
 
     private static Dictionary<string, object> config = new Dictionary<string, object>();
+    private static System.Timers.Timer timer = new System.Timers.Timer(1000);
 
     static AppConfig()
     {
@@ -24,7 +24,8 @@ public static class AppConfig
         if (File.Exists(startupPath + configName))
         {
             configFile = startupPath + configName;
-        } else
+        }
+        else
         {
             configFile = appPath + configName;
         }
@@ -51,8 +52,39 @@ public static class AppConfig
             Init();
         }
 
+        timer.Elapsed += Timer_Elapsed;
+
     }
 
+    private static void Timer_Elapsed(object? sender, System.Timers.ElapsedEventArgs e)
+    {
+
+        timer.Stop();
+        string jsonString = JsonSerializer.Serialize(config, new JsonSerializerOptions { WriteIndented = true });
+        var backup = configFile + ".bak";
+
+        try
+        {
+            File.WriteAllText(backup, jsonString);
+        }
+        catch (Exception ex)
+        {
+            Logger.WriteLine(ex.ToString());
+            return;
+        }
+
+        Thread.Sleep(500);
+
+        if (File.ReadAllText(backup).Contains("}"))
+        {
+            File.Copy(backup, configFile, true);
+        }
+        else
+        {
+            Logger.WriteLine("Error writing config");
+        }
+
+    }
 
     public static string GetModel()
     {
@@ -156,15 +188,7 @@ public static class AppConfig
 
     private static void Write()
     {
-        string jsonString = JsonSerializer.Serialize(config, new JsonSerializerOptions { WriteIndented = true });
-        try
-        {
-            File.WriteAllText(configFile, jsonString);
-        }
-        catch (Exception e)
-        {
-            Debug.Write(e.ToString());
-        }
+        timer.Start();
     }
 
     public static void Set(string name, int value)
@@ -320,6 +344,11 @@ public static class AppConfig
         return ContainsModel("TUF");
     }
 
+    public static bool IsProArt()
+    {
+        return ContainsModel("ProArt");
+    }
+
     public static bool IsVivobook()
     {
         return ContainsModel("Vivobook");
@@ -328,7 +357,7 @@ public static class AppConfig
     // Devices with bugged bios command to change brightness
     public static bool SwappedBrightness()
     {
-        return ContainsModel("FA506IH") || ContainsModel("FA506IC") || ContainsModel("FX506LU") || ContainsModel("FX506IC") || ContainsModel("FX506LH");
+        return ContainsModel("FA506IH") || ContainsModel("FA506IC") || ContainsModel("FX506LU") || ContainsModel("FX506IC") || ContainsModel("FX506LH") || ContainsModel("FA506IV");
     }
 
 
@@ -345,7 +374,7 @@ public static class AppConfig
 
     public static bool IsSingleColor()
     {
-        return  ContainsModel("GA401") || ContainsModel("FX517Z") || ContainsModel("FX516P") || ContainsModel("X13") || IsARCNM() || ContainsModel("GA502IU");
+        return ContainsModel("GA401") || ContainsModel("FX517Z") || ContainsModel("FX516P") || ContainsModel("X13") || IsARCNM() || ContainsModel("GA502IU");
     }
 
     public static bool IsStrix()
@@ -355,7 +384,12 @@ public static class AppConfig
 
     public static bool IsStrixLimitedRGB()
     {
-        return ContainsModel("G614JV") || ContainsModel("G614JZ") || ContainsModel("G512LI") || ContainsModel("G513R") || ContainsModel("G713PV") || ContainsModel("G513IE") || ContainsModel("G713RC");
+        return ContainsModel("G614JV") || ContainsModel("G614JZ") || ContainsModel("G512LI") || ContainsModel("G513R") || ContainsModel("G713PV") || ContainsModel("G513IE") || ContainsModel("G713RC") || ContainsModel("G513QM");
+    }
+
+    public static bool IsNoDirectRGB()
+    {
+        return ContainsModel("GA503") || ContainsModel("G533Q");
     }
 
     public static bool IsStrixNumpad()
@@ -413,13 +447,14 @@ public static class AppConfig
 
     public static bool IsFanScale()
     {
-        if (!ContainsModel("GU604")) return false; 
+        if (!ContainsModel("GU604")) return false;
 
         try
         {
             var (bios, model) = GetBiosAndModel();
             return (Int32.Parse(bios) < 312);
-        } catch
+        }
+        catch
         {
             return false;
         }
