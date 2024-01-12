@@ -10,7 +10,7 @@ using System.Timers;
 namespace GHelper.AnimeMatrix
 {
 
-    public class AniMatrixControl
+    public class AniMatrixControl : NAudio.CoreAudioApi.Interfaces.IMMNotificationClient
     {
 
         SettingsForm settings;
@@ -20,6 +20,8 @@ namespace GHelper.AnimeMatrix
 
         double[]? AudioValues;
         WasapiCapture? AudioDevice;
+        string? AudioDeviceId;
+        private MMDeviceEnumerator? AudioDeviceEnum;
 
         public bool IsValid => device != null;
 
@@ -167,6 +169,9 @@ namespace GHelper.AnimeMatrix
                     Logger.WriteLine(ex.ToString());
                 }
             }
+
+            AudioDeviceId = null;
+            AudioDeviceEnum?.Dispose();
         }
 
         void SetMatrixAudio()
@@ -179,10 +184,13 @@ namespace GHelper.AnimeMatrix
 
             try
             {
-                using (var enumerator = new MMDeviceEnumerator())
-                using (MMDevice device = enumerator.GetDefaultAudioEndpoint(DataFlow.Render, Role.Console))
+                AudioDeviceEnum = new MMDeviceEnumerator();
+                AudioDeviceEnum.RegisterEndpointNotificationCallback(this);
+
+                using (MMDevice device = AudioDeviceEnum.GetDefaultAudioEndpoint(DataFlow.Render, Role.Console))
                 {
                     AudioDevice = new WasapiLoopbackCapture(device);
+                    AudioDeviceId = device.ID;
                     WaveFormat fmt = AudioDevice.WaveFormat;
 
                     AudioValues = new double[fmt.SampleRate / 1000];
@@ -397,6 +405,48 @@ namespace GHelper.AnimeMatrix
 
         }
 
+        public void OnDeviceStateChanged(string deviceId, DeviceState newState)
+        {
 
+        }
+
+        public void OnDeviceAdded(string pwstrDeviceId)
+        {
+
+        }
+
+        public void OnDeviceRemoved(string deviceId)
+        {
+
+        }
+
+        public void OnDefaultDeviceChanged(DataFlow flow, Role role, string defaultDeviceId)
+        {
+            if (AudioDeviceId == defaultDeviceId)
+            {
+                //We already caputre this device. No need to re-initialize
+                return;
+            }
+
+            int running = AppConfig.Get("matrix_running");
+            if (flow != DataFlow.Render || role != Role.Console || running != 4)
+            {
+                return;
+            }
+
+            //Restart audio if default audio changed
+            Logger.WriteLine("Matrix Audio: Default Output changed to " + defaultDeviceId);
+
+            //Already set the device here. Otherwise this will be called multiple times in a short succession and causes a crash due to dispose during initalization.
+            AudioDeviceId = defaultDeviceId;
+
+            //Delay is required or it will deadlock on dispose.
+            Task.Delay(50).ContinueWith(t => SetMatrixAudio());
+        }
+
+        public void OnPropertyValueChanged(string pwstrDeviceId, PropertyKey key)
+        {
+
+        }
     }
 }
