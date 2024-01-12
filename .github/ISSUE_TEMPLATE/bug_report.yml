@@ -16,30 +16,6 @@ body:
         - label: I understand that, if insufficient information was provided, my issue will be closed without an answer.
     validations:
       required: true
-  - type: input
-    id: version
-    attributes:
-      label: Version
-      description: G-Helper version?
-      placeholder: e.g. 0.146
-    validations:
-      required: true
-  - type: input
-    id: os
-    attributes:
-      label: OS
-      description: Which operating system do you use?
-      placeholder: e.g. Windows 11 21H2 build 22000
-    validations:
-      required: true
-  - type: input
-    id: device
-    attributes:
-      label: Device Model
-      description: Which laptop do you use?
-      placeholder: e.g. Asus Zephyrus G14 GA404RK
-    validations:
-      required: true
   - type: textarea
     id: description
     attributes:
@@ -81,6 +57,14 @@ body:
     attributes:
       label: Additional information. 
       description: If applicable, add screenshots or other relevant information to help explain your problem.
+  - type: input
+    id: device
+    attributes:
+      label: Device Model
+      description: Which laptop do you use?
+      placeholder: e.g. Asus Zephyrus G14 GA404RK
+    validations:
+      required: true
   - type: checkboxes
     id: asus
     attributes:
@@ -90,4 +74,16 @@ body:
         - label: Armoury Crate
         - label: MyAsus
         - label: Other Asus Services
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      description: G-Helper version?
+      placeholder: e.g. 0.146
+  - type: input
+    id: os
+    attributes:
+      label: OS
+      description: Which operating system do you use?
+      placeholder: e.g. Windows 11 21H2 build 22000        
           
