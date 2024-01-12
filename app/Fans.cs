@@ -828,7 +828,7 @@ namespace GHelper
             }
             else
             {
-                panelSlow.Visible = true;
+                panelSlow.Visible = modeA;
 
                 if (RyzenControl.IsAMD())
                 {
