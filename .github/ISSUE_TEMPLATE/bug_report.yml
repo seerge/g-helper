@@ -11,8 +11,7 @@ body:
     attributes:
       label: Rules
       options:
-        - label: I made myself familiar with the <a href='https://github.com/seerge/g-helper?tab=readme-ov-file'>Readme</a> and <a href='https://github.com/seerge/g-helper/wiki/FAQ'>FAQ</a>.
-        - label: I checked closed issues for similar ones and did not find a similar problem mentioned before.
+        - label: I made myself familiar with the <a href='https://github.com/seerge/g-helper?tab=readme-ov-file'>Readme</a>, <a href='https://github.com/seerge/g-helper/wiki/FAQ'>FAQ</a> and <a href='https://github.com/seerge/g-helper/wiki/Troubleshooting'>Troubleshooting</a>.
         - label: I understand that, if insufficient information was provided, my issue will be closed without an answer.
     validations:
       required: true
@@ -37,14 +36,6 @@ body:
     validations:
       required: true
   - type: textarea
-    id: expected-behaviour
-    attributes:
-      label: What is the behavior that you expected?
-      description: Describe what did you expect would happen.
-      placeholder: Describe what did you expect would happen.
-    validations:
-      required: true
-  - type: textarea
     id: logs
     attributes:
       label: Logs
@@ -52,24 +43,24 @@ body:
       description: Please drag and drop complete log file from ``%APPDATA%\GHelper\log.txt``
     validations:
       required: true
+  - type: input
+    id: device
+    attributes:
+      label: Device and Model
+      description: Which laptop do you use?
+      placeholder: e.g. Asus Zephyrus G14 GA404RK
+    validations:
+      required: true
   - type: textarea
     id: additional
     attributes:
       label: Additional information. 
       description: If applicable, add screenshots or other relevant information to help explain your problem.
-  - type: input
-    id: device
-    attributes:
-      label: Device Model
-      description: Which laptop do you use?
-      placeholder: e.g. Asus Zephyrus G14 GA404RK
-    validations:
-      required: true
   - type: checkboxes
     id: asus
     attributes:
-      label: Armoury Crate or Asus software running
-      description: Please check what Asus/Armoury Services do you have running
+      label: Asus Software
+      description: Please check what Asus/Armoury Services do you have installed and running
       options:
         - label: Armoury Crate
         - label: MyAsus
@@ -85,5 +76,5 @@ body:
     attributes:
       label: OS
       description: Which operating system do you use?
-      placeholder: e.g. Windows 11 21H2 build 22000        
+      placeholder: e.g. Windows 11 21H2     
           
