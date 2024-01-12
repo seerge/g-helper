@@ -1,0 +1,83 @@
+name: Bug Report
+description: Something isn't working correctly
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to fill out this bug report. The more information you provide, the easier it will be for me to fix it!
+  - type: checkboxes
+    id: rules
+    attributes:
+      label: Rules
+      options:
+        - label: I made myself familiar with the <a href='https://github.com/seerge/g-helper?tab=readme-ov-file'>Readme</a> and <a href='https://github.com/seerge/g-helper/wiki/FAQ'>FAQ</a>.
+        - label: I checked closed issues for similar ones and did not find a similar problem mentioned before.
+        - label: I understand that, if insufficient information was provided, my issue will be closed without an answer.
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      description: G-Helper version?
+      placeholder: e.g. 0.146
+    validations:
+      required: true
+  - type: input
+    id: os
+    attributes:
+      label: OS
+      description: Which operating system do you use?
+      placeholder: e.g. Windows 11 21H2 build 22000
+    validations:
+      required: true
+  - type: input
+    id: device
+    attributes:
+      label: Device Model
+      description: Which laptop do you use?
+      placeholder: e.g. Asus Zephyrus G14 GA404RK
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: What's wrong?
+      description: Provide detailed description of what is wrong or does not work as expected.
+      placeholder: Provide detailed description of what is wrong or does not work as expected.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: How to reproduce the bug?
+      description: Describe how to reproduce the behavior. Be as specific as possible and provide as many details as possible.
+      placeholder: |
+        1. Go to '...'
+        2. Click on '....'
+        3. Scroll down to '....'
+        4. See error
+    validations:
+      required: true
+  - type: textarea
+    id: expected-behaviour
+    attributes:
+      label: What is the behavior that you expected?
+      description: Describe what did you expect would happen.
+      placeholder: Describe what did you expect would happen.
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs
+      placeholder: Please drag and drop complete log file from ``%APPDATA%\GHelper\log.txt``
+      description: Please drag and drop complete log file from ``%APPDATA%\GHelper\log.txt``
+    validations:
+      required: true
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional information
+      description: If applicable, add screenshots or other relevant information to help explain your problem.
