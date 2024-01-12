@@ -259,6 +259,11 @@ public class AsusACPI
             DefaultTotal = 30;
         }
 
+        if (AppConfig.IsIntelHX())
+        {
+            MaxTotal = 175;
+        }
+
         if (AppConfig.DynamicBoost5())
         {
             MaxGPUBoost = 5;
