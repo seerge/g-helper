@@ -1,3 +1,4 @@
+using GHelper.Ally;
 using GHelper.Battery;
 using GHelper.Display;
 using GHelper.Gpu;
@@ -5,6 +6,8 @@ using GHelper.Helpers;
 using GHelper.Input;
 using GHelper.Mode;
 using GHelper.Peripherals;
+using GHelper.USB;
+using Microsoft.VisualBasic.Logging;
 using Microsoft.Win32;
 using Ryzen;
 using System.Diagnostics;
@@ -30,6 +33,7 @@ namespace GHelper
 
         public static ModeControl modeControl = new ModeControl();
         public static GPUModeControl gpuControl = new GPUModeControl(settingsForm);
+        public static AllyControl controllerControl = new AllyControl(settingsForm);
         public static ScreenControl screenControl = new ScreenControl();
         public static ClamshellModeControl clamshellControl = new ClamshellModeControl();
 
@@ -225,6 +229,8 @@ namespace GHelper
 
             settingsForm.AutoKeyboard();
             settingsForm.matrixControl.SetMatrix(true);
+
+            controllerControl.Init();
         }
 
         private static void SystemEvents_PowerModeChanged(object sender, PowerModeChangedEventArgs e)

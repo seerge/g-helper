@@ -1,4 +1,5 @@
-﻿using GHelper.AnimeMatrix;
+﻿using GHelper.Ally;
+using GHelper.AnimeMatrix;
 using GHelper.AutoUpdate;
 using GHelper.Battery;
 using GHelper.Display;
@@ -23,6 +24,7 @@ namespace GHelper
 
         public GPUModeControl gpuControl;
         ScreenControl screenControl = new ScreenControl();
+        AllyControl controllerControl;
         AutoUpdateControl updateControl;
 
         AsusMouseSettings? mouseSettings;
@@ -54,6 +56,7 @@ namespace GHelper
             gpuControl = new GPUModeControl(this);
             updateControl = new AutoUpdateControl(this);
             matrixControl = new AniMatrixControl(this);
+            controllerControl = new AllyControl(this);
 
             buttonSilent.Text = Properties.Strings.Silent;
             buttonBalanced.Text = Properties.Strings.Balanced;
@@ -227,6 +230,8 @@ namespace GHelper
             buttonBatteryFull.MouseLeave += ButtonBatteryFull_MouseLeave;
             buttonBatteryFull.Click += ButtonBatteryFull_Click;
 
+            buttonController.Click += ButtonController_Click;
+
             Text = "G-Helper " + (ProcessHelper.IsUserAdministrator() ? "—" : "-") + " " + AppConfig.GetModelShort();
             TopMost = AppConfig.Is("topmost");
 
@@ -238,6 +243,32 @@ namespace GHelper
             buttonFnLock.Click += ButtonFnLock_Click;
 
             panelPerformance.Focus();
+        }
+
+        private void ButtonController_Click(object? sender, EventArgs e)
+        {
+            controllerControl.ToggleMode();
+        }
+
+        public void VisualiseAlly(bool visible = false)
+        {
+            panelAlly.Visible = visible;
+        }
+
+        public void VisualiseController(ControllerMode mode)
+        {
+            switch (mode)
+            {
+                case ControllerMode.Gamepad:
+                    buttonController.Text = "Gamepad";
+                    break;
+                case ControllerMode.WASD:
+                    buttonController.Text = "WASD";
+                    break;
+                case ControllerMode.Mouse:
+                    buttonController.Text = "Mouse";
+                    break;
+            }
         }
 
         private void SettingsForm_LostFocus(object? sender, EventArgs e)

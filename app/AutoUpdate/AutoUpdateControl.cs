@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using GHelper.Helpers;
+using System.Diagnostics;
 using System.Net;
 using System.Reflection;
 using System.Text.Json;
@@ -130,6 +131,7 @@ namespace GHelper.AutoUpdate
                     cmd.StartInfo.CreateNoWindow = true;
                     cmd.StartInfo.FileName = "powershell";
                     cmd.StartInfo.Arguments = command;
+                    if (ProcessHelper.IsUserAdministrator()) cmd.StartInfo.Verb = "runas";
                     cmd.Start();
                 }
                 catch (Exception ex)

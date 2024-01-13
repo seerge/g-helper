@@ -384,7 +384,7 @@ public static class AppConfig
 
     public static bool IsStrixLimitedRGB()
     {
-        return ContainsModel("G614JV") || ContainsModel("G614JZ") || ContainsModel("G512LI") || ContainsModel("G513R") || ContainsModel("G713PV") || ContainsModel("G513IE") || ContainsModel("G713RC") || ContainsModel("G513QM");
+        return (ContainsModel("G614JV") || ContainsModel("G614JZ") || ContainsModel("G512LI") || ContainsModel("G513R") || ContainsModel("G713PV") || ContainsModel("G513IE") || ContainsModel("G713RC") || ContainsModel("G513QM")) && !Is("per_key_rgb");
     }
 
     public static bool IsNoDirectRGB()
@@ -488,6 +488,11 @@ public static class AppConfig
     public static bool IsHardwareTouchpadToggle()
     {
         return ContainsModel("FA507");
+    }
+
+    public static bool IsIntelHX()
+    {
+        return ContainsModel("G814") || ContainsModel("G614") || ContainsModel("G834") || ContainsModel("G634");
     }
 
     public static bool IsASUS()
