@@ -7,17 +7,27 @@ namespace GHelper.Input
     {
 
         CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
+        Action<int> _handler;
 
         public KeyboardListener(Action<int> KeyHandler)
         {
+            _handler = KeyHandler;
+            Listen();
+        }
+
+        private void Listen () { 
+
             HidStream? input = AsusHid.FindHidStream(AsusHid.INPUT_ID);
-            
+
             // Fallback
-            if (input == null)
+
+            int count = 0;
+
+            while (input == null && count++ < 60)
             {
                 Aura.Init();
                 Thread.Sleep(1000);
-                input = input = AsusHid.FindHidStream(AsusHid.INPUT_ID);
+                input = AsusHid.FindHidStream(AsusHid.INPUT_ID);
             }
 
             if (input == null)
@@ -48,7 +58,7 @@ namespace GHelper.Input
                         if (data.Length > 1 && data[0] == AsusHid.INPUT_ID && data[1] > 0 && data[1] != 236)
                         {
                             Logger.WriteLine($"Key: {data[1]}");
-                            KeyHandler(data[1]);
+                            _handler(data[1]);
                         }
                     }
 

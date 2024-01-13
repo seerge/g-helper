@@ -20,7 +20,7 @@ namespace GHelper.Ally
         SettingsForm settings;
 
         static ControllerMode mode = ControllerMode.Auto;
-        static ControllerMode _autoMode = ControllerMode.Gamepad;
+        static ControllerMode _autoMode = ControllerMode.Auto;
         static int _autoCount = 0;
 
         static int fpsLimit = -1;
@@ -60,13 +60,14 @@ namespace GHelper.Ally
             if (AppConfig.IsAlly()) settings.VisualiseAlly(true);
             else return;
 
+            Deadzones();
             SetMode((ControllerMode)AppConfig.Get("controller_mode", (int)ControllerMode.Auto));
+            
             settings.VisualiseBacklight(InputDispatcher.GetBacklight());
 
             fpsLimit = amdControl.GetFPSLimit();
             Logger.WriteLine($"FPS Limit: {fpsLimit}");
             settings.VisualiseFPSLimit(fpsLimit);
-
 
         }
 
@@ -102,10 +103,16 @@ namespace GHelper.Ally
             settings.VisualiseBacklight(InputDispatcher.GetBacklight());
         }
 
+        private void Deadzones()
+        {
+            AsusHid.WriteInput(new byte[] { AsusHid.INPUT_ID, 0xd1, 4, 4, 0, 100, 0, 100 }, "ControllerDeadzone");
+        }
+
         private void SetMode(ControllerMode mode)
         {
             if (mode == ControllerMode.Auto)
             {
+                _autoMode = ControllerMode.Auto;
                 amdControl.StartFPS();
                 timer.Start();
             }
