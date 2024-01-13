@@ -264,6 +264,16 @@ namespace GHelper.USB
                 if (isACPI) Program.acpi.TUFKeyboardBrightness(brightness);
 
                 AsusHid.Write(new byte[] { AsusHid.AURA_ID, 0xba, 0xc5, 0xc4, (byte)brightness }, log);
+
+                if (AppConfig.IsAlly())
+                {
+                    switch (brightness)
+                    {
+                        case 1: ApplyAura(0.1); break;
+                        case 2: ApplyAura(0.2); break;
+                    }
+                }
+
                 if (AppConfig.ContainsModel("GA503"))
                     AsusHid.WriteInput(new byte[] { AsusHid.INPUT_ID, 0xba, 0xc5, 0xc4, (byte)brightness }, log);
             });
@@ -558,13 +568,20 @@ namespace GHelper.USB
 
         }
 
-        public static void ApplyAura()
+        public static void ApplyAura(double colorDim = 1)
         {
 
             Mode = (AuraMode)AppConfig.Get("aura_mode");
             Speed = (AuraSpeed)AppConfig.Get("aura_speed");
             SetColor(AppConfig.Get("aura_color"));
             SetColor2(AppConfig.Get("aura_color2"));
+
+            if (colorDim < 1)
+            {
+                Color1 = Color.FromArgb((int)(Color1.R * colorDim), (int)(Color1.G * colorDim), (int)(Color1.B * colorDim));
+                Color2 = Color.FromArgb((int)(Color2.R * colorDim), (int)(Color2.G * colorDim), (int)(Color2.B * colorDim));
+            }
+
 
             timer.Enabled = false;
 
