@@ -105,6 +105,14 @@ namespace GHelper.USB
             { AuraMode.AMBIENT, "Ambient"},
         };
 
+        private static Dictionary<AuraMode, string> _modesAlly = new Dictionary<AuraMode, string>
+        {
+            { AuraMode.AuraStatic, Properties.Strings.AuraStatic },
+            { AuraMode.AuraBreathe, Properties.Strings.AuraBreathe },
+            { AuraMode.AuraColorCycle, Properties.Strings.AuraColorCycle },
+            { AuraMode.AuraStrobe, Properties.Strings.AuraStrobe },
+        };
+
         private static Dictionary<AuraMode, string> _modesStrix = new Dictionary<AuraMode, string>
         {
             { AuraMode.AuraStatic, Properties.Strings.AuraStatic },
@@ -159,6 +167,11 @@ namespace GHelper.USB
             if (isSingleColor)
             {
                 return _modesSingleColor;
+            }
+
+            if (AppConfig.IsAlly())
+            {
+                return _modesAlly;
             }
 
             if (AppConfig.IsAdvantageEdition())
@@ -265,14 +278,7 @@ namespace GHelper.USB
 
                 AsusHid.Write(new byte[] { AsusHid.AURA_ID, 0xba, 0xc5, 0xc4, (byte)brightness }, log);
 
-                if (AppConfig.IsAlly())
-                {
-                    switch (brightness)
-                    {
-                        case 1: ApplyAura(0.1); break;
-                        case 2: ApplyAura(0.2); break;
-                    }
-                }
+                if (AppConfig.IsAlly()) ApplyAura();
 
                 if (AppConfig.ContainsModel("GA503"))
                     AsusHid.WriteInput(new byte[] { AsusHid.INPUT_ID, 0xba, 0xc5, 0xc4, (byte)brightness }, log);
@@ -576,12 +582,24 @@ namespace GHelper.USB
             SetColor(AppConfig.Get("aura_color"));
             SetColor2(AppConfig.Get("aura_color2"));
 
-            if (colorDim < 1)
-            {
-                Color1 = Color.FromArgb((int)(Color1.R * colorDim), (int)(Color1.G * colorDim), (int)(Color1.B * colorDim));
-                Color2 = Color.FromArgb((int)(Color2.R * colorDim), (int)(Color2.G * colorDim), (int)(Color2.B * colorDim));
-            }
+            Color _Color1 = Color1;
+            Color _Color2 = Color2;
 
+            // Ally lower brightness fix
+            if (AppConfig.IsAlly())
+            {
+                switch (InputDispatcher.GetBacklight())
+                {
+                    case 1: colorDim = 0.1; break;
+                    case 2: colorDim = 0.3; break;
+                }
+
+                if (colorDim < 1)
+                {
+                    _Color1 = Color.FromArgb((int)(Color1.R * colorDim), (int)(Color1.G * colorDim), (int)(Color1.B * colorDim));
+                    _Color2 = Color.FromArgb((int)(Color2.R * colorDim), (int)(Color2.G * colorDim), (int)(Color2.B * colorDim));
+                }
+            }
 
             timer.Enabled = false;
 
@@ -611,7 +629,7 @@ namespace GHelper.USB
 
             int _speed = (Speed == AuraSpeed.Normal) ? 0xeb : (Speed == AuraSpeed.Fast) ? 0xf5 : 0xe1;
 
-            AsusHid.Write(new List<byte[]> { AuraMessage(Mode, Color1, Color2, _speed, isSingleColor), MESSAGE_APPLY, MESSAGE_SET });
+            AsusHid.Write(new List<byte[]> { AuraMessage(Mode, _Color1, _Color2, _speed, isSingleColor), MESSAGE_APPLY, MESSAGE_SET });
 
             if (isACPI)
                 Program.acpi.TUFKeyboardRGB(Mode, Color1, _speed);
