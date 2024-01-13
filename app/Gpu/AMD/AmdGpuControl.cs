@@ -9,7 +9,9 @@ public class AmdGpuControl : IGpuControl
 {
     private bool _isReady;
     private nint _adlContextHandle;
+
     private readonly ADLAdapterInfo _internalDiscreteAdapter;
+    private readonly ADLAdapterInfo? _iGPU;
 
     public bool IsNvidia => false;
 
@@ -74,6 +76,8 @@ public class AmdGpuControl : IGpuControl
             _isReady = true;
         }
 
+        _iGPU = FindByType(ADLAsicFamilyType.Integrated);
+
     }
 
     public bool IsValid => _isReady && _adlContextHandle != nint.Zero;
@@ -137,6 +141,29 @@ public class AmdGpuControl : IGpuControl
         enabled = enabledOut;
 
         return true;
+    }
+
+    public void StartFPS()
+    {
+        if (_adlContextHandle == nint.Zero || _iGPU == null) return;
+        ADL2_Adapter_FrameMetrics_Start(_adlContextHandle, ((ADLAdapterInfo)_iGPU).AdapterIndex, 0);
+    }
+
+    public void StopFPS()
+    {
+        if (_adlContextHandle == nint.Zero || _iGPU == null) return;
+        ADL2_Adapter_FrameMetrics_Stop(_adlContextHandle, ((ADLAdapterInfo)_iGPU).AdapterIndex, 0);
+    }
+
+    public float GetFPS()
+    {
+        if (_adlContextHandle == nint.Zero || _iGPU == null) return 0;
+        float fps;
+
+        if (ADL2_Adapter_FrameMetrics_Get(_adlContextHandle, ((ADLAdapterInfo)_iGPU).AdapterIndex, 0, out fps) != Adl2.ADL_SUCCESS) return 0;
+
+        return fps;
+
     }
 
     public ADLODNPerformanceLevels? GetGPUClocks()

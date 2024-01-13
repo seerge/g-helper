@@ -1418,6 +1418,7 @@ namespace GHelper
             panelAlly.Size = new Size(827, 176);
             panelAlly.TabIndex = 8;
             panelAlly.TabStop = true;
+            panelAlly.Visible = false;
             // 
             // label1
             // 

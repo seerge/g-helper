@@ -551,6 +551,47 @@ public class Adl2
             int iAdapterIndex,
             int iEnabled);
 
+        // FPS
+
+        [DllImport(Atiadlxx_FileName)]
+        public static extern int ADL2_Adapter_FrameMetrics_Start(
+            IntPtr context,
+            int iAdapterIndex,
+            int VidPnSourceId
+        );
+
+        [DllImport(Atiadlxx_FileName)]
+        public static extern int ADL2_Adapter_FrameMetrics_Stop(
+            IntPtr context,
+            int iAdapterIndex,
+            int VidPnSourceId
+        );
+
+        [DllImport(Atiadlxx_FileName)]
+        public static extern int ADL2_Adapter_FrameMetrics_Get(
+              IntPtr context,
+              int iAdapterIndex,
+              int VidPnSourceId,
+              out float iFramesPerSecond
+          );
+
+        [DllImport(Atiadlxx_FileName)]
+        public static extern int ADL2_FPS_Settings_Get(IntPtr context, int iAdapterIndex, out ADLFPSSettingsOutput lpFPSSettings);
+
+        [StructLayout(LayoutKind.Sequential)]
+        public struct ADLFPSSettingsOutput
+        {
+            public int ulSize;
+            public int bACFPSEnabled;
+            public int bDCFPSEnabled;
+            public int ulACFPSCurrent;
+            public int ulDCFPSCurrent;
+            public int ulACFPSMaximum;
+            public int ulACFPSMinimum;
+            public int ulDCFPSMaximum;
+            public int ulDCFPSMinimum;
+        }
+
         // Clocks
 
         [StructLayout(LayoutKind.Sequential)]

@@ -24,7 +24,7 @@ namespace GHelper
 
         public GPUModeControl gpuControl;
         ScreenControl screenControl = new ScreenControl();
-        AllyControl controllerControl;
+        AllyControl allyControl;
         AutoUpdateControl updateControl;
 
         AsusMouseSettings? mouseSettings;
@@ -56,7 +56,7 @@ namespace GHelper
             gpuControl = new GPUModeControl(this);
             updateControl = new AutoUpdateControl(this);
             matrixControl = new AniMatrixControl(this);
-            controllerControl = new AllyControl(this);
+            allyControl = new AllyControl(this);
 
             buttonSilent.Text = Properties.Strings.Silent;
             buttonBalanced.Text = Properties.Strings.Balanced;
@@ -247,12 +247,16 @@ namespace GHelper
 
         private void ButtonController_Click(object? sender, EventArgs e)
         {
-            controllerControl.ToggleMode();
+            allyControl.ToggleMode();
         }
 
         public void VisualiseAlly(bool visible = false)
         {
-            panelAlly.Visible = visible;
+            if (!visible) return;
+
+            panelAlly.Visible = true;
+            labelKeyboard.Text = "Backlight";
+            buttonFnLock.Visible = false;
         }
 
         public void VisualiseController(ControllerMode mode)
@@ -262,11 +266,11 @@ namespace GHelper
                 case ControllerMode.Gamepad:
                     buttonController.Text = "Gamepad";
                     break;
-                case ControllerMode.WASD:
-                    buttonController.Text = "WASD";
-                    break;
                 case ControllerMode.Mouse:
                     buttonController.Text = "Mouse";
+                    break;
+                default:
+                    buttonController.Text = "Auto";
                     break;
             }
         }
