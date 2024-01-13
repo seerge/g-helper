@@ -231,6 +231,7 @@ namespace GHelper
             buttonBatteryFull.Click += ButtonBatteryFull_Click;
 
             buttonController.Click += ButtonController_Click;
+            buttonBacklight.Click += ButtonBacklight_Click;
 
             Text = "G-Helper " + (ProcessHelper.IsUserAdministrator() ? "—" : "-") + " " + AppConfig.GetModelShort();
             TopMost = AppConfig.Is("topmost");
@@ -245,6 +246,11 @@ namespace GHelper
             panelPerformance.Focus();
         }
 
+        private void ButtonBacklight_Click(object? sender, EventArgs e)
+        {
+            allyControl.ToggleBacklight();
+        }
+
         private void ButtonController_Click(object? sender, EventArgs e)
         {
             allyControl.ToggleMode();
@@ -255,8 +261,8 @@ namespace GHelper
             if (!visible) return;
 
             panelAlly.Visible = true;
-            labelKeyboard.Text = "Backlight";
-            buttonFnLock.Visible = false;
+            panelKeyboardTitle.Visible = false;
+            panelKeyboard.Padding = new Padding(20, 0, 20, 20);
         }
 
         public void VisualiseController(ControllerMode mode)
@@ -273,6 +279,11 @@ namespace GHelper
                     buttonController.Text = "Auto";
                     break;
             }
+        }
+
+        public void VisualiseBacklight(int backlight)
+        {
+            buttonBacklight.Text = Math.Round((double)backlight*33.33).ToString() + "%";
         }
 
         private void SettingsForm_LostFocus(object? sender, EventArgs e)

@@ -109,12 +109,12 @@ namespace GHelper
             picturePeripherals = new PictureBox();
             labelPeripherals = new Label();
             panelAlly = new Panel();
-            label1 = new Label();
             tableLayoutAlly = new TableLayoutPanel();
             buttonController = new RButton();
             panelAllyTitle = new Panel();
             pictureAlly = new PictureBox();
             labelAlly = new Label();
+            buttonBacklight = new RButton();
             panelMatrix.SuspendLayout();
             tableLayoutMatrix.SuspendLayout();
             panelMatrixTitle.SuspendLayout();
@@ -293,7 +293,7 @@ namespace GHelper
             panelBattery.Controls.Add(sliderBattery);
             panelBattery.Controls.Add(panelBatteryTitle);
             panelBattery.Dock = DockStyle.Top;
-            panelBattery.Location = new Point(11, 1441);
+            panelBattery.Location = new Point(11, 1405);
             panelBattery.Margin = new Padding(0);
             panelBattery.Name = "panelBattery";
             panelBattery.Padding = new Padding(20, 20, 20, 10);
@@ -385,7 +385,7 @@ namespace GHelper
             panelFooter.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             panelFooter.Controls.Add(tableButtons);
             panelFooter.Dock = DockStyle.Top;
-            panelFooter.Location = new Point(11, 1616);
+            panelFooter.Location = new Point(11, 1580);
             panelFooter.Margin = new Padding(0);
             panelFooter.Name = "panelFooter";
             panelFooter.Padding = new Padding(20);
@@ -1067,7 +1067,7 @@ namespace GHelper
             panelKeyboard.Controls.Add(tableLayoutKeyboard);
             panelKeyboard.Controls.Add(panelKeyboardTitle);
             panelKeyboard.Dock = DockStyle.Top;
-            panelKeyboard.Location = new Point(11, 923);
+            panelKeyboard.Location = new Point(11, 1063);
             panelKeyboard.Margin = new Padding(0);
             panelKeyboard.Name = "panelKeyboard";
             panelKeyboard.Padding = new Padding(20);
@@ -1243,7 +1243,7 @@ namespace GHelper
             panelVersion.Controls.Add(labelCharge);
             panelVersion.Controls.Add(checkStartup);
             panelVersion.Dock = DockStyle.Top;
-            panelVersion.Location = new Point(11, 1560);
+            panelVersion.Location = new Point(11, 1524);
             panelVersion.Margin = new Padding(4);
             panelVersion.Name = "panelVersion";
             panelVersion.Size = new Size(827, 56);
@@ -1268,7 +1268,7 @@ namespace GHelper
             panelPeripherals.Controls.Add(tableLayoutPeripherals);
             panelPeripherals.Controls.Add(panelPeripheralsTile);
             panelPeripherals.Dock = DockStyle.Top;
-            panelPeripherals.Location = new Point(11, 1243);
+            panelPeripherals.Location = new Point(11, 1207);
             panelPeripherals.Margin = new Padding(0);
             panelPeripherals.Name = "panelPeripherals";
             panelPeripherals.Padding = new Padding(20, 20, 20, 10);
@@ -1407,28 +1407,17 @@ namespace GHelper
             panelAlly.AccessibleRole = AccessibleRole.Grouping;
             panelAlly.AutoSize = true;
             panelAlly.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            panelAlly.Controls.Add(label1);
             panelAlly.Controls.Add(tableLayoutAlly);
             panelAlly.Controls.Add(panelAllyTitle);
             panelAlly.Dock = DockStyle.Top;
-            panelAlly.Location = new Point(11, 1067);
+            panelAlly.Location = new Point(11, 923);
             panelAlly.Margin = new Padding(0);
             panelAlly.Name = "panelAlly";
             panelAlly.Padding = new Padding(20, 20, 20, 0);
-            panelAlly.Size = new Size(827, 176);
+            panelAlly.Size = new Size(827, 140);
             panelAlly.TabIndex = 8;
             panelAlly.TabStop = true;
             panelAlly.Visible = false;
-            // 
-            // label1
-            // 
-            label1.Dock = DockStyle.Top;
-            label1.ForeColor = SystemColors.GrayText;
-            label1.Location = new Point(20, 140);
-            label1.Margin = new Padding(4, 0, 4, 0);
-            label1.Name = "label1";
-            label1.Size = new Size(787, 36);
-            label1.TabIndex = 24;
             // 
             // tableLayoutAlly
             // 
@@ -1438,6 +1427,7 @@ namespace GHelper
             tableLayoutAlly.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33F));
             tableLayoutAlly.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33F));
             tableLayoutAlly.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33F));
+            tableLayoutAlly.Controls.Add(buttonBacklight, 0, 0);
             tableLayoutAlly.Controls.Add(buttonController, 0, 0);
             tableLayoutAlly.Dock = DockStyle.Top;
             tableLayoutAlly.Location = new Point(20, 60);
@@ -1458,6 +1448,8 @@ namespace GHelper
             buttonController.FlatAppearance.BorderSize = 0;
             buttonController.FlatStyle = FlatStyle.Flat;
             buttonController.ForeColor = SystemColors.ControlText;
+            buttonController.Image = Properties.Resources.icons8_game_controller_48;
+            buttonController.ImageAlign = ContentAlignment.MiddleRight;
             buttonController.Location = new Point(4, 4);
             buttonController.Margin = new Padding(4);
             buttonController.Name = "buttonController";
@@ -1465,6 +1457,7 @@ namespace GHelper
             buttonController.Size = new Size(254, 72);
             buttonController.TabIndex = 9;
             buttonController.Text = Properties.Strings.AutoMode;
+            buttonController.TextImageRelation = TextImageRelation.ImageBeforeText;
             buttonController.UseVisualStyleBackColor = false;
             // 
             // panelAllyTitle
@@ -1496,9 +1489,31 @@ namespace GHelper
             labelAlly.Location = new Point(42, -2);
             labelAlly.Margin = new Padding(8, 0, 8, 0);
             labelAlly.Name = "labelAlly";
-            labelAlly.Size = new Size(58, 32);
+            labelAlly.Size = new Size(181, 32);
             labelAlly.TabIndex = 26;
-            labelAlly.Text = "Ally";
+            labelAlly.Text = "Ally Controller";
+            // 
+            // buttonBacklight
+            // 
+            buttonBacklight.Activated = false;
+            buttonBacklight.BackColor = SystemColors.ControlLightLight;
+            buttonBacklight.BorderColor = Color.Transparent;
+            buttonBacklight.BorderRadius = 5;
+            buttonBacklight.Dock = DockStyle.Fill;
+            buttonBacklight.FlatAppearance.BorderSize = 0;
+            buttonBacklight.FlatStyle = FlatStyle.Flat;
+            buttonBacklight.ForeColor = SystemColors.ControlText;
+            buttonBacklight.Image = Properties.Resources.backlight;
+            buttonBacklight.ImageAlign = ContentAlignment.MiddleRight;
+            buttonBacklight.Location = new Point(266, 4);
+            buttonBacklight.Margin = new Padding(4);
+            buttonBacklight.Name = "buttonBacklight";
+            buttonBacklight.Secondary = false;
+            buttonBacklight.Size = new Size(254, 72);
+            buttonBacklight.TabIndex = 10;
+            buttonBacklight.Text = "100%";
+            buttonBacklight.TextImageRelation = TextImageRelation.ImageBeforeText;
+            buttonBacklight.UseVisualStyleBackColor = false;
             // 
             // SettingsForm
             // 
@@ -1511,8 +1526,8 @@ namespace GHelper
             Controls.Add(panelVersion);
             Controls.Add(panelBattery);
             Controls.Add(panelPeripherals);
-            Controls.Add(panelAlly);
             Controls.Add(panelKeyboard);
+            Controls.Add(panelAlly);
             Controls.Add(panelMatrix);
             Controls.Add(panelScreen);
             Controls.Add(panelGPU);
@@ -1665,11 +1680,11 @@ namespace GHelper
         private RButton buttonFnLock;
         private RButton buttonBatteryFull;
         private Panel panelAlly;
-        private Label label1;
         private TableLayoutPanel tableLayoutAlly;
         private RButton buttonController;
         private Panel panelAllyTitle;
         private Label labelAlly;
         private PictureBox pictureAlly;
+        private RButton buttonBacklight;
     }
 }

@@ -1,4 +1,5 @@
 ﻿using GHelper.Gpu.AMD;
+using GHelper.Input;
 using GHelper.USB;
 
 namespace GHelper.Ally
@@ -19,7 +20,6 @@ namespace GHelper.Ally
         SettingsForm settings;
 
         ControllerMode mode = ControllerMode.Auto;
-
         ControllerMode _autoMode = ControllerMode.Gamepad;
         int _autoCount = 0;
 
@@ -60,8 +60,15 @@ namespace GHelper.Ally
             if (AppConfig.IsAlly()) settings.VisualiseAlly(true);
             else return;
 
-            mode = (ControllerMode)AppConfig.Get("controller_mode", (int)ControllerMode.Auto);
-            SetMode(mode);
+            SetMode((ControllerMode)AppConfig.Get("controller_mode", (int)ControllerMode.Auto));
+            settings.VisualiseBacklight(InputDispatcher.GetBacklight());
+
+        }
+
+        public void ToggleBacklight()
+        {
+            InputDispatcher.SetBacklight(4, true);
+            settings.VisualiseBacklight(InputDispatcher.GetBacklight());
         }
 
         private void SetMode(ControllerMode mode)
@@ -77,7 +84,6 @@ namespace GHelper.Ally
 
                 AsusHid.WriteInput(new byte[] { AsusHid.INPUT_ID, 0xd1, 1, 1, (byte)mode }, "ControllerMode");
             }
-
 
             AppConfig.Set("controller_mode", (int)mode);
             settings.VisualiseController(mode);
