@@ -226,6 +226,8 @@ namespace GHelper
                 SetKeyCombo(comboM4, textM4, "m4");
                 SetKeyCombo(comboFNF4, textFNF4, "paddle");
 
+                checkGpuApps.Visible = false;
+                checkUSBC.Visible = false;
 
                 int apuMem = Program.acpi.GetAPUMem();
                 if (apuMem >= 0)
