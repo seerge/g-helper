@@ -15,21 +15,21 @@ namespace GHelper.Ally
     public class AllyControl
     {
         System.Timers.Timer timer = default!;
-        AmdGpuControl amdControl;
+        static AmdGpuControl amdControl = new AmdGpuControl();
 
         SettingsForm settings;
 
-        ControllerMode mode = ControllerMode.Auto;
-        ControllerMode _autoMode = ControllerMode.Gamepad;
-        int _autoCount = 0;
+        static ControllerMode mode = ControllerMode.Auto;
+        static ControllerMode _autoMode = ControllerMode.Gamepad;
+        static int _autoCount = 0;
+
+        static int fpsLimit = -1;
 
         public AllyControl(SettingsForm settingsForm)
         {
             if (!AppConfig.IsAlly()) return;
 
             settings = settingsForm;
-
-            amdControl = new AmdGpuControl();
 
             timer = new System.Timers.Timer(500);
             timer.Elapsed += Timer_Elapsed;
@@ -63,7 +63,38 @@ namespace GHelper.Ally
             SetMode((ControllerMode)AppConfig.Get("controller_mode", (int)ControllerMode.Auto));
             settings.VisualiseBacklight(InputDispatcher.GetBacklight());
 
+            fpsLimit = amdControl.GetFPSLimit();
+            Logger.WriteLine($"FPS Limit: {fpsLimit}");
+            settings.VisualiseFPSLimit(fpsLimit);
+
+
         }
+
+        public void ToggleFPSLimit()
+        {
+            switch (fpsLimit)
+            {
+                case 30:
+                    fpsLimit = 40;
+                    break;
+                case 40:
+                    fpsLimit = 60;
+                    break;
+                case 60:
+                    fpsLimit = 120;
+                    break;
+                default:
+                    fpsLimit = 30;
+                    break;
+            }
+
+            int result = amdControl.SetFPSLimit(fpsLimit);
+            Logger.WriteLine($"FPS Limit {fpsLimit}: {result}");
+
+            settings.VisualiseFPSLimit(fpsLimit);
+
+        }
+
 
         public void ToggleBacklight()
         {
@@ -77,7 +108,8 @@ namespace GHelper.Ally
             {
                 amdControl.StartFPS();
                 timer.Start();
-            } else
+            }
+            else
             {
                 timer.Stop();
                 amdControl.StopFPS();

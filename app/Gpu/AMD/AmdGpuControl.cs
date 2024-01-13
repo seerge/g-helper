@@ -159,11 +159,31 @@ public class AmdGpuControl : IGpuControl
     {
         if (_adlContextHandle == nint.Zero || _iGPU == null) return 0;
         float fps;
-
         if (ADL2_Adapter_FrameMetrics_Get(_adlContextHandle, ((ADLAdapterInfo)_iGPU).AdapterIndex, 0, out fps) != Adl2.ADL_SUCCESS) return 0;
-
         return fps;
+    }
 
+    public int GetFPSLimit()
+    {
+        if (_adlContextHandle == nint.Zero || _iGPU == null) return -1;
+        ADLFPSSettingsOutput settings;
+        if (ADL2_FPS_Settings_Get(_adlContextHandle, ((ADLAdapterInfo)_iGPU).AdapterIndex, out settings) != Adl2.ADL_SUCCESS) return -1;
+        return settings.ulACFPSCurrent;
+    }
+
+    public int SetFPSLimit(int limit)
+    {
+        if (_adlContextHandle == nint.Zero || _iGPU == null) return -1;
+
+        ADLFPSSettingsInput settings = new ADLFPSSettingsInput();
+
+        settings.ulACFPSCurrent = limit;
+        settings.ulDCFPSCurrent = limit;
+        settings.bGlobalSettings = 1;
+
+        if (ADL2_FPS_Settings_Set(_adlContextHandle, ((ADLAdapterInfo)_iGPU).AdapterIndex, settings) != Adl2.ADL_SUCCESS) return 0;
+
+        return 1;
     }
 
     public ADLODNPerformanceLevels? GetGPUClocks()

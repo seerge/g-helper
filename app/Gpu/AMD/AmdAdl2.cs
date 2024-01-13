@@ -578,6 +578,12 @@ public class Adl2
         [DllImport(Atiadlxx_FileName)]
         public static extern int ADL2_FPS_Settings_Get(IntPtr context, int iAdapterIndex, out ADLFPSSettingsOutput lpFPSSettings);
 
+        [DllImport(Atiadlxx_FileName)]
+        public static extern int ADL2_FPS_Settings_Set(IntPtr context, int iAdapterIndex, ADLFPSSettingsInput lpFPSSettings);
+
+        [DllImport(Atiadlxx_FileName)]
+        public static extern int ADL2_FPS_Settings_Reset(IntPtr context, int iAdapterIndex);
+
         [StructLayout(LayoutKind.Sequential)]
         public struct ADLFPSSettingsOutput
         {
@@ -592,6 +598,18 @@ public class Adl2
             public int ulDCFPSMinimum;
         }
 
+        [StructLayout(LayoutKind.Sequential)]
+        public struct ADLFPSSettingsInput
+        {
+            public int ulSize;
+            public int bGlobalSettings;
+            public int ulACFPSCurrent;
+            public int ulDCFPSCurrent;
+
+            // Assuming ulReserved is an array of 6 integers
+            [MarshalAs(UnmanagedType.ByValArray, SizeConst = 6)]
+            public int[] ulReserved;
+        }
         // Clocks
 
         [StructLayout(LayoutKind.Sequential)]

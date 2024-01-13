@@ -110,11 +110,12 @@ namespace GHelper
             labelPeripherals = new Label();
             panelAlly = new Panel();
             tableLayoutAlly = new TableLayoutPanel();
+            buttonBacklight = new RButton();
             buttonController = new RButton();
             panelAllyTitle = new Panel();
             pictureAlly = new PictureBox();
             labelAlly = new Label();
-            buttonBacklight = new RButton();
+            buttonFPS = new RButton();
             panelMatrix.SuspendLayout();
             tableLayoutMatrix.SuspendLayout();
             panelMatrixTitle.SuspendLayout();
@@ -1427,6 +1428,7 @@ namespace GHelper
             tableLayoutAlly.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33F));
             tableLayoutAlly.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33F));
             tableLayoutAlly.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33F));
+            tableLayoutAlly.Controls.Add(buttonFPS, 0, 0);
             tableLayoutAlly.Controls.Add(buttonBacklight, 0, 0);
             tableLayoutAlly.Controls.Add(buttonController, 0, 0);
             tableLayoutAlly.Dock = DockStyle.Top;
@@ -1437,6 +1439,28 @@ namespace GHelper
             tableLayoutAlly.RowStyles.Add(new RowStyle(SizeType.Absolute, 80F));
             tableLayoutAlly.Size = new Size(787, 80);
             tableLayoutAlly.TabIndex = 23;
+            // 
+            // buttonBacklight
+            // 
+            buttonBacklight.Activated = false;
+            buttonBacklight.BackColor = SystemColors.ControlLightLight;
+            buttonBacklight.BorderColor = Color.Transparent;
+            buttonBacklight.BorderRadius = 5;
+            buttonBacklight.Dock = DockStyle.Fill;
+            buttonBacklight.FlatAppearance.BorderSize = 0;
+            buttonBacklight.FlatStyle = FlatStyle.Flat;
+            buttonBacklight.ForeColor = SystemColors.ControlText;
+            buttonBacklight.Image = Properties.Resources.backlight;
+            buttonBacklight.ImageAlign = ContentAlignment.MiddleRight;
+            buttonBacklight.Location = new Point(266, 4);
+            buttonBacklight.Margin = new Padding(4);
+            buttonBacklight.Name = "buttonBacklight";
+            buttonBacklight.Secondary = false;
+            buttonBacklight.Size = new Size(254, 72);
+            buttonBacklight.TabIndex = 10;
+            buttonBacklight.Text = "100%";
+            buttonBacklight.TextImageRelation = TextImageRelation.ImageBeforeText;
+            buttonBacklight.UseVisualStyleBackColor = false;
             // 
             // buttonController
             // 
@@ -1493,27 +1517,27 @@ namespace GHelper
             labelAlly.TabIndex = 26;
             labelAlly.Text = "Ally Controller";
             // 
-            // buttonBacklight
+            // buttonFPS
             // 
-            buttonBacklight.Activated = false;
-            buttonBacklight.BackColor = SystemColors.ControlLightLight;
-            buttonBacklight.BorderColor = Color.Transparent;
-            buttonBacklight.BorderRadius = 5;
-            buttonBacklight.Dock = DockStyle.Fill;
-            buttonBacklight.FlatAppearance.BorderSize = 0;
-            buttonBacklight.FlatStyle = FlatStyle.Flat;
-            buttonBacklight.ForeColor = SystemColors.ControlText;
-            buttonBacklight.Image = Properties.Resources.backlight;
-            buttonBacklight.ImageAlign = ContentAlignment.MiddleRight;
-            buttonBacklight.Location = new Point(266, 4);
-            buttonBacklight.Margin = new Padding(4);
-            buttonBacklight.Name = "buttonBacklight";
-            buttonBacklight.Secondary = false;
-            buttonBacklight.Size = new Size(254, 72);
-            buttonBacklight.TabIndex = 10;
-            buttonBacklight.Text = "100%";
-            buttonBacklight.TextImageRelation = TextImageRelation.ImageBeforeText;
-            buttonBacklight.UseVisualStyleBackColor = false;
+            buttonFPS.Activated = false;
+            buttonFPS.BackColor = SystemColors.ControlLightLight;
+            buttonFPS.BorderColor = Color.Transparent;
+            buttonFPS.BorderRadius = 5;
+            buttonFPS.Dock = DockStyle.Fill;
+            buttonFPS.FlatAppearance.BorderSize = 0;
+            buttonFPS.FlatStyle = FlatStyle.Flat;
+            buttonFPS.ForeColor = SystemColors.ControlText;
+            buttonFPS.Image = Properties.Resources.icons8_video_48;
+            buttonFPS.ImageAlign = ContentAlignment.MiddleRight;
+            buttonFPS.Location = new Point(528, 4);
+            buttonFPS.Margin = new Padding(4);
+            buttonFPS.Name = "buttonFPS";
+            buttonFPS.Secondary = false;
+            buttonFPS.Size = new Size(255, 72);
+            buttonFPS.TabIndex = 11;
+            buttonFPS.Text = "FPS Limit OFF";
+            buttonFPS.TextImageRelation = TextImageRelation.ImageBeforeText;
+            buttonFPS.UseVisualStyleBackColor = false;
             // 
             // SettingsForm
             // 
@@ -1686,5 +1710,6 @@ namespace GHelper
         private Label labelAlly;
         private PictureBox pictureAlly;
         private RButton buttonBacklight;
+        private RButton buttonFPS;
     }
 }

@@ -232,6 +232,7 @@ namespace GHelper
 
             buttonController.Click += ButtonController_Click;
             buttonBacklight.Click += ButtonBacklight_Click;
+            buttonFPS.Click += ButtonFPS_Click;
 
             Text = "G-Helper " + (ProcessHelper.IsUserAdministrator() ? "—" : "-") + " " + AppConfig.GetModelShort();
             TopMost = AppConfig.Is("topmost");
@@ -244,6 +245,11 @@ namespace GHelper
             buttonFnLock.Click += ButtonFnLock_Click;
 
             panelPerformance.Focus();
+        }
+
+        private void ButtonFPS_Click(object? sender, EventArgs e)
+        {
+            allyControl.ToggleFPSLimit();
         }
 
         private void ButtonBacklight_Click(object? sender, EventArgs e)
@@ -284,6 +290,11 @@ namespace GHelper
         public void VisualiseBacklight(int backlight)
         {
             buttonBacklight.Text = Math.Round((double)backlight*33.33).ToString() + "%";
+        }
+
+        public void VisualiseFPSLimit(int limit)
+        {
+            buttonFPS.Text = "FPS Limit " + ((limit > 0 && limit < 120) ? limit : "OFF");
         }
 
         private void SettingsForm_LostFocus(object? sender, EventArgs e)
