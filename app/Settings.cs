@@ -1249,6 +1249,12 @@ namespace GHelper
 
         public void VisualiseGPUMode(int GPUMode = -1)
         {
+            if (AppConfig.IsAlly() && !Program.acpi.IsXGConnected())
+            {
+                tableGPU.Visible = false;
+                GPUMode = AsusACPI.GPUModeEco;
+            }
+
             ButtonEnabled(buttonOptimized, true);
             ButtonEnabled(buttonEco, true);
             ButtonEnabled(buttonStandard, true);
