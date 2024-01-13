@@ -120,7 +120,7 @@ namespace GHelper.AutoUpdate
                 Logger.WriteLine(zipName);
                 Logger.WriteLine(exeName);
 
-                string command = $"Start-Sleep -Seconds 1; $ErrorActionPreference = \"Stop\"; Expand-Archive \"{zipName}\" -DestinationPath . -Force; Remove-Item \"{zipName}\" -Force; \".\\{exeName}\"; ";
+                string command = $"$ErrorActionPreference = \"Stop\"; Wait-Process -Name \"GHelper\"; Expand-Archive \"{zipName}\" -DestinationPath . -Force; Remove-Item \"{zipName}\" -Force; \".\\{exeName}\"; "; 
                 Logger.WriteLine(command);
 
                 try
@@ -139,7 +139,7 @@ namespace GHelper.AutoUpdate
                     Logger.WriteLine(ex.Message);
                 }
 
-                Application.Exit();
+                Environment.Exit(0);
             }
 
         }
