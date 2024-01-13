@@ -1481,7 +1481,7 @@ namespace GHelper
             // pictureAlly
             // 
             pictureAlly.BackgroundImage = Properties.Resources.icons8_controller_32;
-            pictureAlly.BackgroundImageLayout = ImageLayout.Center;
+            pictureAlly.BackgroundImageLayout = ImageLayout.Zoom;
             pictureAlly.Location = new Point(5, 0);
             pictureAlly.Margin = new Padding(4);
             pictureAlly.Name = "pictureAlly";
@@ -1493,7 +1493,7 @@ namespace GHelper
             // 
             labelAlly.AutoSize = true;
             labelAlly.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            labelAlly.Location = new Point(45, 0);
+            labelAlly.Location = new Point(42, -2);
             labelAlly.Margin = new Padding(8, 0, 8, 0);
             labelAlly.Name = "labelAlly";
             labelAlly.Size = new Size(58, 32);
