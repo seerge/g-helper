@@ -61,7 +61,7 @@ body:
   - type: checkboxes
     id: asus
     attributes:
-      label: Asus Software
+      label: Asus Software Running
       description: Please check what Asus/Armoury Services do you have installed and running
       options:
         - label: Armoury Crate
