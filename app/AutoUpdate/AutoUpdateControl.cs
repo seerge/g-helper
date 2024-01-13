@@ -139,7 +139,7 @@ namespace GHelper.AutoUpdate
                     Logger.WriteLine(ex.Message);
                 }
 
-                Application.Exit();
+                Environment.Exit(0);
             }
 
         }
