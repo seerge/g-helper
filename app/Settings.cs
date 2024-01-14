@@ -269,6 +269,8 @@ namespace GHelper
             panelAlly.Visible = true;
             panelKeyboardTitle.Visible = false;
             panelKeyboard.Padding = new Padding(20, 0, 20, 20);
+
+            tableAMD.Visible = true;
         }
 
         public void VisualiseController(ControllerMode mode)

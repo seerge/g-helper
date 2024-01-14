@@ -513,7 +513,7 @@ public class AsusACPI
 
         for (int i = 0; i < 8; i++)
         {
-            if (curve[i] == old) curve[i]++; // preventing 2 points in same spot from default asus profiles
+            if (curve[i] <= old) curve[i] = (byte)Math.Min(100, old + 6); // preventing 2 points in same spot from default asus profiles
             points[curve[i]] = curve[i + 8];
             old = curve[i];
         }
