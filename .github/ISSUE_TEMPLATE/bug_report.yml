@@ -66,6 +66,7 @@ body:
         - Uninstalled
         - Installed
         - Never installed
+      default: 0   
   - type: input
     id: asus
     attributes:
