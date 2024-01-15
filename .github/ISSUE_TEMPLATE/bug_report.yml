@@ -71,7 +71,7 @@ body:
     id: asus
     attributes:
       label: Asus Services
-      description: How many Asus services running do you have? (check ``Extra`` section in G-Helper)?
+      description: How many Asus services do you have running (check ``Extra`` section in G-Helper)?
       placeholder: e.g. None
   - type: input
     id: version
