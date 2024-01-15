@@ -57,15 +57,21 @@ body:
     attributes:
       label: Additional information. 
       description: If applicable, add screenshots or other relevant information to help explain your problem.
-  - type: checkboxes
+  - type: dropdown
+    id: armoury
+    attributes:
+      label: Armoury Crate
+      description: Do you have Armoury Crate installed?
+      options:
+        - label: Installed
+        - label: Uninstalled
+        - label: Never installed
+  - type: input
     id: asus
     attributes:
-      label: Asus Software Running
-      description: Please check what Asus/Armoury Services do you have installed and running
-      options:
-        - label: Armoury Crate
-        - label: MyAsus
-        - label: Other Asus Services
+      label: Asus Services
+      description: How many Asus services running do you have? (check ``Extra`` section in G-Helper)?
+      placeholder: e.g. None
   - type: input
     id: version
     attributes:
