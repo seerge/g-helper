@@ -1,6 +1,5 @@
 name: Bug Report
 description: Something isn't working correctly
-labels: ["bug"]
 body:
   - type: markdown
     attributes:
