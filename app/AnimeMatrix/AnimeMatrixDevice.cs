@@ -452,7 +452,7 @@ namespace Starlight.AnimeMatrix
                     }
                 }
 
-                SetBitmapDiagonal(bmp, (width - textWidth), height);
+                SetBitmapDiagonal(bmp, 5 , height);
 
             }
         }

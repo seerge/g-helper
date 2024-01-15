@@ -3,12 +3,12 @@ using GHelper.Ally;
 
 namespace GHelper
 {
-    public partial class Handheld : RForm
+    public partial class Handheld : Form
     {
         public Handheld()
         {
             InitializeComponent();
-            InitTheme(true);
+            //InitTheme(true);
 
             Shown += Handheld_Shown;
 
@@ -28,7 +28,7 @@ namespace GHelper
 
             buttonReset.Click += ButtonReset_Click;
 
-            trackLSMin.ValueChanged += Controller_Complete; ;
+            trackLSMin.ValueChanged += Controller_Complete;
             trackLSMax.ValueChanged += Controller_Complete;
             trackRSMin.ValueChanged += Controller_Complete;
             trackRSMax.ValueChanged += Controller_Complete;
@@ -40,11 +40,34 @@ namespace GHelper
 
             trackVibra.ValueChanged += Controller_Complete;
 
+            comboM1.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboM1.DataSource = new BindingSource(AllyControl.BindingCodes, null);
+            comboM1.DisplayMember = "Value";
+            comboM1.ValueMember = "Key";
+
+            comboM2.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboM2.DataSource = new BindingSource(AllyControl.BindingCodes, null);
+            comboM2.DisplayMember = "Value";
+            comboM2.ValueMember = "Key";
+
+            comboM1.SelectedValue = AppConfig.Get("bind_m1", 0x028f);
+            comboM2.SelectedValue = AppConfig.Get("bind_m2", 0x028e);
+
+            comboM1.SelectedValueChanged += Binding_SelectedValueChanged;
+            comboM2.SelectedValueChanged += Binding_SelectedValueChanged;
+
+        }
+
+        private void Binding_SelectedValueChanged(object? sender, EventArgs e)
+        {
+            AppConfig.Set("bind_m1", (int)comboM1.SelectedValue);
+            AppConfig.Set("bind_m2", (int)comboM2.SelectedValue);
+            AllyControl.SetBindings();
         }
 
         private void Controller_Complete(object? sender, EventArgs e)
         {
-            AllyControl.Deadzones();
+            AllyControl.SetDeadzones();
         }
 
         private void ButtonReset_Click(object? sender, EventArgs e)
