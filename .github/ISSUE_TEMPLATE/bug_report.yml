@@ -63,9 +63,9 @@ body:
       label: Armoury Crate
       description: Do you have Armoury Crate installed?
       options:
-        - label: Installed
-        - label: Uninstalled
-        - label: Never installed
+        - Uninstalled
+        - Installed
+        - Never installed
   - type: input
     id: asus
     attributes:
