@@ -12,7 +12,7 @@ namespace GHelper.Input
         public KeyboardListener(Action<int> KeyHandler)
         {
             _handler = KeyHandler;
-            Listen();
+            var task = Task.Run(Listen);
         }
 
         private void Listen () { 
@@ -23,10 +23,10 @@ namespace GHelper.Input
 
             int count = 0;
 
-            while (input == null && count++ < 60)
+            while (input == null && count++ < 5)
             {
                 Aura.Init();
-                Thread.Sleep(1000);
+                Thread.Sleep(2000);
                 input = AsusHid.FindHidStream(AsusHid.INPUT_ID);
             }
 
@@ -38,39 +38,35 @@ namespace GHelper.Input
 
             Logger.WriteLine($"Input: {input.Device.DevicePath}");
 
-            var task = Task.Run(() =>
+            try
             {
-                try
+                while (!cancellationTokenSource.Token.IsCancellationRequested)
                 {
-                    while (!cancellationTokenSource.Token.IsCancellationRequested)
+
+                    // Emergency break
+                    if (input == null || !input.CanRead)
                     {
-
-                        // Emergency break
-                        if (input == null || !input.CanRead)
-                        {
-                            Logger.WriteLine("Listener terminated");
-                            break;
-                        }
-
-                        input.ReadTimeout = int.MaxValue;
-
-                        var data = input.Read();
-                        if (data.Length > 1 && data[0] == AsusHid.INPUT_ID && data[1] > 0 && data[1] != 236)
-                        {
-                            Logger.WriteLine($"Key: {data[1]}");
-                            _handler(data[1]);
-                        }
+                        Logger.WriteLine("Listener terminated");
+                        break;
                     }
 
-                    Logger.WriteLine("Listener stopped");
+                    input.ReadTimeout = int.MaxValue;
 
+                    var data = input.Read();
+                    if (data.Length > 1 && data[0] == AsusHid.INPUT_ID && data[1] > 0 && data[1] != 236)
+                    {
+                        Logger.WriteLine($"Key: {data[1]}");
+                        _handler(data[1]);
+                    }
                 }
-                catch (Exception ex)
-                {
-                    Logger.WriteLine(ex.ToString());
-                }
-            });
 
+                Logger.WriteLine("Listener stopped");
+
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLine(ex.ToString());
+            }
 
         }
 
