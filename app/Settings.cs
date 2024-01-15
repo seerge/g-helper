@@ -12,6 +12,7 @@ using GHelper.Peripherals;
 using GHelper.Peripherals.Mouse;
 using GHelper.UI;
 using GHelper.USB;
+using System;
 using System.Diagnostics;
 using System.Timers;
 
@@ -37,6 +38,7 @@ namespace GHelper
         public Fans? fansForm;
         public Extra? extraForm;
         public Updates? updatesForm;
+        public Handheld? handheldForm;
 
         static long lastRefresh;
         static long lastBatteryRefresh;
@@ -159,6 +161,7 @@ namespace GHelper
 
             buttonFans.Click += ButtonFans_Click;
             buttonKeyboard.Click += ButtonKeyboard_Click;
+            buttonController.Click += ButtonHandheld_Click;
 
             pictureColor.Click += PictureColor_Click;
             pictureColor2.Click += PictureColor2_Click;
@@ -230,7 +233,7 @@ namespace GHelper
             buttonBatteryFull.MouseLeave += ButtonBatteryFull_MouseLeave;
             buttonBatteryFull.Click += ButtonBatteryFull_Click;
 
-            buttonController.Click += ButtonController_Click;
+            buttonControllerMode.Click += ButtonControllerMode_Click;
             buttonBacklight.Click += ButtonBacklight_Click;
             buttonFPS.Click += ButtonFPS_Click;
 
@@ -247,6 +250,25 @@ namespace GHelper
             panelPerformance.Focus();
         }
 
+        private void ButtonHandheld_Click(object? sender, EventArgs e)
+        {
+            if (handheldForm == null || handheldForm.Text == "")
+            {
+                handheldForm = new Handheld();
+                AddOwnedForm(handheldForm);
+            }
+
+            if (handheldForm.Visible)
+            {
+                handheldForm.Close();
+            }
+            else
+            {
+                //handheldForm.FormPosition();
+                handheldForm.Show();
+            }
+        }
+
         private void ButtonFPS_Click(object? sender, EventArgs e)
         {
             allyControl.ToggleFPSLimit();
@@ -257,7 +279,7 @@ namespace GHelper
             allyControl.ToggleBacklight();
         }
 
-        private void ButtonController_Click(object? sender, EventArgs e)
+        private void ButtonControllerMode_Click(object? sender, EventArgs e)
         {
             allyControl.ToggleMode();
         }
@@ -278,13 +300,13 @@ namespace GHelper
             switch (mode)
             {
                 case ControllerMode.Gamepad:
-                    buttonController.Text = "Gamepad";
+                    buttonControllerMode.Text = "Gamepad";
                     break;
                 case ControllerMode.Mouse:
-                    buttonController.Text = "Mouse";
+                    buttonControllerMode.Text = "Mouse";
                     break;
                 default:
-                    buttonController.Text = "Auto";
+                    buttonControllerMode.Text = "Auto";
                     break;
             }
         }

@@ -103,9 +103,27 @@ namespace GHelper.Ally
             settings.VisualiseBacklight(InputDispatcher.GetBacklight());
         }
 
-        private void Deadzones()
+        static public void Deadzones()
         {
-            AsusHid.WriteInput(new byte[] { AsusHid.INPUT_ID, 0xd1, 4, 4, 0, 100, 0, 100 }, "ControllerDeadzone");
+            AsusHid.WriteInput(new byte[] { AsusHid.INPUT_ID, 0xd1, 4, 4, 
+                (byte)AppConfig.Get("ls_min", 0), 
+                (byte)AppConfig.Get("ls_max", 100), 
+                (byte)AppConfig.Get("rs_min", 0), 
+                (byte)AppConfig.Get("rs_max", 100) }, 
+                "StickDeadzone");
+
+            AsusHid.WriteInput(new byte[] { AsusHid.INPUT_ID, 0xd1, 5, 4,
+                (byte)AppConfig.Get("lt_min", 0),
+                (byte)AppConfig.Get("lt_max", 100),
+                (byte)AppConfig.Get("rt_min", 0),
+                (byte)AppConfig.Get("rt_max", 100) },
+                "TriggerDeadzone");
+
+            AsusHid.WriteInput(new byte[] { AsusHid.INPUT_ID, 0xd1, 6, 2,
+                (byte)AppConfig.Get("vibra", 100),
+                (byte)AppConfig.Get("vibra", 100) },
+                "Vibration");
+
         }
 
         private void SetMode(ControllerMode mode)
