@@ -118,16 +118,16 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Acceleration" xml:space="preserve">
-    <value>Acceleration</value>
+    <value>Accelerare</value>
   </data>
   <data name="ACPIError" xml:space="preserve">
     <value>Nu se poate conecta la ASUS ACPI. Aplicația nu poate funcționa fără aceasta. Încercați să instalați Asus System Control Interface</value>
   </data>
   <data name="AlertAPUMemoryRestart" xml:space="preserve">
-    <value>Restart your device to apply changes</value>
+    <value>Reporniți dispozitivul pentru a aplica modificările</value>
   </data>
   <data name="AlertAPUMemoryRestartTitle" xml:space="preserve">
-    <value>Restart now?</value>
+    <value>Reporniți acum?</value>
   </data>
   <data name="AlertDGPU" xml:space="preserve">
     <value>Se pare că GPU-ul este folosit intens, dezactivați?</value>
@@ -169,34 +169,34 @@
     <value>Reglare automată a modului de alimentare Windows</value>
   </data>
   <data name="APUMemory" xml:space="preserve">
-    <value>Memory Assigned to GPU</value>
+    <value>Memorie alocată GPU-ului</value>
   </data>
   <data name="AsusServicesRunning" xml:space="preserve">
     <value>Servicii Asus în derulare</value>
   </data>
   <data name="AuraBatteryState" xml:space="preserve">
-    <value>Battery State</value>
+    <value>Starea bateriei</value>
   </data>
   <data name="AuraBreathe" xml:space="preserve">
     <value>Respirație</value>
   </data>
   <data name="AuraClockwise" xml:space="preserve">
-    <value>Clockwise</value>
+    <value>În sensul acelor de ceas</value>
   </data>
   <data name="AuraColorCycle" xml:space="preserve">
     <value>Ciclu de culori</value>
   </data>
   <data name="AuraComet" xml:space="preserve">
-    <value>Comet</value>
+    <value>Cometă</value>
   </data>
   <data name="AuraCounterClockwise" xml:space="preserve">
-    <value>Counterclockwise</value>
+    <value>În sens invers acelor de ceas</value>
   </data>
   <data name="AuraFast" xml:space="preserve">
     <value>Rapid</value>
   </data>
   <data name="AuraLightingMode" xml:space="preserve">
-    <value>Lighting Mode</value>
+    <value>Mod iluminare</value>
   </data>
   <data name="AuraNormal" xml:space="preserve">
     <value>Normal</value>
@@ -205,10 +205,10 @@
     <value>Curcubeu</value>
   </data>
   <data name="AuraRandomColor" xml:space="preserve">
-    <value>Random</value>
+    <value>Aleatoriu</value>
   </data>
   <data name="AuraReact" xml:space="preserve">
-    <value>React</value>
+    <value>Reacție</value>
   </data>
   <data name="AuraSlow" xml:space="preserve">
     <value>Încet</value>
@@ -220,7 +220,7 @@
     <value>Stroboscop</value>
   </data>
   <data name="AuraZoneAll" xml:space="preserve">
-    <value>All</value>
+    <value>Toate</value>
   </data>
   <data name="AuraZoneDock" xml:space="preserve">
     <value>Dock</value>
@@ -229,10 +229,10 @@
     <value>Logo</value>
   </data>
   <data name="AuraZoneScroll" xml:space="preserve">
-    <value>Scrollwheel</value>
+    <value>Rotiță scroll</value>
   </data>
   <data name="AuraZoneUnderglow" xml:space="preserve">
-    <value>Underglow</value>
+    <value>Iluminare de jos</value>
   </data>
   <data name="AutoApply" xml:space="preserve">
     <value>Aplicare automată</value>
@@ -250,16 +250,16 @@
     <value>Timeout conectat / folosind bateria (0 - ON)</value>
   </data>
   <data name="BacklightTimeoutBattery" xml:space="preserve">
-    <value>Backlight Timeout when on battery</value>
+    <value>Timp oprire iluminare pe baterie</value>
   </data>
   <data name="BacklightTimeoutPlugged" xml:space="preserve">
-    <value>Backlight Timeout when plugged</value>
+    <value>Timp oprire iluminare când e conectat</value>
   </data>
   <data name="Balanced" xml:space="preserve">
     <value>Echilibrat</value>
   </data>
   <data name="BatteryCharge" xml:space="preserve">
-    <value>Charge</value>
+    <value>Încărcare</value>
   </data>
   <data name="BatteryChargeLimit" xml:space="preserve">
     <value>Limita de încărcare a bateriei</value>
@@ -268,7 +268,7 @@
     <value>Sănătatea bateriei</value>
   </data>
   <data name="BatteryLimitFull" xml:space="preserve">
-    <value>One time charge to 100%</value>
+    <value>Încarcă o dată la 100%</value>
   </data>
   <data name="BiosAndDriverUpdates" xml:space="preserve">
     <value>Actualizări BIOS și Driver</value>
@@ -277,7 +277,7 @@
     <value>Pornire</value>
   </data>
   <data name="BootSound" xml:space="preserve">
-    <value>Boot Sound</value>
+    <value>Sunet la pornire</value>
   </data>
   <data name="Brightness" xml:space="preserve">
     <value>Luminozitate</value>
@@ -289,7 +289,7 @@
     <value>Mărirea luminozității</value>
   </data>
   <data name="Calibrate" xml:space="preserve">
-    <value>Calibrate</value>
+    <value>Calibrează</value>
   </data>
   <data name="Charging" xml:space="preserve">
     <value>Se încarcă</value>
@@ -304,7 +304,7 @@
     <value>Personalizat</value>
   </data>
   <data name="Deceleration" xml:space="preserve">
-    <value>Deceleration</value>
+    <value>Decelerare</value>
   </data>
   <data name="Default" xml:space="preserve">
     <value>Implicit</value>
@@ -316,7 +316,7 @@
     <value>Se descarcă</value>
   </data>
   <data name="DownloadUpdate" xml:space="preserve">
-    <value>Download</value>
+    <value>Descarcă</value>
   </data>
   <data name="DriverAndSoftware" xml:space="preserve">
     <value>Drivers și Aplicații</value>
@@ -336,7 +336,7 @@
     <value>NVIDIA Display Mode nu este setat la modul Optimus</value>
   </data>
   <data name="EnergySettings" xml:space="preserve">
-    <value>Energy Settings</value>
+    <value>Setări energie</value>
   </data>
   <data name="Extra" xml:space="preserve">
     <value>Extra</value>
@@ -405,10 +405,10 @@
     <value>Temperatura țintă</value>
   </data>
   <data name="HibernateAfter" xml:space="preserve">
-    <value>Minutes till Hibernation in sleep on battery (0 - OFF)</value>
+    <value>Minute până la Hibernare în mod repaus pe baterie (0 - Oprit)</value>
   </data>
   <data name="High" xml:space="preserve">
-    <value>High</value>
+    <value>Ridicat</value>
   </data>
   <data name="KeyBindings" xml:space="preserve">
     <value>Asocieri taste</value>
@@ -429,19 +429,19 @@
     <value>Ecran Laptop</value>
   </data>
   <data name="Lid" xml:space="preserve">
-    <value>Lid</value>
+    <value>Capac</value>
   </data>
   <data name="Lightbar" xml:space="preserve">
     <value>Lightbar</value>
   </data>
   <data name="Lighting" xml:space="preserve">
-    <value>Lighting</value>
+    <value>Iluminare</value>
   </data>
   <data name="Logo" xml:space="preserve">
     <value>Logo-ul</value>
   </data>
   <data name="Low" xml:space="preserve">
-    <value>Low</value>
+    <value>Scăzut</value>
   </data>
   <data name="MatrixAudio" xml:space="preserve">
     <value>Vizualizator audio</value>
@@ -471,37 +471,37 @@
     <value>Imagine</value>
   </data>
   <data name="MaxRefreshTooltip" xml:space="preserve">
-    <value>Valoare maximă refresh rate pentru latență mai mică</value>
+    <value>Rata maximă de reîmprospătare pentru latență mai mică</value>
   </data>
   <data name="MinRefreshTooltip" xml:space="preserve">
-    <value>60Hz refresh rate pentru a economisi bateria</value>
+    <value>60Hz rată de reîmprospătare pentru a economisi bateria</value>
   </data>
   <data name="Minute" xml:space="preserve">
-    <value>Minute</value>
+    <value>Minut</value>
   </data>
   <data name="Minutes" xml:space="preserve">
-    <value>Minutes</value>
+    <value>Minute</value>
   </data>
   <data name="MouseAngleSnapping" xml:space="preserve">
-    <value>Angle Snapping</value>
+    <value>Fixare mișcare la unghi</value>
   </data>
   <data name="MouseAutoPowerOff" xml:space="preserve">
-    <value>Auto Power Off After</value>
+    <value>Oprire automată după</value>
   </data>
   <data name="MouseButtonResponse" xml:space="preserve">
-    <value>Button Response</value>
+    <value>Răspuns buton</value>
   </data>
   <data name="MouseLiftOffDistance" xml:space="preserve">
-    <value>Lift Off Distance</value>
+    <value>Distanța de oprire</value>
   </data>
   <data name="MouseLowBatteryWarning" xml:space="preserve">
-    <value>Low Battery Warning at</value>
+    <value>Avertizare baterie scăzută la</value>
   </data>
   <data name="MousePerformance" xml:space="preserve">
-    <value>Performance</value>
+    <value>Performanță</value>
   </data>
   <data name="MouseSynchronize" xml:space="preserve">
-    <value>Synchronize with mouse</value>
+    <value>Sincronizare cu mouse-ul</value>
   </data>
   <data name="Multizone" xml:space="preserve">
     <value>Multizone</value>
@@ -510,7 +510,7 @@
     <value>Oprire microfon</value>
   </data>
   <data name="Never" xml:space="preserve">
-    <value>Never</value>
+    <value>Niciodată</value>
   </data>
   <data name="NewUpdates" xml:space="preserve">
     <value>Actualizări noi</value>
@@ -519,7 +519,7 @@
     <value>Nu există actualizări noi</value>
   </data>
   <data name="NotConnected" xml:space="preserve">
-    <value>Not Connected</value>
+    <value>Neconectat</value>
   </data>
   <data name="OpenGHelper" xml:space="preserve">
     <value>Deschide fereastra G-Helper</value>
@@ -543,7 +543,7 @@
     <value>Mod</value>
   </data>
   <data name="Peripherals" xml:space="preserve">
-    <value>Peripherals</value>
+    <value>Periferice</value>
   </data>
   <data name="PictureGif" xml:space="preserve">
     <value>Poză / Gif</value>
@@ -552,7 +552,7 @@
     <value>Redare / Pauză</value>
   </data>
   <data name="PollingRate" xml:space="preserve">
-    <value>Polling Rate</value>
+    <value>Rată sondaj</value>
   </data>
   <data name="PowerLimits" xml:space="preserve">
     <value>Limite de putere</value>
@@ -564,13 +564,13 @@
     <value>PrintScreen</value>
   </data>
   <data name="Profile" xml:space="preserve">
-    <value>Profile</value>
+    <value>Profil</value>
   </data>
   <data name="Quit" xml:space="preserve">
     <value>Închide</value>
   </data>
   <data name="RestartGPU" xml:space="preserve">
-    <value>Something is using dGPU and preventing Eco mode. Let G-Helper try to restart dGPU in device manager? (Please proceed at your own risk)</value>
+    <value>Ceva folosește dGPU și previne modul Eco. Permiteți G-Helper să repornească dGPU în managerul de dispozitive? (Continuați pe propriul risc)</value>
   </data>
   <data name="RPM" xml:space="preserve">
     <value>RPM</value>
