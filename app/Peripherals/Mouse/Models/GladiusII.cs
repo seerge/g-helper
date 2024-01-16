@@ -221,6 +221,63 @@
                 LightingSetting[i] = ls;
             }
         }
+
+
+
+        protected override PollingRate ParsePollingRate(byte[] packet)
+        {
+            if (packet[1] == 0x12 && packet[2] == 0x04 && packet[3] == 0x00)
+            {
+                return (PollingRate)packet[9];
+            }
+
+            return PollingRate.PR125Hz;
+        }
+
+        protected override byte[] GetUpdatePollingRatePacket(PollingRate pollingRate)
+        {
+            return new byte[] { reportId, 0x51, 0x31, 0x02, 0x00, (byte)pollingRate };
+        }
+
+        protected override bool ParseAngleSnapping(byte[] packet)
+        {
+            if (packet[1] == 0x12 && packet[2] == 0x04 && packet[3] == 0x00)
+            {
+                return packet[13] == 0x01;
+            }
+
+            return false;
+        }
+
+        protected override byte[] GetUpdateAngleSnappingPacket(bool angleSnapping)
+        {
+            return new byte[] { reportId, 0x51, 0x31, 0x04, 0x00, (byte)(angleSnapping ? 0x01 : 0x00) };
+        }
+
+        protected override DebounceTime ParseDebounce(byte[] packet)
+        {
+            if (packet[1] != 0x12 || packet[2] != 0x04 || packet[3] != 0x00)
+            {
+                return DebounceTime.MS12;
+            }
+
+            if (packet[11] < 0x02)
+            {
+                return DebounceTime.MS12;
+            }
+
+            if (packet[11] > 0x07)
+            {
+                return DebounceTime.MS32;
+            }
+
+            return (DebounceTime)packet[11];
+        }
+
+        protected override byte[] GetUpdateDebouncePacket(DebounceTime debounce)
+        {
+            return new byte[] { reportId, 0x51, 0x31, 0x03, 0x00, ((byte)debounce) };
+        }
     }
 
     //P502
