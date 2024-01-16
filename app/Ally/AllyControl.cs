@@ -302,6 +302,14 @@ namespace GHelper.Ally
                     Key1 = AppConfig.Get("bind_dpl");
                     Key2 = AppConfig.Get("bind_dpr");
                     break;
+                case BindingZone.StickClick:
+                    Key1 = AppConfig.Get("bind_stl");
+                    Key2 = AppConfig.Get("bind_str");
+                    break;
+                case BindingZone.Bumper:
+                    Key1 = AppConfig.Get("bind_bul");
+                    Key2 = AppConfig.Get("bind_bur");
+                    break;
                 case BindingZone.AB:
                     Key1 = AppConfig.Get("bind_a");
                     Key2 = AppConfig.Get("bind_b");
@@ -310,9 +318,17 @@ namespace GHelper.Ally
                     Key1 = AppConfig.Get("bind_x");
                     Key2 = AppConfig.Get("bind_y");
                     break;
-                default:
+                case BindingZone.ViewMenu:
+                    Key1 = AppConfig.Get("bind_menu");
+                    Key2 = AppConfig.Get("bind_select");
+                    break;
+                case BindingZone.M1M2:
                     Key1 = AppConfig.Get("bind_m2");
                     Key2 = AppConfig.Get("bind_m1");
+                    break;
+                default:
+                    Key1 = AppConfig.Get("bind_trl");
+                    Key2 = AppConfig.Get("bind_trr");
                     break;
             }
 
