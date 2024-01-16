@@ -40,8 +40,32 @@ namespace GHelper.Ally
 
         static int fpsLimit = -1;
 
-        public const int CodeM1 = 0x028f;
-        public const int CodeM2 = 0x028e;
+        public const int MappingA = 0x0101;
+        public const int MappingB = 0x0102;
+
+        public const int MappingX = 0x0103;
+        public const int MappingY = 0x0104;
+
+        public const int MappingLB = 0x0105;
+        public const int MappingRB = 0x0106;
+
+        public const int MappingLS = 0x0107;
+        public const int MappingRS = 0x0108;
+
+        public const int MappingDU = 0x0109;
+        public const int MappingDD = 0x010A;
+
+        public const int MappingDL = 0x010B;
+        public const int MappingDR = 0x010C;
+
+        public const int MappingVB = 0x0111;
+        public const int MappingMB = 0x0112;
+
+        public const int MappingM1 = 0x028f;
+        public const int MappingM2 = 0x028e;
+
+        public const int MappingLT = 0x010d;
+        public const int MappingRT = 0x010e;
 
         static byte[] MappingReady = new byte[] { AsusHid.INPUT_ID, 0xd1, 0x0a, 0x01 };
         static byte[] MappingSave = new byte[] { AsusHid.INPUT_ID, 0xd1, 0x0f, 0x20 };
@@ -50,23 +74,33 @@ namespace GHelper.Ally
         {
             { -1, "--------" },
             { 0x0000, "[ Disabled ]" },
-            { 0x028f, "M1" },
-            { 0x028e, "M2" },
-            { 0x0101, "A" },
-            { 0x0102, "B" },
-            { 0x0103, "X" },
-            { 0x0104, "Y" },
-            { 0x0105, "Left Bumper" },
-            { 0x0106, "Right Bumper" },
-            { 0x0107, "Left Stick Click" },
-            { 0x0108, "Right Stick Click" },
-            { 0x0109, "DPad Up" },
-            { 0x010A, "DPad Down" },
-            { 0x010B, "DPad Left" },
-            { 0x010C, "DPad Right" },
-            { 0x0111, "View Button" },
-            { 0x0112, "Menu Button" },
+
+            { MappingM1, "M1" },
+            { MappingM2, "M2" },
+
+            { MappingA, "A" },
+            { MappingB, "B" },
+
+            { MappingX, "X" },
+            { MappingY, "Y" },
+
+            { MappingLB, "Left Bumper" },
+            { MappingRB, "Right Bumper" },
+
+            { MappingLS, "Left Stick Click" },
+            { MappingRS, "Right Stick Click" },
+
+            { MappingDU, "DPad Up" },
+            { MappingDD, "DPad Down" },
+
+            { MappingDL, "DPad Left" },
+            { MappingDR, "DPad Right" },
+
+            { MappingVB, "View Button" },
+            { MappingMB, "Menu Button" },
+
             { 0x0113, "XBox/Steam" },
+
             { 0x0276, "Esc" },
             { 0x0250, "F1" },
             { 0x0260, "F2" },
@@ -167,11 +201,13 @@ namespace GHelper.Ally
             { 0x0279, "NumPlus" },
             { 0x0281, "NumEnter" },
             { 0x0271, "NumPeriod" },
+
             { 0x0301, "Mouse left click" },
             { 0x0302, "Mouse right click" },
             { 0x0303, "Mouse middle click" },
             { 0x0304, "Mouse scroll up" },
             { 0x0305, "Mouse scroll down" },
+
             { 0x0516, "Screenshot" },
             { 0x0519, "Show keyboard" },
             { 0x051c, "Show desktop" },
@@ -295,40 +331,40 @@ namespace GHelper.Ally
             switch (zone)
             {
                 case BindingZone.DPadUpDown:
-                    Key1 = AppConfig.Get("bind_dpu");
-                    Key2 = AppConfig.Get("bind_dpd");
+                    Key1 = AppConfig.Get("bind_du", MappingDU);
+                    Key2 = AppConfig.Get("bind_dd", MappingDD);
                     break;
                 case BindingZone.DPadLeftRight:
-                    Key1 = AppConfig.Get("bind_dpl");
-                    Key2 = AppConfig.Get("bind_dpr");
+                    Key1 = AppConfig.Get("bind_dl", MappingDL);
+                    Key2 = AppConfig.Get("bind_dr", MappingDR);
                     break;
                 case BindingZone.StickClick:
-                    Key1 = AppConfig.Get("bind_stl");
-                    Key2 = AppConfig.Get("bind_str");
+                    Key1 = AppConfig.Get("bind_ls", MappingLS);
+                    Key2 = AppConfig.Get("bind_rs", MappingRS);
                     break;
                 case BindingZone.Bumper:
-                    Key1 = AppConfig.Get("bind_bul");
-                    Key2 = AppConfig.Get("bind_bur");
+                    Key1 = AppConfig.Get("bind_lb", MappingLB);
+                    Key2 = AppConfig.Get("bind_rb", MappingRB);
                     break;
                 case BindingZone.AB:
-                    Key1 = AppConfig.Get("bind_a");
-                    Key2 = AppConfig.Get("bind_b");
+                    Key1 = AppConfig.Get("bind_a", MappingA);
+                    Key2 = AppConfig.Get("bind_b", MappingB);
                     break;
                 case BindingZone.XY:
-                    Key1 = AppConfig.Get("bind_x");
-                    Key2 = AppConfig.Get("bind_y");
+                    Key1 = AppConfig.Get("bind_x", MappingX);
+                    Key2 = AppConfig.Get("bind_y", MappingY);
                     break;
                 case BindingZone.ViewMenu:
-                    Key1 = AppConfig.Get("bind_menu");
-                    Key2 = AppConfig.Get("bind_select");
+                    Key1 = AppConfig.Get("bind_vb", MappingVB);
+                    Key2 = AppConfig.Get("bind_mv", MappingMB);
                     break;
                 case BindingZone.M1M2:
-                    Key1 = AppConfig.Get("bind_m2");
-                    Key2 = AppConfig.Get("bind_m1");
+                    Key1 = AppConfig.Get("bind_m2", MappingM2);
+                    Key2 = AppConfig.Get("bind_m1", MappingM1);
                     break;
                 default:
-                    Key1 = AppConfig.Get("bind_trl");
-                    Key2 = AppConfig.Get("bind_trr");
+                    Key1 = AppConfig.Get("bind_trl", MappingLT);
+                    Key2 = AppConfig.Get("bind_trr", MappingRT);
                     break;
             }
 

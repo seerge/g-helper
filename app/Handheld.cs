@@ -41,18 +41,25 @@ namespace GHelper
 
             trackVibra.ValueChanged += Controller_Complete;
 
-            FillBinding("m1", "M1", AllyControl.CodeM1);
-            FillBinding("m2", "M2", AllyControl.CodeM2);
+            FillBinding("m1", "M1", AllyControl.MappingM1);
+            FillBinding("m2", "M2", AllyControl.MappingM2);
 
-            FillBinding("a", "A");
-            FillBinding("b", "B");
-            FillBinding("x", "X");
-            FillBinding("y", "Y");
+            FillBinding("a", "A", AllyControl.MappingA);
+            FillBinding("b", "B", AllyControl.MappingB);
+            FillBinding("x", "X", AllyControl.MappingX);
+            FillBinding("y", "Y", AllyControl.MappingY);
 
-            FillBinding("dpu", "DPad Up");
-            FillBinding("dpd", "DPad Down");
-            FillBinding("dpl", "DPad Left");
-            FillBinding("dpr", "DPad Right");
+            FillBinding("du", "DPad Up", AllyControl.MappingDU);
+            FillBinding("dd", "DPad Down", AllyControl.MappingDD);
+            
+            FillBinding("dl", "DPad Left", AllyControl.MappingDL);
+            FillBinding("dr", "DPad Right", AllyControl.MappingDR);
+
+            FillBinding("rb", "Right Bumper", AllyControl.MappingRB);
+            FillBinding("lb", "Left Bumper", AllyControl.MappingLB);
+
+            FillBinding("rs", "Right Stick", AllyControl.MappingRS);
+            FillBinding("ll", "Left Stick", AllyControl.MappingLS);
 
         }
 
