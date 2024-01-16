@@ -313,7 +313,7 @@ namespace GHelper
             checkSleepLogo.CheckedChanged += CheckPower_CheckedChanged;
             checkShutdownLogo.CheckedChanged += CheckPower_CheckedChanged;
 
-            if (!AppConfig.IsStrix())
+            if ((!AppConfig.IsStrix() && !AppConfig.IsZ13()) || AppConfig.IsStrixLimitedRGB() || AppConfig.IsARCNM())
             {
                 labelBacklightBar.Visible = false;
                 checkAwakeBar.Visible = false;
@@ -321,10 +321,6 @@ namespace GHelper
                 checkSleepBar.Visible = false;
                 checkShutdownBar.Visible = false;
 
-            }
-
-            if ((!AppConfig.IsStrix() && !AppConfig.IsZ13()) || AppConfig.IsStrixLimitedRGB() || AppConfig.IsARCNM())
-            {
                 labelBacklightLid.Visible = false;
                 checkAwakeLid.Visible = false;
                 checkBootLid.Visible = false;
@@ -336,7 +332,6 @@ namespace GHelper
                 checkBootLogo.Visible = false;
                 checkSleepLogo.Visible = false;
                 checkShutdownLogo.Visible = false;
-
             }
 
             if (!AppConfig.IsStrix() && !AppConfig.IsZ13())
