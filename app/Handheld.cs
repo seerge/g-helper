@@ -103,7 +103,7 @@ namespace GHelper
             if (value >= 0) AppConfig.Set(combo.Name, value);
             else AppConfig.Remove(combo.Name);
 
-            AllyControl.SetBindings();
+            AllyControl.SetMapping();
         }
 
         private void Controller_Complete(object? sender, EventArgs e)
