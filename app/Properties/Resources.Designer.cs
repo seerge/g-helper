@@ -323,6 +323,16 @@ namespace GHelper.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap icons8_joystick_32 {
+            get {
+                object obj = ResourceManager.GetObject("icons8-joystick-32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap icons8_keyboard_32 {
             get {
                 object obj = ResourceManager.GetObject("icons8-keyboard-32", resourceCulture);
@@ -636,6 +646,16 @@ namespace GHelper.Properties {
         internal static System.Drawing.Bitmap icons8_voltage_32 {
             get {
                 object obj = ResourceManager.GetObject("icons8_voltage_32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap icons8_xbox_lt_32 {
+            get {
+                object obj = ResourceManager.GetObject("icons8-xbox-lt-32", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

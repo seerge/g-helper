@@ -1,14 +1,15 @@
-﻿using GHelper.UI;
-using GHelper.Ally;
+﻿using GHelper.Ally;
+using GHelper.UI;
 
 namespace GHelper
 {
-    public partial class Handheld : Form
+    public partial class Handheld : RForm
     {
+
         public Handheld()
         {
             InitializeComponent();
-            //InitTheme(true);
+            InitTheme(true);
 
             Shown += Handheld_Shown;
 
@@ -40,28 +41,68 @@ namespace GHelper
 
             trackVibra.ValueChanged += Controller_Complete;
 
-            comboM1.DropDownStyle = ComboBoxStyle.DropDownList;
-            comboM1.DataSource = new BindingSource(AllyControl.BindingCodes, null);
-            comboM1.DisplayMember = "Value";
-            comboM1.ValueMember = "Key";
+            FillBinding("m1", "M1", AllyControl.CodeM1);
+            FillBinding("m2", "M2", AllyControl.CodeM2);
 
-            comboM2.DropDownStyle = ComboBoxStyle.DropDownList;
-            comboM2.DataSource = new BindingSource(AllyControl.BindingCodes, null);
-            comboM2.DisplayMember = "Value";
-            comboM2.ValueMember = "Key";
+            FillBinding("a", "A");
+            FillBinding("b", "B");
+            FillBinding("x", "X");
+            FillBinding("y", "Y");
 
-            comboM1.SelectedValue = AppConfig.Get("bind_m1", 0x028f);
-            comboM2.SelectedValue = AppConfig.Get("bind_m2", 0x028e);
+            FillBinding("dpu", "DPad Up");
+            FillBinding("dpd", "DPad Down");
+            FillBinding("dpl", "DPad Left");
+            FillBinding("dpr", "DPad Right");
 
-            comboM1.SelectedValueChanged += Binding_SelectedValueChanged;
-            comboM2.SelectedValueChanged += Binding_SelectedValueChanged;
+        }
+
+
+
+        private void FillBinding(string name, string label, int defaultValue = -1)
+        {
+            tableBindings.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+            tableBindings.Controls.Add(new Label { Text = label + ":", Anchor = AnchorStyles.Left, Dock = DockStyle.Fill, Padding = new Padding(5, 5, 5, 5) }, 0, tableBindings.RowCount - 1);
+
+            name = "bind_" + name;
+
+            var combo = new RComboBox();
+
+            combo.BorderColor = Color.White;
+            combo.ButtonColor = Color.FromArgb(255, 255, 255);
+            combo.Dock = DockStyle.Fill;
+            combo.Name = name;
+            combo.Margin = new Padding(5, 5, 5, 5);
+
+            combo.DropDownStyle = ComboBoxStyle.DropDownList;
+            combo.DisplayMember = "Value";
+            combo.ValueMember = "Key";
+
+            int value = AppConfig.Get(name, defaultValue);
+
+            foreach (var item in AllyControl.BindingCodes)
+            {
+                combo.Items.Add(new KeyValuePair<int, string>(item.Key, item.Value));
+                if (item.Key == value) combo.SelectedItem = item;
+            }
+
+            combo.SelectedValueChanged += Binding_SelectedValueChanged;
+
+            tableBindings.Controls.Add(combo, 1, tableBindings.RowCount - 1);
+            tableBindings.RowCount++;
 
         }
 
         private void Binding_SelectedValueChanged(object? sender, EventArgs e)
         {
-            AppConfig.Set("bind_m1", (int)comboM1.SelectedValue);
-            AppConfig.Set("bind_m2", (int)comboM2.SelectedValue);
+
+            if (sender is null) return;
+            RComboBox combo = (RComboBox)sender;
+
+            int value = ((KeyValuePair<int, string>)combo.SelectedItem).Key;
+
+            if (value >= 0) AppConfig.Set(combo.Name, value);
+            else AppConfig.Remove(combo.Name);
+
             AllyControl.SetBindings();
         }
 

@@ -1,6 +1,7 @@
 ﻿using GHelper.Gpu.AMD;
 using GHelper.Input;
 using GHelper.USB;
+using System.Text;
 
 namespace GHelper.Ally
 {
@@ -9,7 +10,21 @@ namespace GHelper.Ally
     {
         Auto = 0,
         Gamepad = 1,
+        WASD = 2,
         Mouse = 3,
+    }
+
+    public enum BindingZone : byte
+    {
+        DPadUpDown = 1,
+        DPadLeftRight = 2,
+        StickClick = 3,
+        Bumper = 4,
+        AB = 5,
+        XY = 6,
+        ViewMenu = 7,
+        M1M2 = 8,
+        Trigger = 9
     }
 
     public class AllyControl
@@ -25,28 +40,62 @@ namespace GHelper.Ally
 
         static int fpsLimit = -1;
 
-        const int CodeM1 = 0x028f;
-        const int CodeM2 = 0x028e;
+        public const int CodeM1 = 0x028f;
+        public const int CodeM2 = 0x028e;
+
+    private byte[] commitReset1of4 = new byte[64]
+        {
+            0x5A, 0xD1, 0x0F, 0x20, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+            0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+            0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+            0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
+
+        };
+
+    private byte[] commitReset2of4 = new byte[64]
+        {
+            0x5A, 0xD1, 0x06, 0x02, 0x64, 0x64, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+            0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+            0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+            0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
+        };
+
+    private byte[] commitReset3of4 = new byte[64]
+        {
+            0x5A, 0xD1, 0x04, 0x04, 0x00, 0x64, 0x00, 0x64, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+            0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+            0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+            0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
+        };
+
+    private byte[] commitReset4of4 = new byte[64]
+        {
+            0x5A, 0xD1, 0x05, 0x04, 0x00, 0x64, 0x00, 0x64, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+            0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+            0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+            0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
+        };
 
         public static Dictionary<int, string> BindingCodes = new Dictionary<int, string>
         {
+            { -1, "--------" },
+            { 0x0000, "[ Disabled ]" },
             { 0x028f, "M1" },
             { 0x028e, "M2" },
-            { 0x0000, "-------" },
             { 0x0101, "A" },
             { 0x0102, "B" },
             { 0x0103, "X" },
             { 0x0104, "Y" },
-            { 0x0105, "left bumper" },
-            { 0x0106, "right bumper" },
-            { 0x0107, "left stick click" },
-            { 0x0108, "right stick click" },
-            { 0x0109, "dpad up" },
-            { 0x010A, "dpad down" },
-            { 0x010B, "dpad left" },
-            { 0x010C, "dpad right" },
-            { 0x0111, "view button" },
-            { 0x0112, "menu button" },
+            { 0x0105, "Left Bumper" },
+            { 0x0106, "Right Bumper" },
+            { 0x0107, "Left Stick Click" },
+            { 0x0108, "Right Stick Click" },
+            { 0x0109, "DPad Up" },
+            { 0x010A, "DPad Down" },
+            { 0x010B, "DPad Left" },
+            { 0x010C, "DPad Right" },
+            { 0x0111, "View Button" },
+            { 0x0112, "Menu Button" },
             { 0x0113, "XBox/Steam" },
             { 0x0276, "Esc" },
             { 0x0250, "F1" },
@@ -242,6 +291,9 @@ namespace GHelper.Ally
 
         static private byte[] DecodeBinding(int binding)
         {
+
+            if (binding < 0) return new byte[2];
+
             byte command = (byte)(binding & 0xFF);
             byte device = (byte)((binding >> 8) & 0xFF);
 
@@ -266,21 +318,65 @@ namespace GHelper.Ally
             return code;
         }
 
-        static public void SetBindings()
-        {
-            int M1 = AppConfig.Get("bind_m1", CodeM1);
-            int M2 = AppConfig.Get("bind_m2", CodeM2);
 
-            byte[] bindings = new byte[50];
-            byte[] init = new byte[] { AsusHid.INPUT_ID, 0xd1, 0x02, 0x08, 0x2c };
+        static private void ApplyBindings(BindingZone zone)
+        {
+            int Key1, Key2;
+            switch (zone)
+            {
+                case BindingZone.DPadUpDown:
+                    Key1 = AppConfig.Get("bind_dpu");
+                    Key2 = AppConfig.Get("bind_dpd");
+                    break;
+                case BindingZone.DPadLeftRight:
+                    Key1 = AppConfig.Get("bind_dpl");
+                    Key2 = AppConfig.Get("bind_dpr");
+                    break;
+                case BindingZone.AB:
+                    Key1 = AppConfig.Get("bind_a");
+                    Key2 = AppConfig.Get("bind_b");
+                    break;
+                case BindingZone.XY:
+                    Key1 = AppConfig.Get("bind_x");
+                    Key2 = AppConfig.Get("bind_y");
+                    break;
+                default:
+                    Key1 = AppConfig.Get("bind_m2");
+                    Key2 = AppConfig.Get("bind_m1");
+                    break;
+            }
+
+            if (Key1 == -1 && Key2 == -1) return;
+
+            byte[] bindings = new byte[64];
+            byte[] init = new byte[] { AsusHid.INPUT_ID, 0xd1, 0x02, (byte)zone, 0x2c };
 
             init.CopyTo(bindings, 0);
-            DecodeBinding(M2).CopyTo(bindings, 5);
-            if (M2 == CodeM2) DecodeBinding(M2).CopyTo(bindings, 16);
-            DecodeBinding(M1).CopyTo(bindings, 27);
-            if (M1 == CodeM1) DecodeBinding(M2).CopyTo(bindings, 16);
+            
+            DecodeBinding(Key1).CopyTo(bindings, 5);
+            DecodeBinding(Key1).CopyTo(bindings, 16);
 
-            AsusHid.WriteInput(bindings, "Bind");
+            DecodeBinding(Key2).CopyTo(bindings, 27);
+            DecodeBinding(Key2).CopyTo(bindings, 38);
+
+            //AsusHid.WriteInput(Encoding.ASCII.GetBytes("ZASUS Tech.Inc."), "Init");
+
+            AsusHid.WriteInput(bindings, $"Bind{zone}");
+            AsusHid.WriteInput(new byte[] { AsusHid.INPUT_ID, 0xd1, 0x0a, 0x01 });
+
+
+
+        }
+
+        static public void SetBindings()
+        {
+            ApplyBindings(BindingZone.DPadUpDown);
+            ApplyBindings(BindingZone.DPadLeftRight);
+            ApplyBindings(BindingZone.AB);
+            ApplyBindings(BindingZone.M1M2);
+            ApplyBindings(BindingZone.XY);
+
+
         }
 
         static public void SetDeadzones()
@@ -309,6 +405,7 @@ namespace GHelper.Ally
         private void ApplyMode(ControllerMode applyMode, string log = "ControllerMode")
         {
             AsusHid.WriteInput(new byte[] { AsusHid.INPUT_ID, 0xd1, 1, 1, (byte)applyMode }, log);
+            AsusHid.WriteInput(new byte[] { AsusHid.INPUT_ID, 0xd1, 0x0a, 0x01 });
             SetBindings();
         }
 

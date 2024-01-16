@@ -64,11 +64,8 @@
             pictureSDeadzone = new PictureBox();
             labelSDeadzone = new Label();
             panelBindings = new Panel();
-            labelM2 = new Label();
-            comboM2 = new UI.RComboBox();
-            labelM1 = new Label();
-            comboM1 = new UI.RComboBox();
-            panel1 = new Panel();
+            tableBindings = new TableLayoutPanel();
+            panelBindingsTitle = new Panel();
             pictureBindings = new PictureBox();
             labelBindings = new Label();
             panelController.SuspendLayout();
@@ -93,7 +90,7 @@
             panelSDeadzone.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureSDeadzone).BeginInit();
             panelBindings.SuspendLayout();
-            panel1.SuspendLayout();
+            panelBindingsTitle.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBindings).BeginInit();
             SuspendLayout();
             // 
@@ -126,7 +123,7 @@
             buttonReset.BorderColor = Color.Transparent;
             buttonReset.BorderRadius = 2;
             buttonReset.FlatStyle = FlatStyle.Flat;
-            buttonReset.Location = new Point(20, 842);
+            buttonReset.Location = new Point(20, 840);
             buttonReset.Margin = new Padding(4, 2, 4, 2);
             buttonReset.Name = "buttonReset";
             buttonReset.Secondary = true;
@@ -365,7 +362,7 @@
             // 
             // pictureTDeadzone
             // 
-            pictureTDeadzone.BackgroundImage = Properties.Resources.icons8_controller_32;
+            pictureTDeadzone.BackgroundImage = Properties.Resources.icons8_xbox_lt_32;
             pictureTDeadzone.BackgroundImageLayout = ImageLayout.Zoom;
             pictureTDeadzone.ErrorImage = null;
             pictureTDeadzone.InitialImage = null;
@@ -532,7 +529,7 @@
             // 
             // pictureSDeadzone
             // 
-            pictureSDeadzone.BackgroundImage = Properties.Resources.icons8_controller_32;
+            pictureSDeadzone.BackgroundImage = Properties.Resources.icons8_joystick_32;
             pictureSDeadzone.BackgroundImageLayout = ImageLayout.Zoom;
             pictureSDeadzone.ErrorImage = null;
             pictureSDeadzone.InitialImage = null;
@@ -556,74 +553,42 @@
             // 
             // panelBindings
             // 
-            panelBindings.Controls.Add(labelM2);
-            panelBindings.Controls.Add(comboM2);
-            panelBindings.Controls.Add(labelM1);
-            panelBindings.Controls.Add(comboM1);
-            panelBindings.Controls.Add(panel1);
+            panelBindings.Controls.Add(tableBindings);
+            panelBindings.Controls.Add(panelBindingsTitle);
             panelBindings.Dock = DockStyle.Left;
             panelBindings.Location = new Point(570, 10);
-            panelBindings.MinimumSize = new Size(500, 0);
+            panelBindings.MinimumSize = new Size(600, 0);
             panelBindings.Name = "panelBindings";
-            panelBindings.Size = new Size(500, 912);
+            panelBindings.Size = new Size(600, 912);
             panelBindings.TabIndex = 46;
             // 
-            // labelM2
+            // tableBindings
             // 
-            labelM2.AutoSize = true;
-            labelM2.Location = new Point(19, 146);
-            labelM2.Margin = new Padding(4, 0, 4, 0);
-            labelM2.Name = "labelM2";
-            labelM2.Size = new Size(49, 32);
-            labelM2.TabIndex = 48;
-            labelM2.Text = "M2";
+            tableBindings.AutoSize = true;
+            tableBindings.ColumnCount = 3;
+            tableBindings.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20F));
+            tableBindings.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 40F));
+            tableBindings.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 40F));
+            tableBindings.Location = new Point(0, 60);
+            tableBindings.Name = "tableBindings";
+            tableBindings.Padding = new Padding(5);
+            tableBindings.RowCount = 1;
+            tableBindings.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
+            tableBindings.Size = new Size(500, 10);
+            tableBindings.TabIndex = 49;
             // 
-            // comboM2
+            // panelBindingsTitle
             // 
-            comboM2.BorderColor = Color.White;
-            comboM2.ButtonColor = Color.FromArgb(255, 255, 255);
-            comboM2.FormattingEnabled = true;
-            comboM2.Items.AddRange(new object[] { Properties.Strings.Default, Properties.Strings.VolumeMute, Properties.Strings.PlayPause, Properties.Strings.PrintScreen, Properties.Strings.ToggleAura, Properties.Strings.Custom });
-            comboM2.Location = new Point(82, 144);
-            comboM2.Margin = new Padding(4, 3, 4, 3);
-            comboM2.Name = "comboM2";
-            comboM2.Size = new Size(374, 40);
-            comboM2.TabIndex = 47;
-            // 
-            // labelM1
-            // 
-            labelM1.AutoSize = true;
-            labelM1.Location = new Point(19, 87);
-            labelM1.Margin = new Padding(4, 0, 4, 0);
-            labelM1.Name = "labelM1";
-            labelM1.Size = new Size(49, 32);
-            labelM1.TabIndex = 46;
-            labelM1.Text = "M1";
-            // 
-            // comboM1
-            // 
-            comboM1.BorderColor = Color.White;
-            comboM1.ButtonColor = Color.FromArgb(255, 255, 255);
-            comboM1.FormattingEnabled = true;
-            comboM1.Items.AddRange(new object[] { Properties.Strings.Default, Properties.Strings.VolumeMute, Properties.Strings.PlayPause, Properties.Strings.PrintScreen, Properties.Strings.ToggleAura, Properties.Strings.Custom });
-            comboM1.Location = new Point(82, 85);
-            comboM1.Margin = new Padding(4, 3, 4, 3);
-            comboM1.Name = "comboM1";
-            comboM1.Size = new Size(374, 40);
-            comboM1.TabIndex = 45;
-            // 
-            // panel1
-            // 
-            panel1.AutoSize = true;
-            panel1.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            panel1.Controls.Add(pictureBindings);
-            panel1.Controls.Add(labelBindings);
-            panel1.Dock = DockStyle.Top;
-            panel1.Location = new Point(0, 0);
-            panel1.Margin = new Padding(4);
-            panel1.Name = "panel1";
-            panel1.Size = new Size(500, 60);
-            panel1.TabIndex = 44;
+            panelBindingsTitle.AutoSize = true;
+            panelBindingsTitle.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            panelBindingsTitle.Controls.Add(pictureBindings);
+            panelBindingsTitle.Controls.Add(labelBindings);
+            panelBindingsTitle.Dock = DockStyle.Top;
+            panelBindingsTitle.Location = new Point(0, 0);
+            panelBindingsTitle.Margin = new Padding(4);
+            panelBindingsTitle.Name = "panelBindingsTitle";
+            panelBindingsTitle.Size = new Size(500, 60);
+            panelBindingsTitle.TabIndex = 44;
             // 
             // pictureBindings
             // 
@@ -654,7 +619,7 @@
             AutoScaleDimensions = new SizeF(13F, 32F);
             AutoScaleMode = AutoScaleMode.Font;
             AutoSize = true;
-            ClientSize = new Size(1082, 932);
+            ClientSize = new Size(1277, 932);
             Controls.Add(panelBindings);
             Controls.Add(panelController);
             MaximizeBox = false;
@@ -696,8 +661,8 @@
             ((System.ComponentModel.ISupportInitialize)pictureSDeadzone).EndInit();
             panelBindings.ResumeLayout(false);
             panelBindings.PerformLayout();
-            panel1.ResumeLayout(false);
-            panel1.PerformLayout();
+            panelBindingsTitle.ResumeLayout(false);
+            panelBindingsTitle.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBindings).EndInit();
             ResumeLayout(false);
             PerformLayout();
@@ -741,12 +706,9 @@
         private Label labelVibraHeader;
         private UI.RButton buttonReset;
         private Panel panelBindings;
-        private Panel panel1;
+        private Panel panelBindingsTitle;
         private PictureBox pictureBindings;
         private Label labelBindings;
-        private Label labelM2;
-        private UI.RComboBox comboM2;
-        private Label labelM1;
-        private UI.RComboBox comboM1;
+        private TableLayoutPanel tableBindings;
     }
 }
