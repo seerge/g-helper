@@ -152,6 +152,8 @@ public class NvidiaGpuControl : IGpuControl
 
         int _clockLimit = GetMaxGPUCLock();
 
+        if (_clockLimit < 0 && clock == 0) return 0;
+
         if (_clockLimit != clock)
         {
             if (clock > 0) RunPowershellCommand($"nvidia-smi -lgc 0,{clock}");
