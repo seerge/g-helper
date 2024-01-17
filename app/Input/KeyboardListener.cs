@@ -1,5 +1,6 @@
 ﻿using HidSharp;
 using GHelper.USB;
+using GHelper.Ally;
 
 namespace GHelper.Input
 {
@@ -37,6 +38,8 @@ namespace GHelper.Input
             }
 
             Logger.WriteLine($"Input: {input.Device.DevicePath}");
+
+            if (AppConfig.IsAlly()) AllyControl.ApplyMode();
 
             try
             {

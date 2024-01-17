@@ -1,6 +1,7 @@
 ﻿using GHelper.Gpu.AMD;
 using GHelper.Input;
 using GHelper.USB;
+using System.Text;
 
 namespace GHelper.Ally
 {
@@ -408,8 +409,15 @@ namespace GHelper.Ally
 
         }
 
+        static void WakeUp()
+        {
+            AsusHid.WriteInput(Encoding.ASCII.GetBytes("ZASUS Tech.Inc."), "Init");
+        }
+
         static public void SetDeadzones()
         {
+            WakeUp();
+
             AsusHid.WriteInput(new byte[] { AsusHid.INPUT_ID, 0xd1, 4, 4,
                 (byte)AppConfig.Get("ls_min", 0),
                 (byte)AppConfig.Get("ls_max", 100),
@@ -436,6 +444,7 @@ namespace GHelper.Ally
 
             if (applyMode is not null) _applyMode = (ControllerMode)applyMode;
 
+            WakeUp();
             AsusHid.WriteInput(new byte[] { AsusHid.INPUT_ID, 0xd1, 0x01, 0x01, (byte)_applyMode }, "Controller");
             AsusHid.WriteInput(CommandSave, null);
 
