@@ -1,6 +1,7 @@
 ﻿using GHelper.Gpu.AMD;
 using GHelper.Input;
 using GHelper.USB;
+using HidSharp;
 using System.Text;
 
 namespace GHelper.Ally
@@ -35,7 +36,7 @@ namespace GHelper.Ally
         SettingsForm settings;
 
         static ControllerMode _mode = ControllerMode.Auto;
-        static ControllerMode _applyMode = ControllerMode.Auto;
+        static ControllerMode _applyMode = ControllerMode.Mouse;
         static int _autoCount = 0;
 
         static int fpsLimit = -1;
@@ -241,9 +242,8 @@ namespace GHelper.Ally
 
             if (_autoCount > 2)
             {
-                _applyMode = newMode;
                 _autoCount = 0;
-                ApplyMode(_applyMode);
+                ApplyMode(newMode);
                 Logger.WriteLine(fps.ToString());
             }
 
@@ -254,14 +254,10 @@ namespace GHelper.Ally
             if (AppConfig.IsAlly()) settings.VisualiseAlly(true);
             else return;
 
-            SetDeadzones();
             SetMode((ControllerMode)AppConfig.Get("controller_mode", (int)ControllerMode.Auto));
 
             settings.VisualiseBacklight(InputDispatcher.GetBacklight());
-
-            fpsLimit = amdControl.GetFPSLimit();
-            Logger.WriteLine($"FPS Limit: {fpsLimit}");
-            settings.VisualiseFPSLimit(fpsLimit);
+            settings.VisualiseFPSLimit(amdControl.GetFPSLimit());
 
         }
 
@@ -439,37 +435,60 @@ namespace GHelper.Ally
 
         }
 
-        public static void ApplyMode(ControllerMode? applyMode = null)
+        public static void ApplyMode(ControllerMode applyMode = ControllerMode.Auto)
         {
+            Task.Run(() => {
 
-            if (applyMode is not null) _applyMode = (ControllerMode)applyMode;
+                HidStream? input = AsusHid.FindHidStream(AsusHid.INPUT_ID);
+                int count = 0;
 
-            WakeUp();
-            AsusHid.WriteInput(new byte[] { AsusHid.INPUT_ID, 0xd1, 0x01, 0x01, (byte)_applyMode }, "Controller");
-            AsusHid.WriteInput(CommandSave, null);
+                while (input == null && count++ < 5)
+                {
+                    input = AsusHid.FindHidStream(AsusHid.INPUT_ID);
+                    Thread.Sleep(2000);
+                }
 
-            BindZone(BindingZone.M1M2);
+                if (input == null)
+                {
+                    Logger.WriteLine($"Controller not found");
+                    return;
+                }
 
-            if (_applyMode == ControllerMode.Gamepad)
-            {
-                BindZone(BindingZone.DPadUpDown);
-                BindZone(BindingZone.DPadLeftRight);
-                BindZone(BindingZone.StickClick);
-                BindZone(BindingZone.Bumper);
-                BindZone(BindingZone.AB);
-                BindZone(BindingZone.XY);
-                BindZone(BindingZone.ViewMenu);
-                BindZone(BindingZone.Trigger);
-            }
+                if (applyMode != ControllerMode.Auto) _applyMode = applyMode;
 
-            AsusHid.WriteInput(CommandSave, null);
+                WakeUp();
+
+                AsusHid.WriteInput(new byte[] { AsusHid.INPUT_ID, 0xd1, 0x01, 0x01, (byte)_applyMode }, "Controller");
+                AsusHid.WriteInput(CommandSave, null);
+
+                BindZone(BindingZone.M1M2);
+
+                if (_applyMode == ControllerMode.Gamepad)
+                {
+                    BindZone(BindingZone.DPadUpDown);
+                    BindZone(BindingZone.DPadLeftRight);
+                    BindZone(BindingZone.StickClick);
+                    BindZone(BindingZone.Bumper);
+                    BindZone(BindingZone.AB);
+                    BindZone(BindingZone.XY);
+                    BindZone(BindingZone.ViewMenu);
+                    BindZone(BindingZone.Trigger);
+                }
+
+                AsusHid.WriteInput(CommandSave, null);
+                SetDeadzones();
+            });
         }
 
         private void SetMode(ControllerMode mode)
         {
+
+            _mode = mode;
+            ApplyMode(mode);
+            AppConfig.Set("controller_mode", (int)mode);
+
             if (mode == ControllerMode.Auto)
             {
-                _applyMode = ControllerMode.Auto;
                 amdControl.StartFPS();
                 timer.Start();
             }
@@ -477,11 +496,8 @@ namespace GHelper.Ally
             {
                 timer.Stop();
                 amdControl.StopFPS();
-                ApplyMode(mode);
             }
-
-            _mode = mode;
-            AppConfig.Set("controller_mode", (int)mode);
+            
             settings.VisualiseController(mode);
         }
 
@@ -491,17 +507,16 @@ namespace GHelper.Ally
             switch (_mode)
             {
                 case ControllerMode.Auto:
-                    _mode = ControllerMode.Gamepad;
+                    SetMode(ControllerMode.Gamepad);
                     break;
                 case ControllerMode.Gamepad:
-                    _mode = ControllerMode.Mouse;
+                    SetMode(ControllerMode.Mouse);
                     break;
                 case ControllerMode.Mouse:
-                    _mode = ControllerMode.Auto;
+                    SetMode(ControllerMode.Auto);
                     break;
             }
 
-            SetMode(_mode);
         }
 
     }

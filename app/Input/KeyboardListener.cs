@@ -21,7 +21,6 @@ namespace GHelper.Input
             HidStream? input = AsusHid.FindHidStream(AsusHid.INPUT_ID);
 
             // Fallback
-
             int count = 0;
 
             while (input == null && count++ < 5)
@@ -38,8 +37,6 @@ namespace GHelper.Input
             }
 
             Logger.WriteLine($"Input: {input.Device.DevicePath}");
-
-            if (AppConfig.IsAlly()) AllyControl.ApplyMode();
 
             try
             {
