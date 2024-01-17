@@ -49,11 +49,11 @@ namespace GHelper
             FillBinding("x", "X");
             FillBinding("y", "Y");
 
-            FillBinding("du", "DPad Up");
-            FillBinding("dd", "DPad Down");
+            FillBinding("du", "DPadUp");
+            FillBinding("dd", "DPadDown");
             
-            FillBinding("dl", "DPad Left");
-            FillBinding("dr", "DPad Right");
+            FillBinding("dl", "DPadLeft");
+            FillBinding("dr", "DPadRight");
 
             FillBinding("rb", "RBumper");
             FillBinding("lb", "LBumper");
