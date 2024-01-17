@@ -68,6 +68,8 @@
             panelBindingsTitle = new Panel();
             pictureBindings = new PictureBox();
             labelBindings = new Label();
+            labelPrimary = new Label();
+            labelSecondary = new Label();
             panelController.SuspendLayout();
             panelVibra.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)trackVibra).BeginInit();
@@ -90,6 +92,7 @@
             panelSDeadzone.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureSDeadzone).BeginInit();
             panelBindings.SuspendLayout();
+            tableBindings.SuspendLayout();
             panelBindingsTitle.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBindings).BeginInit();
             SuspendLayout();
@@ -557,9 +560,9 @@
             panelBindings.Controls.Add(panelBindingsTitle);
             panelBindings.Dock = DockStyle.Left;
             panelBindings.Location = new Point(570, 10);
-            panelBindings.MinimumSize = new Size(600, 0);
+            panelBindings.MinimumSize = new Size(700, 0);
             panelBindings.Name = "panelBindings";
-            panelBindings.Size = new Size(600, 912);
+            panelBindings.Size = new Size(700, 912);
             panelBindings.TabIndex = 46;
             // 
             // tableBindings
@@ -568,13 +571,16 @@
             tableBindings.ColumnCount = 3;
             tableBindings.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20F));
             tableBindings.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 40F));
-            tableBindings.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 40F));
+            tableBindings.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 40F));
+            tableBindings.Controls.Add(labelPrimary, 1, 0);
+            tableBindings.Controls.Add(labelSecondary, 2, 0);
+            tableBindings.Dock = DockStyle.Top;
             tableBindings.Location = new Point(0, 60);
             tableBindings.Name = "tableBindings";
             tableBindings.Padding = new Padding(5);
             tableBindings.RowCount = 1;
-            tableBindings.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            tableBindings.Size = new Size(500, 10);
+            tableBindings.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
+            tableBindings.Size = new Size(700, 52);
             tableBindings.TabIndex = 49;
             // 
             // panelBindingsTitle
@@ -587,7 +593,7 @@
             panelBindingsTitle.Location = new Point(0, 0);
             panelBindingsTitle.Margin = new Padding(4);
             panelBindingsTitle.Name = "panelBindingsTitle";
-            panelBindingsTitle.Size = new Size(500, 60);
+            panelBindingsTitle.Size = new Size(700, 60);
             panelBindingsTitle.TabIndex = 44;
             // 
             // pictureBindings
@@ -614,12 +620,36 @@
             labelBindings.TabIndex = 40;
             labelBindings.Text = "Bindings";
             // 
+            // labelPrimary
+            // 
+            labelPrimary.AutoSize = true;
+            labelPrimary.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            labelPrimary.Location = new Point(147, 5);
+            labelPrimary.Margin = new Padding(4, 0, 4, 0);
+            labelPrimary.Name = "labelPrimary";
+            labelPrimary.Padding = new Padding(5);
+            labelPrimary.Size = new Size(115, 42);
+            labelPrimary.TabIndex = 41;
+            labelPrimary.Text = "Primary";
+            // 
+            // labelSecondary
+            // 
+            labelSecondary.AutoSize = true;
+            labelSecondary.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            labelSecondary.Location = new Point(423, 5);
+            labelSecondary.Margin = new Padding(4, 0, 4, 0);
+            labelSecondary.Name = "labelSecondary";
+            labelSecondary.Padding = new Padding(5);
+            labelSecondary.Size = new Size(144, 42);
+            labelSecondary.TabIndex = 42;
+            labelSecondary.Text = "Secondary";
+            // 
             // Handheld
             // 
             AutoScaleDimensions = new SizeF(13F, 32F);
             AutoScaleMode = AutoScaleMode.Font;
             AutoSize = true;
-            ClientSize = new Size(1277, 932);
+            ClientSize = new Size(1286, 932);
             Controls.Add(panelBindings);
             Controls.Add(panelController);
             MaximizeBox = false;
@@ -661,6 +691,8 @@
             ((System.ComponentModel.ISupportInitialize)pictureSDeadzone).EndInit();
             panelBindings.ResumeLayout(false);
             panelBindings.PerformLayout();
+            tableBindings.ResumeLayout(false);
+            tableBindings.PerformLayout();
             panelBindingsTitle.ResumeLayout(false);
             panelBindingsTitle.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBindings).EndInit();
@@ -710,5 +742,7 @@
         private PictureBox pictureBindings;
         private Label labelBindings;
         private TableLayoutPanel tableBindings;
+        private Label labelPrimary;
+        private Label labelSecondary;
     }
 }

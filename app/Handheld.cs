@@ -44,36 +44,30 @@ namespace GHelper
             FillBinding("m1", "M1", AllyControl.MappingM1);
             FillBinding("m2", "M2", AllyControl.MappingM2);
 
-            FillBinding("a", "A", AllyControl.MappingA);
-            FillBinding("b", "B", AllyControl.MappingB);
-            FillBinding("x", "X", AllyControl.MappingX);
-            FillBinding("y", "Y", AllyControl.MappingY);
+            FillBinding("a", "A");
+            FillBinding("b", "B");
+            FillBinding("x", "X");
+            FillBinding("y", "Y");
 
-            FillBinding("du", "DPad Up", AllyControl.MappingDU);
-            FillBinding("dd", "DPad Down", AllyControl.MappingDD);
+            FillBinding("du", "DPad Up");
+            FillBinding("dd", "DPad Down");
             
-            FillBinding("dl", "DPad Left", AllyControl.MappingDL);
-            FillBinding("dr", "DPad Right", AllyControl.MappingDR);
+            FillBinding("dl", "DPad Left");
+            FillBinding("dr", "DPad Right");
 
-            FillBinding("rb", "Right Bumper", AllyControl.MappingRB);
-            FillBinding("lb", "Left Bumper", AllyControl.MappingLB);
+            FillBinding("rb", "RBumper");
+            FillBinding("lb", "LBumper");
 
-            FillBinding("rs", "Right Stick", AllyControl.MappingRS);
-            FillBinding("ll", "Left Stick", AllyControl.MappingLS);
+            FillBinding("rs", "RStick");
+            FillBinding("ll", "LStick");
 
+            FillBinding("vb", "View");
+            FillBinding("mb", "Menu");
         }
 
-
-
-        private void FillBinding(string name, string label, int defaultValue = -1)
+        private RComboBox ComboBinding(string name, int value)
         {
-            tableBindings.RowStyles.Add(new RowStyle(SizeType.AutoSize));
-            tableBindings.Controls.Add(new Label { Text = label + ":", Anchor = AnchorStyles.Left, Dock = DockStyle.Fill, Padding = new Padding(5, 5, 5, 5) }, 0, tableBindings.RowCount - 1);
-
-            name = "bind_" + name;
-
             var combo = new RComboBox();
-
             combo.BorderColor = Color.White;
             combo.ButtonColor = Color.FromArgb(255, 255, 255);
             combo.Dock = DockStyle.Fill;
@@ -83,18 +77,26 @@ namespace GHelper
             combo.DropDownStyle = ComboBoxStyle.DropDownList;
             combo.DisplayMember = "Value";
             combo.ValueMember = "Key";
-
-            int value = AppConfig.Get(name, defaultValue);
-
             foreach (var item in AllyControl.BindingCodes)
             {
                 combo.Items.Add(new KeyValuePair<int, string>(item.Key, item.Value));
                 if (item.Key == value) combo.SelectedItem = item;
             }
-
             combo.SelectedValueChanged += Binding_SelectedValueChanged;
 
-            tableBindings.Controls.Add(combo, 1, tableBindings.RowCount - 1);
+            return combo;
+
+        }
+
+
+        private void FillBinding(string binding, string label, int defaultValue = -1)
+        {
+            tableBindings.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+            tableBindings.Controls.Add(new Label { Text = label, Anchor = AnchorStyles.Left, Dock = DockStyle.Fill, Padding = new Padding(5, 5, 5, 5) }, 0, tableBindings.RowCount);
+
+            tableBindings.Controls.Add(ComboBinding("bind_" + binding, AppConfig.Get("bind_" + binding, defaultValue)), 1, tableBindings.RowCount);
+            tableBindings.Controls.Add(ComboBinding("bind2_" + binding, AppConfig.Get("bind2_" + binding)), 2, tableBindings.RowCount);
+
             tableBindings.RowCount++;
 
         }

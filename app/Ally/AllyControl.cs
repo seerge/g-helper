@@ -222,7 +222,7 @@ namespace GHelper.Ally
 
             settings = settingsForm;
 
-            timer = new System.Timers.Timer(500);
+            timer = new System.Timers.Timer(300);
             timer.Elapsed += Timer_Elapsed;
 
         }
@@ -235,6 +235,8 @@ namespace GHelper.Ally
 
             if (_applyMode != newMode) _autoCount++;
             else _autoCount = 0;
+
+            if (_mode != ControllerMode.Auto) return;
 
             if (_autoCount > 2)
             {
@@ -326,63 +328,81 @@ namespace GHelper.Ally
 
         static private void MappingZone(BindingZone zone)
         {
-            int Key1, Key2;
+            int KeyL1, KeyR1;
+            int KeyL2, KeyR2;
+
             switch (zone)
             {
                 case BindingZone.DPadUpDown:
-                    Key1 = AppConfig.Get("bind_du", MappingDU);
-                    Key2 = AppConfig.Get("bind_dd", MappingDD);
+                    KeyL1 = AppConfig.Get("bind_du", MappingDU);
+                    KeyR1 = AppConfig.Get("bind_dd", MappingDD);
+                    KeyL2 = AppConfig.Get("bind2_du");
+                    KeyR2 = AppConfig.Get("bind2_dd");
                     break;
                 case BindingZone.DPadLeftRight:
-                    Key1 = AppConfig.Get("bind_dl", MappingDL);
-                    Key2 = AppConfig.Get("bind_dr", MappingDR);
+                    KeyL1 = AppConfig.Get("bind_dl", MappingDL);
+                    KeyR1 = AppConfig.Get("bind_dr", MappingDR);
+                    KeyL2 = AppConfig.Get("bind2_dl");
+                    KeyR2 = AppConfig.Get("bind2_dr");
                     break;
                 case BindingZone.StickClick:
-                    Key1 = AppConfig.Get("bind_ls", MappingLS);
-                    Key2 = AppConfig.Get("bind_rs", MappingRS);
+                    KeyL1 = AppConfig.Get("bind_ls", MappingLS);
+                    KeyR1 = AppConfig.Get("bind_rs", MappingRS);
+                    KeyL2 = AppConfig.Get("bind2_ls");
+                    KeyR2 = AppConfig.Get("bind2_rs");
                     break;
                 case BindingZone.Bumper:
-                    Key1 = AppConfig.Get("bind_lb", MappingLB);
-                    Key2 = AppConfig.Get("bind_rb", MappingRB);
+                    KeyL1 = AppConfig.Get("bind_lb", MappingLB);
+                    KeyR1 = AppConfig.Get("bind_rb", MappingRB);
+                    KeyL2 = AppConfig.Get("bind2_lb");
+                    KeyR2 = AppConfig.Get("bind2_rb");
                     break;
                 case BindingZone.AB:
-                    Key1 = AppConfig.Get("bind_a", MappingA);
-                    Key2 = AppConfig.Get("bind_b", MappingB);
+                    KeyL1 = AppConfig.Get("bind_a", MappingA);
+                    KeyR1 = AppConfig.Get("bind_b", MappingB);
+                    KeyL2 = AppConfig.Get("bind2_a");
+                    KeyR2 = AppConfig.Get("bind2_b");
                     break;
                 case BindingZone.XY:
-                    Key1 = AppConfig.Get("bind_x", MappingX);
-                    Key2 = AppConfig.Get("bind_y", MappingY);
+                    KeyL1 = AppConfig.Get("bind_x", MappingX);
+                    KeyR1 = AppConfig.Get("bind_y", MappingY);
+                    KeyL2 = AppConfig.Get("bind2_x");
+                    KeyR2 = AppConfig.Get("bind2_y");
                     break;
                 case BindingZone.ViewMenu:
-                    Key1 = AppConfig.Get("bind_vb", MappingVB);
-                    Key2 = AppConfig.Get("bind_mv", MappingMB);
+                    KeyL1 = AppConfig.Get("bind_vb", MappingVB);
+                    KeyR1 = AppConfig.Get("bind_mb", MappingMB);
+                    KeyL2 = AppConfig.Get("bind2_vb");
+                    KeyR2 = AppConfig.Get("bind2_mb");
                     break;
                 case BindingZone.M1M2:
-                    Key1 = AppConfig.Get("bind_m2", MappingM2);
-                    Key2 = AppConfig.Get("bind_m1", MappingM1);
+                    KeyL1 = AppConfig.Get("bind_m2", MappingM2);
+                    KeyR1 = AppConfig.Get("bind_m1", MappingM1);
+                    KeyL2 = AppConfig.Get("bind2_m2", MappingM2);
+                    KeyR2 = AppConfig.Get("bind2_m1", MappingM1);
                     break;
                 default:
-                    Key1 = AppConfig.Get("bind_trl", MappingLT);
-                    Key2 = AppConfig.Get("bind_trr", MappingRT);
+                    KeyL1 = AppConfig.Get("bind_trl", MappingLT);
+                    KeyR1 = AppConfig.Get("bind_trr", MappingRT);
+                    KeyL2 = AppConfig.Get("bind2_trl");
+                    KeyR2 = AppConfig.Get("bind2_trr");
                     break;
             }
 
-            if (Key1 == -1 && Key2 == -1) return;
+            if (KeyL1 == -1 && KeyR1 == -1) return;
 
             byte[] bindings = new byte[64];
             byte[] init = new byte[] { AsusHid.INPUT_ID, 0xd1, 0x02, (byte)zone, 0x2c };
 
             init.CopyTo(bindings, 0);
 
-            DecodeBinding(Key1).CopyTo(bindings, 5);
-            DecodeBinding(Key1).CopyTo(bindings, 16);
+            DecodeBinding(KeyL1).CopyTo(bindings, 5);
+            DecodeBinding(KeyL2).CopyTo(bindings, 16);
 
-            DecodeBinding(Key2).CopyTo(bindings, 27);
-            DecodeBinding(Key2).CopyTo(bindings, 38);
+            DecodeBinding(KeyR1).CopyTo(bindings, 27);
+            DecodeBinding(KeyR2).CopyTo(bindings, 38);
 
-            //AsusHid.WriteInput(Encoding.ASCII.GetBytes("ZASUS Tech.Inc."), "Init");
-
-            AsusHid.WriteInput(MappingReady);
+            AsusHid.WriteInput(MappingReady, null);
             AsusHid.WriteInput(bindings, $"Bind{zone}");
 
 
@@ -418,7 +438,7 @@ namespace GHelper.Ally
             if (applyMode is not null) _applyMode = (ControllerMode)applyMode;
 
             AsusHid.WriteInput(new byte[] { AsusHid.INPUT_ID, 0xd1, 0x01, 0x01, (byte)_applyMode }, "Controller");
-            AsusHid.WriteInput(MappingSave);
+            AsusHid.WriteInput(MappingSave, null);
 
             MappingZone(BindingZone.M1M2);
 
@@ -434,7 +454,7 @@ namespace GHelper.Ally
                 MappingZone(BindingZone.Trigger);
             }
 
-            AsusHid.WriteInput(MappingSave);
+            AsusHid.WriteInput(MappingSave, null);
         }
 
         private void SetMode(ControllerMode mode)
