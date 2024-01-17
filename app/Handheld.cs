@@ -110,7 +110,7 @@ namespace GHelper
             if (value >= 0) AppConfig.Set(combo.Name, value);
             else AppConfig.Remove(combo.Name);
 
-            AllyControl.SetMapping();
+            AllyControl.ApplyMode();
         }
 
         private void Controller_Complete(object? sender, EventArgs e)

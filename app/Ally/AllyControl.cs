@@ -1,7 +1,6 @@
 ﻿using GHelper.Gpu.AMD;
 using GHelper.Input;
 using GHelper.USB;
-using System.Text;
 
 namespace GHelper.Ally
 {
@@ -35,7 +34,7 @@ namespace GHelper.Ally
         SettingsForm settings;
 
         static ControllerMode mode = ControllerMode.Auto;
-        static ControllerMode _autoMode = ControllerMode.Auto;
+        static ControllerMode _applyMode = ControllerMode.Auto;
         static int _autoCount = 0;
 
         static int fpsLimit = -1;
@@ -232,16 +231,16 @@ namespace GHelper.Ally
         {
             float fps = amdControl.GetFPS();
 
-            ControllerMode _newMode = (fps > 0) ? ControllerMode.Gamepad : ControllerMode.Mouse;
+            ControllerMode newMode = (fps > 0) ? ControllerMode.Gamepad : ControllerMode.Mouse;
 
-            if (_autoMode != _newMode) _autoCount++;
+            if (_applyMode != newMode) _autoCount++;
             else _autoCount = 0;
 
             if (_autoCount > 2)
             {
-                _autoMode = _newMode;
+                _applyMode = newMode;
                 _autoCount = 0;
-                ApplyMode(_autoMode, "ControllerAuto");
+                ApplyMode(_applyMode);
                 Logger.WriteLine(fps.ToString());
             }
 
@@ -374,7 +373,7 @@ namespace GHelper.Ally
             byte[] init = new byte[] { AsusHid.INPUT_ID, 0xd1, 0x02, (byte)zone, 0x2c };
 
             init.CopyTo(bindings, 0);
-            
+
             DecodeBinding(Key1).CopyTo(bindings, 5);
             DecodeBinding(Key1).CopyTo(bindings, 16);
 
@@ -387,22 +386,6 @@ namespace GHelper.Ally
             AsusHid.WriteInput(bindings, $"Bind{zone}");
 
 
-
-        }
-
-        static public void SetMapping()
-        {
-            MappingZone(BindingZone.DPadUpDown);
-            MappingZone(BindingZone.DPadLeftRight);
-            MappingZone(BindingZone.StickClick);
-            MappingZone(BindingZone.Bumper);
-            MappingZone(BindingZone.AB);
-            MappingZone(BindingZone.XY);
-            MappingZone(BindingZone.ViewMenu);
-            MappingZone(BindingZone.M1M2);
-            MappingZone(BindingZone.Trigger);
-
-            AsusHid.WriteInput(MappingSave);
 
         }
 
@@ -429,20 +412,36 @@ namespace GHelper.Ally
 
         }
 
-        private void ApplyMode(ControllerMode applyMode, string log = "ControllerMode")
+        public static void ApplyMode(ControllerMode? applyMode = null)
         {
-            //AsusHid.WriteInput(new byte[] { AsusHid.INPUT_ID, 0xd1, 0x0b, 0x01, (byte)applyMode }, log);
-            AsusHid.WriteInput(new byte[] { AsusHid.INPUT_ID, 0xd1, 0x01, 0x01, (byte)applyMode }, log);
+
+            if (applyMode is not null) _applyMode = (ControllerMode)applyMode;
+
+            AsusHid.WriteInput(new byte[] { AsusHid.INPUT_ID, 0xd1, 0x01, 0x01, (byte)_applyMode }, "Controller");
             AsusHid.WriteInput(MappingSave);
-            
-            SetMapping();
+
+            if (_applyMode == ControllerMode.Gamepad)
+            {
+                MappingZone(BindingZone.DPadUpDown);
+                MappingZone(BindingZone.DPadLeftRight);
+                MappingZone(BindingZone.StickClick);
+                MappingZone(BindingZone.Bumper);
+                MappingZone(BindingZone.AB);
+                MappingZone(BindingZone.XY);
+                MappingZone(BindingZone.ViewMenu);
+            }
+
+            MappingZone(BindingZone.M1M2);
+            MappingZone(BindingZone.Trigger);
+
+            AsusHid.WriteInput(MappingSave);
         }
 
         private void SetMode(ControllerMode mode)
         {
             if (mode == ControllerMode.Auto)
             {
-                _autoMode = ControllerMode.Auto;
+                _applyMode = ControllerMode.Auto;
                 amdControl.StartFPS();
                 timer.Start();
             }
