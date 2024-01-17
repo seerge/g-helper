@@ -41,8 +41,8 @@ namespace GHelper
 
             trackVibra.ValueChanged += Controller_Complete;
 
-            FillBinding("m1", "M1", AllyControl.MappingM1);
-            FillBinding("m2", "M2", AllyControl.MappingM2);
+            FillBinding("m1", "M1", AllyControl.BindM1);
+            FillBinding("m2", "M2", AllyControl.BindM2);
 
             FillBinding("a", "A");
             FillBinding("b", "B");
@@ -77,7 +77,7 @@ namespace GHelper
             combo.DropDownStyle = ComboBoxStyle.DropDownList;
             combo.DisplayMember = "Value";
             combo.ValueMember = "Key";
-            foreach (var item in AllyControl.BindingCodes)
+            foreach (var item in AllyControl.BindCodes)
             {
                 combo.Items.Add(new KeyValuePair<int, string>(item.Key, item.Value));
                 if (item.Key == value) combo.SelectedItem = item;
