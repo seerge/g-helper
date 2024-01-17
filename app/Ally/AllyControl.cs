@@ -33,7 +33,7 @@ namespace GHelper.Ally
 
         SettingsForm settings;
 
-        static ControllerMode mode = ControllerMode.Auto;
+        static ControllerMode _mode = ControllerMode.Auto;
         static ControllerMode _applyMode = ControllerMode.Auto;
         static int _autoCount = 0;
 
@@ -420,6 +420,8 @@ namespace GHelper.Ally
             AsusHid.WriteInput(new byte[] { AsusHid.INPUT_ID, 0xd1, 0x01, 0x01, (byte)_applyMode }, "Controller");
             AsusHid.WriteInput(MappingSave);
 
+            MappingZone(BindingZone.M1M2);
+
             if (_applyMode == ControllerMode.Gamepad)
             {
                 MappingZone(BindingZone.DPadUpDown);
@@ -429,10 +431,8 @@ namespace GHelper.Ally
                 MappingZone(BindingZone.AB);
                 MappingZone(BindingZone.XY);
                 MappingZone(BindingZone.ViewMenu);
+                MappingZone(BindingZone.Trigger);
             }
-
-            MappingZone(BindingZone.M1M2);
-            MappingZone(BindingZone.Trigger);
 
             AsusHid.WriteInput(MappingSave);
         }
@@ -452,6 +452,7 @@ namespace GHelper.Ally
                 ApplyMode(mode);
             }
 
+            _mode = mode;
             AppConfig.Set("controller_mode", (int)mode);
             settings.VisualiseController(mode);
         }
@@ -459,20 +460,20 @@ namespace GHelper.Ally
         public void ToggleMode()
         {
 
-            switch (mode)
+            switch (_mode)
             {
                 case ControllerMode.Auto:
-                    mode = ControllerMode.Gamepad;
+                    _mode = ControllerMode.Gamepad;
                     break;
                 case ControllerMode.Gamepad:
-                    mode = ControllerMode.Mouse;
+                    _mode = ControllerMode.Mouse;
                     break;
                 case ControllerMode.Mouse:
-                    mode = ControllerMode.Auto;
+                    _mode = ControllerMode.Auto;
                     break;
             }
 
-            SetMode(mode);
+            SetMode(_mode);
         }
 
     }
