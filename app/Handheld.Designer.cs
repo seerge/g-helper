@@ -65,11 +65,11 @@
             labelSDeadzone = new Label();
             panelBindings = new Panel();
             tableBindings = new TableLayoutPanel();
+            labelPrimary = new Label();
+            labelSecondary = new Label();
             panelBindingsTitle = new Panel();
             pictureBindings = new PictureBox();
             labelBindings = new Label();
-            labelPrimary = new Label();
-            labelSecondary = new Label();
             panelController.SuspendLayout();
             panelVibra.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)trackVibra).BeginInit();
@@ -583,6 +583,30 @@
             tableBindings.Size = new Size(700, 52);
             tableBindings.TabIndex = 49;
             // 
+            // labelPrimary
+            // 
+            labelPrimary.AutoSize = true;
+            labelPrimary.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            labelPrimary.Location = new Point(147, 5);
+            labelPrimary.Margin = new Padding(4, 0, 4, 0);
+            labelPrimary.Name = "labelPrimary";
+            labelPrimary.Padding = new Padding(5);
+            labelPrimary.Size = new Size(115, 42);
+            labelPrimary.TabIndex = 41;
+            labelPrimary.Text = "Primary";
+            // 
+            // labelSecondary
+            // 
+            labelSecondary.AutoSize = true;
+            labelSecondary.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            labelSecondary.Location = new Point(423, 5);
+            labelSecondary.Margin = new Padding(4, 0, 4, 0);
+            labelSecondary.Name = "labelSecondary";
+            labelSecondary.Padding = new Padding(5);
+            labelSecondary.Size = new Size(144, 42);
+            labelSecondary.TabIndex = 42;
+            labelSecondary.Text = "Secondary";
+            // 
             // panelBindingsTitle
             // 
             panelBindingsTitle.AutoSize = true;
@@ -616,33 +640,9 @@
             labelBindings.Location = new Point(45, 17);
             labelBindings.Margin = new Padding(4, 0, 4, 0);
             labelBindings.Name = "labelBindings";
-            labelBindings.Size = new Size(114, 32);
+            labelBindings.Size = new Size(558, 32);
             labelBindings.TabIndex = 40;
-            labelBindings.Text = "Bindings";
-            // 
-            // labelPrimary
-            // 
-            labelPrimary.AutoSize = true;
-            labelPrimary.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            labelPrimary.Location = new Point(147, 5);
-            labelPrimary.Margin = new Padding(4, 0, 4, 0);
-            labelPrimary.Name = "labelPrimary";
-            labelPrimary.Padding = new Padding(5);
-            labelPrimary.Size = new Size(115, 42);
-            labelPrimary.TabIndex = 41;
-            labelPrimary.Text = "Primary";
-            // 
-            // labelSecondary
-            // 
-            labelSecondary.AutoSize = true;
-            labelSecondary.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            labelSecondary.Location = new Point(423, 5);
-            labelSecondary.Margin = new Padding(4, 0, 4, 0);
-            labelSecondary.Name = "labelSecondary";
-            labelSecondary.Padding = new Padding(5);
-            labelSecondary.Size = new Size(144, 42);
-            labelSecondary.TabIndex = 42;
-            labelSecondary.Text = "Secondary";
+            labelBindings.Text = "Bindings for Gamepad or Auto (in-game) Mode";
             // 
             // Handheld
             // 
