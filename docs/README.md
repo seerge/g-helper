@@ -93,14 +93,16 @@ Role of G-Helper for your laptop is similar to a role of a remote control for yo
 ### :mouse: Asus Mouse and other peripherals support
 
 [Currently supported models](https://github.com/seerge/g-helper/discussions/900)
-- ROG Harpe Ace Aim Lab Edition
-- ROG Keris Wireless
 - ROG Chakram X (P708)
 - ROG Chakram Core (P511)
-- ROG Strix III Gladius III Aimpoint Wireless (P711)
 - ROG Gladius II and Gladius II Origin (P502 and P504)
 - ROG Gladius III
 - ROG Gladius III Wireless
+- ROG Harpe Ace Aim Lab Edition
+- ROG Keris Wireless
+- ROG Strix Carry (P508)
+- ROG Strix III Gladius III Aimpoint Wireless (P711)
+- ROG Spatha
 - ROG Strix Impact II Wireless
 - TUF Gaming M4 Wireless (P306)
 - TUF Gaming M3
