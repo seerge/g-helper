@@ -139,6 +139,7 @@ Huge thanks to [@IceStormNG](https://github.com/IceStormNG) 👑 for contributio
 - [NvAPIWrapper](https://github.com/falahati/NvAPIWrapper) for accessing Nvidia API
 - [Starlight](https://github.com/vddCore/Starlight) for anime matrix communication protocol
 - [UXTU](https://github.com/JamesCJ60/Universal-x86-Tuning-Utility) for undervolting using Ryzen System Management Unit
+- [AsusCtrl](https://gitlab.com/asus-linux/asusctl) for inspiration and some reverse engineering
 
 **Disclaimers**
 "ROG", "TUF", and "Armoury Crate" are trademarked by and belong to AsusTek Computer, Inc. I make no claims to these or any assets belonging to AsusTek Computer and use them purely for informational purposes only.
