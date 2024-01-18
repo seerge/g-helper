@@ -6,7 +6,7 @@
 Small and lightweight Armoury Crate alternative for Asus laptops offering almost same functionality without extra bloat and unnecessary services. 
 Works with all popular models, such as ROG Zephyrus G14, G15, G16, M16, Flow X13, Flow X16, Flow Z13, TUF Series, Strix / Scar Series, ProArt, VivoBook and many more! 
 
-# [:floppy_disk:Download](https://github.com/seerge/g-helper/releases/latest/download/GHelper.zip) 
+# [:floppy_disk:Download](https://github.com/seerge/g-helper/releases/latest/download/GHelper.zip)
 
 - [FAQ](https://github.com/seerge/g-helper/wiki/FAQ)
 - [Setup and Requirements](https://github.com/seerge/g-helper/wiki/Requirements)
@@ -93,14 +93,16 @@ Role of G-Helper for your laptop is similar to a role of a remote control for yo
 ### :mouse: Asus Mouse and other peripherals support
 
 [Currently supported models](https://github.com/seerge/g-helper/discussions/900)
-- ROG Harpe Ace Aim Lab Edition
-- ROG Keris Wireless
 - ROG Chakram X (P708)
 - ROG Chakram Core (P511)
-- ROG Strix III Gladius III Aimpoint Wireless (P711)
 - ROG Gladius II and Gladius II Origin (P502 and P504)
 - ROG Gladius III
 - ROG Gladius III Wireless
+- ROG Harpe Ace Aim Lab Edition
+- ROG Keris Wireless
+- ROG Strix Carry (P508)
+- ROG Strix III Gladius III Aimpoint Wireless (P711)
+- ROG Spatha
 - ROG Strix Impact II Wireless
 - TUF Gaming M4 Wireless (P306)
 - TUF Gaming M3
@@ -137,6 +139,7 @@ Huge thanks to [@IceStormNG](https://github.com/IceStormNG) 👑 for contributio
 - [NvAPIWrapper](https://github.com/falahati/NvAPIWrapper) for accessing Nvidia API
 - [Starlight](https://github.com/vddCore/Starlight) for anime matrix communication protocol
 - [UXTU](https://github.com/JamesCJ60/Universal-x86-Tuning-Utility) for undervolting using Ryzen System Management Unit
+- [AsusCtl](https://gitlab.com/asus-linux/asusctl) for inspiration and some reverse engineering
 
 **Disclaimers**
 "ROG", "TUF", and "Armoury Crate" are trademarked by and belong to AsusTek Computer, Inc. I make no claims to these or any assets belonging to AsusTek Computer and use them purely for informational purposes only.
