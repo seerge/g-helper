@@ -1,13 +1,12 @@
 ﻿using GHelper;
+using GHelper.Battery;
 using GHelper.Fan;
 using GHelper.Gpu;
-using GHelper.Gpu.NVidia;
 using GHelper.Gpu.AMD;
-
+using GHelper.Gpu.NVidia;
 using GHelper.Helpers;
 using System.Diagnostics;
 using System.Management;
-using GHelper.Battery;
 
 public static class HardwareControl
 {
@@ -68,9 +67,16 @@ public static class HardwareControl
 
                 chargeCapacity = Convert.ToDecimal(obj["RemainingCapacity"]);
 
+                decimal? discharge = Program.acpi.GetBatteryDischarge();
+                if (discharge is not null)
+                {
+                    batteryRate = discharge;
+                    return;
+                }
+
                 decimal chargeRate = Convert.ToDecimal(obj["ChargeRate"]);
                 decimal dischargeRate = Convert.ToDecimal(obj["DischargeRate"]);
-                
+
                 if (chargeRate > 0)
                     batteryRate = chargeRate / 1000;
                 else
@@ -155,7 +161,8 @@ public static class HardwareControl
         return health;
     }
 
-    public static float? GetCPUTemp() {
+    public static float? GetCPUTemp()
+    {
 
         var last = DateTimeOffset.Now.ToUnixTimeSeconds();
         if (Math.Abs(last - lastUpdate) < 2) return cpuTemp;
@@ -255,7 +262,7 @@ public static class HardwareControl
             GpuControl?.Dispose();
 
             IGpuControl _gpuControl = new NvidiaGpuControl();
-            
+
             if (_gpuControl.IsValid)
             {
                 GpuControl = _gpuControl;

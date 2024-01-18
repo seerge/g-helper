@@ -58,6 +58,8 @@ public class AsusACPI
     public const uint GPU_Fan = 0x00110014;
     public const uint Mid_Fan = 0x00110031;
 
+    public const uint BatteryDischarge = 0x0012005A;
+
     public const uint PerformanceMode = 0x00120075; // Performance modes
     public const uint VivoBookMode = 0x00110019; // Vivobook performance modes
 
@@ -372,6 +374,23 @@ public class AsusACPI
         return CallMethod(DSTS, args);
     }
 
+
+    public decimal? GetBatteryDischarge()
+    {
+        var buffer = DeviceGetBuffer(BatteryDischarge);
+
+        if (buffer[2] > 0)
+        {
+            buffer[2] = 0;
+            return (decimal)BitConverter.ToInt16(buffer, 0) / 100;
+        }
+        else
+        {
+            return null;
+        }
+
+
+    }
     public int SetGPUEco(int eco)
     {
         int ecoFlag = DeviceGet(GPUEco);
@@ -411,6 +430,7 @@ public class AsusACPI
 
         return fan;
     }
+
 
     public int SetFanRange(AsusFan device, byte[] curve)
     {

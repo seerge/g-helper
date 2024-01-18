@@ -180,10 +180,10 @@ public class NvidiaGpuControl : IGpuControl
         if (core < MinCoreOffset || core > MaxCoreOffset) return 0;
         if (memory < MinMemoryOffset || memory > MaxMemoryOffset) return 0;
 
-        if (GetClocks(out int currentCore, out int currentMemory))
-        {
-            if (Math.Abs(core - currentCore) < 5 && Math.Abs(memory - currentMemory) < 5) return 0;
-        }
+        GetClocks(out int currentCore, out int currentMemory);
+
+        // Nothing to set
+        if (Math.Abs(core - currentCore) < 5 && Math.Abs(memory - currentMemory) < 5) return 0;
 
         PhysicalGPU internalGpu = _internalGpu!;
 
