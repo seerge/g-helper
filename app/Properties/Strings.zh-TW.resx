@@ -271,7 +271,7 @@
     <value>僅本次將電力充滿</value>
   </data>
   <data name="BiosAndDriverUpdates" xml:space="preserve">
-    <value>BIOS與驅動程式更新 Updates</value>
+    <value>BIOS與驅動程式更新</value>
   </data>
   <data name="Boot" xml:space="preserve">
     <value>開機時</value>
