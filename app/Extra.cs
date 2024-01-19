@@ -315,11 +315,15 @@ namespace GHelper
 
             if ((!AppConfig.IsStrix() && !AppConfig.IsZ13()) || AppConfig.IsStrixLimitedRGB() || AppConfig.IsARCNM())
             {
-                labelBacklightBar.Visible = false;
-                checkAwakeBar.Visible = false;
-                checkBootBar.Visible = false;
-                checkSleepBar.Visible = false;
-                checkShutdownBar.Visible = false;
+
+                if (!AppConfig.IsStrixLimitedRGB())
+                {
+                    labelBacklightBar.Visible = false;
+                    checkAwakeBar.Visible = false;
+                    checkBootBar.Visible = false;
+                    checkSleepBar.Visible = false;
+                    checkShutdownBar.Visible = false;
+                }
 
                 labelBacklightLid.Visible = false;
                 checkAwakeLid.Visible = false;
