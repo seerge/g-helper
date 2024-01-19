@@ -94,11 +94,11 @@ namespace GHelper.Helpers
             }
         }
 
-        public static void StopDisableService(string serviceName)
+        public static void StopDisableService(string serviceName, string disable = "Disabled")
         {
             try
             {
-                string script = $"Get-Service -Name \"{serviceName}\" | Stop-Service -Force -PassThru | Set-Service -StartupType Disabled";
+                string script = $"Get-Service -Name \"{serviceName}\" | Stop-Service -Force -PassThru | Set-Service -StartupType {disable}";
                 Logger.WriteLine(script);
                 RunCMD("powershell", script);
             }

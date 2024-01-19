@@ -66,12 +66,13 @@ namespace GHelper.Ally
 
         public const string BindKBU = "02-98";
         public const string BindKBD = "02-99";
-        public const string BindKBL = "02-91";
-        public const string BindKBR = "02-9D";
+        public const string BindKBL = "02-9A";
+        public const string BindKBR = "02-9B";
 
         public const string BindTab = "02-0D";
         public const string BindEnter = "02-5A";
         public const string BindBack = "02-66";
+        public const string BindEsc = "02-76";
 
         public const string BindPgU = "02-96";
         public const string BindPgD = "02-97";
@@ -86,6 +87,7 @@ namespace GHelper.Ally
         public const string BindBrightnessUp = "04-04-8C-88-8A-06";
 
         public const string BindOverlay = "04-03-8C-88-44";
+        public const string BindShiftTab = "04-02-88-0D";
 
 
         static byte[] CommandReady = new byte[] { AsusHid.INPUT_ID, 0xd1, 0x0a, 0x01 };
@@ -122,7 +124,7 @@ namespace GHelper.Ally
 
             { "01-13", "XBox/Steam" },
 
-            { "02-76", "Esc" },
+            { BindEsc, "Esc" },
             { "02-05", "F1" },
             { "02-06", "F2" },
             { "02-04", "F3" },
@@ -231,6 +233,7 @@ namespace GHelper.Ally
 
             { BindTaskManager, "Task Manager" },
             { BindCloseWindow, "Close Window" },
+            { BindShiftTab, "Shift-Tab" },
 
             { "05-16", "Screenshot" },
             { "05-19", "Show keyboard" },
@@ -292,13 +295,19 @@ namespace GHelper.Ally
             switch (fpsLimit)
             {
                 case 30:
-                    fpsLimit = 40;
+                    fpsLimit = 45;
                     break;
-                case 40:
+                case 45:
                     fpsLimit = 60;
                     break;
                 case 60:
+                    fpsLimit = 90;
+                    break;
+                case 90:
                     fpsLimit = 120;
+                    break;
+                case 120:
+                    fpsLimit = 240;
                     break;
                 default:
                     fpsLimit = 30;
@@ -393,7 +402,7 @@ namespace GHelper.Ally
                     break;
                 case BindingZone.AB:
                     KeyL1 = AppConfig.GetString("bind_a", desktop ? BindEnter : BindA);
-                    KeyR1 = AppConfig.GetString("bind_b", desktop ? BindBack : BindB);
+                    KeyR1 = AppConfig.GetString("bind_b", desktop ? BindEsc : BindB);
                     KeyL2 = AppConfig.GetString("bind2_a");
                     KeyR2 = AppConfig.GetString("bind2_b");
                     break;
@@ -407,7 +416,7 @@ namespace GHelper.Ally
                     KeyL1 = AppConfig.GetString("bind_vb", BindVB);
                     KeyR1 = AppConfig.GetString("bind_mb", BindMB);
                     KeyL2 = AppConfig.GetString("bind2_vb");
-                    KeyR2 = AppConfig.GetString("bind2_mb", BindCloseWindow);
+                    KeyR2 = AppConfig.GetString("bind2_mb");
                     break;
                 case BindingZone.M1M2:
                     KeyL1 = AppConfig.GetString("bind_m2", BindM2);
@@ -416,7 +425,7 @@ namespace GHelper.Ally
                     KeyR2 = AppConfig.GetString("bind2_m1", BindM1);
                     break;
                 default:
-                    KeyL1 = AppConfig.GetString("bind_trl", desktop ? BindCtrl : BindLT);
+                    KeyL1 = AppConfig.GetString("bind_trl", desktop ? BindShiftTab : BindLT);
                     KeyR1 = AppConfig.GetString("bind_trr", desktop ? BindMouseR : BindRT);
                     KeyL2 = AppConfig.GetString("bind2_trl");
                     KeyR2 = AppConfig.GetString("bind2_trr");

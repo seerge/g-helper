@@ -321,7 +321,7 @@ namespace GHelper
 
         public void VisualiseFPSLimit(int limit)
         {
-            buttonFPS.Text = "FPS Limit " + ((limit > 0 && limit < 120) ? limit : "OFF");
+            buttonFPS.Text = "FPS Limit " + ((limit > 0 && limit <= 120) ? limit : "OFF");
         }
 
         private void SettingsForm_LostFocus(object? sender, EventArgs e)
