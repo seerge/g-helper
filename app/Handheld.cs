@@ -41,8 +41,8 @@ namespace GHelper
 
             trackVibra.ValueChanged += Controller_Complete;
 
-            FillBinding("m1", "M1", AllyControl.BindM1);
-            FillBinding("m2", "M2", AllyControl.BindM2);
+            FillBinding("m1", "M1");
+            FillBinding("m2", "M2");
 
             FillBinding("a", "A");
             FillBinding("b", "B");
@@ -65,7 +65,7 @@ namespace GHelper
             FillBinding("mb", "Menu");
         }
 
-        private RComboBox ComboBinding(string name, int value)
+        private RComboBox ComboBinding(string name, string value)
         {
             var combo = new RComboBox();
             combo.BorderColor = Color.White;
@@ -79,7 +79,7 @@ namespace GHelper
             combo.ValueMember = "Key";
             foreach (var item in AllyControl.BindCodes)
             {
-                combo.Items.Add(new KeyValuePair<int, string>(item.Key, item.Value));
+                combo.Items.Add(new KeyValuePair<string, string>(item.Key, item.Value));
                 if (item.Key == value) combo.SelectedItem = item;
             }
             combo.SelectedValueChanged += Binding_SelectedValueChanged;
@@ -89,13 +89,13 @@ namespace GHelper
         }
 
 
-        private void FillBinding(string binding, string label, int defaultValue = -1)
+        private void FillBinding(string binding, string label)
         {
             tableBindings.RowStyles.Add(new RowStyle(SizeType.AutoSize));
             tableBindings.Controls.Add(new Label { Text = label, Anchor = AnchorStyles.Left, Dock = DockStyle.Fill, Padding = new Padding(5, 5, 5, 5) }, 0, tableBindings.RowCount);
 
-            tableBindings.Controls.Add(ComboBinding("bind_" + binding, AppConfig.Get("bind_" + binding, defaultValue)), 1, tableBindings.RowCount);
-            tableBindings.Controls.Add(ComboBinding("bind2_" + binding, AppConfig.Get("bind2_" + binding)), 2, tableBindings.RowCount);
+            tableBindings.Controls.Add(ComboBinding("bind_" + binding, AppConfig.GetString("bind_" + binding,  "")), 1, tableBindings.RowCount);
+            tableBindings.Controls.Add(ComboBinding("bind2_" + binding, AppConfig.GetString("bind2_" + binding, "")), 2, tableBindings.RowCount);
 
             tableBindings.RowCount++;
 
@@ -107,9 +107,9 @@ namespace GHelper
             if (sender is null) return;
             RComboBox combo = (RComboBox)sender;
 
-            int value = ((KeyValuePair<int, string>)combo.SelectedItem).Key;
+            string value = ((KeyValuePair<string, string>)combo.SelectedItem).Key;
 
-            if (value >= 0) AppConfig.Set(combo.Name, value);
+            if (value != "") AppConfig.Set(combo.Name, value);
             else AppConfig.Remove(combo.Name);
 
             AllyControl.ApplyMode();

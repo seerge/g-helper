@@ -118,7 +118,6 @@ namespace GHelper.Input
 
             if (!AppConfig.Is("skip_hotkeys"))
             {
-
                 hook.RegisterHotKey(ModifierKeys.Shift | ModifierKeys.Control | ModifierKeys.Alt, Keys.F14);
                 hook.RegisterHotKey(ModifierKeys.Shift | ModifierKeys.Control | ModifierKeys.Alt, Keys.F15);
 
@@ -140,6 +139,12 @@ namespace GHelper.Input
             {
                 if (actionM1 is not null && actionM1.Length > 0) hook.RegisterHotKey(ModifierKeys.None, Keys.VolumeDown);
                 if (actionM2 is not null && actionM2.Length > 0) hook.RegisterHotKey(ModifierKeys.None, Keys.VolumeUp);
+            }
+
+            if (AppConfig.IsAlly())
+            {
+                hook.RegisterHotKey(ModifierKeys.Shift | ModifierKeys.Control | ModifierKeys.Alt, Keys.F1);
+                hook.RegisterHotKey(ModifierKeys.Shift | ModifierKeys.Control | ModifierKeys.Alt, Keys.F2);
             }
 
             // FN-Lock group
@@ -359,6 +364,12 @@ namespace GHelper.Input
 
                 switch (e.Key)
                 {
+                    case Keys.F1:
+                        SetBrightness(-10);
+                        break;
+                    case Keys.F2:
+                        SetBrightness(10);
+                        break;
                     case Keys.F14:
                         Program.settingsForm.gpuControl.SetGPUMode(AsusACPI.GPUModeEco);
                         break;

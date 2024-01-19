@@ -305,6 +305,9 @@ namespace GHelper
                 case ControllerMode.Mouse:
                     buttonControllerMode.Text = "Mouse";
                     break;
+                case ControllerMode.Skip:
+                    buttonControllerMode.Text = "Skip";
+                    break;
                 default:
                     buttonControllerMode.Text = "Auto";
                     break;

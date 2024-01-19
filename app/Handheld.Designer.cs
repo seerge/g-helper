@@ -640,9 +640,9 @@
             labelBindings.Location = new Point(45, 17);
             labelBindings.Margin = new Padding(4, 0, 4, 0);
             labelBindings.Name = "labelBindings";
-            labelBindings.Size = new Size(558, 32);
+            labelBindings.Size = new Size(114, 32);
             labelBindings.TabIndex = 40;
-            labelBindings.Text = "Bindings for Gamepad or Auto (in-game) Mode";
+            labelBindings.Text = "Bindings";
             // 
             // Handheld
             // 

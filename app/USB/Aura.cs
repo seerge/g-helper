@@ -110,6 +110,7 @@ namespace GHelper.USB
             { AuraMode.AuraStatic, Properties.Strings.AuraStatic },
             { AuraMode.AuraBreathe, Properties.Strings.AuraBreathe },
             { AuraMode.AuraColorCycle, Properties.Strings.AuraColorCycle },
+            { AuraMode.AuraRainbow, Properties.Strings.AuraRainbow },
             { AuraMode.AuraStrobe, Properties.Strings.AuraStrobe },
         };
 
@@ -263,9 +264,10 @@ namespace GHelper.USB
                 new byte[] { AsusHid.AURA_ID, 0xb9 },
                 Encoding.ASCII.GetBytes("]ASUS Tech.Inc."),
                 new byte[] { AsusHid.AURA_ID, 0x05, 0x20, 0x31, 0, 0x1a },
-                //Encoding.ASCII.GetBytes("^ASUS Tech.Inc."),
-                //new byte[] { 0x5e, 0x05, 0x20, 0x31, 0, 0x1a }
             }, "Init");
+
+            AsusHid.WriteInput(Encoding.ASCII.GetBytes("ZASUS Tech.Inc."));
+
         }
 
 
