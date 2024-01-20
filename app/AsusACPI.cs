@@ -72,8 +72,10 @@ public class AsusACPI
     public const uint GPUMuxVivo = 0x00090026;
 
     public const uint BatteryLimit = 0x00120057;
+
     public const uint ScreenOverdrive = 0x00050019;
-    public const uint ScreenMiniled = 0x0005001E;
+    public const uint ScreenMiniled1 = 0x0005001E;
+    public const uint ScreenMiniled2 = 0x0005002E;
 
     public const uint DevsCPUFan = 0x00110022;
     public const uint DevsGPUFan = 0x00110023;

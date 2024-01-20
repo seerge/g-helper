@@ -970,7 +970,17 @@ namespace GHelper
 
             if (miniled >= 0)
             {
-                buttonMiniled.Activated = (miniled == 1) || hdr;
+                if (miniled == 2)
+                {
+                    buttonMiniled.Text = Properties.Strings.Multizone + " Strong";
+                    buttonMiniled.BorderColor = colorStandard;
+                } else
+                {
+                    buttonMiniled.Text = Properties.Strings.Multizone;
+                    buttonMiniled.BorderColor = colorTurbo;
+                }
+
+                buttonMiniled.Activated = (miniled > 0) || hdr;
                 buttonMiniled.Enabled = !hdr;
             }
             else
