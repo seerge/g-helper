@@ -112,12 +112,12 @@ namespace GHelper
             labelPeripherals = new Label();
             panelAlly = new Panel();
             tableLayoutAlly = new TableLayoutPanel();
+            buttonController = new RButton();
             buttonBacklight = new RButton();
             buttonControllerMode = new RButton();
             panelAllyTitle = new Panel();
             pictureAlly = new PictureBox();
             labelAlly = new Label();
-            buttonController = new RButton();
             panelMatrix.SuspendLayout();
             tableLayoutMatrix.SuspendLayout();
             panelMatrixTitle.SuspendLayout();
@@ -715,7 +715,7 @@ namespace GHelper
             buttonFPS.FlatAppearance.BorderSize = 0;
             buttonFPS.FlatStyle = FlatStyle.Flat;
             buttonFPS.ForeColor = SystemColors.ControlText;
-            buttonFPS.Image = Properties.Resources.icons8_video_48;
+            buttonFPS.Image = Properties.Resources.icons8_animation_32;
             buttonFPS.ImageAlign = ContentAlignment.MiddleRight;
             buttonFPS.Location = new Point(4, 4);
             buttonFPS.Margin = new Padding(4);
@@ -1485,6 +1485,27 @@ namespace GHelper
             tableLayoutAlly.Size = new Size(787, 80);
             tableLayoutAlly.TabIndex = 23;
             // 
+            // buttonController
+            // 
+            buttonController.Activated = false;
+            buttonController.BackColor = SystemColors.ControlLight;
+            buttonController.BorderColor = Color.Transparent;
+            buttonController.BorderRadius = 5;
+            buttonController.Dock = DockStyle.Fill;
+            buttonController.FlatAppearance.BorderSize = 0;
+            buttonController.FlatStyle = FlatStyle.Flat;
+            buttonController.ForeColor = SystemColors.ControlText;
+            buttonController.ImageAlign = ContentAlignment.MiddleRight;
+            buttonController.Location = new Point(528, 4);
+            buttonController.Margin = new Padding(4);
+            buttonController.Name = "buttonController";
+            buttonController.Secondary = true;
+            buttonController.Size = new Size(255, 72);
+            buttonController.TabIndex = 11;
+            buttonController.Text = "Controller";
+            buttonController.TextImageRelation = TextImageRelation.ImageBeforeText;
+            buttonController.UseVisualStyleBackColor = false;
+            // 
             // buttonBacklight
             // 
             buttonBacklight.Activated = false;
@@ -1561,27 +1582,6 @@ namespace GHelper
             labelAlly.Size = new Size(181, 32);
             labelAlly.TabIndex = 26;
             labelAlly.Text = "Ally Controller";
-            // 
-            // buttonController
-            // 
-            buttonController.Activated = false;
-            buttonController.BackColor = SystemColors.ControlLight;
-            buttonController.BorderColor = Color.Transparent;
-            buttonController.BorderRadius = 5;
-            buttonController.Dock = DockStyle.Fill;
-            buttonController.FlatAppearance.BorderSize = 0;
-            buttonController.FlatStyle = FlatStyle.Flat;
-            buttonController.ForeColor = SystemColors.ControlText;
-            buttonController.ImageAlign = ContentAlignment.MiddleRight;
-            buttonController.Location = new Point(528, 4);
-            buttonController.Margin = new Padding(4);
-            buttonController.Name = "buttonController";
-            buttonController.Secondary = true;
-            buttonController.Size = new Size(255, 72);
-            buttonController.TabIndex = 11;
-            buttonController.Text = "Controller";
-            buttonController.TextImageRelation = TextImageRelation.ImageBeforeText;
-            buttonController.UseVisualStyleBackColor = false;
             // 
             // SettingsForm
             // 

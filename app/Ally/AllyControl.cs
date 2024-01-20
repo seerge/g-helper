@@ -3,7 +3,6 @@ using GHelper.Input;
 using GHelper.USB;
 using HidSharp;
 using System.Text;
-using System.Windows.Forms;
 
 namespace GHelper.Ally
 {
@@ -61,6 +60,8 @@ namespace GHelper.Ally
         public const string BindM2 = "02-8E";
         public const string BindLT = "01-0D";
         public const string BindRT = "01-0E";
+        public const string BindXB = "01-13";
+
         public const string BindMouseL = "03-01";
         public const string BindMouseR = "03-02";
 
@@ -79,6 +80,7 @@ namespace GHelper.Ally
 
         public const string BindShift = "02-88";
         public const string BindCtrl = "02-8C";
+        public const string BindAlt = "02-8A";
 
         public const string BindTaskManager = "04-03-8C-88-76";
         public const string BindCloseWindow = "04-02-8A-0C";
@@ -87,8 +89,14 @@ namespace GHelper.Ally
         public const string BindBrightnessUp = "04-04-8C-88-8A-06";
 
         public const string BindOverlay = "04-03-8C-88-44";
-        public const string BindShiftTab = "04-02-88-0D";
 
+        public const string BindShiftTab = "04-02-88-0D";
+        public const string BindAltTab = "04-02-8A-0D";
+
+        public const string BindVolUp = "05-03";
+        public const string BindVolDown = "05-02";
+
+        public const string BindPrintScrn = "02-C3";
 
         static byte[] CommandReady = new byte[] { AsusHid.INPUT_ID, 0xd1, 0x0a, 0x01 };
         static byte[] CommandSave = new byte[] { AsusHid.INPUT_ID, 0xd1, 0x0f, 0x20 };
@@ -122,9 +130,35 @@ namespace GHelper.Ally
             { BindVB, "View Button" },
             { BindMB, "Menu Button" },
 
-            { "01-13", "XBox/Steam" },
+            { BindXB, "XBox/Steam" },
 
+            { BindVolUp, "Vol Up" },
+            { BindVolDown, "Vol Down" },
+            { BindBrightnessUp, "Bright Up" },
+            { BindBrightnessDown, "Bright Down" },
+
+            { BindOverlay, "AMD Overlay" },
+            { BindTaskManager, "Task Manager" },
+            { BindCloseWindow, "Close Window" },
+            { BindShiftTab, "Shift-Tab" },
+            { BindAltTab, "Alt-Tab" },
+
+            { BindPrintScrn, "PrntScn" },
             { BindEsc, "Esc" },
+            { BindBack, "Backspace" },
+            { BindTab, "Tab" },
+            { BindEnter, "Enter" },
+            { BindShift, "LShift" },
+            { BindAlt, "LAlt" },
+            { BindCtrl, "LCtl" },
+
+            { BindPgU, "PgUp" },
+            { BindPgD, "PgDwn" },
+            { BindKBU, "UpArrow" },
+            { BindKBD, "DownArrow" },
+            { BindKBL, "LeftArrow" },
+            { BindKBR, "RightArrow" },
+
             { "02-05", "F1" },
             { "02-06", "F2" },
             { "02-04", "F3" },
@@ -150,8 +184,6 @@ namespace GHelper.Ally
             { "02-45", "0" },
             { "02-4E", "-" },
             { "02-55", "=" },
-            { BindBack, "Backspace" },
-            { BindTab, "Tab" },
             { "02-15", "Q" },
             { "02-1D", "W" },
             { "02-24", "E" },
@@ -176,8 +208,6 @@ namespace GHelper.Ally
             { "02-4B", "l" },
             { "02-4C", ";" },
             { "02-52", "'" },
-            { BindEnter, "Enter" },
-            { BindShift, "LShift" },
             { "02-22", "X" },
             { "02-1A", "Z" },
             { "02-21", "C" },
@@ -188,25 +218,16 @@ namespace GHelper.Ally
             { "02-41", "," },
             { "02-49", "." },
             { "02-89", "RShift" },
-            { BindCtrl, "LCtl" },
             { "02-82", "Meta" },
-            { "02-8A", "LAlt" },
             { "02-29", "Space" },
             { "02-8B", "RAlt" },
             { "02-84", "App menu" },
             { "02-8D", "RCtl" },
-            { "02-C3", "PrntScn" },
             { "02-7E", "ScrLk" },
             { "02-C2", "Insert" },
-            { BindPgU, "PgUp" },
-            { BindPgD, "PgDwn" },
             { "02-C0", "Delete" },
             { "02-94", "Home" },
             { "02-95", "End" },
-            { BindKBU, "UpArrow" },
-            { BindKBD, "DownArrow" },
-            { BindKBL, "LeftArrow" },
-            { BindKBR, "RightArrow" },
             { "02-77", "NumLock" },
             { "02-90", "NumSlash" },
             { "02-7C", "NumStar" },
@@ -231,20 +252,12 @@ namespace GHelper.Ally
             { "03-04", "Mouse scroll up" },
             { "03-05", "Mouse scroll down" },
 
-            { BindTaskManager, "Task Manager" },
-            { BindCloseWindow, "Close Window" },
-            { BindShiftTab, "Shift-Tab" },
-
             { "05-16", "Screenshot" },
             { "05-19", "Show keyboard" },
             { "05-1C", "Show desktop" },
             { "05-1E", "Begin recording" },
             { "05-01", "Mic off" },
 
-            { "05-03", "Vol Up" },
-            { "05-02", "Vol Down" },
-            { BindBrightnessUp, "Bright Up" },
-            { BindBrightnessDown, "Bright Down" }
         };
 
         public AllyControl(SettingsForm settingsForm)
@@ -337,7 +350,8 @@ namespace GHelper.Ally
             try
             {
                 bytes = AppConfig.StringToBytes(binding);
-            } catch
+            }
+            catch
             {
                 return new byte[2];
             }
