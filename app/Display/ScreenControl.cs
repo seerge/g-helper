@@ -104,7 +104,6 @@ namespace GHelper.Display
             Logger.WriteLine($"Miniled: {miniled1} {miniled2}");
 
             int miniled = (miniled1 >= 0) ? miniled1 : miniled2;
-
             bool hdr = false;
 
             if (miniled >= 0)
@@ -127,7 +126,8 @@ namespace GHelper.Display
                     maxFrequency: maxFrequency,
                     overdrive: overdrive,
                     overdriveSetting: overdriveSetting,
-                    miniled: miniled,
+                    miniled1: miniled1,
+                    miniled2: miniled2,
                     hdr: hdr
                 );
             });

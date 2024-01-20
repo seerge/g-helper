@@ -929,7 +929,7 @@ namespace GHelper
 
 
 
-        public void VisualiseScreen(bool screenEnabled, bool screenAuto, int frequency, int maxFrequency, int overdrive, bool overdriveSetting, int miniled, bool hdr)
+        public void VisualiseScreen(bool screenEnabled, bool screenAuto, int frequency, int maxFrequency, int overdrive, bool overdriveSetting, int miniled1, int miniled2, bool hdr)
         {
 
             ButtonEnabled(button60Hz, screenEnabled);
@@ -968,20 +968,36 @@ namespace GHelper
                 panelScreen.Visible = false;
             }
 
-            if (miniled >= 0)
+            if (miniled1 >= 0)
             {
-                if (miniled == 2)
-                {
-                    buttonMiniled.Text = Properties.Strings.Multizone + " Strong";
-                    buttonMiniled.BorderColor = colorStandard;
-                } else
-                {
-                    buttonMiniled.Text = Properties.Strings.Multizone;
-                    buttonMiniled.BorderColor = colorTurbo;
-                }
-
-                buttonMiniled.Activated = (miniled > 0) || hdr;
                 buttonMiniled.Enabled = !hdr;
+                buttonMiniled.Activated = miniled1 == 1 || hdr;
+            }
+            else if (miniled2 >= 0)
+            {
+                buttonMiniled.Enabled = !hdr;
+
+                switch (miniled2)
+                {
+                    // Multizone On
+                    case 0:
+                        buttonMiniled.Text = Properties.Strings.Multizone;
+                        buttonMiniled.BorderColor = colorStandard;
+                        buttonMiniled.Activated = true;
+                        break;
+                    // Multizone Strong
+                    case 1:
+                        buttonMiniled.Text = Properties.Strings.MultizoneStrong;
+                        buttonMiniled.BorderColor = colorTurbo;
+                        buttonMiniled.Activated = true;
+                        break;
+                    // Multizone Off
+                    case 2:
+                        buttonMiniled.Text = hdr ? Properties.Strings.Multizone : Properties.Strings.OneZone;
+                        buttonMiniled.BorderColor = colorStandard;
+                        buttonMiniled.Activated = hdr;
+                        break;
+                }
             }
             else
             {
