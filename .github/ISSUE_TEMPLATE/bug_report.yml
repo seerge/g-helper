@@ -12,7 +12,7 @@ body:
       options:
         - label: I made myself familiar with the <a href='https://github.com/seerge/g-helper?tab=readme-ov-file'>Readme</a>, <a href='https://github.com/seerge/g-helper/wiki/FAQ'>FAQ</a> and <a href='https://github.com/seerge/g-helper/wiki/Troubleshooting'>Troubleshooting</a>.
           required: true
-        - label: I understand that, if insufficient information was provided, my issue will be closed without an answer.
+        - label: I understand that, if insufficient information or no app logs will be provided, my issue will be closed without an answer.
           required: true
     validations:
       required: true
