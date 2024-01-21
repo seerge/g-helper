@@ -372,7 +372,7 @@ namespace GHelper.Input
                         SetBrightness(10);
                         break;
                     case Keys.F3:
-                        Program.settingsForm.gpuControl.ToggleXGM();
+                        Program.settingsForm.gpuControl.ToggleXGM(true);
                         break;
                     case Keys.F14:
                         Program.settingsForm.gpuControl.SetGPUMode(AsusACPI.GPUModeEco);
