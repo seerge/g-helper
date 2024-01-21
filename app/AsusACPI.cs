@@ -571,7 +571,6 @@ public class AsusACPI
 
     public bool IsXGConnected()
     {
-        //return true;
         return DeviceGet(GPUXGConnected) == 1;
     }
 

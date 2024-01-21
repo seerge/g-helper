@@ -1327,7 +1327,12 @@ namespace GHelper
             if (AppConfig.IsAlly())
             {
                 tableGPU.Visible = false;
-                if (Program.acpi.IsXGConnected()) tableAMD.Controls.Add(buttonXGM, 1, 0);
+                labelGPU.Text = "GPU";
+                if (Program.acpi.IsXGConnected())
+                {
+                    tableAMD.Controls.Add(buttonXGM, 1, 0);
+                    VisualizeXGM();
+                }
                 return;
             }
 
