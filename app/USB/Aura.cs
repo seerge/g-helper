@@ -264,12 +264,13 @@ namespace GHelper.USB
                 new byte[] { AsusHid.AURA_ID, 0xB9 },
                 Encoding.ASCII.GetBytes("]ASUS Tech.Inc."),
                 new byte[] { AsusHid.AURA_ID, 0x05, 0x20, 0x31, 0, 0x1A },
+                new byte[] { AsusHid.AURA_ID, 0x05, 0x20, 0x31, 0, 0x10 },
 
                 // Random data AC sends to keyboard on start
+                /*
                 new byte[] { AsusHid.AURA_ID, 0x9F, 0x01 },
                 new byte[] { AsusHid.AURA_ID, 0xBF },
 
-                new byte[] { AsusHid.AURA_ID, 0x05, 0x20, 0x31, 0, 0x10 },
                 new byte[] { AsusHid.AURA_ID, 0x05, 0x20, 0x31, 0, 0x20 },
 
                 new byte[] { AsusHid.AURA_ID, 0xC0, 0x03, 0x01},
@@ -277,10 +278,11 @@ namespace GHelper.USB
 
                 Encoding.ASCII.GetBytes("]ASUS Tech.Inc."),
                 new byte[] { AsusHid.AURA_ID, 0x05, 0x20, 0x31, 0, 0x1A },
-                new byte[] { AsusHid.AURA_ID, 0xC0, 0x00, 0x01},
-            }, "Init");
+                */
 
-            AsusHid.WriteInput(Encoding.ASCII.GetBytes("ZASUS Tech.Inc."));
+                new byte[] { AsusHid.AURA_ID, 0xC0, 0x00, 0x01},
+
+            }, "Init");
 
         }
 
@@ -483,7 +485,7 @@ namespace GHelper.USB
             byte[] keyBuf = new byte[mapSize];
 
             buffer[0] = AsusHid.AURA_ID;
-            buffer[1] = 0xbc;
+            buffer[1] = 0xBC;
             buffer[2] = 0;
             buffer[3] = 1;
             buffer[4] = 1;
@@ -494,7 +496,7 @@ namespace GHelper.USB
             if (init)
             {
                 Init();
-                AsusHid.WriteAura(new byte[] { AsusHid.AURA_ID, 0xbc });
+                AsusHid.WriteAura(new byte[] { AsusHid.AURA_ID, 0xBC });
             }
 
             Array.Clear(keyBuf, 0, keyBuf.Length);
@@ -531,7 +533,8 @@ namespace GHelper.USB
             buffer[6] = 0x00;
             buffer[7] = 0x00;
 
-            if (isStrix4Zone) { // per zone
+            if (isStrix4Zone)
+            { // per zone
                 var leds_4_zone = packet4Zone.Count();
                 for (int ledIndex = 0; ledIndex < leds_4_zone; ledIndex++)
                 {
@@ -705,7 +708,7 @@ namespace GHelper.USB
                 bound.Y += bound.Height / 3;
                 bound.Height -= (int)Math.Round(bound.Height * (0.33f + 0.022f)); // cut 1/3 of the top screen + windows panel
 
-                Bitmap screen_low  = AmbientData.CamptureScreen(bound, 512, 288);   //quality decreases greatly if it is less 512 ;
+                Bitmap screen_low = AmbientData.CamptureScreen(bound, 512, 288);   //quality decreases greatly if it is less 512 ;
                 Bitmap screeb_pxl = AmbientData.ResizeImage(screen_low, 4, 2);     // 4x2 zone. top for keyboard and bot for lightbar;
 
                 int zones = AURA_ZONES;

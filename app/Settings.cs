@@ -1324,10 +1324,11 @@ namespace GHelper
 
         public void VisualiseGPUMode(int GPUMode = -1)
         {
-            if (AppConfig.IsAlly() && !Program.acpi.IsXGConnected())
+            if (AppConfig.IsAlly())
             {
                 tableGPU.Visible = false;
-                GPUMode = AsusACPI.GPUModeEco;
+                if (Program.acpi.IsXGConnected()) tableAMD.Controls.Add(buttonXGM, 1, 0);
+                return;
             }
 
             ButtonEnabled(buttonOptimized, true);
@@ -1369,7 +1370,6 @@ namespace GHelper
             }
 
             VisualizeXGM(GPUMode);
-
 
             if (isGpuSection)
             {

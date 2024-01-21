@@ -88,6 +88,7 @@ namespace GHelper.Ally
 
         public const string BindBrightnessDown = "04-04-8C-88-8A-05";
         public const string BindBrightnessUp = "04-04-8C-88-8A-06";
+        public const string BindXGM = "04-04-8C-88-8A-04";
 
         public const string BindOverlay = "04-03-8C-88-44";
 
@@ -152,6 +153,8 @@ namespace GHelper.Ally
             { BindCloseWindow, "Close Window" },
             { BindShiftTab, "Shift-Tab" },
             { BindAltTab, "Alt-Tab" },
+            { BindXGM, "XGM Toggle" },
+
 
             { BindEsc, "Esc" },
             { BindBack, "Backspace" },
