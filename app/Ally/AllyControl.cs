@@ -100,6 +100,7 @@ namespace GHelper.Ally
         public const string BindPrintScrn = "02-C3";
 
         public const string BindScreenshot = "04-03-82-88-1B";
+        public const string BindShowDesktop = "04-02-82-23";
 
         public const string BindShowKeyboard = "05-19";
 
@@ -143,6 +144,7 @@ namespace GHelper.Ally
             { BindBrightnessDown, "Bright Down" },
 
             { BindShowKeyboard, "Show Keyboard" },
+            { BindShowDesktop, "Show Desktop" },
             { BindScreenshot, "Screenshot" },
 
             { BindOverlay, "AMD Overlay" },
@@ -261,8 +263,8 @@ namespace GHelper.Ally
             { "03-05", "Mouse scroll down" },
 
             //{ "05-16", "Screenshot" },
-            
-            { "05-1C", "Show desktop" },
+            //{ "05-1C", "Show desktop" },
+
             { "05-1E", "Begin recording" },
             { "05-01", "Mic off" },
 
@@ -402,7 +404,7 @@ namespace GHelper.Ally
                     KeyL1 = AppConfig.GetString("bind_du", desktop ? BindKBU : BindDU);
                     KeyR1 = AppConfig.GetString("bind_dd", desktop ? BindKBD : BindDD);
                     KeyL2 = AppConfig.GetString("bind2_du", BindShowKeyboard);
-                    KeyR2 = AppConfig.GetString("bind2_dd", BindAltTab);
+                    KeyR2 = AppConfig.GetString("bind2_dd", BindShowDesktop);
                     break;
                 case BindingZone.DPadLeftRight:
                     KeyL1 = AppConfig.GetString("bind_dl", desktop ? BindKBL : BindDL);
