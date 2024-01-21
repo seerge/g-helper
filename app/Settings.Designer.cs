@@ -1495,6 +1495,7 @@ namespace GHelper
             buttonController.FlatAppearance.BorderSize = 0;
             buttonController.FlatStyle = FlatStyle.Flat;
             buttonController.ForeColor = SystemColors.ControlText;
+            buttonController.Image = Properties.Resources.icons8_controls_32;
             buttonController.ImageAlign = ContentAlignment.MiddleRight;
             buttonController.Location = new Point(528, 4);
             buttonController.Margin = new Padding(4);

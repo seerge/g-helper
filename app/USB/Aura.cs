@@ -266,7 +266,7 @@ namespace GHelper.USB
                 new byte[] { AsusHid.AURA_ID, 0x05, 0x20, 0x31, 0, 0x1A },
                 new byte[] { AsusHid.AURA_ID, 0x05, 0x20, 0x31, 0, 0x10 },
 
-                // Random data AC sends to keyboard on start
+                // Random data AC sends to keyboard on start, seem to wake up keyboard on Strix 2024
                 /*
                 new byte[] { AsusHid.AURA_ID, 0x9F, 0x01 },
                 new byte[] { AsusHid.AURA_ID, 0xBF },
@@ -279,7 +279,7 @@ namespace GHelper.USB
                 Encoding.ASCII.GetBytes("]ASUS Tech.Inc."),
                 new byte[] { AsusHid.AURA_ID, 0x05, 0x20, 0x31, 0, 0x1A },
                 */
-
+                
                 new byte[] { AsusHid.AURA_ID, 0xC0, 0x00, 0x01},
 
             }, "Init");
