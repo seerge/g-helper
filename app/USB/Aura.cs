@@ -261,9 +261,23 @@ namespace GHelper.USB
         public static void Init()
         {
             AsusHid.Write(new List<byte[]> {
-                new byte[] { AsusHid.AURA_ID, 0xb9 },
+                new byte[] { AsusHid.AURA_ID, 0xB9 },
                 Encoding.ASCII.GetBytes("]ASUS Tech.Inc."),
-                new byte[] { AsusHid.AURA_ID, 0x05, 0x20, 0x31, 0, 0x1a },
+                new byte[] { AsusHid.AURA_ID, 0x05, 0x20, 0x31, 0, 0x1A },
+
+                // Random data AC sends to keyboard on start
+                new byte[] { AsusHid.AURA_ID, 0x9F, 0x01 },
+                new byte[] { AsusHid.AURA_ID, 0xBF },
+
+                new byte[] { AsusHid.AURA_ID, 0x05, 0x20, 0x31, 0, 0x10 },
+                new byte[] { AsusHid.AURA_ID, 0x05, 0x20, 0x31, 0, 0x20 },
+
+                new byte[] { AsusHid.AURA_ID, 0xC0, 0x03, 0x01},
+                new byte[] { AsusHid.AURA_ID, 0x9E, 0x01, 0x20 },
+
+                Encoding.ASCII.GetBytes("]ASUS Tech.Inc."),
+                new byte[] { AsusHid.AURA_ID, 0x05, 0x20, 0x31, 0, 0x1A },
+                new byte[] { AsusHid.AURA_ID, 0xC0, 0x00, 0x01},
             }, "Init");
 
             AsusHid.WriteInput(Encoding.ASCII.GetBytes("ZASUS Tech.Inc."));

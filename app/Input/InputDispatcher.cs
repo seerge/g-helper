@@ -602,6 +602,9 @@ namespace GHelper.Input
                     case 56:
                         KeyProcess("m4");
                         return;
+                    case 162:
+                        OnScreenKeyboard.Show();
+                        return;
 
                 }
             }

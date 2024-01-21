@@ -81,6 +81,7 @@ namespace GHelper.Ally
         public const string BindShift = "02-88";
         public const string BindCtrl = "02-8C";
         public const string BindAlt = "02-8A";
+        public const string BindWin = "02-82";
 
         public const string BindTaskManager = "04-03-8C-88-76";
         public const string BindCloseWindow = "04-02-8A-0C";
@@ -97,6 +98,10 @@ namespace GHelper.Ally
         public const string BindVolDown = "05-02";
 
         public const string BindPrintScrn = "02-C3";
+
+        public const string BindScreenshot = "04-03-82-88-1B";
+
+        public const string BindShowKeyboard = "05-19";
 
         static byte[] CommandReady = new byte[] { AsusHid.INPUT_ID, 0xd1, 0x0a, 0x01 };
         static byte[] CommandSave = new byte[] { AsusHid.INPUT_ID, 0xd1, 0x0f, 0x20 };
@@ -137,13 +142,15 @@ namespace GHelper.Ally
             { BindBrightnessUp, "Bright Up" },
             { BindBrightnessDown, "Bright Down" },
 
+            { BindShowKeyboard, "Show Keyboard" },
+            { BindScreenshot, "Screenshot" },
+
             { BindOverlay, "AMD Overlay" },
             { BindTaskManager, "Task Manager" },
             { BindCloseWindow, "Close Window" },
             { BindShiftTab, "Shift-Tab" },
             { BindAltTab, "Alt-Tab" },
 
-            { BindPrintScrn, "PrntScn" },
             { BindEsc, "Esc" },
             { BindBack, "Backspace" },
             { BindTab, "Tab" },
@@ -151,6 +158,8 @@ namespace GHelper.Ally
             { BindShift, "LShift" },
             { BindAlt, "LAlt" },
             { BindCtrl, "LCtl" },
+            { BindWin, "WIN" },
+            { BindPrintScrn, "PrntScn" },
 
             { BindPgU, "PgUp" },
             { BindPgD, "PgDwn" },
@@ -218,7 +227,6 @@ namespace GHelper.Ally
             { "02-41", "," },
             { "02-49", "." },
             { "02-89", "RShift" },
-            { "02-82", "Meta" },
             { "02-29", "Space" },
             { "02-8B", "RAlt" },
             { "02-84", "App menu" },
@@ -252,8 +260,8 @@ namespace GHelper.Ally
             { "03-04", "Mouse scroll up" },
             { "03-05", "Mouse scroll down" },
 
-            { "05-16", "Screenshot" },
-            { "05-19", "Show keyboard" },
+            //{ "05-16", "Screenshot" },
+            
             { "05-1C", "Show desktop" },
             { "05-1E", "Begin recording" },
             { "05-01", "Mic off" },
@@ -393,14 +401,14 @@ namespace GHelper.Ally
                 case BindingZone.DPadUpDown:
                     KeyL1 = AppConfig.GetString("bind_du", desktop ? BindKBU : BindDU);
                     KeyR1 = AppConfig.GetString("bind_dd", desktop ? BindKBD : BindDD);
-                    KeyL2 = AppConfig.GetString("bind2_du", BindBrightnessUp);
-                    KeyR2 = AppConfig.GetString("bind2_dd", BindBrightnessDown);
+                    KeyL2 = AppConfig.GetString("bind2_du", BindShowKeyboard);
+                    KeyR2 = AppConfig.GetString("bind2_dd", BindAltTab);
                     break;
                 case BindingZone.DPadLeftRight:
                     KeyL1 = AppConfig.GetString("bind_dl", desktop ? BindKBL : BindDL);
                     KeyR1 = AppConfig.GetString("bind_dr", desktop ? BindKBR : BindDR);
-                    KeyL2 = AppConfig.GetString("bind2_dl");
-                    KeyR2 = AppConfig.GetString("bind2_dr");
+                    KeyL2 = AppConfig.GetString("bind2_dl", BindBrightnessDown);
+                    KeyR2 = AppConfig.GetString("bind2_dr", BindBrightnessUp);
                     break;
                 case BindingZone.StickClick:
                     KeyL1 = AppConfig.GetString("bind_ls", desktop ? BindShift : BindLS);
@@ -423,7 +431,7 @@ namespace GHelper.Ally
                 case BindingZone.XY:
                     KeyL1 = AppConfig.GetString("bind_x", desktop ? BindPgD : BindX);
                     KeyR1 = AppConfig.GetString("bind_y", desktop ? BindPgU : BindY);
-                    KeyL2 = AppConfig.GetString("bind2_x");
+                    KeyL2 = AppConfig.GetString("bind2_x", BindScreenshot);
                     KeyR2 = AppConfig.GetString("bind2_y", BindOverlay);
                     break;
                 case BindingZone.ViewMenu:
