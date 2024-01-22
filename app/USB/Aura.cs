@@ -266,21 +266,22 @@ namespace GHelper.USB
                 new byte[] { AsusHid.AURA_ID, 0x05, 0x20, 0x31, 0, 0x1A },
                 new byte[] { AsusHid.AURA_ID, 0x05, 0x20, 0x31, 0, 0x10 },
 
+                Encoding.ASCII.GetBytes("]ASUS Tech.Inc."),
+                new byte[] { AsusHid.AURA_ID, 0x05, 0x20, 0x31, 0, 0x20 },
+
                 // Random data AC sends to keyboard on start, seem to wake up keyboard on Strix 2024
                 /*
                 new byte[] { AsusHid.AURA_ID, 0x9F, 0x01 },
                 new byte[] { AsusHid.AURA_ID, 0xBF },
 
-                new byte[] { AsusHid.AURA_ID, 0x05, 0x20, 0x31, 0, 0x20 },
 
                 new byte[] { AsusHid.AURA_ID, 0xC0, 0x03, 0x01},
                 new byte[] { AsusHid.AURA_ID, 0x9E, 0x01, 0x20 },
 
-                Encoding.ASCII.GetBytes("]ASUS Tech.Inc."),
                 new byte[] { AsusHid.AURA_ID, 0x05, 0x20, 0x31, 0, 0x1A },
+                new byte[] { AsusHid.AURA_ID, 0xC0, 0x00, 0x01},
                 */
                 
-                new byte[] { AsusHid.AURA_ID, 0xC0, 0x00, 0x01},
 
             }, "Init");
 
@@ -648,7 +649,7 @@ namespace GHelper.USB
 
             int _speed = (Speed == AuraSpeed.Normal) ? 0xeb : (Speed == AuraSpeed.Fast) ? 0xf5 : 0xe1;
 
-            AsusHid.Write(new List<byte[]> { AuraMessage(Mode, _Color1, _Color2, _speed, isSingleColor), MESSAGE_APPLY, MESSAGE_SET });
+            AsusHid.Write(new List<byte[]> { AuraMessage(Mode, _Color1, _Color2, _speed, isSingleColor), MESSAGE_SET, MESSAGE_APPLY });
 
             if (isACPI)
                 Program.acpi.TUFKeyboardRGB(Mode, Color1, _speed);
