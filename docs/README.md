@@ -121,8 +121,14 @@ Huge thanks to [@IceStormNG](https://github.com/IceStormNG) 👑 for contributio
 - ``Fn + Shift + F7 / F8`` - Matrix brightness Down / Up
 - ``Fn + Shift + F7 / F8`` - Screenpad brightness Down / Up
 - ``Ctrl + Shift + F20`` - Mute Microphone
-- ``Ctrl + Shift + Alt + F14`` - Eco Mode
-- ``Ctrl + Shift + Alt + F15`` - Standard Mode
+- ``Ctrl + Shift + Alt + F14`` - Eco GPU Mode
+- ``Ctrl + Shift + Alt + F15`` - Standard GPU Mode
+- ``Ctrl + Shift + Alt + F16`` - Silent
+- ``Ctrl + Shift + Alt + F17`` - Balanced
+- ``Ctrl + Shift + Alt + F18`` - Turbo
+- ``Ctrl + Shift + Alt + F19`` - Custom 1 (if exists)
+- ``Ctrl + Shift + Alt + F20`` - Custom 2 (if exists)
+
 - [Custom keybindings / hotkeys](https://github.com/seerge/g-helper/wiki/Power-user-settings#custom-hotkey-actions)
 
 ------------------
