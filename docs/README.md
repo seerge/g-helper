@@ -128,7 +128,6 @@ Huge thanks to [@IceStormNG](https://github.com/IceStormNG) 👑 for contributio
 - ``Ctrl + Shift + Alt + F18`` - Turbo
 - ``Ctrl + Shift + Alt + F19`` - Custom 1 (if exists)
 - ``Ctrl + Shift + Alt + F20`` - Custom 2 (if exists)
-
 - [Custom keybindings / hotkeys](https://github.com/seerge/g-helper/wiki/Power-user-settings#custom-hotkey-actions)
 
 ------------------
