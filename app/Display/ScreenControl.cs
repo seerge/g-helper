@@ -101,13 +101,12 @@ namespace GHelper.Display
             int miniled1 = Program.acpi.DeviceGet(AsusACPI.ScreenMiniled1);
             int miniled2 = Program.acpi.DeviceGet(AsusACPI.ScreenMiniled2);
 
-            Logger.WriteLine($"Miniled: {miniled1} {miniled2}");
-
             int miniled = (miniled1 >= 0) ? miniled1 : miniled2;
             bool hdr = false;
 
             if (miniled >= 0)
             {
+                Logger.WriteLine($"Miniled: {miniled1} {miniled2}");
                 AppConfig.Set("miniled", miniled);
                 hdr = ScreenCCD.GetHDRStatus();
             }

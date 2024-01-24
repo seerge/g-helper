@@ -3,7 +3,6 @@
 using GHelper.AnimeMatrix.Communication;
 using System.Drawing.Drawing2D;
 using System.Drawing.Text;
-using System.Management;
 using System.Text;
 
 namespace Starlight.AnimeMatrix
@@ -107,9 +106,7 @@ namespace Starlight.AnimeMatrix
 
         public AnimeMatrixDevice() : base(0x0B05, 0x193B, 640)
         {
-            string model = GetModel();
-
-            if (model.Contains("401"))
+            if (AppConfig.ContainsModel("401"))
             {
                 _model = AnimeType.GA401;
 
@@ -124,7 +121,7 @@ namespace Starlight.AnimeMatrix
                 LedStart = 1;
             }
 
-            if (model.Contains("GU604"))
+            if (AppConfig.ContainsModel("GU604"))
             {
                 _model = AnimeType.GU604;
 
@@ -152,18 +149,6 @@ namespace Starlight.AnimeMatrix
             fonts.AddMemoryFont(fontPtr, GHelper.Properties.Resources.MFont.Length);
             AddFontMemResourceEx(fontPtr, (uint)GHelper.Properties.Resources.MFont.Length, IntPtr.Zero, ref dummy);
             System.Runtime.InteropServices.Marshal.FreeCoTaskMem(fontPtr);
-        }
-
-        public string GetModel()
-        {
-            using (var searcher = new ManagementObjectSearcher(@"Select * from Win32_ComputerSystem"))
-            {
-                foreach (var process in searcher.Get())
-                    return process["Model"].ToString();
-            }
-
-            return null;
-
         }
 
         public byte[] GetBuffer()
@@ -452,7 +437,7 @@ namespace Starlight.AnimeMatrix
                     }
                 }
 
-                SetBitmapDiagonal(bmp, 5 , height);
+                SetBitmapDiagonal(bmp, 5, height);
 
             }
         }
