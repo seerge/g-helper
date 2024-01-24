@@ -408,7 +408,7 @@ namespace Starlight.AnimeMatrix
                     var pixel = bmp.GetPixel(x, y);
                     var color = Math.Min((pixel.R + pixel.G + pixel.B) * contrast / 300, 255);
                     if (color > 20)
-                        SetLedDiagonal(x, y, (byte)color, deltaX + (FullRows / 2) + 1, deltaY - (FullRows / 2) - 1);
+                        SetLedDiagonal(x, y, (byte)color, deltaX, deltaY - (FullRows / 2) - 1);
                 }
             }
         }
@@ -431,7 +431,7 @@ namespace Starlight.AnimeMatrix
         public void Text(string text, float fontSize = 10, int x = 0, int y = 0)
         {
 
-            int width = MaxRows - FullRows;
+            int width = MaxRows;
             int height = MaxRows - FullRows;
             int textHeight, textWidth;
 
@@ -501,8 +501,11 @@ namespace Starlight.AnimeMatrix
 
         public void GenerateFrameDiagonal(Image image, float zoom = 100, int panX = 0, int panY = 0, InterpolationMode quality = InterpolationMode.Default, int contrast = 100)
         {
-            int width = MaxRows - FullRows;
-            int height = MaxRows - FullRows*2;
+            int width = MaxRows + FullRows;
+            int height = MaxColumns + FullRows;
+
+            if ((image.Height / image.Width) > (height / width)) height = MaxColumns;
+
             float scale;
 
             using (Bitmap bmp = new Bitmap(width, height))
@@ -518,7 +521,7 @@ namespace Starlight.AnimeMatrix
                     graph.CompositingQuality = CompositingQuality.HighQuality;
                     graph.SmoothingMode = SmoothingMode.AntiAlias;
 
-                    graph.DrawImage(image, width - scaleWidth, height - scaleHeight, scaleWidth, scaleHeight);
+                    graph.DrawImage(image, (width - scaleWidth) / 2, height - scaleHeight, scaleWidth, scaleHeight);
 
                 }
 
