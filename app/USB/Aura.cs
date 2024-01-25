@@ -343,7 +343,17 @@ namespace GHelper.USB
             if (flags.SleepRear) rear |= 1 << 6;
             if (flags.ShutdownRear) rear |= 1 << 7;
 
-            return new byte[] { 0x5d, 0xbd, 0x01, keyb, bar, lid, rear, 0xFF };
+            return new byte[] { AsusHid.AURA_ID, 0xBD, 0x01, keyb, bar, lid, rear, 0xFF };
+        }
+
+        private static void ApplyAllyPower(AuraPower flags)
+        {
+            byte power = 0x00;
+            if (flags.BootKeyb) power |= 0x01;
+            if (flags.AwakeKeyb) power |= 0x02;
+            if (flags.SleepKeyb) power |= 0x04;
+            if (flags.ShutdownKeyb) power |= 0x08;
+            AsusHid.WriteInput(new byte[] { AsusHid.INPUT_ID, 0xD1, 0x09, 0x01, power }, "Aura");
         }
 
         public static void ApplyPower()
@@ -380,6 +390,12 @@ namespace GHelper.USB
             flags.BootRear = AppConfig.IsNotFalse("keyboard_boot_lid");
             flags.SleepRear = AppConfig.IsNotFalse("keyboard_sleep_lid");
             flags.ShutdownRear = AppConfig.IsNotFalse("keyboard_shutdown_lid");
+
+            if (AppConfig.IsAlly())
+            {
+                ApplyAllyPower(flags);
+                return;
+            }
 
             AsusHid.Write(AuraPowerMessage(flags));
 

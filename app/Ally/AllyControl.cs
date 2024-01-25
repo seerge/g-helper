@@ -1,5 +1,6 @@
 ﻿using GHelper.Gpu.AMD;
 using GHelper.Input;
+using GHelper.Mode;
 using GHelper.USB;
 using HidSharp;
 using System.Text;
@@ -580,7 +581,6 @@ namespace GHelper.Ally
 
         public void ToggleMode()
         {
-
             switch (_mode)
             {
                 case ControllerMode.Auto:
@@ -596,7 +596,15 @@ namespace GHelper.Ally
                     SetMode(ControllerMode.Auto);
                     break;
             }
+        }
 
+        public void ToggleXBox()
+        {
+            bool status = !AppConfig.IsNotFalse("controller_xbox");
+            AsusHid.WriteInput(new byte[] { AsusHid.INPUT_ID, 0xD1, 0x0B, 0x01, status ? (byte)0x01 : (byte)0x02 }, "XBox");
+            AppConfig.Set("controller_xbox", status ? 1 : 0);
+
+            settings.VisualiseXBox(status);
         }
 
     }

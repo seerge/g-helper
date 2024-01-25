@@ -228,6 +228,8 @@ namespace GHelper
 
                 checkGpuApps.Visible = false;
                 checkUSBC.Visible = false;
+                checkAutoToggleClamshellMode.Visible = false;
+                checkNoOverdrive.Visible = false;
 
                 int apuMem = Program.acpi.GetAPUMem();
                 if (apuMem >= 0)
