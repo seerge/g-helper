@@ -13,7 +13,6 @@ namespace GHelper
     {
 
         ScreenControl screenControl = new ScreenControl();
-        ModeControl modeControl = new ModeControl();
         ClamshellModeControl clamshellControl = new ClamshellModeControl();
 
         const string EMPTY = "--------------";

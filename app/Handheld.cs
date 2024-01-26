@@ -6,6 +6,9 @@ namespace GHelper
     public partial class Handheld : RForm
     {
 
+        static string activeBinding = "";
+        static RButton? activeButton;
+
         public Handheld()
         {
             InitializeComponent();
@@ -41,79 +44,119 @@ namespace GHelper
 
             trackVibra.ValueChanged += Controller_Complete;
 
-            FillBinding("m1", "M1");
-            FillBinding("m2", "M2");
+            ButtonBinding("m1", "M1", buttonM1);
+            ButtonBinding("m2", "M2", buttonM2);
 
-            FillBinding("a", "A");
-            FillBinding("b", "B");
-            FillBinding("x", "X");
-            FillBinding("y", "Y");
+            ButtonBinding("a", "A", buttonA);
+            ButtonBinding("b", "B", buttonB);
+            ButtonBinding("x", "X", buttonX);
+            ButtonBinding("y", "Y", buttonY);
 
-            FillBinding("du", "DPadUp");
-            FillBinding("dd", "DPadDown");
+            ButtonBinding("du", "DPad Up", buttonDPU);
+            ButtonBinding("dd", "DPad Down", buttonDPD);
             
-            FillBinding("dl", "DPadLeft");
-            FillBinding("dr", "DPadRight");
+            ButtonBinding("dl", "DPad Left", buttonDPL);
+            ButtonBinding("dr", "DPad Right", buttonDPR);
 
-            FillBinding("rb", "RBumper");
-            FillBinding("lb", "LBumper");
+            ButtonBinding("rt", "Right Trigger", buttonRT);
+            ButtonBinding("lt", "Left Trigger", buttonLT);
 
-            FillBinding("rs", "RStick");
-            FillBinding("ll", "LStick");
+            ButtonBinding("rb", "Right Bumper", buttonRB);
+            ButtonBinding("lb", "Left Bumper", buttonLB);
 
-            FillBinding("vb", "View");
-            FillBinding("mb", "Menu");
+            ButtonBinding("rs", "Right Stick", buttonRS);
+            ButtonBinding("ll", "Left Stick", buttonLS);
+
+            ButtonBinding("vb", "View", buttonView);
+            ButtonBinding("mb", "Menu", buttonMenu);
+
+            ComboBinding(comboPrimary);
+            ComboBinding(comboSecondary);
+
         }
 
-        private RComboBox ComboBinding(string name, string value)
+        private void ComboBinding(RComboBox combo)
         {
-            var combo = new RComboBox();
-            combo.BorderColor = Color.White;
-            combo.ButtonColor = Color.FromArgb(255, 255, 255);
-            combo.Dock = DockStyle.Fill;
-            combo.Name = name;
-            combo.Margin = new Padding(5, 5, 5, 5);
 
             combo.DropDownStyle = ComboBoxStyle.DropDownList;
             combo.DisplayMember = "Value";
             combo.ValueMember = "Key";
             foreach (var item in AllyControl.BindCodes)
-            {
                 combo.Items.Add(new KeyValuePair<string, string>(item.Key, item.Value));
-                if (item.Key == value) combo.SelectedItem = item;
-            }
+
             combo.SelectedValueChanged += Binding_SelectedValueChanged;
-
-            return combo;
-
-        }
-
-
-        private void FillBinding(string binding, string label)
-        {
-            tableBindings.RowStyles.Add(new RowStyle(SizeType.AutoSize));
-            tableBindings.Controls.Add(new Label { Text = label, Anchor = AnchorStyles.Left, Dock = DockStyle.Fill, Padding = new Padding(5, 5, 5, 5) }, 0, tableBindings.RowCount);
-
-            tableBindings.Controls.Add(ComboBinding("bind_" + binding, AppConfig.GetString("bind_" + binding,  "")), 1, tableBindings.RowCount);
-            tableBindings.Controls.Add(ComboBinding("bind2_" + binding, AppConfig.GetString("bind2_" + binding, "")), 2, tableBindings.RowCount);
-
-            tableBindings.RowCount++;
 
         }
 
         private void Binding_SelectedValueChanged(object? sender, EventArgs e)
         {
-
             if (sender is null) return;
             RComboBox combo = (RComboBox)sender;
 
             string value = ((KeyValuePair<string, string>)combo.SelectedItem).Key;
+            string binding = "bind" + (combo.Name == "comboPrimary" ? "" : "2") + "_" + activeBinding;
 
-            if (value != "") AppConfig.Set(combo.Name, value);
-            else AppConfig.Remove(combo.Name);
+            if (value != "") AppConfig.Set(binding, value);
+            else AppConfig.Remove(binding);
+
+            VisualiseButton(activeButton, activeBinding);
 
             AllyControl.ApplyMode();
         }
+
+        private void SetComboValue(RComboBox combo, string value)
+        {
+            foreach (var item in AllyControl.BindCodes)
+                if (item.Key == value)
+                {
+                    combo.SelectedItem = item;
+                    return;
+                }
+
+            combo.SelectedIndex = 0;
+        }
+
+        private void VisualiseButton(RButton button, string binding)
+        {
+            if (button == null) return;
+
+            string primary = AppConfig.GetString("bind_" + binding, "");
+            string secondary = AppConfig.GetString("bind2_" + binding, "");
+
+            if (primary != "" || secondary != "")
+            {
+                button.BorderColor = colorStandard;
+                button.Activated = true;
+            }
+            else
+            {
+                button.Activated = false;
+            }
+        }
+
+        private void ButtonBinding(string binding, string label, RButton button)
+        {
+            button.Click += (sender, EventArgs) => { buttonBinding_Click(sender, EventArgs, binding, label); };
+            VisualiseButton(button, binding);
+        }
+
+        void buttonBinding_Click(object sender, EventArgs e, string binding, string label)
+        {
+
+            if (sender is null) return;
+            RButton button = (RButton)sender;
+
+            labelBinding.Text = "Binding: " + label;
+            activeBinding = binding;
+
+            SetComboValue(comboPrimary, AppConfig.GetString("bind_" + binding, ""));
+            SetComboValue(comboSecondary, AppConfig.GetString("bind2_" + binding, ""));
+
+            panelBinding.Visible = true;
+            activeButton = button;
+        }
+
+
 
         private void Controller_Complete(object? sender, EventArgs e)
         {

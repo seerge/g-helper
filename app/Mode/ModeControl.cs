@@ -415,6 +415,8 @@ namespace GHelper.Mode
                 return;
             }
 
+            if (!RyzenControl.IsRingExsists()) return;
+
             try
             {
                 SetUV(AppConfig.GetMode("cpu_uv", 0));
