@@ -146,14 +146,16 @@ namespace GHelper
             if (sender is null) return;
             RButton button = (RButton)sender;
 
-            labelBinding.Text = "Binding: " + label;
+            panelBinding.Visible = true;
+
+            activeButton = button;
             activeBinding = binding;
+
+            labelBinding.Text = "Binding: " + label;
 
             SetComboValue(comboPrimary, AppConfig.GetString("bind_" + binding, ""));
             SetComboValue(comboSecondary, AppConfig.GetString("bind2_" + binding, ""));
 
-            panelBinding.Visible = true;
-            activeButton = button;
         }
 
 

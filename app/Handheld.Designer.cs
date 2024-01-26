@@ -44,11 +44,6 @@
             trackRSMin = new TrackBar();
             labelRSTitle = new Label();
             panelLeft = new Panel();
-            panelVibra = new Panel();
-            pictureBox5 = new PictureBox();
-            labelVibra = new Label();
-            labelVibraTitle = new Label();
-            trackVibra = new TrackBar();
             panelLT = new Panel();
             pictureBox2 = new PictureBox();
             trackLTMax = new TrackBar();
@@ -62,6 +57,12 @@
             trackLSMin = new TrackBar();
             labelLSTitle = new Label();
             panelBindings = new Panel();
+            panelBinding = new Panel();
+            labelBinding = new Label();
+            labelSecondary = new Label();
+            labelPrimary = new Label();
+            comboSecondary = new UI.RComboBox();
+            comboPrimary = new UI.RComboBox();
             buttonView = new UI.RButton();
             buttonLS = new UI.RButton();
             buttonLT = new UI.RButton();
@@ -81,12 +82,11 @@
             buttonY = new UI.RButton();
             buttonX = new UI.RButton();
             pictureAlly = new PictureBox();
-            panelBinding = new Panel();
-            labelBinding = new Label();
-            labelSecondary = new Label();
-            labelPrimary = new Label();
-            comboSecondary = new UI.RComboBox();
-            comboPrimary = new UI.RComboBox();
+            panelVibra = new Panel();
+            pictureBox5 = new PictureBox();
+            labelVibra = new Label();
+            labelVibraTitle = new Label();
+            trackVibra = new TrackBar();
             panelDeadzones.SuspendLayout();
             panelRight.SuspendLayout();
             panelRT.SuspendLayout();
@@ -98,9 +98,6 @@
             ((System.ComponentModel.ISupportInitialize)trackRSMax).BeginInit();
             ((System.ComponentModel.ISupportInitialize)trackRSMin).BeginInit();
             panelLeft.SuspendLayout();
-            panelVibra.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)pictureBox5).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)trackVibra).BeginInit();
             panelLT.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
             ((System.ComponentModel.ISupportInitialize)trackLTMax).BeginInit();
@@ -110,8 +107,11 @@
             ((System.ComponentModel.ISupportInitialize)trackLSMax).BeginInit();
             ((System.ComponentModel.ISupportInitialize)trackLSMin).BeginInit();
             panelBindings.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)pictureAlly).BeginInit();
             panelBinding.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureAlly).BeginInit();
+            panelVibra.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureBox5).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)trackVibra).BeginInit();
             SuspendLayout();
             // 
             // panelDeadzones
@@ -121,19 +121,19 @@
             panelDeadzones.Dock = DockStyle.Top;
             panelDeadzones.Location = new Point(10, 10);
             panelDeadzones.Name = "panelDeadzones";
-            panelDeadzones.Size = new Size(1130, 372);
+            panelDeadzones.Size = new Size(1130, 258);
             panelDeadzones.TabIndex = 0;
             // 
             // panelRight
             // 
-            panelRight.Controls.Add(buttonReset);
+            panelRight.AutoSize = true;
             panelRight.Controls.Add(panelRT);
             panelRight.Controls.Add(panelRS);
             panelRight.Dock = DockStyle.Left;
             panelRight.Location = new Point(560, 0);
             panelRight.MinimumSize = new Size(560, 0);
             panelRight.Name = "panelRight";
-            panelRight.Size = new Size(560, 372);
+            panelRight.Size = new Size(560, 258);
             panelRight.TabIndex = 48;
             // 
             // buttonReset
@@ -144,7 +144,7 @@
             buttonReset.BorderColor = Color.Transparent;
             buttonReset.BorderRadius = 2;
             buttonReset.FlatStyle = FlatStyle.Flat;
-            buttonReset.Location = new Point(310, 296);
+            buttonReset.Location = new Point(870, 41);
             buttonReset.Margin = new Padding(4, 2, 4, 2);
             buttonReset.Name = "buttonReset";
             buttonReset.Secondary = true;
@@ -314,7 +314,6 @@
             // panelLeft
             // 
             panelLeft.AutoSize = true;
-            panelLeft.Controls.Add(panelVibra);
             panelLeft.Controls.Add(panelLT);
             panelLeft.Controls.Add(panelLS);
             panelLeft.Dock = DockStyle.Left;
@@ -323,70 +322,8 @@
             panelLeft.MinimumSize = new Size(560, 0);
             panelLeft.Name = "panelLeft";
             panelLeft.Padding = new Padding(0, 0, 0, 18);
-            panelLeft.Size = new Size(560, 372);
+            panelLeft.Size = new Size(560, 258);
             panelLeft.TabIndex = 47;
-            // 
-            // panelVibra
-            // 
-            panelVibra.AutoSize = true;
-            panelVibra.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            panelVibra.Controls.Add(pictureBox5);
-            panelVibra.Controls.Add(labelVibra);
-            panelVibra.Controls.Add(labelVibraTitle);
-            panelVibra.Controls.Add(trackVibra);
-            panelVibra.Dock = DockStyle.Top;
-            panelVibra.Location = new Point(0, 248);
-            panelVibra.Margin = new Padding(4);
-            panelVibra.MaximumSize = new Size(0, 124);
-            panelVibra.Name = "panelVibra";
-            panelVibra.Size = new Size(560, 124);
-            panelVibra.TabIndex = 46;
-            // 
-            // pictureBox5
-            // 
-            pictureBox5.BackgroundImage = Properties.Resources.icons8_soonvibes_32;
-            pictureBox5.BackgroundImageLayout = ImageLayout.Zoom;
-            pictureBox5.ErrorImage = null;
-            pictureBox5.InitialImage = null;
-            pictureBox5.Location = new Point(10, 14);
-            pictureBox5.Margin = new Padding(4, 2, 4, 10);
-            pictureBox5.Name = "pictureBox5";
-            pictureBox5.Size = new Size(32, 32);
-            pictureBox5.TabIndex = 45;
-            pictureBox5.TabStop = false;
-            // 
-            // labelVibra
-            // 
-            labelVibra.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            labelVibra.Location = new Point(408, 14);
-            labelVibra.Margin = new Padding(4, 0, 4, 0);
-            labelVibra.Name = "labelVibra";
-            labelVibra.Size = new Size(124, 32);
-            labelVibra.TabIndex = 44;
-            labelVibra.Text = "100%";
-            labelVibra.TextAlign = ContentAlignment.TopRight;
-            // 
-            // labelVibraTitle
-            // 
-            labelVibraTitle.AutoSize = true;
-            labelVibraTitle.Location = new Point(77, 14);
-            labelVibraTitle.Margin = new Padding(4, 0, 4, 0);
-            labelVibraTitle.Name = "labelVibraTitle";
-            labelVibraTitle.Size = new Size(209, 32);
-            labelVibraTitle.TabIndex = 43;
-            labelVibraTitle.Text = "Vibration Strength";
-            // 
-            // trackVibra
-            // 
-            trackVibra.Location = new Point(6, 48);
-            trackVibra.Margin = new Padding(4, 2, 4, 2);
-            trackVibra.Maximum = 100;
-            trackVibra.Name = "trackVibra";
-            trackVibra.Size = new Size(546, 90);
-            trackVibra.TabIndex = 42;
-            trackVibra.TickFrequency = 5;
-            trackVibra.TickStyle = TickStyle.TopLeft;
-            trackVibra.Value = 100;
             // 
             // panelLT
             // 
@@ -569,10 +506,79 @@
             panelBindings.Controls.Add(buttonX);
             panelBindings.Controls.Add(pictureAlly);
             panelBindings.Dock = DockStyle.Top;
-            panelBindings.Location = new Point(10, 382);
+            panelBindings.Location = new Point(10, 268);
             panelBindings.Name = "panelBindings";
             panelBindings.Size = new Size(1130, 480);
             panelBindings.TabIndex = 1;
+            // 
+            // panelBinding
+            // 
+            panelBinding.Controls.Add(labelBinding);
+            panelBinding.Controls.Add(labelSecondary);
+            panelBinding.Controls.Add(labelPrimary);
+            panelBinding.Controls.Add(comboSecondary);
+            panelBinding.Controls.Add(comboPrimary);
+            panelBinding.Location = new Point(372, 156);
+            panelBinding.Name = "panelBinding";
+            panelBinding.Size = new Size(400, 186);
+            panelBinding.TabIndex = 37;
+            panelBinding.Visible = false;
+            // 
+            // labelBinding
+            // 
+            labelBinding.AutoSize = true;
+            labelBinding.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            labelBinding.Location = new Point(2, 11);
+            labelBinding.Name = "labelBinding";
+            labelBinding.Size = new Size(183, 32);
+            labelBinding.TabIndex = 31;
+            labelBinding.Text = "Binding: Menu";
+            // 
+            // labelSecondary
+            // 
+            labelSecondary.AutoSize = true;
+            labelSecondary.Location = new Point(2, 122);
+            labelSecondary.Name = "labelSecondary";
+            labelSecondary.Size = new Size(125, 32);
+            labelSecondary.TabIndex = 30;
+            labelSecondary.Text = "Secondary";
+            // 
+            // labelPrimary
+            // 
+            labelPrimary.AutoSize = true;
+            labelPrimary.Location = new Point(2, 63);
+            labelPrimary.Name = "labelPrimary";
+            labelPrimary.Size = new Size(94, 32);
+            labelPrimary.TabIndex = 29;
+            labelPrimary.Text = "Primary";
+            // 
+            // comboSecondary
+            // 
+            comboSecondary.BorderColor = Color.White;
+            comboSecondary.ButtonColor = Color.FromArgb(255, 255, 255);
+            comboSecondary.FlatStyle = FlatStyle.Flat;
+            comboSecondary.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            comboSecondary.FormattingEnabled = true;
+            comboSecondary.ItemHeight = 32;
+            comboSecondary.Location = new Point(133, 121);
+            comboSecondary.Margin = new Padding(4, 11, 4, 8);
+            comboSecondary.Name = "comboSecondary";
+            comboSecondary.Size = new Size(254, 40);
+            comboSecondary.TabIndex = 28;
+            // 
+            // comboPrimary
+            // 
+            comboPrimary.BorderColor = Color.White;
+            comboPrimary.ButtonColor = Color.FromArgb(255, 255, 255);
+            comboPrimary.FlatStyle = FlatStyle.Flat;
+            comboPrimary.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            comboPrimary.FormattingEnabled = true;
+            comboPrimary.ItemHeight = 32;
+            comboPrimary.Location = new Point(133, 60);
+            comboPrimary.Margin = new Padding(4, 11, 4, 8);
+            comboPrimary.Name = "comboPrimary";
+            comboPrimary.Size = new Size(254, 40);
+            comboPrimary.TabIndex = 27;
             // 
             // buttonView
             // 
@@ -944,81 +950,76 @@
             pictureAlly.TabIndex = 0;
             pictureAlly.TabStop = false;
             // 
-            // panelBinding
+            // panelVibra
             // 
-            panelBinding.Controls.Add(labelBinding);
-            panelBinding.Controls.Add(labelSecondary);
-            panelBinding.Controls.Add(labelPrimary);
-            panelBinding.Controls.Add(comboSecondary);
-            panelBinding.Controls.Add(comboPrimary);
-            panelBinding.Location = new Point(372, 156);
-            panelBinding.Name = "panelBinding";
-            panelBinding.Size = new Size(400, 186);
-            panelBinding.TabIndex = 37;
-            panelBinding.Visible = false;
+            panelVibra.AutoSize = true;
+            panelVibra.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            panelVibra.Controls.Add(buttonReset);
+            panelVibra.Controls.Add(pictureBox5);
+            panelVibra.Controls.Add(labelVibra);
+            panelVibra.Controls.Add(labelVibraTitle);
+            panelVibra.Controls.Add(trackVibra);
+            panelVibra.Dock = DockStyle.Top;
+            panelVibra.Location = new Point(10, 748);
+            panelVibra.Margin = new Padding(4);
+            panelVibra.MaximumSize = new Size(0, 124);
+            panelVibra.Name = "panelVibra";
+            panelVibra.Size = new Size(1130, 124);
+            panelVibra.TabIndex = 47;
             // 
-            // labelBinding
+            // pictureBox5
             // 
-            labelBinding.AutoSize = true;
-            labelBinding.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            labelBinding.Location = new Point(2, 11);
-            labelBinding.Name = "labelBinding";
-            labelBinding.Size = new Size(183, 32);
-            labelBinding.TabIndex = 31;
-            labelBinding.Text = "Binding: Menu";
+            pictureBox5.BackgroundImage = Properties.Resources.icons8_soonvibes_32;
+            pictureBox5.BackgroundImageLayout = ImageLayout.Zoom;
+            pictureBox5.ErrorImage = null;
+            pictureBox5.InitialImage = null;
+            pictureBox5.Location = new Point(13, 14);
+            pictureBox5.Margin = new Padding(4, 2, 4, 10);
+            pictureBox5.Name = "pictureBox5";
+            pictureBox5.Size = new Size(32, 32);
+            pictureBox5.TabIndex = 45;
+            pictureBox5.TabStop = false;
             // 
-            // labelSecondary
+            // labelVibra
             // 
-            labelSecondary.AutoSize = true;
-            labelSecondary.Location = new Point(2, 122);
-            labelSecondary.Name = "labelSecondary";
-            labelSecondary.Size = new Size(125, 32);
-            labelSecondary.TabIndex = 30;
-            labelSecondary.Text = "Secondary";
+            labelVibra.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            labelVibra.Location = new Point(408, 14);
+            labelVibra.Margin = new Padding(4, 0, 4, 0);
+            labelVibra.Name = "labelVibra";
+            labelVibra.Size = new Size(124, 32);
+            labelVibra.TabIndex = 44;
+            labelVibra.Text = "100%";
+            labelVibra.TextAlign = ContentAlignment.TopRight;
             // 
-            // labelPrimary
+            // labelVibraTitle
             // 
-            labelPrimary.AutoSize = true;
-            labelPrimary.Location = new Point(2, 63);
-            labelPrimary.Name = "labelPrimary";
-            labelPrimary.Size = new Size(94, 32);
-            labelPrimary.TabIndex = 29;
-            labelPrimary.Text = "Primary";
+            labelVibraTitle.AutoSize = true;
+            labelVibraTitle.Location = new Point(77, 14);
+            labelVibraTitle.Margin = new Padding(4, 0, 4, 0);
+            labelVibraTitle.Name = "labelVibraTitle";
+            labelVibraTitle.Size = new Size(209, 32);
+            labelVibraTitle.TabIndex = 43;
+            labelVibraTitle.Text = "Vibration Strength";
             // 
-            // comboSecondary
+            // trackVibra
             // 
-            comboSecondary.BorderColor = Color.White;
-            comboSecondary.ButtonColor = Color.FromArgb(255, 255, 255);
-            comboSecondary.FlatStyle = FlatStyle.Flat;
-            comboSecondary.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            comboSecondary.FormattingEnabled = true;
-            comboSecondary.ItemHeight = 32;
-            comboSecondary.Location = new Point(133, 121);
-            comboSecondary.Margin = new Padding(4, 11, 4, 8);
-            comboSecondary.Name = "comboSecondary";
-            comboSecondary.Size = new Size(254, 40);
-            comboSecondary.TabIndex = 28;
-            // 
-            // comboPrimary
-            // 
-            comboPrimary.BorderColor = Color.White;
-            comboPrimary.ButtonColor = Color.FromArgb(255, 255, 255);
-            comboPrimary.FlatStyle = FlatStyle.Flat;
-            comboPrimary.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            comboPrimary.FormattingEnabled = true;
-            comboPrimary.ItemHeight = 32;
-            comboPrimary.Location = new Point(133, 60);
-            comboPrimary.Margin = new Padding(4, 11, 4, 8);
-            comboPrimary.Name = "comboPrimary";
-            comboPrimary.Size = new Size(254, 40);
-            comboPrimary.TabIndex = 27;
+            trackVibra.Location = new Point(6, 48);
+            trackVibra.Margin = new Padding(4, 2, 4, 2);
+            trackVibra.Maximum = 100;
+            trackVibra.Name = "trackVibra";
+            trackVibra.Size = new Size(546, 90);
+            trackVibra.TabIndex = 42;
+            trackVibra.TickFrequency = 5;
+            trackVibra.TickStyle = TickStyle.TopLeft;
+            trackVibra.Value = 100;
             // 
             // Handheld
             // 
             AutoScaleDimensions = new SizeF(13F, 32F);
             AutoScaleMode = AutoScaleMode.Font;
             AutoSize = true;
-            ClientSize = new Size(1150, 888);
+            ClientSize = new Size(1150, 880);
+            Controls.Add(panelVibra);
             Controls.Add(panelBindings);
             Controls.Add(panelDeadzones);
             MaximizeBox = false;
@@ -1044,10 +1045,6 @@
             ((System.ComponentModel.ISupportInitialize)trackRSMin).EndInit();
             panelLeft.ResumeLayout(false);
             panelLeft.PerformLayout();
-            panelVibra.ResumeLayout(false);
-            panelVibra.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)pictureBox5).EndInit();
-            ((System.ComponentModel.ISupportInitialize)trackVibra).EndInit();
             panelLT.ResumeLayout(false);
             panelLT.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();
@@ -1059,10 +1056,15 @@
             ((System.ComponentModel.ISupportInitialize)trackLSMax).EndInit();
             ((System.ComponentModel.ISupportInitialize)trackLSMin).EndInit();
             panelBindings.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)pictureAlly).EndInit();
             panelBinding.ResumeLayout(false);
             panelBinding.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureAlly).EndInit();
+            panelVibra.ResumeLayout(false);
+            panelVibra.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureBox5).EndInit();
+            ((System.ComponentModel.ISupportInitialize)trackVibra).EndInit();
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
@@ -1082,11 +1084,6 @@
         private TrackBar trackRSMin;
         private Label labelRSTitle;
         private Panel panelLeft;
-        private Panel panelVibra;
-        private PictureBox pictureBox5;
-        private Label labelVibra;
-        private Label labelVibraTitle;
-        private TrackBar trackVibra;
         private Panel panelLT;
         private PictureBox pictureBox2;
         private TrackBar trackLTMax;
@@ -1126,5 +1123,10 @@
         private Label labelPrimary;
         private UI.RComboBox comboSecondary;
         private UI.RComboBox comboPrimary;
+        private Panel panelVibra;
+        private PictureBox pictureBox5;
+        private Label labelVibra;
+        private Label labelVibraTitle;
+        private TrackBar trackVibra;
     }
 }
