@@ -142,14 +142,14 @@ If you use equivalent mode/settings as in Armoury Crate - the performance of the
 
 The role of G-Helper for your laptop is similar to the role of a remote control for your TV.
 
-**Libraries and projects used**
+### Libraries and projects used
 - [Linux Kernel](https://github.com/torvalds/linux/blob/master/drivers/platform/x86/asus-wmi.c) for some basic endpoints in ASUS ACPI/WMI interface
 - [NvAPIWrapper](https://github.com/falahati/NvAPIWrapper) for accessing Nvidia API
 - [Starlight](https://github.com/vddCore/Starlight) for anime matrix communication protocol
 - [UXTU](https://github.com/JamesCJ60/Universal-x86-Tuning-Utility) for undervolting using Ryzen System Management Unit
 - [AsusCtl](https://gitlab.com/asus-linux/asusctl) for inspiration and some reverse engineering
 
-**Disclaimers**
+### Disclaimers
 "ROG", "TUF", and "Armoury Crate" are trademarked by and belong to AsusTek Computer, Inc. I make no claims to these or any assets belonging to AsusTek Computer and use them purely for informational purposes only.
 
 THE SOFTWARE IS PROVIDED “AS IS” AND WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. MISUSE OF THIS SOFTWARE COULD CAUSE SYSTEM INSTABILITY OR MALFUNCTION.
