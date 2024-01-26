@@ -7,6 +7,7 @@
 using GHelper.Helpers;
 using System.Management;
 using System.Net;
+using System.Reflection;
 
 namespace Ryzen
 {
@@ -153,7 +154,8 @@ namespace Ryzen
 
         public static void DownloadRing()
         {
-            string requestUri = "https://github.com/seerge/g-helper/releases/latest/download/PluginAdvancedSettings.zip";
+            var appVersion = new Version(Assembly.GetExecutingAssembly().GetName().Version.ToString());
+            string requestUri = "https://github.com/seerge/g-helper/releases/download/v" + appVersion.Major + "." + appVersion.Minor + "/PluginAdvancedSettings.zip";
 
             Uri uri = new Uri(requestUri);
 
@@ -175,7 +177,7 @@ namespace Ryzen
                 {
                     Logger.WriteLine(ex.Message);
                     Logger.WriteLine(ex.ToString());
-                    if (!ProcessHelper.IsUserAdministrator()) ProcessHelper.RunAsAdmin("uv");
+                    if (!ProcessHelper.IsUserAdministrator() && !ex.Message.Contains("remote server")) ProcessHelper.RunAsAdmin("uv");
                     return;
                 }
 
