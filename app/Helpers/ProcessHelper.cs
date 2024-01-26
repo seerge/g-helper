@@ -37,14 +37,14 @@ namespace GHelper.Helpers
             return principal.IsInRole(WindowsBuiltInRole.Administrator);
         }
 
-        public static void RunAsAdmin(string? param = null)
+        public static void RunAsAdmin(string? param = null, bool force = false)
         {
 
             if (Math.Abs(DateTimeOffset.Now.ToUnixTimeMilliseconds() - lastAdmin) < 2000) return;
             lastAdmin = DateTimeOffset.Now.ToUnixTimeMilliseconds();
 
             // Check if the current user is an administrator
-            if (!IsUserAdministrator())
+            if (!IsUserAdministrator() || force)
             {
                 ProcessStartInfo startInfo = new ProcessStartInfo();
                 startInfo.UseShellExecute = true;

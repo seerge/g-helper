@@ -185,6 +185,7 @@ namespace Ryzen
                 {
                     System.IO.Compression.ZipFile.ExtractToDirectory(zipLocation, exeDir, overwriteFiles: true);
                     File.Delete(zipLocation);
+                    ProcessHelper.RunAsAdmin("uv", true);
                 }
                 catch (Exception ex)
                 {
