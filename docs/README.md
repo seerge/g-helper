@@ -82,13 +82,6 @@ Each BIOS mode is paired with matching Windows Power Mode. You can adjust this s
 
 ![GPU Modes](https://github.com/seerge/g-helper/assets/5920850/65c6bdd5-728c-4965-b544-fcf5a85ed6a2)
 
-### 🔖 Important Notice
-
-G-Helper is **NOT** an operating system, firmware or a driver. It **DOESN'T** "run" your hardware in realtime anyhow. 
-
-It's an app that lets you select (already predefined and stored in BIOS) operating modes and (optionally) set some settings that already exist on your device (same as Armoury Crate). If you use same mode / settings as in Armoury Crate - performance of your device won't be different.
-
-Role of G-Helper for your laptop is similar to a role of a remote control for your TV.
 
 ### :mouse: Asus Mouse and other peripherals support
 
@@ -138,6 +131,16 @@ Huge thanks to [@IceStormNG](https://github.com/IceStormNG) 👑 for contributio
 | [![QR Code](https://user-images.githubusercontent.com/5920850/233658717-0441494d-fede-4a2c-b4f2-4b16a184a69a.png)](https://www.paypal.com/donate/?hosted_button_id=4HMSHS4EBQWTA) | [![QR Code](https://github-production-user-asset-6210df.s3.amazonaws.com/5920850/239492811-b487e89a-3df6-42ea-bdb8-24c455ab2310.png)](https://www.paypal.com/donate/?hosted_button_id=SRM6QUX6ACXDY) |
 
 ------------------
+
+### 🔖 Important Notice
+
+G-Helper is **NOT** an operating system, firmware, or driver. It **DOES NOT** "run" your hardware in real-time anyhow. 
+
+It's an app that lets you select one of the operating modes created by Asus (and stored in BIOS) and optionally (!) set some settings that already exist on your device same as Armoury Crate can set. It does it by using the Asus System Control Interface "driver" that Armoury uses for it.
+
+If you use equivalent mode/settings as in Armoury Crate - the performance of the behavior of your device won't be different.
+
+The role of G-Helper for your laptop is similar to the role of a remote control for your TV.
 
 **Libraries and projects used**
 - [Linux Kernel](https://github.com/torvalds/linux/blob/master/drivers/platform/x86/asus-wmi.c) for some basic endpoints in ASUS ACPI/WMI interface
