@@ -136,9 +136,9 @@ Huge thanks to [@IceStormNG](https://github.com/IceStormNG) 👑 for contributio
 
 G-Helper is **NOT** an operating system, firmware, or driver. It **DOES NOT** "run" your hardware in real-time anyhow. 
 
-It's an app that lets you select one of the operating modes created by Asus (and stored in BIOS) and optionally (!) set some settings that already exist on your device same as Armoury Crate can set. It does it by using the Asus System Control Interface "driver" that Armoury uses for it.
+It's an app that lets you select one of the predefined operating modes created by Asus (and stored in BIOS) and optionally(!) set some settings that already exist on your device same as Armoury Crate can. It does it by using the Asus System Control Interface "driver" that Armoury uses for it.
 
-If you use equivalent mode/settings as in Armoury Crate - the performance of the behavior of your device won't be different.
+If you use equivalent mode/settings as in Armoury Crate - the performance or the behavior of your device won't be different.
 
 The role of G-Helper for your laptop is similar to the role of a remote control for your TV.
 
