@@ -31,14 +31,14 @@ namespace GHelper
         /// </summary>
         private void InitializeComponent()
         {
-            ChartArea chartArea5 = new ChartArea();
-            Title title5 = new Title();
-            ChartArea chartArea6 = new ChartArea();
-            Title title6 = new Title();
-            ChartArea chartArea7 = new ChartArea();
-            Title title7 = new Title();
-            ChartArea chartArea8 = new ChartArea();
-            Title title8 = new Title();
+            ChartArea chartArea1 = new ChartArea();
+            Title title1 = new Title();
+            ChartArea chartArea2 = new ChartArea();
+            Title title2 = new Title();
+            ChartArea chartArea3 = new ChartArea();
+            Title title3 = new Title();
+            ChartArea chartArea4 = new ChartArea();
+            Title title4 = new Title();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Fans));
             panelFans = new Panel();
             labelTip = new Label();
@@ -85,6 +85,8 @@ namespace GHelper
             panelTitleTemp = new Panel();
             pictureTemp = new PictureBox();
             labelTempLimit = new Label();
+            panelDownload = new Panel();
+            buttonDownload = new RButton();
             panelPower = new Panel();
             panelApplyPower = new Panel();
             checkApplyPower = new RCheckBox();
@@ -168,6 +170,7 @@ namespace GHelper
             ((System.ComponentModel.ISupportInitialize)trackTemp).BeginInit();
             panelTitleTemp.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureTemp).BeginInit();
+            panelDownload.SuspendLayout();
             panelPower.SuspendLayout();
             panelApplyPower.SuspendLayout();
             panelCPU.SuspendLayout();
@@ -257,8 +260,8 @@ namespace GHelper
             // 
             // chartGPU
             // 
-            chartArea5.Name = "ChartArea1";
-            chartGPU.ChartAreas.Add(chartArea5);
+            chartArea1.Name = "ChartArea1";
+            chartGPU.ChartAreas.Add(chartArea1);
             chartGPU.Dock = DockStyle.Fill;
             chartGPU.Location = new Point(12, 493);
             chartGPU.Margin = new Padding(2, 10, 2, 10);
@@ -266,13 +269,13 @@ namespace GHelper
             chartGPU.Size = new Size(782, 463);
             chartGPU.TabIndex = 17;
             chartGPU.Text = "chartGPU";
-            title5.Name = "Title1";
-            chartGPU.Titles.Add(title5);
+            title1.Name = "Title1";
+            chartGPU.Titles.Add(title1);
             // 
             // chartCPU
             // 
-            chartArea6.Name = "ChartArea1";
-            chartCPU.ChartAreas.Add(chartArea6);
+            chartArea2.Name = "ChartArea1";
+            chartCPU.ChartAreas.Add(chartArea2);
             chartCPU.Dock = DockStyle.Fill;
             chartCPU.Location = new Point(12, 10);
             chartCPU.Margin = new Padding(2, 10, 2, 10);
@@ -280,13 +283,13 @@ namespace GHelper
             chartCPU.Size = new Size(782, 463);
             chartCPU.TabIndex = 14;
             chartCPU.Text = "chartCPU";
-            title6.Name = "Title1";
-            chartCPU.Titles.Add(title6);
+            title2.Name = "Title1";
+            chartCPU.Titles.Add(title2);
             // 
             // chartXGM
             // 
-            chartArea7.Name = "ChartAreaXGM";
-            chartXGM.ChartAreas.Add(chartArea7);
+            chartArea3.Name = "ChartAreaXGM";
+            chartXGM.ChartAreas.Add(chartArea3);
             chartXGM.Dock = DockStyle.Fill;
             chartXGM.Location = new Point(12, 1459);
             chartXGM.Margin = new Padding(2, 10, 2, 10);
@@ -294,14 +297,14 @@ namespace GHelper
             chartXGM.Size = new Size(782, 463);
             chartXGM.TabIndex = 14;
             chartXGM.Text = "chartXGM";
-            title7.Name = "Title4";
-            chartXGM.Titles.Add(title7);
+            title3.Name = "Title4";
+            chartXGM.Titles.Add(title3);
             chartXGM.Visible = false;
             // 
             // chartMid
             // 
-            chartArea8.Name = "ChartArea3";
-            chartMid.ChartAreas.Add(chartArea8);
+            chartArea4.Name = "ChartArea3";
+            chartMid.ChartAreas.Add(chartArea4);
             chartMid.Dock = DockStyle.Fill;
             chartMid.Location = new Point(12, 976);
             chartMid.Margin = new Padding(2, 10, 2, 10);
@@ -309,8 +312,8 @@ namespace GHelper
             chartMid.Size = new Size(782, 463);
             chartMid.TabIndex = 14;
             chartMid.Text = "chartMid";
-            title8.Name = "Title3";
-            chartMid.Titles.Add(title8);
+            title4.Name = "Title3";
+            chartMid.Titles.Add(title4);
             chartMid.Visible = false;
             // 
             // panelTitleFans
@@ -528,10 +531,11 @@ namespace GHelper
             panelAdvanced.Controls.Add(panelTitleAdvanced);
             panelAdvanced.Controls.Add(panelTemperature);
             panelAdvanced.Controls.Add(panelTitleTemp);
+            panelAdvanced.Controls.Add(panelDownload);
             panelAdvanced.Dock = DockStyle.Top;
             panelAdvanced.Location = new Point(10, 1644);
             panelAdvanced.Name = "panelAdvanced";
-            panelAdvanced.Size = new Size(520, 888);
+            panelAdvanced.Size = new Size(520, 992);
             panelAdvanced.TabIndex = 14;
             panelAdvanced.Visible = false;
             // 
@@ -540,7 +544,7 @@ namespace GHelper
             panelAdvancedAlways.AutoSize = true;
             panelAdvancedAlways.Controls.Add(checkApplyUV);
             panelAdvancedAlways.Dock = DockStyle.Top;
-            panelAdvancedAlways.Location = new Point(0, 827);
+            panelAdvancedAlways.Location = new Point(0, 931);
             panelAdvancedAlways.Name = "panelAdvancedAlways";
             panelAdvancedAlways.Padding = new Padding(16, 0, 16, 15);
             panelAdvancedAlways.Size = new Size(520, 61);
@@ -566,7 +570,7 @@ namespace GHelper
             panelAdvancedApply.AutoSize = true;
             panelAdvancedApply.Controls.Add(buttonApplyAdvanced);
             panelAdvancedApply.Dock = DockStyle.Top;
-            panelAdvancedApply.Location = new Point(0, 747);
+            panelAdvancedApply.Location = new Point(0, 851);
             panelAdvancedApply.Name = "panelAdvancedApply";
             panelAdvancedApply.Padding = new Padding(15);
             panelAdvancedApply.Size = new Size(520, 80);
@@ -595,7 +599,7 @@ namespace GHelper
             labelRisky.BackColor = Color.IndianRed;
             labelRisky.Dock = DockStyle.Top;
             labelRisky.ForeColor = SystemColors.ControlLightLight;
-            labelRisky.Location = new Point(0, 504);
+            labelRisky.Location = new Point(0, 608);
             labelRisky.Margin = new Padding(0);
             labelRisky.Name = "labelRisky";
             labelRisky.Padding = new Padding(10, 10, 10, 5);
@@ -611,7 +615,7 @@ namespace GHelper
             panelUViGPU.Controls.Add(labelLeftUViGPU);
             panelUViGPU.Controls.Add(trackUViGPU);
             panelUViGPU.Dock = DockStyle.Top;
-            panelUViGPU.Location = new Point(0, 380);
+            panelUViGPU.Location = new Point(0, 484);
             panelUViGPU.Margin = new Padding(4);
             panelUViGPU.MaximumSize = new Size(0, 124);
             panelUViGPU.Name = "panelUViGPU";
@@ -659,7 +663,7 @@ namespace GHelper
             panelUV.Controls.Add(labelLeftUV);
             panelUV.Controls.Add(trackUV);
             panelUV.Dock = DockStyle.Top;
-            panelUV.Location = new Point(0, 256);
+            panelUV.Location = new Point(0, 360);
             panelUV.Margin = new Padding(4);
             panelUV.MaximumSize = new Size(0, 124);
             panelUV.Name = "panelUV";
@@ -704,7 +708,7 @@ namespace GHelper
             panelTitleAdvanced.Controls.Add(pictureUV);
             panelTitleAdvanced.Controls.Add(labelTitleUV);
             panelTitleAdvanced.Dock = DockStyle.Top;
-            panelTitleAdvanced.Location = new Point(0, 190);
+            panelTitleAdvanced.Location = new Point(0, 294);
             panelTitleAdvanced.Name = "panelTitleAdvanced";
             panelTitleAdvanced.Size = new Size(520, 66);
             panelTitleAdvanced.TabIndex = 48;
@@ -740,7 +744,7 @@ namespace GHelper
             panelTemperature.Controls.Add(labelLeftTemp);
             panelTemperature.Controls.Add(trackTemp);
             panelTemperature.Dock = DockStyle.Top;
-            panelTemperature.Location = new Point(0, 66);
+            panelTemperature.Location = new Point(0, 170);
             panelTemperature.Margin = new Padding(4);
             panelTemperature.MaximumSize = new Size(0, 124);
             panelTemperature.Name = "panelTemperature";
@@ -785,7 +789,7 @@ namespace GHelper
             panelTitleTemp.Controls.Add(pictureTemp);
             panelTitleTemp.Controls.Add(labelTempLimit);
             panelTitleTemp.Dock = DockStyle.Top;
-            panelTitleTemp.Location = new Point(0, 0);
+            panelTitleTemp.Location = new Point(0, 104);
             panelTitleTemp.Name = "panelTitleTemp";
             panelTitleTemp.Size = new Size(520, 66);
             panelTitleTemp.TabIndex = 50;
@@ -812,6 +816,38 @@ namespace GHelper
             labelTempLimit.Size = new Size(140, 32);
             labelTempLimit.TabIndex = 47;
             labelTempLimit.Text = "Temp Limit";
+            // 
+            // panelDownload
+            // 
+            panelDownload.AutoSize = true;
+            panelDownload.Controls.Add(buttonDownload);
+            panelDownload.Dock = DockStyle.Top;
+            panelDownload.Location = new Point(0, 0);
+            panelDownload.Name = "panelDownload";
+            panelDownload.Padding = new Padding(20);
+            panelDownload.Size = new Size(520, 104);
+            panelDownload.TabIndex = 52;
+            panelDownload.Visible = false;
+            // 
+            // buttonDownload
+            // 
+            buttonDownload.Activated = false;
+            buttonDownload.AutoSize = true;
+            buttonDownload.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            buttonDownload.BackColor = SystemColors.ControlLight;
+            buttonDownload.BorderColor = Color.Transparent;
+            buttonDownload.BorderRadius = 2;
+            buttonDownload.Dock = DockStyle.Top;
+            buttonDownload.FlatStyle = FlatStyle.Flat;
+            buttonDownload.Location = new Point(20, 20);
+            buttonDownload.Margin = new Padding(20);
+            buttonDownload.Name = "buttonDownload";
+            buttonDownload.Padding = new Padding(10);
+            buttonDownload.Secondary = true;
+            buttonDownload.Size = new Size(480, 64);
+            buttonDownload.TabIndex = 19;
+            buttonDownload.Text = "Download Advanced Settings Plugin";
+            buttonDownload.UseVisualStyleBackColor = false;
             // 
             // panelPower
             // 
@@ -1634,6 +1670,8 @@ namespace GHelper
             panelTitleTemp.ResumeLayout(false);
             panelTitleTemp.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)pictureTemp).EndInit();
+            panelDownload.ResumeLayout(false);
+            panelDownload.PerformLayout();
             panelPower.ResumeLayout(false);
             panelPower.PerformLayout();
             panelApplyPower.ResumeLayout(false);
@@ -1793,5 +1831,7 @@ namespace GHelper
         private Label labelSlow;
         private Label labelLeftSlow;
         private TrackBar trackSlow;
+        private Panel panelDownload;
+        private RButton buttonDownload;
     }
 }
