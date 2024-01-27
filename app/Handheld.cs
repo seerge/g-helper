@@ -54,7 +54,7 @@ namespace GHelper
 
             ButtonBinding("du", "DPad Up", buttonDPU);
             ButtonBinding("dd", "DPad Down", buttonDPD);
-            
+
             ButtonBinding("dl", "DPad Left", buttonDPL);
             ButtonBinding("dr", "DPad Right", buttonDPR);
 
@@ -73,6 +73,15 @@ namespace GHelper
             ComboBinding(comboPrimary);
             ComboBinding(comboSecondary);
 
+            checkController.Checked = AppConfig.Is("controller_disabled");
+            checkController.CheckedChanged += CheckController_CheckedChanged;
+
+        }
+
+        private void CheckController_CheckedChanged(object? sender, EventArgs e)
+        {
+            AppConfig.Set("controller_disabled", checkController.Checked ? 1 : 0);
+            AllyControl.ApplyXBoxStatus();
         }
 
         private void ComboBinding(RComboBox combo)
@@ -246,5 +255,6 @@ namespace GHelper
             Top = Program.settingsForm.Top;
             Left = Program.settingsForm.Left - Width - 5;
         }
+
     }
 }

@@ -30,7 +30,6 @@
         {
             panelDeadzones = new Panel();
             panelRight = new Panel();
-            buttonReset = new UI.RButton();
             panelRT = new Panel();
             pictureBox4 = new PictureBox();
             trackRTMax = new TrackBar();
@@ -56,6 +55,7 @@
             labelLS = new Label();
             trackLSMin = new TrackBar();
             labelLSTitle = new Label();
+            buttonReset = new UI.RButton();
             panelBindings = new Panel();
             panelBinding = new Panel();
             labelBinding = new Label();
@@ -83,6 +83,7 @@
             buttonX = new UI.RButton();
             pictureAlly = new PictureBox();
             panelVibra = new Panel();
+            checkController = new UI.RCheckBox();
             pictureBox5 = new PictureBox();
             labelVibra = new Label();
             labelVibraTitle = new Label();
@@ -119,9 +120,9 @@
             panelDeadzones.Controls.Add(panelRight);
             panelDeadzones.Controls.Add(panelLeft);
             panelDeadzones.Dock = DockStyle.Top;
-            panelDeadzones.Location = new Point(10, 10);
+            panelDeadzones.Location = new Point(10, 527);
             panelDeadzones.Name = "panelDeadzones";
-            panelDeadzones.Size = new Size(1130, 258);
+            panelDeadzones.Size = new Size(1123, 258);
             panelDeadzones.TabIndex = 0;
             // 
             // panelRight
@@ -135,23 +136,6 @@
             panelRight.Name = "panelRight";
             panelRight.Size = new Size(560, 258);
             panelRight.TabIndex = 48;
-            // 
-            // buttonReset
-            // 
-            buttonReset.Activated = false;
-            buttonReset.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            buttonReset.BackColor = SystemColors.ControlLight;
-            buttonReset.BorderColor = Color.Transparent;
-            buttonReset.BorderRadius = 2;
-            buttonReset.FlatStyle = FlatStyle.Flat;
-            buttonReset.Location = new Point(870, 41);
-            buttonReset.Margin = new Padding(4, 2, 4, 2);
-            buttonReset.Name = "buttonReset";
-            buttonReset.Secondary = true;
-            buttonReset.Size = new Size(239, 50);
-            buttonReset.TabIndex = 55;
-            buttonReset.Text = "Reset Deadzones";
-            buttonReset.UseVisualStyleBackColor = false;
             // 
             // panelRT
             // 
@@ -172,7 +156,7 @@
             // 
             // pictureBox4
             // 
-            pictureBox4.BackgroundImage = Properties.Resources.icons8_xbox_lt_32;
+            pictureBox4.BackgroundImage = Properties.Resources.icons8_xbox_rt_32;
             pictureBox4.BackgroundImageLayout = ImageLayout.Zoom;
             pictureBox4.ErrorImage = null;
             pictureBox4.InitialImage = null;
@@ -483,6 +467,23 @@
             labelLSTitle.TabIndex = 17;
             labelLSTitle.Text = "Left Stick Deadzones";
             // 
+            // buttonReset
+            // 
+            buttonReset.Activated = false;
+            buttonReset.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            buttonReset.BackColor = SystemColors.ControlLight;
+            buttonReset.BorderColor = Color.Transparent;
+            buttonReset.BorderRadius = 2;
+            buttonReset.FlatStyle = FlatStyle.Flat;
+            buttonReset.Location = new Point(944, 39);
+            buttonReset.Margin = new Padding(4, 2, 4, 2);
+            buttonReset.Name = "buttonReset";
+            buttonReset.Secondary = true;
+            buttonReset.Size = new Size(165, 50);
+            buttonReset.TabIndex = 55;
+            buttonReset.Text = "Reset";
+            buttonReset.UseVisualStyleBackColor = false;
+            // 
             // panelBindings
             // 
             panelBindings.Controls.Add(panelBinding);
@@ -506,9 +507,9 @@
             panelBindings.Controls.Add(buttonX);
             panelBindings.Controls.Add(pictureAlly);
             panelBindings.Dock = DockStyle.Top;
-            panelBindings.Location = new Point(10, 268);
+            panelBindings.Location = new Point(10, 10);
             panelBindings.Name = "panelBindings";
-            panelBindings.Size = new Size(1130, 480);
+            panelBindings.Size = new Size(1123, 517);
             panelBindings.TabIndex = 1;
             // 
             // panelBinding
@@ -518,7 +519,7 @@
             panelBinding.Controls.Add(labelPrimary);
             panelBinding.Controls.Add(comboSecondary);
             panelBinding.Controls.Add(comboPrimary);
-            panelBinding.Location = new Point(372, 156);
+            panelBinding.Location = new Point(372, 174);
             panelBinding.Name = "panelBinding";
             panelBinding.Size = new Size(400, 186);
             panelBinding.TabIndex = 37;
@@ -590,7 +591,7 @@
             buttonView.FlatStyle = FlatStyle.Flat;
             buttonView.ForeColor = SystemColors.ControlText;
             buttonView.ImageAlign = ContentAlignment.MiddleRight;
-            buttonView.Location = new Point(175, 8);
+            buttonView.Location = new Point(175, 26);
             buttonView.Margin = new Padding(4);
             buttonView.Name = "buttonView";
             buttonView.Secondary = true;
@@ -610,7 +611,7 @@
             buttonLS.FlatStyle = FlatStyle.Flat;
             buttonLS.ForeColor = SystemColors.ControlText;
             buttonLS.ImageAlign = ContentAlignment.MiddleRight;
-            buttonLS.Location = new Point(20, 385);
+            buttonLS.Location = new Point(20, 403);
             buttonLS.Margin = new Padding(4);
             buttonLS.Name = "buttonLS";
             buttonLS.Secondary = true;
@@ -630,7 +631,7 @@
             buttonLT.FlatStyle = FlatStyle.Flat;
             buttonLT.ForeColor = SystemColors.ControlText;
             buttonLT.ImageAlign = ContentAlignment.MiddleRight;
-            buttonLT.Location = new Point(20, 70);
+            buttonLT.Location = new Point(20, 88);
             buttonLT.Margin = new Padding(4);
             buttonLT.Name = "buttonLT";
             buttonLT.Secondary = true;
@@ -650,7 +651,7 @@
             buttonLB.FlatStyle = FlatStyle.Flat;
             buttonLB.ForeColor = SystemColors.ControlText;
             buttonLB.ImageAlign = ContentAlignment.MiddleRight;
-            buttonLB.Location = new Point(20, 7);
+            buttonLB.Location = new Point(20, 25);
             buttonLB.Margin = new Padding(4);
             buttonLB.Name = "buttonLB";
             buttonLB.Secondary = true;
@@ -670,7 +671,7 @@
             buttonDPR.FlatStyle = FlatStyle.Flat;
             buttonDPR.ForeColor = SystemColors.ControlText;
             buttonDPR.ImageAlign = ContentAlignment.MiddleRight;
-            buttonDPR.Location = new Point(20, 322);
+            buttonDPR.Location = new Point(20, 340);
             buttonDPR.Margin = new Padding(4);
             buttonDPR.Name = "buttonDPR";
             buttonDPR.Secondary = true;
@@ -690,7 +691,7 @@
             buttonDPL.FlatStyle = FlatStyle.Flat;
             buttonDPL.ForeColor = SystemColors.ControlText;
             buttonDPL.ImageAlign = ContentAlignment.MiddleRight;
-            buttonDPL.Location = new Point(20, 259);
+            buttonDPL.Location = new Point(20, 277);
             buttonDPL.Margin = new Padding(4);
             buttonDPL.Name = "buttonDPL";
             buttonDPL.Secondary = true;
@@ -710,7 +711,7 @@
             buttonDPD.FlatStyle = FlatStyle.Flat;
             buttonDPD.ForeColor = SystemColors.ControlText;
             buttonDPD.ImageAlign = ContentAlignment.MiddleRight;
-            buttonDPD.Location = new Point(20, 196);
+            buttonDPD.Location = new Point(20, 214);
             buttonDPD.Margin = new Padding(4);
             buttonDPD.Name = "buttonDPD";
             buttonDPD.Secondary = true;
@@ -730,7 +731,7 @@
             buttonDPU.FlatStyle = FlatStyle.Flat;
             buttonDPU.ForeColor = SystemColors.ControlText;
             buttonDPU.ImageAlign = ContentAlignment.MiddleRight;
-            buttonDPU.Location = new Point(20, 133);
+            buttonDPU.Location = new Point(20, 151);
             buttonDPU.Margin = new Padding(4);
             buttonDPU.Name = "buttonDPU";
             buttonDPU.Secondary = true;
@@ -750,7 +751,7 @@
             buttonM2.FlatStyle = FlatStyle.Flat;
             buttonM2.ForeColor = SystemColors.ControlText;
             buttonM2.ImageAlign = ContentAlignment.MiddleRight;
-            buttonM2.Location = new Point(330, 8);
+            buttonM2.Location = new Point(330, 26);
             buttonM2.Margin = new Padding(4);
             buttonM2.Name = "buttonM2";
             buttonM2.Secondary = true;
@@ -770,7 +771,7 @@
             buttonM1.FlatStyle = FlatStyle.Flat;
             buttonM1.ForeColor = SystemColors.ControlText;
             buttonM1.ImageAlign = ContentAlignment.MiddleRight;
-            buttonM1.Location = new Point(650, 8);
+            buttonM1.Location = new Point(650, 26);
             buttonM1.Margin = new Padding(4);
             buttonM1.Name = "buttonM1";
             buttonM1.Secondary = true;
@@ -790,7 +791,7 @@
             buttonRS.FlatStyle = FlatStyle.Flat;
             buttonRS.ForeColor = SystemColors.ControlText;
             buttonRS.ImageAlign = ContentAlignment.MiddleRight;
-            buttonRS.Location = new Point(962, 385);
+            buttonRS.Location = new Point(962, 403);
             buttonRS.Margin = new Padding(4);
             buttonRS.Name = "buttonRS";
             buttonRS.Secondary = true;
@@ -810,7 +811,7 @@
             buttonMenu.FlatStyle = FlatStyle.Flat;
             buttonMenu.ForeColor = SystemColors.ControlText;
             buttonMenu.ImageAlign = ContentAlignment.MiddleRight;
-            buttonMenu.Location = new Point(805, 8);
+            buttonMenu.Location = new Point(805, 26);
             buttonMenu.Margin = new Padding(4);
             buttonMenu.Name = "buttonMenu";
             buttonMenu.Secondary = true;
@@ -830,7 +831,7 @@
             buttonRT.FlatStyle = FlatStyle.Flat;
             buttonRT.ForeColor = SystemColors.ControlText;
             buttonRT.ImageAlign = ContentAlignment.MiddleRight;
-            buttonRT.Location = new Point(962, 70);
+            buttonRT.Location = new Point(962, 88);
             buttonRT.Margin = new Padding(4);
             buttonRT.Name = "buttonRT";
             buttonRT.Secondary = true;
@@ -850,7 +851,7 @@
             buttonRB.FlatStyle = FlatStyle.Flat;
             buttonRB.ForeColor = SystemColors.ControlText;
             buttonRB.ImageAlign = ContentAlignment.MiddleRight;
-            buttonRB.Location = new Point(962, 7);
+            buttonRB.Location = new Point(962, 25);
             buttonRB.Margin = new Padding(4);
             buttonRB.Name = "buttonRB";
             buttonRB.Secondary = true;
@@ -870,7 +871,7 @@
             buttonB.FlatStyle = FlatStyle.Flat;
             buttonB.ForeColor = SystemColors.ControlText;
             buttonB.ImageAlign = ContentAlignment.MiddleRight;
-            buttonB.Location = new Point(962, 322);
+            buttonB.Location = new Point(962, 340);
             buttonB.Margin = new Padding(4);
             buttonB.Name = "buttonB";
             buttonB.Secondary = true;
@@ -890,7 +891,7 @@
             buttonA.FlatStyle = FlatStyle.Flat;
             buttonA.ForeColor = SystemColors.ControlText;
             buttonA.ImageAlign = ContentAlignment.MiddleRight;
-            buttonA.Location = new Point(962, 259);
+            buttonA.Location = new Point(962, 277);
             buttonA.Margin = new Padding(4);
             buttonA.Name = "buttonA";
             buttonA.Secondary = true;
@@ -910,7 +911,7 @@
             buttonY.FlatStyle = FlatStyle.Flat;
             buttonY.ForeColor = SystemColors.ControlText;
             buttonY.ImageAlign = ContentAlignment.MiddleRight;
-            buttonY.Location = new Point(962, 196);
+            buttonY.Location = new Point(962, 214);
             buttonY.Margin = new Padding(4);
             buttonY.Name = "buttonY";
             buttonY.Secondary = true;
@@ -930,7 +931,7 @@
             buttonX.FlatStyle = FlatStyle.Flat;
             buttonX.ForeColor = SystemColors.ControlText;
             buttonX.ImageAlign = ContentAlignment.MiddleRight;
-            buttonX.Location = new Point(962, 133);
+            buttonX.Location = new Point(962, 151);
             buttonX.Margin = new Padding(4);
             buttonX.Name = "buttonX";
             buttonX.Secondary = true;
@@ -944,7 +945,7 @@
             // 
             pictureAlly.BackgroundImage = Properties.Resources.ally;
             pictureAlly.BackgroundImageLayout = ImageLayout.Zoom;
-            pictureAlly.Location = new Point(185, 79);
+            pictureAlly.Location = new Point(185, 97);
             pictureAlly.Name = "pictureAlly";
             pictureAlly.Size = new Size(767, 354);
             pictureAlly.TabIndex = 0;
@@ -954,18 +955,33 @@
             // 
             panelVibra.AutoSize = true;
             panelVibra.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            panelVibra.Controls.Add(checkController);
             panelVibra.Controls.Add(buttonReset);
             panelVibra.Controls.Add(pictureBox5);
             panelVibra.Controls.Add(labelVibra);
             panelVibra.Controls.Add(labelVibraTitle);
             panelVibra.Controls.Add(trackVibra);
             panelVibra.Dock = DockStyle.Top;
-            panelVibra.Location = new Point(10, 748);
+            panelVibra.Location = new Point(10, 785);
             panelVibra.Margin = new Padding(4);
             panelVibra.MaximumSize = new Size(0, 124);
             panelVibra.Name = "panelVibra";
-            panelVibra.Size = new Size(1130, 124);
+            panelVibra.Size = new Size(1123, 124);
             panelVibra.TabIndex = 47;
+            // 
+            // checkController
+            // 
+            checkController.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            checkController.AutoSize = true;
+            checkController.BackColor = SystemColors.ControlLight;
+            checkController.Location = new Point(650, 41);
+            checkController.Margin = new Padding(0);
+            checkController.Name = "checkController";
+            checkController.Padding = new Padding(16, 6, 16, 6);
+            checkController.Size = new Size(269, 48);
+            checkController.TabIndex = 56;
+            checkController.Text = "Disable Controller";
+            checkController.UseVisualStyleBackColor = false;
             // 
             // pictureBox5
             // 
@@ -1018,10 +1034,10 @@
             AutoScaleDimensions = new SizeF(13F, 32F);
             AutoScaleMode = AutoScaleMode.Font;
             AutoSize = true;
-            ClientSize = new Size(1150, 880);
+            ClientSize = new Size(1143, 912);
             Controls.Add(panelVibra);
-            Controls.Add(panelBindings);
             Controls.Add(panelDeadzones);
+            Controls.Add(panelBindings);
             MaximizeBox = false;
             MinimizeBox = false;
             Name = "Handheld";
@@ -1128,5 +1144,6 @@
         private Label labelVibra;
         private Label labelVibraTitle;
         private TrackBar trackVibra;
+        private UI.RCheckBox checkController;
     }
 }
