@@ -133,7 +133,7 @@ public class AsusACPI
     public const int MinTotal = 5;
 
     public static int MaxTotal = 150;
-    public static int DefaultTotal = 125;
+    public static int DefaultTotal = 80;
 
     public const int MinCPU = 5;
     public const int MaxCPU = 100;
@@ -249,6 +249,11 @@ public class AsusACPI
         if (AppConfig.IsAdvantageEdition())
         {
             MaxTotal = 250;
+        }
+
+        if (AppConfig.IsG14AMD())
+        {
+            DefaultTotal = 125;
         }
 
         if (AppConfig.IsX13())

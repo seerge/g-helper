@@ -314,11 +314,6 @@ namespace GHelper
             }
         }
 
-        public void VisualiseXBox(bool status)
-        {
-
-        }
-
         public void VisualiseBacklight(int backlight)
         {
             buttonBacklight.Text = Math.Round((double)backlight*33.33).ToString() + "%";

@@ -412,6 +412,11 @@ public static class AppConfig
         return ContainsModel("X13");
     }
 
+    public static bool IsG14AMD()
+    {
+        return ContainsModel("GA402R");
+    }
+
     public static bool DynamicBoost5()
     {
         return ContainsModel("GZ301ZE");
