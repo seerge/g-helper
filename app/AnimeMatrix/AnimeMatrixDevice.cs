@@ -278,7 +278,7 @@ namespace Starlight.AnimeMatrix
 
             if (x >= FirstX(y) && x < Width())
                 SetLedLinear(RowToLinearAddress(y) - FirstX(y) + x, value);
-        }
+            }
 
         public void SetLedDiagonal(int x, int y, byte color, int deltaX = 0, int deltaY = 0)
         {
@@ -287,6 +287,9 @@ namespace Starlight.AnimeMatrix
 
             int plX = (x - y) / 2;
             int plY = x + y;
+
+            if (x - y == -1) plX = -1;
+
             SetLedPlanar(plX, plY, color);
         }
 
