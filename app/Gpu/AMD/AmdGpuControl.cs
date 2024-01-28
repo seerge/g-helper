@@ -65,8 +65,14 @@ public class AmdGpuControl : IGpuControl
         if (!Adl2.Load())
             return;
 
-        if (Adl2.ADL2_Main_Control_Create(1, out _adlContextHandle) != Adl2.ADL_SUCCESS)
+        try
+        {
+            if (Adl2.ADL2_Main_Control_Create(1, out _adlContextHandle) != Adl2.ADL_SUCCESS) return;
+        } catch (Exception ex)
+        {
+            Logger.WriteLine(ex.Message);
             return;
+        }
 
         ADLAdapterInfo? internalDiscreteAdapter = FindByType(ADLAsicFamilyType.Discrete);
 

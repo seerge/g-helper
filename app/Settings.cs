@@ -24,8 +24,8 @@ namespace GHelper
         ToolStripMenuItem menuSilent, menuBalanced, menuTurbo, menuEco, menuStandard, menuUltimate, menuOptimized;
 
         public GPUModeControl gpuControl;
+        public AllyControl allyControl;
         ScreenControl screenControl = new ScreenControl();
-        AllyControl allyControl;
         AutoUpdateControl updateControl;
 
         AsusMouseSettings? mouseSettings;

@@ -238,19 +238,19 @@ namespace GHelper.USB
         }
 
 
-        public static byte[] AuraMessage(AuraMode mode, Color color, Color color2, int speed, bool mono = false)
+        public static byte[] AuraMessage(AuraMode mode, Color color, Color color2, int speed, bool mono = false, byte zoneByte = 0x00)
         {
 
             byte[] msg = new byte[17];
             msg[0] = AsusHid.AURA_ID;
-            msg[1] = 0xb3;
-            msg[2] = 0x00; // Zone 
+            msg[1] = 0xB3;
+            msg[2] = zoneByte; // Zone 
             msg[3] = (byte)mode; // Aura Mode
             msg[4] = color.R; // R
             msg[5] = mono ? (byte)0 : color.G; // G
             msg[6] = mono ? (byte)0 : color.B; // B
             msg[7] = (byte)speed; // aura.speed as u8;
-            msg[8] = 0; // aura.direction as u8;
+            msg[8] = 0xFF; // aura.direction as u8;
             msg[9] = mode == AuraMode.AuraBreathe ? (byte)1 : (byte)0;
             msg[10] = color2.R; // R
             msg[11] = mono ? (byte)0 : color2.G; // G
@@ -665,6 +665,7 @@ namespace GHelper.USB
             int _speed = (Speed == AuraSpeed.Normal) ? 0xeb : (Speed == AuraSpeed.Fast) ? 0xf5 : 0xe1;
 
             AsusHid.Write(new List<byte[]> { AuraMessage(Mode, _Color1, _Color2, _speed, isSingleColor), MESSAGE_SET, MESSAGE_APPLY });
+            //AsusHid.Write(new List<byte[]> { AuraMessage(Mode, _Color1, _Color2, _speed, isSingleColor, 0x0A), MESSAGE_SET, MESSAGE_APPLY  });
 
             if (isACPI)
                 Program.acpi.TUFKeyboardRGB(Mode, Color1, _speed);

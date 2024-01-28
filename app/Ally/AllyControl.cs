@@ -1,4 +1,5 @@
 ﻿using GHelper.Gpu.AMD;
+using GHelper.Helpers;
 using GHelper.Input;
 using GHelper.Mode;
 using GHelper.USB;
@@ -90,6 +91,7 @@ namespace GHelper.Ally
         public const string BindBrightnessDown = "04-04-8C-88-8A-05";
         public const string BindBrightnessUp = "04-04-8C-88-8A-06";
         public const string BindXGM = "04-04-8C-88-8A-04";
+        public const string BindToggleMode = "04-04-8C-88-8A-0C";
 
         public const string BindOverlay = "04-03-8C-88-44";
 
@@ -139,6 +141,8 @@ namespace GHelper.Ally
             { BindMB, "Menu Button" },
 
             { BindXB, "XBox/Steam" },
+
+            { BindToggleMode, "Controller Mode" },
 
             { BindVolUp, "Vol Up" },
             { BindVolDown, "Vol Down" },
@@ -582,6 +586,21 @@ namespace GHelper.Ally
             }
 
             settings.VisualiseController(mode);
+        }
+
+
+        public void ToggleModeHotkey()
+        {
+            if (_applyMode == ControllerMode.Gamepad)
+            {
+                SetMode(ControllerMode.Mouse);
+                Program.toast.RunToast("Mouse", ToastIcon.Controller);
+            }
+            else
+            {
+                SetMode(ControllerMode.Gamepad);
+                Program.toast.RunToast("Gamepad", ToastIcon.Controller);
+            }
         }
 
         public void ToggleMode()

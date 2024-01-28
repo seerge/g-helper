@@ -146,6 +146,7 @@ namespace GHelper.Input
                 hook.RegisterHotKey(ModifierKeys.Shift | ModifierKeys.Control | ModifierKeys.Alt, Keys.F1);
                 hook.RegisterHotKey(ModifierKeys.Shift | ModifierKeys.Control | ModifierKeys.Alt, Keys.F2);
                 hook.RegisterHotKey(ModifierKeys.Shift | ModifierKeys.Control | ModifierKeys.Alt, Keys.F3);
+                hook.RegisterHotKey(ModifierKeys.Shift | ModifierKeys.Control | ModifierKeys.Alt, Keys.F4);
             }
 
             // FN-Lock group
@@ -373,6 +374,9 @@ namespace GHelper.Input
                         break;
                     case Keys.F3:
                         Program.settingsForm.gpuControl.ToggleXGM(true);
+                        break;
+                    case Keys.F4:
+                        Program.settingsForm.allyControl.ToggleModeHotkey();
                         break;
                     case Keys.F14:
                         Program.settingsForm.gpuControl.SetGPUMode(AsusACPI.GPUModeEco);
