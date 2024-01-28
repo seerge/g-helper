@@ -44,6 +44,11 @@ namespace GHelper
                 customActions.Add("screenpad_up", Properties.Strings.ScreenPadUp);
             }
 
+            if (AppConfig.IsAlly())
+            {
+                customActions.Add("controller", "Controller Mode");
+            }
+
             switch (name)
             {
                 case "m1":

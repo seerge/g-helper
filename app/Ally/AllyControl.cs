@@ -314,7 +314,7 @@ namespace GHelper.Ally
             if (AppConfig.IsAlly()) settings.VisualiseAlly(true);
             else return;
 
-            SetMode((ControllerMode)AppConfig.Get("controller_mode", (int)ControllerMode.Auto));
+            SetMode((ControllerMode)AppConfig.Get("controller_mode", (int)ControllerMode.Auto), true);
 
             settings.VisualiseBacklight(InputDispatcher.GetBacklight());
             settings.VisualiseFPSLimit(amdControl.GetFPSLimit());
@@ -477,7 +477,7 @@ namespace GHelper.Ally
             DecodeBinding(KeyR1).CopyTo(bindings, 27);
             DecodeBinding(KeyR2).CopyTo(bindings, 38);
 
-            AsusHid.WriteInput(CommandReady, null);
+            //AsusHid.WriteInput(CommandReady, null);
             AsusHid.WriteInput(bindings, $"B{zone}");
 
 
@@ -491,7 +491,7 @@ namespace GHelper.Ally
 
         static public void SetDeadzones()
         {
-            WakeUp();
+            //WakeUp();
 
             AsusHid.WriteInput(new byte[] { AsusHid.INPUT_ID, 0xd1, 4, 4,
                 (byte)AppConfig.Get("ls_min", 0),
@@ -519,7 +519,7 @@ namespace GHelper.Ally
             AsusHid.WriteInput(new byte[] { AsusHid.INPUT_ID, 0xD1, 0x0B, 0x01, AppConfig.Is("controller_disabled") ? (byte)0x02 : (byte)0x01 }, "Status");
         }
 
-        public static void ApplyMode(ControllerMode applyMode = ControllerMode.Auto)
+        public static void ApplyMode(ControllerMode applyMode = ControllerMode.Auto, bool init = false)
         {
             Task.Run(() =>
             {
@@ -543,11 +543,14 @@ namespace GHelper.Ally
 
                 if (applyMode != ControllerMode.Auto) _applyMode = applyMode;
 
-                InputDispatcher.SetBacklightAuto(true);
-                WakeUp();
+                if (init)
+                {
+                    WakeUp();
+                    InputDispatcher.SetBacklightAuto(true);
+                }
 
                 AsusHid.WriteInput(new byte[] { AsusHid.INPUT_ID, 0xD1, 0x01, 0x01, (byte)_applyMode }, "Controller");
-                AsusHid.WriteInput(CommandSave, null);
+                //AsusHid.WriteInput(CommandSave, null);
 
                 BindZone(BindingZone.M1M2);
 
@@ -561,18 +564,19 @@ namespace GHelper.Ally
                 BindZone(BindingZone.Trigger);
 
                 AsusHid.WriteInput(CommandSave, null);
+
                 SetDeadzones();
 
             });
         }
 
-        private void SetMode(ControllerMode mode)
+        private void SetMode(ControllerMode mode, bool init = false)
         {
 
             _mode = mode;
             AppConfig.Set("controller_mode", (int)mode);
 
-            ApplyMode(mode);
+            ApplyMode(mode, init);
 
             if (mode == ControllerMode.Auto)
             {

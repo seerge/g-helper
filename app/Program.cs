@@ -229,10 +229,15 @@ namespace GHelper
 
             BatteryControl.AutoBattery(init);
 
-            settingsForm.AutoKeyboard();
             settingsForm.matrixControl.SetMatrix(true);
 
-            allyControl.Init();
+            if (AppConfig.IsAlly())
+            {
+                allyControl.Init();
+            } else
+            {
+                settingsForm.AutoKeyboard();
+            }
         }
 
         private static void SystemEvents_PowerModeChanged(object sender, PowerModeChangedEventArgs e)

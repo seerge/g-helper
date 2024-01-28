@@ -250,7 +250,7 @@ namespace GHelper.USB
             msg[5] = mono ? (byte)0 : color.G; // G
             msg[6] = mono ? (byte)0 : color.B; // B
             msg[7] = (byte)speed; // aura.speed as u8;
-            msg[8] = 0xFF; // aura.direction as u8;
+            msg[8] = 0x00; // aura.direction as u8;
             msg[9] = mode == AuraMode.AuraBreathe ? (byte)1 : (byte)0;
             msg[10] = color2.R; // R
             msg[11] = mono ? (byte)0 : color2.G; // G
@@ -294,12 +294,12 @@ namespace GHelper.USB
                 if (delay) await Task.Delay(TimeSpan.FromSeconds(1));
                 if (isACPI) Program.acpi.TUFKeyboardBrightness(brightness);
 
-                AsusHid.Write(new byte[] { AsusHid.AURA_ID, 0xba, 0xc5, 0xc4, (byte)brightness }, log);
+                AsusHid.Write(new byte[] { AsusHid.AURA_ID, 0xBA, 0xC5, 0xC4, (byte)brightness }, log);
 
                 if (AppConfig.IsAlly()) ApplyAura();
 
                 if (AppConfig.ContainsModel("GA503"))
-                    AsusHid.WriteInput(new byte[] { AsusHid.INPUT_ID, 0xba, 0xc5, 0xc4, (byte)brightness }, log);
+                    AsusHid.WriteInput(new byte[] { AsusHid.INPUT_ID, 0xBA, 0xC5, 0xC4, (byte)brightness }, log);
             });
 
 

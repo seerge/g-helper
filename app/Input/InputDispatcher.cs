@@ -376,7 +376,7 @@ namespace GHelper.Input
                         Program.settingsForm.gpuControl.ToggleXGM(true);
                         break;
                     case Keys.F4:
-                        Program.settingsForm.allyControl.ToggleModeHotkey();
+                        Program.settingsForm.BeginInvoke(Program.settingsForm.allyControl.ToggleModeHotkey);
                         break;
                     case Keys.F14:
                         Program.settingsForm.gpuControl.SetGPUMode(AsusACPI.GPUModeEco);
@@ -519,6 +519,9 @@ namespace GHelper.Input
                     break;
                 case "calculator":
                     LaunchProcess("calc");
+                    break;
+                case "controller":
+                    Program.settingsForm.BeginInvoke(Program.settingsForm.allyControl.ToggleModeHotkey);
                     break;
                 default:
                     break;
