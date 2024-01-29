@@ -118,6 +118,7 @@ namespace GHelper
             panelAllyTitle = new Panel();
             pictureAlly = new PictureBox();
             labelAlly = new Label();
+            buttonOverlay = new RButton();
             panelMatrix.SuspendLayout();
             tableLayoutMatrix.SuspendLayout();
             panelMatrixTitle.SuspendLayout();
@@ -694,6 +695,7 @@ namespace GHelper
             tableAMD.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33F));
             tableAMD.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33F));
             tableAMD.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33F));
+            tableAMD.Controls.Add(buttonOverlay, 0, 0);
             tableAMD.Controls.Add(buttonFPS, 0, 0);
             tableAMD.Dock = DockStyle.Top;
             tableAMD.Location = new Point(20, 316);
@@ -1584,6 +1586,28 @@ namespace GHelper
             labelAlly.TabIndex = 26;
             labelAlly.Text = "Ally Controller";
             // 
+            // buttonOverlay
+            // 
+            buttonOverlay.Activated = false;
+            buttonOverlay.BackColor = SystemColors.ControlLightLight;
+            buttonOverlay.BorderColor = Color.Transparent;
+            buttonOverlay.BorderRadius = 5;
+            buttonOverlay.Dock = DockStyle.Fill;
+            buttonOverlay.FlatAppearance.BorderSize = 0;
+            buttonOverlay.FlatStyle = FlatStyle.Flat;
+            buttonOverlay.ForeColor = SystemColors.ControlText;
+            buttonOverlay.Image = Properties.Resources.icons8_heartbeat_32;
+            buttonOverlay.ImageAlign = ContentAlignment.MiddleRight;
+            buttonOverlay.Location = new Point(266, 4);
+            buttonOverlay.Margin = new Padding(4);
+            buttonOverlay.Name = "buttonOverlay";
+            buttonOverlay.Secondary = false;
+            buttonOverlay.Size = new Size(254, 72);
+            buttonOverlay.TabIndex = 12;
+            buttonOverlay.Text = "AMD Overlay";
+            buttonOverlay.TextImageRelation = TextImageRelation.ImageBeforeText;
+            buttonOverlay.UseVisualStyleBackColor = false;
+            // 
             // SettingsForm
             // 
             AutoScaleDimensions = new SizeF(192F, 192F);
@@ -1759,5 +1783,6 @@ namespace GHelper
         private TableLayoutPanel tableAMD;
         private RButton buttonFPS;
         private RButton buttonController;
+        private RButton buttonOverlay;
     }
 }

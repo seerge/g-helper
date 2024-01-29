@@ -235,7 +235,9 @@ namespace GHelper
 
             buttonControllerMode.Click += ButtonControllerMode_Click;
             buttonBacklight.Click += ButtonBacklight_Click;
+
             buttonFPS.Click += ButtonFPS_Click;
+            buttonOverlay.Click += ButtonOverlay_Click;
 
             Text = "G-Helper " + (ProcessHelper.IsUserAdministrator() ? "—" : "-") + " " + AppConfig.GetModelShort();
             TopMost = AppConfig.Is("topmost");
@@ -248,6 +250,11 @@ namespace GHelper
             buttonFnLock.Click += ButtonFnLock_Click;
 
             panelPerformance.Focus();
+        }
+
+        private void ButtonOverlay_Click(object? sender, EventArgs e)
+        {
+            KeyboardHook.KeyKeyKeyPress(Keys.LControlKey, Keys.LShiftKey, Keys.O);
         }
 
         private void ButtonHandheld_Click(object? sender, EventArgs e)
