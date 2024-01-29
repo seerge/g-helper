@@ -278,7 +278,11 @@ namespace GHelper
                 settingsForm.Activate();
 
                 settingsForm.Left = Screen.FromControl(settingsForm).WorkingArea.Width - 10 - settingsForm.Width;
-                settingsForm.Top = Screen.FromControl(settingsForm).WorkingArea.Height - 10 - settingsForm.Height;
+                
+                if (AppConfig.IsAlly())
+                    settingsForm.Top = Screen.FromControl(settingsForm).Bounds.Height - 100 - settingsForm.Height;
+                else
+                    settingsForm.Top = Screen.FromControl(settingsForm).WorkingArea.Height - 10 - settingsForm.Height;
 
                 settingsForm.VisualiseGPUMode();
             }

@@ -1,7 +1,6 @@
 ﻿using GHelper.Gpu.AMD;
 using GHelper.Helpers;
 using GHelper.Input;
-using GHelper.Mode;
 using GHelper.USB;
 using HidSharp;
 using System.Text;
@@ -108,8 +107,8 @@ namespace GHelper.Ally
 
         public const string BindShowKeyboard = "05-19";
 
-        static byte[] CommandReady = new byte[] { AsusHid.INPUT_ID, 0xd1, 0x0a, 0x01 };
-        static byte[] CommandSave = new byte[] { AsusHid.INPUT_ID, 0xd1, 0x0f, 0x20 };
+        static byte[] CommandReady = new byte[] { AsusHid.INPUT_ID, 0xD1, 0x0A, 0x01 };
+        static byte[] CommandSave = new byte[] { AsusHid.INPUT_ID, 0xD1, 0x0F, 0x20 };
 
         public static Dictionary<string, string> BindCodes = new Dictionary<string, string>
         {
@@ -317,7 +316,9 @@ namespace GHelper.Ally
             SetMode((ControllerMode)AppConfig.Get("controller_mode", (int)ControllerMode.Auto), true);
 
             settings.VisualiseBacklight(InputDispatcher.GetBacklight());
-            settings.VisualiseFPSLimit(amdControl.GetFPSLimit());
+
+            fpsLimit = amdControl.GetFPSLimit();
+            settings.VisualiseFPSLimit(fpsLimit);
 
         }
 
@@ -424,7 +425,7 @@ namespace GHelper.Ally
                     KeyL1 = AppConfig.GetString("bind_ls", desktop ? BindShift : BindLS);
                     KeyR1 = AppConfig.GetString("bind_rs", desktop ? BindMouseL : BindRS);
                     KeyL2 = AppConfig.GetString("bind2_ls");
-                    KeyR2 = AppConfig.GetString("bind2_rs");
+                    KeyR2 = AppConfig.GetString("bind2_rs", BindToggleMode);
                     break;
                 case BindingZone.Bumper:
                     KeyL1 = AppConfig.GetString("bind_lb", desktop ? BindTab : BindLB);
@@ -480,8 +481,6 @@ namespace GHelper.Ally
             //AsusHid.WriteInput(CommandReady, null);
             AsusHid.WriteInput(bindings, $"B{zone}");
 
-
-
         }
 
         static void WakeUp()
@@ -529,10 +528,10 @@ namespace GHelper.Ally
                 HidStream? input = AsusHid.FindHidStream(AsusHid.INPUT_ID);
                 int count = 0;
 
-                while (input == null && count++ < 5)
+                while (input == null && count++ < 10)
                 {
                     input = AsusHid.FindHidStream(AsusHid.INPUT_ID);
-                    Thread.Sleep(2000);
+                    Thread.Sleep(500);
                 }
 
                 if (input == null)
