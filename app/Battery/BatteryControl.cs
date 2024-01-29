@@ -1,6 +1,4 @@
-﻿using GHelper.Properties;
-
-namespace GHelper.Battery
+﻿namespace GHelper.Battery
 {
     internal class BatteryControl
     {
