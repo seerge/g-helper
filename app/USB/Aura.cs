@@ -664,11 +664,7 @@ namespace GHelper.USB
             }
 
             int _speed = (Speed == AuraSpeed.Normal) ? 0xeb : (Speed == AuraSpeed.Fast) ? 0xf5 : 0xe1;
-
-            //AsusHid.Write(new byte[] { AsusHid.AURA_ID, 0xBD, 0x01, 0xFF, 0x1F, 0xFF, 0x0F });
-
             AsusHid.Write(new List<byte[]> { AuraMessage(Mode, _Color1, _Color2, _speed, isSingleColor), MESSAGE_SET, MESSAGE_APPLY });
-            //AsusHid.Write(new List<byte[]> { AuraMessage(Mode, _Color1, _Color2, _speed, isSingleColor, 0x0A), MESSAGE_SET, MESSAGE_APPLY  });
 
             if (isACPI)
                 Program.acpi.TUFKeyboardRGB(Mode, Color1, _speed);
