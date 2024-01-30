@@ -379,7 +379,7 @@ public static class AppConfig
 
     public static bool IsStrix()
     {
-        return ContainsModel("Strix") || ContainsModel("Scar");
+        return ContainsModel("Strix") || ContainsModel("Scar") || ContainsModel("G703G");
     }
 
     public static bool IsStrixLimitedRGB()
