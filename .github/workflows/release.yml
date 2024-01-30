@@ -28,4 +28,4 @@ jobs:
       env:
         GH_TOKEN: ${{ github.token }}
       run: |
-        gh release upload ${{ github.ref_name }} GHelper.exe GHelper.zip PluginAdvancedSettings.zip
+        gh release upload ${{ github.ref_name }} app/bin/x64/Release/net7.0-windows/win-x64/publish/GHelper.exe GHelper.zip PluginAdvancedSettings.zip
