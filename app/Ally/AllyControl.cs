@@ -490,8 +490,6 @@ namespace GHelper.Ally
 
         static public void SetDeadzones()
         {
-            //WakeUp();
-
             AsusHid.WriteInput(new byte[] { AsusHid.INPUT_ID, 0xd1, 4, 4,
                 (byte)AppConfig.Get("ls_min", 0),
                 (byte)AppConfig.Get("ls_max", 100),
@@ -552,7 +550,6 @@ namespace GHelper.Ally
                 //AsusHid.WriteInput(CommandSave, null);
 
                 BindZone(BindingZone.M1M2);
-
                 BindZone(BindingZone.DPadUpDown);
                 BindZone(BindingZone.DPadLeftRight);
                 BindZone(BindingZone.StickClick);
