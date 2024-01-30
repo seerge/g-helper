@@ -213,6 +213,8 @@ namespace GHelper
 
             buttonCalibrate.Click += ButtonCalibrate_Click;
 
+            buttonDownload.Click += ButtonDownload_Click;
+
             ToggleNavigation(0);
 
             if (Program.acpi.DeviceGet(AsusACPI.DevsCPUFanCurve) < 0) buttonCalibrate.Visible = false;
@@ -221,7 +223,21 @@ namespace GHelper
 
         }
 
+        private void ButtonDownload_Click(object? sender, EventArgs e)
+        {
+            RyzenControl.DownloadRing();
 
+            panelAdvancedAlways.Visible = true;
+            panelAdvancedApply.Visible = true;
+            labelRisky.Visible = true;
+            panelUViGPU.Visible = true;
+            panelUV.Visible = true;
+            panelTitleAdvanced.Visible = true;
+            panelTemperature.Visible = true;
+            panelTitleTemp.Visible = true;
+
+            VisualiseAdvanced();
+        }
 
         private void ButtonCalibrate_Click(object? sender, EventArgs e)
         {
@@ -365,6 +381,24 @@ namespace GHelper
 
         private void VisualiseAdvanced()
         {
+
+            if (!RyzenControl.IsRingExsists())
+            {
+                panelTitleAdvanced.Visible = false;
+                labelRisky.Visible = false;
+                panelUV.Visible = false;
+                panelUViGPU.Visible = false;
+                panelTitleTemp.Visible = false;
+                panelTemperature.Visible = false;
+                panelAdvancedAlways.Visible = false;
+                panelAdvancedApply.Visible = false;
+                panelDownload.Visible = true;
+
+            } else
+            {
+                panelDownload.Visible = false;
+            }
+
             if (!RyzenControl.IsSupportedUV())
             {
                 panelTitleAdvanced.Visible = false;

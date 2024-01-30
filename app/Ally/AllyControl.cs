@@ -1,6 +1,9 @@
 ﻿using GHelper.Gpu.AMD;
+using GHelper.Helpers;
 using GHelper.Input;
 using GHelper.USB;
+using HidSharp;
+using System.Text;
 
 namespace GHelper.Ally
 {
@@ -9,7 +12,22 @@ namespace GHelper.Ally
     {
         Auto = 0,
         Gamepad = 1,
+        WASD = 2,
         Mouse = 3,
+        Skip = -1,
+    }
+
+    public enum BindingZone : byte
+    {
+        DPadUpDown = 1,
+        DPadLeftRight = 2,
+        StickClick = 3,
+        Bumper = 4,
+        AB = 5,
+        XY = 6,
+        ViewMenu = 7,
+        M1M2 = 8,
+        Trigger = 9
     }
 
     public class AllyControl
@@ -19,147 +37,244 @@ namespace GHelper.Ally
 
         SettingsForm settings;
 
-        static ControllerMode mode = ControllerMode.Auto;
-        static ControllerMode _autoMode = ControllerMode.Auto;
+        static ControllerMode _mode = ControllerMode.Auto;
+        static ControllerMode _applyMode = ControllerMode.Mouse;
         static int _autoCount = 0;
 
         static int fpsLimit = -1;
 
-        const int CodeM1 = 0x028f;
-        const int CodeM2 = 0x028e;
+        public const string BindA = "01-01";
+        public const string BindB = "01-02";
+        public const string BindX = "01-03";
+        public const string BindY = "01-04";
+        public const string BindLB = "01-05";
+        public const string BindRB = "01-06";
+        public const string BindLS = "01-07";
+        public const string BindRS = "01-08";
+        public const string BindDU = "01-09";
+        public const string BindDD = "01-0A";
+        public const string BindDL = "01-0B";
+        public const string BindDR = "01-0C";
+        public const string BindVB = "01-11";
+        public const string BindMB = "01-12";
+        public const string BindM1 = "02-8F";
+        public const string BindM2 = "02-8E";
+        public const string BindLT = "01-0D";
+        public const string BindRT = "01-0E";
+        public const string BindXB = "01-13";
 
-        public static Dictionary<int, string> BindingCodes = new Dictionary<int, string>
+        public const string BindMouseL = "03-01";
+        public const string BindMouseR = "03-02";
+
+        public const string BindKBU = "02-98";
+        public const string BindKBD = "02-99";
+        public const string BindKBL = "02-9A";
+        public const string BindKBR = "02-9B";
+
+        public const string BindTab = "02-0D";
+        public const string BindEnter = "02-5A";
+        public const string BindBack = "02-66";
+        public const string BindEsc = "02-76";
+
+        public const string BindPgU = "02-96";
+        public const string BindPgD = "02-97";
+
+        public const string BindShift = "02-88";
+        public const string BindCtrl = "02-8C";
+        public const string BindAlt = "02-8A";
+        public const string BindWin = "02-82";
+
+        public const string BindTaskManager = "04-03-8C-88-76";
+        public const string BindCloseWindow = "04-02-8A-0C";
+
+        public const string BindBrightnessDown = "04-04-8C-88-8A-05";
+        public const string BindBrightnessUp = "04-04-8C-88-8A-06";
+        public const string BindXGM = "04-04-8C-88-8A-04";
+        public const string BindToggleMode = "04-04-8C-88-8A-0C";
+
+        public const string BindOverlay = "04-03-8C-88-44";
+
+        public const string BindShiftTab = "04-02-88-0D";
+        public const string BindAltTab = "04-02-8A-0D";
+
+        public const string BindVolUp = "05-03";
+        public const string BindVolDown = "05-02";
+
+        public const string BindPrintScrn = "02-C3";
+
+        public const string BindScreenshot = "04-03-82-88-1B";
+        public const string BindShowDesktop = "04-02-82-23";
+
+        public const string BindShowKeyboard = "05-19";
+
+        static byte[] CommandReady = new byte[] { AsusHid.INPUT_ID, 0xD1, 0x0A, 0x01 };
+        static byte[] CommandSave = new byte[] { AsusHid.INPUT_ID, 0xD1, 0x0F, 0x20 };
+
+        public static Dictionary<string, string> BindCodes = new Dictionary<string, string>
         {
-            { 0x028f, "M1" },
-            { 0x028e, "M2" },
-            { 0x0000, "-------" },
-            { 0x0101, "A" },
-            { 0x0102, "B" },
-            { 0x0103, "X" },
-            { 0x0104, "Y" },
-            { 0x0105, "left bumper" },
-            { 0x0106, "right bumper" },
-            { 0x0107, "left stick click" },
-            { 0x0108, "right stick click" },
-            { 0x0109, "dpad up" },
-            { 0x010A, "dpad down" },
-            { 0x010B, "dpad left" },
-            { 0x010C, "dpad right" },
-            { 0x0111, "view button" },
-            { 0x0112, "menu button" },
-            { 0x0113, "XBox/Steam" },
-            { 0x0276, "Esc" },
-            { 0x0250, "F1" },
-            { 0x0260, "F2" },
-            { 0x0240, "F3" },
-            { 0x020C, "F4" },
-            { 0x0203, "F5" },
-            { 0x020b, "F6" },
-            { 0x0280, "F7" },
-            { 0x020a, "F8" },
-            { 0x0201, "F9" },
-            { 0x0209, "F10" },
-            { 0x0278, "F11" },
-            { 0x0207, "F12" },
-            { 0x020E, "`" },
-            { 0x0216, "1" },
-            { 0x021E, "2" },
-            { 0x0226, "3" },
-            { 0x0225, "4" },
-            { 0x022E, "5" },
-            { 0x0236, "6" },
-            { 0x023D, "7" },
-            { 0x023E, "8" },
-            { 0x0246, "9" },
-            { 0x0245, "0" },
-            { 0x024E, "-" },
-            { 0x0255, "=" },
-            { 0x0266, "Backspace" },
-            { 0x020D, "Tab" },
-            { 0x0215, "Q" },
-            { 0x021D, "W" },
-            { 0x0224, "E" },
-            { 0x022D, "R" },
-            { 0x022C, "T" },
-            { 0x0235, "Y" },
-            { 0x023C, "U" },
-            { 0x0244, "O" },
-            { 0x024D, "P" },
-            { 0x0254, "[" },
-            { 0x025B, "]" },
-            { 0x025D, "|" },
-            { 0x0258, "Caps" },
-            { 0x021C, "A" },
-            { 0x021B, "S" },
-            { 0x0223, "D" },
-            { 0x022B, "F" },
-            { 0x0234, "G" },
-            { 0x0233, "H" },
-            { 0x023B, "J" },
-            { 0x0242, "k" },
-            { 0x024b, "l" },
-            { 0x024c, ";" },
-            { 0x0252, "'" },
-            { 0x025A, "Enter" },
-            { 0x0288, "LShift" },
-            { 0x0222, "X" },
-            { 0x021A, "Z" },
-            { 0x0221, "C" },
-            { 0x022A, "V" },
-            { 0x0232, "B" },
-            { 0x0231, "N" },
-            { 0x023A, "M" },
-            { 0x0241, "," },
-            { 0x0249, "." },
-            { 0x0289, "RShift" },
-            { 0x028C, "LCtl" },
-            { 0x0282, "Meta" },
-            { 0x028A, "LAlt" },
-            { 0x0229, "Space" },
-            { 0x028B, "RAlt" },
-            { 0x0284, "App menu" },
-            { 0x028D, "RCtl" },
-            { 0x02C3, "PrntScn" },
-            { 0x027E, "ScrLk" },
-            { 0x02C2, "Insert" },
-            { 0x0294, "Home" },
-            { 0x0296, "PgUp" },
-            { 0x02C0, "Delete" },
-            { 0x0295, "End" },
-            { 0x0297, "PgDwn" },
-            { 0x0298, "UpArrow" },
-            { 0x0299, "DownArrow" },
-            { 0x0291, "LeftArrow" },
-            { 0x029B, "RightArrow" },
-            { 0x0277, "NumLock" },
-            { 0x0290, "NumSlash" },
-            { 0x027C, "NumStar" },
-            { 0x027B, "NumHyphen" },
-            { 0x0270, "Num0" },
-            { 0x0269, "Num1" },
-            { 0x0272, "Num2" },
-            { 0x027A, "Num3" },
-            { 0x026B, "Num4" },
-            { 0x0273, "Num5" },
-            { 0x0274, "Num6" },
-            { 0x026C, "Num7" },
-            { 0x0275, "Num8" },
-            { 0x027D, "Num9" },
-            { 0x0279, "NumPlus" },
-            { 0x0281, "NumEnter" },
-            { 0x0271, "NumPeriod" },
-            { 0x0301, "Mouse left click" },
-            { 0x0302, "Mouse right click" },
-            { 0x0303, "Mouse middle click" },
-            { 0x0304, "Mouse scroll up" },
-            { 0x0305, "Mouse scroll down" },
-            { 0x0516, "Screenshot" },
-            { 0x0519, "Show keyboard" },
-            { 0x051c, "Show desktop" },
-            { 0x051e, "Begin recording" },
-            { 0x0501, "Mic off" },
-            { 0x0502, "Vol Down" },
-            { 0x0503, "Vol Up" }
+            { "", "--------" },
+            { "00-00", "[ Disabled ]" },
+
+            { BindM1, "M1" },
+            { BindM2, "M2" },
+
+            { BindA, "A" },
+            { BindB, "B" },
+
+            { BindX, "X" },
+            { BindY, "Y" },
+
+            { BindLB, "Left Bumper" },
+            { BindRB, "Right Bumper" },
+
+            { BindLS, "Left Stick Click" },
+            { BindRS, "Right Stick Click" },
+
+            { BindDU, "DPad Up" },
+            { BindDD, "DPad Down" },
+
+            { BindDL, "DPad Left" },
+            { BindDR, "DPad Right" },
+
+            { BindVB, "View Button" },
+            { BindMB, "Menu Button" },
+
+            { BindXB, "XBox/Steam" },
+
+            { BindToggleMode, "Controller Mode" },
+
+            { BindVolUp, "Vol Up" },
+            { BindVolDown, "Vol Down" },
+            { BindBrightnessUp, "Bright Up" },
+            { BindBrightnessDown, "Bright Down" },
+
+            { BindShowKeyboard, "Show Keyboard" },
+            { BindShowDesktop, "Show Desktop" },
+            { BindScreenshot, "Screenshot" },
+
+            { BindOverlay, "AMD Overlay" },
+            { BindTaskManager, "Task Manager" },
+            { BindCloseWindow, "Close Window" },
+            { BindShiftTab, "Shift-Tab" },
+            { BindAltTab, "Alt-Tab" },
+            { BindXGM, "XGM Toggle" },
+
+
+            { BindEsc, "Esc" },
+            { BindBack, "Backspace" },
+            { BindTab, "Tab" },
+            { BindEnter, "Enter" },
+            { BindShift, "LShift" },
+            { BindAlt, "LAlt" },
+            { BindCtrl, "LCtl" },
+            { BindWin, "WIN" },
+            { BindPrintScrn, "PrntScn" },
+
+            { BindPgU, "PgUp" },
+            { BindPgD, "PgDwn" },
+            { BindKBU, "UpArrow" },
+            { BindKBD, "DownArrow" },
+            { BindKBL, "LeftArrow" },
+            { BindKBR, "RightArrow" },
+
+            { "02-05", "F1" },
+            { "02-06", "F2" },
+            { "02-04", "F3" },
+            { "02-0C", "F4" },
+            { "02-03", "F5" },
+            { "02-0B", "F6" },
+            { "02-80", "F7" },
+            { "02-0A", "F8" },
+            { "02-01", "F9" },
+            { "02-09", "F10" },
+            { "02-78", "F11" },
+            { "02-07", "F12" },
+            { "02-0E", "`" },
+            { "02-16", "1" },
+            { "02-1E", "2" },
+            { "02-26", "3" },
+            { "02-25", "4" },
+            { "02-2E", "5" },
+            { "02-36", "6" },
+            { "02-3D", "7" },
+            { "02-3E", "8" },
+            { "02-46", "9" },
+            { "02-45", "0" },
+            { "02-4E", "-" },
+            { "02-55", "=" },
+            { "02-15", "Q" },
+            { "02-1D", "W" },
+            { "02-24", "E" },
+            { "02-2D", "R" },
+            { "02-2C", "T" },
+            { "02-35", "Y" },
+            { "02-3C", "U" },
+            { "02-44", "O" },
+            { "02-4D", "P" },
+            { "02-54", "[" },
+            { "02-5B", "]" },
+            { "02-5D", "|" },
+            { "02-58", "Caps" },
+            { "02-1C", "A" },
+            { "02-1B", "S" },
+            { "02-23", "D" },
+            { "02-2B", "F" },
+            { "02-34", "G" },
+            { "02-33", "H" },
+            { "02-3B", "J" },
+            { "02-42", "k" },
+            { "02-4B", "l" },
+            { "02-4C", ";" },
+            { "02-52", "'" },
+            { "02-22", "X" },
+            { "02-1A", "Z" },
+            { "02-21", "C" },
+            { "02-2A", "V" },
+            { "02-32", "B" },
+            { "02-31", "N" },
+            { "02-3A", "M" },
+            { "02-41", "," },
+            { "02-49", "." },
+            { "02-89", "RShift" },
+            { "02-29", "Space" },
+            { "02-8B", "RAlt" },
+            { "02-84", "App menu" },
+            { "02-8D", "RCtl" },
+            { "02-7E", "ScrLk" },
+            { "02-C2", "Insert" },
+            { "02-C0", "Delete" },
+            { "02-94", "Home" },
+            { "02-95", "End" },
+            { "02-77", "NumLock" },
+            { "02-90", "NumSlash" },
+            { "02-7C", "NumStar" },
+            { "02-7B", "NumHyphen" },
+            { "02-70", "Num0" },
+            { "02-69", "Num1" },
+            { "02-72", "Num2" },
+            { "02-7A", "Num3" },
+            { "02-6B", "Num4" },
+            { "02-73", "Num5" },
+            { "02-74", "Num6" },
+            { "02-6C", "Num7" },
+            { "02-75", "Num8" },
+            { "02-7D", "Num9" },
+            { "02-79", "NumPlus" },
+            { "02-81", "NumEnter" },
+            { "02-71", "NumPeriod" },
+
+            { BindMouseL, "Mouse left click" },
+            { BindMouseR, "Mouse right click" },
+            { "03-03", "Mouse middle click" },
+            { "03-04", "Mouse scroll up" },
+            { "03-05", "Mouse scroll down" },
+
+            //{ "05-16", "Screenshot" },
+            //{ "05-1C", "Show desktop" },
+
+            { "05-1E", "Begin recording" },
+            { "05-01", "Mic off" },
+
         };
 
         public AllyControl(SettingsForm settingsForm)
@@ -168,7 +283,7 @@ namespace GHelper.Ally
 
             settings = settingsForm;
 
-            timer = new System.Timers.Timer(500);
+            timer = new System.Timers.Timer(300);
             timer.Elapsed += Timer_Elapsed;
 
         }
@@ -177,16 +292,17 @@ namespace GHelper.Ally
         {
             float fps = amdControl.GetFPS();
 
-            ControllerMode _newMode = (fps > 0) ? ControllerMode.Gamepad : ControllerMode.Mouse;
+            ControllerMode newMode = (fps > 0) ? ControllerMode.Gamepad : ControllerMode.Mouse;
 
-            if (_autoMode != _newMode) _autoCount++;
+            if (_applyMode != newMode) _autoCount++;
             else _autoCount = 0;
+
+            if (_mode != ControllerMode.Auto) return;
 
             if (_autoCount > 2)
             {
-                _autoMode = _newMode;
                 _autoCount = 0;
-                ApplyMode(_autoMode, "ControllerAuto");
+                ApplyMode(newMode);
                 Logger.WriteLine(fps.ToString());
             }
 
@@ -197,13 +313,11 @@ namespace GHelper.Ally
             if (AppConfig.IsAlly()) settings.VisualiseAlly(true);
             else return;
 
-            SetDeadzones();
-            SetMode((ControllerMode)AppConfig.Get("controller_mode", (int)ControllerMode.Auto));
+            SetMode((ControllerMode)AppConfig.Get("controller_mode", (int)ControllerMode.Auto), true);
 
             settings.VisualiseBacklight(InputDispatcher.GetBacklight());
 
             fpsLimit = amdControl.GetFPSLimit();
-            Logger.WriteLine($"FPS Limit: {fpsLimit}");
             settings.VisualiseFPSLimit(fpsLimit);
 
         }
@@ -213,13 +327,19 @@ namespace GHelper.Ally
             switch (fpsLimit)
             {
                 case 30:
-                    fpsLimit = 40;
+                    fpsLimit = 45;
                     break;
-                case 40:
+                case 45:
                     fpsLimit = 60;
                     break;
                 case 60:
+                    fpsLimit = 90;
+                    break;
+                case 90:
                     fpsLimit = 120;
+                    break;
+                case 120:
+                    fpsLimit = 240;
                     break;
                 default:
                     fpsLimit = 30;
@@ -240,47 +360,132 @@ namespace GHelper.Ally
             settings.VisualiseBacklight(InputDispatcher.GetBacklight());
         }
 
-        static private byte[] DecodeBinding(int binding)
+        static private byte[] DecodeBinding(string binding = "")
         {
-            byte command = (byte)(binding & 0xFF);
-            byte device = (byte)((binding >> 8) & 0xFF);
+            byte[] bytes;
+
+            if (binding == "" || binding is null) return new byte[2];
+
+            try
+            {
+                bytes = AppConfig.StringToBytes(binding);
+            }
+            catch
+            {
+                return new byte[2];
+            }
 
             byte[] code = new byte[10];
-            code[0] = device;
-            switch (device)
+            code[0] = bytes[0];
+
+            switch (bytes[0])
             {
                 case 0x02:
-                    code[2] = command;
+                    code[2] = bytes[1];
                     break;
                 case 0x03:
-                    code[4] = command;
+                    code[4] = bytes[1];
+                    break;
+                case 0x04:
+                    bytes.Skip(1).ToArray().CopyTo(code, 5);
                     break;
                 case 0x05:
-                    code[3] = command;
+                    code[3] = bytes[1];
                     break;
                 default:
-                    code[1] = command;
+                    code[1] = bytes[1];
                     break;
             }
 
             return code;
         }
 
-        static public void SetBindings()
+        static private void BindZone(BindingZone zone)
         {
-            int M1 = AppConfig.Get("bind_m1", CodeM1);
-            int M2 = AppConfig.Get("bind_m2", CodeM2);
+            string KeyL1, KeyR1;
+            string KeyL2, KeyR2;
+
+            bool desktop = (_applyMode == ControllerMode.Mouse);
+
+            switch (zone)
+            {
+                case BindingZone.DPadUpDown:
+                    KeyL1 = AppConfig.GetString("bind_du", desktop ? BindKBU : BindDU);
+                    KeyR1 = AppConfig.GetString("bind_dd", desktop ? BindKBD : BindDD);
+                    KeyL2 = AppConfig.GetString("bind2_du", BindShowKeyboard);
+                    KeyR2 = AppConfig.GetString("bind2_dd", BindShowDesktop);
+                    break;
+                case BindingZone.DPadLeftRight:
+                    KeyL1 = AppConfig.GetString("bind_dl", desktop ? BindKBL : BindDL);
+                    KeyR1 = AppConfig.GetString("bind_dr", desktop ? BindKBR : BindDR);
+                    KeyL2 = AppConfig.GetString("bind2_dl", BindBrightnessDown);
+                    KeyR2 = AppConfig.GetString("bind2_dr", BindBrightnessUp);
+                    break;
+                case BindingZone.StickClick:
+                    KeyL1 = AppConfig.GetString("bind_ls", desktop ? BindShift : BindLS);
+                    KeyR1 = AppConfig.GetString("bind_rs", desktop ? BindMouseL : BindRS);
+                    KeyL2 = AppConfig.GetString("bind2_ls");
+                    KeyR2 = AppConfig.GetString("bind2_rs", BindToggleMode);
+                    break;
+                case BindingZone.Bumper:
+                    KeyL1 = AppConfig.GetString("bind_lb", desktop ? BindTab : BindLB);
+                    KeyR1 = AppConfig.GetString("bind_rb", desktop ? BindMouseL : BindRB);
+                    KeyL2 = AppConfig.GetString("bind2_lb");
+                    KeyR2 = AppConfig.GetString("bind2_rb");
+                    break;
+                case BindingZone.AB:
+                    KeyL1 = AppConfig.GetString("bind_a", desktop ? BindEnter : BindA);
+                    KeyR1 = AppConfig.GetString("bind_b", desktop ? BindEsc : BindB);
+                    KeyL2 = AppConfig.GetString("bind2_a");
+                    KeyR2 = AppConfig.GetString("bind2_b");
+                    break;
+                case BindingZone.XY:
+                    KeyL1 = AppConfig.GetString("bind_x", desktop ? BindPgD : BindX);
+                    KeyR1 = AppConfig.GetString("bind_y", desktop ? BindPgU : BindY);
+                    KeyL2 = AppConfig.GetString("bind2_x", BindScreenshot);
+                    KeyR2 = AppConfig.GetString("bind2_y", BindOverlay);
+                    break;
+                case BindingZone.ViewMenu:
+                    KeyL1 = AppConfig.GetString("bind_vb", BindVB);
+                    KeyR1 = AppConfig.GetString("bind_mb", BindMB);
+                    KeyL2 = AppConfig.GetString("bind2_vb");
+                    KeyR2 = AppConfig.GetString("bind2_mb");
+                    break;
+                case BindingZone.M1M2:
+                    KeyL1 = AppConfig.GetString("bind_m2", BindM2);
+                    KeyR1 = AppConfig.GetString("bind_m1", BindM1);
+                    KeyL2 = AppConfig.GetString("bind2_m2", BindM2);
+                    KeyR2 = AppConfig.GetString("bind2_m1", BindM1);
+                    break;
+                default:
+                    KeyL1 = AppConfig.GetString("bind_trl", desktop ? BindShiftTab : BindLT);
+                    KeyR1 = AppConfig.GetString("bind_trr", desktop ? BindMouseR : BindRT);
+                    KeyL2 = AppConfig.GetString("bind2_trl");
+                    KeyR2 = AppConfig.GetString("bind2_trr");
+                    break;
+            }
+
+            if (KeyL1 == "" && KeyR1 == "") return;
 
             byte[] bindings = new byte[50];
-            byte[] init = new byte[] { AsusHid.INPUT_ID, 0xd1, 0x02, 0x08, 0x2c };
+            byte[] init = new byte[] { AsusHid.INPUT_ID, 0xd1, 0x02, (byte)zone, 0x2c };
 
             init.CopyTo(bindings, 0);
-            DecodeBinding(M2).CopyTo(bindings, 5);
-            if (M2 == CodeM2) DecodeBinding(M2).CopyTo(bindings, 16);
-            DecodeBinding(M1).CopyTo(bindings, 27);
-            if (M1 == CodeM1) DecodeBinding(M2).CopyTo(bindings, 16);
 
-            AsusHid.WriteInput(bindings, "Bind");
+            DecodeBinding(KeyL1).CopyTo(bindings, 5);
+            DecodeBinding(KeyL2).CopyTo(bindings, 16);
+
+            DecodeBinding(KeyR1).CopyTo(bindings, 27);
+            DecodeBinding(KeyR2).CopyTo(bindings, 38);
+
+            //AsusHid.WriteInput(CommandReady, null);
+            AsusHid.WriteInput(bindings, $"B{zone}");
+
+        }
+
+        static void WakeUp()
+        {
+            AsusHid.WriteInput(Encoding.ASCII.GetBytes("ZASUS Tech.Inc."), "Init");
         }
 
         static public void SetDeadzones()
@@ -306,17 +511,71 @@ namespace GHelper.Ally
 
         }
 
-        private void ApplyMode(ControllerMode applyMode, string log = "ControllerMode")
+        public static void ApplyXBoxStatus()
         {
-            AsusHid.WriteInput(new byte[] { AsusHid.INPUT_ID, 0xd1, 1, 1, (byte)applyMode }, log);
-            SetBindings();
+            AsusHid.WriteInput(new byte[] { AsusHid.INPUT_ID, 0xD1, 0x0B, 0x01, AppConfig.Is("controller_disabled") ? (byte)0x02 : (byte)0x01 }, "Status");
         }
 
-        private void SetMode(ControllerMode mode)
+        public static void ApplyMode(ControllerMode applyMode = ControllerMode.Auto, bool init = false)
         {
+            Task.Run(() =>
+            {
+
+                if (applyMode == ControllerMode.Skip) return;
+
+                HidStream? input = AsusHid.FindHidStream(AsusHid.INPUT_ID);
+                int count = 0;
+
+                while (input == null && count++ < 10)
+                {
+                    input = AsusHid.FindHidStream(AsusHid.INPUT_ID);
+                    Thread.Sleep(500);
+                }
+
+                if (input == null)
+                {
+                    Logger.WriteLine($"Controller not found");
+                    return;
+                }
+
+                if (applyMode != ControllerMode.Auto) _applyMode = applyMode;
+
+                if (init)
+                {
+                    WakeUp();
+                    InputDispatcher.SetBacklightAuto(true);
+                }
+
+                AsusHid.WriteInput(new byte[] { AsusHid.INPUT_ID, 0xD1, 0x01, 0x01, (byte)_applyMode }, "Controller");
+                //AsusHid.WriteInput(CommandSave, null);
+
+                BindZone(BindingZone.M1M2);
+                BindZone(BindingZone.DPadUpDown);
+                BindZone(BindingZone.DPadLeftRight);
+                BindZone(BindingZone.StickClick);
+                BindZone(BindingZone.Bumper);
+                BindZone(BindingZone.AB);
+                BindZone(BindingZone.XY);
+                BindZone(BindingZone.ViewMenu);
+                BindZone(BindingZone.Trigger);
+
+                AsusHid.WriteInput(CommandSave, null);
+
+                SetDeadzones();
+
+            });
+        }
+
+        private void SetMode(ControllerMode mode, bool init = false)
+        {
+
+            _mode = mode;
+            AppConfig.Set("controller_mode", (int)mode);
+
+            ApplyMode(mode, init);
+
             if (mode == ControllerMode.Auto)
             {
-                _autoMode = ControllerMode.Auto;
                 amdControl.StartFPS();
                 timer.Start();
             }
@@ -324,30 +583,43 @@ namespace GHelper.Ally
             {
                 timer.Stop();
                 amdControl.StopFPS();
-                ApplyMode(mode);
             }
 
-            AppConfig.Set("controller_mode", (int)mode);
             settings.VisualiseController(mode);
+        }
+
+
+        public void ToggleModeHotkey()
+        {
+            if (_applyMode == ControllerMode.Gamepad)
+            {
+                SetMode(ControllerMode.Mouse);
+                Program.toast.RunToast("Mouse", ToastIcon.Controller);
+            }
+            else
+            {
+                SetMode(ControllerMode.Gamepad);
+                Program.toast.RunToast("Gamepad", ToastIcon.Controller);
+            }
         }
 
         public void ToggleMode()
         {
-
-            switch (mode)
+            switch (_mode)
             {
                 case ControllerMode.Auto:
-                    mode = ControllerMode.Gamepad;
+                    SetMode(ControllerMode.Gamepad);
                     break;
                 case ControllerMode.Gamepad:
-                    mode = ControllerMode.Mouse;
+                    SetMode(ControllerMode.Mouse);
                     break;
                 case ControllerMode.Mouse:
-                    mode = ControllerMode.Auto;
+                    SetMode(ControllerMode.Skip);
+                    break;
+                case ControllerMode.Skip:
+                    SetMode(ControllerMode.Auto);
                     break;
             }
-
-            SetMode(mode);
         }
 
     }

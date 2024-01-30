@@ -1,14 +1,18 @@
-﻿using GHelper.UI;
-using GHelper.Ally;
+﻿using GHelper.Ally;
+using GHelper.UI;
 
 namespace GHelper
 {
-    public partial class Handheld : Form
+    public partial class Handheld : RForm
     {
+
+        static string activeBinding = "";
+        static RButton? activeButton;
+
         public Handheld()
         {
             InitializeComponent();
-            //InitTheme(true);
+            InitTheme(true);
 
             Shown += Handheld_Shown;
 
@@ -40,30 +44,130 @@ namespace GHelper
 
             trackVibra.ValueChanged += Controller_Complete;
 
-            comboM1.DropDownStyle = ComboBoxStyle.DropDownList;
-            comboM1.DataSource = new BindingSource(AllyControl.BindingCodes, null);
-            comboM1.DisplayMember = "Value";
-            comboM1.ValueMember = "Key";
+            ButtonBinding("m1", "M1", buttonM1);
+            ButtonBinding("m2", "M2", buttonM2);
 
-            comboM2.DropDownStyle = ComboBoxStyle.DropDownList;
-            comboM2.DataSource = new BindingSource(AllyControl.BindingCodes, null);
-            comboM2.DisplayMember = "Value";
-            comboM2.ValueMember = "Key";
+            ButtonBinding("a", "A", buttonA);
+            ButtonBinding("b", "B", buttonB);
+            ButtonBinding("x", "X", buttonX);
+            ButtonBinding("y", "Y", buttonY);
 
-            comboM1.SelectedValue = AppConfig.Get("bind_m1", 0x028f);
-            comboM2.SelectedValue = AppConfig.Get("bind_m2", 0x028e);
+            ButtonBinding("du", "DPad Up", buttonDPU);
+            ButtonBinding("dd", "DPad Down", buttonDPD);
 
-            comboM1.SelectedValueChanged += Binding_SelectedValueChanged;
-            comboM2.SelectedValueChanged += Binding_SelectedValueChanged;
+            ButtonBinding("dl", "DPad Left", buttonDPL);
+            ButtonBinding("dr", "DPad Right", buttonDPR);
+
+            ButtonBinding("rt", "Right Trigger", buttonRT);
+            ButtonBinding("lt", "Left Trigger", buttonLT);
+
+            ButtonBinding("rb", "Right Bumper", buttonRB);
+            ButtonBinding("lb", "Left Bumper", buttonLB);
+
+            ButtonBinding("rs", "Right Stick", buttonRS);
+            ButtonBinding("ll", "Left Stick", buttonLS);
+
+            ButtonBinding("vb", "View", buttonView);
+            ButtonBinding("mb", "Menu", buttonMenu);
+
+            ComboBinding(comboPrimary);
+            ComboBinding(comboSecondary);
+
+            checkController.Checked = AppConfig.Is("controller_disabled");
+            checkController.CheckedChanged += CheckController_CheckedChanged;
+
+        }
+
+        private void CheckController_CheckedChanged(object? sender, EventArgs e)
+        {
+            AppConfig.Set("controller_disabled", checkController.Checked ? 1 : 0);
+            AllyControl.ApplyXBoxStatus();
+        }
+
+        private void ComboBinding(RComboBox combo)
+        {
+
+            combo.DropDownStyle = ComboBoxStyle.DropDownList;
+            combo.DisplayMember = "Value";
+            combo.ValueMember = "Key";
+            foreach (var item in AllyControl.BindCodes)
+                combo.Items.Add(new KeyValuePair<string, string>(item.Key, item.Value));
+
+            combo.SelectedValueChanged += Binding_SelectedValueChanged;
 
         }
 
         private void Binding_SelectedValueChanged(object? sender, EventArgs e)
         {
-            AppConfig.Set("bind_m1", (int)comboM1.SelectedValue);
-            AppConfig.Set("bind_m2", (int)comboM2.SelectedValue);
-            AllyControl.SetBindings();
+            if (sender is null) return;
+            RComboBox combo = (RComboBox)sender;
+
+            string value = ((KeyValuePair<string, string>)combo.SelectedItem).Key;
+            string binding = "bind" + (combo.Name == "comboPrimary" ? "" : "2") + "_" + activeBinding;
+
+            if (value != "") AppConfig.Set(binding, value);
+            else AppConfig.Remove(binding);
+
+            VisualiseButton(activeButton, activeBinding);
+
+            AllyControl.ApplyMode();
         }
+
+        private void SetComboValue(RComboBox combo, string value)
+        {
+            foreach (var item in AllyControl.BindCodes)
+                if (item.Key == value)
+                {
+                    combo.SelectedItem = item;
+                    return;
+                }
+
+            combo.SelectedIndex = 0;
+        }
+
+        private void VisualiseButton(RButton button, string binding)
+        {
+            if (button == null) return;
+
+            string primary = AppConfig.GetString("bind_" + binding, "");
+            string secondary = AppConfig.GetString("bind2_" + binding, "");
+
+            if (primary != "" || secondary != "")
+            {
+                button.BorderColor = colorStandard;
+                button.Activated = true;
+            }
+            else
+            {
+                button.Activated = false;
+            }
+        }
+
+        private void ButtonBinding(string binding, string label, RButton button)
+        {
+            button.Click += (sender, EventArgs) => { buttonBinding_Click(sender, EventArgs, binding, label); };
+            VisualiseButton(button, binding);
+        }
+
+        void buttonBinding_Click(object sender, EventArgs e, string binding, string label)
+        {
+
+            if (sender is null) return;
+            RButton button = (RButton)sender;
+
+            panelBinding.Visible = true;
+
+            activeButton = button;
+            activeBinding = binding;
+
+            labelBinding.Text = "Binding: " + label;
+
+            SetComboValue(comboPrimary, AppConfig.GetString("bind_" + binding, ""));
+            SetComboValue(comboSecondary, AppConfig.GetString("bind2_" + binding, ""));
+
+        }
+
+
 
         private void Controller_Complete(object? sender, EventArgs e)
         {
@@ -151,5 +255,6 @@ namespace GHelper
             Top = Program.settingsForm.Top;
             Left = Program.settingsForm.Left - Width - 5;
         }
+
     }
 }

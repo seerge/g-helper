@@ -37,14 +37,14 @@ namespace GHelper.Helpers
             return principal.IsInRole(WindowsBuiltInRole.Administrator);
         }
 
-        public static void RunAsAdmin(string? param = null)
+        public static void RunAsAdmin(string? param = null, bool force = false)
         {
 
             if (Math.Abs(DateTimeOffset.Now.ToUnixTimeMilliseconds() - lastAdmin) < 2000) return;
             lastAdmin = DateTimeOffset.Now.ToUnixTimeMilliseconds();
 
             // Check if the current user is an administrator
-            if (!IsUserAdministrator())
+            if (!IsUserAdministrator() || force)
             {
                 ProcessStartInfo startInfo = new ProcessStartInfo();
                 startInfo.UseShellExecute = true;
@@ -94,11 +94,11 @@ namespace GHelper.Helpers
             }
         }
 
-        public static void StopDisableService(string serviceName)
+        public static void StopDisableService(string serviceName, string disable = "Disabled")
         {
             try
             {
-                string script = $"Get-Service -Name \"{serviceName}\" | Stop-Service -Force -PassThru | Set-Service -StartupType Disabled";
+                string script = $"Get-Service -Name \"{serviceName}\" | Stop-Service -Force -PassThru | Set-Service -StartupType {disable}";
                 Logger.WriteLine(script);
                 RunCMD("powershell", script);
             }

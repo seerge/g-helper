@@ -116,11 +116,18 @@ namespace GHelper.Input
 
             if (keyApp != Keys.None) hook.RegisterHotKey(ModifierKeys.Shift | ModifierKeys.Control, keyApp);
 
-            hook.RegisterHotKey(ModifierKeys.Shift | ModifierKeys.Control | ModifierKeys.Alt, Keys.F14);
-            hook.RegisterHotKey(ModifierKeys.Shift | ModifierKeys.Control | ModifierKeys.Alt, Keys.F15);
-
             if (!AppConfig.Is("skip_hotkeys"))
             {
+                hook.RegisterHotKey(ModifierKeys.Shift | ModifierKeys.Control | ModifierKeys.Alt, Keys.F14);
+                hook.RegisterHotKey(ModifierKeys.Shift | ModifierKeys.Control | ModifierKeys.Alt, Keys.F15);
+
+                hook.RegisterHotKey(ModifierKeys.Shift | ModifierKeys.Control | ModifierKeys.Alt, Keys.F16);
+                hook.RegisterHotKey(ModifierKeys.Shift | ModifierKeys.Control | ModifierKeys.Alt, Keys.F17);
+                hook.RegisterHotKey(ModifierKeys.Shift | ModifierKeys.Control | ModifierKeys.Alt, Keys.F18);
+                hook.RegisterHotKey(ModifierKeys.Shift | ModifierKeys.Control | ModifierKeys.Alt, Keys.F19);
+                hook.RegisterHotKey(ModifierKeys.Shift | ModifierKeys.Control | ModifierKeys.Alt, Keys.F20);
+
+
                 hook.RegisterHotKey(ModifierKeys.Control, Keys.VolumeDown);
                 hook.RegisterHotKey(ModifierKeys.Control, Keys.VolumeUp);
                 hook.RegisterHotKey(ModifierKeys.Shift, Keys.VolumeDown);
@@ -132,6 +139,14 @@ namespace GHelper.Input
             {
                 if (actionM1 is not null && actionM1.Length > 0) hook.RegisterHotKey(ModifierKeys.None, Keys.VolumeDown);
                 if (actionM2 is not null && actionM2.Length > 0) hook.RegisterHotKey(ModifierKeys.None, Keys.VolumeUp);
+            }
+
+            if (AppConfig.IsAlly())
+            {
+                hook.RegisterHotKey(ModifierKeys.Shift | ModifierKeys.Control | ModifierKeys.Alt, Keys.F1);
+                hook.RegisterHotKey(ModifierKeys.Shift | ModifierKeys.Control | ModifierKeys.Alt, Keys.F2);
+                hook.RegisterHotKey(ModifierKeys.Shift | ModifierKeys.Control | ModifierKeys.Alt, Keys.F3);
+                hook.RegisterHotKey(ModifierKeys.Shift | ModifierKeys.Control | ModifierKeys.Alt, Keys.F4);
             }
 
             // FN-Lock group
@@ -351,11 +366,38 @@ namespace GHelper.Input
 
                 switch (e.Key)
                 {
+                    case Keys.F1:
+                        SetBrightness(-10);
+                        break;
+                    case Keys.F2:
+                        SetBrightness(10);
+                        break;
+                    case Keys.F3:
+                        Program.settingsForm.gpuControl.ToggleXGM(true);
+                        break;
+                    case Keys.F4:
+                        Program.settingsForm.BeginInvoke(Program.settingsForm.allyControl.ToggleModeHotkey);
+                        break;
                     case Keys.F14:
                         Program.settingsForm.gpuControl.SetGPUMode(AsusACPI.GPUModeEco);
                         break;
                     case Keys.F15:
                         Program.settingsForm.gpuControl.SetGPUMode(AsusACPI.GPUModeStandard);
+                        break;
+                    case Keys.F16:
+                        modeControl.SetPerformanceMode(2, true);
+                        break;
+                    case Keys.F17:
+                        modeControl.SetPerformanceMode(0, true);
+                        break;
+                    case Keys.F18:
+                        modeControl.SetPerformanceMode(1, true);
+                        break;
+                    case Keys.F19:
+                        modeControl.SetPerformanceMode(3, true);
+                        break;
+                    case Keys.F20:
+                        modeControl.SetPerformanceMode(4, true);
                         break;
                 }
             }
@@ -478,6 +520,9 @@ namespace GHelper.Input
                 case "calculator":
                     LaunchProcess("calc");
                     break;
+                case "controller":
+                    Program.settingsForm.BeginInvoke(Program.settingsForm.allyControl.ToggleModeHotkey);
+                    break;
                 default:
                     break;
             }
@@ -567,6 +612,12 @@ namespace GHelper.Input
                     // The M4/ROG key.
                     case 56:
                         KeyProcess("m4");
+                        return;
+                    case 162:
+                        OnScreenKeyboard.Show();
+                        return;
+                    case 124:
+                        KeyProcess("m3");
                         return;
 
                 }

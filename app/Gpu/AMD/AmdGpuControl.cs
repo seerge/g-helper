@@ -65,8 +65,14 @@ public class AmdGpuControl : IGpuControl
         if (!Adl2.Load())
             return;
 
-        if (Adl2.ADL2_Main_Control_Create(1, out _adlContextHandle) != Adl2.ADL_SUCCESS)
+        try
+        {
+            if (Adl2.ADL2_Main_Control_Create(1, out _adlContextHandle) != Adl2.ADL_SUCCESS) return;
+        } catch (Exception ex)
+        {
+            Logger.WriteLine(ex.Message);
             return;
+        }
 
         ADLAdapterInfo? internalDiscreteAdapter = FindByType(ADLAsicFamilyType.Discrete);
 
@@ -168,6 +174,9 @@ public class AmdGpuControl : IGpuControl
         if (_adlContextHandle == nint.Zero || _iGPU == null) return -1;
         ADLFPSSettingsOutput settings;
         if (ADL2_FPS_Settings_Get(_adlContextHandle, ((ADLAdapterInfo)_iGPU).AdapterIndex, out settings) != Adl2.ADL_SUCCESS) return -1;
+
+        Logger.WriteLine($"FPS Limit: {settings.ulACFPSCurrent}");
+
         return settings.ulACFPSCurrent;
     }
 

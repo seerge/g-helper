@@ -504,7 +504,10 @@ Vis tiek norite tęsti?</value>
     <value>Sinchronizuoti su pele</value>
   </data>
   <data name="Multizone" xml:space="preserve">
-    <value>Daugiazonis</value>
+    <value>Multi Zone</value>
+  </data>
+  <data name="MultizoneStrong" xml:space="preserve">
+    <value>Multi Zone Strong</value>
   </data>
   <data name="MuteMic" xml:space="preserve">
     <value>Mikrofono nutildymas</value>
@@ -520,6 +523,9 @@ Vis tiek norite tęsti?</value>
   </data>
   <data name="NotConnected" xml:space="preserve">
     <value>Neprijungta</value>
+  </data>
+  <data name="OneZone" xml:space="preserve">
+    <value>One Zone</value>
   </data>
   <data name="OpenGHelper" xml:space="preserve">
     <value>Atidaryti G-Helper langą</value>

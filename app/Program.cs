@@ -196,6 +196,10 @@ namespace GHelper
 
                     if (settingsForm.matrixForm is not null && settingsForm.matrixForm.Text != "")
                         settingsForm.matrixForm.InitTheme();
+
+                    if (settingsForm.handheldForm is not null && settingsForm.handheldForm.Text != "")
+                        settingsForm.handheldForm.InitTheme();
+
                     break;
             }
         }
@@ -225,10 +229,15 @@ namespace GHelper
 
             BatteryControl.AutoBattery(init);
 
-            settingsForm.AutoKeyboard();
             settingsForm.matrixControl.SetMatrix(true);
 
-            allyControl.Init();
+            if (AppConfig.IsAlly())
+            {
+                allyControl.Init();
+            } else
+            {
+                settingsForm.AutoKeyboard();
+            }
         }
 
         private static void SystemEvents_PowerModeChanged(object sender, PowerModeChangedEventArgs e)
@@ -269,7 +278,11 @@ namespace GHelper
                 settingsForm.Activate();
 
                 settingsForm.Left = Screen.FromControl(settingsForm).WorkingArea.Width - 10 - settingsForm.Width;
-                settingsForm.Top = Screen.FromControl(settingsForm).WorkingArea.Height - 10 - settingsForm.Height;
+                
+                if (AppConfig.IsAlly())
+                    settingsForm.Top = Math.Max(10, Screen.FromControl(settingsForm).Bounds.Height - 110 - settingsForm.Height);
+                else
+                    settingsForm.Top = Screen.FromControl(settingsForm).WorkingArea.Height - 10 - settingsForm.Height;
 
                 settingsForm.VisualiseGPUMode();
             }

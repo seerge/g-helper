@@ -112,12 +112,13 @@ namespace GHelper
             labelPeripherals = new Label();
             panelAlly = new Panel();
             tableLayoutAlly = new TableLayoutPanel();
+            buttonController = new RButton();
             buttonBacklight = new RButton();
             buttonControllerMode = new RButton();
             panelAllyTitle = new Panel();
             pictureAlly = new PictureBox();
             labelAlly = new Label();
-            buttonController = new RButton();
+            buttonOverlay = new RButton();
             panelMatrix.SuspendLayout();
             tableLayoutMatrix.SuspendLayout();
             panelMatrixTitle.SuspendLayout();
@@ -694,6 +695,7 @@ namespace GHelper
             tableAMD.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33F));
             tableAMD.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33F));
             tableAMD.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33F));
+            tableAMD.Controls.Add(buttonOverlay, 0, 0);
             tableAMD.Controls.Add(buttonFPS, 0, 0);
             tableAMD.Dock = DockStyle.Top;
             tableAMD.Location = new Point(20, 316);
@@ -715,7 +717,7 @@ namespace GHelper
             buttonFPS.FlatAppearance.BorderSize = 0;
             buttonFPS.FlatStyle = FlatStyle.Flat;
             buttonFPS.ForeColor = SystemColors.ControlText;
-            buttonFPS.Image = Properties.Resources.icons8_video_48;
+            buttonFPS.Image = Properties.Resources.icons8_animation_32;
             buttonFPS.ImageAlign = ContentAlignment.MiddleRight;
             buttonFPS.Location = new Point(4, 4);
             buttonFPS.Margin = new Padding(4);
@@ -1485,6 +1487,28 @@ namespace GHelper
             tableLayoutAlly.Size = new Size(787, 80);
             tableLayoutAlly.TabIndex = 23;
             // 
+            // buttonController
+            // 
+            buttonController.Activated = false;
+            buttonController.BackColor = SystemColors.ControlLight;
+            buttonController.BorderColor = Color.Transparent;
+            buttonController.BorderRadius = 5;
+            buttonController.Dock = DockStyle.Fill;
+            buttonController.FlatAppearance.BorderSize = 0;
+            buttonController.FlatStyle = FlatStyle.Flat;
+            buttonController.ForeColor = SystemColors.ControlText;
+            buttonController.Image = Properties.Resources.icons8_controls_32;
+            buttonController.ImageAlign = ContentAlignment.MiddleRight;
+            buttonController.Location = new Point(528, 4);
+            buttonController.Margin = new Padding(4);
+            buttonController.Name = "buttonController";
+            buttonController.Secondary = true;
+            buttonController.Size = new Size(255, 72);
+            buttonController.TabIndex = 11;
+            buttonController.Text = "Controller";
+            buttonController.TextImageRelation = TextImageRelation.ImageBeforeText;
+            buttonController.UseVisualStyleBackColor = false;
+            // 
             // buttonBacklight
             // 
             buttonBacklight.Activated = false;
@@ -1562,26 +1586,27 @@ namespace GHelper
             labelAlly.TabIndex = 26;
             labelAlly.Text = "Ally Controller";
             // 
-            // buttonController
+            // buttonOverlay
             // 
-            buttonController.Activated = false;
-            buttonController.BackColor = SystemColors.ControlLight;
-            buttonController.BorderColor = Color.Transparent;
-            buttonController.BorderRadius = 5;
-            buttonController.Dock = DockStyle.Fill;
-            buttonController.FlatAppearance.BorderSize = 0;
-            buttonController.FlatStyle = FlatStyle.Flat;
-            buttonController.ForeColor = SystemColors.ControlText;
-            buttonController.ImageAlign = ContentAlignment.MiddleRight;
-            buttonController.Location = new Point(528, 4);
-            buttonController.Margin = new Padding(4);
-            buttonController.Name = "buttonController";
-            buttonController.Secondary = true;
-            buttonController.Size = new Size(255, 72);
-            buttonController.TabIndex = 11;
-            buttonController.Text = "Controller";
-            buttonController.TextImageRelation = TextImageRelation.ImageBeforeText;
-            buttonController.UseVisualStyleBackColor = false;
+            buttonOverlay.Activated = false;
+            buttonOverlay.BackColor = SystemColors.ControlLightLight;
+            buttonOverlay.BorderColor = Color.Transparent;
+            buttonOverlay.BorderRadius = 5;
+            buttonOverlay.Dock = DockStyle.Fill;
+            buttonOverlay.FlatAppearance.BorderSize = 0;
+            buttonOverlay.FlatStyle = FlatStyle.Flat;
+            buttonOverlay.ForeColor = SystemColors.ControlText;
+            buttonOverlay.Image = Properties.Resources.icons8_heartbeat_32;
+            buttonOverlay.ImageAlign = ContentAlignment.MiddleRight;
+            buttonOverlay.Location = new Point(266, 4);
+            buttonOverlay.Margin = new Padding(4);
+            buttonOverlay.Name = "buttonOverlay";
+            buttonOverlay.Secondary = false;
+            buttonOverlay.Size = new Size(254, 72);
+            buttonOverlay.TabIndex = 12;
+            buttonOverlay.Text = "AMD Overlay";
+            buttonOverlay.TextImageRelation = TextImageRelation.ImageBeforeText;
+            buttonOverlay.UseVisualStyleBackColor = false;
             // 
             // SettingsForm
             // 
@@ -1758,5 +1783,6 @@ namespace GHelper
         private TableLayoutPanel tableAMD;
         private RButton buttonFPS;
         private RButton buttonController;
+        private RButton buttonOverlay;
     }
 }

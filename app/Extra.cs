@@ -13,7 +13,6 @@ namespace GHelper
     {
 
         ScreenControl screenControl = new ScreenControl();
-        ModeControl modeControl = new ModeControl();
         ClamshellModeControl clamshellControl = new ClamshellModeControl();
 
         const string EMPTY = "--------------";
@@ -43,6 +42,11 @@ namespace GHelper
             {
                 customActions.Add("screenpad_down", Properties.Strings.ScreenPadDown);
                 customActions.Add("screenpad_up", Properties.Strings.ScreenPadUp);
+            }
+
+            if (AppConfig.IsAlly())
+            {
+                customActions.Add("controller", "Controller Mode");
             }
 
             switch (name)
@@ -228,6 +232,8 @@ namespace GHelper
 
                 checkGpuApps.Visible = false;
                 checkUSBC.Visible = false;
+                checkAutoToggleClamshellMode.Visible = false;
+                checkNoOverdrive.Visible = false;
 
                 int apuMem = Program.acpi.GetAPUMem();
                 if (apuMem >= 0)
@@ -315,11 +321,15 @@ namespace GHelper
 
             if ((!AppConfig.IsStrix() && !AppConfig.IsZ13()) || AppConfig.IsStrixLimitedRGB() || AppConfig.IsARCNM())
             {
-                labelBacklightBar.Visible = false;
-                checkAwakeBar.Visible = false;
-                checkBootBar.Visible = false;
-                checkSleepBar.Visible = false;
-                checkShutdownBar.Visible = false;
+
+                if (!AppConfig.IsStrixLimitedRGB())
+                {
+                    labelBacklightBar.Visible = false;
+                    checkAwakeBar.Visible = false;
+                    checkBootBar.Visible = false;
+                    checkSleepBar.Visible = false;
+                    checkShutdownBar.Visible = false;
+                }
 
                 labelBacklightLid.Visible = false;
                 checkAwakeLid.Visible = false;

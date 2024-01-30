@@ -58,6 +58,8 @@ public class AsusACPI
     public const uint GPU_Fan = 0x00110014;
     public const uint Mid_Fan = 0x00110031;
 
+    public const uint BatteryDischarge = 0x0012005A;
+
     public const uint PerformanceMode = 0x00120075; // Performance modes
     public const uint VivoBookMode = 0x00110019; // Vivobook performance modes
 
@@ -70,8 +72,10 @@ public class AsusACPI
     public const uint GPUMuxVivo = 0x00090026;
 
     public const uint BatteryLimit = 0x00120057;
+
     public const uint ScreenOverdrive = 0x00050019;
-    public const uint ScreenMiniled = 0x0005001E;
+    public const uint ScreenMiniled1 = 0x0005001E;
+    public const uint ScreenMiniled2 = 0x0005002E;
 
     public const uint DevsCPUFan = 0x00110022;
     public const uint DevsGPUFan = 0x00110023;
@@ -129,7 +133,7 @@ public class AsusACPI
     public const int MinTotal = 5;
 
     public static int MaxTotal = 150;
-    public static int DefaultTotal = 125;
+    public static int DefaultTotal = 80;
 
     public const int MinCPU = 5;
     public const int MaxCPU = 100;
@@ -245,6 +249,11 @@ public class AsusACPI
         if (AppConfig.IsAdvantageEdition())
         {
             MaxTotal = 250;
+        }
+
+        if (AppConfig.IsG14AMD())
+        {
+            DefaultTotal = 125;
         }
 
         if (AppConfig.IsX13())
@@ -372,6 +381,23 @@ public class AsusACPI
         return CallMethod(DSTS, args);
     }
 
+
+    public decimal? GetBatteryDischarge()
+    {
+        var buffer = DeviceGetBuffer(BatteryDischarge);
+
+        if (buffer[2] > 0)
+        {
+            buffer[2] = 0;
+            return (decimal)BitConverter.ToInt16(buffer, 0) / 100;
+        }
+        else
+        {
+            return null;
+        }
+
+
+    }
     public int SetGPUEco(int eco)
     {
         int ecoFlag = DeviceGet(GPUEco);
@@ -411,6 +437,7 @@ public class AsusACPI
 
         return fan;
     }
+
 
     public int SetFanRange(AsusFan device, byte[] curve)
     {
@@ -549,7 +576,6 @@ public class AsusACPI
 
     public bool IsXGConnected()
     {
-        //return true;
         return DeviceGet(GPUXGConnected) == 1;
     }
 

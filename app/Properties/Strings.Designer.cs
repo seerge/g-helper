@@ -1215,11 +1215,20 @@ namespace GHelper.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Multizone.
+        ///   Looks up a localized string similar to Multi Zone.
         /// </summary>
         internal static string Multizone {
             get {
                 return ResourceManager.GetString("Multizone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Multi Zone Strong.
+        /// </summary>
+        internal static string MultizoneStrong {
+            get {
+                return ResourceManager.GetString("MultizoneStrong", resourceCulture);
             }
         }
         
@@ -1265,6 +1274,15 @@ namespace GHelper.Properties {
         internal static string NotConnected {
             get {
                 return ResourceManager.GetString("NotConnected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to One Zone.
+        /// </summary>
+        internal static string OneZone {
+            get {
+                return ResourceManager.GetString("OneZone", resourceCulture);
             }
         }
         

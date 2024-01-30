@@ -22,9 +22,9 @@ jobs:
     - name: Publish
       run: |
         dotnet publish app/GHelper.sln --configuration Release --runtime win-x64 -p:PublishSingleFile=true --no-self-contained
-        powershell Compress-Archive app/bin/x64/Release/net7.0-windows/win-x64/publish/* GHelper.zip
+        powershell Compress-Archive app/bin/x64/Release/net7.0-windows/win-x64/publish/GHelper.exe GHelper.zip
     - name: Upload
       env:
         GH_TOKEN: ${{ github.token }}
       run: |
-        gh release upload ${{ github.ref_name }} GHelper.zip
+        gh release upload ${{ github.ref_name }} app/bin/x64/Release/net7.0-windows/win-x64/publish/GHelper.exe GHelper.zip

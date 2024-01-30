@@ -3,7 +3,6 @@ using System.Runtime.InteropServices;
 
 namespace GHelper.UI
 {
-
     public class RForm : Form
     {
 

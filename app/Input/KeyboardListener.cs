@@ -1,5 +1,6 @@
-﻿using HidSharp;
-using GHelper.USB;
+﻿using GHelper.USB;
+using HidSharp;
+using System.Text;
 
 namespace GHelper.Input
 {
@@ -15,18 +16,17 @@ namespace GHelper.Input
             var task = Task.Run(Listen);
         }
 
-        private void Listen () { 
+        private void Listen()
+        {
 
             HidStream? input = AsusHid.FindHidStream(AsusHid.INPUT_ID);
 
             // Fallback
-
             int count = 0;
 
-            while (input == null && count++ < 5)
+            while (input == null && count++ < 10)
             {
-                Aura.Init();
-                Thread.Sleep(2000);
+                Thread.Sleep(1000);
                 input = AsusHid.FindHidStream(AsusHid.INPUT_ID);
             }
 
@@ -36,6 +36,7 @@ namespace GHelper.Input
                 return;
             }
 
+            AsusHid.WriteInput(Encoding.ASCII.GetBytes("ZASUS Tech.Inc."));
             Logger.WriteLine($"Input: {input.Device.DevicePath}");
 
             try
