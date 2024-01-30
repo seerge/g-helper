@@ -154,8 +154,9 @@ namespace Ryzen
 
         public static void DownloadRing()
         {
-            var appVersion = new Version(Assembly.GetExecutingAssembly().GetName().Version.ToString());
-            string requestUri = "https://github.com/seerge/g-helper/releases/download/v" + appVersion.Major + "." + appVersion.Minor + "/PluginAdvancedSettings.zip";
+            //var appVersion = new Version(Assembly.GetExecutingAssembly().GetName().Version.ToString());
+            //string requestUri = "https://github.com/seerge/g-helper/releases/download/v" + appVersion.Major + "." + appVersion.Minor + "/PluginAdvancedSettings.zip";
+            string requestUri = "https://github.com/seerge/g-helper/releases/download/v0.150/PluginAdvancedSettings.zip";
 
             Uri uri = new Uri(requestUri);
 
