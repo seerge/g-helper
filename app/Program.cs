@@ -280,7 +280,7 @@ namespace GHelper
                 settingsForm.Left = Screen.FromControl(settingsForm).WorkingArea.Width - 10 - settingsForm.Width;
                 
                 if (AppConfig.IsAlly())
-                    settingsForm.Top = Screen.FromControl(settingsForm).Bounds.Height - 100 - settingsForm.Height;
+                    settingsForm.Top = Screen.FromControl(settingsForm).Bounds.Height - 110 - settingsForm.Height;
                 else
                     settingsForm.Top = Screen.FromControl(settingsForm).WorkingArea.Height - 10 - settingsForm.Height;
 
