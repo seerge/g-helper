@@ -49,8 +49,10 @@ namespace GHelper.Display
 
             if (miniled >= 0)
             {
-                Program.acpi.DeviceSet(AsusACPI.ScreenMiniled, miniled, "Miniled");
-                Debug.WriteLine("Miniled " + miniled);
+                if (Program.acpi.DeviceGet(AsusACPI.ScreenMiniled1) >= 0)
+                    Program.acpi.DeviceSet(AsusACPI.ScreenMiniled1, miniled, "Miniled1");
+                else
+                    Program.acpi.DeviceSet(AsusACPI.ScreenMiniled2, miniled, "Miniled2");
             }
 
             InitScreen();
@@ -59,7 +61,26 @@ namespace GHelper.Display
 
         public int ToogleMiniled()
         {
-            int miniled = (Program.acpi.DeviceGet(AsusACPI.ScreenMiniled) == 1) ? 0 : 1;
+            int miniled1 = Program.acpi.DeviceGet(AsusACPI.ScreenMiniled1);
+            int miniled2 = Program.acpi.DeviceGet(AsusACPI.ScreenMiniled2);
+
+            Logger.WriteLine($"MiniledToggle: {miniled1} {miniled2}");
+
+            int miniled;
+
+            if (miniled1 >= 0)
+            {
+                miniled = (miniled1 == 1) ? 0 : 1;
+            } else
+            {
+                switch (miniled2)
+                {
+                    case 1: miniled = 2; break;
+                    case 2: miniled = 0; break;
+                    default: miniled = 1; break;
+                }
+            }
+
             AppConfig.Set("miniled", miniled);
             SetScreen(-1, -1, miniled);
             return miniled;
@@ -76,12 +97,16 @@ namespace GHelper.Display
             bool overdriveSetting = !AppConfig.Is("no_overdrive");
 
             int overdrive = Program.acpi.DeviceGet(AsusACPI.ScreenOverdrive);
-            int miniled = Program.acpi.DeviceGet(AsusACPI.ScreenMiniled);
 
+            int miniled1 = Program.acpi.DeviceGet(AsusACPI.ScreenMiniled1);
+            int miniled2 = Program.acpi.DeviceGet(AsusACPI.ScreenMiniled2);
+
+            int miniled = (miniled1 >= 0) ? miniled1 : miniled2;
             bool hdr = false;
 
             if (miniled >= 0)
             {
+                Logger.WriteLine($"Miniled: {miniled1} {miniled2}");
                 AppConfig.Set("miniled", miniled);
                 hdr = ScreenCCD.GetHDRStatus();
             }
@@ -100,7 +125,8 @@ namespace GHelper.Display
                     maxFrequency: maxFrequency,
                     overdrive: overdrive,
                     overdriveSetting: overdriveSetting,
-                    miniled: miniled,
+                    miniled1: miniled1,
+                    miniled2: miniled2,
                     hdr: hdr
                 );
             });

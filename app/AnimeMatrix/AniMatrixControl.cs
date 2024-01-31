@@ -4,7 +4,6 @@ using Starlight.AnimeMatrix;
 using System.Diagnostics;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
-using System.IO;
 using System.Timers;
 
 namespace GHelper.AnimeMatrix
@@ -69,49 +68,51 @@ namespace GHelper.AnimeMatrix
             StopMatrixTimer();
             StopMatrixAudio();
 
-            try
+            Task.Run(() =>
             {
-                device.SetProvider();
-            }
-            catch (Exception ex)
-            {
-                Logger.WriteLine(ex.Message);
-                return;
-            }
-
-            if (wakeUp && AppConfig.ContainsModel("401")) device.WakeUp();
-
-            if (brightness == 0 || (auto && SystemInformation.PowerStatus.PowerLineStatus != PowerLineStatus.Online))
-            {
-                device.SetDisplayState(false);
-                device.SetDisplayState(false); // some devices are dumb
-                Logger.WriteLine("Matrix Off");
-            }
-            else
-            {
-                device.SetDisplayState(true);
-                device.SetBrightness((BrightnessMode)brightness);
-
-                switch (running)
+                try
                 {
-                    case 2:
-                        SetMatrixPicture(AppConfig.GetString("matrix_picture"));
-                        break;
-                    case 3:
-                        SetMatrixClock();
-                        break;
-                    case 4:
-                        SetMatrixAudio();
-                        break;
-                    default:
-                        device.SetBuiltInAnimation(true, animation);
-                        Logger.WriteLine("Matrix builtin " + animation.AsByte);
-                        break;
-
+                    device.SetProvider();
+                }
+                catch (Exception ex)
+                {
+                    Logger.WriteLine(ex.Message);
+                    return;
                 }
 
-                //mat.SetBrightness((BrightnessMode)brightness);
-            }
+                if (wakeUp && AppConfig.ContainsModel("401")) device.WakeUp();
+
+                if (brightness == 0 || (auto && SystemInformation.PowerStatus.PowerLineStatus != PowerLineStatus.Online))
+                {
+                    device.SetDisplayState(false);
+                    device.SetDisplayState(false); // some devices are dumb
+                    Logger.WriteLine("Matrix Off");
+                }
+                else
+                {
+                    device.SetDisplayState(true);
+                    device.SetBrightness((BrightnessMode)brightness);
+
+                    switch (running)
+                    {
+                        case 2:
+                            SetMatrixPicture(AppConfig.GetString("matrix_picture"));
+                            break;
+                        case 3:
+                            SetMatrixClock();
+                            break;
+                        case 4:
+                            SetMatrixAudio();
+                            break;
+                        default:
+                            device.SetBuiltInAnimation(true, animation);
+                            Logger.WriteLine("Matrix builtin " + animation.AsByte);
+                            break;
+                    }
+
+                }
+            });
+
 
         }
         private void StartMatrixTimer(int interval = 100)
@@ -358,10 +359,10 @@ namespace GHelper.AnimeMatrix
 
             int matrixZoom = AppConfig.Get("matrix_zoom", 100);
             int matrixContrast = AppConfig.Get("matrix_contrast", 100);
-            
+
             int matrixSpeed = AppConfig.Get("matrix_speed", 50);
 
-            MatrixRotation rotation = (MatrixRotation)AppConfig.Get("matrix_rotation", 0); 
+            MatrixRotation rotation = (MatrixRotation)AppConfig.Get("matrix_rotation", 0);
 
             InterpolationMode matrixQuality = (InterpolationMode)AppConfig.Get("matrix_quality", 0);
 
@@ -382,7 +383,7 @@ namespace GHelper.AnimeMatrix
                         device.GenerateFrame(image, matrixZoom, matrixX, matrixY, matrixQuality, matrixContrast);
                     else
                         device.GenerateFrameDiagonal(image, matrixZoom, matrixX, matrixY, matrixQuality, matrixContrast);
-                    
+
                     device.AddFrame();
                 }
 

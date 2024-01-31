@@ -1,5 +1,6 @@
-﻿using HidSharp;
-using GHelper.USB;
+﻿using GHelper.USB;
+using HidSharp;
+using System.Text;
 
 namespace GHelper.Input
 {
@@ -7,17 +8,26 @@ namespace GHelper.Input
     {
 
         CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
+        Action<int> _handler;
 
         public KeyboardListener(Action<int> KeyHandler)
         {
+            _handler = KeyHandler;
+            var task = Task.Run(Listen);
+        }
+
+        private void Listen()
+        {
+
             HidStream? input = AsusHid.FindHidStream(AsusHid.INPUT_ID);
-            
+
             // Fallback
-            if (input == null)
+            int count = 0;
+
+            while (input == null && count++ < 10)
             {
-                Aura.Init();
                 Thread.Sleep(1000);
-                input = input = AsusHid.FindHidStream(AsusHid.INPUT_ID);
+                input = AsusHid.FindHidStream(AsusHid.INPUT_ID);
             }
 
             if (input == null)
@@ -26,41 +36,38 @@ namespace GHelper.Input
                 return;
             }
 
+            AsusHid.WriteInput(Encoding.ASCII.GetBytes("ZASUS Tech.Inc."));
             Logger.WriteLine($"Input: {input.Device.DevicePath}");
 
-            var task = Task.Run(() =>
+            try
             {
-                try
+                while (!cancellationTokenSource.Token.IsCancellationRequested)
                 {
-                    while (!cancellationTokenSource.Token.IsCancellationRequested)
+
+                    // Emergency break
+                    if (input == null || !input.CanRead)
                     {
-
-                        // Emergency break
-                        if (input == null || !input.CanRead)
-                        {
-                            Logger.WriteLine("Listener terminated");
-                            break;
-                        }
-
-                        input.ReadTimeout = int.MaxValue;
-
-                        var data = input.Read();
-                        if (data.Length > 1 && data[0] == AsusHid.INPUT_ID && data[1] > 0 && data[1] != 236)
-                        {
-                            Logger.WriteLine($"Key: {data[1]}");
-                            KeyHandler(data[1]);
-                        }
+                        Logger.WriteLine("Listener terminated");
+                        break;
                     }
 
-                    Logger.WriteLine("Listener stopped");
+                    input.ReadTimeout = int.MaxValue;
 
+                    var data = input.Read();
+                    if (data.Length > 1 && data[0] == AsusHid.INPUT_ID && data[1] > 0 && data[1] != 236)
+                    {
+                        Logger.WriteLine($"Key: {data[1]}");
+                        _handler(data[1]);
+                    }
                 }
-                catch (Exception ex)
-                {
-                    Logger.WriteLine(ex.ToString());
-                }
-            });
 
+                Logger.WriteLine("Listener stopped");
+
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLine(ex.ToString());
+            }
 
         }
 

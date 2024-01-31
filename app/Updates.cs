@@ -78,7 +78,6 @@ namespace GHelper
             InitializeComponent();
             InitTheme(true);
 
-
             LoadUpdates(true);
 
             //buttonRefresh.Visible = false;

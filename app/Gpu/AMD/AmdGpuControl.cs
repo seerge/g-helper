@@ -9,7 +9,9 @@ public class AmdGpuControl : IGpuControl
 {
     private bool _isReady;
     private nint _adlContextHandle;
+
     private readonly ADLAdapterInfo _internalDiscreteAdapter;
+    private readonly ADLAdapterInfo? _iGPU;
 
     public bool IsNvidia => false;
 
@@ -63,8 +65,14 @@ public class AmdGpuControl : IGpuControl
         if (!Adl2.Load())
             return;
 
-        if (Adl2.ADL2_Main_Control_Create(1, out _adlContextHandle) != Adl2.ADL_SUCCESS)
+        try
+        {
+            if (Adl2.ADL2_Main_Control_Create(1, out _adlContextHandle) != Adl2.ADL_SUCCESS) return;
+        } catch (Exception ex)
+        {
+            Logger.WriteLine(ex.Message);
             return;
+        }
 
         ADLAdapterInfo? internalDiscreteAdapter = FindByType(ADLAsicFamilyType.Discrete);
 
@@ -73,6 +81,8 @@ public class AmdGpuControl : IGpuControl
             _internalDiscreteAdapter = (ADLAdapterInfo)internalDiscreteAdapter;
             _isReady = true;
         }
+
+        _iGPU = FindByType(ADLAsicFamilyType.Integrated);
 
     }
 
@@ -137,6 +147,52 @@ public class AmdGpuControl : IGpuControl
         enabled = enabledOut;
 
         return true;
+    }
+
+    public void StartFPS()
+    {
+        if (_adlContextHandle == nint.Zero || _iGPU == null) return;
+        ADL2_Adapter_FrameMetrics_Start(_adlContextHandle, ((ADLAdapterInfo)_iGPU).AdapterIndex, 0);
+    }
+
+    public void StopFPS()
+    {
+        if (_adlContextHandle == nint.Zero || _iGPU == null) return;
+        ADL2_Adapter_FrameMetrics_Stop(_adlContextHandle, ((ADLAdapterInfo)_iGPU).AdapterIndex, 0);
+    }
+
+    public float GetFPS()
+    {
+        if (_adlContextHandle == nint.Zero || _iGPU == null) return 0;
+        float fps;
+        if (ADL2_Adapter_FrameMetrics_Get(_adlContextHandle, ((ADLAdapterInfo)_iGPU).AdapterIndex, 0, out fps) != Adl2.ADL_SUCCESS) return 0;
+        return fps;
+    }
+
+    public int GetFPSLimit()
+    {
+        if (_adlContextHandle == nint.Zero || _iGPU == null) return -1;
+        ADLFPSSettingsOutput settings;
+        if (ADL2_FPS_Settings_Get(_adlContextHandle, ((ADLAdapterInfo)_iGPU).AdapterIndex, out settings) != Adl2.ADL_SUCCESS) return -1;
+
+        Logger.WriteLine($"FPS Limit: {settings.ulACFPSCurrent}");
+
+        return settings.ulACFPSCurrent;
+    }
+
+    public int SetFPSLimit(int limit)
+    {
+        if (_adlContextHandle == nint.Zero || _iGPU == null) return -1;
+
+        ADLFPSSettingsInput settings = new ADLFPSSettingsInput();
+
+        settings.ulACFPSCurrent = limit;
+        settings.ulDCFPSCurrent = limit;
+        settings.bGlobalSettings = 1;
+
+        if (ADL2_FPS_Settings_Set(_adlContextHandle, ((ADLAdapterInfo)_iGPU).AdapterIndex, settings) != Adl2.ADL_SUCCESS) return 0;
+
+        return 1;
     }
 
     public ADLODNPerformanceLevels? GetGPUClocks()

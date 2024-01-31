@@ -18,6 +18,16 @@ namespace GHelper.Helpers
                 "AsusCertService"
         };
 
+        static List<string> processesAC = new() {
+                "ArmouryCrateSE.Service",
+                "LightingService",
+        };
+
+        static List<string> servicesAC = new() {
+                "ArmouryCrateSEService",
+                "LightingService",
+        };
+
         public static bool IsRunning()
         {
             return Process.GetProcessesByName("AsusOptimization").Count() > 0;
@@ -36,6 +46,17 @@ namespace GHelper.Helpers
             {
                 if (Process.GetProcessesByName(service).Count() > 0) count++;
             }
+
+            if (AppConfig.IsAlly())
+                foreach (string service in processesAC)
+                {
+                    if (Process.GetProcessesByName(service).Count() > 0)
+                    {
+                        count++;
+                        Logger.WriteLine(service);
+                    }
+                }
+
             return count;
         }
 
@@ -46,6 +67,16 @@ namespace GHelper.Helpers
             {
                 ProcessHelper.StopDisableService(service);
             }
+
+            if (AppConfig.IsAlly())
+            {
+                foreach (string service in servicesAC)
+                {
+                    ProcessHelper.StopDisableService(service, "Manual");
+                }
+                Thread.Sleep(1000);
+            }
+
         }
 
         public static void StartAsusServices()
@@ -54,6 +85,16 @@ namespace GHelper.Helpers
             {
                 ProcessHelper.StartEnableService(service);
             }
+
+            if (AppConfig.IsAlly())
+            {
+                foreach (string service in servicesAC)
+                {
+                    ProcessHelper.StartEnableService(service);
+                }
+                Thread.Sleep(1000);
+            }
+
         }
 
     }

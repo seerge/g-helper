@@ -4,7 +4,10 @@
 //
 
 
+using GHelper.Helpers;
 using System.Management;
+using System.Net;
+using System.Reflection;
 
 namespace Ryzen
 {
@@ -52,7 +55,8 @@ namespace Ryzen
                     CPUName = obj["Name"].ToString();
                     CPUModel = obj["Caption"].ToString();
                 }
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 Logger.WriteLine(ex.Message);
             }
@@ -140,6 +144,55 @@ namespace Ryzen
         {
             if (CPUName.Length == 0) Init();
             return CPUName.Contains("6900H") || CPUName.Contains("7945H") || CPUName.Contains("7845H");
+        }
+
+        public static bool IsRingExsists()
+        {
+            string exeDir = Path.GetDirectoryName(Application.ExecutablePath);
+            return File.Exists(exeDir + "\\" + "WinRing0x64.dll");
+        }
+
+        public static void DownloadRing()
+        {
+            //var appVersion = new Version(Assembly.GetExecutingAssembly().GetName().Version.ToString());
+            //string requestUri = "https://github.com/seerge/g-helper/releases/download/v" + appVersion.Major + "." + appVersion.Minor + "/PluginAdvancedSettings.zip";
+            string requestUri = "https://github.com/seerge/g-helper/releases/download/v0.150/PluginAdvancedSettings.zip";
+
+            Uri uri = new Uri(requestUri);
+
+            string exeDir = Path.GetDirectoryName(Application.ExecutablePath);
+            string zipName = Path.GetFileName(uri.LocalPath);
+            string zipLocation = exeDir + "\\" + zipName;
+
+            using (WebClient client = new WebClient())
+            {
+                Logger.WriteLine(requestUri);
+                Logger.WriteLine(exeDir);
+                Logger.WriteLine(zipName);
+
+                try
+                {
+                    client.DownloadFile(uri, zipLocation);
+                }
+                catch (Exception ex)
+                {
+                    Logger.WriteLine(ex.Message);
+                    Logger.WriteLine(ex.ToString());
+                    if (!ProcessHelper.IsUserAdministrator() && !ex.Message.Contains("remote server")) ProcessHelper.RunAsAdmin("uv");
+                    return;
+                }
+
+                try
+                {
+                    System.IO.Compression.ZipFile.ExtractToDirectory(zipLocation, exeDir, overwriteFiles: true);
+                    File.Delete(zipLocation);
+                    ProcessHelper.RunAsAdmin("uv", true);
+                }
+                catch (Exception ex)
+                {
+                    Logger.WriteLine(ex.ToString());
+                }
+            }
         }
 
         public static void SetAddresses()

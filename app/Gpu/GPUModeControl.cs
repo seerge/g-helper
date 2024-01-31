@@ -145,18 +145,6 @@ namespace GHelper.Gpu
 
                 if (eco == 1)
                 {
-                    /*
-                    if (NvidiaSmi.GetDisplayActiveStatus())
-                    {
-                        DialogResult dialogResult = MessageBox.Show(Properties.Strings.EnableOptimusText, Properties.Strings.EnableOptimusTitle, MessageBoxButtons.YesNo);
-                        if (dialogResult == DialogResult.No)
-                        {
-                            InitGPUMode();
-                            return;
-                        }
-                    }
-                    */
-
                     HardwareControl.KillGPUApps();
                 }
 
@@ -296,7 +284,7 @@ namespace GHelper.Gpu
 
         }
 
-        public void ToggleXGM()
+        public void ToggleXGM(bool silent = false)
         {
 
             Task.Run(async () =>
@@ -308,11 +296,19 @@ namespace GHelper.Gpu
                     XGM.Reset();
                     HardwareControl.KillGPUApps();
 
-                    DialogResult dialogResult = MessageBox.Show("Did you close all applications running on XG Mobile?", "Disabling XG Mobile", MessageBoxButtons.YesNo);
-                    if (dialogResult == DialogResult.Yes)
+                    if (silent)
                     {
                         Program.acpi.DeviceSet(AsusACPI.GPUXG, 0, "GPU XGM");
                         await Task.Delay(TimeSpan.FromSeconds(15));
+                    }
+                    else
+                    {
+                        DialogResult dialogResult = MessageBox.Show("Did you close all applications running on XG Mobile?", "Disabling XG Mobile", MessageBoxButtons.YesNo);
+                        if (dialogResult == DialogResult.Yes)
+                        {
+                            Program.acpi.DeviceSet(AsusACPI.GPUXG, 0, "GPU XGM");
+                            await Task.Delay(TimeSpan.FromSeconds(15));
+                        }
                     }
                 }
                 else

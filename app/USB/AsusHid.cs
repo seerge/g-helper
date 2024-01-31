@@ -57,7 +57,7 @@ public static class AsusHid
         return null;
     }
 
-    public static void WriteInput(byte[] data, string log = "USB")
+    public static void WriteInput(byte[] data, string? log = "USB")
     {
         foreach (var device in FindDevices(INPUT_ID))
         {
@@ -68,7 +68,7 @@ public static class AsusHid
                     var payload = new byte[device.GetMaxFeatureReportLength()];
                     Array.Copy(data, payload, data.Length);
                     stream.SetFeature(payload);
-                    Logger.WriteLine($"{log} Feature {device.ProductID.ToString("X")}|{device.GetMaxFeatureReportLength()}: {BitConverter.ToString(data)}");
+                    if (log is not null) Logger.WriteLine($"{log} {device.ProductID.ToString("X")}|{device.GetMaxFeatureReportLength()}: {BitConverter.ToString(data)}");
                 }
             }
             catch (Exception ex)

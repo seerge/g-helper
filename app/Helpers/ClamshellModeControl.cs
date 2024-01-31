@@ -69,12 +69,14 @@ namespace GHelper.Helpers
         }
         public static void DisableClamshellMode()
         {
+            if (PowerNative.GetLidAction(true) == GetDefaultLidAction()) return;
             PowerNative.SetLidAction(GetDefaultLidAction(), true);
             Logger.WriteLine("Disengaging Clamshell Mode");
         }
 
         public static void EnableClamshellMode()
         {
+            if (PowerNative.GetLidAction(true) == 0) return;
             PowerNative.SetLidAction(0, true);
             Logger.WriteLine("Engaging Clamshell Mode");
         }

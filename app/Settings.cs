@@ -12,6 +12,7 @@ using GHelper.Peripherals;
 using GHelper.Peripherals.Mouse;
 using GHelper.UI;
 using GHelper.USB;
+using System;
 using System.Diagnostics;
 using System.Timers;
 
@@ -23,8 +24,8 @@ namespace GHelper
         ToolStripMenuItem menuSilent, menuBalanced, menuTurbo, menuEco, menuStandard, menuUltimate, menuOptimized;
 
         public GPUModeControl gpuControl;
+        public AllyControl allyControl;
         ScreenControl screenControl = new ScreenControl();
-        AllyControl controllerControl;
         AutoUpdateControl updateControl;
 
         AsusMouseSettings? mouseSettings;
@@ -37,6 +38,7 @@ namespace GHelper
         public Fans? fansForm;
         public Extra? extraForm;
         public Updates? updatesForm;
+        public Handheld? handheldForm;
 
         static long lastRefresh;
         static long lastBatteryRefresh;
@@ -56,7 +58,7 @@ namespace GHelper
             gpuControl = new GPUModeControl(this);
             updateControl = new AutoUpdateControl(this);
             matrixControl = new AniMatrixControl(this);
-            controllerControl = new AllyControl(this);
+            allyControl = new AllyControl(this);
 
             buttonSilent.Text = Properties.Strings.Silent;
             buttonBalanced.Text = Properties.Strings.Balanced;
@@ -159,6 +161,7 @@ namespace GHelper
 
             buttonFans.Click += ButtonFans_Click;
             buttonKeyboard.Click += ButtonKeyboard_Click;
+            buttonController.Click += ButtonHandheld_Click;
 
             pictureColor.Click += PictureColor_Click;
             pictureColor2.Click += PictureColor2_Click;
@@ -230,7 +233,11 @@ namespace GHelper
             buttonBatteryFull.MouseLeave += ButtonBatteryFull_MouseLeave;
             buttonBatteryFull.Click += ButtonBatteryFull_Click;
 
-            buttonController.Click += ButtonController_Click;
+            buttonControllerMode.Click += ButtonControllerMode_Click;
+            buttonBacklight.Click += ButtonBacklight_Click;
+
+            buttonFPS.Click += ButtonFPS_Click;
+            buttonOverlay.Click += ButtonOverlay_Click;
 
             Text = "G-Helper " + (ProcessHelper.IsUserAdministrator() ? "—" : "-") + " " + AppConfig.GetModelShort();
             TopMost = AppConfig.Is("topmost");
@@ -245,14 +252,54 @@ namespace GHelper
             panelPerformance.Focus();
         }
 
-        private void ButtonController_Click(object? sender, EventArgs e)
+        private void ButtonOverlay_Click(object? sender, EventArgs e)
         {
-            controllerControl.ToggleMode();
+            KeyboardHook.KeyKeyKeyPress(Keys.LControlKey, Keys.LShiftKey, Keys.O);
+        }
+
+        private void ButtonHandheld_Click(object? sender, EventArgs e)
+        {
+            if (handheldForm == null || handheldForm.Text == "")
+            {
+                handheldForm = new Handheld();
+                AddOwnedForm(handheldForm);
+            }
+
+            if (handheldForm.Visible)
+            {
+                handheldForm.Close();
+            }
+            else
+            {
+                //handheldForm.FormPosition();
+                handheldForm.Show();
+            }
+        }
+
+        private void ButtonFPS_Click(object? sender, EventArgs e)
+        {
+            allyControl.ToggleFPSLimit();
+        }
+
+        private void ButtonBacklight_Click(object? sender, EventArgs e)
+        {
+            allyControl.ToggleBacklight();
+        }
+
+        private void ButtonControllerMode_Click(object? sender, EventArgs e)
+        {
+            allyControl.ToggleMode();
         }
 
         public void VisualiseAlly(bool visible = false)
         {
-            panelAlly.Visible = visible;
+            if (!visible) return;
+
+            panelAlly.Visible = true;
+            panelKeyboardTitle.Visible = false;
+            panelKeyboard.Padding = new Padding(20, 0, 20, 20);
+
+            tableAMD.Visible = true;
         }
 
         public void VisualiseController(ControllerMode mode)
@@ -260,15 +307,28 @@ namespace GHelper
             switch (mode)
             {
                 case ControllerMode.Gamepad:
-                    buttonController.Text = "Gamepad";
-                    break;
-                case ControllerMode.WASD:
-                    buttonController.Text = "WASD";
+                    buttonControllerMode.Text = "Gamepad";
                     break;
                 case ControllerMode.Mouse:
-                    buttonController.Text = "Mouse";
+                    buttonControllerMode.Text = "Mouse";
+                    break;
+                case ControllerMode.Skip:
+                    buttonControllerMode.Text = "Skip";
+                    break;
+                default:
+                    buttonControllerMode.Text = "Auto";
                     break;
             }
+        }
+
+        public void VisualiseBacklight(int backlight)
+        {
+            buttonBacklight.Text = Math.Round((double)backlight*33.33).ToString() + "%";
+        }
+
+        public void VisualiseFPSLimit(int limit)
+        {
+            buttonFPS.Text = "FPS Limit " + ((limit > 0 && limit <= 120) ? limit : "OFF");
         }
 
         private void SettingsForm_LostFocus(object? sender, EventArgs e)
@@ -876,7 +936,7 @@ namespace GHelper
 
 
 
-        public void VisualiseScreen(bool screenEnabled, bool screenAuto, int frequency, int maxFrequency, int overdrive, bool overdriveSetting, int miniled, bool hdr)
+        public void VisualiseScreen(bool screenEnabled, bool screenAuto, int frequency, int maxFrequency, int overdrive, bool overdriveSetting, int miniled1, int miniled2, bool hdr)
         {
 
             ButtonEnabled(button60Hz, screenEnabled);
@@ -915,10 +975,36 @@ namespace GHelper
                 panelScreen.Visible = false;
             }
 
-            if (miniled >= 0)
+            if (miniled1 >= 0)
             {
-                buttonMiniled.Activated = (miniled == 1) || hdr;
                 buttonMiniled.Enabled = !hdr;
+                buttonMiniled.Activated = miniled1 == 1 || hdr;
+            }
+            else if (miniled2 >= 0)
+            {
+                buttonMiniled.Enabled = !hdr;
+
+                switch (miniled2)
+                {
+                    // Multizone On
+                    case 0:
+                        buttonMiniled.Text = Properties.Strings.Multizone;
+                        buttonMiniled.BorderColor = colorStandard;
+                        buttonMiniled.Activated = true;
+                        break;
+                    // Multizone Strong
+                    case 1:
+                        buttonMiniled.Text = Properties.Strings.MultizoneStrong;
+                        buttonMiniled.BorderColor = colorTurbo;
+                        buttonMiniled.Activated = true;
+                        break;
+                    // Multizone Off
+                    case 2:
+                        buttonMiniled.Text = hdr ? Properties.Strings.Multizone : Properties.Strings.OneZone;
+                        buttonMiniled.BorderColor = colorStandard;
+                        buttonMiniled.Activated = hdr;
+                        break;
+                }
             }
             else
             {
@@ -945,6 +1031,7 @@ namespace GHelper
             if (extraForm != null && extraForm.Text != "") extraForm.Close();
             if (updatesForm != null && updatesForm.Text != "") updatesForm.Close();
             if (matrixForm != null && matrixForm.Text != "") matrixForm.Close();
+            if (handheldForm != null && handheldForm.Text != "") handheldForm.Close();
         }
 
         /// <summary>
@@ -965,6 +1052,7 @@ namespace GHelper
                    (extraForm != null && extraForm.ContainsFocus) ||
                    (updatesForm != null && updatesForm.ContainsFocus) ||
                    (matrixForm != null && matrixForm.ContainsFocus) ||
+                   (handheldForm != null && handheldForm.ContainsFocus) ||
                    this.ContainsFocus ||
                    (lostFocusCheck && Math.Abs(DateTimeOffset.Now.ToUnixTimeMilliseconds() - lastLostFocus) < 300);
         }
@@ -1135,13 +1223,13 @@ namespace GHelper
         public void AutoKeyboard()
         {
 
+            InputDispatcher.SetBacklightAuto(true);
+
             if (!AppConfig.Is("skip_aura"))
             {
                 Aura.ApplyPower();
                 Aura.ApplyAura();
             }
-
-            InputDispatcher.SetBacklightAuto(true);
 
             if (Program.acpi.IsXGConnected())
                 XGM.Light(AppConfig.Is("xmg_light"));
@@ -1245,6 +1333,18 @@ namespace GHelper
 
         public void VisualiseGPUMode(int GPUMode = -1)
         {
+            if (AppConfig.IsAlly())
+            {
+                tableGPU.Visible = false;
+                labelGPU.Text = "GPU";
+                if (Program.acpi.IsXGConnected())
+                {
+                    tableAMD.Controls.Add(buttonXGM, 1, 0);
+                    VisualizeXGM();
+                }
+                return;
+            }
+
             ButtonEnabled(buttonOptimized, true);
             ButtonEnabled(buttonEco, true);
             ButtonEnabled(buttonStandard, true);
@@ -1284,7 +1384,6 @@ namespace GHelper
             }
 
             VisualizeXGM(GPUMode);
-
 
             if (isGpuSection)
             {

@@ -124,5 +124,11 @@
         {
             return "TUF GAMING M3 (Gen II)";
         }
+
+        public override int MaxBrightness()
+        {
+            return 100;
+        }
+
     }
 }

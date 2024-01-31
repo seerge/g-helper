@@ -64,6 +64,8 @@ namespace GHelper
             labelCPUFan = new Label();
             panelGPU = new Panel();
             labelTipGPU = new Label();
+            tableAMD = new TableLayoutPanel();
+            buttonFPS = new RButton();
             tableGPU = new TableLayoutPanel();
             buttonStopGPU = new RButton();
             buttonEco = new RButton();
@@ -109,12 +111,14 @@ namespace GHelper
             picturePeripherals = new PictureBox();
             labelPeripherals = new Label();
             panelAlly = new Panel();
-            label1 = new Label();
             tableLayoutAlly = new TableLayoutPanel();
             buttonController = new RButton();
+            buttonBacklight = new RButton();
+            buttonControllerMode = new RButton();
             panelAllyTitle = new Panel();
             pictureAlly = new PictureBox();
             labelAlly = new Label();
+            buttonOverlay = new RButton();
             panelMatrix.SuspendLayout();
             tableLayoutMatrix.SuspendLayout();
             panelMatrixTitle.SuspendLayout();
@@ -129,6 +133,7 @@ namespace GHelper
             panelCPUTitle.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)picturePerf).BeginInit();
             panelGPU.SuspendLayout();
+            tableAMD.SuspendLayout();
             tableGPU.SuspendLayout();
             panelGPUTitle.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureGPU).BeginInit();
@@ -163,7 +168,7 @@ namespace GHelper
             panelMatrix.Controls.Add(panelMatrixTitle);
             panelMatrix.Controls.Add(checkMatrix);
             panelMatrix.Dock = DockStyle.Top;
-            panelMatrix.Location = new Point(11, 747);
+            panelMatrix.Location = new Point(11, 827);
             panelMatrix.Margin = new Padding(0);
             panelMatrix.Name = "panelMatrix";
             panelMatrix.Padding = new Padding(20, 20, 20, 10);
@@ -293,7 +298,7 @@ namespace GHelper
             panelBattery.Controls.Add(sliderBattery);
             panelBattery.Controls.Add(panelBatteryTitle);
             panelBattery.Dock = DockStyle.Top;
-            panelBattery.Location = new Point(11, 1441);
+            panelBattery.Location = new Point(11, 1485);
             panelBattery.Margin = new Padding(0);
             panelBattery.Name = "panelBattery";
             panelBattery.Padding = new Padding(20, 20, 20, 10);
@@ -385,7 +390,7 @@ namespace GHelper
             panelFooter.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             panelFooter.Controls.Add(tableButtons);
             panelFooter.Dock = DockStyle.Top;
-            panelFooter.Location = new Point(11, 1616);
+            panelFooter.Location = new Point(11, 1660);
             panelFooter.Margin = new Padding(0);
             panelFooter.Name = "panelFooter";
             panelFooter.Padding = new Padding(20);
@@ -660,6 +665,7 @@ namespace GHelper
             panelGPU.AutoSize = true;
             panelGPU.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             panelGPU.Controls.Add(labelTipGPU);
+            panelGPU.Controls.Add(tableAMD);
             panelGPU.Controls.Add(tableGPU);
             panelGPU.Controls.Add(panelGPUTitle);
             panelGPU.Dock = DockStyle.Top;
@@ -667,7 +673,7 @@ namespace GHelper
             panelGPU.Margin = new Padding(0);
             panelGPU.Name = "panelGPU";
             panelGPU.Padding = new Padding(20, 20, 20, 0);
-            panelGPU.Size = new Size(827, 352);
+            panelGPU.Size = new Size(827, 432);
             panelGPU.TabIndex = 1;
             panelGPU.TabStop = true;
             // 
@@ -675,11 +681,53 @@ namespace GHelper
             // 
             labelTipGPU.Dock = DockStyle.Top;
             labelTipGPU.ForeColor = SystemColors.GrayText;
-            labelTipGPU.Location = new Point(20, 316);
+            labelTipGPU.Location = new Point(20, 396);
             labelTipGPU.Margin = new Padding(4, 0, 4, 0);
             labelTipGPU.Name = "labelTipGPU";
             labelTipGPU.Size = new Size(787, 36);
             labelTipGPU.TabIndex = 20;
+            // 
+            // tableAMD
+            // 
+            tableAMD.AutoSize = true;
+            tableAMD.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            tableAMD.ColumnCount = 3;
+            tableAMD.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33F));
+            tableAMD.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33F));
+            tableAMD.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33F));
+            tableAMD.Controls.Add(buttonOverlay, 0, 0);
+            tableAMD.Controls.Add(buttonFPS, 0, 0);
+            tableAMD.Dock = DockStyle.Top;
+            tableAMD.Location = new Point(20, 316);
+            tableAMD.Margin = new Padding(8, 4, 8, 4);
+            tableAMD.Name = "tableAMD";
+            tableAMD.RowCount = 1;
+            tableAMD.RowStyles.Add(new RowStyle(SizeType.Absolute, 80F));
+            tableAMD.Size = new Size(787, 80);
+            tableAMD.TabIndex = 24;
+            tableAMD.Visible = false;
+            // 
+            // buttonFPS
+            // 
+            buttonFPS.Activated = false;
+            buttonFPS.BackColor = SystemColors.ControlLightLight;
+            buttonFPS.BorderColor = Color.Transparent;
+            buttonFPS.BorderRadius = 5;
+            buttonFPS.Dock = DockStyle.Fill;
+            buttonFPS.FlatAppearance.BorderSize = 0;
+            buttonFPS.FlatStyle = FlatStyle.Flat;
+            buttonFPS.ForeColor = SystemColors.ControlText;
+            buttonFPS.Image = Properties.Resources.icons8_animation_32;
+            buttonFPS.ImageAlign = ContentAlignment.MiddleRight;
+            buttonFPS.Location = new Point(4, 4);
+            buttonFPS.Margin = new Padding(4);
+            buttonFPS.Name = "buttonFPS";
+            buttonFPS.Secondary = false;
+            buttonFPS.Size = new Size(254, 72);
+            buttonFPS.TabIndex = 11;
+            buttonFPS.Text = "FPS Limit OFF";
+            buttonFPS.TextImageRelation = TextImageRelation.ImageBeforeText;
+            buttonFPS.UseVisualStyleBackColor = false;
             // 
             // tableGPU
             // 
@@ -896,7 +944,7 @@ namespace GHelper
             panelScreen.Controls.Add(tableScreen);
             panelScreen.Controls.Add(panelScreenTitle);
             panelScreen.Dock = DockStyle.Top;
-            panelScreen.Location = new Point(11, 571);
+            panelScreen.Location = new Point(11, 651);
             panelScreen.Margin = new Padding(0);
             panelScreen.Name = "panelScreen";
             panelScreen.Padding = new Padding(20, 20, 20, 0);
@@ -1067,7 +1115,7 @@ namespace GHelper
             panelKeyboard.Controls.Add(tableLayoutKeyboard);
             panelKeyboard.Controls.Add(panelKeyboardTitle);
             panelKeyboard.Dock = DockStyle.Top;
-            panelKeyboard.Location = new Point(11, 923);
+            panelKeyboard.Location = new Point(11, 1143);
             panelKeyboard.Margin = new Padding(0);
             panelKeyboard.Name = "panelKeyboard";
             panelKeyboard.Padding = new Padding(20);
@@ -1243,7 +1291,7 @@ namespace GHelper
             panelVersion.Controls.Add(labelCharge);
             panelVersion.Controls.Add(checkStartup);
             panelVersion.Dock = DockStyle.Top;
-            panelVersion.Location = new Point(11, 1560);
+            panelVersion.Location = new Point(11, 1604);
             panelVersion.Margin = new Padding(4);
             panelVersion.Name = "panelVersion";
             panelVersion.Size = new Size(827, 56);
@@ -1268,7 +1316,7 @@ namespace GHelper
             panelPeripherals.Controls.Add(tableLayoutPeripherals);
             panelPeripherals.Controls.Add(panelPeripheralsTile);
             panelPeripherals.Dock = DockStyle.Top;
-            panelPeripherals.Location = new Point(11, 1243);
+            panelPeripherals.Location = new Point(11, 1287);
             panelPeripherals.Margin = new Padding(0);
             panelPeripherals.Name = "panelPeripherals";
             panelPeripherals.Padding = new Padding(20, 20, 20, 10);
@@ -1407,27 +1455,17 @@ namespace GHelper
             panelAlly.AccessibleRole = AccessibleRole.Grouping;
             panelAlly.AutoSize = true;
             panelAlly.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            panelAlly.Controls.Add(label1);
             panelAlly.Controls.Add(tableLayoutAlly);
             panelAlly.Controls.Add(panelAllyTitle);
             panelAlly.Dock = DockStyle.Top;
-            panelAlly.Location = new Point(11, 1067);
+            panelAlly.Location = new Point(11, 1003);
             panelAlly.Margin = new Padding(0);
             panelAlly.Name = "panelAlly";
             panelAlly.Padding = new Padding(20, 20, 20, 0);
-            panelAlly.Size = new Size(827, 176);
+            panelAlly.Size = new Size(827, 140);
             panelAlly.TabIndex = 8;
             panelAlly.TabStop = true;
-            // 
-            // label1
-            // 
-            label1.Dock = DockStyle.Top;
-            label1.ForeColor = SystemColors.GrayText;
-            label1.Location = new Point(20, 140);
-            label1.Margin = new Padding(4, 0, 4, 0);
-            label1.Name = "label1";
-            label1.Size = new Size(787, 36);
-            label1.TabIndex = 24;
+            panelAlly.Visible = false;
             // 
             // tableLayoutAlly
             // 
@@ -1438,6 +1476,8 @@ namespace GHelper
             tableLayoutAlly.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33F));
             tableLayoutAlly.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33F));
             tableLayoutAlly.Controls.Add(buttonController, 0, 0);
+            tableLayoutAlly.Controls.Add(buttonBacklight, 0, 0);
+            tableLayoutAlly.Controls.Add(buttonControllerMode, 0, 0);
             tableLayoutAlly.Dock = DockStyle.Top;
             tableLayoutAlly.Location = new Point(20, 60);
             tableLayoutAlly.Margin = new Padding(8, 4, 8, 4);
@@ -1450,21 +1490,68 @@ namespace GHelper
             // buttonController
             // 
             buttonController.Activated = false;
-            buttonController.BackColor = SystemColors.ControlLightLight;
+            buttonController.BackColor = SystemColors.ControlLight;
             buttonController.BorderColor = Color.Transparent;
             buttonController.BorderRadius = 5;
             buttonController.Dock = DockStyle.Fill;
             buttonController.FlatAppearance.BorderSize = 0;
             buttonController.FlatStyle = FlatStyle.Flat;
             buttonController.ForeColor = SystemColors.ControlText;
-            buttonController.Location = new Point(4, 4);
+            buttonController.Image = Properties.Resources.icons8_controls_32;
+            buttonController.ImageAlign = ContentAlignment.MiddleRight;
+            buttonController.Location = new Point(528, 4);
             buttonController.Margin = new Padding(4);
             buttonController.Name = "buttonController";
-            buttonController.Secondary = false;
-            buttonController.Size = new Size(254, 72);
-            buttonController.TabIndex = 9;
-            buttonController.Text = Properties.Strings.AutoMode;
+            buttonController.Secondary = true;
+            buttonController.Size = new Size(255, 72);
+            buttonController.TabIndex = 11;
+            buttonController.Text = "Controller";
+            buttonController.TextImageRelation = TextImageRelation.ImageBeforeText;
             buttonController.UseVisualStyleBackColor = false;
+            // 
+            // buttonBacklight
+            // 
+            buttonBacklight.Activated = false;
+            buttonBacklight.BackColor = SystemColors.ControlLightLight;
+            buttonBacklight.BorderColor = Color.Transparent;
+            buttonBacklight.BorderRadius = 5;
+            buttonBacklight.Dock = DockStyle.Fill;
+            buttonBacklight.FlatAppearance.BorderSize = 0;
+            buttonBacklight.FlatStyle = FlatStyle.Flat;
+            buttonBacklight.ForeColor = SystemColors.ControlText;
+            buttonBacklight.Image = Properties.Resources.backlight;
+            buttonBacklight.ImageAlign = ContentAlignment.MiddleRight;
+            buttonBacklight.Location = new Point(266, 4);
+            buttonBacklight.Margin = new Padding(4);
+            buttonBacklight.Name = "buttonBacklight";
+            buttonBacklight.Secondary = false;
+            buttonBacklight.Size = new Size(254, 72);
+            buttonBacklight.TabIndex = 10;
+            buttonBacklight.Text = "100%";
+            buttonBacklight.TextImageRelation = TextImageRelation.ImageBeforeText;
+            buttonBacklight.UseVisualStyleBackColor = false;
+            // 
+            // buttonControllerMode
+            // 
+            buttonControllerMode.Activated = false;
+            buttonControllerMode.BackColor = SystemColors.ControlLightLight;
+            buttonControllerMode.BorderColor = Color.Transparent;
+            buttonControllerMode.BorderRadius = 5;
+            buttonControllerMode.Dock = DockStyle.Fill;
+            buttonControllerMode.FlatAppearance.BorderSize = 0;
+            buttonControllerMode.FlatStyle = FlatStyle.Flat;
+            buttonControllerMode.ForeColor = SystemColors.ControlText;
+            buttonControllerMode.Image = Properties.Resources.icons8_game_controller_48;
+            buttonControllerMode.ImageAlign = ContentAlignment.MiddleRight;
+            buttonControllerMode.Location = new Point(4, 4);
+            buttonControllerMode.Margin = new Padding(4);
+            buttonControllerMode.Name = "buttonControllerMode";
+            buttonControllerMode.Secondary = false;
+            buttonControllerMode.Size = new Size(254, 72);
+            buttonControllerMode.TabIndex = 9;
+            buttonControllerMode.Text = Properties.Strings.AutoMode;
+            buttonControllerMode.TextImageRelation = TextImageRelation.ImageBeforeText;
+            buttonControllerMode.UseVisualStyleBackColor = false;
             // 
             // panelAllyTitle
             // 
@@ -1480,7 +1567,7 @@ namespace GHelper
             // pictureAlly
             // 
             pictureAlly.BackgroundImage = Properties.Resources.icons8_controller_32;
-            pictureAlly.BackgroundImageLayout = ImageLayout.Center;
+            pictureAlly.BackgroundImageLayout = ImageLayout.Zoom;
             pictureAlly.Location = new Point(5, 0);
             pictureAlly.Margin = new Padding(4);
             pictureAlly.Name = "pictureAlly";
@@ -1492,12 +1579,34 @@ namespace GHelper
             // 
             labelAlly.AutoSize = true;
             labelAlly.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            labelAlly.Location = new Point(45, 0);
+            labelAlly.Location = new Point(42, -2);
             labelAlly.Margin = new Padding(8, 0, 8, 0);
             labelAlly.Name = "labelAlly";
-            labelAlly.Size = new Size(58, 32);
+            labelAlly.Size = new Size(181, 32);
             labelAlly.TabIndex = 26;
-            labelAlly.Text = "Ally";
+            labelAlly.Text = "Ally Controller";
+            // 
+            // buttonOverlay
+            // 
+            buttonOverlay.Activated = false;
+            buttonOverlay.BackColor = SystemColors.ControlLightLight;
+            buttonOverlay.BorderColor = Color.Transparent;
+            buttonOverlay.BorderRadius = 5;
+            buttonOverlay.Dock = DockStyle.Fill;
+            buttonOverlay.FlatAppearance.BorderSize = 0;
+            buttonOverlay.FlatStyle = FlatStyle.Flat;
+            buttonOverlay.ForeColor = SystemColors.ControlText;
+            buttonOverlay.Image = Properties.Resources.icons8_heartbeat_32;
+            buttonOverlay.ImageAlign = ContentAlignment.MiddleRight;
+            buttonOverlay.Location = new Point(266, 4);
+            buttonOverlay.Margin = new Padding(4);
+            buttonOverlay.Name = "buttonOverlay";
+            buttonOverlay.Secondary = false;
+            buttonOverlay.Size = new Size(254, 72);
+            buttonOverlay.TabIndex = 12;
+            buttonOverlay.Text = "AMD Overlay";
+            buttonOverlay.TextImageRelation = TextImageRelation.ImageBeforeText;
+            buttonOverlay.UseVisualStyleBackColor = false;
             // 
             // SettingsForm
             // 
@@ -1510,8 +1619,8 @@ namespace GHelper
             Controls.Add(panelVersion);
             Controls.Add(panelBattery);
             Controls.Add(panelPeripherals);
-            Controls.Add(panelAlly);
             Controls.Add(panelKeyboard);
+            Controls.Add(panelAlly);
             Controls.Add(panelMatrix);
             Controls.Add(panelScreen);
             Controls.Add(panelGPU);
@@ -1546,6 +1655,7 @@ namespace GHelper
             ((System.ComponentModel.ISupportInitialize)picturePerf).EndInit();
             panelGPU.ResumeLayout(false);
             panelGPU.PerformLayout();
+            tableAMD.ResumeLayout(false);
             tableGPU.ResumeLayout(false);
             panelGPUTitle.ResumeLayout(false);
             panelGPUTitle.PerformLayout();
@@ -1664,11 +1774,15 @@ namespace GHelper
         private RButton buttonFnLock;
         private RButton buttonBatteryFull;
         private Panel panelAlly;
-        private Label label1;
         private TableLayoutPanel tableLayoutAlly;
-        private RButton buttonController;
+        private RButton buttonControllerMode;
         private Panel panelAllyTitle;
         private Label labelAlly;
         private PictureBox pictureAlly;
+        private RButton buttonBacklight;
+        private TableLayoutPanel tableAMD;
+        private RButton buttonFPS;
+        private RButton buttonController;
+        private RButton buttonOverlay;
     }
 }

@@ -319,7 +319,6 @@ namespace GHelper.Mode
                 int clock_limit = AppConfig.GetMode("gpu_clock_limit");
 
                 if (core == -1 && memory == -1 && clock_limit == -1) return;
-
                 //if ((gpu_core > -5 && gpu_core < 5) && (gpu_memory > -5 && gpu_memory < 5)) launchAsAdmin = false;
 
                 if (Program.acpi.DeviceGet(AsusACPI.GPUEco) == 1) { Logger.WriteLine("Clocks: Eco"); return; }
@@ -415,6 +414,8 @@ namespace GHelper.Mode
                 if (launchAsAdmin) ProcessHelper.RunAsAdmin("uv");
                 return;
             }
+
+            if (!RyzenControl.IsRingExsists()) return;
 
             try
             {

@@ -13,7 +13,6 @@ namespace GHelper
     {
 
         ScreenControl screenControl = new ScreenControl();
-        ModeControl modeControl = new ModeControl();
         ClamshellModeControl clamshellControl = new ClamshellModeControl();
 
         const string EMPTY = "--------------";
@@ -43,6 +42,11 @@ namespace GHelper
             {
                 customActions.Add("screenpad_down", Properties.Strings.ScreenPadDown);
                 customActions.Add("screenpad_up", Properties.Strings.ScreenPadUp);
+            }
+
+            if (AppConfig.IsAlly())
+            {
+                customActions.Add("controller", "Controller Mode");
             }
 
             switch (name)
@@ -226,6 +230,10 @@ namespace GHelper
                 SetKeyCombo(comboM4, textM4, "m4");
                 SetKeyCombo(comboFNF4, textFNF4, "paddle");
 
+                checkGpuApps.Visible = false;
+                checkUSBC.Visible = false;
+                checkAutoToggleClamshellMode.Visible = false;
+                checkNoOverdrive.Visible = false;
 
                 int apuMem = Program.acpi.GetAPUMem();
                 if (apuMem >= 0)
@@ -311,18 +319,18 @@ namespace GHelper
             checkSleepLogo.CheckedChanged += CheckPower_CheckedChanged;
             checkShutdownLogo.CheckedChanged += CheckPower_CheckedChanged;
 
-            if (!AppConfig.IsStrix())
-            {
-                labelBacklightBar.Visible = false;
-                checkAwakeBar.Visible = false;
-                checkBootBar.Visible = false;
-                checkSleepBar.Visible = false;
-                checkShutdownBar.Visible = false;
-
-            }
-
             if ((!AppConfig.IsStrix() && !AppConfig.IsZ13()) || AppConfig.IsStrixLimitedRGB() || AppConfig.IsARCNM())
             {
+
+                if (!AppConfig.IsStrixLimitedRGB())
+                {
+                    labelBacklightBar.Visible = false;
+                    checkAwakeBar.Visible = false;
+                    checkBootBar.Visible = false;
+                    checkSleepBar.Visible = false;
+                    checkShutdownBar.Visible = false;
+                }
+
                 labelBacklightLid.Visible = false;
                 checkAwakeLid.Visible = false;
                 checkBootLid.Visible = false;
@@ -334,7 +342,6 @@ namespace GHelper
                 checkBootLogo.Visible = false;
                 checkSleepLogo.Visible = false;
                 checkShutdownLogo.Visible = false;
-
             }
 
             if (!AppConfig.IsStrix() && !AppConfig.IsZ13())

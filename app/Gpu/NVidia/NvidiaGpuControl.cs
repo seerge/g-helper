@@ -152,6 +152,8 @@ public class NvidiaGpuControl : IGpuControl
 
         int _clockLimit = GetMaxGPUCLock();
 
+        if (_clockLimit < 0 && clock == 0) return 0;
+
         if (_clockLimit != clock)
         {
             if (clock > 0) RunPowershellCommand($"nvidia-smi -lgc 0,{clock}");
@@ -178,10 +180,10 @@ public class NvidiaGpuControl : IGpuControl
         if (core < MinCoreOffset || core > MaxCoreOffset) return 0;
         if (memory < MinMemoryOffset || memory > MaxMemoryOffset) return 0;
 
-        if (GetClocks(out int currentCore, out int currentMemory))
-        {
-            if (Math.Abs(core - currentCore) < 5 && Math.Abs(memory - currentMemory) < 5) return 0;
-        }
+        GetClocks(out int currentCore, out int currentMemory);
+
+        // Nothing to set
+        if (Math.Abs(core - currentCore) < 5 && Math.Abs(memory - currentMemory) < 5) return 0;
 
         PhysicalGPU internalGpu = _internalGpu!;
 

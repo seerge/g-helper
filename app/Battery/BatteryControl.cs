@@ -19,7 +19,7 @@
         public static void UnSetBatteryLimitFull()
         {
             AppConfig.Set("charge_full", 0);
-            Program.settingsForm.VisualiseBatteryFull();
+            Program.settingsForm.Invoke(Program.settingsForm.VisualiseBatteryFull);
         }
 
         public static void AutoBattery(bool init = false)

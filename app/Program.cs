@@ -6,8 +6,6 @@ using GHelper.Helpers;
 using GHelper.Input;
 using GHelper.Mode;
 using GHelper.Peripherals;
-using GHelper.USB;
-using Microsoft.VisualBasic.Logging;
 using Microsoft.Win32;
 using Ryzen;
 using System.Diagnostics;
@@ -33,7 +31,7 @@ namespace GHelper
 
         public static ModeControl modeControl = new ModeControl();
         public static GPUModeControl gpuControl = new GPUModeControl(settingsForm);
-        public static AllyControl controllerControl = new AllyControl(settingsForm);
+        public static AllyControl allyControl = new AllyControl(settingsForm);
         public static ScreenControl screenControl = new ScreenControl();
         public static ClamshellModeControl clamshellControl = new ClamshellModeControl();
 
@@ -198,6 +196,10 @@ namespace GHelper
 
                     if (settingsForm.matrixForm is not null && settingsForm.matrixForm.Text != "")
                         settingsForm.matrixForm.InitTheme();
+
+                    if (settingsForm.handheldForm is not null && settingsForm.handheldForm.Text != "")
+                        settingsForm.handheldForm.InitTheme();
+
                     break;
             }
         }
@@ -227,10 +229,15 @@ namespace GHelper
 
             BatteryControl.AutoBattery(init);
 
-            settingsForm.AutoKeyboard();
             settingsForm.matrixControl.SetMatrix(true);
 
-            controllerControl.Init();
+            if (AppConfig.IsAlly())
+            {
+                allyControl.Init();
+            } else
+            {
+                settingsForm.AutoKeyboard();
+            }
         }
 
         private static void SystemEvents_PowerModeChanged(object sender, PowerModeChangedEventArgs e)
@@ -271,7 +278,11 @@ namespace GHelper
                 settingsForm.Activate();
 
                 settingsForm.Left = Screen.FromControl(settingsForm).WorkingArea.Width - 10 - settingsForm.Width;
-                settingsForm.Top = Screen.FromControl(settingsForm).WorkingArea.Height - 10 - settingsForm.Height;
+                
+                if (AppConfig.IsAlly())
+                    settingsForm.Top = Math.Max(10, Screen.FromControl(settingsForm).Bounds.Height - 110 - settingsForm.Height);
+                else
+                    settingsForm.Top = Screen.FromControl(settingsForm).WorkingArea.Height - 10 - settingsForm.Height;
 
                 settingsForm.VisualiseGPUMode();
             }
