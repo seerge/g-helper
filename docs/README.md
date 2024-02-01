@@ -6,7 +6,7 @@
 Small and lightweight Armoury Crate alternative for Asus laptops offering almost same functionality without extra bloat and unnecessary services. 
 Works with all popular models, such as ROG Zephyrus G14, G15, G16, M16, Flow X13, Flow X16, Flow Z13, TUF Series, Strix / Scar Series, ProArt, VivoBook and many more! 
 
-# [:floppy_disk:Download](https://github.com/seerge/g-helper/releases/latest/download/GHelper.zip)
+# [:floppy_disk:Download](https://github.com/seerge/g-helper/releases/download/v0.151/GHelper.zip)
 
 - [FAQ](https://github.com/seerge/g-helper/wiki/FAQ)
 - [Setup and Requirements](https://github.com/seerge/g-helper/wiki/Requirements)
@@ -95,6 +95,7 @@ Each BIOS mode is paired with matching Windows Power Mode. You can adjust this s
 - ROG Keris Wireless
 - ROG Strix Carry (P508)
 - ROG Strix III Gladius III Aimpoint Wireless (P711)
+- ROG Strix Impact III (P518)
 - ROG Spatha
 - ROG Strix Impact II Wireless
 - TUF Gaming M4 Wireless (P306)
