@@ -12,10 +12,8 @@ using GHelper.Peripherals;
 using GHelper.Peripherals.Mouse;
 using GHelper.UI;
 using GHelper.USB;
-using System;
 using System.Diagnostics;
 using System.Timers;
-using static NativeMethods;
 
 namespace GHelper
 {
@@ -435,7 +433,7 @@ namespace GHelper
             if (m.Msg == NativeMethods.WM_POWERBROADCAST && m.WParam == (IntPtr)NativeMethods.PBT_POWERSETTINGCHANGE)
             {
                 var settings = (NativeMethods.POWERBROADCAST_SETTING)m.GetLParam(typeof(NativeMethods.POWERBROADCAST_SETTING));
-                if (settings.PowerSetting == PowerSettingGuid.LIDSWITCH_STATE_CHANGE)
+                if (settings.PowerSetting == NativeMethods.PowerSettingGuid.LIDSWITCH_STATE_CHANGE)
                 {
                     switch (settings.Data)
                     {
