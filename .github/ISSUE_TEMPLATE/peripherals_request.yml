@@ -1,0 +1,31 @@
+name: Mouse and other peripherals support request
+description: Request support for a new device
+body:
+  - type: input
+    id: device
+    attributes:
+      label: Mouse / peripheral model and version
+      placeholder: e.g. Asus TUF M4 Wireless
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: Armoury Crate Screenshots
+      description: Connect your mouse to Armoury Crate (maybe in a VM if you do not want to install it on your PC) and upload here screenshots of all the pages for your mouse for settings.
+      placeholder: Drag and drop screenshots here
+    validations:
+      required: true
+  - type: textarea
+    id: solution
+    attributes:
+      label: USB Details
+      description: Also, please use <a href=https://www.uwe-sieber.de/usbtreeview.html>USB Tree View</a> and send the text (especially the block with all the child devices) of the mouse. <img width="1168" alt="image" src="https://github.com/seerge/g-helper/assets/12786283/8b51dd4d-c9fe-444e-b1b1-415175e10555">
+      placeholder: USB Tree View details
+    validations:
+      required: true
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional information. 
+      placeholder: If applicable, add screenshots or other relevant information          
