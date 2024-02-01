@@ -214,6 +214,7 @@ namespace GHelper.Peripherals
             DetectMouse(new ChakramCore());
             DetectMouse(new SpathaX());
             DetectMouse(new StrixCarry());
+            DetectMouse(new StrixImpactIII());
         }
 
         public static void DetectMouse(AsusMouse am)
