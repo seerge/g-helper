@@ -15,6 +15,7 @@ using GHelper.USB;
 using System;
 using System.Diagnostics;
 using System.Timers;
+using static NativeMethods;
 
 namespace GHelper
 {
@@ -431,29 +432,42 @@ namespace GHelper
         protected override void WndProc(ref Message m)
         {
 
-            switch (m.Msg)
+            if (m.Msg == NativeMethods.WM_POWERBROADCAST && m.WParam == (IntPtr)NativeMethods.PBT_POWERSETTINGCHANGE)
             {
-                case NativeMethods.WM_POWERBROADCAST:
-                    if (m.WParam == (IntPtr)NativeMethods.PBT_POWERSETTINGCHANGE)
+                var settings = (NativeMethods.POWERBROADCAST_SETTING)m.GetLParam(typeof(NativeMethods.POWERBROADCAST_SETTING));
+                if (settings.PowerSetting == PowerSettingGuid.LIDSWITCH_STATE_CHANGE)
+                {
+                    switch (settings.Data)
                     {
-                        var settings = (NativeMethods.POWERBROADCAST_SETTING)m.GetLParam(typeof(NativeMethods.POWERBROADCAST_SETTING));
-                        switch (settings.Data)
-                        {
-                            case 0:
-                                Logger.WriteLine("Monitor Power Off");
-                                Aura.ApplyBrightness(0);
-                                break;
-                            case 1:
-                                Logger.WriteLine("Monitor Power On");
-                                Program.SetAutoModes();
-                                break;
-                            case 2:
-                                Logger.WriteLine("Monitor Dimmed");
-                                break;
-                        }
+                        case 0:
+                            Logger.WriteLine("Lid Closed");
+                            Aura.ApplyBrightness(0, "Lid");
+                            break;
+                        case 1:
+                            Logger.WriteLine("Lid Open");
+                            Aura.ApplyBrightness(InputDispatcher.GetBacklight(), "Lid");
+                            break;
                     }
-                    m.Result = (IntPtr)1;
-                    break;
+
+                }
+                else
+                {
+                    switch (settings.Data)
+                    {
+                        case 0:
+                            Logger.WriteLine("Monitor Power Off");
+                            Aura.ApplyBrightness(0);
+                            break;
+                        case 1:
+                            Logger.WriteLine("Monitor Power On");
+                            Program.SetAutoModes();
+                            break;
+                        case 2:
+                            Logger.WriteLine("Monitor Dimmed");
+                            break;
+                    }
+                }
+                m.Result = (IntPtr)1;
             }
 
             try

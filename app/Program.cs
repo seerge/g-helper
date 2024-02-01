@@ -37,7 +37,7 @@ namespace GHelper
 
         public static ToastForm toast = new ToastForm();
 
-        public static IntPtr unRegPowerNotify;
+        public static IntPtr unRegPowerNotify, unRegPowerNotifyLid;
 
         private static long lastAuto;
         private static long lastTheme;
@@ -110,8 +110,8 @@ namespace GHelper
             clamshellControl.ToggleLidAction();
 
             // Subscribing for monitor power on events
-            PowerSettingGuid settingGuid = new NativeMethods.PowerSettingGuid();
-            unRegPowerNotify = NativeMethods.RegisterPowerSettingNotification(settingsForm.Handle, settingGuid.ConsoleDisplayState, NativeMethods.DEVICE_NOTIFY_WINDOW_HANDLE);
+            unRegPowerNotify = NativeMethods.RegisterPowerSettingNotification(settingsForm.Handle, PowerSettingGuid.ConsoleDisplayState, NativeMethods.DEVICE_NOTIFY_WINDOW_HANDLE);
+            unRegPowerNotifyLid = NativeMethods.RegisterPowerSettingNotification(settingsForm.Handle, PowerSettingGuid.LIDSWITCH_STATE_CHANGE, NativeMethods.DEVICE_NOTIFY_WINDOW_HANDLE);
 
 
             Task task = Task.Run((Action)PeripheralsProvider.DetectAllAsusMice);
@@ -303,6 +303,7 @@ namespace GHelper
             PeripheralsProvider.UnregisterForDeviceEvents();
             clamshellControl.UnregisterDisplayEvents();
             NativeMethods.UnregisterPowerSettingNotification(unRegPowerNotify);
+            NativeMethods.UnregisterPowerSettingNotification(unRegPowerNotifyLid);
             Application.Exit();
         }
 
