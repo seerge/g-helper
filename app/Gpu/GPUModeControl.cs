@@ -185,6 +185,8 @@ namespace GHelper.Gpu
             if (SystemInformation.PowerStatus.PowerLineStatus != PowerLineStatus.Online) return false;
             if (!AppConfig.Is("optimized_usbc")) return true;
 
+            if (AppConfig.ContainsModel("FA507")) Thread.Sleep(600);
+
             int chargerMode = Program.acpi.DeviceGet(AsusACPI.ChargerMode);
             Logger.WriteLine("ChargerStatus: " + chargerMode);
 
