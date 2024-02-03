@@ -249,6 +249,13 @@ namespace GHelper
                 gpuControl.StandardModeFix();
             }
 
+            int delay = AppConfig.Get("charger_delay");
+            if (delay > 0)
+            {
+                Logger.WriteLine($"Charger Delay: {delay}");
+                Thread.Sleep(delay);
+            }
+
             if (SystemInformation.PowerStatus.PowerLineStatus == isPlugged) return;
             SetAutoModes(true);
         }
