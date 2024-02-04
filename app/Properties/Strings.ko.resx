@@ -362,6 +362,9 @@
   <data name="EnergySettings" xml:space="preserve">
     <value>Energy Settings</value>
   </data>
+  <data name="Export" xml:space="preserve">
+    <value>Export Profile</value>
+  </data>
   <data name="Extra" xml:space="preserve">
     <value>추가 설정</value>
   </data>
@@ -436,6 +439,9 @@
   </data>
   <data name="ImageRotation" xml:space="preserve">
     <value>Image Rotation</value>
+  </data>
+  <data name="Import" xml:space="preserve">
+    <value>Import Profile</value>
   </data>
   <data name="KeyBindings" xml:space="preserve">
     <value>키 설정</value>
@@ -523,6 +529,9 @@
   </data>
   <data name="MouseButtonResponse" xml:space="preserve">
     <value>버튼 응답</value>
+  </data>
+  <data name="MouseImportFailed" xml:space="preserve">
+    <value>Import failed. Selected file is not a valid mouse profile or corrutpted.</value>
   </data>
   <data name="MouseLiftOffDistance" xml:space="preserve">
     <value>들어올림 거리</value>

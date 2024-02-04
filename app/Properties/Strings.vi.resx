@@ -362,6 +362,9 @@ Do you still want to continue?</value>
   <data name="EnergySettings" xml:space="preserve">
     <value>Energy Settings</value>
   </data>
+  <data name="Export" xml:space="preserve">
+    <value>Export Profile</value>
+  </data>
   <data name="Extra" xml:space="preserve">
     <value>Thêm</value>
   </data>
@@ -436,6 +439,9 @@ Do you still want to continue?</value>
   </data>
   <data name="ImageRotation" xml:space="preserve">
     <value>Image Rotation</value>
+  </data>
+  <data name="Import" xml:space="preserve">
+    <value>Import Profile</value>
   </data>
   <data name="KeyBindings" xml:space="preserve">
     <value>Tổ hợp phím</value>
@@ -523,6 +529,9 @@ Do you still want to continue?</value>
   </data>
   <data name="MouseButtonResponse" xml:space="preserve">
     <value>Button Response</value>
+  </data>
+  <data name="MouseImportFailed" xml:space="preserve">
+    <value>Import failed. Selected file is not a valid mouse profile or corrutpted.</value>
   </data>
   <data name="MouseLiftOffDistance" xml:space="preserve">
     <value>Lift Off Distance</value>
