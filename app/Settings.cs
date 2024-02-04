@@ -91,6 +91,9 @@ namespace GHelper
             buttonQuit.Text = Properties.Strings.Quit;
             buttonUpdates.Text = Properties.Strings.Updates;
 
+            buttonController.Text = Properties.Strings.Controller;
+            labelAlly.Text = Properties.Strings.AllyController;
+
             // Accessible Labels
 
             panelMatrix.AccessibleName = Properties.Strings.AnimeMatrix;

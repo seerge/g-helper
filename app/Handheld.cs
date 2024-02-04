@@ -14,6 +14,17 @@ namespace GHelper
             InitializeComponent();
             InitTheme(true);
 
+            labelLSTitle.Text = Properties.Strings.LSDeadzones;
+            labelRSTitle.Text = Properties.Strings.RSDeadzones;
+            labelLTTitle.Text = Properties.Strings.LTDeadzones;
+            labelRTTitle.Text = Properties.Strings.RTDeadzones;
+            labelVibraTitle.Text = Properties.Strings.VibrationStrength;
+            checkController.Text = Properties.Strings.DisableController;
+            buttonReset.Text = Properties.Strings.Reset;
+
+            labelPrimary.Text = Properties.Strings.BindingPrimary;
+            labelSecondary.Text = Properties.Strings.BindingSecondary;
+
             Shown += Handheld_Shown;
 
             Init();
@@ -160,7 +171,7 @@ namespace GHelper
             activeButton = button;
             activeBinding = binding;
 
-            labelBinding.Text = "Binding: " + label;
+            labelBinding.Text = Properties.Strings.Binding + ": " + label;
 
             SetComboValue(comboPrimary, AppConfig.GetString("bind_" + binding, ""));
             SetComboValue(comboSecondary, AppConfig.GetString("bind2_" + binding, ""));
