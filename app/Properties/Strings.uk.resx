@@ -145,7 +145,7 @@
     <value>Перезавантажити зараз?</value>
   </data>
   <data name="AllyController" xml:space="preserve">
-    <value>Ally Controller</value>
+    <value>Ally Контролер</value>
   </data>
   <data name="AnimationSpeed" xml:space="preserve">
     <value>Швидкість Анімації</value>
@@ -172,7 +172,7 @@
     <value>Автоматично застосовувати Windows Power Modes</value>
   </data>
   <data name="APUMemory" xml:space="preserve">
-    <value>Memory Assigned to GPU</value>
+    <value>Пам'ять призначена на GPU</value>
   </data>
   <data name="AsusServicesRunning" xml:space="preserve">
     <value>Кількість запущених сервісів Asus</value>
@@ -253,10 +253,10 @@
     <value>Тайм-аут на зарядці / на батареї (0 - УВІМК)</value>
   </data>
   <data name="BacklightTimeoutBattery" xml:space="preserve">
-    <value>Backlight Timeout when on battery</value>
+    <value>Тайм-аут підсвітки на батареї</value>
   </data>
   <data name="BacklightTimeoutPlugged" xml:space="preserve">
-    <value>Backlight Timeout when plugged</value>
+    <value>Тайм-аут підсвітки на зарядці</value>
   </data>
   <data name="Balanced" xml:space="preserve">
     <value>Баланс</value>
@@ -274,13 +274,13 @@
     <value>Одноразовий заряд до 100%</value>
   </data>
   <data name="Binding" xml:space="preserve">
-    <value>Binding</value>
+    <value>Прив'язка</value>
   </data>
   <data name="BindingPrimary" xml:space="preserve">
-    <value>Primary</value>
+    <value>Первинна</value>
   </data>
   <data name="BindingSecondary" xml:space="preserve">
-    <value>Secondary</value>
+    <value>Додаткова</value>
   </data>
   <data name="BiosAndDriverUpdates" xml:space="preserve">
     <value>Оновлення BIOS та драйверів</value>
@@ -310,10 +310,10 @@
     <value>Колір</value>
   </data>
   <data name="Contrast" xml:space="preserve">
-    <value>Contrast</value>
+    <value>Контраст</value>
   </data>
   <data name="Controller" xml:space="preserve">
-    <value>Controller</value>
+    <value>Контролер</value>
   </data>
   <data name="CPUBoost" xml:space="preserve">
     <value>CPU Boost</value>
@@ -328,7 +328,7 @@
     <value>За замовчуванням</value>
   </data>
   <data name="DisableController" xml:space="preserve">
-    <value>Disable Controller</value>
+    <value>Вимкнути контролер</value>
   </data>
   <data name="DisableOverdrive" xml:space="preserve">
     <value>Вимкнути овердрайв дисплею</value>
@@ -349,7 +349,7 @@
     <value>Еко</value>
   </data>
   <data name="EnableGPUOnShutdown" xml:space="preserve">
-    <value>Enable GPU on shutdown (prevents issue with Eco mode)</value>
+    <value>Увімкнути GPU при вимиканні лептопу</value>
   </data>
   <data name="EnableOptimusText" xml:space="preserve">
     <value>Вимкнення dGPU коли NVIDIA Display Mode не встановлено в режим Optimus може спричинити проблеми з управлінням яскравістю до наступного перезавантаження. 
@@ -435,7 +435,7 @@
     <value>Висока</value>
   </data>
   <data name="ImageRotation" xml:space="preserve">
-    <value>Image Rotation</value>
+    <value>Поворот зображення</value>
   </data>
   <data name="KeyBindings" xml:space="preserve">
     <value>Прив'язки клавіш</value>
@@ -471,10 +471,10 @@
     <value>Низька</value>
   </data>
   <data name="LSDeadzones" xml:space="preserve">
-    <value>Left Stick Deadzones</value>
+    <value>Мертві зони лівого джойстика</value>
   </data>
   <data name="LTDeadzones" xml:space="preserve">
-    <value>Left Trigger Deadzones</value>
+    <value>Мертві зони лівого тригера</value>
   </data>
   <data name="MatrixAudio" xml:space="preserve">
     <value>Аудіо візуалізатор</value>
@@ -537,10 +537,10 @@
     <value>Синхронізувати з мишею</value>
   </data>
   <data name="Multizone" xml:space="preserve">
-    <value>Multi Zone</value>
+    <value>Мульти-зона</value>
   </data>
   <data name="MultizoneStrong" xml:space="preserve">
-    <value>Multi Zone Strong</value>
+    <value>Мульти-зона сильна</value>
   </data>
   <data name="MuteMic" xml:space="preserve">
     <value>Вимкнути мікрофон</value>
@@ -558,7 +558,7 @@
     <value>Не під'єднано</value>
   </data>
   <data name="OneZone" xml:space="preserve">
-    <value>One Zone</value>
+    <value>Одна зона</value>
   </data>
   <data name="OpenGHelper" xml:space="preserve">
     <value>Відкрити вікно G-Helper</value>
@@ -609,7 +609,7 @@
     <value>Вихід</value>
   </data>
   <data name="Reset" xml:space="preserve">
-    <value>Reset</value>
+    <value>Скинути</value>
   </data>
   <data name="RestartGPU" xml:space="preserve">
     <value>Щось використовує dGPU та запобігає Еко-режиму. Дозвольте G-Helper спробувати перезапустити dGPU у менеджері пристрою? (Будь ласка, продовжуйте на власний ризик)</value>
@@ -618,16 +618,16 @@
     <value>Оберти</value>
   </data>
   <data name="RSDeadzones" xml:space="preserve">
-    <value>Right Stick Deadzones</value>
+    <value>Мертві зони правого джойстика</value>
   </data>
   <data name="RTDeadzones" xml:space="preserve">
-    <value>Right Trigger Deadzones</value>
+    <value>Мертві зони правого тригера</value>
   </data>
   <data name="RunOnStartup" xml:space="preserve">
     <value>Запускати на старті</value>
   </data>
   <data name="ScalingQuality" xml:space="preserve">
-    <value>Scaling Quality</value>
+    <value>Метод масштабування</value>
   </data>
   <data name="ScreenPadDown" xml:space="preserve">
     <value>Зменшити яскравість Screenpad</value>
@@ -708,7 +708,7 @@
     <value>Версія</value>
   </data>
   <data name="VibrationStrength" xml:space="preserve">
-    <value>Vibration Strength</value>
+    <value>Сила вібрації</value>
   </data>
   <data name="VolumeDown" xml:space="preserve">
     <value>Зменшення гучності</value>
@@ -723,6 +723,6 @@
     <value>Тримати вікно завжди зверху</value>
   </data>
   <data name="Zoom" xml:space="preserve">
-    <value>Zoom</value>
+    <value>Зум</value>
   </data>
 </root>
