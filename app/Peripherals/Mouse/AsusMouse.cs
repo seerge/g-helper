@@ -97,6 +97,43 @@ namespace GHelper.Peripherals.Mouse
 
         public AnimationDirection AnimationDirection { get; set; }
 
+        public byte[] Export()
+        {
+            byte[] data = new byte[0];
+
+            data = data
+                .Append((byte)LightingMode)                         // 1 Byte
+                .Concat(BitConverter.GetBytes(Brightness))          // 4 Bytes
+                .Concat(BitConverter.GetBytes(RGBColor.ToArgb()))   // 4 Bytes
+                .Concat(BitConverter.GetBytes(RandomColor))         // 1 Byte
+                .Append((byte)AnimationSpeed)                       // 1 Byte
+                .Append((byte)AnimationDirection)                   // 1 Byte
+                .ToArray();
+
+            //12 bytes
+            return data;
+        }
+
+        public bool Import(byte[] blob)
+        {
+            if (blob.Length != 12)
+            {
+                //Data must be 12 bytes
+                return false;
+            }
+
+            LightingMode = (LightingMode)blob[0];
+
+            Brightness = BitConverter.ToInt32(blob, 1);
+            RGBColor = Color.FromArgb(BitConverter.ToInt32(blob, 5));
+            RandomColor = BitConverter.ToBoolean(blob, 9);
+
+            AnimationSpeed = (AnimationSpeed)blob[10];
+            AnimationDirection = (AnimationDirection)blob[11];
+
+            return true;
+        }
+
         public override bool Equals(object? obj)
         {
             return obj is LightingSetting setting &&
@@ -134,6 +171,33 @@ namespace GHelper.Peripherals.Mouse
         public override string? ToString()
         {
             return "DPI: " + DPI + ", Color (" + Color.R + ", " + Color.G + ", " + Color.B + ")";
+        }
+
+        public byte[] Export()
+        {
+            byte[] data = new byte[0];
+
+            data = data
+                .Concat(BitConverter.GetBytes(DPI))                     // 4 bytes
+                .Concat(BitConverter.GetBytes(Color.ToArgb()))          // 4 bytes
+                .ToArray();
+
+            //8 bytes
+            return data;
+        }
+
+        public bool Import(byte[] blob)
+        {
+            if (blob.Length != 8)
+            {
+                //Data must be 8 bytes
+                return false;
+            }
+
+            DPI = BitConverter.ToUInt32(blob, 0);
+            Color = Color.FromArgb(BitConverter.ToInt32(blob, 4));
+
+            return true;
         }
     }
 
@@ -204,6 +268,165 @@ namespace GHelper.Peripherals.Mouse
         public AsusMouse(ushort vendorId, ushort productId, string path, bool wireless, byte reportId) : this(vendorId, productId, path, wireless)
         {
             this.reportId = reportId;
+        }
+
+
+        public bool CanExport()
+        {
+            return true;
+        }
+
+        //GMP1 = G-Helper Mouse Profile Version 1 :D
+        private static readonly byte[] MAGIC = { (byte)'G', (byte)'M', (byte)'P', (byte)'1' };
+
+        public byte[] Export()
+        {
+            byte[] data = new byte[0];
+
+            data = data
+                .Concat(MAGIC)                                          // 4 Byte Magic
+                .ToArray();
+
+            foreach (LightingSetting ls in LightingSetting)
+            {
+                data = data.Concat(ls.Export()).ToArray();                     // Append 12 bytes for each Lighting setting
+            }
+
+
+            data = data                                                        // = 6 Bytes
+                .Concat(BitConverter.GetBytes(LowBatteryWarning))       // 4 Bytes
+                .Append((byte)PowerOffSetting)                          // 1 Byte
+                .Append((byte)LiftOffDistance)                          // 1 Byte
+                .ToArray();
+
+            foreach (AsusMouseDPI dpi in DpiSettings)
+            {
+                data = data.Concat(dpi.Export()).ToArray();                     // Append 8 bytes for each DPI Profile
+            }
+
+
+
+            data = data                                                        // = 13 Bytes
+               .Append((byte)PollingRate)                               // 1 Byte
+               .Concat(BitConverter.GetBytes(AngleSnapping))            // 1 Byte
+               .Concat(BitConverter.GetBytes(AngleAdjustmentDegrees))   // 2 Bytes
+               .Append((byte)Debounce)                                  // 1 Byte
+               .Concat(BitConverter.GetBytes(Acceleration))             // 4 Bytes
+               .Concat(BitConverter.GetBytes(Deceleration))             // 4 Bytes
+               .ToArray();
+
+            //Total length: 4 + (LightingSetting.Length * 12) + 6 + (DPIProfileCount() + 8) + 13 Bytes
+
+            return data;
+        }
+
+        public bool Import(byte[] blob)
+        {
+            int expectedLength = 4 + (LightingSetting.Length * 12) + 6 + (DPIProfileCount() * 8) + 13;
+
+            if (blob.Length != expectedLength)
+            {
+                //Wrong lenght. Will not decode properly anyways.
+                Logger.WriteLine(GetDisplayName() + " Import: Failed to import due to wrong data Lenght. Expected: " + expectedLength + " Is: " + blob.Length);
+                return false;
+            }
+
+            if (blob[0] != MAGIC[0] || blob[1] != MAGIC[1] || blob[2] != MAGIC[2] || blob[3] != MAGIC[3])
+            {
+                //MAGIC does not match. Maybe some other profile or not even a profile at all.
+                Logger.WriteLine(GetDisplayName() + " Import: Failed to import. Magic Wrong: " + ByteArrayToString(blob));
+                return false;
+            }
+
+
+            int offset = 4; // skip MAGIC
+
+            for (int i = 0; i < LightingSetting.Length; ++i)
+            {
+                byte[] data = blob.Skip(offset).Take(12).ToArray(); // Read 12 Byte blocks
+                offset += 12;
+
+
+                if (!LightingSetting[i].Import(data))
+                {
+                    Logger.WriteLine(GetDisplayName() + " Import: Failed to import LightingSetting. Data: " + ByteArrayToString(data));
+                    return false;
+                }
+            }
+
+            LowBatteryWarning = BitConverter.ToInt32(blob, offset);
+            offset += 4;
+
+            PowerOffSetting = (PowerOffSetting)blob[offset++];
+            LiftOffDistance = (LiftOffDistance)blob[offset++];
+
+            for (int i = 0; i < DpiSettings.Length; ++i)
+            {
+                byte[] data = blob.Skip(offset).Take(8).ToArray(); // Read 8 Byte blocks
+                offset += 8;
+
+
+                if (!DpiSettings[i].Import(data))
+                {
+                    Logger.WriteLine(GetDisplayName() + " Import: Failed to import DPISettings. Data: " + ByteArrayToString(data));
+                    return false;
+                }
+            }
+
+
+            PollingRate = (PollingRate)blob[offset++];
+
+            AngleSnapping = BitConverter.ToBoolean(blob, offset++);
+            AngleAdjustmentDegrees = BitConverter.ToInt16(blob, offset);
+            offset += 2;
+
+
+            Acceleration = BitConverter.ToInt32(blob, offset);
+            offset += 4;
+            Deceleration = BitConverter.ToInt32(blob, offset);
+            offset += 4;
+
+
+            //Apply Settings to the mouse
+            if (HasBattery())
+                SetEnergySettings(LowBatteryWarning, PowerOffSetting);
+
+            SetPollingRate(PollingRate);
+
+            if (HasLiftOffSetting())
+                SetLiftOffDistance(LiftOffDistance);
+
+            if (HasAngleSnapping())
+                SetAngleSnapping(AngleSnapping);
+
+            if (HasAngleTuning())
+                SetAngleAdjustment(AngleAdjustmentDegrees);
+
+            if (HasAcceleration())
+                SetAcceleration(Acceleration);
+
+            if (HasDeceleration())
+                SetDeceleration(Deceleration);
+
+            if (HasRGB())
+            {
+                for (int i = 0; i < SupportedLightingZones().Length; ++i)
+                {
+                    LightingZone lz = SupportedLightingZones()[i];
+                    LightingSetting ls = LightingSettingForZone(lz);
+
+                    SetLightingSetting(ls, lz);
+                }
+            }
+
+            for (int i = 0; i < DPIProfileCount(); ++i)
+            {
+                AsusMouseDPI dpi = DpiSettings[i];
+
+                SetDPIForProfile(dpi, i + 1);
+            }
+
+            return true;
         }
 
         public override bool Equals(object? obj)
