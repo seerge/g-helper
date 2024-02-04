@@ -144,6 +144,9 @@
   <data name="AlertUltimateTitle" xml:space="preserve">
     <value>Uruchomić ponownie teraz?</value>
   </data>
+  <data name="AllyController" xml:space="preserve">
+    <value>Ally Controller</value>
+  </data>
   <data name="AnimationSpeed" xml:space="preserve">
     <value>Prędkość animacji</value>
   </data>
@@ -270,6 +273,15 @@
   <data name="BatteryLimitFull" xml:space="preserve">
     <value>Jednorazowo naładuj do 100%</value>
   </data>
+  <data name="Binding" xml:space="preserve">
+    <value>Binding</value>
+  </data>
+  <data name="BindingPrimary" xml:space="preserve">
+    <value>Primary</value>
+  </data>
+  <data name="BindingSecondary" xml:space="preserve">
+    <value>Secondary</value>
+  </data>
   <data name="BiosAndDriverUpdates" xml:space="preserve">
     <value>Aktualizacje BIOS i sterowników</value>
   </data>
@@ -297,6 +309,12 @@
   <data name="Color" xml:space="preserve">
     <value>Kolor</value>
   </data>
+  <data name="Contrast" xml:space="preserve">
+    <value>Contrast</value>
+  </data>
+  <data name="Controller" xml:space="preserve">
+    <value>Controller</value>
+  </data>
   <data name="CPUBoost" xml:space="preserve">
     <value>Zwiększenie taktowania CPU</value>
   </data>
@@ -308,6 +326,9 @@
   </data>
   <data name="Default" xml:space="preserve">
     <value>Domyślny</value>
+  </data>
+  <data name="DisableController" xml:space="preserve">
+    <value>Disable Controller</value>
   </data>
   <data name="DisableOverdrive" xml:space="preserve">
     <value>Wyłącz funkcję Overdrive monitora</value>
@@ -326,6 +347,9 @@
   </data>
   <data name="EcoMode" xml:space="preserve">
     <value>Eco</value>
+  </data>
+  <data name="EnableGPUOnShutdown" xml:space="preserve">
+    <value>Enable GPU on shutdown (prevents issue with Eco mode)</value>
   </data>
   <data name="EnableOptimusText" xml:space="preserve">
     <value>Wyłączenie dGPU przez przejście do trybu Eco, podczas gdy tryb wyświetlania w Panelu sterowania NVIDIA nie jest ustawiony na Optimus, może powodować problemy z regulacją jasności do czasu następnego restartu systemu. 
@@ -410,6 +434,9 @@ Nadal chcesz kontynuować?</value>
   <data name="High" xml:space="preserve">
     <value>Wysoka</value>
   </data>
+  <data name="ImageRotation" xml:space="preserve">
+    <value>Image Rotation</value>
+  </data>
   <data name="KeyBindings" xml:space="preserve">
     <value>Ustawienia klawiszy skrótów</value>
   </data>
@@ -442,6 +469,12 @@ Nadal chcesz kontynuować?</value>
   </data>
   <data name="Low" xml:space="preserve">
     <value>Niska</value>
+  </data>
+  <data name="LSDeadzones" xml:space="preserve">
+    <value>Left Stick Deadzones</value>
+  </data>
+  <data name="LTDeadzones" xml:space="preserve">
+    <value>Left Trigger Deadzones</value>
   </data>
   <data name="MatrixAudio" xml:space="preserve">
     <value>Wizualizer muzyki</value>
@@ -575,14 +608,26 @@ Nadal chcesz kontynuować?</value>
   <data name="Quit" xml:space="preserve">
     <value>Zamknij</value>
   </data>
+  <data name="Reset" xml:space="preserve">
+    <value>Reset</value>
+  </data>
   <data name="RestartGPU" xml:space="preserve">
     <value>Coś korzysta z dGPU, uniemożliwiając włączenie trybu Eco. Czy G-Helper ma zresetować dGPU w Menadżerze Urządzeń? (Korzystasz na własne ryzyko)</value>
   </data>
   <data name="RPM" xml:space="preserve">
     <value>RPM</value>
   </data>
+  <data name="RSDeadzones" xml:space="preserve">
+    <value>Right Stick Deadzones</value>
+  </data>
+  <data name="RTDeadzones" xml:space="preserve">
+    <value>Right Trigger Deadzones</value>
+  </data>
   <data name="RunOnStartup" xml:space="preserve">
     <value>Uruchom przy starcie</value>
+  </data>
+  <data name="ScalingQuality" xml:space="preserve">
+    <value>Scaling Quality</value>
   </data>
   <data name="ScreenPadDown" xml:space="preserve">
     <value>Zmniejsz jasność ScreenPad</value>
@@ -662,6 +707,9 @@ Nadal chcesz kontynuować?</value>
   <data name="VersionLabel" xml:space="preserve">
     <value>Wersja</value>
   </data>
+  <data name="VibrationStrength" xml:space="preserve">
+    <value>Vibration Strength</value>
+  </data>
   <data name="VolumeDown" xml:space="preserve">
     <value>Zmniejsz głośność</value>
   </data>
@@ -673,5 +721,8 @@ Nadal chcesz kontynuować?</value>
   </data>
   <data name="WindowTop" xml:space="preserve">
     <value>Zachowaj okno aplikacji zawsze na wierzchu</value>
+  </data>
+  <data name="Zoom" xml:space="preserve">
+    <value>Zoom</value>
   </data>
 </root>

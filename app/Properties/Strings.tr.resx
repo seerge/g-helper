@@ -144,6 +144,9 @@
   <data name="AlertUltimateTitle" xml:space="preserve">
     <value>Şimdi yeniden başlatılsın mı?</value>
   </data>
+  <data name="AllyController" xml:space="preserve">
+    <value>Ally Controller</value>
+  </data>
   <data name="AnimationSpeed" xml:space="preserve">
     <value>Animasyon Hızı</value>
   </data>
@@ -270,6 +273,15 @@
   <data name="BatteryLimitFull" xml:space="preserve">
     <value>Bir seferlik %100 şarj etme</value>
   </data>
+  <data name="Binding" xml:space="preserve">
+    <value>Binding</value>
+  </data>
+  <data name="BindingPrimary" xml:space="preserve">
+    <value>Primary</value>
+  </data>
+  <data name="BindingSecondary" xml:space="preserve">
+    <value>Secondary</value>
+  </data>
   <data name="BiosAndDriverUpdates" xml:space="preserve">
     <value>BIOS ve Sürücü Güncellemeleri</value>
   </data>
@@ -297,6 +309,12 @@
   <data name="Color" xml:space="preserve">
     <value>Renk</value>
   </data>
+  <data name="Contrast" xml:space="preserve">
+    <value>Contrast</value>
+  </data>
+  <data name="Controller" xml:space="preserve">
+    <value>Controller</value>
+  </data>
   <data name="CPUBoost" xml:space="preserve">
     <value>CPU Desteği</value>
   </data>
@@ -308,6 +326,9 @@
   </data>
   <data name="Default" xml:space="preserve">
     <value>Varsayılan</value>
+  </data>
+  <data name="DisableController" xml:space="preserve">
+    <value>Disable Controller</value>
   </data>
   <data name="DisableOverdrive" xml:space="preserve">
     <value>Ekran overdrive özelliğini devre dışı bırak</value>
@@ -326,6 +347,9 @@
   </data>
   <data name="EcoMode" xml:space="preserve">
     <value>Eko</value>
+  </data>
+  <data name="EnableGPUOnShutdown" xml:space="preserve">
+    <value>Enable GPU on shutdown (prevents issue with Eco mode)</value>
   </data>
   <data name="EnableOptimusText" xml:space="preserve">
     <value>NVIDIA Denetim Masası'ndaki Görüntü Modu Optimus olarak ayarlı değilken Eko moduna geçilerek harici GPU'nun devre dışı bırakılması, bir sonraki yeniden başlatmaya kadar parlaklık ayarlarında sorunlara neden olabilir. 
@@ -410,6 +434,9 @@ Yine de devam etmek istiyor musunuz?</value>
   <data name="High" xml:space="preserve">
     <value>Yüksek</value>
   </data>
+  <data name="ImageRotation" xml:space="preserve">
+    <value>Image Rotation</value>
+  </data>
   <data name="KeyBindings" xml:space="preserve">
     <value>Tuş Atamaları</value>
   </data>
@@ -442,6 +469,12 @@ Yine de devam etmek istiyor musunuz?</value>
   </data>
   <data name="Low" xml:space="preserve">
     <value>Düşük</value>
+  </data>
+  <data name="LSDeadzones" xml:space="preserve">
+    <value>Left Stick Deadzones</value>
+  </data>
+  <data name="LTDeadzones" xml:space="preserve">
+    <value>Left Trigger Deadzones</value>
   </data>
   <data name="MatrixAudio" xml:space="preserve">
     <value>Ses Görselleştirici</value>
@@ -575,14 +608,26 @@ Yine de devam etmek istiyor musunuz?</value>
   <data name="Quit" xml:space="preserve">
     <value>Çıkış Yap</value>
   </data>
+  <data name="Reset" xml:space="preserve">
+    <value>Reset</value>
+  </data>
   <data name="RestartGPU" xml:space="preserve">
     <value>Bir şey harici GPU'yu kullanıyor ve Eco modunu engelliyor. G-Helper aygıt yöneticisinde harici GPU'yu yeniden başlatmayı denesin mi? (Kendi sorumluluğunuzdadır)</value>
   </data>
   <data name="RPM" xml:space="preserve">
     <value>RPM</value>
   </data>
+  <data name="RSDeadzones" xml:space="preserve">
+    <value>Right Stick Deadzones</value>
+  </data>
+  <data name="RTDeadzones" xml:space="preserve">
+    <value>Right Trigger Deadzones</value>
+  </data>
   <data name="RunOnStartup" xml:space="preserve">
     <value>Başlangıçta Çalıştır</value>
+  </data>
+  <data name="ScalingQuality" xml:space="preserve">
+    <value>Scaling Quality</value>
   </data>
   <data name="ScreenPadDown" xml:space="preserve">
     <value>Screenpad Parlaklığını Azalt</value>
@@ -662,6 +707,9 @@ Yine de devam etmek istiyor musunuz?</value>
   <data name="VersionLabel" xml:space="preserve">
     <value>Sürüm</value>
   </data>
+  <data name="VibrationStrength" xml:space="preserve">
+    <value>Vibration Strength</value>
+  </data>
   <data name="VolumeDown" xml:space="preserve">
     <value>Sesi Azalt</value>
   </data>
@@ -673,5 +721,8 @@ Yine de devam etmek istiyor musunuz?</value>
   </data>
   <data name="WindowTop" xml:space="preserve">
     <value>Uygulama penceresini her zaman en üstte tut</value>
+  </data>
+  <data name="Zoom" xml:space="preserve">
+    <value>Zoom</value>
   </data>
 </root>

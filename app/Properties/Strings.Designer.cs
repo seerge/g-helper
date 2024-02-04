@@ -142,6 +142,15 @@ namespace GHelper.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ally Controller.
+        /// </summary>
+        internal static string AllyController {
+            get {
+                return ResourceManager.GetString("AllyController", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Animation Speed.
         /// </summary>
         internal static string AnimationSpeed {
@@ -520,6 +529,33 @@ namespace GHelper.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Binding.
+        /// </summary>
+        internal static string Binding {
+            get {
+                return ResourceManager.GetString("Binding", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Primary.
+        /// </summary>
+        internal static string BindingPrimary {
+            get {
+                return ResourceManager.GetString("BindingPrimary", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Secondary.
+        /// </summary>
+        internal static string BindingSecondary {
+            get {
+                return ResourceManager.GetString("BindingSecondary", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to BIOS and Driver Updates.
         /// </summary>
         internal static string BiosAndDriverUpdates {
@@ -601,6 +637,24 @@ namespace GHelper.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Contrast.
+        /// </summary>
+        internal static string Contrast {
+            get {
+                return ResourceManager.GetString("Contrast", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Controller.
+        /// </summary>
+        internal static string Controller {
+            get {
+                return ResourceManager.GetString("Controller", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to CPU Boost.
         /// </summary>
         internal static string CPUBoost {
@@ -633,6 +687,15 @@ namespace GHelper.Properties {
         internal static string Default {
             get {
                 return ResourceManager.GetString("Default", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Disable Controller.
+        /// </summary>
+        internal static string DisableController {
+            get {
+                return ResourceManager.GetString("DisableController", resourceCulture);
             }
         }
         
@@ -687,6 +750,15 @@ namespace GHelper.Properties {
         internal static string EcoMode {
             get {
                 return ResourceManager.GetString("EcoMode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enable GPU on shutdown (prevents issue with Eco mode).
+        /// </summary>
+        internal static string EnableGPUOnShutdown {
+            get {
+                return ResourceManager.GetString("EnableGPUOnShutdown", resourceCulture);
             }
         }
         
@@ -936,6 +1008,15 @@ namespace GHelper.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Image Rotation.
+        /// </summary>
+        internal static string ImageRotation {
+            get {
+                return ResourceManager.GetString("ImageRotation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Key Bindings.
         /// </summary>
         internal static string KeyBindings {
@@ -1031,6 +1112,24 @@ namespace GHelper.Properties {
         internal static string Low {
             get {
                 return ResourceManager.GetString("Low", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Left Stick Deadzones.
+        /// </summary>
+        internal static string LSDeadzones {
+            get {
+                return ResourceManager.GetString("LSDeadzones", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Left Trigger Deadzones.
+        /// </summary>
+        internal static string LTDeadzones {
+            get {
+                return ResourceManager.GetString("LTDeadzones", resourceCulture);
             }
         }
         
@@ -1431,6 +1530,15 @@ namespace GHelper.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Reset.
+        /// </summary>
+        internal static string Reset {
+            get {
+                return ResourceManager.GetString("Reset", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Something is using dGPU and preventing Eco mode. Let G-Helper try to restart dGPU in device manager? (Please proceed at your own risk).
         /// </summary>
         internal static string RestartGPU {
@@ -1449,11 +1557,38 @@ namespace GHelper.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Right Stick Deadzones.
+        /// </summary>
+        internal static string RSDeadzones {
+            get {
+                return ResourceManager.GetString("RSDeadzones", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Right Trigger Deadzones.
+        /// </summary>
+        internal static string RTDeadzones {
+            get {
+                return ResourceManager.GetString("RTDeadzones", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Run on Startup.
         /// </summary>
         internal static string RunOnStartup {
             get {
                 return ResourceManager.GetString("RunOnStartup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Scaling Quality.
+        /// </summary>
+        internal static string ScalingQuality {
+            get {
+                return ResourceManager.GetString("ScalingQuality", resourceCulture);
             }
         }
         
@@ -1692,6 +1827,15 @@ namespace GHelper.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Vibration Strength.
+        /// </summary>
+        internal static string VibrationStrength {
+            get {
+                return ResourceManager.GetString("VibrationStrength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Volume Down.
         /// </summary>
         internal static string VolumeDown {
@@ -1724,6 +1868,15 @@ namespace GHelper.Properties {
         internal static string WindowTop {
             get {
                 return ResourceManager.GetString("WindowTop", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Zoom.
+        /// </summary>
+        internal static string Zoom {
+            get {
+                return ResourceManager.GetString("Zoom", resourceCulture);
             }
         }
     }
