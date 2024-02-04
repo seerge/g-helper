@@ -471,10 +471,10 @@
     <value>Низька</value>
   </data>
   <data name="LSDeadzones" xml:space="preserve">
-    <value>Мертві зони лівого джойстика</value>
+    <value>Лівий стік - Deadzone</value>
   </data>
   <data name="LTDeadzones" xml:space="preserve">
-    <value>Мертві зони лівого тригера</value>
+    <value>Лівий тригер - Deadzone</value>
   </data>
   <data name="MatrixAudio" xml:space="preserve">
     <value>Аудіо візуалізатор</value>
@@ -618,10 +618,10 @@
     <value>Оберти</value>
   </data>
   <data name="RSDeadzones" xml:space="preserve">
-    <value>Мертві зони правого джойстика</value>
+    <value>Правий стік - Deadzone</value>
   </data>
   <data name="RTDeadzones" xml:space="preserve">
-    <value>Мертві зони правого тригера</value>
+    <value>Правий тригер - Deadzone</value>
   </data>
   <data name="RunOnStartup" xml:space="preserve">
     <value>Запускати на старті</value>
