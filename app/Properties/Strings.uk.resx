@@ -537,10 +537,10 @@
     <value>Синхронізувати з мишею</value>
   </data>
   <data name="Multizone" xml:space="preserve">
-    <value>Мульти-зона</value>
+    <value>Мульти зона</value>
   </data>
   <data name="MultizoneStrong" xml:space="preserve">
-    <value>Мульти-зона сильна</value>
+    <value>Мульти зона сильна</value>
   </data>
   <data name="MuteMic" xml:space="preserve">
     <value>Вимкнути мікрофон</value>
