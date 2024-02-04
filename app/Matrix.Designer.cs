@@ -222,7 +222,7 @@
             comboRotation.FormattingEnabled = true;
             comboRotation.ItemHeight = 32;
             comboRotation.Items.AddRange(new object[] { "Straight", "Diagonal" });
-            comboRotation.Location = new Point(229, 17);
+            comboRotation.Location = new Point(279, 17);
             comboRotation.Margin = new Padding(4, 11, 4, 8);
             comboRotation.Name = "comboRotation";
             comboRotation.Size = new Size(322, 40);
@@ -256,7 +256,7 @@
             comboScaling.FormattingEnabled = true;
             comboScaling.ItemHeight = 32;
             comboScaling.Items.AddRange(new object[] { "Default", "Low", "High", "Bilinear", "Bicubic", "NearestNeighbor", "HighQualityBilinear", "HighQualityBicubic" });
-            comboScaling.Location = new Point(229, 17);
+            comboScaling.Location = new Point(279, 17);
             comboScaling.Margin = new Padding(4, 11, 4, 8);
             comboScaling.Name = "comboScaling";
             comboScaling.Size = new Size(322, 40);

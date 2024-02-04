@@ -130,6 +130,7 @@ namespace GHelper
             labelBacklightTimeout.Text = Properties.Strings.BacklightTimeout;
             //labelBacklightTimeoutPlugged.Text = Properties.Strings.BacklightTimeoutPlugged;
 
+            checkGPUFix.Text = Properties.Strings.EnableGPUOnShutdown;
             checkNoOverdrive.Text = Properties.Strings.DisableOverdrive;
             checkTopmost.Text = Properties.Strings.WindowTop;
             checkUSBC.Text = Properties.Strings.OptimizedUSBC;
@@ -217,7 +218,7 @@ namespace GHelper
                 labelM2.Visible = comboM2.Visible = textM2.Visible = false;
 
                 // Re-label M3 and M4 and FNF4 to match the front labels.
-                labelM3.Text = "Ctrl Center";
+                labelM3.Text = "Cmd Center";
                 labelM4.Text = "ROG";
                 labelFNF4.Text = "Back Paddles";
 
