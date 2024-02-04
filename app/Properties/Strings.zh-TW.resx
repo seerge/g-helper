@@ -144,6 +144,9 @@
   <data name="AlertUltimateTitle" xml:space="preserve">
     <value>現在重新啟動嗎?</value>
   </data>
+  <data name="AllyController" xml:space="preserve">
+    <value>Ally Controller</value>
+  </data>
   <data name="AnimationSpeed" xml:space="preserve">
     <value>動畫速度</value>
   </data>
@@ -270,6 +273,15 @@
   <data name="BatteryLimitFull" xml:space="preserve">
     <value>僅本次將電力充滿</value>
   </data>
+  <data name="Binding" xml:space="preserve">
+    <value>Binding</value>
+  </data>
+  <data name="BindingPrimary" xml:space="preserve">
+    <value>Primary</value>
+  </data>
+  <data name="BindingSecondary" xml:space="preserve">
+    <value>Secondary</value>
+  </data>
   <data name="BiosAndDriverUpdates" xml:space="preserve">
     <value>BIOS與驅動程式更新</value>
   </data>
@@ -297,6 +309,12 @@
   <data name="Color" xml:space="preserve">
     <value>顏色</value>
   </data>
+  <data name="Contrast" xml:space="preserve">
+    <value>Contrast</value>
+  </data>
+  <data name="Controller" xml:space="preserve">
+    <value>Controller</value>
+  </data>
   <data name="CPUBoost" xml:space="preserve">
     <value>CPU 加速</value>
   </data>
@@ -308,6 +326,9 @@
   </data>
   <data name="Default" xml:space="preserve">
     <value>預設</value>
+  </data>
+  <data name="DisableController" xml:space="preserve">
+    <value>Disable Controller</value>
   </data>
   <data name="DisableOverdrive" xml:space="preserve">
     <value>禁用螢幕加速OD</value>
@@ -326,6 +347,9 @@
   </data>
   <data name="EcoMode" xml:space="preserve">
     <value>節能模式</value>
+  </data>
+  <data name="EnableGPUOnShutdown" xml:space="preserve">
+    <value>Enable GPU on shutdown (prevents issue with Eco mode)</value>
   </data>
   <data name="EnableOptimusText" xml:space="preserve">
     <value>「Nvidia控制面板」中的顯示模式未設置為自動切換時，透過G-Helper的節能模式禁用獨顯可能導致螢幕亮度控制出現問題直到下次重新開機後。
@@ -410,6 +434,9 @@
   <data name="High" xml:space="preserve">
     <value>高</value>
   </data>
+  <data name="ImageRotation" xml:space="preserve">
+    <value>Image Rotation</value>
+  </data>
   <data name="KeyBindings" xml:space="preserve">
     <value>按鍵綁定</value>
   </data>
@@ -442,6 +469,12 @@
   </data>
   <data name="Low" xml:space="preserve">
     <value>低</value>
+  </data>
+  <data name="LSDeadzones" xml:space="preserve">
+    <value>Left Stick Deadzones</value>
+  </data>
+  <data name="LTDeadzones" xml:space="preserve">
+    <value>Left Trigger Deadzones</value>
   </data>
   <data name="MatrixAudio" xml:space="preserve">
     <value>音效視覺化</value>
@@ -575,14 +608,26 @@
   <data name="Quit" xml:space="preserve">
     <value>退出</value>
   </data>
+  <data name="Reset" xml:space="preserve">
+    <value>Reset</value>
+  </data>
   <data name="RestartGPU" xml:space="preserve">
     <value>有其他程式正在使用獨顯導致無法切換至節能模式. 是否讓G-Helper重新啟動獨顯? * 請自行評估風險</value>
   </data>
   <data name="RPM" xml:space="preserve">
     <value>每分鐘轉數</value>
   </data>
+  <data name="RSDeadzones" xml:space="preserve">
+    <value>Right Stick Deadzones</value>
+  </data>
+  <data name="RTDeadzones" xml:space="preserve">
+    <value>Right Trigger Deadzones</value>
+  </data>
   <data name="RunOnStartup" xml:space="preserve">
     <value>開機自動開啟</value>
+  </data>
+  <data name="ScalingQuality" xml:space="preserve">
+    <value>Scaling Quality</value>
   </data>
   <data name="ScreenPadDown" xml:space="preserve">
     <value>第二觸控螢幕亮度降低</value>
@@ -662,6 +707,9 @@
   <data name="VersionLabel" xml:space="preserve">
     <value>版本</value>
   </data>
+  <data name="VibrationStrength" xml:space="preserve">
+    <value>Vibration Strength</value>
+  </data>
   <data name="VolumeDown" xml:space="preserve">
     <value>音量降低</value>
   </data>
@@ -673,5 +721,8 @@
   </data>
   <data name="WindowTop" xml:space="preserve">
     <value>視窗置頂</value>
+  </data>
+  <data name="Zoom" xml:space="preserve">
+    <value>Zoom</value>
   </data>
 </root>
