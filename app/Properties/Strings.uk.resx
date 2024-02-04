@@ -435,7 +435,7 @@
     <value>Висока</value>
   </data>
   <data name="ImageRotation" xml:space="preserve">
-    <value>Поворот зображення</value>
+    <value>Поворот</value>
   </data>
   <data name="KeyBindings" xml:space="preserve">
     <value>Прив'язки клавіш</value>
@@ -627,7 +627,7 @@
     <value>Запускати на старті</value>
   </data>
   <data name="ScalingQuality" xml:space="preserve">
-    <value>Метод масштабування</value>
+    <value>Масштабування</value>
   </data>
   <data name="ScreenPadDown" xml:space="preserve">
     <value>Зменшити яскравість Screenpad</value>
