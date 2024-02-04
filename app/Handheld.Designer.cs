@@ -1010,7 +1010,7 @@
             // labelVibraTitle
             // 
             labelVibraTitle.AutoSize = true;
-            labelVibraTitle.Location = new Point(77, 14);
+            labelVibraTitle.Location = new Point(54, 14);
             labelVibraTitle.Margin = new Padding(4, 0, 4, 0);
             labelVibraTitle.Name = "labelVibraTitle";
             labelVibraTitle.Size = new Size(209, 32);

@@ -14,6 +14,8 @@ namespace GHelper
             InitializeComponent();
             InitTheme(true);
 
+            Text = Properties.Strings.Controller;
+
             labelLSTitle.Text = Properties.Strings.LSDeadzones;
             labelRSTitle.Text = Properties.Strings.RSDeadzones;
             labelLTTitle.Text = Properties.Strings.LTDeadzones;
