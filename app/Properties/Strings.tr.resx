@@ -362,6 +362,9 @@ Yine de devam etmek istiyor musunuz?</value>
   <data name="EnergySettings" xml:space="preserve">
     <value>Enerji Ayarları</value>
   </data>
+  <data name="Export" xml:space="preserve">
+    <value>Export Profile</value>
+  </data>
   <data name="Extra" xml:space="preserve">
     <value>Ekstra</value>
   </data>
@@ -436,6 +439,9 @@ Yine de devam etmek istiyor musunuz?</value>
   </data>
   <data name="ImageRotation" xml:space="preserve">
     <value>Image Rotation</value>
+  </data>
+  <data name="Import" xml:space="preserve">
+    <value>Import Profile</value>
   </data>
   <data name="KeyBindings" xml:space="preserve">
     <value>Tuş Atamaları</value>
@@ -523,6 +529,9 @@ Yine de devam etmek istiyor musunuz?</value>
   </data>
   <data name="MouseButtonResponse" xml:space="preserve">
     <value>Tuş Tepkisi</value>
+  </data>
+  <data name="MouseImportFailed" xml:space="preserve">
+    <value>Import failed. Selected file is not a valid mouse profile or corrutpted.</value>
   </data>
   <data name="MouseLiftOffDistance" xml:space="preserve">
     <value>Havalanma Mesafesi</value>

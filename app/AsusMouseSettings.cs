@@ -55,6 +55,9 @@ namespace GHelper
             buttonLightingZoneAll.Text = Properties.Strings.AuraZoneAll;
             buttonLightingZoneDock.Text = Properties.Strings.AuraZoneDock;
 
+            buttonExport.Text = Properties.Strings.Export;
+            buttonImport.Text = Properties.Strings.Import;
+
             InitTheme();
 
             this.Text = mouse.GetDisplayName();
@@ -902,6 +905,65 @@ namespace GHelper
         private void ButtonSync_Click(object sender, EventArgs e)
         {
             RefreshMouseData();
+        }
+
+        private void buttonImport_Click(object sender, EventArgs e)
+        {
+            byte[] data = null;
+
+            Thread t = new Thread(() =>
+            {
+                OpenFileDialog ofd = new OpenFileDialog();
+                ofd.Filter = "G-Helper Mouse Profile V1 (*.gmp1)|*.gmp1";
+
+                if (ofd.ShowDialog() == DialogResult.OK)
+                {
+                    data = File.ReadAllBytes(ofd.FileName);
+                }
+            });
+
+            t.SetApartmentState(ApartmentState.STA);
+            t.Start();
+            t.Join();
+
+            if (data == null)
+            {
+                //User aborted loading
+                return;
+            }
+
+            if (!mouse.Import(data))
+            {
+                Logger.WriteLine("Failed to import mouse profile");
+                MessageBox.Show(Properties.Strings.MouseImportFailed);
+            }
+            else
+            {
+                if (!mouse.IsLightingZoned())
+                {
+                    visibleZone = LightingZone.All;
+                }
+
+                RefreshMouseData();
+            }
+        }
+
+        private void buttonExport_Click(object sender, EventArgs e)
+        {
+            Thread t = new Thread(() =>
+            {
+                SaveFileDialog sfd = new SaveFileDialog();
+                sfd.Filter = "G-Helper Mouse Profile V1 (*.gmp1)|*.gmp1";
+
+                if (sfd.ShowDialog() == DialogResult.OK)
+                {
+                    File.WriteAllBytes(sfd.FileName, mouse.Export());
+                }
+            });
+
+            t.SetApartmentState(ApartmentState.STA);
+            t.Start();
+            t.Join();
         }
     }
 }

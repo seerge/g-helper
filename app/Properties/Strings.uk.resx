@@ -362,6 +362,9 @@
   <data name="EnergySettings" xml:space="preserve">
     <value>Налаштування Енергії</value>
   </data>
+  <data name="Export" xml:space="preserve">
+    <value>Export Profile</value>
+  </data>
   <data name="Extra" xml:space="preserve">
     <value>Додатково</value>
   </data>
@@ -436,6 +439,9 @@
   </data>
   <data name="ImageRotation" xml:space="preserve">
     <value>Поворот</value>
+  </data>
+  <data name="Import" xml:space="preserve">
+    <value>Import Profile</value>
   </data>
   <data name="KeyBindings" xml:space="preserve">
     <value>Прив'язки клавіш</value>
@@ -523,6 +529,9 @@
   </data>
   <data name="MouseButtonResponse" xml:space="preserve">
     <value>Відповідь Кнопок</value>
+  </data>
+  <data name="MouseImportFailed" xml:space="preserve">
+    <value>Import failed. Selected file is not a valid mouse profile or corrutpted.</value>
   </data>
   <data name="MouseLiftOffDistance" xml:space="preserve">
     <value>Відстань підйому</value>

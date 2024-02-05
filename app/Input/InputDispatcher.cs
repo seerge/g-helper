@@ -247,10 +247,10 @@ namespace GHelper.Input
         public void KeyPressed(object sender, KeyPressedEventArgs e)
         {
 
+            Logger.WriteLine(e.Key.ToString() + " " + e.Modifier.ToString());
+
             if (e.Modifier == ModifierKeys.None)
             {
-                Logger.WriteLine(e.Key.ToString());
-
                 if (AppConfig.NoMKeys())
                 {
                     switch (e.Key)
