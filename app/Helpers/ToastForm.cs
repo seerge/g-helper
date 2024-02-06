@@ -156,6 +156,12 @@ namespace GHelper.Helpers
 
                 Show();
                 timer.Start();
+
+                Program.settingsForm.AccessibilityObject.RaiseAutomationNotification(
+                    System.Windows.Forms.Automation.AutomationNotificationKind.ActionCompleted, 
+                    System.Windows.Forms.Automation.AutomationNotificationProcessing.MostRecent, 
+                    text);
+
             });
 
         }
