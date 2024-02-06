@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace GHelper.Peripherals
 {
     public enum PeripheralType
@@ -18,6 +13,10 @@ namespace GHelper.Peripherals
         public bool Wireless { get; }
         public int Battery { get; }
         public bool Charging { get; }
+
+        public bool CanExport();
+        public byte[] Export();
+        public bool Import(byte[] blob);
 
         public PeripheralType DeviceType();
 
