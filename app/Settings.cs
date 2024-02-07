@@ -1382,13 +1382,13 @@ namespace GHelper
                     buttonEco.Activated = !GPUAuto;
                     buttonOptimized.Activated = GPUAuto;
                     labelGPU.Text = Properties.Strings.GPUMode + ": " + Properties.Strings.GPUModeEco;
-                    panelGPU.AccessibleName = Properties.Strings.GPUMode + ": " + (GPUAuto ? Properties.Strings.Optimized : Properties.Strings.EcoMode);
+                    panelGPU.AccessibleName = Properties.Strings.GPUMode + " - " + (GPUAuto ? Properties.Strings.Optimized : Properties.Strings.EcoMode);
                     Program.trayIcon.Icon = Properties.Resources.eco;
                     break;
                 case AsusACPI.GPUModeUltimate:
                     buttonUltimate.Activated = true;
                     labelGPU.Text = Properties.Strings.GPUMode + ": " + Properties.Strings.GPUModeUltimate;
-                    panelGPU.AccessibleName = Properties.Strings.GPUMode + ": " + Properties.Strings.UltimateMode;
+                    panelGPU.AccessibleName = Properties.Strings.GPUMode + " - " + Properties.Strings.UltimateMode;
                     Program.trayIcon.Icon = Properties.Resources.ultimate;
                     break;
                 default:
@@ -1396,7 +1396,7 @@ namespace GHelper
                     buttonStandard.Activated = !GPUAuto;
                     buttonOptimized.Activated = GPUAuto;
                     labelGPU.Text = Properties.Strings.GPUMode + ": " + Properties.Strings.GPUModeStandard;
-                    panelGPU.AccessibleName = Properties.Strings.GPUMode + ": " + (GPUAuto ? Properties.Strings.Optimized : Properties.Strings.StandardMode);
+                    panelGPU.AccessibleName = Properties.Strings.GPUMode + " - " + (GPUAuto ? Properties.Strings.Optimized : Properties.Strings.StandardMode);
                     Program.trayIcon.Icon = Properties.Resources.standard;
                     break;
             }

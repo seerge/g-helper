@@ -1,4 +1,5 @@
-﻿using System.Drawing.Drawing2D;
+﻿using System.Diagnostics;
+using System.Drawing.Drawing2D;
 
 namespace GHelper.Helpers
 {
@@ -134,6 +135,16 @@ namespace GHelper.Helpers
 
         }
 
+        public static void ReadText(string text)
+        {
+            ProcessStartInfo startInfo = new ProcessStartInfo();
+            startInfo.FileName = "PowerShell.exe";
+            startInfo.Arguments = $"-Command \"Add-Type -AssemblyName System.Speech; (New-Object System.Speech.Synthesis.SpeechSynthesizer).Speak('{text}')\"";
+            startInfo.CreateNoWindow = true;
+            Process.Start(startInfo);
+        }
+
+
         public void RunToast(string text, ToastIcon? icon = null)
         {
 
@@ -157,9 +168,11 @@ namespace GHelper.Helpers
                 Show();
                 timer.Start();
 
+                //if (AppConfig.Is("narrator")) ReadText(text);
+
                 Program.settingsForm.AccessibilityObject.RaiseAutomationNotification(
-                    System.Windows.Forms.Automation.AutomationNotificationKind.ActionCompleted, 
-                    System.Windows.Forms.Automation.AutomationNotificationProcessing.MostRecent, 
+                    System.Windows.Forms.Automation.AutomationNotificationKind.ActionCompleted,
+                    System.Windows.Forms.Automation.AutomationNotificationProcessing.MostRecent,
                     text);
 
             });

@@ -29,6 +29,16 @@ namespace GHelper.UI
 
         public bool darkTheme = false;
 
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                CreateParams cp = base.CreateParams;
+                cp.ExStyle |= 0x02000000;  // Turn on WS_EX_COMPOSITED
+                return cp;
+            }
+        }
+
         public static void InitColors(bool darkTheme)
         {
             if (darkTheme)
@@ -98,7 +108,9 @@ namespace GHelper.UI
             {
                 DwmSetWindowAttribute(Handle, 20, new[] { darkTheme ? 1 : 0 }, 4);
                 ControlHelper.Adjust(this, changed);
+                this.Invalidate();
             }
+
 
             return changed;
 
