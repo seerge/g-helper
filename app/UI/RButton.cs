@@ -5,16 +5,6 @@ namespace GHelper.UI
     public class RButton : Button
     {
 
-        protected override CreateParams CreateParams
-        {
-            get
-            {
-                var parms = base.CreateParams;
-                parms.Style &= ~0x02000000;  // Turn off WS_CLIPCHILDREN
-                return parms;
-            }
-        }
-
         //Fields
         private int borderSize = 5;
 
