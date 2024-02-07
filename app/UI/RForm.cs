@@ -28,7 +28,15 @@ namespace GHelper.UI
         private static extern int DwmSetWindowAttribute(nint hwnd, int attr, int[] attrValue, int attrSize);
 
         public bool darkTheme = false;
-
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                var parms = base.CreateParams;
+                parms.Style &= ~0x02000000;  // Turn off WS_CLIPCHILDREN
+                return parms;
+            }
+        }
         public static void InitColors(bool darkTheme)
         {
             if (darkTheme)
