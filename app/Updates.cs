@@ -35,10 +35,15 @@ namespace GHelper
 
             (bios, model) = AppConfig.GetBiosAndModel();
 
+            buttonRefresh.TabStop = false;
+            
             updatesCount = 0;
             labelUpdates.ForeColor = colorEco;
             labelUpdates.Text = Properties.Strings.NoNewUpdates;
 
+            panelBios.AccessibleRole = AccessibleRole.Grouping;
+            panelBios.AccessibleName = Properties.Strings.NoNewUpdates;
+            panelBios.TabStop = true;
 
             Text = Properties.Strings.BiosAndDriverUpdates + ": " + model + " " + bios;
             labelBIOS.Text = "BIOS";
@@ -121,12 +126,17 @@ namespace GHelper
             Invoke(delegate
             {
                 string versionText = driver.version.Replace("latest version at the ", "");
-                Label versionLabel = new Label { Text = versionText, Anchor = AnchorStyles.Left, AutoSize = true };
+                LinkLabel versionLabel = new LinkLabel { Text = versionText, Anchor = AnchorStyles.Left, AutoSize = true };
+
+                versionLabel.AccessibleName = driver.title;
+                versionLabel.TabStop = true;
+                versionLabel.TabIndex = table.RowCount + 1;
+
                 versionLabel.Cursor = Cursors.Hand;
                 versionLabel.Font = new Font(versionLabel.Font, FontStyle.Underline);
-                versionLabel.ForeColor = colorEco;
+                versionLabel.LinkColor = colorEco;
                 versionLabel.Padding = new Padding(5, 5, 5, 5);
-                versionLabel.Click += delegate
+                versionLabel.LinkClicked += delegate
                 {
                     Process.Start(new ProcessStartInfo(driver.downloadUrl) { UseShellExecute = true });
                 };
@@ -152,18 +162,19 @@ namespace GHelper
 
         public void VisualiseNewDriver(int position, int newer, TableLayoutPanel table)
         {
-            var label = table.GetControlFromPosition(3, position) as Label;
+            var label = table.GetControlFromPosition(3, position) as LinkLabel;
             if (label != null)
             {
                 Invoke(delegate
                 {
                     if (newer == DRIVER_NEWER)
                     {
+                        label.AccessibleName = label.AccessibleName + Properties.Strings.NewUpdates;
                         label.Font = new Font(label.Font, FontStyle.Underline | FontStyle.Bold);
-                        label.ForeColor = colorTurbo;
+                        label.LinkColor = colorTurbo;
                     }
 
-                    if (newer == DRIVER_NOT_FOUND) label.ForeColor = Color.Gray;
+                    if (newer == DRIVER_NOT_FOUND) label.LinkColor = Color.Gray;
 
                 });
             }
@@ -176,6 +187,9 @@ namespace GHelper
                 labelUpdates.Text = $"{Properties.Strings.NewUpdates}: {updatesCount}";
                 labelUpdates.ForeColor = colorTurbo;
                 labelUpdates.Font = new Font(labelUpdates.Font, FontStyle.Bold);
+
+                panelBios.AccessibleName = labelUpdates.Text;
+
             });
         }
 

@@ -126,7 +126,7 @@ namespace GHelper
             buttonRefresh.Name = "buttonRefresh";
             buttonRefresh.Secondary = true;
             buttonRefresh.Size = new Size(52, 46);
-            buttonRefresh.TabIndex = 3;
+            buttonRefresh.TabIndex = 1;
             buttonRefresh.UseVisualStyleBackColor = false;
             // 
             // panelBios

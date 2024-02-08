@@ -362,6 +362,9 @@ Vis tiek norite tęsti?</value>
   <data name="EnergySettings" xml:space="preserve">
     <value>Energijos nustatymai</value>
   </data>
+  <data name="Export" xml:space="preserve">
+    <value>Export Profile</value>
+  </data>
   <data name="Extra" xml:space="preserve">
     <value>Išplėstiniai</value>
   </data>
@@ -436,6 +439,9 @@ Vis tiek norite tęsti?</value>
   </data>
   <data name="ImageRotation" xml:space="preserve">
     <value>Image Rotation</value>
+  </data>
+  <data name="Import" xml:space="preserve">
+    <value>Import Profile</value>
   </data>
   <data name="KeyBindings" xml:space="preserve">
     <value>Klavišų priskyrimas</value>
@@ -523,6 +529,9 @@ Vis tiek norite tęsti?</value>
   </data>
   <data name="MouseButtonResponse" xml:space="preserve">
     <value>Klavišo atsakas</value>
+  </data>
+  <data name="MouseImportFailed" xml:space="preserve">
+    <value>Import failed. Selected file is not a valid mouse profile or corrutpted.</value>
   </data>
   <data name="MouseLiftOffDistance" xml:space="preserve">
     <value>Pakilimo atstumas</value>
