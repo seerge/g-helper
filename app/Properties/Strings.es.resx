@@ -363,7 +363,7 @@
     <value>Ajustes de energía</value>
   </data>
   <data name="Export" xml:space="preserve">
-    <value>Export Profile</value>
+    <value>Exportar perfil</value>
   </data>
   <data name="Extra" xml:space="preserve">
     <value>Adicional</value>
@@ -438,10 +438,10 @@
     <value>Alto</value>
   </data>
   <data name="ImageRotation" xml:space="preserve">
-    <value>Image Rotation</value>
+    <value>Rotación de imagen</value>
   </data>
   <data name="Import" xml:space="preserve">
-    <value>Import Profile</value>
+    <value>Importar perfil</value>
   </data>
   <data name="KeyBindings" xml:space="preserve">
     <value>Atajos de teclado</value>
@@ -477,10 +477,10 @@
     <value>Bajo</value>
   </data>
   <data name="LSDeadzones" xml:space="preserve">
-    <value>Left Stick Deadzones</value>
+    <value>Punto muerto stick izquierdo</value>
   </data>
   <data name="LTDeadzones" xml:space="preserve">
-    <value>Left Trigger Deadzones</value>
+    <value>Punto muerto gatillo izquierdo</value>
   </data>
   <data name="MatrixAudio" xml:space="preserve">
     <value>Visualizador de audio</value>
@@ -531,7 +531,7 @@
     <value>Respuesta del botón</value>
   </data>
   <data name="MouseImportFailed" xml:space="preserve">
-    <value>Import failed. Selected file is not a valid mouse profile or corrutpted.</value>
+    <value>Importación fallida. El archivo seleccionado no es un perfil válido o está corrupto.</value>
   </data>
   <data name="MouseLiftOffDistance" xml:space="preserve">
     <value>Distancia de despegue (LOD)</value>
@@ -618,7 +618,7 @@
     <value>Quitar</value>
   </data>
   <data name="Reset" xml:space="preserve">
-    <value>Reset</value>
+    <value>Reiniciar</value>
   </data>
   <data name="RestartGPU" xml:space="preserve">
     <value>Algo está usando la dGPU e impide el modo Eco. ¿Reiniciar dGPU en el administrador de dispositivos? (Proceda bajo su propio riesgo)</value>
@@ -627,16 +627,16 @@
     <value>RPM</value>
   </data>
   <data name="RSDeadzones" xml:space="preserve">
-    <value>Right Stick Deadzones</value>
+    <value>Punto muerto stick derecho</value>
   </data>
   <data name="RTDeadzones" xml:space="preserve">
-    <value>Right Trigger Deadzones</value>
+    <value>Punto muerto gatillo derecho</value>
   </data>
   <data name="RunOnStartup" xml:space="preserve">
     <value>Ejecutar al inicio</value>
   </data>
   <data name="ScalingQuality" xml:space="preserve">
-    <value>Scaling Quality</value>
+    <value>Calidad del escalado</value>
   </data>
   <data name="ScreenPadDown" xml:space="preserve">
     <value>Bajar brillo ScreenPad</value>
@@ -717,7 +717,7 @@
     <value>Versión</value>
   </data>
   <data name="VibrationStrength" xml:space="preserve">
-    <value>Vibration Strength</value>
+    <value>Intensidad de vibración</value>
   </data>
   <data name="VolumeDown" xml:space="preserve">
     <value>Bajar volumen</value>
