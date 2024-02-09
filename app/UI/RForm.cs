@@ -34,6 +34,7 @@ namespace GHelper.UI
             {
                 var parms = base.CreateParams;
                 parms.Style &= ~0x02000000;  // Turn off WS_CLIPCHILDREN
+                parms.ClassStyle &= ~0x00020000;
                 return parms;
             }
         }
