@@ -468,7 +468,6 @@ public static class AppConfig
     public static bool IsSwappedFans()
     {
         if (!ContainsModel("GA503")) return false;
-        if (Modes.GetCurrent() != 0) return false;
 
         try
         {
