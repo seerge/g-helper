@@ -145,7 +145,7 @@
     <value>¿Reiniciar ahora?</value>
   </data>
   <data name="AllyController" xml:space="preserve">
-    <value>Ally Controller</value>
+    <value>Mando Ally</value>
   </data>
   <data name="AnimationSpeed" xml:space="preserve">
     <value>Velocidad</value>
@@ -274,13 +274,13 @@
     <value>Cargar una vez al 100%</value>
   </data>
   <data name="Binding" xml:space="preserve">
-    <value>Binding</value>
+    <value>Emparejado</value>
   </data>
   <data name="BindingPrimary" xml:space="preserve">
-    <value>Primary</value>
+    <value>Primario</value>
   </data>
   <data name="BindingSecondary" xml:space="preserve">
-    <value>Secondary</value>
+    <value>Secundario</value>
   </data>
   <data name="BiosAndDriverUpdates" xml:space="preserve">
     <value>Actualizaciones de BIOS y Drivers</value>
@@ -310,10 +310,10 @@
     <value>Color</value>
   </data>
   <data name="Contrast" xml:space="preserve">
-    <value>Contrast</value>
+    <value>Contraste</value>
   </data>
   <data name="Controller" xml:space="preserve">
-    <value>Controller</value>
+    <value>Mando</value>
   </data>
   <data name="CPUBoost" xml:space="preserve">
     <value>CPU Boost</value>
@@ -328,7 +328,7 @@
     <value>Por defecto</value>
   </data>
   <data name="DisableController" xml:space="preserve">
-    <value>Disable Controller</value>
+    <value>Deshabilitar mando</value>
   </data>
   <data name="DisableOverdrive" xml:space="preserve">
     <value>Desactivar Overdrive</value>
@@ -349,7 +349,7 @@
     <value>Eco</value>
   </data>
   <data name="EnableGPUOnShutdown" xml:space="preserve">
-    <value>Enable GPU on shutdown (prevents issue with Eco mode)</value>
+    <value>Habilitar GPU al apagar (evita problemas con el modo Eco)</value>
   </data>
   <data name="EnableOptimusText" xml:space="preserve">
     <value>Deshabilitar la dGPU cambiando a modo Eco mientras el Modo de Pantalla en el Panel de Control de NVIDIA no está configurado en Optimus puede causar problemas con el control del brillo hasta después del próximo reinicio.
