@@ -467,7 +467,7 @@ public static class AppConfig
 
     public static bool IsSwappedFans()
     {
-        if (!ContainsModel("GA503")) return false;
+        if (!ContainsModel("GA503R")) return false;
 
         try
         {
