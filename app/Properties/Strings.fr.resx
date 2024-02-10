@@ -363,7 +363,7 @@ Voulez-vous continuer ?</value>
     <value>Paramètres d'énergie</value>
   </data>
   <data name="Export" xml:space="preserve">
-    <value>Exporter un profil</value>
+    <value>Exporter profil</value>
   </data>
   <data name="Extra" xml:space="preserve">
     <value>+ d'options</value>
@@ -441,7 +441,7 @@ Voulez-vous continuer ?</value>
     <value>Rotation de l'image</value>
   </data>
   <data name="Import" xml:space="preserve">
-    <value>Importer un profil</value>
+    <value>Importer profil</value>
   </data>
   <data name="KeyBindings" xml:space="preserve">
     <value>Raccourcis clavier</value>
@@ -534,7 +534,7 @@ Voulez-vous continuer ?</value>
     <value>Échec de l'importation. Le fichier sélectionné n'est pas un profil de souris valide ou corrompu.</value>
   </data>
   <data name="MouseLiftOffDistance" xml:space="preserve">
-    <value>Lift Off Distance</value>
+    <value>Hauteur de détection</value>
   </data>
   <data name="MouseLowBatteryWarning" xml:space="preserve">
     <value>Avertissement de batterie faible à</value>
