@@ -465,6 +465,21 @@ public static class AppConfig
         }
     }
 
+    public static bool IsSwappedFans()
+    {
+        if (!ContainsModel("GA503R")) return false;
+
+        try
+        {
+            var (bios, model) = GetBiosAndModel();
+            return (Int32.Parse(bios) == 317);
+        }
+        catch
+        {
+            return false;
+        }
+    }
+
     public static bool IsFanRequired()
     {
         return ContainsModel("GA402X") || ContainsModel("G513") || ContainsModel("G713R") || ContainsModel("G713P");
