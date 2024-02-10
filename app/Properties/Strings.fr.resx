@@ -199,7 +199,7 @@
     <value>Rapide</value>
   </data>
   <data name="AuraLightingMode" xml:space="preserve">
-    <value>Mode d’Éclairage</value>
+    <value>Effets d'éclairage</value>
   </data>
   <data name="AuraNormal" xml:space="preserve">
     <value>Normal</value>
@@ -235,7 +235,7 @@
     <value>Molette</value>
   </data>
   <data name="AuraZoneUnderglow" xml:space="preserve">
-    <value>Underglow</value>
+    <value>Led ROG</value>
   </data>
   <data name="AutoApply" xml:space="preserve">
     <value>Appliquer automatiquement</value>
@@ -522,7 +522,7 @@ Voulez-vous continuer ?</value>
     <value>Minutes</value>
   </data>
   <data name="MouseAngleSnapping" xml:space="preserve">
-    <value>Angle Snapping</value>
+    <value>Correction d'angle</value>
   </data>
   <data name="MouseAutoPowerOff" xml:space="preserve">
     <value>Arrêt automatique après</value>
