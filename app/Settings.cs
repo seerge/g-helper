@@ -686,7 +686,7 @@ namespace GHelper
         private void CheckMatrix_CheckedChanged(object? sender, EventArgs e)
         {
             AppConfig.Set("matrix_auto", checkMatrix.Checked ? 1 : 0);
-            matrixControl.SetMatrix();
+            matrixControl.SetDevice();
         }
 
 
@@ -724,14 +724,14 @@ namespace GHelper
         private void ComboMatrixRunning_SelectedValueChanged(object? sender, EventArgs e)
         {
             AppConfig.Set("matrix_running", comboMatrixRunning.SelectedIndex);
-            matrixControl.SetMatrix();
+            matrixControl.SetDevice();
         }
 
 
         private void ComboMatrix_SelectedValueChanged(object? sender, EventArgs e)
         {
             AppConfig.Set("matrix_brightness", comboMatrix.SelectedIndex);
-            matrixControl.SetMatrix();
+            matrixControl.SetDevice();
         }
 
 
@@ -896,6 +896,15 @@ namespace GHelper
                 return;
             }
 
+            if (matrixControl.deviceSlash is not null)
+            {
+                labelMatrix.Text = "Slash Lightning";
+                comboMatrixRunning.Items.Clear();
+                comboMatrixRunning.Items.Add("Transmission");
+                comboMatrixRunning.Items.Add("Bitstream");
+                buttonMatrix.Visible = false;
+            }
+
             comboMatrix.SelectedIndex = Math.Min(AppConfig.Get("matrix_brightness", 0), comboMatrix.Items.Count - 1);
             comboMatrixRunning.SelectedIndex = Math.Min(AppConfig.Get("matrix_running", 0), comboMatrixRunning.Items.Count - 1);
 
@@ -909,7 +918,7 @@ namespace GHelper
         {
             comboMatrix.SelectedIndex = Math.Min(Math.Max(0, comboMatrix.SelectedIndex + delta), comboMatrix.Items.Count - 1);
             AppConfig.Set("matrix_brightness", comboMatrix.SelectedIndex);
-            matrixControl.SetMatrix();
+            matrixControl.SetDevice();
             Program.toast.RunToast(comboMatrix.GetItemText(comboMatrix.SelectedItem), delta > 0 ? ToastIcon.BacklightUp : ToastIcon.BacklightDown);
         }
 
