@@ -638,7 +638,7 @@ namespace GHelper.Input
                         KeyProcess("m6");
                         return;
                     case 136:    // FN + F12
-                        Program.acpi.DeviceSet(AsusACPI.UniversalControl, AsusACPI.Airplane, "Airplane");
+                        if (!AppConfig.IsNoAirplaneMode()) Program.acpi.DeviceSet(AsusACPI.UniversalControl, AsusACPI.Airplane, "Airplane");
                         return;
                     case 181:    // FN + Numpad Enter
                         KeyProcess("fne");
