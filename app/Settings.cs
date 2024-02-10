@@ -896,7 +896,7 @@ namespace GHelper
                 return;
             }
 
-            if (matrixControl.deviceSlash is not null)
+            if (matrixControl.IsSlash)
             {
                 labelMatrix.Text = "Slash Lightning";
                 comboMatrixRunning.Items.Clear();

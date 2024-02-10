@@ -1,10 +1,10 @@
 ﻿using NAudio.CoreAudioApi;
 using NAudio.Wave;
-using Starlight.AnimeMatrix;
 using System.Diagnostics;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Timers;
+using static GHelper.AnimeMatrix.BuiltInAnimation;
 
 namespace GHelper.AnimeMatrix
 {
@@ -25,6 +25,7 @@ namespace GHelper.AnimeMatrix
         private MMDeviceEnumerator? AudioDeviceEnum;
 
         public bool IsValid => deviceMatrix != null || deviceSlash != null;
+        public bool IsSlash => deviceSlash != null;
 
         private long lastPresent;
         private List<double> maxes = new List<double>();
@@ -35,29 +36,17 @@ namespace GHelper.AnimeMatrix
 
             try
             {
-                deviceMatrix = new AnimeMatrixDevice();
-            }
-            catch
-            {
-                deviceMatrix = null;
-            }
-
-            if (AppConfig.ContainsModel("GA403"))
-            {
-                try
-                {
+                if (AppConfig.ContainsModel("GA40"))
                     deviceSlash = new SlashDevice();
-                }
-                catch
-                {
-                    deviceSlash = null;
-                }
-            }
+                else
+                    deviceMatrix = new AnimeMatrixDevice();
 
-            if (IsValid)
-            {
                 matrixTimer = new System.Timers.Timer(100);
                 matrixTimer.Elapsed += MatrixTimer_Elapsed;
+            }
+            catch (Exception ex)
+            {
+                //Logger.WriteLine(ex.Message);
             }
 
         }
@@ -95,15 +84,14 @@ namespace GHelper.AnimeMatrix
                 {
                     deviceSlash.Init();
                     deviceSlash.SetOptions(false);
-                } else
+                }
+                else
                 {
                     deviceSlash.Init();
                     deviceSlash.SetMode((SlashMode)running);
-                    deviceSlash.SetOptions(false, (byte)(brightness*85.333), 0);
+                    deviceSlash.SetOptions(false, (byte)(brightness * 85.333), 0);
                     deviceSlash.Save();
                 }
-
-
             });
         }
 
@@ -115,13 +103,6 @@ namespace GHelper.AnimeMatrix
             int brightness = AppConfig.Get("matrix_brightness", 0);
             int running = AppConfig.Get("matrix_running", 0);
             bool auto = AppConfig.Is("matrix_auto");
-
-            BuiltInAnimation animation = new BuiltInAnimation(
-                (BuiltInAnimation.Running)running,
-                BuiltInAnimation.Sleeping.Starfield,
-                BuiltInAnimation.Shutdown.SeeYa,
-                BuiltInAnimation.Startup.StaticEmergence
-            );
 
             StopMatrixTimer();
             StopMatrixAudio();
@@ -163,8 +144,7 @@ namespace GHelper.AnimeMatrix
                             SetMatrixAudio();
                             break;
                         default:
-                            deviceMatrix.SetBuiltInAnimation(true, animation);
-                            Logger.WriteLine("Matrix builtin " + animation.AsByte);
+                            SetBuiltIn(running);
                             break;
                     }
 
@@ -173,6 +153,19 @@ namespace GHelper.AnimeMatrix
 
 
         }
+
+        private void SetBuiltIn(int running)
+        {
+            BuiltInAnimation animation = new BuiltInAnimation(
+                (Running)running,
+                Sleeping.Starfield,
+                Shutdown.SeeYa,
+                BuiltInAnimation.Startup.StaticEmergence
+            );
+            deviceMatrix.SetBuiltInAnimation(true, animation);
+            Logger.WriteLine("Matrix builtin: " + animation.AsByte);
+        }
+
         private void StartMatrixTimer(int interval = 100)
         {
             matrixTimer.Interval = interval;
@@ -187,7 +180,8 @@ namespace GHelper.AnimeMatrix
 
         private void MatrixTimer_Elapsed(object? sender, ElapsedEventArgs e)
         {
-            //if (!IsValid) return;
+
+            if (deviceMatrix is null) return;
 
             switch (AppConfig.Get("matrix_running"))
             {
@@ -235,7 +229,7 @@ namespace GHelper.AnimeMatrix
 
         void SetMatrixAudio()
         {
-            if (!IsValid) return;
+            if (deviceMatrix is null) return;
 
             deviceMatrix.SetBuiltInAnimation(false);
             StopMatrixTimer();
@@ -317,6 +311,8 @@ namespace GHelper.AnimeMatrix
         void PresentAudio(double[] audio)
         {
 
+            if (deviceMatrix is null) return;
+
             if (Math.Abs(DateTimeOffset.Now.ToUnixTimeMilliseconds() - lastPresent) < 70) return;
             lastPresent = DateTimeOffset.Now.ToUnixTimeMilliseconds();
 
@@ -376,7 +372,8 @@ namespace GHelper.AnimeMatrix
         public void SetMatrixPicture(string fileName, bool visualise = true)
         {
 
-            if (!IsValid) return;
+            if (deviceMatrix is null) return;
+
             StopMatrixTimer();
 
             try
