@@ -477,7 +477,11 @@ public class AsusACPI
 
         if (fanScale != 100 && device == AsusFan.CPU) Logger.WriteLine("Custom fan scale: " + fanScale);
 
-        // it seems to be a bug, when some old model's bios can go nuts if fan is set to 100% 
+        if (AppConfig.IsSwappedFans())
+        {
+            device = (device == AsusFan.CPU) ? AsusFan.GPU : AsusFan.CPU;
+            Logger.WriteLine("Swapped fan fix");
+        }
 
         for (int i = 8; i < curve.Length; i++) curve[i] = (byte)(Math.Max((byte)0, Math.Min((byte)100, curve[i])) * fanScale / 100);
 

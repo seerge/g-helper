@@ -80,7 +80,7 @@ namespace GHelper.AnimeMatrix
                     return;
                 }
 
-                if (wakeUp && AppConfig.ContainsModel("401")) device.WakeUp();
+                if (wakeUp) device.WakeUp();
 
                 if (brightness == 0 || (auto && SystemInformation.PowerStatus.PowerLineStatus != PowerLineStatus.Online))
                 {
