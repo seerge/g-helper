@@ -71,7 +71,6 @@ namespace Starlight.AnimeMatrix
     }
 
 
-
     public enum BrightnessMode : byte
     {
         Off = 0,
@@ -79,7 +78,6 @@ namespace Starlight.AnimeMatrix
         Medium = 2,
         Full = 3
     }
-
 
 
     public class AnimeMatrixDevice : Device
@@ -139,6 +137,56 @@ namespace Starlight.AnimeMatrix
 
         }
 
+        public void WakeUp()
+        {
+            Set(Packet<AnimeMatrixPacket>(Encoding.ASCII.GetBytes("ASUS Tech.Inc.")));
+        }
+
+        public void SetBrightness(BrightnessMode mode)
+        {
+            Set(Packet<AnimeMatrixPacket>(0xC0, 0x04, (byte)mode));
+        }
+
+        public void SetDisplayState(bool enable)
+        {
+            Set(Packet<AnimeMatrixPacket>(0xC3, 0x01, enable ? (byte)0x00 : (byte)0x80));
+        }
+
+        public void SetBuiltInAnimation(bool enable)
+        {
+            Set(Packet<AnimeMatrixPacket>(0xC4, 0x01, enable ? (byte)0x00 : (byte)0x80));
+        }
+
+        public void SetBuiltInAnimation(bool enable, BuiltInAnimation animation)
+        {
+            SetBuiltInAnimation(enable);
+            Set(Packet<AnimeMatrixPacket>(0xC5, animation.AsByte));
+        }
+
+        public void Present()
+        {
+
+            int page = 0;
+            int start, end;
+
+            while (page * UpdatePageLength < LedCount)
+            {
+                start = page * UpdatePageLength;
+                end = Math.Min(LedCount, (page + 1) * UpdatePageLength);
+
+                Set(Packet<AnimeMatrixPacket>(0xC0, 0x02)
+                    .AppendData(BitConverter.GetBytes((ushort)(start + 1)))
+                    .AppendData(BitConverter.GetBytes((ushort)(end - start)))
+                    .AppendData(_displayBuffer[start..end])
+                );
+
+                page++;
+            }
+
+            Set(Packet<AnimeMatrixPacket>(0xC0, 0x03));
+        }
+
+
         private void LoadMFont()
         {
             byte[] fontData = GHelper.Properties.Resources.MFont;
@@ -151,10 +199,6 @@ namespace Starlight.AnimeMatrix
             System.Runtime.InteropServices.Marshal.FreeCoTaskMem(fontPtr);
         }
 
-        public byte[] GetBuffer()
-        {
-            return _displayBuffer;
-        }
 
         public void PresentNextFrame()
         {
@@ -174,12 +218,6 @@ namespace Starlight.AnimeMatrix
         {
             frames.Add(_displayBuffer.ToArray());
         }
-
-        public void SendRaw(params byte[] data)
-        {
-            Set(Packet<AnimeMatrixPacket>(data));
-        }
-
 
         public int Width()
         {
@@ -294,98 +332,18 @@ namespace Starlight.AnimeMatrix
         }
 
 
-        public void WakeUp()
-        {
-            Set(Packet<AnimeMatrixPacket>(Encoding.ASCII.GetBytes("ASUS Tech.Inc.")));
-        }
-
         public void SetLedLinear(int address, byte value)
         {
             if (!IsAddressableLed(address)) return;
             _displayBuffer[address] = value;
         }
 
-        public void SetLedLinearImmediate(int address, byte value)
-        {
-            if (!IsAddressableLed(address)) return;
-            _displayBuffer[address] = value;
-
-            Set(Packet<AnimeMatrixPacket>(0xC0, 0x02)
-                .AppendData(BitConverter.GetBytes((ushort)(address + 1)))
-                .AppendData(BitConverter.GetBytes((ushort)0x0001))
-                .AppendData(value)
-            );
-
-            Set(Packet<AnimeMatrixPacket>(0xC0, 0x03));
-        }
-
-
 
         public void Clear(bool present = false)
         {
-            for (var i = 0; i < _displayBuffer.Length; i++)
-                _displayBuffer[i] = 0;
-
-            if (present)
-                Present();
+            for (var i = 0; i < _displayBuffer.Length; i++) _displayBuffer[i] = 0;
+            if (present) Present();
         }
-
-        public void Present()
-        {
-
-            int page = 0;
-            int start, end;
-
-            while (page * UpdatePageLength < LedCount)
-            {
-                start = page * UpdatePageLength;
-                end = Math.Min(LedCount, (page + 1) * UpdatePageLength);
-
-                Set(Packet<AnimeMatrixPacket>(0xC0, 0x02)
-                    .AppendData(BitConverter.GetBytes((ushort)(start + 1)))
-                    .AppendData(BitConverter.GetBytes((ushort)(end - start)))
-                    .AppendData(_displayBuffer[start..end])
-                );
-
-                page++;
-            }
-
-            Set(Packet<AnimeMatrixPacket>(0xC0, 0x03));
-        }
-
-        public void SetDisplayState(bool enable)
-        {
-            if (enable)
-            {
-                Set(Packet<AnimeMatrixPacket>(0xC3, 0x01)
-                    .AppendData(0x00));
-            }
-            else
-            {
-                Set(Packet<AnimeMatrixPacket>(0xC3, 0x01)
-                    .AppendData(0x80));
-            }
-        }
-
-        public void SetBrightness(BrightnessMode mode)
-        {
-            Set(Packet<AnimeMatrixPacket>(0xC0, 0x04)
-                .AppendData((byte)mode)
-            );
-        }
-
-        public void SetBuiltInAnimation(bool enable)
-        {
-            var enabled = enable ? (byte)0x00 : (byte)0x80;
-            Set(Packet<AnimeMatrixPacket>(0xC4, 0x01, enabled));
-        }
-
-        public void SetBuiltInAnimation(bool enable, BuiltInAnimation animation)
-        {
-            SetBuiltInAnimation(enable);
-            Set(Packet<AnimeMatrixPacket>(0xC5, animation.AsByte));
-        }
-
 
         private void SetBitmapDiagonal(Bitmap bmp, int deltaX = 0, int deltaY = 0, int contrast = 100)
         {
