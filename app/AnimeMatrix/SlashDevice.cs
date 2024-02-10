@@ -18,7 +18,7 @@ namespace GHelper.AnimeMatrix
 
     public class SlashDevice : Device
     {
-        public SlashDevice() : base(0x0B05, 0x193B, 640) // 128
+        public SlashDevice() : base(0x0B05, 0x193B, 128)
         {
         }
 

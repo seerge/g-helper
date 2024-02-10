@@ -367,7 +367,7 @@ namespace GHelper.AnimeMatrix
                 AppConfig.Set("matrix_running", 2);
 
                 SetMatrixPicture(fileName);
-                settings.SetMatrixRunning(2);
+                settings.VisualiseMatrixRunning(2);
 
             }
 
@@ -396,7 +396,7 @@ namespace GHelper.AnimeMatrix
                     }
 
                     fs.Close();
-                    if (visualise) settings.VisualiseMatrix(fileName);
+                    if (visualise) settings.VisualiseMatrixPicture(fileName);
                 }
             }
             catch

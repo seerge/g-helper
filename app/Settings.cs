@@ -424,7 +424,7 @@ namespace GHelper
             }
         }
 
-        public void VisualiseMatrix(string image)
+        public void VisualiseMatrixPicture(string image)
         {
             if (matrixForm == null || matrixForm.Text == "") return;
             matrixForm.VisualiseMatrix(image);
@@ -712,7 +712,7 @@ namespace GHelper
 
         }
 
-        public void SetMatrixRunning(int mode)
+        public void VisualiseMatrixRunning(int mode)
         {
             Invoke(delegate
             {
