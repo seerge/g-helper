@@ -48,7 +48,6 @@ namespace GHelper.AnimeMatrix
         {
             Set(Packet<SlashPacket>(0xD3, 0x03, 0x01, 0x08, 0xAB, 0xFF, 0x01, status ? (byte)0x01 : (byte)0x00, 0x06, brightness, 0xFF, interval));
             Save();
-            Save();
         }
 
         public void Set(Packet packet)

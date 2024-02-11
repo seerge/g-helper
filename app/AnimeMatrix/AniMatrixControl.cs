@@ -46,7 +46,7 @@ namespace GHelper.AnimeMatrix
             }
             catch (Exception ex)
             {
-                //Logger.WriteLine(ex.Message);
+                Logger.WriteLine(ex.Message);
             }
 
         }
@@ -89,7 +89,7 @@ namespace GHelper.AnimeMatrix
                 {
                     deviceSlash.Init();
                     deviceSlash.SetMode((SlashMode)running);
-                    deviceSlash.SetOptions(false, (byte)(brightness * 85.333), 0);
+                    deviceSlash.SetOptions(true, (byte)(brightness * 85.333), 0);
                     deviceSlash.Save();
                 }
             });
