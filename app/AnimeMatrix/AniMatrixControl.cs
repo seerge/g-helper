@@ -64,6 +64,8 @@ namespace GHelper.AnimeMatrix
 
             int brightness = AppConfig.Get("matrix_brightness", 0);
             int running = AppConfig.Get("matrix_running", 0);
+            int inteval = AppConfig.Get("matrix_interval", 0);
+
             bool auto = AppConfig.Is("matrix_auto");
 
             Task.Run(() =>
@@ -89,7 +91,7 @@ namespace GHelper.AnimeMatrix
                 {
                     deviceSlash.Init();
                     deviceSlash.SetMode((SlashMode)running);
-                    deviceSlash.SetOptions(true, (byte)(brightness * 85.333), 0);
+                    deviceSlash.SetOptions(true, brightness, inteval);
                     deviceSlash.Save();
                 }
             });

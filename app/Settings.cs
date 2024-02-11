@@ -173,9 +173,11 @@ namespace GHelper
 
             comboMatrix.DropDownStyle = ComboBoxStyle.DropDownList;
             comboMatrixRunning.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboInterval.DropDownStyle = ComboBoxStyle.DropDownList;
 
             comboMatrix.DropDownClosed += ComboMatrix_SelectedValueChanged;
             comboMatrixRunning.DropDownClosed += ComboMatrixRunning_SelectedValueChanged;
+            comboInterval.DropDownClosed += ComboInterval_DropDownClosed;
 
             buttonMatrix.Click += ButtonMatrix_Click;
 
@@ -721,6 +723,12 @@ namespace GHelper
             });
         }
 
+        private void ComboInterval_DropDownClosed(object? sender, EventArgs e)
+        {
+            AppConfig.Set("matrix_interval", comboInterval.SelectedIndex);
+            matrixControl.SetDevice();
+        }
+
         private void ComboMatrixRunning_SelectedValueChanged(object? sender, EventArgs e)
         {
             AppConfig.Set("matrix_running", comboMatrixRunning.SelectedIndex);
@@ -902,11 +910,16 @@ namespace GHelper
                 comboMatrixRunning.Items.Clear();
                 comboMatrixRunning.Items.Add("Transmission");
                 comboMatrixRunning.Items.Add("Bitstream");
+
+                comboInterval.Visible = true;
+                for (int i = 0; i <= 5; i++) comboInterval.Items.Add($"Interval {i}s");
+
                 buttonMatrix.Visible = false;
             }
 
             comboMatrix.SelectedIndex = Math.Min(AppConfig.Get("matrix_brightness", 0), comboMatrix.Items.Count - 1);
             comboMatrixRunning.SelectedIndex = Math.Min(AppConfig.Get("matrix_running", 0), comboMatrixRunning.Items.Count - 1);
+            comboInterval.SelectedIndex = Math.Min(AppConfig.Get("matrix_interval", 0), comboInterval.Items.Count - 1);
 
             checkMatrix.Checked = AppConfig.Is("matrix_auto");
             checkMatrix.CheckedChanged += CheckMatrix_CheckedChanged;

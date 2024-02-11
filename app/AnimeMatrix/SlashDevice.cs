@@ -44,9 +44,10 @@ namespace GHelper.AnimeMatrix
             Set(Packet<SlashPacket>(0xD3, 0x04, 0x00, 0x0C, 0x01, (mode == SlashMode.Bitstream) ? (byte)0x1D : (byte)0x1A, 0x02, 0x19, 0x03, 0x13, 0x04, 0x11, 0x05, 0x12, 0x06, 0x13));
         }
 
-        public void SetOptions(bool status, byte brightness = 0xFF, byte interval = 0x00)
+        public void SetOptions(bool status, int brightness = 0, int interval = 0)
         {
-            Set(Packet<SlashPacket>(0xD3, 0x03, 0x01, 0x08, 0xAB, 0xFF, 0x01, status ? (byte)0x01 : (byte)0x00, 0x06, brightness, 0xFF, interval));
+            byte brightnessByte = (byte)(brightness * 85.333);
+            Set(Packet<SlashPacket>(0xD3, 0x03, 0x01, 0x08, 0xAB, 0xFF, 0x01, status ? (byte)0x01 : (byte)0x00, 0x06, brightnessByte, 0xFF, (byte)interval));
             Save();
         }
 
