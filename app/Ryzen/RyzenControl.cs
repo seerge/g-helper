@@ -7,7 +7,6 @@
 using GHelper.Helpers;
 using System.Management;
 using System.Net;
-using System.Reflection;
 
 namespace Ryzen
 {
@@ -23,7 +22,6 @@ namespace Ryzen
         public static int MinTemp => AppConfig.Get("min_temp", 75);
         public const int MaxTemp = 98;
 
-        public static string[] FAM = { "RAVEN", "PICASSO", "DALI", "RENOIR/LUCIENNE", "MATISSE", "VANGOGH", "VERMEER", "CEZANNE/BARCELO", "REMBRANDT", "PHOENIX", "RAPHAEL/DRAGON RANGE" };
         public static int FAMID { get; protected set; }
 
         public static string CPUModel = "";
@@ -42,6 +40,7 @@ namespace Ryzen
         //PHEONIX - 9
         //RAPHAEL/DRAGON RANGE - 10
         //MENDOCINO - 11
+        //HAWKPOINT - 12
 
         public static void Init()
         {
@@ -108,7 +107,7 @@ namespace Ryzen
                 FAMID = 8; //REMBRANDT
             }
 
-            if (CPUModel.Contains("Model " + Convert.ToString(116)))
+            if (CPUModel.Contains("Model " + Convert.ToString(116)) || CPUModel.Contains("Model " + Convert.ToString(120)))
             {
                 FAMID = 9; //PHEONIX 
             }
@@ -121,6 +120,11 @@ namespace Ryzen
             if (CPUModel.Contains("Model " + Convert.ToString(160)))
             {
                 FAMID = 11; //MENDOCINO 
+            }
+
+            if (CPUModel.Contains("Model " + Convert.ToString(117)))
+            {
+                FAMID = 12; //HAWKPOINT 
             }
 
             Logger.WriteLine($"CPU: {FAMID} - {CPUName} - {CPUModel}");
@@ -224,7 +228,7 @@ namespace Ryzen
                 Smu.PSMU_ADDR_RSP = 0x3B10A80;
                 Smu.PSMU_ADDR_ARG = 0x3B10A88;
             }
-            else if (FAMID == 5 || FAMID == 8 || FAMID == 9 || FAMID == 11)
+            else if (FAMID == 5 || FAMID == 8 || FAMID == 9 || FAMID == 11 || FAMID == 12)
             {
                 Smu.MP1_ADDR_MSG = 0x3B10528;
                 Smu.MP1_ADDR_RSP = 0x3B10578;
