@@ -107,6 +107,7 @@ Huge thanks to [@IceStormNG](https://github.com/IceStormNG) 👑 for contributio
 ### ⌨️ Keybindings
 
 - ``Fn + F5 / Fn + Shift + F5`` - Toggle Performance Modes forwards / backwards
+- ``Shift + Fn + F7 / F8`` - Set Anime Matrix / Slash Lightning brightness Down / Up
 - ``Ctrl + Shift + F5 / Ctrl + Shift + Alt + F5`` - Toggle Performance Modes forwards / backwards
 - ``Ctrl + Shift + F12`` - Open G-Helper window
 - ``Ctrl + M1 / M2`` - Screen brightness Down / Up
