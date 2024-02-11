@@ -909,10 +909,11 @@ namespace GHelper
                 labelMatrix.Text = "Slash Lightning";
                 comboMatrixRunning.Items.Clear();
                 comboMatrixRunning.Items.Add("Transmission");
-                comboMatrixRunning.Items.Add("Bitstream");
+                comboMatrixRunning.Items.Add("Bit Stream");
 
                 comboInterval.Visible = true;
-                for (int i = 0; i <= 5; i++) comboInterval.Items.Add($"Interval {i}s");
+                comboInterval.Items.Add($"Interval Off");
+                for (int i = 1; i <= 5; i++) comboInterval.Items.Add($"Interval {i}s");
 
                 buttonMatrix.Visible = false;
             }

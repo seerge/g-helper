@@ -194,7 +194,7 @@ namespace GHelper
             tableLayoutMatrix.Location = new Point(20, 60);
             tableLayoutMatrix.Margin = new Padding(8);
             tableLayoutMatrix.Name = "tableLayoutMatrix";
-            tableLayoutMatrix.RowCount = 2;
+            tableLayoutMatrix.RowCount = 1;
             tableLayoutMatrix.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
             tableLayoutMatrix.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
             tableLayoutMatrix.Size = new Size(787, 84);
