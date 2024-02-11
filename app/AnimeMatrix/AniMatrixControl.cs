@@ -36,7 +36,7 @@ namespace GHelper.AnimeMatrix
 
             try
             {
-                if (AppConfig.ContainsModel("GA40"))
+                if (AppConfig.ContainsModel("GA403"))
                     deviceSlash = new SlashDevice();
                 else
                     deviceMatrix = new AnimeMatrixDevice();

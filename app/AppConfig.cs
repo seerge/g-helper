@@ -101,6 +101,8 @@ public static class AppConfig
             }
         }
 
+        //if (_model.Contains("GA402")) _model = "ROG Zephyrus G14 GA403UI"; // Debug Purposes
+
         return _model;
     }
 
