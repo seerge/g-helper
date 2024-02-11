@@ -688,7 +688,7 @@ namespace GHelper
         private void CheckMatrix_CheckedChanged(object? sender, EventArgs e)
         {
             AppConfig.Set("matrix_auto", checkMatrix.Checked ? 1 : 0);
-            matrixControl.SetDevice();
+            matrixControl.SetBatteryAuto();
         }
 
 
@@ -908,8 +908,11 @@ namespace GHelper
             {
                 labelMatrix.Text = "Slash Lightning";
                 comboMatrixRunning.Items.Clear();
-                comboMatrixRunning.Items.Add("Transmission");
-                comboMatrixRunning.Items.Add("Bit Stream");
+
+                foreach (var item in SlashDevice.Modes)
+                {
+                    comboMatrixRunning.Items.Add(item.Value);
+                }
 
                 comboInterval.Visible = true;
                 comboInterval.Items.Add($"Interval Off");

@@ -294,12 +294,10 @@ namespace GHelper.USB
                 if (delay) await Task.Delay(TimeSpan.FromSeconds(1));
                 if (isACPI) Program.acpi.TUFKeyboardBrightness(brightness);
 
-                AsusHid.Write(new byte[] { AsusHid.AURA_ID, 0xBA, 0xC5, 0xC4, (byte)brightness }, log);
+                AsusHid.WriteInput(new byte[] { AsusHid.INPUT_ID, 0xBA, 0xC5, 0xC4, (byte)brightness }, log);
 
                 if (AppConfig.IsAlly()) ApplyAura();
 
-                if (AppConfig.IsInputBacklight())
-                    AsusHid.WriteInput(new byte[] { AsusHid.INPUT_ID, 0xBA, 0xC5, 0xC4, (byte)brightness }, log);
             });
 
 

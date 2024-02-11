@@ -36,7 +36,7 @@ namespace GHelper.AnimeMatrix
 
             try
             {
-                if (AppConfig.ContainsModel("GA403"))
+                if (AppConfig.ContainsModel("GA403") || AppConfig.ContainsModel("GU605"))
                     deviceSlash = new SlashDevice();
                 else
                     deviceMatrix = new AnimeMatrixDevice();
@@ -85,7 +85,7 @@ namespace GHelper.AnimeMatrix
                 if (brightness == 0 || (auto && SystemInformation.PowerStatus.PowerLineStatus != PowerLineStatus.Online))
                 {
                     deviceSlash.Init();
-                    deviceSlash.SetOptions(false);
+                    deviceSlash.SetOptions(false, 0, 0);
                 }
                 else
                 {
@@ -95,6 +95,12 @@ namespace GHelper.AnimeMatrix
                     deviceSlash.Save();
                 }
             });
+        }
+
+        public void SetBatteryAuto()
+        {
+            if (deviceSlash is not null) deviceSlash.SetBatterySaver(AppConfig.Is("matrix_auto"));
+            if (deviceMatrix is not null) SetMatrix();
         }
 
         public void SetMatrix(bool wakeUp = false)
