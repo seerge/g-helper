@@ -377,6 +377,11 @@ public static class AppConfig
         return ContainsModel("GA401") || ContainsModel("FX517Z") || ContainsModel("FX516P") || ContainsModel("X13") || IsARCNM() || ContainsModel("GA502IU");
     }
 
+    public static bool IsInputBacklight()
+    {
+        return ContainsModel("GA503") || ContainsModel("GA403");
+    }
+
     public static bool IsStrix()
     {
         return ContainsModel("Strix") || ContainsModel("Scar") || ContainsModel("G703G");

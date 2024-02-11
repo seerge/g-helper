@@ -298,7 +298,7 @@ namespace GHelper.USB
 
                 if (AppConfig.IsAlly()) ApplyAura();
 
-                if (AppConfig.ContainsModel("GA503"))
+                if (AppConfig.IsInputBacklight())
                     AsusHid.WriteInput(new byte[] { AsusHid.INPUT_ID, 0xBA, 0xC5, 0xC4, (byte)brightness }, log);
             });
 
