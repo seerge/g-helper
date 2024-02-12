@@ -65,6 +65,7 @@ namespace GHelper
             panelGPU = new Panel();
             labelTipGPU = new Label();
             tableAMD = new TableLayoutPanel();
+            buttonOverlay = new RButton();
             buttonFPS = new RButton();
             tableGPU = new TableLayoutPanel();
             buttonStopGPU = new RButton();
@@ -118,7 +119,7 @@ namespace GHelper
             panelAllyTitle = new Panel();
             pictureAlly = new PictureBox();
             labelAlly = new Label();
-            buttonOverlay = new RButton();
+            comboInterval = new RComboBox();
             panelMatrix.SuspendLayout();
             tableLayoutMatrix.SuspendLayout();
             panelMatrixTitle.SuspendLayout();
@@ -187,6 +188,7 @@ namespace GHelper
             tableLayoutMatrix.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
             tableLayoutMatrix.Controls.Add(comboMatrix, 0, 0);
             tableLayoutMatrix.Controls.Add(comboMatrixRunning, 1, 0);
+            tableLayoutMatrix.Controls.Add(comboInterval, 2, 0);
             tableLayoutMatrix.Controls.Add(buttonMatrix, 2, 0);
             tableLayoutMatrix.Dock = DockStyle.Top;
             tableLayoutMatrix.Location = new Point(20, 60);
@@ -194,7 +196,8 @@ namespace GHelper
             tableLayoutMatrix.Name = "tableLayoutMatrix";
             tableLayoutMatrix.RowCount = 1;
             tableLayoutMatrix.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            tableLayoutMatrix.Size = new Size(787, 64);
+            tableLayoutMatrix.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
+            tableLayoutMatrix.Size = new Size(787, 84);
             tableLayoutMatrix.TabIndex = 43;
             // 
             // comboMatrix
@@ -706,6 +709,28 @@ namespace GHelper
             tableAMD.Size = new Size(787, 80);
             tableAMD.TabIndex = 24;
             tableAMD.Visible = false;
+            // 
+            // buttonOverlay
+            // 
+            buttonOverlay.Activated = false;
+            buttonOverlay.BackColor = SystemColors.ControlLightLight;
+            buttonOverlay.BorderColor = Color.Transparent;
+            buttonOverlay.BorderRadius = 5;
+            buttonOverlay.Dock = DockStyle.Fill;
+            buttonOverlay.FlatAppearance.BorderSize = 0;
+            buttonOverlay.FlatStyle = FlatStyle.Flat;
+            buttonOverlay.ForeColor = SystemColors.ControlText;
+            buttonOverlay.Image = Properties.Resources.icons8_heartbeat_32;
+            buttonOverlay.ImageAlign = ContentAlignment.MiddleRight;
+            buttonOverlay.Location = new Point(266, 4);
+            buttonOverlay.Margin = new Padding(4);
+            buttonOverlay.Name = "buttonOverlay";
+            buttonOverlay.Secondary = false;
+            buttonOverlay.Size = new Size(254, 72);
+            buttonOverlay.TabIndex = 12;
+            buttonOverlay.Text = "AMD Overlay";
+            buttonOverlay.TextImageRelation = TextImageRelation.ImageBeforeText;
+            buttonOverlay.UseVisualStyleBackColor = false;
             // 
             // buttonFPS
             // 
@@ -1586,27 +1611,20 @@ namespace GHelper
             labelAlly.TabIndex = 26;
             labelAlly.Text = "Ally Controller";
             // 
-            // buttonOverlay
+            // comboInterval
             // 
-            buttonOverlay.Activated = false;
-            buttonOverlay.BackColor = SystemColors.ControlLightLight;
-            buttonOverlay.BorderColor = Color.Transparent;
-            buttonOverlay.BorderRadius = 5;
-            buttonOverlay.Dock = DockStyle.Fill;
-            buttonOverlay.FlatAppearance.BorderSize = 0;
-            buttonOverlay.FlatStyle = FlatStyle.Flat;
-            buttonOverlay.ForeColor = SystemColors.ControlText;
-            buttonOverlay.Image = Properties.Resources.icons8_heartbeat_32;
-            buttonOverlay.ImageAlign = ContentAlignment.MiddleRight;
-            buttonOverlay.Location = new Point(266, 4);
-            buttonOverlay.Margin = new Padding(4);
-            buttonOverlay.Name = "buttonOverlay";
-            buttonOverlay.Secondary = false;
-            buttonOverlay.Size = new Size(254, 72);
-            buttonOverlay.TabIndex = 12;
-            buttonOverlay.Text = "AMD Overlay";
-            buttonOverlay.TextImageRelation = TextImageRelation.ImageBeforeText;
-            buttonOverlay.UseVisualStyleBackColor = false;
+            comboInterval.BorderColor = Color.White;
+            comboInterval.ButtonColor = Color.FromArgb(255, 255, 255);
+            comboInterval.Dock = DockStyle.Top;
+            comboInterval.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            comboInterval.FormattingEnabled = true;
+            comboInterval.ItemHeight = 32;
+            comboInterval.Location = new Point(7, 75);
+            comboInterval.Margin = new Padding(7, 11, 7, 8);
+            comboInterval.Name = "comboInterval";
+            comboInterval.Size = new Size(248, 40);
+            comboInterval.TabIndex = 19;
+            comboInterval.Visible = false;
             // 
             // SettingsForm
             // 
@@ -1784,5 +1802,6 @@ namespace GHelper
         private RButton buttonFPS;
         private RButton buttonController;
         private RButton buttonOverlay;
+        private RComboBox comboInterval;
     }
 }

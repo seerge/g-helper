@@ -173,9 +173,11 @@ namespace GHelper
 
             comboMatrix.DropDownStyle = ComboBoxStyle.DropDownList;
             comboMatrixRunning.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboInterval.DropDownStyle = ComboBoxStyle.DropDownList;
 
             comboMatrix.DropDownClosed += ComboMatrix_SelectedValueChanged;
             comboMatrixRunning.DropDownClosed += ComboMatrixRunning_SelectedValueChanged;
+            comboInterval.DropDownClosed += ComboInterval_DropDownClosed;
 
             buttonMatrix.Click += ButtonMatrix_Click;
 
@@ -424,7 +426,7 @@ namespace GHelper
             }
         }
 
-        public void VisualiseMatrix(string image)
+        public void VisualiseMatrixPicture(string image)
         {
             if (matrixForm == null || matrixForm.Text == "") return;
             matrixForm.VisualiseMatrix(image);
@@ -686,7 +688,7 @@ namespace GHelper
         private void CheckMatrix_CheckedChanged(object? sender, EventArgs e)
         {
             AppConfig.Set("matrix_auto", checkMatrix.Checked ? 1 : 0);
-            matrixControl.SetMatrix();
+            matrixControl.SetBatteryAuto();
         }
 
 
@@ -712,7 +714,7 @@ namespace GHelper
 
         }
 
-        public void SetMatrixRunning(int mode)
+        public void VisualiseMatrixRunning(int mode)
         {
             Invoke(delegate
             {
@@ -721,17 +723,23 @@ namespace GHelper
             });
         }
 
+        private void ComboInterval_DropDownClosed(object? sender, EventArgs e)
+        {
+            AppConfig.Set("matrix_interval", comboInterval.SelectedIndex);
+            matrixControl.SetDevice();
+        }
+
         private void ComboMatrixRunning_SelectedValueChanged(object? sender, EventArgs e)
         {
             AppConfig.Set("matrix_running", comboMatrixRunning.SelectedIndex);
-            matrixControl.SetMatrix();
+            matrixControl.SetDevice();
         }
 
 
         private void ComboMatrix_SelectedValueChanged(object? sender, EventArgs e)
         {
             AppConfig.Set("matrix_brightness", comboMatrix.SelectedIndex);
-            matrixControl.SetMatrix();
+            matrixControl.SetDevice();
         }
 
 
@@ -896,8 +904,26 @@ namespace GHelper
                 return;
             }
 
+            if (matrixControl.IsSlash)
+            {
+                labelMatrix.Text = "Slash Lightning";
+                comboMatrixRunning.Items.Clear();
+
+                foreach (var item in SlashDevice.Modes)
+                {
+                    comboMatrixRunning.Items.Add(item.Value);
+                }
+
+                comboInterval.Visible = true;
+                comboInterval.Items.Add($"Interval Off");
+                for (int i = 1; i <= 5; i++) comboInterval.Items.Add($"Interval {i}s");
+
+                buttonMatrix.Visible = false;
+            }
+
             comboMatrix.SelectedIndex = Math.Min(AppConfig.Get("matrix_brightness", 0), comboMatrix.Items.Count - 1);
             comboMatrixRunning.SelectedIndex = Math.Min(AppConfig.Get("matrix_running", 0), comboMatrixRunning.Items.Count - 1);
+            comboInterval.SelectedIndex = Math.Min(AppConfig.Get("matrix_interval", 0), comboInterval.Items.Count - 1);
 
             checkMatrix.Checked = AppConfig.Is("matrix_auto");
             checkMatrix.CheckedChanged += CheckMatrix_CheckedChanged;
@@ -909,7 +935,7 @@ namespace GHelper
         {
             comboMatrix.SelectedIndex = Math.Min(Math.Max(0, comboMatrix.SelectedIndex + delta), comboMatrix.Items.Count - 1);
             AppConfig.Set("matrix_brightness", comboMatrix.SelectedIndex);
-            matrixControl.SetMatrix();
+            matrixControl.SetDevice();
             Program.toast.RunToast(comboMatrix.GetItemText(comboMatrix.SelectedItem), delta > 0 ? ToastIcon.BacklightUp : ToastIcon.BacklightDown);
         }
 
