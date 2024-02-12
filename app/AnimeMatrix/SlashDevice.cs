@@ -1,5 +1,4 @@
 ﻿using GHelper.AnimeMatrix.Communication;
-using GHelper.Mode;
 using System.Text;
 
 namespace GHelper.AnimeMatrix
@@ -38,10 +37,10 @@ namespace GHelper.AnimeMatrix
             { SlashMode.Bounce, "Bounce"},
             { SlashMode.Slash, "Slash"},
             { SlashMode.Loading, "Loading"},
-            
+
             { SlashMode.BitStream, "Bit Stream"},
             { SlashMode.Transmission, "Transmission"},
-            
+
             { SlashMode.Flow, "Flow"},
             { SlashMode.Flux, "Flux"},
             { SlashMode.Phantom, "Phantom"},
@@ -106,7 +105,8 @@ namespace GHelper.AnimeMatrix
             try
             {
                 modeByte = modeCodes[mode];
-            } catch (Exception)
+            }
+            catch (Exception)
             {
                 modeByte = 0x00;
             }

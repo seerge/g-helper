@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Timers;
-using static GHelper.AnimeMatrix.BuiltInAnimation;
 
 namespace GHelper.AnimeMatrix
 {
@@ -36,7 +35,7 @@ namespace GHelper.AnimeMatrix
 
             try
             {
-                if (AppConfig.ContainsModel("GA403") || AppConfig.ContainsModel("GU605"))
+                if (AppConfig.IsSlash())
                     deviceSlash = new SlashDevice();
                 else
                     deviceMatrix = new AnimeMatrixDevice();
@@ -165,9 +164,9 @@ namespace GHelper.AnimeMatrix
         private void SetBuiltIn(int running)
         {
             BuiltInAnimation animation = new BuiltInAnimation(
-                (Running)running,
-                Sleeping.Starfield,
-                Shutdown.SeeYa,
+                (BuiltInAnimation.Running)running,
+                BuiltInAnimation.Sleeping.Starfield,
+                BuiltInAnimation.Shutdown.SeeYa,
                 BuiltInAnimation.Startup.StaticEmergence
             );
             deviceMatrix.SetBuiltInAnimation(true, animation);
