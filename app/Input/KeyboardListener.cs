@@ -66,7 +66,7 @@ namespace GHelper.Input
             }
             catch (Exception ex)
             {
-                Logger.WriteLine(ex.ToString());
+                Logger.WriteLine($"Listener exited: {ex.Message}");
             }
 
         }
