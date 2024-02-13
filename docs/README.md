@@ -107,13 +107,12 @@ Huge thanks to [@IceStormNG](https://github.com/IceStormNG) 👑 for contributio
 ### ⌨️ Keybindings
 
 - ``Fn + F5 / Fn + Shift + F5`` - Toggle Performance Modes forwards / backwards
-- ``Shift + Fn + F7 / F8`` - Set Anime Matrix / Slash Lightning brightness Down / Up
 - ``Ctrl + Shift + F5 / Ctrl + Shift + Alt + F5`` - Toggle Performance Modes forwards / backwards
 - ``Ctrl + Shift + F12`` - Open G-Helper window
 - ``Ctrl + M1 / M2`` - Screen brightness Down / Up
 - ``Shift + M1 / M2`` - Backlight brightness Down / Up
 - ``Fn + C`` - Fn-Lock
-- ``Fn + Shift + F7 / F8`` - Matrix brightness Down / Up
+- ``Fn + Shift + F7 / F8`` - Matrix / Slash Lightning brightness Down / Up
 - ``Fn + Shift + F7 / F8`` - Screenpad brightness Down / Up
 - ``Ctrl + Shift + F20`` - Mute Microphone
 - ``Ctrl + Shift + Alt + F14`` - Eco GPU Mode
