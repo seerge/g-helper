@@ -24,26 +24,30 @@ public sealed class KeyboardHook : IDisposable
     public static void KeyPress(Keys key)
     {
         keybd_event((byte)key, 0, KEYEVENTF_EXTENDEDKEY, IntPtr.Zero);
+
+        Thread.Sleep(1);
+
+        keybd_event((byte)key, 0, KEYEVENTF_EXTENDEDKEY | KEYEVENTF_KEYUP, IntPtr.Zero);
     }
 
     public static void KeyKeyPress(Keys key, Keys key2)
     {
         keybd_event((byte)key, 0, KEYEVENTF_EXTENDEDKEY, IntPtr.Zero);
         keybd_event((byte)key2, 0, KEYEVENTF_EXTENDEDKEY, IntPtr.Zero);
+
+        Thread.Sleep(1);
+
         keybd_event((byte)key2, 0, KEYEVENTF_EXTENDEDKEY | KEYEVENTF_KEYUP, IntPtr.Zero);
         keybd_event((byte)key, 0, KEYEVENTF_EXTENDEDKEY | KEYEVENTF_KEYUP, IntPtr.Zero);
     }
 
-    public static void KeyKeyKeyPress(Keys key, Keys key2, Keys key3, int sleep = 0)
+    public static void KeyKeyKeyPress(Keys key, Keys key2, Keys key3, int sleep = 1)
     {
         keybd_event((byte)key, 0, KEYEVENTF_EXTENDEDKEY, IntPtr.Zero);
         keybd_event((byte)key2, 0, KEYEVENTF_EXTENDEDKEY, IntPtr.Zero);
         keybd_event((byte)key3, 0, KEYEVENTF_EXTENDEDKEY, IntPtr.Zero);
 
-        if (sleep > 0)
-        {
-            Thread.Sleep(sleep);
-        }
+        Thread.Sleep(sleep);
 
         keybd_event((byte)key3, 0, KEYEVENTF_EXTENDEDKEY | KEYEVENTF_KEYUP, IntPtr.Zero);
         keybd_event((byte)key2, 0, KEYEVENTF_EXTENDEDKEY | KEYEVENTF_KEYUP, IntPtr.Zero);
