@@ -794,20 +794,31 @@ namespace GHelper.Input
         {
             if (!ProcessHelper.IsUserAdministrator()) return;
 
-            int toggle = AppConfig.Is("camera_toggle") ? 0 : 1;
-            Program.acpi.DeviceSet(AsusACPI.CameraLed, toggle, "Camera");
+            string CameraRegistryKeyPath = @"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\CapabilityAccessManager\ConsentStore\webcam";
+            string CameraRegistryValueName = "Value";
 
             try
             {
-                ProcessHelper.RunCMD("powershell", (toggle == 1 ? "Disable" : "Enable") + "-PnpDevice -InstanceId (Get-PnpDevice -FriendlyName *webcam*).InstanceId -Confirm:$false");
+                var status = (string?)Registry.GetValue(CameraRegistryKeyPath, CameraRegistryValueName, "");
+
+                if (status == "Allow") status = "Deny";
+                else if (status == "Deny") status = "Allow";
+                else
+                {
+                    Logger.WriteLine("Unknown camera status");
+                    return;
+                }
+
+                Registry.SetValue(CameraRegistryKeyPath, CameraRegistryValueName, status, RegistryValueKind.String);
+                Program.acpi.DeviceSet(AsusACPI.CameraLed, (status == "Deny" ? 1 : 0), "Camera");
+                Program.toast.RunToast($"Camera " + (status == "Deny" ? "Off" : "On"));
+
             }
             catch (Exception ex)
             {
                 Logger.WriteLine(ex.ToString());
             }
 
-            AppConfig.Set("camera_toggle", toggle);
-            Program.toast.RunToast($"Camera " + (toggle == 1 ? "Off" : "On"));
         }
 
         public static void SetScreenpad(int delta)
