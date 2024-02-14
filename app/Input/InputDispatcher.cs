@@ -500,7 +500,7 @@ namespace GHelper.Input
                 case "micmute":
                     bool muteStatus = Audio.ToggleMute();
                     Program.toast.RunToast(muteStatus ? "Muted" : "Unmuted", muteStatus ? ToastIcon.MicrophoneMute : ToastIcon.Microphone);
-                    if (AppConfig.IsVivobook()) Program.acpi.DeviceSet(AsusACPI.MICMUTE_LED, muteStatus ? 1 : 0, "MicmuteLed");
+                    if (AppConfig.IsVivobook()) Program.acpi.DeviceSet(AsusACPI.MicMuteLed, muteStatus ? 1 : 0, "MicmuteLed");
                     break;
                 case "brightness_up":
                     SetBrightness(+10);
@@ -628,6 +628,9 @@ namespace GHelper.Input
             {
                 switch (EventID)
                 {
+                    case 134:     // FN + F12 ON OLD DEVICES
+                        KeyProcess("m4");
+                        return;
                     case 124:    // M3
                         KeyProcess("m3");
                         return;
@@ -705,6 +708,9 @@ namespace GHelper.Input
                     }
                     else
                         Program.acpi.DeviceSet(AsusACPI.UniversalControl, AsusACPI.Brightness_Up, "Brightness");
+                    break;
+                case 133: // Camera Toggle
+                    ToggleCamera();
                     break;
                 case 107: // FN+F10
                     ToggleTouchpadEvent();
@@ -784,6 +790,25 @@ namespace GHelper.Input
             Program.toast.RunToast($"Screen Pad " + (toggle == 1 ? "On" : "Off"), toggle > 0 ? ToastIcon.BrightnessUp : ToastIcon.BrightnessDown);
         }
 
+        public static void ToggleCamera()
+        {
+            if (!ProcessHelper.IsUserAdministrator()) return;
+
+            int toggle = AppConfig.Is("camera_toggle") ? 0 : 1;
+            Program.acpi.DeviceSet(AsusACPI.CameraLed, toggle, "Camera");
+
+            try
+            {
+                ProcessHelper.RunCMD("powershell", (toggle == 1 ? "Disable" : "Enable") + "-PnpDevice -InstanceId (Get-PnpDevice -FriendlyName *webcam*).InstanceId -Confirm:$false");
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLine(ex.ToString());
+            }
+
+            AppConfig.Set("camera_toggle", toggle);
+            Program.toast.RunToast($"Camera " + (toggle == 1 ? "Off" : "On"));
+        }
 
         public static void SetScreenpad(int delta)
         {

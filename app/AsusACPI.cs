@@ -46,7 +46,6 @@ public class AsusACPI
     public const int KB_DUO_PgUpDn = 0x4B;
     public const int KB_DUO_SecondDisplay = 0x6A;
 
-
     public const int Touchpad_Toggle = 0x6B;
 
     public const int ChargerMode = 0x0012006C;
@@ -106,13 +105,15 @@ public class AsusACPI
     public const int TUF_KB2 = 0x0010005a;
     public const int TUF_KB_STATE = 0x00100057;
 
-    public const int MICMUTE_LED = 0x00040017;
+    public const int MicMuteLed = 0x00040017;
 
     public const int TabletState = 0x00060077;
     public const int FnLock = 0x00100023;
 
     public const int ScreenPadToggle = 0x00050031;
     public const int ScreenPadBrightness = 0x00050032;
+
+    public const int CameraLed = 0x00060079;
 
     public const int BootSound = 0x00130022;
 
