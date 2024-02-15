@@ -665,21 +665,31 @@ public class AsusACPI
         }
     }
 
-    public void ScanRange()
+    public string ScanRange()
     {
         int value;
         string appPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\GHelper";
         string logFile = appPath + "\\scan.txt";
-        for (uint i = 0x00000000; i <= 0x00160000; i++)
+        using (StreamWriter w = File.AppendText(logFile))
         {
-            value = DeviceGet(i);
-            if (value >= 0)
-                using (StreamWriter w = File.AppendText(logFile))
+            w.WriteLine($"Scan started {DateTime.Now}");
+            for (uint i = 0x00000000; i <= 0x00160000; i += 0x10000)
+            {
+                for (uint j = 0x00; j <= 0xFF; j++)
                 {
-                    w.WriteLine(i.ToString("X8") + ": " + value.ToString("X4") + " (" + value + ")");
-                    w.Close();
+                    uint id = i + j;
+                    value = DeviceGet(id);
+                    if (value >= 0)
+                    {
+                        w.WriteLine(id.ToString("X8") + ": " + value.ToString("X4") + " (" + value + ")");
+                    }
                 }
+            }
+            w.WriteLine($"---------------------");
+            w.Close();
         }
+
+        return logFile;
 
     }
 
