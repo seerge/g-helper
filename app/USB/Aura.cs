@@ -73,7 +73,8 @@ namespace GHelper.USB
         private static AuraMode mode = AuraMode.AuraStatic;
         private static AuraSpeed speed = AuraSpeed.Normal;
 
-        private static int _brightness = 0;
+        private static bool backlight = false;
+        private static bool initDirect = false;
 
         public static Color Color1 = Color.White;
         public static Color Color2 = Color.Black;
@@ -291,7 +292,7 @@ namespace GHelper.USB
 
         public static void ApplyBrightness(int brightness, string log = "Backlight", bool delay = false)
         {
-            _brightness = brightness;
+            if (brightness == 0) backlight = false;
 
             Task.Run(async () =>
             {
@@ -304,6 +305,13 @@ namespace GHelper.USB
                     AsusHid.Write(new byte[] { AsusHid.AURA_ID, 0xBA, 0xC5, 0xC4, (byte)brightness }, log);
 
                 if (AppConfig.IsAlly()) ApplyAura();
+
+                if (brightness > 0)
+                {
+                    if (!backlight) initDirect = true;
+                    backlight = true;
+
+                }
 
             });
 
@@ -498,7 +506,7 @@ namespace GHelper.USB
 
         public static void ApplyDirect(Color[] color, bool init = false)
         {
-            if (_brightness <= 0) return;
+            if (!backlight) return;
 
             const byte keySet = 167;
             const byte ledCount = 178;
@@ -517,9 +525,9 @@ namespace GHelper.USB
             buffer[6] = 0;
             buffer[7] = 0x10;
 
-            if (init)
+            if (init || initDirect)
             {
-                Init();
+                initDirect = false;
                 AsusHid.WriteAura(new byte[] { AsusHid.AURA_ID, 0xBC });
             }
 
@@ -580,7 +588,7 @@ namespace GHelper.USB
         public static void ApplyDirect(Color color, bool init = false)
         {
 
-            if (_brightness <= 0) return;
+            if (!backlight) return;
 
             if (isACPI)
             {
@@ -600,9 +608,9 @@ namespace GHelper.USB
                 return;
             }
 
-            if (init)
+            if (init || initDirect)
             {
-                //Init();
+                initDirect = false;
                 AsusHid.WriteAura(new byte[] { AsusHid.AURA_ID, 0xbc, 1 });
             }
 
@@ -729,7 +737,7 @@ namespace GHelper.USB
 
             public static void ApplyAmbient(bool init = false)
             {
-                if (_brightness <= 0) return;
+                if (!backlight) return;
 
                 var bound = Screen.GetBounds(Point.Empty);
                 bound.Y += bound.Height / 3;
