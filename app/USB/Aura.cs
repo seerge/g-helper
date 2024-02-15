@@ -73,6 +73,8 @@ namespace GHelper.USB
         private static AuraMode mode = AuraMode.AuraStatic;
         private static AuraSpeed speed = AuraSpeed.Normal;
 
+        private static int _brightness = 0;
+
         public static Color Color1 = Color.White;
         public static Color Color2 = Color.Black;
 
@@ -289,6 +291,8 @@ namespace GHelper.USB
 
         public static void ApplyBrightness(int brightness, string log = "Backlight", bool delay = false)
         {
+            _brightness = brightness;
+
             Task.Run(async () =>
             {
                 if (delay) await Task.Delay(TimeSpan.FromSeconds(1));
@@ -494,6 +498,8 @@ namespace GHelper.USB
 
         public static void ApplyDirect(Color[] color, bool init = false)
         {
+            if (_brightness <= 0) return;
+
             const byte keySet = 167;
             const byte ledCount = 178;
             const ushort mapSize = 3 * ledCount;
@@ -573,6 +579,8 @@ namespace GHelper.USB
 
         public static void ApplyDirect(Color color, bool init = false)
         {
+
+            if (_brightness <= 0) return;
 
             if (isACPI)
             {
@@ -721,6 +729,8 @@ namespace GHelper.USB
 
             public static void ApplyAmbient(bool init = false)
             {
+                if (_brightness <= 0) return;
+
                 var bound = Screen.GetBounds(Point.Empty);
                 bound.Y += bound.Height / 3;
                 bound.Height -= (int)Math.Round(bound.Height * (0.33f + 0.022f)); // cut 1/3 of the top screen + windows panel
