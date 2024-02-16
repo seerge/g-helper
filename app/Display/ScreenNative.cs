@@ -32,6 +32,15 @@ namespace GHelper.Display
     }
     internal class ScreenNative
     {
+
+        [DllImport("gdi32", CharSet = CharSet.Unicode)]
+        internal static extern IntPtr CreateDC(string driver, string device, string port, IntPtr deviceMode);
+
+        [DllImport("gdi32")]
+        internal static extern bool SetDeviceGammaRamp(IntPtr dcHandle, ref GammaRamp ramp);
+
+
+
         [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
         public struct DEVMODE
         {
@@ -146,7 +155,7 @@ namespace GHelper.Display
         public const string defaultDevice = @"\\.\DISPLAY1";
 
 
-        private static string? FindInternalName(bool log = false)
+        public static string? FindInternalName(bool log = false)
         {
             try
             {

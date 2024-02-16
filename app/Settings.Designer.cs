@@ -123,8 +123,6 @@ namespace GHelper
             panelGamma = new Panel();
             sliderGamma = new Slider();
             panelGammaTitle = new Panel();
-            buttonGammaLoad = new RButton();
-            buttonGammaSave = new RButton();
             labelGamma = new Label();
             pictureGamma = new PictureBox();
             labelGammaTitle = new Label();
@@ -1667,8 +1665,6 @@ namespace GHelper
             // 
             // panelGammaTitle
             // 
-            panelGammaTitle.Controls.Add(buttonGammaLoad);
-            panelGammaTitle.Controls.Add(buttonGammaSave);
             panelGammaTitle.Controls.Add(labelGamma);
             panelGammaTitle.Controls.Add(pictureGamma);
             panelGammaTitle.Controls.Add(labelGammaTitle);
@@ -1679,44 +1675,6 @@ namespace GHelper
             panelGammaTitle.Padding = new Padding(0, 0, 0, 4);
             panelGammaTitle.Size = new Size(787, 44);
             panelGammaTitle.TabIndex = 40;
-            // 
-            // buttonGammaLoad
-            // 
-            buttonGammaLoad.Activated = false;
-            buttonGammaLoad.BackColor = SystemColors.ControlLight;
-            buttonGammaLoad.BorderColor = Color.Transparent;
-            buttonGammaLoad.BorderRadius = 2;
-            buttonGammaLoad.FlatAppearance.BorderSize = 0;
-            buttonGammaLoad.FlatStyle = FlatStyle.Flat;
-            buttonGammaLoad.Font = new Font("Segoe UI", 7.125F, FontStyle.Bold, GraphicsUnit.Point);
-            buttonGammaLoad.ForeColor = SystemColors.ControlDark;
-            buttonGammaLoad.Location = new Point(500, 4);
-            buttonGammaLoad.Margin = new Padding(0);
-            buttonGammaLoad.Name = "buttonGammaLoad";
-            buttonGammaLoad.Secondary = true;
-            buttonGammaLoad.Size = new Size(76, 36);
-            buttonGammaLoad.TabIndex = 41;
-            buttonGammaLoad.Text = "Load";
-            buttonGammaLoad.UseVisualStyleBackColor = false;
-            // 
-            // buttonGammaSave
-            // 
-            buttonGammaSave.Activated = false;
-            buttonGammaSave.BackColor = SystemColors.ControlLight;
-            buttonGammaSave.BorderColor = Color.Transparent;
-            buttonGammaSave.BorderRadius = 2;
-            buttonGammaSave.FlatAppearance.BorderSize = 0;
-            buttonGammaSave.FlatStyle = FlatStyle.Flat;
-            buttonGammaSave.Font = new Font("Segoe UI", 7.125F, FontStyle.Bold, GraphicsUnit.Point);
-            buttonGammaSave.ForeColor = SystemColors.ControlDark;
-            buttonGammaSave.Location = new Point(576, 4);
-            buttonGammaSave.Margin = new Padding(0);
-            buttonGammaSave.Name = "buttonGammaSave";
-            buttonGammaSave.Secondary = true;
-            buttonGammaSave.Size = new Size(75, 36);
-            buttonGammaSave.TabIndex = 40;
-            buttonGammaSave.Text = "Save";
-            buttonGammaSave.UseVisualStyleBackColor = false;
             // 
             // labelGamma
             // 
@@ -1937,7 +1895,5 @@ namespace GHelper
         private Label labelGamma;
         private PictureBox pictureGamma;
         private Label labelGammaTitle;
-        private RButton buttonGammaLoad;
-        private RButton buttonGammaSave;
     }
 }

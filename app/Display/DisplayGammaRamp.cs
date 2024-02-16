@@ -1,11 +1,12 @@
-﻿using System;
-using System.Diagnostics;
-using WindowsDisplayAPI.Native.DeviceContext.Structures;
+﻿using System.Diagnostics;
+using System.Runtime.InteropServices;
 
-namespace WindowsDisplayAPI
+namespace GHelper.Display
 {
+ 
     public class DisplayGammaRamp
     {
+    
         public DisplayGammaRamp(ushort[] red, ushort[] green, ushort[] blue)
         {
             if (red?.Length != GammaRamp.DataPoints)
@@ -37,29 +38,6 @@ namespace WindowsDisplayAPI
         {
         }
 
-        public DisplayGammaRamp(
-            double redBrightness,
-            double redContrast,
-            double redGamma,
-            double greenBrightness,
-            double greenContrast,
-            double greenGamma,
-            double blueBrightness,
-            double blueContrast,
-            double blueGamma
-        )
-            : this(
-                CalculateLUT(redBrightness, redContrast, redGamma),
-                CalculateLUT(greenBrightness, greenContrast, greenGamma),
-                CalculateLUT(blueBrightness, blueContrast, blueGamma)
-            )
-        {
-        }
-
-        internal DisplayGammaRamp(GammaRamp ramp) :
-            this(ramp.Red, ramp.Green, ramp.Blue)
-        {
-        }
 
         public ushort[] Blue { get; }
         public ushort[] Green { get; }
@@ -73,11 +51,11 @@ namespace WindowsDisplayAPI
 
             for (var i = 0; i < result.Length; i++)
             {
-                result[i] = (ushort)((0.5 + brightness / 2)  * ushort.MaxValue * i / (float)(result.Length - 1));
+                result[i] = (ushort)((0.5 + brightness / 2) * ushort.MaxValue * i / (float)(result.Length - 1));
                 bits += result[i].ToString() + " ";
             }
 
-            Debug.WriteLine(bits);
+            //Debug.WriteLine(bits);
 
             return result;
         }
@@ -87,5 +65,7 @@ namespace WindowsDisplayAPI
         {
             return new GammaRamp(Red, Green, Blue);
         }
+
+
     }
 }

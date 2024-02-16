@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Runtime.InteropServices;
-using System.Text;
+﻿using System.Runtime.InteropServices;
 
-namespace WindowsDisplayAPI.Native.DeviceContext.Structures
+namespace GHelper.Display
 {
+
     [StructLayout(LayoutKind.Sequential)]
     internal struct GammaRamp
     {
@@ -54,4 +52,5 @@ namespace WindowsDisplayAPI.Native.DeviceContext.Structures
             Blue = blue;
         }
     }
+
 }

@@ -256,21 +256,9 @@ namespace GHelper
             sliderGamma.ValueChanged += SliderGamma_ValueChanged;
             labelGamma.Text = "100%";
 
-            buttonGammaSave.Click += ButtonGammaSave_Click;
-            buttonGammaLoad.Click += ButtonGammaLoad_Click;
-
             panelPerformance.Focus();
         }
 
-        private void ButtonGammaLoad_Click(object? sender, EventArgs e)
-        {
-            screenControl.RestoreGamma();
-        }
-
-        private void ButtonGammaSave_Click(object? sender, EventArgs e)
-        {
-            screenControl.SaveGamma();
-        }
 
         private void SliderGamma_ValueChanged(object? sender, EventArgs e)
         {
