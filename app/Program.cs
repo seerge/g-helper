@@ -229,7 +229,7 @@ namespace GHelper
 
             BatteryControl.AutoBattery(init);
 
-            settingsForm.matrixControl.SetMatrix(true);
+            settingsForm.matrixControl.SetDevice(true);
 
             if (AppConfig.IsAlly())
             {

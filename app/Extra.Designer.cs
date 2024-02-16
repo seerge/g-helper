@@ -120,6 +120,7 @@ namespace GHelper
             comboAPU = new RComboBox();
             pictureAPUMem = new PictureBox();
             labelAPUMem = new Label();
+            pictureScan = new PictureBox();
             panelServices.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureService).BeginInit();
             panelBindingsHeader.SuspendLayout();
@@ -144,6 +145,7 @@ namespace GHelper
             ((System.ComponentModel.ISupportInitialize)pictureHibernate).BeginInit();
             panelAPU.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureAPUMem).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)pictureScan).BeginInit();
             SuspendLayout();
             // 
             // panelServices
@@ -1003,6 +1005,7 @@ namespace GHelper
             // 
             panelSettingsHeader.AutoSize = true;
             panelSettingsHeader.BackColor = SystemColors.ControlLight;
+            panelSettingsHeader.Controls.Add(pictureScan);
             panelSettingsHeader.Controls.Add(pictureLog);
             panelSettingsHeader.Controls.Add(pictureSettings);
             panelSettingsHeader.Controls.Add(labelSettings);
@@ -1263,6 +1266,20 @@ namespace GHelper
             labelAPUMem.TabIndex = 0;
             labelAPUMem.Text = "Memory Assigned to GPU";
             // 
+            // pictureScan
+            // 
+            pictureScan.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            pictureScan.BackgroundImage = Resources.icons8_heartbeat_32;
+            pictureScan.BackgroundImageLayout = ImageLayout.Zoom;
+            pictureScan.Cursor = Cursors.Hand;
+            pictureScan.Location = new Point(891, 11);
+            pictureScan.Margin = new Padding(4, 3, 4, 3);
+            pictureScan.Name = "pictureScan";
+            pictureScan.Size = new Size(32, 32);
+            pictureScan.TabIndex = 13;
+            pictureScan.TabStop = false;
+            pictureScan.Visible = false;
+            // 
             // Extra
             // 
             AutoScaleDimensions = new SizeF(192F, 192F);
@@ -1326,6 +1343,7 @@ namespace GHelper
             panelAPU.ResumeLayout(false);
             panelAPU.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)pictureAPUMem).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pictureScan).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -1420,5 +1438,6 @@ namespace GHelper
         private PictureBox pictureAPUMem;
         private Label labelAPUMem;
         private RComboBox comboAPU;
+        private PictureBox pictureScan;
     }
 }

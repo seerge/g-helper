@@ -30,7 +30,7 @@ public static class Logger
         try
         {
             var file = File.ReadAllLines(logFile);
-            int skip = Math.Max(0, file.Count() - 1000);
+            int skip = Math.Max(0, file.Count() - 2000);
             File.WriteAllLines(logFile, file.Skip(skip).ToArray());
         }
         catch { }

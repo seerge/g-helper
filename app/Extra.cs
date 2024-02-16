@@ -386,6 +386,7 @@ namespace GHelper
             buttonServices.Click += ButtonServices_Click;
 
             pictureLog.Click += PictureLog_Click;
+            pictureScan.Click += PictureScan_Click;
 
             checkGPUFix.Visible = Program.acpi.IsNVidiaGPU();
             checkGPUFix.Checked = AppConfig.IsGPUFix();
@@ -396,6 +397,18 @@ namespace GHelper
             InitVariBright();
             InitServices();
             InitHibernate();
+        }
+
+        private void PictureScan_Click(object? sender, EventArgs e)
+        {
+            string logFile = Program.acpi.ScanRange();
+            new Process
+            {
+                StartInfo = new ProcessStartInfo(logFile)
+                {
+                    UseShellExecute = true
+                }
+            }.Start();
         }
 
         private void ComboAPU_SelectedIndexChanged(object? sender, EventArgs e)

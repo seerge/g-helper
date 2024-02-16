@@ -62,8 +62,8 @@ namespace GHelper
             comboRotation.SelectedValueChanged += ComboRotation_SelectedValueChanged; ;
 
 
-            uiScale = panelPicture.Width / matrixControl.device.MaxColumns / 3;
-            panelPicture.Height = (int)(matrixControl.device.MaxRows * uiScale);
+            uiScale = panelPicture.Width / matrixControl.deviceMatrix.MaxColumns / 3;
+            panelPicture.Height = (int)(matrixControl.deviceMatrix.MaxRows * uiScale);
 
         }
 

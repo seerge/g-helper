@@ -101,6 +101,8 @@ public static class AppConfig
             }
         }
 
+        //if (_model.Contains("GA402RK")) _model = "ROG Zephyrus G14 GA403UI"; // Debug Purposes
+
         return _model;
     }
 
@@ -377,6 +379,16 @@ public static class AppConfig
         return ContainsModel("GA401") || ContainsModel("FX517Z") || ContainsModel("FX516P") || ContainsModel("X13") || IsARCNM() || ContainsModel("GA502IU");
     }
 
+    public static bool IsSlash()
+    {
+        return ContainsModel("GA403") || ContainsModel("GU605");
+    }
+
+    public static bool IsInputBacklight()
+    {
+        return ContainsModel("GA503") || IsSlash();
+    }
+
     public static bool IsStrix()
     {
         return ContainsModel("Strix") || ContainsModel("Scar") || ContainsModel("G703G");
@@ -385,6 +397,11 @@ public static class AppConfig
     public static bool IsStrixLimitedRGB()
     {
         return (ContainsModel("G614JV") || ContainsModel("G614JZ") || ContainsModel("G512LI") || ContainsModel("G513R") || ContainsModel("G713PV") || ContainsModel("G513IE") || ContainsModel("G713RC") || ContainsModel("G513QM") || ContainsModel("G531G")) && !Is("per_key_rgb");
+    }
+
+    public static bool IsNoAirplaneMode()
+    {
+        return ContainsModel("FX506");
     }
 
     public static bool IsNoDirectRGB()

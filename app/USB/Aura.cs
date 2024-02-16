@@ -73,6 +73,9 @@ namespace GHelper.USB
         private static AuraMode mode = AuraMode.AuraStatic;
         private static AuraSpeed speed = AuraSpeed.Normal;
 
+        private static bool backlight = false;
+        private static bool initDirect = false;
+
         public static Color Color1 = Color.White;
         public static Color Color2 = Color.Black;
 
@@ -289,17 +292,27 @@ namespace GHelper.USB
 
         public static void ApplyBrightness(int brightness, string log = "Backlight", bool delay = false)
         {
+            if (brightness == 0) backlight = false;
+
             Task.Run(async () =>
             {
                 if (delay) await Task.Delay(TimeSpan.FromSeconds(1));
                 if (isACPI) Program.acpi.TUFKeyboardBrightness(brightness);
 
-                AsusHid.Write(new byte[] { AsusHid.AURA_ID, 0xBA, 0xC5, 0xC4, (byte)brightness }, log);
+                if (AppConfig.IsInputBacklight()) 
+                    AsusHid.WriteInput(new byte[] { AsusHid.INPUT_ID, 0xBA, 0xC5, 0xC4, (byte)brightness }, log);
+                else 
+                    AsusHid.Write(new byte[] { AsusHid.AURA_ID, 0xBA, 0xC5, 0xC4, (byte)brightness }, log);
 
                 if (AppConfig.IsAlly()) ApplyAura();
 
-                if (AppConfig.ContainsModel("GA503"))
-                    AsusHid.WriteInput(new byte[] { AsusHid.INPUT_ID, 0xBA, 0xC5, 0xC4, (byte)brightness }, log);
+                if (brightness > 0)
+                {
+                    if (!backlight) initDirect = true;
+                    backlight = true;
+
+                }
+
             });
 
 
@@ -493,6 +506,8 @@ namespace GHelper.USB
 
         public static void ApplyDirect(Color[] color, bool init = false)
         {
+            if (!backlight) return;
+
             const byte keySet = 167;
             const byte ledCount = 178;
             const ushort mapSize = 3 * ledCount;
@@ -510,9 +525,9 @@ namespace GHelper.USB
             buffer[6] = 0;
             buffer[7] = 0x10;
 
-            if (init)
+            if (init || initDirect)
             {
-                Init();
+                initDirect = false;
                 AsusHid.WriteAura(new byte[] { AsusHid.AURA_ID, 0xBC });
             }
 
@@ -573,6 +588,8 @@ namespace GHelper.USB
         public static void ApplyDirect(Color color, bool init = false)
         {
 
+            if (!backlight) return;
+
             if (isACPI)
             {
                 Program.acpi.TUFKeyboardRGB(0, color, 0, null);
@@ -591,9 +608,9 @@ namespace GHelper.USB
                 return;
             }
 
-            if (init)
+            if (init || initDirect)
             {
-                //Init();
+                initDirect = false;
                 AsusHid.WriteAura(new byte[] { AsusHid.AURA_ID, 0xbc, 1 });
             }
 
@@ -720,6 +737,8 @@ namespace GHelper.USB
 
             public static void ApplyAmbient(bool init = false)
             {
+                if (!backlight) return;
+
                 var bound = Screen.GetBounds(Point.Empty);
                 bound.Y += bound.Height / 3;
                 bound.Height -= (int)Math.Round(bound.Height * (0.33f + 0.022f)); // cut 1/3 of the top screen + windows panel
