@@ -514,15 +514,24 @@ public class AsusACPI
             default: fan_mode = 0; break;
         }
 
+        byte[] result;
+
         switch (device)
         {
             case AsusFan.GPU:
-                return DeviceGetBuffer(DevsGPUFanCurve, fan_mode);
+                result = DeviceGetBuffer(DevsGPUFanCurve, fan_mode);
+                break;
             case AsusFan.Mid:
-                return DeviceGetBuffer(DevsMidFanCurve, fan_mode);
+                result = DeviceGetBuffer(DevsMidFanCurve, fan_mode);
+                break;
             default:
-                return DeviceGetBuffer(DevsCPUFanCurve, fan_mode);
+                result = DeviceGetBuffer(DevsCPUFanCurve, fan_mode);
+                break;
         }
+
+        Logger.WriteLine($"GetFan {device} :" + BitConverter.ToString(result));
+
+        return result;
 
     }
 
