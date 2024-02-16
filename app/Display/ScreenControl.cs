@@ -1,4 +1,4 @@
-﻿using System.Diagnostics;
+﻿using WindowsDisplayAPI;
 
 namespace GHelper.Display
 {
@@ -6,6 +6,8 @@ namespace GHelper.Display
     {
 
         public const int MAX_REFRESH = 1000;
+
+        public static DisplayGammaRamp? gamma;
 
         public void AutoScreen(bool force = false)
         {
@@ -20,6 +22,35 @@ namespace GHelper.Display
             {
                 SetScreen(overdrive: AppConfig.Get("overdrive"));
             }
+        }
+
+        public void SaveGamma()
+        {
+            var display = WindowsDisplayAPI.Display.GetDisplays().Where(x => x.DisplayScreen.IsPrimary).FirstOrDefault();
+            if (display is null) return;
+
+            gamma = display.GammaRamp;
+
+            Logger.WriteLine("R:" + string.Join("-", display.GammaRamp.Red));
+            Logger.WriteLine("G:" + string.Join("-", display.GammaRamp.Green));
+            Logger.WriteLine("B:" + string.Join("-", display.GammaRamp.Blue));
+        }
+
+        public void RestoreGamma()
+        {
+            var display = WindowsDisplayAPI.Display.GetDisplays().Where(x => x.DisplayScreen.IsPrimary).FirstOrDefault();
+            if (gamma is not null) display!.GammaRamp = gamma;
+        }
+
+        public void SetGamma(int brightness = 100, int contrast = 100)
+        {
+            var display = WindowsDisplayAPI.Display.GetDisplays().Where(x => x.DisplayScreen.IsPrimary).FirstOrDefault();
+            var bright = (float)(brightness) / 100;
+
+            Logger.WriteLine("Brightness: " + bright.ToString());
+
+            display!.GammaRamp = new DisplayGammaRamp(bright, bright, 1);
+            //ScreenBrightness.Set(60 + (int)(40 * bright));
         }
 
         public void SetScreen(int frequency = -1, int overdrive = -1, int miniled = -1)
@@ -71,7 +102,8 @@ namespace GHelper.Display
             if (miniled1 >= 0)
             {
                 miniled = (miniled1 == 1) ? 0 : 1;
-            } else
+            }
+            else
             {
                 switch (miniled2)
                 {
