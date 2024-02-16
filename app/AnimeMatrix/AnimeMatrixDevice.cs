@@ -5,7 +5,7 @@ using System.Drawing.Drawing2D;
 using System.Drawing.Text;
 using System.Text;
 
-namespace Starlight.AnimeMatrix
+namespace GHelper.AnimeMatrix
 {
     public class BuiltInAnimation
     {
@@ -91,7 +91,6 @@ namespace Starlight.AnimeMatrix
         public int MaxRows = 61;
         public int MaxColumns = 34;
         public int LedStart = 0;
-
         public int FullRows = 11;
 
         private int frameIndex = 0;

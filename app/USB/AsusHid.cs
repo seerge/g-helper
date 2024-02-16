@@ -90,18 +90,24 @@ public static class AsusHid
         if (devices is null) return;
 
         foreach (var device in devices)
-            using (var stream = device.Open())
-                foreach (var data in dataList)
-                    try
-                    {
-                        stream.Write(data);
-                        Logger.WriteLine($"{log} {device.ProductID.ToString("X")}: {BitConverter.ToString(data)}");
-                    }
-                    catch (Exception ex)
-                    {
-                        Logger.WriteLine($"Error writing {log} {device.ProductID.ToString("X")}: {ex.Message} {BitConverter.ToString(data)} ");
-                    }
-
+            try
+            {
+                using (var stream = device.Open())
+                    foreach (var data in dataList)
+                        try
+                        {
+                            stream.Write(data);
+                            Logger.WriteLine($"{log} {device.ProductID.ToString("X")}: {BitConverter.ToString(data)}");
+                        }
+                        catch (Exception ex)
+                        {
+                            Logger.WriteLine($"Error writing {log} {device.ProductID.ToString("X")}: {ex.Message} {BitConverter.ToString(data)} ");
+                        }
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLine($"Error opening {log} {device.ProductID.ToString("X")}: {ex.Message}");
+            }
     }
 
     public static void WriteAura(byte[] data)

@@ -500,7 +500,7 @@ namespace GHelper.Input
                 case "micmute":
                     bool muteStatus = Audio.ToggleMute();
                     Program.toast.RunToast(muteStatus ? "Muted" : "Unmuted", muteStatus ? ToastIcon.MicrophoneMute : ToastIcon.Microphone);
-                    if (AppConfig.IsVivobook()) Program.acpi.DeviceSet(AsusACPI.MICMUTE_LED, muteStatus ? 1 : 0, "MicmuteLed");
+                    if (AppConfig.IsVivobook()) Program.acpi.DeviceSet(AsusACPI.MicMuteLed, muteStatus ? 1 : 0, "MicmuteLed");
                     break;
                 case "brightness_up":
                     SetBrightness(+10);
@@ -628,6 +628,9 @@ namespace GHelper.Input
             {
                 switch (EventID)
                 {
+                    case 134:     // FN + F12 ON OLD DEVICES
+                        KeyProcess("m4");
+                        return;
                     case 124:    // M3
                         KeyProcess("m3");
                         return;
@@ -638,7 +641,7 @@ namespace GHelper.Input
                         KeyProcess("m6");
                         return;
                     case 136:    // FN + F12
-                        Program.acpi.DeviceSet(AsusACPI.UniversalControl, AsusACPI.Airplane, "Airplane");
+                        if (!AppConfig.IsNoAirplaneMode()) Program.acpi.DeviceSet(AsusACPI.UniversalControl, AsusACPI.Airplane, "Airplane");
                         return;
                     case 181:    // FN + Numpad Enter
                         KeyProcess("fne");
@@ -705,6 +708,9 @@ namespace GHelper.Input
                     }
                     else
                         Program.acpi.DeviceSet(AsusACPI.UniversalControl, AsusACPI.Brightness_Up, "Brightness");
+                    break;
+                case 133: // Camera Toggle
+                    ToggleCamera();
                     break;
                 case 107: // FN+F10
                     ToggleTouchpadEvent();
@@ -784,6 +790,36 @@ namespace GHelper.Input
             Program.toast.RunToast($"Screen Pad " + (toggle == 1 ? "On" : "Off"), toggle > 0 ? ToastIcon.BrightnessUp : ToastIcon.BrightnessDown);
         }
 
+        public static void ToggleCamera()
+        {
+            if (!ProcessHelper.IsUserAdministrator()) return;
+
+            string CameraRegistryKeyPath = @"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\CapabilityAccessManager\ConsentStore\webcam";
+            string CameraRegistryValueName = "Value";
+
+            try
+            {
+                var status = (string?)Registry.GetValue(CameraRegistryKeyPath, CameraRegistryValueName, "");
+
+                if (status == "Allow") status = "Deny";
+                else if (status == "Deny") status = "Allow";
+                else
+                {
+                    Logger.WriteLine("Unknown camera status");
+                    return;
+                }
+
+                Registry.SetValue(CameraRegistryKeyPath, CameraRegistryValueName, status, RegistryValueKind.String);
+                Program.acpi.DeviceSet(AsusACPI.CameraLed, (status == "Deny" ? 1 : 0), "Camera");
+                Program.toast.RunToast($"Camera " + (status == "Deny" ? "Off" : "On"));
+
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLine(ex.ToString());
+            }
+
+        }
 
         public static void SetScreenpad(int delta)
         {
