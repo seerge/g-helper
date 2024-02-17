@@ -588,7 +588,7 @@ Voulez-vous continuer ?</value>
     <value>Overdrive</value>
   </data>
   <data name="PerformanceMode" xml:space="preserve">
-    <value>Mode Performance</value>
+    <value>Mode</value>
   </data>
   <data name="Peripherals" xml:space="preserve">
     <value>Périphériques</value>
