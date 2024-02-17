@@ -260,7 +260,6 @@ namespace GHelper
             panelPerformance.Focus();
         }
 
-
         private void SliderGamma_ValueChanged(object? sender, EventArgs e)
         {
             screenControl.SetGamma(sliderGamma.Value);

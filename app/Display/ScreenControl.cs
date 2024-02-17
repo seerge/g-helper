@@ -7,7 +7,7 @@ namespace GHelper.Display
 
         public const int MAX_REFRESH = 1000;
 
-        public static DisplayGammaRamp? gamma;
+        public static DisplayGammaRamp? gammaRamp;
 
         public void AutoScreen(bool force = false)
         {
@@ -24,6 +24,29 @@ namespace GHelper.Display
             }
         }
 
+        public void SaveGamma()
+        {
+            var screenName = ScreenNative.FindLaptopScreen();
+            if (screenName is null) return;
+
+            try
+            {
+                var handle = ScreenNative.CreateDC(screenName, screenName, null, IntPtr.Zero);
+                var gammaRamp = new GammaRamp();
+                if (ScreenNative.GetDeviceGammaRamp(handle, ref gammaRamp))
+                {
+                    var gamma = new DisplayGammaRamp(gammaRamp);
+                    Logger.WriteLine("Gamma R: " + string.Join("-", gamma.Red));
+                    Logger.WriteLine("Gamma G: " + string.Join("-", gamma.Green));
+                    Logger.WriteLine("Gamma B: " + string.Join("-", gamma.Blue));
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLine(ex.ToString());
+            }
+        }
+
         public void SetGamma(int brightness = 100, int contrast = 100)
         {
             var bright = (float)(brightness) / 100;
@@ -35,8 +58,23 @@ namespace GHelper.Display
             try
             {
                 var handle = ScreenNative.CreateDC(screenName, screenName, null, IntPtr.Zero);
-                var gammaRamp = new DisplayGammaRamp(bright, bright, 1).AsRamp();
-                ScreenNative.SetDeviceGammaRamp(handle, ref gammaRamp);
+                if (gammaRamp is null)
+                {
+                    var gammaDump = new GammaRamp();
+                    if (ScreenNative.GetDeviceGammaRamp(handle, ref gammaDump))
+                    {
+                        gammaRamp = new DisplayGammaRamp(gammaDump);
+                        Logger.WriteLine("Gamma R: " + string.Join("-", gammaRamp.Red));
+                        Logger.WriteLine("Gamma G: " + string.Join("-", gammaRamp.Green));
+                        Logger.WriteLine("Gamma B: " + string.Join("-", gammaRamp.Blue));
+                    }
+                }
+
+                if (gammaRamp is null) gammaRamp = new DisplayGammaRamp();
+
+                var ramp = gammaRamp.AsBrightnessRamp(bright);
+                ScreenNative.SetDeviceGammaRamp(handle, ref ramp);
+
             } catch (Exception ex)
             {
                 Logger.WriteLine(ex.ToString());
