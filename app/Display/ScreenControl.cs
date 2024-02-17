@@ -50,7 +50,6 @@ namespace GHelper.Display
         public void SetGamma(int brightness = 100, int contrast = 100)
         {
             var bright = (float)(brightness) / 100;
-            Logger.WriteLine("Brightness: " + bright.ToString());
 
             var screenName = ScreenNative.FindLaptopScreen();
             if (screenName is null) return;
@@ -70,10 +69,16 @@ namespace GHelper.Display
                     }
                 }
 
-                if (gammaRamp is null) gammaRamp = new DisplayGammaRamp();
+                if (gammaRamp is null || !gammaRamp.IsOriginal())
+                {
+                    Logger.WriteLine("Default Gamma");
+                    gammaRamp = new DisplayGammaRamp();
+                }
 
                 var ramp = gammaRamp.AsBrightnessRamp(bright);
-                ScreenNative.SetDeviceGammaRamp(handle, ref ramp);
+                bool result = ScreenNative.SetDeviceGammaRamp(handle, ref ramp);
+
+                Logger.WriteLine("Brightness " + bright.ToString() + ": " + result);
 
             } catch (Exception ex)
             {

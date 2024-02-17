@@ -1,13 +1,9 @@
-﻿using System.Diagnostics;
-using System.Reflection.Metadata.Ecma335;
-using System.Runtime.InteropServices;
-
-namespace GHelper.Display
+﻿namespace GHelper.Display
 {
- 
+
     public class DisplayGammaRamp
     {
-    
+
         public DisplayGammaRamp(ushort[] red, ushort[] green, ushort[] blue)
         {
             if (red?.Length != GammaRamp.DataPoints)
@@ -67,20 +63,30 @@ namespace GHelper.Display
         public ushort[] Red { get; }
         private static ushort[] CalculateLUT(double brightness, double contrast, double gamma)
         {
+            brightness = 0.5 + brightness / 2;
             var result = new ushort[GammaRamp.DataPoints];
             for (var i = 0; i < result.Length; i++)
             {
-                result[i] = (ushort)((0.5 + brightness / 2) * ushort.MaxValue * i / (float)(result.Length - 1));
+                result[i] = (ushort)(brightness * ushort.MaxValue * i / (float)(result.Length - 1));
             }
             return result;
         }
 
+        public bool IsOriginal()
+        {
+            int MaxRed = Red[Red.Length - 1];
+            int MaxGreen = Green[Green.Length - 1];
+            int MaxBlue = Blue[Blue.Length - 1];
+            return (Math.Abs((MaxRed + MaxGreen + MaxBlue) / 3 - ushort.MaxValue) < 256);
+        }
+
         private static ushort[] Brightness(ushort[] data, double brightness)
         {
+            brightness = 0.5 + brightness / 2;
             var result = new ushort[GammaRamp.DataPoints];
             for (var i = 0; i < result.Length; i++)
             {
-                result[i] = (ushort)(data[i]*brightness);
+                result[i] = (ushort)(data[i] * brightness);
             }
             return result;
         }
