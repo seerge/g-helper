@@ -82,11 +82,13 @@
 
         private static ushort[] Brightness(ushort[] data, double brightness)
         {
-            brightness = 0.5 + brightness / 2;
             var result = new ushort[GammaRamp.DataPoints];
             for (var i = 0; i < result.Length; i++)
             {
-                result[i] = (ushort)(data[i] * brightness);
+                if (brightness < 0.5)
+                    result[i] = (ushort)(0.5 * ushort.MaxValue * Math.Pow((float)i/(result.Length - 1),  2 - brightness*2));
+                else
+                    result[i] = (ushort)(data[i] * brightness);
             }
             return result;
         }
