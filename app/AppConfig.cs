@@ -389,6 +389,11 @@ public static class AppConfig
         return ContainsModel("GA503") || IsSlash();
     }
 
+    public static bool IsOLED()
+    {
+        return ContainsModel("OLED") || IsSlash() || ContainsModel("GA402RK");
+    }
+
     public static bool IsStrix()
     {
         return ContainsModel("Strix") || ContainsModel("Scar") || ContainsModel("G703G");

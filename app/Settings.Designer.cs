@@ -1648,6 +1648,7 @@ namespace GHelper
             panelGamma.Padding = new Padding(20, 20, 20, 10);
             panelGamma.Size = new Size(827, 123);
             panelGamma.TabIndex = 9;
+            panelGamma.Visible = false;
             // 
             // sliderGamma
             // 

@@ -253,6 +253,7 @@ namespace GHelper
             VisualiseFnLock();
             buttonFnLock.Click += ButtonFnLock_Click;
 
+            panelGamma.Visible = AppConfig.IsOLED();
             sliderGamma.ValueChanged += SliderGamma_ValueChanged;
             labelGamma.Text = "100%";
 
