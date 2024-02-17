@@ -145,7 +145,7 @@
     <value>現在重新啟動嗎?</value>
   </data>
   <data name="AllyController" xml:space="preserve">
-    <value>Ally Controller</value>
+    <value>Ally控制器</value>
   </data>
   <data name="AnimationSpeed" xml:space="preserve">
     <value>動畫速度</value>
@@ -277,10 +277,10 @@
     <value>Binding</value>
   </data>
   <data name="BindingPrimary" xml:space="preserve">
-    <value>Primary</value>
+    <value>主要</value>
   </data>
   <data name="BindingSecondary" xml:space="preserve">
-    <value>Secondary</value>
+    <value>次要</value>
   </data>
   <data name="BiosAndDriverUpdates" xml:space="preserve">
     <value>BIOS與驅動程式更新</value>
@@ -313,7 +313,7 @@
     <value>Contrast</value>
   </data>
   <data name="Controller" xml:space="preserve">
-    <value>Controller</value>
+    <value>控制器</value>
   </data>
   <data name="CPUBoost" xml:space="preserve">
     <value>CPU 加速</value>
@@ -328,7 +328,7 @@
     <value>預設</value>
   </data>
   <data name="DisableController" xml:space="preserve">
-    <value>Disable Controller</value>
+    <value>停用控制器</value>
   </data>
   <data name="DisableOverdrive" xml:space="preserve">
     <value>禁用螢幕加速OD</value>
@@ -363,7 +363,7 @@
     <value>電源設定</value>
   </data>
   <data name="Export" xml:space="preserve">
-    <value>Export Profile</value>
+    <value>匯出設定檔</value>
   </data>
   <data name="Extra" xml:space="preserve">
     <value>更多</value>
@@ -441,7 +441,7 @@
     <value>Image Rotation</value>
   </data>
   <data name="Import" xml:space="preserve">
-    <value>Import Profile</value>
+    <value>匯入設定檔</value>
   </data>
   <data name="KeyBindings" xml:space="preserve">
     <value>按鍵綁定</value>
@@ -531,7 +531,7 @@
     <value>按鍵回應</value>
   </data>
   <data name="MouseImportFailed" xml:space="preserve">
-    <value>Import failed. Selected file is not a valid mouse profile or corrutpted.</value>
+    <value>匯入失敗，所選檔案並非有效的滑鼠設定檔或該檔已毀損</value>
   </data>
   <data name="MouseLiftOffDistance" xml:space="preserve">
     <value>響應高度(LOD)</value>
@@ -618,7 +618,7 @@
     <value>退出</value>
   </data>
   <data name="Reset" xml:space="preserve">
-    <value>Reset</value>
+    <value>重設</value>
   </data>
   <data name="RestartGPU" xml:space="preserve">
     <value>有其他程式正在使用獨顯導致無法切換至節能模式. 是否讓G-Helper重新啟動獨顯? * 請自行評估風險</value>
