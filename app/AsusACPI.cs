@@ -223,6 +223,8 @@ public class AsusACPI
         return _connected;
     }
 
+    private static ManagementEventWatcher? watcher;
+
     public AsusACPI()
     {
         try
@@ -747,10 +749,14 @@ public class AsusACPI
     {
         try
         {
-            ManagementEventWatcher watcher = new ManagementEventWatcher();
-            watcher.EventArrived += new EventArrivedEventHandler(EventHandler);
-            watcher.Scope = new ManagementScope("root\\wmi");
-            watcher.Query = new WqlEventQuery("SELECT * FROM AsusAtkWmiEvent");
+            if (watcher is null)
+            {
+                watcher = new ManagementEventWatcher();
+                watcher.EventArrived += new EventArrivedEventHandler(EventHandler);
+                watcher.Scope = new ManagementScope("root\\wmi");
+                watcher.Query = new WqlEventQuery("SELECT * FROM AsusAtkWmiEvent");
+            }
+
             watcher.Start();
         }
         catch

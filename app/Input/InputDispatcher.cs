@@ -32,9 +32,6 @@ namespace GHelper.Input
             byte[] result = Program.acpi.DeviceInit();
             Debug.WriteLine($"Init: {BitConverter.ToString(result)}");
 
-            Program.acpi.SubscribeToEvents(WatcherEventArrived);
-            //Task.Run(Program.acpi.RunListener);
-
             hook.KeyPressed += new EventHandler<KeyPressedEventArgs>(KeyPressed);
 
             RegisterKeys();
@@ -82,6 +79,8 @@ namespace GHelper.Input
                 listener = new KeyboardListener(HandleEvent);
             else
                 Logger.WriteLine("Optimization service is running");
+
+            Program.acpi.SubscribeToEvents(WatcherEventArrived);
 
             InitBacklightTimer();
 
