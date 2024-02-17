@@ -456,10 +456,10 @@ Voulez-vous continuer ?</value>
     <value>Rétroéclairage du clavier</value>
   </data>
   <data name="LaptopKeyboard" xml:space="preserve">
-    <value>Clavier de l'ordinateur</value>
+    <value>Clavier</value>
   </data>
   <data name="LaptopScreen" xml:space="preserve">
-    <value>Écran de l'ordinateur </value>
+    <value>Écran</value>
   </data>
   <data name="Lid" xml:space="preserve">
     <value>Capot</value>
