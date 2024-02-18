@@ -399,9 +399,15 @@ public static class AppConfig
         return (ContainsModel("G614JV") || ContainsModel("G614JZ") || ContainsModel("G512LI") || ContainsModel("G513R") || ContainsModel("G713PV") || ContainsModel("G513IE") || ContainsModel("G713RC") || ContainsModel("G513QM") || ContainsModel("G531G")) && !Is("per_key_rgb");
     }
 
+
     public static bool IsNoAirplaneMode()
     {
         return ContainsModel("FX506");
+    }
+
+    public static bool NoWMI()
+    {
+        return ContainsModel("GL704G");
     }
 
     public static bool IsNoDirectRGB()
