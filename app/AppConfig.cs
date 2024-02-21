@@ -91,13 +91,19 @@ public static class AppConfig
         if (_model is null)
         {
             _model = "";
-            using (var searcher = new ManagementObjectSearcher(@"Select * from Win32_ComputerSystem"))
+            try
             {
-                foreach (var process in searcher.Get())
+                using (var searcher = new ManagementObjectSearcher(@"Select * from Win32_ComputerSystem"))
                 {
-                    _model = process["Model"].ToString();
-                    break;
+                    foreach (var process in searcher.Get())
+                    {
+                        _model = process["Model"].ToString();
+                        break;
+                    }
                 }
+            } catch (Exception ex)
+            {
+                Logger.WriteLine(ex.Message);
             }
         }
 
