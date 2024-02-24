@@ -253,7 +253,17 @@ namespace GHelper
             VisualiseFnLock();
             buttonFnLock.Click += ButtonFnLock_Click;
 
+            panelGamma.Visible = AppConfig.IsOLED();
+            sliderGamma.ValueChanged += SliderGamma_ValueChanged;
+            labelGamma.Text = "100%";
+
             panelPerformance.Focus();
+        }
+
+        private void SliderGamma_ValueChanged(object? sender, EventArgs e)
+        {
+            screenControl.SetGamma(sliderGamma.Value);
+            labelGamma.Text = sliderGamma.Value + "%";
         }
 
         private void ButtonOverlay_Click(object? sender, EventArgs e)
