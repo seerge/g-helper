@@ -126,6 +126,7 @@ namespace GHelper
             labelGamma = new Label();
             pictureGamma = new PictureBox();
             labelGammaTitle = new Label();
+            checkMatrixLid = new CheckBox();
             panelMatrix.SuspendLayout();
             tableLayoutMatrix.SuspendLayout();
             panelMatrixTitle.SuspendLayout();
@@ -174,6 +175,7 @@ namespace GHelper
             panelMatrix.AccessibleRole = AccessibleRole.Grouping;
             panelMatrix.AutoSize = true;
             panelMatrix.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            panelMatrix.Controls.Add(checkMatrixLid);
             panelMatrix.Controls.Add(tableLayoutMatrix);
             panelMatrix.Controls.Add(panelMatrixTitle);
             panelMatrix.Controls.Add(checkMatrix);
@@ -1709,6 +1711,19 @@ namespace GHelper
             labelGammaTitle.TabIndex = 37;
             labelGammaTitle.Text = "Flicker-free Dimming";
             // 
+            // checkMatrixLid
+            // 
+            checkMatrixLid.AutoSize = true;
+            checkMatrixLid.ForeColor = SystemColors.GrayText;
+            checkMatrixLid.Location = new Point(286, 126);
+            checkMatrixLid.Margin = new Padding(8, 4, 8, 4);
+            checkMatrixLid.Name = "checkMatrixLid";
+            checkMatrixLid.Size = new Size(246, 36);
+            checkMatrixLid.TabIndex = 46;
+            checkMatrixLid.Text = "Enable on lid close";
+            checkMatrixLid.UseVisualStyleBackColor = true;
+            checkMatrixLid.Visible = false;
+            // 
             // SettingsForm
             // 
             AutoScaleDimensions = new SizeF(192F, 192F);
@@ -1896,5 +1911,6 @@ namespace GHelper
         private Label labelGamma;
         private PictureBox pictureGamma;
         private Label labelGammaTitle;
+        private CheckBox checkMatrixLid;
     }
 }
