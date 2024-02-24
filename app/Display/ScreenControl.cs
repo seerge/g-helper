@@ -47,9 +47,9 @@ namespace GHelper.Display
             }
         }
 
-        public void SetGamma(int brightness = 100, int contrast = 100)
+        public void SetGamma(int brightness = 100)
         {
-            var bright = (float)(brightness) / 100;
+            var bright = Math.Round((float)brightness / 200 + 0.5, 2);
 
             var screenName = ScreenNative.FindLaptopScreen();
             if (screenName is null) return;
