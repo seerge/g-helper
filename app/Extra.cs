@@ -414,6 +414,8 @@ namespace GHelper
                 return;
             }
 
+            eCoresMax = Math.Max(8, eCoresMax);
+
             panelCores.Visible = true;
 
             comboCoresE.DropDownStyle = ComboBoxStyle.DropDownList;
@@ -431,11 +433,11 @@ namespace GHelper
 
         private void ButtonCores_Click(object? sender, EventArgs e)
         {
+            Program.acpi.SetCores(AsusACPI.ECoreMin + comboCoresE.SelectedIndex, AsusACPI.PCoreMin + comboCoresP.SelectedIndex);
             DialogResult dialogResult = MessageBox.Show(Properties.Strings.AlertAPUMemoryRestart, Properties.Strings.AlertAPUMemoryRestartTitle, MessageBoxButtons.YesNo);
 
             if (dialogResult == DialogResult.Yes)
             {
-                Program.acpi.SetCores(comboCoresE.SelectedIndex, comboCoresP.SelectedIndex);
                 Process.Start("shutdown", "/r /t 1");
             }
         }

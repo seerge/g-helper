@@ -686,7 +686,7 @@ public class AsusACPI
     public (int, int) GetCores(bool max = false)
     {
         int value = Program.acpi.DeviceGet(max ? CORES_MAX : CORES_CPU);
-        //value = max ? 0x806 : 0x605;
+        //value = max ? 0x406 : 0x605;
 
         if (value < 0) return (-1, -1);
         Logger.WriteLine("Cores" + (max ? "Max" : "") + ": 0x" + value.ToString("X4"));
