@@ -696,7 +696,12 @@ public class AsusACPI
 
     public void SetCores(int eCores, int pCores)
     {
-        if (eCores < ECoreMin || eCores > ECoreMax || pCores < PCoreMin || pCores > PCoreMax) return;
+        if (eCores < ECoreMin || eCores > ECoreMax || pCores < PCoreMin || pCores > PCoreMax)
+        {
+            Logger.WriteLine($"Incorrect Core config ({eCores}, {pCores})");
+            return;
+        };
+
         int value = (eCores << 8) | pCores;
         Program.acpi.DeviceSet(CORES_CPU, value, "Cores (0x" + value.ToString("X4") + ")");
     }
