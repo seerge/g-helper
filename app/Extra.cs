@@ -388,15 +388,58 @@ namespace GHelper
             pictureLog.Click += PictureLog_Click;
             pictureScan.Click += PictureScan_Click;
 
+            pictureScan.Visible = true;
+
             checkGPUFix.Visible = Program.acpi.IsNVidiaGPU();
             checkGPUFix.Checked = AppConfig.IsGPUFix();
             checkGPUFix.CheckedChanged += CheckGPUFix_CheckedChanged;
 
             toolTip.SetToolTip(checkAutoToggleClamshellMode, "Disable sleep on lid close when plugged in and external monitor is connected");
 
+            InitCores();
             InitVariBright();
             InitServices();
             InitHibernate();
+        }
+
+
+        private void InitCores()
+        {
+            (int eCores, int pCores) = Program.acpi.GetCores();
+            (int eCoresMax, int pCoresMax) = Program.acpi.GetCores(true);
+
+            if (eCores < 0 || pCores < 0 || eCoresMax < 0 || pCoresMax < 0)
+            {
+                panelCores.Visible = false;
+                return;
+            }
+
+            panelCores.Visible = true;
+
+            comboCoresE.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboCoresP.DropDownStyle = ComboBoxStyle.DropDownList;
+
+            for (int i = 0; i <= eCoresMax; i++) comboCoresE.Items.Add(i.ToString() + "E-cores");
+            for (int i = 0; i <= pCoresMax; i++) comboCoresP.Items.Add(i.ToString() + "P-cores");
+
+            comboCoresE.SelectedIndex = Math.Min(eCores, eCoresMax);
+            comboCoresP.SelectedIndex = Math.Min(pCores, pCoresMax);
+
+            comboCoresP.SelectedIndexChanged += ComboCores_SelectedIndexChanged;
+            comboCoresE.SelectedIndexChanged += ComboCores_SelectedIndexChanged;
+
+        }
+
+        private void ComboCores_SelectedIndexChanged(object? sender, EventArgs e)
+        {
+            Program.acpi.SetCores(comboCoresE.SelectedIndex, comboCoresP.SelectedIndex);
+
+            DialogResult dialogResult = MessageBox.Show(Properties.Strings.AlertAPUMemoryRestart, Properties.Strings.AlertAPUMemoryRestartTitle, MessageBoxButtons.YesNo);
+            
+            if (dialogResult == DialogResult.Yes)
+            {
+                Process.Start("shutdown", "/r /t 1");
+            }
         }
 
         private void PictureScan_Click(object? sender, EventArgs e)

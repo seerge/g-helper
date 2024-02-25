@@ -99,6 +99,7 @@ namespace GHelper
             checkSleepLid = new CheckBox();
             checkShutdownLid = new CheckBox();
             panelSettingsHeader = new Panel();
+            pictureScan = new PictureBox();
             pictureLog = new PictureBox();
             pictureSettings = new PictureBox();
             labelSettings = new Label();
@@ -120,7 +121,11 @@ namespace GHelper
             comboAPU = new RComboBox();
             pictureAPUMem = new PictureBox();
             labelAPUMem = new Label();
-            pictureScan = new PictureBox();
+            panelCores = new Panel();
+            comboCoresP = new RComboBox();
+            comboCoresE = new RComboBox();
+            pictureCores = new PictureBox();
+            label1 = new Label();
             panelServices.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureService).BeginInit();
             panelBindingsHeader.SuspendLayout();
@@ -137,6 +142,7 @@ namespace GHelper
             panelXMG.SuspendLayout();
             tableBacklight.SuspendLayout();
             panelSettingsHeader.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureScan).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureLog).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureSettings).BeginInit();
             panelSettings.SuspendLayout();
@@ -145,7 +151,8 @@ namespace GHelper
             ((System.ComponentModel.ISupportInitialize)pictureHibernate).BeginInit();
             panelAPU.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureAPUMem).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)pictureScan).BeginInit();
+            panelCores.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureCores).BeginInit();
             SuspendLayout();
             // 
             // panelServices
@@ -155,7 +162,7 @@ namespace GHelper
             panelServices.Controls.Add(labelServices);
             panelServices.Controls.Add(buttonServices);
             panelServices.Dock = DockStyle.Top;
-            panelServices.Location = new Point(15, 1378);
+            panelServices.Location = new Point(15, 1436);
             panelServices.Name = "panelServices";
             panelServices.Size = new Size(983, 75);
             panelServices.TabIndex = 5;
@@ -1016,6 +1023,20 @@ namespace GHelper
             panelSettingsHeader.Size = new Size(983, 51);
             panelSettingsHeader.TabIndex = 45;
             // 
+            // pictureScan
+            // 
+            pictureScan.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            pictureScan.BackgroundImage = Resources.icons8_search_32;
+            pictureScan.BackgroundImageLayout = ImageLayout.Zoom;
+            pictureScan.Cursor = Cursors.Hand;
+            pictureScan.Location = new Point(891, 11);
+            pictureScan.Margin = new Padding(4, 3, 4, 3);
+            pictureScan.Name = "pictureScan";
+            pictureScan.Size = new Size(32, 32);
+            pictureScan.TabIndex = 13;
+            pictureScan.TabStop = false;
+            pictureScan.Visible = false;
+            // 
             // pictureLog
             // 
             pictureLog.Anchor = AnchorStyles.Top | AnchorStyles.Right;
@@ -1063,7 +1084,7 @@ namespace GHelper
             panelSettings.Controls.Add(checkGpuApps);
             panelSettings.Controls.Add(checkGPUFix);
             panelSettings.Dock = DockStyle.Top;
-            panelSettings.Location = new Point(15, 978);
+            panelSettings.Location = new Point(15, 1036);
             panelSettings.Name = "panelSettings";
             panelSettings.Padding = new Padding(20, 5, 11, 5);
             panelSettings.Size = new Size(983, 346);
@@ -1178,7 +1199,7 @@ namespace GHelper
             panelPower.Controls.Add(labelHibernateAfter);
             panelPower.Controls.Add(pictureHibernate);
             panelPower.Dock = DockStyle.Top;
-            panelPower.Location = new Point(15, 1324);
+            panelPower.Location = new Point(15, 1382);
             panelPower.Name = "panelPower";
             panelPower.Size = new Size(983, 54);
             panelPower.TabIndex = 4;
@@ -1221,7 +1242,7 @@ namespace GHelper
             panelAPU.Controls.Add(pictureAPUMem);
             panelAPU.Controls.Add(labelAPUMem);
             panelAPU.Dock = DockStyle.Top;
-            panelAPU.Location = new Point(15, 921);
+            panelAPU.Location = new Point(15, 979);
             panelAPU.Name = "panelAPU";
             panelAPU.Padding = new Padding(11, 5, 11, 0);
             panelAPU.Size = new Size(983, 57);
@@ -1239,10 +1260,10 @@ namespace GHelper
             comboAPU.FormattingEnabled = true;
             comboAPU.ItemHeight = 32;
             comboAPU.Items.AddRange(new object[] { "Auto", "1G", "2G", "3G", "4G", "5G", "6G", "7G", "8G" });
-            comboAPU.Location = new Point(663, 8);
+            comboAPU.Location = new Point(647, 8);
             comboAPU.Margin = new Padding(4, 12, 4, 9);
             comboAPU.Name = "comboAPU";
-            comboAPU.Size = new Size(293, 40);
+            comboAPU.Size = new Size(309, 40);
             comboAPU.TabIndex = 12;
             comboAPU.TabStop = false;
             // 
@@ -1266,19 +1287,72 @@ namespace GHelper
             labelAPUMem.TabIndex = 0;
             labelAPUMem.Text = "Memory Assigned to GPU";
             // 
-            // pictureScan
+            // panelCores
             // 
-            pictureScan.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            pictureScan.BackgroundImage = Resources.icons8_heartbeat_32;
-            pictureScan.BackgroundImageLayout = ImageLayout.Zoom;
-            pictureScan.Cursor = Cursors.Hand;
-            pictureScan.Location = new Point(891, 11);
-            pictureScan.Margin = new Padding(4, 3, 4, 3);
-            pictureScan.Name = "pictureScan";
-            pictureScan.Size = new Size(32, 32);
-            pictureScan.TabIndex = 13;
-            pictureScan.TabStop = false;
-            pictureScan.Visible = false;
+            panelCores.AutoSize = true;
+            panelCores.Controls.Add(comboCoresP);
+            panelCores.Controls.Add(comboCoresE);
+            panelCores.Controls.Add(pictureCores);
+            panelCores.Controls.Add(label1);
+            panelCores.Dock = DockStyle.Top;
+            panelCores.Location = new Point(15, 921);
+            panelCores.Name = "panelCores";
+            panelCores.Padding = new Padding(11, 5, 11, 0);
+            panelCores.Size = new Size(983, 58);
+            panelCores.TabIndex = 47;
+            panelCores.Visible = false;
+            // 
+            // comboCoresP
+            // 
+            comboCoresP.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            comboCoresP.BorderColor = Color.White;
+            comboCoresP.ButtonColor = SystemColors.ControlLight;
+            comboCoresP.FlatStyle = FlatStyle.Flat;
+            comboCoresP.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            comboCoresP.FormattingEnabled = true;
+            comboCoresP.ItemHeight = 32;
+            comboCoresP.Location = new Point(805, 9);
+            comboCoresP.Margin = new Padding(4, 12, 4, 9);
+            comboCoresP.Name = "comboCoresP";
+            comboCoresP.Size = new Size(150, 40);
+            comboCoresP.TabIndex = 13;
+            comboCoresP.TabStop = false;
+            // 
+            // comboCoresE
+            // 
+            comboCoresE.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            comboCoresE.BorderColor = Color.White;
+            comboCoresE.ButtonColor = SystemColors.ControlLight;
+            comboCoresE.FlatStyle = FlatStyle.Flat;
+            comboCoresE.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            comboCoresE.FormattingEnabled = true;
+            comboCoresE.ItemHeight = 32;
+            comboCoresE.Location = new Point(647, 9);
+            comboCoresE.Margin = new Padding(4, 12, 4, 9);
+            comboCoresE.Name = "comboCoresE";
+            comboCoresE.Size = new Size(150, 40);
+            comboCoresE.TabIndex = 12;
+            comboCoresE.TabStop = false;
+            // 
+            // pictureCores
+            // 
+            pictureCores.BackgroundImage = Resources.icons8_processor_32;
+            pictureCores.BackgroundImageLayout = ImageLayout.Zoom;
+            pictureCores.Location = new Point(20, 15);
+            pictureCores.Name = "pictureCores";
+            pictureCores.Size = new Size(32, 32);
+            pictureCores.TabIndex = 1;
+            pictureCores.TabStop = false;
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            label1.Location = new Point(64, 14);
+            label1.Name = "label1";
+            label1.Size = new Size(299, 32);
+            label1.TabIndex = 0;
+            label1.Text = "CPU Cores Configuration";
             // 
             // Extra
             // 
@@ -1292,6 +1366,7 @@ namespace GHelper
             Controls.Add(panelPower);
             Controls.Add(panelSettings);
             Controls.Add(panelAPU);
+            Controls.Add(panelCores);
             Controls.Add(panelSettingsHeader);
             Controls.Add(panelBacklight);
             Controls.Add(panelBacklightHeader);
@@ -1332,6 +1407,7 @@ namespace GHelper
             tableBacklight.ResumeLayout(false);
             panelSettingsHeader.ResumeLayout(false);
             panelSettingsHeader.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureScan).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureLog).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureSettings).EndInit();
             panelSettings.ResumeLayout(false);
@@ -1343,7 +1419,9 @@ namespace GHelper
             panelAPU.ResumeLayout(false);
             panelAPU.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)pictureAPUMem).EndInit();
-            ((System.ComponentModel.ISupportInitialize)pictureScan).EndInit();
+            panelCores.ResumeLayout(false);
+            panelCores.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureCores).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -1439,5 +1517,10 @@ namespace GHelper
         private Label labelAPUMem;
         private RComboBox comboAPU;
         private PictureBox pictureScan;
+        private Panel panelCores;
+        private RComboBox comboCoresE;
+        private PictureBox pictureCores;
+        private Label label1;
+        private RComboBox comboCoresP;
     }
 }

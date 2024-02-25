@@ -2,6 +2,7 @@
 using GHelper.USB;
 using System.Management;
 using System.Runtime.InteropServices;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 public enum AsusFan
 {
@@ -98,6 +99,9 @@ public class AsusACPI
     public const int PPT_APUC1 = 0x001200C1;  // fPPT (fast boost limit)
     public const int PPT_GPUC2 = 0x001200C2;  // NVIDIA GPU Temp Target (75.. 87 C) 
 
+    public const uint CORES_CPU = 0x001200D2; // Intel E-core and P-core configuration in a format 0x0[E]0[P]
+    public const uint CORES_MAX = 0x001200D3; // Maximum Intel E-core and P-core availability
+
     public const int APU_MEM = 0x000600C1;
 
     public const int TUF_KB_BRIGHTNESS = 0x00050021;
@@ -141,7 +145,7 @@ public class AsusACPI
     public const int DefaultCPU = 80;
 
     public const int MinGPUBoost = 5;
-    public static int MaxGPUBoost = 25;
+    public static int MaxGPUBoost = 50;
 
     public const int MinGPUTemp = 75;
     public const int MaxGPUTemp = 87;
@@ -672,6 +676,24 @@ public class AsusACPI
             default:
                 return 4;
         }
+    }
+
+    public (int, int) GetCores(bool max = false)
+    {
+        int value = Program.acpi.DeviceGet(max ? CORES_MAX : CORES_CPU);
+        //value = max ? 0x806 : 0x605;
+
+        if (value < 0) return (-1, -1);
+        Logger.WriteLine("Cores" + (max ? "Max" : "") + ": 0x" + value.ToString("X4"));
+        
+        return ((value >> 8) & 0xFF, (value) & 0xFF);
+    }
+
+    public void SetCores(int eCores, int pCores)
+    {
+        if (eCores < 0 || eCores > 16 || pCores < 0 || pCores > 16) return;
+        int value = (eCores << 8) | pCores;
+        Program.acpi.DeviceSet(CORES_CPU, value, "Cores (0x" + value.ToString("X4")+")");
     }
 
     public string ScanRange()
