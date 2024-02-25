@@ -2,7 +2,6 @@
 using GHelper.USB;
 using System.Management;
 using System.Runtime.InteropServices;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 public enum AsusFan
 {
@@ -145,7 +144,7 @@ public class AsusACPI
     public const int DefaultCPU = 80;
 
     public const int MinGPUBoost = 5;
-    public static int MaxGPUBoost = 50;
+    public static int MaxGPUBoost = 25;
 
     public const int MinGPUTemp = 75;
     public const int MaxGPUTemp = 87;
@@ -685,7 +684,7 @@ public class AsusACPI
 
         if (value < 0) return (-1, -1);
         Logger.WriteLine("Cores" + (max ? "Max" : "") + ": 0x" + value.ToString("X4"));
-        
+
         return ((value >> 8) & 0xFF, (value) & 0xFF);
     }
 
@@ -693,7 +692,7 @@ public class AsusACPI
     {
         if (eCores < 0 || eCores > 16 || pCores < 0 || pCores > 16) return;
         int value = (eCores << 8) | pCores;
-        Program.acpi.DeviceSet(CORES_CPU, value, "Cores (0x" + value.ToString("X4")+")");
+        Program.acpi.DeviceSet(CORES_CPU, value, "Cores (0x" + value.ToString("X4") + ")");
     }
 
     public string ScanRange()

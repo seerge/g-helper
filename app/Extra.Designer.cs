@@ -122,6 +122,7 @@ namespace GHelper
             pictureAPUMem = new PictureBox();
             labelAPUMem = new Label();
             panelCores = new Panel();
+            buttonCores = new RButton();
             comboCoresP = new RComboBox();
             comboCoresE = new RComboBox();
             pictureCores = new PictureBox();
@@ -162,7 +163,7 @@ namespace GHelper
             panelServices.Controls.Add(labelServices);
             panelServices.Controls.Add(buttonServices);
             panelServices.Dock = DockStyle.Top;
-            panelServices.Location = new Point(15, 1436);
+            panelServices.Location = new Point(15, 1439);
             panelServices.Name = "panelServices";
             panelServices.Size = new Size(983, 75);
             panelServices.TabIndex = 5;
@@ -1084,7 +1085,7 @@ namespace GHelper
             panelSettings.Controls.Add(checkGpuApps);
             panelSettings.Controls.Add(checkGPUFix);
             panelSettings.Dock = DockStyle.Top;
-            panelSettings.Location = new Point(15, 1036);
+            panelSettings.Location = new Point(15, 1039);
             panelSettings.Name = "panelSettings";
             panelSettings.Padding = new Padding(20, 5, 11, 5);
             panelSettings.Size = new Size(983, 346);
@@ -1199,7 +1200,7 @@ namespace GHelper
             panelPower.Controls.Add(labelHibernateAfter);
             panelPower.Controls.Add(pictureHibernate);
             panelPower.Dock = DockStyle.Top;
-            panelPower.Location = new Point(15, 1382);
+            panelPower.Location = new Point(15, 1385);
             panelPower.Name = "panelPower";
             panelPower.Size = new Size(983, 54);
             panelPower.TabIndex = 4;
@@ -1242,7 +1243,7 @@ namespace GHelper
             panelAPU.Controls.Add(pictureAPUMem);
             panelAPU.Controls.Add(labelAPUMem);
             panelAPU.Dock = DockStyle.Top;
-            panelAPU.Location = new Point(15, 979);
+            panelAPU.Location = new Point(15, 982);
             panelAPU.Name = "panelAPU";
             panelAPU.Padding = new Padding(11, 5, 11, 0);
             panelAPU.Size = new Size(983, 57);
@@ -1260,7 +1261,7 @@ namespace GHelper
             comboAPU.FormattingEnabled = true;
             comboAPU.ItemHeight = 32;
             comboAPU.Items.AddRange(new object[] { "Auto", "1G", "2G", "3G", "4G", "5G", "6G", "7G", "8G" });
-            comboAPU.Location = new Point(647, 8);
+            comboAPU.Location = new Point(654, 8);
             comboAPU.Margin = new Padding(4, 12, 4, 9);
             comboAPU.Name = "comboAPU";
             comboAPU.Size = new Size(309, 40);
@@ -1281,7 +1282,7 @@ namespace GHelper
             // 
             labelAPUMem.AutoSize = true;
             labelAPUMem.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            labelAPUMem.Location = new Point(56, 11);
+            labelAPUMem.Location = new Point(64, 11);
             labelAPUMem.Name = "labelAPUMem";
             labelAPUMem.Size = new Size(309, 32);
             labelAPUMem.TabIndex = 0;
@@ -1290,6 +1291,7 @@ namespace GHelper
             // panelCores
             // 
             panelCores.AutoSize = true;
+            panelCores.Controls.Add(buttonCores);
             panelCores.Controls.Add(comboCoresP);
             panelCores.Controls.Add(comboCoresE);
             panelCores.Controls.Add(pictureCores);
@@ -1298,9 +1300,26 @@ namespace GHelper
             panelCores.Location = new Point(15, 921);
             panelCores.Name = "panelCores";
             panelCores.Padding = new Padding(11, 5, 11, 0);
-            panelCores.Size = new Size(983, 58);
+            panelCores.Size = new Size(983, 61);
             panelCores.TabIndex = 47;
             panelCores.Visible = false;
+            // 
+            // buttonCores
+            // 
+            buttonCores.Activated = false;
+            buttonCores.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            buttonCores.BackColor = SystemColors.ButtonHighlight;
+            buttonCores.BorderColor = Color.Transparent;
+            buttonCores.BorderRadius = 2;
+            buttonCores.FlatStyle = FlatStyle.Flat;
+            buttonCores.Location = new Point(856, 7);
+            buttonCores.Margin = new Padding(4, 3, 4, 3);
+            buttonCores.Name = "buttonCores";
+            buttonCores.Secondary = false;
+            buttonCores.Size = new Size(106, 46);
+            buttonCores.TabIndex = 20;
+            buttonCores.Text = "Apply";
+            buttonCores.UseVisualStyleBackColor = false;
             // 
             // comboCoresP
             // 
@@ -1311,7 +1330,7 @@ namespace GHelper
             comboCoresP.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
             comboCoresP.FormattingEnabled = true;
             comboCoresP.ItemHeight = 32;
-            comboCoresP.Location = new Point(805, 9);
+            comboCoresP.Location = new Point(701, 10);
             comboCoresP.Margin = new Padding(4, 12, 4, 9);
             comboCoresP.Name = "comboCoresP";
             comboCoresP.Size = new Size(150, 40);
@@ -1327,7 +1346,7 @@ namespace GHelper
             comboCoresE.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
             comboCoresE.FormattingEnabled = true;
             comboCoresE.ItemHeight = 32;
-            comboCoresE.Location = new Point(647, 9);
+            comboCoresE.Location = new Point(543, 10);
             comboCoresE.Margin = new Padding(4, 12, 4, 9);
             comboCoresE.Name = "comboCoresE";
             comboCoresE.Size = new Size(150, 40);
@@ -1522,5 +1541,6 @@ namespace GHelper
         private PictureBox pictureCores;
         private Label label1;
         private RComboBox comboCoresP;
+        private RButton buttonCores;
     }
 }

@@ -419,28 +419,27 @@ namespace GHelper
             comboCoresE.DropDownStyle = ComboBoxStyle.DropDownList;
             comboCoresP.DropDownStyle = ComboBoxStyle.DropDownList;
 
-            for (int i = 0; i <= eCoresMax; i++) comboCoresE.Items.Add(i.ToString() + "E-cores");
-            for (int i = 0; i <= pCoresMax; i++) comboCoresP.Items.Add(i.ToString() + "P-cores");
+            for (int i = 0; i <= eCoresMax; i++) comboCoresE.Items.Add(i.ToString() + " Ecores");
+            for (int i = 0; i <= pCoresMax; i++) comboCoresP.Items.Add(i.ToString() + " Pcores");
 
             comboCoresE.SelectedIndex = Math.Min(eCores, eCoresMax);
             comboCoresP.SelectedIndex = Math.Min(pCores, pCoresMax);
 
-            comboCoresP.SelectedIndexChanged += ComboCores_SelectedIndexChanged;
-            comboCoresE.SelectedIndexChanged += ComboCores_SelectedIndexChanged;
+            buttonCores.Click += ButtonCores_Click;
 
         }
 
-        private void ComboCores_SelectedIndexChanged(object? sender, EventArgs e)
+        private void ButtonCores_Click(object? sender, EventArgs e)
         {
-            Program.acpi.SetCores(comboCoresE.SelectedIndex, comboCoresP.SelectedIndex);
-
             DialogResult dialogResult = MessageBox.Show(Properties.Strings.AlertAPUMemoryRestart, Properties.Strings.AlertAPUMemoryRestartTitle, MessageBoxButtons.YesNo);
-            
+
             if (dialogResult == DialogResult.Yes)
             {
+                Program.acpi.SetCores(comboCoresE.SelectedIndex, comboCoresP.SelectedIndex);
                 Process.Start("shutdown", "/r /t 1");
             }
         }
+
 
         private void PictureScan_Click(object? sender, EventArgs e)
         {
