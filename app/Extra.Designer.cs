@@ -1330,7 +1330,7 @@ namespace GHelper
             comboCoresP.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
             comboCoresP.FormattingEnabled = true;
             comboCoresP.ItemHeight = 32;
-            comboCoresP.Location = new Point(701, 10);
+            comboCoresP.Location = new Point(543, 10);
             comboCoresP.Margin = new Padding(4, 12, 4, 9);
             comboCoresP.Name = "comboCoresP";
             comboCoresP.Size = new Size(150, 40);
@@ -1346,7 +1346,7 @@ namespace GHelper
             comboCoresE.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
             comboCoresE.FormattingEnabled = true;
             comboCoresE.ItemHeight = 32;
-            comboCoresE.Location = new Point(543, 10);
+            comboCoresE.Location = new Point(702, 10);
             comboCoresE.Margin = new Padding(4, 12, 4, 9);
             comboCoresE.Name = "comboCoresE";
             comboCoresE.Size = new Size(150, 40);

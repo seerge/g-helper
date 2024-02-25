@@ -149,6 +149,12 @@ public class AsusACPI
     public const int MinGPUTemp = 75;
     public const int MaxGPUTemp = 87;
 
+    public const int PCoreMin = 4;
+    public const int ECoreMin = 0;
+
+    public const int PCoreMax = 16;
+    public const int ECoreMax = 16;
+
 
     [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
     private static extern IntPtr CreateFile(
@@ -690,7 +696,7 @@ public class AsusACPI
 
     public void SetCores(int eCores, int pCores)
     {
-        if (eCores < 0 || eCores > 16 || pCores < 0 || pCores > 16) return;
+        if (eCores < ECoreMin || eCores > ECoreMax || pCores < PCoreMin || pCores > PCoreMax) return;
         int value = (eCores << 8) | pCores;
         Program.acpi.DeviceSet(CORES_CPU, value, "Cores (0x" + value.ToString("X4") + ")");
     }

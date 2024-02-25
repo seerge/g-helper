@@ -419,11 +419,11 @@ namespace GHelper
             comboCoresE.DropDownStyle = ComboBoxStyle.DropDownList;
             comboCoresP.DropDownStyle = ComboBoxStyle.DropDownList;
 
-            for (int i = 0; i <= eCoresMax; i++) comboCoresE.Items.Add(i.ToString() + " Ecores");
-            for (int i = 0; i <= pCoresMax; i++) comboCoresP.Items.Add(i.ToString() + " Pcores");
+            for (int i = AsusACPI.PCoreMin; i <= pCoresMax; i++) comboCoresP.Items.Add(i.ToString() + " Pcores");
+            for (int i = AsusACPI.ECoreMin; i <= eCoresMax; i++) comboCoresE.Items.Add(i.ToString() + " Ecores");
 
-            comboCoresE.SelectedIndex = Math.Min(eCores, eCoresMax);
-            comboCoresP.SelectedIndex = Math.Min(pCores, pCoresMax);
+            comboCoresP.SelectedIndex = Math.Max(Math.Min(pCores - AsusACPI.PCoreMin, comboCoresP.Items.Count - 1), 0);
+            comboCoresE.SelectedIndex = Math.Max(Math.Min(eCores - AsusACPI.ECoreMin, comboCoresE.Items.Count - 1), 0);
 
             buttonCores.Click += ButtonCores_Click;
 
