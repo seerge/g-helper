@@ -330,6 +330,9 @@
   <data name="DisableController" xml:space="preserve">
     <value>Disable Controller</value>
   </data>
+  <data name="DisableOnLidClose" xml:space="preserve">
+    <value>Disable on lid close</value>
+  </data>
   <data name="DisableOverdrive" xml:space="preserve">
     <value>Desativar o overdrive do ecrã</value>
   </data>
@@ -699,7 +702,7 @@ Quer prosseguir?</value>
     <value>Desligado</value>
   </data>
   <data name="TurnOffOnBattery" xml:space="preserve">
-    <value>Desligar em bateria</value>
+    <value>Disable on battery</value>
   </data>
   <data name="UltimateGPUTooltip" xml:space="preserve">
     <value>O ecrã do portátil está ligado diretamente à dGPU, maximizando FPS</value>
