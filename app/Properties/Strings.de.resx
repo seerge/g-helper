@@ -702,7 +702,7 @@ Trotzdem fortfahren?</value>
     <value>Ausgeschaltet</value>
   </data>
   <data name="TurnOffOnBattery" xml:space="preserve">
-    <value>Disable on battery</value>
+    <value>Im Batteriebetrieb abschalten</value>
   </data>
   <data name="UltimateGPUTooltip" xml:space="preserve">
     <value>Verbindet den Bildschirm mit der dGPU für maximale Leistung.</value>
