@@ -330,6 +330,9 @@
   <data name="DisableController" xml:space="preserve">
     <value>Deshabilitar mando</value>
   </data>
+  <data name="DisableOnLidClose" xml:space="preserve">
+    <value>Disable on lid close</value>
+  </data>
   <data name="DisableOverdrive" xml:space="preserve">
     <value>Desactivar Overdrive</value>
   </data>
@@ -699,7 +702,7 @@
     <value>Apagado</value>
   </data>
   <data name="TurnOffOnBattery" xml:space="preserve">
-    <value>Apagar con batería</value>
+    <value>Disable on battery</value>
   </data>
   <data name="UltimateGPUTooltip" xml:space="preserve">
     <value>Enruta la pantalla del portátil a la dGPU, maximizando FPS</value>
