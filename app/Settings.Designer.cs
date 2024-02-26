@@ -31,7 +31,9 @@ namespace GHelper
         private void InitializeComponent()
         {
             panelMatrix = new Panel();
+            panelMatrixAuto = new Panel();
             checkMatrixLid = new CheckBox();
+            checkMatrix = new CheckBox();
             tableLayoutMatrix = new TableLayoutPanel();
             comboMatrix = new RComboBox();
             comboMatrixRunning = new RComboBox();
@@ -40,7 +42,6 @@ namespace GHelper
             panelMatrixTitle = new Panel();
             pictureMatrix = new PictureBox();
             labelMatrix = new Label();
-            checkMatrix = new CheckBox();
             panelBattery = new Panel();
             buttonBatteryFull = new RButton();
             sliderBattery = new Slider();
@@ -128,6 +129,7 @@ namespace GHelper
             pictureGamma = new PictureBox();
             labelGammaTitle = new Label();
             panelMatrix.SuspendLayout();
+            panelMatrixAuto.SuspendLayout();
             tableLayoutMatrix.SuspendLayout();
             panelMatrixTitle.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureMatrix).BeginInit();
@@ -175,31 +177,57 @@ namespace GHelper
             panelMatrix.AccessibleRole = AccessibleRole.Grouping;
             panelMatrix.AutoSize = true;
             panelMatrix.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            panelMatrix.Controls.Add(checkMatrixLid);
+            panelMatrix.Controls.Add(panelMatrixAuto);
             panelMatrix.Controls.Add(tableLayoutMatrix);
             panelMatrix.Controls.Add(panelMatrixTitle);
-            panelMatrix.Controls.Add(checkMatrix);
             panelMatrix.Dock = DockStyle.Top;
             panelMatrix.Location = new Point(11, 950);
             panelMatrix.Margin = new Padding(0);
             panelMatrix.Name = "panelMatrix";
             panelMatrix.Padding = new Padding(20, 20, 20, 10);
-            panelMatrix.Size = new Size(827, 212);
+            panelMatrix.Size = new Size(827, 194);
             panelMatrix.TabIndex = 3;
             panelMatrix.TabStop = true;
+            // 
+            // panelMatrixAuto
+            // 
+            panelMatrixAuto.Controls.Add(checkMatrixLid);
+            panelMatrixAuto.Controls.Add(checkMatrix);
+            panelMatrixAuto.Dock = DockStyle.Top;
+            panelMatrixAuto.Location = new Point(20, 144);
+            panelMatrixAuto.Margin = new Padding(4);
+            panelMatrixAuto.Name = "panelMatrixAuto";
+            panelMatrixAuto.Padding = new Padding(5, 0, 0, 0);
+            panelMatrixAuto.Size = new Size(787, 40);
+            panelMatrixAuto.TabIndex = 47;
             // 
             // checkMatrixLid
             // 
             checkMatrixLid.AutoSize = true;
+            checkMatrixLid.Dock = DockStyle.Left;
             checkMatrixLid.ForeColor = SystemColors.GrayText;
-            checkMatrixLid.Location = new Point(27, 162);
+            checkMatrixLid.Location = new Point(256, 0);
             checkMatrixLid.Margin = new Padding(8, 4, 8, 4);
             checkMatrixLid.Name = "checkMatrixLid";
-            checkMatrixLid.Size = new Size(253, 36);
+            checkMatrixLid.Size = new Size(253, 40);
             checkMatrixLid.TabIndex = 46;
             checkMatrixLid.Text = "Disable on lid close";
             checkMatrixLid.UseVisualStyleBackColor = true;
             checkMatrixLid.Visible = false;
+            // 
+            // checkMatrix
+            // 
+            checkMatrix.AutoSize = true;
+            checkMatrix.Dock = DockStyle.Left;
+            checkMatrix.ForeColor = SystemColors.GrayText;
+            checkMatrix.Location = new Point(5, 0);
+            checkMatrix.Margin = new Padding(8, 4, 8, 4);
+            checkMatrix.Name = "checkMatrix";
+            checkMatrix.Padding = new Padding(0, 0, 10, 0);
+            checkMatrix.Size = new Size(251, 40);
+            checkMatrix.TabIndex = 19;
+            checkMatrix.Text = Properties.Strings.TurnOffOnBattery;
+            checkMatrix.UseVisualStyleBackColor = true;
             // 
             // tableLayoutMatrix
             // 
@@ -320,18 +348,6 @@ namespace GHelper
             labelMatrix.TabIndex = 40;
             labelMatrix.Text = "Anime Matrix";
             // 
-            // checkMatrix
-            // 
-            checkMatrix.AutoSize = true;
-            checkMatrix.ForeColor = SystemColors.GrayText;
-            checkMatrix.Location = new Point(27, 126);
-            checkMatrix.Margin = new Padding(8, 4, 8, 4);
-            checkMatrix.Name = "checkMatrix";
-            checkMatrix.Size = new Size(241, 36);
-            checkMatrix.TabIndex = 19;
-            checkMatrix.Text = Properties.Strings.TurnOffOnBattery;
-            checkMatrix.UseVisualStyleBackColor = true;
-            // 
             // panelBattery
             // 
             panelBattery.AutoSize = true;
@@ -340,7 +356,7 @@ namespace GHelper
             panelBattery.Controls.Add(sliderBattery);
             panelBattery.Controls.Add(panelBatteryTitle);
             panelBattery.Dock = DockStyle.Top;
-            panelBattery.Location = new Point(11, 1644);
+            panelBattery.Location = new Point(11, 1626);
             panelBattery.Margin = new Padding(0);
             panelBattery.Name = "panelBattery";
             panelBattery.Padding = new Padding(20, 20, 20, 10);
@@ -432,7 +448,7 @@ namespace GHelper
             panelFooter.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             panelFooter.Controls.Add(tableButtons);
             panelFooter.Dock = DockStyle.Top;
-            panelFooter.Location = new Point(11, 1819);
+            panelFooter.Location = new Point(11, 1801);
             panelFooter.Margin = new Padding(0);
             panelFooter.Name = "panelFooter";
             panelFooter.Padding = new Padding(20);
@@ -1179,7 +1195,7 @@ namespace GHelper
             panelKeyboard.Controls.Add(tableLayoutKeyboard);
             panelKeyboard.Controls.Add(panelKeyboardTitle);
             panelKeyboard.Dock = DockStyle.Top;
-            panelKeyboard.Location = new Point(11, 1302);
+            panelKeyboard.Location = new Point(11, 1284);
             panelKeyboard.Margin = new Padding(0);
             panelKeyboard.Name = "panelKeyboard";
             panelKeyboard.Padding = new Padding(20);
@@ -1355,7 +1371,7 @@ namespace GHelper
             panelVersion.Controls.Add(labelCharge);
             panelVersion.Controls.Add(checkStartup);
             panelVersion.Dock = DockStyle.Top;
-            panelVersion.Location = new Point(11, 1763);
+            panelVersion.Location = new Point(11, 1745);
             panelVersion.Margin = new Padding(4);
             panelVersion.Name = "panelVersion";
             panelVersion.Size = new Size(827, 56);
@@ -1380,7 +1396,7 @@ namespace GHelper
             panelPeripherals.Controls.Add(tableLayoutPeripherals);
             panelPeripherals.Controls.Add(panelPeripheralsTile);
             panelPeripherals.Dock = DockStyle.Top;
-            panelPeripherals.Location = new Point(11, 1446);
+            panelPeripherals.Location = new Point(11, 1428);
             panelPeripherals.Margin = new Padding(0);
             panelPeripherals.Name = "panelPeripherals";
             panelPeripherals.Padding = new Padding(20, 20, 20, 10);
@@ -1522,7 +1538,7 @@ namespace GHelper
             panelAlly.Controls.Add(tableLayoutAlly);
             panelAlly.Controls.Add(panelAllyTitle);
             panelAlly.Dock = DockStyle.Top;
-            panelAlly.Location = new Point(11, 1162);
+            panelAlly.Location = new Point(11, 1144);
             panelAlly.Margin = new Padding(0);
             panelAlly.Name = "panelAlly";
             panelAlly.Padding = new Padding(20, 20, 20, 0);
@@ -1754,6 +1770,8 @@ namespace GHelper
             Text = "G-Helper";
             panelMatrix.ResumeLayout(false);
             panelMatrix.PerformLayout();
+            panelMatrixAuto.ResumeLayout(false);
+            panelMatrixAuto.PerformLayout();
             tableLayoutMatrix.ResumeLayout(false);
             panelMatrixTitle.ResumeLayout(false);
             panelMatrixTitle.PerformLayout();
@@ -1912,5 +1930,6 @@ namespace GHelper
         private PictureBox pictureGamma;
         private Label labelGammaTitle;
         private CheckBox checkMatrixLid;
+        private Panel panelMatrixAuto;
     }
 }
