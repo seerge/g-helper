@@ -192,7 +192,7 @@ namespace GHelper
             // 
             checkMatrixLid.AutoSize = true;
             checkMatrixLid.ForeColor = SystemColors.GrayText;
-            checkMatrixLid.Location = new Point(286, 126);
+            checkMatrixLid.Location = new Point(275, 126);
             checkMatrixLid.Margin = new Padding(8, 4, 8, 4);
             checkMatrixLid.Name = "checkMatrixLid";
             checkMatrixLid.Size = new Size(253, 36);
@@ -326,7 +326,7 @@ namespace GHelper
             checkMatrix.Location = new Point(27, 126);
             checkMatrix.Margin = new Padding(8, 4, 8, 4);
             checkMatrix.Name = "checkMatrix";
-            checkMatrix.Size = new Size(249, 36);
+            checkMatrix.Size = new Size(241, 36);
             checkMatrix.TabIndex = 19;
             checkMatrix.Text = Properties.Strings.TurnOffOnBattery;
             checkMatrix.UseVisualStyleBackColor = true;
