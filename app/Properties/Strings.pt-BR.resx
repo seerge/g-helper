@@ -702,7 +702,7 @@ Do you still want to continue?</value>
     <value>Desligado</value>
   </data>
   <data name="TurnOffOnBattery" xml:space="preserve">
-    <value>Disable on battery</value>
+    <value>Desligar em bateria</value>
   </data>
   <data name="UltimateGPUTooltip" xml:space="preserve">
     <value>Direciona a tela do computador ao dGPU</value>
