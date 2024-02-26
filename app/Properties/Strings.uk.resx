@@ -330,6 +330,9 @@
   <data name="DisableController" xml:space="preserve">
     <value>Вимкнути контролер</value>
   </data>
+  <data name="DisableOnLidClose" xml:space="preserve">
+    <value>Вимкнути при закритті</value>
+  </data>
   <data name="DisableOverdrive" xml:space="preserve">
     <value>Вимкнути овердрайв дисплею</value>
   </data>
@@ -699,7 +702,7 @@
     <value>Вимкнений</value>
   </data>
   <data name="TurnOffOnBattery" xml:space="preserve">
-    <value>Вимикати на батареї</value>
+    <value>Вимкнути на батареї</value>
   </data>
   <data name="UltimateGPUTooltip" xml:space="preserve">
     <value>Підключає екран лептопу до dGPU, щоб підвищити FPS</value>

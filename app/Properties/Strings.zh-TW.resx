@@ -330,6 +330,9 @@
   <data name="DisableController" xml:space="preserve">
     <value>停用控制器</value>
   </data>
+  <data name="DisableOnLidClose" xml:space="preserve">
+    <value>Disable on lid close</value>
+  </data>
   <data name="DisableOverdrive" xml:space="preserve">
     <value>禁用螢幕加速OD</value>
   </data>
