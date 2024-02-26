@@ -702,7 +702,7 @@ Nadal chcesz kontynuować?</value>
     <value>Wyłączony</value>
   </data>
   <data name="TurnOffOnBattery" xml:space="preserve">
-    <value>Disable on battery</value>
+    <value>Wyłączony na baterii</value>
   </data>
   <data name="UltimateGPUTooltip" xml:space="preserve">
     <value>Podłącza ekran laptopa bezpośrednio do dedykowanego GPU</value>
