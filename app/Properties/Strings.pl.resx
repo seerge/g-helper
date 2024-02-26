@@ -330,6 +330,9 @@
   <data name="DisableController" xml:space="preserve">
     <value>Disable Controller</value>
   </data>
+  <data name="DisableOnLidClose" xml:space="preserve">
+    <value>Disable on lid close</value>
+  </data>
   <data name="DisableOverdrive" xml:space="preserve">
     <value>Wyłącz funkcję Overdrive monitora</value>
   </data>
@@ -699,7 +702,7 @@ Nadal chcesz kontynuować?</value>
     <value>Wyłączony</value>
   </data>
   <data name="TurnOffOnBattery" xml:space="preserve">
-    <value>Wyłączony na baterii</value>
+    <value>Disable on battery</value>
   </data>
   <data name="UltimateGPUTooltip" xml:space="preserve">
     <value>Podłącza ekran laptopa bezpośrednio do dedykowanego GPU</value>
