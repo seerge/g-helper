@@ -702,7 +702,7 @@
     <value>已关闭</value>
   </data>
   <data name="TurnOffOnBattery" xml:space="preserve">
-    <value>Disable on battery</value>
+    <value>使用电池时关闭</value>
   </data>
   <data name="UltimateGPUTooltip" xml:space="preserve">
     <value>开启独显直连获得最佳帧率</value>
