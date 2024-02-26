@@ -398,7 +398,7 @@ namespace GHelper
             InitServices();
             InitHibernate();
 
-            InitACPITesting();
+            //InitACPITesting();
 
         }
 

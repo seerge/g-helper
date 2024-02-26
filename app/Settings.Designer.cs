@@ -199,6 +199,7 @@ namespace GHelper
             checkMatrixLid.TabIndex = 46;
             checkMatrixLid.Text = "Disable on lid close";
             checkMatrixLid.UseVisualStyleBackColor = true;
+            checkMatrixLid.Visible = false;
             // 
             // tableLayoutMatrix
             // 
