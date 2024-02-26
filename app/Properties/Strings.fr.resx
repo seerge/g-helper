@@ -330,6 +330,9 @@
   <data name="DisableController" xml:space="preserve">
     <value>Désactiver le contrôleur</value>
   </data>
+  <data name="DisableOnLidClose" xml:space="preserve">
+    <value>Disable on lid close</value>
+  </data>
   <data name="DisableOverdrive" xml:space="preserve">
     <value>Désactiver l'overdrive de l'écran</value>
   </data>
@@ -699,7 +702,7 @@ Voulez-vous continuer ?</value>
     <value>Éteint</value>
   </data>
   <data name="TurnOffOnBattery" xml:space="preserve">
-    <value>Éteindre sur batterie</value>
+    <value>Disable on battery</value>
   </data>
   <data name="UltimateGPUTooltip" xml:space="preserve">
     <value>Redirige l'écran du portable vers le dGPU, maximisation taux FPS </value>
