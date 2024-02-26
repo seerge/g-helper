@@ -702,7 +702,7 @@ Yine de devam etmek istiyor musunuz?</value>
     <value>Kapatıldı</value>
   </data>
   <data name="TurnOffOnBattery" xml:space="preserve">
-    <value>Disable on battery</value>
+    <value>Pille çalışırken kapat</value>
   </data>
   <data name="UltimateGPUTooltip" xml:space="preserve">
     <value>Dizüstü ekranını harici GPU'ya yönlendirerek FPS'yi maksimize eder</value>
