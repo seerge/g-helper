@@ -415,6 +415,7 @@ namespace GHelper
             }
 
             eCoresMax = Math.Max(8, eCoresMax);
+            pCoresMax = Math.Max(6, pCoresMax);
 
             panelCores.Visible = true;
 

@@ -43,6 +43,10 @@ public class AsusACPI
     public const int Brightness_Down = 0x10;
     public const int Brightness_Up = 0x20;
     public const int KB_Sleep = 0x6c;
+
+    public const int KB_TouchpadToggle = 0x6b;
+    public const int KB_MuteToggle = 0x7c;
+
     public const int KB_DUO_PgUpDn = 0x4B;
     public const int KB_DUO_SecondDisplay = 0x6A;
 
