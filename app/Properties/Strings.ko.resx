@@ -702,7 +702,7 @@
     <value>꺼짐</value>
   </data>
   <data name="TurnOffOnBattery" xml:space="preserve">
-    <value>Disable on battery</value>
+    <value>배터리 사용 중에는 끄기</value>
   </data>
   <data name="UltimateGPUTooltip" xml:space="preserve">
     <value>노트북 화면을 dGPU와 연결, FPS 최대화</value>
