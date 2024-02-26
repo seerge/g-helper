@@ -455,10 +455,14 @@ namespace GHelper
                         case 0:
                             Logger.WriteLine("Lid Closed");
                             Aura.ApplyBrightness(0, "Lid");
+                            AniMatrixControl.lidClose = true;
+                            matrixControl.SetLidMode();
                             break;
                         case 1:
                             Logger.WriteLine("Lid Open");
                             Aura.ApplyBrightness(InputDispatcher.GetBacklight(), "Lid");
+                            AniMatrixControl.lidClose = false;
+                            matrixControl.SetLidMode();
                             break;
                     }
 
@@ -704,7 +708,7 @@ namespace GHelper
         private void CheckMatrixLid_CheckedChanged(object? sender, EventArgs e)
         {
             AppConfig.Set("matrix_lid", checkMatrixLid.Checked ? 1 : 0);
-            matrixControl.SetLidMode();
+            matrixControl.SetLidMode(true);
         }
 
 
@@ -934,7 +938,6 @@ namespace GHelper
                 for (int i = 1; i <= 5; i++) comboInterval.Items.Add($"Interval {i}s");
 
                 buttonMatrix.Visible = false;
-                checkMatrixLid.Visible = true;
             } 
 
             comboMatrix.SelectedIndex = Math.Min(AppConfig.Get("matrix_brightness", 0), comboMatrix.Items.Count - 1);

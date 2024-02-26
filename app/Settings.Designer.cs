@@ -31,6 +31,7 @@ namespace GHelper
         private void InitializeComponent()
         {
             panelMatrix = new Panel();
+            checkMatrixLid = new CheckBox();
             tableLayoutMatrix = new TableLayoutPanel();
             comboMatrix = new RComboBox();
             comboMatrixRunning = new RComboBox();
@@ -126,7 +127,6 @@ namespace GHelper
             labelGamma = new Label();
             pictureGamma = new PictureBox();
             labelGammaTitle = new Label();
-            checkMatrixLid = new CheckBox();
             panelMatrix.SuspendLayout();
             tableLayoutMatrix.SuspendLayout();
             panelMatrixTitle.SuspendLayout();
@@ -187,6 +187,18 @@ namespace GHelper
             panelMatrix.Size = new Size(827, 176);
             panelMatrix.TabIndex = 3;
             panelMatrix.TabStop = true;
+            // 
+            // checkMatrixLid
+            // 
+            checkMatrixLid.AutoSize = true;
+            checkMatrixLid.ForeColor = SystemColors.GrayText;
+            checkMatrixLid.Location = new Point(286, 126);
+            checkMatrixLid.Margin = new Padding(8, 4, 8, 4);
+            checkMatrixLid.Name = "checkMatrixLid";
+            checkMatrixLid.Size = new Size(253, 36);
+            checkMatrixLid.TabIndex = 46;
+            checkMatrixLid.Text = "Disable on lid close";
+            checkMatrixLid.UseVisualStyleBackColor = true;
             // 
             // tableLayoutMatrix
             // 
@@ -1710,19 +1722,6 @@ namespace GHelper
             labelGammaTitle.Size = new Size(307, 32);
             labelGammaTitle.TabIndex = 37;
             labelGammaTitle.Text = "Flicker-free Dimming";
-            // 
-            // checkMatrixLid
-            // 
-            checkMatrixLid.AutoSize = true;
-            checkMatrixLid.ForeColor = SystemColors.GrayText;
-            checkMatrixLid.Location = new Point(286, 126);
-            checkMatrixLid.Margin = new Padding(8, 4, 8, 4);
-            checkMatrixLid.Name = "checkMatrixLid";
-            checkMatrixLid.Size = new Size(246, 36);
-            checkMatrixLid.TabIndex = 46;
-            checkMatrixLid.Text = "Enable on lid close";
-            checkMatrixLid.UseVisualStyleBackColor = true;
-            checkMatrixLid.Visible = false;
             // 
             // SettingsForm
             // 

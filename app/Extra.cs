@@ -386,9 +386,6 @@ namespace GHelper
             buttonServices.Click += ButtonServices_Click;
 
             pictureLog.Click += PictureLog_Click;
-            pictureScan.Click += PictureScan_Click;
-
-            pictureScan.Visible = true;
 
             checkGPUFix.Visible = Program.acpi.IsNVidiaGPU();
             checkGPUFix.Checked = AppConfig.IsGPUFix();
@@ -400,8 +397,35 @@ namespace GHelper
             InitVariBright();
             InitServices();
             InitHibernate();
+
+            InitACPITesting();
+
         }
 
+        private void InitACPITesting()
+        {
+            pictureScan.Visible = true;
+            panelACPI.Visible = true;
+
+            textACPICommand.Text = "120075";
+            textACPIParam.Text = "1";
+
+            buttonACPISend.Click += ButtonACPISend_Click;
+            pictureScan.Click += PictureScan_Click;
+        }
+
+        private void ButtonACPISend_Click(object? sender, EventArgs e)
+        {
+            try {
+                int deviceID = Convert.ToInt32(textACPICommand.Text, 16);
+                int status = Convert.ToInt32(textACPIParam.Text, textACPIParam.Text.Contains("x") ? 16 : 10);
+                int result = Program.acpi.DeviceSet((uint)deviceID, status, "TestACPI " + deviceID.ToString("X8") + " " + status.ToString("X4"));
+                labelACPITitle.Text = "ACPI DEVS Test : " + result.ToString();
+            } catch (Exception ex)
+            {
+                Logger.WriteLine(ex.Message);
+            }
+        }
 
         private void InitCores()
         {

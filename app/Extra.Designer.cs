@@ -127,6 +127,12 @@ namespace GHelper
             comboCoresE = new RComboBox();
             pictureCores = new PictureBox();
             label1 = new Label();
+            panelACPI = new Panel();
+            textACPIParam = new TextBox();
+            textACPICommand = new TextBox();
+            buttonACPISend = new RButton();
+            pictureDebug = new PictureBox();
+            labelACPITitle = new Label();
             panelServices.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureService).BeginInit();
             panelBindingsHeader.SuspendLayout();
@@ -154,6 +160,8 @@ namespace GHelper
             ((System.ComponentModel.ISupportInitialize)pictureAPUMem).BeginInit();
             panelCores.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureCores).BeginInit();
+            panelACPI.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureDebug).BeginInit();
             SuspendLayout();
             // 
             // panelServices
@@ -163,7 +171,7 @@ namespace GHelper
             panelServices.Controls.Add(labelServices);
             panelServices.Controls.Add(buttonServices);
             panelServices.Dock = DockStyle.Top;
-            panelServices.Location = new Point(15, 1439);
+            panelServices.Location = new Point(15, 1508);
             panelServices.Name = "panelServices";
             panelServices.Size = new Size(983, 75);
             panelServices.TabIndex = 5;
@@ -1085,7 +1093,7 @@ namespace GHelper
             panelSettings.Controls.Add(checkGpuApps);
             panelSettings.Controls.Add(checkGPUFix);
             panelSettings.Dock = DockStyle.Top;
-            panelSettings.Location = new Point(15, 1039);
+            panelSettings.Location = new Point(15, 1108);
             panelSettings.Name = "panelSettings";
             panelSettings.Padding = new Padding(20, 5, 11, 5);
             panelSettings.Size = new Size(983, 346);
@@ -1200,7 +1208,7 @@ namespace GHelper
             panelPower.Controls.Add(labelHibernateAfter);
             panelPower.Controls.Add(pictureHibernate);
             panelPower.Dock = DockStyle.Top;
-            panelPower.Location = new Point(15, 1385);
+            panelPower.Location = new Point(15, 1454);
             panelPower.Name = "panelPower";
             panelPower.Size = new Size(983, 54);
             panelPower.TabIndex = 4;
@@ -1243,7 +1251,7 @@ namespace GHelper
             panelAPU.Controls.Add(pictureAPUMem);
             panelAPU.Controls.Add(labelAPUMem);
             panelAPU.Dock = DockStyle.Top;
-            panelAPU.Location = new Point(15, 982);
+            panelAPU.Location = new Point(15, 1051);
             panelAPU.Name = "panelAPU";
             panelAPU.Padding = new Padding(11, 5, 11, 0);
             panelAPU.Size = new Size(983, 57);
@@ -1297,7 +1305,7 @@ namespace GHelper
             panelCores.Controls.Add(pictureCores);
             panelCores.Controls.Add(label1);
             panelCores.Dock = DockStyle.Top;
-            panelCores.Location = new Point(15, 921);
+            panelCores.Location = new Point(15, 990);
             panelCores.Name = "panelCores";
             panelCores.Padding = new Padding(11, 5, 11, 0);
             panelCores.Size = new Size(983, 61);
@@ -1373,6 +1381,79 @@ namespace GHelper
             label1.TabIndex = 0;
             label1.Text = "CPU Cores Configuration";
             // 
+            // panelACPI
+            // 
+            panelACPI.AutoSize = true;
+            panelACPI.Controls.Add(textACPIParam);
+            panelACPI.Controls.Add(textACPICommand);
+            panelACPI.Controls.Add(buttonACPISend);
+            panelACPI.Controls.Add(pictureDebug);
+            panelACPI.Controls.Add(labelACPITitle);
+            panelACPI.Dock = DockStyle.Top;
+            panelACPI.Location = new Point(15, 921);
+            panelACPI.Name = "panelACPI";
+            panelACPI.Padding = new Padding(11, 5, 11, 0);
+            panelACPI.Size = new Size(983, 69);
+            panelACPI.TabIndex = 48;
+            panelACPI.Visible = false;
+            // 
+            // textACPIParam
+            // 
+            textACPIParam.Location = new Point(717, 18);
+            textACPIParam.Margin = new Padding(4, 3, 4, 3);
+            textACPIParam.Name = "textACPIParam";
+            textACPIParam.PlaceholderText = "Value";
+            textACPIParam.Size = new Size(127, 39);
+            textACPIParam.TabIndex = 22;
+            textACPIParam.TabStop = false;
+            // 
+            // textACPICommand
+            // 
+            textACPICommand.Location = new Point(467, 18);
+            textACPICommand.Margin = new Padding(4, 3, 4, 3);
+            textACPICommand.Name = "textACPICommand";
+            textACPICommand.PlaceholderText = "Address";
+            textACPICommand.Size = new Size(242, 39);
+            textACPICommand.TabIndex = 21;
+            textACPICommand.TabStop = false;
+            // 
+            // buttonACPISend
+            // 
+            buttonACPISend.Activated = false;
+            buttonACPISend.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            buttonACPISend.BackColor = SystemColors.ButtonHighlight;
+            buttonACPISend.BorderColor = Color.Transparent;
+            buttonACPISend.BorderRadius = 2;
+            buttonACPISend.FlatStyle = FlatStyle.Flat;
+            buttonACPISend.Location = new Point(854, 13);
+            buttonACPISend.Margin = new Padding(4, 3, 4, 3);
+            buttonACPISend.Name = "buttonACPISend";
+            buttonACPISend.Secondary = false;
+            buttonACPISend.Size = new Size(106, 46);
+            buttonACPISend.TabIndex = 20;
+            buttonACPISend.Text = "Send";
+            buttonACPISend.UseVisualStyleBackColor = false;
+            // 
+            // pictureDebug
+            // 
+            pictureDebug.BackgroundImage = Resources.icons8_heartbeat_32;
+            pictureDebug.BackgroundImageLayout = ImageLayout.Zoom;
+            pictureDebug.Location = new Point(20, 20);
+            pictureDebug.Name = "pictureDebug";
+            pictureDebug.Size = new Size(32, 32);
+            pictureDebug.TabIndex = 1;
+            pictureDebug.TabStop = false;
+            // 
+            // labelACPITitle
+            // 
+            labelACPITitle.AutoSize = true;
+            labelACPITitle.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            labelACPITitle.Location = new Point(57, 20);
+            labelACPITitle.Name = "labelACPITitle";
+            labelACPITitle.Size = new Size(188, 32);
+            labelACPITitle.TabIndex = 0;
+            labelACPITitle.Text = "ACPI DEVS Test";
+            // 
             // Extra
             // 
             AutoScaleDimensions = new SizeF(192F, 192F);
@@ -1380,12 +1461,13 @@ namespace GHelper
             AutoScroll = true;
             AutoSize = true;
             AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            ClientSize = new Size(1013, 1515);
+            ClientSize = new Size(1013, 1612);
             Controls.Add(panelServices);
             Controls.Add(panelPower);
             Controls.Add(panelSettings);
             Controls.Add(panelAPU);
             Controls.Add(panelCores);
+            Controls.Add(panelACPI);
             Controls.Add(panelSettingsHeader);
             Controls.Add(panelBacklight);
             Controls.Add(panelBacklightHeader);
@@ -1441,6 +1523,9 @@ namespace GHelper
             panelCores.ResumeLayout(false);
             panelCores.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)pictureCores).EndInit();
+            panelACPI.ResumeLayout(false);
+            panelACPI.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureDebug).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -1542,5 +1627,11 @@ namespace GHelper
         private Label label1;
         private RComboBox comboCoresP;
         private RButton buttonCores;
+        private Panel panelACPI;
+        private TextBox textACPIParam;
+        private TextBox textACPICommand;
+        private RButton buttonACPISend;
+        private PictureBox pictureDebug;
+        private Label labelACPITitle;
     }
 }
