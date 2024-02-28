@@ -548,7 +548,7 @@ namespace GHelper
             {
                 gpuVisible = buttonGPU.Visible = true;
 
-                gpuPowerBase = Program.acpi.DeviceGet(AsusACPI.GPU_POWER_BASE);
+                gpuPowerBase = Program.acpi.DeviceGet(AsusACPI.GPU_BASE);
                 int gpuPowerVar = Program.acpi.DeviceGet(AsusACPI.GPU_POWER);
 
                 int gpu_boost = AppConfig.GetMode("gpu_boost");

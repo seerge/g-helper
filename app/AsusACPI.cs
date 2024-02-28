@@ -105,7 +105,7 @@ public class AsusACPI
     public const uint CORES_CPU = 0x001200D2; // Intel E-core and P-core configuration in a format 0x0[E]0[P]
     public const uint CORES_MAX = 0x001200D3; // Maximum Intel E-core and P-core availability
 
-    public const uint GPU_POWER_BASE = 0x00120099;  // Base part GPU TGP
+    public const uint GPU_BASE  = 0x00120099;  // Base part GPU TGP
     public const uint GPU_POWER = 0x00120098;  // Additonal part of GPU TGP
 
     public const int APU_MEM = 0x000600C1;
