@@ -890,6 +890,7 @@ namespace GHelper.Input
             if (e.NewEvent is null) return;
             int EventID = int.Parse(e.NewEvent["EventID"].ToString());
             Logger.WriteLine("WMI event " + EventID);
+            if (AppConfig.NoWMI()) return;
             HandleEvent(EventID);
         }
     }

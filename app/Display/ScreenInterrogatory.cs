@@ -339,7 +339,20 @@ namespace GHelper.Display
 
             for (var i = 0; i < modeCount; i++)
                 if (displayModes[i].infoType == DISPLAYCONFIG_MODE_INFO_TYPE.DISPLAYCONFIG_MODE_INFO_TYPE_TARGET)
-                    yield return DeviceName(displayModes[i].adapterId, displayModes[i].id);
+                {
+                    DISPLAYCONFIG_TARGET_DEVICE_NAME? displayName = null;
+                    try
+                    {
+                        displayName = DeviceName(displayModes[i].adapterId, displayModes[i].id);
+                        
+                    } catch (Exception e)
+                    {
+                        Logger.WriteLine(e.Message);
+                    }
+
+                    if (displayName is not null) yield return (DISPLAYCONFIG_TARGET_DEVICE_NAME)displayName;
+                }
+                    
         }
 
 

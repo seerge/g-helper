@@ -127,6 +127,11 @@ namespace GHelper.AnimeMatrix
             Set(Packet<SlashPacket>(0xD8, 0x01, 0x00, 0x01, status ? (byte)0x80 : (byte)0x00));
         }
 
+        public void SetLidMode(bool status)
+        {
+            Set(Packet<SlashPacket>(0xD8, 0x00, 0x00, 0x02, 0xA5, status ? (byte)0x80 : (byte)0x00));
+        }
+
         public void Set(Packet packet)
         {
             _usbProvider?.Set(packet.Data);
