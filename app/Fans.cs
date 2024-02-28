@@ -31,6 +31,8 @@ namespace GHelper
 
         FanSensorControl fanSensorControl;
 
+        static int gpuPowerBase = 0;
+
         public Fans()
         {
 
@@ -144,17 +146,22 @@ namespace GHelper
             trackGPUTemp.Minimum = AsusACPI.MinGPUTemp;
             trackGPUTemp.Maximum = AsusACPI.MaxGPUTemp;
 
+            trackGPUPower.Minimum = AsusACPI.MinGPUPower;
+            trackGPUPower.Maximum = AsusACPI.MaxGPUPower;
+
             trackGPUClockLimit.Scroll += trackGPUClockLimit_Scroll;
             trackGPUCore.Scroll += trackGPU_Scroll;
             trackGPUMemory.Scroll += trackGPU_Scroll;
 
             trackGPUBoost.Scroll += trackGPUPower_Scroll;
             trackGPUTemp.Scroll += trackGPUPower_Scroll;
+            trackGPUPower.Scroll += trackGPUPower_Scroll;
 
             trackGPUCore.MouseUp += TrackGPU_MouseUp;
             trackGPUMemory.MouseUp += TrackGPU_MouseUp;
             trackGPUBoost.MouseUp += TrackGPU_MouseUp;
             trackGPUTemp.MouseUp += TrackGPU_MouseUp;
+            trackGPUPower.MouseUp += TrackGPU_MouseUp;
 
             trackGPUClockLimit.MouseUp += TrackGPU_MouseUp;
 
@@ -541,8 +548,12 @@ namespace GHelper
             {
                 gpuVisible = buttonGPU.Visible = true;
 
+                gpuPowerBase = Program.acpi.DeviceGet(AsusACPI.GPU_POWER_BASE);
+                int gpuPowerVar = Program.acpi.DeviceGet(AsusACPI.GPU_POWER);
+
                 int gpu_boost = AppConfig.GetMode("gpu_boost");
                 int gpu_temp = AppConfig.GetMode("gpu_temp");
+                int gpu_power = AppConfig.GetMode("gpu_power");
 
                 int core = AppConfig.GetMode("gpu_core");
                 int memory = AppConfig.GetMode("gpu_memory");
@@ -550,32 +561,35 @@ namespace GHelper
 
                 if (gpu_boost < 0) gpu_boost = AsusACPI.MaxGPUBoost;
                 if (gpu_temp < 0) gpu_temp = AsusACPI.MaxGPUTemp;
+                if (gpu_power < 0) gpu_power = (gpuPowerVar >= 0) ? gpuPowerVar : AsusACPI.MaxGPUPower;
 
                 if (core == -1) core = 0;
                 if (memory == -1) memory = 0;
                 if (clock_limit == -1) clock_limit = NvidiaGpuControl.MaxClockLimit;
 
-                if (nvControl.GetClocks(out int current_core, out int current_memory))
+                if (nvControl is not null)
                 {
-                    core = current_core;
-                    memory = current_memory;
+                    if (nvControl.GetClocks(out int current_core, out int current_memory))
+                    {
+                        core = current_core;
+                        memory = current_memory;
+                    }
+
+                    int _clockLimit = nvControl.GetMaxGPUCLock();
+
+                    if (_clockLimit == 0) clock_limit = NvidiaGpuControl.MaxClockLimit;
+                    else if (_clockLimit > 0) clock_limit = _clockLimit;
+
+                    try
+                    {
+                        labelGPU.Text = nvControl.FullName;
+                    }
+                    catch
+                    {
+
+                    }
                 }
 
-                int _clockLimit = nvControl.GetMaxGPUCLock();
-
-                if (_clockLimit == 0) clock_limit = NvidiaGpuControl.MaxClockLimit;
-                else if (_clockLimit > 0) clock_limit = _clockLimit;
-
-                try
-                {
-                    labelGPU.Text = nvControl.FullName;
-                }
-                catch
-                {
-
-                }
-
-                //}
                 trackGPUClockLimit.Value = Math.Max(Math.Min(clock_limit, NvidiaGpuControl.MaxClockLimit), NvidiaGpuControl.MinClockLimit);
 
                 trackGPUCore.Value = Math.Max(Math.Min(core, NvidiaGpuControl.MaxCoreOffset), NvidiaGpuControl.MinCoreOffset);
@@ -584,8 +598,12 @@ namespace GHelper
                 trackGPUBoost.Value = Math.Max(Math.Min(gpu_boost, AsusACPI.MaxGPUBoost), AsusACPI.MinGPUBoost);
                 trackGPUTemp.Value = Math.Max(Math.Min(gpu_temp, AsusACPI.MaxGPUTemp), AsusACPI.MinGPUTemp);
 
+                trackGPUPower.Value = Math.Max(Math.Min(gpu_power, AsusACPI.MaxGPUPower), AsusACPI.MinGPUPower);
+
                 panelGPUBoost.Visible = (Program.acpi.DeviceGet(AsusACPI.PPT_GPUC0) >= 0);
                 panelGPUTemp.Visible = (Program.acpi.DeviceGet(AsusACPI.PPT_GPUC2) >= 0);
+
+                panelGPUPower.Visible = gpuPowerBase > 0 && gpuPowerVar >= 0;
 
                 VisualiseGPUSettings();
 
@@ -610,6 +628,9 @@ namespace GHelper
                 labelGPUClockLimit.Text = "Default";
             else
                 labelGPUClockLimit.Text = $"{trackGPUClockLimit.Value} MHz";
+
+            labelGPUPower.Text = (gpuPowerBase + trackGPUPower.Value) + "W";
+
         }
 
         private void trackGPUClockLimit_Scroll(object? sender, EventArgs e)
@@ -640,6 +661,7 @@ namespace GHelper
         {
             AppConfig.SetMode("gpu_boost", trackGPUBoost.Value);
             AppConfig.SetMode("gpu_temp", trackGPUTemp.Value);
+            AppConfig.SetMode("gpu_power", trackGPUPower.Value);
 
             VisualiseGPUSettings();
         }
@@ -1089,16 +1111,21 @@ namespace GHelper
 
             if (gpuVisible)
             {
+                int gpuPowerVar = Program.acpi.DeviceGet(AsusACPI.GPU_POWER);
+
                 trackGPUClockLimit.Value = NvidiaGpuControl.MaxClockLimit;
                 trackGPUCore.Value = 0;
                 trackGPUMemory.Value = 0;
+                
                 trackGPUBoost.Value = AsusACPI.MaxGPUBoost;
                 trackGPUTemp.Value = AsusACPI.MaxGPUTemp;
+                trackGPUPower.Value = (gpuPowerVar >= 0) ? gpuPowerVar : AsusACPI.MaxGPUPower;
 
                 AppConfig.SetMode("gpu_clock_limit", trackGPUClockLimit.Value);
 
                 AppConfig.SetMode("gpu_boost", trackGPUBoost.Value);
                 AppConfig.SetMode("gpu_temp", trackGPUTemp.Value);
+                AppConfig.SetMode("gpu_power", trackGPUPower.Value);
 
                 AppConfig.SetMode("gpu_core", trackGPUCore.Value);
                 AppConfig.SetMode("gpu_memory", trackGPUMemory.Value);
