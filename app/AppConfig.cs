@@ -91,13 +91,19 @@ public static class AppConfig
         if (_model is null)
         {
             _model = "";
-            using (var searcher = new ManagementObjectSearcher(@"Select * from Win32_ComputerSystem"))
+            try
             {
-                foreach (var process in searcher.Get())
+                using (var searcher = new ManagementObjectSearcher(@"Select * from Win32_ComputerSystem"))
                 {
-                    _model = process["Model"].ToString();
-                    break;
+                    foreach (var process in searcher.Get())
+                    {
+                        _model = process["Model"].ToString();
+                        break;
+                    }
                 }
+            } catch (Exception ex)
+            {
+                Logger.WriteLine(ex.Message);
             }
         }
 
@@ -389,6 +395,11 @@ public static class AppConfig
         return ContainsModel("GA503") || IsSlash();
     }
 
+    public static bool IsOLED()
+    {
+        return ContainsModel("OLED") || IsSlash() || ContainsModel("UX64") || ContainsModel("UX34") || ContainsModel("UX53") || ContainsModel("K360") || ContainsModel("X150"); 
+    }
+
     public static bool IsStrix()
     {
         return ContainsModel("Strix") || ContainsModel("Scar") || ContainsModel("G703G");
@@ -399,9 +410,15 @@ public static class AppConfig
         return (ContainsModel("G614JV") || ContainsModel("G614JZ") || ContainsModel("G512LI") || ContainsModel("G513R") || ContainsModel("G713PV") || ContainsModel("G513IE") || ContainsModel("G713RC") || ContainsModel("G513QM") || ContainsModel("G531G")) && !Is("per_key_rgb");
     }
 
+
     public static bool IsNoAirplaneMode()
     {
         return ContainsModel("FX506");
+    }
+
+    public static bool NoWMI()
+    {
+        return ContainsModel("GL704G");
     }
 
     public static bool IsNoDirectRGB()
@@ -451,7 +468,7 @@ public static class AppConfig
 
     public static bool NoAutoUltimate()
     {
-        return ContainsModel("G614") || ContainsModel("GU604") || ContainsModel("FX507") || ContainsModel("G513") || ContainsModel("FA617") || ContainsModel("G834");
+        return ContainsModel("G614") || ContainsModel("GU604") || ContainsModel("FX507") || ContainsModel("G513") || ContainsModel("FA617") || ContainsModel("G834") || ContainsModel("GA403") || ContainsModel("GU605");
     }
 
 

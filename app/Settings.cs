@@ -85,6 +85,7 @@ namespace GHelper
             labelPeripherals.Text = Properties.Strings.Peripherals;
 
             checkMatrix.Text = Properties.Strings.TurnOffOnBattery;
+            checkMatrixLid.Text = Properties.Strings.DisableOnLidClose;
             checkStartup.Text = Properties.Strings.RunOnStartup;
 
             buttonMatrix.Text = Properties.Strings.PictureGif;
@@ -218,7 +219,7 @@ namespace GHelper
             sliderBattery.ValueChanged += SliderBattery_ValueChanged;
             Program.trayIcon.MouseMove += TrayIcon_MouseMove;
 
-            sensorTimer = new System.Timers.Timer(1000);
+            sensorTimer = new System.Timers.Timer(AppConfig.Get("sensor_timer",1000));
             sensorTimer.Elapsed += OnTimedEvent;
             sensorTimer.Enabled = true;
 
@@ -253,7 +254,17 @@ namespace GHelper
             VisualiseFnLock();
             buttonFnLock.Click += ButtonFnLock_Click;
 
+            panelGamma.Visible = AppConfig.IsOLED();
+            sliderGamma.ValueChanged += SliderGamma_ValueChanged;
+            labelGamma.Text = "100%";
+
             panelPerformance.Focus();
+        }
+
+        private void SliderGamma_ValueChanged(object? sender, EventArgs e)
+        {
+            screenControl.SetGamma(sliderGamma.Value);
+            labelGamma.Text = sliderGamma.Value + "%";
         }
 
         private void ButtonOverlay_Click(object? sender, EventArgs e)
@@ -445,10 +456,14 @@ namespace GHelper
                         case 0:
                             Logger.WriteLine("Lid Closed");
                             Aura.ApplyBrightness(0, "Lid");
+                            AniMatrixControl.lidClose = true;
+                            matrixControl.SetLidMode();
                             break;
                         case 1:
                             Logger.WriteLine("Lid Open");
                             Aura.ApplyBrightness(InputDispatcher.GetBacklight(), "Lid");
+                            AniMatrixControl.lidClose = false;
+                            matrixControl.SetLidMode();
                             break;
                     }
 
@@ -691,6 +706,11 @@ namespace GHelper
             matrixControl.SetBatteryAuto();
         }
 
+        private void CheckMatrixLid_CheckedChanged(object? sender, EventArgs e)
+        {
+            AppConfig.Set("matrix_lid", checkMatrixLid.Checked ? 1 : 0);
+            matrixControl.SetLidMode(true);
+        }
 
 
         private void ButtonMatrix_Click(object? sender, EventArgs e)
@@ -919,7 +939,8 @@ namespace GHelper
                 for (int i = 1; i <= 5; i++) comboInterval.Items.Add($"Interval {i}s");
 
                 buttonMatrix.Visible = false;
-            }
+                checkMatrixLid.Visible = true;
+            } 
 
             comboMatrix.SelectedIndex = Math.Min(AppConfig.Get("matrix_brightness", 0), comboMatrix.Items.Count - 1);
             comboMatrixRunning.SelectedIndex = Math.Min(AppConfig.Get("matrix_running", 0), comboMatrixRunning.Items.Count - 1);
@@ -927,6 +948,10 @@ namespace GHelper
 
             checkMatrix.Checked = AppConfig.Is("matrix_auto");
             checkMatrix.CheckedChanged += CheckMatrix_CheckedChanged;
+
+            checkMatrixLid.Checked = AppConfig.Is("matrix_lid");
+            checkMatrixLid.CheckedChanged += CheckMatrixLid_CheckedChanged;
+
 
         }
 

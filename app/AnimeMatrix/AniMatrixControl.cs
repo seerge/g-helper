@@ -18,6 +18,8 @@ namespace GHelper.AnimeMatrix
         public AnimeMatrixDevice? deviceMatrix;
         public SlashDevice? deviceSlash;
 
+        public static bool lidClose = false;
+
         double[]? AudioValues;
         WasapiCapture? AudioDevice;
         string? AudioDeviceId;
@@ -56,6 +58,15 @@ namespace GHelper.AnimeMatrix
             if (deviceSlash is not null) SetSlash(wakeUp);
         }
 
+        public void SetLidMode(bool force = false)
+        {
+            if (AppConfig.Is("matrix_lid") || force)
+            {
+                Logger.WriteLine($"Matrix LidClosed: {lidClose}");
+                SetDevice(true);
+            }
+        }
+
 
         public void SetSlash(bool wakeUp = false)
         {
@@ -66,6 +77,7 @@ namespace GHelper.AnimeMatrix
             int inteval = AppConfig.Get("matrix_interval", 0);
 
             bool auto = AppConfig.Is("matrix_auto");
+            bool lid = AppConfig.Is("matrix_lid");
 
             Task.Run(() =>
             {
@@ -81,7 +93,7 @@ namespace GHelper.AnimeMatrix
 
                 if (wakeUp) deviceSlash.WakeUp();
 
-                if (brightness == 0 || (auto && SystemInformation.PowerStatus.PowerLineStatus != PowerLineStatus.Online))
+                if (brightness == 0 || (auto && SystemInformation.PowerStatus.PowerLineStatus != PowerLineStatus.Online) || (lid && lidClose))
                 {
                     deviceSlash.Init();
                     deviceSlash.SetOptions(false, 0, 0);
@@ -110,6 +122,7 @@ namespace GHelper.AnimeMatrix
             int brightness = AppConfig.Get("matrix_brightness", 0);
             int running = AppConfig.Get("matrix_running", 0);
             bool auto = AppConfig.Is("matrix_auto");
+            bool lid = AppConfig.Is("matrix_lid");
 
             StopMatrixTimer();
             StopMatrixAudio();
@@ -128,7 +141,7 @@ namespace GHelper.AnimeMatrix
 
                 if (wakeUp) deviceMatrix.WakeUp();
 
-                if (brightness == 0 || (auto && SystemInformation.PowerStatus.PowerLineStatus != PowerLineStatus.Online))
+                if (brightness == 0 || (auto && SystemInformation.PowerStatus.PowerLineStatus != PowerLineStatus.Online) || (lid && lidClose))
                 {
                     deviceMatrix.SetDisplayState(false);
                     deviceMatrix.SetDisplayState(false); // some devices are dumb

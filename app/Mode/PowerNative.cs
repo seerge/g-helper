@@ -163,7 +163,7 @@ namespace GHelper.Mode
             if (status != 0 || activeScheme != guidScheme)
             {
                 status = PowerSetActiveOverlayScheme(guidScheme);
-                Logger.WriteLine("Power Mode " + scheme + ":" + (status == 0 ? "OK" : status));
+                Logger.WriteLine("Power Mode " + activeScheme + " -> " + scheme + ":" + (status == 0 ? "OK" : status));
             }
 
         }

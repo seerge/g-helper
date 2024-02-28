@@ -330,6 +330,9 @@
   <data name="DisableController" xml:space="preserve">
     <value>Disable Controller</value>
   </data>
+  <data name="DisableOnLidClose" xml:space="preserve">
+    <value>Disable on lid close</value>
+  </data>
   <data name="DisableOverdrive" xml:space="preserve">
     <value>Disable screen overdrive</value>
   </data>
@@ -699,7 +702,7 @@ Do you still want to continue?</value>
     <value>Turned off</value>
   </data>
   <data name="TurnOffOnBattery" xml:space="preserve">
-    <value>Turn off on battery</value>
+    <value>Disable on battery</value>
   </data>
   <data name="UltimateGPUTooltip" xml:space="preserve">
     <value>Routes laptop screen to dGPU, maximizing FPS</value>

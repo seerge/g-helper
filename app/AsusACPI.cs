@@ -43,6 +43,10 @@ public class AsusACPI
     public const int Brightness_Down = 0x10;
     public const int Brightness_Up = 0x20;
     public const int KB_Sleep = 0x6c;
+
+    public const int KB_TouchpadToggle = 0x6b;
+    public const int KB_MuteToggle = 0x7c;
+
     public const int KB_DUO_PgUpDn = 0x4B;
     public const int KB_DUO_SecondDisplay = 0x6A;
 
@@ -98,6 +102,9 @@ public class AsusACPI
     public const int PPT_APUC1 = 0x001200C1;  // fPPT (fast boost limit)
     public const int PPT_GPUC2 = 0x001200C2;  // NVIDIA GPU Temp Target (75.. 87 C) 
 
+    public const uint CORES_CPU = 0x001200D2; // Intel E-core and P-core configuration in a format 0x0[E]0[P]
+    public const uint CORES_MAX = 0x001200D3; // Maximum Intel E-core and P-core availability
+
     public const int APU_MEM = 0x000600C1;
 
     public const int TUF_KB_BRIGHTNESS = 0x00050021;
@@ -145,6 +152,12 @@ public class AsusACPI
 
     public const int MinGPUTemp = 75;
     public const int MaxGPUTemp = 87;
+
+    public const int PCoreMin = 4;
+    public const int ECoreMin = 0;
+
+    public const int PCoreMax = 16;
+    public const int ECoreMax = 16;
 
 
     [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
@@ -514,15 +527,24 @@ public class AsusACPI
             default: fan_mode = 0; break;
         }
 
+        byte[] result;
+
         switch (device)
         {
             case AsusFan.GPU:
-                return DeviceGetBuffer(DevsGPUFanCurve, fan_mode);
+                result = DeviceGetBuffer(DevsGPUFanCurve, fan_mode);
+                break;
             case AsusFan.Mid:
-                return DeviceGetBuffer(DevsMidFanCurve, fan_mode);
+                result = DeviceGetBuffer(DevsMidFanCurve, fan_mode);
+                break;
             default:
-                return DeviceGetBuffer(DevsCPUFanCurve, fan_mode);
+                result = DeviceGetBuffer(DevsCPUFanCurve, fan_mode);
+                break;
         }
+
+        Logger.WriteLine($"GetFan {device} :" + BitConverter.ToString(result));
+
+        return result;
 
     }
 
@@ -663,6 +685,29 @@ public class AsusACPI
             default:
                 return 4;
         }
+    }
+
+    public (int, int) GetCores(bool max = false)
+    {
+        int value = Program.acpi.DeviceGet(max ? CORES_MAX : CORES_CPU);
+        //value = max ? 0x406 : 0x605;
+
+        if (value < 0) return (-1, -1);
+        Logger.WriteLine("Cores" + (max ? "Max" : "") + ": 0x" + value.ToString("X4"));
+
+        return ((value >> 8) & 0xFF, (value) & 0xFF);
+    }
+
+    public void SetCores(int eCores, int pCores)
+    {
+        if (eCores < ECoreMin || eCores > ECoreMax || pCores < PCoreMin || pCores > PCoreMax)
+        {
+            Logger.WriteLine($"Incorrect Core config ({eCores}, {pCores})");
+            return;
+        };
+
+        int value = (eCores << 8) | pCores;
+        Program.acpi.DeviceSet(CORES_CPU, value, "Cores (0x" + value.ToString("X4") + ")");
     }
 
     public string ScanRange()

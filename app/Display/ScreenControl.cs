@@ -1,4 +1,4 @@
-﻿using System.Diagnostics;
+﻿using System.Runtime.InteropServices;
 
 namespace GHelper.Display
 {
@@ -6,6 +6,8 @@ namespace GHelper.Display
     {
 
         public const int MAX_REFRESH = 1000;
+
+        public static DisplayGammaRamp? gammaRamp;
 
         public void AutoScreen(bool force = false)
         {
@@ -20,6 +22,70 @@ namespace GHelper.Display
             {
                 SetScreen(overdrive: AppConfig.Get("overdrive"));
             }
+        }
+
+        public void SaveGamma()
+        {
+            var screenName = ScreenNative.FindLaptopScreen();
+            if (screenName is null) return;
+
+            try
+            {
+                var handle = ScreenNative.CreateDC(screenName, screenName, null, IntPtr.Zero);
+                var gammaRamp = new GammaRamp();
+                if (ScreenNative.GetDeviceGammaRamp(handle, ref gammaRamp))
+                {
+                    var gamma = new DisplayGammaRamp(gammaRamp);
+                    Logger.WriteLine("Gamma R: " + string.Join("-", gamma.Red));
+                    Logger.WriteLine("Gamma G: " + string.Join("-", gamma.Green));
+                    Logger.WriteLine("Gamma B: " + string.Join("-", gamma.Blue));
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLine(ex.ToString());
+            }
+        }
+
+        public void SetGamma(int brightness = 100)
+        {
+            var bright = Math.Round((float)brightness / 200 + 0.5, 2);
+
+            var screenName = ScreenNative.FindLaptopScreen();
+            if (screenName is null) return;
+
+            try
+            {
+                var handle = ScreenNative.CreateDC(screenName, screenName, null, IntPtr.Zero);
+                if (gammaRamp is null)
+                {
+                    var gammaDump = new GammaRamp();
+                    if (ScreenNative.GetDeviceGammaRamp(handle, ref gammaDump))
+                    {
+                        gammaRamp = new DisplayGammaRamp(gammaDump);
+                        Logger.WriteLine("Gamma R: " + string.Join("-", gammaRamp.Red));
+                        Logger.WriteLine("Gamma G: " + string.Join("-", gammaRamp.Green));
+                        Logger.WriteLine("Gamma B: " + string.Join("-", gammaRamp.Blue));
+                    }
+                }
+
+                if (gammaRamp is null || !gammaRamp.IsOriginal())
+                {
+                    Logger.WriteLine("Default Gamma");
+                    gammaRamp = new DisplayGammaRamp();
+                }
+
+                var ramp = gammaRamp.AsBrightnessRamp(bright);
+                bool result = ScreenNative.SetDeviceGammaRamp(handle, ref ramp);
+
+                Logger.WriteLine("Brightness " + bright.ToString() + ": " + result);
+
+            } catch (Exception ex)
+            {
+                Logger.WriteLine(ex.ToString());
+            }
+
+            //ScreenBrightness.Set(60 + (int)(40 * bright));
         }
 
         public void SetScreen(int frequency = -1, int overdrive = -1, int miniled = -1)
@@ -71,7 +137,8 @@ namespace GHelper.Display
             if (miniled1 >= 0)
             {
                 miniled = (miniled1 == 1) ? 0 : 1;
-            } else
+            }
+            else
             {
                 switch (miniled2)
                 {
