@@ -1125,7 +1125,8 @@ namespace GHelper
 
                 AppConfig.SetMode("gpu_boost", trackGPUBoost.Value);
                 AppConfig.SetMode("gpu_temp", trackGPUTemp.Value);
-                AppConfig.SetMode("gpu_power", trackGPUPower.Value);
+
+                AppConfig.RemoveMode("gpu_power");
 
                 AppConfig.SetMode("gpu_core", trackGPUCore.Value);
                 AppConfig.SetMode("gpu_memory", trackGPUMemory.Value);
