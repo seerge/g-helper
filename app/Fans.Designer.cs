@@ -31,14 +31,14 @@ namespace GHelper
         /// </summary>
         private void InitializeComponent()
         {
-            ChartArea chartArea13 = new ChartArea();
-            Title title13 = new Title();
-            ChartArea chartArea14 = new ChartArea();
-            Title title14 = new Title();
-            ChartArea chartArea15 = new ChartArea();
-            Title title15 = new Title();
-            ChartArea chartArea16 = new ChartArea();
-            Title title16 = new Title();
+            ChartArea chartArea1 = new ChartArea();
+            Title title1 = new Title();
+            ChartArea chartArea2 = new ChartArea();
+            Title title2 = new Title();
+            ChartArea chartArea3 = new ChartArea();
+            Title title3 = new Title();
+            ChartArea chartArea4 = new ChartArea();
+            Title title4 = new Title();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Fans));
             panelFans = new Panel();
             labelTip = new Label();
@@ -119,6 +119,10 @@ namespace GHelper
             picturePowerMode = new PictureBox();
             labelPowerModeTitle = new Label();
             panelGPU = new Panel();
+            panelGPUPower = new Panel();
+            labelGPUPower = new Label();
+            labelGPUPowerTitle = new Label();
+            trackGPUPower = new TrackBar();
             panelGPUTemp = new Panel();
             labelGPUTemp = new Label();
             labelGPUTempTitle = new Label();
@@ -147,10 +151,6 @@ namespace GHelper
             buttonAdvanced = new RButton();
             buttonGPU = new RButton();
             buttonCPU = new RButton();
-            panelGPUPower = new Panel();
-            labelGPUPower = new Label();
-            labelGPUPowerTitle = new Label();
-            trackGPUPower = new TrackBar();
             panelFans.SuspendLayout();
             tableFanCharts.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)chartGPU).BeginInit();
@@ -194,6 +194,8 @@ namespace GHelper
             panelPowerModeTItle.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)picturePowerMode).BeginInit();
             panelGPU.SuspendLayout();
+            panelGPUPower.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)trackGPUPower).BeginInit();
             panelGPUTemp.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)trackGPUTemp).BeginInit();
             panelGPUBoost.SuspendLayout();
@@ -208,8 +210,6 @@ namespace GHelper
             ((System.ComponentModel.ISupportInitialize)pictureGPU).BeginInit();
             panelNav.SuspendLayout();
             tableNav.SuspendLayout();
-            panelGPUPower.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)trackGPUPower).BeginInit();
             SuspendLayout();
             // 
             // panelFans
@@ -266,8 +266,8 @@ namespace GHelper
             // 
             // chartGPU
             // 
-            chartArea13.Name = "ChartArea1";
-            chartGPU.ChartAreas.Add(chartArea13);
+            chartArea1.Name = "ChartArea1";
+            chartGPU.ChartAreas.Add(chartArea1);
             chartGPU.Dock = DockStyle.Fill;
             chartGPU.Location = new Point(12, 493);
             chartGPU.Margin = new Padding(2, 10, 2, 10);
@@ -275,13 +275,13 @@ namespace GHelper
             chartGPU.Size = new Size(782, 463);
             chartGPU.TabIndex = 17;
             chartGPU.Text = "chartGPU";
-            title13.Name = "Title1";
-            chartGPU.Titles.Add(title13);
+            title1.Name = "Title1";
+            chartGPU.Titles.Add(title1);
             // 
             // chartCPU
             // 
-            chartArea14.Name = "ChartArea1";
-            chartCPU.ChartAreas.Add(chartArea14);
+            chartArea2.Name = "ChartArea1";
+            chartCPU.ChartAreas.Add(chartArea2);
             chartCPU.Dock = DockStyle.Fill;
             chartCPU.Location = new Point(12, 10);
             chartCPU.Margin = new Padding(2, 10, 2, 10);
@@ -289,13 +289,13 @@ namespace GHelper
             chartCPU.Size = new Size(782, 463);
             chartCPU.TabIndex = 14;
             chartCPU.Text = "chartCPU";
-            title14.Name = "Title1";
-            chartCPU.Titles.Add(title14);
+            title2.Name = "Title1";
+            chartCPU.Titles.Add(title2);
             // 
             // chartXGM
             // 
-            chartArea15.Name = "ChartAreaXGM";
-            chartXGM.ChartAreas.Add(chartArea15);
+            chartArea3.Name = "ChartAreaXGM";
+            chartXGM.ChartAreas.Add(chartArea3);
             chartXGM.Dock = DockStyle.Fill;
             chartXGM.Location = new Point(12, 1459);
             chartXGM.Margin = new Padding(2, 10, 2, 10);
@@ -303,14 +303,14 @@ namespace GHelper
             chartXGM.Size = new Size(782, 463);
             chartXGM.TabIndex = 14;
             chartXGM.Text = "chartXGM";
-            title15.Name = "Title4";
-            chartXGM.Titles.Add(title15);
+            title3.Name = "Title4";
+            chartXGM.Titles.Add(title3);
             chartXGM.Visible = false;
             // 
             // chartMid
             // 
-            chartArea16.Name = "ChartArea3";
-            chartMid.ChartAreas.Add(chartArea16);
+            chartArea4.Name = "ChartArea3";
+            chartMid.ChartAreas.Add(chartArea4);
             chartMid.Dock = DockStyle.Fill;
             chartMid.Location = new Point(12, 976);
             chartMid.Margin = new Padding(2, 10, 2, 10);
@@ -318,8 +318,8 @@ namespace GHelper
             chartMid.Size = new Size(782, 463);
             chartMid.TabIndex = 14;
             chartMid.Text = "chartMid";
-            title16.Name = "Title3";
-            chartMid.Titles.Add(title16);
+            title4.Name = "Title3";
+            chartMid.Titles.Add(title4);
             chartMid.Visible = false;
             // 
             // panelTitleFans
@@ -1241,9 +1241,9 @@ namespace GHelper
             // panelGPU
             // 
             panelGPU.AutoSize = true;
-            panelGPU.Controls.Add(panelGPUPower);
             panelGPU.Controls.Add(panelGPUTemp);
             panelGPU.Controls.Add(panelGPUBoost);
+            panelGPU.Controls.Add(panelGPUPower);
             panelGPU.Controls.Add(panelGPUMemory);
             panelGPU.Controls.Add(panelGPUCore);
             panelGPU.Controls.Add(panelGPUClockLimit);
@@ -1257,6 +1257,55 @@ namespace GHelper
             panelGPU.TabIndex = 44;
             panelGPU.Visible = false;
             // 
+            // panelGPUPower
+            // 
+            panelGPUPower.AutoSize = true;
+            panelGPUPower.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            panelGPUPower.Controls.Add(labelGPUPower);
+            panelGPUPower.Controls.Add(labelGPUPowerTitle);
+            panelGPUPower.Controls.Add(trackGPUPower);
+            panelGPUPower.Dock = DockStyle.Top;
+            panelGPUPower.Location = new Point(0, 432);
+            panelGPUPower.Margin = new Padding(4);
+            panelGPUPower.MaximumSize = new Size(0, 124);
+            panelGPUPower.Name = "panelGPUPower";
+            panelGPUPower.Size = new Size(520, 124);
+            panelGPUPower.TabIndex = 49;
+            // 
+            // labelGPUPower
+            // 
+            labelGPUPower.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            labelGPUPower.Location = new Point(374, 14);
+            labelGPUPower.Margin = new Padding(4, 0, 4, 0);
+            labelGPUPower.Name = "labelGPUPower";
+            labelGPUPower.Size = new Size(124, 32);
+            labelGPUPower.TabIndex = 44;
+            labelGPUPower.Text = "105W";
+            labelGPUPower.TextAlign = ContentAlignment.TopRight;
+            // 
+            // labelGPUPowerTitle
+            // 
+            labelGPUPowerTitle.AutoSize = true;
+            labelGPUPowerTitle.Location = new Point(10, 14);
+            labelGPUPowerTitle.Margin = new Padding(4, 0, 4, 0);
+            labelGPUPowerTitle.Name = "labelGPUPowerTitle";
+            labelGPUPowerTitle.Size = new Size(130, 32);
+            labelGPUPowerTitle.TabIndex = 43;
+            labelGPUPowerTitle.Text = "GPU Power";
+            // 
+            // trackGPUPower
+            // 
+            trackGPUPower.Location = new Point(6, 48);
+            trackGPUPower.Margin = new Padding(4, 2, 4, 2);
+            trackGPUPower.Maximum = 25;
+            trackGPUPower.Minimum = 5;
+            trackGPUPower.Name = "trackGPUPower";
+            trackGPUPower.Size = new Size(496, 90);
+            trackGPUPower.TabIndex = 42;
+            trackGPUPower.TickFrequency = 5;
+            trackGPUPower.TickStyle = TickStyle.TopLeft;
+            trackGPUPower.Value = 25;
+            // 
             // panelGPUTemp
             // 
             panelGPUTemp.AutoSize = true;
@@ -1265,7 +1314,7 @@ namespace GHelper
             panelGPUTemp.Controls.Add(labelGPUTempTitle);
             panelGPUTemp.Controls.Add(trackGPUTemp);
             panelGPUTemp.Dock = DockStyle.Top;
-            panelGPUTemp.Location = new Point(0, 556);
+            panelGPUTemp.Location = new Point(0, 680);
             panelGPUTemp.Margin = new Padding(4);
             panelGPUTemp.MaximumSize = new Size(0, 124);
             panelGPUTemp.Name = "panelGPUTemp";
@@ -1314,7 +1363,7 @@ namespace GHelper
             panelGPUBoost.Controls.Add(labelGPUBoostTitle);
             panelGPUBoost.Controls.Add(trackGPUBoost);
             panelGPUBoost.Dock = DockStyle.Top;
-            panelGPUBoost.Location = new Point(0, 432);
+            panelGPUBoost.Location = new Point(0, 556);
             panelGPUBoost.Margin = new Padding(4);
             panelGPUBoost.MaximumSize = new Size(0, 124);
             panelGPUBoost.Name = "panelGPUBoost";
@@ -1626,55 +1675,6 @@ namespace GHelper
             buttonCPU.TextImageRelation = TextImageRelation.ImageBeforeText;
             buttonCPU.UseVisualStyleBackColor = false;
             // 
-            // panelGPUPower
-            // 
-            panelGPUPower.AutoSize = true;
-            panelGPUPower.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            panelGPUPower.Controls.Add(labelGPUPower);
-            panelGPUPower.Controls.Add(labelGPUPowerTitle);
-            panelGPUPower.Controls.Add(trackGPUPower);
-            panelGPUPower.Dock = DockStyle.Top;
-            panelGPUPower.Location = new Point(0, 680);
-            panelGPUPower.Margin = new Padding(4);
-            panelGPUPower.MaximumSize = new Size(0, 124);
-            panelGPUPower.Name = "panelGPUPower";
-            panelGPUPower.Size = new Size(520, 124);
-            panelGPUPower.TabIndex = 49;
-            // 
-            // labelGPUPower
-            // 
-            labelGPUPower.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            labelGPUPower.Location = new Point(374, 14);
-            labelGPUPower.Margin = new Padding(4, 0, 4, 0);
-            labelGPUPower.Name = "labelGPUPower";
-            labelGPUPower.Size = new Size(124, 32);
-            labelGPUPower.TabIndex = 44;
-            labelGPUPower.Text = "105W";
-            labelGPUPower.TextAlign = ContentAlignment.TopRight;
-            // 
-            // labelGPUPowerTitle
-            // 
-            labelGPUPowerTitle.AutoSize = true;
-            labelGPUPowerTitle.Location = new Point(10, 14);
-            labelGPUPowerTitle.Margin = new Padding(4, 0, 4, 0);
-            labelGPUPowerTitle.Name = "labelGPUPowerTitle";
-            labelGPUPowerTitle.Size = new Size(130, 32);
-            labelGPUPowerTitle.TabIndex = 43;
-            labelGPUPowerTitle.Text = "GPU Power";
-            // 
-            // trackGPUPower
-            // 
-            trackGPUPower.Location = new Point(6, 48);
-            trackGPUPower.Margin = new Padding(4, 2, 4, 2);
-            trackGPUPower.Maximum = 25;
-            trackGPUPower.Minimum = 5;
-            trackGPUPower.Name = "trackGPUPower";
-            trackGPUPower.Size = new Size(496, 90);
-            trackGPUPower.TabIndex = 42;
-            trackGPUPower.TickFrequency = 5;
-            trackGPUPower.TickStyle = TickStyle.TopLeft;
-            trackGPUPower.Value = 25;
-            // 
             // Fans
             // 
             AutoScaleDimensions = new SizeF(192F, 192F);
@@ -1756,6 +1756,9 @@ namespace GHelper
             ((System.ComponentModel.ISupportInitialize)picturePowerMode).EndInit();
             panelGPU.ResumeLayout(false);
             panelGPU.PerformLayout();
+            panelGPUPower.ResumeLayout(false);
+            panelGPUPower.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)trackGPUPower).EndInit();
             panelGPUTemp.ResumeLayout(false);
             panelGPUTemp.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)trackGPUTemp).EndInit();
@@ -1776,9 +1779,6 @@ namespace GHelper
             ((System.ComponentModel.ISupportInitialize)pictureGPU).EndInit();
             panelNav.ResumeLayout(false);
             tableNav.ResumeLayout(false);
-            panelGPUPower.ResumeLayout(false);
-            panelGPUPower.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)trackGPUPower).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
