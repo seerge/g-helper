@@ -124,10 +124,10 @@
     <value>Verbindung zu ASUS ACPI fehlgeschlagen. G-Helper kann nicht ausgeführt werden. Bitte installiere ASUS System Control Interface.</value>
   </data>
   <data name="AlertAPUMemoryRestart" xml:space="preserve">
-    <value>Restart your device to apply changes</value>
+    <value>Gerät neu starten, um Änderungen anzuwenden</value>
   </data>
   <data name="AlertAPUMemoryRestartTitle" xml:space="preserve">
-    <value>Restart now?</value>
+    <value>Jetzt neu starten?</value>
   </data>
   <data name="AlertDGPU" xml:space="preserve">
     <value>Die GPU wird gerade verwendet. Trotzdem deaktivieren?</value>
@@ -250,7 +250,7 @@
     <value>Im Betrieb</value>
   </data>
   <data name="BacklightTimeout" xml:space="preserve">
-    <value>Timeout angeschlossen / bei Akku (0 - AN)</value>
+    <value>Timeout angeschlossen / bei Akku (0 = An)</value>
   </data>
   <data name="BacklightTimeoutBattery" xml:space="preserve">
     <value>Backlight Timeout when on battery</value>
@@ -289,7 +289,7 @@
     <value>Hochfahren</value>
   </data>
   <data name="BootSound" xml:space="preserve">
-    <value>Boot Sound</value>
+    <value>Boot-Sound</value>
   </data>
   <data name="Brightness" xml:space="preserve">
     <value>Helligkeit</value>
@@ -310,7 +310,7 @@
     <value>Farbe</value>
   </data>
   <data name="Contrast" xml:space="preserve">
-    <value>Contrast</value>
+    <value>Kontrast</value>
   </data>
   <data name="Controller" xml:space="preserve">
     <value>Controller</value>
@@ -328,7 +328,7 @@
     <value>Standard</value>
   </data>
   <data name="DisableController" xml:space="preserve">
-    <value>Disable Controller</value>
+    <value>Controller deaktivieren</value>
   </data>
   <data name="DisableOnLidClose" xml:space="preserve">
     <value>Disable on lid close</value>
@@ -352,7 +352,7 @@
     <value>Eco</value>
   </data>
   <data name="EnableGPUOnShutdown" xml:space="preserve">
-    <value>Enable GPU on shutdown (prevents issue with Eco mode)</value>
+    <value>Aktiviere GPU beim Herunterfahren (verhindert Problem im Eco-Modus)</value>
   </data>
   <data name="EnableOptimusText" xml:space="preserve">
     <value>Die dGPU zu deaktivieren, indem Sie in den Eco-Modus wechseln während der Anzeigemodus nicht auf Optimus eingestellt ist, kann zu Problemen mit der Helligkeitseinstellung führen.
@@ -366,7 +366,7 @@ Trotzdem fortfahren?</value>
     <value>Energieeinstellungen</value>
   </data>
   <data name="Export" xml:space="preserve">
-    <value>Export Profile</value>
+    <value>Profil exportieren</value>
   </data>
   <data name="Extra" xml:space="preserve">
     <value>Extra</value>
@@ -441,10 +441,10 @@ Trotzdem fortfahren?</value>
     <value>Hoch</value>
   </data>
   <data name="ImageRotation" xml:space="preserve">
-    <value>Image Rotation</value>
+    <value>Bilddrehung</value>
   </data>
   <data name="Import" xml:space="preserve">
-    <value>Import Profile</value>
+    <value>Profil importieren</value>
   </data>
   <data name="KeyBindings" xml:space="preserve">
     <value>Tastenbelegung</value>
@@ -534,7 +534,7 @@ Trotzdem fortfahren?</value>
     <value>Tastenreaktionsgeschwindigkeit</value>
   </data>
   <data name="MouseImportFailed" xml:space="preserve">
-    <value>Import failed. Selected file is not a valid mouse profile or corrutpted.</value>
+    <value>Import fehlgeschlagen. Die ausgewählte Datei ist kein gültiges Mausprofil oder beschädigt.</value>
   </data>
   <data name="MouseLiftOffDistance" xml:space="preserve">
     <value>Lift Off Distance</value>
@@ -621,7 +621,7 @@ Trotzdem fortfahren?</value>
     <value>Schließen</value>
   </data>
   <data name="Reset" xml:space="preserve">
-    <value>Reset</value>
+    <value>Zurücksetzen</value>
   </data>
   <data name="RestartGPU" xml:space="preserve">
     <value>Ein Prozess verhindert den Wechsel in den Eco-Modus. dGPU neu starten? Fortfahren auf eigene Gefahr.</value>
@@ -639,7 +639,7 @@ Trotzdem fortfahren?</value>
     <value>Beim Start ausführen</value>
   </data>
   <data name="ScalingQuality" xml:space="preserve">
-    <value>Scaling Quality</value>
+    <value>Skalierungsqualität</value>
   </data>
   <data name="ScreenPadDown" xml:space="preserve">
     <value>Screenpad Helligkeit verringern</value>
@@ -720,7 +720,7 @@ Trotzdem fortfahren?</value>
     <value>Version</value>
   </data>
   <data name="VibrationStrength" xml:space="preserve">
-    <value>Vibration Strength</value>
+    <value>Vibrationsstärke</value>
   </data>
   <data name="VolumeDown" xml:space="preserve">
     <value>Lautstärke verringern</value>
