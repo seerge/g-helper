@@ -1121,15 +1121,14 @@ namespace GHelper
                 trackGPUTemp.Value = AsusACPI.MaxGPUTemp;
                 trackGPUPower.Value = (gpuPowerVar >= 0) ? gpuPowerVar : AsusACPI.MaxGPUPower;
 
-                AppConfig.SetMode("gpu_clock_limit", trackGPUClockLimit.Value);
-
                 AppConfig.SetMode("gpu_boost", trackGPUBoost.Value);
                 AppConfig.SetMode("gpu_temp", trackGPUTemp.Value);
 
                 AppConfig.RemoveMode("gpu_power");
 
-                AppConfig.SetMode("gpu_core", trackGPUCore.Value);
-                AppConfig.SetMode("gpu_memory", trackGPUMemory.Value);
+                AppConfig.RemoveMode("gpu_clock_limit");
+                AppConfig.RemoveMode("gpu_core");
+                AppConfig.RemoveMode("gpu_memory");
 
                 VisualiseGPUSettings();
                 modeControl.SetGPUClocks(true);
