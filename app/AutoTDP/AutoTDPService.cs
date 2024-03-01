@@ -202,7 +202,7 @@ namespace GHelper.AutoTDP
 
             foreach (GameProfile gp in GameProfiles)
             {
-                if (gp.ProcessName is not null && processName.EndsWith(gp.ProcessName))
+                if (gp.ProcessName is not null && processName.EndsWith(gp.ProcessName, StringComparison.CurrentCultureIgnoreCase))
                 {
                     return gp;
                 }
