@@ -10,7 +10,7 @@
 
     internal interface IFramerateSource
     {
-        public double GetFramerate(string processName);
+        public double GetFramerate(GameInstance instance);
 
         public List<GameInstance> GetRunningGames();
     }

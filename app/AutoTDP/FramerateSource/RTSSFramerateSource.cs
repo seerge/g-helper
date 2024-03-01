@@ -69,7 +69,7 @@ namespace GHelper.AutoTDP.FramerateSource
             return giL;
         }
 
-        public double GetFramerate(string processName)
+        public double GetFramerate(GameInstance instance)
         {
             if (!IsRunning)
             {
@@ -79,7 +79,7 @@ namespace GHelper.AutoTDP.FramerateSource
             try
             {
                 var appE = OSD.GetAppEntries()
-                    .Where(x => (x.Flags & AppFlags.MASK) != AppFlags.None).FirstOrDefault(a => a.Name.EndsWith(processName));
+                    .Where(x => (x.Flags & AppFlags.MASK) != AppFlags.None).FirstOrDefault(a => a.ProcessId == instance.ProcessID);
                 if (appE is null)
                     return -1.0d;
 

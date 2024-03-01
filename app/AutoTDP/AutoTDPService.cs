@@ -258,7 +258,7 @@ namespace GHelper.AutoTDP
                 CurrentTDP = powerLimiter.GetCPUPowerLimit();
                 while (currentGame is not null && Running)
                 {
-                    GameFPS = framerateSouce.GetFramerate(profile.ProcessName);
+                    GameFPS = framerateSouce.GetFramerate(instance);
 
 
                     Logger.WriteLine("[AutoTDPService] (" + instance.ProcessName + ") Framerate " + GameFPS);
