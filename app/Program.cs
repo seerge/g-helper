@@ -1,4 +1,5 @@
 using GHelper.Ally;
+using GHelper.AutoTDP;
 using GHelper.Battery;
 using GHelper.Display;
 using GHelper.Gpu;
@@ -45,6 +46,8 @@ namespace GHelper
         public static InputDispatcher? inputDispatcher;
 
         private static PowerLineStatus isPlugged = SystemInformation.PowerStatus.PowerLineStatus;
+
+        public static AutoTDPService autoTDPService = new AutoTDPService();
 
         // The main entry point for the application
         public static void Main(string[] args)
@@ -306,6 +309,7 @@ namespace GHelper
 
         static void OnExit(object sender, EventArgs e)
         {
+            autoTDPService.Shutdown();
             trayIcon.Visible = false;
             PeripheralsProvider.UnregisterForDeviceEvents();
             clamshellControl.UnregisterDisplayEvents();
