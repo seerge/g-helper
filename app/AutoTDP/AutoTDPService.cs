@@ -240,6 +240,11 @@ namespace GHelper.AutoTDP
             currentGame = null;
             GameFPSPrevious = double.NaN;
             GameFPS = 0;
+            LastAdjustmentsWithoutImprovement = 0;
+            LastAdjustment = 0.0; 
+            FramerateLog = new List<double>();
+            FramerateTargetReachedCounter = 0;
+            FramerateDipCounter = 0;
 
             if (powerLimiter is not null)
             {
@@ -443,6 +448,9 @@ namespace GHelper.AutoTDP
             {
                 framerateSouce = null;
             }
+
+            currentGame = null;
+            Reset();
 
             //Kill RTSS instance if we started one
             RTSSFramerateSource.Stop();
