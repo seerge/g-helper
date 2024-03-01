@@ -294,6 +294,11 @@ public class AsusACPI
             MaxGPUPower = 70;
         }
 
+        if (AppConfig.IsSlash())
+        {
+            MaxGPUPower = 25;
+        }
+
         if (AppConfig.DynamicBoost5())
         {
             MaxGPUBoost = 5;
