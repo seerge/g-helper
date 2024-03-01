@@ -67,9 +67,17 @@ public static class AppConfig
         {
             File.WriteAllText(backup, jsonString);
         }
-        catch (Exception ex)
+        catch (Exception)
         {
-            Logger.WriteLine(ex.ToString());
+            Thread.Sleep(100);
+            try
+            {
+                File.WriteAllText(backup, jsonString);
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLine(ex.Message);
+            }
             return;
         }
 
