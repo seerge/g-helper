@@ -78,8 +78,7 @@ namespace GHelper.AutoTDP.FramerateSource
 
             try
             {
-                var appE = OSD.GetAppEntries()
-                    .Where(x => (x.Flags & AppFlags.MASK) != AppFlags.None).FirstOrDefault(a => a.ProcessId == instance.ProcessID);
+                var appE = OSD.GetAppEntries().FirstOrDefault(a => a.ProcessId == instance.ProcessID);
                 if (appE is null)
                     return -1.0d;
 
