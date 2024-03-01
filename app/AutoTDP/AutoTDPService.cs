@@ -471,8 +471,6 @@ namespace GHelper.AutoTDP
             {
                 if (LOG_AUTO_TDP)
                     Logger.WriteLine("[AutoTDPService] Single Dip, Ignore");
-
-                GameFPSPrevious = GameFPS;
                 //single dip. Ignore
                 return;
             }
