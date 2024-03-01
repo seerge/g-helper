@@ -139,6 +139,7 @@ namespace GHelper.AutoTDP
         {
             if (!File.Exists(GameProfileFile))
             {
+                if (GameProfiles is null) GameProfiles = new List<GameProfile>();
                 return;
             }
 
