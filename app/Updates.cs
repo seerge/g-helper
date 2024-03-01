@@ -83,12 +83,11 @@ namespace GHelper
             InitializeComponent();
             InitTheme(true);
 
-            LoadUpdates(true);
-
             //buttonRefresh.Visible = false;
             buttonRefresh.Click += ButtonRefresh_Click;
             Shown += Updates_Shown;
         }
+
 
         private void ButtonRefresh_Click(object? sender, EventArgs e)
         {
@@ -100,7 +99,9 @@ namespace GHelper
             Height = Program.settingsForm.Height;
             Top = Program.settingsForm.Top;
             Left = Program.settingsForm.Left - Width - 5;
+            LoadUpdates(true);
         }
+
         private Dictionary<string, string> GetDeviceVersions()
         {
             using (ManagementObjectSearcher objSearcher = new ManagementObjectSearcher("Select * from Win32_PnPSignedDriver"))
