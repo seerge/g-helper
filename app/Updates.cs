@@ -36,7 +36,7 @@ namespace GHelper
             (bios, model) = AppConfig.GetBiosAndModel();
 
             buttonRefresh.TabStop = false;
-            
+
             updatesCount = 0;
             labelUpdates.ForeColor = colorEco;
             labelUpdates.Text = Properties.Strings.NoNewUpdates;
@@ -83,12 +83,11 @@ namespace GHelper
             InitializeComponent();
             InitTheme(true);
 
-            LoadUpdates(true);
-
             //buttonRefresh.Visible = false;
             buttonRefresh.Click += ButtonRefresh_Click;
             Shown += Updates_Shown;
         }
+
 
         private void ButtonRefresh_Click(object? sender, EventArgs e)
         {
@@ -100,7 +99,9 @@ namespace GHelper
             Height = Program.settingsForm.Height;
             Top = Program.settingsForm.Top;
             Left = Program.settingsForm.Left - Width - 5;
+            LoadUpdates(true);
         }
+
         private Dictionary<string, string> GetDeviceVersions()
         {
             using (ManagementObjectSearcher objSearcher = new ManagementObjectSearcher("Select * from Win32_PnPSignedDriver"))
@@ -160,24 +161,36 @@ namespace GHelper
             });
         }
 
-        public void VisualiseNewDriver(int position, int newer, TableLayoutPanel table)
+        private void _VisualiseNewDriver(int position, int newer, TableLayoutPanel table)
         {
             var label = table.GetControlFromPosition(3, position) as LinkLabel;
             if (label != null)
             {
+                if (newer == DRIVER_NEWER)
+                {
+                    label.AccessibleName = label.AccessibleName + Properties.Strings.NewUpdates;
+                    label.Font = new Font(label.Font, FontStyle.Underline | FontStyle.Bold);
+                    label.LinkColor = colorTurbo;
+                }
+
+                if (newer == DRIVER_NOT_FOUND) label.LinkColor = Color.Gray;
+
+            }
+        }
+
+        public void VisualiseNewDriver(int position, int newer, TableLayoutPanel table)
+        {
+            if (InvokeRequired)
+            {
                 Invoke(delegate
                 {
-                    if (newer == DRIVER_NEWER)
-                    {
-                        label.AccessibleName = label.AccessibleName + Properties.Strings.NewUpdates;
-                        label.Font = new Font(label.Font, FontStyle.Underline | FontStyle.Bold);
-                        label.LinkColor = colorTurbo;
-                    }
-
-                    if (newer == DRIVER_NOT_FOUND) label.LinkColor = Color.Gray;
-
+                    _VisualiseNewDriver(position, newer, table);
                 });
+            } else
+            {
+                _VisualiseNewDriver(position, newer, table);
             }
+
         }
 
         public void VisualiseNewCount(int updatesCount, TableLayoutPanel table)
@@ -193,7 +206,7 @@ namespace GHelper
             });
         }
 
-    public async void DriversAsync(string url, int type, TableLayoutPanel table)
+        public async void DriversAsync(string url, int type, TableLayoutPanel table)
         {
 
             try
@@ -266,7 +279,7 @@ namespace GHelper
                                 foreach (var localVersion in localVersions)
                                 {
                                     newer = Math.Min(newer, new Version(driver.version).CompareTo(new Version(localVersion)));
-                                    Logger.WriteLine(driver.title + " " + deviceID  + " "+ driver.version + " vs " + localVersion + " = " + newer);
+                                    Logger.WriteLine(driver.title + " " + deviceID + " " + driver.version + " vs " + localVersion + " = " + newer);
                                 }
 
                             }

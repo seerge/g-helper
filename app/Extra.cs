@@ -398,17 +398,19 @@ namespace GHelper
             InitServices();
             InitHibernate();
 
-            //InitACPITesting();
+            InitACPITesting();
 
         }
 
         private void InitACPITesting()
         {
+            if (!AppConfig.Is("debug")) return;
+
             pictureScan.Visible = true;
             panelACPI.Visible = true;
 
-            textACPICommand.Text = "120075";
-            textACPIParam.Text = "1";
+            textACPICommand.Text = "120098";
+            textACPIParam.Text = "25";
 
             buttonACPISend.Click += ButtonACPISend_Click;
             pictureScan.Click += PictureScan_Click;
