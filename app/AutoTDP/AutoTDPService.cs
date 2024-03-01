@@ -266,17 +266,21 @@ namespace GHelper.AutoTDP
                 CurrentTDP = powerLimiter.GetCPUPowerLimit();
                 while (currentGame is not null && Running)
                 {
-                    GameFPS = framerateSouce.GetFramerate(instance);
+                    //prevent FPS from going to 0 which causes issues with the math
+
+                    double fps = framerateSouce.GetFramerate(instance);
 
 
                     Logger.WriteLine("[AutoTDPService] (" + instance.ProcessName + ") Framerate " + GameFPS);
 
-                    if (GameFPS < 0.0d)
+                    if (fps < 0.0d)
                     {
                         //Game is not running anymore or RTSS lost its hook
                         Reset();
                         return;
                     }
+
+                    GameFPS = Math.Max(5, fps);
                     AdjustPowerLimit(profile);
 
                     try
