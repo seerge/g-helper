@@ -47,6 +47,17 @@ namespace GHelper.Display
             }
         }
 
+        public void SetBrightness(int brightness = -1)
+        {
+            if (!AppConfig.IsOLED()) return;
+
+            if (brightness >= 0) AppConfig.Set("brightness", brightness);
+            else brightness = AppConfig.Get("brightness");
+
+            if (brightness >= 0) SetGamma(brightness);
+        }
+
+
         public void SetGamma(int brightness = 100)
         {
             var bright = Math.Round((float)brightness / 200 + 0.5, 2);
