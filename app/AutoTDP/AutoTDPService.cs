@@ -27,11 +27,14 @@ namespace GHelper.AutoTDP
         private int FramerateTargetReachedCounter;
         private int FramerateDipCounter;
 
-        private static readonly int FPSDipHistorySize = 8;
+        private static readonly int FPSDipHistorySize = 6;
 
         private List<double> FramerateLog = new List<double>();
 
         private double CurrentTDP;
+        private double LastAdjustment;
+        private double LastAdjustmentTotal = 0;
+        private int LastAdjustmentsWithoutImprovement = 0;
 
         private GameInstance? currentGame;
 
@@ -302,21 +305,21 @@ namespace GHelper.AutoTDP
             {
                 FramerateTargetReachedCounter++;
 
-                if (FramerateTargetReachedCounter >= 4
+                if (FramerateTargetReachedCounter >= 3
                     && FramerateTargetReachedCounter < FPSDipHistorySize
-                    && targetFPS - 0.75 <= FramerateLog.Take(4).Average()
-                    && FramerateLog.Take(3).Average() <= targetFPS + 0.15)
+                    && targetFPS - 0.5 <= FramerateLog.Take(3).Average()
+                    && FramerateLog.Take(3).Average() - 0.05 <= targetFPS)
                 {
                     //short dip
                     FramerateDipCounter++;
-                    correction = targetFPS + 0.75 - currentFramerate;
+                    correction = targetFPS - currentFramerate;
                 }
-                else if (FramerateDipCounter >= 5
-                    && targetFPS - 0.75 <= FramerateLog.Average()
-                         && FramerateLog.Average() <= targetFPS + 0.15)
+                else if (FramerateDipCounter >= 4
+                    && targetFPS - 0.5 <= FramerateLog.Average()
+                         && FramerateLog.Average() - 0.1 <= targetFPS)
                 {
                     //long dip
-                    correction = targetFPS + 1.5 - currentFramerate;
+                    correction = targetFPS + 0.25 - currentFramerate;
                     FramerateTargetReachedCounter = FPSDipHistorySize;
                 }
             }
@@ -335,11 +338,11 @@ namespace GHelper.AutoTDP
         private double TDPDamper(double currentFramerate)
         {
             if (double.IsNaN(GameFPSPrevious)) GameFPSPrevious = currentFramerate;
-            double dF = -0.1d;
+            double dF = -0.15d;
 
             // Calculation
             double deltaError = currentFramerate - GameFPSPrevious;
-            double dT = deltaError / (1010.0 / 1000.0);
+            double dT = deltaError / (1020.0 / 1000.0);
             double damping = CurrentTDP / currentFramerate * dF * dT;
 
             GameFPSPrevious = currentFramerate;
@@ -357,26 +360,44 @@ namespace GHelper.AutoTDP
             }
 
             double newPL = CurrentTDP;
-
-
-            Logger.WriteLine("[AutoTDPService] Current: " + (int)GameFPS + "FPS");
-
-
-            double delta = profile.TargetFPS - GameFPS - FPSDipCorrection(GameFPS, profile.TargetFPS);
+            double fpsCorrection = FPSDipCorrection(GameFPS, profile.GetTDPFPS());
+            double delta = profile.GetTDPFPS() - GameFPS - fpsCorrection - 1;
             delta = Math.Clamp(delta, -15, 15);
 
 
-            double adjustment = (delta * CurrentTDP / GameFPS) * 0.85;
+            double adjustment = (delta * CurrentTDP / GameFPS) * 0.9;
             //Dampen the changes to not change TDP too aggressively which would cause performance issues
             adjustment += TDPDamper(GameFPS);
 
+            adjustment = Math.Min(adjustment, (CurrentTDP / 5));
+
+            if (LastAdjustment > 0 && GameFPS <= GameFPSPrevious && adjustment > 0)
+            {
+                LastAdjustmentsWithoutImprovement++;
+                LastAdjustmentTotal += adjustment;
+
+                //Wait for 3 consecutive power increases and at least 3W increased TDP before judging that increasing power does nothing.
+                if (LastAdjustmentsWithoutImprovement >= 3 && LastAdjustmentTotal > 3)
+                {
+                    //Do not adjust if increasing power does not improve framerate.
+                    Logger.WriteLine("[AutoTDPService] Not adjusting because no improvement from last increase");
+                    return;
+                }
+
+            }
+            else
+            {
+                LastAdjustmentsWithoutImprovement = 0;
+                LastAdjustmentTotal = 0;
+            }
 
             newPL += adjustment;
+            LastAdjustment = adjustment;
 
             //Respect the limits that the user chose
             newPL = Math.Clamp(newPL, profile.MinTdp, profile.MaxTdp);
 
-            Logger.WriteLine("[AutoTDPService] Setting Power Limit from " + CurrentTDP + "W to " + newPL + "W, Delta:" + adjustment);
+            Logger.WriteLine("[AutoTDPService] Setting Power Limit from " + CurrentTDP + "W to " + newPL + "W, Delta:" + adjustment + ", FPS correction: " + fpsCorrection);
 
             //We only limit to full watts, no fractions. In this case, we will cut off the fractional part
             powerLimiter.SetCPUPowerLimit(newPL);
