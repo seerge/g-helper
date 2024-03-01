@@ -57,7 +57,7 @@ namespace GHelper.AutoTDP
         private void SliderMinTDP_ValueChanged(object? sender, EventArgs e)
         {
             labelMinTDP.Text = sliderMinTDP.Value + "W";
-            if (sliderMaxTDP.Value > sliderMinTDP.Value)
+            if (sliderMaxTDP.Value < sliderMinTDP.Value)
             {
                 sliderMaxTDP.Value = sliderMinTDP.Value;
             }
