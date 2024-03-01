@@ -42,6 +42,12 @@ namespace GHelper.Display
         [DllImport("gdi32")]
         internal static extern bool GetDeviceGammaRamp(IntPtr dcHandle, ref GammaRamp ramp);
 
+        [DllImport("gdi32", CharSet = CharSet.Unicode)]
+        internal static extern bool SetICMProfileW(IntPtr dcHandle, string lpFileName);
+
+        [DllImport("gdi32", CharSet = CharSet.Unicode)]
+        internal static extern bool SetICMMode(IntPtr dcHandle, int mode);
+
         [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
         public struct DEVMODE
         {
