@@ -36,7 +36,7 @@ namespace GHelper.AutoTDP.PowerLimiter
             PowerUnit = 1 / Math.Pow(2, pwr);
         }
 
-        public void SetCPUPowerLimit(int watts)
+        public void SetCPUPowerLimit(double watts)
         {
             uint eax = 0;
             uint edx = 0;

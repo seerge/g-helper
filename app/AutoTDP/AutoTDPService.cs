@@ -379,7 +379,7 @@ namespace GHelper.AutoTDP
             Logger.WriteLine("[AutoTDPService] Setting Power Limit from " + CurrentTDP + "W to " + newPL + "W, Delta:" + adjustment);
 
             //We only limit to full watts, no fractions. In this case, we will cut off the fractional part
-            powerLimiter.SetCPUPowerLimit((int)newPL);
+            powerLimiter.SetCPUPowerLimit(newPL);
             CurrentTDP = newPL;
         }
 

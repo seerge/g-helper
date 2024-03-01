@@ -2,7 +2,7 @@
 {
     internal interface IPowerLimiter : IDisposable
     {
-        public void SetCPUPowerLimit(int watts);
+        public void SetCPUPowerLimit(double watts);
 
         public int GetCPUPowerLimit();
 

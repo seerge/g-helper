@@ -21,17 +21,17 @@ namespace GHelper.AutoTDP.PowerLimiter
             }
         }
 
-        public void SetCPUPowerLimit(int watts)
+        public void SetCPUPowerLimit(double watts)
         {
             if (Program.acpi.DeviceGet(AsusACPI.PPT_APUA0) >= 0)
             {
-                Program.acpi.DeviceSet(AsusACPI.PPT_APUA3, watts, "PowerLimit A3");
-                Program.acpi.DeviceSet(AsusACPI.PPT_APUA0, watts, "PowerLimit A0");
+                Program.acpi.DeviceSet(AsusACPI.PPT_APUA3, (int)watts, "PowerLimit A3");
+                Program.acpi.DeviceSet(AsusACPI.PPT_APUA0, (int)watts, "PowerLimit A0");
             }
 
             if (Program.acpi.IsAllAmdPPT()) // CPU limit all amd models
             {
-                Program.acpi.DeviceSet(AsusACPI.PPT_CPUB0, watts, "PowerLimit B0");
+                Program.acpi.DeviceSet(AsusACPI.PPT_CPUB0, (int)watts, "PowerLimit B0");
             }
         }
 
