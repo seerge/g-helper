@@ -87,8 +87,13 @@ namespace GHelper.Mode
                 Program.toast.RunToast(Modes.GetCurrentName(), SystemInformation.PowerStatus.PowerLineStatus == PowerLineStatus.Online ? ToastIcon.Charger : ToastIcon.Battery);
 
             SetGPUClocks();
-            AutoFans();
-            AutoPower(1000);
+
+            Task.Run(async () =>
+            {
+                AutoFans();
+                AutoPower(1000);
+            });
+
 
             // Power plan from config or defaulting to balanced
             if (AppConfig.GetModeString("scheme") is not null)
@@ -145,18 +150,17 @@ namespace GHelper.Mode
                     Program.acpi.SetFanCurve(AsusFan.Mid, AppConfig.GetFanConfig(AsusFan.Mid));
 
 
-                // something went wrong, resetting to default profile
+                // Alternative way to set fan curve
                 if (cpuResult != 1 || gpuResult != 1)
                 {
                     cpuResult = Program.acpi.SetFanRange(AsusFan.CPU, AppConfig.GetFanConfig(AsusFan.CPU));
                     gpuResult = Program.acpi.SetFanRange(AsusFan.GPU, AppConfig.GetFanConfig(AsusFan.GPU));
 
+                    // Something went wrong, resetting to default profile
                     if (cpuResult != 1 || gpuResult != 1)
                     {
-                        int mode = Modes.GetCurrentBase();
-                        Logger.WriteLine("ASUS BIOS rejected fan curve, resetting mode to " + mode);
-                        Program.acpi.DeviceSet(AsusACPI.PerformanceMode, mode, "Reset Mode");
-                        settings.LabelFansResult("ASUS BIOS rejected fan curve");
+                        Program.acpi.DeviceSet(AsusACPI.PerformanceMode, Modes.GetCurrentBase(), "Reset Mode");
+                        settings.LabelFansResult("Model doesn't support custom fan curves");
                     }
                 }
                 else
@@ -189,45 +193,19 @@ namespace GHelper.Mode
 
             bool applyPower = AppConfig.IsMode("auto_apply_power");
             bool applyFans = AppConfig.IsMode("auto_apply");
-            //bool applyGPU = true;
 
-            if (applyPower && !applyFans)
+            if (applyPower && !applyFans && (AppConfig.IsFanRequired() || AppConfig.IsManualModeRequired()))
             {
-                // force fan curve for misbehaving bios PPTs on some models
-                if (AppConfig.IsFanRequired())
-                {
-                    delay = 500;
-                    AutoFans(true);
-                }
-
-                // Fix for models that don't support PPT settings in all modes, setting a "manual" mode for them
-                if (AppConfig.IsManualModeRequired())
-                {
-                    AutoFans(true);
-                }
+                delay = 500;
+                AutoFans(true);
             }
 
-            if (delay > 0)
-            {
-                var timer = new System.Timers.Timer(delay);
-                timer.Elapsed += delegate
-                {
-                    timer.Stop();
-                    timer.Dispose();
+            Thread.Sleep(delay);
+            if (applyPower) SetPower(delay == 0);
 
-                    if (applyPower) SetPower();
-                    Thread.Sleep(500);
-                    SetGPUPower();
-                    AutoRyzen();
-                };
-                timer.Start();
-            }
-            else
-            {
-                if (applyPower) SetPower(true);
-                SetGPUPower();
-                AutoRyzen();
-            }
+            Thread.Sleep(500);
+            SetGPUPower();
+            AutoRyzen();
 
         }
 

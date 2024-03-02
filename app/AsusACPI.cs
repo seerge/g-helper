@@ -554,7 +554,7 @@ public class AsusACPI
                 break;
         }
 
-        Logger.WriteLine($"GetFan {device} :" + BitConverter.ToString(result));
+        //Logger.WriteLine($"GetFan {device} :" + BitConverter.ToString(result));
 
         return result;
 
