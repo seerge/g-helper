@@ -280,7 +280,6 @@ namespace GHelper
         private void ButtonAutoTDP_Click(object? sender, EventArgs e)
         {
             autoTdpUi = new AutoTDPUI();
-            autoTdpUi.TopMost = true;
             autoTdpUi.FormClosed += AutoTdpUi_FormClosed;
             autoTdpUi.Disposed += AutoTdpUi_Disposed;
             if (!autoTdpUi.IsDisposed)

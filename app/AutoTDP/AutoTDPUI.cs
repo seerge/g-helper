@@ -95,9 +95,8 @@ namespace GHelper.AutoTDP
             p.MinTdp = 15;
 
             profileUI = new AutoTDPGameProfileUI(p, this);
-            profileUI.TopMost = true;
             profileUI.FormClosed += ProfileUI_FormClosed;
-            profileUI.Show();
+            profileUI.ShowDialog(this);
         }
 
         private void ProfileUI_FormClosed(object? sender, FormClosedEventArgs e)
@@ -193,9 +192,8 @@ namespace GHelper.AutoTDP
         {
             GameProfile gp = (GameProfile)((RButton)sender).Tag;
             profileUI = new AutoTDPGameProfileUI(gp, this);
-            profileUI.TopMost = true;
             profileUI.FormClosed += ProfileUI_FormClosed;
-            profileUI.Show();
+            profileUI.ShowDialog(this);
         }
 
         public void DeleteGameProfile(GameProfile gp)
