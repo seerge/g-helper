@@ -421,11 +421,11 @@ namespace GHelper.AutoTDP
 
         private void FramerateUnstable()
         {
-            LowestStableStability -= 3;
+            LowestStableStability -= 15;
         }
         private void FramerateVeryUnstable()
         {
-            LowestStableStability -= 30;
+            LowestStableStability -= 60;
         }
 
         private bool Stabilize()
@@ -453,7 +453,7 @@ namespace GHelper.AutoTDP
                 if (LowestStableStability > 120)
                 {
                     //if stable for long time try to reduce it again
-                    LowestStableTDP = LowestTDP + (LowestTDP * 0.10); ;
+                    LowestStableTDP = ProfileForGame(currentGame.ProcessName).MaxTdp;
                     LowestStableStability = 0;
                 }
             }
