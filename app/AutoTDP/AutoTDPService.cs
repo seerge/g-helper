@@ -157,13 +157,13 @@ namespace GHelper.AutoTDP
         {
             string? limiter = AppConfig.GetString("auto_tdp_limiter");
 
-            if (limiter is null || limiter.Equals("asus_acpi"))
+            if (limiter is null || limiter.Equals("asus_acpi") && ASUSACPIPowerLimiter.IsAvailable())
             {
                 powerLimiter = new ASUSACPIPowerLimiter();
                 return;
             }
 
-            if (limiter is not null && limiter.Equals("intel_msr"))
+            if (limiter is not null && limiter.Equals("intel_msr") && IntelMSRPowerLimiter.IsAvailable())
             {
                 powerLimiter = new IntelMSRPowerLimiter();
                 return;
