@@ -1,4 +1,5 @@
 ﻿using GHelper.AutoTDP.FramerateSource;
+using GHelper.AutoTDP.PowerLimiter;
 using GHelper.UI;
 using Ryzen;
 
@@ -123,7 +124,7 @@ namespace GHelper.AutoTDP
         {
             checkBoxEnabled.Checked = AppConfig.Get("auto_tdp_enabled", 0) == 1;
 
-            if (!RyzenControl.IsAMD())
+            if (IntelMSRPowerLimiter.IsAvailable())
                 comboBoxLimiter.Items.Add("Intel MSR Power Limiter");
 
 
@@ -134,14 +135,14 @@ namespace GHelper.AutoTDP
             if (comboBoxLimiter.Items.Count > 0 && limiter is null)
                 comboBoxLimiter.SelectedIndex = 0;
 
-            if (!RyzenControl.IsAMD() && limiter is not null && limiter.Equals("intel_msr"))
+            if (IntelMSRPowerLimiter.IsAvailable() && limiter is not null && limiter.Equals("intel_msr"))
             {
                 comboBoxLimiter.SelectedIndex = 0;
             }
 
-            if (limiter is not null && limiter.Equals("asus_acpi"))
+            if (limiter is not null && limiter.Equals("asus_acpi") && ASUSACPIPowerLimiter.IsAvailable())
             {
-                comboBoxLimiter.SelectedIndex = !RyzenControl.IsAMD() ? 1 : 0;
+                comboBoxLimiter.SelectedIndex = IntelMSRPowerLimiter.IsAvailable() ? 1 : 0;
             }
 
 

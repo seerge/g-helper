@@ -27,6 +27,11 @@ namespace GHelper.AutoTDP.PowerLimiter
             ReadPowerUnit();
         }
 
+        public static bool IsAvailable()
+        {
+            return !RyzenControl.IsAMD();
+        }
+
         public void SavePowerLimits()
         {
             DefaultEax = 0;

@@ -17,6 +17,11 @@ namespace GHelper.AutoTDP.PowerLimiter
            
         }
 
+        public static bool IsAvailable()
+        {
+            return AppConfig.IsASUS();
+        }
+
         public void SavePowerLimits()
         {
             DefaultA0 = Program.acpi.DeviceGet(AsusACPI.PPT_APUA0);

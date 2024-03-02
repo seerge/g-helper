@@ -82,13 +82,14 @@ namespace GHelper.AutoTDP
             int availableFS = 0;
             int availablePL = 0;
 
+            //Requires RTSS to be installed
             if (RTSSFramerateSource.IsAvailable()) availableFS++;
 
             //Intel MSR Limiter is available on Intel only
-            if (!RyzenControl.IsAMD()) availablePL++;
+            if (IntelMSRPowerLimiter.IsAvailable()) availablePL++;
 
             //ASUS ACPI Power limiter is available
-            if (AppConfig.IsASUS()) availablePL++;
+            if (ASUSACPIPowerLimiter.IsAvailable()) availablePL++;
 
             return availablePL > 0 && availableFS > 0;
         }
