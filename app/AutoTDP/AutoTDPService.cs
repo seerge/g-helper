@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using System.Collections.Generic;
+using System.Text.Json;
 using GHelper.AutoTDP.FramerateSource;
 using GHelper.AutoTDP.PowerLimiter;
 using Ryzen;
@@ -88,6 +89,7 @@ namespace GHelper.AutoTDP
 
             if (RTSSFramerateSource.IsAvailable()) l.Add("rtss");
 
+            Logger.WriteLine("[AutoTDPService] Available Framerate Sources: " + string.Join(", ", l.ToArray()));
             return l;
         }
 
@@ -100,6 +102,9 @@ namespace GHelper.AutoTDP
 
             if (ASUSACPIPowerLimiter.IsAvailable()) l.Add("asus_acpi");
 
+
+            Logger.WriteLine("[AutoTDPService] Available Power Limiters: " + string.Join(", ", l.ToArray()));
+
             return l;
         }
 
@@ -107,6 +112,7 @@ namespace GHelper.AutoTDP
         {
             if (!IsEnabled() || IsRunning() || !IsAvailable())
             {
+                Logger.WriteLine("[AutoTDPService] Refusing startup. Stats: Enabled: " + IsEnabled() + ", Running: " + IsRunning() + " ,Available: " + IsAvailable());
                 return;
             }
 
@@ -146,6 +152,7 @@ namespace GHelper.AutoTDP
 
             if ((source is null || source.Equals("rtss")) && RTSSFramerateSource.IsAvailable())
             {
+                Logger.WriteLine("[AutoTDPService] Initializing RTSSFramerateSource...");
                 RTSSFramerateSource rtss = new RTSSFramerateSource();
                 RTSSFramerateSource.Start();
                 framerateSouce = rtss;
@@ -159,12 +166,14 @@ namespace GHelper.AutoTDP
 
             if (limiter is null || limiter.Equals("asus_acpi") && ASUSACPIPowerLimiter.IsAvailable())
             {
+                Logger.WriteLine("[AutoTDPService] Initializing ASUSACPIPowerLimiter...");
                 powerLimiter = new ASUSACPIPowerLimiter();
                 return;
             }
 
             if (limiter is not null && limiter.Equals("intel_msr") && IntelMSRPowerLimiter.IsAvailable())
             {
+                Logger.WriteLine("[AutoTDPService] Initializing IntelMSRPowerLimiter...");
                 powerLimiter = new IntelMSRPowerLimiter();
                 return;
             }
@@ -305,6 +314,8 @@ namespace GHelper.AutoTDP
             {
                 return;
             }
+
+            Logger.WriteLine("[AutoTDPService] Start handling game: " + instance.ProcessName + "  PID: " + instance.ProcessID);
 
             tdpThread = new Thread(() =>
             {
