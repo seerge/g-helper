@@ -1,6 +1,7 @@
 ﻿using System.Text.Json;
 using GHelper.AutoTDP.FramerateSource;
 using GHelper.AutoTDP.PowerLimiter;
+using Ryzen;
 
 namespace GHelper.AutoTDP
 {
@@ -69,9 +70,32 @@ namespace GHelper.AutoTDP
             return currentGame is not null;
         }
 
+        public static bool IsAvailable()
+        {
+
+            if (AppConfig.IsAlly())
+            {
+                //Not yet supported
+                return false;
+            }
+
+            int availableFS = 0;
+            int availablePL = 0;
+
+            if (RTSSFramerateSource.IsAvailable()) availableFS++;
+
+            //Intel MSR Limiter is available on Intel only
+            if (!RyzenControl.IsAMD()) availablePL++;
+
+            //ASUS ACPI Power limiter is available
+            if (AppConfig.IsASUS()) availablePL++;
+
+            return availablePL > 0 && availableFS > 0;
+        }
+
         public void Start()
         {
-            if (!IsEnabled() || IsRunning())
+            if (!IsEnabled() || IsRunning() || !IsAvailable())
             {
                 return;
             }
