@@ -2,17 +2,27 @@
 using GHelper.AutoTDP.PowerLimiter;
 using GHelper.UI;
 using Ryzen;
+using System.Linq;
 
 namespace GHelper.AutoTDP
 {
     public partial class AutoTDPUI : RForm
     {
+
+        private Dictionary<string, string> ModeTexts = new Dictionary<string, string>();
+
+
         private AutoTDPGameProfileUI? profileUI;
         public AutoTDPUI()
         {
             InitializeComponent();
 
             InitTheme();
+
+
+            ModeTexts.Add("intel_msr", "Intel MSR Power Limiter");
+            ModeTexts.Add("asus_acpi", "ASUS ACPI Power Limiter");
+            ModeTexts.Add("rtss", "Riva Tuner Statistics Server");
 
             checkBoxEnabled.CheckedChanged += CheckBoxEnabled_CheckedChanged;
             buttonAddGame.Click += ButtonAddGame_Click;
@@ -29,24 +39,13 @@ namespace GHelper.AutoTDP
 
         private void ComboBoxFPSSource_DropDownClosed(object? sender, EventArgs e)
         {
-            if ((comboBoxFPSSource.SelectedItem as string).StartsWith("Riva"))
-            {
-                AppConfig.Set("auto_tdp_fps_source", "rtss");
-            }
+            AppConfig.Set("auto_tdp_fps_source", AutoTDPService.AvailableFramerateSources().ElementAt(comboBoxFPSSource.SelectedIndex));
+
         }
 
         private void ComboBoxLimiter_DropDownClosed(object? sender, EventArgs e)
         {
-            if ((comboBoxLimiter.SelectedItem as string).StartsWith("Intel"))
-            {
-                AppConfig.Set("auto_tdp_limiter", "intel_msr");
-            }
-
-
-            if ((comboBoxLimiter.SelectedItem as string).StartsWith("ASUS ACPI"))
-            {
-                AppConfig.Set("auto_tdp_limiter", "asus_acpi");
-            }
+            AppConfig.Set("auto_tdp_limiter", AutoTDPService.AvailablePowerLimiters().ElementAt(comboBoxLimiter.SelectedIndex));
         }
 
         private void CheckBoxEnabled_CheckedChanged(object? sender, EventArgs e)
@@ -124,42 +123,42 @@ namespace GHelper.AutoTDP
         {
             checkBoxEnabled.Checked = AppConfig.Get("auto_tdp_enabled", 0) == 1;
 
-            if (IntelMSRPowerLimiter.IsAvailable())
-                comboBoxLimiter.Items.Add("Intel MSR Power Limiter");
+            comboBoxLimiter.Items.Clear();
+            comboBoxFPSSource.Items.Clear();
 
-
-            comboBoxLimiter.Items.Add("ASUS ACPI Power Limiter");
-
-            string? limiter = AppConfig.GetString("auto_tdp_limiter");
-
-            if (comboBoxLimiter.Items.Count > 0 && limiter is null)
-                comboBoxLimiter.SelectedIndex = 0;
-
-            if (IntelMSRPowerLimiter.IsAvailable() && limiter is not null && limiter.Equals("intel_msr"))
+            foreach (string s in AutoTDPService.AvailablePowerLimiters())
             {
-                comboBoxLimiter.SelectedIndex = 0;
+                comboBoxLimiter.Items.Add(ModeTexts[s]);
             }
 
-            if (limiter is not null && limiter.Equals("asus_acpi") && ASUSACPIPowerLimiter.IsAvailable())
+            foreach (string s in AutoTDPService.AvailableFramerateSources())
             {
-                comboBoxLimiter.SelectedIndex = IntelMSRPowerLimiter.IsAvailable() ? 1 : 0;
+                comboBoxFPSSource.Items.Add(ModeTexts[s]);
             }
 
 
-
-            if (RTSSFramerateSource.IsAvailable())
-                comboBoxFPSSource.Items.Add("Riva Tuner Statistics Server");
-
-
+            string? limiter = AppConfig.GetString("auto_tdp_limiter", null);
             string? source = AppConfig.GetString("auto_tdp_fps_source", null);
 
-            if (comboBoxFPSSource.Items.Count > 0 && source is null)
-                comboBoxFPSSource.SelectedIndex = 0;
 
-            if (source is not null && source.Equals("rtss"))
+            if (limiter is not null && AutoTDPService.AvailablePowerLimiters().Contains(limiter))
+            {
+                comboBoxLimiter.SelectedIndex = AutoTDPService.AvailablePowerLimiters().IndexOf(limiter);
+            }
+            else
+            {
+                comboBoxLimiter.SelectedIndex = 0;
+            }
+
+            if (source is not null && AutoTDPService.AvailableFramerateSources().Contains(source))
+            {
+                comboBoxFPSSource.SelectedIndex = AutoTDPService.AvailableFramerateSources().IndexOf(source);
+            }
+            else
             {
                 comboBoxFPSSource.SelectedIndex = 0;
             }
+
         }
 
 

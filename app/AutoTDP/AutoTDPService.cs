@@ -79,19 +79,28 @@ namespace GHelper.AutoTDP
                 return false;
             }
 
-            int availableFS = 0;
-            int availablePL = 0;
+            return AvailablePowerLimiters().Count > 0 && AvailableFramerateSources().Count > 0;
+        }
 
-            //Requires RTSS to be installed
-            if (RTSSFramerateSource.IsAvailable()) availableFS++;
+        public static List<string> AvailableFramerateSources()
+        {
+            List<string> l = new List<string>();
 
-            //Intel MSR Limiter is available on Intel only
-            if (IntelMSRPowerLimiter.IsAvailable()) availablePL++;
+            if (RTSSFramerateSource.IsAvailable()) l.Add("rtss");
 
-            //ASUS ACPI Power limiter is available
-            if (ASUSACPIPowerLimiter.IsAvailable()) availablePL++;
+            return l;
+        }
 
-            return availablePL > 0 && availableFS > 0;
+
+        public static List<string> AvailablePowerLimiters()
+        {
+            List<string> l = new List<string>();
+
+            if (IntelMSRPowerLimiter.IsAvailable()) l.Add("intel_msr");
+
+            if (ASUSACPIPowerLimiter.IsAvailable()) l.Add("asus_acpi");
+
+            return l;
         }
 
         public void Start()
