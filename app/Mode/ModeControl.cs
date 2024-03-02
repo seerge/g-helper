@@ -145,17 +145,16 @@ namespace GHelper.Mode
                     Program.acpi.SetFanCurve(AsusFan.Mid, AppConfig.GetFanConfig(AsusFan.Mid));
 
 
-                // something went wrong, resetting to default profile
+                // Alternative way to set fan curve
                 if (cpuResult != 1 || gpuResult != 1)
                 {
                     cpuResult = Program.acpi.SetFanRange(AsusFan.CPU, AppConfig.GetFanConfig(AsusFan.CPU));
                     gpuResult = Program.acpi.SetFanRange(AsusFan.GPU, AppConfig.GetFanConfig(AsusFan.GPU));
 
+                    // Something went wrong, resetting to default profile
                     if (cpuResult != 1 || gpuResult != 1)
                     {
-                        int mode = Modes.GetCurrentBase();
-                        Logger.WriteLine("ASUS BIOS rejected fan curve, resetting mode to " + mode);
-                        Program.acpi.DeviceSet(AsusACPI.PerformanceMode, mode, "Reset Mode");
+                        Program.acpi.DeviceSet(AsusACPI.PerformanceMode, Modes.GetCurrentBase(), "Reset Mode");
                         settings.LabelFansResult("ASUS BIOS rejected fan curve");
                     }
                 }
@@ -189,45 +188,22 @@ namespace GHelper.Mode
 
             bool applyPower = AppConfig.IsMode("auto_apply_power");
             bool applyFans = AppConfig.IsMode("auto_apply");
-            //bool applyGPU = true;
 
-            if (applyPower && !applyFans)
+            Task.Run(async () =>
             {
-                // force fan curve for misbehaving bios PPTs on some models
-                if (AppConfig.IsFanRequired())
+                if (applyPower && !applyFans && (AppConfig.IsFanRequired() || AppConfig.IsManualModeRequired()))
                 {
                     delay = 500;
                     AutoFans(true);
                 }
 
-                // Fix for models that don't support PPT settings in all modes, setting a "manual" mode for them
-                if (AppConfig.IsManualModeRequired())
-                {
-                    AutoFans(true);
-                }
-            }
-
-            if (delay > 0)
-            {
-                var timer = new System.Timers.Timer(delay);
-                timer.Elapsed += delegate
-                {
-                    timer.Stop();
-                    timer.Dispose();
-
-                    if (applyPower) SetPower();
-                    Thread.Sleep(500);
-                    SetGPUPower();
-                    AutoRyzen();
-                };
-                timer.Start();
-            }
-            else
-            {
-                if (applyPower) SetPower(true);
+                await Task.Delay(TimeSpan.FromMilliseconds(delay));
+                if (applyPower) SetPower(delay == 0);
+                
+                await Task.Delay(TimeSpan.FromMilliseconds(500));
                 SetGPUPower();
                 AutoRyzen();
-            }
+            });
 
         }
 
