@@ -762,7 +762,10 @@ namespace GHelper
 
         private void TrackPower_MouseUp(object? sender, MouseEventArgs e)
         {
-            modeControl.AutoPower();
+            Task.Run(() =>
+            {
+                modeControl.AutoPower();
+            });
         }
 
 

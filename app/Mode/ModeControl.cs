@@ -87,8 +87,13 @@ namespace GHelper.Mode
                 Program.toast.RunToast(Modes.GetCurrentName(), SystemInformation.PowerStatus.PowerLineStatus == PowerLineStatus.Online ? ToastIcon.Charger : ToastIcon.Battery);
 
             SetGPUClocks();
-            AutoFans();
-            AutoPower(1000);
+
+            Task.Run(async () =>
+            {
+                AutoFans();
+                AutoPower(1000);
+            });
+
 
             // Power plan from config or defaulting to balanced
             if (AppConfig.GetModeString("scheme") is not null)
@@ -155,7 +160,7 @@ namespace GHelper.Mode
                     if (cpuResult != 1 || gpuResult != 1)
                     {
                         Program.acpi.DeviceSet(AsusACPI.PerformanceMode, Modes.GetCurrentBase(), "Reset Mode");
-                        settings.LabelFansResult("ASUS BIOS rejected fan curve");
+                        settings.LabelFansResult("Model doesn't support custom fan curves");
                     }
                 }
                 else
@@ -189,21 +194,18 @@ namespace GHelper.Mode
             bool applyPower = AppConfig.IsMode("auto_apply_power");
             bool applyFans = AppConfig.IsMode("auto_apply");
 
-            Task.Run(async () =>
+            if (applyPower && !applyFans && (AppConfig.IsFanRequired() || AppConfig.IsManualModeRequired()))
             {
-                if (applyPower && !applyFans && (AppConfig.IsFanRequired() || AppConfig.IsManualModeRequired()))
-                {
-                    delay = 500;
-                    AutoFans(true);
-                }
+                delay = 500;
+                AutoFans(true);
+            }
 
-                await Task.Delay(TimeSpan.FromMilliseconds(delay));
-                if (applyPower) SetPower(delay == 0);
-                
-                await Task.Delay(TimeSpan.FromMilliseconds(500));
-                SetGPUPower();
-                AutoRyzen();
-            });
+            Thread.Sleep(delay);
+            if (applyPower) SetPower(delay == 0);
+
+            Thread.Sleep(500);
+            SetGPUPower();
+            AutoRyzen();
 
         }
 
