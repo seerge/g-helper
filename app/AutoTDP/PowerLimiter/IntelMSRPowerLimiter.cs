@@ -2,8 +2,12 @@
 
 namespace GHelper.AutoTDP.PowerLimiter
 {
+
     internal class IntelMSRPowerLimiter : IPowerLimiter
     {
+        public static readonly uint MSR_PKG_POWER_LIMIT = 0x610;
+        public static readonly uint MSR_RAPL_POWER_UNIT = 0x606;
+
         private Ols ols;
 
         private uint DefaultEax = 0; // Set on first reading
@@ -28,7 +32,7 @@ namespace GHelper.AutoTDP.PowerLimiter
             uint eax = 0;
             uint edx = 0;
 
-            ols.Rdmsr(0x606, ref eax, ref edx);
+            ols.Rdmsr(MSR_RAPL_POWER_UNIT, ref eax, ref edx);
 
 
             uint pwr = eax & 0x03;
@@ -42,7 +46,7 @@ namespace GHelper.AutoTDP.PowerLimiter
             uint edx = 0;
 
 
-            ols.Rdmsr(0x610, ref eax, ref edx);
+            ols.Rdmsr(MSR_PKG_POWER_LIMIT, ref eax, ref edx);
 
             uint watsRapl = (uint)(watts / PowerUnit);
 
@@ -66,7 +70,7 @@ namespace GHelper.AutoTDP.PowerLimiter
             uint eax = 0;
             uint edx = 0;
 
-            ols.Rdmsr(0x610, ref eax, ref edx);
+            ols.Rdmsr(MSR_PKG_POWER_LIMIT, ref eax, ref edx);
 
             if (DefaultEax == 0)
             {
@@ -88,7 +92,7 @@ namespace GHelper.AutoTDP.PowerLimiter
             {
                 return;
             }
-            ols.Wrmsr(0x610, DefaultEax, DefaultEdx);
+            ols.Wrmsr(MSR_PKG_POWER_LIMIT, DefaultEax, DefaultEdx);
         }
 
         public void Dispose()
