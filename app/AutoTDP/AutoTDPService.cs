@@ -452,13 +452,13 @@ namespace GHelper.AutoTDP
 
                 if (LowestStableStability > 120)
                 {
-                    //if stable for long time try to reduce it a bit
-                    LowestStableTDP -= 0.5;
+                    //if stable for long time try to reduce it again
+                    LowestStableTDP = LowestTDP + (LowestTDP * 0.10); ;
                     LowestStableStability = 0;
                 }
             }
 
-            if (LowestTDP - 0.25 <= CurrentTDP && CurrentTDP >= LowestTDP + 0.25)
+            if (LowestTDP - 0.25 <= CurrentTDP && CurrentTDP <= LowestTDP + 0.25)
             {
                 LowestStableStability++;
 
