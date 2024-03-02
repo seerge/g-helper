@@ -90,8 +90,10 @@ namespace GHelper.Mode
 
             Task.Run(async () =>
             {
+                await Task.Delay(TimeSpan.FromMilliseconds(100));
                 AutoFans();
-                AutoPower(1000);
+                await Task.Delay(TimeSpan.FromMilliseconds(1000));
+                AutoPower();
             });
 
 
@@ -186,7 +188,7 @@ namespace GHelper.Mode
 
         }
 
-        public void AutoPower(int delay = 0)
+        public void AutoPower(bool launchAsAdmin = false)
         {
 
             customPower = 0;
@@ -196,12 +198,11 @@ namespace GHelper.Mode
 
             if (applyPower && !applyFans && (AppConfig.IsFanRequired() || AppConfig.IsManualModeRequired()))
             {
-                delay = 500;
                 AutoFans(true);
+                Thread.Sleep(500);
             }
 
-            Thread.Sleep(delay);
-            if (applyPower) SetPower(delay == 0);
+            if (applyPower) SetPower(launchAsAdmin);
 
             Thread.Sleep(500);
             SetGPUPower();

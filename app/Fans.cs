@@ -764,7 +764,7 @@ namespace GHelper
         {
             Task.Run(() =>
             {
-                modeControl.AutoPower();
+                modeControl.AutoPower(true);
             });
         }
 
