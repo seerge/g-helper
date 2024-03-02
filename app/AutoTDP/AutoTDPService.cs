@@ -280,7 +280,6 @@ namespace GHelper.AutoTDP
 
                 while (currentGame is not null && Running)
                 {
-                    //prevent FPS from going to 0 which causes issues with the math
 
                     double fps = framerateSouce.GetFramerate(instance);
 
@@ -294,6 +293,7 @@ namespace GHelper.AutoTDP
                         return;
                     }
 
+                    //prevent FPS from going to 0 which causes issues with the math
                     GameFPS = Math.Max(5, fps);
                     AdjustPowerLimit(profile);
 
@@ -326,6 +326,7 @@ namespace GHelper.AutoTDP
 
             if (targetFPS - 1 <= currentFramerate && currentFramerate <= targetFPS + 1)
             {
+                //Framerate is inside ideal range
                 FramerateTargetReachedCounter++;
 
                 if (FramerateTargetReachedCounter >= 3
@@ -355,7 +356,7 @@ namespace GHelper.AutoTDP
             }
             else
             {
-                //No dip, no correction
+                //Framerate not in target range
                 correction = 0.0;
                 FramerateTargetReachedCounter = 0;
                 FramerateDipCounter = 0;
@@ -436,7 +437,7 @@ namespace GHelper.AutoTDP
             if (double.IsNaN(GameFPSPrevious)) GameFPSPrevious = currentFramerate;
             double dF = -0.12d;
 
-            // Calculation
+            // PID Compute
             double deltaError = currentFramerate - GameFPSPrevious;
             double dT = deltaError / (1020.0 / 1000.0);
             double damping = CurrentTDP / currentFramerate * dF * dT;
@@ -511,7 +512,7 @@ namespace GHelper.AutoTDP
                 Logger.WriteLine("[AutoTDPService] Power Limit from " + CurrentTDP + "W to " + newPL + "W, Delta:" + adjustment
                     + " Lowest: " + LowestTDP + "W, Lowest Stable(" + LowestStableStability + "): " + LowestStableTDP + "W");
 
-            //We only limit to full watts, no fractions. In this case, we will cut off the fractional part
+            //Apply power limits
             powerLimiter.SetCPUPowerLimit(newPL);
             CurrentTDP = newPL;
         }
