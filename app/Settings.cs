@@ -279,6 +279,11 @@ namespace GHelper
 
         private void ButtonAutoTDP_Click(object? sender, EventArgs e)
         {
+            if (autoTdpUi is not null)
+            {
+                return;
+            }
+
             autoTdpUi = new AutoTDPUI();
             autoTdpUi.FormClosed += AutoTdpUi_FormClosed;
             autoTdpUi.Disposed += AutoTdpUi_Disposed;
