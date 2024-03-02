@@ -88,11 +88,11 @@ namespace GHelper.AutoTDP
 
             GameProfile p = new GameProfile();
             p.ProcessName = Path.GetFileName(path);
-            p.GameTitle = Path.GetFileName(path);
+            p.GameTitle = Path.GetFileName(path).Replace(".exe", "");
             p.Enabled = true;
             p.TargetFPS = 60;
             p.MaxTdp = 40;
-            p.MinTdp = 20;
+            p.MinTdp = 15;
 
             profileUI = new AutoTDPGameProfileUI(p, this);
             profileUI.TopMost = true;
