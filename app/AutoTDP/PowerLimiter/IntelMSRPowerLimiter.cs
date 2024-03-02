@@ -27,6 +27,14 @@ namespace GHelper.AutoTDP.PowerLimiter
             ReadPowerUnit();
         }
 
+        public void SavePowerLimits()
+        {
+            DefaultEax = 0;
+            DefaultEdx = 0;
+
+            ols.Rdmsr(MSR_PKG_POWER_LIMIT, ref DefaultEax, ref DefaultEdx);
+        }
+
         public void ReadPowerUnit()
         {
             uint eax = 0;
@@ -71,13 +79,6 @@ namespace GHelper.AutoTDP.PowerLimiter
             uint edx = 0;
 
             ols.Rdmsr(MSR_PKG_POWER_LIMIT, ref eax, ref edx);
-
-            if (DefaultEax == 0)
-            {
-                //Store default settings to reset them on exit
-                DefaultEax = eax;
-                DefaultEdx = edx;
-            }
 
             uint pl1 = eax & PL1_MASK;
             uint pl2 = edx & PL2_MASK;

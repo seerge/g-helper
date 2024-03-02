@@ -14,6 +14,11 @@ namespace GHelper.AutoTDP.PowerLimiter
 
         public ASUSACPIPowerLimiter()
         {
+           
+        }
+
+        public void SavePowerLimits()
+        {
             DefaultA0 = Program.acpi.DeviceGet(AsusACPI.PPT_APUA0);
             DefaultA3 = Program.acpi.DeviceGet(AsusACPI.PPT_APUA3);
             if (Program.acpi.IsAllAmdPPT()) // CPU limit all amd models

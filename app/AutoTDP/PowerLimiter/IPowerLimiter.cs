@@ -8,5 +8,7 @@
 
         public void ResetPowerLimits();
 
+        public void SavePowerLimits();
+
     }
 }

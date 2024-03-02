@@ -299,6 +299,8 @@ namespace GHelper.AutoTDP
             tdpThread = new Thread(() =>
             {
                 CurrentTDP = powerLimiter.GetCPUPowerLimit();
+                powerLimiter.SavePowerLimits(); // save current power limits to restore them afterwards
+
                 LowestStableTDP = profile.MaxTdp;
                 LowestTDP = profile.MaxTdp;
 
