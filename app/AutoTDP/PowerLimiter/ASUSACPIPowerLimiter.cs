@@ -10,6 +10,7 @@ namespace GHelper.AutoTDP.PowerLimiter
         private int DefaultA0;
         private int DefaultA3;
         private int DefaultB0 = 0;
+        private int DefaultC1 = 0;
 
         public ASUSACPIPowerLimiter()
         {
@@ -18,6 +19,10 @@ namespace GHelper.AutoTDP.PowerLimiter
             if (Program.acpi.IsAllAmdPPT()) // CPU limit all amd models
             {
                 DefaultB0 = Program.acpi.DeviceGet(AsusACPI.PPT_CPUB0);
+            }
+            if (Program.acpi.DeviceGet(AsusACPI.PPT_APUC1) >= 0) // FPPT boost for non all-amd models
+            {
+                DefaultC1 = Program.acpi.DeviceGet(AsusACPI.PPT_APUC1);
             }
         }
 
@@ -32,6 +37,11 @@ namespace GHelper.AutoTDP.PowerLimiter
             if (Program.acpi.IsAllAmdPPT()) // CPU limit all amd models
             {
                 Program.acpi.DeviceSet(AsusACPI.PPT_CPUB0, (int)watts, "PowerLimit B0");
+            }
+
+            if (Program.acpi.DeviceGet(AsusACPI.PPT_APUC1) >= 0) // FPPT boost for non all-amd models
+            {
+                Program.acpi.DeviceSet(AsusACPI.PPT_APUC1, (int)watts, "PowerLimit C1");
             }
         }
 
@@ -58,6 +68,11 @@ namespace GHelper.AutoTDP.PowerLimiter
             if (Program.acpi.IsAllAmdPPT() && DefaultB0 > 0) // CPU limit all amd models
             {
                 Program.acpi.DeviceSet(AsusACPI.PPT_CPUB0, DefaultB0, "PowerLimit B0");
+            }
+
+            if (Program.acpi.DeviceGet(AsusACPI.PPT_APUC1) >= 0) // FPPT boost for non all-amd models
+            {
+                Program.acpi.DeviceSet(AsusACPI.PPT_APUC1, DefaultC1, "PowerLimit C1");
             }
         }
     }
