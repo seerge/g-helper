@@ -37,7 +37,12 @@
         }
         public override int DPIIncrements()
         {
-            return 100;
+            return 50;
+        }
+
+        public override int MinDPI()
+        {
+            return 50;
         }
 
         public override bool HasDebounceSetting()

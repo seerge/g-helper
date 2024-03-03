@@ -7,6 +7,10 @@
         {
         }
 
+        public StrixImpactII(ushort pid) : base(0x0B05, pid, "mi_00", false)
+        {
+        }
+
         public override int DPIProfileCount()
         {
             return 4;
@@ -172,6 +176,21 @@
                 Logger.WriteLine(GetDisplayName() + ": Read RGB Setting for Zone " + lz[i].ToString() + ": " + ls.ToString());
                 LightingSetting[i] = ls;
             }
+        }
+    }
+
+    public class StrixImpactIIElectroPunk : StrixImpactII
+    {
+
+        public StrixImpactIIElectroPunk() : base(0x1956)
+        {
+
+        }
+
+
+        public override string GetDisplayName()
+        {
+            return "ROG Strix Impact II Electro Punk";
         }
     }
 }
