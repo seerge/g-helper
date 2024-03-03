@@ -762,7 +762,10 @@ namespace GHelper
 
         private void TrackPower_MouseUp(object? sender, MouseEventArgs e)
         {
-            modeControl.AutoPower();
+            Task.Run(() =>
+            {
+                modeControl.AutoPower(true);
+            });
         }
 
 
@@ -1112,6 +1115,7 @@ namespace GHelper
             if (gpuVisible)
             {
                 int gpuPowerVar = Program.acpi.DeviceGet(AsusACPI.GPU_POWER);
+                Logger.WriteLine("Default GPU Power: " +  gpuPowerVar);
 
                 trackGPUClockLimit.Value = NvidiaGpuControl.MaxClockLimit;
                 trackGPUCore.Value = 0;
@@ -1119,7 +1123,7 @@ namespace GHelper
                 
                 trackGPUBoost.Value = AsusACPI.MaxGPUBoost;
                 trackGPUTemp.Value = AsusACPI.MaxGPUTemp;
-                trackGPUPower.Value = (gpuPowerVar >= 0) ? gpuPowerVar : AsusACPI.MaxGPUPower;
+                trackGPUPower.Value = Math.Max(Math.Min((gpuPowerVar >= 0) ? gpuPowerVar : AsusACPI.MaxGPUPower, AsusACPI.MaxGPUPower), AsusACPI.MinGPUPower);
 
                 AppConfig.SetMode("gpu_boost", trackGPUBoost.Value);
                 AppConfig.SetMode("gpu_temp", trackGPUTemp.Value);

@@ -365,9 +365,9 @@ public static class AppConfig
         return ContainsModel("ProArt");
     }
 
-    public static bool IsVivobook()
+    public static bool IsVivoZenbook()
     {
-        return ContainsModel("Vivobook");
+        return ContainsModel("Vivobook") || ContainsModel("Zenbook");
     }
 
     // Devices with bugged bios command to change brightness
@@ -514,7 +514,7 @@ public static class AppConfig
         try
         {
             var (bios, model) = GetBiosAndModel();
-            return (Int32.Parse(bios) == 317);
+            return (Int32.Parse(bios) == 317 || Int32.Parse(bios) == 316);
         }
         catch
         {
