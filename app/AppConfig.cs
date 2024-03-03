@@ -514,7 +514,7 @@ public static class AppConfig
         try
         {
             var (bios, model) = GetBiosAndModel();
-            return (Int32.Parse(bios) == 317);
+            return (Int32.Parse(bios) == 317 || Int32.Parse(bios) == 316);
         }
         catch
         {
