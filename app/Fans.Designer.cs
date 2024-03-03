@@ -119,6 +119,10 @@ namespace GHelper
             picturePowerMode = new PictureBox();
             labelPowerModeTitle = new Label();
             panelGPU = new Panel();
+            panelGPUPower = new Panel();
+            labelGPUPower = new Label();
+            labelGPUPowerTitle = new Label();
+            trackGPUPower = new TrackBar();
             panelGPUTemp = new Panel();
             labelGPUTemp = new Label();
             labelGPUTempTitle = new Label();
@@ -190,6 +194,8 @@ namespace GHelper
             panelPowerModeTItle.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)picturePowerMode).BeginInit();
             panelGPU.SuspendLayout();
+            panelGPUPower.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)trackGPUPower).BeginInit();
             panelGPUTemp.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)trackGPUTemp).BeginInit();
             panelGPUBoost.SuspendLayout();
@@ -533,7 +539,7 @@ namespace GHelper
             panelAdvanced.Controls.Add(panelTitleTemp);
             panelAdvanced.Controls.Add(panelDownload);
             panelAdvanced.Dock = DockStyle.Top;
-            panelAdvanced.Location = new Point(10, 1644);
+            panelAdvanced.Location = new Point(10, 1768);
             panelAdvanced.Name = "panelAdvanced";
             panelAdvanced.Size = new Size(520, 992);
             panelAdvanced.TabIndex = 14;
@@ -864,7 +870,7 @@ namespace GHelper
             panelPower.Controls.Add(panelPowerMode);
             panelPower.Controls.Add(panelPowerModeTItle);
             panelPower.Dock = DockStyle.Top;
-            panelPower.Location = new Point(10, 764);
+            panelPower.Location = new Point(10, 888);
             panelPower.Margin = new Padding(4);
             panelPower.Name = "panelPower";
             panelPower.Size = new Size(520, 880);
@@ -1237,6 +1243,7 @@ namespace GHelper
             panelGPU.AutoSize = true;
             panelGPU.Controls.Add(panelGPUTemp);
             panelGPU.Controls.Add(panelGPUBoost);
+            panelGPU.Controls.Add(panelGPUPower);
             panelGPU.Controls.Add(panelGPUMemory);
             panelGPU.Controls.Add(panelGPUCore);
             panelGPU.Controls.Add(panelGPUClockLimit);
@@ -1246,9 +1253,58 @@ namespace GHelper
             panelGPU.Margin = new Padding(4);
             panelGPU.Name = "panelGPU";
             panelGPU.Padding = new Padding(0, 0, 0, 18);
-            panelGPU.Size = new Size(520, 698);
+            panelGPU.Size = new Size(520, 822);
             panelGPU.TabIndex = 44;
             panelGPU.Visible = false;
+            // 
+            // panelGPUPower
+            // 
+            panelGPUPower.AutoSize = true;
+            panelGPUPower.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            panelGPUPower.Controls.Add(labelGPUPower);
+            panelGPUPower.Controls.Add(labelGPUPowerTitle);
+            panelGPUPower.Controls.Add(trackGPUPower);
+            panelGPUPower.Dock = DockStyle.Top;
+            panelGPUPower.Location = new Point(0, 432);
+            panelGPUPower.Margin = new Padding(4);
+            panelGPUPower.MaximumSize = new Size(0, 124);
+            panelGPUPower.Name = "panelGPUPower";
+            panelGPUPower.Size = new Size(520, 124);
+            panelGPUPower.TabIndex = 49;
+            // 
+            // labelGPUPower
+            // 
+            labelGPUPower.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            labelGPUPower.Location = new Point(374, 14);
+            labelGPUPower.Margin = new Padding(4, 0, 4, 0);
+            labelGPUPower.Name = "labelGPUPower";
+            labelGPUPower.Size = new Size(124, 32);
+            labelGPUPower.TabIndex = 44;
+            labelGPUPower.Text = "105W";
+            labelGPUPower.TextAlign = ContentAlignment.TopRight;
+            // 
+            // labelGPUPowerTitle
+            // 
+            labelGPUPowerTitle.AutoSize = true;
+            labelGPUPowerTitle.Location = new Point(10, 14);
+            labelGPUPowerTitle.Margin = new Padding(4, 0, 4, 0);
+            labelGPUPowerTitle.Name = "labelGPUPowerTitle";
+            labelGPUPowerTitle.Size = new Size(130, 32);
+            labelGPUPowerTitle.TabIndex = 43;
+            labelGPUPowerTitle.Text = "GPU Power";
+            // 
+            // trackGPUPower
+            // 
+            trackGPUPower.Location = new Point(6, 48);
+            trackGPUPower.Margin = new Padding(4, 2, 4, 2);
+            trackGPUPower.Maximum = 25;
+            trackGPUPower.Minimum = 5;
+            trackGPUPower.Name = "trackGPUPower";
+            trackGPUPower.Size = new Size(496, 90);
+            trackGPUPower.TabIndex = 42;
+            trackGPUPower.TickFrequency = 5;
+            trackGPUPower.TickStyle = TickStyle.TopLeft;
+            trackGPUPower.Value = 25;
             // 
             // panelGPUTemp
             // 
@@ -1258,7 +1314,7 @@ namespace GHelper
             panelGPUTemp.Controls.Add(labelGPUTempTitle);
             panelGPUTemp.Controls.Add(trackGPUTemp);
             panelGPUTemp.Dock = DockStyle.Top;
-            panelGPUTemp.Location = new Point(0, 556);
+            panelGPUTemp.Location = new Point(0, 680);
             panelGPUTemp.Margin = new Padding(4);
             panelGPUTemp.MaximumSize = new Size(0, 124);
             panelGPUTemp.Name = "panelGPUTemp";
@@ -1307,7 +1363,7 @@ namespace GHelper
             panelGPUBoost.Controls.Add(labelGPUBoostTitle);
             panelGPUBoost.Controls.Add(trackGPUBoost);
             panelGPUBoost.Dock = DockStyle.Top;
-            panelGPUBoost.Location = new Point(0, 432);
+            panelGPUBoost.Location = new Point(0, 556);
             panelGPUBoost.Margin = new Padding(4);
             panelGPUBoost.MaximumSize = new Size(0, 124);
             panelGPUBoost.Name = "panelGPUBoost";
@@ -1700,6 +1756,9 @@ namespace GHelper
             ((System.ComponentModel.ISupportInitialize)picturePowerMode).EndInit();
             panelGPU.ResumeLayout(false);
             panelGPU.PerformLayout();
+            panelGPUPower.ResumeLayout(false);
+            panelGPUPower.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)trackGPUPower).EndInit();
             panelGPUTemp.ResumeLayout(false);
             panelGPUTemp.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)trackGPUTemp).EndInit();
@@ -1833,5 +1892,9 @@ namespace GHelper
         private TrackBar trackSlow;
         private Panel panelDownload;
         private RButton buttonDownload;
+        private Panel panelGPUPower;
+        private Label labelGPUPower;
+        private Label labelGPUPowerTitle;
+        private TrackBar trackGPUPower;
     }
 }

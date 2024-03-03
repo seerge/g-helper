@@ -254,16 +254,28 @@ namespace GHelper
             VisualiseFnLock();
             buttonFnLock.Click += ButtonFnLock_Click;
 
-            panelGamma.Visible = AppConfig.IsOLED();
-            sliderGamma.ValueChanged += SliderGamma_ValueChanged;
-            labelGamma.Text = "100%";
-
             panelPerformance.Focus();
+
+            InitBrightness();
         }
+
+        public void InitBrightness()
+        {
+            if (!AppConfig.IsOLED()) return;
+
+            panelGamma.Visible = true;
+
+            int brightness = AppConfig.Get("brightness");
+            if (brightness >= 0) sliderGamma.Value = brightness;
+
+            sliderGamma.ValueChanged += SliderGamma_ValueChanged;
+            labelGamma.Text = sliderGamma.Value + "%";
+        }
+
 
         private void SliderGamma_ValueChanged(object? sender, EventArgs e)
         {
-            screenControl.SetGamma(sliderGamma.Value);
+            screenControl.SetBrightness(sliderGamma.Value);
             labelGamma.Text = sliderGamma.Value + "%";
         }
 

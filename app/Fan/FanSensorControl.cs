@@ -9,7 +9,7 @@ namespace GHelper.Fan
 
         public const int XGM_FAN_MAX = 72;
 
-        public const int INADEQUATE_MAX = 92;
+        public const int INADEQUATE_MAX = 104;
 
         const int FAN_COUNT = 3;
 

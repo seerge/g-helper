@@ -24,28 +24,16 @@ namespace GHelper.Display
             }
         }
 
-        public void SaveGamma()
+        public void SetBrightness(int brightness = -1)
         {
-            var screenName = ScreenNative.FindLaptopScreen();
-            if (screenName is null) return;
+            if (!AppConfig.IsOLED()) return;
 
-            try
-            {
-                var handle = ScreenNative.CreateDC(screenName, screenName, null, IntPtr.Zero);
-                var gammaRamp = new GammaRamp();
-                if (ScreenNative.GetDeviceGammaRamp(handle, ref gammaRamp))
-                {
-                    var gamma = new DisplayGammaRamp(gammaRamp);
-                    Logger.WriteLine("Gamma R: " + string.Join("-", gamma.Red));
-                    Logger.WriteLine("Gamma G: " + string.Join("-", gamma.Green));
-                    Logger.WriteLine("Gamma B: " + string.Join("-", gamma.Blue));
-                }
-            }
-            catch (Exception ex)
-            {
-                Logger.WriteLine(ex.ToString());
-            }
+            if (brightness >= 0) AppConfig.Set("brightness", brightness);
+            else brightness = AppConfig.Get("brightness");
+
+            if (brightness >= 0) SetGamma(brightness);
         }
+
 
         public void SetGamma(int brightness = 100)
         {
@@ -63,15 +51,15 @@ namespace GHelper.Display
                     if (ScreenNative.GetDeviceGammaRamp(handle, ref gammaDump))
                     {
                         gammaRamp = new DisplayGammaRamp(gammaDump);
-                        Logger.WriteLine("Gamma R: " + string.Join("-", gammaRamp.Red));
-                        Logger.WriteLine("Gamma G: " + string.Join("-", gammaRamp.Green));
-                        Logger.WriteLine("Gamma B: " + string.Join("-", gammaRamp.Blue));
+                        //Logger.WriteLine("Gamma R: " + string.Join("-", gammaRamp.Red));
+                        //Logger.WriteLine("Gamma G: " + string.Join("-", gammaRamp.Green));
+                        //Logger.WriteLine("Gamma B: " + string.Join("-", gammaRamp.Blue));
                     }
                 }
 
                 if (gammaRamp is null || !gammaRamp.IsOriginal())
                 {
-                    Logger.WriteLine("Default Gamma");
+                    Logger.WriteLine("Not default Gamma");
                     gammaRamp = new DisplayGammaRamp();
                 }
 
