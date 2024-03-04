@@ -421,9 +421,16 @@ public class AsusACPI
         {
             return null;
         }
-
-
     }
+
+
+    public int SetVivoMode(int mode)
+    {
+        if (mode == 1) mode = 2;
+        else if (mode == 2) mode = 1;
+        return Program.acpi.DeviceSet(VivoBookMode, mode, "VivoMode");
+    }
+
     public int SetGPUEco(int eco)
     {
         int ecoFlag = DeviceGet(GPUEco);
