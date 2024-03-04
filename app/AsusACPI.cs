@@ -308,6 +308,14 @@ public class AsusACPI
         {
             MaxGPUBoost = 15;
         }
+
+        if (AppConfig.IsAMDLight())
+        {
+            MaxTotal = 90;
+        }
+
+
+
     }
 
     public void Control(uint dwIoControlCode, byte[] lpInBuffer, byte[] lpOutBuffer)

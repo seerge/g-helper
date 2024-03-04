@@ -532,6 +532,11 @@ public static class AppConfig
         return ContainsModel("GA402X") || ContainsModel("G513") || ContainsModel("G713R") || ContainsModel("G713P") || ContainsModel("GU605") || ContainsModel("GA403");
     }
 
+    public static bool IsAMDLight()
+    {
+        return ContainsModel("GA402X") || ContainsModel("GU605") || ContainsModel("GA403") || ContainsModel("FA507N") || ContainsModel("FA507X") || ContainsModel("FA707N") || ContainsModel("FA707X");
+    }
+
     public static bool IsPowerRequired()
     {
         return ContainsModel("FX507") || ContainsModel("FX517") || ContainsModel("FX707");
