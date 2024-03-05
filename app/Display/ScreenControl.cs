@@ -151,7 +151,7 @@ namespace GHelper.Display
             bool screenAuto = AppConfig.Is("screen_auto");
             bool overdriveSetting = !AppConfig.Is("no_overdrive");
 
-            int overdrive = Program.acpi.DeviceGet(AsusACPI.ScreenOverdrive);
+            int overdrive = AppConfig.Is("no_overdrive") ? 0 : Program.acpi.DeviceGet(AsusACPI.ScreenOverdrive);
 
             int miniled1 = Program.acpi.DeviceGet(AsusACPI.ScreenMiniled1);
             int miniled2 = Program.acpi.DeviceGet(AsusACPI.ScreenMiniled2);
