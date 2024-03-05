@@ -62,39 +62,45 @@ namespace GHelper.Mode
 
             if (!Modes.Exists(mode)) mode = 0;
 
-            customFans = false;
-            customPower = 0;
-
             settings.ShowMode(mode);
-            SetModeLabel();
 
             Modes.SetCurrent(mode);
 
-            int status = Program.acpi.DeviceSet(AsusACPI.PerformanceMode, AppConfig.IsManualModeRequired() ? AsusACPI.PerformanceManual : Modes.GetBase(mode), "Mode");
 
-            // Vivobook fallback
-            if (status != 1)
+            Task.Run(async () =>
             {
-                int vivoMode = Modes.GetBase(mode);
-                if (vivoMode == 1) vivoMode = 2;
-                else if (vivoMode == 2) vivoMode = 1;
-                Program.acpi.DeviceSet(AsusACPI.VivoBookMode, vivoMode, "VivoMode");
-            }
+                bool reset = AppConfig.IsResetRequired() && (Modes.GetBase(oldMode) == Modes.GetBase(mode)) && customPower > 0;
+
+                customFans = false;
+                customPower = 0;
+                SetModeLabel();
+
+                // Workaround for not properly resetting limits on G14 2024
+                if (reset)
+                {
+                    Program.acpi.DeviceSet(AsusACPI.PerformanceMode, (Modes.GetBase(oldMode) != 1) ? AsusACPI.PerformanceTurbo : AsusACPI.PerformanceBalanced, "Reset");
+                    await Task.Delay(TimeSpan.FromMilliseconds(1500));
+                }
+
+                int status = Program.acpi.DeviceSet(AsusACPI.PerformanceMode, AppConfig.IsManualModeRequired() ? AsusACPI.PerformanceManual : Modes.GetBase(mode), "Mode");
+                // Vivobook fallback
+                if (status != 1) Program.acpi.SetVivoMode(Modes.GetBase(mode));
+
+                SetGPUClocks();
+
+                AutoFans();
+                await Task.Delay(TimeSpan.FromMilliseconds(1000));
+                AutoPower();
+
+
+            });
+
 
             if (AppConfig.Is("xgm_fan") && Program.acpi.IsXGConnected()) XGM.Reset();
 
             if (notify)
                 Program.toast.RunToast(Modes.GetCurrentName(), SystemInformation.PowerStatus.PowerLineStatus == PowerLineStatus.Online ? ToastIcon.Charger : ToastIcon.Battery);
 
-            SetGPUClocks();
-
-            Task.Run(async () =>
-            {
-                await Task.Delay(TimeSpan.FromMilliseconds(100));
-                AutoFans();
-                await Task.Delay(TimeSpan.FromMilliseconds(1000));
-                AutoPower();
-            });
 
 
             // Power plan from config or defaulting to balanced

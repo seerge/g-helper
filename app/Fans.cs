@@ -1008,7 +1008,7 @@ namespace GHelper
             try
             {
                 if (chartCount > 2)
-                    Size = MinimumSize = new Size(Size.Width, (int)(ControlHelper.GetDpiScale(this).Value * (chartCount * 200 + 100)));
+                    Size = MinimumSize = new Size(Size.Width, Math.Max(MinimumSize.Height, (int)(ControlHelper.GetDpiScale(this).Value * (chartCount * 200 + 100))));
             }
             catch (Exception ex)
             {
