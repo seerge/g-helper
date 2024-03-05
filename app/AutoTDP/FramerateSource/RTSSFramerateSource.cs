@@ -52,7 +52,7 @@ namespace GHelper.AutoTDP.FramerateSource
         {
             if (!IsRunning)
             {
-                return new List<GameInstance>();
+                Start();
             }
 
             List<GameInstance> giL = new List<GameInstance>();
