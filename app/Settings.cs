@@ -257,6 +257,15 @@ namespace GHelper
             panelPerformance.Focus();
 
             InitBrightness();
+
+            checkSRGB.Checked = screenControl.GetSRGB();
+            checkSRGB.CheckedChanged += CheckSRGB_CheckedChanged;
+
+        }
+
+        private void CheckSRGB_CheckedChanged(object? sender, EventArgs e)
+        {
+            screenControl.ToggleSRGB();
         }
 
         public void InitBrightness()
