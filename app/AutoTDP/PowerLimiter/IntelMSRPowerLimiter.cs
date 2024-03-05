@@ -25,11 +25,48 @@ namespace GHelper.AutoTDP.PowerLimiter
             ols = new Ols();
             ols.InitializeOls();
             ReadPowerUnit();
+            Logger.WriteLine("[AutoTDPService] Read MSR_RAPL_POWER_UNIT: " + PowerUnit);
         }
 
         public static bool IsAvailable()
         {
-            return !RyzenControl.IsAMD();
+            if (RyzenControl.IsAMD())
+            {
+                return false;
+            }
+            Ols o = new Ols();
+
+            o.InitializeOls();
+
+            uint err = o.GetDllStatus();
+            o.DeinitializeOls();
+            o.Dispose();
+
+            switch (err)
+            {
+                case (uint)Ols.OlsDllStatus.OLS_DLL_NO_ERROR:
+                    return true;
+                case (uint)Ols.OlsDllStatus.OLS_DLL_DRIVER_NOT_LOADED:
+                    Logger.WriteLine("[AutoTDPService] Intel MSR Error: OLS_DRIVER_NOT_LOADED");
+                    break;
+                case (uint)Ols.OlsDllStatus.OLS_DLL_UNSUPPORTED_PLATFORM:
+                    Logger.WriteLine("[AutoTDPService] Intel MSR Error: OLS_DLL_UNSUPPORTED_PLATFORM");
+                    break;
+                case (uint)Ols.OlsDllStatus.OLS_DLL_DRIVER_NOT_FOUND:
+                    Logger.WriteLine("[AutoTDPService] Intel MSR Error: OLS_DLL_DRIVER_NOT_FOUND");
+                    break;
+                case (uint)Ols.OlsDllStatus.OLS_DLL_DRIVER_UNLOADED:
+                    Logger.WriteLine("[AutoTDPService] Intel MSR Error: OLS_DLL_DRIVER_UNLOADED");
+                    break;
+                case (uint)Ols.OlsDllStatus.OLS_DLL_DRIVER_NOT_LOADED_ON_NETWORK:
+                    Logger.WriteLine("[AutoTDPService] Intel MSR Error: OLS_DLL_DRIVER_NOT_LOADED_ON_NETWORK");
+                    break;
+                case (uint)Ols.OlsDllStatus.OLS_DLL_UNKNOWN_ERROR:
+                    Logger.WriteLine("[AutoTDPService] Intel MSR Error: OLS_DLL_UNKNOWN_ERROR");
+                    break;
+            }
+
+            return false;
         }
 
         public void SavePowerLimits()
@@ -37,7 +74,10 @@ namespace GHelper.AutoTDP.PowerLimiter
             DefaultEax = 0;
             DefaultEdx = 0;
 
-            ols.Rdmsr(MSR_PKG_POWER_LIMIT, ref DefaultEax, ref DefaultEdx);
+            if (ols.Rdmsr(MSR_PKG_POWER_LIMIT, ref DefaultEax, ref DefaultEdx) == 0)
+            {
+                Logger.WriteLine("[AutoTDPService] Failed to Read MSR_PKG_POWER_LIMIT");
+            }
         }
 
         public void ReadPowerUnit()
@@ -45,7 +85,10 @@ namespace GHelper.AutoTDP.PowerLimiter
             uint eax = 0;
             uint edx = 0;
 
-            ols.Rdmsr(MSR_RAPL_POWER_UNIT, ref eax, ref edx);
+            if (ols.Rdmsr(MSR_RAPL_POWER_UNIT, ref eax, ref edx) == 0)
+            {
+                Logger.WriteLine("[AutoTDPService] Failed to Read MSR_RAPL_POWER_UNIT");
+            }
 
 
             uint pwr = eax & 0x03;
@@ -59,7 +102,10 @@ namespace GHelper.AutoTDP.PowerLimiter
             uint edx = 0;
 
 
-            ols.Rdmsr(MSR_PKG_POWER_LIMIT, ref eax, ref edx);
+            if (ols.Rdmsr(MSR_PKG_POWER_LIMIT, ref eax, ref edx) == 0)
+            {
+                Logger.WriteLine("[AutoTDPService] Failed to Read MSR_PKG_POWER_LIMIT");
+            }
 
             uint watsRapl = (uint)(watts / PowerUnit);
 
@@ -74,7 +120,10 @@ namespace GHelper.AutoTDP.PowerLimiter
             eaxFilterd |= 0x8000;
             edxFilterd |= 0x8000;
 
-            ols.Wrmsr(0x610, eaxFilterd, edxFilterd);
+            if (ols.Wrmsr(0x610, eaxFilterd, edxFilterd) == 0)
+            {
+                Logger.WriteLine("[AutoTDPService] Failed to Write MSR_PKG_POWER_LIMIT");
+            }
         }
 
 
@@ -83,10 +132,16 @@ namespace GHelper.AutoTDP.PowerLimiter
             uint eax = 0;
             uint edx = 0;
 
-            ols.Rdmsr(MSR_PKG_POWER_LIMIT, ref eax, ref edx);
+            if (ols.Rdmsr(MSR_PKG_POWER_LIMIT, ref eax, ref edx) == 0)
+            {
+                Logger.WriteLine("[AutoTDPService] Failed to Read MSR_PKG_POWER_LIMIT");
+            }
 
             uint pl1 = eax & PL1_MASK;
             uint pl2 = edx & PL2_MASK;
+
+
+            Logger.WriteLine("[AutoTDPService] Read Power Limit - PL1: " + pl1 + "W, PL2: " + pl2 + "W");
 
             return (int)(pl1 * PowerUnit);
         }
