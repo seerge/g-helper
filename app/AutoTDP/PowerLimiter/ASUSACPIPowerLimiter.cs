@@ -8,6 +8,8 @@ namespace GHelper.AutoTDP.PowerLimiter
         private bool allAmd;
         private bool fPPT;
 
+        private int lastPowerLimit = 0;
+
         public ASUSACPIPowerLimiter()
         {
             allAmd = Program.acpi.IsAllAmdPPT();
@@ -26,14 +28,26 @@ namespace GHelper.AutoTDP.PowerLimiter
         public void SetCPUPowerLimit(double watts)
         {
 
+            int pl = (int)Math.Ceiling(watts);
+
+            if (lastPowerLimit == pl)
+            {
+                //Do not set the same limit twice to reduce load on the ACPI driver
+                return;
+            }
+
             if (allAmd) // CPU limit all amd models
             {
-                Program.acpi.DeviceSet(AsusACPI.PPT_CPUB0, (int)watts, "PowerLimit B0");
-            } else {
-                Program.acpi.DeviceSet(AsusACPI.PPT_APUA3, (int)watts, "PowerLimit A3");
-                Program.acpi.DeviceSet(AsusACPI.PPT_APUA0, (int)watts, "PowerLimit A0");
-                if (fPPT) Program.acpi.DeviceSet(AsusACPI.PPT_APUC1, (int)watts, "PowerLimit C1");
+                Program.acpi.DeviceSet(AsusACPI.PPT_CPUB0, pl, "PowerLimit B0");
             }
+            else
+            {
+                Program.acpi.DeviceSet(AsusACPI.PPT_APUA3, pl, "PowerLimit A3");
+                Program.acpi.DeviceSet(AsusACPI.PPT_APUA0, pl, "PowerLimit A0");
+                if (fPPT) Program.acpi.DeviceSet(AsusACPI.PPT_APUC1, pl, "PowerLimit C1");
+            }
+
+            lastPowerLimit = pl;
         }
 
 
