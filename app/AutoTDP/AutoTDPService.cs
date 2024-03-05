@@ -326,6 +326,8 @@ namespace GHelper.AutoTDP
                 CurrentTDP = powerLimiter.GetCPUPowerLimit();
                 powerLimiter.SavePowerLimits(); // save current power limits to restore them afterwards
 
+                Logger.WriteLine("[AutoTDPService] Backing up Power limit: " + CurrentTDP + "W");
+
                 LowestStableTDP = profile.MaxTdp;
                 LowestTDP = profile.MaxTdp;
 
