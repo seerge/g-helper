@@ -522,9 +522,19 @@ public static class AppConfig
         }
     }
 
+    public static bool IsResetRequired()
+    {
+        return ContainsModel("GA403");
+    }
+
     public static bool IsFanRequired()
     {
-        return ContainsModel("GA402X") || ContainsModel("G513") || ContainsModel("G713R") || ContainsModel("G713P");
+        return ContainsModel("GA402X") || ContainsModel("G513") || ContainsModel("G713R") || ContainsModel("G713P") || ContainsModel("GU605") || ContainsModel("GA403");
+    }
+
+    public static bool IsAMDLight()
+    {
+        return ContainsModel("GA402X") || ContainsModel("GU605") || ContainsModel("GA403") || ContainsModel("FA507N") || ContainsModel("FA507X") || ContainsModel("FA707N") || ContainsModel("FA707X");
     }
 
     public static bool IsPowerRequired()
