@@ -9,10 +9,13 @@ namespace GHelper.AutoTDP
     internal class AutoTDPService : IDisposable
     {
 
-        private static readonly bool LOG_AUTO_TDP = false;
-        private static readonly int INTERVAL_MIN_CHECK = 30 * 1_000;
+        private static readonly bool LOG_AUTO_TDP = true;
+        private static readonly int INTERVAL_MIN_CHECK = 10 * 1_000;
         private static readonly int INTERVAL_APP_CHECK = 5_000;
-        private static readonly int INTERVAL_FPS_CHECK = 500;
+        private static readonly int INTERVAL_FPS_CHECK = 33;
+
+        private static readonly int INTERVAL_LOG = 1_000;
+        private int LogCounter = 0;
 
         string GameProfileFile = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\GHelper\\AutoTDP.json";
 
@@ -226,14 +229,14 @@ namespace GHelper.AutoTDP
             if (runningGames.Count == 0)
             {
                 if (LOG_AUTO_TDP)
-                    Logger.WriteLine("[AutoTDPService] No games detected");
+                    AutoTDPLogger.WriteLine("[AutoTDPService] No games detected");
                 return;
             }
 
             foreach (GameInstance gi in runningGames)
             {
                 if (LOG_AUTO_TDP)
-                    Logger.WriteLine("[AutoTDPService] Detected App: " + gi.ProcessName + "  PID: " + gi.ProcessID);
+                    AutoTDPLogger.WriteLine("[AutoTDPService] Detected App: " + gi.ProcessName + "  PID: " + gi.ProcessID);
 
                 if (IsGameInList(gi.ProcessName))
                 {
@@ -273,7 +276,7 @@ namespace GHelper.AutoTDP
             if (currentGame is not null)
             {
                 if (LOG_AUTO_TDP)
-                    Logger.WriteLine("[AutoTDPService] Already handling a game");
+                    AutoTDPLogger.WriteLine("[AutoTDPService] Already handling a game");
                 return;
             }
 
@@ -299,6 +302,7 @@ namespace GHelper.AutoTDP
             FramerateDipCounter = 0;
             LowestStableStability = 0;
             LowestStableChecks = 0;
+            LogCounter = 0;
 
             if (powerLimiter is not null)
             {
@@ -330,12 +334,13 @@ namespace GHelper.AutoTDP
 
                     double fps = framerateSouce.GetFramerate(instance);
 
-                    if (LOG_AUTO_TDP)
-                        Logger.WriteLine("[AutoTDPService] (" + instance.ProcessName + ") Framerate " + GameFPS);
+                    if (LOG_AUTO_TDP && LogCounter * INTERVAL_FPS_CHECK > INTERVAL_LOG)
+                        AutoTDPLogger.WriteLine("[AutoTDPService] (" + instance.ProcessName + ") Framerate " + GameFPS);
 
                     if (fps < 0.0d)
                     {
                         //Game is not running anymore or RTSS lost its hook
+                        Logger.WriteLine("[AutoTDPService] Game exited: " + instance.ProcessName + "  PID: " + instance.ProcessID);
                         Reset();
                         return;
                     }
@@ -385,14 +390,14 @@ namespace GHelper.AutoTDP
                     FramerateDipCounter++;
                     FramerateUnstable();
 
-                    correction = targetFPS + 0.15 - currentFramerate;
+                    correction = targetFPS + 0.25 - currentFramerate;
                 }
                 else if (FramerateDipCounter >= 4
                     && targetFPS - 0.5 <= FramerateLog.Average()
                          && FramerateLog.Average() - 0.1 <= targetFPS)
                 {
                     //long dip
-                    correction = targetFPS + 0.35 - currentFramerate;
+                    correction = targetFPS + 0.45 - currentFramerate;
                     FramerateTargetReachedCounter = FPSDipHistorySize;
                     FramerateVeryUnstable();
                 }
@@ -450,7 +455,8 @@ namespace GHelper.AutoTDP
             {
                 LowestStableStability++;
 
-                if (LowestStableStability > 120)
+                //Stable for at least 15s
+                if (LowestStableStability * INTERVAL_FPS_CHECK > (15 * 1_000))
                 {
                     //if stable for long time try to reduce it again
                     LowestStableTDP = ProfileForGame(currentGame.ProcessName).MaxTdp;
@@ -462,7 +468,7 @@ namespace GHelper.AutoTDP
             {
                 LowestStableStability++;
 
-                if (LowestStableStability > 10 && Stabilize())
+                if (LowestStableStability * INTERVAL_FPS_CHECK > (5 * 1_000) && Stabilize())
                 {
                     LowestStableTDP = LowestTDP + (LowestTDP * 0.10); // Add 10% additional wattage to get a smoother framerate
                 }
@@ -509,7 +515,7 @@ namespace GHelper.AutoTDP
             delta = Math.Clamp(delta, -15, 15);
 
 
-            double adjustment = (delta * CurrentTDP / GameFPS) * 0.65;
+            double adjustment = (delta * CurrentTDP / GameFPS) * 0.7;
             //Dampen the changes to not change TDP too aggressively which would cause performance issues
             adjustment += TDPDamper(GameFPS);
 
@@ -518,22 +524,22 @@ namespace GHelper.AutoTDP
             if (GameFPSPrevious > profile.GetTDPFPS() && GameFPS < profile.GetTDPFPS())
             {
                 if (LOG_AUTO_TDP)
-                    Logger.WriteLine("[AutoTDPService] Single Dip, Ignore");
+                    AutoTDPLogger.WriteLine("[AutoTDPService] Single Dip, Ignore");
                 //single dip. Ignore
                 return;
             }
 
-            if (LastAdjustment > 0 && GameFPS <= GameFPSPrevious && adjustment > 0)
+            if (LastAdjustment > 0 && GameFPS <= GameFPSPrevious + 0.1 && adjustment > 0)
             {
                 LastAdjustmentsWithoutImprovement++;
                 LastAdjustmentTotal += adjustment;
 
-                //Wait for 3 consecutive power increases and at least 3W increased TDP before judging that increasing power does nothing.
-                if (LastAdjustmentsWithoutImprovement >= 3 && LastAdjustmentTotal > 3)
+                //Wait for 10 consecutive power increases and at least 5W increased TDP before judging that increasing power does nothing.
+                if (LastAdjustmentsWithoutImprovement >= 10 && LastAdjustmentTotal > 5)
                 {
                     //Do not adjust if increasing power does not improve framerate.
                     if (LOG_AUTO_TDP)
-                        Logger.WriteLine("[AutoTDPService] Not adjusting because no improvement from last increase");
+                        AutoTDPLogger.WriteLine("[AutoTDPService] Not adjusting because no improvement from last increase");
                     return;
                 }
 
@@ -556,8 +562,19 @@ namespace GHelper.AutoTDP
             }
 
             if (LOG_AUTO_TDP)
-                Logger.WriteLine("[AutoTDPService] Power Limit from " + CurrentTDP + "W to " + newPL + "W, Delta:" + adjustment
-                    + " Lowest: " + LowestTDP + "W, Lowest Stable(" + LowestStableStability + "): " + LowestStableTDP + "W");
+            {
+                if (LogCounter * INTERVAL_FPS_CHECK > INTERVAL_LOG)
+                {
+                    LogCounter = 0;
+                    AutoTDPLogger.WriteLine("[AutoTDPService] Power Limit from " + CurrentTDP + "W to " + newPL + "W, Delta:" + adjustment
+                   + " Lowest: " + LowestTDP + "W, Lowest Stable(" + LowestStableStability + "): " + LowestStableTDP + "W");
+                }
+                else
+                {
+                    LogCounter++;
+                }
+            }
+
 
             //Apply power limits
             powerLimiter.SetCPUPowerLimit(newPL);
