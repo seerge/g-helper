@@ -86,12 +86,13 @@ namespace GHelper.Mode
                 // Vivobook fallback
                 if (status != 1) Program.acpi.SetVivoMode(Modes.GetBase(mode));
 
+                SetGPUClocks();
+
                 AutoFans();
                 await Task.Delay(TimeSpan.FromMilliseconds(1000));
                 AutoPower();
 
 
-                SetGPUClocks();
             });
 
 
