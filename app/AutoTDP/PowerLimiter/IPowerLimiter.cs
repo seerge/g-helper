@@ -12,5 +12,7 @@
 
         public int GetMinInterval();
 
+        public void Prepare();
+
     }
 }

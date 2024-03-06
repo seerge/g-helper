@@ -25,6 +25,12 @@ namespace GHelper.AutoTDP.PowerLimiter
             return 250;
         }
 
+        public void Prepare()
+        {
+            //Program.modeControl.AutoFans(AppConfig.IsManualModeRequired() || AppConfig.IsFanRequired());
+            Program.modeControl.SetPerformanceMode(Modes.GetCurrent());
+        }
+
         public void SavePowerLimits()
         {
         }

@@ -134,8 +134,12 @@ namespace GHelper.AutoTDP
 
             InitLimiter();
 
-            if (powerLimiter is not null)
+            if (powerLimiter is not null && IsActive())
+            {
                 powerLimiter.SavePowerLimits();
+                powerLimiter.Prepare();
+            }
+
         }
 
         public void Start()
@@ -352,6 +356,8 @@ namespace GHelper.AutoTDP
             {
                 CurrentTDP = powerLimiter.GetCPUPowerLimit();
                 powerLimiter.SavePowerLimits(); // save current power limits to restore them afterwards
+
+                powerLimiter.Prepare();
 
                 Logger.WriteLine("[AutoTDPService] Backing up Power limit: " + CurrentTDP + "W");
 
@@ -624,6 +630,7 @@ namespace GHelper.AutoTDP
         public void Shutdown()
         {
             Running = false;
+            currentGame = null;
 
             if (checkerThread is not null)
             {
@@ -650,7 +657,6 @@ namespace GHelper.AutoTDP
                 framerateSouce = null;
             }
 
-            currentGame = null;
             Reset();
 
             //Kill RTSS instance if we started one

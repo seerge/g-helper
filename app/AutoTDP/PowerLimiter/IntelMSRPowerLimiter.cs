@@ -36,6 +36,11 @@ namespace GHelper.AutoTDP.PowerLimiter
             return 250;
         }
 
+        public void Prepare()
+        {
+
+        }
+
         public static bool IsAvailable()
         {
             if (RyzenControl.IsAMD())
