@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using Microsoft.Win32;
 using RTSSSharedMemoryNET;
 
 namespace GHelper.AutoTDP.FramerateSource
@@ -15,15 +16,36 @@ namespace GHelper.AutoTDP.FramerateSource
         public static bool IsRunning => Process.GetProcessesByName("RTSS").Length != 0;
 
 
+        private static string GetInstallPath()
+        {
+            try
+            {
+                return (string)Registry.GetValue("HKEY_LOCAL_MACHINE\\SOFTWARE\\WOW6432Node\\Unwinder\\RTSS", "InstallPath", null);
+            }
+            catch (Exception e)
+            {
+                return null;
+            }
+        }
+
+
         static RTSSFramerateSource()
         {
-            RTSSPath = @"C:\Program Files (x86)\RivaTuner Statistics Server\RTSS.exe";
+            string path = GetInstallPath();
+
+            if (path is not null)
+            {
+                RTSSPath = path;
+            }
+            else
+            {
+                RTSSPath = @"C:\Program Files (x86)\RivaTuner Statistics Server\RTSS.exe";
+            }
         }
 
         public static bool IsAvailable()
         {
             return File.Exists(RTSSPath);
-
         }
 
         public static void Start()
