@@ -170,7 +170,7 @@ namespace GHelper.AutoTDP.PowerLimiter
             uint pl2 = edx & PL2_MASK;
 
 
-            Logger.WriteLine("[AutoTDPService] Read Power Limit - PL1: " + pl1 + "W, PL2: " + pl2 + "W");
+            Logger.WriteLine("[AutoTDPService] Read Power Limit - PL1: " + pl1 * PowerUnit + "W, PL2: " + pl2 * PowerUnit + "W");
 
             return (int)(pl1 * PowerUnit);
         }
