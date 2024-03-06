@@ -184,6 +184,15 @@ namespace GHelper.AutoTDP
         {
             string? source = AppConfig.GetString("auto_tdp_fps_source");
 
+            if (source is null)
+            {
+                Logger.WriteLine("[AutoTDPService] No source defined in settings. Using Default");
+            }
+            else
+            {
+                Logger.WriteLine("[AutoTDPService] Framerate Source Setting: " + source);
+            }
+
             if ((source is null || source.Equals("rtss")) && RTSSFramerateSource.IsAvailable())
             {
                 Logger.WriteLine("[AutoTDPService] Initializing RTSSFramerateSource...");
@@ -198,7 +207,16 @@ namespace GHelper.AutoTDP
         {
             string? limiter = AppConfig.GetString("auto_tdp_limiter");
 
-            if (limiter is null || limiter.Equals("asus_acpi") && ASUSACPIPowerLimiter.IsAvailable())
+            if (limiter is null)
+            {
+                Logger.WriteLine("[AutoTDPService] No limiter defined in settings. Using Default");
+            }
+            else
+            {
+                Logger.WriteLine("[AutoTDPService] Limiter Setting: " + limiter);
+            }
+
+            if (limiter is null || (limiter.Equals("asus_acpi") && ASUSACPIPowerLimiter.IsAvailable()))
             {
                 Logger.WriteLine("[AutoTDPService] Initializing ASUSACPIPowerLimiter...");
                 powerLimiter = new ASUSACPIPowerLimiter();
