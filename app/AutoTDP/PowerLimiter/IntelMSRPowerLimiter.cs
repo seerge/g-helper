@@ -26,13 +26,14 @@ namespace GHelper.AutoTDP.PowerLimiter
         {
             ols = new Ols();
             ols.InitializeOls();
+            DRIVER_LOADED = true;
             ReadPowerUnit();
             Logger.WriteLine("[AutoTDPService] Read MSR_RAPL_POWER_UNIT: " + PowerUnit);
         }
 
         public int GetMinInterval()
         {
-            return 33;
+            return 250;
         }
 
         public static bool IsAvailable()
