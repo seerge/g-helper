@@ -10,6 +10,8 @@ namespace GHelper.AutoTDP.PowerLimiter
 
         private Ols ols;
 
+        private static bool DRIVER_LOADED = false;
+
         private uint DefaultEax = 0; // Set on first reading
         private uint DefaultEdx = 0;
 
@@ -39,6 +41,12 @@ namespace GHelper.AutoTDP.PowerLimiter
             {
                 return false;
             }
+
+            if (DRIVER_LOADED)
+            {
+                return true;
+            }
+
             Ols o = new Ols();
 
             o.InitializeOls();
@@ -47,10 +55,22 @@ namespace GHelper.AutoTDP.PowerLimiter
             o.DeinitializeOls();
             o.Dispose();
 
+            if (err == (uint)Ols.OlsDllStatus.OLS_DLL_NO_ERROR)
+            {
+                return true;
+            }
+
+            LogOLSState(err);
+
+            return false;
+        }
+
+        private static void LogOLSState(uint err)
+        {
             switch (err)
             {
                 case (uint)Ols.OlsDllStatus.OLS_DLL_NO_ERROR:
-                    return true;
+                    return;
                 case (uint)Ols.OlsDllStatus.OLS_DLL_DRIVER_NOT_LOADED:
                     Logger.WriteLine("[AutoTDPService] Intel MSR Error: OLS_DRIVER_NOT_LOADED");
                     break;
@@ -70,8 +90,6 @@ namespace GHelper.AutoTDP.PowerLimiter
                     Logger.WriteLine("[AutoTDPService] Intel MSR Error: OLS_DLL_UNKNOWN_ERROR");
                     break;
             }
-
-            return false;
         }
 
         public void SavePowerLimits()
@@ -82,6 +100,7 @@ namespace GHelper.AutoTDP.PowerLimiter
             if (ols.Rdmsr(MSR_PKG_POWER_LIMIT, ref DefaultEax, ref DefaultEdx) == 0)
             {
                 Logger.WriteLine("[AutoTDPService] Failed to Read MSR_PKG_POWER_LIMIT");
+                LogOLSState(ols.GetDllStatus());
             }
         }
 
@@ -93,6 +112,7 @@ namespace GHelper.AutoTDP.PowerLimiter
             if (ols.Rdmsr(MSR_RAPL_POWER_UNIT, ref eax, ref edx) == 0)
             {
                 Logger.WriteLine("[AutoTDPService] Failed to Read MSR_RAPL_POWER_UNIT");
+                LogOLSState(ols.GetDllStatus());
             }
 
 
@@ -110,6 +130,7 @@ namespace GHelper.AutoTDP.PowerLimiter
             if (ols.Rdmsr(MSR_PKG_POWER_LIMIT, ref eax, ref edx) == 0)
             {
                 Logger.WriteLine("[AutoTDPService] Failed to Read MSR_PKG_POWER_LIMIT");
+                LogOLSState(ols.GetDllStatus());
             }
 
             uint watsRapl = (uint)(watts / PowerUnit);
@@ -128,6 +149,7 @@ namespace GHelper.AutoTDP.PowerLimiter
             if (ols.Wrmsr(0x610, eaxFilterd, edxFilterd) == 0)
             {
                 Logger.WriteLine("[AutoTDPService] Failed to Write MSR_PKG_POWER_LIMIT");
+                LogOLSState(ols.GetDllStatus());
             }
         }
 
@@ -140,6 +162,7 @@ namespace GHelper.AutoTDP.PowerLimiter
             if (ols.Rdmsr(MSR_PKG_POWER_LIMIT, ref eax, ref edx) == 0)
             {
                 Logger.WriteLine("[AutoTDPService] Failed to Read MSR_PKG_POWER_LIMIT");
+                LogOLSState(ols.GetDllStatus());
             }
 
             uint pl1 = eax & PL1_MASK;
@@ -165,6 +188,7 @@ namespace GHelper.AutoTDP.PowerLimiter
         {
             ols.DeinitializeOls();
             ols.Dispose();
+            DRIVER_LOADED = true;
         }
     }
 }
