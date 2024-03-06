@@ -445,7 +445,7 @@ namespace GHelper.AutoTDP
 
                     correction = targetFPS + 0.25 - currentFramerate;
                 }
-                else if (FramerateDipCounter >= 4
+                else if (FramerateDipCounter >= 2
                     && targetFPS - 0.5 <= FramerateLog.Average()
                          && FramerateLog.Average() - 0.1 <= targetFPS)
                 {
@@ -479,11 +479,11 @@ namespace GHelper.AutoTDP
 
         private void FramerateUnstable()
         {
-            LowestStableStability -= 15;
+            LowestStableStability -= 30;
         }
         private void FramerateVeryUnstable()
         {
-            LowestStableStability -= 60;
+            LowestStableStability = -10;
         }
 
         private bool Stabilize()
