@@ -45,7 +45,15 @@ namespace GHelper.AutoTDP
 
         private void ComboBoxLimiter_DropDownClosed(object? sender, EventArgs e)
         {
-            AppConfig.Set("auto_tdp_limiter", AutoTDPService.AvailablePowerLimiters().ElementAt(comboBoxLimiter.SelectedIndex));
+            string? limiter = AppConfig.GetString("auto_tdp_limiter");
+            string newLimiter = AutoTDPService.AvailablePowerLimiters().ElementAt(comboBoxLimiter.SelectedIndex);
+
+            AppConfig.Set("auto_tdp_limiter", newLimiter);
+
+            if (!newLimiter.Equals(limiter))
+            {
+                Program.autoTDPService.SwapPowerLimiter();
+            }
         }
 
         private void CheckBoxEnabled_CheckedChanged(object? sender, EventArgs e)

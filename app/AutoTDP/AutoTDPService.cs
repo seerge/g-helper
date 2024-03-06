@@ -120,6 +120,24 @@ namespace GHelper.AutoTDP
             return l;
         }
 
+        public void SwapPowerLimiter()
+        {
+            IPowerLimiter? ipl = powerLimiter;
+            powerLimiter = null;
+
+            if (ipl is not null)
+            {
+                ipl.ResetPowerLimits();
+                ipl.Dispose();
+            }
+
+
+            InitLimiter();
+
+            if (powerLimiter is not null)
+                powerLimiter.SavePowerLimits();
+        }
+
         public void Start()
         {
             if (!IsEnabled() || IsRunning() || !IsAvailable())
@@ -588,7 +606,7 @@ namespace GHelper.AutoTDP
 
 
             //Apply power limits
-            powerLimiter.SetCPUPowerLimit(newPL);
+            powerLimiter?.SetCPUPowerLimit(newPL);
             CurrentTDP = newPL;
         }
 
