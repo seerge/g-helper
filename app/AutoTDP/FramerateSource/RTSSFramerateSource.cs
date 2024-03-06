@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using GHelper.Helpers;
 using Microsoft.Win32;
 using RTSSSharedMemoryNET;
 
@@ -45,7 +46,12 @@ namespace GHelper.AutoTDP.FramerateSource
 
         public static bool IsAvailable()
         {
-            return File.Exists(RTSSPath);
+            if (IsRunning)
+            {
+                return true;
+            }
+
+            return File.Exists(RTSSPath) && ProcessHelper.IsUserAdministrator();
         }
 
         public static void Start()
