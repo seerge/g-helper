@@ -47,7 +47,7 @@ namespace GHelper
 
         private static PowerLineStatus isPlugged = SystemInformation.PowerStatus.PowerLineStatus;
 
-        public static AutoTDPService autoTDPService;
+        public static AutoTDPService autoTDPService = null;
 
         // The main entry point for the application
         public static void Main(string[] args)

@@ -47,7 +47,7 @@ namespace GHelper.AutoTDP
         private double LastAdjustmentTotal = 0;
         private int LastAdjustmentsWithoutImprovement = 0;
 
-        private GameInstance? currentGame;
+        private GameInstance? currentGame = null;
 
         public AutoTDPService()
         {
