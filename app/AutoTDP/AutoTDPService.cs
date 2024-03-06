@@ -10,7 +10,7 @@ namespace GHelper.AutoTDP
     {
 
         private static readonly bool LOG_AUTO_TDP = true;
-        private static readonly int INTERVAL_MIN_CHECK = 10 * 1_000;
+        private static readonly int INTERVAL_MIN_CHECK = 15 * 1_000;
         private static readonly int INTERVAL_APP_CHECK = 5_000;
         private static readonly int INTERVAL_FPS_CHECK = 33;
 
@@ -508,8 +508,8 @@ namespace GHelper.AutoTDP
             {
                 LowestStableStability++;
 
-                //Stable for at least 15s
-                if (LowestStableStability * FPSCheckInterval() > (15 * 1_000))
+                //Stable for at least 120s
+                if (LowestStableStability * FPSCheckInterval() > (120 * 1_000))
                 {
                     //if stable for long time try to reduce it again
                     LowestStableTDP = ProfileForGame(currentGame.ProcessName).MaxTdp;
@@ -534,7 +534,7 @@ namespace GHelper.AutoTDP
                 LowestTDP = CurrentTDP;
             }
 
-            LowestStableStability = Math.Min(LowestStableStability, 150);
+            LowestStableStability = Math.Min(LowestStableStability, (125 * 1_000) / FPSCheckInterval());
         }
 
 
