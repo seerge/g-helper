@@ -139,14 +139,15 @@ namespace GHelper.AutoTDP.PowerLimiter
                 LogOLSState(ols.GetDllStatus());
             }
 
-            uint watsRapl = (uint)(watts / PowerUnit);
+            //Power limit in RAPL units
+            uint wattsRapl = (uint)(watts / PowerUnit);
 
             //Set limits for both PL1 and PL2
             uint eaxFilterd = eax & ~PL1_MASK;
             uint edxFilterd = edx & ~PL2_MASK;
 
-            eaxFilterd |= watsRapl;
-            edxFilterd |= watsRapl;
+            eaxFilterd |= wattsRapl;
+            edxFilterd |= wattsRapl;
 
             //Enable clamping
             eaxFilterd |= 0x8000;
