@@ -1,4 +1,5 @@
-﻿using GHelper.Mode;
+﻿using GHelper;
+using GHelper.Mode;
 using System.Management;
 using System.Text.Json;
 
@@ -482,7 +483,9 @@ public static class AppConfig
 
     public static bool IsManualModeRequired()
     {
-        if (!IsMode("auto_apply_power"))
+        if (!IsMode("auto_apply_power")
+            && (Program.autoTDPService is null
+            || (!Program.autoTDPService.IsActive() && AppConfig.GetString("auto_tdp_limiter").Equals("asus_acpi"))))
             return false;
 
         return
