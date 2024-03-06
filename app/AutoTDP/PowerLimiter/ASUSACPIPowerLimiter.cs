@@ -64,7 +64,7 @@ namespace GHelper.AutoTDP.PowerLimiter
         // You can't read PPTs on ASUS :) endpoints just return 0 if they are available
         public int GetCPUPowerLimit()
         {
-            return Program.acpi.DeviceGet(AsusACPI.PPT_APUA0);
+            return 200;
         }
 
         public void Dispose()
