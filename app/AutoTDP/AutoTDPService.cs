@@ -86,6 +86,15 @@ namespace GHelper.AutoTDP
             return AvailablePowerLimiters().Count > 0 && AvailableFramerateSources().Count > 0;
         }
 
+        private int FPSCheckInterval()
+        {
+            if (powerLimiter is null)
+            {
+                return INTERVAL_FPS_CHECK;
+            }
+            return (int)Math.Max(INTERVAL_FPS_CHECK, powerLimiter.GetMinInterval());
+        }
+
         public static List<string> AvailableFramerateSources()
         {
             List<string> l = new List<string>();
@@ -336,7 +345,7 @@ namespace GHelper.AutoTDP
 
                     double fps = framerateSouce.GetFramerate(instance);
 
-                    if (LOG_AUTO_TDP && LogCounter * INTERVAL_FPS_CHECK > INTERVAL_LOG)
+                    if (LOG_AUTO_TDP && LogCounter * FPSCheckInterval() > INTERVAL_LOG)
                         AutoTDPLogger.WriteLine("[AutoTDPService] (" + instance.ProcessName + ") Framerate " + GameFPS);
 
                     if (fps < 0.0d)
@@ -353,7 +362,7 @@ namespace GHelper.AutoTDP
 
                     try
                     {
-                        Thread.Sleep(INTERVAL_FPS_CHECK);
+                        Thread.Sleep(FPSCheckInterval());
                     }
                     catch (ThreadInterruptedException)
                     {
@@ -437,7 +446,7 @@ namespace GHelper.AutoTDP
 
         private bool Stabilize()
         {
-            return LowestStableChecks * INTERVAL_FPS_CHECK > INTERVAL_MIN_CHECK;
+            return LowestStableChecks * FPSCheckInterval() > INTERVAL_MIN_CHECK;
         }
 
         private void ProcessStability()
@@ -458,7 +467,7 @@ namespace GHelper.AutoTDP
                 LowestStableStability++;
 
                 //Stable for at least 15s
-                if (LowestStableStability * INTERVAL_FPS_CHECK > (15 * 1_000))
+                if (LowestStableStability * FPSCheckInterval() > (15 * 1_000))
                 {
                     //if stable for long time try to reduce it again
                     LowestStableTDP = ProfileForGame(currentGame.ProcessName).MaxTdp;
@@ -470,7 +479,7 @@ namespace GHelper.AutoTDP
             {
                 LowestStableStability++;
 
-                if (LowestStableStability * INTERVAL_FPS_CHECK > (5 * 1_000) && Stabilize())
+                if (LowestStableStability * FPSCheckInterval() > (5 * 1_000) && Stabilize())
                 {
                     LowestStableTDP = LowestTDP + (LowestTDP * 0.10); // Add 10% additional wattage to get a smoother framerate
                 }
@@ -565,7 +574,7 @@ namespace GHelper.AutoTDP
 
             if (LOG_AUTO_TDP)
             {
-                if (LogCounter * INTERVAL_FPS_CHECK > INTERVAL_LOG)
+                if (LogCounter * FPSCheckInterval() > INTERVAL_LOG)
                 {
                     LogCounter = 0;
                     AutoTDPLogger.WriteLine("[AutoTDPService] Power Limit from " + CurrentTDP + "W to " + newPL + "W, Delta:" + adjustment

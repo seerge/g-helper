@@ -20,6 +20,10 @@ namespace GHelper.AutoTDP.PowerLimiter
         {
             return AppConfig.IsASUS();
         }
+        public int GetMinInterval()
+        {
+            return 250;
+        }
 
         public void SavePowerLimits()
         {

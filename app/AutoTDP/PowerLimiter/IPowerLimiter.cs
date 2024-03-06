@@ -10,5 +10,7 @@
 
         public void SavePowerLimits();
 
+        public int GetMinInterval();
+
     }
 }

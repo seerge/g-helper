@@ -28,6 +28,11 @@ namespace GHelper.AutoTDP.PowerLimiter
             Logger.WriteLine("[AutoTDPService] Read MSR_RAPL_POWER_UNIT: " + PowerUnit);
         }
 
+        public int GetMinInterval()
+        {
+            return 33;
+        }
+
         public static bool IsAvailable()
         {
             if (RyzenControl.IsAMD())
