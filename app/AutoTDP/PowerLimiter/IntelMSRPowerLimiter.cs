@@ -1,4 +1,5 @@
-﻿using Ryzen;
+﻿using GHelper.Helpers;
+using Ryzen;
 
 namespace GHelper.AutoTDP.PowerLimiter
 {
@@ -43,6 +44,11 @@ namespace GHelper.AutoTDP.PowerLimiter
 
         public static bool IsAvailable()
         {
+            if (!ProcessHelper.IsUserAdministrator())
+            {
+                return false;
+            }
+
             if (RyzenControl.IsAMD())
             {
                 return false;
