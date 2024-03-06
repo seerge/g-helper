@@ -1,4 +1,5 @@
-﻿using System.Runtime.InteropServices;
+﻿using GHelper.Helpers;
+using System.Runtime.InteropServices;
 
 namespace GHelper.Display
 {
@@ -31,8 +32,14 @@ namespace GHelper.Display
             if (brightness >= 0) AppConfig.Set("brightness", brightness);
             else brightness = AppConfig.Get("brightness");
 
-            if (brightness >= 0) SetGamma(brightness);
+            if (brightness >= 0) Task.Run(() =>
+            {
+                //Logger.WriteLine($"Brightness: {brightness}");
+                var splendid = Environment.SystemDirectory + "\\DriverStore\\FileRepository\\asussci2.inf_amd64_f2eed2fae3b45a67\\ASUSOptimization\\AsusSplendid.exe";
+                ProcessHelper.RunCMD(splendid, (AppConfig.IsROG() ? 19 : 9) + " 0 " + (40 + brightness * 0.6));
+            });
         }
+
 
 
         public void SetGamma(int brightness = 100)

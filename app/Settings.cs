@@ -267,9 +267,10 @@ namespace GHelper
 
             int brightness = AppConfig.Get("brightness");
             if (brightness >= 0) sliderGamma.Value = brightness;
+            labelGamma.Text = sliderGamma.Value + "%";
 
             sliderGamma.ValueChanged += SliderGamma_ValueChanged;
-            labelGamma.Text = sliderGamma.Value + "%";
+            sliderGamma.MouseUp += SliderGamma_ValueChanged;
         }
 
 
