@@ -256,18 +256,66 @@ namespace GHelper
             buttonFnLock.Click += ButtonFnLock_Click;
 
             panelPerformance.Focus();
-
-            InitBrightness();
+            InitVisual();
         }
 
-        public void InitBrightness()
-        {
-            if (!AppConfig.IsOLED()) return;
-            panelGamma.Visible = true;
-            VisualiseBrightness();
 
-            sliderGamma.ValueChanged += SliderGamma_ValueChanged;
-            //sliderGamma.MouseUp += SliderGamma_ValueChanged;
+        public void InitVisual()
+        {
+
+            bool dimming = false;
+
+            if (AppConfig.IsOLED())
+            {
+                dimming = true;
+                labelGammaTitle.Text = "Flicker-free Dimming";
+                panelGamma.Visible = true;
+                sliderGamma.Visible = true;
+                VisualiseBrightness();
+                sliderGamma.ValueChanged += SliderGamma_ValueChanged;
+            }
+
+            var gamuts = ScreenControl.GetGamutModes();
+            if (gamuts.Count < 1) return;
+
+            if (!dimming) labelGammaTitle.Text = "Visual Mode";
+            else labelGammaTitle.Text += " / Visual";
+
+            panelGamma.Visible = true;
+            tableVisual.Visible = true;
+
+            comboVisual.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboVisual.DataSource = new BindingSource(ScreenControl.GetVisualModes(), null);
+            comboVisual.DisplayMember = "Value";
+            comboVisual.ValueMember = "Key";
+            comboVisual.SelectedValue = (SplendidCommand)AppConfig.Get("visual", (int)SplendidCommand.Default);
+
+            comboVisual.SelectedValueChanged += ComboVisual_SelectedValueChanged;
+            comboVisual.Visible = true;
+
+            if (gamuts.Count <= 1) return;
+
+            comboGamut.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboGamut.DataSource = new BindingSource(gamuts, null);
+            comboGamut.DisplayMember = "Value";
+            comboGamut.ValueMember = "Key";
+            comboGamut.SelectedValue = (SplendidGamut)AppConfig.Get("gamut", (int)SplendidGamut.Native);
+
+            comboGamut.SelectedValueChanged += ComboGamut_SelectedValueChanged;
+            comboGamut.Visible = true;
+
+        }
+
+        private void ComboGamut_SelectedValueChanged(object? sender, EventArgs e)
+        {
+            AppConfig.Set("gamut", (int)comboGamut.SelectedValue);
+            ScreenControl.SetGamut((int)comboGamut.SelectedValue);
+        }
+
+        private void ComboVisual_SelectedValueChanged(object? sender, EventArgs e)
+        {
+            AppConfig.Set("visual", (int)comboVisual.SelectedValue);
+            ScreenControl.SetVisual((SplendidCommand)comboVisual.SelectedValue);
         }
 
         public void VisualiseBrightness()
