@@ -80,9 +80,9 @@ namespace GHelper.Display
             RunSplendid(SplendidCommand.GamutMode, 0, mode);
         }
 
-        public static void SetVisual(SplendidCommand mode = SplendidCommand.Default)
+        public static void SetVisual(SplendidCommand mode = SplendidCommand.Default, int whiteBalance = 50)
         {
-            RunSplendid(mode, 0, 50);
+            RunSplendid(mode, 0, mode == SplendidCommand.Eyecare ? 2 : whiteBalance);
         }
 
         private static string GetSplendidPath()
