@@ -19,8 +19,7 @@ namespace GHelper.Input
         public static Keys keyApp = Keys.F12;
 
         static ModeControl modeControl = Program.modeControl;
-        static ScreenControl screenControl = new ScreenControl();
-
+        
         static bool isTUF = AppConfig.IsTUF();
 
         KeyboardListener listener;
@@ -246,7 +245,7 @@ namespace GHelper.Input
 
         static void SetBrightnessDimming(int delta)
         {
-            int brightness = screenControl.SetBrightness(delta: delta);
+            int brightness = ScreenControl.SetBrightness(delta: delta);
             if (brightness >= 0)
                 Program.toast.RunToast(brightness + "%", (delta < 0) ? ToastIcon.BrightnessDown : ToastIcon.BrightnessUp);
         }
@@ -479,7 +478,7 @@ namespace GHelper.Input
                     break;
                 case "miniled":
                     if (ScreenCCD.GetHDRStatus()) return;
-                    int miniled = screenControl.ToogleMiniled();
+                    int miniled = ScreenControl.ToogleMiniled();
                     Program.toast.RunToast(miniled == 1 ? "Multi-Zone" : "Single-Zone", miniled == 1 ? ToastIcon.BrightnessUp : ToastIcon.BrightnessDown);
                     break;
                 case "aura":
