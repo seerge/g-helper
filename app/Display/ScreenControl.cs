@@ -45,13 +45,17 @@ namespace GHelper.Display
         {
             brightnessTimer.Stop();
 
-            if (_init)
-            {
-                RunSplendid(SplendidCommand.Init, 4);
-                _init = false;
-            }
 
             if (RunSplendid(SplendidCommand.DimmingVisual, 0, (int)(40 + _brightness * 0.6))) return;
+
+            if (_init)
+            {
+                _init = false;
+                RunSplendid(SplendidCommand.Init);
+                RunSplendid(SplendidCommand.Init, 4);
+                if (RunSplendid(SplendidCommand.DimmingVisual, 0, (int)(40 + _brightness * 0.6))) return;
+            }
+
             // GammaRamp Fallback
             SetGamma(_brightness);
         }
