@@ -258,6 +258,7 @@ namespace GHelper
             panelPerformance.Focus();
 
             InitBrightness();
+            InitVisual();
         }
 
         public void InitBrightness()
@@ -268,6 +269,41 @@ namespace GHelper
 
             sliderGamma.ValueChanged += SliderGamma_ValueChanged;
             //sliderGamma.MouseUp += SliderGamma_ValueChanged;
+        }
+
+        public void InitVisual()
+        {
+            var gamuts = ScreenControl.GetGamutModes();
+            if (gamuts.Count < 1) return;
+
+            tableVisual.Visible = true;
+
+            comboVisual.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboVisual.DataSource = new BindingSource(ScreenControl.GetVisualModes(), null);
+            comboVisual.DisplayMember = "Value";
+            comboVisual.ValueMember = "Key";
+            comboVisual.SelectedValueChanged += ComboVisual_SelectedValueChanged;
+            comboVisual.Visible = true;
+
+            if (gamuts.Count <= 1) return;
+
+            comboGamut.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboGamut.DataSource = new BindingSource(gamuts, null);
+            comboGamut.DisplayMember = "Value";
+            comboGamut.ValueMember = "Key";
+            comboGamut.SelectedValueChanged += ComboGamut_SelectedValueChanged;
+            comboGamut.Visible = true;
+
+        }
+
+        private void ComboGamut_SelectedValueChanged(object? sender, EventArgs e)
+        {
+            ScreenControl.SetGamut((int)comboGamut.SelectedValue);
+        }
+
+        private void ComboVisual_SelectedValueChanged(object? sender, EventArgs e)
+        {
+            ScreenControl.SetVisual((SplendidCommand)comboVisual.SelectedValue);
         }
 
         public void VisualiseBrightness()
