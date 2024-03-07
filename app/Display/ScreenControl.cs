@@ -2,6 +2,13 @@
 
 namespace GHelper.Display
 {
+    enum SplendidCommand: int
+    {
+        Init = 10,
+        DimmingAsus = 9,
+        DimmingVisual = 19
+    }
+
     public static class ScreenControl
     {
 
@@ -10,28 +17,41 @@ namespace GHelper.Display
         public static DisplayGammaRamp? gammaRamp;
 
         private static int _brightness = 100;
+        private static bool _init = true;
+
         private static System.Timers.Timer brightnessTimer = new System.Timers.Timer(100);
 
         static ScreenControl () {
             brightnessTimer.Elapsed += BrightnessTimerTimer_Elapsed;
         }
 
+        private static bool RunSplendid(SplendidCommand command, int? param1 = null, int? param2 = null)
+        {
+            var splendid = Environment.SystemDirectory + "\\DriverStore\\FileRepository\\asussci2.inf_amd64_f2eed2fae3b45a67\\ASUSOptimization\\AsusSplendid.exe";
+            bool isGameVisual = Directory.Exists("C:\\ProgramData\\ASUS\\GameVisual");
+            bool isSplenddid = File.Exists(splendid);
+
+            if (isSplenddid)
+            {
+                if (command == SplendidCommand.DimmingVisual && !isGameVisual) command = SplendidCommand.DimmingAsus;
+                var result = ProcessHelper.RunCMD(splendid, (int)command + " " + param1 + " " + param2);
+                if (result.Contains("file not exist") || (result.Length == 0 && isGameVisual)) return false;
+            }
+
+            return true;
+        }
+
         private static void BrightnessTimerTimer_Elapsed(object? sender, System.Timers.ElapsedEventArgs e)
         {
             brightnessTimer.Stop();
 
-            var splendid = Environment.SystemDirectory + "\\DriverStore\\FileRepository\\asussci2.inf_amd64_f2eed2fae3b45a67\\ASUSOptimization\\AsusSplendid.exe";
-
-            bool isSplenddid = File.Exists(splendid);
-            bool isGameVisual = Directory.Exists("C:\\ProgramData\\ASUS\\GameVisual");
-
-            if (isSplenddid)
+            if (_init)
             {
-                var result = ProcessHelper.RunCMD(splendid, (isGameVisual ? 19 : 9) + " 0 " + (40 + _brightness * 0.6));
-                bool fail = result.Contains("file not exist") || (result.Length == 0 && isGameVisual);
-                if (!fail) return;
+                RunSplendid(SplendidCommand.Init, 4);
+                _init = false;
             }
 
+            if (RunSplendid(SplendidCommand.DimmingVisual, 0, (int)(40 + _brightness * 0.6))) return;
             // GammaRamp Fallback
             SetGamma(_brightness);
         }
