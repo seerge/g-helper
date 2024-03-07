@@ -85,12 +85,27 @@ namespace GHelper.Display
 
         public static void SetGamut(int mode = 50)
         {
-            RunSplendid(SplendidCommand.GamutMode, 0, mode);
+            if (RunSplendid(SplendidCommand.GamutMode, 0, mode)) return;
+            
+            if (_init)
+            {
+                _init = false;
+                RunSplendid(SplendidCommand.Init);
+                RunSplendid(SplendidCommand.GamutMode, 0, mode);
+            }
         }
 
         public static void SetVisual(SplendidCommand mode = SplendidCommand.Default, int whiteBalance = 50)
         {
-            RunSplendid(mode, 0, mode == SplendidCommand.Eyecare ? 2 : whiteBalance);
+            int balance = mode == SplendidCommand.Eyecare ? 2 : whiteBalance;
+            RunSplendid(mode, 0, balance);
+            
+            if (_init)
+            {
+                _init = false;
+                RunSplendid(SplendidCommand.Init);
+                RunSplendid(mode, 0, balance);
+            }
         }
 
         private static string GetSplendidPath()
