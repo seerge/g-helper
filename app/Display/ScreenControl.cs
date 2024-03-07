@@ -53,19 +53,27 @@ namespace GHelper.Display
         {
             Dictionary<SplendidGamut, string> _modes = new Dictionary<SplendidGamut, string>();
 
-            DirectoryInfo d = new DirectoryInfo("C:\\ProgramData\\ASUS\\GameVisual"); 
-            FileInfo[] icms = d.GetFiles("*.icm");
+            if (!Directory.Exists("C:\\ProgramData\\ASUS\\GameVisual")) return _modes;
 
-            if (icms.Length == 0) return _modes;
-
-            _modes.Add(SplendidGamut.Native, "Gamut - Native");
-            foreach (FileInfo icm in icms)
+            try
             {
-                if (icm.Name.Contains("sRGB")) _modes.Add(SplendidGamut.sRGB, "Gamut - sRGB");
-                if (icm.Name.Contains("DCIP3")) _modes.Add(SplendidGamut.DCIP3, "Gamut - DCIP3");
-                if (icm.Name.Contains("DisplayP3")) _modes.Add(SplendidGamut.DisplayP3, "Gamut - DisplayP3");
+                DirectoryInfo d = new DirectoryInfo("C:\\ProgramData\\ASUS\\GameVisual");
+                FileInfo[] icms = d.GetFiles("*.icm");
+                if (icms.Length == 0) return _modes;
+
+                _modes.Add(SplendidGamut.Native, "Gamut - Native");
+                foreach (FileInfo icm in icms)
+                {
+                    if (icm.Name.Contains("sRGB")) _modes.Add(SplendidGamut.sRGB, "Gamut - sRGB");
+                    if (icm.Name.Contains("DCIP3")) _modes.Add(SplendidGamut.DCIP3, "Gamut - DCIP3");
+                    if (icm.Name.Contains("DisplayP3")) _modes.Add(SplendidGamut.DisplayP3, "Gamut - DisplayP3");
+                }
+                return _modes;
             }
-            return _modes;
+            catch {
+                return _modes;
+            }
+
         }
 
         public static Dictionary<SplendidCommand, string> GetVisualModes()
