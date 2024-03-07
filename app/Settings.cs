@@ -287,6 +287,8 @@ namespace GHelper
             autoTdpUi = new AutoTDPUI();
             autoTdpUi.FormClosed += AutoTdpUi_FormClosed;
             autoTdpUi.Disposed += AutoTdpUi_Disposed;
+            autoTdpUi.TopMost = AppConfig.Is("topmost");
+
             if (!autoTdpUi.IsDisposed)
             {
                 autoTdpUi.Show();
