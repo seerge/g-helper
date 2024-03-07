@@ -9,6 +9,32 @@ namespace GHelper.Display
 
         public static DisplayGammaRamp? gammaRamp;
 
+        private static int _brightness = 100;
+        private static System.Timers.Timer brightnessTimer = new System.Timers.Timer(100);
+
+        static ScreenControl () {
+            brightnessTimer.Elapsed += BrightnessTimerTimer_Elapsed;
+        }
+
+        private static void BrightnessTimerTimer_Elapsed(object? sender, System.Timers.ElapsedEventArgs e)
+        {
+            brightnessTimer.Stop();
+
+            var splendid = Environment.SystemDirectory + "\\DriverStore\\FileRepository\\asussci2.inf_amd64_f2eed2fae3b45a67\\ASUSOptimization\\AsusSplendid.exe";
+
+            bool isSplenddid = File.Exists(splendid);
+            bool isGameVisual = Directory.Exists("C:\\ProgramData\\ASUS\\GameVisual");
+
+            if (isSplenddid)
+            {
+                var result = ProcessHelper.RunCMD(splendid, (isGameVisual ? 19 : 9) + " 0 " + (40 + _brightness * 0.6));
+                if (!result.Contains("file not exist")) return;
+            }
+
+            // GammaRamp Fallback
+            SetGamma(_brightness);
+        }
+
         public static void AutoScreen(bool force = false)
         {
             if (force || AppConfig.Is("screen_auto"))
@@ -29,30 +55,15 @@ namespace GHelper.Display
             if (!AppConfig.IsOLED()) return -1;
 
             if (brightness < 0) brightness = AppConfig.Get("brightness", 100);
-            brightness = Math.Max(0, Math.Min(100, brightness + delta));
 
-            AppConfig.Set("brightness", brightness);
+            _brightness = Math.Max(0, Math.Min(100, brightness + delta));
+            AppConfig.Set("brightness", _brightness);
 
-            Task.Run(() =>
-            {
-                var splendid = Environment.SystemDirectory + "\\DriverStore\\FileRepository\\asussci2.inf_amd64_f2eed2fae3b45a67\\ASUSOptimization\\AsusSplendid.exe";
-
-                bool isSplenddid = File.Exists(splendid);
-                bool isGameVisual = Directory.Exists("C:\\ProgramData\\ASUS\\GameVisual");
-
-                if (isSplenddid)
-                {
-                    var result = ProcessHelper.RunCMD(splendid, (isGameVisual ? 19 : 9) + " 0 " + (40 + brightness * 0.6));
-                    if (!result.Contains("file not exist")) return;
-                }
-
-                // GammaRamp Fallback
-                SetGamma(brightness);
-            });
+            brightnessTimer.Start();
 
             Program.settingsForm.VisualiseBrightness();
 
-            return brightness;
+            return _brightness;
         }
 
 

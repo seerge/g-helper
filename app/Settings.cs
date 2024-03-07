@@ -47,6 +47,8 @@ namespace GHelper
         bool batteryMouseOver = false;
         bool batteryFullMouseOver = false;
 
+        bool sliderGammaIgnore = false;
+
         public SettingsForm()
         {
 
@@ -272,13 +274,16 @@ namespace GHelper
         {
             Invoke(delegate
             {
+                sliderGammaIgnore = true;
                 sliderGamma.Value = AppConfig.Get("brightness", 100);
                 labelGamma.Text = sliderGamma.Value + "%";
+                sliderGammaIgnore = false;
             });
         }
 
         private void SliderGamma_ValueChanged(object? sender, EventArgs e)
         {
+            if (sliderGammaIgnore) return;
             ScreenControl.SetBrightness(sliderGamma.Value);
         }
 
