@@ -670,7 +670,7 @@ namespace GHelper.USB
             {
                 CustomRGB.ApplyAmbient(true);
                 timer.Enabled = true;
-                timer.Interval = AppConfig.Get("aura_refresh", AppConfig.ContainsModel("GU604") ? 400 : 120);
+                timer.Interval = AppConfig.Get("aura_refresh", AppConfig.IsStrix() ? 100 : 300);
                 return;
             }
 
