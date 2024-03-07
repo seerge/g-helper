@@ -1648,7 +1648,7 @@ namespace GHelper
                     return;
                 }
                 mouseSettings = new AsusMouseSettings(am);
-                mouseSettings.TopMost = true;
+                mouseSettings.TopMost = AppConfig.Is("topmost");
                 mouseSettings.FormClosed += MouseSettings_FormClosed;
                 mouseSettings.Disposed += MouseSettings_Disposed;
                 if (!mouseSettings.IsDisposed)
