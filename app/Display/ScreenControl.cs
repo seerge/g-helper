@@ -1,4 +1,6 @@
 ﻿using GHelper.Helpers;
+using GHelper.Mode;
+using System.Management;
 
 namespace GHelper.Display
 {
@@ -18,6 +20,7 @@ namespace GHelper.Display
 
         private static int _brightness = 100;
         private static bool _init = true;
+        private static string? _splendidPath = null;
 
         private static System.Timers.Timer brightnessTimer = new System.Timers.Timer(100);
 
@@ -25,9 +28,34 @@ namespace GHelper.Display
             brightnessTimer.Elapsed += BrightnessTimerTimer_Elapsed;
         }
 
+        private static string GetSplendidPath()
+        {
+            if (_splendidPath == null)
+            {
+                try
+                {
+                    using (var searcher = new ManagementObjectSearcher(@"Select * from Win32_SystemDriver WHERE Name='ATKWMIACPIIO'"))
+                    {
+                        foreach (var driver in searcher.Get())
+                        {
+                            string path = driver["PathName"].ToString();
+                            _splendidPath = Path.GetDirectoryName(path) + "\\AsusSplendid.exe";
+                            break;
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Logger.WriteLine(ex.Message);
+                }
+            }
+
+            return _splendidPath;
+        }
+
         private static bool RunSplendid(SplendidCommand command, int? param1 = null, int? param2 = null)
         {
-            var splendid = Environment.SystemDirectory + "\\DriverStore\\FileRepository\\asussci2.inf_amd64_f2eed2fae3b45a67\\ASUSOptimization\\AsusSplendid.exe";
+            var splendid = GetSplendidPath(); 
             bool isGameVisual = Directory.Exists("C:\\ProgramData\\ASUS\\GameVisual");
             bool isSplenddid = File.Exists(splendid);
 
