@@ -155,8 +155,8 @@ namespace GHelper.Display
 
             if (overdrive >= 0)
             {
-                if (AppConfig.Get("no_overdrive") == 1) overdrive = 0;
-                Program.acpi.DeviceSet(AsusACPI.ScreenOverdrive, overdrive, "ScreenOverdrive");
+                if (AppConfig.IsNoOverdrive()) overdrive = 0;
+                if (!AppConfig.IsOLED()) Program.acpi.DeviceSet(AsusACPI.ScreenOverdrive, overdrive, "ScreenOverdrive");
 
             }
 
@@ -208,9 +208,9 @@ namespace GHelper.Display
             int maxFrequency = ScreenNative.GetMaxRefreshRate(laptopScreen);
 
             bool screenAuto = AppConfig.Is("screen_auto");
-            bool overdriveSetting = !AppConfig.Is("no_overdrive");
+            bool overdriveSetting = !AppConfig.IsNoOverdrive();
 
-            int overdrive = AppConfig.Is("no_overdrive") ? 0 : Program.acpi.DeviceGet(AsusACPI.ScreenOverdrive);
+            int overdrive = AppConfig.IsNoOverdrive() ? 0 : Program.acpi.DeviceGet(AsusACPI.ScreenOverdrive);
 
             int miniled1 = Program.acpi.DeviceGet(AsusACPI.ScreenMiniled1);
             int miniled2 = Program.acpi.DeviceGet(AsusACPI.ScreenMiniled2);

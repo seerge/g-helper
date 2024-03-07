@@ -408,6 +408,11 @@ public static class AppConfig
         return ContainsModel("OLED") || IsSlash() || ContainsModel("UX64") || ContainsModel("UX34") || ContainsModel("UX53") || ContainsModel("K360") || ContainsModel("X150") || ContainsModel("M3500"); 
     }
 
+    public static bool IsNoOverdrive()
+    {
+        return Is("no_overdrive") || IsOLED();
+    }
+
     public static bool IsStrix()
     {
         return ContainsModel("Strix") || ContainsModel("Scar") || ContainsModel("G703G");

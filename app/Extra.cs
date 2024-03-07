@@ -209,6 +209,11 @@ namespace GHelper
                 checkUSBC.Visible = false;
             }
 
+            if (AppConfig.IsOLED())
+            {
+                checkNoOverdrive.Visible = false;
+            }
+
             // Change text and hide irrelevant options on the ROG Ally,
             // which is a bit of a special case piece of hardware.
             if (AppConfig.IsAlly())
@@ -356,7 +361,7 @@ namespace GHelper
             checkTopmost.Checked = AppConfig.Is("topmost");
             checkTopmost.CheckedChanged += CheckTopmost_CheckedChanged; ;
 
-            checkNoOverdrive.Checked = AppConfig.Is("no_overdrive");
+            checkNoOverdrive.Checked = AppConfig.IsNoOverdrive();
             checkNoOverdrive.CheckedChanged += CheckNoOverdrive_CheckedChanged;
 
             checkUSBC.Checked = AppConfig.Is("optimized_usbc");
