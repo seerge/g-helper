@@ -97,16 +97,16 @@ public static class AsusHid
                         try
                         {
                             stream.Write(data);
-                            Logger.WriteLine($"{log} {device.ProductID.ToString("X")}: {BitConverter.ToString(data)}");
+                            if (log is not null) Logger.WriteLine($"{log} {device.ProductID.ToString("X")}: {BitConverter.ToString(data)}");
                         }
                         catch (Exception ex)
                         {
-                            Logger.WriteLine($"Error writing {log} {device.ProductID.ToString("X")}: {ex.Message} {BitConverter.ToString(data)} ");
+                            if (log is not null) Logger.WriteLine($"Error writing {log} {device.ProductID.ToString("X")}: {ex.Message} {BitConverter.ToString(data)} ");
                         }
             }
             catch (Exception ex)
             {
-                Logger.WriteLine($"Error opening {log} {device.ProductID.ToString("X")}: {ex.Message}");
+                if (log is not null) Logger.WriteLine($"Error opening {log} {device.ProductID.ToString("X")}: {ex.Message}");
             }
     }
 

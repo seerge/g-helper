@@ -598,7 +598,7 @@ namespace GHelper.USB
 
             if (AppConfig.IsNoDirectRGB())
             {
-                AsusHid.Write(new List<byte[]> { AuraMessage(AuraMode.AuraStatic, color, color, 0xeb, isSingleColor), MESSAGE_SET });
+                AsusHid.Write(new List<byte[]> { AuraMessage(AuraMode.AuraStatic, color, color, 0xeb, isSingleColor), MESSAGE_SET }, null);
                 return;
             }
 
