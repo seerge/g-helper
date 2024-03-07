@@ -50,12 +50,12 @@ namespace GHelper.Display
 
             if (icms.Length == 0) return _modes;
 
-            _modes.Add(50, "Native");
+            _modes.Add(50, "Gamut - Native");
             foreach (FileInfo icm in icms)
             {
-                if (icm.Name.Contains("sRGB")) _modes.Add(51, "sRGB");
-                if (icm.Name.Contains("DCIP3")) _modes.Add(53, "DCIP3");
-                if (icm.Name.Contains("DisplayP3")) _modes.Add(54, "DisplayP3");
+                if (icm.Name.Contains("sRGB")) _modes.Add(51, "Gamut - sRGB");
+                if (icm.Name.Contains("DCIP3")) _modes.Add(53, "Gamut - DCIP3");
+                if (icm.Name.Contains("DisplayP3")) _modes.Add(54, "Gamut - DisplayP3");
             }
             return _modes;
         }

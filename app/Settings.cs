@@ -256,26 +256,32 @@ namespace GHelper
             buttonFnLock.Click += ButtonFnLock_Click;
 
             panelPerformance.Focus();
-
-            InitBrightness();
             InitVisual();
         }
 
-        public void InitBrightness()
-        {
-            if (!AppConfig.IsOLED()) return;
-            panelGamma.Visible = true;
-            VisualiseBrightness();
-
-            sliderGamma.ValueChanged += SliderGamma_ValueChanged;
-            //sliderGamma.MouseUp += SliderGamma_ValueChanged;
-        }
 
         public void InitVisual()
         {
+
+            bool dimming = false;
+
+            if (AppConfig.IsOLED())
+            {
+                dimming = true;
+                labelGammaTitle.Text = "Flicker-free Dimming";
+                panelGamma.Visible = true;
+                sliderGamma.Visible = true;
+                VisualiseBrightness();
+                sliderGamma.ValueChanged += SliderGamma_ValueChanged;
+            }
+
             var gamuts = ScreenControl.GetGamutModes();
             if (gamuts.Count < 1) return;
 
+            if (!dimming) labelGammaTitle.Text = "Visual Mode";
+            else labelGammaTitle.Text += " / Visual";
+
+            panelGamma.Visible = true;
             tableVisual.Visible = true;
 
             comboVisual.DropDownStyle = ComboBoxStyle.DropDownList;
