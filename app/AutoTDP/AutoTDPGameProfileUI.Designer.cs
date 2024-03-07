@@ -47,6 +47,7 @@
             labelLimiter = new Label();
             buttonSave = new UI.RButton();
             buttonDelete = new UI.RButton();
+            sliderFPS = new UI.Slider();
             panelPerformanceHeader.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureKeyboard).BeginInit();
             panelGameSettings.SuspendLayout();
@@ -61,17 +62,19 @@
             panelPerformanceHeader.Controls.Add(checkBoxEnabled);
             panelPerformanceHeader.Dock = DockStyle.Top;
             panelPerformanceHeader.Location = new Point(0, 0);
+            panelPerformanceHeader.Margin = new Padding(2, 2, 2, 2);
             panelPerformanceHeader.Name = "panelPerformanceHeader";
-            panelPerformanceHeader.Size = new Size(551, 50);
+            panelPerformanceHeader.Size = new Size(386, 30);
             panelPerformanceHeader.TabIndex = 53;
             // 
             // pictureKeyboard
             // 
             pictureKeyboard.BackgroundImage = Properties.Resources.icons8_automation_32;
             pictureKeyboard.BackgroundImageLayout = ImageLayout.Zoom;
-            pictureKeyboard.Location = new Point(4, 13);
+            pictureKeyboard.Location = new Point(3, 8);
+            pictureKeyboard.Margin = new Padding(2, 2, 2, 2);
             pictureKeyboard.Name = "pictureKeyboard";
-            pictureKeyboard.Size = new Size(23, 27);
+            pictureKeyboard.Size = new Size(16, 16);
             pictureKeyboard.TabIndex = 35;
             pictureKeyboard.TabStop = false;
             // 
@@ -79,19 +82,19 @@
             // 
             labelSettings.AutoSize = true;
             labelSettings.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            labelSettings.Location = new Point(31, 13);
-            labelSettings.Margin = new Padding(6, 0, 6, 0);
+            labelSettings.Location = new Point(22, 8);
+            labelSettings.Margin = new Padding(4, 0, 4, 0);
             labelSettings.Name = "labelSettings";
-            labelSettings.Size = new Size(135, 25);
+            labelSettings.Size = new Size(89, 15);
             labelSettings.TabIndex = 34;
             labelSettings.Text = "Game Settings";
             // 
             // checkBoxEnabled
             // 
-            checkBoxEnabled.Location = new Point(344, 3);
-            checkBoxEnabled.Margin = new Padding(6, 0, 6, 0);
+            checkBoxEnabled.Location = new Point(241, 2);
+            checkBoxEnabled.Margin = new Padding(4, 0, 4, 0);
             checkBoxEnabled.Name = "checkBoxEnabled";
-            checkBoxEnabled.Size = new Size(194, 42);
+            checkBoxEnabled.Size = new Size(136, 25);
             checkBoxEnabled.TabIndex = 53;
             checkBoxEnabled.Text = "Enabled";
             checkBoxEnabled.UseVisualStyleBackColor = true;
@@ -99,6 +102,7 @@
             // panelGameSettings
             // 
             panelGameSettings.AutoSize = true;
+            panelGameSettings.Controls.Add(sliderFPS);
             panelGameSettings.Controls.Add(labelMinTDP);
             panelGameSettings.Controls.Add(labelMaxTDP);
             panelGameSettings.Controls.Add(sliderMaxTDP);
@@ -112,28 +116,27 @@
             panelGameSettings.Controls.Add(labelFPSSource);
             panelGameSettings.Controls.Add(labelLimiter);
             panelGameSettings.Dock = DockStyle.Top;
-            panelGameSettings.Location = new Point(0, 50);
+            panelGameSettings.Location = new Point(0, 30);
+            panelGameSettings.Margin = new Padding(2, 2, 2, 2);
             panelGameSettings.Name = "panelGameSettings";
-            panelGameSettings.Padding = new Padding(0, 0, 0, 12);
-            panelGameSettings.Size = new Size(551, 244);
+            panelGameSettings.Padding = new Padding(0, 0, 0, 7);
+            panelGameSettings.Size = new Size(386, 146);
             panelGameSettings.TabIndex = 57;
             // 
             // labelMinTDP
             // 
-            labelMinTDP.Location = new Point(489, 152);
-            labelMinTDP.Margin = new Padding(4, 0, 4, 0);
+            labelMinTDP.Location = new Point(342, 91);
             labelMinTDP.Name = "labelMinTDP";
-            labelMinTDP.Size = new Size(56, 37);
+            labelMinTDP.Size = new Size(39, 22);
             labelMinTDP.TabIndex = 67;
             labelMinTDP.Text = "30W";
             labelMinTDP.TextAlign = ContentAlignment.MiddleRight;
             // 
             // labelMaxTDP
             // 
-            labelMaxTDP.Location = new Point(487, 195);
-            labelMaxTDP.Margin = new Padding(4, 0, 4, 0);
+            labelMaxTDP.Location = new Point(341, 117);
             labelMaxTDP.Name = "labelMaxTDP";
-            labelMaxTDP.Size = new Size(57, 37);
+            labelMaxTDP.Size = new Size(40, 22);
             labelMaxTDP.TabIndex = 66;
             labelMaxTDP.Text = "150W";
             labelMaxTDP.TextAlign = ContentAlignment.MiddleRight;
@@ -141,25 +144,27 @@
             // sliderMaxTDP
             // 
             sliderMaxTDP.AccessibleName = "DPI Slider";
-            sliderMaxTDP.Location = new Point(200, 195);
+            sliderMaxTDP.Location = new Point(140, 117);
+            sliderMaxTDP.Margin = new Padding(2, 2, 2, 2);
             sliderMaxTDP.Max = 200;
             sliderMaxTDP.Min = 5;
             sliderMaxTDP.Name = "sliderMaxTDP";
-            sliderMaxTDP.Size = new Size(291, 33);
+            sliderMaxTDP.Size = new Size(204, 20);
             sliderMaxTDP.Step = 1;
             sliderMaxTDP.TabIndex = 65;
             sliderMaxTDP.TabStop = false;
-            sliderMaxTDP.Text = "sliderBattery";
+            sliderMaxTDP.Text = "Max TDP Slider";
             sliderMaxTDP.Value = 0;
             // 
             // numericUpDownFPS
             // 
             numericUpDownFPS.BorderStyle = BorderStyle.None;
-            numericUpDownFPS.Location = new Point(416, 110);
+            numericUpDownFPS.Location = new Point(312, 66);
+            numericUpDownFPS.Margin = new Padding(2, 2, 2, 2);
             numericUpDownFPS.Maximum = new decimal(new int[] { 1000, 0, 0, 0 });
             numericUpDownFPS.Minimum = new decimal(new int[] { 20, 0, 0, 0 });
             numericUpDownFPS.Name = "numericUpDownFPS";
-            numericUpDownFPS.Size = new Size(123, 27);
+            numericUpDownFPS.Size = new Size(65, 19);
             numericUpDownFPS.TabIndex = 64;
             numericUpDownFPS.TextAlign = HorizontalAlignment.Center;
             numericUpDownFPS.Value = new decimal(new int[] { 60, 0, 0, 0 });
@@ -167,81 +172,80 @@
             // sliderMinTDP
             // 
             sliderMinTDP.AccessibleName = "DPI Slider";
-            sliderMinTDP.Location = new Point(200, 155);
+            sliderMinTDP.Location = new Point(140, 93);
+            sliderMinTDP.Margin = new Padding(2, 2, 2, 2);
             sliderMinTDP.Max = 200;
             sliderMinTDP.Min = 5;
             sliderMinTDP.Name = "sliderMinTDP";
-            sliderMinTDP.Size = new Size(291, 33);
+            sliderMinTDP.Size = new Size(204, 20);
             sliderMinTDP.Step = 1;
             sliderMinTDP.TabIndex = 63;
             sliderMinTDP.TabStop = false;
-            sliderMinTDP.Text = "sliderBattery";
+            sliderMinTDP.Text = "Min TDP Slider";
             sliderMinTDP.Value = 0;
             // 
             // labelMaxTDPText
             // 
-            labelMaxTDPText.Location = new Point(7, 195);
-            labelMaxTDPText.Margin = new Padding(6, 0, 6, 0);
+            labelMaxTDPText.Location = new Point(5, 117);
+            labelMaxTDPText.Margin = new Padding(4, 0, 4, 0);
             labelMaxTDPText.Name = "labelMaxTDPText";
-            labelMaxTDPText.Size = new Size(184, 37);
+            labelMaxTDPText.Size = new Size(129, 22);
             labelMaxTDPText.TabIndex = 61;
             labelMaxTDPText.Text = "Max TDP:";
             labelMaxTDPText.TextAlign = ContentAlignment.MiddleLeft;
             // 
             // labeMinTDPText
             // 
-            labeMinTDPText.Location = new Point(7, 152);
-            labeMinTDPText.Margin = new Padding(6, 0, 6, 0);
+            labeMinTDPText.Location = new Point(5, 91);
+            labeMinTDPText.Margin = new Padding(4, 0, 4, 0);
             labeMinTDPText.Name = "labeMinTDPText";
-            labeMinTDPText.Size = new Size(184, 37);
+            labeMinTDPText.Size = new Size(129, 22);
             labeMinTDPText.TabIndex = 62;
             labeMinTDPText.Text = "Min TDP:";
             labeMinTDPText.TextAlign = ContentAlignment.MiddleLeft;
             // 
             // labelTargetFPS
             // 
-            labelTargetFPS.Location = new Point(7, 105);
-            labelTargetFPS.Margin = new Padding(6, 0, 6, 0);
+            labelTargetFPS.Location = new Point(5, 63);
+            labelTargetFPS.Margin = new Padding(4, 0, 4, 0);
             labelTargetFPS.Name = "labelTargetFPS";
-            labelTargetFPS.Size = new Size(184, 37);
+            labelTargetFPS.Size = new Size(129, 22);
             labelTargetFPS.TabIndex = 60;
             labelTargetFPS.Text = "Target FPS:";
             labelTargetFPS.TextAlign = ContentAlignment.MiddleLeft;
             // 
             // textBoxTitle
             // 
-            textBoxTitle.Location = new Point(200, 60);
-            textBoxTitle.Margin = new Padding(4, 5, 4, 5);
+            textBoxTitle.Location = new Point(140, 36);
             textBoxTitle.Name = "textBoxTitle";
-            textBoxTitle.Size = new Size(337, 31);
+            textBoxTitle.Size = new Size(237, 23);
             textBoxTitle.TabIndex = 59;
             // 
             // textBoxProcessName
             // 
-            textBoxProcessName.Location = new Point(200, 10);
-            textBoxProcessName.Margin = new Padding(4, 5, 4, 5);
+            textBoxProcessName.Location = new Point(140, 6);
             textBoxProcessName.Name = "textBoxProcessName";
             textBoxProcessName.ReadOnly = true;
-            textBoxProcessName.Size = new Size(337, 31);
+            textBoxProcessName.Size = new Size(237, 23);
             textBoxProcessName.TabIndex = 58;
             textBoxProcessName.WordWrap = false;
             // 
             // labelFPSSource
             // 
-            labelFPSSource.Location = new Point(6, 62);
-            labelFPSSource.Margin = new Padding(6, 0, 6, 0);
+            labelFPSSource.Location = new Point(4, 37);
+            labelFPSSource.Margin = new Padding(4, 0, 4, 0);
             labelFPSSource.Name = "labelFPSSource";
-            labelFPSSource.Size = new Size(184, 37);
+            labelFPSSource.Size = new Size(129, 22);
             labelFPSSource.TabIndex = 57;
             labelFPSSource.Text = "Name:";
             labelFPSSource.TextAlign = ContentAlignment.MiddleLeft;
             // 
             // labelLimiter
             // 
-            labelLimiter.Location = new Point(6, 12);
-            labelLimiter.Margin = new Padding(6, 0, 6, 0);
+            labelLimiter.Location = new Point(4, 7);
+            labelLimiter.Margin = new Padding(4, 0, 4, 0);
             labelLimiter.Name = "labelLimiter";
-            labelLimiter.Size = new Size(184, 37);
+            labelLimiter.Size = new Size(129, 22);
             labelLimiter.TabIndex = 47;
             labelLimiter.Text = "Process";
             labelLimiter.TextAlign = ContentAlignment.MiddleLeft;
@@ -256,11 +260,11 @@
             buttonSave.BorderRadius = 2;
             buttonSave.FlatStyle = FlatStyle.Flat;
             buttonSave.ForeColor = SystemColors.ControlText;
-            buttonSave.Location = new Point(399, 303);
-            buttonSave.Margin = new Padding(3, 7, 3, 7);
+            buttonSave.Location = new Point(279, 182);
+            buttonSave.Margin = new Padding(2, 4, 2, 4);
             buttonSave.Name = "buttonSave";
             buttonSave.Secondary = false;
-            buttonSave.Size = new Size(147, 42);
+            buttonSave.Size = new Size(103, 25);
             buttonSave.TabIndex = 61;
             buttonSave.Text = "Save";
             buttonSave.UseVisualStyleBackColor = false;
@@ -275,26 +279,40 @@
             buttonDelete.BorderRadius = 2;
             buttonDelete.FlatStyle = FlatStyle.Flat;
             buttonDelete.ForeColor = SystemColors.ControlText;
-            buttonDelete.Location = new Point(6, 303);
-            buttonDelete.Margin = new Padding(3, 7, 3, 7);
+            buttonDelete.Location = new Point(4, 182);
+            buttonDelete.Margin = new Padding(2, 4, 2, 4);
             buttonDelete.Name = "buttonDelete";
             buttonDelete.Secondary = false;
-            buttonDelete.Size = new Size(147, 42);
+            buttonDelete.Size = new Size(103, 25);
             buttonDelete.TabIndex = 62;
             buttonDelete.Text = "Delete";
             buttonDelete.UseVisualStyleBackColor = false;
             // 
+            // sliderFPS
+            // 
+            sliderFPS.AccessibleName = "DPI Slider";
+            sliderFPS.Location = new Point(140, 66);
+            sliderFPS.Margin = new Padding(2);
+            sliderFPS.Max = 1000;
+            sliderFPS.Min = 20;
+            sliderFPS.Name = "sliderFPS";
+            sliderFPS.Size = new Size(168, 20);
+            sliderFPS.Step = 1;
+            sliderFPS.TabIndex = 68;
+            sliderFPS.TabStop = false;
+            sliderFPS.Text = "FPS Slider";
+            sliderFPS.Value = 60;
+            // 
             // AutoTDPGameProfileUI
             // 
-            AutoScaleDimensions = new SizeF(10F, 25F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(551, 362);
+            ClientSize = new Size(386, 217);
             Controls.Add(buttonDelete);
             Controls.Add(buttonSave);
             Controls.Add(panelGameSettings);
             Controls.Add(panelPerformanceHeader);
             FormBorderStyle = FormBorderStyle.FixedSingle;
-            Margin = new Padding(4, 5, 4, 5);
             MaximizeBox = false;
             MinimizeBox = false;
             Name = "AutoTDPGameProfileUI";
@@ -332,5 +350,6 @@
         private Label labelMinTDP;
         private Label labelMaxTDP;
         private UI.RButton buttonDelete;
+        private UI.Slider sliderFPS;
     }
 }

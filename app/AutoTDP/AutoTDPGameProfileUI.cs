@@ -18,12 +18,25 @@ namespace GHelper.AutoTDP
             buttonSave.Click += ButtonSave_Click;
             buttonDelete.Click += ButtonDelete_Click;
 
+            sliderFPS.ValueChanged += SliderFPS_ValueChanged;
+            numericUpDownFPS.ValueChanged += NumericUpDownFPS_ValueChanged;
+
             InitTheme();
 
 
             Shown += AutoTDPGameProfileUI_Shown;
 
             VisualizeGameProfile();
+        }
+
+        private void NumericUpDownFPS_ValueChanged(object? sender, EventArgs e)
+        {
+            sliderFPS.Value = (int)numericUpDownFPS.Value;
+        }
+
+        private void SliderFPS_ValueChanged(object? sender, EventArgs e)
+        {
+            numericUpDownFPS.Value = sliderFPS.Value;
         }
 
         private void ButtonDelete_Click(object? sender, EventArgs e)
