@@ -288,6 +288,8 @@ namespace GHelper
             comboVisual.DataSource = new BindingSource(ScreenControl.GetVisualModes(), null);
             comboVisual.DisplayMember = "Value";
             comboVisual.ValueMember = "Key";
+            comboVisual.SelectedValue = (SplendidCommand)AppConfig.Get("visual", (int)SplendidCommand.Default);
+
             comboVisual.SelectedValueChanged += ComboVisual_SelectedValueChanged;
             comboVisual.Visible = true;
 
@@ -297,6 +299,8 @@ namespace GHelper
             comboGamut.DataSource = new BindingSource(gamuts, null);
             comboGamut.DisplayMember = "Value";
             comboGamut.ValueMember = "Key";
+            comboGamut.SelectedValue = (SplendidGamut)AppConfig.Get("gamut", (int)SplendidGamut.Native);
+
             comboGamut.SelectedValueChanged += ComboGamut_SelectedValueChanged;
             comboGamut.Visible = true;
 
@@ -304,11 +308,13 @@ namespace GHelper
 
         private void ComboGamut_SelectedValueChanged(object? sender, EventArgs e)
         {
+            AppConfig.Set("gamut", (int)comboGamut.SelectedValue);
             ScreenControl.SetGamut((int)comboGamut.SelectedValue);
         }
 
         private void ComboVisual_SelectedValueChanged(object? sender, EventArgs e)
         {
+            AppConfig.Set("visual", (int)comboVisual.SelectedValue);
             ScreenControl.SetVisual((SplendidCommand)comboVisual.SelectedValue);
         }
 
