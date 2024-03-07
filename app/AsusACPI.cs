@@ -296,7 +296,7 @@ public class AsusACPI
 
         if (AppConfig.IsSlash())
         {
-            MaxGPUPower = 25;
+            MaxGPUPower = AppConfig.Get("max_gpu_power", 25);
         }
 
         if (AppConfig.DynamicBoost5())
@@ -308,6 +308,14 @@ public class AsusACPI
         {
             MaxGPUBoost = 15;
         }
+
+        if (AppConfig.IsAMDLight())
+        {
+            MaxTotal = 90;
+        }
+
+
+
     }
 
     public void Control(uint dwIoControlCode, byte[] lpInBuffer, byte[] lpOutBuffer)
@@ -421,9 +429,16 @@ public class AsusACPI
         {
             return null;
         }
-
-
     }
+
+
+    public int SetVivoMode(int mode)
+    {
+        if (mode == 1) mode = 2;
+        else if (mode == 2) mode = 1;
+        return Program.acpi.DeviceSet(VivoBookMode, mode, "VivoMode");
+    }
+
     public int SetGPUEco(int eco)
     {
         int ecoFlag = DeviceGet(GPUEco);
