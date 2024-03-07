@@ -28,7 +28,8 @@ namespace GHelper.Display
             if (isSplenddid)
             {
                 var result = ProcessHelper.RunCMD(splendid, (isGameVisual ? 19 : 9) + " 0 " + (40 + _brightness * 0.6));
-                if (!result.Contains("file not exist")) return;
+                bool fail = result.Contains("file not exist") || (result.Length == 0 && isGameVisual);
+                if (!fail) return;
             }
 
             // GammaRamp Fallback
