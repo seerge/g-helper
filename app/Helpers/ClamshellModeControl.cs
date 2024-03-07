@@ -99,9 +99,7 @@ namespace GHelper.Helpers
                 ToggleLidAction();
 
             if (Program.settingsForm.Visible)
-                Program.screenControl.InitScreen();
-
-            Program.screenControl.SetBrightness();
+                ScreenControl.InitScreen();
 
         }
 

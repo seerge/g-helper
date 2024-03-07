@@ -1,15 +1,41 @@
-﻿using System.Runtime.InteropServices;
+﻿using GHelper.Helpers;
 
 namespace GHelper.Display
 {
-    public class ScreenControl
+    public static class ScreenControl
     {
 
         public const int MAX_REFRESH = 1000;
 
         public static DisplayGammaRamp? gammaRamp;
 
-        public void AutoScreen(bool force = false)
+        private static int _brightness = 100;
+        private static System.Timers.Timer brightnessTimer = new System.Timers.Timer(100);
+
+        static ScreenControl () {
+            brightnessTimer.Elapsed += BrightnessTimerTimer_Elapsed;
+        }
+
+        private static void BrightnessTimerTimer_Elapsed(object? sender, System.Timers.ElapsedEventArgs e)
+        {
+            brightnessTimer.Stop();
+
+            var splendid = Environment.SystemDirectory + "\\DriverStore\\FileRepository\\asussci2.inf_amd64_f2eed2fae3b45a67\\ASUSOptimization\\AsusSplendid.exe";
+
+            bool isSplenddid = File.Exists(splendid);
+            bool isGameVisual = Directory.Exists("C:\\ProgramData\\ASUS\\GameVisual");
+
+            if (isSplenddid)
+            {
+                var result = ProcessHelper.RunCMD(splendid, (isGameVisual ? 19 : 9) + " 0 " + (40 + _brightness * 0.6));
+                if (!result.Contains("file not exist")) return;
+            }
+
+            // GammaRamp Fallback
+            SetGamma(_brightness);
+        }
+
+        public static void AutoScreen(bool force = false)
         {
             if (force || AppConfig.Is("screen_auto"))
             {
@@ -24,18 +50,25 @@ namespace GHelper.Display
             }
         }
 
-        public void SetBrightness(int brightness = -1)
+        public static int SetBrightness(int brightness = -1, int delta = 0)
         {
-            if (!AppConfig.IsOLED()) return;
+            if (!AppConfig.IsOLED()) return -1;
 
-            if (brightness >= 0) AppConfig.Set("brightness", brightness);
-            else brightness = AppConfig.Get("brightness");
+            if (brightness < 0) brightness = AppConfig.Get("brightness", 100);
 
-            if (brightness >= 0) SetGamma(brightness);
+            _brightness = Math.Max(0, Math.Min(100, brightness + delta));
+            AppConfig.Set("brightness", _brightness);
+
+            brightnessTimer.Start();
+
+            Program.settingsForm.VisualiseBrightness();
+
+            return _brightness;
         }
 
 
-        public void SetGamma(int brightness = 100)
+
+        public static void SetGamma(int brightness = 100)
         {
             var bright = Math.Round((float)brightness / 200 + 0.5, 2);
 
@@ -66,9 +99,10 @@ namespace GHelper.Display
                 var ramp = gammaRamp.AsBrightnessRamp(bright);
                 bool result = ScreenNative.SetDeviceGammaRamp(handle, ref ramp);
 
-                Logger.WriteLine("Brightness " + bright.ToString() + ": " + result);
+                Logger.WriteLine("Gamma " + bright.ToString() + ": " + result);
 
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 Logger.WriteLine(ex.ToString());
             }
@@ -76,7 +110,7 @@ namespace GHelper.Display
             //ScreenBrightness.Set(60 + (int)(40 * bright));
         }
 
-        public void SetScreen(int frequency = -1, int overdrive = -1, int miniled = -1)
+        public static void SetScreen(int frequency = -1, int overdrive = -1, int miniled = -1)
         {
             var laptopScreen = ScreenNative.FindLaptopScreen(true);
 
@@ -113,7 +147,7 @@ namespace GHelper.Display
         }
 
 
-        public int ToogleMiniled()
+        public static int ToogleMiniled()
         {
             int miniled1 = Program.acpi.DeviceGet(AsusACPI.ScreenMiniled1);
             int miniled2 = Program.acpi.DeviceGet(AsusACPI.ScreenMiniled2);
@@ -141,7 +175,7 @@ namespace GHelper.Display
             return miniled;
         }
 
-        public void InitScreen()
+        public static void InitScreen()
         {
             var laptopScreen = ScreenNative.FindLaptopScreen();
 
@@ -151,7 +185,7 @@ namespace GHelper.Display
             bool screenAuto = AppConfig.Is("screen_auto");
             bool overdriveSetting = !AppConfig.Is("no_overdrive");
 
-            int overdrive = Program.acpi.DeviceGet(AsusACPI.ScreenOverdrive);
+            int overdrive = AppConfig.Is("no_overdrive") ? 0 : Program.acpi.DeviceGet(AsusACPI.ScreenOverdrive);
 
             int miniled1 = Program.acpi.DeviceGet(AsusACPI.ScreenMiniled1);
             int miniled2 = Program.acpi.DeviceGet(AsusACPI.ScreenMiniled2);

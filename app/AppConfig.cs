@@ -405,7 +405,7 @@ public static class AppConfig
 
     public static bool IsOLED()
     {
-        return ContainsModel("OLED") || IsSlash() || ContainsModel("UX64") || ContainsModel("UX34") || ContainsModel("UX53") || ContainsModel("K360") || ContainsModel("X150"); 
+        return ContainsModel("OLED") || IsSlash() || ContainsModel("UX64") || ContainsModel("UX34") || ContainsModel("UX53") || ContainsModel("K360") || ContainsModel("X150") || ContainsModel("M3500"); 
     }
 
     public static bool IsStrix()
@@ -431,7 +431,7 @@ public static class AppConfig
 
     public static bool IsNoDirectRGB()
     {
-        return ContainsModel("GA503") || ContainsModel("G533Q");
+        return ContainsModel("GA503") || ContainsModel("G533Q") || IsSlash();
     }
 
     public static bool IsStrixNumpad()
@@ -572,6 +572,10 @@ public static class AppConfig
         return ContainsModel("G834") || ContainsModel("G614") || ContainsModel("G834") || ContainsModel("G634");
     }
 
+    public static bool IsROG()
+    {
+        return ContainsModel("ROG");
+    }
     public static bool IsASUS()
     {
         return ContainsModel("ROG") || ContainsModel("TUF") || ContainsModel("Vivobook") || ContainsModel("Zenbook");
