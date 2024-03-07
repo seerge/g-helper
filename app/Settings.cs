@@ -116,7 +116,7 @@ namespace GHelper
             buttonScreenAuto.AccessibleName = Properties.Strings.AutoMode;
             //button60Hz.AccessibleName = "60Hz Refresh Rate";
             //button120Hz.AccessibleName = "Maximum Refresh Rate";
-            
+
             panelKeyboard.AccessibleName = Properties.Strings.LaptopKeyboard;
             buttonKeyboard.AccessibleName = Properties.Strings.ExtraSettings;
             buttonKeyboardColor.AccessibleName = Properties.Strings.LaptopKeyboard + " " + Properties.Strings.Color;
@@ -219,7 +219,7 @@ namespace GHelper
             sliderBattery.ValueChanged += SliderBattery_ValueChanged;
             Program.trayIcon.MouseMove += TrayIcon_MouseMove;
 
-            sensorTimer = new System.Timers.Timer(AppConfig.Get("sensor_timer",1000));
+            sensorTimer = new System.Timers.Timer(AppConfig.Get("sensor_timer", 1000));
             sensorTimer.Elapsed += OnTimedEvent;
             sensorTimer.Enabled = true;
 
@@ -262,22 +262,25 @@ namespace GHelper
         public void InitBrightness()
         {
             if (!AppConfig.IsOLED()) return;
-
             panelGamma.Visible = true;
-
-            int brightness = AppConfig.Get("brightness");
-            if (brightness >= 0) sliderGamma.Value = brightness;
-            labelGamma.Text = sliderGamma.Value + "%";
+            VisualiseBrightness();
 
             sliderGamma.ValueChanged += SliderGamma_ValueChanged;
             sliderGamma.MouseUp += SliderGamma_ValueChanged;
         }
 
+        public void VisualiseBrightness()
+        {
+            Invoke(delegate
+            {
+                sliderGamma.Value = AppConfig.Get("brightness", 100);
+                labelGamma.Text = sliderGamma.Value + "%";
+            });
+        }
 
         private void SliderGamma_ValueChanged(object? sender, EventArgs e)
         {
             screenControl.SetBrightness(sliderGamma.Value);
-            labelGamma.Text = sliderGamma.Value + "%";
         }
 
         private void ButtonOverlay_Click(object? sender, EventArgs e)
@@ -351,7 +354,7 @@ namespace GHelper
 
         public void VisualiseBacklight(int backlight)
         {
-            buttonBacklight.Text = Math.Round((double)backlight*33.33).ToString() + "%";
+            buttonBacklight.Text = Math.Round((double)backlight * 33.33).ToString() + "%";
         }
 
         public void VisualiseFPSLimit(int limit)
@@ -848,7 +851,7 @@ namespace GHelper
             FansToggle();
         }
 
-        private void SetColorPicker(string colorField = "aura_color") 
+        private void SetColorPicker(string colorField = "aura_color")
         {
             ColorDialog colorDlg = new ColorDialog();
             colorDlg.AllowFullOpen = true;
@@ -953,7 +956,7 @@ namespace GHelper
 
                 buttonMatrix.Visible = false;
                 checkMatrixLid.Visible = true;
-            } 
+            }
 
             comboMatrix.SelectedIndex = Math.Min(AppConfig.Get("matrix_brightness", 0), comboMatrix.Items.Count - 1);
             comboMatrixRunning.SelectedIndex = Math.Min(AppConfig.Get("matrix_running", 0), comboMatrixRunning.Items.Count - 1);
@@ -1286,11 +1289,13 @@ namespace GHelper
         {
             if (InvokeRequired)
             {
-                Invoke(delegate { 
+                Invoke(delegate
+                {
                     labelPerf.Text = modeText;
                     panelPerformance.AccessibleName = labelPerf.Text;
                 });
-            } else
+            }
+            else
             {
                 labelPerf.Text = modeText;
                 panelPerformance.AccessibleName = labelPerf.Text;
@@ -1465,7 +1470,7 @@ namespace GHelper
                     break;
             }
 
-            
+
 
             VisualizeXGM(GPUMode);
 

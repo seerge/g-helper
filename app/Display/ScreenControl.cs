@@ -25,19 +25,26 @@ namespace GHelper.Display
             }
         }
 
-        public void SetBrightness(int brightness = -1)
+        public int SetBrightness(int brightness = -1, int delta = 0)
         {
-            if (!AppConfig.IsOLED()) return;
+            if (!AppConfig.IsOLED()) return -1;
 
-            if (brightness >= 0) AppConfig.Set("brightness", brightness);
-            else brightness = AppConfig.Get("brightness");
+            if (brightness < 0) brightness = AppConfig.Get("brightness", 100);
+            brightness = Math.Max(0, Math.Min(100, brightness + delta));
 
-            if (brightness >= 0) Task.Run(() =>
+            AppConfig.Set("brightness", brightness);
+
+            Task.Run(() =>
             {
-                //Logger.WriteLine($"Brightness: {brightness}");
+                bool isGameVisual = System.IO.Directory.Exists("C:\\ProgramData\\ASUS\\GameVisual") ;
                 var splendid = Environment.SystemDirectory + "\\DriverStore\\FileRepository\\asussci2.inf_amd64_f2eed2fae3b45a67\\ASUSOptimization\\AsusSplendid.exe";
-                ProcessHelper.RunCMD(splendid, (AppConfig.IsROG() ? 19 : 9) + " 0 " + (40 + brightness * 0.6));
+                var result = ProcessHelper.RunCMD(splendid, (isGameVisual ? 19 : 9) + " 0 " + (40 + brightness * 0.6));
+                if (result.Contains("file not exist")) SetGamma(brightness);
             });
+
+            Program.settingsForm.VisualiseBrightness();
+
+            return brightness;
         }
 
 

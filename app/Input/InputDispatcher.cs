@@ -244,6 +244,13 @@ namespace GHelper.Input
 
         }
 
+        static void SetBrightnessDimming(int delta)
+        {
+            int brightness = screenControl.SetBrightness(delta: delta);
+            if (brightness >= 0)
+                Program.toast.RunToast(brightness + "%", (delta < 0) ? ToastIcon.BrightnessDown : ToastIcon.BrightnessUp);
+        }
+
         public void KeyPressed(object sender, KeyPressedEventArgs e)
         {
 
@@ -698,8 +705,14 @@ namespace GHelper.Input
                         if (AppConfig.IsDUO()) SetScreenpad(-10);
                         else Program.settingsForm.BeginInvoke(Program.settingsForm.CycleMatrix, -1);
                     }
+                    else if (Control.ModifierKeys == Keys.Control && AppConfig.IsOLED())
+                    {
+                        SetBrightnessDimming(-10);
+                    }
                     else
+                    {
                         Program.acpi.DeviceSet(AsusACPI.UniversalControl, AsusACPI.Brightness_Down, "Brightness");
+                    }
                     break;
                 case 32: // FN+F8
                     if (Control.ModifierKeys == Keys.Shift)
@@ -707,8 +720,14 @@ namespace GHelper.Input
                         if (AppConfig.IsDUO()) SetScreenpad(10);
                         else Program.settingsForm.BeginInvoke(Program.settingsForm.CycleMatrix, 1);
                     }
+                    else if (Control.ModifierKeys == Keys.Control && AppConfig.IsOLED())
+                    {
+                        SetBrightnessDimming(10);
+                    }
                     else
+                    {
                         Program.acpi.DeviceSet(AsusACPI.UniversalControl, AsusACPI.Brightness_Up, "Brightness");
+                    }
                     break;
                 case 133: // Camera Toggle
                     ToggleCamera();
