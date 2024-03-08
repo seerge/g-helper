@@ -24,6 +24,7 @@ namespace GHelper
 
         public GPUModeControl gpuControl;
         public AllyControl allyControl;
+        ScreenControl screenControl = new ScreenControl(); 
         AutoUpdateControl updateControl;
 
         AsusMouseSettings? mouseSettings;
@@ -275,7 +276,7 @@ namespace GHelper
                 sliderGamma.ValueChanged += SliderGamma_ValueChanged;
             }
 
-            var gamuts = ScreenControl.GetGamutModes();
+            var gamuts = VisualControl.GetGamutModes();
             if (gamuts.Count < 1) return;
 
             if (!dimming) labelGammaTitle.Text = "Visual Mode";
@@ -285,7 +286,7 @@ namespace GHelper
             tableVisual.Visible = true;
 
             comboVisual.DropDownStyle = ComboBoxStyle.DropDownList;
-            comboVisual.DataSource = new BindingSource(ScreenControl.GetVisualModes(), null);
+            comboVisual.DataSource = new BindingSource(VisualControl.GetVisualModes(), null);
             comboVisual.DisplayMember = "Value";
             comboVisual.ValueMember = "Key";
             comboVisual.SelectedValue = (SplendidCommand)AppConfig.Get("visual", (int)SplendidCommand.Default);
@@ -309,13 +310,13 @@ namespace GHelper
         private void ComboGamut_SelectedValueChanged(object? sender, EventArgs e)
         {
             AppConfig.Set("gamut", (int)comboGamut.SelectedValue);
-            ScreenControl.SetGamut((int)comboGamut.SelectedValue);
+            VisualControl.SetGamut((int)comboGamut.SelectedValue);
         }
 
         private void ComboVisual_SelectedValueChanged(object? sender, EventArgs e)
         {
             AppConfig.Set("visual", (int)comboVisual.SelectedValue);
-            ScreenControl.SetVisual((SplendidCommand)comboVisual.SelectedValue);
+            VisualControl.SetVisual((SplendidCommand)comboVisual.SelectedValue);
         }
 
         public void VisualiseBrightness()
@@ -332,7 +333,7 @@ namespace GHelper
         private void SliderGamma_ValueChanged(object? sender, EventArgs e)
         {
             if (sliderGammaIgnore) return;
-            ScreenControl.SetBrightness(sliderGamma.Value);
+            VisualControl.SetBrightness(sliderGamma.Value);
         }
 
         private void ButtonOverlay_Click(object? sender, EventArgs e)
@@ -474,7 +475,7 @@ namespace GHelper
             sensorTimer.Enabled = this.Visible;
             if (this.Visible)
             {
-                ScreenControl.InitScreen();
+                screenControl.InitScreen();
                 VisualizeXGM();
 
                 Task.Run((Action)RefreshPeripheralsBattery);
@@ -753,7 +754,7 @@ namespace GHelper
         private void ButtonScreenAuto_Click(object? sender, EventArgs e)
         {
             AppConfig.Set("screen_auto", 1);
-            ScreenControl.AutoScreen();
+            screenControl.AutoScreen();
         }
 
 
@@ -1053,19 +1054,19 @@ namespace GHelper
         private void Button120Hz_Click(object? sender, EventArgs e)
         {
             AppConfig.Set("screen_auto", 0);
-            ScreenControl.SetScreen(ScreenControl.MAX_REFRESH, 1);
+            screenControl.SetScreen(ScreenControl.MAX_REFRESH, 1);
         }
 
         private void Button60Hz_Click(object? sender, EventArgs e)
         {
             AppConfig.Set("screen_auto", 0);
-            ScreenControl.SetScreen(60, 0);
+            screenControl.SetScreen(60, 0);
         }
 
 
         private void ButtonMiniled_Click(object? sender, EventArgs e)
         {
-            ScreenControl.ToogleMiniled();
+            screenControl.ToogleMiniled();
         }
 
 

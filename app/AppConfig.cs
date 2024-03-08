@@ -539,7 +539,7 @@ public static class AppConfig
 
     public static bool IsAMDLight()
     {
-        return ContainsModel("GA402X") || ContainsModel("GU605") || ContainsModel("GA403") || ContainsModel("FA507N") || ContainsModel("FA507X") || ContainsModel("FA707N") || ContainsModel("FA707X");
+        return ContainsModel("GA402X") || ContainsModel("GA403") || ContainsModel("FA507N") || ContainsModel("FA507X") || ContainsModel("FA707N") || ContainsModel("FA707X");
     }
 
     public static bool IsPowerRequired()

@@ -12,6 +12,7 @@ namespace GHelper
     public partial class Extra : RForm
     {
 
+        ScreenControl screenControl = new ScreenControl();
         ClamshellModeControl clamshellControl = new ClamshellModeControl();
 
         const string EMPTY = "--------------";
@@ -683,7 +684,7 @@ namespace GHelper
         private void CheckNoOverdrive_CheckedChanged(object? sender, EventArgs e)
         {
             AppConfig.Set("no_overdrive", (checkNoOverdrive.Checked ? 1 : 0));
-            ScreenControl.AutoScreen(true);
+            screenControl.AutoScreen(true);
         }
 
 
