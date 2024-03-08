@@ -1,10 +1,5 @@
 ﻿using GHelper.Helpers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Management;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GHelper.Display
 {
@@ -43,21 +38,26 @@ namespace GHelper.Display
         private static System.Timers.Timer brightnessTimer = new System.Timers.Timer(100);
 
 
-        static VisualControl ()
+        static VisualControl()
         {
             brightnessTimer.Elapsed += BrightnessTimerTimer_Elapsed;
         }
 
         private static string GetGameVisualPath()
         {
-            return "C:\\ProgramData\\ASUS\\GameVisual";
+            return Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + "\\ASUS\\GameVisual";
         }
 
         public static Dictionary<SplendidGamut, string> GetGamutModes()
         {
             Dictionary<SplendidGamut, string> _modes = new Dictionary<SplendidGamut, string>();
 
-            if (!Directory.Exists(GetGameVisualPath())) return _modes;
+            string gameVisualPath = GetGameVisualPath();
+            if (!Directory.Exists(gameVisualPath))
+            {
+                Logger.WriteLine(gameVisualPath + "doesn't exit");
+                return _modes;
+            }
 
             try
             {
