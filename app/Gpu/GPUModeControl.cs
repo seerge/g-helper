@@ -9,6 +9,7 @@ namespace GHelper.Gpu
     public class GPUModeControl
     {
         SettingsForm settings;
+        ScreenControl screenControl = new ScreenControl();
 
         public static int gpuMode;
         public static bool? gpuExists = null;
@@ -158,7 +159,7 @@ namespace GHelper.Gpu
                 settings.Invoke(delegate
                 {
                     InitGPUMode();
-                    ScreenControl.AutoScreen();
+                    screenControl.AutoScreen();
                 });
 
                 if (eco == 0)

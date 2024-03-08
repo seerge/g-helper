@@ -1,41 +1,15 @@
 ﻿using GHelper.Helpers;
+using System.Management;
 
 namespace GHelper.Display
 {
-    public static class ScreenControl
+    public class ScreenControl
     {
 
         public const int MAX_REFRESH = 1000;
 
-        public static DisplayGammaRamp? gammaRamp;
 
-        private static int _brightness = 100;
-        private static System.Timers.Timer brightnessTimer = new System.Timers.Timer(100);
-
-        static ScreenControl () {
-            brightnessTimer.Elapsed += BrightnessTimerTimer_Elapsed;
-        }
-
-        private static void BrightnessTimerTimer_Elapsed(object? sender, System.Timers.ElapsedEventArgs e)
-        {
-            brightnessTimer.Stop();
-
-            var splendid = Environment.SystemDirectory + "\\DriverStore\\FileRepository\\asussci2.inf_amd64_f2eed2fae3b45a67\\ASUSOptimization\\AsusSplendid.exe";
-
-            bool isSplenddid = File.Exists(splendid);
-            bool isGameVisual = Directory.Exists("C:\\ProgramData\\ASUS\\GameVisual");
-
-            if (isSplenddid)
-            {
-                var result = ProcessHelper.RunCMD(splendid, (isGameVisual ? 19 : 9) + " 0 " + (40 + _brightness * 0.6));
-                if (!result.Contains("file not exist")) return;
-            }
-
-            // GammaRamp Fallback
-            SetGamma(_brightness);
-        }
-
-        public static void AutoScreen(bool force = false)
+        public void AutoScreen(bool force = false)
         {
             if (force || AppConfig.Is("screen_auto"))
             {
@@ -50,67 +24,8 @@ namespace GHelper.Display
             }
         }
 
-        public static int SetBrightness(int brightness = -1, int delta = 0)
-        {
-            if (!AppConfig.IsOLED()) return -1;
 
-            if (brightness < 0) brightness = AppConfig.Get("brightness", 100);
-
-            _brightness = Math.Max(0, Math.Min(100, brightness + delta));
-            AppConfig.Set("brightness", _brightness);
-
-            brightnessTimer.Start();
-
-            Program.settingsForm.VisualiseBrightness();
-
-            return _brightness;
-        }
-
-
-
-        public static void SetGamma(int brightness = 100)
-        {
-            var bright = Math.Round((float)brightness / 200 + 0.5, 2);
-
-            var screenName = ScreenNative.FindLaptopScreen();
-            if (screenName is null) return;
-
-            try
-            {
-                var handle = ScreenNative.CreateDC(screenName, screenName, null, IntPtr.Zero);
-                if (gammaRamp is null)
-                {
-                    var gammaDump = new GammaRamp();
-                    if (ScreenNative.GetDeviceGammaRamp(handle, ref gammaDump))
-                    {
-                        gammaRamp = new DisplayGammaRamp(gammaDump);
-                        //Logger.WriteLine("Gamma R: " + string.Join("-", gammaRamp.Red));
-                        //Logger.WriteLine("Gamma G: " + string.Join("-", gammaRamp.Green));
-                        //Logger.WriteLine("Gamma B: " + string.Join("-", gammaRamp.Blue));
-                    }
-                }
-
-                if (gammaRamp is null || !gammaRamp.IsOriginal())
-                {
-                    Logger.WriteLine("Not default Gamma");
-                    gammaRamp = new DisplayGammaRamp();
-                }
-
-                var ramp = gammaRamp.AsBrightnessRamp(bright);
-                bool result = ScreenNative.SetDeviceGammaRamp(handle, ref ramp);
-
-                Logger.WriteLine("Gamma " + bright.ToString() + ": " + result);
-
-            }
-            catch (Exception ex)
-            {
-                Logger.WriteLine(ex.ToString());
-            }
-
-            //ScreenBrightness.Set(60 + (int)(40 * bright));
-        }
-
-        public static void SetScreen(int frequency = -1, int overdrive = -1, int miniled = -1)
+        public void SetScreen(int frequency = -1, int overdrive = -1, int miniled = -1)
         {
             var laptopScreen = ScreenNative.FindLaptopScreen(true);
 
@@ -130,8 +45,8 @@ namespace GHelper.Display
 
             if (overdrive >= 0)
             {
-                if (AppConfig.Get("no_overdrive") == 1) overdrive = 0;
-                Program.acpi.DeviceSet(AsusACPI.ScreenOverdrive, overdrive, "ScreenOverdrive");
+                if (AppConfig.IsNoOverdrive()) overdrive = 0;
+                if (!AppConfig.IsOLED()) Program.acpi.DeviceSet(AsusACPI.ScreenOverdrive, overdrive, "ScreenOverdrive");
 
             }
 
@@ -147,7 +62,7 @@ namespace GHelper.Display
         }
 
 
-        public static int ToogleMiniled()
+        public int ToogleMiniled()
         {
             int miniled1 = Program.acpi.DeviceGet(AsusACPI.ScreenMiniled1);
             int miniled2 = Program.acpi.DeviceGet(AsusACPI.ScreenMiniled2);
@@ -175,7 +90,7 @@ namespace GHelper.Display
             return miniled;
         }
 
-        public static void InitScreen()
+        public void InitScreen()
         {
             var laptopScreen = ScreenNative.FindLaptopScreen();
 
@@ -183,9 +98,9 @@ namespace GHelper.Display
             int maxFrequency = ScreenNative.GetMaxRefreshRate(laptopScreen);
 
             bool screenAuto = AppConfig.Is("screen_auto");
-            bool overdriveSetting = !AppConfig.Is("no_overdrive");
+            bool overdriveSetting = !AppConfig.IsNoOverdrive();
 
-            int overdrive = AppConfig.Is("no_overdrive") ? 0 : Program.acpi.DeviceGet(AsusACPI.ScreenOverdrive);
+            int overdrive = AppConfig.IsNoOverdrive() ? 0 : Program.acpi.DeviceGet(AsusACPI.ScreenOverdrive);
 
             int miniled1 = Program.acpi.DeviceGet(AsusACPI.ScreenMiniled1);
             int miniled2 = Program.acpi.DeviceGet(AsusACPI.ScreenMiniled2);

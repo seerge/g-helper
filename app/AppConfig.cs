@@ -405,7 +405,12 @@ public static class AppConfig
 
     public static bool IsOLED()
     {
-        return ContainsModel("OLED") || IsSlash() || ContainsModel("UX64") || ContainsModel("UX34") || ContainsModel("UX53") || ContainsModel("K360") || ContainsModel("X150") || ContainsModel("M3500"); 
+        return ContainsModel("OLED") || IsSlash() || ContainsModel("UX64") || ContainsModel("UX34") || ContainsModel("UX53") || ContainsModel("K360") || ContainsModel("X150") || ContainsModel("M3500") || ContainsModel("K650"); 
+    }
+
+    public static bool IsNoOverdrive()
+    {
+        return Is("no_overdrive") || IsOLED();
     }
 
     public static bool IsStrix()
@@ -534,7 +539,7 @@ public static class AppConfig
 
     public static bool IsAMDLight()
     {
-        return ContainsModel("GA402X") || ContainsModel("GU605") || ContainsModel("GA403") || ContainsModel("FA507N") || ContainsModel("FA507X") || ContainsModel("FA707N") || ContainsModel("FA707X");
+        return ContainsModel("GA402X") || ContainsModel("GA403") || ContainsModel("FA507N") || ContainsModel("FA507X") || ContainsModel("FA707N") || ContainsModel("FA707X");
     }
 
     public static bool IsPowerRequired()
