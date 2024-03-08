@@ -122,7 +122,7 @@ namespace GHelper.Helpers
             }
         }
 
-        public static void RunCMD(string name, string args)
+        public static string RunCMD(string name, string args)
         {
             var cmd = new Process();
             cmd.StartInfo.UseShellExecute = false;
@@ -133,13 +133,13 @@ namespace GHelper.Helpers
             cmd.StartInfo.Arguments = args;
             cmd.Start();
 
-            Logger.WriteLine(args);
-
+            Logger.WriteLine(name + " " + args);
             string result = cmd.StandardOutput.ReadToEnd().Replace(Environment.NewLine, " ").Trim(' ');
-
             Logger.WriteLine(result);
             
             cmd.WaitForExit();
+
+            return result;
         }
 
 

@@ -33,7 +33,7 @@ namespace GHelper
         public static ModeControl modeControl = new ModeControl();
         public static GPUModeControl gpuControl = new GPUModeControl(settingsForm);
         public static AllyControl allyControl = new AllyControl(settingsForm);
-        public static ScreenControl screenControl = new ScreenControl();
+        public static ScreenControl screenControl = new ScreenControl(); 
         public static ClamshellModeControl clamshellControl = new ClamshellModeControl();
 
         public static ToastForm toast = new ToastForm();

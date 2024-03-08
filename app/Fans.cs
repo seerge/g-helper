@@ -48,7 +48,7 @@ namespace GHelper
             labelPowerLimits.Text = Properties.Strings.PowerLimits;
             checkApplyPower.Text = Properties.Strings.ApplyPowerLimits;
 
-            labelFans.Text = Properties.Strings.FanCurves;
+            labelFans.Text = "BIOS " + Properties.Strings.FanCurves;
             labelBoost.Text = Properties.Strings.CPUBoost;
             buttonReset.Text = Properties.Strings.FactoryDefaults;
             checkApplyFans.Text = Properties.Strings.ApplyFanCurve;
@@ -1008,7 +1008,7 @@ namespace GHelper
             try
             {
                 if (chartCount > 2)
-                    Size = MinimumSize = new Size(Size.Width, (int)(ControlHelper.GetDpiScale(this).Value * (chartCount * 200 + 100)));
+                    Size = MinimumSize = new Size(Size.Width, Math.Max(MinimumSize.Height, (int)(ControlHelper.GetDpiScale(this).Value * (chartCount * 200 + 100))));
             }
             catch (Exception ex)
             {
@@ -1115,6 +1115,7 @@ namespace GHelper
             if (gpuVisible)
             {
                 int gpuPowerVar = Program.acpi.DeviceGet(AsusACPI.GPU_POWER);
+                Logger.WriteLine("Default GPU Power: " +  gpuPowerVar);
 
                 trackGPUClockLimit.Value = NvidiaGpuControl.MaxClockLimit;
                 trackGPUCore.Value = 0;
@@ -1122,7 +1123,7 @@ namespace GHelper
                 
                 trackGPUBoost.Value = AsusACPI.MaxGPUBoost;
                 trackGPUTemp.Value = AsusACPI.MaxGPUTemp;
-                trackGPUPower.Value = (gpuPowerVar >= 0) ? gpuPowerVar : AsusACPI.MaxGPUPower;
+                trackGPUPower.Value = Math.Max(Math.Min((gpuPowerVar >= 0) ? gpuPowerVar : AsusACPI.MaxGPUPower, AsusACPI.MaxGPUPower), AsusACPI.MinGPUPower);
 
                 AppConfig.SetMode("gpu_boost", trackGPUBoost.Value);
                 AppConfig.SetMode("gpu_temp", trackGPUTemp.Value);

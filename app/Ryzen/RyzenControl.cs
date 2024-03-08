@@ -13,7 +13,7 @@ namespace Ryzen
     internal class RyzenControl
     {
 
-        public static int MinCPUUV => AppConfig.Get("min_uv", -30);
+        public static int MinCPUUV => AppConfig.Get("min_uv", -40);
         public const int MaxCPUUV = 0;
 
         public const int MinIGPUUV = -20;

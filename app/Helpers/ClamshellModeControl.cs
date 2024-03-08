@@ -101,8 +101,6 @@ namespace GHelper.Helpers
             if (Program.settingsForm.Visible)
                 Program.screenControl.InitScreen();
 
-            Program.screenControl.SetBrightness();
-
         }
 
         private static int CheckAndSaveLidAction()

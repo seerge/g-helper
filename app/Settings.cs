@@ -25,7 +25,7 @@ namespace GHelper
 
         public GPUModeControl gpuControl;
         public AllyControl allyControl;
-        ScreenControl screenControl = new ScreenControl();
+        ScreenControl screenControl = new ScreenControl(); 
         AutoUpdateControl updateControl;
 
         AsusMouseSettings? mouseSettings;
@@ -49,6 +49,8 @@ namespace GHelper
 
         bool batteryMouseOver = false;
         bool batteryFullMouseOver = false;
+
+        bool sliderGammaIgnore = false;
 
         public SettingsForm()
         {
@@ -118,7 +120,7 @@ namespace GHelper
             buttonScreenAuto.AccessibleName = Properties.Strings.AutoMode;
             //button60Hz.AccessibleName = "60Hz Refresh Rate";
             //button120Hz.AccessibleName = "Maximum Refresh Rate";
-            
+
             panelKeyboard.AccessibleName = Properties.Strings.LaptopKeyboard;
             buttonKeyboard.AccessibleName = Properties.Strings.ExtraSettings;
             buttonKeyboardColor.AccessibleName = Properties.Strings.LaptopKeyboard + " " + Properties.Strings.Color;
@@ -221,7 +223,7 @@ namespace GHelper
             sliderBattery.ValueChanged += SliderBattery_ValueChanged;
             Program.trayIcon.MouseMove += TrayIcon_MouseMove;
 
-            sensorTimer = new System.Timers.Timer(AppConfig.Get("sensor_timer",1000));
+            sensorTimer = new System.Timers.Timer(AppConfig.Get("sensor_timer", 1000));
             sensorTimer.Elapsed += OnTimedEvent;
             sensorTimer.Enabled = true;
 
@@ -259,23 +261,78 @@ namespace GHelper
             buttonFnLock.Click += ButtonFnLock_Click;
 
             panelPerformance.Focus();
-
-            InitBrightness();
+            InitVisual();
         }
 
-        public void InitBrightness()
+
+        public void InitVisual()
         {
-            if (!AppConfig.IsOLED()) return;
+
+            bool dimming = false;
+
+            if (AppConfig.IsOLED())
+            {
+                dimming = true;
+                labelGammaTitle.Text = "Flicker-free Dimming";
+                panelGamma.Visible = true;
+                sliderGamma.Visible = true;
+                VisualiseBrightness();
+                sliderGamma.ValueChanged += SliderGamma_ValueChanged;
+            }
+
+            var gamuts = VisualControl.GetGamutModes();
+            if (gamuts.Count < 1) return;
+
+            if (!dimming) labelGammaTitle.Text = "Visual Mode";
+            else labelGammaTitle.Text += " / Visual";
 
             panelGamma.Visible = true;
+            tableVisual.Visible = true;
 
-            int brightness = AppConfig.Get("brightness");
-            if (brightness >= 0) sliderGamma.Value = brightness;
+            comboVisual.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboVisual.DataSource = new BindingSource(VisualControl.GetVisualModes(), null);
+            comboVisual.DisplayMember = "Value";
+            comboVisual.ValueMember = "Key";
+            comboVisual.SelectedValue = (SplendidCommand)AppConfig.Get("visual", (int)SplendidCommand.Default);
 
-            sliderGamma.ValueChanged += SliderGamma_ValueChanged;
-            labelGamma.Text = sliderGamma.Value + "%";
+            comboVisual.SelectedValueChanged += ComboVisual_SelectedValueChanged;
+            comboVisual.Visible = true;
+
+            if (gamuts.Count <= 1) return;
+
+            comboGamut.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboGamut.DataSource = new BindingSource(gamuts, null);
+            comboGamut.DisplayMember = "Value";
+            comboGamut.ValueMember = "Key";
+            comboGamut.SelectedValue = (SplendidGamut)AppConfig.Get("gamut", (int)SplendidGamut.Native);
+
+            comboGamut.SelectedValueChanged += ComboGamut_SelectedValueChanged;
+            comboGamut.Visible = true;
+
         }
 
+        private void ComboGamut_SelectedValueChanged(object? sender, EventArgs e)
+        {
+            AppConfig.Set("gamut", (int)comboGamut.SelectedValue);
+            VisualControl.SetGamut((int)comboGamut.SelectedValue);
+        }
+
+        private void ComboVisual_SelectedValueChanged(object? sender, EventArgs e)
+        {
+            AppConfig.Set("visual", (int)comboVisual.SelectedValue);
+            VisualControl.SetVisual((SplendidCommand)comboVisual.SelectedValue);
+        }
+
+        public void VisualiseBrightness()
+        {
+            Invoke(delegate
+            {
+                sliderGammaIgnore = true;
+                sliderGamma.Value = AppConfig.Get("brightness", 100);
+                labelGamma.Text = sliderGamma.Value + "%";
+                sliderGammaIgnore = false;
+            });
+        }
 
         private void ButtonAutoTDP_Click(object? sender, EventArgs e)
         {
@@ -311,8 +368,8 @@ namespace GHelper
 
         private void SliderGamma_ValueChanged(object? sender, EventArgs e)
         {
-            screenControl.SetBrightness(sliderGamma.Value);
-            labelGamma.Text = sliderGamma.Value + "%";
+            if (sliderGammaIgnore) return;
+            VisualControl.SetBrightness(sliderGamma.Value);
         }
 
         private void ButtonOverlay_Click(object? sender, EventArgs e)
@@ -386,7 +443,7 @@ namespace GHelper
 
         public void VisualiseBacklight(int backlight)
         {
-            buttonBacklight.Text = Math.Round((double)backlight*33.33).ToString() + "%";
+            buttonBacklight.Text = Math.Round((double)backlight * 33.33).ToString() + "%";
         }
 
         public void VisualiseFPSLimit(int limit)
@@ -885,7 +942,7 @@ namespace GHelper
             FansToggle();
         }
 
-        private void SetColorPicker(string colorField = "aura_color") 
+        private void SetColorPicker(string colorField = "aura_color")
         {
             ColorDialog colorDlg = new ColorDialog();
             colorDlg.AllowFullOpen = true;
@@ -990,7 +1047,7 @@ namespace GHelper
 
                 buttonMatrix.Visible = false;
                 checkMatrixLid.Visible = true;
-            } 
+            }
 
             comboMatrix.SelectedIndex = Math.Min(AppConfig.Get("matrix_brightness", 0), comboMatrix.Items.Count - 1);
             comboMatrixRunning.SelectedIndex = Math.Min(AppConfig.Get("matrix_running", 0), comboMatrixRunning.Items.Count - 1);
@@ -1324,11 +1381,13 @@ namespace GHelper
         {
             if (InvokeRequired)
             {
-                Invoke(delegate { 
+                Invoke(delegate
+                {
                     labelPerf.Text = modeText;
                     panelPerformance.AccessibleName = labelPerf.Text;
                 });
-            } else
+            }
+            else
             {
                 labelPerf.Text = modeText;
                 panelPerformance.AccessibleName = labelPerf.Text;
@@ -1503,7 +1562,7 @@ namespace GHelper
                     break;
             }
 
-            
+
 
             VisualizeXGM(GPUMode);
 
@@ -1677,7 +1736,7 @@ namespace GHelper
                     return;
                 }
                 mouseSettings = new AsusMouseSettings(am);
-                mouseSettings.TopMost = true;
+                mouseSettings.TopMost = AppConfig.Is("topmost");
                 mouseSettings.FormClosed += MouseSettings_FormClosed;
                 mouseSettings.Disposed += MouseSettings_Disposed;
                 if (!mouseSettings.IsDisposed)

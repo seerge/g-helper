@@ -85,7 +85,7 @@ namespace GHelper.Input
 
             InitBacklightTimer();
 
-            if (AppConfig.ContainsModel("VivoBook")) Program.acpi.DeviceSet(AsusACPI.FnLock, AppConfig.Is("fn_lock") ? 1 : 0, "FnLock");
+            if (AppConfig.IsVivoZenbook()) Program.acpi.DeviceSet(AsusACPI.FnLock, AppConfig.Is("fn_lock") ? 1 : 0, "FnLock");
 
         }
 
@@ -151,7 +151,7 @@ namespace GHelper.Input
 
             // FN-Lock group
 
-            if (AppConfig.Is("fn_lock") && !AppConfig.ContainsModel("VivoBook"))
+            if (AppConfig.Is("fn_lock") && !AppConfig.IsVivoZenbook())
                 for (Keys i = Keys.F1; i <= Keys.F11; i++) hook.RegisterHotKey(ModifierKeys.None, i);
 
             // Arrow-lock group
@@ -242,6 +242,13 @@ namespace GHelper.Input
                     Program.toast.RunToast(ScreenBrightness.Adjust(delta) + "%", (delta < 0) ? ToastIcon.BrightnessDown : ToastIcon.BrightnessUp);
             }
 
+        }
+
+        static void SetBrightnessDimming(int delta)
+        {
+            int brightness = VisualControl.SetBrightness(delta: delta);
+            if (brightness >= 0)
+                Program.toast.RunToast(brightness + "%", (delta < 0) ? ToastIcon.BrightnessDown : ToastIcon.BrightnessUp);
         }
 
         public void KeyPressed(object sender, KeyPressedEventArgs e)
@@ -500,7 +507,7 @@ namespace GHelper.Input
                 case "micmute":
                     bool muteStatus = Audio.ToggleMute();
                     Program.toast.RunToast(muteStatus ? "Muted" : "Unmuted", muteStatus ? ToastIcon.MicrophoneMute : ToastIcon.Microphone);
-                    if (AppConfig.IsVivobook()) Program.acpi.DeviceSet(AsusACPI.MicMuteLed, muteStatus ? 1 : 0, "MicmuteLed");
+                    if (AppConfig.IsVivoZenbook()) Program.acpi.DeviceSet(AsusACPI.MicMuteLed, muteStatus ? 1 : 0, "MicmuteLed");
                     break;
                 case "brightness_up":
                     SetBrightness(+10);
@@ -568,7 +575,7 @@ namespace GHelper.Input
             int fnLock = AppConfig.Is("fn_lock") ? 0 : 1;
             AppConfig.Set("fn_lock", fnLock);
 
-            if (AppConfig.ContainsModel("VivoBook"))
+            if (AppConfig.IsVivoZenbook())
                 Program.acpi.DeviceSet(AsusACPI.FnLock, fnLock == 1 ? 1 : 0, "FnLock");
             else
                 Program.settingsForm.BeginInvoke(Program.inputDispatcher.RegisterKeys);
@@ -676,7 +683,8 @@ namespace GHelper.Input
                         return;
                     case 51:    // Fn+F6 on old TUFs
                     case 53:    // Fn+F6 on GA-502DU model
-                        NativeMethods.TurnOffScreen();
+                        SleepEvent();
+                        //NativeMethods.TurnOffScreen();
                         return;
                 }
             }
@@ -697,8 +705,14 @@ namespace GHelper.Input
                         if (AppConfig.IsDUO()) SetScreenpad(-10);
                         else Program.settingsForm.BeginInvoke(Program.settingsForm.CycleMatrix, -1);
                     }
+                    else if (Control.ModifierKeys == Keys.Control && AppConfig.IsOLED())
+                    {
+                        SetBrightnessDimming(-10);
+                    }
                     else
+                    {
                         Program.acpi.DeviceSet(AsusACPI.UniversalControl, AsusACPI.Brightness_Down, "Brightness");
+                    }
                     break;
                 case 32: // FN+F8
                     if (Control.ModifierKeys == Keys.Shift)
@@ -706,8 +720,14 @@ namespace GHelper.Input
                         if (AppConfig.IsDUO()) SetScreenpad(10);
                         else Program.settingsForm.BeginInvoke(Program.settingsForm.CycleMatrix, 1);
                     }
+                    else if (Control.ModifierKeys == Keys.Control && AppConfig.IsOLED())
+                    {
+                        SetBrightnessDimming(10);
+                    }
                     else
+                    {
                         Program.acpi.DeviceSet(AsusACPI.UniversalControl, AsusACPI.Brightness_Up, "Brightness");
+                    }
                     break;
                 case 133: // Camera Toggle
                     ToggleCamera();
