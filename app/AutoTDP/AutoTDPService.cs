@@ -233,7 +233,7 @@ namespace GHelper.AutoTDP
 
         public void SaveGameProfiles()
         {
-            string json = JsonSerializer.Serialize(GameProfiles);
+            string json = JsonSerializer.Serialize(GameProfiles, new JsonSerializerOptions { WriteIndented = true });
 
             File.WriteAllText(GameProfileFile, json);
         }
