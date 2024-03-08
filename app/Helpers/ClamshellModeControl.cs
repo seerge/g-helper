@@ -99,7 +99,7 @@ namespace GHelper.Helpers
                 ToggleLidAction();
 
             if (Program.settingsForm.Visible)
-                ScreenControl.InitScreen();
+                Program.screenControl.InitScreen();
 
         }
 

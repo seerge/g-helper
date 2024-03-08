@@ -12,6 +12,7 @@ namespace GHelper
     public partial class Extra : RForm
     {
 
+        ScreenControl screenControl = new ScreenControl();
         ClamshellModeControl clamshellControl = new ClamshellModeControl();
 
         const string EMPTY = "--------------";
@@ -209,6 +210,11 @@ namespace GHelper
                 checkUSBC.Visible = false;
             }
 
+            if (AppConfig.IsOLED())
+            {
+                checkNoOverdrive.Visible = false;
+            }
+
             // Change text and hide irrelevant options on the ROG Ally,
             // which is a bit of a special case piece of hardware.
             if (AppConfig.IsAlly())
@@ -356,7 +362,7 @@ namespace GHelper
             checkTopmost.Checked = AppConfig.Is("topmost");
             checkTopmost.CheckedChanged += CheckTopmost_CheckedChanged; ;
 
-            checkNoOverdrive.Checked = AppConfig.Is("no_overdrive");
+            checkNoOverdrive.Checked = AppConfig.IsNoOverdrive();
             checkNoOverdrive.CheckedChanged += CheckNoOverdrive_CheckedChanged;
 
             checkUSBC.Checked = AppConfig.Is("optimized_usbc");
@@ -678,7 +684,7 @@ namespace GHelper
         private void CheckNoOverdrive_CheckedChanged(object? sender, EventArgs e)
         {
             AppConfig.Set("no_overdrive", (checkNoOverdrive.Checked ? 1 : 0));
-            ScreenControl.AutoScreen(true);
+            screenControl.AutoScreen(true);
         }
 
 

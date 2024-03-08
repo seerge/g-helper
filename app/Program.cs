@@ -32,6 +32,7 @@ namespace GHelper
         public static ModeControl modeControl = new ModeControl();
         public static GPUModeControl gpuControl = new GPUModeControl(settingsForm);
         public static AllyControl allyControl = new AllyControl(settingsForm);
+        public static ScreenControl screenControl = new ScreenControl(); 
         public static ClamshellModeControl clamshellControl = new ClamshellModeControl();
 
         public static ToastForm toast = new ToastForm();
@@ -165,7 +166,7 @@ namespace GHelper
             if (e.Reason == SessionSwitchReason.SessionLogon || e.Reason == SessionSwitchReason.SessionUnlock)
             {
                 Logger.WriteLine("Session:" + e.Reason.ToString());
-                ScreenControl.AutoScreen();
+                screenControl.AutoScreen();
             }
         }
 
@@ -223,7 +224,7 @@ namespace GHelper
             if (!switched)
             {
                 gpuControl.InitGPUMode();
-                ScreenControl.AutoScreen();
+                screenControl.AutoScreen();
             }
 
             BatteryControl.AutoBattery(init);
