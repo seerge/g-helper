@@ -1749,7 +1749,7 @@ namespace GHelper
             sliderGamma.Min = 0;
             sliderGamma.Name = "sliderGamma";
             sliderGamma.Size = new Size(787, 40);
-            sliderGamma.Step = 10;
+            sliderGamma.Step = 5;
             sliderGamma.TabIndex = 20;
             sliderGamma.Text = "sliderGamma";
             sliderGamma.Value = 100;
