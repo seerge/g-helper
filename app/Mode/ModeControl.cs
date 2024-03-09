@@ -88,6 +88,7 @@ namespace GHelper.Mode
 
                 SetGPUClocks();
 
+                await Task.Delay(TimeSpan.FromMilliseconds(100));
                 AutoFans();
                 await Task.Delay(TimeSpan.FromMilliseconds(1000));
                 AutoPower();
