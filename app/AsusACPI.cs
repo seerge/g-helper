@@ -154,7 +154,7 @@ public class AsusACPI
     public static int MaxGPUBoost = 25;
 
     public static int MinGPUPower = 0;
-    public static int MaxGPUPower = 50;
+    public static int MaxGPUPower = 70;
 
     public const int MinGPUTemp = 75;
     public const int MaxGPUTemp = 87;
@@ -291,12 +291,6 @@ public class AsusACPI
         if (AppConfig.IsIntelHX())
         {
             MaxTotal = 175;
-            MaxGPUPower = 70;
-        }
-
-        if (AppConfig.IsSlash())
-        {
-            MaxGPUPower = AppConfig.Get("max_gpu_power", 25);
         }
 
         if (AppConfig.DynamicBoost5())
@@ -307,6 +301,11 @@ public class AsusACPI
         if (AppConfig.DynamicBoost15())
         {
             MaxGPUBoost = 15;
+        }
+
+        if (AppConfig.DynamicBoost20())
+        {
+            MaxGPUBoost = 20;
         }
 
         if (AppConfig.IsAMDLight())

@@ -285,11 +285,15 @@ namespace GHelper
             panelGamma.Visible = true;
             tableVisual.Visible = true;
 
+            var visualValue = (SplendidCommand)AppConfig.Get("visual", (int)SplendidCommand.Default);
+
             comboVisual.DropDownStyle = ComboBoxStyle.DropDownList;
             comboVisual.DataSource = new BindingSource(VisualControl.GetVisualModes(), null);
             comboVisual.DisplayMember = "Value";
             comboVisual.ValueMember = "Key";
-            comboVisual.SelectedValue = (SplendidCommand)AppConfig.Get("visual", (int)SplendidCommand.Default);
+            comboVisual.SelectedValue = visualValue;
+
+            VisualControl.SetVisual(mode : visualValue, init : true);
 
             comboVisual.SelectedValueChanged += ComboVisual_SelectedValueChanged;
             comboVisual.Visible = true;

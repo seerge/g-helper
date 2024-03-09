@@ -30,6 +30,20 @@ public static class NvidiaSmi
         return false; // Return false if the "Display Active" status is not found
     }
 
+    public static int GetMaxGPUPower()
+    {
+        string output = RunNvidiaSmiCommand("--query-gpu=power.max_limit --format csv,noheader,nounits");
+        output = output.Trim().Trim('\n', '\r');
+
+        if (float.TryParse(output, out float floatValue))
+        {
+            int intValue = (int)floatValue;
+            return intValue;
+        }
+
+        return -1;
+    }
+
     private static string RunNvidiaSmiCommand(string arguments = "-i 0 -q")
     {
         ProcessStartInfo startInfo = new ProcessStartInfo

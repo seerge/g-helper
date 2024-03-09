@@ -13,6 +13,8 @@ namespace GHelper.Display
 
     public enum SplendidCommand : int
     {
+        None = -1,
+
         Init = 10,
         DimmingAsus = 9,
         DimmingVisual = 19,
@@ -108,8 +110,11 @@ namespace GHelper.Display
             }
         }
 
-        public static void SetVisual(SplendidCommand mode = SplendidCommand.Default, int whiteBalance = 50)
+        public static void SetVisual(SplendidCommand mode = SplendidCommand.Default, int whiteBalance = 50, bool init = false)
         {
+            if (mode == SplendidCommand.None) return;
+            if (mode == SplendidCommand.Default && init) return; // Skip default setting on init
+
             int balance = mode == SplendidCommand.Eyecare ? 2 : whiteBalance;
             if (RunSplendid(mode, 0, balance)) return;
 
