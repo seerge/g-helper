@@ -532,7 +532,7 @@ namespace GHelper
                 Task.Run((Action)RefreshPeripheralsBattery);
                 updateControl.CheckForUpdates();
 
-                tableAdditionalGPUFeature.Visible = AutoTDPService.IsAvailable();
+                tableAdditionalCPUFeature.Visible = AutoTDPService.IsAvailable();
             }
         }
 

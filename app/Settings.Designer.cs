@@ -67,7 +67,7 @@ namespace GHelper
             labelCPUFan = new Label();
             panelGPU = new Panel();
             labelTipGPU = new Label();
-            tableAdditionalGPUFeature = new TableLayoutPanel();
+            tableAdditionalCPUFeature = new TableLayoutPanel();
             buttonAutoTDP = new RButton();
             tableAMD = new TableLayoutPanel();
             buttonOverlay = new RButton();
@@ -149,7 +149,7 @@ namespace GHelper
             panelCPUTitle.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)picturePerf).BeginInit();
             panelGPU.SuspendLayout();
-            tableAdditionalGPUFeature.SuspendLayout();
+            tableAdditionalCPUFeature.SuspendLayout();
             tableAMD.SuspendLayout();
             tableGPU.SuspendLayout();
             panelGPUTitle.SuspendLayout();
@@ -554,6 +554,7 @@ namespace GHelper
             panelPerformance.AccessibleRole = AccessibleRole.Grouping;
             panelPerformance.AutoSize = true;
             panelPerformance.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            panelPerformance.Controls.Add(tableAdditionalCPUFeature);
             panelPerformance.Controls.Add(tablePerf);
             panelPerformance.Controls.Add(panelCPUTitle);
             panelPerformance.Dock = DockStyle.Top;
@@ -731,7 +732,6 @@ namespace GHelper
             panelGPU.AutoSize = true;
             panelGPU.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             panelGPU.Controls.Add(labelTipGPU);
-            panelGPU.Controls.Add(tableAdditionalGPUFeature);
             panelGPU.Controls.Add(tableAMD);
             panelGPU.Controls.Add(tableGPU);
             panelGPU.Controls.Add(panelGPUTitle);
@@ -756,21 +756,21 @@ namespace GHelper
             // 
             // tableAdditionalGPUFeature
             // 
-            tableAdditionalGPUFeature.AutoSize = true;
-            tableAdditionalGPUFeature.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            tableAdditionalGPUFeature.ColumnCount = 3;
-            tableAdditionalGPUFeature.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.3333321F));
-            tableAdditionalGPUFeature.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.3333321F));
-            tableAdditionalGPUFeature.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.3333321F));
-            tableAdditionalGPUFeature.Controls.Add(buttonAutoTDP, 0, 0);
-            tableAdditionalGPUFeature.Dock = DockStyle.Top;
-            tableAdditionalGPUFeature.Location = new Point(10, 198);
-            tableAdditionalGPUFeature.Margin = new Padding(2, 1, 2, 1);
-            tableAdditionalGPUFeature.Name = "tableAdditionalGPUFeature";
-            tableAdditionalGPUFeature.RowCount = 1;
-            tableAdditionalGPUFeature.RowStyles.Add(new RowStyle(SizeType.Absolute, 60F));
-            tableAdditionalGPUFeature.Size = new Size(392, 60);
-            tableAdditionalGPUFeature.TabIndex = 25;
+            tableAdditionalCPUFeature.AutoSize = true;
+            tableAdditionalCPUFeature.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            tableAdditionalCPUFeature.ColumnCount = 3;
+            tableAdditionalCPUFeature.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.3333321F));
+            tableAdditionalCPUFeature.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.3333321F));
+            tableAdditionalCPUFeature.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.3333321F));
+            tableAdditionalCPUFeature.Controls.Add(buttonAutoTDP, 0, 0);
+            tableAdditionalCPUFeature.Dock = DockStyle.Top;
+            tableAdditionalCPUFeature.Location = new Point(10, 198);
+            tableAdditionalCPUFeature.Margin = new Padding(2, 1, 2, 1);
+            tableAdditionalCPUFeature.Name = "tableAdditionalGPUFeature";
+            tableAdditionalCPUFeature.RowCount = 1;
+            tableAdditionalCPUFeature.RowStyles.Add(new RowStyle(SizeType.Absolute, 60F));
+            tableAdditionalCPUFeature.Size = new Size(392, 60);
+            tableAdditionalCPUFeature.TabIndex = 25;
             // 
             // buttonAutoTDP
             // 
@@ -1910,7 +1910,7 @@ namespace GHelper
             ((System.ComponentModel.ISupportInitialize)picturePerf).EndInit();
             panelGPU.ResumeLayout(false);
             panelGPU.PerformLayout();
-            tableAdditionalGPUFeature.ResumeLayout(false);
+            tableAdditionalCPUFeature.ResumeLayout(false);
             tableAMD.ResumeLayout(false);
             tableGPU.ResumeLayout(false);
             panelGPUTitle.ResumeLayout(false);
@@ -2054,7 +2054,7 @@ namespace GHelper
         private Label labelGammaTitle;
         private CheckBox checkMatrixLid;
         private Panel panelMatrixAuto;
-        private TableLayoutPanel tableAdditionalGPUFeature;
+        private TableLayoutPanel tableAdditionalCPUFeature;
         private RButton buttonAutoTDP;
         private TableLayoutPanel tableVisual;
         private RComboBox comboVisual;
