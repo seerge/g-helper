@@ -131,6 +131,7 @@ namespace GHelper
             labelGamma = new Label();
             pictureGamma = new PictureBox();
             labelGammaTitle = new Label();
+            comboColorTemp = new RComboBox();
             panelMatrix.SuspendLayout();
             panelMatrixAuto.SuspendLayout();
             tableLayoutMatrix.SuspendLayout();
@@ -1694,6 +1695,7 @@ namespace GHelper
             tableVisual.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33F));
             tableVisual.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33F));
             tableVisual.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33F));
+            tableVisual.Controls.Add(comboColorTemp, 0, 0);
             tableVisual.Controls.Add(comboVisual, 0, 0);
             tableVisual.Controls.Add(comboGamut, 0, 0);
             tableVisual.Dock = DockStyle.Top;
@@ -1715,7 +1717,6 @@ namespace GHelper
             comboVisual.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
             comboVisual.FormattingEnabled = true;
             comboVisual.ItemHeight = 32;
-            comboVisual.Items.AddRange(new object[] { "Static", "Breathe", "Rainbow", "Strobe" });
             comboVisual.Location = new Point(266, 11);
             comboVisual.Margin = new Padding(4, 11, 4, 8);
             comboVisual.Name = "comboVisual";
@@ -1732,7 +1733,6 @@ namespace GHelper
             comboGamut.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
             comboGamut.FormattingEnabled = true;
             comboGamut.ItemHeight = 32;
-            comboGamut.Items.AddRange(new object[] { "Static", "Breathe", "Rainbow", "Strobe" });
             comboGamut.Location = new Point(4, 11);
             comboGamut.Margin = new Padding(4, 11, 4, 8);
             comboGamut.Name = "comboGamut";
@@ -1799,6 +1799,22 @@ namespace GHelper
             labelGammaTitle.Size = new Size(506, 32);
             labelGammaTitle.TabIndex = 37;
             labelGammaTitle.Text = "Flicker-free Dimming";
+            // 
+            // comboColorTemp
+            // 
+            comboColorTemp.BorderColor = Color.White;
+            comboColorTemp.ButtonColor = Color.FromArgb(255, 255, 255);
+            comboColorTemp.Dock = DockStyle.Top;
+            comboColorTemp.FlatStyle = FlatStyle.Flat;
+            comboColorTemp.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            comboColorTemp.FormattingEnabled = true;
+            comboColorTemp.ItemHeight = 32;
+            comboColorTemp.Location = new Point(528, 11);
+            comboColorTemp.Margin = new Padding(4, 11, 4, 8);
+            comboColorTemp.Name = "comboColorTemp";
+            comboColorTemp.Size = new Size(255, 40);
+            comboColorTemp.TabIndex = 15;
+            comboColorTemp.Visible = false;
             // 
             // SettingsForm
             // 
@@ -1996,5 +2012,6 @@ namespace GHelper
         private TableLayoutPanel tableVisual;
         private RComboBox comboVisual;
         private RComboBox comboGamut;
+        private RComboBox comboColorTemp;
     }
 }
