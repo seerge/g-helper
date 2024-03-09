@@ -32,6 +32,7 @@ namespace GHelper
         FanSensorControl fanSensorControl;
 
         static int gpuPowerBase = 0;
+        static bool isGPUPower => gpuPowerBase > 0;
 
         public Fans()
         {
@@ -526,8 +527,16 @@ namespace GHelper
         private void InitGPUPower()
         {
             gpuPowerBase = Program.acpi.DeviceGet(AsusACPI.GPU_BASE);
-            panelGPUPower.Visible = gpuPowerBase > 0;
-            if (gpuPowerBase <= 0) return;
+            panelGPUPower.Visible = isGPUPower;
+            if (!isGPUPower) return;
+
+            int maxGPUPower = NvidiaSmi.GetMaxGPUPower();
+            if (maxGPUPower > 0)
+            {
+                AsusACPI.MaxGPUPower = maxGPUPower - gpuPowerBase - 15;
+                trackGPUPower.Minimum = AsusACPI.MinGPUPower;
+                trackGPUPower.Maximum = AsusACPI.MaxGPUPower;
+            }
 
             Task.Run(async () =>
             {
@@ -678,7 +687,8 @@ namespace GHelper
         {
             AppConfig.SetMode("gpu_boost", trackGPUBoost.Value);
             AppConfig.SetMode("gpu_temp", trackGPUTemp.Value);
-            AppConfig.SetMode("gpu_power", trackGPUPower.Value);
+
+            if (isGPUPower) AppConfig.SetMode("gpu_power", trackGPUPower.Value);
 
             VisualiseGPUSettings();
         }
