@@ -523,6 +523,29 @@ namespace GHelper
             modeControl.SetGPUClocks(true);
         }
 
+        private void InitGPUPower()
+        {
+            gpuPowerBase = Program.acpi.DeviceGet(AsusACPI.GPU_BASE);
+            panelGPUPower.Visible = gpuPowerBase >= 0;
+            if (gpuPowerBase <= 0) return;
+
+            Task.Run(async () =>
+            {
+                await Task.Delay(TimeSpan.FromMilliseconds(200));
+                int gpuPowerVar = Program.acpi.DeviceGet(AsusACPI.GPU_POWER);
+                Logger.WriteLine($"ReadGPUPower ({Modes.GetCurrentBase()}): {gpuPowerVar}");
+
+                int gpu_power = AppConfig.GetMode("gpu_power");
+                if (gpu_power < 0) gpu_power = (gpuPowerVar >= 0) ? gpuPowerVar : AsusACPI.MaxGPUPower;
+
+                Invoke(delegate
+                {
+                    trackGPUPower.Value = Math.Max(Math.Min(gpu_power, AsusACPI.MaxGPUPower), AsusACPI.MinGPUPower);
+                    VisualiseGPUSettings();
+                });
+            });
+        }
+
         public void InitGPU()
         {
 
@@ -548,12 +571,8 @@ namespace GHelper
             {
                 gpuVisible = buttonGPU.Visible = true;
 
-                gpuPowerBase = Program.acpi.DeviceGet(AsusACPI.GPU_BASE);
-                int gpuPowerVar = Program.acpi.DeviceGet(AsusACPI.GPU_POWER);
-
                 int gpu_boost = AppConfig.GetMode("gpu_boost");
                 int gpu_temp = AppConfig.GetMode("gpu_temp");
-                int gpu_power = AppConfig.GetMode("gpu_power");
 
                 int core = AppConfig.GetMode("gpu_core");
                 int memory = AppConfig.GetMode("gpu_memory");
@@ -561,7 +580,6 @@ namespace GHelper
 
                 if (gpu_boost < 0) gpu_boost = AsusACPI.MaxGPUBoost;
                 if (gpu_temp < 0) gpu_temp = AsusACPI.MaxGPUTemp;
-                if (gpu_power < 0) gpu_power = (gpuPowerVar >= 0) ? gpuPowerVar : AsusACPI.MaxGPUPower;
 
                 if (core == -1) core = 0;
                 if (memory == -1) memory = 0;
@@ -598,14 +616,13 @@ namespace GHelper
                 trackGPUBoost.Value = Math.Max(Math.Min(gpu_boost, AsusACPI.MaxGPUBoost), AsusACPI.MinGPUBoost);
                 trackGPUTemp.Value = Math.Max(Math.Min(gpu_temp, AsusACPI.MaxGPUTemp), AsusACPI.MinGPUTemp);
 
-                trackGPUPower.Value = Math.Max(Math.Min(gpu_power, AsusACPI.MaxGPUPower), AsusACPI.MinGPUPower);
 
                 panelGPUBoost.Visible = (Program.acpi.DeviceGet(AsusACPI.PPT_GPUC0) >= 0);
                 panelGPUTemp.Visible = (Program.acpi.DeviceGet(AsusACPI.PPT_GPUC2) >= 0);
 
-                panelGPUPower.Visible = gpuPowerBase > 0 && gpuPowerVar >= 0;
-
                 VisualiseGPUSettings();
+
+                InitGPUPower();
 
             }
             catch (Exception ex)
@@ -1079,7 +1096,6 @@ namespace GHelper
 
         }
 
-
         private void ButtonReset_Click(object? sender, EventArgs e)
         {
 
@@ -1114,25 +1130,22 @@ namespace GHelper
 
             if (gpuVisible)
             {
-                int gpuPowerVar = Program.acpi.DeviceGet(AsusACPI.GPU_POWER);
-                Logger.WriteLine("Default GPU Power: " +  gpuPowerVar);
-
                 trackGPUClockLimit.Value = NvidiaGpuControl.MaxClockLimit;
                 trackGPUCore.Value = 0;
                 trackGPUMemory.Value = 0;
                 
                 trackGPUBoost.Value = AsusACPI.MaxGPUBoost;
                 trackGPUTemp.Value = AsusACPI.MaxGPUTemp;
-                trackGPUPower.Value = Math.Max(Math.Min((gpuPowerVar >= 0) ? gpuPowerVar : AsusACPI.MaxGPUPower, AsusACPI.MaxGPUPower), AsusACPI.MinGPUPower);
 
                 AppConfig.SetMode("gpu_boost", trackGPUBoost.Value);
                 AppConfig.SetMode("gpu_temp", trackGPUTemp.Value);
 
                 AppConfig.RemoveMode("gpu_power");
-
                 AppConfig.RemoveMode("gpu_clock_limit");
                 AppConfig.RemoveMode("gpu_core");
                 AppConfig.RemoveMode("gpu_memory");
+
+                InitGPUPower();
 
                 VisualiseGPUSettings();
                 modeControl.SetGPUClocks(true);
