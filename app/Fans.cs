@@ -527,13 +527,15 @@ namespace GHelper
         private void InitGPUPower()
         {
             gpuPowerBase = Program.acpi.DeviceGet(AsusACPI.GPU_BASE);
+            Logger.WriteLine($"ReadGPUPowerBase: {gpuPowerBase}");
+
             panelGPUPower.Visible = isGPUPower;
             if (!isGPUPower) return;
 
             int maxGPUPower = NvidiaSmi.GetMaxGPUPower();
             if (maxGPUPower > 0)
             {
-                AsusACPI.MaxGPUPower = maxGPUPower - gpuPowerBase - 15;
+                AsusACPI.MaxGPUPower = maxGPUPower - gpuPowerBase - AsusACPI.MaxGPUBoost;
                 trackGPUPower.Minimum = AsusACPI.MinGPUPower;
                 trackGPUPower.Maximum = AsusACPI.MaxGPUPower;
             }

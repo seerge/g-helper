@@ -303,6 +303,11 @@ public class AsusACPI
             MaxGPUBoost = 15;
         }
 
+        if (AppConfig.DynamicBoost20())
+        {
+            MaxGPUBoost = 20;
+        }
+
         if (AppConfig.IsAMDLight())
         {
             MaxTotal = 90;
