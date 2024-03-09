@@ -286,6 +286,7 @@ namespace GHelper
             tableVisual.Visible = true;
 
             var visualValue = (SplendidCommand)AppConfig.Get("visual", (int)SplendidCommand.Default);
+            var colorTempValue = AppConfig.Get("color_temp", VisualControl.DefaultColorTemp);
 
             comboVisual.DropDownStyle = ComboBoxStyle.DropDownList;
             comboVisual.DataSource = new BindingSource(VisualControl.GetVisualModes(), null);
@@ -293,10 +294,19 @@ namespace GHelper
             comboVisual.ValueMember = "Key";
             comboVisual.SelectedValue = visualValue;
 
-            VisualControl.SetVisual(mode : visualValue, init : true);
+            comboColorTemp.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboColorTemp.DataSource = new BindingSource(VisualControl.GetTemperatures(), null);
+            comboColorTemp.DisplayMember = "Value";
+            comboColorTemp.ValueMember = "Key";
+            comboColorTemp.SelectedValue = colorTempValue;
+
+            VisualControl.SetVisual(visualValue, colorTempValue, true);
 
             comboVisual.SelectedValueChanged += ComboVisual_SelectedValueChanged;
             comboVisual.Visible = true;
+
+            comboColorTemp.SelectedValueChanged += ComboVisual_SelectedValueChanged;
+            comboColorTemp.Visible = true;
 
             if (gamuts.Count <= 1) return;
 
@@ -320,7 +330,8 @@ namespace GHelper
         private void ComboVisual_SelectedValueChanged(object? sender, EventArgs e)
         {
             AppConfig.Set("visual", (int)comboVisual.SelectedValue);
-            VisualControl.SetVisual((SplendidCommand)comboVisual.SelectedValue);
+            AppConfig.Set("color_temp", (int)comboColorTemp.SelectedValue);
+            VisualControl.SetVisual((SplendidCommand)comboVisual.SelectedValue, (int)comboColorTemp.SelectedValue);
         }
 
         public void VisualiseBrightness()
