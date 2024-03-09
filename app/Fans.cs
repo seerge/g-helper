@@ -526,7 +526,7 @@ namespace GHelper
         private void InitGPUPower()
         {
             gpuPowerBase = Program.acpi.DeviceGet(AsusACPI.GPU_BASE);
-            panelGPUPower.Visible = gpuPowerBase >= 0;
+            panelGPUPower.Visible = gpuPowerBase > 0;
             if (gpuPowerBase <= 0) return;
 
             Task.Run(async () =>
