@@ -67,6 +67,8 @@ namespace GHelper.Fan
 
             if (AppConfig.ContainsModel("GV601")) return new int[3] { 78, 59, 85 };
 
+            if (AppConfig.ContainsModel("GA403")) return new int[3] { 68, 68, 80 };
+
             return new int[3] { DEFAULT_FAN_MAX, DEFAULT_FAN_MAX, DEFAULT_FAN_MAX };
         }
 

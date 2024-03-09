@@ -475,6 +475,11 @@ public static class AppConfig
         return ContainsModel("FX507ZC4");
     }
 
+    public static bool DynamicBoost20()
+    {
+        return ContainsModel("GU605");
+    }
+
     public static bool IsAdvantageEdition()
     {
         return ContainsModel("13QY");

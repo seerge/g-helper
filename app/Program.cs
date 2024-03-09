@@ -219,6 +219,8 @@ namespace GHelper
             isPlugged = SystemInformation.PowerStatus.PowerLineStatus;
             Logger.WriteLine("AutoSetting for " + isPlugged.ToString());
 
+            BatteryControl.AutoBattery(init);
+
             inputDispatcher.Init();
 
             modeControl.AutoPerformance(powerChanged);
@@ -230,8 +232,6 @@ namespace GHelper
                 gpuControl.InitGPUMode();
                 screenControl.AutoScreen();
             }
-
-            BatteryControl.AutoBattery(init);
 
             settingsForm.matrixControl.SetDevice(true);
 
