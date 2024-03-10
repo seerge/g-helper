@@ -269,15 +269,15 @@ namespace GHelper
             if (AppConfig.IsOLED())
             {
                 dimming = true;
-                labelGammaTitle.Text = "Flicker-free Dimming";
+                labelGammaTitle.Text = Properties.Strings.FlickerFreeDimming;
                 panelGamma.Visible = true;
                 sliderGamma.Visible = true;
                 VisualiseBrightness();
                 sliderGamma.ValueChanged += SliderGamma_ValueChanged;
             }
 
-            if (!dimming) labelGammaTitle.Text = "Visual Mode";
-            else labelGammaTitle.Text += " / Visual";
+            if (!dimming) labelGammaTitle.Text = Properties.Strings.ViualMode;
+            else labelGammaTitle.Text += " / " + Properties.Strings.ViualMode;
 
             var gamuts = VisualControl.GetGamutModes();
 
@@ -287,7 +287,7 @@ namespace GHelper
                 {
                     tableVisual.ColumnCount = 2;
 
-                    buttonInstallColor.Text = "Download Color Profile(s)";
+                    buttonInstallColor.Text = Properties.Strings.DownloadColorProfiles;
                     buttonInstallColor.Visible = true;
                     buttonInstallColor.Click += ButtonInstallColorProfile_Click;
 

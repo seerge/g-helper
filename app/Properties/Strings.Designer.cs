@@ -727,6 +727,15 @@ namespace GHelper.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Download Color Profiles.
+        /// </summary>
+        internal static string DownloadColorProfiles {
+            get {
+                return ResourceManager.GetString("DownloadColorProfiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Download.
         /// </summary>
         internal static string DownloadUpdate {
@@ -905,6 +914,15 @@ namespace GHelper.Properties {
         internal static string FansPower {
             get {
                 return ResourceManager.GetString("FansPower", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Flicker-free Dimming.
+        /// </summary>
+        internal static string FlickerFreeDimming {
+            get {
+                return ResourceManager.GetString("FlickerFreeDimming", resourceCulture);
             }
         }
         
@@ -1868,6 +1886,15 @@ namespace GHelper.Properties {
         internal static string VibrationStrength {
             get {
                 return ResourceManager.GetString("VibrationStrength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Visual Mode.
+        /// </summary>
+        internal static string ViualMode {
+            get {
+                return ResourceManager.GetString("ViualMode", resourceCulture);
             }
         }
         
