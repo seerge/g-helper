@@ -1,7 +1,7 @@
 ﻿
 namespace GHelper.AutoTDP
 {
-    public class GameProfile
+    public class GameProfile : IComparable<GameProfile>
     {
         public string GameTitle { get; set; }
         public string ProcessName { get; set; }
@@ -9,6 +9,11 @@ namespace GHelper.AutoTDP
         public int MinTdp { get; set; }
         public int MaxTdp { get; set; }
         public bool Enabled { get; set; }
+
+        public int CompareTo(GameProfile? other)
+        {
+            return GameTitle.CompareTo(other?.GameTitle);
+        }
 
         public int GetTDPFPS()
         {

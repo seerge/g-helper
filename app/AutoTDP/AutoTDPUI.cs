@@ -213,6 +213,7 @@ namespace GHelper.AutoTDP
                 Program.autoTDPService.GameProfiles.Remove(gp);
             }
 
+            Program.autoTDPService.SortGameProfiles();
             Program.autoTDPService.SaveGameProfiles();
             VizualizeGameList();
         }
@@ -223,6 +224,7 @@ namespace GHelper.AutoTDP
             {
                 Program.autoTDPService.GameProfiles.Add(gp);
             }
+            Program.autoTDPService.SortGameProfiles();
             Program.autoTDPService.SaveGameProfiles();
             VizualizeGameList();
         }

@@ -238,6 +238,11 @@ namespace GHelper.AutoTDP
             File.WriteAllText(GameProfileFile, json);
         }
 
+        public void SortGameProfiles()
+        {
+            GameProfiles.Sort();
+        }
+
 
         public void LoadGameProfiles()
         {
