@@ -276,11 +276,30 @@ namespace GHelper
                 sliderGamma.ValueChanged += SliderGamma_ValueChanged;
             }
 
-            var gamuts = VisualControl.GetGamutModes();
-            if (gamuts.Count < 1) return;
-
             if (!dimming) labelGammaTitle.Text = "Visual Mode";
             else labelGammaTitle.Text += " / Visual";
+
+            var gamuts = VisualControl.GetGamutModes();
+
+            if (gamuts.Count < 1)
+            {
+                if (ColorProfileHelper.ProfileExists())
+                {
+                    tableVisual.ColumnCount = 2;
+
+                    buttonInstallColor.Text = "Download Color Profile(s)";
+                    buttonInstallColor.Visible = true;
+                    buttonInstallColor.Click += ButtonInstallColorProfile_Click;
+
+                    panelGamma.Visible = true;
+                    tableVisual.Visible = true;
+                }
+                return;
+            } else
+            {
+                tableVisual.ColumnCount = 3;
+                buttonInstallColor.Visible = false;
+            }
 
             panelGamma.Visible = true;
             tableVisual.Visible = true;
@@ -319,6 +338,12 @@ namespace GHelper
             comboGamut.SelectedValueChanged += ComboGamut_SelectedValueChanged;
             comboGamut.Visible = true;
 
+        }
+
+        private async void ButtonInstallColorProfile_Click(object? sender, EventArgs e)
+        {
+            await ColorProfileHelper.InstallProfile();
+            InitVisual();
         }
 
         private void ComboGamut_SelectedValueChanged(object? sender, EventArgs e)

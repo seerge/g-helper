@@ -45,7 +45,7 @@ namespace GHelper.Display
             brightnessTimer.Elapsed += BrightnessTimerTimer_Elapsed;
         }
 
-        private static string GetGameVisualPath()
+        public static string GetGameVisualPath()
         {
             return Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + "\\ASUS\\GameVisual";
         }
@@ -57,7 +57,7 @@ namespace GHelper.Display
             string gameVisualPath = GetGameVisualPath();
             if (!Directory.Exists(gameVisualPath))
             {
-                Logger.WriteLine(gameVisualPath + "doesn't exit");
+                Logger.WriteLine(gameVisualPath + " doesn't exit");
                 return _modes;
             }
 
