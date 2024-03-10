@@ -339,6 +339,9 @@
   <data name="Discharging" xml:space="preserve">
     <value>Discharging</value>
   </data>
+  <data name="DownloadColorProfiles" xml:space="preserve">
+    <value>Download Color Profiles</value>
+  </data>
   <data name="DownloadUpdate" xml:space="preserve">
     <value>Unduh</value>
   </data>
@@ -400,6 +403,9 @@ Apakah Anda masih ingin melanjutkan?</value>
   </data>
   <data name="FansPower" xml:space="preserve">
     <value>Kipas + Daya</value>
+  </data>
+  <data name="FlickerFreeDimming" xml:space="preserve">
+    <value>Flicker-free Dimming</value>
   </data>
   <data name="FnLock" xml:space="preserve">
     <value>Proses tombol pintas Fn+F tanpa Fn</value>
@@ -721,6 +727,9 @@ Apakah Anda masih ingin melanjutkan?</value>
   </data>
   <data name="VibrationStrength" xml:space="preserve">
     <value>Vibration Strength</value>
+  </data>
+  <data name="ViualMode" xml:space="preserve">
+    <value>Visual Mode</value>
   </data>
   <data name="VolumeDown" xml:space="preserve">
     <value>Volume Turun</value>
