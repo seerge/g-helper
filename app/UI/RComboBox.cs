@@ -1,10 +1,12 @@
 ﻿using System.ComponentModel;
+using System.Drawing.Drawing2D;
 using System.Runtime.InteropServices;
 
 namespace GHelper.UI
 {
     public class RComboBox : ComboBox
     {
+
         private Color borderColor = Color.Gray;
         [DefaultValue(typeof(Color), "Gray")]
         public Color BorderColor
@@ -51,6 +53,67 @@ namespace GHelper.UI
             }
         }
 
+
+        public static GraphicsPath RoundedRect(Rectangle bounds, int radiusL, int radiusR)
+        {
+            int diameterL = radiusL * 2;
+            int diameterR = radiusR * 2;
+
+            Size sizeL = new Size(diameterL, diameterL);
+            Size sizeR = new Size(diameterR, diameterR);
+
+            Rectangle arcL = new Rectangle(bounds.Location, sizeL);
+            Rectangle arcR = new Rectangle(bounds.Location, sizeR);
+
+            GraphicsPath path = new GraphicsPath();
+
+            // top left arc  
+            path.AddArc(arcL, 180, 90);
+
+            // top right arc  
+            arcR.X = bounds.Right - diameterR;
+            arcR.Y = bounds.Top;
+            path.AddArc(arcR, 270, 90);
+
+            // bottom right arc  
+            arcR.Y = bounds.Bottom - diameterR;
+            arcR.X = bounds.Right - diameterR;
+            path.AddArc(arcR, 0, 90);
+
+            // bottom left arc 
+            arcL.X = bounds.Left;
+            arcL.Y = bounds.Bottom - diameterL;
+            path.AddArc(arcL, 90, 90);
+
+            path.CloseFigure();
+            return path;
+        }
+
+        public static void DrawRoundedRectangle(Graphics graphics, Pen pen, Rectangle bounds, int cornerRadiusL = 5, int cornerRadiusR = 5)
+        {
+            if (graphics == null)
+                throw new ArgumentNullException(nameof(graphics));
+            if (pen == null)
+                throw new ArgumentNullException(nameof(pen));
+
+            using (GraphicsPath path = RoundedRect(bounds, cornerRadiusL, cornerRadiusR))
+            {
+                graphics.DrawPath(pen, path);
+            }
+        }
+
+        public static void FillRoundedRectangle(Graphics graphics, Brush brush, Rectangle bounds, int cornerRadiusL = 5, int cornerRadiusR = 5)
+        {
+            if (graphics == null)
+                throw new ArgumentNullException(nameof(graphics));
+            if (brush == null)
+                throw new ArgumentNullException(nameof(brush));
+
+            using (GraphicsPath path = RoundedRect(bounds, cornerRadiusL, cornerRadiusR))
+            {
+                graphics.FillPath(brush, path);
+            }
+        }
 
         protected override void WndProc(ref Message m)
         {
@@ -111,20 +174,25 @@ namespace GHelper.UI
                 {
                     using (var b = new SolidBrush(buttonColor))
                     {
+                        //FillRoundedRectangle(g, b, dropDownRect, 1, 3);
                         g.FillRectangle(b, dropDownRect);
                     }
                     using (var b = new SolidBrush(arrowColor))
                     {
                         g.FillPolygon(b, arrow);
                     }
-                    using (var p = new Pen(innerBorderColor))
+                    using (var p = new Pen(innerBorderColor, 2))
                     {
-                        g.DrawRectangle(p, innerBorder);
-                        g.DrawRectangle(p, innerInnerBorder);
+                        DrawRoundedRectangle(g, p, innerBorder, 3, 1);
+                        //DrawRoundedRectangle(g, p, innerInnerBorder, 3, 1);
+
+                        //g.DrawRectangle(p, innerBorder);
+                        //g.DrawRectangle(p, innerInnerBorder);
                     }
                     using (var p = new Pen(outerBorderColor))
                     {
-                        g.DrawRectangle(p, outerBorder);
+                        DrawRoundedRectangle(g, p, outerBorder, 4, 4);
+                        //g.DrawRectangle(p, outerBorder);
                     }
                 }
                 if (shoulEndPaint)
