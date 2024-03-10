@@ -352,7 +352,7 @@
     <value>集显模式</value>
   </data>
   <data name="EnableGPUOnShutdown" xml:space="preserve">
-    <value>Enable GPU on shutdown (prevents issue with Eco mode)</value>
+    <value>在关闭时启用 GPU (防止与 Eco 模式出现问题)</value>
   </data>
   <data name="EnableOptimusText" xml:space="preserve">
     <value>NVIDIA 控制面板中的显示模式未设置为 Optimus 时，通过集显模式禁用独立显卡可能会使亮度控制出现问题，直到下次重启后才能恢复。
