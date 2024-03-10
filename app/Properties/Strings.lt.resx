@@ -339,6 +339,9 @@
   <data name="Discharging" xml:space="preserve">
     <value>Iškrovimas</value>
   </data>
+  <data name="DownloadColorProfiles" xml:space="preserve">
+    <value>Download Color Profiles</value>
+  </data>
   <data name="DownloadUpdate" xml:space="preserve">
     <value>Atsisiųsti</value>
   </data>
@@ -400,6 +403,9 @@ Vis tiek norite tęsti?</value>
   </data>
   <data name="FansPower" xml:space="preserve">
     <value>Aušintuvai + galia</value>
+  </data>
+  <data name="FlickerFreeDimming" xml:space="preserve">
+    <value>Flicker-free Dimming</value>
   </data>
   <data name="FnLock" xml:space="preserve">
     <value>Apdoroti Fn+F sparčiuosius klavišus be Fn</value>
@@ -721,6 +727,9 @@ Vis tiek norite tęsti?</value>
   </data>
   <data name="VibrationStrength" xml:space="preserve">
     <value>Vibration Strength</value>
+  </data>
+  <data name="ViualMode" xml:space="preserve">
+    <value>Visual Mode</value>
   </data>
   <data name="VolumeDown" xml:space="preserve">
     <value>Garsumo mažinimas</value>
