@@ -76,7 +76,7 @@ namespace GHelper.AutoTDP
             Thread t = new Thread(() =>
             {
                 OpenFileDialog ofd = new OpenFileDialog();
-                ofd.Filter = "Executables (*.exe)|*.exe";
+                ofd.Filter = "Executables (*.exe, *.dat)|*.exe; *.dat";
 
                 if (ofd.ShowDialog() == DialogResult.OK)
                 {
