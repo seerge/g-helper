@@ -273,18 +273,38 @@ namespace GHelper
             if (AppConfig.IsOLED())
             {
                 dimming = true;
-                labelGammaTitle.Text = "Flicker-free Dimming";
+                labelGammaTitle.Text = Properties.Strings.FlickerFreeDimming;
                 panelGamma.Visible = true;
                 sliderGamma.Visible = true;
                 VisualiseBrightness();
                 sliderGamma.ValueChanged += SliderGamma_ValueChanged;
+                sliderGamma.MouseUp += SliderGamma_ValueChanged;
             }
 
-            var gamuts = VisualControl.GetGamutModes();
-            if (gamuts.Count < 1) return;
+            if (!dimming) labelGammaTitle.Text = Properties.Strings.ViualMode;
+            else labelGammaTitle.Text += " / " + Properties.Strings.ViualMode;
 
-            if (!dimming) labelGammaTitle.Text = "Visual Mode";
-            else labelGammaTitle.Text += " / Visual";
+            var gamuts = VisualControl.GetGamutModes();
+
+            if (gamuts.Count < 1)
+            {
+                if (ColorProfileHelper.ProfileExists())
+                {
+                    tableVisual.ColumnCount = 2;
+
+                    buttonInstallColor.Text = Properties.Strings.DownloadColorProfiles;
+                    buttonInstallColor.Visible = true;
+                    buttonInstallColor.Click += ButtonInstallColorProfile_Click;
+
+                    panelGamma.Visible = true;
+                    tableVisual.Visible = true;
+                }
+                return;
+            } else
+            {
+                tableVisual.ColumnCount = 3;
+                buttonInstallColor.Visible = false;
+            }
 
             panelGamma.Visible = true;
             tableVisual.Visible = true;
@@ -323,6 +343,12 @@ namespace GHelper
             comboGamut.SelectedValueChanged += ComboGamut_SelectedValueChanged;
             comboGamut.Visible = true;
 
+        }
+
+        private async void ButtonInstallColorProfile_Click(object? sender, EventArgs e)
+        {
+            await ColorProfileHelper.InstallProfile();
+            InitVisual();
         }
 
         private void ComboGamut_SelectedValueChanged(object? sender, EventArgs e)
