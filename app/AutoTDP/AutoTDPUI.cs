@@ -96,7 +96,7 @@ namespace GHelper.AutoTDP
 
             GameProfile p = new GameProfile();
             p.ProcessName = Path.GetFileName(path);
-            p.GameTitle = Path.GetFileName(path).Replace(".exe", "");
+            p.GameTitle = Path.GetFileName(path).Replace(".exe", "").Replace(".dat", "");
             p.Enabled = true;
             p.TargetFPS = 60;
             p.MaxTdp = 40;
