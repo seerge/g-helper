@@ -11,7 +11,7 @@ namespace GHelper.AutoTDP
         private static readonly bool LOG_AUTO_TDP = true;
         private static readonly int INTERVAL_MIN_CHECK = 15 * 1_000;
         private static readonly int INTERVAL_APP_CHECK = 5_000;
-        private static readonly int INTERVAL_FPS_CHECK = 33;
+        private static readonly int INTERVAL_FPS_CHECK = 1_000;
 
         private static readonly int INTERVAL_LOG = 1_000;
         private int LogCounter = 0;
