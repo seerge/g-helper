@@ -16,6 +16,10 @@ body:
           required: true
     validations:
       required: true
+  - type: markdown
+    attributes:
+      value: |
+        <b>NOTICE:</b> Issues like "my fans are not working properly" will be closed without answer. Neither G-Helper nor Armoury don't control fans in realtime anyhow. Fans are <b>always</b> controlled by BIOS, even when you set a custom fan curve. 
   - type: textarea
     id: description
     attributes:
