@@ -124,14 +124,15 @@ namespace GHelper
             labelAlly = new Label();
             panelGamma = new Panel();
             tableVisual = new TableLayoutPanel();
+            buttonInstallColor = new RButton();
             comboVisual = new RComboBox();
+            comboColorTemp = new RComboBox();
             comboGamut = new RComboBox();
             sliderGamma = new Slider();
             panelGammaTitle = new Panel();
             labelGamma = new Label();
             pictureGamma = new PictureBox();
             labelGammaTitle = new Label();
-            comboColorTemp = new RComboBox();
             panelMatrix.SuspendLayout();
             panelMatrixAuto.SuspendLayout();
             tableLayoutMatrix.SuspendLayout();
@@ -186,7 +187,7 @@ namespace GHelper
             panelMatrix.Controls.Add(tableLayoutMatrix);
             panelMatrix.Controls.Add(panelMatrixTitle);
             panelMatrix.Dock = DockStyle.Top;
-            panelMatrix.Location = new Point(11, 1000);
+            panelMatrix.Location = new Point(11, 1007);
             panelMatrix.Margin = new Padding(0);
             panelMatrix.Name = "panelMatrix";
             panelMatrix.Padding = new Padding(20, 20, 20, 10);
@@ -361,7 +362,7 @@ namespace GHelper
             panelBattery.Controls.Add(sliderBattery);
             panelBattery.Controls.Add(panelBatteryTitle);
             panelBattery.Dock = DockStyle.Top;
-            panelBattery.Location = new Point(11, 1676);
+            panelBattery.Location = new Point(11, 1683);
             panelBattery.Margin = new Padding(0);
             panelBattery.Name = "panelBattery";
             panelBattery.Padding = new Padding(20, 20, 20, 10);
@@ -453,7 +454,7 @@ namespace GHelper
             panelFooter.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             panelFooter.Controls.Add(tableButtons);
             panelFooter.Dock = DockStyle.Top;
-            panelFooter.Location = new Point(11, 1851);
+            panelFooter.Location = new Point(11, 1858);
             panelFooter.Margin = new Padding(0);
             panelFooter.Name = "panelFooter";
             panelFooter.Padding = new Padding(20);
@@ -1032,8 +1033,8 @@ namespace GHelper
             panelScreen.Location = new Point(11, 651);
             panelScreen.Margin = new Padding(0);
             panelScreen.Name = "panelScreen";
-            panelScreen.Padding = new Padding(20, 20, 20, 0);
-            panelScreen.Size = new Size(827, 176);
+            panelScreen.Padding = new Padding(20, 10, 20, 0);
+            panelScreen.Size = new Size(827, 166);
             panelScreen.TabIndex = 2;
             panelScreen.TabStop = true;
             // 
@@ -1041,7 +1042,7 @@ namespace GHelper
             // 
             labelTipScreen.Dock = DockStyle.Top;
             labelTipScreen.ForeColor = SystemColors.GrayText;
-            labelTipScreen.Location = new Point(20, 140);
+            labelTipScreen.Location = new Point(20, 130);
             labelTipScreen.Margin = new Padding(4, 0, 4, 0);
             labelTipScreen.Name = "labelTipScreen";
             labelTipScreen.Size = new Size(787, 36);
@@ -1061,7 +1062,7 @@ namespace GHelper
             tableScreen.Controls.Add(button120Hz, 2, 0);
             tableScreen.Controls.Add(buttonMiniled, 3, 0);
             tableScreen.Dock = DockStyle.Top;
-            tableScreen.Location = new Point(20, 60);
+            tableScreen.Location = new Point(20, 50);
             tableScreen.Margin = new Padding(8, 4, 8, 4);
             tableScreen.Name = "tableScreen";
             tableScreen.RowCount = 1;
@@ -1153,7 +1154,7 @@ namespace GHelper
             panelScreenTitle.Controls.Add(pictureScreen);
             panelScreenTitle.Controls.Add(labelSreen);
             panelScreenTitle.Dock = DockStyle.Top;
-            panelScreenTitle.Location = new Point(20, 20);
+            panelScreenTitle.Location = new Point(20, 10);
             panelScreenTitle.Margin = new Padding(4);
             panelScreenTitle.Name = "panelScreenTitle";
             panelScreenTitle.Size = new Size(787, 40);
@@ -1200,7 +1201,7 @@ namespace GHelper
             panelKeyboard.Controls.Add(tableLayoutKeyboard);
             panelKeyboard.Controls.Add(panelKeyboardTitle);
             panelKeyboard.Dock = DockStyle.Top;
-            panelKeyboard.Location = new Point(11, 1334);
+            panelKeyboard.Location = new Point(11, 1341);
             panelKeyboard.Margin = new Padding(0);
             panelKeyboard.Name = "panelKeyboard";
             panelKeyboard.Padding = new Padding(20);
@@ -1376,7 +1377,7 @@ namespace GHelper
             panelVersion.Controls.Add(labelCharge);
             panelVersion.Controls.Add(checkStartup);
             panelVersion.Dock = DockStyle.Top;
-            panelVersion.Location = new Point(11, 1795);
+            panelVersion.Location = new Point(11, 1802);
             panelVersion.Margin = new Padding(4);
             panelVersion.Name = "panelVersion";
             panelVersion.Size = new Size(827, 56);
@@ -1401,7 +1402,7 @@ namespace GHelper
             panelPeripherals.Controls.Add(tableLayoutPeripherals);
             panelPeripherals.Controls.Add(panelPeripheralsTile);
             panelPeripherals.Dock = DockStyle.Top;
-            panelPeripherals.Location = new Point(11, 1478);
+            panelPeripherals.Location = new Point(11, 1485);
             panelPeripherals.Margin = new Padding(0);
             panelPeripherals.Name = "panelPeripherals";
             panelPeripherals.Padding = new Padding(20, 20, 20, 10);
@@ -1543,7 +1544,7 @@ namespace GHelper
             panelAlly.Controls.Add(tableLayoutAlly);
             panelAlly.Controls.Add(panelAllyTitle);
             panelAlly.Dock = DockStyle.Top;
-            panelAlly.Location = new Point(11, 1194);
+            panelAlly.Location = new Point(11, 1201);
             panelAlly.Margin = new Padding(0);
             panelAlly.Name = "panelAlly";
             panelAlly.Padding = new Padding(20, 20, 20, 0);
@@ -1679,11 +1680,11 @@ namespace GHelper
             panelGamma.Controls.Add(sliderGamma);
             panelGamma.Controls.Add(panelGammaTitle);
             panelGamma.Dock = DockStyle.Top;
-            panelGamma.Location = new Point(11, 827);
+            panelGamma.Location = new Point(11, 817);
             panelGamma.Margin = new Padding(0);
             panelGamma.Name = "panelGamma";
-            panelGamma.Padding = new Padding(20, 20, 20, 10);
-            panelGamma.Size = new Size(827, 173);
+            panelGamma.Padding = new Padding(20, 10, 20, 10);
+            panelGamma.Size = new Size(827, 190);
             panelGamma.TabIndex = 9;
             panelGamma.Visible = false;
             // 
@@ -1692,21 +1693,45 @@ namespace GHelper
             tableVisual.AutoSize = true;
             tableVisual.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             tableVisual.ColumnCount = 3;
-            tableVisual.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33F));
-            tableVisual.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33F));
-            tableVisual.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33F));
-            tableVisual.Controls.Add(comboColorTemp, 0, 0);
+            tableVisual.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.3333321F));
+            tableVisual.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.3333321F));
+            tableVisual.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.3333321F));
+            tableVisual.Controls.Add(buttonInstallColor, 0, 0);
             tableVisual.Controls.Add(comboVisual, 0, 0);
-            tableVisual.Controls.Add(comboGamut, 0, 0);
+            tableVisual.Controls.Add(comboColorTemp, 1, 0);
+            tableVisual.Controls.Add(comboGamut, 2, 0);
             tableVisual.Dock = DockStyle.Top;
-            tableVisual.Location = new Point(20, 104);
+            tableVisual.Location = new Point(20, 94);
             tableVisual.Margin = new Padding(8);
             tableVisual.Name = "tableVisual";
             tableVisual.RowCount = 1;
             tableVisual.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            tableVisual.Size = new Size(787, 59);
+            tableVisual.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
+            tableVisual.Size = new Size(787, 86);
             tableVisual.TabIndex = 41;
             tableVisual.Visible = false;
+            // 
+            // buttonInstallColor
+            // 
+            buttonInstallColor.Activated = false;
+            buttonInstallColor.BackColor = SystemColors.ControlLight;
+            buttonInstallColor.BorderColor = Color.Transparent;
+            buttonInstallColor.BorderRadius = 2;
+            buttonInstallColor.Dock = DockStyle.Top;
+            buttonInstallColor.FlatAppearance.BorderSize = 0;
+            buttonInstallColor.FlatStyle = FlatStyle.Flat;
+            buttonInstallColor.Image = Properties.Resources.icons8_color_32;
+            buttonInstallColor.ImageAlign = ContentAlignment.MiddleRight;
+            buttonInstallColor.Location = new Point(266, 8);
+            buttonInstallColor.Margin = new Padding(4, 8, 4, 8);
+            buttonInstallColor.Name = "buttonInstallColor";
+            buttonInstallColor.Secondary = true;
+            buttonInstallColor.Size = new Size(254, 50);
+            buttonInstallColor.TabIndex = 38;
+            buttonInstallColor.Text = "Install Colors";
+            buttonInstallColor.TextImageRelation = TextImageRelation.ImageBeforeText;
+            buttonInstallColor.UseVisualStyleBackColor = false;
+            buttonInstallColor.Visible = false;
             // 
             // comboVisual
             // 
@@ -1717,12 +1742,28 @@ namespace GHelper
             comboVisual.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
             comboVisual.FormattingEnabled = true;
             comboVisual.ItemHeight = 32;
-            comboVisual.Location = new Point(266, 11);
+            comboVisual.Location = new Point(4, 11);
             comboVisual.Margin = new Padding(4, 11, 4, 8);
             comboVisual.Name = "comboVisual";
             comboVisual.Size = new Size(254, 40);
             comboVisual.TabIndex = 14;
             comboVisual.Visible = false;
+            // 
+            // comboColorTemp
+            // 
+            comboColorTemp.BorderColor = Color.White;
+            comboColorTemp.ButtonColor = Color.FromArgb(255, 255, 255);
+            comboColorTemp.Dock = DockStyle.Top;
+            comboColorTemp.FlatStyle = FlatStyle.Flat;
+            comboColorTemp.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            comboColorTemp.FormattingEnabled = true;
+            comboColorTemp.ItemHeight = 32;
+            comboColorTemp.Location = new Point(531, 11);
+            comboColorTemp.Margin = new Padding(7, 11, 7, 8);
+            comboColorTemp.Name = "comboColorTemp";
+            comboColorTemp.Size = new Size(249, 40);
+            comboColorTemp.TabIndex = 15;
+            comboColorTemp.Visible = false;
             // 
             // comboGamut
             // 
@@ -1733,7 +1774,7 @@ namespace GHelper
             comboGamut.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
             comboGamut.FormattingEnabled = true;
             comboGamut.ItemHeight = 32;
-            comboGamut.Location = new Point(4, 11);
+            comboGamut.Location = new Point(4, 77);
             comboGamut.Margin = new Padding(4, 11, 4, 8);
             comboGamut.Name = "comboGamut";
             comboGamut.Size = new Size(254, 40);
@@ -1743,7 +1784,7 @@ namespace GHelper
             // sliderGamma
             // 
             sliderGamma.Dock = DockStyle.Top;
-            sliderGamma.Location = new Point(20, 64);
+            sliderGamma.Location = new Point(20, 54);
             sliderGamma.Margin = new Padding(4);
             sliderGamma.Max = 100;
             sliderGamma.Min = 0;
@@ -1761,7 +1802,7 @@ namespace GHelper
             panelGammaTitle.Controls.Add(pictureGamma);
             panelGammaTitle.Controls.Add(labelGammaTitle);
             panelGammaTitle.Dock = DockStyle.Top;
-            panelGammaTitle.Location = new Point(20, 20);
+            panelGammaTitle.Location = new Point(20, 10);
             panelGammaTitle.Margin = new Padding(4);
             panelGammaTitle.Name = "panelGammaTitle";
             panelGammaTitle.Padding = new Padding(0, 0, 0, 4);
@@ -1799,22 +1840,6 @@ namespace GHelper
             labelGammaTitle.Size = new Size(506, 32);
             labelGammaTitle.TabIndex = 37;
             labelGammaTitle.Text = "Flicker-free Dimming";
-            // 
-            // comboColorTemp
-            // 
-            comboColorTemp.BorderColor = Color.White;
-            comboColorTemp.ButtonColor = Color.FromArgb(255, 255, 255);
-            comboColorTemp.Dock = DockStyle.Top;
-            comboColorTemp.FlatStyle = FlatStyle.Flat;
-            comboColorTemp.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            comboColorTemp.FormattingEnabled = true;
-            comboColorTemp.ItemHeight = 32;
-            comboColorTemp.Location = new Point(528, 11);
-            comboColorTemp.Margin = new Padding(4, 11, 4, 8);
-            comboColorTemp.Name = "comboColorTemp";
-            comboColorTemp.Size = new Size(255, 40);
-            comboColorTemp.TabIndex = 15;
-            comboColorTemp.Visible = false;
             // 
             // SettingsForm
             // 
@@ -2013,5 +2038,6 @@ namespace GHelper
         private RComboBox comboVisual;
         private RComboBox comboGamut;
         private RComboBox comboColorTemp;
+        private RButton buttonInstallColor;
     }
 }
