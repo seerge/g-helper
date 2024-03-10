@@ -37,7 +37,7 @@ namespace GHelper.Display
         private static bool _init = true;
         private static string? _splendidPath = null;
 
-        private static System.Timers.Timer brightnessTimer = new System.Timers.Timer(100);
+        private static System.Timers.Timer brightnessTimer = new System.Timers.Timer(200);
 
         public const int DefaultColorTemp = 50;
         static VisualControl()

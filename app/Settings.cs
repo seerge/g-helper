@@ -274,6 +274,7 @@ namespace GHelper
                 sliderGamma.Visible = true;
                 VisualiseBrightness();
                 sliderGamma.ValueChanged += SliderGamma_ValueChanged;
+                sliderGamma.MouseUp += SliderGamma_ValueChanged;
             }
 
             if (!dimming) labelGammaTitle.Text = Properties.Strings.ViualMode;
