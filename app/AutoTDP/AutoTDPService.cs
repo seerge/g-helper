@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Text.Json;
+﻿using System.Text.Json;
 using GHelper.AutoTDP.FramerateSource;
 using GHelper.AutoTDP.PowerLimiter;
 using Ryzen;

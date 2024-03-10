@@ -202,7 +202,7 @@ namespace GHelper.AutoTDP
             GameProfile gp = (GameProfile)((RButton)sender).Tag;
             profileUI = new AutoTDPGameProfileUI(gp, this);
             profileUI.FormClosed += ProfileUI_FormClosed;
-            profileUI.TopMost = AppConfig.Is("topmost") || this.TopMost; 
+            profileUI.TopMost = AppConfig.Is("topmost") || this.TopMost;
             profileUI.ShowDialog(this);
         }
 
