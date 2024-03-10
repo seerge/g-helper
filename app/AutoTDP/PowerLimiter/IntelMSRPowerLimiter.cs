@@ -18,7 +18,7 @@ namespace GHelper.AutoTDP.PowerLimiter
 
         public int GetMinInterval()
         {
-            return 250;
+            return 33;
         }
 
         public void Prepare()
