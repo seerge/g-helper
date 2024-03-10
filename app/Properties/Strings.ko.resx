@@ -339,6 +339,9 @@
   <data name="Discharging" xml:space="preserve">
     <value>방전 중</value>
   </data>
+  <data name="DownloadColorProfiles" xml:space="preserve">
+    <value>Download Color Profiles</value>
+  </data>
   <data name="DownloadUpdate" xml:space="preserve">
     <value>다운로드</value>
   </data>
@@ -400,6 +403,9 @@
   </data>
   <data name="FansPower" xml:space="preserve">
     <value>팬 + 전력</value>
+  </data>
+  <data name="FlickerFreeDimming" xml:space="preserve">
+    <value>Flicker-free Dimming</value>
   </data>
   <data name="FnLock" xml:space="preserve">
     <value>Fn 키를 누르지 않고 Fn+F 핫키 작동</value>
@@ -721,6 +727,9 @@
   </data>
   <data name="VibrationStrength" xml:space="preserve">
     <value>Vibration Strength</value>
+  </data>
+  <data name="ViualMode" xml:space="preserve">
+    <value>Visual Mode</value>
   </data>
   <data name="VolumeDown" xml:space="preserve">
     <value>볼륨 작게</value>
