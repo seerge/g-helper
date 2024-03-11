@@ -11,7 +11,7 @@ namespace GHelper.AutoTDP
         private static readonly bool LOG_AUTO_TDP = true;
         private static readonly int INTERVAL_MIN_CHECK = 15 * 1_000;
         private static readonly int INTERVAL_APP_CHECK = 5_000;
-        private static readonly int INTERVAL_FPS_CHECK = 1_000;
+        private static readonly int INTERVAL_FPS_CHECK = 500;
 
         private static readonly int INTERVAL_LOG = 1_000;
         private int LogCounter = 0;
@@ -590,7 +590,7 @@ namespace GHelper.AutoTDP
 
             adjustment = Math.Min(adjustment, (CurrentTDP * 0.1));
 
-            if (GameFPSPrevious > profile.GetTDPFPS() && GameFPS < profile.GetTDPFPS())
+            if (GameFPSPrevious > profile.GetTDPFPS() && GameFPS < profile.GetTDPFPS() && FPSCheckInterval() <= 250)
             {
                 if (LOG_AUTO_TDP)
                     AutoTDPLogger.WriteLine("[AutoTDPService] Single Dip, Ignore");
