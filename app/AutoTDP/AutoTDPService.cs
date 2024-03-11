@@ -311,6 +311,10 @@ namespace GHelper.AutoTDP
             {
                 if (gp.ProcessName is not null && processName.EndsWith(gp.ProcessName, StringComparison.CurrentCultureIgnoreCase))
                 {
+                    if (!gp.Enabled)
+                    {
+                        return null;
+                    }
                     return gp;
                 }
             }
