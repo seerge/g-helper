@@ -405,7 +405,7 @@ Trotzdem fortfahren?</value>
     <value>Lüfter + Leistung</value>
   </data>
   <data name="FlickerFreeDimming" xml:space="preserve">
-    <value>Flicker-free Dimming</value>
+    <value>Flackerfreies Dimmen</value>
   </data>
   <data name="FnLock" xml:space="preserve">
     <value>FN+F Funktionen ohne FN Taste nutzen</value>
@@ -729,7 +729,7 @@ Trotzdem fortfahren?</value>
     <value>Vibrationsstärke</value>
   </data>
   <data name="ViualMode" xml:space="preserve">
-    <value>Visual Mode</value>
+    <value>Darstellungsmodus</value>
   </data>
   <data name="VolumeDown" xml:space="preserve">
     <value>Lautstärke verringern</value>
