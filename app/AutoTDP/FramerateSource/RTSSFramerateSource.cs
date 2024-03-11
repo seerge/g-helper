@@ -84,14 +84,22 @@ namespace GHelper.AutoTDP.FramerateSource
             }
 
             List<GameInstance> giL = new List<GameInstance>();
-
-            foreach (AppEntry appEntry in OSD.GetAppEntries())
+            try
             {
-                GameInstance i = new GameInstance();
-                i.ProcessID = appEntry.ProcessId;
-                i.ProcessName = appEntry.Name;
+                foreach (AppEntry appEntry in OSD.GetAppEntries())
+                {
+                    GameInstance i = new GameInstance();
+                    i.ProcessID = appEntry.ProcessId;
+                    i.ProcessName = appEntry.Name;
 
-                giL.Add(i);
+                    giL.Add(i);
+                }
+            }
+            catch (InvalidDataException)
+            {
+            }
+            catch (FileNotFoundException)
+            {
             }
 
             return giL;
