@@ -34,6 +34,7 @@ namespace GHelper
               {"fnlock", Properties.Strings.ToggleFnLock},
               {"brightness_down", Properties.Strings.BrightnessDown},
               {"brightness_up", Properties.Strings.BrightnessUp},
+              {"visual", Properties.Strings.VisualMode},
               {"ghelper", Properties.Strings.OpenGHelper},
               {"custom", Properties.Strings.Custom}
             };
@@ -71,6 +72,9 @@ namespace GHelper
                 case "fnc":
                     customActions[""] = Properties.Strings.ToggleFnLock;
                     customActions.Remove("fnlock");
+                    break;
+                case "fnv":
+                    customActions[""] = EMPTY;
                     break;
                 case "fne":
                     customActions[""] = "Calculator";
@@ -160,6 +164,7 @@ namespace GHelper
             comboM4.AccessibleName = "M4 Action";
             comboFNF4.AccessibleName = "Fn+F4 Action";
             comboFNC.AccessibleName = "Fn+C Action";
+            comboFNV.AccessibleName = "Fn+V Action";
             comboFNE.AccessibleName = "Fn+Numpad Action";
 
             numericBacklightPluggedTime.AccessibleName = Properties.Strings.BacklightTimeoutPlugged;
@@ -232,6 +237,10 @@ namespace GHelper
                 comboFNC.Visible = false;
                 textFNC.Visible = false;
 
+                labelFNV.Visible = false;
+                comboFNV.Visible = false;
+                textFNV.Visible = false;
+
                 SetKeyCombo(comboM3, textM3, "cc");
                 SetKeyCombo(comboM4, textM4, "m4");
                 SetKeyCombo(comboFNF4, textFNF4, "paddle");
@@ -262,6 +271,7 @@ namespace GHelper
                 SetKeyCombo(comboFNF4, textFNF4, "fnf4");
 
                 SetKeyCombo(comboFNC, textFNC, "fnc");
+                SetKeyCombo(comboFNV, textFNV, "fnv");
                 SetKeyCombo(comboFNE, textFNE, "fne");
             }
 

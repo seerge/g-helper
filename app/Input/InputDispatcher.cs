@@ -485,6 +485,9 @@ namespace GHelper.Input
                 case "aura":
                     Program.settingsForm.BeginInvoke(Program.settingsForm.CycleAuraMode);
                     break;
+                case "visual":
+                    Program.settingsForm.BeginInvoke(Program.settingsForm.CycleVisualMode);
+                    break;
                 case "performance":
                     modeControl.CyclePerformanceMode(Control.ModifierKeys == Keys.Shift);
                     break;
@@ -659,6 +662,9 @@ namespace GHelper.Input
                     case 179:   // FN+F4
                     case 178:   // FN+F4
                         KeyProcess("fnf4");
+                        return;
+                    case 138:   // Fn + V
+                        KeyProcess("fnv");
                         return;
                     case 158:   // Fn + C
                         KeyProcess("fnc");

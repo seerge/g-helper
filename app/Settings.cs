@@ -344,6 +344,16 @@ namespace GHelper
 
         }
 
+        public void CycleVisualMode()
+        {
+            if (comboVisual.SelectedIndex < comboVisual.Items.Count - 1)
+                comboVisual.SelectedIndex += 1;
+            else
+                comboVisual.SelectedIndex = 0;
+
+            Program.toast.RunToast(comboVisual.GetItemText(comboVisual.SelectedItem), ToastIcon.BrightnessUp);
+        }
+
         private async void ButtonInstallColorProfile_Click(object? sender, EventArgs e)
         {
             await ColorProfileHelper.InstallProfile();
