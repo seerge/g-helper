@@ -393,6 +393,14 @@ namespace GHelper.AutoTDP
                 while (currentGame is not null && Running)
                 {
 
+                    if (!profile.Enabled)
+                    {
+                        //Game was disabled during session. Stop AutoTDP 
+                        Logger.WriteLine("[AutoTDPService] Game profile disabled: " + profile.GameTitle + ". Disengaging.");
+                        Reset();
+                        return;
+                    }
+
                     double fps = framerateSouce.GetFramerate(instance);
 
                     if (LOG_AUTO_TDP && LogCounter * FPSCheckInterval() > INTERVAL_LOG)
