@@ -283,7 +283,7 @@ namespace GHelper
             var gamuts = VisualControl.GetGamutModes();
 
             // Color profiles exist
-            if (gamuts.Count > 0)
+            if (gamuts.Count > 0 || AppConfig.IsVivoZenbook())
             {
                 tableVisual.ColumnCount = 3;
                 buttonInstallColor.Visible = false;
