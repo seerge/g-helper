@@ -728,7 +728,7 @@ Voulez-vous continuer ?</value>
   <data name="VibrationStrength" xml:space="preserve">
     <value>Intensité de la vibration</value>
   </data>
-  <data name="ViualMode" xml:space="preserve">
+  <data name="VisualMode" xml:space="preserve">
     <value>Visual Mode</value>
   </data>
   <data name="VolumeDown" xml:space="preserve">
