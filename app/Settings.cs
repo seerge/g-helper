@@ -264,26 +264,29 @@ namespace GHelper
         public void InitVisual()
         {
 
-            bool dimming = false;
+            bool isOled = AppConfig.IsOLED();
 
-            if (AppConfig.IsOLED())
+            if (isOled)
             {
-                dimming = true;
-                labelGammaTitle.Text = Properties.Strings.FlickerFreeDimming;
-                panelGamma.Visible = true;
-                sliderGamma.Visible = true;
+                labelGammaTitle.Text = Properties.Strings.FlickerFreeDimming + " / " + Properties.Strings.ViualMode;
                 VisualiseBrightness();
                 sliderGamma.ValueChanged += SliderGamma_ValueChanged;
                 sliderGamma.MouseUp += SliderGamma_ValueChanged;
+            } else
+            {
+                labelGammaTitle.Text = Properties.Strings.ViualMode;
             }
-
-            if (!dimming) labelGammaTitle.Text = Properties.Strings.ViualMode;
-            else labelGammaTitle.Text += " / " + Properties.Strings.ViualMode;
 
             var gamuts = VisualControl.GetGamutModes();
 
-            if (gamuts.Count < 1)
+            // OLED or color profiles exist
+            if (isOled || gamuts.Count > 0)
             {
+                tableVisual.ColumnCount = 3;
+                buttonInstallColor.Visible = false;
+            } else
+            {
+                // If it's possible to retrieve color profiles
                 if (ColorProfileHelper.ProfileExists())
                 {
                     tableVisual.ColumnCount = 2;
@@ -295,11 +298,8 @@ namespace GHelper
                     panelGamma.Visible = true;
                     tableVisual.Visible = true;
                 }
+
                 return;
-            } else
-            {
-                tableVisual.ColumnCount = 3;
-                buttonInstallColor.Visible = false;
             }
 
             panelGamma.Visible = true;
