@@ -264,10 +264,9 @@ namespace GHelper
         public void InitVisual()
         {
 
-            bool isOled = AppConfig.IsOLED();
-
-            if (isOled)
+            if (AppConfig.IsOLED())
             {
+                panelGamma.Visible = true;
                 sliderGamma.Visible = true;
                 labelGammaTitle.Text = Properties.Strings.FlickerFreeDimming + " / " + Properties.Strings.VisualMode;
 
@@ -275,6 +274,7 @@ namespace GHelper
 
                 sliderGamma.ValueChanged += SliderGamma_ValueChanged;
                 sliderGamma.MouseUp += SliderGamma_ValueChanged;
+
             } else
             {
                 labelGammaTitle.Text = Properties.Strings.VisualMode;
@@ -282,8 +282,8 @@ namespace GHelper
 
             var gamuts = VisualControl.GetGamutModes();
 
-            // OLED or color profiles exist
-            if (isOled || gamuts.Count > 0)
+            // Color profiles exist
+            if (gamuts.Count > 0)
             {
                 tableVisual.ColumnCount = 3;
                 buttonInstallColor.Visible = false;
