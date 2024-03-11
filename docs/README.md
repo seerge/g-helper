@@ -30,7 +30,7 @@ Works with all popular models, such as ROG Zephyrus G14, G15, G16, M16, Flow X13
 4. Simple and clean native UI with easy access to all settings
 5. FN-Lock and custom hotkeys
 
-![Screenshot 2023-08-05 190302](https://github.com/seerge/g-helper/assets/5920850/5d32b8d8-0eb8-4da8-9d5f-95120ea921cf)
+![Screenshot 2024-03-11 104354](https://github.com/seerge/g-helper/assets/5920850/626a5a6e-fdae-431c-843e-92886c8420ee)
 
 ### :zap: Features
 
@@ -78,7 +78,7 @@ Each BIOS mode is paired with matching Windows Power Mode. You can adjust this s
 3. **Ultimate**: iGPU and dGPU enabled, but dGPU drives built in display (supported on 2022+ models)
 4. **Optimized**: disables dGPU on battery (Eco) and enables when plugged in (Standard)
 
-![Screenshot 2023-08-05 170159](https://github.com/seerge/g-helper/assets/5920850/84a5beb3-2463-40f1-9188-930d3099aad9)
+![Screenshot 2024-03-11 111818](https://github.com/seerge/g-helper/assets/5920850/fd69a81e-978d-4d5c-a0a8-26da51f90a5b)
 
 ![GPU Modes](https://github.com/seerge/g-helper/assets/5920850/65c6bdd5-728c-4965-b544-fcf5a85ed6a2)
 
