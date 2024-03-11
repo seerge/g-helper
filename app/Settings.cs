@@ -268,13 +268,13 @@ namespace GHelper
 
             if (isOled)
             {
-                labelGammaTitle.Text = Properties.Strings.FlickerFreeDimming + " / " + Properties.Strings.ViualMode;
+                labelGammaTitle.Text = Properties.Strings.FlickerFreeDimming + " / " + Properties.Strings.VisualMode;
                 VisualiseBrightness();
                 sliderGamma.ValueChanged += SliderGamma_ValueChanged;
                 sliderGamma.MouseUp += SliderGamma_ValueChanged;
             } else
             {
-                labelGammaTitle.Text = Properties.Strings.ViualMode;
+                labelGammaTitle.Text = Properties.Strings.VisualMode;
             }
 
             var gamuts = VisualControl.GetGamutModes();
