@@ -268,8 +268,11 @@ namespace GHelper
 
             if (isOled)
             {
+                sliderGamma.Visible = true;
                 labelGammaTitle.Text = Properties.Strings.FlickerFreeDimming + " / " + Properties.Strings.VisualMode;
+
                 VisualiseBrightness();
+
                 sliderGamma.ValueChanged += SliderGamma_ValueChanged;
                 sliderGamma.MouseUp += SliderGamma_ValueChanged;
             } else
