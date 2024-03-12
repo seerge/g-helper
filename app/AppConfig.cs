@@ -595,4 +595,10 @@ public static class AppConfig
     {
         return ContainsModel("ROG") || ContainsModel("TUF") || ContainsModel("Vivobook") || ContainsModel("Zenbook");
     }
+
+    public static bool IsBWIcon()
+    {
+        return Is("bw_icon");
+    }
+
 }

@@ -1559,13 +1559,11 @@ namespace GHelper
                     buttonOptimized.Activated = GPUAuto;
                     labelGPU.Text = Properties.Strings.GPUMode + ": " + Properties.Strings.GPUModeEco;
                     panelGPU.AccessibleName = Properties.Strings.GPUMode + " - " + (GPUAuto ? Properties.Strings.Optimized : Properties.Strings.EcoMode);
-                    Program.trayIcon.Icon = Properties.Resources.eco;
                     break;
                 case AsusACPI.GPUModeUltimate:
                     buttonUltimate.Activated = true;
                     labelGPU.Text = Properties.Strings.GPUMode + ": " + Properties.Strings.GPUModeUltimate;
                     panelGPU.AccessibleName = Properties.Strings.GPUMode + " - " + Properties.Strings.UltimateMode;
-                    Program.trayIcon.Icon = Properties.Resources.ultimate;
                     break;
                 default:
                     buttonOptimized.BorderColor = colorStandard;
@@ -1573,12 +1571,10 @@ namespace GHelper
                     buttonOptimized.Activated = GPUAuto;
                     labelGPU.Text = Properties.Strings.GPUMode + ": " + Properties.Strings.GPUModeStandard;
                     panelGPU.AccessibleName = Properties.Strings.GPUMode + " - " + (GPUAuto ? Properties.Strings.Optimized : Properties.Strings.StandardMode);
-                    Program.trayIcon.Icon = Properties.Resources.standard;
                     break;
             }
 
-
-
+            VisualiseIcon();
             VisualizeXGM(GPUMode);
 
             if (isGpuSection)
@@ -1591,6 +1587,23 @@ namespace GHelper
 
         }
 
+
+        public void VisualiseIcon()
+        {
+            int GPUMode = AppConfig.Get("gpu_mode");
+            switch (GPUMode)
+            {
+                case AsusACPI.GPUModeEco:
+                    Program.trayIcon.Icon = AppConfig.IsBWIcon() ? (!darkTheme ? Properties.Resources.dark_eco : Properties.Resources.light_eco) : Properties.Resources.eco;
+                    break;
+                case AsusACPI.GPUModeUltimate:
+                    Program.trayIcon.Icon = AppConfig.IsBWIcon() ? (!darkTheme ? Properties.Resources.dark_standard : Properties.Resources.light_standard) : Properties.Resources.ultimate;
+                    break;
+                default:
+                    Program.trayIcon.Icon = AppConfig.IsBWIcon() ? (!darkTheme ? Properties.Resources.dark_standard : Properties.Resources.light_standard) : Properties.Resources.standard;
+                    break;
+            }
+        }
 
         private void ButtonSilent_Click(object? sender, EventArgs e)
         {

@@ -397,6 +397,9 @@ namespace GHelper
             checkBootSound.Checked = (Program.acpi.DeviceGet(AsusACPI.BootSound) == 1);
             checkBootSound.CheckedChanged += CheckBootSound_CheckedChanged;
 
+            checkBWIcon.Checked = AppConfig.IsBWIcon();
+            checkBWIcon.CheckedChanged += CheckBWIcon_CheckedChanged;
+
             pictureHelp.Click += PictureHelp_Click;
             buttonServices.Click += ButtonServices_Click;
 
@@ -415,6 +418,12 @@ namespace GHelper
 
             InitACPITesting();
 
+        }
+
+        private void CheckBWIcon_CheckedChanged(object? sender, EventArgs e)
+        {
+            AppConfig.Set("bw_icon", (checkBWIcon.Checked ? 1 : 0));
+            Program.settingsForm.VisualiseIcon();
         }
 
         private void InitACPITesting()
