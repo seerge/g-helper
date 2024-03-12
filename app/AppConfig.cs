@@ -413,6 +413,11 @@ public static class AppConfig
         return Is("no_overdrive") || IsOLED();
     }
 
+    public static bool IsNoSleepEvent()
+    {
+        return ContainsModel("FX505");
+    }
+
     public static bool IsStrix()
     {
         return ContainsModel("Strix") || ContainsModel("Scar") || ContainsModel("G703G");
