@@ -340,7 +340,7 @@
     <value>Taux décharge </value>
   </data>
   <data name="DownloadColorProfiles" xml:space="preserve">
-    <value>Download Color Profiles</value>
+    <value>Télécharger les profils de couleurs</value>
   </data>
   <data name="DownloadUpdate" xml:space="preserve">
     <value>Télécharger</value>
@@ -729,7 +729,7 @@ Voulez-vous continuer ?</value>
     <value>Intensité de la vibration</value>
   </data>
   <data name="VisualMode" xml:space="preserve">
-    <value>Visual Mode</value>
+    <value>Modes Visuels</value>
   </data>
   <data name="VolumeDown" xml:space="preserve">
     <value>Vol-</value>
