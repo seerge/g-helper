@@ -379,7 +379,7 @@ public static class AppConfig
 
     public static bool IsDUO()
     {
-        return ContainsModel("Duo");
+        return ContainsModel("Duo") || ContainsModel("GX550") || ContainsModel("GX650");
     }
 
     // G14 2020 has no aura, but media keys instead
