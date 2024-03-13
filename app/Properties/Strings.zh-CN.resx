@@ -331,7 +331,7 @@
     <value>Disable Controller</value>
   </data>
   <data name="DisableOnLidClose" xml:space="preserve">
-    <value>Disable on lid close</value>
+    <value>合盖时禁用</value>
   </data>
   <data name="DisableOverdrive" xml:space="preserve">
     <value>禁用屏幕快速显示(OD)</value>
@@ -369,7 +369,7 @@
     <value>电源设置</value>
   </data>
   <data name="Export" xml:space="preserve">
-    <value>Export Profile</value>
+    <value>导出配置文件</value>
   </data>
   <data name="Extra" xml:space="preserve">
     <value>更多</value>
@@ -450,7 +450,7 @@
     <value>Image Rotation</value>
   </data>
   <data name="Import" xml:space="preserve">
-    <value>Import Profile</value>
+    <value>导入配置</value>
   </data>
   <data name="KeyBindings" xml:space="preserve">
     <value>按键绑定</value>
@@ -540,7 +540,7 @@
     <value>按键响应</value>
   </data>
   <data name="MouseImportFailed" xml:space="preserve">
-    <value>Import failed. Selected file is not a valid mouse profile or corrutpted.</value>
+    <value>导入失败，选中的文件不是有效的配置文件或已损坏。</value>
   </data>
   <data name="MouseLiftOffDistance" xml:space="preserve">
     <value>响应高度</value>
@@ -627,7 +627,7 @@
     <value>退出</value>
   </data>
   <data name="Reset" xml:space="preserve">
-    <value>Reset</value>
+    <value>重置</value>
   </data>
   <data name="RestartGPU" xml:space="preserve">
     <value>有程序正在使用独显并阻止进入集显模式。要让 G-Helper 在设备管理器中重新启动独显吗？（请自行承担风险）</value>
