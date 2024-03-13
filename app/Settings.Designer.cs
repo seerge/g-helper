@@ -296,10 +296,10 @@ namespace GHelper
             comboInterval.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
             comboInterval.FormattingEnabled = true;
             comboInterval.ItemHeight = 32;
-            comboInterval.Location = new Point(7, 68);
-            comboInterval.Margin = new Padding(7, 8, 7, 8);
+            comboInterval.Location = new Point(4, 68);
+            comboInterval.Margin = new Padding(4, 8, 4, 8);
             comboInterval.Name = "comboInterval";
-            comboInterval.Size = new Size(248, 40);
+            comboInterval.Size = new Size(254, 40);
             comboInterval.TabIndex = 19;
             comboInterval.Visible = false;
             // 
