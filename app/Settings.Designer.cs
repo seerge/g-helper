@@ -318,9 +318,10 @@ namespace GHelper
             buttonMatrix.Location = new Point(526, 4);
             buttonMatrix.Margin = new Padding(2, 4, 4, 8);
             buttonMatrix.MaximumSize = new Size(0, 48);
+            buttonMatrix.MinimumSize = new Size(0, 44);
             buttonMatrix.Name = "buttonMatrix";
             buttonMatrix.Secondary = true;
-            buttonMatrix.Size = new Size(255, 42);
+            buttonMatrix.Size = new Size(255, 44);
             buttonMatrix.TabIndex = 18;
             buttonMatrix.Text = Properties.Strings.PictureGif;
             buttonMatrix.UseVisualStyleBackColor = false;
@@ -1250,9 +1251,10 @@ namespace GHelper
             buttonKeyboard.Location = new Point(526, 4);
             buttonKeyboard.Margin = new Padding(2, 4, 4, 8);
             buttonKeyboard.MaximumSize = new Size(0, 48);
+            buttonKeyboard.MinimumSize = new Size(0, 44);
             buttonKeyboard.Name = "buttonKeyboard";
             buttonKeyboard.Secondary = true;
-            buttonKeyboard.Size = new Size(255, 42);
+            buttonKeyboard.Size = new Size(255, 44);
             buttonKeyboard.TabIndex = 37;
             buttonKeyboard.Text = "&Extra";
             buttonKeyboard.TextImageRelation = TextImageRelation.ImageBeforeText;
@@ -1305,6 +1307,7 @@ namespace GHelper
             buttonKeyboardColor.Location = new Point(0, 0);
             buttonKeyboardColor.Margin = new Padding(4, 8, 4, 8);
             buttonKeyboardColor.MaximumSize = new Size(0, 48);
+            buttonKeyboardColor.MinimumSize = new Size(0, 44);
             buttonKeyboardColor.Name = "buttonKeyboardColor";
             buttonKeyboardColor.Secondary = false;
             buttonKeyboardColor.Size = new Size(253, 44);
