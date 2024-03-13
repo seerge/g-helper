@@ -1585,6 +1585,14 @@ namespace GHelper
                 menuOptimized.Checked = buttonOptimized.Activated;
             }
 
+            // UI Fix for small screeens
+            if (Top < 0)
+            {
+                labelTipGPU.Visible = false;
+                labelTipScreen.Visible = false;
+                Top = 5;
+            }
+
         }
 
 
