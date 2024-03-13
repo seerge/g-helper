@@ -249,6 +249,18 @@
   <data name="Awake" xml:space="preserve">
     <value>Đang bật</value>
   </data>
+  <data name="BacklightLow" xml:space="preserve">
+    <value>Low</value>
+  </data>
+  <data name="BacklightMax" xml:space="preserve">
+    <value>Max</value>
+  </data>
+  <data name="BacklightMid" xml:space="preserve">
+    <value>Mid</value>
+  </data>
+  <data name="BacklightOff" xml:space="preserve">
+    <value>Off</value>
+  </data>
   <data name="BacklightTimeout" xml:space="preserve">
     <value>Số giây để tắt đèn nền bàn phím(khi dùng pin)</value>
   </data>
@@ -299,6 +311,9 @@
   </data>
   <data name="BrightnessUp" xml:space="preserve">
     <value>Tăng độ sáng</value>
+  </data>
+  <data name="BWTrayIcon" xml:space="preserve">
+    <value>Black and white tray icon</value>
   </data>
   <data name="Calibrate" xml:space="preserve">
     <value>Calibrate</value>
@@ -410,6 +425,12 @@ Do you still want to continue?</value>
   <data name="FnLock" xml:space="preserve">
     <value>Process Fn+F hotkeys without Fn</value>
   </data>
+  <data name="FnLockOff" xml:space="preserve">
+    <value>FN-Lock Off</value>
+  </data>
+  <data name="FnLockOn" xml:space="preserve">
+    <value>FN-Lock On</value>
+  </data>
   <data name="GPUBoost" xml:space="preserve">
     <value>Tăng tốc năng động</value>
   </data>
@@ -433,6 +454,9 @@ Do you still want to continue?</value>
   </data>
   <data name="GPUModeUltimate" xml:space="preserve">
     <value>Chỉ dùng GPU rời</value>
+  </data>
+  <data name="GPUPower" xml:space="preserve">
+    <value>GPU Power</value>
   </data>
   <data name="GPUSettings" xml:space="preserve">
     <value>Cài đặt GPU</value>
@@ -560,6 +584,9 @@ Do you still want to continue?</value>
   <data name="MultizoneStrong" xml:space="preserve">
     <value>Multi Zone Strong</value>
   </data>
+  <data name="Muted" xml:space="preserve">
+    <value>Muted</value>
+  </data>
   <data name="MuteMic" xml:space="preserve">
     <value>Tắt Mic</value>
   </data>
@@ -574,6 +601,12 @@ Do you still want to continue?</value>
   </data>
   <data name="NotConnected" xml:space="preserve">
     <value>Not Connected</value>
+  </data>
+  <data name="Off" xml:space="preserve">
+    <value>Off</value>
+  </data>
+  <data name="On" xml:space="preserve">
+    <value>On</value>
   </data>
   <data name="OneZone" xml:space="preserve">
     <value>One Zone</value>
@@ -718,6 +751,9 @@ Do you still want to continue?</value>
   </data>
   <data name="UndervoltingRisky" xml:space="preserve">
     <value>Undervolting is an experimental and risky feature. If applied values are too low for your hardware, it can become unstable, shut down or cause data corruption. If you want to try - start from small values first, click Apply and test what works for you.</value>
+  </data>
+  <data name="Unmuted" xml:space="preserve">
+    <value>Unmuted</value>
   </data>
   <data name="Updates" xml:space="preserve">
     <value>Updates</value>
