@@ -331,7 +331,7 @@
     <value>Désactiver le contrôleur</value>
   </data>
   <data name="DisableOnLidClose" xml:space="preserve">
-    <value>Disable on lid close</value>
+    <value>Désactiver à la fermeture du capot</value>
   </data>
   <data name="DisableOverdrive" xml:space="preserve">
     <value>Désactiver l'overdrive de l'écran</value>
