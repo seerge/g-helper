@@ -1599,16 +1599,18 @@ namespace GHelper
         public void VisualiseIcon()
         {
             int GPUMode = AppConfig.Get("gpu_mode");
+            bool isDark = CheckSystemDarkModeStatus();
+
             switch (GPUMode)
             {
                 case AsusACPI.GPUModeEco:
-                    Program.trayIcon.Icon = AppConfig.IsBWIcon() ? (!darkTheme ? Properties.Resources.dark_eco : Properties.Resources.light_eco) : Properties.Resources.eco;
+                    Program.trayIcon.Icon = AppConfig.IsBWIcon() ? (!isDark ? Properties.Resources.dark_eco : Properties.Resources.light_eco) : Properties.Resources.eco;
                     break;
                 case AsusACPI.GPUModeUltimate:
-                    Program.trayIcon.Icon = AppConfig.IsBWIcon() ? (!darkTheme ? Properties.Resources.dark_standard : Properties.Resources.light_standard) : Properties.Resources.ultimate;
+                    Program.trayIcon.Icon = AppConfig.IsBWIcon() ? (!isDark ? Properties.Resources.dark_standard : Properties.Resources.light_standard) : Properties.Resources.ultimate;
                     break;
                 default:
-                    Program.trayIcon.Icon = AppConfig.IsBWIcon() ? (!darkTheme ? Properties.Resources.dark_standard : Properties.Resources.light_standard) : Properties.Resources.standard;
+                    Program.trayIcon.Icon = AppConfig.IsBWIcon() ? (!isDark ? Properties.Resources.dark_standard : Properties.Resources.light_standard) : Properties.Resources.standard;
                     break;
             }
         }
