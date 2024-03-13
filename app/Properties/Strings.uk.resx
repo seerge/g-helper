@@ -250,16 +250,16 @@
     <value>Робота</value>
   </data>
   <data name="BacklightLow" xml:space="preserve">
-    <value>Low</value>
+    <value>Низька</value>
   </data>
   <data name="BacklightMax" xml:space="preserve">
-    <value>Max</value>
+    <value>Максимальна</value>
   </data>
   <data name="BacklightMid" xml:space="preserve">
-    <value>Mid</value>
+    <value>Середня</value>
   </data>
   <data name="BacklightOff" xml:space="preserve">
-    <value>Off</value>
+    <value>Вимкнена</value>
   </data>
   <data name="BacklightTimeout" xml:space="preserve">
     <value>Тайм-аут на зарядці / на батареї (0 - УВІМК)</value>
@@ -313,7 +313,7 @@
     <value>Підвищити яскравість</value>
   </data>
   <data name="BWTrayIcon" xml:space="preserve">
-    <value>Black and white tray icon</value>
+    <value>Чорно-біла іконка трею</value>
   </data>
   <data name="Calibrate" xml:space="preserve">
     <value>Калібрування</value>
@@ -355,7 +355,7 @@
     <value>Розрядка</value>
   </data>
   <data name="DownloadColorProfiles" xml:space="preserve">
-    <value>Download Color Profiles</value>
+    <value>Завантажити Колірні Профілі</value>
   </data>
   <data name="DownloadUpdate" xml:space="preserve">
     <value>Завантажити</value>
@@ -384,7 +384,7 @@
     <value>Налаштування Енергії</value>
   </data>
   <data name="Export" xml:space="preserve">
-    <value>Export Profile</value>
+    <value>Експортувати Профіль</value>
   </data>
   <data name="Extra" xml:space="preserve">
     <value>Додатково</value>
@@ -420,16 +420,16 @@
     <value>Кулери та Потужність</value>
   </data>
   <data name="FlickerFreeDimming" xml:space="preserve">
-    <value>Flicker-free Dimming</value>
+    <value>Безмерехтливе Затемнення</value>
   </data>
   <data name="FnLock" xml:space="preserve">
     <value>Гарячі клавіші Fn+F працюють без натискання Fn</value>
   </data>
   <data name="FnLockOff" xml:space="preserve">
-    <value>FN-Lock Off</value>
+    <value>FN-Lock Вимк.</value>
   </data>
   <data name="FnLockOn" xml:space="preserve">
-    <value>FN-Lock On</value>
+    <value>FN-Lock Увімк.</value>
   </data>
   <data name="GPUBoost" xml:space="preserve">
     <value>Dynamic Boost</value>
@@ -456,7 +456,7 @@
     <value>Ексклюзивний dGPU</value>
   </data>
   <data name="GPUPower" xml:space="preserve">
-    <value>GPU Power</value>
+    <value>Потужність GPU</value>
   </data>
   <data name="GPUSettings" xml:space="preserve">
     <value>Параметри GPU</value>
@@ -474,7 +474,7 @@
     <value>Поворот</value>
   </data>
   <data name="Import" xml:space="preserve">
-    <value>Import Profile</value>
+    <value>Імпорт Профілю</value>
   </data>
   <data name="KeyBindings" xml:space="preserve">
     <value>Прив'язки клавіш</value>
@@ -564,7 +564,7 @@
     <value>Відповідь Кнопок</value>
   </data>
   <data name="MouseImportFailed" xml:space="preserve">
-    <value>Import failed. Selected file is not a valid mouse profile or corrutpted.</value>
+    <value>Не вдалося імпортувати профіль. Вибраний файл не є допустимим профілем миші або є пошкодженим.</value>
   </data>
   <data name="MouseLiftOffDistance" xml:space="preserve">
     <value>Відстань підйому</value>
@@ -585,7 +585,7 @@
     <value>Мульти зона сильна</value>
   </data>
   <data name="Muted" xml:space="preserve">
-    <value>Muted</value>
+    <value>Беззвучний</value>
   </data>
   <data name="MuteMic" xml:space="preserve">
     <value>Вимкнути мікрофон</value>
@@ -603,10 +603,10 @@
     <value>Не під'єднано</value>
   </data>
   <data name="Off" xml:space="preserve">
-    <value>Off</value>
+    <value>Вимк.</value>
   </data>
   <data name="On" xml:space="preserve">
-    <value>On</value>
+    <value>Увімк.</value>
   </data>
   <data name="OneZone" xml:space="preserve">
     <value>Одна зона</value>
@@ -753,7 +753,7 @@
     <value>Undervolting є експериментальним. Якщо значення занизькі для вашого CPU, це може спричинити нестабільність або пошкодити дані. Якщо хочете спробувати - почніть з малих значень, натисніть «Застосувати» та перевірте, чи стабільно все працює.</value>
   </data>
   <data name="Unmuted" xml:space="preserve">
-    <value>Unmuted</value>
+    <value>Активний</value>
   </data>
   <data name="Updates" xml:space="preserve">
     <value>Оновлення</value>
@@ -765,7 +765,7 @@
     <value>Сила вібрації</value>
   </data>
   <data name="VisualMode" xml:space="preserve">
-    <value>Visual Mode</value>
+    <value>Візуальний режим</value>
   </data>
   <data name="VolumeDown" xml:space="preserve">
     <value>Зменшення гучності</value>
