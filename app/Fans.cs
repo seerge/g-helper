@@ -60,6 +60,7 @@ namespace GHelper
             labelGPUMemoryTitle.Text = Properties.Strings.GPUMemoryClockOffset;
             labelGPUBoostTitle.Text = Properties.Strings.GPUBoost;
             labelGPUTempTitle.Text = Properties.Strings.GPUTempTarget;
+            labelGPUPowerTitle.Text = Properties.Strings.GPUPower;
 
             labelRisky.Text = Properties.Strings.UndervoltingRisky;
             buttonApplyAdvanced.Text = Properties.Strings.Apply;
