@@ -336,7 +336,7 @@ namespace GHelper
             // 
             pictureMatrix.BackgroundImage = Properties.Resources.icons8_matrix_32;
             pictureMatrix.BackgroundImageLayout = ImageLayout.Zoom;
-            pictureMatrix.Location = new Point(4, 0);
+            pictureMatrix.Location = new Point(4, 2);
             pictureMatrix.Margin = new Padding(4);
             pictureMatrix.Name = "pictureMatrix";
             pictureMatrix.Size = new Size(32, 32);
@@ -1175,7 +1175,7 @@ namespace GHelper
             // 
             pictureScreen.BackgroundImage = Properties.Resources.icons8_laptop_32;
             pictureScreen.BackgroundImageLayout = ImageLayout.Zoom;
-            pictureScreen.Location = new Point(4, 0);
+            pictureScreen.Location = new Point(4, 2);
             pictureScreen.Margin = new Padding(4);
             pictureScreen.Name = "pictureScreen";
             pictureScreen.Size = new Size(32, 32);
@@ -1353,7 +1353,7 @@ namespace GHelper
             // 
             pictureKeyboard.BackgroundImage = Properties.Resources.icons8_keyboard_32__1_;
             pictureKeyboard.BackgroundImageLayout = ImageLayout.Zoom;
-            pictureKeyboard.Location = new Point(4, 0);
+            pictureKeyboard.Location = new Point(4, 2);
             pictureKeyboard.Margin = new Padding(4);
             pictureKeyboard.Name = "pictureKeyboard";
             pictureKeyboard.Size = new Size(32, 32);
@@ -1517,7 +1517,7 @@ namespace GHelper
             // 
             picturePeripherals.BackgroundImage = Properties.Resources.icons8_maus_48;
             picturePeripherals.BackgroundImageLayout = ImageLayout.Zoom;
-            picturePeripherals.Location = new Point(5, 0);
+            picturePeripherals.Location = new Point(4, 2);
             picturePeripherals.Margin = new Padding(4);
             picturePeripherals.Name = "picturePeripherals";
             picturePeripherals.Size = new Size(32, 32);
@@ -1822,7 +1822,7 @@ namespace GHelper
             // 
             pictureGamma.BackgroundImage = Properties.Resources.icons8_brightness_32;
             pictureGamma.BackgroundImageLayout = ImageLayout.Zoom;
-            pictureGamma.Location = new Point(4, 0);
+            pictureGamma.Location = new Point(4, 2);
             pictureGamma.Margin = new Padding(4);
             pictureGamma.Name = "pictureGamma";
             pictureGamma.Size = new Size(32, 32);
