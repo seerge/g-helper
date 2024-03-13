@@ -8,6 +8,9 @@ Works with all popular models, such as ROG Zephyrus G14, G15, G16, M16, Flow X13
 
 # [:floppy_disk:Download](https://github.com/seerge/g-helper/releases/latest/download/GHelper.zip)
 
+> or use a package manager\
+> [Chocolatey](https://community.chocolatey.org/packages/g-helper): `choco install g-helper`
+
 - [FAQ](https://github.com/seerge/g-helper/wiki/FAQ)
 - [Setup and Requirements](https://github.com/seerge/g-helper/wiki/Requirements)
 - [Troubleshooting](https://github.com/seerge/g-helper/wiki/Troubleshooting)
