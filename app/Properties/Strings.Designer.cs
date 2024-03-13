@@ -1892,9 +1892,9 @@ namespace GHelper.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Visual Mode.
         /// </summary>
-        internal static string ViualMode {
+        internal static string VisualMode {
             get {
-                return ResourceManager.GetString("ViualMode", resourceCulture);
+                return ResourceManager.GetString("VisualMode", resourceCulture);
             }
         }
         
