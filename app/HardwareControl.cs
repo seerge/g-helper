@@ -14,6 +14,8 @@ public static class HardwareControl
     public static IGpuControl? GpuControl;
 
     public static float? cpuTemp = -1;
+    public static float? gpuTemp = -1;
+
     public static decimal? batteryRate = 0;
     public static decimal batteryHealth = -1;
     public static decimal batteryCapacity = -1;
@@ -23,7 +25,6 @@ public static class HardwareControl
     public static decimal? chargeCapacity;
 
 
-    public static int? gpuTemp = null;
 
     public static string? cpuFan;
     public static string? gpuFan;
@@ -179,26 +180,15 @@ public static class HardwareControl
             }
             catch (Exception ex)
             {
-                Debug.WriteLine("Failed reading CPU temp :" + ex.Message);
+                //Debug.WriteLine("Failed reading CPU temp :" + ex.Message);
             }
 
 
         return cpuTemp;
     }
 
-
-    public static void ReadSensors()
+    public static float? GetGPUTemp()
     {
-        batteryRate = 0;
-        gpuTemp = -1;
-        gpuUse = -1;
-
-        cpuFan = FanSensorControl.FormatFan(AsusFan.CPU, Program.acpi.GetFan(AsusFan.CPU));
-        gpuFan = FanSensorControl.FormatFan(AsusFan.GPU, Program.acpi.GetFan(AsusFan.GPU));
-        midFan = FanSensorControl.FormatFan(AsusFan.Mid, Program.acpi.GetFan(AsusFan.Mid));
-
-        cpuTemp = GetCPUTemp();
-
         try
         {
             gpuTemp = GpuControl?.GetCurrentTemperature();
@@ -207,11 +197,29 @@ public static class HardwareControl
         catch (Exception ex)
         {
             gpuTemp = -1;
-            Debug.WriteLine("Failed reading GPU temp :" + ex.Message);
+            //Debug.WriteLine("Failed reading GPU temp :" + ex.Message);
         }
 
         if (gpuTemp is null || gpuTemp < 0)
+        {
             gpuTemp = Program.acpi.DeviceGet(AsusACPI.Temp_GPU);
+        }
+
+        return gpuTemp;
+    }
+
+
+    public static void ReadSensors()
+    {
+        batteryRate = 0;
+        gpuUse = -1;
+
+        cpuFan = FanSensorControl.FormatFan(AsusFan.CPU, Program.acpi.GetFan(AsusFan.CPU));
+        gpuFan = FanSensorControl.FormatFan(AsusFan.GPU, Program.acpi.GetFan(AsusFan.GPU));
+        midFan = FanSensorControl.FormatFan(AsusFan.Mid, Program.acpi.GetFan(AsusFan.Mid));
+
+        cpuTemp = GetCPUTemp();
+        gpuTemp = GetGPUTemp();
 
         ReadFullChargeCapacity();
         GetBatteryStatus();

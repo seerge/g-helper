@@ -121,6 +121,26 @@ namespace GHelper.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
+        internal static System.Drawing.Icon dark_eco {
+            get {
+                object obj = ResourceManager.GetObject("dark_eco", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
+        internal static System.Drawing.Icon dark_standard {
+            get {
+                object obj = ResourceManager.GetObject("dark_standard", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap dot_eco {
@@ -747,6 +767,26 @@ namespace GHelper.Properties {
             get {
                 object obj = ResourceManager.GetObject("icons8-xbox-rt-32", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
+        internal static System.Drawing.Icon light_eco {
+            get {
+                object obj = ResourceManager.GetObject("light_eco", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
+        internal static System.Drawing.Icon light_standard {
+            get {
+                object obj = ResourceManager.GetObject("light_standard", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
             }
         }
         

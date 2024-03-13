@@ -339,6 +339,9 @@
   <data name="Discharging" xml:space="preserve">
     <value>Descargando</value>
   </data>
+  <data name="DownloadColorProfiles" xml:space="preserve">
+    <value>Download Color Profiles</value>
+  </data>
   <data name="DownloadUpdate" xml:space="preserve">
     <value>Descargar</value>
   </data>
@@ -400,6 +403,9 @@
   </data>
   <data name="FansPower" xml:space="preserve">
     <value>Ventiladores + Energía</value>
+  </data>
+  <data name="FlickerFreeDimming" xml:space="preserve">
+    <value>Flicker-free Dimming</value>
   </data>
   <data name="FnLock" xml:space="preserve">
     <value>Usar teclas de acceso rápido (Fn+F) sin pulsar Fn</value>
@@ -721,6 +727,9 @@
   </data>
   <data name="VibrationStrength" xml:space="preserve">
     <value>Intensidad de vibración</value>
+  </data>
+  <data name="VisualMode" xml:space="preserve">
+    <value>Visual Mode</value>
   </data>
   <data name="VolumeDown" xml:space="preserve">
     <value>Bajar volumen</value>

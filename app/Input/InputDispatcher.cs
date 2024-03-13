@@ -485,6 +485,9 @@ namespace GHelper.Input
                 case "aura":
                     Program.settingsForm.BeginInvoke(Program.settingsForm.CycleAuraMode);
                     break;
+                case "visual":
+                    Program.settingsForm.BeginInvoke(Program.settingsForm.CycleVisualMode);
+                    break;
                 case "performance":
                     modeControl.CyclePerformanceMode(Control.ModifierKeys == Keys.Shift);
                     break;
@@ -660,6 +663,9 @@ namespace GHelper.Input
                     case 178:   // FN+F4
                         KeyProcess("fnf4");
                         return;
+                    case 138:   // Fn + V
+                        KeyProcess("fnv");
+                        return;
                     case 158:   // Fn + C
                         KeyProcess("fnc");
                         return;
@@ -683,8 +689,8 @@ namespace GHelper.Input
                         return;
                     case 51:    // Fn+F6 on old TUFs
                     case 53:    // Fn+F6 on GA-502DU model
-                        SleepEvent();
-                        //NativeMethods.TurnOffScreen();
+                        if (AppConfig.IsNoSleepEvent()) NativeMethods.TurnOffScreen();
+                        else SleepEvent();
                         return;
                 }
             }

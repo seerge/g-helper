@@ -264,26 +264,32 @@ namespace GHelper
         public void InitVisual()
         {
 
-            bool dimming = false;
-
             if (AppConfig.IsOLED())
             {
-                dimming = true;
-                labelGammaTitle.Text = Properties.Strings.FlickerFreeDimming;
                 panelGamma.Visible = true;
                 sliderGamma.Visible = true;
+                labelGammaTitle.Text = Properties.Strings.FlickerFreeDimming + " / " + Properties.Strings.VisualMode;
+
                 VisualiseBrightness();
+
                 sliderGamma.ValueChanged += SliderGamma_ValueChanged;
                 sliderGamma.MouseUp += SliderGamma_ValueChanged;
-            }
 
-            if (!dimming) labelGammaTitle.Text = Properties.Strings.ViualMode;
-            else labelGammaTitle.Text += " / " + Properties.Strings.ViualMode;
+            } else
+            {
+                labelGammaTitle.Text = Properties.Strings.VisualMode;
+            }
 
             var gamuts = VisualControl.GetGamutModes();
 
-            if (gamuts.Count < 1)
+            // Color profiles exist
+            if (gamuts.Count > 0)
             {
+                tableVisual.ColumnCount = 3;
+                buttonInstallColor.Visible = false;
+            } else
+            {
+                // If it's possible to retrieve color profiles
                 if (ColorProfileHelper.ProfileExists())
                 {
                     tableVisual.ColumnCount = 2;
@@ -295,11 +301,8 @@ namespace GHelper
                     panelGamma.Visible = true;
                     tableVisual.Visible = true;
                 }
+
                 return;
-            } else
-            {
-                tableVisual.ColumnCount = 3;
-                buttonInstallColor.Visible = false;
             }
 
             panelGamma.Visible = true;
@@ -339,6 +342,16 @@ namespace GHelper
             comboGamut.SelectedValueChanged += ComboGamut_SelectedValueChanged;
             comboGamut.Visible = true;
 
+        }
+
+        public void CycleVisualMode()
+        {
+            if (comboVisual.SelectedIndex < comboVisual.Items.Count - 1)
+                comboVisual.SelectedIndex += 1;
+            else
+                comboVisual.SelectedIndex = 0;
+
+            Program.toast.RunToast(comboVisual.GetItemText(comboVisual.SelectedItem), ToastIcon.BrightnessUp);
         }
 
         private async void ButtonInstallColorProfile_Click(object? sender, EventArgs e)
@@ -1546,13 +1559,11 @@ namespace GHelper
                     buttonOptimized.Activated = GPUAuto;
                     labelGPU.Text = Properties.Strings.GPUMode + ": " + Properties.Strings.GPUModeEco;
                     panelGPU.AccessibleName = Properties.Strings.GPUMode + " - " + (GPUAuto ? Properties.Strings.Optimized : Properties.Strings.EcoMode);
-                    Program.trayIcon.Icon = Properties.Resources.eco;
                     break;
                 case AsusACPI.GPUModeUltimate:
                     buttonUltimate.Activated = true;
                     labelGPU.Text = Properties.Strings.GPUMode + ": " + Properties.Strings.GPUModeUltimate;
                     panelGPU.AccessibleName = Properties.Strings.GPUMode + " - " + Properties.Strings.UltimateMode;
-                    Program.trayIcon.Icon = Properties.Resources.ultimate;
                     break;
                 default:
                     buttonOptimized.BorderColor = colorStandard;
@@ -1560,12 +1571,10 @@ namespace GHelper
                     buttonOptimized.Activated = GPUAuto;
                     labelGPU.Text = Properties.Strings.GPUMode + ": " + Properties.Strings.GPUModeStandard;
                     panelGPU.AccessibleName = Properties.Strings.GPUMode + " - " + (GPUAuto ? Properties.Strings.Optimized : Properties.Strings.StandardMode);
-                    Program.trayIcon.Icon = Properties.Resources.standard;
                     break;
             }
 
-
-
+            VisualiseIcon();
             VisualizeXGM(GPUMode);
 
             if (isGpuSection)
@@ -1578,6 +1587,23 @@ namespace GHelper
 
         }
 
+
+        public void VisualiseIcon()
+        {
+            int GPUMode = AppConfig.Get("gpu_mode");
+            switch (GPUMode)
+            {
+                case AsusACPI.GPUModeEco:
+                    Program.trayIcon.Icon = AppConfig.IsBWIcon() ? (!darkTheme ? Properties.Resources.dark_eco : Properties.Resources.light_eco) : Properties.Resources.eco;
+                    break;
+                case AsusACPI.GPUModeUltimate:
+                    Program.trayIcon.Icon = AppConfig.IsBWIcon() ? (!darkTheme ? Properties.Resources.dark_standard : Properties.Resources.light_standard) : Properties.Resources.ultimate;
+                    break;
+                default:
+                    Program.trayIcon.Icon = AppConfig.IsBWIcon() ? (!darkTheme ? Properties.Resources.dark_standard : Properties.Resources.light_standard) : Properties.Resources.standard;
+                    break;
+            }
+        }
 
         private void ButtonSilent_Click(object? sender, EventArgs e)
         {
