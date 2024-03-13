@@ -689,8 +689,7 @@ namespace GHelper.Input
                         return;
                     case 51:    // Fn+F6 on old TUFs
                     case 53:    // Fn+F6 on GA-502DU model
-                        if (AppConfig.IsNoSleepEvent()) NativeMethods.TurnOffScreen();
-                        else SleepEvent();
+                        NativeMethods.TurnOffScreen();
                         return;
                 }
             }
