@@ -250,16 +250,16 @@
     <value>唤醒时</value>
   </data>
   <data name="BacklightLow" xml:space="preserve">
-    <value>Low</value>
+    <value>低亮度</value>
   </data>
   <data name="BacklightMax" xml:space="preserve">
-    <value>Max</value>
+    <value>高亮度</value>
   </data>
   <data name="BacklightMid" xml:space="preserve">
-    <value>Mid</value>
+    <value>中亮度</value>
   </data>
   <data name="BacklightOff" xml:space="preserve">
-    <value>Off</value>
+    <value>背光关闭</value>
   </data>
   <data name="BacklightTimeout" xml:space="preserve">
     <value>插电/电池时熄灭时间（0表示长亮）</value>
@@ -426,10 +426,10 @@
     <value>打开FnLock (无需按下FN使用FN+(F1-F12)热键)</value>
   </data>
   <data name="FnLockOff" xml:space="preserve">
-    <value>FN-Lock Off</value>
+    <value>Fn锁定关</value>
   </data>
   <data name="FnLockOn" xml:space="preserve">
-    <value>FN-Lock On</value>
+    <value>Fn锁定开</value>
   </data>
   <data name="GPUBoost" xml:space="preserve">
     <value>动态加速</value>
@@ -456,7 +456,7 @@
     <value>独显直连</value>
   </data>
   <data name="GPUPower" xml:space="preserve">
-    <value>GPU Power</value>
+    <value>GPU 功率</value>
   </data>
   <data name="GPUSettings" xml:space="preserve">
     <value>GPU 设置</value>
@@ -585,7 +585,7 @@
     <value>Multi Zone Strong</value>
   </data>
   <data name="Muted" xml:space="preserve">
-    <value>Muted</value>
+    <value>麦克风关闭</value>
   </data>
   <data name="MuteMic" xml:space="preserve">
     <value>静音麦克风</value>
@@ -603,10 +603,10 @@
     <value>未连接</value>
   </data>
   <data name="Off" xml:space="preserve">
-    <value>Off</value>
+    <value>关</value>
   </data>
   <data name="On" xml:space="preserve">
-    <value>On</value>
+    <value>开</value>
   </data>
   <data name="OneZone" xml:space="preserve">
     <value>One Zone</value>
@@ -753,7 +753,7 @@
     <value>降低电压是实验性的危险功能。 如果对硬件应用的值太低，可能会产生不稳定、关闭现象或造成数据损坏问题。 如果你想要尝试，应先从小值开始，点击应用并测试合适的值。</value>
   </data>
   <data name="Unmuted" xml:space="preserve">
-    <value>Unmuted</value>
+    <value>麦克风开启</value>
   </data>
   <data name="Updates" xml:space="preserve">
     <value>更新</value>
