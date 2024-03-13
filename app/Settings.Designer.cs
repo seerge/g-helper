@@ -317,6 +317,7 @@ namespace GHelper
             buttonMatrix.FlatStyle = FlatStyle.Flat;
             buttonMatrix.Location = new Point(526, 4);
             buttonMatrix.Margin = new Padding(2, 4, 4, 8);
+            buttonMatrix.MaximumSize = new Size(0, 48);
             buttonMatrix.Name = "buttonMatrix";
             buttonMatrix.Secondary = true;
             buttonMatrix.Size = new Size(255, 42);
@@ -1248,6 +1249,7 @@ namespace GHelper
             buttonKeyboard.ImageAlign = ContentAlignment.MiddleRight;
             buttonKeyboard.Location = new Point(526, 4);
             buttonKeyboard.Margin = new Padding(2, 4, 4, 8);
+            buttonKeyboard.MaximumSize = new Size(0, 48);
             buttonKeyboard.Name = "buttonKeyboard";
             buttonKeyboard.Secondary = true;
             buttonKeyboard.Size = new Size(255, 42);
@@ -1302,6 +1304,7 @@ namespace GHelper
             buttonKeyboardColor.ForeColor = SystemColors.ControlText;
             buttonKeyboardColor.Location = new Point(0, 0);
             buttonKeyboardColor.Margin = new Padding(4, 8, 4, 8);
+            buttonKeyboardColor.MaximumSize = new Size(0, 48);
             buttonKeyboardColor.Name = "buttonKeyboardColor";
             buttonKeyboardColor.Secondary = false;
             buttonKeyboardColor.Size = new Size(253, 44);
