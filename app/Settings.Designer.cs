@@ -1276,7 +1276,7 @@ namespace GHelper
             // pictureColor2
             // 
             pictureColor2.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            pictureColor2.Location = new Point(185, 15);
+            pictureColor2.Location = new Point(185, 14);
             pictureColor2.Margin = new Padding(8);
             pictureColor2.Name = "pictureColor2";
             pictureColor2.Size = new Size(20, 20);
@@ -1286,7 +1286,7 @@ namespace GHelper
             // pictureColor
             // 
             pictureColor.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            pictureColor.Location = new Point(216, 15);
+            pictureColor.Location = new Point(216, 14);
             pictureColor.Margin = new Padding(8);
             pictureColor.Name = "pictureColor";
             pictureColor.Size = new Size(20, 20);
