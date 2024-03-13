@@ -310,7 +310,7 @@
     <value>顏色</value>
   </data>
   <data name="Contrast" xml:space="preserve">
-    <value>Contrast</value>
+    <value>對比</value>
   </data>
   <data name="Controller" xml:space="preserve">
     <value>控制器</value>
@@ -338,6 +338,9 @@
   </data>
   <data name="Discharging" xml:space="preserve">
     <value>正在釋放電力</value>
+  </data>
+  <data name="DownloadColorProfiles" xml:space="preserve">
+    <value>下載色彩設定檔</value>
   </data>
   <data name="DownloadUpdate" xml:space="preserve">
     <value>下載</value>
@@ -401,6 +404,9 @@
   <data name="FansPower" xml:space="preserve">
     <value>自定義設置</value>
   </data>
+  <data name="FlickerFreeDimming" xml:space="preserve">
+    <value>Flicker-free Dimming</value>
+  </data>
   <data name="FnLock" xml:space="preserve">
     <value>使用Fn+F1~F12功能時免按下Fn鍵</value>
   </data>
@@ -441,7 +447,7 @@
     <value>高</value>
   </data>
   <data name="ImageRotation" xml:space="preserve">
-    <value>Image Rotation</value>
+    <value>圖像旋轉</value>
   </data>
   <data name="Import" xml:space="preserve">
     <value>匯入設定檔</value>
@@ -720,7 +726,10 @@
     <value>版本</value>
   </data>
   <data name="VibrationStrength" xml:space="preserve">
-    <value>Vibration Strength</value>
+    <value>震動強度</value>
+  </data>
+  <data name="VisualMode" xml:space="preserve">
+    <value>Visual Mode</value>
   </data>
   <data name="VolumeDown" xml:space="preserve">
     <value>音量降低</value>

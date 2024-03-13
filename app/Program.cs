@@ -202,7 +202,10 @@ namespace GHelper
                         settingsForm.matrixForm.InitTheme();
 
                     if (settingsForm.handheldForm is not null && settingsForm.handheldForm.Text != "")
+                    {
                         settingsForm.handheldForm.InitTheme();
+                        settingsForm.VisualiseIcon();
+                    }
 
                     break;
             }

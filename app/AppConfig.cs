@@ -406,12 +406,17 @@ public static class AppConfig
 
     public static bool IsOLED()
     {
-        return ContainsModel("OLED") || IsSlash() || ContainsModel("UX64") || ContainsModel("UX34") || ContainsModel("UX53") || ContainsModel("K360") || ContainsModel("X150") || ContainsModel("M3500") || ContainsModel("K650"); 
+        return ContainsModel("OLED") || IsSlash() || ContainsModel("UX64") || ContainsModel("UX34") || ContainsModel("UX53") || ContainsModel("K360") || ContainsModel("X150") || ContainsModel("M3500") || ContainsModel("K650") || ContainsModel("UM53") || ContainsModel("K660"); 
     }
 
     public static bool IsNoOverdrive()
     {
         return Is("no_overdrive") || IsOLED();
+    }
+
+    public static bool IsNoSleepEvent()
+    {
+        return ContainsModel("FX505");
     }
 
     public static bool IsStrix()
@@ -550,7 +555,7 @@ public static class AppConfig
 
     public static bool IsFanRequired()
     {
-        return ContainsModel("GA402X") || ContainsModel("G513") || ContainsModel("G713R") || ContainsModel("G713P") || ContainsModel("GU605") || ContainsModel("GA403");
+        return ContainsModel("GA402X") || ContainsModel("G513") || ContainsModel("G713R") || ContainsModel("G713P") || ContainsModel("GU605") || ContainsModel("GA403") || ContainsModel("G634J") || ContainsModel("G834J");
     }
 
     public static bool IsAMDLight()
@@ -601,4 +606,10 @@ public static class AppConfig
     {
         return ContainsModel("ROG") || ContainsModel("TUF") || ContainsModel("Vivobook") || ContainsModel("Zenbook");
     }
+
+    public static bool IsBWIcon()
+    {
+        return Is("bw_icon");
+    }
+
 }
