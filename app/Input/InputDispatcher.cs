@@ -509,7 +509,7 @@ namespace GHelper.Input
                     break;
                 case "micmute":
                     bool muteStatus = Audio.ToggleMute();
-                    Program.toast.RunToast(muteStatus ? "Muted" : "Unmuted", muteStatus ? ToastIcon.MicrophoneMute : ToastIcon.Microphone);
+                    Program.toast.RunToast(muteStatus ? Properties.Strings.Muted : Properties.Strings.Unmuted, muteStatus ? ToastIcon.MicrophoneMute : ToastIcon.Microphone);
                     if (AppConfig.IsVivoZenbook()) Program.acpi.DeviceSet(AsusACPI.MicMuteLed, muteStatus ? 1 : 0, "MicmuteLed");
                     break;
                 case "brightness_up":
@@ -551,7 +551,7 @@ namespace GHelper.Input
         {
             if (hotkey || !AppConfig.IsHardwareTouchpadToggle()) ToggleTouchpad();
             Thread.Sleep(200);
-            Program.toast.RunToast(GetTouchpadState() ? "On" : "Off", ToastIcon.Touchpad);
+            Program.toast.RunToast(GetTouchpadState() ? Properties.Strings.On : Properties.Strings.Off, ToastIcon.Touchpad);
         }
 
         static void ToggleTouchpad()
@@ -585,7 +585,7 @@ namespace GHelper.Input
 
             Program.settingsForm.BeginInvoke(Program.settingsForm.VisualiseFnLock);
 
-            Program.toast.RunToast("Fn-Lock " + (fnLock == 1 ? "On" : "Off"), ToastIcon.FnLock);
+            Program.toast.RunToast(Properties.Strings.Fn_Lock + " " + (fnLock == 1 ? Properties.Strings.On : Properties.Strings.Off), ToastIcon.FnLock);
         }
 
         public static void TabletMode()
@@ -801,7 +801,7 @@ namespace GHelper.Input
 
             if (!OptimizationService.IsOSDRunning())
             {
-                string[] backlightNames = new string[] { "Off", "Low", "Mid", "Max" };
+                string[] backlightNames = new string[] { Properties.Strings.Backlight_off, Properties.Strings.Backlight_low, Properties.Strings.Backlight_mid, Properties.Strings.Backlight_max };
                 Program.toast.RunToast(backlightNames[backlight], delta > 0 ? ToastIcon.BacklightUp : ToastIcon.BacklightDown);
             }
 
