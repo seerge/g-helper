@@ -313,7 +313,7 @@
     <value>Zwiększ jasność</value>
   </data>
   <data name="BWTrayIcon" xml:space="preserve">
-    <value>Black and white tray icon</value>
+    <value>Czarnobiała ikona obszaru powiadomień</value>
   </data>
   <data name="Calibrate" xml:space="preserve">
     <value>Kalibruj</value>
@@ -370,7 +370,7 @@
     <value>Eco</value>
   </data>
   <data name="EnableGPUOnShutdown" xml:space="preserve">
-    <value>Enable GPU on shutdown (prevents issue with Eco mode)</value>
+    <value>Aktywuj GPU przy wyłączaniu (zapobiega problemom z trybem Eco)</value>
   </data>
   <data name="EnableOptimusText" xml:space="preserve">
     <value>Wyłączenie dGPU przez przejście do trybu Eco, podczas gdy tryb wyświetlania w Panelu sterowania NVIDIA nie jest ustawiony na Optimus, może powodować problemy z regulacją jasności do czasu następnego restartu systemu. 
@@ -384,7 +384,7 @@ Nadal chcesz kontynuować?</value>
     <value>Ustawienia zasilania</value>
   </data>
   <data name="Export" xml:space="preserve">
-    <value>Export Profile</value>
+    <value>Eksportuj profil</value>
   </data>
   <data name="Extra" xml:space="preserve">
     <value>Ustawienia</value>
@@ -420,7 +420,7 @@ Nadal chcesz kontynuować?</value>
     <value>Dostosuj</value>
   </data>
   <data name="FlickerFreeDimming" xml:space="preserve">
-    <value>Flicker-free Dimming</value>
+    <value>Przyciemnianie bez migotania</value>
   </data>
   <data name="FnLock" xml:space="preserve">
     <value>Używaj klawiszy funkcyjnych bez przycisku Fn</value>
@@ -456,7 +456,7 @@ Nadal chcesz kontynuować?</value>
     <value>tylko dGPU</value>
   </data>
   <data name="GPUPower" xml:space="preserve">
-    <value>GPU Power</value>
+    <value>Moc GPU</value>
   </data>
   <data name="GPUSettings" xml:space="preserve">
     <value>Ustawienia GPU</value>
@@ -474,7 +474,7 @@ Nadal chcesz kontynuować?</value>
     <value>Image Rotation</value>
   </data>
   <data name="Import" xml:space="preserve">
-    <value>Import Profile</value>
+    <value>Importuj profil</value>
   </data>
   <data name="KeyBindings" xml:space="preserve">
     <value>Ustawienia klawiszy skrótów</value>
