@@ -687,10 +687,6 @@ namespace GHelper.Input
                     case 199: // ON Z13 - FN+F11 - cycles backlight
                         SetBacklight(4);
                         return;
-                    case 51:    // Fn+F6 on old TUFs
-                    case 53:    // Fn+F6 on GA-502DU model
-                        NativeMethods.TurnOffScreen();
-                        return;
                 }
             }
 
@@ -749,6 +745,10 @@ namespace GHelper.Input
                     else
                         SetScreenpad(100);
                     break;
+                case 51:    // Fn+F6 on old TUFs
+                case 53:    // Fn+F6 on GA-502DU model
+                    NativeMethods.TurnOffScreen();
+                    return;
 
 
             }
