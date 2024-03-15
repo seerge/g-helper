@@ -435,7 +435,7 @@ namespace GHelper
 
             panelAlly.Visible = true;
             panelKeyboardTitle.Visible = false;
-            panelKeyboard.Padding = new Padding(20, 0, 20, 20);
+            panelKeyboard.Padding = new Padding(panelKeyboard.Padding.Left, 0, panelKeyboard.Padding.Right, panelKeyboard.Padding.Bottom);
 
             tableAMD.Visible = true;
         }
