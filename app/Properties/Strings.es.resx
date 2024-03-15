@@ -355,7 +355,7 @@
     <value>Descargando</value>
   </data>
   <data name="DownloadColorProfiles" xml:space="preserve">
-    <value>Download Color Profiles</value>
+    <value>Descargar perfiles de color</value>
   </data>
   <data name="DownloadUpdate" xml:space="preserve">
     <value>Descargar</value>
