@@ -603,10 +603,10 @@ Nadal chcesz kontynuować?</value>
     <value>Nie połączono</value>
   </data>
   <data name="Off" xml:space="preserve">
-    <value>Off</value>
+    <value>Wyłączony</value>
   </data>
   <data name="On" xml:space="preserve">
-    <value>On</value>
+    <value>Włączony</value>
   </data>
   <data name="OneZone" xml:space="preserve">
     <value>Jedna strefa</value>
