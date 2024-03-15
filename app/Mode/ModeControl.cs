@@ -69,7 +69,7 @@ namespace GHelper.Mode
 
             Task.Run(async () =>
             {
-                bool reset = AppConfig.IsResetRequired() && (Modes.GetBase(oldMode) == Modes.GetBase(mode)) && customPower > 0;
+                bool reset = AppConfig.IsResetRequired() && (Modes.GetBase(oldMode) == Modes.GetBase(mode)) && customPower > 0 && !AppConfig.IsMode("auto_apply_power");
 
                 customFans = false;
                 customPower = 0;
