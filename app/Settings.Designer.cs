@@ -385,7 +385,7 @@ namespace GHelper
             buttonBatteryFull.FlatStyle = FlatStyle.Flat;
             buttonBatteryFull.Font = new Font("Segoe UI", 7.125F, FontStyle.Bold, GraphicsUnit.Point);
             buttonBatteryFull.ForeColor = SystemColors.ControlDark;
-            buttonBatteryFull.Location = new Point(730, 66);
+            buttonBatteryFull.Location = new Point(728, 66);
             buttonBatteryFull.Margin = new Padding(0);
             buttonBatteryFull.Name = "buttonBatteryFull";
             buttonBatteryFull.Secondary = true;
@@ -424,7 +424,7 @@ namespace GHelper
             // labelBattery
             // 
             labelBattery.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            labelBattery.Location = new Point(448, 0);
+            labelBattery.Location = new Point(455, 0);
             labelBattery.Margin = new Padding(8, 0, 8, 0);
             labelBattery.Name = "labelBattery";
             labelBattery.Size = new Size(324, 36);
@@ -1861,7 +1861,7 @@ namespace GHelper
             AutoScaleMode = AutoScaleMode.Dpi;
             AutoSize = true;
             AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            ClientSize = new Size(849, 1709);
+            ClientSize = new Size(849, 2001);
             Controls.Add(panelFooter);
             Controls.Add(panelVersion);
             Controls.Add(panelBattery);

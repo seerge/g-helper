@@ -78,7 +78,7 @@ namespace GHelper.Mode
                 // Workaround for not properly resetting limits on G14 2024
                 if (reset)
                 {
-                    Program.acpi.DeviceSet(AsusACPI.PerformanceMode, (Modes.GetBase(oldMode) != 1) ? AsusACPI.PerformanceTurbo : AsusACPI.PerformanceBalanced, "Reset");
+                    Program.acpi.DeviceSet(AsusACPI.PerformanceMode, (Modes.GetBase(oldMode) != 1) ? AsusACPI.PerformanceTurbo : AsusACPI.PerformanceBalanced, "ModeReset");
                     await Task.Delay(TimeSpan.FromMilliseconds(1500));
                 }
 
