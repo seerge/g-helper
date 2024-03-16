@@ -205,11 +205,7 @@ namespace GHelper
                 labelFNF4.Visible = comboFNF4.Visible = textFNF4.Visible = false;
             }
 
-            if (AppConfig.IsTUF())
-            {
-                labelFNV.Visible = comboFNV.Visible = textFNV.Visible = false;
-            }
-            else
+            if (!AppConfig.IsTUF())
             {
                 labelFNE.Visible = comboFNE.Visible = textFNE.Visible = false;
             }
