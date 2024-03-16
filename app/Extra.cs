@@ -210,6 +210,11 @@ namespace GHelper
                 labelFNE.Visible = comboFNE.Visible = textFNE.Visible = false;
             }
 
+            if (AppConfig.IsNoFNV())
+            {
+                labelFNV.Visible = comboFNV.Visible = textFNV.Visible = false;
+            }
+
             if (Program.acpi.DeviceGet(AsusACPI.GPUEco) < 0)
             {
                 checkGpuApps.Visible = false;
