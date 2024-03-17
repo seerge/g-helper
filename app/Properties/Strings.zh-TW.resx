@@ -765,7 +765,7 @@
     <value>震動強度</value>
   </data>
   <data name="VisualMode" xml:space="preserve">
-    <value>Visual Mode</value>
+    <value>色域模式</value>
   </data>
   <data name="VolumeDown" xml:space="preserve">
     <value>音量降低</value>
