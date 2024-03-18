@@ -1533,6 +1533,7 @@ namespace GHelper
                     tableAMD.Controls.Add(buttonXGM, 1, 0);
                     VisualizeXGM();
                 }
+                VisualiseIcon();
                 return;
             }
 
