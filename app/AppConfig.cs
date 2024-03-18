@@ -587,6 +587,11 @@ public static class AppConfig
         return ContainsModel("G834") || ContainsModel("G614") || ContainsModel("G834") || ContainsModel("G634");
     }
 
+    public static bool IsNoFNV()
+    {
+        return ContainsModel("FX507") || ContainsModel("FX707");
+    }
+
     public static bool IsROG()
     {
         return ContainsModel("ROG");
@@ -600,5 +605,7 @@ public static class AppConfig
     {
         return Is("bw_icon");
     }
+
+
 
 }
