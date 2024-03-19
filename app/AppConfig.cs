@@ -454,6 +454,11 @@ public static class AppConfig
         return ContainsModel("Z13");
     }
 
+    public static bool IsS17()
+    {
+        return ContainsModel("S17");
+    }
+
     public static bool HasTabletMode()
     {
         return ContainsModel("X16") || ContainsModel("X13");
