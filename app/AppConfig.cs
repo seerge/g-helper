@@ -1,4 +1,4 @@
-﻿using GHelper.Mode;
+using GHelper.Mode;
 using System.Management;
 using System.Text.Json;
 
@@ -436,7 +436,7 @@ public static class AppConfig
 
     public static bool NoWMI()
     {
-        return ContainsModel("GL704G");
+        return ContainsModel("GL704G") || ContainsModel("GM501G");
     }
 
     public static bool IsNoDirectRGB()
