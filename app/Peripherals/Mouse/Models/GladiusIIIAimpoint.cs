@@ -103,4 +103,47 @@
             return "ROG Gladius III Aimpoint (Wired)";
         }
     }
+
+    public class GladiusIIIAimpointEva2 : GladiusIIIAimpoint
+    {
+        public GladiusIIIAimpointEva2() : base(0x1B0C, true)
+        {
+        }
+
+        public GladiusIIIAimpointEva2(ushort productId) : base(productId, false)
+        {
+        }
+
+        public override string GetDisplayName()
+        {
+            return "ROG Gladius III Eva 2 (Wireless)";
+        }
+
+        public override LightingZone[] SupportedLightingZones()
+        {
+            return new LightingZone[] { LightingZone.Logo };
+        }
+
+        public override bool IsLightingModeSupported(LightingMode lightingMode)
+        {
+            return lightingMode == LightingMode.Static
+                || lightingMode == LightingMode.Breathing
+                || lightingMode == LightingMode.ColorCycle
+                || lightingMode == LightingMode.React
+                || lightingMode == LightingMode.Comet
+                || lightingMode == LightingMode.BatteryState;
+        }
+    }
+
+    public class GladiusIIIAimpointEva2Wired : GladiusIIIAimpointEva2
+    {
+        public GladiusIIIAimpointEva2Wired() : base(0x1B0A)
+        {
+        }
+
+        public override string GetDisplayName()
+        {
+            return "ROG Gladius III Eva 2 (Wired)";
+        }
+    }
 }
