@@ -69,7 +69,7 @@ namespace GHelper.Mode
 
             Task.Run(async () =>
             {
-                bool reset = AppConfig.IsResetRequired() && (Modes.GetBase(oldMode) == Modes.GetBase(mode)) && customPower > 0;
+                bool reset = AppConfig.IsResetRequired() && (Modes.GetBase(oldMode) == Modes.GetBase(mode)) && customPower > 0 && !AppConfig.IsMode("auto_apply_power");
 
                 customFans = false;
                 customPower = 0;
@@ -78,7 +78,7 @@ namespace GHelper.Mode
                 // Workaround for not properly resetting limits on G14 2024
                 if (reset)
                 {
-                    Program.acpi.DeviceSet(AsusACPI.PerformanceMode, (Modes.GetBase(oldMode) != 1) ? AsusACPI.PerformanceTurbo : AsusACPI.PerformanceBalanced, "Reset");
+                    Program.acpi.DeviceSet(AsusACPI.PerformanceMode, (Modes.GetBase(oldMode) != 1) ? AsusACPI.PerformanceTurbo : AsusACPI.PerformanceBalanced, "ModeReset");
                     await Task.Delay(TimeSpan.FromMilliseconds(1500));
                 }
 

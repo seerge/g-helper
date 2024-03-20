@@ -471,7 +471,7 @@ namespace GHelper
 
             panelAlly.Visible = true;
             panelKeyboardTitle.Visible = false;
-            panelKeyboard.Padding = new Padding(20, 0, 20, 20);
+            panelKeyboard.Padding = new Padding(panelKeyboard.Padding.Left, 0, panelKeyboard.Padding.Right, panelKeyboard.Padding.Bottom);
 
             tableAMD.Visible = true;
         }
@@ -1572,6 +1572,7 @@ namespace GHelper
                     tableAMD.Controls.Add(buttonXGM, 1, 0);
                     VisualizeXGM();
                 }
+                VisualiseIcon();
                 return;
             }
 
@@ -1624,22 +1625,32 @@ namespace GHelper
                 menuOptimized.Checked = buttonOptimized.Activated;
             }
 
+            // UI Fix for small screeens
+            if (Top < 0)
+            {
+                labelTipGPU.Visible = false;
+                labelTipScreen.Visible = false;
+                Top = 5;
+            }
+
         }
 
 
         public void VisualiseIcon()
         {
             int GPUMode = AppConfig.Get("gpu_mode");
+            bool isDark = CheckSystemDarkModeStatus();
+
             switch (GPUMode)
             {
                 case AsusACPI.GPUModeEco:
-                    Program.trayIcon.Icon = AppConfig.IsBWIcon() ? (!darkTheme ? Properties.Resources.dark_eco : Properties.Resources.light_eco) : Properties.Resources.eco;
+                    Program.trayIcon.Icon = AppConfig.IsBWIcon() ? (!isDark ? Properties.Resources.dark_eco : Properties.Resources.light_eco) : Properties.Resources.eco;
                     break;
                 case AsusACPI.GPUModeUltimate:
-                    Program.trayIcon.Icon = AppConfig.IsBWIcon() ? (!darkTheme ? Properties.Resources.dark_standard : Properties.Resources.light_standard) : Properties.Resources.ultimate;
+                    Program.trayIcon.Icon = AppConfig.IsBWIcon() ? (!isDark ? Properties.Resources.dark_standard : Properties.Resources.light_standard) : Properties.Resources.ultimate;
                     break;
                 default:
-                    Program.trayIcon.Icon = AppConfig.IsBWIcon() ? (!darkTheme ? Properties.Resources.dark_standard : Properties.Resources.light_standard) : Properties.Resources.standard;
+                    Program.trayIcon.Icon = AppConfig.IsBWIcon() ? (!isDark ? Properties.Resources.dark_standard : Properties.Resources.light_standard) : Properties.Resources.standard;
                     break;
             }
         }

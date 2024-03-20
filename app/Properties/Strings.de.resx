@@ -172,7 +172,7 @@
     <value>Windows Leistungsmodus automatisch anpassen</value>
   </data>
   <data name="APUMemory" xml:space="preserve">
-    <value>Memory Assigned to GPU</value>
+    <value>GPU zugewiesener Speicher</value>
   </data>
   <data name="AsusServicesRunning" xml:space="preserve">
     <value>ASUS Dienste laufen</value>
@@ -249,6 +249,18 @@
   <data name="Awake" xml:space="preserve">
     <value>Im Betrieb</value>
   </data>
+  <data name="BacklightLow" xml:space="preserve">
+    <value>Niedrig</value>
+  </data>
+  <data name="BacklightMax" xml:space="preserve">
+    <value>Max</value>
+  </data>
+  <data name="BacklightMid" xml:space="preserve">
+    <value>Mittel</value>
+  </data>
+  <data name="BacklightOff" xml:space="preserve">
+    <value>Aus</value>
+  </data>
   <data name="BacklightTimeout" xml:space="preserve">
     <value>Timeout angeschlossen / bei Akku (0 = An)</value>
   </data>
@@ -277,10 +289,10 @@
     <value>Binding</value>
   </data>
   <data name="BindingPrimary" xml:space="preserve">
-    <value>Primary</value>
+    <value>Primär</value>
   </data>
   <data name="BindingSecondary" xml:space="preserve">
-    <value>Secondary</value>
+    <value>Sekundär</value>
   </data>
   <data name="BiosAndDriverUpdates" xml:space="preserve">
     <value>BIOS und Treiber Updates</value>
@@ -299,6 +311,9 @@
   </data>
   <data name="BrightnessUp" xml:space="preserve">
     <value>Helligkeit erhöhen</value>
+  </data>
+  <data name="BWTrayIcon" xml:space="preserve">
+    <value>Taskleistensymbol in Schwarzweiß</value>
   </data>
   <data name="Calibrate" xml:space="preserve">
     <value>Kalibrieren</value>
@@ -331,7 +346,7 @@
     <value>Controller deaktivieren</value>
   </data>
   <data name="DisableOnLidClose" xml:space="preserve">
-    <value>Disable on lid close</value>
+    <value>Beim Schließen des Deckels deaktivieren</value>
   </data>
   <data name="DisableOverdrive" xml:space="preserve">
     <value>Bildschirm: Overdrive abschalten</value>
@@ -340,7 +355,7 @@
     <value>Entlädt</value>
   </data>
   <data name="DownloadColorProfiles" xml:space="preserve">
-    <value>Download Color Profiles</value>
+    <value>Farbprofile herunterladen</value>
   </data>
   <data name="DownloadUpdate" xml:space="preserve">
     <value>Download</value>
@@ -408,7 +423,13 @@ Trotzdem fortfahren?</value>
     <value>Flackerfreies Dimmen</value>
   </data>
   <data name="FnLock" xml:space="preserve">
-    <value>FN+F Funktionen ohne FN Taste nutzen</value>
+    <value>Fn+F Funktionen ohne Fn Taste nutzen</value>
+  </data>
+  <data name="FnLockOff" xml:space="preserve">
+    <value>Fn-Sperre aus</value>
+  </data>
+  <data name="FnLockOn" xml:space="preserve">
+    <value>Fn-Sperre an</value>
   </data>
   <data name="GPUBoost" xml:space="preserve">
     <value>Dynamic Boost</value>
@@ -433,6 +454,9 @@ Trotzdem fortfahren?</value>
   </data>
   <data name="GPUModeUltimate" xml:space="preserve">
     <value>Nur dGPU</value>
+  </data>
+  <data name="GPUPower" xml:space="preserve">
+    <value>GPU-Leistung</value>
   </data>
   <data name="GPUSettings" xml:space="preserve">
     <value>GPU Einstellungen</value>
@@ -560,6 +584,9 @@ Trotzdem fortfahren?</value>
   <data name="MultizoneStrong" xml:space="preserve">
     <value>Multi Zone Strong</value>
   </data>
+  <data name="Muted" xml:space="preserve">
+    <value>Stumm</value>
+  </data>
   <data name="MuteMic" xml:space="preserve">
     <value>Mikrofon stummschalten</value>
   </data>
@@ -574,6 +601,12 @@ Trotzdem fortfahren?</value>
   </data>
   <data name="NotConnected" xml:space="preserve">
     <value>Nicht verbunden</value>
+  </data>
+  <data name="Off" xml:space="preserve">
+    <value>Aus</value>
+  </data>
+  <data name="On" xml:space="preserve">
+    <value>An</value>
   </data>
   <data name="OneZone" xml:space="preserve">
     <value>One Zone</value>
@@ -719,6 +752,9 @@ Trotzdem fortfahren?</value>
   <data name="UndervoltingRisky" xml:space="preserve">
     <value>Die Spannungsabsenkung (Undervolting) ist experimentell und birgt Risiken. Wenn die Spannung zu weit abgesenkt wird, wird der Computer instabil und kann abstürzen, was zu Datenverlust führen kann. Es empfiehlt sich mit kleinen Werten anzufangen und ausgiebig zu testen, um den idealen Wert zu finden.</value>
   </data>
+  <data name="Unmuted" xml:space="preserve">
+    <value>Laut</value>
+  </data>
   <data name="Updates" xml:space="preserve">
     <value>Aktualisierungen</value>
   </data>
@@ -729,7 +765,7 @@ Trotzdem fortfahren?</value>
     <value>Vibrationsstärke</value>
   </data>
   <data name="VisualMode" xml:space="preserve">
-    <value>Visual Mode</value>
+    <value>Darstellungsmodus</value>
   </data>
   <data name="VolumeDown" xml:space="preserve">
     <value>Lautstärke verringern</value>

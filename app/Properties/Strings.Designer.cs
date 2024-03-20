@@ -457,6 +457,42 @@ namespace GHelper.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Low.
+        /// </summary>
+        internal static string BacklightLow {
+            get {
+                return ResourceManager.GetString("BacklightLow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Max.
+        /// </summary>
+        internal static string BacklightMax {
+            get {
+                return ResourceManager.GetString("BacklightMax", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mid.
+        /// </summary>
+        internal static string BacklightMid {
+            get {
+                return ResourceManager.GetString("BacklightMid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Off.
+        /// </summary>
+        internal static string BacklightOff {
+            get {
+                return ResourceManager.GetString("BacklightOff", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Timeout plugged / on battery (0 - ON).
         /// </summary>
         internal static string BacklightTimeout {
@@ -606,6 +642,15 @@ namespace GHelper.Properties {
         internal static string BrightnessUp {
             get {
                 return ResourceManager.GetString("BrightnessUp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Black and white tray icon.
+        /// </summary>
+        internal static string BWTrayIcon {
+            get {
+                return ResourceManager.GetString("BWTrayIcon", resourceCulture);
             }
         }
         
@@ -936,6 +981,24 @@ namespace GHelper.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to FN-Lock Off.
+        /// </summary>
+        internal static string FnLockOff {
+            get {
+                return ResourceManager.GetString("FnLockOff", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to FN-Lock On.
+        /// </summary>
+        internal static string FnLockOn {
+            get {
+                return ResourceManager.GetString("FnLockOn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Dynamic Boost.
         /// </summary>
         internal static string GPUBoost {
@@ -1004,6 +1067,15 @@ namespace GHelper.Properties {
         internal static string GPUModeUltimate {
             get {
                 return ResourceManager.GetString("GPUModeUltimate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to GPU Power.
+        /// </summary>
+        internal static string GPUPower {
+            get {
+                return ResourceManager.GetString("GPUPower", resourceCulture);
             }
         }
         
@@ -1386,6 +1458,15 @@ namespace GHelper.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Muted.
+        /// </summary>
+        internal static string Muted {
+            get {
+                return ResourceManager.GetString("Muted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Mute Mic.
         /// </summary>
         internal static string MuteMic {
@@ -1427,6 +1508,24 @@ namespace GHelper.Properties {
         internal static string NotConnected {
             get {
                 return ResourceManager.GetString("NotConnected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Off.
+        /// </summary>
+        internal static string Off {
+            get {
+                return ResourceManager.GetString("Off", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to On.
+        /// </summary>
+        internal static string On {
+            get {
+                return ResourceManager.GetString("On", resourceCulture);
             }
         }
         
@@ -1859,6 +1958,15 @@ namespace GHelper.Properties {
         internal static string UndervoltingRisky {
             get {
                 return ResourceManager.GetString("UndervoltingRisky", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unmuted.
+        /// </summary>
+        internal static string Unmuted {
+            get {
+                return ResourceManager.GetString("Unmuted", resourceCulture);
             }
         }
         

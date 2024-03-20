@@ -1,4 +1,4 @@
-﻿using GHelper;
+using GHelper;
 using GHelper.Mode;
 using System.Management;
 using System.Text.Json;
@@ -380,7 +380,7 @@ public static class AppConfig
 
     public static bool IsDUO()
     {
-        return ContainsModel("Duo");
+        return ContainsModel("Duo") || ContainsModel("GX550") || ContainsModel("GX650");
     }
 
     // G14 2020 has no aura, but media keys instead
@@ -406,7 +406,7 @@ public static class AppConfig
 
     public static bool IsOLED()
     {
-        return ContainsModel("OLED") || IsSlash() || ContainsModel("UX64") || ContainsModel("UX34") || ContainsModel("UX53") || ContainsModel("K360") || ContainsModel("X150") || ContainsModel("M3500") || ContainsModel("K650") || ContainsModel("UM53") || ContainsModel("K660"); 
+        return ContainsModel("OLED") || IsSlash() || ContainsModel("M7600") || ContainsModel("UX64") || ContainsModel("UX34") || ContainsModel("UX53") || ContainsModel("K360") || ContainsModel("X150") || ContainsModel("M3500") || ContainsModel("K650") || ContainsModel("UM53") || ContainsModel("K660"); 
     }
 
     public static bool IsNoOverdrive()
@@ -437,7 +437,7 @@ public static class AppConfig
 
     public static bool NoWMI()
     {
-        return ContainsModel("GL704G");
+        return ContainsModel("GL704G") || ContainsModel("GM501G");
     }
 
     public static bool IsNoDirectRGB()
@@ -453,6 +453,11 @@ public static class AppConfig
     public static bool IsZ13()
     {
         return ContainsModel("Z13");
+    }
+
+    public static bool IsS17()
+    {
+        return ContainsModel("S17");
     }
 
     public static bool HasTabletMode()
@@ -598,6 +603,11 @@ public static class AppConfig
         return ContainsModel("G834") || ContainsModel("G614") || ContainsModel("G834") || ContainsModel("G634");
     }
 
+    public static bool IsNoFNV()
+    {
+        return ContainsModel("FX507") || ContainsModel("FX707");
+    }
+
     public static bool IsROG()
     {
         return ContainsModel("ROG");
@@ -611,5 +621,7 @@ public static class AppConfig
     {
         return Is("bw_icon");
     }
+
+
 
 }

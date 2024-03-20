@@ -509,7 +509,7 @@ namespace GHelper.Input
                     break;
                 case "micmute":
                     bool muteStatus = Audio.ToggleMute();
-                    Program.toast.RunToast(muteStatus ? "Muted" : "Unmuted", muteStatus ? ToastIcon.MicrophoneMute : ToastIcon.Microphone);
+                    Program.toast.RunToast(muteStatus ? Properties.Strings.Muted : Properties.Strings.Unmuted, muteStatus ? ToastIcon.MicrophoneMute : ToastIcon.Microphone);
                     if (AppConfig.IsVivoZenbook()) Program.acpi.DeviceSet(AsusACPI.MicMuteLed, muteStatus ? 1 : 0, "MicmuteLed");
                     break;
                 case "brightness_up":
@@ -551,7 +551,7 @@ namespace GHelper.Input
         {
             if (hotkey || !AppConfig.IsHardwareTouchpadToggle()) ToggleTouchpad();
             Thread.Sleep(200);
-            Program.toast.RunToast(GetTouchpadState() ? "On" : "Off", ToastIcon.Touchpad);
+            Program.toast.RunToast(GetTouchpadState() ? Properties.Strings.On : Properties.Strings.Off, ToastIcon.Touchpad);
         }
 
         static void ToggleTouchpad()
@@ -570,7 +570,7 @@ namespace GHelper.Input
             AppConfig.Set("arrow_lock", arLock);
 
             Program.settingsForm.BeginInvoke(Program.inputDispatcher.RegisterKeys);
-            Program.toast.RunToast("Arrow-Lock " + (arLock == 1 ? "On" : "Off"), ToastIcon.FnLock);
+            Program.toast.RunToast("Arrow-Lock " + (arLock == 1 ? Properties.Strings.On : Properties.Strings.Off), ToastIcon.FnLock);
         }
 
         public static void ToggleFnLock()
@@ -585,7 +585,7 @@ namespace GHelper.Input
 
             Program.settingsForm.BeginInvoke(Program.settingsForm.VisualiseFnLock);
 
-            Program.toast.RunToast("Fn-Lock " + (fnLock == 1 ? "On" : "Off"), ToastIcon.FnLock);
+            Program.toast.RunToast(fnLock == 1 ? Properties.Strings.FnLockOn : Properties.Strings.FnLockOff, ToastIcon.FnLock);
         }
 
         public static void TabletMode()
@@ -687,11 +687,6 @@ namespace GHelper.Input
                     case 199: // ON Z13 - FN+F11 - cycles backlight
                         SetBacklight(4);
                         return;
-                    case 51:    // Fn+F6 on old TUFs
-                    case 53:    // Fn+F6 on GA-502DU model
-                        if (AppConfig.IsNoSleepEvent()) NativeMethods.TurnOffScreen();
-                        else SleepEvent();
-                        return;
                 }
             }
 
@@ -750,6 +745,10 @@ namespace GHelper.Input
                     else
                         SetScreenpad(100);
                     break;
+                case 51:    // Fn+F6 on old TUFs
+                case 53:    // Fn+F6 on GA-502DU model
+                    NativeMethods.TurnOffScreen();
+                    return;
 
 
             }
@@ -801,7 +800,7 @@ namespace GHelper.Input
 
             if (!OptimizationService.IsOSDRunning())
             {
-                string[] backlightNames = new string[] { "Off", "Low", "Mid", "Max" };
+                string[] backlightNames = new string[] { Properties.Strings.BacklightOff, Properties.Strings.BacklightLow, Properties.Strings.BacklightMid, Properties.Strings.BacklightMax };
                 Program.toast.RunToast(backlightNames[backlight], delta > 0 ? ToastIcon.BacklightUp : ToastIcon.BacklightDown);
             }
 
