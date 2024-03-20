@@ -7,6 +7,7 @@ namespace GHelper.Helpers
 
         static List<string> services = new() {
                 "ArmouryCrateControlInterface",
+                "AsHidService",
                 "ASUSOptimization",
                 "AsusAppService",
                 "ASUSLinkNear",
