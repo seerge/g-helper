@@ -19,6 +19,7 @@ namespace GHelper.AnimeMatrix
         public SlashDevice? deviceSlash;
 
         public static bool lidClose = false;
+        private static bool _wakeUp = false;
 
         double[]? AudioValues;
         WasapiCapture? AudioDevice;
@@ -91,7 +92,7 @@ namespace GHelper.AnimeMatrix
                     return;
                 }
 
-                if (wakeUp) deviceSlash.WakeUp();
+                if (wakeUp) _wakeUp = true;
 
                 if (brightness == 0 || (auto && SystemInformation.PowerStatus.PowerLineStatus != PowerLineStatus.Online) || (lid && lidClose))
                 {
@@ -100,6 +101,12 @@ namespace GHelper.AnimeMatrix
                 }
                 else
                 {
+                    if (_wakeUp)
+                    {
+                        deviceSlash.WakeUp();
+                        _wakeUp = false;
+                    }
+
                     deviceSlash.Init();
                     deviceSlash.SetMode((SlashMode)running);
                     deviceSlash.SetOptions(true, brightness, inteval);
