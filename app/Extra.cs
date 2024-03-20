@@ -146,6 +146,7 @@ namespace GHelper
             labelBacklightLogo.Text = Properties.Strings.Logo;
 
             checkGpuApps.Text = Properties.Strings.KillGpuApps;
+            checkBWIcon.Text = Properties.Strings.BWTrayIcon;
             labelHibernateAfter.Text = Properties.Strings.HibernateAfter;
 
             labelAPUMem.Text = Properties.Strings.APUMemory;
@@ -207,6 +208,11 @@ namespace GHelper
             if (!AppConfig.IsTUF())
             {
                 labelFNE.Visible = comboFNE.Visible = textFNE.Visible = false;
+            }
+
+            if (AppConfig.IsNoFNV())
+            {
+                labelFNV.Visible = comboFNV.Visible = textFNV.Visible = false;
             }
 
             if (Program.acpi.DeviceGet(AsusACPI.GPUEco) < 0)

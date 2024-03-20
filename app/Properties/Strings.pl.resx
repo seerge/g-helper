@@ -145,7 +145,7 @@
     <value>Uruchomić ponownie teraz?</value>
   </data>
   <data name="AllyController" xml:space="preserve">
-    <value>Ally Controller</value>
+    <value>Kontroler Ally</value>
   </data>
   <data name="AnimationSpeed" xml:space="preserve">
     <value>Prędkość animacji</value>
@@ -249,6 +249,18 @@
   <data name="Awake" xml:space="preserve">
     <value>Włączone</value>
   </data>
+  <data name="BacklightLow" xml:space="preserve">
+    <value>Niskie</value>
+  </data>
+  <data name="BacklightMax" xml:space="preserve">
+    <value>Wysokie</value>
+  </data>
+  <data name="BacklightMid" xml:space="preserve">
+    <value>Średnie</value>
+  </data>
+  <data name="BacklightOff" xml:space="preserve">
+    <value>Wyłączone</value>
+  </data>
   <data name="BacklightTimeout" xml:space="preserve">
     <value>Limit czasu podłączonego / na baterii (0 - Włączony)</value>
   </data>
@@ -274,13 +286,13 @@
     <value>Jednorazowo naładuj do 100%</value>
   </data>
   <data name="Binding" xml:space="preserve">
-    <value>Binding</value>
+    <value>Przypisanie klawiszy</value>
   </data>
   <data name="BindingPrimary" xml:space="preserve">
-    <value>Primary</value>
+    <value>Podstawowe</value>
   </data>
   <data name="BindingSecondary" xml:space="preserve">
-    <value>Secondary</value>
+    <value>Drugorzędne</value>
   </data>
   <data name="BiosAndDriverUpdates" xml:space="preserve">
     <value>Aktualizacje BIOS i sterowników</value>
@@ -300,6 +312,9 @@
   <data name="BrightnessUp" xml:space="preserve">
     <value>Zwiększ jasność</value>
   </data>
+  <data name="BWTrayIcon" xml:space="preserve">
+    <value>Czarnobiała ikona obszaru powiadomień</value>
+  </data>
   <data name="Calibrate" xml:space="preserve">
     <value>Kalibruj</value>
   </data>
@@ -310,10 +325,10 @@
     <value>Kolor</value>
   </data>
   <data name="Contrast" xml:space="preserve">
-    <value>Contrast</value>
+    <value>Kontrast</value>
   </data>
   <data name="Controller" xml:space="preserve">
-    <value>Controller</value>
+    <value>Kontroler</value>
   </data>
   <data name="CPUBoost" xml:space="preserve">
     <value>Zwiększenie taktowania CPU</value>
@@ -328,10 +343,10 @@
     <value>Domyślny</value>
   </data>
   <data name="DisableController" xml:space="preserve">
-    <value>Disable Controller</value>
+    <value>Wyłącz kontroler</value>
   </data>
   <data name="DisableOnLidClose" xml:space="preserve">
-    <value>Disable on lid close</value>
+    <value>Wyłącz po zamknięciu pokrywy</value>
   </data>
   <data name="DisableOverdrive" xml:space="preserve">
     <value>Wyłącz funkcję Overdrive monitora</value>
@@ -340,7 +355,7 @@
     <value>Zużycie mocy</value>
   </data>
   <data name="DownloadColorProfiles" xml:space="preserve">
-    <value>Download Color Profiles</value>
+    <value>Pobieranie profili kolorów</value>
   </data>
   <data name="DownloadUpdate" xml:space="preserve">
     <value>Pobierz</value>
@@ -355,7 +370,7 @@
     <value>Eco</value>
   </data>
   <data name="EnableGPUOnShutdown" xml:space="preserve">
-    <value>Enable GPU on shutdown (prevents issue with Eco mode)</value>
+    <value>Aktywuj GPU przy wyłączaniu (zapobiega problemom z trybem Eco)</value>
   </data>
   <data name="EnableOptimusText" xml:space="preserve">
     <value>Wyłączenie dGPU przez przejście do trybu Eco, podczas gdy tryb wyświetlania w Panelu sterowania NVIDIA nie jest ustawiony na Optimus, może powodować problemy z regulacją jasności do czasu następnego restartu systemu. 
@@ -369,7 +384,7 @@ Nadal chcesz kontynuować?</value>
     <value>Ustawienia zasilania</value>
   </data>
   <data name="Export" xml:space="preserve">
-    <value>Export Profile</value>
+    <value>Eksportuj profil</value>
   </data>
   <data name="Extra" xml:space="preserve">
     <value>Ustawienia</value>
@@ -405,10 +420,16 @@ Nadal chcesz kontynuować?</value>
     <value>Dostosuj</value>
   </data>
   <data name="FlickerFreeDimming" xml:space="preserve">
-    <value>Flicker-free Dimming</value>
+    <value>Przyciemnianie bez migotania</value>
   </data>
   <data name="FnLock" xml:space="preserve">
     <value>Używaj klawiszy funkcyjnych bez przycisku Fn</value>
+  </data>
+  <data name="FnLockOff" xml:space="preserve">
+    <value>Fn-Lock wył.</value>
+  </data>
+  <data name="FnLockOn" xml:space="preserve">
+    <value>Fn-Lock wł.</value>
   </data>
   <data name="GPUBoost" xml:space="preserve">
     <value>Dynamic Boost</value>
@@ -434,6 +455,9 @@ Nadal chcesz kontynuować?</value>
   <data name="GPUModeUltimate" xml:space="preserve">
     <value>tylko dGPU</value>
   </data>
+  <data name="GPUPower" xml:space="preserve">
+    <value>Moc GPU</value>
+  </data>
   <data name="GPUSettings" xml:space="preserve">
     <value>Ustawienia GPU</value>
   </data>
@@ -447,10 +471,10 @@ Nadal chcesz kontynuować?</value>
     <value>Wysoka</value>
   </data>
   <data name="ImageRotation" xml:space="preserve">
-    <value>Image Rotation</value>
+    <value>Obracanie obrazu</value>
   </data>
   <data name="Import" xml:space="preserve">
-    <value>Import Profile</value>
+    <value>Importuj profil</value>
   </data>
   <data name="KeyBindings" xml:space="preserve">
     <value>Ustawienia klawiszy skrótów</value>
@@ -486,10 +510,10 @@ Nadal chcesz kontynuować?</value>
     <value>Niska</value>
   </data>
   <data name="LSDeadzones" xml:space="preserve">
-    <value>Left Stick Deadzones</value>
+    <value>Martwe strefy lewego joysticka</value>
   </data>
   <data name="LTDeadzones" xml:space="preserve">
-    <value>Left Trigger Deadzones</value>
+    <value>Martwe strefy lewego triggera</value>
   </data>
   <data name="MatrixAudio" xml:space="preserve">
     <value>Wizualizer muzyki</value>
@@ -540,7 +564,7 @@ Nadal chcesz kontynuować?</value>
     <value>Reakcja przycisków</value>
   </data>
   <data name="MouseImportFailed" xml:space="preserve">
-    <value>Import failed. Selected file is not a valid mouse profile or corrutpted.</value>
+    <value>Błąd importu. Wybrany plik jest uszkodzony lub nie jest poprawnym profilem myszy.</value>
   </data>
   <data name="MouseLiftOffDistance" xml:space="preserve">
     <value>Wysokość reakcji sensora</value>
@@ -560,6 +584,9 @@ Nadal chcesz kontynuować?</value>
   <data name="MultizoneStrong" xml:space="preserve">
     <value>Wiele stref (mocniejsze)</value>
   </data>
+  <data name="Muted" xml:space="preserve">
+    <value>Wyciszony</value>
+  </data>
   <data name="MuteMic" xml:space="preserve">
     <value>Wyciszenie mikrofonu</value>
   </data>
@@ -574,6 +601,12 @@ Nadal chcesz kontynuować?</value>
   </data>
   <data name="NotConnected" xml:space="preserve">
     <value>Nie połączono</value>
+  </data>
+  <data name="Off" xml:space="preserve">
+    <value>Wyłączony</value>
+  </data>
+  <data name="On" xml:space="preserve">
+    <value>Włączony</value>
   </data>
   <data name="OneZone" xml:space="preserve">
     <value>Jedna strefa</value>
@@ -636,16 +669,16 @@ Nadal chcesz kontynuować?</value>
     <value>RPM</value>
   </data>
   <data name="RSDeadzones" xml:space="preserve">
-    <value>Right Stick Deadzones</value>
+    <value>Martwe strefy prawego joysticka</value>
   </data>
   <data name="RTDeadzones" xml:space="preserve">
-    <value>Right Trigger Deadzones</value>
+    <value>Martwe strefy prawego triggera</value>
   </data>
   <data name="RunOnStartup" xml:space="preserve">
     <value>Uruchom przy starcie</value>
   </data>
   <data name="ScalingQuality" xml:space="preserve">
-    <value>Scaling Quality</value>
+    <value>Jakość skalowania</value>
   </data>
   <data name="ScreenPadDown" xml:space="preserve">
     <value>Zmniejsz jasność ScreenPad</value>
@@ -719,6 +752,9 @@ Nadal chcesz kontynuować?</value>
   <data name="UndervoltingRisky" xml:space="preserve">
     <value>Undervolting jest funkcją eksperymentalną i ryzykowną. Jeżeli zastosowane wartości są za niskie dla Twojego urządzenia, może ono działać niestabilnie, wyłączyć się lub uszkodzić dane. Chcąc wypróbować tę funkcję, zacznij od niewielkich wartości, zastosuj je i sprawdź efekt.</value>
   </data>
+  <data name="Unmuted" xml:space="preserve">
+    <value>Włączony</value>
+  </data>
   <data name="Updates" xml:space="preserve">
     <value>Aktualizacje</value>
   </data>
@@ -726,10 +762,10 @@ Nadal chcesz kontynuować?</value>
     <value>Wersja</value>
   </data>
   <data name="VibrationStrength" xml:space="preserve">
-    <value>Vibration Strength</value>
+    <value>Siła wibracji</value>
   </data>
   <data name="VisualMode" xml:space="preserve">
-    <value>Visual Mode</value>
+    <value>Tryb wyświetlania</value>
   </data>
   <data name="VolumeDown" xml:space="preserve">
     <value>Zmniejsz głośność</value>
@@ -744,6 +780,6 @@ Nadal chcesz kontynuować?</value>
     <value>Zachowaj okno aplikacji zawsze na wierzchu</value>
   </data>
   <data name="Zoom" xml:space="preserve">
-    <value>Zoom</value>
+    <value>Przybliżenie</value>
   </data>
 </root>

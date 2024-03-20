@@ -179,6 +179,8 @@ namespace GHelper
             {
                 case UserPreferenceCategory.General:
                     bool changed = settingsForm.InitTheme();
+                    settingsForm.VisualiseIcon();
+
                     if (changed)
                     {
                         Debug.WriteLine("Theme Changed");
@@ -197,11 +199,8 @@ namespace GHelper
                     if (settingsForm.matrixForm is not null && settingsForm.matrixForm.Text != "")
                         settingsForm.matrixForm.InitTheme();
 
-                    if (settingsForm.handheldForm is not null && settingsForm.handheldForm.Text != "")
-                    {
+                    if (settingsForm.handheldForm is not null && settingsForm.handheldForm.Text != "") 
                         settingsForm.handheldForm.InitTheme();
-                        settingsForm.VisualiseIcon();
-                    }
 
                     break;
             }

@@ -84,18 +84,18 @@ namespace GHelper.AnimeMatrix
 
         public void WakeUp()
         {
-            Set(Packet<SlashPacket>(Encoding.ASCII.GetBytes("ASUS Tech.Inc.")));
+            Set(Packet<SlashPacket>(Encoding.ASCII.GetBytes("ASUS Tech.Inc.")), "SlashWakeUp");
         }
 
         public void Init()
         {
-            Set(Packet<SlashPacket>(0xD7, 0x00, 0x00, 0x01, 0xAC));
-            Set(Packet<SlashPacket>(0xD2, 0x02, 0x01, 0x08, 0xAB));
+            Set(Packet<SlashPacket>(0xD7, 0x00, 0x00, 0x01, 0xAC), "SlashInit");
+            Set(Packet<SlashPacket>(0xD2, 0x02, 0x01, 0x08, 0xAB), "SlashInit");
         }
 
         public void Save()
         {
-            Set(Packet<SlashPacket>(0xD4, 0x00, 0x00, 0x01, 0xAB));
+            Set(Packet<SlashPacket>(0xD4, 0x00, 0x00, 0x01, 0xAB), "SlashSave");
         }
 
         public void SetMode(SlashMode mode)
@@ -111,20 +111,20 @@ namespace GHelper.AnimeMatrix
                 modeByte = 0x00;
             }
 
-            Set(Packet<SlashPacket>(0xD2, 0x03, 0x00, 0x0C));
-            Set(Packet<SlashPacket>(0xD3, 0x04, 0x00, 0x0C, 0x01, modeByte, 0x02, 0x19, 0x03, 0x13, 0x04, 0x11, 0x05, 0x12, 0x06, 0x13));
+            Set(Packet<SlashPacket>(0xD2, 0x03, 0x00, 0x0C), "SlashMode");
+            Set(Packet<SlashPacket>(0xD3, 0x04, 0x00, 0x0C, 0x01, modeByte, 0x02, 0x19, 0x03, 0x13, 0x04, 0x11, 0x05, 0x12, 0x06, 0x13), "SlashMode");
         }
 
         public void SetOptions(bool status, int brightness = 0, int interval = 0)
         {
             byte brightnessByte = (byte)(brightness * 85.333);
 
-            Set(Packet<SlashPacket>(0xD3, 0x03, 0x01, 0x08, 0xAB, 0xFF, 0x01, status ? (byte)0x01 : (byte)0x00, 0x06, brightnessByte, 0xFF, (byte)interval));
+            Set(Packet<SlashPacket>(0xD3, 0x03, 0x01, 0x08, 0xAB, 0xFF, 0x01, status ? (byte)0x01 : (byte)0x00, 0x06, brightnessByte, 0xFF, (byte)interval), "SlashOptions");
         }
 
         public void SetBatterySaver(bool status)
         {
-            Set(Packet<SlashPacket>(0xD8, 0x01, 0x00, 0x01, status ? (byte)0x80 : (byte)0x00));
+            Set(Packet<SlashPacket>(0xD8, 0x01, 0x00, 0x01, status ? (byte)0x80 : (byte)0x00), "SlashBatterySaver");
         }
 
         public void SetLidMode(bool status)
@@ -132,10 +132,10 @@ namespace GHelper.AnimeMatrix
             Set(Packet<SlashPacket>(0xD8, 0x00, 0x00, 0x02, 0xA5, status ? (byte)0x80 : (byte)0x00));
         }
 
-        public void Set(Packet packet)
+        public void Set(Packet packet, string? log = null)
         {
             _usbProvider?.Set(packet.Data);
-            Logger.WriteLine("Slash:" + BitConverter.ToString(packet.Data));
+            if (log is not null) Logger.WriteLine("Slash:" + BitConverter.ToString(packet.Data));
         }
 
 
