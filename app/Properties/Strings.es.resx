@@ -426,10 +426,10 @@
     <value>Usar teclas de acceso rápido (Fn+F) sin pulsar Fn</value>
   </data>
   <data name="FnLockOff" xml:space="preserve">
-    <value>Bloqueo FN desactivado</value>
+    <value>Tecla Fn normal</value>
   </data>
   <data name="FnLockOn" xml:space="preserve">
-    <value>Bloqueo FN activado</value>
+    <value>Tecla Fn bloqueada</value>
   </data>
   <data name="GPUBoost" xml:space="preserve">
     <value>Dynamic Boost</value>
@@ -477,7 +477,7 @@
     <value>Importar perfil</value>
   </data>
   <data name="KeyBindings" xml:space="preserve">
-    <value>Atajos de teclado</value>
+    <value>Teclas de acceso rápido</value>
   </data>
   <data name="Keyboard" xml:space="preserve">
     <value>Teclado</value>
@@ -726,7 +726,7 @@
     <value>Cambiar automáticamente a modo Clamshell</value>
   </data>
   <data name="ToggleFnLock" xml:space="preserve">
-    <value>Alternar Fn-Lock</value>
+    <value>Alternar bloqueo Fn</value>
   </data>
   <data name="ToggleMiniled" xml:space="preserve">
     <value>Alternar Miniled (si compatible)</value>
