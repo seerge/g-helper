@@ -3,11 +3,11 @@
     //P711
     public class GladiusIIIAimpoint : AsusMouse
     {
-        public GladiusIIIAimpoint() : base(0x0B05, 0x1A70, "mi_00", true)
+        public GladiusIIIAimpoint() : base(0x0B05, 0x1A72, "mi_00", true)
         {
         }
 
-        protected GladiusIIIAimpoint(ushort vendorId, bool wireless) : base(0x0B05, vendorId, "mi_00", wireless)
+        protected GladiusIIIAimpoint(ushort productId, bool wireless) : base(0x0B05, productId, "mi_00", wireless)
         {
         }
 
@@ -94,7 +94,7 @@
 
     public class GladiusIIIAimpointWired : GladiusIIIAimpoint
     {
-        public GladiusIIIAimpointWired() : base(0x1A72, false)
+        public GladiusIIIAimpointWired() : base(0x1A70, false)
         {
         }
 
