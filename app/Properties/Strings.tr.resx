@@ -250,16 +250,16 @@
     <value>Uyanırken</value>
   </data>
   <data name="BacklightLow" xml:space="preserve">
-    <value>Low</value>
+    <value>Düşük</value>
   </data>
   <data name="BacklightMax" xml:space="preserve">
-    <value>Max</value>
+    <value>Yüksek</value>
   </data>
   <data name="BacklightMid" xml:space="preserve">
-    <value>Mid</value>
+    <value>Orta</value>
   </data>
   <data name="BacklightOff" xml:space="preserve">
-    <value>Off</value>
+    <value>Kapalı</value>
   </data>
   <data name="BacklightTimeout" xml:space="preserve">
     <value>Pildeyken klavye ışığının kapanma süresi</value>
@@ -313,7 +313,7 @@
     <value>Parlaklığı Artır</value>
   </data>
   <data name="BWTrayIcon" xml:space="preserve">
-    <value>Black and white tray icon</value>
+    <value>Siyah-beyaz tepsi simgesi</value>
   </data>
   <data name="Calibrate" xml:space="preserve">
     <value>Kalibre Et</value>
@@ -426,10 +426,10 @@ Yine de devam etmek istiyor musunuz?</value>
     <value>Fn+F kısayol tuşlarını FN tuşuna basmadan çalıştır</value>
   </data>
   <data name="FnLockOff" xml:space="preserve">
-    <value>FN-Lock Off</value>
+    <value>FN-Lock Kapalı</value>
   </data>
   <data name="FnLockOn" xml:space="preserve">
-    <value>FN-Lock On</value>
+    <value>FN-Lock Açık</value>
   </data>
   <data name="GPUBoost" xml:space="preserve">
     <value>Dynamic Boost</value>
@@ -456,7 +456,7 @@ Yine de devam etmek istiyor musunuz?</value>
     <value>sadece harici GPU</value>
   </data>
   <data name="GPUPower" xml:space="preserve">
-    <value>GPU Power</value>
+    <value>GPU Gücü</value>
   </data>
   <data name="GPUSettings" xml:space="preserve">
     <value>GPU Ayarları</value>
@@ -585,7 +585,7 @@ Yine de devam etmek istiyor musunuz?</value>
     <value>Çok Bölgeli (Güçlü)</value>
   </data>
   <data name="Muted" xml:space="preserve">
-    <value>Muted</value>
+    <value>Ses kapalı</value>
   </data>
   <data name="MuteMic" xml:space="preserve">
     <value>Mikrofonu Sustur</value>
@@ -603,10 +603,10 @@ Yine de devam etmek istiyor musunuz?</value>
     <value>Bağlantı Yok</value>
   </data>
   <data name="Off" xml:space="preserve">
-    <value>Off</value>
+    <value>Kapalı</value>
   </data>
   <data name="On" xml:space="preserve">
-    <value>On</value>
+    <value>Açık</value>
   </data>
   <data name="OneZone" xml:space="preserve">
     <value>Tek Bölgeli</value>
@@ -753,7 +753,7 @@ Yine de devam etmek istiyor musunuz?</value>
     <value>Undervolting deneysel ve riskli bir özelliktir. Uygulanan değerler cihazınız için çok düşükse, cihazınız stabil çalışmayabilir, kapanabilir veya veri kaybına uğrayabilir. Yine de denemek istiyorsanız, önce küçük değerlerden başlayıp Uygula'ya tıklayın ve sizin için uygun olanı test edin.</value>
   </data>
   <data name="Unmuted" xml:space="preserve">
-    <value>Unmuted</value>
+    <value>Ses açık</value>
   </data>
   <data name="Updates" xml:space="preserve">
     <value>Güncellemeler</value>
