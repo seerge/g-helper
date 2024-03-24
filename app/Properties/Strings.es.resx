@@ -313,7 +313,7 @@
     <value>Subir brillo</value>
   </data>
   <data name="BWTrayIcon" xml:space="preserve">
-    <value>Black and white tray icon</value>
+    <value>Icono de bandeja blanco y negro</value>
   </data>
   <data name="Calibrate" xml:space="preserve">
     <value>Calibrar</value>
@@ -420,16 +420,16 @@
     <value>Ventiladores + Energía</value>
   </data>
   <data name="FlickerFreeDimming" xml:space="preserve">
-    <value>Flicker-free Dimming</value>
+    <value>Atenuación sin parpadeo</value>
   </data>
   <data name="FnLock" xml:space="preserve">
     <value>Usar teclas de acceso rápido (Fn+F) sin pulsar Fn</value>
   </data>
   <data name="FnLockOff" xml:space="preserve">
-    <value>FN-Lock Off</value>
+    <value>Tecla Fn normal</value>
   </data>
   <data name="FnLockOn" xml:space="preserve">
-    <value>FN-Lock On</value>
+    <value>Tecla Fn bloqueada</value>
   </data>
   <data name="GPUBoost" xml:space="preserve">
     <value>Dynamic Boost</value>
@@ -456,7 +456,7 @@
     <value>Exclusivo dGPU</value>
   </data>
   <data name="GPUPower" xml:space="preserve">
-    <value>GPU Power</value>
+    <value>Energía de GPU</value>
   </data>
   <data name="GPUSettings" xml:space="preserve">
     <value>Ajustes de GPU</value>
@@ -477,7 +477,7 @@
     <value>Importar perfil</value>
   </data>
   <data name="KeyBindings" xml:space="preserve">
-    <value>Atajos de teclado</value>
+    <value>Teclas de acceso rápido</value>
   </data>
   <data name="Keyboard" xml:space="preserve">
     <value>Teclado</value>
@@ -726,7 +726,7 @@
     <value>Cambiar automáticamente a modo Clamshell</value>
   </data>
   <data name="ToggleFnLock" xml:space="preserve">
-    <value>Alternar Fn-Lock</value>
+    <value>Alternar bloqueo Fn</value>
   </data>
   <data name="ToggleMiniled" xml:space="preserve">
     <value>Alternar Miniled (si compatible)</value>

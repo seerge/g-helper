@@ -226,7 +226,7 @@
     <value>全部</value>
   </data>
   <data name="AuraZoneDock" xml:space="preserve">
-    <value>Dock</value>
+    <value>底座</value>
   </data>
   <data name="AuraZoneLogo" xml:space="preserve">
     <value>Logo</value>
@@ -235,7 +235,7 @@
     <value>滾輪</value>
   </data>
   <data name="AuraZoneUnderglow" xml:space="preserve">
-    <value>Underglow</value>
+    <value>底光</value>
   </data>
   <data name="AutoApply" xml:space="preserve">
     <value>自動套用</value>
@@ -250,16 +250,16 @@
     <value>喚醒時</value>
   </data>
   <data name="BacklightLow" xml:space="preserve">
-    <value>Low</value>
+    <value>低</value>
   </data>
   <data name="BacklightMax" xml:space="preserve">
-    <value>Max</value>
+    <value>最大</value>
   </data>
   <data name="BacklightMid" xml:space="preserve">
-    <value>Mid</value>
+    <value>中等</value>
   </data>
   <data name="BacklightOff" xml:space="preserve">
-    <value>Off</value>
+    <value>關閉</value>
   </data>
   <data name="BacklightTimeout" xml:space="preserve">
     <value>閒置幾秒後關閉燈光：插電時 / 使用電池 (0 = 不關閉)</value>
@@ -286,7 +286,7 @@
     <value>僅本次將電力充滿</value>
   </data>
   <data name="Binding" xml:space="preserve">
-    <value>Binding</value>
+    <value>綁定</value>
   </data>
   <data name="BindingPrimary" xml:space="preserve">
     <value>主要</value>
@@ -313,7 +313,7 @@
     <value>螢幕亮度提高</value>
   </data>
   <data name="BWTrayIcon" xml:space="preserve">
-    <value>Black and white tray icon</value>
+    <value>工作列圖示黑白化</value>
   </data>
   <data name="Calibrate" xml:space="preserve">
     <value>校準</value>
@@ -370,7 +370,7 @@
     <value>節能模式</value>
   </data>
   <data name="EnableGPUOnShutdown" xml:space="preserve">
-    <value>Enable GPU on shutdown (prevents issue with Eco mode)</value>
+    <value>關機前啟動顯卡(解決切換顯卡節能模式&amp;標準模式和亮度的某些問題)</value>
   </data>
   <data name="EnableOptimusText" xml:space="preserve">
     <value>「Nvidia控制面板」中的顯示模式未設置為自動切換時，透過G-Helper的節能模式禁用獨顯可能導致螢幕亮度控制出現問題直到下次重新開機後。
@@ -420,16 +420,16 @@
     <value>自定義設置</value>
   </data>
   <data name="FlickerFreeDimming" xml:space="preserve">
-    <value>Flicker-free Dimming</value>
+    <value>不閃屏調光(Flicker-free Dimming)</value>
   </data>
   <data name="FnLock" xml:space="preserve">
     <value>使用Fn+F1~F12功能時免按下Fn鍵</value>
   </data>
   <data name="FnLockOff" xml:space="preserve">
-    <value>FN-Lock Off</value>
+    <value>Fn鎖定解除</value>
   </data>
   <data name="FnLockOn" xml:space="preserve">
-    <value>FN-Lock On</value>
+    <value>Fn鎖定</value>
   </data>
   <data name="GPUBoost" xml:space="preserve">
     <value>動態加速</value>
@@ -456,7 +456,7 @@
     <value>獨立顯卡</value>
   </data>
   <data name="GPUPower" xml:space="preserve">
-    <value>GPU Power</value>
+    <value>顯卡功耗</value>
   </data>
   <data name="GPUSettings" xml:space="preserve">
     <value>顯卡設定</value>
@@ -510,10 +510,10 @@
     <value>低</value>
   </data>
   <data name="LSDeadzones" xml:space="preserve">
-    <value>Left Stick Deadzones</value>
+    <value>左搖桿死區</value>
   </data>
   <data name="LTDeadzones" xml:space="preserve">
-    <value>Left Trigger Deadzones</value>
+    <value>左扳機(LT)死區</value>
   </data>
   <data name="MatrixAudio" xml:space="preserve">
     <value>音效視覺化</value>
@@ -585,7 +585,7 @@
     <value>多區強化</value>
   </data>
   <data name="Muted" xml:space="preserve">
-    <value>Muted</value>
+    <value>已靜音</value>
   </data>
   <data name="MuteMic" xml:space="preserve">
     <value>麥克風開關</value>
@@ -603,10 +603,10 @@
     <value>未連線</value>
   </data>
   <data name="Off" xml:space="preserve">
-    <value>Off</value>
+    <value>關閉</value>
   </data>
   <data name="On" xml:space="preserve">
-    <value>On</value>
+    <value>開啟</value>
   </data>
   <data name="OneZone" xml:space="preserve">
     <value>單區</value>
@@ -669,16 +669,16 @@
     <value>每分鐘轉數</value>
   </data>
   <data name="RSDeadzones" xml:space="preserve">
-    <value>Right Stick Deadzones</value>
+    <value>右搖桿死區</value>
   </data>
   <data name="RTDeadzones" xml:space="preserve">
-    <value>Right Trigger Deadzones</value>
+    <value>右扳機(RT)死區</value>
   </data>
   <data name="RunOnStartup" xml:space="preserve">
     <value>開機自動開啟</value>
   </data>
   <data name="ScalingQuality" xml:space="preserve">
-    <value>Scaling Quality</value>
+    <value>縮放品質</value>
   </data>
   <data name="ScreenPadDown" xml:space="preserve">
     <value>第二觸控螢幕亮度降低</value>
@@ -753,7 +753,7 @@
     <value>降壓是一項實驗性且有風險的功能，若設定的值過低，可能造成系統不穩定甚至無預警關機，建議可先嘗試較小的降壓數值，並點擊"套用"來測試適合你的使用狀況</value>
   </data>
   <data name="Unmuted" xml:space="preserve">
-    <value>Unmuted</value>
+    <value>已取消靜音</value>
   </data>
   <data name="Updates" xml:space="preserve">
     <value>更新驅動</value>
@@ -765,7 +765,7 @@
     <value>震動強度</value>
   </data>
   <data name="VisualMode" xml:space="preserve">
-    <value>Visual Mode</value>
+    <value>色域模式</value>
   </data>
   <data name="VolumeDown" xml:space="preserve">
     <value>音量降低</value>
@@ -780,6 +780,6 @@
     <value>視窗置頂</value>
   </data>
   <data name="Zoom" xml:space="preserve">
-    <value>Zoom</value>
+    <value>縮放</value>
   </data>
 </root>

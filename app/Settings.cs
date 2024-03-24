@@ -350,6 +350,9 @@ namespace GHelper
 
         public void CycleVisualMode()
         {
+
+            if (comboVisual.Items.Count < 1) return ;
+
             if (comboVisual.SelectedIndex < comboVisual.Items.Count - 1)
                 comboVisual.SelectedIndex += 1;
             else
