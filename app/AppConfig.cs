@@ -344,6 +344,7 @@ public static class AppConfig
     {
         return (ContainsModel("Z13") && !IsARCNM()) ||
                ContainsModel("FX706") ||
+               ContainsModel("FA706") ||
                ContainsModel("FA506") ||
                ContainsModel("FX506") ||
                ContainsModel("Duo") ||
