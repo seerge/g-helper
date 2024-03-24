@@ -208,7 +208,7 @@ namespace GHelper.AutoTDP
 
         public void DeleteGameProfile(GameProfile gp)
         {
-            if (Program.autoTDPService.IsGameInList(gp.ProcessName))
+            if (Program.autoTDPService.IsGameInList(gp.ProcessName, false))
             {
                 Program.autoTDPService.GameProfiles.Remove(gp);
             }
@@ -220,7 +220,7 @@ namespace GHelper.AutoTDP
 
         public void UpdateGameProfile(GameProfile gp)
         {
-            if (!Program.autoTDPService.IsGameInList(gp.ProcessName))
+            if (!Program.autoTDPService.IsGameInList(gp.ProcessName, false))
             {
                 Program.autoTDPService.GameProfiles.Add(gp);
             }

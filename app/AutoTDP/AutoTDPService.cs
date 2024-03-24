@@ -300,7 +300,7 @@ namespace GHelper.AutoTDP
             }
         }
 
-        public GameProfile? ProfileForGame(String? processName)
+        public GameProfile? ProfileForGame(String? processName, bool checkForEnabled = true)
         {
             if (processName is null)
             {
@@ -311,7 +311,7 @@ namespace GHelper.AutoTDP
             {
                 if (gp.ProcessName is not null && processName.EndsWith(gp.ProcessName, StringComparison.CurrentCultureIgnoreCase))
                 {
-                    if (!gp.Enabled)
+                    if (!gp.Enabled && checkForEnabled)
                     {
                         return null;
                     }
@@ -322,9 +322,9 @@ namespace GHelper.AutoTDP
             return null;
         }
 
-        public bool IsGameInList(String? processName)
+        public bool IsGameInList(String? processName, bool checkForEnabled = true)
         {
-            return ProfileForGame(processName) is not null;
+            return ProfileForGame(processName, checkForEnabled) is not null;
         }
 
 
