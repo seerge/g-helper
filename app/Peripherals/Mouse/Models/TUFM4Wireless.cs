@@ -7,6 +7,10 @@
         {
         }
 
+        public TUFM4Wirelss(ushort productId) : base(0x0B05, productId, "mi_00", true)
+        {
+        }
+
         public override int DPIProfileCount()
         {
             return 4;
@@ -80,6 +84,21 @@
         public override bool CanChangeDPIProfile()
         {
             return true;
+        }
+    }
+
+    //P310
+    public class TUFM4WirelssCN : TUFM4Wirelss
+    {
+        public TUFM4WirelssCN() : base(0x1A8D)
+        {
+
+        }
+
+
+        public override string GetDisplayName()
+        {
+            return "TX GAMING MOUSE (Wireless)";
         }
     }
 }
