@@ -275,7 +275,7 @@ namespace GHelper
                             for (int k = 0; k < driver.hardwares.GetArrayLength(); k++)
                             {
                                 var deviceID = driver.hardwares[k].GetProperty("hardwareid").ToString();
-                                var localVersions = devices.Where(p => p.Key.Contains(deviceID)).Select(p => p.Value);
+                                var localVersions = devices.Where(p => p.Key.Contains(deviceID, StringComparison.CurrentCultureIgnoreCase)).Select(p => p.Value);
                                 foreach (var localVersion in localVersions)
                                 {
                                     newer = Math.Min(newer, new Version(driver.version).CompareTo(new Version(localVersion)));
