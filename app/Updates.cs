@@ -102,6 +102,8 @@ namespace GHelper
             LoadUpdates(true);
         }
 
+
+
         private Dictionary<string, string> GetDeviceVersions()
         {
             using (ManagementObjectSearcher objSearcher = new ManagementObjectSearcher("Select * from Win32_PnPSignedDriver"))
@@ -186,7 +188,8 @@ namespace GHelper
                 {
                     _VisualiseNewDriver(position, newer, table);
                 });
-            } else
+            }
+            else
             {
                 _VisualiseNewDriver(position, newer, table);
             }
@@ -204,6 +207,17 @@ namespace GHelper
                 panelBios.AccessibleName = labelUpdates.Text;
 
             });
+        }
+
+
+        static string CleanupDeviceId(string input)
+        {
+            int index = input.IndexOf("&REV_");
+            if (index != -1)
+            {
+                return input.Substring(0, index);
+            }
+            return input;
         }
 
         public async void DriversAsync(string url, int type, TableLayoutPanel table)
@@ -275,6 +289,7 @@ namespace GHelper
                             for (int k = 0; k < driver.hardwares.GetArrayLength(); k++)
                             {
                                 var deviceID = driver.hardwares[k].GetProperty("hardwareid").ToString();
+                                deviceID = CleanupDeviceId(deviceID);
                                 var localVersions = devices.Where(p => p.Key.Contains(deviceID, StringComparison.CurrentCultureIgnoreCase)).Select(p => p.Value);
                                 foreach (var localVersion in localVersions)
                                 {
