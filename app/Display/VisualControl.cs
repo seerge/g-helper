@@ -130,6 +130,7 @@ namespace GHelper.Display
             if (mode == SplendidCommand.Default && init) return; // Skip default setting on init
 
             if (ScreenCCD.GetHDRStatus(true)) return;
+            if (ScreenNative.GetRefreshRate(ScreenNative.FindLaptopScreen(true)) < 0) return;
 
             if (whiteBalance != DefaultColorTemp && !init) ProcessHelper.RunAsAdmin();
 
