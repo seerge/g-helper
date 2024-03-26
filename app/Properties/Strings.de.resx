@@ -124,7 +124,7 @@
     <value>Verbindung zu ASUS ACPI fehlgeschlagen. G-Helper kann nicht ausgeführt werden. Bitte installiere ASUS System Control Interface.</value>
   </data>
   <data name="AlertAPUMemoryRestart" xml:space="preserve">
-    <value>Gerät neu starten, um Änderungen anzuwenden</value>
+    <value>Gerät neu starten, um Änderungen anzuwenden?</value>
   </data>
   <data name="AlertAPUMemoryRestartTitle" xml:space="preserve">
     <value>Jetzt neu starten?</value>
