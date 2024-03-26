@@ -532,7 +532,7 @@ namespace GHelper
             sensorTimer.Enabled = this.Visible;
             if (this.Visible)
             {
-                //screenControl.InitScreen();
+                screenControl.InitScreen();
                 VisualizeXGM();
 
                 Task.Run((Action)RefreshPeripheralsBattery);
