@@ -420,7 +420,7 @@ Voulez-vous continuer ?</value>
     <value>Ventilateurs + Puissance</value>
   </data>
   <data name="FlickerFreeDimming" xml:space="preserve">
-    <value>Flicker-free Dimming</value>
+    <value>Gradation OLED sans scintillement</value>
   </data>
   <data name="FnLock" xml:space="preserve">
     <value>Traiter les raccourcis clavier Fn+F sans Fn</value>
