@@ -1,7 +1,4 @@
-﻿using GHelper.Helpers;
-using System.Management;
-
-namespace GHelper.Display
+﻿namespace GHelper.Display
 {
     public class ScreenControl
     {
@@ -28,10 +25,18 @@ namespace GHelper.Display
         public void SetScreen(int frequency = -1, int overdrive = -1, int miniled = -1)
         {
             var laptopScreen = ScreenNative.FindLaptopScreen(true);
-            if (laptopScreen is null) return;
+            if (laptopScreen is null)
+            {
+                InitScreen();
+                return;
+            }
 
             var refreshRate = ScreenNative.GetRefreshRate(laptopScreen);
-            if (refreshRate < 0) return;
+            if (refreshRate < 0)
+            {
+                InitScreen();
+                return;
+            }
 
             if (frequency >= MAX_REFRESH)
             {
@@ -49,7 +54,6 @@ namespace GHelper.Display
                 if (!AppConfig.IsOLED() && overdrive != Program.acpi.DeviceGet(AsusACPI.ScreenOverdrive))
                 {
                     Program.acpi.DeviceSet(AsusACPI.ScreenOverdrive, overdrive, "ScreenOverdrive");
-
                 }
             }
 
@@ -89,7 +93,7 @@ namespace GHelper.Display
             }
 
             AppConfig.Set("miniled", miniled);
-            SetScreen(-1, -1, miniled);
+            SetScreen(miniled: miniled);
             return miniled;
         }
 
