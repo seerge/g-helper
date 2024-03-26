@@ -129,6 +129,8 @@ namespace GHelper.Display
             if (mode == SplendidCommand.None) return;
             if (mode == SplendidCommand.Default && init) return; // Skip default setting on init
 
+            if (ScreenCCD.GetHDRStatus(true)) return;
+
             if (whiteBalance != DefaultColorTemp && !init) ProcessHelper.RunAsAdmin();
 
             int balance = mode == SplendidCommand.Eyecare ? 2 : whiteBalance;
