@@ -25,18 +25,10 @@
         public void SetScreen(int frequency = -1, int overdrive = -1, int miniled = -1)
         {
             var laptopScreen = ScreenNative.FindLaptopScreen(true);
-            if (laptopScreen is null)
-            {
-                InitScreen();
-                return;
-            }
+            if (laptopScreen is null) return;
 
             var refreshRate = ScreenNative.GetRefreshRate(laptopScreen);
-            if (refreshRate < 0)
-            {
-                InitScreen();
-                return;
-            }
+            if (refreshRate < 0) return;
 
             if (frequency >= MAX_REFRESH)
             {
