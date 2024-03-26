@@ -46,8 +46,11 @@ namespace GHelper.Display
             if (overdrive >= 0)
             {
                 if (AppConfig.IsNoOverdrive()) overdrive = 0;
-                if (!AppConfig.IsOLED()) Program.acpi.DeviceSet(AsusACPI.ScreenOverdrive, overdrive, "ScreenOverdrive");
+                if (!AppConfig.IsOLED() && overdrive != Program.acpi.DeviceGet(AsusACPI.ScreenOverdrive))
+                {
+                    Program.acpi.DeviceSet(AsusACPI.ScreenOverdrive, overdrive, "ScreenOverdrive");
 
+                }
             }
 
             if (miniled >= 0)
@@ -112,8 +115,9 @@ namespace GHelper.Display
             {
                 Logger.WriteLine($"Miniled: {miniled1} {miniled2}");
                 AppConfig.Set("miniled", miniled);
-                hdr = ScreenCCD.GetHDRStatus();
             }
+
+            hdr = ScreenCCD.GetHDRStatus();
 
             bool screenEnabled = (frequency >= 0);
 

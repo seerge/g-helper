@@ -1203,6 +1203,9 @@ namespace GHelper
                 buttonMiniled.Visible = false;
             }
 
+            tableVisual.Visible = !hdr;
+            labelVisual.Visible = hdr;
+
         }
 
         private void ButtonQuit_Click(object? sender, EventArgs e)
