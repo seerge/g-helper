@@ -1203,8 +1203,21 @@ namespace GHelper
                 buttonMiniled.Visible = false;
             }
 
-            tableVisual.Visible = !hdr;
-            labelVisual.Visible = hdr;
+            if (!screenEnabled)
+            {
+                labelVisual.Text = Properties.Strings.VisualModesScreen;
+                labelVisual.Visible = true;
+                tableVisual.Visible = false;
+            } else if (hdr)
+            {
+                labelVisual.Text = Properties.Strings.VisualModesHDR;
+                labelVisual.Visible = true;
+                tableVisual.Visible = false;
+            } else 
+            {
+                labelVisual.Visible = false;
+                tableVisual.Visible = true;
+            }
 
         }
 

@@ -2007,6 +2007,24 @@ namespace GHelper.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Visual Modes are not available when HDR is active.
+        /// </summary>
+        internal static string VisualModesHDR {
+            get {
+                return ResourceManager.GetString("VisualModesHDR", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Visual Modes are not available when laptop screen is off.
+        /// </summary>
+        internal static string VisualModesScreen {
+            get {
+                return ResourceManager.GetString("VisualModesScreen", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Volume Down.
         /// </summary>
         internal static string VolumeDown {
