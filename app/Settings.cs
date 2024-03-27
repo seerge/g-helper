@@ -264,6 +264,8 @@ namespace GHelper
         public void InitVisual()
         {
 
+            if (AppConfig.Is("hide_visual")) return;
+
             if (AppConfig.IsOLED())
             {
                 panelGamma.Visible = true;
