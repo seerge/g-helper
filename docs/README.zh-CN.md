@@ -22,7 +22,7 @@ G-helper兼容所有主流型号，例如 ROG 幻14、幻15、幻16、幻13、�
 
 ### 通过paypal支持本项目：[:euro: EUR](https://www.paypal.com/donate/?hosted_button_id=4HMSHS4EBQWTA)或者[💵 USD](https://www.paypal.com/donate/?hosted_button_id=SRM6QUX6ACXDY) 
 
-[![G-Helper Download](https://github.com/seerge/g-helper/assets/112304778/4202a261-7e05-469c-99a1-a781ca366cfb)](https://github.com/seerge/g-helper/releases/latest/download/GHelper.zip)
+[![G-Helper Download](https://github.com/pasical/g-helper/assets/112304778/03f442b9-29e8-4e99-a095-8eaa533c995b)](https://github.com/seerge/g-helper/releases/latest/download/GHelper.zip)
 
 _如果你在别的地方提到这个软件-请记得加上这个项目的网址。十分感谢。_
 
@@ -34,7 +34,8 @@ _如果你在别的地方提到这个软件-请记得加上这个项目的网址
 4. 简洁的界面设计，可以轻松调整所有设置。
 5. FN 锁定和自定义热键
 
-![image](https://github.com/pasical/g-helper/assets/112304778/698c197e-c9f2-4b01-acea-de7a1a12dde6)
+![image](https://github.com/pasical/g-helper/assets/112304778/ee221865-cf36-4246-95f0-47313e647230)
+
 
 
 ### ⚡️ 主要功能
@@ -316,7 +317,8 @@ Where ``mode = 0 (balanced), 1 (turbo), 2 (silent)``
 2. 要想模拟任意windows按键 - 向"action"文本框中粘贴相对应的 keycode，例如 ``0x2C`` 为屏幕截图键。
    Keycodes的完整列表: https://learn.microsoft.com/en-us/windows/win32/inputdev/virtual-key-codes
 
-![image](https://github.com/pasical/g-helper/assets/112304778/195f3a05-6daa-4463-abf2-8df4d0ac4cd3)
+![image](https://github.com/pasical/g-helper/assets/112304778/1280b7c9-f0c1-4b91-b502-2b9dd79b12d8)
+
 
 
 ---
