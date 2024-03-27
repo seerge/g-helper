@@ -1188,6 +1188,15 @@ namespace GHelper.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to LED Status Indicators.
+        /// </summary>
+        internal static string LEDStatusIndicators {
+            get {
+                return ResourceManager.GetString("LEDStatusIndicators", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Lid.
         /// </summary>
         internal static string Lid {
@@ -2003,6 +2012,24 @@ namespace GHelper.Properties {
         internal static string VisualMode {
             get {
                 return ResourceManager.GetString("VisualMode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Visual Modes are not available when HDR is active.
+        /// </summary>
+        internal static string VisualModesHDR {
+            get {
+                return ResourceManager.GetString("VisualModesHDR", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Visual Modes are not available when laptop screen is off.
+        /// </summary>
+        internal static string VisualModesScreen {
+            get {
+                return ResourceManager.GetString("VisualModesScreen", resourceCulture);
             }
         }
         

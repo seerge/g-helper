@@ -250,16 +250,16 @@
     <value>Allumé</value>
   </data>
   <data name="BacklightLow" xml:space="preserve">
-    <value>Low</value>
+    <value>Faible</value>
   </data>
   <data name="BacklightMax" xml:space="preserve">
-    <value>Max</value>
+    <value>Maximum</value>
   </data>
   <data name="BacklightMid" xml:space="preserve">
-    <value>Mid</value>
+    <value>Moyen</value>
   </data>
   <data name="BacklightOff" xml:space="preserve">
-    <value>Off</value>
+    <value>Désactivé</value>
   </data>
   <data name="BacklightTimeout" xml:space="preserve">
     <value>Délai branché / sur batterie (0 - ON)</value>
@@ -313,7 +313,7 @@
     <value>Augmenter la luminosité</value>
   </data>
   <data name="BWTrayIcon" xml:space="preserve">
-    <value>Black and white tray icon</value>
+    <value>Icône de la zone de notification en noir et blanc</value>
   </data>
   <data name="Calibrate" xml:space="preserve">
     <value>Calibrer</value>
@@ -420,16 +420,16 @@ Voulez-vous continuer ?</value>
     <value>Ventilateurs + Puissance</value>
   </data>
   <data name="FlickerFreeDimming" xml:space="preserve">
-    <value>Flicker-free Dimming</value>
+    <value>Gradation OLED sans scintillement</value>
   </data>
   <data name="FnLock" xml:space="preserve">
     <value>Traiter les raccourcis clavier Fn+F sans Fn</value>
   </data>
   <data name="FnLockOff" xml:space="preserve">
-    <value>FN-Lock Off</value>
+    <value>Verrouillage FN désactivé</value>
   </data>
   <data name="FnLockOn" xml:space="preserve">
-    <value>FN-Lock On</value>
+    <value>Verrouillage FN activé</value>
   </data>
   <data name="GPUBoost" xml:space="preserve">
     <value>Dynamic Boost</value>
@@ -456,7 +456,7 @@ Voulez-vous continuer ?</value>
     <value>dGPU exclusif</value>
   </data>
   <data name="GPUPower" xml:space="preserve">
-    <value>GPU Power</value>
+    <value>Puissance du GPU</value>
   </data>
   <data name="GPUSettings" xml:space="preserve">
     <value>Paramètres du GPU</value>
@@ -585,7 +585,7 @@ Voulez-vous continuer ?</value>
     <value>Multi Zone Strong</value>
   </data>
   <data name="Muted" xml:space="preserve">
-    <value>Muted</value>
+    <value>Son désactivé</value>
   </data>
   <data name="MuteMic" xml:space="preserve">
     <value>Désactiver le micro</value>
@@ -603,10 +603,10 @@ Voulez-vous continuer ?</value>
     <value>Non connecté</value>
   </data>
   <data name="Off" xml:space="preserve">
-    <value>Off</value>
+    <value>Désactivé</value>
   </data>
   <data name="On" xml:space="preserve">
-    <value>On</value>
+    <value>Activé</value>
   </data>
   <data name="OneZone" xml:space="preserve">
     <value>Une zone</value>
@@ -753,7 +753,7 @@ Voulez-vous continuer ?</value>
     <value>L'undervolting est une fonctionnalité expérimentale et risquée. Si les valeurs appliquées sont trop faibles, elles peuvent causer de l'instabilité, éteindre l'ordinateur ou causer une corruption de données. Si vous voulez essayer - commencer avec des petites valeurs, cliquez sur Appliquer et testez ce qui fonctionne pour vous.</value>
   </data>
   <data name="Unmuted" xml:space="preserve">
-    <value>Unmuted</value>
+    <value>Son activé</value>
   </data>
   <data name="Updates" xml:space="preserve">
     <value>Mises à jour</value>
@@ -766,6 +766,12 @@ Voulez-vous continuer ?</value>
   </data>
   <data name="VisualMode" xml:space="preserve">
     <value>Mode d'affichage</value>
+  </data>
+  <data name="VisualModesHDR" xml:space="preserve">
+    <value>Visual Modes are not available when HDR is active</value>
+  </data>
+  <data name="VisualModesScreen" xml:space="preserve">
+    <value>Visual Modes are not available when laptop screen is off</value>
   </data>
   <data name="VolumeDown" xml:space="preserve">
     <value>Vol-</value>
