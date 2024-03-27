@@ -1,7 +1,4 @@
-﻿using GHelper.Helpers;
-using System.Management;
-
-namespace GHelper.Display
+﻿namespace GHelper.Display
 {
     public class ScreenControl
     {
@@ -28,17 +25,16 @@ namespace GHelper.Display
         public void SetScreen(int frequency = -1, int overdrive = -1, int miniled = -1)
         {
             var laptopScreen = ScreenNative.FindLaptopScreen(true);
+            var refreshRate = ScreenNative.GetRefreshRate(laptopScreen);
 
-            if (laptopScreen is null) return;
-
-            if (ScreenNative.GetRefreshRate(laptopScreen) < 0) return;
+            if (refreshRate < 0) return;
 
             if (frequency >= MAX_REFRESH)
             {
                 frequency = ScreenNative.GetMaxRefreshRate(laptopScreen);
             }
 
-            if (frequency > 0)
+            if (frequency > 0 && frequency != refreshRate)
             {
                 ScreenNative.SetRefreshRate(laptopScreen, frequency);
             }
@@ -46,8 +42,10 @@ namespace GHelper.Display
             if (overdrive >= 0)
             {
                 if (AppConfig.IsNoOverdrive()) overdrive = 0;
-                if (!AppConfig.IsOLED()) Program.acpi.DeviceSet(AsusACPI.ScreenOverdrive, overdrive, "ScreenOverdrive");
-
+                if (!AppConfig.IsOLED() && overdrive != Program.acpi.DeviceGet(AsusACPI.ScreenOverdrive))
+                {
+                    Program.acpi.DeviceSet(AsusACPI.ScreenOverdrive, overdrive, "ScreenOverdrive");
+                }
             }
 
             if (miniled >= 0)
@@ -86,14 +84,13 @@ namespace GHelper.Display
             }
 
             AppConfig.Set("miniled", miniled);
-            SetScreen(-1, -1, miniled);
+            SetScreen(miniled: miniled);
             return miniled;
         }
 
         public void InitScreen()
         {
             var laptopScreen = ScreenNative.FindLaptopScreen();
-
             int frequency = ScreenNative.GetRefreshRate(laptopScreen);
             int maxFrequency = ScreenNative.GetMaxRefreshRate(laptopScreen);
 
@@ -112,8 +109,9 @@ namespace GHelper.Display
             {
                 Logger.WriteLine($"Miniled: {miniled1} {miniled2}");
                 AppConfig.Set("miniled", miniled);
-                hdr = ScreenCCD.GetHDRStatus();
             }
+
+            hdr = ScreenCCD.GetHDRStatus();
 
             bool screenEnabled = (frequency >= 0);
 

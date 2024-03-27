@@ -809,9 +809,14 @@ namespace GHelper.Input
         public static void ToggleScreenpad()
         {
             int toggle = AppConfig.Is("screenpad_toggle") ? 0 : 1;
+            int brightness = AppConfig.Get("screenpad", 100);
 
             Program.acpi.DeviceSet(AsusACPI.ScreenPadToggle, toggle, "ScreenpadToggle");
+            if (toggle > 0) Program.acpi.DeviceSet(AsusACPI.ScreenPadBrightness, Math.Max(brightness * 255 / 100, 0), "Screenpad");
+
             AppConfig.Set("screenpad_toggle", toggle);
+
+
             Program.toast.RunToast($"Screen Pad " + (toggle == 1 ? "On" : "Off"), toggle > 0 ? ToastIcon.BrightnessUp : ToastIcon.BrightnessDown);
         }
 

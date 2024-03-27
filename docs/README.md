@@ -38,17 +38,18 @@ Works with all popular models, such as ROG Zephyrus G14, G15, G16, M16, Flow X13
 2. GPU modes: Eco - Standard - Ultimate - Optimized
 3. Screen refresh rate control with display overdrive (OD) 
 4. Custom fan curve editor, power limits and turbo boost selection for every performance mode
-5. Anime matrix control including animated GIFs, clock and Audio visualizer
+5. Anime Matrix or Slash Lightning control including animated GIFs, clock and Audio visualizer
 6. Backlight animation modes and colors 
 7. Custom hotkeys (M-keys, FN+X keys)
-8. Monitor CPU / GPU temperature, fan speeds and battery status
+8. Monitor CPU and GPU temperature, fan speeds and battery status
 9. Battery charge limit to preserve battery health
-10. NVidia GPU overclocking
+10. NVidia GPU overclocking and undervolting
 11. XG Mobile Control
 12. AMD CPU Undervolting
 13. BIOS and Driver Updates
 14. Asus Mice settings
 15. Mini-led multi-zone switch
+16. Flicker-free dimming and Visual Modes
 
 ### :gear: Automation
 - Performance Mode switching when on battery or plugged in

@@ -108,6 +108,7 @@ namespace GHelper
             labelSettings = new Label();
             panelSettings = new Panel();
             checkAutoToggleClamshellMode = new CheckBox();
+            checkBWIcon = new CheckBox();
             checkTopmost = new CheckBox();
             checkNoOverdrive = new CheckBox();
             checkBootSound = new CheckBox();
@@ -115,6 +116,7 @@ namespace GHelper
             checkVariBright = new CheckBox();
             checkGpuApps = new CheckBox();
             checkGPUFix = new CheckBox();
+            checkStatusLed = new CheckBox();
             panelPower = new Panel();
             numericHibernateAfter = new NumericUpDown();
             labelHibernateAfter = new Label();
@@ -136,7 +138,6 @@ namespace GHelper
             buttonACPISend = new RButton();
             pictureDebug = new PictureBox();
             labelACPITitle = new Label();
-            checkBWIcon = new CheckBox();
             panelServices.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureService).BeginInit();
             panelBindingsHeader.SuspendLayout();
@@ -175,7 +176,7 @@ namespace GHelper
             panelServices.Controls.Add(labelServices);
             panelServices.Controls.Add(buttonServices);
             panelServices.Dock = DockStyle.Top;
-            panelServices.Location = new Point(15, 1596);
+            panelServices.Location = new Point(15, 1638);
             panelServices.Name = "panelServices";
             panelServices.Size = new Size(949, 75);
             panelServices.TabIndex = 5;
@@ -1134,18 +1135,19 @@ namespace GHelper
             panelSettings.Controls.Add(checkVariBright);
             panelSettings.Controls.Add(checkGpuApps);
             panelSettings.Controls.Add(checkGPUFix);
+            panelSettings.Controls.Add(checkStatusLed);
             panelSettings.Dock = DockStyle.Top;
             panelSettings.Location = new Point(15, 1154);
             panelSettings.Name = "panelSettings";
             panelSettings.Padding = new Padding(20, 5, 11, 5);
-            panelSettings.Size = new Size(949, 388);
+            panelSettings.Size = new Size(949, 430);
             panelSettings.TabIndex = 3;
             // 
             // checkAutoToggleClamshellMode
             // 
             checkAutoToggleClamshellMode.AutoSize = true;
             checkAutoToggleClamshellMode.Dock = DockStyle.Top;
-            checkAutoToggleClamshellMode.Location = new Point(20, 341);
+            checkAutoToggleClamshellMode.Location = new Point(20, 383);
             checkAutoToggleClamshellMode.Name = "checkAutoToggleClamshellMode";
             checkAutoToggleClamshellMode.Padding = new Padding(3);
             checkAutoToggleClamshellMode.Size = new Size(918, 42);
@@ -1153,11 +1155,24 @@ namespace GHelper
             checkAutoToggleClamshellMode.Text = "Auto Toggle Clamshell Mode";
             checkAutoToggleClamshellMode.UseVisualStyleBackColor = true;
             // 
+            // checkBWIcon
+            // 
+            checkBWIcon.AutoSize = true;
+            checkBWIcon.Dock = DockStyle.Top;
+            checkBWIcon.Location = new Point(20, 341);
+            checkBWIcon.Margin = new Padding(4, 3, 4, 3);
+            checkBWIcon.Name = "checkBWIcon";
+            checkBWIcon.Padding = new Padding(3);
+            checkBWIcon.Size = new Size(918, 42);
+            checkBWIcon.TabIndex = 11;
+            checkBWIcon.Text = "Black and white tray icon";
+            checkBWIcon.UseVisualStyleBackColor = true;
+            // 
             // checkTopmost
             // 
             checkTopmost.AutoSize = true;
             checkTopmost.Dock = DockStyle.Top;
-            checkTopmost.Location = new Point(20, 257);
+            checkTopmost.Location = new Point(20, 299);
             checkTopmost.Margin = new Padding(4, 3, 4, 3);
             checkTopmost.Name = "checkTopmost";
             checkTopmost.Padding = new Padding(3);
@@ -1170,7 +1185,7 @@ namespace GHelper
             // 
             checkNoOverdrive.AutoSize = true;
             checkNoOverdrive.Dock = DockStyle.Top;
-            checkNoOverdrive.Location = new Point(20, 215);
+            checkNoOverdrive.Location = new Point(20, 257);
             checkNoOverdrive.Margin = new Padding(4, 3, 4, 3);
             checkNoOverdrive.Name = "checkNoOverdrive";
             checkNoOverdrive.Padding = new Padding(3);
@@ -1183,7 +1198,7 @@ namespace GHelper
             // 
             checkBootSound.AutoSize = true;
             checkBootSound.Dock = DockStyle.Top;
-            checkBootSound.Location = new Point(20, 173);
+            checkBootSound.Location = new Point(20, 215);
             checkBootSound.Margin = new Padding(4, 3, 4, 3);
             checkBootSound.Name = "checkBootSound";
             checkBootSound.Padding = new Padding(3);
@@ -1196,7 +1211,7 @@ namespace GHelper
             // 
             checkUSBC.AutoSize = true;
             checkUSBC.Dock = DockStyle.Top;
-            checkUSBC.Location = new Point(20, 131);
+            checkUSBC.Location = new Point(20, 173);
             checkUSBC.Margin = new Padding(4, 3, 4, 3);
             checkUSBC.Name = "checkUSBC";
             checkUSBC.Padding = new Padding(3);
@@ -1209,7 +1224,7 @@ namespace GHelper
             // 
             checkVariBright.AutoSize = true;
             checkVariBright.Dock = DockStyle.Top;
-            checkVariBright.Location = new Point(20, 89);
+            checkVariBright.Location = new Point(20, 131);
             checkVariBright.Margin = new Padding(4, 3, 4, 3);
             checkVariBright.Name = "checkVariBright";
             checkVariBright.Padding = new Padding(3);
@@ -1222,7 +1237,7 @@ namespace GHelper
             // 
             checkGpuApps.AutoSize = true;
             checkGpuApps.Dock = DockStyle.Top;
-            checkGpuApps.Location = new Point(20, 47);
+            checkGpuApps.Location = new Point(20, 89);
             checkGpuApps.Margin = new Padding(4, 3, 4, 3);
             checkGpuApps.Name = "checkGpuApps";
             checkGpuApps.Padding = new Padding(3);
@@ -1235,7 +1250,7 @@ namespace GHelper
             // 
             checkGPUFix.AutoSize = true;
             checkGPUFix.Dock = DockStyle.Top;
-            checkGPUFix.Location = new Point(20, 5);
+            checkGPUFix.Location = new Point(20, 47);
             checkGPUFix.Margin = new Padding(4, 3, 4, 3);
             checkGPUFix.Name = "checkGPUFix";
             checkGPUFix.Padding = new Padding(3);
@@ -1244,13 +1259,27 @@ namespace GHelper
             checkGPUFix.Text = "Enable GPU on shutdown (prevents issue with Eco mode)";
             checkGPUFix.UseVisualStyleBackColor = true;
             // 
+            // checkStatusLed
+            // 
+            checkStatusLed.AutoSize = true;
+            checkStatusLed.Dock = DockStyle.Top;
+            checkStatusLed.Location = new Point(20, 5);
+            checkStatusLed.Margin = new Padding(4, 3, 4, 3);
+            checkStatusLed.Name = "checkStatusLed";
+            checkStatusLed.Padding = new Padding(3);
+            checkStatusLed.Size = new Size(918, 42);
+            checkStatusLed.TabIndex = 12;
+            checkStatusLed.Text = "LED Status Indicators";
+            checkStatusLed.UseVisualStyleBackColor = true;
+            checkStatusLed.Visible = false;
+            // 
             // panelPower
             // 
             panelPower.Controls.Add(numericHibernateAfter);
             panelPower.Controls.Add(labelHibernateAfter);
             panelPower.Controls.Add(pictureHibernate);
             panelPower.Dock = DockStyle.Top;
-            panelPower.Location = new Point(15, 1542);
+            panelPower.Location = new Point(15, 1584);
             panelPower.Name = "panelPower";
             panelPower.Size = new Size(949, 54);
             panelPower.TabIndex = 4;
@@ -1496,19 +1525,6 @@ namespace GHelper
             labelACPITitle.TabIndex = 0;
             labelACPITitle.Text = "ACPI DEVS Test";
             // 
-            // checkBWIcon
-            // 
-            checkBWIcon.AutoSize = true;
-            checkBWIcon.Dock = DockStyle.Top;
-            checkBWIcon.Location = new Point(20, 299);
-            checkBWIcon.Margin = new Padding(4, 3, 4, 3);
-            checkBWIcon.Name = "checkBWIcon";
-            checkBWIcon.Padding = new Padding(3);
-            checkBWIcon.Size = new Size(918, 42);
-            checkBWIcon.TabIndex = 11;
-            checkBWIcon.Text = "Black and white tray icon";
-            checkBWIcon.UseVisualStyleBackColor = true;
-            // 
             // Extra
             // 
             AutoScaleDimensions = new SizeF(192F, 192F);
@@ -1516,7 +1532,7 @@ namespace GHelper
             AutoScroll = true;
             AutoSize = true;
             AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            ClientSize = new Size(1013, 1668);
+            ClientSize = new Size(1013, 1559);
             Controls.Add(panelServices);
             Controls.Add(panelPower);
             Controls.Add(panelSettings);
@@ -1692,5 +1708,6 @@ namespace GHelper
         private PictureBox pictureDebug;
         private Label labelACPITitle;
         private CheckBox checkBWIcon;
+        private CheckBox checkStatusLed;
     }
 }

@@ -6,7 +6,7 @@ namespace GHelper.Display
     public class ScreenCCD
     {
 
-        public static bool GetHDRStatus()
+        public static bool GetHDRStatus(bool log = false)
         {
             var err = GetDisplayConfigBufferSizes(QDC.QDC_ONLY_ACTIVE_PATHS, out var pathCount, out var modeCount);
             if (err != 0)
@@ -46,7 +46,7 @@ namespace GHelper.Display
                     info.outputTechnology == DISPLAYCONFIG_VIDEO_OUTPUT_TECHNOLOGY.DISPLAYCONFIG_OUTPUT_TECHNOLOGY_DISPLAYPORT_EMBEDDED ||
                     info.monitorFriendlyDeviceName == internalName)
                 {
-                    Logger.WriteLine(info.monitorFriendlyDeviceName + " HDR: " + colorInfo.advancedColorEnabled);
+                    if (log) Logger.WriteLine(info.monitorFriendlyDeviceName + " HDR: " + colorInfo.advancedColorEnabled);
                     return colorInfo.advancedColorEnabled;
                 }
 
