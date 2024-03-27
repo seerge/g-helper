@@ -190,7 +190,7 @@ namespace GHelper.Gpu
             int chargerMode = Program.acpi.DeviceGet(AsusACPI.ChargerMode);
             Logger.WriteLine("ChargerStatus: " + chargerMode);
 
-            if (chargerMode < 0) return true;
+            if (chargerMode <= 0) return true;
             return (chargerMode & AsusACPI.ChargerBarrel) > 0;
 
         }
