@@ -268,6 +268,8 @@ namespace GHelper
         public void InitVisual()
         {
 
+            if (AppConfig.Is("hide_visual")) return;
+
             if (AppConfig.IsOLED())
             {
                 panelGamma.Visible = true;
@@ -1240,6 +1242,21 @@ namespace GHelper
             {
                 buttonMiniled.Visible = false;
             }
+
+            if (hdr) labelVisual.Text = Properties.Strings.VisualModesHDR;
+            if (!screenEnabled) labelVisual.Text = Properties.Strings.VisualModesScreen;
+
+            if (!screenEnabled || hdr)
+            {
+                labelVisual.Location = tableVisual.Location;
+                labelVisual.Width = tableVisual.Width;
+                labelVisual.Height = tableVisual.Height;
+                labelVisual.Visible = true;
+            } else
+            {
+                labelVisual.Visible = false;
+            }
+
 
         }
 
