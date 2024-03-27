@@ -404,7 +404,9 @@ namespace GHelper
             checkBootSound.Checked = (Program.acpi.DeviceGet(AsusACPI.BootSound) == 1);
             checkBootSound.CheckedChanged += CheckBootSound_CheckedChanged;
 
-            checkStatusLed.Checked = (Program.acpi.DeviceGet(AsusACPI.StatusLed) > 0);
+            var statusLed = Program.acpi.DeviceGet(AsusACPI.StatusLed);
+            checkStatusLed.Visible = statusLed >= 0;
+            checkStatusLed.Checked = (statusLed > 0);
             checkStatusLed.CheckedChanged += CheckLEDStatus_CheckedChanged; ;
 
 
