@@ -494,6 +494,9 @@
   <data name="LaptopScreen" xml:space="preserve">
     <value>Дисплей</value>
   </data>
+  <data name="LEDStatusIndicators" xml:space="preserve">
+    <value>LED Status Indicators</value>
+  </data>
   <data name="Lid" xml:space="preserve">
     <value>Кришка</value>
   </data>
