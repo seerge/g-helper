@@ -767,6 +767,12 @@ Yine de devam etmek istiyor musunuz?</value>
   <data name="VisualMode" xml:space="preserve">
     <value>Görüntü Modu</value>
   </data>
+  <data name="VisualModesHDR" xml:space="preserve">
+    <value>Visual Modes are not available when HDR is active</value>
+  </data>
+  <data name="VisualModesScreen" xml:space="preserve">
+    <value>Visual Modes are not available when laptop screen is off</value>
+  </data>
   <data name="VolumeDown" xml:space="preserve">
     <value>Sesi Azalt</value>
   </data>
