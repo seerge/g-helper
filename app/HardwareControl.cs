@@ -305,7 +305,8 @@ public static class HardwareControl
     public static void KillGPUApps()
     {
 
-        List<string> tokill = new() { "EADesktop", "RadeonSoftware", "epicgameslauncher", "ASUSSmartDisplayControl" };
+        List<string> tokill = new() { "EADesktop", "epicgameslauncher", "ASUSSmartDisplayControl" };
+
         foreach (string kill in tokill) ProcessHelper.KillByName(kill);
 
         if (AppConfig.Is("kill_gpu_apps") && GpuControl is not null)

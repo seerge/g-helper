@@ -297,7 +297,6 @@ namespace GHelper.Gpu
                 {
                     XGM.Reset();
                     HardwareControl.KillGPUApps();
-                    await Task.Delay(TimeSpan.FromSeconds(1));
 
                     if (silent)
                     {
