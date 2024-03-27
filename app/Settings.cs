@@ -257,9 +257,16 @@ namespace GHelper
             buttonFnLock.Click += ButtonFnLock_Click;
 
             labelVisual.Click += LabelVisual_Click;
+            labelCharge.Click += LabelCharge_Click;
 
             panelPerformance.Focus();
             InitVisual();
+        }
+
+        private void LabelCharge_Click(object? sender, EventArgs e)
+        {
+            ProcessHelper.RunCMD("powershell", "powercfg /batteryreport");
+            ProcessHelper.RunCMD("explorer", "battery-report.html");
         }
 
         private void LabelVisual_Click(object? sender, EventArgs e)
