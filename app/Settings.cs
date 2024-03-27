@@ -1205,6 +1205,8 @@ namespace GHelper
                 buttonMiniled.Visible = false;
             }
 
+            SuspendLayout();
+
             if (!screenEnabled)
             {
                 labelVisual.Text = Properties.Strings.VisualModesScreen;
@@ -1220,6 +1222,8 @@ namespace GHelper
                 tableVisual.Visible = true;
                 labelVisual.Visible = false;
             }
+
+            ResumeLayout();
 
         }
 
