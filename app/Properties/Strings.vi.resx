@@ -767,6 +767,12 @@ Do you still want to continue?</value>
   <data name="VisualMode" xml:space="preserve">
     <value>Visual Mode</value>
   </data>
+  <data name="VisualModesHDR" xml:space="preserve">
+    <value>Visual Modes are not available when HDR is active</value>
+  </data>
+  <data name="VisualModesScreen" xml:space="preserve">
+    <value>Visual Modes are not available when laptop screen is off</value>
+  </data>
   <data name="VolumeDown" xml:space="preserve">
     <value>Giảm âm lượng</value>
   </data>
