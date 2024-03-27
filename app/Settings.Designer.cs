@@ -1714,6 +1714,7 @@ namespace GHelper
             labelVisual.TabIndex = 42;
             labelVisual.Text = "Visual Modes are not available when HDR is active";
             labelVisual.Visible = false;
+            labelVisual.Cursor = Cursors.Hand;
             // 
             // tableVisual
             // 

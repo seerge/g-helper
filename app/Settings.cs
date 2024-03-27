@@ -256,10 +256,17 @@ namespace GHelper
             VisualiseFnLock();
             buttonFnLock.Click += ButtonFnLock_Click;
 
+            labelVisual.Click += LabelVisual_Click;
+
             panelPerformance.Focus();
             InitVisual();
         }
 
+        private void LabelVisual_Click(object? sender, EventArgs e)
+        {
+            labelVisual.Visible = false;
+            VisualControl.forceVisual = true;
+        }
 
         public void InitVisual()
         {
