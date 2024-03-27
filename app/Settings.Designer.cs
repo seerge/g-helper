@@ -1705,7 +1705,6 @@ namespace GHelper
             // 
             // labelVisual
             // 
-            labelVisual.Dock = DockStyle.Top;
             labelVisual.ForeColor = SystemColors.GrayText;
             labelVisual.Location = new Point(20, 170);
             labelVisual.Margin = new Padding(4, 0, 4, 0);
@@ -1875,7 +1874,7 @@ namespace GHelper
             AutoScaleMode = AutoScaleMode.Dpi;
             AutoSize = true;
             AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            ClientSize = new Size(849, 2001);
+            ClientSize = new Size(849, 1559);
             Controls.Add(panelFooter);
             Controls.Add(panelVersion);
             Controls.Add(panelBattery);

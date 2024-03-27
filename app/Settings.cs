@@ -1205,25 +1205,20 @@ namespace GHelper
                 buttonMiniled.Visible = false;
             }
 
-            SuspendLayout();
+            if (hdr) labelVisual.Text = Properties.Strings.VisualModesHDR;
+            if (!screenEnabled) labelVisual.Text = Properties.Strings.VisualModesScreen;
 
-            if (!screenEnabled)
+            if (!screenEnabled || hdr)
             {
-                labelVisual.Text = Properties.Strings.VisualModesScreen;
+                labelVisual.Location = tableVisual.Location;
+                labelVisual.Width = tableVisual.Width;
+                labelVisual.Height = tableVisual.Height;
                 labelVisual.Visible = true;
-                tableVisual.Visible = false;
-            } else if (hdr)
+            } else
             {
-                labelVisual.Text = Properties.Strings.VisualModesHDR;
-                labelVisual.Visible = true;
-                tableVisual.Visible = false;
-            } else 
-            {
-                tableVisual.Visible = true;
                 labelVisual.Visible = false;
             }
 
-            ResumeLayout();
 
         }
 
