@@ -34,7 +34,8 @@ _如果你在别的地方提到这个软件-请记得加上这个项目的网址
 4. 简洁的界面设计，可以轻松调整所有设置。
 5. FN 锁定和自定义热键
 
-![Screenshot 2024-03-11 104354](https://github.com/seerge/g-helper/assets/5920850/626a5a6e-fdae-431c-843e-92886c8420ee)
+![image](https://github.com/pasical/g-helper/assets/112304778/698c197e-c9f2-4b01-acea-de7a1a12dde6)
+
 
 ### ⚡️ 主要功能
 
@@ -147,28 +148,6 @@ _PPTs 默认在 幻14 2022版上显示, 对于其他型号 PPTs 的显示将会�
 
 ------------------
 
-### 🔖 注意事项
-
-G-Helper 不是操作系统、固件或驱动程序。它无论如何都不会实时“运行”您的硬件。
-
-这只是一个应用程序，允许您选择制造商创建的预定义操作模式之一（并存储在 BIOS 中），并可选地（！）设置一些已经存在于您的设备上的设置，与 Armoury Crate 的原理相同。它通过使用 Armoury Crate 所使用的 Asus System Control Interface “驱动程序”来实现所有功能。
-
-如果您使用的模式/设置与 Armoury Crate 中的相同 - 您设备的性能或行为不会有差异。
-
-G-Helper 对您笔记本电脑的作用，类似于遥控器对您电视的作用。
-
-### 使用的库和项目
-- [Linux Kernel](https://github.com/torvalds/linux/blob/master/drivers/platform/x86/asus-wmi.c)华硕 ACPI/WMI 接口中一些基本端点的 Linux 内核 
-- [NvAPIWrapper](https://github.com/falahati/NvAPIWrapper) 用于访问 Nvidia API
-- [Starlight](https://github.com/vddCore/Starlight) 光显矩阵通信协议
-- [UXTU](https://github.com/JamesCJ60/Universal-x86-Tuning-Utility) 使用 Ryzen 系统管理单元进行降压
-- [AsusCtl](https://gitlab.com/asus-linux/asusctl) 提供灵感和一些逆向工程
-
-### 免责声明
-
-"ROG"、"TUF" 和 "Armoury Crate" 是 AsusTek Computer, Inc. 的注册商标。我对这些或任何属于 AsusTek Computer 的资产不提出任何主张，仅出于信息传递目的而使用它们。
-
-软件按“现状”提供，不提供任何形式的明示或暗示保证，包括但不限于对适销性、特定用途的适用性和非侵权的保证。滥用此软件可能导致系统不稳定或故障。
 
 # 常见问题解答
 
@@ -330,18 +309,42 @@ Where ``mode = 0 (balanced), 1 (turbo), 2 (silent)``
 
 ### 自定义热键行为
 
-软件支持为 M3, M4 和 FN+F4 热键自定义配置。如要设置，在按键旁的选项框中选择"自定义设置"，然后执行下面的操作(任选其一):
+软件支持热键自定义配置。如要设置，在按键旁的选项框中选择"自定义设置"，然后执行下面的操作(任选其一):
 
 1. 要想运行任意应用 - 向 "action" 文本框中粘贴应用文件exe的完整路径，例如:
    ``C:\Program Files\EA Games\Battlefield 2042\BF2042.exe``
 2. 要想模拟任意windows按键 - 向"action"文本框中粘贴相对应的 keycode，例如 ``0x2C`` 为屏幕截图键。
    Keycodes的完整列表: https://learn.microsoft.com/en-us/windows/win32/inputdev/virtual-key-codes
 
-![Screenshot 2023-04-13 172537](https://user-images.githubusercontent.com/5920850/231837470-df913847-cf8a-43e1-80b6-5eb6e9eaee4e.png)
+![image](https://github.com/pasical/g-helper/assets/112304778/195f3a05-6daa-4463-abf2-8df4d0ac4cd3)
+
 
 ---
 
-_注:请务必参考下方 **免责声明** 原文，以避免或减小错误或不恰当之翻译引起的负面影响。翻译仅为便于阅读之目的，不具有法律效力，亦不作为发生争端时处理之依据。_
+### 使用的库和项目
+- [Linux Kernel](https://github.com/torvalds/linux/blob/master/drivers/platform/x86/asus-wmi.c)华硕 ACPI/WMI 接口中一些基本端点的 Linux 内核 
+- [NvAPIWrapper](https://github.com/falahati/NvAPIWrapper) 用于访问 Nvidia API
+- [Starlight](https://github.com/vddCore/Starlight) 光显矩阵通信协议
+- [UXTU](https://github.com/JamesCJ60/Universal-x86-Tuning-Utility) 使用 Ryzen 系统管理单元进行降压
+- [AsusCtl](https://gitlab.com/asus-linux/asusctl) 提供灵感和一些逆向工程
+
+### 🔖 注意事项
+
+G-Helper 不是操作系统、固件或驱动程序。它无论如何都不会实时“运行”您的硬件。
+
+这只是一个应用程序，允许您选择制造商创建的预定义操作模式之一（并存储在 BIOS 中），并可选地（！）设置一些已经存在于您的设备上的设置，与 Armoury Crate 的原理相同。它通过使用 Armoury Crate 所使用的 Asus System Control Interface “驱动程序”来实现所有功能。
+
+如果您使用的模式/设置与 Armoury Crate 中的相同 - 您设备的性能或行为不会有差异。
+
+G-Helper 对您笔记本电脑的作用，类似于遥控器对您电视的作用。
+
+### 免责声明
+
+"ROG"、"TUF" 和 "Armoury Crate" 是 AsusTek Computer, Inc. 的注册商标。我对这些或任何属于 AsusTek Computer 的资产不提出任何主张，仅出于信息传递目的而使用它们。
+
+软件按“现状”提供，不提供任何形式的明示或暗示保证，包括但不限于对适销性、特定用途的适用性和非侵权的保证。滥用此软件可能导致系统不稳定或故障。
+
+_注:请务必参考下方 **免责声明** 原文，以避免或减小错误或不恰当之翻译引起的负面影响。翻译仅为便于阅读之目的，并非专业翻译，可能存在错误，可能与最新版本有所差异。本文不具有法律效力，亦不作为发生争端时处理之依据。_
 
 **Disclaimers**
 "ROG", "TUF", and "Armoury Crate" are trademarked by and belong to AsusTek Computer, Inc. I make no claims to these or any assets belonging to AsusTek Computer and use them purely for informational purposes only.
