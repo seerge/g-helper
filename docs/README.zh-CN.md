@@ -1,14 +1,24 @@
-# G-Helper (GHelper)
-
-[![Github all releases](https://img.shields.io/github/downloads/seerge/g-helper/total.svg)](https://GitHub.com/seerge/g-helper/releases/) [![GitHub release](https://img.shields.io/github/release/seerge/g-helper.svg)](https://GitHub.com/seerge/g-helper/releases/) [![GitHub stars](https://img.shields.io/github/stars/seerge/g-helper.svg?style=social&label=Star)](https://GitHub.com/seerge/g-helper/stargazers/)
-
+# G-Helper——轻量级的华硕笔记本控制中心
 [![United24](https://raw.githubusercontent.com/seerge/g-helper/main/docs/ua.png)](https://u24.gov.ua/)
+[![GitHub release](https://img.shields.io/github/release/seerge/g-helper)](https://GitHub.com/seerge/g-helper/releases/) 
+[![Github all releases](https://img.shields.io/github/downloads/seerge/g-helper/total)](https://GitHub.com/seerge/g-helper/releases/) [![GitHub stars](https://img.shields.io/github/stars/seerge/g-helper.svg?style=social)](https://GitHub.com/seerge/g-helper/stargazers/) 
+
 
 语言: [English](https://github.com/seerge/g-helper#readme) | 中文
 
-## 为ASUS笔记本打造的、Armoury Crate(奥创控制中心)的轻量化替代品
+适用于华硕（Asus）笔记本电脑的轻量级 Armoury Crate (奥创控制中心)替代品，在功能几乎相同的同时减少不必要的服务以减轻负载。
+G-helper兼容所有主流型号，例如 ROG 幻14、幻15、幻16、幻13、幻X、天选（飞行堡垒）系列、枪神/魔霸系列、创系列、灵耀系列、无畏系列、ROG Ally 等！
 
-这是一个ROG 幻14、幻15，幻13、幻16，飞行堡垒/天选系列，ROG 枪神/魔霸系列或其他ASUS笔记本的控制工具。可以做到几乎所有Armoury Crate(奥创控制中心)能做的事情，而且不需要任何多余的功能或安装不必要的系统服务。
+
+# [:floppy_disk:下载应用](https://github.com/seerge/g-helper/releases/latest/download/GHelper.zip)
+
+如果你喜欢这个应用，请[给这个项目⭐️](https://github.com/seerge/g-helper) 或者向别人推荐它！
+
+### 通过paypal支持本项目：[:euro: EUR](https://www.paypal.com/donate/?hosted_button_id=4HMSHS4EBQWTA)或者[💵 USD](https://www.paypal.com/donate/?hosted_button_id=SRM6QUX6ACXDY) 
+
+[![G-Helper Download](https://github.com/seerge/g-helper/assets/112304778/4202a261-7e05-469c-99a1-a781ca366cfb)](https://github.com/seerge/g-helper/releases/latest/download/GHelper.zip)
+
+_如果你在别的地方提到这个软件-请记得加上这个项目的网址。十分感谢。_
 
 ## 🎁 主要优点
 
@@ -16,17 +26,9 @@
 2. 可以手动调整所有的性能模式(包括自定义风扇曲线以及PPTs(Platform Power Threshold,即CPU总功耗,下文简称PPTs--译注))
 3. 极致的轻量化，几乎不消耗任何资源，也不需要安装系统服务。只需要下载一个exe文件就可以运行。
 4. 简洁的界面设计，可以轻松调整所有设置。
-5. 运行不需要管理员权限！
+5. FN 锁定和自定义热键
 
-## [💾 下载应用](https://github.com/seerge/g-helper/releases/latest/download/GHelper.zip)
-
-如果你喜欢这个应用，请[给这个项目⭐️](https://github.com/seerge/g-helper) 或者向别人推荐它！
-
-### 💶 [(通过paypal)支持和捐赠G-Helper](https://www.paypal.com/donate/?hosted_button_id=4HMSHS4EBQWTA)
-
-_如果你在别的地方提到这个软件-请记得加上这个项目的网址。十分感谢。_
-
-![Screenshot 2023-04-11 221528](https://user-images.githubusercontent.com/5920850/231278828-9bb7f5c3-4ce6-4825-b06d-572f39d3ede8.png)
+![Screenshot 2024-03-11 104354](https://github.com/seerge/g-helper/assets/5920850/626a5a6e-fdae-431c-843e-92886c8420ee)
 
 ### ⚡️ 主要功能
 
@@ -36,9 +38,16 @@ _如果你在别的地方提到这个软件-请记得加上这个项目的网址
 4. 可调节的风扇曲线、电源功耗设置(PPTs)(_注:请谨慎调节!_)和CPU超频选项
 5. ROG Anime matrix 光显矩阵屏控制， 感谢项目 [Starlight](https://github.com/vddCore/Starlight) + 应用侧的一些调整，包括动画GIF图片
 6. 键盘灯光效果和颜色设置 (包括睡眠模式下的灯光效果和对飞行堡垒/天选系列的键盘支持)
-7. 对 M3, M4 按键的自定义设置和 FN+F5 快捷键(性能模式切换) FN+F4 快捷键(键盘灯光效果切换)
+7. 对M按键的自定义设置和 FN+X 快捷键的自定义
 8. CPU/GPU温度、风扇转速和电池充放电功率显示
 9. 电池充电上限设置，保护电池健康度
+10. Nvidia GPU 超频和降压
+11. XG Mobile 控制
+12. AMD CPU 的降压
+13. BIOS和驱动的升级
+14. 华硕鼠标的配置修改
+15. Mini-LED 屏幕的多区调光
+16. 低亮度防闪烁功能和显示风格的修改
 
 ### ⚙️ 当使用电池供电或插上电源时，自动切换：
 
@@ -67,6 +76,93 @@ _PPTs 默认在 幻14 2022版上显示, 对于其他型号 PPTs 的显示将会�
 2. 标准模式 (MS Hybrid) : 同时启用核显与独显, 核显连接笔电内置屏幕
 3. 独显直连: 同时启用核显与独显, 但独显直连笔电屏幕 (仅在幻14 2022版等机型上支持)
 4. 自动切换: 使用电池时关闭独显(集显模式)，并在插上电源后重新启用独显(混合输出)
+
+![Screenshot 2024-03-11 111818](https://github.com/seerge/g-helper/assets/5920850/fd69a81e-978d-4d5c-a0a8-26da51f90a5b)
+
+![GPU Modes](https://github.com/seerge/g-helper/assets/5920850/65c6bdd5-728c-4965-b544-fcf5a85ed6a2)
+
+### :mouse: 华硕鼠标和其他外设的支持
+
+[目前支持的型号](https://github.com/seerge/g-helper/discussions/900)
+
+*对于中国大陆发行的版本请自行参考
+- ROG Chakram X (P708)
+- ROG Chakram Core (P511)
+- ROG Gladius II and Gladius II Origin (P502 and P504)
+- ROG Gladius III
+- ROG Gladius III Wireless
+- ROG Harpe Ace Aim Lab Edition
+- ROG Keris Wireless
+- ROG Strix Carry (P508)
+- ROG Strix III Gladius III Aimpoint Wireless (P711)
+- ROG Strix Impact III (P518)
+- ROG Spatha
+- ROG Strix Impact II Wireless
+- TUF Gaming M4 Wireless (P306)
+- TUF Gaming M3
+- TUF Gaming M3 Gen II
+
+特别感谢 [@IceStormNG](https://github.com/IceStormNG) 👑 的贡献和研究！
+
+### ⌨️ 按键绑定
+
+- ``Fn + F5 / Fn + Shift + F5`` - 向前/向后切换性能模式
+- ``Ctrl + Shift + F5 / Ctrl + Shift + Alt + F5`` - 向前/向后切换性能模式
+- ``Ctrl + Shift + F12`` - 打开G-Helper窗口
+- ``Ctrl + M1 / M2`` - 屏幕亮度调低/调高
+- ``Shift + M1 / M2`` - 键盘背光亮度调低/调高
+- ``Fn + C`` - Fn锁定
+- ``Fn + Shift + F7 / F8`` - 光显矩阵/光线矩阵亮度调低/调高
+- ``Fn + Shift + F7 / F8`` - 屏幕亮度调低/调高
+- ``Ctrl + Shift + F20`` - 麦克风静音
+- ``Ctrl + Shift + Alt + F14`` - 集显模式
+- ``Ctrl + Shift + Alt + F15`` - 标准模式
+- ``Ctrl + Shift + Alt + F16`` - 静音模式
+- ``Ctrl + Shift + Alt + F17`` - 平衡模式
+- ``Ctrl + Shift + Alt + F18`` - 增强模式
+- ``Ctrl + Shift + Alt + F19`` - 自定义 1（如果存在）
+- ``Ctrl + Shift + Alt + F20`` - 自定义 2（如果存在）
+- [自定义键绑定/热键](https://github.com/seerge/g-helper/wiki/Power-user-settings#custom-hotkey-actions)
+
+### 🎮ROG Ally 按键
+- ``M + DPad Left / Right`` - 显示亮度
+- ``M + DPad Up`` - 屏幕键盘
+- ``M + DPad Down`` - 显示桌面
+- ``M + Y`` - 切换 AMD 覆盖
+- ``M + X`` - 截屏
+- ``M + Right Stick Click`` - 控制器模式
+
+------------------
+#### 如果您喜欢本项目，可以扫描以下二维码捐赠 
+
+| [Paypal in EUR](https://www.paypal.com/donate/?hosted_button_id=4HMSHS4EBQWTA) | [Paypal in USD](https://www.paypal.com/donate/?hosted_button_id=SRM6QUX6ACXDY) |
+| ------------------------------------------ | ----------------------------------------------- |
+| [![QR Code](https://user-images.githubusercontent.com/5920850/233658717-0441494d-fede-4a2c-b4f2-4b16a184a69a.png)](https://www.paypal.com/donate/?hosted_button_id=4HMSHS4EBQWTA) | [![QR Code](https://github-production-user-asset-6210df.s3.amazonaws.com/5920850/239492811-b487e89a-3df6-42ea-bdb8-24c455ab2310.png)](https://www.paypal.com/donate/?hosted_button_id=SRM6QUX6ACXDY) |
+
+------------------
+
+### 🔖 注意事项
+
+G-Helper 不是操作系统、固件或驱动程序。它无论如何都不会实时“运行”您的硬件。
+
+这只是一个应用程序，允许您选择制造商创建的预定义操作模式之一（并存储在 BIOS 中），并可选地（！）设置一些已经存在于您的设备上的设置，与 Armoury Crate 的原理相同。它通过使用 Armoury Crate 所使用的 Asus System Control Interface “驱动程序”来实现所有功能。
+
+如果您使用的模式/设置与 Armoury Crate 中的相同 - 您设备的性能或行为不会有差异。
+
+G-Helper 对您笔记本电脑的作用，类似于遥控器对您电视的作用。
+
+### 使用的库和项目
+- [Linux Kernel](https://github.com/torvalds/linux/blob/master/drivers/platform/x86/asus-wmi.c)华硕 ACPI/WMI 接口中一些基本端点的 Linux 内核 
+- [NvAPIWrapper](https://github.com/falahati/NvAPIWrapper) 用于访问 Nvidia API
+- [Starlight](https://github.com/vddCore/Starlight) 光显矩阵通信协议
+- [UXTU](https://github.com/JamesCJ60/Universal-x86-Tuning-Utility) 使用 Ryzen 系统管理单元进行降压
+- [AsusCtl](https://gitlab.com/asus-linux/asusctl) 提供灵感和一些逆向工程
+
+### 免责声明
+
+"ROG"、"TUF" 和 "Armoury Crate" 是 AsusTek Computer, Inc. 的注册商标。我对这些或任何属于 AsusTek Computer 的资产不提出任何主张，仅出于信息传递目的而使用它们。
+
+软件按“现状”提供，不提供任何形式的明示或暗示保证，包括但不限于对适销性、特定用途的适用性和非侵权的保证。滥用此软件可能导致系统不稳定或故障。
 
 ## ❓ 常见问题解答(FAQ)
 
@@ -172,14 +268,6 @@ G-helper是一个单文件的exe文件, 而且它不会向系统中安装任何�
 #### G-helper 是什么?
 
 这是一个轻量化的Armoury Crate(奥创控制中心)替代工具，而且不需要任何多余的功能或安装不必要的系统服务的。在ROG G14, G15, G16, M16, X13, Z13, X16, TUF, Scar, Vivobook, ProArt等热门笔记本中都适用。
-
----
-
-## 💶 [支持这个项目](https://www.paypal.com/donate/?hosted_button_id=4HMSHS4EBQWTA)
-
-#### 如果你喜欢这个项目你可以[通过Paypal捐赠](https://www.paypal.com/donate/?hosted_button_id=4HMSHS4EBQWTA)
-
-[![二维码](https://user-images.githubusercontent.com/5920850/233658717-0441494d-fede-4a2c-b4f2-4b16a184a69a.png)](https://www.paypal.com/donate/?hosted_button_id=4HMSHS4EBQWTA)
 
 ---
 
