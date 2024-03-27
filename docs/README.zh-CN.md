@@ -14,9 +14,11 @@ G-helper兼容所有主流型号，例如 ROG 幻14、幻15、幻16、幻13、�
 
 如果你喜欢这个应用，请[给这个项目⭐️](https://github.com/seerge/g-helper) 或者向别人推荐它！
 
-## 常见问题解答(FAQ)
-## 安装指南
-## 高级用户设置
+[常见问题解答(FAQ)](#常见问题解答)
+
+[安装指南](#安装指南)
+
+[高级用户设置](#高级用户设置)
 
 ### 通过paypal支持本项目：[:euro: EUR](https://www.paypal.com/donate/?hosted_button_id=4HMSHS4EBQWTA)或者[💵 USD](https://www.paypal.com/donate/?hosted_button_id=SRM6QUX6ACXDY) 
 
@@ -168,7 +170,7 @@ G-Helper 对您笔记本电脑的作用，类似于遥控器对您电视的作�
 
 软件按“现状”提供，不提供任何形式的明示或暗示保证，包括但不限于对适销性、特定用途的适用性和非侵权的保证。滥用此软件可能导致系统不稳定或故障。
 
-## ❓ [常见问题解答(FAQ)](#常见问题解答(FAQ))
+# 常见问题解答
 
 #### 当我按下 M4 / Rog键的时候总是弹出安装Armoury Crate的弹窗提示，我该如何关闭它?
 
@@ -275,7 +277,7 @@ G-helper是一个单文件的exe文件, 而且它不会向系统中安装任何�
 
 ---
 
-### [安装指南](#安装指南)
+# 安装指南
 
 1. 从 [**Releases Page**](https://github.com/seerge/g-helper/releases) 下载最新版本
 2. 解压到你选择的文件夹
@@ -309,7 +311,7 @@ G-helper是一个单文件的exe文件, 而且它不会向系统中安装任何�
 
 ---
 
-## [高级用户设置](#高级用户设置)
+# 高级用户设置
 
 ### 为每一个模式自定义用户计划
 
