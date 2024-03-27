@@ -494,6 +494,9 @@
   <data name="LaptopScreen" xml:space="preserve">
     <value>螢幕顯示</value>
   </data>
+  <data name="LEDStatusIndicators" xml:space="preserve">
+    <value>LED狀態指示器</value>
+  </data>
   <data name="Lid" xml:space="preserve">
     <value>螢幕背蓋</value>
   </data>
@@ -768,10 +771,10 @@
     <value>色域模式</value>
   </data>
   <data name="VisualModesHDR" xml:space="preserve">
-    <value>Visual Modes are not available when HDR is active</value>
+    <value>HDR開啟時不支援色域模式</value>
   </data>
   <data name="VisualModesScreen" xml:space="preserve">
-    <value>Visual Modes are not available when laptop screen is off</value>
+    <value>筆電螢幕闔上時不支援色域模式</value>
   </data>
   <data name="VolumeDown" xml:space="preserve">
     <value>音量降低</value>

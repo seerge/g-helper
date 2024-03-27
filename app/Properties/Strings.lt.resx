@@ -494,6 +494,9 @@ Vis tiek norite tęsti?</value>
   <data name="LaptopScreen" xml:space="preserve">
     <value>Ekranas</value>
   </data>
+  <data name="LEDStatusIndicators" xml:space="preserve">
+    <value>LED Status Indicators</value>
+  </data>
   <data name="Lid" xml:space="preserve">
     <value>Dangtis</value>
   </data>
