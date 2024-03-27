@@ -1188,6 +1188,15 @@ namespace GHelper.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to LED Status Indicators.
+        /// </summary>
+        internal static string LEDStatusIndicators {
+            get {
+                return ResourceManager.GetString("LEDStatusIndicators", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Lid.
         /// </summary>
         internal static string Lid {

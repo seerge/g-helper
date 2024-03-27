@@ -127,6 +127,7 @@ namespace GHelper
             checkBoot.Text = Properties.Strings.Boot;
             checkShutdown.Text = Properties.Strings.Shutdown;
             checkBootSound.Text = Properties.Strings.BootSound;
+            checkStatusLed.Text = Properties.Strings.LEDStatusIndicators;
 
             labelSpeed.Text = Properties.Strings.AnimationSpeed;
             //labelBrightness.Text = Properties.Strings.Brightness;
@@ -403,6 +404,10 @@ namespace GHelper
             checkBootSound.Checked = (Program.acpi.DeviceGet(AsusACPI.BootSound) == 1);
             checkBootSound.CheckedChanged += CheckBootSound_CheckedChanged;
 
+            checkStatusLed.Checked = (Program.acpi.DeviceGet(AsusACPI.StatusLed) > 0);
+            checkStatusLed.CheckedChanged += CheckLEDStatus_CheckedChanged; ;
+
+
             checkBWIcon.Checked = AppConfig.IsBWIcon();
             checkBWIcon.CheckedChanged += CheckBWIcon_CheckedChanged;
 
@@ -424,6 +429,11 @@ namespace GHelper
 
             InitACPITesting();
 
+        }
+
+        private void CheckLEDStatus_CheckedChanged(object? sender, EventArgs e)
+        {
+            Program.acpi.DeviceSet(AsusACPI.StatusLed, (checkStatusLed.Checked ? 7 : 0), "StatusLED");
         }
 
         private void CheckBWIcon_CheckedChanged(object? sender, EventArgs e)
