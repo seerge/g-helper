@@ -1215,8 +1215,8 @@ namespace GHelper
                 tableVisual.Visible = false;
             } else 
             {
-                labelVisual.Visible = false;
                 tableVisual.Visible = true;
+                labelVisual.Visible = false;
             }
 
         }
