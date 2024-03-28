@@ -9,6 +9,7 @@ namespace GHelper.AutoTDP
         public int MinTdp { get; set; }
         public int MaxTdp { get; set; }
         public bool Enabled { get; set; }
+        public int Interval { get; set; }
 
         public int CompareTo(GameProfile? other)
         {

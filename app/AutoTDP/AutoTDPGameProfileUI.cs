@@ -21,12 +21,25 @@ namespace GHelper.AutoTDP
             sliderFPS.ValueChanged += SliderFPS_ValueChanged;
             numericUpDownFPS.ValueChanged += NumericUpDownFPS_ValueChanged;
 
+            sliderCheckInterval.ValueChanged += SliderCheckInterval_ValueChanged;
+            numericCheckInterval.ValueChanged += NumericCheckInterval_ValueChanged;
+
             InitTheme();
 
 
             Shown += AutoTDPGameProfileUI_Shown;
 
             VisualizeGameProfile();
+        }
+
+        private void NumericCheckInterval_ValueChanged(object? sender, EventArgs e)
+        {
+            sliderCheckInterval.Value = (int)numericCheckInterval.Value;
+        }
+
+        private void SliderCheckInterval_ValueChanged(object? sender, EventArgs e)
+        {
+            numericCheckInterval.Value = sliderCheckInterval.Value;
         }
 
         private void NumericUpDownFPS_ValueChanged(object? sender, EventArgs e)
@@ -52,6 +65,7 @@ namespace GHelper.AutoTDP
             GameProfile.TargetFPS = ((int)numericUpDownFPS.Value);
             GameProfile.MinTdp = sliderMinTDP.Value;
             GameProfile.MaxTdp = sliderMaxTDP.Value;
+            GameProfile.Interval = ((int)numericCheckInterval.Value);
 
             AutoTDPUI.UpdateGameProfile(GameProfile);
 
@@ -92,12 +106,19 @@ namespace GHelper.AutoTDP
 
         private void VisualizeGameProfile()
         {
+            if (GameProfile.Interval < sliderCheckInterval.Min || GameProfile.Interval > sliderCheckInterval.Max)
+            {
+                GameProfile.Interval = AutoTDPService.INTERVAL_FPS_CHECK;
+            }
+
             sliderMinTDP.Value = GameProfile.MinTdp;
             sliderMaxTDP.Value = GameProfile.MaxTdp;
             numericUpDownFPS.Value = GameProfile.TargetFPS;
             textBoxProcessName.Text = GameProfile.ProcessName;
             textBoxTitle.Text = GameProfile.GameTitle;
             checkBoxEnabled.Checked = GameProfile.Enabled;
+            sliderCheckInterval.Value = GameProfile.Interval;
+            numericCheckInterval.Value = GameProfile.Interval;
         }
     }
 }

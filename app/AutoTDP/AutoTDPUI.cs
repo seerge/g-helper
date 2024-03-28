@@ -101,6 +101,7 @@ namespace GHelper.AutoTDP
             p.TargetFPS = 60;
             p.MaxTdp = 40;
             p.MinTdp = 15;
+            p.Interval = AutoTDPService.INTERVAL_FPS_CHECK;
 
             profileUI = new AutoTDPGameProfileUI(p, this);
             profileUI.FormClosed += ProfileUI_FormClosed;

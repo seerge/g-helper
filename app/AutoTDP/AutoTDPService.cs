@@ -11,7 +11,7 @@ namespace GHelper.AutoTDP
         private static readonly bool LOG_AUTO_TDP = true;
         private static readonly int INTERVAL_MIN_CHECK = 15 * 1_000;
         private static readonly int INTERVAL_APP_CHECK = 5_000;
-        private static readonly int INTERVAL_FPS_CHECK = 500;
+        public static readonly int INTERVAL_FPS_CHECK = 500;
 
         private static readonly int INTERVAL_LOG = 1_000;
         private int LogCounter = 0;
@@ -47,6 +47,7 @@ namespace GHelper.AutoTDP
         private int LastAdjustmentsWithoutImprovement = 0;
 
         private GameInstance? currentGame = null;
+        private GameProfile? currentGameProfile = null;
 
         public AutoTDPService()
         {
@@ -91,7 +92,15 @@ namespace GHelper.AutoTDP
             {
                 return INTERVAL_FPS_CHECK;
             }
-            return (int)Math.Max(INTERVAL_FPS_CHECK, powerLimiter.GetMinInterval());
+
+            int interval = INTERVAL_FPS_CHECK;
+
+            if (currentGame is not null && currentGameProfile is not null && currentGameProfile.Interval > 0)
+            {
+                interval = currentGameProfile.Interval;
+            }
+
+            return (int)Math.Max(interval, powerLimiter.GetMinInterval());
         }
 
         public static List<string> AvailableFramerateSources()
@@ -350,6 +359,7 @@ namespace GHelper.AutoTDP
         public void Reset()
         {
             currentGame = null;
+            currentGameProfile = null;
             GameFPSPrevious = double.NaN;
             GameFPS = 0;
             LastAdjustmentsWithoutImprovement = 0;
@@ -370,8 +380,8 @@ namespace GHelper.AutoTDP
 
         public void StartGameHandler(GameInstance instance)
         {
-            GameProfile? profile = ProfileForGame(instance.ProcessName);
-            if (profile is null || powerLimiter is null || framerateSouce is null)
+            currentGameProfile = ProfileForGame(instance.ProcessName);
+            if (currentGameProfile is null || powerLimiter is null || framerateSouce is null)
             {
                 return;
             }
@@ -387,16 +397,16 @@ namespace GHelper.AutoTDP
 
                 Logger.WriteLine("[AutoTDPService] Backing up Power limit: " + CurrentTDP + "W");
 
-                LowestStableTDP = profile.MaxTdp;
-                LowestTDP = profile.MaxTdp;
+                LowestStableTDP = currentGameProfile.MaxTdp;
+                LowestTDP = currentGameProfile.MaxTdp;
 
                 while (currentGame is not null && Running)
                 {
 
-                    if (!profile.Enabled)
+                    if (!currentGameProfile.Enabled)
                     {
                         //Game was disabled during session. Stop AutoTDP 
-                        Logger.WriteLine("[AutoTDPService] Game profile disabled: " + profile.GameTitle + ". Disengaging.");
+                        Logger.WriteLine("[AutoTDPService] Game profile disabled: " + currentGameProfile.GameTitle + ". Disengaging.");
                         Reset();
                         return;
                     }
@@ -416,7 +426,7 @@ namespace GHelper.AutoTDP
 
                     //prevent FPS from going to 0 which causes issues with the math
                     GameFPS = Math.Max(5, fps);
-                    AdjustPowerLimit(profile);
+                    AdjustPowerLimit(currentGameProfile);
 
                     try
                     {
@@ -528,7 +538,7 @@ namespace GHelper.AutoTDP
                 if (LowestStableStability * FPSCheckInterval() > (120 * 1_000))
                 {
                     //if stable for long time try to reduce it again
-                    LowestStableTDP = ProfileForGame(currentGame.ProcessName).MaxTdp;
+                    LowestStableTDP = currentGameProfile.MaxTdp;
                     LowestStableStability = 0;
                 }
             }
@@ -655,6 +665,7 @@ namespace GHelper.AutoTDP
             if (tdpThread is not null)
             {
                 currentGame = null;
+                currentGameProfile = null;
                 tdpThread.Join();
                 tdpThread = null;
             }
@@ -665,6 +676,7 @@ namespace GHelper.AutoTDP
         {
             Running = false;
             currentGame = null;
+            currentGameProfile = null;
 
             if (checkerThread is not null)
             {

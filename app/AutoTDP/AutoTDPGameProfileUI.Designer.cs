@@ -33,6 +33,10 @@
             labelSettings = new Label();
             checkBoxEnabled = new CheckBox();
             panelGameSettings = new Panel();
+            sliderCheckInterval = new UI.Slider();
+            numericCheckInterval = new NumericUpDown();
+            labelCheckInterval = new Label();
+            sliderFPS = new UI.Slider();
             labelMinTDP = new Label();
             labelMaxTDP = new Label();
             sliderMaxTDP = new UI.Slider();
@@ -47,10 +51,10 @@
             labelLimiter = new Label();
             buttonSave = new UI.RButton();
             buttonDelete = new UI.RButton();
-            sliderFPS = new UI.Slider();
             panelPerformanceHeader.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureKeyboard).BeginInit();
             panelGameSettings.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numericCheckInterval).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDownFPS).BeginInit();
             SuspendLayout();
             // 
@@ -62,7 +66,7 @@
             panelPerformanceHeader.Controls.Add(checkBoxEnabled);
             panelPerformanceHeader.Dock = DockStyle.Top;
             panelPerformanceHeader.Location = new Point(0, 0);
-            panelPerformanceHeader.Margin = new Padding(2, 2, 2, 2);
+            panelPerformanceHeader.Margin = new Padding(2);
             panelPerformanceHeader.Name = "panelPerformanceHeader";
             panelPerformanceHeader.Size = new Size(386, 30);
             panelPerformanceHeader.TabIndex = 53;
@@ -72,7 +76,7 @@
             pictureKeyboard.BackgroundImage = Properties.Resources.icons8_automation_32;
             pictureKeyboard.BackgroundImageLayout = ImageLayout.Zoom;
             pictureKeyboard.Location = new Point(3, 8);
-            pictureKeyboard.Margin = new Padding(2, 2, 2, 2);
+            pictureKeyboard.Margin = new Padding(2);
             pictureKeyboard.Name = "pictureKeyboard";
             pictureKeyboard.Size = new Size(16, 16);
             pictureKeyboard.TabIndex = 35;
@@ -102,6 +106,9 @@
             // panelGameSettings
             // 
             panelGameSettings.AutoSize = true;
+            panelGameSettings.Controls.Add(sliderCheckInterval);
+            panelGameSettings.Controls.Add(numericCheckInterval);
+            panelGameSettings.Controls.Add(labelCheckInterval);
             panelGameSettings.Controls.Add(sliderFPS);
             panelGameSettings.Controls.Add(labelMinTDP);
             panelGameSettings.Controls.Add(labelMaxTDP);
@@ -117,11 +124,64 @@
             panelGameSettings.Controls.Add(labelLimiter);
             panelGameSettings.Dock = DockStyle.Top;
             panelGameSettings.Location = new Point(0, 30);
-            panelGameSettings.Margin = new Padding(2, 2, 2, 2);
+            panelGameSettings.Margin = new Padding(2);
             panelGameSettings.Name = "panelGameSettings";
             panelGameSettings.Padding = new Padding(0, 0, 0, 7);
-            panelGameSettings.Size = new Size(386, 146);
+            panelGameSettings.Size = new Size(386, 174);
             panelGameSettings.TabIndex = 57;
+            // 
+            // sliderCheckInterval
+            // 
+            sliderCheckInterval.AccessibleName = "DPI Slider";
+            sliderCheckInterval.Location = new Point(140, 145);
+            sliderCheckInterval.Margin = new Padding(2);
+            sliderCheckInterval.Max = 5000;
+            sliderCheckInterval.Min = 16;
+            sliderCheckInterval.Name = "sliderCheckInterval";
+            sliderCheckInterval.Size = new Size(168, 20);
+            sliderCheckInterval.Step = 1;
+            sliderCheckInterval.TabIndex = 71;
+            sliderCheckInterval.TabStop = false;
+            sliderCheckInterval.Text = "FPS Slider";
+            sliderCheckInterval.Value = 500;
+            // 
+            // numericCheckInterval
+            // 
+            numericCheckInterval.BorderStyle = BorderStyle.None;
+            numericCheckInterval.Location = new Point(312, 145);
+            numericCheckInterval.Margin = new Padding(2);
+            numericCheckInterval.Maximum = new decimal(new int[] { 5000, 0, 0, 0 });
+            numericCheckInterval.Minimum = new decimal(new int[] { 16, 0, 0, 0 });
+            numericCheckInterval.Name = "numericCheckInterval";
+            numericCheckInterval.Size = new Size(65, 19);
+            numericCheckInterval.TabIndex = 70;
+            numericCheckInterval.TextAlign = HorizontalAlignment.Center;
+            numericCheckInterval.Value = new decimal(new int[] { 500, 0, 0, 0 });
+            // 
+            // labelCheckInterval
+            // 
+            labelCheckInterval.Location = new Point(5, 142);
+            labelCheckInterval.Margin = new Padding(4, 0, 4, 0);
+            labelCheckInterval.Name = "labelCheckInterval";
+            labelCheckInterval.Size = new Size(129, 22);
+            labelCheckInterval.TabIndex = 69;
+            labelCheckInterval.Text = "Check Interval (ms):";
+            labelCheckInterval.TextAlign = ContentAlignment.MiddleLeft;
+            // 
+            // sliderFPS
+            // 
+            sliderFPS.AccessibleName = "DPI Slider";
+            sliderFPS.Location = new Point(140, 66);
+            sliderFPS.Margin = new Padding(2);
+            sliderFPS.Max = 1000;
+            sliderFPS.Min = 20;
+            sliderFPS.Name = "sliderFPS";
+            sliderFPS.Size = new Size(168, 20);
+            sliderFPS.Step = 1;
+            sliderFPS.TabIndex = 68;
+            sliderFPS.TabStop = false;
+            sliderFPS.Text = "FPS Slider";
+            sliderFPS.Value = 60;
             // 
             // labelMinTDP
             // 
@@ -145,7 +205,7 @@
             // 
             sliderMaxTDP.AccessibleName = "DPI Slider";
             sliderMaxTDP.Location = new Point(140, 117);
-            sliderMaxTDP.Margin = new Padding(2, 2, 2, 2);
+            sliderMaxTDP.Margin = new Padding(2);
             sliderMaxTDP.Max = 200;
             sliderMaxTDP.Min = 5;
             sliderMaxTDP.Name = "sliderMaxTDP";
@@ -160,7 +220,7 @@
             // 
             numericUpDownFPS.BorderStyle = BorderStyle.None;
             numericUpDownFPS.Location = new Point(312, 66);
-            numericUpDownFPS.Margin = new Padding(2, 2, 2, 2);
+            numericUpDownFPS.Margin = new Padding(2);
             numericUpDownFPS.Maximum = new decimal(new int[] { 1000, 0, 0, 0 });
             numericUpDownFPS.Minimum = new decimal(new int[] { 20, 0, 0, 0 });
             numericUpDownFPS.Name = "numericUpDownFPS";
@@ -173,7 +233,7 @@
             // 
             sliderMinTDP.AccessibleName = "DPI Slider";
             sliderMinTDP.Location = new Point(140, 93);
-            sliderMinTDP.Margin = new Padding(2, 2, 2, 2);
+            sliderMinTDP.Margin = new Padding(2);
             sliderMinTDP.Max = 200;
             sliderMinTDP.Min = 5;
             sliderMinTDP.Name = "sliderMinTDP";
@@ -260,7 +320,7 @@
             buttonSave.BorderRadius = 2;
             buttonSave.FlatStyle = FlatStyle.Flat;
             buttonSave.ForeColor = SystemColors.ControlText;
-            buttonSave.Location = new Point(279, 182);
+            buttonSave.Location = new Point(278, 225);
             buttonSave.Margin = new Padding(2, 4, 2, 4);
             buttonSave.Name = "buttonSave";
             buttonSave.Secondary = false;
@@ -279,7 +339,7 @@
             buttonDelete.BorderRadius = 2;
             buttonDelete.FlatStyle = FlatStyle.Flat;
             buttonDelete.ForeColor = SystemColors.ControlText;
-            buttonDelete.Location = new Point(4, 182);
+            buttonDelete.Location = new Point(3, 225);
             buttonDelete.Margin = new Padding(2, 4, 2, 4);
             buttonDelete.Name = "buttonDelete";
             buttonDelete.Secondary = false;
@@ -288,26 +348,11 @@
             buttonDelete.Text = "Delete";
             buttonDelete.UseVisualStyleBackColor = false;
             // 
-            // sliderFPS
-            // 
-            sliderFPS.AccessibleName = "DPI Slider";
-            sliderFPS.Location = new Point(140, 66);
-            sliderFPS.Margin = new Padding(2);
-            sliderFPS.Max = 1000;
-            sliderFPS.Min = 20;
-            sliderFPS.Name = "sliderFPS";
-            sliderFPS.Size = new Size(168, 20);
-            sliderFPS.Step = 1;
-            sliderFPS.TabIndex = 68;
-            sliderFPS.TabStop = false;
-            sliderFPS.Text = "FPS Slider";
-            sliderFPS.Value = 60;
-            // 
             // AutoTDPGameProfileUI
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(386, 217);
+            ClientSize = new Size(386, 263);
             Controls.Add(buttonDelete);
             Controls.Add(buttonSave);
             Controls.Add(panelGameSettings);
@@ -324,6 +369,7 @@
             ((System.ComponentModel.ISupportInitialize)pictureKeyboard).EndInit();
             panelGameSettings.ResumeLayout(false);
             panelGameSettings.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)numericCheckInterval).EndInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDownFPS).EndInit();
             ResumeLayout(false);
             PerformLayout();
@@ -351,5 +397,8 @@
         private Label labelMaxTDP;
         private UI.RButton buttonDelete;
         private UI.Slider sliderFPS;
+        private UI.Slider sliderCheckInterval;
+        private NumericUpDown numericCheckInterval;
+        private Label labelCheckInterval;
     }
 }
