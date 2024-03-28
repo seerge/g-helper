@@ -1,4 +1,5 @@
 using GHelper.Ally;
+using GHelper.AutoTDP;
 using GHelper.Battery;
 using GHelper.Display;
 using GHelper.Gpu;
@@ -46,6 +47,8 @@ namespace GHelper
 
         private static PowerLineStatus isPlugged = SystemInformation.PowerStatus.PowerLineStatus;
 
+        public static AutoTDPService autoTDPService = null;
+
         // The main entry point for the application
         public static void Main(string[] args)
         {
@@ -70,6 +73,7 @@ namespace GHelper
             Logger.WriteLine("App launched: " + AppConfig.GetModel() + " :" + Assembly.GetExecutingAssembly().GetName().Version.ToString() + CultureInfo.CurrentUICulture + (ProcessHelper.IsUserAdministrator() ? "." : ""));
 
             acpi = new AsusACPI();
+            autoTDPService = new AutoTDPService();
 
             if (!acpi.IsConnected() && AppConfig.IsASUS())
             {
@@ -308,6 +312,7 @@ namespace GHelper
 
         static void OnExit(object sender, EventArgs e)
         {
+            autoTDPService.Shutdown();
             trayIcon.Visible = false;
             PeripheralsProvider.UnregisterForDeviceEvents();
             clamshellControl.UnregisterDisplayEvents();
