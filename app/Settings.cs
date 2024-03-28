@@ -265,8 +265,9 @@ namespace GHelper
 
         private void LabelCharge_Click(object? sender, EventArgs e)
         {
-            ProcessHelper.RunCMD("powershell", "powercfg /batteryreport");
-            ProcessHelper.RunCMD("explorer", "battery-report.html");
+            var report = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + "\\battery-report.html";
+            ProcessHelper.RunCMD("powershell", $"powercfg /batteryreport /output \"{report}\"");
+            ProcessHelper.RunCMD("explorer", $"\"{report}\"");
         }
 
         private void LabelVisual_Click(object? sender, EventArgs e)
