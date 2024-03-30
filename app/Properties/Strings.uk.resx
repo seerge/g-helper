@@ -495,7 +495,7 @@
     <value>Дисплей</value>
   </data>
   <data name="LEDStatusIndicators" xml:space="preserve">
-    <value>LED Status Indicators</value>
+    <value>LED-Індикатори стану</value>
   </data>
   <data name="Lid" xml:space="preserve">
     <value>Кришка</value>
@@ -771,10 +771,10 @@
     <value>Візуальний режим</value>
   </data>
   <data name="VisualModesHDR" xml:space="preserve">
-    <value>Visual Modes are not available when HDR is active</value>
+    <value>Візуальні режими недоступні, коли HDR активний</value>
   </data>
   <data name="VisualModesScreen" xml:space="preserve">
-    <value>Visual Modes are not available when laptop screen is off</value>
+    <value>Візуальні режими недоступні, коли екран вимкнений</value>
   </data>
   <data name="VolumeDown" xml:space="preserve">
     <value>Зменшення гучності</value>
