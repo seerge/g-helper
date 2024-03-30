@@ -27,14 +27,16 @@ public class NativeMethods
     private const int MONITOR_OFF = 2;
 
     [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-    private static extern IntPtr SendMessage(IntPtr hWnd, uint Msg, IntPtr wParam, IntPtr lParam);
+    private static extern IntPtr SendMessage(nint hWnd, int hMsg, int wParam, int lParam);
 
     [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
     private static extern uint FormatMessage(uint dwFlags, IntPtr lpSource, uint dwMessageId, uint dwLanguageId, out string lpBuffer, uint nSize, IntPtr Arguments);
 
     public static void TurnOffScreen()
     {
-        IntPtr result = SendMessage(-1, WM_SYSCOMMAND, (IntPtr)SC_MONITORPOWER, (IntPtr)MONITOR_OFF);
+        Form f = new Form();
+        IntPtr result = SendMessage(f.Handle, WM_SYSCOMMAND, SC_MONITORPOWER, MONITOR_OFF);
+
         if (result == IntPtr.Zero)
         {
             int error = Marshal.GetLastWin32Error();
