@@ -1679,7 +1679,7 @@ namespace GHelper
             sliderBattery.Value = limit;
 
             sliderBattery.AccessibleName = Properties.Strings.BatteryChargeLimit + ": " + limit.ToString() + "%";
-            sliderBattery.AccessibilityObject.Select(AccessibleSelection.TakeFocus);
+            //sliderBattery.AccessibilityObject.Select(AccessibleSelection.TakeFocus);
 
             VisualiseBatteryFull();
         }
