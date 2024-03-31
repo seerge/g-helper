@@ -971,7 +971,7 @@
             // 
             // checkController
             // 
-            checkController.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            checkController.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             checkController.AutoSize = true;
             checkController.BackColor = SystemColors.ControlLight;
             checkController.Location = new Point(650, 41);

@@ -494,6 +494,9 @@ Trotzdem fortfahren?</value>
   <data name="LaptopScreen" xml:space="preserve">
     <value>Laptopbildschirm</value>
   </data>
+  <data name="LEDStatusIndicators" xml:space="preserve">
+    <value>LED Status Indicators</value>
+  </data>
   <data name="Lid" xml:space="preserve">
     <value>Deckel</value>
   </data>
@@ -768,10 +771,10 @@ Trotzdem fortfahren?</value>
     <value>Darstellungsmodus</value>
   </data>
   <data name="VisualModesHDR" xml:space="preserve">
-    <value>Visual Modes are not available when HDR is active</value>
+    <value>Darstellungsmodi sind nicht verfügbar, wenn HDR aktiv ist.</value>
   </data>
   <data name="VisualModesScreen" xml:space="preserve">
-    <value>Visual Modes are not available when laptop screen is off</value>
+    <value>Darstellungsmodi sind nicht verfügbar, wenn Laptop-Bildschirm aus ist.</value>
   </data>
   <data name="VolumeDown" xml:space="preserve">
     <value>Lautstärke verringern</value>

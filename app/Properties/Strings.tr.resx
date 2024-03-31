@@ -494,6 +494,9 @@ Yine de devam etmek istiyor musunuz?</value>
   <data name="LaptopScreen" xml:space="preserve">
     <value>Laptop Ekranı</value>
   </data>
+  <data name="LEDStatusIndicators" xml:space="preserve">
+    <value>LED Status Indicators</value>
+  </data>
   <data name="Lid" xml:space="preserve">
     <value>Kapak</value>
   </data>
