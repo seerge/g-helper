@@ -1452,6 +1452,7 @@ namespace GHelper
             labelCharge.Size = new Size(461, 56);
             labelCharge.TabIndex = 40;
             labelCharge.TextAlign = ContentAlignment.MiddleRight;
+            labelCharge.Cursor = Cursors.Hand;
             // 
             // panelPeripherals
             // 
@@ -1749,6 +1750,7 @@ namespace GHelper
             // 
             // labelVisual
             // 
+            labelVisual.Cursor = Cursors.Hand;
             labelVisual.ForeColor = SystemColors.GrayText;
             labelVisual.Location = new Point(20, 170);
             labelVisual.Margin = new Padding(4, 0, 4, 0);
@@ -1918,7 +1920,7 @@ namespace GHelper
             AutoScaleMode = AutoScaleMode.Dpi;
             AutoSize = true;
             AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            ClientSize = new Size(849, 1559);
+            ClientSize = new Size(849, 2045);
             Controls.Add(panelFooter);
             Controls.Add(panelVersion);
             Controls.Add(panelBattery);

@@ -40,6 +40,8 @@ namespace GHelper.Display
         private static System.Timers.Timer brightnessTimer = new System.Timers.Timer(200);
 
         public const int DefaultColorTemp = 50;
+
+        public static bool forceVisual = false;
         static VisualControl()
         {
             brightnessTimer.Elapsed += BrightnessTimerTimer_Elapsed;
@@ -129,8 +131,8 @@ namespace GHelper.Display
             if (mode == SplendidCommand.None) return;
             if (mode == SplendidCommand.Default && init) return; // Skip default setting on init
 
-            if (ScreenCCD.GetHDRStatus(true)) return;
-            if (ScreenNative.GetRefreshRate(ScreenNative.FindLaptopScreen(true)) < 0) return;
+            if (!forceVisual && ScreenCCD.GetHDRStatus(true)) return;
+            if (!forceVisual && ScreenNative.GetRefreshRate(ScreenNative.FindLaptopScreen(true)) < 0) return;
 
             if (whiteBalance != DefaultColorTemp && !init) ProcessHelper.RunAsAdmin();
 

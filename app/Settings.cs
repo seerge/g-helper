@@ -260,10 +260,25 @@ namespace GHelper
             VisualiseFnLock();
             buttonFnLock.Click += ButtonFnLock_Click;
 
+            labelVisual.Click += LabelVisual_Click;
+            labelCharge.Click += LabelCharge_Click;
+
             panelPerformance.Focus();
             InitVisual();
         }
 
+        private void LabelCharge_Click(object? sender, EventArgs e)
+        {
+            var report = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + "\\battery-report.html";
+            ProcessHelper.RunCMD("powershell", $"powercfg /batteryreport /output \"{report}\"");
+            ProcessHelper.RunCMD("explorer", $"\"{report}\"");
+        }
+
+        private void LabelVisual_Click(object? sender, EventArgs e)
+        {
+            labelVisual.Visible = false;
+            VisualControl.forceVisual = true;
+        }
 
         public void InitVisual()
         {
@@ -1703,7 +1718,7 @@ namespace GHelper
             sliderBattery.Value = limit;
 
             sliderBattery.AccessibleName = Properties.Strings.BatteryChargeLimit + ": " + limit.ToString() + "%";
-            sliderBattery.AccessibilityObject.Select(AccessibleSelection.TakeFocus);
+            //sliderBattery.AccessibilityObject.Select(AccessibleSelection.TakeFocus);
 
             VisualiseBatteryFull();
         }

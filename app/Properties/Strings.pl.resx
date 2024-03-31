@@ -494,6 +494,9 @@ Nadal chcesz kontynuować?</value>
   <data name="LaptopScreen" xml:space="preserve">
     <value>Ekran laptopa</value>
   </data>
+  <data name="LEDStatusIndicators" xml:space="preserve">
+    <value>Wskaźniki stanu</value>
+  </data>
   <data name="Lid" xml:space="preserve">
     <value>Pokrywa</value>
   </data>
@@ -768,10 +771,10 @@ Nadal chcesz kontynuować?</value>
     <value>Tryb wyświetlania</value>
   </data>
   <data name="VisualModesHDR" xml:space="preserve">
-    <value>Visual Modes are not available when HDR is active</value>
+    <value>Tryby wyświetlania nie są dostępne, kiedy HDR jest włączone</value>
   </data>
   <data name="VisualModesScreen" xml:space="preserve">
-    <value>Visual Modes are not available when laptop screen is off</value>
+    <value>Tryby wyświetlania nie są dostępne, kiedy ekran laptopa jest wyłączony</value>
   </data>
   <data name="VolumeDown" xml:space="preserve">
     <value>Zmniejsz głośność</value>

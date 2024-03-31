@@ -220,10 +220,10 @@ namespace GHelper
             panelFans.Controls.Add(tableFanCharts);
             panelFans.Controls.Add(panelTitleFans);
             panelFans.Controls.Add(panelApplyFans);
-            panelFans.Dock = DockStyle.Left;
+            panelFans.Dock = DockStyle.Fill;
             panelFans.Location = new Point(530, 0);
             panelFans.Margin = new Padding(0);
-            panelFans.MaximumSize = new Size(816, 0);
+            //panelFans.MaximumSize = new Size(816, 0);
             panelFans.MinimumSize = new Size(816, 0);
             panelFans.Name = "panelFans";
             panelFans.Padding = new Padding(0, 0, 10, 0);
@@ -1685,7 +1685,7 @@ namespace GHelper
             Controls.Add(panelFans);
             Controls.Add(panelSliders);
             Margin = new Padding(4, 2, 4, 2);
-            MaximizeBox = false;
+            MaximizeBox = true;
             MinimizeBox = false;
             MinimumSize = new Size(26, 1100);
             Name = "Fans";
