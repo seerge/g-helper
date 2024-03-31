@@ -61,41 +61,39 @@ namespace GHelper.Display
             return Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + "\\ASUS\\GameVisual";
         }
 
+        public static string GetVivobookPath()
+        {
+            return Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + "\\ASUS\\ASUS System Control Interface\\ASUSOptimization\\Splendid";
+        }
+
         public static Dictionary<SplendidGamut, string> GetGamutModes()
         {
 
-            if (AppConfig.IsVivoZenbook())
-            {
-                return new Dictionary<SplendidGamut, string>
-                {
-                    { SplendidGamut.VivoNative, "Gamut: Native" },
-                    { SplendidGamut.VivoSRGB, "Gamut: sRGB" },
-                    { SplendidGamut.VivoDCIP3, "Gamut: DCIP3" },
-                    { SplendidGamut.ViviDisplayP3, "Gamut: DisplayP3" },
-                };
-            }
+            bool isVivo = AppConfig.IsVivoZenbook();
 
             Dictionary<SplendidGamut, string> _modes = new Dictionary<SplendidGamut, string>();
 
-            string gameVisualPath = GetGameVisualPath();
-            if (!Directory.Exists(gameVisualPath))
+            string iccPath = isVivo ? GetVivobookPath() : GetGameVisualPath();
+
+            if (!Directory.Exists(iccPath))
             {
-                Logger.WriteLine(gameVisualPath + " doesn't exit");
+                Logger.WriteLine(iccPath + " doesn't exit");
                 return _modes;
             }
 
             try
             {
-                DirectoryInfo d = new DirectoryInfo(GetGameVisualPath());
+                DirectoryInfo d = new DirectoryInfo(iccPath);
                 FileInfo[] icms = d.GetFiles("*.icm");
                 if (icms.Length == 0) return _modes;
 
-                _modes.Add(SplendidGamut.Native, "Gamut: Native");
+                _modes.Add(isVivo ? SplendidGamut.VivoNative : SplendidGamut.Native, "Gamut: Native");
                 foreach (FileInfo icm in icms)
                 {
-                    if (icm.Name.Contains("sRGB")) _modes.Add(SplendidGamut.sRGB, "Gamut: sRGB");
-                    if (icm.Name.Contains("DCIP3")) _modes.Add(SplendidGamut.DCIP3, "Gamut: DCIP3");
-                    if (icm.Name.Contains("DisplayP3")) _modes.Add(SplendidGamut.DisplayP3, "Gamut: DisplayP3");
+                    //Logger.WriteLine(icm.FullName);
+                    if (icm.Name.Contains("sRGB")) _modes.Add(isVivo ? SplendidGamut.VivoSRGB : SplendidGamut.sRGB, "Gamut: sRGB");
+                    if (icm.Name.Contains("DCIP3")) _modes.Add(isVivo ? SplendidGamut.VivoDCIP3 : SplendidGamut.DCIP3, "Gamut: DCIP3");
+                    if (icm.Name.Contains("DisplayP3")) _modes.Add(isVivo ? SplendidGamut.ViviDisplayP3 : SplendidGamut.DisplayP3, "Gamut: DisplayP3");
                 }
                 return _modes;
             }
@@ -181,7 +179,24 @@ namespace GHelper.Display
 
             if (whiteBalance != DefaultColorTemp && !init) ProcessHelper.RunAsAdmin();
 
-            int balance = mode == SplendidCommand.Eyecare ? 2 : whiteBalance;
+            int? balance;
+            
+            switch (mode) {
+                case SplendidCommand.Eyecare:
+                    balance = 2;
+                    break;
+                case SplendidCommand.VivoNormal:
+                case SplendidCommand.VivoVivid:
+                    balance = null;
+                    break;
+                case SplendidCommand.VivoEycare:
+                    balance = Math.Abs(whiteBalance - 50) * 4 / 50;
+                    break;
+                default:
+                    balance = whiteBalance;
+                    break;
+            }
+
             if (RunSplendid(mode, 0, balance)) return;
 
             if (_init)
