@@ -56,13 +56,8 @@ namespace GHelper.Battery
                 cmd.StartInfo.UseShellExecute = false;
                 cmd.StartInfo.CreateNoWindow = true;
                 cmd.StartInfo.FileName = "powershell";
-                cmd.StartInfo.Arguments = "powercfg /batteryreport";
+                cmd.StartInfo.Arguments = "powercfg /batteryreport; explorer battery-report.html";
                 cmd.Start();
-
-                cmd.StartInfo.FileName = "explorer";
-                cmd.StartInfo.Arguments = "battery-report.html";
-                cmd.Start();
-
             }
             catch (Exception ex)
             {
