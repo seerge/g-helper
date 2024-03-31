@@ -138,9 +138,9 @@ namespace GHelper
             buttonOptimized.BorderColor = colorEco;
             buttonXGM.BorderColor = colorTurbo;
 
-            button60Hz.BorderColor = Color.LightGray;
-            button120Hz.BorderColor = Color.LightGray;
-            buttonScreenAuto.BorderColor = Color.LightGray;
+            button60Hz.BorderColor = colorGray;
+            button120Hz.BorderColor = colorGray;
+            buttonScreenAuto.BorderColor = colorGray;
             buttonMiniled.BorderColor = colorTurbo;
 
             buttonSilent.Click += ButtonSilent_Click;
