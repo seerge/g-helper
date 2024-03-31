@@ -5,6 +5,10 @@ namespace GHelper.Display
 {
     public enum SplendidGamut : int
     {
+        VivoNative = 0,
+        VivoSRGB = 1,
+        VivoDCIP3 = 3,
+        ViviDisplayP3 = 4,
         Native = 50,
         sRGB = 51,
         DCIP3 = 53,
@@ -14,6 +18,11 @@ namespace GHelper.Display
     public enum SplendidCommand : int
     {
         None = -1,
+
+        VivoNormal = 1,
+        VivoVivid = 2,
+        VivoManual = 6,
+        VivoEycare = 7,
 
         Init = 10,
         DimmingAsus = 9,
@@ -54,6 +63,18 @@ namespace GHelper.Display
 
         public static Dictionary<SplendidGamut, string> GetGamutModes()
         {
+
+            if (AppConfig.IsVivoZenbook())
+            {
+                return new Dictionary<SplendidGamut, string>
+                {
+                    { SplendidGamut.VivoNative, "Gamut: Native" },
+                    { SplendidGamut.VivoSRGB, "Gamut: sRGB" },
+                    { SplendidGamut.VivoDCIP3, "Gamut: DCIP3" },
+                    { SplendidGamut.ViviDisplayP3, "Gamut: DisplayP3" },
+                };
+            }
+
             Dictionary<SplendidGamut, string> _modes = new Dictionary<SplendidGamut, string>();
 
             string gameVisualPath = GetGameVisualPath();
@@ -87,6 +108,18 @@ namespace GHelper.Display
 
         public static Dictionary<SplendidCommand, string> GetVisualModes()
         {
+
+            if (AppConfig.IsVivoZenbook())
+            {
+                return new Dictionary<SplendidCommand, string>
+                {
+                    { SplendidCommand.VivoNormal, "Default" },
+                    { SplendidCommand.VivoVivid, "Vivid" },
+                    { SplendidCommand.VivoManual, "Manual" },
+                    { SplendidCommand.VivoEycare, "Eyecare" },
+                };
+            }
+
             return new Dictionary<SplendidCommand, string>
             {
                 { SplendidCommand.Default, "Default"},
@@ -111,6 +144,18 @@ namespace GHelper.Display
                 { 70, "Cold"},
                 { 85, "Colder"},
                 { 100, "Coldest"},
+            };
+        }
+
+        public static Dictionary<int, string> GetEyeCares()
+        {
+            return new Dictionary<int, string>
+            {
+                { 0, "0"},
+                { 1, "1"},
+                { 2, "2"},
+                { 3, "3"},
+                { 4, "4"},
             };
         }
 
