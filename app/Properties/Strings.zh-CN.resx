@@ -494,6 +494,9 @@
   <data name="LaptopScreen" xml:space="preserve">
     <value>笔记本屏幕</value>
   </data>
+  <data name="LEDStatusIndicators" xml:space="preserve">
+    <value>LED Status Indicators</value>
+  </data>
   <data name="Lid" xml:space="preserve">
     <value>盖子</value>
   </data>

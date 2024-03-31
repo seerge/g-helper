@@ -494,6 +494,9 @@ Apakah Anda masih ingin melanjutkan?</value>
   <data name="LaptopScreen" xml:space="preserve">
     <value>Layar Laptop</value>
   </data>
+  <data name="LEDStatusIndicators" xml:space="preserve">
+    <value>LED Status Indicators</value>
+  </data>
   <data name="Lid" xml:space="preserve">
     <value>Lid</value>
   </data>
