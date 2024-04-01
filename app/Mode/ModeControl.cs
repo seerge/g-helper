@@ -29,7 +29,7 @@ namespace GHelper.Mode
         private void ReapplyTimer_Elapsed(object? sender, System.Timers.ElapsedEventArgs e)
         {
             SetCPUTemp(AppConfig.GetMode("cpu_temp"), false);
-            if (_ryzenPower) SetRyzenPower();
+            SetRyzenPower();
         }
 
         public void AutoPerformance(bool powerChanged = false)
@@ -224,8 +224,12 @@ namespace GHelper.Mode
             settings.SetModeLabel(Properties.Strings.PerformanceMode + ": " + Modes.GetCurrentName() + (customFans ? "+" : "") + ((customPower > 0) ? " " + customPower + "W" : ""));
         }
 
-        public void SetRyzenPower(bool log = false)
+        public void SetRyzenPower(bool init = false)
         {
+            if (init) _ryzenPower = true;
+
+            if (!_ryzenPower) return;
+            if (!RyzenControl.IsRingExsists()) return;
             if (!AppConfig.IsMode("auto_apply_power")) return;
 
             int limit_total = AppConfig.GetMode("limit_total");
@@ -235,18 +239,17 @@ namespace GHelper.Mode
             if (limit_total < AsusACPI.MinTotal) return;
 
             var stapmResult = SendCommand.set_stapm_limit((uint)limit_total * 1000);
-            if (log) Logger.WriteLine($"STAPM: {limit_total} {stapmResult}");
+            if (init) Logger.WriteLine($"STAPM: {limit_total} {stapmResult}");
 
             var stapmResult2 = SendCommand.set_stapm2_limit((uint)limit_total * 1000);
-            if (log) Logger.WriteLine($"STAPM2: {limit_total} {stapmResult2}");
+            if (init) Logger.WriteLine($"STAPM2: {limit_total} {stapmResult2}");
 
             var slowResult = SendCommand.set_slow_limit((uint)limit_slow * 1000);
-            if (log) Logger.WriteLine($"SLOW: {limit_slow} {slowResult}");
+            if (init) Logger.WriteLine($"SLOW: {limit_slow} {slowResult}");
 
             var fastResult = SendCommand.set_fast_limit((uint)limit_slow * 1000);
-            if (log) Logger.WriteLine($"FAST: {limit_slow} {fastResult}");
+            if (init) Logger.WriteLine($"FAST: {limit_slow} {fastResult}");
 
-            _ryzenPower = true;
         }
 
         public void SetPower(bool launchAsAdmin = false)
@@ -286,7 +289,6 @@ namespace GHelper.Mode
                 if (ProcessHelper.IsUserAdministrator())
                 {
                     SetRyzenPower(true);
-                    customPower = limit_total;
                 }
                 else if (launchAsAdmin)
                 {
