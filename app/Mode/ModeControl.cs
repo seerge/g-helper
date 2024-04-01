@@ -264,11 +264,11 @@ namespace GHelper.Mode
                     var stapmResult2 = SendCommand.set_stapm2_limit((uint)limit_total * 1000);
                     Logger.WriteLine($"STAPM2: {limit_total} {stapmResult2}");
 
-                    var slowResult = SendCommand.set_slow_limit((uint)limit_total * 1000);
-                    Logger.WriteLine($"SLOW: {limit_total} {slowResult}");
+                    var slowResult = SendCommand.set_slow_limit((uint)limit_slow * 1000);
+                    Logger.WriteLine($"SLOW: {limit_slow} {slowResult}");
 
-                    var fastResult = SendCommand.set_fast_limit((uint)limit_total * 1000);
-                    Logger.WriteLine($"FAST: {limit_total} {fastResult}");
+                    var fastResult = SendCommand.set_fast_limit((uint)limit_slow * 1000);
+                    Logger.WriteLine($"FAST: {limit_slow} {fastResult}");
 
                     customPower = limit_total;
                 }
