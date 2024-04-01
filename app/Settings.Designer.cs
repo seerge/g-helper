@@ -1712,7 +1712,7 @@ namespace GHelper
             labelVisual.Margin = new Padding(4, 0, 4, 0);
             labelVisual.Name = "labelVisual";
             labelVisual.Padding = new Padding(4);
-            labelVisual.Size = new Size(787, 52);
+            labelVisual.Size = new Size(800, 52);
             labelVisual.TabIndex = 42;
             labelVisual.Text = "Visual Modes are not available when HDR is active";
             labelVisual.Visible = false;
