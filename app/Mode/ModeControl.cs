@@ -28,7 +28,7 @@ namespace GHelper.Mode
 
         private void ReapplyTimer_Elapsed(object? sender, System.Timers.ElapsedEventArgs e)
         {
-            SetCPUTemp(AppConfig.GetMode("cpu_temp"), false);
+            SetCPUTemp(AppConfig.GetMode("cpu_temp"));
             SetRyzenPower();
         }
 
@@ -369,18 +369,16 @@ namespace GHelper.Mode
 
         }
 
-        public void SetCPUTemp(int? cpuTemp, bool log = true)
+        public void SetCPUTemp(int? cpuTemp, bool init = false)
         {
             if (cpuTemp >= RyzenControl.MinTemp && cpuTemp < RyzenControl.MaxTemp)
             {
                 var resultCPU = SendCommand.set_tctl_temp((uint)cpuTemp);
-                if (log) Logger.WriteLine($"CPU Temp: {cpuTemp} {resultCPU}");
+                if (init) Logger.WriteLine($"CPU Temp: {cpuTemp} {resultCPU}");
 
                 var restultAPU = SendCommand.set_apu_skin_temp_limit((uint)cpuTemp);
-                if (log) Logger.WriteLine($"APU Temp: {cpuTemp} {restultAPU}");
+                if (init) Logger.WriteLine($"APU Temp: {cpuTemp} {restultAPU}");
             }
-
-            reapplyTimer.Enabled = AppConfig.IsMode("auto_uv");
         }
 
         public void SetUV(int cpuUV)
@@ -422,18 +420,21 @@ namespace GHelper.Mode
             {
                 SetUV(AppConfig.GetMode("cpu_uv", 0));
                 SetUViGPU(AppConfig.GetMode("igpu_uv", 0));
-                SetCPUTemp(AppConfig.GetMode("cpu_temp"));
+                SetCPUTemp(AppConfig.GetMode("cpu_temp"), true);
             }
             catch (Exception ex)
             {
                 Logger.WriteLine("UV Error: " + ex.ToString());
             }
+
+            reapplyTimer.Enabled = AppConfig.IsMode("auto_uv");
         }
 
         public void ResetRyzen()
         {
             if (_cpuUV != 0) SetUV(0);
             if (_igpuUV != 0) SetUViGPU(0);
+            reapplyTimer.Enabled = false;
         }
 
         public void AutoRyzen()
