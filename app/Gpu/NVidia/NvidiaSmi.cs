@@ -38,6 +38,7 @@ public static class NvidiaSmi
         if (float.TryParse(output, out float floatValue))
         {
             int intValue = (int)floatValue;
+            if (intValue < 50 || intValue > 175) return -1;
             return intValue;
         }
 
