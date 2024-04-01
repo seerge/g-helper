@@ -473,6 +473,10 @@ namespace GHelper.Input
                 case "screenshot":
                     KeyboardHook.KeyPress(Keys.Snapshot);
                     break;
+                case "lock":
+                    Logger.WriteLine("Screen lock");
+                    NativeMethods.LockScreen();
+                    break;
                 case "screen":
                     Logger.WriteLine("Screen off toggle");
                     NativeMethods.TurnOffScreen();
