@@ -1866,7 +1866,7 @@ namespace GHelper
             labelGammaTitle.Location = new Point(43, 0);
             labelGammaTitle.Margin = new Padding(4, 0, 4, 0);
             labelGammaTitle.Name = "labelGammaTitle";
-            labelGammaTitle.Size = new Size(507, 32);
+            labelGammaTitle.Size = new Size(540, 32);
             labelGammaTitle.TabIndex = 37;
             labelGammaTitle.Text = "Flicker-free Dimming";
             // 
