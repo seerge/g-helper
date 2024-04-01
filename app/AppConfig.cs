@@ -535,8 +535,9 @@ public static class AppConfig
         try
         {
             var (bios, model) = GetBiosAndModel();
-            if (ContainsModel("GA503RM") && Int32.Parse(bios) == 317) return true;
-            if ((ContainsModel("GA503RS") || ContainsModel("GA503RW")) && Int32.Parse(bios) == 316) return true;
+            var biosVersion = Int32.Parse(bios);
+            if (ContainsModel("GA503RM") && biosVersion == 317) return true;
+            if ((ContainsModel("GA503RS") || ContainsModel("GA503RW")) && biosVersion == 316) return true;
             return false;
         }
         catch
