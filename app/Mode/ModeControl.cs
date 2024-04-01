@@ -376,14 +376,9 @@ namespace GHelper.Mode
 
                 var restultAPU = SendCommand.set_apu_skin_temp_limit((uint)cpuTemp);
                 if (log) Logger.WriteLine($"APU Temp: {cpuTemp} {restultAPU}");
-
-                reapplyTimer.Enabled = AppConfig.IsMode("auto_uv");
-
             }
-            else
-            {
-                reapplyTimer.Enabled = false;
-            }
+
+            reapplyTimer.Enabled = AppConfig.IsMode("auto_uv");
         }
 
         public void SetUV(int cpuUV)
