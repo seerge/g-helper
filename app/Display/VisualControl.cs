@@ -25,7 +25,7 @@ namespace GHelper.Display
         VivoEycare = 7,
 
         Init = 10,
-        DimmingAsus = 9,
+        DimmingVivo = 9,
         DimmingVisual = 19,
         GamutMode = 200,
 
@@ -235,14 +235,14 @@ namespace GHelper.Display
         private static bool RunSplendid(SplendidCommand command, int? param1 = null, int? param2 = null)
         {
             var splendid = GetSplendidPath();
-            bool isGameVisual = Directory.Exists(GetGameVisualPath());
+            bool isVivo = AppConfig.IsVivoZenbook();
             bool isSplenddid = File.Exists(splendid);
 
             if (isSplenddid)
             {
-                if (command == SplendidCommand.DimmingVisual && !isGameVisual) command = SplendidCommand.DimmingAsus;
+                if (command == SplendidCommand.DimmingVisual && isVivo) command = SplendidCommand.DimmingVivo;
                 var result = ProcessHelper.RunCMD(splendid, (int)command + " " + param1 + " " + param2);
-                if (result.Contains("file not exist") || (result.Length == 0 && isGameVisual)) return false;
+                if (result.Contains("file not exist") || (result.Length == 0 && !isVivo)) return false;
             }
 
             return true;
