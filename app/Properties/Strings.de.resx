@@ -495,7 +495,7 @@ Trotzdem fortfahren?</value>
     <value>Laptopbildschirm</value>
   </data>
   <data name="LEDStatusIndicators" xml:space="preserve">
-    <value>LED Status Indicators</value>
+    <value>LED-Statusanzeige</value>
   </data>
   <data name="Lid" xml:space="preserve">
     <value>Deckel</value>
