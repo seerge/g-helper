@@ -691,6 +691,18 @@ namespace GHelper.Input
                     case 199: // ON Z13 - FN+F11 - cycles backlight
                         SetBacklight(4);
                         return;
+                    case 46: // Fn + F4 Vivobook Brightness down
+                        if (Control.ModifierKeys == Keys.Control && AppConfig.IsOLED())
+                        {
+                            SetBrightnessDimming(-10);
+                        }
+                        break;
+                    case 47: // Fn + F5 Vivobook Brightness up
+                        if (Control.ModifierKeys == Keys.Control && AppConfig.IsOLED())
+                        {
+                            SetBrightnessDimming(10);
+                        }
+                        break;
                 }
             }
 
