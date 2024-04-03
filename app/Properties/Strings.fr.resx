@@ -774,10 +774,10 @@ Voulez-vous continuer ?</value>
     <value>Mode d'affichage</value>
   </data>
   <data name="VisualModesHDR" xml:space="preserve">
-    <value>Visual Modes are not available when HDR is active</value>
+    <value>Les modes visuels ne sont pas disponibles lorsque le HDR est actif</value>
   </data>
   <data name="VisualModesScreen" xml:space="preserve">
-    <value>Visual Modes are not available when laptop screen is off</value>
+    <value>Les modes visuels ne sont pas disponibles lorsque l'écran de l'ordinateur portable est éteint</value>
   </data>
   <data name="VolumeDown" xml:space="preserve">
     <value>Vol-</value>
