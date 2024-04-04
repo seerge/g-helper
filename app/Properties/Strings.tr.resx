@@ -121,7 +121,7 @@
     <value>Hızlandırma</value>
   </data>
   <data name="ACPIError" xml:space="preserve">
-    <value>ASUS ACPI'ye bağlanılamıyor. Uygulama o olmadan çalışamaz. Asus Sistem Kontrol Arayüzü'nü yüklemeyi deneyin.</value>
+    <value>ASUS ACPI bağlanılamıyor. Uygulama onsuz çalışamaz. Asus Sistem Kontrol Arayüzünü kurmayı deneyin</value>
   </data>
   <data name="AlertAPUMemoryRestart" xml:space="preserve">
     <value>Değişiklikleri uygulamak için cihazınızı yeniden başlatın</value>
@@ -130,7 +130,7 @@
     <value>Şimdi yeniden başlatılsın mı?</value>
   </data>
   <data name="AlertDGPU" xml:space="preserve">
-    <value>Görünüşe göre GPU yoğun bir şekilde kullanılıyor, devre dışı bırakılsın mı?</value>
+    <value>GPU yoğun kullanımda gibi görünüyor, devre dışı bırakılsın mı?</value>
   </data>
   <data name="AlertDGPUTitle" xml:space="preserve">
     <value>Eko Modu</value>
@@ -283,7 +283,7 @@
     <value>Pil Sağlığı</value>
   </data>
   <data name="BatteryLimitFull" xml:space="preserve">
-    <value>Bir seferlik %100 şarj etme</value>
+    <value>Tek seferlik %100'e kadar şarj</value>
   </data>
   <data name="Binding" xml:space="preserve">
     <value>Tuş Atamaları</value>
@@ -304,7 +304,7 @@
     <value>Boot Sesi</value>
   </data>
   <data name="Brightness" xml:space="preserve">
-    <value>Parlaklığı</value>
+    <value>Parlaklık</value>
   </data>
   <data name="BrightnessDown" xml:space="preserve">
     <value>Parlaklığı Azalt</value>
@@ -495,7 +495,7 @@ Yine de devam etmek istiyor musunuz?</value>
     <value>Laptop Ekranı</value>
   </data>
   <data name="LEDStatusIndicators" xml:space="preserve">
-    <value>LED Status Indicators</value>
+    <value>LED Durum Göstergeleri</value>
   </data>
   <data name="Lid" xml:space="preserve">
     <value>Kapak</value>
@@ -507,7 +507,7 @@ Yine de devam etmek istiyor musunuz?</value>
     <value>Işıklandırma</value>
   </data>
   <data name="LockScreen" xml:space="preserve">
-    <value>Lock Screen</value>
+    <value>Kilit Ekranı</value>
   </data>
   <data name="Logo" xml:space="preserve">
     <value>Logo</value>
@@ -774,10 +774,10 @@ Yine de devam etmek istiyor musunuz?</value>
     <value>Görüntü Modu</value>
   </data>
   <data name="VisualModesHDR" xml:space="preserve">
-    <value>Visual Modes are not available when HDR is active</value>
+    <value>HDR etkin olduğunda Görsel Modlar kullanılamaz</value>
   </data>
   <data name="VisualModesScreen" xml:space="preserve">
-    <value>Visual Modes are not available when laptop screen is off</value>
+    <value>Bilgisayar ekranı kapalı olduğunda Görsel Modlar kullanılamaz</value>
   </data>
   <data name="VolumeDown" xml:space="preserve">
     <value>Sesi Azalt</value>
