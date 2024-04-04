@@ -169,7 +169,7 @@
     <value>Güç Sınırlarını Uygula</value>
   </data>
   <data name="ApplyWindowsPowerPlan" xml:space="preserve">
-    <value>Windows Güç Modunu otomatik ayarla</value>
+    <value>Windows Güç Modlarını otomatik ayarla</value>
   </data>
   <data name="APUMemory" xml:space="preserve">
     <value>GPU için Atanan Bellek</value>
@@ -390,7 +390,7 @@ Yine de devam etmek istiyor musunuz?</value>
     <value>Ekstra</value>
   </data>
   <data name="ExtraSettings" xml:space="preserve">
-    <value>Ekstra Ayarlar</value>
+    <value>Ek Ayarlar</value>
   </data>
   <data name="FactoryDefaults" xml:space="preserve">
     <value>Fabrika Ayarları</value>
