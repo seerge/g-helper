@@ -169,7 +169,7 @@
     <value>Güç Sınırlarını Uygula</value>
   </data>
   <data name="ApplyWindowsPowerPlan" xml:space="preserve">
-    <value>Windows Güç Modunu otomatik ayarla</value>
+    <value>Windows Güç Modlarını otomatik ayarla</value>
   </data>
   <data name="APUMemory" xml:space="preserve">
     <value>GPU için Atanan Bellek</value>
@@ -390,7 +390,7 @@ Yine de devam etmek istiyor musunuz?</value>
     <value>Ekstra</value>
   </data>
   <data name="ExtraSettings" xml:space="preserve">
-    <value>Ekstra Ayarlar</value>
+    <value>Ek Ayarlar</value>
   </data>
   <data name="FactoryDefaults" xml:space="preserve">
     <value>Fabrika Ayarları</value>
@@ -471,7 +471,7 @@ Yine de devam etmek istiyor musunuz?</value>
     <value>Yüksek</value>
   </data>
   <data name="ImageRotation" xml:space="preserve">
-    <value>Görüntü Rotasyonu</value>
+    <value>Görüntü Döndürme</value>
   </data>
   <data name="Import" xml:space="preserve">
     <value>Profili İçe Aktar</value>
@@ -516,7 +516,7 @@ Yine de devam etmek istiyor musunuz?</value>
     <value>Düşük</value>
   </data>
   <data name="LSDeadzones" xml:space="preserve">
-    <value>Sol Joystick Ölü Bölgeleri</value>
+    <value>Sol Çubuk Ölü Bölgeleri</value>
   </data>
   <data name="LTDeadzones" xml:space="preserve">
     <value>Sol Tetik Ölü Bölgeleri</value>
@@ -525,7 +525,7 @@ Yine de devam etmek istiyor musunuz?</value>
     <value>Ses Görselleştirici</value>
   </data>
   <data name="MatrixBanner" xml:space="preserve">
-    <value>Binary Banner</value>
+    <value>İkili Afiş</value>
   </data>
   <data name="MatrixBright" xml:space="preserve">
     <value>Parlak</value>
@@ -561,7 +561,7 @@ Yine de devam etmek istiyor musunuz?</value>
     <value>Dakika</value>
   </data>
   <data name="MouseAngleSnapping" xml:space="preserve">
-    <value>Angle Snapping</value>
+    <value>Açılı Yakalama</value>
   </data>
   <data name="MouseAutoPowerOff" xml:space="preserve">
     <value>Sonrasında Otomatik Kapat</value>
@@ -582,7 +582,7 @@ Yine de devam etmek istiyor musunuz?</value>
     <value>Performans</value>
   </data>
   <data name="MouseSynchronize" xml:space="preserve">
-    <value>Fare ile senkronize edin</value>
+    <value>Fare ile eşitle</value>
   </data>
   <data name="Multizone" xml:space="preserve">
     <value>Çok Bölgeli</value>
