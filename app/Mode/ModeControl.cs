@@ -18,13 +18,15 @@ namespace GHelper.Mode
         private bool _ryzenPower = false;
 
         static System.Timers.Timer reapplyTimer = default!;
+        static System.Timers.Timer modeToggleTimer = default!;
 
         public ModeControl()
         {
             reapplyTimer = new System.Timers.Timer(AppConfig.GetMode("reapply_time", 30) * 1000);
-            reapplyTimer.Elapsed += ReapplyTimer_Elapsed;
             reapplyTimer.Enabled = false;
+            reapplyTimer.Elapsed += ReapplyTimer_Elapsed;
         }
+
 
         private void ReapplyTimer_Elapsed(object? sender, System.Timers.ElapsedEventArgs e)
         {
@@ -54,6 +56,11 @@ namespace GHelper.Mode
             // Default power mode
             AppConfig.RemoveMode("powermode");
             PowerNative.SetPowerMode(Modes.GetCurrentBase());
+        }
+
+        public void Toast()
+        {
+            Program.toast.RunToast(Modes.GetCurrentName(), SystemInformation.PowerStatus.PowerLineStatus == PowerLineStatus.Online ? ToastIcon.Charger : ToastIcon.Battery);
         }
 
         public void SetPerformanceMode(int mode = -1, bool notify = false)
@@ -101,10 +108,7 @@ namespace GHelper.Mode
 
             if (AppConfig.Is("xgm_fan") && Program.acpi.IsXGConnected()) XGM.Reset();
 
-            if (notify)
-                Program.toast.RunToast(Modes.GetCurrentName(), SystemInformation.PowerStatus.PowerLineStatus == PowerLineStatus.Online ? ToastIcon.Charger : ToastIcon.Battery);
-
-
+            if (notify) Toast();
 
             // Power plan from config or defaulting to balanced
             if (AppConfig.GetModeString("scheme") is not null)
@@ -135,9 +139,34 @@ namespace GHelper.Mode
         }
 
 
+        private void ModeToggleTimer_Elapsed(object? sender, System.Timers.ElapsedEventArgs e)
+        {
+            modeToggleTimer.Stop();
+            Logger.WriteLine($"Timed mode: {Modes.GetCurrent()}");
+            SetPerformanceMode();
+
+        }
+
         public void CyclePerformanceMode(bool back = false)
         {
-            SetPerformanceMode(Modes.GetNext(back), true);
+            int delay = AppConfig.Get("mode_delay");
+            if (delay > 0)
+            {
+                if (modeToggleTimer is null)
+                {
+                    modeToggleTimer = new System.Timers.Timer(delay);
+                    modeToggleTimer.Elapsed += ModeToggleTimer_Elapsed;
+                }
+
+                modeToggleTimer.Stop();
+                modeToggleTimer.Start();
+                Modes.SetCurrent(Modes.GetNext(back));
+                Toast();
+            } else
+            {
+                SetPerformanceMode(Modes.GetNext(back), true);
+            }
+
         }
 
         public void AutoFans(bool force = false)
