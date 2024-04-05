@@ -118,6 +118,8 @@ namespace GHelper.Input
 
             if (!AppConfig.Is("skip_hotkeys"))
             {
+                hook.RegisterHotKey(ModifierKeys.Shift | ModifierKeys.Control | ModifierKeys.Alt, Keys.F13);
+
                 hook.RegisterHotKey(ModifierKeys.Shift | ModifierKeys.Control | ModifierKeys.Alt, Keys.F14);
                 hook.RegisterHotKey(ModifierKeys.Shift | ModifierKeys.Control | ModifierKeys.Alt, Keys.F15);
 
@@ -126,6 +128,7 @@ namespace GHelper.Input
                 hook.RegisterHotKey(ModifierKeys.Shift | ModifierKeys.Control | ModifierKeys.Alt, Keys.F18);
                 hook.RegisterHotKey(ModifierKeys.Shift | ModifierKeys.Control | ModifierKeys.Alt, Keys.F19);
                 hook.RegisterHotKey(ModifierKeys.Shift | ModifierKeys.Control | ModifierKeys.Alt, Keys.F20);
+
 
 
                 hook.RegisterHotKey(ModifierKeys.Control, Keys.VolumeDown);
@@ -384,6 +387,9 @@ namespace GHelper.Input
                         break;
                     case Keys.F4:
                         Program.settingsForm.BeginInvoke(Program.settingsForm.allyControl.ToggleModeHotkey);
+                        break;
+                    case Keys.F13:
+                        ToggleScreenRate();
                         break;
                     case Keys.F14:
                         Program.settingsForm.gpuControl.SetGPUMode(AsusACPI.GPUModeEco);
@@ -834,6 +840,12 @@ namespace GHelper.Input
             AppConfig.Set("screenpad_toggle", toggle);
 
             Program.toast.RunToast($"Screen Pad " + (toggle == 1 ? "On" : "Off"), toggle > 0 ? ToastIcon.BrightnessUp : ToastIcon.BrightnessDown);
+        }
+
+        public static void ToggleScreenRate()
+        {
+            AppConfig.Set("screen_auto", 0);
+            screenControl.ToggleScreenRate();
         }
 
         public static void ToggleCamera()
