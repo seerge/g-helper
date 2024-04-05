@@ -135,7 +135,7 @@ namespace GHelper.AnimeMatrix
         public void Set(Packet packet, string? log = null)
         {
             _usbProvider?.Set(packet.Data);
-            if (log is not null) Logger.WriteLine("Slash:" + BitConverter.ToString(packet.Data));
+            if (log is not null) Logger.WriteLine($"{log}:" + BitConverter.ToString(packet.Data).Substring(0,48));
         }
 
 
