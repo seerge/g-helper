@@ -121,7 +121,7 @@
     <value>Hızlandırma</value>
   </data>
   <data name="ACPIError" xml:space="preserve">
-    <value>ASUS ACPI'ye bağlanılamıyor. Uygulama o olmadan çalışamaz. Asus Sistem Kontrol Arayüzü'nü yüklemeyi deneyin.</value>
+    <value>ASUS ACPI bağlanılamıyor. Uygulama onsuz çalışamaz. Asus Sistem Kontrol Arayüzünü kurmayı deneyin</value>
   </data>
   <data name="AlertAPUMemoryRestart" xml:space="preserve">
     <value>Değişiklikleri uygulamak için cihazınızı yeniden başlatın</value>
@@ -130,7 +130,7 @@
     <value>Şimdi yeniden başlatılsın mı?</value>
   </data>
   <data name="AlertDGPU" xml:space="preserve">
-    <value>Görünüşe göre GPU yoğun bir şekilde kullanılıyor, devre dışı bırakılsın mı?</value>
+    <value>GPU yoğun kullanımda gibi, devre dışı bırakılsın mı?</value>
   </data>
   <data name="AlertDGPUTitle" xml:space="preserve">
     <value>Eko Modu</value>
@@ -169,10 +169,10 @@
     <value>Güç Sınırlarını Uygula</value>
   </data>
   <data name="ApplyWindowsPowerPlan" xml:space="preserve">
-    <value>Windows Güç Modunu otomatik ayarla</value>
+    <value>Windows Güç Modlarını otomatik ayarla</value>
   </data>
   <data name="APUMemory" xml:space="preserve">
-    <value>GPU'ya Atanan Bellek</value>
+    <value>GPU için Atanan Bellek</value>
   </data>
   <data name="AsusServicesRunning" xml:space="preserve">
     <value>Çalışan Asus Hizmetleri</value>
@@ -244,7 +244,7 @@
     <value>Otomatik</value>
   </data>
   <data name="AutoRefreshTooltip" xml:space="preserve">
-    <value>Pil tasarrufu için 60Hz kullanılır ve şarja takıldığında eski haline getirir</value>
+    <value>Pil tasarrufu için 60Hz kullanılır, şarja takıldığında eski haline gelir</value>
   </data>
   <data name="Awake" xml:space="preserve">
     <value>Uyanırken</value>
@@ -262,7 +262,7 @@
     <value>Kapalı</value>
   </data>
   <data name="BacklightTimeout" xml:space="preserve">
-    <value>Pildeyken klavye ışığının kapanma süresi</value>
+    <value>Pilde klavye ışığı kapanma süresi</value>
   </data>
   <data name="BacklightTimeoutBattery" xml:space="preserve">
     <value>Pildeyken Arka Işık Zaman Aşımı</value>
@@ -283,7 +283,7 @@
     <value>Pil Sağlığı</value>
   </data>
   <data name="BatteryLimitFull" xml:space="preserve">
-    <value>Bir seferlik %100 şarj etme</value>
+    <value>Tek seferlik %100'e kadar şarj</value>
   </data>
   <data name="Binding" xml:space="preserve">
     <value>Tuş Atamaları</value>
@@ -298,13 +298,13 @@
     <value>BIOS ve Sürücü Güncellemeleri</value>
   </data>
   <data name="Boot" xml:space="preserve">
-    <value>Boot</value>
+    <value>Açılışta</value>
   </data>
   <data name="BootSound" xml:space="preserve">
-    <value>Boot Sesi</value>
+    <value>Önyükleme Sesi</value>
   </data>
   <data name="Brightness" xml:space="preserve">
-    <value>Parlaklığı</value>
+    <value>Parlaklık</value>
   </data>
   <data name="BrightnessDown" xml:space="preserve">
     <value>Parlaklığı Azalt</value>
@@ -313,10 +313,10 @@
     <value>Parlaklığı Artır</value>
   </data>
   <data name="BWTrayIcon" xml:space="preserve">
-    <value>Siyah-beyaz tepsi simgesi</value>
+    <value>Siyah ve beyaz tepsi simgesi</value>
   </data>
   <data name="Calibrate" xml:space="preserve">
-    <value>Kalibre Et</value>
+    <value>Kalibrasyon</value>
   </data>
   <data name="Charging" xml:space="preserve">
     <value>Şarj oluyor</value>
@@ -331,7 +331,7 @@
     <value>Kontrolcü</value>
   </data>
   <data name="CPUBoost" xml:space="preserve">
-    <value>CPU Desteği</value>
+    <value>CPU Artışı</value>
   </data>
   <data name="Custom" xml:space="preserve">
     <value>Özel</value>
@@ -352,7 +352,7 @@
     <value>Ekran overdrive özelliğini devre dışı bırak</value>
   </data>
   <data name="Discharging" xml:space="preserve">
-    <value>Şarj azalıyor</value>
+    <value>Şarj Azalıyor</value>
   </data>
   <data name="DownloadColorProfiles" xml:space="preserve">
     <value>Renk Profillerini İndir</value>
@@ -364,13 +364,13 @@
     <value>Sürücüler ve Yazılımlar</value>
   </data>
   <data name="EcoGPUTooltip" xml:space="preserve">
-    <value>Pil tasarrufu için harici GPU'yu devre dışı bırakır</value>
+    <value>Pil tasarrufu için dGPU devre dışı bırakılır</value>
   </data>
   <data name="EcoMode" xml:space="preserve">
     <value>Eko</value>
   </data>
   <data name="EnableGPUOnShutdown" xml:space="preserve">
-    <value>Kapanma sırasında harici GPU'yu etkinleştir (Eco moduyla ilgili sorunları önler)</value>
+    <value>Kapatma sırasında GPU'yu etkinleştir (Eco modundaki sorunları önler)</value>
   </data>
   <data name="EnableOptimusText" xml:space="preserve">
     <value>NVIDIA Denetim Masası'ndaki Görüntü Modu Optimus olarak ayarlı değilken Eko moduna geçilerek harici GPU'nun devre dışı bırakılması, bir sonraki yeniden başlatmaya kadar parlaklık ayarlarında sorunlara neden olabilir. 
@@ -390,7 +390,7 @@ Yine de devam etmek istiyor musunuz?</value>
     <value>Ekstra</value>
   </data>
   <data name="ExtraSettings" xml:space="preserve">
-    <value>Ekstra Ayarlar</value>
+    <value>Ek Ayarlar</value>
   </data>
   <data name="FactoryDefaults" xml:space="preserve">
     <value>Fabrika Ayarları</value>
@@ -447,13 +447,13 @@ Yine de devam etmek istiyor musunuz?</value>
     <value>GPU Modu</value>
   </data>
   <data name="GPUModeEco" xml:space="preserve">
-    <value>sadece dahili GPU</value>
+    <value>Sadece iGPU</value>
   </data>
   <data name="GPUModeStandard" xml:space="preserve">
-    <value>dahili + harici GPU</value>
+    <value>iGPU + dGPU</value>
   </data>
   <data name="GPUModeUltimate" xml:space="preserve">
-    <value>sadece harici GPU</value>
+    <value>Ayrıcalıklı dGPU</value>
   </data>
   <data name="GPUPower" xml:space="preserve">
     <value>GPU Gücü</value>
@@ -471,7 +471,7 @@ Yine de devam etmek istiyor musunuz?</value>
     <value>Yüksek</value>
   </data>
   <data name="ImageRotation" xml:space="preserve">
-    <value>Görüntü Rotasyonu</value>
+    <value>Görüntü Döndürme</value>
   </data>
   <data name="Import" xml:space="preserve">
     <value>Profili İçe Aktar</value>
@@ -483,7 +483,7 @@ Yine de devam etmek istiyor musunuz?</value>
     <value>Klavye</value>
   </data>
   <data name="KillGpuApps" xml:space="preserve">
-    <value>Eco'ya geçerken harici GPU'yu kullanan tüm uygulamaları durdur</value>
+    <value>Eco moda geçerken GPU kullanan tüm uygulamaları durdur</value>
   </data>
   <data name="LaptopBacklight" xml:space="preserve">
     <value>Laptop Aydınlatması</value>
@@ -495,7 +495,7 @@ Yine de devam etmek istiyor musunuz?</value>
     <value>Laptop Ekranı</value>
   </data>
   <data name="LEDStatusIndicators" xml:space="preserve">
-    <value>LED Status Indicators</value>
+    <value>LED Durum Göstergeleri</value>
   </data>
   <data name="Lid" xml:space="preserve">
     <value>Kapak</value>
@@ -507,7 +507,7 @@ Yine de devam etmek istiyor musunuz?</value>
     <value>Işıklandırma</value>
   </data>
   <data name="LockScreen" xml:space="preserve">
-    <value>Lock Screen</value>
+    <value>Kilit Ekranı</value>
   </data>
   <data name="Logo" xml:space="preserve">
     <value>Logo</value>
@@ -516,7 +516,7 @@ Yine de devam etmek istiyor musunuz?</value>
     <value>Düşük</value>
   </data>
   <data name="LSDeadzones" xml:space="preserve">
-    <value>Sol Joystick Ölü Bölgeleri</value>
+    <value>Sol Çubuk Ölü Bölgeleri</value>
   </data>
   <data name="LTDeadzones" xml:space="preserve">
     <value>Sol Tetik Ölü Bölgeleri</value>
@@ -525,7 +525,7 @@ Yine de devam etmek istiyor musunuz?</value>
     <value>Ses Görselleştirici</value>
   </data>
   <data name="MatrixBanner" xml:space="preserve">
-    <value>Binary Banner</value>
+    <value>İkili Afiş</value>
   </data>
   <data name="MatrixBright" xml:space="preserve">
     <value>Parlak</value>
@@ -549,7 +549,7 @@ Yine de devam etmek istiyor musunuz?</value>
     <value>Resim</value>
   </data>
   <data name="MaxRefreshTooltip" xml:space="preserve">
-    <value>Daha düşük gecikme için maksimum yenileme hızı</value>
+    <value>En düşük gecikme için en yüksek yenileme hızı</value>
   </data>
   <data name="MinRefreshTooltip" xml:space="preserve">
     <value>Pil tasarrufu için 60Hz yenileme hızı</value>
@@ -561,7 +561,7 @@ Yine de devam etmek istiyor musunuz?</value>
     <value>Dakika</value>
   </data>
   <data name="MouseAngleSnapping" xml:space="preserve">
-    <value>Angle Snapping</value>
+    <value>Açılı Yakalama</value>
   </data>
   <data name="MouseAutoPowerOff" xml:space="preserve">
     <value>Sonrasında Otomatik Kapat</value>
@@ -582,7 +582,7 @@ Yine de devam etmek istiyor musunuz?</value>
     <value>Performans</value>
   </data>
   <data name="MouseSynchronize" xml:space="preserve">
-    <value>Fare ile senkronize edin</value>
+    <value>Fare ile eşitle</value>
   </data>
   <data name="Multizone" xml:space="preserve">
     <value>Çok Bölgeli</value>
@@ -591,7 +591,7 @@ Yine de devam etmek istiyor musunuz?</value>
     <value>Çok Bölgeli (Güçlü)</value>
   </data>
   <data name="Muted" xml:space="preserve">
-    <value>Ses kapalı</value>
+    <value>Susturuldu</value>
   </data>
   <data name="MuteMic" xml:space="preserve">
     <value>Mikrofonu Sustur</value>
@@ -606,7 +606,7 @@ Yine de devam etmek istiyor musunuz?</value>
     <value>Güncelleme yok</value>
   </data>
   <data name="NotConnected" xml:space="preserve">
-    <value>Bağlantı Yok</value>
+    <value>Bağlı Değil</value>
   </data>
   <data name="Off" xml:space="preserve">
     <value>Kapalı</value>
@@ -621,13 +621,13 @@ Yine de devam etmek istiyor musunuz?</value>
     <value>G-Helper penceresini aç</value>
   </data>
   <data name="Optimized" xml:space="preserve">
-    <value>Optimize edilmiş</value>
+    <value>İyileştirilmiş</value>
   </data>
   <data name="OptimizedGPUTooltip" xml:space="preserve">
-    <value>Pille çalışırken Eko moda ve şarjdayken Standart moda geçiş yapın</value>
+    <value>Pil ile çalışırken Eko moda, şarjda Standart moda geçiş yap</value>
   </data>
   <data name="OptimizedUSBC" xml:space="preserve">
-    <value>Optimize edilmiş modda USB-c şarj cihazında GPU'yu devre dışı bırak</value>
+    <value>İyileştirilmiş modda USB-C şarj cihazı bağlıyken, GPU devre dışı kalsın</value>
   </data>
   <data name="Other" xml:space="preserve">
     <value>Diğer</value>
@@ -657,13 +657,13 @@ Yine de devam etmek istiyor musunuz?</value>
     <value>Güç Sınırları deneysel bir özelliktir. Riski göze alarak dikkatli kullanın!</value>
   </data>
   <data name="PrintScreen" xml:space="preserve">
-    <value>Ekran Görüntüsü Al</value>
+    <value>PrintScreen</value>
   </data>
   <data name="Profile" xml:space="preserve">
     <value>Profil</value>
   </data>
   <data name="Quit" xml:space="preserve">
-    <value>Çıkış Yap</value>
+    <value>Çıkış</value>
   </data>
   <data name="Reset" xml:space="preserve">
     <value>Sıfırla</value>
@@ -693,7 +693,7 @@ Yine de devam etmek istiyor musunuz?</value>
     <value>Screenpad Parlaklığını Artır</value>
   </data>
   <data name="Shutdown" xml:space="preserve">
-    <value>Kapatma</value>
+    <value>Kapanış</value>
   </data>
   <data name="Silent" xml:space="preserve">
     <value>Sessiz</value>
@@ -702,7 +702,7 @@ Yine de devam etmek istiyor musunuz?</value>
     <value>Uyku</value>
   </data>
   <data name="StandardGPUTooltip" xml:space="preserve">
-    <value>Standart kullanım için harici GPU'yu etkinleştirir</value>
+    <value>Standart kullanım için dGPU etkinleştirilir</value>
   </data>
   <data name="StandardMode" xml:space="preserve">
     <value>Standart</value>
@@ -750,13 +750,13 @@ Yine de devam etmek istiyor musunuz?</value>
     <value>Pille çalışırken kapat</value>
   </data>
   <data name="UltimateGPUTooltip" xml:space="preserve">
-    <value>Dizüstü ekranını harici GPU'ya yönlendirerek FPS'yi maksimize eder</value>
+    <value>Dizüstü ekranını dGPU üstüne yönlendirerek FPS en üst düzeye çıkar</value>
   </data>
   <data name="UltimateMode" xml:space="preserve">
     <value>Ultimate</value>
   </data>
   <data name="UndervoltingRisky" xml:space="preserve">
-    <value>Undervolting deneysel ve riskli bir özelliktir. Uygulanan değerler cihazınız için çok düşükse, cihazınız stabil çalışmayabilir, kapanabilir veya veri kaybına uğrayabilir. Yine de denemek istiyorsanız, önce küçük değerlerden başlayıp Uygula'ya tıklayın ve sizin için uygun olanı test edin.</value>
+    <value>Düşük voltaj deneysel ve riskli bir özelliktir. Uygulanan değerler cihaz için çok düşükse, cihazı stabil çalışmayabilir, kapanabilir veya veri kaybına uğrayabilir. Yine de denemek istiyorsanız, önce küçük değerlerden başlayın ve sizin için uygun olanı test edin.</value>
   </data>
   <data name="Unmuted" xml:space="preserve">
     <value>Ses açık</value>
@@ -768,16 +768,16 @@ Yine de devam etmek istiyor musunuz?</value>
     <value>Sürüm</value>
   </data>
   <data name="VibrationStrength" xml:space="preserve">
-    <value>Titreşim Şiddeti</value>
+    <value>Titreşim Yoğunluğu</value>
   </data>
   <data name="VisualMode" xml:space="preserve">
-    <value>Görüntü Modu</value>
+    <value>Görsel Mod</value>
   </data>
   <data name="VisualModesHDR" xml:space="preserve">
-    <value>Visual Modes are not available when HDR is active</value>
+    <value>HDR etkin olduğunda Görsel Modlar kullanılamaz</value>
   </data>
   <data name="VisualModesScreen" xml:space="preserve">
-    <value>Visual Modes are not available when laptop screen is off</value>
+    <value>Bilgisayar ekranı kapalı olduğunda Görsel Modlar kullanılamaz</value>
   </data>
   <data name="VolumeDown" xml:space="preserve">
     <value>Sesi Azalt</value>
@@ -792,6 +792,6 @@ Yine de devam etmek istiyor musunuz?</value>
     <value>Uygulama penceresini her zaman en üstte tut</value>
   </data>
   <data name="Zoom" xml:space="preserve">
-    <value>Yakınlaştırma</value>
+    <value>Yakınlaştır</value>
   </data>
 </root>

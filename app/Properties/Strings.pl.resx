@@ -507,7 +507,7 @@ Nadal chcesz kontynuować?</value>
     <value>Oświetlenie</value>
   </data>
   <data name="LockScreen" xml:space="preserve">
-    <value>Lock Screen</value>
+    <value>Ekran blokady</value>
   </data>
   <data name="Logo" xml:space="preserve">
     <value>Logo</value>
