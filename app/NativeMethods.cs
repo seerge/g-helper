@@ -32,6 +32,15 @@ public class NativeMethods
     [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
     private static extern uint FormatMessage(uint dwFlags, IntPtr lpSource, uint dwMessageId, uint dwLanguageId, out string lpBuffer, uint nSize, IntPtr Arguments);
 
+    [DllImport("user32.dll", SetLastError = true)]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    private static extern bool LockWorkStation();
+
+    public static void LockScreen()
+    {
+        LockWorkStation();
+    }
+
     public static void TurnOffScreen()
     {
         Form f = new Form();

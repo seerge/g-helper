@@ -506,6 +506,9 @@ Vis tiek norite tęsti?</value>
   <data name="Lighting" xml:space="preserve">
     <value>Apšvietimas</value>
   </data>
+  <data name="LockScreen" xml:space="preserve">
+    <value>Lock Screen</value>
+  </data>
   <data name="Logo" xml:space="preserve">
     <value>Logotipas</value>
   </data>

@@ -21,6 +21,16 @@
             }
         }
 
+        public void ToggleScreenRate()
+        {
+            var laptopScreen = ScreenNative.FindLaptopScreen(true);
+            var refreshRate = ScreenNative.GetRefreshRate(laptopScreen);
+            if (refreshRate < 0) return;
+
+            ScreenNative.SetRefreshRate(laptopScreen, refreshRate > 60 ? 60 : ScreenNative.GetMaxRefreshRate(laptopScreen));
+            InitScreen();
+        }
+
 
         public void SetScreen(int frequency = -1, int overdrive = -1, int miniled = -1)
         {

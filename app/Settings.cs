@@ -140,9 +140,9 @@ namespace GHelper
             buttonOptimized.BorderColor = colorEco;
             buttonXGM.BorderColor = colorTurbo;
 
-            button60Hz.BorderColor = SystemColors.ActiveBorder;
-            button120Hz.BorderColor = SystemColors.ActiveBorder;
-            buttonScreenAuto.BorderColor = SystemColors.ActiveBorder;
+            button60Hz.BorderColor = colorGray;
+            button120Hz.BorderColor = colorGray;
+            buttonScreenAuto.BorderColor = colorGray;
             buttonMiniled.BorderColor = colorTurbo;
 
             buttonSilent.Click += ButtonSilent_Click;
@@ -269,9 +269,7 @@ namespace GHelper
 
         private void LabelCharge_Click(object? sender, EventArgs e)
         {
-            var report = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + "\\battery-report.html";
-            ProcessHelper.RunCMD("powershell", $"powercfg /batteryreport /output \"{report}\"");
-            ProcessHelper.RunCMD("explorer", $"\"{report}\"");
+            BatteryControl.BatteryReport();
         }
 
         private void LabelVisual_Click(object? sender, EventArgs e)

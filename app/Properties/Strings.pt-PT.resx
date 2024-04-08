@@ -506,6 +506,9 @@ Quer prosseguir?</value>
   <data name="Lighting" xml:space="preserve">
     <value>Iluminação</value>
   </data>
+  <data name="LockScreen" xml:space="preserve">
+    <value>Lock Screen</value>
+  </data>
   <data name="Logo" xml:space="preserve">
     <value>Logo</value>
   </data>

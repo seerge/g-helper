@@ -1224,6 +1224,15 @@ namespace GHelper.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Lock Screen.
+        /// </summary>
+        internal static string LockScreen {
+            get {
+                return ResourceManager.GetString("LockScreen", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Logo.
         /// </summary>
         internal static string Logo {
