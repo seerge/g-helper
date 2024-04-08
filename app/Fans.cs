@@ -1261,7 +1261,7 @@ namespace GHelper
 
                     labelTip.Text = Math.Floor(curPoint.XValue) + "C, " + ChartYLabel((int)curPoint.YValues[0], device, " " + Properties.Strings.RPM);
                     labelTip.Top = e.Y + ((Control)sender).Top;
-                    labelTip.Left = e.X - 50;
+                    labelTip.Left = Math.Min(chart.Width - labelTip.Width - 20, e.X - 50);
 
                 }
                 catch

@@ -30,6 +30,7 @@ namespace GHelper
               {"aura", Properties.Strings.ToggleAura},
               {"performance", Properties.Strings.PerformanceMode},
               {"screen", Properties.Strings.ToggleScreen},
+              {"lock", Properties.Strings.LockScreen},
               {"miniled", Properties.Strings.ToggleMiniled},
               {"fnlock", Properties.Strings.ToggleFnLock},
               {"brightness_down", Properties.Strings.BrightnessDown},

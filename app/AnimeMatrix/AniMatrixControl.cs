@@ -61,9 +61,11 @@ namespace GHelper.AnimeMatrix
 
         public void SetLidMode(bool force = false)
         {
-            if (AppConfig.Is("matrix_lid") || force)
+            bool matrixLid = AppConfig.Is("matrix_lid");
+            if (matrixLid || force)
             {
                 Logger.WriteLine($"Matrix LidClosed: {lidClose}");
+                if (deviceSlash is not null) deviceSlash.SetLidMode(matrixLid);
                 SetDevice(true);
             }
         }

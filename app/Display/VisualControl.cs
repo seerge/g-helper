@@ -5,6 +5,10 @@ namespace GHelper.Display
 {
     public enum SplendidGamut : int
     {
+        VivoNative = 0,
+        VivoSRGB = 1,
+        VivoDCIP3 = 3,
+        ViviDisplayP3 = 4,
         Native = 50,
         sRGB = 51,
         DCIP3 = 53,
@@ -15,8 +19,13 @@ namespace GHelper.Display
     {
         None = -1,
 
+        VivoNormal = 1,
+        VivoVivid = 2,
+        VivoManual = 6,
+        VivoEycare = 7,
+
         Init = 10,
-        DimmingAsus = 9,
+        DimmingVivo = 9,
         DimmingVisual = 19,
         GamutMode = 200,
 
@@ -52,29 +61,39 @@ namespace GHelper.Display
             return Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + "\\ASUS\\GameVisual";
         }
 
+        public static string GetVivobookPath()
+        {
+            return Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + "\\ASUS\\ASUS System Control Interface\\ASUSOptimization\\Splendid";
+        }
+
         public static Dictionary<SplendidGamut, string> GetGamutModes()
         {
+
+            bool isVivo = AppConfig.IsVivoZenbook();
+
             Dictionary<SplendidGamut, string> _modes = new Dictionary<SplendidGamut, string>();
 
-            string gameVisualPath = GetGameVisualPath();
-            if (!Directory.Exists(gameVisualPath))
+            string iccPath = isVivo ? GetVivobookPath() : GetGameVisualPath();
+
+            if (!Directory.Exists(iccPath))
             {
-                Logger.WriteLine(gameVisualPath + " doesn't exit");
+                Logger.WriteLine(iccPath + " doesn't exit");
                 return _modes;
             }
 
             try
             {
-                DirectoryInfo d = new DirectoryInfo(GetGameVisualPath());
+                DirectoryInfo d = new DirectoryInfo(iccPath);
                 FileInfo[] icms = d.GetFiles("*.icm");
                 if (icms.Length == 0) return _modes;
 
-                _modes.Add(SplendidGamut.Native, "Gamut: Native");
+                _modes.Add(isVivo ? SplendidGamut.VivoNative : SplendidGamut.Native, "Gamut: Native");
                 foreach (FileInfo icm in icms)
                 {
-                    if (icm.Name.Contains("sRGB")) _modes.Add(SplendidGamut.sRGB, "Gamut: sRGB");
-                    if (icm.Name.Contains("DCIP3")) _modes.Add(SplendidGamut.DCIP3, "Gamut: DCIP3");
-                    if (icm.Name.Contains("DisplayP3")) _modes.Add(SplendidGamut.DisplayP3, "Gamut: DisplayP3");
+                    //Logger.WriteLine(icm.FullName);
+                    if (icm.Name.Contains("sRGB")) _modes.Add(isVivo ? SplendidGamut.VivoSRGB : SplendidGamut.sRGB, "Gamut: sRGB");
+                    if (icm.Name.Contains("DCIP3")) _modes.Add(isVivo ? SplendidGamut.VivoDCIP3 : SplendidGamut.DCIP3, "Gamut: DCIP3");
+                    if (icm.Name.Contains("DisplayP3")) _modes.Add(isVivo ? SplendidGamut.ViviDisplayP3 : SplendidGamut.DisplayP3, "Gamut: DisplayP3");
                 }
                 return _modes;
             }
@@ -87,6 +106,18 @@ namespace GHelper.Display
 
         public static Dictionary<SplendidCommand, string> GetVisualModes()
         {
+
+            if (AppConfig.IsVivoZenbook())
+            {
+                return new Dictionary<SplendidCommand, string>
+                {
+                    { SplendidCommand.VivoNormal, "Default" },
+                    { SplendidCommand.VivoVivid, "Vivid" },
+                    { SplendidCommand.VivoManual, "Manual" },
+                    { SplendidCommand.VivoEycare, "Eyecare" },
+                };
+            }
+
             return new Dictionary<SplendidCommand, string>
             {
                 { SplendidCommand.Default, "Default"},
@@ -114,6 +145,18 @@ namespace GHelper.Display
             };
         }
 
+        public static Dictionary<int, string> GetEyeCares()
+        {
+            return new Dictionary<int, string>
+            {
+                { 0, "0"},
+                { 1, "1"},
+                { 2, "2"},
+                { 3, "3"},
+                { 4, "4"},
+            };
+        }
+
         public static void SetGamut(int mode = 50)
         {
             if (RunSplendid(SplendidCommand.GamutMode, 0, mode)) return;
@@ -136,7 +179,24 @@ namespace GHelper.Display
 
             if (whiteBalance != DefaultColorTemp && !init) ProcessHelper.RunAsAdmin();
 
-            int balance = mode == SplendidCommand.Eyecare ? 2 : whiteBalance;
+            int? balance;
+            
+            switch (mode) {
+                case SplendidCommand.Eyecare:
+                    balance = 2;
+                    break;
+                case SplendidCommand.VivoNormal:
+                case SplendidCommand.VivoVivid:
+                    balance = null;
+                    break;
+                case SplendidCommand.VivoEycare:
+                    balance = Math.Abs(whiteBalance - 50) * 4 / 50;
+                    break;
+                default:
+                    balance = whiteBalance;
+                    break;
+            }
+
             if (RunSplendid(mode, 0, balance)) return;
 
             if (_init)
@@ -175,14 +235,14 @@ namespace GHelper.Display
         private static bool RunSplendid(SplendidCommand command, int? param1 = null, int? param2 = null)
         {
             var splendid = GetSplendidPath();
-            bool isGameVisual = Directory.Exists(GetGameVisualPath());
+            bool isVivo = AppConfig.IsVivoZenbook();
             bool isSplenddid = File.Exists(splendid);
 
             if (isSplenddid)
             {
-                if (command == SplendidCommand.DimmingVisual && !isGameVisual) command = SplendidCommand.DimmingAsus;
+                if (command == SplendidCommand.DimmingVisual && isVivo) command = SplendidCommand.DimmingVivo;
                 var result = ProcessHelper.RunCMD(splendid, (int)command + " " + param1 + " " + param2);
-                if (result.Contains("file not exist") || (result.Length == 0 && isGameVisual)) return false;
+                if (result.Contains("file not exist") || (result.Length == 0 && !isVivo)) return false;
             }
 
             return true;
