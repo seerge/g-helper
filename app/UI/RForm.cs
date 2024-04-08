@@ -10,6 +10,7 @@ namespace GHelper.UI
         public static Color colorStandard = Color.FromArgb(255, 58, 174, 239);
         public static Color colorTurbo = Color.FromArgb(255, 255, 32, 32);
         public static Color colorCustom = Color.FromArgb(255, 255, 128, 0);
+        public static Color colorGray = Color.FromArgb(255, 168, 168, 168);
 
 
         public static Color buttonMain;

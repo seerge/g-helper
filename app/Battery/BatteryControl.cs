@@ -1,4 +1,7 @@
-﻿namespace GHelper.Battery
+﻿using GHelper.Helpers;
+using System.Diagnostics;
+
+namespace GHelper.Battery
 {
     internal class BatteryControl
     {
@@ -40,6 +43,26 @@
             AppConfig.Set("charge_full", 0);
 
             Program.settingsForm.VisualiseBattery(limit);
+        }
+
+        public static void BatteryReport()
+        {
+            var reportDir = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+
+            try
+            {
+                var cmd = new Process();
+                cmd.StartInfo.WorkingDirectory = reportDir;
+                cmd.StartInfo.UseShellExecute = false;
+                cmd.StartInfo.CreateNoWindow = true;
+                cmd.StartInfo.FileName = "powershell";
+                cmd.StartInfo.Arguments = "powercfg /batteryreport; explorer battery-report.html";
+                cmd.Start();
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLine(ex.Message);
+            }
         }
 
     }

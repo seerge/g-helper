@@ -406,7 +406,7 @@ public static class AppConfig
 
     public static bool IsOLED()
     {
-        return ContainsModel("OLED") || IsSlash() || ContainsModel("M7600") || ContainsModel("UX64") || ContainsModel("UX34") || ContainsModel("UX53") || ContainsModel("K360") || ContainsModel("X150") || ContainsModel("M350") || ContainsModel("K650") || ContainsModel("UM53") || ContainsModel("K660") || ContainsModel("UX84") || ContainsModel("M650") || ContainsModel("K340");
+        return ContainsModel("OLED") || IsSlash() || ContainsModel("M7600") || ContainsModel("UX64") || ContainsModel("UX34") || ContainsModel("UX53") || ContainsModel("K360") || ContainsModel("X150") || ContainsModel("M350") || ContainsModel("K650") || ContainsModel("UM53") || ContainsModel("K660") || ContainsModel("UX84") || ContainsModel("M650") || ContainsModel("K340") || ContainsModel("K350");
     }
 
     public static bool IsNoOverdrive()
@@ -442,7 +442,7 @@ public static class AppConfig
 
     public static bool IsNoDirectRGB()
     {
-        return ContainsModel("GA503") || ContainsModel("G533Q") || IsSlash();
+        return ContainsModel("GA503") || ContainsModel("G533Q") || ContainsModel("GU502") || IsSlash();
     }
 
     public static bool IsStrixNumpad()
@@ -535,7 +535,10 @@ public static class AppConfig
         try
         {
             var (bios, model) = GetBiosAndModel();
-            return (Int32.Parse(bios) == 317 || Int32.Parse(bios) == 316);
+            var biosVersion = Int32.Parse(bios);
+            if (ContainsModel("GA503RM") && biosVersion == 317) return true;
+            if ((ContainsModel("GA503RS") || ContainsModel("GA503RW")) && biosVersion == 316) return true;
+            return false;
         }
         catch
         {

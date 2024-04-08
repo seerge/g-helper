@@ -47,7 +47,7 @@ namespace GHelper.Display
                     info.monitorFriendlyDeviceName == internalName)
                 {
                     if (log) Logger.WriteLine(info.monitorFriendlyDeviceName + " HDR: " + colorInfo.advancedColorEnabled + " " + colorInfo.bitsPerColorChannel + " " + colorInfo.value + " " + colorInfo.wideColorEnforced);
-                    return colorInfo.advancedColorEnabled && colorInfo.bitsPerColorChannel > 8;
+                    return colorInfo.advancedColorEnabled && (colorInfo.bitsPerColorChannel > 8 || !colorInfo.wideColorEnforced);
                 }
 
             }

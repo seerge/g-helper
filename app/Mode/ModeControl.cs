@@ -15,19 +15,23 @@ namespace GHelper.Mode
 
         private int _cpuUV = 0;
         private int _igpuUV = 0;
+        private bool _ryzenPower = false;
 
         static System.Timers.Timer reapplyTimer = default!;
+        static System.Timers.Timer modeToggleTimer = default!;
 
         public ModeControl()
         {
             reapplyTimer = new System.Timers.Timer(AppConfig.GetMode("reapply_time", 30) * 1000);
-            reapplyTimer.Elapsed += ReapplyTimer_Elapsed;
             reapplyTimer.Enabled = false;
+            reapplyTimer.Elapsed += ReapplyTimer_Elapsed;
         }
+
 
         private void ReapplyTimer_Elapsed(object? sender, System.Timers.ElapsedEventArgs e)
         {
-            SetCPUTemp(AppConfig.GetMode("cpu_temp"), false);
+            SetCPUTemp(AppConfig.GetMode("cpu_temp"));
+            SetRyzenPower();
         }
 
         public void AutoPerformance(bool powerChanged = false)
@@ -52,6 +56,11 @@ namespace GHelper.Mode
             // Default power mode
             AppConfig.RemoveMode("powermode");
             PowerNative.SetPowerMode(Modes.GetCurrentBase());
+        }
+
+        public void Toast()
+        {
+            Program.toast.RunToast(Modes.GetCurrentName(), SystemInformation.PowerStatus.PowerLineStatus == PowerLineStatus.Online ? ToastIcon.Charger : ToastIcon.Battery);
         }
 
         public void SetPerformanceMode(int mode = -1, bool notify = false)
@@ -99,10 +108,7 @@ namespace GHelper.Mode
 
             if (AppConfig.Is("xgm_fan") && Program.acpi.IsXGConnected()) XGM.Reset();
 
-            if (notify)
-                Program.toast.RunToast(Modes.GetCurrentName(), SystemInformation.PowerStatus.PowerLineStatus == PowerLineStatus.Online ? ToastIcon.Charger : ToastIcon.Battery);
-
-
+            if (notify) Toast();
 
             // Power plan from config or defaulting to balanced
             if (AppConfig.GetModeString("scheme") is not null)
@@ -133,9 +139,34 @@ namespace GHelper.Mode
         }
 
 
+        private void ModeToggleTimer_Elapsed(object? sender, System.Timers.ElapsedEventArgs e)
+        {
+            modeToggleTimer.Stop();
+            Logger.WriteLine($"Timed mode: {Modes.GetCurrent()}");
+            SetPerformanceMode();
+
+        }
+
         public void CyclePerformanceMode(bool back = false)
         {
-            SetPerformanceMode(Modes.GetNext(back), true);
+            int delay = AppConfig.Get("mode_delay");
+            if (delay > 0)
+            {
+                if (modeToggleTimer is null)
+                {
+                    modeToggleTimer = new System.Timers.Timer(delay);
+                    modeToggleTimer.Elapsed += ModeToggleTimer_Elapsed;
+                }
+
+                modeToggleTimer.Stop();
+                modeToggleTimer.Start();
+                Modes.SetCurrent(Modes.GetNext(back));
+                Toast();
+            } else
+            {
+                SetPerformanceMode(Modes.GetNext(back), true);
+            }
+
         }
 
         public void AutoFans(bool force = false)
@@ -222,6 +253,34 @@ namespace GHelper.Mode
             settings.SetModeLabel(Properties.Strings.PerformanceMode + ": " + Modes.GetCurrentName() + (customFans ? "+" : "") + ((customPower > 0) ? " " + customPower + "W" : ""));
         }
 
+        public void SetRyzenPower(bool init = false)
+        {
+            if (init) _ryzenPower = true;
+
+            if (!_ryzenPower) return;
+            if (!RyzenControl.IsRingExsists()) return;
+            if (!AppConfig.IsMode("auto_apply_power")) return;
+
+            int limit_total = AppConfig.GetMode("limit_total");
+            int limit_slow = AppConfig.GetMode("limit_slow", limit_total);
+
+            if (limit_total > AsusACPI.MaxTotal) return;
+            if (limit_total < AsusACPI.MinTotal) return;
+
+            var stapmResult = SendCommand.set_stapm_limit((uint)limit_total * 1000);
+            if (init) Logger.WriteLine($"STAPM: {limit_total} {stapmResult}");
+
+            var stapmResult2 = SendCommand.set_stapm2_limit((uint)limit_total * 1000);
+            if (init) Logger.WriteLine($"STAPM2: {limit_total} {stapmResult2}");
+
+            var slowResult = SendCommand.set_slow_limit((uint)limit_slow * 1000);
+            if (init) Logger.WriteLine($"SLOW: {limit_slow} {slowResult}");
+
+            var fastResult = SendCommand.set_fast_limit((uint)limit_slow * 1000);
+            if (init) Logger.WriteLine($"FAST: {limit_slow} {fastResult}");
+
+        }
+
         public void SetPower(bool launchAsAdmin = false)
         {
 
@@ -258,19 +317,7 @@ namespace GHelper.Mode
 
                 if (ProcessHelper.IsUserAdministrator())
                 {
-                    var stapmResult = SendCommand.set_stapm_limit((uint)limit_total * 1000);
-                    Logger.WriteLine($"STAPM: {limit_total} {stapmResult}");
-
-                    var stapmResult2 = SendCommand.set_stapm2_limit((uint)limit_total * 1000);
-                    Logger.WriteLine($"STAPM2: {limit_total} {stapmResult2}");
-
-                    var slowResult = SendCommand.set_slow_limit((uint)limit_total * 1000);
-                    Logger.WriteLine($"SLOW: {limit_total} {slowResult}");
-
-                    var fastResult = SendCommand.set_fast_limit((uint)limit_total * 1000);
-                    Logger.WriteLine($"FAST: {limit_total} {fastResult}");
-
-                    customPower = limit_total;
+                    SetRyzenPower(true);
                 }
                 else if (launchAsAdmin)
                 {
@@ -351,22 +398,15 @@ namespace GHelper.Mode
 
         }
 
-        public void SetCPUTemp(int? cpuTemp, bool log = true)
+        public void SetCPUTemp(int? cpuTemp, bool init = false)
         {
             if (cpuTemp >= RyzenControl.MinTemp && cpuTemp < RyzenControl.MaxTemp)
             {
                 var resultCPU = SendCommand.set_tctl_temp((uint)cpuTemp);
-                if (log) Logger.WriteLine($"CPU Temp: {cpuTemp} {resultCPU}");
+                if (init) Logger.WriteLine($"CPU Temp: {cpuTemp} {resultCPU}");
 
                 var restultAPU = SendCommand.set_apu_skin_temp_limit((uint)cpuTemp);
-                if (log) Logger.WriteLine($"APU Temp: {cpuTemp} {restultAPU}");
-
-                reapplyTimer.Enabled = AppConfig.IsMode("auto_uv");
-
-            }
-            else
-            {
-                reapplyTimer.Enabled = false;
+                if (init) Logger.WriteLine($"APU Temp: {cpuTemp} {restultAPU}");
             }
         }
 
@@ -409,18 +449,21 @@ namespace GHelper.Mode
             {
                 SetUV(AppConfig.GetMode("cpu_uv", 0));
                 SetUViGPU(AppConfig.GetMode("igpu_uv", 0));
-                SetCPUTemp(AppConfig.GetMode("cpu_temp"));
+                SetCPUTemp(AppConfig.GetMode("cpu_temp"), true);
             }
             catch (Exception ex)
             {
                 Logger.WriteLine("UV Error: " + ex.ToString());
             }
+
+            reapplyTimer.Enabled = AppConfig.IsMode("auto_uv");
         }
 
         public void ResetRyzen()
         {
             if (_cpuUV != 0) SetUV(0);
             if (_igpuUV != 0) SetUViGPU(0);
+            reapplyTimer.Enabled = false;
         }
 
         public void AutoRyzen()
