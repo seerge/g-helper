@@ -116,6 +116,7 @@ Huge thanks to [@IceStormNG](https://github.com/IceStormNG) 👑 for contributio
 - ``Fn + Shift + F7 / F8`` - Matrix / Slash Lightning brightness Down / Up
 - ``Fn + Shift + F7 / F8`` - Screenpad brightness Down / Up
 - ``Ctrl + Shift + F20`` - Mute Microphone
+- ``Ctrl + Shift + Alt + F13`` - Toggle Display Refresh Rate
 - ``Ctrl + Shift + Alt + F14`` - Eco GPU Mode
 - ``Ctrl + Shift + Alt + F15`` - Standard GPU Mode
 - ``Ctrl + Shift + Alt + F16`` - Silent
