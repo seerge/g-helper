@@ -38,7 +38,7 @@ Works with all popular models, such as ROG Zephyrus G14, G15, G16, M16, Flow X13
 2. GPU modes: Eco - Standard - Ultimate - Optimized
 3. Screen refresh rate control with display overdrive (OD) 
 4. Custom fan curve editor, power limits and turbo boost selection for every performance mode
-5. Anime Matrix or Slash Lightning control including animated GIFs, clock and Audio visualizer
+5. Anime Matrix or Slash Lighting control including animated GIFs, clock and Audio visualizer
 6. Backlight animation modes and colors 
 7. Custom hotkeys (M-keys, FN+X keys)
 8. Monitor CPU and GPU temperature, fan speeds and battery status
@@ -113,7 +113,7 @@ Huge thanks to [@IceStormNG](https://github.com/IceStormNG) 👑 for contributio
 - ``Ctrl + M1 / M2`` - Screen brightness Down / Up
 - ``Shift + M1 / M2`` - Backlight brightness Down / Up
 - ``Fn + C`` - Fn-Lock
-- ``Fn + Shift + F7 / F8`` - Matrix / Slash Lightning brightness Down / Up
+- ``Fn + Shift + F7 / F8`` - Matrix / Slash Lighting brightness Down / Up
 - ``Fn + Shift + F7 / F8`` - Screenpad brightness Down / Up
 - ``Ctrl + Shift + F20`` - Mute Microphone
 - ``Ctrl + Shift + Alt + F13`` - Toggle Display Refresh Rate
