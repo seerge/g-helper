@@ -1412,7 +1412,7 @@ namespace GHelper
             // 
             pictureKeyboard.BackgroundImage = Properties.Resources.icons8_keyboard_32__1_;
             pictureKeyboard.BackgroundImageLayout = ImageLayout.Zoom;
-            pictureKeyboard.Location = new Point(8, 3);
+            pictureKeyboard.Location = new Point(8, 0);
             pictureKeyboard.Margin = new Padding(4);
             pictureKeyboard.Name = "pictureKeyboard";
             pictureKeyboard.Size = new Size(32, 32);
@@ -1423,7 +1423,7 @@ namespace GHelper
             // 
             labelKeyboard.AutoSize = true;
             labelKeyboard.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            labelKeyboard.Location = new Point(40, 0);
+            labelKeyboard.Location = new Point(43, 0);
             labelKeyboard.Margin = new Padding(4, 0, 4, 0);
             labelKeyboard.Name = "labelKeyboard";
             labelKeyboard.Size = new Size(210, 32);
@@ -1443,6 +1443,7 @@ namespace GHelper
             // 
             // labelCharge
             // 
+            labelCharge.Cursor = Cursors.Hand;
             labelCharge.Dock = DockStyle.Right;
             labelCharge.ForeColor = SystemColors.ControlDark;
             labelCharge.Location = new Point(366, 0);
@@ -1452,7 +1453,6 @@ namespace GHelper
             labelCharge.Size = new Size(461, 56);
             labelCharge.TabIndex = 40;
             labelCharge.TextAlign = ContentAlignment.MiddleRight;
-            labelCharge.Cursor = Cursors.Hand;
             // 
             // panelPeripherals
             // 
