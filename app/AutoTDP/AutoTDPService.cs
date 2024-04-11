@@ -588,6 +588,21 @@ namespace GHelper.AutoTDP
                 return;
             }
 
+            //For the case that someone thinks they're super smart and sets the max lower than the min, we treat them as equal and consider the MAX to be the fixed TDP.
+            if (profile.MaxTdp <= profile.MinTdp)
+            {
+                if (CurrentTDP == profile.MaxTdp)
+                {
+                    return;
+                }
+                powerLimiter?.SetCPUPowerLimit(profile.MaxTdp);
+                CurrentTDP = profile.MaxTdp;
+                if (LOG_AUTO_TDP)
+                    AutoTDPLogger.WriteLine("[AutoTDPService] Power Limit fixed at " + profile.MaxTdp + "W");
+
+                return;
+            }
+
             double newPL = CurrentTDP;
             double fpsCorrection = FPSDipCorrection(GameFPS, profile.GetTDPFPS());
             double delta = profile.GetTDPFPS() - GameFPS - fpsCorrection - 1;
