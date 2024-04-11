@@ -611,6 +611,7 @@ namespace GHelper.USB
             if (init || initDirect)
             {
                 initDirect = false;
+                Init();
                 AsusHid.WriteAura(new byte[] { AsusHid.AURA_ID, 0xbc, 1 });
             }
 
