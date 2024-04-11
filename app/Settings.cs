@@ -1067,7 +1067,7 @@ namespace GHelper
 
             if (matrixControl.IsSlash)
             {
-                labelMatrix.Text = "Slash Lightning";
+                labelMatrix.Text = "Slash Lighting";
                 comboMatrixRunning.Items.Clear();
 
                 foreach (var item in SlashDevice.Modes)
