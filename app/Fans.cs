@@ -73,8 +73,6 @@ namespace GHelper
             labelTip.Visible = false;
             labelTip.BackColor = Color.Transparent;
 
-            FormClosing += Fans_FormClosing;
-
             seriesCPU = chartCPU.Series.Add("CPU");
             seriesGPU = chartGPU.Series.Add("GPU");
             seriesMid = chartMid.Series.Add("Mid");
@@ -120,10 +118,10 @@ namespace GHelper
             trackFast.Maximum = AsusACPI.MaxTotal;
             trackFast.Minimum = AsusACPI.MinTotal;
 
-            trackFast.Scroll += TrackPower_Scroll;
-            trackCPU.Scroll += TrackPower_Scroll;
-            trackTotal.Scroll += TrackPower_Scroll;
-            trackSlow.Scroll += TrackPower_Scroll;
+            trackTotal.Scroll += TrackTotal_Scroll;
+            trackSlow.Scroll += TrackSlow_Scroll;
+            trackFast.Scroll += TrackFast_Scroll;
+            trackCPU.Scroll += TrackCPU_Scroll;
 
             trackFast.MouseUp += TrackPower_MouseUp;
             trackCPU.MouseUp += TrackPower_MouseUp;
@@ -883,18 +881,8 @@ namespace GHelper
             });
         }
 
-        private void Fans_FormClosing(object? sender, FormClosingEventArgs e)
-        {
-            /*
-            if (e.CloseReason == CloseReason.UserClosing)
-            {
-                e.Cancel = true;
-                Hide();
-            }*/
-        }
 
-
-        public void InitPower(bool changed = false)
+        public void InitPower()
         {
 
             bool modeA = Program.acpi.DeviceGet(AsusACPI.PPT_APUA0) >= 0 || RyzenControl.IsAMD();
@@ -921,57 +909,37 @@ namespace GHelper
 
                 if (RyzenControl.IsAMD())
                 {
-                    labelLeftTotal.Text = "CPU Sustained (SPL)";
-                    labelLeftSlow.Text = "CPU Slow (sPPT)";
-                    labelLeftFast.Text = "CPU Fast (fPPT)";
+                    labelLeftTotal.Text = "SPL (CPU sustained)";
+                    labelLeftSlow.Text = "sPPT (CPU 2 min boost)";
+                    labelLeftFast.Text = "fPPT (CPU 2 sec boost)";
                     panelFast.Visible = modeC1;
                     
                 }
                 else
                 {
-                    labelLeftTotal.Text = "CPU Slow (PL1)";
-                    labelLeftSlow.Text = "CPU Fast (PL2)";
+                    labelLeftTotal.Text = "PL1 (CPU sustained)";
+                    labelLeftSlow.Text = "PL2 (CPU 2 min boost)";
                     panelFast.Visible = false;
                 }
 
             }
 
-            int limit_total;
-            int limit_slow;
-            int limit_cpu;
-            int limit_fast;
+            checkApplyPower.Checked = AppConfig.IsMode("auto_apply_power");
 
-            bool apply = AppConfig.IsMode("auto_apply_power");
+            int limit_total = AppConfig.GetMode("limit_total", AsusACPI.DefaultTotal);
+            int limit_slow = AppConfig.GetMode("limit_slow", limit_total);
+            int limit_fast = AppConfig.GetMode("limit_fast", limit_total);
+            int limit_cpu = AppConfig.GetMode("limit_cpu", AsusACPI.DefaultCPU);
 
-            if (changed)
-            {
-                limit_total = trackTotal.Value;
-                limit_slow = trackSlow.Value;
-                limit_cpu = trackCPU.Value;
-                limit_fast = trackFast.Value;
-            }
-            else
-            {
-                limit_total = AppConfig.GetMode("limit_total");
-                limit_slow = AppConfig.GetMode("limit_slow");
-                limit_cpu = AppConfig.GetMode("limit_cpu");
-                limit_fast = AppConfig.GetMode("limit_fast");
-            }
-
-            if (limit_total < 0) limit_total = AsusACPI.DefaultTotal;
             if (limit_total > AsusACPI.MaxTotal) limit_total = AsusACPI.MaxTotal;
             if (limit_total < AsusACPI.MinTotal) limit_total = AsusACPI.MinTotal;
 
-            if (limit_cpu < 0) limit_cpu = AsusACPI.DefaultCPU;
             if (limit_cpu > AsusACPI.MaxCPU) limit_cpu = AsusACPI.MaxCPU;
             if (limit_cpu < AsusACPI.MinCPU) limit_cpu = AsusACPI.MinCPU;
-            if (limit_cpu > limit_total) limit_cpu = limit_total;
-
-            if (limit_slow < 0) limit_slow = limit_total;
+            
             if (limit_slow > AsusACPI.MaxTotal) limit_slow = AsusACPI.MaxTotal;
             if (limit_slow < AsusACPI.MinTotal) limit_slow = AsusACPI.MinTotal;
 
-            if (limit_fast < 0) limit_fast = AsusACPI.DefaultTotal;
             if (limit_fast > AsusACPI.MaxTotal) limit_fast = AsusACPI.MaxTotal;
             if (limit_fast < AsusACPI.MinTotal) limit_fast = AsusACPI.MinTotal;
 
@@ -980,27 +948,50 @@ namespace GHelper
             trackCPU.Value = limit_cpu;
             trackFast.Value = limit_fast;
 
-            checkApplyPower.Checked = apply;
+            SavePower();
 
+        }
+
+        private void SavePower()
+        {
             labelTotal.Text = trackTotal.Value.ToString() + "W";
             labelSlow.Text = trackSlow.Value.ToString() + "W";
             labelCPU.Text = trackCPU.Value.ToString() + "W";
             labelFast.Text = trackFast.Value.ToString() + "W";
 
-            AppConfig.SetMode("limit_total", limit_total);
-            AppConfig.SetMode("limit_slow", limit_slow);
-            AppConfig.SetMode("limit_cpu", limit_cpu);
-            AppConfig.SetMode("limit_fast", limit_fast);
-
-
+            AppConfig.SetMode("limit_total", trackTotal.Value);
+            AppConfig.SetMode("limit_slow", trackSlow.Value);
+            AppConfig.SetMode("limit_cpu", trackCPU.Value);
+            AppConfig.SetMode("limit_fast", trackFast.Value);
         }
 
-
-        private void TrackPower_Scroll(object? sender, EventArgs e)
+        private void TrackTotal_Scroll(object? sender, EventArgs e)
         {
-            InitPower(true);
+            if (trackTotal.Value > trackSlow.Value) trackSlow.Value = trackTotal.Value;
+            if (trackTotal.Value > trackFast.Value) trackFast.Value = trackTotal.Value;
+            if (trackTotal.Value < trackCPU.Value) trackCPU.Value = trackTotal.Value;
+            SavePower();
         }
 
+        private void TrackSlow_Scroll(object? sender, EventArgs e)
+        {
+            if (trackSlow.Value < trackTotal.Value) trackTotal.Value = trackSlow.Value;
+            if (trackSlow.Value > trackFast.Value) trackFast.Value = trackSlow.Value;
+            SavePower();
+        }
+
+        private void TrackFast_Scroll(object? sender, EventArgs e)
+        {
+            if (trackFast.Value < trackSlow.Value) trackSlow.Value = trackFast.Value;
+            if (trackFast.Value < trackTotal.Value) trackTotal.Value = trackFast.Value;
+            SavePower();
+        }
+
+        private void TrackCPU_Scroll(object? sender, EventArgs e)
+        {
+            if (trackCPU.Value > trackTotal.Value) trackTotal.Value = trackCPU.Value;
+            SavePower();
+        }
 
         public void InitFans()
         {
