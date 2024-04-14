@@ -242,12 +242,13 @@ namespace GHelper
                     var json = await httpClient.GetStringAsync(urlNormal);
 
                     var data = JsonSerializer.Deserialize<JsonElement>(json);
+                    var result = data.GetProperty("Result");
 
                     // fallback for bugged API
-                    if (data.GetProperty("Result").ToString() == "")
+                    if (result.ToString() == "" || result.GetProperty("Obj").GetArrayLength() == 0)
                     {
                         Random rnd = new Random();
-                        var urlFallback = url.Replace("CPUNAME", model + rnd.Next(100, 999));
+                        var urlFallback = url.Replace("CPUNAME", model + rnd.Next(10, 99));
                         Logger.WriteLine(urlFallback);
                         json = await httpClient.GetStringAsync(urlFallback);
                         data = JsonSerializer.Deserialize<JsonElement>(json);
