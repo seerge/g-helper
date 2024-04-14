@@ -1,6 +1,7 @@
 ﻿using GHelper.Gpu.AMD;
 using GHelper.Helpers;
 using GHelper.Input;
+using GHelper.Mode;
 using GHelper.USB;
 using HidSharp;
 using System.Text;
@@ -39,9 +40,11 @@ namespace GHelper.Ally
 
         static ControllerMode _mode = ControllerMode.Auto;
         static ControllerMode _applyMode = ControllerMode.Mouse;
-        static int _autoCount = 0;
 
-        static int minTDP = 5;
+        static int _autoCount = 0;
+        static int _upCount = 0, _downCount = 0;
+
+        static int minTDP = 6;
         static int maxTDP = 25;
         static int autoTDP = -1;
 
@@ -293,20 +296,35 @@ namespace GHelper.Ally
 
         }
 
+        private int GetMaxTDP()
+        {
+            int tdp = AppConfig.GetMode("limit_total");
+            if (tdp > 0) return tdp;
+            switch (Modes.GetCurrentBase())
+            {
+                case 1:
+                    return 25;
+                case 2:
+                    return 10;
+                default:
+                    return 15;
+            }
+        }
+
         private int GetTDP()
         {
-            if (autoTDP < 0) autoTDP = AppConfig.GetMode("limit_total", maxTDP);
+            if (autoTDP < 0) autoTDP = GetMaxTDP();
             return autoTDP;
         }
 
-        private void SetTDP(int tdp, float fps)
+        private void SetTDP(int tdp, string log)
         {
             if (tdp < minTDP) tdp = minTDP;
             if (tdp > maxTDP) tdp = maxTDP;
 
             if (tdp == autoTDP) return;
-            
-            Program.acpi.DeviceSet(AsusACPI.PPT_APUA0, tdp, $"AutoTDP {fps}");
+
+            Program.acpi.DeviceSet(AsusACPI.PPT_APUA0, tdp, log);
             Program.acpi.DeviceSet(AsusACPI.PPT_APUA3, tdp, null);
             Program.acpi.DeviceSet(AsusACPI.PPT_APUC1, tdp, null);
             autoTDP = tdp;
@@ -315,16 +333,24 @@ namespace GHelper.Ally
         private void Timer_Elapsed(object? sender, System.Timers.ElapsedEventArgs e)
         {
             float fps = amdControl.GetFPS();
-            
+
             if (fpsLimit <= 120)
             {
-                if (fps <= fpsLimit - 4)
+                if (fps < fpsLimit - 5) _upCount++;
+                if (fps >= fpsLimit) _downCount++;
+
+                if (_upCount > 2)
                 {
-                    SetTDP(GetTDP() + 1, fps);
+                    _downCount = 0;
+                    _upCount--;
+                    SetTDP(GetTDP() + 1, $"AutoTDP+ {fps}");
                 }
-                else if (fps >= fpsLimit - 1)
+
+                if (_downCount > 8)
                 {
-                    SetTDP(GetTDP() - 1, fps);
+                    SetTDP(GetTDP() - 1, $"AutoTDP- {fps}");
+                    _upCount = 0;
+                    _downCount--;
                 }
             }
 
