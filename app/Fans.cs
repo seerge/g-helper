@@ -128,6 +128,11 @@ namespace GHelper
             trackTotal.MouseUp += TrackPower_MouseUp;
             trackSlow.MouseUp += TrackPower_MouseUp;
 
+            trackFast.KeyUp += TrackPower_KeyUp;
+            trackCPU.KeyUp += TrackPower_KeyUp;
+            trackTotal.KeyUp += TrackPower_KeyUp;
+            trackSlow.KeyUp += TrackPower_KeyUp;
+
             checkApplyFans.Click += CheckApplyFans_Click;
             checkApplyPower.Click += CheckApplyPower_Click;
 
@@ -229,6 +234,7 @@ namespace GHelper
             FormClosed += Fans_FormClosed;
 
         }
+
 
         private void ButtonDownload_Click(object? sender, EventArgs e)
         {
@@ -796,6 +802,14 @@ namespace GHelper
             });
         }
 
+
+        private void TrackPower_KeyUp(object? sender, KeyEventArgs e)
+        {
+            Task.Run(() =>
+            {
+                modeControl.AutoPower(true);
+            });
+        }
 
         public void InitPowerPlan()
         {
