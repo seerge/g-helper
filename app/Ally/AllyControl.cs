@@ -41,7 +41,12 @@ namespace GHelper.Ally
         static ControllerMode _applyMode = ControllerMode.Mouse;
         static int _autoCount = 0;
 
+        static int minTDP = 5;
+        static int maxTDP = 25;
+        static int autoTDP = -1;
+
         static int fpsLimit = -1;
+
 
         public const string BindA = "01-01";
         public const string BindB = "01-02";
@@ -288,9 +293,40 @@ namespace GHelper.Ally
 
         }
 
+        private int GetTDP()
+        {
+            if (autoTDP < 0) autoTDP = AppConfig.GetMode("limit_total", maxTDP);
+            return autoTDP;
+        }
+
+        private void SetTDP(int tdp)
+        {
+            if (tdp < minTDP) tdp = minTDP;
+            if (tdp > maxTDP) tdp = maxTDP;
+
+            if (tdp == autoTDP) return;
+            
+            Program.acpi.DeviceSet(AsusACPI.PPT_APUA0, tdp, "AutoTDP");
+            Program.acpi.DeviceSet(AsusACPI.PPT_APUA3, tdp, "AutoTDP");
+            Program.acpi.DeviceSet(AsusACPI.PPT_APUC1, tdp, "AutoTDP");
+            autoTDP = tdp;
+        }
+
         private void Timer_Elapsed(object? sender, System.Timers.ElapsedEventArgs e)
         {
             float fps = amdControl.GetFPS();
+            
+            if (fpsLimit <= 120)
+            {
+                if (fps < fpsLimit - 4)
+                {
+                    SetTDP(GetTDP() - 1);
+                }
+                else if (fps > fpsLimit - 1)
+                {
+                    SetTDP(GetTDP() + 1);
+                }
+            }
 
             ControllerMode newMode = (fps > 0) ? ControllerMode.Gamepad : ControllerMode.Mouse;
 
