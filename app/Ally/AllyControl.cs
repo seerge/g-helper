@@ -299,16 +299,16 @@ namespace GHelper.Ally
             return autoTDP;
         }
 
-        private void SetTDP(int tdp)
+        private void SetTDP(int tdp, float fps)
         {
             if (tdp < minTDP) tdp = minTDP;
             if (tdp > maxTDP) tdp = maxTDP;
 
             if (tdp == autoTDP) return;
             
-            Program.acpi.DeviceSet(AsusACPI.PPT_APUA0, tdp, "AutoTDP");
-            Program.acpi.DeviceSet(AsusACPI.PPT_APUA3, tdp, "AutoTDP");
-            Program.acpi.DeviceSet(AsusACPI.PPT_APUC1, tdp, "AutoTDP");
+            Program.acpi.DeviceSet(AsusACPI.PPT_APUA0, tdp, $"AutoTDP {fps}");
+            Program.acpi.DeviceSet(AsusACPI.PPT_APUA3, tdp, null);
+            Program.acpi.DeviceSet(AsusACPI.PPT_APUC1, tdp, null);
             autoTDP = tdp;
         }
 
@@ -318,13 +318,13 @@ namespace GHelper.Ally
             
             if (fpsLimit <= 120)
             {
-                if (fps < fpsLimit - 4)
+                if (fps <= fpsLimit - 4)
                 {
-                    SetTDP(GetTDP() - 1);
+                    SetTDP(GetTDP() + 1, fps);
                 }
-                else if (fps > fpsLimit - 1)
+                else if (fps >= fpsLimit - 1)
                 {
-                    SetTDP(GetTDP() + 1);
+                    SetTDP(GetTDP() - 1, fps);
                 }
             }
 
