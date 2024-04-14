@@ -1,4 +1,5 @@
 ﻿using GHelper.UI;
+using Ryzen;
 using System.Diagnostics;
 using System.Management;
 using System.Net;
@@ -60,14 +61,16 @@ namespace GHelper
             ClearTable(tableBios);
             ClearTable(tableDrivers);
 
+            var cpu = RyzenControl.IsAMD() ? "A" : "I";
+
             Task.Run(async () =>
             {
-                DriversAsync($"https://rog.asus.com/support/webapi/product/GetPDBIOS?website=global&model={model}&cpu={model}", 1, tableBios);
+                DriversAsync($"https://rog.asus.com/support/webapi/product/GetPDBIOS?website=global&model={model}&cpu={cpu}", 1, tableBios);
             });
 
             Task.Run(async () =>
             {
-                DriversAsync($"https://rog.asus.com/support/webapi/product/GetPDDrivers?website=global&model={model}&cpu={model}&osid=52", 0, tableDrivers);
+                DriversAsync($"https://rog.asus.com/support/webapi/product/GetPDDrivers?website=global&model={model}&cpu={cpu}&osid=52", 0, tableDrivers);
             });
         }
 
