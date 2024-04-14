@@ -54,6 +54,9 @@ namespace GHelper
             tableBios.Visible = false;
             tableDrivers.Visible = false;
 
+            labelLegendGreen.BackColor = colorEco;
+            labelLegendRed.BackColor = colorTurbo;
+
             ClearTable(tableBios);
             ClearTable(tableDrivers);
 
