@@ -5,6 +5,7 @@ using GHelper.Mode;
 using GHelper.USB;
 using HidSharp;
 using System.Text;
+using System.Windows.Forms.DataVisualization.Charting;
 
 namespace GHelper.Ally
 {
@@ -33,7 +34,7 @@ namespace GHelper.Ally
 
     public class AllyControl
     {
-        System.Timers.Timer timer = default!;
+        static System.Timers.Timer timer = default!;
         static AmdGpuControl amdControl = new AmdGpuControl();
 
         SettingsForm settings;
@@ -291,12 +292,14 @@ namespace GHelper.Ally
         public AllyControl(SettingsForm settingsForm)
         {
             if (!AppConfig.IsAlly()) return;
-
             settings = settingsForm;
 
-            timer = new System.Timers.Timer(200);
-            timer.Elapsed += Timer_Elapsed;
-
+            if (timer is null)
+            {
+                timer = new System.Timers.Timer(500);
+                timer.Elapsed += Timer_Elapsed;
+                Logger.WriteLine("Ally timer");
+            }
         }
 
         private int GetMaxTDP()
@@ -345,19 +348,21 @@ namespace GHelper.Ally
 
                 if (fps < fpsLimit - 5) _upCount++;
                 if (fps > fpsLimit - 1) _downCount++;
+                if (fps <= 0) tdpMin = 6;
 
-                if (_upCount > 2)
+                if (_upCount >= 2)
                 {
+                    if (fps > 0 && fps < fpsLimit - 10) tdpMin = GetTDP() + 1;
                     _downCount = 0;
-                    _upCount--;
+                    _upCount = 0;
                     SetTDP(GetTDP() + 1, $"AutoTDP+ {fps}");
                 }
 
-                if (_downCount > 10)
+                if (_downCount >= 4)
                 {
                     SetTDP(GetTDP() - 1, $"AutoTDP- {fps}");
                     _upCount = 0;
-                    _downCount--;
+                    _downCount = 0;
                 }
             }
 
@@ -368,7 +373,7 @@ namespace GHelper.Ally
 
             if (_mode != ControllerMode.Auto) return;
 
-            if (_autoCount >= 5)
+            if (_autoCount >= 4)
             {
                 _autoCount = 0;
                 ApplyMode(newMode);
@@ -405,7 +410,6 @@ namespace GHelper.Ally
 
             autoTDP = AppConfig.Is("auto_tdp");
             settings.VisualiseAutoTDP(autoTDP);
-
         }
 
         public void ToggleFPSLimit()
