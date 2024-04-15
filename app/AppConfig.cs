@@ -591,11 +591,6 @@ public static class AppConfig
         return ContainsModel("G814") || ContainsModel("G614") || ContainsModel("G834") || ContainsModel("G634");
     }
 
-    public static bool IsNewAura()
-    {
-        return ContainsModel("G834") || ContainsModel("G614") || ContainsModel("G834") || ContainsModel("G634");
-    }
-
     public static bool IsNoFNV()
     {
         return ContainsModel("FX507") || ContainsModel("FX707");
