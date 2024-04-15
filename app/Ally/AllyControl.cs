@@ -42,11 +42,14 @@ namespace GHelper.Ally
         static ControllerMode _applyMode = ControllerMode.Mouse;
 
         static int _autoCount = 0;
-        static int _upCount = 0, _downCount = 0;
+        static int _upCount = 0;
+        static int _downCount = 0;
 
-        static int minTDP = 6;
-        static int maxTDP = 25;
-        static int autoTDP = -1;
+        static int tdpMin = 6;
+        static int tdpMax = 25;
+        static int tdpCurrent = -1;
+
+        static bool autoTDP = false;
 
         static int fpsLimit = -1;
 
@@ -291,7 +294,7 @@ namespace GHelper.Ally
 
             settings = settingsForm;
 
-            timer = new System.Timers.Timer(300);
+            timer = new System.Timers.Timer(200);
             timer.Elapsed += Timer_Elapsed;
 
         }
@@ -313,31 +316,35 @@ namespace GHelper.Ally
 
         private int GetTDP()
         {
-            if (autoTDP < 0) autoTDP = GetMaxTDP();
-            return autoTDP;
+            if (tdpCurrent < 0) tdpCurrent = GetMaxTDP();
+            return tdpCurrent;
         }
 
         private void SetTDP(int tdp, string log)
         {
-            if (tdp < minTDP) tdp = minTDP;
-            if (tdp > maxTDP) tdp = maxTDP;
+            if (tdp < tdpMin) tdp = tdpMin;
+            if (tdp > tdpMax) tdp = tdpMax;
 
-            if (tdp == autoTDP) return;
+            if (tdp == tdpCurrent) return;
+            if (!autoTDP) return;
 
             Program.acpi.DeviceSet(AsusACPI.PPT_APUA0, tdp, log);
             Program.acpi.DeviceSet(AsusACPI.PPT_APUA3, tdp, null);
-            Program.acpi.DeviceSet(AsusACPI.PPT_APUC1, tdp, null);
-            autoTDP = tdp;
+            Program.acpi.DeviceSet(AsusACPI.PPT_APUC1, (int)(tdp * 1.2), null);
+
+            tdpCurrent = tdp;
         }
 
         private void Timer_Elapsed(object? sender, System.Timers.ElapsedEventArgs e)
         {
             float fps = amdControl.GetFPS();
 
-            if (fpsLimit <= 120)
+            if (autoTDP)
             {
+                if (fpsLimit < 0 || fpsLimit > 120) fpsLimit = 120;
+
                 if (fps < fpsLimit - 5) _upCount++;
-                if (fps >= fpsLimit) _downCount++;
+                if (fps > fpsLimit - 1) _downCount++;
 
                 if (_upCount > 2)
                 {
@@ -346,7 +353,7 @@ namespace GHelper.Ally
                     SetTDP(GetTDP() + 1, $"AutoTDP+ {fps}");
                 }
 
-                if (_downCount > 8)
+                if (_downCount > 10)
                 {
                     SetTDP(GetTDP() - 1, $"AutoTDP- {fps}");
                     _upCount = 0;
@@ -361,12 +368,26 @@ namespace GHelper.Ally
 
             if (_mode != ControllerMode.Auto) return;
 
-            if (_autoCount > 2)
+            if (_autoCount >= 5)
             {
                 _autoCount = 0;
                 ApplyMode(newMode);
                 Logger.WriteLine(fps.ToString());
             }
+
+        }
+
+        public void ToggleAutoTDP()
+        {
+            autoTDP = !autoTDP;
+            tdpCurrent = -1;
+
+            if (!autoTDP)
+            {
+                Program.modeControl.SetPerformanceMode();
+            }
+
+            settings.VisualiseAutoTDP(autoTDP);
 
         }
 
@@ -381,6 +402,9 @@ namespace GHelper.Ally
 
             fpsLimit = amdControl.GetFPSLimit();
             settings.VisualiseFPSLimit(fpsLimit);
+
+            autoTDP = AppConfig.Is("auto_tdp");
+            settings.VisualiseAutoTDP(autoTDP);
 
         }
 

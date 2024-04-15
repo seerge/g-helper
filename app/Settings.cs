@@ -245,6 +245,9 @@ namespace GHelper
 
             buttonFPS.Click += ButtonFPS_Click;
             buttonOverlay.Click += ButtonOverlay_Click;
+            
+            buttonAutoTDP.Click += ButtonAutoTDP_Click;
+            buttonAutoTDP.BorderColor = colorTurbo;
 
             Text = "G-Helper " + (ProcessHelper.IsUserAdministrator() ? "—" : "-") + " " + AppConfig.GetModelShort();
             TopMost = AppConfig.Is("topmost");
@@ -261,6 +264,11 @@ namespace GHelper
 
             panelPerformance.Focus();
             InitVisual();
+        }
+
+        private void ButtonAutoTDP_Click(object? sender, EventArgs e)
+        {
+            allyControl.ToggleAutoTDP();
         }
 
         private void LabelCharge_Click(object? sender, EventArgs e)
@@ -485,6 +493,12 @@ namespace GHelper
         public void VisualiseFPSLimit(int limit)
         {
             buttonFPS.Text = "FPS Limit " + ((limit > 0 && limit <= 120) ? limit : "OFF");
+        }
+
+        public void VisualiseAutoTDP(bool status)
+        {
+            Logger.WriteLine($"Auto TDP: {status}");
+            buttonAutoTDP.Activated = status;
         }
 
         private void SettingsForm_LostFocus(object? sender, EventArgs e)
