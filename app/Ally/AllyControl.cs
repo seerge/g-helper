@@ -5,7 +5,6 @@ using GHelper.Mode;
 using GHelper.USB;
 using HidSharp;
 using System.Text;
-using System.Windows.Forms.DataVisualization.Charting;
 
 namespace GHelper.Ally
 {
@@ -43,10 +42,14 @@ namespace GHelper.Ally
         static ControllerMode _applyMode = ControllerMode.Mouse;
 
         static int _autoCount = 0;
+
         static int _upCount = 0;
         static int _downCount = 0;
+        static int _capCount = 0;
 
-        static int tdpMin = 6;
+        const int tdpLimit = 6;
+
+        static int tdpMin = tdpLimit;
         static int tdpMax = 25;
         static int tdpCurrent = -1;
 
@@ -296,7 +299,7 @@ namespace GHelper.Ally
 
             if (timer is null)
             {
-                timer = new System.Timers.Timer(500);
+                timer = new System.Timers.Timer(200);
                 timer.Elapsed += Timer_Elapsed;
                 Logger.WriteLine("Ally timer");
             }
@@ -333,7 +336,7 @@ namespace GHelper.Ally
 
             Program.acpi.DeviceSet(AsusACPI.PPT_APUA0, tdp, log);
             Program.acpi.DeviceSet(AsusACPI.PPT_APUA3, tdp, null);
-            Program.acpi.DeviceSet(AsusACPI.PPT_APUC1, (int)(tdp * 1.2), null);
+            Program.acpi.DeviceSet(AsusACPI.PPT_APUC1, tdp, null);
 
             tdpCurrent = tdp;
         }
@@ -342,28 +345,49 @@ namespace GHelper.Ally
         {
             float fps = amdControl.GetFPS();
 
-            if (autoTDP)
+            if (autoTDP && fpsLimit > 0 && fpsLimit < 120)
             {
-                if (fpsLimit < 0 || fpsLimit > 120) fpsLimit = 120;
+                //Debug.Write(fps + " ");
 
-                if (fps < fpsLimit - 5) _upCount++;
-                if (fps > fpsLimit - 1) _downCount++;
-                if (fps <= 0) tdpMin = 6;
+                if (fps < fpsLimit * 0.8) _upCount++;
+                else _upCount = 0;
 
-                if (_upCount >= 2)
+                if (fps >= fpsLimit * 0.9) _downCount++;
+                else _downCount = 0;
+
+                if (fps >= fpsLimit * 0.95) _capCount++;
+                else _capCount = 0;
+
+                if (fps <= 0 && tdpMin > tdpLimit)
                 {
-                    if (fps > 0 && fps < fpsLimit - 10) tdpMin = GetTDP() + 1;
-                    _downCount = 0;
-                    _upCount = 0;
-                    SetTDP(GetTDP() + 1, $"AutoTDP+ {fps}");
+                    tdpMin = tdpLimit;
                 }
 
-                if (_downCount >= 4)
+                var tdp = GetTDP();
+
+                if (_upCount >= 1)
                 {
-                    SetTDP(GetTDP() - 1, $"AutoTDP- {fps}");
-                    _upCount = 0;
+                    if (fps > 0 && fps < fpsLimit * 0.7)
+                    {
+                        tdpMin = tdp + 1;
+                    }
                     _downCount = 0;
+                    _upCount--;
+                    SetTDP(tdp + 1, $"AutoTDP+ {fps}");
                 }
+
+                if (_downCount >= 10)
+                {
+                    SetTDP(tdp - 1, $"AutoTDP- {fps}");
+                    _upCount = 0;
+                    _downCount--;
+                }
+
+                if (_capCount >= 10 && tdp <= tdpMin + 1 && tdpMin > tdpLimit)
+                {
+                    tdpMin--;
+                }
+
             }
 
             ControllerMode newMode = (fps > 0) ? ControllerMode.Gamepad : ControllerMode.Mouse;
@@ -373,7 +397,7 @@ namespace GHelper.Ally
 
             if (_mode != ControllerMode.Auto) return;
 
-            if (_autoCount >= 4)
+            if (_autoCount >= 10)
             {
                 _autoCount = 0;
                 ApplyMode(newMode);
