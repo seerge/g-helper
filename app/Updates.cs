@@ -1,5 +1,4 @@
 ﻿using GHelper.UI;
-using Ryzen;
 using System.Diagnostics;
 using System.Management;
 using System.Net;
@@ -63,12 +62,12 @@ namespace GHelper
 
             Task.Run(async () =>
             {
-                DriversAsync($"https://rog.asus.com/support/webapi/product/GetPDBIOS?website=global&model={model}&cpu=CPUNAME", model, 1, tableBios);
+                DriversAsync($"https://rog.asus.com/support/webapi/product/GetPDBIOS?website=global&model={model}&cpu={model}", 1, tableBios);
             });
 
             Task.Run(async () =>
             {
-                DriversAsync($"https://rog.asus.com/support/webapi/product/GetPDDrivers?website=global&model={model}&cpu=CPUNAME&osid=52", model, 0, tableDrivers);
+                DriversAsync($"https://rog.asus.com/support/webapi/product/GetPDDrivers?website=global&model={model}&cpu={model}&osid=52", 0, tableDrivers);
             });
         }
 
@@ -224,7 +223,7 @@ namespace GHelper
             return input;
         }
 
-        public async void DriversAsync(string url, string model, int type, TableLayoutPanel table)
+        public async void DriversAsync(string url, int type, TableLayoutPanel table)
         {
 
             try
@@ -234,12 +233,10 @@ namespace GHelper
                     AutomaticDecompression = DecompressionMethods.All
                 }))
                 {
-                    var urlNormal = url.Replace("CPUNAME", model);
-                    Logger.WriteLine(urlNormal);
-
+                    Logger.WriteLine(url);
                     httpClient.DefaultRequestHeaders.AcceptEncoding.ParseAdd("gzip, deflate, br");
                     httpClient.DefaultRequestHeaders.Add("User-Agent", "C# App");
-                    var json = await httpClient.GetStringAsync(urlNormal);
+                    var json = await httpClient.GetStringAsync(url);
 
                     var data = JsonSerializer.Deserialize<JsonElement>(json);
                     var result = data.GetProperty("Result");
@@ -247,12 +244,11 @@ namespace GHelper
                     // fallback for bugged API
                     if (result.ToString() == "" || result.GetProperty("Obj").GetArrayLength() == 0)
                     {
-                        Random rnd = new Random();
-                        var urlFallback = url.Replace("CPUNAME", model + rnd.Next(10, 99));
+                        var urlFallback = url + "&tag=" + new Random().Next(10, 99);
                         Logger.WriteLine(urlFallback);
                         json = await httpClient.GetStringAsync(urlFallback);
                         data = JsonSerializer.Deserialize<JsonElement>(json);
-                    } 
+                    }
 
                     var groups = data.GetProperty("Result").GetProperty("Obj");
 
