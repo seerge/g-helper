@@ -47,8 +47,6 @@ namespace GHelper.Ally
         static int _downCount = 0;
 
         static int tdpMin = 6;
-        static int tdpMax = 25;
-
         static int tdpStable = tdpMin;
         static int tdpCurrent = -1;
 
@@ -350,52 +348,24 @@ namespace GHelper.Ally
 
             if (autoTDP && fpsLimit > 0 && fpsLimit <= 120)
             {
-                //Debug.Write(fps + " ");
-
                 if (fps <= Math.Max(fpsLimit - 5, fpsLimit * 0.8)) _upCount++;
                 else _upCount = 0;
 
                 if (fps >= Math.Min(fpsLimit - 1, fpsLimit * 0.95)) _downCount++;
                 else _downCount = 0;
 
-                /*
-                if (fps <= 0 && tdpStable > tdpMin)
-                {
-                    tdpStable = tdpMin;
-                    Logger.WriteLine($"StableTDP= {fps}: {tdpStable}");
-                }
-                */
-
-                var tdp = GetTDP();
-
                 if (_upCount >= 1)
                 {
-                    /*
-                    if (fps > 0)
-                    {
-                        tdpStable = tdp + 1;
-                        Logger.WriteLine($"StableTDP+ {fps}: {tdpStable}");
-                    }
-                    */
-
                     _downCount = 0;
                     _upCount = 0;
-                    SetTDP(tdp + 1, $"AutoTDP+ {fps}");
+                    SetTDP(GetTDP() + 1, $"AutoTDP+ {fps}");
                 }
 
                 if (_downCount >= 8)
                 {
-                    /*
-                    if (tdpStable > tdpMin && tdpStable > tdp - 1)
-                    {
-                        tdpStable = tdp - 1;
-                        Logger.WriteLine($"StableTDP- {fps}: {tdpStable}");
-                    }
-                    */
-
                     _upCount = 0;
                     _downCount--;
-                    if (tdp > tdpStable) SetTDP(tdp - 1, $"AutoTDP- {fps}");
+                    SetTDP(GetTDP() - 1, $"AutoTDP- {fps}");
                 }
             }
 
@@ -438,9 +408,6 @@ namespace GHelper.Ally
 
             fpsLimit = amdControl.GetFPSLimit();
             settings.VisualiseFPSLimit(fpsLimit);
-
-            autoTDP = AppConfig.Is("auto_tdp");
-            settings.VisualiseAutoTDP(autoTDP);
         }
 
         public void ToggleFPSLimit()
