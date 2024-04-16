@@ -342,7 +342,7 @@ namespace GHelper.Mode
 
         }
 
-        public void SetGPUClocks(bool launchAsAdmin = true)
+        public void SetGPUClocks(bool launchAsAdmin = true, bool reset = false)
         {
             Task.Run(() =>
             {
@@ -350,6 +350,8 @@ namespace GHelper.Mode
                 int core = AppConfig.GetMode("gpu_core");
                 int memory = AppConfig.GetMode("gpu_memory");
                 int clock_limit = AppConfig.GetMode("gpu_clock_limit");
+
+                if (reset) core = memory = clock_limit = 0;
 
                 if (core == -1 && memory == -1 && clock_limit == -1) return;
                 //if ((gpu_core > -5 && gpu_core < 5) && (gpu_memory > -5 && gpu_memory < 5)) launchAsAdmin = false;

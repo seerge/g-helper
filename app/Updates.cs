@@ -233,11 +233,23 @@ namespace GHelper
                     AutomaticDecompression = DecompressionMethods.All
                 }))
                 {
+                    Logger.WriteLine(url);
                     httpClient.DefaultRequestHeaders.AcceptEncoding.ParseAdd("gzip, deflate, br");
                     httpClient.DefaultRequestHeaders.Add("User-Agent", "C# App");
                     var json = await httpClient.GetStringAsync(url);
 
                     var data = JsonSerializer.Deserialize<JsonElement>(json);
+                    var result = data.GetProperty("Result");
+
+                    // fallback for bugged API
+                    if (result.ToString() == "" || result.GetProperty("Obj").GetArrayLength() == 0)
+                    {
+                        var urlFallback = url + "&tag=" + new Random().Next(10, 99);
+                        Logger.WriteLine(urlFallback);
+                        json = await httpClient.GetStringAsync(urlFallback);
+                        data = JsonSerializer.Deserialize<JsonElement>(json);
+                    }
+
                     var groups = data.GetProperty("Result").GetProperty("Obj");
 
 

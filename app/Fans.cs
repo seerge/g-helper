@@ -1166,7 +1166,7 @@ namespace GHelper
                 InitGPUPower();
 
                 VisualiseGPUSettings();
-                modeControl.SetGPUClocks(true);
+                modeControl.SetGPUClocks(true, true);
                 modeControl.SetGPUPower();
             }
 
