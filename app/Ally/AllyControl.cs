@@ -4,6 +4,7 @@ using GHelper.Input;
 using GHelper.Mode;
 using GHelper.USB;
 using HidSharp;
+using System.Diagnostics;
 using System.Text;
 
 namespace GHelper.Ally
@@ -348,37 +349,44 @@ namespace GHelper.Ally
 
             if (autoTDP && fpsLimit > 0 && fpsLimit <= 120)
             {
-                if (fps <= Math.Max(fpsLimit - 5, fpsLimit * 0.8)) _upCount++;
+                int power = (int)amdControl.GetGpuPower();
+                //Debug.WriteLine($"{power}: {fps}");
+
+                if (fps <= fpsLimit * 0.8) _upCount++;
                 else _upCount = 0;
 
-                if (fps >= Math.Min(fpsLimit - 1, fpsLimit * 0.95)) _downCount++;
+                if (fps >= fpsLimit * 0.90) _downCount++;
                 else _downCount = 0;
 
+                var tdp = GetTDP();
                 if (_upCount >= 1)
                 {
                     _downCount = 0;
                     _upCount = 0;
-                    SetTDP(GetTDP() + 1, $"AutoTDP+ {fps}");
+                    SetTDP(tdp + 1, $"AutoTDP+ [{power}]{fps}");
                 }
 
-                if (_downCount >= 8)
+                if (_downCount >= 8 && power < tdp)
                 {
                     _upCount = 0;
                     _downCount--;
-                    SetTDP(GetTDP() - 1, $"AutoTDP- {fps}");
+                    SetTDP(tdp - 1, $"AutoTDP- [{power}]{fps}");
                 }
             }
 
-            ControllerMode newMode = (fps > 0) ? ControllerMode.Gamepad : ControllerMode.Mouse;
-
-            if (_applyMode != newMode) _autoCount++;
-            else _autoCount = 0;
-
-            if (_autoCount > 2)
+            if (_mode == ControllerMode.Auto)
             {
-                _autoCount = 0;
-                ApplyMode(newMode);
-                Logger.WriteLine($"Controller Mode {fps}: {newMode}");
+                ControllerMode newMode = (fps > 0) ? ControllerMode.Gamepad : ControllerMode.Mouse;
+
+                if (_applyMode != newMode) _autoCount++;
+                else _autoCount = 0;
+
+                if (_autoCount > 2)
+                {
+                    _autoCount = 0;
+                    ApplyMode(newMode);
+                    Logger.WriteLine($"Controller Mode {fps}: {newMode}");
+                }
             }
 
         }
