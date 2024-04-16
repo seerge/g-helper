@@ -45,12 +45,11 @@ namespace GHelper.Ally
 
         static int _upCount = 0;
         static int _downCount = 0;
-        static int _capCount = 0;
 
-        const int tdpLimit = 6;
-
-        static int tdpMin = tdpLimit;
+        static int tdpMin = 6;
         static int tdpMax = 25;
+
+        static int tdpStable = tdpMin;
         static int tdpCurrent = -1;
 
         static bool autoTDP = false;
@@ -299,7 +298,7 @@ namespace GHelper.Ally
 
             if (timer is null)
             {
-                timer = new System.Timers.Timer(200);
+                timer = new System.Timers.Timer(300);
                 timer.Elapsed += Timer_Elapsed;
                 Logger.WriteLine("Ally timer");
             }
@@ -328,8 +327,10 @@ namespace GHelper.Ally
 
         private void SetTDP(int tdp, string log)
         {
-            if (tdp < tdpMin) tdp = tdpMin;
-            if (tdp > tdpMax) tdp = tdpMax;
+            if (tdp < tdpStable) tdp = tdpStable;
+
+            int max = GetMaxTDP();
+            if (tdp > max) tdp = max;
 
             if (tdp == tdpCurrent) return;
             if (!autoTDP) return;
@@ -343,51 +344,59 @@ namespace GHelper.Ally
 
         private void Timer_Elapsed(object? sender, System.Timers.ElapsedEventArgs e)
         {
+            if (!autoTDP && _mode != ControllerMode.Auto) return;
+
             float fps = amdControl.GetFPS();
 
-            if (autoTDP && fpsLimit > 0 && fpsLimit < 120)
+            if (autoTDP && fpsLimit > 0 && fpsLimit <= 120)
             {
                 //Debug.Write(fps + " ");
 
-                if (fps < fpsLimit * 0.8) _upCount++;
+                if (fps <= Math.Max(fpsLimit - 5, fpsLimit * 0.8)) _upCount++;
                 else _upCount = 0;
 
-                if (fps >= fpsLimit * 0.9) _downCount++;
+                if (fps >= Math.Min(fpsLimit - 1, fpsLimit * 0.95)) _downCount++;
                 else _downCount = 0;
 
-                if (fps >= fpsLimit * 0.95) _capCount++;
-                else _capCount = 0;
-
-                if (fps <= 0 && tdpMin > tdpLimit)
+                /*
+                if (fps <= 0 && tdpStable > tdpMin)
                 {
-                    tdpMin = tdpLimit;
+                    tdpStable = tdpMin;
+                    Logger.WriteLine($"StableTDP= {fps}: {tdpStable}");
                 }
+                */
 
                 var tdp = GetTDP();
 
                 if (_upCount >= 1)
                 {
-                    if (fps > 0 && fps < fpsLimit * 0.7)
+                    /*
+                    if (fps > 0)
                     {
-                        tdpMin = tdp + 1;
+                        tdpStable = tdp + 1;
+                        Logger.WriteLine($"StableTDP+ {fps}: {tdpStable}");
                     }
+                    */
+
                     _downCount = 0;
-                    _upCount--;
+                    _upCount = 0;
                     SetTDP(tdp + 1, $"AutoTDP+ {fps}");
                 }
 
-                if (_downCount >= 10)
+                if (_downCount >= 8)
                 {
-                    SetTDP(tdp - 1, $"AutoTDP- {fps}");
+                    /*
+                    if (tdpStable > tdpMin && tdpStable > tdp - 1)
+                    {
+                        tdpStable = tdp - 1;
+                        Logger.WriteLine($"StableTDP- {fps}: {tdpStable}");
+                    }
+                    */
+
                     _upCount = 0;
                     _downCount--;
+                    if (tdp > tdpStable) SetTDP(tdp - 1, $"AutoTDP- {fps}");
                 }
-
-                if (_capCount >= 10 && tdp <= tdpMin + 1 && tdpMin > tdpLimit)
-                {
-                    tdpMin--;
-                }
-
             }
 
             ControllerMode newMode = (fps > 0) ? ControllerMode.Gamepad : ControllerMode.Mouse;
@@ -395,13 +404,11 @@ namespace GHelper.Ally
             if (_applyMode != newMode) _autoCount++;
             else _autoCount = 0;
 
-            if (_mode != ControllerMode.Auto) return;
-
-            if (_autoCount >= 10)
+            if (_autoCount > 2)
             {
                 _autoCount = 0;
                 ApplyMode(newMode);
-                Logger.WriteLine(fps.ToString());
+                Logger.WriteLine($"Controller Mode {fps}: {newMode}");
             }
 
         }
@@ -688,16 +695,8 @@ namespace GHelper.Ally
 
             ApplyMode(mode, init);
 
-            if (mode == ControllerMode.Auto)
-            {
-                amdControl.StartFPS();
-                timer.Start();
-            }
-            else
-            {
-                timer.Stop();
-                amdControl.StopFPS();
-            }
+            amdControl.StartFPS();
+            timer.Start();
 
             settings.VisualiseController(mode);
         }
