@@ -218,7 +218,9 @@ namespace GHelper
 
             buttonUpdates.Click += ButtonUpdates_Click;
 
-            sliderBattery.ValueChanged += SliderBattery_ValueChanged;
+            sliderBattery.MouseUp += SliderBattery_MouseUp;
+            sliderBattery.KeyUp += SliderBattery_KeyUp;
+
             Program.trayIcon.MouseMove += TrayIcon_MouseMove;
 
             sensorTimer = new System.Timers.Timer(AppConfig.Get("sensor_timer", 1000));
@@ -264,6 +266,16 @@ namespace GHelper
 
             panelPerformance.Focus();
             InitVisual();
+        }
+
+        private void SliderBattery_KeyUp(object? sender, KeyEventArgs e)
+        {
+            BatteryControl.SetBatteryChargeLimit(sliderBattery.Value);
+        }
+
+        private void SliderBattery_MouseUp(object? sender, MouseEventArgs e)
+        {
+            BatteryControl.SetBatteryChargeLimit(sliderBattery.Value);
         }
 
         private void ButtonAutoTDP_Click(object? sender, EventArgs e)
@@ -739,11 +751,6 @@ namespace GHelper
         private void ButtonXGM_Click(object? sender, EventArgs e)
         {
             gpuControl.ToggleXGM();
-        }
-
-        private void SliderBattery_ValueChanged(object? sender, EventArgs e)
-        {
-            BatteryControl.SetBatteryChargeLimit(sliderBattery.Value);
         }
 
 

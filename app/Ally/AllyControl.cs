@@ -4,8 +4,9 @@ using GHelper.Input;
 using GHelper.Mode;
 using GHelper.USB;
 using HidSharp;
-using System.Diagnostics;
 using System.Text;
+
+
 
 namespace GHelper.Ally
 {
@@ -381,7 +382,7 @@ namespace GHelper.Ally
                 if (_applyMode != newMode) _autoCount++;
                 else _autoCount = 0;
 
-                if (_autoCount > 2)
+                if (_autoCount == 3)
                 {
                     _autoCount = 0;
                     ApplyMode(newMode);
@@ -575,7 +576,7 @@ namespace GHelper.Ally
             DecodeBinding(KeyR2).CopyTo(bindings, 38);
 
             //AsusHid.WriteInput(CommandReady, null);
-            AsusHid.WriteInput(bindings, $"B{zone}");
+            AsusHid.WriteInput(bindings, null);
 
         }
 
@@ -591,19 +592,19 @@ namespace GHelper.Ally
                 (byte)AppConfig.Get("ls_max", 100),
                 (byte)AppConfig.Get("rs_min", 0),
                 (byte)AppConfig.Get("rs_max", 100)
-            }, "StickDeadzone");
+            }, null);
 
             AsusHid.WriteInput(new byte[] { AsusHid.INPUT_ID, 0xd1, 5, 4,
                 (byte)AppConfig.Get("lt_min", 0),
                 (byte)AppConfig.Get("lt_max", 100),
                 (byte)AppConfig.Get("rt_min", 0),
                 (byte)AppConfig.Get("rt_max", 100)
-            }, "TriggerDeadzone");
+            }, null);
 
             AsusHid.WriteInput(new byte[] { AsusHid.INPUT_ID, 0xd1, 6, 2,
                 (byte)AppConfig.Get("vibra", 100),
                 (byte)AppConfig.Get("vibra", 100)
-            }, "Vibration");
+            }, null);
 
         }
 
@@ -668,6 +669,7 @@ namespace GHelper.Ally
             _mode = mode;
             AppConfig.Set("controller_mode", (int)mode);
 
+            amdControl.StopFPS();
             ApplyMode(mode, init);
 
             amdControl.StartFPS();
