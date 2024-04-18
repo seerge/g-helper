@@ -19,7 +19,8 @@ namespace GHelper.AnimeMatrix
         Ramp,
         GameOver,
         Start,
-        Buzzer
+        Buzzer,
+        Static
     }
 
     internal class SlashPacket : Packet
@@ -53,6 +54,7 @@ namespace GHelper.AnimeMatrix
             { SlashMode.GameOver, "Game Over"},
             { SlashMode.Start, "Start"},
             { SlashMode.Buzzer, "Buzzer"},
+            { SlashMode.Static, "Static"},
         };
 
         private static Dictionary<SlashMode, byte> modeCodes = new Dictionary<SlashMode, byte>
@@ -113,6 +115,13 @@ namespace GHelper.AnimeMatrix
 
             Set(Packet<SlashPacket>(0xD2, 0x03, 0x00, 0x0C), "SlashMode");
             Set(Packet<SlashPacket>(0xD3, 0x04, 0x00, 0x0C, 0x01, modeByte, 0x02, 0x19, 0x03, 0x13, 0x04, 0x11, 0x05, 0x12, 0x06, 0x13), "SlashMode");
+        }
+
+        public void SetStatic()
+        {
+            Set(Packet<SlashPacket>(0xD3, 0x00, 0x00, 0x07), "Static");
+            Set(Packet<SlashPacket>(0xD3, 0x00, 0x00, 0x01, 0xAC), "Static");
+            Set(Packet<SlashPacket>(0xD3, 0x00, 0x00, 0x07, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF), "StaticWhite");
         }
 
         public void SetOptions(bool status, int brightness = 0, int interval = 0)

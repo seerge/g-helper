@@ -98,9 +98,18 @@ namespace GHelper.AnimeMatrix
                     }
 
                     deviceSlash.Init();
-                    deviceSlash.SetMode((SlashMode)running);
-                    deviceSlash.SetOptions(true, brightness, inteval);
-                    deviceSlash.Save();
+                    
+                    switch ((SlashMode)running)
+                    {
+                        case SlashMode.Static:
+                            deviceSlash.SetStatic();
+                            break;
+                        default:
+                            deviceSlash.SetMode((SlashMode)running);
+                            deviceSlash.SetOptions(true, brightness, inteval);
+                            deviceSlash.Save();
+                            break;
+                    }
                 }
             });
         }
