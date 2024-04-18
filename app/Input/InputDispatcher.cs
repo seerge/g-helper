@@ -586,7 +586,7 @@ namespace GHelper.Input
 
         public static void ToggleFnLock()
         {
-            bool fnLock = AppConfig.Is("fn_lock");
+            bool fnLock = !AppConfig.Is("fn_lock");
             AppConfig.Set("fn_lock", fnLock ? 1 : 0);
 
             if (AppConfig.IsVivoZenbook())
