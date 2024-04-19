@@ -103,6 +103,7 @@ namespace GHelper.AnimeMatrix
                     {
                         case SlashMode.Static:
                             deviceSlash.SetStatic();
+                            deviceSlash.Save();
                             break;
                         default:
                             deviceSlash.SetMode((SlashMode)running);

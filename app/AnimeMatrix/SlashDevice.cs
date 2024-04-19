@@ -119,9 +119,8 @@ namespace GHelper.AnimeMatrix
 
         public void SetStatic()
         {
-            Set(Packet<SlashPacket>(0xD3, 0x00, 0x00, 0x07), "Static");
-            Set(Packet<SlashPacket>(0xD3, 0x00, 0x00, 0x01, 0xAC), "Static");
             Set(Packet<SlashPacket>(0xD3, 0x00, 0x00, 0x07, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF), "StaticWhite");
+            Set(Packet<SlashPacket>(0xD3, 0x00, 0x00, 0x01, 0xAC), "Static");
         }
 
         public void SetOptions(bool status, int brightness = 0, int interval = 0)
