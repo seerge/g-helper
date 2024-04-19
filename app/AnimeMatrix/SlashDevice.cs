@@ -122,10 +122,10 @@ namespace GHelper.AnimeMatrix
             byte brightnessByte = (byte)(brightness * 85.333);
 
             Set(Packet<SlashPacket>(0xD2, 0x02, 0x01, 0x08, 0xAC), "Static");
-            Set(Packet<SlashPacket>(0xD3, 0x03, 0x01, 0x08, 0xAC, 0xFF, 0xFF, 0x01, 0x05, brightnessByte, 0xFF), "StaticSettings");
+            Set(Packet<SlashPacket>(0xD3, 0x03, 0x01, 0x08, 0xAC, 0xFF, 0xFF, 0x01, 0x05, 0xFF, 0xFF), "StaticSettings");
             Set(Packet<SlashPacket>(0xD4, 0x00, 0x00, 0x01, 0xAC), "StaticSave");
 
-            Set(Packet<SlashPacket>(0xD3, 0x00, 0x00, 0x07, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF), "Static White");
+            Set(Packet<SlashPacket>(0xD3, 0x00, 0x00, 0x07, brightnessByte, brightnessByte, brightnessByte, brightnessByte, brightnessByte, brightnessByte, brightnessByte), "Static White");
         }
 
         public void SetOptions(bool status, int brightness = 0, int interval = 0)
