@@ -102,7 +102,7 @@ namespace GHelper.AnimeMatrix
                     switch ((SlashMode)running)
                     {
                         case SlashMode.Static:
-                            deviceSlash.SetStatic();
+                            deviceSlash.SetStatic(brightness);
                             break;
                         default:
                             deviceSlash.SetMode((SlashMode)running);
