@@ -59,18 +59,6 @@ namespace GHelper.AnimeMatrix
             if (deviceSlash is not null) SetSlash(wakeUp);
         }
 
-        public void SetLidMode(bool force = false)
-        {
-            bool matrixLid = AppConfig.Is("matrix_lid");
-            if (matrixLid || force)
-            {
-                Logger.WriteLine($"Matrix LidClosed: {lidClose}");
-                if (deviceSlash is not null) deviceSlash.SetLidMode(matrixLid);
-                SetDevice(true);
-            }
-        }
-
-
         public void SetSlash(bool wakeUp = false)
         {
             if (deviceSlash is null) return;
@@ -110,16 +98,44 @@ namespace GHelper.AnimeMatrix
                     }
 
                     deviceSlash.Init();
-                    deviceSlash.SetMode((SlashMode)running);
-                    deviceSlash.SetOptions(true, brightness, inteval);
-                    deviceSlash.Save();
+                    
+                    switch ((SlashMode)running)
+                    {
+                        case SlashMode.Static:
+                            deviceSlash.SetStatic();
+                            deviceSlash.Save();
+                            break;
+                        default:
+                            deviceSlash.SetMode((SlashMode)running);
+                            deviceSlash.SetOptions(true, brightness, inteval);
+                            deviceSlash.Save();
+                            break;
+                    }
                 }
             });
         }
 
+        public void SetLidMode(bool force = false)
+        {
+            bool matrixLid = AppConfig.Is("matrix_lid");
+            if (deviceSlash is not null) deviceSlash.SetLidMode(matrixLid);
+
+            if (matrixLid || force)
+            {
+                Logger.WriteLine($"Matrix LidClosed: {lidClose}");
+                SetDevice(true);
+            }
+        }
+
         public void SetBatteryAuto()
         {
-            if (deviceSlash is not null) deviceSlash.SetBatterySaver(AppConfig.Is("matrix_auto"));
+            if (deviceSlash is not null)
+            {
+                bool auto = AppConfig.Is("matrix_auto");
+                deviceSlash.SetBatterySaver(auto);
+                if (!auto) SetSlash();
+            }
+
             if (deviceMatrix is not null) SetMatrix();
         }
 

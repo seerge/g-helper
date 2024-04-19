@@ -85,7 +85,8 @@ namespace GHelper.Input
 
             InitBacklightTimer();
 
-            if (AppConfig.IsVivoZenbook()) Program.acpi.DeviceSet(AsusACPI.FnLock, AppConfig.Is("fn_lock") ? 1 : 0, "FnLock");
+            if (AppConfig.IsVivoZenbook())
+                Program.acpi.DeviceSet(AsusACPI.FnLock, AppConfig.Is("fn_lock") ^ AppConfig.IsInvertedFNLock() ? 1 : 0, "FnLock");
 
         }
 
@@ -585,17 +586,17 @@ namespace GHelper.Input
 
         public static void ToggleFnLock()
         {
-            int fnLock = AppConfig.Is("fn_lock") ? 0 : 1;
-            AppConfig.Set("fn_lock", fnLock);
+            bool fnLock = !AppConfig.Is("fn_lock");
+            AppConfig.Set("fn_lock", fnLock ? 1 : 0);
 
             if (AppConfig.IsVivoZenbook())
-                Program.acpi.DeviceSet(AsusACPI.FnLock, fnLock == 1 ? 1 : 0, "FnLock");
+                Program.acpi.DeviceSet(AsusACPI.FnLock, fnLock ^ AppConfig.IsInvertedFNLock() ? 1 : 0, "FnLock");
             else
                 Program.settingsForm.BeginInvoke(Program.inputDispatcher.RegisterKeys);
 
             Program.settingsForm.BeginInvoke(Program.settingsForm.VisualiseFnLock);
 
-            Program.toast.RunToast(fnLock == 1 ? Properties.Strings.FnLockOn : Properties.Strings.FnLockOff, ToastIcon.FnLock);
+            Program.toast.RunToast(fnLock ? Properties.Strings.FnLockOn : Properties.Strings.FnLockOff, ToastIcon.FnLock);
         }
 
         public static void TabletMode()
