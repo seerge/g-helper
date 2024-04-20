@@ -117,7 +117,12 @@ namespace GHelper.AnimeMatrix
         public void SetLidMode(bool force = false)
         {
             bool matrixLid = AppConfig.Is("matrix_lid");
-            if (deviceSlash is not null) deviceSlash.SetLidMode(matrixLid);
+            
+            if (deviceSlash is not null)
+            {
+                deviceSlash.SetLidMode(matrixLid);
+                deviceSlash.SetSleepActive(!matrixLid);
+            }
 
             if (matrixLid || force)
             {

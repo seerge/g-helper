@@ -137,12 +137,18 @@ namespace GHelper.AnimeMatrix
 
         public void SetBatterySaver(bool status)
         {
-            Set(Packet<SlashPacket>(0xD8, 0x01, 0x00, 0x01, status ? (byte)0x80 : (byte)0x00), "SlashBatterySaver");
+            Set(Packet<SlashPacket>(0xD8, 0x01, 0x00, 0x01, status ? (byte)0x80 : (byte)0x00), $"SlashBatterySaver {status}");
         }
 
         public void SetLidMode(bool status)
         {
-            Set(Packet<SlashPacket>(0xD8, 0x00, 0x00, 0x02, 0xA5, status ? (byte)0x80 : (byte)0x00));
+            Set(Packet<SlashPacket>(0xD8, 0x00, 0x00, 0x02, 0xA5, status ? (byte)0x80 : (byte)0x00), $"DisableLidClose {status}");
+        }
+
+        public void SetSleepActive(bool status)
+        {
+            Set(Packet<SlashPacket>(0xD2, 0x02, 0x01, 0x08, 0xA1), "SleepInit");
+            Set(Packet<SlashPacket>(0xD3, 0x03, 0x01, 0x08, 0xA1, 0x00, 0xFF, status ? (byte)0x01 : (byte)0x00, 0x02, 0xFF, 0xFF), $"Sleep {status}");
         }
 
         public void Set(Packet packet, string? log = null)
