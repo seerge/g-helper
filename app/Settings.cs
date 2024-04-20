@@ -323,7 +323,7 @@ namespace GHelper
             panelGamma.Visible = true;
             tableVisual.Visible = true;
 
-            var visualValue = (SplendidCommand)AppConfig.Get("visual", (int)SplendidCommand.Default);
+            var visualValue = (SplendidCommand)AppConfig.Get("visual", (int)VisualControl.GetDefaultVisualMode());
             var colorTempValue = AppConfig.Get("color_temp", VisualControl.DefaultColorTemp);
 
             comboVisual.DropDownStyle = ComboBoxStyle.DropDownList;
@@ -352,7 +352,7 @@ namespace GHelper
             comboGamut.DataSource = new BindingSource(gamuts, null);
             comboGamut.DisplayMember = "Value";
             comboGamut.ValueMember = "Key";
-            comboGamut.SelectedValue = (SplendidGamut)AppConfig.Get("gamut", (int)SplendidGamut.Native);
+            comboGamut.SelectedValue = (SplendidGamut)AppConfig.Get("gamut", (int)VisualControl.GetDefaultGamut());
 
             comboGamut.SelectedValueChanged += ComboGamut_SelectedValueChanged;
             comboGamut.Visible = true;
