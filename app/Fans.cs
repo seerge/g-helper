@@ -162,13 +162,14 @@ namespace GHelper
             trackGPUTemp.Scroll += trackGPUPower_Scroll;
             trackGPUPower.Scroll += trackGPUPower_Scroll;
 
-            trackGPUCore.MouseUp += TrackGPU_MouseUp;
-            trackGPUMemory.MouseUp += TrackGPU_MouseUp;
+            trackGPUCore.MouseUp += TrackGPUClocks_MouseUp;
+            trackGPUMemory.MouseUp += TrackGPUClocks_MouseUp;
+            trackGPUClockLimit.MouseUp += TrackGPUClocks_MouseUp;
+
             trackGPUBoost.MouseUp += TrackGPU_MouseUp;
             trackGPUTemp.MouseUp += TrackGPU_MouseUp;
             trackGPUPower.MouseUp += TrackGPU_MouseUp;
 
-            trackGPUClockLimit.MouseUp += TrackGPU_MouseUp;
 
             //labelInfo.MaximumSize = new Size(280, 0);
             labelFansResult.Visible = false;
@@ -526,13 +527,17 @@ namespace GHelper
         private void TrackGPU_MouseUp(object? sender, MouseEventArgs e)
         {
             modeControl.SetGPUPower();
+        }
+
+        private void TrackGPUClocks_MouseUp(object? sender, MouseEventArgs e)
+        {
             modeControl.SetGPUClocks(true);
         }
 
         private void InitGPUPower()
         {
             gpuPowerBase = Program.acpi.DeviceGet(AsusACPI.GPU_BASE);
-            Logger.WriteLine($"ReadGPUPowerBase: {gpuPowerBase}");
+            if (gpuPowerBase >= 0) Logger.WriteLine($"ReadGPUPowerBase: {gpuPowerBase}");
 
             panelGPUPower.Visible = isGPUPower;
             if (!isGPUPower) return;
