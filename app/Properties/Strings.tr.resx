@@ -247,7 +247,7 @@
     <value>Pil tasarrufu için 60Hz kullanılır, şarja takıldığında eski haline gelir</value>
   </data>
   <data name="Awake" xml:space="preserve">
-    <value>Uyanırken</value>
+    <value>Uyanış</value>
   </data>
   <data name="BacklightLow" xml:space="preserve">
     <value>Düşük</value>
@@ -298,10 +298,10 @@
     <value>BIOS ve Sürücü Güncellemeleri</value>
   </data>
   <data name="Boot" xml:space="preserve">
-    <value>Açılışta</value>
+    <value>Açılış</value>
   </data>
   <data name="BootSound" xml:space="preserve">
-    <value>Önyükleme Sesi</value>
+    <value>Açılış sesi</value>
   </data>
   <data name="Brightness" xml:space="preserve">
     <value>Parlaklık</value>
@@ -729,7 +729,7 @@ Yine de devam etmek istiyor musunuz?</value>
     <value>Aura'yı Kullan</value>
   </data>
   <data name="ToggleClamshellMode" xml:space="preserve">
-    <value>Otomatik Clamshell Modunu Aç</value>
+    <value>Kapaklı modu otmatik değiştir</value>
   </data>
   <data name="ToggleFnLock" xml:space="preserve">
     <value>Fn-Lock'u Aç</value>
