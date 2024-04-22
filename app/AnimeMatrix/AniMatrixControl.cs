@@ -88,6 +88,7 @@ namespace GHelper.AnimeMatrix
                 {
                     deviceSlash.Init();
                     deviceSlash.SetOptions(false, 0, 0);
+                    deviceSlash.SetSleepActive(false);
                 }
                 else
                 {
@@ -98,12 +99,11 @@ namespace GHelper.AnimeMatrix
                     }
 
                     deviceSlash.Init();
-                    
+
                     switch ((SlashMode)running)
                     {
                         case SlashMode.Static:
-                            deviceSlash.SetStatic();
-                            deviceSlash.Save();
+                            deviceSlash.SetStatic(brightness);
                             break;
                         default:
                             deviceSlash.SetMode((SlashMode)running);
@@ -111,6 +111,8 @@ namespace GHelper.AnimeMatrix
                             deviceSlash.Save();
                             break;
                     }
+
+                    deviceSlash.SetSleepActive(true);
                 }
             });
         }
@@ -118,7 +120,11 @@ namespace GHelper.AnimeMatrix
         public void SetLidMode(bool force = false)
         {
             bool matrixLid = AppConfig.Is("matrix_lid");
-            if (deviceSlash is not null) deviceSlash.SetLidMode(matrixLid);
+            
+            if (deviceSlash is not null)
+            {
+                deviceSlash.SetLidMode(matrixLid);
+            }
 
             if (matrixLid || force)
             {

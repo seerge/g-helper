@@ -117,10 +117,15 @@ namespace GHelper.AnimeMatrix
             Set(Packet<SlashPacket>(0xD3, 0x04, 0x00, 0x0C, 0x01, modeByte, 0x02, 0x19, 0x03, 0x13, 0x04, 0x11, 0x05, 0x12, 0x06, 0x13), "SlashMode");
         }
 
-        public void SetStatic()
+        public void SetStatic(int brightness = 0)
         {
-            Set(Packet<SlashPacket>(0xD3, 0x00, 0x00, 0x07, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF), "StaticWhite");
-            Set(Packet<SlashPacket>(0xD3, 0x00, 0x00, 0x01, 0xAC), "Static");
+            byte brightnessByte = (byte)(brightness * 85.333);
+
+            Set(Packet<SlashPacket>(0xD2, 0x02, 0x01, 0x08, 0xAC), "Static");
+            Set(Packet<SlashPacket>(0xD3, 0x03, 0x01, 0x08, 0xAC, 0xFF, 0xFF, 0x01, 0x05, 0xFF, 0xFF), "StaticSettings");
+            Set(Packet<SlashPacket>(0xD4, 0x00, 0x00, 0x01, 0xAC), "StaticSave");
+
+            Set(Packet<SlashPacket>(0xD3, 0x00, 0x00, 0x07, brightnessByte, brightnessByte, brightnessByte, brightnessByte, brightnessByte, brightnessByte, brightnessByte), "Static White");
         }
 
         public void SetOptions(bool status, int brightness = 0, int interval = 0)
@@ -132,12 +137,18 @@ namespace GHelper.AnimeMatrix
 
         public void SetBatterySaver(bool status)
         {
-            Set(Packet<SlashPacket>(0xD8, 0x01, 0x00, 0x01, status ? (byte)0x80 : (byte)0x00), "SlashBatterySaver");
+            Set(Packet<SlashPacket>(0xD8, 0x01, 0x00, 0x01, status ? (byte)0x80 : (byte)0x00), $"SlashBatterySaver {status}");
         }
 
         public void SetLidMode(bool status)
         {
-            Set(Packet<SlashPacket>(0xD8, 0x00, 0x00, 0x02, 0xA5, status ? (byte)0x80 : (byte)0x00));
+            Set(Packet<SlashPacket>(0xD8, 0x00, 0x00, 0x02, 0xA5, status ? (byte)0x80 : (byte)0x00), $"DisableLidClose {status}");
+        }
+
+        public void SetSleepActive(bool status)
+        {
+            Set(Packet<SlashPacket>(0xD2, 0x02, 0x01, 0x08, 0xA1), "SleepInit");
+            Set(Packet<SlashPacket>(0xD3, 0x03, 0x01, 0x08, 0xA1, 0x00, 0xFF, status ? (byte)0x01 : (byte)0x00, 0x02, 0xFF, 0xFF), $"Sleep {status}");
         }
 
         public void Set(Packet packet, string? log = null)

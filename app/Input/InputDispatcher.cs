@@ -941,32 +941,16 @@ namespace GHelper.Input
 
         static void LaunchProcess(string command = "")
         {
-
+            if (string.IsNullOrEmpty(command)) return;
             try
             {
-
-                //string executable = command.Split(' ')[0];
-                //string arguments = command.Substring(executable.Length).Trim();
-                ProcessStartInfo startInfo = new ProcessStartInfo("cmd", "/C " + command);
-
-                startInfo.RedirectStandardOutput = true;
-                startInfo.RedirectStandardError = true;
-                startInfo.UseShellExecute = false;
-                startInfo.CreateNoWindow = true;
-
-                startInfo.WorkingDirectory = Environment.CurrentDirectory;
-                //startInfo.Arguments = arguments;
-                Process proc = Process.Start(startInfo);
+                RestrictedProcessHelper.RunAsRestrictedUser(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.System), "cmd.exe"), "/C " + command);
             }
-            catch
+            catch (Exception ex)
             {
-                Logger.WriteLine("Failed to run  " + command);
+                Logger.WriteLine($"Failed to run: {command} {ex.Message}");
             }
-
-
         }
-
-
 
         static void WatcherEventArrived(object sender, EventArrivedEventArgs e)
         {
