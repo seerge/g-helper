@@ -507,7 +507,7 @@ Trotzdem fortfahren?</value>
     <value>Beleuchtung</value>
   </data>
   <data name="LockScreen" xml:space="preserve">
-    <value>Lock Screen</value>
+    <value>Bildschirm sperren</value>
   </data>
   <data name="Logo" xml:space="preserve">
     <value>Logo</value>
