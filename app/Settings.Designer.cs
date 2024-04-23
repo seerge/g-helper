@@ -88,6 +88,7 @@ namespace GHelper
             button60Hz = new RButton();
             button120Hz = new RButton();
             buttonMiniled = new RButton();
+            buttonFHD = new RButton();
             panelScreenTitle = new Panel();
             labelMidFan = new Label();
             pictureScreen = new PictureBox();
@@ -134,7 +135,6 @@ namespace GHelper
             labelGamma = new Label();
             pictureGamma = new PictureBox();
             labelGammaTitle = new Label();
-            buttonFHD = new RButton();
             panelMatrix.SuspendLayout();
             panelMatrixAuto.SuspendLayout();
             tableLayoutMatrix.SuspendLayout();
@@ -1147,14 +1147,35 @@ namespace GHelper
             buttonMiniled.FlatAppearance.BorderSize = 0;
             buttonMiniled.FlatStyle = FlatStyle.Flat;
             buttonMiniled.ForeColor = SystemColors.ControlText;
-            buttonMiniled.Location = new Point(592, 4);
+            buttonMiniled.Location = new Point(4, 84);
             buttonMiniled.Margin = new Padding(4);
             buttonMiniled.Name = "buttonMiniled";
             buttonMiniled.Secondary = false;
-            buttonMiniled.Size = new Size(191, 72);
+            buttonMiniled.Size = new Size(188, 12);
             buttonMiniled.TabIndex = 12;
             buttonMiniled.Text = Properties.Strings.Multizone;
             buttonMiniled.UseVisualStyleBackColor = false;
+            // 
+            // buttonFHD
+            // 
+            buttonFHD.Activated = false;
+            buttonFHD.BackColor = SystemColors.ControlLightLight;
+            buttonFHD.BorderColor = Color.Transparent;
+            buttonFHD.BorderRadius = 5;
+            buttonFHD.CausesValidation = false;
+            buttonFHD.Dock = DockStyle.Fill;
+            buttonFHD.FlatAppearance.BorderSize = 0;
+            buttonFHD.FlatStyle = FlatStyle.Flat;
+            buttonFHD.ForeColor = SystemColors.ControlText;
+            buttonFHD.Location = new Point(592, 4);
+            buttonFHD.Margin = new Padding(4);
+            buttonFHD.Name = "buttonFHD";
+            buttonFHD.Secondary = false;
+            buttonFHD.Size = new Size(191, 72);
+            buttonFHD.TabIndex = 13;
+            buttonFHD.Text = "FHD";
+            buttonFHD.UseVisualStyleBackColor = false;
+            buttonFHD.Visible = false;
             // 
             // panelScreenTitle
             // 
@@ -1871,27 +1892,6 @@ namespace GHelper
             labelGammaTitle.Size = new Size(540, 32);
             labelGammaTitle.TabIndex = 37;
             labelGammaTitle.Text = "Flicker-free Dimming";
-            // 
-            // buttonFHD
-            // 
-            buttonFHD.Activated = false;
-            buttonFHD.BackColor = SystemColors.ControlLightLight;
-            buttonFHD.BorderColor = Color.Transparent;
-            buttonFHD.BorderRadius = 5;
-            buttonFHD.CausesValidation = false;
-            buttonFHD.Dock = DockStyle.Fill;
-            buttonFHD.FlatAppearance.BorderSize = 0;
-            buttonFHD.FlatStyle = FlatStyle.Flat;
-            buttonFHD.ForeColor = SystemColors.ControlText;
-            buttonFHD.Location = new Point(4, 84);
-            buttonFHD.Margin = new Padding(4);
-            buttonFHD.Name = "buttonFHD";
-            buttonFHD.Secondary = false;
-            buttonFHD.Size = new Size(188, 12);
-            buttonFHD.TabIndex = 13;
-            buttonFHD.Text = "FHD";
-            buttonFHD.UseVisualStyleBackColor = false;
-            buttonFHD.Visible = false;
             // 
             // SettingsForm
             // 
