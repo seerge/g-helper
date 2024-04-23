@@ -159,6 +159,7 @@ namespace GHelper
             button120Hz.Click += Button120Hz_Click;
             buttonScreenAuto.Click += ButtonScreenAuto_Click;
             buttonMiniled.Click += ButtonMiniled_Click;
+            buttonFHD.Click += ButtonFHD_Click;
 
             buttonQuit.Click += ButtonQuit_Click;
 
@@ -261,6 +262,11 @@ namespace GHelper
 
             panelPerformance.Focus();
             InitVisual();
+        }
+
+        private void ButtonFHD_Click(object? sender, EventArgs e)
+        {
+            screenControl.ToogleFHD();
         }
 
         private void LabelCharge_Click(object? sender, EventArgs e)
@@ -1143,7 +1149,7 @@ namespace GHelper
 
 
 
-        public void VisualiseScreen(bool screenEnabled, bool screenAuto, int frequency, int maxFrequency, int overdrive, bool overdriveSetting, int miniled1, int miniled2, bool hdr)
+        public void VisualiseScreen(bool screenEnabled, bool screenAuto, int frequency, int maxFrequency, int overdrive, bool overdriveSetting, int miniled1, int miniled2, bool hdr, int fhd)
         {
 
             ButtonEnabled(button60Hz, screenEnabled);
@@ -1180,6 +1186,12 @@ namespace GHelper
             else if (maxFrequency > 0)
             {
                 panelScreen.Visible = false;
+            }
+
+            if (fhd >= 0)
+            {
+                buttonFHD.Visible = true;
+                buttonFHD.Text = fhd > 0 ? "FHD" : "UHD";
             }
 
             if (miniled1 >= 0)
