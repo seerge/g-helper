@@ -217,6 +217,9 @@ namespace GHelper
             button120Hz.MouseMove += Button120Hz_MouseHover;
             button120Hz.MouseLeave += ButtonScreen_MouseLeave;
 
+            buttonFHD.MouseMove += ButtonFHD_MouseHover;
+            buttonFHD.MouseLeave += ButtonScreen_MouseLeave;
+
             buttonUpdates.Click += ButtonUpdates_Click;
 
             sliderBattery.ValueChanged += SliderBattery_ValueChanged;
@@ -769,6 +772,11 @@ namespace GHelper
         private static void OnTimedEvent(Object? source, ElapsedEventArgs? e)
         {
             Program.settingsForm.RefreshSensors();
+        }
+
+        private void ButtonFHD_MouseHover(object? sender, EventArgs e)
+        {
+           labelTipScreen.Text = "Switch to "+ ((buttonFHD.Text == "FHD") ? "UHD" : "FHD") + " Mode";
         }
 
         private void Button120Hz_MouseHover(object? sender, EventArgs e)
