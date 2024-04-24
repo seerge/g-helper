@@ -22,6 +22,10 @@ Works with all popular models, such as ROG Zephyrus G14, G15, G16, M16, Flow X13
 | ----------------- | ---------------- | 
 | [Josh Cravey](https://www.youtube.com/watch?v=hqe-PjuE-K8) | [cbutters Tech](https://www.youtube.com/watch?v=6aVdwJKZSSc) | 
 
+## 📰 Articles
+1. https://binaryfork.com/ghelper-armoury-crate-alternative-10216/
+2. https://www.digitaltrends.com/computing/g-helper-armoury-crate-alternative/
+
 ## :gift: Advantages 
 
 1. Seamless and automatic GPU switching
