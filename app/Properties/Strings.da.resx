@@ -163,7 +163,7 @@
     <value>Anvend</value>
   </data>
   <data name="ApplyFanCurve" xml:space="preserve">
-    <value>Anvend brugerdefineret blæserkurve</value>
+    <value>Anvend blæserkurve</value>
   </data>
   <data name="ApplyPowerLimits" xml:space="preserve">
     <value>Anvend strømgrænser</value>
