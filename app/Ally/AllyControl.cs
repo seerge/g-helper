@@ -1,9 +1,12 @@
 ﻿using GHelper.Gpu.AMD;
 using GHelper.Helpers;
 using GHelper.Input;
+using GHelper.Mode;
 using GHelper.USB;
 using HidSharp;
 using System.Text;
+
+
 
 namespace GHelper.Ally
 {
@@ -32,16 +35,27 @@ namespace GHelper.Ally
 
     public class AllyControl
     {
-        System.Timers.Timer timer = default!;
+        static System.Timers.Timer timer = default!;
         static AmdGpuControl amdControl = new AmdGpuControl();
 
         SettingsForm settings;
 
         static ControllerMode _mode = ControllerMode.Auto;
         static ControllerMode _applyMode = ControllerMode.Mouse;
+
         static int _autoCount = 0;
 
+        static int _upCount = 0;
+        static int _downCount = 0;
+
+        static int tdpMin = 6;
+        static int tdpStable = tdpMin;
+        static int tdpCurrent = -1;
+
+        static bool autoTDP = false;
+
         static int fpsLimit = -1;
+
 
         public const string BindA = "01-01";
         public const string BindB = "01-02";
@@ -280,31 +294,115 @@ namespace GHelper.Ally
         public AllyControl(SettingsForm settingsForm)
         {
             if (!AppConfig.IsAlly()) return;
-
             settings = settingsForm;
 
-            timer = new System.Timers.Timer(300);
-            timer.Elapsed += Timer_Elapsed;
+            if (timer is null)
+            {
+                timer = new System.Timers.Timer(300);
+                timer.Elapsed += Timer_Elapsed;
+                Logger.WriteLine("Ally timer");
+            }
+        }
 
+        private int GetMaxTDP()
+        {
+            int tdp = AppConfig.GetMode("limit_total");
+            if (tdp > 0) return tdp;
+            switch (Modes.GetCurrentBase())
+            {
+                case 1:
+                    return 25;
+                case 2:
+                    return 10;
+                default:
+                    return 15;
+            }
+        }
+
+        private int GetTDP()
+        {
+            if (tdpCurrent < 0) tdpCurrent = GetMaxTDP();
+            return tdpCurrent;
+        }
+
+        private void SetTDP(int tdp, string log)
+        {
+            if (tdp < tdpStable) tdp = tdpStable;
+
+            int max = GetMaxTDP();
+            if (tdp > max) tdp = max;
+
+            if (tdp == tdpCurrent) return;
+            if (!autoTDP) return;
+
+            Program.acpi.DeviceSet(AsusACPI.PPT_APUA0, tdp, log);
+            Program.acpi.DeviceSet(AsusACPI.PPT_APUA3, tdp, null);
+            Program.acpi.DeviceSet(AsusACPI.PPT_APUC1, tdp, null);
+
+            tdpCurrent = tdp;
         }
 
         private void Timer_Elapsed(object? sender, System.Timers.ElapsedEventArgs e)
         {
+            if (!autoTDP && _mode != ControllerMode.Auto) return;
+
             float fps = amdControl.GetFPS();
 
-            ControllerMode newMode = (fps > 0) ? ControllerMode.Gamepad : ControllerMode.Mouse;
-
-            if (_applyMode != newMode) _autoCount++;
-            else _autoCount = 0;
-
-            if (_mode != ControllerMode.Auto) return;
-
-            if (_autoCount > 2)
+            if (autoTDP && fpsLimit > 0 && fpsLimit <= 120)
             {
-                _autoCount = 0;
-                ApplyMode(newMode);
-                Logger.WriteLine(fps.ToString());
+                int power = (int)amdControl.GetGpuPower();
+                //Debug.WriteLine($"{power}: {fps}");
+
+                if (fps <= fpsLimit * 0.8) _upCount++;
+                else _upCount = 0;
+
+                if (fps >= fpsLimit * 0.90) _downCount++;
+                else _downCount = 0;
+
+                var tdp = GetTDP();
+                if (_upCount >= 1)
+                {
+                    _downCount = 0;
+                    _upCount = 0;
+                    SetTDP(tdp + 1, $"AutoTDP+ [{power}]{fps}");
+                }
+
+                if (_downCount >= 8 && power < tdp)
+                {
+                    _upCount = 0;
+                    _downCount--;
+                    SetTDP(tdp - 1, $"AutoTDP- [{power}]{fps}");
+                }
             }
+
+            if (_mode == ControllerMode.Auto)
+            {
+                ControllerMode newMode = (fps > 0) ? ControllerMode.Gamepad : ControllerMode.Mouse;
+
+                if (_applyMode != newMode) _autoCount++;
+                else _autoCount = 0;
+
+                if (_autoCount == 3)
+                {
+                    _autoCount = 0;
+                    ApplyMode(newMode);
+                    Logger.WriteLine($"Controller Mode {fps}: {newMode}");
+                }
+            }
+
+        }
+
+        public void ToggleAutoTDP()
+        {
+            autoTDP = !autoTDP;
+            tdpCurrent = -1;
+
+            if (!autoTDP)
+            {
+                Program.modeControl.SetPerformanceMode();
+            }
+
+            settings.VisualiseAutoTDP(autoTDP);
 
         }
 
@@ -319,7 +417,6 @@ namespace GHelper.Ally
 
             fpsLimit = amdControl.GetFPSLimit();
             settings.VisualiseFPSLimit(fpsLimit);
-
         }
 
         public void ToggleFPSLimit()
@@ -479,7 +576,7 @@ namespace GHelper.Ally
             DecodeBinding(KeyR2).CopyTo(bindings, 38);
 
             //AsusHid.WriteInput(CommandReady, null);
-            AsusHid.WriteInput(bindings, $"B{zone}");
+            AsusHid.WriteInput(bindings, null);
 
         }
 
@@ -495,19 +592,19 @@ namespace GHelper.Ally
                 (byte)AppConfig.Get("ls_max", 100),
                 (byte)AppConfig.Get("rs_min", 0),
                 (byte)AppConfig.Get("rs_max", 100)
-            }, "StickDeadzone");
+            }, null);
 
             AsusHid.WriteInput(new byte[] { AsusHid.INPUT_ID, 0xd1, 5, 4,
                 (byte)AppConfig.Get("lt_min", 0),
                 (byte)AppConfig.Get("lt_max", 100),
                 (byte)AppConfig.Get("rt_min", 0),
                 (byte)AppConfig.Get("rt_max", 100)
-            }, "TriggerDeadzone");
+            }, null);
 
             AsusHid.WriteInput(new byte[] { AsusHid.INPUT_ID, 0xd1, 6, 2,
                 (byte)AppConfig.Get("vibra", 100),
                 (byte)AppConfig.Get("vibra", 100)
-            }, "Vibration");
+            }, null);
 
         }
 
@@ -572,18 +669,11 @@ namespace GHelper.Ally
             _mode = mode;
             AppConfig.Set("controller_mode", (int)mode);
 
+            amdControl.StopFPS();
             ApplyMode(mode, init);
 
-            if (mode == ControllerMode.Auto)
-            {
-                amdControl.StartFPS();
-                timer.Start();
-            }
-            else
-            {
-                timer.Stop();
-                amdControl.StopFPS();
-            }
+            amdControl.StartFPS();
+            timer.Start();
 
             settings.VisualiseController(mode);
         }

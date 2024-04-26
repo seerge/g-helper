@@ -135,6 +135,7 @@ namespace GHelper
             labelGamma = new Label();
             pictureGamma = new PictureBox();
             labelGammaTitle = new Label();
+            buttonAutoTDP = new RButton();
             panelMatrix.SuspendLayout();
             panelMatrixAuto.SuspendLayout();
             tableLayoutMatrix.SuspendLayout();
@@ -766,6 +767,7 @@ namespace GHelper
             tableAMD.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33F));
             tableAMD.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33F));
             tableAMD.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33F));
+            tableAMD.Controls.Add(buttonAutoTDP, 0, 0);
             tableAMD.Controls.Add(buttonOverlay, 0, 0);
             tableAMD.Controls.Add(buttonFPS, 0, 0);
             tableAMD.Dock = DockStyle.Top;
@@ -1893,6 +1895,28 @@ namespace GHelper
             labelGammaTitle.TabIndex = 37;
             labelGammaTitle.Text = "Flicker-free Dimming";
             // 
+            // buttonAutoTDP
+            // 
+            buttonAutoTDP.Activated = false;
+            buttonAutoTDP.BackColor = SystemColors.ControlLightLight;
+            buttonAutoTDP.BorderColor = Color.Transparent;
+            buttonAutoTDP.BorderRadius = 5;
+            buttonAutoTDP.Dock = DockStyle.Fill;
+            buttonAutoTDP.FlatAppearance.BorderSize = 0;
+            buttonAutoTDP.FlatStyle = FlatStyle.Flat;
+            buttonAutoTDP.ForeColor = SystemColors.ControlText;
+            buttonAutoTDP.Image = Properties.Resources.icons8_gauge_32;
+            buttonAutoTDP.ImageAlign = ContentAlignment.MiddleRight;
+            buttonAutoTDP.Location = new Point(528, 4);
+            buttonAutoTDP.Margin = new Padding(4);
+            buttonAutoTDP.Name = "buttonAutoTDP";
+            buttonAutoTDP.Secondary = false;
+            buttonAutoTDP.Size = new Size(255, 72);
+            buttonAutoTDP.TabIndex = 13;
+            buttonAutoTDP.Text = "AutoTDP";
+            buttonAutoTDP.TextImageRelation = TextImageRelation.ImageBeforeText;
+            buttonAutoTDP.UseVisualStyleBackColor = false;
+            // 
             // SettingsForm
             // 
             AutoScaleDimensions = new SizeF(192F, 192F);
@@ -2095,5 +2119,6 @@ namespace GHelper
         private RButton buttonInstallColor;
         private Label labelVisual;
         private RButton buttonFHD;
+        private RButton buttonAutoTDP;
     }
 }

@@ -222,7 +222,9 @@ namespace GHelper
 
             buttonUpdates.Click += ButtonUpdates_Click;
 
-            sliderBattery.ValueChanged += SliderBattery_ValueChanged;
+            sliderBattery.MouseUp += SliderBattery_MouseUp;
+            sliderBattery.KeyUp += SliderBattery_KeyUp;
+
             Program.trayIcon.MouseMove += TrayIcon_MouseMove;
 
             sensorTimer = new System.Timers.Timer(AppConfig.Get("sensor_timer", 1000));
@@ -249,6 +251,9 @@ namespace GHelper
 
             buttonFPS.Click += ButtonFPS_Click;
             buttonOverlay.Click += ButtonOverlay_Click;
+            
+            buttonAutoTDP.Click += ButtonAutoTDP_Click;
+            buttonAutoTDP.BorderColor = colorTurbo;
 
             Text = "G-Helper " + (ProcessHelper.IsUserAdministrator() ? "—" : "-") + " " + AppConfig.GetModelShort();
             TopMost = AppConfig.Is("topmost");
@@ -270,6 +275,21 @@ namespace GHelper
         private void ButtonFHD_Click(object? sender, EventArgs e)
         {
             screenControl.ToogleFHD();
+        }
+
+        private void SliderBattery_KeyUp(object? sender, KeyEventArgs e)
+        {
+            BatteryControl.SetBatteryChargeLimit(sliderBattery.Value);
+        }
+
+        private void SliderBattery_MouseUp(object? sender, MouseEventArgs e)
+        {
+            BatteryControl.SetBatteryChargeLimit(sliderBattery.Value);
+        }
+
+        private void ButtonAutoTDP_Click(object? sender, EventArgs e)
+        {
+            allyControl.ToggleAutoTDP();
         }
 
         private void LabelCharge_Click(object? sender, EventArgs e)
@@ -494,6 +514,12 @@ namespace GHelper
         public void VisualiseFPSLimit(int limit)
         {
             buttonFPS.Text = "FPS Limit " + ((limit > 0 && limit <= 120) ? limit : "OFF");
+        }
+
+        public void VisualiseAutoTDP(bool status)
+        {
+            Logger.WriteLine($"Auto TDP: {status}");
+            buttonAutoTDP.Activated = status;
         }
 
         private void SettingsForm_LostFocus(object? sender, EventArgs e)
@@ -734,11 +760,6 @@ namespace GHelper
         private void ButtonXGM_Click(object? sender, EventArgs e)
         {
             gpuControl.ToggleXGM();
-        }
-
-        private void SliderBattery_ValueChanged(object? sender, EventArgs e)
-        {
-            BatteryControl.SetBatteryChargeLimit(sliderBattery.Value);
         }
 
 
