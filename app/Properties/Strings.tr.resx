@@ -729,7 +729,7 @@ Yine de devam etmek istiyor musunuz?</value>
     <value>Aura'yı Kullan</value>
   </data>
   <data name="ToggleClamshellMode" xml:space="preserve">
-    <value>Kapaklı modu otmatik değiştir</value>
+    <value>Otomatik Clamshell Modunu Aç</value>
   </data>
   <data name="ToggleFnLock" xml:space="preserve">
     <value>Fn-Lock'u Aç</value>
