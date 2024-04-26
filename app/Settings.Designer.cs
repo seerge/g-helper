@@ -88,6 +88,7 @@ namespace GHelper
             button60Hz = new RButton();
             button120Hz = new RButton();
             buttonMiniled = new RButton();
+            buttonFHD = new RButton();
             panelScreenTitle = new Panel();
             labelMidFan = new Label();
             pictureScreen = new PictureBox();
@@ -189,7 +190,7 @@ namespace GHelper
             panelMatrix.Controls.Add(tableLayoutMatrix);
             panelMatrix.Controls.Add(panelMatrixTitle);
             panelMatrix.Dock = DockStyle.Top;
-            panelMatrix.Location = new Point(11, 1051);
+            panelMatrix.Location = new Point(11, 1071);
             panelMatrix.Margin = new Padding(0);
             panelMatrix.Name = "panelMatrix";
             panelMatrix.Padding = new Padding(20, 20, 20, 11);
@@ -369,7 +370,7 @@ namespace GHelper
             panelBattery.Controls.Add(sliderBattery);
             panelBattery.Controls.Add(panelBatteryTitle);
             panelBattery.Dock = DockStyle.Top;
-            panelBattery.Location = new Point(11, 1705);
+            panelBattery.Location = new Point(11, 1725);
             panelBattery.Margin = new Padding(0);
             panelBattery.Name = "panelBattery";
             panelBattery.Padding = new Padding(20, 20, 20, 11);
@@ -461,7 +462,7 @@ namespace GHelper
             panelFooter.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             panelFooter.Controls.Add(tableButtons);
             panelFooter.Dock = DockStyle.Top;
-            panelFooter.Location = new Point(11, 1881);
+            panelFooter.Location = new Point(11, 1901);
             panelFooter.Margin = new Padding(0);
             panelFooter.Name = "panelFooter";
             panelFooter.Padding = new Padding(20);
@@ -1042,7 +1043,7 @@ namespace GHelper
             panelScreen.Margin = new Padding(0);
             panelScreen.Name = "panelScreen";
             panelScreen.Padding = new Padding(20, 11, 20, 0);
-            panelScreen.Size = new Size(827, 167);
+            panelScreen.Size = new Size(827, 187);
             panelScreen.TabIndex = 2;
             panelScreen.TabStop = true;
             // 
@@ -1050,7 +1051,7 @@ namespace GHelper
             // 
             labelTipScreen.Dock = DockStyle.Top;
             labelTipScreen.ForeColor = SystemColors.GrayText;
-            labelTipScreen.Location = new Point(20, 131);
+            labelTipScreen.Location = new Point(20, 151);
             labelTipScreen.Margin = new Padding(4, 0, 4, 0);
             labelTipScreen.Name = "labelTipScreen";
             labelTipScreen.Size = new Size(787, 36);
@@ -1069,13 +1070,14 @@ namespace GHelper
             tableScreen.Controls.Add(button60Hz, 1, 0);
             tableScreen.Controls.Add(button120Hz, 2, 0);
             tableScreen.Controls.Add(buttonMiniled, 3, 0);
+            tableScreen.Controls.Add(buttonFHD, 3, 0);
             tableScreen.Dock = DockStyle.Top;
             tableScreen.Location = new Point(20, 51);
             tableScreen.Margin = new Padding(8, 4, 8, 4);
             tableScreen.Name = "tableScreen";
             tableScreen.RowCount = 1;
             tableScreen.RowStyles.Add(new RowStyle(SizeType.Absolute, 80F));
-            tableScreen.Size = new Size(787, 80);
+            tableScreen.Size = new Size(787, 100);
             tableScreen.TabIndex = 23;
             // 
             // buttonScreenAuto
@@ -1147,14 +1149,35 @@ namespace GHelper
             buttonMiniled.FlatAppearance.BorderSize = 0;
             buttonMiniled.FlatStyle = FlatStyle.Flat;
             buttonMiniled.ForeColor = SystemColors.ControlText;
-            buttonMiniled.Location = new Point(592, 4);
+            buttonMiniled.Location = new Point(4, 84);
             buttonMiniled.Margin = new Padding(4);
             buttonMiniled.Name = "buttonMiniled";
             buttonMiniled.Secondary = false;
-            buttonMiniled.Size = new Size(191, 72);
+            buttonMiniled.Size = new Size(188, 12);
             buttonMiniled.TabIndex = 12;
             buttonMiniled.Text = Properties.Strings.Multizone;
             buttonMiniled.UseVisualStyleBackColor = false;
+            // 
+            // buttonFHD
+            // 
+            buttonFHD.Activated = false;
+            buttonFHD.BackColor = SystemColors.ControlLightLight;
+            buttonFHD.BorderColor = Color.Transparent;
+            buttonFHD.BorderRadius = 5;
+            buttonFHD.CausesValidation = false;
+            buttonFHD.Dock = DockStyle.Fill;
+            buttonFHD.FlatAppearance.BorderSize = 0;
+            buttonFHD.FlatStyle = FlatStyle.Flat;
+            buttonFHD.ForeColor = SystemColors.ControlText;
+            buttonFHD.Location = new Point(592, 4);
+            buttonFHD.Margin = new Padding(4);
+            buttonFHD.Name = "buttonFHD";
+            buttonFHD.Secondary = false;
+            buttonFHD.Size = new Size(191, 72);
+            buttonFHD.TabIndex = 13;
+            buttonFHD.Text = "FHD";
+            buttonFHD.UseVisualStyleBackColor = false;
+            buttonFHD.Visible = false;
             // 
             // panelScreenTitle
             // 
@@ -1209,7 +1232,7 @@ namespace GHelper
             panelKeyboard.Controls.Add(tableLayoutKeyboard);
             panelKeyboard.Controls.Add(panelKeyboardTitle);
             panelKeyboard.Dock = DockStyle.Top;
-            panelKeyboard.Location = new Point(11, 1374);
+            panelKeyboard.Location = new Point(11, 1394);
             panelKeyboard.Margin = new Padding(0);
             panelKeyboard.Name = "panelKeyboard";
             panelKeyboard.Padding = new Padding(20);
@@ -1393,7 +1416,7 @@ namespace GHelper
             panelVersion.Controls.Add(labelCharge);
             panelVersion.Controls.Add(checkStartup);
             panelVersion.Dock = DockStyle.Top;
-            panelVersion.Location = new Point(11, 1825);
+            panelVersion.Location = new Point(11, 1845);
             panelVersion.Margin = new Padding(4);
             panelVersion.Name = "panelVersion";
             panelVersion.Size = new Size(827, 56);
@@ -1419,7 +1442,7 @@ namespace GHelper
             panelPeripherals.Controls.Add(tableLayoutPeripherals);
             panelPeripherals.Controls.Add(panelPeripheralsTile);
             panelPeripherals.Dock = DockStyle.Top;
-            panelPeripherals.Location = new Point(11, 1506);
+            panelPeripherals.Location = new Point(11, 1526);
             panelPeripherals.Margin = new Padding(0);
             panelPeripherals.Name = "panelPeripherals";
             panelPeripherals.Padding = new Padding(20, 20, 20, 11);
@@ -1561,7 +1584,7 @@ namespace GHelper
             panelAlly.Controls.Add(tableLayoutAlly);
             panelAlly.Controls.Add(panelAllyTitle);
             panelAlly.Dock = DockStyle.Top;
-            panelAlly.Location = new Point(11, 1234);
+            panelAlly.Location = new Point(11, 1254);
             panelAlly.Margin = new Padding(0);
             panelAlly.Name = "panelAlly";
             panelAlly.Padding = new Padding(20, 20, 20, 0);
@@ -1698,7 +1721,7 @@ namespace GHelper
             panelGamma.Controls.Add(sliderGamma);
             panelGamma.Controls.Add(panelGammaTitle);
             panelGamma.Dock = DockStyle.Top;
-            panelGamma.Location = new Point(11, 818);
+            panelGamma.Location = new Point(11, 838);
             panelGamma.Margin = new Padding(0);
             panelGamma.Name = "panelGamma";
             panelGamma.Padding = new Padding(20, 11, 20, 11);
@@ -2095,6 +2118,7 @@ namespace GHelper
         private RComboBox comboColorTemp;
         private RButton buttonInstallColor;
         private Label labelVisual;
+        private RButton buttonFHD;
         private RButton buttonAutoTDP;
     }
 }

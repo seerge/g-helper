@@ -159,6 +159,7 @@ namespace GHelper
             button120Hz.Click += Button120Hz_Click;
             buttonScreenAuto.Click += ButtonScreenAuto_Click;
             buttonMiniled.Click += ButtonMiniled_Click;
+            buttonFHD.Click += ButtonFHD_Click;
 
             buttonQuit.Click += ButtonQuit_Click;
 
@@ -216,6 +217,9 @@ namespace GHelper
             button120Hz.MouseMove += Button120Hz_MouseHover;
             button120Hz.MouseLeave += ButtonScreen_MouseLeave;
 
+            buttonFHD.MouseMove += ButtonFHD_MouseHover;
+            buttonFHD.MouseLeave += ButtonScreen_MouseLeave;
+
             buttonUpdates.Click += ButtonUpdates_Click;
 
             sliderBattery.MouseUp += SliderBattery_MouseUp;
@@ -266,6 +270,11 @@ namespace GHelper
 
             panelPerformance.Focus();
             InitVisual();
+        }
+
+        private void ButtonFHD_Click(object? sender, EventArgs e)
+        {
+            screenControl.ToogleFHD();
         }
 
         private void SliderBattery_KeyUp(object? sender, KeyEventArgs e)
@@ -786,6 +795,11 @@ namespace GHelper
             Program.settingsForm.RefreshSensors();
         }
 
+        private void ButtonFHD_MouseHover(object? sender, EventArgs e)
+        {
+           labelTipScreen.Text = "Switch to "+ ((buttonFHD.Text == "FHD") ? "UHD" : "FHD") + " Mode";
+        }
+
         private void Button120Hz_MouseHover(object? sender, EventArgs e)
         {
             labelTipScreen.Text = Properties.Strings.MaxRefreshTooltip;
@@ -1104,7 +1118,7 @@ namespace GHelper
                 checkMatrixLid.Visible = true;
             }
 
-            comboMatrix.SelectedIndex = Math.Min(AppConfig.Get("matrix_brightness", 0), comboMatrix.Items.Count - 1);
+            comboMatrix.SelectedIndex = Math.Max(0, Math.Min(AppConfig.Get("matrix_brightness", 0), comboMatrix.Items.Count - 1));
             comboMatrixRunning.SelectedIndex = Math.Min(AppConfig.Get("matrix_running", 0), comboMatrixRunning.Items.Count - 1);
             comboInterval.SelectedIndex = Math.Min(AppConfig.Get("matrix_interval", 0), comboInterval.Items.Count - 1);
 
@@ -1164,7 +1178,7 @@ namespace GHelper
 
 
 
-        public void VisualiseScreen(bool screenEnabled, bool screenAuto, int frequency, int maxFrequency, int overdrive, bool overdriveSetting, int miniled1, int miniled2, bool hdr)
+        public void VisualiseScreen(bool screenEnabled, bool screenAuto, int frequency, int maxFrequency, int overdrive, bool overdriveSetting, int miniled1, int miniled2, bool hdr, int fhd)
         {
 
             ButtonEnabled(button60Hz, screenEnabled);
@@ -1201,6 +1215,12 @@ namespace GHelper
             else if (maxFrequency > 0)
             {
                 panelScreen.Visible = false;
+            }
+
+            if (fhd >= 0)
+            {
+                buttonFHD.Visible = true;
+                buttonFHD.Text = fhd > 0 ? "FHD" : "UHD";
             }
 
             if (miniled1 >= 0)

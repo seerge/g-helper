@@ -112,9 +112,9 @@ namespace GHelper
             // 
             labelUpdates.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             labelUpdates.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            labelUpdates.Location = new Point(919, 19);
+            labelUpdates.Location = new Point(864, 19);
             labelUpdates.Name = "labelUpdates";
-            labelUpdates.Size = new Size(245, 32);
+            labelUpdates.Size = new Size(302, 32);
             labelUpdates.TabIndex = 4;
             labelUpdates.Text = "Updates Available";
             // 
