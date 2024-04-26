@@ -47,9 +47,13 @@ namespace GHelper
             trackZoom.ValueChanged += TrackZoom_Changed;
             trackZoom.Value = Math.Min(trackZoom.Maximum, AppConfig.Get("matrix_zoom", 100));
 
-            trackContrast.MouseUp += TrackContrast_MouseUp; ;
-            trackContrast.ValueChanged += TrackContrast_ValueChanged; ;
+            trackContrast.MouseUp += TrackContrast_MouseUp;
+            trackContrast.ValueChanged += TrackMatrix_ValueChanged;
             trackContrast.Value = Math.Min(trackContrast.Maximum, AppConfig.Get("matrix_contrast", 100));
+
+            trackBrightness.MouseUp += TrackBrightness_MouseUp;
+            trackBrightness.ValueChanged += TrackMatrix_ValueChanged;
+            trackBrightness.Value = Math.Min(trackBrightness.Maximum, AppConfig.Get("matrix_brightness", 0));
 
             VisualiseMatrix();
 
@@ -67,7 +71,7 @@ namespace GHelper
 
         }
 
-        private void TrackContrast_ValueChanged(object? sender, EventArgs e)
+        private void TrackMatrix_ValueChanged(object? sender, EventArgs e)
         {
             VisualiseMatrix();
         }
@@ -77,6 +81,13 @@ namespace GHelper
             AppConfig.Set("matrix_contrast", trackContrast.Value);
             SetMatrixPicture();
         }
+
+        private void TrackBrightness_MouseUp(object? sender, MouseEventArgs e)
+        {
+            AppConfig.Set("matrix_brightness", trackBrightness.Value);
+            SetMatrixPicture();
+        }
+
 
         private void ComboRotation_SelectedValueChanged(object? sender, EventArgs e)
         {
@@ -104,6 +115,7 @@ namespace GHelper
         {
             labelZoom.Text = trackZoom.Value + "%";
             labelContrast.Text = trackContrast.Value + "%";
+            labelBrightness.Text = trackBrightness.Value + "%";
         }
 
         private void ButtonReset_Click(object? sender, EventArgs e)

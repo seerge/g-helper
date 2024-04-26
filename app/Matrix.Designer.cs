@@ -35,6 +35,10 @@
             panelMain = new Panel();
             panelButtons = new Panel();
             buttonReset = new UI.RButton();
+            panelBrightness = new Panel();
+            labelBrightness = new Label();
+            labelBrightnessTitle = new Label();
+            trackBrightness = new TrackBar();
             panelContrast = new Panel();
             labelContrast = new Label();
             labelContrastTitle = new Label();
@@ -53,6 +57,8 @@
             panelPicture.SuspendLayout();
             panelMain.SuspendLayout();
             panelButtons.SuspendLayout();
+            panelBrightness.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)trackBrightness).BeginInit();
             panelContrast.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)trackContrast).BeginInit();
             panelRotation.SuspendLayout();
@@ -117,6 +123,7 @@
             // 
             panelMain.AutoSize = true;
             panelMain.Controls.Add(panelButtons);
+            panelMain.Controls.Add(panelBrightness);
             panelMain.Controls.Add(panelContrast);
             panelMain.Controls.Add(panelRotation);
             panelMain.Controls.Add(panelScaling);
@@ -125,7 +132,7 @@
             panelMain.Dock = DockStyle.Top;
             panelMain.Location = new Point(20, 20);
             panelMain.Name = "panelMain";
-            panelMain.Size = new Size(834, 959);
+            panelMain.Size = new Size(834, 1104);
             panelMain.TabIndex = 5;
             // 
             // panelButtons
@@ -133,7 +140,7 @@
             panelButtons.Controls.Add(buttonReset);
             panelButtons.Controls.Add(buttonPicture);
             panelButtons.Dock = DockStyle.Top;
-            panelButtons.Location = new Point(0, 865);
+            panelButtons.Location = new Point(0, 1010);
             panelButtons.Name = "panelButtons";
             panelButtons.Size = new Size(834, 94);
             panelButtons.TabIndex = 6;
@@ -157,6 +164,52 @@
             buttonReset.TextImageRelation = TextImageRelation.ImageBeforeText;
             buttonReset.UseVisualStyleBackColor = false;
             // 
+            // panelBrightness
+            // 
+            panelBrightness.AutoSize = true;
+            panelBrightness.Controls.Add(labelBrightness);
+            panelBrightness.Controls.Add(labelBrightnessTitle);
+            panelBrightness.Controls.Add(trackBrightness);
+            panelBrightness.Dock = DockStyle.Top;
+            panelBrightness.Location = new Point(0, 865);
+            panelBrightness.Name = "panelBrightness";
+            panelBrightness.Size = new Size(834, 145);
+            panelBrightness.TabIndex = 7;
+            // 
+            // labelBrightness
+            // 
+            labelBrightness.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            labelBrightness.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            labelBrightness.Location = new Point(673, 17);
+            labelBrightness.Name = "labelBrightness";
+            labelBrightness.Size = new Size(125, 32);
+            labelBrightness.TabIndex = 4;
+            labelBrightness.Text = "Brightness";
+            labelBrightness.TextAlign = ContentAlignment.TopRight;
+            // 
+            // labelBrightnessTitle
+            // 
+            labelBrightnessTitle.AutoSize = true;
+            labelBrightnessTitle.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            labelBrightnessTitle.Location = new Point(16, 17);
+            labelBrightnessTitle.Name = "labelBrightnessTitle";
+            labelBrightnessTitle.Size = new Size(134, 32);
+            labelBrightnessTitle.TabIndex = 3;
+            labelBrightnessTitle.Text = "Brightness";
+            // 
+            // trackBrightness
+            // 
+            trackBrightness.LargeChange = 50;
+            trackBrightness.Location = new Point(16, 52);
+            trackBrightness.Maximum = 100;
+            trackBrightness.Minimum = -100;
+            trackBrightness.Name = "trackBrightness";
+            trackBrightness.Size = new Size(782, 90);
+            trackBrightness.SmallChange = 10;
+            trackBrightness.TabIndex = 2;
+            trackBrightness.TickFrequency = 20;
+            trackBrightness.TickStyle = TickStyle.TopLeft;
+            // 
             // panelContrast
             // 
             panelContrast.AutoSize = true;
@@ -172,13 +225,13 @@
             // labelContrast
             // 
             labelContrast.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            labelContrast.AutoSize = true;
             labelContrast.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            labelContrast.Location = new Point(705, 17);
+            labelContrast.Location = new Point(701, 17);
             labelContrast.Name = "labelContrast";
             labelContrast.Size = new Size(103, 32);
             labelContrast.TabIndex = 4;
             labelContrast.Text = "Contrast";
+            labelContrast.TextAlign = ContentAlignment.TopRight;
             // 
             // labelContrastTitle
             // 
@@ -310,7 +363,7 @@
             AutoScaleDimensions = new SizeF(192F, 192F);
             AutoScaleMode = AutoScaleMode.Dpi;
             AutoSize = true;
-            ClientSize = new Size(874, 1006);
+            ClientSize = new Size(874, 1142);
             Controls.Add(panelMain);
             MaximizeBox = false;
             MinimizeBox = false;
@@ -326,6 +379,9 @@
             panelMain.ResumeLayout(false);
             panelMain.PerformLayout();
             panelButtons.ResumeLayout(false);
+            panelBrightness.ResumeLayout(false);
+            panelBrightness.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)trackBrightness).EndInit();
             panelContrast.ResumeLayout(false);
             panelContrast.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)trackContrast).EndInit();
@@ -361,5 +417,9 @@
         private Label labelContrast;
         private Label labelContrastTitle;
         private TrackBar trackContrast;
+        private Panel panelBrightness;
+        private Label labelBrightness;
+        private Label labelBrightnessTitle;
+        private TrackBar trackBrightness;
     }
 }
