@@ -154,7 +154,7 @@
     <value>Anime Matrix</value>
   </data>
   <data name="AppAlreadyRunning" xml:space="preserve">
-    <value>Appen kører allerede</value>
+    <value>App'en kører allerede</value>
   </data>
   <data name="AppAlreadyRunningText" xml:space="preserve">
     <value>G-Helper kører allerede. Tjek systembakken for et ikon.</value>
@@ -175,7 +175,7 @@
     <value>Hukommelse tildelt til GPU</value>
   </data>
   <data name="AsusServicesRunning" xml:space="preserve">
-    <value>Kørende Asus-tjenester</value>
+    <value>Kørende ASUS-tjenester</value>
   </data>
   <data name="AuraBatteryState" xml:space="preserve">
     <value>Batteritilstand</value>
@@ -301,7 +301,7 @@
     <value>Boot</value>
   </data>
   <data name="BootSound" xml:space="preserve">
-    <value>Boot-lyd</value>
+    <value>Opstarts-lyd</value>
   </data>
   <data name="Brightness" xml:space="preserve">
     <value>Lysstyrke</value>
@@ -313,7 +313,7 @@
     <value>Lysstyrke op</value>
   </data>
   <data name="BWTrayIcon" xml:space="preserve">
-    <value>Sort og hvid bakkeikon</value>
+    <value>Sort/hvid bakkeikon</value>
   </data>
   <data name="Calibrate" xml:space="preserve">
     <value>Kalibrer</value>
@@ -349,7 +349,7 @@
     <value>Deaktiver ved lukning af låg</value>
   </data>
   <data name="DisableOverdrive" xml:space="preserve">
-    <value>Deaktiver overdrive på skærmen</value>
+    <value>Deaktiver Overdrive på skærmen</value>
   </data>
   <data name="Discharging" xml:space="preserve">
     <value>Aflader</value>
@@ -393,7 +393,7 @@ Vil du stadig fortsætte?</value>
     <value>Ekstra indstillinger</value>
   </data>
   <data name="FactoryDefaults" xml:space="preserve">
-    <value>Standard fabriksindstillinger</value>
+    <value>Gendan standarder</value>
   </data>
   <data name="FanCurves" xml:space="preserve">
     <value>Blæserkurver</value>
@@ -411,13 +411,13 @@ Vil du stadig fortsætte?</value>
     <value>Blæserprofiler</value>
   </data>
   <data name="FansAndPower" xml:space="preserve">
-    <value>Blæsere og kraft</value>
+    <value>Blæsere og strøm</value>
   </data>
   <data name="FanSpeed" xml:space="preserve">
     <value>Blæser</value>
   </data>
   <data name="FansPower" xml:space="preserve">
-    <value>Blæser + Kraft</value>
+    <value>Blæser + Strøm</value>
   </data>
   <data name="FlickerFreeDimming" xml:space="preserve">
     <value>Flimmerfri dæmpning</value>
@@ -426,10 +426,10 @@ Vil du stadig fortsætte?</value>
     <value>Aktiver Fn + F genvejstaster uden Fn</value>
   </data>
   <data name="FnLockOff" xml:space="preserve">
-    <value>FN-lås fra</value>
+    <value>Fn-lås fra</value>
   </data>
   <data name="FnLockOn" xml:space="preserve">
-    <value>FN-lås til</value>
+    <value>Fn-lås til</value>
   </data>
   <data name="GPUBoost" xml:space="preserve">
     <value>Dynamisk boost</value>
@@ -438,13 +438,13 @@ Vil du stadig fortsætte?</value>
     <value>Skifter</value>
   </data>
   <data name="GPUCoreClockOffset" xml:space="preserve">
-    <value>Core Clock forskydning</value>
+    <value>Core Clock offset</value>
   </data>
   <data name="GPUMemoryClockOffset" xml:space="preserve">
-    <value>Memory Clock forskydning</value>
+    <value>Memory Clock offset</value>
   </data>
   <data name="GPUMode" xml:space="preserve">
-    <value>GPU- tilstand</value>
+    <value>GPU-tilstand</value>
   </data>
   <data name="GPUModeEco" xml:space="preserve">
     <value>Kun iGPU</value>
@@ -456,7 +456,7 @@ Vil du stadig fortsætte?</value>
     <value>dGPU eksklusivt</value>
   </data>
   <data name="GPUPower" xml:space="preserve">
-    <value>GPU- strøm</value>
+    <value>GPU-strøm</value>
   </data>
   <data name="GPUSettings" xml:space="preserve">
     <value>GPU-indstillinger</value>
@@ -486,13 +486,13 @@ Vil du stadig fortsætte?</value>
     <value>Stop alle apps der bruger GPU når du skifter til Øko</value>
   </data>
   <data name="LaptopBacklight" xml:space="preserve">
-    <value>Bærbar baggrundsbelysning</value>
+    <value>Laptop baggrundsbelysning</value>
   </data>
   <data name="LaptopKeyboard" xml:space="preserve">
-    <value>Bærbar tastatur</value>
+    <value>Laptop-tastatur</value>
   </data>
   <data name="LaptopScreen" xml:space="preserve">
-    <value>Bærbar skærm</value>
+    <value>Laptop-skærm</value>
   </data>
   <data name="LEDStatusIndicators" xml:space="preserve">
     <value>LED statusindikatorer</value>
@@ -561,7 +561,7 @@ Vil du stadig fortsætte?</value>
     <value>minutter</value>
   </data>
   <data name="MouseAngleSnapping" xml:space="preserve">
-    <value>Vinkel snapping</value>
+    <value>Vinkel-snapping</value>
   </data>
   <data name="MouseAutoPowerOff" xml:space="preserve">
     <value>Automatisk slukning efter</value>
@@ -627,7 +627,7 @@ Vil du stadig fortsætte?</value>
     <value>Skift til Øko på batteri og til Standard, når tilsluttet strøm</value>
   </data>
   <data name="OptimizedUSBC" xml:space="preserve">
-    <value>Hold GPU deaktiveret på USB-C-oplader i optimeret tilstand</value>
+    <value>Hold GPU deaktiveret på USB-C oplader i optimeret tilstand</value>
   </data>
   <data name="Other" xml:space="preserve">
     <value>Andet</value>
@@ -651,10 +651,10 @@ Vil du stadig fortsætte?</value>
     <value>Polling Rate</value>
   </data>
   <data name="PowerLimits" xml:space="preserve">
-    <value>Kraftgrænser</value>
+    <value>Strømgrænser</value>
   </data>
   <data name="PPTExperimental" xml:space="preserve">
-    <value>Kraftgrænser er en eksperimentel funktion. Brug omhyggeligt og på egen risiko!</value>
+    <value>Strømgrænser er en eksperimentel funktion. Brug omhyggeligt og på egen risiko!</value>
   </data>
   <data name="PrintScreen" xml:space="preserve">
     <value>PrintScreen</value>
@@ -729,10 +729,10 @@ Vil du stadig fortsætte?</value>
     <value>Slå Aura til/fra</value>
   </data>
   <data name="ToggleClamshellMode" xml:space="preserve">
-    <value>Automatisk slå Clamshell tilstand til/fra</value>
+    <value>Slå automatisk Clamshell-tilstand til/fra</value>
   </data>
   <data name="ToggleFnLock" xml:space="preserve">
-    <value>Slå Fn-Lock til/fra</value>
+    <value>Slå Fn-lås til/fra</value>
   </data>
   <data name="ToggleMiniled" xml:space="preserve">
     <value>Slå MiniLED til/fra (hvis understøttet)</value>
@@ -750,7 +750,7 @@ Vil du stadig fortsætte?</value>
     <value>Deaktiver på batteri</value>
   </data>
   <data name="UltimateGPUTooltip" xml:space="preserve">
-    <value>Kobler bærbar skærm direkte til dGPU, hvilket maksimerer FPS</value>
+    <value>Kobler laptop-skærmen direkte til dGPU, hvilket maksimerer FPS</value>
   </data>
   <data name="UltimateMode" xml:space="preserve">
     <value>Ultimativ</value>
@@ -759,7 +759,7 @@ Vil du stadig fortsætte?</value>
     <value>Undervolting er en eksperimentel og risikabel funktion. Hvis de anvendte værdier er for lave for din hardware, kan det blive ustabilt, lukke ned eller forårsage datakorruption. Hvis du ønsker at prøve - start fra små værdier først, klik på Anvend og test hvad der virker for dig.</value>
   </data>
   <data name="Unmuted" xml:space="preserve">
-    <value>Ikke muted</value>
+    <value>Ikke lydløs</value>
   </data>
   <data name="Updates" xml:space="preserve">
     <value>Opdateringer</value>
