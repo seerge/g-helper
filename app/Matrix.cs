@@ -47,13 +47,13 @@ namespace GHelper
             trackZoom.ValueChanged += TrackZoom_Changed;
             trackZoom.Value = Math.Min(trackZoom.Maximum, AppConfig.Get("matrix_zoom", 100));
 
-            trackContrast.MouseUp += TrackContrast_MouseUp;
+            trackContrast.MouseUp += TrackMatrix_MouseUp;
             trackContrast.ValueChanged += TrackMatrix_ValueChanged;
             trackContrast.Value = Math.Min(trackContrast.Maximum, AppConfig.Get("matrix_contrast", 100));
 
-            trackBrightness.MouseUp += TrackBrightness_MouseUp;
-            trackBrightness.ValueChanged += TrackMatrix_ValueChanged;
-            trackBrightness.Value = Math.Min(trackBrightness.Maximum, AppConfig.Get("matrix_brightness", 0));
+            trackGamma.MouseUp += TrackMatrix_MouseUp;
+            trackGamma.ValueChanged += TrackMatrix_ValueChanged;
+            trackGamma.Value = Math.Min(trackGamma.Maximum, AppConfig.Get("matrix_gamma", 0));
 
             VisualiseMatrix();
 
@@ -76,15 +76,10 @@ namespace GHelper
             VisualiseMatrix();
         }
 
-        private void TrackContrast_MouseUp(object? sender, MouseEventArgs e)
+        private void TrackMatrix_MouseUp(object? sender, MouseEventArgs e)
         {
             AppConfig.Set("matrix_contrast", trackContrast.Value);
-            SetMatrixPicture();
-        }
-
-        private void TrackBrightness_MouseUp(object? sender, MouseEventArgs e)
-        {
-            AppConfig.Set("matrix_brightness", trackBrightness.Value);
+            AppConfig.Set("matrix_gamma", trackGamma.Value);
             SetMatrixPicture();
         }
 
@@ -115,12 +110,12 @@ namespace GHelper
         {
             labelZoom.Text = trackZoom.Value + "%";
             labelContrast.Text = trackContrast.Value + "%";
-            labelBrightness.Text = trackBrightness.Value + "%";
+            labelGamma.Text = trackGamma.Value + "%";
         }
 
         private void ButtonReset_Click(object? sender, EventArgs e)
         {
-            AppConfig.Set("matrix_brightness", 0);
+            AppConfig.Set("matrix_gamma", 0);
             AppConfig.Set("matrix_contrast", 100);
             AppConfig.Set("matrix_zoom", 100);
             AppConfig.Set("matrix_x", 0);
@@ -128,7 +123,7 @@ namespace GHelper
 
             trackZoom.Value = 100;
             trackContrast.Value = 100;
-            trackBrightness.Value = 0;
+            trackGamma.Value = 0;
 
             SetMatrixPicture();
 

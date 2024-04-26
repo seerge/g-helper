@@ -35,10 +35,10 @@
             panelMain = new Panel();
             panelButtons = new Panel();
             buttonReset = new UI.RButton();
-            panelBrightness = new Panel();
-            labelBrightness = new Label();
-            labelBrightnessTitle = new Label();
-            trackBrightness = new TrackBar();
+            panelGamma = new Panel();
+            labelGamma = new Label();
+            labelGammaTitle = new Label();
+            trackGamma = new TrackBar();
             panelContrast = new Panel();
             labelContrast = new Label();
             labelContrastTitle = new Label();
@@ -57,8 +57,8 @@
             panelPicture.SuspendLayout();
             panelMain.SuspendLayout();
             panelButtons.SuspendLayout();
-            panelBrightness.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)trackBrightness).BeginInit();
+            panelGamma.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)trackGamma).BeginInit();
             panelContrast.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)trackContrast).BeginInit();
             panelRotation.SuspendLayout();
@@ -123,7 +123,7 @@
             // 
             panelMain.AutoSize = true;
             panelMain.Controls.Add(panelButtons);
-            panelMain.Controls.Add(panelBrightness);
+            panelMain.Controls.Add(panelGamma);
             panelMain.Controls.Add(panelContrast);
             panelMain.Controls.Add(panelRotation);
             panelMain.Controls.Add(panelScaling);
@@ -164,51 +164,51 @@
             buttonReset.TextImageRelation = TextImageRelation.ImageBeforeText;
             buttonReset.UseVisualStyleBackColor = false;
             // 
-            // panelBrightness
+            // panelGamma
             // 
-            panelBrightness.AutoSize = true;
-            panelBrightness.Controls.Add(labelBrightness);
-            panelBrightness.Controls.Add(labelBrightnessTitle);
-            panelBrightness.Controls.Add(trackBrightness);
-            panelBrightness.Dock = DockStyle.Top;
-            panelBrightness.Location = new Point(0, 865);
-            panelBrightness.Name = "panelBrightness";
-            panelBrightness.Size = new Size(834, 145);
-            panelBrightness.TabIndex = 7;
+            panelGamma.AutoSize = true;
+            panelGamma.Controls.Add(labelGamma);
+            panelGamma.Controls.Add(labelGammaTitle);
+            panelGamma.Controls.Add(trackGamma);
+            panelGamma.Dock = DockStyle.Top;
+            panelGamma.Location = new Point(0, 865);
+            panelGamma.Name = "panelGamma";
+            panelGamma.Size = new Size(834, 145);
+            panelGamma.TabIndex = 7;
             // 
-            // labelBrightness
+            // labelGamma
             // 
-            labelBrightness.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            labelBrightness.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            labelBrightness.Location = new Point(673, 17);
-            labelBrightness.Name = "labelBrightness";
-            labelBrightness.Size = new Size(125, 32);
-            labelBrightness.TabIndex = 4;
-            labelBrightness.Text = "Brightness";
-            labelBrightness.TextAlign = ContentAlignment.TopRight;
+            labelGamma.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            labelGamma.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            labelGamma.Location = new Point(673, 17);
+            labelGamma.Name = "labelGamma";
+            labelGamma.Size = new Size(125, 32);
+            labelGamma.TabIndex = 4;
+            labelGamma.Text = "Brightness";
+            labelGamma.TextAlign = ContentAlignment.TopRight;
             // 
-            // labelBrightnessTitle
+            // labelGammaTitle
             // 
-            labelBrightnessTitle.AutoSize = true;
-            labelBrightnessTitle.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            labelBrightnessTitle.Location = new Point(16, 17);
-            labelBrightnessTitle.Name = "labelBrightnessTitle";
-            labelBrightnessTitle.Size = new Size(134, 32);
-            labelBrightnessTitle.TabIndex = 3;
-            labelBrightnessTitle.Text = "Brightness";
+            labelGammaTitle.AutoSize = true;
+            labelGammaTitle.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            labelGammaTitle.Location = new Point(16, 17);
+            labelGammaTitle.Name = "labelGammaTitle";
+            labelGammaTitle.Size = new Size(134, 32);
+            labelGammaTitle.TabIndex = 3;
+            labelGammaTitle.Text = "Brightness";
             // 
-            // trackBrightness
+            // trackGamma
             // 
-            trackBrightness.LargeChange = 50;
-            trackBrightness.Location = new Point(16, 52);
-            trackBrightness.Maximum = 100;
-            trackBrightness.Minimum = -100;
-            trackBrightness.Name = "trackBrightness";
-            trackBrightness.Size = new Size(782, 90);
-            trackBrightness.SmallChange = 10;
-            trackBrightness.TabIndex = 2;
-            trackBrightness.TickFrequency = 20;
-            trackBrightness.TickStyle = TickStyle.TopLeft;
+            trackGamma.LargeChange = 50;
+            trackGamma.Location = new Point(16, 52);
+            trackGamma.Maximum = 100;
+            trackGamma.Minimum = -100;
+            trackGamma.Name = "trackGamma";
+            trackGamma.Size = new Size(782, 90);
+            trackGamma.SmallChange = 10;
+            trackGamma.TabIndex = 2;
+            trackGamma.TickFrequency = 20;
+            trackGamma.TickStyle = TickStyle.TopLeft;
             // 
             // panelContrast
             // 
@@ -379,9 +379,9 @@
             panelMain.ResumeLayout(false);
             panelMain.PerformLayout();
             panelButtons.ResumeLayout(false);
-            panelBrightness.ResumeLayout(false);
-            panelBrightness.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)trackBrightness).EndInit();
+            panelGamma.ResumeLayout(false);
+            panelGamma.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)trackGamma).EndInit();
             panelContrast.ResumeLayout(false);
             panelContrast.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)trackContrast).EndInit();
@@ -417,9 +417,9 @@
         private Label labelContrast;
         private Label labelContrastTitle;
         private TrackBar trackContrast;
-        private Panel panelBrightness;
-        private Label labelBrightness;
-        private Label labelBrightnessTitle;
-        private TrackBar trackBrightness;
+        private Panel panelGamma;
+        private Label labelGamma;
+        private Label labelGammaTitle;
+        private TrackBar trackGamma;
     }
 }
