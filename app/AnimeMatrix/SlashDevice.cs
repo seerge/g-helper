@@ -119,13 +119,18 @@ namespace GHelper.AnimeMatrix
 
         public void SetStatic(int brightness = 0)
         {
-            byte brightnessByte = (byte)(brightness * 85.333);
+            SetCustom(Enumerable.Repeat((byte)(brightness * 85.333), 7).ToArray());
 
+        }
+
+        public void SetCustom(byte[] data)
+        {
             Set(Packet<SlashPacket>(0xD2, 0x02, 0x01, 0x08, 0xAC), "Static");
             Set(Packet<SlashPacket>(0xD3, 0x03, 0x01, 0x08, 0xAC, 0xFF, 0xFF, 0x01, 0x05, 0xFF, 0xFF), "StaticSettings");
             Set(Packet<SlashPacket>(0xD4, 0x00, 0x00, 0x01, 0xAC), "StaticSave");
 
-            Set(Packet<SlashPacket>(0xD3, 0x00, 0x00, 0x07, brightnessByte, brightnessByte, brightnessByte, brightnessByte, brightnessByte, brightnessByte, brightnessByte), "Static White");
+            byte[] payload = new byte[] { 0xD3, 0x00, 0x00, 0x07 };
+            Set(Packet<SlashPacket>(payload.Concat(data.Take(7)).ToArray()), "Static Data");
         }
 
         public void SetOptions(bool status, int brightness = 0, int interval = 0)
