@@ -120,6 +120,7 @@ namespace GHelper
 
         private void ButtonReset_Click(object? sender, EventArgs e)
         {
+            AppConfig.Set("matrix_brightness", 0);
             AppConfig.Set("matrix_contrast", 100);
             AppConfig.Set("matrix_zoom", 100);
             AppConfig.Set("matrix_x", 0);
@@ -127,6 +128,7 @@ namespace GHelper
 
             trackZoom.Value = 100;
             trackContrast.Value = 100;
+            trackBrightness.Value = 0;
 
             SetMatrixPicture();
 
