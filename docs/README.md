@@ -61,8 +61,6 @@ Works with all popular models, such as ROG Zephyrus G14, G15, G16, M16, Flow X13
 - Auto Screen refresh rate (60Hz on battery and max Hz when plugged)
 - Keyboard backlight timeout on battery or when plugged in
 
-_To keep auto switching and hotkeys working the app needs to stay running in the tray. It doesn't consume any resources._
-
 ### :rocket: Performance Modes
 
 <img align="right" width="300" src="https://github.com/seerge/g-helper/assets/5920850/3e119674-db8d-486b-aa65-2bf9b61f9aa6">
