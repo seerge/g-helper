@@ -68,7 +68,7 @@ namespace GHelper
             panelGPU = new Panel();
             labelTipGPU = new Label();
             tableAdditionalCPUFeature = new TableLayoutPanel();
-            buttonAutoTDP = new RButton();
+            buttonCPUAutoTDP = new RButton();
             tableAMD = new TableLayoutPanel();
             buttonOverlay = new RButton();
             buttonFPS = new RButton();
@@ -769,7 +769,7 @@ namespace GHelper
             tableAdditionalCPUFeature.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.3333321F));
             tableAdditionalCPUFeature.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.3333321F));
             tableAdditionalCPUFeature.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.3333321F));
-            tableAdditionalCPUFeature.Controls.Add(buttonAutoTDP, 0, 0);
+            tableAdditionalCPUFeature.Controls.Add(buttonCPUAutoTDP, 0, 0);
             tableAdditionalCPUFeature.Dock = DockStyle.Top;
             tableAdditionalCPUFeature.Location = new Point(10, 198);
             tableAdditionalCPUFeature.Margin = new Padding(2, 1, 2, 1);
@@ -781,25 +781,25 @@ namespace GHelper
             // 
             // buttonAutoTDP
             // 
-            buttonAutoTDP.Activated = false;
-            buttonAutoTDP.BackColor = SystemColors.ControlLightLight;
-            buttonAutoTDP.BorderColor = Color.Transparent;
-            buttonAutoTDP.BorderRadius = 5;
-            buttonAutoTDP.Dock = DockStyle.Fill;
-            buttonAutoTDP.FlatAppearance.BorderSize = 0;
-            buttonAutoTDP.FlatStyle = FlatStyle.Flat;
-            buttonAutoTDP.ForeColor = SystemColors.ControlText;
-            buttonAutoTDP.Image = Properties.Resources.icons8_processor_32;
-            buttonAutoTDP.ImageAlign = ContentAlignment.MiddleRight;
-            buttonAutoTDP.Location = new Point(1, 1);
-            buttonAutoTDP.Margin = new Padding(1, 1, 1, 1);
-            buttonAutoTDP.Name = "buttonAutoTDP";
-            buttonAutoTDP.Secondary = false;
-            buttonAutoTDP.Size = new Size(128, 38);
-            buttonAutoTDP.TabIndex = 11;
-            buttonAutoTDP.Text = "Auto TDP";
-            buttonAutoTDP.TextImageRelation = TextImageRelation.ImageBeforeText;
-            buttonAutoTDP.UseVisualStyleBackColor = false;
+            buttonCPUAutoTDP.Activated = false;
+            buttonCPUAutoTDP.BackColor = SystemColors.ControlLightLight;
+            buttonCPUAutoTDP.BorderColor = Color.Transparent;
+            buttonCPUAutoTDP.BorderRadius = 5;
+            buttonCPUAutoTDP.Dock = DockStyle.Fill;
+            buttonCPUAutoTDP.FlatAppearance.BorderSize = 0;
+            buttonCPUAutoTDP.FlatStyle = FlatStyle.Flat;
+            buttonCPUAutoTDP.ForeColor = SystemColors.ControlText;
+            buttonCPUAutoTDP.Image = Properties.Resources.icons8_processor_32;
+            buttonCPUAutoTDP.ImageAlign = ContentAlignment.MiddleRight;
+            buttonCPUAutoTDP.Location = new Point(1, 1);
+            buttonCPUAutoTDP.Margin = new Padding(1, 1, 1, 1);
+            buttonCPUAutoTDP.Name = "buttonAutoTDP";
+            buttonCPUAutoTDP.Secondary = false;
+            buttonCPUAutoTDP.Size = new Size(128, 38);
+            buttonCPUAutoTDP.TabIndex = 11;
+            buttonCPUAutoTDP.Text = "Auto TDP";
+            buttonCPUAutoTDP.TextImageRelation = TextImageRelation.ImageBeforeText;
+            buttonCPUAutoTDP.UseVisualStyleBackColor = false;
             // 
             // tableAMD
             // 
@@ -2111,7 +2111,7 @@ namespace GHelper
         private CheckBox checkMatrixLid;
         private Panel panelMatrixAuto;
         private TableLayoutPanel tableAdditionalCPUFeature;
-        private RButton buttonAutoTDP;
+        private RButton buttonCPUAutoTDP;
         private TableLayoutPanel tableVisual;
         private RComboBox comboVisual;
         private RComboBox comboGamut;

@@ -248,7 +248,7 @@ namespace GHelper
             buttonFPS.Click += ButtonFPS_Click;
             buttonOverlay.Click += ButtonOverlay_Click;
 
-            buttonAutoTDP.Click += ButtonAutoTDP_Click;
+            buttonCPUAutoTDP.Click += ButtonAutoTDP_Click;
 
             Text = "G-Helper " + (ProcessHelper.IsUserAdministrator() ? "—" : "-") + " " + AppConfig.GetModelShort();
             TopMost = AppConfig.Is("topmost");
