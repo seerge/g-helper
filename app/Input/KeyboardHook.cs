@@ -21,12 +21,35 @@ public sealed class KeyboardHook : IDisposable
     private const byte VK_LWIN = 0x5B;
     private const byte VK_LCONTROL = 0xA2;
 
+    [DllImport("user32.dll")]
+    public static extern void mouse_event(uint dwFlags, uint dx, uint dy, uint cButtons, uint dwExtraInfo);
+    //Mouse actions
+    private const int MOUSEEVENTF_LEFTDOWN = 0x02;
+    private const int MOUSEEVENTF_LEFTUP = 0x04;
+
+    private const int MOUSEEVENTF_RIGHTDOWN = 0x08;
+    private const int MOUSEEVENTF_RIGHTUP = 0x10;
+
+    private const int MOUSEEVENTF_MIDDOWN = 0x20;
+    private const int MOUSEEVENTF_MIDTUP = 0x40;
+
     public static void KeyPress(Keys key)
     {
+        switch (key)
+        {
+            case Keys.LButton:
+                mouse_event(MOUSEEVENTF_LEFTDOWN | MOUSEEVENTF_LEFTUP, (uint)Cursor.Position.X, (uint)Cursor.Position.Y, 0, 0);
+                return;
+            case Keys.RButton:
+                mouse_event(MOUSEEVENTF_RIGHTDOWN | MOUSEEVENTF_RIGHTUP, (uint)Cursor.Position.X, (uint)Cursor.Position.Y, 0, 0);
+                return;
+            case Keys.MButton:
+                mouse_event(MOUSEEVENTF_MIDDOWN | MOUSEEVENTF_MIDTUP, (uint)Cursor.Position.X, (uint)Cursor.Position.Y, 0, 0);
+                return;
+        }
+
         keybd_event((byte)key, 0, KEYEVENTF_EXTENDEDKEY, IntPtr.Zero);
-
         Thread.Sleep(1);
-
         keybd_event((byte)key, 0, KEYEVENTF_EXTENDEDKEY | KEYEVENTF_KEYUP, IntPtr.Zero);
     }
 

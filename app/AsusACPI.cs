@@ -79,6 +79,7 @@ public class AsusACPI
     public const uint ScreenOverdrive = 0x00050019;
     public const uint ScreenMiniled1 = 0x0005001E;
     public const uint ScreenMiniled2 = 0x0005002E;
+    public const uint ScreenFHD = 0x0005001C;
 
     public const uint DevsCPUFan = 0x00110022;
     public const uint DevsGPUFan = 0x00110023;

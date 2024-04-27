@@ -285,6 +285,7 @@ namespace GHelper.Mode
         {
 
             bool allAMD = Program.acpi.IsAllAmdPPT();
+            bool isAMD = RyzenControl.IsAMD();
 
             int limit_total = AppConfig.GetMode("limit_total");
             int limit_cpu = AppConfig.GetMode("limit_cpu");
@@ -312,7 +313,7 @@ namespace GHelper.Mode
                 Program.acpi.DeviceSet(AsusACPI.PPT_APUA0, limit_slow, "PowerLimit A0");
                 customPower = limit_total;
             }
-            else if (RyzenControl.IsAMD())
+            else if (isAMD)
             {
 
                 if (ProcessHelper.IsUserAdministrator())
@@ -331,10 +332,9 @@ namespace GHelper.Mode
                 Program.acpi.DeviceSet(AsusACPI.PPT_CPUB0, limit_cpu, "PowerLimit B0");
                 customPower = limit_cpu;
             }
-            else if (Program.acpi.DeviceGet(AsusACPI.PPT_APUC1) >= 0) // FPPT boost for non all-amd models
+            else if (isAMD && Program.acpi.DeviceGet(AsusACPI.PPT_APUC1) >= 0) // FPPT boost for non all-amd models
             {
                 Program.acpi.DeviceSet(AsusACPI.PPT_APUC1, limit_fast, "PowerLimit C1");
-                customPower = limit_fast;
             }
 
 
@@ -342,7 +342,7 @@ namespace GHelper.Mode
 
         }
 
-        public void SetGPUClocks(bool launchAsAdmin = true)
+        public void SetGPUClocks(bool launchAsAdmin = true, bool reset = false)
         {
             Task.Run(() =>
             {
@@ -350,6 +350,8 @@ namespace GHelper.Mode
                 int core = AppConfig.GetMode("gpu_core");
                 int memory = AppConfig.GetMode("gpu_memory");
                 int clock_limit = AppConfig.GetMode("gpu_clock_limit");
+
+                if (reset) core = memory = clock_limit = 0;
 
                 if (core == -1 && memory == -1 && clock_limit == -1) return;
                 //if ((gpu_core > -5 && gpu_core < 5) && (gpu_memory > -5 && gpu_memory < 5)) launchAsAdmin = false;
