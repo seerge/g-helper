@@ -139,7 +139,7 @@
     <value>Ultimate Modu kapatmak yeniden başlatmayı gerektirir</value>
   </data>
   <data name="AlertUltimateOn" xml:space="preserve">
-    <value>Ultimate Modu etkinleştirmek yeniden başlatmayı gerektirir</value>
+    <value>Ultimate Mod için yeniden başlatılmalı</value>
   </data>
   <data name="AlertUltimateTitle" xml:space="preserve">
     <value>Şimdi yeniden başlatılsın mı?</value>
@@ -247,7 +247,7 @@
     <value>Pil tasarrufu için 60Hz kullanılır, şarja takıldığında eski haline gelir</value>
   </data>
   <data name="Awake" xml:space="preserve">
-    <value>Uyanırken</value>
+    <value>Uyanış</value>
   </data>
   <data name="BacklightLow" xml:space="preserve">
     <value>Düşük</value>
@@ -298,10 +298,10 @@
     <value>BIOS ve Sürücü Güncellemeleri</value>
   </data>
   <data name="Boot" xml:space="preserve">
-    <value>Açılışta</value>
+    <value>Açılış</value>
   </data>
   <data name="BootSound" xml:space="preserve">
-    <value>Önyükleme Sesi</value>
+    <value>Açılış sesi</value>
   </data>
   <data name="Brightness" xml:space="preserve">
     <value>Parlaklık</value>
@@ -387,7 +387,7 @@ Yine de devam etmek istiyor musunuz?</value>
     <value>Profili Dışa Aktar</value>
   </data>
   <data name="Extra" xml:space="preserve">
-    <value>Ekstra</value>
+    <value>Ek Özellikler</value>
   </data>
   <data name="ExtraSettings" xml:space="preserve">
     <value>Ek Ayarlar</value>
@@ -420,10 +420,10 @@ Yine de devam etmek istiyor musunuz?</value>
     <value>Fanlar + Güç</value>
   </data>
   <data name="FlickerFreeDimming" xml:space="preserve">
-    <value>Flicker-free Dimming</value>
+    <value>Titreşimsiz Karartma</value>
   </data>
   <data name="FnLock" xml:space="preserve">
-    <value>Fn+F kısayol tuşlarını FN tuşuna basmadan çalıştır</value>
+    <value>Fn+F kısayolunu Fn tuşuna basmadan çalıştır</value>
   </data>
   <data name="FnLockOff" xml:space="preserve">
     <value>FN-Lock Kapalı</value>
@@ -603,7 +603,7 @@ Yine de devam etmek istiyor musunuz?</value>
     <value>Yeni güncellemeler</value>
   </data>
   <data name="NoNewUpdates" xml:space="preserve">
-    <value>Güncelleme yok</value>
+    <value>Yeni güncelleme yok</value>
   </data>
   <data name="NotConnected" xml:space="preserve">
     <value>Bağlı Değil</value>
@@ -675,7 +675,7 @@ Yine de devam etmek istiyor musunuz?</value>
     <value>RPM</value>
   </data>
   <data name="RSDeadzones" xml:space="preserve">
-    <value>Sağ Joystick Ölü Bölgeleri</value>
+    <value>Sağ Çubuk Ölü Bölgeleri</value>
   </data>
   <data name="RTDeadzones" xml:space="preserve">
     <value>Sağ Tetik Ölü Bölgeleri</value>

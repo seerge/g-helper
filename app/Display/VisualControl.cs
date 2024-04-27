@@ -66,6 +66,11 @@ namespace GHelper.Display
             return Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + "\\ASUS\\ASUS System Control Interface\\ASUSOptimization\\Splendid";
         }
 
+        public static SplendidGamut GetDefaultGamut()
+        {
+            return AppConfig.IsVivoZenbook() ? SplendidGamut.VivoNative : SplendidGamut.Native;
+        }
+
         public static Dictionary<SplendidGamut, string> GetGamutModes()
         {
 
@@ -102,6 +107,11 @@ namespace GHelper.Display
                 return _modes;
             }
 
+        }
+
+        public static SplendidCommand GetDefaultVisualMode()
+        {
+            return AppConfig.IsVivoZenbook() ? SplendidCommand.VivoNormal : SplendidCommand.Default;
         }
 
         public static Dictionary<SplendidCommand, string> GetVisualModes()

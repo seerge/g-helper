@@ -22,6 +22,10 @@ Works with all popular models, such as ROG Zephyrus G14, G15, G16, M16, Flow X13
 | ----------------- | ---------------- | 
 | [Josh Cravey](https://www.youtube.com/watch?v=hqe-PjuE-K8) | [cbutters Tech](https://www.youtube.com/watch?v=6aVdwJKZSSc) | 
 
+## 📰 Articles
+1. https://binaryfork.com/ghelper-armoury-crate-alternative-10216/
+2. https://www.digitaltrends.com/computing/g-helper-armoury-crate-alternative/
+
 ## :gift: Advantages 
 
 1. Seamless and automatic GPU switching
@@ -38,7 +42,7 @@ Works with all popular models, such as ROG Zephyrus G14, G15, G16, M16, Flow X13
 2. GPU modes: Eco - Standard - Ultimate - Optimized
 3. Screen refresh rate control with display overdrive (OD) 
 4. Custom fan curve editor, power limits and turbo boost selection for every performance mode
-5. Anime Matrix or Slash Lightning control including animated GIFs, clock and Audio visualizer
+5. Anime Matrix or Slash Lighting control including animated GIFs, clock and Audio visualizer
 6. Backlight animation modes and colors 
 7. Custom hotkeys (M-keys, FN+X keys)
 8. Monitor CPU and GPU temperature, fan speeds and battery status
@@ -56,8 +60,6 @@ Works with all popular models, such as ROG Zephyrus G14, G15, G16, M16, Flow X13
 - Optimized GPU mode - disables dGPU on battery and enables when plugged in
 - Auto Screen refresh rate (60Hz on battery and max Hz when plugged)
 - Keyboard backlight timeout on battery or when plugged in
-
-_To keep auto switching and hotkeys working the app needs to stay running in the tray. It doesn't consume any resources._
 
 ### :rocket: Performance Modes
 
@@ -113,7 +115,7 @@ Huge thanks to [@IceStormNG](https://github.com/IceStormNG) 👑 for contributio
 - ``Ctrl + M1 / M2`` - Screen brightness Down / Up
 - ``Shift + M1 / M2`` - Backlight brightness Down / Up
 - ``Fn + C`` - Fn-Lock
-- ``Fn + Shift + F7 / F8`` - Matrix / Slash Lightning brightness Down / Up
+- ``Fn + Shift + F7 / F8`` - Matrix / Slash Lighting brightness Down / Up
 - ``Fn + Shift + F7 / F8`` - Screenpad brightness Down / Up
 - ``Ctrl + Shift + F20`` - Mute Microphone
 - ``Ctrl + Shift + Alt + F13`` - Toggle Display Refresh Rate
@@ -154,7 +156,7 @@ If you use equivalent mode/settings as in Armoury Crate - the performance or the
 The role of G-Helper for your laptop is similar to the role of a remote control for your TV.
 
 ### Libraries and projects used
-- [Linux Kernel](https://github.com/torvalds/linux/blob/master/drivers/platform/x86/asus-wmi.c) for some basic endpoints in ASUS ACPI/WMI interface
+- [Linux Kernel](https://github.com/torvalds/linux/blob/master/include/linux/platform_data/x86/asus-wmi.h) for some basic endpoints in ASUS ACPI/WMI interface
 - [NvAPIWrapper](https://github.com/falahati/NvAPIWrapper) for accessing Nvidia API
 - [Starlight](https://github.com/vddCore/Starlight) for anime matrix communication protocol
 - [UXTU](https://github.com/JamesCJ60/Universal-x86-Tuning-Utility) for undervolting using Ryzen System Management Unit

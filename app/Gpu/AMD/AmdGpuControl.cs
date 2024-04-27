@@ -119,6 +119,18 @@ public class AmdGpuControl : IGpuControl
 
     }
 
+    public int? GetGpuPower()
+    {
+        if (_adlContextHandle == nint.Zero || _iGPU == null) return null;
+        if (ADL2_New_QueryPMLogData_Get(_adlContextHandle, ((ADLAdapterInfo)_iGPU).AdapterIndex, out ADLPMLogDataOutput adlpmLogDataOutput) != Adl2.ADL_SUCCESS) return null;
+
+        ADLSingleSensorData gpuUsage = adlpmLogDataOutput.Sensors[(int)ADLSensorType.PMLOG_ASIC_POWER];
+        if (gpuUsage.Supported == 0) return null;
+
+        return gpuUsage.Value;
+
+    }
+
 
     public bool SetVariBright(int enabled)
     {

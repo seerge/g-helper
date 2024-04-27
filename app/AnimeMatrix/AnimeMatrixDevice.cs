@@ -344,21 +344,21 @@ namespace GHelper.AnimeMatrix
             if (present) Present();
         }
 
-        private void SetBitmapDiagonal(Bitmap bmp, int deltaX = 0, int deltaY = 0, int contrast = 100)
+        private void SetBitmapDiagonal(Bitmap bmp, int deltaX = 0, int deltaY = 0, int contrast = 100, int gamma = 0)
         {
             for (int y = 0; y < bmp.Height; y++)
             {
                 for (int x = 0; x < bmp.Width; x++)
                 {
                     var pixel = bmp.GetPixel(x, y);
-                    var color = Math.Min((pixel.R + pixel.G + pixel.B) * contrast / 300, 255);
+                    var color = Math.Min((pixel.R + pixel.G + pixel.B + gamma) * contrast / 300, 255);
                     if (color > 20)
                         SetLedDiagonal(x, y, (byte)color, deltaX, deltaY - (FullRows / 2) - 1);
                 }
             }
         }
 
-        private void SetBitmapLinear(Bitmap bmp, int contrast = 100)
+        private void SetBitmapLinear(Bitmap bmp, int contrast = 100, int gamma = 0)
         {
             for (int y = 0; y < bmp.Height; y++)
             {
@@ -366,7 +366,7 @@ namespace GHelper.AnimeMatrix
                     if (x % 2 == y % 2)
                     {
                         var pixel = bmp.GetPixel(x, y);
-                        var color = Math.Min((pixel.R + pixel.G + pixel.B) * contrast / 300, 255);
+                        var color = Math.Min((pixel.R + pixel.G + pixel.B + gamma) * contrast / 300, 255);
                         if (color > 20)
                             SetLedPlanar(x / 2, y, (byte)color);
                     }
@@ -413,7 +413,7 @@ namespace GHelper.AnimeMatrix
             Present();
 
         }
-        public void GenerateFrame(Image image, float zoom = 100, int panX = 0, int panY = 0, InterpolationMode quality = InterpolationMode.Default, int contrast = 100)
+        public void GenerateFrame(Image image, float zoom = 100, int panX = 0, int panY = 0, InterpolationMode quality = InterpolationMode.Default, int contrast = 100, int gamma = 0)
         {
             int width = MaxColumns / 2 * 6;
             int height = MaxRows;
@@ -440,11 +440,11 @@ namespace GHelper.AnimeMatrix
                 }
 
                 Clear();
-                SetBitmapLinear(bmp, contrast);
+                SetBitmapLinear(bmp, contrast, gamma);
             }
         }
 
-        public void GenerateFrameDiagonal(Image image, float zoom = 100, int panX = 0, int panY = 0, InterpolationMode quality = InterpolationMode.Default, int contrast = 100)
+        public void GenerateFrameDiagonal(Image image, float zoom = 100, int panX = 0, int panY = 0, InterpolationMode quality = InterpolationMode.Default, int contrast = 100, int gamma = 0)
         {
             int width = MaxRows + FullRows;
             int height = MaxColumns + FullRows;
@@ -471,7 +471,7 @@ namespace GHelper.AnimeMatrix
                 }
 
                 Clear();
-                SetBitmapDiagonal(bmp, -panX, height + panY, contrast);
+                SetBitmapDiagonal(bmp, -panX, height + panY, contrast, gamma);
             }
         }
 

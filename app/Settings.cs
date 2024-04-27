@@ -161,6 +161,7 @@ namespace GHelper
             button120Hz.Click += Button120Hz_Click;
             buttonScreenAuto.Click += ButtonScreenAuto_Click;
             buttonMiniled.Click += ButtonMiniled_Click;
+            buttonFHD.Click += ButtonFHD_Click;
 
             buttonQuit.Click += ButtonQuit_Click;
 
@@ -218,9 +219,14 @@ namespace GHelper
             button120Hz.MouseMove += Button120Hz_MouseHover;
             button120Hz.MouseLeave += ButtonScreen_MouseLeave;
 
+            buttonFHD.MouseMove += ButtonFHD_MouseHover;
+            buttonFHD.MouseLeave += ButtonScreen_MouseLeave;
+
             buttonUpdates.Click += ButtonUpdates_Click;
 
-            sliderBattery.ValueChanged += SliderBattery_ValueChanged;
+            sliderBattery.MouseUp += SliderBattery_MouseUp;
+            sliderBattery.KeyUp += SliderBattery_KeyUp;
+
             Program.trayIcon.MouseMove += TrayIcon_MouseMove;
 
             sensorTimer = new System.Timers.Timer(AppConfig.Get("sensor_timer", 1000));
@@ -247,6 +253,9 @@ namespace GHelper
 
             buttonFPS.Click += ButtonFPS_Click;
             buttonOverlay.Click += ButtonOverlay_Click;
+            
+            buttonAutoTDP.Click += ButtonAutoTDP_Click;
+            buttonAutoTDP.BorderColor = colorTurbo;
 
             buttonCPUAutoTDP.Click += ButtonAutoTDP_Click;
 
@@ -265,6 +274,26 @@ namespace GHelper
 
             panelPerformance.Focus();
             InitVisual();
+        }
+
+        private void ButtonFHD_Click(object? sender, EventArgs e)
+        {
+            screenControl.ToogleFHD();
+        }
+
+        private void SliderBattery_KeyUp(object? sender, KeyEventArgs e)
+        {
+            BatteryControl.SetBatteryChargeLimit(sliderBattery.Value);
+        }
+
+        private void SliderBattery_MouseUp(object? sender, MouseEventArgs e)
+        {
+            BatteryControl.SetBatteryChargeLimit(sliderBattery.Value);
+        }
+
+        private void ButtonAutoTDP_Click(object? sender, EventArgs e)
+        {
+            allyControl.ToggleAutoTDP();
         }
 
         private void LabelCharge_Click(object? sender, EventArgs e)
@@ -327,7 +356,7 @@ namespace GHelper
             panelGamma.Visible = true;
             tableVisual.Visible = true;
 
-            var visualValue = (SplendidCommand)AppConfig.Get("visual", (int)SplendidCommand.Default);
+            var visualValue = (SplendidCommand)AppConfig.Get("visual", (int)VisualControl.GetDefaultVisualMode());
             var colorTempValue = AppConfig.Get("color_temp", VisualControl.DefaultColorTemp);
 
             comboVisual.DropDownStyle = ComboBoxStyle.DropDownList;
@@ -356,7 +385,7 @@ namespace GHelper
             comboGamut.DataSource = new BindingSource(gamuts, null);
             comboGamut.DisplayMember = "Value";
             comboGamut.ValueMember = "Key";
-            comboGamut.SelectedValue = (SplendidGamut)AppConfig.Get("gamut", (int)SplendidGamut.Native);
+            comboGamut.SelectedValue = (SplendidGamut)AppConfig.Get("gamut", (int)VisualControl.GetDefaultGamut());
 
             comboGamut.SelectedValueChanged += ComboGamut_SelectedValueChanged;
             comboGamut.Visible = true;
@@ -521,6 +550,12 @@ namespace GHelper
         public void VisualiseFPSLimit(int limit)
         {
             buttonFPS.Text = "FPS Limit " + ((limit > 0 && limit <= 120) ? limit : "OFF");
+        }
+
+        public void VisualiseAutoTDP(bool status)
+        {
+            Logger.WriteLine($"Auto TDP: {status}");
+            buttonAutoTDP.Activated = status;
         }
 
         private void SettingsForm_LostFocus(object? sender, EventArgs e)
@@ -765,11 +800,6 @@ namespace GHelper
             gpuControl.ToggleXGM();
         }
 
-        private void SliderBattery_ValueChanged(object? sender, EventArgs e)
-        {
-            BatteryControl.SetBatteryChargeLimit(sliderBattery.Value);
-        }
-
 
         public void SetVersionLabel(string label, bool update = false)
         {
@@ -801,6 +831,11 @@ namespace GHelper
         private static void OnTimedEvent(Object? source, ElapsedEventArgs? e)
         {
             Program.settingsForm.RefreshSensors();
+        }
+
+        private void ButtonFHD_MouseHover(object? sender, EventArgs e)
+        {
+           labelTipScreen.Text = "Switch to "+ ((buttonFHD.Text == "FHD") ? "UHD" : "FHD") + " Mode";
         }
 
         private void Button120Hz_MouseHover(object? sender, EventArgs e)
@@ -1121,7 +1156,7 @@ namespace GHelper
                 checkMatrixLid.Visible = true;
             }
 
-            comboMatrix.SelectedIndex = Math.Min(AppConfig.Get("matrix_brightness", 0), comboMatrix.Items.Count - 1);
+            comboMatrix.SelectedIndex = Math.Max(0, Math.Min(AppConfig.Get("matrix_brightness", 0), comboMatrix.Items.Count - 1));
             comboMatrixRunning.SelectedIndex = Math.Min(AppConfig.Get("matrix_running", 0), comboMatrixRunning.Items.Count - 1);
             comboInterval.SelectedIndex = Math.Min(AppConfig.Get("matrix_interval", 0), comboInterval.Items.Count - 1);
 
@@ -1181,7 +1216,7 @@ namespace GHelper
 
 
 
-        public void VisualiseScreen(bool screenEnabled, bool screenAuto, int frequency, int maxFrequency, int overdrive, bool overdriveSetting, int miniled1, int miniled2, bool hdr)
+        public void VisualiseScreen(bool screenEnabled, bool screenAuto, int frequency, int maxFrequency, int overdrive, bool overdriveSetting, int miniled1, int miniled2, bool hdr, int fhd)
         {
 
             ButtonEnabled(button60Hz, screenEnabled);
@@ -1218,6 +1253,12 @@ namespace GHelper
             else if (maxFrequency > 0)
             {
                 panelScreen.Visible = false;
+            }
+
+            if (fhd >= 0)
+            {
+                buttonFHD.Visible = true;
+                buttonFHD.Text = fhd > 0 ? "FHD" : "UHD";
             }
 
             if (miniled1 >= 0)

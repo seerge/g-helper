@@ -1,4 +1,6 @@
-﻿namespace GHelper.Display
+﻿using System.Diagnostics;
+
+namespace GHelper.Display
 {
     public class ScreenControl
     {
@@ -69,6 +71,18 @@
             InitScreen();
         }
 
+        public void ToogleFHD()
+        {
+            int fhd = Program.acpi.DeviceGet(AsusACPI.ScreenFHD);
+            Logger.WriteLine($"FHD Toggle: {fhd}");
+
+            DialogResult dialogResult = MessageBox.Show("Changing display mode requires reboot", Properties.Strings.AlertUltimateTitle, MessageBoxButtons.YesNo);
+            if (dialogResult == DialogResult.Yes)
+            {
+                Program.acpi.DeviceSet(AsusACPI.ScreenFHD, (fhd == 1) ? 0 : 1, "FHD");
+                Process.Start("shutdown", "/r /t 1");
+            }
+        }
 
         public int ToogleMiniled()
         {
@@ -125,6 +139,12 @@
 
             bool screenEnabled = (frequency >= 0);
 
+            int fhd = -1;
+            if (AppConfig.IsDUO())
+            {
+                fhd = Program.acpi.DeviceGet(AsusACPI.ScreenFHD);
+            }
+
             AppConfig.Set("frequency", frequency);
             AppConfig.Set("overdrive", overdrive);
 
@@ -139,7 +159,8 @@
                     overdriveSetting: overdriveSetting,
                     miniled1: miniled1,
                     miniled2: miniled2,
-                    hdr: hdr
+                    hdr: hdr,
+                    fhd: fhd
                 );
             });
 

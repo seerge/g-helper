@@ -118,680 +118,680 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Acceleration" xml:space="preserve">
-    <value>滑鼠加速</value>
+    <value>Acceleration</value>
   </data>
   <data name="ACPIError" xml:space="preserve">
-    <value>無法連結到華碩 ACPI。 没有它，應用程式將無法執行。 嘗試安裝Asus System Control Interface</value>
+    <value>Kan ikke oprette forbindelse til ASUS ACPI. Applikationen kan ikke fungere uden. Prøv at installere Asus System Control Interface</value>
   </data>
   <data name="AlertAPUMemoryRestart" xml:space="preserve">
-    <value>重新啟動裝置以套用變更</value>
+    <value>Genstart din enhed for at anvende ændringerne</value>
   </data>
   <data name="AlertAPUMemoryRestartTitle" xml:space="preserve">
-    <value>現在重新啟動?</value>
+    <value>Genstart nu?</value>
   </data>
   <data name="AlertDGPU" xml:space="preserve">
-    <value>看起来 GPU 正在大量使用，是否禁用它?</value>
+    <value>Ser ud til at GPU er i kraftig brug, vil du deaktivere den?</value>
   </data>
   <data name="AlertDGPUTitle" xml:space="preserve">
-    <value>節能模式</value>
+    <value>Øko-tilstand</value>
   </data>
   <data name="AlertUltimateOff" xml:space="preserve">
-    <value>關閉獨顯需要重新啟動</value>
+    <value>Slukning af Ultimativ tilstand kræver genstart</value>
   </data>
   <data name="AlertUltimateOn" xml:space="preserve">
-    <value>獨顯直連需要重啟</value>
+    <value>Ultimativ tilstand kræver genstart</value>
   </data>
   <data name="AlertUltimateTitle" xml:space="preserve">
-    <value>現在重新啟動嗎?</value>
+    <value>Genstart nu?</value>
   </data>
   <data name="AllyController" xml:space="preserve">
-    <value>Ally控制器</value>
+    <value>Ally Controller</value>
   </data>
   <data name="AnimationSpeed" xml:space="preserve">
-    <value>動畫速度</value>
+    <value>Animationshastighed</value>
   </data>
   <data name="AnimeMatrix" xml:space="preserve">
-    <value>AniMeMatrix</value>
+    <value>Anime Matrix</value>
   </data>
   <data name="AppAlreadyRunning" xml:space="preserve">
-    <value>程式已正在執行</value>
+    <value>App'en kører allerede</value>
   </data>
   <data name="AppAlreadyRunningText" xml:space="preserve">
-    <value>G-Helper已經在執行。 請確認右下工作列中的圖示。</value>
+    <value>G-Helper kører allerede. Tjek systembakken for et ikon.</value>
   </data>
   <data name="Apply" xml:space="preserve">
-    <value>套用</value>
+    <value>Anvend</value>
   </data>
   <data name="ApplyFanCurve" xml:space="preserve">
-    <value>套用自定義風扇曲線</value>
+    <value>Anvend blæserkurve</value>
   </data>
   <data name="ApplyPowerLimits" xml:space="preserve">
-    <value>套用功率限制</value>
+    <value>Anvend strømgrænser</value>
   </data>
   <data name="ApplyWindowsPowerPlan" xml:space="preserve">
-    <value>自動調整Windows電源模式</value>
+    <value>Automatisk justering af Windows strømtilstande</value>
   </data>
   <data name="APUMemory" xml:space="preserve">
-    <value>分配給GPU的記憶體</value>
+    <value>Hukommelse tildelt til GPU</value>
   </data>
   <data name="AsusServicesRunning" xml:space="preserve">
-    <value>執行中的華碩服務</value>
+    <value>Kørende ASUS-tjenester</value>
   </data>
   <data name="AuraBatteryState" xml:space="preserve">
-    <value>電池狀態</value>
+    <value>Batteritilstand</value>
   </data>
   <data name="AuraBreathe" xml:space="preserve">
-    <value>呼吸</value>
+    <value>Vejrtrækning</value>
   </data>
   <data name="AuraClockwise" xml:space="preserve">
-    <value>順時針</value>
+    <value>Med uret</value>
   </data>
   <data name="AuraColorCycle" xml:space="preserve">
-    <value>彩色循環</value>
+    <value>Farvecyklus</value>
   </data>
   <data name="AuraComet" xml:space="preserve">
-    <value>彗星</value>
+    <value>Komet</value>
   </data>
   <data name="AuraCounterClockwise" xml:space="preserve">
-    <value>逆時針</value>
+    <value>Mod uret</value>
   </data>
   <data name="AuraFast" xml:space="preserve">
-    <value>快速</value>
+    <value>Hurtig</value>
   </data>
   <data name="AuraLightingMode" xml:space="preserve">
-    <value>燈效模式</value>
+    <value>Lystilstand</value>
   </data>
   <data name="AuraNormal" xml:space="preserve">
-    <value>正常</value>
+    <value>Normal</value>
   </data>
   <data name="AuraRainbow" xml:space="preserve">
-    <value>彩虹</value>
+    <value>Regnbue</value>
   </data>
   <data name="AuraRandomColor" xml:space="preserve">
-    <value>隨機</value>
+    <value>Tilfældig</value>
   </data>
   <data name="AuraReact" xml:space="preserve">
-    <value>觸發</value>
+    <value>Reager</value>
   </data>
   <data name="AuraSlow" xml:space="preserve">
-    <value>慢</value>
+    <value>Langsom</value>
   </data>
   <data name="AuraStatic" xml:space="preserve">
-    <value>靜態恆亮</value>
+    <value>Statisk</value>
   </data>
   <data name="AuraStrobe" xml:space="preserve">
-    <value>閃爍</value>
+    <value>Strobelys</value>
   </data>
   <data name="AuraZoneAll" xml:space="preserve">
-    <value>全部</value>
+    <value>Alle</value>
   </data>
   <data name="AuraZoneDock" xml:space="preserve">
-    <value>底座</value>
+    <value>Dock</value>
   </data>
   <data name="AuraZoneLogo" xml:space="preserve">
     <value>Logo</value>
   </data>
   <data name="AuraZoneScroll" xml:space="preserve">
-    <value>滾輪</value>
+    <value>Scroll-hjul</value>
   </data>
   <data name="AuraZoneUnderglow" xml:space="preserve">
-    <value>底光</value>
+    <value>Underglød</value>
   </data>
   <data name="AutoApply" xml:space="preserve">
-    <value>自動套用</value>
+    <value>Anvend automatisk</value>
   </data>
   <data name="AutoMode" xml:space="preserve">
-    <value>自動</value>
+    <value>Automatisk</value>
   </data>
   <data name="AutoRefreshTooltip" xml:space="preserve">
-    <value>電池模式時自動60Hz</value>
+    <value>Sætter 60 Hz for at spare på batteri, og tilbage når tilsluttet</value>
   </data>
   <data name="Awake" xml:space="preserve">
-    <value>喚醒時</value>
+    <value>Vågen</value>
   </data>
   <data name="BacklightLow" xml:space="preserve">
-    <value>低</value>
+    <value>Lav</value>
   </data>
   <data name="BacklightMax" xml:space="preserve">
-    <value>最大</value>
+    <value>Maksimal</value>
   </data>
   <data name="BacklightMid" xml:space="preserve">
-    <value>中等</value>
+    <value>Mellem</value>
   </data>
   <data name="BacklightOff" xml:space="preserve">
-    <value>關閉</value>
+    <value>Slukket</value>
   </data>
   <data name="BacklightTimeout" xml:space="preserve">
-    <value>閒置幾秒後關閉燈光：插電時 / 使用電池 (0 = 不關閉)</value>
+    <value>Timeout tilsluttet / på batteri (0 - TIL)</value>
   </data>
   <data name="BacklightTimeoutBattery" xml:space="preserve">
-    <value>閒置時關閉燈光(電池模式)</value>
+    <value>Baggrundslys timeout på batteri</value>
   </data>
   <data name="BacklightTimeoutPlugged" xml:space="preserve">
-    <value>閒置時關閉燈光(充電模式)</value>
+    <value>Timeout for baggrundslys når tilsluttet</value>
   </data>
   <data name="Balanced" xml:space="preserve">
-    <value>平衡模式</value>
+    <value>Balanceret</value>
   </data>
   <data name="BatteryCharge" xml:space="preserve">
-    <value>充電</value>
+    <value>Opladning</value>
   </data>
   <data name="BatteryChargeLimit" xml:space="preserve">
-    <value>電池充電上限</value>
+    <value>Batteriopladningsgrænse</value>
   </data>
   <data name="BatteryHealth" xml:space="preserve">
-    <value>電池健康度</value>
+    <value>Batteritilstand</value>
   </data>
   <data name="BatteryLimitFull" xml:space="preserve">
-    <value>僅本次將電力充滿</value>
+    <value>Engangsopladning til 100%</value>
   </data>
   <data name="Binding" xml:space="preserve">
-    <value>綁定</value>
+    <value>Binding</value>
   </data>
   <data name="BindingPrimary" xml:space="preserve">
-    <value>主要</value>
+    <value>Primær</value>
   </data>
   <data name="BindingSecondary" xml:space="preserve">
-    <value>次要</value>
+    <value>Sekundær</value>
   </data>
   <data name="BiosAndDriverUpdates" xml:space="preserve">
-    <value>BIOS與驅動程式更新</value>
+    <value>BIOS og driveropdateringer</value>
   </data>
   <data name="Boot" xml:space="preserve">
-    <value>開機時</value>
+    <value>Boot</value>
   </data>
   <data name="BootSound" xml:space="preserve">
-    <value>開機音效</value>
+    <value>Opstarts-lyd</value>
   </data>
   <data name="Brightness" xml:space="preserve">
-    <value>亮度</value>
+    <value>Lysstyrke</value>
   </data>
   <data name="BrightnessDown" xml:space="preserve">
-    <value>螢幕亮度降低</value>
+    <value>Lysstyrke ned</value>
   </data>
   <data name="BrightnessUp" xml:space="preserve">
-    <value>螢幕亮度提高</value>
+    <value>Lysstyrke op</value>
   </data>
   <data name="BWTrayIcon" xml:space="preserve">
-    <value>工作列圖示黑白化</value>
+    <value>Sort/hvid bakkeikon</value>
   </data>
   <data name="Calibrate" xml:space="preserve">
-    <value>校準</value>
+    <value>Kalibrer</value>
   </data>
   <data name="Charging" xml:space="preserve">
-    <value>充電中</value>
+    <value>Oplader</value>
   </data>
   <data name="Color" xml:space="preserve">
-    <value>顏色</value>
+    <value>Farve</value>
   </data>
   <data name="Contrast" xml:space="preserve">
-    <value>對比</value>
+    <value>Kontrast</value>
   </data>
   <data name="Controller" xml:space="preserve">
-    <value>控制器</value>
+    <value>Controller</value>
   </data>
   <data name="CPUBoost" xml:space="preserve">
-    <value>CPU 加速</value>
+    <value>CPU Boost</value>
   </data>
   <data name="Custom" xml:space="preserve">
-    <value>自定義設置</value>
+    <value>Brugerdefineret</value>
   </data>
   <data name="Deceleration" xml:space="preserve">
-    <value>滑鼠減速</value>
+    <value>Deceleration</value>
   </data>
   <data name="Default" xml:space="preserve">
-    <value>預設</value>
+    <value>Standard</value>
   </data>
   <data name="DisableController" xml:space="preserve">
-    <value>停用控制器</value>
+    <value>Deaktiver Controller</value>
   </data>
   <data name="DisableOnLidClose" xml:space="preserve">
-    <value>Disable on lid close</value>
+    <value>Deaktiver ved lukning af låg</value>
   </data>
   <data name="DisableOverdrive" xml:space="preserve">
-    <value>禁用螢幕加速OD</value>
+    <value>Deaktiver Overdrive på skærmen</value>
   </data>
   <data name="Discharging" xml:space="preserve">
-    <value>正在釋放電力</value>
+    <value>Aflader</value>
   </data>
   <data name="DownloadColorProfiles" xml:space="preserve">
-    <value>下載色彩設定檔</value>
+    <value>Hent farveprofiler</value>
   </data>
   <data name="DownloadUpdate" xml:space="preserve">
-    <value>下載</value>
+    <value>Hent</value>
   </data>
   <data name="DriverAndSoftware" xml:space="preserve">
-    <value>驅動程式與軟體</value>
+    <value>Drivere og software</value>
   </data>
   <data name="EcoGPUTooltip" xml:space="preserve">
-    <value>禁用獨顯以節省電池電量</value>
+    <value>Deaktiverer dGPU for at spare på batteriet</value>
   </data>
   <data name="EcoMode" xml:space="preserve">
-    <value>節能模式</value>
+    <value>Øko</value>
   </data>
   <data name="EnableGPUOnShutdown" xml:space="preserve">
-    <value>關機前啟動顯卡(解決切換顯卡節能模式&amp;標準模式和亮度的某些問題)</value>
+    <value>Aktiver GPU ved nedlukning (forhindrer problemer med Øko-tilstand)</value>
   </data>
   <data name="EnableOptimusText" xml:space="preserve">
-    <value>「Nvidia控制面板」中的顯示模式未設置為自動切換時，透過G-Helper的節能模式禁用獨顯可能導致螢幕亮度控制出現問題直到下次重新開機後。
+    <value>Deaktivering af dGPU ved at gå i Øko-tilstand, mens visningstilstand i NVIDIA Kontrolpanel ikke er indstillet til Optimus kan forårsage problemer med lysstyrkekontrol indtil efter næste genstart. 
 
-是否繼續？</value>
+Vil du stadig fortsætte?</value>
   </data>
   <data name="EnableOptimusTitle" xml:space="preserve">
-    <value>Nvidia顯示模式未設置為自動切換</value>
+    <value>NVIDIA Visningstilstand er ikke indstillet til Optimus</value>
   </data>
   <data name="EnergySettings" xml:space="preserve">
-    <value>電源設定</value>
+    <value>Energiindstillinger</value>
   </data>
   <data name="Export" xml:space="preserve">
-    <value>匯出設定檔</value>
+    <value>Eksporter profil</value>
   </data>
   <data name="Extra" xml:space="preserve">
-    <value>更多</value>
+    <value>Ekstra</value>
   </data>
   <data name="ExtraSettings" xml:space="preserve">
-    <value>更多設定</value>
+    <value>Ekstra indstillinger</value>
   </data>
   <data name="FactoryDefaults" xml:space="preserve">
-    <value>恢復原廠設定</value>
+    <value>Gendan standarder</value>
   </data>
   <data name="FanCurves" xml:space="preserve">
-    <value>風扇曲線</value>
+    <value>Blæserkurver</value>
   </data>
   <data name="FanProfileCPU" xml:space="preserve">
-    <value>CPU 風扇設定檔</value>
+    <value>CPU blæserkurveprofil</value>
   </data>
   <data name="FanProfileGPU" xml:space="preserve">
-    <value>GPU 風扇設定檔</value>
+    <value>GPU blæserkurveprofil</value>
   </data>
   <data name="FanProfileMid" xml:space="preserve">
-    <value>中等風扇設置</value>
+    <value>Midt blæserprofil</value>
   </data>
   <data name="FanProfiles" xml:space="preserve">
-    <value>風扇設置</value>
+    <value>Blæserprofiler</value>
   </data>
   <data name="FansAndPower" xml:space="preserve">
-    <value>風扇和電源</value>
+    <value>Blæsere og strøm</value>
   </data>
   <data name="FanSpeed" xml:space="preserve">
-    <value>風扇</value>
+    <value>Blæser</value>
   </data>
   <data name="FansPower" xml:space="preserve">
-    <value>自定義設置</value>
+    <value>Blæser + Strøm</value>
   </data>
   <data name="FlickerFreeDimming" xml:space="preserve">
-    <value>不閃屏調光(Flicker-free Dimming)</value>
+    <value>Flimmerfri dæmpning</value>
   </data>
   <data name="FnLock" xml:space="preserve">
-    <value>使用Fn+F1~F12功能時免按下Fn鍵</value>
+    <value>Aktiver Fn + F genvejstaster uden Fn</value>
   </data>
   <data name="FnLockOff" xml:space="preserve">
-    <value>Fn鎖定解除</value>
+    <value>Fn-lås fra</value>
   </data>
   <data name="FnLockOn" xml:space="preserve">
-    <value>Fn鎖定</value>
+    <value>Fn-lås til</value>
   </data>
   <data name="GPUBoost" xml:space="preserve">
-    <value>動態加速</value>
+    <value>Dynamisk boost</value>
   </data>
   <data name="GPUChanging" xml:space="preserve">
-    <value>切換中...</value>
+    <value>Skifter</value>
   </data>
   <data name="GPUCoreClockOffset" xml:space="preserve">
-    <value>核心時脈偏移量(Offset)</value>
+    <value>Core Clock offset</value>
   </data>
   <data name="GPUMemoryClockOffset" xml:space="preserve">
-    <value>顯示卡記憶體偏移量(Offset)</value>
+    <value>Memory Clock offset</value>
   </data>
   <data name="GPUMode" xml:space="preserve">
-    <value>GPU 模式</value>
+    <value>GPU-tilstand</value>
   </data>
   <data name="GPUModeEco" xml:space="preserve">
-    <value>僅限內顯</value>
+    <value>Kun iGPU</value>
   </data>
   <data name="GPUModeStandard" xml:space="preserve">
-    <value>內顯 + 獨顯</value>
+    <value>iGPU + dGPU</value>
   </data>
   <data name="GPUModeUltimate" xml:space="preserve">
-    <value>獨立顯卡</value>
+    <value>dGPU eksklusivt</value>
   </data>
   <data name="GPUPower" xml:space="preserve">
-    <value>顯卡功耗</value>
+    <value>GPU-strøm</value>
   </data>
   <data name="GPUSettings" xml:space="preserve">
-    <value>顯卡設定</value>
+    <value>GPU-indstillinger</value>
   </data>
   <data name="GPUTempTarget" xml:space="preserve">
-    <value>GPU溫度上限</value>
+    <value>Temperaturmål</value>
   </data>
   <data name="HibernateAfter" xml:space="preserve">
-    <value>使用電池下何時進入休眠(0=關閉此功能)</value>
+    <value>Minutter til dvale i standby på batteriet (0 - OFF)</value>
   </data>
   <data name="High" xml:space="preserve">
-    <value>高</value>
+    <value>Høj</value>
   </data>
   <data name="ImageRotation" xml:space="preserve">
-    <value>圖像旋轉</value>
+    <value>Billedrotation</value>
   </data>
   <data name="Import" xml:space="preserve">
-    <value>匯入設定檔</value>
+    <value>Importer profil</value>
   </data>
   <data name="KeyBindings" xml:space="preserve">
-    <value>按鍵綁定</value>
+    <value>Tastebindinger</value>
   </data>
   <data name="Keyboard" xml:space="preserve">
-    <value>鍵盤</value>
+    <value>Tastatur</value>
   </data>
   <data name="KillGpuApps" xml:space="preserve">
-    <value>切換至節能模式時，關閉所有正在使用獨顯的程式</value>
+    <value>Stop alle apps der bruger GPU når du skifter til Øko</value>
   </data>
   <data name="LaptopBacklight" xml:space="preserve">
-    <value>背光</value>
+    <value>Laptop baggrundsbelysning</value>
   </data>
   <data name="LaptopKeyboard" xml:space="preserve">
-    <value>鍵盤背光:</value>
+    <value>Laptop-tastatur</value>
   </data>
   <data name="LaptopScreen" xml:space="preserve">
-    <value>螢幕顯示</value>
+    <value>Laptop-skærm</value>
   </data>
   <data name="LEDStatusIndicators" xml:space="preserve">
-    <value>LED狀態指示器</value>
+    <value>LED statusindikatorer</value>
   </data>
   <data name="Lid" xml:space="preserve">
-    <value>螢幕背蓋</value>
+    <value>Låg</value>
   </data>
   <data name="Lightbar" xml:space="preserve">
-    <value>燈條</value>
+    <value>Lightbar</value>
   </data>
   <data name="Lighting" xml:space="preserve">
-    <value>亮度</value>
+    <value>Belysning</value>
   </data>
   <data name="LockScreen" xml:space="preserve">
-    <value>鎖定螢幕</value>
+    <value>Låseskærm</value>
   </data>
   <data name="Logo" xml:space="preserve">
     <value>Logo</value>
   </data>
   <data name="Low" xml:space="preserve">
-    <value>低</value>
+    <value>Lav</value>
   </data>
   <data name="LSDeadzones" xml:space="preserve">
-    <value>左搖桿死區</value>
+    <value>Venstre stick dødzoner</value>
   </data>
   <data name="LTDeadzones" xml:space="preserve">
-    <value>左扳機(LT)死區</value>
+    <value>Venstre udløser dødzoner</value>
   </data>
   <data name="MatrixAudio" xml:space="preserve">
-    <value>音效視覺化</value>
+    <value>Lydvisualisering</value>
   </data>
   <data name="MatrixBanner" xml:space="preserve">
-    <value>横幅</value>
+    <value>Binær banner</value>
   </data>
   <data name="MatrixBright" xml:space="preserve">
-    <value>明亮</value>
+    <value>Kraftigt</value>
   </data>
   <data name="MatrixClock" xml:space="preserve">
-    <value>時鐘</value>
+    <value>Ur</value>
   </data>
   <data name="MatrixDim" xml:space="preserve">
-    <value>黯淡</value>
+    <value>Dæmpet</value>
   </data>
   <data name="MatrixLogo" xml:space="preserve">
     <value>ROG logo</value>
   </data>
   <data name="MatrixMedium" xml:space="preserve">
-    <value>中</value>
+    <value>Middel</value>
   </data>
   <data name="MatrixOff" xml:space="preserve">
-    <value>關閉</value>
+    <value>Slukket</value>
   </data>
   <data name="MatrixPicture" xml:space="preserve">
-    <value>圖片</value>
+    <value>Billede</value>
   </data>
   <data name="MaxRefreshTooltip" xml:space="preserve">
-    <value>更高的更新率和更低延遲</value>
+    <value>Maks. opdateringshastighed for lavere latenstid</value>
   </data>
   <data name="MinRefreshTooltip" xml:space="preserve">
-    <value>維持60Hz以節省電量</value>
+    <value>60Hz opdateringshastighed for at spare på batteriet</value>
   </data>
   <data name="Minute" xml:space="preserve">
-    <value>分鐘</value>
+    <value>minut</value>
   </data>
   <data name="Minutes" xml:space="preserve">
-    <value>分鐘</value>
+    <value>minutter</value>
   </data>
   <data name="MouseAngleSnapping" xml:space="preserve">
-    <value>角度修正</value>
+    <value>Vinkel-snapping</value>
   </data>
   <data name="MouseAutoPowerOff" xml:space="preserve">
-    <value>自動關閉電源</value>
+    <value>Automatisk slukning efter</value>
   </data>
   <data name="MouseButtonResponse" xml:space="preserve">
-    <value>按鍵回應</value>
+    <value>Knaprespons</value>
   </data>
   <data name="MouseImportFailed" xml:space="preserve">
-    <value>匯入失敗，所選檔案並非有效的滑鼠設定檔或該檔已毀損</value>
+    <value>Import mislykkedes. Den valgte fil er ikke en gyldig museprofil eller den er korrupteret.</value>
   </data>
   <data name="MouseLiftOffDistance" xml:space="preserve">
-    <value>響應高度(LOD)</value>
+    <value>Løfteafstand</value>
   </data>
   <data name="MouseLowBatteryWarning" xml:space="preserve">
-    <value>低電量警告</value>
+    <value>Lav batteriadvarsel ved</value>
   </data>
   <data name="MousePerformance" xml:space="preserve">
-    <value>性能設定</value>
+    <value>Ydelse</value>
   </data>
   <data name="MouseSynchronize" xml:space="preserve">
-    <value>與滑鼠同步</value>
+    <value>Synkroniser med mus</value>
   </data>
   <data name="Multizone" xml:space="preserve">
-    <value>多區</value>
+    <value>Multizone</value>
   </data>
   <data name="MultizoneStrong" xml:space="preserve">
-    <value>多區強化</value>
+    <value>Multizone stærk</value>
   </data>
   <data name="Muted" xml:space="preserve">
-    <value>已靜音</value>
+    <value>Lydløs</value>
   </data>
   <data name="MuteMic" xml:space="preserve">
-    <value>麥克風開關</value>
+    <value>Lydløs mikrofon</value>
   </data>
   <data name="Never" xml:space="preserve">
-    <value>永不</value>
+    <value>Aldrig</value>
   </data>
   <data name="NewUpdates" xml:space="preserve">
-    <value>新的更新</value>
+    <value>Nye opdateringer</value>
   </data>
   <data name="NoNewUpdates" xml:space="preserve">
-    <value>沒有新的更新</value>
+    <value>Ingen nye opdateringer</value>
   </data>
   <data name="NotConnected" xml:space="preserve">
-    <value>未連線</value>
+    <value>Ikke tilsluttet</value>
   </data>
   <data name="Off" xml:space="preserve">
-    <value>關閉</value>
+    <value>Fra</value>
   </data>
   <data name="On" xml:space="preserve">
-    <value>開啟</value>
+    <value>Til</value>
   </data>
   <data name="OneZone" xml:space="preserve">
-    <value>單區</value>
+    <value>En zone</value>
   </data>
   <data name="OpenGHelper" xml:space="preserve">
-    <value>開啟G-Helper視窗</value>
+    <value>Åbn G-Helper vindue</value>
   </data>
   <data name="Optimized" xml:space="preserve">
-    <value>自動模式</value>
+    <value>Optimeret</value>
   </data>
   <data name="OptimizedGPUTooltip" xml:space="preserve">
-    <value>使用電池切換到節能模式，插入電源時切換到標準模式</value>
+    <value>Skift til Øko på batteri og til Standard, når tilsluttet strøm</value>
   </data>
   <data name="OptimizedUSBC" xml:space="preserve">
-    <value>自動模式下，使用USB-C充電時持續關閉獨顯</value>
+    <value>Hold GPU deaktiveret på USB-C oplader i optimeret tilstand</value>
   </data>
   <data name="Other" xml:space="preserve">
-    <value>其他</value>
+    <value>Andet</value>
   </data>
   <data name="Overdrive" xml:space="preserve">
-    <value>OD</value>
+    <value>Overdrive</value>
   </data>
   <data name="PerformanceMode" xml:space="preserve">
-    <value>性能模式:</value>
+    <value>Tilstand</value>
   </data>
   <data name="Peripherals" xml:space="preserve">
-    <value>週邊設備</value>
+    <value>Tilbehør</value>
   </data>
   <data name="PictureGif" xml:space="preserve">
-    <value>圖片/動圖</value>
+    <value>Billede / Gif</value>
   </data>
   <data name="PlayPause" xml:space="preserve">
-    <value>播放/暫停</value>
+    <value>Afspil / Pause</value>
   </data>
   <data name="PollingRate" xml:space="preserve">
-    <value>輪循率</value>
+    <value>Polling Rate</value>
   </data>
   <data name="PowerLimits" xml:space="preserve">
-    <value>功率限制</value>
+    <value>Strømgrænser</value>
   </data>
   <data name="PPTExperimental" xml:space="preserve">
-    <value>功率限制是實驗性功能。謹慎使用,風險自負!</value>
+    <value>Strømgrænser er en eksperimentel funktion. Brug omhyggeligt og på egen risiko!</value>
   </data>
   <data name="PrintScreen" xml:space="preserve">
-    <value>截圖</value>
+    <value>PrintScreen</value>
   </data>
   <data name="Profile" xml:space="preserve">
-    <value>設定檔</value>
+    <value>Profil</value>
   </data>
   <data name="Quit" xml:space="preserve">
-    <value>退出</value>
+    <value>Afslut</value>
   </data>
   <data name="Reset" xml:space="preserve">
-    <value>重設</value>
+    <value>Nulstil</value>
   </data>
   <data name="RestartGPU" xml:space="preserve">
-    <value>有其他程式正在使用獨顯導致無法切換至節能模式. 是否讓G-Helper重新啟動獨顯? * 請自行評估風險</value>
+    <value>Noget bruger dGPU og forhindrer Øko-tilstand. Lad G-Helper forsøge at genstarte dGPU i enhedshåndtering? (fortsæt på egen risiko)</value>
   </data>
   <data name="RPM" xml:space="preserve">
-    <value>每分鐘轉數</value>
+    <value>RPM</value>
   </data>
   <data name="RSDeadzones" xml:space="preserve">
-    <value>右搖桿死區</value>
+    <value>Højre stick dødzoner</value>
   </data>
   <data name="RTDeadzones" xml:space="preserve">
-    <value>右扳機(RT)死區</value>
+    <value>Højre udløser dødzoner</value>
   </data>
   <data name="RunOnStartup" xml:space="preserve">
-    <value>開機自動開啟</value>
+    <value>Kør ved opstart</value>
   </data>
   <data name="ScalingQuality" xml:space="preserve">
-    <value>縮放品質</value>
+    <value>Skaleringskvalitet</value>
   </data>
   <data name="ScreenPadDown" xml:space="preserve">
-    <value>第二觸控螢幕亮度降低</value>
+    <value>Screenpad lysstyrke ned</value>
   </data>
   <data name="ScreenPadUp" xml:space="preserve">
-    <value>第二觸控螢幕亮度提高</value>
+    <value>Skærmtastatur lysstyrke op</value>
   </data>
   <data name="Shutdown" xml:space="preserve">
-    <value>關機時</value>
+    <value>Luk ned</value>
   </data>
   <data name="Silent" xml:space="preserve">
-    <value>安靜模式</value>
+    <value>Lydløs</value>
   </data>
   <data name="Sleep" xml:space="preserve">
-    <value>睡眠時</value>
+    <value>Standby</value>
   </data>
   <data name="StandardGPUTooltip" xml:space="preserve">
-    <value>標準模式會啟用獨顯</value>
+    <value>Aktiverer dGPU til standardbrug</value>
   </data>
   <data name="StandardMode" xml:space="preserve">
-    <value>標準模式</value>
+    <value>Standard</value>
   </data>
   <data name="Start" xml:space="preserve">
-    <value>開始</value>
+    <value>Start</value>
   </data>
   <data name="StartingServices" xml:space="preserve">
-    <value>正在啟動服務</value>
+    <value>Starter tjenester</value>
   </data>
   <data name="StartupError" xml:space="preserve">
-    <value>啟動錯誤</value>
+    <value>Startfejl</value>
   </data>
   <data name="Stop" xml:space="preserve">
-    <value>停止</value>
+    <value>Stop</value>
   </data>
   <data name="StopGPUApps" xml:space="preserve">
-    <value>停止GPU相關程式</value>
+    <value>Stop GPU-programmer</value>
   </data>
   <data name="StoppingServices" xml:space="preserve">
-    <value>正在停止服務</value>
+    <value>Stopper tjenester</value>
   </data>
   <data name="ToggleAura" xml:space="preserve">
-    <value>切換Aura</value>
+    <value>Slå Aura til/fra</value>
   </data>
   <data name="ToggleClamshellMode" xml:space="preserve">
-    <value>翻蓋模式 (蓋上筆電但有外接螢幕時，系統仍會持續運行)</value>
+    <value>Slå automatisk Clamshell-tilstand til/fra</value>
   </data>
   <data name="ToggleFnLock" xml:space="preserve">
-    <value>免按Fn鍵使用Fn+F1~F12功能</value>
+    <value>Slå Fn-lås til/fra</value>
   </data>
   <data name="ToggleMiniled" xml:space="preserve">
-    <value>切換Miniled(若有支援)</value>
+    <value>Slå MiniLED til/fra (hvis understøttet)</value>
   </data>
   <data name="ToggleScreen" xml:space="preserve">
-    <value>切換螢幕</value>
+    <value>Slå skærmen til/fra</value>
   </data>
   <data name="Turbo" xml:space="preserve">
-    <value>極速模式</value>
+    <value>Turbo</value>
   </data>
   <data name="TurnedOff" xml:space="preserve">
-    <value>已關閉</value>
+    <value>Slukket</value>
   </data>
   <data name="TurnOffOnBattery" xml:space="preserve">
-    <value>電池模式時關閉</value>
+    <value>Deaktiver på batteri</value>
   </data>
   <data name="UltimateGPUTooltip" xml:space="preserve">
-    <value>開啟獨顯直連獲得最佳幀數</value>
+    <value>Kobler laptop-skærmen direkte til dGPU, hvilket maksimerer FPS</value>
   </data>
   <data name="UltimateMode" xml:space="preserve">
-    <value>獨顯直連</value>
+    <value>Ultimativ</value>
   </data>
   <data name="UndervoltingRisky" xml:space="preserve">
-    <value>降壓是一項實驗性且有風險的功能，若設定的值過低，可能造成系統不穩定甚至無預警關機，建議可先嘗試較小的降壓數值，並點擊"套用"來測試適合你的使用狀況</value>
+    <value>Undervolting er en eksperimentel og risikabel funktion. Hvis de anvendte værdier er for lave for din hardware, kan det blive ustabilt, lukke ned eller forårsage datakorruption. Hvis du ønsker at prøve - start fra små værdier først, klik på Anvend og test hvad der virker for dig.</value>
   </data>
   <data name="Unmuted" xml:space="preserve">
-    <value>已取消靜音</value>
+    <value>Ikke lydløs</value>
   </data>
   <data name="Updates" xml:space="preserve">
-    <value>更新驅動</value>
+    <value>Opdateringer</value>
   </data>
   <data name="VersionLabel" xml:space="preserve">
-    <value>版本</value>
+    <value>Version</value>
   </data>
   <data name="VibrationStrength" xml:space="preserve">
-    <value>震動強度</value>
+    <value>Vibrationsstyrke</value>
   </data>
   <data name="VisualMode" xml:space="preserve">
-    <value>色域模式</value>
+    <value>Visuel tilstand</value>
   </data>
   <data name="VisualModesHDR" xml:space="preserve">
-    <value>HDR開啟時不支援色域模式</value>
+    <value>Visuelle tilstande er ikke tilgængelige, når HDR er aktiv</value>
   </data>
   <data name="VisualModesScreen" xml:space="preserve">
-    <value>筆電螢幕闔上時不支援色域模式</value>
+    <value>Visuelle tilstande er ikke tilgængelige, når laptopskærmen er slukket</value>
   </data>
   <data name="VolumeDown" xml:space="preserve">
-    <value>音量降低</value>
+    <value>Lydstyrke ned</value>
   </data>
   <data name="VolumeMute" xml:space="preserve">
-    <value>靜音</value>
+    <value>Lydløs</value>
   </data>
   <data name="VolumeUp" xml:space="preserve">
-    <value>音量增加</value>
+    <value>Lydstyrke op</value>
   </data>
   <data name="WindowTop" xml:space="preserve">
-    <value>視窗置頂</value>
+    <value>Hold altid appvinduet øverst</value>
   </data>
   <data name="Zoom" xml:space="preserve">
-    <value>縮放</value>
+    <value>Zoom</value>
   </data>
 </root>
