@@ -59,18 +59,6 @@ namespace GHelper.AnimeMatrix
             if (deviceSlash is not null) SetSlash(wakeUp);
         }
 
-        public void SetLidMode(bool force = false)
-        {
-            bool matrixLid = AppConfig.Is("matrix_lid");
-            if (matrixLid || force)
-            {
-                Logger.WriteLine($"Matrix LidClosed: {lidClose}");
-                if (deviceSlash is not null) deviceSlash.SetLidMode(matrixLid);
-                SetDevice(true);
-            }
-        }
-
-
         public void SetSlash(bool wakeUp = false)
         {
             if (deviceSlash is null) return;
@@ -100,6 +88,7 @@ namespace GHelper.AnimeMatrix
                 {
                     deviceSlash.Init();
                     deviceSlash.SetOptions(false, 0, 0);
+                    deviceSlash.SetSleepActive(false);
                 }
                 else
                 {
@@ -110,16 +99,56 @@ namespace GHelper.AnimeMatrix
                     }
 
                     deviceSlash.Init();
-                    deviceSlash.SetMode((SlashMode)running);
-                    deviceSlash.SetOptions(true, brightness, inteval);
-                    deviceSlash.Save();
+
+                    switch ((SlashMode)running)
+                    {
+                        case SlashMode.Static:
+                            var custom = AppConfig.GetString("slash_custom");
+                            if (custom is not null && custom.Length > 0)
+                            {
+                                deviceSlash.SetCustom(AppConfig.StringToBytes(custom));
+                            } else
+                            {
+                                deviceSlash.SetStatic(brightness);
+                            }
+                            break;
+                        default:
+                            deviceSlash.SetMode((SlashMode)running);
+                            deviceSlash.SetOptions(true, brightness, inteval);
+                            deviceSlash.Save();
+                            break;
+                    }
+
+                    deviceSlash.SetSleepActive(true);
                 }
             });
         }
 
+        public void SetLidMode(bool force = false)
+        {
+            bool matrixLid = AppConfig.Is("matrix_lid");
+            
+            if (deviceSlash is not null)
+            {
+                deviceSlash.SetLidMode(matrixLid);
+            }
+
+            if (matrixLid || force)
+            {
+                Logger.WriteLine($"Matrix LidClosed: {lidClose}");
+                SetDevice(true);
+            }
+        }
+
         public void SetBatteryAuto()
         {
-            if (deviceSlash is not null) deviceSlash.SetBatterySaver(AppConfig.Is("matrix_auto"));
+            if (deviceSlash is not null)
+            {
+                bool auto = AppConfig.Is("matrix_auto");
+                deviceSlash.SetBatterySaver(auto);
+                if (!auto) SetSlash();
+            }
+
             if (deviceMatrix is not null) SetMatrix();
         }
 
@@ -443,6 +472,7 @@ namespace GHelper.AnimeMatrix
 
             int matrixZoom = AppConfig.Get("matrix_zoom", 100);
             int matrixContrast = AppConfig.Get("matrix_contrast", 100);
+            int matrixGamma = AppConfig.Get("matrix_gamma", 0);
 
             int matrixSpeed = AppConfig.Get("matrix_speed", 50);
 
@@ -464,9 +494,9 @@ namespace GHelper.AnimeMatrix
                     image.SelectActiveFrame(dimension, i);
 
                     if (rotation == MatrixRotation.Planar)
-                        deviceMatrix.GenerateFrame(image, matrixZoom, matrixX, matrixY, matrixQuality, matrixContrast);
+                        deviceMatrix.GenerateFrame(image, matrixZoom, matrixX, matrixY, matrixQuality, matrixContrast, matrixGamma);
                     else
-                        deviceMatrix.GenerateFrameDiagonal(image, matrixZoom, matrixX, matrixY, matrixQuality, matrixContrast);
+                        deviceMatrix.GenerateFrameDiagonal(image, matrixZoom, matrixX, matrixY, matrixQuality, matrixContrast, matrixGamma);
 
                     deviceMatrix.AddFrame();
                 }
@@ -481,9 +511,9 @@ namespace GHelper.AnimeMatrix
             else
             {
                 if (rotation == MatrixRotation.Planar)
-                    deviceMatrix.GenerateFrame(image, matrixZoom, matrixX, matrixY, matrixQuality, matrixContrast);
+                    deviceMatrix.GenerateFrame(image, matrixZoom, matrixX, matrixY, matrixQuality, matrixContrast, matrixGamma);
                 else
-                    deviceMatrix.GenerateFrameDiagonal(image, matrixZoom, matrixX, matrixY, matrixQuality, matrixContrast);
+                    deviceMatrix.GenerateFrameDiagonal(image, matrixZoom, matrixX, matrixY, matrixQuality, matrixContrast, matrixGamma);
 
                 deviceMatrix.Present();
             }

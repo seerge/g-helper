@@ -19,7 +19,8 @@ namespace GHelper.AnimeMatrix
         Ramp,
         GameOver,
         Start,
-        Buzzer
+        Buzzer,
+        Static
     }
 
     internal class SlashPacket : Packet
@@ -53,6 +54,7 @@ namespace GHelper.AnimeMatrix
             { SlashMode.GameOver, "Game Over"},
             { SlashMode.Start, "Start"},
             { SlashMode.Buzzer, "Buzzer"},
+            { SlashMode.Static, "Static"},
         };
 
         private static Dictionary<SlashMode, byte> modeCodes = new Dictionary<SlashMode, byte>
@@ -115,6 +117,22 @@ namespace GHelper.AnimeMatrix
             Set(Packet<SlashPacket>(0xD3, 0x04, 0x00, 0x0C, 0x01, modeByte, 0x02, 0x19, 0x03, 0x13, 0x04, 0x11, 0x05, 0x12, 0x06, 0x13), "SlashMode");
         }
 
+        public void SetStatic(int brightness = 0)
+        {
+            SetCustom(Enumerable.Repeat((byte)(brightness * 85.333), 7).ToArray());
+
+        }
+
+        public void SetCustom(byte[] data)
+        {
+            Set(Packet<SlashPacket>(0xD2, 0x02, 0x01, 0x08, 0xAC), "Static");
+            Set(Packet<SlashPacket>(0xD3, 0x03, 0x01, 0x08, 0xAC, 0xFF, 0xFF, 0x01, 0x05, 0xFF, 0xFF), "StaticSettings");
+            Set(Packet<SlashPacket>(0xD4, 0x00, 0x00, 0x01, 0xAC), "StaticSave");
+
+            byte[] payload = new byte[] { 0xD3, 0x00, 0x00, 0x07 };
+            Set(Packet<SlashPacket>(payload.Concat(data.Take(7)).ToArray()), "Static Data");
+        }
+
         public void SetOptions(bool status, int brightness = 0, int interval = 0)
         {
             byte brightnessByte = (byte)(brightness * 85.333);
@@ -124,12 +142,18 @@ namespace GHelper.AnimeMatrix
 
         public void SetBatterySaver(bool status)
         {
-            Set(Packet<SlashPacket>(0xD8, 0x01, 0x00, 0x01, status ? (byte)0x80 : (byte)0x00), "SlashBatterySaver");
+            Set(Packet<SlashPacket>(0xD8, 0x01, 0x00, 0x01, status ? (byte)0x80 : (byte)0x00), $"SlashBatterySaver {status}");
         }
 
         public void SetLidMode(bool status)
         {
-            Set(Packet<SlashPacket>(0xD8, 0x00, 0x00, 0x02, 0xA5, status ? (byte)0x80 : (byte)0x00));
+            Set(Packet<SlashPacket>(0xD8, 0x00, 0x00, 0x02, 0xA5, status ? (byte)0x80 : (byte)0x00), $"DisableLidClose {status}");
+        }
+
+        public void SetSleepActive(bool status)
+        {
+            Set(Packet<SlashPacket>(0xD2, 0x02, 0x01, 0x08, 0xA1), "SleepInit");
+            Set(Packet<SlashPacket>(0xD3, 0x03, 0x01, 0x08, 0xA1, 0x00, 0xFF, status ? (byte)0x01 : (byte)0x00, 0x02, 0xFF, 0xFF), $"Sleep {status}");
         }
 
         public void Set(Packet packet, string? log = null)

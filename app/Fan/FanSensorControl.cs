@@ -58,6 +58,8 @@ namespace GHelper.Fan
             if (AppConfig.ContainsModel("FA507R")) return new int[3] { 63, 57, DEFAULT_FAN_MAX };
             if (AppConfig.ContainsModel("FA507X")) return new int[3] { 63, 68, DEFAULT_FAN_MAX };
 
+            if (AppConfig.ContainsModel("FX607J")) return new int[3] { 74, 72, DEFAULT_FAN_MAX };
+
             if (AppConfig.ContainsModel("GX650")) return new int[3] { 62, 62, DEFAULT_FAN_MAX };
 
             if (AppConfig.ContainsModel("G732")) return new int[3] { 61, 60, DEFAULT_FAN_MAX };
@@ -68,6 +70,7 @@ namespace GHelper.Fan
             if (AppConfig.ContainsModel("GV601")) return new int[3] { 78, 59, 85 };
 
             if (AppConfig.ContainsModel("GA403")) return new int[3] { 68, 68, 80 };
+            if (AppConfig.ContainsModel("GU605")) return new int[3] { 62, 62, 92 };
 
             return new int[3] { DEFAULT_FAN_MAX, DEFAULT_FAN_MAX, DEFAULT_FAN_MAX };
         }

@@ -54,12 +54,15 @@ namespace GHelper
             tableBios.Visible = false;
             tableDrivers.Visible = false;
 
+            labelLegendGreen.BackColor = colorEco;
+            labelLegendRed.BackColor = colorTurbo;
+
             ClearTable(tableBios);
             ClearTable(tableDrivers);
 
             Task.Run(async () =>
             {
-                DriversAsync($"https://rog.asus.com/support/webapi/product/GetPDBIOS?website=global&model={model}&cpu=", 1, tableBios);
+                DriversAsync($"https://rog.asus.com/support/webapi/product/GetPDBIOS?website=global&model={model}&cpu={model}", 1, tableBios);
             });
 
             Task.Run(async () =>
@@ -230,11 +233,23 @@ namespace GHelper
                     AutomaticDecompression = DecompressionMethods.All
                 }))
                 {
+                    Logger.WriteLine(url);
                     httpClient.DefaultRequestHeaders.AcceptEncoding.ParseAdd("gzip, deflate, br");
                     httpClient.DefaultRequestHeaders.Add("User-Agent", "C# App");
                     var json = await httpClient.GetStringAsync(url);
 
                     var data = JsonSerializer.Deserialize<JsonElement>(json);
+                    var result = data.GetProperty("Result");
+
+                    // fallback for bugged API
+                    if (result.ToString() == "" || result.GetProperty("Obj").GetArrayLength() == 0)
+                    {
+                        var urlFallback = url + "&tag=" + new Random().Next(10, 99);
+                        Logger.WriteLine(urlFallback);
+                        json = await httpClient.GetStringAsync(urlFallback);
+                        data = JsonSerializer.Deserialize<JsonElement>(json);
+                    }
+
                     var groups = data.GetProperty("Result").GetProperty("Obj");
 
 

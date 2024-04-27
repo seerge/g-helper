@@ -35,6 +35,10 @@
             panelMain = new Panel();
             panelButtons = new Panel();
             buttonReset = new UI.RButton();
+            panelGamma = new Panel();
+            labelGamma = new Label();
+            labelGammaTitle = new Label();
+            trackGamma = new TrackBar();
             panelContrast = new Panel();
             labelContrast = new Label();
             labelContrastTitle = new Label();
@@ -53,6 +57,8 @@
             panelPicture.SuspendLayout();
             panelMain.SuspendLayout();
             panelButtons.SuspendLayout();
+            panelGamma.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)trackGamma).BeginInit();
             panelContrast.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)trackContrast).BeginInit();
             panelRotation.SuspendLayout();
@@ -117,6 +123,7 @@
             // 
             panelMain.AutoSize = true;
             panelMain.Controls.Add(panelButtons);
+            panelMain.Controls.Add(panelGamma);
             panelMain.Controls.Add(panelContrast);
             panelMain.Controls.Add(panelRotation);
             panelMain.Controls.Add(panelScaling);
@@ -125,7 +132,7 @@
             panelMain.Dock = DockStyle.Top;
             panelMain.Location = new Point(20, 20);
             panelMain.Name = "panelMain";
-            panelMain.Size = new Size(834, 959);
+            panelMain.Size = new Size(834, 1104);
             panelMain.TabIndex = 5;
             // 
             // panelButtons
@@ -133,7 +140,7 @@
             panelButtons.Controls.Add(buttonReset);
             panelButtons.Controls.Add(buttonPicture);
             panelButtons.Dock = DockStyle.Top;
-            panelButtons.Location = new Point(0, 865);
+            panelButtons.Location = new Point(0, 1010);
             panelButtons.Name = "panelButtons";
             panelButtons.Size = new Size(834, 94);
             panelButtons.TabIndex = 6;
@@ -157,6 +164,52 @@
             buttonReset.TextImageRelation = TextImageRelation.ImageBeforeText;
             buttonReset.UseVisualStyleBackColor = false;
             // 
+            // panelGamma
+            // 
+            panelGamma.AutoSize = true;
+            panelGamma.Controls.Add(labelGamma);
+            panelGamma.Controls.Add(labelGammaTitle);
+            panelGamma.Controls.Add(trackGamma);
+            panelGamma.Dock = DockStyle.Top;
+            panelGamma.Location = new Point(0, 865);
+            panelGamma.Name = "panelGamma";
+            panelGamma.Size = new Size(834, 145);
+            panelGamma.TabIndex = 7;
+            // 
+            // labelGamma
+            // 
+            labelGamma.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            labelGamma.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            labelGamma.Location = new Point(673, 17);
+            labelGamma.Name = "labelGamma";
+            labelGamma.Size = new Size(125, 32);
+            labelGamma.TabIndex = 4;
+            labelGamma.Text = "Brightness";
+            labelGamma.TextAlign = ContentAlignment.TopRight;
+            // 
+            // labelGammaTitle
+            // 
+            labelGammaTitle.AutoSize = true;
+            labelGammaTitle.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            labelGammaTitle.Location = new Point(16, 17);
+            labelGammaTitle.Name = "labelGammaTitle";
+            labelGammaTitle.Size = new Size(134, 32);
+            labelGammaTitle.TabIndex = 3;
+            labelGammaTitle.Text = "Brightness";
+            // 
+            // trackGamma
+            // 
+            trackGamma.LargeChange = 50;
+            trackGamma.Location = new Point(16, 52);
+            trackGamma.Maximum = 100;
+            trackGamma.Minimum = -100;
+            trackGamma.Name = "trackGamma";
+            trackGamma.Size = new Size(782, 90);
+            trackGamma.SmallChange = 10;
+            trackGamma.TabIndex = 2;
+            trackGamma.TickFrequency = 20;
+            trackGamma.TickStyle = TickStyle.TopLeft;
+            // 
             // panelContrast
             // 
             panelContrast.AutoSize = true;
@@ -172,13 +225,13 @@
             // labelContrast
             // 
             labelContrast.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            labelContrast.AutoSize = true;
             labelContrast.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            labelContrast.Location = new Point(705, 17);
+            labelContrast.Location = new Point(701, 17);
             labelContrast.Name = "labelContrast";
             labelContrast.Size = new Size(103, 32);
             labelContrast.TabIndex = 4;
             labelContrast.Text = "Contrast";
+            labelContrast.TextAlign = ContentAlignment.TopRight;
             // 
             // labelContrastTitle
             // 
@@ -310,7 +363,7 @@
             AutoScaleDimensions = new SizeF(192F, 192F);
             AutoScaleMode = AutoScaleMode.Dpi;
             AutoSize = true;
-            ClientSize = new Size(874, 1006);
+            ClientSize = new Size(874, 1142);
             Controls.Add(panelMain);
             MaximizeBox = false;
             MinimizeBox = false;
@@ -326,6 +379,9 @@
             panelMain.ResumeLayout(false);
             panelMain.PerformLayout();
             panelButtons.ResumeLayout(false);
+            panelGamma.ResumeLayout(false);
+            panelGamma.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)trackGamma).EndInit();
             panelContrast.ResumeLayout(false);
             panelContrast.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)trackContrast).EndInit();
@@ -361,5 +417,9 @@
         private Label labelContrast;
         private Label labelContrastTitle;
         private TrackBar trackContrast;
+        private Panel panelGamma;
+        private Label labelGamma;
+        private Label labelGammaTitle;
+        private TrackBar trackGamma;
     }
 }
