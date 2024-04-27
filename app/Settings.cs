@@ -257,7 +257,7 @@ namespace GHelper
             buttonAutoTDP.Click += ButtonAutoTDP_Click;
             buttonAutoTDP.BorderColor = colorTurbo;
 
-            buttonCPUAutoTDP.Click += ButtonAutoTDP_Click;
+            buttonCPUAutoTDP.Click += ButtonCPUAutoTDP_Click;
 
             Text = "G-Helper " + (ProcessHelper.IsUserAdministrator() ? "—" : "-") + " " + AppConfig.GetModelShort();
             TopMost = AppConfig.Is("topmost");
@@ -435,7 +435,7 @@ namespace GHelper
             });
         }
 
-        private void ButtonAutoTDP_Click(object? sender, EventArgs e)
+        private void ButtonCPUAutoTDP_Click(object? sender, EventArgs e)
         {
             if (autoTdpUi is not null)
             {
