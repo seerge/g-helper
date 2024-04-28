@@ -51,10 +51,10 @@ namespace GHelper.Display
                 ScreenNative.SetRefreshRate(laptopScreen, frequency);
             }
 
-            if (overdrive >= 0)
+            if (Program.acpi.IsOverdriveSupported() && overdrive >= 0)
             {
                 if (AppConfig.IsNoOverdrive()) overdrive = 0;
-                if (!AppConfig.IsOLED() && overdrive != Program.acpi.DeviceGet(AsusACPI.ScreenOverdrive))
+                if (overdrive != Program.acpi.DeviceGet(AsusACPI.ScreenOverdrive))
                 {
                     Program.acpi.DeviceSet(AsusACPI.ScreenOverdrive, overdrive, "ScreenOverdrive");
                 }
@@ -119,7 +119,7 @@ namespace GHelper.Display
             int maxFrequency = ScreenNative.GetMaxRefreshRate(laptopScreen);
 
             bool screenAuto = AppConfig.Is("screen_auto");
-            bool overdriveSetting = !AppConfig.IsNoOverdrive();
+            bool overdriveSetting = Program.acpi.IsOverdriveSupported() && !AppConfig.IsNoOverdrive();
 
             int overdrive = AppConfig.IsNoOverdrive() ? 0 : Program.acpi.DeviceGet(AsusACPI.ScreenOverdrive);
 

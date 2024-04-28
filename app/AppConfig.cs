@@ -416,7 +416,7 @@ public static class AppConfig
 
     public static bool IsNoOverdrive()
     {
-        return Is("no_overdrive") || IsOLED();
+        return Is("no_overdrive");
     }
 
     public static bool IsNoSleepEvent()
