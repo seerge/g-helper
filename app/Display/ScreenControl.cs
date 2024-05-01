@@ -65,7 +65,10 @@ namespace GHelper.Display
                 if (Program.acpi.DeviceGet(AsusACPI.ScreenMiniled1) >= 0)
                     Program.acpi.DeviceSet(AsusACPI.ScreenMiniled1, miniled, "Miniled1");
                 else
+                {
                     Program.acpi.DeviceSet(AsusACPI.ScreenMiniled2, miniled, "Miniled2");
+                    Thread.Sleep(100);
+                }
             }
 
             InitScreen();
