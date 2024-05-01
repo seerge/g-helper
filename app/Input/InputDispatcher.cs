@@ -490,8 +490,8 @@ namespace GHelper.Input
                     break;
                 case "miniled":
                     if (ScreenCCD.GetHDRStatus()) return;
-                    int miniled = screenControl.ToogleMiniled();
-                    Program.toast.RunToast(miniled == 1 ? "Multi-Zone" : "Single-Zone", miniled == 1 ? ToastIcon.BrightnessUp : ToastIcon.BrightnessDown);
+                    string miniledName = screenControl.ToogleMiniled();
+                    Program.toast.RunToast(miniledName, miniledName == Properties.Strings.OneZone ? ToastIcon.BrightnessDown : ToastIcon.BrightnessUp);
                     break;
                 case "aura":
                     Program.settingsForm.BeginInvoke(Program.settingsForm.CycleAuraMode);

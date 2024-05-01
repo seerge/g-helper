@@ -87,7 +87,7 @@ namespace GHelper.Display
             }
         }
 
-        public int ToogleMiniled()
+        public string ToogleMiniled()
         {
             int miniled1 = Program.acpi.DeviceGet(AsusACPI.ScreenMiniled1);
             int miniled2 = Program.acpi.DeviceGet(AsusACPI.ScreenMiniled2);
@@ -95,24 +95,45 @@ namespace GHelper.Display
             Logger.WriteLine($"MiniledToggle: {miniled1} {miniled2}");
 
             int miniled;
+            string name;
 
             if (miniled1 >= 0)
             {
-                miniled = (miniled1 == 1) ? 0 : 1;
+                switch (miniled1)
+                {
+                    case 1: 
+                        miniled = 0;
+                        name = Properties.Strings.OneZone;
+                        break;
+                    default:
+                        miniled = 1;
+                        name = Properties.Strings.Multizone;
+                        break;
+                }
             }
             else
             {
                 switch (miniled2)
                 {
-                    case 1: miniled = 2; break;
-                    case 2: miniled = 0; break;
-                    default: miniled = 1; break;
+                    case 1: 
+                        miniled = 2;
+                        name = Properties.Strings.OneZone;
+                        break;
+                    case 2: 
+                        miniled = 0;
+                        name = Properties.Strings.Multizone;
+                        break;
+                    default: 
+                        miniled = 1;
+                        name = Properties.Strings.MultizoneStrong;
+                        break;
                 }
             }
 
             AppConfig.Set("miniled", miniled);
             SetScreen(miniled: miniled);
-            return miniled;
+            
+            return name;
         }
 
         public void InitScreen()
