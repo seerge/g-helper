@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Acceleration" xml:space="preserve">
-    <value>Acceleration</value>
+    <value>가속</value>
   </data>
   <data name="ACPIError" xml:space="preserve">
     <value>ASUS ACPI에 연결할 수 없어 응용 프로그램이 작동하지 않습니다. Asus System Control Interface를 먼저 설치하십시오.</value>
@@ -250,13 +250,13 @@
     <value>절전 모드 해제</value>
   </data>
   <data name="BacklightLow" xml:space="preserve">
-    <value>Low</value>
+    <value>낮음</value>
   </data>
   <data name="BacklightMax" xml:space="preserve">
-    <value>Max</value>
+    <value>최대</value>
   </data>
   <data name="BacklightMid" xml:space="preserve">
-    <value>Mid</value>
+    <value>중간</value>
   </data>
   <data name="BacklightOff" xml:space="preserve">
     <value>꺼짐</value>
@@ -337,13 +337,13 @@
     <value>사용자 설정</value>
   </data>
   <data name="Deceleration" xml:space="preserve">
-    <value>Deceleration</value>
+    <value>감속</value>
   </data>
   <data name="Default" xml:space="preserve">
     <value>기본</value>
   </data>
   <data name="DisableController" xml:space="preserve">
-    <value>Disable Controller</value>
+    <value>컨트롤러 비활성화</value>
   </data>
   <data name="DisableOnLidClose" xml:space="preserve">
     <value>덮개를 닫을 시 비활성화</value>
@@ -426,10 +426,10 @@
     <value>Fn 키를 누르지 않고 Fn+F 핫키 작동</value>
   </data>
   <data name="FnLockOff" xml:space="preserve">
-    <value>FN-Lock Off</value>
+    <value>FN-Lock 꺼짐</value>
   </data>
   <data name="FnLockOn" xml:space="preserve">
-    <value>FN-Lock On</value>
+    <value>FN-Lock 켜짐</value>
   </data>
   <data name="GPUBoost" xml:space="preserve">
     <value>다이나믹 부스트</value>
@@ -471,7 +471,7 @@
     <value>높게</value>
   </data>
   <data name="ImageRotation" xml:space="preserve">
-    <value>Image Rotation</value>
+    <value>이미지 방향</value>
   </data>
   <data name="Import" xml:space="preserve">
     <value>프로필 가져오기</value>
@@ -495,7 +495,7 @@
     <value>화면</value>
   </data>
   <data name="LEDStatusIndicators" xml:space="preserve">
-    <value>LED Status Indicators</value>
+    <value>LED 상태 표시등</value>
   </data>
   <data name="Lid" xml:space="preserve">
     <value>덮개</value>
@@ -516,10 +516,10 @@
     <value>낮게</value>
   </data>
   <data name="LSDeadzones" xml:space="preserve">
-    <value>Left Stick Deadzones</value>
+    <value>왼쪽 스틱 데드존</value>
   </data>
   <data name="LTDeadzones" xml:space="preserve">
-    <value>Left Trigger Deadzones</value>
+    <value>왼쪽 트리거 데드존</value>
   </data>
   <data name="MatrixAudio" xml:space="preserve">
     <value>오디오 비주얼라이저</value>
@@ -591,7 +591,7 @@
     <value>Multi Zone Strong</value>
   </data>
   <data name="Muted" xml:space="preserve">
-    <value>Muted</value>
+    <value>음소거</value>
   </data>
   <data name="MuteMic" xml:space="preserve">
     <value>마이크 음소거</value>
@@ -609,10 +609,10 @@
     <value>연결되지 않음</value>
   </data>
   <data name="Off" xml:space="preserve">
-    <value>Off</value>
+    <value>꺼짐</value>
   </data>
   <data name="On" xml:space="preserve">
-    <value>On</value>
+    <value>켜짐</value>
   </data>
   <data name="OneZone" xml:space="preserve">
     <value>One Zone</value>
@@ -666,7 +666,7 @@
     <value>종료</value>
   </data>
   <data name="Reset" xml:space="preserve">
-    <value>Reset</value>
+    <value>초기화</value>
   </data>
   <data name="RestartGPU" xml:space="preserve">
     <value>dGPU가 사용중이기 때문에 Eco 모드로 전환할 수 없습니다. 장치 관리자에서 dGPU를 재시작하시겠습니까?</value>
@@ -675,10 +675,10 @@
     <value>RPM</value>
   </data>
   <data name="RSDeadzones" xml:space="preserve">
-    <value>Right Stick Deadzones</value>
+    <value>오른쪽 스틱 데드존</value>
   </data>
   <data name="RTDeadzones" xml:space="preserve">
-    <value>Right Trigger Deadzones</value>
+    <value>오른쪽 트리거 데드존</value>
   </data>
   <data name="RunOnStartup" xml:space="preserve">
     <value>시스템 시작 시 실행</value>
@@ -759,7 +759,7 @@
     <value>언더볼팅은 실험적이며 위험한 기능입니다. 적용 값이 너무 낮은 경우 시스템이 불안정해지고, 강제 종료되거나 데이터 손상을 유발할 수 있습니다. 낮은 값부터 적용하여 잘 작동하는지 확인해 보십시오.</value>
   </data>
   <data name="Unmuted" xml:space="preserve">
-    <value>Unmuted</value>
+    <value>음소거 해제</value>
   </data>
   <data name="Updates" xml:space="preserve">
     <value>업데이트</value>
@@ -771,13 +771,13 @@
     <value>진동 세기</value>
   </data>
   <data name="VisualMode" xml:space="preserve">
-    <value>Visual Mode</value>
+    <value>비주얼 모드</value>
   </data>
   <data name="VisualModesHDR" xml:space="preserve">
-    <value>Visual Modes are not available when HDR is active</value>
+    <value>HDR이 켜져 있을 때에는 비주얼 모드를 사용할 수 없습니다.</value>
   </data>
   <data name="VisualModesScreen" xml:space="preserve">
-    <value>Visual Modes are not available when laptop screen is off</value>
+    <value>노트북의 화면이 꺼져 있을 때에는 비주얼 모드를 사용할 수 없습니다.</value>
   </data>
   <data name="VolumeDown" xml:space="preserve">
     <value>볼륨 작게</value>
@@ -792,6 +792,6 @@
     <value>창을 항상 맨 위로 유지</value>
   </data>
   <data name="Zoom" xml:space="preserve">
-    <value>Zoom</value>
+    <value>확대/축소</value>
   </data>
 </root>
