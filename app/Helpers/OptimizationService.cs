@@ -48,7 +48,7 @@ namespace GHelper.Helpers
                 if (Process.GetProcessesByName(service).Count() > 0) count++;
             }
 
-            if (AppConfig.IsAlly())
+            if (AppConfig.IsStopAC())
                 foreach (string service in processesAC)
                 {
                     if (Process.GetProcessesByName(service).Count() > 0)
@@ -69,7 +69,7 @@ namespace GHelper.Helpers
                 ProcessHelper.StopDisableService(service);
             }
 
-            if (AppConfig.IsAlly())
+            if (AppConfig.IsStopAC())
             {
                 foreach (string service in servicesAC)
                 {

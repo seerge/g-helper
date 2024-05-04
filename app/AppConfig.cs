@@ -615,6 +615,11 @@ public static class AppConfig
         return Is("bw_icon");
     }
 
+    public static bool IsStopAC()
+    {
+        return IsAlly() || Is("stop_ac");
+    }
+
 
 
 }
