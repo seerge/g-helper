@@ -21,11 +21,13 @@ namespace GHelper.Helpers
 
         static List<string> processesAC = new() {
                 "ArmouryCrateSE.Service",
+                "ArmouryCrate.Service",
                 "LightingService",
         };
 
         static List<string> servicesAC = new() {
                 "ArmouryCrateSEService",
+                "ArmouryCrateService",
                 "LightingService",
         };
 
