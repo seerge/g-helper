@@ -15,22 +15,29 @@ namespace GHelper.Helpers
 
         public bool IsExternalDisplayConnected()
         {
-            var devices = ScreenInterrogatory.GetAllDevices().ToArray();
-
-            string internalName = AppConfig.GetString("internal_display");
-
-            foreach (var device in devices)
+            try
             {
-                if (device.outputTechnology != ScreenInterrogatory.DISPLAYCONFIG_VIDEO_OUTPUT_TECHNOLOGY.DISPLAYCONFIG_OUTPUT_TECHNOLOGY_INTERNAL &&
-                    device.outputTechnology != ScreenInterrogatory.DISPLAYCONFIG_VIDEO_OUTPUT_TECHNOLOGY.DISPLAYCONFIG_OUTPUT_TECHNOLOGY_DISPLAYPORT_EMBEDDED
-                    && device.monitorFriendlyDeviceName != internalName)
+                var devicesList = ScreenInterrogatory.GetAllDevices();
+                var devices = devicesList.ToArray();
+
+                string internalName = AppConfig.GetString("internal_display");
+
+                foreach (var device in devices)
                 {
-                    Logger.WriteLine("Found external screen: " + device.monitorFriendlyDeviceName + ":" + device.outputTechnology.ToString());
+                    if (device.outputTechnology != ScreenInterrogatory.DISPLAYCONFIG_VIDEO_OUTPUT_TECHNOLOGY.DISPLAYCONFIG_OUTPUT_TECHNOLOGY_INTERNAL &&
+                        device.outputTechnology != ScreenInterrogatory.DISPLAYCONFIG_VIDEO_OUTPUT_TECHNOLOGY.DISPLAYCONFIG_OUTPUT_TECHNOLOGY_DISPLAYPORT_EMBEDDED
+                        && device.monitorFriendlyDeviceName != internalName)
+                    {
+                        Logger.WriteLine("Found external screen: " + device.monitorFriendlyDeviceName + ":" + device.outputTechnology.ToString());
 
-                    //Already found one, we do not have to check whether there are more
-                    return true;
+                        //Already found one, we do not have to check whether there are more
+                        return true;
+                    }
+
                 }
-
+            } catch (Exception ex)
+            {
+                Logger.WriteLine(ex.ToString());
             }
 
             return false;

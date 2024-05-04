@@ -674,7 +674,7 @@ namespace GHelper
         private void trackGPUClockLimit_Scroll(object? sender, EventArgs e)
         {
 
-            int maxClock = (int)Math.Round((float)trackGPUClockLimit.Value / 50) * 50;
+            int maxClock = (int)Math.Round((float)trackGPUClockLimit.Value / 5) * 5;
 
             trackGPUClockLimit.Value = maxClock;
             AppConfig.SetMode("gpu_clock_limit", maxClock);
