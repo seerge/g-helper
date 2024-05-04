@@ -166,7 +166,8 @@ namespace GHelper.Display
         {
             try
             {
-                var devices = GetAllDevices().ToArray();
+                var devicesList = GetAllDevices();
+                var devices = devicesList.ToArray();
                 string internalName = AppConfig.GetString("internal_display");
 
                 foreach (var device in devices)
