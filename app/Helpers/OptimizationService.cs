@@ -89,7 +89,7 @@ namespace GHelper.Helpers
                 ProcessHelper.StartEnableService(service);
             }
 
-            if (AppConfig.IsAlly())
+            if (AppConfig.IsStopAC())
             {
                 foreach (string service in servicesAC)
                 {
