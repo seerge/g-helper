@@ -167,6 +167,9 @@ public class AsusACPI
     public const int PCoreMax = 16;
     public const int ECoreMax = 16;
 
+    private bool? _allAMD = null;
+    private bool? _overdrive = null;
+
 
     [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
     private static extern IntPtr CreateFile(
@@ -636,8 +639,14 @@ public class AsusACPI
 
     public bool IsAllAmdPPT()
     {
-        //return false; 
-        return DeviceGet(PPT_CPUB0) >= 0 && DeviceGet(PPT_GPUC0) < 0;
+        if (_allAMD is null) _allAMD = DeviceGet(PPT_CPUB0) >= 0 && DeviceGet(PPT_GPUC0) < 0;
+        return (bool)_allAMD;
+    }
+
+    public bool IsOverdriveSupported()
+    {
+        if (_overdrive is null) _overdrive = DeviceGet(ScreenOverdrive) >= 0;
+        return (bool)_overdrive;
     }
 
     public bool IsNVidiaGPU()

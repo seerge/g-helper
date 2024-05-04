@@ -223,10 +223,7 @@ namespace GHelper
                 checkUSBC.Visible = false;
             }
 
-            if (AppConfig.IsOLED())
-            {
-                checkNoOverdrive.Visible = false;
-            }
+            checkNoOverdrive.Visible = Program.acpi.IsOverdriveSupported();
 
             // Change text and hide irrelevant options on the ROG Ally,
             // which is a bit of a special case piece of hardware.
@@ -256,7 +253,6 @@ namespace GHelper
                 checkGpuApps.Visible = false;
                 checkUSBC.Visible = false;
                 checkAutoToggleClamshellMode.Visible = false;
-                checkNoOverdrive.Visible = false;
 
                 int apuMem = Program.acpi.GetAPUMem();
                 if (apuMem >= 0)

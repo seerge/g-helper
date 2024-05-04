@@ -159,6 +159,18 @@
         }
     }
 
+    public class ROGKerisWirelessWiredC : ROGKerisWireless
+    {
+        public ROGKerisWirelessWiredC() : base(0x195C, false)
+        {
+        }
+
+        public override string GetDisplayName()
+        {
+            return "ROG Keris (Wired)";
+        }
+    }
+
     public class ROGKerisWirelessWired : ROGKerisWireless
     {
         public ROGKerisWirelessWired() : base(0x195E, false)
