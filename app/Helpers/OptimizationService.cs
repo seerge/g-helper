@@ -13,6 +13,7 @@ namespace GHelper.Helpers
                 "ASUSLinkNear",
                 "ASUSLinkRemote",
                 "ASUSSoftwareManager",
+                "ASUSLiveUpdateAgent",
                 "ASUSSwitch",
                 "ASUSSystemAnalysis",
                 "ASUSSystemDiagnosis",
