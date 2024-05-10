@@ -30,6 +30,7 @@ namespace GHelper
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             tableBios = new TableLayoutPanel();
             labelBIOS = new Label();
             pictureBios = new PictureBox();
@@ -47,6 +48,7 @@ namespace GHelper
             labelLegendGray = new Label();
             labelLegendRed = new Label();
             labelLegend = new Label();
+            toolTip = new ToolTip(components);
             ((System.ComponentModel.ISupportInitialize)pictureBios).BeginInit();
             panelBiosTitle.SuspendLayout();
             panelBios.SuspendLayout();
@@ -339,5 +341,6 @@ namespace GHelper
         private Label labelLegendRed;
         private Label labelLegendGray;
         private Label labelLegendGreen;
+        private ToolTip toolTip;
     }
 }
