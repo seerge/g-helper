@@ -115,6 +115,7 @@ Huge thanks to [@IceStormNG](https://github.com/IceStormNG) 👑 for contributio
 - ``Ctrl + M1 / M2`` - Screen brightness Down / Up
 - ``Shift + M1 / M2`` - Backlight brightness Down / Up
 - ``Fn + C`` - Fn-Lock
+- ``Fn + Ctrl +  F7 / F8`` - Flicker-free dimming Down / Up
 - ``Fn + Shift + F7 / F8`` - Matrix / Slash Lighting brightness Down / Up
 - ``Fn + Shift + F7 / F8`` - Screenpad brightness Down / Up
 - ``Ctrl + Shift + F20`` - Mute Microphone
