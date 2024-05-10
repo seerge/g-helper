@@ -271,7 +271,7 @@ G-helper是一个单文件的exe文件, 而且它不会向系统中安装任何�
 ### 推荐配置(可选)
 
 - 推荐保持 "Asus Optimization Service" 这个windows服务的运行, 它保证基本的键盘快捷键(比如屏幕或键盘亮度)能够使用。
-- 可选选项(!) 你可以通过在管理员模式下运行 [这个用于精简的.bat文件](https://raw.githubusercontent.com/seerge/g-helper/main/debloat.bat)来禁用/移除不必要的服务。如果要恢复这些服务，运行 [这个.bat文件](https://raw.githubusercontent.com/seerge/g-helper/main/bloat.bat)。
+- 可选选项(!) 你可以通过在管理员模式下运行 [这个用于精简的.bat文件](https://raw.githubusercontent.com/seerge/g-helper/main/docs/debloat.bat)来禁用/移除不必要的服务。如果要恢复这些服务，运行 [这个.bat文件](https://raw.githubusercontent.com/seerge/g-helper/main/docs/bloat.bat)。
 
 -这个应用不建议与Armoury Crate(及其服务)同时运行, 因为它们会调整相同的设置。你可以[使用ASUS官方提供的卸载工具卸载](https://dlcdnets.asus.com/pub/ASUS/mb/14Utilities/Armoury_Crate_Uninstall_Tool.zip?model=armoury%20crate)Armoury Crate。以防万一，你总是可以之后再安装回来。
 
