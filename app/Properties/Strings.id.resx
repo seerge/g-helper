@@ -591,7 +591,7 @@ Apakah Anda masih ingin melanjutkan?</value>
     <value>Multi Zone Strong</value>
   </data>
   <data name="Muted" xml:space="preserve">
-    <value>Muted</value>
+    <value>Di Bisukan</value>
   </data>
   <data name="MuteMic" xml:space="preserve">
     <value>Bisukan Mic</value>
@@ -609,10 +609,10 @@ Apakah Anda masih ingin melanjutkan?</value>
     <value>Tidak Tersambung</value>
   </data>
   <data name="Off" xml:space="preserve">
-    <value>Off</value>
+    <value>Mati</value>
   </data>
   <data name="On" xml:space="preserve">
-    <value>On</value>
+    <value>Hidup</value>
   </data>
   <data name="OneZone" xml:space="preserve">
     <value>One Zone</value>
