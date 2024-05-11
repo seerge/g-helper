@@ -740,6 +740,12 @@
   <data name="ToggleScreen" xml:space="preserve">
     <value>关闭屏幕</value>
   </data>
+  <data name="ToggleTouchscreen" xml:space="preserve">
+    <value>Toggle Touchscreen</value>
+  </data>
+  <data name="Touchscreen" xml:space="preserve">
+    <value/>
+  </data>
   <data name="Turbo" xml:space="preserve">
     <value>增强模式</value>
   </data>
