@@ -36,6 +36,7 @@ namespace GHelper
               {"brightness_down", Properties.Strings.BrightnessDown},
               {"brightness_up", Properties.Strings.BrightnessUp},
               {"visual", Properties.Strings.VisualMode},
+              {"touchscreen", Properties.Strings.ToggleTouchscreen },
               {"ghelper", Properties.Strings.OpenGHelper},
               {"custom", Properties.Strings.Custom}
             };
