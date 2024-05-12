@@ -121,7 +121,7 @@
     <value>滑鼠加速</value>
   </data>
   <data name="ACPIError" xml:space="preserve">
-    <value>無法連結到華碩 ACPI。 没有它，應用程式將無法執行。 嘗試安裝Asus System Control Interface</value>
+    <value>無法連結到華碩 ACPI，應用程式無法執行。 請嘗試安裝 Asus System Control Interface</value>
   </data>
   <data name="AlertAPUMemoryRestart" xml:space="preserve">
     <value>重新啟動裝置以套用變更</value>
@@ -130,7 +130,7 @@
     <value>現在重新啟動?</value>
   </data>
   <data name="AlertDGPU" xml:space="preserve">
-    <value>看起来 GPU 正在大量使用，是否禁用它?</value>
+    <value>看起來 GPU 正在被重度使用，是否禁用?</value>
   </data>
   <data name="AlertDGPUTitle" xml:space="preserve">
     <value>節能模式</value>
@@ -139,7 +139,7 @@
     <value>關閉獨顯需要重新啟動</value>
   </data>
   <data name="AlertUltimateOn" xml:space="preserve">
-    <value>獨顯直連需要重啟</value>
+    <value>獨顯直連需要重新啟動</value>
   </data>
   <data name="AlertUltimateTitle" xml:space="preserve">
     <value>現在重新啟動嗎?</value>
@@ -151,13 +151,13 @@
     <value>動畫速度</value>
   </data>
   <data name="AnimeMatrix" xml:space="preserve">
-    <value>AniMeMatrix</value>
+    <value>AniMeMatrix™</value>
   </data>
   <data name="AppAlreadyRunning" xml:space="preserve">
-    <value>程式已正在執行</value>
+    <value>程式正在執行</value>
   </data>
   <data name="AppAlreadyRunningText" xml:space="preserve">
-    <value>G-Helper已經在執行。 請確認右下工作列中的圖示。</value>
+    <value>G-Helper正在執行。 請檢查右下系統匣。</value>
   </data>
   <data name="Apply" xml:space="preserve">
     <value>套用</value>
@@ -187,7 +187,7 @@
     <value>順時針</value>
   </data>
   <data name="AuraColorCycle" xml:space="preserve">
-    <value>彩色循環</value>
+    <value>色彩循環</value>
   </data>
   <data name="AuraComet" xml:space="preserve">
     <value>彗星</value>
@@ -244,7 +244,7 @@
     <value>自動</value>
   </data>
   <data name="AutoRefreshTooltip" xml:space="preserve">
-    <value>電池模式時自動60Hz</value>
+    <value>使用電池時設定為 60Hz，並在插上電源時恢復</value>
   </data>
   <data name="Awake" xml:space="preserve">
     <value>喚醒時</value>
@@ -346,13 +346,13 @@
     <value>停用控制器</value>
   </data>
   <data name="DisableOnLidClose" xml:space="preserve">
-    <value>Disable on lid close</value>
+    <value>蓋上螢幕時取消</value>
   </data>
   <data name="DisableOverdrive" xml:space="preserve">
     <value>禁用螢幕加速OD</value>
   </data>
   <data name="Discharging" xml:space="preserve">
-    <value>正在釋放電力</value>
+    <value>使用電池中</value>
   </data>
   <data name="DownloadColorProfiles" xml:space="preserve">
     <value>下載色彩設定檔</value>
@@ -405,10 +405,10 @@
     <value>GPU 風扇設定檔</value>
   </data>
   <data name="FanProfileMid" xml:space="preserve">
-    <value>中等風扇設置</value>
+    <value>小風扇設定檔</value>
   </data>
   <data name="FanProfiles" xml:space="preserve">
-    <value>風扇設置</value>
+    <value>風扇設定檔</value>
   </data>
   <data name="FansAndPower" xml:space="preserve">
     <value>風扇和電源</value>
@@ -417,13 +417,13 @@
     <value>風扇</value>
   </data>
   <data name="FansPower" xml:space="preserve">
-    <value>自定義設置</value>
+    <value>自定義</value>
   </data>
   <data name="FlickerFreeDimming" xml:space="preserve">
     <value>不閃屏調光(Flicker-free Dimming)</value>
   </data>
   <data name="FnLock" xml:space="preserve">
-    <value>使用Fn+F1~F12功能時免按下Fn鍵</value>
+    <value>使用 Fn + F1~F12 功能時無須按下Fn鍵</value>
   </data>
   <data name="FnLockOff" xml:space="preserve">
     <value>Fn鎖定解除</value>
@@ -432,7 +432,7 @@
     <value>Fn鎖定</value>
   </data>
   <data name="GPUBoost" xml:space="preserve">
-    <value>動態加速</value>
+    <value>動態加速 (Dynamic Boost)</value>
   </data>
   <data name="GPUChanging" xml:space="preserve">
     <value>切換中...</value>
@@ -489,7 +489,7 @@
     <value>背光</value>
   </data>
   <data name="LaptopKeyboard" xml:space="preserve">
-    <value>鍵盤背光:</value>
+    <value>鍵盤背光</value>
   </data>
   <data name="LaptopScreen" xml:space="preserve">
     <value>螢幕顯示</value>
@@ -636,7 +636,7 @@
     <value>OD</value>
   </data>
   <data name="PerformanceMode" xml:space="preserve">
-    <value>性能模式:</value>
+    <value>性能模式</value>
   </data>
   <data name="Peripherals" xml:space="preserve">
     <value>週邊設備</value>
@@ -648,7 +648,7 @@
     <value>播放/暫停</value>
   </data>
   <data name="PollingRate" xml:space="preserve">
-    <value>輪循率</value>
+    <value>輪詢率</value>
   </data>
   <data name="PowerLimits" xml:space="preserve">
     <value>功率限制</value>
@@ -669,10 +669,10 @@
     <value>重設</value>
   </data>
   <data name="RestartGPU" xml:space="preserve">
-    <value>有其他程式正在使用獨顯導致無法切換至節能模式. 是否讓G-Helper重新啟動獨顯? * 請自行評估風險</value>
+    <value>有其他程式正在使用獨顯導致無法切換至節能模式. 是否讓 G-Helper 於裝置管理員重新啟動獨顯? (請自行評估風險)</value>
   </data>
   <data name="RPM" xml:space="preserve">
-    <value>每分鐘轉數</value>
+    <value>RPM</value>
   </data>
   <data name="RSDeadzones" xml:space="preserve">
     <value>右搖桿死區</value>
@@ -681,7 +681,7 @@
     <value>右扳機(RT)死區</value>
   </data>
   <data name="RunOnStartup" xml:space="preserve">
-    <value>開機自動開啟</value>
+    <value>開機時自動執行</value>
   </data>
   <data name="ScalingQuality" xml:space="preserve">
     <value>縮放品質</value>
@@ -708,7 +708,7 @@
     <value>標準模式</value>
   </data>
   <data name="Start" xml:space="preserve">
-    <value>開始</value>
+    <value>啟動</value>
   </data>
   <data name="StartingServices" xml:space="preserve">
     <value>正在啟動服務</value>
@@ -726,7 +726,7 @@
     <value>正在停止服務</value>
   </data>
   <data name="ToggleAura" xml:space="preserve">
-    <value>切換Aura</value>
+    <value>切換 Aura 模式</value>
   </data>
   <data name="ToggleClamshellMode" xml:space="preserve">
     <value>翻蓋模式 (蓋上筆電但有外接螢幕時，系統仍會持續運行)</value>
@@ -735,19 +735,19 @@
     <value>免按Fn鍵使用Fn+F1~F12功能</value>
   </data>
   <data name="ToggleMiniled" xml:space="preserve">
-    <value>切換Miniled(若有支援)</value>
+    <value>切換 mini-LED (若有支援)</value>
   </data>
   <data name="ToggleScreen" xml:space="preserve">
     <value>切換螢幕</value>
   </data>
   <data name="ToggleTouchscreen" xml:space="preserve">
-    <value>Toggle Touchscreen</value>
+    <value>切換螢幕觸控</value>
   </data>
   <data name="Touchscreen" xml:space="preserve">
     <value/>
   </data>
   <data name="Turbo" xml:space="preserve">
-    <value>極速模式</value>
+    <value>極速</value>
   </data>
   <data name="TurnedOff" xml:space="preserve">
     <value>已關閉</value>
