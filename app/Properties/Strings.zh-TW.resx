@@ -121,7 +121,7 @@
     <value>滑鼠加速</value>
   </data>
   <data name="ACPIError" xml:space="preserve">
-    <value>無法連結到華碩 ACPI。 没有它，應用程式將無法執行。 嘗試安裝Asus System Control Interface</value>
+    <value>無法連結到華碩 ACPI，應用程式無法執行。 請嘗試安裝 Asus System Control Interface</value>
   </data>
   <data name="AlertAPUMemoryRestart" xml:space="preserve">
     <value>重新啟動裝置以套用變更</value>
@@ -130,7 +130,7 @@
     <value>現在重新啟動?</value>
   </data>
   <data name="AlertDGPU" xml:space="preserve">
-    <value>看起来 GPU 正在大量使用，是否禁用它?</value>
+    <value>看起來 GPU 正在被重度使用，是否禁用?</value>
   </data>
   <data name="AlertDGPUTitle" xml:space="preserve">
     <value>節能模式</value>
@@ -139,7 +139,7 @@
     <value>關閉獨顯需要重新啟動</value>
   </data>
   <data name="AlertUltimateOn" xml:space="preserve">
-    <value>獨顯直連需要重啟</value>
+    <value>獨顯直連需要重新啟動</value>
   </data>
   <data name="AlertUltimateTitle" xml:space="preserve">
     <value>現在重新啟動嗎?</value>
@@ -151,13 +151,13 @@
     <value>動畫速度</value>
   </data>
   <data name="AnimeMatrix" xml:space="preserve">
-    <value>AniMeMatrix</value>
+    <value>AniMeMatrix™</value>
   </data>
   <data name="AppAlreadyRunning" xml:space="preserve">
-    <value>程式已正在執行</value>
+    <value>程式正在執行</value>
   </data>
   <data name="AppAlreadyRunningText" xml:space="preserve">
-    <value>G-Helper已經在執行。 請確認右下工作列中的圖示。</value>
+    <value>G-Helper正在執行。 請檢查右下系統匣。</value>
   </data>
   <data name="Apply" xml:space="preserve">
     <value>套用</value>
@@ -187,7 +187,7 @@
     <value>順時針</value>
   </data>
   <data name="AuraColorCycle" xml:space="preserve">
-    <value>彩色循環</value>
+    <value>色彩循環</value>
   </data>
   <data name="AuraComet" xml:space="preserve">
     <value>彗星</value>
@@ -346,7 +346,7 @@
     <value>停用控制器</value>
   </data>
   <data name="DisableOnLidClose" xml:space="preserve">
-    <value>Disable on lid close</value>
+    <value>蓋上螢幕時取消</value>
   </data>
   <data name="DisableOverdrive" xml:space="preserve">
     <value>禁用螢幕加速OD</value>
@@ -741,7 +741,7 @@
     <value>切換螢幕</value>
   </data>
   <data name="ToggleTouchscreen" xml:space="preserve">
-    <value>Toggle Touchscreen</value>
+    <value>切換螢幕觸控</value>
   </data>
   <data name="Touchscreen" xml:space="preserve">
     <value/>
