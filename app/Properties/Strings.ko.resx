@@ -247,7 +247,7 @@
     <value>배터리 사용 중에만 60Hz 설정</value>
   </data>
   <data name="Awake" xml:space="preserve">
-    <value>절전 모드 해제</value>
+    <value>활성</value>
   </data>
   <data name="BacklightLow" xml:space="preserve">
     <value>낮음</value>
@@ -693,13 +693,13 @@
     <value>Screenpad 밝기 증가</value>
   </data>
   <data name="Shutdown" xml:space="preserve">
-    <value>시스템 종료</value>
+    <value>종료</value>
   </data>
   <data name="Silent" xml:space="preserve">
     <value>조용</value>
   </data>
   <data name="Sleep" xml:space="preserve">
-    <value>절전 모드</value>
+    <value>절전</value>
   </data>
   <data name="StandardGPUTooltip" xml:space="preserve">
     <value>Standard 모드에서 dGPU 켜기</value>
@@ -739,6 +739,12 @@
   </data>
   <data name="ToggleScreen" xml:space="preserve">
     <value>화면 전환 키</value>
+  </data>
+  <data name="ToggleTouchscreen" xml:space="preserve">
+    <value>Toggle Touchscreen</value>
+  </data>
+  <data name="Touchscreen" xml:space="preserve">
+    <value/>
   </data>
   <data name="Turbo" xml:space="preserve">
     <value>터보</value>
