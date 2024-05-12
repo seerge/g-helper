@@ -36,6 +36,7 @@ namespace GHelper
               {"brightness_down", Properties.Strings.BrightnessDown},
               {"brightness_up", Properties.Strings.BrightnessUp},
               {"visual", Properties.Strings.VisualMode},
+              {"touchscreen", Properties.Strings.ToggleTouchscreen },
               {"ghelper", Properties.Strings.OpenGHelper},
               {"custom", Properties.Strings.Custom}
             };
@@ -398,7 +399,10 @@ namespace GHelper
             checkGpuApps.Checked = AppConfig.Is("kill_gpu_apps");
             checkGpuApps.CheckedChanged += CheckGpuApps_CheckedChanged;
 
-            checkBootSound.Checked = (Program.acpi.DeviceGet(AsusACPI.BootSound) == 1);
+            int bootSound = Program.acpi.DeviceGet(AsusACPI.BootSound);
+            if (bootSound < 0 || bootSound > UInt16.MaxValue) bootSound = AppConfig.Get("boot_sound", 0);
+
+            checkBootSound.Checked = (bootSound == 1);
             checkBootSound.CheckedChanged += CheckBootSound_CheckedChanged;
 
             var statusLed = Program.acpi.DeviceGet(AsusACPI.StatusLed);
@@ -536,7 +540,9 @@ namespace GHelper
 
         private void CheckBootSound_CheckedChanged(object? sender, EventArgs e)
         {
-            Program.acpi.DeviceSet(AsusACPI.BootSound, (checkBootSound.Checked ? 1 : 0), "BootSound");
+            int bootSound = checkBootSound.Checked ? 1 : 0;
+            Program.acpi.DeviceSet(AsusACPI.BootSound, bootSound, "BootSound");
+            AppConfig.Set("boot_sound", bootSound);
         }
 
         private void CheckGPUFix_CheckedChanged(object? sender, EventArgs e)
