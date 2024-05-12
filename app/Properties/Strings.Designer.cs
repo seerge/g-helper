@@ -1926,6 +1926,24 @@ namespace GHelper.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Toggle Touchscreen.
+        /// </summary>
+        internal static string ToggleTouchscreen {
+            get {
+                return ResourceManager.GetString("ToggleTouchscreen", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string Touchscreen {
+            get {
+                return ResourceManager.GetString("Touchscreen", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Turbo.
         /// </summary>
         internal static string Turbo {

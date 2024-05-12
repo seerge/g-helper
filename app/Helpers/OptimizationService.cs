@@ -13,6 +13,7 @@ namespace GHelper.Helpers
                 "ASUSLinkNear",
                 "ASUSLinkRemote",
                 "ASUSSoftwareManager",
+                "ASUSLiveUpdateAgent",
                 "ASUSSwitch",
                 "ASUSSystemAnalysis",
                 "ASUSSystemDiagnosis",
@@ -89,7 +90,7 @@ namespace GHelper.Helpers
                 ProcessHelper.StartEnableService(service);
             }
 
-            if (AppConfig.IsAlly())
+            if (AppConfig.IsStopAC())
             {
                 foreach (string service in servicesAC)
                 {

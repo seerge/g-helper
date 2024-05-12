@@ -353,10 +353,10 @@ namespace GHelper.Ally
                 int power = (int)amdControl.GetGpuPower();
                 //Debug.WriteLine($"{power}: {fps}");
 
-                if (fps <= fpsLimit * 0.8) _upCount++;
+                if (fps <= Math.Min(fpsLimit * 0.9, fpsLimit - 4)) _upCount++;
                 else _upCount = 0;
 
-                if (fps >= fpsLimit * 0.90) _downCount++;
+                if (fps >= Math.Min(fpsLimit * 0.95, fpsLimit - 2)) _downCount++;
                 else _downCount = 0;
 
                 var tdp = GetTDP();
@@ -424,9 +424,15 @@ namespace GHelper.Ally
             switch (fpsLimit)
             {
                 case 30:
+                    fpsLimit = 40;
+                    break;
+                case 40:
                     fpsLimit = 45;
                     break;
                 case 45:
+                    fpsLimit = 50;
+                    break;
+                case 50:
                     fpsLimit = 60;
                     break;
                 case 60:

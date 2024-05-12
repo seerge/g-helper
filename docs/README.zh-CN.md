@@ -257,31 +257,28 @@ G-helper是一个单文件的exe文件, 而且它不会向系统中安装任何�
 
 ---
 
-# 安装指南
+### 如何开始
 
-1. 从 [**Releases Page**](https://github.com/seerge/g-helper/releases) 下载最新版本
-2. 解压到你选择的文件夹
-3. 运行 **GHelper.exe**
+1.下载[**最新版本**](https://github.com/seerge/g-helper/releases/latest/download/GHelper.zip)
+2. 解压到您选择的文件夹_（不要直接从zip运行exe，因为Windows会将其放入临时文件夹并在之后删除）_
+3.运行**GHelper.exe**
 
-### 运行要求(必须)
+- 如果您在启动时收到来自 Windows Defender 的警告（Windows 保护了您的电脑）。
+单击“更多信息”->“仍然运行”。
+- 如果出现“在商店中搜索应用程序”对话框，则这是 Windows Defender 的一个错误。
+右键单击 GHelper.exe -> 选择“属性” -> 选择“取消阻止复选框”
 
-- Microsoft [.NET7](https://dotnet.microsoft.com/en-us/download)。 你可能已经安装了。 如果没有的话你可以从官方网站 [立即下载](https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/sdk-7.0.202-windows-x64-installer)。
-- [Asus System Control Interface](https://dlcdnets.asus.com/pub/ASUS/nb/Image/CustomComponent/ASUSSystemControlInterfaceV3/ASUSSystemControlInterfaceV3.exe)。 如果你安装了或者安装过myASUS,  那么这个"驱动"应当已经安装(即使myASUS已经卸载)。 或者你可以手动下载安装。
+### 要求（强制）
 
-### 推荐配置(可选)
+- [Microsoft .NET 7](https://download.visualstudio.microsoft.com/download/pr/8091a826-e1c4-424a-b17b-5c10776cd3de/8957f21a279322d8fac9b542c6aba12e/dotnet-sdk-7.0.408-win-x64.exe)
+- [华硕系统控制界面](https://dlcdnets.asus.com/pub/ASUS/nb/Image/CustomComponent/ASUSSystemControlInterfaceV3/ASUSSystemControlInterfaceV3.exe)
 
-- 推荐保持 "Asus Optimization Service" 这个windows服务的运行, 它保证基本的键盘快捷键(比如屏幕或键盘亮度)能够使用。
-- 可选选项(!) 你可以通过在管理员模式下运行 [这个用于精简的.bat文件](https://raw.githubusercontent.com/seerge/g-helper/main/debloat.bat)来禁用/移除不必要的服务。如果要恢复这些服务，运行 [这个.bat文件](https://raw.githubusercontent.com/seerge/g-helper/main/bloat.bat)。
+### 建议（可选）
 
--这个应用不建议与Armoury Crate(及其服务)同时运行, 因为它们会调整相同的设置。你可以[使用ASUS官方提供的卸载工具卸载](https://dlcdnets.asus.com/pub/ASUS/mb/14Utilities/Armoury_Crate_Uninstall_Tool.zip?model=armoury%20crate)Armoury Crate。以防万一，你总是可以之后再安装回来。
+- **不建议**将该应用程序与 Armoury Crate 服务结合使用，因为它们调整相同的设置。 您可以[使用AC自带的卸载工具卸载](https://dlcdnets.asus.com/pub/ASUS/mb/14Utilities/Armoury_Crate_Uninstall_Tool.zip?model=armoury%20crate)。 以防万一，您可以稍后再安装它。
+- **不建议**运行“ASUS Smart Display Control”应用程序，因为它会尝试更改刷新率并与 g-helper 争夺相同的功能。 您可以安全地卸载它。
+- 如果您不打算使用 MyASUS，您可以停止/禁用不必要的服务：转到应用程序中的 **Extra**，然后按 Asus 服务部分中的“停止”。 要重新启动/启用服务 - 单击“开始”。
 
----
-
-为Asus ROG 幻14 2022 (配置了AMD核显和独显)设计和开发。但应当可能在幻14 2021和2020款, 幻15, X FLOW, 以及其他的ROG机型上使用相关且支持的功能。
-
-我并没有microsoft证书来为这个应用签名，所以如果你在启动时看到windows defender的警告(windows 保护了你的电脑),点击“更多详情” -> 继续运行(不推荐)。作为可选选项，你也可以使用 visual studio自行编译然后运行这个项目 :)
-
-设置文件保存在 ``%AppData%\GHelper``
 
 ---
 
