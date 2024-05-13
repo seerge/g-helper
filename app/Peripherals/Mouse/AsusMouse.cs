@@ -1,5 +1,6 @@
 ﻿using GHelper.AnimeMatrix.Communication;
 using GHelper.AnimeMatrix.Communication.Platform;
+using GHelper.Input;
 using System.Runtime.CompilerServices;
 using System.Text;
 
@@ -1742,6 +1743,17 @@ namespace GHelper.Peripherals.Mouse
                 Logger.WriteLine(GetDisplayName() + ": Read RGB Setting for Zone " + lz[i].ToString() + ": " + ls.ToString());
                 LightingSetting[i] = ls;
             }
+        }
+
+        public void SetColor(Color color)
+        {
+            var ls = new LightingSetting();
+            ls.RGBColor = color;
+            ls.Brightness = InputDispatcher.GetBacklight() * 25;
+
+            WriteForResponse(GetUpdateLightingModePacket(ls, LightingZone.All));
+            WriteForResponse(GetSaveProfilePacket());
+
         }
 
         public void SetLightingSetting(LightingSetting lightingSetting, LightingZone zone)

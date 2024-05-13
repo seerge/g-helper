@@ -1,6 +1,7 @@
 ﻿using GHelper.Gpu;
 using GHelper.Helpers;
 using GHelper.Input;
+using GHelper.Peripherals;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
@@ -767,6 +768,12 @@ namespace GHelper.USB
                 {
                     if (isStrix) ApplyDirect(AmbientData.result, init);
                     else ApplyDirect(AmbientData.result[0], init);
+
+                    foreach (var mouse in PeripheralsProvider.ConnectedMice)
+                    {
+                        mouse.SetColor(AmbientData.result[0]);
+                    }
+
                 }
 
             }
