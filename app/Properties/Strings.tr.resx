@@ -741,7 +741,7 @@ Yine de devam etmek istiyor musunuz?</value>
     <value>Ekranı Değiştir</value>
   </data>
   <data name="ToggleTouchscreen" xml:space="preserve">
-    <value>Toggle Touchscreen</value>
+    <value>Dokunmatik Ekranı Değiştir</value>
   </data>
   <data name="Touchscreen" xml:space="preserve">
     <value/>
