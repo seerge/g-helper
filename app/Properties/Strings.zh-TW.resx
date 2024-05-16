@@ -139,7 +139,7 @@
     <value>關閉獨顯需要重新啟動</value>
   </data>
   <data name="AlertUltimateOn" xml:space="preserve">
-    <value>獨顯直連需要重新啟動</value>
+    <value>獨顯輸出需要重新啟動</value>
   </data>
   <data name="AlertUltimateTitle" xml:space="preserve">
     <value>現在重新啟動嗎?</value>
@@ -271,7 +271,7 @@
     <value>閒置時關閉燈光(充電模式)</value>
   </data>
   <data name="Balanced" xml:space="preserve">
-    <value>平衡模式</value>
+    <value>效能</value>
   </data>
   <data name="BatteryCharge" xml:space="preserve">
     <value>充電</value>
@@ -621,13 +621,13 @@
     <value>開啟G-Helper視窗</value>
   </data>
   <data name="Optimized" xml:space="preserve">
-    <value>自動模式</value>
+    <value>自動調節</value>
   </data>
   <data name="OptimizedGPUTooltip" xml:space="preserve">
     <value>使用電池切換到節能模式，插入電源時切換到標準模式</value>
   </data>
   <data name="OptimizedUSBC" xml:space="preserve">
-    <value>自動模式下，使用USB-C充電時持續關閉獨顯</value>
+    <value>自動調節模式下，使用USB-C充電時持續關閉獨顯</value>
   </data>
   <data name="Other" xml:space="preserve">
     <value>其他</value>
@@ -696,13 +696,13 @@
     <value>關機時</value>
   </data>
   <data name="Silent" xml:space="preserve">
-    <value>安靜模式</value>
+    <value>靜音</value>
   </data>
   <data name="Sleep" xml:space="preserve">
     <value>睡眠時</value>
   </data>
   <data name="StandardGPUTooltip" xml:space="preserve">
-    <value>標準模式會啟用獨顯</value>
+    <value>混合輸出會啟用獨顯</value>
   </data>
   <data name="StandardMode" xml:space="preserve">
     <value>標準模式</value>
@@ -756,10 +756,10 @@
     <value>電池模式時關閉</value>
   </data>
   <data name="UltimateGPUTooltip" xml:space="preserve">
-    <value>開啟獨顯直連獲得最佳幀數</value>
+    <value>開啟獨顯輸出獲得最佳幀數</value>
   </data>
   <data name="UltimateMode" xml:space="preserve">
-    <value>獨顯直連</value>
+    <value>獨顯輸出</value>
   </data>
   <data name="UndervoltingRisky" xml:space="preserve">
     <value>降壓是一項實驗性且有風險的功能，若設定的值過低，可能造成系統不穩定甚至無預警關機，建議可先嘗試較小的降壓數值，並點擊"套用"來測試適合你的使用狀況</value>
