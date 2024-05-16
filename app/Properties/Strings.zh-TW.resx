@@ -370,7 +370,7 @@
     <value>節能模式</value>
   </data>
   <data name="EnableGPUOnShutdown" xml:space="preserve">
-    <value>關機前啟動顯卡(解決切換顯卡節能模式&amp;標準模式和亮度的某些問題)</value>
+    <value>關機前啟動顯卡(解決切換顯卡節能模式&amp;混合輸出和亮度的某些問題)</value>
   </data>
   <data name="EnableOptimusText" xml:space="preserve">
     <value>「Nvidia控制面板」中的顯示模式未設置為自動切換時，透過G-Helper的節能模式禁用獨顯可能導致螢幕亮度控制出現問題直到下次重新開機後。
@@ -624,7 +624,7 @@
     <value>自動調節</value>
   </data>
   <data name="OptimizedGPUTooltip" xml:space="preserve">
-    <value>使用電池切換到節能模式，插入電源時切換到標準模式</value>
+    <value>使用電池切換到整合式顯卡，插入電源時切換到獨立顯卡</value>
   </data>
   <data name="OptimizedUSBC" xml:space="preserve">
     <value>自動調節模式下，使用USB-C充電時持續關閉獨顯</value>
@@ -702,7 +702,7 @@
     <value>睡眠時</value>
   </data>
   <data name="StandardGPUTooltip" xml:space="preserve">
-    <value>混合輸出會啟用獨顯</value>
+    <value>自動切換獨立顯卡以及整合式顯卡 (MS-Hybrid)</value>
   </data>
   <data name="StandardMode" xml:space="preserve">
     <value>標準模式</value>
@@ -732,7 +732,7 @@
     <value>翻蓋模式 (蓋上筆電但有外接螢幕時，系統仍會持續運行)</value>
   </data>
   <data name="ToggleFnLock" xml:space="preserve">
-    <value>免按Fn鍵使用Fn+F1~F12功能</value>
+    <value>切換 Fn-Lock</value>
   </data>
   <data name="ToggleMiniled" xml:space="preserve">
     <value>切換 mini-LED (若有支援)</value>
