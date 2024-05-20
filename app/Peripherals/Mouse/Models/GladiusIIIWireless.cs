@@ -1,13 +1,13 @@
 ﻿namespace GHelper.Peripherals.Mouse.Models
 {
     //P706_Wireless
-    public class GladiusIII : AsusMouse
+    public class GladiusIIIWireless : AsusMouse
     {
-        public GladiusIII() : base(0x0B05, 0x197F, "mi_00", true)
+        public GladiusIIIWireless() : base(0x0B05, 0x197F, "mi_00", true)
         {
         }
 
-        protected GladiusIII(ushort vendorId, bool wireless) : base(0x0B05, vendorId, "mi_00", wireless)
+        protected GladiusIIIWireless(ushort vendorId, bool wireless) : base(0x0B05, vendorId, "mi_00", wireless)
         {
         }
 
@@ -77,7 +77,7 @@
         }
     }
 
-    public class GladiusIIIWired : GladiusIII
+    public class GladiusIIIWired : GladiusIIIWireless
     {
         public GladiusIIIWired() : base(0x197d, false)
         {
