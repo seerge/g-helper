@@ -30,15 +30,22 @@ public class Startup
             var task = taskService.RootFolder.AllTasks.FirstOrDefault(t => t.Name == taskName);
             if (task != null)
             {
-                string strExeFilePath = Application.ExecutablePath.Trim();
-                string action = task.Definition.Actions.FirstOrDefault()!.ToString().Trim();
-                if (!strExeFilePath.Equals(action, StringComparison.OrdinalIgnoreCase) && !File.Exists(action))
+                try
                 {
-                    Logger.WriteLine("File doesn't exist: " + action);
-                    Logger.WriteLine("Rescheduling to: " + strExeFilePath);
-                    UnSchedule();
-                    Schedule();
+                    string strExeFilePath = Application.ExecutablePath.Trim();
+                    string action = task.Definition.Actions.FirstOrDefault()!.ToString().Trim();
+                    if (!strExeFilePath.Equals(action, StringComparison.OrdinalIgnoreCase) && !File.Exists(action))
+                    {
+                        Logger.WriteLine("File doesn't exist: " + action);
+                        Logger.WriteLine("Rescheduling to: " + strExeFilePath);
+                        UnSchedule();
+                        Schedule();
+                    }
+                } catch (Exception ex)
+                {
+                    Logger.WriteLine($"Can't check startup task: {ex.Message}");
                 }
+
             }
         }
     }

@@ -431,7 +431,12 @@ public static class AppConfig
 
     public static bool IsStrixLimitedRGB()
     {
-        return (ContainsModel("G614JV_") || ContainsModel("G614JZ") || ContainsModel("G512LI") || ContainsModel("G513R") || ContainsModel("G713PV") || ContainsModel("G513IE") || ContainsModel("G713RC") || ContainsModel("G513QM") || ContainsModel("G531G")) && !Is("per_key_rgb");
+        return ContainsModel("G512LI") || ContainsModel("G513R") || ContainsModel("G713PV") || ContainsModel("G513IE") || ContainsModel("G713RC") || ContainsModel("G513QM") || ContainsModel("G531G");
+    }
+
+    public static bool Is4ZoneRGB()
+    {
+        return (ContainsModel("G614JI_") || ContainsModel("G614JV_") || ContainsModel("G614JZ") || IsStrixLimitedRGB()) && !Is("per_key_rgb");
     }
 
 

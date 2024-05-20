@@ -409,14 +409,11 @@ namespace GHelper
 
         private void ComboGamut_SelectedValueChanged(object? sender, EventArgs e)
         {
-            AppConfig.Set("gamut", (int)comboGamut.SelectedValue);
             VisualControl.SetGamut((int)comboGamut.SelectedValue);
         }
 
         private void ComboVisual_SelectedValueChanged(object? sender, EventArgs e)
         {
-            AppConfig.Set("visual", (int)comboVisual.SelectedValue);
-            AppConfig.Set("color_temp", (int)comboColorTemp.SelectedValue);
             VisualControl.SetVisual((SplendidCommand)comboVisual.SelectedValue, (int)comboColorTemp.SelectedValue);
         }
 
