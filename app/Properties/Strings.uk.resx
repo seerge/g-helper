@@ -507,7 +507,7 @@
     <value>Ілюмінація</value>
   </data>
   <data name="LockScreen" xml:space="preserve">
-    <value>Lock Screen</value>
+    <value>Блокування екрану</value>
   </data>
   <data name="Logo" xml:space="preserve">
     <value>Лого</value>
@@ -741,7 +741,7 @@
     <value>Вимкнути екран</value>
   </data>
   <data name="ToggleTouchscreen" xml:space="preserve">
-    <value>Toggle Touchscreen</value>
+    <value>Сенсорний екран</value>
   </data>
   <data name="Touchscreen" xml:space="preserve">
     <value/>
