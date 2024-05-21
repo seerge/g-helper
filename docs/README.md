@@ -44,7 +44,7 @@ Works with all popular models, such as ROG Zephyrus G14, G15, G16, M16, Flow X13
 4. Custom fan curve editor, power limits and turbo boost selection for every performance mode
 5. Anime Matrix or Slash Lighting control including animated GIFs, clock and Audio visualizer
 6. Backlight animation modes and colors 
-7. Custom hotkeys (M-keys, FN+X keys)
+7. Hotkey handling
 8. Monitor CPU and GPU temperature, fan speeds and battery status
 9. Battery charge limit to preserve battery health
 10. NVidia GPU overclocking and undervolting
