@@ -87,6 +87,9 @@ namespace GHelper.AnimeMatrix
         public void WakeUp()
         {
             Set(Packet<SlashPacket>(Encoding.ASCII.GetBytes("ASUS Tech.Inc.")), "SlashWakeUp");
+            Set(Packet<SlashPacket>(0xC2), "SlashWakeUp");
+            Set(Packet<SlashPacket>(0xD1, 0x01, 0x00, 0x01), "SlashWakeUp");
+            Set(Packet<SlashPacket>(0xD2, 0x03, 0x00, 0x0C), "SlashWakeUpMode");
         }
 
         public void Init()

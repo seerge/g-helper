@@ -1,13 +1,13 @@
 ﻿namespace GHelper.Peripherals.Mouse.Models
 {
     //P706_Wireless
-    public class GladiusIII : AsusMouse
+    public class GladiusIIIWireless : AsusMouse
     {
-        public GladiusIII() : base(0x0B05, 0x197F, "mi_00", true)
+        public GladiusIIIWireless() : base(0x0B05, 0x197F, "mi_00", true)
         {
         }
 
-        protected GladiusIII(ushort vendorId, bool wireless) : base(0x0B05, vendorId, "mi_00", wireless)
+        protected GladiusIIIWireless(ushort vendorId, bool wireless) : base(0x0B05, vendorId, "mi_00", wireless)
         {
         }
 
@@ -77,7 +77,7 @@
         }
     }
 
-    public class GladiusIIIWired : GladiusIII
+    public class GladiusIIIWired : GladiusIIIWireless
     {
         public GladiusIIIWired() : base(0x197d, false)
         {
@@ -86,6 +86,45 @@
         public override string GetDisplayName()
         {
             return "ROG Gladius III (Wired)";
+        }
+    }
+
+
+    //P514
+    public class GladiusIII : GladiusIIIWireless
+    {
+        public GladiusIII() : base(0x197B, false)
+        {
+        }
+
+        public override string GetDisplayName()
+        {
+            return "ROG Gladius III";
+        }
+
+        public override bool HasAutoPowerOff()
+        {
+            return false;
+        }
+
+        public override bool HasLowBatteryWarning()
+        {
+            return false;
+        }
+
+        public override bool HasBattery()
+        {
+            return false;
+        }
+
+        public override bool IsLightingModeSupported(LightingMode lightingMode)
+        {
+            return lightingMode == LightingMode.Static
+                || lightingMode == LightingMode.Breathing
+                || lightingMode == LightingMode.ColorCycle
+                || lightingMode == LightingMode.Rainbow
+                || lightingMode == LightingMode.React
+                || lightingMode == LightingMode.Comet;
         }
     }
 }

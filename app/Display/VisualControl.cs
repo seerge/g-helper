@@ -167,8 +167,12 @@ namespace GHelper.Display
             };
         }
 
-        public static void SetGamut(int mode = 50)
+        public static void SetGamut(int mode = -1)
         {
+            if (mode < 0) mode = (int)GetDefaultGamut();
+
+            AppConfig.Set("gamut", mode);
+
             if (RunSplendid(SplendidCommand.GamutMode, 0, mode)) return;
 
             if (_init)
@@ -186,6 +190,9 @@ namespace GHelper.Display
 
             if (!forceVisual && ScreenCCD.GetHDRStatus(true)) return;
             if (!forceVisual && ScreenNative.GetRefreshRate(ScreenNative.FindLaptopScreen(true)) < 0) return;
+
+            AppConfig.Set("visual", (int)mode);
+            AppConfig.Set("color_temp", whiteBalance);
 
             if (whiteBalance != DefaultColorTemp && !init) ProcessHelper.RunAsAdmin();
 
