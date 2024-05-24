@@ -60,14 +60,16 @@ namespace GHelper
             ClearTable(tableBios);
             ClearTable(tableDrivers);
 
+            string rogParam = AppConfig.IsROG() ? "&systemCode=rog" : "";
+
             Task.Run(async () =>
             {
-                DriversAsync($"https://rog.asus.com/support/webapi/product/GetPDBIOS?website=global&model={model}&cpu={model}", 1, tableBios);
+                DriversAsync($"https://rog.asus.com/support/webapi/product/GetPDBIOS?website=global&model={model}&cpu={model}{rogParam}", 1, tableBios);
             });
 
             Task.Run(async () =>
             {
-                DriversAsync($"https://rog.asus.com/support/webapi/product/GetPDDrivers?website=global&model={model}&cpu={model}&osid=52", 0, tableDrivers);
+                DriversAsync($"https://rog.asus.com/support/webapi/product/GetPDDrivers?website=global&model={model}&cpu={model}&osid=52{rogParam}", 0, tableDrivers);
             });
         }
 

@@ -142,7 +142,7 @@
     <value>獨顯輸出需要重新啟動</value>
   </data>
   <data name="AlertUltimateTitle" xml:space="preserve">
-    <value>現在重新啟動嗎?</value>
+    <value>立即重新啟動?</value>
   </data>
   <data name="AllyController" xml:space="preserve">
     <value>Ally控制器</value>
