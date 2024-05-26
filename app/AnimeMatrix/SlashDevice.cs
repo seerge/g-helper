@@ -94,8 +94,14 @@ namespace GHelper.AnimeMatrix
 
         public void Init()
         {
+            SetEnabled(true);
             Set(Packet<SlashPacket>(0xD7, 0x00, 0x00, 0x01, 0xAC), "SlashInit");
             Set(Packet<SlashPacket>(0xD2, 0x02, 0x01, 0x08, 0xAB), "SlashInit");
+        }
+
+        public void SetEnabled(bool status = true)
+        {
+            Set(Packet<SlashPacket>(0xD8, 0x02, 0x00, 0x01, status ? (byte)0x00 : (byte)0x80), $"SlashEnable {status}");
         }
 
         public void Save()
