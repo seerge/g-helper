@@ -705,7 +705,7 @@
     <value>自動切換獨立顯卡以及整合式顯卡 (MS-Hybrid)</value>
   </data>
   <data name="StandardMode" xml:space="preserve">
-    <value>混合輸出</value>
+    <value>標準模式</value>
   </data>
   <data name="Start" xml:space="preserve">
     <value>啟動</value>
