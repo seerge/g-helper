@@ -73,6 +73,8 @@ namespace GHelper.Helpers
         protected override void PerformPaint(PaintEventArgs e)
         {
             Brush brush = new SolidBrush(Color.FromArgb(150, Color.Black));
+
+            e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
             e.Graphics.FillRoundedRectangle(brush, Bound, 10);
 
             StringFormat format = new StringFormat();
