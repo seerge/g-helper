@@ -99,6 +99,18 @@
         {
             return true;
         }
+        // 3.00.06 - 4.00.01 or newer firmware
+        protected override PollingRate ParsePollingRate(byte[] packet)
+        {
+            if (packet[1] == 0x12 && packet[2] == 0x04 && packet[3] == 0x00)
+            {
+                if ((int)packet[13] > 7)
+                    return (PollingRate)packet[13] - 96;
+                return (PollingRate)packet[13];
+            }
+
+            return PollingRate.PR125Hz;
+        }
     }
 
     public class KerisWirelssAimpointWired : KerisWirelssAimpoint
