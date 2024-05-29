@@ -183,7 +183,7 @@ namespace GHelper.USB
                 return _modes;
             }
 
-            if (AppConfig.IsStrix() && !AppConfig.IsStrixLimitedRGB())
+            if (AppConfig.IsStrix() && !AppConfig.Is4ZoneRGB())
             {
                 return _modesStrix;
             }
