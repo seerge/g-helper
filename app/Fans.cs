@@ -1160,8 +1160,11 @@ namespace GHelper
                 trackGPUBoost.Value = AsusACPI.MaxGPUBoost;
                 trackGPUTemp.Value = AsusACPI.MaxGPUTemp;
 
-                AppConfig.SetMode("gpu_boost", trackGPUBoost.Value);
-                AppConfig.SetMode("gpu_temp", trackGPUTemp.Value);
+                //AppConfig.SetMode("gpu_boost", trackGPUBoost.Value);
+                //AppConfig.SetMode("gpu_temp", trackGPUTemp.Value);
+                
+                AppConfig.RemoveMode("gpu_boost");
+                AppConfig.RemoveMode("gpu_temp");
 
                 AppConfig.RemoveMode("gpu_power");
                 AppConfig.RemoveMode("gpu_clock_limit");

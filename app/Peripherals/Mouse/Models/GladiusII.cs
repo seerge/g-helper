@@ -297,4 +297,20 @@
             return 3;
         }
     }
+
+    public class GladiusIIOriginPink : GladiusIIOrigin
+    {
+        public GladiusIIOriginPink() : base(0x18CD, "mi_02")
+        {
+
+        }
+        public override string GetDisplayName()
+        {
+            return "Gladius II Origin";
+        }
+        public override int ProfileCount()
+        {
+            return 3;
+        }
+    }
 }

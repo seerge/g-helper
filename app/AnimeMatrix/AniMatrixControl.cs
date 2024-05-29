@@ -86,8 +86,9 @@ namespace GHelper.AnimeMatrix
 
                 if (brightness == 0 || (auto && SystemInformation.PowerStatus.PowerLineStatus != PowerLineStatus.Online) || (lid && lidClose))
                 {
-                    deviceSlash.Init();
-                    deviceSlash.SetOptions(false, 0, 0);
+                    deviceSlash.SetEnabled(false);
+                    //deviceSlash.Init();
+                    //deviceSlash.SetOptions(false, 0, 0);
                     deviceSlash.SetSleepActive(false);
                 }
                 else
@@ -98,6 +99,7 @@ namespace GHelper.AnimeMatrix
                         _wakeUp = false;
                     }
 
+                    deviceSlash.SetEnabled(true);
                     deviceSlash.Init();
 
                     switch ((SlashMode)running)
