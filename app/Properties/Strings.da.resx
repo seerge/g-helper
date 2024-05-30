@@ -624,7 +624,7 @@ Vil du stadig fortsætte?</value>
     <value>Optimeret</value>
   </data>
   <data name="OptimizedGPUTooltip" xml:space="preserve">
-    <value>Skift til Øko på batteri og til Standard, når tilsluttet strøm</value>
+    <value>Switch to Eco on battery and to Standard when plugged in</value>
   </data>
   <data name="OptimizedUSBC" xml:space="preserve">
     <value>Hold GPU deaktiveret på USB-C oplader i optimeret tilstand</value>
