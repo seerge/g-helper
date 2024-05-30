@@ -624,7 +624,7 @@
     <value>최적화</value>
   </data>
   <data name="OptimizedGPUTooltip" xml:space="preserve">
-    <value>배터리 사용 중에만 Eco 모드 설정</value>
+    <value>Switch to Eco on battery and to Standard when plugged in</value>
   </data>
   <data name="OptimizedUSBC" xml:space="preserve">
     <value>최적화 모드에서 PD 충전 시 GPU 비활성화</value>
