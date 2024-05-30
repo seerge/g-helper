@@ -624,7 +624,7 @@ Vis tiek norite tęsti?</value>
     <value>Optimizuotas</value>
   </data>
   <data name="OptimizedGPUTooltip" xml:space="preserve">
-    <value>Perjungti į ekonomišką, kai naudojamas akumuliatorius, ir į standartinį, kai įjungtas į lizdą</value>
+    <value>Switch to Eco on battery and to Standard when plugged in</value>
   </data>
   <data name="OptimizedUSBC" xml:space="preserve">
     <value>Neįjungti GPU, kai naudojamas USB-C įkroviklis optimizuotame režime</value>
