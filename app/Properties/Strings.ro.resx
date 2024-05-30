@@ -624,7 +624,7 @@
     <value>Optimizat</value>
   </data>
   <data name="OptimizedGPUTooltip" xml:space="preserve">
-    <value>Schimbă la modul Eco pe baterie și la Standard când este conectat</value>
+    <value>Switch to Eco on battery and to Standard when plugged in</value>
   </data>
   <data name="OptimizedUSBC" xml:space="preserve">
     <value>Păstraţi GPU dezactivat când încărcătorul USB-C e folosit în modul Optimized</value>
