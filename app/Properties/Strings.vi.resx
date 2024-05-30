@@ -624,7 +624,7 @@ Do you still want to continue?</value>
     <value>Tối ưu</value>
   </data>
   <data name="OptimizedGPUTooltip" xml:space="preserve">
-    <value>Chuyển về Tiết kiệm khi dùng pin và Tiêu chuẩn khi cắm sạc</value>
+    <value>Switch to Eco on battery and to Standard when plugged in</value>
   </data>
   <data name="OptimizedUSBC" xml:space="preserve">
     <value>Tắt GPU khi dùng sạc Type-C ở Chế độ Tối ưu</value>
