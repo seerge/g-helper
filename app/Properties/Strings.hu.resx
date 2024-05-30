@@ -624,7 +624,7 @@ Do you still want to continue?</value>
     <value>Optimalizált</value>
   </data>
   <data name="OptimizedGPUTooltip" xml:space="preserve">
-    <value>Akkus módban váltson Eco módra, töltéskor pedig Standard-ra</value>
+    <value>Switch to Eco on battery and to Standard when plugged in</value>
   </data>
   <data name="OptimizedUSBC" xml:space="preserve">
     <value>Optimalizált módban USB-C-s töltés közben tartsa letiltva a GPU-t</value>
