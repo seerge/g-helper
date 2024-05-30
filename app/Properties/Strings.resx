@@ -624,7 +624,7 @@ Do you still want to continue?</value>
     <value>Optimized</value>
   </data>
   <data name="OptimizedGPUTooltip" xml:space="preserve">
-    <value>Switch to Eco on battery and to Standard when plugged</value>
+    <value>Switch to Eco on battery and to Standard when plugged in</value>
   </data>
   <data name="OptimizedUSBC" xml:space="preserve">
     <value>Keep GPU disabled on USB-C charger in Optimized mode</value>
