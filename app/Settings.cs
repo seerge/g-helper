@@ -1293,6 +1293,8 @@ namespace GHelper
             if (updatesForm != null && updatesForm.Text != "") updatesForm.Close();
             if (matrixForm != null && matrixForm.Text != "") matrixForm.Close();
             if (handheldForm != null && handheldForm.Text != "") handheldForm.Close();
+            if (mouseSettings != null && mouseSettings.Text != "") mouseSettings.Close();
+
         }
 
         /// <summary>
