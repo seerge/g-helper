@@ -7,7 +7,7 @@ Small and lightweight Armoury Crate alternative for Asus laptops offering almost
 Works with all popular models, such as ROG Zephyrus G14, G15, G16, M16, Flow X13, Flow X16, Flow Z13, TUF Series, Strix / Scar Series, ProArt, Vivobook, Zenbook, ROG Ally and many more! 
 
 # [:floppy_disk:Download](https://github.com/seerge/g-helper/releases/latest/download/GHelper.zip)
-### Support project : [:euro: Paypal EUR](https://www.paypal.com/donate/?hosted_button_id=4HMSHS4EBQWTA) | [💵 Paypal USD](https://www.paypal.com/donate/?hosted_button_id=SRM6QUX6ACXDY)
+### Support project : [:euro: Paypal EUR](https://bit.ly/4c0ZWs9) | [💵 Paypal USD](https://bit.ly/4aGTyW8)
 
 - [FAQ](https://github.com/seerge/g-helper/wiki/FAQ)
 - [Setup and Requirements](https://github.com/seerge/g-helper/wiki/Requirements)
@@ -136,13 +136,6 @@ Huge thanks to [@IceStormNG](https://github.com/IceStormNG) 👑 for contributio
 - ``M + Y`` - Toggle AMD overay
 - ``M + X`` - Screenshot
 - ``M + Right Stick Click`` - Controller Mode
-
-------------------
-#### If you like the app you can make a Donation 
-
-| [Paypal in EUR](https://www.paypal.com/donate/?hosted_button_id=4HMSHS4EBQWTA) | [Paypal in USD](https://www.paypal.com/donate/?hosted_button_id=SRM6QUX6ACXDY) |
-| ------------------------------------------ | ----------------------------------------------- |
-| [![QR Code](https://user-images.githubusercontent.com/5920850/233658717-0441494d-fede-4a2c-b4f2-4b16a184a69a.png)](https://www.paypal.com/donate/?hosted_button_id=4HMSHS4EBQWTA) | [![QR Code](https://github-production-user-asset-6210df.s3.amazonaws.com/5920850/239492811-b487e89a-3df6-42ea-bdb8-24c455ab2310.png)](https://www.paypal.com/donate/?hosted_button_id=SRM6QUX6ACXDY) |
 
 ------------------
 
