@@ -95,6 +95,7 @@ Each BIOS mode is paired with matching Windows Power Mode. You can adjust this s
 - ROG Gladius III
 - ROG Gladius III Wireless
 - ROG Harpe Ace Aim Lab Edition
+- ROG Keris (P509)
 - ROG Keris Wireless
 - ROG Strix Carry (P508)
 - ROG Strix III Gladius III Aimpoint Wireless (P711)
