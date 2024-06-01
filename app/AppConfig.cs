@@ -638,7 +638,7 @@ public static class AppConfig
     }
     public static bool IsDynamicLighting()
     {
-        return true || IsSlash() || ContainsModel("JIR") || ContainsModel("JZR") || ContainsModel("FA607") || ContainsModel("FX607");
+        return IsSlash() || ContainsModel("JIR") || ContainsModel("JZR") || ContainsModel("FA607") || ContainsModel("FX607");
     }
 
 }

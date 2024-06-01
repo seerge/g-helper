@@ -1269,7 +1269,7 @@ namespace GHelper
             // 
             labelDynamicLighting.Cursor = Cursors.Hand;
             labelDynamicLighting.Dock = DockStyle.Top;
-            labelDynamicLighting.Font = new Font("Segoe UI", 9F, FontStyle.Underline, GraphicsUnit.Point);
+            labelDynamicLighting.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
             labelDynamicLighting.ForeColor = SystemColors.GrayText;
             labelDynamicLighting.Location = new Point(20, 112);
             labelDynamicLighting.Margin = new Padding(4, 0, 4, 0);
