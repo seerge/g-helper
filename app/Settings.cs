@@ -12,7 +12,6 @@ using GHelper.Peripherals;
 using GHelper.Peripherals.Mouse;
 using GHelper.UI;
 using GHelper.USB;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Timers;
 
@@ -25,7 +24,7 @@ namespace GHelper
 
         public GPUModeControl gpuControl;
         public AllyControl allyControl;
-        ScreenControl screenControl = new ScreenControl(); 
+        ScreenControl screenControl = new ScreenControl();
         AutoUpdateControl updateControl;
 
         AsusMouseSettings? mouseSettings;
@@ -253,7 +252,7 @@ namespace GHelper
 
             buttonFPS.Click += ButtonFPS_Click;
             buttonOverlay.Click += ButtonOverlay_Click;
-            
+
             buttonAutoTDP.Click += ButtonAutoTDP_Click;
             buttonAutoTDP.BorderColor = colorTurbo;
 
@@ -270,10 +269,16 @@ namespace GHelper
             labelVisual.Click += LabelVisual_Click;
             labelCharge.Click += LabelCharge_Click;
 
+            labelDynamicLighting.Click += LabelDynamicLighting_Click;
+
             panelPerformance.Focus();
             InitVisual();
         }
 
+        private void LabelDynamicLighting_Click(object? sender, EventArgs e)
+        {
+            DynamicLightingHelper.OpenSettings();
+        }
 
         private void ButtonFHD_Click(object? sender, EventArgs e)
         {
@@ -327,7 +332,8 @@ namespace GHelper
                 sliderGamma.ValueChanged += SliderGamma_ValueChanged;
                 sliderGamma.MouseUp += SliderGamma_ValueChanged;
 
-            } else
+            }
+            else
             {
                 labelGammaTitle.Text = Properties.Strings.VisualMode;
             }
@@ -339,7 +345,8 @@ namespace GHelper
             {
                 tableVisual.ColumnCount = 3;
                 buttonInstallColor.Visible = false;
-            } else
+            }
+            else
             {
                 // If it's possible to retrieve color profiles
                 if (ColorProfileHelper.ProfileExists())
@@ -399,7 +406,7 @@ namespace GHelper
         public void CycleVisualMode()
         {
 
-            if (comboVisual.Items.Count < 1) return ;
+            if (comboVisual.Items.Count < 1) return;
 
             if (comboVisual.SelectedIndex < comboVisual.Items.Count - 1)
                 comboVisual.SelectedIndex += 1;
@@ -802,7 +809,7 @@ namespace GHelper
 
         private void ButtonFHD_MouseHover(object? sender, EventArgs e)
         {
-           labelTipScreen.Text = "Switch to "+ ((buttonFHD.Text == "FHD") ? "UHD" : "FHD") + " Mode";
+            labelTipScreen.Text = "Switch to " + ((buttonFHD.Text == "FHD") ? "UHD" : "FHD") + " Mode";
         }
 
         private void Button120Hz_MouseHover(object? sender, EventArgs e)
@@ -1079,21 +1086,26 @@ namespace GHelper
             });
         }
 
+        private void _VisualiseAura()
+        {
+            pictureColor.BackColor = Aura.Color1;
+            pictureColor2.BackColor = Aura.Color2;
+            pictureColor2.Visible = Aura.HasSecondColor();
+
+            if (AppConfig.IsDynamicLighting())
+            {
+                labelDynamicLighting.Visible = DynamicLightingHelper.IsEnabled();
+                labelDynamicLighting.ForeColor = colorStandard;
+                this.OnResize(null);
+            }
+        }
+
         public void VisualiseAura()
         {
             if (InvokeRequired)
-                Invoke(delegate
-                {
-                    pictureColor.BackColor = Aura.Color1;
-                    pictureColor2.BackColor = Aura.Color2;
-                    pictureColor2.Visible = Aura.HasSecondColor();
-                });
+                Invoke(_VisualiseAura);
             else
-            {
-                pictureColor.BackColor = Aura.Color1;
-                pictureColor2.BackColor = Aura.Color2;
-                pictureColor2.Visible = Aura.HasSecondColor();
-            }
+                _VisualiseAura();
         }
 
         public void InitMatrix()
@@ -1274,7 +1286,8 @@ namespace GHelper
                 labelVisual.Width = tableVisual.Width;
                 labelVisual.Height = tableVisual.Height;
                 labelVisual.Visible = true;
-            } else
+            }
+            else
             {
                 labelVisual.Visible = false;
             }

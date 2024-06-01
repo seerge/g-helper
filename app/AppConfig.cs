@@ -636,5 +636,9 @@ public static class AppConfig
         return ContainsModel("GU605") || (IsTUF() && !(ContainsModel("FX507Z") || ContainsModel("FA617")));
 
     }
+    public static bool IsDynamicLighting()
+    {
+        return true || IsSlash() || ContainsModel("JIR") || ContainsModel("JZR") || ContainsModel("FA607") || ContainsModel("FX607");
+    }
 
 }
