@@ -12,6 +12,7 @@ using GHelper.Peripherals;
 using GHelper.Peripherals.Mouse;
 using GHelper.UI;
 using GHelper.USB;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Timers;
 
@@ -224,6 +225,7 @@ namespace GHelper
 
             sliderBattery.MouseUp += SliderBattery_MouseUp;
             sliderBattery.KeyUp += SliderBattery_KeyUp;
+            sliderBattery.ValueChanged += SliderBattery_ValueChanged;
 
             Program.trayIcon.MouseMove += TrayIcon_MouseMove;
 
@@ -272,9 +274,15 @@ namespace GHelper
             InitVisual();
         }
 
+
         private void ButtonFHD_Click(object? sender, EventArgs e)
         {
             screenControl.ToogleFHD();
+        }
+
+        private void SliderBattery_ValueChanged(object? sender, EventArgs e)
+        {
+            VisualiseBatteryTitle(sliderBattery.Value);
         }
 
         private void SliderBattery_KeyUp(object? sender, KeyEventArgs e)
@@ -1710,9 +1718,14 @@ namespace GHelper
             but.BackColor = but.Enabled ? Color.FromArgb(255, but.BackColor) : Color.FromArgb(100, but.BackColor);
         }
 
-        public void VisualiseBattery(int limit)
+        public void VisualiseBatteryTitle(int limit)
         {
             labelBatteryTitle.Text = Properties.Strings.BatteryChargeLimit + ": " + limit.ToString() + "%";
+        }
+
+        public void VisualiseBattery(int limit)
+        {
+            VisualiseBatteryTitle(limit);
             sliderBattery.Value = limit;
 
             sliderBattery.AccessibleName = Properties.Strings.BatteryChargeLimit + ": " + limit.ToString() + "%";

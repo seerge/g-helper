@@ -109,7 +109,8 @@ public static class AppConfig
                         break;
                     }
                 }
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 Logger.WriteLine(ex.Message);
             }
@@ -625,6 +626,15 @@ public static class AppConfig
         return IsAlly() || Is("stop_ac");
     }
 
+    public static bool IsChargeLimit80()
+    {
+        return ContainsModel("GA403");
+    }
 
+    public static bool IsChargeLimit6080()
+    {
+        return true || IsTUF() && !(ContainsModel("FX507Z") || ContainsModel("FA617"));
+
+    }
 
 }
