@@ -633,7 +633,7 @@ public static class AppConfig
 
     public static bool IsChargeLimit6080()
     {
-        return IsTUF() && !(ContainsModel("FX507Z") || ContainsModel("FA617"));
+        return ContainsModel("GU605") || (IsTUF() && !(ContainsModel("FX507Z") || ContainsModel("FA617")));
 
     }
 
