@@ -636,9 +636,11 @@ public static class AppConfig
         return ContainsModel("GU605") || (IsTUF() && !(ContainsModel("FX507Z") || ContainsModel("FA617")));
 
     }
+
+    // 2024 Models support Dynamic Lighting
     public static bool IsDynamicLighting()
     {
-        return IsSlash() || ContainsModel("JIR") || ContainsModel("JZR") || ContainsModel("FA607") || ContainsModel("FX607");
+        return IsSlash() || ContainsModel("JIR") || ContainsModel("JZR") || ContainsModel("JVR") || ContainsModel("JYR") || ContainsModel("FA607P") || ContainsModel("FX607J") || ContainsModel("FA507U");
     }
 
 }
