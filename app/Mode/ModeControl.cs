@@ -31,6 +31,7 @@ namespace GHelper.Mode
         private void ReapplyTimer_Elapsed(object? sender, System.Timers.ElapsedEventArgs e)
         {
             SetCPUTemp(AppConfig.GetMode("cpu_temp"));
+            SetSkinTemp(AppConfig.GetMode("skin_temp"));
             SetRyzenPower();
         }
 
@@ -406,9 +407,15 @@ namespace GHelper.Mode
             {
                 var resultCPU = SendCommand.set_tctl_temp((uint)cpuTemp);
                 if (init) Logger.WriteLine($"CPU Temp: {cpuTemp} {resultCPU}");
+            }
+        }
 
-                var restultAPU = SendCommand.set_apu_skin_temp_limit((uint)cpuTemp);
-                if (init) Logger.WriteLine($"APU Temp: {cpuTemp} {restultAPU}");
+        public void SetSkinTemp(int? skinTemp, bool init = false)
+        {
+            if (skinTemp >= RyzenControl.MinSkin && skinTemp < RyzenControl.MaxSkin)
+            {
+                var restultAPU = SendCommand.set_apu_skin_temp_limit((uint)skinTemp);
+                if (init) Logger.WriteLine($"APU Skin Temp: {skinTemp} {restultAPU}");
             }
         }
 
@@ -452,6 +459,7 @@ namespace GHelper.Mode
                 SetUV(AppConfig.GetMode("cpu_uv", 0));
                 SetUViGPU(AppConfig.GetMode("igpu_uv", 0));
                 SetCPUTemp(AppConfig.GetMode("cpu_temp"), true);
+                SetSkinTemp(AppConfig.GetMode("skin_temp"), true);
             }
             catch (Exception ex)
             {

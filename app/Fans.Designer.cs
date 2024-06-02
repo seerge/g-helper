@@ -31,14 +31,14 @@ namespace GHelper
         /// </summary>
         private void InitializeComponent()
         {
-            ChartArea chartArea1 = new ChartArea();
-            Title title1 = new Title();
-            ChartArea chartArea2 = new ChartArea();
-            Title title2 = new Title();
-            ChartArea chartArea3 = new ChartArea();
-            Title title3 = new Title();
-            ChartArea chartArea4 = new ChartArea();
-            Title title4 = new Title();
+            ChartArea chartArea9 = new ChartArea();
+            Title title9 = new Title();
+            ChartArea chartArea10 = new ChartArea();
+            Title title10 = new Title();
+            ChartArea chartArea11 = new ChartArea();
+            Title title11 = new Title();
+            ChartArea chartArea12 = new ChartArea();
+            Title title12 = new Title();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Fans));
             panelFans = new Panel();
             labelTip = new Label();
@@ -119,10 +119,6 @@ namespace GHelper
             picturePowerMode = new PictureBox();
             labelPowerModeTitle = new Label();
             panelGPU = new Panel();
-            panelGPUPower = new Panel();
-            labelGPUPower = new Label();
-            labelGPUPowerTitle = new Label();
-            trackGPUPower = new TrackBar();
             panelGPUTemp = new Panel();
             labelGPUTemp = new Label();
             labelGPUTempTitle = new Label();
@@ -131,6 +127,10 @@ namespace GHelper
             labelGPUBoost = new Label();
             labelGPUBoostTitle = new Label();
             trackGPUBoost = new TrackBar();
+            panelGPUPower = new Panel();
+            labelGPUPower = new Label();
+            labelGPUPowerTitle = new Label();
+            trackGPUPower = new TrackBar();
             panelGPUMemory = new Panel();
             labelGPUMemory = new Label();
             labelGPUMemoryTitle = new Label();
@@ -151,6 +151,10 @@ namespace GHelper
             buttonAdvanced = new RButton();
             buttonGPU = new RButton();
             buttonCPU = new RButton();
+            panelSkin = new Panel();
+            labelSkin = new Label();
+            labelSkinTitle = new Label();
+            trackSkin = new TrackBar();
             panelFans.SuspendLayout();
             tableFanCharts.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)chartGPU).BeginInit();
@@ -194,12 +198,12 @@ namespace GHelper
             panelPowerModeTItle.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)picturePowerMode).BeginInit();
             panelGPU.SuspendLayout();
-            panelGPUPower.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)trackGPUPower).BeginInit();
             panelGPUTemp.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)trackGPUTemp).BeginInit();
             panelGPUBoost.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)trackGPUBoost).BeginInit();
+            panelGPUPower.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)trackGPUPower).BeginInit();
             panelGPUMemory.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)trackGPUMemory).BeginInit();
             panelGPUCore.SuspendLayout();
@@ -210,6 +214,8 @@ namespace GHelper
             ((System.ComponentModel.ISupportInitialize)pictureGPU).BeginInit();
             panelNav.SuspendLayout();
             tableNav.SuspendLayout();
+            panelSkin.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)trackSkin).BeginInit();
             SuspendLayout();
             // 
             // panelFans
@@ -223,11 +229,10 @@ namespace GHelper
             panelFans.Dock = DockStyle.Fill;
             panelFans.Location = new Point(530, 0);
             panelFans.Margin = new Padding(0);
-            //panelFans.MaximumSize = new Size(816, 0);
             panelFans.MinimumSize = new Size(816, 0);
             panelFans.Name = "panelFans";
             panelFans.Padding = new Padding(0, 0, 10, 0);
-            panelFans.Size = new Size(816, 2119);
+            panelFans.Size = new Size(820, 2119);
             panelFans.TabIndex = 12;
             // 
             // labelTip
@@ -261,65 +266,65 @@ namespace GHelper
             tableFanCharts.RowStyles.Add(new RowStyle(SizeType.Percent, 25F));
             tableFanCharts.RowStyles.Add(new RowStyle(SizeType.Percent, 25F));
             tableFanCharts.RowStyles.Add(new RowStyle(SizeType.Percent, 25F));
-            tableFanCharts.Size = new Size(806, 1937);
+            tableFanCharts.Size = new Size(810, 1937);
             tableFanCharts.TabIndex = 36;
             // 
             // chartGPU
             // 
-            chartArea1.Name = "ChartArea1";
-            chartGPU.ChartAreas.Add(chartArea1);
+            chartArea9.Name = "ChartArea1";
+            chartGPU.ChartAreas.Add(chartArea9);
             chartGPU.Dock = DockStyle.Fill;
             chartGPU.Location = new Point(12, 493);
             chartGPU.Margin = new Padding(2, 10, 2, 10);
             chartGPU.Name = "chartGPU";
-            chartGPU.Size = new Size(782, 463);
+            chartGPU.Size = new Size(786, 463);
             chartGPU.TabIndex = 17;
             chartGPU.Text = "chartGPU";
-            title1.Name = "Title1";
-            chartGPU.Titles.Add(title1);
+            title9.Name = "Title1";
+            chartGPU.Titles.Add(title9);
             // 
             // chartCPU
             // 
-            chartArea2.Name = "ChartArea1";
-            chartCPU.ChartAreas.Add(chartArea2);
+            chartArea10.Name = "ChartArea1";
+            chartCPU.ChartAreas.Add(chartArea10);
             chartCPU.Dock = DockStyle.Fill;
             chartCPU.Location = new Point(12, 10);
             chartCPU.Margin = new Padding(2, 10, 2, 10);
             chartCPU.Name = "chartCPU";
-            chartCPU.Size = new Size(782, 463);
+            chartCPU.Size = new Size(786, 463);
             chartCPU.TabIndex = 14;
             chartCPU.Text = "chartCPU";
-            title2.Name = "Title1";
-            chartCPU.Titles.Add(title2);
+            title10.Name = "Title1";
+            chartCPU.Titles.Add(title10);
             // 
             // chartXGM
             // 
-            chartArea3.Name = "ChartAreaXGM";
-            chartXGM.ChartAreas.Add(chartArea3);
+            chartArea11.Name = "ChartAreaXGM";
+            chartXGM.ChartAreas.Add(chartArea11);
             chartXGM.Dock = DockStyle.Fill;
             chartXGM.Location = new Point(12, 1459);
             chartXGM.Margin = new Padding(2, 10, 2, 10);
             chartXGM.Name = "chartXGM";
-            chartXGM.Size = new Size(782, 463);
+            chartXGM.Size = new Size(786, 463);
             chartXGM.TabIndex = 14;
             chartXGM.Text = "chartXGM";
-            title3.Name = "Title4";
-            chartXGM.Titles.Add(title3);
+            title11.Name = "Title4";
+            chartXGM.Titles.Add(title11);
             chartXGM.Visible = false;
             // 
             // chartMid
             // 
-            chartArea4.Name = "ChartArea3";
-            chartMid.ChartAreas.Add(chartArea4);
+            chartArea12.Name = "ChartArea3";
+            chartMid.ChartAreas.Add(chartArea12);
             chartMid.Dock = DockStyle.Fill;
             chartMid.Location = new Point(12, 976);
             chartMid.Margin = new Padding(2, 10, 2, 10);
             chartMid.Name = "chartMid";
-            chartMid.Size = new Size(782, 463);
+            chartMid.Size = new Size(786, 463);
             chartMid.TabIndex = 14;
             chartMid.Text = "chartMid";
-            title4.Name = "Title3";
-            chartMid.Titles.Add(title4);
+            title12.Name = "Title3";
+            chartMid.Titles.Add(title12);
             chartMid.Visible = false;
             // 
             // panelTitleFans
@@ -334,7 +339,7 @@ namespace GHelper
             panelTitleFans.Location = new Point(0, 0);
             panelTitleFans.Margin = new Padding(4);
             panelTitleFans.Name = "panelTitleFans";
-            panelTitleFans.Size = new Size(806, 66);
+            panelTitleFans.Size = new Size(810, 66);
             panelTitleFans.TabIndex = 42;
             // 
             // buttonRename
@@ -346,7 +351,7 @@ namespace GHelper
             buttonRename.BorderRadius = 2;
             buttonRename.FlatStyle = FlatStyle.Flat;
             buttonRename.Image = Properties.Resources.icons8_edit_32;
-            buttonRename.Location = new Point(376, 10);
+            buttonRename.Location = new Point(380, 10);
             buttonRename.Margin = new Padding(4, 2, 4, 2);
             buttonRename.Name = "buttonRename";
             buttonRename.Secondary = true;
@@ -363,7 +368,7 @@ namespace GHelper
             buttonRemove.BorderRadius = 2;
             buttonRemove.FlatStyle = FlatStyle.Flat;
             buttonRemove.Image = Properties.Resources.icons8_remove_64;
-            buttonRemove.Location = new Point(322, 10);
+            buttonRemove.Location = new Point(326, 10);
             buttonRemove.Margin = new Padding(4, 2, 4, 2);
             buttonRemove.Name = "buttonRemove";
             buttonRemove.Secondary = true;
@@ -380,7 +385,7 @@ namespace GHelper
             buttonAdd.BorderRadius = 2;
             buttonAdd.FlatStyle = FlatStyle.Flat;
             buttonAdd.Image = Properties.Resources.icons8_add_64;
-            buttonAdd.Location = new Point(744, 10);
+            buttonAdd.Location = new Point(748, 10);
             buttonAdd.Margin = new Padding(4, 2, 4, 2);
             buttonAdd.Name = "buttonAdd";
             buttonAdd.Secondary = true;
@@ -395,7 +400,7 @@ namespace GHelper
             comboModes.ButtonColor = Color.FromArgb(255, 255, 255);
             comboModes.FlatStyle = FlatStyle.Flat;
             comboModes.FormattingEnabled = true;
-            comboModes.Location = new Point(436, 14);
+            comboModes.Location = new Point(440, 14);
             comboModes.Margin = new Padding(0);
             comboModes.Name = "comboModes";
             comboModes.Size = new Size(302, 40);
@@ -434,7 +439,7 @@ namespace GHelper
             panelApplyFans.Location = new Point(0, 2003);
             panelApplyFans.Margin = new Padding(4);
             panelApplyFans.Name = "panelApplyFans";
-            panelApplyFans.Size = new Size(806, 116);
+            panelApplyFans.Size = new Size(810, 116);
             panelApplyFans.TabIndex = 43;
             // 
             // buttonCalibrate
@@ -470,7 +475,7 @@ namespace GHelper
             checkApplyFans.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             checkApplyFans.AutoSize = true;
             checkApplyFans.BackColor = SystemColors.ControlLight;
-            checkApplyFans.Location = new Point(450, 42);
+            checkApplyFans.Location = new Point(454, 42);
             checkApplyFans.Margin = new Padding(0);
             checkApplyFans.Name = "checkApplyFans";
             checkApplyFans.Padding = new Padding(16, 6, 16, 6);
@@ -536,12 +541,13 @@ namespace GHelper
             panelAdvanced.Controls.Add(panelUV);
             panelAdvanced.Controls.Add(panelTitleAdvanced);
             panelAdvanced.Controls.Add(panelTemperature);
+            panelAdvanced.Controls.Add(panelSkin);
             panelAdvanced.Controls.Add(panelTitleTemp);
             panelAdvanced.Controls.Add(panelDownload);
             panelAdvanced.Dock = DockStyle.Top;
             panelAdvanced.Location = new Point(10, 1768);
             panelAdvanced.Name = "panelAdvanced";
-            panelAdvanced.Size = new Size(520, 992);
+            panelAdvanced.Size = new Size(520, 1116);
             panelAdvanced.TabIndex = 14;
             panelAdvanced.Visible = false;
             // 
@@ -550,7 +556,7 @@ namespace GHelper
             panelAdvancedAlways.AutoSize = true;
             panelAdvancedAlways.Controls.Add(checkApplyUV);
             panelAdvancedAlways.Dock = DockStyle.Top;
-            panelAdvancedAlways.Location = new Point(0, 931);
+            panelAdvancedAlways.Location = new Point(0, 1055);
             panelAdvancedAlways.Name = "panelAdvancedAlways";
             panelAdvancedAlways.Padding = new Padding(16, 0, 16, 15);
             panelAdvancedAlways.Size = new Size(520, 61);
@@ -576,7 +582,7 @@ namespace GHelper
             panelAdvancedApply.AutoSize = true;
             panelAdvancedApply.Controls.Add(buttonApplyAdvanced);
             panelAdvancedApply.Dock = DockStyle.Top;
-            panelAdvancedApply.Location = new Point(0, 851);
+            panelAdvancedApply.Location = new Point(0, 975);
             panelAdvancedApply.Name = "panelAdvancedApply";
             panelAdvancedApply.Padding = new Padding(15);
             panelAdvancedApply.Size = new Size(520, 80);
@@ -605,7 +611,7 @@ namespace GHelper
             labelRisky.BackColor = Color.IndianRed;
             labelRisky.Dock = DockStyle.Top;
             labelRisky.ForeColor = SystemColors.ControlLightLight;
-            labelRisky.Location = new Point(0, 608);
+            labelRisky.Location = new Point(0, 732);
             labelRisky.Margin = new Padding(0);
             labelRisky.Name = "labelRisky";
             labelRisky.Padding = new Padding(10, 10, 10, 5);
@@ -621,7 +627,7 @@ namespace GHelper
             panelUViGPU.Controls.Add(labelLeftUViGPU);
             panelUViGPU.Controls.Add(trackUViGPU);
             panelUViGPU.Dock = DockStyle.Top;
-            panelUViGPU.Location = new Point(0, 484);
+            panelUViGPU.Location = new Point(0, 608);
             panelUViGPU.Margin = new Padding(4);
             panelUViGPU.MaximumSize = new Size(0, 124);
             panelUViGPU.Name = "panelUViGPU";
@@ -669,7 +675,7 @@ namespace GHelper
             panelUV.Controls.Add(labelLeftUV);
             panelUV.Controls.Add(trackUV);
             panelUV.Dock = DockStyle.Top;
-            panelUV.Location = new Point(0, 360);
+            panelUV.Location = new Point(0, 484);
             panelUV.Margin = new Padding(4);
             panelUV.MaximumSize = new Size(0, 124);
             panelUV.Name = "panelUV";
@@ -714,7 +720,7 @@ namespace GHelper
             panelTitleAdvanced.Controls.Add(pictureUV);
             panelTitleAdvanced.Controls.Add(labelTitleUV);
             panelTitleAdvanced.Dock = DockStyle.Top;
-            panelTitleAdvanced.Location = new Point(0, 294);
+            panelTitleAdvanced.Location = new Point(0, 418);
             panelTitleAdvanced.Name = "panelTitleAdvanced";
             panelTitleAdvanced.Size = new Size(520, 66);
             panelTitleAdvanced.TabIndex = 48;
@@ -750,7 +756,7 @@ namespace GHelper
             panelTemperature.Controls.Add(labelLeftTemp);
             panelTemperature.Controls.Add(trackTemp);
             panelTemperature.Dock = DockStyle.Top;
-            panelTemperature.Location = new Point(0, 170);
+            panelTemperature.Location = new Point(0, 294);
             panelTemperature.Margin = new Padding(4);
             panelTemperature.MaximumSize = new Size(0, 124);
             panelTemperature.Name = "panelTemperature";
@@ -1257,55 +1263,6 @@ namespace GHelper
             panelGPU.TabIndex = 44;
             panelGPU.Visible = false;
             // 
-            // panelGPUPower
-            // 
-            panelGPUPower.AutoSize = true;
-            panelGPUPower.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            panelGPUPower.Controls.Add(labelGPUPower);
-            panelGPUPower.Controls.Add(labelGPUPowerTitle);
-            panelGPUPower.Controls.Add(trackGPUPower);
-            panelGPUPower.Dock = DockStyle.Top;
-            panelGPUPower.Location = new Point(0, 432);
-            panelGPUPower.Margin = new Padding(4);
-            panelGPUPower.MaximumSize = new Size(0, 124);
-            panelGPUPower.Name = "panelGPUPower";
-            panelGPUPower.Size = new Size(520, 124);
-            panelGPUPower.TabIndex = 49;
-            // 
-            // labelGPUPower
-            // 
-            labelGPUPower.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            labelGPUPower.Location = new Point(374, 14);
-            labelGPUPower.Margin = new Padding(4, 0, 4, 0);
-            labelGPUPower.Name = "labelGPUPower";
-            labelGPUPower.Size = new Size(124, 32);
-            labelGPUPower.TabIndex = 44;
-            labelGPUPower.Text = "105W";
-            labelGPUPower.TextAlign = ContentAlignment.TopRight;
-            // 
-            // labelGPUPowerTitle
-            // 
-            labelGPUPowerTitle.AutoSize = true;
-            labelGPUPowerTitle.Location = new Point(10, 14);
-            labelGPUPowerTitle.Margin = new Padding(4, 0, 4, 0);
-            labelGPUPowerTitle.Name = "labelGPUPowerTitle";
-            labelGPUPowerTitle.Size = new Size(130, 32);
-            labelGPUPowerTitle.TabIndex = 43;
-            labelGPUPowerTitle.Text = "GPU Power";
-            // 
-            // trackGPUPower
-            // 
-            trackGPUPower.Location = new Point(6, 48);
-            trackGPUPower.Margin = new Padding(4, 2, 4, 2);
-            trackGPUPower.Maximum = 25;
-            trackGPUPower.Minimum = 5;
-            trackGPUPower.Name = "trackGPUPower";
-            trackGPUPower.Size = new Size(496, 90);
-            trackGPUPower.TabIndex = 42;
-            trackGPUPower.TickFrequency = 5;
-            trackGPUPower.TickStyle = TickStyle.TopLeft;
-            trackGPUPower.Value = 25;
-            // 
             // panelGPUTemp
             // 
             panelGPUTemp.AutoSize = true;
@@ -1403,6 +1360,55 @@ namespace GHelper
             trackGPUBoost.TickFrequency = 5;
             trackGPUBoost.TickStyle = TickStyle.TopLeft;
             trackGPUBoost.Value = 25;
+            // 
+            // panelGPUPower
+            // 
+            panelGPUPower.AutoSize = true;
+            panelGPUPower.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            panelGPUPower.Controls.Add(labelGPUPower);
+            panelGPUPower.Controls.Add(labelGPUPowerTitle);
+            panelGPUPower.Controls.Add(trackGPUPower);
+            panelGPUPower.Dock = DockStyle.Top;
+            panelGPUPower.Location = new Point(0, 432);
+            panelGPUPower.Margin = new Padding(4);
+            panelGPUPower.MaximumSize = new Size(0, 124);
+            panelGPUPower.Name = "panelGPUPower";
+            panelGPUPower.Size = new Size(520, 124);
+            panelGPUPower.TabIndex = 49;
+            // 
+            // labelGPUPower
+            // 
+            labelGPUPower.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            labelGPUPower.Location = new Point(374, 14);
+            labelGPUPower.Margin = new Padding(4, 0, 4, 0);
+            labelGPUPower.Name = "labelGPUPower";
+            labelGPUPower.Size = new Size(124, 32);
+            labelGPUPower.TabIndex = 44;
+            labelGPUPower.Text = "105W";
+            labelGPUPower.TextAlign = ContentAlignment.TopRight;
+            // 
+            // labelGPUPowerTitle
+            // 
+            labelGPUPowerTitle.AutoSize = true;
+            labelGPUPowerTitle.Location = new Point(10, 14);
+            labelGPUPowerTitle.Margin = new Padding(4, 0, 4, 0);
+            labelGPUPowerTitle.Name = "labelGPUPowerTitle";
+            labelGPUPowerTitle.Size = new Size(130, 32);
+            labelGPUPowerTitle.TabIndex = 43;
+            labelGPUPowerTitle.Text = "GPU Power";
+            // 
+            // trackGPUPower
+            // 
+            trackGPUPower.Location = new Point(6, 48);
+            trackGPUPower.Margin = new Padding(4, 2, 4, 2);
+            trackGPUPower.Maximum = 25;
+            trackGPUPower.Minimum = 5;
+            trackGPUPower.Name = "trackGPUPower";
+            trackGPUPower.Size = new Size(496, 90);
+            trackGPUPower.TabIndex = 42;
+            trackGPUPower.TickFrequency = 5;
+            trackGPUPower.TickStyle = TickStyle.TopLeft;
+            trackGPUPower.Value = 25;
             // 
             // panelGPUMemory
             // 
@@ -1675,6 +1681,54 @@ namespace GHelper
             buttonCPU.TextImageRelation = TextImageRelation.ImageBeforeText;
             buttonCPU.UseVisualStyleBackColor = false;
             // 
+            // panelSkin
+            // 
+            panelSkin.AutoSize = true;
+            panelSkin.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            panelSkin.Controls.Add(labelSkin);
+            panelSkin.Controls.Add(labelSkinTitle);
+            panelSkin.Controls.Add(trackSkin);
+            panelSkin.Dock = DockStyle.Top;
+            panelSkin.Location = new Point(0, 170);
+            panelSkin.Margin = new Padding(4);
+            panelSkin.MaximumSize = new Size(0, 124);
+            panelSkin.Name = "panelSkin";
+            panelSkin.Size = new Size(520, 124);
+            panelSkin.TabIndex = 53;
+            // 
+            // labelSkin
+            // 
+            labelSkin.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            labelSkin.Location = new Point(347, 13);
+            labelSkin.Margin = new Padding(4, 0, 4, 0);
+            labelSkin.Name = "labelSkin";
+            labelSkin.Size = new Size(148, 32);
+            labelSkin.TabIndex = 13;
+            labelSkin.Text = "T";
+            labelSkin.TextAlign = ContentAlignment.TopRight;
+            // 
+            // labelSkinTitle
+            // 
+            labelSkinTitle.AutoSize = true;
+            labelSkinTitle.Location = new Point(10, 10);
+            labelSkinTitle.Margin = new Padding(4, 0, 4, 0);
+            labelSkinTitle.Name = "labelSkinTitle";
+            labelSkinTitle.Size = new Size(235, 32);
+            labelSkinTitle.TabIndex = 12;
+            labelSkinTitle.Text = "APU Skin Temp Limit";
+            // 
+            // trackSkin
+            // 
+            trackSkin.Location = new Point(6, 48);
+            trackSkin.Margin = new Padding(4, 2, 4, 2);
+            trackSkin.Maximum = 0;
+            trackSkin.Minimum = -40;
+            trackSkin.Name = "trackSkin";
+            trackSkin.Size = new Size(508, 90);
+            trackSkin.TabIndex = 11;
+            trackSkin.TickFrequency = 5;
+            trackSkin.TickStyle = TickStyle.TopLeft;
+            // 
             // Fans
             // 
             AutoScaleDimensions = new SizeF(192F, 192F);
@@ -1685,7 +1739,6 @@ namespace GHelper
             Controls.Add(panelFans);
             Controls.Add(panelSliders);
             Margin = new Padding(4, 2, 4, 2);
-            MaximizeBox = true;
             MinimizeBox = false;
             MinimumSize = new Size(26, 1100);
             Name = "Fans";
@@ -1756,15 +1809,15 @@ namespace GHelper
             ((System.ComponentModel.ISupportInitialize)picturePowerMode).EndInit();
             panelGPU.ResumeLayout(false);
             panelGPU.PerformLayout();
-            panelGPUPower.ResumeLayout(false);
-            panelGPUPower.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)trackGPUPower).EndInit();
             panelGPUTemp.ResumeLayout(false);
             panelGPUTemp.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)trackGPUTemp).EndInit();
             panelGPUBoost.ResumeLayout(false);
             panelGPUBoost.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)trackGPUBoost).EndInit();
+            panelGPUPower.ResumeLayout(false);
+            panelGPUPower.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)trackGPUPower).EndInit();
             panelGPUMemory.ResumeLayout(false);
             panelGPUMemory.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)trackGPUMemory).EndInit();
@@ -1779,6 +1832,9 @@ namespace GHelper
             ((System.ComponentModel.ISupportInitialize)pictureGPU).EndInit();
             panelNav.ResumeLayout(false);
             tableNav.ResumeLayout(false);
+            panelSkin.ResumeLayout(false);
+            panelSkin.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)trackSkin).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -1896,5 +1952,9 @@ namespace GHelper
         private Label labelGPUPower;
         private Label labelGPUPowerTitle;
         private TrackBar trackGPUPower;
+        private Panel panelSkin;
+        private Label labelSkin;
+        private Label labelSkinTitle;
+        private TrackBar trackSkin;
     }
 }
