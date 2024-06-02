@@ -322,10 +322,12 @@ namespace GHelper.Gpu
                         Program.acpi.DeviceSet(AsusACPI.GPUXG, 1, "GPU XGM");
 
                     InitXGM();
-
                     XGM.Light(AppConfig.Is("xmg_light"));
 
                     await Task.Delay(TimeSpan.FromSeconds(15));
+
+                    InitXGM();
+                    XGM.Light(AppConfig.Is("xmg_light"));
 
                     if (AppConfig.IsMode("auto_apply"))
                         XGM.SetFan(AppConfig.GetFanConfig(AsusFan.XGM));
