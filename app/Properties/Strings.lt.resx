@@ -127,7 +127,7 @@
     <value>Restart your device to apply changes</value>
   </data>
   <data name="AlertAPUMemoryRestartTitle" xml:space="preserve">
-    <value>Restart now?</value>
+    <value>Paleisti iš naujo?</value>
   </data>
   <data name="AlertDGPU" xml:space="preserve">
     <value>Panašu, kad jūsų GPU yra intensyviai naudojamas. Išjungti jį?</value>
@@ -289,10 +289,10 @@
     <value>Binding</value>
   </data>
   <data name="BindingPrimary" xml:space="preserve">
-    <value>Primary</value>
+    <value>Pirminis</value>
   </data>
   <data name="BindingSecondary" xml:space="preserve">
-    <value>Secondary</value>
+    <value>Antrinis</value>
   </data>
   <data name="BiosAndDriverUpdates" xml:space="preserve">
     <value>BIOS ir tvarkyklių naujinimai</value>
@@ -774,10 +774,10 @@ Vis tiek norite tęsti?</value>
     <value>Versija</value>
   </data>
   <data name="VibrationStrength" xml:space="preserve">
-    <value>Vibration Strength</value>
+    <value>Vibracijos stiprumas</value>
   </data>
   <data name="VisualMode" xml:space="preserve">
-    <value>Visual Mode</value>
+    <value>Vizualinis režimas</value>
   </data>
   <data name="VisualModesHDR" xml:space="preserve">
     <value>Visual Modes are not available when HDR is active</value>
