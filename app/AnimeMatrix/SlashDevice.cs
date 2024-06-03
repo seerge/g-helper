@@ -20,7 +20,8 @@ namespace GHelper.AnimeMatrix
         GameOver,
         Start,
         Buzzer,
-        Static
+        Static,
+        BatteryLevel,
     }
 
     internal class SlashPacket : Packet
@@ -54,7 +55,9 @@ namespace GHelper.AnimeMatrix
             { SlashMode.GameOver, "Game Over"},
             { SlashMode.Start, "Start"},
             { SlashMode.Buzzer, "Buzzer"},
+
             { SlashMode.Static, "Static"},
+            { SlashMode.BatteryLevel, "Battery Level"}
         };
 
         private static Dictionary<SlashMode, byte> modeCodes = new Dictionary<SlashMode, byte>
@@ -127,7 +130,31 @@ namespace GHelper.AnimeMatrix
         public void SetStatic(int brightness = 0)
         {
             SetCustom(Enumerable.Repeat((byte)(brightness * 85.333), 7).ToArray());
+        }
 
+        private byte[] getBatteryPattern(int brightness, float percentage)
+        {
+            // because 7 segments, within each led segment represents a percentage bracket of (100/7 = 14.2857%)
+            // set brightness to reflect battery's percentage within that range
+
+            int bracket = (int)Math.Floor(percentage / 14.2857);
+            if(bracket == 7) return Enumerable.Repeat((byte)0xFF, 7).ToArray();
+
+            byte[] batteryPattern = new byte[7] {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
+            for (int i = 0; i < bracket; i++)
+            {
+                batteryPattern[i] = 0xFF;
+            }
+
+            //set the "selected" bracket to the percentage of that bracket filled from 0 to 255 as a hex
+            batteryPattern[bracket+1] = (byte)((percentage % 14.2857) * 255 / 14.2857);
+
+            return batteryPattern;
+        }
+
+        public void setBatteryPattern(int brightness, float percentage)
+        {
+            SetCustom(getBatteryPattern(brightness, percentage));
         }
 
         public void SetCustom(byte[] data)

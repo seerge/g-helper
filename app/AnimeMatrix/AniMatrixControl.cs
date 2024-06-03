@@ -114,6 +114,15 @@ namespace GHelper.AnimeMatrix
                                 deviceSlash.SetStatic(brightness);
                             }
                             break;
+                        case SlashMode.BatteryLevel:
+                            deviceSlash.setBatteryPattern(brightness, 50);
+                            // because battery discharges slowly, lower refresh rate:
+                            // 100% in 1hr = 1% every 36 seconds
+                            // 1 bracket every 14.2857% * 36s = 514.2852s
+                            // 1 brightness level every 514.2852s / 3 = 171.4284 seconds
+                            // so even at once per minute, it's still faster than peak battery discharging
+                            deviceSlash.SetOptions(true, brightness, 60000);
+                            break;
                         default:
                             deviceSlash.SetMode((SlashMode)running);
                             deviceSlash.SetOptions(true, brightness, inteval);
