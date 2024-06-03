@@ -31,14 +31,14 @@ namespace GHelper
         /// </summary>
         private void InitializeComponent()
         {
-            ChartArea chartArea9 = new ChartArea();
-            Title title9 = new Title();
-            ChartArea chartArea10 = new ChartArea();
-            Title title10 = new Title();
-            ChartArea chartArea11 = new ChartArea();
-            Title title11 = new Title();
-            ChartArea chartArea12 = new ChartArea();
-            Title title12 = new Title();
+            ChartArea chartArea1 = new ChartArea();
+            Title title1 = new Title();
+            ChartArea chartArea2 = new ChartArea();
+            Title title2 = new Title();
+            ChartArea chartArea3 = new ChartArea();
+            Title title3 = new Title();
+            ChartArea chartArea4 = new ChartArea();
+            Title title4 = new Title();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Fans));
             panelFans = new Panel();
             labelTip = new Label();
@@ -82,6 +82,10 @@ namespace GHelper
             labelTemp = new Label();
             labelLeftTemp = new Label();
             trackTemp = new TrackBar();
+            panelSkin = new Panel();
+            labelSkin = new Label();
+            labelSkinTitle = new Label();
+            trackSkin = new TrackBar();
             panelTitleTemp = new Panel();
             pictureTemp = new PictureBox();
             labelTempLimit = new Label();
@@ -151,10 +155,6 @@ namespace GHelper
             buttonAdvanced = new RButton();
             buttonGPU = new RButton();
             buttonCPU = new RButton();
-            panelSkin = new Panel();
-            labelSkin = new Label();
-            labelSkinTitle = new Label();
-            trackSkin = new TrackBar();
             panelFans.SuspendLayout();
             tableFanCharts.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)chartGPU).BeginInit();
@@ -176,6 +176,8 @@ namespace GHelper
             ((System.ComponentModel.ISupportInitialize)pictureUV).BeginInit();
             panelTemperature.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)trackTemp).BeginInit();
+            panelSkin.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)trackSkin).BeginInit();
             panelTitleTemp.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureTemp).BeginInit();
             panelDownload.SuspendLayout();
@@ -214,8 +216,6 @@ namespace GHelper
             ((System.ComponentModel.ISupportInitialize)pictureGPU).BeginInit();
             panelNav.SuspendLayout();
             tableNav.SuspendLayout();
-            panelSkin.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)trackSkin).BeginInit();
             SuspendLayout();
             // 
             // panelFans
@@ -271,8 +271,8 @@ namespace GHelper
             // 
             // chartGPU
             // 
-            chartArea9.Name = "ChartArea1";
-            chartGPU.ChartAreas.Add(chartArea9);
+            chartArea1.Name = "ChartArea1";
+            chartGPU.ChartAreas.Add(chartArea1);
             chartGPU.Dock = DockStyle.Fill;
             chartGPU.Location = new Point(12, 493);
             chartGPU.Margin = new Padding(2, 10, 2, 10);
@@ -280,13 +280,13 @@ namespace GHelper
             chartGPU.Size = new Size(786, 463);
             chartGPU.TabIndex = 17;
             chartGPU.Text = "chartGPU";
-            title9.Name = "Title1";
-            chartGPU.Titles.Add(title9);
+            title1.Name = "Title1";
+            chartGPU.Titles.Add(title1);
             // 
             // chartCPU
             // 
-            chartArea10.Name = "ChartArea1";
-            chartCPU.ChartAreas.Add(chartArea10);
+            chartArea2.Name = "ChartArea1";
+            chartCPU.ChartAreas.Add(chartArea2);
             chartCPU.Dock = DockStyle.Fill;
             chartCPU.Location = new Point(12, 10);
             chartCPU.Margin = new Padding(2, 10, 2, 10);
@@ -294,13 +294,13 @@ namespace GHelper
             chartCPU.Size = new Size(786, 463);
             chartCPU.TabIndex = 14;
             chartCPU.Text = "chartCPU";
-            title10.Name = "Title1";
-            chartCPU.Titles.Add(title10);
+            title2.Name = "Title1";
+            chartCPU.Titles.Add(title2);
             // 
             // chartXGM
             // 
-            chartArea11.Name = "ChartAreaXGM";
-            chartXGM.ChartAreas.Add(chartArea11);
+            chartArea3.Name = "ChartAreaXGM";
+            chartXGM.ChartAreas.Add(chartArea3);
             chartXGM.Dock = DockStyle.Fill;
             chartXGM.Location = new Point(12, 1459);
             chartXGM.Margin = new Padding(2, 10, 2, 10);
@@ -308,14 +308,14 @@ namespace GHelper
             chartXGM.Size = new Size(786, 463);
             chartXGM.TabIndex = 14;
             chartXGM.Text = "chartXGM";
-            title11.Name = "Title4";
-            chartXGM.Titles.Add(title11);
+            title3.Name = "Title4";
+            chartXGM.Titles.Add(title3);
             chartXGM.Visible = false;
             // 
             // chartMid
             // 
-            chartArea12.Name = "ChartArea3";
-            chartMid.ChartAreas.Add(chartArea12);
+            chartArea4.Name = "ChartArea3";
+            chartMid.ChartAreas.Add(chartArea4);
             chartMid.Dock = DockStyle.Fill;
             chartMid.Location = new Point(12, 976);
             chartMid.Margin = new Padding(2, 10, 2, 10);
@@ -323,8 +323,8 @@ namespace GHelper
             chartMid.Size = new Size(786, 463);
             chartMid.TabIndex = 14;
             chartMid.Text = "chartMid";
-            title12.Name = "Title3";
-            chartMid.Titles.Add(title12);
+            title4.Name = "Title3";
+            chartMid.Titles.Add(title4);
             chartMid.Visible = false;
             // 
             // panelTitleFans
@@ -540,8 +540,8 @@ namespace GHelper
             panelAdvanced.Controls.Add(panelUViGPU);
             panelAdvanced.Controls.Add(panelUV);
             panelAdvanced.Controls.Add(panelTitleAdvanced);
-            panelAdvanced.Controls.Add(panelTemperature);
             panelAdvanced.Controls.Add(panelSkin);
+            panelAdvanced.Controls.Add(panelTemperature);
             panelAdvanced.Controls.Add(panelTitleTemp);
             panelAdvanced.Controls.Add(panelDownload);
             panelAdvanced.Dock = DockStyle.Top;
@@ -756,7 +756,7 @@ namespace GHelper
             panelTemperature.Controls.Add(labelLeftTemp);
             panelTemperature.Controls.Add(trackTemp);
             panelTemperature.Dock = DockStyle.Top;
-            panelTemperature.Location = new Point(0, 294);
+            panelTemperature.Location = new Point(0, 170);
             panelTemperature.Margin = new Padding(4);
             panelTemperature.MaximumSize = new Size(0, 124);
             panelTemperature.Name = "panelTemperature";
@@ -795,6 +795,54 @@ namespace GHelper
             trackTemp.TabIndex = 11;
             trackTemp.TickFrequency = 5;
             trackTemp.TickStyle = TickStyle.TopLeft;
+            // 
+            // panelSkin
+            // 
+            panelSkin.AutoSize = true;
+            panelSkin.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            panelSkin.Controls.Add(labelSkin);
+            panelSkin.Controls.Add(labelSkinTitle);
+            panelSkin.Controls.Add(trackSkin);
+            panelSkin.Dock = DockStyle.Top;
+            panelSkin.Location = new Point(0, 294);
+            panelSkin.Margin = new Padding(4);
+            panelSkin.MaximumSize = new Size(0, 124);
+            panelSkin.Name = "panelSkin";
+            panelSkin.Size = new Size(520, 124);
+            panelSkin.TabIndex = 53;
+            // 
+            // labelSkin
+            // 
+            labelSkin.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            labelSkin.Location = new Point(347, 13);
+            labelSkin.Margin = new Padding(4, 0, 4, 0);
+            labelSkin.Name = "labelSkin";
+            labelSkin.Size = new Size(148, 32);
+            labelSkin.TabIndex = 13;
+            labelSkin.Text = "T";
+            labelSkin.TextAlign = ContentAlignment.TopRight;
+            // 
+            // labelSkinTitle
+            // 
+            labelSkinTitle.AutoSize = true;
+            labelSkinTitle.Location = new Point(10, 10);
+            labelSkinTitle.Margin = new Padding(4, 0, 4, 0);
+            labelSkinTitle.Name = "labelSkinTitle";
+            labelSkinTitle.Size = new Size(235, 32);
+            labelSkinTitle.TabIndex = 12;
+            labelSkinTitle.Text = "APU Skin Temp Limit";
+            // 
+            // trackSkin
+            // 
+            trackSkin.Location = new Point(6, 48);
+            trackSkin.Margin = new Padding(4, 2, 4, 2);
+            trackSkin.Maximum = 0;
+            trackSkin.Minimum = -40;
+            trackSkin.Name = "trackSkin";
+            trackSkin.Size = new Size(508, 90);
+            trackSkin.TabIndex = 11;
+            trackSkin.TickFrequency = 5;
+            trackSkin.TickStyle = TickStyle.TopLeft;
             // 
             // panelTitleTemp
             // 
@@ -1681,54 +1729,6 @@ namespace GHelper
             buttonCPU.TextImageRelation = TextImageRelation.ImageBeforeText;
             buttonCPU.UseVisualStyleBackColor = false;
             // 
-            // panelSkin
-            // 
-            panelSkin.AutoSize = true;
-            panelSkin.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            panelSkin.Controls.Add(labelSkin);
-            panelSkin.Controls.Add(labelSkinTitle);
-            panelSkin.Controls.Add(trackSkin);
-            panelSkin.Dock = DockStyle.Top;
-            panelSkin.Location = new Point(0, 170);
-            panelSkin.Margin = new Padding(4);
-            panelSkin.MaximumSize = new Size(0, 124);
-            panelSkin.Name = "panelSkin";
-            panelSkin.Size = new Size(520, 124);
-            panelSkin.TabIndex = 53;
-            // 
-            // labelSkin
-            // 
-            labelSkin.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            labelSkin.Location = new Point(347, 13);
-            labelSkin.Margin = new Padding(4, 0, 4, 0);
-            labelSkin.Name = "labelSkin";
-            labelSkin.Size = new Size(148, 32);
-            labelSkin.TabIndex = 13;
-            labelSkin.Text = "T";
-            labelSkin.TextAlign = ContentAlignment.TopRight;
-            // 
-            // labelSkinTitle
-            // 
-            labelSkinTitle.AutoSize = true;
-            labelSkinTitle.Location = new Point(10, 10);
-            labelSkinTitle.Margin = new Padding(4, 0, 4, 0);
-            labelSkinTitle.Name = "labelSkinTitle";
-            labelSkinTitle.Size = new Size(235, 32);
-            labelSkinTitle.TabIndex = 12;
-            labelSkinTitle.Text = "APU Skin Temp Limit";
-            // 
-            // trackSkin
-            // 
-            trackSkin.Location = new Point(6, 48);
-            trackSkin.Margin = new Padding(4, 2, 4, 2);
-            trackSkin.Maximum = 0;
-            trackSkin.Minimum = -40;
-            trackSkin.Name = "trackSkin";
-            trackSkin.Size = new Size(508, 90);
-            trackSkin.TabIndex = 11;
-            trackSkin.TickFrequency = 5;
-            trackSkin.TickStyle = TickStyle.TopLeft;
-            // 
             // Fans
             // 
             AutoScaleDimensions = new SizeF(192F, 192F);
@@ -1776,6 +1776,9 @@ namespace GHelper
             panelTemperature.ResumeLayout(false);
             panelTemperature.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)trackTemp).EndInit();
+            panelSkin.ResumeLayout(false);
+            panelSkin.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)trackSkin).EndInit();
             panelTitleTemp.ResumeLayout(false);
             panelTitleTemp.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)pictureTemp).EndInit();
@@ -1832,9 +1835,6 @@ namespace GHelper
             ((System.ComponentModel.ISupportInitialize)pictureGPU).EndInit();
             panelNav.ResumeLayout(false);
             tableNav.ResumeLayout(false);
-            panelSkin.ResumeLayout(false);
-            panelSkin.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)trackSkin).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
