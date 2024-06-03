@@ -7,7 +7,6 @@ Small and lightweight Armoury Crate alternative for Asus laptops offering almost
 Works with all popular models, such as ROG Zephyrus G14, G15, G16, M16, Flow X13, Flow X16, Flow Z13, TUF Series, Strix / Scar Series, ProArt, Vivobook, Zenbook, ROG Ally and many more! 
 
 # [:floppy_disk:Download](https://github.com/seerge/g-helper/releases/latest/download/GHelper.zip)
-### Support project : [:euro: Paypal EUR](https://bit.ly/4c0ZWs9) | [💵 Paypal USD](https://bit.ly/4aGTyW8)
 
 - [FAQ](https://github.com/seerge/g-helper/wiki/FAQ)
 - [Setup and Requirements](https://github.com/seerge/g-helper/wiki/Requirements)
