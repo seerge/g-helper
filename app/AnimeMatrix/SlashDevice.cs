@@ -1,5 +1,7 @@
 ﻿using GHelper.AnimeMatrix.Communication;
+using System.Management;
 using System.Text;
+using System.Timers;
 
 namespace GHelper.AnimeMatrix
 {
@@ -132,29 +134,58 @@ namespace GHelper.AnimeMatrix
             SetCustom(Enumerable.Repeat((byte)(brightness * 85.333), 7).ToArray());
         }
 
-        private byte[] getBatteryPattern(int brightness, float percentage)
+        public static double GetBatteryChargePercentage()
+            {
+                double batteryCharge = 0;
+                try
+                {
+                    ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT * FROM Win32_Battery");
+                    foreach (ManagementObject battery in searcher.Get())
+                    {
+                        batteryCharge = Convert.ToDouble(battery["EstimatedChargeRemaining"]);
+                        break; // Assuming only one battery
+                    }
+                }
+                catch (ManagementException e)
+                {
+                    Console.WriteLine("An error occurred while querying for WMI data: " + e.Message);
+                }
+                return batteryCharge;
+            }
+
+        private byte[] getBatteryPattern(int brightness, double percentage)
         {
             // because 7 segments, within each led segment represents a percentage bracket of (100/7 = 14.2857%)
             // set brightness to reflect battery's percentage within that range
 
             int bracket = (int)Math.Floor(percentage / 14.2857);
-            if(bracket == 7) return Enumerable.Repeat((byte)0xFF, 7).ToArray();
-
-            byte[] batteryPattern = new byte[7] {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
-            for (int i = 0; i < bracket; i++)
+            if(bracket >= 7) return Enumerable.Repeat((byte)(brightness * 85.333), 7).ToArray();
+            
+            byte[] batteryPattern = Enumerable.Repeat((byte)(0x00), 7).ToArray();
+            for (int i = 6; i > 6-bracket; i--)
             {
-                batteryPattern[i] = 0xFF;
+                batteryPattern[i] = (byte)(brightness * 85.333);
             }
 
             //set the "selected" bracket to the percentage of that bracket filled from 0 to 255 as a hex
-            batteryPattern[bracket+1] = (byte)((percentage % 14.2857) * 255 / 14.2857);
+            batteryPattern[6-bracket] = (byte)(((percentage % 14.2857) * brightness * 85.333) / 14.2857);
 
             return batteryPattern;
         }
 
-        public void setBatteryPattern(int brightness, float percentage)
+        private static int testing = 0;
+        public void setBatteryPattern(int brightness)
         {
-            SetCustom(getBatteryPattern(brightness, percentage));
+            // if(testing == 3){
+            //     SetCustom(new byte[] {0x00, 0xff, 0x00, 0xff, 0x00, 0xff, 0x00});
+            //     testing = 0;
+            // }
+            // else{
+            //     testing++;
+            //     SetCustom(getBatteryPattern(brightness, 100*(GetBatteryChargePercentage()/AppConfig.Get("charge_limit",100))));
+            // }
+            
+            SetCustom(getBatteryPattern(brightness, 100*(GetBatteryChargePercentage()/AppConfig.Get("charge_limit",100))));
         }
 
         public void SetCustom(byte[] data)
