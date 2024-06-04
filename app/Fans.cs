@@ -1144,7 +1144,6 @@ namespace GHelper
 
             AdvancedScroll();
             AppConfig.RemoveMode("cpu_temp");
-            AppConfig.RemoveMode("skin_temp");
 
             modeControl.ResetPerformanceMode();
 
