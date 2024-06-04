@@ -117,7 +117,7 @@ namespace GHelper.AnimeMatrix
                             }
                             break;
                         case SlashMode.BatteryLevel:
-                            SlashTimer_start(1000);
+                            SlashTimer_start();
                             break;
                         default:
                             deviceSlash.SetMode((SlashMode)running);
@@ -270,12 +270,12 @@ namespace GHelper.AnimeMatrix
         }
         
         
-        private void SlashTimer_start(int interval = 100000)
+        private void SlashTimer_start(int interval = 60000)
         {
             // 100% to 0% in 1hr = 1% every 36 seconds
             // 1 bracket every 14.2857 * 36s = 514s ~ 8m 30s
             // only ~5 actually distinguishable levels, so refresh every <= 514/5 ~ 100s
-            // default is 100s = 100000ms
+            // default is 60s
 
             // create the timer if first call
             // this way, the timer only spawns if user tries to use battery pattern
