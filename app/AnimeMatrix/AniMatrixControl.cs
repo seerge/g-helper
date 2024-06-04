@@ -14,6 +14,7 @@ namespace GHelper.AnimeMatrix
         SettingsForm settings;
 
         System.Timers.Timer matrixTimer = default!;
+        System.Timers.Timer slashTimer = default!;
 
         public AnimeMatrixDevice? deviceMatrix;
         public SlashDevice? deviceSlash;
@@ -45,6 +46,7 @@ namespace GHelper.AnimeMatrix
 
                 matrixTimer = new System.Timers.Timer(100);
                 matrixTimer.Elapsed += MatrixTimer_Elapsed;
+
             }
             catch (Exception ex)
             {
@@ -101,7 +103,7 @@ namespace GHelper.AnimeMatrix
 
                     deviceSlash.SetEnabled(true);
                     deviceSlash.Init();
-
+                    
                     switch ((SlashMode)running)
                     {
                         case SlashMode.Static:
@@ -114,12 +116,18 @@ namespace GHelper.AnimeMatrix
                                 deviceSlash.SetStatic(brightness);
                             }
                             break;
+                        case SlashMode.BatteryLevel:
+                            // call tick to immediately update the pattern
+                            SlashTimer_start();
+                            SlashTimer_tick();
+                            break;
                         default:
                             deviceSlash.SetMode((SlashMode)running);
                             deviceSlash.SetOptions(true, brightness, inteval);
                             deviceSlash.Save();
                             break;
                     }
+                    // kill the timer if we are not displaying battery pattern
 
                     deviceSlash.SetSleepActive(true);
                 }
@@ -237,7 +245,6 @@ namespace GHelper.AnimeMatrix
             matrixTimer.Stop();
         }
 
-
         private void MatrixTimer_Elapsed(object? sender, ElapsedEventArgs e)
         {
 
@@ -255,13 +262,58 @@ namespace GHelper.AnimeMatrix
 
         }
 
-
         public void SetMatrixClock()
         {
             deviceMatrix.SetBuiltInAnimation(false);
             StartMatrixTimer(1000);
             Logger.WriteLine("Matrix Clock");
         }
+        
+        
+        private void SlashTimer_start(int interval = 60000)
+        {
+            // 100% to 0% in 1hr = 1% every 36 seconds
+            // 1 bracket every 14.2857 * 36s = 514s ~ 8m 30s
+            // only ~5 actually distinguishable levels, so refresh every <= 514/5 ~ 100s
+            // default is 60s
+
+            // create the timer if first call
+            // this way, the timer only spawns if user tries to use battery pattern
+            if(slashTimer == default(System.Timers.Timer))
+            {
+                slashTimer = new System.Timers.Timer(interval);
+                slashTimer.Elapsed += SlashTimer_elapsed;
+                slashTimer.AutoReset = true;
+            }
+            // only write if interval changed
+            if(slashTimer.Interval != interval)
+            {
+                slashTimer.Interval = interval;
+            }
+            
+            slashTimer.Start();
+        }
+
+        private void SlashTimer_elapsed(object? sender, ElapsedEventArgs e)
+        {
+            SlashTimer_tick();
+        }
+
+        private void SlashTimer_tick()
+        {
+            if (deviceSlash is null) return;
+
+            //kill timer if called but not in battery pattern mode
+            if((SlashMode)AppConfig.Get("matrix_running", 0) != SlashMode.BatteryLevel)
+            {
+                slashTimer.Stop();
+                slashTimer.Dispose();
+                return;
+            }
+
+            deviceSlash.SetBatteryPattern(AppConfig.Get("matrix_brightness", 0));
+        }
+
 
         public void Dispose()
         {
@@ -396,7 +448,6 @@ namespace GHelper.AnimeMatrix
 
             deviceMatrix.Present();
         }
-
 
         public void OpenMatrixPicture()
         {
