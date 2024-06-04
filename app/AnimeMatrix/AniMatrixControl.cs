@@ -117,7 +117,9 @@ namespace GHelper.AnimeMatrix
                             }
                             break;
                         case SlashMode.BatteryLevel:
+                            // call tick to immediately update the pattern
                             SlashTimer_start();
+                            SlashTimer_tick();
                             break;
                         default:
                             deviceSlash.SetMode((SlashMode)running);
@@ -243,8 +245,6 @@ namespace GHelper.AnimeMatrix
             matrixTimer.Stop();
         }
 
-
-
         private void MatrixTimer_Elapsed(object? sender, ElapsedEventArgs e)
         {
 
@@ -295,6 +295,11 @@ namespace GHelper.AnimeMatrix
         }
 
         private void SlashTimer_elapsed(object? sender, ElapsedEventArgs e)
+        {
+            SlashTimer_tick();
+        }
+
+        private void SlashTimer_tick()
         {
             if (deviceSlash is null) return;
 
