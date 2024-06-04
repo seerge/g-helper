@@ -184,9 +184,6 @@ namespace GHelper
             trackTemp.Minimum = RyzenControl.MinTemp;
             trackTemp.Maximum = RyzenControl.MaxTemp;
 
-            trackSkin.Minimum = RyzenControl.MinSkin;
-            trackSkin.Maximum = RyzenControl.MaxSkin;
-
             comboPowerMode.DropDownStyle = ComboBoxStyle.DropDownList;
             comboPowerMode.DataSource = new BindingSource(PowerNative.powerModes, null);
             comboPowerMode.DisplayMember = "Value";
@@ -214,7 +211,6 @@ namespace GHelper
             trackUV.Scroll += TrackUV_Scroll;
             trackUViGPU.Scroll += TrackUV_Scroll;
             trackTemp.Scroll += TrackUV_Scroll;
-            trackSkin.Scroll += TrackUV_Scroll;
 
             buttonApplyAdvanced.Click += ButtonApplyAdvanced_Click;
 
@@ -252,7 +248,6 @@ namespace GHelper
             panelUV.Visible = true;
             panelTitleAdvanced.Visible = true;
             panelTemperature.Visible = true;
-            panelSkin.Visible = true;
             panelTitleTemp.Visible = true;
 
             VisualiseAdvanced();
@@ -386,15 +381,11 @@ namespace GHelper
             int temp = AppConfig.GetMode("cpu_temp");
             if (temp < RyzenControl.MinTemp || temp > RyzenControl.MaxTemp) temp = RyzenControl.MaxTemp;
 
-            int skin = AppConfig.GetMode("skin_temp");
-            if (skin < RyzenControl.MinSkin || skin > RyzenControl.MaxSkin) skin = RyzenControl.MaxSkin;
-
             checkApplyUV.Enabled = checkApplyUV.Checked = AppConfig.IsMode("auto_uv");
 
             trackUV.Value = cpuUV;
             trackUViGPU.Value = igpuUV;
             trackTemp.Value = temp;
-            trackSkin.Value = skin;
 
             VisualiseAdvanced();
 
@@ -413,7 +404,6 @@ namespace GHelper
                 panelUViGPU.Visible = false;
                 panelTitleTemp.Visible = false;
                 panelTemperature.Visible = false;
-                panelSkin.Visible = false;
                 panelAdvancedAlways.Visible = false;
                 panelAdvancedApply.Visible = false;
                 panelDownload.Visible = true;
@@ -440,7 +430,6 @@ namespace GHelper
             labelUViGPU.Text = trackUViGPU.Value.ToString();
 
             labelTemp.Text = (trackTemp.Value < RyzenControl.MaxTemp) ? trackTemp.Value.ToString() + "°C" : "Default";
-            labelSkin.Text = (trackSkin.Value < RyzenControl.MaxSkin) ? trackSkin.Value.ToString() + "°C" : "Default";
         }
 
         private void AdvancedScroll()
@@ -450,7 +439,6 @@ namespace GHelper
 
             VisualiseAdvanced();
 
-            AppConfig.SetMode("skin_temp", trackSkin.Value);
             AppConfig.SetMode("cpu_temp", trackTemp.Value);
             AppConfig.SetMode("cpu_uv", trackUV.Value);
             AppConfig.SetMode("igpu_uv", trackUViGPU.Value);
@@ -1153,7 +1141,6 @@ namespace GHelper
             trackUV.Value = RyzenControl.MaxCPUUV;
             trackUViGPU.Value = RyzenControl.MaxIGPUUV;
             trackTemp.Value = RyzenControl.MaxTemp;
-            trackSkin.Value = RyzenControl.MaxSkin;
 
             AdvancedScroll();
             AppConfig.RemoveMode("cpu_temp");

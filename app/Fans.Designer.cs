@@ -82,10 +82,6 @@ namespace GHelper
             labelTemp = new Label();
             labelLeftTemp = new Label();
             trackTemp = new TrackBar();
-            panelSkin = new Panel();
-            labelSkin = new Label();
-            labelSkinTitle = new Label();
-            trackSkin = new TrackBar();
             panelTitleTemp = new Panel();
             pictureTemp = new PictureBox();
             labelTempLimit = new Label();
@@ -176,8 +172,6 @@ namespace GHelper
             ((System.ComponentModel.ISupportInitialize)pictureUV).BeginInit();
             panelTemperature.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)trackTemp).BeginInit();
-            panelSkin.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)trackSkin).BeginInit();
             panelTitleTemp.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureTemp).BeginInit();
             panelDownload.SuspendLayout();
@@ -540,14 +534,13 @@ namespace GHelper
             panelAdvanced.Controls.Add(panelUViGPU);
             panelAdvanced.Controls.Add(panelUV);
             panelAdvanced.Controls.Add(panelTitleAdvanced);
-            panelAdvanced.Controls.Add(panelSkin);
             panelAdvanced.Controls.Add(panelTemperature);
             panelAdvanced.Controls.Add(panelTitleTemp);
             panelAdvanced.Controls.Add(panelDownload);
             panelAdvanced.Dock = DockStyle.Top;
             panelAdvanced.Location = new Point(10, 1768);
             panelAdvanced.Name = "panelAdvanced";
-            panelAdvanced.Size = new Size(520, 1116);
+            panelAdvanced.Size = new Size(520, 992);
             panelAdvanced.TabIndex = 14;
             panelAdvanced.Visible = false;
             // 
@@ -556,7 +549,7 @@ namespace GHelper
             panelAdvancedAlways.AutoSize = true;
             panelAdvancedAlways.Controls.Add(checkApplyUV);
             panelAdvancedAlways.Dock = DockStyle.Top;
-            panelAdvancedAlways.Location = new Point(0, 1055);
+            panelAdvancedAlways.Location = new Point(0, 931);
             panelAdvancedAlways.Name = "panelAdvancedAlways";
             panelAdvancedAlways.Padding = new Padding(16, 0, 16, 15);
             panelAdvancedAlways.Size = new Size(520, 61);
@@ -582,7 +575,7 @@ namespace GHelper
             panelAdvancedApply.AutoSize = true;
             panelAdvancedApply.Controls.Add(buttonApplyAdvanced);
             panelAdvancedApply.Dock = DockStyle.Top;
-            panelAdvancedApply.Location = new Point(0, 975);
+            panelAdvancedApply.Location = new Point(0, 851);
             panelAdvancedApply.Name = "panelAdvancedApply";
             panelAdvancedApply.Padding = new Padding(15);
             panelAdvancedApply.Size = new Size(520, 80);
@@ -611,7 +604,7 @@ namespace GHelper
             labelRisky.BackColor = Color.IndianRed;
             labelRisky.Dock = DockStyle.Top;
             labelRisky.ForeColor = SystemColors.ControlLightLight;
-            labelRisky.Location = new Point(0, 732);
+            labelRisky.Location = new Point(0, 608);
             labelRisky.Margin = new Padding(0);
             labelRisky.Name = "labelRisky";
             labelRisky.Padding = new Padding(10, 10, 10, 5);
@@ -627,7 +620,7 @@ namespace GHelper
             panelUViGPU.Controls.Add(labelLeftUViGPU);
             panelUViGPU.Controls.Add(trackUViGPU);
             panelUViGPU.Dock = DockStyle.Top;
-            panelUViGPU.Location = new Point(0, 608);
+            panelUViGPU.Location = new Point(0, 484);
             panelUViGPU.Margin = new Padding(4);
             panelUViGPU.MaximumSize = new Size(0, 124);
             panelUViGPU.Name = "panelUViGPU";
@@ -675,7 +668,7 @@ namespace GHelper
             panelUV.Controls.Add(labelLeftUV);
             panelUV.Controls.Add(trackUV);
             panelUV.Dock = DockStyle.Top;
-            panelUV.Location = new Point(0, 484);
+            panelUV.Location = new Point(0, 360);
             panelUV.Margin = new Padding(4);
             panelUV.MaximumSize = new Size(0, 124);
             panelUV.Name = "panelUV";
@@ -720,7 +713,7 @@ namespace GHelper
             panelTitleAdvanced.Controls.Add(pictureUV);
             panelTitleAdvanced.Controls.Add(labelTitleUV);
             panelTitleAdvanced.Dock = DockStyle.Top;
-            panelTitleAdvanced.Location = new Point(0, 418);
+            panelTitleAdvanced.Location = new Point(0, 294);
             panelTitleAdvanced.Name = "panelTitleAdvanced";
             panelTitleAdvanced.Size = new Size(520, 66);
             panelTitleAdvanced.TabIndex = 48;
@@ -795,54 +788,6 @@ namespace GHelper
             trackTemp.TabIndex = 11;
             trackTemp.TickFrequency = 5;
             trackTemp.TickStyle = TickStyle.TopLeft;
-            // 
-            // panelSkin
-            // 
-            panelSkin.AutoSize = true;
-            panelSkin.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            panelSkin.Controls.Add(labelSkin);
-            panelSkin.Controls.Add(labelSkinTitle);
-            panelSkin.Controls.Add(trackSkin);
-            panelSkin.Dock = DockStyle.Top;
-            panelSkin.Location = new Point(0, 294);
-            panelSkin.Margin = new Padding(4);
-            panelSkin.MaximumSize = new Size(0, 124);
-            panelSkin.Name = "panelSkin";
-            panelSkin.Size = new Size(520, 124);
-            panelSkin.TabIndex = 53;
-            // 
-            // labelSkin
-            // 
-            labelSkin.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            labelSkin.Location = new Point(347, 13);
-            labelSkin.Margin = new Padding(4, 0, 4, 0);
-            labelSkin.Name = "labelSkin";
-            labelSkin.Size = new Size(148, 32);
-            labelSkin.TabIndex = 13;
-            labelSkin.Text = "T";
-            labelSkin.TextAlign = ContentAlignment.TopRight;
-            // 
-            // labelSkinTitle
-            // 
-            labelSkinTitle.AutoSize = true;
-            labelSkinTitle.Location = new Point(10, 10);
-            labelSkinTitle.Margin = new Padding(4, 0, 4, 0);
-            labelSkinTitle.Name = "labelSkinTitle";
-            labelSkinTitle.Size = new Size(235, 32);
-            labelSkinTitle.TabIndex = 12;
-            labelSkinTitle.Text = "APU Skin Temp Limit";
-            // 
-            // trackSkin
-            // 
-            trackSkin.Location = new Point(6, 48);
-            trackSkin.Margin = new Padding(4, 2, 4, 2);
-            trackSkin.Maximum = 0;
-            trackSkin.Minimum = -40;
-            trackSkin.Name = "trackSkin";
-            trackSkin.Size = new Size(508, 90);
-            trackSkin.TabIndex = 11;
-            trackSkin.TickFrequency = 5;
-            trackSkin.TickStyle = TickStyle.TopLeft;
             // 
             // panelTitleTemp
             // 
@@ -1776,9 +1721,6 @@ namespace GHelper
             panelTemperature.ResumeLayout(false);
             panelTemperature.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)trackTemp).EndInit();
-            panelSkin.ResumeLayout(false);
-            panelSkin.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)trackSkin).EndInit();
             panelTitleTemp.ResumeLayout(false);
             panelTitleTemp.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)pictureTemp).EndInit();
@@ -1952,9 +1894,5 @@ namespace GHelper
         private Label labelGPUPower;
         private Label labelGPUPowerTitle;
         private TrackBar trackGPUPower;
-        private Panel panelSkin;
-        private Label labelSkin;
-        private Label labelSkinTitle;
-        private TrackBar trackSkin;
     }
 }

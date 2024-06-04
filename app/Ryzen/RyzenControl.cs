@@ -21,8 +21,6 @@ namespace Ryzen
 
         public static int MinTemp => AppConfig.Get("min_temp", 75);
         public const int MaxTemp = 98;
-        public static int MinSkin => 25;
-        public const int MaxSkin = 46;
 
         public static int FAMID { get; protected set; }
 
