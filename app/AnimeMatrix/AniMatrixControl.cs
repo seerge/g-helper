@@ -311,7 +311,7 @@ namespace GHelper.AnimeMatrix
                 return;
             }
 
-            deviceSlash.setBatteryPattern(AppConfig.Get("matrix_brightness", 0));
+            deviceSlash.SetBatteryPattern(AppConfig.Get("matrix_brightness", 0));
         }
 
 

@@ -153,7 +153,7 @@ namespace GHelper.AnimeMatrix
                 return batteryCharge;
             }
 
-        private byte[] getBatteryPattern(int brightness, double percentage)
+        private byte[] GetBatteryPattern(int brightness, double percentage)
         {
             // because 7 segments, within each led segment represents a percentage bracket of (100/7 = 14.2857%)
             // set brightness to reflect battery's percentage within that range
@@ -173,19 +173,9 @@ namespace GHelper.AnimeMatrix
             return batteryPattern;
         }
 
-        private static int testing = 0;
-        public void setBatteryPattern(int brightness)
+        public void SetBatteryPattern(int brightness)
         {
-            // if(testing == 3){
-            //     SetCustom(new byte[] {0x00, 0xff, 0x00, 0xff, 0x00, 0xff, 0x00});
-            //     testing = 0;
-            // }
-            // else{
-            //     testing++;
-            //     SetCustom(getBatteryPattern(brightness, 100*(GetBatteryChargePercentage()/AppConfig.Get("charge_limit",100))));
-            // }
-            
-            SetCustom(getBatteryPattern(brightness, 100*(GetBatteryChargePercentage()/AppConfig.Get("charge_limit",100))));
+            SetCustom(GetBatteryPattern(brightness, 100*(GetBatteryChargePercentage()/AppConfig.Get("charge_limit",100))));
         }
 
         public void SetCustom(byte[] data)
