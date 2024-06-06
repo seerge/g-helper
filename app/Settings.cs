@@ -443,6 +443,14 @@ namespace GHelper
             });
         }
 
+        public void VisualiseGamut()
+        {
+            Invoke(delegate
+            {
+                if (comboGamut.Items.Count > 0) comboGamut.SelectedIndex = 0;
+            });
+        }
+
         private void SliderGamma_ValueChanged(object? sender, EventArgs e)
         {
             if (sliderGammaIgnore) return;
