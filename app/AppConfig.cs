@@ -435,11 +435,15 @@ public static class AppConfig
         return ContainsModel("G512LI") || ContainsModel("G513R") || ContainsModel("G713PV") || ContainsModel("G513IE") || ContainsModel("G713RC") || ContainsModel("G513QM") || ContainsModel("G531G");
     }
 
-    public static bool Is4ZoneRGB()
+    public static bool IsPossible4ZoneRGB()
     {
-        return (ContainsModel("G614JI_") || ContainsModel("G614JV_") || ContainsModel("G614JZ") || IsStrixLimitedRGB()) && !Is("per_key_rgb");
+        return ContainsModel("G614JI_") || ContainsModel("G614JV_") || ContainsModel("G614JZ") || IsStrixLimitedRGB();
     }
 
+    public static bool Is4ZoneRGB()
+    {
+        return IsPossible4ZoneRGB() && !Is("per_key_rgb");
+    }
 
     public static bool IsNoAirplaneMode()
     {
