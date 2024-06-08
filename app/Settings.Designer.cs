@@ -68,6 +68,7 @@ namespace GHelper
             panelGPU = new Panel();
             labelTipGPU = new Label();
             tableAMD = new TableLayoutPanel();
+            buttonAutoTDP = new RButton();
             buttonOverlay = new RButton();
             buttonFPS = new RButton();
             tableGPU = new TableLayoutPanel();
@@ -94,6 +95,7 @@ namespace GHelper
             pictureScreen = new PictureBox();
             labelSreen = new Label();
             panelKeyboard = new Panel();
+            labelDynamicLighting = new Label();
             tableLayoutKeyboard = new TableLayoutPanel();
             buttonKeyboard = new RButton();
             panelColor = new Panel();
@@ -135,7 +137,6 @@ namespace GHelper
             labelGamma = new Label();
             pictureGamma = new PictureBox();
             labelGammaTitle = new Label();
-            buttonAutoTDP = new RButton();
             panelMatrix.SuspendLayout();
             panelMatrixAuto.SuspendLayout();
             tableLayoutMatrix.SuspendLayout();
@@ -370,7 +371,7 @@ namespace GHelper
             panelBattery.Controls.Add(sliderBattery);
             panelBattery.Controls.Add(panelBatteryTitle);
             panelBattery.Dock = DockStyle.Top;
-            panelBattery.Location = new Point(11, 1725);
+            panelBattery.Location = new Point(11, 1765);
             panelBattery.Margin = new Padding(0);
             panelBattery.Name = "panelBattery";
             panelBattery.Padding = new Padding(20, 20, 20, 11);
@@ -462,7 +463,7 @@ namespace GHelper
             panelFooter.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             panelFooter.Controls.Add(tableButtons);
             panelFooter.Dock = DockStyle.Top;
-            panelFooter.Location = new Point(11, 1901);
+            panelFooter.Location = new Point(11, 1941);
             panelFooter.Margin = new Padding(0);
             panelFooter.Name = "panelFooter";
             panelFooter.Padding = new Padding(20);
@@ -780,6 +781,28 @@ namespace GHelper
             tableAMD.TabIndex = 24;
             tableAMD.Visible = false;
             // 
+            // buttonAutoTDP
+            // 
+            buttonAutoTDP.Activated = false;
+            buttonAutoTDP.BackColor = SystemColors.ControlLightLight;
+            buttonAutoTDP.BorderColor = Color.Transparent;
+            buttonAutoTDP.BorderRadius = 5;
+            buttonAutoTDP.Dock = DockStyle.Fill;
+            buttonAutoTDP.FlatAppearance.BorderSize = 0;
+            buttonAutoTDP.FlatStyle = FlatStyle.Flat;
+            buttonAutoTDP.ForeColor = SystemColors.ControlText;
+            buttonAutoTDP.Image = Properties.Resources.icons8_gauge_32;
+            buttonAutoTDP.ImageAlign = ContentAlignment.MiddleRight;
+            buttonAutoTDP.Location = new Point(528, 4);
+            buttonAutoTDP.Margin = new Padding(4);
+            buttonAutoTDP.Name = "buttonAutoTDP";
+            buttonAutoTDP.Secondary = false;
+            buttonAutoTDP.Size = new Size(255, 72);
+            buttonAutoTDP.TabIndex = 13;
+            buttonAutoTDP.Text = "AutoTDP";
+            buttonAutoTDP.TextImageRelation = TextImageRelation.ImageBeforeText;
+            buttonAutoTDP.UseVisualStyleBackColor = false;
+            // 
             // buttonOverlay
             // 
             buttonOverlay.Activated = false;
@@ -1077,6 +1100,7 @@ namespace GHelper
             tableScreen.Name = "tableScreen";
             tableScreen.RowCount = 1;
             tableScreen.RowStyles.Add(new RowStyle(SizeType.Absolute, 80F));
+            tableScreen.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
             tableScreen.Size = new Size(787, 100);
             tableScreen.TabIndex = 23;
             // 
@@ -1229,6 +1253,7 @@ namespace GHelper
             panelKeyboard.AccessibleRole = AccessibleRole.Grouping;
             panelKeyboard.AutoSize = true;
             panelKeyboard.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            panelKeyboard.Controls.Add(labelDynamicLighting);
             panelKeyboard.Controls.Add(tableLayoutKeyboard);
             panelKeyboard.Controls.Add(panelKeyboardTitle);
             panelKeyboard.Dock = DockStyle.Top;
@@ -1236,9 +1261,24 @@ namespace GHelper
             panelKeyboard.Margin = new Padding(0);
             panelKeyboard.Name = "panelKeyboard";
             panelKeyboard.Padding = new Padding(20);
-            panelKeyboard.Size = new Size(827, 132);
+            panelKeyboard.Size = new Size(827, 172);
             panelKeyboard.TabIndex = 4;
             panelKeyboard.TabStop = true;
+            // 
+            // labelDynamicLighting
+            // 
+            labelDynamicLighting.Cursor = Cursors.Hand;
+            labelDynamicLighting.Dock = DockStyle.Top;
+            labelDynamicLighting.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            labelDynamicLighting.ForeColor = SystemColors.GrayText;
+            labelDynamicLighting.Location = new Point(20, 112);
+            labelDynamicLighting.Margin = new Padding(4, 0, 4, 0);
+            labelDynamicLighting.Name = "labelDynamicLighting";
+            labelDynamicLighting.Padding = new Padding(4);
+            labelDynamicLighting.Size = new Size(787, 40);
+            labelDynamicLighting.TabIndex = 43;
+            labelDynamicLighting.Text = "Please disable Windows > Dynamic Lighting";
+            labelDynamicLighting.Visible = false;
             // 
             // tableLayoutKeyboard
             // 
@@ -1416,7 +1456,7 @@ namespace GHelper
             panelVersion.Controls.Add(labelCharge);
             panelVersion.Controls.Add(checkStartup);
             panelVersion.Dock = DockStyle.Top;
-            panelVersion.Location = new Point(11, 1845);
+            panelVersion.Location = new Point(11, 1885);
             panelVersion.Margin = new Padding(4);
             panelVersion.Name = "panelVersion";
             panelVersion.Size = new Size(827, 56);
@@ -1442,7 +1482,7 @@ namespace GHelper
             panelPeripherals.Controls.Add(tableLayoutPeripherals);
             panelPeripherals.Controls.Add(panelPeripheralsTile);
             panelPeripherals.Dock = DockStyle.Top;
-            panelPeripherals.Location = new Point(11, 1526);
+            panelPeripherals.Location = new Point(11, 1566);
             panelPeripherals.Margin = new Padding(0);
             panelPeripherals.Name = "panelPeripherals";
             panelPeripherals.Padding = new Padding(20, 20, 20, 11);
@@ -1895,28 +1935,6 @@ namespace GHelper
             labelGammaTitle.TabIndex = 37;
             labelGammaTitle.Text = "Flicker-free Dimming";
             // 
-            // buttonAutoTDP
-            // 
-            buttonAutoTDP.Activated = false;
-            buttonAutoTDP.BackColor = SystemColors.ControlLightLight;
-            buttonAutoTDP.BorderColor = Color.Transparent;
-            buttonAutoTDP.BorderRadius = 5;
-            buttonAutoTDP.Dock = DockStyle.Fill;
-            buttonAutoTDP.FlatAppearance.BorderSize = 0;
-            buttonAutoTDP.FlatStyle = FlatStyle.Flat;
-            buttonAutoTDP.ForeColor = SystemColors.ControlText;
-            buttonAutoTDP.Image = Properties.Resources.icons8_gauge_32;
-            buttonAutoTDP.ImageAlign = ContentAlignment.MiddleRight;
-            buttonAutoTDP.Location = new Point(528, 4);
-            buttonAutoTDP.Margin = new Padding(4);
-            buttonAutoTDP.Name = "buttonAutoTDP";
-            buttonAutoTDP.Secondary = false;
-            buttonAutoTDP.Size = new Size(255, 72);
-            buttonAutoTDP.TabIndex = 13;
-            buttonAutoTDP.Text = "AutoTDP";
-            buttonAutoTDP.TextImageRelation = TextImageRelation.ImageBeforeText;
-            buttonAutoTDP.UseVisualStyleBackColor = false;
-            // 
             // SettingsForm
             // 
             AutoScaleDimensions = new SizeF(192F, 192F);
@@ -2120,5 +2138,6 @@ namespace GHelper
         private Label labelVisual;
         private RButton buttonFHD;
         private RButton buttonAutoTDP;
+        private Label labelDynamicLighting;
     }
 }
