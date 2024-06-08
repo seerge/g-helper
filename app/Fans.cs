@@ -428,6 +428,7 @@ namespace GHelper
 
             labelUV.Text = trackUV.Value.ToString();
             labelUViGPU.Text = trackUViGPU.Value.ToString();
+
             labelTemp.Text = (trackTemp.Value < RyzenControl.MaxTemp) ? trackTemp.Value.ToString() + "°C" : "Default";
         }
 
@@ -1142,7 +1143,7 @@ namespace GHelper
             trackTemp.Value = RyzenControl.MaxTemp;
 
             AdvancedScroll();
-            AppConfig.SetMode("cpu_temp", -1);
+            AppConfig.RemoveMode("cpu_temp");
 
             modeControl.ResetPerformanceMode();
 
