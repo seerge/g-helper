@@ -624,7 +624,7 @@ Trotzdem fortfahren?</value>
     <value>Optimiert</value>
   </data>
   <data name="OptimizedGPUTooltip" xml:space="preserve">
-    <value>Switch to Eco on battery and to Standard when plugged in</value>
+    <value>Eco-Modus im Batteriebetrieb. Standard, wenn eingesteckt.</value>
   </data>
   <data name="OptimizedUSBC" xml:space="preserve">
     <value>dGPU beim USB-C Laden im Optimierten Modus deaktiviert lassen</value>
