@@ -624,7 +624,7 @@
     <value>自动切换</value>
   </data>
   <data name="OptimizedGPUTooltip" xml:space="preserve">
-    <value>Switch to Eco on battery and to Standard when plugged in</value>
+    <value>使用电池时切换到集显模式，并在插上电源后重新启用标准模式</value>
   </data>
   <data name="OptimizedUSBC" xml:space="preserve">
     <value>在自动切换模式下，使用USB-C为笔记本供电时禁用GPU</value>
