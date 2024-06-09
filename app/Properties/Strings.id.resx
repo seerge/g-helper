@@ -624,7 +624,7 @@ Apakah Anda masih ingin melanjutkan?</value>
     <value>Dioptimalkan</value>
   </data>
   <data name="OptimizedGPUTooltip" xml:space="preserve">
-    <value>Switch to Eco on battery and to Standard when plugged in</value>
+    <value>Beralih ke Mode Eco saat menggunakan baterai dan ke Mode Standar saat mengisi daya.</value>
   </data>
   <data name="OptimizedUSBC" xml:space="preserve">
     <value>Tetap matikan GPU pada pengisi daya USB-C dalam mode Dioptimalkan</value>
