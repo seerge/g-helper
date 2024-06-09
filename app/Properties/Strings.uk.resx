@@ -624,7 +624,7 @@
     <value>Авто</value>
   </data>
   <data name="OptimizedGPUTooltip" xml:space="preserve">
-    <value>Switch to Eco on battery and to Standard when plugged in</value>
+    <value>Вмикає Еко на батареї та Стандартний на зарядці</value>
   </data>
   <data name="OptimizedUSBC" xml:space="preserve">
     <value>Вимикати GPU на зарядці від USB-C в режимі Авто</value>
