@@ -11,6 +11,7 @@ G-helper兼容所有主流型号，例如 ROG 幻14、幻15、幻16、幻13、�
 
 
 # [:floppy_disk:下载应用](https://github.com/seerge/g-helper/releases/latest/download/GHelper.zip)
+## 支持此项目：[💳 信用卡 / 支付宝 / 微信支付](https://buy.stripe.com/bIY4hl8HbalH3G8bIJ)
 
 如果你喜欢这个应用，请[给这个项目⭐️](https://github.com/seerge/g-helper) 或者向别人推荐它！
 

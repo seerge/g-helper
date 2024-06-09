@@ -624,7 +624,7 @@ Yine de devam etmek istiyor musunuz?</value>
     <value>İyileştirilmiş</value>
   </data>
   <data name="OptimizedGPUTooltip" xml:space="preserve">
-    <value>Pil ile çalışırken Eko moda, şarjda Standart moda geçiş yap</value>
+    <value>Pilde çalışırken Eco moda, fişe takılıyken Standart moda geçin</value>
   </data>
   <data name="OptimizedUSBC" xml:space="preserve">
     <value>İyileştirilmiş modda USB-C şarj cihazı bağlıyken, GPU devre dışı kalsın</value>
