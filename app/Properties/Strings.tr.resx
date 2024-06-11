@@ -624,7 +624,7 @@ Yine de devam etmek istiyor musunuz?</value>
     <value>İyileştirilmiş</value>
   </data>
   <data name="OptimizedGPUTooltip" xml:space="preserve">
-    <value>Pilde çalışırken Eco moda, fişe takılıyken Standart moda geçin</value>
+    <value>Pil ile çalışırken Eco moda, Elektrik ile Standart moda geçilir</value>
   </data>
   <data name="OptimizedUSBC" xml:space="preserve">
     <value>İyileştirilmiş modda USB-C şarj cihazı bağlıyken, GPU devre dışı kalsın</value>
@@ -756,7 +756,7 @@ Yine de devam etmek istiyor musunuz?</value>
     <value>Pille çalışırken kapat</value>
   </data>
   <data name="UltimateGPUTooltip" xml:space="preserve">
-    <value>Dizüstü ekranını dGPU üstüne yönlendirerek FPS en üst düzeye çıkar</value>
+    <value>Dizüstü ekranı doğrudan dGPU üstünden çalışır FPS artar</value>
   </data>
   <data name="UltimateMode" xml:space="preserve">
     <value>Ultimate</value>
