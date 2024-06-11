@@ -127,7 +127,7 @@
     <value>Restart your device to apply changes</value>
   </data>
   <data name="AlertAPUMemoryRestartTitle" xml:space="preserve">
-    <value>Restart now?</value>
+    <value>Újraindítás most?</value>
   </data>
   <data name="AlertDGPU" xml:space="preserve">
     <value>Úgy tűnik használatban van a GPU. Biztosan letiltod?</value>
@@ -313,7 +313,7 @@
     <value>Fényerő növelése</value>
   </data>
   <data name="BWTrayIcon" xml:space="preserve">
-    <value>Black and white tray icon</value>
+    <value>Fekete-fehér tálca ikon</value>
   </data>
   <data name="Calibrate" xml:space="preserve">
     <value>Kalibrálás</value>
@@ -325,7 +325,7 @@
     <value>Szín</value>
   </data>
   <data name="Contrast" xml:space="preserve">
-    <value>Contrast</value>
+    <value>Kontraszt</value>
   </data>
   <data name="Controller" xml:space="preserve">
     <value>Controller</value>
