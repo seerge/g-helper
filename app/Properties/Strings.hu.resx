@@ -426,10 +426,10 @@ Do you still want to continue?</value>
     <value>Fn + F gyorsgombok feldolgozása Fn nélkül</value>
   </data>
   <data name="FnLockOff" xml:space="preserve">
-    <value>FN-Lock Off</value>
+    <value>Fn-Lock Ki</value>
   </data>
   <data name="FnLockOn" xml:space="preserve">
-    <value>FN-Lock On</value>
+    <value>Fn-Lock Be</value>
   </data>
   <data name="GPUBoost" xml:space="preserve">
     <value>Dinamikus gyorsítás</value>
@@ -507,7 +507,7 @@ Do you still want to continue?</value>
     <value>Világítás</value>
   </data>
   <data name="LockScreen" xml:space="preserve">
-    <value>Lock Screen</value>
+    <value>Képernyő zarolása</value>
   </data>
   <data name="Logo" xml:space="preserve">
     <value>Logó</value>
