@@ -630,14 +630,9 @@ public static class AppConfig
         return IsAlly() || Is("stop_ac");
     }
 
-    public static bool IsChargeLimit80()
-    {
-        return ContainsModel("GA403UI");
-    }
-
     public static bool IsChargeLimit6080()
     {
-        return ContainsModel("GA403UU") || ContainsModel("GA403UV") || ContainsModel("GU605") || ContainsModel("GA503R") || (IsTUF() && !(ContainsModel("FX507Z") || ContainsModel("FA617")));
+        return ContainsModel("GA403U") || ContainsModel("GU605") || ContainsModel("GA503R") || (IsTUF() && !(ContainsModel("FX507Z") || ContainsModel("FA617")));
 
     }
 

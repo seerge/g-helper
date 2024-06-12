@@ -118,112 +118,112 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Acceleration" xml:space="preserve">
-    <value>Aceleração</value>
+    <value>Acceleration</value>
   </data>
   <data name="ACPIError" xml:space="preserve">
-    <value>Não foi possível conectar ao ASUS ACPI. O programa não funciona sem esse serviço. Tente instalar Asus System Control Interface</value>
+    <value>Can't connect to ASUS ACPI. Application can't function without it. Try to install Asus System Control Interface</value>
   </data>
   <data name="AlertAPUMemoryRestart" xml:space="preserve">
-    <value>Reinicie o dispositivo para aplicar as alterações</value>
+    <value>Restart your device to apply changes</value>
   </data>
   <data name="AlertAPUMemoryRestartTitle" xml:space="preserve">
-    <value>Reiniciar agora?</value>
+    <value>Restart now?</value>
   </data>
   <data name="AlertDGPU" xml:space="preserve">
-    <value>Parece que o GPU está em uso pesado, desativá-lo?</value>
+    <value>Looks like GPU is in heavy use, disable it?</value>
   </data>
   <data name="AlertDGPUTitle" xml:space="preserve">
-    <value>Modo económico</value>
+    <value>Eco Mode</value>
   </data>
   <data name="AlertUltimateOff" xml:space="preserve">
-    <value>Passar ao Modo Ultimate implica o reinício do sistema</value>
+    <value>Switching off Ultimate Mode requires restart</value>
   </data>
   <data name="AlertUltimateOn" xml:space="preserve">
-    <value>Modo Ultimate implica o reinício do sistema</value>
+    <value>Ultimate Mode requires restart</value>
   </data>
   <data name="AlertUltimateTitle" xml:space="preserve">
-    <value>Reiniciar agora?</value>
+    <value>Reboot now?</value>
   </data>
   <data name="AllyController" xml:space="preserve">
     <value>Ally Controller</value>
   </data>
   <data name="AnimationSpeed" xml:space="preserve">
-    <value>Velocidade da Animação</value>
+    <value>Animation Speed</value>
   </data>
   <data name="AnimeMatrix" xml:space="preserve">
-    <value>AniMe Matrix</value>
+    <value>Anime Matrix</value>
   </data>
   <data name="AppAlreadyRunning" xml:space="preserve">
-    <value>O programa já está em execução</value>
+    <value>App already running</value>
   </data>
   <data name="AppAlreadyRunningText" xml:space="preserve">
-    <value>G-Helper já está em execução. Verifique o tabuleiro do sistema pelo ícone.</value>
+    <value>G-Helper is already running. Check system tray for an icon.</value>
   </data>
   <data name="Apply" xml:space="preserve">
-    <value>Aplicar</value>
+    <value>Apply</value>
   </data>
   <data name="ApplyFanCurve" xml:space="preserve">
-    <value>Aplicar a curva personalizada</value>
+    <value>Apply Custom Fan Curve</value>
   </data>
   <data name="ApplyPowerLimits" xml:space="preserve">
-    <value>Aplicar as limitações de energia</value>
+    <value>Apply Power Limits</value>
   </data>
   <data name="ApplyWindowsPowerPlan" xml:space="preserve">
-    <value>Ajuste automático dos modos de energia do Windows</value>
+    <value>Auto adjust Windows Power Modes</value>
   </data>
   <data name="APUMemory" xml:space="preserve">
-    <value>Memória Alocada à GPU</value>
+    <value>Memory Assigned to GPU</value>
   </data>
   <data name="AsusServicesRunning" xml:space="preserve">
-    <value>Serviços da Asus em execução</value>
+    <value>Asus Services Running</value>
   </data>
   <data name="AuraBatteryState" xml:space="preserve">
-    <value>Estado da bateria</value>
+    <value>Battery State</value>
   </data>
   <data name="AuraBreathe" xml:space="preserve">
-    <value>Respiração</value>
+    <value>Breathe</value>
   </data>
   <data name="AuraClockwise" xml:space="preserve">
-    <value>No sentido horário</value>
+    <value>Clockwise</value>
   </data>
   <data name="AuraColorCycle" xml:space="preserve">
-    <value>Ciclo de cores</value>
+    <value>Color Cycle</value>
   </data>
   <data name="AuraComet" xml:space="preserve">
-    <value>Cometa</value>
+    <value>Comet</value>
   </data>
   <data name="AuraCounterClockwise" xml:space="preserve">
-    <value>No sentido anti-horário</value>
+    <value>Counterclockwise</value>
   </data>
   <data name="AuraFast" xml:space="preserve">
-    <value>Rápido</value>
+    <value>Fast</value>
   </data>
   <data name="AuraLightingMode" xml:space="preserve">
-    <value>Modo de iluminação</value>
+    <value>Lighting Mode</value>
   </data>
   <data name="AuraNormal" xml:space="preserve">
     <value>Normal</value>
   </data>
   <data name="AuraRainbow" xml:space="preserve">
-    <value>Arco-íris</value>
+    <value>Rainbow</value>
   </data>
   <data name="AuraRandomColor" xml:space="preserve">
-    <value>Aleatório</value>
+    <value>Random</value>
   </data>
   <data name="AuraReact" xml:space="preserve">
-    <value>Reagir</value>
+    <value>React</value>
   </data>
   <data name="AuraSlow" xml:space="preserve">
-    <value>Lento</value>
+    <value>Slow</value>
   </data>
   <data name="AuraStatic" xml:space="preserve">
-    <value>Estático</value>
+    <value>Static</value>
   </data>
   <data name="AuraStrobe" xml:space="preserve">
-    <value>Estroboscópio</value>
+    <value>Strobe</value>
   </data>
   <data name="AuraZoneAll" xml:space="preserve">
-    <value>Todos</value>
+    <value>All</value>
   </data>
   <data name="AuraZoneDock" xml:space="preserve">
     <value>Dock</value>
@@ -232,22 +232,22 @@
     <value>Logo</value>
   </data>
   <data name="AuraZoneScroll" xml:space="preserve">
-    <value>Roda de Deslocamento</value>
+    <value>Scrollwheel</value>
   </data>
   <data name="AuraZoneUnderglow" xml:space="preserve">
     <value>Underglow</value>
   </data>
   <data name="AutoApply" xml:space="preserve">
-    <value>Aplicar automaticamente</value>
+    <value>Auto Apply</value>
   </data>
   <data name="AutoMode" xml:space="preserve">
-    <value>Automático</value>
+    <value>Auto</value>
   </data>
   <data name="AutoRefreshTooltip" xml:space="preserve">
-    <value>Define a taxa de atualização automaticamente para poupar bateria</value>
+    <value>Sets 60Hz to save battery, and back when plugged</value>
   </data>
   <data name="Awake" xml:space="preserve">
-    <value>Acordado</value>
+    <value>Awake</value>
   </data>
   <data name="BacklightLow" xml:space="preserve">
     <value>Low</value>
@@ -262,28 +262,28 @@
     <value>Off</value>
   </data>
   <data name="BacklightTimeout" xml:space="preserve">
-    <value>Tempo limite ligado à corrente / na bateria (0 - ON)</value>
+    <value>Timeout plugged / on battery (0 - ON)</value>
   </data>
   <data name="BacklightTimeoutBattery" xml:space="preserve">
-    <value>Desligar o ecrã após (em Bateria)</value>
+    <value>Backlight Timeout when on battery</value>
   </data>
   <data name="BacklightTimeoutPlugged" xml:space="preserve">
-    <value>Desligar o ecrã após (ligado à corrente)</value>
+    <value>Backlight Timeout when plugged</value>
   </data>
   <data name="Balanced" xml:space="preserve">
-    <value>Equilibrado</value>
+    <value>Balanced</value>
   </data>
   <data name="BatteryCharge" xml:space="preserve">
-    <value>Carga</value>
+    <value>Charge</value>
   </data>
   <data name="BatteryChargeLimit" xml:space="preserve">
-    <value>Limite de carga</value>
+    <value>Battery Charge Limit</value>
   </data>
   <data name="BatteryHealth" xml:space="preserve">
-    <value>Estado da bateria</value>
+    <value>Battery Health</value>
   </data>
   <data name="BatteryLimitFull" xml:space="preserve">
-    <value>Carregamento único até 100%</value>
+    <value>One time charge to 100%</value>
   </data>
   <data name="Binding" xml:space="preserve">
     <value>Binding</value>
@@ -295,34 +295,34 @@
     <value>Secondary</value>
   </data>
   <data name="BiosAndDriverUpdates" xml:space="preserve">
-    <value>Atualizações de Drivers e da BIOS</value>
+    <value>BIOS and Driver Updates</value>
   </data>
   <data name="Boot" xml:space="preserve">
-    <value>Ao ligar</value>
+    <value>Boot</value>
   </data>
   <data name="BootSound" xml:space="preserve">
-    <value>Som de ligar</value>
+    <value>Boot Sound</value>
   </data>
   <data name="Brightness" xml:space="preserve">
-    <value>Nível do brilho</value>
+    <value>Brightness</value>
   </data>
   <data name="BrightnessDown" xml:space="preserve">
-    <value>Diminuir o brilho</value>
+    <value>Brightness Down</value>
   </data>
   <data name="BrightnessUp" xml:space="preserve">
-    <value>Aumentar o brilho</value>
+    <value>Brightness Up</value>
   </data>
   <data name="BWTrayIcon" xml:space="preserve">
     <value>Black and white tray icon</value>
   </data>
   <data name="Calibrate" xml:space="preserve">
-    <value>Calibrar</value>
+    <value>Calibrate</value>
   </data>
   <data name="Charging" xml:space="preserve">
-    <value>Carregando</value>
+    <value>Charging</value>
   </data>
   <data name="Color" xml:space="preserve">
-    <value>Cor</value>
+    <value>Color</value>
   </data>
   <data name="Contrast" xml:space="preserve">
     <value>Contrast</value>
@@ -331,16 +331,16 @@
     <value>Controller</value>
   </data>
   <data name="CPUBoost" xml:space="preserve">
-    <value>Turbo do CPU</value>
+    <value>CPU Boost</value>
   </data>
   <data name="Custom" xml:space="preserve">
-    <value>Personalizado</value>
+    <value>Custom</value>
   </data>
   <data name="Deceleration" xml:space="preserve">
-    <value>Desaceleração</value>
+    <value>Deceleration</value>
   </data>
   <data name="Default" xml:space="preserve">
-    <value>Padrão</value>
+    <value>Default</value>
   </data>
   <data name="DisableController" xml:space="preserve">
     <value>Disable Controller</value>
@@ -349,81 +349,81 @@
     <value>Disable on lid close</value>
   </data>
   <data name="DisableOverdrive" xml:space="preserve">
-    <value>Desativar o overdrive do ecrã</value>
+    <value>Disable screen overdrive</value>
   </data>
   <data name="Discharging" xml:space="preserve">
-    <value>Descarregando</value>
+    <value>Discharging</value>
   </data>
   <data name="DownloadColorProfiles" xml:space="preserve">
     <value>Download Color Profiles</value>
   </data>
   <data name="DownloadUpdate" xml:space="preserve">
-    <value>Transferir</value>
+    <value>Download</value>
   </data>
   <data name="DriverAndSoftware" xml:space="preserve">
-    <value>Drivers e Software</value>
+    <value>Drivers and Software</value>
   </data>
   <data name="EcoGPUTooltip" xml:space="preserve">
-    <value>Desativar o dGPU para poupar energia</value>
+    <value>Disables dGPU to save battery</value>
   </data>
   <data name="EcoMode" xml:space="preserve">
-    <value>Económico</value>
+    <value>Eco</value>
   </data>
   <data name="EnableGPUOnShutdown" xml:space="preserve">
     <value>Enable GPU on shutdown (prevents issue with Eco mode)</value>
   </data>
   <data name="EnableOptimusText" xml:space="preserve">
-    <value>Desativar a dGPU por ativar o modo Eco enquanto o Modo de Ecrã no Painel de Controlo da NVIDIA não está definido para Optimus pode causar problemas com os controlos do brilho do painel até ao próximo reinício.
+    <value>Disabling the dGPU by going into Eco mode while Display Mode in NVIDIA Control Panel is not set to Optimus might cause problems with brightness controls until after the next reboot. 
 
-Quer prosseguir?</value>
+Do you still want to continue?</value>
   </data>
   <data name="EnableOptimusTitle" xml:space="preserve">
-    <value>O Modo de Ecrã da NVIDIA não está definido para Optimus</value>
+    <value>NVIDIA Display Mode is not set to Optimus</value>
   </data>
   <data name="EnergySettings" xml:space="preserve">
-    <value>Configurações de Energia</value>
+    <value>Energy Settings</value>
   </data>
   <data name="Export" xml:space="preserve">
     <value>Export Profile</value>
   </data>
   <data name="Extra" xml:space="preserve">
-    <value>Adicional</value>
+    <value>Extra</value>
   </data>
   <data name="ExtraSettings" xml:space="preserve">
-    <value>Configurações adicionais</value>
+    <value>Extra Settings</value>
   </data>
   <data name="FactoryDefaults" xml:space="preserve">
-    <value>Padrão de fábrica</value>
+    <value>Factory Defaults</value>
   </data>
   <data name="FanCurves" xml:space="preserve">
-    <value>Curvas das Ventoinhas</value>
+    <value>Fan Curves</value>
   </data>
   <data name="FanProfileCPU" xml:space="preserve">
-    <value>Perfil da Ventoinha do CPU</value>
+    <value>CPU Fan Profile</value>
   </data>
   <data name="FanProfileGPU" xml:space="preserve">
-    <value>Perfil da Ventoinha da GPU</value>
+    <value>GPU Fan Profile</value>
   </data>
   <data name="FanProfileMid" xml:space="preserve">
-    <value>Perfil da Ventoinha Central</value>
+    <value>Mid Fan Profile</value>
   </data>
   <data name="FanProfiles" xml:space="preserve">
-    <value>Perfis das Ventoinhas</value>
+    <value>Fan Profiles</value>
   </data>
   <data name="FansAndPower" xml:space="preserve">
-    <value>Ventoinhas e Potência</value>
+    <value>Fans and Power</value>
   </data>
   <data name="FanSpeed" xml:space="preserve">
     <value>Fan</value>
   </data>
   <data name="FansPower" xml:space="preserve">
-    <value>Ventoinhas + Potência</value>
+    <value>Fans + Power</value>
   </data>
   <data name="FlickerFreeDimming" xml:space="preserve">
     <value>Flicker-free Dimming</value>
   </data>
   <data name="FnLock" xml:space="preserve">
-    <value>Processar teclas de atalho Fn+F sem pressionar Fn</value>
+    <value>Process Fn+F hotkeys without Fn</value>
   </data>
   <data name="FnLockOff" xml:space="preserve">
     <value>FN-Lock Off</value>
@@ -432,43 +432,43 @@ Quer prosseguir?</value>
     <value>FN-Lock On</value>
   </data>
   <data name="GPUBoost" xml:space="preserve">
-    <value>Boost dinâmico</value>
+    <value>Dynamic Boost</value>
   </data>
   <data name="GPUChanging" xml:space="preserve">
-    <value>Carregando</value>
+    <value>Changing</value>
   </data>
   <data name="GPUCoreClockOffset" xml:space="preserve">
-    <value>Frequência da GPU</value>
+    <value>Core Clock Offset</value>
   </data>
   <data name="GPUMemoryClockOffset" xml:space="preserve">
-    <value>Frequência da Memória</value>
+    <value>Memory Clock Offset</value>
   </data>
   <data name="GPUMode" xml:space="preserve">
-    <value>Modo da GPU</value>
+    <value>GPU Mode</value>
   </data>
   <data name="GPUModeEco" xml:space="preserve">
-    <value>Só iGPU</value>
+    <value>iGPU only</value>
   </data>
   <data name="GPUModeStandard" xml:space="preserve">
     <value>iGPU + dGPU</value>
   </data>
   <data name="GPUModeUltimate" xml:space="preserve">
-    <value>Exclusivamente dGPU</value>
+    <value>dGPU exclusive</value>
   </data>
   <data name="GPUPower" xml:space="preserve">
     <value>GPU Power</value>
   </data>
   <data name="GPUSettings" xml:space="preserve">
-    <value>Parâmetros de GPU</value>
+    <value>GPU Settings</value>
   </data>
   <data name="GPUTempTarget" xml:space="preserve">
-    <value>Temperatura limite</value>
+    <value>Temperature Target</value>
   </data>
   <data name="HibernateAfter" xml:space="preserve">
-    <value>Minutos para a hibernação em suspensão, na bateria (0 - OFF)</value>
+    <value>Minutes till Hibernation in sleep on battery (0 - OFF)</value>
   </data>
   <data name="High" xml:space="preserve">
-    <value>Alto</value>
+    <value>High</value>
   </data>
   <data name="ImageRotation" xml:space="preserve">
     <value>Image Rotation</value>
@@ -477,34 +477,34 @@ Quer prosseguir?</value>
     <value>Import Profile</value>
   </data>
   <data name="KeyBindings" xml:space="preserve">
-    <value>Combinações de teclas</value>
+    <value>Key Bindings</value>
   </data>
   <data name="Keyboard" xml:space="preserve">
-    <value>Teclado</value>
+    <value>Keyboard</value>
   </data>
   <data name="KillGpuApps" xml:space="preserve">
-    <value>Parar todos os programas que usam a GPU ao alternar para o modo Eco</value>
+    <value>Stop all apps using GPU when switching to Eco</value>
   </data>
   <data name="LaptopBacklight" xml:space="preserve">
-    <value>Configurações de iluminação</value>
+    <value>Laptop Backlight</value>
   </data>
   <data name="LaptopKeyboard" xml:space="preserve">
-    <value>Teclado</value>
+    <value>Laptop Keyboard</value>
   </data>
   <data name="LaptopScreen" xml:space="preserve">
-    <value>Ecrã</value>
+    <value>Laptop Screen</value>
   </data>
   <data name="LEDStatusIndicators" xml:space="preserve">
     <value>LED Status Indicators</value>
   </data>
   <data name="Lid" xml:space="preserve">
-    <value>Tampa</value>
+    <value>Lid</value>
   </data>
   <data name="Lightbar" xml:space="preserve">
-    <value>Barra de Luz</value>
+    <value>Lightbar</value>
   </data>
   <data name="Lighting" xml:space="preserve">
-    <value>Iluminação</value>
+    <value>Lighting</value>
   </data>
   <data name="LockScreen" xml:space="preserve">
     <value>Lock Screen</value>
@@ -513,7 +513,7 @@ Quer prosseguir?</value>
     <value>Logo</value>
   </data>
   <data name="Low" xml:space="preserve">
-    <value>Baixo</value>
+    <value>Low</value>
   </data>
   <data name="LSDeadzones" xml:space="preserve">
     <value>Left Stick Deadzones</value>
@@ -522,49 +522,49 @@ Quer prosseguir?</value>
     <value>Left Trigger Deadzones</value>
   </data>
   <data name="MatrixAudio" xml:space="preserve">
-    <value>Visualizador de áudio</value>
+    <value>Audio Visualizer</value>
   </data>
   <data name="MatrixBanner" xml:space="preserve">
-    <value>Bandeira Binária</value>
+    <value>Binary Banner</value>
   </data>
   <data name="MatrixBright" xml:space="preserve">
-    <value>Brilho</value>
+    <value>Bright</value>
   </data>
   <data name="MatrixClock" xml:space="preserve">
-    <value>Relógio</value>
+    <value>Clock</value>
   </data>
   <data name="MatrixDim" xml:space="preserve">
-    <value>Escuro</value>
+    <value>Dim</value>
   </data>
   <data name="MatrixLogo" xml:space="preserve">
-    <value>Logo ROG</value>
+    <value>Rog Logo</value>
   </data>
   <data name="MatrixMedium" xml:space="preserve">
-    <value>Médio</value>
+    <value>Medium</value>
   </data>
   <data name="MatrixOff" xml:space="preserve">
-    <value>Desligado</value>
+    <value>Off</value>
   </data>
   <data name="MatrixPicture" xml:space="preserve">
-    <value>Imagem</value>
+    <value>Picture</value>
   </data>
   <data name="MaxRefreshTooltip" xml:space="preserve">
-    <value>Taxa de atualização máxima e menor latência</value>
+    <value>Max refresh rate for lower latency</value>
   </data>
   <data name="MinRefreshTooltip" xml:space="preserve">
-    <value>Taxa de atualização de 60Hz para poupar bateria</value>
+    <value>60Hz refresh rate to save battery</value>
   </data>
   <data name="Minute" xml:space="preserve">
-    <value>Minuto</value>
+    <value>Minute</value>
   </data>
   <data name="Minutes" xml:space="preserve">
-    <value>Minutos</value>
+    <value>Minutes</value>
   </data>
   <data name="MouseAngleSnapping" xml:space="preserve">
     <value>Angle Snapping</value>
   </data>
   <data name="MouseAutoPowerOff" xml:space="preserve">
-    <value>Desligar automaticamente após</value>
+    <value>Auto Power Off After</value>
   </data>
   <data name="MouseButtonResponse" xml:space="preserve">
     <value>Button Response</value>
@@ -573,16 +573,16 @@ Quer prosseguir?</value>
     <value>Import failed. Selected file is not a valid mouse profile or corrutpted.</value>
   </data>
   <data name="MouseLiftOffDistance" xml:space="preserve">
-    <value>Distância de Lift Off</value>
+    <value>Lift Off Distance</value>
   </data>
   <data name="MouseLowBatteryWarning" xml:space="preserve">
-    <value>Aviso de bateria fraca</value>
+    <value>Low Battery Warning at</value>
   </data>
   <data name="MousePerformance" xml:space="preserve">
-    <value>Desempenho do rato</value>
+    <value>Performance</value>
   </data>
   <data name="MouseSynchronize" xml:space="preserve">
-    <value>Sincronizar com o rato</value>
+    <value>Synchronize with mouse</value>
   </data>
   <data name="Multizone" xml:space="preserve">
     <value>Multi Zone</value>
@@ -594,19 +594,19 @@ Quer prosseguir?</value>
     <value>Muted</value>
   </data>
   <data name="MuteMic" xml:space="preserve">
-    <value>Desligar microfone</value>
+    <value>Mute Mic</value>
   </data>
   <data name="Never" xml:space="preserve">
-    <value>Nunca</value>
+    <value>Never</value>
   </data>
   <data name="NewUpdates" xml:space="preserve">
-    <value>Novas atualizações</value>
+    <value>New updates</value>
   </data>
   <data name="NoNewUpdates" xml:space="preserve">
-    <value>Sem novas atualizações</value>
+    <value>No new updates</value>
   </data>
   <data name="NotConnected" xml:space="preserve">
-    <value>Não conectado</value>
+    <value>Not Connected</value>
   </data>
   <data name="Off" xml:space="preserve">
     <value>Off</value>
@@ -618,58 +618,58 @@ Quer prosseguir?</value>
     <value>One Zone</value>
   </data>
   <data name="OpenGHelper" xml:space="preserve">
-    <value>Abrir G-Helper</value>
+    <value>Open G-Helper window</value>
   </data>
   <data name="Optimized" xml:space="preserve">
-    <value>Otimizado</value>
+    <value>Optimized</value>
   </data>
   <data name="OptimizedGPUTooltip" xml:space="preserve">
-    <value>Mudar para Eco em bateria, e mudar para Standard quando ligado à corrente</value>
+    <value>Switch to Eco on battery and to Standard when plugged in</value>
   </data>
   <data name="OptimizedUSBC" xml:space="preserve">
-    <value>Manter a GPU desativada ao usar um carregador USB-C no modo Otimizado</value>
+    <value>Keep GPU disabled on USB-C charger in Optimized mode</value>
   </data>
   <data name="Other" xml:space="preserve">
-    <value>Outro</value>
+    <value>Other</value>
   </data>
   <data name="Overdrive" xml:space="preserve">
     <value>Overdrive</value>
   </data>
   <data name="PerformanceMode" xml:space="preserve">
-    <value>Modo</value>
+    <value>Mode</value>
   </data>
   <data name="Peripherals" xml:space="preserve">
-    <value>Periféricos</value>
+    <value>Peripherals</value>
   </data>
   <data name="PictureGif" xml:space="preserve">
-    <value>Imagem / Gif</value>
+    <value>Picture / Gif</value>
   </data>
   <data name="PlayPause" xml:space="preserve">
-    <value>Reproduzir / Pausar</value>
+    <value>Play / Pause</value>
   </data>
   <data name="PollingRate" xml:space="preserve">
     <value>Polling Rate</value>
   </data>
   <data name="PowerLimits" xml:space="preserve">
-    <value>Limites de Potência</value>
+    <value>Power Limits</value>
   </data>
   <data name="PPTExperimental" xml:space="preserve">
-    <value>Os Limites de Potência são uma funcionalidade experimental. Use com cuidado!</value>
+    <value>Power Limits is an experimental feature. Use carefully and at your own risk!</value>
   </data>
   <data name="PrintScreen" xml:space="preserve">
-    <value>Captura de ecrã</value>
+    <value>PrintScreen</value>
   </data>
   <data name="Profile" xml:space="preserve">
-    <value>Perfil</value>
+    <value>Profile</value>
   </data>
   <data name="Quit" xml:space="preserve">
-    <value>Sair</value>
+    <value>Quit</value>
   </data>
   <data name="Reset" xml:space="preserve">
     <value>Reset</value>
   </data>
   <data name="RestartGPU" xml:space="preserve">
-    <value>Algum processo está a utilizar a dGPU, impedindo o modo Eco. Deixar o G-Helper tentar reiniciar a dGPU no gestor de dispositivos? (Proceda por sua conta e risco)</value>
+    <value>Something is using dGPU and preventing Eco mode. Let G-Helper try to restart dGPU in device manager? (Please proceed at your own risk)</value>
   </data>
   <data name="RPM" xml:space="preserve">
     <value>RPM</value>
@@ -681,64 +681,64 @@ Quer prosseguir?</value>
     <value>Right Trigger Deadzones</value>
   </data>
   <data name="RunOnStartup" xml:space="preserve">
-    <value>Executar ao iniciar</value>
+    <value>Run on Startup</value>
   </data>
   <data name="ScalingQuality" xml:space="preserve">
     <value>Scaling Quality</value>
   </data>
   <data name="ScreenPadDown" xml:space="preserve">
-    <value>Diminuir o brilho do ScreenPad</value>
+    <value>Screenpad Brightness Down</value>
   </data>
   <data name="ScreenPadUp" xml:space="preserve">
-    <value>Aumentar o brilho do ScreenPad</value>
+    <value>Screenpad Brightness Up</value>
   </data>
   <data name="Shutdown" xml:space="preserve">
-    <value>Desligar</value>
+    <value>Shutdown</value>
   </data>
   <data name="Silent" xml:space="preserve">
-    <value>Silencioso</value>
+    <value>Silent</value>
   </data>
   <data name="Sleep" xml:space="preserve">
-    <value>Hibernação</value>
+    <value>Sleep</value>
   </data>
   <data name="StandardGPUTooltip" xml:space="preserve">
-    <value>Liga o dGPU para uso padrão</value>
+    <value>Enables dGPU for standard use</value>
   </data>
   <data name="StandardMode" xml:space="preserve">
-    <value>Padrão</value>
+    <value>Standard</value>
   </data>
   <data name="Start" xml:space="preserve">
-    <value>Iniciar</value>
+    <value>Start</value>
   </data>
   <data name="StartingServices" xml:space="preserve">
-    <value>Iniciando os serviços</value>
+    <value>Starting Services</value>
   </data>
   <data name="StartupError" xml:space="preserve">
-    <value>Erro de inicialização</value>
+    <value>Startup Error</value>
   </data>
   <data name="Stop" xml:space="preserve">
-    <value>Parar</value>
+    <value>Stop</value>
   </data>
   <data name="StopGPUApps" xml:space="preserve">
-    <value>Parar programas que usem a GPU</value>
+    <value>Stop GPU Applications</value>
   </data>
   <data name="StoppingServices" xml:space="preserve">
-    <value>Parando os serviços</value>
+    <value>Stopping Services</value>
   </data>
   <data name="ToggleAura" xml:space="preserve">
-    <value>Alternar Aura</value>
+    <value>Toggle Aura</value>
   </data>
   <data name="ToggleClamshellMode" xml:space="preserve">
-    <value>Alternar automaticamente o Modo Clamshell</value>
+    <value>Auto Toggle Clamshell Mode</value>
   </data>
   <data name="ToggleFnLock" xml:space="preserve">
-    <value>Alternar Fn-Lock</value>
+    <value>Toggle Fn-Lock</value>
   </data>
   <data name="ToggleMiniled" xml:space="preserve">
-    <value>Alternar MiniLED (se suportado)</value>
+    <value>Toggle Miniled (if supported)</value>
   </data>
   <data name="ToggleScreen" xml:space="preserve">
-    <value>Alternar Ecrã</value>
+    <value>Toggle Screen</value>
   </data>
   <data name="ToggleTouchscreen" xml:space="preserve">
     <value>Toggle Touchscreen</value>
@@ -750,28 +750,28 @@ Quer prosseguir?</value>
     <value>Turbo</value>
   </data>
   <data name="TurnedOff" xml:space="preserve">
-    <value>Desligado</value>
+    <value>Turned off</value>
   </data>
   <data name="TurnOffOnBattery" xml:space="preserve">
-    <value>Desligar em bateria</value>
+    <value>Disable on battery</value>
   </data>
   <data name="UltimateGPUTooltip" xml:space="preserve">
-    <value>O ecrã do portátil está ligado diretamente à dGPU, maximizando FPS</value>
+    <value>Routes laptop screen to dGPU, maximizing FPS</value>
   </data>
   <data name="UltimateMode" xml:space="preserve">
     <value>Ultimate</value>
   </data>
   <data name="UndervoltingRisky" xml:space="preserve">
-    <value>Undervolting é uma funcionalidade experimental e arriscada. Se os valores aplicados foram baixos para o hardware, podem existir instabilidades, desligar e causar corrupção de dados. Caso queira, comece por valores pequenos no início, clique em Aplicar e teste o que funciona para o hardware.</value>
+    <value>Undervolting is an experimental and risky feature. If applied values are too low for your hardware, it can become unstable, shut down or cause data corruption. If you want to try - start from small values first, click Apply and test what works for you.</value>
   </data>
   <data name="Unmuted" xml:space="preserve">
     <value>Unmuted</value>
   </data>
   <data name="Updates" xml:space="preserve">
-    <value>Atualizações</value>
+    <value>Updates</value>
   </data>
   <data name="VersionLabel" xml:space="preserve">
-    <value>Versão</value>
+    <value>Version</value>
   </data>
   <data name="VibrationStrength" xml:space="preserve">
     <value>Vibration Strength</value>
@@ -786,16 +786,16 @@ Quer prosseguir?</value>
     <value>Visual Modes are not available when laptop screen is off</value>
   </data>
   <data name="VolumeDown" xml:space="preserve">
-    <value>Diminuir o volume</value>
+    <value>Volume Down</value>
   </data>
   <data name="VolumeMute" xml:space="preserve">
-    <value>Sem som</value>
+    <value>Volume Mute</value>
   </data>
   <data name="VolumeUp" xml:space="preserve">
-    <value>Aumentar o volume</value>
+    <value>Volume Up</value>
   </data>
   <data name="WindowTop" xml:space="preserve">
-    <value>Manter a janela do aplicativo sempre no topo</value>
+    <value>Keep app window always on top</value>
   </data>
   <data name="Zoom" xml:space="preserve">
     <value>Zoom</value>
