@@ -51,6 +51,8 @@ namespace GHelper.Display
         public const int DefaultColorTemp = 50;
 
         public static bool forceVisual = false;
+        public static bool skipGamut = false;
+
         static VisualControl()
         {
             brightnessTimer.Elapsed += BrightnessTimerTimer_Elapsed;
@@ -169,6 +171,7 @@ namespace GHelper.Display
 
         public static void SetGamut(int mode = -1)
         {
+            if (skipGamut) return;
             if (mode < 0) mode = (int)GetDefaultGamut();
 
             AppConfig.Set("gamut", mode);
@@ -197,8 +200,9 @@ namespace GHelper.Display
             if (whiteBalance != DefaultColorTemp && !init) ProcessHelper.RunAsAdmin();
 
             int? balance;
-            
-            switch (mode) {
+
+            switch (mode)
+            {
                 case SplendidCommand.Eyecare:
                     balance = 2;
                     break;
@@ -296,10 +300,23 @@ namespace GHelper.Display
             brightnessTimer.Start();
 
             Program.settingsForm.VisualiseBrightness();
+            //if (brightness < 100) ResetGamut();
 
             return _brightness;
         }
 
+        public static void ResetGamut()
+        {
+            int defaultGamut = (int)GetDefaultGamut();
+
+            if (AppConfig.Get("gamut") != defaultGamut)
+            {
+                skipGamut = true;
+                AppConfig.Set("gamut", defaultGamut);
+                Program.settingsForm.VisualiseGamut();
+                skipGamut = false;
+            }
+        }
 
 
         public static void SetGamma(int brightness = 100)

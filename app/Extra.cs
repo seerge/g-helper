@@ -423,6 +423,10 @@ namespace GHelper
             checkGPUFix.Checked = AppConfig.IsGPUFix();
             checkGPUFix.CheckedChanged += CheckGPUFix_CheckedChanged;
 
+            checkPerKeyRGB.Visible = AppConfig.IsPossible4ZoneRGB();
+            checkPerKeyRGB.Checked = AppConfig.Is("per_key_rgb");
+            checkPerKeyRGB.CheckedChanged += CheckPerKeyRGB_CheckedChanged;
+
             toolTip.SetToolTip(checkAutoToggleClamshellMode, "Disable sleep on lid close when plugged in and external monitor is connected");
 
             InitCores();
@@ -432,6 +436,11 @@ namespace GHelper
 
             InitACPITesting();
 
+        }
+
+        private void CheckPerKeyRGB_CheckedChanged(object? sender, EventArgs e)
+        {
+            AppConfig.Set("per_key_rgb", (checkPerKeyRGB.Checked ? 1 : 0));
         }
 
         private void CheckLEDStatus_CheckedChanged(object? sender, EventArgs e)

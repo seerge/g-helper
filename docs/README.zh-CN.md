@@ -12,6 +12,17 @@ G-helper兼容所有主流型号，例如 ROG 幻14、幻15、幻16、幻13、�
 
 # [:floppy_disk:下载应用](https://github.com/seerge/g-helper/releases/latest/download/GHelper.zip)
 
+<table>
+<tr>
+   <td><b>支持此项目</b></td>
+   <td >
+      <a href="https://bit.ly/4c0ZWs9"><img src="https://raw.githubusercontent.com/seerge/g-helper/main/docs/paypal.png" height="36" alt="PayPal"></a>&nbsp;
+      <a href="https://buy.stripe.com/bIY4hl8HbalH3G8bIJ"><img src="https://raw.githubusercontent.com/seerge/g-helper/main/docs/stripe.png" height="36" alt="Stripe"></a>&nbsp;
+      <a href="https://buy.stripe.com/bIY4hl8HbalH3G8bIJ"><img src="https://raw.githubusercontent.com/seerge/g-helper/main/docs/alipay.png" height="36" alt="Alipay"></a>
+   </td>
+</tr>
+</table>
+
 如果你喜欢这个应用，请[给这个项目⭐️](https://github.com/seerge/g-helper) 或者向别人推荐它！
 
 [常见问题解答(FAQ)](#常见问题解答)
@@ -19,8 +30,6 @@ G-helper兼容所有主流型号，例如 ROG 幻14、幻15、幻16、幻13、�
 [安装指南](#安装指南)
 
 [高级用户设置](#高级用户设置)
-
-### 通过paypal支持本项目：[:euro: EUR](https://www.paypal.com/donate/?hosted_button_id=4HMSHS4EBQWTA)或者[💵 USD](https://www.paypal.com/donate/?hosted_button_id=SRM6QUX6ACXDY) 
 
 [![G-Helper Download](https://github.com/pasical/g-helper/assets/112304778/03f442b9-29e8-4e99-a095-8eaa533c995b)](https://github.com/seerge/g-helper/releases/latest/download/GHelper.zip)
 

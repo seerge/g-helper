@@ -1,5 +1,4 @@
-﻿using GHelper.Helpers;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 
 namespace GHelper.Battery
 {
@@ -36,6 +35,12 @@ namespace GHelper.Battery
 
             if (limit < 0) limit = AppConfig.Get("charge_limit");
             if (limit < 40 || limit > 100) return;
+
+            if (AppConfig.IsChargeLimit6080())
+            {
+                if (limit > 80) limit = 100;
+                else if (limit < 60) limit = 60;
+            }
 
             Program.acpi.DeviceSet(AsusACPI.BatteryLimit, limit, "BatteryLimit");
 

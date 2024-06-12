@@ -322,7 +322,6 @@ namespace GHelper.Gpu
                         Program.acpi.DeviceSet(AsusACPI.GPUXG, 1, "GPU XGM");
 
                     InitXGM();
-
                     XGM.Light(AppConfig.Is("xmg_light"));
 
                     await Task.Delay(TimeSpan.FromSeconds(15));

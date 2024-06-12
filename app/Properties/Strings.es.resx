@@ -624,7 +624,7 @@
     <value>Optimizado</value>
   </data>
   <data name="OptimizedGPUTooltip" xml:space="preserve">
-    <value>Cambia a Eco con batería y a Estándar cuando está enchufado</value>
+    <value>Cambiar a Eco con batería y a Estándar cuando está enchufado</value>
   </data>
   <data name="OptimizedUSBC" xml:space="preserve">
     <value>Deshabilitar dGPU con cargador USB-C en modo Optimizado</value>
