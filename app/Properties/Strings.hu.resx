@@ -235,7 +235,7 @@
     <value>Görgetés</value>
   </data>
   <data name="AuraZoneUnderglow" xml:space="preserve">
-    <value>Underglow</value>
+    <value>Alsó világítás</value>
   </data>
   <data name="AutoApply" xml:space="preserve">
     <value>Automatikus alkalmazás</value>
@@ -346,7 +346,7 @@
     <value>Kontoller letiltása</value>
   </data>
   <data name="DisableOnLidClose" xml:space="preserve">
-    <value>Disable on lid close</value>
+    <value>Letiltása képernyő lehajtásakor</value>
   </data>
   <data name="DisableOverdrive" xml:space="preserve">
     <value>Képernyőtúlhajtás letiltása</value>
@@ -495,7 +495,7 @@ Do you still want to continue?</value>
     <value>Laptop kijelző</value>
   </data>
   <data name="LEDStatusIndicators" xml:space="preserve">
-    <value>LED Status Indicators</value>
+    <value>LED Állapotjelzők</value>
   </data>
   <data name="Lid" xml:space="preserve">
     <value>Fedél</value>
@@ -687,10 +687,10 @@ Do you still want to continue?</value>
     <value>Scaling Quality</value>
   </data>
   <data name="ScreenPadDown" xml:space="preserve">
-    <value>Screenpad Brightness Down</value>
+    <value>Screenpad fényerő csökkentése</value>
   </data>
   <data name="ScreenPadUp" xml:space="preserve">
-    <value>Screenpad Brightness Up</value>
+    <value>Screenpad fényerő növelése</value>
   </data>
   <data name="Shutdown" xml:space="preserve">
     <value>Leállítás</value>
