@@ -741,7 +741,7 @@ Trotzdem fortfahren?</value>
     <value>Bildschirm umschalten</value>
   </data>
   <data name="ToggleTouchscreen" xml:space="preserve">
-    <value>Toggle Touchscreen</value>
+    <value>Touchscreen umschalten</value>
   </data>
   <data name="Touchscreen" xml:space="preserve">
     <value/>

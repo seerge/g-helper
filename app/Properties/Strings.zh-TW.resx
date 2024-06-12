@@ -624,7 +624,7 @@
     <value>自動調節</value>
   </data>
   <data name="OptimizedGPUTooltip" xml:space="preserve">
-    <value>使用電池切換到整合式顯卡，插入電源時切換到獨立顯卡</value>
+    <value>使用電池時切換到，插入電源時切換到標準模式</value>
   </data>
   <data name="OptimizedUSBC" xml:space="preserve">
     <value>自動調節模式下，使用USB-C充電時持續關閉獨顯</value>

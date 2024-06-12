@@ -300,7 +300,7 @@ namespace GHelper.Display
             brightnessTimer.Start();
 
             Program.settingsForm.VisualiseBrightness();
-            if (brightness < 100) ResetGamut();
+            //if (brightness < 100) ResetGamut();
 
             return _brightness;
         }
