@@ -741,7 +741,7 @@ Nadal chcesz kontynuować?</value>
     <value>Przełącz ekran</value>
   </data>
   <data name="ToggleTouchscreen" xml:space="preserve">
-    <value>Toggle Touchscreen</value>
+    <value>Włącz/wyłącz ekran dotykowy</value>
   </data>
   <data name="Touchscreen" xml:space="preserve">
     <value/>
