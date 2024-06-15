@@ -430,6 +430,11 @@ public static class AppConfig
         return ContainsModel("Strix") || ContainsModel("Scar") || ContainsModel("G703G");
     }
 
+    public static bool IsAdvancedRGB()
+    {
+        return IsStrix() || ContainsModel("GX650");
+    }
+
     public static bool IsStrixLimitedRGB()
     {
         return ContainsModel("G512LI") || ContainsModel("G513R") || ContainsModel("G713PV") || ContainsModel("G513IE") || ContainsModel("G713RC") || ContainsModel("G513QM") || ContainsModel("G531G");
