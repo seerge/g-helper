@@ -354,34 +354,36 @@ namespace GHelper.USB
         public static void ApplyPower()
         {
 
+            bool onBattery = SystemInformation.PowerStatus.PowerLineStatus != PowerLineStatus.Online;
+
             AuraPower flags = new();
 
             // Keyboard
-            flags.AwakeKeyb = AppConfig.IsNotFalse("keyboard_awake");
+            flags.AwakeKeyb = onBattery ? AppConfig.IsOnBattery("keyboard_awake") : AppConfig.IsNotFalse("keyboard_awake");
             flags.BootKeyb = AppConfig.IsNotFalse("keyboard_boot");
             flags.SleepKeyb = AppConfig.IsNotFalse("keyboard_sleep");
             flags.ShutdownKeyb = AppConfig.IsNotFalse("keyboard_shutdown");
 
             // Logo
-            flags.AwakeLogo = AppConfig.IsNotFalse("keyboard_awake_logo");
+            flags.AwakeLogo = onBattery ? AppConfig.IsOnBattery("keyboard_awake_logo") : AppConfig.IsNotFalse("keyboard_awake_logo");
             flags.BootLogo = AppConfig.IsNotFalse("keyboard_boot_logo");
             flags.SleepLogo = AppConfig.IsNotFalse("keyboard_sleep_logo");
             flags.ShutdownLogo = AppConfig.IsNotFalse("keyboard_shutdown_logo");
 
             // Lightbar
-            flags.AwakeBar = AppConfig.IsNotFalse("keyboard_awake_bar");
+            flags.AwakeBar = onBattery ? AppConfig.IsOnBattery("keyboard_awake_bar") : AppConfig.IsNotFalse("keyboard_awake_bar");
             flags.BootBar = AppConfig.IsNotFalse("keyboard_boot_bar");
             flags.SleepBar = AppConfig.IsNotFalse("keyboard_sleep_bar");
             flags.ShutdownBar = AppConfig.IsNotFalse("keyboard_shutdown_bar");
 
             // Lid
-            flags.AwakeLid = AppConfig.IsNotFalse("keyboard_awake_lid");
+            flags.AwakeLid = onBattery ? AppConfig.IsOnBattery("keyboard_awake_lid") : AppConfig.IsNotFalse("keyboard_awake_lid");
             flags.BootLid = AppConfig.IsNotFalse("keyboard_boot_lid");
             flags.SleepLid = AppConfig.IsNotFalse("keyboard_sleep_lid");
             flags.ShutdownLid = AppConfig.IsNotFalse("keyboard_shutdown_lid");
 
             // Rear Bar
-            flags.AwakeRear = AppConfig.IsNotFalse("keyboard_awake_lid");
+            flags.AwakeRear = onBattery ? AppConfig.IsOnBattery("keyboard_awake_lid") : AppConfig.IsNotFalse("keyboard_awake_lid");
             flags.BootRear = AppConfig.IsNotFalse("keyboard_boot_lid");
             flags.SleepRear = AppConfig.IsNotFalse("keyboard_sleep_lid");
             flags.ShutdownRear = AppConfig.IsNotFalse("keyboard_shutdown_lid");

@@ -196,6 +196,11 @@ public static class AppConfig
         return Get(name) != 0;
     }
 
+    public static bool IsOnBattery(string zone)
+    {
+        return Get(zone + "_bat", Get(zone)) != 0;
+    }
+
     public static string GetString(string name, string empty = null)
     {
         if (config.ContainsKey(name))
