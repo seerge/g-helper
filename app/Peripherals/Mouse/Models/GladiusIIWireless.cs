@@ -96,7 +96,7 @@
 
         public override LightingZone[] SupportedLightingZones()
         {
-            return new LightingZone[] { LightingZone.Logo, LightingZone.Scrollwheel, LightingZone.Underglow };
+            return new LightingZone[] { LightingZone.Logo, LightingZone.Scrollwheel };
         }
 
         public override int DPIIncrements()
@@ -112,6 +112,17 @@
         public override int MaxBrightness()
         {
             return 4;
+        }
+
+        //Has 25% increments
+        protected override int ParseBattery(byte[] packet)
+        {
+            if (packet[1] == 0x12 && packet[2] == 0x07)
+            {
+                return packet[5] * 25;
+            }
+
+            return -1;
         }
 
         protected override byte[] GetUpdateLightingModePacket(LightingSetting lightingSetting, LightingZone zone)
@@ -152,6 +163,7 @@
 
             return base.GetUpdateLightingModePacket(lightingSetting, zone);
         }
+
 
         protected override byte[] GetReadLightingModePacket(LightingZone zone)
         {
