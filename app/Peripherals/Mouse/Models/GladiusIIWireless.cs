@@ -82,7 +82,7 @@
 
         public override bool HasDPIColors()
         {
-            return true;
+            return false;
         }
 
         public override bool IsLightingModeSupported(LightingMode lightingMode)
