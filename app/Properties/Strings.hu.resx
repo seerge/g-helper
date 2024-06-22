@@ -127,7 +127,7 @@
     <value>Restart your device to apply changes</value>
   </data>
   <data name="AlertAPUMemoryRestartTitle" xml:space="preserve">
-    <value>Restart now?</value>
+    <value>Újraindítás most?</value>
   </data>
   <data name="AlertDGPU" xml:space="preserve">
     <value>Úgy tűnik használatban van a GPU. Biztosan letiltod?</value>
@@ -235,7 +235,7 @@
     <value>Görgetés</value>
   </data>
   <data name="AuraZoneUnderglow" xml:space="preserve">
-    <value>Underglow</value>
+    <value>Alsó világítás</value>
   </data>
   <data name="AutoApply" xml:space="preserve">
     <value>Automatikus alkalmazás</value>
@@ -283,7 +283,7 @@
     <value>Akku állapot</value>
   </data>
   <data name="BatteryLimitFull" xml:space="preserve">
-    <value>One time charge to 100%</value>
+    <value>Egyszeri 100%-os feltöltés</value>
   </data>
   <data name="Binding" xml:space="preserve">
     <value>Binding</value>
@@ -313,7 +313,7 @@
     <value>Fényerő növelése</value>
   </data>
   <data name="BWTrayIcon" xml:space="preserve">
-    <value>Black and white tray icon</value>
+    <value>Fekete-fehér tálca ikon</value>
   </data>
   <data name="Calibrate" xml:space="preserve">
     <value>Kalibrálás</value>
@@ -325,10 +325,10 @@
     <value>Szín</value>
   </data>
   <data name="Contrast" xml:space="preserve">
-    <value>Contrast</value>
+    <value>Kontraszt</value>
   </data>
   <data name="Controller" xml:space="preserve">
-    <value>Controller</value>
+    <value>Kontroller</value>
   </data>
   <data name="CPUBoost" xml:space="preserve">
     <value>CPU gyorsítás</value>
@@ -343,10 +343,10 @@
     <value>Alapért.</value>
   </data>
   <data name="DisableController" xml:space="preserve">
-    <value>Disable Controller</value>
+    <value>Kontoller letiltása</value>
   </data>
   <data name="DisableOnLidClose" xml:space="preserve">
-    <value>Disable on lid close</value>
+    <value>Letiltása képernyő lehajtásakor</value>
   </data>
   <data name="DisableOverdrive" xml:space="preserve">
     <value>Képernyőtúlhajtás letiltása</value>
@@ -355,7 +355,7 @@
     <value>Merülés</value>
   </data>
   <data name="DownloadColorProfiles" xml:space="preserve">
-    <value>Download Color Profiles</value>
+    <value>Színprofilok letöltése</value>
   </data>
   <data name="DownloadUpdate" xml:space="preserve">
     <value>Letöltés</value>
@@ -384,7 +384,7 @@ Do you still want to continue?</value>
     <value>Energia beállítások</value>
   </data>
   <data name="Export" xml:space="preserve">
-    <value>Export Profile</value>
+    <value>Profil exportálása</value>
   </data>
   <data name="Extra" xml:space="preserve">
     <value>Extra</value>
@@ -420,16 +420,16 @@ Do you still want to continue?</value>
     <value>Venti + energia</value>
   </data>
   <data name="FlickerFreeDimming" xml:space="preserve">
-    <value>Flicker-free Dimming</value>
+    <value>Villogásmentes halványítás</value>
   </data>
   <data name="FnLock" xml:space="preserve">
     <value>Fn + F gyorsgombok feldolgozása Fn nélkül</value>
   </data>
   <data name="FnLockOff" xml:space="preserve">
-    <value>FN-Lock Off</value>
+    <value>Fn-Lock Ki</value>
   </data>
   <data name="FnLockOn" xml:space="preserve">
-    <value>FN-Lock On</value>
+    <value>Fn-Lock Be</value>
   </data>
   <data name="GPUBoost" xml:space="preserve">
     <value>Dinamikus gyorsítás</value>
@@ -474,7 +474,7 @@ Do you still want to continue?</value>
     <value>Image Rotation</value>
   </data>
   <data name="Import" xml:space="preserve">
-    <value>Import Profile</value>
+    <value>Profil importálása</value>
   </data>
   <data name="KeyBindings" xml:space="preserve">
     <value>Gyorsbillentyűk</value>
@@ -495,7 +495,7 @@ Do you still want to continue?</value>
     <value>Laptop kijelző</value>
   </data>
   <data name="LEDStatusIndicators" xml:space="preserve">
-    <value>LED Status Indicators</value>
+    <value>LED Állapotjelzők</value>
   </data>
   <data name="Lid" xml:space="preserve">
     <value>Fedél</value>
@@ -507,7 +507,7 @@ Do you still want to continue?</value>
     <value>Világítás</value>
   </data>
   <data name="LockScreen" xml:space="preserve">
-    <value>Lock Screen</value>
+    <value>Képernyő zarolása</value>
   </data>
   <data name="Logo" xml:space="preserve">
     <value>Logó</value>
@@ -591,7 +591,7 @@ Do you still want to continue?</value>
     <value>Multi Zone Strong</value>
   </data>
   <data name="Muted" xml:space="preserve">
-    <value>Muted</value>
+    <value>Mikrofon Ki</value>
   </data>
   <data name="MuteMic" xml:space="preserve">
     <value>Mikrofon némítása</value>
@@ -609,10 +609,10 @@ Do you still want to continue?</value>
     <value>Nincs csatlakoztatva</value>
   </data>
   <data name="Off" xml:space="preserve">
-    <value>Off</value>
+    <value>Ki</value>
   </data>
   <data name="On" xml:space="preserve">
-    <value>On</value>
+    <value>Be</value>
   </data>
   <data name="OneZone" xml:space="preserve">
     <value>One Zone</value>
@@ -687,10 +687,10 @@ Do you still want to continue?</value>
     <value>Scaling Quality</value>
   </data>
   <data name="ScreenPadDown" xml:space="preserve">
-    <value>Screenpad Brightness Down</value>
+    <value>Screenpad fényerő csökkentése</value>
   </data>
   <data name="ScreenPadUp" xml:space="preserve">
-    <value>Screenpad Brightness Up</value>
+    <value>Screenpad fényerő növelése</value>
   </data>
   <data name="Shutdown" xml:space="preserve">
     <value>Leállítás</value>
@@ -741,7 +741,7 @@ Do you still want to continue?</value>
     <value>Képernyő ki-/bekapcsolása</value>
   </data>
   <data name="ToggleTouchscreen" xml:space="preserve">
-    <value>Toggle Touchscreen</value>
+    <value>Érintőképernyő ki-/bekapcsolása</value>
   </data>
   <data name="Touchscreen" xml:space="preserve">
     <value/>
@@ -765,7 +765,7 @@ Do you still want to continue?</value>
     <value>Undervolting is an experimental and risky feature. If applied values are too low for your hardware, it can become unstable, shut down or cause data corruption. If you want to try - start from small values first, click Apply and test what works for you.</value>
   </data>
   <data name="Unmuted" xml:space="preserve">
-    <value>Unmuted</value>
+    <value>Mikrofon Be</value>
   </data>
   <data name="Updates" xml:space="preserve">
     <value>Frissítések</value>
@@ -777,7 +777,7 @@ Do you still want to continue?</value>
     <value>Vibration Strength</value>
   </data>
   <data name="VisualMode" xml:space="preserve">
-    <value>Visual Mode</value>
+    <value>Képernyőszín Mód</value>
   </data>
   <data name="VisualModesHDR" xml:space="preserve">
     <value>Visual Modes are not available when HDR is active</value>
