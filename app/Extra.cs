@@ -348,7 +348,7 @@ namespace GHelper
             checkSleepLogo.CheckedChanged += CheckPower_CheckedChanged;
             checkShutdownLogo.CheckedChanged += CheckPower_CheckedChanged;
 
-            if ((!AppConfig.IsStrix() && !AppConfig.IsZ13()) || AppConfig.IsStrixLimitedRGB() || AppConfig.IsARCNM())
+            if (!AppConfig.IsBacklightZones() || AppConfig.IsStrixLimitedRGB() || AppConfig.IsARCNM())
             {
 
                 if (!AppConfig.IsStrixLimitedRGB())
@@ -376,7 +376,7 @@ namespace GHelper
                 checkShutdownLogo.Visible = false;
             }
 
-            if (!AppConfig.IsStrix() && !AppConfig.IsZ13())
+            if (!AppConfig.IsBacklightZones())
             {
                 labelBacklightKeyboard.Visible = false;
                 checkBattery.Visible = false;
@@ -777,7 +777,7 @@ namespace GHelper
             AppConfig.Set("keyboard_sleep_logo", (checkSleepLogo.Checked ? 1 : 0));
             AppConfig.Set("keyboard_shutdown_logo", (checkShutdownLogo.Checked ? 1 : 0));
 
-            if (checkBattery.Visible)
+            if (AppConfig.IsBacklightZones())
             {
                 AppConfig.Set("keyboard_awake_bat", (checkBattery.Checked ? 1 : 0));
                 AppConfig.Set("keyboard_awake_bar_bat", (checkBatteryBar.Checked ? 1 : 0));
