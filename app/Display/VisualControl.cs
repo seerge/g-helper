@@ -98,14 +98,49 @@ namespace GHelper.Display
                 foreach (FileInfo icm in icms)
                 {
                     //Logger.WriteLine(icm.FullName);
-                    if (icm.Name.Contains("sRGB")) _modes.Add(isVivo ? SplendidGamut.VivoSRGB : SplendidGamut.sRGB, "Gamut: sRGB");
-                    if (icm.Name.Contains("DCIP3")) _modes.Add(isVivo ? SplendidGamut.VivoDCIP3 : SplendidGamut.DCIP3, "Gamut: DCIP3");
-                    if (icm.Name.Contains("DisplayP3")) _modes.Add(isVivo ? SplendidGamut.ViviDisplayP3 : SplendidGamut.DisplayP3, "Gamut: DisplayP3");
+                    
+                    if (icm.Name.Contains("sRGB"))
+                    {
+                        try
+                        {
+                            _modes.Add(isVivo ? SplendidGamut.VivoSRGB : SplendidGamut.sRGB, "Gamut: sRGB");
+                            Logger.WriteLine(icm.FullName + " sRGB");
+                        }
+                        catch 
+                        {
+                        }
+                    }
+
+                    if (icm.Name.Contains("DCIP3"))
+                    {
+                        try
+                        {
+                            _modes.Add(isVivo ? SplendidGamut.VivoDCIP3 : SplendidGamut.DCIP3, "Gamut: DCIP3");
+                            Logger.WriteLine(icm.FullName + " DCIP3");
+                        }
+                        catch
+                        {
+                        }
+                    }
+
+                    if (icm.Name.Contains("DisplayP3"))
+                    {
+                        try
+                        {
+                            _modes.Add(isVivo ? SplendidGamut.ViviDisplayP3 : SplendidGamut.DisplayP3, "Gamut: DisplayP3");
+                            Logger.WriteLine(icm.FullName + " DisplayP3");
+                        }
+                        catch
+                        {
+                        }
+                    }
                 }
                 return _modes;
             }
-            catch
+            catch (Exception ex)
             {
+                //Logger.WriteLine(ex.Message);
+                Logger.WriteLine(ex.ToString());
                 return _modes;
             }
 
