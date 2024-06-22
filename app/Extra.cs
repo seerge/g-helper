@@ -783,13 +783,7 @@ namespace GHelper
                 AppConfig.Set("keyboard_awake_bar_bat", (checkBatteryBar.Checked ? 1 : 0));
                 AppConfig.Set("keyboard_awake_lid_bat", (checkBatteryLid.Checked ? 1 : 0));
                 AppConfig.Set("keyboard_awake_logo_bat", (checkBatteryLogo.Checked ? 1 : 0));
-            } else
-            {
-                AppConfig.Remove("keyboard_awake_bat");
-                AppConfig.Remove("keyboard_awake_bar_bat");
-                AppConfig.Remove("keyboard_awake_lid_bat");
-                AppConfig.Remove("keyboard_awake_logo_bat");
-            }
+            } 
 
             Aura.ApplyPower();
 
