@@ -791,30 +791,35 @@ namespace GHelper
             tableBacklight.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
             tableBacklight.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
             tableBacklight.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
-            tableBacklight.Controls.Add(checkBatteryLogo, 0, 5);
-            tableBacklight.Controls.Add(checkBattery, 0, 5);
-            tableBacklight.Controls.Add(checkBatteryLid, 0, 5);
-            tableBacklight.Controls.Add(checkBatteryBar, 0, 5);
+
             tableBacklight.Controls.Add(labelBacklightKeyboard, 0, 0);
             tableBacklight.Controls.Add(checkAwake, 0, 1);
             tableBacklight.Controls.Add(checkBoot, 0, 2);
             tableBacklight.Controls.Add(checkSleep, 0, 3);
             tableBacklight.Controls.Add(checkShutdown, 0, 4);
+            tableBacklight.Controls.Add(checkBattery, 0, 5);
+
             tableBacklight.Controls.Add(labelBacklightLogo, 1, 0);
             tableBacklight.Controls.Add(checkAwakeLogo, 1, 1);
             tableBacklight.Controls.Add(checkBootLogo, 1, 2);
             tableBacklight.Controls.Add(checkSleepLogo, 1, 3);
             tableBacklight.Controls.Add(checkShutdownLogo, 1, 4);
+            tableBacklight.Controls.Add(checkBatteryLogo, 1, 5);
+
             tableBacklight.Controls.Add(labelBacklightBar, 2, 0);
             tableBacklight.Controls.Add(checkAwakeBar, 2, 1);
             tableBacklight.Controls.Add(checkBootBar, 2, 2);
             tableBacklight.Controls.Add(checkSleepBar, 2, 3);
             tableBacklight.Controls.Add(checkShutdownBar, 2, 4);
+            tableBacklight.Controls.Add(checkBatteryBar, 2, 5);
+
             tableBacklight.Controls.Add(labelBacklightLid, 3, 0);
             tableBacklight.Controls.Add(checkAwakeLid, 3, 1);
             tableBacklight.Controls.Add(checkBootLid, 3, 2);
             tableBacklight.Controls.Add(checkSleepLid, 3, 3);
             tableBacklight.Controls.Add(checkShutdownLid, 3, 4);
+            tableBacklight.Controls.Add(checkBatteryLid, 3, 5);
+
             tableBacklight.Dock = DockStyle.Top;
             tableBacklight.Location = new Point(0, 5);
             tableBacklight.Margin = new Padding(0);
