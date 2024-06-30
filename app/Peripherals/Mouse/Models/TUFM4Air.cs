@@ -30,7 +30,7 @@
 
         public override int ProfileCount()
         {
-            return 1;
+            return 3;
         }
         public override int MaxDPI()
         {

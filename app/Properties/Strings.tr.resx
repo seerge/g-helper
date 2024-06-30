@@ -585,10 +585,10 @@ Yine de devam etmek istiyor musunuz?</value>
     <value>Fare ile eşitle</value>
   </data>
   <data name="Multizone" xml:space="preserve">
-    <value>Çok Bölgeli</value>
+    <value>Çoklu Bölge</value>
   </data>
   <data name="MultizoneStrong" xml:space="preserve">
-    <value>Çok Bölgeli (Güçlü)</value>
+    <value>Çoklu Bölge Güçlü</value>
   </data>
   <data name="Muted" xml:space="preserve">
     <value>Susturuldu</value>
@@ -615,7 +615,7 @@ Yine de devam etmek istiyor musunuz?</value>
     <value>Açık</value>
   </data>
   <data name="OneZone" xml:space="preserve">
-    <value>Tek Bölgeli</value>
+    <value>Tek Bölge</value>
   </data>
   <data name="OpenGHelper" xml:space="preserve">
     <value>G-Helper penceresini aç</value>
@@ -624,7 +624,7 @@ Yine de devam etmek istiyor musunuz?</value>
     <value>İyileştirilmiş</value>
   </data>
   <data name="OptimizedGPUTooltip" xml:space="preserve">
-    <value>Pilde çalışırken Eco moda, fişe takılıyken Standart moda geçin</value>
+    <value>Pil ile çalışırken Eco moda, Elektrik ile Standart moda geçilir</value>
   </data>
   <data name="OptimizedUSBC" xml:space="preserve">
     <value>İyileştirilmiş modda USB-C şarj cihazı bağlıyken, GPU devre dışı kalsın</value>
@@ -726,16 +726,16 @@ Yine de devam etmek istiyor musunuz?</value>
     <value>Hizmetler Durduruluyor</value>
   </data>
   <data name="ToggleAura" xml:space="preserve">
-    <value>Aura'yı Kullan</value>
+    <value>Aura Değiştir</value>
   </data>
   <data name="ToggleClamshellMode" xml:space="preserve">
     <value>Otomatik Clamshell Modunu Aç</value>
   </data>
   <data name="ToggleFnLock" xml:space="preserve">
-    <value>Fn-Lock'u Aç</value>
+    <value>Fn-Lock Değiştir</value>
   </data>
   <data name="ToggleMiniled" xml:space="preserve">
-    <value>Miniled'i Aç (destekliyorsa)</value>
+    <value>Miniled Değiştir (destekleniyorsa)</value>
   </data>
   <data name="ToggleScreen" xml:space="preserve">
     <value>Ekranı Değiştir</value>
@@ -756,7 +756,7 @@ Yine de devam etmek istiyor musunuz?</value>
     <value>Pille çalışırken kapat</value>
   </data>
   <data name="UltimateGPUTooltip" xml:space="preserve">
-    <value>Dizüstü ekranını dGPU üstüne yönlendirerek FPS en üst düzeye çıkar</value>
+    <value>Dizüstü ekranı doğrudan dGPU üstünden çalışır FPS artar</value>
   </data>
   <data name="UltimateMode" xml:space="preserve">
     <value>Ultimate</value>
