@@ -190,11 +190,13 @@ namespace GHelper.Peripherals
             DetectMouse(new GladiusIIOrigin());
             DetectMouse(new GladiusIIOriginPink());
             DetectMouse(new GladiusII());
+            DetectMouse(new GladiusIIWireless());
             DetectMouse(new ROGKerisWireless());
             DetectMouse(new ROGKerisWirelessWired());
             DetectMouse(new ROGKeris());
             DetectMouse(new ROGKerisWirelessEvaEdition());
             DetectMouse(new ROGKerisWirelessEvaEditionWired());
+            DetectMouse(new TUFM4Air());
             DetectMouse(new TUFM4Wirelss());
             DetectMouse(new TUFM4WirelssCN());
             DetectMouse(new StrixImpactIIWireless());
