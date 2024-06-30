@@ -130,5 +130,40 @@
             return 100;
         }
 
+        public override int MaxDPI()
+        {
+            return 8_000;
+        }
+
+        public override int MinDPI()
+        {
+            return 100;
+        }
+
+        public override int DPIIncrements()
+        {
+            return 50;
+        }
+
+        public override bool HasDPIColors()
+        {
+            return true;
+        }
+
+        protected override int ParseDPIProfile(byte[] packet)
+        {
+            return base.ParseDPIProfile(packet) + 1;
+        }
+
+        protected override byte[] GetChangeDPIProfilePacket(int profile)
+        {
+            return new byte[] { reportId, 0x51, 0x31, 0x0A, 0x00, 0x04 };
+        }
+
+        protected override byte[] GetChangeDPIProfilePacket2(int profile)
+        {
+            return new byte[] { reportId, 0x51, 0x31, 0x09, 0x00, (byte)(profile - 1) };
+        }
+
     }
 }
