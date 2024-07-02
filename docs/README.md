@@ -103,6 +103,7 @@ Each BIOS mode is paired with matching Windows Power Mode. You can adjust this s
 - ROG Chakram X (P708)
 - ROG Chakram Core (P511)
 - ROG Gladius II and Gladius II Origin (P502 and P504)
+- ROG Gladius II Wireless
 - ROG Gladius III
 - ROG Gladius III Wireless
 - ROG Harpe Ace Aim Lab Edition
@@ -116,6 +117,7 @@ Each BIOS mode is paired with matching Windows Power Mode. You can adjust this s
 - TUF Gaming M4 Wireless (P306)
 - TUF Gaming M3
 - TUF Gaming M3 Gen II
+- TUF Gaming M4 AIR
 
 Huge thanks to [@IceStormNG](https://github.com/IceStormNG) 👑 for contribution and research (!).
 
