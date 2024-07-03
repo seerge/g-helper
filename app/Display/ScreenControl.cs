@@ -10,17 +10,27 @@ namespace GHelper.Display
 
         public void AutoScreen(bool force = false)
         {
+            int frequency = -1;
+            int overdrive = -1;
             if (force || AppConfig.Is("screen_auto"))
             {
                 if (SystemInformation.PowerStatus.PowerLineStatus == PowerLineStatus.Online)
-                    SetScreen(MAX_REFRESH, 1);
+                {
+                    frequency = MAX_REFRESH;
+                    overdrive = 1;
+                }
                 else
-                    SetScreen(60, 0);
+                {
+                    frequency = 60;
+                    overdrive = 0;
+                }
             }
             else
             {
-                SetScreen(overdrive: AppConfig.Get("overdrive"));
+                overdrive = AppConfig.Get("overdrive");
             }
+
+            SetScreen(frequency, overdrive, AppConfig.Get("miniled"));
         }
 
         public void ToggleScreenRate()
