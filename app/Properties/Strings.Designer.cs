@@ -79,6 +79,15 @@ namespace GHelper.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Aggressively reapply MiniLed.
+        /// </summary>
+        internal static string AggressivelyReapplyMiniLed {
+            get {
+                return ResourceManager.GetString("AggressivelyReapplyMiniLed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Restart your device to apply changes.
         /// </summary>
         internal static string AlertAPUMemoryRestart {
@@ -1575,7 +1584,7 @@ namespace GHelper.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Switch to Eco on battery and to Standard when plugged.
+        ///   Looks up a localized string similar to Switch to Eco on battery and to Standard when plugged in.
         /// </summary>
         internal static string OptimizedGPUTooltip {
             get {

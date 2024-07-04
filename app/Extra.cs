@@ -439,6 +439,8 @@ namespace GHelper
             checkPerKeyRGB.Checked = AppConfig.Is("per_key_rgb");
             checkPerKeyRGB.CheckedChanged += CheckPerKeyRGB_CheckedChanged;
 
+            checkAggressiveMiniLed.CheckedChanged += CheckAggressiveMiniLed_CheckedChanged;
+
             toolTip.SetToolTip(checkAutoToggleClamshellMode, "Disable sleep on lid close when plugged in and external monitor is connected");
 
             InitCores();
@@ -448,6 +450,11 @@ namespace GHelper
 
             InitACPITesting();
 
+        }
+
+        private void CheckAggressiveMiniLed_CheckedChanged(object? sender, EventArgs e)
+        {
+            AppConfig.Set("aggressively_set_miniled", (checkAggressiveMiniLed.Checked ? 1 : 0));
         }
 
         private void CheckPerKeyRGB_CheckedChanged(object? sender, EventArgs e)

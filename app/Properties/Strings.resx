@@ -800,4 +800,7 @@ Do you still want to continue?</value>
   <data name="Zoom" xml:space="preserve">
     <value>Zoom</value>
   </data>
+  <data name="AggressivelyReapplyMiniLed" xml:space="preserve">
+    <value>Aggressively reapply MiniLed</value>
+  </data>
 </root>

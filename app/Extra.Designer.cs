@@ -143,6 +143,7 @@ namespace GHelper
             checkBatteryLid = new CheckBox();
             checkBattery = new CheckBox();
             checkBatteryLogo = new CheckBox();
+            checkAggressiveMiniLed = new CheckBox();
             panelServices.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureService).BeginInit();
             panelBindingsHeader.SuspendLayout();
@@ -1141,6 +1142,7 @@ namespace GHelper
             panelSettings.AccessibleRole = AccessibleRole.Grouping;
             panelSettings.AutoSize = true;
             panelSettings.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            panelSettings.Controls.Add(checkAggressiveMiniLed);
             panelSettings.Controls.Add(checkAutoToggleClamshellMode);
             panelSettings.Controls.Add(checkBWIcon);
             panelSettings.Controls.Add(checkTopmost);
@@ -1302,6 +1304,18 @@ namespace GHelper
             checkPerKeyRGB.Text = "Per-Key RGB Keyboard";
             checkPerKeyRGB.UseVisualStyleBackColor = true;
             checkPerKeyRGB.Visible = false;
+            // checkAggressiveMiniLed
+            // 
+            checkAggressiveMiniLed.AutoSize = true;
+            checkAggressiveMiniLed.Dock = DockStyle.Top;
+            checkAggressiveMiniLed.Location = new Point(10, 255);
+            checkAggressiveMiniLed.Margin = new Padding(4, 3, 4, 3);
+            checkAggressiveMiniLed.Name = "checkAggressiveMiniLed";
+            checkAggressiveMiniLed.Padding = new Padding(3);
+            checkAggressiveMiniLed.Size = new Size(550, 23);
+            checkAggressiveMiniLed.TabIndex = 14;
+            checkAggressiveMiniLed.Text = Strings.AggressivelyReapplyMiniLed;
+            checkAggressiveMiniLed.UseVisualStyleBackColor = true;
             // 
             // panelPower
             // 
@@ -1792,5 +1806,6 @@ namespace GHelper
         private CheckBox checkBattery;
         private CheckBox checkBatteryLid;
         private CheckBox checkBatteryBar;
+        private CheckBox checkAggressiveMiniLed;
     }
 }

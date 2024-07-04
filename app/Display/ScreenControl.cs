@@ -12,6 +12,7 @@ namespace GHelper.Display
         {
             int frequency = -1;
             int overdrive = -1;
+            int miniled = -1;
             if (force || AppConfig.Is("screen_auto"))
             {
                 if (SystemInformation.PowerStatus.PowerLineStatus == PowerLineStatus.Online)
@@ -30,7 +31,12 @@ namespace GHelper.Display
                 overdrive = AppConfig.Get("overdrive");
             }
 
-            SetScreen(frequency, overdrive, AppConfig.Get("miniled"));
+            if (AppConfig.Is("aggressively_set_miniled"))
+            {
+                miniled = AppConfig.Get("miniled");
+            }
+
+            SetScreen(frequency, overdrive, miniled);
         }
 
         public void ToggleScreenRate()
