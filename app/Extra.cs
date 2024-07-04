@@ -439,6 +439,7 @@ namespace GHelper
             checkPerKeyRGB.Checked = AppConfig.Is("per_key_rgb");
             checkPerKeyRGB.CheckedChanged += CheckPerKeyRGB_CheckedChanged;
 
+            checkAggressiveMiniLed.Checked = AppConfig.Is("aggressively_set_miniled");
             checkAggressiveMiniLed.CheckedChanged += CheckAggressiveMiniLed_CheckedChanged;
 
             toolTip.SetToolTip(checkAutoToggleClamshellMode, "Disable sleep on lid close when plugged in and external monitor is connected");
