@@ -683,6 +683,11 @@ namespace GHelper
                 }
                 m.Result = (IntPtr)1;
             }
+            else if (m.Msg == NativeMethods.WM_DISPLAYCHANGE)
+            {
+                Logger.WriteLine("Display Changed");
+                screenControl.AutoScreen();
+            }
 
             try
             {

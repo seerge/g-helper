@@ -65,6 +65,7 @@ public class NativeMethods
     internal const uint DEVICE_NOTIFY_WINDOW_HANDLE = 0x0;
     internal const uint DEVICE_NOTIFY_SERVICE_HANDLE = 0x1;
     internal const int WM_POWERBROADCAST = 0x0218;
+    internal const int WM_DISPLAYCHANGE = 0x7E;
     internal const int PBT_POWERSETTINGCHANGE = 0x8013;
 
     [DllImport("User32.dll", SetLastError = true)]
