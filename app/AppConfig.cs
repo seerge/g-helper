@@ -659,7 +659,7 @@ public static class AppConfig
 
     public static bool IsForceMiniled()
     {
-        return ContainsModel("G843JYR") || Is("force_miniled");
+        return ContainsModel("G834JYR") || Is("force_miniled");
     }
 
 }
