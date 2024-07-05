@@ -71,18 +71,6 @@
     <Content Include="Resources\eco.ico">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\icons8-charging-battery-48.png">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\icons8-laptop-48.png">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\icons8-speed-48.png">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\icons8-video-card-48.png">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Content>
     <Content Include="Resources\ultimate.ico">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Content>
