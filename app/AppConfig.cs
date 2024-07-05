@@ -657,4 +657,9 @@ public static class AppConfig
         return IsSlash() || ContainsModel("JIR") || ContainsModel("JZR") || ContainsModel("JVR") || ContainsModel("JYR") || ContainsModel("FA607P") || ContainsModel("FX607J") || ContainsModel("FA507U");
     }
 
+    public static bool IsForceMiniled()
+    {
+        return ContainsModel("G843JYR") || Is("force_miniled");
+    }
+
 }

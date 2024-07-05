@@ -108,6 +108,9 @@ namespace GHelper.Helpers
             if (Program.settingsForm.Visible)
                 Program.screenControl.InitScreen();
 
+            if (AppConfig.IsForceMiniled()) 
+                Program.screenControl.InitMiniled();
+
         }
 
         private static int CheckAndSaveLidAction()
