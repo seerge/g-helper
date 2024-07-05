@@ -1,13 +1,13 @@
 ﻿namespace GHelper.Peripherals.Mouse.Models
 {
-    //P709_Wireless
-    public class KerisIIAce : AsusMouse
+
+    public class KerisIIAceWired : AsusMouse
     {
-        public KerisIIAce() : base(0x0B05, 0x1B16, "mi_00", true)
+        public KerisIIAceWired() : base(0x0B05, 0x1B16, "mi_00", true)
         {
         }
 
-        protected KerisIIAce(ushort vendorId, bool wireless) : base(0x0B05, vendorId, "mi_00", wireless)
+        protected KerisIIAceWired(ushort vendorId, bool wireless) : base(0x0B05, vendorId, "mi_00", wireless)
         {
         }
 
@@ -47,6 +47,11 @@
         }
 
         public override bool HasRGB()
+        {
+            return true;
+        }
+
+        public override bool HasXYDPI()
         {
             return true;
         }
@@ -101,9 +106,11 @@
     }
 
     /*
-    public class KerisIIAceWired : KerisIIAce
+     * 
+    Mouse uses Omni Reciever
+    public class KerisIIAce : KerisIIAce
     {
-        public KerisIIAceWired() : base(0xAAAA, false)
+        public KerisIIAce() : base(0xAAAA, false)
         {
         }
 
