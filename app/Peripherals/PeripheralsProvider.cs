@@ -214,6 +214,7 @@ namespace GHelper.Peripherals
             DetectMouse(new TUFM5());
             DetectMouse(new KerisWirelssAimpoint());
             DetectMouse(new KerisWirelssAimpointWired());
+            DetectMouse(new KerisIIAce());
             DetectMouse(new PugioII());
             DetectMouse(new PugioIIWired());
             DetectMouse(new StrixImpactII());
