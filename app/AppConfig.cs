@@ -418,7 +418,7 @@ public static class AppConfig
 
     public static bool IsOLED()
     {
-        return ContainsModel("OLED") || IsSlash() || ContainsModel("M7600") || ContainsModel("UX64") || ContainsModel("UX34") || ContainsModel("UX53") || ContainsModel("K360") || ContainsModel("X150") || ContainsModel("M350") || ContainsModel("K650") || ContainsModel("UM53") || ContainsModel("K660") || ContainsModel("UX84") || ContainsModel("M650") || ContainsModel("K340") || ContainsModel("K350") || ContainsModel("M140") || ContainsModel("UM340") || ContainsModel("S540");
+        return ContainsModel("OLED") || IsSlash() || ContainsModel("M7600") || ContainsModel("UX64") || ContainsModel("UX34") || ContainsModel("UX53") || ContainsModel("K360") || ContainsModel("X150") || ContainsModel("M350") || ContainsModel("K650") || ContainsModel("UM53") || ContainsModel("K660") || ContainsModel("UX84") || ContainsModel("M650") || ContainsModel("K340") || ContainsModel("K350") || ContainsModel("M140") || ContainsModel("UM340") || ContainsModel("S540") || ContainsModel("M7400");
     }
 
     public static bool IsNoOverdrive()
@@ -666,6 +666,11 @@ public static class AppConfig
     public static bool IsDynamicLighting()
     {
         return IsSlash() || ContainsModel("JIR") || ContainsModel("JZR") || ContainsModel("JVR") || ContainsModel("JYR") || ContainsModel("FA607P") || ContainsModel("FX607J") || ContainsModel("FA507U");
+    }
+
+    public static bool IsForceMiniled()
+    {
+        return ContainsModel("G834JYR") || Is("force_miniled");
     }
 
 }

@@ -7,6 +7,7 @@ Small and lightweight Armoury Crate alternative for Asus laptops offering almost
 Works with all popular models, such as ROG Zephyrus G14, G15, G16, M16, Flow X13, Flow X16, Flow Z13, TUF Series, Strix / Scar Series, ProArt, Vivobook, Zenbook, ROG Ally and many more! 
 
 # [:floppy_disk:Download](https://github.com/seerge/g-helper/releases/latest/download/GHelper.zip)
+**⭐ If you like the app - please spread the word about it online**
 
 <table>
 <tr>
@@ -103,6 +104,7 @@ Each BIOS mode is paired with matching Windows Power Mode. You can adjust this s
 - ROG Chakram X (P708)
 - ROG Chakram Core (P511)
 - ROG Gladius II and Gladius II Origin (P502 and P504)
+- ROG Gladius II Wireless
 - ROG Gladius III
 - ROG Gladius III Wireless
 - ROG Harpe Ace Aim Lab Edition
@@ -116,6 +118,7 @@ Each BIOS mode is paired with matching Windows Power Mode. You can adjust this s
 - TUF Gaming M4 Wireless (P306)
 - TUF Gaming M3
 - TUF Gaming M3 Gen II
+- TUF Gaming M4 AIR
 
 Huge thanks to [@IceStormNG](https://github.com/IceStormNG) 👑 for contribution and research (!).
 
@@ -169,6 +172,6 @@ The role of G-Helper for your laptop is similar to the role of a remote control 
 - [AsusCtl](https://gitlab.com/asus-linux/asusctl) for inspiration and some reverse engineering
 
 ### Disclaimers
-"ROG", "TUF", and "Armoury Crate" are trademarked by and belong to AsusTek Computer, Inc. I make no claims to these or any assets belonging to AsusTek Computer and use them purely for informational purposes only.
+"Asus", "ROG", "TUF", and "Armoury Crate" are trademarked by and belong to AsusTek Computer, Inc. I make no claims to these or any assets belonging to AsusTek Computer and use them purely for informational purposes only.
 
 THE SOFTWARE IS PROVIDED “AS IS” AND WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. MISUSE OF THIS SOFTWARE COULD CAUSE SYSTEM INSTABILITY OR MALFUNCTION.
