@@ -108,17 +108,19 @@ Each BIOS mode is paired with matching Windows Power Mode. You can adjust this s
 - ROG Gladius III
 - ROG Gladius III Wireless
 - ROG Harpe Ace Aim Lab Edition
-- ROG Keris (P509)
 - ROG Keris Wireless
+- ROG Keris II Ace
 - ROG Strix Carry (P508)
 - ROG Strix III Gladius III Aimpoint Wireless (P711)
 - ROG Strix Impact III (P518)
 - ROG Spatha
 - ROG Strix Impact II Wireless
+- ROG Pugio
 - TUF Gaming M4 Wireless (P306)
 - TUF Gaming M3
 - TUF Gaming M3 Gen II
 - TUF Gaming M4 AIR
+- TX Gaming Mini
 
 Huge thanks to [@IceStormNG](https://github.com/IceStormNG) 👑 for contribution and research (!).
 
