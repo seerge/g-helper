@@ -226,6 +226,8 @@ namespace GHelper.Peripherals
             DetectMouse(new StrixCarry());
             DetectMouse(new StrixImpactIII());
             DetectMouse(new StrixImpact());
+            DetectMouse(new TXGamingMini());
+            DetectMouse(new TXGamingMiniWired());
         }
 
         public static void DetectMouse(AsusMouse am)

@@ -7,7 +7,7 @@
         {
         }
 
-        public TUFM4Wirelss(ushort productId) : base(0x0B05, productId, "mi_00", true)
+        public TUFM4Wirelss(ushort productId, bool wireless) : base(0x0B05, productId, "mi_00", wireless)
         {
         }
 
@@ -90,7 +90,7 @@
     //P310
     public class TUFM4WirelssCN : TUFM4Wirelss
     {
-        public TUFM4WirelssCN() : base(0x1A8D)
+        public TUFM4WirelssCN() : base(0x1A8D, true)
         {
 
         }
@@ -100,5 +100,42 @@
         {
             return "TX GAMING MOUSE (Wireless)";
         }
+    }
+
+    //P519_Wireless
+    public class TXGamingMini : TUFM4Wirelss
+    {
+        public TXGamingMini() : base(0x1AF5, true)
+        {
+        }
+
+        public TXGamingMini(ushort productId, bool wireless) : base(productId, wireless)
+        {
+        }
+
+        public override string GetDisplayName()
+        {
+            return "TX GAMING MOUSE Mini (Wireless)";
+        }
+
+        public override bool HasXYDPI()
+        {
+            return true;
+        }
+
+    }
+
+    //P519_Wired
+    public class TXGamingMiniWired : TXGamingMini
+    {
+        public TXGamingMiniWired() : base(0x1AF3, false)
+        {
+        }
+
+        public override string GetDisplayName()
+        {
+            return "TX GAMING MOUSE Mini (Wired)";
+        }
+
     }
 }
