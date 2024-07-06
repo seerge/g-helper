@@ -42,11 +42,6 @@
             return true;
         }
 
-        public override bool HasDebounceSetting()
-        {
-            return true;
-        }
-
         public override bool HasAngleSnapping()
         {
             return true;
@@ -62,19 +57,9 @@
             return false;
         }
 
-        public override bool HasDPIColors()
-        {
-            return false;
-        }
-
         public override int DPIIncrements()
         {
             return 100;
-        }
-
-        public override bool CanChangeDPIProfile()
-        {
-            return true;
         }
     }
 

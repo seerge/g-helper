@@ -60,6 +60,13 @@ namespace GHelper.Display
                 }
             }
 
+            SetMiniled(miniled);
+
+            InitScreen();
+        }
+
+        public void SetMiniled(int miniled = -1)
+        {
             if (miniled >= 0)
             {
                 if (Program.acpi.DeviceGet(AsusACPI.ScreenMiniled1) >= 0)
@@ -70,8 +77,12 @@ namespace GHelper.Display
                     Thread.Sleep(100);
                 }
             }
+        }
 
-            InitScreen();
+        public void InitMiniled()
+        {
+            if (AppConfig.IsForceMiniled())
+                SetMiniled(AppConfig.Get("miniled"));
         }
 
         public void ToogleFHD()

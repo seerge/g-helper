@@ -218,6 +218,7 @@ namespace GHelper
             Logger.WriteLine("AutoSetting for " + isPlugged.ToString());
 
             BatteryControl.AutoBattery(init);
+            if (init) screenControl.InitMiniled();
 
             inputDispatcher.Init();
 
