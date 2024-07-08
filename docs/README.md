@@ -122,6 +122,7 @@ Each BIOS mode is paired with matching Windows Power Mode. You can adjust this s
 - TUF Gaming M3
 - TUF Gaming M3 Gen II
 - TUF Gaming M4 AIR
+- TUF Gaming M5
 - TX Gaming Mini
 
 Huge thanks to [@IceStormNG](https://github.com/IceStormNG) 👑 for contribution and research (!).
