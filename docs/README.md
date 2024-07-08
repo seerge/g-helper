@@ -117,6 +117,7 @@ Each BIOS mode is paired with matching Windows Power Mode. You can adjust this s
 - ROG Spatha
 - ROG Strix Impact II Wireless
 - ROG Pugio
+- ROG Pugio II
 - TUF Gaming M4 Wireless (P306)
 - TUF Gaming M3
 - TUF Gaming M3 Gen II
