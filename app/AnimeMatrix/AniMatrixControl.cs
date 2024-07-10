@@ -140,7 +140,7 @@ namespace GHelper.AnimeMatrix
             
             if (deviceSlash is not null)
             {
-                deviceSlash.SetLidMode(matrixLid);
+                deviceSlash.SetLidMode(true);
             }
 
             if (matrixLid || force)
