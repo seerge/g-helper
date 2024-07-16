@@ -114,7 +114,7 @@ Each BIOS mode is paired with matching Windows Power Mode. You can adjust this s
 - ROG Strix Carry (P508)
 - ROG Strix III Gladius III Aimpoint Wireless (P711)
 - ROG Strix Impact III (P518)
-- ROG Spatha
+- ROG Spatha X
 - ROG Strix Impact II Wireless
 - ROG Pugio
 - ROG Pugio II
