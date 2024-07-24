@@ -218,7 +218,7 @@ namespace GHelper
                 labelFNV.Visible = comboFNV.Visible = textFNV.Visible = false;
             }
 
-            if (Program.acpi.DeviceGet(AsusACPI.GPUEco) < 0)
+            if (Program.acpi.DeviceGet(AsusACPI.GPUEcoEndpoint) < 0)
             {
                 checkGpuApps.Visible = false;
                 checkUSBC.Visible = false;

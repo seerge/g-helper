@@ -67,6 +67,7 @@ public class AsusACPI
     public const uint VivoBookMode = 0x00110019; // Vivobook performance modes
 
     public const uint GPUEco = 0x00090020;
+    public const uint GPUEcoVivo = 0x00090120;
 
     public const uint GPUXGConnected = 0x00090018;
     public const uint GPUXG = 0x00090019;
@@ -170,6 +171,7 @@ public class AsusACPI
     private bool? _allAMD = null;
     private bool? _overdrive = null;
 
+    public static uint GPUEcoEndpoint => AppConfig.IsVivoZenbook() ? GPUEcoVivo : GPUEco; 
 
     [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
     private static extern IntPtr CreateFile(
@@ -445,14 +447,16 @@ public class AsusACPI
 
     public int SetGPUEco(int eco)
     {
-        int ecoFlag = DeviceGet(GPUEco);
+        uint ecoEndpoint = GPUEcoEndpoint;
+
+        int ecoFlag = DeviceGet(ecoEndpoint);
         if (ecoFlag < 0) return -1;
 
         if (ecoFlag == 1 && eco == 0)
-            return DeviceSet(GPUEco, eco, "GPUEco");
+            return DeviceSet(ecoEndpoint, eco, "GPUEco");
 
         if (ecoFlag == 0 && eco == 1)
-            return DeviceSet(GPUEco, eco, "GPUEco");
+            return DeviceSet(ecoEndpoint, eco, "GPUEco");
 
         return -1;
     }
