@@ -1478,10 +1478,10 @@ namespace GHelper
             labelCharge.Cursor = Cursors.Hand;
             labelCharge.Dock = DockStyle.Right;
             labelCharge.ForeColor = SystemColors.ControlDark;
-            labelCharge.Location = new Point(346, 0);
+            labelCharge.Location = new Point(442, 0);
             labelCharge.Margin = new Padding(0);
             labelCharge.Name = "labelCharge";
-            labelCharge.Size = new Size(461, 50);
+            labelCharge.Size = new Size(365, 50);
             labelCharge.TabIndex = 40;
             labelCharge.TextAlign = ContentAlignment.MiddleRight;
             // 
