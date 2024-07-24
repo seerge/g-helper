@@ -269,10 +269,17 @@ namespace GHelper
             labelVisual.Click += LabelVisual_Click;
             labelCharge.Click += LabelCharge_Click;
 
+            buttonDonate.Click += ButtonDonate_Click;
+
             labelDynamicLighting.Click += LabelDynamicLighting_Click;
 
             panelPerformance.Focus();
             InitVisual();
+        }
+
+        private void ButtonDonate_Click(object? sender, EventArgs e)
+        {
+            Process.Start(new ProcessStartInfo("https://github.com/seerge/g-helper/wiki/Support-Project") { UseShellExecute = true });
         }
 
         private void LabelDynamicLighting_Click(object? sender, EventArgs e)
