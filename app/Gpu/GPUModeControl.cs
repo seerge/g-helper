@@ -22,7 +22,7 @@ namespace GHelper.Gpu
 
         public void InitGPUMode()
         {
-            int eco = Program.acpi.DeviceGet(AsusACPI.GPUEcoEndpoint);
+            int eco = Program.acpi.DeviceGet(AsusACPI.GPUEco);
             int mux = Program.acpi.DeviceGet(AsusACPI.GPUMux);
 
             if (mux < 0) mux = Program.acpi.DeviceGet(AsusACPI.GPUMuxVivo);
@@ -205,7 +205,7 @@ namespace GHelper.Gpu
 
             if (!GpuAuto && !ForceGPU) return false;
 
-            int eco = Program.acpi.DeviceGet(AsusACPI.GPUEcoEndpoint);
+            int eco = Program.acpi.DeviceGet(AsusACPI.GPUEco);
             int mux = Program.acpi.DeviceGet(AsusACPI.GPUMux);
 
             if (mux == 0)

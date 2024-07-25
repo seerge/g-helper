@@ -571,7 +571,7 @@ namespace GHelper
         public void InitGPU()
         {
 
-            if (Program.acpi.DeviceGet(AsusACPI.GPUEcoEndpoint) == 1)
+            if (Program.acpi.DeviceGet(AsusACPI.GPUEco) == 1)
             {
                 gpuVisible = buttonGPU.Visible = false;
                 return;

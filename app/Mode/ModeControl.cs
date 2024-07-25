@@ -356,7 +356,7 @@ namespace GHelper.Mode
                 if (core == -1 && memory == -1 && clock_limit == -1) return;
                 //if ((gpu_core > -5 && gpu_core < 5) && (gpu_memory > -5 && gpu_memory < 5)) launchAsAdmin = false;
 
-                if (Program.acpi.DeviceGet(AsusACPI.GPUEcoEndpoint) == 1) { Logger.WriteLine("Clocks: Eco"); return; }
+                if (Program.acpi.DeviceGet(AsusACPI.GPUEco) == 1) { Logger.WriteLine("Clocks: Eco"); return; }
                 if (HardwareControl.GpuControl is null) { Logger.WriteLine("Clocks: NoGPUControl"); return; }
                 if (!HardwareControl.GpuControl!.IsNvidia) { Logger.WriteLine("Clocks: NotNvidia"); return; }
 
