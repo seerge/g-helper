@@ -134,34 +134,30 @@
 
         private static bool isForward = true; // Track the current direction
 
-        public static int GetNext(bool back = false)
+        public static int GetNext(bool backward = false)
         {
             var modes = GetList();
             int index = modes.IndexOf(GetCurrent());
 
-            if (back)
+            // Reverse the direction if the backward parameter is true
+            if (backward)
             {
-                // Reverse the direction if 'back' is true
                 isForward = !isForward;
             }
 
-            if (isForward)
+            // Determine the direction based on the isForward variable
+            index += isForward ? 1 : -1;
+
+            // Handle wrapping around the list
+            if (index >= modes.Count)
             {
-                index++;
-                if (index >= modes.Count)
-                {
-                    index = modes.Count - 2; // Move to the second last element
-                    isForward = false; // Reverse the direction
-                }
+                index = modes.Count - 2;
+                isForward = false;
             }
-            else
+            else if (index < 0)
             {
-                index--;
-                if (index < 0)
-                {
-                    index = 1; // Move to the second element
-                    isForward = true; // Reverse the direction
-                }
+                index = 1;
+                isForward = true;
             }
 
             return modes[index];
