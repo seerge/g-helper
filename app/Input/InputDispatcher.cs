@@ -373,7 +373,7 @@ namespace GHelper.Input
 
             if (e.Modifier == (ModifierKeys.Control | ModifierKeys.Shift | ModifierKeys.Alt))
             {
-                if (e.Key == keyProfile) modeControl.CyclePerformanceMode(true);
+                if (e.Key == keyProfile) modeControl.CyclePerformanceMode();
 
                 switch (e.Key)
                 {
@@ -500,7 +500,7 @@ namespace GHelper.Input
                     Program.settingsForm.BeginInvoke(Program.settingsForm.CycleVisualMode);
                     break;
                 case "performance":
-                    modeControl.CyclePerformanceMode(Control.ModifierKeys == Keys.Shift);
+                    modeControl.CyclePerformanceMode();
                     break;
                 case "ghelper":
                     try
@@ -673,7 +673,7 @@ namespace GHelper.Input
                         KeyProcess("fne");
                         return;
                     case 174:   // FN+F5
-                        modeControl.CyclePerformanceMode(Control.ModifierKeys == Keys.Shift);
+                        modeControl.CyclePerformanceMode();
                         return;
                     case 179:   // FN+F4
                     case 178:   // FN+F4

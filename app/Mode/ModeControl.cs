@@ -147,7 +147,7 @@ namespace GHelper.Mode
 
         }
 
-        public void CyclePerformanceMode(bool backward = false)
+        public void CyclePerformanceMode()
         {
             int delay = AppConfig.Get("mode_delay");
             if (delay > 0)
@@ -160,11 +160,11 @@ namespace GHelper.Mode
 
                 modeToggleTimer.Stop();
                 modeToggleTimer.Start();
-                Modes.SetCurrent(Modes.GetNext(backward));
+                Modes.SetCurrent(Modes.GetNext());
                 Toast();
             } else
             {
-                SetPerformanceMode(Modes.GetNext(backward), true);
+                SetPerformanceMode(Modes.GetNext(), true);
             }
 
         }

@@ -134,16 +134,10 @@
 
         private static bool isForward = true; // Track the current direction
 
-        public static int GetNext(bool backward = false)
+        public static int GetNext()
         {
             var modes = GetList();
             int index = modes.IndexOf(GetCurrent());
-
-            // Reverse the direction if the backward parameter is true
-            if (backward)
-            {
-                isForward = !isForward;
-            }
 
             // Determine the direction based on the isForward variable
             index += isForward ? 1 : -1;
