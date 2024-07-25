@@ -72,7 +72,7 @@ public class AsusACPI
     public const uint GPUXGConnected = 0x00090018;
     public const uint GPUXG = 0x00090019;
 
-    public const uint GPUMux = 0x00090016;
+    public const uint GPUMuxROG = 0x00090016;
     public const uint GPUMuxVivo = 0x00090026;
 
     public const uint BatteryLimit = 0x00120057;
@@ -171,7 +171,8 @@ public class AsusACPI
     private bool? _allAMD = null;
     private bool? _overdrive = null;
 
-    public static uint GPUEco => AppConfig.IsVivoZenbook() ? GPUEcoVivo : GPUEcoROG; 
+    public static uint GPUEco => AppConfig.IsVivoZenbook() ? GPUEcoVivo : GPUEcoROG;
+    public static uint GPUMux => AppConfig.IsVivoZenbook() ? GPUMuxVivo : GPUMuxROG;
 
     [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
     private static extern IntPtr CreateFile(
