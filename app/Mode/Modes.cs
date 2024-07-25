@@ -132,6 +132,7 @@
             }
         }
 
+        private static bool isForward = true; // Track the current direction
 
         public static int GetNext(bool back = false)
         {
@@ -140,16 +141,30 @@
 
             if (back)
             {
-                index--;
-                if (index < 0) index = modes.Count - 1;
-                return modes[index];
+                // Reverse the direction if 'back' is true
+                isForward = !isForward;
+            }
+
+            if (isForward)
+            {
+                index++;
+                if (index >= modes.Count)
+                {
+                    index = modes.Count - 2; // Move to the second last element
+                    isForward = false; // Reverse the direction
+                }
             }
             else
             {
-                index++;
-                if (index > modes.Count - 1) index = 0;
-                return modes[index];
+                index--;
+                if (index < 0)
+                {
+                    index = 1; // Move to the second element
+                    isForward = true; // Reverse the direction
+                }
             }
+
+            return modes[index];
         }
     }
 }
