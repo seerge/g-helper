@@ -402,7 +402,7 @@ public static class AppConfig
 
     public static bool IsSlash()
     {
-        return ContainsModel("GA403") || ContainsModel("GU605");
+        return ContainsModel("GA403") || ContainsModel("GU605") || ContainsModel("GA605");
     }
 
     public static bool IsInputBacklight()
