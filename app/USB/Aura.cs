@@ -241,20 +241,20 @@ namespace GHelper.USB
         }
 
 
-        public static byte[] AuraMessage(AuraMode mode, Color color, Color color2, int speed, bool mono = false, byte zoneByte = 0x00)
+        public static byte[] AuraMessage(AuraMode mode, Color color, Color color2, int speed, bool mono = false)
         {
 
             byte[] msg = new byte[17];
             msg[0] = AsusHid.AURA_ID;
             msg[1] = 0xB3;
-            msg[2] = zoneByte; // Zone 
+            msg[2] = 0x00; // Zone 
             msg[3] = (byte)mode; // Aura Mode
             msg[4] = color.R; // R
             msg[5] = mono ? (byte)0 : color.G; // G
             msg[6] = mono ? (byte)0 : color.B; // B
             msg[7] = (byte)speed; // aura.speed as u8;
             msg[8] = 0x00; // aura.direction as u8;
-            msg[9] = mode == AuraMode.AuraBreathe ? (byte)1 : (byte)0;
+            msg[9] = (color.R == 0 && color.G == 0 && color.B == 0) ? (byte)0xFF : (byte)0x00; // random color flag
             msg[10] = color2.R; // R
             msg[11] = mono ? (byte)0 : color2.G; // G
             msg[12] = mono ? (byte)0 : color2.B; // B

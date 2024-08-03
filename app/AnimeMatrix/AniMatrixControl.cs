@@ -140,7 +140,7 @@ namespace GHelper.AnimeMatrix
             
             if (deviceSlash is not null)
             {
-                deviceSlash.SetLidMode(matrixLid);
+                deviceSlash.SetLidMode(true);
             }
 
             if (matrixLid || force)
@@ -226,9 +226,9 @@ namespace GHelper.AnimeMatrix
         {
             BuiltInAnimation animation = new BuiltInAnimation(
                 (BuiltInAnimation.Running)running,
-                BuiltInAnimation.Sleeping.Starfield,
-                BuiltInAnimation.Shutdown.SeeYa,
-                BuiltInAnimation.Startup.StaticEmergence
+                (BuiltInAnimation.Sleeping)AppConfig.Get("matrix_sleep", (int)BuiltInAnimation.Sleeping.Starfield),
+                (BuiltInAnimation.Shutdown)AppConfig.Get("matrix_shutdown", (int)BuiltInAnimation.Shutdown.SeeYa),
+                (BuiltInAnimation.Startup)AppConfig.Get("matrix_startup", (int)BuiltInAnimation.Startup.StaticEmergence)
             );
             deviceMatrix.SetBuiltInAnimation(true, animation);
             Logger.WriteLine("Matrix builtin: " + animation.AsByte);

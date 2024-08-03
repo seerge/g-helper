@@ -219,6 +219,7 @@ namespace GHelper.Peripherals
             DetectMouse(new PugioIIWired());
             DetectMouse(new StrixImpactII());
             DetectMouse(new StrixImpactIIElectroPunk());
+            DetectMouse(new StrixEvolve());
             DetectMouse(new Chakram());
             DetectMouse(new ChakramWired());
             DetectMouse(new ChakramCore());
@@ -226,6 +227,8 @@ namespace GHelper.Peripherals
             DetectMouse(new StrixCarry());
             DetectMouse(new StrixImpactIII());
             DetectMouse(new StrixImpact());
+            DetectMouse(new TXGamingMini());
+            DetectMouse(new TXGamingMiniWired());
             DetectMouse(new Pugio());
         }
 

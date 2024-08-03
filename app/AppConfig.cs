@@ -403,7 +403,7 @@ public static class AppConfig
 
     public static bool IsSlash()
     {
-        return ContainsModel("GA403") || ContainsModel("GU605");
+        return ContainsModel("GA403") || ContainsModel("GU605") || ContainsModel("GA605");
     }
 
     public static bool IsInputBacklight()
@@ -418,7 +418,7 @@ public static class AppConfig
 
     public static bool IsOLED()
     {
-        return ContainsModel("OLED") || IsSlash() || ContainsModel("M7600") || ContainsModel("UX64") || ContainsModel("UX34") || ContainsModel("UX53") || ContainsModel("K360") || ContainsModel("X150") || ContainsModel("M350") || ContainsModel("K650") || ContainsModel("UM53") || ContainsModel("K660") || ContainsModel("UX84") || ContainsModel("M650") || ContainsModel("K340") || ContainsModel("K350") || ContainsModel("M140") || ContainsModel("UM340") || ContainsModel("S540") || ContainsModel("M7400");
+        return ContainsModel("OLED") || IsSlash() || ContainsModel("M7600") || ContainsModel("UX64") || ContainsModel("UX34") || ContainsModel("UX53") || ContainsModel("K360") || ContainsModel("X150") || ContainsModel("M350") || ContainsModel("K650") || ContainsModel("UM53") || ContainsModel("K660") || ContainsModel("UX84") || ContainsModel("M650") || ContainsModel("K340") || ContainsModel("K350") || ContainsModel("M140") || ContainsModel("UM340") || ContainsModel("S540") || ContainsModel("M7400") || ContainsModel("N650");
     }
 
     public static bool IsNoOverdrive()
@@ -518,7 +518,7 @@ public static class AppConfig
 
     public static bool DynamicBoost20()
     {
-        return ContainsModel("GU605");
+        return ContainsModel("GU605") || ContainsModel("GA605");
     }
 
     public static bool IsAdvantageEdition()
@@ -528,7 +528,7 @@ public static class AppConfig
 
     public static bool NoAutoUltimate()
     {
-        return ContainsModel("G614") || ContainsModel("GU604") || ContainsModel("FX507") || ContainsModel("G513") || ContainsModel("FA617") || ContainsModel("G834") || ContainsModel("GA403") || ContainsModel("GU605");
+        return ContainsModel("G614") || ContainsModel("GU604") || ContainsModel("FX507") || ContainsModel("G513") || ContainsModel("FA617") || ContainsModel("G834") || ContainsModel("GA403") || ContainsModel("GU605") || ContainsModel("GA605") || ContainsModel("GU603VV");
     }
 
 
@@ -594,7 +594,7 @@ public static class AppConfig
 
     public static bool IsFanRequired()
     {
-        return ContainsModel("GA402X") || ContainsModel("G513") || ContainsModel("G713R") || ContainsModel("G713P") || ContainsModel("GU605") || ContainsModel("GA403") || ContainsModel("G634J") || ContainsModel("G834J") || ContainsModel("G614J") || ContainsModel("G814J") || ContainsModel("FX507V");
+        return ContainsModel("GA402X") || ContainsModel("G513") || ContainsModel("G713R") || ContainsModel("G713P") || ContainsModel("GU605") || ContainsModel("GA605") || ContainsModel("GA403") || ContainsModel("G634J") || ContainsModel("G834J") || ContainsModel("G614J") || ContainsModel("G814J") || ContainsModel("FX507V");
     }
 
     public static bool IsAMDLight()
@@ -658,14 +658,14 @@ public static class AppConfig
 
     public static bool IsChargeLimit6080()
     {
-        return ContainsModel("GA403U") || ContainsModel("GU605") || ContainsModel("GA503R") || (IsTUF() && !(ContainsModel("FX507Z") || ContainsModel("FA617")));
+        return ContainsModel("GA403U") || ContainsModel("GU605") || ContainsModel("GA605") || ContainsModel("GA503R") || (IsTUF() && !(ContainsModel("FX507Z") || ContainsModel("FA617")));
 
     }
 
     // 2024 Models support Dynamic Lighting
     public static bool IsDynamicLighting()
     {
-        return IsSlash() || ContainsModel("JIR") || ContainsModel("JZR") || ContainsModel("JVR") || ContainsModel("JYR") || ContainsModel("FA607P") || ContainsModel("FX607J") || ContainsModel("FA507U");
+        return IsSlash() || IsIntelHX() || ContainsModel("FA607P") || ContainsModel("FX607J") || ContainsModel("FA507U");
     }
 
     public static bool IsForceMiniled()

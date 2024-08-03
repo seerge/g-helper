@@ -4,6 +4,7 @@
 [![Github all releases](https://img.shields.io/github/downloads/seerge/g-helper/total)](https://GitHub.com/seerge/g-helper/releases/) [![GitHub stars](https://img.shields.io/github/stars/seerge/g-helper.svg?style=social)](https://GitHub.com/seerge/g-helper/stargazers/) <sup>[中文版点这里](https://github.com/seerge/g-helper/blob/main/docs/README.zh-CN.md)</sup>
 
 Small and lightweight Armoury Crate alternative for Asus laptops offering almost same functionality without extra load and unnecessary services. 
+
 Works with all popular models, such as ROG Zephyrus G14, G15, G16, M16, Flow X13, Flow X16, Flow Z13, TUF Series, Strix / Scar Series, ProArt, Vivobook, Zenbook, ROG Ally and many more! 
 
 # [:floppy_disk:Download](https://github.com/seerge/g-helper/releases/latest/download/GHelper.zip)
@@ -108,17 +109,21 @@ Each BIOS mode is paired with matching Windows Power Mode. You can adjust this s
 - ROG Gladius III
 - ROG Gladius III Wireless
 - ROG Harpe Ace Aim Lab Edition
-- ROG Keris (P509)
 - ROG Keris Wireless
+- ROG Keris II Ace
 - ROG Strix Carry (P508)
 - ROG Strix III Gladius III Aimpoint Wireless (P711)
 - ROG Strix Impact III (P518)
-- ROG Spatha
+- ROG Spatha X
 - ROG Strix Impact II Wireless
+- ROG Pugio
+- ROG Pugio II
 - TUF Gaming M4 Wireless (P306)
 - TUF Gaming M3
 - TUF Gaming M3 Gen II
 - TUF Gaming M4 AIR
+- TUF Gaming M5
+- TX Gaming Mini
 
 Huge thanks to [@IceStormNG](https://github.com/IceStormNG) 👑 for contribution and research (!).
 
