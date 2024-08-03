@@ -405,6 +405,11 @@ public static class AppConfig
         return ContainsModel("GA403") || ContainsModel("GU605") || ContainsModel("GA605");
     }
 
+    public static bool IsSlashAura()
+    {
+        return ContainsModel("GA605");
+    }
+
     public static bool IsInputBacklight()
     {
         return ContainsModel("GA503") || IsSlash();
@@ -583,7 +588,7 @@ public static class AppConfig
 
     public static bool IsFanRequired()
     {
-        return ContainsModel("GA402X") || ContainsModel("G513") || ContainsModel("G713R") || ContainsModel("G713P") || ContainsModel("GU605") || ContainsModel("GA605") || ContainsModel("GA403") || ContainsModel("G634J") || ContainsModel("G834J") || ContainsModel("G614J") || ContainsModel("G814J") || ContainsModel("FX507V");
+        return ContainsModel("GA402X") || ContainsModel("G513") || ContainsModel("G713R") || ContainsModel("G713P") || ContainsModel("GU605") || ContainsModel("GA403") || ContainsModel("G634J") || ContainsModel("G834J") || ContainsModel("G614J") || ContainsModel("G814J") || ContainsModel("FX507V");
     }
 
     public static bool IsAMDLight()

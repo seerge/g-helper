@@ -1,7 +1,6 @@
 ﻿using GHelper.AnimeMatrix.Communication;
 using System.Management;
 using System.Text;
-using System.Timers;
 
 namespace GHelper.AnimeMatrix
 {
@@ -26,15 +25,15 @@ namespace GHelper.AnimeMatrix
         BatteryLevel,
     }
 
-    internal class SlashPacket : Packet
-    {
-        public SlashPacket(byte[] command) : base(0x5E, 128, command)
-        {
-        }
-    }
-
     public class SlashDevice : Device
     {
+
+        internal class SlashPacket : Packet
+        {
+            public SlashPacket(byte[] command) : base(0x5E, 128, command)
+            {
+            }
+        }
 
         public static Dictionary<SlashMode, string> Modes = new Dictionary<SlashMode, string>
         {
@@ -85,7 +84,7 @@ namespace GHelper.AnimeMatrix
             { SlashMode.Buzzer, 0x44},
         };
 
-        public SlashDevice() : base(0x0B05, 0x193B, 128)
+        public SlashDevice(ushort productId = 0x193B) : base(0x0B05, productId, 128)
         {
         }
 
@@ -135,23 +134,23 @@ namespace GHelper.AnimeMatrix
         }
 
         public static double GetBatteryChargePercentage()
+        {
+            double batteryCharge = 0;
+            try
             {
-                double batteryCharge = 0;
-                try
+                ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT * FROM Win32_Battery");
+                foreach (ManagementObject battery in searcher.Get())
                 {
-                    ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT * FROM Win32_Battery");
-                    foreach (ManagementObject battery in searcher.Get())
-                    {
-                        batteryCharge = Convert.ToDouble(battery["EstimatedChargeRemaining"]);
-                        break; // Assuming only one battery
-                    }
+                    batteryCharge = Convert.ToDouble(battery["EstimatedChargeRemaining"]);
+                    break; // Assuming only one battery
                 }
-                catch (ManagementException e)
-                {
-                    Console.WriteLine("An error occurred while querying for WMI data: " + e.Message);
-                }
-                return batteryCharge;
             }
+            catch (ManagementException e)
+            {
+                Console.WriteLine("An error occurred while querying for WMI data: " + e.Message);
+            }
+            return batteryCharge;
+        }
 
         private byte[] GetBatteryPattern(int brightness, double percentage)
         {
@@ -159,23 +158,23 @@ namespace GHelper.AnimeMatrix
             // set brightness to reflect battery's percentage within that range
 
             int bracket = (int)Math.Floor(percentage / 14.2857);
-            if(bracket >= 7) return Enumerable.Repeat((byte)(brightness * 85.333), 7).ToArray();
-            
+            if (bracket >= 7) return Enumerable.Repeat((byte)(brightness * 85.333), 7).ToArray();
+
             byte[] batteryPattern = Enumerable.Repeat((byte)(0x00), 7).ToArray();
-            for (int i = 6; i > 6-bracket; i--)
+            for (int i = 6; i > 6 - bracket; i--)
             {
                 batteryPattern[i] = (byte)(brightness * 85.333);
             }
 
             //set the "selected" bracket to the percentage of that bracket filled from 0 to 255 as a hex
-            batteryPattern[6-bracket] = (byte)(((percentage % 14.2857) * brightness * 85.333) / 14.2857);
+            batteryPattern[6 - bracket] = (byte)(((percentage % 14.2857) * brightness * 85.333) / 14.2857);
 
             return batteryPattern;
         }
 
         public void SetBatteryPattern(int brightness)
         {
-            SetCustom(GetBatteryPattern(brightness, 100*(GetBatteryChargePercentage()/AppConfig.Get("charge_limit",100))));
+            SetCustom(GetBatteryPattern(brightness, 100 * (GetBatteryChargePercentage() / AppConfig.Get("charge_limit", 100))));
         }
 
         public void SetCustom(byte[] data)
@@ -214,9 +213,22 @@ namespace GHelper.AnimeMatrix
         public void Set(Packet packet, string? log = null)
         {
             _usbProvider?.Set(packet.Data);
-            if (log is not null) Logger.WriteLine($"{log}:" + BitConverter.ToString(packet.Data).Substring(0,48));
+            if (log is not null) Logger.WriteLine($"{log}:" + BitConverter.ToString(packet.Data).Substring(0, 48));
+        }
+    }
+
+    public class SlashDeviceAura : SlashDevice
+    {
+        public SlashDeviceAura(): base(0x193B)
+        {
         }
 
+        internal new class SlashPacket : Packet
+        {
+            public SlashPacket(byte[] command) : base(0x5D, 128, command)
+            {
+            }
+        }
 
     }
 }
