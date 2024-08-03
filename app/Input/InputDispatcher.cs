@@ -218,6 +218,9 @@ namespace GHelper.Input
                 case 3:
                     KeyboardHook.KeyKeyKeyPress((Keys)hexKeys[0], (Keys)hexKeys[1], (Keys)hexKeys[2]);
                     break;
+                case 4:
+                    KeyboardHook.KeyKeyKeyKeyPress((Keys)hexKeys[0], (Keys)hexKeys[1], (Keys)hexKeys[2], (Keys)hexKeys[3]);
+                    break;
                 default:
                     LaunchProcess(command);
                     break;
