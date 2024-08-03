@@ -25,8 +25,6 @@ namespace GHelper.Gpu
             int eco = Program.acpi.DeviceGet(AsusACPI.GPUEco);
             int mux = Program.acpi.DeviceGet(AsusACPI.GPUMux);
 
-            if (mux < 0) mux = Program.acpi.DeviceGet(AsusACPI.GPUMuxVivo);
-
             Logger.WriteLine("Eco flag : " + eco);
             Logger.WriteLine("Mux flag : " + mux);
 
@@ -83,7 +81,6 @@ namespace GHelper.Gpu
                 if (dialogResult == DialogResult.Yes)
                 {
                     status = Program.acpi.DeviceSet(AsusACPI.GPUMux, 1, "GPUMux");
-                    if (status != 1) Program.acpi.DeviceSet(AsusACPI.GPUMuxVivo, 1, "GPUMuxVivo");
                     restart = true;
                     changed = true;
                 }
@@ -99,7 +96,6 @@ namespace GHelper.Gpu
                         Thread.Sleep(100);
                     }
                     status = Program.acpi.DeviceSet(AsusACPI.GPUMux, 0, "GPUMux");
-                    if (status != 1) Program.acpi.DeviceSet(AsusACPI.GPUMuxVivo, 0, "GPUMuxVivo");
                     restart = true;
                     changed = true;
                 }

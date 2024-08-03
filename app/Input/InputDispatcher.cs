@@ -949,7 +949,10 @@ namespace GHelper.Input
             if (string.IsNullOrEmpty(command)) return;
             try
             {
-                RestrictedProcessHelper.RunAsRestrictedUser(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.System), "cmd.exe"), "/C " + command);
+                if (command.StartsWith("shutdown"))
+                    ProcessHelper.RunCMD("cmd", "/C " + command);
+                else
+                    RestrictedProcessHelper.RunAsRestrictedUser(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.System), "cmd.exe"), "/C " + command);
             }
             catch (Exception ex)
             {

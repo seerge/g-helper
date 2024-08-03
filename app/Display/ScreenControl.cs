@@ -153,6 +153,9 @@ namespace GHelper.Display
             int frequency = ScreenNative.GetRefreshRate(laptopScreen);
             int maxFrequency = ScreenNative.GetMaxRefreshRate(laptopScreen);
 
+            if (maxFrequency > 0) AppConfig.Set("max_frequency", maxFrequency);
+            else maxFrequency = AppConfig.Get("max_frequency");
+
             bool screenAuto = AppConfig.Is("screen_auto");
             bool overdriveSetting = Program.acpi.IsOverdriveSupported() && !AppConfig.IsNoOverdrive();
 
