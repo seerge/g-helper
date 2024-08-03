@@ -395,6 +395,11 @@ public static class AppConfig
         return ContainsModel("GA401I") && !ContainsModel("GA401IHR");
     }
 
+    public static bool MediaKeys()
+    {
+        return NoAura() || ContainsModel("G712LU");
+    }
+
     public static bool IsSingleColor()
     {
         return ContainsModel("GA401") || ContainsModel("FX517Z") || ContainsModel("FX516P") || ContainsModel("X13") || IsARCNM() || ContainsModel("GA502IU");

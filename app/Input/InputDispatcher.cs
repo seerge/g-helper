@@ -291,7 +291,7 @@ namespace GHelper.Input
                     }
                 }
 
-                if (AppConfig.NoAura())
+                if (AppConfig.MediaKeys())
                 {
                     switch (e.Key)
                     {

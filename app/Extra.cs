@@ -203,7 +203,7 @@ namespace GHelper
                 labelFNF4.Visible = comboFNF4.Visible = textFNF4.Visible = false;
             }
 
-            if (AppConfig.NoAura())
+            if (AppConfig.MediaKeys())
             {
                 labelFNF4.Visible = comboFNF4.Visible = textFNF4.Visible = false;
             }
