@@ -397,7 +397,7 @@ public static class AppConfig
 
     public static bool MediaKeys()
     {
-        return NoAura() || ContainsModel("G712LU");
+        return NoAura() || ContainsModel("G712L");
     }
 
     public static bool IsSingleColor()
