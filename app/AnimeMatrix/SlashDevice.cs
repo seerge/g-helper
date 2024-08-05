@@ -219,7 +219,7 @@ namespace GHelper.AnimeMatrix
 
     public class SlashDeviceAura : SlashDevice
     {
-        public SlashDeviceAura(): base(0x193B)
+        public SlashDeviceAura(): base(0x19B6)
         {
         }
 
