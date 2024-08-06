@@ -229,6 +229,10 @@ namespace GHelper.AnimeMatrix
     {
         protected override byte reportID => 0x5D;
 
+        public SlashDeviceAura() : base(0x19B6)
+        {
+        }
+
         protected override SlashPacket CreatePacket(byte[] command)
         {
             return new SlashPacket(command, reportID);
