@@ -402,7 +402,7 @@ public static class AppConfig
 
     public static bool IsSingleColor()
     {
-        return ContainsModel("GA401") || ContainsModel("FX517Z") || ContainsModel("FX516P") || ContainsModel("X13") || IsARCNM() || ContainsModel("GA502IU");
+        return ContainsModel("GA401") || ContainsModel("FX517Z") || ContainsModel("FX516P") || ContainsModel("X13") || IsARCNM() || ContainsModel("GA502IU") || ContainsModel("FA617N") || ContainsModel("FA617X");
     }
 
     public static bool IsSlash()
