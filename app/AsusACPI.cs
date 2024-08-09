@@ -172,7 +172,7 @@ public class AsusACPI
     private bool? _overdrive = null;
 
     public static uint GPUEco => AppConfig.IsVivoZenPro() ? GPUEcoVivo : GPUEcoROG;
-    public static uint GPUMux => AppConfig.IsVivoZenbook() ? GPUMuxVivo : GPUMuxROG;
+    public static uint GPUMux => AppConfig.IsVivoZenPro() ? GPUMuxVivo : GPUMuxROG;
 
     [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
     private static extern IntPtr CreateFile(
