@@ -658,6 +658,7 @@ namespace GHelper.Input
                 switch (EventID)
                 {
                     case 134:     // FN + F12 ON OLD DEVICES
+                    case 139:     // ProArt F12
                         KeyProcess("m4");
                         return;
                     case 124:    // M3
@@ -691,7 +692,7 @@ namespace GHelper.Input
                     case 78:    // Fn + ESC
                         ToggleFnLock();
                         return;
-                    case 75:    // Fn + ESC
+                    case 75:    // Fn + Arrow Lock
                         ToggleArrowLock();
                         return;
                     case 189: // Tablet mode
