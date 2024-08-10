@@ -70,13 +70,13 @@ namespace GHelper.Display
 
         public static SplendidGamut GetDefaultGamut()
         {
-            return AppConfig.IsVivoZenbook() ? SplendidGamut.VivoNative : SplendidGamut.Native;
+            return AppConfig.IsVivoZenPro() ? SplendidGamut.VivoNative : SplendidGamut.Native;
         }
 
         public static Dictionary<SplendidGamut, string> GetGamutModes()
         {
 
-            bool isVivo = AppConfig.IsVivoZenbook();
+            bool isVivo = AppConfig.IsVivoZenPro();
 
             Dictionary<SplendidGamut, string> _modes = new Dictionary<SplendidGamut, string>();
 
@@ -148,13 +148,13 @@ namespace GHelper.Display
 
         public static SplendidCommand GetDefaultVisualMode()
         {
-            return AppConfig.IsVivoZenbook() ? SplendidCommand.VivoNormal : SplendidCommand.Default;
+            return AppConfig.IsVivoZenPro() ? SplendidCommand.VivoNormal : SplendidCommand.Default;
         }
 
         public static Dictionary<SplendidCommand, string> GetVisualModes()
         {
 
-            if (AppConfig.IsVivoZenbook())
+            if (AppConfig.IsVivoZenPro())
             {
                 return new Dictionary<SplendidCommand, string>
                 {
@@ -291,7 +291,7 @@ namespace GHelper.Display
         private static bool RunSplendid(SplendidCommand command, int? param1 = null, int? param2 = null)
         {
             var splendid = GetSplendidPath();
-            bool isVivo = AppConfig.IsVivoZenbook();
+            bool isVivo = AppConfig.IsVivoZenPro();
             bool isSplenddid = File.Exists(splendid);
 
             if (isSplenddid)
