@@ -780,7 +780,7 @@ namespace GHelper.Input
                 case 53:    // Fn+F6 on GA-502DU model
                     NativeMethods.TurnOffScreen();
                     return;
-                case 900:    // Fn+F8 emojis popup
+                case 126:    // Fn+F8 emojis popup
                     KeyboardHook.KeyKeyPress(Keys.LWin, Keys.OemSemicolon);
                     return;
 
