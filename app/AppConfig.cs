@@ -372,7 +372,7 @@ public static class AppConfig
         return ContainsModel("ProArt");
     }
 
-    public static bool IsHWFNLock()
+    public static bool IsVivoZenbook()
     {
         return ContainsModel("Vivobook") || ContainsModel("Zenbook");
     }
