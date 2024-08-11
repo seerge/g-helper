@@ -377,6 +377,11 @@ public static class AppConfig
         return ContainsModel("Vivobook") || ContainsModel("Zenbook");
     }
 
+    public static bool IsVivoZenPro()
+    {
+        return ContainsModel("Vivobook") || ContainsModel("Zenbook") || ContainsModel("ProArt");
+    }
+
     // Devices with bugged bios command to change brightness
     public static bool SwappedBrightness()
     {

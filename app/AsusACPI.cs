@@ -46,6 +46,7 @@ public class AsusACPI
 
     public const int KB_TouchpadToggle = 0x6b;
     public const int KB_MuteToggle = 0x7c;
+    public const int KB_NumlockToggle = 0x4e;
 
     public const int KB_DUO_PgUpDn = 0x4B;
     public const int KB_DUO_SecondDisplay = 0x6A;
@@ -171,8 +172,8 @@ public class AsusACPI
     private bool? _allAMD = null;
     private bool? _overdrive = null;
 
-    public static uint GPUEco => (AppConfig.IsVivoZenbook() || AppConfig.IsProArt()) ? GPUEcoVivo : GPUEcoROG;
-    public static uint GPUMux => AppConfig.IsVivoZenbook() ? GPUMuxVivo : GPUMuxROG;
+    public static uint GPUEco => AppConfig.IsVivoZenPro() ? GPUEcoVivo : GPUEcoROG;
+    public static uint GPUMux => AppConfig.IsVivoZenPro() ? GPUMuxVivo : GPUMuxROG;
 
     [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
     private static extern IntPtr CreateFile(
