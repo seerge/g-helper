@@ -85,7 +85,7 @@ namespace GHelper.Input
 
             InitBacklightTimer();
 
-            if (AppConfig.IsVivoZenPro())
+            if (AppConfig.IsHWFNLock())
                 Program.acpi.DeviceSet(AsusACPI.FnLock, AppConfig.Is("fn_lock") ^ AppConfig.IsInvertedFNLock() ? 1 : 0, "FnLock");
 
         }
@@ -155,7 +155,7 @@ namespace GHelper.Input
 
             // FN-Lock group
 
-            if (AppConfig.Is("fn_lock") && !AppConfig.IsVivoZenPro())
+            if (AppConfig.Is("fn_lock") && !AppConfig.IsHWFNLock())
                 for (Keys i = Keys.F1; i <= Keys.F11; i++) hook.RegisterHotKey(ModifierKeys.None, i);
 
             // Arrow-lock group
@@ -277,6 +277,43 @@ namespace GHelper.Input
                             return;
                         case Keys.F4:
                             KeyProcess("m3");
+                            return;
+                    }
+                }
+
+                if (AppConfig.IsProArt())
+                {
+                    switch (e.Key)
+                    {
+                        case Keys.F2:
+                            KeyboardHook.KeyPress(Keys.VolumeDown);
+                            return;
+                        case Keys.F3:
+                            KeyboardHook.KeyPress(Keys.VolumeUp);
+                            return;
+                        case Keys.F4:
+                            HandleEvent(199); // Backlight cycle
+                            return;
+                        case Keys.F5:
+                            SetBrightness(-10);
+                            return;
+                        case Keys.F6:
+                            SetBrightness(+10);
+                            return;
+                        case Keys.F7:
+                            KeyboardHook.KeyKeyPress(Keys.LWin, Keys.P);
+                            return;
+                        case Keys.F8:
+                            HandleEvent(126); // Emojis
+                            return;
+                        case Keys.F9:
+                            KeyProcess("m3"); // MicMute
+                            return;
+                        case Keys.F10:
+                            HandleEvent(133); // Camera Toggle
+                            return;
+                        case Keys.F11:
+                            KeyboardHook.KeyPress(Keys.Snapshot); // PrintScreen
                             return;
                     }
                 }
@@ -597,7 +634,7 @@ namespace GHelper.Input
             bool fnLock = !AppConfig.Is("fn_lock");
             AppConfig.Set("fn_lock", fnLock ? 1 : 0);
 
-            if (AppConfig.IsVivoZenPro())
+            if (AppConfig.IsHWFNLock())
                 Program.acpi.DeviceSet(AsusACPI.FnLock, fnLock ^ AppConfig.IsInvertedFNLock() ? 1 : 0, "FnLock");
             else
                 Program.settingsForm.BeginInvoke(Program.inputDispatcher.RegisterKeys);
