@@ -46,7 +46,7 @@ public class AsusACPI
 
     public const int KB_TouchpadToggle = 0x6b;
     public const int KB_MuteToggle = 0x7c;
-    public const int KB_NumlockToggle = 0x4e;
+    public const int KB_FNlockToggle = 0x4e;
 
     public const int KB_DUO_PgUpDn = 0x4B;
     public const int KB_DUO_SecondDisplay = 0x6A;
