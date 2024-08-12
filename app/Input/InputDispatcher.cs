@@ -707,9 +707,6 @@ namespace GHelper.Input
                     case 55:    // Arconym
                         KeyProcess("m6");
                         return;
-                    case 136:    // FN + F12
-                        if (!AppConfig.IsNoAirplaneMode()) Program.acpi.DeviceSet(AsusACPI.UniversalControl, AsusACPI.Airplane, "Airplane");
-                        return;
                     case 181:    // FN + Numpad Enter
                         KeyProcess("fne");
                         return;
@@ -725,12 +722,6 @@ namespace GHelper.Input
                         return;
                     case 158:   // Fn + C
                         KeyProcess("fnc");
-                        return;
-                    case 78:    // Fn + ESC
-                        ToggleFnLock();
-                        return;
-                    case 75:    // Fn + Arrow Lock
-                        ToggleArrowLock();
                         return;
                     case 189: // Tablet mode
                         TabletMode();
@@ -820,6 +811,15 @@ namespace GHelper.Input
                     return;
                 case 126:    // Fn+F8 emojis popup
                     KeyboardHook.KeyKeyPress(Keys.LWin, Keys.OemSemicolon);
+                    return;
+                case 78:    // Fn + ESC
+                    ToggleFnLock();
+                    return;
+                case 75:    // Fn + Arrow Lock
+                    ToggleArrowLock();
+                    return;
+                case 136:    // FN + F12
+                    if (!AppConfig.IsNoAirplaneMode()) Program.acpi.DeviceSet(AsusACPI.UniversalControl, AsusACPI.Airplane, "Airplane");
                     return;
 
 
