@@ -92,7 +92,12 @@ namespace GHelper.Gpu
                 {
                     if (AppConfig.NoAutoUltimate())
                     {
-                        Program.acpi.SetGPUEco(0);
+                        int standardStatus = Program.acpi.SetGPUEco(0);
+                        if (standardStatus == 0)
+                        {
+                            settings.VisualiseGPUMode();
+                            return;
+                        }
                         Thread.Sleep(100);
                     }
                     status = Program.acpi.DeviceSet(AsusACPI.GPUMux, 0, "GPUMux");
