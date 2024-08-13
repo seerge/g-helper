@@ -226,7 +226,7 @@
     <value>Tout</value>
   </data>
   <data name="AuraZoneDock" xml:space="preserve">
-    <value>Dock</value>
+    <value>Station d'accueil</value>
   </data>
   <data name="AuraZoneLogo" xml:space="preserve">
     <value>Logo</value>
@@ -495,7 +495,7 @@ Voulez-vous continuer ?</value>
     <value>Écran</value>
   </data>
   <data name="LEDStatusIndicators" xml:space="preserve">
-    <value>LED Status Indicators</value>
+    <value>Indicateurs d'état LED</value>
   </data>
   <data name="Lid" xml:space="preserve">
     <value>Capot</value>
@@ -507,7 +507,7 @@ Voulez-vous continuer ?</value>
     <value>Éclairage</value>
   </data>
   <data name="LockScreen" xml:space="preserve">
-    <value>Lock Screen</value>
+    <value>Écran de verrouillage</value>
   </data>
   <data name="Logo" xml:space="preserve">
     <value>Logo</value>
@@ -585,10 +585,10 @@ Voulez-vous continuer ?</value>
     <value>Synchroniser avec le pointeur</value>
   </data>
   <data name="Multizone" xml:space="preserve">
-    <value>Multi Zone</value>
+    <value>Multi-zones</value>
   </data>
   <data name="MultizoneStrong" xml:space="preserve">
-    <value>Multi Zone Strong</value>
+    <value>Forte zone multiple</value>
   </data>
   <data name="Muted" xml:space="preserve">
     <value>Son désactivé</value>
@@ -741,7 +741,7 @@ Voulez-vous continuer ?</value>
     <value>Allumer l'écran</value>
   </data>
   <data name="ToggleTouchscreen" xml:space="preserve">
-    <value>Toggle Touchscreen</value>
+    <value>Activer/désactiver l'écran tactile</value>
   </data>
   <data name="Touchscreen" xml:space="preserve">
     <value/>
