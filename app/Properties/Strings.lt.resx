@@ -313,7 +313,7 @@
     <value>Ryškumo didinimas</value>
   </data>
   <data name="BWTrayIcon" xml:space="preserve">
-    <value>Black and white tray icon</value>
+    <value>Naudoti juodai baltą piktogramą</value>
   </data>
   <data name="Calibrate" xml:space="preserve">
     <value>Kalibruoti</value>
@@ -483,7 +483,7 @@ Vis tiek norite tęsti?</value>
     <value>Klaviatūra</value>
   </data>
   <data name="KillGpuApps" xml:space="preserve">
-    <value>Sustabdyti visas GPU naudojančias programėles, kai perjungiama į ekonomišką režimą</value>
+    <value>Sustabdyti visas GPU naudojančias programėles, kai perjungiama į ekon. režimą</value>
   </data>
   <data name="LaptopBacklight" xml:space="preserve">
     <value>Apšvietimas</value>
