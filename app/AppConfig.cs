@@ -41,10 +41,19 @@ public static class AppConfig
             {
                 config = JsonSerializer.Deserialize<Dictionary<string, object>>(text);
             }
-            catch
+            catch (Exception ex)
             {
-                Logger.WriteLine("Broken config: " + text);
-                Init();
+                Logger.WriteLine($"Broken config: {ex.Message} {text}");
+                try
+                {
+                    text = File.ReadAllText(configFile + ".bak");
+                    config = JsonSerializer.Deserialize<Dictionary<string, object>>(text);
+                }
+                catch (Exception exb)
+                {
+                    Logger.WriteLine($"Broken backup config: {exb.Message} {text}");
+                    Init();
+                }
             }
         }
         else
