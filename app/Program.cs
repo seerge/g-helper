@@ -282,15 +282,17 @@ namespace GHelper
             }
             else
             {
-                var screen = Screen.FromControl(settingsForm);
+                var screen = Screen.PrimaryScreen; 
+                if (screen is null) screen = Screen.FromControl(settingsForm);
 
-                settingsForm.Left = screen.WorkingArea.X + screen.WorkingArea.Width - 10 - settingsForm.Width;
+                settingsForm.Location = screen.WorkingArea.Location;
+                settingsForm.Left = screen.WorkingArea.Width - 10 - settingsForm.Width;
                 settingsForm.Top = screen.WorkingArea.Height - 10 - settingsForm.Height;
 
                 settingsForm.Show();
                 settingsForm.Activate();
 
-                settingsForm.Left = screen.WorkingArea.X + screen.WorkingArea.Width - 10 - settingsForm.Width;
+                settingsForm.Left = screen.WorkingArea.Width - 10 - settingsForm.Width;
                 
                 if (AppConfig.IsAlly())
                     settingsForm.Top = Math.Max(10, screen.Bounds.Height - 110 - settingsForm.Height);
