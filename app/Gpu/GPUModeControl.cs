@@ -227,6 +227,7 @@ namespace GHelper.Gpu
                     if ((GpuAuto && !IsPlugged()) || (ForceGPU && GpuMode == AsusACPI.GPUModeEco))
                     {
 
+                        if (Program.acpi.IsXGConnected()) return false;
                         if (HardwareControl.IsUsedGPU())
                         {
                             DialogResult dialogResult = MessageBox.Show(Properties.Strings.AlertDGPU, Properties.Strings.AlertDGPUTitle, MessageBoxButtons.YesNo);
