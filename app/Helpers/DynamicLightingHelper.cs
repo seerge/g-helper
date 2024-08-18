@@ -7,6 +7,8 @@ namespace GHelper.Helpers
 
         public static bool IsEnabled()
         {
+            if (Environment.OSVersion.Version.Build < 22000) return false;
+
             using var key = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Lighting");
             var registryValueObject = key?.GetValue("AmbientLightingEnabled");
 

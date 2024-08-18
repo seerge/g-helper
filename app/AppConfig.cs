@@ -42,10 +42,19 @@ public static class AppConfig
             {
                 config = JsonSerializer.Deserialize<Dictionary<string, object>>(text);
             }
-            catch
+            catch (Exception ex)
             {
-                Logger.WriteLine("Broken config: " + text);
-                Init();
+                Logger.WriteLine($"Broken config: {ex.Message} {text}");
+                try
+                {
+                    text = File.ReadAllText(configFile + ".bak");
+                    config = JsonSerializer.Deserialize<Dictionary<string, object>>(text);
+                }
+                catch (Exception exb)
+                {
+                    Logger.WriteLine($"Broken backup config: {exb.Message} {text}");
+                    Init();
+                }
             }
         }
         else
@@ -378,6 +387,11 @@ public static class AppConfig
         return ContainsModel("Vivobook") || ContainsModel("Zenbook");
     }
 
+    public static bool IsVivoZenPro()
+    {
+        return ContainsModel("Vivobook") || ContainsModel("Zenbook") || ContainsModel("ProArt");
+    }
+
     // Devices with bugged bios command to change brightness
     public static bool SwappedBrightness()
     {
@@ -396,14 +410,24 @@ public static class AppConfig
         return ContainsModel("GA401I") && !ContainsModel("GA401IHR");
     }
 
+    public static bool MediaKeys()
+    {
+        return NoAura() || ContainsModel("G712L");
+    }
+
     public static bool IsSingleColor()
     {
-        return ContainsModel("GA401") || ContainsModel("FX517Z") || ContainsModel("FX516P") || ContainsModel("X13") || IsARCNM() || ContainsModel("GA502IU");
+        return ContainsModel("GA401") || ContainsModel("FX517Z") || ContainsModel("FX516P") || ContainsModel("X13") || IsARCNM() || ContainsModel("GA502IU") || ContainsModel("FA617N") || ContainsModel("FA617X");
     }
 
     public static bool IsSlash()
     {
         return ContainsModel("GA403") || ContainsModel("GU605") || ContainsModel("GA605");
+    }
+
+    public static bool IsSlashAura()
+    {
+        return ContainsModel("GA605");
     }
 
     public static bool IsInputBacklight()
@@ -594,7 +618,7 @@ public static class AppConfig
 
     public static bool IsFanRequired()
     {
-        return ContainsModel("GA402X") || ContainsModel("G513") || ContainsModel("G713R") || ContainsModel("G713P") || ContainsModel("GU605") || ContainsModel("GA605") || ContainsModel("GA403") || ContainsModel("G634J") || ContainsModel("G834J") || ContainsModel("G614J") || ContainsModel("G814J") || ContainsModel("FX507V");
+        return ContainsModel("GA402X") || ContainsModel("G513") || ContainsModel("G713R") || ContainsModel("G713P") || ContainsModel("GU605") || ContainsModel("GA403") || ContainsModel("G634J") || ContainsModel("G834J") || ContainsModel("G614J") || ContainsModel("G814J") || ContainsModel("FX507V");
     }
 
     public static bool IsAMDLight()

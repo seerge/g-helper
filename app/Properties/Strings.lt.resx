@@ -124,7 +124,7 @@
     <value>Nepavyko prisijungti prie ASUS ACPI. Programėlė be jo negali veikti. Pabandykite įdiegti Asus System Control Interface</value>
   </data>
   <data name="AlertAPUMemoryRestart" xml:space="preserve">
-    <value>Restart your device to apply changes</value>
+    <value>Norėdami pritaikyti pakeitimus, paleiskite įrenginį iš naujo</value>
   </data>
   <data name="AlertAPUMemoryRestartTitle" xml:space="preserve">
     <value>Paleisti iš naujo?</value>
@@ -145,7 +145,7 @@
     <value>Paleisti iš naujo dabar?</value>
   </data>
   <data name="AllyController" xml:space="preserve">
-    <value>Ally Controller</value>
+    <value>„Ally“ valdiklis</value>
   </data>
   <data name="AnimationSpeed" xml:space="preserve">
     <value>Animacijos greitis</value>
@@ -163,7 +163,7 @@
     <value>Taikyti</value>
   </data>
   <data name="ApplyFanCurve" xml:space="preserve">
-    <value>Taikyti tinkintą aušintuvo kreivę</value>
+    <value>Taikyti tinkintą kreivę</value>
   </data>
   <data name="ApplyPowerLimits" xml:space="preserve">
     <value>Taikyti galios ribas</value>
@@ -172,7 +172,7 @@
     <value>Automatiškai derinti Windows energijos režimus</value>
   </data>
   <data name="APUMemory" xml:space="preserve">
-    <value>Memory Assigned to GPU</value>
+    <value>Atmintis priskirta vaizdo plokštei</value>
   </data>
   <data name="AsusServicesRunning" xml:space="preserve">
     <value>Veikiančios Asus tarnybos</value>
@@ -202,7 +202,7 @@
     <value>Apšvietimo režimas</value>
   </data>
   <data name="AuraNormal" xml:space="preserve">
-    <value>Normalus</value>
+    <value>Įprastas</value>
   </data>
   <data name="AuraRainbow" xml:space="preserve">
     <value>Vaivorykštė</value>
@@ -244,7 +244,7 @@
     <value>Automatinis</value>
   </data>
   <data name="AutoRefreshTooltip" xml:space="preserve">
-    <value>Nustato 60Hz, kad taupytų energiją, ir atgal, kai įjungtas į lizdą</value>
+    <value>Nustatomas 60Hz dažn. taupymui, ir atgal, kuomet įkraunama</value>
   </data>
   <data name="Awake" xml:space="preserve">
     <value>Pabudęs</value>
@@ -259,7 +259,7 @@
     <value>Mid</value>
   </data>
   <data name="BacklightOff" xml:space="preserve">
-    <value>Off</value>
+    <value>Išjungta</value>
   </data>
   <data name="BacklightTimeout" xml:space="preserve">
     <value>Laiko riba su lizdu / akumuliatoriumi (0 – ĮJUNGTA)</value>
@@ -280,13 +280,13 @@
     <value>Įkrovos riba</value>
   </data>
   <data name="BatteryHealth" xml:space="preserve">
-    <value>Sveikata</value>
+    <value>Baterijos būklė</value>
   </data>
   <data name="BatteryLimitFull" xml:space="preserve">
     <value>Vienkartinė įkrova iki 100%</value>
   </data>
   <data name="Binding" xml:space="preserve">
-    <value>Binding</value>
+    <value>Saistymas</value>
   </data>
   <data name="BindingPrimary" xml:space="preserve">
     <value>Pirminis</value>
@@ -313,7 +313,7 @@
     <value>Ryškumo didinimas</value>
   </data>
   <data name="BWTrayIcon" xml:space="preserve">
-    <value>Black and white tray icon</value>
+    <value>Naudoti juodai baltą piktogramą</value>
   </data>
   <data name="Calibrate" xml:space="preserve">
     <value>Kalibruoti</value>
@@ -325,10 +325,10 @@
     <value>Spalva</value>
   </data>
   <data name="Contrast" xml:space="preserve">
-    <value>Contrast</value>
+    <value>Kontrastas</value>
   </data>
   <data name="Controller" xml:space="preserve">
-    <value>Controller</value>
+    <value>Valdiklis</value>
   </data>
   <data name="CPUBoost" xml:space="preserve">
     <value>CPU spartinimas</value>
@@ -343,10 +343,10 @@
     <value>Numatytas</value>
   </data>
   <data name="DisableController" xml:space="preserve">
-    <value>Disable Controller</value>
+    <value>Išjungti valdiklį</value>
   </data>
   <data name="DisableOnLidClose" xml:space="preserve">
-    <value>Disable on lid close</value>
+    <value>Išjungti uždarius gaubtą</value>
   </data>
   <data name="DisableOverdrive" xml:space="preserve">
     <value>Išjungti ekrano pikselių spartinimą</value>
@@ -355,7 +355,7 @@
     <value>Iškrovimas</value>
   </data>
   <data name="DownloadColorProfiles" xml:space="preserve">
-    <value>Download Color Profiles</value>
+    <value>Atsisiųsti spalvų profilius</value>
   </data>
   <data name="DownloadUpdate" xml:space="preserve">
     <value>Atsisiųsti</value>
@@ -364,13 +364,13 @@
     <value>Tvarkyklės ir programinė įranga</value>
   </data>
   <data name="EcoGPUTooltip" xml:space="preserve">
-    <value>Išjungia dGPU, kad taupytų energiją</value>
+    <value>Išjungia dGPU akumuliatoriaus taupymui</value>
   </data>
   <data name="EcoMode" xml:space="preserve">
     <value>Ekonomiškas</value>
   </data>
   <data name="EnableGPUOnShutdown" xml:space="preserve">
-    <value>Enable GPU on shutdown (prevents issue with Eco mode)</value>
+    <value>Įgalinti GPU išjungimo metu (apsauga nuo „Eco“ režimo problemos)</value>
   </data>
   <data name="EnableOptimusText" xml:space="preserve">
     <value>Jei ekrano režimas NVIDIA valdymo skyde yra nenustatytas į Optimus, kai dGPU yra išjungtas perjungus į ekonominį režimą, gali kilti problemų su ryškumo valdymu iki kito paleidimo iš naujo. 
@@ -384,7 +384,7 @@ Vis tiek norite tęsti?</value>
     <value>Energijos nustatymai</value>
   </data>
   <data name="Export" xml:space="preserve">
-    <value>Export Profile</value>
+    <value>Eksportuoti profilį</value>
   </data>
   <data name="Extra" xml:space="preserve">
     <value>Išplėstiniai</value>
@@ -420,16 +420,16 @@ Vis tiek norite tęsti?</value>
     <value>Aušintuvai + galia</value>
   </data>
   <data name="FlickerFreeDimming" xml:space="preserve">
-    <value>Flicker-free Dimming</value>
+    <value>Užtamsinimas be mirgėjimo</value>
   </data>
   <data name="FnLock" xml:space="preserve">
     <value>Apdoroti Fn+F sparčiuosius klavišus be Fn</value>
   </data>
   <data name="FnLockOff" xml:space="preserve">
-    <value>FN-Lock Off</value>
+    <value>FN užraktas išjungtas</value>
   </data>
   <data name="FnLockOn" xml:space="preserve">
-    <value>FN-Lock On</value>
+    <value>FN užraktas įjungtas</value>
   </data>
   <data name="GPUBoost" xml:space="preserve">
     <value>Dinaminis spartinimas</value>
@@ -456,7 +456,7 @@ Vis tiek norite tęsti?</value>
     <value>Tik dGPU</value>
   </data>
   <data name="GPUPower" xml:space="preserve">
-    <value>GPU Power</value>
+    <value>GPU galia</value>
   </data>
   <data name="GPUSettings" xml:space="preserve">
     <value>GPU nustatymai</value>
@@ -465,16 +465,16 @@ Vis tiek norite tęsti?</value>
     <value>Temperatūros tikslas</value>
   </data>
   <data name="HibernateAfter" xml:space="preserve">
-    <value>Minutės iki miego su akumuliatoriumi (0 – IŠJUNGTA)</value>
+    <value>Užmigimo laikas akumuliatoriaus režimu (0 – IŠJUNGTA)</value>
   </data>
   <data name="High" xml:space="preserve">
     <value>Aukštas</value>
   </data>
   <data name="ImageRotation" xml:space="preserve">
-    <value>Image Rotation</value>
+    <value>Atvaizdo pasukimas</value>
   </data>
   <data name="Import" xml:space="preserve">
-    <value>Import Profile</value>
+    <value>Importuoti profilį</value>
   </data>
   <data name="KeyBindings" xml:space="preserve">
     <value>Klavišų priskyrimas</value>
@@ -483,7 +483,7 @@ Vis tiek norite tęsti?</value>
     <value>Klaviatūra</value>
   </data>
   <data name="KillGpuApps" xml:space="preserve">
-    <value>Sustabdyti visas GPU naudojančias programėles, kai perjungiama į ekonomišką režimą</value>
+    <value>Sustabdyti visas GPU naudojančias programėles, kai perjungiama į ekon. režimą</value>
   </data>
   <data name="LaptopBacklight" xml:space="preserve">
     <value>Apšvietimas</value>
@@ -495,7 +495,7 @@ Vis tiek norite tęsti?</value>
     <value>Ekranas</value>
   </data>
   <data name="LEDStatusIndicators" xml:space="preserve">
-    <value>LED Status Indicators</value>
+    <value>LED būsenos indikatoriai</value>
   </data>
   <data name="Lid" xml:space="preserve">
     <value>Dangtis</value>
@@ -507,7 +507,7 @@ Vis tiek norite tęsti?</value>
     <value>Apšvietimas</value>
   </data>
   <data name="LockScreen" xml:space="preserve">
-    <value>Lock Screen</value>
+    <value>Užrakinimo ekranas</value>
   </data>
   <data name="Logo" xml:space="preserve">
     <value>Logotipas</value>
@@ -516,7 +516,7 @@ Vis tiek norite tęsti?</value>
     <value>Žemas</value>
   </data>
   <data name="LSDeadzones" xml:space="preserve">
-    <value>Left Stick Deadzones</value>
+    <value>Kairiojo jungiklio nejautrumo zonos</value>
   </data>
   <data name="LTDeadzones" xml:space="preserve">
     <value>Left Trigger Deadzones</value>
@@ -549,10 +549,10 @@ Vis tiek norite tęsti?</value>
     <value>Paveikslėlis</value>
   </data>
   <data name="MaxRefreshTooltip" xml:space="preserve">
-    <value>Maksimalus kadrų dažnis už mažesnę delsą</value>
+    <value>Maksimalus kadrų dažnis mažesnei delsai</value>
   </data>
   <data name="MinRefreshTooltip" xml:space="preserve">
-    <value>60Hz kadrų dažnis, kad taupytumėte energiją</value>
+    <value>60Hz kadrų dažnis energijos taupymui</value>
   </data>
   <data name="Minute" xml:space="preserve">
     <value>min.</value>
@@ -561,7 +561,7 @@ Vis tiek norite tęsti?</value>
     <value>min.</value>
   </data>
   <data name="MouseAngleSnapping" xml:space="preserve">
-    <value>Angle Snapping</value>
+    <value>Kampinis fiksavimas</value>
   </data>
   <data name="MouseAutoPowerOff" xml:space="preserve">
     <value>Automatiškai išjungti po</value>
@@ -570,7 +570,7 @@ Vis tiek norite tęsti?</value>
     <value>Klavišo atsakas</value>
   </data>
   <data name="MouseImportFailed" xml:space="preserve">
-    <value>Import failed. Selected file is not a valid mouse profile or corrutpted.</value>
+    <value>Importuoti nepavyko. Pasirinktas failas nėra galiojantis pelės profilis arba yra sugadintas.</value>
   </data>
   <data name="MouseLiftOffDistance" xml:space="preserve">
     <value>Pakilimo atstumas</value>
@@ -609,10 +609,10 @@ Vis tiek norite tęsti?</value>
     <value>Neprijungta</value>
   </data>
   <data name="Off" xml:space="preserve">
-    <value>Off</value>
+    <value>Išjungta</value>
   </data>
   <data name="On" xml:space="preserve">
-    <value>On</value>
+    <value>Įjungta</value>
   </data>
   <data name="OneZone" xml:space="preserve">
     <value>One Zone</value>
@@ -624,10 +624,10 @@ Vis tiek norite tęsti?</value>
     <value>Optimizuotas</value>
   </data>
   <data name="OptimizedGPUTooltip" xml:space="preserve">
-    <value>Perjungti į ekonomišką, kai naudojamas akumuliatorius, ir į standartinį, kai įjungtas į lizdą</value>
+    <value>Naudojant akumuliatorių įjungiamas ekon. režimas, įkraunant - stand. režimas</value>
   </data>
   <data name="OptimizedUSBC" xml:space="preserve">
-    <value>Neįjungti GPU, kai naudojamas USB-C įkroviklis optimizuotame režime</value>
+    <value>Išjungti GPU optimizuotame režime, kai naudojamas USB-C įkroviklis</value>
   </data>
   <data name="Other" xml:space="preserve">
     <value>Kita</value>
@@ -666,7 +666,7 @@ Vis tiek norite tęsti?</value>
     <value>Išeiti</value>
   </data>
   <data name="Reset" xml:space="preserve">
-    <value>Reset</value>
+    <value>Atstatyti</value>
   </data>
   <data name="RestartGPU" xml:space="preserve">
     <value>Kažkas naudoja dGPU ir neleidžia įjungti ekonomiško režimo. Norite leisti G-Helper bandyti iš naujo paleisti dGPU įrenginių tvarkytuvėje? (Tęskite savo rizika)</value>
@@ -756,7 +756,7 @@ Vis tiek norite tęsti?</value>
     <value>Išjungti naudojant akumuliatorių</value>
   </data>
   <data name="UltimateGPUTooltip" xml:space="preserve">
-    <value>Nukreipia ekraną į dGPU, kad maksimizuotų kadrų dažnį</value>
+    <value>Maksimaliai padidinamas kadrų kiekis, nukreipiant ekraną į dGPU</value>
   </data>
   <data name="UltimateMode" xml:space="preserve">
     <value>Maksimalus</value>
@@ -780,10 +780,10 @@ Vis tiek norite tęsti?</value>
     <value>Vizualinis režimas</value>
   </data>
   <data name="VisualModesHDR" xml:space="preserve">
-    <value>Visual Modes are not available when HDR is active</value>
+    <value>Vizualiniai režimai nepasiekiami, kuomet įjungtas HDR</value>
   </data>
   <data name="VisualModesScreen" xml:space="preserve">
-    <value>Visual Modes are not available when laptop screen is off</value>
+    <value>Vizualiniai režimai nepasiekiami, kuomet kompiuterio ekranas išjungtas</value>
   </data>
   <data name="VolumeDown" xml:space="preserve">
     <value>Garsumo mažinimas</value>

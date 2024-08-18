@@ -218,6 +218,9 @@ namespace GHelper.Input
                 case 3:
                     KeyboardHook.KeyKeyKeyPress((Keys)hexKeys[0], (Keys)hexKeys[1], (Keys)hexKeys[2]);
                     break;
+                case 4:
+                    KeyboardHook.KeyKeyKeyKeyPress((Keys)hexKeys[0], (Keys)hexKeys[1], (Keys)hexKeys[2], (Keys)hexKeys[3]);
+                    break;
                 default:
                     LaunchProcess(command);
                     break;
@@ -278,6 +281,43 @@ namespace GHelper.Input
                     }
                 }
 
+                if (AppConfig.IsProArt())
+                {
+                    switch (e.Key)
+                    {
+                        case Keys.F2:
+                            KeyboardHook.KeyPress(Keys.VolumeDown);
+                            return;
+                        case Keys.F3:
+                            KeyboardHook.KeyPress(Keys.VolumeUp);
+                            return;
+                        case Keys.F4:
+                            HandleEvent(199); // Backlight cycle
+                            return;
+                        case Keys.F5:
+                            SetBrightness(-10);
+                            return;
+                        case Keys.F6:
+                            SetBrightness(+10);
+                            return;
+                        case Keys.F7:
+                            KeyboardHook.KeyKeyPress(Keys.LWin, Keys.P);
+                            return;
+                        case Keys.F8:
+                            HandleEvent(126); // Emojis
+                            return;
+                        case Keys.F9:
+                            KeyProcess("m3"); // MicMute
+                            return;
+                        case Keys.F10:
+                            HandleEvent(133); // Camera Toggle
+                            return;
+                        case Keys.F11:
+                            KeyboardHook.KeyPress(Keys.Snapshot); // PrintScreen
+                            return;
+                    }
+                }
+
                 if (AppConfig.IsZ13() || AppConfig.IsDUO())
                 {
                     switch (e.Key)
@@ -288,7 +328,7 @@ namespace GHelper.Input
                     }
                 }
 
-                if (AppConfig.NoAura())
+                if (AppConfig.MediaKeys())
                 {
                     switch (e.Key)
                     {
@@ -655,6 +695,7 @@ namespace GHelper.Input
                 switch (EventID)
                 {
                     case 134:     // FN + F12 ON OLD DEVICES
+                    case 139:     // ProArt F12
                         KeyProcess("m4");
                         return;
                     case 124:    // M3
@@ -665,9 +706,6 @@ namespace GHelper.Input
                         return;
                     case 55:    // Arconym
                         KeyProcess("m6");
-                        return;
-                    case 136:    // FN + F12
-                        if (!AppConfig.IsNoAirplaneMode()) Program.acpi.DeviceSet(AsusACPI.UniversalControl, AsusACPI.Airplane, "Airplane");
                         return;
                     case 181:    // FN + Numpad Enter
                         KeyProcess("fne");
@@ -684,12 +722,6 @@ namespace GHelper.Input
                         return;
                     case 158:   // Fn + C
                         KeyProcess("fnc");
-                        return;
-                    case 78:    // Fn + ESC
-                        ToggleFnLock();
-                        return;
-                    case 75:    // Fn + ESC
-                        ToggleArrowLock();
                         return;
                     case 189: // Tablet mode
                         TabletMode();
@@ -776,6 +808,18 @@ namespace GHelper.Input
                 case 51:    // Fn+F6 on old TUFs
                 case 53:    // Fn+F6 on GA-502DU model
                     NativeMethods.TurnOffScreen();
+                    return;
+                case 126:    // Fn+F8 emojis popup
+                    KeyboardHook.KeyKeyPress(Keys.LWin, Keys.OemSemicolon);
+                    return;
+                case 78:    // Fn + ESC
+                    ToggleFnLock();
+                    return;
+                case 75:    // Fn + Arrow Lock
+                    ToggleArrowLock();
+                    return;
+                case 136:    // FN + F12
+                    if (!AppConfig.IsNoAirplaneMode()) Program.acpi.DeviceSet(AsusACPI.UniversalControl, AsusACPI.Airplane, "Airplane");
                     return;
 
 

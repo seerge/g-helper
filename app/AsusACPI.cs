@@ -46,6 +46,7 @@ public class AsusACPI
 
     public const int KB_TouchpadToggle = 0x6b;
     public const int KB_MuteToggle = 0x7c;
+    public const int KB_FNlockToggle = 0x4e;
 
     public const int KB_DUO_PgUpDn = 0x4B;
     public const int KB_DUO_SecondDisplay = 0x6A;
@@ -113,9 +114,14 @@ public class AsusACPI
     public const int APU_MEM = 0x000600C1;
 
     public const int TUF_KB_BRIGHTNESS = 0x00050021;
+    public const int VIVO_KB_BRIGHTNESS = 0x0005002F;
+
     public const int TUF_KB = 0x00100056;
     public const int TUF_KB2 = 0x0010005a;
+    public const int VIVO_KB = 0x0012008E;
+
     public const int TUF_KB_STATE = 0x00100057;
+    public const int VIVO_KB_STATE = 0x0012008F;
 
     public const int MicMuteLed = 0x00040017;
 
@@ -171,8 +177,8 @@ public class AsusACPI
     private bool? _allAMD = null;
     private bool? _overdrive = null;
 
-    public static uint GPUEco => AppConfig.IsVivoZenbook() ? GPUEcoVivo : GPUEcoROG;
-    public static uint GPUMux => AppConfig.IsVivoZenbook() ? GPUMuxVivo : GPUMuxROG;
+    public static uint GPUEco => AppConfig.IsVivoZenPro() ? GPUEcoVivo : GPUEcoROG;
+    public static uint GPUMux => AppConfig.IsVivoZenPro() ? GPUMuxVivo : GPUMuxROG;
 
     [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
     private static extern IntPtr CreateFile(
@@ -644,7 +650,7 @@ public class AsusACPI
 
     public bool IsAllAmdPPT()
     {
-        if (_allAMD is null) _allAMD = DeviceGet(PPT_CPUB0) >= 0 && DeviceGet(PPT_GPUC0) < 0;
+        if (_allAMD is null) _allAMD = DeviceGet(PPT_CPUB0) >= 0 && DeviceGet(PPT_GPUC0) < 0 && !AppConfig.IsAlly();
         return (bool)_allAMD;
     }
 
@@ -784,6 +790,7 @@ public class AsusACPI
     {
         int param = 0x80 | (brightness & 0x7F);
         DeviceSet(TUF_KB_BRIGHTNESS, param, "TUF Brightness");
+        if (AppConfig.IsVivoZenPro()) DeviceSet(VIVO_KB_BRIGHTNESS, param, "VIVO Brightness");
     }
 
     public void TUFKeyboardRGB(AuraMode mode, Color color, int speed, string? log = "TUF RGB")
@@ -819,6 +826,7 @@ public class AsusACPI
         state = state | 0x01 << 8;
 
         DeviceSet(TUF_KB_STATE, state, "TUF_KB");
+        if (AppConfig.IsVivoZenPro()) DeviceSet(VIVO_KB_STATE, state, "VIVO_KB");
     }
 
     public void SubscribeToEvents(Action<object, EventArrivedEventArgs> EventHandler)
