@@ -709,7 +709,10 @@ namespace GHelper
         {
             using (var amdControl = new AmdGpuControl())
             {
-                amdControl.SetVariBright(checkVariBright.Checked ? 1 : 0);
+                if (NvidiaSmi.GetDisplayActiveStatus()) return; // Skip if Nvidia GPU is active
+                var status = checkVariBright.Checked ? 1 : 0;
+                var result = amdControl.SetVariBright(status);
+                Logger.WriteLine($"VariBright {status}: {result}");
                 ProcessHelper.KillByName("RadeonSoftware");
             }
         }
