@@ -404,12 +404,14 @@ namespace GHelper.AnimeMatrix
 
         public void PresentClock()
         {
-            string second = (DateTime.Now.Second % 2 == 0) ? ":" : "  ";
-            string time = DateTime.Now.ToString("HH" + second + "mm");
+            string timeFormat = AppConfig.GetString("matrix_time", "HH:mm");
+            string dateFormat = AppConfig.GetString("matrix_date", "yy.MM.dd");
+
+            if (DateTime.Now.Second % 2 != 0) timeFormat = timeFormat.Replace(":", "  ");
 
             Clear();
-            Text(time, 15, 0, 25);
-            Text(DateTime.Now.ToString("yy'. 'MM'. 'dd"), 11.5F, 0, 14);
+            Text(DateTime.Now.ToString(timeFormat), 15, 2, 25);
+            Text(DateTime.Now.ToString(dateFormat), 11.5F, 0, 14);
             Present();
 
         }

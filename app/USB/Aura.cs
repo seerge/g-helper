@@ -79,7 +79,7 @@ namespace GHelper.USB
         public static Color Color1 = Color.White;
         public static Color Color2 = Color.Black;
 
-        static bool isACPI = AppConfig.IsTUF() || AppConfig.IsVivoZenbook() || AppConfig.IsProArt();
+        static bool isACPI = AppConfig.IsTUF() || AppConfig.IsVivoZenPro();
         static bool isStrix = AppConfig.IsAdvancedRGB() && !AppConfig.IsNoDirectRGB();
 
         static bool isStrix4Zone = AppConfig.Is4ZoneRGB();
@@ -254,7 +254,7 @@ namespace GHelper.USB
             msg[6] = mono ? (byte)0 : color.B; // B
             msg[7] = (byte)speed; // aura.speed as u8;
             msg[8] = 0x00; // aura.direction as u8;
-            msg[9] = (color.R == 0 && color.G == 0 && color.B == 0) ? (byte)0xFF : (byte)0x00; // random color flag
+            msg[9] = (color.R == 0 && color.G == 0 && color.B == 0) ? (byte)0xFF : (mode == AuraMode.AuraBreathe ? (byte)0x01 : (byte)0x00); // random color flag
             msg[10] = color2.R; // R
             msg[11] = mono ? (byte)0 : color2.G; // G
             msg[12] = mono ? (byte)0 : color2.B; // B

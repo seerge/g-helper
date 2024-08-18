@@ -92,7 +92,12 @@ namespace GHelper.Gpu
                 {
                     if (AppConfig.NoAutoUltimate())
                     {
-                        Program.acpi.SetGPUEco(0);
+                        int standardStatus = Program.acpi.SetGPUEco(0);
+                        if (standardStatus == 0)
+                        {
+                            settings.VisualiseGPUMode();
+                            return;
+                        }
                         Thread.Sleep(100);
                     }
                     status = Program.acpi.DeviceSet(AsusACPI.GPUMux, 0, "GPUMux");
@@ -222,6 +227,7 @@ namespace GHelper.Gpu
                     if ((GpuAuto && !IsPlugged()) || (ForceGPU && GpuMode == AsusACPI.GPUModeEco))
                     {
 
+                        if (Program.acpi.IsXGConnected()) return false;
                         if (HardwareControl.IsUsedGPU())
                         {
                             DialogResult dialogResult = MessageBox.Show(Properties.Strings.AlertDGPU, Properties.Strings.AlertDGPUTitle, MessageBoxButtons.YesNo);
