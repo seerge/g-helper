@@ -118,10 +118,8 @@ public class AsusACPI
 
     public const int TUF_KB = 0x00100056;
     public const int TUF_KB2 = 0x0010005a;
-    public const int VIVO_KB = 0x0012008E;
 
     public const int TUF_KB_STATE = 0x00100057;
-    public const int VIVO_KB_STATE = 0x0012008F;
 
     public const int MicMuteLed = 0x00040017;
 
@@ -791,6 +789,7 @@ public class AsusACPI
         int param = 0x80 | (brightness & 0x7F);
         DeviceSet(TUF_KB_BRIGHTNESS, param, "TUF Brightness");
         if (AppConfig.IsVivoZenPro()) DeviceSet(VIVO_KB_BRIGHTNESS, param, "VIVO Brightness");
+
     }
 
     public void TUFKeyboardRGB(AuraMode mode, Color color, int speed, string? log = "TUF RGB")
@@ -814,8 +813,6 @@ public class AsusACPI
             DeviceSet(TUF_KB2, setting, log);
         }
 
-        // if (AppConfig.IsVivoZenPro()) DeviceSet(VIVO_KB, setting_vivo, "VIVO RGB");
-
     }
 
     const int ASUS_WMI_KEYBOARD_POWER_BOOT = 0x03 << 16;
@@ -834,7 +831,6 @@ public class AsusACPI
         state = state | 0x01 << 8;
 
         DeviceSet(TUF_KB_STATE, state, "TUF_KB");
-        if (AppConfig.IsVivoZenPro()) DeviceSet(VIVO_KB_STATE, state, "VIVO_KB");
     }
 
     public void SubscribeToEvents(Action<object, EventArrivedEventArgs> EventHandler)
