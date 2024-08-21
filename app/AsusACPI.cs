@@ -806,7 +806,15 @@ public class AsusACPI
         setting[5] = (byte)speed;
 
         int result = DeviceSet(TUF_KB, setting, log);
-        if (result != 1) DeviceSet(TUF_KB2, setting, log);
+        if (result != 1)
+        {
+            setting[0] = (byte)0xb3;
+            DeviceSet(TUF_KB2, setting, log);
+            setting[0] = (byte)0xb4;
+            DeviceSet(TUF_KB2, setting, log);
+        }
+
+        // if (AppConfig.IsVivoZenPro()) DeviceSet(VIVO_KB, setting_vivo, "VIVO RGB");
 
     }
 
