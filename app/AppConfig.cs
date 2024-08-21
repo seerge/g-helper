@@ -431,7 +431,7 @@ public static class AppConfig
 
     public static bool IsInputBacklight()
     {
-        return ContainsModel("GA503") || IsSlash();
+        return ContainsModel("GA503") || IsSlash() || IsVivoZenPro();
     }
 
     public static bool IsInvertedFNLock()
