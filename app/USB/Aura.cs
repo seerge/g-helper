@@ -271,9 +271,12 @@ namespace GHelper.USB
 
             if (AppConfig.IsProArt())
             {
-                AsusHid.WriteInput([0x21,0x0A]);
-                AsusHid.WriteInput([AsusHid.INPUT_ID, 0x05, 0x20, 0x31, 0x00, 0x08, 0x83, 0x05, 0xC1, 0x00, 0x01, 0x02, 0x01, 0x00, 0x56, 0x0F]);
-                AsusHid.WriteInput([AsusHid.INPUT_ID, 0xD0, 0x85, 0xFF, 0x01, 0xEC]);
+                AsusHid.WriteInput([AsusHid.INPUT_ID, 0x05, 0x20, 0x31, 0x00, 0x08], "ProArt Init");
+                AsusHid.WriteInput([AsusHid.INPUT_ID, 0xD0, 0x4E], "ProArt Init");
+                AsusHid.WriteInput([AsusHid.INPUT_ID, 0xBA, 0xC5, 0xC4], "ProArt Init");
+                AsusHid.WriteInput([AsusHid.INPUT_ID, 0xD0, 0x8F, 0x01], "ProArt Init");
+                AsusHid.WriteInput([AsusHid.INPUT_ID, 0xD0, 0x85, 0xFF], "ProArt Init");
+                AsusHid.WriteInput([AsusHid.INPUT_ID, 0xD0, 0x4E], "ProArt Init");
             }
         }
 
