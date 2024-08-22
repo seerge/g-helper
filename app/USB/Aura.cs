@@ -268,6 +268,13 @@ namespace GHelper.USB
                 Encoding.ASCII.GetBytes("]ASUS Tech.Inc."),
                 new byte[] { AsusHid.AURA_ID, 0x05, 0x20, 0x31, 0, 0x1A },
             }, "Init");
+
+            if (AppConfig.IsProArt())
+            {
+                AsusHid.WriteInput([0x21,0x0A]);
+                AsusHid.WriteInput([AsusHid.INPUT_ID, 0x05, 0x20, 0x31, 0x00, 0x08, 0x83, 0x05, 0xC1, 0x00, 0x01, 0x02, 0x01, 0x00, 0x56, 0x0F]);
+                AsusHid.WriteInput([AsusHid.INPUT_ID, 0xD0, 0x85, 0xFF, 0x01, 0xEC]);
+            }
         }
 
 
