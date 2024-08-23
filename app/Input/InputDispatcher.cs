@@ -631,7 +631,7 @@ namespace GHelper.Input
         public static void HardwareFnLock(bool fnLock)
         {
             Program.acpi.DeviceSet(AsusACPI.FnLock, fnLock ^ AppConfig.IsInvertedFNLock() ? 1 : 0, "FnLock");
-            AsusHid.WriteInput([AsusHid.INPUT_ID, 0xD0, 0x4E, fnLock ? (byte)0x01 : (byte)0x00], "USB FnLock");
+            AsusHid.WriteInput([AsusHid.INPUT_ID, 0xD0, 0x4E, fnLock ? (byte)0x00 : (byte)0x01], "USB FnLock");
         }
 
         public static void ToggleFnLock()
