@@ -411,17 +411,17 @@ public static class AppConfig
     // G14 2020 has no aura, but media keys instead
     public static bool NoAura()
     {
-        return ContainsModel("GA401I") && !ContainsModel("GA401IHR");
+        return (ContainsModel("GA401I") && !ContainsModel("GA401IHR")) || ContainsModel("HN7306");
     }
 
     public static bool MediaKeys()
     {
-        return NoAura() || ContainsModel("G712L");
+        return (ContainsModel("GA401I") && !ContainsModel("GA401IHR")) || ContainsModel("G712L");
     }
 
     public static bool IsSingleColor()
     {
-        return ContainsModel("GA401") || ContainsModel("FX517Z") || ContainsModel("FX516P") || ContainsModel("X13") || IsARCNM() || ContainsModel("GA502IU") || ContainsModel("FA617N") || ContainsModel("FA617X");
+        return ContainsModel("GA401") || ContainsModel("FX517Z") || ContainsModel("FX516P") || ContainsModel("X13") || IsARCNM() || ContainsModel("GA502IU") || ContainsModel("FA617N") || ContainsModel("FA617X") || NoAura();
     }
 
     public static bool IsSlash()
