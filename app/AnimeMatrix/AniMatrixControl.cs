@@ -114,6 +114,7 @@ namespace GHelper.AnimeMatrix
                     switch ((SlashMode)running)
                     {
                         case SlashMode.Static:
+                            Logger.WriteLine("Slash: Static");
                             var custom = AppConfig.GetString("slash_custom");
                             if (custom is not null && custom.Length > 0)
                             {
@@ -126,6 +127,7 @@ namespace GHelper.AnimeMatrix
                             break;
                         case SlashMode.BatteryLevel:
                             // call tick to immediately update the pattern
+                            Logger.WriteLine("Slash: Battery Level");
                             SlashTimer_start();
                             SlashTimer_tick();
                             break;
