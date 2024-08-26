@@ -280,7 +280,7 @@ namespace GHelper.AnimeMatrix
         }
 
 
-        private void SlashTimer_start(int interval = 60000)
+        private void SlashTimer_start(int interval = 180000)
         {
             // 100% to 0% in 1hr = 1% every 36 seconds
             // 1 bracket every 14.2857 * 36s = 514s ~ 8m 30s
