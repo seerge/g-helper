@@ -40,7 +40,7 @@ namespace Ryzen
         //PHEONIX - 9
         //RAPHAEL/DRAGON RANGE - 10
         //MENDOCINO - 11
-        //HAWKPOINT - 12
+        //HAWKPOINT/STRIXPOINT - 12
 
         public static void Init()
         {
@@ -77,7 +77,7 @@ namespace Ryzen
                 FAMID = 1; //PICASSO
             }
 
-            if (CPUModel.Contains("Model " + Convert.ToString(32)))
+            if (CPUModel.Contains("Family " + Convert.ToString(23)) && CPUModel.Contains("Model " + Convert.ToString(32)))
             {
                 FAMID = 2; //DALI
             }
@@ -127,6 +127,11 @@ namespace Ryzen
                 FAMID = 12; //HAWKPOINT 
             }
 
+            if (CPUModel.Contains("Family " + Convert.ToString(26)) && CPUModel.Contains("Model " + Convert.ToString(36)))
+            {
+                FAMID = 12; //STRIXPOINT 
+            }
+
             Logger.WriteLine($"CPU: {FAMID} - {CPUName} - {CPUModel}");
 
             SetAddresses();
@@ -141,7 +146,7 @@ namespace Ryzen
         public static bool IsSupportedUV()
         {
             if (CPUName.Length == 0) Init();
-            return CPUName.Contains("Ryzen 9") || CPUName.Contains("4900H") || CPUName.Contains("4800H") || CPUName.Contains("4600H");
+            return CPUName.Contains("Ryzen AI 9") || CPUName.Contains("Ryzen 9") || CPUName.Contains("4900H") || CPUName.Contains("4800H") || CPUName.Contains("4600H");
         }
 
         public static bool IsSupportedUViGPU()

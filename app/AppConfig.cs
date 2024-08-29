@@ -392,10 +392,15 @@ public static class AppConfig
         return ContainsModel("Vivobook") || ContainsModel("Zenbook") || ContainsModel("ProArt");
     }
 
+    public static bool IsHardwareFnLock()
+    {
+        return IsVivoZenPro();
+    }
+
     // Devices with bugged bios command to change brightness
     public static bool SwappedBrightness()
     {
-        return ContainsModel("FA506IH") || ContainsModel("FA506IC") || ContainsModel("FX506LU") || ContainsModel("FX506IC") || ContainsModel("FX506LH") || ContainsModel("FA506IV") || ContainsModel("FA706IC");
+        return ContainsModel("FA506IH") || ContainsModel("FA506IC") || ContainsModel("FX506LU") || ContainsModel("FX506IC") || ContainsModel("FX506LH") || ContainsModel("FA506IV") || ContainsModel("FA706IC") || ContainsModel("FA706IH");
     }
 
 
@@ -407,17 +412,17 @@ public static class AppConfig
     // G14 2020 has no aura, but media keys instead
     public static bool NoAura()
     {
-        return ContainsModel("GA401I") && !ContainsModel("GA401IHR");
+        return (ContainsModel("GA401I") && !ContainsModel("GA401IHR")) || ContainsModel("HN7306");
     }
 
     public static bool MediaKeys()
     {
-        return NoAura() || ContainsModel("G712L");
+        return (ContainsModel("GA401I") && !ContainsModel("GA401IHR")) || ContainsModel("G712L");
     }
 
     public static bool IsSingleColor()
     {
-        return ContainsModel("GA401") || ContainsModel("FX517Z") || ContainsModel("FX516P") || ContainsModel("X13") || IsARCNM() || ContainsModel("GA502IU") || ContainsModel("FA617N") || ContainsModel("FA617X");
+        return ContainsModel("GA401") || ContainsModel("FX517Z") || ContainsModel("FX516P") || ContainsModel("X13") || IsARCNM() || ContainsModel("GA502IU") || ContainsModel("FA617N") || ContainsModel("FA617X") || NoAura();
     }
 
     public static bool IsSlash()
@@ -432,7 +437,7 @@ public static class AppConfig
 
     public static bool IsInputBacklight()
     {
-        return ContainsModel("GA503") || IsSlash();
+        return ContainsModel("GA503") || IsSlash() || IsVivoZenPro();
     }
 
     public static bool IsInvertedFNLock()
@@ -442,7 +447,7 @@ public static class AppConfig
 
     public static bool IsOLED()
     {
-        return ContainsModel("OLED") || IsSlash() || ContainsModel("M7600") || ContainsModel("UX64") || ContainsModel("UX34") || ContainsModel("UX53") || ContainsModel("K360") || ContainsModel("X150") || ContainsModel("M350") || ContainsModel("K650") || ContainsModel("UM53") || ContainsModel("K660") || ContainsModel("UX84") || ContainsModel("M650") || ContainsModel("K340") || ContainsModel("K350") || ContainsModel("M140") || ContainsModel("UM340") || ContainsModel("S540") || ContainsModel("M7400") || ContainsModel("N650");
+        return ContainsModel("OLED") || IsSlash() || ContainsModel("M7600") || ContainsModel("UX64") || ContainsModel("UX34") || ContainsModel("UX53") || ContainsModel("K360") || ContainsModel("X150") || ContainsModel("M350") || ContainsModel("K650") || ContainsModel("UM53") || ContainsModel("K660") || ContainsModel("UX84") || ContainsModel("M650") || ContainsModel("M550") || ContainsModel("K340") || ContainsModel("K350") || ContainsModel("M140") || ContainsModel("UM340") || ContainsModel("S540") || ContainsModel("M7400") || ContainsModel("N650") || ContainsModel("HN7306") || ContainsModel("H7606");
     }
 
     public static bool IsNoOverdrive()
@@ -618,12 +623,12 @@ public static class AppConfig
 
     public static bool IsFanRequired()
     {
-        return ContainsModel("GA402X") || ContainsModel("G513") || ContainsModel("G713R") || ContainsModel("G713P") || ContainsModel("GU605") || ContainsModel("GA403") || ContainsModel("G634J") || ContainsModel("G834J") || ContainsModel("G614J") || ContainsModel("G814J") || ContainsModel("FX507V");
+        return ContainsModel("GA402X") || ContainsModel("G513") || ContainsModel("G713R") || ContainsModel("G713P") || ContainsModel("GU605") || ContainsModel("GA605") || ContainsModel("GA403") || ContainsModel("G634J") || ContainsModel("G834J") || ContainsModel("G614J") || ContainsModel("G814J") || ContainsModel("FX507V");
     }
 
     public static bool IsAMDLight()
     {
-        return ContainsModel("GA402X") || ContainsModel("GA403") || ContainsModel("FA507N") || ContainsModel("FA507X") || ContainsModel("FA707N") || ContainsModel("FA707X");
+        return ContainsModel("GA402X") || ContainsModel("GA605") || ContainsModel("GA403") || ContainsModel("FA507N") || ContainsModel("FA507X") || ContainsModel("FA707N") || ContainsModel("FA707X");
     }
 
     public static bool IsPowerRequired()

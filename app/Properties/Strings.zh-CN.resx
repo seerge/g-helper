@@ -741,7 +741,7 @@
     <value>关闭屏幕</value>
   </data>
   <data name="ToggleTouchscreen" xml:space="preserve">
-    <value>Toggle Touchscreen</value>
+    <value>切换触摸屏</value>
   </data>
   <data name="Touchscreen" xml:space="preserve">
     <value/>

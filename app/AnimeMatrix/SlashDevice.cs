@@ -182,17 +182,17 @@ namespace GHelper.AnimeMatrix
 
         public void SetBatteryPattern(int brightness)
         {
-            SetCustom(GetBatteryPattern(brightness, 100 * (GetBatteryChargePercentage() / AppConfig.Get("charge_limit", 100))));
+            SetCustom(GetBatteryPattern(brightness, 100 * (GetBatteryChargePercentage() / AppConfig.Get("charge_limit", 100))), null);
         }
 
-        public void SetCustom(byte[] data)
+        public void SetCustom(byte[] data, string? log = "Static Data")
         {
-            Set(CreatePacket([0xD2, 0x02, 0x01, 0x08, 0xAC]), "Static");
-            Set(CreatePacket([0xD3, 0x03, 0x01, 0x08, 0xAC, 0xFF, 0xFF, 0x01, 0x05, 0xFF, 0xFF]), "StaticSettings");
-            Set(CreatePacket([0xD4, 0x00, 0x00, 0x01, 0xAC]), "StaticSave");
+            Set(CreatePacket([0xD2, 0x02, 0x01, 0x08, 0xAC]), null);
+            Set(CreatePacket([0xD3, 0x03, 0x01, 0x08, 0xAC, 0xFF, 0xFF, 0x01, 0x05, 0xFF, 0xFF]), null);
+            Set(CreatePacket([0xD4, 0x00, 0x00, 0x01, 0xAC]), null);
 
             byte[] payload = new byte[] { 0xD3, 0x00, 0x00, 0x07 };
-            Set(CreatePacket(payload.Concat(data.Take(7)).ToArray()), "Static Data");
+            Set(CreatePacket(payload.Concat(data.Take(7)).ToArray()), log);
         }
 
         public void SetOptions(bool status, int brightness = 0, int interval = 0)
