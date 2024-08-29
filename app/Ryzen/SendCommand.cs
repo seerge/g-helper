@@ -21,7 +21,7 @@ namespace Ryzen
         //PHEONIX - 9
         //RAPHAEL/DRAGON RANGE - 10
         //MENDOCINO - 11
-        //HAWKPOINT - 12
+        //HAWKPOINT/STRIXPOINT - 12
 
         public static Smu RyzenAccess = new Smu(false);
         public static int FAMID = RyzenControl.FAMID;
