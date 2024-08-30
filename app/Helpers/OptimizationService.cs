@@ -17,6 +17,7 @@ namespace GHelper.Helpers
                 "ASUSSwitch",
                 "ASUSSystemAnalysis",
                 "ASUSSystemDiagnosis",
+                "AsusPTPService",
                 "AsusCertService"
         };
 
