@@ -262,7 +262,7 @@
     <value>Kapalı</value>
   </data>
   <data name="BacklightTimeout" xml:space="preserve">
-    <value>Pilde klavye ışığı kapanma süresi</value>
+    <value>Pilde klavye ışığı kapanma süresi [saniye]</value>
   </data>
   <data name="BacklightTimeoutBattery" xml:space="preserve">
     <value>Pildeyken Arka Işık Zaman Aşımı</value>

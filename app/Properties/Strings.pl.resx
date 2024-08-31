@@ -262,7 +262,7 @@
     <value>Wyłączone</value>
   </data>
   <data name="BacklightTimeout" xml:space="preserve">
-    <value>Limit czasu podłączonego / na baterii (0 - Włączony)</value>
+    <value>Limit czasu podłączonego / na baterii (0 - Włączony) [sekundy]</value>
   </data>
   <data name="BacklightTimeoutBattery" xml:space="preserve">
     <value>Czas podświetlenia na baterii</value>

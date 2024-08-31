@@ -262,7 +262,7 @@
     <value>Apagado</value>
   </data>
   <data name="BacklightTimeout" xml:space="preserve">
-    <value>Tiempo de espera conectado / con batería (0 - ON)</value>
+    <value>Tiempo de espera conectado / con batería (0 - ON) [segundos]</value>
   </data>
   <data name="BacklightTimeoutBattery" xml:space="preserve">
     <value>Tiempo de retroiluminación con batería</value>

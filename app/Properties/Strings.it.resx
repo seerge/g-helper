@@ -262,7 +262,7 @@
     <value>Off</value>
   </data>
   <data name="BacklightTimeout" xml:space="preserve">
-    <value>Timeout in carica / a batteria (0 - ACCESO)</value>
+    <value>Timeout in carica / a batteria (0 - ACCESO) [secondi]</value>
   </data>
   <data name="BacklightTimeoutBattery" xml:space="preserve">
     <value>Backlight Timeout when on battery</value>

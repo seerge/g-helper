@@ -262,7 +262,7 @@
     <value>Mati</value>
   </data>
   <data name="BacklightTimeout" xml:space="preserve">
-    <value>Waktu tunggu dicolokan / menggunakan baterai (0 - Hidup)</value>
+    <value>Waktu tunggu dicolokan / menggunakan baterai (0 - Hidup) [detik]</value>
   </data>
   <data name="BacklightTimeoutBattery" xml:space="preserve">
     <value>Backlight Timeout when on battery</value>

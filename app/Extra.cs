@@ -172,7 +172,9 @@ namespace GHelper
             comboFNE.AccessibleName = "Fn+Numpad Action";
 
             numericBacklightPluggedTime.AccessibleName = Properties.Strings.BacklightTimeoutPlugged;
+            toolTip.SetToolTip(numericBacklightPluggedTime, Properties.Strings.BacklightTimeoutPlugged);
             numericBacklightTime.AccessibleName = Properties.Strings.BacklightTimeoutBattery;
+            toolTip.SetToolTip(numericBacklightTime, Properties.Strings.BacklightTimeoutBattery);
 
             comboKeyboardSpeed.AccessibleName = Properties.Strings.LaptopBacklight + " " +Properties.Strings.AnimationSpeed;
             comboAPU.AccessibleName = Properties.Strings.LaptopBacklight + " " + Properties.Strings.AnimationSpeed;

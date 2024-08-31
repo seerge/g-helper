@@ -262,7 +262,7 @@
     <value>꺼짐</value>
   </data>
   <data name="BacklightTimeout" xml:space="preserve">
-    <value>전원 / 배터리 사용 중 자동 꺼짐 시간 (0 - 항상 켜짐)</value>
+    <value>전원 / 배터리 사용 중 자동 꺼짐 시간 (0 - 항상 켜짐) [초]</value>
   </data>
   <data name="BacklightTimeoutBattery" xml:space="preserve">
     <value>배터리 사용 중 백라이트 자동 꺼짐</value>

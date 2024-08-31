@@ -262,7 +262,7 @@
     <value>關閉</value>
   </data>
   <data name="BacklightTimeout" xml:space="preserve">
-    <value>閒置幾秒後關閉燈光：插電時 / 使用電池 (0 = 不關閉)</value>
+    <value>閒置幾秒後關閉燈光：插電時 / 使用電池 (0 = 不關閉) [秒]</value>
   </data>
   <data name="BacklightTimeoutBattery" xml:space="preserve">
     <value>閒置時關閉燈光(電池模式)</value>

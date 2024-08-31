@@ -262,7 +262,7 @@
     <value>背光关闭</value>
   </data>
   <data name="BacklightTimeout" xml:space="preserve">
-    <value>插电/电池时熄灭时间（0表示长亮）</value>
+    <value>插电/电池时熄灭时间（0表示长亮）[秒]</value>
   </data>
   <data name="BacklightTimeoutBattery" xml:space="preserve">
     <value>充电模式下的背光超时</value>

@@ -262,7 +262,7 @@
     <value>Off</value>
   </data>
   <data name="BacklightTimeout" xml:space="preserve">
-    <value>Timeout conectat / folosind bateria (0 - ON)</value>
+    <value>Timeout conectat / folosind bateria (0 - ON) [secunde]</value>
   </data>
   <data name="BacklightTimeoutBattery" xml:space="preserve">
     <value>Timp oprire iluminare pe baterie</value>
