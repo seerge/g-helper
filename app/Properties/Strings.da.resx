@@ -262,7 +262,7 @@
     <value>Slukket</value>
   </data>
   <data name="BacklightTimeout" xml:space="preserve">
-    <value>Timeout tilsluttet / på batteri (0 - TIL)</value>
+    <value>Timeout tilsluttet / på batteri (0 - TIL) [sekunder]</value>
   </data>
   <data name="BacklightTimeoutBattery" xml:space="preserve">
     <value>Baggrundslys timeout på batteri</value>

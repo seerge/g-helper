@@ -262,7 +262,7 @@
     <value>Off</value>
   </data>
   <data name="BacklightTimeout" xml:space="preserve">
-    <value>Tempo limite ligado à corrente / na bateria (0 - ON)</value>
+    <value>Tempo limite ligado à corrente / na bateria (0 - ON) [segundos]</value>
   </data>
   <data name="BacklightTimeoutBattery" xml:space="preserve">
     <value>Desligar o ecrã após (em Bateria)</value>
