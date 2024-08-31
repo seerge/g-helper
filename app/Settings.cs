@@ -270,6 +270,12 @@ namespace GHelper
             labelCharge.Click += LabelCharge_Click;
 
             buttonDonate.Click += ButtonDonate_Click;
+            
+            if (AppConfig.Get("start_count") > 10 && !AppConfig.Is("donate_click"))
+            {
+                buttonDonate.BorderColor = colorTurbo;
+                buttonDonate.Badge = true;
+            }
 
             labelDynamicLighting.Click += LabelDynamicLighting_Click;
 
@@ -279,6 +285,8 @@ namespace GHelper
 
         private void ButtonDonate_Click(object? sender, EventArgs e)
         {
+            AppConfig.Set("donate_click", 1);
+            buttonDonate.Badge = false;
             Process.Start(new ProcessStartInfo("https://github.com/seerge/g-helper/wiki/Support-Project") { UseShellExecute = true });
         }
 
