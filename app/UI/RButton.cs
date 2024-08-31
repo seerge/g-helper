@@ -114,8 +114,7 @@ namespace GHelper.UI
                 using (Brush brush = new SolidBrush(borderColor))
                 {
                     var radius = ratio * 10;
-                    var padding = ratio * 10;
-                    pevent.Graphics.FillEllipse(brush, rectSurface.Width - padding - (2 * radius), padding, radius + radius, radius + radius);
+                    pevent.Graphics.FillEllipse(brush, rectSurface.Width - rectSurface.Height / 2 -  radius, rectSurface.Height / 2 - radius, radius + radius, radius + radius);
                 }
             }
 
