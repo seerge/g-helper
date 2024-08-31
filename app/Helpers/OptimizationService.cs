@@ -17,9 +17,10 @@ namespace GHelper.Helpers
                 "ASUSSwitch",
                 "ASUSSystemAnalysis",
                 "ASUSSystemDiagnosis",
-                "AsusPTPService",
                 "AsusCertService"
         };
+
+        //"AsusPTPService",
 
         static List<string> processesAC = new() {
                 "ArmouryCrateSE.Service",
