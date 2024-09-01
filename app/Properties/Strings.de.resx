@@ -783,7 +783,7 @@ Trotzdem fortfahren?</value>
     <value>Darstellungsmodi sind nicht verfügbar, wenn HDR aktiv ist.</value>
   </data>
   <data name="VisualModesScreen" xml:space="preserve">
-    <value>Darstellungsmodi sind nicht verfügbar, wenn Laptop-Bildschirm aus ist.</value>
+    <value>Modi nicht verfügbar, wenn Laptop-Bildschirm aus ist.</value>
   </data>
   <data name="VolumeDown" xml:space="preserve">
     <value>Lautstärke verringern</value>
