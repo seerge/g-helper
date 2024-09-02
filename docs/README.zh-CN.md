@@ -4,7 +4,7 @@
 [![Github all releases](https://img.shields.io/github/downloads/seerge/g-helper/total)](https://GitHub.com/seerge/g-helper/releases/) [![GitHub stars](https://img.shields.io/github/stars/seerge/g-helper.svg?style=social)](https://GitHub.com/seerge/g-helper/stargazers/) 
 
 
-语言: [English](https://github.com/seerge/g-helper#readme) | 中文
+语言: [English](https://github.com/seerge/g-helper#readme) | 中文 | [日本語](https://github.com/seerge/g-helper/blob/main/docs/README.ja-JP.md)
 
 适用于华硕（Asus）笔记本电脑的轻量级 Armoury Crate (奥创控制中心)替代品，在功能几乎相同的同时减少不必要的服务以减轻负载。
 G-helper兼容所有主流型号，例如 ROG 幻14、幻15、幻16、幻13、幻X、天选（飞行堡垒）系列、枪神/魔霸系列、创系列、灵耀系列、无畏系列、ROG Ally 等！
