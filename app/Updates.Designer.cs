@@ -78,7 +78,7 @@ namespace GHelper
             // labelBIOS
             // 
             labelBIOS.AutoSize = true;
-            labelBIOS.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            labelBIOS.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             labelBIOS.Location = new Point(68, 23);
             labelBIOS.Margin = new Padding(4, 0, 4, 0);
             labelBIOS.Name = "labelBIOS";
@@ -113,7 +113,7 @@ namespace GHelper
             // labelUpdates
             // 
             labelUpdates.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            labelUpdates.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            labelUpdates.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             labelUpdates.Location = new Point(864, 19);
             labelUpdates.Name = "labelUpdates";
             labelUpdates.Size = new Size(302, 32);
@@ -125,6 +125,7 @@ namespace GHelper
             buttonRefresh.Activated = false;
             buttonRefresh.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             buttonRefresh.BackColor = SystemColors.ControlLight;
+            buttonRefresh.Badge = false;
             buttonRefresh.BorderColor = Color.Transparent;
             buttonRefresh.BorderRadius = 5;
             buttonRefresh.FlatAppearance.BorderSize = 0;
@@ -192,7 +193,7 @@ namespace GHelper
             // labelDrivers
             // 
             labelDrivers.AutoSize = true;
-            labelDrivers.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            labelDrivers.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             labelDrivers.Location = new Point(68, 6);
             labelDrivers.Margin = new Padding(4, 0, 4, 0);
             labelDrivers.Name = "labelDrivers";
@@ -280,7 +281,7 @@ namespace GHelper
             // 
             labelLegend.AutoSize = true;
             labelLegend.Dock = DockStyle.Top;
-            labelLegend.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            labelLegend.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             labelLegend.Location = new Point(20, 10);
             labelLegend.Margin = new Padding(10);
             labelLegend.Name = "labelLegend";

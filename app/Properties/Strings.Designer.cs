@@ -772,6 +772,15 @@ namespace GHelper.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Donate.
+        /// </summary>
+        internal static string Donate {
+            get {
+                return ResourceManager.GetString("Donate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Download Color Profiles.
         /// </summary>
         internal static string DownloadColorProfiles {
@@ -1197,6 +1206,42 @@ namespace GHelper.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Legend.
+        /// </summary>
+        internal static string Legend {
+            get {
+                return ResourceManager.GetString("Legend", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Can&apos;t check local version.
+        /// </summary>
+        internal static string LegendGray {
+            get {
+                return ResourceManager.GetString("LegendGray", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Updated.
+        /// </summary>
+        internal static string LegendGreen {
+            get {
+                return ResourceManager.GetString("LegendGreen", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Update Available.
+        /// </summary>
+        internal static string LegendRed {
+            get {
+                return ResourceManager.GetString("LegendRed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Lid.
         /// </summary>
         internal static string Lid {
@@ -1575,7 +1620,7 @@ namespace GHelper.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Switch to Eco on battery and to Standard when plugged.
+        ///   Looks up a localized string similar to Switch to Eco on battery and to Standard when plugged in.
         /// </summary>
         internal static string OptimizedGPUTooltip {
             get {
@@ -1935,7 +1980,7 @@ namespace GHelper.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to Touchscreen.
         /// </summary>
         internal static string Touchscreen {
             get {
