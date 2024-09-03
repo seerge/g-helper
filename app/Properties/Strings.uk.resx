@@ -807,7 +807,7 @@
     <value>Легенда</value>
   </data>
   <data name="LegendGray" xml:space="preserve">
-    <value>Нема даних</value>
+    <value>Немає даних</value>
     <comment>Can't check local version</comment>
   </data>
   <data name="LegendRed" xml:space="preserve">
