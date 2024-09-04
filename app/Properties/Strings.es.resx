@@ -744,7 +744,7 @@
     <value>Alternar pantalla táctil</value>
   </data>
   <data name="Touchscreen" xml:space="preserve">
-    <value>Touchscreen</value>
+    <value>Pantalla táctil</value>
   </data>
   <data name="Turbo" xml:space="preserve">
     <value>Turbo</value>
@@ -801,21 +801,21 @@
     <value>Zoom</value>
   </data>
   <data name="Donate" xml:space="preserve">
-    <value>Donate</value>
+    <value>Donar</value>
   </data>
   <data name="Legend" xml:space="preserve">
-    <value>Legend</value>
+    <value>Leyenda</value>
   </data>
   <data name="LegendGray" xml:space="preserve">
-    <value>Can't check local version</value>
+    <value>No se puede comprobar la versión local</value>
     <comment>Can't check local version</comment>
   </data>
   <data name="LegendRed" xml:space="preserve">
-    <value>Update Available</value>
+    <value>Actualización disponible</value>
     <comment>Update Available</comment>
   </data>
   <data name="LegendGreen" xml:space="preserve">
-    <value>Updated</value>
+    <value>Actualizado</value>
     <comment>Updated</comment>
   </data>
 </root>
