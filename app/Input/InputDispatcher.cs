@@ -944,7 +944,8 @@ namespace GHelper.Input
             Action<int> action = (b) =>
             {
                 if (b >= 0) Program.acpi.DeviceSet(AsusACPI.ScreenPadToggle, 1, "ScreenpadOn");
-                Program.acpi.DeviceSet(AsusACPI.ScreenPadBrightness, Math.Max(b * 255 / 100, 0), "Screenpad");
+                int[] brightnessValues = [0, 4, 9, 14, 21, 32, 48, 73, 111, 169, 255];
+                Program.acpi.DeviceSet(AsusACPI.ScreenPadBrightness, brightnessValues[Math.Min(brightnessValues.Length - 1, Math.Max(0, b / 10))], "Screenpad");
                 if (b < 0) Program.acpi.DeviceSet(AsusACPI.ScreenPadToggle, 0, "ScreenpadOff");
             };
 
