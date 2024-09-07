@@ -347,6 +347,7 @@ namespace GHelper.Ally
             if (!autoTDP && _mode != ControllerMode.Auto) return;
 
             float fps = amdControl.GetFPS();
+            int? usage = 0;
 
             if (autoTDP && fpsLimit > 0 && fpsLimit <= 120)
             {
@@ -377,7 +378,8 @@ namespace GHelper.Ally
 
             if (_mode == ControllerMode.Auto)
             {
-                ControllerMode newMode = (fps > 0) ? ControllerMode.Gamepad : ControllerMode.Mouse;
+                if (fps > 0) usage = amdControl.GetiGpuUse();
+                ControllerMode newMode = (fps > 0 && usage > 15) ? ControllerMode.Gamepad : ControllerMode.Mouse;
 
                 if (_applyMode != newMode) _autoCount++;
                 else _autoCount = 0;
@@ -386,7 +388,7 @@ namespace GHelper.Ally
                 {
                     _autoCount = 0;
                     ApplyMode(newMode);
-                    Logger.WriteLine($"Controller Mode {fps}: {newMode}");
+                    Logger.WriteLine($"Controller Mode (FPS={fps}, USAGE={usage}%): {newMode}");
                 }
             }
 

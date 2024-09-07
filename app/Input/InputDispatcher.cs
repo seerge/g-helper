@@ -978,7 +978,7 @@ namespace GHelper.Input
             }
             else
             {
-                brightness = Math.Max(Math.Min(100, brightness + delta), -10);
+                brightness = Math.Max(Math.Min(100, brightness + delta), 0);
             }
 
             AppConfig.Set("screenpad", brightness);
