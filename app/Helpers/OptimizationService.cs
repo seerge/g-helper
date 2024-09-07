@@ -20,6 +20,8 @@ namespace GHelper.Helpers
                 "AsusCertService"
         };
 
+        //"AsusPTPService",
+
         static List<string> processesAC = new() {
                 "ArmouryCrateSE.Service",
                 "ArmouryCrate.Service",

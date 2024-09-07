@@ -72,6 +72,10 @@ namespace GHelper
             Logger.WriteLine("------------");
             Logger.WriteLine("App launched: " + AppConfig.GetModel() + " :" + Assembly.GetExecutingAssembly().GetName().Version.ToString() + CultureInfo.CurrentUICulture + (ProcessHelper.IsUserAdministrator() ? "." : ""));
 
+            var startCount = AppConfig.Get("start_count") + 1;
+            AppConfig.Set("start_count", startCount);
+            Logger.WriteLine("Start Count: " + startCount);
+
             acpi = new AsusACPI();
             autoTDPService = new AutoTDPService();
 

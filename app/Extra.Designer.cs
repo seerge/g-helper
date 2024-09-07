@@ -73,8 +73,8 @@ namespace GHelper
             labelBacklightTitle = new Label();
             panelBacklight = new Panel();
             panelBacklightExtra = new Panel();
-            numericBacklightPluggedTime = new NumericUpDown();
-            numericBacklightTime = new NumericUpDown();
+            numericBacklightPluggedTime = new NumericUpDownWithUnit();
+            numericBacklightTime = new NumericUpDownWithUnit();
             labelBacklightTimeout = new Label();
             labelSpeed = new Label();
             comboKeyboardSpeed = new RComboBox();
@@ -119,7 +119,7 @@ namespace GHelper
             checkStatusLed = new CheckBox();
             checkPerKeyRGB = new CheckBox();
             panelPower = new Panel();
-            numericHibernateAfter = new NumericUpDown();
+            numericHibernateAfter = new NumericUpDownWithUnit();
             labelHibernateAfter = new Label();
             pictureHibernate = new PictureBox();
             toolTip = new ToolTip(components);
@@ -715,6 +715,7 @@ namespace GHelper
             numericBacklightPluggedTime.Name = "numericBacklightPluggedTime";
             numericBacklightPluggedTime.Size = new Size(140, 39);
             numericBacklightPluggedTime.TabIndex = 1;
+            numericBacklightPluggedTime.Unit = "sec";
             // 
             // numericBacklightTime
             // 
@@ -725,6 +726,7 @@ namespace GHelper
             numericBacklightTime.Name = "numericBacklightTime";
             numericBacklightTime.Size = new Size(140, 39);
             numericBacklightTime.TabIndex = 2;
+            numericBacklightTime.Unit = "sec";
             // 
             // labelBacklightTimeout
             // 
@@ -1323,6 +1325,7 @@ namespace GHelper
             numericHibernateAfter.Maximum = new decimal(new int[] { 3000000, 0, 0, 0 });
             numericHibernateAfter.Name = "numericHibernateAfter";
             numericHibernateAfter.Size = new Size(152, 39);
+            numericHibernateAfter.Unit = "min";
             numericHibernateAfter.TabIndex = 1;
             // 
             // labelHibernateAfter
@@ -1714,8 +1717,8 @@ namespace GHelper
         private Panel panelBacklightHeader;
         private Panel panelBacklight;
         private Panel panelBacklightExtra;
-        private NumericUpDown numericBacklightPluggedTime;
-        private NumericUpDown numericBacklightTime;
+        private NumericUpDownWithUnit numericBacklightPluggedTime;
+        private NumericUpDownWithUnit numericBacklightTime;
         private Label labelBacklightTimeout;
         private Label labelSpeed;
         private RComboBox comboKeyboardSpeed;
@@ -1764,7 +1767,7 @@ namespace GHelper
         private Panel panelPower;
         private PictureBox pictureHibernate;
         private Label labelHibernateAfter;
-        private NumericUpDown numericHibernateAfter;
+        private NumericUpDownWithUnit numericHibernateAfter;
         private CheckBox checkGPUFix;
         private ToolTip toolTip;
         private CheckBox checkBootSound;
