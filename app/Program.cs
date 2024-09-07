@@ -87,6 +87,8 @@ namespace GHelper
                 return;
             }
 
+            ProcessHelper.KillByName("ASUSSmartDisplayControl");
+
             Application.EnableVisualStyles();
 
             HardwareControl.RecreateGpuControl();
