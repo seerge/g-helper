@@ -936,7 +936,7 @@ namespace GHelper.Input
 
         private static System.Threading.Timer screenpadActionTimer;
         private static int screenpadBrightnessToSet;
-        public static void ApplyScreenpadAction(int brightness, bool doToggle = false)
+        public static void ApplyScreenpadAction(int brightness, bool instant = true)
         {
             var delay = AppConfig.Get("screenpad_delay", 1500);
 
@@ -949,7 +949,7 @@ namespace GHelper.Input
                 if (b < 0) Program.acpi.DeviceSet(AsusACPI.ScreenPadToggle, 0, "ScreenpadOff");
             };
 
-            if(delay <= 0 || (brightness > 0 && brightness < 100 && doToggle == false)) //instant action
+            if(delay <= 0 || instant) //instant action
             {
                 action(brightness);
             }
@@ -975,20 +975,19 @@ namespace GHelper.Input
                 if (brightness < 0) brightness = 100;
                 else if (brightness >= 100) brightness = 0;
                 else brightness = -10;
+                ApplyScreenpadAction(brightness, false);
             }
             else
             {
                 brightness = Math.Max(Math.Min(100, brightness + delta), 0);
+                ApplyScreenpadAction(brightness);
             }
 
             AppConfig.Set("screenpad", brightness);
 
-            ApplyScreenpadAction(brightness);
-
             string toast;
 
             if (brightness < 0) toast = "Off";
-            else if (brightness == 0) toast = "Hidden";
             else toast = brightness.ToString() + "%";
 
             Program.toast.RunToast($"Screen Pad {toast}", delta > 0 ? ToastIcon.BrightnessUp : ToastIcon.BrightnessDown);
