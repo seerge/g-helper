@@ -744,7 +744,7 @@ Trotzdem fortfahren?</value>
     <value>Touchscreen umschalten</value>
   </data>
   <data name="Touchscreen" xml:space="preserve">
-    <value/>
+    <value>Touchscreen</value>
   </data>
   <data name="Turbo" xml:space="preserve">
     <value>Turbo</value>
@@ -783,7 +783,7 @@ Trotzdem fortfahren?</value>
     <value>Darstellungsmodi sind nicht verfügbar, wenn HDR aktiv ist.</value>
   </data>
   <data name="VisualModesScreen" xml:space="preserve">
-    <value>Darstellungsmodi sind nicht verfügbar, wenn Laptop-Bildschirm aus ist.</value>
+    <value>Modi nicht verfügbar, wenn Laptop-Bildschirm aus ist.</value>
   </data>
   <data name="VolumeDown" xml:space="preserve">
     <value>Lautstärke verringern</value>
@@ -799,5 +799,23 @@ Trotzdem fortfahren?</value>
   </data>
   <data name="Zoom" xml:space="preserve">
     <value>Zoom</value>
+  </data>
+  <data name="Donate" xml:space="preserve">
+    <value>Spenden</value>
+  </data>
+  <data name="Legend" xml:space="preserve">
+    <value>Legende</value>
+  </data>
+  <data name="LegendGray" xml:space="preserve">
+    <value>Kann lokale Version nicht überprüfen</value>
+    <comment>Can't check local version</comment>
+  </data>
+  <data name="LegendRed" xml:space="preserve">
+    <value>Update verfügbar</value>
+    <comment>Update Available</comment>
+  </data>
+  <data name="LegendGreen" xml:space="preserve">
+    <value>Aktuell</value>
+    <comment>Updated</comment>
   </data>
 </root>

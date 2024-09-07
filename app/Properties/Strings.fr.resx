@@ -744,7 +744,7 @@ Voulez-vous continuer ?</value>
     <value>Activer/désactiver l'écran tactile</value>
   </data>
   <data name="Touchscreen" xml:space="preserve">
-    <value/>
+    <value>Touchscreen</value>
   </data>
   <data name="Turbo" xml:space="preserve">
     <value>Turbo</value>
@@ -799,5 +799,23 @@ Voulez-vous continuer ?</value>
   </data>
   <data name="Zoom" xml:space="preserve">
     <value>Zoom</value>
+  </data>
+  <data name="Donate" xml:space="preserve">
+    <value>Donate</value>
+  </data>
+  <data name="Legend" xml:space="preserve">
+    <value>Legend</value>
+  </data>
+  <data name="LegendGray" xml:space="preserve">
+    <value>Can't check local version</value>
+    <comment>Can't check local version</comment>
+  </data>
+  <data name="LegendRed" xml:space="preserve">
+    <value>Update Available</value>
+    <comment>Update Available</comment>
+  </data>
+  <data name="LegendGreen" xml:space="preserve">
+    <value>Updated</value>
+    <comment>Updated</comment>
   </data>
 </root>

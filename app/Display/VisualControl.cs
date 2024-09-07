@@ -224,7 +224,7 @@ namespace GHelper.Display
         public static void SetVisual(SplendidCommand mode = SplendidCommand.Default, int whiteBalance = DefaultColorTemp, bool init = false)
         {
             if (mode == SplendidCommand.None) return;
-            if (mode == SplendidCommand.Default && init) return; // Skip default setting on init
+            if ((mode == SplendidCommand.Default || mode == SplendidCommand.VivoNormal) && init) return; // Skip default setting on init
 
             if (!forceVisual && ScreenCCD.GetHDRStatus(true)) return;
             if (!forceVisual && ScreenNative.GetRefreshRate(ScreenNative.FindLaptopScreen(true)) < 0) return;

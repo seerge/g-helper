@@ -49,6 +49,11 @@ namespace GHelper
             labelBIOS.Text = "BIOS";
             labelDrivers.Text = Properties.Strings.DriverAndSoftware;
 
+            labelLegend.Text = Properties.Strings.Legend;
+            labelLegendGray.Text = Properties.Strings.LegendGray;
+            labelLegendRed.Text = Properties.Strings.LegendRed;
+            labelLegendGreen.Text = Properties.Strings.LegendGreen;
+
             SuspendLayout();
 
             tableBios.Visible = false;

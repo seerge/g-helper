@@ -744,7 +744,7 @@ Yine de devam etmek istiyor musunuz?</value>
     <value>Dokunmatik Ekranı Değiştir</value>
   </data>
   <data name="Touchscreen" xml:space="preserve">
-    <value/>
+    <value>Dokunmatik ekran</value>
   </data>
   <data name="Turbo" xml:space="preserve">
     <value>Turbo</value>
@@ -799,5 +799,23 @@ Yine de devam etmek istiyor musunuz?</value>
   </data>
   <data name="Zoom" xml:space="preserve">
     <value>Yakınlaştır</value>
+  </data>
+  <data name="Donate" xml:space="preserve">
+    <value>Bağış</value>
+  </data>
+  <data name="Legend" xml:space="preserve">
+    <value>Gösterge</value>
+  </data>
+  <data name="LegendGray" xml:space="preserve">
+    <value>Yerel sürüm denetlenemiyor</value>
+    <comment>Can't check local version</comment>
+  </data>
+  <data name="LegendRed" xml:space="preserve">
+    <value>Güncelleme Mevcut</value>
+    <comment>Update Available</comment>
+  </data>
+  <data name="LegendGreen" xml:space="preserve">
+    <value>Güncellendi</value>
+    <comment>Updated</comment>
   </data>
 </root>
