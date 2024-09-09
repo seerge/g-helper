@@ -127,6 +127,8 @@ public class Startup
                 else
                     ProcessHelper.RunAsAdmin();
             }
+
+            Logger.WriteLine("Startup task scheduled: " + strExeFilePath);
         }
 
         ScheduleCharge();

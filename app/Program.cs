@@ -343,7 +343,7 @@ namespace GHelper
                 int limit = 80;
                 if (limit > 0 && limit < 100)
                 {
-                    Logger.WriteLine($"Startup Battery Limit {limit}");
+                    Logger.WriteLine($"------- Startup Battery Limit {limit} -------");
                     acpi = new AsusACPI(true);
                     acpi.DeviceSet(AsusACPI.BatteryLimit, limit, "Limit");
                 }
