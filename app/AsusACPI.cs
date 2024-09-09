@@ -254,7 +254,7 @@ public class AsusACPI
         return _connected;
     }
 
-    public AsusACPI()
+    public AsusACPI(bool light = false)
     {
         try
         {
@@ -277,6 +277,8 @@ public class AsusACPI
         {
             Logger.WriteLine($"Can't connect to ACPI: {ex.Message}");
         }
+
+        if (light) return;
 
         if (AppConfig.IsAdvantageEdition())
         {
