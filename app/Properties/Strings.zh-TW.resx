@@ -744,7 +744,7 @@
     <value>切換螢幕觸控</value>
   </data>
   <data name="Touchscreen" xml:space="preserve">
-    <value>Touchscreen</value>
+    <value>觸控螢幕</value>
   </data>
   <data name="Turbo" xml:space="preserve">
     <value>極速</value>
@@ -801,21 +801,21 @@
     <value>縮放</value>
   </data>
   <data name="Donate" xml:space="preserve">
-    <value>Donate</value>
+    <value>捐贈</value>
   </data>
   <data name="Legend" xml:space="preserve">
     <value>Legend</value>
   </data>
   <data name="LegendGray" xml:space="preserve">
-    <value>Can't check local version</value>
+    <value>無法檢查本機版本</value>
     <comment>Can't check local version</comment>
   </data>
   <data name="LegendRed" xml:space="preserve">
-    <value>Update Available</value>
+    <value>有可用的更新</value>
     <comment>Update Available</comment>
   </data>
   <data name="LegendGreen" xml:space="preserve">
-    <value>Updated</value>
+    <value>已更新</value>
     <comment>Updated</comment>
   </data>
 </root>
