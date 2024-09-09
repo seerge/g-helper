@@ -340,11 +340,11 @@ namespace GHelper
         {
             try
             {
-                int limit = 80;
+                int limit = AppConfig.Get("charge_limit");
                 if (limit > 0 && limit < 100)
                 {
                     Logger.WriteLine($"------- Startup Battery Limit {limit} -------");
-                    acpi = new AsusACPI(true);
+                    acpi = new AsusACPI();
                     acpi.DeviceSet(AsusACPI.BatteryLimit, limit, "Limit");
                 }
             }
