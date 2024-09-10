@@ -7,49 +7,24 @@
 body {
     font-family: Arial, sans-serif;
     background-color: #1f1d2e;
-    color: #fff; 
+    color: #fff;
     line-height: 1.6;
 }
 
-.gradient-text {
-    font-size: 1.5rem;
-    font-weight: bold;
-
-    background: linear-gradient(45deg, #9e61ff, #ff9a9e, #d78dc2, #a18cd1, #adc3e7);
-    background-size: 300%;
-    background-clip: text;
-    -webkit-background-clip: text;
-    
-    
-    color: transparent;
-    
-    animation: shine 4s ease-in-out infinite;
+img:not(.support-button) 
+{
+    width: 100%;
 }
 
-@keyframes shine {
-    0% {
-        background-position: 0% 50%;
-    }
-    50% {
-        background-position: 100% 50%;
-    }
-    100% {
-        background-position: 0% 50%;
-    }
+a {
+    color: lightblue;
 }
 
-a{
-color: lightblue;
-}
-
-a:hover{
-color: purple;
+a:hover {
+    color: purple;
 }
 
 header {
-    display: flex;
-    flex-direction: column;
-
     text-align: center;
     padding: 2rem 1rem;
     background-color: #28253b;
@@ -57,123 +32,137 @@ header {
 
 .header-content {
     display: flex;
-    flex-direction: row; /* Align items horizontally */
-    
-    justify-content: center; /* Center items horizontally */
-    align-items: center; /* Align items vertically */
-    margin-bottom: 1rem; /* Space between the header content and the paragraph */
-    gap: 2em;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+    margin-bottom: 1rem;
 }
 
 h1 {
     font-size: 2.5rem;
 }
 
-nav ul {
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-    list-style: none;
-    margin: 1rem 0;
+.support-links {
+    text-align: center;
+    margin: 2rem 0;
 }
 
-nav ul li a {
-    color: #4e88e8;
-    text-decoration: none;
+.support-buttons
+{
+margin-top: 0.5em;
+}
+
+.support-buttons a img {
+    animation-play-state: paused;
+    height: 36px;
+    margin: 0 5px;
+}
+
+.support-buttons a img:hover {
+    animation: bounce 1s infinite;
 }
 
 main {
-    padding: 1rem;
     max-width: 1200px;
     margin: 0 auto;
+    padding: 1rem;
 }
 
 section {
     margin-bottom: 2rem;
 }
 
-section#features ul {
+#features ul {
     list-style: square;
     padding-left: 1.5rem;
 }
 
-table {
-    width: 100%;
-    margin: 1rem 0;
-    border-collapse: collapse;
-}
-
-th, td {
-    padding: 1rem;
-    text-align: left;
-    border: 1px solid #4e88e8;
-}
-
-nav a img:hover{
-    animation: bounce 2s cubic-bezier(.47,0,.74,.71) both;
-}
-
 .cta-btn {
     background-color: #4e88e8;
-    
     color: #fff;
-    font-size: 1em;
-    cursor: pointer;
-
     width: 200px;
     height: 50px;
-    
-    padding: 0.5rem 1rem;
-    margin-top: 1rem;
-
-    border-radius: 3px;
     border: none;
-
-    animation: bounce 2s ease-in infinite; 
-    animation-play-state: running; 
+    border-radius: 3px;
+    cursor: pointer;
+    margin-top: 1rem;
+    padding: 0.5rem 1rem;
+    animation: bounce 2s ease-in infinite;
 }
 
 .cta-btn:hover {
-    background-color: #356bc0; 
+    background-color: #356bc0;
     animation-play-state: paused;
-}
-
-@keyframes bounce {
-    0% {
-        transform: translateY(0);
-    }
-    30% {
-        transform: translateY(-10px);
-    }
-    50% {
-        transform: translateY(0);
-    }
-    70% {
-        transform: translateY(-5px);
-    }
-    100% {
-        transform: translateY(0);
-    }
 }
 
 footer {
     text-align: center;
-    padding: 1rem;
     background-color: #28253b;
+    padding: 1rem;
+}
+
+section#disclaimer {
+    background-color: #8ca1c4;
+}
+
+
+[alt="GPU Modes"]
+{
+    width: 50%;
+}
+
+.gradient-text {
+    font-size: 1.5rem;
+    font-weight: bold;
+    background: linear-gradient(45deg, #9e61ff, #ff9a9e, #d78dc2, #a18cd1, #adc3e7);
+    background-size: 300%;
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    animation: gradient 5s ease-in-out infinite;
+}
+
+@keyframes gradient {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+
+@keyframes bounce-loop {
+  0%, 100% {
+    transform: translateY(-25%);
+    animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+  }
+  50% {
+    transform: translateY(0);
+    animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+  }
+}
+
+
+@keyframes bounce {
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
 }
 
 @media (max-width: 768px) {
-    nav ul {
+    .header-content {
         flex-direction: column;
-        align-items: center;
-    }
-
-    header h1 {
-        font-size: 2rem;
-    }
-
-    section#features ul {
-        padding-left: 1rem;
     }
 
     .cta-btn {
