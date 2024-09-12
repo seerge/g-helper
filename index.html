@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,182 +7,39 @@
     <title>G-Helper - Lightweight Control Tool for Asus Laptops</title>
     <link rel="stylesheet" href="style.css">
     <link rel="icon" href="favicon.svg">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 </head>
 
 <body>
+    
+    <!-- Link to the JS file -->
+    <script src="app.js"></script>
+
     <header>
         <div class="header-content">
             <svg width="100" height="100" viewBox="0 0 500 500" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="250" cy="250" r="250" fill="#4AB8F5"></circle>
-                <path d="M335.458 187C332.333 177.436 328.214 168.866 323.1 161.29C318.081 153.619 312.068 147.085 305.06 141.688C298.148 136.29 290.288 132.17 281.481 129.33C272.674 126.489 263.015 125.068 252.504 125.068C235.269 125.068 219.596 129.519 205.487 138.42C191.377 147.322 180.155 160.438 171.822 177.767C163.488 195.097 159.322 216.356 159.322 241.545C159.322 266.735 163.536 287.994 171.964 305.324C180.392 322.653 191.803 335.769 206.197 344.67C220.591 353.572 236.784 358.023 254.776 358.023C271.443 358.023 286.121 354.472 298.81 347.369C311.594 340.172 321.538 330.04 328.64 316.972C335.837 303.809 339.435 288.326 339.435 270.523L350.231 272.795H262.731V241.545H373.526V272.795C373.526 296.754 368.413 317.587 358.185 335.295C348.053 353.004 334.038 366.735 316.14 376.489C298.337 386.148 277.882 390.977 254.776 390.977C229.019 390.977 206.386 384.917 186.879 372.795C167.466 360.674 152.314 343.439 141.424 321.091C130.629 298.742 125.231 272.227 125.231 241.545C125.231 218.534 128.308 197.843 134.464 179.472C140.714 161.006 149.521 145.286 160.884 132.312C172.248 119.339 185.695 109.396 201.225 102.483C216.755 95.5701 233.848 92.1136 252.504 92.1136C267.844 92.1136 282.144 94.4337 295.401 99.0739C308.754 103.619 320.638 110.106 331.055 118.534C341.566 126.867 350.326 136.858 357.333 148.506C364.341 160.059 369.17 172.89 371.822 187H335.458Z" fill="white"></path>
-            </svg>
+                <circle cx="250" cy="250" r="250" fill="#4AB8F5"/>
+                <path d="M335.458 187C332.333 177.436 328.214 168.866 323.1 161.29C318.081 153.619 312.068 147.085 305.06 141.688C298.148 136.29 290.288 132.17 281.481 129.33C272.674 126.489 263.015 125.068 252.504 125.068C235.269 125.068 219.596 129.519 205.487 138.42C191.377 147.322 180.155 160.438 171.822 177.767C163.488 195.097 159.322 216.356 159.322 241.545C159.322 266.735 163.536 287.994 171.964 305.324C180.392 322.653 191.803 335.769 206.197 344.67C220.591 353.572 236.784 358.023 254.776 358.023C271.443 358.023 286.121 354.472 298.81 347.369C311.594 340.172 321.538 330.04 328.64 316.972C335.837 303.809 339.435 288.326 339.435 270.523L350.231 272.795H262.731V241.545H373.526V272.795C373.526 296.754 368.413 317.587 358.185 335.295C348.053 353.004 334.038 366.735 316.14 376.489C298.337 386.148 277.882 390.977 254.776 390.977C229.019 390.977 206.386 384.917 186.879 372.795C167.466 360.674 152.314 343.439 141.424 321.091C130.629 298.742 125.231 272.227 125.231 241.545C125.231 218.534 128.308 197.843 134.464 179.472C140.714 161.006 149.521 145.286 160.884 132.312C172.248 119.339 185.695 109.396 201.225 102.483C216.755 95.5701 233.848 92.1136 252.504 92.1136C267.844 92.1136 282.144 94.4337 295.401 99.0739C308.754 103.619 320.638 110.106 331.055 118.534C341.566 126.867 350.326 136.858 357.333 148.506C364.341 160.059 369.17 172.89 371.822 187H335.458Z" fill="white"/>
+                </svg>                
             <h1>G-Helper</h1>
         </div>
-        <p>Small and lightweight Armoury Crate alternative for Asus laptops.</p>
     </header>
 
     <main>
-
-        <section id="download">
-            <h2>📥 G-Helper Download</h2>
-            <a href="https://github.com/seerge/g-helper/releases/latest/download/GHelper.zip">
-                <img src="https://github.com/seerge/g-helper/assets/5920850/4d98465a-63a5-4498-ae14-afb3e67e7e82" alt="G-Helper Download">
-            </a>
-            <button class="cta-btn" onclick="downloadGHelper()">Download</button>
-            <p>⭐ If you like the app - please spread the word about it online.</p>
-        </section>
-
-        <nav class="support-links">
-            <h3 class="gradient-text">Support This Project</h3>
-            <div class="support-buttons">
-                <a href="https://bit.ly/4c0ZWs9"><img src="https://raw.githubusercontent.com/seerge/g-helper/main/docs/paypal-eur.png" class="support-button" alt="PayPal EUR"></a>
-                <a href="https://bit.ly/4aGTyW8"><img src="https://raw.githubusercontent.com/seerge/g-helper/main/docs/paypal-usd.png" class="support-button" alt="PayPal USD"></a>
-                <a href="https://buy.stripe.com/8wM6pt8HbgK50tWbIK"><img src="https://raw.githubusercontent.com/seerge/g-helper/main/docs/stripe.png" class="support-button" alt="Stripe"></a>
-                <a href="https://buy.stripe.com/6oE29dg9D3Xj7Wo28b"><img src="https://raw.githubusercontent.com/seerge/g-helper/main/docs/alipay.png" class="support-button" alt="Alipay"></a>
+        <section id="readme-section">
+            <div id="readme-content">
+                <!-- README.md -->
             </div>
-        </nav>
-
-        <section id="resources">
-            <h2>🔗 Useful Links</h2>
-            <ul>
-                <li><a href="https://github.com/seerge/g-helper/wiki/FAQ">FAQ</a></li>
-                <li><a href="https://github.com/seerge/g-helper/wiki/Requirements">Setup and Requirements</a></li>
-                <li><a href="https://github.com/seerge/g-helper/wiki/Troubleshooting">Troubleshooting</a></li>
-                <li><a href="https://github.com/seerge/g-helper/wiki/Power-user-settings">Power User Settings</a></li>
-            </ul>
         </section>
-                
-        <section id="youtube">
-            <h2>📢 YouTube Reviews and Guides</h2>
-            <table>
-                <tr>
-                    <td>
-                        <a href="https://www.youtube.com/watch?v=hqe-PjuE-K8">
-                            <img src="https://i.ytimg.com/vi/hqe-PjuE-K8/hqdefault.jpg" alt="Youtube review Josh Cravey">
-                        </a>
-                    </td>
-                    <td>
-                        <a href="https://www.youtube.com/watch?v=6aVdwJKZSSc">
-                            <img src="https://i.ytimg.com/vi/6aVdwJKZSSc/hqdefault.jpg" alt="Youtube review cbutters Tech">
-                        </a>
-                    </td>
-                </tr>
-                <tr>
-                    <td><a href="https://www.youtube.com/watch?v=hqe-PjuE-K8">Josh Cravey</a></td>
-                    <td><a href="https://www.youtube.com/watch?v=6aVdwJKZSSc">cbutters Tech</a></td>
-                </tr>
-            </table>
-        </section>
-        
-        <section id="articles">
-            <h2>📰 Articles</h2>
-            <ul>
-                <li><a href="https://www.digitaltrends.com/computing/g-helper-armoury-crate-alternative/">Digital Trends</a></li>
-                <li><a href="https://binaryfork.com/ghelper-armoury-crate-alternative-10216/">Binary Fork</a></li>
-            </ul>
-        </section>
-        
-        <section id="advantages">
-            <h2>🎁 Advantages</h2>
-            <ul>
-                <li>Seamless and automatic GPU switching</li>
-                <li>All performance modes can be fully customized with power limits and fan curves</li>
-                <li>Lightweight. Doesn't install anything in your system. Just a single exe to run</li>
-                <li>Simple and clean native UI with easy access to all settings</li>
-                <li>FN-Lock and custom hotkeys</li>
-            </ul>
-        </section>
-        
-        <section id="features">
-            <h2>⚡ Features</h2>
-            <ul>
-                <li>Performance modes: Silent - Balanced - Turbo (with default fan curves)</li>
-                <li>GPU modes: Eco - Standard - Ultimate - Optimized</li>
-                <li>Screen refresh rate control with display overdrive (OD)</li>
-                <li>Custom fan curve editor, power limits, and turbo boost selection for every performance mode</li>
-                <li>Anime Matrix or Slash Lighting control including animated GIFs, clock, and Audio visualizer</li>
-                <li>Backlight animation modes and colors</li>
-                <li>Hotkey handling</li>
-                <li>Monitor CPU and GPU temperature, fan speeds, and battery status</li>
-                <li>Battery charge limit to preserve battery health</li>
-                <li>NVIDIA GPU overclocking and undervolting</li>
-                <li>XG Mobile Control</li>
-                <li>AMD CPU Undervolting</li>
-                <li>BIOS and Driver Updates</li>
-                <li>Asus Mice settings</li>
-                <li>Mini-led multi-zone switch</li>
-                <li>Flicker-free dimming and Visual Modes</li>
-            </ul>
-        </section>
-        
-        <section id="automation">
-            <h2>⚙️ Automation</h2>
-            <ul>
-                <li>Performance Mode switching when on battery or plugged in</li>
-                <li>Optimized GPU mode - disables dGPU on battery and enables when plugged in</li>
-                <li>Auto Screen refresh rate (60Hz on battery and max Hz when plugged)</li>
-                <li>Keyboard backlight timeout on battery or when plugged in</li>
-            </ul>
-        </section>
-        
-        <section id="performance-modes">
-            <h2>🚀 Performance Modes</h2>
-            <img align="right" width="300" src="https://github.com/seerge/g-helper/assets/5920850/3e119674-db8d-486b-aa65-2bf9b61f9aa6" alt="Performance Modes">
-            <p>All Modes are <strong>baked in BIOS</strong> along with default fan curves and power limits and they are the <strong>same</strong> as in the Armoury Crate.</p>
-            <p>Each BIOS mode is paired with matching Windows Power Mode. You can adjust this setting under "Fans + Power".</p>
-            <ul>
-                <li><strong>Silent</strong> in BIOS + Best power efficiency power mode</li>
-                <li><strong>Balanced</strong> (Performance in AC) in BIOS + Balanced power mode</li>
-                <li><strong>Turbo</strong> in BIOS + Best performance power mode</li>
-            </ul>
-        </section>
-        
-        <section id="gpu-modes">
-            <h2>🎮 GPU Modes</h2>
-            <ul>
-                <li><strong>Eco</strong>: Only low power integrated GPU enabled, iGPU drives built-in display</li>
-                <li><strong>Standard</strong> (MS Hybrid): iGPU and dGPU enabled, iGPU drives built-in display</li>
-                <li><strong>Ultimate</strong>: iGPU and dGPU enabled, but dGPU drives built-in display (supported on 2022+ models)</li>
-                <li><strong>Optimized</strong>: Disables dGPU on battery (Eco) and enables when plugged in (Standard)</li>
-            </ul>
-            <img src="https://github.com/seerge/g-helper/assets/5920850/fd69a81e-978d-4d5c-a0a8-26da51f90a5b" alt="GPU Modes">
-        </section>
-        
-        <section id="peripherals">
-            <h2>🖱️ Asus Mouse and Other Peripherals Support</h2>
-            <ul>
-                <li>ROG Chakram X (P708)</li>
-                <li>ROG Chakram Core (P511)</li>
-                <li>ROG Gladius II and Gladius II Origin (P502 and P504)</li>
-                <li>and more, check the full list at <a href="https://github.com/seerge/g-helper/discussions/900">Github</a></li>
-            </ul>
-        </section>
-        
-        <section id="keybindings">
-            <h2>⌨️ Keybindings</h2>
-            <ul>
-                <li><code>Fn + F5</code> - Toggle Performance Modes forwards</li>
-                <li><code>Ctrl + Shift + F12</code> - Open G-Helper window</li>
-                <li>
-                    Full list of Keybindings at <a href="https://github.com/seerge/g-helper/wiki/Power-user-settings#custom-hotkey-actions">Github</a>
-                </li>
-                <i>
-                    <button class="cta-btn" onclick="downloadGHelper()">Download</button>
-                </i>
-            </ul>
-        </section>
-                
     </main>
 
     <footer>
-        <p><a href="https://github.com/seerge/g-helper"><strong>G-Helper</strong></a> is free and open-source under the <a href="https://github.com/seerge/g-helper/blob/main/LICENSE">GPL-3.0 license</a>. Learn more about the license <a href="https://opensource.org/licenses/GPL-3.0" target="_blank" rel="noopener noreferrer">here</a>.<br>Check out the project on GitHub at <a href="https://github.com/seerge/g-helper">G-Helper</a>.</p>
+      
+        <p>
+          g-helper is provided under the <a href="https://github.com/seerge/g-helper/blob/main/LICENSE">GPL-3.0 license</a> Learn more <a href="https://github.com/seerge/g-helper/blob/main/LICENSE">here</a>
+        </p>
+      
     </footer>
 
-    <script>
-        function downloadGHelper() {
-            window.location.replace("https://github.com/seerge/g-helper/releases/latest");
-        }
-    </script>
 </body>
-
 </html>
