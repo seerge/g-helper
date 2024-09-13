@@ -4,15 +4,19 @@ Varibles
 ******************************************************************
 */
 :root {
-    --primary: #2E2E2E;       /* Charcoal */
-    --primary-text: #F7F7F7;  /* Off White */
+    --primary: #2E2E2E;
+    --primary-text: #F7F7F7;
    
-    --a: #9608dd;             /* Gold */
-    --a-hover: #FFD700;       /* Bright Gold */
+    --a: #9608dd;   
+    --a-hover: #FFD700;
    
-    --header-background: #1C1C1C;  /* Almost Black */
-    --footer-background: #D4AF37;  /* Gold */
-   }
+    --header-background: #1C1C1C; 
+    --footer-background: #D4AF37;
+
+    --margin-main: 1em;
+    --margin-text: 0.3em;
+    --margin-headers: 1.5em;
+}
        
   
 /*
@@ -38,16 +42,28 @@ body {
 
 /*
 ******************************************************************
-Anchor Styling
+Margins 
 ******************************************************************
 */
-a {
-    color: var(--a);
-    text-decoration: none;
+main
+{   
+    margin: 0 var(--margin-main);
+
+    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
+    font-size: 16px;
+    line-height: 1.5;
+    word-wrap: break-word;
 }
 
-a:hover {
-    color: var(--a-hover);
+:is(h1, h2, h3, h4, h5, h6)
+{
+    margin-top: var(--margin-headers);
+    margin-bottom: calc(var(--margin-headers) / 2);
+}
+
+:is(p, pre, a, strong, i, em, blockquote, li):not(footer,header)
+{
+    margin: var(--margin-text) 0;
 }
 
 
@@ -69,9 +85,35 @@ header {
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    margin-bottom: 1rem;
     gap: 2em;
 }
+
+
+/*
+******************************************************************
+Anchor Styling
+******************************************************************
+*/
+a {
+    color: var(--a);
+    text-decoration: none;
+}
+
+a:hover {
+    color: var(--a-hover);
+}
+
+
+/*
+******************************************************************
+Lists
+******************************************************************
+*/
+ul, ol, li 
+{
+    list-style-type: none;
+}
+
 
 
 /*
@@ -90,6 +132,7 @@ img:hover
 {
     animation: Bounce 2.5s ease-in-out infinite;
 }
+
 
 /*
 ******************************************************************
