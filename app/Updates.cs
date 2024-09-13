@@ -211,17 +211,29 @@ namespace GHelper
 
         public void VisualiseNewCount(int updatesCount, TableLayoutPanel table)
         {
+            if (InvokeRequired)
+            {
+                Invoke(delegate
+                {
+                    _VisualiseNewCount(updatesCount, table);
+                });
+            }
+            else
+            {
+                _VisualiseNewCount(updatesCount, table);
+            }
+        }
+
+        public void _VisualiseNewCount(int updatesCount, TableLayoutPanel table)
+        {
             Invoke(delegate
             {
                 labelUpdates.Text = $"{Properties.Strings.NewUpdates}: {updatesCount}";
                 labelUpdates.ForeColor = colorTurbo;
                 labelUpdates.Font = new Font(labelUpdates.Font, FontStyle.Bold);
-
                 panelBios.AccessibleName = labelUpdates.Text;
-
             });
         }
-
 
         static string CleanupDeviceId(string input)
         {
