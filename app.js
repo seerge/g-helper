@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
+
     // Function to fetch the README content from GitHub
     async function fetchReadme() {
         const url = 'https://api.github.com/repos/seerge/g-helper/readme';
@@ -16,10 +17,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const readme = await response.text();
             console.log('README fetched successfully.');
+            console.log('Raw README content:', readme);
 
-            const md = window.markdownit().use(window.markdownitEmoji);
+            // Initialize Markdown-it with HTML rendering and links enabled
+            const md = window.markdownit({
+                html: true, 
+                linkify: true 
+            }).use(window.markdownitEmoji);
 
-            document.getElementById('readme-content').innerHTML = md.render(readme);
+            // Render Markdown to HTML
+            let renderedContent = md.render(readme);
+
+            // Insert the sanitized HTML into the page
+            document.getElementById('readme-content').innerHTML = renderedContent;
         } catch (error) {
             console.error('Error:', error);
         }
