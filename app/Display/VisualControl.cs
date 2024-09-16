@@ -323,14 +323,32 @@ namespace GHelper.Display
             SetGamma(_brightness);
         }
 
+        public static void InitBrightness()
+        {
+            if (!AppConfig.IsOLED()) return;
+            if (!AppConfig.SaveDimming()) return;
+
+            int brightness = GetBrightness();
+            if (brightness >= 0) SetBrightness(brightness);
+        }
+
+        private static bool IsOnBattery()
+        {
+            return AppConfig.SaveDimming() && SystemInformation.PowerStatus.PowerLineStatus != PowerLineStatus.Online;
+        }
+
+        public static int GetBrightness()
+        {
+            return AppConfig.Get(IsOnBattery() ? "brightness_battery" : "brightness", 100);
+        }
+
         public static int SetBrightness(int brightness = -1, int delta = 0)
         {
             if (!AppConfig.IsOLED()) return -1;
-
-            if (brightness < 0) brightness = AppConfig.Get("brightness", 100);
+            if (brightness < 0) GetBrightness();
 
             _brightness = Math.Max(0, Math.Min(100, brightness + delta));
-            AppConfig.Set("brightness", _brightness);
+            AppConfig.Set(IsOnBattery() ? "brightness_battery" : "brightness", _brightness);
 
             brightnessTimer.Start();
 

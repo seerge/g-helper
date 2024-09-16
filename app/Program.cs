@@ -256,6 +256,8 @@ namespace GHelper
                 settingsForm.AutoKeyboard();
             }
 
+            VisualControl.InitBrightness();
+
             return true;
         }
 

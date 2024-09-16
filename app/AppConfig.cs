@@ -691,4 +691,9 @@ public static class AppConfig
         return ContainsModel("G834JYR") || Is("force_miniled");
     }
 
+    public static bool SaveDimming()
+    {
+        return Is("save_dimming");
+    }
+
 }
