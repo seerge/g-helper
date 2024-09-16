@@ -228,12 +228,12 @@ namespace GHelper.Input
         }
 
 
-        static void SetBrightness(bool up)
+        static void SetBrightness(bool up, bool hotkey = false)
         {
             int brightness = -1;
 
             if (isTUF) brightness = ScreenBrightness.Get();
-            if (AppConfig.SwappedBrightness()) up = !up;
+            if (AppConfig.SwappedBrightness() && !hotkey) up = !up;
 
             int step = AppConfig.Get("brightness_step", 10);
             if (step != 10)
@@ -784,7 +784,7 @@ namespace GHelper.Input
                     }
                     else
                     {
-                        SetBrightness(false);
+                        SetBrightness(false, true);
                     }
                     break;
                 case 32: // FN+F8
@@ -799,7 +799,7 @@ namespace GHelper.Input
                     }
                     else
                     {
-                        SetBrightness(true);
+                        SetBrightness(true, true);
                     }
                     break;
                 case 133: // Camera Toggle
