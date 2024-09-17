@@ -76,7 +76,8 @@ namespace GHelper
                     customActions.Remove("fnlock");
                     break;
                 case "fnv":
-                    customActions[""] = EMPTY;
+                    customActions[""] = Properties.Strings.VisualMode;
+                    customActions.Remove("visual");
                     break;
                 case "fne":
                     customActions[""] = "Calculator";

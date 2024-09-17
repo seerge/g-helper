@@ -511,6 +511,8 @@ namespace GHelper.Input
                     action = "micmute";
                 if (name == "fnc")
                     action = "fnlock";
+                if (name == "fnv")
+                    action = "visual";
                 if (name == "fne")
                     action = "calculator";
             }
