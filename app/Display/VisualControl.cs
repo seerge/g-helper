@@ -211,9 +211,14 @@ namespace GHelper.Display
 
             AppConfig.Set("gamut", mode);
 
-            if (RunSplendid(SplendidCommand.GamutMode, 0, mode)) return;
-
-            if (_init)
+            var result = RunSplendid(SplendidCommand.GamutMode, 0, mode);
+            if (result == 0) return;
+            if (result == -1)
+            {
+                Logger.WriteLine("Gamut setting refused, reverting.");
+                RunSplendid(SplendidCommand.GamutMode, 0, (int)GetDefaultGamut());
+            }
+            if (result == 1 && _init)
             {
                 _init = false;
                 RunSplendid(SplendidCommand.Init);
@@ -253,9 +258,14 @@ namespace GHelper.Display
                     break;
             }
 
-            if (RunSplendid(mode, 0, balance)) return;
-
-            if (_init)
+            var result = RunSplendid(mode, 0, balance);
+            if (result == 0) return;
+            if (result == -1)
+            {
+                Logger.WriteLine("Visual setting refused, reverting.");
+                RunSplendid(SplendidCommand.Default, 0, DefaultColorTemp);
+            }
+            if (result == 1 && _init)
             {
                 _init = false;
                 RunSplendid(SplendidCommand.Init);
@@ -288,7 +298,7 @@ namespace GHelper.Display
             return _splendidPath;
         }
 
-        private static bool RunSplendid(SplendidCommand command, int? param1 = null, int? param2 = null)
+        private static int RunSplendid(SplendidCommand command, int? param1 = null, int? param2 = null)
         {
             var splendid = GetSplendidPath();
             bool isVivo = AppConfig.IsVivoZenPro();
@@ -298,10 +308,11 @@ namespace GHelper.Display
             {
                 if (command == SplendidCommand.DimmingVisual && isVivo) command = SplendidCommand.DimmingVivo;
                 var result = ProcessHelper.RunCMD(splendid, (int)command + " " + param1 + " " + param2);
-                if (result.Contains("file not exist") || (result.Length == 0 && !isVivo)) return false;
+                if (result.Contains("file not exist") || (result.Length == 0 && !isVivo)) return 1;
+                if (result.Contains("return code: -1")) return -1;
             }
 
-            return true;
+            return 0;
         }
 
         private static void BrightnessTimerTimer_Elapsed(object? sender, System.Timers.ElapsedEventArgs e)
@@ -309,14 +320,14 @@ namespace GHelper.Display
             brightnessTimer.Stop();
 
 
-            if (RunSplendid(SplendidCommand.DimmingVisual, 0, (int)(40 + _brightness * 0.6))) return;
+            if (RunSplendid(SplendidCommand.DimmingVisual, 0, (int)(40 + _brightness * 0.6)) == 0) return;
 
             if (_init)
             {
                 _init = false;
                 RunSplendid(SplendidCommand.Init);
                 RunSplendid(SplendidCommand.Init, 4);
-                if (RunSplendid(SplendidCommand.DimmingVisual, 0, (int)(40 + _brightness * 0.6))) return;
+                if (RunSplendid(SplendidCommand.DimmingVisual, 0, (int)(40 + _brightness * 0.6)) == 0) return;
             }
 
             // GammaRamp Fallback
