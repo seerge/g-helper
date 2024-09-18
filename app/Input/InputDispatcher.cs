@@ -282,7 +282,7 @@ namespace GHelper.Input
                             KeyboardHook.KeyPress(Keys.VolumeUp);
                             return;
                         case Keys.F4:
-                            KeyProcess("m3");
+                            ToggleMic();
                             return;
                     }
                 }
@@ -313,7 +313,7 @@ namespace GHelper.Input
                             HandleEvent(126); // Emojis
                             return;
                         case Keys.F9:
-                            KeyProcess("m3"); // MicMute
+                            ToggleMic(); // MicMute
                             return;
                         case Keys.F10:
                             HandleEvent(133); // Camera Toggle
@@ -414,7 +414,7 @@ namespace GHelper.Input
             {
                 if (e.Key == keyProfile) modeControl.CyclePerformanceMode();
                 if (e.Key == keyApp) Program.SettingsToggle();
-                if (e.Key == Keys.F20) KeyProcess("m3");
+                if (e.Key == Keys.F20) ToggleMic();
             }
 
             if (e.Modifier == (ModifierKeys.Control | ModifierKeys.Shift | ModifierKeys.Alt))
@@ -567,9 +567,7 @@ namespace GHelper.Input
                     ToggleFnLock();
                     break;
                 case "micmute":
-                    bool muteStatus = Audio.ToggleMute();
-                    Program.toast.RunToast(muteStatus ? Properties.Strings.Muted : Properties.Strings.Unmuted, muteStatus ? ToastIcon.MicrophoneMute : ToastIcon.Microphone);
-                    if (AppConfig.IsVivoZenbook()) Program.acpi.DeviceSet(AsusACPI.MicMuteLed, muteStatus ? 1 : 0, "MicmuteLed");
+                    ToggleMic();
                     break;
                 case "brightness_up":
                     SetBrightness(true);
@@ -600,6 +598,14 @@ namespace GHelper.Input
                 default:
                     break;
             }
+        }
+
+
+        static void ToggleMic()
+        {
+            bool muteStatus = Audio.ToggleMute();
+            Program.toast.RunToast(muteStatus ? Properties.Strings.Muted : Properties.Strings.Unmuted, muteStatus ? ToastIcon.MicrophoneMute : ToastIcon.Microphone);
+            if (AppConfig.IsVivoZenbook()) Program.acpi.DeviceSet(AsusACPI.MicMuteLed, muteStatus ? 1 : 0, "MicmuteLed");
         }
 
         static bool GetTouchpadState()
