@@ -39,8 +39,8 @@ namespace GHelper.Battery
             if (AppConfig.IsChargeLimit6080())
             {
                 if (limit > 85) limit = 100;
+                else if (limit >= 80) limit = 80;
                 else if (limit < 60) limit = 60;
-                else limit = 80;
             }
 
             Program.acpi.DeviceSet(AsusACPI.BatteryLimit, limit, "BatteryLimit");
