@@ -453,7 +453,7 @@ namespace GHelper
             Invoke(delegate
             {
                 sliderGammaIgnore = true;
-                sliderGamma.Value = AppConfig.Get("brightness", 100);
+                sliderGamma.Value = VisualControl.GetBrightness();
                 labelGamma.Text = sliderGamma.Value + "%";
                 sliderGammaIgnore = false;
             });
