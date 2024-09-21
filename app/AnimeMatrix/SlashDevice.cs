@@ -209,7 +209,7 @@ namespace GHelper.AnimeMatrix
 
         public void SetLidMode(bool status)
         {
-            Set(CreatePacket([0xD8, 0x00, 0x00, 0x02, 0xA5, status ? (byte)0x80 : (byte)0x00]), $"DisableLidClose {status}");
+            Set(CreatePacket([0xD8, 0x00, 0x00, 0x02, 0xA5, status ? (byte)0x80 : (byte)0x00]), $"SlashLidCloseAnimation {status}");
         }
 
         public void SetSleepActive(bool status)
