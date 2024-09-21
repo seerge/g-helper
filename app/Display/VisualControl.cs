@@ -44,6 +44,7 @@ namespace GHelper.Display
 
         private static int _brightness = 100;
         private static bool _init = true;
+        private static bool _download = true;
         private static string? _splendidPath = null;
 
         private static System.Timers.Timer brightnessTimer = new System.Timers.Timer(200);
@@ -217,6 +218,11 @@ namespace GHelper.Display
             {
                 Logger.WriteLine("Gamut setting refused, reverting.");
                 RunSplendid(SplendidCommand.GamutMode, 0, (int)GetDefaultGamut());
+                if (ProcessHelper.IsUserAdministrator() && _download)
+                {
+                    _download = false;
+                    ColorProfileHelper.InstallProfile();
+                }
             }
             if (result == 1 && _init)
             {
@@ -262,8 +268,13 @@ namespace GHelper.Display
             if (result == 0) return;
             if (result == -1)
             {
-                Logger.WriteLine("Visual setting refused, reverting.");
+                Logger.WriteLine("Visual mode setting refused, reverting.");
                 RunSplendid(SplendidCommand.Default, 0, DefaultColorTemp);
+                if (ProcessHelper.IsUserAdministrator() && _download)
+                {
+                    _download = false;
+                    ColorProfileHelper.InstallProfile();
+                }
             }
             if (result == 1 && _init)
             {
