@@ -367,7 +367,7 @@ namespace GHelper.Display
         public static int SetBrightness(int brightness = -1, int delta = 0)
         {
             if (!AppConfig.IsOLED()) return -1;
-            if (brightness < 0) GetBrightness();
+            if (brightness < 0) brightness = GetBrightness();
 
             _brightness = Math.Max(0, Math.Min(100, brightness + delta));
             AppConfig.Set(IsOnBattery() ? "brightness_battery" : "brightness", _brightness);
