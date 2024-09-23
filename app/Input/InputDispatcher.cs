@@ -591,9 +591,13 @@ namespace GHelper.Input
                     Program.settingsForm.BeginInvoke(Program.settingsForm.allyControl.ToggleModeHotkey);
                     break;
                 case "touchscreen":
-                    var touchscreenStatus = TouchscreenHelper.ToggleTouchscreen();
-                    if (touchscreenStatus is not null)
-                        Program.toast.RunToast(Properties.Strings.Touchscreen + " " + ((bool)touchscreenStatus ? Properties.Strings.On : Properties.Strings.Off), ToastIcon.Touchpad);
+                    var status = !TouchscreenHelper.GetStatus();
+                    Logger.WriteLine("Touchscreen status: " + status);
+                    if (status is not null)
+                    {
+                        Program.toast.RunToast(Properties.Strings.Touchscreen + " " + ((bool)status ? Properties.Strings.On : Properties.Strings.Off), ToastIcon.Touchpad);
+                        TouchscreenHelper.ToggleTouchscreen((bool)status);
+                    }
                     break;
                 default:
                     break;
