@@ -12,7 +12,7 @@ public static class AppConfig
     private static string? _bios;
 
     private static Dictionary<string, object> config = new Dictionary<string, object>();
-    private static System.Timers.Timer timer = new System.Timers.Timer(1000);
+    private static System.Timers.Timer timer = new System.Timers.Timer(2000);
 
     static AppConfig()
     {
@@ -90,10 +90,13 @@ public static class AppConfig
             return;
         }
 
-        Thread.Sleep(500);
+        Thread.Sleep(1000);
 
-        if (File.ReadAllText(backup).Contains("}"))
+        var backupText = File.ReadAllText(backup);
+
+        if (backupText.Contains("{") && backupText.Contains("}"))
         {
+            //Logger.WriteLine("Config written");
             File.Copy(backup, configFile, true);
         }
         else
@@ -219,6 +222,7 @@ public static class AppConfig
 
     private static void Write()
     {
+        timer.Stop();
         timer.Start();
     }
 
