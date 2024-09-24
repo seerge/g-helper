@@ -90,13 +90,12 @@ public static class AppConfig
             return;
         }
 
-        Thread.Sleep(1000);
+        Thread.Sleep(500);
 
         var backupText = File.ReadAllText(backup);
 
         if (backupText.Contains("{") && backupText.Contains("}"))
         {
-            //Logger.WriteLine("Config written");
             File.Copy(backup, configFile, true);
         }
         else
