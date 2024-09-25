@@ -94,6 +94,11 @@ namespace GHelper
                 return;
             }
 
+            if (acpi.IsConnected())
+            {
+                acpi.DisableOOBE();
+            }
+
             ProcessHelper.KillByName("ASUSSmartDisplayControl");
 
             Application.EnableVisualStyles();

@@ -114,7 +114,7 @@ public class AsusACPI
     public const int APU_MEM = 0x000600C1;
 
     public const int TUF_KB_BRIGHTNESS = 0x00050021;
-    public const int VIVO_KB_BRIGHTNESS = 0x0005002F;
+    public const int KBD_BACKLIGHT_OOBE = 0x0005002F;
 
     public const int TUF_KB = 0x00100056;
     public const int TUF_KB2 = 0x0010005a;
@@ -415,6 +415,14 @@ public class AsusACPI
 
         return BitConverter.ToInt32(status, 0) - 65536;
 
+    }
+
+    public bool DevicePresent(uint DeviceID) {
+        byte[] args = new byte[8];
+        BitConverter.GetBytes((uint)DeviceID).CopyTo(args, 0);
+        byte[] status = CallMethod(DSTS, args);
+
+        return (BitConverter.ToUInt32(status, 0) & 0x10000) == 0x10000;
     }
 
     public byte[] DeviceGetBuffer(uint DeviceID, uint Status = 0)
@@ -784,12 +792,18 @@ public class AsusACPI
 
     }
 
+    public void DisableOOBE()
+    {
+        if (DevicePresent(KBD_BACKLIGHT_OOBE))
+        {
+            DeviceSet(KBD_BACKLIGHT_OOBE, 1, "OOBE");
+        }
+    }
+
     public void TUFKeyboardBrightness(int brightness)
     {
         int param = 0x80 | (brightness & 0x7F);
         DeviceSet(TUF_KB_BRIGHTNESS, param, "TUF Brightness");
-        if (AppConfig.IsVivoZenPro()) DeviceSet(VIVO_KB_BRIGHTNESS, param, "VIVO Brightness");
-
     }
 
     public void TUFKeyboardRGB(AuraMode mode, Color color, int speed, string? log = "TUF RGB")
