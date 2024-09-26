@@ -640,7 +640,7 @@ public static class AppConfig
 
     public static bool IsForceSetGPUMode()
     {
-        return Is("gpu_mode_force_set") || ContainsModel("503");
+        return Is("gpu_mode_force_set") || (ContainsModel("503") && IsNotFalse("gpu_mode_force_set"));
     }
 
     public static bool IsNoGPUModes()
