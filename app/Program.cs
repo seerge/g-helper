@@ -278,6 +278,7 @@ namespace GHelper
             }
 
             if (SystemInformation.PowerStatus.PowerLineStatus == isPlugged) return;
+            if (AppConfig.Is("disable_power_event")) return;
             SetAutoModes(true);
         }
 

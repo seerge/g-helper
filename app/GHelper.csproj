@@ -15,7 +15,7 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <ProduceReferenceAssembly>False</ProduceReferenceAssembly>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
-    <AssemblyVersion>0.191</AssemblyVersion>
+    <AssemblyVersion>0.193</AssemblyVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -63,8 +63,8 @@
     <PackageReference Include="NAudio" Version="2.1.0" />
     <PackageReference Include="NvAPIWrapper.Net" Version="0.8.1.101" />
     <PackageReference Include="System.Management" Version="8.0.0" />
-    <PackageReference Include="TaskScheduler" Version="2.10.1" />
-    <PackageReference Include="WinForms.DataVisualization" Version="1.8.0" />
+    <PackageReference Include="TaskScheduler" Version="2.11.0" />
+    <PackageReference Include="WinForms.DataVisualization" Version="1.9.2" />
   </ItemGroup>
 
   <ItemGroup>
