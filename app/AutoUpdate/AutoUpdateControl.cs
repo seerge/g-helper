@@ -145,7 +145,7 @@ namespace GHelper.AutoUpdate
                     Logger.WriteLine(ex.Message);
                 }
 
-                Environment.Exit(0);
+                Application.Exit();
             }
 
         }
