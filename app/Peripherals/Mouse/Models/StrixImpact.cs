@@ -86,7 +86,7 @@
 
         public override int DPIIncrements()
         {
-            return 100;
+            return 50;
         }
 
 
