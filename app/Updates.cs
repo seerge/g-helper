@@ -226,13 +226,10 @@ namespace GHelper
 
         public void _VisualiseNewCount(int updatesCount, TableLayoutPanel table)
         {
-            Invoke(delegate
-            {
-                labelUpdates.Text = $"{Properties.Strings.NewUpdates}: {updatesCount}";
-                labelUpdates.ForeColor = colorTurbo;
-                labelUpdates.Font = new Font(labelUpdates.Font, FontStyle.Bold);
-                panelBios.AccessibleName = labelUpdates.Text;
-            });
+            labelUpdates.Text = $"{Properties.Strings.NewUpdates}: {updatesCount}";
+            labelUpdates.ForeColor = colorTurbo;
+            labelUpdates.Font = new Font(labelUpdates.Font, FontStyle.Bold);
+            panelBios.AccessibleName = labelUpdates.Text;
         }
 
         static string CleanupDeviceId(string input)
