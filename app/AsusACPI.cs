@@ -114,7 +114,7 @@ public class AsusACPI
     public const int APU_MEM = 0x000600C1;
 
     public const int TUF_KB_BRIGHTNESS = 0x00050021;
-    public const int VIVO_KB_BRIGHTNESS = 0x0005002F;
+    public const int KBD_BACKLIGHT_OOBE = 0x0005002F;
 
     public const int TUF_KB = 0x00100056;
     public const int TUF_KB2 = 0x0010005a;
@@ -788,7 +788,6 @@ public class AsusACPI
     {
         int param = 0x80 | (brightness & 0x7F);
         DeviceSet(TUF_KB_BRIGHTNESS, param, "TUF Brightness");
-        if (AppConfig.IsVivoZenPro()) DeviceSet(VIVO_KB_BRIGHTNESS, param, "VIVO Brightness");
 
     }
 
@@ -831,6 +830,7 @@ public class AsusACPI
         state = state | 0x01 << 8;
 
         DeviceSet(TUF_KB_STATE, state, "TUF_KB");
+        if (AppConfig.IsVivoZenPro() && DeviceGet(KBD_BACKLIGHT_OOBE) >= 0) DeviceSet(KBD_BACKLIGHT_OOBE, 1, "VIVO OOBE");
     }
 
     public void SubscribeToEvents(Action<object, EventArrivedEventArgs> EventHandler)
