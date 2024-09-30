@@ -651,22 +651,22 @@ namespace GHelper.Ally
                     InputDispatcher.SetBacklightAuto(true);
                 }
 
-                    AsusHid.WriteInput([AsusHid.INPUT_ID, 0xD1, 0x01, 0x01, (byte)_applyMode], "Controller");
-                    //AsusHid.WriteInput(CommandSave, null);
+                AsusHid.WriteInput([AsusHid.INPUT_ID, 0xD1, 0x01, 0x01, (byte)_applyMode], "Controller");
+                //AsusHid.WriteInput(CommandSave, null);
 
-                    BindZone(BindingZone.M1M2);
-                    BindZone(BindingZone.DPadUpDown);
-                    BindZone(BindingZone.DPadLeftRight);
-                    BindZone(BindingZone.StickClick);
-                    BindZone(BindingZone.Bumper);
-                    BindZone(BindingZone.AB);
-                    BindZone(BindingZone.XY);
-                    BindZone(BindingZone.ViewMenu);
-                    BindZone(BindingZone.Trigger);
+                BindZone(BindingZone.M1M2);
+                BindZone(BindingZone.DPadUpDown);
+                BindZone(BindingZone.DPadLeftRight);
+                BindZone(BindingZone.StickClick);
+                BindZone(BindingZone.Bumper);
+                BindZone(BindingZone.AB);
+                BindZone(BindingZone.XY);
+                BindZone(BindingZone.ViewMenu);
+                BindZone(BindingZone.Trigger);
 
-                    AsusHid.WriteInput(CommandSave, null);
+                AsusHid.WriteInput(CommandSave, null);
 
-                    SetDeadzones();
+                SetDeadzones();
 
                 if (init && AppConfig.Is("controller_disabled"))
                 {
