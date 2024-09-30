@@ -616,9 +616,9 @@ namespace GHelper.Ally
 
         }
 
-        public static void ApplyXBoxStatus()
+        public static void DisableXBoxController(bool disabled)
         {
-            AsusHid.WriteInput([AsusHid.INPUT_ID, 0xD1, 0x0B, 0x01, AppConfig.Is("controller_disabled") ? (byte)0x02 : (byte)0x01], "Status");
+            AsusHid.WriteInput([AsusHid.INPUT_ID, 0xD1, 0x0B, 0x01, disabled ? (byte)0x02 : (byte)0x01], $"ControllerDisabled: {disabled}");
         }
 
         public static void ApplyMode(ControllerMode applyMode = ControllerMode.Auto, bool init = false)
@@ -651,26 +651,28 @@ namespace GHelper.Ally
                     InputDispatcher.SetBacklightAuto(true);
                 }
 
-                AsusHid.WriteInput([AsusHid.INPUT_ID, 0xD1, 0x01, 0x01, (byte)_applyMode], "Controller");
-                //AsusHid.WriteInput(CommandSave, null);
+                    AsusHid.WriteInput([AsusHid.INPUT_ID, 0xD1, 0x01, 0x01, (byte)_applyMode], "Controller");
+                    //AsusHid.WriteInput(CommandSave, null);
 
-                BindZone(BindingZone.M1M2);
-                BindZone(BindingZone.DPadUpDown);
-                BindZone(BindingZone.DPadLeftRight);
-                BindZone(BindingZone.StickClick);
-                BindZone(BindingZone.Bumper);
-                BindZone(BindingZone.AB);
-                BindZone(BindingZone.XY);
-                BindZone(BindingZone.ViewMenu);
-                BindZone(BindingZone.Trigger);
+                    BindZone(BindingZone.M1M2);
+                    BindZone(BindingZone.DPadUpDown);
+                    BindZone(BindingZone.DPadLeftRight);
+                    BindZone(BindingZone.StickClick);
+                    BindZone(BindingZone.Bumper);
+                    BindZone(BindingZone.AB);
+                    BindZone(BindingZone.XY);
+                    BindZone(BindingZone.ViewMenu);
+                    BindZone(BindingZone.Trigger);
 
-                AsusHid.WriteInput(CommandSave, null);
+                    AsusHid.WriteInput(CommandSave, null);
 
-                SetDeadzones();
+                    SetDeadzones();
 
                 if (init && AppConfig.Is("controller_disabled"))
                 {
-                    ApplyXBoxStatus();
+                    Thread.Sleep(500);
+                    DisableXBoxController(false);
+                    DisableXBoxController(true);
                 }
 
             });
