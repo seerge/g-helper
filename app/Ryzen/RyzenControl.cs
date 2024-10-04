@@ -143,6 +143,11 @@ namespace Ryzen
             return CPUName.Contains("AMD") || CPUName.Contains("Ryzen") || CPUName.Contains("Athlon") || CPUName.Contains("Radeon") || CPUName.Contains("AMD Custom APU 0405");
         }
 
+        public static bool IsSupportedPower()
+        {
+            return IsAMD() && FAMID < 12;
+        }
+
         public static bool IsSupportedUV()
         {
             if (CPUName.Length == 0) Init();
