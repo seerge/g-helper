@@ -270,9 +270,6 @@ namespace GHelper.Mode
             var stapmResult = SendCommand.set_stapm_limit((uint)limit_total * 1000);
             if (init) Logger.WriteLine($"STAPM: {limit_total} {stapmResult}");
 
-            var stapmResult2 = SendCommand.set_stapm2_limit((uint)limit_total * 1000);
-            if (init) Logger.WriteLine($"STAPM2: {limit_total} {stapmResult2}");
-
             var slowResult = SendCommand.set_slow_limit((uint)limit_slow * 1000);
             if (init) Logger.WriteLine($"SLOW: {limit_slow} {slowResult}");
 

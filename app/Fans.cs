@@ -927,7 +927,7 @@ namespace GHelper
             {
                 panelSlow.Visible = modeA;
 
-                if (RyzenControl.IsSupportedPower())
+                if (RyzenControl.IsAMD())
                 {
                     labelLeftTotal.Text = "SPL (CPU sustained)";
                     labelLeftSlow.Text = "sPPT (CPU 2 min boost)";
