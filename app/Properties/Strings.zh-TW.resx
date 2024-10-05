@@ -157,7 +157,7 @@
     <value>程式正在執行</value>
   </data>
   <data name="AppAlreadyRunningText" xml:space="preserve">
-    <value>G-Helper正在執行。 請檢查右下系統匣。</value>
+    <value>G-Helper 正在執行。 請檢查右下系統匣。</value>
   </data>
   <data name="Apply" xml:space="preserve">
     <value>套用</value>
@@ -169,10 +169,10 @@
     <value>套用功率限制</value>
   </data>
   <data name="ApplyWindowsPowerPlan" xml:space="preserve">
-    <value>自動調整Windows電源模式</value>
+    <value>自動調整 Windows 電源模式</value>
   </data>
   <data name="APUMemory" xml:space="preserve">
-    <value>分配給GPU的記憶體</value>
+    <value>分配給 GPU 的記憶體</value>
   </data>
   <data name="AsusServicesRunning" xml:space="preserve">
     <value>執行中的華碩服務</value>
@@ -295,7 +295,7 @@
     <value>次要</value>
   </data>
   <data name="BiosAndDriverUpdates" xml:space="preserve">
-    <value>BIOS與驅動程式更新</value>
+    <value>BIOS 與驅動程式更新</value>
   </data>
   <data name="Boot" xml:space="preserve">
     <value>開機時</value>

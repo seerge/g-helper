@@ -326,7 +326,8 @@ namespace GHelper
                 return;
             }
 
-            LightingMode lm = supportedLightingModes[comboBoxLightingMode.SelectedIndex];
+            var index = comboBoxLightingMode.SelectedIndex;
+            LightingMode lm = supportedLightingModes[index < supportedLightingModes.Count ? index : 0 ];
 
             LightingSetting? ls = mouse.LightingSettingForZone(visibleZone);
             if (ls.LightingMode == lm)

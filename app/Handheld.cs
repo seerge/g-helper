@@ -94,7 +94,7 @@ namespace GHelper
         private void CheckController_CheckedChanged(object? sender, EventArgs e)
         {
             AppConfig.Set("controller_disabled", checkController.Checked ? 1 : 0);
-            AllyControl.ApplyXBoxStatus();
+            AllyControl.DisableXBoxController(checkController.Checked);
         }
 
         private void ComboBinding(RComboBox combo)

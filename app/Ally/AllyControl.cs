@@ -616,9 +616,9 @@ namespace GHelper.Ally
 
         }
 
-        public static void ApplyXBoxStatus()
+        public static void DisableXBoxController(bool disabled)
         {
-            AsusHid.WriteInput(new byte[] { AsusHid.INPUT_ID, 0xD1, 0x0B, 0x01, AppConfig.Is("controller_disabled") ? (byte)0x02 : (byte)0x01 }, "Status");
+            AsusHid.WriteInput([AsusHid.INPUT_ID, 0xD1, 0x0B, 0x01, disabled ? (byte)0x02 : (byte)0x01], $"ControllerDisabled: {disabled}");
         }
 
         public static void ApplyMode(ControllerMode applyMode = ControllerMode.Auto, bool init = false)
@@ -651,7 +651,7 @@ namespace GHelper.Ally
                     InputDispatcher.SetBacklightAuto(true);
                 }
 
-                AsusHid.WriteInput(new byte[] { AsusHid.INPUT_ID, 0xD1, 0x01, 0x01, (byte)_applyMode }, "Controller");
+                AsusHid.WriteInput([AsusHid.INPUT_ID, 0xD1, 0x01, 0x01, (byte)_applyMode], "Controller");
                 //AsusHid.WriteInput(CommandSave, null);
 
                 BindZone(BindingZone.M1M2);
@@ -667,6 +667,13 @@ namespace GHelper.Ally
                 AsusHid.WriteInput(CommandSave, null);
 
                 SetDeadzones();
+
+                if (init && AppConfig.Is("controller_disabled"))
+                {
+                    Thread.Sleep(500);
+                    DisableXBoxController(false);
+                    DisableXBoxController(true);
+                }
 
             });
         }
