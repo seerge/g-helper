@@ -41,7 +41,7 @@ public static class NvidiaSmi
     public static int GetMaxGPUPower()
     {
         string output = RunNvidiaSmiCommand("--query-gpu=power.max_limit --format csv,noheader,nounits");
-        output = output.Trim().Trim('\n', '\r');
+        output = output.Trim().Trim('\n', '\r').Replace(".00","").Replace(",00", "");
 
         if (float.TryParse(output, out float floatValue))
         {

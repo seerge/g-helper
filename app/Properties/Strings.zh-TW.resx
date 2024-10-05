@@ -157,7 +157,7 @@
     <value>程式正在執行</value>
   </data>
   <data name="AppAlreadyRunningText" xml:space="preserve">
-    <value>G-Helper正在執行。 請檢查右下系統匣。</value>
+    <value>G-Helper 正在執行。 請檢查右下系統匣。</value>
   </data>
   <data name="Apply" xml:space="preserve">
     <value>套用</value>
@@ -169,10 +169,10 @@
     <value>套用功率限制</value>
   </data>
   <data name="ApplyWindowsPowerPlan" xml:space="preserve">
-    <value>自動調整Windows電源模式</value>
+    <value>自動調整 Windows 電源模式</value>
   </data>
   <data name="APUMemory" xml:space="preserve">
-    <value>分配給GPU的記憶體</value>
+    <value>分配給 GPU 的記憶體</value>
   </data>
   <data name="AsusServicesRunning" xml:space="preserve">
     <value>執行中的華碩服務</value>
@@ -295,7 +295,7 @@
     <value>次要</value>
   </data>
   <data name="BiosAndDriverUpdates" xml:space="preserve">
-    <value>BIOS與驅動程式更新</value>
+    <value>BIOS 與驅動程式更新</value>
   </data>
   <data name="Boot" xml:space="preserve">
     <value>開機時</value>
@@ -744,7 +744,7 @@
     <value>切換螢幕觸控</value>
   </data>
   <data name="Touchscreen" xml:space="preserve">
-    <value>Touchscreen</value>
+    <value>觸控螢幕</value>
   </data>
   <data name="Turbo" xml:space="preserve">
     <value>極速</value>
@@ -801,21 +801,21 @@
     <value>縮放</value>
   </data>
   <data name="Donate" xml:space="preserve">
-    <value>Donate</value>
+    <value>捐贈</value>
   </data>
   <data name="Legend" xml:space="preserve">
     <value>Legend</value>
   </data>
   <data name="LegendGray" xml:space="preserve">
-    <value>Can't check local version</value>
+    <value>無法檢查本機版本</value>
     <comment>Can't check local version</comment>
   </data>
   <data name="LegendRed" xml:space="preserve">
-    <value>Update Available</value>
+    <value>有可用的更新</value>
     <comment>Update Available</comment>
   </data>
   <data name="LegendGreen" xml:space="preserve">
-    <value>Updated</value>
+    <value>已更新</value>
     <comment>Updated</comment>
   </data>
 </root>

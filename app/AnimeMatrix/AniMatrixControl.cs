@@ -111,8 +111,6 @@ namespace GHelper.AnimeMatrix
                     deviceSlash.SetEnabled(true);
                     deviceSlash.Init();
 
-                    deviceSlash.SetLidMode(false);
-
                     switch ((SlashMode)running)
                     {
                         case SlashMode.Static:
@@ -149,6 +147,11 @@ namespace GHelper.AnimeMatrix
         public void SetLidMode(bool force = false)
         {
             bool matrixLid = AppConfig.Is("matrix_lid");
+
+            if (deviceSlash is not null)
+            {
+                deviceSlash.SetLidMode(!matrixLid && AppConfig.Is("slash_sleep"));
+            }
 
             if (matrixLid || force)
             {

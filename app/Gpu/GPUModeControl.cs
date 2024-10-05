@@ -92,13 +92,16 @@ namespace GHelper.Gpu
                 {
                     if (AppConfig.NoAutoUltimate())
                     {
-                        int standardStatus = Program.acpi.SetGPUEco(0);
-                        if (standardStatus == 0)
+                        Program.acpi.SetGPUEco(0);
+                        Thread.Sleep(500);
+
+                        int eco = Program.acpi.DeviceGet(AsusACPI.GPUEco);
+                        Logger.WriteLine("Eco flag : " + eco);
+                        if (eco == 1)
                         {
                             settings.VisualiseGPUMode();
                             return;
                         }
-                        Thread.Sleep(100);
                     }
                     status = Program.acpi.DeviceSet(AsusACPI.GPUMux, 0, "GPUMux");
                     restart = true;

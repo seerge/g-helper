@@ -76,7 +76,8 @@ namespace GHelper
                     customActions.Remove("fnlock");
                     break;
                 case "fnv":
-                    customActions[""] = EMPTY;
+                    customActions[""] = Properties.Strings.VisualMode;
+                    customActions.Remove("visual");
                     break;
                 case "fne":
                     customActions[""] = "Calculator";
@@ -504,7 +505,10 @@ namespace GHelper
                 return;
             }
 
-            eCoresMax = Math.Max(8, eCoresMax);
+            if (eCoresMax == 0) eCoresMax = 8;
+            if (pCoresMax == 0) pCoresMax = 6;
+
+            eCoresMax = Math.Max(4, eCoresMax);
             pCoresMax = Math.Max(6, pCoresMax);
 
             panelCores.Visible = true;

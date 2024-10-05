@@ -21,7 +21,8 @@ namespace Ryzen
         //PHEONIX - 9
         //RAPHAEL/DRAGON RANGE - 10
         //MENDOCINO - 11
-        //HAWKPOINT/STRIXPOINT - 12
+        //HAWKPOINT - 12
+        //STRIXPOINT - 13
 
         public static Smu RyzenAccess = new Smu(false);
         public static int FAMID = RyzenControl.FAMID;
@@ -49,7 +50,8 @@ namespace Ryzen
                 case 9:
                 case 11:
                 case 12:
-                    RyzenAccess.SendMp1(0x14, ref Args);
+                case 13:
+                    result = RyzenAccess.SendMp1(0x14, ref Args);
                     result = RyzenAccess.SendPsmu(0x31, ref Args);
                     break;
                 default:
@@ -59,32 +61,6 @@ namespace Ryzen
             RyzenAccess.Deinitialize();
             return result;
             
-        }
-
-        //STAMP2 Limit
-        public static Smu.Status? set_stapm2_limit(uint value)
-        {
-            RyzenAccess.Initialize();
-            uint[] Args = new uint[6];
-            Args[0] = value;
-            Smu.Status? result = null;
-
-            switch (FAMID)
-            {
-                case 3:
-                case 5:
-                case 7:
-                case 8:
-                case 9:
-                case 11:
-                case 12:
-                    result = RyzenAccess.SendPsmu(0x31, ref Args);
-                    break;
-                default:
-                    break;
-            }
-            RyzenAccess.Deinitialize();
-            return result;
         }
 
         //Fast Limit
@@ -109,7 +85,9 @@ namespace Ryzen
                 case 9:
                 case 11:
                 case 12:
+                case 13:
                     result = RyzenAccess.SendMp1(0x15, ref Args);
+                    result = RyzenAccess.SendPsmu(0x32, ref Args);
                     break;
                 default:
                     break;
@@ -140,7 +118,10 @@ namespace Ryzen
                 case 9:
                 case 11:
                 case 12:
+                case 13:
                     result = RyzenAccess.SendMp1(0x16, ref Args);
+                    result = RyzenAccess.SendPsmu(0x33, ref Args);
+                    result = RyzenAccess.SendPsmu(0x34, ref Args);
                     break;
                 default:
                     break;
@@ -176,11 +157,12 @@ namespace Ryzen
                 case 9:
                 case 11:
                 case 12:
+                case 13:
                     result = RyzenAccess.SendMp1(0x19, ref Args);
                     break;
                 case 4:
                 case 6:
-                    RyzenAccess.SendMp1(0x23, ref Args);
+                    result = RyzenAccess.SendMp1(0x23, ref Args);
                     result = RyzenAccess.SendPsmu(0x56, ref Args);
                     break;
                 case 10:
@@ -191,37 +173,6 @@ namespace Ryzen
             }
 
             RyzenAccess.Deinitialize();
-            return result;
-        }
-
-        //Skin Temp limit
-        public static Smu.Status? set_apu_skin_temp_limit(uint value)
-        {
-            RyzenAccess.Initialize();
-            uint[] Args = new uint[6];
-            Args[0] = value;
-
-            Smu.Status? result = null;
-
-            switch (FAMID)
-            {
-                case 5:
-                case 8:
-                case 9:
-                case 11:
-                case 12:
-                    result = RyzenAccess.SendMp1(0x33, ref Args);
-                    break;
-                case 3:
-                case 7:
-                    result = RyzenAccess.SendMp1(0x38, ref Args);
-                    break;
-                default:
-                    break;
-            }
-
-            RyzenAccess.Deinitialize();
-
             return result;
         }
 
@@ -241,12 +192,12 @@ namespace Ryzen
             {
                 case 3:
                 case 7:
-                    RyzenAccess.SendMp1(0x55, ref Args);
+                    result = RyzenAccess.SendMp1(0x55, ref Args);
                     result = RyzenAccess.SendPsmu(0xB1, ref Args);
                     break;
                 case 4:
                 case 6:
-                    RyzenAccess.SendMp1(0x36, ref Args);
+                    result = RyzenAccess.SendMp1(0x36, ref Args);
                     result = RyzenAccess.SendPsmu(0xB, ref Args);
                     break;
                 case 5:
@@ -254,6 +205,7 @@ namespace Ryzen
                 case 9:
                 case 11:
                 case 12:
+                case 13:
                     result = RyzenAccess.SendPsmu(0x5D, ref Args);
                     break;
                 case 10:
@@ -285,7 +237,7 @@ namespace Ryzen
             {
                 case 3:
                 case 7:
-                    RyzenAccess.SendMp1(0x64, ref Args);
+                    result = RyzenAccess.SendMp1(0x64, ref Args);
                     result = RyzenAccess.SendPsmu(0x57, ref Args);
                     break;
                 case 5:
@@ -293,6 +245,7 @@ namespace Ryzen
                 case 9:
                 case 11:
                 case 12:
+                case 13:
                     result = RyzenAccess.SendPsmu(0xb7, ref Args);
                     break;
                 default:

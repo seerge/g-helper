@@ -44,6 +44,7 @@ namespace GHelper.Display
 
         private static int _brightness = 100;
         private static bool _init = true;
+        private static bool _download = true;
         private static string? _splendidPath = null;
 
         private static System.Timers.Timer brightnessTimer = new System.Timers.Timer(200);
@@ -211,9 +212,19 @@ namespace GHelper.Display
 
             AppConfig.Set("gamut", mode);
 
-            if (RunSplendid(SplendidCommand.GamutMode, 0, mode)) return;
-
-            if (_init)
+            var result = RunSplendid(SplendidCommand.GamutMode, 0, mode);
+            if (result == 0) return;
+            if (result == -1)
+            {
+                Logger.WriteLine("Gamut setting refused, reverting.");
+                RunSplendid(SplendidCommand.GamutMode, 0, (int)GetDefaultGamut());
+                if (ProcessHelper.IsUserAdministrator() && _download)
+                {
+                    _download = false;
+                    ColorProfileHelper.InstallProfile();
+                }
+            }
+            if (result == 1 && _init)
             {
                 _init = false;
                 RunSplendid(SplendidCommand.Init);
@@ -253,9 +264,19 @@ namespace GHelper.Display
                     break;
             }
 
-            if (RunSplendid(mode, 0, balance)) return;
-
-            if (_init)
+            var result = RunSplendid(mode, 0, balance);
+            if (result == 0) return;
+            if (result == -1)
+            {
+                Logger.WriteLine("Visual mode setting refused, reverting.");
+                RunSplendid(SplendidCommand.Default, 0, DefaultColorTemp);
+                if (ProcessHelper.IsUserAdministrator() && _download)
+                {
+                    _download = false;
+                    ColorProfileHelper.InstallProfile();
+                }
+            }
+            if (result == 1 && _init)
             {
                 _init = false;
                 RunSplendid(SplendidCommand.Init);
@@ -288,7 +309,7 @@ namespace GHelper.Display
             return _splendidPath;
         }
 
-        private static bool RunSplendid(SplendidCommand command, int? param1 = null, int? param2 = null)
+        private static int RunSplendid(SplendidCommand command, int? param1 = null, int? param2 = null)
         {
             var splendid = GetSplendidPath();
             bool isVivo = AppConfig.IsVivoZenPro();
@@ -298,10 +319,11 @@ namespace GHelper.Display
             {
                 if (command == SplendidCommand.DimmingVisual && isVivo) command = SplendidCommand.DimmingVivo;
                 var result = ProcessHelper.RunCMD(splendid, (int)command + " " + param1 + " " + param2);
-                if (result.Contains("file not exist") || (result.Length == 0 && !isVivo)) return false;
+                if (result.Contains("file not exist") || (result.Length == 0 && !isVivo)) return 1;
+                if (result.Contains("return code: -1")) return -1;
             }
 
-            return true;
+            return 0;
         }
 
         private static void BrightnessTimerTimer_Elapsed(object? sender, System.Timers.ElapsedEventArgs e)
@@ -309,28 +331,46 @@ namespace GHelper.Display
             brightnessTimer.Stop();
 
 
-            if (RunSplendid(SplendidCommand.DimmingVisual, 0, (int)(40 + _brightness * 0.6))) return;
+            if (RunSplendid(SplendidCommand.DimmingVisual, 0, (int)(40 + _brightness * 0.6)) == 0) return;
 
             if (_init)
             {
                 _init = false;
                 RunSplendid(SplendidCommand.Init);
                 RunSplendid(SplendidCommand.Init, 4);
-                if (RunSplendid(SplendidCommand.DimmingVisual, 0, (int)(40 + _brightness * 0.6))) return;
+                if (RunSplendid(SplendidCommand.DimmingVisual, 0, (int)(40 + _brightness * 0.6)) == 0) return;
             }
 
             // GammaRamp Fallback
             SetGamma(_brightness);
         }
 
+        public static void InitBrightness()
+        {
+            if (!AppConfig.IsOLED()) return;
+            if (!AppConfig.SaveDimming()) return;
+
+            int brightness = GetBrightness();
+            if (brightness >= 0) SetBrightness(brightness);
+        }
+
+        private static bool IsOnBattery()
+        {
+            return AppConfig.SaveDimming() && SystemInformation.PowerStatus.PowerLineStatus != PowerLineStatus.Online;
+        }
+
+        public static int GetBrightness()
+        {
+            return AppConfig.Get(IsOnBattery() ? "brightness_battery" : "brightness", 100);
+        }
+
         public static int SetBrightness(int brightness = -1, int delta = 0)
         {
             if (!AppConfig.IsOLED()) return -1;
-
-            if (brightness < 0) brightness = AppConfig.Get("brightness", 100);
+            if (brightness < 0) brightness = GetBrightness();
 
             _brightness = Math.Max(0, Math.Min(100, brightness + delta));
-            AppConfig.Set("brightness", _brightness);
+            AppConfig.Set(IsOnBattery() ? "brightness_battery" : "brightness", _brightness);
 
             brightnessTimer.Start();
 

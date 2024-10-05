@@ -13,7 +13,7 @@ public static class AppConfig
     private static string? _bios;
 
     private static Dictionary<string, object> config = new Dictionary<string, object>();
-    private static System.Timers.Timer timer = new System.Timers.Timer(1000);
+    private static System.Timers.Timer timer = new System.Timers.Timer(2000);
 
     static AppConfig()
     {
@@ -93,7 +93,9 @@ public static class AppConfig
 
         Thread.Sleep(500);
 
-        if (File.ReadAllText(backup).Contains("}"))
+        var backupText = File.ReadAllText(backup);
+
+        if (backupText.Contains("{") && backupText.Contains("}"))
         {
             File.Copy(backup, configFile, true);
         }
@@ -220,6 +222,7 @@ public static class AppConfig
 
     private static void Write()
     {
+        timer.Stop();
         timer.Start();
     }
 
@@ -303,27 +306,32 @@ public static class AppConfig
 
         switch (mode)
         {
-            case 1:
-                if (device == AsusFan.GPU)
-                    curve = StringToBytes("14-3F-44-48-4C-50-54-62-16-1F-26-2D-39-47-55-5F");
-                else
-                    curve = StringToBytes("14-3F-44-48-4C-50-54-62-11-1A-22-29-34-43-51-5A");
-                break;
-            case 2:
-                if (device == AsusFan.GPU)
-                    curve = StringToBytes("3C-41-42-46-47-4B-4C-62-08-11-11-1D-1D-26-26-2D");
-                else
-                    curve = StringToBytes("3C-41-42-46-47-4B-4C-62-03-0C-0C-16-16-22-22-29");
-                break;
+            case AsusACPI.PerformanceTurbo:
+                switch (device)
+                {
+                    case AsusFan.GPU:
+                        return StringToBytes("14-3F-44-48-4C-50-54-62-16-1F-26-2D-39-47-55-5F");
+                    default:
+                        return StringToBytes("14-3F-44-48-4C-50-54-62-11-1A-22-29-34-43-51-5A");
+                }
+            case AsusACPI.PerformanceSilent:
+                switch (device)
+                {
+                    case AsusFan.GPU:
+                        return StringToBytes("3C-41-42-46-47-4B-4C-62-08-11-11-1D-1D-26-26-2D");
+                    default:
+                        return StringToBytes("3C-41-42-46-47-4B-4C-62-03-0C-0C-16-16-22-22-29");
+                }
             default:
-                if (device == AsusFan.GPU)
-                    curve = StringToBytes("3A-3D-40-44-48-4D-51-62-0C-16-1D-1F-26-2D-34-4A");
-                else
-                    curve = StringToBytes("3A-3D-40-44-48-4D-51-62-08-11-16-1A-22-29-30-45");
-                break;
+                switch (device)
+                {
+                    case AsusFan.GPU:
+                        return StringToBytes("3A-3D-40-44-48-4D-51-62-0C-16-1D-1F-26-2D-34-4A");
+                    default:
+                        return StringToBytes("3A-3D-40-44-48-4D-51-62-08-11-16-1A-22-29-30-45");
+                }
         }
 
-        return curve;
     }
 
     public static string GetModeString(string name)
@@ -412,7 +420,7 @@ public static class AppConfig
     // G14 2020 has no aura, but media keys instead
     public static bool NoAura()
     {
-        return (ContainsModel("GA401I") && !ContainsModel("GA401IHR")) || ContainsModel("HN7306");
+        return (ContainsModel("GA401I") && !ContainsModel("GA401IHR")) || ContainsModel("GA502IU") || ContainsModel("HN7306");
     }
 
     public static bool MediaKeys()
@@ -422,7 +430,7 @@ public static class AppConfig
 
     public static bool IsSingleColor()
     {
-        return ContainsModel("GA401") || ContainsModel("FX517Z") || ContainsModel("FX516P") || ContainsModel("X13") || IsARCNM() || ContainsModel("GA502IU") || ContainsModel("FA617N") || ContainsModel("FA617X") || NoAura();
+        return ContainsModel("GA401") || ContainsModel("FX517Z") || ContainsModel("FX516P") || ContainsModel("X13") || IsARCNM() || ContainsModel("FA617N") || ContainsModel("FA617X") || NoAura();
     }
 
     public static bool IsSlash()
@@ -447,7 +455,7 @@ public static class AppConfig
 
     public static bool IsOLED()
     {
-        return ContainsModel("OLED") || IsSlash() || ContainsModel("M7600") || ContainsModel("UX64") || ContainsModel("UX34") || ContainsModel("UX53") || ContainsModel("K360") || ContainsModel("X150") || ContainsModel("M350") || ContainsModel("K650") || ContainsModel("UM53") || ContainsModel("K660") || ContainsModel("UX84") || ContainsModel("M650") || ContainsModel("M550") || ContainsModel("K340") || ContainsModel("K350") || ContainsModel("M140") || ContainsModel("UM340") || ContainsModel("S540") || ContainsModel("M7400") || ContainsModel("N650") || ContainsModel("HN7306") || ContainsModel("H7606");
+        return ContainsModel("OLED") || IsSlash() || ContainsModel("M7600") || ContainsModel("UX64") || ContainsModel("UX34") || ContainsModel("UX53") || ContainsModel("K360") || ContainsModel("X150") || ContainsModel("M350") || ContainsModel("K650") || ContainsModel("UM53") || ContainsModel("K660") || ContainsModel("UX84") || ContainsModel("M650") || ContainsModel("M550") || ContainsModel("K340") || ContainsModel("K350") || ContainsModel("M140") || ContainsModel("UM340") || ContainsModel("S540") || ContainsModel("M7400") || ContainsModel("N650") || ContainsModel("HN7306") || ContainsModel("H7606") || ContainsModel("UX5406") || ContainsModel("UM5606");
     }
 
     public static bool IsNoOverdrive()
@@ -643,7 +651,7 @@ public static class AppConfig
 
     public static bool IsForceSetGPUMode()
     {
-        return Is("gpu_mode_force_set") || ContainsModel("503");
+        return Is("gpu_mode_force_set") || (ContainsModel("503") && IsNotFalse("gpu_mode_force_set"));
     }
 
     public static bool IsNoGPUModes()
@@ -700,6 +708,11 @@ public static class AppConfig
     public static bool IsForceMiniled()
     {
         return ContainsModel("G834JYR") || Is("force_miniled");
+    }
+
+    public static bool SaveDimming()
+    {
+        return Is("save_dimming");
     }
 
 }
