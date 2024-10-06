@@ -757,8 +757,8 @@ namespace GHelper
 
             chart.Titles[0].Text = title;
 
-            chart.ChartAreas[0].AxisX.Minimum = 10;
-            chart.ChartAreas[0].AxisX.Maximum = 100;
+            chart.ChartAreas[0].AxisX.Minimum = 20;
+            chart.ChartAreas[0].AxisX.Maximum = 110;
             chart.ChartAreas[0].AxisX.Interval = 10;
 
             chart.ChartAreas[0].AxisY.Minimum = 0;
@@ -1019,7 +1019,7 @@ namespace GHelper
             int chartCount = 2;
 
             // Middle / system fan check
-            if (!AsusACPI.IsEmptyCurve(Program.acpi.GetFanCurve(AsusFan.Mid)) || Program.acpi.GetFan(AsusFan.Mid) >= 0)
+            if (Program.acpi.GetFan(AsusFan.Mid) >= 0)
             {
                 AppConfig.Set("mid_fan", 1);
                 chartCount++;
@@ -1082,15 +1082,10 @@ namespace GHelper
             if (reset || AsusACPI.IsInvalidCurve(curve))
             {
                 curve = Program.acpi.GetFanCurve(device, Modes.GetCurrentBase());
-
-                if (AsusACPI.IsInvalidCurve(curve))
-                    curve = AppConfig.GetDefaultCurve(device);
-
-                curve = AsusACPI.FixFanCurve(curve);
-
+                Logger.WriteLine($"Default {device}:" + BitConverter.ToString(curve));
             }
 
-            //Debug.WriteLine(BitConverter.ToString(curve));
+            curve = AsusACPI.FixFanCurve(curve);
 
             byte old = 0;
             for (int i = 0; i < 8; i++)
@@ -1245,8 +1240,7 @@ namespace GHelper
                     dx = ax.PixelPositionToValue(e.X);
                     dy = ay.PixelPositionToValue(e.Y);
 
-                    if (dx < 20) dx = 20;
-                    if (dx > 100) dx = 100;
+                    dx = AsusACPI.FixTemp((int)dx, curIndex);
 
                     if (dy < 0) dy = 0;
                     if (dy > fansMax) dy = fansMax;

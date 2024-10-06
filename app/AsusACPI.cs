@@ -583,7 +583,7 @@ public class AsusACPI
         }
 
         //Logger.WriteLine($"GetFan {device} :" + BitConverter.ToString(result));
-
+        if (IsInvalidCurve(result)) result = AppConfig.GetDefaultCurve(device);
         return result;
 
     }
@@ -598,43 +598,20 @@ public class AsusACPI
         return curve.All(singleByte => singleByte == 0);
     }
 
+    public static int FixTemp(int temp, int index)
+    {
+        var dxMin = 30 + 10 * index;
+        var dxMax = dxMin + 9;
+        return Math.Min(dxMax, Math.Max(dxMin, temp));
+    }
+
     public static byte[] FixFanCurve(byte[] curve)
     {
         if (curve.Length != 16) throw new Exception("Incorrect curve");
 
-        var points = new Dictionary<byte, byte>();
-        byte old = 0;
-
         for (int i = 0; i < 8; i++)
         {
-            if (curve[i] <= old) curve[i] = (byte)Math.Min(100, old + 6); // preventing 2 points in same spot from default asus profiles
-            points[curve[i]] = curve[i + 8];
-            old = curve[i];
-        }
-
-        var pointsFixed = new Dictionary<byte, byte>();
-        bool fix = false;
-
-        int count = 0;
-        foreach (var pair in points.OrderBy(x => x.Key))
-        {
-            if (count == 0 && pair.Key >= 40)
-            {
-                fix = true;
-                pointsFixed.Add(30, 0);
-            }
-
-            if (count != 3 || !fix)
-                pointsFixed.Add(pair.Key, pair.Value);
-            count++;
-        }
-
-        count = 0;
-        foreach (var pair in pointsFixed.OrderBy(x => x.Key))
-        {
-            curve[count] = pair.Key;
-            curve[count + 8] = pair.Value;
-            count++;
+            curve[i] = (byte)FixTemp(curve[i], i); 
         }
 
         return curve;
