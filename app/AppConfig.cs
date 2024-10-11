@@ -696,7 +696,7 @@ public static class AppConfig
 
     public static bool IsForceMiniled()
     {
-        return ContainsModel("G834JYR") || Is("force_miniled");
+        return ContainsModel("G834JYR") || ContainsModel("G834JZR") || Is("force_miniled");
     }
 
     public static bool SaveDimming()
