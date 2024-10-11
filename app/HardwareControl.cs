@@ -24,7 +24,7 @@ public static class HardwareControl
     public static decimal? fullCapacity;
     public static decimal? chargeCapacity;
 
-
+    public static string? batteryCharge;
 
     public static string? cpuFan;
     public static string? gpuFan;
@@ -226,7 +226,8 @@ public static class HardwareControl
 
         if (fullCapacity > 0 && chargeCapacity > 0)
         {
-            batteryCapacity = Math.Min(100, ((decimal)chargeCapacity / (decimal)fullCapacity) * 100);
+            batteryCapacity = Math.Min(100, (decimal)chargeCapacity / (decimal)fullCapacity * 100);
+            batteryCharge = Math.Round((decimal)chargeCapacity / 1000, 1).ToString() + "Wh" + " " + Math.Round(batteryCapacity, 1) + "%";
             if (batteryCapacity > 99) BatteryControl.UnSetBatteryLimitFull();
         }
 

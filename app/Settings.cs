@@ -1420,7 +1420,9 @@ namespace GHelper
                 cpuTemp = ": " + Math.Round((decimal)HardwareControl.cpuTemp).ToString() + "°C";
 
             if (HardwareControl.batteryCapacity > 0)
-                charge = Properties.Strings.BatteryCharge + ": " + Math.Round(HardwareControl.batteryCapacity, 1) + "% ";
+            {
+                charge = Properties.Strings.BatteryCharge + ": " + HardwareControl.batteryCharge;
+            }
 
             if (HardwareControl.batteryRate < 0)
                 battery = Properties.Strings.Discharging + ": " + Math.Round(-(decimal)HardwareControl.batteryRate, 1).ToString() + "W";
