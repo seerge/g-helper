@@ -1,0 +1,194 @@
+/*
+******************************************************************
+Varibles
+******************************************************************
+*/
+:root {
+    --primary: #2E2E2E;
+    --primary-text: #F7F7F7;
+   
+    --a:#FFD700; /* #D4AF37 */
+    --a-hover:#9b0fe0;
+   
+    --header-background: #1C1C1C; 
+    --footer-background: #3f3f3f;
+
+    --margin-main: 10em;
+    --margin-text: 0.3em;
+    --margin-headers: 1.5em;
+}
+       
+  
+/*
+******************************************************************
+Rest
+******************************************************************
+*/
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: var(--primary);
+    color: var(--primary-text);
+
+    line-height: 1.6;
+    overflow-x: hidden;
+}
+
+
+/*
+******************************************************************
+Margins 
+******************************************************************
+*/
+main
+{   
+    margin: 0 var(--margin-main);
+
+    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
+    font-size: 16px;
+    line-height: 1.5;
+    word-wrap: break-word;
+}
+
+:is(h1, h2, h3, h4, h5, h6)
+{
+    margin-top: var(--margin-headers);
+    margin-bottom: calc(var(--margin-headers) / 2);
+}
+
+:is(p, pre, a, strong, i, em, blockquote, li):not(footer,header)
+{
+    margin: var(--margin-text) 0;
+}
+
+
+/*
+******************************************************************
+Header styling
+******************************************************************
+*/
+header {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    padding: 2rem 1rem;
+    background-color: var(--header-background);
+}
+
+.header-content {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 2em;
+}
+
+
+/*
+******************************************************************
+Anchor Styling
+******************************************************************
+*/
+a {
+    color: var(--a);
+    text-decoration: none;
+}
+
+a:hover {
+    color: var(--a-hover);
+}
+
+
+/*
+******************************************************************
+Lists
+******************************************************************
+*/
+ul, ol, li 
+{
+    list-style-type: none;
+}
+
+
+
+/*
+******************************************************************
+Imgs responsive
+******************************************************************
+*/
+img {
+    margin: 1rem auto;
+    max-width: 100%;
+    display: block;
+    height: auto;
+}
+
+img:hover
+{
+    animation: Bounce 2.5s ease-in-out infinite;
+}
+
+
+/*
+******************************************************************
+Footer section
+******************************************************************
+*/
+footer {
+    text-align: center;
+    padding: 1rem;
+    background-color: var(--footer-background);
+}
+
+
+/*
+******************************************************************
+Animations
+******************************************************************
+*/
+@keyframes Bounce {
+    0% {
+        transform: translateY(0);
+    }
+    30% {
+        transform: translateY(-10px);
+    }
+    50% {
+        transform: translateY(0);
+    }
+    70% {
+        transform: translateY(-5px);
+    }
+    100% {
+        transform: translateY(0);
+    }
+}
+
+@keyframes shine {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+
+@media (max-width: 768px) {
+
+    main
+    {   
+        --margin-main: 1em;
+      margin: 0 var(--margin-main);
+    }
+
+  }
+  
