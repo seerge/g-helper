@@ -235,6 +235,7 @@ namespace GHelper
 
             labelCharge.MouseEnter += PanelBattery_MouseEnter;
             labelCharge.MouseLeave += PanelBattery_MouseLeave;
+            labelBattery.Click += LabelBattery_Click;
 
             buttonPeripheral1.Click += ButtonPeripheral_Click;
             buttonPeripheral2.Click += ButtonPeripheral_Click;
@@ -282,6 +283,12 @@ namespace GHelper
 
             panelPerformance.Focus();
             InitVisual();
+        }
+
+        private void LabelBattery_Click(object? sender, EventArgs e)
+        {
+            HardwareControl.chargeWatt = !HardwareControl.chargeWatt;
+            RefreshSensors(true);
         }
 
         private void ButtonDonate_Click(object? sender, EventArgs e)
