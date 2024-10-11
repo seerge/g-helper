@@ -1,4 +1,5 @@
 ﻿using GHelper.Helpers;
+using Microsoft.Win32;
 using System.Management;
 
 namespace GHelper.Display
@@ -100,7 +101,7 @@ namespace GHelper.Display
                 foreach (FileInfo icm in icms)
                 {
                     //Logger.WriteLine(icm.FullName);
-                    
+
                     if (icm.Name.Contains("sRGB"))
                     {
                         try
@@ -108,7 +109,7 @@ namespace GHelper.Display
                             _modes.Add(isVivo ? SplendidGamut.VivoSRGB : SplendidGamut.sRGB, "Gamut: sRGB");
                             Logger.WriteLine(icm.FullName + " sRGB");
                         }
-                        catch 
+                        catch
                         {
                         }
                     }
@@ -205,6 +206,20 @@ namespace GHelper.Display
                 { 3, "3"},
                 { 4, "4"},
             };
+        }
+
+        const string GameVisualKey = @"HKEY_CURRENT_USER\Software\ASUS\ARMOURY CRATE Service\GameVisual";
+        const string GameVisualValue = "ActiveGVStatus";
+
+        public static bool IsEnabled()
+        {
+            var status = (int?)Registry.GetValue(GameVisualKey, GameVisualValue, 1);
+            return status > 0;
+        }
+
+        public static void SetRegStatus(int status = 1)
+        {
+            Registry.SetValue(GameVisualKey, GameVisualValue, status, RegistryValueKind.DWord);
         }
 
         public static void SetGamut(int mode = -1)
@@ -327,6 +342,11 @@ namespace GHelper.Display
                 var result = ProcessHelper.RunCMD(splendid, (int)command + " " + param1 + " " + param2);
                 if (result.Contains("file not exist") || (result.Length == 0 && !isVivo)) return 1;
                 if (result.Contains("return code: -1")) return -1;
+                if (result.Contains("Visual is disabled"))
+                {
+                    SetRegStatus(1);
+                    return 1;
+                }
             }
 
             return 0;
