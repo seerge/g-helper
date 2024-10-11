@@ -37,6 +37,7 @@ namespace GHelper.Display
         Cinema = 25,
         Vivid = 13,
         Eyecare = 17,
+        Disabled = 18,
     }
     public static class VisualControl
     {
@@ -175,7 +176,8 @@ namespace GHelper.Display
                 { SplendidCommand.FPS, "FPS"},
                 { SplendidCommand.Cinema, "Cinema"},
                 { SplendidCommand.Vivid, "Vivid" },
-                { SplendidCommand.Eyecare, "Eyecare"}
+                { SplendidCommand.Eyecare, "Eyecare"},
+                { SplendidCommand.Disabled, "Disabled"}
             };
         }
 
@@ -235,7 +237,7 @@ namespace GHelper.Display
         public static void SetVisual(SplendidCommand mode = SplendidCommand.Default, int whiteBalance = DefaultColorTemp, bool init = false)
         {
             if (mode == SplendidCommand.None) return;
-            if ((mode == SplendidCommand.Default || mode == SplendidCommand.VivoNormal) && init) return; // Skip default setting on init
+            if ((mode == SplendidCommand.Disabled || mode == SplendidCommand.Default || mode == SplendidCommand.VivoNormal) && init) return; // Skip default setting on init
 
             if (!forceVisual && ScreenCCD.GetHDRStatus(true)) return;
             if (!forceVisual && ScreenNative.GetRefreshRate(ScreenNative.FindLaptopScreen(true)) < 0) return;
@@ -245,12 +247,16 @@ namespace GHelper.Display
 
             if (whiteBalance != DefaultColorTemp && !init) ProcessHelper.RunAsAdmin();
 
-            int? balance;
+            int? balance = null;
+            int command = 0;
 
             switch (mode)
             {
+                case SplendidCommand.Disabled:
+                    command = 2;
+                    break;
                 case SplendidCommand.Eyecare:
-                    balance = 2;
+                    balance = 4;
                     break;
                 case SplendidCommand.VivoNormal:
                 case SplendidCommand.VivoVivid:
@@ -264,7 +270,7 @@ namespace GHelper.Display
                     break;
             }
 
-            var result = RunSplendid(mode, 0, balance);
+            int result = RunSplendid(mode, command, balance);
             if (result == 0) return;
             if (result == -1)
             {
