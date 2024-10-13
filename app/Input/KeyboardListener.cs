@@ -10,6 +10,8 @@ namespace GHelper.Input
         CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
         Action<int> _handler;
 
+        static int retry = 0;
+
         public KeyboardListener(Action<int> KeyHandler)
         {
             _handler = KeyHandler;
@@ -67,6 +69,12 @@ namespace GHelper.Input
             catch (Exception ex)
             {
                 Logger.WriteLine($"Listener exited: {ex.Message}");
+                if (retry++ < 2)
+                {
+                    Thread.Sleep(300);
+                    Logger.WriteLine($"Restarting listener {retry}");
+                    Listen();
+                }
             }
 
         }
