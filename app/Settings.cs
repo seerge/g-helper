@@ -850,7 +850,7 @@ namespace GHelper
 
         private void Button60Hz_MouseHover(object? sender, EventArgs e)
         {
-            labelTipScreen.Text = Properties.Strings.MinRefreshTooltip;
+            labelTipScreen.Text = Properties.Strings.MinRefreshTooltip.Replace("60", ScreenControl.MIN_RATE.ToString());
         }
 
         private void ButtonScreen_MouseLeave(object? sender, EventArgs e)
@@ -860,7 +860,7 @@ namespace GHelper
 
         private void ButtonScreenAuto_MouseHover(object? sender, EventArgs e)
         {
-            labelTipScreen.Text = Properties.Strings.AutoRefreshTooltip;
+            labelTipScreen.Text = Properties.Strings.AutoRefreshTooltip.Replace("60", ScreenControl.MIN_RATE.ToString());
         }
 
         private void ButtonUltimate_MouseHover(object? sender, EventArgs e)
@@ -1215,7 +1215,7 @@ namespace GHelper
         private void Button60Hz_Click(object? sender, EventArgs e)
         {
             AppConfig.Set("screen_auto", 0);
-            screenControl.SetScreen(60, 0);
+            screenControl.SetScreen(ScreenControl.MIN_RATE, 0);
         }
 
 
@@ -1246,16 +1246,18 @@ namespace GHelper
             {
                 buttonScreenAuto.Activated = true;
             }
-            else if (frequency == 60)
+            else if (frequency == ScreenControl.MIN_RATE)
             {
                 button60Hz.Activated = true;
             }
-            else if (frequency > 60)
+            else if (frequency > ScreenControl.MIN_RATE)
             {
                 button120Hz.Activated = true;
             }
 
-            if (maxFrequency > 60)
+            button60Hz.Text = ScreenControl.MIN_RATE + "Hz";
+
+            if (maxFrequency > ScreenControl.MIN_RATE)
             {
                 button120Hz.Text = maxFrequency.ToString() + "Hz" + (overdriveSetting ? " + OD" : "");
                 panelScreen.Visible = true;

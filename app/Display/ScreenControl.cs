@@ -6,7 +6,7 @@ namespace GHelper.Display
     {
 
         public const int MAX_REFRESH = 1000;
-
+        public static int MIN_RATE = AppConfig.Get("min_rate", 60);
 
         public void AutoScreen(bool force = false)
         {
@@ -15,7 +15,7 @@ namespace GHelper.Display
                 if (SystemInformation.PowerStatus.PowerLineStatus == PowerLineStatus.Online)
                     SetScreen(MAX_REFRESH, 1);
                 else
-                    SetScreen(60, 0);
+                    SetScreen(MIN_RATE, 0);
             }
             else
             {
@@ -29,7 +29,7 @@ namespace GHelper.Display
             var refreshRate = ScreenNative.GetRefreshRate(laptopScreen);
             if (refreshRate < 0) return;
 
-            ScreenNative.SetRefreshRate(laptopScreen, refreshRate > 60 ? 60 : ScreenNative.GetMaxRefreshRate(laptopScreen));
+            ScreenNative.SetRefreshRate(laptopScreen, refreshRate > MIN_RATE ? MIN_RATE : ScreenNative.GetMaxRefreshRate(laptopScreen));
             InitScreen();
         }
 
