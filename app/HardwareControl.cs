@@ -24,7 +24,7 @@ public static class HardwareControl
     public static decimal? fullCapacity;
     public static decimal? chargeCapacity;
 
-
+    public static string? batteryCharge;
 
     public static string? cpuFan;
     public static string? gpuFan;
@@ -33,6 +33,20 @@ public static class HardwareControl
     public static int? gpuUse;
 
     static long lastUpdate;
+
+    static bool _chargeWatt = AppConfig.Is("charge_watt");
+    public static bool chargeWatt
+    {
+        get
+        {
+            return _chargeWatt;
+        }
+        set
+        {
+            AppConfig.Set("charge_watt", value ? 1 : 0);
+            _chargeWatt = value;
+        }
+    }
 
     private static int GetGpuUse()
     {
@@ -226,8 +240,16 @@ public static class HardwareControl
 
         if (fullCapacity > 0 && chargeCapacity > 0)
         {
-            batteryCapacity = Math.Min(100, ((decimal)chargeCapacity / (decimal)fullCapacity) * 100);
+            batteryCapacity = Math.Min(100, (decimal)chargeCapacity / (decimal)fullCapacity * 100);
             if (batteryCapacity > 99) BatteryControl.UnSetBatteryLimitFull();
+            if (chargeWatt)
+            {
+                batteryCharge = Math.Round((decimal)chargeCapacity / 1000, 1).ToString() + "Wh";
+            }
+            else
+            {
+                batteryCharge = Math.Round(batteryCapacity, 1) + "%";
+            }
         }
 
 
