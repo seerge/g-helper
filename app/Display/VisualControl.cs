@@ -1,4 +1,5 @@
 ﻿using GHelper.Helpers;
+using Microsoft.Win32;
 using System.Management;
 
 namespace GHelper.Display
@@ -37,6 +38,7 @@ namespace GHelper.Display
         Cinema = 25,
         Vivid = 13,
         Eyecare = 17,
+        Disabled = 18,
     }
     public static class VisualControl
     {
@@ -99,7 +101,7 @@ namespace GHelper.Display
                 foreach (FileInfo icm in icms)
                 {
                     //Logger.WriteLine(icm.FullName);
-                    
+
                     if (icm.Name.Contains("sRGB"))
                     {
                         try
@@ -107,7 +109,7 @@ namespace GHelper.Display
                             _modes.Add(isVivo ? SplendidGamut.VivoSRGB : SplendidGamut.sRGB, "Gamut: sRGB");
                             Logger.WriteLine(icm.FullName + " sRGB");
                         }
-                        catch 
+                        catch
                         {
                         }
                     }
@@ -175,7 +177,8 @@ namespace GHelper.Display
                 { SplendidCommand.FPS, "FPS"},
                 { SplendidCommand.Cinema, "Cinema"},
                 { SplendidCommand.Vivid, "Vivid" },
-                { SplendidCommand.Eyecare, "Eyecare"}
+                { SplendidCommand.Eyecare, "Eyecare"},
+                { SplendidCommand.Disabled, "Disabled"}
             };
         }
 
@@ -203,6 +206,20 @@ namespace GHelper.Display
                 { 3, "3"},
                 { 4, "4"},
             };
+        }
+
+        const string GameVisualKey = @"HKEY_CURRENT_USER\Software\ASUS\ARMOURY CRATE Service\GameVisual";
+        const string GameVisualValue = "ActiveGVStatus";
+
+        public static bool IsEnabled()
+        {
+            var status = (int?)Registry.GetValue(GameVisualKey, GameVisualValue, 1);
+            return status > 0;
+        }
+
+        public static void SetRegStatus(int status = 1)
+        {
+            Registry.SetValue(GameVisualKey, GameVisualValue, status, RegistryValueKind.DWord);
         }
 
         public static void SetGamut(int mode = -1)
@@ -235,7 +252,7 @@ namespace GHelper.Display
         public static void SetVisual(SplendidCommand mode = SplendidCommand.Default, int whiteBalance = DefaultColorTemp, bool init = false)
         {
             if (mode == SplendidCommand.None) return;
-            if ((mode == SplendidCommand.Default || mode == SplendidCommand.VivoNormal) && init) return; // Skip default setting on init
+            if ((mode == SplendidCommand.Disabled || mode == SplendidCommand.Default || mode == SplendidCommand.VivoNormal) && init) return; // Skip default setting on init
 
             if (!forceVisual && ScreenCCD.GetHDRStatus(true)) return;
             if (!forceVisual && ScreenNative.GetRefreshRate(ScreenNative.FindLaptopScreen(true)) < 0) return;
@@ -245,12 +262,16 @@ namespace GHelper.Display
 
             if (whiteBalance != DefaultColorTemp && !init) ProcessHelper.RunAsAdmin();
 
-            int? balance;
+            int? balance = null;
+            int command = 0;
 
             switch (mode)
             {
+                case SplendidCommand.Disabled:
+                    command = 2;
+                    break;
                 case SplendidCommand.Eyecare:
-                    balance = 2;
+                    balance = 4;
                     break;
                 case SplendidCommand.VivoNormal:
                 case SplendidCommand.VivoVivid:
@@ -264,7 +285,7 @@ namespace GHelper.Display
                     break;
             }
 
-            var result = RunSplendid(mode, 0, balance);
+            int result = RunSplendid(mode, command, balance);
             if (result == 0) return;
             if (result == -1)
             {
@@ -321,6 +342,11 @@ namespace GHelper.Display
                 var result = ProcessHelper.RunCMD(splendid, (int)command + " " + param1 + " " + param2);
                 if (result.Contains("file not exist") || (result.Length == 0 && !isVivo)) return 1;
                 if (result.Contains("return code: -1")) return -1;
+                if (result.Contains("Visual is disabled"))
+                {
+                    SetRegStatus(1);
+                    return 1;
+                }
             }
 
             return 0;
