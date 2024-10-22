@@ -213,7 +213,7 @@ namespace GHelper.AnimeMatrix
                     switch (running)
                     {
                         case 2:
-                            SetMatrixPicture(AppConfig.GetString("matrix_picture"));
+                            SetMatrixPicture(AppConfig.GetString("matrix_picture"), false);
                             break;
                         case 3:
                             SetMatrixClock();

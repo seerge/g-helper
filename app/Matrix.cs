@@ -81,7 +81,7 @@ namespace GHelper
         {
             AppConfig.Set("matrix_contrast", trackContrast.Value);
             AppConfig.Set("matrix_gamma", trackGamma.Value);
-            SetMatrixPicture();
+            SetMatrixPicture(false);
         }
 
 
