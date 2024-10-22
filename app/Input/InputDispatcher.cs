@@ -118,6 +118,13 @@ namespace GHelper.Input
 
             if (!AppConfig.Is("skip_hotkeys"))
             {
+
+                if (AppConfig.IsDUO())
+                {
+                    hook.RegisterHotKey(ModifierKeys.Shift | ModifierKeys.Control | ModifierKeys.Alt, Keys.F7);
+                    hook.RegisterHotKey(ModifierKeys.Shift | ModifierKeys.Control | ModifierKeys.Alt, Keys.F8);
+                }
+
                 hook.RegisterHotKey(ModifierKeys.Shift | ModifierKeys.Control | ModifierKeys.Alt, Keys.F13);
 
                 hook.RegisterHotKey(ModifierKeys.Shift | ModifierKeys.Control | ModifierKeys.Alt, Keys.F14);
@@ -128,8 +135,6 @@ namespace GHelper.Input
                 hook.RegisterHotKey(ModifierKeys.Shift | ModifierKeys.Control | ModifierKeys.Alt, Keys.F18);
                 hook.RegisterHotKey(ModifierKeys.Shift | ModifierKeys.Control | ModifierKeys.Alt, Keys.F19);
                 hook.RegisterHotKey(ModifierKeys.Shift | ModifierKeys.Control | ModifierKeys.Alt, Keys.F20);
-
-
 
                 hook.RegisterHotKey(ModifierKeys.Control, Keys.VolumeDown);
                 hook.RegisterHotKey(ModifierKeys.Control, Keys.VolumeUp);
@@ -434,6 +439,12 @@ namespace GHelper.Input
                         break;
                     case Keys.F4:
                         Program.settingsForm.BeginInvoke(Program.settingsForm.allyControl.ToggleModeHotkey);
+                        break;
+                    case Keys.F7:
+                        SetScreenpad(-10);
+                        break;
+                    case Keys.F8:
+                        SetScreenpad(10);
                         break;
                     case Keys.F13:
                         ToggleScreenRate();
