@@ -450,9 +450,11 @@ namespace GHelper.Input
                         ToggleScreenRate();
                         break;
                     case Keys.F14:
+                        Program.toast.RunToast(Properties.Strings.EcoMode);
                         Program.settingsForm.gpuControl.SetGPUMode(AsusACPI.GPUModeEco);
                         break;
                     case Keys.F15:
+                        Program.toast.RunToast(Properties.Strings.StandardMode);
                         Program.settingsForm.gpuControl.SetGPUMode(AsusACPI.GPUModeStandard);
                         break;
                     case Keys.F16:
