@@ -504,7 +504,7 @@ public static class AppConfig
 
     public static bool NoWMI()
     {
-        return ContainsModel("GL704G") || ContainsModel("GM501G");
+        return ContainsModel("GL704G") || ContainsModel("GM501G") || ContainsModel("GX501G");
     }
 
     public static bool IsNoDirectRGB()
