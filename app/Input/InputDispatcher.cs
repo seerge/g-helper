@@ -1026,6 +1026,13 @@ namespace GHelper.Input
             Program.toast.RunToast($"Screen Pad {toast}", delta > 0 ? ToastIcon.BrightnessUp : ToastIcon.BrightnessDown);
         }
 
+        public static void InitScreenpad()
+        {
+            if (!AppConfig.IsDUO()) return;
+            int brightness = AppConfig.Get("screenpad");
+            if (brightness >= 0) ApplyScreenpadAction(brightness);
+        }
+
         static void LaunchProcess(string command = "")
         {
             if (string.IsNullOrEmpty(command)) return;
