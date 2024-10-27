@@ -22,9 +22,9 @@ G-helper兼容所有主流型号，例如 ROG 幻14、幻15、幻16、幻13、�
 
 ### [:floppy_disk:下载应用](https://github.com/seerge/g-helper/releases/latest/download/GHelper.zip)
 
-### [常见问题解答(FAQ)](#常见问题解答)
-
 ### [安装指南](#安装指南)
+
+### [常见问题解答(FAQ)](#常见问题解答)
 
 ### [高级用户设置](#高级用户设置)
 
@@ -37,7 +37,7 @@ _如果你在别的地方提到这个软件，请记得加上这个项目的网�
 ## 🎁 主要优点
 
 1. 自动且无缝的独立显卡模式切换(不需要关闭所有应用或执行其他操作)
-2. 可以手动调整所有的性能模式(包括自定义风扇曲线以及PPTs(Platform Power Threshold,即CPU总功耗,下文简称PPTs--译注))
+2. 可以手动调整所有的性能模式(包括自定义风扇曲线以及PPTs(Platform Power Threshold,即CPU总功耗,下文简称PPTs ——译注))
 3. 极致的轻量化，几乎不消耗任何资源，也不需要安装系统服务。只需要下载一个exe文件就可以运行。
 4. 简洁的界面设计，可以轻松调整所有设置。
 5. FN 锁定和自定义热键
@@ -82,7 +82,7 @@ _如果你在别的地方提到这个软件，请记得加上这个项目的网�
 2. 平衡/性能 (平衡模式的风扇曲线设置, 100W 总PPT, 其中 CPU 最高 45W PPT) + windows电源模式设置为平衡
 3. 增强 (激进的风扇曲线设置, 125W 总PPT, 其中 CPU 最高 80W PPT) + windows电源模式设置为高性能/最佳性能
 
-_PPTs 默认在 幻14 2022版上显示, 对于其他型号 PPTs 的显示将会有所变化，因为它们在bios中的设置不同。_
+_PPTs 默认在 幻14 2022版上的显示, 对于其他型号 PPTs 的显示将会有所变化，因为它们在bios中的设置不同。_
 
 ![Screenshot 2023-04-06 142234](https://user-images.githubusercontent.com/5920850/230377635-7032a480-3a94-4e35-9468-d8911e3e55ec.png)
 
@@ -101,7 +101,7 @@ _PPTs 默认在 幻14 2022版上显示, 对于其他型号 PPTs 的显示将会�
 
 [目前支持的型号](https://github.com/seerge/g-helper/discussions/900)
 
-*对于中国大陆发行的版本请自行参考
+_*对于中国大陆发行的版本仅供参考_
 - ROG Chakram X (P708)
 - ROG Chakram Core (P511)
 - ROG Gladius II and Gladius II Origin (P502 and P504)
@@ -160,6 +160,8 @@ _PPTs 默认在 幻14 2022版上显示, 对于其他型号 PPTs 的显示将会�
 
 # 常见问题解答
 
+_*由于译者精力有限，以下的解答可能过时/未收录最新的问题，如有需要请自行查看英文版README或者issue列表_
+
 #### 当我按下 M4 / Rog键的时候总是弹出安装Armoury Crate的弹窗提示，我该如何关闭它?
 
 删除下列文件或者把它移动(注:剪切+粘贴)到别的目录 ``C:\Windows\System32\ASUSACCI\ArmouryCrateKeyControl.exe``.
@@ -200,15 +202,15 @@ _PPTs 默认在 幻14 2022版上显示, 对于其他型号 PPTs 的显示将会�
 
 #### 打开应用后没有看到应用启动/弹窗提示"G-Helper已经在运行"
 
-请在系统托盘里找到 (G) 图标。windows会默认隐藏所有图标，所以你可能需要点击 ^ 来看见它们。建议任务栏右键进入任务栏设置 -> 其他系统图标 -> 将 G-Helper 设置为始终在任务栏上显示。
+请在系统托盘里找到 (G) 图标。windows会默认隐藏所有图标，所以你可能需要点击 ^ 来看见它们。建议任务栏右键进入任务栏设置 → 其他系统图标 → 将 G-Helper 设置为始终在任务栏上显示。
 
 #### 应用不能启动或者崩溃了，我该怎么做?
 
-从开始菜单里打开“事件管理器”， 进入 Windows日志 -> 应用，然后在最近的错误日志里寻找包含G-helper的日志。如果你找到一个 - 请提出一个 [新的 issue](https://github.com/seerge/g-helper/issues) ，其中包含来自这次错误的所有的详细信息。
+从开始菜单里打开“事件管理器”， 进入 Windows日志 → 应用，然后在最近的错误日志里寻找包含G-helper的日志。如果你找到一个 - 请提出一个 [新的 issue](https://github.com/seerge/g-helper/issues) ，其中包含来自这次错误的所有的详细信息。
 
 #### 我可以在用G-Helper的时候同时用myASUS吗?
 
-当然可以! 唯一的问题是myASUS可能会重置你之前在g-helper里设置的电池充电上限。在这种情况下，建议你在这两个应用(myASUS和g-helper)里设置相同的充电上限(60%/80%/100%)以避免冲突。
+当然可以! 唯一的问题是myASUS可能会重置你之前在G-helper里设置的电池充电上限。在这种情况下，建议你在这两个应用(myASUS和g-helper)里设置相同的充电上限(60%/80%/100%)以避免冲突。
 
 #### 我如何将M3键设置为将麦克风静音?
 
@@ -216,7 +218,7 @@ _PPTs 默认在 幻14 2022版上显示, 对于其他型号 PPTs 的显示将会�
 
 #### 我如何设置不同的视觉风格(即 Armoury Crate 内的gamevisual功能)?
 
-因为这个功能让颜色显示不正确，我个人(注:作者 :) )并不喜欢这些。但是如果你需要这个功能 - 你可以使用 Nvidia 控制面板/GefoeceExperirence滤镜或者AMD控制面板(Radeon Software/AMD Software: Adrenalin Edition)来修改显示颜色(因显示器和配置而异)。如果你真的非常需要这个功能，你也可以使用 [微软商店中ASUS自己的工具](https://apps.microsoft.com/store/detail/gamevisual/9P4K1LFTXSH8?hl=nl-nl&gl=nl&rtc=1)
+因为这个功能让颜色显示不正确，我个人（译注:指作者 :) ）并不喜欢这些。但是如果你需要这个功能 - 你可以使用 Nvidia 控制面板/GefoeceExperirence滤镜或者AMD控制面板(Radeon Software/AMD Software: Adrenalin Edition)来修改显示颜色(因显示器和配置而异)。如果你真的非常需要这个功能，你也可以使用 [微软商店中ASUS自己的工具](https://apps.microsoft.com/store/detail/gamevisual/9P4K1LFTXSH8?hl=nl-nl&gl=nl&rtc=1)
 
 #### 我能超频 Nvidia GPU 核心或显存吗?
 
@@ -252,7 +254,7 @@ G-helper是一个单文件的exe文件, 而且它不会向系统中安装任何�
 
 #### 我删除了Armoury之后我的GPU性能降低了
 
-检查你的 Nvidia Experience 设置，确保Whisper Mode项是关闭的。你还可以尝试重置所有设置。`Nvidia 控制面板 -> 管理 3D  设置 -> 恢复`
+检查你的 Nvidia Experience 设置，确保Whisper Mode项是关闭的。你还可以尝试重置所有设置。`Nvidia 控制面板 → 管理 3D  设置 → 恢复`
 
 #### 我如何从硬件层面重启我的笔记本？
 
@@ -270,13 +272,13 @@ G-helper是一个单文件的exe文件, 而且它不会向系统中安装任何�
 ### 如何开始
 
 1.下载[**最新版本**](https://github.com/seerge/g-helper/releases/latest/download/GHelper.zip)
-2. 解压到您选择的文件夹_（不要直接从zip运行exe，因为Windows会将其放入临时文件夹并在之后删除）_
+2. 解压到您选择的文件夹 _（不要直接从zip运行exe，因为Windows会将其放入临时文件夹并在之后删除）_
 3.运行**GHelper.exe**
 
 - 如果您在启动时收到来自 Windows Defender 的警告（Windows 保护了您的电脑）。
-单击“更多信息”->“仍然运行”。
+单击“更多信息” → “仍然运行”。
 - 如果出现“在商店中搜索应用程序”对话框，则这是 Windows Defender 的一个错误。
-右键单击 GHelper.exe -> 选择“属性” -> 选择“取消阻止复选框”
+右键单击 GHelper.exe → 选择“属性” → 选择“取消阻止复选框”
 
 ### 要求（强制）
 
@@ -286,7 +288,7 @@ G-helper是一个单文件的exe文件, 而且它不会向系统中安装任何�
 ### 建议（可选）
 
 - **不建议**将该应用程序与 Armoury Crate 服务结合使用，因为它们调整相同的设置。 您可以[使用AC自带的卸载工具卸载](https://dlcdnets.asus.com/pub/ASUS/mb/14Utilities/Armoury_Crate_Uninstall_Tool.zip?model=armoury%20crate)。 以防万一，您可以稍后再安装它。
-- **不建议**运行“ASUS Smart Display Control”应用程序，因为它会尝试更改刷新率并与 g-helper 争夺相同的功能。 您可以安全地卸载它。
+- **不建议**运行“ASUS Smart Display Control”应用程序，因为它会尝试更改刷新率并与 G-helper 争夺相同的功能。 您可以安全地卸载它。
 - 如果您不打算使用 MyASUS，您可以停止/禁用不必要的服务：转到应用程序中的 **Extra**，然后按 Asus 服务部分中的“停止”。 要重新启动/启用服务 - 单击“开始”。
 
 
@@ -302,7 +304,7 @@ G-helper是一个单文件的exe文件, 而且它不会向系统中安装任何�
 
 ### 为每一个模式自定义用户计划
 
-在 config.json (位于 %appdata/GHelper) 中你可以手动添加自定义电源设置的GUID (它既可以是"真正的"可被选择的电源计划，也可以是"覆盖式(overlay)"的电源计划，就像g-helper默认设置的那样)
+在 config.json (位于 %appdata/GHelper) 中你可以手动添加自定义电源设置的GUID (它既可以是"真正的"可被选择的电源计划，也可以是"覆盖式(overlay)"的电源计划，就像G-helper默认设置的那样)
 
 格式如下 : "scheme_`<mode>`" : "GUID"
 
