@@ -9,9 +9,6 @@
 适用于华硕（Asus）笔记本电脑的轻量级 Armoury Crate (奥创控制中心)替代品，在功能几乎相同的同时减少不必要的服务以减轻负载。
 G-helper兼容所有主流型号，例如 ROG 幻14、幻15、幻16、幻13、幻X、天选（飞行堡垒）系列、枪神/魔霸系列、创系列、灵耀系列、无畏系列、ROG Ally 等！
 
-
-# [:floppy_disk:下载应用](https://github.com/seerge/g-helper/releases/latest/download/GHelper.zip)
-
 <table>
 <tr>
    <td><b>支持此项目</b></td>
@@ -23,17 +20,19 @@ G-helper兼容所有主流型号，例如 ROG 幻14、幻15、幻16、幻13、�
 </tr>
 </table>
 
+### [:floppy_disk:下载应用](https://github.com/seerge/g-helper/releases/latest/download/GHelper.zip)
+
+### [常见问题解答(FAQ)](#常见问题解答)
+
+### [安装指南](#安装指南)
+
+### [高级用户设置](#高级用户设置)
+
 如果你喜欢这个应用，请[给这个项目⭐️](https://github.com/seerge/g-helper) 或者向别人推荐它！
-
-[常见问题解答(FAQ)](#常见问题解答)
-
-[安装指南](#安装指南)
-
-[高级用户设置](#高级用户设置)
 
 [![G-Helper Download](https://github.com/pasical/g-helper/assets/112304778/03f442b9-29e8-4e99-a095-8eaa533c995b)](https://github.com/seerge/g-helper/releases/latest/download/GHelper.zip)
 
-_如果你在别的地方提到这个软件-请记得加上这个项目的网址。十分感谢。_
+_如果你在别的地方提到这个软件，请记得加上这个项目的网址。十分感谢。_
 
 ## 🎁 主要优点
 
@@ -265,6 +264,8 @@ G-helper是一个单文件的exe文件, 而且它不会向系统中安装任何�
 这是一个轻量化的Armoury Crate(奥创控制中心)替代工具，而且不需要任何多余的功能或安装不必要的系统服务的。在ROG G14, G15, G16, M16, X13, Z13, X16, TUF, Scar, Vivobook, ProArt等热门笔记本中都适用。
 
 ---
+
+# 安装指南
 
 ### 如何开始
 
