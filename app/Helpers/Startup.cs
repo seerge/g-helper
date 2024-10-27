@@ -106,7 +106,7 @@ public class Startup
         {
 
             td.RegistrationInfo.Description = "G-Helper Auto Start";
-            td.Triggers.Add(new LogonTrigger { UserId = WindowsIdentity.GetCurrent().Name, Delay = TimeSpan.FromSeconds(1) });
+            td.Triggers.Add(new LogonTrigger { UserId = WindowsIdentity.GetCurrent().Name, Delay = TimeSpan.FromSeconds(2) });
             td.Actions.Add(strExeFilePath);
 
             if (ProcessHelper.IsUserAdministrator())

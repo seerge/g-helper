@@ -118,6 +118,13 @@ namespace GHelper.Input
 
             if (!AppConfig.Is("skip_hotkeys"))
             {
+
+                if (AppConfig.IsDUO())
+                {
+                    hook.RegisterHotKey(ModifierKeys.Shift | ModifierKeys.Control | ModifierKeys.Alt, Keys.F7);
+                    hook.RegisterHotKey(ModifierKeys.Shift | ModifierKeys.Control | ModifierKeys.Alt, Keys.F8);
+                }
+
                 hook.RegisterHotKey(ModifierKeys.Shift | ModifierKeys.Control | ModifierKeys.Alt, Keys.F13);
 
                 hook.RegisterHotKey(ModifierKeys.Shift | ModifierKeys.Control | ModifierKeys.Alt, Keys.F14);
@@ -128,8 +135,6 @@ namespace GHelper.Input
                 hook.RegisterHotKey(ModifierKeys.Shift | ModifierKeys.Control | ModifierKeys.Alt, Keys.F18);
                 hook.RegisterHotKey(ModifierKeys.Shift | ModifierKeys.Control | ModifierKeys.Alt, Keys.F19);
                 hook.RegisterHotKey(ModifierKeys.Shift | ModifierKeys.Control | ModifierKeys.Alt, Keys.F20);
-
-
 
                 hook.RegisterHotKey(ModifierKeys.Control, Keys.VolumeDown);
                 hook.RegisterHotKey(ModifierKeys.Control, Keys.VolumeUp);
@@ -435,13 +440,21 @@ namespace GHelper.Input
                     case Keys.F4:
                         Program.settingsForm.BeginInvoke(Program.settingsForm.allyControl.ToggleModeHotkey);
                         break;
+                    case Keys.F7:
+                        SetScreenpad(-10);
+                        break;
+                    case Keys.F8:
+                        SetScreenpad(10);
+                        break;
                     case Keys.F13:
                         ToggleScreenRate();
                         break;
                     case Keys.F14:
+                        Program.toast.RunToast(Properties.Strings.EcoMode);
                         Program.settingsForm.gpuControl.SetGPUMode(AsusACPI.GPUModeEco);
                         break;
                     case Keys.F15:
+                        Program.toast.RunToast(Properties.Strings.StandardMode);
                         Program.settingsForm.gpuControl.SetGPUMode(AsusACPI.GPUModeStandard);
                         break;
                     case Keys.F16:
@@ -735,6 +748,7 @@ namespace GHelper.Input
                         KeyProcess("fne");
                         return;
                     case 174:   // FN+F5
+                    case 157:   // Zenbook DUO FN+F
                         modeControl.CyclePerformanceMode(Control.ModifierKeys == Keys.Shift);
                         return;
                     case 179:   // FN+F4
@@ -1010,6 +1024,13 @@ namespace GHelper.Input
             else toast = brightness.ToString() + "%";
 
             Program.toast.RunToast($"Screen Pad {toast}", delta > 0 ? ToastIcon.BrightnessUp : ToastIcon.BrightnessDown);
+        }
+
+        public static void InitScreenpad()
+        {
+            if (!AppConfig.IsDUO()) return;
+            int brightness = AppConfig.Get("screenpad");
+            if (brightness >= 0) ApplyScreenpadAction(brightness);
         }
 
         static void LaunchProcess(string command = "")
