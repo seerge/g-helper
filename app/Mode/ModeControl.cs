@@ -110,30 +110,24 @@ namespace GHelper.Mode
 
             if (notify) Toast();
 
-            // Power plan from config or defaulting to balanced
-            if (AppConfig.GetModeString("scheme") is not null)
-                PowerNative.SetPowerPlan(AppConfig.GetModeString("scheme"));
-            else
-                PowerNative.SetBalancedPowerPlan();
+            if (!AppConfig.Is("skip_powermode"))
+            {
+                // Power plan from config or defaulting to balanced
+                if (AppConfig.GetModeString("scheme") is not null)
+                    PowerNative.SetPowerPlan(AppConfig.GetModeString("scheme"));
+                else
+                    PowerNative.SetBalancedPowerPlan();
 
-            // Windows power mode
-            if (AppConfig.GetModeString("powermode") is not null)
-                PowerNative.SetPowerMode(AppConfig.GetModeString("powermode"));
-            else
-                PowerNative.SetPowerMode(Modes.GetBase(mode));
+                // Windows power mode
+                if (AppConfig.GetModeString("powermode") is not null)
+                    PowerNative.SetPowerMode(AppConfig.GetModeString("powermode"));
+                else
+                    PowerNative.SetPowerMode(Modes.GetBase(mode));
+            }
 
             // CPU Boost setting override
             if (AppConfig.GetMode("auto_boost") != -1)
-                PowerNative.SetCPUBoost(AppConfig.GetMode("auto_boost"));
-
-            //BatteryControl.SetBatteryChargeLimit();
-
-            /*
-            if (NativeMethods.PowerGetEffectiveOverlayScheme(out Guid activeScheme) == 0)
-            {
-                Debug.WriteLine("Effective :" + activeScheme);
-            }
-            */
+                    PowerNative.SetCPUBoost(AppConfig.GetMode("auto_boost"));
 
             settings.FansInit();
         }
@@ -162,7 +156,8 @@ namespace GHelper.Mode
                 modeToggleTimer.Start();
                 Modes.SetCurrent(Modes.GetNext(back));
                 Toast();
-            } else
+            }
+            else
             {
                 SetPerformanceMode(Modes.GetNext(back), true);
             }
@@ -385,7 +380,7 @@ namespace GHelper.Mode
             if (gpu_power >= AsusACPI.MinGPUPower && gpu_power <= AsusACPI.MaxGPUPower && Program.acpi.DeviceGet(AsusACPI.GPU_POWER) >= 0)
                 Program.acpi.DeviceSet(AsusACPI.GPU_POWER, gpu_power, "PowerLimit TGP (GPU VAR)");
 
-            if (gpu_boost >= AsusACPI.MinGPUBoost && gpu_boost <= AsusACPI.MaxGPUBoost && Program.acpi.DeviceGet(AsusACPI.PPT_GPUC0) >= 0) 
+            if (gpu_boost >= AsusACPI.MinGPUBoost && gpu_boost <= AsusACPI.MaxGPUBoost && Program.acpi.DeviceGet(AsusACPI.PPT_GPUC0) >= 0)
                 boostResult = Program.acpi.DeviceSet(AsusACPI.PPT_GPUC0, gpu_boost, "PowerLimit C0 (GPU BOOST)");
 
             if (gpu_temp >= AsusACPI.MinGPUTemp && gpu_temp <= AsusACPI.MaxGPUTemp && Program.acpi.DeviceGet(AsusACPI.PPT_GPUC2) >= 0)
