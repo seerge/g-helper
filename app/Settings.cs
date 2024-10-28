@@ -1786,7 +1786,7 @@ namespace GHelper
 
         public void VisualiseBatteryFull()
         {
-            if (AppConfig.Is("charge_full"))
+            if (BatteryControl.chargeFull)
             {
                 buttonBatteryFull.BackColor = colorStandard;
                 buttonBatteryFull.ForeColor = SystemColors.ControlLightLight;

@@ -2,7 +2,7 @@
 
 namespace GHelper.Battery
 {
-    internal class BatteryControl
+    public static class BatteryControl
     {
 
         static bool _chargeFull = AppConfig.Is("charge_full");
