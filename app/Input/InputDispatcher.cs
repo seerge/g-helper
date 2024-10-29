@@ -15,8 +15,14 @@ namespace GHelper.Input
         System.Timers.Timer timer = new System.Timers.Timer(1000);
         public static bool backlightActivity = true;
 
-        public static Keys keyProfile = Keys.F5;
-        public static Keys keyApp = Keys.F12;
+        public static Keys keyProfile = (Keys)AppConfig.Get("keybind_profile", (int)Keys.F5);
+        public static Keys keyApp = (Keys)AppConfig.Get("keybind_app", (int)Keys.F12);
+
+        public static Keys keyProfile0 = (Keys)AppConfig.Get("keybind_profile_0", (int)Keys.F17);
+        public static Keys keyProfile1 = (Keys)AppConfig.Get("keybind_profile_1", (int)Keys.F18);
+        public static Keys keyProfile2 = (Keys)AppConfig.Get("keybind_profile_2", (int)Keys.F16);
+        public static Keys keyProfile3 = (Keys)AppConfig.Get("keybind_profile_3", (int)Keys.F19);
+        public static Keys keyProfile4 = (Keys)AppConfig.Get("keybind_profile_4", (int)Keys.F20);
 
         static ModeControl modeControl = Program.modeControl;
         static ScreenControl screenControl = new ScreenControl();
@@ -101,10 +107,6 @@ namespace GHelper.Input
         {
             hook.UnregisterAll();
 
-            // CTRL + SHIFT + F5 to cycle profiles
-            if (AppConfig.Get("keybind_profile") != -1) keyProfile = (Keys)AppConfig.Get("keybind_profile");
-            if (AppConfig.Get("keybind_app") != -1) keyApp = (Keys)AppConfig.Get("keybind_app");
-
             string actionM1 = AppConfig.GetString("m1");
             string actionM2 = AppConfig.GetString("m2");
 
@@ -118,7 +120,6 @@ namespace GHelper.Input
 
             if (!AppConfig.Is("skip_hotkeys"))
             {
-
                 if (AppConfig.IsDUO())
                 {
                     hook.RegisterHotKey(ModifierKeys.Shift | ModifierKeys.Control | ModifierKeys.Alt, Keys.F7);
@@ -130,11 +131,11 @@ namespace GHelper.Input
                 hook.RegisterHotKey(ModifierKeys.Shift | ModifierKeys.Control | ModifierKeys.Alt, Keys.F14);
                 hook.RegisterHotKey(ModifierKeys.Shift | ModifierKeys.Control | ModifierKeys.Alt, Keys.F15);
 
-                hook.RegisterHotKey(ModifierKeys.Shift | ModifierKeys.Control | ModifierKeys.Alt, Keys.F16);
-                hook.RegisterHotKey(ModifierKeys.Shift | ModifierKeys.Control | ModifierKeys.Alt, Keys.F17);
-                hook.RegisterHotKey(ModifierKeys.Shift | ModifierKeys.Control | ModifierKeys.Alt, Keys.F18);
-                hook.RegisterHotKey(ModifierKeys.Shift | ModifierKeys.Control | ModifierKeys.Alt, Keys.F19);
-                hook.RegisterHotKey(ModifierKeys.Shift | ModifierKeys.Control | ModifierKeys.Alt, Keys.F20);
+                hook.RegisterHotKey(ModifierKeys.Shift | ModifierKeys.Control | ModifierKeys.Alt, keyProfile0);
+                hook.RegisterHotKey(ModifierKeys.Shift | ModifierKeys.Control | ModifierKeys.Alt, keyProfile1);
+                hook.RegisterHotKey(ModifierKeys.Shift | ModifierKeys.Control | ModifierKeys.Alt, keyProfile2);
+                hook.RegisterHotKey(ModifierKeys.Shift | ModifierKeys.Control | ModifierKeys.Alt, keyProfile3);
+                hook.RegisterHotKey(ModifierKeys.Shift | ModifierKeys.Control | ModifierKeys.Alt, keyProfile4);
 
                 hook.RegisterHotKey(ModifierKeys.Control, Keys.VolumeDown);
                 hook.RegisterHotKey(ModifierKeys.Control, Keys.VolumeUp);
@@ -425,6 +426,12 @@ namespace GHelper.Input
             if (e.Modifier == (ModifierKeys.Control | ModifierKeys.Shift | ModifierKeys.Alt))
             {
                 if (e.Key == keyProfile) modeControl.CyclePerformanceMode(true);
+                
+                if (e.Key == keyProfile0) modeControl.SetPerformanceMode(0, true);
+                if (e.Key == keyProfile1) modeControl.SetPerformanceMode(1, true);
+                if (e.Key == keyProfile2) modeControl.SetPerformanceMode(2, true);
+                if (e.Key == keyProfile3) modeControl.SetPerformanceMode(3, true);
+                if (e.Key == keyProfile4) modeControl.SetPerformanceMode(4, true);
 
                 switch (e.Key)
                 {
@@ -456,21 +463,6 @@ namespace GHelper.Input
                     case Keys.F15:
                         Program.toast.RunToast(Properties.Strings.StandardMode);
                         Program.settingsForm.gpuControl.SetGPUMode(AsusACPI.GPUModeStandard);
-                        break;
-                    case Keys.F16:
-                        modeControl.SetPerformanceMode(2, true);
-                        break;
-                    case Keys.F17:
-                        modeControl.SetPerformanceMode(0, true);
-                        break;
-                    case Keys.F18:
-                        modeControl.SetPerformanceMode(1, true);
-                        break;
-                    case Keys.F19:
-                        modeControl.SetPerformanceMode(3, true);
-                        break;
-                    case Keys.F20:
-                        modeControl.SetPerformanceMode(4, true);
                         break;
                 }
             }
