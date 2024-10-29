@@ -410,7 +410,7 @@ namespace GHelper.AnimeMatrix
             if (DateTime.Now.Second % 2 != 0) timeFormat = timeFormat.Replace(":", "  ");
 
             Clear();
-            Text(DateTime.Now.ToString(timeFormat), 15, 13 - FullRows, 25);
+            Text(DateTime.Now.ToString(timeFormat), 15, 7 - FullRows / 2, 25);
             Text(DateTime.Now.ToString(dateFormat), 11.5F, 0, 14);
             Present();
 
