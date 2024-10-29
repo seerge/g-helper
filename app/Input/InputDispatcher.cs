@@ -748,6 +748,7 @@ namespace GHelper.Input
                         KeyProcess("fne");
                         return;
                     case 174:   // FN+F5
+                    case 153:   // FN+F5 OLD MODELS
                     case 157:   // Zenbook DUO FN+F
                         modeControl.CyclePerformanceMode(Control.ModifierKeys == Keys.Shift);
                         return;
