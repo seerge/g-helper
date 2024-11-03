@@ -14,6 +14,7 @@ namespace GHelper.Input
     {
         System.Timers.Timer timer = new System.Timers.Timer(1000);
         public static bool backlightActivity = true;
+        public static bool lidClose = false;
 
         public static Keys keyProfile = (Keys)AppConfig.Get("keybind_profile", (int)Keys.F5);
         public static Keys keyApp = (Keys)AppConfig.Get("keybind_app", (int)Keys.F12);
@@ -874,6 +875,7 @@ namespace GHelper.Input
 
         public static void SetBacklightAuto(bool init = false)
         {
+            if (lidClose) return;
             if (init) Aura.Init();
             Aura.ApplyBrightness(GetBacklight(), "Auto", init);
         }
