@@ -648,7 +648,7 @@ namespace GHelper.Ally
                 if (init)
                 {
                     WakeUp();
-                    InputDispatcher.SetBacklightAuto(true);
+                    InputDispatcher.SetBacklightAuto();
                 }
 
                 AsusHid.WriteInput([AsusHid.INPUT_ID, 0xD1, 0x01, 0x01, (byte)_applyMode], "Controller");

@@ -873,11 +873,22 @@ namespace GHelper.Input
             return Math.Max(Math.Min(3, backlight), 0);
         }
 
-        public static void SetBacklightAuto(bool init = false)
+        public static void AutoKeyboard()
+        {
+            if (AppConfig.HasTabletMode()) TabletMode();
+            if (lidClose || AppConfig.Is("skip_aura")) return;
+
+            Aura.Init();
+            Aura.ApplyPower();
+            Aura.ApplyAura();
+            SetBacklightAuto();
+        }
+
+
+        public static void SetBacklightAuto()
         {
             if (lidClose) return;
-            if (init) Aura.Init();
-            Aura.ApplyBrightness(GetBacklight(), "Auto", init);
+            Aura.ApplyBrightness(GetBacklight(), "Auto");
         }
 
         public static void SetBacklight(int delta, bool force = false)

@@ -6,6 +6,7 @@ using GHelper.Helpers;
 using GHelper.Input;
 using GHelper.Mode;
 using GHelper.Peripherals;
+using GHelper.USB;
 using Microsoft.Win32;
 using Ryzen;
 using System.Diagnostics;
@@ -258,9 +259,10 @@ namespace GHelper
             }
             else
             {
-                settingsForm.AutoKeyboard();
+                InputDispatcher.AutoKeyboard();
             }
 
+            XGM.InitLight();
             VisualControl.InitBrightness();
 
             return true;

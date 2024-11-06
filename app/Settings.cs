@@ -1541,24 +1541,6 @@ namespace GHelper
         }
 
 
-        public void AutoKeyboard()
-        {
-
-            if (!AppConfig.Is("skip_aura"))
-            {
-                Aura.ApplyPower();
-                Aura.ApplyAura();
-            }
-
-            InputDispatcher.SetBacklightAuto(true);
-
-            if (Program.acpi.IsXGConnected())
-                XGM.Light(AppConfig.Is("xmg_light"));
-
-            if (AppConfig.HasTabletMode()) InputDispatcher.TabletMode();
-
-        }
-
 
         public void VisualizeXGM(int GPUMode = -1)
         {
