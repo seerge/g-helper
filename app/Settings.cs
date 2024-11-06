@@ -712,14 +712,14 @@ namespace GHelper
                     {
                         case 0:
                             Logger.WriteLine("Lid Closed");
+                            InputDispatcher.lidClose = AniMatrixControl.lidClose = true;
                             Aura.ApplyBrightness(0, "Lid");
-                            AniMatrixControl.lidClose = true;
                             matrixControl.SetLidMode();
                             break;
                         case 1:
                             Logger.WriteLine("Lid Open");
+                            InputDispatcher.lidClose = AniMatrixControl.lidClose = false;
                             Aura.ApplyBrightness(InputDispatcher.GetBacklight(), "Lid");
-                            AniMatrixControl.lidClose = false;
                             matrixControl.SetLidMode();
                             break;
                     }
@@ -1580,24 +1580,6 @@ namespace GHelper
         }
 
 
-        public void AutoKeyboard()
-        {
-
-            if (!AppConfig.Is("skip_aura"))
-            {
-                Aura.ApplyPower();
-                Aura.ApplyAura();
-            }
-
-            InputDispatcher.SetBacklightAuto(true);
-
-            if (Program.acpi.IsXGConnected())
-                XGM.Light(AppConfig.Is("xmg_light"));
-
-            if (AppConfig.HasTabletMode()) InputDispatcher.TabletMode();
-
-        }
-
 
         public void VisualizeXGM(int GPUMode = -1)
         {
@@ -1825,7 +1807,7 @@ namespace GHelper
 
         public void VisualiseBatteryFull()
         {
-            if (AppConfig.Is("charge_full"))
+            if (BatteryControl.chargeFull)
             {
                 buttonBatteryFull.BackColor = colorStandard;
                 buttonBatteryFull.ForeColor = SystemColors.ControlLightLight;
