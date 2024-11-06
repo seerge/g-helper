@@ -241,7 +241,7 @@ public static class HardwareControl
         if (fullCapacity > 0 && chargeCapacity > 0)
         {
             batteryCapacity = Math.Min(100, (decimal)chargeCapacity / (decimal)fullCapacity * 100);
-            if (batteryCapacity > 99) BatteryControl.UnSetBatteryLimitFull();
+            if (batteryCapacity > 99 && BatteryControl.chargeFull) BatteryControl.UnSetBatteryLimitFull();
             if (chargeWatt)
             {
                 batteryCharge = Math.Round((decimal)chargeCapacity / 1000, 1).ToString() + "Wh";
@@ -251,8 +251,6 @@ public static class HardwareControl
                 batteryCharge = Math.Round(batteryCapacity, 1) + "%";
             }
         }
-
-
     }
 
     public static bool IsUsedGPU(int threshold = 10)

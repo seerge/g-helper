@@ -361,6 +361,11 @@ namespace GHelper.USB
             AsusHid.WriteInput(new byte[] { AsusHid.INPUT_ID, 0xD1, 0x09, 0x01, power }, "Aura");
         }
 
+        public static void ApplyPowerOff()
+        {
+            AsusHid.Write(AuraPowerMessage(new AuraPower()));
+        }
+
         public static void ApplyPower()
         {
 

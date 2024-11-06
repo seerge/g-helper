@@ -2,31 +2,46 @@
 
 namespace GHelper.Battery
 {
-    internal class BatteryControl
+    public static class BatteryControl
     {
+
+        static bool _chargeFull = AppConfig.Is("charge_full");
+        public static bool chargeFull
+        {
+            get
+            {
+                return _chargeFull;
+            }
+            set
+            {
+                AppConfig.Set("charge_full", value ? 1 : 0);
+                _chargeFull = value;
+            }
+        }
 
         public static void ToggleBatteryLimitFull()
         {
-            if (AppConfig.Is("charge_full")) SetBatteryChargeLimit();
+            if (chargeFull) SetBatteryChargeLimit();
             else SetBatteryLimitFull();
         }
 
         public static void SetBatteryLimitFull()
         {
-            AppConfig.Set("charge_full", 1);
+            chargeFull = true;
             Program.acpi.DeviceSet(AsusACPI.BatteryLimit, 100, "BatteryLimit");
             Program.settingsForm.VisualiseBatteryFull();
         }
 
         public static void UnSetBatteryLimitFull()
         {
-            AppConfig.Set("charge_full", 0);
+            chargeFull = false;
+            Logger.WriteLine("Battery fully charged");
             Program.settingsForm.Invoke(Program.settingsForm.VisualiseBatteryFull);
         }
 
         public static void AutoBattery(bool init = false)
         {
-            if (AppConfig.Is("charge_full") && !init) SetBatteryLimitFull();
+            if (chargeFull && !init) SetBatteryLimitFull();
             else SetBatteryChargeLimit();
         }
 
@@ -46,7 +61,7 @@ namespace GHelper.Battery
             Program.acpi.DeviceSet(AsusACPI.BatteryLimit, limit, "BatteryLimit");
 
             AppConfig.Set("charge_limit", limit);
-            AppConfig.Set("charge_full", 0);
+            chargeFull = false;
 
             Program.settingsForm.VisualiseBattery(limit);
         }

@@ -52,6 +52,10 @@ namespace GHelper.USB
             Write(new byte[] { 0x5e, 0xc5, status ? (byte)0x50 : (byte)0 });
         }
 
+        public static void InitLight()
+        {
+            if (Program.acpi.IsXGConnected()) Light(AppConfig.Is("xmg_light"));
+        }
 
         public static void Reset()
         {
