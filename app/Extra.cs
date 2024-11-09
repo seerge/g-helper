@@ -37,6 +37,7 @@ namespace GHelper
               {"brightness_up", Properties.Strings.BrightnessUp},
               {"visual", Properties.Strings.VisualMode},
               {"touchscreen", Properties.Strings.ToggleTouchscreen },
+              {"micmute", Properties.Strings.MuteMic},
               {"ghelper", Properties.Strings.OpenGHelper},
               {"custom", Properties.Strings.Custom}
             };
@@ -62,6 +63,7 @@ namespace GHelper
                     break;
                 case "m3":
                     customActions[""] = Properties.Strings.MuteMic;
+                    customActions.Remove("micmute");
                     break;
                 case "m4":
                     customActions[""] = Properties.Strings.OpenGHelper;
