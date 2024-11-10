@@ -698,10 +698,15 @@ public static class AppConfig
     {
         return ContainsModel("G834JYR") || ContainsModel("G834JZR") || Is("force_miniled");
     }
+    public static bool IsCameraShutter()
+    {
+        return ContainsModel("UX5401") || ContainsModel("UX5406");
+    }
 
     public static bool SaveDimming()
     {
         return Is("save_dimming");
     }
+
 
 }
