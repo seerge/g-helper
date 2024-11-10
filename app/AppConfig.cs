@@ -517,6 +517,11 @@ public static class AppConfig
         return ContainsModel("GA503") || ContainsModel("G533Q") || ContainsModel("GU502") || ContainsModel("GU603") || IsSlash();
     }
 
+    public static bool NoGpu()
+    {
+        return Is("no_gpu");
+    }
+
     public static bool IsStrixNumpad()
     {
         return ContainsModel("G713R");

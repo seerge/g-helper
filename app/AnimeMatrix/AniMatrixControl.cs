@@ -37,7 +37,7 @@ namespace GHelper.AnimeMatrix
         {
             settings = settingsForm;
             if (!AppConfig.IsSlash() && !AppConfig.IsAnimeMatrix()) return;
-            
+
             try
             {
                 if (AppConfig.IsSlash())

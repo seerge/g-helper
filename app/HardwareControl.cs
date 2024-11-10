@@ -289,26 +289,29 @@ public static class HardwareControl
         {
             GpuControl?.Dispose();
 
-            IGpuControl _gpuControl = new NvidiaGpuControl();
-
-            if (_gpuControl.IsValid)
+            if (!AppConfig.NoGpu())
             {
-                GpuControl = _gpuControl;
-                Logger.WriteLine(GpuControl.FullName);
-                return;
-            }
+                IGpuControl _gpuControl = new NvidiaGpuControl();
 
-            _gpuControl.Dispose();
+                if (_gpuControl.IsValid)
+                {
+                    GpuControl = _gpuControl;
+                    Logger.WriteLine(GpuControl.FullName);
+                    return;
+                }
 
-            _gpuControl = new AmdGpuControl();
-            if (_gpuControl.IsValid)
-            {
-                GpuControl = _gpuControl;
-                if (GpuControl.FullName.Contains("6850M")) AppConfig.Set("xgm_special", 1);
-                Logger.WriteLine(GpuControl.FullName);
-                return;
-            }
-            _gpuControl.Dispose();
+                _gpuControl.Dispose();
+
+                _gpuControl = new AmdGpuControl();
+                if (_gpuControl.IsValid)
+                {
+                    GpuControl = _gpuControl;
+                    if (GpuControl.FullName.Contains("6850M")) AppConfig.Set("xgm_special", 1);
+                    Logger.WriteLine(GpuControl.FullName);
+                    return;
+                }
+                _gpuControl.Dispose();
+            }           
 
             Logger.WriteLine("dGPU not found");
             GpuControl = null;
