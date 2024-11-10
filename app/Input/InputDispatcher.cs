@@ -427,7 +427,7 @@ namespace GHelper.Input
             if (e.Modifier == (ModifierKeys.Control | ModifierKeys.Shift | ModifierKeys.Alt))
             {
                 if (e.Key == keyProfile) modeControl.CyclePerformanceMode(true);
-                
+
                 if (e.Key == keyProfile0) modeControl.SetPerformanceMode(0, true);
                 if (e.Key == keyProfile1) modeControl.SetPerformanceMode(1, true);
                 if (e.Key == keyProfile2) modeControl.SetPerformanceMode(2, true);
@@ -664,7 +664,7 @@ namespace GHelper.Input
             bool fnLock = !AppConfig.Is("fn_lock");
             AppConfig.Set("fn_lock", fnLock ? 1 : 0);
 
-            if (AppConfig.IsHardwareFnLock()) 
+            if (AppConfig.IsHardwareFnLock())
                 HardwareFnLock(fnLock);
             else
                 Program.settingsForm.BeginInvoke(Program.inputDispatcher.RegisterKeys);
@@ -944,19 +944,17 @@ namespace GHelper.Input
 
         public static void ToggleCamera()
         {
-            if(AppConfig.IsCameraShutter())
-            {
-                if(Program.acpi.DeviceGet(AsusACPI.CameraShutter)==0)
-                {
-                    Program.acpi.DeviceSet(AsusACPI.CameraShutter, 1, "CameraShutterOn");
-                    Program.toast.RunToast($"Camera Off");
+            int cameraShutter = Program.acpi.DeviceGet(AsusACPI.CameraShutter);
 
-                }
-                else
-                {
-                    Program.acpi.DeviceSet(AsusACPI.CameraShutter, 0, "CameraShutterOff");
-                    Program.toast.RunToast($"Camera On");
-                }
+            if (cameraShutter == 0)
+            {
+                Program.acpi.DeviceSet(AsusACPI.CameraShutter, 1, "CameraShutterOn");
+                Program.toast.RunToast($"Camera Off");
+            }
+            else if (cameraShutter == 1)
+            {
+                Program.acpi.DeviceSet(AsusACPI.CameraShutter, 0, "CameraShutterOff");
+                Program.toast.RunToast($"Camera On");
             }
             else
             {
@@ -1004,7 +1002,7 @@ namespace GHelper.Input
                 if (b < 0) Program.acpi.DeviceSet(AsusACPI.ScreenPadToggle, 0, "ScreenpadOff");
             };
 
-            if(delay <= 0 || instant) //instant action
+            if (delay <= 0 || instant) //instant action
             {
                 action(brightness);
             }
