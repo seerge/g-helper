@@ -86,9 +86,14 @@ namespace GHelper.Input
             Program.acpi.DeviceInit();
 
             if (!OptimizationService.IsRunning())
+            {
+                Program.acpi.DeviceGet(AsusACPI.CameraShutter);
                 listener = new KeyboardListener(HandleEvent);
+            }
             else
+            {
                 Logger.WriteLine("Optimization service is running");
+            }
 
             InitBacklightTimer();
 
