@@ -944,33 +944,49 @@ namespace GHelper.Input
 
         public static void ToggleCamera()
         {
-            if (!ProcessHelper.IsUserAdministrator()) return;
-
-            string CameraRegistryKeyPath = @"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\CapabilityAccessManager\ConsentStore\webcam";
-            string CameraRegistryValueName = "Value";
-
-            try
+            if(AppConfig.IsCameraShutter())
             {
-                var status = (string?)Registry.GetValue(CameraRegistryKeyPath, CameraRegistryValueName, "");
+                if(Program.acpi.DeviceGet(AsusACPI.CameraShutter)==0)
+                {
+                    Program.acpi.DeviceSet(AsusACPI.CameraShutter, 1, "CameraShutterOn");
+                    Program.toast.RunToast($"Camera Off");
 
-                if (status == "Allow") status = "Deny";
-                else if (status == "Deny") status = "Allow";
+                }
                 else
                 {
-                    Logger.WriteLine("Unknown camera status");
-                    return;
+                    Program.acpi.DeviceSet(AsusACPI.CameraShutter, 0, "CameraShutterOff");
+                    Program.toast.RunToast($"Camera On");
                 }
-
-                Registry.SetValue(CameraRegistryKeyPath, CameraRegistryValueName, status, RegistryValueKind.String);
-                Program.acpi.DeviceSet(AsusACPI.CameraLed, (status == "Deny" ? 1 : 0), "Camera");
-                Program.toast.RunToast($"Camera " + (status == "Deny" ? "Off" : "On"));
-
             }
-            catch (Exception ex)
+            else
             {
-                Logger.WriteLine(ex.ToString());
-            }
+                if (!ProcessHelper.IsUserAdministrator()) return;
 
+                string CameraRegistryKeyPath = @"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\CapabilityAccessManager\ConsentStore\webcam";
+                string CameraRegistryValueName = "Value";
+
+                try
+                {
+                    var status = (string?)Registry.GetValue(CameraRegistryKeyPath, CameraRegistryValueName, "");
+
+                    if (status == "Allow") status = "Deny";
+                    else if (status == "Deny") status = "Allow";
+                    else
+                    {
+                        Logger.WriteLine("Unknown camera status");
+                        return;
+                    }
+
+                    Registry.SetValue(CameraRegistryKeyPath, CameraRegistryValueName, status, RegistryValueKind.String);
+                    Program.acpi.DeviceSet(AsusACPI.CameraLed, (status == "Deny" ? 1 : 0), "Camera");
+                    Program.toast.RunToast($"Camera " + (status == "Deny" ? "Off" : "On"));
+
+                }
+                catch (Exception ex)
+                {
+                    Logger.WriteLine(ex.ToString());
+                }
+            }
         }
 
         private static System.Threading.Timer screenpadActionTimer;
