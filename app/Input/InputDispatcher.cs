@@ -956,6 +956,14 @@ namespace GHelper.Input
                 Program.acpi.DeviceSet(AsusACPI.CameraShutter, 0, "CameraShutterOff");
                 Program.toast.RunToast($"Camera On");
             }
+            else if (cameraShutter == 262144)
+            {
+                Program.toast.RunToast($"Camera Off");
+            }
+            else if (cameraShutter == 262145)
+            {
+                Program.toast.RunToast($"Camera On");
+            }
             else
             {
                 if (!ProcessHelper.IsUserAdministrator()) return;
