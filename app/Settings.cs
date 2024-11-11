@@ -274,7 +274,7 @@ namespace GHelper
             buttonDonate.Click += ButtonDonate_Click;
 
             int click = AppConfig.Get("donate_click");
-            if (AppConfig.Get("start_count") >= ((click <= 0) ? 10 : click + 50))
+            if (AppConfig.Get("start_count") >= ((click < 10) ? 10 : click + 50))
             {
                 buttonDonate.BorderColor = colorTurbo;
                 buttonDonate.Badge = true;
