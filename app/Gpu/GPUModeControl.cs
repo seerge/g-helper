@@ -22,6 +22,12 @@ namespace GHelper.Gpu
 
         public void InitGPUMode()
         {
+            if (AppConfig.NoGpu())
+            {
+                settings.HideGPUModes(false); 
+                return;
+            }
+
             int eco = Program.acpi.DeviceGet(AsusACPI.GPUEco);
             int mux = Program.acpi.DeviceGet(AsusACPI.GPUMux);
 
@@ -44,7 +50,7 @@ namespace GHelper.Gpu
                 // GPU mode not supported
                 if (eco < 0 && mux < 0)
                 {
-                    if (gpuExists is null) gpuExists = (!AppConfig.NoGpu()) && Program.acpi.GetFan(AsusFan.GPU) >= 0;
+                    if (gpuExists is null) gpuExists = Program.acpi.GetFan(AsusFan.GPU) >= 0;
                     settings.HideGPUModes((bool)gpuExists);
                 }
             }
