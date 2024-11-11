@@ -173,6 +173,7 @@ namespace GHelper
         {
             gpuControl.StandardModeFix();
             BatteryControl.AutoBattery();
+            InputDispatcher.ShutdownStatusLed();
         }
 
         private static void SystemEvents_SessionSwitch(object sender, SessionSwitchEventArgs e)
@@ -237,6 +238,7 @@ namespace GHelper
             {
                 screenControl.InitMiniled();
                 InputDispatcher.InitScreenpad();
+                InputDispatcher.InitStatusLed();
             }
 
             inputDispatcher.Init();
@@ -275,6 +277,7 @@ namespace GHelper
             {
                 Logger.WriteLine("Power Mode Changed:" + e.Mode.ToString());
                 gpuControl.StandardModeFix();
+                InputDispatcher.ShutdownStatusLed();
             }
 
             int delay = AppConfig.Get("charger_delay");

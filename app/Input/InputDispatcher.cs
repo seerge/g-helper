@@ -1066,6 +1066,21 @@ namespace GHelper.Input
             if (brightness >= 0) ApplyScreenpadAction(brightness);
         }
 
+        public static void SetStatusLED(bool status)
+        {
+            Program.acpi.DeviceSet(AsusACPI.StatusLed, status ? 7 : 0, "StatusLED");
+        }
+
+        public static void InitStatusLed()
+        {
+            if (AppConfig.IsAutoStatusLed()) SetStatusLED(true);
+        }
+
+        public static void ShutdownStatusLed()
+        {
+            if (AppConfig.IsAutoStatusLed()) SetStatusLED(false);
+        }
+
         static void LaunchProcess(string command = "")
         {
             if (string.IsNullOrEmpty(command)) return;

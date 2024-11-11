@@ -460,7 +460,7 @@ namespace GHelper
 
         private void CheckLEDStatus_CheckedChanged(object? sender, EventArgs e)
         {
-            Program.acpi.DeviceSet(AsusACPI.StatusLed, (checkStatusLed.Checked ? 7 : 0), "StatusLED");
+            InputDispatcher.SetStatusLED(checkStatusLed.Checked);
         }
 
         private void CheckBWIcon_CheckedChanged(object? sender, EventArgs e)

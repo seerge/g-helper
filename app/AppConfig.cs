@@ -713,5 +713,10 @@ public static class AppConfig
         return Is("save_dimming");
     }
 
+    public static bool IsAutoStatusLed()
+    {
+        return Is("auto_status_led");
+    }
+
 
 }
