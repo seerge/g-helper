@@ -653,6 +653,11 @@ public static class AppConfig
         return ContainsModel("GV301RA") || ContainsModel("GV302XA") || IsAlly();
     }
 
+    public static bool NoGpu()
+    {
+        return Is("no_gpu") || ContainsModel("UX540");
+    }
+
     public static bool IsHardwareTouchpadToggle()
     {
         return ContainsModel("FA507");
