@@ -423,7 +423,7 @@ namespace GHelper
             var statusLed = Program.acpi.DeviceGet(AsusACPI.StatusLed);
             checkStatusLed.Visible = statusLed >= 0;
             checkStatusLed.Checked = (statusLed > 0);
-            checkStatusLed.CheckedChanged += CheckLEDStatus_CheckedChanged; ;
+            checkStatusLed.CheckedChanged += CheckLEDStatus_CheckedChanged;
 
 
             checkBWIcon.Checked = AppConfig.IsBWIcon();
