@@ -295,7 +295,7 @@ namespace GHelper
         {
             AppConfig.Set("donate_click", 1);
             buttonDonate.Badge = false;
-            Process.Start(new ProcessStartInfo("https://github.com/seerge/g-helper/wiki/Support-Project") { UseShellExecute = true });
+            Process.Start(new ProcessStartInfo("https://g-helper.com/support") { UseShellExecute = true });
         }
 
         private void LabelDynamicLighting_Click(object? sender, EventArgs e)
