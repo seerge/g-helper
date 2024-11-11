@@ -235,7 +235,6 @@ namespace GHelper
             BatteryControl.AutoBattery(init);
             if (init)
             {
-                screenControl.InitMiniled();
                 InputDispatcher.InitScreenpad();
             }
 
@@ -262,6 +261,7 @@ namespace GHelper
                 InputDispatcher.AutoKeyboard();
             }
 
+            screenControl.InitMiniled();
             InputDispatcher.InitStatusLed();
             XGM.InitLight();
             VisualControl.InitBrightness();
