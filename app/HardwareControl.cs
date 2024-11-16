@@ -285,6 +285,7 @@ public static class HardwareControl
 
     public static void RecreateGpuControl()
     {
+        if (AppConfig.NoGpu()) return;
         try
         {
             GpuControl?.Dispose();

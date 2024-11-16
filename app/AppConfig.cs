@@ -432,6 +432,11 @@ public static class AppConfig
         return ContainsModel("GA401") || ContainsModel("FX517Z") || ContainsModel("FX516P") || ContainsModel("X13") || IsARCNM() || ContainsModel("FA617N") || ContainsModel("FA617X") || NoAura();
     }
 
+    public static bool IsAnimeMatrix()
+    {
+        return ContainsModel("GA401") || ContainsModel("GA402") || ContainsModel("GU604V");
+    }
+    
     public static bool IsSlash()
     {
         return ContainsModel("GA403") || ContainsModel("GU605") || ContainsModel("GA605");
@@ -648,6 +653,11 @@ public static class AppConfig
         return ContainsModel("GV301RA") || ContainsModel("GV302XA") || IsAlly();
     }
 
+    public static bool NoGpu()
+    {
+        return Is("no_gpu") || ContainsModel("UX540");
+    }
+
     public static bool IsHardwareTouchpadToggle()
     {
         return ContainsModel("FA507");
@@ -691,17 +701,22 @@ public static class AppConfig
     // 2024 Models support Dynamic Lighting
     public static bool IsDynamicLighting()
     {
-        return IsSlash() || IsIntelHX() || ContainsModel("FA607P") || ContainsModel("FX607J") || ContainsModel("FA507U");
+        return IsSlash() || IsIntelHX() || IsTUF();
     }
 
     public static bool IsForceMiniled()
     {
         return ContainsModel("G834JYR") || ContainsModel("G834JZR") || Is("force_miniled");
     }
-
     public static bool SaveDimming()
     {
         return Is("save_dimming");
     }
+
+    public static bool IsAutoStatusLed()
+    {
+        return Is("auto_status_led");
+    }
+
 
 }

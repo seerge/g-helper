@@ -481,9 +481,8 @@ namespace GHelper.Peripherals.Mouse
         {
             try
             {
-                HidSharp.DeviceList.Local.GetHidDevices(VendorID(), ProductID())
-                    .First(x => x.DevicePath.Contains(path));
-                return true;
+                return HidSharp.DeviceList.Local.GetHidDevices(VendorID(), ProductID())
+                    .FirstOrDefault(x => x.DevicePath.Contains(path)) != null;
             }
             catch
             {
