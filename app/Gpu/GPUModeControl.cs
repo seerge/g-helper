@@ -22,6 +22,12 @@ namespace GHelper.Gpu
 
         public void InitGPUMode()
         {
+            if (AppConfig.NoGpu())
+            {
+                settings.HideGPUModes(false); 
+                return;
+            }
+
             int eco = Program.acpi.DeviceGet(AsusACPI.GPUEco);
             int mux = Program.acpi.DeviceGet(AsusACPI.GPUMux);
 

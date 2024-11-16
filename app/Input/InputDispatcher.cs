@@ -86,9 +86,14 @@ namespace GHelper.Input
             Program.acpi.DeviceInit();
 
             if (!OptimizationService.IsRunning())
+            {
+                Program.acpi.DeviceGet(AsusACPI.CameraShutter);
                 listener = new KeyboardListener(HandleEvent);
+            }
             else
+            {
                 Logger.WriteLine("Optimization service is running");
+            }
 
             InitBacklightTimer();
 
@@ -427,7 +432,7 @@ namespace GHelper.Input
             if (e.Modifier == (ModifierKeys.Control | ModifierKeys.Shift | ModifierKeys.Alt))
             {
                 if (e.Key == keyProfile) modeControl.CyclePerformanceMode(true);
-                
+
                 if (e.Key == keyProfile0) modeControl.SetPerformanceMode(0, true);
                 if (e.Key == keyProfile1) modeControl.SetPerformanceMode(1, true);
                 if (e.Key == keyProfile2) modeControl.SetPerformanceMode(2, true);
@@ -664,7 +669,7 @@ namespace GHelper.Input
             bool fnLock = !AppConfig.Is("fn_lock");
             AppConfig.Set("fn_lock", fnLock ? 1 : 0);
 
-            if (AppConfig.IsHardwareFnLock()) 
+            if (AppConfig.IsHardwareFnLock())
                 HardwareFnLock(fnLock);
             else
                 Program.settingsForm.BeginInvoke(Program.inputDispatcher.RegisterKeys);
@@ -944,33 +949,55 @@ namespace GHelper.Input
 
         public static void ToggleCamera()
         {
-            if (!ProcessHelper.IsUserAdministrator()) return;
+            int cameraShutter = Program.acpi.DeviceGet(AsusACPI.CameraShutter);
 
-            string CameraRegistryKeyPath = @"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\CapabilityAccessManager\ConsentStore\webcam";
-            string CameraRegistryValueName = "Value";
-
-            try
+            if (cameraShutter == 0)
             {
-                var status = (string?)Registry.GetValue(CameraRegistryKeyPath, CameraRegistryValueName, "");
+                Program.acpi.DeviceSet(AsusACPI.CameraShutter, 1, "CameraShutterOn");
+                Program.toast.RunToast($"Camera Off");
+            }
+            else if (cameraShutter == 1)
+            {
+                Program.acpi.DeviceSet(AsusACPI.CameraShutter, 0, "CameraShutterOff");
+                Program.toast.RunToast($"Camera On");
+            }
+            else if (cameraShutter == 262144)
+            {
+                Program.toast.RunToast($"Camera Off");
+            }
+            else if (cameraShutter == 262145)
+            {
+                Program.toast.RunToast($"Camera On");
+            }
+            else
+            {
+                if (!ProcessHelper.IsUserAdministrator()) return;
 
-                if (status == "Allow") status = "Deny";
-                else if (status == "Deny") status = "Allow";
-                else
+                string CameraRegistryKeyPath = @"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\CapabilityAccessManager\ConsentStore\webcam";
+                string CameraRegistryValueName = "Value";
+
+                try
                 {
-                    Logger.WriteLine("Unknown camera status");
-                    return;
+                    var status = (string?)Registry.GetValue(CameraRegistryKeyPath, CameraRegistryValueName, "");
+
+                    if (status == "Allow") status = "Deny";
+                    else if (status == "Deny") status = "Allow";
+                    else
+                    {
+                        Logger.WriteLine("Unknown camera status");
+                        return;
+                    }
+
+                    Registry.SetValue(CameraRegistryKeyPath, CameraRegistryValueName, status, RegistryValueKind.String);
+                    Program.acpi.DeviceSet(AsusACPI.CameraLed, (status == "Deny" ? 1 : 0), "Camera");
+                    Program.toast.RunToast($"Camera " + (status == "Deny" ? "Off" : "On"));
+
                 }
-
-                Registry.SetValue(CameraRegistryKeyPath, CameraRegistryValueName, status, RegistryValueKind.String);
-                Program.acpi.DeviceSet(AsusACPI.CameraLed, (status == "Deny" ? 1 : 0), "Camera");
-                Program.toast.RunToast($"Camera " + (status == "Deny" ? "Off" : "On"));
-
+                catch (Exception ex)
+                {
+                    Logger.WriteLine(ex.ToString());
+                }
             }
-            catch (Exception ex)
-            {
-                Logger.WriteLine(ex.ToString());
-            }
-
         }
 
         private static System.Threading.Timer screenpadActionTimer;
@@ -988,7 +1015,7 @@ namespace GHelper.Input
                 if (b < 0) Program.acpi.DeviceSet(AsusACPI.ScreenPadToggle, 0, "ScreenpadOff");
             };
 
-            if(delay <= 0 || instant) //instant action
+            if (delay <= 0 || instant) //instant action
             {
                 action(brightness);
             }
@@ -1037,6 +1064,21 @@ namespace GHelper.Input
             if (!AppConfig.IsDUO()) return;
             int brightness = AppConfig.Get("screenpad");
             if (brightness >= 0) ApplyScreenpadAction(brightness);
+        }
+
+        public static void SetStatusLED(bool status)
+        {
+            Program.acpi.DeviceSet(AsusACPI.StatusLed, status ? 7 : 0, "StatusLED");
+        }
+
+        public static void InitStatusLed()
+        {
+            if (AppConfig.IsAutoStatusLed()) SetStatusLED(true);
+        }
+
+        public static void ShutdownStatusLed()
+        {
+            if (AppConfig.IsAutoStatusLed()) SetStatusLED(false);
         }
 
         static void LaunchProcess(string command = "")

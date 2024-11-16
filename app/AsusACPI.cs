@@ -129,6 +129,7 @@ public class AsusACPI
     public const int ScreenPadToggle = 0x00050031;
     public const int ScreenPadBrightness = 0x00050032;
 
+    public const int CameraShutter = 0x00060078;
     public const int CameraLed = 0x00060079;
     public const int StatusLed = 0x000600C2;
 

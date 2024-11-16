@@ -175,6 +175,7 @@ namespace GHelper.Mode
 
             if (activeSchemeGuid.ToString() != balanced && !AppConfig.Is("skip_power_plan"))
             {
+                Logger.WriteLine($"Changing power plan from {activeSchemeGuid.ToString()} to Balanced");
                 SetPowerPlan(balanced);
             }
         }

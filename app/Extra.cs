@@ -37,6 +37,7 @@ namespace GHelper
               {"brightness_up", Properties.Strings.BrightnessUp},
               {"visual", Properties.Strings.VisualMode},
               {"touchscreen", Properties.Strings.ToggleTouchscreen },
+              {"micmute", Properties.Strings.MuteMic},
               {"ghelper", Properties.Strings.OpenGHelper},
               {"custom", Properties.Strings.Custom}
             };
@@ -62,6 +63,7 @@ namespace GHelper
                     break;
                 case "m3":
                     customActions[""] = Properties.Strings.MuteMic;
+                    customActions.Remove("micmute");
                     break;
                 case "m4":
                     customActions[""] = Properties.Strings.OpenGHelper;
@@ -421,7 +423,7 @@ namespace GHelper
             var statusLed = Program.acpi.DeviceGet(AsusACPI.StatusLed);
             checkStatusLed.Visible = statusLed >= 0;
             checkStatusLed.Checked = (statusLed > 0);
-            checkStatusLed.CheckedChanged += CheckLEDStatus_CheckedChanged; ;
+            checkStatusLed.CheckedChanged += CheckLEDStatus_CheckedChanged;
 
 
             checkBWIcon.Checked = AppConfig.IsBWIcon();
@@ -458,7 +460,7 @@ namespace GHelper
 
         private void CheckLEDStatus_CheckedChanged(object? sender, EventArgs e)
         {
-            Program.acpi.DeviceSet(AsusACPI.StatusLed, (checkStatusLed.Checked ? 7 : 0), "StatusLED");
+            InputDispatcher.SetStatusLED(checkStatusLed.Checked);
         }
 
         private void CheckBWIcon_CheckedChanged(object? sender, EventArgs e)

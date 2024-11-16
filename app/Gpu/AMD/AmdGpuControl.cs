@@ -62,8 +62,7 @@ public class AmdGpuControl : IGpuControl
 
     public AmdGpuControl()
     {
-        if (!Adl2.Load())
-            return;
+        if (AppConfig.NoGpu() || !Adl2.Load()) return;
 
         try
         {
