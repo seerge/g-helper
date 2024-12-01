@@ -737,6 +737,7 @@ namespace GHelper
             if (Modes.GetDictionaryCustom().Count > 0)
                 contextMenuStrip.Items.Add("-");
 
+            menuModesCustom.Clear();
             foreach (var (modeIdx, name) in Modes.GetDictionaryCustom())
             {
                 var menuCustom = new ToolStripMenuItem(name);
