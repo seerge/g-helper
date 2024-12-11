@@ -24,6 +24,7 @@ namespace GHelper.Input
         public static Keys keyProfile2 = (Keys)AppConfig.Get("keybind_profile_2", (int)Keys.F16);
         public static Keys keyProfile3 = (Keys)AppConfig.Get("keybind_profile_3", (int)Keys.F19);
         public static Keys keyProfile4 = (Keys)AppConfig.Get("keybind_profile_4", (int)Keys.F20);
+        public static Keys keyXGM = (Keys)AppConfig.Get("keybind_xgm", (int)Keys.F21);
 
         static ModeControl modeControl = Program.modeControl;
         static ScreenControl screenControl = new ScreenControl();
@@ -142,6 +143,7 @@ namespace GHelper.Input
                 hook.RegisterHotKey(ModifierKeys.Shift | ModifierKeys.Control | ModifierKeys.Alt, keyProfile2);
                 hook.RegisterHotKey(ModifierKeys.Shift | ModifierKeys.Control | ModifierKeys.Alt, keyProfile3);
                 hook.RegisterHotKey(ModifierKeys.Shift | ModifierKeys.Control | ModifierKeys.Alt, keyProfile4);
+                hook.RegisterHotKey(ModifierKeys.Shift | ModifierKeys.Control | ModifierKeys.Alt, keyXGM);
 
                 hook.RegisterHotKey(ModifierKeys.Control, Keys.VolumeDown);
                 hook.RegisterHotKey(ModifierKeys.Control, Keys.VolumeUp);
@@ -438,6 +440,7 @@ namespace GHelper.Input
                 if (e.Key == keyProfile2) modeControl.SetPerformanceMode(2, true);
                 if (e.Key == keyProfile3) modeControl.SetPerformanceMode(3, true);
                 if (e.Key == keyProfile4) modeControl.SetPerformanceMode(4, true);
+                if (e.Key == keyXGM) Program.settingsForm.gpuControl.ToggleXGM(true);
 
                 switch (e.Key)
                 {
