@@ -11,8 +11,16 @@ public class Startup
 
     public static bool IsScheduled()
     {
-        using (TaskService taskService = new TaskService())
-            return (taskService.RootFolder.AllTasks.Any(t => t.Name == taskName));
+        try
+        {
+            using (TaskService taskService = new TaskService())
+                return (taskService.RootFolder.AllTasks.Any(t => t.Name == taskName));
+        }
+        catch (Exception e)
+        {
+            Logger.WriteLine("Can't check startup task status: " + e.Message);
+            return false;
+        }
     }
 
     public static void ReScheduleAdmin()
