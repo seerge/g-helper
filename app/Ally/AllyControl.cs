@@ -438,6 +438,9 @@ namespace GHelper.Ally
                     fpsLimit = 60;
                     break;
                 case 60:
+                    fpsLimit = 75;
+                    break;
+                case 75:
                     fpsLimit = 90;
                     break;
                 case 90:
