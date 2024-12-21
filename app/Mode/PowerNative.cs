@@ -75,13 +75,14 @@ namespace GHelper.Mode
         const string POWER_SILENT = "961cc777-2547-4f9d-8174-7d86181b8a7a";
         const string POWER_BALANCED = "00000000-0000-0000-0000-000000000000";
         const string POWER_TURBO = "ded574b5-45a0-4f42-8737-46345c09c238";
-        const string POWER_BETTERPERFORMANCE = "ded574b5-45a0-4f42-8737-46345c09c238";
+
+        const string PLAN_BALANCED = "381b4222-f694-41f0-9685-ff5bb260df2e";
+        const string PLAN_HIGH_PERFORMANCE = "8c5e7fda-e8bf-4a96-9a85-a6e23a8c635c";
 
         static List<string> overlays = new() {
                 POWER_BALANCED,
                 POWER_TURBO,
                 POWER_SILENT,
-                POWER_BETTERPERFORMANCE
             };
 
         public static Dictionary<string, string> powerModes = new Dictionary<string, string>
@@ -89,6 +90,7 @@ namespace GHelper.Mode
                 { POWER_SILENT, "Best Power Efficiency" },
                 { POWER_BALANCED, "Balanced" },
                 { POWER_TURBO, "Best Performance" },
+                { PLAN_HIGH_PERFORMANCE, "Max Performance"},
             };
         static Guid GetActiveScheme()
         {
@@ -139,14 +141,23 @@ namespace GHelper.Mode
             Logger.WriteLine("Boost " + boost);
         }
 
+        public static bool IsHighPerformance(string scheme) => scheme == PLAN_HIGH_PERFORMANCE;
+
         public static string GetPowerMode()
         {
+            if (IsHighPerformance(GetActiveScheme().ToString())) return PLAN_HIGH_PERFORMANCE;
             PowerGetEffectiveOverlayScheme(out Guid activeScheme);
             return activeScheme.ToString();
         }
 
         public static void SetPowerMode(string scheme)
         {
+
+            if (IsHighPerformance(scheme))
+            {
+                SetPowerPlan(scheme);
+                return;
+            }
 
             if (!overlays.Contains(scheme)) return;
 
@@ -171,7 +182,7 @@ namespace GHelper.Mode
         public static void SetBalancedPowerPlan()
         {
             Guid activeSchemeGuid = GetActiveScheme();
-            string balanced = "381b4222-f694-41f0-9685-ff5bb260df2e";
+            string balanced = PLAN_BALANCED;
 
             if (activeSchemeGuid.ToString() != balanced && !AppConfig.Is("skip_power_plan"))
             {
