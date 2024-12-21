@@ -12,6 +12,7 @@ namespace GHelper.Mode
 
         private static bool customFans = false;
         private static int customPower = 0;
+        private static bool customTemp = false;
 
         private int _cpuUV = 0;
         private int _igpuUV = 0;
@@ -82,6 +83,8 @@ namespace GHelper.Mode
 
                 customFans = false;
                 customPower = 0;
+                customTemp = false;
+
                 SetModeLabel();
 
                 // Workaround for not properly resetting limits on G14 2024
@@ -394,10 +397,17 @@ namespace GHelper.Mode
 
         public void SetCPUTemp(int? cpuTemp, bool init = false)
         {
+            if (cpuTemp == RyzenControl.MaxTemp && customTemp)
+            {
+                cpuTemp = RyzenControl.DefaultTemp;
+                Logger.WriteLine($"Custom CPU Temp reset");
+            }
+
             if (cpuTemp >= RyzenControl.MinTemp && cpuTemp < RyzenControl.MaxTemp)
             {
                 var resultCPU = SendCommand.set_tctl_temp((uint)cpuTemp);
                 if (init) Logger.WriteLine($"CPU Temp: {cpuTemp} {resultCPU}");
+                if (resultCPU == Smu.Status.OK) customTemp = cpuTemp != RyzenControl.DefaultTemp;
             }
         }
 
