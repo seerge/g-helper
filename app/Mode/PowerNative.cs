@@ -182,14 +182,17 @@ namespace GHelper.Mode
 
         }
 
-        public static void SetPowerPlan(string scheme = PLAN_BALANCED)
+        public static void SetPowerPlan(string scheme)
         {
             // Skipping power modes
             if (overlays.Contains(scheme)) return;
-            if (GetActiveScheme().ToString() == scheme) return;
+
+            if (scheme is null) scheme = PLAN_BALANCED;
+            var activeScheme = GetActiveScheme().ToString();
+            if (activeScheme == scheme) return;
 
             uint status = PowerSetActiveScheme(IntPtr.Zero, new Guid(scheme));
-            Logger.WriteLine("Power Plan " + scheme + ":" + (status == 0 ? "OK" : status));
+            Logger.WriteLine($"Power Plan {activeScheme} -> {scheme} :" + (status == 0 ? "OK" : status));
         }
 
         public static string GetDefaultPowerMode(int mode)
