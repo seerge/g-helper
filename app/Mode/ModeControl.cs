@@ -115,19 +115,9 @@ namespace GHelper.Mode
 
             if (!AppConfig.Is("skip_powermode"))
             {
-                var powerMode = AppConfig.GetModeString("powermode");
-                if (!PowerNative.IsHighPerformance(powerMode))
-                {
-                    // Power plan from config or defaulting to balanced
-                    if (AppConfig.GetModeString("scheme") is not null)
-                        PowerNative.SetPowerPlan(AppConfig.GetModeString("scheme"));
-                    else
-                        PowerNative.SetBalancedPowerPlan();
-                }
-
                 // Windows power mode
-                if (powerMode is not null)
-                    PowerNative.SetPowerMode(powerMode);
+                if (AppConfig.GetModeString("powermode") is not null)
+                    PowerNative.SetPowerMode(AppConfig.GetModeString("powermode"));
                 else
                     PowerNative.SetPowerMode(Modes.GetBase(mode));
             }

@@ -141,11 +141,9 @@ namespace GHelper.Mode
             Logger.WriteLine("Boost " + boost);
         }
 
-        public static bool IsHighPerformance(string scheme) => scheme == PLAN_HIGH_PERFORMANCE;
-
         public static string GetPowerMode()
         {
-            if (IsHighPerformance(GetActiveScheme().ToString())) return PLAN_HIGH_PERFORMANCE;
+            if (GetActiveScheme().ToString() == PLAN_HIGH_PERFORMANCE) return PLAN_HIGH_PERFORMANCE;
             PowerGetEffectiveOverlayScheme(out Guid activeScheme);
             return activeScheme.ToString();
         }
@@ -153,10 +151,15 @@ namespace GHelper.Mode
         public static void SetPowerMode(string scheme)
         {
 
-            if (IsHighPerformance(scheme))
+            if (scheme == PLAN_HIGH_PERFORMANCE)
             {
                 SetPowerPlan(scheme);
                 return;
+            }
+            else
+            {
+                // Power plan from config or defaulting to balanced
+                SetPowerPlan(AppConfig.GetModeString("scheme"));
             }
 
             if (!overlays.Contains(scheme)) return;
@@ -164,7 +167,7 @@ namespace GHelper.Mode
             Guid guidScheme = new Guid(scheme);
 
             uint status = PowerGetEffectiveOverlayScheme(out Guid activeScheme);
-            
+
             if (GetBatterySaverStatus())
             {
                 Logger.WriteLine("Battery Saver detected");
@@ -179,25 +182,13 @@ namespace GHelper.Mode
 
         }
 
-        public static void SetBalancedPowerPlan()
-        {
-            Guid activeSchemeGuid = GetActiveScheme();
-            string balanced = PLAN_BALANCED;
-
-            if (activeSchemeGuid.ToString() != balanced && !AppConfig.Is("skip_power_plan"))
-            {
-                Logger.WriteLine($"Changing power plan from {activeSchemeGuid.ToString()} to Balanced");
-                SetPowerPlan(balanced);
-            }
-        }
-
-        public static void SetPowerPlan(string scheme)
+        public static void SetPowerPlan(string scheme = PLAN_BALANCED)
         {
             // Skipping power modes
             if (overlays.Contains(scheme)) return;
+            if (GetActiveScheme().ToString() == scheme) return;
 
-            Guid guidScheme = new Guid(scheme);
-            uint status = PowerSetActiveScheme(IntPtr.Zero, guidScheme);
+            uint status = PowerSetActiveScheme(IntPtr.Zero, new Guid(scheme));
             Logger.WriteLine("Power Plan " + scheme + ":" + (status == 0 ? "OK" : status));
         }
 
@@ -343,7 +334,8 @@ namespace GHelper.Mode
             {
                 GetSystemPowerStatus(sps);
                 return (sps.SystemStatusFlag > 0);
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 return false;
             }
