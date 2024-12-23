@@ -90,7 +90,7 @@ namespace GHelper.Mode
                 { POWER_SILENT, "Best Power Efficiency" },
                 { POWER_BALANCED, "Balanced" },
                 { POWER_TURBO, "Best Performance" },
-                { PLAN_HIGH_PERFORMANCE, "Max Performance"},
+                { PLAN_HIGH_PERFORMANCE, "High Performance Plan"},
             };
         static Guid GetActiveScheme()
         {
