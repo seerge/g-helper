@@ -414,6 +414,7 @@ namespace GHelper
 
             comboVisual.SelectedValueChanged += ComboVisual_SelectedValueChanged;
             comboVisual.Visible = true;
+            VisualiseDisabled();
 
             comboColorTemp.SelectedValueChanged += ComboVisual_SelectedValueChanged;
             comboColorTemp.Visible = true;
@@ -458,6 +459,7 @@ namespace GHelper
         private void ComboVisual_SelectedValueChanged(object? sender, EventArgs e)
         {
             VisualControl.SetVisual((SplendidCommand)comboVisual.SelectedValue, (int)comboColorTemp.SelectedValue);
+            VisualiseDisabled();
         }
 
         public void VisualiseBrightness()
@@ -501,6 +503,11 @@ namespace GHelper
         private void AutoTdpUi_FormClosed(object? sender, FormClosedEventArgs e)
         {
             autoTdpUi = null;
+        }
+
+        public void VisualiseDisabled()
+        {
+            comboGamut.Enabled = comboColorTemp.Enabled = (SplendidCommand)AppConfig.Get("visual") != SplendidCommand.Disabled;
         }
 
         public void VisualiseGamut()
