@@ -236,6 +236,7 @@ namespace GHelper
             if (init)
             {
                 InputDispatcher.InitScreenpad();
+                screenControl.InitOptimalBrightness();
             }
 
             inputDispatcher.Init();

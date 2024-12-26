@@ -425,7 +425,7 @@ namespace GHelper
             checkStatusLed.Checked = (statusLed > 0);
             checkStatusLed.CheckedChanged += CheckLEDStatus_CheckedChanged;
 
-            var optimalBrightness = Program.acpi.DeviceGet(AsusACPI.ScreenOptimalBrightness);
+            var optimalBrightness = screenControl.GetOptimalBrightness();
             checkOptimalBrightness.Visible = optimalBrightness >= 0;
             checkOptimalBrightness.Checked = (optimalBrightness > 0);
             checkOptimalBrightness.CheckedChanged += CheckOptimalBrightness_CheckedChanged;
@@ -460,7 +460,7 @@ namespace GHelper
 
         private void CheckOptimalBrightness_CheckedChanged(object? sender, EventArgs e)
         {
-            Program.acpi.DeviceSet(AsusACPI.ScreenOptimalBrightness, checkOptimalBrightness.Checked ? 1 : 0, "Optimal Brightness");
+            screenControl.SetOptimalBrightness(checkOptimalBrightness.Checked ? 1 : 0);
         }
 
         private void CheckPerKeyRGB_CheckedChanged(object? sender, EventArgs e)
