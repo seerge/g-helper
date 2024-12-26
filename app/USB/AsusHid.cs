@@ -119,11 +119,15 @@ public static class AsusHid
             }
     }
 
-    public static void WriteAura(byte[] data)
+    public static void WriteAura(byte[] data, bool retry = true)
     {
 
         if (auraStream == null) auraStream = FindHidStream(AURA_ID);
-        if (auraStream == null) return;
+        if (auraStream == null)
+        {
+            Logger.WriteLine("Aura stream not found");
+            return;
+        }
 
         try
         {
@@ -131,8 +135,10 @@ public static class AsusHid
         }
         catch (Exception ex)
         {
+            Logger.WriteLine($"Error writing data to HID device: {ex.Message} {BitConverter.ToString(data)}");
             auraStream.Dispose();
-            Debug.WriteLine($"Error writing data to HID device: {ex.Message} {BitConverter.ToString(data)}");
+            auraStream = null;
+            if (retry) WriteAura(data, false);
         }
     }
 

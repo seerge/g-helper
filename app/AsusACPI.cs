@@ -83,6 +83,8 @@ public class AsusACPI
     public const uint ScreenMiniled2 = 0x0005002E;
     public const uint ScreenFHD = 0x0005001C;
 
+    public const uint ScreenOptimalBrightness = 0x0005002A;
+
     public const uint DevsCPUFan = 0x00110022;
     public const uint DevsGPUFan = 0x00110023;
 
