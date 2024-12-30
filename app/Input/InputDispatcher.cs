@@ -521,7 +521,7 @@ namespace GHelper.Input
                     action = "aura";
                 if (name == "fnf5")
                     action = "performance";
-                if (name == "m3" && !OptimizationService.IsRunning())
+                if (name == "m3")
                     action = "micmute";
                 if (name == "fnc")
                     action = "fnlock";
@@ -621,7 +621,7 @@ namespace GHelper.Input
 
         static void ToggleMic()
         {
-            bool muteStatus = Audio.ToggleMute();
+            bool muteStatus = OptimizationService.IsRunning() ? Audio.IsMuted() : Audio.ToggleMute();
             Program.toast.RunToast(muteStatus ? Properties.Strings.Muted : Properties.Strings.Unmuted, muteStatus ? ToastIcon.MicrophoneMute : ToastIcon.Microphone);
             if (AppConfig.IsVivoZenbook()) Program.acpi.DeviceSet(AsusACPI.MicMuteLed, muteStatus ? 1 : 0, "MicmuteLed");
         }
