@@ -164,6 +164,7 @@ namespace GHelper.Input
                 hook.RegisterHotKey(ModifierKeys.Shift | ModifierKeys.Control | ModifierKeys.Alt, Keys.F2);
                 hook.RegisterHotKey(ModifierKeys.Shift | ModifierKeys.Control | ModifierKeys.Alt, Keys.F3);
                 hook.RegisterHotKey(ModifierKeys.Shift | ModifierKeys.Control | ModifierKeys.Alt, Keys.F4);
+                hook.RegisterHotKey(ModifierKeys.Shift | ModifierKeys.Control | ModifierKeys.Alt, Keys.F6);
             }
 
             // FN-Lock group
@@ -456,6 +457,9 @@ namespace GHelper.Input
                     case Keys.F4:
                         Program.settingsForm.BeginInvoke(Program.settingsForm.allyControl.ToggleModeHotkey);
                         break;
+                    case Keys.F6:
+                        ToggleTouchScreen();
+                        break;
                     case Keys.F7:
                         SetScreenpad(-10);
                         break;
@@ -605,19 +609,24 @@ namespace GHelper.Input
                     Program.settingsForm.BeginInvoke(Program.settingsForm.allyControl.ToggleModeHotkey);
                     break;
                 case "touchscreen":
-                    var status = !TouchscreenHelper.GetStatus();
-                    Logger.WriteLine("Touchscreen status: " + status);
-                    if (status is not null)
-                    {
-                        Program.toast.RunToast(Properties.Strings.Touchscreen + " " + ((bool)status ? Properties.Strings.On : Properties.Strings.Off), ToastIcon.Touchpad);
-                        TouchscreenHelper.ToggleTouchscreen((bool)status);
-                    }
+                    ToggleTouchScreen();
                     break;
                 default:
                     break;
             }
         }
 
+
+        static void ToggleTouchScreen()
+        {
+            var status = !TouchscreenHelper.GetStatus();
+            Logger.WriteLine("Touchscreen status: " + status);
+            if (status is not null)
+            {
+                Program.toast.RunToast(Properties.Strings.Touchscreen + " " + ((bool)status ? Properties.Strings.On : Properties.Strings.Off), ToastIcon.Touchpad);
+                TouchscreenHelper.ToggleTouchscreen((bool)status);
+            }
+        }
 
         static void ToggleMic()
         {
