@@ -898,15 +898,15 @@ namespace GHelper.Input
             Aura.Init();
             Aura.ApplyPower();
             Aura.ApplyAura();
-            Aura.Init();
-            SetBacklightAuto();
+            SetBacklightAuto(true);
         }
 
 
-        public static void SetBacklightAuto()
+        public static void SetBacklightAuto(bool init = false)
         {
             if (lidClose) return;
-            Aura.ApplyBrightness(GetBacklight(), "Auto");
+            if (init) Aura.Init();
+            Aura.ApplyBrightness(GetBacklight(), "Auto", init);
         }
 
         public static void SetBacklight(int delta, bool force = false)
