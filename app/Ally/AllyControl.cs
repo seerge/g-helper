@@ -570,10 +570,10 @@ namespace GHelper.Ally
                     KeyR2 = AppConfig.GetString("bind2_m1", BindM1);
                     break;
                 default:
-                    KeyL1 = AppConfig.GetString("bind_trl", desktop ? BindShiftTab : BindLT);
-                    KeyR1 = AppConfig.GetString("bind_trr", desktop ? BindMouseR : BindRT);
-                    KeyL2 = AppConfig.GetString("bind2_trl");
-                    KeyR2 = AppConfig.GetString("bind2_trr");
+                    KeyL1 = AppConfig.GetString("bind_lt", desktop ? BindShiftTab : BindLT);
+                    KeyR1 = AppConfig.GetString("bind_rt", desktop ? BindMouseR : BindRT);
+                    KeyL2 = AppConfig.GetString("bind2_lt");
+                    KeyR2 = AppConfig.GetString("bind2_rt");
                     break;
             }
 
