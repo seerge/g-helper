@@ -898,6 +898,7 @@ namespace GHelper.Input
             Aura.Init();
             Aura.ApplyPower();
             Aura.ApplyAura();
+            Aura.Init();
             SetBacklightAuto();
         }
 
