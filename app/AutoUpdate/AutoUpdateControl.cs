@@ -125,7 +125,15 @@ namespace GHelper.AutoUpdate
 
             using (WebClient client = new WebClient())
             {
-                client.DownloadFile(uri, zipLocation);
+                try
+                {
+                    client.DownloadFile(uri, zipLocation);
+                }
+                catch (Exception ex)
+                {
+                    Logger.WriteLine(ex.Message);
+                    ProcessHelper.RunAsAdmin("autoupdate");
+                }
 
                 Logger.WriteLine(requestUri);
                 Logger.WriteLine(exeDir);
