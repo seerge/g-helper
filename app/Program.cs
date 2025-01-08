@@ -46,15 +46,15 @@ namespace GHelper
         public static InputDispatcher? inputDispatcher;
 
         private static PowerLineStatus isPlugged = SystemInformation.PowerStatus.PowerLineStatus;
+        public static string actionParam = "";
 
         // The main entry point for the application
         public static void Main(string[] args)
         {
 
-            string action = "";
-            if (args.Length > 0) action = args[0];
+            if (args.Length > 0) actionParam = args[0];
 
-            if (action == "charge")
+            if (actionParam == "charge")
             {
                 BatteryLimit();
                 Application.Exit();
@@ -131,12 +131,12 @@ namespace GHelper
             Task task = Task.Run((Action)PeripheralsProvider.DetectAllAsusMice);
             PeripheralsProvider.RegisterForDeviceEvents();
 
-            if (Environment.CurrentDirectory.Trim('\\') == Application.StartupPath.Trim('\\') || action.Length > 0)
+            if (Environment.CurrentDirectory.Trim('\\') == Application.StartupPath.Trim('\\') || actionParam.Length > 0)
             {
                 SettingsToggle(false);
             }
 
-            switch (action)
+            switch (actionParam)
             {
                 case "cpu":
                     Startup.ReScheduleAdmin();

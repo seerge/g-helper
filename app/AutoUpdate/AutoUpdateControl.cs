@@ -83,6 +83,12 @@ namespace GHelper.AutoUpdate
                         versionUrl = url;
                         settings.SetVersionLabel(Properties.Strings.DownloadUpdate + ": " + tag, true);
 
+                        if (Program.actionParam == "autoupdate")
+                        {
+                            AutoUpdate(url);
+                            return;
+                        }
+
                         if (AppConfig.GetString("skip_version") != tag)
                         {
                             DialogResult dialogResult = MessageBox.Show(Properties.Strings.DownloadUpdate + ": G-Helper " + tag + "?", "Update", MessageBoxButtons.YesNo);
@@ -109,7 +115,7 @@ namespace GHelper.AutoUpdate
 
         public static string EscapeString(string input)
         {
-            return Regex.Replace(input, @"\[|\]", "`$0");
+            return Regex.Replace(input, @"\[|\]", "`$0").Replace("'","''");
         }
 
         async void AutoUpdate(string requestUri)
@@ -120,6 +126,7 @@ namespace GHelper.AutoUpdate
 
             string exeLocation = Application.ExecutablePath;
             string exeDir = Path.GetDirectoryName(exeLocation);
+            exeDir = "C:\\Program Files\\GHelper";
             string exeName = Path.GetFileName(exeLocation);
             string zipLocation = exeDir + "\\" + zipName;
 
