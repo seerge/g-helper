@@ -520,6 +520,8 @@ namespace GHelper
             if (eCoresMax == 0) eCoresMax = 8;
             if (pCoresMax == 0) pCoresMax = 6;
 
+            if (AppConfig.Is8Ecores()) eCoresMax = Math.Max(8, eCoresMax);
+
             eCoresMax = Math.Max(4, eCoresMax);
             pCoresMax = Math.Max(6, pCoresMax);
 
