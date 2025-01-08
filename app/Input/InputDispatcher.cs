@@ -916,11 +916,12 @@ namespace GHelper.Input
             bool onBattery = SystemInformation.PowerStatus.PowerLineStatus != PowerLineStatus.Online;
 
             int backlight = onBattery ? backlight_battery : backlight_power;
+            int backlightMax = AppConfig.Get("max_brightness", 3);
 
-            if (delta >= 4)
-                backlight = ++backlight % 4;
+            if (delta > backlightMax)
+                backlight = ++backlight % (backlightMax + 1);
             else
-                backlight = Math.Max(Math.Min(3, backlight + delta), 0);
+                backlight = Math.Max(Math.Min(backlightMax, backlight + delta), 0);
 
             if (onBattery)
                 AppConfig.Set("keyboard_brightness_ac", backlight);
