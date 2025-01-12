@@ -152,7 +152,7 @@ namespace GHelper.Input
                 hook.RegisterHotKey(ModifierKeys.Shift | ModifierKeys.Control, Keys.F20);
             }
 
-            if (!AppConfig.IsZ13() && !AppConfig.IsAlly())
+            if (!AppConfig.IsZ13() && !AppConfig.IsAlly() && !AppConfig.IsVivoZenPro())
             {
                 if (actionM1 is not null && actionM1.Length > 0) hook.RegisterHotKey(ModifierKeys.None, Keys.VolumeDown);
                 if (actionM2 is not null && actionM2.Length > 0) hook.RegisterHotKey(ModifierKeys.None, Keys.VolumeUp);

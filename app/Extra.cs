@@ -206,6 +206,15 @@ namespace GHelper
                 labelFNF4.Visible = comboFNF4.Visible = textFNF4.Visible = false;
             }
 
+            if (AppConfig.IsVivoZenPro())
+            {
+                labelM1.Visible = comboM1.Visible = textM1.Visible = false;
+                labelM2.Visible = comboM2.Visible = textM2.Visible = false;
+                labelM3.Visible = comboM3.Visible = textM3.Visible = false;
+                labelFNF4.Visible = comboFNF4.Visible = textFNF4.Visible = false;
+                labelM4.Text = "FN+F12";
+            }
+
             if (AppConfig.MediaKeys())
             {
                 labelFNF4.Visible = comboFNF4.Visible = textFNF4.Visible = false;
