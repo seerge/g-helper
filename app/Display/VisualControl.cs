@@ -254,7 +254,7 @@ namespace GHelper.Display
         {
             if (mode == SplendidCommand.None) return;
             if ((mode == SplendidCommand.Default || mode == SplendidCommand.VivoNormal) && init) return; // Skip default setting on init
-            if (!RyzenControl.IsAMD() && mode == SplendidCommand.Disabled && init) return; // Skip disabled setting for Intel devices
+            if (mode == SplendidCommand.Disabled && !RyzenControl.IsAMD() && init) return; // Skip disabled setting for Intel devices
 
             if (!forceVisual && ScreenCCD.GetHDRStatus(true)) return;
             if (!forceVisual && ScreenNative.GetRefreshRate(ScreenNative.FindLaptopScreen(true)) < 0) return;
