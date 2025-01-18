@@ -1,5 +1,6 @@
 ﻿using GHelper.Helpers;
 using Microsoft.Win32;
+using Ryzen;
 using System.Management;
 
 namespace GHelper.Display
@@ -252,7 +253,8 @@ namespace GHelper.Display
         public static void SetVisual(SplendidCommand mode = SplendidCommand.Default, int whiteBalance = DefaultColorTemp, bool init = false)
         {
             if (mode == SplendidCommand.None) return;
-            if ((mode == SplendidCommand.Disabled || mode == SplendidCommand.Default || mode == SplendidCommand.VivoNormal) && init) return; // Skip default setting on init
+            if ((mode == SplendidCommand.Default || mode == SplendidCommand.VivoNormal) && init) return; // Skip default setting on init
+            if (mode == SplendidCommand.Disabled && !RyzenControl.IsAMD() && init) return; // Skip disabled setting for Intel devices
 
             if (!forceVisual && ScreenCCD.GetHDRStatus(true)) return;
             if (!forceVisual && ScreenNative.GetRefreshRate(ScreenNative.FindLaptopScreen(true)) < 0) return;

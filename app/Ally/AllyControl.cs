@@ -105,11 +105,13 @@ namespace GHelper.Ally
         public const string BindBrightnessUp = "04-04-8C-88-8A-06";
         public const string BindXGM = "04-04-8C-88-8A-04";
         public const string BindToggleMode = "04-04-8C-88-8A-0C";
+        public const string BindToggleTouchScreen = "04-04-8C-88-8A-0B";
 
         public const string BindOverlay = "04-03-8C-88-44";
 
         public const string BindShiftTab = "04-02-88-0D";
         public const string BindAltTab = "04-02-8A-0D";
+        public const string BindWinTab = "04-02-82-0D";
 
         public const string BindVolUp = "05-03";
         public const string BindVolDown = "05-02";
@@ -156,6 +158,7 @@ namespace GHelper.Ally
             { BindXB, "XBox/Steam" },
 
             { BindToggleMode, "Controller Mode" },
+            { BindToggleTouchScreen, "Toggle TouchScreen" },
 
             { BindVolUp, "Vol Up" },
             { BindVolDown, "Vol Down" },
@@ -171,6 +174,7 @@ namespace GHelper.Ally
             { BindCloseWindow, "Close Window" },
             { BindShiftTab, "Shift-Tab" },
             { BindAltTab, "Alt-Tab" },
+            { BindWinTab, "Win-Tab" },
             { BindXGM, "XGM Toggle" },
 
 
@@ -566,10 +570,10 @@ namespace GHelper.Ally
                     KeyR2 = AppConfig.GetString("bind2_m1", BindM1);
                     break;
                 default:
-                    KeyL1 = AppConfig.GetString("bind_trl", desktop ? BindShiftTab : BindLT);
-                    KeyR1 = AppConfig.GetString("bind_trr", desktop ? BindMouseR : BindRT);
-                    KeyL2 = AppConfig.GetString("bind2_trl");
-                    KeyR2 = AppConfig.GetString("bind2_trr");
+                    KeyL1 = AppConfig.GetString("bind_lt", desktop ? BindShiftTab : BindLT);
+                    KeyR1 = AppConfig.GetString("bind_rt", desktop ? BindMouseR : BindRT);
+                    KeyL2 = AppConfig.GetString("bind2_lt");
+                    KeyR2 = AppConfig.GetString("bind2_rt");
                     break;
             }
 

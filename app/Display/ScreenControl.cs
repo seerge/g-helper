@@ -92,6 +92,23 @@ namespace GHelper.Display
                 SetMiniled(AppConfig.Get("miniled"));
         }
 
+        public void InitOptimalBrightness()
+        {
+            int optimalBrightness = AppConfig.Get("optimal_brightness");
+            if (optimalBrightness >= 0) SetOptimalBrightness(optimalBrightness);
+        }
+
+        public void SetOptimalBrightness(int status)
+        {
+            Program.acpi.DeviceSet(AsusACPI.ScreenOptimalBrightness, status, "Optimal Brightness");
+            AppConfig.Set("optimal_brightness", status);
+        }
+
+        public int GetOptimalBrightness()
+        {
+            return Program.acpi.DeviceGet(AsusACPI.ScreenOptimalBrightness);
+        }
+
         public void ToogleFHD()
         {
             int fhd = Program.acpi.DeviceGet(AsusACPI.ScreenFHD);

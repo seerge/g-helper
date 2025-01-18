@@ -233,10 +233,8 @@ namespace GHelper
             Logger.WriteLine("AutoSetting for " + isPlugged.ToString());
 
             BatteryControl.AutoBattery(init);
-            if (init)
-            {
-                InputDispatcher.InitScreenpad();
-            }
+            if (init) InputDispatcher.InitScreenpad();
+            screenControl.InitOptimalBrightness();
 
             inputDispatcher.Init();
 
@@ -271,7 +269,7 @@ namespace GHelper
 
         private static void SystemEvents_PowerModeChanged(object sender, PowerModeChangedEventArgs e)
         {
-
+            Logger.WriteLine($"Power Mode {e.Mode}: {SystemInformation.PowerStatus.PowerLineStatus}");
             if (e.Mode == PowerModes.Suspend)
             {
                 Logger.WriteLine("Power Mode Changed:" + e.Mode.ToString());
