@@ -414,7 +414,7 @@ public static class AppConfig
 
     public static bool IsDUO()
     {
-        return ContainsModel("Duo") || ContainsModel("GX550") || ContainsModel("GX650") || ContainsModel("UX840");
+        return ContainsModel("Duo") || ContainsModel("GX550") || ContainsModel("GX650") || ContainsModel("UX840") || ContainsModel("UX482");
     }
 
     // G14 2020 has no aura, but media keys instead
@@ -677,6 +677,11 @@ public static class AppConfig
     public static bool IsIntelHX()
     {
         return ContainsModel("G814") || ContainsModel("G614") || ContainsModel("G834") || ContainsModel("G634");
+    }
+
+    public static bool Is8Ecores()
+    {
+        return ContainsModel("FX507ZU");
     }
 
     public static bool IsNoFNV()

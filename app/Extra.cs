@@ -206,6 +206,15 @@ namespace GHelper
                 labelFNF4.Visible = comboFNF4.Visible = textFNF4.Visible = false;
             }
 
+            if (AppConfig.IsVivoZenPro())
+            {
+                labelM1.Visible = comboM1.Visible = textM1.Visible = false;
+                labelM2.Visible = comboM2.Visible = textM2.Visible = false;
+                labelM3.Visible = comboM3.Visible = textM3.Visible = false;
+                labelFNF4.Visible = comboFNF4.Visible = textFNF4.Visible = false;
+                labelM4.Text = "FN+F12";
+            }
+
             if (AppConfig.MediaKeys())
             {
                 labelFNF4.Visible = comboFNF4.Visible = textFNF4.Visible = false;
@@ -425,7 +434,7 @@ namespace GHelper
             checkStatusLed.Checked = (statusLed > 0);
             checkStatusLed.CheckedChanged += CheckLEDStatus_CheckedChanged;
 
-            var optimalBrightness = Program.acpi.DeviceGet(AsusACPI.ScreenOptimalBrightness);
+            var optimalBrightness = screenControl.GetOptimalBrightness();
             checkOptimalBrightness.Visible = optimalBrightness >= 0;
             checkOptimalBrightness.Checked = (optimalBrightness > 0);
             checkOptimalBrightness.CheckedChanged += CheckOptimalBrightness_CheckedChanged;
@@ -460,7 +469,7 @@ namespace GHelper
 
         private void CheckOptimalBrightness_CheckedChanged(object? sender, EventArgs e)
         {
-            Program.acpi.DeviceSet(AsusACPI.ScreenOptimalBrightness, checkOptimalBrightness.Checked ? 1 : 0, "Optimal Brightness");
+            screenControl.SetOptimalBrightness(checkOptimalBrightness.Checked ? 1 : 0);
         }
 
         private void CheckPerKeyRGB_CheckedChanged(object? sender, EventArgs e)
@@ -519,6 +528,8 @@ namespace GHelper
 
             if (eCoresMax == 0) eCoresMax = 8;
             if (pCoresMax == 0) pCoresMax = 6;
+
+            if (AppConfig.Is8Ecores()) eCoresMax = Math.Max(8, eCoresMax);
 
             eCoresMax = Math.Max(4, eCoresMax);
             pCoresMax = Math.Max(6, pCoresMax);

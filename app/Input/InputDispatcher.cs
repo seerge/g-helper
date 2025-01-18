@@ -152,7 +152,7 @@ namespace GHelper.Input
                 hook.RegisterHotKey(ModifierKeys.Shift | ModifierKeys.Control, Keys.F20);
             }
 
-            if (!AppConfig.IsZ13() && !AppConfig.IsAlly())
+            if (!AppConfig.IsZ13() && !AppConfig.IsAlly() && !AppConfig.IsVivoZenPro())
             {
                 if (actionM1 is not null && actionM1.Length > 0) hook.RegisterHotKey(ModifierKeys.None, Keys.VolumeDown);
                 if (actionM2 is not null && actionM2.Length > 0) hook.RegisterHotKey(ModifierKeys.None, Keys.VolumeUp);
@@ -164,6 +164,7 @@ namespace GHelper.Input
                 hook.RegisterHotKey(ModifierKeys.Shift | ModifierKeys.Control | ModifierKeys.Alt, Keys.F2);
                 hook.RegisterHotKey(ModifierKeys.Shift | ModifierKeys.Control | ModifierKeys.Alt, Keys.F3);
                 hook.RegisterHotKey(ModifierKeys.Shift | ModifierKeys.Control | ModifierKeys.Alt, Keys.F4);
+                hook.RegisterHotKey(ModifierKeys.Shift | ModifierKeys.Control | ModifierKeys.Alt, Keys.F6);
             }
 
             // FN-Lock group
@@ -456,6 +457,9 @@ namespace GHelper.Input
                     case Keys.F4:
                         Program.settingsForm.BeginInvoke(Program.settingsForm.allyControl.ToggleModeHotkey);
                         break;
+                    case Keys.F6:
+                        ToggleTouchScreen();
+                        break;
                     case Keys.F7:
                         SetScreenpad(-10);
                         break;
@@ -605,19 +609,24 @@ namespace GHelper.Input
                     Program.settingsForm.BeginInvoke(Program.settingsForm.allyControl.ToggleModeHotkey);
                     break;
                 case "touchscreen":
-                    var status = !TouchscreenHelper.GetStatus();
-                    Logger.WriteLine("Touchscreen status: " + status);
-                    if (status is not null)
-                    {
-                        Program.toast.RunToast(Properties.Strings.Touchscreen + " " + ((bool)status ? Properties.Strings.On : Properties.Strings.Off), ToastIcon.Touchpad);
-                        TouchscreenHelper.ToggleTouchscreen((bool)status);
-                    }
+                    ToggleTouchScreen();
                     break;
                 default:
                     break;
             }
         }
 
+
+        static void ToggleTouchScreen()
+        {
+            var status = !TouchscreenHelper.GetStatus();
+            Logger.WriteLine("Touchscreen status: " + status);
+            if (status is not null)
+            {
+                Program.toast.RunToast(Properties.Strings.Touchscreen + " " + ((bool)status ? Properties.Strings.On : Properties.Strings.Off), ToastIcon.Touchpad);
+                TouchscreenHelper.ToggleTouchscreen((bool)status);
+            }
+        }
 
         static void ToggleMic()
         {
@@ -889,14 +898,15 @@ namespace GHelper.Input
             Aura.Init();
             Aura.ApplyPower();
             Aura.ApplyAura();
-            SetBacklightAuto();
+            SetBacklightAuto(true);
         }
 
 
-        public static void SetBacklightAuto()
+        public static void SetBacklightAuto(bool init = false)
         {
             if (lidClose) return;
-            Aura.ApplyBrightness(GetBacklight(), "Auto");
+            if (init) Aura.Init();
+            Aura.ApplyBrightness(GetBacklight(), "Auto", init);
         }
 
         public static void SetBacklight(int delta, bool force = false)
@@ -906,11 +916,12 @@ namespace GHelper.Input
             bool onBattery = SystemInformation.PowerStatus.PowerLineStatus != PowerLineStatus.Online;
 
             int backlight = onBattery ? backlight_battery : backlight_power;
+            int backlightMax = AppConfig.Get("max_brightness", 3);
 
-            if (delta >= 4)
-                backlight = ++backlight % 4;
+            if (delta > backlightMax)
+                backlight = ++backlight % (backlightMax + 1);
             else
-                backlight = Math.Max(Math.Min(3, backlight + delta), 0);
+                backlight = Math.Max(Math.Min(backlightMax, backlight + delta), 0);
 
             if (onBattery)
                 AppConfig.Set("keyboard_brightness_ac", backlight);
