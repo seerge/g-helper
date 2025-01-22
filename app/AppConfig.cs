@@ -424,7 +424,7 @@ public static class AppConfig
 
     public static bool MediaKeys()
     {
-        return (ContainsModel("GA401I") && !ContainsModel("GA401IHR")) || ContainsModel("G712L");
+        return (ContainsModel("GA401I") && !ContainsModel("GA401IHR")) || ContainsModel("G712L") || ContainsModel("GX502L");
     }
 
     public static bool IsSingleColor()
