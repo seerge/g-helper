@@ -691,6 +691,11 @@ namespace GHelper.USB
         public static class CustomRGB
         {
 
+            static int tempFreeze = AppConfig.Get("temp_freeze", 20);
+            static int tempCold = AppConfig.Get("temp_cold", 40);
+            static int tempWarm = AppConfig.Get("temp_warm", 65);
+            static int tempHot = AppConfig.Get("temp_hot", 90);
+
             public static void ApplyGPUColor()
             {
                 if ((AuraMode)AppConfig.Get("aura_mode") != AuraMode.GPUMODE) return;
@@ -719,14 +724,13 @@ namespace GHelper.USB
             public static void ApplyHeatmap(bool init = false)
             {
                 float cpuTemp = (float)HardwareControl.GetCPUTemp();
-                int freeze = 20, cold = 40, warm = 65, hot = 90;
                 Color color;
 
                 //Debug.WriteLine(cpuTemp);
 
-                if (cpuTemp < cold) color = ColorUtils.GetWeightedAverage(Color.Blue, Color.Green, ((float)cpuTemp - freeze) / (cold - freeze));
-                else if (cpuTemp < warm) color = ColorUtils.GetWeightedAverage(Color.Green, Color.Yellow, ((float)cpuTemp - cold) / (warm - cold));
-                else if (cpuTemp < hot) color = ColorUtils.GetWeightedAverage(Color.Yellow, Color.Red, ((float)cpuTemp - warm) / (hot - warm));
+                if (cpuTemp < tempCold) color = ColorUtils.GetWeightedAverage(Color.Blue, Color.Green, ((float)cpuTemp - tempFreeze) / (tempCold - tempFreeze));
+                else if (cpuTemp < tempWarm) color = ColorUtils.GetWeightedAverage(Color.Green, Color.Yellow, ((float)cpuTemp - tempCold) / (tempWarm - tempCold));
+                else if (cpuTemp < tempHot) color = ColorUtils.GetWeightedAverage(Color.Yellow, Color.Red, ((float)cpuTemp - tempWarm) / (tempHot - tempWarm));
                 else color = Color.Red;
 
                 ApplyDirect(color, init);
