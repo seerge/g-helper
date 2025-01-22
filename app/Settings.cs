@@ -1365,6 +1365,7 @@ namespace GHelper
         public void ShowAll()
         {
             this.Activate();
+            this.Focus();
         }
 
         /// <summary>
