@@ -403,6 +403,15 @@ namespace GHelper.USB
             flags.SleepRear = AppConfig.IsNotFalse("keyboard_sleep_lid");
             flags.ShutdownRear = AppConfig.IsNotFalse("keyboard_shutdown_lid");
 
+            // On Z13 back panel light is controlled by mix of different flags, so merging them together
+            if (AppConfig.IsZ13())
+            {
+                flags.AwakeBar = flags.AwakeLid = flags.AwakeLogo;
+                flags.BootBar = flags.BootLid = flags.BootLogo;
+                flags.SleepBar = flags.SleepLid = flags.SleepLogo;
+                flags.ShutdownBar = flags.ShutdownLid = flags.ShutdownLogo;
+            }
+
             if (AppConfig.IsAlly())
             {
                 ApplyAllyPower(flags);
