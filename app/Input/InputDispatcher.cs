@@ -653,7 +653,14 @@ namespace GHelper.Input
 
         static void ToggleTouchpad()
         {
-            KeyboardHook.KeyKeyKeyPress(Keys.LWin, Keys.LControlKey, Keys.F24, 50);
+            if (AppConfig.IsROG())
+            {
+                AsusHid.WriteInput([AsusHid.INPUT_ID, 0xF4, 0x6B], "USB Touchpad");
+            } else
+            {
+                KeyboardHook.KeyKeyKeyPress(Keys.LWin, Keys.LControlKey, Keys.F24, 50);
+            }
+
         }
 
         static void SleepEvent()
