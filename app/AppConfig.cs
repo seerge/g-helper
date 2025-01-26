@@ -670,7 +670,7 @@ public static class AppConfig
 
     public static bool Is8Ecores()
     {
-        return ContainsModel("FX507ZU");
+        return ContainsModel("FX507Z");
     }
 
     public static bool IsNoFNV()
