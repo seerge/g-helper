@@ -262,7 +262,7 @@
     <value>Išjungta</value>
   </data>
   <data name="BacklightTimeout" xml:space="preserve">
-    <value>Laiko riba su lizdu / akumuliatoriumi (0 – ĮJUNGTA)</value>
+    <value>Apšvietimo laikas įkraunant / baterija (0 – ĮJUNGTA)</value>
   </data>
   <data name="BacklightTimeoutBattery" xml:space="preserve">
     <value>Foninio apšvietimo laikas akumuliatoriaus režimu</value>
@@ -298,7 +298,7 @@
     <value>BIOS ir tvarkyklių naujinimai</value>
   </data>
   <data name="Boot" xml:space="preserve">
-    <value>Paleidimas</value>
+    <value>Paleidžiant</value>
   </data>
   <data name="BootSound" xml:space="preserve">
     <value>Paleidimo garsas</value>
