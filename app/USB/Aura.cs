@@ -737,9 +737,9 @@ namespace GHelper.USB
 
                 //Debug.WriteLine(cpuTemp);
 
-                if (cpuTemp < tempCold) color = ColorUtils.GetWeightedAverage(Color.Blue, Color.Green, ((float)cpuTemp - tempFreeze) / (tempCold - tempFreeze));
-                else if (cpuTemp < tempWarm) color = ColorUtils.GetWeightedAverage(Color.Green, Color.Yellow, ((float)cpuTemp - tempCold) / (tempWarm - tempCold));
-                else if (cpuTemp < tempHot) color = ColorUtils.GetWeightedAverage(Color.Yellow, Color.Red, ((float)cpuTemp - tempWarm) / (tempHot - tempWarm));
+                if (cpuTemp < tempCold) color = ColorUtils.GetWeightedAverage(Color.White, Color.Blue, ((float)cpuTemp - tempFreeze) / (tempCold - tempFreeze));
+                else if (cpuTemp < tempWarm) color = ColorUtils.GetWeightedAverage(Color.Blue, Color.Purple, ((float)cpuTemp - tempCold) / (tempWarm - tempCold));
+                else if (cpuTemp < tempHot) color = ColorUtils.GetWeightedAverage(Color.Purple, Color.Red, ((float)cpuTemp - tempWarm) / (tempHot - tempWarm));
                 else color = Color.Red;
 
                 ApplyDirect(color, init);
