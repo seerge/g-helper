@@ -152,7 +152,7 @@ namespace GHelper.Input
                 return defaultModifiers;
 
             ModifierKeys modifiers = ModifierKeys.None;
-            HashSet<string> keys = new HashSet<string>(configValue.Split(','), StringComparer.OrdinalIgnoreCase);
+            HashSet<string> keys = new HashSet<string>(configValue.Split('+'), StringComparer.OrdinalIgnoreCase);
 
             if (keys.Contains("win")) modifiers |= ModifierKeys.Win;
             if (keys.Contains("shift")) modifiers |= ModifierKeys.Shift;
