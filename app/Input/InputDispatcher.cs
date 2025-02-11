@@ -1,4 +1,4 @@
-﻿using GHelper.Display;
+using GHelper.Display;
 using GHelper.Helpers;
 using GHelper.Mode;
 using GHelper.USB;
@@ -19,18 +19,18 @@ namespace GHelper.Input
         static HashSet<Keys> assignedKeys = new HashSet<Keys>();
         static HashSet<ModifierKeys> assignedModifiers = new HashSet<ModifierKeys>();
 
-        public static Keys keyProfile = ValidKeyBindings("keybind_profile", Keys.F5, assignedKeys);
-        public static Keys keyApp = ValidKeyBindings("keybind_app", Keys.F12, assignedKeys);
+        public static Keys keyProfile = (Keys)AppConfig.Get("keybind_profile", (int)Keys.F5);
+        public static Keys keyApp = (Keys)AppConfig.Get("keybind_app", (int)Keys.F12);
 
-        public static Keys keyProfile0 = ValidKeyBindings("keybind_profile_0", Keys.F17, assignedKeys);
-        public static Keys keyProfile1 = ValidKeyBindings("keybind_profile_1", Keys.F18, assignedKeys);
-        public static Keys keyProfile2 = ValidKeyBindings("keybind_profile_2", Keys.F16, assignedKeys);
-        public static Keys keyProfile3 = ValidKeyBindings("keybind_profile_3", Keys.F19, assignedKeys);
-        public static Keys keyProfile4 = ValidKeyBindings("keybind_profile_4", Keys.F20, assignedKeys);
-        public static Keys keyXGM = ValidKeyBindings("keybind_xgm", Keys.F21, assignedKeys);
+        public static Keys keyProfile0 = (Keys)AppConfig.Get("keybind_profile_0", (int)Keys.F17);
+        public static Keys keyProfile1 = (Keys)AppConfig.Get("keybind_profile_1", (int)Keys.F18);
+        public static Keys keyProfile2 = (Keys)AppConfig.Get("keybind_profile_2", (int)Keys.F16);
+        public static Keys keyProfile3 = (Keys)AppConfig.Get("keybind_profile_3", (int)Keys.F19);
+        public static Keys keyProfile4 = (Keys)AppConfig.Get("keybind_profile_4", (int)Keys.F20);
+        public static Keys keyXGM = (Keys)AppConfig.Get("keybind_xgm", (int)Keys.F21);
 
-        public static ModifierKeys keyModifier = ValidModifierKeys("modifier_keybind", ModifierKeys.Shift | ModifierKeys.Control, assignedModifiers);
-        public static ModifierKeys keyModifierAlt = ValidModifierKeys("modifier_keybind_alt", ModifierKeys.Shift | ModifierKeys.Control | ModifierKeys.Alt, assignedModifiers);
+        public static ModifierKeys keyModifier = GetModifierKeys("modifier_keybind", ModifierKeys.Shift | ModifierKeys.Control);
+        public static ModifierKeys keyModifierAlt = GetModifierKeys("modifier_keybind_alt", ModifierKeys.Shift | ModifierKeys.Control | ModifierKeys.Alt);
 
         static ModeControl modeControl = Program.modeControl;
         static ScreenControl screenControl = new ScreenControl();
@@ -112,36 +112,6 @@ namespace GHelper.Input
         {
             timer.Enabled = AppConfig.Get("keyboard_timeout") > 0 && SystemInformation.PowerStatus.PowerLineStatus != PowerLineStatus.Online ||
                             AppConfig.Get("keyboard_ac_timeout") > 0 && SystemInformation.PowerStatus.PowerLineStatus == PowerLineStatus.Online;
-        }
-
-        private static Keys ValidKeyBindings(string configKey, Keys defaultKey, HashSet<Keys> existingKeys)
-        {
-            Keys newKey = (Keys)AppConfig.Get(configKey, (int)defaultKey);
-
-            // Check for conflicts with existing keys
-            if (existingKeys.Contains(newKey))
-            {
-                Logger.WriteLine($"Conflict detected for {configKey}, using default");
-                return defaultKey;
-            }
-
-            existingKeys.Add(newKey);
-            return newKey;
-        }
-
-        private static ModifierKeys ValidModifierKeys(string configKey, ModifierKeys defaultModifiers, HashSet<ModifierKeys> existingModifiers)
-        {
-            ModifierKeys newModifiers = GetModifierKeys(configKey, defaultModifiers);
-
-            // Check for conflicts with existing modifiers
-            if (existingModifiers.Contains(newModifiers))
-            {
-                Logger.WriteLine($"Conflict detected for {configKey}");
-                return defaultModifiers;
-            }
-
-            existingModifiers.Add(newModifiers);
-            return newModifiers;
         }
 
         private static ModifierKeys GetModifierKeys(string configKey, ModifierKeys defaultModifiers)
