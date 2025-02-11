@@ -16,9 +16,6 @@ namespace GHelper.Input
         public static bool backlightActivity = true;
         public static bool lidClose = false;
 
-        static HashSet<Keys> assignedKeys = new HashSet<Keys>();
-        static HashSet<ModifierKeys> assignedModifiers = new HashSet<ModifierKeys>();
-
         public static Keys keyProfile = (Keys)AppConfig.Get("keybind_profile", (int)Keys.F5);
         public static Keys keyApp = (Keys)AppConfig.Get("keybind_app", (int)Keys.F12);
 
