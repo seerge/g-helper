@@ -1364,8 +1364,9 @@ namespace GHelper
         /// </summary>
         public void ShowAll()
         {
+            this.TopMost = true;
             this.Activate();
-            this.Focus();
+            this.TopMost = AppConfig.Is("topmost");
         }
 
         /// <summary>
