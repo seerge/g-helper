@@ -209,7 +209,7 @@ namespace GHelper.Gpu
         {
 
             bool GpuAuto = AppConfig.Is("gpu_auto");
-            bool ForceGPU = AppConfig.IsForceSetGPUMode();
+            bool ForceGPU = AppConfig.IsForceSetGPUMode() && !GpuAuto;
 
             int GpuMode = AppConfig.Get("gpu_mode");
 
