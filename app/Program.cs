@@ -314,7 +314,7 @@ namespace GHelper
                 settingsForm.Top = screen.WorkingArea.Height - 10 - settingsForm.Height;
 
                 settingsForm.Show();
-                settingsForm.Activate();
+                settingsForm.ShowAll();
 
                 settingsForm.Left = screen.WorkingArea.Width - 10 - settingsForm.Width;
 
