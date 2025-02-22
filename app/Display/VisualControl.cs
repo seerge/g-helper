@@ -226,7 +226,11 @@ namespace GHelper.Display
         public static void InitGamut()
         {
             int gamut = AppConfig.Get("gamut");
-            if (gamut >= 0) SetGamut(gamut);
+
+            if (gamut < 0) return;
+            if ((SplendidGamut)gamut == SplendidGamut.Native || (SplendidGamut)gamut == SplendidGamut.VivoNative) return; 
+
+            SetGamut(gamut);
         }
 
         public static void SetGamut(int mode = -1)
