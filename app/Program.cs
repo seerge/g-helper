@@ -277,11 +277,6 @@ namespace GHelper
                 InputDispatcher.ShutdownStatusLed();
             }
 
-            if (e.Mode == PowerModes.Resume)
-            {
-                VisualControl.InitGamut();
-            }
-
             int delay = AppConfig.Get("charger_delay");
             if (delay > 0)
             {

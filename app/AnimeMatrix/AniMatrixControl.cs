@@ -96,10 +96,10 @@ namespace GHelper.AnimeMatrix
 
                 if (brightness == 0 || (auto && SystemInformation.PowerStatus.PowerLineStatus != PowerLineStatus.Online) || (lid && lidClose))
                 {
+                    deviceSlash.SetSleepActive(false);
                     deviceSlash.SetEnabled(false);
                     //deviceSlash.Init();
                     //deviceSlash.SetOptions(false, 0, 0);
-                    deviceSlash.SetSleepActive(false);
                 }
                 else
                 {
