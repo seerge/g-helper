@@ -140,7 +140,7 @@ namespace GHelper.AnimeMatrix
                     }
                     // kill the timer if we are not displaying battery pattern
 
-                    deviceSlash.SetSleepActive(true);
+                    deviceSlash.SetSleepActive(AppConfig.IsNotFalse("slash_sleep"));
                 }
             });
         }
