@@ -1226,6 +1226,44 @@ namespace GHelper
             screenControl.SetScreen(ScreenControl.MIN_RATE, 0);
         }
 
+        private async Task TestCaffeinate()
+        {
+            const int testDurationMinutes = 1; // Test with 1 minute
+            const int totalMonitoringTimeSeconds = 80; // Monitor slightly longer than the test duration
+            const int checkIntervalSeconds = 5; // Check every 5 seconds
+
+            // Activate caffeinate
+            bool activateResult = GHelper.Display.Caffeinate.Activate(testDurationMinutes);
+            Logger.WriteLine($"Activate result: {activateResult}");
+            Logger.WriteLine($"Is active: {GHelper.Display.Caffeinate.IsActive}");
+            Logger.WriteLine($"Initial status: {GHelper.Display.Caffeinate.GetStatus()}");
+
+            // Monitor the status until timer completes or we reach maximum monitoring time
+            int elapsedTime = 0;
+            bool completed = false;
+
+            while (elapsedTime < totalMonitoringTimeSeconds && !completed)
+            {
+                await Task.Delay(checkIntervalSeconds * 1000);
+                elapsedTime += checkIntervalSeconds;
+
+                string status = GHelper.Display.Caffeinate.GetStatus();
+                Logger.WriteLine($"Status after {elapsedTime} seconds: {status}");
+
+                // Check if the status indicates the timer has completed
+                if (!GHelper.Display.Caffeinate.IsActive || status.Contains("Sleep allowed"))
+                {
+                    Logger.WriteLine($"Timer completed after approximately {elapsedTime} seconds");
+                    //completed = true;
+                }
+            }
+
+            // Ensure we deactivate in case the timer hasn't completed yet
+            //bool deactivateResult = GHelper.Display.Caffeinate.Deactivate();
+            //Logger.WriteLine($"Deactivate result: {deactivateResult}");
+            Logger.WriteLine($"Final status - Is active: {GHelper.Display.Caffeinate.IsActive}");
+        }
+
 
         private void ButtonMiniled_Click(object? sender, EventArgs e)
         {
@@ -1411,6 +1449,7 @@ namespace GHelper
 
         private void ButtonOptimized_Click(object? sender, EventArgs e)
         {
+            //TestCaffeinate();
             AppConfig.Set("gpu_auto", (AppConfig.Get("gpu_auto") == 1) ? 0 : 1);
             VisualiseGPUMode();
             gpuControl.AutoGPUMode(true);
