@@ -223,6 +223,16 @@ namespace GHelper.Display
             Registry.SetValue(GameVisualKey, GameVisualValue, status, RegistryValueKind.DWord);
         }
 
+        public static void InitGamut()
+        {
+            int gamut = AppConfig.Get("gamut");
+
+            if (gamut < 0) return;
+            if ((SplendidGamut)gamut == SplendidGamut.Native || (SplendidGamut)gamut == SplendidGamut.VivoNative) return; 
+
+            SetGamut(gamut);
+        }
+
         public static void SetGamut(int mode = -1)
         {
             if (skipGamut) return;
@@ -318,7 +328,7 @@ namespace GHelper.Display
                         foreach (var driver in searcher.Get())
                         {
                             string path = driver["PathName"].ToString();
-                            _splendidPath = Path.GetDirectoryName(path) + "\\AsusSplendid.exe";
+                            _splendidPath = Path.GetDirectoryName(path);
                             break;
                         }
                     }
@@ -334,14 +344,15 @@ namespace GHelper.Display
 
         private static int RunSplendid(SplendidCommand command, int? param1 = null, int? param2 = null)
         {
-            var splendid = GetSplendidPath();
+            string splendidPath = GetSplendidPath();
+            string splendidExe = $"{splendidPath}\\AsusSplendid.exe";
             bool isVivo = AppConfig.IsVivoZenPro();
-            bool isSplenddid = File.Exists(splendid);
+            bool isSplenddid = File.Exists(splendidExe);
 
             if (isSplenddid)
             {
                 if (command == SplendidCommand.DimmingVisual && isVivo) command = SplendidCommand.DimmingVivo;
-                var result = ProcessHelper.RunCMD(splendid, (int)command + " " + param1 + " " + param2);
+                var result = ProcessHelper.RunCMD(splendidExe, (int)command + " " + param1 + " " + param2, splendidPath);
                 if (result.Contains("file not exist") || (result.Length == 0 && !isVivo)) return 1;
                 if (result.Contains("return code: -1")) return -1;
                 if (result.Contains("Visual is disabled"))
