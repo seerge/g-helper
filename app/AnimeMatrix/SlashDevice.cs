@@ -207,9 +207,9 @@ namespace GHelper.AnimeMatrix
             Set(CreatePacket([0xD8, 0x01, 0x00, 0x01, status ? (byte)0x80 : (byte)0x00]), $"SlashBatterySaver {status}");
         }
 
-        public void SetLidMode(bool status)
+        public void SetLidCloseAnimation(bool status)
         {
-            Set(CreatePacket([0xD8, 0x00, 0x00, 0x02, 0xA5, status ? (byte)0x80 : (byte)0x00]), $"SlashLidCloseAnimation {status}");
+            Set(CreatePacket([0xD8, 0x00, 0x00, 0x02, 0xA5, status ? (byte)0x00 : (byte)0x80]), $"SlashLidCloseAnimation {status}");
         }
 
         public void SetSleepActive(bool status)

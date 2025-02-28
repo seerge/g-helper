@@ -122,7 +122,7 @@ namespace GHelper.Helpers
             }
         }
 
-        public static string RunCMD(string name, string args)
+        public static string RunCMD(string name, string args, string? directory = null)
         {
             var cmd = new Process();
             cmd.StartInfo.UseShellExecute = false;
@@ -131,6 +131,7 @@ namespace GHelper.Helpers
             cmd.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
             cmd.StartInfo.FileName = name;
             cmd.StartInfo.Arguments = args;
+            if (directory != null) cmd.StartInfo.WorkingDirectory = directory;
             cmd.Start();
 
             Logger.WriteLine(name + " " + args);

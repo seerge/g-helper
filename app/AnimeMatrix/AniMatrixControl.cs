@@ -96,10 +96,10 @@ namespace GHelper.AnimeMatrix
 
                 if (brightness == 0 || (auto && SystemInformation.PowerStatus.PowerLineStatus != PowerLineStatus.Online) || (lid && lidClose))
                 {
+                    deviceSlash.SetSleepActive(false);
                     deviceSlash.SetEnabled(false);
                     //deviceSlash.Init();
                     //deviceSlash.SetOptions(false, 0, 0);
-                    deviceSlash.SetSleepActive(false);
                 }
                 else
                 {
@@ -140,7 +140,7 @@ namespace GHelper.AnimeMatrix
                     }
                     // kill the timer if we are not displaying battery pattern
 
-                    deviceSlash.SetSleepActive(true);
+                    deviceSlash.SetSleepActive(AppConfig.IsNotFalse("slash_sleep"));
                 }
             });
         }
@@ -151,7 +151,7 @@ namespace GHelper.AnimeMatrix
 
             if (deviceSlash is not null)
             {
-                deviceSlash.SetLidMode(!matrixLid && AppConfig.Is("slash_sleep"));
+                deviceSlash.SetLidCloseAnimation(!matrixLid || AppConfig.Is("slash_sleep"));
             }
 
             if (matrixLid || force)
