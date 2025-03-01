@@ -1463,6 +1463,11 @@ namespace GHelper
                 {
                     labelCPUFan.Text = "CPU" + cpuTemp + " " + HardwareControl.cpuFan;
                     labelGPUFan.Text = "GPU" + gpuTemp + " " + HardwareControl.gpuFan;
+                    if (HardwareControl.gpuFan is not null && AppConfig.NoGpu())
+                    {
+                        labelMidFan.Text = "AUX " + HardwareControl.gpuFan;
+                    }
+
                     if (HardwareControl.midFan is not null)
                         labelMidFan.Text = "Mid " + HardwareControl.midFan;
 
