@@ -1561,7 +1561,7 @@ namespace GHelper
             if (!connected) return;
 
             if (GPUMode != -1)
-                ButtonEnabled(buttonXGM, AppConfig.IsNoGPUModes() || GPUMode != AsusACPI.GPUModeEco);
+                ButtonEnabled(buttonXGM, AppConfig.IsAMDiGPU() || GPUMode != AsusACPI.GPUModeEco);
 
 
             int activated = Program.acpi.DeviceGet(AsusACPI.GPUXG);

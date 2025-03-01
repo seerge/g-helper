@@ -651,7 +651,7 @@ public class AsusACPI
 
     public bool IsAllAmdPPT()
     {
-        if (_allAMD is null) _allAMD = DeviceGet(PPT_CPUB0) >= 0 && DeviceGet(PPT_GPUC0) < 0 && !AppConfig.IsAlly();
+        if (_allAMD is null) _allAMD = DeviceGet(PPT_CPUB0) >= 0 && DeviceGet(PPT_GPUC0) < 0 && !AppConfig.IsAMDiGPU();
         return (bool)_allAMD;
     }
 

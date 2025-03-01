@@ -127,7 +127,7 @@ public static class AppConfig
             }
         }
 
-        //if (_model.Contains("GA402RK")) _model = "ROG Zephyrus G14 GA403UI"; // Debug Purposes
+        //if (_model.Contains("GA402RK")) _model = "ROG Flow Z13 GZ302EA"; // Debug Purposes
 
         return _model;
     }
@@ -630,7 +630,7 @@ public static class AppConfig
 
     public static bool IsAMDLight()
     {
-        return ContainsModel("GA402X") || ContainsModel("GA605") || ContainsModel("GA403") || ContainsModel("FA507N") || ContainsModel("FA507X") || ContainsModel("FA707N") || ContainsModel("FA707X");
+        return ContainsModel("GA402X") || ContainsModel("GA605") || ContainsModel("GA403") || ContainsModel("FA507N") || ContainsModel("FA507X") || ContainsModel("FA707N") || ContainsModel("FA707X") || ContainsModel("GZ302");
     }
 
     public static bool IsPowerRequired()
@@ -648,9 +648,9 @@ public static class AppConfig
         return Is("gpu_mode_force_set") || (ContainsModel("503") && IsNotFalse("gpu_mode_force_set"));
     }
 
-    public static bool IsNoGPUModes()
+    public static bool IsAMDiGPU()
     {
-        return ContainsModel("GV301RA") || ContainsModel("GV302XA") || IsAlly();
+        return ContainsModel("GV301RA") || ContainsModel("GV302XA") || ContainsModel("GZ302") || IsAlly();
     }
 
     public static bool NoGpu()
