@@ -1465,7 +1465,7 @@ namespace GHelper
                     labelGPUFan.Text = "GPU" + gpuTemp + " " + HardwareControl.gpuFan;
                     if (HardwareControl.gpuFan is not null && AppConfig.NoGpu())
                     {
-                        labelMidFan.Text = "AUX " + HardwareControl.gpuFan;
+                        labelMidFan.Text = "GPU" + gpuTemp + " " + HardwareControl.gpuFan;
                     }
 
                     if (HardwareControl.midFan is not null)
