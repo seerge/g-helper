@@ -767,6 +767,9 @@ namespace GHelper.Input
             {
                 switch (EventID)
                 {
+                    case 95:     // Z13 Side button
+                        KeyProcess("m4");
+                        return;
                     case 134:     // FN + F12 ON OLD DEVICES
                     case 139:     // ProArt F12
                         KeyProcess("m4");
