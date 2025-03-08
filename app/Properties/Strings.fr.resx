@@ -175,7 +175,7 @@
     <value>Mémoire attribuée au GPU</value>
   </data>
   <data name="AsusServicesRunning" xml:space="preserve">
-    <value>Services Asus actifs</value>
+    <value>Services Asus actifs </value>
   </data>
   <data name="AuraBatteryState" xml:space="preserve">
     <value>État de la batterie</value>
@@ -636,7 +636,7 @@ Voulez-vous continuer ?</value>
     <value>Overdrive</value>
   </data>
   <data name="PerformanceMode" xml:space="preserve">
-    <value>Mode</value>
+    <value>Mode </value>
   </data>
   <data name="Peripherals" xml:space="preserve">
     <value>Périphériques</value>
