@@ -211,7 +211,7 @@
     <value>Aléatoire</value>
   </data>
   <data name="AuraReact" xml:space="preserve">
-    <value>React</value>
+    <value>Réagir</value>
   </data>
   <data name="AuraSlow" xml:space="preserve">
     <value>Lent</value>
@@ -274,7 +274,7 @@
     <value>Équilibré</value>
   </data>
   <data name="BatteryCharge" xml:space="preserve">
-    <value>Charge de la batterie</value>
+    <value>Charge de la batterie </value>
   </data>
   <data name="BatteryChargeLimit" xml:space="preserve">
     <value>Limite de charge </value>
@@ -744,7 +744,7 @@ Voulez-vous continuer ?</value>
     <value>Activer/désactiver l'écran tactile</value>
   </data>
   <data name="Touchscreen" xml:space="preserve">
-    <value>Touchscreen</value>
+    <value>Écran tactile</value>
   </data>
   <data name="Turbo" xml:space="preserve">
     <value>Turbo</value>
@@ -801,21 +801,21 @@ Voulez-vous continuer ?</value>
     <value>Zoom</value>
   </data>
   <data name="Donate" xml:space="preserve">
-    <value>Donate</value>
+    <value>Faire un don</value>
   </data>
   <data name="Legend" xml:space="preserve">
-    <value>Legend</value>
+    <value>Légende</value>
   </data>
   <data name="LegendGray" xml:space="preserve">
-    <value>Can't check local version</value>
+    <value>Impossible de vérifier la version actuelle</value>
     <comment>Can't check local version</comment>
   </data>
   <data name="LegendRed" xml:space="preserve">
-    <value>Update Available</value>
+    <value>Mise à jour disponible</value>
     <comment>Update Available</comment>
   </data>
   <data name="LegendGreen" xml:space="preserve">
-    <value>Updated</value>
+    <value>Mis à jour</value>
     <comment>Updated</comment>
   </data>
 </root>
