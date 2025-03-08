@@ -853,9 +853,69 @@ namespace GHelper.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap mug_active_black_32 {
+            get {
+                object obj = ResourceManager.GetObject("mug-active-black-32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap mug_active_s {
+            get {
+                object obj = ResourceManager.GetObject("mug-active-s", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap mug_active_white_32 {
+            get {
+                object obj = ResourceManager.GetObject("mug-active-white-32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap mug_sleep {
             get {
                 object obj = ResourceManager.GetObject("mug-sleep", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap mug_sleep_black_32 {
+            get {
+                object obj = ResourceManager.GetObject("mug-sleep-black-32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap mug_sleep_s {
+            get {
+                object obj = ResourceManager.GetObject("mug-sleep-s", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap mug_sleep_white_32 {
+            get {
+                object obj = ResourceManager.GetObject("mug-sleep-white-32", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

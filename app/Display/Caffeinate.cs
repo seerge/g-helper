@@ -10,6 +10,7 @@ namespace GHelper.Display
         private static DateTime? endTime;
         private static readonly System.Timers.Timer timer = new();
         private const int DefaultDuration = 480; // Default duration in minutes (8 hours)
+        public static event EventHandler? CaffeinateStateChanged;
 
         static Caffeinate()
         {
@@ -24,7 +25,7 @@ namespace GHelper.Display
         {
             uint sleepDisabled = NativeMethods.ES_CONTINUOUS | NativeMethods.ES_DISPLAY_REQUIRED;
             uint previousState = NativeMethods.SetThreadExecutionState(sleepDisabled);
-            
+
             if (previousState == 0)
             {
                 Debug.WriteLine("Call to SetThreadExecutionState failed.");
@@ -32,7 +33,7 @@ namespace GHelper.Display
             }
 
             int timerIntervalInMilliseconds = durationInMinutes * 60 * 1000;
-            
+
             if (timerIntervalInMilliseconds > 0)
             {
                 timer.Interval = timerIntervalInMilliseconds;
@@ -44,8 +45,9 @@ namespace GHelper.Display
                 // Duration of 0 means indefinite
                 endTime = null;
             }
-            
+
             isActivated = true;
+            CaffeinateStateChanged?.Invoke(null, EventArgs.Empty);
             return true;
         }
 
@@ -59,8 +61,9 @@ namespace GHelper.Display
                 Debug.WriteLine("Call to SetThreadExecutionState failed.");
                 return false;
             }
-            
+
             isActivated = false;
+            CaffeinateStateChanged?.Invoke(null, EventArgs.Empty);
             endTime = null;
             return true;
         }

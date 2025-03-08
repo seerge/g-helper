@@ -364,4 +364,22 @@
   <data name="mug-sleep" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\mug-sleep.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="mug-sleep-s" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\mug-sleep-s.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="mug-active-s" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\mug-active-s.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="mug-active-black-32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\mug-active-black-32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="mug-sleep-black-32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\mug-sleep-black-32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="mug-active-white-32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\mug-active-white-32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="mug-sleep-white-32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\mug-sleep-white-32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>
