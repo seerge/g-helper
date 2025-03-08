@@ -29,6 +29,8 @@ namespace GHelper.Display
         Init = 10,
         DimmingVivo = 9,
         DimmingVisual = 19,
+        DimmingDuo = 109,
+
         GamutMode = 200,
 
         Default = 11,
@@ -351,7 +353,6 @@ namespace GHelper.Display
 
             if (isSplenddid)
             {
-                if (command == SplendidCommand.DimmingVisual && isVivo) command = SplendidCommand.DimmingVivo;
                 var result = ProcessHelper.RunCMD(splendidExe, (int)command + " " + param1 + " " + param2, splendidPath);
                 if (result.Contains("file not exist") || (result.Length == 0 && !isVivo)) return 1;
                 if (result.Contains("return code: -1")) return -1;
@@ -369,15 +370,18 @@ namespace GHelper.Display
         {
             brightnessTimer.Stop();
 
+            var dimmingCommand = AppConfig.IsVivoZenPro() ? SplendidCommand.DimmingVivo : SplendidCommand.DimmingVisual;
+            var dimmingLevel = (int)(40 + _brightness * 0.6);
 
-            if (RunSplendid(SplendidCommand.DimmingVisual, 0, (int)(40 + _brightness * 0.6)) == 0) return;
+            if (AppConfig.IsDUO()) RunSplendid(SplendidCommand.DimmingDuo, 0, dimmingLevel);
+            if (RunSplendid(dimmingCommand, 0, dimmingLevel) == 0) return;
 
             if (_init)
             {
                 _init = false;
                 RunSplendid(SplendidCommand.Init);
                 RunSplendid(SplendidCommand.Init, 4);
-                if (RunSplendid(SplendidCommand.DimmingVisual, 0, (int)(40 + _brightness * 0.6)) == 0) return;
+                if (RunSplendid(dimmingCommand, 0, dimmingLevel) == 0) return;
             }
 
             // GammaRamp Fallback
