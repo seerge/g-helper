@@ -124,13 +124,13 @@
     <value>No se pudo conectar con ASUS ACPI. La aplicación no puede funcionar sin el recurso. Instale Asus System Control Interface</value>
   </data>
   <data name="AlertAPUMemoryRestart" xml:space="preserve">
-    <value>Reinicia el dispositivo para aplicar los cambios</value>
+    <value>Reinicie el dispositivo para aplicar los cambios</value>
   </data>
   <data name="AlertAPUMemoryRestartTitle" xml:space="preserve">
     <value>¿Reiniciar ahora?</value>
   </data>
   <data name="AlertDGPU" xml:space="preserve">
-    <value>Detectado uso intensivo de la GPU, ¿deshabilitarla?</value>
+    <value>Se ha detectado el uso intensivo de la GPU, ¿desea deshabilitarla?</value>
   </data>
   <data name="AlertDGPUTitle" xml:space="preserve">
     <value>Modo Eco</value>
@@ -154,7 +154,7 @@
     <value>AniMe Matrix</value>
   </data>
   <data name="AppAlreadyRunning" xml:space="preserve">
-    <value>La apliación ya está ejecutándose</value>
+    <value>La aplicación ya está ejecutándose</value>
   </data>
   <data name="AppAlreadyRunningText" xml:space="preserve">
     <value>G-Helper ya está ejecutándose. Compruebe la bandeja del sistema.</value>
@@ -298,10 +298,10 @@
     <value>Actualizaciones de BIOS y Drivers</value>
   </data>
   <data name="Boot" xml:space="preserve">
-    <value>Al arrancar</value>
+    <value>Inicio</value>
   </data>
   <data name="BootSound" xml:space="preserve">
-    <value>Sonido al arranque</value>
+    <value>Sonido en Inicio</value>
   </data>
   <data name="Brightness" xml:space="preserve">
     <value>Brillo</value>
@@ -373,7 +373,7 @@
     <value>Habilitar GPU al apagar (evita problemas con el modo Eco)</value>
   </data>
   <data name="EnableOptimusText" xml:space="preserve">
-    <value>Deshabilitar la dGPU cambiando a modo Eco mientras el Modo de Pantalla en el Panel de Control de NVIDIA no está configurado en Optimus puede causar problemas con el control del brillo hasta después del próximo reinicio.
+    <value>Deshabilitar la dGPU cambiando a modo Eco, mientras el Modo de Pantalla en el Panel de Control de NVIDIA no está configurado en Optimus, puede causar problemas con el control del brillo hasta después del próximo reinicio.
 
 ¿Seguro que desea continuar?</value>
   </data>
@@ -387,10 +387,10 @@
     <value>Exportar perfil</value>
   </data>
   <data name="Extra" xml:space="preserve">
-    <value>Adicional</value>
+    <value>Extra</value>
   </data>
   <data name="ExtraSettings" xml:space="preserve">
-    <value>Opciones adicionales</value>
+    <value>Opciones extra</value>
   </data>
   <data name="FactoryDefaults" xml:space="preserve">
     <value>Valores de fábrica</value>
@@ -399,10 +399,10 @@
     <value>Curvas de ventiladores</value>
   </data>
   <data name="FanProfileCPU" xml:space="preserve">
-    <value>Perfil ventilador CPU</value>
+    <value>Perfil ventilador de CPU</value>
   </data>
   <data name="FanProfileGPU" xml:space="preserve">
-    <value>Perfil ventilador GPU</value>
+    <value>Perfil ventilador de GPU</value>
   </data>
   <data name="FanProfileMid" xml:space="preserve">
     <value>Perfil ventilador central</value>
@@ -414,7 +414,7 @@
     <value>Ventiladores y energía</value>
   </data>
   <data name="FanSpeed" xml:space="preserve">
-    <value>Fan</value>
+    <value>Ventilador</value>
   </data>
   <data name="FansPower" xml:space="preserve">
     <value>Ventiladores + Energía</value>
