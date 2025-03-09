@@ -258,8 +258,9 @@ namespace GHelper
             buttonAutoTDP.Click += ButtonAutoTDP_Click;
             buttonAutoTDP.BorderColor = colorTurbo;
 
-            Caffeinate.CaffeinateStateChanged += OnCaffeinateStateChanged;
-            UpdateCaffeinateIcon(Caffeinate.IsActive);
+            pictureCaffeinated.Click += pictureCaffeinated_Click;
+            Caffeinated.CaffeinatedStateChanged += OnCaffeinatedStateChanged;
+            UpdateCaffeinatedIcon(Caffeinated.IsActive);
 
             Text = "G-Helper " + (ProcessHelper.IsUserAdministrator() ? "—" : "-") + " " + AppConfig.GetModelShort();
             TopMost = AppConfig.Is("topmost");
@@ -289,12 +290,12 @@ namespace GHelper
             InitVisual();
         }
 
-        private void OnCaffeinateStateChanged(object? sender, EventArgs e)
+        private void OnCaffeinatedStateChanged(object? sender, EventArgs e)
         {
             if (InvokeRequired)
-                Invoke(() => UpdateCaffeinateIcon(Caffeinate.IsActive));
+                Invoke(() => UpdateCaffeinatedIcon(Caffeinated.IsActive));
             else
-                UpdateCaffeinateIcon(Caffeinate.IsActive);
+                UpdateCaffeinatedIcon(Caffeinated.IsActive);
         }
 
         private void LabelBattery_Click(object? sender, EventArgs e)
@@ -1348,7 +1349,7 @@ namespace GHelper
 
         private void ButtonQuit_Click(object? sender, EventArgs e)
         {
-            CleanupCaffeinate();
+            CleanupCaffeinated();
             matrixControl.Dispose();
             Close();
             Program.trayIcon.Visible = false;
@@ -1955,17 +1956,17 @@ namespace GHelper
             }
         }
 
-        private async Task TestCaffeinate()
+        private async Task TestCaffeinated()
         {
             const int testDurationMinutes = 1; // Test with 1 minute
             const int totalMonitoringTimeSeconds = 80; // Monitor slightly longer than the test duration
             const int checkIntervalSeconds = 5; // Check every 5 seconds
+            AppConfig.Set("caffeinated_duration", testDurationMinutes);
 
             // Activate caffeinate
-            bool activateResult = GHelper.Display.Caffeinate.Activate(testDurationMinutes);
-            Logger.WriteLine($"Activate result: {activateResult}");
-            Logger.WriteLine($"Is active: {GHelper.Display.Caffeinate.IsActive}");
-            Logger.WriteLine($"Initial status: {GHelper.Display.Caffeinate.GetStatus()}");
+            Caffeinated.Toggle();
+            Logger.WriteLine($"Is active: {Caffeinated.IsActive}");
+            Logger.WriteLine($"Initial status: {Caffeinated.GetStatus()}");
 
             // Monitor the status until timer completes or we reach maximum monitoring time
             int elapsedTime = 0;
@@ -1976,11 +1977,11 @@ namespace GHelper
                 await Task.Delay(checkIntervalSeconds * 1000);
                 elapsedTime += checkIntervalSeconds;
 
-                string status = GHelper.Display.Caffeinate.GetStatus();
+                string status = Caffeinated.GetStatus();
                 Logger.WriteLine($"Status after {elapsedTime} seconds: {status}");
 
                 // Check if the status indicates the timer has completed
-                if (!GHelper.Display.Caffeinate.IsActive || status.Contains("Sleep allowed"))
+                if (!Caffeinated.IsActive || status.Contains("Sleep allowed"))
                 {
                     Logger.WriteLine($"Timer completed after approximately {elapsedTime} seconds");
                     //completed = true;
@@ -1988,9 +1989,7 @@ namespace GHelper
             }
 
             // Ensure we deactivate in case the timer hasn't completed yet
-            //bool deactivateResult = GHelper.Display.Caffeinate.Deactivate();
-            //Logger.WriteLine($"Deactivate result: {deactivateResult}");
-            Logger.WriteLine($"Final status - Is active: {GHelper.Display.Caffeinate.IsActive}");
+            Logger.WriteLine($"Final status - Is active: {Caffeinated.IsActive}");
         }
 
         private void ButtonFnLock_Click(object? sender, EventArgs e)
@@ -1998,44 +1997,36 @@ namespace GHelper
             InputDispatcher.ToggleFnLock();
         }
 
-        private void pictureCaffenate_Click(object sender, EventArgs e)
+        private void pictureCaffeinated_Click(object sender, EventArgs e)
         {
-            
-            if (Caffeinate.IsActive)
-            {
-                Caffeinate.Deactivate();
-                UpdateCaffeinateIcon(false);
-                Logger.WriteLine("Caffeinate Deactivated");
-            }
-            else
-            {
-                Caffeinate.Activate(1); // Using default duration
-                UpdateCaffeinateIcon(true);
-                Logger.WriteLine("Caffeinate Activated");
-            }
+            //Logger.WriteLine("" + AppConfig.Get("caffeinated_duration"));
+            //Logger.WriteLine("" + Caffeinated.CustomCaffeinatedDuration);
+
+            Caffeinated.Toggle();
+            Logger.WriteLine("Caffeinate " + (Caffeinated.IsActive ? "Activated" : "Deactivated"));
         }
 
-        private void UpdateCaffeinateIcon(bool isActive)
+        private void UpdateCaffeinatedIcon(bool isActive)
         {
             bool isDark = CheckSystemDarkModeStatus();
 
             if (isActive)
             {
-                pictureCaffenate.BackgroundImage = isDark ?
+                pictureCaffeinated.BackgroundImage = isDark ?
                     Properties.Resources.mug_active_white_32 :
                     Properties.Resources.mug_active_black_32;
             }
             else
             {
-                pictureCaffenate.BackgroundImage = isDark ?
+                pictureCaffeinated.BackgroundImage = isDark ?
                     Properties.Resources.mug_sleep_white_32 :
                     Properties.Resources.mug_sleep_black_32;
             }
         }
 
-        public void CleanupCaffeinate()
+        public void CleanupCaffeinated()
         {
-            Caffeinate.CaffeinateStateChanged -= OnCaffeinateStateChanged;
+            Caffeinated.CaffeinatedStateChanged -= OnCaffeinatedStateChanged;
         }
     }
 }

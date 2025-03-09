@@ -91,7 +91,7 @@ namespace GHelper
             buttonMiniled = new RButton();
             buttonFHD = new RButton();
             panelScreenTitle = new Panel();
-            pictureCaffenate = new PictureBox();
+            pictureCaffeinated = new PictureBox();
             labelMidFan = new Label();
             pictureScreen = new PictureBox();
             labelSreen = new Label();
@@ -162,7 +162,7 @@ namespace GHelper
             panelScreen.SuspendLayout();
             tableScreen.SuspendLayout();
             panelScreenTitle.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)pictureCaffenate).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)pictureCaffeinated).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureScreen).BeginInit();
             panelKeyboard.SuspendLayout();
             tableLayoutKeyboard.SuspendLayout();
@@ -1240,7 +1240,7 @@ namespace GHelper
             // 
             // panelScreenTitle
             // 
-            panelScreenTitle.Controls.Add(pictureCaffenate);
+            panelScreenTitle.Controls.Add(pictureCaffeinated);
             panelScreenTitle.Controls.Add(labelMidFan);
             panelScreenTitle.Controls.Add(pictureScreen);
             panelScreenTitle.Controls.Add(labelSreen);
@@ -1251,19 +1251,18 @@ namespace GHelper
             panelScreenTitle.Size = new Size(392, 20);
             panelScreenTitle.TabIndex = 25;
             // 
-            // pictureCaffenate
+            // pictureCaffeinated
             // 
-            pictureCaffenate.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            pictureCaffenate.BackgroundImage = Properties.Resources.mug_sleep_black_32;
-            pictureCaffenate.BackgroundImageLayout = ImageLayout.Zoom;
-            pictureCaffenate.Cursor = Cursors.Hand;
-            pictureCaffenate.Location = new Point(373, 2);
-            pictureCaffenate.Margin = new Padding(2);
-            pictureCaffenate.Name = "pictureCaffenate";
-            pictureCaffenate.Size = new Size(16, 16);
-            pictureCaffenate.TabIndex = 29;
-            pictureCaffenate.TabStop = false;
-            pictureCaffenate.Click += pictureCaffenate_Click;
+            pictureCaffeinated.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            pictureCaffeinated.BackgroundImage = Properties.Resources.mug_sleep_black_32;
+            pictureCaffeinated.BackgroundImageLayout = ImageLayout.Zoom;
+            pictureCaffeinated.Cursor = Cursors.Hand;
+            pictureCaffeinated.Location = new Point(373, 2);
+            pictureCaffeinated.Margin = new Padding(2);
+            pictureCaffeinated.Name = "pictureCaffeinated";
+            pictureCaffeinated.Size = new Size(16, 16);
+            pictureCaffeinated.TabIndex = 29;
+            pictureCaffeinated.TabStop = false;
             // 
             // labelMidFan
             // 
@@ -2086,7 +2085,7 @@ namespace GHelper
             tableScreen.ResumeLayout(false);
             panelScreenTitle.ResumeLayout(false);
             panelScreenTitle.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)pictureCaffenate).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pictureCaffeinated).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureScreen).EndInit();
             panelKeyboard.ResumeLayout(false);
             panelKeyboard.PerformLayout();
@@ -2233,6 +2232,6 @@ namespace GHelper
         private Panel panelVersion;
         private Label labelVersion;
         private RButton buttonDonate;
-        private PictureBox pictureCaffenate;
+        private PictureBox pictureCaffeinated;
     }
 }

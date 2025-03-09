@@ -655,6 +655,15 @@ namespace GHelper.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Minutes until sleep allowed (0 - Indefinite).
+        /// </summary>
+        internal static string CaffeinatedDuration {
+            get {
+                return ResourceManager.GetString("CaffeinatedDuration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Calibrate.
         /// </summary>
         internal static string Calibrate {

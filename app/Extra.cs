@@ -154,6 +154,7 @@ namespace GHelper
             checkGpuApps.Text = Properties.Strings.KillGpuApps;
             checkBWIcon.Text = Properties.Strings.BWTrayIcon;
             labelHibernateAfter.Text = Properties.Strings.HibernateAfter;
+            labelCaffeinatedDuration.Text = Properties.Strings.CaffeinatedDuration;
 
             labelAPUMem.Text = Properties.Strings.APUMemory;
 
@@ -187,6 +188,7 @@ namespace GHelper
 
             panelSettings.AccessibleName = Properties.Strings.ExtraSettings;
             numericHibernateAfter.AccessibleName = Properties.Strings.HibernateAfter;
+            numericCaffeinatedDuration.AccessibleName = Properties.Strings.CaffeinatedDuration;
 
             if (AppConfig.IsARCNM())
             {
@@ -476,7 +478,7 @@ namespace GHelper
             InitVariBright();
             InitServices();
             InitHibernate();
-
+            InitCaffeinated();
             InitACPITesting();
 
         }
@@ -635,6 +637,28 @@ namespace GHelper
         private void NumericHibernateAfter_ValueChanged(object? sender, EventArgs e)
         {
             PowerNative.SetHibernateAfter((int)numericHibernateAfter.Value);
+        }
+
+        private void InitCaffeinated()
+        {
+            try
+            {
+                int caffeinatedDuration = AppConfig.Get("caffeinated_duration", Caffeinated.CustomCaffeinatedDuration);
+                if (caffeinatedDuration < 0 || caffeinatedDuration > numericCaffeinatedDuration.Maximum)
+                    caffeinatedDuration = Caffeinated.CustomCaffeinatedDuration;
+
+                numericCaffeinatedDuration.Value = caffeinatedDuration;
+                numericCaffeinatedDuration.ValueChanged += NumericCaffeinatedDuration_ValueChanged;
+            }
+            catch (Exception ex)
+            {
+                panelCaffeinated.Visible = false;
+                Logger.WriteLine(ex.ToString());
+            }
+        }
+        private void NumericCaffeinatedDuration_ValueChanged(object? sender, EventArgs e)
+        {
+            AppConfig.Set("caffeinated_duration", (int)numericCaffeinatedDuration.Value);
         }
 
         private void PictureLog_Click(object? sender, EventArgs e)

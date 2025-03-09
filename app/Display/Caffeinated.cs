@@ -4,25 +4,26 @@ using System.Timers;
 
 namespace GHelper.Display
 {
-    public static class Caffeinate
+    public static class Caffeinated
     {
         private static bool isActivated = false;
         private static DateTime? endTime;
         private static readonly System.Timers.Timer timer = new();
         private const int DefaultDuration = 480; // Default duration in minutes (8 hours)
-        public static event EventHandler? CaffeinateStateChanged;
+        public static event EventHandler? CaffeinatedStateChanged;
 
-        static Caffeinate()
+        static Caffeinated()
         {
             timer.Elapsed += Timer_Elapsed;
         }
 
         public static bool IsActive => isActivated;
         public static DateTime? EndTime => endTime;
-        public static int DefaultCaffeinateDuration => DefaultDuration;
+        public static int CustomCaffeinatedDuration => AppConfig.Get("caffeinated_duration", DefaultDuration);
 
-        public static bool Activate(int durationInMinutes = DefaultDuration)
+        private static bool Activate()
         {
+            int durationInMinutes = CustomCaffeinatedDuration;
             uint sleepDisabled = NativeMethods.ES_CONTINUOUS | NativeMethods.ES_DISPLAY_REQUIRED;
             uint previousState = NativeMethods.SetThreadExecutionState(sleepDisabled);
 
@@ -47,11 +48,11 @@ namespace GHelper.Display
             }
 
             isActivated = true;
-            CaffeinateStateChanged?.Invoke(null, EventArgs.Empty);
+            CaffeinatedStateChanged?.Invoke(null, EventArgs.Empty);
             return true;
         }
 
-        public static bool Deactivate()
+        private static bool Deactivate()
         {
             timer.Stop();
 
@@ -63,7 +64,7 @@ namespace GHelper.Display
             }
 
             isActivated = false;
-            CaffeinateStateChanged?.Invoke(null, EventArgs.Empty);
+            CaffeinatedStateChanged?.Invoke(null, EventArgs.Empty);
             endTime = null;
             return true;
         }
@@ -111,12 +112,12 @@ namespace GHelper.Display
             Deactivate();
         }
 
-        public static void Toggle(int durationInMinutes = DefaultDuration)
+        public static void Toggle()
         {
             if (isActivated)
                 Deactivate();
             else
-                Activate(durationInMinutes);
+                Activate();
         }
     }
 
