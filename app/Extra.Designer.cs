@@ -1322,7 +1322,7 @@ namespace GHelper
             checkGPUFix.Padding = new Padding(3);
             checkGPUFix.Size = new Size(802, 40);
             checkGPUFix.TabIndex = 9;
-            checkGPUFix.Text = "Enable GPU on shutdown (prevents issue with Eco mode)";
+            checkGPUFix.Text = "Enable GPU on shutdown (prevents issues with Eco mode & brightness slider)";
             checkGPUFix.UseVisualStyleBackColor = true;
             // 
             // checkStatusLed
