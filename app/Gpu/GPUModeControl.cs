@@ -160,29 +160,37 @@ namespace GHelper.Gpu
 
                 Logger.WriteLine($"Running eco command {eco}");
 
-                status = Program.acpi.SetGPUEco(eco);
-
-                if (status == 0 && eco == 1 && hardWay) RestartGPU();
-
-                await Task.Delay(TimeSpan.FromMilliseconds(AppConfig.Get("refresh_delay", 500)));
-
-                settings.Invoke(delegate
+                try
                 {
-                    InitGPUMode();
-                    screenControl.AutoScreen();
-                });
 
-                if (eco == 0)
-                {
-                    await Task.Delay(TimeSpan.FromMilliseconds(3000));
-                    HardwareControl.RecreateGpuControl();
-                    Program.modeControl.SetGPUClocks(false);
+                    status = Program.acpi.SetGPUEco(eco);
+
+                    if (status == 0 && eco == 1 && hardWay) RestartGPU();
+
+                    await Task.Delay(TimeSpan.FromMilliseconds(AppConfig.Get("refresh_delay", 500)));
+
+                    settings.Invoke(delegate
+                    {
+                        InitGPUMode();
+                        screenControl.AutoScreen();
+                    });
+
+                    if (eco == 0)
+                    {
+                        await Task.Delay(TimeSpan.FromMilliseconds(3000));
+                        HardwareControl.RecreateGpuControl();
+                        Program.modeControl.SetGPUClocks(false);
+                    }
+
+                    if (AppConfig.Is("mode_reapply"))
+                    {
+                        await Task.Delay(TimeSpan.FromMilliseconds(3000));
+                        Program.modeControl.AutoPerformance();
+                    }
                 }
-
-                if (AppConfig.Is("mode_reapply"))
+                catch (Exception ex)
                 {
-                    await Task.Delay(TimeSpan.FromMilliseconds(3000));
-                    Program.modeControl.AutoPerformance();
+                    Logger.WriteLine("Error setting GPU Eco: " + ex.Message);
                 }
 
             });
