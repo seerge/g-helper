@@ -52,6 +52,8 @@ public static class AppConfig
                 catch (Exception exb)
                 {
                     Logger.WriteLine($"Broken backup config: {exb.Message} {text}");
+                    File.Copy(configFile, configFile + ".old", true);
+                    File.Copy(configFile + ".bak", configFile + ".bak.old", true);
                     Init();
                 }
             }
