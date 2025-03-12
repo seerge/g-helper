@@ -717,18 +717,30 @@ namespace GHelper.Input
             Program.toast.RunToast(fnLock ? Properties.Strings.FnLockOn : Properties.Strings.FnLockOff, ToastIcon.FnLock);
         }
 
+        public static void SetSlateMode(int status)
+        {
+            try
+            {
+                Registry.SetValue(@"HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\PriorityControl", "ConvertibleSlateMode", status, RegistryValueKind.DWord);
+                Logger.WriteLine("Setting ConvertibleSlateMode : " + status);
+            } catch (Exception ex)
+            {
+                Logger.WriteLine("Can't set ConvertibleSlateMode: " + ex.Message);
+            }
+        }
+
         public static void TabletMode()
         {
             if (AppConfig.Is("disable_tablet")) return;
 
             bool touchpadState = GetTouchpadState();
-            int keyboardConnected = Program.acpi.DeviceGet(AsusACPI.KeyboardConnected);
-            int tabletState = Program.acpi.DeviceGet(AsusACPI.TabletState);
-            bool tablet = tabletState > 0;
+            bool tabletState = Program.acpi.DeviceGet(AsusACPI.TabletState) > 0;
+            int slateState = Program.acpi.DeviceGet(AsusACPI.SlateMode);
 
-            Logger.WriteLine($"Tablet: {tabletState} | TabletCheck {keyboardConnected} | Touchpad: {touchpadState}");
+            Logger.WriteLine($"Tablet: {tabletState} | SlateMode: {slateState} | Touchpad: {touchpadState}");
 
-            if (tablet && touchpadState || !tablet && !touchpadState) ToggleTouchpad();
+            if (slateState >= 0) SetSlateMode(slateState);
+            if (tabletState && touchpadState || !tabletState && !touchpadState) ToggleTouchpad();
 
         }
 
