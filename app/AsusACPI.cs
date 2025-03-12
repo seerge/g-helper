@@ -34,6 +34,7 @@ public class AsusACPI
     const uint DSTS = 0x53545344;
     const uint DEVS = 0x53564544;
     const uint INIT = 0x54494E49;
+    const uint WDOG = 0x474F4457;
 
     public const uint UniversalControl = 0x00100021;
 
@@ -84,6 +85,7 @@ public class AsusACPI
     public const uint ScreenFHD = 0x0005001C;
 
     public const uint ScreenOptimalBrightness = 0x0005002A;
+    public const uint ScreenInit = 0x00050011; // ?
 
     public const uint DevsCPUFan = 0x00110022;
     public const uint DevsGPUFan = 0x00110023;
@@ -376,6 +378,13 @@ public class AsusACPI
     {
         byte[] args = new byte[8];
         return CallMethod(INIT, args);
+
+    }
+
+    public byte[] DeviceWatchDog()
+    {
+        byte[] args = new byte[8];
+        return CallMethod(WDOG, args);
 
     }
 
