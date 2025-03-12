@@ -536,7 +536,7 @@ public static class AppConfig
 
     public static bool HasTabletMode()
     {
-        return ContainsModel("X16") || ContainsModel("X13");
+        return ContainsModel("X16") || ContainsModel("X13") || ContainsModel("Z13");
     }
 
     public static bool IsX13()
