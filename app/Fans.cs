@@ -1050,8 +1050,8 @@ namespace GHelper
             {
                 if (chartCount > 2)
                 {
-                    int maxHeight = (int)(ControlHelper.GetDpiScale(this).Value * (chartCount * 200 + 100));
-                    Size = MinimumSize = new Size(Size.Width, Math.Min(Math.Max(MinimumSize.Height, maxHeight), Screen.PrimaryScreen.WorkingArea.Height - 50));
+                    MaximumSize = new Size(Size.Width, Screen.PrimaryScreen.WorkingArea.Height - 50);
+                    Size = MinimumSize = new Size(Size.Width, Math.Max(MinimumSize.Height, (int)(ControlHelper.GetDpiScale(this).Value * (chartCount * 200 + 100))));
                 }
                     
             }
