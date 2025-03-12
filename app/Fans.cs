@@ -780,6 +780,7 @@ namespace GHelper
 
         public void FormPosition()
         {
+
             if (Height > Program.settingsForm.Height)
             {
                 Top = Math.Max(0, Program.settingsForm.Top + Program.settingsForm.Height - Height);
@@ -1049,10 +1050,7 @@ namespace GHelper
             try
             {
                 if (chartCount > 2)
-                {
-                    MaximumSize = new Size(Size.Width, Screen.PrimaryScreen.WorkingArea.Height - 50);
                     Size = MinimumSize = new Size(Size.Width, Math.Max(MinimumSize.Height, (int)(ControlHelper.GetDpiScale(this).Value * (chartCount * 200 + 100))));
-                }
                     
             }
             catch (Exception ex)
