@@ -125,6 +125,7 @@ public class AsusACPI
 
     public const int MicMuteLed = 0x00040017;
 
+    public const int KeyboardConnected = 0x00120063;
     public const int TabletState = 0x00060077;
     public const int FnLock = 0x00100023;
 

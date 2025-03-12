@@ -722,11 +722,13 @@ namespace GHelper.Input
             if (AppConfig.Is("disable_tablet")) return;
 
             bool touchpadState = GetTouchpadState();
-            bool tabletState = Program.acpi.DeviceGet(AsusACPI.TabletState) > 0;
+            int keyboardConnected = Program.acpi.DeviceGet(AsusACPI.KeyboardConnected);
+            int tabletState = Program.acpi.DeviceGet(AsusACPI.TabletState);
+            bool tablet = tabletState > 0;
 
-            Logger.WriteLine("Tablet: " + tabletState + " Touchpad: " + touchpadState);
+            Logger.WriteLine($"Tablet: {tabletState} | TabletCheck {keyboardConnected} | Touchpad: {touchpadState}");
 
-            if (tabletState && touchpadState || !tabletState && !touchpadState) ToggleTouchpad();
+            if (tablet && touchpadState || !tablet && !touchpadState) ToggleTouchpad();
 
         }
 
