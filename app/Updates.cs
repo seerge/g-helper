@@ -272,7 +272,7 @@ namespace GHelper
                     var groups = data.GetProperty("Result").GetProperty("Obj");
 
 
-                    List<string> skipList = new() { "Armoury Crate & Aura Creator Installer", "MyASUS", "ASUS Smart Display Control", "Aura Wallpaper", "Virtual Pet", "ROG Font V1.5" };
+                    List<string> skipList = new() { "Armoury Crate & Aura Creator Installer", "MyASUS", "ASUS Smart Display Control", "Aura Wallpaper", "Virtual Pet", "Virtual Pet- Ultimate Edition", "ROG Font V1.5", "Armoury Crate Control Interface" };
                     List<DriverDownload> drivers = new();
 
                     for (int i = 0; i < groups.GetArrayLength(); i++)
