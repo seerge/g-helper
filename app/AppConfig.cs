@@ -708,7 +708,7 @@ public static class AppConfig
     // 2024 Models support Dynamic Lighting
     public static bool IsDynamicLighting()
     {
-        return IsSlash() || IsIntelHX() || IsTUF();
+        return IsSlash() || IsIntelHX() || IsTUF() || IsZ13();
     }
 
     public static bool IsForceMiniled()
