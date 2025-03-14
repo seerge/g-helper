@@ -705,6 +705,11 @@ namespace GHelper.USB
             static int tempWarm = AppConfig.Get("temp_warm", 65);
             static int tempHot = AppConfig.Get("temp_hot", 90);
 
+            static Color colorFreeze = ColorTranslator.FromHtml(AppConfig.GetString("color_freeze", "#0000FF")); 
+            static Color colorCold = ColorTranslator.FromHtml(AppConfig.GetString("color_cold", "#008000"));
+            static Color colorWarm = ColorTranslator.FromHtml(AppConfig.GetString("color_warm", "#FFFF00"));
+            static Color colorHot = ColorTranslator.FromHtml(AppConfig.GetString("color_hot", "#FF0000"));
+
             public static void ApplyGPUColor()
             {
                 if ((AuraMode)AppConfig.Get("aura_mode") != AuraMode.GPUMODE) return;
@@ -733,14 +738,12 @@ namespace GHelper.USB
             public static void ApplyHeatmap(bool init = false)
             {
                 float cpuTemp = (float)HardwareControl.GetCPUTemp();
-                Color color;
+                Color color = colorFreeze;
 
-                //Debug.WriteLine(cpuTemp);
-
-                if (cpuTemp < tempCold) color = ColorUtils.GetWeightedAverage(Color.Blue, Color.Green, ((float)cpuTemp - tempFreeze) / (tempCold - tempFreeze));
-                else if (cpuTemp < tempWarm) color = ColorUtils.GetWeightedAverage(Color.Green, Color.Yellow, ((float)cpuTemp - tempCold) / (tempWarm - tempCold));
-                else if (cpuTemp < tempHot) color = ColorUtils.GetWeightedAverage(Color.Yellow, Color.Red, ((float)cpuTemp - tempWarm) / (tempHot - tempWarm));
-                else color = Color.Red;
+                if (cpuTemp < tempCold) color = ColorUtils.GetWeightedAverage(colorFreeze, colorCold, ((float)cpuTemp - tempFreeze) / (tempCold - tempFreeze));
+                else if (cpuTemp < tempWarm) color = ColorUtils.GetWeightedAverage(colorCold, colorWarm, ((float)cpuTemp - tempCold) / (tempWarm - tempCold));
+                else if (cpuTemp < tempHot) color = ColorUtils.GetWeightedAverage(colorWarm, colorHot, ((float)cpuTemp - tempWarm) / (tempHot - tempWarm));
+                else color = colorHot;
 
                 ApplyDirect(color, init);
             }
