@@ -1,4 +1,5 @@
-﻿using System.Runtime.InteropServices;
+﻿using Microsoft.Win32;
+using System.Runtime.InteropServices;
 
 namespace GHelper.Mode
 {
@@ -332,18 +333,17 @@ namespace GHelper.Mode
 
         public static bool GetBatterySaverStatus()
         {
-            SystemPowerStatus sps = new SystemPowerStatus();
             try
             {
-                GetSystemPowerStatus(sps);
-                return (sps.SystemStatusFlag > 0);
-            }
-            catch (Exception ex)
+                var status = (int?)Registry.GetValue(@"HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Power", "EnergySaverState", 0);
+                return status == 1;
+            } catch (Exception e)
             {
+                Logger.WriteLine("Can't check EnergySaverState" + e.Message);
                 return false;
             }
-
         }
+
 
     }
 }
