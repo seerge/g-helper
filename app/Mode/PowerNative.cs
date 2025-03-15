@@ -335,9 +335,16 @@ namespace GHelper.Mode
         {
             try
             {
-                var status = (int?)Registry.GetValue(@"HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Power", "EnergySaverState", 0);
-                return status == 1;
-            } catch (Exception e)
+                var status = Registry.GetValue(@"HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Power", "EnergySaverState", null);
+                if (status == null)
+                {
+                    SystemPowerStatus sps = new SystemPowerStatus();
+                    GetSystemPowerStatus(sps);
+                    return (sps.SystemStatusFlag > 0);
+                }
+                return (int)status == 1;
+            }
+            catch (Exception e)
             {
                 Logger.WriteLine("Can't check EnergySaverState" + e.Message);
                 return false;
