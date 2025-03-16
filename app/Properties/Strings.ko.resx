@@ -726,25 +726,25 @@
     <value>서비스 중지 중</value>
   </data>
   <data name="ToggleAura" xml:space="preserve">
-    <value>Aura 전환 키</value>
+    <value>Aura 전환</value>
   </data>
   <data name="ToggleClamshellMode" xml:space="preserve">
-    <value>클램쉘 모드 자동 전환</value>
+    <value>클램셸 모드 자동 전환</value>
   </data>
   <data name="ToggleFnLock" xml:space="preserve">
-    <value>Fn-Lock 전환 키</value>
+    <value>Fn-Lock 전환</value>
   </data>
   <data name="ToggleMiniled" xml:space="preserve">
-    <value>Miniled 전환 키 (지원하는 기기만)</value>
+    <value>Miniled 전환 (지원하는 기기만)</value>
   </data>
   <data name="ToggleScreen" xml:space="preserve">
-    <value>화면 전환 키</value>
+    <value>화면 전환</value>
   </data>
   <data name="ToggleTouchscreen" xml:space="preserve">
-    <value>Toggle Touchscreen</value>
+    <value>터치스크린 전환</value>
   </data>
   <data name="Touchscreen" xml:space="preserve">
-    <value>Touchscreen</value>
+    <value>터치스크린</value>
   </data>
   <data name="Turbo" xml:space="preserve">
     <value>터보</value>
@@ -783,7 +783,7 @@
     <value>HDR이 켜져 있을 때에는 비주얼 모드를 사용할 수 없습니다.</value>
   </data>
   <data name="VisualModesScreen" xml:space="preserve">
-    <value>노트북의 화면이 꺼져 있을 때에는 비주얼 모드를 사용할 수 없습니다.</value>
+    <value>노트북 화면이 꺼져 있을 때는 비주얼 모드 사용 불가</value>
   </data>
   <data name="VolumeDown" xml:space="preserve">
     <value>볼륨 작게</value>
@@ -801,7 +801,7 @@
     <value>확대/축소</value>
   </data>
   <data name="Donate" xml:space="preserve">
-    <value>Donate</value>
+    <value>후원</value>
   </data>
   <data name="Legend" xml:space="preserve">
     <value>Legend</value>
@@ -811,7 +811,7 @@
     <comment>Can't check local version</comment>
   </data>
   <data name="LegendRed" xml:space="preserve">
-    <value>Update Available</value>
+    <value>업데이트 이용 가능</value>
     <comment>Update Available</comment>
   </data>
   <data name="LegendGreen" xml:space="preserve">
