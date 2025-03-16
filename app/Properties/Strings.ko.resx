@@ -133,7 +133,7 @@
     <value>GPU 사용량이 높습니다. 비활성화하시겠습니까?</value>
   </data>
   <data name="AlertDGPUTitle" xml:space="preserve">
-    <value>에코 모드</value>
+    <value>Eco 모드</value>
   </data>
   <data name="AlertUltimateOff" xml:space="preserve">
     <value>Ultimate 모드를 끄기 위해서는 다시 시작해야 합니다.</value>
@@ -175,7 +175,7 @@
     <value>GPU에 할당된 메모리</value>
   </data>
   <data name="AsusServicesRunning" xml:space="preserve">
-    <value>실행중인 Asus 서비스</value>
+    <value>실행 중인 Asus 서비스</value>
   </data>
   <data name="AuraBatteryState" xml:space="preserve">
     <value>배터리 상태</value>
@@ -355,7 +355,7 @@
     <value>방전 중</value>
   </data>
   <data name="DownloadColorProfiles" xml:space="preserve">
-    <value>색 프로필 다운로드</value>
+    <value>색상 프로필 다운로드</value>
   </data>
   <data name="DownloadUpdate" xml:space="preserve">
     <value>다운로드</value>
@@ -367,13 +367,13 @@
     <value>배터리 절약을 위해 dGPU 비활성화</value>
   </data>
   <data name="EcoMode" xml:space="preserve">
-    <value>에코</value>
+    <value>Eco</value>
   </data>
   <data name="EnableGPUOnShutdown" xml:space="preserve">
-    <value>종료 시 GPU 활성화 (에코 모드 문제 방지)</value>
+    <value>종료 시 GPU 활성화 (Eco 모드 문제 방지)</value>
   </data>
   <data name="EnableOptimusText" xml:space="preserve">
-    <value>NVIDIA 제어판에서 디스플레이 모드가 Optimus로 설정되지 않은 상태에서 에코 모드로 전환하여 dGPU를 비활성화하면 다시 시작하기 전까지 밝기 조절에 문제가 발생할 수 있습니다.
+    <value>NVIDIA 제어판에서 디스플레이 모드가 Optimus로 설정되지 않은 상태에서 Eco 모드로 전환하여 dGPU를 비활성화하면 다시 시작하기 전까지 밝기 조절에 문제가 발생할 수 있습니다.
 
 계속 진행하시겠습니까?</value>
   </data>
@@ -477,13 +477,13 @@
     <value>프로필 가져오기</value>
   </data>
   <data name="KeyBindings" xml:space="preserve">
-    <value>키 설정</value>
+    <value>키 바인딩</value>
   </data>
   <data name="Keyboard" xml:space="preserve">
     <value>키보드</value>
   </data>
   <data name="KillGpuApps" xml:space="preserve">
-    <value>에코 모드로 전환 시 GPU를 사용하는 모든 앱 중지</value>
+    <value>Eco 모드로 전환 시 GPU를 사용하는 모든 앱 중지</value>
   </data>
   <data name="LaptopBacklight" xml:space="preserve">
     <value>백라이트</value>
@@ -624,7 +624,7 @@
     <value>최적화</value>
   </data>
   <data name="OptimizedGPUTooltip" xml:space="preserve">
-    <value>배터리 사용 중에만 에코 모드로 전환</value>
+    <value>배터리 사용 중에만 Eco 모드로 전환</value>
   </data>
   <data name="OptimizedUSBC" xml:space="preserve">
     <value>최적화 모드에서 PD 충전 시 GPU 비활성화</value>
@@ -669,7 +669,7 @@
     <value>초기화</value>
   </data>
   <data name="RestartGPU" xml:space="preserve">
-    <value>dGPU가 사용중이기 때문에 에코 모드로 전환할 수 없습니다. 장치 관리자에서 dGPU를 재시작하시겠습니까?</value>
+    <value>dGPU가 사용중이기 때문에 Eco 모드로 전환할 수 없습니다. 장치 관리자에서 dGPU를 재시작하시겠습니까?</value>
   </data>
   <data name="RPM" xml:space="preserve">
     <value>RPM</value>
@@ -702,10 +702,10 @@
     <value>절전</value>
   </data>
   <data name="StandardGPUTooltip" xml:space="preserve">
-    <value>Standard 모드에서 dGPU 켜기</value>
+    <value>표준 모드에서 dGPU 켜기</value>
   </data>
   <data name="StandardMode" xml:space="preserve">
-    <value>Standard</value>
+    <value>표준</value>
   </data>
   <data name="Start" xml:space="preserve">
     <value>시작</value>
