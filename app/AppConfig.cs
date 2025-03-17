@@ -622,7 +622,7 @@ public static class AppConfig
 
     public static bool IsResetRequired()
     {
-        return ContainsModel("FA507XV");
+        return ContainsModel("GA403") || ContainsModel("FA507XV");
     }
 
     public static bool IsFanRequired()
