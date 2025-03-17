@@ -130,7 +130,7 @@
     <value>Redémarrer maintenant ?</value>
   </data>
   <data name="AlertDGPU" xml:space="preserve">
-    <value>Le GPU semble être surchargé, voulez vous le désactiver ?</value>
+    <value>Le GPU semble être surchargé, voulez-vous le désactiver ?</value>
   </data>
   <data name="AlertDGPUTitle" xml:space="preserve">
     <value>Mode Éco</value>
@@ -319,7 +319,7 @@
     <value>Calibrer</value>
   </data>
   <data name="Charging" xml:space="preserve">
-    <value>Chargement en cours</value>
+    <value>Taux de charge </value>
   </data>
   <data name="Color" xml:space="preserve">
     <value>Couleur</value>
@@ -352,7 +352,7 @@
     <value>Désactiver l'overdrive de l'écran</value>
   </data>
   <data name="Discharging" xml:space="preserve">
-    <value>Taux décharge </value>
+    <value>Taux de décharge </value>
   </data>
   <data name="DownloadColorProfiles" xml:space="preserve">
     <value>Télécharger les profils de couleurs</value>
@@ -801,8 +801,7 @@ Voulez-vous continuer ?</value>
     <value>Zoom</value>
   </data>
   <data name="Donate" xml:space="preserve">
-    <value>Faire un don
-</value>
+    <value>Faire un don</value>
   </data>
   <data name="Legend" xml:space="preserve">
     <value>Légende</value>
