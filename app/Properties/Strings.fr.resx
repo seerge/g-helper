@@ -280,7 +280,7 @@
     <value>Limite de charge </value>
   </data>
   <data name="BatteryHealth" xml:space="preserve">
-    <value>Santé de la batterie</value>
+    <value>Santé de la batterie </value>
   </data>
   <data name="BatteryLimitFull" xml:space="preserve">
     <value>Charge unique à 100%</value>
@@ -630,7 +630,7 @@ Voulez-vous continuer ?</value>
     <value>Garder le GPU désactivé lorsque branché via USB-C en mode Optimisé</value>
   </data>
   <data name="Other" xml:space="preserve">
-    <value>Autre</value>
+    <value>Autres</value>
   </data>
   <data name="Overdrive" xml:space="preserve">
     <value>Overdrive</value>
@@ -801,7 +801,8 @@ Voulez-vous continuer ?</value>
     <value>Zoom</value>
   </data>
   <data name="Donate" xml:space="preserve">
-    <value>Faire un don</value>
+    <value>Faire un don
+</value>
   </data>
   <data name="Legend" xml:space="preserve">
     <value>Légende</value>
