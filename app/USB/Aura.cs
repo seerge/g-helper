@@ -710,6 +710,10 @@ namespace GHelper.USB
             static Color colorWarm = ColorTranslator.FromHtml(AppConfig.GetString("color_warm", "#FFFF00"));
             static Color colorHot = ColorTranslator.FromHtml(AppConfig.GetString("color_hot", "#FF0000"));
 
+            static Color colorUltimate = ColorTranslator.FromHtml(AppConfig.GetString("color_ultimate", "#FF0000"));
+            static Color colorStandard = ColorTranslator.FromHtml(AppConfig.GetString("color_cold", "#FFFF00"));
+            static Color colorEco = ColorTranslator.FromHtml(AppConfig.GetString("color_hot", "#008000"));
+
             public static void ApplyGPUColor()
             {
                 if ((AuraMode)AppConfig.Get("aura_mode") != AuraMode.GPUMODE) return;
@@ -719,13 +723,13 @@ namespace GHelper.USB
                 switch (GPUModeControl.gpuMode)
                 {
                     case AsusACPI.GPUModeUltimate:
-                        color = Color.Red;
+                        color = colorUltimate;
                         break;
                     case AsusACPI.GPUModeEco:
-                        color = Color.Green;
+                        color = colorEco;
                         break;
                     default:
-                        color = Color.Yellow;
+                        color = colorStandard;
                         break;
                 }
 
