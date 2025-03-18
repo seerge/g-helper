@@ -711,8 +711,8 @@ namespace GHelper.USB
             static Color colorHot = ColorTranslator.FromHtml(AppConfig.GetString("color_hot", "#FF0000"));
 
             static Color colorUltimate = ColorTranslator.FromHtml(AppConfig.GetString("color_ultimate", "#FF0000"));
-            static Color colorStandard = ColorTranslator.FromHtml(AppConfig.GetString("color_cold", "#FFFF00"));
-            static Color colorEco = ColorTranslator.FromHtml(AppConfig.GetString("color_hot", "#008000"));
+            static Color colorStandard = ColorTranslator.FromHtml(AppConfig.GetString("color_standard", "#FFFF00"));
+            static Color colorEco = ColorTranslator.FromHtml(AppConfig.GetString("color_eco", "#008000"));
 
             public static void ApplyGPUColor()
             {
