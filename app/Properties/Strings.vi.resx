@@ -127,7 +127,7 @@
     <value>Restart your device to apply changes</value>
   </data>
   <data name="AlertAPUMemoryRestartTitle" xml:space="preserve">
-    <value>Restart now?</value>
+    <value>Khởi động lại ngay</value>
   </data>
   <data name="AlertDGPU" xml:space="preserve">
     <value>Có vẻ như GPU rời đang được sử dụng nhiều, tắt nó?</value>
