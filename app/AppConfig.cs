@@ -725,5 +725,9 @@ public static class AppConfig
         return Is("auto_status_led");
     }
 
+    public static bool NoFnC()
+    {
+        return ContainsModel("FX507VU");
+    }
 
 }

@@ -188,6 +188,11 @@ namespace GHelper
             panelSettings.AccessibleName = Properties.Strings.ExtraSettings;
             numericHibernateAfter.AccessibleName = Properties.Strings.HibernateAfter;
 
+            if (AppConfig.NoFnC())
+            {
+                labelFNC.Visible = comboFNC.Visible = textFNC.Visible = false;
+            }
+
             if (AppConfig.IsARCNM())
             {
                 labelM3.Text = "FN+F6";
