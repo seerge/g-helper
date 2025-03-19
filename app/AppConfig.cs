@@ -398,7 +398,7 @@ public static class AppConfig
 
     public static bool IsVivoZenPro()
     {
-        return ContainsModel("Vivobook") || ContainsModel("Zenbook") || ContainsModel("ProArt");
+        return IsProArt() || IsVivoZenbook();
     }
 
     public static bool IsHardwareFnLock()
