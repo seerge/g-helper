@@ -278,7 +278,7 @@ namespace GHelper
             if (startCount >= ((click < 10) ? 10 : click + 50))
             {
                 buttonDonate.BorderColor = colorTurbo;
-                buttonDonate.Badge = Math.Min(9, Math.Max(1, (startCount - click) / 50));
+                buttonDonate.Badge = Math.Clamp((startCount - click) / 50, 1, 9);
             }
 
             labelDynamicLighting.Click += LabelDynamicLighting_Click;
