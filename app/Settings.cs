@@ -273,7 +273,7 @@ namespace GHelper
 
             buttonDonate.Click += ButtonDonate_Click;
 
-            int click = 0;  AppConfig.Get("donate_click");
+            int click = AppConfig.Get("donate_click");
             int startCount = AppConfig.Get("start_count");
             if (startCount >= ((click < 10) ? 10 : click + 50))
             {
