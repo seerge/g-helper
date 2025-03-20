@@ -33,6 +33,7 @@ public static class HardwareControl
     public static int? gpuUse;
 
     static long lastUpdate;
+    static bool isNoCPUTemp = AppConfig.Is("no_cpu_temp");
 
     static bool _chargeWatt = AppConfig.Is("charge_watt");
     public static bool chargeWatt
@@ -185,7 +186,7 @@ public static class HardwareControl
 
         cpuTemp = Program.acpi.DeviceGet(AsusACPI.Temp_CPU);
 
-        if (cpuTemp < 0) try
+        if (cpuTemp < 0 || isNoCPUTemp) try
             {
                 using (var ct = new PerformanceCounter("Thermal Zone Information", "Temperature", @"\_TZ.THRM", true))
                 {

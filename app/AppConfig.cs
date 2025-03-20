@@ -529,6 +529,11 @@ public static class AppConfig
         return ContainsModel("Z13");
     }
 
+    public static bool IsNoCPUTemp()
+    {
+        return ContainsModel("PZ13");
+    }
+
     public static bool IsS17()
     {
         return ContainsModel("S17");
