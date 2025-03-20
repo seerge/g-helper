@@ -52,8 +52,8 @@ namespace GHelper.UI
             }
         }
 
-        private bool badge = false;
-        public bool Badge
+        private int badge = 0;
+        public int Badge
         {
             get { return badge; }
             set
@@ -109,12 +109,14 @@ namespace GHelper.UI
                 pevent.Graphics.DrawPath(penBorder, pathBorder);
             }
 
-            if (badge)
+            if (badge > 0)
             {
                 using (Brush brush = new SolidBrush(borderColor))
                 {
-                    var radius = ratio * 10;
-                    pevent.Graphics.FillEllipse(brush, rectSurface.Width - rectSurface.Height / 2 -  radius, rectSurface.Height / 2 - radius, radius + radius, radius + radius);
+                    var radius = ratio * 14;
+                    var badgeRect = new Rectangle((int)(rectSurface.Width - rectSurface.Height / 2 - radius), (int)(rectSurface.Height / 2 - radius), (int)(radius + radius), (int)(radius + radius));
+                    pevent.Graphics.FillEllipse(brush, badgeRect);
+                    TextRenderer.DrawText(pevent.Graphics, badge.ToString(), new Font(Font.FontFamily, (float)0.75 * Font.Size, FontStyle.Bold), badgeRect, Color.White, TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter | TextFormatFlags.NoPadding);
                 }
             }
 
