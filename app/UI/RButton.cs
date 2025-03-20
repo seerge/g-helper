@@ -116,7 +116,7 @@ namespace GHelper.UI
                     var radius = ratio * 14;
                     var badgeRect = new Rectangle((int)(rectSurface.Width - rectSurface.Height / 2 - radius), (int)(rectSurface.Height / 2 - radius), (int)(radius + radius), (int)(radius + radius));
                     pevent.Graphics.FillEllipse(brush, badgeRect);
-                    TextRenderer.DrawText(pevent.Graphics, badge.ToString(), new Font(Font.FontFamily, (float)0.75 * Font.Size, FontStyle.Bold), badgeRect, Color.White, TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter | TextFormatFlags.NoPadding);
+                    TextRenderer.DrawText(pevent.Graphics, badge.ToString(), new Font(Font.FontFamily, (float)0.8 * Font.Size, FontStyle.Bold), badgeRect, Color.White, TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter | TextFormatFlags.NoPadding);
                 }
             }
 
