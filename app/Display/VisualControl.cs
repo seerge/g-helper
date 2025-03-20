@@ -268,55 +268,58 @@ namespace GHelper.Display
             if ((mode == SplendidCommand.Default || mode == SplendidCommand.VivoNormal) && init) return; // Skip default setting on init
             if (mode == SplendidCommand.Disabled && !RyzenControl.IsAMD() && init) return; // Skip disabled setting for Intel devices
 
-            if (!forceVisual && ScreenCCD.GetHDRStatus(true)) return;
-            if (!forceVisual && ScreenNative.GetRefreshRate(ScreenNative.FindLaptopScreen(true)) < 0) return;
-
             AppConfig.Set("visual", (int)mode);
             AppConfig.Set("color_temp", whiteBalance);
 
-            if (whiteBalance != DefaultColorTemp && !init) ProcessHelper.RunAsAdmin();
-
-            int? balance = null;
-            int command = 0;
-
-            switch (mode)
+            Task.Run(async () =>
             {
-                case SplendidCommand.Disabled:
-                    command = 2;
-                    break;
-                case SplendidCommand.Eyecare:
-                    balance = 4;
-                    break;
-                case SplendidCommand.VivoNormal:
-                case SplendidCommand.VivoVivid:
-                    balance = null;
-                    break;
-                case SplendidCommand.VivoEycare:
-                    balance = Math.Abs(whiteBalance - 50) * 4 / 50;
-                    break;
-                default:
-                    balance = whiteBalance;
-                    break;
-            }
+                if (!forceVisual && ScreenCCD.GetHDRStatus(true)) return;
+                if (!forceVisual && ScreenNative.GetRefreshRate(ScreenNative.FindLaptopScreen(true)) < 0) return;
 
-            int result = RunSplendid(mode, command, balance);
-            if (result == 0) return;
-            if (result == -1)
-            {
-                Logger.WriteLine("Visual mode setting refused, reverting.");
-                RunSplendid(SplendidCommand.Default, 0, DefaultColorTemp);
-                if (ProcessHelper.IsUserAdministrator() && _download)
+                //if (whiteBalance != DefaultColorTemp && !init) ProcessHelper.RunAsAdmin();
+
+                int? balance = null;
+                int command = 0;
+
+                switch (mode)
                 {
-                    _download = false;
-                    ColorProfileHelper.InstallProfile();
+                    case SplendidCommand.Disabled:
+                        command = 2;
+                        break;
+                    case SplendidCommand.Eyecare:
+                        balance = 4;
+                        break;
+                    case SplendidCommand.VivoNormal:
+                    case SplendidCommand.VivoVivid:
+                        balance = null;
+                        break;
+                    case SplendidCommand.VivoEycare:
+                        balance = Math.Abs(whiteBalance - 50) * 4 / 50;
+                        break;
+                    default:
+                        balance = whiteBalance;
+                        break;
                 }
-            }
-            if (result == 1 && _init)
-            {
-                _init = false;
-                RunSplendid(SplendidCommand.Init);
-                RunSplendid(mode, 0, balance);
-            }
+
+                int result = RunSplendid(mode, command, balance);
+                if (result == 0) return;
+                if (result == -1)
+                {
+                    Logger.WriteLine("Visual mode setting refused, reverting.");
+                    RunSplendid(SplendidCommand.Default, 0, DefaultColorTemp);
+                    if (ProcessHelper.IsUserAdministrator() && _download)
+                    {
+                        _download = false;
+                        ColorProfileHelper.InstallProfile();
+                    }
+                }
+                if (result == 1 && _init)
+                {
+                    _init = false;
+                    RunSplendid(SplendidCommand.Init);
+                    RunSplendid(mode, 0, balance);
+                }
+            });
         }
 
         private static string GetSplendidPath()
