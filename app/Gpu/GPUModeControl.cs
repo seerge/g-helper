@@ -370,19 +370,22 @@ namespace GHelper.Gpu
 
         public static bool IsHibernationEnabled()
         {
-            const string keyPath = @"SYSTEM\CurrentControlSet\Control\Power";
-            const string valueName = "HibernateEnabled";
-
-            using (RegistryKey key = Registry.LocalMachine.OpenSubKey(keyPath))
+            try
             {
-                if (key != null)
+                using (RegistryKey key = Registry.LocalMachine.OpenSubKey(@"SYSTEM\CurrentControlSet\Control\Power"))
                 {
-                    object value = key.GetValue(valueName);
-                    if (value is int intValue)
+                    if (key != null)
                     {
-                        return intValue != 0;
+                        object value = key.GetValue("HibernateEnabled");
+                        if (value is int intValue)
+                        {
+                            return intValue != 0;
+                        }
                     }
                 }
+            } catch (Exception ex)
+            {
+                Logger.WriteLine("Error checking hibernation status: " + ex.Message);
             }
             return true;
         }
