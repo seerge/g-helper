@@ -274,10 +274,11 @@ namespace GHelper
             buttonDonate.Click += ButtonDonate_Click;
 
             int click = AppConfig.Get("donate_click");
-            if (AppConfig.Get("start_count") >= ((click < 10) ? 10 : click + 50))
+            int startCount = AppConfig.Get("start_count");
+            if (startCount >= ((click < 10) ? 10 : click + 50))
             {
                 buttonDonate.BorderColor = colorTurbo;
-                buttonDonate.Badge = true;
+                buttonDonate.Badge = Math.Clamp((startCount - click) / 50, 1, 9);
             }
 
             labelDynamicLighting.Click += LabelDynamicLighting_Click;
@@ -295,7 +296,7 @@ namespace GHelper
         private void ButtonDonate_Click(object? sender, EventArgs e)
         {
             AppConfig.Set("donate_click", AppConfig.Get("start_count"));
-            buttonDonate.Badge = false;
+            buttonDonate.Badge = 0;
             Process.Start(new ProcessStartInfo("https://g-helper.com/support") { UseShellExecute = true });
         }
 

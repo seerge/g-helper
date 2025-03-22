@@ -496,7 +496,7 @@ public static class AppConfig
 
     public static bool IsPossible4ZoneRGB()
     {
-        return ContainsModel("G614JI_") || ContainsModel("G614JV_") || ContainsModel("G614JZ") || IsStrixLimitedRGB();
+        return ContainsModel("G614JI_") || ContainsModel("G614JV_") || ContainsModel("G614JZ") || ContainsModel("G614JU") || IsStrixLimitedRGB();
     }
 
     public static bool Is4ZoneRGB()
@@ -527,6 +527,11 @@ public static class AppConfig
     public static bool IsZ13()
     {
         return ContainsModel("Z13");
+    }
+
+    public static bool IsPZ13()
+    {
+        return ContainsModel("PZ13");
     }
 
     public static bool IsS17()

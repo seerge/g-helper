@@ -341,7 +341,6 @@ namespace GHelper
             buttonRename.Activated = false;
             buttonRename.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             buttonRename.BackColor = SystemColors.ControlLight;
-            buttonRename.Badge = false;
             buttonRename.BorderColor = Color.Transparent;
             buttonRename.BorderRadius = 2;
             buttonRename.FlatStyle = FlatStyle.Flat;
@@ -359,7 +358,6 @@ namespace GHelper
             buttonRemove.Activated = false;
             buttonRemove.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             buttonRemove.BackColor = SystemColors.ControlLight;
-            buttonRemove.Badge = false;
             buttonRemove.BorderColor = Color.Transparent;
             buttonRemove.BorderRadius = 2;
             buttonRemove.FlatStyle = FlatStyle.Flat;
@@ -377,7 +375,6 @@ namespace GHelper
             buttonAdd.Activated = false;
             buttonAdd.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             buttonAdd.BackColor = SystemColors.ControlLight;
-            buttonAdd.Badge = false;
             buttonAdd.BorderColor = Color.Transparent;
             buttonAdd.BorderRadius = 2;
             buttonAdd.FlatStyle = FlatStyle.Flat;
@@ -444,7 +441,6 @@ namespace GHelper
             buttonCalibrate.Activated = false;
             buttonCalibrate.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             buttonCalibrate.BackColor = SystemColors.ControlLight;
-            buttonCalibrate.Badge = false;
             buttonCalibrate.BorderColor = Color.Transparent;
             buttonCalibrate.BorderRadius = 2;
             buttonCalibrate.FlatStyle = FlatStyle.Flat;
@@ -487,7 +483,6 @@ namespace GHelper
             buttonReset.Activated = false;
             buttonReset.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             buttonReset.BackColor = SystemColors.ControlLight;
-            buttonReset.Badge = false;
             buttonReset.BorderColor = Color.Transparent;
             buttonReset.BorderRadius = 2;
             buttonReset.FlatStyle = FlatStyle.Flat;
@@ -590,7 +585,6 @@ namespace GHelper
             // 
             buttonApplyAdvanced.Activated = false;
             buttonApplyAdvanced.BackColor = SystemColors.ControlLight;
-            buttonApplyAdvanced.Badge = false;
             buttonApplyAdvanced.BorderColor = Color.Transparent;
             buttonApplyAdvanced.BorderRadius = 2;
             buttonApplyAdvanced.Dock = DockStyle.Top;
@@ -846,7 +840,6 @@ namespace GHelper
             buttonDownload.AutoSize = true;
             buttonDownload.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             buttonDownload.BackColor = SystemColors.ControlLight;
-            buttonDownload.Badge = false;
             buttonDownload.BorderColor = Color.Transparent;
             buttonDownload.BorderRadius = 2;
             buttonDownload.Dock = DockStyle.Top;
@@ -1631,7 +1624,6 @@ namespace GHelper
             // 
             buttonAdvanced.Activated = false;
             buttonAdvanced.BackColor = SystemColors.ControlLight;
-            buttonAdvanced.Badge = false;
             buttonAdvanced.BorderColor = Color.Transparent;
             buttonAdvanced.BorderRadius = 2;
             buttonAdvanced.Dock = DockStyle.Fill;
@@ -1650,7 +1642,6 @@ namespace GHelper
             // 
             buttonGPU.Activated = false;
             buttonGPU.BackColor = SystemColors.ControlLight;
-            buttonGPU.Badge = false;
             buttonGPU.BorderColor = Color.Transparent;
             buttonGPU.BorderRadius = 2;
             buttonGPU.Dock = DockStyle.Fill;
@@ -1669,7 +1660,6 @@ namespace GHelper
             // 
             buttonCPU.Activated = false;
             buttonCPU.BackColor = SystemColors.ControlLight;
-            buttonCPU.Badge = false;
             buttonCPU.BorderColor = Color.Transparent;
             buttonCPU.BorderRadius = 2;
             buttonCPU.Dock = DockStyle.Fill;

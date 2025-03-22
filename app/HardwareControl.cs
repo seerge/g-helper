@@ -33,6 +33,7 @@ public static class HardwareControl
     public static int? gpuUse;
 
     static long lastUpdate;
+    static bool isPZ13 = AppConfig.IsPZ13();
 
     static bool _chargeWatt = AppConfig.Is("charge_watt");
     public static bool chargeWatt
@@ -178,11 +179,11 @@ public static class HardwareControl
 
     public static float? GetCPUTemp()
     {
-
         var last = DateTimeOffset.Now.ToUnixTimeSeconds();
         if (Math.Abs(last - lastUpdate) < 2) return cpuTemp;
         lastUpdate = last;
 
+        if (isPZ13) return (float)GetCPUTempWMI();
         cpuTemp = Program.acpi.DeviceGet(AsusACPI.Temp_CPU);
 
         if (cpuTemp < 0) try
@@ -199,6 +200,28 @@ public static class HardwareControl
 
 
         return cpuTemp;
+    }
+
+    static double GetCPUTempWMI()
+    {
+        try
+        {
+            string wmiNamespace = @"root\WMI";
+            string wmiQuery = @"SELECT * FROM MSAcpi_ThermalZoneTemperature WHERE InstanceName = 'ACPI\\QCOM0C5A\\1_0'";  // ACPI\\ThermalZone\\THRM_0
+            using (ManagementObjectSearcher searcher = new ManagementObjectSearcher(wmiNamespace, wmiQuery))
+            {
+                foreach (ManagementObject obj in searcher.Get())
+                {
+                    double tempKelvin = Convert.ToDouble(obj["CurrentTemperature"]);
+                    return (tempKelvin / 10) - 273.15;
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            //Logger.WriteLine("Error retrieving temperature: " + ex.Message);
+        }
+        return -1;
     }
 
     public static float? GetGPUTemp()
