@@ -643,11 +643,9 @@ namespace GHelper
         {
             try
             {
-                int caffeinatedDuration = AppConfig.Get("caffeinated_duration", Caffeinated.CustomCaffeinatedDuration);
-                if (caffeinatedDuration < 0 || caffeinatedDuration > numericCaffeinatedDuration.Maximum)
-                    caffeinatedDuration = Caffeinated.CustomCaffeinatedDuration;
-
-                numericCaffeinatedDuration.Value = caffeinatedDuration;
+                // Default Duration of 8 hours (480 minutes) of no sleep
+                int caffeinateDuration = AppConfig.Get("caffeinated_duration", 480);
+                numericCaffeinatedDuration.Value = caffeinateDuration;
                 numericCaffeinatedDuration.ValueChanged += NumericCaffeinatedDuration_ValueChanged;
             }
             catch (Exception ex)

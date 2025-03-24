@@ -1675,12 +1675,13 @@ namespace GHelper
             numericCaffeinatedDuration.Increment = new decimal(new int[] { 5, 0, 0, 0 });
             numericCaffeinatedDuration.Location = new Point(409, 3);
             numericCaffeinatedDuration.Margin = new Padding(2);
-            numericCaffeinatedDuration.Maximum = new decimal(new int[] { 3000000, 0, 0, 0 });
+            numericCaffeinatedDuration.Maximum = new decimal(new int[] { 10080, 0, 0, 0 });
             numericCaffeinatedDuration.Name = "numericCaffeinatedDuration";
             numericCaffeinatedDuration.Size = new Size(76, 23);
             numericCaffeinatedDuration.TabIndex = 46;
             numericCaffeinatedDuration.Unit = "min";
             numericCaffeinatedDuration.UnitFirst = false;
+            numericCaffeinatedDuration.Value = new decimal(new int[] { 480, 0, 0, 0 });
             // 
             // labelCaffeinatedDuration
             // 

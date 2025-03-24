@@ -2003,7 +2003,9 @@ namespace GHelper
             //Logger.WriteLine("" + Caffeinated.CustomCaffeinatedDuration);
 
             Caffeinated.Toggle();
-            Logger.WriteLine("Caffeinate " + (Caffeinated.IsActive ? "Activated" : "Deactivated"));
+            Logger.WriteLine("Caffeinate " + (Caffeinated.IsActive ?
+                "Activated: " + Caffeinated.GetStatus() :
+                "Deactivated"));
         }
 
         private void UpdateCaffeinatedIcon(bool isActive)
