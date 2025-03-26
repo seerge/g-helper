@@ -1962,45 +1962,22 @@ namespace GHelper
             }
         }
 
-        private async Task TestCaffeinated()
-        {
-            const int testDurationMinutes = 1; // Test with 1 minute
-            const int totalMonitoringTimeSeconds = 80; // Monitor slightly longer than the test duration
-            const int checkIntervalSeconds = 5; // Check every 5 seconds
-            AppConfig.Set("caffeinated_duration", testDurationMinutes);
-
-            // Activate caffeinate
-            Caffeinated.Toggle();
-            Logger.WriteLine($"Is active: {Caffeinated.IsActive}");
-            Logger.WriteLine($"Initial status: {Caffeinated.GetStatus()}");
-
-            // Monitor the status until timer completes or we reach maximum monitoring time
-            int elapsedTime = 0;
-            bool completed = false;
-
-            while (elapsedTime < totalMonitoringTimeSeconds && !completed)
-            {
-                await Task.Delay(checkIntervalSeconds * 1000);
-                elapsedTime += checkIntervalSeconds;
-
-                string status = Caffeinated.GetStatus();
-                Logger.WriteLine($"Status after {elapsedTime} seconds: {status}");
-
-                // Check if the status indicates the timer has completed
-                if (!Caffeinated.IsActive || status.Contains("Sleep allowed"))
-                {
-                    Logger.WriteLine($"Timer completed after approximately {elapsedTime} seconds");
-                    //completed = true;
-                }
-            }
-
-            // Ensure we deactivate in case the timer hasn't completed yet
-            Logger.WriteLine($"Final status - Is active: {Caffeinated.IsActive}");
-        }
-
         private void ButtonFnLock_Click(object? sender, EventArgs e)
         {
             InputDispatcher.ToggleFnLock();
+        }
+
+        public void CycleCaffeinatedMode()
+        {
+            // Same as clicking the icon that triggers caffeinate toggle
+            Caffeinated.Toggle();
+            Logger.WriteLine("Caffeinate " + (Caffeinated.IsActive ?
+                "Activated: " + Caffeinated.GetStatus() :
+                "Deactivated"));
+
+            Program.toast.RunToast(Caffeinated.IsActive ?
+                Properties.Strings.CaffeinatedActive : Properties.Strings.CaffeinatedInactive,
+                Caffeinated.IsActive ? ToastIcon.CaffeinatedActive : ToastIcon.CaffeinatedInactive);
         }
 
         private void pictureCaffeinated_Click(object sender, EventArgs e)

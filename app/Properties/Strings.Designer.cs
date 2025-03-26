@@ -655,11 +655,38 @@ namespace GHelper.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Caffeinated.
+        /// </summary>
+        internal static string Caffeinated {
+            get {
+                return ResourceManager.GetString("Caffeinated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Caffeinated Active.
+        /// </summary>
+        internal static string CaffeinatedActive {
+            get {
+                return ResourceManager.GetString("CaffeinatedActive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Minutes until sleep allowed (0 - Indefinite).
         /// </summary>
         internal static string CaffeinatedDuration {
             get {
                 return ResourceManager.GetString("CaffeinatedDuration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Caffeinated Inactive.
+        /// </summary>
+        internal static string CaffeinatedInactive {
+            get {
+                return ResourceManager.GetString("CaffeinatedInactive", resourceCulture);
             }
         }
         

@@ -873,6 +873,16 @@ namespace GHelper.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap mug_active_96 {
+            get {
+                object obj = ResourceManager.GetObject("mug-active-96", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap mug_active_black_32 {
             get {
                 object obj = ResourceManager.GetObject("mug-active-black-32", resourceCulture);
@@ -906,6 +916,16 @@ namespace GHelper.Properties {
         internal static System.Drawing.Bitmap mug_sleep {
             get {
                 object obj = ResourceManager.GetObject("mug-sleep", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap mug_sleep_96 {
+            get {
+                object obj = ResourceManager.GetObject("mug-sleep-96", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

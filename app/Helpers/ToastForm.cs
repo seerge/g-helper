@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Drawing.Drawing2D;
+using GHelper.Display;
 
 namespace GHelper.Helpers
 {
@@ -52,7 +53,9 @@ namespace GHelper.Helpers
         FnLock,
         Battery,
         Charger,
-        Controller
+        Controller,
+        CaffeinatedActive,
+        CaffeinatedInactive,
     }
 
     public class ToastForm : OSDNativeForm
@@ -118,7 +121,12 @@ namespace GHelper.Helpers
                 case ToastIcon.Controller:
                     icon = Properties.Resources.icons8_controller_96;
                     break;
-
+                case ToastIcon.CaffeinatedActive:
+                    icon = Properties.Resources.mug_active_96;
+                    break;
+                case ToastIcon.CaffeinatedInactive:
+                    icon = Properties.Resources.mug_sleep_96;
+                    break;
             }
 
             int shiftX = 0;
