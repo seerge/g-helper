@@ -717,15 +717,29 @@ namespace GHelper.Input
             Program.toast.RunToast(fnLock ? Properties.Strings.FnLockOn : Properties.Strings.FnLockOff, ToastIcon.FnLock);
         }
 
+        public static void SetSlateMode(int status)
+        {
+            try
+            {
+                Registry.SetValue(@"HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\PriorityControl", "ConvertibleSlateMode", status, RegistryValueKind.DWord);
+                Logger.WriteLine("Setting ConvertibleSlateMode : " + status);
+            } catch (Exception ex)
+            {
+                Logger.WriteLine("Can't set ConvertibleSlateMode: " + ex.Message);
+            }
+        }
+
         public static void TabletMode()
         {
             if (AppConfig.Is("disable_tablet")) return;
 
             bool touchpadState = GetTouchpadState();
             bool tabletState = Program.acpi.DeviceGet(AsusACPI.TabletState) > 0;
+            int slateState = Program.acpi.DeviceGet(AsusACPI.SlateMode);
 
-            Logger.WriteLine("Tablet: " + tabletState + " Touchpad: " + touchpadState);
+            Logger.WriteLine($"Tablet: {tabletState} | SlateMode: {slateState} | Touchpad: {touchpadState}");
 
+            if (slateState >= 0) SetSlateMode(slateState);
             if (tabletState && touchpadState || !tabletState && !touchpadState) ToggleTouchpad();
 
         }
@@ -767,6 +781,9 @@ namespace GHelper.Input
             {
                 switch (EventID)
                 {
+                    case 95:     // Z13 Side button
+                        KeyProcess("m4");
+                        return;
                     case 134:     // FN + F12 ON OLD DEVICES
                     case 139:     // ProArt F12
                         KeyProcess("m4");

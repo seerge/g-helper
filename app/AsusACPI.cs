@@ -34,6 +34,7 @@ public class AsusACPI
     const uint DSTS = 0x53545344;
     const uint DEVS = 0x53564544;
     const uint INIT = 0x54494E49;
+    const uint WDOG = 0x474F4457;
 
     public const uint UniversalControl = 0x00100021;
 
@@ -84,6 +85,7 @@ public class AsusACPI
     public const uint ScreenFHD = 0x0005001C;
 
     public const uint ScreenOptimalBrightness = 0x0005002A;
+    public const uint ScreenInit = 0x00050011; // ?
 
     public const uint DevsCPUFan = 0x00110022;
     public const uint DevsGPUFan = 0x00110023;
@@ -125,6 +127,7 @@ public class AsusACPI
 
     public const int MicMuteLed = 0x00040017;
 
+    public const int SlateMode = 0x00120063;
     public const int TabletState = 0x00060077;
     public const int FnLock = 0x00100023;
 
@@ -375,6 +378,13 @@ public class AsusACPI
     {
         byte[] args = new byte[8];
         return CallMethod(INIT, args);
+
+    }
+
+    public byte[] DeviceWatchDog()
+    {
+        byte[] args = new byte[8];
+        return CallMethod(WDOG, args);
 
     }
 
@@ -651,7 +661,7 @@ public class AsusACPI
 
     public bool IsAllAmdPPT()
     {
-        if (_allAMD is null) _allAMD = DeviceGet(PPT_CPUB0) >= 0 && DeviceGet(PPT_GPUC0) < 0 && !AppConfig.IsAlly();
+        if (_allAMD is null) _allAMD = DeviceGet(PPT_CPUB0) >= 0 && DeviceGet(PPT_GPUC0) < 0 && !AppConfig.IsAMDiGPU();
         return (bool)_allAMD;
     }
 

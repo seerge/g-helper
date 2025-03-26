@@ -52,6 +52,8 @@ public static class AppConfig
                 catch (Exception exb)
                 {
                     Logger.WriteLine($"Broken backup config: {exb.Message} {text}");
+                    File.Copy(configFile, configFile + ".old", true);
+                    File.Copy(configFile + ".bak", configFile + ".bak.old", true);
                     Init();
                 }
             }
@@ -127,7 +129,7 @@ public static class AppConfig
             }
         }
 
-        //if (_model.Contains("GA402RK")) _model = "ROG Zephyrus G14 GA403UI"; // Debug Purposes
+        //if (_model.Contains("GA402RK")) _model = "ROG Flow Z13 GZ302EA"; // Debug Purposes
 
         return _model;
     }
@@ -401,7 +403,7 @@ public static class AppConfig
 
     public static bool IsHardwareFnLock()
     {
-        return IsVivoZenPro();
+        return IsVivoZenPro() || ContainsModel("GZ302EA");
     }
 
     // Devices with bugged bios command to change brightness
@@ -494,7 +496,7 @@ public static class AppConfig
 
     public static bool IsPossible4ZoneRGB()
     {
-        return ContainsModel("G614JI_") || ContainsModel("G614JV_") || ContainsModel("G614JZ") || IsStrixLimitedRGB();
+        return ContainsModel("G614JI_") || ContainsModel("G614JV_") || ContainsModel("G614JZ") || ContainsModel("G614JU") || IsStrixLimitedRGB();
     }
 
     public static bool Is4ZoneRGB()
@@ -527,6 +529,11 @@ public static class AppConfig
         return ContainsModel("Z13");
     }
 
+    public static bool IsPZ13()
+    {
+        return ContainsModel("PZ13");
+    }
+
     public static bool IsS17()
     {
         return ContainsModel("S17");
@@ -534,7 +541,7 @@ public static class AppConfig
 
     public static bool HasTabletMode()
     {
-        return ContainsModel("X16") || ContainsModel("X13");
+        return ContainsModel("X16") || ContainsModel("X13") || ContainsModel("Z13");
     }
 
     public static bool IsX13()
@@ -625,12 +632,12 @@ public static class AppConfig
 
     public static bool IsFanRequired()
     {
-        return ContainsModel("GA402X") || ContainsModel("G513") || ContainsModel("G713R") || ContainsModel("G713P") || ContainsModel("GU605") || ContainsModel("GA605") || ContainsModel("GA403") || ContainsModel("G634J") || ContainsModel("G834J") || ContainsModel("G614J") || ContainsModel("G814J") || ContainsModel("FX507V");
+        return ContainsModel("GA402X") || ContainsModel("G513") || ContainsModel("G713R") || ContainsModel("G713P") || ContainsModel("GU605") || ContainsModel("GA605") || ContainsModel("G634J") || ContainsModel("G834J") || ContainsModel("G614J") || ContainsModel("G814J") || ContainsModel("FX507V");
     }
 
     public static bool IsAMDLight()
     {
-        return ContainsModel("GA402X") || ContainsModel("GA605") || ContainsModel("GA403") || ContainsModel("FA507N") || ContainsModel("FA507X") || ContainsModel("FA707N") || ContainsModel("FA707X");
+        return ContainsModel("GA402X") || ContainsModel("GA605") || ContainsModel("GA403") || ContainsModel("FA507N") || ContainsModel("FA507X") || ContainsModel("FA707N") || ContainsModel("FA707X") || ContainsModel("GZ302");
     }
 
     public static bool IsPowerRequired()
@@ -648,14 +655,14 @@ public static class AppConfig
         return Is("gpu_mode_force_set") || (ContainsModel("503") && IsNotFalse("gpu_mode_force_set"));
     }
 
-    public static bool IsNoGPUModes()
+    public static bool IsAMDiGPU()
     {
-        return ContainsModel("GV301RA") || ContainsModel("GV302XA") || IsAlly();
+        return ContainsModel("GV301RA") || ContainsModel("GV302XA") || ContainsModel("GZ302") || IsAlly();
     }
 
     public static bool NoGpu()
     {
-        return Is("no_gpu") || ContainsModel("UX540");
+        return Is("no_gpu") || ContainsModel("UX540") || ContainsModel("UM560") || ContainsModel("GZ302");
     }
 
     public static bool IsHardwareTouchpadToggle()
@@ -706,7 +713,7 @@ public static class AppConfig
     // 2024 Models support Dynamic Lighting
     public static bool IsDynamicLighting()
     {
-        return IsSlash() || IsIntelHX() || IsTUF();
+        return IsSlash() || IsIntelHX() || IsTUF() || IsZ13();
     }
 
     public static bool IsForceMiniled()

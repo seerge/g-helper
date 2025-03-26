@@ -124,10 +124,10 @@
     <value>Không thể kết nối đến ASUS ACPI. Chương trình cần nó để có thể hoạt động. Hãy thử cài lại Asus System Control Interface</value>
   </data>
   <data name="AlertAPUMemoryRestart" xml:space="preserve">
-    <value>Restart your device to apply changes</value>
+    <value>Khởi động lại thiết bị của bạn để áp dụng thay đổi</value>
   </data>
   <data name="AlertAPUMemoryRestartTitle" xml:space="preserve">
-    <value>Restart now?</value>
+    <value>Khởi động lại ngay?</value>
   </data>
   <data name="AlertDGPU" xml:space="preserve">
     <value>Có vẻ như GPU rời đang được sử dụng nhiều, tắt nó?</value>
@@ -145,7 +145,7 @@
     <value>Khởi động lại ngay?</value>
   </data>
   <data name="AllyController" xml:space="preserve">
-    <value>Ally Controller</value>
+    <value>Bộ điều khiển Ally</value>
   </data>
   <data name="AnimationSpeed" xml:space="preserve">
     <value>Tốc độ</value>
@@ -172,7 +172,7 @@
     <value>Tự động điều chỉnh Kế hoạch nguồn của Windows</value>
   </data>
   <data name="APUMemory" xml:space="preserve">
-    <value>Memory Assigned to GPU</value>
+    <value>Bộ nhớ chuyển cho GPU</value>
   </data>
   <data name="AsusServicesRunning" xml:space="preserve">
     <value>Dịch vụ Asus đang chạy</value>
@@ -226,13 +226,13 @@
     <value>Tất cả</value>
   </data>
   <data name="AuraZoneDock" xml:space="preserve">
-    <value>Dock</value>
+    <value>Dock kết nối</value>
   </data>
   <data name="AuraZoneLogo" xml:space="preserve">
-    <value>Logo</value>
+    <value>Biểu tượng</value>
   </data>
   <data name="AuraZoneScroll" xml:space="preserve">
-    <value>Scrollwheel</value>
+    <value>Con lăn chuột</value>
   </data>
   <data name="AuraZoneUnderglow" xml:space="preserve">
     <value>Underglow</value>
@@ -250,25 +250,25 @@
     <value>Đang bật</value>
   </data>
   <data name="BacklightLow" xml:space="preserve">
-    <value>Low</value>
+    <value>Thấp</value>
   </data>
   <data name="BacklightMax" xml:space="preserve">
-    <value>Max</value>
+    <value>Cao</value>
   </data>
   <data name="BacklightMid" xml:space="preserve">
-    <value>Mid</value>
+    <value>Trung bình</value>
   </data>
   <data name="BacklightOff" xml:space="preserve">
-    <value>Off</value>
+    <value>Tắt</value>
   </data>
   <data name="BacklightTimeout" xml:space="preserve">
     <value>Số giây để tắt đèn nền bàn phím(khi dùng pin)</value>
   </data>
   <data name="BacklightTimeoutBattery" xml:space="preserve">
-    <value>Backlight Timeout when on battery</value>
+    <value>Số giây để tắt đèn nền bàn phím(khi dùng pin)</value>
   </data>
   <data name="BacklightTimeoutPlugged" xml:space="preserve">
-    <value>Backlight Timeout when plugged</value>
+    <value>Số giây để tắt đèn bàn phím (khi cắm dây)</value>
   </data>
   <data name="Balanced" xml:space="preserve">
     <value>Cân bằng</value>
@@ -283,16 +283,16 @@
     <value>Sức khoẻ pin</value>
   </data>
   <data name="BatteryLimitFull" xml:space="preserve">
-    <value>One time charge to 100%</value>
+    <value>Sạc 1 lần đến 100%</value>
   </data>
   <data name="Binding" xml:space="preserve">
     <value>Binding</value>
   </data>
   <data name="BindingPrimary" xml:space="preserve">
-    <value>Primary</value>
+    <value>Chính</value>
   </data>
   <data name="BindingSecondary" xml:space="preserve">
-    <value>Secondary</value>
+    <value>Phụ</value>
   </data>
   <data name="BiosAndDriverUpdates" xml:space="preserve">
     <value>Cập nhật BIOS và driver</value>
@@ -301,7 +301,7 @@
     <value>Khởi động</value>
   </data>
   <data name="BootSound" xml:space="preserve">
-    <value>Boot Sound</value>
+    <value>Tiếng ROG khi bật máy</value>
   </data>
   <data name="Brightness" xml:space="preserve">
     <value>Độ sáng</value>
@@ -313,10 +313,10 @@
     <value>Tăng độ sáng</value>
   </data>
   <data name="BWTrayIcon" xml:space="preserve">
-    <value>Black and white tray icon</value>
+    <value>Logo đen trắng ở thanh tác vụ</value>
   </data>
   <data name="Calibrate" xml:space="preserve">
-    <value>Calibrate</value>
+    <value>Cân chỉnh</value>
   </data>
   <data name="Charging" xml:space="preserve">
     <value>Đang sạc</value>
@@ -325,10 +325,10 @@
     <value>Màu</value>
   </data>
   <data name="Contrast" xml:space="preserve">
-    <value>Contrast</value>
+    <value>Độ tương phản</value>
   </data>
   <data name="Controller" xml:space="preserve">
-    <value>Controller</value>
+    <value>Bộ điều khiển</value>
   </data>
   <data name="CPUBoost" xml:space="preserve">
     <value>Tăng tốc CPU</value>
@@ -343,10 +343,10 @@
     <value>Mặc định</value>
   </data>
   <data name="DisableController" xml:space="preserve">
-    <value>Disable Controller</value>
+    <value>Tắt điều khiển</value>
   </data>
   <data name="DisableOnLidClose" xml:space="preserve">
-    <value>Disable on lid close</value>
+    <value>Tắt khi gập máy xuống</value>
   </data>
   <data name="DisableOverdrive" xml:space="preserve">
     <value>Tắt Overdrive</value>
@@ -370,21 +370,21 @@
     <value>Tiết kiệm</value>
   </data>
   <data name="EnableGPUOnShutdown" xml:space="preserve">
-    <value>Enable GPU on shutdown (prevents issue with Eco mode)</value>
+    <value>Khởi chạy GPU khi máy tắt (tránh vấn đề khi chạy chế độ Eco)</value>
   </data>
   <data name="EnableOptimusText" xml:space="preserve">
-    <value>Disabling the dGPU by going into Eco mode while Display Mode in NVIDIA Control Panel is not set to Optimus might cause problems with brightness controls until after the next reboot. 
+    <value>Vô hiệu hóa GPU rời bằng cách chuyển sang chế độ Eco trong khi chế độ màn hình trong NVIDIA Control Panel chưa được đổi thành Optimus có thể gây ra lỗi điều chỉnh độ sáng cho đến khi khởi động lại.
 
-Do you still want to continue?</value>
+Bạn có muốn tiếp tục không?</value>
   </data>
   <data name="EnableOptimusTitle" xml:space="preserve">
-    <value>NVIDIA Display Mode is not set to Optimus</value>
+    <value>Chế độ màn hình trong NVIDIA chưa được chỉnh sang Optimus</value>
   </data>
   <data name="EnergySettings" xml:space="preserve">
-    <value>Energy Settings</value>
+    <value>Các chế độ năng lượng</value>
   </data>
   <data name="Export" xml:space="preserve">
-    <value>Export Profile</value>
+    <value>Xuất cấu hình ra file</value>
   </data>
   <data name="Extra" xml:space="preserve">
     <value>Thêm</value>
@@ -414,7 +414,7 @@ Do you still want to continue?</value>
     <value>Quạt và Công suất</value>
   </data>
   <data name="FanSpeed" xml:space="preserve">
-    <value>Fan</value>
+    <value>Quạt</value>
   </data>
   <data name="FansPower" xml:space="preserve">
     <value>Quạt + Công suất</value>
@@ -423,13 +423,13 @@ Do you still want to continue?</value>
     <value>Flicker-free Dimming</value>
   </data>
   <data name="FnLock" xml:space="preserve">
-    <value>Process Fn+F hotkeys without Fn</value>
+    <value>Dùng những tổ hợp phím Fn+F mà không cần Fn</value>
   </data>
   <data name="FnLockOff" xml:space="preserve">
-    <value>FN-Lock Off</value>
+    <value>Tắt khóa Fn</value>
   </data>
   <data name="FnLockOn" xml:space="preserve">
-    <value>FN-Lock On</value>
+    <value>Bật khóa Fn</value>
   </data>
   <data name="GPUBoost" xml:space="preserve">
     <value>Tăng tốc năng động</value>
@@ -456,7 +456,7 @@ Do you still want to continue?</value>
     <value>Chỉ dùng GPU rời</value>
   </data>
   <data name="GPUPower" xml:space="preserve">
-    <value>GPU Power</value>
+    <value>Chế độ điện GPU</value>
   </data>
   <data name="GPUSettings" xml:space="preserve">
     <value>Cài đặt GPU</value>
@@ -468,13 +468,13 @@ Do you still want to continue?</value>
     <value>Minutes till Hibernation in sleep on battery (0 - OFF)</value>
   </data>
   <data name="High" xml:space="preserve">
-    <value>High</value>
+    <value>Cao</value>
   </data>
   <data name="ImageRotation" xml:space="preserve">
-    <value>Image Rotation</value>
+    <value>Xoay Hình Ảnh</value>
   </data>
   <data name="Import" xml:space="preserve">
-    <value>Import Profile</value>
+    <value>Nhập cấu hình từ file</value>
   </data>
   <data name="KeyBindings" xml:space="preserve">
     <value>Tổ hợp phím</value>
@@ -483,7 +483,7 @@ Do you still want to continue?</value>
     <value>Bàn phím</value>
   </data>
   <data name="KillGpuApps" xml:space="preserve">
-    <value>Stop all apps using GPU when switching to Eco</value>
+    <value>Ngưng tất cả app dùng GPU khi đổi sang chế độ Eco</value>
   </data>
   <data name="LaptopBacklight" xml:space="preserve">
     <value>Độ sáng đèn nền</value>
@@ -495,7 +495,7 @@ Do you still want to continue?</value>
     <value>Màn hình Laptop</value>
   </data>
   <data name="LEDStatusIndicators" xml:space="preserve">
-    <value>LED Status Indicators</value>
+    <value>Đèn báo LED</value>
   </data>
   <data name="Lid" xml:space="preserve">
     <value>Màn gập</value>
@@ -504,22 +504,22 @@ Do you still want to continue?</value>
     <value>Thanh sáng</value>
   </data>
   <data name="Lighting" xml:space="preserve">
-    <value>Lighting</value>
+    <value>Ánh sáng</value>
   </data>
   <data name="LockScreen" xml:space="preserve">
-    <value>Lock Screen</value>
+    <value>Màn hình khoá</value>
   </data>
   <data name="Logo" xml:space="preserve">
-    <value>Logo</value>
+    <value>Biểu tượng</value>
   </data>
   <data name="Low" xml:space="preserve">
-    <value>Low</value>
+    <value>Thấp</value>
   </data>
   <data name="LSDeadzones" xml:space="preserve">
-    <value>Left Stick Deadzones</value>
+    <value>Deadzone stick trái</value>
   </data>
   <data name="LTDeadzones" xml:space="preserve">
-    <value>Left Trigger Deadzones</value>
+    <value>Deadzone trigger trái</value>
   </data>
   <data name="MatrixAudio" xml:space="preserve">
     <value>Sóng nhạc</value>
@@ -555,7 +555,7 @@ Do you still want to continue?</value>
     <value>Tần số quét 60Hz để tiết kiệm pin</value>
   </data>
   <data name="Minute" xml:space="preserve">
-    <value>Minute</value>
+    <value>Phút</value>
   </data>
   <data name="Minutes" xml:space="preserve">
     <value>Minutes</value>

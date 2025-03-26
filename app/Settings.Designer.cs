@@ -1267,10 +1267,10 @@ namespace GHelper
             // labelMidFan
             // 
             labelMidFan.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            labelMidFan.Location = new Point(240, -2);
-            labelMidFan.Margin = new Padding(4, 0, 4, 0);
+            labelMidFan.Location = new Point(500, 0);
+            labelMidFan.Margin = new Padding(8, 0, 8, 0);
             labelMidFan.Name = "labelMidFan";
-            labelMidFan.Size = new Size(126, 18);
+            labelMidFan.Size = new Size(285, 35);
             labelMidFan.TabIndex = 28;
             labelMidFan.Text = "         ";
             labelMidFan.TextAlign = ContentAlignment.TopRight;

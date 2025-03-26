@@ -130,7 +130,7 @@
     <value>Redémarrer maintenant ?</value>
   </data>
   <data name="AlertDGPU" xml:space="preserve">
-    <value>Le GPU semble être surchargé, voulez vous le désactiver ?</value>
+    <value>Le GPU semble être surchargé, voulez-vous le désactiver ?</value>
   </data>
   <data name="AlertDGPUTitle" xml:space="preserve">
     <value>Mode Éco</value>
@@ -175,7 +175,7 @@
     <value>Mémoire attribuée au GPU</value>
   </data>
   <data name="AsusServicesRunning" xml:space="preserve">
-    <value>Services Asus actifs</value>
+    <value>Services Asus actifs </value>
   </data>
   <data name="AuraBatteryState" xml:space="preserve">
     <value>État de la batterie</value>
@@ -211,7 +211,7 @@
     <value>Aléatoire</value>
   </data>
   <data name="AuraReact" xml:space="preserve">
-    <value>React</value>
+    <value>Réagir</value>
   </data>
   <data name="AuraSlow" xml:space="preserve">
     <value>Lent</value>
@@ -274,13 +274,13 @@
     <value>Équilibré</value>
   </data>
   <data name="BatteryCharge" xml:space="preserve">
-    <value>Charge de la batterie</value>
+    <value>Charge de la batterie </value>
   </data>
   <data name="BatteryChargeLimit" xml:space="preserve">
     <value>Limite de charge </value>
   </data>
   <data name="BatteryHealth" xml:space="preserve">
-    <value>Santé de la batterie</value>
+    <value>Santé de la batterie </value>
   </data>
   <data name="BatteryLimitFull" xml:space="preserve">
     <value>Charge unique à 100%</value>
@@ -319,7 +319,7 @@
     <value>Calibrer</value>
   </data>
   <data name="Charging" xml:space="preserve">
-    <value>Chargement en cours</value>
+    <value>Taux de charge </value>
   </data>
   <data name="Color" xml:space="preserve">
     <value>Couleur</value>
@@ -352,7 +352,7 @@
     <value>Désactiver l'overdrive de l'écran</value>
   </data>
   <data name="Discharging" xml:space="preserve">
-    <value>Taux décharge </value>
+    <value>Taux de décharge </value>
   </data>
   <data name="DownloadColorProfiles" xml:space="preserve">
     <value>Télécharger les profils de couleurs</value>
@@ -630,13 +630,13 @@ Voulez-vous continuer ?</value>
     <value>Garder le GPU désactivé lorsque branché via USB-C en mode Optimisé</value>
   </data>
   <data name="Other" xml:space="preserve">
-    <value>Autre</value>
+    <value>Autres</value>
   </data>
   <data name="Overdrive" xml:space="preserve">
     <value>Overdrive</value>
   </data>
   <data name="PerformanceMode" xml:space="preserve">
-    <value>Mode</value>
+    <value>Mode </value>
   </data>
   <data name="Peripherals" xml:space="preserve">
     <value>Périphériques</value>
@@ -744,7 +744,7 @@ Voulez-vous continuer ?</value>
     <value>Activer/désactiver l'écran tactile</value>
   </data>
   <data name="Touchscreen" xml:space="preserve">
-    <value>Touchscreen</value>
+    <value>Écran tactile</value>
   </data>
   <data name="Turbo" xml:space="preserve">
     <value>Turbo</value>
@@ -801,21 +801,21 @@ Voulez-vous continuer ?</value>
     <value>Zoom</value>
   </data>
   <data name="Donate" xml:space="preserve">
-    <value>Donate</value>
+    <value>Faire un don</value>
   </data>
   <data name="Legend" xml:space="preserve">
-    <value>Legend</value>
+    <value>Légende</value>
   </data>
   <data name="LegendGray" xml:space="preserve">
-    <value>Can't check local version</value>
+    <value>Impossible de vérifier la version actuelle</value>
     <comment>Can't check local version</comment>
   </data>
   <data name="LegendRed" xml:space="preserve">
-    <value>Update Available</value>
+    <value>Mise à jour disponible</value>
     <comment>Update Available</comment>
   </data>
   <data name="LegendGreen" xml:space="preserve">
-    <value>Updated</value>
+    <value>Mis à jour</value>
     <comment>Updated</comment>
   </data>
 </root>
