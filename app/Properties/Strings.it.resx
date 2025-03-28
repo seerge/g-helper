@@ -124,7 +124,7 @@
     <value>Impossibile connettersi ad ASUS ACPI. Senza di essa l'applicazione non può funzionare. Prova ad installare Asus System Control Interface</value>
   </data>
   <data name="AlertAPUMemoryRestart" xml:space="preserve">
-    <value>Restart your device to apply changes</value>
+    <value>Riavvia il dispositivo per applicare le modifiche</value>
   </data>
   <data name="AlertAPUMemoryRestartTitle" xml:space="preserve">
     <value>Restart now?</value>
