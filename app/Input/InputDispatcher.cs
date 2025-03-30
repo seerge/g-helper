@@ -936,11 +936,19 @@ namespace GHelper.Input
         public static void AutoKeyboard()
         {
             if (AppConfig.HasTabletMode()) TabletMode();
-            if (lidClose || AppConfig.Is("skip_aura")) return;
+            if (lidClose)
+            {
+                Logger.WriteLine("Skipping Backlight Init: Lid Closed");
+                return;
+            }
 
-            Aura.Init();
-            Aura.ApplyPower();
-            Aura.ApplyAura();
+            if (!AppConfig.Is("skip_aura"))
+            {
+                Aura.Init();
+                Aura.ApplyPower();
+                Aura.ApplyAura();
+            }
+
             SetBacklightAuto(true);
         }
 
