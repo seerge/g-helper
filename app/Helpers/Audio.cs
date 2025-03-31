@@ -4,7 +4,7 @@ namespace GHelper.Helpers
 {
     internal class Audio
     {
-        public static bool ToggleMute()
+        public static bool ToggleMicMute()
         {
             using (var enumerator = new MMDeviceEnumerator())
             {
@@ -23,6 +23,23 @@ namespace GHelper.Helpers
                 Logger.WriteLine(mmDevice.ToString() + ":" + status);
 
                 return status;
+            }
+        }
+
+        public static bool IsMuted()
+        {
+            try
+            {
+                using (var deviceEnumerator = new MMDeviceEnumerator())
+                {
+                    var defaultDevice = deviceEnumerator.GetDefaultAudioEndpoint(DataFlow.Render, Role.Multimedia);
+                    return defaultDevice.AudioEndpointVolume.Mute;
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLine("Error checking mute status: " + ex.Message);
+                return false; // Assume not muted in case of error
             }
         }
     }
