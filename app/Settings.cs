@@ -702,7 +702,7 @@ namespace GHelper
                     {
                         case 0:
                             Logger.WriteLine("Monitor Power Off");
-                            Aura.ApplyBrightness(0);
+                            Aura.SleepBrightness();
                             break;
                         case 1:
                             Logger.WriteLine("Monitor Power On");

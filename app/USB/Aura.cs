@@ -284,6 +284,11 @@ namespace GHelper.USB
         }
 
 
+        public static void SleepBrightness()
+        {
+            if (!AppConfig.IsSleepBacklight() || !AppConfig.Is("keyboard_sleep")) ApplyBrightness(0, "Sleep");
+        }
+
         public static void ApplyBrightness(int brightness, string log = "Backlight", bool delay = false)
         {
             if (brightness == 0) backlight = false;
