@@ -969,6 +969,11 @@ namespace GHelper.Input
             Aura.ApplyBrightness(GetBacklight(), "Auto", init);
         }
 
+        public static void StartupBacklight()
+        {
+            Aura.DirectBrightness(GetBacklight(), "Startup");
+        }
+
         public static void SetBacklight(int delta, bool force = false)
         {
             int backlight_power = AppConfig.Get("keyboard_brightness", 1);
