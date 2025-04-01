@@ -295,7 +295,7 @@
     <value>Secondaire</value>
   </data>
   <data name="BiosAndDriverUpdates" xml:space="preserve">
-    <value>Mise à jour BIOS et pilotes</value>
+    <value>Mises à jour BIOS et pilotes </value>
   </data>
   <data name="Boot" xml:space="preserve">
     <value>Au démarrage</value>
@@ -361,7 +361,7 @@
     <value>Télécharger</value>
   </data>
   <data name="DriverAndSoftware" xml:space="preserve">
-    <value>Pilotes et Logiciels</value>
+    <value>Pilotes et logiciels</value>
   </data>
   <data name="EcoGPUTooltip" xml:space="preserve">
     <value>Désactive le dGPU pour préserver la batterie</value>
@@ -426,10 +426,10 @@ Voulez-vous continuer ?</value>
     <value>Traiter les raccourcis clavier Fn+F sans Fn</value>
   </data>
   <data name="FnLockOff" xml:space="preserve">
-    <value>Verrouillage FN désactivé</value>
+    <value>Verrouillage Fn désactivé</value>
   </data>
   <data name="FnLockOn" xml:space="preserve">
-    <value>Verrouillage FN activé</value>
+    <value>Verrouillage Fn activé</value>
   </data>
   <data name="GPUBoost" xml:space="preserve">
     <value>Dynamic Boost</value>

@@ -639,6 +639,11 @@ namespace GHelper.Input
         }
 
 
+        static void MuteLED()
+        {
+            Program.acpi.DeviceSet(AsusACPI.SoundMuteLed, Audio.IsMuted() ? 1 : 0, "SoundLed");
+        }
+
         static void ToggleTouchScreen()
         {
             var status = !TouchscreenHelper.GetStatus();
@@ -652,7 +657,7 @@ namespace GHelper.Input
 
         static void ToggleMic()
         {
-            bool muteStatus = Audio.ToggleMute();
+            bool muteStatus = Audio.ToggleMicMute();
             Program.toast.RunToast(muteStatus ? Properties.Strings.Muted : Properties.Strings.Unmuted, muteStatus ? ToastIcon.MicrophoneMute : ToastIcon.Microphone);
             if (AppConfig.IsVivoZenbook()) Program.acpi.DeviceSet(AsusACPI.MicMuteLed, muteStatus ? 1 : 0, "MicmuteLed");
         }
@@ -916,6 +921,10 @@ namespace GHelper.Input
                 case 136:    // FN + F12
                     if (!AppConfig.IsNoAirplaneMode()) Program.acpi.DeviceSet(AsusACPI.UniversalControl, AsusACPI.Airplane, "Airplane");
                     return;
+                case 50:
+                    // Sound Mute Event
+                    MuteLED();
+                    return;
 
 
             }
@@ -939,11 +948,19 @@ namespace GHelper.Input
         public static void AutoKeyboard()
         {
             if (AppConfig.HasTabletMode()) TabletMode();
-            if (lidClose || AppConfig.Is("skip_aura")) return;
+            if (lidClose)
+            {
+                Logger.WriteLine("Skipping Backlight Init: Lid Closed");
+                return;
+            }
 
-            Aura.Init();
-            Aura.ApplyPower();
-            Aura.ApplyAura();
+            if (!AppConfig.Is("skip_aura"))
+            {
+                Aura.Init();
+                Aura.ApplyPower();
+                Aura.ApplyAura();
+            }
+
             SetBacklightAuto(true);
         }
 
@@ -953,6 +970,11 @@ namespace GHelper.Input
             if (lidClose) return;
             if (init) Aura.Init();
             Aura.ApplyBrightness(GetBacklight(), "Auto", init);
+        }
+
+        public static void StartupBacklight()
+        {
+            Aura.DirectBrightness(GetBacklight(), "Startup");
         }
 
         public static void SetBacklight(int delta, bool force = false)

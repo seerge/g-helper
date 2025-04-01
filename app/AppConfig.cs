@@ -393,12 +393,12 @@ public static class AppConfig
 
     public static bool IsVivoZenbook()
     {
-        return ContainsModel("Vivobook") || ContainsModel("Zenbook");
+        return ContainsModel("Vivobook") || ContainsModel("Zenbook") || ContainsModel("EXPERTBOOK");
     }
 
     public static bool IsVivoZenPro()
     {
-        return ContainsModel("Vivobook") || ContainsModel("Zenbook") || ContainsModel("ProArt");
+        return ContainsModel("Vivobook") || ContainsModel("Zenbook") || ContainsModel("ProArt") || ContainsModel("EXPERTBOOK");
     }
 
     public static bool IsHardwareFnLock()
@@ -434,6 +434,11 @@ public static class AppConfig
         return ContainsModel("GA401") || ContainsModel("FX517Z") || ContainsModel("FX516P") || ContainsModel("X13") || IsARCNM() || ContainsModel("FA617N") || ContainsModel("FA617X") || NoAura();
     }
 
+    public static bool IsSleepBacklight()
+    {
+        return ContainsModel("FA617");
+    }
+
     public static bool IsAnimeMatrix()
     {
         return ContainsModel("GA401") || ContainsModel("GA402") || ContainsModel("GU604V");
@@ -456,7 +461,7 @@ public static class AppConfig
 
     public static bool IsInvertedFNLock()
     {
-        return ContainsModel("M140") || ContainsModel("S550");
+        return ContainsModel("M140") || ContainsModel("S550") || ContainsModel("P540");
     }
 
     public static bool IsOLED()

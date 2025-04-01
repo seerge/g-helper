@@ -126,6 +126,7 @@ public class AsusACPI
     public const int TUF_KB_STATE = 0x00100057;
 
     public const int MicMuteLed = 0x00040017;
+    public const int SoundMuteLed = 0x0004001C;
 
     public const int SlateMode = 0x00120063;
     public const int TabletState = 0x00060077;

@@ -57,6 +57,7 @@ namespace GHelper
             if (action == "charge")
             {
                 BatteryLimit();
+                InputDispatcher.StartupBacklight();
                 Application.Exit();
                 return;
             }
