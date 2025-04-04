@@ -818,4 +818,13 @@ Yine de devam etmek istiyor musunuz?</value>
     <value>Güncellendi</value>
     <comment>Updated</comment>
   </data>
+  <data name="CaffeinatedDuration" xml:space="preserve">
+    <value>Uyku moduna geçmeden önceki dakikalar (0 - Süresiz)</value>
+  </data>
+  <data name="CaffeinatedActive" xml:space="preserve">
+    <value>Uyanık Modu etkin</value>
+  </data>
+  <data name="Caffeinated" xml:space="preserve">
+    <value>Uyanık Modu</value>
+  </data>
 </root>

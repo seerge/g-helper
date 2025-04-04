@@ -818,4 +818,16 @@ Sei sicuro di voler continuare?</value>
     <value>Aggiornato</value>
     <comment>Updated</comment>
   </data>
+  <data name="CaffeinatedDuration" xml:space="preserve">
+    <value>Minuti prima di consentire la sospensione (0 - Indefinito)</value>
+  </data>
+  <data name="CaffeinatedActive" xml:space="preserve">
+    <value>Modalità Attiva attivata</value>
+  </data>
+  <data name="CaffeinatedInactive" xml:space="preserve">
+    <value>Modalità Attiva disattivata</value>
+  </data>
+  <data name="Caffeinated" xml:space="preserve">
+    <value>Modalità Attiva</value>
+  </data>
 </root>

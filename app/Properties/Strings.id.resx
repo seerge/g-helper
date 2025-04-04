@@ -818,4 +818,16 @@ Apakah Anda masih ingin melanjutkan?</value>
     <value>Updated</value>
     <comment>Updated</comment>
   </data>
+  <data name="CaffeinatedDuration" xml:space="preserve">
+    <value>Menit sampai tidur diizinkan (0 - Tidak terbatas)</value>
+  </data>
+  <data name="CaffeinatedActive" xml:space="preserve">
+    <value>Mode Terjaga Aktif</value>
+  </data>
+  <data name="CaffeinatedInactive" xml:space="preserve">
+    <value>Mode Terjaga Tidak Aktif</value>
+  </data>
+  <data name="Caffeinated" xml:space="preserve">
+    <value>Mode Terjaga</value>
+  </data>
 </root>

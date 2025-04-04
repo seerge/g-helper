@@ -818,4 +818,16 @@ Folytatni szeretnéd?</value>
     <value>Updated</value>
     <comment>Updated</comment>
   </data>
+  <data name="CaffeinatedDuration" xml:space="preserve">
+    <value>Percek az alvás engedélyezéséig (0 - Határozatlan)</value>
+  </data>
+  <data name="CaffeinatedActive" xml:space="preserve">
+    <value>Ébren tartás aktív</value>
+  </data>
+  <data name="CaffeinatedInactive" xml:space="preserve">
+    <value>Ébren tartás inaktív</value>
+  </data>
+  <data name="Caffeinated" xml:space="preserve">
+    <value>Ébren tartás</value>
+  </data>
 </root>

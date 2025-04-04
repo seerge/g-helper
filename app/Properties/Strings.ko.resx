@@ -818,4 +818,16 @@
     <value>업데이트됨</value>
     <comment>Updated</comment>
   </data>
+  <data name="CaffeinatedDuration" xml:space="preserve">
+    <value>절전 허용까지 남은 시간(분) (0 - 무기한)</value>
+  </data>
+  <data name="CaffeinatedActive" xml:space="preserve">
+    <value>절전 방지 활성화</value>
+  </data>
+  <data name="CaffeinatedInactive" xml:space="preserve">
+    <value>절전 방지 비활성화</value>
+  </data>
+  <data name="Caffeinated" xml:space="preserve">
+    <value>절전 방지</value>
+  </data>
 </root>

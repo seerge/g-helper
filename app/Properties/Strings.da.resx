@@ -818,4 +818,16 @@ Vil du stadig fortsætte?</value>
     <value>Updated</value>
     <comment>Updated</comment>
   </data>
+  <data name="CaffeinatedDuration" xml:space="preserve">
+    <value>Minutter indtil dvale tillades (0 - Ubegrænset)</value>
+  </data>
+  <data name="CaffeinatedActive" xml:space="preserve">
+    <value>Koffeininjektion aktiv</value>
+  </data>
+  <data name="CaffeinatedInactive" xml:space="preserve">
+    <value>Koffeininjektion inaktiv</value>
+  </data>
+  <data name="Caffeinated" xml:space="preserve">
+    <value>Koffeininjektion</value>
+  </data>
 </root>

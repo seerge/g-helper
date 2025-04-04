@@ -818,4 +818,16 @@ Do you still want to continue?</value>
     <value>Updated</value>
     <comment>Updated</comment>
   </data>
+  <data name="CaffeinatedDuration" xml:space="preserve">
+    <value>スリープ許可までの分数 (0 - 無期限)</value>
+  </data>
+  <data name="CaffeinatedActive" xml:space="preserve">
+    <value>スリープ防止有効</value>
+  </data>
+  <data name="CaffeinatedInactive" xml:space="preserve">
+    <value>スリープ防止無効</value>
+  </data>
+  <data name="Caffeinated" xml:space="preserve">
+    <value>スリープ防止</value>
+  </data>
 </root>

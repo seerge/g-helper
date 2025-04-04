@@ -818,4 +818,16 @@
     <value>Updated</value>
     <comment>Updated</comment>
   </data>
+  <data name="CaffeinatedDuration" xml:space="preserve">
+    <value>Minute până când repausul este permis (0 - Nedefinit)</value>
+  </data>
+  <data name="CaffeinatedActive" xml:space="preserve">
+    <value>Mod Activ activat</value>
+  </data>
+  <data name="CaffeinatedInactive" xml:space="preserve">
+    <value>Mod Activ dezactivat</value>
+  </data>
+  <data name="Caffeinated" xml:space="preserve">
+    <value>Mod Activ</value>
+  </data>
 </root>

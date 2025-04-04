@@ -818,4 +818,16 @@
     <value>已更新</value>
     <comment>Updated</comment>
   </data>
+  <data name="CaffeinatedDuration" xml:space="preserve">
+    <value>允許睡眠前的分鐘數 (0 - 無限期)</value>
+  </data>
+  <data name="CaffeinatedActive" xml:space="preserve">
+    <value>防止睡眠已啟用</value>
+  </data>
+  <data name="CaffeinatedInactive" xml:space="preserve">
+    <value>防止睡眠已禁用</value>
+  </data>
+  <data name="Caffeinated" xml:space="preserve">
+    <value>防止睡眠</value>
+  </data>
 </root>

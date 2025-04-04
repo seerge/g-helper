@@ -818,4 +818,16 @@
     <value>Оновлено</value>
     <comment>Updated</comment>
   </data>
+  <data name="CaffeinatedDuration" xml:space="preserve">
+    <value>Хвилин до дозволу сну (0 - Необмежено)</value>
+  </data>
+  <data name="CaffeinatedActive" xml:space="preserve">
+    <value>Режим без сну активний</value>
+  </data>
+  <data name="CaffeinatedInactive" xml:space="preserve">
+    <value>Режим без сну неактивний</value>
+  </data>
+  <data name="Caffeinated" xml:space="preserve">
+    <value>Режим без сну</value>
+  </data>
 </root>

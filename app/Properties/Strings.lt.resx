@@ -818,4 +818,16 @@ Vis tiek norite tęsti?</value>
     <value>Atnaujinta</value>
     <comment>Updated</comment>
   </data>
+  <data name="CaffeinatedDuration" xml:space="preserve">
+    <value>Minutės iki miego leidimo (0 - Neribotai)</value>
+  </data>
+  <data name="CaffeinatedActive" xml:space="preserve">
+    <value>Nemiego režimas aktyvus</value>
+  </data>
+  <data name="CaffeinatedInactive" xml:space="preserve">
+    <value>Nemiego režimas neaktyvus</value>
+  </data>
+  <data name="Caffeinated" xml:space="preserve">
+    <value>Nemiego režimas</value>
+  </data>
 </root>

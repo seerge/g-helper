@@ -818,4 +818,16 @@ Voulez-vous continuer ?</value>
     <value>Mis à jour</value>
     <comment>Updated</comment>
   </data>
+  <data name="CaffeinatedDuration" xml:space="preserve">
+    <value>Minutes avant mise en veille autorisée (0 - Indéfini)</value>
+  </data>
+  <data name="CaffeinatedActive" xml:space="preserve">
+    <value>Anti-veille activé</value>
+  </data>
+  <data name="CaffeinatedInactive" xml:space="preserve">
+    <value>Anti-veille désactivé</value>
+  </data>
+  <data name="Caffeinated" xml:space="preserve">
+    <value>Anti-veille</value>
+  </data>
 </root>

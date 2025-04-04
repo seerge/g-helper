@@ -818,4 +818,16 @@
     <value>Actualizado</value>
     <comment>Updated</comment>
   </data>
+  <data name="CaffeinatedDuration" xml:space="preserve">
+    <value>Minutos hasta permitir reposo (0 - Indefinido)</value>
+  </data>
+  <data name="CaffeinatedActive" xml:space="preserve">
+    <value>Modo Activo activado</value>
+  </data>
+  <data name="CaffeinatedInactive" xml:space="preserve">
+    <value>Modo Activo desactivado</value>
+  </data>
+  <data name="Caffeinated" xml:space="preserve">
+    <value>Modo Activo</value>
+  </data>
 </root>

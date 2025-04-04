@@ -818,4 +818,16 @@ Trotzdem fortfahren?</value>
     <value>Aktuell</value>
     <comment>Updated</comment>
   </data>
+  <data name="CaffeinatedDuration" xml:space="preserve">
+    <value>Minuten bis Ruhezustand erlaubt (0 - Unbegrenzt)</value>
+  </data>
+  <data name="CaffeinatedActive" xml:space="preserve">
+    <value>Wachhaltemodus aktiv</value>
+  </data>
+  <data name="CaffeinatedInactive" xml:space="preserve">
+    <value>Wachhaltemodus inaktiv</value>
+  </data>
+  <data name="Caffeinated" xml:space="preserve">
+    <value>Wachhaltemodus</value>
+  </data>
 </root>

@@ -818,4 +818,16 @@ Nadal chcesz kontynuować?</value>
     <value>Wersja aktualna</value>
     <comment>Updated</comment>
   </data>
+  <data name="CaffeinatedDuration" xml:space="preserve">
+    <value>Minuty do zezwolenia na uśpienie (0 - Bezterminowo)</value>
+  </data>
+  <data name="CaffeinatedActive" xml:space="preserve">
+    <value>Tryb Aktywny włączony</value>
+  </data>
+  <data name="CaffeinatedInactive" xml:space="preserve">
+    <value>Tryb Aktywny wyłączony</value>
+  </data>
+  <data name="Caffeinated" xml:space="preserve">
+    <value>Tryb Aktywny</value>
+  </data>
 </root>
