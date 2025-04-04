@@ -65,6 +65,7 @@ Small and lightweight Armoury Crate alternative for Asus laptops offering almost
 14. Asus Mice settings
 15. Mini-led multi-zone switch
 16. Flicker-free dimming and Visual Modes
+17. Caffeinated feature to prevent automatic/idle system sleep timeouts for a customizable duration
 
 ### :gear: Automation
 - Performance Mode switching when on battery or plugged in
