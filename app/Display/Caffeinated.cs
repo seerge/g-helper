@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Text;
+using System.Threading;
 using System.Timers;
+using static System.Windows.Forms.AxHost;
 
 namespace GHelper.Display
 {
@@ -106,12 +109,6 @@ namespace GHelper.Display
                 return $"{time.Seconds} second{(time.Seconds != 1 ? "s" : "")}";
             }
         }
-
-        private static void Timer_Elapsed(object? sender, ElapsedEventArgs e)
-        {
-            Deactivate();
-        }
-
         public static void Toggle()
         {
             if (isActivated)
@@ -119,6 +116,13 @@ namespace GHelper.Display
             else
                 Activate();
         }
+        private static void Timer_Elapsed(object? sender, ElapsedEventArgs e)
+        {
+            // Marshaling the Deactivate() call to the UI thread
+            Program.settingsForm.BeginInvoke(Deactivate);
+            Logger.WriteLine("Caffeinated Deactivated (Time Expiration)");
+        }
+
     }
 
     //// Native methods for Windows API calls

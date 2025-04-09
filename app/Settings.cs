@@ -1969,9 +1969,9 @@ namespace GHelper
 
         public void CycleCaffeinatedMode()
         {
-            // Same as clicking the icon that triggers caffeinate toggle
+            // Same as clicking the icon that triggers caffeinated toggle
             Caffeinated.Toggle();
-            Logger.WriteLine("Caffeinate " + (Caffeinated.IsActive ?
+            Logger.WriteLine("Caffeinated " + (Caffeinated.IsActive ?
                 "Activated: " + Caffeinated.GetStatus() :
                 "Deactivated"));
 
@@ -1986,7 +1986,7 @@ namespace GHelper
             //Logger.WriteLine("" + Caffeinated.CustomCaffeinatedDuration);
 
             Caffeinated.Toggle();
-            Logger.WriteLine("Caffeinate " + (Caffeinated.IsActive ?
+            Logger.WriteLine("Caffeinated " + (Caffeinated.IsActive ?
                 "Activated: " + Caffeinated.GetStatus() :
                 "Deactivated"));
         }
