@@ -212,7 +212,6 @@ namespace GHelper
             buttonServices.Activated = false;
             buttonServices.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             buttonServices.BackColor = SystemColors.ButtonHighlight;
-            buttonServices.Badge = false;
             buttonServices.BorderColor = Color.Transparent;
             buttonServices.BorderRadius = 2;
             buttonServices.FlatStyle = FlatStyle.Flat;
@@ -1470,7 +1469,6 @@ namespace GHelper
             buttonCores.Activated = false;
             buttonCores.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             buttonCores.BackColor = SystemColors.ButtonHighlight;
-            buttonCores.Badge = false;
             buttonCores.BorderColor = Color.Transparent;
             buttonCores.BorderRadius = 2;
             buttonCores.FlatStyle = FlatStyle.Flat;
@@ -1576,7 +1574,6 @@ namespace GHelper
             buttonACPISend.Activated = false;
             buttonACPISend.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             buttonACPISend.BackColor = SystemColors.ButtonHighlight;
-            buttonACPISend.Badge = false;
             buttonACPISend.BorderColor = Color.Transparent;
             buttonACPISend.BorderRadius = 2;
             buttonACPISend.FlatStyle = FlatStyle.Flat;

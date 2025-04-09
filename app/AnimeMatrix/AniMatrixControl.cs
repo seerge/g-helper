@@ -151,7 +151,7 @@ namespace GHelper.AnimeMatrix
 
             if (deviceSlash is not null)
             {
-                deviceSlash.SetLidCloseAnimation(!matrixLid || AppConfig.Is("slash_sleep"));
+                deviceSlash.SetLidCloseAnimation(!matrixLid && !AppConfig.Is("slash_sleep"));
             }
 
             if (matrixLid || force)

@@ -124,13 +124,13 @@
     <value>ASUS ACPI에 연결할 수 없어 응용 프로그램이 작동하지 않습니다. Asus System Control Interface를 먼저 설치하십시오.</value>
   </data>
   <data name="AlertAPUMemoryRestart" xml:space="preserve">
-    <value>변경사항을 적용하려면 기기를 다시 시작하십시오.</value>
+    <value>변경 사항을 적용하려면 기기를 다시 시작하십시오.</value>
   </data>
   <data name="AlertAPUMemoryRestartTitle" xml:space="preserve">
     <value>지금 다시 시작하시겠습니까?</value>
   </data>
   <data name="AlertDGPU" xml:space="preserve">
-    <value>GPU 사용량이 높습니다. 비활성화 하시겠습니까?</value>
+    <value>GPU 사용량이 높습니다. 비활성화하시겠습니까?</value>
   </data>
   <data name="AlertDGPUTitle" xml:space="preserve">
     <value>Eco 모드</value>
@@ -172,10 +172,10 @@
     <value>윈도우 전원 모드 자동조절</value>
   </data>
   <data name="APUMemory" xml:space="preserve">
-    <value>Memory Assigned to GPU</value>
+    <value>GPU에 할당된 메모리</value>
   </data>
   <data name="AsusServicesRunning" xml:space="preserve">
-    <value>실행중인 Asus 서비스</value>
+    <value>실행 중인 Asus 서비스</value>
   </data>
   <data name="AuraBatteryState" xml:space="preserve">
     <value>배터리 상태</value>
@@ -286,7 +286,7 @@
     <value>이번만 100%까지 충전</value>
   </data>
   <data name="Binding" xml:space="preserve">
-    <value>Binding</value>
+    <value>바인딩</value>
   </data>
   <data name="BindingPrimary" xml:space="preserve">
     <value>Primary</value>
@@ -355,7 +355,7 @@
     <value>방전 중</value>
   </data>
   <data name="DownloadColorProfiles" xml:space="preserve">
-    <value>색 프로필 다운로드</value>
+    <value>색상 프로필 다운로드</value>
   </data>
   <data name="DownloadUpdate" xml:space="preserve">
     <value>다운로드</value>
@@ -370,12 +370,12 @@
     <value>Eco</value>
   </data>
   <data name="EnableGPUOnShutdown" xml:space="preserve">
-    <value>Enable GPU on shutdown (prevents issue with Eco mode)</value>
+    <value>종료 시 GPU 활성화 (Eco 모드 문제 방지)</value>
   </data>
   <data name="EnableOptimusText" xml:space="preserve">
-    <value>NVIDIA 디스플레이 모드가 Optimus로 설정되어 있지 않을 때 Eco 모드로 전환하여 dGPU를 비활성화하면 다시 시작하기 전까지 밝기 조절 문제가 생길 수 있습니다.
+    <value>NVIDIA 제어판에서 디스플레이 모드가 Optimus로 설정되지 않은 상태에서 Eco 모드로 전환하여 dGPU를 비활성화하면 다시 시작하기 전까지 밝기 조절에 문제가 발생할 수 있습니다.
 
-계속하시겠습니까?</value>
+계속 진행하시겠습니까?</value>
   </data>
   <data name="EnableOptimusTitle" xml:space="preserve">
     <value>NVIDIA 디스플레이 모드가 Optimus로 설정되어 있지 않습니다.</value>
@@ -420,7 +420,7 @@
     <value>팬 + 전력</value>
   </data>
   <data name="FlickerFreeDimming" xml:space="preserve">
-    <value>Flicker-free Dimming</value>
+    <value>플리커 프리 디밍</value>
   </data>
   <data name="FnLock" xml:space="preserve">
     <value>Fn 키를 누르지 않고 Fn+F 핫키 작동</value>
@@ -477,7 +477,7 @@
     <value>프로필 가져오기</value>
   </data>
   <data name="KeyBindings" xml:space="preserve">
-    <value>키 설정</value>
+    <value>키 바인딩</value>
   </data>
   <data name="Keyboard" xml:space="preserve">
     <value>키보드</value>
@@ -570,7 +570,7 @@
     <value>버튼 응답</value>
   </data>
   <data name="MouseImportFailed" xml:space="preserve">
-    <value>Import failed. Selected file is not a valid mouse profile or corrutpted.</value>
+    <value>가져오기 실패. 유효한 마우스 프로필이 아니거나 손상된 파일입니다.</value>
   </data>
   <data name="MouseLiftOffDistance" xml:space="preserve">
     <value>들어올림 거리</value>
@@ -585,10 +585,10 @@
     <value>마우스와 동기화</value>
   </data>
   <data name="Multizone" xml:space="preserve">
-    <value>Multi Zone</value>
+    <value>다중 영역</value>
   </data>
   <data name="MultizoneStrong" xml:space="preserve">
-    <value>Multi Zone Strong</value>
+    <value>다중 영역 강도</value>
   </data>
   <data name="Muted" xml:space="preserve">
     <value>음소거</value>
@@ -615,7 +615,7 @@
     <value>켜짐</value>
   </data>
   <data name="OneZone" xml:space="preserve">
-    <value>One Zone</value>
+    <value>단일 영역</value>
   </data>
   <data name="OpenGHelper" xml:space="preserve">
     <value>G-Helper 열기</value>
@@ -624,7 +624,7 @@
     <value>최적화</value>
   </data>
   <data name="OptimizedGPUTooltip" xml:space="preserve">
-    <value>배터리 사용 중에만 Eco 모드 설정</value>
+    <value>배터리 사용 중에만 Eco 모드로 전환</value>
   </data>
   <data name="OptimizedUSBC" xml:space="preserve">
     <value>최적화 모드에서 PD 충전 시 GPU 비활성화</value>
@@ -684,7 +684,7 @@
     <value>시스템 시작 시 실행</value>
   </data>
   <data name="ScalingQuality" xml:space="preserve">
-    <value>Scaling Quality</value>
+    <value>스케일링 품질</value>
   </data>
   <data name="ScreenPadDown" xml:space="preserve">
     <value>Screenpad 밝기 감소</value>
@@ -702,10 +702,10 @@
     <value>절전</value>
   </data>
   <data name="StandardGPUTooltip" xml:space="preserve">
-    <value>Standard 모드에서 dGPU 켜기</value>
+    <value>표준 모드에서 dGPU 켜기</value>
   </data>
   <data name="StandardMode" xml:space="preserve">
-    <value>Standard</value>
+    <value>표준</value>
   </data>
   <data name="Start" xml:space="preserve">
     <value>시작</value>
@@ -726,25 +726,25 @@
     <value>서비스 중지 중</value>
   </data>
   <data name="ToggleAura" xml:space="preserve">
-    <value>Aura 전환 키</value>
+    <value>Aura 전환</value>
   </data>
   <data name="ToggleClamshellMode" xml:space="preserve">
-    <value>클램쉘 모드 자동 전환</value>
+    <value>클램셸 모드 자동 전환</value>
   </data>
   <data name="ToggleFnLock" xml:space="preserve">
-    <value>Fn-Lock 전환 키</value>
+    <value>Fn-Lock 전환</value>
   </data>
   <data name="ToggleMiniled" xml:space="preserve">
-    <value>Miniled 전환 키 (지원하는 기기만)</value>
+    <value>Miniled 전환 (지원하는 기기만)</value>
   </data>
   <data name="ToggleScreen" xml:space="preserve">
-    <value>화면 전환 키</value>
+    <value>화면 전환</value>
   </data>
   <data name="ToggleTouchscreen" xml:space="preserve">
-    <value>Toggle Touchscreen</value>
+    <value>터치스크린 전환</value>
   </data>
   <data name="Touchscreen" xml:space="preserve">
-    <value>Touchscreen</value>
+    <value>터치스크린</value>
   </data>
   <data name="Turbo" xml:space="preserve">
     <value>터보</value>
@@ -783,7 +783,7 @@
     <value>HDR이 켜져 있을 때에는 비주얼 모드를 사용할 수 없습니다.</value>
   </data>
   <data name="VisualModesScreen" xml:space="preserve">
-    <value>노트북의 화면이 꺼져 있을 때에는 비주얼 모드를 사용할 수 없습니다.</value>
+    <value>노트북 화면이 꺼져 있을 때는 비주얼 모드 사용 불가</value>
   </data>
   <data name="VolumeDown" xml:space="preserve">
     <value>볼륨 작게</value>
@@ -801,21 +801,21 @@
     <value>확대/축소</value>
   </data>
   <data name="Donate" xml:space="preserve">
-    <value>Donate</value>
+    <value>후원</value>
   </data>
   <data name="Legend" xml:space="preserve">
-    <value>Legend</value>
+    <value>범례</value>
   </data>
   <data name="LegendGray" xml:space="preserve">
-    <value>Can't check local version</value>
+    <value>설치된 버전 확인 불가</value>
     <comment>Can't check local version</comment>
   </data>
   <data name="LegendRed" xml:space="preserve">
-    <value>Update Available</value>
+    <value>업데이트 이용 가능</value>
     <comment>Update Available</comment>
   </data>
   <data name="LegendGreen" xml:space="preserve">
-    <value>Updated</value>
+    <value>업데이트됨</value>
     <comment>Updated</comment>
   </data>
 </root>

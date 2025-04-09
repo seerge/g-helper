@@ -636,6 +636,11 @@ namespace GHelper.Input
         }
 
 
+        static void MuteLED()
+        {
+            Program.acpi.DeviceSet(AsusACPI.SoundMuteLed, Audio.IsMuted() ? 1 : 0, "SoundLed");
+        }
+
         static void ToggleTouchScreen()
         {
             var status = !TouchscreenHelper.GetStatus();
@@ -649,7 +654,7 @@ namespace GHelper.Input
 
         static void ToggleMic()
         {
-            bool muteStatus = Audio.ToggleMute();
+            bool muteStatus = Audio.ToggleMicMute();
             Program.toast.RunToast(muteStatus ? Properties.Strings.Muted : Properties.Strings.Unmuted, muteStatus ? ToastIcon.MicrophoneMute : ToastIcon.Microphone);
             if (AppConfig.IsVivoZenbook()) Program.acpi.DeviceSet(AsusACPI.MicMuteLed, muteStatus ? 1 : 0, "MicmuteLed");
         }
@@ -717,15 +722,29 @@ namespace GHelper.Input
             Program.toast.RunToast(fnLock ? Properties.Strings.FnLockOn : Properties.Strings.FnLockOff, ToastIcon.FnLock);
         }
 
+        public static void SetSlateMode(int status)
+        {
+            try
+            {
+                Registry.SetValue(@"HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\PriorityControl", "ConvertibleSlateMode", status, RegistryValueKind.DWord);
+                Logger.WriteLine("Setting ConvertibleSlateMode : " + status);
+            } catch (Exception ex)
+            {
+                Logger.WriteLine("Can't set ConvertibleSlateMode: " + ex.Message);
+            }
+        }
+
         public static void TabletMode()
         {
             if (AppConfig.Is("disable_tablet")) return;
 
             bool touchpadState = GetTouchpadState();
             bool tabletState = Program.acpi.DeviceGet(AsusACPI.TabletState) > 0;
+            int slateState = Program.acpi.DeviceGet(AsusACPI.SlateMode);
 
-            Logger.WriteLine("Tablet: " + tabletState + " Touchpad: " + touchpadState);
+            Logger.WriteLine($"Tablet: {tabletState} | SlateMode: {slateState} | Touchpad: {touchpadState}");
 
+            if (slateState >= 0) SetSlateMode(slateState);
             if (tabletState && touchpadState || !tabletState && !touchpadState) ToggleTouchpad();
 
         }
@@ -767,6 +786,9 @@ namespace GHelper.Input
             {
                 switch (EventID)
                 {
+                    case 95:     // Z13 Side button
+                        KeyProcess("m4");
+                        return;
                     case 134:     // FN + F12 ON OLD DEVICES
                     case 139:     // ProArt F12
                         KeyProcess("m4");
@@ -896,6 +918,10 @@ namespace GHelper.Input
                 case 136:    // FN + F12
                     if (!AppConfig.IsNoAirplaneMode()) Program.acpi.DeviceSet(AsusACPI.UniversalControl, AsusACPI.Airplane, "Airplane");
                     return;
+                case 50:
+                    // Sound Mute Event
+                    MuteLED();
+                    return;
 
 
             }
@@ -919,11 +945,19 @@ namespace GHelper.Input
         public static void AutoKeyboard()
         {
             if (AppConfig.HasTabletMode()) TabletMode();
-            if (lidClose || AppConfig.Is("skip_aura")) return;
+            if (lidClose)
+            {
+                Logger.WriteLine("Skipping Backlight Init: Lid Closed");
+                return;
+            }
 
-            Aura.Init();
-            Aura.ApplyPower();
-            Aura.ApplyAura();
+            if (!AppConfig.Is("skip_aura"))
+            {
+                Aura.Init();
+                Aura.ApplyPower();
+                Aura.ApplyAura();
+            }
+
             SetBacklightAuto(true);
         }
 
@@ -933,6 +967,11 @@ namespace GHelper.Input
             if (lidClose) return;
             if (init) Aura.Init();
             Aura.ApplyBrightness(GetBacklight(), "Auto", init);
+        }
+
+        public static void StartupBacklight()
+        {
+            Aura.DirectBrightness(GetBacklight(), "Startup");
         }
 
         public static void SetBacklight(int delta, bool force = false)
