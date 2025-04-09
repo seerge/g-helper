@@ -600,7 +600,7 @@ Voulez-vous continuer ?</value>
     <value>Jamais</value>
   </data>
   <data name="NewUpdates" xml:space="preserve">
-    <value>Nouvelles mises à jour</value>
+    <value>Nouvelles mises à jour </value>
   </data>
   <data name="NoNewUpdates" xml:space="preserve">
     <value>Aucune mise à jour disponible</value>
