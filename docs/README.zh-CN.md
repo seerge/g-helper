@@ -16,9 +16,10 @@ G-helper兼容所有主流型号，例如 ROG 幻14、幻15、幻16、幻13、�
 <tr>
    <td><b>支持此项目</b></td>
    <td >
-      <a href="https://bit.ly/4c0ZWs9"><img src="https://raw.githubusercontent.com/seerge/g-helper/main/docs/paypal.png" height="36" alt="PayPal"></a>&nbsp;
-      <a href="https://buy.stripe.com/bIY4hl8HbalH3G8bIJ"><img src="https://raw.githubusercontent.com/seerge/g-helper/main/docs/stripe.png" height="36" alt="Stripe"></a>&nbsp;
-      <a href="https://buy.stripe.com/bIY4hl8HbalH3G8bIJ"><img src="https://raw.githubusercontent.com/seerge/g-helper/main/docs/alipay.png" height="36" alt="Alipay"></a>
+      <a href="https://www.paypal.com/donate/?hosted_button_id=Y7UNMPRNLB5X2"><img src="https://raw.githubusercontent.com/seerge/g-helper/main/docs/paypal-eur.png" height="36" alt="PayPal EUR"></a>&nbsp;
+      <a href="https://www.paypal.com/donate/?hosted_button_id=JSMU7DFHFSJMW"><img src="https://raw.githubusercontent.com/seerge/g-helper/main/docs/paypal-usd.png" height="36" alt="PayPal USD"></a>&nbsp;
+      <a href="https://buy.stripe.com/8wM6pt8HbgK50tWbIK"><img src="https://raw.githubusercontent.com/seerge/g-helper/main/docs/stripe.png" height="36" alt="Stripe"></a>&nbsp;
+      <a href="https://buy.stripe.com/6oE29dg9D3Xj7Wo28b"><img src="https://raw.githubusercontent.com/seerge/g-helper/main/docs/alipay.png" height="36" alt="Alipay"></a>
    </td>
 </tr>
 </table>

@@ -125,7 +125,6 @@ namespace GHelper
             buttonRefresh.Activated = false;
             buttonRefresh.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             buttonRefresh.BackColor = SystemColors.ControlLight;
-            buttonRefresh.Badge = false;
             buttonRefresh.BorderColor = Color.Transparent;
             buttonRefresh.BorderRadius = 5;
             buttonRefresh.FlatAppearance.BorderSize = 0;

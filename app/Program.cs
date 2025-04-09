@@ -57,6 +57,7 @@ namespace GHelper
             if (action == "charge")
             {
                 BatteryLimit();
+                InputDispatcher.StartupBacklight();
                 Application.Exit();
                 return;
             }
@@ -273,7 +274,7 @@ namespace GHelper
             if (e.Mode == PowerModes.Suspend)
             {
                 Logger.WriteLine("Power Mode Changed:" + e.Mode.ToString());
-                gpuControl.StandardModeFix();
+                gpuControl.StandardModeFix(true);
                 InputDispatcher.ShutdownStatusLed();
             }
 

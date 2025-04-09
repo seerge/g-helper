@@ -269,6 +269,9 @@ namespace GHelper.USB
                 new byte[] { AsusHid.AURA_ID, 0x05, 0x20, 0x31, 0, 0x1A },
             }, "Init");
 
+            if (AppConfig.IsZ13())
+                AsusHid.Write([AsusHid.AURA_ID, 0xC0, 0x03, 0x01], "Dynamic Lighting Init");
+
             if (AppConfig.IsProArt())
             {
                 AsusHid.WriteInput([AsusHid.INPUT_ID, 0x05, 0x20, 0x31, 0x00, 0x08], "ProArt Init");
@@ -281,6 +284,11 @@ namespace GHelper.USB
         }
 
 
+        public static void SleepBrightness()
+        {
+            if (!AppConfig.IsSleepBacklight() || !AppConfig.Is("keyboard_sleep")) ApplyBrightness(0, "Sleep");
+        }
+
         public static void ApplyBrightness(int brightness, string log = "Backlight", bool delay = false)
         {
             if (brightness == 0) backlight = false;
@@ -288,25 +296,24 @@ namespace GHelper.USB
             Task.Run(async () =>
             {
                 if (delay) await Task.Delay(TimeSpan.FromSeconds(1));
-                if (isACPI) Program.acpi.TUFKeyboardBrightness(brightness);
-
-                if (AppConfig.IsInputBacklight()) 
-                    AsusHid.WriteInput(new byte[] { AsusHid.INPUT_ID, 0xBA, 0xC5, 0xC4, (byte)brightness }, log);
-                else 
-                    AsusHid.Write(new byte[] { AsusHid.AURA_ID, 0xBA, 0xC5, 0xC4, (byte)brightness }, log);
-
+                DirectBrightness(brightness, log);
                 if (AppConfig.IsAlly()) ApplyAura();
-
+                
                 if (brightness > 0)
                 {
                     if (!backlight) initDirect = true;
                     backlight = true;
-
                 }
-
             });
+        }
 
-
+        public static void DirectBrightness(int brightness, string log)
+        {
+            if (isACPI) Program.acpi.TUFKeyboardBrightness(brightness);
+            if (AppConfig.IsInputBacklight())
+                AsusHid.WriteInput([AsusHid.INPUT_ID, 0xBA, 0xC5, 0xC4, (byte)brightness], log);
+            else
+                AsusHid.Write([AsusHid.AURA_ID, 0xBA, 0xC5, 0xC4, (byte)brightness], log);
         }
 
         static byte[] AuraPowerMessage(AuraPower flags)
@@ -705,6 +712,15 @@ namespace GHelper.USB
             static int tempWarm = AppConfig.Get("temp_warm", 65);
             static int tempHot = AppConfig.Get("temp_hot", 90);
 
+            static Color colorFreeze = ColorTranslator.FromHtml(AppConfig.GetString("color_freeze", "#0000FF")); 
+            static Color colorCold = ColorTranslator.FromHtml(AppConfig.GetString("color_cold", "#008000"));
+            static Color colorWarm = ColorTranslator.FromHtml(AppConfig.GetString("color_warm", "#FFFF00"));
+            static Color colorHot = ColorTranslator.FromHtml(AppConfig.GetString("color_hot", "#FF0000"));
+
+            static Color colorUltimate = ColorTranslator.FromHtml(AppConfig.GetString("color_ultimate", "#FF0000"));
+            static Color colorStandard = ColorTranslator.FromHtml(AppConfig.GetString("color_standard", "#FFFF00"));
+            static Color colorEco = ColorTranslator.FromHtml(AppConfig.GetString("color_eco", "#008000"));
+
             public static void ApplyGPUColor()
             {
                 if ((AuraMode)AppConfig.Get("aura_mode") != AuraMode.GPUMODE) return;
@@ -714,13 +730,13 @@ namespace GHelper.USB
                 switch (GPUModeControl.gpuMode)
                 {
                     case AsusACPI.GPUModeUltimate:
-                        color = Color.Red;
+                        color = colorUltimate;
                         break;
                     case AsusACPI.GPUModeEco:
-                        color = Color.Green;
+                        color = colorEco;
                         break;
                     default:
-                        color = Color.Yellow;
+                        color = colorStandard;
                         break;
                 }
 
@@ -733,14 +749,12 @@ namespace GHelper.USB
             public static void ApplyHeatmap(bool init = false)
             {
                 float cpuTemp = (float)HardwareControl.GetCPUTemp();
-                Color color;
+                Color color = colorFreeze;
 
-                //Debug.WriteLine(cpuTemp);
-
-                if (cpuTemp < tempCold) color = ColorUtils.GetWeightedAverage(Color.Blue, Color.Green, ((float)cpuTemp - tempFreeze) / (tempCold - tempFreeze));
-                else if (cpuTemp < tempWarm) color = ColorUtils.GetWeightedAverage(Color.Green, Color.Yellow, ((float)cpuTemp - tempCold) / (tempWarm - tempCold));
-                else if (cpuTemp < tempHot) color = ColorUtils.GetWeightedAverage(Color.Yellow, Color.Red, ((float)cpuTemp - tempWarm) / (tempHot - tempWarm));
-                else color = Color.Red;
+                if (cpuTemp < tempCold) color = ColorUtils.GetWeightedAverage(colorFreeze, colorCold, ((float)cpuTemp - tempFreeze) / (tempCold - tempFreeze));
+                else if (cpuTemp < tempWarm) color = ColorUtils.GetWeightedAverage(colorCold, colorWarm, ((float)cpuTemp - tempCold) / (tempWarm - tempCold));
+                else if (cpuTemp < tempHot) color = ColorUtils.GetWeightedAverage(colorWarm, colorHot, ((float)cpuTemp - tempWarm) / (tempHot - tempWarm));
+                else color = colorHot;
 
                 ApplyDirect(color, init);
             }
