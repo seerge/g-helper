@@ -807,7 +807,6 @@ namespace GHelper.Input
                         return;
                     case 174:   // FN+F5
                     case 153:   // FN+F5 OLD MODELS
-                    case 157:   // Zenbook DUO FN+F
                         modeControl.CyclePerformanceMode(Control.ModifierKeys == Keys.Shift);
                         return;
                     case 179:   // FN+F4
@@ -922,8 +921,9 @@ namespace GHelper.Input
                     // Sound Mute Event
                     MuteLED();
                     return;
-
-
+                case 157:   // Zenbook DUO FN+F
+                    modeControl.CyclePerformanceMode(Control.ModifierKeys == Keys.Shift);
+                    return;
             }
         }
 
