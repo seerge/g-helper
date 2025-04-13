@@ -1029,6 +1029,7 @@ namespace GHelper.Input
         public static void ToggleCamera()
         {
             int cameraShutter = Program.acpi.DeviceGet(AsusACPI.CameraShutter);
+            Logger.WriteLine("Camera Shutter status: " + cameraShutter);
 
             if (cameraShutter == 0)
             {
@@ -1038,6 +1039,16 @@ namespace GHelper.Input
             else if (cameraShutter == 1)
             {
                 Program.acpi.DeviceSet(AsusACPI.CameraShutter, 0, "CameraShutterOff");
+                Program.toast.RunToast($"Camera On");
+            }
+            else if (cameraShutter == 1048577)
+            {
+                Program.acpi.DeviceSet(AsusACPI.CameraShutter, 5, "CameraShutter");
+                Program.toast.RunToast($"Camera Off");
+            }
+            else if (cameraShutter == 1048576)
+            {
+                Program.acpi.DeviceSet(AsusACPI.CameraShutter, 4, "CameraShutter");
                 Program.toast.RunToast($"Camera On");
             }
             else if (cameraShutter == 262144)
