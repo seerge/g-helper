@@ -630,6 +630,9 @@ namespace GHelper.Input
                 case "touchscreen":
                     ToggleTouchScreen();
                     break;
+                case "caffeinated":
+                    Program.settingsForm.BeginInvoke(Program.settingsForm.CycleCaffeinatedMode);
+                    break;
                 default:
                     break;
             }

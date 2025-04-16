@@ -258,6 +258,10 @@ namespace GHelper
             buttonAutoTDP.Click += ButtonAutoTDP_Click;
             buttonAutoTDP.BorderColor = colorTurbo;
 
+            pictureCaffeinated.Click += pictureCaffeinated_Click;
+            Caffeinated.CaffeinatedStateChanged += OnCaffeinatedStateChanged;
+            UpdateCaffeinatedIcon(Caffeinated.IsActive);
+
             Text = "G-Helper " + (ProcessHelper.IsUserAdministrator() ? "—" : "-") + " " + AppConfig.GetModelShort();
             TopMost = AppConfig.Is("topmost");
 
@@ -285,6 +289,14 @@ namespace GHelper
 
             panelPerformance.Focus();
             InitVisual();
+        }
+
+        private void OnCaffeinatedStateChanged(object? sender, EventArgs e)
+        {
+            if (InvokeRequired)
+                Invoke(() => UpdateCaffeinatedIcon(Caffeinated.IsActive));
+            else
+                UpdateCaffeinatedIcon(Caffeinated.IsActive);
         }
 
         private void LabelBattery_Click(object? sender, EventArgs e)
@@ -1227,7 +1239,6 @@ namespace GHelper
             screenControl.SetScreen(ScreenControl.MIN_RATE, 0);
         }
 
-
         private void ButtonMiniled_Click(object? sender, EventArgs e)
         {
             screenControl.ToogleMiniled();
@@ -1339,6 +1350,7 @@ namespace GHelper
 
         private void ButtonQuit_Click(object? sender, EventArgs e)
         {
+            CleanupCaffeinated();
             matrixControl.Dispose();
             Close();
             Program.trayIcon.Visible = false;
@@ -1950,13 +1962,56 @@ namespace GHelper
             }
         }
 
-
         private void ButtonFnLock_Click(object? sender, EventArgs e)
         {
             InputDispatcher.ToggleFnLock();
         }
 
+        public void CycleCaffeinatedMode()
+        {
+            // Same as clicking the icon that triggers caffeinated toggle
+            Caffeinated.Toggle();
+            Logger.WriteLine("Caffeinated " + (Caffeinated.IsActive ?
+                "Activated: " + Caffeinated.GetStatus() :
+                "Deactivated"));
+
+            Program.toast.RunToast(Caffeinated.IsActive ?
+                Properties.Strings.CaffeinatedActive : Properties.Strings.CaffeinatedInactive,
+                Caffeinated.IsActive ? ToastIcon.CaffeinatedActive : ToastIcon.CaffeinatedInactive);
+        }
+
+        private void pictureCaffeinated_Click(object sender, EventArgs e)
+        {
+            //Logger.WriteLine("" + AppConfig.Get("caffeinated_duration"));
+            //Logger.WriteLine("" + Caffeinated.CustomCaffeinatedDuration);
+
+            Caffeinated.Toggle();
+            Logger.WriteLine("Caffeinated " + (Caffeinated.IsActive ?
+                "Activated: " + Caffeinated.GetStatus() :
+                "Deactivated"));
+        }
+
+        private void UpdateCaffeinatedIcon(bool isActive)
+        {
+            bool isDark = CheckSystemDarkModeStatus();
+
+            if (isActive)
+            {
+                pictureCaffeinated.BackgroundImage = isDark ?
+                    Properties.Resources.mug_active_white_32 :
+                    Properties.Resources.mug_active_black_32;
+            }
+            else
+            {
+                pictureCaffeinated.BackgroundImage = isDark ?
+                    Properties.Resources.mug_sleep_white_32 :
+                    Properties.Resources.mug_sleep_black_32;
+            }
+        }
+
+        public void CleanupCaffeinated()
+        {
+            Caffeinated.CaffeinatedStateChanged -= OnCaffeinatedStateChanged;
+        }
     }
-
-
 }
