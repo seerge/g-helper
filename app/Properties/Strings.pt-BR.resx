@@ -762,7 +762,7 @@ Ainda quer continuar?</value>
     <value>Ultimate</value>
   </data>
   <data name="UndervoltingRisky" xml:space="preserve">
-    <value>Undervolting is an experimental and risky feature. If applied values are too low for your hardware, it can become unstable, shut down or cause data corruption. If you want to try - start from small values first, click Apply and test what works for you.</value>
+    <value>A subvoltagem é um recurso experimental e arriscado. Se os valores aplicados forem muito baixos para seu hardware, ele poderá ficar instável, ser desligado ou causar corrupção de dados. Se quiser experimentar, comece com valores pequenos primeiro, clique em Aplicar e teste o que funciona para você.</value>
   </data>
   <data name="Unmuted" xml:space="preserve">
     <value>Não silenciado</value>
