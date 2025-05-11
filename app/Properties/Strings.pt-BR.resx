@@ -124,10 +124,10 @@
     <value>Não foi possível conectar ao ASUS ACPI. O aplicativo não pode funcionar sem isso. Tente instalar Asus System Controle Interface</value>
   </data>
   <data name="AlertAPUMemoryRestart" xml:space="preserve">
-    <value>Restart your device to apply changes</value>
+    <value>Reinicie seu dispositivo para aplicar as alterações</value>
   </data>
   <data name="AlertAPUMemoryRestartTitle" xml:space="preserve">
-    <value>Restart now?</value>
+    <value>Reiniciar agora?</value>
   </data>
   <data name="AlertDGPU" xml:space="preserve">
     <value>Parece que o GPU está em uso pesado.</value>
@@ -172,13 +172,13 @@
     <value>Ajuste automático dos modos de energia do Windows</value>
   </data>
   <data name="APUMemory" xml:space="preserve">
-    <value>Memory Assigned to GPU</value>
+    <value>Memória Atribuída à GPU</value>
   </data>
   <data name="AsusServicesRunning" xml:space="preserve">
     <value>Serviços da Asus em execução</value>
   </data>
   <data name="AuraBatteryState" xml:space="preserve">
-    <value>Battery State</value>
+    <value>Estado da bateria</value>
   </data>
   <data name="AuraBreathe" xml:space="preserve">
     <value>Repiração</value>
@@ -199,7 +199,7 @@
     <value>Rápido</value>
   </data>
   <data name="AuraLightingMode" xml:space="preserve">
-    <value>Lighting Mode</value>
+    <value>Modo de iluminação</value>
   </data>
   <data name="AuraNormal" xml:space="preserve">
     <value>Normal</value>
@@ -250,16 +250,16 @@
     <value>Acordado</value>
   </data>
   <data name="BacklightLow" xml:space="preserve">
-    <value>Low</value>
+    <value>Baixo</value>
   </data>
   <data name="BacklightMax" xml:space="preserve">
-    <value>Max</value>
+    <value>Máximo</value>
   </data>
   <data name="BacklightMid" xml:space="preserve">
-    <value>Mid</value>
+    <value>Meio</value>
   </data>
   <data name="BacklightOff" xml:space="preserve">
-    <value>Off</value>
+    <value>Desligado</value>
   </data>
   <data name="BacklightTimeout" xml:space="preserve">
     <value>Tempo limite plugado / na bateria (0 - ligado)</value>
@@ -465,7 +465,7 @@ Do you still want to continue?</value>
     <value>Alvo de temperatura</value>
   </data>
   <data name="HibernateAfter" xml:space="preserve">
-    <value>Minutes till Hibernation in sleep on battery (0 - OFF)</value>
+    <value>Minutos até Hibernação em suspensão na bateria (0 — Desligado)</value>
   </data>
   <data name="High" xml:space="preserve">
     <value>High</value>
