@@ -342,22 +342,7 @@ namespace GHelper
                                 }
                             }
 
-                        try
-                        {
-                            if (type == 0 && driver.title.Contains("Dolby"))
-                            {
-                                var localVersion = devices["Dolby"];
-                                newer = Math.Min(newer, new Version(driver.version).CompareTo(new Version(localVersion)));
-                                Logger.WriteLine(driver.title + driver.version + " vs " + localVersion + " = " + newer);
-                                tip = "Download: " + driver.version + "\n" + "Installed: " + localVersion;
-                            }
-                        }
-                        catch (Exception ex)
-                        {
-                            Logger.WriteLine("Can't check Dolby version" + ex.ToString());
-                        }
-
-                        if (type == 1)
+                        if (type == 1 && !driver.title.Contains("Firmware"))
                         {
                             newer = Int32.Parse(driver.version) > Int32.Parse(bios) ? 1 : -1;
                             tip = "Download: " + driver.version + "\n" + "Installed: " + bios;
