@@ -451,7 +451,7 @@ public static class AppConfig
 
     public static bool IsSlashAura()
     {
-        return ContainsModel("GA605");
+        return ContainsModel("GA605") || ContainsModel("GU605");
     }
 
     public static bool IsInputBacklight()
