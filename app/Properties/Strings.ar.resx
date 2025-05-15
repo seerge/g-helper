@@ -498,7 +498,7 @@
     <value>مؤشرات حالة LED</value>
   </data>
   <data name="Lid" xml:space="preserve">
-    <value>Lid</value>
+    <value>غطاء</value>
   </data>
   <data name="Lightbar" xml:space="preserve">
     <value>شريط الإضاءة</value>
