@@ -1168,8 +1168,8 @@ namespace GHelper
                 }
 
                 comboInterval.Visible = true;
-                comboInterval.Items.Add($"Interval Off");
-                for (int i = 1; i <= 5; i++) comboInterval.Items.Add($"Interval {i}s");
+                comboInterval.Items.Add(Properties.Strings.IntervalOff);
+                for (int i = 1; i <= 5; i++) comboInterval.Items.Add(string.Format(Properties.Strings.IntervalSeconds, i));
 
                 buttonMatrix.Visible = false;
                 checkMatrixLid.Visible = true;
