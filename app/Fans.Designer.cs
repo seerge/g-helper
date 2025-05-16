@@ -31,14 +31,14 @@ namespace GHelper
         /// </summary>
         private void InitializeComponent()
         {
-            ChartArea chartArea1 = new ChartArea();
-            Title title1 = new Title();
-            ChartArea chartArea2 = new ChartArea();
-            Title title2 = new Title();
-            ChartArea chartArea3 = new ChartArea();
-            Title title3 = new Title();
-            ChartArea chartArea4 = new ChartArea();
-            Title title4 = new Title();
+            ChartArea chartArea5 = new ChartArea();
+            Title title5 = new Title();
+            ChartArea chartArea6 = new ChartArea();
+            Title title6 = new Title();
+            ChartArea chartArea7 = new ChartArea();
+            Title title7 = new Title();
+            ChartArea chartArea8 = new ChartArea();
+            Title title8 = new Title();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Fans));
             panelFans = new Panel();
             labelTip = new Label();
@@ -267,8 +267,8 @@ namespace GHelper
             // 
             // chartGPU
             // 
-            chartArea1.Name = "ChartArea1";
-            chartGPU.ChartAreas.Add(chartArea1);
+            chartArea5.Name = "ChartArea1";
+            chartGPU.ChartAreas.Add(chartArea5);
             chartGPU.Dock = DockStyle.Fill;
             chartGPU.Location = new Point(12, 238);
             chartGPU.Margin = new Padding(2, 10, 2, 10);
@@ -276,13 +276,13 @@ namespace GHelper
             chartGPU.Size = new Size(786, 208);
             chartGPU.TabIndex = 17;
             chartGPU.Text = "chartGPU";
-            title1.Name = "Title1";
-            chartGPU.Titles.Add(title1);
+            title5.Name = "Title1";
+            chartGPU.Titles.Add(title5);
             // 
             // chartCPU
             // 
-            chartArea2.Name = "ChartArea1";
-            chartCPU.ChartAreas.Add(chartArea2);
+            chartArea6.Name = "ChartArea1";
+            chartCPU.ChartAreas.Add(chartArea6);
             chartCPU.Dock = DockStyle.Fill;
             chartCPU.Location = new Point(12, 10);
             chartCPU.Margin = new Padding(2, 10, 2, 10);
@@ -290,13 +290,13 @@ namespace GHelper
             chartCPU.Size = new Size(786, 208);
             chartCPU.TabIndex = 14;
             chartCPU.Text = "chartCPU";
-            title2.Name = "Title1";
-            chartCPU.Titles.Add(title2);
+            title6.Name = "Title1";
+            chartCPU.Titles.Add(title6);
             // 
             // chartXGM
             // 
-            chartArea3.Name = "ChartAreaXGM";
-            chartXGM.ChartAreas.Add(chartArea3);
+            chartArea7.Name = "ChartAreaXGM";
+            chartXGM.ChartAreas.Add(chartArea7);
             chartXGM.Dock = DockStyle.Fill;
             chartXGM.Location = new Point(12, 694);
             chartXGM.Margin = new Padding(2, 10, 2, 10);
@@ -304,14 +304,14 @@ namespace GHelper
             chartXGM.Size = new Size(786, 209);
             chartXGM.TabIndex = 14;
             chartXGM.Text = "chartXGM";
-            title3.Name = "Title4";
-            chartXGM.Titles.Add(title3);
+            title7.Name = "Title4";
+            chartXGM.Titles.Add(title7);
             chartXGM.Visible = false;
             // 
             // chartMid
             // 
-            chartArea4.Name = "ChartArea3";
-            chartMid.ChartAreas.Add(chartArea4);
+            chartArea8.Name = "ChartArea3";
+            chartMid.ChartAreas.Add(chartArea8);
             chartMid.Dock = DockStyle.Fill;
             chartMid.Location = new Point(12, 466);
             chartMid.Margin = new Padding(2, 10, 2, 10);
@@ -319,8 +319,8 @@ namespace GHelper
             chartMid.Size = new Size(786, 208);
             chartMid.TabIndex = 14;
             chartMid.Text = "chartMid";
-            title4.Name = "Title3";
-            chartMid.Titles.Add(title4);
+            title8.Name = "Title3";
+            chartMid.Titles.Add(title8);
             chartMid.Visible = false;
             // 
             // panelTitleFans
@@ -363,7 +363,7 @@ namespace GHelper
             buttonRemove.Badge = 0;
             buttonRemove.BorderColor = Color.Transparent;
             buttonRemove.BorderRadius = 2;
-            buttonRemove.Dock = DockStyle.Top;
+            buttonRemove.Dock = DockStyle.Fill;
             buttonRemove.FlatStyle = FlatStyle.Flat;
             buttonRemove.Image = Properties.Resources.icons8_remove_64;
             buttonRemove.Location = new Point(0, 10);
@@ -381,7 +381,7 @@ namespace GHelper
             buttonAdd.Badge = 0;
             buttonAdd.BorderColor = Color.Transparent;
             buttonAdd.BorderRadius = 2;
-            buttonAdd.Dock = DockStyle.Top;
+            buttonAdd.Dock = DockStyle.Fill;
             buttonAdd.FlatStyle = FlatStyle.Flat;
             buttonAdd.Image = Properties.Resources.icons8_add_64;
             buttonAdd.Location = new Point(416, 10);
@@ -399,7 +399,7 @@ namespace GHelper
             buttonRename.Badge = 0;
             buttonRename.BorderColor = Color.Transparent;
             buttonRename.BorderRadius = 2;
-            buttonRename.Dock = DockStyle.Top;
+            buttonRename.Dock = DockStyle.Fill;
             buttonRename.FlatStyle = FlatStyle.Flat;
             buttonRename.Image = Properties.Resources.icons8_edit_32;
             buttonRename.Location = new Point(60, 10);
