@@ -818,4 +818,16 @@ Do you still want to continue?</value>
     <value>Updated</value>
     <comment>Updated</comment>
   </data>
+  <data name="CaffeinatedDuration" xml:space="preserve">
+    <value>Minutes until sleep allowed (0 - Indefinite)</value>
+  </data>
+  <data name="CaffeinatedActive" xml:space="preserve">
+    <value>Caffeinated Active</value>
+  </data>
+  <data name="CaffeinatedInactive" xml:space="preserve">
+    <value>Caffeinated Inactive</value>
+  </data>
+  <data name="Caffeinated" xml:space="preserve">
+	<value>Caffeinated</value>
+  </data>
 </root>
