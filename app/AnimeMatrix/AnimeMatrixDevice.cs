@@ -67,7 +67,8 @@ namespace GHelper.AnimeMatrix
     {
         GA401,
         GA402,
-        GU604
+        GU604,
+        G835
     }
 
 
@@ -106,28 +107,32 @@ namespace GHelper.AnimeMatrix
             if (AppConfig.ContainsModel("401"))
             {
                 _model = AnimeType.GA401;
-
                 MaxColumns = 33;
                 MaxRows = 55;
                 LedCount = 1245;
-
                 UpdatePageLength = 410;
-
                 FullRows = 5;
-
                 LedStart = 1;
             }
 
             if (AppConfig.ContainsModel("GU604"))
             {
                 _model = AnimeType.GU604;
-
                 MaxColumns = 39;
                 MaxRows = 92;
                 LedCount = 1711;
                 UpdatePageLength = 630;
-
                 FullRows = 9;
+            }
+
+            if (AppConfig.ContainsModel("G835") || AppConfig.ContainsModel("G815"))
+            {
+                _model = AnimeType.G835;
+                MaxColumns = 34;
+                MaxRows = 68;
+                LedCount = 810;
+                UpdatePageLength = 490;
+                FullRows = 29;
             }
 
             _displayBuffer = new byte[LedCount];
@@ -218,7 +223,7 @@ namespace GHelper.AnimeMatrix
             frames.Add(_displayBuffer.ToArray());
         }
 
-        public int Width()
+        public int Width(int y)
         {
             switch (_model)
             {
@@ -226,6 +231,8 @@ namespace GHelper.AnimeMatrix
                     return 33;
                 case AnimeType.GU604:
                     return 39;
+                case AnimeType.G835:
+                    return 1 + y / 2;
                 default:
                     return 34;
             }
@@ -240,16 +247,15 @@ namespace GHelper.AnimeMatrix
                     {
                         return 1;
                     }
-                    return (int)Math.Ceiling(Math.Max(0, y - 5) / 2F);
+                    return (int)Math.Ceiling(Math.Max(0, y - FullRows) / 2F);
                 case AnimeType.GU604:
                     if (y < 9 && y % 2 == 0)
                     {
                         return 1;
                     }
-                    return (int)Math.Ceiling(Math.Max(0, y - 9) / 2F);
-
+                    return (int)Math.Ceiling(Math.Max(0, y - FullRows) / 2F);
                 default:
-                    return (int)Math.Ceiling(Math.Max(0, y - 11) / 2F);
+                    return (int)Math.Ceiling(Math.Max(0, y - FullRows) / 2F);
             }
         }
 
@@ -271,7 +277,6 @@ namespace GHelper.AnimeMatrix
                         default:
                             return 36 - y / 2;
                     }
-
                 case AnimeType.GU604:
                     switch (y)
                     {
@@ -281,21 +286,17 @@ namespace GHelper.AnimeMatrix
                         case 6:
                         case 8:
                             return 38;
-
                         case 1:
                         case 3:
                         case 5:
                         case 7:
                         case 9:
                             return 39;
-
                         default:
-                            return Width() - FirstX(y);
+                            return Width(y) - FirstX(y);
                     }
-
-
                 default:
-                    return Width() - FirstX(y);
+                    return Width(y) - FirstX(y);
             }
         }
 
@@ -313,7 +314,7 @@ namespace GHelper.AnimeMatrix
         {
             if (!IsRowInRange(y)) return;
 
-            if (x >= FirstX(y) && x < Width())
+            if (x >= FirstX(y) && x < Width(y))
                 SetLedLinear(RowToLinearAddress(y) - FirstX(y) + x, value);
             }
 

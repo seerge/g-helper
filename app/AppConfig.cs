@@ -441,7 +441,7 @@ public static class AppConfig
 
     public static bool IsAnimeMatrix()
     {
-        return ContainsModel("GA401") || ContainsModel("GA402") || ContainsModel("GU604V");
+        return ContainsModel("GA401") || ContainsModel("GA402") || ContainsModel("GU604V") || ContainsModel("GU604V") || ContainsModel("G835") || ContainsModel("G815") || ContainsModel("G635") || ContainsModel("G615");
     }
     
     public static bool IsSlash()
