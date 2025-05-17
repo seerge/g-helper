@@ -411,11 +411,64 @@ namespace GHelper.AnimeMatrix
             if (DateTime.Now.Second % 2 != 0) timeFormat = timeFormat.Replace(":", "  ");
 
             Clear();
-            Text(DateTime.Now.ToString(timeFormat), 15, 7 - FullRows / 2, 25);
-            Text(DateTime.Now.ToString(dateFormat), 11.5F, 0, 14);
+            switch (_model)
+            {
+                case AnimeType.G835:
+                    Text(DateTime.Now.ToString(timeFormat), 15, 2, 16);
+                    break;
+                default:
+                    Text(DateTime.Now.ToString(timeFormat), 15, 7 - FullRows / 2, 25);
+                    Text(DateTime.Now.ToString(dateFormat), 11.5F, 0, 14);
+                    break;
+            }
             Present();
 
         }
+
+        public void DrawBar(int pos, double h)
+        {
+            switch (_model)
+            {
+                case AnimeType.G835:
+                    DrawBarDiagonal(pos, h);
+                    break;
+                default:
+                    DrawBarPlanar(pos, h);
+                    break;
+            }
+        }
+
+        public void DrawBarPlanar(int pos, double h)
+        {
+            int dx = pos * 2;
+            int dy = 20;
+
+            byte color;
+
+            for (int y = 0; y < h - (h % 2); y++)
+                for (int x = 0; x < 2 - (y % 2); x++)
+                {
+                    //color = (byte)(Math.Min(1,(h - y - 2)*2) * 255);
+                    SetLedPlanar(x + dx, dy + y, (byte)(h * 255 / 30));
+                    SetLedPlanar(x + dx, dy - y, 255);
+                }
+        }
+
+        public void DrawBarDiagonal(int pos, double h)
+        {
+            int dx = pos * 2;
+            int dy = 0;
+
+            byte color;
+
+            for (int y = 0; y < h/2 ; y++)
+                for (int x = 0; x < 2 ; x++)
+                {
+                    color = (byte)(Math.Min(1, (h - y - 2) * 2) * 255);
+                    SetLedDiagonal(x + dx, dy - y, (byte)(h * 255 / 30), 6, 0);
+                }
+        }
+
         public void GenerateFrame(Image image, float zoom = 100, int panX = 0, int panY = 0, InterpolationMode quality = InterpolationMode.Default, int contrast = 100, int gamma = 0)
         {
             int width = MaxColumns / 2 * 6;

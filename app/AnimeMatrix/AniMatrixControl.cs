@@ -415,22 +415,6 @@ namespace GHelper.AnimeMatrix
             PresentAudio(fftMag);
         }
 
-        private void DrawBar(int pos, double h)
-        {
-            int dx = pos * 2;
-            int dy = 20;
-
-            byte color;
-
-            for (int y = 0; y < h - (h % 2); y++)
-                for (int x = 0; x < 2 - (y % 2); x++)
-                {
-                    //color = (byte)(Math.Min(1,(h - y - 2)*2) * 255);
-                    deviceMatrix.SetLedPlanar(x + dx, dy + y, (byte)(h * 255 / 30));
-                    deviceMatrix.SetLedPlanar(x + dx, dy - y, 255);
-                }
-        }
-
         void PresentAudio(double[] audio)
         {
 
@@ -455,7 +439,7 @@ namespace GHelper.AnimeMatrix
             if (maxes.Count > 20) maxes.RemoveAt(0);
             maxAverage = maxes.Average();
 
-            for (int i = 0; i < size; i++) DrawBar(20 - i, bars[i] * 20 / maxAverage);
+            for (int i = 0; i < size; i++) deviceMatrix.DrawBar(20 - i, bars[i] * 20 / maxAverage);
 
             deviceMatrix.Present();
         }
