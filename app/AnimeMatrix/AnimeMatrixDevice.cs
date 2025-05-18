@@ -414,7 +414,8 @@ namespace GHelper.AnimeMatrix
             switch (_model)
             {
                 case AnimeType.G835:
-                    Text(DateTime.Now.ToString(timeFormat), 15, 2, 16);
+                //case AnimeType.GA402:
+                    Text(DateTime.Now.ToString(timeFormat), 15, 4, 20);
                     break;
                 default:
                     Text(DateTime.Now.ToString(timeFormat), 15, 7 - FullRows / 2, 25);
@@ -429,6 +430,7 @@ namespace GHelper.AnimeMatrix
         {
             switch (_model)
             {
+                case AnimeType.GA402:
                 case AnimeType.G835:
                     DrawBarDiagonal(pos, h);
                     break;
@@ -465,7 +467,7 @@ namespace GHelper.AnimeMatrix
                 for (int x = 0; x < 2 ; x++)
                 {
                     color = (byte)(Math.Min(1, (h - y - 2) * 2) * 255);
-                    SetLedDiagonal(x + dx, dy - y, (byte)(h * 255 / 30), 6, 0);
+                    SetLedDiagonal(x + dx, dy - y, (byte)(h * 255 / 30), 5, -5);
                 }
         }
 
