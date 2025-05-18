@@ -430,7 +430,7 @@ namespace GHelper.AnimeMatrix
         {
             switch (_model)
             {
-                case AnimeType.GA402:
+                //case AnimeType.GA402:
                 case AnimeType.G835:
                     DrawBarDiagonal(pos, h);
                     break;
