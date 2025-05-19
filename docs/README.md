@@ -41,7 +41,7 @@ Small and lightweight Armoury Crate alternative for Asus laptops offering almost
 
 1. Seamless and automatic GPU switching
 2. All performance modes can be fully customized with power limits and fan curves
-3. Lightweight. Doesn't install anything in your system. Just a single exe to run
+3. Lightweight. Just a single exe to run. Doesn't install anything in your system. 
 4. Simple and clean native UI with easy access to all settings
 5. FN-Lock and custom hotkeys
 
