@@ -819,16 +819,16 @@
     <comment>Updated</comment>
   </data>
   <data name="SlashBounce" xml:space="preserve">
-    <value>Bounce</value>
+    <value>Bote</value>
   </data>
   <data name="SlashMode" xml:space="preserve">
-    <value>Slash</value>
+    <value>Barra inclinada</value>
   </data>
   <data name="SlashLoading" xml:space="preserve">
-    <value>Loading</value>
+    <value>Cargando</value>
   </data>
   <data name="SlashBitStream" xml:space="preserve">
-    <value>Bit Stream</value>
+    <value>Flujo de bits</value>
   </data>
   <data name="SlashTransmission" xml:space="preserve">
     <value>Transmission</value>
