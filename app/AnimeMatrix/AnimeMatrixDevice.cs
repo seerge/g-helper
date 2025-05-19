@@ -467,7 +467,7 @@ namespace GHelper.AnimeMatrix
                 for (int x = 0; x < 2 ; x++)
                 {
                     color = (byte)(Math.Min(1, (h - y - 2) * 2) * 255);
-                    SetLedDiagonal(x + dx, dy - y, (byte)(h * 255 / 30), 5, -5);
+                    SetLedDiagonal(x + dx, dy - y, (byte)(h * 255 / 30), 10, -(FullRows/2));
                 }
         }
 
