@@ -831,48 +831,48 @@
     <value>Flujo de bits</value>
   </data>
   <data name="SlashTransmission" xml:space="preserve">
-    <value>Transmission</value>
+    <value>Transmisión</value>
   </data>
   <data name="SlashFlow" xml:space="preserve">
-    <value>Flow</value>
+    <value>Fluir</value>
   </data>
   <data name="SlashFlux" xml:space="preserve">
-    <value>Flux</value>
+    <value>Flujo</value>
   </data>
   <data name="SlashPhantom" xml:space="preserve">
-    <value>Phantom</value>
+    <value>Fantasma</value>
   </data>
   <data name="SlashSpectrum" xml:space="preserve">
-    <value>Spectrum</value>
+    <value>Espectro</value>
   </data>
   <data name="SlashHazard" xml:space="preserve">
-    <value>Hazard</value>
+    <value>Peligro</value>
   </data>
   <data name="SlashInterfacing" xml:space="preserve">
-    <value>Interfacing</value>
+    <value>Interfaces</value>
   </data>
   <data name="SlashRamp" xml:space="preserve">
-    <value>Ramp</value>
+    <value>Rampa</value>
   </data>
   <data name="SlashGameOver" xml:space="preserve">
-    <value>Game Over</value>
+    <value>Fin de la partida</value>
   </data>
   <data name="SlashStart" xml:space="preserve">
-    <value>Start</value>
+    <value>Comenzar</value>
   </data>
   <data name="SlashBuzzer" xml:space="preserve">
-    <value>Buzzer</value>
+    <value>Zumbador</value>
   </data>
   <data name="SlashStatic" xml:space="preserve">
-    <value>Static</value>
+    <value>Estático</value>
   </data>
   <data name="SlashBatteryLevel" xml:space="preserve">
-    <value>Battery Level</value>
+    <value>Nivel de Batería</value>
   </data>
   <data name="IntervalOff" xml:space="preserve">
-    <value>Interval Off</value>
+    <value>Intervalo Apagado</value>
   </data>
   <data name="IntervalSeconds" xml:space="preserve">
-    <value>Interval {0}s</value>
+    <value>Intervalo {0}s</value>
   </data>
 </root>
