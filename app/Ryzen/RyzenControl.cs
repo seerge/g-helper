@@ -14,7 +14,7 @@ namespace Ryzen
     {
 
         public static int MinCPUUV => AppConfig.Get("min_uv", -40);
-        public const int MaxCPUUV = 0;
+        public static int MaxCPUUV => AppConfig.Get("max_uv", 0);
 
         public const int MinIGPUUV = -20;
         public const int MaxIGPUUV = 0;
