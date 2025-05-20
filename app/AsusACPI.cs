@@ -130,6 +130,7 @@ public class AsusACPI
 
     public const int SlateMode = 0x00120063;
     public const int TabletState = 0x00060077;
+    public const int TentState = 0x00060062;
     public const int FnLock = 0x00100023;
 
     public const int ScreenPadToggle = 0x00050031;
