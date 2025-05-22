@@ -364,7 +364,7 @@
     <value>Drivers e Software</value>
   </data>
   <data name="EcoGPUTooltip" xml:space="preserve">
-    <value>Desativar o dGPU para economisar a energía</value>
+    <value>Desativar o dGPU para economizar energia</value>
   </data>
   <data name="EcoMode" xml:space="preserve">
     <value>Econômico</value>
