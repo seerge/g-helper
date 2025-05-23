@@ -677,7 +677,7 @@ public static class AppConfig
 
     public static bool IsIntelHX()
     {
-        return ContainsModel("G814") || ContainsModel("G614") || ContainsModel("G834") || ContainsModel("G634");
+        return ContainsModel("G814") || ContainsModel("G614") || ContainsModel("G834") || ContainsModel("G634") || ContainsModel("G835") || ContainsModel("G635") || ContainsModel("G815") || ContainsModel("G615");
     }
 
     public static bool Is8Ecores()
