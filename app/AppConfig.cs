@@ -383,7 +383,7 @@ public static class AppConfig
 
     public static bool IsTUF()
     {
-        return ContainsModel("TUF");
+        return ContainsModel("TUF") || ContainsModel("TX Gaming");
     }
 
     public static bool IsProArt()
