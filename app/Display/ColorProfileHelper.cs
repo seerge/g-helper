@@ -615,6 +615,7 @@ namespace GHelper.Display
         public static bool ProfileExists()
         {
             (string bios, string model) = AppConfig.GetBiosAndModel();
+            if (model is null) return false;
             return (GetProfileUrl(model) is not null);
         }
 
