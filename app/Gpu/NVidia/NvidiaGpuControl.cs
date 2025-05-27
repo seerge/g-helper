@@ -111,7 +111,7 @@ public class NvidiaGpuControl : IGpuControl
     }
 
 
-    private bool RunPowershellCommand(string script)
+    private static bool RunPowershellCommand(string script)
     {
         try
         {
@@ -168,9 +168,14 @@ public class NvidiaGpuControl : IGpuControl
 
     }
 
-    public bool RestartGPU()
+    public static bool RestartGPU()
     {
         return RunPowershellCommand(@"$device = Get-PnpDevice | Where-Object { $_.FriendlyName -imatch 'NVIDIA' -and $_.Class -eq 'Display' }; Disable-PnpDevice $device.InstanceId -Confirm:$false; Start-Sleep -Seconds 5; Enable-PnpDevice $device.InstanceId -Confirm:$false");
+    }
+
+    public static bool RestartNVService()
+    {
+        return RunPowershellCommand(@"Restart-Service -Name 'NVDisplay.ContainerLocalSystem' -Force");
     }
 
 

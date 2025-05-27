@@ -178,6 +178,7 @@ namespace GHelper.Gpu
 
                     if (eco == 0)
                     {
+                        if (AppConfig.IsNVServiceRestart()) NvidiaGpuControl.RestartNVService();
                         await Task.Delay(TimeSpan.FromMilliseconds(3000));
                         HardwareControl.RecreateGpuControl();
                         Program.modeControl.SetGPUClocks(false);
@@ -283,8 +284,7 @@ namespace GHelper.Gpu
             {
                 settings.LockGPUModes("Restarting GPU ...");
 
-                var nvControl = (NvidiaGpuControl)HardwareControl.GpuControl;
-                bool status = nvControl.RestartGPU();
+                bool status = NvidiaGpuControl.RestartGPU();
 
                 settings.Invoke(delegate
                 {

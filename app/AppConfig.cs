@@ -655,6 +655,11 @@ public static class AppConfig
         return Is("gpu_fix") || (ContainsModel("GA402X") && IsNotFalse("gpu_fix"));
     }
 
+    public static bool IsNVServiceRestart()
+    {
+        return Is("nv_restart");
+    }
+
     public static bool IsForceSetGPUMode()
     {
         return Is("gpu_mode_force_set") || (ContainsModel("503") && IsNotFalse("gpu_mode_force_set"));
