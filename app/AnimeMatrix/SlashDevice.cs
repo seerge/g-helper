@@ -71,6 +71,7 @@ namespace GHelper.AnimeMatrix
 
         private static Dictionary<SlashMode, byte> modeCodes = new Dictionary<SlashMode, byte>
         {
+            { SlashMode.Static, 0x06},
             { SlashMode.Bounce, 0x10},
             { SlashMode.Slash, 0x12},
             { SlashMode.Loading, 0x13},
