@@ -29,8 +29,18 @@ public static class AsusHid
         }
 
         foreach (var device in deviceList)
-            if (device.GetReportDescriptor().TryGetReport(ReportType.Feature, reportId, out _))
-                yield return device;
+        {
+            bool isValid = false;
+            try
+            {
+                isValid = device.GetReportDescriptor().TryGetReport(ReportType.Feature, reportId, out _);
+            }
+            catch (Exception ex)
+            {
+                //Logger.WriteLine($"Error getting report descriptor for device {device.ProductID.ToString("X")}: {ex.Message}");
+            }
+            if (isValid) yield return device;
+        }
     }
 
     public static HidStream? FindHidStream(byte reportId)
