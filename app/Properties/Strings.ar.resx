@@ -151,7 +151,7 @@
     <value>سرعة الحركة</value>
   </data>
   <data name="AnimeMatrix" xml:space="preserve">
-    <value>Anime Matrix</value>
+    <value>أنمي ماتريكس</value>
   </data>
   <data name="AppAlreadyRunning" xml:space="preserve">
     <value>التطبيق يعمل بالفعل</value>
@@ -498,7 +498,7 @@
     <value>مؤشرات حالة LED</value>
   </data>
   <data name="Lid" xml:space="preserve">
-    <value>Lid</value>
+    <value>غطاء</value>
   </data>
   <data name="Lightbar" xml:space="preserve">
     <value>شريط الإضاءة</value>
@@ -817,5 +817,62 @@
   <data name="LegendGreen" xml:space="preserve">
     <value>محدّث</value>
     <comment>Updated</comment>
+  </data>
+  <data name="SlashBounce" xml:space="preserve">
+    <value>ارتداد</value>
+  </data>
+  <data name="SlashMode" xml:space="preserve">
+    <value>سلاش</value>
+  </data>
+  <data name="SlashLoading" xml:space="preserve">
+    <value>تحميل</value>
+  </data>
+  <data name="SlashBitStream" xml:space="preserve">
+    <value>تدفق</value>
+  </data>
+  <data name="SlashTransmission" xml:space="preserve">
+    <value>إرسال</value>
+  </data>
+  <data name="SlashFlow" xml:space="preserve">
+    <value>تدفق</value>
+  </data>
+  <data name="SlashFlux" xml:space="preserve">
+    <value>انسياب</value>
+  </data>
+  <data name="SlashPhantom" xml:space="preserve">
+    <value>شبح</value>
+  </data>
+  <data name="SlashSpectrum" xml:space="preserve">
+    <value>نطاق</value>
+  </data>
+  <data name="SlashHazard" xml:space="preserve">
+    <value>خطر</value>
+  </data>
+  <data name="SlashInterfacing" xml:space="preserve">
+    <value>توصيل</value>
+  </data>
+  <data name="SlashRamp" xml:space="preserve">
+    <value>منحدر</value>
+  </data>
+  <data name="SlashGameOver" xml:space="preserve">
+    <value>انتهت اللعبة</value>
+  </data>
+  <data name="SlashStart" xml:space="preserve">
+    <value>بدء</value>
+  </data>
+  <data name="SlashBuzzer" xml:space="preserve">
+    <value>إنذار</value>
+  </data>
+  <data name="SlashStatic" xml:space="preserve">
+    <value>ثابت</value>
+  </data>
+  <data name="SlashBatteryLevel" xml:space="preserve">
+    <value>مستوى البطارية</value>
+  </data>
+  <data name="IntervalOff" xml:space="preserve">
+    <value>إيقاف الفاصل الزمني</value>
+  </data>
+  <data name="IntervalSeconds" xml:space="preserve">
+    <value>الفاصل الزمني {0}ث</value>
   </data>
 </root>

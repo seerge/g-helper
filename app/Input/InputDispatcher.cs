@@ -15,6 +15,7 @@ namespace GHelper.Input
         System.Timers.Timer timer = new System.Timers.Timer(1000);
         public static bool backlightActivity = true;
         public static bool lidClose = false;
+        public static bool tentMode = false;
 
         public static Keys keyProfile = (Keys)AppConfig.Get("keybind_profile", (int)Keys.F5);
         public static Keys keyApp = (Keys)AppConfig.Get("keybind_app", (int)Keys.F12);
@@ -749,6 +750,15 @@ namespace GHelper.Input
 
         }
 
+        public static void TentMode()
+        {
+            int tentState = Program.acpi.DeviceGet(AsusACPI.TentState);
+            Logger.WriteLine($"Tent: {tentState}");
+            if (tentState < 0) return;
+            tentMode = tentState > 0;
+            Aura.ApplyBrightness(tentMode ? 0 : GetBacklight(), "Tent");
+        }
+
         static void HandleEvent(int EventID)
         {
             // The ROG Ally uses different M-key codes.
@@ -924,6 +934,10 @@ namespace GHelper.Input
                 case 157:   // Zenbook DUO FN+F
                     modeControl.CyclePerformanceMode(Control.ModifierKeys == Keys.Shift);
                     return;
+                case 250:
+                    // Tent Mode
+                    TentMode();
+                    return;
             }
         }
 
@@ -951,6 +965,12 @@ namespace GHelper.Input
                 return;
             }
 
+            if (tentMode)
+            {
+                Logger.WriteLine("Skipping Backlight Init: Tent Mode");
+                return;
+            }
+
             if (!AppConfig.Is("skip_aura"))
             {
                 Aura.Init();
@@ -964,7 +984,7 @@ namespace GHelper.Input
 
         public static void SetBacklightAuto(bool init = false)
         {
-            if (lidClose) return;
+            if (lidClose || tentMode) return;
             if (init) Aura.Init();
             Aura.ApplyBrightness(GetBacklight(), "Auto", init);
         }
