@@ -121,133 +121,133 @@
     <value>Acceleration</value>
   </data>
   <data name="ACPIError" xml:space="preserve">
-    <value>Can't connect to ASUS ACPI. Application can't function without it. Try to install Asus System Control Interface</value>
+    <value>ASUS ACPIに接続できません。 Asus System Control Interfaceをインストールしてください</value>
   </data>
   <data name="AlertAPUMemoryRestart" xml:space="preserve">
-    <value>Restart your device to apply changes</value>
+    <value>変更を適用するにはデバイスを再起動してください</value>
   </data>
   <data name="AlertAPUMemoryRestartTitle" xml:space="preserve">
-    <value>Restart now?</value>
+    <value>再起動しますか？</value>
   </data>
   <data name="AlertDGPU" xml:space="preserve">
-    <value>Looks like GPU is in heavy use, disable it?</value>
+    <value>GPUが大量に使用されているようです。無効にしますか？</value>
   </data>
   <data name="AlertDGPUTitle" xml:space="preserve">
-    <value>Eco Mode</value>
+    <value>エコモード</value>
   </data>
   <data name="AlertUltimateOff" xml:space="preserve">
-    <value>Switching off Ultimate Mode requires restart</value>
+    <value>Ultimate モードをオフにするには再起動が必要です</value>
   </data>
   <data name="AlertUltimateOn" xml:space="preserve">
-    <value>Ultimate Mode requires restart</value>
+    <value>Ultimate モードには再起動が必要です</value>
   </data>
   <data name="AlertUltimateTitle" xml:space="preserve">
-    <value>Reboot now?</value>
+    <value>今すぐ再起動？</value>
   </data>
   <data name="AllyController" xml:space="preserve">
-    <value>Ally Controller</value>
+    <value>Allyコントローラ</value>
   </data>
   <data name="AnimationSpeed" xml:space="preserve">
-    <value>Animation Speed</value>
+    <value>アニメーション速度</value>
   </data>
   <data name="AnimeMatrix" xml:space="preserve">
-    <value>Anime Matrix</value>
+    <value>AniMe Matrix</value>
   </data>
   <data name="AppAlreadyRunning" xml:space="preserve">
-    <value>App already running</value>
+    <value>アプリは既に実行中です</value>
   </data>
   <data name="AppAlreadyRunningText" xml:space="preserve">
-    <value>G-Helper is already running. Check system tray for an icon.</value>
+    <value>G-Helperは既に実行されています。システムトレイのアイコンをチェックしてください。</value>
   </data>
   <data name="Apply" xml:space="preserve">
-    <value>Apply</value>
+    <value>適用</value>
   </data>
   <data name="ApplyFanCurve" xml:space="preserve">
-    <value>Apply Custom Fan Curve</value>
+    <value>カスタムファンカーブの適用</value>
   </data>
   <data name="ApplyPowerLimits" xml:space="preserve">
-    <value>Apply Power Limits</value>
+    <value>電力制限を適用する</value>
   </data>
   <data name="ApplyWindowsPowerPlan" xml:space="preserve">
-    <value>Auto adjust Windows Power Modes</value>
+    <value>Windows電源モードを自動調整</value>
   </data>
   <data name="APUMemory" xml:space="preserve">
-    <value>Memory Assigned to GPU</value>
+    <value>GPUに割り当てられたメモリ</value>
   </data>
   <data name="AsusServicesRunning" xml:space="preserve">
-    <value>Asus Services Running</value>
+    <value>Asusサービスを実行中</value>
   </data>
   <data name="AuraBatteryState" xml:space="preserve">
-    <value>Battery State</value>
+    <value>バッテリーの状態</value>
   </data>
   <data name="AuraBreathe" xml:space="preserve">
-    <value>Breathe</value>
+    <value>呼吸</value>
   </data>
   <data name="AuraClockwise" xml:space="preserve">
-    <value>Clockwise</value>
+    <value>時計回り</value>
   </data>
   <data name="AuraColorCycle" xml:space="preserve">
-    <value>Color Cycle</value>
+    <value>カラーサイクル</value>
   </data>
   <data name="AuraComet" xml:space="preserve">
-    <value>Comet</value>
+    <value>コメット</value>
   </data>
   <data name="AuraCounterClockwise" xml:space="preserve">
-    <value>Counterclockwise</value>
+    <value>反時計回り</value>
   </data>
   <data name="AuraFast" xml:space="preserve">
-    <value>Fast</value>
+    <value>高速</value>
   </data>
   <data name="AuraLightingMode" xml:space="preserve">
-    <value>Lighting Mode</value>
+    <value>照明モード</value>
   </data>
   <data name="AuraNormal" xml:space="preserve">
-    <value>Normal</value>
+    <value>普通</value>
   </data>
   <data name="AuraRainbow" xml:space="preserve">
-    <value>Rainbow</value>
+    <value>虹</value>
   </data>
   <data name="AuraRandomColor" xml:space="preserve">
-    <value>Random</value>
+    <value>ランダム</value>
   </data>
   <data name="AuraReact" xml:space="preserve">
-    <value>React</value>
+    <value>リアクト</value>
   </data>
   <data name="AuraSlow" xml:space="preserve">
-    <value>Slow</value>
+    <value>低速</value>
   </data>
   <data name="AuraStatic" xml:space="preserve">
-    <value>Static</value>
+    <value>固定</value>
   </data>
   <data name="AuraStrobe" xml:space="preserve">
-    <value>Strobe</value>
+    <value>ストロボ</value>
   </data>
   <data name="AuraZoneAll" xml:space="preserve">
-    <value>All</value>
+    <value>全て</value>
   </data>
   <data name="AuraZoneDock" xml:space="preserve">
-    <value>Dock</value>
+    <value>ドック</value>
   </data>
   <data name="AuraZoneLogo" xml:space="preserve">
-    <value>Logo</value>
+    <value>ロゴ</value>
   </data>
   <data name="AuraZoneScroll" xml:space="preserve">
     <value>Scrollwheel</value>
   </data>
   <data name="AuraZoneUnderglow" xml:space="preserve">
-    <value>Underglow</value>
+    <value>アンダーグロー</value>
   </data>
   <data name="AutoApply" xml:space="preserve">
-    <value>Auto Apply</value>
+    <value>自動的に適用</value>
   </data>
   <data name="AutoMode" xml:space="preserve">
-    <value>Auto</value>
+    <value>自動</value>
   </data>
   <data name="AutoRefreshTooltip" xml:space="preserve">
-    <value>Sets 60Hz to save battery, and back when plugged</value>
+    <value>電源接続時にバッテリーを節約するために60Hzを設定する</value>
   </data>
   <data name="Awake" xml:space="preserve">
-    <value>Awake</value>
+    <value>起動中</value>
   </data>
   <data name="BacklightLow" xml:space="preserve">
     <value>Low</value>
@@ -259,31 +259,31 @@
     <value>Mid</value>
   </data>
   <data name="BacklightOff" xml:space="preserve">
-    <value>Off</value>
+    <value>オフ</value>
   </data>
   <data name="BacklightTimeout" xml:space="preserve">
-    <value>Timeout plugged / on battery (0 - ON)</value>
+    <value>バッテリー / 接続時間 (0 - ON)</value>
   </data>
   <data name="BacklightTimeoutBattery" xml:space="preserve">
     <value>バッテリー時のバックライトタイムアウト</value>
   </data>
   <data name="BacklightTimeoutPlugged" xml:space="preserve">
-    <value>Backlight Timeout when plugged</value>
+    <value>電源接続時のバックライトのタイムアウト</value>
   </data>
   <data name="Balanced" xml:space="preserve">
-    <value>Balanced</value>
+    <value>バランス</value>
   </data>
   <data name="BatteryCharge" xml:space="preserve">
-    <value>Charge</value>
+    <value>充電</value>
   </data>
   <data name="BatteryChargeLimit" xml:space="preserve">
-    <value>Battery Charge Limit</value>
+    <value>バッテリー充電制限</value>
   </data>
   <data name="BatteryHealth" xml:space="preserve">
-    <value>Battery Health</value>
+    <value>バッテリー健康度</value>
   </data>
   <data name="BatteryLimitFull" xml:space="preserve">
-    <value>One time charge to 100%</value>
+    <value>100%までの一回限りの充電</value>
   </data>
   <data name="Binding" xml:space="preserve">
     <value>Binding</value>
@@ -295,141 +295,141 @@
     <value>Secondary</value>
   </data>
   <data name="BiosAndDriverUpdates" xml:space="preserve">
-    <value>BIOS and Driver Updates</value>
+    <value>BIOS とドライバの更新</value>
   </data>
   <data name="Boot" xml:space="preserve">
-    <value>Boot</value>
+    <value>ブート</value>
   </data>
   <data name="BootSound" xml:space="preserve">
-    <value>Boot Sound</value>
+    <value>起動音</value>
   </data>
   <data name="Brightness" xml:space="preserve">
-    <value>Brightness</value>
+    <value>明るさ</value>
   </data>
   <data name="BrightnessDown" xml:space="preserve">
-    <value>Brightness Down</value>
+    <value>明るさダウン</value>
   </data>
   <data name="BrightnessUp" xml:space="preserve">
-    <value>Brightness Up</value>
+    <value>明るさを上げる</value>
   </data>
   <data name="BWTrayIcon" xml:space="preserve">
-    <value>Black and white tray icon</value>
+    <value>白黒トレイアイコン</value>
   </data>
   <data name="Calibrate" xml:space="preserve">
-    <value>Calibrate</value>
+    <value>キャリブレーション</value>
   </data>
   <data name="Charging" xml:space="preserve">
-    <value>Charging</value>
+    <value>充電中</value>
   </data>
   <data name="Color" xml:space="preserve">
-    <value>Color</value>
+    <value>カラー</value>
   </data>
   <data name="Contrast" xml:space="preserve">
-    <value>Contrast</value>
+    <value>コントラスト</value>
   </data>
   <data name="Controller" xml:space="preserve">
-    <value>Controller</value>
+    <value>コントローラー</value>
   </data>
   <data name="CPUBoost" xml:space="preserve">
-    <value>CPU Boost</value>
+    <value>CPUブースト</value>
   </data>
   <data name="Custom" xml:space="preserve">
-    <value>Custom</value>
+    <value>カスタム</value>
   </data>
   <data name="Deceleration" xml:space="preserve">
     <value>Deceleration</value>
   </data>
   <data name="Default" xml:space="preserve">
-    <value>Default</value>
+    <value>既定</value>
   </data>
   <data name="DisableController" xml:space="preserve">
-    <value>Disable Controller</value>
+    <value>コントローラーを無効化</value>
   </data>
   <data name="DisableOnLidClose" xml:space="preserve">
-    <value>Disable on lid close</value>
+    <value>フタを閉じた時に無効化</value>
   </data>
   <data name="DisableOverdrive" xml:space="preserve">
-    <value>Disable screen overdrive</value>
+    <value>スクリーンオーバードライブを無効にする</value>
   </data>
   <data name="Discharging" xml:space="preserve">
-    <value>Discharging</value>
+    <value>放電中</value>
   </data>
   <data name="DownloadColorProfiles" xml:space="preserve">
-    <value>Download Color Profiles</value>
+    <value>カラープロファイルをダウンロード</value>
   </data>
   <data name="DownloadUpdate" xml:space="preserve">
-    <value>Download</value>
+    <value>ダウンロード</value>
   </data>
   <data name="DriverAndSoftware" xml:space="preserve">
-    <value>Drivers and Software</value>
+    <value>ドライバとソフトウェア</value>
   </data>
   <data name="EcoGPUTooltip" xml:space="preserve">
-    <value>Disables dGPU to save battery</value>
+    <value>バッテリー節約のためにdGPUを無効にします</value>
   </data>
   <data name="EcoMode" xml:space="preserve">
-    <value>Eco</value>
+    <value>エコ</value>
   </data>
   <data name="EnableGPUOnShutdown" xml:space="preserve">
-    <value>Enable GPU on shutdown (prevents issue with Eco mode)</value>
+    <value>シャットダウン時にGPUを有効にする (エコモードでの問題を防ぐ)</value>
   </data>
   <data name="EnableOptimusText" xml:space="preserve">
-    <value>Disabling the dGPU by going into Eco mode while Display Mode in NVIDIA Control Panel is not set to Optimus might cause problems with brightness controls until after the next reboot. 
+    <value>NVIDIA Control Panel の ディスプレイモード が Optimus に設定されていない場合、エコモードに入って dGPU を無効にすると、次回再起動するまで明るさコントロールに問題が生じる可能性があります。 
 
-Do you still want to continue?</value>
+続行しますか？</value>
   </data>
   <data name="EnableOptimusTitle" xml:space="preserve">
-    <value>NVIDIA Display Mode is not set to Optimus</value>
+    <value>NVIDIA ディスプレイモードが Optimus に設定されていません</value>
   </data>
   <data name="EnergySettings" xml:space="preserve">
-    <value>Energy Settings</value>
+    <value>エネルギー設定</value>
   </data>
   <data name="Export" xml:space="preserve">
-    <value>Export Profile</value>
+    <value>プロファイルをエクスポート</value>
   </data>
   <data name="Extra" xml:space="preserve">
-    <value>Extra</value>
+    <value>その他</value>
   </data>
   <data name="ExtraSettings" xml:space="preserve">
-    <value>Extra Settings</value>
+    <value>その他の設定</value>
   </data>
   <data name="FactoryDefaults" xml:space="preserve">
-    <value>Factory Defaults</value>
+    <value>出荷時のデフォルト設定</value>
   </data>
   <data name="FanCurves" xml:space="preserve">
-    <value>Fan Curves</value>
+    <value>ファンカーブ</value>
   </data>
   <data name="FanProfileCPU" xml:space="preserve">
-    <value>CPU Fan Profile</value>
+    <value>CPUファンプロファイル</value>
   </data>
   <data name="FanProfileGPU" xml:space="preserve">
-    <value>GPU Fan Profile</value>
+    <value>GPU ファンプロファイル</value>
   </data>
   <data name="FanProfileMid" xml:space="preserve">
-    <value>Mid Fan Profile</value>
+    <value>ミッドファンプロファイル</value>
   </data>
   <data name="FanProfiles" xml:space="preserve">
-    <value>Fan Profiles</value>
+    <value>ファンプロファイル</value>
   </data>
   <data name="FansAndPower" xml:space="preserve">
-    <value>Fans and Power</value>
+    <value>ファンとパワー</value>
   </data>
   <data name="FanSpeed" xml:space="preserve">
-    <value>Fan</value>
+    <value>ファン</value>
   </data>
   <data name="FansPower" xml:space="preserve">
-    <value>Fans + Power</value>
+    <value>ファン + パワー</value>
   </data>
   <data name="FlickerFreeDimming" xml:space="preserve">
     <value>フリッカーフリー調光</value>
   </data>
   <data name="FnLock" xml:space="preserve">
-    <value>Process Fn+F hotkeys without Fn</value>
+    <value>FnなしでFn+Fホットキーを処理</value>
   </data>
   <data name="FnLockOff" xml:space="preserve">
-    <value>FN-Lock Off</value>
+    <value>FNロック オフ</value>
   </data>
   <data name="FnLockOn" xml:space="preserve">
-    <value>FN-Lock On</value>
+    <value>FNロック オン</value>
   </data>
   <data name="GPUBoost" xml:space="preserve">
     <value>Dynamic Boost</value>
@@ -438,121 +438,121 @@ Do you still want to continue?</value>
     <value>Changing</value>
   </data>
   <data name="GPUCoreClockOffset" xml:space="preserve">
-    <value>Core Clock Offset</value>
+    <value>コアクロックオフセット</value>
   </data>
   <data name="GPUMemoryClockOffset" xml:space="preserve">
-    <value>Memory Clock Offset</value>
+    <value>メモリクロックオフセット</value>
   </data>
   <data name="GPUMode" xml:space="preserve">
-    <value>GPU Mode</value>
+    <value>GPUモード</value>
   </data>
   <data name="GPUModeEco" xml:space="preserve">
-    <value>iGPU only</value>
+    <value>iGPU のみ</value>
   </data>
   <data name="GPUModeStandard" xml:space="preserve">
     <value>iGPU + dGPU</value>
   </data>
   <data name="GPUModeUltimate" xml:space="preserve">
-    <value>dGPU exclusive</value>
+    <value>dGPU 専用</value>
   </data>
   <data name="GPUPower" xml:space="preserve">
-    <value>GPU Power</value>
+    <value>GPU電力</value>
   </data>
   <data name="GPUSettings" xml:space="preserve">
-    <value>GPU Settings</value>
+    <value>GPU設定</value>
   </data>
   <data name="GPUTempTarget" xml:space="preserve">
-    <value>Temperature Target</value>
+    <value>温度ターゲット</value>
   </data>
   <data name="HibernateAfter" xml:space="preserve">
-    <value>Minutes till Hibernation in sleep on battery (0 - OFF)</value>
+    <value>スリープ時にバッテリーを停止するまでの時間 (0 - OFF)</value>
   </data>
   <data name="High" xml:space="preserve">
     <value>High</value>
   </data>
   <data name="ImageRotation" xml:space="preserve">
-    <value>Image Rotation</value>
+    <value>画像の回転</value>
   </data>
   <data name="Import" xml:space="preserve">
-    <value>Import Profile</value>
+    <value>プロファイルをインポート</value>
   </data>
   <data name="KeyBindings" xml:space="preserve">
-    <value>Key Bindings</value>
+    <value>キー割り当て</value>
   </data>
   <data name="Keyboard" xml:space="preserve">
-    <value>Keyboard</value>
+    <value>キーボード</value>
   </data>
   <data name="KillGpuApps" xml:space="preserve">
-    <value>Stop all apps using GPU when switching to Eco</value>
+    <value>エコに切り替えるときにGPUを使用しているすべてのアプリを停止します</value>
   </data>
   <data name="LaptopBacklight" xml:space="preserve">
-    <value>Laptop Backlight</value>
+    <value>ラップトップのバックライト</value>
   </data>
   <data name="LaptopKeyboard" xml:space="preserve">
-    <value>Laptop Keyboard</value>
+    <value>ラップトップキーボード</value>
   </data>
   <data name="LaptopScreen" xml:space="preserve">
-    <value>Laptop Screen</value>
+    <value>ラップトップ画面</value>
   </data>
   <data name="LEDStatusIndicators" xml:space="preserve">
-    <value>LED Status Indicators</value>
+    <value>LEDステータス表示</value>
   </data>
   <data name="Lid" xml:space="preserve">
-    <value>Lid</value>
+    <value>フタ</value>
   </data>
   <data name="Lightbar" xml:space="preserve">
-    <value>Lightbar</value>
+    <value>ライトバー</value>
   </data>
   <data name="Lighting" xml:space="preserve">
-    <value>Lighting</value>
+    <value>ライティング</value>
   </data>
   <data name="LockScreen" xml:space="preserve">
-    <value>Lock Screen</value>
+    <value>ロック画面</value>
   </data>
   <data name="Logo" xml:space="preserve">
-    <value>Logo</value>
+    <value>ロゴ</value>
   </data>
   <data name="Low" xml:space="preserve">
     <value>Low</value>
   </data>
   <data name="LSDeadzones" xml:space="preserve">
-    <value>Left Stick Deadzones</value>
+    <value>左スティックデッドゾーン</value>
   </data>
   <data name="LTDeadzones" xml:space="preserve">
-    <value>Left Trigger Deadzones</value>
+    <value>左トリガーデッドゾーン</value>
   </data>
   <data name="MatrixAudio" xml:space="preserve">
-    <value>Audio Visualizer</value>
+    <value>オーディオビジュアライザー</value>
   </data>
   <data name="MatrixBanner" xml:space="preserve">
     <value>Binary Banner</value>
   </data>
   <data name="MatrixBright" xml:space="preserve">
-    <value>Bright</value>
+    <value>明度調整</value>
   </data>
   <data name="MatrixClock" xml:space="preserve">
-    <value>Clock</value>
+    <value>時計</value>
   </data>
   <data name="MatrixDim" xml:space="preserve">
     <value>Dim</value>
   </data>
   <data name="MatrixLogo" xml:space="preserve">
-    <value>Rog Logo</value>
+    <value>Rog ロゴ</value>
   </data>
   <data name="MatrixMedium" xml:space="preserve">
     <value>Medium</value>
   </data>
   <data name="MatrixOff" xml:space="preserve">
-    <value>Off</value>
+    <value>オフ</value>
   </data>
   <data name="MatrixPicture" xml:space="preserve">
-    <value>Picture</value>
+    <value>画像</value>
   </data>
   <data name="MaxRefreshTooltip" xml:space="preserve">
-    <value>Max refresh rate for lower latency</value>
+    <value>最大リフレッシュレートで低遅延を実現</value>
   </data>
   <data name="MinRefreshTooltip" xml:space="preserve">
-    <value>60Hz refresh rate to save battery</value>
+    <value>バッテリーを節約するために60Hzのリフレッシュレートを使用</value>
   </data>
   <data name="Minute" xml:space="preserve">
     <value>Minute</value>
@@ -561,28 +561,28 @@ Do you still want to continue?</value>
     <value>Minutes</value>
   </data>
   <data name="MouseAngleSnapping" xml:space="preserve">
-    <value>Angle Snapping</value>
+    <value>角度スナップ</value>
   </data>
   <data name="MouseAutoPowerOff" xml:space="preserve">
-    <value>Auto Power Off After</value>
+    <value>自動電源オフ</value>
   </data>
   <data name="MouseButtonResponse" xml:space="preserve">
-    <value>Button Response</value>
+    <value>ボタンの応答</value>
   </data>
   <data name="MouseImportFailed" xml:space="preserve">
-    <value>Import failed. Selected file is not a valid mouse profile or corrutpted.</value>
+    <value>インポートに失敗しました。選択したファイルは有効なマウスプロファイルではないか、壊れています。</value>
   </data>
   <data name="MouseLiftOffDistance" xml:space="preserve">
     <value>持ち上げ距離</value>
   </data>
   <data name="MouseLowBatteryWarning" xml:space="preserve">
-    <value>Low Battery Warning at</value>
+    <value>バッテリー残量低下警告</value>
   </data>
   <data name="MousePerformance" xml:space="preserve">
-    <value>Performance</value>
+    <value>パフォーマンス</value>
   </data>
   <data name="MouseSynchronize" xml:space="preserve">
-    <value>Synchronize with mouse</value>
+    <value>マウスと同期</value>
   </data>
   <data name="Multizone" xml:space="preserve">
     <value>Multi Zone</value>
@@ -591,231 +591,231 @@ Do you still want to continue?</value>
     <value>Multi Zone Strong</value>
   </data>
   <data name="Muted" xml:space="preserve">
-    <value>Muted</value>
+    <value>ミュート</value>
   </data>
   <data name="MuteMic" xml:space="preserve">
-    <value>Mute Mic</value>
+    <value>マイクをミュートする</value>
   </data>
   <data name="Never" xml:space="preserve">
-    <value>Never</value>
+    <value>なし</value>
   </data>
   <data name="NewUpdates" xml:space="preserve">
-    <value>New updates</value>
+    <value>新しい更新</value>
   </data>
   <data name="NoNewUpdates" xml:space="preserve">
-    <value>No new updates</value>
+    <value>アップデートはありません</value>
   </data>
   <data name="NotConnected" xml:space="preserve">
-    <value>Not Connected</value>
+    <value>未接続</value>
   </data>
   <data name="Off" xml:space="preserve">
-    <value>Off</value>
+    <value>オフ</value>
   </data>
   <data name="On" xml:space="preserve">
-    <value>On</value>
+    <value>オン</value>
   </data>
   <data name="OneZone" xml:space="preserve">
-    <value>One Zone</value>
+    <value>1つのゾーン</value>
   </data>
   <data name="OpenGHelper" xml:space="preserve">
-    <value>Open G-Helper window</value>
+    <value>G-Helperウィンドウを開く</value>
   </data>
   <data name="Optimized" xml:space="preserve">
-    <value>Optimized</value>
+    <value>最適化</value>
   </data>
   <data name="OptimizedGPUTooltip" xml:space="preserve">
     <value>Switch to Eco on battery and to Standard when plugged in</value>
   </data>
   <data name="OptimizedUSBC" xml:space="preserve">
-    <value>Keep GPU disabled on USB-C charger in Optimized mode</value>
+    <value>最適化モードでUSB-C充電器でGPUを無効にする</value>
   </data>
   <data name="Other" xml:space="preserve">
-    <value>Other</value>
+    <value>その他</value>
   </data>
   <data name="Overdrive" xml:space="preserve">
-    <value>Overdrive</value>
+    <value>オーバードライブ</value>
   </data>
   <data name="PerformanceMode" xml:space="preserve">
-    <value>Mode</value>
+    <value>モード</value>
   </data>
   <data name="Peripherals" xml:space="preserve">
-    <value>Peripherals</value>
+    <value>周辺機器</value>
   </data>
   <data name="PictureGif" xml:space="preserve">
-    <value>Picture / Gif</value>
+    <value>画像 / Gif</value>
   </data>
   <data name="PlayPause" xml:space="preserve">
-    <value>Play / Pause</value>
+    <value>再生 / 一時停止</value>
   </data>
   <data name="PollingRate" xml:space="preserve">
-    <value>Polling Rate</value>
+    <value>ポーリング レート</value>
   </data>
   <data name="PowerLimits" xml:space="preserve">
-    <value>Power Limits</value>
+    <value>電力制限</value>
   </data>
   <data name="PPTExperimental" xml:space="preserve">
-    <value>Power Limits is an experimental feature. Use carefully and at your own risk!</value>
+    <value>電力制限は実験的な機能です。慎重に、ご自身の責任において使用してください！</value>
   </data>
   <data name="PrintScreen" xml:space="preserve">
     <value>PrintScreen</value>
   </data>
   <data name="Profile" xml:space="preserve">
-    <value>Profile</value>
+    <value>プロファイル</value>
   </data>
   <data name="Quit" xml:space="preserve">
-    <value>Quit</value>
+    <value>終了</value>
   </data>
   <data name="Reset" xml:space="preserve">
-    <value>Reset</value>
+    <value>リセット</value>
   </data>
   <data name="RestartGPU" xml:space="preserve">
-    <value>Something is using dGPU and preventing Eco mode. Let G-Helper try to restart dGPU in device manager? (Please proceed at your own risk)</value>
+    <value>何らかの問題が dGPU を使用しており、エコモードを防止しています。G-Helper をデバイスマネージャーで dGPU を再起動させてください。(自己責任で進んでください)</value>
   </data>
   <data name="RPM" xml:space="preserve">
     <value>RPM</value>
   </data>
   <data name="RSDeadzones" xml:space="preserve">
-    <value>Right Stick Deadzones</value>
+    <value>右スティックのデッドゾーン</value>
   </data>
   <data name="RTDeadzones" xml:space="preserve">
-    <value>Right Trigger Deadzones</value>
+    <value>右トリガーデッドゾーン</value>
   </data>
   <data name="RunOnStartup" xml:space="preserve">
-    <value>Run on Startup</value>
+    <value>起動時に実行する</value>
   </data>
   <data name="ScalingQuality" xml:space="preserve">
-    <value>Scaling Quality</value>
+    <value>スケーリング品質</value>
   </data>
   <data name="ScreenPadDown" xml:space="preserve">
-    <value>Screenpad Brightness Down</value>
+    <value>画面の明るさダウン</value>
   </data>
   <data name="ScreenPadUp" xml:space="preserve">
-    <value>Screenpad Brightness Up</value>
+    <value>画面の明るさを上げる</value>
   </data>
   <data name="Shutdown" xml:space="preserve">
-    <value>Shutdown</value>
+    <value>シャットダウン</value>
   </data>
   <data name="Silent" xml:space="preserve">
-    <value>Silent</value>
+    <value>サイレント</value>
   </data>
   <data name="Sleep" xml:space="preserve">
-    <value>Sleep</value>
+    <value>スリープ</value>
   </data>
   <data name="StandardGPUTooltip" xml:space="preserve">
-    <value>Enables dGPU for standard use</value>
+    <value>標準的な使用のために dGPU を有効にします</value>
   </data>
   <data name="StandardMode" xml:space="preserve">
-    <value>Standard</value>
+    <value>標準</value>
   </data>
   <data name="Start" xml:space="preserve">
-    <value>Start</value>
+    <value>スタート</value>
   </data>
   <data name="StartingServices" xml:space="preserve">
-    <value>Starting Services</value>
+    <value>サービスを開始</value>
   </data>
   <data name="StartupError" xml:space="preserve">
-    <value>Startup Error</value>
+    <value>起動エラー</value>
   </data>
   <data name="Stop" xml:space="preserve">
-    <value>Stop</value>
+    <value>ストップ</value>
   </data>
   <data name="StopGPUApps" xml:space="preserve">
-    <value>Stop GPU Applications</value>
+    <value>GPU アプリケーションを停止</value>
   </data>
   <data name="StoppingServices" xml:space="preserve">
-    <value>Stopping Services</value>
+    <value>サービスの停止中</value>
   </data>
   <data name="ToggleAura" xml:space="preserve">
     <value>Auraを切り替える</value>
   </data>
   <data name="ToggleClamshellMode" xml:space="preserve">
-    <value>Auto Toggle Clamshell Mode</value>
+    <value>クランシェルモードの自動切り替え</value>
   </data>
   <data name="ToggleFnLock" xml:space="preserve">
-    <value>Toggle Fn-Lock</value>
+    <value>Fn-Lockを切り替える</value>
   </data>
   <data name="ToggleMiniled" xml:space="preserve">
     <value>Toggle Miniled (if supported)</value>
   </data>
   <data name="ToggleScreen" xml:space="preserve">
-    <value>Toggle Screen</value>
+    <value>画面を切り替える</value>
   </data>
   <data name="ToggleTouchscreen" xml:space="preserve">
-    <value>Toggle Touchscreen</value>
+    <value>タッチスクリーンの切り替え</value>
   </data>
   <data name="Touchscreen" xml:space="preserve">
-    <value>Touchscreen</value>
+    <value>タッチスクリーン</value>
   </data>
   <data name="Turbo" xml:space="preserve">
-    <value>Turbo</value>
+    <value>ターボ</value>
   </data>
   <data name="TurnedOff" xml:space="preserve">
-    <value>Turned off</value>
+    <value>無効</value>
   </data>
   <data name="TurnOffOnBattery" xml:space="preserve">
-    <value>Disable on battery</value>
+    <value>バッテリーを無効にする</value>
   </data>
   <data name="UltimateGPUTooltip" xml:space="preserve">
-    <value>Routes laptop screen to dGPU, maximizing FPS</value>
+    <value>ラップトップ画面をdGPUにルーティングし、FPSを最大化</value>
   </data>
   <data name="UltimateMode" xml:space="preserve">
     <value>Ultimate</value>
   </data>
   <data name="UndervoltingRisky" xml:space="preserve">
-    <value>Undervolting is an experimental and risky feature. If applied values are too low for your hardware, it can become unstable, shut down or cause data corruption. If you want to try - start from small values first, click Apply and test what works for you.</value>
+    <value>アンダーボルトは、実験的で危険な機能です。 適用される値がハードウェアに低すぎると、不安定になったり、シャットダウンしたり、データが破損したりする可能性があります。 試してみたい場合 - 最初に小さい値から始めて、適用をクリックして、何があなたに役立つかをテストします。</value>
   </data>
   <data name="Unmuted" xml:space="preserve">
-    <value>Unmuted</value>
+    <value>ミュート解除</value>
   </data>
   <data name="Updates" xml:space="preserve">
-    <value>Updates</value>
+    <value>アップデート</value>
   </data>
   <data name="VersionLabel" xml:space="preserve">
-    <value>Version</value>
+    <value>バージョン</value>
   </data>
   <data name="VibrationStrength" xml:space="preserve">
-    <value>Vibration Strength</value>
+    <value>振動の強さ</value>
   </data>
   <data name="VisualMode" xml:space="preserve">
-    <value>Visual Mode</value>
+    <value>ビジュアルモード</value>
   </data>
   <data name="VisualModesHDR" xml:space="preserve">
-    <value>Visual Modes are not available when HDR is active</value>
+    <value>HDRがアクティブな場合、ビジュアルモードは利用できません</value>
   </data>
   <data name="VisualModesScreen" xml:space="preserve">
-    <value>Visual Modes are not available when laptop screen is off</value>
+    <value>ラップトップ画面がオフの場合、ビジュアルモードは使用できません</value>
   </data>
   <data name="VolumeDown" xml:space="preserve">
-    <value>Volume Down</value>
+    <value>音量ダウン</value>
   </data>
   <data name="VolumeMute" xml:space="preserve">
-    <value>Volume Mute</value>
+    <value>音量ミュート</value>
   </data>
   <data name="VolumeUp" xml:space="preserve">
-    <value>Volume Up</value>
+    <value>音量アップ</value>
   </data>
   <data name="WindowTop" xml:space="preserve">
-    <value>Keep app window always on top</value>
+    <value>アプリのウィンドウを常にトップに表示する</value>
   </data>
   <data name="Zoom" xml:space="preserve">
-    <value>Zoom</value>
+    <value>ズーム</value>
   </data>
   <data name="Donate" xml:space="preserve">
-    <value>Donate</value>
+    <value>寄付</value>
   </data>
   <data name="Legend" xml:space="preserve">
-    <value>Legend</value>
+    <value>凡例</value>
   </data>
   <data name="LegendGray" xml:space="preserve">
-    <value>Can't check local version</value>
+    <value>ローカルバージョンを確認できません</value>
     <comment>Can't check local version</comment>
   </data>
   <data name="LegendRed" xml:space="preserve">
-    <value>Update Available</value>
+    <value>アップデートが利用できます</value>
     <comment>Update Available</comment>
   </data>
   <data name="LegendGreen" xml:space="preserve">
-    <value>Updated</value>
+    <value>更新</value>
     <comment>Updated</comment>
   </data>
   <data name="SlashBounce" xml:space="preserve">
@@ -867,10 +867,10 @@ Do you still want to continue?</value>
     <value>Static</value>
   </data>
   <data name="SlashBatteryLevel" xml:space="preserve">
-    <value>Battery Level</value>
+    <value>バッテリー残量</value>
   </data>
   <data name="IntervalOff" xml:space="preserve">
-    <value>Interval Off</value>
+    <value>インターバルオフ</value>
   </data>
   <data name="IntervalSeconds" xml:space="preserve">
     <value>間隔 {0}秒</value>
