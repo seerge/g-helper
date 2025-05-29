@@ -31,14 +31,14 @@ namespace GHelper
         /// </summary>
         private void InitializeComponent()
         {
-            ChartArea chartArea1 = new ChartArea();
-            Title title1 = new Title();
-            ChartArea chartArea2 = new ChartArea();
-            Title title2 = new Title();
-            ChartArea chartArea3 = new ChartArea();
-            Title title3 = new Title();
-            ChartArea chartArea4 = new ChartArea();
-            Title title4 = new Title();
+            ChartArea chartArea5 = new ChartArea();
+            Title title5 = new Title();
+            ChartArea chartArea6 = new ChartArea();
+            Title title6 = new Title();
+            ChartArea chartArea7 = new ChartArea();
+            Title title7 = new Title();
+            ChartArea chartArea8 = new ChartArea();
+            Title title8 = new Title();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Fans));
             panelFans = new Panel();
             labelTip = new Label();
@@ -48,9 +48,10 @@ namespace GHelper
             chartXGM = new Chart();
             chartMid = new Chart();
             panelTitleFans = new Panel();
-            buttonRename = new RButton();
+            tableLayoutModes = new TableLayoutPanel();
             buttonRemove = new RButton();
             buttonAdd = new RButton();
+            buttonRename = new RButton();
             comboModes = new RComboBox();
             picturePerf = new PictureBox();
             labelFans = new Label();
@@ -158,6 +159,7 @@ namespace GHelper
             ((System.ComponentModel.ISupportInitialize)chartXGM).BeginInit();
             ((System.ComponentModel.ISupportInitialize)chartMid).BeginInit();
             panelTitleFans.SuspendLayout();
+            tableLayoutModes.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)picturePerf).BeginInit();
             panelApplyFans.SuspendLayout();
             panelSliders.SuspendLayout();
@@ -265,8 +267,8 @@ namespace GHelper
             // 
             // chartGPU
             // 
-            chartArea1.Name = "ChartArea1";
-            chartGPU.ChartAreas.Add(chartArea1);
+            chartArea5.Name = "ChartArea1";
+            chartGPU.ChartAreas.Add(chartArea5);
             chartGPU.Dock = DockStyle.Fill;
             chartGPU.Location = new Point(12, 238);
             chartGPU.Margin = new Padding(2, 10, 2, 10);
@@ -274,13 +276,13 @@ namespace GHelper
             chartGPU.Size = new Size(786, 208);
             chartGPU.TabIndex = 17;
             chartGPU.Text = "chartGPU";
-            title1.Name = "Title1";
-            chartGPU.Titles.Add(title1);
+            title5.Name = "Title1";
+            chartGPU.Titles.Add(title5);
             // 
             // chartCPU
             // 
-            chartArea2.Name = "ChartArea1";
-            chartCPU.ChartAreas.Add(chartArea2);
+            chartArea6.Name = "ChartArea1";
+            chartCPU.ChartAreas.Add(chartArea6);
             chartCPU.Dock = DockStyle.Fill;
             chartCPU.Location = new Point(12, 10);
             chartCPU.Margin = new Padding(2, 10, 2, 10);
@@ -288,13 +290,13 @@ namespace GHelper
             chartCPU.Size = new Size(786, 208);
             chartCPU.TabIndex = 14;
             chartCPU.Text = "chartCPU";
-            title2.Name = "Title1";
-            chartCPU.Titles.Add(title2);
+            title6.Name = "Title1";
+            chartCPU.Titles.Add(title6);
             // 
             // chartXGM
             // 
-            chartArea3.Name = "ChartAreaXGM";
-            chartXGM.ChartAreas.Add(chartArea3);
+            chartArea7.Name = "ChartAreaXGM";
+            chartXGM.ChartAreas.Add(chartArea7);
             chartXGM.Dock = DockStyle.Fill;
             chartXGM.Location = new Point(12, 694);
             chartXGM.Margin = new Padding(2, 10, 2, 10);
@@ -302,14 +304,14 @@ namespace GHelper
             chartXGM.Size = new Size(786, 209);
             chartXGM.TabIndex = 14;
             chartXGM.Text = "chartXGM";
-            title3.Name = "Title4";
-            chartXGM.Titles.Add(title3);
+            title7.Name = "Title4";
+            chartXGM.Titles.Add(title7);
             chartXGM.Visible = false;
             // 
             // chartMid
             // 
-            chartArea4.Name = "ChartArea3";
-            chartMid.ChartAreas.Add(chartArea4);
+            chartArea8.Name = "ChartArea3";
+            chartMid.ChartAreas.Add(chartArea8);
             chartMid.Dock = DockStyle.Fill;
             chartMid.Location = new Point(12, 466);
             chartMid.Margin = new Padding(2, 10, 2, 10);
@@ -317,16 +319,13 @@ namespace GHelper
             chartMid.Size = new Size(786, 208);
             chartMid.TabIndex = 14;
             chartMid.Text = "chartMid";
-            title4.Name = "Title3";
-            chartMid.Titles.Add(title4);
+            title8.Name = "Title3";
+            chartMid.Titles.Add(title8);
             chartMid.Visible = false;
             // 
             // panelTitleFans
             // 
-            panelTitleFans.Controls.Add(buttonRename);
-            panelTitleFans.Controls.Add(buttonRemove);
-            panelTitleFans.Controls.Add(buttonAdd);
-            panelTitleFans.Controls.Add(comboModes);
+            panelTitleFans.Controls.Add(tableLayoutModes);
             panelTitleFans.Controls.Add(picturePerf);
             panelTitleFans.Controls.Add(labelFans);
             panelTitleFans.Dock = DockStyle.Top;
@@ -336,68 +335,92 @@ namespace GHelper
             panelTitleFans.Size = new Size(810, 66);
             panelTitleFans.TabIndex = 42;
             // 
-            // buttonRename
+            // tableLayoutModes
             // 
-            buttonRename.Activated = false;
-            buttonRename.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            buttonRename.BackColor = SystemColors.ControlLight;
-            buttonRename.BorderColor = Color.Transparent;
-            buttonRename.BorderRadius = 2;
-            buttonRename.FlatStyle = FlatStyle.Flat;
-            buttonRename.Image = Properties.Resources.icons8_edit_32;
-            buttonRename.Location = new Point(380, 10);
-            buttonRename.Margin = new Padding(4, 2, 4, 2);
-            buttonRename.Name = "buttonRename";
-            buttonRename.Secondary = true;
-            buttonRename.Size = new Size(52, 46);
-            buttonRename.TabIndex = 45;
-            buttonRename.UseVisualStyleBackColor = false;
+            tableLayoutModes.ColumnCount = 4;
+            tableLayoutModes.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 60F));
+            tableLayoutModes.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 60F));
+            tableLayoutModes.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
+            tableLayoutModes.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 60F));
+            tableLayoutModes.Controls.Add(buttonRemove, 0, 0);
+            tableLayoutModes.Controls.Add(buttonAdd, 3, 0);
+            tableLayoutModes.Controls.Add(buttonRename, 1, 0);
+            tableLayoutModes.Controls.Add(comboModes, 2, 0);
+            tableLayoutModes.Dock = DockStyle.Right;
+            tableLayoutModes.Location = new Point(330, 0);
+            tableLayoutModes.Margin = new Padding(0);
+            tableLayoutModes.Name = "tableLayoutModes";
+            tableLayoutModes.Padding = new Padding(0, 10, 4, 10);
+            tableLayoutModes.RowCount = 1;
+            tableLayoutModes.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
+            tableLayoutModes.Size = new Size(480, 66);
+            tableLayoutModes.TabIndex = 1;
             // 
             // buttonRemove
             // 
             buttonRemove.Activated = false;
-            buttonRemove.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             buttonRemove.BackColor = SystemColors.ControlLight;
+            buttonRemove.Badge = 0;
             buttonRemove.BorderColor = Color.Transparent;
             buttonRemove.BorderRadius = 2;
+            buttonRemove.Dock = DockStyle.Fill;
             buttonRemove.FlatStyle = FlatStyle.Flat;
             buttonRemove.Image = Properties.Resources.icons8_remove_64;
-            buttonRemove.Location = new Point(326, 10);
-            buttonRemove.Margin = new Padding(4, 2, 4, 2);
+            buttonRemove.Location = new Point(0, 10);
+            buttonRemove.Margin = new Padding(0, 0, 6, 0);
             buttonRemove.Name = "buttonRemove";
             buttonRemove.Secondary = true;
-            buttonRemove.Size = new Size(52, 46);
+            buttonRemove.Size = new Size(54, 46);
             buttonRemove.TabIndex = 44;
             buttonRemove.UseVisualStyleBackColor = false;
             // 
             // buttonAdd
             // 
             buttonAdd.Activated = false;
-            buttonAdd.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             buttonAdd.BackColor = SystemColors.ControlLight;
+            buttonAdd.Badge = 0;
             buttonAdd.BorderColor = Color.Transparent;
             buttonAdd.BorderRadius = 2;
+            buttonAdd.Dock = DockStyle.Fill;
             buttonAdd.FlatStyle = FlatStyle.Flat;
             buttonAdd.Image = Properties.Resources.icons8_add_64;
-            buttonAdd.Location = new Point(748, 10);
-            buttonAdd.Margin = new Padding(4, 2, 4, 2);
+            buttonAdd.Location = new Point(416, 10);
+            buttonAdd.Margin = new Padding(0, 0, 6, 0);
             buttonAdd.Name = "buttonAdd";
             buttonAdd.Secondary = true;
-            buttonAdd.Size = new Size(52, 46);
+            buttonAdd.Size = new Size(54, 46);
             buttonAdd.TabIndex = 43;
             buttonAdd.UseVisualStyleBackColor = false;
             // 
+            // buttonRename
+            // 
+            buttonRename.Activated = false;
+            buttonRename.BackColor = SystemColors.ControlLight;
+            buttonRename.Badge = 0;
+            buttonRename.BorderColor = Color.Transparent;
+            buttonRename.BorderRadius = 2;
+            buttonRename.Dock = DockStyle.Fill;
+            buttonRename.FlatStyle = FlatStyle.Flat;
+            buttonRename.Image = Properties.Resources.icons8_edit_32;
+            buttonRename.Location = new Point(60, 10);
+            buttonRename.Margin = new Padding(0, 0, 6, 0);
+            buttonRename.Name = "buttonRename";
+            buttonRename.Secondary = true;
+            buttonRename.Size = new Size(54, 46);
+            buttonRename.TabIndex = 45;
+            buttonRename.UseVisualStyleBackColor = false;
+            // 
             // comboModes
             // 
-            comboModes.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             comboModes.BorderColor = Color.White;
             comboModes.ButtonColor = Color.FromArgb(255, 255, 255);
+            comboModes.Dock = DockStyle.Top;
             comboModes.FlatStyle = FlatStyle.Flat;
             comboModes.FormattingEnabled = true;
-            comboModes.Location = new Point(440, 14);
-            comboModes.Margin = new Padding(0);
+            comboModes.Location = new Point(120, 14);
+            comboModes.Margin = new Padding(0, 4, 6, 4);
             comboModes.Name = "comboModes";
-            comboModes.Size = new Size(302, 40);
+            comboModes.Size = new Size(290, 40);
             comboModes.TabIndex = 42;
             // 
             // picturePerf
@@ -441,6 +464,7 @@ namespace GHelper
             buttonCalibrate.Activated = false;
             buttonCalibrate.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             buttonCalibrate.BackColor = SystemColors.ControlLight;
+            buttonCalibrate.Badge = 0;
             buttonCalibrate.BorderColor = Color.Transparent;
             buttonCalibrate.BorderRadius = 2;
             buttonCalibrate.FlatStyle = FlatStyle.Flat;
@@ -483,6 +507,7 @@ namespace GHelper
             buttonReset.Activated = false;
             buttonReset.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             buttonReset.BackColor = SystemColors.ControlLight;
+            buttonReset.Badge = 0;
             buttonReset.BorderColor = Color.Transparent;
             buttonReset.BorderRadius = 2;
             buttonReset.FlatStyle = FlatStyle.Flat;
@@ -585,6 +610,7 @@ namespace GHelper
             // 
             buttonApplyAdvanced.Activated = false;
             buttonApplyAdvanced.BackColor = SystemColors.ControlLight;
+            buttonApplyAdvanced.Badge = 0;
             buttonApplyAdvanced.BorderColor = Color.Transparent;
             buttonApplyAdvanced.BorderRadius = 2;
             buttonApplyAdvanced.Dock = DockStyle.Top;
@@ -840,6 +866,7 @@ namespace GHelper
             buttonDownload.AutoSize = true;
             buttonDownload.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             buttonDownload.BackColor = SystemColors.ControlLight;
+            buttonDownload.Badge = 0;
             buttonDownload.BorderColor = Color.Transparent;
             buttonDownload.BorderRadius = 2;
             buttonDownload.Dock = DockStyle.Top;
@@ -1624,6 +1651,7 @@ namespace GHelper
             // 
             buttonAdvanced.Activated = false;
             buttonAdvanced.BackColor = SystemColors.ControlLight;
+            buttonAdvanced.Badge = 0;
             buttonAdvanced.BorderColor = Color.Transparent;
             buttonAdvanced.BorderRadius = 2;
             buttonAdvanced.Dock = DockStyle.Fill;
@@ -1642,6 +1670,7 @@ namespace GHelper
             // 
             buttonGPU.Activated = false;
             buttonGPU.BackColor = SystemColors.ControlLight;
+            buttonGPU.Badge = 0;
             buttonGPU.BorderColor = Color.Transparent;
             buttonGPU.BorderRadius = 2;
             buttonGPU.Dock = DockStyle.Fill;
@@ -1660,6 +1689,7 @@ namespace GHelper
             // 
             buttonCPU.Activated = false;
             buttonCPU.BackColor = SystemColors.ControlLight;
+            buttonCPU.Badge = 0;
             buttonCPU.BorderColor = Color.Transparent;
             buttonCPU.BorderRadius = 2;
             buttonCPU.Dock = DockStyle.Fill;
@@ -1700,6 +1730,7 @@ namespace GHelper
             ((System.ComponentModel.ISupportInitialize)chartMid).EndInit();
             panelTitleFans.ResumeLayout(false);
             panelTitleFans.PerformLayout();
+            tableLayoutModes.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)picturePerf).EndInit();
             panelApplyFans.ResumeLayout(false);
             panelApplyFans.PerformLayout();
@@ -1894,5 +1925,6 @@ namespace GHelper
         private Label labelGPUPower;
         private Label labelGPUPowerTitle;
         private TrackBar trackGPUPower;
+        private TableLayoutPanel tableLayoutModes;
     }
 }

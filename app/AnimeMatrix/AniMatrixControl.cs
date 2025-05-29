@@ -115,15 +115,17 @@ namespace GHelper.AnimeMatrix
                     switch ((SlashMode)running)
                     {
                         case SlashMode.Static:
-                            Logger.WriteLine("Slash: Static");
                             var custom = AppConfig.GetString("slash_custom");
                             if (custom is not null && custom.Length > 0)
                             {
+                                Logger.WriteLine("Slash: Static");
                                 deviceSlash.SetCustom(AppConfig.StringToBytes(custom));
                             }
                             else
                             {
-                                deviceSlash.SetStatic(brightness);
+                                deviceSlash.SetMode((SlashMode)running);
+                                deviceSlash.SetOptions(true, brightness, inteval);
+                                deviceSlash.Save();
                             }
                             break;
                         case SlashMode.BatteryLevel:
@@ -138,6 +140,7 @@ namespace GHelper.AnimeMatrix
                             deviceSlash.Save();
                             break;
                     }
+
                     // kill the timer if we are not displaying battery pattern
 
                     deviceSlash.SetSleepActive(AppConfig.IsNotFalse("slash_sleep"));
@@ -415,22 +418,6 @@ namespace GHelper.AnimeMatrix
             PresentAudio(fftMag);
         }
 
-        private void DrawBar(int pos, double h)
-        {
-            int dx = pos * 2;
-            int dy = 20;
-
-            byte color;
-
-            for (int y = 0; y < h - (h % 2); y++)
-                for (int x = 0; x < 2 - (y % 2); x++)
-                {
-                    //color = (byte)(Math.Min(1,(h - y - 2)*2) * 255);
-                    deviceMatrix.SetLedPlanar(x + dx, dy + y, (byte)(h * 255 / 30));
-                    deviceMatrix.SetLedPlanar(x + dx, dy - y, 255);
-                }
-        }
-
         void PresentAudio(double[] audio)
         {
 
@@ -455,7 +442,7 @@ namespace GHelper.AnimeMatrix
             if (maxes.Count > 20) maxes.RemoveAt(0);
             maxAverage = maxes.Average();
 
-            for (int i = 0; i < size; i++) DrawBar(20 - i, bars[i] * 20 / maxAverage);
+            for (int i = 0; i < size; i++) deviceMatrix.DrawBar(20 - i, bars[i] * 20 / maxAverage);
 
             deviceMatrix.Present();
         }

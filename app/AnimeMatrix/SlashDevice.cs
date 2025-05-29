@@ -45,32 +45,33 @@ namespace GHelper.AnimeMatrix
 
         public static Dictionary<SlashMode, string> Modes = new Dictionary<SlashMode, string>
         {
-            { SlashMode.Bounce, "Bounce"},
-            { SlashMode.Slash, "Slash"},
-            { SlashMode.Loading, "Loading"},
+            { SlashMode.Bounce, Properties.Strings.SlashBounce},
+            { SlashMode.Slash, Properties.Strings.SlashMode},
+            { SlashMode.Loading, Properties.Strings.SlashLoading},
 
-            { SlashMode.BitStream, "Bit Stream"},
-            { SlashMode.Transmission, "Transmission"},
+            { SlashMode.BitStream, Properties.Strings.SlashBitStream},
+            { SlashMode.Transmission, Properties.Strings.SlashTransmission},
 
-            { SlashMode.Flow, "Flow"},
-            { SlashMode.Flux, "Flux"},
-            { SlashMode.Phantom, "Phantom"},
-            { SlashMode.Spectrum, "Spectrum"},
+            { SlashMode.Flow, Properties.Strings.SlashFlow},
+            { SlashMode.Flux, Properties.Strings.SlashFlux},
+            { SlashMode.Phantom, Properties.Strings.SlashPhantom},
+            { SlashMode.Spectrum, Properties.Strings.SlashSpectrum},
 
-            { SlashMode.Hazard, "Hazard"},
-            { SlashMode.Interfacing, "Interfacing"},
-            { SlashMode.Ramp, "Ramp"},
+            { SlashMode.Hazard, Properties.Strings.SlashHazard},
+            { SlashMode.Interfacing, Properties.Strings.SlashInterfacing},
+            { SlashMode.Ramp, Properties.Strings.SlashRamp},
 
-            { SlashMode.GameOver, "Game Over"},
-            { SlashMode.Start, "Start"},
-            { SlashMode.Buzzer, "Buzzer"},
+            { SlashMode.GameOver, Properties.Strings.SlashGameOver},
+            { SlashMode.Start, Properties.Strings.SlashStart},
+            { SlashMode.Buzzer, Properties.Strings.SlashBuzzer},
 
-            { SlashMode.Static, "Static"},
-            { SlashMode.BatteryLevel, "Battery Level"}
+            { SlashMode.Static, Properties.Strings.SlashStatic},
+            { SlashMode.BatteryLevel, Properties.Strings.SlashBatteryLevel}
         };
 
         private static Dictionary<SlashMode, byte> modeCodes = new Dictionary<SlashMode, byte>
         {
+            { SlashMode.Static, 0x06},
             { SlashMode.Bounce, 0x10},
             { SlashMode.Slash, 0x12},
             { SlashMode.Loading, 0x13},
