@@ -265,7 +265,7 @@
     <value>Timeout plugged / on battery (0 - ON)</value>
   </data>
   <data name="BacklightTimeoutBattery" xml:space="preserve">
-    <value>Backlight Timeout when on battery</value>
+    <value>バッテリー時のバックライトタイムアウト</value>
   </data>
   <data name="BacklightTimeoutPlugged" xml:space="preserve">
     <value>Backlight Timeout when plugged</value>
@@ -420,7 +420,7 @@ Do you still want to continue?</value>
     <value>Fans + Power</value>
   </data>
   <data name="FlickerFreeDimming" xml:space="preserve">
-    <value>Flicker-free Dimming</value>
+    <value>フリッカーフリー調光</value>
   </data>
   <data name="FnLock" xml:space="preserve">
     <value>Process Fn+F hotkeys without Fn</value>
@@ -573,7 +573,7 @@ Do you still want to continue?</value>
     <value>Import failed. Selected file is not a valid mouse profile or corrutpted.</value>
   </data>
   <data name="MouseLiftOffDistance" xml:space="preserve">
-    <value>Lift Off Distance</value>
+    <value>持ち上げ距離</value>
   </data>
   <data name="MouseLowBatteryWarning" xml:space="preserve">
     <value>Low Battery Warning at</value>
@@ -726,7 +726,7 @@ Do you still want to continue?</value>
     <value>Stopping Services</value>
   </data>
   <data name="ToggleAura" xml:space="preserve">
-    <value>Toggle Aura</value>
+    <value>Auraを切り替える</value>
   </data>
   <data name="ToggleClamshellMode" xml:space="preserve">
     <value>Auto Toggle Clamshell Mode</value>
@@ -873,6 +873,6 @@ Do you still want to continue?</value>
     <value>Interval Off</value>
   </data>
   <data name="IntervalSeconds" xml:space="preserve">
-    <value>Interval {0}s</value>
+    <value>間隔 {0}秒</value>
   </data>
 </root>
