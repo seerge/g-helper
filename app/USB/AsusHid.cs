@@ -15,12 +15,12 @@ public static class AsusHid
 
     public static IEnumerable<HidDevice>? FindDevices(byte reportId)
     {
-        HidDeviceLoader loader = new HidDeviceLoader();
         IEnumerable<HidDevice> deviceList;
 
         try
         {
-            deviceList = loader.GetDevices(ASUS_ID).Where(device => deviceIds.Contains(device.ProductID) && device.CanOpen && device.GetMaxFeatureReportLength() > 0);
+            deviceList = DeviceList.Local.GetHidDevices(ASUS_ID).Where(device => deviceIds.Contains(device.ProductID));
+            deviceList = deviceList.Where(device => device.CanOpen);
         }
         catch (Exception ex)
         {
