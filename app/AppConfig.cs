@@ -728,7 +728,7 @@ public static class AppConfig
 
     public static bool IsDynamicLightingInit()
     {
-        return ContainsModel("FA608") && Is("lighting_init");
+        return ContainsModel("FA608") || Is("lighting_init");
     }
 
     public static bool IsForceMiniled()

@@ -19,8 +19,7 @@ public static class AsusHid
 
         try
         {
-            deviceList = DeviceList.Local.GetHidDevices(ASUS_ID).Where(device => deviceIds.Contains(device.ProductID));
-            deviceList = deviceList.Where(device => device.CanOpen);
+            deviceList = DeviceList.Local.GetHidDevices(ASUS_ID).Where(device => deviceIds.Contains(device.ProductID) && device.GetMaxFeatureReportLength() > 0 && device.CanOpen);
         }
         catch (Exception ex)
         {
