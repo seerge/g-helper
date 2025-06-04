@@ -726,6 +726,11 @@ public static class AppConfig
         return IsSlash() || IsIntelHX() || IsTUF() || IsZ13();
     }
 
+    public static bool IsDynamicLightingInit()
+    {
+        return ContainsModel("FA608") || Is("lighting_init");
+    }
+
     public static bool IsForceMiniled()
     {
         return ContainsModel("G834JYR") || ContainsModel("G834JZR") || ContainsModel("G634JZR") || ContainsModel("G835LW") || Is("force_miniled");

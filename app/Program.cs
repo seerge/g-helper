@@ -224,7 +224,7 @@ namespace GHelper
 
 
 
-        public static bool SetAutoModes(bool powerChanged = false, bool init = false)
+        public static bool SetAutoModes(bool powerChanged = false, bool init = false, bool wakeup = false)
         {
 
             if (Math.Abs(DateTimeOffset.Now.ToUnixTimeMilliseconds() - lastAuto) < 3000) return false;
@@ -235,6 +235,7 @@ namespace GHelper
 
             BatteryControl.AutoBattery(init);
             if (init) InputDispatcher.InitScreenpad();
+            if (init || wakeup) DynamicLightingHelper.Init();
             screenControl.InitOptimalBrightness();
 
             inputDispatcher.Init();

@@ -706,7 +706,7 @@ namespace GHelper
                             break;
                         case 1:
                             Logger.WriteLine("Monitor Power On");
-                            if (!Program.SetAutoModes()) BatteryControl.AutoBattery();
+                            if (!Program.SetAutoModes(wakeup:true)) BatteryControl.AutoBattery();
                             break;
                         case 2:
                             Logger.WriteLine("Monitor Dimmed");
