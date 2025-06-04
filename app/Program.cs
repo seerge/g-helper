@@ -160,6 +160,16 @@ namespace GHelper
                     settingsForm.FansToggle(2);
                     modeControl.SetRyzen();
                     break;
+                case "colors":
+                    Task.Run(async () =>
+                    {
+                        await ColorProfileHelper.InstallProfile();
+                        settingsForm.Invoke(delegate
+                        {
+                            settingsForm.InitVisual();
+                        });
+                    });
+                    break;
                 default:
                     Startup.StartupCheck();
                     break;
