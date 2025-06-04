@@ -19,11 +19,29 @@ namespace GHelper.Helpers
             try
             {
                 Registry.SetValue(LightingKey, LightingValue, status, RegistryValueKind.DWord);
+                SetDynamicLightingOnAllDevices(status);
                 Logger.WriteLine($"Dynamic lighting: {status}");
             }
             catch (Exception ex)
             {
                 Logger.WriteLine($"Error setting value for dynamic lighting: {ex.Message}");
+            }
+        }
+
+        static void SetDynamicLightingOnAllDevices(int status = 1)
+        {
+            RegistryKey? devicesKey = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Lighting\Devices", true);
+
+            if (devicesKey != null)
+            {
+                foreach (string deviceKeyName in devicesKey.GetSubKeyNames())
+                {
+                    RegistryKey? deviceKey = devicesKey.OpenSubKey(deviceKeyName, true);
+                    if (deviceKey != null && deviceKey.GetValue(LightingValue) != null)
+                    {
+                        deviceKey.SetValue(LightingValue, status, RegistryValueKind.DWord);
+                    }
+                }
             }
         }
 
