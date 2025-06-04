@@ -621,7 +621,7 @@ namespace GHelper.Display
 
         public static async Task InstallProfile()
         {
-            ProcessHelper.RunAsAdmin();
+            ProcessHelper.RunAsAdmin("colors");
 
             (string bios, string model) = AppConfig.GetBiosAndModel();
             string? profileUrl = GetProfileUrl(model);
