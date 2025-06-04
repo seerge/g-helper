@@ -706,7 +706,7 @@ namespace GHelper
                             break;
                         case 1:
                             Logger.WriteLine("Monitor Power On");
-                            if (!Program.SetAutoModes(wakeup:true)) BatteryControl.AutoBattery();
+                            if (!Program.SetAutoModes(wakeup: true)) BatteryControl.AutoBattery();
                             break;
                         case 2:
                             Logger.WriteLine("Monitor Dimmed");
@@ -1198,12 +1198,22 @@ namespace GHelper
         }
 
 
-        public void CycleAuraMode()
+        public void CycleAuraMode(int delta)
         {
-            if (comboKeyboard.SelectedIndex < comboKeyboard.Items.Count - 1)
-                comboKeyboard.SelectedIndex += 1;
+            if (delta > 0)
+            {
+                if (comboKeyboard.SelectedIndex < comboKeyboard.Items.Count - 1)
+                    comboKeyboard.SelectedIndex += 1;
+                else
+                    comboKeyboard.SelectedIndex = 0;
+            }
             else
-                comboKeyboard.SelectedIndex = 0;
+            {
+                if (comboKeyboard.SelectedIndex > 0)
+                    comboKeyboard.SelectedIndex -= 1;
+                else
+                    comboKeyboard.SelectedIndex = comboKeyboard.Items.Count - 1;
+            }
 
             Program.toast.RunToast(comboKeyboard.GetItemText(comboKeyboard.SelectedItem), ToastIcon.BacklightUp);
         }
