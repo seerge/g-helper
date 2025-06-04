@@ -263,11 +263,18 @@ namespace GHelper.USB
 
         public static void Init()
         {
-            AsusHid.Write(new List<byte[]> {
+            try
+            {
+                AsusHid.Write(new List<byte[]> {
                 new byte[] { AsusHid.AURA_ID, 0xB9 },
                 Encoding.ASCII.GetBytes("]ASUS Tech.Inc."),
                 new byte[] { AsusHid.AURA_ID, 0x05, 0x20, 0x31, 0, 0x1A },
             }, "Init");
+            } catch (Exception ex)
+            {
+                Logger.WriteLine($"Error initializing Aura: {ex.Message}");
+                return;
+            }
 
             if (AppConfig.IsZ13())
                 AsusHid.Write([AsusHid.AURA_ID, 0xC0, 0x03, 0x01], "Dynamic Lighting Init");
