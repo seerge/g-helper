@@ -106,10 +106,10 @@ namespace GHelper.Helpers
                 ToggleLidAction();
 
             if (Program.settingsForm.Visible)
-                Program.screenControl.InitScreen();
+                ScreenControl.InitScreen();
 
-            if (AppConfig.IsForceMiniled()) 
-                Program.screenControl.InitMiniled();
+            if (AppConfig.IsForceMiniled())
+                ScreenControl.InitMiniled();
 
         }
 

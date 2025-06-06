@@ -24,7 +24,6 @@ namespace GHelper
 
         public GPUModeControl gpuControl;
         public AllyControl allyControl;
-        ScreenControl screenControl = new ScreenControl();
         AutoUpdateControl updateControl;
 
         AsusMouseSettings? mouseSettings;
@@ -307,7 +306,7 @@ namespace GHelper
 
         private void ButtonFHD_Click(object? sender, EventArgs e)
         {
-            screenControl.ToogleFHD();
+            ScreenControl.ToogleFHD();
         }
 
         private void SliderBattery_ValueChanged(object? sender, EventArgs e)
@@ -634,7 +633,7 @@ namespace GHelper
             sensorTimer.Enabled = this.Visible;
             if (this.Visible)
             {
-                screenControl.InitScreen();
+                ScreenControl.InitScreen();
                 VisualizeXGM();
 
                 Task.Run((Action)RefreshPeripheralsBattery);
@@ -913,7 +912,7 @@ namespace GHelper
         private void ButtonScreenAuto_Click(object? sender, EventArgs e)
         {
             AppConfig.Set("screen_auto", 1);
-            screenControl.AutoScreen();
+            ScreenControl.AutoScreen();
         }
 
 
@@ -1228,19 +1227,19 @@ namespace GHelper
         private void Button120Hz_Click(object? sender, EventArgs e)
         {
             AppConfig.Set("screen_auto", 0);
-            screenControl.SetScreen(ScreenControl.MAX_REFRESH, 1);
+            ScreenControl.SetScreen(ScreenControl.MAX_REFRESH, 1);
         }
 
         private void Button60Hz_Click(object? sender, EventArgs e)
         {
             AppConfig.Set("screen_auto", 0);
-            screenControl.SetScreen(ScreenControl.MIN_RATE, 0);
+            ScreenControl.SetScreen(ScreenControl.MIN_RATE, 0);
         }
 
 
         private void ButtonMiniled_Click(object? sender, EventArgs e)
         {
-            screenControl.ToogleMiniled();
+            ScreenControl.ToogleMiniled();
         }
 
 
