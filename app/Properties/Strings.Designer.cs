@@ -826,7 +826,7 @@ namespace GHelper.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Enable GPU on shutdown (prevents issue with Eco mode).
+        ///   Looks up a localized string similar to Enable GPU on shutdown (prevents issues with Eco mode and brightness slider).
         /// </summary>
         internal static string EnableGPUOnShutdown {
             get {
