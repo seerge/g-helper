@@ -1,6 +1,7 @@
-﻿using GHelper.Gpu;
+using GHelper.Gpu;
 using GHelper.Helpers;
 using GHelper.Input;
+using GHelper.Properties;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
@@ -709,13 +710,17 @@ namespace GHelper.USB
 
             static int tempFreeze = AppConfig.Get("temp_freeze", 20);
             static int tempCold = AppConfig.Get("temp_cold", 40);
-            static int tempWarm = AppConfig.Get("temp_warm", 65);
-            static int tempHot = AppConfig.Get("temp_hot", 90);
+            static int tempWarm = AppConfig.Get("temp_warm", 60);
+            static int tempHot = AppConfig.Get("temp_hot", 70);
+            static int tempVeryHot = AppConfig.Get("temp_veryhot", 80);
+            static int tempExtreme = AppConfig.Get("temp_extreme", 90);
 
             static Color colorFreeze = ColorTranslator.FromHtml(AppConfig.GetString("color_freeze", "#0000FF")); 
             static Color colorCold = ColorTranslator.FromHtml(AppConfig.GetString("color_cold", "#008000"));
             static Color colorWarm = ColorTranslator.FromHtml(AppConfig.GetString("color_warm", "#FFFF00"));
-            static Color colorHot = ColorTranslator.FromHtml(AppConfig.GetString("color_hot", "#FF0000"));
+            static Color colorHot = ColorTranslator.FromHtml(AppConfig.GetString("color_hot", "#FFA500"));
+            static Color colorVeryHot = ColorTranslator.FromHtml(AppConfig.GetString("color_very_hot", "#FF4500"));
+            static Color colorExtreme = ColorTranslator.FromHtml(AppConfig.GetString("color_extreme", "#FF0000"));
 
             static Color colorUltimate = ColorTranslator.FromHtml(AppConfig.GetString("color_ultimate", "#FF0000"));
             static Color colorStandard = ColorTranslator.FromHtml(AppConfig.GetString("color_standard", "#FFFF00"));
@@ -751,26 +756,42 @@ namespace GHelper.USB
                 float cpuTemp = (float)HardwareControl.GetCPUTemp();
                 Color color = colorFreeze;
 
-                if (cpuTemp < tempCold) color = ColorUtils.GetWeightedAverage(colorFreeze, colorCold, ((float)cpuTemp - tempFreeze) / (tempCold - tempFreeze));
-                else if (cpuTemp < tempWarm) color = ColorUtils.GetWeightedAverage(colorCold, colorWarm, ((float)cpuTemp - tempCold) / (tempWarm - tempCold));
-                else if (cpuTemp < tempHot) color = ColorUtils.GetWeightedAverage(colorWarm, colorHot, ((float)cpuTemp - tempWarm) / (tempHot - tempWarm));
-                else color = colorHot;
+                if (cpuTemp < tempCold)
+                    color = ColorUtils.GetWeightedAverage(colorFreeze, colorCold, (cpuTemp - tempFreeze) / (tempCold - tempFreeze));
+                else if (cpuTemp < tempWarm)
+                    color = ColorUtils.GetWeightedAverage(colorCold, colorWarm, (cpuTemp - tempCold) / (tempWarm - tempCold));
+                else if (cpuTemp < tempHot)
+                    color = ColorUtils.GetWeightedAverage(colorWarm, colorHot, (cpuTemp - tempWarm) / (tempHot - tempWarm));
+                else if (cpuTemp < tempVeryHot)
+                    color = ColorUtils.GetWeightedAverage(colorHot, colorVeryHot, (cpuTemp - tempHot) / (tempVeryHot - tempHot));
+                else if (cpuTemp < tempExtreme)
+                    color = ColorUtils.GetWeightedAverage(colorVeryHot, colorExtreme, (cpuTemp - tempVeryHot) / (tempExtreme - tempVeryHot));
+                else
+                    color = colorExtreme;
 
                 ApplyDirect(color, init);
             }
 
 
-
-            public static void ApplyAmbient(bool init = false)
+            public static void ApplyAmbient(bool init = false, float saturationBoost = 0.4f, float brightnessBoost = 1.0f)
             {
                 if (!backlight) return;
+
+                Color BoostAndCheck(Color c)
+                {
+                    var boosted = ColorUtils.BoostSaturationAndBrightness(c, saturationBoost, brightnessBoost);
+                    // Boosted renk siyah ise (RGB 0,0,0) kapalı renk olarak kabul et
+                    if (boosted.R == 0 && boosted.G == 0 && boosted.B == 0)
+                        return Color.Black;
+                    return boosted;
+                }
 
                 var bound = Screen.GetBounds(Point.Empty);
                 bound.Y += bound.Height / 3;
                 bound.Height -= (int)Math.Round(bound.Height * (0.33f + 0.022f)); // cut 1/3 of the top screen + windows panel
 
-                Bitmap screen_low = AmbientData.CamptureScreen(bound, 512, 288);   //quality decreases greatly if it is less 512 ;
-                Bitmap screeb_pxl = AmbientData.ResizeImage(screen_low, 4, 2);     // 4x2 zone. top for keyboard and bot for lightbar;
+                Bitmap screen_low = AmbientData.CamptureScreen(bound, 512, 288);
+                Bitmap screeb_pxl = AmbientData.ResizeImage(screen_low, 4, 2);
 
                 int zones = AURA_ZONES;
 
@@ -779,22 +800,20 @@ namespace GHelper.USB
                     var mid_left = ColorUtils.GetMidColor(screeb_pxl.GetPixel(0, 1), screeb_pxl.GetPixel(1, 1));
                     var mid_right = ColorUtils.GetMidColor(screeb_pxl.GetPixel(2, 1), screeb_pxl.GetPixel(3, 1));
 
-                    AmbientData.Colors[4].RGB = ColorUtils.HSV.UpSaturation(screeb_pxl.GetPixel(1, 1)); // left bck
-                    AmbientData.Colors[5].RGB = ColorUtils.HSV.UpSaturation(mid_left);  // center left
-                    AmbientData.Colors[6].RGB = ColorUtils.HSV.UpSaturation(mid_right); // center right
-                    AmbientData.Colors[7].RGB = ColorUtils.HSV.UpSaturation(screeb_pxl.GetPixel(3, 1)); // right bck
+                    AmbientData.Colors[4].RGB = BoostAndCheck(screeb_pxl.GetPixel(1, 1));
+                    AmbientData.Colors[5].RGB = BoostAndCheck(mid_left);
+                    AmbientData.Colors[6].RGB = BoostAndCheck(mid_right);
+                    AmbientData.Colors[7].RGB = BoostAndCheck(screeb_pxl.GetPixel(3, 1));
 
                     for (int i = 0; i < 4; i++) // keyboard
-                        AmbientData.Colors[i].RGB = ColorUtils.HSV.UpSaturation(screeb_pxl.GetPixel(i, 0));
+                        AmbientData.Colors[i].RGB = BoostAndCheck(screeb_pxl.GetPixel(i, 0));
                 }
                 else
                 {
                     zones = 1;
-                    AmbientData.Colors[0].RGB = ColorUtils.HSV.UpSaturation(ColorUtils.GetDominantColor(screeb_pxl), (float)0.3);
+                    Color dom = ColorUtils.GetDominantColor(screeb_pxl);
+                    AmbientData.Colors[0].RGB = BoostAndCheck(dom);
                 }
-
-                //screen_low.Save("big.jpg", ImageFormat.Jpeg);
-                //screeb_pxl.Save("small.jpg", ImageFormat.Jpeg);
 
                 screen_low.Dispose();
                 screeb_pxl.Dispose();
@@ -803,7 +822,8 @@ namespace GHelper.USB
 
                 for (int i = 0; i < zones; i++)
                 {
-                    if (AmbientData.result[i].ToArgb() != AmbientData.Colors[i].RGB.ToArgb()) is_fresh = true;
+                    if (AmbientData.result[i].ToArgb() != AmbientData.Colors[i].RGB.ToArgb())
+                        is_fresh = true;
                     AmbientData.result[i] = AmbientData.Colors[i].RGB;
                 }
 
@@ -812,8 +832,9 @@ namespace GHelper.USB
                     if (isStrix) ApplyDirect(AmbientData.result, init);
                     else ApplyDirect(AmbientData.result[0], init);
                 }
-
             }
+
+
 
             static class AmbientData
             {
