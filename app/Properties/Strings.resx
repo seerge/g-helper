@@ -875,4 +875,10 @@ Do you still want to continue?</value>
   <data name="IntervalSeconds" xml:space="preserve">
     <value>Interval {0}s</value>
   </data>
+  <data name="NumLockOn" xml:space="preserve">
+    <value>NumLock On</value>
+  </data>
+  <data name="NumLockOff" xml:space="preserve">
+    <value>NumLock Off</value>
+  </data>
 </root>

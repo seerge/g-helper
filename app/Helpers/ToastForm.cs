@@ -50,6 +50,7 @@ namespace GHelper.Helpers
         Microphone,
         MicrophoneMute,
         FnLock,
+        NumLock,
         Battery,
         Charger,
         Controller
@@ -108,6 +109,9 @@ namespace GHelper.Helpers
                     break;
                 case ToastIcon.FnLock:
                     icon = Properties.Resources.icons8_function;
+                    break;
+                case ToastIcon.NumLock:
+                    icon = Properties.Resources.icon_numlock_96;
                     break;
                 case ToastIcon.Battery:
                     icon = Properties.Resources.icons8_charged_battery_96;

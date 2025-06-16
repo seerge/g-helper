@@ -200,6 +200,9 @@ namespace GHelper.Input
                 hook.RegisterHotKey(ModifierKeys.None, Keys.Down);
             }
 
+            if (isTUF)
+                hook.RegisterHotKey(ModifierKeys.None, Keys.NumLock);
+
         }
 
 
@@ -367,7 +370,15 @@ namespace GHelper.Input
                             return;
                     }
                 }
-
+                if (isTUF)
+                {
+                    switch (e.Key)
+                    {
+                        case Keys.NumLock:
+                            ShowNumLockToast();
+                            return;
+                    }
+                }
                 if (AppConfig.MediaKeys())
                 {
                     switch (e.Key)
@@ -635,6 +646,10 @@ namespace GHelper.Input
             }
         }
 
+        static void ShowNumLockToast()
+        {
+            Program.toast.RunToast(new Microsoft.VisualBasic.Devices.Keyboard().NumLock ? Properties.Strings.NumLockOn : Properties.Strings.NumLockOff, ToastIcon.NumLock);
+        }
 
         static void MuteLED()
         {
