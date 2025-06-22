@@ -418,6 +418,11 @@ public static class AppConfig
         return ContainsModel("Duo") || ContainsModel("GX550") || ContainsModel("GX650") || ContainsModel("UX840") || ContainsModel("UX482");
     }
 
+    public static bool IsM4Button()
+    {
+        return IsDUO() || ContainsModel("GZ302EA");
+    }
+
     // G14 2020 has no aura, but media keys instead
     public static bool NoAura()
     {
