@@ -43,6 +43,7 @@ namespace Ryzen
         //MENDOCINO - 11
         //HAWKPOINT - 12
         //STRIXPOINT - 13
+        //STRIXHALO - 14
 
         public static void Init()
         {
@@ -134,6 +135,11 @@ namespace Ryzen
                 FAMID = 13; //STRIXPOINT 
             }
 
+            if (CPUModel.Contains("Family " + Convert.ToString(26)) && CPUModel.Contains("Model " + Convert.ToString(112)))
+            {
+                FAMID = 14; //STRIXHALO 
+            }
+
             Logger.WriteLine($"CPU: {FAMID} - {CPUName} - {CPUModel}");
 
             SetAddresses();
@@ -148,7 +154,7 @@ namespace Ryzen
         public static bool IsSupportedUV()
         {
             if (CPUName.Length == 0) Init();
-            return CPUName.Contains("Ryzen AI 9") || CPUName.Contains("Ryzen 9") || CPUName.Contains("4900H") || CPUName.Contains("4800H") || CPUName.Contains("4600H");
+            return CPUName.Contains("RYZEN AI MAX") || CPUName.Contains("Ryzen AI 9") || CPUName.Contains("Ryzen 9") || CPUName.Contains("4900H") || CPUName.Contains("4800H") || CPUName.Contains("4600H");
         }
 
         public static bool IsSupportedUViGPU()
@@ -235,7 +241,7 @@ namespace Ryzen
                 Smu.PSMU_ADDR_RSP = 0x3B10A80;
                 Smu.PSMU_ADDR_ARG = 0x3B10A88;
             }
-            else if (FAMID == 5 || FAMID == 8 || FAMID == 9 || FAMID == 11 || FAMID == 12)
+            else if (FAMID == 5 || FAMID == 8 || FAMID == 9 || FAMID == 11 || FAMID == 12 || FAMID == 14)
             {
                 Smu.MP1_ADDR_MSG = 0x3B10528;
                 Smu.MP1_ADDR_RSP = 0x3B10578;
