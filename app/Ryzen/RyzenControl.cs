@@ -160,7 +160,7 @@ namespace Ryzen
         public static bool IsSupportedUViGPU()
         {
             if (CPUName.Length == 0) Init();
-            return CPUName.Contains("6900H") || CPUName.Contains("7945H") || CPUName.Contains("7845H");
+            return CPUName.Contains("RYZEN AI MAX") || CPUName.Contains("6900H") || CPUName.Contains("7945H") || CPUName.Contains("7845H");
         }
 
         public static bool IsRingExsists()
