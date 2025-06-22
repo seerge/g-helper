@@ -16,8 +16,8 @@ namespace Ryzen
         public static int MinCPUUV => AppConfig.Get("min_uv", -40);
         public static int MaxCPUUV => AppConfig.Get("max_uv", 0);
 
-        public const int MinIGPUUV = -20;
-        public const int MaxIGPUUV = 0;
+        public static int MinIGPUUV = AppConfig.Get("min_igpu_uv", -30);
+        public static int MaxIGPUUV = AppConfig.Get("max_igpu_uv", 0);
 
         public static int MinTemp => AppConfig.Get("min_temp", 75);
         public const int MaxTemp = 98;
