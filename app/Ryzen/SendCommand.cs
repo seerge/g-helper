@@ -23,6 +23,7 @@ namespace Ryzen
         //MENDOCINO - 11
         //HAWKPOINT - 12
         //STRIXPOINT - 13
+        //STRIXHALO - 14
 
         public static Smu RyzenAccess = new Smu(false);
         public static int FAMID = RyzenControl.FAMID;
@@ -158,6 +159,7 @@ namespace Ryzen
                 case 11:
                 case 12:
                 case 13:
+                case 14:
                     result = RyzenAccess.SendMp1(0x19, ref Args);
                     break;
                 case 4:
@@ -208,6 +210,10 @@ namespace Ryzen
                 case 13:
                     result = RyzenAccess.SendPsmu(0x5D, ref Args);
                     break;
+                case 14:
+                    result = RyzenAccess.SendMp1(0x4C, ref Args);
+                    result = RyzenAccess.SendPsmu(0x5D, ref Args);
+                    break;
                 case 10:
                     result = RyzenAccess.SendPsmu(0x7, ref Args);
                     break;
@@ -246,6 +252,7 @@ namespace Ryzen
                 case 11:
                 case 12:
                 case 13:
+                case 14:
                     result = RyzenAccess.SendPsmu(0xb7, ref Args);
                     break;
                 default:
