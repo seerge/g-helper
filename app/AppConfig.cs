@@ -403,7 +403,7 @@ public static class AppConfig
 
     public static bool IsHardwareFnLock()
     {
-        return IsVivoZenPro() || ContainsModel("GZ302EA") || ContainsModel("GA403W") || ContainsModel("GA403UM") || ContainsModel("GA403UP") || ContainsModel("GA403UH");
+        return IsVivoZenPro() || ContainsModel("GZ302EA") || IsSlashAura();
     }
 
     // Devices with bugged bios command to change brightness

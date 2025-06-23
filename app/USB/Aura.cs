@@ -281,6 +281,8 @@ namespace GHelper.USB
                 AsusHid.WriteInput([AsusHid.INPUT_ID, 0xD0, 0x85, 0xFF], "ProArt Init");
                 //AsusHid.WriteInput([AsusHid.INPUT_ID, 0xD0, 0x4E], "ProArt Init");
             }
+
+            InputDispatcher.InitFNLock();
         }
 
 

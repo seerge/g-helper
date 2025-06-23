@@ -100,9 +100,11 @@ namespace GHelper.Input
             }
 
             InitBacklightTimer();
+        }
 
+        public static void InitFNLock()
+        {
             if (AppConfig.IsHardwareFnLock()) HardwareFnLock(AppConfig.Is("fn_lock"));
-
         }
 
         public void InitBacklightTimer()
