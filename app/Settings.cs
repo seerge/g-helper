@@ -10,6 +10,7 @@ using GHelper.Input;
 using GHelper.Mode;
 using GHelper.Peripherals;
 using GHelper.Peripherals.Mouse;
+using GHelper.Properties;
 using GHelper.UI;
 using GHelper.USB;
 using System.Diagnostics;
@@ -280,7 +281,8 @@ namespace GHelper
                 buttonDonate.Badge = Math.Clamp((startCount - click) / 50, 1, 9);
             }
 
-            labelDynamicLighting.Click += LabelDynamicLighting_Click;
+            labelBacklight.ForeColor = colorStandard;
+            labelBacklight.Click += LabelBacklight_Click;
 
             panelPerformance.Focus();
             InitVisual();
@@ -299,9 +301,9 @@ namespace GHelper
             Process.Start(new ProcessStartInfo("https://g-helper.com/support") { UseShellExecute = true });
         }
 
-        private void LabelDynamicLighting_Click(object? sender, EventArgs e)
+        private void LabelBacklight_Click(object? sender, EventArgs e)
         {
-            DynamicLightingHelper.OpenSettings();
+            if (DynamicLightingHelper.IsEnabled()) DynamicLightingHelper.OpenSettings();
         }
 
         private void ButtonFHD_Click(object? sender, EventArgs e)
@@ -1131,11 +1133,20 @@ namespace GHelper
             pictureColor2.BackColor = Aura.Color2;
             pictureColor2.Visible = Aura.HasSecondColor();
 
-            if (AppConfig.IsDynamicLighting())
+            bool dynamic = AppConfig.IsDynamicLighting() && DynamicLightingHelper.IsEnabled();
+
+            if (dynamic)
             {
-                labelDynamicLighting.Visible = DynamicLightingHelper.IsEnabled();
-                labelDynamicLighting.ForeColor = colorStandard;
-                this.OnResize(null);
+                labelBacklight.Cursor = Cursors.Hand;
+                labelBacklight.Text = Strings.DisableDynamicLighting;
+            } else if (Aura.Mode == AuraMode.AMBIENT)
+            {
+                labelBacklight.Cursor = Cursors.Default;
+                labelBacklight.Text = Strings.AmbientModeResources;
+            } else
+            {
+                labelBacklight.Cursor = Cursors.Default;
+                labelBacklight.Text = "";
             }
         }
 
