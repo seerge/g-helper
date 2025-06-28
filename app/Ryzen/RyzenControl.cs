@@ -44,6 +44,7 @@ namespace Ryzen
         //HAWKPOINT - 12
         //STRIXPOINT - 13
         //STRIXHALO - 14
+        //FIRERANGE - 15
 
         public static void Init()
         {
@@ -105,7 +106,7 @@ namespace Ryzen
                 FAMID = 7; //CEZANNE/BARCELO
             }
 
-            if (CPUModel.Contains("Model " + Convert.ToString(64)) || CPUModel.Contains("Model " + Convert.ToString(68)))
+            if (CPUModel.Contains("Family " + Convert.ToString(25)) && (CPUModel.Contains("Model " + Convert.ToString(63)) || CPUModel.Contains("Model " + Convert.ToString(68))))
             {
                 FAMID = 8; //REMBRANDT
             }
@@ -138,6 +139,11 @@ namespace Ryzen
             if (CPUModel.Contains("Family " + Convert.ToString(26)) && CPUModel.Contains("Model " + Convert.ToString(112)))
             {
                 FAMID = 14; //STRIXHALO 
+            }
+
+            if (CPUModel.Contains("Family " + Convert.ToString(26)) && CPUModel.Contains("Model " + Convert.ToString(68)) && CPUModel.Contains("HX"))
+            {
+                FAMID = 15; //FIRERANGE 
             }
 
             Logger.WriteLine($"CPU: {FAMID} - {CPUName} - {CPUModel}");
@@ -271,15 +277,15 @@ namespace Ryzen
                 Smu.PSMU_ADDR_RSP = 0x3B10570;
                 Smu.PSMU_ADDR_ARG = 0x3B10A40;
             }
-            else if (FAMID == 10)
+            else if (FAMID == 10 || FAMID == 15)
             {
-                Smu.MP1_ADDR_MSG = 0x3010508;
-                Smu.MP1_ADDR_RSP = 0x3010988;
-                Smu.MP1_ADDR_ARG = 0x3010984;
+                Smu.MP1_ADDR_MSG = 0x3B10530;
+                Smu.MP1_ADDR_RSP = 0x3B1057C;
+                Smu.MP1_ADDR_ARG = 0x3B109C4;
 
-                Smu.PSMU_ADDR_MSG = 0x3B10524;
-                Smu.PSMU_ADDR_RSP = 0x3B10570;
-                Smu.PSMU_ADDR_ARG = 0x3B10A40;
+                Smu.PSMU_ADDR_MSG = 0x03B10524;
+                Smu.PSMU_ADDR_RSP = 0x03B10570;
+                Smu.PSMU_ADDR_ARG = 0x03B10A40;
             }
             else
             {

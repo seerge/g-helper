@@ -24,6 +24,7 @@ namespace Ryzen
         //HAWKPOINT - 12
         //STRIXPOINT - 13
         //STRIXHALO - 14
+        //FIRERANGE - 15
 
         public static Smu RyzenAccess = new Smu(false);
         public static int FAMID = RyzenControl.FAMID;
@@ -168,6 +169,8 @@ namespace Ryzen
                     result = RyzenAccess.SendPsmu(0x56, ref Args);
                     break;
                 case 10:
+                case 15:
+                    result = RyzenAccess.SendMp1(0x3f, ref Args);
                     result = RyzenAccess.SendPsmu(0x59, ref Args);
                     break;
                 default:
@@ -215,6 +218,7 @@ namespace Ryzen
                     result = RyzenAccess.SendPsmu(0x5D, ref Args);
                     break;
                 case 10:
+                case 15:
                     result = RyzenAccess.SendPsmu(0x7, ref Args);
                     break;
                 default:
