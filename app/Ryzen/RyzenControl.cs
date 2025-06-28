@@ -141,7 +141,7 @@ namespace Ryzen
                 FAMID = 14; //STRIXHALO 
             }
 
-            if (CPUModel.Contains("Family " + Convert.ToString(26)) && CPUModel.Contains("Model " + Convert.ToString(68)) && CPUModel.Contains("HX"))
+            if (CPUModel.Contains("Family " + Convert.ToString(26)) && CPUModel.Contains("Model " + Convert.ToString(68)) && CPUName.Contains("HX"))
             {
                 FAMID = 15; //FIRERANGE 
             }
