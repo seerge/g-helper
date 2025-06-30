@@ -1,5 +1,7 @@
 ﻿using GHelper.Gpu.NVidia;
 using GHelper.Helpers;
+using GHelper;
+using GHelper.Plugins;
 using GHelper.USB;
 using Ryzen;
 
@@ -7,6 +9,7 @@ namespace GHelper.Mode
 {
     public class ModeControl
     {
+        public readonly FanPluginManager fanPluginManager = new();
 
         static SettingsForm settings = Program.settingsForm;
 
@@ -26,6 +29,16 @@ namespace GHelper.Mode
             reapplyTimer = new System.Timers.Timer(AppConfig.GetMode("reapply_time", 30) * 1000);
             reapplyTimer.Enabled = false;
             reapplyTimer.Elapsed += ReapplyTimer_Elapsed;
+
+            var fanPluginList = fanPluginManager.DiscoverPlugins();
+            if (fanPluginList.Count > 0)
+            {
+                int selectedId = AppConfig.GetMode("fan_plugin_id", 0);
+                if (selectedId >= 0 && selectedId < fanPluginList.Count)
+                {
+                    fanPluginManager.SetActivePlugin(fanPluginList[selectedId]);
+                }
+            }
         }
 
 
@@ -163,6 +176,21 @@ namespace GHelper.Mode
 
         public void AutoFans(bool force = false)
         {
+            if (AppConfig.Is("fan_plugin_enabled"))
+            {
+                var sensorData = new Dictionary<string, float>();
+                if (HardwareControl.cpuTemp is not null) sensorData.Add("cpu_temp", (float)HardwareControl.cpuTemp);
+                if (HardwareControl.gpuTemp is not null) sensorData.Add("gpu_temp", (float)HardwareControl.gpuTemp);
+                var fanSpeeds = fanPluginManager.RunPlugin(sensorData);
+                int cpuFan = fanSpeeds.GetValueOrDefault("cpu_fan", 30);
+                int gpuFan = fanSpeeds.GetValueOrDefault("gpu_fan", 30);
+                int midFan = fanSpeeds.GetValueOrDefault("mid_fan", -1); // -1 signifies no middle fan
+                Program.acpi.SetFanCurve(AsusFan.CPU, CreateFlatCurve(cpuFan));
+                Program.acpi.SetFanCurve(AsusFan.GPU, CreateFlatCurve(gpuFan));
+                customFans = true;
+                SetModeLabel();
+                return;
+            }
             customFans = false;
 
             if (AppConfig.IsMode("auto_apply") || force)
@@ -469,5 +497,15 @@ namespace GHelper.Mode
             else ResetRyzen();
         }
 
+    private byte[] CreateFlatCurve(int percentage)
+        {
+            byte[] curve = new byte[16];
+            for (int i = 0; i < 8; i++)
+            {
+                curve[i] = (byte)(30 + i * 10); // Temperature points from 30 to 100
+                curve[i + 8] = (byte)Math.Min(100, percentage);   // Fan speed
+            }
+            return curve;
+        }
     }
 }

@@ -65,6 +65,7 @@
     <PackageReference Include="System.Management" Version="9.0.5" />
     <PackageReference Include="TaskScheduler" Version="2.12.1" />
     <PackageReference Include="WinForms.DataVisualization" Version="1.10.0" />
+    <PackageReference Include="NLua" Version="1.6.3" />
   </ItemGroup>
 
   <ItemGroup>
@@ -126,6 +127,12 @@
     <None Update="WinRing0x64.sys">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Plugins\**\*.*">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>
