@@ -632,7 +632,7 @@ namespace GHelper
 
         private void SettingsForm_VisibleChanged(object? sender, EventArgs e)
         {
-            sensorTimer.Enabled = this.Visible;
+            // sensorTimer.Enabled = this.Visible;
             if (this.Visible)
             {
                 ScreenControl.InitScreen();
