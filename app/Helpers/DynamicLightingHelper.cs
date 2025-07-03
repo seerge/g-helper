@@ -52,7 +52,7 @@ namespace GHelper.Helpers
             if (IsEnabled()) return;
 
             SetRegStatus(1);
-            Thread.Sleep(200);
+            Thread.Sleep(500);
             SetRegStatus(0);
         }
 
