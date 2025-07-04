@@ -229,7 +229,7 @@ namespace GHelper
 
             Program.trayIcon.MouseMove += TrayIcon_MouseMove;
 
-            sensorTimer = new System.Timers.Timer(AppConfig.Get("sensor_timer", 1000));
+            sensorTimer = new System.Timers.Timer(AppConfig.Get("sensor_timer", 100));
             sensorTimer.Elapsed += OnTimedEvent;
             sensorTimer.Enabled = true;
 
@@ -632,7 +632,7 @@ namespace GHelper
 
         private void SettingsForm_VisibleChanged(object? sender, EventArgs e)
         {
-            sensorTimer.Enabled = this.Visible;
+            // sensorTimer.Enabled = this.Visible;
             if (this.Visible)
             {
                 ScreenControl.InitScreen();
@@ -846,6 +846,7 @@ namespace GHelper
         private static void OnTimedEvent(Object? source, ElapsedEventArgs? e)
         {
             Program.settingsForm.RefreshSensors();
+            Program.modeControl.AutoFans();
         }
 
         private void ButtonFHD_MouseHover(object? sender, EventArgs e)
