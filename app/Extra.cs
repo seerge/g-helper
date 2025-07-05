@@ -12,7 +12,6 @@ namespace GHelper
     public partial class Extra : RForm
     {
 
-        ScreenControl screenControl = new ScreenControl();
         ClamshellModeControl clamshellControl = new ClamshellModeControl();
 
         const string EMPTY = "--------------";
@@ -202,7 +201,7 @@ namespace GHelper
                 labelM1.Text = "FN+F2";
                 labelM2.Text = "FN+F3";
                 labelM3.Text = "FN+F4";
-                labelM4.Visible = comboM4.Visible = textM4.Visible = AppConfig.IsDUO();
+                labelM4.Visible = comboM4.Visible = textM4.Visible = AppConfig.IsM4Button();
                 labelFNF4.Visible = comboFNF4.Visible = textFNF4.Visible = false;
             }
 
@@ -448,7 +447,7 @@ namespace GHelper
             checkStatusLed.Checked = (statusLed > 0);
             checkStatusLed.CheckedChanged += CheckLEDStatus_CheckedChanged;
 
-            var optimalBrightness = screenControl.GetOptimalBrightness();
+            var optimalBrightness = ScreenControl.GetOptimalBrightness();
             checkOptimalBrightness.Visible = optimalBrightness >= 0;
             checkOptimalBrightness.Checked = (optimalBrightness > 0);
             checkOptimalBrightness.CheckedChanged += CheckOptimalBrightness_CheckedChanged;
@@ -483,7 +482,7 @@ namespace GHelper
 
         private void CheckOptimalBrightness_CheckedChanged(object? sender, EventArgs e)
         {
-            screenControl.SetOptimalBrightness(checkOptimalBrightness.Checked ? 1 : 0);
+            ScreenControl.SetOptimalBrightness(checkOptimalBrightness.Checked ? 1 : 0);
         }
 
         private void CheckPerKeyRGB_CheckedChanged(object? sender, EventArgs e)
@@ -791,7 +790,7 @@ namespace GHelper
         private void CheckNoOverdrive_CheckedChanged(object? sender, EventArgs e)
         {
             AppConfig.Set("no_overdrive", (checkNoOverdrive.Checked ? 1 : 0));
-            screenControl.AutoScreen(true);
+            ScreenControl.AutoScreen(true);
         }
 
 

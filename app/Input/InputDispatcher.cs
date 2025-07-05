@@ -31,7 +31,6 @@ namespace GHelper.Input
         public static ModifierKeys keyModifierAlt = GetModifierKeys("modifier_keybind_alt", ModifierKeys.Shift | ModifierKeys.Control | ModifierKeys.Alt);
 
         static ModeControl modeControl = Program.modeControl;
-        static ScreenControl screenControl = new ScreenControl();
 
         static bool isTUF = AppConfig.IsTUF();
 
@@ -101,9 +100,11 @@ namespace GHelper.Input
             }
 
             InitBacklightTimer();
+        }
 
+        public static void InitFNLock()
+        {
             if (AppConfig.IsHardwareFnLock()) HardwareFnLock(AppConfig.Is("fn_lock"));
-
         }
 
         public void InitBacklightTimer()
@@ -576,11 +577,11 @@ namespace GHelper.Input
                     break;
                 case "miniled":
                     if (ScreenCCD.GetHDRStatus()) return;
-                    string miniledName = screenControl.ToogleMiniled();
+                    string miniledName = ScreenControl.ToogleMiniled();
                     Program.toast.RunToast(miniledName, miniledName == Properties.Strings.OneZone ? ToastIcon.BrightnessDown : ToastIcon.BrightnessUp);
                     break;
                 case "aura":
-                    Program.settingsForm.BeginInvoke(Program.settingsForm.CycleAuraMode);
+                    Program.settingsForm.BeginInvoke(Program.settingsForm.CycleAuraMode, Control.ModifierKeys == Keys.Shift ? -1 : 1);
                     break;
                 case "visual":
                     Program.settingsForm.BeginInvoke(Program.settingsForm.CycleVisualMode);
@@ -750,10 +751,16 @@ namespace GHelper.Input
 
         }
 
+        static int GetTentState()
+        {
+            var tentState = Program.acpi.DeviceGet(AsusACPI.TentState);
+            Logger.WriteLine($"Tent: {tentState}");
+            return tentState;
+        }
+
         public static void TentMode()
         {
-            int tentState = Program.acpi.DeviceGet(AsusACPI.TentState);
-            Logger.WriteLine($"Tent: {tentState}");
+            var tentState = GetTentState();
             if (tentState < 0) return;
             tentMode = tentState > 0;
             Aura.ApplyBrightness(tentMode ? 0 : GetBacklight(), "Tent");
@@ -819,8 +826,10 @@ namespace GHelper.Input
                     case 153:   // FN+F5 OLD MODELS
                         modeControl.CyclePerformanceMode(Control.ModifierKeys == Keys.Shift);
                         return;
+                    case 178:   // FN+LEFT ARROW / FN + F4
+                        Program.settingsForm.BeginInvoke(Program.settingsForm.CycleAuraMode, -1);
+                        return;
                     case 179:   // FN+F4
-                    case 178:   // FN+F4
                         KeyProcess("fnf4");
                         return;
                     case 138:   // Fn + V
@@ -967,8 +976,12 @@ namespace GHelper.Input
 
             if (tentMode)
             {
-                Logger.WriteLine("Skipping Backlight Init: Tent Mode");
-                return;
+                tentMode = GetTentState() > 0; 
+                if (tentMode)
+                {
+                    Logger.WriteLine("Skipping Backlight Init: Tent Mode");
+                    return;
+                }
             }
 
             if (!AppConfig.Is("skip_aura"))
@@ -985,7 +998,6 @@ namespace GHelper.Input
         public static void SetBacklightAuto(bool init = false)
         {
             if (lidClose || tentMode) return;
-            if (init) Aura.Init();
             Aura.ApplyBrightness(GetBacklight(), "Auto", init);
         }
 
@@ -1043,7 +1055,7 @@ namespace GHelper.Input
         public static void ToggleScreenRate()
         {
             AppConfig.Set("screen_auto", 0);
-            screenControl.ToggleScreenRate();
+            ScreenControl.ToggleScreenRate();
         }
 
         public static void ToggleCamera()

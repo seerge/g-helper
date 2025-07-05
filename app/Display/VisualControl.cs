@@ -90,7 +90,7 @@ namespace GHelper.Display
 
             if (!Directory.Exists(iccPath))
             {
-                Logger.WriteLine(iccPath + " doesn't exit");
+                Logger.WriteLine(iccPath + " doesn't exist");
                 return _modes;
             }
 

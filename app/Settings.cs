@@ -11,6 +11,7 @@ using GHelper.Input;
 using GHelper.Mode;
 using GHelper.Peripherals;
 using GHelper.Peripherals.Mouse;
+using GHelper.Properties;
 using GHelper.UI;
 using GHelper.USB;
 using System.Diagnostics;
@@ -25,7 +26,6 @@ namespace GHelper
 
         public GPUModeControl gpuControl;
         public AllyControl allyControl;
-        ScreenControl screenControl = new ScreenControl();
         AutoUpdateControl updateControl;
 
         AsusMouseSettings? mouseSettings;
@@ -285,7 +285,8 @@ namespace GHelper
                 buttonDonate.Badge = Math.Clamp((startCount - click) / 50, 1, 9);
             }
 
-            labelDynamicLighting.Click += LabelDynamicLighting_Click;
+            labelBacklight.ForeColor = colorStandard;
+            labelBacklight.Click += LabelBacklight_Click;
 
             panelPerformance.Focus();
             InitVisual();
@@ -304,14 +305,14 @@ namespace GHelper
             Process.Start(new ProcessStartInfo("https://g-helper.com/support") { UseShellExecute = true });
         }
 
-        private void LabelDynamicLighting_Click(object? sender, EventArgs e)
+        private void LabelBacklight_Click(object? sender, EventArgs e)
         {
-            DynamicLightingHelper.OpenSettings();
+            if (DynamicLightingHelper.IsEnabled()) DynamicLightingHelper.OpenSettings();
         }
 
         private void ButtonFHD_Click(object? sender, EventArgs e)
         {
-            screenControl.ToogleFHD();
+            ScreenControl.ToogleFHD();
         }
 
         private void SliderBattery_ValueChanged(object? sender, EventArgs e)
@@ -670,7 +671,7 @@ namespace GHelper
             sensorTimer.Enabled = this.Visible;
             if (this.Visible)
             {
-                screenControl.InitScreen();
+                ScreenControl.InitScreen();
                 VisualizeXGM();
 
                 Task.Run((Action)RefreshPeripheralsBattery);
@@ -744,7 +745,7 @@ namespace GHelper
                             break;
                         case 1:
                             Logger.WriteLine("Monitor Power On");
-                            if (!Program.SetAutoModes()) BatteryControl.AutoBattery();
+                            if (!Program.SetAutoModes(wakeup: true)) BatteryControl.AutoBattery();
                             break;
                         case 2:
                             Logger.WriteLine("Monitor Dimmed");
@@ -951,7 +952,7 @@ namespace GHelper
         private void ButtonScreenAuto_Click(object? sender, EventArgs e)
         {
             AppConfig.Set("screen_auto", 1);
-            screenControl.AutoScreen();
+            ScreenControl.AutoScreen();
         }
 
 
@@ -1170,11 +1171,20 @@ namespace GHelper
             pictureColor2.BackColor = Aura.Color2;
             pictureColor2.Visible = Aura.HasSecondColor();
 
-            if (AppConfig.IsDynamicLighting())
+            bool dynamic = AppConfig.IsDynamicLighting() && DynamicLightingHelper.IsEnabled();
+
+            if (dynamic)
             {
-                labelDynamicLighting.Visible = DynamicLightingHelper.IsEnabled();
-                labelDynamicLighting.ForeColor = colorStandard;
-                this.OnResize(null);
+                labelBacklight.Cursor = Cursors.Hand;
+                labelBacklight.Text = Strings.DisableDynamicLighting;
+            } else if (Aura.Mode == AuraMode.AMBIENT)
+            {
+                labelBacklight.Cursor = Cursors.Default;
+                labelBacklight.Text = Strings.AmbientModeResources;
+            } else
+            {
+                labelBacklight.Cursor = Cursors.Default;
+                labelBacklight.Text = "";
             }
         }
 
@@ -1236,12 +1246,22 @@ namespace GHelper
         }
 
 
-        public void CycleAuraMode()
+        public void CycleAuraMode(int delta)
         {
-            if (comboKeyboard.SelectedIndex < comboKeyboard.Items.Count - 1)
-                comboKeyboard.SelectedIndex += 1;
+            if (delta > 0)
+            {
+                if (comboKeyboard.SelectedIndex < comboKeyboard.Items.Count - 1)
+                    comboKeyboard.SelectedIndex += 1;
+                else
+                    comboKeyboard.SelectedIndex = 0;
+            }
             else
-                comboKeyboard.SelectedIndex = 0;
+            {
+                if (comboKeyboard.SelectedIndex > 0)
+                    comboKeyboard.SelectedIndex -= 1;
+                else
+                    comboKeyboard.SelectedIndex = comboKeyboard.Items.Count - 1;
+            }
 
             Program.toast.RunToast(comboKeyboard.GetItemText(comboKeyboard.SelectedItem), ToastIcon.BacklightUp);
         }
@@ -1256,19 +1276,19 @@ namespace GHelper
         private void Button120Hz_Click(object? sender, EventArgs e)
         {
             AppConfig.Set("screen_auto", 0);
-            screenControl.SetScreen(ScreenControl.MAX_REFRESH, 1);
+            ScreenControl.SetScreen(ScreenControl.MAX_REFRESH, 1);
         }
 
         private void Button60Hz_Click(object? sender, EventArgs e)
         {
             AppConfig.Set("screen_auto", 0);
-            screenControl.SetScreen(ScreenControl.MIN_RATE, 0);
+            ScreenControl.SetScreen(ScreenControl.MIN_RATE, 0);
         }
 
 
         private void ButtonMiniled_Click(object? sender, EventArgs e)
         {
-            screenControl.ToogleMiniled();
+            ScreenControl.ToogleMiniled();
         }
 
 

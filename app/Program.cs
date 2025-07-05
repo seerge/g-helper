@@ -34,7 +34,6 @@ namespace GHelper
         public static ModeControl modeControl = new ModeControl();
         public static GPUModeControl gpuControl = new GPUModeControl(settingsForm);
         public static AllyControl allyControl = new AllyControl(settingsForm);
-        public static ScreenControl screenControl = new ScreenControl(); 
         public static ClamshellModeControl clamshellControl = new ClamshellModeControl();
 
         public static ToastForm toast = new ToastForm();
@@ -164,6 +163,16 @@ namespace GHelper
                     settingsForm.FansToggle(2);
                     modeControl.SetRyzen();
                     break;
+                case "colors":
+                    Task.Run(async () =>
+                    {
+                        await ColorProfileHelper.InstallProfile();
+                        settingsForm.Invoke(delegate
+                        {
+                            settingsForm.InitVisual();
+                        });
+                    });
+                    break;
                 default:
                     Startup.StartupCheck();
                     break;
@@ -186,7 +195,7 @@ namespace GHelper
             if (e.Reason == SessionSwitchReason.SessionLogon || e.Reason == SessionSwitchReason.SessionUnlock)
             {
                 Logger.WriteLine("Session:" + e.Reason.ToString());
-                screenControl.AutoScreen();
+                ScreenControl.AutoScreen();
             }
         }
 
@@ -228,7 +237,7 @@ namespace GHelper
 
 
 
-        public static bool SetAutoModes(bool powerChanged = false, bool init = false)
+        public static bool SetAutoModes(bool powerChanged = false, bool init = false, bool wakeup = false)
         {
 
             if (Math.Abs(DateTimeOffset.Now.ToUnixTimeMilliseconds() - lastAuto) < 3000) return false;
@@ -239,7 +248,8 @@ namespace GHelper
 
             BatteryControl.AutoBattery(init);
             if (init) InputDispatcher.InitScreenpad();
-            screenControl.InitOptimalBrightness();
+            if (init || wakeup) DynamicLightingHelper.Init();
+            ScreenControl.InitOptimalBrightness();
 
             inputDispatcher.Init();
 
@@ -250,7 +260,7 @@ namespace GHelper
             if (!switched)
             {
                 gpuControl.InitGPUMode();
-                screenControl.AutoScreen();
+                ScreenControl.AutoScreen();
             }
 
             settingsForm.matrixControl.SetDevice(true);
@@ -264,7 +274,7 @@ namespace GHelper
                 InputDispatcher.AutoKeyboard();
             }
 
-            screenControl.InitMiniled();
+            ScreenControl.InitMiniled();
             InputDispatcher.InitStatusLed();
             XGM.InitLight();
             VisualControl.InitBrightness();
@@ -360,7 +370,10 @@ namespace GHelper
                 if (limit > 0 && limit < 100)
                 {
                     Logger.WriteLine($"------- Startup Battery Limit {limit} -------");
+                    ProcessHelper.StartEnableService("ATKWMIACPIIO", false);
+                    Logger.WriteLine($"Connecting to ACPI");
                     acpi = new AsusACPI();
+                    Logger.WriteLine($"Setting Limit");
                     acpi.DeviceSet(AsusACPI.BatteryLimit, limit, "Limit");
                 }
             }
