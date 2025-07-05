@@ -383,7 +383,7 @@ public static class AppConfig
 
     public static bool IsTUF()
     {
-        return ContainsModel("TUF") || ContainsModel("TX Gaming");
+        return ContainsModel("TUF") || ContainsModel("TX Gaming") || ContainsModel("TX Air");
     }
 
     public static bool IsProArt()
@@ -403,7 +403,7 @@ public static class AppConfig
 
     public static bool IsHardwareFnLock()
     {
-        return IsVivoZenPro() || ContainsModel("GZ302EA");
+        return IsVivoZenPro() || ContainsModel("GZ302EA") || IsSlashAura();
     }
 
     // Devices with bugged bios command to change brightness
@@ -416,6 +416,11 @@ public static class AppConfig
     public static bool IsDUO()
     {
         return ContainsModel("Duo") || ContainsModel("GX550") || ContainsModel("GX650") || ContainsModel("UX840") || ContainsModel("UX482");
+    }
+
+    public static bool IsM4Button()
+    {
+        return IsDUO() || ContainsModel("GZ302EA");
     }
 
     // G14 2020 has no aura, but media keys instead
@@ -436,7 +441,7 @@ public static class AppConfig
 
     public static bool IsSleepBacklight()
     {
-        return ContainsModel("FA617");
+        return ContainsModel("FA617") || ContainsModel("FX507");
     }
 
     public static bool IsAnimeMatrix()
@@ -466,7 +471,7 @@ public static class AppConfig
 
     public static bool IsOLED()
     {
-        return ContainsModel("OLED") || IsSlash() || ContainsModel("M7600") || ContainsModel("UX64") || ContainsModel("UX34") || ContainsModel("UX53") || ContainsModel("K360") || ContainsModel("X150") || ContainsModel("M350") || ContainsModel("K650") || ContainsModel("UM53") || ContainsModel("K660") || ContainsModel("UX84") || ContainsModel("M650") || ContainsModel("M550") || ContainsModel("M540") || ContainsModel("K340") || ContainsModel("K350") || ContainsModel("M140") || ContainsModel("UM340") || ContainsModel("S540") || ContainsModel("S550") || ContainsModel("M7400") || ContainsModel("N650") || ContainsModel("HN7306") || ContainsModel("H760") || ContainsModel("UX5406") || ContainsModel("M5606") || ContainsModel("X513") || ContainsModel("N7400");
+        return ContainsModel("OLED") || IsSlash() || ContainsModel("M7600") || ContainsModel("UX64") || ContainsModel("UX34") || ContainsModel("UX53") || ContainsModel("K360") || ContainsModel("X150") || ContainsModel("M340") || ContainsModel("M350") || ContainsModel("K650") || ContainsModel("UM53") || ContainsModel("K660") || ContainsModel("UX84") || ContainsModel("M650") || ContainsModel("M550") || ContainsModel("M540") || ContainsModel("K340") || ContainsModel("K350") || ContainsModel("M140") || ContainsModel("S540") || ContainsModel("S550") || ContainsModel("M7400") || ContainsModel("N650") || ContainsModel("HN7306") || ContainsModel("H760") || ContainsModel("UX5406") || ContainsModel("M5606") || ContainsModel("X513") || ContainsModel("N7400");
     }
 
     public static bool IsNoOverdrive()
@@ -726,9 +731,14 @@ public static class AppConfig
         return IsSlash() || IsIntelHX() || IsTUF() || IsZ13();
     }
 
+    public static bool IsDynamicLightingInit()
+    {
+        return ContainsModel("FA608") || Is("lighting_init");
+    }
+
     public static bool IsForceMiniled()
     {
-        return ContainsModel("G834JYR") || ContainsModel("G834JZR") || ContainsModel("G634JZR") || Is("force_miniled");
+        return ContainsModel("G834JYR") || ContainsModel("G834JZR") || ContainsModel("G634JZR") || ContainsModel("G835LW") || Is("force_miniled");
     }
     public static bool SaveDimming()
     {

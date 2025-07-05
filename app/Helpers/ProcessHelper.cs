@@ -108,11 +108,11 @@ namespace GHelper.Helpers
             }
         }
 
-        public static void StartEnableService(string serviceName)
+        public static void StartEnableService(string serviceName, bool automatic = true)
         {
             try
             {
-                string script = $"Set-Service -Name \"{serviceName}\" -Status running -StartupType Automatic";
+                string script = $"Set-Service -Name \"{serviceName}\" -Status running" + (automatic? " -StartupType Automatic":"");
                 Logger.WriteLine(script);
                 RunCMD("powershell", script);
             }

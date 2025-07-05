@@ -875,4 +875,10 @@ Vis tiek norite tęsti?</value>
   <data name="IntervalSeconds" xml:space="preserve">
     <value>Interval {0}s</value>
   </data>
+  <data name="DisableDynamicLighting" xml:space="preserve">
+    <value>Please disable Windows &gt; Dynamic Lighting</value>
+  </data>
+  <data name="AmbientModeResources" xml:space="preserve">
+    <value>Ambient mode may increase resource usage</value>
+  </data>
 </root>
