@@ -18,7 +18,7 @@ Small and lightweight Armoury Crate alternative for Asus laptops offering almost
       <a href="https://buy.stripe.com/6oE29dg9D3Xj7Wo28b"><img src="https://raw.githubusercontent.com/seerge/g-helper/main/docs/alipay.png" width="150" alt="Alipay"></a>
    </td>
 </tr>
-</table>>
+</table>
 
 - [FAQ](https://github.com/seerge/g-helper/wiki/FAQ)
 - [Setup and Requirements](https://github.com/seerge/g-helper/wiki/Requirements)
