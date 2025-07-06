@@ -244,7 +244,7 @@ namespace GHelper
 
             BatteryControl.AutoBattery(init);
             if (init) InputDispatcher.InitScreenpad();
-            if (init || wakeup) DynamicLightingHelper.Init();
+            DynamicLightingHelper.Init();
             ScreenControl.InitOptimalBrightness();
 
             inputDispatcher.Init();
