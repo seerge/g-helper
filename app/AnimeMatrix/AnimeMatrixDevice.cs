@@ -68,7 +68,7 @@ namespace GHelper.AnimeMatrix
         GA401,
         GA402,
         GU604,
-        G835
+        STRIX
     }
 
 
@@ -125,9 +125,9 @@ namespace GHelper.AnimeMatrix
                 FullRows = 9;
             }
 
-            if (AppConfig.ContainsModel("G835") || AppConfig.ContainsModel("G815"))
+            if (AppConfig.ContainsModel("G635") || AppConfig.ContainsModel("G615") || AppConfig.ContainsModel("G835") || AppConfig.ContainsModel("G815"))
             {
-                _model = AnimeType.G835;
+                _model = AnimeType.STRIX;
                 MaxColumns = 34;
                 MaxRows = 68;
                 LedCount = 810;
@@ -231,7 +231,7 @@ namespace GHelper.AnimeMatrix
                     return 33;
                 case AnimeType.GU604:
                     return 39;
-                case AnimeType.G835:
+                case AnimeType.STRIX:
                     return 1 + y / 2;
                 default:
                     return 34;
@@ -413,7 +413,7 @@ namespace GHelper.AnimeMatrix
             Clear();
             switch (_model)
             {
-                case AnimeType.G835:
+                case AnimeType.STRIX:
                 //case AnimeType.GA402:
                     Text(DateTime.Now.ToString(timeFormat), 15, 4, 20);
                     break;
@@ -431,7 +431,7 @@ namespace GHelper.AnimeMatrix
             switch (_model)
             {
                 //case AnimeType.GA402:
-                case AnimeType.G835:
+                case AnimeType.STRIX:
                     DrawBarDiagonal(pos, h);
                     break;
                 default:
