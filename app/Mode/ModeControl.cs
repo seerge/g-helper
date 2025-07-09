@@ -2,6 +2,7 @@
 using GHelper.Helpers;
 using GHelper.USB;
 using Ryzen;
+using System;
 
 namespace GHelper.Mode
 {
@@ -372,6 +373,8 @@ namespace GHelper.Mode
             {
                 int min = AppConfig.GetMode("igpu_core_min");
                 int max = AppConfig.GetMode("igpu_core_max");
+
+                if (min == -1 && max == -1) return;
 
                 if (HardwareControl.IntelGpuControl is null) { Logger.WriteLine("Intel GPU Clocks Error: no Intel GPU Control."); return; }
 
