@@ -623,6 +623,7 @@ namespace GHelper
             trackIntelGPUCoreMin.TabIndex = 18;
             trackIntelGPUCoreMin.TickFrequency = 50;
             trackIntelGPUCoreMin.TickStyle = TickStyle.TopLeft;
+            trackIntelGPUCoreMin.Scroll += trackIntelGPUCoreMin_Scroll;
             // 
             // label10
             // 
@@ -674,6 +675,7 @@ namespace GHelper
             trackIntelGPUCoreMax.TickFrequency = 50;
             trackIntelGPUCoreMax.TickStyle = TickStyle.TopLeft;
             trackIntelGPUCoreMax.Value = 1500;
+            trackIntelGPUCoreMax.Scroll += trackIntelGPUCoreMax_Scroll;
             // 
             // label12
             // 

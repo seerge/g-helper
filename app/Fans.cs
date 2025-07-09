@@ -411,7 +411,8 @@ namespace GHelper
                 panelAdvancedApply.Visible = false;
                 panelDownload.Visible = true;
 
-            } else
+            }
+            else
             {
                 panelDownload.Visible = false;
             }
@@ -643,7 +644,8 @@ namespace GHelper
                     dGpuVisible = false;
                     Logger.WriteLine(ex.ToString());
                 }
-            } else dGpuVisible = false;
+            }
+            else dGpuVisible = false;
 
             try
             {
@@ -720,6 +722,37 @@ namespace GHelper
 
             if (isGPUPower) AppConfig.SetMode("gpu_power", trackGPUPower.Value);
 
+            VisualiseGPUSettings();
+        }
+
+        private void trackIntelGPUCoreMax_Scroll(object sender, EventArgs e)
+        {
+            UpdateIntelGPUCoreClock(true);
+        }
+
+        private void trackIntelGPUCoreMin_Scroll(object sender, EventArgs e)
+        {
+            UpdateIntelGPUCoreClock(false);
+        }
+
+        private void UpdateIntelGPUCoreClock(bool maxSlider)
+        {
+            if (maxSlider)
+            {
+                if (trackIntelGPUCoreMax.Value < trackIntelGPUCoreMin.Value)
+                    trackIntelGPUCoreMin.Value = trackIntelGPUCoreMax.Value;
+            }
+            else
+            {
+                if (trackIntelGPUCoreMin.Value > trackIntelGPUCoreMax.Value)
+                    trackIntelGPUCoreMax.Value = trackIntelGPUCoreMin.Value;
+            }
+
+            int maxClock = trackIntelGPUCoreMax.Value;
+            int minClock = trackIntelGPUCoreMin.Value;
+
+            AppConfig.SetMode("igpu_core_max", maxClock);
+            AppConfig.SetMode("igpu_core_min", minClock);
             VisualiseGPUSettings();
         }
 
@@ -846,7 +879,7 @@ namespace GHelper
 
             comboPowerMode.Enabled = !batterySaver;
 
-            if (batterySaver) 
+            if (batterySaver)
                 comboPowerMode.SelectedIndex = 0;
             else
                 comboPowerMode.SelectedValue = powerMode;
@@ -951,7 +984,7 @@ namespace GHelper
                     labelLeftSlow.Text = "sPPT (CPU 2 min boost)";
                     labelLeftFast.Text = "fPPT (CPU 2 sec boost)";
                     panelFast.Visible = modeC1;
-                    
+
                 }
                 else
                 {
@@ -974,7 +1007,7 @@ namespace GHelper
 
             if (limit_cpu > AsusACPI.MaxCPU) limit_cpu = AsusACPI.MaxCPU;
             if (limit_cpu < AsusACPI.MinCPU) limit_cpu = AsusACPI.MinCPU;
-            
+
             if (limit_slow > AsusACPI.MaxTotal) limit_slow = AsusACPI.MaxTotal;
             if (limit_slow < AsusACPI.MinTotal) limit_slow = AsusACPI.MinTotal;
 
@@ -1068,7 +1101,7 @@ namespace GHelper
             {
                 if (chartCount > 2)
                     Size = MinimumSize = new Size(Size.Width, Math.Max(MinimumSize.Height, (int)(ControlHelper.GetDpiScale(this).Value * (chartCount * 200 + 100))));
-                    
+
             }
             catch (Exception ex)
             {
@@ -1176,13 +1209,13 @@ namespace GHelper
                 trackGPUClockLimit.Value = NvidiaGpuControl.MaxClockLimit;
                 trackGPUCore.Value = 0;
                 trackGPUMemory.Value = 0;
-                
+
                 trackGPUBoost.Value = AsusACPI.MaxGPUBoost;
                 trackGPUTemp.Value = AsusACPI.MaxGPUTemp;
 
                 //AppConfig.SetMode("gpu_boost", trackGPUBoost.Value);
                 //AppConfig.SetMode("gpu_temp", trackGPUTemp.Value);
-                
+
                 AppConfig.RemoveMode("gpu_boost");
                 AppConfig.RemoveMode("gpu_temp");
 

@@ -16,8 +16,8 @@ namespace GHelper.GPU.Intel
         public bool IsValid => _frequencyHandles != null && _frequencyHandles.Length > 0;
         public string FullName => "Intel GPU (not implemented)";
 
-        public int MaxCore => AppConfig.Get("max_igpu_core", (int)FrequencyLimits.Max);
-        public int MinCore => AppConfig.Get("max_igpu_core", (int)FrequencyLimits.Min);
+        public int MaxCore => AppConfig.Get("igpu_core_max", (int)FrequencyLimits.Max);
+        public int MinCore => AppConfig.Get("igpu_core_min", (int)FrequencyLimits.Min);
 
         private LZDriverHandle[] _driverHandles;
         private LZDeviceHandle[] _deviceHandles;
