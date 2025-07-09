@@ -365,6 +365,29 @@ namespace GHelper.Mode
             });
         }
 
+        public void SetIntelGPUClocks(bool launchAsAdmin = true, bool reset = false)
+        {
+            Task.Run(() =>
+            {
+                int min = AppConfig.GetMode("igpu_core_min");
+                int max = AppConfig.GetMode("igpu_core_max");
+
+                if (HardwareControl.IntelGpuControl is null) { Logger.WriteLine("Intel GPU Clocks Error: no Intel GPU Control."); return; }
+
+                try
+                {
+                    HardwareControl.IntelGpuControl.SetCoreFrequencyLimits(min, max);
+                    if (launchAsAdmin) ProcessHelper.RunAsAdmin("gpu");
+                }
+                catch (Exception ex)
+                {
+                    Logger.WriteLine("Intel GPU Clocks Error:" + ex.ToString());
+                }
+
+                settings.GPUInit();
+            });
+        }
+
         public void SetGPUPower()
         {
 

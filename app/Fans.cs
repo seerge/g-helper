@@ -168,6 +168,9 @@ namespace GHelper
             trackGPUMemory.MouseUp += TrackGPUClocks_MouseUp;
             trackGPUClockLimit.MouseUp += TrackGPUClocks_MouseUp;
 
+            trackIntelGPUCoreMin.MouseUp += TrackIntelGPUClocks_MouseUp;
+            trackIntelGPUCoreMax.MouseUp += TrackIntelGPUClocks_MouseUp;
+
             trackGPUBoost.MouseUp += TrackGPU_MouseUp;
             trackGPUTemp.MouseUp += TrackGPU_MouseUp;
             trackGPUPower.MouseUp += TrackGPU_MouseUp;
@@ -537,6 +540,11 @@ namespace GHelper
         private void TrackGPUClocks_MouseUp(object? sender, MouseEventArgs e)
         {
             modeControl.SetGPUClocks(true);
+        }
+
+        private void TrackIntelGPUClocks_MouseUp(object? sender, MouseEventArgs e)
+        {
+            modeControl.SetIntelGPUClocks(true);
         }
 
         private void InitGPUPower()
