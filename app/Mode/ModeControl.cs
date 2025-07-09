@@ -335,6 +335,22 @@ namespace GHelper.Mode
         {
             Task.Run(() =>
             {
+                if (HardwareControl.IntelGpuControl is not null)
+                {
+                    int min = AppConfig.GetMode("igpu_core_min");
+                    int max = AppConfig.GetMode("igpu_core_max");
+
+                    try
+                    {
+                        HardwareControl.IntelGpuControl.SetCoreFrequencyLimits(min, max);
+                        if (launchAsAdmin) ProcessHelper.RunAsAdmin("gpu");
+                    }
+                    catch (Exception ex)
+                    {
+                        Logger.WriteLine("Intel GPU Clocks Error:" + ex.ToString());
+                    }
+                }
+                else Logger.WriteLine("Not setting Intel GPU Clocks: no Intel GPU Control.");
 
                 int core = AppConfig.GetMode("gpu_core");
                 int memory = AppConfig.GetMode("gpu_memory");
@@ -359,29 +375,6 @@ namespace GHelper.Mode
                 catch (Exception ex)
                 {
                     Logger.WriteLine("Clocks Error:" + ex.ToString());
-                }
-
-                settings.GPUInit();
-            });
-        }
-
-        public void SetIntelGPUClocks(bool launchAsAdmin = true, bool reset = false)
-        {
-            Task.Run(() =>
-            {
-                int min = AppConfig.GetMode("igpu_core_min");
-                int max = AppConfig.GetMode("igpu_core_max");
-
-                if (HardwareControl.IntelGpuControl is null) { Logger.WriteLine("Intel GPU Clocks Error: no Intel GPU Control."); return; }
-
-                try
-                {
-                    HardwareControl.IntelGpuControl.SetCoreFrequencyLimits(min, max);
-                    if (launchAsAdmin) ProcessHelper.RunAsAdmin("gpu");
-                }
-                catch (Exception ex)
-                {
-                    Logger.WriteLine("Intel GPU Clocks Error:" + ex.ToString());
                 }
 
                 settings.GPUInit();
