@@ -328,6 +328,7 @@ namespace GHelper
         {
             SuspendLayout();
             
+            if (!gpuVisible) index = 0;
             _currentPage = index;
 
             buttonCPU.Activated = false;
@@ -339,7 +340,6 @@ namespace GHelper
             panelIntelGPU.Visible = false;
             panelAdvanced.Visible = false;
 
-            if (!gpuVisible) index = 0;
 
             switch (index)
             {

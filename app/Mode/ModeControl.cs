@@ -378,11 +378,11 @@ namespace GHelper.Mode
                 try
                 {
                     HardwareControl.IntelGpuControl.SetCoreFrequencyLimits(min, max);
-                    if (launchAsAdmin) ProcessHelper.RunAsAdmin("gpu");
                 }
                 catch (Exception ex)
                 {
                     Logger.WriteLine("Intel GPU Clocks Error:" + ex.ToString());
+                    if (launchAsAdmin) ProcessHelper.RunAsAdmin("gpu");
                 }
 
                 settings.GPUInit();
