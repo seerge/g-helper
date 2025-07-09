@@ -1,12 +1,4 @@
 ﻿using GHelper.Gpu;
-using GHelper.Gpu.AMD;
-using System;
-using System.Collections.Generic;
-using System.DirectoryServices;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GHelper.GPU.Intel
 {
@@ -19,8 +11,8 @@ namespace GHelper.GPU.Intel
         public int MaxCoreLimit => (int)FrequencyLimits.Max;
         public int MinCoreLimit => (int)FrequencyLimits.Min;
 
-        public int MaxCore => AppConfig.Get("igpu_core_max", (int)GetCurrentFrequencyRange().Max);
-        public int MinCore => AppConfig.Get("igpu_core_min", (int)GetCurrentFrequencyRange().Min);
+        public int MaxCore => AppConfig.GetMode("igpu_core_max", (int)GetCurrentFrequencyRange().Max);
+        public int MinCore => AppConfig.GetMode("igpu_core_min", (int)GetCurrentFrequencyRange().Min);
 
         private LZDriverHandle[] _driverHandles;
         private LZDeviceHandle[] _deviceHandles;
@@ -121,6 +113,13 @@ namespace GHelper.GPU.Intel
             // Not implemented
         }
 
+        public void Reset()
+        {
+            AppConfig.RemoveMode("igpu_core_max");
+            AppConfig.RemoveMode("igpu_core_min");
+
+            SetCoreFrequencyLimits(-1, -1); // Reset to default values
+        }
 
 
         public void Dispose()

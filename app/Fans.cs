@@ -1247,6 +1247,11 @@ namespace GHelper
                 AppConfig.RemoveMode("gpu_core");
                 AppConfig.RemoveMode("gpu_memory");
 
+                if (HardwareControl.IntelGpuControl is not null)
+                {
+                    HardwareControl.IntelGpuControl.Reset();
+                }
+
                 InitGPUPower();
 
                 VisualiseGPUSettings();
