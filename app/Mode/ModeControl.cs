@@ -1,4 +1,4 @@
-﻿using GHelper.Gpu.NVidia;
+﻿using GHelper.Gpu.Nvidia;
 using GHelper.Helpers;
 using GHelper.USB;
 using Ryzen;
