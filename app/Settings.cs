@@ -1649,8 +1649,17 @@ namespace GHelper
 
             SetContextMenu();
 
-            panelGPU.Visible = gpuExists;
+            //panelGPU.Visible = gpuExists;
+            
+        }
 
+        public void UpdateGPUForm()
+        {
+            if (fansForm != null)
+            {
+                fansForm.InitGPU();
+                fansForm.RefreshCurrentPage();
+            }
         }
 
 
@@ -1742,6 +1751,7 @@ namespace GHelper
                 Top = 5;
             }
 
+            UpdateGPUForm();
         }
 
 

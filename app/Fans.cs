@@ -36,6 +36,9 @@ namespace GHelper
         static int gpuPowerBase = 0;
         static bool isGPUPower => gpuPowerBase > 0;
 
+        private int _currentPage = 0;
+        public int CurrentPage => _currentPage;
+
         public Fans()
         {
 
@@ -323,8 +326,9 @@ namespace GHelper
 
         public void ToggleNavigation(int index = 0)
         {
-
             SuspendLayout();
+            
+            _currentPage = index;
 
             buttonCPU.Activated = false;
             buttonGPU.Activated = false;
@@ -332,7 +336,10 @@ namespace GHelper
 
             panelPower.Visible = false;
             panelGPU.Visible = false;
+            panelIntelGPU.Visible = false;
             panelAdvanced.Visible = false;
+
+            if (!gpuVisible) index = 0;
 
             switch (index)
             {
@@ -353,6 +360,11 @@ namespace GHelper
 
             ResumeLayout(false);
             PerformLayout();
+        }
+
+        public void RefreshCurrentPage()
+        {
+            ToggleNavigation(CurrentPage);
         }
 
         private void ButtonAdvanced_Click(object? sender, EventArgs e)
