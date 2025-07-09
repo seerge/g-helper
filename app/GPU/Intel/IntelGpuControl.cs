@@ -16,25 +16,25 @@ namespace GHelper.GPU.Intel
         public bool IsValid => _frequencyHandles != null && _frequencyHandles.Length > 0;
         public string FullName => "Intel GPU (not implemented)";
 
-        public int MaxCore => AppConfig.Get("igpu_core_max", (int)FrequencyLimits.Max);
-        public int MinCore => AppConfig.Get("igpu_core_min", (int)FrequencyLimits.Min);
+        public int MaxCoreLimit => (int)FrequencyLimits.Max;
+        public int MinCoreLimit => (int)FrequencyLimits.Min;
+
+        public int MaxCore => AppConfig.Get("igpu_core_max", (int)GetCurrentFrequencyRange().Max);
+        public int MinCore => AppConfig.Get("igpu_core_min", (int)GetCurrentFrequencyRange().Min);
 
         private LZDriverHandle[] _driverHandles;
         private LZDeviceHandle[] _deviceHandles;
         private LZFrequencyHandle[] _frequencyHandles;
 
-        private LZFrequencyRange _frequencyLimits;
+        private LZFrequencyRange? _frequencyLimits;
 
         public LZFrequencyRange FrequencyLimits
         {
             get
             {
-                if (_frequencyLimits.Min == 0 && _frequencyLimits.Max == 0)
-                {
-                    GetCoreFrequencyLimits(out double min, out double max);
-                    _frequencyLimits = new LZFrequencyRange { Min = min, Max = max };
-                }
-                return _frequencyLimits;
+                if (_frequencyLimits == null)
+                    _frequencyLimits = GetCoreFrequencyLimits();
+                return _frequencyLimits.Value;
             }
         }
 
@@ -60,36 +60,40 @@ namespace GHelper.GPU.Intel
             }
         }
 
-        public void GetCoreFrequencyLimits(out double min, out double max)
+        public LZFrequencyRange GetCoreFrequencyLimits()
         {
             try
             {
                 LZFrequencyProperties properties = IntelLevelZero.GetFrequencyProperties(_frequencyHandles[0]);
-                min = properties.Min;
-                max = properties.Max;
+                return new LZFrequencyRange { Min = properties.Min, Max = properties.Max };
             }
             catch (IntelLevelZero.LZException ex)
             {
                 Logger.WriteLine($"Failed to get core frequencies: {ex.Message} (Level Zero error code: {ex.ErrorCode})");
-                min = 0;
-                max = 0;
             }
+
+            return new LZFrequencyRange { Min = 0, Max = 0 };
         }
 
-        public void GetCurrentFrequencyLimits(out double min, out double max)
+        public LZFrequencyRange GetCurrentFrequencyRange()
         {
             try
             {
-                LZFrequencyRange range = IntelLevelZero.GetFrequencyRange(_frequencyHandles[0]);
-                min = range.Min;
-                max = range.Max;
+                return IntelLevelZero.GetFrequencyRange(_frequencyHandles[0]);
             }
             catch (IntelLevelZero.LZException ex)
             {
                 Logger.WriteLine($"Failed to get current frequencies: {ex.Message} (Level Zero error code: {ex.ErrorCode})");
-                min = 0;
-                max = 0;
             }
+
+            return FrequencyLimits;
+        }
+
+        public void GetCurrentFrequencyLimits(out double min, out double max)
+        {
+            LZFrequencyRange range = GetCurrentFrequencyRange();
+            min = range.Min;
+            max = range.Max;
         }
 
         public void SetCoreFrequencyLimits(double min, double max)

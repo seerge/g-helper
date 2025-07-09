@@ -181,6 +181,7 @@ namespace GHelper.Gpu
                         await Task.Delay(TimeSpan.FromMilliseconds(3000));
                         HardwareControl.RecreateGpuControl();
                         Program.modeControl.SetGPUClocks(false);
+                        Program.modeControl.SetIntelGPUClocks();
                     }
 
                     if (AppConfig.Is("mode_reapply"))

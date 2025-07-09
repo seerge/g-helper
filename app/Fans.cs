@@ -168,8 +168,8 @@ namespace GHelper
             trackGPUMemory.MouseUp += TrackGPUClocks_MouseUp;
             trackGPUClockLimit.MouseUp += TrackGPUClocks_MouseUp;
 
-            trackIntelGPUCoreMin.MouseUp += TrackGPUClocks_MouseUp;
-            trackIntelGPUCoreMax.MouseUp += TrackGPUClocks_MouseUp;
+            trackIntelGPUCoreMin.MouseUp += TrackIntelGPUClocks_MouseUp;
+            trackIntelGPUCoreMax.MouseUp += TrackIntelGPUClocks_MouseUp;
 
             trackGPUBoost.MouseUp += TrackGPU_MouseUp;
             trackGPUTemp.MouseUp += TrackGPU_MouseUp;
@@ -542,6 +542,11 @@ namespace GHelper
             modeControl.SetGPUClocks(true);
         }
 
+        private void TrackIntelGPUClocks_MouseUp(object? sender, MouseEventArgs e)
+        {
+            modeControl.SetIntelGPUClocks(true);
+        }
+
         private void InitGPUPower()
         {
             gpuPowerBase = Program.acpi.DeviceGet(AsusACPI.GPU_BASE);
@@ -659,8 +664,11 @@ namespace GHelper
 
                 IntelGpuControl intelGpu = HardwareControl.IntelGpuControl;
 
+                trackIntelGPUCoreMax.Maximum = trackIntelGPUCoreMin.Maximum = intelGpu.MaxCoreLimit;
+                trackIntelGPUCoreMax.Minimum = trackIntelGPUCoreMin.Minimum = intelGpu.MinCoreLimit;
+
                 trackIntelGPUCoreMax.Value = intelGpu.MaxCore;
-                trackIntelGPUCoreMax.Value = intelGpu.MaxCore;
+                trackIntelGPUCoreMin.Value = intelGpu.MinCore;
 
                 VisualiseGPUSettings();
             }
@@ -1232,6 +1240,8 @@ namespace GHelper
                 VisualiseGPUSettings();
                 modeControl.SetGPUClocks(true, true);
                 modeControl.SetGPUPower();
+
+                modeControl.SetIntelGPUClocks(true, true);
             }
 
         }
