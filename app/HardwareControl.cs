@@ -129,7 +129,6 @@ public static class HardwareControl
         {
             Debug.WriteLine("Full Charge Reading: " + ex.Message);
         }
-
     }
 
     public static void ReadDesignCapacity()
@@ -286,15 +285,6 @@ public static class HardwareControl
             return (GetGpuUse() > threshold);
         }
         return false;
-    }
-
-
-    public static NvidiaGpuControl? GetNvidiaGpuControl()
-    {
-        if ((bool)GpuControl?.IsNvidia)
-            return (NvidiaGpuControl)GpuControl;
-        else
-            return null;
     }
 
     public static void RecreateGpuControlWithDelay(int delay = 5)
