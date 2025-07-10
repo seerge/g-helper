@@ -208,7 +208,7 @@ internal class IntelLevelZero
         if (result != LZResult.Ok)
             throw new LZException("Failed to get frequency range.", result);
 
-        return "hi";//properties.Name;
+        return properties.Name;
     }
 
     public static class NativeMethods
