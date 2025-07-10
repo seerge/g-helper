@@ -31,14 +31,14 @@ namespace GHelper
         /// </summary>
         private void InitializeComponent()
         {
-            ChartArea chartArea5 = new ChartArea();
-            Title title5 = new Title();
-            ChartArea chartArea6 = new ChartArea();
-            Title title6 = new Title();
-            ChartArea chartArea7 = new ChartArea();
-            Title title7 = new Title();
-            ChartArea chartArea8 = new ChartArea();
-            Title title8 = new Title();
+            ChartArea chartArea1 = new ChartArea();
+            Title title1 = new Title();
+            ChartArea chartArea2 = new ChartArea();
+            Title title2 = new Title();
+            ChartArea chartArea3 = new ChartArea();
+            Title title3 = new Title();
+            ChartArea chartArea4 = new ChartArea();
+            Title title4 = new Title();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Fans));
             panelFans = new Panel();
             labelTip = new Label();
@@ -64,7 +64,7 @@ namespace GHelper
             panelSliders = new Panel();
             panelAdvanced = new Panel();
             panelAdvancedAlways = new Panel();
-            checkApplyUV = new RCheckBox();
+            checkApplyAuto = new RCheckBox();
             panelAdvancedApply = new Panel();
             buttonApplyAdvanced = new RButton();
             labelRisky = new Label();
@@ -288,8 +288,8 @@ namespace GHelper
             // 
             // chartGPU
             // 
-            chartArea5.Name = "ChartArea1";
-            chartGPU.ChartAreas.Add(chartArea5);
+            chartArea1.Name = "ChartArea1";
+            chartGPU.ChartAreas.Add(chartArea1);
             chartGPU.Dock = DockStyle.Fill;
             chartGPU.Location = new Point(6, 375);
             chartGPU.Margin = new Padding(1, 5, 1, 5);
@@ -297,13 +297,13 @@ namespace GHelper
             chartGPU.Size = new Size(393, 360);
             chartGPU.TabIndex = 17;
             chartGPU.Text = "chartGPU";
-            title5.Name = "Title1";
-            chartGPU.Titles.Add(title5);
+            title1.Name = "Title1";
+            chartGPU.Titles.Add(title1);
             // 
             // chartCPU
             // 
-            chartArea6.Name = "ChartArea1";
-            chartCPU.ChartAreas.Add(chartArea6);
+            chartArea2.Name = "ChartArea1";
+            chartCPU.ChartAreas.Add(chartArea2);
             chartCPU.Dock = DockStyle.Fill;
             chartCPU.Location = new Point(6, 5);
             chartCPU.Margin = new Padding(1, 5, 1, 5);
@@ -311,13 +311,13 @@ namespace GHelper
             chartCPU.Size = new Size(393, 360);
             chartCPU.TabIndex = 14;
             chartCPU.Text = "chartCPU";
-            title6.Name = "Title1";
-            chartCPU.Titles.Add(title6);
+            title2.Name = "Title1";
+            chartCPU.Titles.Add(title2);
             // 
             // chartXGM
             // 
-            chartArea7.Name = "ChartAreaXGM";
-            chartXGM.ChartAreas.Add(chartArea7);
+            chartArea3.Name = "ChartAreaXGM";
+            chartXGM.ChartAreas.Add(chartArea3);
             chartXGM.Dock = DockStyle.Fill;
             chartXGM.Location = new Point(6, 1115);
             chartXGM.Margin = new Padding(1, 5, 1, 5);
@@ -325,14 +325,14 @@ namespace GHelper
             chartXGM.Size = new Size(393, 363);
             chartXGM.TabIndex = 14;
             chartXGM.Text = "chartXGM";
-            title7.Name = "Title4";
-            chartXGM.Titles.Add(title7);
+            title3.Name = "Title4";
+            chartXGM.Titles.Add(title3);
             chartXGM.Visible = false;
             // 
             // chartMid
             // 
-            chartArea8.Name = "ChartArea3";
-            chartMid.ChartAreas.Add(chartArea8);
+            chartArea4.Name = "ChartArea3";
+            chartMid.ChartAreas.Add(chartArea4);
             chartMid.Dock = DockStyle.Fill;
             chartMid.Location = new Point(6, 745);
             chartMid.Margin = new Padding(1, 5, 1, 5);
@@ -340,8 +340,8 @@ namespace GHelper
             chartMid.Size = new Size(393, 360);
             chartMid.TabIndex = 14;
             chartMid.Text = "chartMid";
-            title8.Name = "Title3";
-            chartMid.Titles.Add(title8);
+            title4.Name = "Title3";
+            chartMid.Titles.Add(title4);
             chartMid.Visible = false;
             // 
             // panelTitleFans
@@ -594,7 +594,7 @@ namespace GHelper
             // panelAdvancedAlways
             // 
             panelAdvancedAlways.AutoSize = true;
-            panelAdvancedAlways.Controls.Add(checkApplyUV);
+            panelAdvancedAlways.Controls.Add(checkApplyAuto);
             panelAdvancedAlways.Dock = DockStyle.Top;
             panelAdvancedAlways.Location = new Point(0, 640);
             panelAdvancedAlways.Margin = new Padding(2);
@@ -603,19 +603,19 @@ namespace GHelper
             panelAdvancedAlways.Size = new Size(260, 31);
             panelAdvancedAlways.TabIndex = 46;
             // 
-            // checkApplyUV
+            // checkApplyAuto
             // 
-            checkApplyUV.BackColor = SystemColors.ControlLight;
-            checkApplyUV.Dock = DockStyle.Top;
-            checkApplyUV.Enabled = false;
-            checkApplyUV.Location = new Point(8, 0);
-            checkApplyUV.Margin = new Padding(8, 8, 0, 0);
-            checkApplyUV.Name = "checkApplyUV";
-            checkApplyUV.Padding = new Padding(8, 3, 8, 3);
-            checkApplyUV.Size = new Size(244, 23);
-            checkApplyUV.TabIndex = 51;
-            checkApplyUV.Text = "Auto Apply";
-            checkApplyUV.UseVisualStyleBackColor = false;
+            checkApplyAuto.BackColor = SystemColors.ControlLight;
+            checkApplyAuto.Dock = DockStyle.Top;
+            checkApplyAuto.Enabled = false;
+            checkApplyAuto.Location = new Point(8, 0);
+            checkApplyAuto.Margin = new Padding(8, 8, 0, 0);
+            checkApplyAuto.Name = "checkApplyAuto";
+            checkApplyAuto.Padding = new Padding(8, 3, 8, 3);
+            checkApplyAuto.Size = new Size(244, 23);
+            checkApplyAuto.TabIndex = 51;
+            checkApplyAuto.Text = "Auto Apply";
+            checkApplyAuto.UseVisualStyleBackColor = false;
             // 
             // panelAdvancedApply
             // 
@@ -2110,7 +2110,7 @@ namespace GHelper
         private Label labelLeftTemp;
         private TrackBar trackTemp;
         private Panel panelAdvancedAlways;
-        private RCheckBox checkApplyUV;
+        private RCheckBox checkApplyAuto;
         private Panel panelPowerMode;
         private RComboBox comboPowerMode;
         private Panel panelPowerModeTItle;

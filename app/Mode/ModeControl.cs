@@ -101,8 +101,6 @@ namespace GHelper.Mode
 
                 SetGPUClocks();
 
-                SetIntelGPUClocks();
-
                 await Task.Delay(TimeSpan.FromMilliseconds(100));
                 AutoFans();
                 await Task.Delay(TimeSpan.FromMilliseconds(1000));
@@ -395,11 +393,16 @@ namespace GHelper.Mode
                 catch (Exception ex)
                 {
                     Logger.WriteLine("Intel GPU Clocks Error:" + ex.ToString());
-                    if (launchAsAdmin) ProcessHelper.RunAsAdmin("gpu");
+                    if (launchAsAdmin) ProcessHelper.RunAsAdmin("igpu");
                 }
 
                 settings.GPUInit();
             });
+        }
+
+        public void ResetIntelGPUClocks()
+        {
+            SetIntelGPUClocks(true, true);
         }
 
         public void SetGPUPower()
@@ -506,5 +509,11 @@ namespace GHelper.Mode
             else ResetRyzen();
         }
 
+        public void AutoIntelGPU()
+        {
+            
+            if (AppConfig.IsMode("auto_intel_gpu")) SetIntelGPUClocks();
+            else ResetIntelGPUClocks();
+        }
     }
 }
