@@ -34,7 +34,7 @@ public enum LZResult: uint
     Ok = 0
 }
 
-public enum ze_device_type_t : int
+public enum LZDeviceType : int
 {
     ZE_DEVICE_TYPE_GPU = 1,
 }
@@ -66,40 +66,34 @@ public struct LZFrequencyState
     public double ThrottleReasons;
 }
 
-[StructLayout(LayoutKind.Sequential)]
-public struct ze_device_uuid_t
-{
-    [MarshalAs(UnmanagedType.I1, SizeConst = 16)]
-    int[] id;
-}
-
 [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
 public struct LZDeviceProperties
 {
     public LZStructureType StructureType;
-    public IntPtr nextPtr;
-    public ze_device_type_t type;
+    public IntPtr NextPtr;
+    public LZDeviceType Type;
     public uint VendorId;
     public uint DeviceId;
     public uint Flags;
     public uint SubdeviceId;
     public uint CoreClockRate;
-    public uint MaxMemAllocSize;
+    public ulong MaxMemAllocSize;
     public uint MaxHardwareContexts;
     public uint MaxCommandQueuePriority;
-    public uint NumThreadsPerEU;
+    public uint ThreadsPerEU;
     public uint PhysicalEUSimdWidth;
-    public uint NumEUsPerSubslice;
-    public uint NumSubslicesPerSlice;
-    public uint NumSlices;
-    public uint TimerResolution;
+    public uint EUsPerSubslice;
+    public uint SubslicesPerSlice;
+    public uint Slices;
+    public ulong TimerResolution;
     public uint TimestampValidBits;
     public uint KernelTimestampValidBits;
 
-    ze_device_uuid_t uuid;
+    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 16)]
+    public byte[] Uuid;
 
     [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 256)]
-    public string name;
+    public string Name;
 }
 
 public struct LZDriverHandle { public IntPtr Handle; }
@@ -214,7 +208,7 @@ internal class IntelLevelZero
         if (result != LZResult.Ok)
             throw new LZException("Failed to get frequency range.", result);
 
-        return properties.name;
+        return "hi";//properties.Name;
     }
 
     public static class NativeMethods
