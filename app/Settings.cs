@@ -84,7 +84,6 @@ namespace GHelper
             labelKeyboard.Text = Properties.Strings.LaptopKeyboard;
             labelMatrix.Text = Properties.Strings.AnimeMatrix;
             labelBatteryTitle.Text = Properties.Strings.BatteryChargeLimit;
-            labelPeripherals.Text = Properties.Strings.Peripherals;
 
             checkMatrix.Text = Properties.Strings.TurnOffOnBattery;
             checkMatrixLid.Text = Properties.Strings.DisableOnLidClose;

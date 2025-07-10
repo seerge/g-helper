@@ -114,9 +114,6 @@ namespace GHelper
             buttonPeripheral3 = new RButton();
             buttonPeripheral2 = new RButton();
             buttonPeripheral1 = new RButton();
-            panelPeripheralsTile = new Panel();
-            picturePeripherals = new PictureBox();
-            labelPeripherals = new Label();
             panelAlly = new Panel();
             tableLayoutAlly = new TableLayoutPanel();
             buttonController = new RButton();
@@ -172,8 +169,6 @@ namespace GHelper
             panelStartup.SuspendLayout();
             panelPeripherals.SuspendLayout();
             tableLayoutPeripherals.SuspendLayout();
-            panelPeripheralsTile.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)picturePeripherals).BeginInit();
             panelAlly.SuspendLayout();
             tableLayoutAlly.SuspendLayout();
             panelAllyTitle.SuspendLayout();
@@ -375,7 +370,7 @@ namespace GHelper
             panelBattery.Controls.Add(sliderBattery);
             panelBattery.Controls.Add(panelBatteryTitle);
             panelBattery.Dock = DockStyle.Top;
-            panelBattery.Location = new Point(11, 1734);
+            panelBattery.Location = new Point(11, 1683);
             panelBattery.Margin = new Padding(0);
             panelBattery.Name = "panelBattery";
             panelBattery.Padding = new Padding(20, 15, 20, 0);
@@ -468,7 +463,7 @@ namespace GHelper
             panelFooter.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             panelFooter.Controls.Add(tableButtons);
             panelFooter.Dock = DockStyle.Top;
-            panelFooter.Location = new Point(11, 1938);
+            panelFooter.Location = new Point(11, 1887);
             panelFooter.Margin = new Padding(0);
             panelFooter.Name = "panelFooter";
             panelFooter.Padding = new Padding(20, 10, 20, 20);
@@ -1490,7 +1485,7 @@ namespace GHelper
             panelStartup.Controls.Add(labelCharge);
             panelStartup.Controls.Add(checkStartup);
             panelStartup.Dock = DockStyle.Top;
-            panelStartup.Location = new Point(11, 1838);
+            panelStartup.Location = new Point(11, 1787);
             panelStartup.Margin = new Padding(0);
             panelStartup.Name = "panelStartup";
             panelStartup.Padding = new Padding(20, 0, 20, 0);
@@ -1514,13 +1509,12 @@ namespace GHelper
             panelPeripherals.AutoSize = true;
             panelPeripherals.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             panelPeripherals.Controls.Add(tableLayoutPeripherals);
-            panelPeripherals.Controls.Add(panelPeripheralsTile);
             panelPeripherals.Dock = DockStyle.Top;
             panelPeripherals.Location = new Point(11, 1540);
             panelPeripherals.Margin = new Padding(0);
             panelPeripherals.Name = "panelPeripherals";
-            panelPeripherals.Padding = new Padding(20, 15, 20, 11);
-            panelPeripherals.Size = new Size(827, 194);
+            panelPeripherals.Padding = new Padding(20, 5, 20, 10);
+            panelPeripherals.Size = new Size(827, 143);
             panelPeripherals.TabIndex = 4;
             panelPeripherals.Visible = false;
             // 
@@ -1537,7 +1531,7 @@ namespace GHelper
             tableLayoutPeripherals.Controls.Add(buttonPeripheral2, 0, 0);
             tableLayoutPeripherals.Controls.Add(buttonPeripheral1, 0, 0);
             tableLayoutPeripherals.Dock = DockStyle.Top;
-            tableLayoutPeripherals.Location = new Point(20, 55);
+            tableLayoutPeripherals.Location = new Point(20, 5);
             tableLayoutPeripherals.Margin = new Padding(8, 4, 8, 4);
             tableLayoutPeripherals.Name = "tableLayoutPeripherals";
             tableLayoutPeripherals.RowCount = 1;
@@ -1619,39 +1613,6 @@ namespace GHelper
             buttonPeripheral1.Text = "Mouse 1";
             buttonPeripheral1.TextImageRelation = TextImageRelation.ImageBeforeText;
             buttonPeripheral1.UseVisualStyleBackColor = false;
-            // 
-            // panelPeripheralsTile
-            // 
-            panelPeripheralsTile.Controls.Add(picturePeripherals);
-            panelPeripheralsTile.Controls.Add(labelPeripherals);
-            panelPeripheralsTile.Dock = DockStyle.Top;
-            panelPeripheralsTile.Location = new Point(20, 15);
-            panelPeripheralsTile.Margin = new Padding(4);
-            panelPeripheralsTile.Name = "panelPeripheralsTile";
-            panelPeripheralsTile.Size = new Size(787, 40);
-            panelPeripheralsTile.TabIndex = 45;
-            // 
-            // picturePeripherals
-            // 
-            picturePeripherals.BackgroundImage = Properties.Resources.icons8_maus_48;
-            picturePeripherals.BackgroundImageLayout = ImageLayout.Zoom;
-            picturePeripherals.Location = new Point(8, 3);
-            picturePeripherals.Margin = new Padding(4);
-            picturePeripherals.Name = "picturePeripherals";
-            picturePeripherals.Size = new Size(32, 32);
-            picturePeripherals.TabIndex = 41;
-            picturePeripherals.TabStop = false;
-            // 
-            // labelPeripherals
-            // 
-            labelPeripherals.AutoSize = true;
-            labelPeripherals.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            labelPeripherals.Location = new Point(44, 0);
-            labelPeripherals.Margin = new Padding(8, 0, 8, 0);
-            labelPeripherals.Name = "labelPeripherals";
-            labelPeripherals.Size = new Size(141, 32);
-            labelPeripherals.TabIndex = 40;
-            labelPeripherals.Text = "Peripherals";
             // 
             // panelAlly
             // 
@@ -1982,7 +1943,7 @@ namespace GHelper
             panelVersion.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             panelVersion.Controls.Add(labelVersion);
             panelVersion.Dock = DockStyle.Top;
-            panelVersion.Location = new Point(11, 1888);
+            panelVersion.Location = new Point(11, 1837);
             panelVersion.MinimumSize = new Size(0, 50);
             panelVersion.Name = "panelVersion";
             panelVersion.Padding = new Padding(20, 5, 20, 5);
@@ -2083,9 +2044,6 @@ namespace GHelper
             panelPeripherals.ResumeLayout(false);
             panelPeripherals.PerformLayout();
             tableLayoutPeripherals.ResumeLayout(false);
-            panelPeripheralsTile.ResumeLayout(false);
-            panelPeripheralsTile.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)picturePeripherals).EndInit();
             panelAlly.ResumeLayout(false);
             panelAlly.PerformLayout();
             tableLayoutAlly.ResumeLayout(false);
@@ -2169,9 +2127,6 @@ namespace GHelper
         private TableLayoutPanel tableButtons;
         private Panel panelPeripherals;
         private TableLayoutPanel tableLayoutPeripherals;
-        private Panel panelPeripheralsTile;
-        private PictureBox picturePeripherals;
-        private Label labelPeripherals;
         private RButton buttonPeripheral2;
         private RButton buttonPeripheral3;
         private RButton buttonPeripheral1;
