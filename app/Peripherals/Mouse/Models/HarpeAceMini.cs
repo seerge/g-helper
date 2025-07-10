@@ -1,13 +1,14 @@
 ﻿namespace GHelper.Peripherals.Mouse.Models
 {
-    //P713_Wireless
-    public class HarpeAceAimLabEdition : AsusMouse
+    //P716_Wireless
+    public class HarpeAceMiniOmni : AsusMouse
     {
-        public HarpeAceAimLabEdition() : base(0x0B05, 0x1A94, "mi_00", true)
+
+        public HarpeAceMiniOmni() : base(0x0B05, 0x1ACE, "mi_02&col03", true, 0x03)
         {
         }
 
-        protected HarpeAceAimLabEdition(ushort productId, bool wireless, string endpoint, byte reportId) : base(0x0B05, productId, endpoint, wireless, reportId)
+        protected HarpeAceMiniOmni(ushort productId, string path, bool wireless) : base(0x0B05, productId, path, wireless)
         {
         }
 
@@ -18,7 +19,7 @@
 
         public override string GetDisplayName()
         {
-            return "ROG Harpe Ace Aim Lab Edition (Wireless)";
+            return "ROG Harpe Ace Mini (Omni)";
         }
 
 
@@ -28,10 +29,7 @@
                 PollingRate.PR125Hz,
                 PollingRate.PR250Hz,
                 PollingRate.PR500Hz,
-                PollingRate.PR1000Hz,
-                PollingRate.PR2000Hz,
-                PollingRate.PR4000Hz,
-                PollingRate.PR8000Hz,
+                PollingRate.PR1000Hz
             };
         }
 
@@ -41,20 +39,14 @@
         }
         public override int MaxDPI()
         {
-            return 36_000;
+            return 42_000;
         }
 
         public override int MinDPI()
         {
-            return 50;
+            return 100;
         }
-
         public override bool HasXYDPI()
-        {
-            return true;
-        }
-
-        public override bool HasDebounceSetting()
         {
             return true;
         }
@@ -111,60 +103,17 @@
 
         public override int AngleTuningStep()
         {
-            return 1;
+            return 5;
         }
 
         public override int AngleTuningMin()
         {
-            return -30;
+            return -20;
         }
 
         public override int AngleTuningMax()
         {
-            return 30;
-        }
-
-        public override bool HasAcceleration()
-        {
-            return true;
-        }
-
-        public override bool HasDeceleration()
-        {
-            return true;
-        }
-
-        public override int MaxAcceleration()
-        {
-            return 9;
-        }
-        public override int MaxDeceleration()
-        {
-            return 9;
-        }
-    }
-
-    public class HarpeAceAimLabEditionWired : HarpeAceAimLabEdition
-    {
-        public HarpeAceAimLabEditionWired() : base(0x1A92, false, "mi_00", 0x00)
-        {
-        }
-
-        public override string GetDisplayName()
-        {
-            return "ROG Harpe Ace Aim Lab Edition (Wired)";
-        }
-    }
-
-    public class HarpeAceAimLabEditionOmni : HarpeAceAimLabEdition
-    {
-        public HarpeAceAimLabEditionOmni() : base(0x1ACE, true, "mi_02&col03", 0x03)
-        {
-        }
-
-        public override string GetDisplayName()
-        {
-            return "ROG Harpe Ace Aim Lab Edition (OMNI)";
+            return 20;
         }
 
         public override int USBPacketSize()
@@ -172,4 +121,17 @@
             return 64;
         }
     }
+
+    public class HarpeAceMiniWired : HarpeAceMiniOmni
+    {
+        public HarpeAceMiniWired() : base(0x1B63, "mi_00" , false)
+        {
+        }
+
+        public override string GetDisplayName()
+        {
+            return "Harpe Ace Mini (Wired)";
+        }
+    }
+
 }
