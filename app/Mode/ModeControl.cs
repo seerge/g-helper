@@ -253,7 +253,7 @@ namespace GHelper.Mode
             if (init) _ryzenPower = true;
 
             if (!_ryzenPower) return;
-            if (!RyzenControl.IsRingExsists()) return;
+            if (!RyzenControl.IsRingPresent()) return;
             if (!AppConfig.IsMode("auto_apply_power")) return;
 
             int limit_total = AppConfig.GetMode("limit_total");
@@ -371,10 +371,15 @@ namespace GHelper.Mode
         {
             Task.Run(() =>
             {
-                int min = AppConfig.GetMode("igpu_core_min");
-                int max = AppConfig.GetMode("igpu_core_max");
+                int min = -1, max = -1;
 
-                if (min == -1 && max == -1) return;
+                if (!reset)
+                {
+                    min = AppConfig.GetMode("igpu_core_min");
+                    max = AppConfig.GetMode("igpu_core_max");
+
+                    if (min == -1 && max == -1) return;
+                }
 
                 if (HardwareControl.IntelGpuControl is null) { Logger.WriteLine("Intel GPU Clocks Error: no Intel GPU Control."); return; }
 
@@ -465,7 +470,7 @@ namespace GHelper.Mode
                 return;
             }
 
-            if (!RyzenControl.IsRingExsists()) return;
+            if (!RyzenControl.IsRingPresent()) return;
 
             try
             {

@@ -169,7 +169,7 @@ namespace Ryzen
             return CPUName.Contains("RYZEN AI MAX") || CPUName.Contains("6900H") || CPUName.Contains("7945H") || CPUName.Contains("7845H");
         }
 
-        public static bool IsRingExsists()
+        public static bool IsRingPresent()
         {
             string exeDir = Path.GetDirectoryName(Application.ExecutablePath);
             return File.Exists(exeDir + "\\" + "WinRing0x64.dll");

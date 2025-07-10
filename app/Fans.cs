@@ -23,7 +23,9 @@ namespace GHelper
         Series seriesXGM;
 
         static bool gpuVisible = true;
-        static bool iGpuVisible = true;
+        static bool intelGpuVisible = true;
+        static bool amdVisible = RyzenControl.IsAMD();
+
         static bool fanRpm = true;
 
         const int fansMax = 100;
@@ -348,7 +350,8 @@ namespace GHelper
                 case 2:
                     buttonAdvanced.Activated = true;
                     panelAdvanced.Visible = true;
-                    panelIntelGPU.Visible = iGpuVisible;
+                    panelTempLimit.Visible = amdVisible;
+                    panelIntelGPU.Visible = intelGpuVisible;
                     break;
                 default:
                     buttonCPU.Activated = true;
@@ -382,7 +385,10 @@ namespace GHelper
 
         private void ButtonApplyAdvanced_Click(object? sender, EventArgs e)
         {
-            modeControl.SetRyzen(true);
+            if (amdVisible)
+                modeControl.SetRyzen(true);
+            else if(intelGpuVisible)
+                modeControl.SetIntelGPUClocks(true);
             checkApplyUV.Enabled = true;
         }
 
@@ -411,13 +417,13 @@ namespace GHelper
         public void UpdateVisibleNavigationButtons()
         {
             buttonGPU.Visible = gpuVisible;
-            buttonAdvanced.Visible = RyzenControl.IsAMD() || iGpuVisible;
+            buttonAdvanced.Visible = amdVisible || intelGpuVisible;
         }
 
         private void VisualiseAdvanced()
         {
 
-            if (!RyzenControl.IsRingExsists())
+            if (!RyzenControl.IsRingPresent())
             {
                 panelTitleUV.Visible = false;
                 labelRisky.Visible = false;
@@ -672,7 +678,7 @@ namespace GHelper
 
             try
             {
-                iGpuVisible = true;
+                intelGpuVisible = true;
 
                 if (HardwareControl.IntelGpuControl is null || !HardwareControl.IntelGpuControl.IsValid)
                     throw new Exception("No valid Intel GPU control.");
@@ -689,7 +695,7 @@ namespace GHelper
             }
             catch (Exception ex)
             {
-                iGpuVisible = false;
+                intelGpuVisible = false;
                 Logger.WriteLine(ex.ToString());
             }
 

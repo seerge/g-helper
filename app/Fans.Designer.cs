@@ -31,14 +31,14 @@ namespace GHelper
         /// </summary>
         private void InitializeComponent()
         {
-            ChartArea chartArea5 = new ChartArea();
-            Title title5 = new Title();
-            ChartArea chartArea6 = new ChartArea();
-            Title title6 = new Title();
-            ChartArea chartArea7 = new ChartArea();
-            Title title7 = new Title();
-            ChartArea chartArea8 = new ChartArea();
-            Title title8 = new Title();
+            ChartArea chartArea1 = new ChartArea();
+            Title title1 = new Title();
+            ChartArea chartArea2 = new ChartArea();
+            Title title2 = new Title();
+            ChartArea chartArea3 = new ChartArea();
+            Title title3 = new Title();
+            ChartArea chartArea4 = new ChartArea();
+            Title title4 = new Title();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Fans));
             panelFans = new Panel();
             labelTip = new Label();
@@ -62,18 +62,6 @@ namespace GHelper
             buttonReset = new RButton();
             comboBoost = new RComboBox();
             panelSliders = new Panel();
-            panelIntelGPU = new Panel();
-            panelIntelGPUCoreMin = new Panel();
-            labelIntelGPUCoreMin = new Label();
-            trackIntelGPUCoreMin = new TrackBar();
-            labelIntelGPUCoreMinTitle = new Label();
-            panelIntelGPUCoreMax = new Panel();
-            labelIntelGPUCoreMax = new Label();
-            trackIntelGPUCoreMax = new TrackBar();
-            labelIntelGPUCoreMaxTitle = new Label();
-            panelTitleIntelGPU = new Panel();
-            pictureIntelGPU = new PictureBox();
-            labelIntelGPU = new Label();
             panelAdvanced = new Panel();
             panelAdvancedAlways = new Panel();
             checkApplyUV = new RCheckBox();
@@ -91,6 +79,7 @@ namespace GHelper
             panelTitleUV = new Panel();
             pictureUV = new PictureBox();
             labelTitleUV = new Label();
+            panelTempLimit = new Panel();
             panelTemperature = new Panel();
             labelTemp = new Label();
             labelLeftTemp = new Label();
@@ -100,6 +89,18 @@ namespace GHelper
             labelTempLimit = new Label();
             panelDownload = new Panel();
             buttonDownload = new RButton();
+            panelIntelGPU = new Panel();
+            panelIntelGPUCoreMin = new Panel();
+            labelIntelGPUCoreMin = new Label();
+            trackIntelGPUCoreMin = new TrackBar();
+            labelIntelGPUCoreMinTitle = new Label();
+            panelIntelGPUCoreMax = new Panel();
+            labelIntelGPUCoreMax = new Label();
+            trackIntelGPUCoreMax = new TrackBar();
+            labelIntelGPUCoreMaxTitle = new Label();
+            panelTitleIntelGPU = new Panel();
+            pictureIntelGPU = new PictureBox();
+            labelIntelGPU = new Label();
             panelPower = new Panel();
             panelApplyPower = new Panel();
             checkApplyPower = new RCheckBox();
@@ -175,13 +176,6 @@ namespace GHelper
             ((System.ComponentModel.ISupportInitialize)picturePerf).BeginInit();
             panelApplyFans.SuspendLayout();
             panelSliders.SuspendLayout();
-            panelIntelGPU.SuspendLayout();
-            panelIntelGPUCoreMin.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)trackIntelGPUCoreMin).BeginInit();
-            panelIntelGPUCoreMax.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)trackIntelGPUCoreMax).BeginInit();
-            panelTitleIntelGPU.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)pictureIntelGPU).BeginInit();
             panelAdvanced.SuspendLayout();
             panelAdvancedAlways.SuspendLayout();
             panelAdvancedApply.SuspendLayout();
@@ -191,11 +185,19 @@ namespace GHelper
             ((System.ComponentModel.ISupportInitialize)trackUV).BeginInit();
             panelTitleUV.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureUV).BeginInit();
+            panelTempLimit.SuspendLayout();
             panelTemperature.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)trackTemp).BeginInit();
             panelTitleTemp.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureTemp).BeginInit();
             panelDownload.SuspendLayout();
+            panelIntelGPU.SuspendLayout();
+            panelIntelGPUCoreMin.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)trackIntelGPUCoreMin).BeginInit();
+            panelIntelGPUCoreMax.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)trackIntelGPUCoreMax).BeginInit();
+            panelTitleIntelGPU.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureIntelGPU).BeginInit();
             panelPower.SuspendLayout();
             panelApplyPower.SuspendLayout();
             panelCPU.SuspendLayout();
@@ -286,8 +288,8 @@ namespace GHelper
             // 
             // chartGPU
             // 
-            chartArea5.Name = "ChartArea1";
-            chartGPU.ChartAreas.Add(chartArea5);
+            chartArea1.Name = "ChartArea1";
+            chartGPU.ChartAreas.Add(chartArea1);
             chartGPU.Dock = DockStyle.Fill;
             chartGPU.Location = new Point(6, 375);
             chartGPU.Margin = new Padding(1, 5, 1, 5);
@@ -295,13 +297,13 @@ namespace GHelper
             chartGPU.Size = new Size(393, 360);
             chartGPU.TabIndex = 17;
             chartGPU.Text = "chartGPU";
-            title5.Name = "Title1";
-            chartGPU.Titles.Add(title5);
+            title1.Name = "Title1";
+            chartGPU.Titles.Add(title1);
             // 
             // chartCPU
             // 
-            chartArea6.Name = "ChartArea1";
-            chartCPU.ChartAreas.Add(chartArea6);
+            chartArea2.Name = "ChartArea1";
+            chartCPU.ChartAreas.Add(chartArea2);
             chartCPU.Dock = DockStyle.Fill;
             chartCPU.Location = new Point(6, 5);
             chartCPU.Margin = new Padding(1, 5, 1, 5);
@@ -309,13 +311,13 @@ namespace GHelper
             chartCPU.Size = new Size(393, 360);
             chartCPU.TabIndex = 14;
             chartCPU.Text = "chartCPU";
-            title6.Name = "Title1";
-            chartCPU.Titles.Add(title6);
+            title2.Name = "Title1";
+            chartCPU.Titles.Add(title2);
             // 
             // chartXGM
             // 
-            chartArea7.Name = "ChartAreaXGM";
-            chartXGM.ChartAreas.Add(chartArea7);
+            chartArea3.Name = "ChartAreaXGM";
+            chartXGM.ChartAreas.Add(chartArea3);
             chartXGM.Dock = DockStyle.Fill;
             chartXGM.Location = new Point(6, 1115);
             chartXGM.Margin = new Padding(1, 5, 1, 5);
@@ -323,14 +325,14 @@ namespace GHelper
             chartXGM.Size = new Size(393, 363);
             chartXGM.TabIndex = 14;
             chartXGM.Text = "chartXGM";
-            title7.Name = "Title4";
-            chartXGM.Titles.Add(title7);
+            title3.Name = "Title4";
+            chartXGM.Titles.Add(title3);
             chartXGM.Visible = false;
             // 
             // chartMid
             // 
-            chartArea8.Name = "ChartArea3";
-            chartMid.ChartAreas.Add(chartArea8);
+            chartArea4.Name = "ChartArea3";
+            chartMid.ChartAreas.Add(chartArea4);
             chartMid.Dock = DockStyle.Fill;
             chartMid.Location = new Point(6, 745);
             chartMid.Margin = new Padding(1, 5, 1, 5);
@@ -338,8 +340,8 @@ namespace GHelper
             chartMid.Size = new Size(393, 360);
             chartMid.TabIndex = 14;
             chartMid.Text = "chartMid";
-            title8.Name = "Title3";
-            chartMid.Titles.Add(title8);
+            title4.Name = "Title3";
+            chartMid.Titles.Add(title4);
             chartMid.Visible = false;
             // 
             // panelTitleFans
@@ -568,6 +570,354 @@ namespace GHelper
             panelSliders.Size = new Size(265, 1576);
             panelSliders.TabIndex = 13;
             // 
+            // panelAdvanced
+            // 
+            panelAdvanced.AutoSize = true;
+            panelAdvanced.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            panelAdvanced.Controls.Add(panelAdvancedAlways);
+            panelAdvanced.Controls.Add(panelAdvancedApply);
+            panelAdvanced.Controls.Add(labelRisky);
+            panelAdvanced.Controls.Add(panelUViGPU);
+            panelAdvanced.Controls.Add(panelUV);
+            panelAdvanced.Controls.Add(panelTitleUV);
+            panelAdvanced.Controls.Add(panelTempLimit);
+            panelAdvanced.Controls.Add(panelDownload);
+            panelAdvanced.Controls.Add(panelIntelGPU);
+            panelAdvanced.Dock = DockStyle.Top;
+            panelAdvanced.Location = new Point(5, 885);
+            panelAdvanced.Margin = new Padding(2);
+            panelAdvanced.Name = "panelAdvanced";
+            panelAdvanced.Size = new Size(260, 671);
+            panelAdvanced.TabIndex = 14;
+            panelAdvanced.Visible = false;
+            // 
+            // panelAdvancedAlways
+            // 
+            panelAdvancedAlways.AutoSize = true;
+            panelAdvancedAlways.Controls.Add(checkApplyUV);
+            panelAdvancedAlways.Dock = DockStyle.Top;
+            panelAdvancedAlways.Location = new Point(0, 640);
+            panelAdvancedAlways.Margin = new Padding(2);
+            panelAdvancedAlways.Name = "panelAdvancedAlways";
+            panelAdvancedAlways.Padding = new Padding(8, 0, 8, 8);
+            panelAdvancedAlways.Size = new Size(260, 31);
+            panelAdvancedAlways.TabIndex = 46;
+            // 
+            // checkApplyUV
+            // 
+            checkApplyUV.BackColor = SystemColors.ControlLight;
+            checkApplyUV.Dock = DockStyle.Top;
+            checkApplyUV.Enabled = false;
+            checkApplyUV.Location = new Point(8, 0);
+            checkApplyUV.Margin = new Padding(8, 8, 0, 0);
+            checkApplyUV.Name = "checkApplyUV";
+            checkApplyUV.Padding = new Padding(8, 3, 8, 3);
+            checkApplyUV.Size = new Size(244, 23);
+            checkApplyUV.TabIndex = 51;
+            checkApplyUV.Text = "Auto Apply";
+            checkApplyUV.TextAlign = ContentAlignment.MiddleCenter;
+            checkApplyUV.UseVisualStyleBackColor = false;
+            // 
+            // panelAdvancedApply
+            // 
+            panelAdvancedApply.AutoSize = true;
+            panelAdvancedApply.Controls.Add(buttonApplyAdvanced);
+            panelAdvancedApply.Dock = DockStyle.Top;
+            panelAdvancedApply.Location = new Point(0, 599);
+            panelAdvancedApply.Margin = new Padding(2);
+            panelAdvancedApply.Name = "panelAdvancedApply";
+            panelAdvancedApply.Padding = new Padding(8);
+            panelAdvancedApply.Size = new Size(260, 41);
+            panelAdvancedApply.TabIndex = 47;
+            // 
+            // buttonApplyAdvanced
+            // 
+            buttonApplyAdvanced.Activated = false;
+            buttonApplyAdvanced.BackColor = SystemColors.ControlLight;
+            buttonApplyAdvanced.Badge = 0;
+            buttonApplyAdvanced.BorderColor = Color.Transparent;
+            buttonApplyAdvanced.BorderRadius = 2;
+            buttonApplyAdvanced.Dock = DockStyle.Top;
+            buttonApplyAdvanced.FlatStyle = FlatStyle.Flat;
+            buttonApplyAdvanced.Location = new Point(8, 8);
+            buttonApplyAdvanced.Margin = new Padding(2, 1, 8, 8);
+            buttonApplyAdvanced.Name = "buttonApplyAdvanced";
+            buttonApplyAdvanced.Secondary = true;
+            buttonApplyAdvanced.Size = new Size(244, 25);
+            buttonApplyAdvanced.TabIndex = 49;
+            buttonApplyAdvanced.Text = "Apply";
+            buttonApplyAdvanced.TextImageRelation = TextImageRelation.ImageBeforeText;
+            buttonApplyAdvanced.UseVisualStyleBackColor = false;
+            // 
+            // labelRisky
+            // 
+            labelRisky.BackColor = Color.IndianRed;
+            labelRisky.Dock = DockStyle.Top;
+            labelRisky.ForeColor = SystemColors.ControlLightLight;
+            labelRisky.Location = new Point(0, 477);
+            labelRisky.Margin = new Padding(0);
+            labelRisky.Name = "labelRisky";
+            labelRisky.Padding = new Padding(5, 5, 5, 2);
+            labelRisky.Size = new Size(260, 122);
+            labelRisky.TabIndex = 46;
+            labelRisky.Text = resources.GetString("labelRisky.Text");
+            // 
+            // panelUViGPU
+            // 
+            panelUViGPU.AutoSize = true;
+            panelUViGPU.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            panelUViGPU.Controls.Add(labelUViGPU);
+            panelUViGPU.Controls.Add(labelLeftUViGPU);
+            panelUViGPU.Controls.Add(trackUViGPU);
+            panelUViGPU.Dock = DockStyle.Top;
+            panelUViGPU.Location = new Point(0, 415);
+            panelUViGPU.Margin = new Padding(2);
+            panelUViGPU.MaximumSize = new Size(0, 62);
+            panelUViGPU.Name = "panelUViGPU";
+            panelUViGPU.Size = new Size(260, 62);
+            panelUViGPU.TabIndex = 49;
+            // 
+            // labelUViGPU
+            // 
+            labelUViGPU.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            labelUViGPU.Location = new Point(174, 4);
+            labelUViGPU.Margin = new Padding(2, 0, 2, 0);
+            labelUViGPU.Name = "labelUViGPU";
+            labelUViGPU.Size = new Size(74, 16);
+            labelUViGPU.TabIndex = 13;
+            labelUViGPU.Text = "UV";
+            labelUViGPU.TextAlign = ContentAlignment.TopRight;
+            // 
+            // labelLeftUViGPU
+            // 
+            labelLeftUViGPU.AutoSize = true;
+            labelLeftUViGPU.Location = new Point(5, 5);
+            labelLeftUViGPU.Margin = new Padding(2, 0, 2, 0);
+            labelLeftUViGPU.Name = "labelLeftUViGPU";
+            labelLeftUViGPU.Size = new Size(33, 15);
+            labelLeftUViGPU.TabIndex = 12;
+            labelLeftUViGPU.Text = "iGPU";
+            // 
+            // trackUViGPU
+            // 
+            trackUViGPU.Location = new Point(3, 24);
+            trackUViGPU.Margin = new Padding(2, 1, 2, 1);
+            trackUViGPU.Maximum = 0;
+            trackUViGPU.Minimum = -40;
+            trackUViGPU.Name = "trackUViGPU";
+            trackUViGPU.Size = new Size(254, 45);
+            trackUViGPU.TabIndex = 11;
+            trackUViGPU.TickFrequency = 5;
+            trackUViGPU.TickStyle = TickStyle.TopLeft;
+            // 
+            // panelUV
+            // 
+            panelUV.AutoSize = true;
+            panelUV.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            panelUV.Controls.Add(labelUV);
+            panelUV.Controls.Add(labelLeftUV);
+            panelUV.Controls.Add(trackUV);
+            panelUV.Dock = DockStyle.Top;
+            panelUV.Location = new Point(0, 353);
+            panelUV.Margin = new Padding(2);
+            panelUV.MaximumSize = new Size(0, 62);
+            panelUV.Name = "panelUV";
+            panelUV.Size = new Size(260, 62);
+            panelUV.TabIndex = 46;
+            // 
+            // labelUV
+            // 
+            labelUV.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            labelUV.Location = new Point(174, 6);
+            labelUV.Margin = new Padding(2, 0, 2, 0);
+            labelUV.Name = "labelUV";
+            labelUV.Size = new Size(74, 16);
+            labelUV.TabIndex = 13;
+            labelUV.Text = "UV";
+            labelUV.TextAlign = ContentAlignment.TopRight;
+            // 
+            // labelLeftUV
+            // 
+            labelLeftUV.AutoSize = true;
+            labelLeftUV.Location = new Point(5, 5);
+            labelLeftUV.Margin = new Padding(2, 0, 2, 0);
+            labelLeftUV.Name = "labelLeftUV";
+            labelLeftUV.Size = new Size(30, 15);
+            labelLeftUV.TabIndex = 12;
+            labelLeftUV.Text = "CPU";
+            // 
+            // trackUV
+            // 
+            trackUV.Location = new Point(3, 24);
+            trackUV.Margin = new Padding(2, 1, 2, 1);
+            trackUV.Maximum = 0;
+            trackUV.Minimum = -40;
+            trackUV.Name = "trackUV";
+            trackUV.Size = new Size(254, 45);
+            trackUV.TabIndex = 11;
+            trackUV.TickFrequency = 5;
+            trackUV.TickStyle = TickStyle.TopLeft;
+            // 
+            // panelTitleUV
+            // 
+            panelTitleUV.Controls.Add(pictureUV);
+            panelTitleUV.Controls.Add(labelTitleUV);
+            panelTitleUV.Dock = DockStyle.Top;
+            panelTitleUV.Location = new Point(0, 320);
+            panelTitleUV.Margin = new Padding(2);
+            panelTitleUV.Name = "panelTitleUV";
+            panelTitleUV.Size = new Size(260, 33);
+            panelTitleUV.TabIndex = 48;
+            // 
+            // pictureUV
+            // 
+            pictureUV.BackgroundImage = Properties.Resources.icons8_voltage_32;
+            pictureUV.BackgroundImageLayout = ImageLayout.Zoom;
+            pictureUV.InitialImage = null;
+            pictureUV.Location = new Point(5, 9);
+            pictureUV.Margin = new Padding(2, 1, 2, 5);
+            pictureUV.Name = "pictureUV";
+            pictureUV.Size = new Size(16, 16);
+            pictureUV.TabIndex = 48;
+            pictureUV.TabStop = false;
+            // 
+            // labelTitleUV
+            // 
+            labelTitleUV.AutoSize = true;
+            labelTitleUV.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            labelTitleUV.Location = new Point(22, 8);
+            labelTitleUV.Margin = new Padding(2, 0, 2, 0);
+            labelTitleUV.Name = "labelTitleUV";
+            labelTitleUV.Size = new Size(81, 15);
+            labelTitleUV.TabIndex = 47;
+            labelTitleUV.Text = "Undervolting";
+            // 
+            // panelTempLimit
+            // 
+            panelTempLimit.Controls.Add(panelTemperature);
+            panelTempLimit.Controls.Add(panelTitleTemp);
+            panelTempLimit.Dock = DockStyle.Top;
+            panelTempLimit.Location = new Point(0, 220);
+            panelTempLimit.Name = "panelTempLimit";
+            panelTempLimit.Size = new Size(260, 100);
+            panelTempLimit.TabIndex = 49;
+            // 
+            // panelTemperature
+            // 
+            panelTemperature.AutoSize = true;
+            panelTemperature.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            panelTemperature.Controls.Add(labelTemp);
+            panelTemperature.Controls.Add(labelLeftTemp);
+            panelTemperature.Controls.Add(trackTemp);
+            panelTemperature.Dock = DockStyle.Top;
+            panelTemperature.Location = new Point(0, 33);
+            panelTemperature.Margin = new Padding(2);
+            panelTemperature.MaximumSize = new Size(0, 62);
+            panelTemperature.Name = "panelTemperature";
+            panelTemperature.Size = new Size(260, 62);
+            panelTemperature.TabIndex = 51;
+            // 
+            // labelTemp
+            // 
+            labelTemp.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            labelTemp.Location = new Point(174, 6);
+            labelTemp.Margin = new Padding(2, 0, 2, 0);
+            labelTemp.Name = "labelTemp";
+            labelTemp.Size = new Size(74, 16);
+            labelTemp.TabIndex = 13;
+            labelTemp.Text = "T";
+            labelTemp.TextAlign = ContentAlignment.TopRight;
+            // 
+            // labelLeftTemp
+            // 
+            labelLeftTemp.AutoSize = true;
+            labelLeftTemp.Location = new Point(5, 5);
+            labelLeftTemp.Margin = new Padding(2, 0, 2, 0);
+            labelLeftTemp.Name = "labelLeftTemp";
+            labelLeftTemp.Size = new Size(93, 15);
+            labelLeftTemp.TabIndex = 12;
+            labelLeftTemp.Text = "CPU Temp Limit";
+            // 
+            // trackTemp
+            // 
+            trackTemp.Location = new Point(3, 24);
+            trackTemp.Margin = new Padding(2, 1, 2, 1);
+            trackTemp.Maximum = 0;
+            trackTemp.Minimum = -40;
+            trackTemp.Name = "trackTemp";
+            trackTemp.Size = new Size(254, 45);
+            trackTemp.TabIndex = 11;
+            trackTemp.TickFrequency = 5;
+            trackTemp.TickStyle = TickStyle.TopLeft;
+            // 
+            // panelTitleTemp
+            // 
+            panelTitleTemp.Controls.Add(pictureTemp);
+            panelTitleTemp.Controls.Add(labelTempLimit);
+            panelTitleTemp.Dock = DockStyle.Top;
+            panelTitleTemp.Location = new Point(0, 0);
+            panelTitleTemp.Margin = new Padding(2);
+            panelTitleTemp.Name = "panelTitleTemp";
+            panelTitleTemp.Size = new Size(260, 33);
+            panelTitleTemp.TabIndex = 50;
+            // 
+            // pictureTemp
+            // 
+            pictureTemp.BackgroundImage = Properties.Resources.icons8_temperature_32;
+            pictureTemp.BackgroundImageLayout = ImageLayout.Zoom;
+            pictureTemp.InitialImage = null;
+            pictureTemp.Location = new Point(5, 9);
+            pictureTemp.Margin = new Padding(2, 1, 2, 5);
+            pictureTemp.Name = "pictureTemp";
+            pictureTemp.Size = new Size(16, 16);
+            pictureTemp.TabIndex = 48;
+            pictureTemp.TabStop = false;
+            // 
+            // labelTempLimit
+            // 
+            labelTempLimit.AutoSize = true;
+            labelTempLimit.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            labelTempLimit.Location = new Point(23, 8);
+            labelTempLimit.Margin = new Padding(2, 0, 2, 0);
+            labelTempLimit.Name = "labelTempLimit";
+            labelTempLimit.Size = new Size(69, 15);
+            labelTempLimit.TabIndex = 47;
+            labelTempLimit.Text = "Temp Limit";
+            // 
+            // panelDownload
+            // 
+            panelDownload.AutoSize = true;
+            panelDownload.Controls.Add(buttonDownload);
+            panelDownload.Dock = DockStyle.Top;
+            panelDownload.Location = new Point(0, 163);
+            panelDownload.Margin = new Padding(2);
+            panelDownload.Name = "panelDownload";
+            panelDownload.Padding = new Padding(10);
+            panelDownload.Size = new Size(260, 57);
+            panelDownload.TabIndex = 52;
+            panelDownload.Visible = false;
+            // 
+            // buttonDownload
+            // 
+            buttonDownload.Activated = false;
+            buttonDownload.AutoSize = true;
+            buttonDownload.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            buttonDownload.BackColor = SystemColors.ControlLight;
+            buttonDownload.Badge = 0;
+            buttonDownload.BorderColor = Color.Transparent;
+            buttonDownload.BorderRadius = 2;
+            buttonDownload.Dock = DockStyle.Top;
+            buttonDownload.FlatStyle = FlatStyle.Flat;
+            buttonDownload.Location = new Point(10, 10);
+            buttonDownload.Margin = new Padding(10);
+            buttonDownload.Name = "buttonDownload";
+            buttonDownload.Padding = new Padding(5);
+            buttonDownload.Secondary = true;
+            buttonDownload.Size = new Size(240, 37);
+            buttonDownload.TabIndex = 19;
+            buttonDownload.Text = "Download Advanced Settings Plugin";
+            buttonDownload.UseVisualStyleBackColor = false;
+            // 
             // panelIntelGPU
             // 
             panelIntelGPU.AutoSize = true;
@@ -575,7 +925,7 @@ namespace GHelper
             panelIntelGPU.Controls.Add(panelIntelGPUCoreMax);
             panelIntelGPU.Controls.Add(panelTitleIntelGPU);
             panelIntelGPU.Dock = DockStyle.Top;
-            panelIntelGPU.Location = new Point(0, 503);
+            panelIntelGPU.Location = new Point(0, 0);
             panelIntelGPU.Margin = new Padding(2);
             panelIntelGPU.Name = "panelIntelGPU";
             panelIntelGPU.Padding = new Padding(0, 0, 0, 9);
@@ -719,348 +1069,9 @@ namespace GHelper
             labelIntelGPU.Location = new Point(22, 8);
             labelIntelGPU.Margin = new Padding(2, 0, 2, 0);
             labelIntelGPU.Name = "labelIntelGPU";
-            labelIntelGPU.Size = new Size(84, 15);
+            labelIntelGPU.Size = new Size(110, 15);
             labelIntelGPU.TabIndex = 40;
-            labelIntelGPU.Text = "iGPU Settings";
-            // 
-            // panelAdvanced
-            // 
-            panelAdvanced.AutoSize = true;
-            panelAdvanced.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            panelAdvanced.Controls.Add(panelIntelGPU);
-            panelAdvanced.Controls.Add(panelAdvancedAlways);
-            panelAdvanced.Controls.Add(panelAdvancedApply);
-            panelAdvanced.Controls.Add(labelRisky);
-            panelAdvanced.Controls.Add(panelUViGPU);
-            panelAdvanced.Controls.Add(panelUV);
-            panelAdvanced.Controls.Add(panelTitleUV);
-            panelAdvanced.Controls.Add(panelTemperature);
-            panelAdvanced.Controls.Add(panelTitleTemp);
-            panelAdvanced.Controls.Add(panelDownload);
-            panelAdvanced.Dock = DockStyle.Top;
-            panelAdvanced.Location = new Point(5, 885);
-            panelAdvanced.Margin = new Padding(2);
-            panelAdvanced.Name = "panelAdvanced";
-            panelAdvanced.Size = new Size(260, 666);
-            panelAdvanced.TabIndex = 14;
-            panelAdvanced.Visible = false;
-            // 
-            // panelAdvancedAlways
-            // 
-            panelAdvancedAlways.AutoSize = true;
-            panelAdvancedAlways.Controls.Add(checkApplyUV);
-            panelAdvancedAlways.Dock = DockStyle.Top;
-            panelAdvancedAlways.Location = new Point(0, 472);
-            panelAdvancedAlways.Margin = new Padding(2);
-            panelAdvancedAlways.Name = "panelAdvancedAlways";
-            panelAdvancedAlways.Padding = new Padding(8, 0, 8, 8);
-            panelAdvancedAlways.Size = new Size(260, 31);
-            panelAdvancedAlways.TabIndex = 46;
-            // 
-            // checkApplyUV
-            // 
-            checkApplyUV.BackColor = SystemColors.ControlLight;
-            checkApplyUV.Dock = DockStyle.Top;
-            checkApplyUV.Enabled = false;
-            checkApplyUV.Location = new Point(8, 0);
-            checkApplyUV.Margin = new Padding(8, 8, 0, 0);
-            checkApplyUV.Name = "checkApplyUV";
-            checkApplyUV.Padding = new Padding(8, 3, 8, 3);
-            checkApplyUV.Size = new Size(244, 23);
-            checkApplyUV.TabIndex = 51;
-            checkApplyUV.Text = "Auto Apply";
-            checkApplyUV.TextAlign = ContentAlignment.MiddleCenter;
-            checkApplyUV.UseVisualStyleBackColor = false;
-            // 
-            // panelAdvancedApply
-            // 
-            panelAdvancedApply.AutoSize = true;
-            panelAdvancedApply.Controls.Add(buttonApplyAdvanced);
-            panelAdvancedApply.Dock = DockStyle.Top;
-            panelAdvancedApply.Location = new Point(0, 431);
-            panelAdvancedApply.Margin = new Padding(2);
-            panelAdvancedApply.Name = "panelAdvancedApply";
-            panelAdvancedApply.Padding = new Padding(8);
-            panelAdvancedApply.Size = new Size(260, 41);
-            panelAdvancedApply.TabIndex = 47;
-            // 
-            // buttonApplyAdvanced
-            // 
-            buttonApplyAdvanced.Activated = false;
-            buttonApplyAdvanced.BackColor = SystemColors.ControlLight;
-            buttonApplyAdvanced.Badge = 0;
-            buttonApplyAdvanced.BorderColor = Color.Transparent;
-            buttonApplyAdvanced.BorderRadius = 2;
-            buttonApplyAdvanced.Dock = DockStyle.Top;
-            buttonApplyAdvanced.FlatStyle = FlatStyle.Flat;
-            buttonApplyAdvanced.Location = new Point(8, 8);
-            buttonApplyAdvanced.Margin = new Padding(2, 1, 8, 8);
-            buttonApplyAdvanced.Name = "buttonApplyAdvanced";
-            buttonApplyAdvanced.Secondary = true;
-            buttonApplyAdvanced.Size = new Size(244, 25);
-            buttonApplyAdvanced.TabIndex = 49;
-            buttonApplyAdvanced.Text = "Apply";
-            buttonApplyAdvanced.TextImageRelation = TextImageRelation.ImageBeforeText;
-            buttonApplyAdvanced.UseVisualStyleBackColor = false;
-            // 
-            // labelRisky
-            // 
-            labelRisky.BackColor = Color.IndianRed;
-            labelRisky.Dock = DockStyle.Top;
-            labelRisky.ForeColor = SystemColors.ControlLightLight;
-            labelRisky.Location = new Point(0, 309);
-            labelRisky.Margin = new Padding(0);
-            labelRisky.Name = "labelRisky";
-            labelRisky.Padding = new Padding(5, 5, 5, 2);
-            labelRisky.Size = new Size(260, 122);
-            labelRisky.TabIndex = 46;
-            labelRisky.Text = resources.GetString("labelRisky.Text");
-            // 
-            // panelUViGPU
-            // 
-            panelUViGPU.AutoSize = true;
-            panelUViGPU.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            panelUViGPU.Controls.Add(labelUViGPU);
-            panelUViGPU.Controls.Add(labelLeftUViGPU);
-            panelUViGPU.Controls.Add(trackUViGPU);
-            panelUViGPU.Dock = DockStyle.Top;
-            panelUViGPU.Location = new Point(0, 247);
-            panelUViGPU.Margin = new Padding(2);
-            panelUViGPU.MaximumSize = new Size(0, 62);
-            panelUViGPU.Name = "panelUViGPU";
-            panelUViGPU.Size = new Size(260, 62);
-            panelUViGPU.TabIndex = 49;
-            // 
-            // labelUViGPU
-            // 
-            labelUViGPU.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            labelUViGPU.Location = new Point(174, 4);
-            labelUViGPU.Margin = new Padding(2, 0, 2, 0);
-            labelUViGPU.Name = "labelUViGPU";
-            labelUViGPU.Size = new Size(74, 16);
-            labelUViGPU.TabIndex = 13;
-            labelUViGPU.Text = "UV";
-            labelUViGPU.TextAlign = ContentAlignment.TopRight;
-            // 
-            // labelLeftUViGPU
-            // 
-            labelLeftUViGPU.AutoSize = true;
-            labelLeftUViGPU.Location = new Point(5, 5);
-            labelLeftUViGPU.Margin = new Padding(2, 0, 2, 0);
-            labelLeftUViGPU.Name = "labelLeftUViGPU";
-            labelLeftUViGPU.Size = new Size(33, 15);
-            labelLeftUViGPU.TabIndex = 12;
-            labelLeftUViGPU.Text = "iGPU";
-            // 
-            // trackUViGPU
-            // 
-            trackUViGPU.Location = new Point(3, 24);
-            trackUViGPU.Margin = new Padding(2, 1, 2, 1);
-            trackUViGPU.Maximum = 0;
-            trackUViGPU.Minimum = -40;
-            trackUViGPU.Name = "trackUViGPU";
-            trackUViGPU.Size = new Size(254, 45);
-            trackUViGPU.TabIndex = 11;
-            trackUViGPU.TickFrequency = 5;
-            trackUViGPU.TickStyle = TickStyle.TopLeft;
-            // 
-            // panelUV
-            // 
-            panelUV.AutoSize = true;
-            panelUV.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            panelUV.Controls.Add(labelUV);
-            panelUV.Controls.Add(labelLeftUV);
-            panelUV.Controls.Add(trackUV);
-            panelUV.Dock = DockStyle.Top;
-            panelUV.Location = new Point(0, 185);
-            panelUV.Margin = new Padding(2);
-            panelUV.MaximumSize = new Size(0, 62);
-            panelUV.Name = "panelUV";
-            panelUV.Size = new Size(260, 62);
-            panelUV.TabIndex = 46;
-            // 
-            // labelUV
-            // 
-            labelUV.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            labelUV.Location = new Point(174, 6);
-            labelUV.Margin = new Padding(2, 0, 2, 0);
-            labelUV.Name = "labelUV";
-            labelUV.Size = new Size(74, 16);
-            labelUV.TabIndex = 13;
-            labelUV.Text = "UV";
-            labelUV.TextAlign = ContentAlignment.TopRight;
-            // 
-            // labelLeftUV
-            // 
-            labelLeftUV.AutoSize = true;
-            labelLeftUV.Location = new Point(5, 5);
-            labelLeftUV.Margin = new Padding(2, 0, 2, 0);
-            labelLeftUV.Name = "labelLeftUV";
-            labelLeftUV.Size = new Size(30, 15);
-            labelLeftUV.TabIndex = 12;
-            labelLeftUV.Text = "CPU";
-            // 
-            // trackUV
-            // 
-            trackUV.Location = new Point(3, 24);
-            trackUV.Margin = new Padding(2, 1, 2, 1);
-            trackUV.Maximum = 0;
-            trackUV.Minimum = -40;
-            trackUV.Name = "trackUV";
-            trackUV.Size = new Size(254, 45);
-            trackUV.TabIndex = 11;
-            trackUV.TickFrequency = 5;
-            trackUV.TickStyle = TickStyle.TopLeft;
-            // 
-            // panelTitleUV
-            // 
-            panelTitleUV.Controls.Add(pictureUV);
-            panelTitleUV.Controls.Add(labelTitleUV);
-            panelTitleUV.Dock = DockStyle.Top;
-            panelTitleUV.Location = new Point(0, 152);
-            panelTitleUV.Margin = new Padding(2);
-            panelTitleUV.Name = "panelTitleUV";
-            panelTitleUV.Size = new Size(260, 33);
-            panelTitleUV.TabIndex = 48;
-            // 
-            // pictureUV
-            // 
-            pictureUV.BackgroundImage = Properties.Resources.icons8_voltage_32;
-            pictureUV.BackgroundImageLayout = ImageLayout.Zoom;
-            pictureUV.InitialImage = null;
-            pictureUV.Location = new Point(5, 9);
-            pictureUV.Margin = new Padding(2, 1, 2, 5);
-            pictureUV.Name = "pictureUV";
-            pictureUV.Size = new Size(16, 16);
-            pictureUV.TabIndex = 48;
-            pictureUV.TabStop = false;
-            // 
-            // labelTitleUV
-            // 
-            labelTitleUV.AutoSize = true;
-            labelTitleUV.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            labelTitleUV.Location = new Point(22, 8);
-            labelTitleUV.Margin = new Padding(2, 0, 2, 0);
-            labelTitleUV.Name = "labelTitleUV";
-            labelTitleUV.Size = new Size(81, 15);
-            labelTitleUV.TabIndex = 47;
-            labelTitleUV.Text = "Undervolting";
-            // 
-            // panelTemperature
-            // 
-            panelTemperature.AutoSize = true;
-            panelTemperature.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            panelTemperature.Controls.Add(labelTemp);
-            panelTemperature.Controls.Add(labelLeftTemp);
-            panelTemperature.Controls.Add(trackTemp);
-            panelTemperature.Dock = DockStyle.Top;
-            panelTemperature.Location = new Point(0, 90);
-            panelTemperature.Margin = new Padding(2);
-            panelTemperature.MaximumSize = new Size(0, 62);
-            panelTemperature.Name = "panelTemperature";
-            panelTemperature.Size = new Size(260, 62);
-            panelTemperature.TabIndex = 51;
-            // 
-            // labelTemp
-            // 
-            labelTemp.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            labelTemp.Location = new Point(174, 6);
-            labelTemp.Margin = new Padding(2, 0, 2, 0);
-            labelTemp.Name = "labelTemp";
-            labelTemp.Size = new Size(74, 16);
-            labelTemp.TabIndex = 13;
-            labelTemp.Text = "T";
-            labelTemp.TextAlign = ContentAlignment.TopRight;
-            // 
-            // labelLeftTemp
-            // 
-            labelLeftTemp.AutoSize = true;
-            labelLeftTemp.Location = new Point(5, 5);
-            labelLeftTemp.Margin = new Padding(2, 0, 2, 0);
-            labelLeftTemp.Name = "labelLeftTemp";
-            labelLeftTemp.Size = new Size(93, 15);
-            labelLeftTemp.TabIndex = 12;
-            labelLeftTemp.Text = "CPU Temp Limit";
-            // 
-            // trackTemp
-            // 
-            trackTemp.Location = new Point(3, 24);
-            trackTemp.Margin = new Padding(2, 1, 2, 1);
-            trackTemp.Maximum = 0;
-            trackTemp.Minimum = -40;
-            trackTemp.Name = "trackTemp";
-            trackTemp.Size = new Size(254, 45);
-            trackTemp.TabIndex = 11;
-            trackTemp.TickFrequency = 5;
-            trackTemp.TickStyle = TickStyle.TopLeft;
-            // 
-            // panelTitleTemp
-            // 
-            panelTitleTemp.Controls.Add(pictureTemp);
-            panelTitleTemp.Controls.Add(labelTempLimit);
-            panelTitleTemp.Dock = DockStyle.Top;
-            panelTitleTemp.Location = new Point(0, 57);
-            panelTitleTemp.Margin = new Padding(2);
-            panelTitleTemp.Name = "panelTitleTemp";
-            panelTitleTemp.Size = new Size(260, 33);
-            panelTitleTemp.TabIndex = 50;
-            // 
-            // pictureTemp
-            // 
-            pictureTemp.BackgroundImage = Properties.Resources.icons8_temperature_32;
-            pictureTemp.BackgroundImageLayout = ImageLayout.Zoom;
-            pictureTemp.InitialImage = null;
-            pictureTemp.Location = new Point(5, 9);
-            pictureTemp.Margin = new Padding(2, 1, 2, 5);
-            pictureTemp.Name = "pictureTemp";
-            pictureTemp.Size = new Size(16, 16);
-            pictureTemp.TabIndex = 48;
-            pictureTemp.TabStop = false;
-            // 
-            // labelTempLimit
-            // 
-            labelTempLimit.AutoSize = true;
-            labelTempLimit.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            labelTempLimit.Location = new Point(23, 8);
-            labelTempLimit.Margin = new Padding(2, 0, 2, 0);
-            labelTempLimit.Name = "labelTempLimit";
-            labelTempLimit.Size = new Size(69, 15);
-            labelTempLimit.TabIndex = 47;
-            labelTempLimit.Text = "Temp Limit";
-            // 
-            // panelDownload
-            // 
-            panelDownload.AutoSize = true;
-            panelDownload.Controls.Add(buttonDownload);
-            panelDownload.Dock = DockStyle.Top;
-            panelDownload.Location = new Point(0, 0);
-            panelDownload.Margin = new Padding(2);
-            panelDownload.Name = "panelDownload";
-            panelDownload.Padding = new Padding(10);
-            panelDownload.Size = new Size(260, 57);
-            panelDownload.TabIndex = 52;
-            panelDownload.Visible = false;
-            // 
-            // buttonDownload
-            // 
-            buttonDownload.Activated = false;
-            buttonDownload.AutoSize = true;
-            buttonDownload.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            buttonDownload.BackColor = SystemColors.ControlLight;
-            buttonDownload.Badge = 0;
-            buttonDownload.BorderColor = Color.Transparent;
-            buttonDownload.BorderRadius = 2;
-            buttonDownload.Dock = DockStyle.Top;
-            buttonDownload.FlatStyle = FlatStyle.Flat;
-            buttonDownload.Location = new Point(10, 10);
-            buttonDownload.Margin = new Padding(10);
-            buttonDownload.Name = "buttonDownload";
-            buttonDownload.Padding = new Padding(5);
-            buttonDownload.Secondary = true;
-            buttonDownload.Size = new Size(240, 37);
-            buttonDownload.TabIndex = 19;
-            buttonDownload.Text = "Download Advanced Settings Plugin";
-            buttonDownload.UseVisualStyleBackColor = false;
+            labelIntelGPU.Text = "Intel GPU Settings";
             // 
             // panelPower
             // 
@@ -1919,17 +1930,6 @@ namespace GHelper
             panelApplyFans.PerformLayout();
             panelSliders.ResumeLayout(false);
             panelSliders.PerformLayout();
-            panelIntelGPU.ResumeLayout(false);
-            panelIntelGPU.PerformLayout();
-            panelIntelGPUCoreMin.ResumeLayout(false);
-            panelIntelGPUCoreMin.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)trackIntelGPUCoreMin).EndInit();
-            panelIntelGPUCoreMax.ResumeLayout(false);
-            panelIntelGPUCoreMax.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)trackIntelGPUCoreMax).EndInit();
-            panelTitleIntelGPU.ResumeLayout(false);
-            panelTitleIntelGPU.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)pictureIntelGPU).EndInit();
             panelAdvanced.ResumeLayout(false);
             panelAdvanced.PerformLayout();
             panelAdvancedAlways.ResumeLayout(false);
@@ -1943,6 +1943,8 @@ namespace GHelper
             panelTitleUV.ResumeLayout(false);
             panelTitleUV.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)pictureUV).EndInit();
+            panelTempLimit.ResumeLayout(false);
+            panelTempLimit.PerformLayout();
             panelTemperature.ResumeLayout(false);
             panelTemperature.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)trackTemp).EndInit();
@@ -1951,6 +1953,17 @@ namespace GHelper
             ((System.ComponentModel.ISupportInitialize)pictureTemp).EndInit();
             panelDownload.ResumeLayout(false);
             panelDownload.PerformLayout();
+            panelIntelGPU.ResumeLayout(false);
+            panelIntelGPU.PerformLayout();
+            panelIntelGPUCoreMin.ResumeLayout(false);
+            panelIntelGPUCoreMin.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)trackIntelGPUCoreMin).EndInit();
+            panelIntelGPUCoreMax.ResumeLayout(false);
+            panelIntelGPUCoreMax.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)trackIntelGPUCoreMax).EndInit();
+            panelTitleIntelGPU.ResumeLayout(false);
+            panelTitleIntelGPU.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureIntelGPU).EndInit();
             panelPower.ResumeLayout(false);
             panelPower.PerformLayout();
             panelApplyPower.ResumeLayout(false);
@@ -2132,5 +2145,6 @@ namespace GHelper
         private Panel panelTitleIntelGPU;
         private PictureBox pictureIntelGPU;
         private Label labelIntelGPU;
+        private Panel panelTempLimit;
     }
 }
