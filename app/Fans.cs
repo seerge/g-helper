@@ -23,7 +23,6 @@ namespace GHelper
         Series seriesXGM;
 
         static bool gpuVisible = true;
-        static bool dGpuVisible = true;
         static bool iGpuVisible = true;
         static bool fanRpm = true;
 
@@ -254,7 +253,7 @@ namespace GHelper
             labelRisky.Visible = true;
             panelUViGPU.Visible = true;
             panelUV.Visible = true;
-            panelTitleAdvanced.Visible = true;
+            panelTitleUV.Visible = true;
             panelTemperature.Visible = true;
             panelTitleTemp.Visible = true;
 
@@ -328,7 +327,6 @@ namespace GHelper
         {
             SuspendLayout();
             
-            if (!gpuVisible) index = 0;
             _currentPage = index;
 
             buttonCPU.Activated = false;
@@ -340,17 +338,17 @@ namespace GHelper
             panelIntelGPU.Visible = false;
             panelAdvanced.Visible = false;
 
-
             switch (index)
             {
                 case 1:
+                    if (!gpuVisible) ToggleNavigation();
                     buttonGPU.Activated = true;
-                    panelGPU.Visible = dGpuVisible;
-                    panelIntelGPU.Visible = iGpuVisible;
+                    panelGPU.Visible = true;
                     break;
                 case 2:
                     buttonAdvanced.Activated = true;
                     panelAdvanced.Visible = true;
+                    panelIntelGPU.Visible = iGpuVisible;
                     break;
                 default:
                     buttonCPU.Activated = true;
@@ -407,8 +405,13 @@ namespace GHelper
 
             VisualiseAdvanced();
 
-            buttonAdvanced.Visible = RyzenControl.IsAMD();
+            UpdateVisibleNavigationButtons();
+        }
 
+        public void UpdateVisibleNavigationButtons()
+        {
+            buttonGPU.Visible = gpuVisible;
+            buttonAdvanced.Visible = RyzenControl.IsAMD() || iGpuVisible;
         }
 
         private void VisualiseAdvanced()
@@ -416,7 +419,7 @@ namespace GHelper
 
             if (!RyzenControl.IsRingExsists())
             {
-                panelTitleAdvanced.Visible = false;
+                panelTitleUV.Visible = false;
                 labelRisky.Visible = false;
                 panelUV.Visible = false;
                 panelUViGPU.Visible = false;
@@ -434,7 +437,7 @@ namespace GHelper
 
             if (!RyzenControl.IsSupportedUV())
             {
-                panelTitleAdvanced.Visible = false;
+                panelTitleUV.Visible = false;
                 labelRisky.Visible = false;
                 panelUV.Visible = false;
                 panelUViGPU.Visible = false;
@@ -601,7 +604,7 @@ namespace GHelper
 
                 try
                 {
-                    dGpuVisible = true;
+                    gpuVisible = true;
 
                     int gpu_boost = AppConfig.GetMode("gpu_boost");
                     int gpu_temp = AppConfig.GetMode("gpu_temp");
@@ -661,11 +664,11 @@ namespace GHelper
                 }
                 catch (Exception ex)
                 {
-                    dGpuVisible = false;
+                    gpuVisible = false;
                     Logger.WriteLine(ex.ToString());
                 }
             }
-            else dGpuVisible = false;
+            else gpuVisible = false;
 
             try
             {
@@ -690,9 +693,7 @@ namespace GHelper
                 Logger.WriteLine(ex.ToString());
             }
 
-            gpuVisible = dGpuVisible || iGpuVisible;
-
-            buttonGPU.Visible = gpuVisible;
+            UpdateVisibleNavigationButtons();
         }
 
         private void VisualiseGPUSettings()
@@ -1248,9 +1249,7 @@ namespace GHelper
                 AppConfig.RemoveMode("gpu_memory");
 
                 if (HardwareControl.IntelGpuControl is not null)
-                {
                     HardwareControl.IntelGpuControl.Reset();
-                }
 
                 InitGPUPower();
 
