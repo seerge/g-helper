@@ -238,7 +238,7 @@ namespace GHelper.Mode
             Thread.Sleep(500);
             SetGPUPower();
             AutoRyzen();
-
+            AutoIntelGPU();
         }
 
         public void SetModeLabel()
@@ -511,7 +511,6 @@ namespace GHelper.Mode
 
         public void AutoIntelGPU()
         {
-            
             if (AppConfig.IsMode("auto_intel_gpu")) SetIntelGPUClocks();
             else ResetIntelGPUClocks();
         }
