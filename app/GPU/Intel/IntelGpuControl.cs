@@ -6,7 +6,7 @@ namespace GHelper.GPU.Intel
     {
         public bool IsNvidia => false;
         public bool IsValid => _frequencyHandles != null && _frequencyHandles.Length > 0;
-        public string FullName => "Intel GPU (not implemented)";
+        public string? FullName => _deviceName;
 
         public int MaxCoreLimit => (int)FrequencyLimits.Max;
         public int MinCoreLimit => (int)FrequencyLimits.Min;
@@ -19,6 +19,8 @@ namespace GHelper.GPU.Intel
         private LZFrequencyHandle[] _frequencyHandles;
 
         private LZFrequencyRange? _frequencyLimits;
+
+        private string? _deviceName;
 
         public LZFrequencyRange FrequencyLimits
         {
@@ -40,6 +42,8 @@ namespace GHelper.GPU.Intel
                 _driverHandles = IntelLevelZero.InitDrivers();
                 _deviceHandles = IntelLevelZero.InitDevices(_driverHandles[0]);
                 _frequencyHandles = IntelLevelZero.InitFrequencies(_deviceHandles[0]);
+
+                _deviceName = IntelLevelZero.GetDeviceName(_deviceHandles[0]);
             }
             catch (IntelLevelZero.LZException ex)
             {
@@ -104,23 +108,16 @@ namespace GHelper.GPU.Intel
         {
             return null; // Not implemented
         }
+
         public int? GetGpuUse()
         {
             return null; // Not implemented
         }
+
         public void KillGPUApps()
         {
             // Not implemented
         }
-
-        public void Reset()
-        {
-            AppConfig.RemoveMode("igpu_core_max");
-            AppConfig.RemoveMode("igpu_core_min");
-
-            SetCoreFrequencyLimits(-1, -1); // Reset to default values
-        }
-
 
         public void Dispose()
         {

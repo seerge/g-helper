@@ -736,6 +736,8 @@ namespace GHelper
                 trackIntelGPUCoreMin.Value = intelGpu.MinCore;
                 
                 checkApplyAuto.Enabled = checkApplyAuto.Checked = AppConfig.IsMode("auto_intel_gpu");
+
+                if (intelGpu.FullName != null) labelIntelGPU.Text = intelGpu.FullName;
             }
             catch (Exception ex)
             {

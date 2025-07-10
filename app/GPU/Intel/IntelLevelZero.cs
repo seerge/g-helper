@@ -8,39 +8,49 @@ namespace GHelper.GPU.Intel;
 [StructLayout(LayoutKind.Sequential)]
 public struct LZFrequencyRange
 {
-public double Min;
-public double Max;
+    public double Min;
+    public double Max;
 }
 
 public enum LZStructureType : uint
 {
-FrequencyProperties = 0x1001
+    FrequencyProperties = 0x1001
 }
 
 public enum LZFrequencyDomain : uint
 {
-GPU = 0,
-Memory = 1
+    GPU = 0,
+    Memory = 1
 }
 
 public enum LZBool : uint
 {
-False = 0,
-True = 1
+    False = 0,
+    True = 1
+}
+
+public enum LZResult: uint
+{
+    Ok = 0
+}
+
+public enum ze_device_type_t : int
+{
+    ZE_DEVICE_TYPE_GPU = 1,
 }
 
 [StructLayout(LayoutKind.Explicit, Size = 56)]
 public struct LZFrequencyProperties
 {
-[FieldOffset(0)] public LZStructureType StructureType;
-[FieldOffset(4)] public IntPtr NextPtr;
-[FieldOffset(8)] public LZFrequencyDomain Type;
-[FieldOffset(12)] public LZBool OnSubdevice;
-[FieldOffset(16)] public uint SubdeviceId;
-[FieldOffset(20)] public LZBool CanControl;
-[FieldOffset(24)] public LZBool IsThrottleEventSupported;
-[FieldOffset(32)] public double Min;
-[FieldOffset(40)] public double Max;
+    [FieldOffset(0)] public LZStructureType StructureType;
+    [FieldOffset(4)] public IntPtr NextPtr;
+    [FieldOffset(8)] public LZFrequencyDomain Type;
+    [FieldOffset(12)] public LZBool OnSubdevice;
+    [FieldOffset(16)] public uint SubdeviceId;
+    [FieldOffset(20)] public LZBool CanControl;
+    [FieldOffset(24)] public LZBool IsThrottleEventSupported;
+    [FieldOffset(32)] public double Min;
+    [FieldOffset(40)] public double Max;
 }
 
 [StructLayout(LayoutKind.Sequential)]
@@ -54,6 +64,42 @@ public struct LZFrequencyState
     public double EfficientFrequency;   // Efficient frequency (MHz)
     public double ActualFrequency;      // ACTUAL CURRENT FREQUENCY (MHz)
     public double ThrottleReasons;
+}
+
+[StructLayout(LayoutKind.Sequential)]
+public struct ze_device_uuid_t
+{
+    [MarshalAs(UnmanagedType.I1, SizeConst = 16)]
+    int[] id;
+}
+
+[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
+public struct LZDeviceProperties
+{
+    public LZStructureType StructureType;
+    public IntPtr nextPtr;
+    public ze_device_type_t type;
+    public uint VendorId;
+    public uint DeviceId;
+    public uint Flags;
+    public uint SubdeviceId;
+    public uint CoreClockRate;
+    public uint MaxMemAllocSize;
+    public uint MaxHardwareContexts;
+    public uint MaxCommandQueuePriority;
+    public uint NumThreadsPerEU;
+    public uint PhysicalEUSimdWidth;
+    public uint NumEUsPerSubslice;
+    public uint NumSubslicesPerSlice;
+    public uint NumSlices;
+    public uint TimerResolution;
+    public uint TimestampValidBits;
+    public uint KernelTimestampValidBits;
+
+    ze_device_uuid_t uuid;
+
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 256)]
+    public string name;
 }
 
 public struct LZDriverHandle { public IntPtr Handle; }
@@ -89,7 +135,7 @@ internal class IntelLevelZero
 
     public static LZDriverHandle[] InitDrivers()
     {
-        int result = NativeMethods.Init(1);
+        LZResult result = NativeMethods.Init(1);
         if (result != 0)
             throw new LZException("Failed to initialize Level Zero.", result);
 
@@ -109,7 +155,7 @@ internal class IntelLevelZero
     public static LZDeviceHandle[] InitDevices(LZDriverHandle driverHandle)
     {
         uint deviceCount = 0;
-        int result = NativeMethods.GetDevices(driverHandle, ref deviceCount);
+        LZResult result = NativeMethods.GetDevices(driverHandle, ref deviceCount);
         if (result != 0 || deviceCount == 0)
             throw new LZException("No devices found.", result);
 
@@ -124,7 +170,7 @@ internal class IntelLevelZero
     public static LZFrequencyHandle[] InitFrequencies(LZDeviceHandle deviceHandle)
     {
         uint freqDomainCount = 0;
-        int result = NativeMethods.GetDeviceFrequencies(deviceHandle, ref freqDomainCount);
+        LZResult result = NativeMethods.GetDeviceFrequencies(deviceHandle, ref freqDomainCount);
         if (result != 0 || freqDomainCount == 0)
             throw new LZException("No frequency domains found.", result);
         LZFrequencyHandle[] frequencyHandles = new LZFrequencyHandle[freqDomainCount];
@@ -138,7 +184,7 @@ internal class IntelLevelZero
     public static LZFrequencyProperties GetFrequencyProperties(LZFrequencyHandle frequencyHandle)
     {
         LZFrequencyProperties properties = new LZFrequencyProperties();
-        int result = NativeMethods.GetFrequencyProperties(frequencyHandle, ref properties);
+        LZResult result = NativeMethods.GetFrequencyProperties(frequencyHandle, ref properties);
         if (result != 0)
             throw new LZException("Failed to get frequency properties.", result);
         return properties;
@@ -147,8 +193,8 @@ internal class IntelLevelZero
     public static LZFrequencyRange GetFrequencyRange(LZFrequencyHandle frequencyHandle)
     {
         LZFrequencyRange range = new LZFrequencyRange();
-        int result = NativeMethods.GetFrequencyRange(frequencyHandle, ref range);
-        if (result != 0)
+        LZResult result = NativeMethods.GetFrequencyRange(frequencyHandle, ref range);
+        if (result != LZResult.Ok)
             throw new LZException("Failed to get frequency range.", result);
 
         return range;
@@ -156,9 +202,19 @@ internal class IntelLevelZero
 
     public static void SetFrequencyRange(LZFrequencyHandle frequencyHandle, LZFrequencyRange frequencyRange)
     {
-        int result = NativeMethods.SetFrequencyRange(frequencyHandle, ref frequencyRange);
-        if (result != 0)
-            throw new Exception("Failed to set frequency range.");
+        LZResult result = NativeMethods.SetFrequencyRange(frequencyHandle, ref frequencyRange);
+        if (result != LZResult.Ok)
+            throw new LZException("Failed to set frequency range.", result);
+    }
+
+    public static string GetDeviceName(LZDeviceHandle deviceHandle)
+    {
+        LZDeviceProperties properties = new LZDeviceProperties();
+        LZResult result = NativeMethods.GetDeviceProperties(deviceHandle, ref properties);
+        if (result != LZResult.Ok)
+            throw new LZException("Failed to get frequency range.", result);
+
+        return properties.name;
     }
 
     public static class NativeMethods
@@ -169,28 +225,31 @@ internal class IntelLevelZero
         /// <param name="flags">1 is for GPUs. NPUs can be controlled too. Value 0 chooses any type of device.</param>
         /// <returns></returns>
         [DllImport(LevelZero_FileName, EntryPoint = "zeInit")]
-        public static extern int Init(int flags = 0);
+        public static extern LZResult Init(int flags = 0);
 
         [DllImport(LevelZero_FileName, EntryPoint = "zeDriverGet", CallingConvention = CallingConvention.Cdecl)]
-        public static extern int GetDrivers(ref uint count, [In, Out, Optional] LZDriverHandle[]? driverHandles);
+        public static extern LZResult GetDrivers(ref uint count, [In, Out, Optional] LZDriverHandle[]? driverHandles);
 
         [DllImport(LevelZero_FileName, EntryPoint = "zeDeviceGet", CallingConvention = CallingConvention.Cdecl)]
-        public static extern int GetDevices(LZDriverHandle driverHandle, ref uint count, [In, Out, Optional] LZDeviceHandle[]? deviceHandles);
+        public static extern LZResult GetDevices(LZDriverHandle driverHandle, ref uint count, [In, Out, Optional] LZDeviceHandle[]? deviceHandles);
 
         [DllImport(LevelZero_FileName, EntryPoint = "zesDeviceEnumFrequencyDomains", CallingConvention = CallingConvention.Cdecl)]
-        public static extern int GetDeviceFrequencies(LZDeviceHandle deviceHandle, ref uint count, [In, Out, Optional] LZFrequencyHandle[]? frequencyHandles);
+        public static extern LZResult GetDeviceFrequencies(LZDeviceHandle deviceHandle, ref uint count, [In, Out, Optional] LZFrequencyHandle[]? frequencyHandles);
 
         [DllImport(LevelZero_FileName, EntryPoint = "zesFrequencyGetProperties", CallingConvention = CallingConvention.Cdecl)]
-        public static extern int GetFrequencyProperties(LZFrequencyHandle frequencyHandle, ref LZFrequencyProperties properties);
+        public static extern LZResult GetFrequencyProperties(LZFrequencyHandle frequencyHandle, ref LZFrequencyProperties properties);
 
         [DllImport(LevelZero_FileName, EntryPoint = "zesFrequencyGetRange")]
-        public static extern int GetFrequencyRange(LZFrequencyHandle frequencyHandle, ref LZFrequencyRange limits);
+        public static extern LZResult GetFrequencyRange(LZFrequencyHandle frequencyHandle, ref LZFrequencyRange limits);
 
         [DllImport(LevelZero_FileName, EntryPoint = "zesFrequencySetRange")]
-        public static extern int SetFrequencyRange(LZFrequencyHandle frequencyHandle, ref LZFrequencyRange limits);
+        public static extern LZResult SetFrequencyRange(LZFrequencyHandle frequencyHandle, ref LZFrequencyRange limits);
 
         [DllImport(LevelZero_FileName, EntryPoint = "zesFrequencyGetState", CallingConvention = CallingConvention.Cdecl)]
-        public static extern int GetFrequencyState(LZFrequencyHandle frequencyHandle, ref LZFrequencyState state);
+        public static extern LZResult GetFrequencyState(LZFrequencyHandle frequencyHandle, ref LZFrequencyState state);
+
+        [DllImport(LevelZero_FileName, EntryPoint = "zeDeviceGetProperties", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LZResult GetDeviceProperties(LZDeviceHandle deviceHandle, ref LZDeviceProperties deviceProperties);
     }
 
     public class LZException : Exception
@@ -199,14 +258,14 @@ internal class IntelLevelZero
 
         public int ErrorCode { get { return _levelZeroErrorCode; } }
 
-        public LZException(int levelZeroErrorCode)
+        public LZException(LZResult levelZeroErrorCode)
         {
-            _levelZeroErrorCode = levelZeroErrorCode;
+            _levelZeroErrorCode = (int)levelZeroErrorCode;
         }
 
-        public LZException(string message, int levelZeroErrorCode) : base(message)
+        public LZException(string message, LZResult levelZeroErrorCode) : base(message)
         {
-            _levelZeroErrorCode = levelZeroErrorCode;
+            _levelZeroErrorCode = (int)levelZeroErrorCode;
         }
     }
 }
