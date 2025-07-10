@@ -372,13 +372,18 @@ namespace GHelper.Mode
             Task.Run(() =>
             {
                 int min = -1, max = -1;
-
+                
                 if (!reset)
                 {
                     min = AppConfig.GetMode("igpu_core_min");
                     max = AppConfig.GetMode("igpu_core_max");
 
                     if (min == -1 && max == -1) return;
+                }
+                else
+                {
+                    AppConfig.RemoveMode("igpu_core_min");
+                    AppConfig.RemoveMode("igpu_core_max");
                 }
 
                 if (HardwareControl.IntelGpuControl is null) { Logger.WriteLine("Intel GPU Clocks Error: no Intel GPU Control."); return; }

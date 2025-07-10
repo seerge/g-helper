@@ -392,28 +392,6 @@ namespace GHelper
             checkApplyUV.Enabled = true;
         }
 
-        public void InitUV()
-        {
-
-            //if (!ProcessHelper.IsUserAdministrator()) return;
-
-            int cpuUV = Math.Max(trackUV.Minimum, Math.Min(trackUV.Maximum, AppConfig.GetMode("cpu_uv", 0)));
-            int igpuUV = Math.Max(trackUViGPU.Minimum, Math.Min(trackUViGPU.Maximum, AppConfig.GetMode("igpu_uv", 0)));
-
-            int temp = AppConfig.GetMode("cpu_temp");
-            if (temp < RyzenControl.MinTemp || temp > RyzenControl.MaxTemp) temp = RyzenControl.MaxTemp;
-
-            checkApplyUV.Enabled = checkApplyUV.Checked = AppConfig.IsMode("auto_uv");
-
-            trackUV.Value = cpuUV;
-            trackUViGPU.Value = igpuUV;
-            trackTemp.Value = temp;
-
-            VisualiseAdvanced();
-
-            UpdateVisibleNavigationButtons();
-        }
-
         public void UpdateVisibleNavigationButtons()
         {
             buttonGPU.Visible = gpuVisible;
@@ -458,6 +436,12 @@ namespace GHelper
             labelUViGPU.Text = trackUViGPU.Value.ToString();
 
             labelTemp.Text = (trackTemp.Value < RyzenControl.MaxTemp) ? trackTemp.Value.ToString() + "°C" : "Default";
+
+            if (intelGpuVisible)
+            {
+                labelIntelGPUCoreMax.Text = $"{trackIntelGPUCoreMax.Value} MHz";
+                labelIntelGPUCoreMin.Text = $"{trackIntelGPUCoreMin.Value} MHz";
+            }
         }
 
         private void AdvancedScroll()
@@ -476,6 +460,30 @@ namespace GHelper
         private void TrackUV_Scroll(object? sender, EventArgs e)
         {
             AdvancedScroll();
+        }
+
+        private void trackIntelGPUCoreMax_Scroll(object sender, EventArgs e)
+        {
+            if (trackIntelGPUCoreMax.Value < trackIntelGPUCoreMin.Value)
+                trackIntelGPUCoreMin.Value = trackIntelGPUCoreMax.Value;
+            UpdateIntelGPUCoreClock();
+        }
+
+        private void trackIntelGPUCoreMin_Scroll(object sender, EventArgs e)
+        {
+            if (trackIntelGPUCoreMin.Value > trackIntelGPUCoreMax.Value)
+                trackIntelGPUCoreMax.Value = trackIntelGPUCoreMin.Value;
+            UpdateIntelGPUCoreClock();
+        }
+
+        private void UpdateIntelGPUCoreClock()
+        {
+            int maxClock = trackIntelGPUCoreMax.Value;
+            int minClock = trackIntelGPUCoreMin.Value;
+
+            AppConfig.SetMode("igpu_core_max", maxClock);
+            AppConfig.SetMode("igpu_core_min", minClock);
+            VisualiseGPUSettings();
         }
 
         private void ComboModes_KeyPress(object? sender, KeyPressEventArgs e)
@@ -676,6 +684,26 @@ namespace GHelper
             }
             else gpuVisible = false;
 
+            UpdateVisibleNavigationButtons();
+        }
+
+        public void InitUV()
+        {
+
+            //if (!ProcessHelper.IsUserAdministrator()) return;
+
+            int cpuUV = Math.Max(trackUV.Minimum, Math.Min(trackUV.Maximum, AppConfig.GetMode("cpu_uv", 0)));
+            int igpuUV = Math.Max(trackUViGPU.Minimum, Math.Min(trackUViGPU.Maximum, AppConfig.GetMode("igpu_uv", 0)));
+
+            int temp = AppConfig.GetMode("cpu_temp");
+            if (temp < RyzenControl.MinTemp || temp > RyzenControl.MaxTemp) temp = RyzenControl.MaxTemp;
+
+            checkApplyUV.Enabled = checkApplyUV.Checked = AppConfig.IsMode("auto_uv");
+
+            trackUV.Value = cpuUV;
+            trackUViGPU.Value = igpuUV;
+            trackTemp.Value = temp;
+
             try
             {
                 intelGpuVisible = true;
@@ -690,14 +718,14 @@ namespace GHelper
 
                 trackIntelGPUCoreMax.Value = intelGpu.MaxCore;
                 trackIntelGPUCoreMin.Value = intelGpu.MinCore;
-
-                VisualiseGPUSettings();
             }
             catch (Exception ex)
             {
                 intelGpuVisible = false;
                 Logger.WriteLine(ex.ToString());
             }
+
+            VisualiseAdvanced();
 
             UpdateVisibleNavigationButtons();
         }
@@ -716,18 +744,15 @@ namespace GHelper
                 labelGPUClockLimit.Text = $"{trackGPUClockLimit.Value} MHz";
 
             labelGPUPower.Text = (gpuPowerBase + trackGPUPower.Value) + "W";
-
-            labelIntelGPUCoreMax.Text = $"{trackIntelGPUCoreMax.Value} MHz";
-            labelIntelGPUCoreMin.Text = $"{trackIntelGPUCoreMin.Value} MHz";
         }
 
         private void trackGPUClockLimit_Scroll(object? sender, EventArgs e)
         {
-
             int maxClock = (int)Math.Round((float)trackGPUClockLimit.Value / 5) * 5;
 
             trackGPUClockLimit.Value = maxClock;
             AppConfig.SetMode("gpu_clock_limit", maxClock);
+
             VisualiseGPUSettings();
         }
 
@@ -739,10 +764,8 @@ namespace GHelper
 
             AppConfig.SetMode("gpu_core", trackGPUCore.Value);
             AppConfig.SetMode("gpu_memory", trackGPUMemory.Value);
-
-
+            
             VisualiseGPUSettings();
-
         }
 
         private void trackGPUPower_Scroll(object? sender, EventArgs e)
@@ -752,37 +775,6 @@ namespace GHelper
 
             if (isGPUPower) AppConfig.SetMode("gpu_power", trackGPUPower.Value);
 
-            VisualiseGPUSettings();
-        }
-
-        private void trackIntelGPUCoreMax_Scroll(object sender, EventArgs e)
-        {
-            UpdateIntelGPUCoreClock(true);
-        }
-
-        private void trackIntelGPUCoreMin_Scroll(object sender, EventArgs e)
-        {
-            UpdateIntelGPUCoreClock(false);
-        }
-
-        private void UpdateIntelGPUCoreClock(bool maxSlider)
-        {
-            if (maxSlider)
-            {
-                if (trackIntelGPUCoreMax.Value < trackIntelGPUCoreMin.Value)
-                    trackIntelGPUCoreMin.Value = trackIntelGPUCoreMax.Value;
-            }
-            else
-            {
-                if (trackIntelGPUCoreMin.Value > trackIntelGPUCoreMax.Value)
-                    trackIntelGPUCoreMax.Value = trackIntelGPUCoreMin.Value;
-            }
-
-            int maxClock = trackIntelGPUCoreMax.Value;
-            int minClock = trackIntelGPUCoreMin.Value;
-
-            AppConfig.SetMode("igpu_core_max", maxClock);
-            AppConfig.SetMode("igpu_core_min", minClock);
             VisualiseGPUSettings();
         }
 
@@ -1253,9 +1245,6 @@ namespace GHelper
                 AppConfig.RemoveMode("gpu_clock_limit");
                 AppConfig.RemoveMode("gpu_core");
                 AppConfig.RemoveMode("gpu_memory");
-
-                if (HardwareControl.IntelGpuControl is not null)
-                    HardwareControl.IntelGpuControl.Reset();
 
                 InitGPUPower();
 

@@ -31,14 +31,14 @@ namespace GHelper
         /// </summary>
         private void InitializeComponent()
         {
-            ChartArea chartArea1 = new ChartArea();
-            Title title1 = new Title();
-            ChartArea chartArea2 = new ChartArea();
-            Title title2 = new Title();
-            ChartArea chartArea3 = new ChartArea();
-            Title title3 = new Title();
-            ChartArea chartArea4 = new ChartArea();
-            Title title4 = new Title();
+            ChartArea chartArea5 = new ChartArea();
+            Title title5 = new Title();
+            ChartArea chartArea6 = new ChartArea();
+            Title title6 = new Title();
+            ChartArea chartArea7 = new ChartArea();
+            Title title7 = new Title();
+            ChartArea chartArea8 = new ChartArea();
+            Title title8 = new Title();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Fans));
             panelFans = new Panel();
             labelTip = new Label();
@@ -288,8 +288,8 @@ namespace GHelper
             // 
             // chartGPU
             // 
-            chartArea1.Name = "ChartArea1";
-            chartGPU.ChartAreas.Add(chartArea1);
+            chartArea5.Name = "ChartArea1";
+            chartGPU.ChartAreas.Add(chartArea5);
             chartGPU.Dock = DockStyle.Fill;
             chartGPU.Location = new Point(6, 375);
             chartGPU.Margin = new Padding(1, 5, 1, 5);
@@ -297,13 +297,13 @@ namespace GHelper
             chartGPU.Size = new Size(393, 360);
             chartGPU.TabIndex = 17;
             chartGPU.Text = "chartGPU";
-            title1.Name = "Title1";
-            chartGPU.Titles.Add(title1);
+            title5.Name = "Title1";
+            chartGPU.Titles.Add(title5);
             // 
             // chartCPU
             // 
-            chartArea2.Name = "ChartArea1";
-            chartCPU.ChartAreas.Add(chartArea2);
+            chartArea6.Name = "ChartArea1";
+            chartCPU.ChartAreas.Add(chartArea6);
             chartCPU.Dock = DockStyle.Fill;
             chartCPU.Location = new Point(6, 5);
             chartCPU.Margin = new Padding(1, 5, 1, 5);
@@ -311,13 +311,13 @@ namespace GHelper
             chartCPU.Size = new Size(393, 360);
             chartCPU.TabIndex = 14;
             chartCPU.Text = "chartCPU";
-            title2.Name = "Title1";
-            chartCPU.Titles.Add(title2);
+            title6.Name = "Title1";
+            chartCPU.Titles.Add(title6);
             // 
             // chartXGM
             // 
-            chartArea3.Name = "ChartAreaXGM";
-            chartXGM.ChartAreas.Add(chartArea3);
+            chartArea7.Name = "ChartAreaXGM";
+            chartXGM.ChartAreas.Add(chartArea7);
             chartXGM.Dock = DockStyle.Fill;
             chartXGM.Location = new Point(6, 1115);
             chartXGM.Margin = new Padding(1, 5, 1, 5);
@@ -325,14 +325,14 @@ namespace GHelper
             chartXGM.Size = new Size(393, 363);
             chartXGM.TabIndex = 14;
             chartXGM.Text = "chartXGM";
-            title3.Name = "Title4";
-            chartXGM.Titles.Add(title3);
+            title7.Name = "Title4";
+            chartXGM.Titles.Add(title7);
             chartXGM.Visible = false;
             // 
             // chartMid
             // 
-            chartArea4.Name = "ChartArea3";
-            chartMid.ChartAreas.Add(chartArea4);
+            chartArea8.Name = "ChartArea3";
+            chartMid.ChartAreas.Add(chartArea8);
             chartMid.Dock = DockStyle.Fill;
             chartMid.Location = new Point(6, 745);
             chartMid.Margin = new Padding(1, 5, 1, 5);
@@ -340,8 +340,8 @@ namespace GHelper
             chartMid.Size = new Size(393, 360);
             chartMid.TabIndex = 14;
             chartMid.Text = "chartMid";
-            title4.Name = "Title3";
-            chartMid.Titles.Add(title4);
+            title8.Name = "Title3";
+            chartMid.Titles.Add(title8);
             chartMid.Visible = false;
             // 
             // panelTitleFans
@@ -615,7 +615,6 @@ namespace GHelper
             checkApplyUV.Size = new Size(244, 23);
             checkApplyUV.TabIndex = 51;
             checkApplyUV.Text = "Auto Apply";
-            checkApplyUV.TextAlign = ContentAlignment.MiddleCenter;
             checkApplyUV.UseVisualStyleBackColor = false;
             // 
             // panelAdvancedApply
