@@ -249,7 +249,7 @@ namespace GHelper
             panelFans.MinimumSize = new Size(408, 0);
             panelFans.Name = "panelFans";
             panelFans.Padding = new Padding(0, 0, 5, 0);
-            panelFans.Size = new Size(410, 1576);
+            panelFans.Size = new Size(410, 756);
             panelFans.TabIndex = 12;
             // 
             // labelTip
@@ -283,7 +283,7 @@ namespace GHelper
             tableFanCharts.RowStyles.Add(new RowStyle(SizeType.Percent, 25F));
             tableFanCharts.RowStyles.Add(new RowStyle(SizeType.Percent, 25F));
             tableFanCharts.RowStyles.Add(new RowStyle(SizeType.Percent, 25F));
-            tableFanCharts.Size = new Size(405, 1485);
+            tableFanCharts.Size = new Size(405, 665);
             tableFanCharts.TabIndex = 36;
             // 
             // chartGPU
@@ -291,10 +291,10 @@ namespace GHelper
             chartArea1.Name = "ChartArea1";
             chartGPU.ChartAreas.Add(chartArea1);
             chartGPU.Dock = DockStyle.Fill;
-            chartGPU.Location = new Point(6, 375);
+            chartGPU.Location = new Point(6, 170);
             chartGPU.Margin = new Padding(1, 5, 1, 5);
             chartGPU.Name = "chartGPU";
-            chartGPU.Size = new Size(393, 360);
+            chartGPU.Size = new Size(393, 155);
             chartGPU.TabIndex = 17;
             chartGPU.Text = "chartGPU";
             title1.Name = "Title1";
@@ -308,7 +308,7 @@ namespace GHelper
             chartCPU.Location = new Point(6, 5);
             chartCPU.Margin = new Padding(1, 5, 1, 5);
             chartCPU.Name = "chartCPU";
-            chartCPU.Size = new Size(393, 360);
+            chartCPU.Size = new Size(393, 155);
             chartCPU.TabIndex = 14;
             chartCPU.Text = "chartCPU";
             title2.Name = "Title1";
@@ -319,10 +319,10 @@ namespace GHelper
             chartArea3.Name = "ChartAreaXGM";
             chartXGM.ChartAreas.Add(chartArea3);
             chartXGM.Dock = DockStyle.Fill;
-            chartXGM.Location = new Point(6, 1115);
+            chartXGM.Location = new Point(6, 500);
             chartXGM.Margin = new Padding(1, 5, 1, 5);
             chartXGM.Name = "chartXGM";
-            chartXGM.Size = new Size(393, 363);
+            chartXGM.Size = new Size(393, 158);
             chartXGM.TabIndex = 14;
             chartXGM.Text = "chartXGM";
             title3.Name = "Title4";
@@ -334,10 +334,10 @@ namespace GHelper
             chartArea4.Name = "ChartArea3";
             chartMid.ChartAreas.Add(chartArea4);
             chartMid.Dock = DockStyle.Fill;
-            chartMid.Location = new Point(6, 745);
+            chartMid.Location = new Point(6, 335);
             chartMid.Margin = new Padding(1, 5, 1, 5);
             chartMid.Name = "chartMid";
-            chartMid.Size = new Size(393, 360);
+            chartMid.Size = new Size(393, 155);
             chartMid.TabIndex = 14;
             chartMid.Text = "chartMid";
             title4.Name = "Title3";
@@ -474,7 +474,7 @@ namespace GHelper
             panelApplyFans.Controls.Add(checkApplyFans);
             panelApplyFans.Controls.Add(buttonReset);
             panelApplyFans.Dock = DockStyle.Bottom;
-            panelApplyFans.Location = new Point(0, 1518);
+            panelApplyFans.Location = new Point(0, 698);
             panelApplyFans.Margin = new Padding(2);
             panelApplyFans.Name = "panelApplyFans";
             panelApplyFans.Size = new Size(405, 58);
@@ -567,7 +567,7 @@ namespace GHelper
             panelSliders.MinimumSize = new Size(265, 0);
             panelSliders.Name = "panelSliders";
             panelSliders.Padding = new Padding(5, 0, 0, 0);
-            panelSliders.Size = new Size(265, 1576);
+            panelSliders.Size = new Size(265, 756);
             panelSliders.TabIndex = 13;
             // 
             // panelAdvanced
@@ -1903,7 +1903,7 @@ namespace GHelper
             AutoScaleMode = AutoScaleMode.Dpi;
             AutoSize = true;
             AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            ClientSize = new Size(675, 1576);
+            ClientSize = new Size(675, 756);
             Controls.Add(panelFans);
             Controls.Add(panelSliders);
             Margin = new Padding(2, 1, 2, 1);
