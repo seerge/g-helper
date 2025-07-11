@@ -1,14 +1,14 @@
 ﻿namespace GHelper.Peripherals.Mouse.Models
 {
     //P716_Wireless
-    public class HarpeAceMiniOmni : AsusMouse
+    public class HarpeAceMiniWired : AsusMouse
     {
 
-        public HarpeAceMiniOmni() : base(0x0B05, 0x1ACE, "mi_02&col03", true, 0x03)
+        public HarpeAceMiniWired() : base(0x0B05, 0x1ACE, "mi_02&col03", true, 0x03)
         {
         }
 
-        protected HarpeAceMiniOmni(ushort productId, string path, bool wireless) : base(0x0B05, productId, path, wireless)
+        protected HarpeAceMiniWired(ushort productId, bool wireless, string endpoint, byte reportId) : base(0x0B05, productId, endpoint, wireless, reportId)
         {
         }
 
@@ -19,9 +19,8 @@
 
         public override string GetDisplayName()
         {
-            return "ROG Harpe Ace Mini (Omni)";
+            return "ROG Harpe Ace Mini (Wired)";
         }
-
 
         public override PollingRate[] SupportedPollingrates()
         {
@@ -42,10 +41,6 @@
             return 42_000;
         }
 
-        public override int MinDPI()
-        {
-            return 100;
-        }
         public override bool HasXYDPI()
         {
             return true;
@@ -106,31 +101,21 @@
             return 5;
         }
 
-        public override int AngleTuningMin()
-        {
-            return -20;
-        }
-
-        public override int AngleTuningMax()
-        {
-            return 20;
-        }
-
         public override int USBPacketSize()
         {
             return 64;
         }
     }
 
-    public class HarpeAceMiniWired : HarpeAceMiniOmni
+    public class HarpeAceMiniOmni : HarpeAceMiniWired
     {
-        public HarpeAceMiniWired() : base(0x1B63, "mi_00" , false)
+        public HarpeAceMiniOmni() : base(0x1ACE, true, "mi_02&col03", 0x03)
         {
         }
 
         public override string GetDisplayName()
         {
-            return "Harpe Ace Mini (Wired)";
+            return "Harpe Ace Mini (OMNI)";
         }
     }
 

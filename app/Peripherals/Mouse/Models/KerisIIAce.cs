@@ -7,7 +7,7 @@
         {
         }
 
-        protected KerisIIAceWired(ushort vendorId, bool wireless) : base(0x0B05, vendorId, "mi_00", wireless)
+        protected KerisIIAceWired(ushort productId, bool wireless, string endpoint, byte reportId) : base(0x0B05, productId, endpoint, wireless, reportId)
         {
         }
 
@@ -28,7 +28,9 @@
                 PollingRate.PR125Hz,
                 PollingRate.PR250Hz,
                 PollingRate.PR500Hz,
-                PollingRate.PR1000Hz
+                PollingRate.PR1000Hz,
+                PollingRate.PR2000Hz,
+                PollingRate.PR4000Hz
             };
         }
 
@@ -36,6 +38,8 @@
         {
             return 5;
         }
+
+
         public override int MaxDPI()
         {
             return 42_000;
@@ -91,6 +95,11 @@
             return true;
         }
 
+        public override int AngleTuningStep()
+        {
+            return 5;
+        }
+
         protected override PollingRate ParsePollingRate(byte[] packet)
         {
             if (packet[1] == 0x12 && packet[2] == 0x04 && packet[3] == 0x00)
@@ -105,20 +114,21 @@
 
     }
 
-    /*
-     * 
-    Mouse uses Omni Reciever
-    public class KerisIIAce : KerisIIAce
+    public class KerisAceIIOmni : KerisIIAceWired
     {
-        public KerisIIAce() : base(0xAAAA, false)
+        public KerisAceIIOmni() : base(0x1ACE, true, "mi_02&col03", 0x03)
         {
         }
 
         public override string GetDisplayName()
         {
-            return "ROG Keris II Ace (Wired)";
+            return "Keris Ace II (OMNI)";
+        }
+
+        public override int USBPacketSize()
+        {
+            return 64;
         }
     }
-    */
 
 }
