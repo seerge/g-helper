@@ -251,11 +251,14 @@ namespace GHelper.Peripherals
                     var response = new byte[64];
                     stream.Write(new byte[] { 0x03, 0x12, 0x12, 0x02 });
                     stream.Read(response);
+                    
                     Logger.WriteLine("Omni Mouse ID: " + BitConverter.ToString(response));
+
                     var signature = (response[5], response[6]);
                     AsusMouse omniMouse = signature switch
                     {
-                        (0x42, 0x32) => new HarpeAceMiniOmni(), // 0x35
+                        (0x42, 0x32) => new HarpeAceMiniOmni(), // B24082550833
+                        (0x52, 0x39) => new KerisWirelssAimpointOmni(), //R90518300572
                         _ => new HarpeAceAimLabEditionOmni()
                     };
                     DetectMouse(omniMouse);

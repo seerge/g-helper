@@ -11,6 +11,10 @@
         {
         }
 
+        protected KerisWirelssAimpoint(ushort productId, bool wireless, string endpoint, byte reportId) : base(0x0B05, productId, endpoint, wireless, reportId)
+        {
+        }
+
         public override int DPIProfileCount()
         {
             return 4;
@@ -124,4 +128,22 @@
             return "ROG Keris Wireless Aimpoint (Wired)";
         }
     }
+
+    public class KerisWirelssAimpointOmni : KerisWirelssAimpoint
+    {
+        public KerisWirelssAimpointOmni() : base(0x1ACE, true, "mi_02&col03", 0x03)
+        {
+        }
+
+        public override string GetDisplayName()
+        {
+            return "Keris Wireless Aimpoint (OMNI)";
+        }
+
+        public override int USBPacketSize()
+        {
+            return 64;
+        }
+    }
+
 }
