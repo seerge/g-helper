@@ -3,6 +3,8 @@ using GHelper.Peripherals.Mouse.Models;
 using HidSharp;
 using System.IO;
 using System.Runtime.CompilerServices;
+using System.Text;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace GHelper.Peripherals
 {
@@ -253,6 +255,8 @@ namespace GHelper.Peripherals
                     stream.Read(response);
                     
                     Logger.WriteLine("Omni Mouse ID: " + BitConverter.ToString(response));
+                    var signatureBytes = response.Skip(5).Take(12).ToArray();
+                    Logger.WriteLine("Signature: " + BitConverter.ToString(signatureBytes) + " = " + Encoding.ASCII.GetString(signatureBytes));
 
                     var signature = (response[5], response[6]);
                     AsusMouse omniMouse = signature switch
