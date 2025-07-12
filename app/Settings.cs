@@ -45,6 +45,7 @@ namespace GHelper
 
         bool isGpuSection = true;
 
+        bool rateMouseOver = false;
         bool batteryMouseOver = false;
         bool batteryFullMouseOver = false;
 
@@ -235,6 +236,8 @@ namespace GHelper
             labelCharge.MouseEnter += PanelBattery_MouseEnter;
             labelCharge.MouseLeave += PanelBattery_MouseLeave;
             labelBattery.Click += LabelBattery_Click;
+            labelBattery.MouseEnter += LabelBattery_MouseEnter;
+            labelBattery.MouseLeave += LabelBattery_MouseLeave;
 
             buttonPeripheral1.Click += ButtonPeripheral_Click;
             buttonPeripheral2.Click += ButtonPeripheral_Click;
@@ -290,6 +293,18 @@ namespace GHelper
         private void LabelBattery_Click(object? sender, EventArgs e)
         {
             HardwareControl.chargeWatt = !HardwareControl.chargeWatt;
+            RefreshSensors(true);
+        }
+
+        private void LabelBattery_MouseEnter(object? sender, EventArgs e)
+        {
+            rateMouseOver = true;
+            RefreshSensors(true);
+        }
+
+        private void LabelBattery_MouseLeave(object? sender, EventArgs e)
+        {
+            rateMouseOver = false;
             RefreshSensors(true);
         }
 
@@ -1441,6 +1456,22 @@ namespace GHelper
             gpuControl.KillGPUApps();
         }
 
+        private string BatteryTime()
+        {
+            decimal limit = 1;
+            if (!BatteryControl.chargeFull) limit = (decimal)AppConfig.Get("charge_limit") / 100;
+            decimal? remaining = HardwareControl.batteryRate < 0 ? HardwareControl.chargeCapacity : (HardwareControl.fullCapacity * limit) - HardwareControl.chargeCapacity;
+            try
+            {
+                double hoursRemaining = Math.Abs((double)((remaining / 1000) / HardwareControl.batteryRate));
+                return String.Format("Time Remaining: {0}h {1}m", Math.Floor(hoursRemaining), Math.Round((hoursRemaining % 1) * 60, 0));
+            }
+            catch
+            {
+                return "Time Remaining: Unknown";
+            }
+        }
+
         public async void RefreshSensors(bool force = false)
         {
 
@@ -1455,6 +1486,8 @@ namespace GHelper
             HardwareControl.ReadSensors();
             Task.Run((Action)PeripheralsProvider.RefreshBatteryForAllDevices);
 
+            string battTime = BatteryTime();
+
             if (HardwareControl.cpuTemp > 0)
                 cpuTemp = ": " + Math.Round((decimal)HardwareControl.cpuTemp).ToString() + "°C";
 
@@ -1462,12 +1495,17 @@ namespace GHelper
             {
                 charge = Properties.Strings.BatteryCharge + ": " + HardwareControl.batteryCharge;
             }
-
-            if (HardwareControl.batteryRate < 0)
-                battery = Properties.Strings.Discharging + ": " + Math.Round(-(decimal)HardwareControl.batteryRate, 1).ToString() + "W";
-            else if (HardwareControl.batteryRate > 0)
-                battery = Properties.Strings.Charging + ": " + Math.Round((decimal)HardwareControl.batteryRate, 1).ToString() + "W";
-
+            if (rateMouseOver)
+            {
+                battery = battTime;
+            }
+            else
+            {
+                if (HardwareControl.batteryRate < 0)
+                    battery = Properties.Strings.Discharging + ": " + Math.Round(-(decimal)HardwareControl.batteryRate, 1).ToString() + "W";
+                else if (HardwareControl.batteryRate > 0)
+                    battery = Properties.Strings.Charging + ": " + Math.Round((decimal)HardwareControl.batteryRate, 1).ToString() + "W";
+            }
 
             if (HardwareControl.gpuTemp > 0)
             {
@@ -1476,7 +1514,8 @@ namespace GHelper
 
             string trayTip = "CPU" + cpuTemp + " " + HardwareControl.cpuFan;
             if (gpuTemp.Length > 0) trayTip += "\nGPU" + gpuTemp + " " + HardwareControl.gpuFan;
-            if (battery.Length > 0) trayTip += "\n" + battery;
+            if (battery.Length > 0) trayTip += "\n" + battery + "\n" + battTime;
+            
 
             if (Program.settingsForm.IsHandleCreated)
                 Program.settingsForm.BeginInvoke(delegate
