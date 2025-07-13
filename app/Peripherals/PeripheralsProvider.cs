@@ -263,8 +263,8 @@ namespace GHelper.Peripherals
                         (0x42, 0x32) => new HarpeAceMiniOmni(),             // B24082550833
                         (0x52, 0x39) => new KerisWirelssAimpointOmni(),     // R90518300572
                         (0x30, 0x32) => new KerisAceIIOmni(),               // 024031316969
-                        (0x32, 0x30) => new StrixImpactIIIWirelessOmni(),   // 024031316969
-                        _ => new HarpeAceAimLabEditionOmni()                // 202405290700
+                        (0x32, 0x30) => new StrixImpactIIIWirelessOmni(),   // 202405290700
+                        _ => new HarpeAceAimLabEditionOmni()                 
                     };
                     DetectMouse(omniMouse);
                     stream.Close();
