@@ -19,7 +19,7 @@
 
         public override string GetDisplayName()
         {
-            return "ROG Harpe Ace Mini (Wired)";
+            return "Harpe Ace Mini (Wired)";
         }
 
         public override PollingRate[] SupportedPollingrates()
