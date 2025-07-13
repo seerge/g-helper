@@ -20,12 +20,33 @@ namespace GHelper.Mode
 
         static System.Timers.Timer reapplyTimer = default!;
         static System.Timers.Timer modeToggleTimer = default!;
+        static System.Timers.Timer resetTimer = default!;
 
         public ModeControl()
         {
             reapplyTimer = new System.Timers.Timer(AppConfig.GetMode("reapply_time", 30) * 1000);
             reapplyTimer.Enabled = false;
             reapplyTimer.Elapsed += ReapplyTimer_Elapsed;
+
+            resetTimer = new System.Timers.Timer();
+            resetTimer.Elapsed += ResetTimer_Elapsed;
+        }
+
+        private void ResetTimer_Elapsed(object? sender, System.Timers.ElapsedEventArgs e)
+        {
+            ResetPerformanceMode();
+        }
+
+        public void StartResetPerformanceModeTimer(int interval)
+        {
+            resetTimer.Stop();
+            resetTimer.Interval = interval * 1000;
+            resetTimer.Start();
+        }
+
+        public void StopResetPerformanceModeTimer()
+        {
+            resetTimer.Stop();
         }
 
 

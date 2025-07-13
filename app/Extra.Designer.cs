@@ -1198,6 +1198,8 @@ namespace GHelper
             panelSettings.Controls.Add(checkVariBright);
             panelSettings.Controls.Add(checkGpuApps);
             panelSettings.Controls.Add(checkGPUFix);
+            panelSettings.Controls.Add(checkResetPerformanceMode);
+            panelSettings.Controls.Add(numericResetPerformanceMode);
             panelSettings.Controls.Add(checkOptimalBrightness);
             panelSettings.Controls.Add(checkStatusLed);
             panelSettings.Controls.Add(checkPerKeyRGB);
@@ -1620,6 +1622,33 @@ namespace GHelper
             checkOptimalBrightness.UseVisualStyleBackColor = true;
             checkOptimalBrightness.Visible = false;
             // 
+            // checkResetPerformanceMode
+            //
+            checkResetPerformanceMode.AutoSize = true;
+            checkResetPerformanceMode.Dock = DockStyle.Top;
+            checkResetPerformanceMode.Location = new Point(18, 484);
+            checkResetPerformanceMode.Margin = new Padding(4, 3, 4, 3);
+            checkResetPerformanceMode.Name = "checkResetPerformanceMode";
+            checkResetPerformanceMode.Padding = new Padding(3);
+            checkResetPerformanceMode.Size = new Size(802, 40);
+            checkResetPerformanceMode.TabIndex = 15;
+            checkResetPerformanceMode.Text = "Enable nonstop performance mode reset";
+            checkResetPerformanceMode.UseVisualStyleBackColor = true;
+            //
+            // numericResetPerformanceMode
+            //
+            numericResetPerformanceMode.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            numericResetPerformanceMode.Location = new Point(690, 489);
+            numericResetPerformanceMode.Margin = new Padding(4, 3, 4, 3);
+            numericResetPerformanceMode.Maximum = new decimal(new int[] { 3600, 0, 0, 0 });
+            numericResetPerformanceMode.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
+            numericResetPerformanceMode.Name = "numericResetPerformanceMode";
+            numericResetPerformanceMode.Size = new Size(122, 35);
+            numericResetPerformanceMode.TabIndex = 16;
+            numericResetPerformanceMode.Unit = "sec";
+            numericResetPerformanceMode.UnitFirst = false;
+            numericResetPerformanceMode.Value = new decimal(new int[] { 3, 0, 0, 0 });
+            //
             // Extra
             // 
             AutoScaleDimensions = new SizeF(168F, 168F);
@@ -1810,5 +1839,7 @@ namespace GHelper
         private CheckBox checkBatteryLid;
         private CheckBox checkBatteryBar;
         private CheckBox checkOptimalBrightness;
+        private CheckBox checkResetPerformanceMode;
+        private NumericUpDownWithUnit numericResetPerformanceMode;
     }
 }

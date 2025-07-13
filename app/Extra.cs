@@ -478,6 +478,32 @@ namespace GHelper
 
             InitACPITesting();
 
+            checkResetPerformanceMode.Checked = AppConfig.Is("reset_performance_mode");
+            checkResetPerformanceMode.CheckedChanged += CheckResetPerformanceMode_CheckedChanged;
+            numericResetPerformanceMode.Value = AppConfig.Get("reset_performance_mode_interval", 3);
+            numericResetPerformanceMode.ValueChanged += NumericResetPerformanceMode_ValueChanged;
+        }
+
+        private void CheckResetPerformanceMode_CheckedChanged(object? sender, EventArgs e)
+        {
+            AppConfig.Set("reset_performance_mode", (checkResetPerformanceMode.Checked ? 1 : 0));
+            if (checkResetPerformanceMode.Checked)
+            {
+                Program.modeControl.StartResetPerformanceModeTimer((int)numericResetPerformanceMode.Value);
+            }
+            else
+            {
+                Program.modeControl.StopResetPerformanceModeTimer();
+            }
+        }
+
+        private void NumericResetPerformanceMode_ValueChanged(object? sender, EventArgs e)
+        {
+            AppConfig.Set("reset_performance_mode_interval", (int)numericResetPerformanceMode.Value);
+            if (checkResetPerformanceMode.Checked)
+            {
+                Program.modeControl.StartResetPerformanceModeTimer((int)numericResetPerformanceMode.Value);
+            }
         }
 
         private void CheckOptimalBrightness_CheckedChanged(object? sender, EventArgs e)
