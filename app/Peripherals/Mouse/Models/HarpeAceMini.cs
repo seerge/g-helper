@@ -4,7 +4,7 @@
     public class HarpeAceMiniWired : AsusMouse
     {
 
-        public HarpeAceMiniWired() : base(0x0B05, 0x1ACE, "mi_02&col03", true, 0x03)
+        public HarpeAceMiniWired() : base(0x0B05, 0x1B63, "mi_00", false)
         {
         }
 
