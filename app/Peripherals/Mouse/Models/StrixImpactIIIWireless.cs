@@ -15,7 +15,7 @@
 
         public override string GetDisplayName()
         {
-            return "Strix Imact III Wireless (OMNI)";
+            return "Strix Impact III Wireless (OMNI)";
         }
 
         public override PollingRate[] SupportedPollingrates()
