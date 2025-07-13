@@ -1,14 +1,10 @@
 ﻿namespace GHelper.Peripherals.Mouse.Models
 {
     //P520
-    public class StrixImpactIIIWireless : AsusMouse
+    public class StrixImpactIIIWirelessOmni : AsusMouse
     {
 
-        public StrixImpactIIIWireless() : base(0x0B05, 0x9999, "mi_00", false)
-        {
-        }
-
-        protected StrixImpactIIIWireless(ushort productId, bool wireless, string endpoint, byte reportId) : base(0x0B05, productId, endpoint, wireless, reportId)
+        public StrixImpactIIIWirelessOmni() : base(0x0B05, 0x1ACE, "mi_02&col03", true, 0x03)
         {
         }
 
@@ -19,7 +15,7 @@
 
         public override string GetDisplayName()
         {
-            return "Strix Imact III Wireless (Wired)";
+            return "Strix Imact III Wireless (OMNI)";
         }
 
         public override PollingRate[] SupportedPollingrates()
@@ -106,17 +102,4 @@
             return 64;
         }
     }
-
-    public class StrixImpactIIIWirelessOmni : StrixImpactIIIWireless
-    {
-        public StrixImpactIIIWirelessOmni() : base(0x1ACE, true, "mi_02&col03", 0x03)
-        {
-        }
-
-        public override string GetDisplayName()
-        {
-            return "Strix Imact III Wireless (OMNI)";
-        }
-    }
-
 }
