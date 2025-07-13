@@ -30,7 +30,8 @@
                 PollingRate.PR500Hz,
                 PollingRate.PR1000Hz,
                 PollingRate.PR2000Hz,
-                PollingRate.PR4000Hz
+                PollingRate.PR4000Hz,
+                PollingRate.PR8000Hz,
             };
         }
 
@@ -99,19 +100,6 @@
         {
             return 5;
         }
-
-        protected override PollingRate ParsePollingRate(byte[] packet)
-        {
-            if (packet[1] == 0x12 && packet[2] == 0x04 && packet[3] == 0x00)
-            {
-                if ((int)packet[13] > 7)
-                    return (PollingRate)packet[13] - 96;
-                return (PollingRate)packet[13];
-            }
-
-            return PollingRate.PR125Hz;
-        }
-
     }
 
     public class KerisAceIIOmni : KerisIIAceWired
