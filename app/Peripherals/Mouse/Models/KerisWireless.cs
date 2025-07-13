@@ -1,13 +1,13 @@
 ﻿namespace GHelper.Peripherals.Mouse.Models
 {
     //P513
-    public class ROGKerisWireless : AsusMouse
+    public class KerisWireless : AsusMouse
     {
-        public ROGKerisWireless() : base(0x0B05, 0x1960, "mi_00", true)
+        public KerisWireless() : base(0x0B05, 0x1960, "mi_00", true)
         {
         }
 
-        protected ROGKerisWireless(ushort vendorId, bool wireless) : base(0x0B05, vendorId, "mi_00", wireless)
+        protected KerisWireless(ushort vendorId, bool wireless) : base(0x0B05, vendorId, "mi_00", wireless)
         {
         }
 
@@ -160,9 +160,9 @@
     }
 
     //P509
-    public class ROGKeris : ROGKerisWireless
+    public class Keris : KerisWireless
     {
-        public ROGKeris() : base(0x195C, false)
+        public Keris() : base(0x195C, false)
         {
         }
 
@@ -187,9 +187,9 @@
         }
     }
 
-    public class ROGKerisWirelessWired : ROGKerisWireless
+    public class KerisWirelessWired : KerisWireless
     {
-        public ROGKerisWirelessWired() : base(0x195E, false)
+        public KerisWirelessWired() : base(0x195E, false)
         {
         }
 
@@ -199,9 +199,9 @@
         }
     }
 
-    public class ROGKerisWirelessEvaEdition : ROGKerisWireless
+    public class KerisWirelessEvaEdition : KerisWireless
     {
-        public ROGKerisWirelessEvaEdition() : base(0x1A59, true)
+        public KerisWirelessEvaEdition() : base(0x1A59, true)
         {
         }
 
@@ -211,9 +211,9 @@
         }
     }
 
-    public class ROGKerisWirelessEvaEditionWired : ROGKerisWireless
+    public class KerisWirelessEvaEditionWired : KerisWireless
     {
-        public ROGKerisWirelessEvaEditionWired() : base(0x1A57, false)
+        public KerisWirelessEvaEditionWired() : base(0x1A57, false)
         {
         }
 
