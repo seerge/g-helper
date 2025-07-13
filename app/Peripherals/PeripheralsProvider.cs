@@ -4,7 +4,6 @@ using HidSharp;
 using System.IO;
 using System.Runtime.CompilerServices;
 using System.Text;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace GHelper.Peripherals
 {
@@ -263,6 +262,7 @@ namespace GHelper.Peripherals
                     {
                         (0x42, 0x32) => new HarpeAceMiniOmni(), // B24082550833
                         (0x52, 0x39) => new KerisWirelssAimpointOmni(), //R90518300572
+                        (0x30, 0x32) => new KerisAceIIOmni(), // 024031316969
                         _ => new HarpeAceAimLabEditionOmni()
                     };
                     DetectMouse(omniMouse);
