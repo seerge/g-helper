@@ -18,7 +18,7 @@
 
         public override string GetDisplayName()
         {
-            return "ROG Keris II Ace";
+            return "ROG Keris II Ace (Wired)";
         }
 
 
@@ -110,7 +110,7 @@
 
         public override string GetDisplayName()
         {
-            return "Keris II Ace (OMNI)";
+            return "ROG Keris II Ace (OMNI)";
         }
 
         public override int USBPacketSize()
