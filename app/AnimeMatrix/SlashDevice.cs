@@ -23,6 +23,9 @@ namespace GHelper.AnimeMatrix
         Buzzer,
         Static,
         BatteryLevel,
+        FX1,
+        FX2,
+        FX3,
     }
 
     public class SlashPacket : Packet
@@ -66,7 +69,11 @@ namespace GHelper.AnimeMatrix
             { SlashMode.Buzzer, Properties.Strings.SlashBuzzer},
 
             { SlashMode.Static, Properties.Strings.SlashStatic},
-            { SlashMode.BatteryLevel, Properties.Strings.SlashBatteryLevel}
+            { SlashMode.BatteryLevel, Properties.Strings.SlashBatteryLevel},
+
+            { SlashMode.FX1, "FX1"},
+            { SlashMode.FX2, "FX2"},
+            { SlashMode.FX3, "FX3"}
         };
 
         private static Dictionary<SlashMode, byte> modeCodes = new Dictionary<SlashMode, byte>
@@ -91,6 +98,10 @@ namespace GHelper.AnimeMatrix
             { SlashMode.GameOver, 0x42},
             { SlashMode.Start, 0x43},
             { SlashMode.Buzzer, 0x44},
+
+            { SlashMode.FX1, 0x60},
+            { SlashMode.FX2, 0x61},
+            { SlashMode.FX3, 0x62},
         };
 
         public SlashDevice(ushort productId = 0x193B) : base(0x0B05, productId, 128)
