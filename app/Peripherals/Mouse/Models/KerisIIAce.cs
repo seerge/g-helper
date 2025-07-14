@@ -110,7 +110,7 @@
 
         public override string GetDisplayName()
         {
-            return "Keris Ace II (OMNI)";
+            return "Keris II Ace (OMNI)";
         }
 
         public override int USBPacketSize()
