@@ -65,7 +65,8 @@
                 || lightingMode == LightingMode.Breathing
                 || lightingMode == LightingMode.ColorCycle
                 || lightingMode == LightingMode.BatteryState
-                || lightingMode == LightingMode.React;
+                || lightingMode == LightingMode.React
+                || lightingMode == LightingMode.Off;
         }
 
         public override bool HasAutoPowerOff()

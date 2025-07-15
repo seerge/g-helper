@@ -1010,7 +1010,7 @@
             comboBoxAnimationSpeed.DropDownStyle = ComboBoxStyle.DropDownList;
             comboBoxAnimationSpeed.FlatStyle = FlatStyle.Flat;
             comboBoxAnimationSpeed.FormattingEnabled = true;
-            comboBoxAnimationSpeed.Location = new Point(490, 209);
+            comboBoxAnimationSpeed.Location = new Point(490, 208);
             comboBoxAnimationSpeed.Margin = new Padding(22, 0, 22, 0);
             comboBoxAnimationSpeed.Name = "comboBoxAnimationSpeed";
             comboBoxAnimationSpeed.Size = new Size(376, 40);
@@ -1046,8 +1046,8 @@
             buttonLightingColor.BorderRadius = 2;
             buttonLightingColor.FlatStyle = FlatStyle.Flat;
             buttonLightingColor.ForeColor = SystemColors.ControlText;
-            buttonLightingColor.Location = new Point(490, 144);
-            buttonLightingColor.Margin = new Padding(4, 8, 4, 8);
+            buttonLightingColor.Location = new Point(488, 145);
+            buttonLightingColor.Margin = new Padding(0);
             buttonLightingColor.Name = "buttonLightingColor";
             buttonLightingColor.Secondary = false;
             buttonLightingColor.Size = new Size(180, 50);
@@ -1162,7 +1162,7 @@
             comboBoxAutoPowerOff.DropDownStyle = ComboBoxStyle.DropDownList;
             comboBoxAutoPowerOff.FlatStyle = FlatStyle.Flat;
             comboBoxAutoPowerOff.FormattingEnabled = true;
-            comboBoxAutoPowerOff.Location = new Point(482, 58);
+            comboBoxAutoPowerOff.Location = new Point(490, 58);
             comboBoxAutoPowerOff.Margin = new Padding(22, 0, 22, 0);
             comboBoxAutoPowerOff.Name = "comboBoxAutoPowerOff";
             comboBoxAutoPowerOff.Size = new Size(378, 40);
