@@ -95,8 +95,14 @@ public static class AppConfig
         Thread.Sleep(500);
 
         var backupText = File.ReadAllText(backup);
+        bool isValid =
+            !string.IsNullOrWhiteSpace(backupText) &&
+            backupText.IndexOf('\0') == -1 &&                     
+            backupText.StartsWith("{") &&
+            backupText.Trim().EndsWith("}") &&
+            backupText.Length >= 10;
 
-        if (backupText.Contains("{") && backupText.Contains("}"))
+        if (isValid)
         {
             File.Copy(backup, configFile, true);
         }
