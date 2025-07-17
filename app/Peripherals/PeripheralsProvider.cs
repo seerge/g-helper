@@ -252,22 +252,24 @@ namespace GHelper.Peripherals
                     var response = new byte[64];
                     stream.Write(new byte[] { 0x03, 0x12, 0x12, 0x02 });
                     stream.Read(response);
-                    
+
                     Logger.WriteLine("Omni Mouse ID: " + BitConverter.ToString(response));
                     var signatureBytes = response.Skip(5).Take(12).ToArray();
-                    Logger.WriteLine("Signature: " + BitConverter.ToString(signatureBytes) + " = " + Encoding.ASCII.GetString(signatureBytes));
+                    string signatureStr = Encoding.ASCII.GetString(signatureBytes);
 
-                    var signature = (response[5], response[6]);
-                    AsusMouse omniMouse = signature switch
+                    Logger.WriteLine("Signature: " + BitConverter.ToString(signatureBytes) + " = " + signatureStr);
+
+                    AsusMouse omniMouse = signatureStr switch
                     {
-                        (0x42, 0x32) => new HarpeAceMiniOmni(),             // B24082550833
-                        (0x52, 0x39) => new KerisWirelssAimpointOmni(),     // R90518300572
-                        (0x30, 0x32) => new KerisAceIIOmni(),               // 024031316969
-                        (0x32, 0x30) => new StrixImpactIIIWirelessOmni(),   // 202405290700
-                        _ => new HarpeAceAimLabEditionOmni()                 
+                        var s when s.StartsWith("B23") => new HarpeAceAimLabEditionOmni(),      // B23072800062
+                        var s when s.StartsWith("B24") => new HarpeAceMiniOmni(),               // B24082550833
+                        var s when s.StartsWith("R9") => new KerisWirelssAimpointOmni(),        // R90518300572
+                        var s when s.StartsWith("02") => new KerisAceIIOmni(),                  // 024031316969
+                        var s when s.StartsWith("20") => new StrixImpactIIIWirelessOmni(),      // 202405290700
+                        _ => new HarpeAceAimLabEditionOmni()
                     };
+
                     DetectMouse(omniMouse);
-                    stream.Close();
                 }
             }
             catch
