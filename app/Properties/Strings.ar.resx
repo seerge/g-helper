@@ -876,9 +876,9 @@
     <value>الفاصل الزمني {0}ث</value>
   </data>
   <data name="DisableDynamicLighting" xml:space="preserve">
-    <value>Please disable Windows &gt; Dynamic Lighting</value>
+    <value>الرجاء تعطيل ويندوز &gt; الإضاءة الديناميكية</value>
   </data>
   <data name="AmbientModeResources" xml:space="preserve">
-    <value>Ambient mode may increase resource usage</value>
+    <value>الوضع المحيط قد يزيد من استخدام الموارد</value>
   </data>
 </root>
