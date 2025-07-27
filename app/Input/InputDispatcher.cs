@@ -1185,7 +1185,7 @@ namespace GHelper.Input
         {
             if (!AppConfig.IsDUO()) return;
             int brightness = AppConfig.Get("screenpad");
-            if (brightness >= 0) ApplyScreenpadAction(brightness);
+            if (brightness != -1) ApplyScreenpadAction(brightness);
         }
 
         public static void SetStatusLED(bool status)
