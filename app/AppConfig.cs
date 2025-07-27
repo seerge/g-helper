@@ -421,7 +421,7 @@ public static class AppConfig
 
     public static bool IsDUO()
     {
-        return ContainsModel("Duo") || ContainsModel("GX550") || ContainsModel("GX650") || ContainsModel("UX840") || ContainsModel("UX482");
+        return ContainsModel("Duo") || ContainsModel("GX550") || ContainsModel("GX551") || ContainsModel("GX650") || ContainsModel("UX840") || ContainsModel("UX482");
     }
 
     public static bool IsM4Button()
