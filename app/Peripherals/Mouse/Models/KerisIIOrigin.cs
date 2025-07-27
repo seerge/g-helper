@@ -1,13 +1,13 @@
 ﻿namespace GHelper.Peripherals.Mouse.Models
 {
 
-    public class KerisIIAceWired : AsusMouse
+    public class KerisIIOriginWired : AsusMouse
     {
-        public KerisIIAceWired() : base(0x0B05, 0x1B16, "mi_00", true)
+        public KerisIIOriginWired() : base(0x0B05, 0x1C0C, "mi_00", true)
         {
         }
 
-        protected KerisIIAceWired(ushort productId, bool wireless, string endpoint, byte reportId) : base(0x0B05, productId, endpoint, wireless, reportId)
+        protected KerisIIOriginWired(ushort productId, bool wireless, string endpoint, byte reportId) : base(0x0B05, productId, endpoint, wireless, reportId)
         {
         }
 
@@ -18,7 +18,7 @@
 
         public override string GetDisplayName()
         {
-            return "ROG Keris II Ace (Wired)";
+            return "ROG Keris II Origin (Wired)";
         }
 
 
@@ -51,6 +51,11 @@
         public override bool HasRGB()
         {
             return true;
+        }
+
+        public override LightingZone[] SupportedLightingZones()
+        {
+            return new LightingZone[] { LightingZone.Logo, LightingZone.Scrollwheel, LightingZone.Underglow };
         }
 
         public override bool HasXYDPI()
@@ -98,22 +103,23 @@
         {
             return 5;
         }
-    }
-
-    public class KerisAceIIOmni : KerisIIAceWired
-    {
-        public KerisAceIIOmni() : base(0x1ACE, true, "mi_02&col03", 0x03)
-        {
-        }
-
-        public override string GetDisplayName()
-        {
-            return "ROG Keris II Ace (OMNI)";
-        }
 
         public override int USBPacketSize()
         {
             return 64;
         }
+    }
+
+    public class KerisIIOriginOmni : KerisIIOriginWired
+    {
+        public KerisIIOriginOmni() : base(0x1ACE, true, "mi_02&col03", 0x03)
+        {
+        }
+
+        public override string GetDisplayName()
+        {
+            return "ROG Keris II Origin (OMNI)";
+        }
+ 
     }
 }

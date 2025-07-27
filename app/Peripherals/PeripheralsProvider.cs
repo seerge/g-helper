@@ -219,6 +219,7 @@ namespace GHelper.Peripherals
             DetectMouse(new KerisWirelssAimpoint());
             DetectMouse(new KerisWirelssAimpointWired());
             DetectMouse(new KerisIIAceWired());
+            DetectMouse(new KerisIIOriginWired()); 
             DetectMouse(new PugioII());
             DetectMouse(new PugioIIWired());
             DetectMouse(new StrixImpactII());
@@ -264,7 +265,8 @@ namespace GHelper.Peripherals
                         var s when s.StartsWith("B23") => new HarpeAceAimLabEditionOmni(),      // B23072800062
                         var s when s.StartsWith("B24") => new HarpeAceMiniOmni(),               // B24082550833
                         var s when s.StartsWith("R9") => new KerisWirelssAimpointOmni(),        // R90518300572
-                        var s when s.StartsWith("02") => new KerisAceIIOmni(),                  // 024031316969
+                        var s when s.StartsWith("024") => new KerisAceIIOmni(),                 // 024031316969
+                        var s when s.StartsWith("025") => new KerisIIOriginOmni(),              // 025050613700
                         var s when s.StartsWith("20") => new StrixImpactIIIWirelessOmni(),      // 202405290700
                         _ => new HarpeAceAimLabEditionOmni()
                     };
