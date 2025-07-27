@@ -148,7 +148,7 @@ namespace GHelper.Input
 
             if (!AppConfig.Is("skip_hotkeys"))
             {
-                if (AppConfig.IsDUO())
+                if (AppConfig.IsDUO() || (AppConfig.IsVivoZenbook() && AppConfig.IsOLED()))
                 {
                     hook.RegisterHotKey(keyModifierAlt, Keys.F7);
                     hook.RegisterHotKey(keyModifierAlt, Keys.F8);
@@ -482,10 +482,12 @@ namespace GHelper.Input
                         ToggleTouchScreen();
                         break;
                     case Keys.F7:
-                        SetScreenpad(-10);
+                        if (AppConfig.IsDUO()) SetScreenpad(-10);
+                        else SetBrightnessDimming(-10);
                         break;
                     case Keys.F8:
-                        SetScreenpad(10);
+                        if (AppConfig.IsDUO()) SetScreenpad(10);
+                        else SetBrightnessDimming(10);
                         break;
                     case Keys.F13:
                         ToggleScreenRate();
