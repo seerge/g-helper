@@ -42,6 +42,9 @@ namespace GHelper
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Fans));
             panelFans = new Panel();
             labelTip = new Label();
+            panelFanPlugins = new Panel();
+            comboFanPlugin = new RComboBox();
+            checkEnableFanPlugin = new RCheckBox();
             tableFanCharts = new TableLayoutPanel();
             chartGPU = new Chart();
             chartCPU = new Chart();
@@ -219,6 +222,7 @@ namespace GHelper
             panelFans.AutoSize = true;
             panelFans.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             panelFans.Controls.Add(labelTip);
+            panelFans.Controls.Add(panelFanPlugins);
             panelFans.Controls.Add(tableFanCharts);
             panelFans.Controls.Add(panelTitleFans);
             panelFans.Controls.Add(panelApplyFans);
@@ -243,6 +247,41 @@ namespace GHelper
             labelTip.TabIndex = 40;
             labelTip.Text = "500,300";
             // 
+            // panelFanPlugins
+            // 
+            panelFanPlugins.Controls.Add(comboFanPlugin);
+            panelFanPlugins.Controls.Add(checkEnableFanPlugin);
+            panelFanPlugins.Dock = DockStyle.Top;
+            panelFanPlugins.Location = new Point(0, 66);
+            panelFanPlugins.Name = "panelFanPlugins";
+            panelFanPlugins.Size = new Size(1038, 54);
+            panelFanPlugins.TabIndex = 11;
+            // 
+            // checkEnableFanPlugin
+            // 
+            checkEnableFanPlugin.AutoSize = true;
+            checkEnableFanPlugin.Location = new Point(10, 15);
+            checkEnableFanPlugin.Name = "checkEnableFanPlugin";
+            checkEnableFanPlugin.Size = new Size(185, 29);
+            checkEnableFanPlugin.TabIndex = 0;
+            checkEnableFanPlugin.Text = "Enable Fan Plugin";
+            checkEnableFanPlugin.UseVisualStyleBackColor = true;
+            // 
+            // comboFanPlugin
+            // 
+            comboFanPlugin.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            comboFanPlugin.BorderColor = Color.White;
+            comboFanPlugin.ButtonColor = Color.FromArgb(255, 255, 255);
+            comboFanPlugin.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboFanPlugin.Enabled = false;
+            comboFanPlugin.FlatStyle = FlatStyle.Flat;
+            comboFanPlugin.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            comboFanPlugin.FormattingEnabled = true;
+            comboFanPlugin.Location = new Point(211, 13);
+            comboFanPlugin.Name = "comboFanPlugin";
+            comboFanPlugin.Size = new Size(815, 33);
+            comboFanPlugin.TabIndex = 1;
+            // 
             // tableFanCharts
             // 
             tableFanCharts.AutoSize = true;
@@ -253,7 +292,7 @@ namespace GHelper
             tableFanCharts.Controls.Add(chartXGM, 0, 2);
             tableFanCharts.Controls.Add(chartMid, 0, 2);
             tableFanCharts.Dock = DockStyle.Fill;
-            tableFanCharts.Location = new Point(0, 66);
+            tableFanCharts.Location = new Point(0, 120);
             tableFanCharts.Margin = new Padding(4);
             tableFanCharts.Name = "tableFanCharts";
             tableFanCharts.Padding = new Padding(10, 0, 10, 5);
@@ -1926,5 +1965,8 @@ namespace GHelper
         private Label labelGPUPowerTitle;
         private TrackBar trackGPUPower;
         private TableLayoutPanel tableLayoutModes;
+        private Panel panelFanPlugins;
+        private RCheckBox checkEnableFanPlugin;
+        private RComboBox comboFanPlugin;
     }
 }
