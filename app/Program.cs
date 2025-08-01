@@ -251,15 +251,9 @@ namespace GHelper
 
             modeControl.AutoPerformance(powerChanged);
 
-            bool switched = gpuControl.AutoGPUMode();
-
-            if (!switched)
-            {
-                gpuControl.InitGPUMode();
-                ScreenControl.AutoScreen();
-            }
-
             settingsForm.matrixControl.SetDevice(true);
+            InputDispatcher.InitStatusLed();
+            XGM.InitLight();
 
             if (AppConfig.IsAlly())
             {
@@ -270,9 +264,14 @@ namespace GHelper
                 InputDispatcher.AutoKeyboard();
             }
 
+            bool switched = gpuControl.AutoGPUMode(delay: 1000);
+            if (!switched)
+            {
+                gpuControl.InitGPUMode();
+                ScreenControl.AutoScreen();
+            }
+
             ScreenControl.InitMiniled();
-            InputDispatcher.InitStatusLed();
-            XGM.InitLight();
             VisualControl.InitBrightness();
 
             return true;
