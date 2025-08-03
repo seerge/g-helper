@@ -825,10 +825,10 @@ Voulez-vous continuer ?</value>
     <value>Slash</value>
   </data>
   <data name="SlashLoading" xml:space="preserve">
-    <value>Loading</value>
+    <value>Сhargement</value>
   </data>
   <data name="SlashBitStream" xml:space="preserve">
-    <value>Bit Stream</value>
+    <value>Flux de bits</value>
   </data>
   <data name="SlashTransmission" xml:space="preserve">
     <value>Transmission</value>
@@ -852,33 +852,33 @@ Voulez-vous continuer ?</value>
     <value>Interfacing</value>
   </data>
   <data name="SlashRamp" xml:space="preserve">
-    <value>Ramp</value>
+    <value>Rampe</value>
   </data>
   <data name="SlashGameOver" xml:space="preserve">
     <value>Game Over</value>
   </data>
   <data name="SlashStart" xml:space="preserve">
-    <value>Start</value>
+    <value>Début</value>
   </data>
   <data name="SlashBuzzer" xml:space="preserve">
     <value>Buzzer</value>
   </data>
   <data name="SlashStatic" xml:space="preserve">
-    <value>Static</value>
+    <value>Statique</value>
   </data>
   <data name="SlashBatteryLevel" xml:space="preserve">
-    <value>Battery Level</value>
+    <value>Niveau de la batterie</value>
   </data>
   <data name="IntervalOff" xml:space="preserve">
-    <value>Interval Off</value>
+    <value>Intervalle désactivé</value>
   </data>
   <data name="IntervalSeconds" xml:space="preserve">
-    <value>Interval {0}s</value>
+    <value>Intervalle {0}s</value>
   </data>
   <data name="DisableDynamicLighting" xml:space="preserve">
-    <value>Please disable Windows &gt; Dynamic Lighting</value>
+    <value>Veuillez désactiver l'Éclairage dynamique Windows &gt;</value>
   </data>
   <data name="AmbientModeResources" xml:space="preserve">
-    <value>Ambient mode may increase resource usage</value>
+    <value>Le mode Ambiant peut augmenter l'utilisation des ressources</value>
   </data>
 </root>
