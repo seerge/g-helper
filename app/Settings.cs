@@ -429,15 +429,25 @@ namespace GHelper
 
         }
 
-        public void CycleVisualMode()
+        public void CycleVisualMode(int delta)
         {
 
             if (comboVisual.Items.Count < 1) return;
 
-            if (comboVisual.SelectedIndex < comboVisual.Items.Count - 1)
-                comboVisual.SelectedIndex += 1;
+            if (delta > 0)
+            {
+                if (comboVisual.SelectedIndex < comboVisual.Items.Count - 1)
+                    comboVisual.SelectedIndex += 1;
+                else
+                    comboVisual.SelectedIndex = 0;
+            }
             else
-                comboVisual.SelectedIndex = 0;
+            {
+                if (comboVisual.SelectedIndex > 0)
+                    comboVisual.SelectedIndex -= 1;
+                else
+                    comboVisual.SelectedIndex = comboVisual.Items.Count - 1;
+            }
 
             Program.toast.RunToast(comboVisual.GetItemText(comboVisual.SelectedItem), ToastIcon.BrightnessUp);
         }

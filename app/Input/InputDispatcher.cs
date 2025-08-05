@@ -586,7 +586,7 @@ namespace GHelper.Input
                     Program.settingsForm.BeginInvoke(Program.settingsForm.CycleAuraMode, Control.ModifierKeys == Keys.Shift ? -1 : 1);
                     break;
                 case "visual":
-                    Program.settingsForm.BeginInvoke(Program.settingsForm.CycleVisualMode);
+                    Program.settingsForm.BeginInvoke(Program.settingsForm.CycleVisualMode, Control.ModifierKeys == Keys.Shift ? -1 : 1);
                     break;
                 case "performance":
                     modeControl.CyclePerformanceMode(Control.ModifierKeys == Keys.Shift);
