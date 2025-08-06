@@ -266,6 +266,7 @@ namespace GHelper.Peripherals
                         var s when s.StartsWith("B23") => new HarpeAceAimLabEditionOmni(),              // B23072800062
                         var s when s.StartsWith("B241226667") => new HarpeAceAimLabEditionOmni(),       // B24122666771
                         var s when s.StartsWith("B24") => new HarpeAceMiniOmni(),                       // B24082550833
+                        var s when s.StartsWith("B25") => new HarpeAceMiniOmni(),                       // B25030817186
                         var s when s.StartsWith("R9") => new KerisWirelssAimpointOmni(),                // R90518300572
                         var s when s.StartsWith("F24") => new KerisWirelssAimpointOmni(),               // F24B21DD03F4
                         var s when s.StartsWith("FB") => new KerisWirelssAimpointOmni(),                // FBA0CC1D6F9C
