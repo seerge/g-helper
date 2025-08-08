@@ -881,10 +881,10 @@ Folytatni szeretnéd?</value>
   <data name="AmbientModeResources" xml:space="preserve">
     <value>Ambient mode may increase resource usage</value>
   </data>
-  <data name="EstimatedToLimit" xml:space="preserve">
+  <data name="EstimatedToFullBattery" xml:space="preserve">
     <value />
   </data>
-  <data name="EstimatedToEmpty" xml:space="preserve">
+  <data name="EstimatedBatteryRemaining" xml:space="preserve">
     <value />
   </data>
 </root>

@@ -882,20 +882,20 @@ namespace GHelper.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Estimated (to empty).
+        ///   Looks up a localized string similar to Remaining.
         /// </summary>
-        internal static string EstimatedToEmpty {
+        internal static string EstimatedBatteryRemaining {
             get {
-                return ResourceManager.GetString("EstimatedToEmpty", resourceCulture);
+                return ResourceManager.GetString("EstimatedBatteryRemaining", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Estimated (to limit).
+        ///   Looks up a localized string similar to To Full.
         /// </summary>
-        internal static string EstimatedToLimit {
+        internal static string EstimatedToFullBattery {
             get {
-                return ResourceManager.GetString("EstimatedToLimit", resourceCulture);
+                return ResourceManager.GetString("EstimatedToFullBattery", resourceCulture);
             }
         }
         
