@@ -54,10 +54,6 @@ namespace GHelper.Battery
 
             if (AppConfig.IsChargeLimit6080())
             {
-                // if (limit > 85) limit = 100;
-                // else if (limit >= 80) limit = 80;
-                // else if (limit < 60) limit = 60;
-
                 if (limit < 60) limit = 60;
             }
 
@@ -90,7 +86,7 @@ namespace GHelper.Battery
         }
 
         /// <summary>
-        /// Workaround for precise regulation of battery charge limit on models normally limited to 60% or 80%. Periodically monitors windows battery level and adjusts the charge limit accordingly.
+        /// Workaround to allow charge limits between 80% and 100% on models normally limited to between 60% and 80%. Periodically monitors windows battery level and adjusts the charge limit accordingly.
         /// </summary>
         /// <param name="interval">Time between checks.</param>
         public static async Task Regulate6080BatteryChargeLimit(TimeSpan interval)
@@ -106,7 +102,8 @@ namespace GHelper.Battery
 
                 var limit = AppConfig.Get("charge_limit");
 
-                if (limit <= 60)
+                // Don't need to worry about below 80, this is supported natively
+                if (limit <= 80)
                 {
                     continue;
                 }
