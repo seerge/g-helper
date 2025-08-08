@@ -886,5 +886,10 @@ namespace GHelper
         {
 
         }
+
+        private void checkEstimateBatteryTime_CheckedChanged(object sender, EventArgs e)
+        {
+            AppConfig.Set("estimate_battery_time", checkEstimateBatteryTime.Checked ? 1 : 0);
+        }
     }
 }

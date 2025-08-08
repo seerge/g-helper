@@ -89,6 +89,11 @@ namespace GHelper.Battery
 
         public static string GetEstimatedBatteryTime()
         {
+            if (AppConfig.Get("estimate_battery_time") != 1)
+            {
+                return "";
+            }
+
             // Not charging or discharging
             if (HardwareControl.batteryRate == 0 || HardwareControl.batteryRate is null)
             {

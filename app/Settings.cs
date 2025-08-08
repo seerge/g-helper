@@ -1462,6 +1462,8 @@ namespace GHelper
             string battery = "";
             string charge = "";
 
+            string batteryTime = BatteryControl.GetEstimatedBatteryTime();
+
             HardwareControl.ReadSensors();
             Task.Run((Action)PeripheralsProvider.RefreshBatteryForAllDevices);
 
@@ -1487,6 +1489,7 @@ namespace GHelper
             string trayTip = "CPU" + cpuTemp + " " + HardwareControl.cpuFan;
             if (gpuTemp.Length > 0) trayTip += "\nGPU" + gpuTemp + " " + HardwareControl.gpuFan;
             if (battery.Length > 0) trayTip += "\n" + battery;
+            if (batteryTime != "") trayTip += "\n" + batteryTime;
 
             if (Program.settingsForm.IsHandleCreated)
                 Program.settingsForm.BeginInvoke(delegate
@@ -1504,7 +1507,7 @@ namespace GHelper
                     labelBattery.Text = battery;
                     if (!batteryMouseOver && !batteryFullMouseOver) labelCharge.Text = charge;
 
-                    labelEstimatedBatteryTime.Text = BatteryControl.GetEstimatedBatteryTime();
+                    labelEstimatedBatteryTime.Text = batteryTime;
 
                     //panelPerformance.AccessibleName = labelPerf.Text + " " + trayTip;
                 });
