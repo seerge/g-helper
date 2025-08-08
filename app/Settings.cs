@@ -302,7 +302,7 @@ namespace GHelper
 
         private void LabelBacklight_Click(object? sender, EventArgs e)
         {
-            if (DynamicLightingHelper.IsEnabled()) DynamicLightingHelper.OpenSettings();
+            if (AppConfig.IsDynamicLighting() && DynamicLightingHelper.IsEnabled()) DynamicLightingHelper.OpenSettings();
         }
 
         private void ButtonFHD_Click(object? sender, EventArgs e)
