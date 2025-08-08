@@ -109,12 +109,12 @@ namespace GHelper.Battery
             {
                 var estimateTimeToEmpty = TimeSpan.FromHours((double)(HardwareControl.batteryCapacity / Math.Abs((decimal)HardwareControl.batteryRate)));
 
-                return Strings.EstimatedToEmpty + ": " + EstimatedTimeToString(estimateTimeToEmpty);
+                return Strings.EstimatedBatteryRemaining + ": " + EstimatedTimeToString(estimateTimeToEmpty);
             }
 
             var estimatedTimeToLimit = TimeSpan.FromHours((double)((HardwareControl.batteryCapacity - (HardwareControl.chargeCapacity / 1000)) / HardwareControl.batteryRate));
 
-            return Strings.EstimatedToLimit + ": " + EstimatedTimeToString(estimatedTimeToLimit);
+            return Strings.EstimatedToFullBattery + ": " + EstimatedTimeToString(estimatedTimeToLimit);
         }
 
         private static string EstimatedTimeToString(TimeSpan estimatedTime)
