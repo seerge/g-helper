@@ -882,6 +882,24 @@ namespace GHelper.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Estimated (to empty).
+        /// </summary>
+        internal static string EstimatedToEmpty {
+            get {
+                return ResourceManager.GetString("EstimatedToEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Estimated (to limit).
+        /// </summary>
+        internal static string EstimatedToLimit {
+            get {
+                return ResourceManager.GetString("EstimatedToLimit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Export Profile.
         /// </summary>
         internal static string Export {
@@ -2336,15 +2354,6 @@ namespace GHelper.Properties {
         internal static string Zoom {
             get {
                 return ResourceManager.GetString("Zoom", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Looks up a localized string similar to Estimated.
-        /// </summary>
-        internal static string Estimated {
-            get {
-                return ResourceManager.GetString("Estimated", resourceCulture);
             }
         }
     }

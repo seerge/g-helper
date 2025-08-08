@@ -881,4 +881,10 @@ Do you still want to continue?</value>
   <data name="AmbientModeResources" xml:space="preserve">
     <value>Ambient mode may increase resource usage</value>
   </data>
+  <data name="EstimatedToLimit" xml:space="preserve">
+    <value>Estimated (to limit)</value>
+  </data>
+  <data name="EstimatedToEmpty" xml:space="preserve">
+    <value>Estimated (to empty)</value>
+  </data>
 </root>

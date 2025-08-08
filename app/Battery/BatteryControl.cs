@@ -89,36 +89,37 @@ namespace GHelper.Battery
 
         public static string GetEstimatedBatteryTime()
         {
-            if (HardwareControl.batteryRate == 0)
+            // Not charging or discharging
+            if (HardwareControl.batteryRate == 0 || HardwareControl.batteryRate is null)
+            {
+                return "";
+            }
+
+            if (HardwareControl.fullCapacity is null || HardwareControl.chargeCapacity is null)
             {
                 return "";
             }
 
             if (HardwareControl.batteryRate < 0)
             {
-                var estimateTimeToEmpty = TimeSpan.FromHours((double)(HardwareControl.batteryCapacity / HardwareControl.batteryRate));
+                var estimateTimeToEmpty = TimeSpan.FromHours((double)(HardwareControl.batteryCapacity / Math.Abs((decimal)HardwareControl.batteryRate)));
 
-                return Strings.Estimated + ": " + EstimatedTimeToString(estimateTimeToEmpty);
+                return Strings.EstimatedToEmpty + ": " + EstimatedTimeToString(estimateTimeToEmpty);
             }
 
-            if (HardwareControl.fullCapacity is null)
+            var estimatedTimeToLimit = TimeSpan.FromHours((double)((HardwareControl.batteryCapacity - (HardwareControl.chargeCapacity / 1000)) / HardwareControl.batteryRate));
+
+            return Strings.EstimatedToLimit + ": " + EstimatedTimeToString(estimatedTimeToLimit);
+        }
+
+        private static string EstimatedTimeToString(TimeSpan estimatedTime)
+        {
+            if (estimatedTime.Hours == 0)
             {
-                return Strings.Estimated + ": " + "Unknown";
+                return estimatedTime.Minutes + "min";
             }
 
-            var estimatedTimeToFull = TimeSpan.FromHours((double)(((decimal)HardwareControl.fullCapacity - HardwareControl.batteryCapacity) / HardwareControl.batteryRate)!);
-
-            return Strings.Estimated + ": " + EstimatedTimeToString(estimatedTimeToFull);
-
-            string EstimatedTimeToString(TimeSpan estimatedTime)
-            {
-                if (estimatedTime.Hours == 0)
-                {
-                    return estimatedTime.Minutes + "min";
-                }
-
-                return $"{estimatedTime.Hours}h {estimatedTime.Minutes}min";
-            }
+            return $"{estimatedTime.Hours}h {estimatedTime.Minutes}min";
         }
     }
 }
