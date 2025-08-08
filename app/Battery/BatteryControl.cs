@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Management;
 
 namespace GHelper.Battery
 {
@@ -53,9 +54,11 @@ namespace GHelper.Battery
 
             if (AppConfig.IsChargeLimit6080())
             {
-                if (limit > 85) limit = 100;
-                else if (limit >= 80) limit = 80;
-                else if (limit < 60) limit = 60;
+                // if (limit > 85) limit = 100;
+                // else if (limit >= 80) limit = 80;
+                // else if (limit < 60) limit = 60;
+
+                if (limit < 60) limit = 60;
             }
 
             Program.acpi.DeviceSet(AsusACPI.BatteryLimit, limit, "BatteryLimit");
@@ -86,5 +89,38 @@ namespace GHelper.Battery
             }
         }
 
+        /// <summary>
+        /// Workaround for precise regulation of battery charge limit on models normally limited to 60% or 80%. Periodically monitors windows battery level and adjusts the charge limit accordingly.
+        /// </summary>
+        /// <param name="interval">Time between </param>
+        public static async Task Regulate6080BatteryChargeLimit(TimeSpan interval)
+        {
+            var timer = new PeriodicTimer(interval);
+
+            while (await timer.WaitForNextTickAsync())
+            {
+                if (chargeFull)
+                {
+                    continue;
+                }
+
+                var limit = AppConfig.Get("charge_limit");
+
+                if (limit <= 60)
+                {
+                    continue;
+                }
+
+                var batteryLevel = SystemInformation.PowerStatus.BatteryLifePercent;
+                var setLimit = 100;
+
+                if (batteryLevel >= limit)
+                {
+                    setLimit = 60;
+                }
+
+                Program.acpi.DeviceSet(AsusACPI.BatteryLimit, setLimit, "BatteryLimit");
+            }
+        }
     }
 }
