@@ -1504,6 +1504,8 @@ namespace GHelper
                     labelBattery.Text = battery;
                     if (!batteryMouseOver && !batteryFullMouseOver) labelCharge.Text = charge;
 
+                    labelEstimatedBatteryTime.Text = BatteryControl.GetEstimatedBatteryTime();
+
                     //panelPerformance.AccessibleName = labelPerf.Text + " " + trayTip;
                 });
 

@@ -2120,6 +2120,7 @@ namespace GHelper
         private Label labelMatrix;
         private Panel panelBatteryTitle;
         private Label labelBattery;
+        private Label labelEstimatedBatteryTime;
         private PictureBox pictureBattery;
         private Label labelBatteryTitle;
         private Panel panelStartup;

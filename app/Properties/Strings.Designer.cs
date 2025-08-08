@@ -2338,5 +2338,14 @@ namespace GHelper.Properties {
                 return ResourceManager.GetString("Zoom", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Estimated.
+        /// </summary>
+        internal static string Estimated {
+            get {
+                return ResourceManager.GetString("Estimated", resourceCulture);
+            }
+        }
     }
 }

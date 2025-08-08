@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using GHelper.Properties;
 
 namespace GHelper.Battery
 {
@@ -86,5 +87,38 @@ namespace GHelper.Battery
             }
         }
 
+        public static string GetEstimatedBatteryTime()
+        {
+            if (HardwareControl.batteryRate == 0)
+            {
+                return "";
+            }
+
+            if (HardwareControl.batteryRate < 0)
+            {
+                var estimateTimeToEmpty = TimeSpan.FromHours((double)(HardwareControl.batteryCapacity / HardwareControl.batteryRate));
+
+                return Strings.Estimated + ": " + EstimatedTimeToString(estimateTimeToEmpty);
+            }
+
+            if (HardwareControl.fullCapacity is null)
+            {
+                return Strings.Estimated + ": " + "Unknown";
+            }
+
+            var estimatedTimeToFull = TimeSpan.FromHours((double)(((decimal)HardwareControl.fullCapacity - HardwareControl.batteryCapacity) / HardwareControl.batteryRate)!);
+
+            return Strings.Estimated + ": " + EstimatedTimeToString(estimatedTimeToFull);
+
+            string EstimatedTimeToString(TimeSpan estimatedTime)
+            {
+                if (estimatedTime.Hours == 0)
+                {
+                    return estimatedTime.Minutes + "min";
+                }
+
+                return $"{estimatedTime.Hours}h {estimatedTime.Minutes}min";
+            }
+        }
     }
 }
