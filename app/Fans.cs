@@ -2,6 +2,8 @@
 using GHelper.Gpu.NVidia;
 using GHelper.Mode;
 using GHelper.UI;
+
+using GHelper.Plugins;
 using GHelper.USB;
 using Ryzen;
 using System.Diagnostics;
@@ -29,6 +31,9 @@ namespace GHelper
         NvidiaGpuControl? nvControl = null;
         ModeControl modeControl = Program.modeControl;
 
+        private FanPluginManager fanPluginManager = Program.modeControl.fanPluginManager;
+        private Dictionary<string, string> fanPlugins = new();
+
         FanSensorControl fanSensorControl;
 
         static int gpuPowerBase = 0;
@@ -36,8 +41,12 @@ namespace GHelper
 
         public Fans()
         {
-
             InitializeComponent();
+            Load += Fans_Load;
+        }
+        private void Fans_Load(object? sender, EventArgs e)
+        {
+            InitPlugins();
 
             fanSensorControl = new FanSensorControl(this);
 
@@ -233,7 +242,38 @@ namespace GHelper
             if (Program.acpi.DeviceGet(AsusACPI.DevsCPUFanCurve) < 0) buttonCalibrate.Visible = false;
 
             FormClosed += Fans_FormClosed;
+        }
 
+
+        private void InitPlugins()
+        {
+            var fanPluginList = fanPluginManager.DiscoverPlugins();
+            comboFanPlugin.DataSource = fanPluginList;
+
+            if (fanPluginList.Count > 0)
+            {
+                int selectedId = AppConfig.GetMode("fan_plugin_id", 0);
+                if (selectedId >= 0 && selectedId < fanPluginList.Count)
+                {
+                    comboFanPlugin.SelectedIndex = selectedId;
+                }
+                else
+                {
+                    comboFanPlugin.SelectedIndex = 0;
+                }
+
+                if (comboFanPlugin.SelectedValue is not null)
+                {
+                    fanPluginManager.SetActivePlugin(comboFanPlugin.SelectedValue.ToString()!);
+                }
+            }
+
+            checkEnableFanPlugin.Checked = AppConfig.Is("fan_plugin_enabled");
+
+            comboFanPlugin.SelectedValueChanged += ComboFanPlugin_SelectedValueChanged;
+            checkEnableFanPlugin.CheckedChanged += CheckEnableFanPlugin_CheckedChanged;
+
+            TogglePluginPanel();
         }
 
 
@@ -1361,17 +1401,49 @@ namespace GHelper
                 if (curXVal < lowerPoint.XValue)
                 {
 
+                    
                     for (int i = index - 1; i >= 0; i--)
                     {
                         DataPoint curLower = series.Points[i];
                         if (curLower.XValue <= curXVal) break;
-
                         curLower.XValue = curXVal;
                     }
                 }
             }
         }
 
-    }
+        private void CheckEnableFanPlugin_CheckedChanged(object? sender, EventArgs e)
+        {
+            TogglePluginPanel();
+            AppConfig.Set("fan_plugin_enabled", checkEnableFanPlugin.Checked ? 1 : 0);
+            modeControl.AutoFans(true);
+        }
 
+        private void ComboFanPlugin_SelectedValueChanged(object? sender, EventArgs e)
+        {
+            if (comboFanPlugin.SelectedValue is null) return;
+
+            string fileName = comboFanPlugin.SelectedValue.ToString()!;
+            fanPluginManager.SetActivePlugin(fileName);
+            AppConfig.SetMode("fan_plugin_id", comboFanPlugin.SelectedIndex);
+
+            if (checkEnableFanPlugin.Checked)
+            {
+                modeControl.AutoFans(true);
+            }
+        }
+        private void TogglePluginPanel()
+        {
+            bool pluginEnabled = checkEnableFanPlugin.Checked;
+
+            comboFanPlugin.Enabled = pluginEnabled;
+
+            // When plugin mode is active, manual fan controls are disabled and visually hidden.
+            bool manualControlsEnabled = !pluginEnabled;
+            tableFanCharts.Visible = manualControlsEnabled;
+            checkApplyFans.Enabled = manualControlsEnabled;
+            buttonReset.Enabled = manualControlsEnabled;
+            buttonCalibrate.Enabled = manualControlsEnabled;
+        }
+    }
 }
