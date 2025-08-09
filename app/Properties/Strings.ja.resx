@@ -876,9 +876,9 @@
     <value>間隔 {0}秒</value>
   </data>
   <data name="DisableDynamicLighting" xml:space="preserve">
-    <value>Please disable Windows &gt; Dynamic Lighting</value>
+    <value>Windows &gt; 動的ライティングを無効にしてください</value>
   </data>
   <data name="AmbientModeResources" xml:space="preserve">
-    <value>Ambient mode may increase resource usage</value>
+    <value>アンビエントモードはリソース使用量を増加させる可能性があります</value>
   </data>
 </root>
