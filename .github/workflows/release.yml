@@ -8,7 +8,9 @@ on:
 
 permissions:
   contents: write
-
+  id-token: write
+  attestations: write
+  
 jobs:
   release:
     runs-on: windows-2022
@@ -27,3 +29,9 @@ jobs:
         GH_TOKEN: ${{ github.token }}
       run: |
         gh release upload ${{ github.ref_name }} app/bin/x64/Release/net8.0-windows/win-x64/publish/GHelper.exe GHelper.zip
+    - name: Generate SLSA build provenance attestation
+      uses: actions/attest-build-provenance@v2
+      with:
+        subject-path: |
+          app/bin/x64/Release/net8.0-windows/win-x64/publish/GHelper.exe
+          GHelper.zip
