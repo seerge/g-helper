@@ -123,6 +123,11 @@
             return true;
         }
 
+        public override int DPIIncrements()
+        {
+            // TX Gaming Mini might use 50 as increment instead of 100
+            return 50;
+        }
     }
 
     //P519_Wired
