@@ -113,6 +113,12 @@
         {
         }
 
+        public override int DPIIncrements()
+        {
+            return 50;
+        }
+
+
         public override string GetDisplayName()
         {
             return "TX GAMING MOUSE Mini (Wireless)";
