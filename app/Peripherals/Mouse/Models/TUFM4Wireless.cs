@@ -78,7 +78,7 @@
 
         public override int DPIIncrements()
         {
-            return 50;
+            return 100;
         }
 
         public override bool CanChangeDPIProfile()
@@ -131,6 +131,12 @@
         public TXGamingMiniWired() : base(0x1AF3, false)
         {
         }
+
+        public override int DPIIncrements()
+        {
+            return 50;
+        }
+
 
         public override string GetDisplayName()
         {
