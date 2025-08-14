@@ -78,7 +78,7 @@
 
         public override int DPIIncrements()
         {
-            return 100;
+            return 50;
         }
 
         public override bool CanChangeDPIProfile()
