@@ -799,10 +799,10 @@ public class AsusACPI
 
     }
 
-    public void TUFKeyboardBrightness(int brightness)
+    public void TUFKeyboardBrightness(int brightness, string log = "TUF Backlight")
     {
         int param = 0x80 | (brightness & 0x7F);
-        DeviceSet(TUF_KB_BRIGHTNESS, param, "TUF Brightness");
+        DeviceSet(TUF_KB_BRIGHTNESS, param, log);
 
     }
 
