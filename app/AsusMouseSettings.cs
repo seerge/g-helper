@@ -23,6 +23,8 @@ namespace GHelper
         private LightingZone visibleZone = LightingZone.All;
 
         private bool updateMouseDPI = true;
+        private System.Windows.Forms.Timer dpiUpdateTimer;
+        private int lastDpiProfile = -1;
 
         public AsusMouseSettings(AsusMouse mouse)
         {
@@ -112,6 +114,12 @@ namespace GHelper
             InitMouseCapabilities();
             Logger.WriteLine(mouse.GetDisplayName() + " (GUI): Initialized capabilities. Synchronizing mouse data");
             RefreshMouseData();
+
+            // Initialize DPI monitoring timer
+            dpiUpdateTimer = new System.Windows.Forms.Timer();
+            dpiUpdateTimer.Interval = 500; // Check every 500ms
+            dpiUpdateTimer.Tick += DpiUpdateTimer_Tick;
+            lastDpiProfile = mouse.DpiProfile;
         }
 
         private void SliderAcceleration_MouseUp(object? sender, MouseEventArgs e)
@@ -186,6 +194,10 @@ namespace GHelper
 
         private void AsusMouseSettings_FormClosing(object? sender, FormClosingEventArgs e)
         {
+            // Stop DPI monitoring timer
+            dpiUpdateTimer?.Stop();
+            dpiUpdateTimer?.Dispose();
+            
             mouse.BatteryUpdated -= Mouse_BatteryUpdated;
             mouse.Disconnect -= Mouse_Disconnect;
             mouse.MouseReadyChanged -= Mouse_MouseReadyChanged;
@@ -473,6 +485,44 @@ namespace GHelper
 
             VisualizeMouseSettings();
             VisualizeBatteryState();
+        }
+
+        private void DpiUpdateTimer_Tick(object? sender, EventArgs e)
+        {
+            if (mouse == null || !mouse.IsDeviceReady || Disposing || IsDisposed)
+                return;
+
+            try
+            {
+                // Read current DPI profile without full synchronization
+                mouse.ReadProfile();
+                
+                // Check if DPI profile has changed
+                if (mouse.DpiProfile != lastDpiProfile)
+                {
+                    lastDpiProfile = mouse.DpiProfile;
+                    
+                    // Update DPI display in UI thread
+                    if (InvokeRequired)
+                    {
+                        Invoke(new Action(() => {
+                            VisualizeDPIButtons();
+                            VisualizeCurrentDPIProfile();
+                        }));
+                    }
+                    else
+                    {
+                        VisualizeDPIButtons();
+                        VisualizeCurrentDPIProfile();
+                    }
+                    
+                    Logger.WriteLine(mouse.GetDisplayName() + " (GUI): DPI profile changed to " + mouse.DpiProfile);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLine(mouse.GetDisplayName() + " (GUI): Error checking DPI profile: " + ex.Message);
+            }
         }
 
         private void InitMouseCapabilities()
@@ -910,6 +960,9 @@ namespace GHelper
             mouse.Disconnect += Mouse_Disconnect;
             mouse.BatteryUpdated += Mouse_BatteryUpdated;
             mouse.MouseReadyChanged += Mouse_MouseReadyChanged;
+            
+            // Start DPI monitoring timer
+            dpiUpdateTimer.Start();
         }
 
         private void ButtonSync_Click(object sender, EventArgs e)
