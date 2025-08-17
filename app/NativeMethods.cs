@@ -27,6 +27,12 @@ public class NativeMethods
     private const int MONITOR_OFF = 2;
 
     [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+    public static extern int RegisterWindowMessage(string lpString);
+
+    public static readonly int WM_TASKBARCREATED = RegisterWindowMessage("TaskbarCreated");
+
+
+    [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
     private static extern IntPtr SendMessage(nint hWnd, int hMsg, int wParam, int lParam);
 
     [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]

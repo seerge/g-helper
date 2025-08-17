@@ -723,6 +723,12 @@ namespace GHelper
                 m.Result = (IntPtr)1;
             }
 
+            if (m.Msg == NativeMethods.WM_TASKBARCREATED)
+            {
+                Logger.WriteLine("Taskbar created, re-creating tray icon");
+                Program.trayIcon.Visible = true;
+            }
+
             try
             {
                 base.WndProc(ref m);

@@ -103,6 +103,8 @@ namespace GHelper
                 Visible = true
             };
 
+            Logger.WriteLine($"Tray Icon: {trayIcon.Visible}");
+
             settingsForm.SetContextMenu();
             trayIcon.MouseClick += TrayIcon_MouseClick;
             trayIcon.MouseMove += TrayIcon_MouseMove;
@@ -357,7 +359,12 @@ namespace GHelper
 
         static void OnExit(object sender, EventArgs e)
         {
-            trayIcon.Visible = false;
+            if (trayIcon is not null)
+            {
+                trayIcon.Visible = false;
+                trayIcon.Dispose();
+            }
+
             PeripheralsProvider.UnregisterForDeviceEvents();
             clamshellControl.UnregisterDisplayEvents();
             NativeMethods.UnregisterPowerSettingNotification(unRegPowerNotify);
