@@ -726,7 +726,7 @@ namespace GHelper
             if (m.Msg == NativeMethods.WM_TASKBARCREATED)
             {
                 Logger.WriteLine("Taskbar created, re-creating tray icon");
-                Program.trayIcon.Visible = true;
+                if (Program.trayIcon is not null) Program.trayIcon.Visible = true;
             }
 
             try
