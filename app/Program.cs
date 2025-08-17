@@ -19,13 +19,7 @@ namespace GHelper
 
     static class Program
     {
-        public static NotifyIcon trayIcon = new NotifyIcon
-        {
-            Text = "G-Helper",
-            Icon = Properties.Resources.standard,
-            Visible = true
-        };
-
+        public static NotifyIcon trayIcon;
         public static AsusACPI acpi;
 
         public static SettingsForm settingsForm = new SettingsForm();
@@ -102,7 +96,17 @@ namespace GHelper
             HardwareControl.RecreateGpuControl();
             RyzenControl.Init();
 
+            trayIcon = new NotifyIcon
+            {
+                Text = "G-Helper",
+                Icon = Properties.Resources.standard,
+                Visible = true
+            };
+
+            settingsForm.SetContextMenu();
             trayIcon.MouseClick += TrayIcon_MouseClick;
+            trayIcon.MouseMove += TrayIcon_MouseMove;
+
 
             inputDispatcher = new InputDispatcher();
 
@@ -346,7 +350,10 @@ namespace GHelper
 
         }
 
-
+        static void TrayIcon_MouseMove(object? sender, MouseEventArgs e)
+        {
+            settingsForm.RefreshSensors();
+        }
 
         static void OnExit(object sender, EventArgs e)
         {

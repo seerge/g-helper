@@ -226,8 +226,6 @@ namespace GHelper
             sliderBattery.KeyUp += SliderBattery_KeyUp;
             sliderBattery.ValueChanged += SliderBattery_ValueChanged;
 
-            Program.trayIcon.MouseMove += TrayIcon_MouseMove;
-
             sensorTimer = new System.Timers.Timer(AppConfig.Get("sensor_timer", 1000));
             sensorTimer.Elapsed += OnTimedEvent;
             sensorTimer.Enabled = true;
@@ -262,7 +260,6 @@ namespace GHelper
 
             //This will auto position the window again when it resizes. Might mess with position if people drag the window somewhere else.
             this.Resize += SettingsForm_Resize;
-            SetContextMenu();
 
             VisualiseFnLock();
             buttonFnLock.Click += ButtonFnLock_Click;
@@ -814,7 +811,7 @@ namespace GHelper
                 contextMenuStrip.ForeColor = this.ForeColor;
             }
 
-            Program.trayIcon.ContextMenuStrip = contextMenuStrip;
+            if (Program.trayIcon is not null) Program.trayIcon.ContextMenuStrip = contextMenuStrip;
 
 
         }
@@ -844,11 +841,6 @@ namespace GHelper
         private void LabelVersion_Click(object? sender, EventArgs e)
         {
             updateControl.LoadReleases();
-        }
-
-        private static void TrayIcon_MouseMove(object? sender, MouseEventArgs e)
-        {
-            Program.settingsForm.RefreshSensors();
         }
 
 
@@ -1508,7 +1500,7 @@ namespace GHelper
                 });
 
 
-            Program.trayIcon.Text = trayTip;
+            if (Program.trayIcon is not null) Program.trayIcon.Text = trayTip;
 
         }
 
@@ -1756,6 +1748,7 @@ namespace GHelper
 
         public void VisualiseIcon()
         {
+            if (Program.trayIcon is null) return;
             int GPUMode = AppConfig.Get("gpu_mode");
             bool isDark = CheckSystemDarkModeStatus();
 
