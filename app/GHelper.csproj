@@ -15,7 +15,7 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <ProduceReferenceAssembly>False</ProduceReferenceAssembly>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
-    <AssemblyVersion>0.221</AssemblyVersion>
+    <AssemblyVersion>0.222</AssemblyVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
