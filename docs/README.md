@@ -29,9 +29,9 @@ Small and lightweight Armoury Crate alternative for Asus laptops offering almost
 [![G-Helper Download](https://github.com/seerge/g-helper/assets/5920850/4d98465a-63a5-4498-ae14-afb3e67e7e82)](https://github.com/seerge/g-helper/releases/latest/download/GHelper.zip)
 
 ## :loudspeaker: YouTube Reviews and Guides
-| [![Youtube review Josh Cravey](https://i.ytimg.com/vi/hqe-PjuE-K8/hqdefault.jpg)](https://www.youtube.com/watch?v=hqe-PjuE-K8) | [![Youtube review cbutters Tech](https://i.ytimg.com/vi/6aVdwJKZSSc/hqdefault.jpg)](https://www.youtube.com/watch?v=6aVdwJKZSSc) |
-| ----------------- | ---------------- | 
-| [Josh Cravey](https://www.youtube.com/watch?v=hqe-PjuE-K8) | [cbutters Tech](https://www.youtube.com/watch?v=6aVdwJKZSSc) | 
+| [![Youtube review Josh Cravey](https://i.ytimg.com/vi/hqe-PjuE-K8/hqdefault.jpg)](https://www.youtube.com/watch?v=hqe-PjuE-K8) | [![Youtube review Crimson Tech](https://i.ytimg.com/vi/5XUIMUzgHU0/hqdefault.jpg)](https://www.youtube.com/watch?v=5XUIMUzgHU0) | [![Youtube review cbutters Tech](https://i.ytimg.com/vi/6aVdwJKZSSc/hqdefault.jpg)](https://www.youtube.com/watch?v=6aVdwJKZSSc) |
+| ----------------- | ---------------- | ---------------- | 
+| [Josh Cravey](https://www.youtube.com/watch?v=hqe-PjuE-K8) | [Crimson Tech](https://www.youtube.com/watch?v=5XUIMUzgHU0) | [cbutters Tech](https://www.youtube.com/watch?v=6aVdwJKZSSc) | 
 
 ## 📰 Articles
 1. https://www.digitaltrends.com/computing/g-helper-armoury-crate-alternative/
