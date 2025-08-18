@@ -93,7 +93,7 @@ public class Startup
 
             td.Settings.StopIfGoingOnBatteries = false;
             td.Settings.DisallowStartIfOnBatteries = false;
-            td.Settings.ExecutionTimeLimit = TimeSpan.Zero;
+            td.Settings.ExecutionTimeLimit = TimeSpan.FromSeconds(30);
 
             try
             {
