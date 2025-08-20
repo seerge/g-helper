@@ -2,36 +2,58 @@ name: Release
 
 on:
   release:
-    types: [ published ]
+    types: [published]
   workflow_dispatch:
-  
 
 permissions:
   contents: write
   id-token: write
   attestations: write
-  
+
 jobs:
   release:
     runs-on: windows-2022
     steps:
-    - uses: actions/checkout@v4
-    - name: Setup dotnet
-      uses: actions/setup-dotnet@v4
-      with:
-        dotnet-version: '8.0.x'
-    - name: Publish
-      run: |
-        dotnet publish app/GHelper.sln --configuration Release --runtime win-x64 -p:PublishSingleFile=true --no-self-contained
-        powershell Compress-Archive app/bin/x64/Release/net8.0-windows/win-x64/publish/GHelper.exe GHelper.zip
-    - name: Upload
-      env:
-        GH_TOKEN: ${{ github.token }}
-      run: |
-        gh release upload ${{ github.ref_name }} app/bin/x64/Release/net8.0-windows/win-x64/publish/GHelper.exe GHelper.zip
-    - name: Generate SLSA build provenance attestation
-      uses: actions/attest-build-provenance@v2
-      with:
-        subject-path: |
-          app/bin/x64/Release/net8.0-windows/win-x64/publish/GHelper.exe
-          GHelper.zip
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Publish EXE
+        run: |
+          dotnet publish app/GHelper.sln --configuration Release --runtime win-x64 -p:PublishSingleFile=true --no-self-contained
+          copy app/bin/x64/Release/net8.0-windows/win-x64/publish/GHelper.exe ./GHelper-unsigned.exe
+
+      - name: Upload unsigned EXE
+        id: upload-unsigned-exe
+        uses: actions/upload-artifact@v4
+        with:
+          path: ./GHelper-unsigned.exe
+
+      - id: sign-exe
+        uses: signpath/github-action-submit-signing-request@v1.1
+        with:
+          api-token: ${{ secrets.SIGNPATH_API_TOKEN }}
+          organization-id: ${{ secrets.SIGNPATH_ORG_ID }}
+          project-slug: ${{ secrets.SIGNPATH_PROJECT }}
+          signing-policy-slug: ${{ secrets.SIGNPATH_POLICY }}
+          github-artifact-id: ${{ steps.upload-unsigned-exe.outputs.artifact-id }}
+          wait-for-completion: true
+          output-artifact-directory: './signed'
+
+      - name: List signed folder
+        run: dir ./signed
+
+      - name: Rename signed EXE
+        run: rename-item ./signed/GHelper-unsigned.exe GHelper.exe
+
+      - name: Create ZIP from signed EXE
+        run: powershell Compress-Archive ./signed/GHelper.exe ./signed/GHelper.zip
+
+      - name: Upload signed artifacts
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release upload ${{ github.ref_name }} ./signed/GHelper.exe ./signed/GHelper.zip
