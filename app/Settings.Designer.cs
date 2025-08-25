@@ -51,7 +51,7 @@ namespace GHelper
             labelBatteryTitle = new Label();
             panelFooter = new Panel();
             tableButtons = new TableLayoutPanel();
-            buttonDonate = new RButton();
+            buttonDonate = new RBadgeButton();
             buttonQuit = new RButton();
             buttonUpdates = new RButton();
             checkStartup = new CheckBox();
@@ -312,7 +312,6 @@ namespace GHelper
             buttonMatrix.AutoSize = true;
             buttonMatrix.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             buttonMatrix.BackColor = SystemColors.ControlLight;
-            buttonMatrix.Badge = 0;
             buttonMatrix.BorderColor = Color.Transparent;
             buttonMatrix.BorderRadius = 2;
             buttonMatrix.Dock = DockStyle.Top;
@@ -382,7 +381,6 @@ namespace GHelper
             buttonBatteryFull.Activated = false;
             buttonBatteryFull.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             buttonBatteryFull.BackColor = SystemColors.ControlLight;
-            buttonBatteryFull.Badge = 0;
             buttonBatteryFull.BorderColor = Color.Transparent;
             buttonBatteryFull.BorderRadius = 2;
             buttonBatteryFull.FlatAppearance.BorderSize = 0;
@@ -515,7 +513,6 @@ namespace GHelper
             // 
             buttonQuit.Activated = false;
             buttonQuit.BackColor = SystemColors.ControlLight;
-            buttonQuit.Badge = 0;
             buttonQuit.BorderColor = Color.Transparent;
             buttonQuit.BorderRadius = 2;
             buttonQuit.Dock = DockStyle.Top;
@@ -536,7 +533,6 @@ namespace GHelper
             // 
             buttonUpdates.Activated = false;
             buttonUpdates.BackColor = SystemColors.ControlLight;
-            buttonUpdates.Badge = 0;
             buttonUpdates.BorderColor = Color.Transparent;
             buttonUpdates.BorderRadius = 2;
             buttonUpdates.Dock = DockStyle.Top;
@@ -609,7 +605,6 @@ namespace GHelper
             buttonSilent.Activated = false;
             buttonSilent.BackColor = SystemColors.ControlLightLight;
             buttonSilent.BackgroundImageLayout = ImageLayout.None;
-            buttonSilent.Badge = 0;
             buttonSilent.BorderColor = Color.Transparent;
             buttonSilent.BorderRadius = 5;
             buttonSilent.Dock = DockStyle.Fill;
@@ -632,7 +627,6 @@ namespace GHelper
             // 
             buttonBalanced.Activated = false;
             buttonBalanced.BackColor = SystemColors.ControlLightLight;
-            buttonBalanced.Badge = 0;
             buttonBalanced.BorderColor = Color.Transparent;
             buttonBalanced.BorderRadius = 5;
             buttonBalanced.Dock = DockStyle.Fill;
@@ -655,7 +649,6 @@ namespace GHelper
             // 
             buttonTurbo.Activated = false;
             buttonTurbo.BackColor = SystemColors.ControlLightLight;
-            buttonTurbo.Badge = 0;
             buttonTurbo.BorderColor = Color.Transparent;
             buttonTurbo.BorderRadius = 5;
             buttonTurbo.Dock = DockStyle.Fill;
@@ -678,7 +671,6 @@ namespace GHelper
             // 
             buttonFans.Activated = false;
             buttonFans.BackColor = SystemColors.ControlLight;
-            buttonFans.Badge = 0;
             buttonFans.BorderColor = Color.Transparent;
             buttonFans.BorderRadius = 5;
             buttonFans.Dock = DockStyle.Fill;
@@ -799,7 +791,6 @@ namespace GHelper
             // 
             buttonAutoTDP.Activated = false;
             buttonAutoTDP.BackColor = SystemColors.ControlLightLight;
-            buttonAutoTDP.Badge = 0;
             buttonAutoTDP.BorderColor = Color.Transparent;
             buttonAutoTDP.BorderRadius = 5;
             buttonAutoTDP.Dock = DockStyle.Fill;
@@ -822,7 +813,6 @@ namespace GHelper
             // 
             buttonOverlay.Activated = false;
             buttonOverlay.BackColor = SystemColors.ControlLightLight;
-            buttonOverlay.Badge = 0;
             buttonOverlay.BorderColor = Color.Transparent;
             buttonOverlay.BorderRadius = 5;
             buttonOverlay.Dock = DockStyle.Fill;
@@ -845,7 +835,6 @@ namespace GHelper
             // 
             buttonFPS.Activated = false;
             buttonFPS.BackColor = SystemColors.ControlLightLight;
-            buttonFPS.Badge = 0;
             buttonFPS.BorderColor = Color.Transparent;
             buttonFPS.BorderRadius = 5;
             buttonFPS.Dock = DockStyle.Fill;
@@ -893,7 +882,6 @@ namespace GHelper
             // 
             buttonStopGPU.Activated = false;
             buttonStopGPU.BackColor = SystemColors.ControlLightLight;
-            buttonStopGPU.Badge = 0;
             buttonStopGPU.BorderColor = Color.Transparent;
             buttonStopGPU.BorderRadius = 5;
             buttonStopGPU.CausesValidation = false;
@@ -918,7 +906,6 @@ namespace GHelper
             // 
             buttonEco.Activated = false;
             buttonEco.BackColor = SystemColors.ControlLightLight;
-            buttonEco.Badge = 0;
             buttonEco.BorderColor = Color.Transparent;
             buttonEco.BorderRadius = 5;
             buttonEco.CausesValidation = false;
@@ -942,7 +929,6 @@ namespace GHelper
             // 
             buttonStandard.Activated = false;
             buttonStandard.BackColor = SystemColors.ControlLightLight;
-            buttonStandard.Badge = 0;
             buttonStandard.BorderColor = Color.Transparent;
             buttonStandard.BorderRadius = 5;
             buttonStandard.Dock = DockStyle.Top;
@@ -965,7 +951,6 @@ namespace GHelper
             // 
             buttonXGM.Activated = false;
             buttonXGM.BackColor = SystemColors.ControlLightLight;
-            buttonXGM.Badge = 0;
             buttonXGM.BorderColor = Color.Transparent;
             buttonXGM.BorderRadius = 5;
             buttonXGM.Dock = DockStyle.Top;
@@ -989,7 +974,6 @@ namespace GHelper
             // 
             buttonOptimized.Activated = false;
             buttonOptimized.BackColor = SystemColors.ControlLightLight;
-            buttonOptimized.Badge = 0;
             buttonOptimized.BorderColor = Color.Transparent;
             buttonOptimized.BorderRadius = 5;
             buttonOptimized.Dock = DockStyle.Top;
@@ -1012,7 +996,6 @@ namespace GHelper
             // 
             buttonUltimate.Activated = false;
             buttonUltimate.BackColor = SystemColors.ControlLightLight;
-            buttonUltimate.Badge = 0;
             buttonUltimate.BorderColor = Color.Transparent;
             buttonUltimate.BorderRadius = 5;
             buttonUltimate.Dock = DockStyle.Top;
@@ -1131,7 +1114,6 @@ namespace GHelper
             // 
             buttonScreenAuto.Activated = false;
             buttonScreenAuto.BackColor = SystemColors.ControlLightLight;
-            buttonScreenAuto.Badge = 0;
             buttonScreenAuto.BorderColor = Color.Transparent;
             buttonScreenAuto.BorderRadius = 5;
             buttonScreenAuto.Dock = DockStyle.Fill;
@@ -1151,7 +1133,6 @@ namespace GHelper
             // 
             button60Hz.Activated = false;
             button60Hz.BackColor = SystemColors.ControlLightLight;
-            button60Hz.Badge = 0;
             button60Hz.BorderColor = Color.Transparent;
             button60Hz.BorderRadius = 5;
             button60Hz.CausesValidation = false;
@@ -1172,7 +1153,6 @@ namespace GHelper
             // 
             button120Hz.Activated = false;
             button120Hz.BackColor = SystemColors.ControlLightLight;
-            button120Hz.Badge = 0;
             button120Hz.BorderColor = Color.Transparent;
             button120Hz.BorderRadius = 5;
             button120Hz.Dock = DockStyle.Fill;
@@ -1192,7 +1172,6 @@ namespace GHelper
             // 
             buttonMiniled.Activated = false;
             buttonMiniled.BackColor = SystemColors.ControlLightLight;
-            buttonMiniled.Badge = 0;
             buttonMiniled.BorderColor = Color.Transparent;
             buttonMiniled.BorderRadius = 5;
             buttonMiniled.CausesValidation = false;
@@ -1213,7 +1192,6 @@ namespace GHelper
             // 
             buttonFHD.Activated = false;
             buttonFHD.BackColor = SystemColors.ControlLightLight;
-            buttonFHD.Badge = 0;
             buttonFHD.BorderColor = Color.Transparent;
             buttonFHD.BorderRadius = 5;
             buttonFHD.CausesValidation = false;
@@ -1332,7 +1310,6 @@ namespace GHelper
             buttonKeyboard.AutoSize = true;
             buttonKeyboard.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             buttonKeyboard.BackColor = SystemColors.ControlLight;
-            buttonKeyboard.Badge = 0;
             buttonKeyboard.BorderColor = Color.Transparent;
             buttonKeyboard.BorderRadius = 2;
             buttonKeyboard.Dock = DockStyle.Top;
@@ -1391,7 +1368,6 @@ namespace GHelper
             buttonKeyboardColor.AutoSize = true;
             buttonKeyboardColor.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             buttonKeyboardColor.BackColor = SystemColors.ButtonHighlight;
-            buttonKeyboardColor.Badge = 0;
             buttonKeyboardColor.BorderColor = Color.Transparent;
             buttonKeyboardColor.BorderRadius = 2;
             buttonKeyboardColor.Dock = DockStyle.Top;
@@ -1441,7 +1417,6 @@ namespace GHelper
             // 
             buttonFnLock.Activated = false;
             buttonFnLock.BackColor = SystemColors.ControlLight;
-            buttonFnLock.Badge = 0;
             buttonFnLock.BorderColor = Color.Transparent;
             buttonFnLock.BorderRadius = 2;
             buttonFnLock.Dock = DockStyle.Right;
@@ -1543,7 +1518,6 @@ namespace GHelper
             // 
             buttonPeripheral3.Activated = false;
             buttonPeripheral3.BackColor = SystemColors.ControlLightLight;
-            buttonPeripheral3.Badge = 0;
             buttonPeripheral3.BorderColor = Color.Transparent;
             buttonPeripheral3.BorderRadius = 5;
             buttonPeripheral3.CausesValidation = false;
@@ -1568,7 +1542,6 @@ namespace GHelper
             // 
             buttonPeripheral2.Activated = false;
             buttonPeripheral2.BackColor = SystemColors.ControlLightLight;
-            buttonPeripheral2.Badge = 0;
             buttonPeripheral2.BorderColor = Color.Transparent;
             buttonPeripheral2.BorderRadius = 5;
             buttonPeripheral2.CausesValidation = false;
@@ -1593,7 +1566,6 @@ namespace GHelper
             // 
             buttonPeripheral1.Activated = false;
             buttonPeripheral1.BackColor = SystemColors.ControlLightLight;
-            buttonPeripheral1.Badge = 0;
             buttonPeripheral1.BorderColor = Color.Transparent;
             buttonPeripheral1.BorderRadius = 5;
             buttonPeripheral1.CausesValidation = false;
@@ -1655,7 +1627,6 @@ namespace GHelper
             // 
             buttonController.Activated = false;
             buttonController.BackColor = SystemColors.ControlLight;
-            buttonController.Badge = 0;
             buttonController.BorderColor = Color.Transparent;
             buttonController.BorderRadius = 5;
             buttonController.Dock = DockStyle.Fill;
@@ -1678,7 +1649,6 @@ namespace GHelper
             // 
             buttonBacklight.Activated = false;
             buttonBacklight.BackColor = SystemColors.ControlLightLight;
-            buttonBacklight.Badge = 0;
             buttonBacklight.BorderColor = Color.Transparent;
             buttonBacklight.BorderRadius = 5;
             buttonBacklight.Dock = DockStyle.Fill;
@@ -1701,7 +1671,6 @@ namespace GHelper
             // 
             buttonControllerMode.Activated = false;
             buttonControllerMode.BackColor = SystemColors.ControlLightLight;
-            buttonControllerMode.Badge = 0;
             buttonControllerMode.BorderColor = Color.Transparent;
             buttonControllerMode.BorderRadius = 5;
             buttonControllerMode.Dock = DockStyle.Fill;
@@ -1811,7 +1780,6 @@ namespace GHelper
             // 
             buttonInstallColor.Activated = false;
             buttonInstallColor.BackColor = SystemColors.ControlLight;
-            buttonInstallColor.Badge = 0;
             buttonInstallColor.BorderColor = Color.Transparent;
             buttonInstallColor.BorderRadius = 2;
             buttonInstallColor.Dock = DockStyle.Top;
@@ -2166,6 +2134,6 @@ namespace GHelper
         private Label labelBacklight;
         private Panel panelVersion;
         private Label labelVersion;
-        private RButton buttonDonate;
+        private RBadgeButton buttonDonate;
     }
 }

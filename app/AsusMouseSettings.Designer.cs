@@ -608,7 +608,6 @@
             buttonDPIColor.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right;
             buttonDPIColor.AutoSize = true;
             buttonDPIColor.BackColor = SystemColors.ButtonHighlight;
-            buttonDPIColor.Badge = 0;
             buttonDPIColor.BorderColor = Color.Transparent;
             buttonDPIColor.BorderRadius = 2;
             buttonDPIColor.FlatStyle = FlatStyle.Flat;
@@ -662,7 +661,6 @@
             buttonDPI2.AccessibleName = "DPI Setting 2";
             buttonDPI2.Activated = false;
             buttonDPI2.BackColor = SystemColors.ControlLightLight;
-            buttonDPI2.Badge = 0;
             buttonDPI2.BorderColor = Color.Transparent;
             buttonDPI2.BorderRadius = 5;
             buttonDPI2.Dock = DockStyle.Top;
@@ -686,7 +684,6 @@
             buttonDPI1.AccessibleName = "DPI Setting 1";
             buttonDPI1.Activated = false;
             buttonDPI1.BackColor = SystemColors.ControlLightLight;
-            buttonDPI1.Badge = 0;
             buttonDPI1.BorderColor = Color.Transparent;
             buttonDPI1.BorderRadius = 5;
             buttonDPI1.CausesValidation = false;
@@ -710,7 +707,6 @@
             buttonDPI3.AccessibleName = "DPI Setting 3";
             buttonDPI3.Activated = false;
             buttonDPI3.BackColor = SystemColors.ControlLightLight;
-            buttonDPI3.Badge = 0;
             buttonDPI3.BorderColor = Color.Transparent;
             buttonDPI3.BorderRadius = 5;
             buttonDPI3.Dock = DockStyle.Top;
@@ -734,7 +730,6 @@
             buttonDPI4.AccessibleName = "DPI Setting 4";
             buttonDPI4.Activated = false;
             buttonDPI4.BackColor = SystemColors.ControlLightLight;
-            buttonDPI4.Badge = 0;
             buttonDPI4.BorderColor = Color.Transparent;
             buttonDPI4.BorderRadius = 5;
             buttonDPI4.Dock = DockStyle.Top;
@@ -853,7 +848,6 @@
             buttonLightingZoneScroll.AutoSize = true;
             buttonLightingZoneScroll.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             buttonLightingZoneScroll.BackColor = SystemColors.ControlLightLight;
-            buttonLightingZoneScroll.Badge = 0;
             buttonLightingZoneScroll.BorderColor = Color.LightGreen;
             buttonLightingZoneScroll.BorderRadius = 5;
             buttonLightingZoneScroll.Dock = DockStyle.Fill;
@@ -878,7 +872,6 @@
             buttonLightingZoneLogo.AutoSize = true;
             buttonLightingZoneLogo.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             buttonLightingZoneLogo.BackColor = SystemColors.ControlLightLight;
-            buttonLightingZoneLogo.Badge = 0;
             buttonLightingZoneLogo.BorderColor = Color.LightGreen;
             buttonLightingZoneLogo.BorderRadius = 5;
             buttonLightingZoneLogo.Dock = DockStyle.Fill;
@@ -903,7 +896,6 @@
             buttonLightingZoneAll.AutoSize = true;
             buttonLightingZoneAll.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             buttonLightingZoneAll.BackColor = SystemColors.ControlLightLight;
-            buttonLightingZoneAll.Badge = 0;
             buttonLightingZoneAll.BorderColor = Color.LightGreen;
             buttonLightingZoneAll.BorderRadius = 5;
             buttonLightingZoneAll.CausesValidation = false;
@@ -928,7 +920,6 @@
             buttonLightingZoneUnderglow.AutoSize = true;
             buttonLightingZoneUnderglow.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             buttonLightingZoneUnderglow.BackColor = SystemColors.ControlLightLight;
-            buttonLightingZoneUnderglow.Badge = 0;
             buttonLightingZoneUnderglow.BorderColor = Color.LightGreen;
             buttonLightingZoneUnderglow.BorderRadius = 5;
             buttonLightingZoneUnderglow.Dock = DockStyle.Fill;
@@ -953,7 +944,6 @@
             buttonLightingZoneDock.AutoSize = true;
             buttonLightingZoneDock.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             buttonLightingZoneDock.BackColor = SystemColors.ControlLightLight;
-            buttonLightingZoneDock.Badge = 0;
             buttonLightingZoneDock.BorderColor = Color.LightGreen;
             buttonLightingZoneDock.BorderRadius = 5;
             buttonLightingZoneDock.Dock = DockStyle.Fill;
@@ -1041,7 +1031,6 @@
             buttonLightingColor.Activated = false;
             buttonLightingColor.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             buttonLightingColor.BackColor = SystemColors.ButtonHighlight;
-            buttonLightingColor.Badge = 0;
             buttonLightingColor.BorderColor = Color.Transparent;
             buttonLightingColor.BorderRadius = 2;
             buttonLightingColor.FlatStyle = FlatStyle.Flat;
@@ -1309,7 +1298,6 @@
             buttonSync.Activated = false;
             buttonSync.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             buttonSync.BackColor = SystemColors.ButtonHighlight;
-            buttonSync.Badge = 0;
             buttonSync.BorderColor = Color.Transparent;
             buttonSync.BorderRadius = 2;
             buttonSync.FlatStyle = FlatStyle.Flat;
@@ -1343,7 +1331,6 @@
             buttonImport.Activated = false;
             buttonImport.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             buttonImport.BackColor = SystemColors.ButtonHighlight;
-            buttonImport.Badge = 0;
             buttonImport.BorderColor = Color.Transparent;
             buttonImport.BorderRadius = 2;
             buttonImport.FlatStyle = FlatStyle.Flat;
@@ -1364,7 +1351,6 @@
             buttonExport.Activated = false;
             buttonExport.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             buttonExport.BackColor = SystemColors.ButtonHighlight;
-            buttonExport.Badge = 0;
             buttonExport.BorderColor = Color.Transparent;
             buttonExport.BorderRadius = 2;
             buttonExport.FlatStyle = FlatStyle.Flat;
@@ -1401,7 +1387,6 @@
             rButton1.AccessibleName = "DPI Setting 2";
             rButton1.Activated = false;
             rButton1.BackColor = SystemColors.ControlLightLight;
-            rButton1.Badge = 0;
             rButton1.BorderColor = Color.Transparent;
             rButton1.BorderRadius = 5;
             rButton1.Dock = DockStyle.Top;
@@ -1424,7 +1409,6 @@
             rButton2.AccessibleName = "DPI Setting 1";
             rButton2.Activated = false;
             rButton2.BackColor = SystemColors.ControlLightLight;
-            rButton2.Badge = 0;
             rButton2.BorderColor = Color.Transparent;
             rButton2.BorderRadius = 5;
             rButton2.CausesValidation = false;
