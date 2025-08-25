@@ -128,4 +128,8 @@
     </None>
   </ItemGroup>
 
+	<Target Name="ZipSingleExe" AfterTargets="Publish">
+		<Exec Command="powershell -Command &quot;Compress-Archive -Path '$(PublishDir)GHelper.exe' -DestinationPath '$(PublishDir)GHelper.zip' -Force&quot;" />
+	</Target>
+
 </Project>
