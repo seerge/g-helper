@@ -333,6 +333,10 @@ public class AsusACPI
             MaxTotal = 90;
         }
 
+        if (AppConfig.IsZ1325())
+        {
+            MaxTotal = 93;
+        }
 
 
     }

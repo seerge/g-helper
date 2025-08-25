@@ -540,6 +540,11 @@ public static class AppConfig
         return ContainsModel("G713R");
     }
 
+    public static bool IsZ1325()
+    {
+        return ContainsModel("GZ302E");
+    }
+
     public static bool IsZ13()
     {
         return ContainsModel("Z13");
