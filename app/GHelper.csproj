@@ -128,8 +128,7 @@
     </None>
   </ItemGroup>
 
-	<Target Name="ZipSingleExe" AfterTargets="Publish">
+	<Target Name="ZipSingleExe" AfterTargets="Publish" Condition="'$(GITHUB_ACTIONS)'!='true'">
 		<Exec Command="powershell -Command &quot;Compress-Archive -Path '$(PublishDir)GHelper.exe' -DestinationPath '$(PublishDir)GHelper.zip' -Force&quot;" />
 	</Target>
-
 </Project>
