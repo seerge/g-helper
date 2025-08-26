@@ -15,7 +15,7 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <ProduceReferenceAssembly>False</ProduceReferenceAssembly>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
-    <AssemblyVersion>0.216</AssemblyVersion>
+    <AssemblyVersion>0.223</AssemblyVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -128,4 +128,7 @@
     </None>
   </ItemGroup>
 
+	<Target Name="ZipSingleExe" AfterTargets="Publish" Condition="'$(GITHUB_ACTIONS)'!='true'">
+		<Exec Command="powershell -Command &quot;Compress-Archive -Path '$(PublishDir)GHelper.exe' -DestinationPath '$(PublishDir)GHelper.zip' -Force&quot;" />
+	</Target>
 </Project>

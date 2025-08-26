@@ -148,7 +148,7 @@ namespace GHelper.Input
 
             if (!AppConfig.Is("skip_hotkeys"))
             {
-                if (AppConfig.IsDUO())
+                if (AppConfig.IsDUO() || (AppConfig.IsVivoZenbook() && AppConfig.IsOLED()))
                 {
                     hook.RegisterHotKey(keyModifierAlt, Keys.F7);
                     hook.RegisterHotKey(keyModifierAlt, Keys.F8);
@@ -482,10 +482,12 @@ namespace GHelper.Input
                         ToggleTouchScreen();
                         break;
                     case Keys.F7:
-                        SetScreenpad(-10);
+                        if (AppConfig.IsDUO()) SetScreenpad(-10);
+                        else SetBrightnessDimming(-10);
                         break;
                     case Keys.F8:
-                        SetScreenpad(10);
+                        if (AppConfig.IsDUO()) SetScreenpad(10);
+                        else SetBrightnessDimming(10);
                         break;
                     case Keys.F13:
                         ToggleScreenRate();
@@ -584,7 +586,7 @@ namespace GHelper.Input
                     Program.settingsForm.BeginInvoke(Program.settingsForm.CycleAuraMode, Control.ModifierKeys == Keys.Shift ? -1 : 1);
                     break;
                 case "visual":
-                    Program.settingsForm.BeginInvoke(Program.settingsForm.CycleVisualMode);
+                    Program.settingsForm.BeginInvoke(Program.settingsForm.CycleVisualMode, Control.ModifierKeys == Keys.Shift ? -1 : 1);
                     break;
                 case "performance":
                     modeControl.CyclePerformanceMode(Control.ModifierKeys == Keys.Shift);
@@ -1185,7 +1187,7 @@ namespace GHelper.Input
         {
             if (!AppConfig.IsDUO()) return;
             int brightness = AppConfig.Get("screenpad");
-            if (brightness >= 0) ApplyScreenpadAction(brightness);
+            if (brightness != -1) ApplyScreenpadAction(brightness);
         }
 
         public static void SetStatusLED(bool status)

@@ -214,7 +214,7 @@ namespace GHelper.Gpu
 
         }
 
-        public bool AutoGPUMode(bool optimized = false)
+        public bool AutoGPUMode(bool optimized = false, int delay = 0)
         {
 
             bool GpuAuto = AppConfig.Is("gpu_auto");
@@ -238,6 +238,7 @@ namespace GHelper.Gpu
                 if (eco == 1)
                     if ((GpuAuto && IsPlugged()) || (ForceGPU && GpuMode == AsusACPI.GPUModeStandard))
                     {
+                        if (delay > 0) Thread.Sleep(delay);
                         SetGPUEco(0);
                         return true;
                     }
@@ -252,6 +253,7 @@ namespace GHelper.Gpu
                             if (dialogResult == DialogResult.No) return false;
                         }
 
+                        if (delay > 0) Thread.Sleep(delay);
                         SetGPUEco(1);
                         return true;
                     }

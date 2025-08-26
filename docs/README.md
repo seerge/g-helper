@@ -12,10 +12,10 @@ Small and lightweight Armoury Crate alternative for Asus laptops offering almost
 <tr>
    <td><b>Support Project</b></td>
    <td >
-      <a href="https://www.paypal.com/donate/?hosted_button_id=Y7UNMPRNLB5X2"><img src="https://raw.githubusercontent.com/seerge/g-helper/main/docs/paypal-eur.png" height="36" alt="PayPal EUR"></a>&nbsp;
-      <a href="https://www.paypal.com/donate/?hosted_button_id=JSMU7DFHFSJMW"><img src="https://raw.githubusercontent.com/seerge/g-helper/main/docs/paypal-usd.png" height="36" alt="PayPal USD"></a>&nbsp;
-      <a href="https://buy.stripe.com/8wM6pt8HbgK50tWbIK"><img src="https://raw.githubusercontent.com/seerge/g-helper/main/docs/stripe.png" height="36" alt="Stripe"></a>&nbsp;
-      <a href="https://buy.stripe.com/6oE29dg9D3Xj7Wo28b"><img src="https://raw.githubusercontent.com/seerge/g-helper/main/docs/alipay.png" height="36" alt="Alipay"></a>
+      <a href="https://www.paypal.com/donate/?hosted_button_id=Y7UNMPRNLB5X2"><img src="https://raw.githubusercontent.com/seerge/g-helper/main/docs/paypal-eur.png" width="150" alt="PayPal EUR"></a>&nbsp;
+      <a href="https://www.paypal.com/donate/?hosted_button_id=JSMU7DFHFSJMW"><img src="https://raw.githubusercontent.com/seerge/g-helper/main/docs/paypal-usd.png" width="150" alt="PayPal USD"></a>&nbsp;
+      <a href="https://buy.stripe.com/8wM6pt8HbgK50tWbIK"><img src="https://raw.githubusercontent.com/seerge/g-helper/main/docs/stripe.png" width="150"alt="Stripe"></a>&nbsp;
+      <a href="https://buy.stripe.com/6oE29dg9D3Xj7Wo28b"><img src="https://raw.githubusercontent.com/seerge/g-helper/main/docs/alipay.png" width="150" alt="Alipay"></a>
    </td>
 </tr>
 </table>
@@ -29,13 +29,15 @@ Small and lightweight Armoury Crate alternative for Asus laptops offering almost
 [![G-Helper Download](https://github.com/seerge/g-helper/assets/5920850/4d98465a-63a5-4498-ae14-afb3e67e7e82)](https://github.com/seerge/g-helper/releases/latest/download/GHelper.zip)
 
 ## :loudspeaker: YouTube Reviews and Guides
-| [![Youtube review Josh Cravey](https://i.ytimg.com/vi/hqe-PjuE-K8/hqdefault.jpg)](https://www.youtube.com/watch?v=hqe-PjuE-K8) | [![Youtube review cbutters Tech](https://i.ytimg.com/vi/6aVdwJKZSSc/hqdefault.jpg)](https://www.youtube.com/watch?v=6aVdwJKZSSc) |
-| ----------------- | ---------------- | 
-| [Josh Cravey](https://www.youtube.com/watch?v=hqe-PjuE-K8) | [cbutters Tech](https://www.youtube.com/watch?v=6aVdwJKZSSc) | 
+| [![Youtube review Josh Cravey](https://i.ytimg.com/vi/hqe-PjuE-K8/hqdefault.jpg)](https://www.youtube.com/watch?v=hqe-PjuE-K8) | [![Youtube review Crimson Tech](https://i.ytimg.com/vi/5XUIMUzgHU0/hqdefault.jpg)](https://www.youtube.com/watch?v=5XUIMUzgHU0) | [![Youtube review cbutters Tech](https://i.ytimg.com/vi/6aVdwJKZSSc/hqdefault.jpg)](https://www.youtube.com/watch?v=6aVdwJKZSSc) |
+| ----------------- | ---------------- | ---------------- | 
+| [Josh Cravey](https://www.youtube.com/watch?v=hqe-PjuE-K8) | [Crimson Tech](https://www.youtube.com/watch?v=5XUIMUzgHU0) | [cbutters Tech](https://www.youtube.com/watch?v=6aVdwJKZSSc) | 
 
 ## 📰 Articles
 1. https://www.digitaltrends.com/computing/g-helper-armoury-crate-alternative/
 2. https://binaryfork.com/ghelper-armoury-crate-alternative-10216/
+3. https://www.ultrabookreview.com/71392-optimized-quiet-gaming-5080-5090/
+4. https://www.lesnumeriques.com/appli-logiciel/marre-des-lenteurs-d-armoury-crate-sur-votre-pc-portable-asus-decouvrez-g-helper-l-alternative-ultra-legere-n240111.html
 
 ## :gift: Advantages 
 
@@ -100,23 +102,26 @@ Each BIOS mode is paired with matching Windows Power Mode. You can adjust this s
 ### :mouse: Asus Mouse and other peripherals support
 
 [Currently supported models](https://github.com/seerge/g-helper/discussions/900)
-- ROG Chakram X (P708)
-- ROG Chakram Core (P511)
-- ROG Gladius II and Gladius II Origin (P502 and P504)
+- ROG Chakram X 
+- ROG Chakram Core 
+- ROG Gladius II and Gladius II Origin
 - ROG Gladius II Wireless
 - ROG Gladius III
 - ROG Gladius III Wireless
 - ROG Harpe Ace Aim Lab Edition
+- ROG Harpe Ace Mini
 - ROG Keris Wireless
 - ROG Keris II Ace
-- ROG Strix Carry (P508)
-- ROG Strix III Gladius III Aimpoint Wireless (P711)
-- ROG Strix Impact III (P518)
+- ROG Keris Wireless Aimpoint
+- ROG Strix Carry
+- ROG Strix III Gladius III Aimpoint Wireless 
+- ROG Strix Impact III
+- ROG Strix Impact III Wireless 
 - ROG Spatha X
 - ROG Strix Impact II Wireless
 - ROG Pugio
 - ROG Pugio II
-- TUF Gaming M4 Wireless (P306)
+- TUF Gaming M4 Wireless
 - TUF Gaming M3
 - TUF Gaming M3 Gen II
 - TUF Gaming M4 AIR
@@ -133,7 +138,7 @@ Huge thanks to [@IceStormNG](https://github.com/IceStormNG) 👑 for contributio
 - ``Ctrl + M1 / M2`` - Screen brightness Down / Up
 - ``Shift + M1 / M2`` - Backlight brightness Down / Up
 - ``Fn + C`` - Fn-Lock
-- ``Fn + Ctrl +  F7 / F8`` - Flicker-free dimming Down / Up
+- ``Fn + Ctrl +  F7 / F8`` / ``Ctrl + Shift + Alt +  F7 / F8`` - Flicker-free dimming Down / Up
 - ``Fn + Shift + F7 / F8`` - Matrix / Slash Lighting brightness Down / Up
 - ``Fn + Shift + F7 / F8`` - Screenpad brightness Down / Up
 - ``Ctrl + Shift + F20`` - Mute Microphone
@@ -157,15 +162,15 @@ Huge thanks to [@IceStormNG](https://github.com/IceStormNG) 👑 for contributio
 
 ------------------
 
-### 🔖 Important Notice
-
-G-Helper is **NOT** an operating system, firmware, or driver. It **DOES NOT** "run" your hardware in real-time anyhow. 
-
-It's an app that lets you select one of the predefined operating modes created by manufacturer (and stored in BIOS) and optionally(!) set some settings that already exist on your device same as Armoury Crate can. It does it by using the Asus System Control Interface "driver" that Armoury uses for it.
-
-If you use equivalent mode/settings as in Armoury Crate - the performance or the behavior of your device won't be different.
-
-The role of G-Helper for your laptop is similar to the role of a remote control for your TV.
+> [!NOTE]
+> ### 🔖 Important Notice
+> G-Helper is **NOT** an operating system, firmware, or driver. It **DOES NOT** "run" your hardware in real-time anyhow.
+> 
+> It's an app that lets you select one of the predefined operating modes created by manufacturer (and stored in BIOS) and optionally(!) set some settings that already exist on your device same as Armoury Crate can. It does it by using the Asus System Control Interface "driver" that Armoury uses for it.
+> 
+> If you use equivalent mode/settings as in Armoury Crate - the performance or the behavior of your device won't be different.
+> 
+> The role of G-Helper for your laptop is similar to the role of a remote control for your TV.
 
 ### Libraries and projects used
 - [Linux Kernel](https://github.com/torvalds/linux/blob/master/include/linux/platform_data/x86/asus-wmi.h) for some basic endpoints in ASUS ACPI/WMI interface

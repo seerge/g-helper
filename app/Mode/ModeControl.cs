@@ -469,5 +469,11 @@ namespace GHelper.Mode
             else ResetRyzen();
         }
 
+        public void ShutdownReset()
+        {
+            if (!AppConfig.IsShutdownReset()) return;
+            Program.acpi.DeviceSet(AsusACPI.PerformanceMode,AsusACPI.PerformanceBalanced, "Mode Reset");
+        }
+
     }
 }

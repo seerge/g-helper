@@ -84,7 +84,6 @@ namespace GHelper
             labelKeyboard.Text = Properties.Strings.LaptopKeyboard;
             labelMatrix.Text = Properties.Strings.AnimeMatrix;
             labelBatteryTitle.Text = Properties.Strings.BatteryChargeLimit;
-            labelPeripherals.Text = Properties.Strings.Peripherals;
 
             checkMatrix.Text = Properties.Strings.TurnOffOnBattery;
             checkMatrixLid.Text = Properties.Strings.DisableOnLidClose;
@@ -227,8 +226,6 @@ namespace GHelper
             sliderBattery.KeyUp += SliderBattery_KeyUp;
             sliderBattery.ValueChanged += SliderBattery_ValueChanged;
 
-            Program.trayIcon.MouseMove += TrayIcon_MouseMove;
-
             sensorTimer = new System.Timers.Timer(AppConfig.Get("sensor_timer", 1000));
             sensorTimer.Elapsed += OnTimedEvent;
             sensorTimer.Enabled = true;
@@ -263,7 +260,6 @@ namespace GHelper
 
             //This will auto position the window again when it resizes. Might mess with position if people drag the window somewhere else.
             this.Resize += SettingsForm_Resize;
-            SetContextMenu();
 
             VisualiseFnLock();
             buttonFnLock.Click += ButtonFnLock_Click;
@@ -303,7 +299,7 @@ namespace GHelper
 
         private void LabelBacklight_Click(object? sender, EventArgs e)
         {
-            if (DynamicLightingHelper.IsEnabled()) DynamicLightingHelper.OpenSettings();
+            if (AppConfig.IsDynamicLighting() && DynamicLightingHelper.IsEnabled()) DynamicLightingHelper.OpenSettings();
         }
 
         private void ButtonFHD_Click(object? sender, EventArgs e)
@@ -430,15 +426,25 @@ namespace GHelper
 
         }
 
-        public void CycleVisualMode()
+        public void CycleVisualMode(int delta)
         {
 
             if (comboVisual.Items.Count < 1) return;
 
-            if (comboVisual.SelectedIndex < comboVisual.Items.Count - 1)
-                comboVisual.SelectedIndex += 1;
+            if (delta > 0)
+            {
+                if (comboVisual.SelectedIndex < comboVisual.Items.Count - 1)
+                    comboVisual.SelectedIndex += 1;
+                else
+                    comboVisual.SelectedIndex = 0;
+            }
             else
-                comboVisual.SelectedIndex = 0;
+            {
+                if (comboVisual.SelectedIndex > 0)
+                    comboVisual.SelectedIndex -= 1;
+                else
+                    comboVisual.SelectedIndex = comboVisual.Items.Count - 1;
+            }
 
             Program.toast.RunToast(comboVisual.GetItemText(comboVisual.SelectedItem), ToastIcon.BrightnessUp);
         }
@@ -717,6 +723,12 @@ namespace GHelper
                 m.Result = (IntPtr)1;
             }
 
+            if (m.Msg == NativeMethods.WM_TASKBARCREATED)
+            {
+                Logger.WriteLine("Taskbar created, re-creating tray icon");
+                if (Program.trayIcon is not null) Program.trayIcon.Visible = true;
+            }
+
             try
             {
                 base.WndProc(ref m);
@@ -805,7 +817,7 @@ namespace GHelper
                 contextMenuStrip.ForeColor = this.ForeColor;
             }
 
-            Program.trayIcon.ContextMenuStrip = contextMenuStrip;
+            if (Program.trayIcon is not null) Program.trayIcon.ContextMenuStrip = contextMenuStrip;
 
 
         }
@@ -835,11 +847,6 @@ namespace GHelper
         private void LabelVersion_Click(object? sender, EventArgs e)
         {
             updateControl.LoadReleases();
-        }
-
-        private static void TrayIcon_MouseMove(object? sender, MouseEventArgs e)
-        {
-            Program.settingsForm.RefreshSensors();
         }
 
 
@@ -1499,7 +1506,7 @@ namespace GHelper
                 });
 
 
-            Program.trayIcon.Text = trayTip;
+            if (Program.trayIcon is not null) Program.trayIcon.Text = trayTip;
 
         }
 
@@ -1747,6 +1754,7 @@ namespace GHelper
 
         public void VisualiseIcon()
         {
+            if (Program.trayIcon is null) return;
             int GPUMode = AppConfig.Get("gpu_mode");
             bool isDark = CheckSystemDarkModeStatus();
 
