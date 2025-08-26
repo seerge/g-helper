@@ -582,7 +582,8 @@ public static class AppConfig
 
     public static bool DynamicBoost15()
     {
-        return ContainsModel("FX507ZC4") || ContainsModel("GA403UM") || ContainsModel("GU605CP") || ContainsModel("FX608J") || ContainsModel("FX608L") || ContainsModel("FA608U") || ContainsModel("FA608P") || ContainsModel("FA608W");
+        return ContainsModel("FX507ZC4") || ContainsModel("GA403UM") || ContainsModel("GU605CP") || ContainsModel("FX608J") || ContainsModel("FX608L") || ContainsModel("FA608U") || ContainsModel("FA608P") || ContainsModel("FA608W") ||
+               ContainsModel("FA401K") || ContainsModel("FA401UM") || ContainsModel("FA401UH");
     }
 
     public static bool DynamicBoost20()
