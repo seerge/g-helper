@@ -1,6 +1,4 @@
-﻿using System.Runtime.CompilerServices;
-
-namespace GHelper.Peripherals.Mouse.Models
+﻿namespace GHelper.Peripherals.Mouse.Models
 {
     //P713_Wireless
     public class HarpeAceAimLabEdition : AsusMouse

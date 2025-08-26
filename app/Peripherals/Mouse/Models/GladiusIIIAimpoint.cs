@@ -11,6 +11,10 @@
         {
         }
 
+        protected GladiusIIIAimpoint(ushort productId, bool wireless, string endpoint, byte reportId) : base(0x0B05, productId, endpoint, wireless, reportId)
+        {
+        }
+
         public override int DPIProfileCount()
         {
             return 4;
@@ -144,6 +148,23 @@
         public override string GetDisplayName()
         {
             return "ROG Gladius III Eva 2 (Wired)";
+        }
+    }
+
+    public class GladiusIIIAimpointOmni : GladiusIIIAimpoint
+    {
+        public GladiusIIIAimpointOmni() : base(0x1ACE, true, "mi_02&col03", 0x03)
+        {
+        }
+
+        public override string GetDisplayName()
+        {
+            return "ROG Gladius III Aimpoint (OMNI)";
+        }
+
+        public override int USBPacketSize()
+        {
+            return 64;
         }
     }
 }

@@ -876,9 +876,9 @@
     <value>Intervalo {0}s</value>
   </data>
   <data name="DisableDynamicLighting" xml:space="preserve">
-    <value>Please disable Windows &gt; Dynamic Lighting</value>
+    <value>Por favor, desactive Windows &gt; Iluminación dinámica</value>
   </data>
   <data name="AmbientModeResources" xml:space="preserve">
-    <value>Ambient mode may increase resource usage</value>
+    <value>El modo ambiente puede aumentar el uso de recursos</value>
   </data>
 </root>

@@ -1,17 +1,10 @@
 ﻿namespace GHelper.Peripherals.Mouse.Models
 {
-    //P709_Wireless
-    public class KerisWirelssAimpoint : AsusMouse
+    //P520
+    public class StrixImpactIIIWirelessOmni : AsusMouse
     {
-        public KerisWirelssAimpoint() : base(0x0B05, 0x1A68, "mi_00", true)
-        {
-        }
 
-        protected KerisWirelssAimpoint(ushort vendorId, bool wireless) : base(0x0B05, vendorId, "mi_00", wireless)
-        {
-        }
-
-        protected KerisWirelssAimpoint(ushort productId, bool wireless, string endpoint, byte reportId) : base(0x0B05, productId, endpoint, wireless, reportId)
+        public StrixImpactIIIWirelessOmni() : base(0x0B05, 0x1ACE, "mi_02&col03", true, 0x03)
         {
         }
 
@@ -22,9 +15,8 @@
 
         public override string GetDisplayName()
         {
-            return "ROG Keris Wireless Aimpoint (Wireless)";
+            return "Strix Impact III Wireless (OMNI)";
         }
-
 
         public override PollingRate[] SupportedPollingrates()
         {
@@ -50,11 +42,6 @@
             return true;
         }
 
-        public override bool HasDebounceSetting()
-        {
-            return true;
-        }
-
         public override bool HasLiftOffSetting()
         {
             return true;
@@ -67,7 +54,7 @@
 
         public override LightingZone[] SupportedLightingZones()
         {
-            return new LightingZone[] { LightingZone.Logo };
+            return new LightingZone[] { LightingZone.Scrollwheel };
         }
 
         public override bool IsLightingModeSupported(LightingMode lightingMode)
@@ -75,8 +62,9 @@
             return lightingMode == LightingMode.Static
                 || lightingMode == LightingMode.Breathing
                 || lightingMode == LightingMode.ColorCycle
+                || lightingMode == LightingMode.React
                 || lightingMode == LightingMode.BatteryState
-                || lightingMode == LightingMode.React;
+                || lightingMode == LightingMode.Off;
         }
 
         public override bool HasAutoPowerOff()
@@ -103,29 +91,10 @@
         {
             return true;
         }
-    }
 
-    public class KerisWirelssAimpointWired : KerisWirelssAimpoint
-    {
-        public KerisWirelssAimpointWired() : base(0x1A66, false)
+        public override int AngleTuningStep()
         {
-        }
-
-        public override string GetDisplayName()
-        {
-            return "ROG Keris Wireless Aimpoint (Wired)";
-        }
-    }
-
-    public class KerisWirelssAimpointOmni : KerisWirelssAimpoint
-    {
-        public KerisWirelssAimpointOmni() : base(0x1ACE, true, "mi_02&col03", 0x03)
-        {
-        }
-
-        public override string GetDisplayName()
-        {
-            return "Keris Wireless Aimpoint (OMNI)";
+            return 5;
         }
 
         public override int USBPacketSize()
@@ -133,5 +102,4 @@
             return 64;
         }
     }
-
 }

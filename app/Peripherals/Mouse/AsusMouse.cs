@@ -961,7 +961,7 @@ namespace GHelper.Peripherals.Mouse
         {
             if (packet[1] == 0x12 && packet[2] == 0x04 && packet[3] == 0x00)
             {
-                return (PollingRate)packet[13];
+                return (PollingRate)(packet[13] & 0x07);
             }
 
             return PollingRate.PR125Hz;

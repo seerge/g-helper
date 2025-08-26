@@ -20,13 +20,7 @@ namespace GHelper
 
     static class Program
     {
-        public static NotifyIcon trayIcon = new NotifyIcon
-        {
-            Text = "G-Helper",
-            Icon = Properties.Resources.standard,
-            Visible = true
-        };
-
+        public static NotifyIcon trayIcon;
         public static AsusACPI acpi;
 
         public static SettingsForm settingsForm = new SettingsForm();
@@ -106,7 +100,19 @@ namespace GHelper
             HardwareControl.RecreateGpuControl();
             RyzenControl.Init();
 
+            trayIcon = new NotifyIcon
+            {
+                Text = "G-Helper",
+                Icon = Properties.Resources.standard,
+                Visible = true
+            };
+
+            Logger.WriteLine($"Tray Icon: {trayIcon.Visible}");
+
+            settingsForm.SetContextMenu();
             trayIcon.MouseClick += TrayIcon_MouseClick;
+            trayIcon.MouseMove += TrayIcon_MouseMove;
+
 
             inputDispatcher = new InputDispatcher();
 
@@ -186,6 +192,7 @@ namespace GHelper
         private static void SystemEvents_SessionEnding(object sender, SessionEndingEventArgs e)
         {
             gpuControl.StandardModeFix();
+            modeControl.ShutdownReset();
             BatteryControl.AutoBattery();
             InputDispatcher.ShutdownStatusLed();
         }
@@ -248,22 +255,16 @@ namespace GHelper
 
             BatteryControl.AutoBattery(init);
             if (init) InputDispatcher.InitScreenpad();
-            if (init || wakeup) DynamicLightingHelper.Init();
+            DynamicLightingHelper.Init();
             ScreenControl.InitOptimalBrightness();
 
             inputDispatcher.Init();
 
             modeControl.AutoPerformance(powerChanged);
 
-            bool switched = gpuControl.AutoGPUMode();
-
-            if (!switched)
-            {
-                gpuControl.InitGPUMode();
-                ScreenControl.AutoScreen();
-            }
-
             settingsForm.matrixControl.SetDevice(true);
+            InputDispatcher.InitStatusLed();
+            XGM.InitLight();
 
             if (AppConfig.IsAlly())
             {
@@ -274,9 +275,14 @@ namespace GHelper
                 InputDispatcher.AutoKeyboard();
             }
 
+            bool switched = gpuControl.AutoGPUMode(delay: 1000);
+            if (!switched)
+            {
+                gpuControl.InitGPUMode();
+                ScreenControl.AutoScreen();
+            }
+
             ScreenControl.InitMiniled();
-            InputDispatcher.InitStatusLed();
-            XGM.InitLight();
             VisualControl.InitBrightness();
 
             return true;
@@ -289,6 +295,7 @@ namespace GHelper
             {
                 Logger.WriteLine("Power Mode Changed:" + e.Mode.ToString());
                 gpuControl.StandardModeFix(true);
+                modeControl.ShutdownReset();
                 InputDispatcher.ShutdownStatusLed();
             }
 
@@ -349,12 +356,20 @@ namespace GHelper
 
         }
 
-
+        static void TrayIcon_MouseMove(object? sender, MouseEventArgs e)
+        {
+            settingsForm.RefreshSensors();
+        }
 
         static void OnExit(object sender, EventArgs e)
         {
+            if (trayIcon is not null)
+            {
+                trayIcon.Visible = false;
+                trayIcon.Dispose();
+            }
+
             autoTDPService.Shutdown();
-            trayIcon.Visible = false;
             PeripheralsProvider.UnregisterForDeviceEvents();
             clamshellControl.UnregisterDisplayEvents();
             NativeMethods.UnregisterPowerSettingNotification(unRegPowerNotify);

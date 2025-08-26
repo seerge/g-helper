@@ -90,10 +90,6 @@
         }
 
 
-        public override int MinDPI()
-        {
-            return 200;
-        }
 
         public override bool CanChangeDPIProfile()
         {
