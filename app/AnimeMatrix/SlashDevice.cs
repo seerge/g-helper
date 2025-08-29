@@ -77,8 +77,7 @@ namespace GHelper.AnimeMatrix
             { SlashMode.FX3, "FX3"},
 
             { SlashMode.BatteryLevel, Properties.Strings.SlashBatteryLevel},
-            { SlashMode.Audio, Properties.Strings.MatrixAudio},
-            { SlashMode.AudioSpectrum, "Audio Spectrum"}
+            { SlashMode.Audio, Properties.Strings.MatrixAudio}
 
         };
 
