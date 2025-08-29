@@ -255,6 +255,7 @@ namespace GHelper
             ScreenControl.InitOptimalBrightness();
 
             inputDispatcher.Init();
+            //HardwareControl.ReadSensors(true);
 
             modeControl.AutoPerformance(powerChanged);
 
