@@ -32,6 +32,7 @@ namespace GHelper.AnimeMatrix
 
         private long lastPresent;
         private List<double> maxes = new List<double>();
+        private int brightness = 0;
 
         public AniMatrixControl(SettingsForm settingsForm)
         {
@@ -79,6 +80,8 @@ namespace GHelper.AnimeMatrix
 
             bool auto = AppConfig.Is("matrix_auto");
             bool lid = AppConfig.Is("matrix_lid");
+
+            StopAudio();
 
             Task.Run(() =>
             {
@@ -134,6 +137,10 @@ namespace GHelper.AnimeMatrix
                             SlashTimer_start();
                             SlashTimer_tick();
                             break;
+                        case SlashMode.Audio:
+                            Logger.WriteLine("Slash: Audio");
+                            SetAudio();
+                            break;
                         default:
                             deviceSlash.SetMode((SlashMode)running);
                             deviceSlash.SetOptions(true, brightness, inteval);
@@ -187,7 +194,7 @@ namespace GHelper.AnimeMatrix
             bool lid = AppConfig.Is("matrix_lid");
 
             StopMatrixTimer();
-            StopMatrixAudio();
+            StopAudio();
 
             Task.Run(() =>
             {
@@ -223,7 +230,7 @@ namespace GHelper.AnimeMatrix
                             SetMatrixClock();
                             break;
                         case 4:
-                            SetMatrixAudio();
+                            SetAudio();
                             break;
                         default:
                             SetBuiltIn(running);
@@ -331,10 +338,10 @@ namespace GHelper.AnimeMatrix
 
         public void Dispose()
         {
-            StopMatrixAudio();
+            StopAudio();
         }
 
-        void StopMatrixAudio()
+        void StopAudio()
         {
             if (AudioDevice is not null)
             {
@@ -353,13 +360,14 @@ namespace GHelper.AnimeMatrix
             AudioDeviceEnum?.Dispose();
         }
 
-        void SetMatrixAudio()
+        void SetAudio()
         {
-            if (deviceMatrix is null) return;
+            if (deviceMatrix is not null) deviceMatrix.SetBuiltInAnimation(false);
+            else if (deviceSlash is not null) deviceSlash.SetEmpty();
+            else return;
 
-            deviceMatrix.SetBuiltInAnimation(false);
-            StopMatrixTimer();
-            StopMatrixAudio();
+            StopAudio();
+            brightness = AppConfig.Get("matrix_brightness", 0);
 
             try
             {
@@ -375,7 +383,7 @@ namespace GHelper.AnimeMatrix
                     AudioValues = new double[fmt.SampleRate / 1000];
                     AudioDevice.DataAvailable += WaveIn_DataAvailable;
                     AudioDevice.StartRecording();
-                    Logger.WriteLine("Matrix Audio");
+                    Logger.WriteLine("Subscribed to Audio");
                 }
             }
             catch (Exception ex)
@@ -421,12 +429,10 @@ namespace GHelper.AnimeMatrix
         void PresentAudio(double[] audio)
         {
 
-            if (deviceMatrix is null) return;
+            if (deviceMatrix is null && deviceSlash is null) return;
 
             if (Math.Abs(DateTimeOffset.Now.ToUnixTimeMilliseconds() - lastPresent) < 70) return;
             lastPresent = DateTimeOffset.Now.ToUnixTimeMilliseconds();
-
-            deviceMatrix.Clear();
 
             int size = 20;
             double[] bars = new double[size];
@@ -442,9 +448,18 @@ namespace GHelper.AnimeMatrix
             if (maxes.Count > 20) maxes.RemoveAt(0);
             maxAverage = maxes.Average();
 
-            for (int i = 0; i < size; i++) deviceMatrix.DrawBar(20 - i, bars[i] * 20 / maxAverage);
+            if (deviceMatrix is not null)
+            {
+                deviceMatrix.Clear();
+                for (int i = 0; i < size; i++) deviceMatrix.DrawBar(20 - i, bars[i] * 20 / maxAverage);
+                deviceMatrix.Present();
+            }
 
-            deviceMatrix.Present();
+            if (deviceSlash is not null)
+            {
+                deviceSlash.SetAudioPattern(brightness, 20 * (bars[0] + bars[1]) / maxAverage);
+            }
+
         }
 
         public void OpenMatrixPicture()
@@ -607,7 +622,7 @@ namespace GHelper.AnimeMatrix
             AudioDeviceId = defaultDeviceId;
 
             //Delay is required or it will deadlock on dispose.
-            Task.Delay(50).ContinueWith(t => SetMatrixAudio());
+            Task.Delay(50).ContinueWith(t => SetAudio());
         }
 
         public void OnPropertyValueChanged(string pwstrDeviceId, PropertyKey key)
