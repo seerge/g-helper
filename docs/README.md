@@ -162,15 +162,15 @@ Huge thanks to [@IceStormNG](https://github.com/IceStormNG) 👑 for contributio
 
 ------------------
 
-### 🔖 Important Notice
-
-G-Helper is **NOT** an operating system, firmware, or driver. It **DOES NOT** "run" your hardware in real-time anyhow. 
-
-It's an app that lets you select one of the predefined operating modes created by manufacturer (and stored in BIOS) and optionally(!) set some settings that already exist on your device same as Armoury Crate can. It does it by using the Asus System Control Interface "driver" that Armoury uses for it.
-
-If you use equivalent mode/settings as in Armoury Crate - the performance or the behavior of your device won't be different.
-
-The role of G-Helper for your laptop is similar to the role of a remote control for your TV.
+> [!NOTE]
+> ### 🔖 Important Notice
+> G-Helper is **NOT** an operating system, firmware, or driver. It **DOES NOT** "run" your hardware in real-time anyhow.
+> 
+> It's an app that lets you select one of the predefined operating modes created by manufacturer (and stored in BIOS) and optionally(!) set some settings that already exist on your device same as Armoury Crate can. It does it by using the Asus System Control Interface "driver" that Armoury uses for it.
+> 
+> If you use equivalent mode/settings as in Armoury Crate - the performance or the behavior of your device won't be different.
+> 
+> The role of G-Helper for your laptop is similar to the role of a remote control for your TV.
 
 ### Libraries and projects used
 - [Linux Kernel](https://github.com/torvalds/linux/blob/master/include/linux/platform_data/x86/asus-wmi.h) for some basic endpoints in ASUS ACPI/WMI interface
