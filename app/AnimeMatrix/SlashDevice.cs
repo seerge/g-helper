@@ -208,14 +208,11 @@ namespace GHelper.AnimeMatrix
         {
             byte[] payload = new byte[7];
             double step = 100.0 / 7.0;
-
             for (int i = 0; i < 7; i++)
             {
-                double t = 1 + step * i;
-                double bfrac = Math.Clamp((bass - (t - step)) / step, 0, 1);
-                double tfrac = Math.Clamp((treble - (t - step)) / step, 0, 1);
-                payload[6 - i] |= (byte)(bfrac * brightness * 0x10);
-                payload[6 - i] |= (byte)(tfrac * brightness * 0x50);
+                double s = step * i, e = step * (i + 1);
+                if (bass > s) payload[6 - i] |= (byte)(Math.Min((bass - s) / (e - s), 1) * brightness * 0x10);
+                if (treble > s) payload[6 - i] |= (byte)(Math.Min((treble - s) / (e - s), 1) * brightness * 0x50);
             }
             ContinueCustom(payload, null);
         }
