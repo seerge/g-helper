@@ -139,7 +139,7 @@ namespace GHelper.AnimeMatrix
                             SlashTimer_start();
                             SlashTimer_tick();
                             break;
-                        case SlashMode.AudioBar:
+                        case SlashMode.Audio:
                         case SlashMode.AudioSpectrum:
                             slashMode = (SlashMode)running;
                             Logger.WriteLine("Slash: Audio");
@@ -461,7 +461,7 @@ namespace GHelper.AnimeMatrix
 
             if (deviceSlash is not null)
             {
-                if (slashMode == SlashMode.AudioBar)
+                if (slashMode == SlashMode.Audio)
                 {
                     deviceSlash.SetAudioPattern(slashBrightness, 20 * (bars[0] + bars[1] + bars[2]) / maxAverage, 10 * (bars[3] + bars[4] + bars[5] + bars[6]) / maxAverage);
                 } 
