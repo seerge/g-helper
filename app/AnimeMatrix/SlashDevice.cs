@@ -26,7 +26,8 @@ namespace GHelper.AnimeMatrix
         FX2,
         FX3,
         BatteryLevel,
-        Audio,
+        AudioBar,
+        AudioSpectrum
     }
 
     public class SlashPacket : Packet
@@ -76,7 +77,8 @@ namespace GHelper.AnimeMatrix
             { SlashMode.FX3, "FX3"},
 
             { SlashMode.BatteryLevel, Properties.Strings.SlashBatteryLevel},
-            { SlashMode.Audio, Properties.Strings.MatrixAudio}
+            { SlashMode.AudioBar, "Audio Bar"},
+            { SlashMode.AudioSpectrum, "Audio Spectrum"}
 
         };
 
@@ -202,10 +204,22 @@ namespace GHelper.AnimeMatrix
             SetCustom(GetPercentagePattern(0, 0));
         }
 
-        public void SetAudioPattern(int brightness, double audio)
+        public void SetAudioPattern(int brightness, double bass, double treble)
         {
-            ContinueCustom(GetPercentagePattern(brightness, audio), null);
+            byte[] payload = new byte[7];
+            double step = 100.0 / 7.0;
+
+            for (int i = 0; i < 7; i++)
+            {
+                double t = 1 + step * i;
+                double bfrac = Math.Clamp((bass - (t - step)) / step, 0, 1);
+                double tfrac = Math.Clamp((treble - (t - step)) / step, 0, 1);
+                payload[6 - i] |= (byte)(bfrac * brightness * 0x10);
+                payload[6 - i] |= (byte)(tfrac * brightness * 0x50);
+            }
+            ContinueCustom(payload, null);
         }
+
 
         public void SetCustom(byte[] data, string? log = "Static Data")
         {

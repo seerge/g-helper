@@ -32,7 +32,9 @@ namespace GHelper.AnimeMatrix
 
         private long lastPresent;
         private List<double> maxes = new List<double>();
-        private int brightness = 0;
+        
+        private int slashBrightness = 0;
+        private SlashMode slashMode;
 
         public AniMatrixControl(SettingsForm settingsForm)
         {
@@ -137,7 +139,9 @@ namespace GHelper.AnimeMatrix
                             SlashTimer_start();
                             SlashTimer_tick();
                             break;
-                        case SlashMode.Audio:
+                        case SlashMode.AudioBar:
+                        case SlashMode.AudioSpectrum:
+                            slashMode = (SlashMode)running;
                             Logger.WriteLine("Slash: Audio");
                             SetAudio();
                             break;
@@ -367,7 +371,7 @@ namespace GHelper.AnimeMatrix
             else return;
 
             StopAudio();
-            brightness = AppConfig.Get("matrix_brightness", 0);
+            slashBrightness = AppConfig.Get("matrix_brightness", 0);
 
             try
             {
@@ -457,9 +461,17 @@ namespace GHelper.AnimeMatrix
 
             if (deviceSlash is not null)
             {
-                deviceSlash.SetAudioPattern(brightness, 20 * (bars[0] + bars[1]) / maxAverage);
+                if (slashMode == SlashMode.AudioBar)
+                {
+                    deviceSlash.SetAudioPattern(slashBrightness, 20 * (bars[0] + bars[1] + bars[2]) / maxAverage, 10 * (bars[3] + bars[4] + bars[5] + bars[6]) / maxAverage);
+                } 
+                else
+                {
+                    var payload = new byte[7];
+                    for (int i = 0; i < 7; i++) payload[6-i] = (byte)(Math.Min(255, Math.Pow((bars[2 * i] + bars[2 * i + 1]) / 2 / maxAverage, 2) * 0x8F));
+                    deviceSlash.ContinueCustom(payload, null);
+                }
             }
-
         }
 
         public void OpenMatrixPicture()
