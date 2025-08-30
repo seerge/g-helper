@@ -12,7 +12,7 @@ namespace GHelper.AutoUpdate
 
         SettingsForm settings;
 
-        public string versionUrl = "http://github.com/seerge/g-helper/releases";
+        public string versionUrl = "https://github.com/seerge/g-helper/releases";
         static long lastUpdate;
 
         public AutoUpdateControl(SettingsForm settingsForm)
