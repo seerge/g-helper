@@ -16,6 +16,7 @@ namespace GHelper.Input
         public static bool backlightActivity = true;
         public static bool lidClose = false;
         public static bool tentMode = false;
+        private static bool? _fnLock = null;
 
         public static Keys keyProfile = (Keys)AppConfig.Get("keybind_profile", (int)Keys.F5);
         public static Keys keyApp = (Keys)AppConfig.Get("keybind_app", (int)Keys.F12);
@@ -104,7 +105,7 @@ namespace GHelper.Input
 
         public static void InitFNLock()
         {
-            if (AppConfig.IsHardwareFnLock()) HardwareFnLock(AppConfig.Is("fn_lock"));
+            if (IsHardwareFnLock()) HardwareFnLock(AppConfig.Is("fn_lock"));
         }
 
         public void InitBacklightTimer()
@@ -190,7 +191,7 @@ namespace GHelper.Input
 
             // FN-Lock group
 
-            if (AppConfig.Is("fn_lock") && !AppConfig.IsHardwareFnLock())
+            if (AppConfig.Is("fn_lock") && !IsHardwareFnLock())
                 for (Keys i = Keys.F1; i <= Keys.F11; i++) hook.RegisterHotKey(ModifierKeys.None, i);
 
             // Arrow-lock group
@@ -705,6 +706,18 @@ namespace GHelper.Input
             Program.toast.RunToast("Arrow-Lock " + (arLock == 1 ? Properties.Strings.On : Properties.Strings.Off), ToastIcon.FnLock);
         }
 
+        public static bool IsHardwareFnLock()
+        {
+            if (AppConfig.IsHardwareFnLock()) return true;
+            if (_fnLock is null)
+            {
+                var fnLockStatus = Program.acpi.DeviceGet(AsusACPI.FnLock);
+                Logger.WriteLine("FnLock Support: " + fnLockStatus);
+                _fnLock = fnLockStatus > 0;
+            }
+            return (bool)_fnLock;
+        }
+
         public static void HardwareFnLock(bool fnLock)
         {
             Program.acpi.DeviceSet(AsusACPI.FnLock, fnLock ^ AppConfig.IsInvertedFNLock() ? 1 : 0, "FnLock");
@@ -716,7 +729,7 @@ namespace GHelper.Input
             bool fnLock = !AppConfig.Is("fn_lock");
             AppConfig.Set("fn_lock", fnLock ? 1 : 0);
 
-            if (AppConfig.IsHardwareFnLock())
+            if (IsHardwareFnLock())
                 HardwareFnLock(fnLock);
             else
                 Program.settingsForm.BeginInvoke(Program.inputDispatcher.RegisterKeys);
