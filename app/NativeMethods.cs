@@ -1,7 +1,7 @@
 ﻿using System.Runtime.InteropServices;
 
 
-public class NativeMethods
+public static class NativeMethods
 {
 
     internal struct LASTINPUTINFO
@@ -28,9 +28,6 @@ public class NativeMethods
 
     [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
     public static extern int RegisterWindowMessage(string lpString);
-
-    public static readonly int WM_TASKBARCREATED = RegisterWindowMessage("TaskbarCreated");
-
 
     [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
     private static extern IntPtr SendMessage(nint hWnd, int hMsg, int wParam, int lParam);

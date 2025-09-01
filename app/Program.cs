@@ -32,6 +32,7 @@ namespace GHelper
         public static ToastForm toast = new ToastForm();
 
         public static IntPtr unRegPowerNotify, unRegPowerNotifyLid;
+        public static int WM_TASKBARCREATED = 0;
 
         private static long lastAuto;
         private static long lastTheme;
@@ -103,7 +104,8 @@ namespace GHelper
                 Visible = true
             };
 
-            Logger.WriteLine($"Tray Icon: {trayIcon.Visible}");
+            WM_TASKBARCREATED = RegisterWindowMessage("TaskbarCreated");
+            Logger.WriteLine($"Tray Icon: {trayIcon.Visible} | {WM_TASKBARCREATED}");
 
             settingsForm.SetContextMenu();
             trayIcon.MouseClick += TrayIcon_MouseClick;
