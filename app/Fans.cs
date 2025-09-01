@@ -1,4 +1,4 @@
-﻿using GHelper.Fan;
+using GHelper.Fan;
 using GHelper.Gpu.NVidia;
 using GHelper.Mode;
 using GHelper.UI;
@@ -135,6 +135,10 @@ namespace GHelper
 
             checkApplyFans.Click += CheckApplyFans_Click;
             checkApplyPower.Click += CheckApplyPower_Click;
+
+            comboFanUnified.Items.AddRange(new String[] { "Disabled", "GPU Priority", "CPU Priority" });
+            comboFanUnified.SelectedIndex = AppConfig.GetFanUnifiedMode();
+            comboFanUnified.SelectedIndexChanged += ComboFanUnified_SelectedIndexChanged;
 
             trackGPUClockLimit.Minimum = NvidiaGpuControl.MinClockLimit;
             trackGPUClockLimit.Maximum = NvidiaGpuControl.MaxClockLimit;
@@ -866,14 +870,18 @@ namespace GHelper
 
         }
 
+        private void ComboFanUnified_SelectedIndexChanged(object? sender, EventArgs e)
+        {
+            AppConfig.SetFanUnifiedMode(comboFanUnified.SelectedIndex);
+            modeControl.AutoFans(true);
+        }
+
         private void CheckApplyFans_Click(object? sender, EventArgs e)
         {
             if (sender is null) return;
             CheckBox chk = (CheckBox)sender;
 
-            AppConfig.SetMode("auto_apply", chk.Checked ? 1 : 0);
-            modeControl.SetPerformanceMode();
-
+            modeControl.AutoFans(true);
         }
 
         public void InitAxis()
@@ -945,6 +953,7 @@ namespace GHelper
 
             }
 
+            checkApplyFans.Checked = AppConfig.IsMode("auto_apply");
             checkApplyPower.Checked = AppConfig.IsMode("auto_apply_power");
 
             int limit_total = AppConfig.GetMode("limit_total", AsusACPI.DefaultTotal);
@@ -1372,6 +1381,48 @@ namespace GHelper
             }
         }
 
-    }
+        public static int GetFanSpeedForTemperature(int temp, byte[] curve)
+        {
+            int fanSpeed = 0;
 
+            for (int i = 0; i < 8; i++)
+            {
+                if (curve[i] == 0) continue;
+
+                if (temp >= curve[i])
+                {
+                    fanSpeed = curve[i + 8];
+                }
+                else
+                {
+                    break;
+                }
+            }
+
+            return fanSpeed;
+        }
+
+        public static byte[] CreateFlatFanCurve(int fanSpeed, byte[]? standardCurve)
+        {
+            if (fanSpeed < 0) fanSpeed = 0;
+            if (fanSpeed > 100) fanSpeed = 100;
+            byte speed = (byte)fanSpeed;
+
+            if (standardCurve is null || standardCurve.Length != 16) {
+                // Fallback to default temps if something is wrong
+                standardCurve = new byte[] { 20, 30, 40, 50, 60, 70, 80, 90, 0, 0, 0, 0, 0, 0, 0, 0 };
+            }
+
+            byte[] flatCurve = new byte[16];
+            // Copy temperature points
+            Array.Copy(standardCurve, 0, flatCurve, 0, 8);
+            // Set all speed points to the target speed
+            for (int i = 8; i < 16; i++) {
+                flatCurve[i] = speed;
+            }
+
+            return flatCurve;
+        }
+
+    }
 }
