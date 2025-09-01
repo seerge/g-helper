@@ -276,6 +276,7 @@ namespace GHelper.Peripherals
                         var s when s.StartsWith("025") => new KerisIIOriginOmni(),                      // 025050613700
                         var s when s.StartsWith("20") => new StrixImpactIIIWirelessOmni(),              // 202405290700
                         var s when s.StartsWith("R8") => new GladiusIIIAimpointOmni(),                  // R82020155689
+                        var s when s.StartsWith("R6") => new GladiusIIIAimpointOmni(),                  // R60120331787
                         _ => new HarpeAceAimLabEditionOmni()
                     };
 
