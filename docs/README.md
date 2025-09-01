@@ -179,6 +179,12 @@ Huge thanks to [@IceStormNG](https://github.com/IceStormNG) 👑 for contributio
 - [UXTU](https://github.com/JamesCJ60/Universal-x86-Tuning-Utility) for undervolting using Ryzen System Management Unit
 - [AsusCtl](https://gitlab.com/asus-linux/asusctl) for inspiration and some reverse engineering
 
+### Code Signing Policy
+Free code signing provided by [SignPath.io](https://about.signpath.io/), certificate by [SignPath Foundation](https://signpath.org/)
+
+### Privacy Policy
+This program will not transfer any information to other networked systems
+
 ### Disclaimers
 "Asus", "ROG", "TUF", and "Armoury Crate" are trademarked by and belong to AsusTek Computer, Inc. I make no claims to these or any assets belonging to AsusTek Computer and use them purely for informational purposes only.
 
