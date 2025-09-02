@@ -26,6 +26,23 @@ namespace GHelper.Helpers
             }
         }
 
+        public static bool IsMicMuted()
+        {
+            try
+            {
+                using (var deviceEnumerator = new MMDeviceEnumerator())
+                {
+                    var commDevice = deviceEnumerator.GetDefaultAudioEndpoint(DataFlow.Capture, Role.Communications);
+                    return commDevice.AudioEndpointVolume.Mute;
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLine("Error checking mic mute status: " + ex.Message);
+                return false; // Assume not muted in case of error
+            }
+        }
+
         public static bool IsMuted()
         {
             try
