@@ -644,7 +644,7 @@ namespace GHelper.Input
 
         static void MuteLED()
         {
-            Thread.Sleep(200);
+            Thread.Sleep(500);
             Program.acpi.DeviceSet(AsusACPI.SoundMuteLed, Audio.IsMuted() ? 1 : 0, "SoundLed");
         }
 
