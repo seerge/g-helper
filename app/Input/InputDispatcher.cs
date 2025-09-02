@@ -101,7 +101,7 @@ namespace GHelper.Input
             }
 
             InitBacklightTimer();
-            MicMuteLED();
+            MuteLEDInit();
         }
 
         public static void InitFNLock()
@@ -666,11 +666,11 @@ namespace GHelper.Input
             if (AppConfig.IsVivoZenbook()) Program.acpi.DeviceSet(AsusACPI.MicMuteLed, muteStatus ? 1 : 0, "MicmuteLed");
         }
 
-        static void MicMuteLED()
+        static void MuteLEDInit()
         {
             if (!AppConfig.IsVivoZenbook()) return;
-            if (Program.acpi.DeviceGet(AsusACPI.MicMuteLed) < 0) return;
-            Program.acpi.DeviceSet(AsusACPI.MicMuteLed, Audio.IsMicMuted() ? 1 : 0, "MicmuteLedInit");
+            if (Program.acpi.DeviceGet(AsusACPI.MicMuteLed) >= 0) Program.acpi.DeviceSet(AsusACPI.MicMuteLed, Audio.IsMicMuted() ? 1 : 0, "MicmuteLedInit");
+            if (Program.acpi.DeviceGet(AsusACPI.SoundMuteLed) >= 0) Program.acpi.DeviceSet(AsusACPI.SoundMuteLed, Audio.IsMuted() ? 1 : 0, "SoundLedInit");
         }
 
         static bool GetTouchpadState()
