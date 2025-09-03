@@ -44,7 +44,12 @@ public class Startup
                     string action = task.Definition.Actions.FirstOrDefault()!.ToString().Trim();
                     if (!strExeFilePath.Equals(action, StringComparison.OrdinalIgnoreCase) && !File.Exists(action))
                     {
-                        Logger.WriteLine("File doesn't exist: " + action);
+                        Logger.WriteLine("Startup file doesn't exist: " + action);
+                        if (task.Definition.Principal.RunLevel == TaskRunLevel.Highest && !ProcessHelper.IsUserAdministrator())
+                        {
+                            ProcessHelper.RunAsAdmin();
+                            return;
+                        }
                         Logger.WriteLine("Rescheduling to: " + strExeFilePath);
                         UnSchedule();
                         Schedule();
