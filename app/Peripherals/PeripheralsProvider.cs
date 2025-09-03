@@ -268,7 +268,6 @@ namespace GHelper.Peripherals
                         var s when s.StartsWith("B24") => new HarpeAceMiniOmni(),                       // B24082550833
                         var s when s.StartsWith("B25") => new HarpeAceMiniOmni(),                       // B25030817186
                         var s when s.StartsWith("R1") => new KerisWirelssAimpointOmni(),                // R13121351391
-                        var s when s.StartsWith("R9") => new KerisWirelssAimpointOmni(),                // R90518300572
                         var s when s.StartsWith("F24") => new KerisWirelssAimpointOmni(),               // F24B21DD03F4
                         var s when s.StartsWith("FB") => new KerisWirelssAimpointOmni(),                // FBA0CC1D6F9C
                         var s when s.StartsWith("024") => new KerisAceIIOmni(),                         // 024031316969
@@ -277,6 +276,8 @@ namespace GHelper.Peripherals
                         var s when s.StartsWith("20") => new StrixImpactIIIWirelessOmni(),              // 202405290700
                         var s when s.StartsWith("R8") => new GladiusIIIAimpointOmni(),                  // R82020155689
                         var s when s.StartsWith("R6") => new GladiusIIIAimpointOmni(),                  // R60120331787
+                        var s when s.StartsWith("R903") => new GladiusIIIAimpointOmni(),                // R90319215881
+                        var s when s.StartsWith("R9") => new KerisWirelssAimpointOmni(),                // R90518300572
                         _ => new HarpeAceAimLabEditionOmni()
                     };
 
