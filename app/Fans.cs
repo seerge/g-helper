@@ -189,7 +189,7 @@ namespace GHelper
             comboPowerMode.DisplayMember = "Value";
             comboPowerMode.ValueMember = "Key";
 
-            FillModes();
+            FillModes(false);
             InitAll();
             InitCPU();
 
@@ -486,17 +486,17 @@ namespace GHelper
 
             Modes.Remove(mode);
             FillModes();
-
             modeControl.SetPerformanceMode(AsusACPI.PerformanceBalanced);
 
         }
 
-        private void FillModes()
+        private void FillModes(bool contextMenu = true)
         {
             comboModes.DropDownStyle = ComboBoxStyle.DropDownList;
             comboModes.DataSource = new BindingSource(Modes.GetDictonary(), null);
             comboModes.DisplayMember = "Value";
             comboModes.ValueMember = "Key";
+            if (contextMenu) Program.settingsForm.SetContextMenu();
         }
 
         private void ButtonAdd_Click(object? sender, EventArgs e)

@@ -21,7 +21,7 @@ namespace GHelper
     public partial class SettingsForm : RForm
     {
         ContextMenuStrip contextMenuStrip = new CustomContextMenu();
-        ToolStripMenuItem menuSilent, menuBalanced, menuTurbo, menuEco, menuStandard, menuUltimate, menuOptimized;
+        ToolStripMenuItem menuEco, menuStandard, menuUltimate, menuOptimized;
 
         public GPUModeControl gpuControl;
         public AllyControl allyControl;
@@ -741,9 +741,12 @@ namespace GHelper
 
         public void SetContextMenu()
         {
+            var currentMode = Modes.GetCurrent();
 
-            var mode = Modes.GetCurrent();
-
+            foreach (ToolStripItem item in contextMenuStrip.Items.Cast<ToolStripItem>().ToList())
+            {
+                if (item is ToolStripMenuItem menuItem) menuItem.Dispose();
+            }
             contextMenuStrip.Items.Clear();
             Padding padding = new Padding(15, 5, 5, 5);
 
@@ -752,23 +755,15 @@ namespace GHelper
             title.Enabled = false;
             contextMenuStrip.Items.Add(title);
 
-            menuSilent = new ToolStripMenuItem(Properties.Strings.Silent);
-            menuSilent.Click += ButtonSilent_Click;
-            menuSilent.Margin = padding;
-            menuSilent.Checked = (mode == AsusACPI.PerformanceSilent);
-            contextMenuStrip.Items.Add(menuSilent);
-
-            menuBalanced = new ToolStripMenuItem(Properties.Strings.Balanced);
-            menuBalanced.Click += ButtonBalanced_Click;
-            menuBalanced.Margin = padding;
-            menuBalanced.Checked = (mode == AsusACPI.PerformanceBalanced);
-            contextMenuStrip.Items.Add(menuBalanced);
-
-            menuTurbo = new ToolStripMenuItem(Properties.Strings.Turbo);
-            menuTurbo.Click += ButtonTurbo_Click;
-            menuTurbo.Margin = padding;
-            menuTurbo.Checked = (mode == AsusACPI.PerformanceTurbo);
-            contextMenuStrip.Items.Add(menuTurbo);
+            foreach (var mode in Modes.GetDictonary())
+            {
+                var menuMode = new ToolStripMenuItem(mode.Value);
+                menuMode.Tag = mode.Key;
+                menuMode.Click += (sender, args) => { Program.modeControl.SetPerformanceMode(mode.Key); };
+                menuMode.Margin = padding;
+                menuMode.Checked = (mode.Key == currentMode);
+                contextMenuStrip.Items.Add(menuMode);
+            }
 
             contextMenuStrip.Items.Add("-");
 
@@ -1534,23 +1529,16 @@ namespace GHelper
             buttonTurbo.Activated = false;
             buttonFans.Activated = false;
 
-            menuSilent.Checked = false;
-            menuBalanced.Checked = false;
-            menuTurbo.Checked = false;
-
             switch (mode)
             {
                 case AsusACPI.PerformanceSilent:
                     buttonSilent.Activated = true;
-                    menuSilent.Checked = true;
                     break;
                 case AsusACPI.PerformanceTurbo:
                     buttonTurbo.Activated = true;
-                    menuTurbo.Checked = true;
                     break;
                 case AsusACPI.PerformanceBalanced:
                     buttonBalanced.Activated = true;
-                    menuBalanced.Checked = true;
                     break;
                 default:
                     buttonFans.Activated = true;
@@ -1561,6 +1549,14 @@ namespace GHelper
                         _ => colorStandard,
                     };
                     break;
+            }
+
+            foreach (var item in contextMenuStrip.Items)
+            {
+                if (item is ToolStripMenuItem menuItem && menuItem.Tag is not null)
+                {
+                    menuItem.Checked = ((int)menuItem.Tag == mode);
+                }
             }
         }
 
