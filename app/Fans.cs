@@ -711,7 +711,7 @@ namespace GHelper
         {
             if (percentage == 0) return "OFF";
 
-            int Min = FanSensorControl.DEFAULT_FAN_MIN;
+            int Min = FanSensorControl.GetFanMin(device);
             int Max = FanSensorControl.GetFanMax(device);
 
             if (fanRpm)
