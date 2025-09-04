@@ -744,6 +744,16 @@ public static class AppConfig
     {
         return ContainsModel("G834JYR") || ContainsModel("G834JZR") || ContainsModel("G634JZR") || ContainsModel("G835LW") || Is("force_miniled");
     }
+    public static int GetFanUnifiedMode()
+    {
+        return Get("fan_unified_mode", 0);
+    }
+
+    public static void SetFanUnifiedMode(int mode)
+    {
+        Set("fan_unified_mode", mode);
+    }
+
     public static bool SaveDimming()
     {
         return Is("save_dimming");
@@ -753,6 +763,4 @@ public static class AppConfig
     {
         return Is("auto_status_led");
     }
-
-
 }

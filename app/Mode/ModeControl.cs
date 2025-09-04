@@ -1,6 +1,7 @@
-﻿using GHelper.Gpu.NVidia;
+using GHelper.Gpu.NVidia;
 using GHelper.Helpers;
 using GHelper.USB;
+using GHelper.Gpu;
 using Ryzen;
 
 namespace GHelper.Mode
@@ -20,6 +21,7 @@ namespace GHelper.Mode
 
         static System.Timers.Timer reapplyTimer = default!;
         static System.Timers.Timer modeToggleTimer = default!;
+        static System.Timers.Timer? fanUnifiedTimer;
 
         public ModeControl()
         {
@@ -161,9 +163,69 @@ namespace GHelper.Mode
 
         }
 
+        private void StopUnifiedFanControl()
+        {
+            if (fanUnifiedTimer is not null)
+            {
+                fanUnifiedTimer.Stop();
+                fanUnifiedTimer.Dispose();
+                fanUnifiedTimer = null;
+            }
+        }
+
+        private void UnifiedFanTimer_Elapsed(object? sender, System.Timers.ElapsedEventArgs e)
+        {
+            int fanUnifiedMode = AppConfig.GetFanUnifiedMode();
+            if (fanUnifiedMode == 0) {
+                StopUnifiedFanControl();
+                AutoFans(true);
+                return;
+            }
+
+            byte[]? priorityCurve;
+            float? currentTempFloat;
+
+            if (fanUnifiedMode == 1) { // GPU Priority
+                priorityCurve = AppConfig.GetFanConfig(AsusFan.GPU);
+                currentTempFloat = HardwareControl.GetGPUTemp();
+            } else { // CPU Priority
+                priorityCurve = AppConfig.GetFanConfig(AsusFan.CPU);
+                currentTempFloat = HardwareControl.GetCPUTemp();
+            }
+
+            if (currentTempFloat is null) return;
+            int currentTemp = (int)currentTempFloat;
+
+            if (priorityCurve is null) return;
+
+            int fanSpeed = Fans.GetFanSpeedForTemperature(currentTemp, priorityCurve);
+
+            byte[] flatCurve = Fans.CreateFlatFanCurve(fanSpeed, priorityCurve);
+
+            Program.acpi.SetFanCurve(AsusFan.CPU, flatCurve);
+            Program.acpi.SetFanCurve(AsusFan.GPU, flatCurve);
+
+        }
+
+
         public void AutoFans(bool force = false)
         {
             customFans = false;
+
+            StopUnifiedFanControl();
+
+            int fanUnifiedMode = AppConfig.GetFanUnifiedMode();
+
+            if (fanUnifiedMode > 0)
+            {
+                fanUnifiedTimer = new System.Timers.Timer(1000);
+                fanUnifiedTimer.Elapsed += UnifiedFanTimer_Elapsed;
+                fanUnifiedTimer.Start();
+                UnifiedFanTimer_Elapsed(null, null);
+                customFans = true;
+                SetModeLabel();
+                return;
+            }
 
             if (AppConfig.IsMode("auto_apply") || force)
             {
@@ -175,8 +237,11 @@ namespace GHelper.Mode
                     xgmFan = true;
                 }
 
-                int cpuResult = Program.acpi.SetFanCurve(AsusFan.CPU, AppConfig.GetFanConfig(AsusFan.CPU));
-                int gpuResult = Program.acpi.SetFanCurve(AsusFan.GPU, AppConfig.GetFanConfig(AsusFan.GPU));
+                byte[]? cpuFanCurve = AppConfig.GetFanConfig(AsusFan.CPU);
+                byte[]? gpuFanCurve = AppConfig.GetFanConfig(AsusFan.GPU);
+
+                int cpuResult = Program.acpi.SetFanCurve(AsusFan.CPU, cpuFanCurve);
+                int gpuResult = Program.acpi.SetFanCurve(AsusFan.GPU, gpuFanCurve);
 
                 if (AppConfig.Is("mid_fan"))
                     Program.acpi.SetFanCurve(AsusFan.Mid, AppConfig.GetFanConfig(AsusFan.Mid));
@@ -185,8 +250,8 @@ namespace GHelper.Mode
                 // Alternative way to set fan curve
                 if (cpuResult != 1 || gpuResult != 1)
                 {
-                    cpuResult = Program.acpi.SetFanRange(AsusFan.CPU, AppConfig.GetFanConfig(AsusFan.CPU));
-                    gpuResult = Program.acpi.SetFanRange(AsusFan.GPU, AppConfig.GetFanConfig(AsusFan.GPU));
+                    cpuResult = Program.acpi.SetFanRange(AsusFan.CPU, cpuFanCurve);
+                    gpuResult = Program.acpi.SetFanRange(AsusFan.GPU, gpuFanCurve);
 
                     // Something went wrong, resetting to default profile
                     if (cpuResult != 1 || gpuResult != 1)

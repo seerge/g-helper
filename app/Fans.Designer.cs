@@ -1,4 +1,4 @@
-﻿using GHelper.UI;
+using GHelper.UI;
 using System.Windows.Forms.DataVisualization.Charting;
 
 namespace GHelper
@@ -40,6 +40,8 @@ namespace GHelper
             ChartArea chartArea8 = new ChartArea();
             Title title8 = new Title();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Fans));
+            comboFanUnified = new RComboBox();
+            labelFanUnified = new Label();
             panelFans = new Panel();
             labelTip = new Label();
             tableFanCharts = new TableLayoutPanel();
@@ -445,15 +447,18 @@ namespace GHelper
             // 
             // panelApplyFans
             // 
+
             panelApplyFans.Controls.Add(buttonCalibrate);
             panelApplyFans.Controls.Add(labelFansResult);
+            panelApplyFans.Controls.Add(labelFanUnified);
+            panelApplyFans.Controls.Add(comboFanUnified);
             panelApplyFans.Controls.Add(checkApplyFans);
             panelApplyFans.Controls.Add(buttonReset);
             panelApplyFans.Dock = DockStyle.Bottom;
             panelApplyFans.Location = new Point(0, 984);
             panelApplyFans.Margin = new Padding(4);
             panelApplyFans.Name = "panelApplyFans";
-            panelApplyFans.Size = new Size(810, 116);
+            panelApplyFans.Size = new Size(810, 140);
             panelApplyFans.TabIndex = 43;
             // 
             // buttonCalibrate
@@ -464,7 +469,7 @@ namespace GHelper
             buttonCalibrate.BorderColor = Color.Transparent;
             buttonCalibrate.BorderRadius = 2;
             buttonCalibrate.FlatStyle = FlatStyle.Flat;
-            buttonCalibrate.Location = new Point(275, 40);
+            buttonCalibrate.Location = new Point(275, 80);
             buttonCalibrate.Margin = new Padding(4, 2, 4, 2);
             buttonCalibrate.Name = "buttonCalibrate";
             buttonCalibrate.Secondary = true;
@@ -484,16 +489,38 @@ namespace GHelper
             labelFansResult.TabIndex = 42;
             labelFansResult.Visible = false;
             // 
+            // comboFanUnified
+            // 
+            comboFanUnified.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            comboFanUnified.BorderColor = Color.White;
+            comboFanUnified.ButtonColor = Color.FromArgb(255, 255, 255);
+            comboFanUnified.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboFanUnified.FormattingEnabled = true;
+            comboFanUnified.Location = new Point(580, 20);
+            comboFanUnified.Name = "comboFanUnified";
+            comboFanUnified.Size = new Size(200, 40);
+            comboFanUnified.TabIndex = 45;
+            // 
+            // labelFanUnified
+            // 
+            labelFanUnified.Anchor = AnchorStyles.Top | AnchorStyles.Left;
+            labelFanUnified.AutoSize = true;
+            labelFanUnified.Location = new Point(15, 25);
+            labelFanUnified.Name = "labelFanUnified";
+            labelFanUnified.Size = new Size(223, 32);
+            labelFanUnified.TabIndex = 44;
+            labelFanUnified.Text = "Unified Fan Control";
+            // 
             // checkApplyFans
             // 
             checkApplyFans.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             checkApplyFans.AutoSize = true;
             checkApplyFans.BackColor = SystemColors.ControlLight;
-            checkApplyFans.Location = new Point(454, 42);
+            checkApplyFans.Location = new Point(594, 82);
             checkApplyFans.Margin = new Padding(0);
             checkApplyFans.Name = "checkApplyFans";
             checkApplyFans.Padding = new Padding(16, 6, 16, 6);
-            checkApplyFans.Size = new Size(341, 48);
+            checkApplyFans.Size = new Size(201, 48);
             checkApplyFans.TabIndex = 19;
             checkApplyFans.Text = Properties.Strings.ApplyFanCurve;
             checkApplyFans.UseVisualStyleBackColor = false;
@@ -506,7 +533,7 @@ namespace GHelper
             buttonReset.BorderColor = Color.Transparent;
             buttonReset.BorderRadius = 2;
             buttonReset.FlatStyle = FlatStyle.Flat;
-            buttonReset.Location = new Point(15, 40);
+            buttonReset.Location = new Point(15, 80);
             buttonReset.Margin = new Padding(4, 2, 4, 2);
             buttonReset.Name = "buttonReset";
             buttonReset.Secondary = true;
@@ -1832,6 +1859,8 @@ namespace GHelper
         private Label labelGPUCore;
         private TrackBar trackGPUCore;
         private Label labelGPUCoreTitle;
+        private UI.RComboBox comboFanUnified;
+        private Label labelFanUnified;
         private Panel panelTitleGPU;
         private PictureBox pictureGPU;
         private Label labelGPU;
