@@ -748,6 +748,9 @@ namespace GHelper
                 if (item is ToolStripMenuItem menuItem) menuItem.Dispose();
             }
             contextMenuStrip.Items.Clear();
+            contextMenuStrip.ShowCheckMargin = true;
+            contextMenuStrip.ImageScalingSize = new Size(16, 16);
+            contextMenuStrip.ShowImageMargin = false;
             Padding padding = new Padding(15, 5, 5, 5);
 
             var title = new ToolStripMenuItem(Properties.Strings.PerformanceMode);
