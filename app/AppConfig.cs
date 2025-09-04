@@ -191,6 +191,11 @@ public static class AppConfig
         File.WriteAllText(configFile, jsonString);
     }
 
+    public static bool Exists(string name)
+    {
+        return config.ContainsKey(name);
+    }
+
     public static int Get(string name, int empty = -1)
     {
         if (config.ContainsKey(name))
