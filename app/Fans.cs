@@ -408,7 +408,8 @@ namespace GHelper
                 panelAdvancedApply.Visible = false;
                 panelDownload.Visible = true;
 
-            } else
+            }
+            else
             {
                 panelDownload.Visible = false;
             }
@@ -829,7 +830,7 @@ namespace GHelper
 
             comboPowerMode.Enabled = !batterySaver;
 
-            if (batterySaver) 
+            if (batterySaver)
                 comboPowerMode.SelectedIndex = 0;
             else
                 comboPowerMode.SelectedValue = powerMode;
@@ -934,7 +935,7 @@ namespace GHelper
                     labelLeftSlow.Text = "sPPT (CPU 2 min boost)";
                     labelLeftFast.Text = "fPPT (CPU 2 sec boost)";
                     panelFast.Visible = modeC1;
-                    
+
                 }
                 else
                 {
@@ -957,7 +958,7 @@ namespace GHelper
 
             if (limit_cpu > AsusACPI.MaxCPU) limit_cpu = AsusACPI.MaxCPU;
             if (limit_cpu < AsusACPI.MinCPU) limit_cpu = AsusACPI.MinCPU;
-            
+
             if (limit_slow > AsusACPI.MaxTotal) limit_slow = AsusACPI.MaxTotal;
             if (limit_slow < AsusACPI.MinTotal) limit_slow = AsusACPI.MinTotal;
 
@@ -1051,7 +1052,7 @@ namespace GHelper
             {
                 if (chartCount > 2)
                     Size = MinimumSize = new Size(Size.Width, Math.Max(MinimumSize.Height, (int)(ControlHelper.GetDpiScale(this).Value * (chartCount * 200 + 100))));
-                    
+
             }
             catch (Exception ex)
             {
@@ -1065,7 +1066,25 @@ namespace GHelper
             LoadProfile(seriesCPU, AsusFan.CPU);
             LoadProfile(seriesGPU, AsusFan.GPU);
 
-            checkApplyFans.Checked = AppConfig.IsMode("auto_apply");
+            bool autoFans = AppConfig.IsMode("auto_apply_power") && AppConfig.IsFanRequired();
+            bool applyFans = AppConfig.IsMode("auto_apply");
+
+            checkApplyFans.Checked = applyFans;
+
+            if (autoFans || applyFans)
+            {
+                seriesCPU.Color = colorStandard;
+                seriesGPU.Color = colorTurbo;
+                seriesMid.Color = colorEco;
+                seriesXGM.Color = Color.Orange;
+            }
+            else
+            {
+                seriesCPU.Color = Color.Gray;
+                seriesGPU.Color = Color.Gray;
+                seriesMid.Color = Color.Gray;
+                seriesXGM.Color = Color.Gray;
+            }
 
         }
 
@@ -1159,13 +1178,13 @@ namespace GHelper
                 trackGPUClockLimit.Value = NvidiaGpuControl.MaxClockLimit;
                 trackGPUCore.Value = 0;
                 trackGPUMemory.Value = 0;
-                
+
                 trackGPUBoost.Value = AsusACPI.MaxGPUBoost;
                 trackGPUTemp.Value = AsusACPI.MaxGPUTemp;
 
                 //AppConfig.SetMode("gpu_boost", trackGPUBoost.Value);
                 //AppConfig.SetMode("gpu_temp", trackGPUTemp.Value);
-                
+
                 AppConfig.RemoveMode("gpu_boost");
                 AppConfig.RemoveMode("gpu_temp");
 

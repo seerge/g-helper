@@ -226,7 +226,7 @@ namespace GHelper.Mode
             bool applyPower = AppConfig.IsMode("auto_apply_power");
             bool applyFans = AppConfig.IsMode("auto_apply");
 
-            if (applyPower && !applyFans && (AppConfig.IsFanRequired() || AppConfig.IsManualModeRequired()))
+            if (applyPower && !applyFans && AppConfig.IsFanRequired())
             {
                 AutoFans(true);
                 Thread.Sleep(500);
