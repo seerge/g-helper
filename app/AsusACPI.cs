@@ -550,12 +550,6 @@ public class AsusACPI
 
         if (fanScale != 100 && device == AsusFan.CPU) Logger.WriteLine("Custom fan scale: " + fanScale);
 
-        if (AppConfig.IsSwappedFans())
-        {
-            device = (device == AsusFan.CPU) ? AsusFan.GPU : AsusFan.CPU;
-            Logger.WriteLine("Swapped fan fix");
-        }
-
         for (int i = 8; i < curve.Length; i++) curve[i] = (byte)(Math.Max((byte)0, Math.Min((byte)100, curve[i])) * fanScale / 100);
 
         switch (device)

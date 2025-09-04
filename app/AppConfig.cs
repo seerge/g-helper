@@ -634,24 +634,6 @@ public static class AppConfig
         }
     }
 
-    public static bool IsSwappedFans()
-    {
-        if (!ContainsModel("GA503R")) return false;
-
-        try
-        {
-            var (bios, model) = GetBiosAndModel();
-            var biosVersion = Int32.Parse(bios);
-            if (ContainsModel("GA503RM") && biosVersion == 317) return true;
-            if ((ContainsModel("GA503RS") || ContainsModel("GA503RW")) && biosVersion == 316) return true;
-            return false;
-        }
-        catch
-        {
-            return false;
-        }
-    }
-
     public static bool IsResetRequired()
     {
         return ContainsModel("GA403") || ContainsModel("FA507XV");
