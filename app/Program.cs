@@ -178,7 +178,7 @@ namespace GHelper
                     });
                     break;
                 default:
-                    Startup.StartupCheck();
+                    Task.Run(Startup.StartupCheck);
                     break;
             }
 

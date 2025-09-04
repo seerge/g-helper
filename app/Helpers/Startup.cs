@@ -1,5 +1,7 @@
 ﻿using GHelper.Helpers;
 using Microsoft.Win32.TaskScheduler;
+using System.Diagnostics;
+using System.Reflection;
 using System.Security.Principal;
 
 public class Startup
@@ -42,9 +44,42 @@ public class Startup
                 try
                 {
                     string action = task.Definition.Actions.FirstOrDefault()!.ToString().Trim();
-                    if (!strExeFilePath.Equals(action, StringComparison.OrdinalIgnoreCase) && !File.Exists(action))
+                    bool needsReschedule = false;
+
+                    if (!strExeFilePath.Equals(action, StringComparison.OrdinalIgnoreCase))
                     {
-                        Logger.WriteLine("Startup file doesn't exist: " + action);
+                        if (!File.Exists(action))
+                        {
+                            Logger.WriteLine("Startup file doesn't exist: " + action);
+                            needsReschedule = true;
+                        }
+                        else
+                        {
+                            try
+                            {
+                                var currentVer = Assembly.GetEntryAssembly().GetName().Version;
+                                var fv = FileVersionInfo.GetVersionInfo(action).FileVersion.Split('.');
+                                var scheduledVer = new Version(
+                                    int.Parse(fv[0]),
+                                    fv.Length > 1 ? int.Parse(fv[1]) : 0,
+                                    fv.Length > 2 ? int.Parse(fv[2]) : 0,
+                                    fv.Length > 3 ? int.Parse(fv[3]) : 0
+                                );
+                                if (currentVer > scheduledVer)
+                                {
+                                    Logger.WriteLine($"Startup file is older {scheduledVer}, current is {currentVer}");
+                                    needsReschedule = true;
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                Logger.WriteLine("Can't compare assembly versions: " + ex.Message);
+                            }
+                        }
+                    }
+
+                    if (needsReschedule)
+                    {
                         if (task.Definition.Principal.RunLevel == TaskRunLevel.Highest && !ProcessHelper.IsUserAdministrator())
                         {
                             ProcessHelper.RunAsAdmin();
