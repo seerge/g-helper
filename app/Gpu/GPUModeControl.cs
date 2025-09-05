@@ -20,7 +20,7 @@ namespace GHelper.Gpu
             settings = settingsForm;
         }
 
-        public void InitGPUMode()
+        public void InitGPUMode(bool init = false)
         {
             if (AppConfig.NoGpu())
             {
@@ -34,7 +34,7 @@ namespace GHelper.Gpu
             Logger.WriteLine("Eco flag : " + eco);
             Logger.WriteLine("Mux flag : " + mux);
 
-            if (AppConfig.IsNVPlatformExists() && eco == 0) NvidiaGpuControl.CheckStartNVPlatform();
+            if (init && eco == 0 && AppConfig.IsNVPlatformExists()) NvidiaGpuControl.CheckStartNVPlatform();
 
             settings.VisualiseGPUButtons(eco >= 0, mux >= 0);
 
