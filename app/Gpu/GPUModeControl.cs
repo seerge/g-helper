@@ -34,7 +34,7 @@ namespace GHelper.Gpu
             Logger.WriteLine("Eco flag : " + eco);
             Logger.WriteLine("Mux flag : " + mux);
 
-            if (eco == 0) NvidiaGpuControl.CheckStartNVPlatform();
+            if (AppConfig.IsNVPlatformExists() && eco == 0) NvidiaGpuControl.CheckStartNVPlatform();
 
             settings.VisualiseGPUButtons(eco >= 0, mux >= 0);
 
@@ -158,7 +158,7 @@ namespace GHelper.Gpu
                 if (eco == 1)
                 {
                     HardwareControl.KillGPUApps();
-                    NvidiaGpuControl.StopNVPlatform();
+                    if (AppConfig.IsNVPlatform()) NvidiaGpuControl.StopNVPlatform();
                 }
 
                 Logger.WriteLine($"Running eco command {eco}");
@@ -180,7 +180,7 @@ namespace GHelper.Gpu
 
                     if (eco == 0)
                     {
-                        NvidiaGpuControl.StartNVPlatform();
+                        if (AppConfig.IsNVPlatform()) NvidiaGpuControl.StartNVPlatform();
                         await Task.Delay(TimeSpan.FromMilliseconds(3000));
                         HardwareControl.RecreateGpuControl();
                         Program.modeControl.SetGPUClocks(false);
