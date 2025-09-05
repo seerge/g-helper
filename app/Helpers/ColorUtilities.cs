@@ -1,143 +1,112 @@
-﻿using System.Runtime.CompilerServices;
+using System;
+using System.Drawing;
+using System.Runtime.CompilerServices;
 
 namespace GHelper.Helpers
 {
     public class ColorUtils
     {
-        // Method to get the weighted average between two colors
-        public static Color GetWeightedAverage(Color color1, Color color2, float weight)
+        // Renk doygunluğu ve parlaklığı artıran fonksiyon
+        public static Color BoostSaturationAndBrightness(Color color, float saturationBoost, float brightnessBoost)
         {
-
-            int red = (int)Math.Round(color1.R * (1 - weight) + color2.R * weight);
-            int green = (int)Math.Round(color1.G * (1 - weight) + color2.G * weight);
-            int blue = (int)Math.Round(color1.B * (1 - weight) + color2.B * weight);
-
-            red = Math.Min(255, Math.Max(0, red));
-            green = Math.Min(255, Math.Max(0, green));
-            blue = Math.Min(255, Math.Max(0, blue));
-
-            return Color.FromArgb(red, green, blue);
+            float h, s, v;
+            RGBtoHSV(color, out h, out s, out v);
+            s = Math.Min(1.0f, s + saturationBoost);
+            v = Math.Min(1.0f, v * brightnessBoost);
+            return HSVtoRGB(h, s, v);
         }
 
-        public static Color GetMidColor(Color color1, Color color2)
+        // Boost sonrası siyahsa direkt siyah döndür, değilse Boost edilmiş renk
+        public static Color BoostAndCheck(Color c, float saturationBoost = 0.3f, float brightnessBoost = 0.4f)
         {
-            return Color.FromArgb((color1.R + color2.R) / 2,
-                (color1.G + color2.G) / 2,
-                (color1.B + color2.B) / 2);
+            var boosted = BoostSaturationAndBrightness(c, saturationBoost, brightnessBoost);
+            if (boosted.R == 0 && boosted.G == 0 && boosted.B == 0)
+                return Color.Black;
+            return boosted;
         }
 
-        public static Color GetDominantColor(Bitmap bmp)
+        // İki rengin ağırlıklı ortalamasını hesapla
+        public static Color GetWeightedAverage(Color c1, Color c2, float weight)
         {
+            weight = Math.Clamp(weight, 0f, 1f);
 
-            //Used for tally
-            int r = 0;
-            int g = 0;
-            int b = 0;
-
-            int total = 0;
-
-            for (int x = 0; x < bmp.Width; x++)
-            {
-                for (int y = 0; y < bmp.Height; y++)
-                {
-                    Color clr = bmp.GetPixel(x, y);
-
-                    r += clr.R;
-                    g += clr.G;
-                    b += clr.B;
-
-                    total++;
-                }
-            }
-
-            //Calculate average
-            r /= total;
-            g /= total;
-            b /= total;
+            int r = (int)(c1.R * (1 - weight) + c2.R * weight);
+            int g = (int)(c1.G * (1 - weight) + c2.G * weight);
+            int b = (int)(c1.B * (1 - weight) + c2.B * weight);
 
             return Color.FromArgb(r, g, b);
         }
 
-        public class HSV
+        // İki rengin ortanca tonunu hesapla (örnek)
+        public static Color GetMidColor(Color c1, Color c2)
         {
-            public double Hue { get; set; }
-            public double Saturation { get; set; }
-            public double Value { get; set; }
-
-            public Color ToRGB()
-            {
-                var hue = Hue * 6;
-                var saturation = Saturation;
-                var value = Value;
-
-                double red;
-                double green;
-                double blue;
-
-                if (saturation == 0)
-                {
-                    red = green = blue = value;
-                }
-                else
-                {
-                    var i = Convert.ToInt32(Math.Floor(hue));
-                    var f = hue - i;
-                    var p = value * (1 - saturation);
-                    var q = value * (1 - saturation * f);
-                    var t = value * (1 - saturation * (1 - f));
-                    int mod = i % 6;
-
-                    red = new[] { value, q, p, p, t, value }[mod];
-                    green = new[] { t, value, value, q, p, p }[mod];
-                    blue = new[] { p, p, t, value, value, q }[mod];
-                }
-
-                return Color.FromArgb(Convert.ToInt32(red * 255), Convert.ToInt32(green * 255), Convert.ToInt32(blue * 255));
-            }
-
-            public static HSV ToHSV(Color rgb)
-            {
-                double red = rgb.R / 255.0;
-                double green = rgb.G / 255.0;
-                double blue = rgb.B / 255.0;
-                var min = Math.Min(red, Math.Min(green, blue));
-                var max = Math.Max(red, Math.Max(green, blue));
-                var delta = max - min;
-                double hue;
-                double saturation = 0;
-                var value = max;
-
-                if (max != 0)
-                    saturation = delta / max;
-
-                if (delta == 0)
-                    hue = 0;
-                else
-                {
-                    if (red == max)
-                        hue = (green - blue) / delta + (green < blue ? 6 : 0);
-                    else if (green == max)
-                        hue = 2 + (blue - red) / delta;
-                    else
-                        hue = 4 + (red - green) / delta;
-
-                    hue /= 6;
-                }
-
-                return new HSV { Hue = hue, Saturation = saturation, Value = value };
-            }
-
-            public static Color UpSaturation(Color rgb, float increse = 0.2f) //make color more colored
-            {
-                if (rgb.R == rgb.G && rgb.G == rgb.B)
-                    return rgb;
-                var hsv_color = ToHSV(rgb);
-                hsv_color.Saturation = Math.Min(hsv_color.Saturation + increse, 1.00f);
-                return hsv_color.ToRGB();
-            }
-
+            return Color.FromArgb(
+                (c1.R + c2.R) / 2,
+                (c1.G + c2.G) / 2,
+                (c1.B + c2.B) / 2);
         }
 
+        // Bitmap üzerindeki baskın renk (örnek basit versiyon)
+        public static Color GetDominantColor(Bitmap bmp)
+        {
+            int r = 0, g = 0, b = 0;
+            int total = 0;
+
+            for (int y = 0; y < bmp.Height; y++)
+            {
+                for (int x = 0; x < bmp.Width; x++)
+                {
+                    Color c = bmp.GetPixel(x, y);
+                    r += c.R;
+                    g += c.G;
+                    b += c.B;
+                    total++;
+                }
+            }
+
+            return Color.FromArgb(r / total, g / total, b / total);
+        }
+
+        // RGB -> HSV dönüşümü
+        public static void RGBtoHSV(Color color, out float hue, out float saturation, out float value)
+        {
+            int max = Math.Max(color.R, Math.Max(color.G, color.B));
+            int min = Math.Min(color.R, Math.Min(color.G, color.B));
+
+            hue = color.GetHue() / 360f;
+            saturation = (max == 0) ? 0 : 1f - (1f * min / max);
+            value = max / 255f;
+        }
+
+        // HSV -> RGB dönüşümü
+        public static Color HSVtoRGB(float h, float s, float v)
+        {
+            int i = (int)(h * 6);
+            float f = h * 6 - i;
+            int p = (int)(255 * v * (1 - s));
+            int q = (int)(255 * v * (1 - f * s));
+            int t = (int)(255 * v * (1 - (1 - f) * s));
+            int vInt = (int)(255 * v);
+
+            switch (i % 6)
+            {
+                case 0: return Color.FromArgb(vInt, t, p);
+                case 1: return Color.FromArgb(q, vInt, p);
+                case 2: return Color.FromArgb(p, vInt, t);
+                case 3: return Color.FromArgb(p, q, vInt);
+                case 4: return Color.FromArgb(t, p, vInt);
+                case 5: return Color.FromArgb(vInt, p, q);
+                default: return Color.Black;
+            }
+        }
+
+        // HSV sınıfı (isteğe bağlı, şu an boş tutabilirsin)
+        public class HSV
+        {
+            // İstersen HSV değerler ve dönüşümler burada olur
+        }
+
+        // Renkleri yumuşak geçişle değiştirmek için sınıf
         public class SmoothColor
         {
             public Color RGB
@@ -152,7 +121,7 @@ namespace GHelper.Helpers
                 return clr_;
             }
 
-            private float smooth = 0.65f; //smooth
+            private float smooth = 0.65f;
             private Color clr = new Color();
             private Color clr_ = new Color();
 
@@ -171,10 +140,9 @@ namespace GHelper.Helpers
                     if (endPoint1 != endPoint2)
                     {
                         return Color.FromArgb(
-                        InterpolateComponent(endPoint1, endPoint2, lambda, _redSelector),
-                        InterpolateComponent(endPoint1, endPoint2, lambda, _greenSelector),
-                        InterpolateComponent(endPoint1, endPoint2, lambda, _blueSelector)
-                        );
+                            InterpolateComponent(endPoint1, endPoint2, lambda, _redSelector),
+                            InterpolateComponent(endPoint1, endPoint2, lambda, _greenSelector),
+                            InterpolateComponent(endPoint1, endPoint2, lambda, _blueSelector));
                     }
 
                     return endPoint1;
@@ -186,8 +154,6 @@ namespace GHelper.Helpers
                     return (byte)(selector(end1) + (selector(end2) - selector(end1)) * lambda);
                 }
             }
-
         }
     }
-
 }
