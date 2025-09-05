@@ -178,59 +178,39 @@ public class NvidiaGpuControl : IGpuControl
         return RunPowershellCommand(@"Restart-Service -Name 'NVDisplay.ContainerLocalSystem' -Force");
     }
 
-    public static bool StartNVService()
-    {
-        return RunPowershellCommand(@"Get-Service | Where-Object { $_.DisplayName -like '*NVIDIA*' } | Start-Service");
-    }
-
-    public static bool StopNVService()
-    {
-        return RunPowershellCommand(@"Get-Service | Where-Object { $_.DisplayName -like '*NVIDIA*' } | Stop-Service");
-    }
 
     public static void CheckStartNVPlatform()
     {
-        Task.Run(() =>
+        try
         {
-            try
+            var result = ProcessHelper.RunCMD("powershell", "Get-PnpDevice | Where-Object { $_.FriendlyName -imatch 'NVIDIA' -and $_.Class -eq 'SoftwareDevice' } | Select-Object -ExpandProperty Status");
+            if (result.Contains("Error"))
             {
-                var result = ProcessHelper.RunCMD("powershell", "Get-PnpDevice | Where-Object { $_.FriendlyName -imatch 'NVIDIA' -and $_.Class -eq 'SoftwareDevice' } | Select-Object -ExpandProperty Status");
-                if (result.Contains("Error"))
+                Logger.WriteLine("Starting NV Platform");
+                if (ProcessHelper.IsUserAdministrator())
                 {
-                    Logger.WriteLine("Starting NV Platform");
-                    if (ProcessHelper.IsUserAdministrator())
-                    {
-                        StartNVPlatform();
-                    }
-                    else
-                    {
-                        ProcessHelper.RunAsAdmin();
-                        Application.Exit();
-                        return;
-                    }
+                    RunPowershellCommand(@"$device = Get-PnpDevice | Where-Object { $_.FriendlyName -imatch 'NVIDIA' -and $_.Class -eq 'SoftwareDevice' }; Enable-PnpDevice $device.InstanceId -Confirm:$false;");
+                    RunPowershellCommand(@"Get-Service | Where-Object { $_.DisplayName -like '*NVIDIA*' } | Start-Service");
+                }
+                else
+                {
+                    ProcessHelper.RunAsAdmin();
+                    return;
                 }
             }
-            catch (Exception ex)
-            {
-                Logger.WriteLine(ex.ToString());
-            }
-        });
+        }
+        catch (Exception ex)
+        {
+            Logger.WriteLine(ex.ToString());
+        }
     }
 
-    public static bool StopNVPlatform()
+    public static void StopNVPlatform()
     {
-        if (!ProcessHelper.IsUserAdministrator()) return false;
-        var result = RunPowershellCommand(@"$device = Get-PnpDevice | Where-Object { $_.FriendlyName -imatch 'NVIDIA' -and $_.Class -eq 'SoftwareDevice' }; Disable-PnpDevice $device.InstanceId -Confirm:$false;");
-        StopNVService();
-        return result;
-    }
-
-    public static bool StartNVPlatform()
-    {
-        if (!ProcessHelper.IsUserAdministrator()) return false;
-        var result = RunPowershellCommand(@"$device = Get-PnpDevice | Where-Object { $_.FriendlyName -imatch 'NVIDIA' -and $_.Class -eq 'SoftwareDevice' }; Enable-PnpDevice $device.InstanceId -Confirm:$false;");
-        StartNVService();
-        return result;
+        if (!ProcessHelper.IsUserAdministrator()) return;
+        RunPowershellCommand(@"$device = Get-PnpDevice | Where-Object { $_.FriendlyName -imatch 'NVIDIA' -and $_.Class -eq 'SoftwareDevice' }; Disable-PnpDevice $device.InstanceId -Confirm:$false;");
+        RunPowershellCommand(@"Get-Service | Where-Object { $_.DisplayName -like '*NVIDIA*' } | Stop-Service");
+        return;
     }
 
     public int SetClocks(int core, int memory)
