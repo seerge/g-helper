@@ -183,6 +183,7 @@ public class NvidiaGpuControl : IGpuControl
         try
         {
             var result = ProcessHelper.RunCMD("powershell", "Get-PnpDevice | Where-Object { $_.FriendlyName -imatch 'NVIDIA' -and $_.Class -eq 'SoftwareDevice' } | Select-Object -ExpandProperty Status");
+            Logger.WriteLine("NV Platform status: " + result);
             return result.Contains("OK");
         }
         catch (Exception ex)
