@@ -178,12 +178,21 @@ public class NvidiaGpuControl : IGpuControl
         return RunPowershellCommand(@"Restart-Service -Name 'NVDisplay.ContainerLocalSystem' -Force");
     }
 
+    public static bool StartNVService()
+    {
+        return RunPowershellCommand(@"Get-Service | Where-Object { $_.DisplayName -like '*NVIDIA*' } | Start-Service");
+    }
+
+    public static bool StopNVService()
+    {
+        return RunPowershellCommand(@"Get-Service | Where-Object { $_.DisplayName -like '*NVIDIA*' } | Stop-Service");
+    }
+
     public static bool IsNVPlatformEnabled()
     {
         try
         {
             var result = ProcessHelper.RunCMD("powershell", "Get-PnpDevice | Where-Object { $_.FriendlyName -imatch 'NVIDIA' -and $_.Class -eq 'SoftwareDevice' } | Select-Object -ExpandProperty Status");
-            Logger.WriteLine("NV Platform status: " + result);
             return result.Contains("OK");
         }
         catch (Exception ex)
