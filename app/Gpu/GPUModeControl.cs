@@ -170,7 +170,7 @@ namespace GHelper.Gpu
                 if (eco == 1)
                 {
                     HardwareControl.KillGPUApps();
-                    NvidiaGpuControl.StopNVPlatform();
+                    if (AppConfig.IsNVPlatform()) NvidiaGpuControl.StopNVPlatform();
                 }
 
                 Logger.WriteLine($"Running eco command {eco}");
@@ -192,8 +192,7 @@ namespace GHelper.Gpu
 
                     if (eco == 0)
                     {
-                        NvidiaGpuControl.StartNVPlatform();
-                        if (AppConfig.IsNVServiceRestart()) NvidiaGpuControl.RestartNVService();
+                        if (AppConfig.IsNVPlatform()) NvidiaGpuControl.StartNVPlatform();
                         await Task.Delay(TimeSpan.FromMilliseconds(3000));
                         HardwareControl.RecreateGpuControl();
                         Program.modeControl.SetGPUClocks(false);
