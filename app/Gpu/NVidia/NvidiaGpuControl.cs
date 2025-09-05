@@ -205,13 +205,17 @@ public class NvidiaGpuControl : IGpuControl
     public static bool StopNVPlatform()
     {
         if (!ProcessHelper.IsUserAdministrator()) return false;
-        return RunPowershellCommand(@"$device = Get-PnpDevice | Where-Object { $_.FriendlyName -imatch 'NVIDIA' -and $_.Class -eq 'SoftwareDevice' }; Disable-PnpDevice $device.InstanceId -Confirm:$false;");
+        var result = RunPowershellCommand(@"$device = Get-PnpDevice | Where-Object { $_.FriendlyName -imatch 'NVIDIA' -and $_.Class -eq 'SoftwareDevice' }; Disable-PnpDevice $device.InstanceId -Confirm:$false;");
+        StopNVService();
+        return result;
     }
 
     public static bool StartNVPlatform()
     {
         if (!ProcessHelper.IsUserAdministrator()) return false;
-        return RunPowershellCommand(@"$device = Get-PnpDevice | Where-Object { $_.FriendlyName -imatch 'NVIDIA' -and $_.Class -eq 'SoftwareDevice' }; Enable-PnpDevice $device.InstanceId -Confirm:$false;");
+        var result = RunPowershellCommand(@"$device = Get-PnpDevice | Where-Object { $_.FriendlyName -imatch 'NVIDIA' -and $_.Class -eq 'SoftwareDevice' }; Enable-PnpDevice $device.InstanceId -Confirm:$false;");
+        StartNVService();
+        return result;
     }
 
     public int SetClocks(int core, int memory)
