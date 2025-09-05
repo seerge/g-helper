@@ -188,22 +188,35 @@ public class NvidiaGpuControl : IGpuControl
         return RunPowershellCommand(@"Get-Service | Where-Object { $_.DisplayName -like '*NVIDIA*' } | Stop-Service");
     }
 
-    public static bool IsNVPlatformEnabled()
+    public static void CheckStartNVPlatform()
     {
+        if (!AppConfig.IsNVPlatformExists()) return;
         try
         {
             var result = ProcessHelper.RunCMD("powershell", "Get-PnpDevice | Where-Object { $_.FriendlyName -imatch 'NVIDIA' -and $_.Class -eq 'SoftwareDevice' } | Select-Object -ExpandProperty Status");
-            return result.Contains("OK");
+            if (result.Contains("Error"))
+            {
+                Logger.WriteLine("Starting NV Platform");
+                if (ProcessHelper.IsUserAdministrator())
+                {
+                    StartNVPlatform();
+                }
+                else
+                {
+                    ProcessHelper.RunAsAdmin();
+                    return;
+                }
+            }
         }
         catch (Exception ex)
         {
             Logger.WriteLine(ex.ToString());
-            return true;
         }
     }
 
     public static bool StopNVPlatform()
     {
+        if (!AppConfig.IsNVPlatform()) return false;
         if (!ProcessHelper.IsUserAdministrator()) return false;
         var result = RunPowershellCommand(@"$device = Get-PnpDevice | Where-Object { $_.FriendlyName -imatch 'NVIDIA' -and $_.Class -eq 'SoftwareDevice' }; Disable-PnpDevice $device.InstanceId -Confirm:$false;");
         StopNVService();
@@ -212,6 +225,7 @@ public class NvidiaGpuControl : IGpuControl
 
     public static bool StartNVPlatform()
     {
+        if (!AppConfig.IsNVPlatform()) return false;
         if (!ProcessHelper.IsUserAdministrator()) return false;
         var result = RunPowershellCommand(@"$device = Get-PnpDevice | Where-Object { $_.FriendlyName -imatch 'NVIDIA' -and $_.Class -eq 'SoftwareDevice' }; Enable-PnpDevice $device.InstanceId -Confirm:$false;");
         StartNVService();

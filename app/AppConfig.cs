@@ -668,6 +668,10 @@ public static class AppConfig
     {
         return Is("nv_platform");
     }
+    public static bool IsNVPlatformExists()
+    {
+        return Exists("nv_platform");
+    }
 
     public static bool IsForceSetGPUMode()
     {
