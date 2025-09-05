@@ -178,6 +178,31 @@ public class NvidiaGpuControl : IGpuControl
         return RunPowershellCommand(@"Restart-Service -Name 'NVDisplay.ContainerLocalSystem' -Force");
     }
 
+    public static bool IsNVPlatformEnabled()
+    {
+        try
+        {
+            var result = ProcessHelper.RunCMD("powershell", "Get-PnpDevice | Where-Object { $_.FriendlyName -imatch 'NVIDIA' -and $_.Class -eq 'SoftwareDevice' } | Select-Object -ExpandProperty Status");
+            return result.Contains("OK");
+        }
+        catch (Exception ex)
+        {
+            Logger.WriteLine(ex.ToString());
+            return true;
+        }
+    }
+
+    public static bool StopNVPlatform()
+    {
+        if (!ProcessHelper.IsUserAdministrator()) return false;
+        return RunPowershellCommand(@"$device = Get-PnpDevice | Where-Object { $_.FriendlyName -imatch 'NVIDIA' -and $_.Class -eq 'SoftwareDevice' }; Disable-PnpDevice $device.InstanceId -Confirm:$false;");
+    }
+
+    public static bool StartNVPlatform()
+    {
+        if (!ProcessHelper.IsUserAdministrator()) return false;
+        return RunPowershellCommand(@"$device = Get-PnpDevice | Where-Object { $_.FriendlyName -imatch 'NVIDIA' -and $_.Class -eq 'SoftwareDevice' }; Enable-PnpDevice $device.InstanceId -Confirm:$false;");
+    }
 
     public int SetClocks(int core, int memory)
     {
