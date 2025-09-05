@@ -190,28 +190,31 @@ public class NvidiaGpuControl : IGpuControl
 
     public static void CheckStartNVPlatform()
     {
-        try
+        Task.Run(() =>
         {
-            var result = ProcessHelper.RunCMD("powershell", "Get-PnpDevice | Where-Object { $_.FriendlyName -imatch 'NVIDIA' -and $_.Class -eq 'SoftwareDevice' } | Select-Object -ExpandProperty Status");
-            if (result.Contains("Error"))
+            try
             {
-                Logger.WriteLine("Starting NV Platform");
-                if (ProcessHelper.IsUserAdministrator())
+                var result = ProcessHelper.RunCMD("powershell", "Get-PnpDevice | Where-Object { $_.FriendlyName -imatch 'NVIDIA' -and $_.Class -eq 'SoftwareDevice' } | Select-Object -ExpandProperty Status");
+                if (result.Contains("Error"))
                 {
-                    StartNVPlatform();
-                }
-                else
-                {
-                    ProcessHelper.RunAsAdmin();
-                    Application.Exit();
-                    return;
+                    Logger.WriteLine("Starting NV Platform");
+                    if (ProcessHelper.IsUserAdministrator())
+                    {
+                        StartNVPlatform();
+                    }
+                    else
+                    {
+                        ProcessHelper.RunAsAdmin();
+                        Application.Exit();
+                        return;
+                    }
                 }
             }
-        }
-        catch (Exception ex)
-        {
-            Logger.WriteLine(ex.ToString());
-        }
+            catch (Exception ex)
+            {
+                Logger.WriteLine(ex.ToString());
+            }
+        });
     }
 
     public static bool StopNVPlatform()
