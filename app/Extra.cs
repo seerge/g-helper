@@ -465,6 +465,11 @@ namespace GHelper
             checkGPUFix.Checked = AppConfig.IsGPUFix();
             checkGPUFix.CheckedChanged += CheckGPUFix_CheckedChanged;
 
+            checkNVPlatform.Visible = Program.acpi.IsNVidiaGPU();
+            checkNVPlatform.Checked = AppConfig.IsNVPlatform();
+            checkNVPlatform.CheckedChanged += CheckNVPlatform_CheckedChanged;
+
+
             checkPerKeyRGB.Visible = AppConfig.IsPossible4ZoneRGB();
             checkPerKeyRGB.Checked = AppConfig.Is("per_key_rgb");
             checkPerKeyRGB.CheckedChanged += CheckPerKeyRGB_CheckedChanged;
@@ -478,6 +483,11 @@ namespace GHelper
 
             InitACPITesting();
 
+        }
+
+        private void CheckNVPlatform_CheckedChanged(object? sender, EventArgs e)
+        {
+            AppConfig.Set("nv_platform", (checkNVPlatform.Checked ? 1 : 0));
         }
 
         private void CheckOptimalBrightness_CheckedChanged(object? sender, EventArgs e)

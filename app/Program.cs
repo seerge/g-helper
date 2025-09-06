@@ -277,7 +277,7 @@ namespace GHelper
             bool switched = gpuControl.AutoGPUMode(delay: 1000);
             if (!switched)
             {
-                gpuControl.InitGPUMode();
+                gpuControl.InitGPUMode(init);
                 ScreenControl.AutoScreen();
             }
 
