@@ -134,10 +134,9 @@ namespace GHelper.Helpers
             if (directory != null) cmd.StartInfo.WorkingDirectory = directory;
             cmd.Start();
 
-            Logger.WriteLine(name + " " + args);
             string result = cmd.StandardOutput.ReadToEnd().Replace(Environment.NewLine, " ").Trim(' ');
+            Logger.WriteLine(name + " " + args);
             Logger.WriteLine(result);
-            
             cmd.WaitForExit();
 
             return result;
