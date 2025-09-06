@@ -134,9 +134,12 @@ namespace GHelper.Helpers
             if (directory != null) cmd.StartInfo.WorkingDirectory = directory;
             cmd.Start();
 
+
+            var watch = Stopwatch.StartNew();
             string result = cmd.StandardOutput.ReadToEnd().Replace(Environment.NewLine, " ").Trim(' ');
+            watch.Stop();
             Logger.WriteLine(name + " " + args);
-            Logger.WriteLine(result);
+            Logger.WriteLine(watch.ElapsedMilliseconds + " ms: " + result);
             cmd.WaitForExit();
 
             return result;
