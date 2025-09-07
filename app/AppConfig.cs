@@ -1,4 +1,5 @@
 using GHelper.Mode;
+using System.Diagnostics;
 using System.Management;
 using System.Text.Json;
 
@@ -13,6 +14,7 @@ public static class AppConfig
 
     private static Dictionary<string, object> config = new Dictionary<string, object>();
     private static System.Timers.Timer timer = new System.Timers.Timer(2000);
+    private static long lastWrite;
 
     static AppConfig()
     {
@@ -76,14 +78,15 @@ public static class AppConfig
 
         try
         {
-            File.WriteAllText(backup, jsonString);
+            File.WriteAllText(configFile, jsonString);
+            //Debug.WriteLine($"{DateTime.Now}: Config write");
         }
         catch (Exception)
         {
-            Thread.Sleep(100);
+            Thread.Sleep(1000);
             try
             {
-                File.WriteAllText(backup, jsonString);
+                File.WriteAllText(configFile, jsonString);
             }
             catch (Exception ex)
             {
@@ -92,9 +95,13 @@ public static class AppConfig
             return;
         }
 
-        Thread.Sleep(500);
+        lastWrite = DateTimeOffset.Now.ToUnixTimeMilliseconds();
 
-        var backupText = File.ReadAllText(backup);
+        Thread.Sleep(5000);
+
+        if (Math.Abs(DateTimeOffset.Now.ToUnixTimeMilliseconds() - lastWrite) < 4000) return;
+
+        var backupText = File.ReadAllText(configFile);
         bool isValid =
             !string.IsNullOrWhiteSpace(backupText) &&
             backupText.IndexOf('\0') == -1 &&                     
@@ -104,7 +111,8 @@ public static class AppConfig
 
         if (isValid)
         {
-            File.Copy(backup, configFile, true);
+            File.Copy(configFile, backup, true);
+            //Debug.WriteLine($"{DateTime.Now}: Config backup");
         }
         else
         {
