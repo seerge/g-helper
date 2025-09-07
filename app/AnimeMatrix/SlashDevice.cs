@@ -210,7 +210,7 @@ namespace GHelper.AnimeMatrix
             for (int i = 0; i < 7; i++)
             {
                 double s = step * i, e = step * (i + 1);
-                if (bass > s) payload[6 - i] |= (byte)(Math.Min((bass - s) / (e - s), 1) * brightness * 0x10);
+                if (bass > s) payload[6 - i] |= (byte)(Math.Min((bass - s) / (e - s), 1) * brightness * 0x20);
                 if (treble > s) payload[6 - i] |= (byte)(Math.Min((treble - s) / (e - s), 1) * brightness * 0x50);
             }
             ContinueCustom(payload, null);

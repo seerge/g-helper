@@ -435,7 +435,7 @@ namespace GHelper.AnimeMatrix
 
             if (deviceMatrix is null && deviceSlash is null) return;
 
-            if (Math.Abs(DateTimeOffset.Now.ToUnixTimeMilliseconds() - lastPresent) < 70) return;
+            if (Math.Abs(DateTimeOffset.Now.ToUnixTimeMilliseconds() - lastPresent) < 30)   return;
             lastPresent = DateTimeOffset.Now.ToUnixTimeMilliseconds();
 
             int size = 20;
@@ -463,7 +463,9 @@ namespace GHelper.AnimeMatrix
             {
                 if (slashMode == SlashMode.Audio)
                 {
-                    deviceSlash.SetAudioPattern(slashBrightness, 20 * (bars[0] + bars[1] + bars[2]) / maxAverage, 10 * (bars[3] + bars[4] + bars[5] + bars[6]) / maxAverage);
+                    var bassLevel = 30 * (bars[0] + bars[1]) / maxAverage;
+                    deviceSlash.SetAudioPattern(slashBrightness, bassLevel, 10 * (bars[3] + bars[4] + bars[5] + bars[6]) / maxAverage);
+                    //Program.settingsForm.VisualiseAudio(bassLevel);
                 } 
                 else
                 {

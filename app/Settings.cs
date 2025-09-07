@@ -1960,6 +1960,16 @@ namespace GHelper
             mouseSettings = null;
         }
 
+        public void VisualiseAudio(double level)
+        {
+            int filledSquares = (int)Math.Round(level/2);
+            string squares = new string('|', filledSquares);
+            Invoke(delegate
+            {
+                labelMatrix.Text = $"{Properties.Strings.AnimeMatrix} {squares}";
+            });
+        }
+
         public void VisualiseFnLock()
         {
 
