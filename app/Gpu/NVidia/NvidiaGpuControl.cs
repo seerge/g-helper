@@ -26,7 +26,7 @@ public class NvidiaGpuControl : IGpuControl
     public NvidiaGpuControl()
     {
         _internalGpu = GetInternalDiscreteGpu();
-        if (FullName.Contains("070 Ti") || FullName.Contains("080") || FullName.Contains("090"))
+        if (IsValid && (FullName.Contains("070 Ti") || FullName.Contains("080") || FullName.Contains("090")))
         {
             MaxCoreOffset = Math.Max(MaxCoreOffset, 400);
             MaxMemoryOffset = Math.Max(MaxMemoryOffset, 1000);
