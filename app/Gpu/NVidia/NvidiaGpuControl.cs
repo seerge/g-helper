@@ -12,8 +12,8 @@ namespace GHelper.Gpu.NVidia;
 public class NvidiaGpuControl : IGpuControl
 {
 
-    public static int MaxCoreOffset => AppConfig.Get("max_gpu_core", 250);
-    public static int MaxMemoryOffset => AppConfig.Get("max_gpu_memory", 500);
+    public static int MaxCoreOffset = AppConfig.Get("max_gpu_core", 250);
+    public static int MaxMemoryOffset = AppConfig.Get("max_gpu_memory", 500);
 
     public static int MinCoreOffset = AppConfig.Get("min_gpu_core", -250);
     public static int MinMemoryOffset = AppConfig.Get("min_gpu_memory", -500);
@@ -26,6 +26,12 @@ public class NvidiaGpuControl : IGpuControl
     public NvidiaGpuControl()
     {
         _internalGpu = GetInternalDiscreteGpu();
+        if (FullName.Contains("070 Ti") || FullName.Contains("080") || FullName.Contains("090"))
+        {
+            MaxCoreOffset = Math.Max(MaxCoreOffset, 400);
+            MaxMemoryOffset = Math.Max(MaxMemoryOffset, 1000);
+            Logger.WriteLine($"NVIDIA GPU: {FullName} ({MaxCoreOffset},{MaxMemoryOffset})");
+        }
     }
 
     public bool IsValid => _internalGpu != null;
