@@ -35,6 +35,14 @@ namespace GHelper.AutoUpdate
             });
         }
 
+        public void Update()
+        {
+            Task.Run(() =>
+            {
+                CheckForUpdatesAsync(true);
+            });
+        }
+
         public void LoadReleases()
         {
             try
@@ -47,7 +55,7 @@ namespace GHelper.AutoUpdate
             }
         }
 
-        async void CheckForUpdatesAsync()
+        async void CheckForUpdatesAsync(bool force = false)
         {
 
             if (AppConfig.Is("skip_updates")) return;
@@ -84,7 +92,7 @@ namespace GHelper.AutoUpdate
                         settings.SetVersionLabel(Properties.Strings.DownloadUpdate + ": " + tag, true);
 
                         string[] args = Environment.GetCommandLineArgs();
-                        if (args.Length > 1 && args[1] == "autoupdate")
+                        if (force || args.Length > 1 && args[1] == "autoupdate")
                         {
                             AutoUpdate(url);
                             return;
