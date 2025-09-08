@@ -1916,7 +1916,7 @@ namespace GHelper
             panelVersion.Location = new Point(11, 1837);
             panelVersion.MinimumSize = new Size(0, 50);
             panelVersion.Name = "panelVersion";
-            panelVersion.Padding = new Padding(20, 5, 20, 5);
+            panelVersion.Padding = new Padding(20, 5, 22, 5);
             panelVersion.Size = new Size(827, 50);
             panelVersion.TabIndex = 10;
             // 
@@ -1932,7 +1932,7 @@ namespace GHelper
             buttonEnergySaver.Font = new Font("Segoe UI", 7.125F, FontStyle.Bold);
             buttonEnergySaver.ForeColor = SystemColors.ControlDark;
             buttonEnergySaver.ImageAlign = ContentAlignment.MiddleLeft;
-            buttonEnergySaver.Location = new Point(644, 5);
+            buttonEnergySaver.Location = new Point(642, 5);
             buttonEnergySaver.Margin = new Padding(0);
             buttonEnergySaver.Name = "buttonEnergySaver";
             buttonEnergySaver.Secondary = true;
