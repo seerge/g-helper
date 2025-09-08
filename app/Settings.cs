@@ -143,6 +143,10 @@ namespace GHelper
             buttonScreenAuto.BorderColor = colorGray;
             buttonMiniled.BorderColor = colorTurbo;
 
+            buttonEnergySaver.BackColor = colorEco;
+            buttonEnergySaver.ForeColor = SystemColors.ControlLightLight;
+            buttonEnergySaver.Click += ButtonEnergySaver_Click;
+
             buttonSilent.Click += ButtonSilent_Click;
             buttonBalanced.Click += ButtonBalanced_Click;
             buttonTurbo.Click += ButtonTurbo_Click;
@@ -288,6 +292,11 @@ namespace GHelper
         {
             HardwareControl.chargeWatt = !HardwareControl.chargeWatt;
             RefreshSensors(true);
+        }
+
+        private void ButtonEnergySaver_Click(object? sender, EventArgs e)
+        {
+            KeyboardHook.KeyKeyPress(Keys.LWin, Keys.A);
         }
 
         private void ButtonDonate_Click(object? sender, EventArgs e)
@@ -643,7 +652,7 @@ namespace GHelper
             {
                 ScreenControl.InitScreen();
                 VisualizeXGM();
-
+                buttonEnergySaver.Visible = PowerNative.GetBatterySaverStatus();
                 Task.Run((Action)RefreshPeripheralsBattery);
                 updateControl.CheckForUpdates();
             }
