@@ -148,7 +148,15 @@ namespace GHelper.AutoUpdate
                 catch (Exception ex)
                 {
                     Logger.WriteLine(ex.Message);
-                    ProcessHelper.RunAsAdmin("autoupdate");
+                    if (!ProcessHelper.IsUserAdministrator())
+                    {
+                        ProcessHelper.RunAsAdmin("autoupdate");
+                        Application.Exit();
+                    } else
+                    {
+                        LoadReleases();
+                    }
+                    return;
                 }
 
                 Logger.WriteLine(requestUri);
