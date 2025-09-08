@@ -1975,7 +1975,7 @@ namespace GHelper
             string squares = new string('|', filledSquares);
             Invoke(delegate
             {
-                labelMatrix.Text = $"{Properties.Strings.AnimeMatrix} {squares}";
+                labelMatrix.Text = $"Slash Lighting: {squares}";
             });
         }
 
