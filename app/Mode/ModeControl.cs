@@ -94,7 +94,7 @@ namespace GHelper.Mode
                     await Task.Delay(TimeSpan.FromMilliseconds(1500));
                 }
 
-                int status = Program.acpi.DeviceSet(AsusACPI.PerformanceMode, AppConfig.IsManualModeRequired() ? AsusACPI.PerformanceManual : Modes.GetBase(mode), "Mode");
+                int status = Program.acpi.DeviceSet(AsusACPI.PerformanceMode, Modes.GetBase(mode), "Mode");
                 // Vivobook fallback
                 if (status != 1) Program.acpi.SetVivoMode(Modes.GetBase(mode));
 

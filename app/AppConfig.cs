@@ -614,13 +614,6 @@ public static class AppConfig
         return ContainsModel("G614") || ContainsModel("GU604") || ContainsModel("FX507") || ContainsModel("G513") || ContainsModel("FA617") || ContainsModel("G834") || ContainsModel("GA403") || ContainsModel("GU605") || ContainsModel("GA605") || ContainsModel("GU603VV");
     }
 
-
-    public static bool IsManualModeRequired()
-    {
-        if (!IsMode("auto_apply_power")) return false;
-        return Is("manual_mode") || ContainsModel("G733");
-    }
-
     public static bool IsFanScale()
     {
         if (!ContainsModel("GU604")) return false;
@@ -643,7 +636,7 @@ public static class AppConfig
 
     public static bool IsFanRequired()
     {
-        return IsManualModeRequired() || ContainsModel("GA402X") || ContainsModel("GU604") || ContainsModel("G513") || ContainsModel("G713R") || ContainsModel("G713P") || ContainsModel("GU605") || ContainsModel("GA605") || ContainsModel("G634J") || ContainsModel("G834J") || ContainsModel("G614J") || ContainsModel("G814J") || ContainsModel("FX507V") || ContainsModel("G614F") || ContainsModel("G614R");
+        return ContainsModel("GA402X") || ContainsModel("GU604") || ContainsModel("G513") || ContainsModel("G713R") || ContainsModel("G713P") || ContainsModel("GU605") || ContainsModel("GA605") || ContainsModel("G634J") || ContainsModel("G834J") || ContainsModel("G614J") || ContainsModel("G814J") || ContainsModel("FX507V") || ContainsModel("G614F") || ContainsModel("G614R");
     }
 
     public static bool IsAMDLight()
