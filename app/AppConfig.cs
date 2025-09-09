@@ -617,14 +617,8 @@ public static class AppConfig
 
     public static bool IsManualModeRequired()
     {
-        if (!IsMode("auto_apply_power"))
-            return false;
-
-        return
-            Is("manual_mode") ||
-            ContainsModel("GU604") ||
-            ContainsModel("G733") ||
-            ContainsModel("FX507Z");
+        if (!IsMode("auto_apply_power")) return false;
+        return Is("manual_mode") || ContainsModel("GU604") || ContainsModel("G733");
     }
 
     public static bool IsFanScale()
