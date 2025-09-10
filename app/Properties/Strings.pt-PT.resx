@@ -145,7 +145,7 @@
     <value>Reiniciar agora?</value>
   </data>
   <data name="AllyController" xml:space="preserve">
-    <value>Ally Controller</value>
+    <value>Controlador Ally</value>
   </data>
   <data name="AnimationSpeed" xml:space="preserve">
     <value>Velocidade da Animação</value>
@@ -250,16 +250,16 @@
     <value>Acordado</value>
   </data>
   <data name="BacklightLow" xml:space="preserve">
-    <value>Low</value>
+    <value>Baixo</value>
   </data>
   <data name="BacklightMax" xml:space="preserve">
-    <value>Max</value>
+    <value>Máximo</value>
   </data>
   <data name="BacklightMid" xml:space="preserve">
-    <value>Mid</value>
+    <value>Médio</value>
   </data>
   <data name="BacklightOff" xml:space="preserve">
-    <value>Off</value>
+    <value>Desligado</value>
   </data>
   <data name="BacklightTimeout" xml:space="preserve">
     <value>Tempo limite ligado à corrente / na bateria (0 - ON)</value>
@@ -286,13 +286,13 @@
     <value>Carregamento único até 100%</value>
   </data>
   <data name="Binding" xml:space="preserve">
-    <value>Binding</value>
+    <value>Vinculação</value>
   </data>
   <data name="BindingPrimary" xml:space="preserve">
-    <value>Primary</value>
+    <value>Primário</value>
   </data>
   <data name="BindingSecondary" xml:space="preserve">
-    <value>Secondary</value>
+    <value>Secundário</value>
   </data>
   <data name="BiosAndDriverUpdates" xml:space="preserve">
     <value>Atualizações de Drivers e da BIOS</value>
@@ -313,7 +313,7 @@
     <value>Aumentar o brilho</value>
   </data>
   <data name="BWTrayIcon" xml:space="preserve">
-    <value>Black and white tray icon</value>
+    <value>Ícone da bandeja a preto e branco</value>
   </data>
   <data name="Calibrate" xml:space="preserve">
     <value>Calibrar</value>
@@ -325,10 +325,10 @@
     <value>Cor</value>
   </data>
   <data name="Contrast" xml:space="preserve">
-    <value>Contrast</value>
+    <value>Contraste</value>
   </data>
   <data name="Controller" xml:space="preserve">
-    <value>Controller</value>
+    <value>Controlador</value>
   </data>
   <data name="CPUBoost" xml:space="preserve">
     <value>Turbo do CPU</value>
@@ -343,10 +343,10 @@
     <value>Padrão</value>
   </data>
   <data name="DisableController" xml:space="preserve">
-    <value>Disable Controller</value>
+    <value>Desativar Controlador</value>
   </data>
   <data name="DisableOnLidClose" xml:space="preserve">
-    <value>Disable on lid close</value>
+    <value>Desativar ao fechar a tampa</value>
   </data>
   <data name="DisableOverdrive" xml:space="preserve">
     <value>Desativar o overdrive do ecrã</value>
@@ -355,7 +355,7 @@
     <value>Descarregando</value>
   </data>
   <data name="DownloadColorProfiles" xml:space="preserve">
-    <value>Download Color Profiles</value>
+    <value>Descarregar Perfis de Cor</value>
   </data>
   <data name="DownloadUpdate" xml:space="preserve">
     <value>Transferir</value>
@@ -370,7 +370,7 @@
     <value>Económico</value>
   </data>
   <data name="EnableGPUOnShutdown" xml:space="preserve">
-    <value>Enable GPU on shutdown (prevents issue with Eco mode)</value>
+    <value>Ativar a GPU no encerramento (previne o problema do modo Eco)</value>
   </data>
   <data name="EnableOptimusText" xml:space="preserve">
     <value>Desativar a dGPU por ativar o modo Eco enquanto o Modo de Ecrã no Painel de Controlo da NVIDIA não está definido para Optimus pode causar problemas com os controlos do brilho do painel até ao próximo reinício.
@@ -384,7 +384,7 @@ Quer prosseguir?</value>
     <value>Configurações de Energia</value>
   </data>
   <data name="Export" xml:space="preserve">
-    <value>Export Profile</value>
+    <value>Exportar Perfil</value>
   </data>
   <data name="Extra" xml:space="preserve">
     <value>Adicional</value>
@@ -420,7 +420,7 @@ Quer prosseguir?</value>
     <value>Ventoinhas + Potência</value>
   </data>
   <data name="FlickerFreeDimming" xml:space="preserve">
-    <value>Flicker-free Dimming</value>
+    <value>Atenuação sem cintilação</value>
   </data>
   <data name="FnLock" xml:space="preserve">
     <value>Processar teclas de atalho Fn+F sem pressionar Fn</value>
