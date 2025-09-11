@@ -65,6 +65,7 @@ public class AsusACPI
 
     public const uint BatteryDischarge = 0x0012005A;
 
+    public const uint StatusMode = 0x00090031;
     public const uint PerformanceMode = 0x00120075; // Performance modes
     public const uint VivoBookMode = 0x00110019; // Vivobook performance modes
 
