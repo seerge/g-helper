@@ -33,6 +33,7 @@ namespace GHelper
 
         static int gpuPowerBase = 0;
         static bool isGPUPower => gpuPowerBase > 0;
+        static bool clampFanDots = AppConfig.IsTUF();
 
         public Fans()
         {
@@ -1280,6 +1281,13 @@ namespace GHelper
                     {
                         double deltaY = dy - curPoint.YValues[0];
                         double deltaX = dx - curPoint.XValue;
+
+                        if (clampFanDots)
+                        {
+                            double minX = 30 + (curIndex * 10);
+                            double maxX = minX + 10;
+                            dx = Math.Max(minX, Math.Min(maxX, dx));
+                        }
 
                         curPoint.XValue = dx;
 
