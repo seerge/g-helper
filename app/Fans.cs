@@ -1104,7 +1104,7 @@ namespace GHelper
             if (reset || AsusACPI.IsInvalidCurve(curve))
             {
                 curve = Program.acpi.GetFanCurve(device, Modes.GetCurrentBase());
-
+                Logger.WriteLine($"Default Curve: {device} - {BitConverter.ToString(curve)}");
                 if (AsusACPI.IsInvalidCurve(curve))
                     curve = AppConfig.GetDefaultCurve(device);
 
@@ -1285,7 +1285,7 @@ namespace GHelper
                         if (clampFanDots)
                         {
                             double minX = 30 + (curIndex * 10);
-                            double maxX = minX + 10;
+                            double maxX = minX + 9;
                             dx = Math.Max(minX, Math.Min(maxX, dx));
                         }
 
