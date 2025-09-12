@@ -546,8 +546,7 @@ public class AsusACPI
 
         int result;
 
-        int defaultScale = (AppConfig.IsFanScale() && (device == AsusFan.CPU || device == AsusFan.GPU)) ? 130 : 100;
-        int fanScale = AppConfig.Get("fan_scale", defaultScale);
+        int fanScale = AppConfig.Get("fan_scale", 100);
 
         if (fanScale != 100 && device == AsusFan.CPU) Logger.WriteLine("Custom fan scale: " + fanScale);
 

@@ -614,21 +614,6 @@ public static class AppConfig
         return ContainsModel("G614") || ContainsModel("GU604") || ContainsModel("FX507") || ContainsModel("G513") || ContainsModel("FA617") || ContainsModel("G834") || ContainsModel("GA403") || ContainsModel("GU605") || ContainsModel("GA605") || ContainsModel("GU603VV");
     }
 
-    public static bool IsFanScale()
-    {
-        if (!ContainsModel("GU604")) return false;
-
-        try
-        {
-            var (bios, model) = GetBiosAndModel();
-            return (Int32.Parse(bios) < 312);
-        }
-        catch
-        {
-            return false;
-        }
-    }
-
     public static bool IsResetRequired()
     {
         return ContainsModel("GA403") || ContainsModel("FA507XV");
