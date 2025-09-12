@@ -646,7 +646,16 @@ public class AsusACPI
         count = 0;
         foreach (var pair in pointsFixed.OrderBy(x => x.Key))
         {
-            curve[count] = pair.Key;
+            int x = pair.Key;
+
+            if (AppConfig.IsClampFanDots())
+            {
+                int minX = 30 + (count * 10);
+                int maxX = minX + 10;
+                x = Math.Max(minX, Math.Min(maxX, x));
+            }
+
+            curve[count] = (byte)x;
             curve[count + 8] = pair.Value;
             count++;
         }

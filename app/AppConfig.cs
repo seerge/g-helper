@@ -330,17 +330,17 @@ public static class AppConfig
                 switch (device)
                 {
                     case AsusFan.GPU:
-                        return StringToBytes("14-3F-44-48-4C-50-54-62-16-1F-26-2D-39-47-55-5F");
+                        return StringToBytes("1E-3F-44-48-4C-50-54-62-16-1F-26-2D-39-47-55-5F");
                     default:
-                        return StringToBytes("14-3F-44-48-4C-50-54-62-11-1A-22-29-34-43-51-5A");
+                        return StringToBytes("1E-3F-44-48-4C-50-54-62-11-1A-22-29-34-43-51-5A");
                 }
             case AsusACPI.PerformanceSilent:
                 switch (device)
                 {
                     case AsusFan.GPU:
-                        return StringToBytes("3C-41-42-46-47-4B-4C-62-08-11-11-1D-1D-26-26-2D");
+                        return StringToBytes("1E-31-3B-42-47-50-5A-64-00-00-04-11-1B-23-28-2D");
                     default:
-                        return StringToBytes("3C-41-42-46-47-4B-4C-62-03-0C-0C-16-16-22-22-29");
+                        return StringToBytes("1E-31-3B-42-47-50-5A-64-00-00-03-0C-14-1C-22-29");
                 }
             default:
                 switch (device)
@@ -747,6 +747,11 @@ public static class AppConfig
     public static bool IsAutoStatusLed()
     {
         return Is("auto_status_led");
+    }
+
+    public static bool IsClampFanDots()
+    {
+        return Is("fan_clamp") || (IsTUF() && IsNotFalse("fan_clamp"));
     }
 
 

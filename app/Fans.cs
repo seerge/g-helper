@@ -33,7 +33,7 @@ namespace GHelper
 
         static int gpuPowerBase = 0;
         static bool isGPUPower => gpuPowerBase > 0;
-        static bool clampFanDots = AppConfig.IsTUF();
+        static bool clampFanDots = AppConfig.IsClampFanDots();
 
         public Fans()
         {
