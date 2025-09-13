@@ -31,16 +31,17 @@ namespace GHelper
         /// </summary>
         private void InitializeComponent()
         {
-            ChartArea chartArea5 = new ChartArea();
-            Title title5 = new Title();
-            ChartArea chartArea6 = new ChartArea();
-            Title title6 = new Title();
-            ChartArea chartArea7 = new ChartArea();
-            Title title7 = new Title();
-            ChartArea chartArea8 = new ChartArea();
-            Title title8 = new Title();
+            ChartArea chartArea1 = new ChartArea();
+            Title title1 = new Title();
+            ChartArea chartArea2 = new ChartArea();
+            Title title2 = new Title();
+            ChartArea chartArea3 = new ChartArea();
+            Title title3 = new Title();
+            ChartArea chartArea4 = new ChartArea();
+            Title title4 = new Title();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Fans));
             panelFans = new Panel();
+            checkFanClamp = new RCheckBox();
             labelTip = new Label();
             tableFanCharts = new TableLayoutPanel();
             chartGPU = new Chart();
@@ -218,6 +219,7 @@ namespace GHelper
             // 
             panelFans.AutoSize = true;
             panelFans.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            panelFans.Controls.Add(checkFanClamp);
             panelFans.Controls.Add(labelTip);
             panelFans.Controls.Add(tableFanCharts);
             panelFans.Controls.Add(panelTitleFans);
@@ -230,6 +232,20 @@ namespace GHelper
             panelFans.Padding = new Padding(0, 0, 10, 0);
             panelFans.Size = new Size(820, 1100);
             panelFans.TabIndex = 12;
+            // 
+            // checkFanClamp
+            // 
+            checkFanClamp.AutoSize = true;
+            checkFanClamp.BackColor = Color.Transparent;
+            checkFanClamp.Font = new Font("Segoe UI", 8F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            checkFanClamp.Location = new Point(22, 84);
+            checkFanClamp.Name = "checkFanClamp";
+            checkFanClamp.Padding = new Padding(8, 4, 4, 4);
+            checkFanClamp.Size = new Size(193, 44);
+            checkFanClamp.TabIndex = 44;
+            checkFanClamp.TabStop = false;
+            checkFanClamp.Text = "Clamp to Grid";
+            checkFanClamp.UseVisualStyleBackColor = false;
             // 
             // labelTip
             // 
@@ -267,8 +283,8 @@ namespace GHelper
             // 
             // chartGPU
             // 
-            chartArea5.Name = "ChartArea1";
-            chartGPU.ChartAreas.Add(chartArea5);
+            chartArea1.Name = "ChartArea1";
+            chartGPU.ChartAreas.Add(chartArea1);
             chartGPU.Dock = DockStyle.Fill;
             chartGPU.Location = new Point(12, 238);
             chartGPU.Margin = new Padding(2, 10, 2, 10);
@@ -276,13 +292,13 @@ namespace GHelper
             chartGPU.Size = new Size(786, 208);
             chartGPU.TabIndex = 17;
             chartGPU.Text = "chartGPU";
-            title5.Name = "Title1";
-            chartGPU.Titles.Add(title5);
+            title1.Name = "Title1";
+            chartGPU.Titles.Add(title1);
             // 
             // chartCPU
             // 
-            chartArea6.Name = "ChartArea1";
-            chartCPU.ChartAreas.Add(chartArea6);
+            chartArea2.Name = "ChartArea1";
+            chartCPU.ChartAreas.Add(chartArea2);
             chartCPU.Dock = DockStyle.Fill;
             chartCPU.Location = new Point(12, 10);
             chartCPU.Margin = new Padding(2, 10, 2, 10);
@@ -290,13 +306,13 @@ namespace GHelper
             chartCPU.Size = new Size(786, 208);
             chartCPU.TabIndex = 14;
             chartCPU.Text = "chartCPU";
-            title6.Name = "Title1";
-            chartCPU.Titles.Add(title6);
+            title2.Name = "Title1";
+            chartCPU.Titles.Add(title2);
             // 
             // chartXGM
             // 
-            chartArea7.Name = "ChartAreaXGM";
-            chartXGM.ChartAreas.Add(chartArea7);
+            chartArea3.Name = "ChartAreaXGM";
+            chartXGM.ChartAreas.Add(chartArea3);
             chartXGM.Dock = DockStyle.Fill;
             chartXGM.Location = new Point(12, 694);
             chartXGM.Margin = new Padding(2, 10, 2, 10);
@@ -304,14 +320,14 @@ namespace GHelper
             chartXGM.Size = new Size(786, 209);
             chartXGM.TabIndex = 14;
             chartXGM.Text = "chartXGM";
-            title7.Name = "Title4";
-            chartXGM.Titles.Add(title7);
+            title3.Name = "Title4";
+            chartXGM.Titles.Add(title3);
             chartXGM.Visible = false;
             // 
             // chartMid
             // 
-            chartArea8.Name = "ChartArea3";
-            chartMid.ChartAreas.Add(chartArea8);
+            chartArea4.Name = "ChartArea3";
+            chartMid.ChartAreas.Add(chartArea4);
             chartMid.Dock = DockStyle.Fill;
             chartMid.Location = new Point(12, 466);
             chartMid.Margin = new Padding(2, 10, 2, 10);
@@ -319,8 +335,8 @@ namespace GHelper
             chartMid.Size = new Size(786, 208);
             chartMid.TabIndex = 14;
             chartMid.Text = "chartMid";
-            title8.Name = "Title3";
-            chartMid.Titles.Add(title8);
+            title4.Name = "Title3";
+            chartMid.Titles.Add(title4);
             chartMid.Visible = false;
             // 
             // panelTitleFans
@@ -1916,5 +1932,6 @@ namespace GHelper
         private Label labelGPUPowerTitle;
         private TrackBar trackGPUPower;
         private TableLayoutPanel tableLayoutModes;
+        private RCheckBox checkFanClamp;
     }
 }

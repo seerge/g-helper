@@ -229,6 +229,9 @@ namespace GHelper
 
             buttonDownload.Click += ButtonDownload_Click;
 
+            checkFanClamp.Checked = clampFanDots;
+            checkFanClamp.Click += CheckFanClamp_Click;
+
             ToggleNavigation(0);
 
             if (Program.acpi.DeviceGet(AsusACPI.DevsCPUFanCurve) < 0) buttonCalibrate.Visible = false;
@@ -237,6 +240,11 @@ namespace GHelper
 
         }
 
+        private void CheckFanClamp_Click(object? sender, EventArgs e)
+        {
+            clampFanDots = checkFanClamp.Checked;
+            AppConfig.Set("fan_clamp", clampFanDots ? 1 : 0);
+        }
 
         private void ButtonDownload_Click(object? sender, EventArgs e)
         {
