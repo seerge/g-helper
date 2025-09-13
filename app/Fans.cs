@@ -24,6 +24,9 @@ namespace GHelper
         static bool gpuVisible = true;
         static bool fanRpm = true;
 
+        const int tempMin = 20;
+        const int tempMax = 110;
+
         const int fansMax = 100;
 
         NvidiaGpuControl? nvControl = null;
@@ -33,6 +36,7 @@ namespace GHelper
 
         static int gpuPowerBase = 0;
         static bool isGPUPower => gpuPowerBase > 0;
+        static bool clampFanDots = AppConfig.IsClampFanDots();
 
         public Fans()
         {
@@ -228,6 +232,9 @@ namespace GHelper
 
             buttonDownload.Click += ButtonDownload_Click;
 
+            checkFanClamp.Checked = clampFanDots;
+            checkFanClamp.Click += CheckFanClamp_Click;
+
             ToggleNavigation(0);
 
             if (Program.acpi.DeviceGet(AsusACPI.DevsCPUFanCurve) < 0) buttonCalibrate.Visible = false;
@@ -236,6 +243,11 @@ namespace GHelper
 
         }
 
+        private void CheckFanClamp_Click(object? sender, EventArgs e)
+        {
+            clampFanDots = checkFanClamp.Checked;
+            AppConfig.Set("fan_clamp", clampFanDots ? 1 : 0);
+        }
 
         private void ButtonDownload_Click(object? sender, EventArgs e)
         {
@@ -758,8 +770,8 @@ namespace GHelper
 
             chart.Titles[0].Text = title;
 
-            chart.ChartAreas[0].AxisX.Minimum = 10;
-            chart.ChartAreas[0].AxisX.Maximum = 100;
+            chart.ChartAreas[0].AxisX.Minimum = tempMin;
+            chart.ChartAreas[0].AxisX.Maximum = tempMax;
             chart.ChartAreas[0].AxisX.Interval = 10;
 
             chart.ChartAreas[0].AxisY.Minimum = 0;
@@ -1103,7 +1115,7 @@ namespace GHelper
             if (reset || AsusACPI.IsInvalidCurve(curve))
             {
                 curve = Program.acpi.GetFanCurve(device, Modes.GetCurrentBase());
-
+                Logger.WriteLine($"Default Curve: {device} - {BitConverter.ToString(curve)}");
                 if (AsusACPI.IsInvalidCurve(curve))
                     curve = AppConfig.GetDefaultCurve(device);
 
@@ -1155,6 +1167,10 @@ namespace GHelper
 
             checkApplyFans.Checked = false;
             checkApplyPower.Checked = false;
+            seriesCPU.Color = Color.Gray;
+            seriesGPU.Color = Color.Gray;
+            seriesMid.Color = Color.Gray;
+            seriesXGM.Color = Color.Gray;
 
             AppConfig.SetMode("auto_apply", 0);
             AppConfig.SetMode("auto_apply_power", 0);
@@ -1266,8 +1282,8 @@ namespace GHelper
                     dx = ax.PixelPositionToValue(e.X);
                     dy = ay.PixelPositionToValue(e.Y);
 
-                    if (dx < 20) dx = 20;
-                    if (dx > 100) dx = 100;
+                    if (dx < tempMin) dx = tempMin;
+                    if (dx > tempMax) dx = tempMax;
 
                     if (dy < 0) dy = 0;
                     if (dy > fansMax) dy = fansMax;
@@ -1280,6 +1296,13 @@ namespace GHelper
                     {
                         double deltaY = dy - curPoint.YValues[0];
                         double deltaX = dx - curPoint.XValue;
+
+                        if (clampFanDots)
+                        {
+                            double minX = 30 + (curIndex * 10);
+                            double maxX = minX + 9;
+                            dx = Math.Max(minX, Math.Min(maxX, dx));
+                        }
 
                         curPoint.XValue = dx;
 
@@ -1316,7 +1339,7 @@ namespace GHelper
         {
             for (int i = 0; i < series.Points.Count; i++)
             {
-                series.Points[i].XValue = Math.Max(20, Math.Min(100, series.Points[i].XValue + deltaX));
+                series.Points[i].XValue = Math.Max(tempMin, Math.Min(tempMax, series.Points[i].XValue + deltaX));
                 series.Points[i].YValues[0] = Math.Max(0, Math.Min(100, series.Points[i].YValues[0] + deltaY));
             }
         }

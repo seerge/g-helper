@@ -264,7 +264,7 @@ namespace GHelper.Peripherals
                     AsusMouse omniMouse = signatureStr switch
                     {
                         var s when s.StartsWith("B23") => new HarpeAceAimLabEditionOmni(),              // B23072800062
-                        var s when s.StartsWith("B241226667") => new HarpeAceAimLabEditionOmni(),       // B24122666771
+                        var s when s.StartsWith("B241") => new HarpeAceAimLabEditionOmni(),             // B24122666771
                         var s when s.StartsWith("B24") => new HarpeAceMiniOmni(),                       // B24082550833
                         var s when s.StartsWith("B25") => new HarpeAceMiniOmni(),                       // B25030817186
                         var s when s.StartsWith("R1") => new KerisWirelssAimpointOmni(),                // R13121351391

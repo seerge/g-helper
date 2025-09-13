@@ -244,8 +244,9 @@ namespace GHelper
 
         public static bool SetAutoModes(bool powerChanged = false, bool init = false, bool wakeup = false)
         {
+            int skipDelay = wakeup ? 10000 : 3000;
 
-            if (Math.Abs(DateTimeOffset.Now.ToUnixTimeMilliseconds() - lastAuto) < 3000) return false;
+            if (Math.Abs(DateTimeOffset.Now.ToUnixTimeMilliseconds() - lastAuto) < skipDelay) return false;
             lastAuto = DateTimeOffset.Now.ToUnixTimeMilliseconds();
 
             isPlugged = SystemInformation.PowerStatus.PowerLineStatus;
@@ -307,7 +308,7 @@ namespace GHelper
 
             if (SystemInformation.PowerStatus.PowerLineStatus == isPlugged) return;
             if (AppConfig.Is("disable_power_event")) return;
-            SetAutoModes(true);
+            SetAutoModes(powerChanged: true);
         }
 
         public static void SettingsToggle(bool checkForFocus = true, bool trayClick = false)

@@ -135,6 +135,7 @@ namespace GHelper
             pictureGamma = new PictureBox();
             labelGammaTitle = new Label();
             panelVersion = new Panel();
+            buttonEnergySaver = new RButton();
             labelVersion = new Label();
             panelMatrix.SuspendLayout();
             panelMatrixAuto.SuspendLayout();
@@ -1909,14 +1910,36 @@ namespace GHelper
             // 
             panelVersion.AutoSize = true;
             panelVersion.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            panelVersion.Controls.Add(buttonEnergySaver);
             panelVersion.Controls.Add(labelVersion);
             panelVersion.Dock = DockStyle.Top;
             panelVersion.Location = new Point(11, 1837);
             panelVersion.MinimumSize = new Size(0, 50);
             panelVersion.Name = "panelVersion";
-            panelVersion.Padding = new Padding(20, 5, 20, 5);
+            panelVersion.Padding = new Padding(20, 5, 24, 5);
             panelVersion.Size = new Size(827, 50);
             panelVersion.TabIndex = 10;
+            // 
+            // buttonEnergySaver
+            // 
+            buttonEnergySaver.Activated = false;
+            buttonEnergySaver.BackColor = SystemColors.ControlLight;
+            buttonEnergySaver.BorderColor = Color.Transparent;
+            buttonEnergySaver.BorderRadius = 2;
+            buttonEnergySaver.Dock = DockStyle.Right;
+            buttonEnergySaver.FlatAppearance.BorderSize = 0;
+            buttonEnergySaver.FlatStyle = FlatStyle.Flat;
+            buttonEnergySaver.Font = new Font("Segoe UI", 7.125F, FontStyle.Bold);
+            buttonEnergySaver.ForeColor = SystemColors.ControlDark;
+            buttonEnergySaver.ImageAlign = ContentAlignment.MiddleLeft;
+            buttonEnergySaver.Location = new Point(642, 5);
+            buttonEnergySaver.Margin = new Padding(0);
+            buttonEnergySaver.Name = "buttonEnergySaver";
+            buttonEnergySaver.Secondary = true;
+            buttonEnergySaver.Size = new Size(163, 40);
+            buttonEnergySaver.TabIndex = 39;
+            buttonEnergySaver.Text = "Energy Saver";
+            buttonEnergySaver.UseVisualStyleBackColor = false;
             // 
             // labelVersion
             // 
@@ -2135,5 +2158,6 @@ namespace GHelper
         private Panel panelVersion;
         private Label labelVersion;
         private RBadgeButton buttonDonate;
+        private RButton buttonEnergySaver;
     }
 }

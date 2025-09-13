@@ -49,6 +49,7 @@ namespace GHelper
         bool batteryFullMouseOver = false;
 
         bool sliderGammaIgnore = false;
+        bool activateCheck = false;
 
         public SettingsForm()
         {
@@ -126,6 +127,7 @@ namespace GHelper
 
             FormClosing += SettingsForm_FormClosing;
             Deactivate += SettingsForm_LostFocus;
+            Activated += SettingsForm_Focused;
 
             buttonSilent.BorderColor = colorEco;
             buttonBalanced.BorderColor = colorStandard;
@@ -142,6 +144,10 @@ namespace GHelper
             button120Hz.BorderColor = colorGray;
             buttonScreenAuto.BorderColor = colorGray;
             buttonMiniled.BorderColor = colorTurbo;
+
+            buttonEnergySaver.BackColor = colorEco;
+            buttonEnergySaver.ForeColor = SystemColors.ControlLightLight;
+            buttonEnergySaver.Click += ButtonEnergySaver_Click;
 
             buttonSilent.Click += ButtonSilent_Click;
             buttonBalanced.Click += ButtonBalanced_Click;
@@ -288,6 +294,12 @@ namespace GHelper
         {
             HardwareControl.chargeWatt = !HardwareControl.chargeWatt;
             RefreshSensors(true);
+        }
+
+        private void ButtonEnergySaver_Click(object? sender, EventArgs e)
+        {
+            KeyboardHook.KeyKeyPress(Keys.LWin, Keys.A);
+            activateCheck = true;
         }
 
         private void ButtonDonate_Click(object? sender, EventArgs e)
@@ -581,6 +593,14 @@ namespace GHelper
             buttonAutoTDP.Activated = status;
         }
 
+        private void SettingsForm_Focused(object? sender, EventArgs e)
+        {
+            if (activateCheck)
+            {
+                buttonEnergySaver.Visible = PowerNative.GetBatterySaverStatus();
+                activateCheck = false;
+            }
+        }
         private void SettingsForm_LostFocus(object? sender, EventArgs e)
         {
             lastLostFocus = DateTimeOffset.Now.ToUnixTimeMilliseconds();
@@ -643,7 +663,7 @@ namespace GHelper
             {
                 ScreenControl.InitScreen();
                 VisualizeXGM();
-
+                buttonEnergySaver.Visible = PowerNative.GetBatterySaverStatus();
                 Task.Run((Action)RefreshPeripheralsBattery);
                 updateControl.CheckForUpdates();
             }
@@ -844,7 +864,7 @@ namespace GHelper
 
         private void LabelVersion_Click(object? sender, EventArgs e)
         {
-            updateControl.LoadReleases();
+            updateControl.Update();
         }
 
 
@@ -1958,6 +1978,16 @@ namespace GHelper
         private void MouseSettings_FormClosed(object? sender, FormClosedEventArgs e)
         {
             mouseSettings = null;
+        }
+
+        public void VisualiseAudio(double level)
+        {
+            int filledSquares = (int)Math.Round(level/2);
+            string squares = new string('|', filledSquares);
+            Invoke(delegate
+            {
+                labelMatrix.Text = $"Slash Lighting: {squares}";
+            });
         }
 
         public void VisualiseFnLock()

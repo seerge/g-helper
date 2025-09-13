@@ -1,4 +1,5 @@
 using GHelper.Mode;
+using System.Diagnostics;
 using System.Management;
 using System.Text.Json;
 
@@ -13,6 +14,7 @@ public static class AppConfig
 
     private static Dictionary<string, object> config = new Dictionary<string, object>();
     private static System.Timers.Timer timer = new System.Timers.Timer(2000);
+    private static long lastWrite;
 
     static AppConfig()
     {
@@ -76,14 +78,15 @@ public static class AppConfig
 
         try
         {
-            File.WriteAllText(backup, jsonString);
+            File.WriteAllText(configFile, jsonString);
+            //Debug.WriteLine($"{DateTime.Now}: Config write");
         }
         catch (Exception)
         {
-            Thread.Sleep(100);
+            Thread.Sleep(1000);
             try
             {
-                File.WriteAllText(backup, jsonString);
+                File.WriteAllText(configFile, jsonString);
             }
             catch (Exception ex)
             {
@@ -92,9 +95,13 @@ public static class AppConfig
             return;
         }
 
-        Thread.Sleep(500);
+        lastWrite = DateTimeOffset.Now.ToUnixTimeMilliseconds();
 
-        var backupText = File.ReadAllText(backup);
+        Thread.Sleep(5000);
+
+        if (Math.Abs(DateTimeOffset.Now.ToUnixTimeMilliseconds() - lastWrite) < 4000) return;
+
+        var backupText = File.ReadAllText(configFile);
         bool isValid =
             !string.IsNullOrWhiteSpace(backupText) &&
             backupText.IndexOf('\0') == -1 &&                     
@@ -104,7 +111,8 @@ public static class AppConfig
 
         if (isValid)
         {
-            File.Copy(backup, configFile, true);
+            File.Copy(configFile, backup, true);
+            //Debug.WriteLine($"{DateTime.Now}: Config backup");
         }
         else
         {
@@ -322,17 +330,17 @@ public static class AppConfig
                 switch (device)
                 {
                     case AsusFan.GPU:
-                        return StringToBytes("14-3F-44-48-4C-50-54-62-16-1F-26-2D-39-47-55-5F");
+                        return StringToBytes("1E-3F-44-48-4C-50-54-62-16-1F-26-2D-39-47-55-5F");
                     default:
-                        return StringToBytes("14-3F-44-48-4C-50-54-62-11-1A-22-29-34-43-51-5A");
+                        return StringToBytes("1E-3F-44-48-4C-50-54-62-11-1A-22-29-34-43-51-5A");
                 }
             case AsusACPI.PerformanceSilent:
                 switch (device)
                 {
                     case AsusFan.GPU:
-                        return StringToBytes("3C-41-42-46-47-4B-4C-62-08-11-11-1D-1D-26-26-2D");
+                        return StringToBytes("1E-31-3B-42-47-50-5A-64-00-00-04-11-1B-23-28-2D");
                     default:
-                        return StringToBytes("3C-41-42-46-47-4B-4C-62-03-0C-0C-16-16-22-22-29");
+                        return StringToBytes("1E-31-3B-42-47-50-5A-64-00-00-03-0C-14-1C-22-29");
                 }
             default:
                 switch (device)
@@ -512,7 +520,7 @@ public static class AppConfig
 
     public static bool IsStrixLimitedRGB()
     {
-        return ContainsModel("G512LI") || ContainsModel("G513R") || ContainsModel("G713QM") || ContainsModel("G713PV") || ContainsModel("G513IE") || ContainsModel("G713RC") || ContainsModel("G713PU") || ContainsModel("G513QM") || ContainsModel("G513QC") || ContainsModel("G531G") || ContainsModel("G615JMR");
+        return ContainsModel("G512LI") || ContainsModel("G513R") || ContainsModel("G713QM") || ContainsModel("G713PV") || ContainsModel("G513IE") || ContainsModel("G713RC") || ContainsModel("G713PU") || ContainsModel("G513QM") || ContainsModel("G513QC") || ContainsModel("G531G") || ContainsModel("G615JMR") || ContainsModel("G815LR");
     }
 
     public static bool IsPossible4ZoneRGB()
@@ -606,34 +614,6 @@ public static class AppConfig
         return ContainsModel("G614") || ContainsModel("GU604") || ContainsModel("FX507") || ContainsModel("G513") || ContainsModel("FA617") || ContainsModel("G834") || ContainsModel("GA403") || ContainsModel("GU605") || ContainsModel("GA605") || ContainsModel("GU603VV");
     }
 
-
-    public static bool IsManualModeRequired()
-    {
-        if (!IsMode("auto_apply_power"))
-            return false;
-
-        return
-            Is("manual_mode") ||
-            ContainsModel("GU604") ||
-            ContainsModel("G733") ||
-            ContainsModel("FX507Z");
-    }
-
-    public static bool IsFanScale()
-    {
-        if (!ContainsModel("GU604")) return false;
-
-        try
-        {
-            var (bios, model) = GetBiosAndModel();
-            return (Int32.Parse(bios) < 312);
-        }
-        catch
-        {
-            return false;
-        }
-    }
-
     public static bool IsResetRequired()
     {
         return ContainsModel("GA403") || ContainsModel("FA507XV");
@@ -641,7 +621,7 @@ public static class AppConfig
 
     public static bool IsFanRequired()
     {
-        return IsManualModeRequired() || ContainsModel("GA402X") || ContainsModel("G513") || ContainsModel("G713R") || ContainsModel("G713P") || ContainsModel("GU605") || ContainsModel("GA605") || ContainsModel("G634J") || ContainsModel("G834J") || ContainsModel("G614J") || ContainsModel("G814J") || ContainsModel("FX507V") || ContainsModel("G614F") || ContainsModel("G614R");
+        return ContainsModel("GA402X") || ContainsModel("GU604") || ContainsModel("G513") || ContainsModel("G713R") || ContainsModel("G713P") || ContainsModel("GU605") || ContainsModel("GA605") || ContainsModel("G634J") || ContainsModel("G834J") || ContainsModel("G614J") || ContainsModel("G814J") || ContainsModel("FX507V") || ContainsModel("G614F") || ContainsModel("G614R");
     }
 
     public static bool IsAMDLight()
@@ -756,6 +736,11 @@ public static class AppConfig
     public static bool IsAutoStatusLed()
     {
         return Is("auto_status_led");
+    }
+
+    public static bool IsClampFanDots()
+    {
+        return Is("fan_clamp") || (IsTUF() && IsNotFalse("fan_clamp"));
     }
 
 
