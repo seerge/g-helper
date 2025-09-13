@@ -20,11 +20,11 @@ namespace GHelper.Gpu
             settings = settingsForm;
         }
 
-        public void InitGPUMode()
+        public void InitGPUMode(bool init = false)
         {
             if (AppConfig.NoGpu())
             {
-                settings.HideGPUModes(false); 
+                settings.HideGPUModes(false);
                 return;
             }
 
@@ -33,6 +33,8 @@ namespace GHelper.Gpu
 
             Logger.WriteLine("Eco flag : " + eco);
             Logger.WriteLine("Mux flag : " + mux);
+
+            if (init && eco == 0 && AppConfig.IsNVPlatformExists()) Task.Run(NvidiaGpuControl.CheckStartNVPlatform);
 
             settings.VisualiseGPUButtons(eco >= 0, mux >= 0);
 
@@ -156,6 +158,7 @@ namespace GHelper.Gpu
                 if (eco == 1)
                 {
                     HardwareControl.KillGPUApps();
+                    if (AppConfig.IsNVPlatform()) NvidiaGpuControl.StopNVPlatform();
                 }
 
                 Logger.WriteLine($"Running eco command {eco}");
@@ -177,7 +180,7 @@ namespace GHelper.Gpu
 
                     if (eco == 0)
                     {
-                        if (AppConfig.IsNVServiceRestart()) NvidiaGpuControl.RestartNVService();
+                        if (AppConfig.IsNVPlatform()) NvidiaGpuControl.CheckStartNVPlatform();
                         await Task.Delay(TimeSpan.FromMilliseconds(3000));
                         HardwareControl.RecreateGpuControl();
                         Program.modeControl.SetGPUClocks(false);
@@ -384,7 +387,8 @@ namespace GHelper.Gpu
                         }
                     }
                 }
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 Logger.WriteLine("Error checking hibernation status: " + ex.Message);
             }

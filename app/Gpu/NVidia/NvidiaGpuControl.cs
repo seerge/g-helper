@@ -185,6 +185,40 @@ public class NvidiaGpuControl : IGpuControl
     }
 
 
+    public static void CheckStartNVPlatform()
+    {
+        try
+        {
+            var result = ProcessHelper.RunCMD("powershell", "Get-PnpDevice | Where-Object { $_.FriendlyName -imatch 'NVIDIA' -and $_.Class -eq 'SoftwareDevice' } | Select-Object -ExpandProperty Status");
+            if (result.Contains("Error"))
+            {
+                Logger.WriteLine("Starting NV Platform");
+                if (ProcessHelper.IsUserAdministrator())
+                {
+                    RunPowershellCommand(@"$device = Get-PnpDevice | Where-Object { $_.FriendlyName -imatch 'NVIDIA' -and $_.Class -eq 'SoftwareDevice' }; Enable-PnpDevice $device.InstanceId -Confirm:$false;");
+                    RunPowershellCommand(@"Get-Service | Where-Object { $_.DisplayName -like '*NVIDIA*' } | Start-Service");
+                }
+                else
+                {
+                    ProcessHelper.RunAsAdmin();
+                    return;
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Logger.WriteLine(ex.ToString());
+        }
+    }
+
+    public static void StopNVPlatform()
+    {
+        if (!ProcessHelper.IsUserAdministrator()) return;
+        RunPowershellCommand(@"$device = Get-PnpDevice | Where-Object { $_.FriendlyName -imatch 'NVIDIA' -and $_.Class -eq 'SoftwareDevice' }; Disable-PnpDevice $device.InstanceId -Confirm:$false;");
+        RunPowershellCommand(@"Get-Service | Where-Object { $_.DisplayName -like '*NVIDIA*' } | Stop-Service");
+        return;
+    }
+
     public int SetClocks(int core, int memory)
     {
 

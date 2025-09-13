@@ -644,9 +644,13 @@ public static class AppConfig
         return Is("shutdown_reset") || ContainsModel("FX507Z");
     }
 
-    public static bool IsNVServiceRestart()
+    public static bool IsNVPlatform()
     {
-        return Is("nv_restart");
+        return Is("nv_platform");
+    }
+    public static bool IsNVPlatformExists()
+    {
+        return Exists("nv_platform");
     }
 
     public static bool IsForceSetGPUMode()
