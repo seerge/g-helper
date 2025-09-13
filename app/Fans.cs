@@ -1164,6 +1164,10 @@ namespace GHelper
 
             checkApplyFans.Checked = false;
             checkApplyPower.Checked = false;
+            seriesCPU.Color = Color.Gray;
+            seriesGPU.Color = Color.Gray;
+            seriesMid.Color = Color.Gray;
+            seriesXGM.Color = Color.Gray;
 
             AppConfig.SetMode("auto_apply", 0);
             AppConfig.SetMode("auto_apply_power", 0);
