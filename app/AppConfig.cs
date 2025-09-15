@@ -533,7 +533,7 @@ public static class AppConfig
         return IsPossible4ZoneRGB() && !Is("per_key_rgb");
     }
 
-    public static bool IsNoAirplaneMode()
+    public static bool IsHardwareHotkeys()
     {
         return ContainsModel("FX506");
     }
