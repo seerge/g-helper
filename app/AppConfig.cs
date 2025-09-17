@@ -614,6 +614,12 @@ public static class AppConfig
         return ContainsModel("G614") || ContainsModel("GU604") || ContainsModel("FX507") || ContainsModel("G513") || ContainsModel("FA617") || ContainsModel("G834") || ContainsModel("GA403") || ContainsModel("GU605") || ContainsModel("GA605") || ContainsModel("GU603VV");
     }
 
+    public static bool IsManualModeRequired()
+    {
+        if (!IsMode("auto_apply_power")) return false;
+        return Is("manual_mode") || ContainsModel("G733");
+    }
+
     public static bool IsResetRequired()
     {
         return ContainsModel("GA403") || ContainsModel("FA507XV");
