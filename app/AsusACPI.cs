@@ -65,6 +65,7 @@ public class AsusACPI
 
     public const uint BatteryDischarge = 0x0012005A;
 
+    public const uint StatusMode = 0x00090031;
     public const uint PerformanceMode = 0x00120075; // Performance modes
     public const uint VivoBookMode = 0x00110019; // Vivobook performance modes
 
@@ -545,8 +546,7 @@ public class AsusACPI
 
         int result;
 
-        int defaultScale = (AppConfig.IsFanScale() && (device == AsusFan.CPU || device == AsusFan.GPU)) ? 130 : 100;
-        int fanScale = AppConfig.Get("fan_scale", defaultScale);
+        int fanScale = AppConfig.Get("fan_scale", 100);
 
         if (fanScale != 100 && device == AsusFan.CPU) Logger.WriteLine("Custom fan scale: " + fanScale);
 
@@ -645,7 +645,16 @@ public class AsusACPI
         count = 0;
         foreach (var pair in pointsFixed.OrderBy(x => x.Key))
         {
-            curve[count] = pair.Key;
+            int x = pair.Key;
+
+            if (AppConfig.IsClampFanDots())
+            {
+                int minX = 30 + (count * 10);
+                int maxX = minX + 10;
+                x = Math.Max(minX, Math.Min(maxX, x));
+            }
+
+            curve[count] = (byte)x;
             curve[count + 8] = pair.Value;
             count++;
         }

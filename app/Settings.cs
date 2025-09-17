@@ -49,6 +49,7 @@ namespace GHelper
         bool batteryFullMouseOver = false;
 
         bool sliderGammaIgnore = false;
+        bool activateCheck = false;
 
         public SettingsForm()
         {
@@ -126,6 +127,7 @@ namespace GHelper
 
             FormClosing += SettingsForm_FormClosing;
             Deactivate += SettingsForm_LostFocus;
+            Activated += SettingsForm_Focused;
 
             buttonSilent.BorderColor = colorEco;
             buttonBalanced.BorderColor = colorStandard;
@@ -297,6 +299,7 @@ namespace GHelper
         private void ButtonEnergySaver_Click(object? sender, EventArgs e)
         {
             KeyboardHook.KeyKeyPress(Keys.LWin, Keys.A);
+            activateCheck = true;
         }
 
         private void ButtonDonate_Click(object? sender, EventArgs e)
@@ -590,6 +593,14 @@ namespace GHelper
             buttonAutoTDP.Activated = status;
         }
 
+        private void SettingsForm_Focused(object? sender, EventArgs e)
+        {
+            if (activateCheck)
+            {
+                buttonEnergySaver.Visible = PowerNative.GetBatterySaverStatus();
+                activateCheck = false;
+            }
+        }
         private void SettingsForm_LostFocus(object? sender, EventArgs e)
         {
             lastLostFocus = DateTimeOffset.Now.ToUnixTimeMilliseconds();

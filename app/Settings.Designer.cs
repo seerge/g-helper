@@ -1916,7 +1916,7 @@ namespace GHelper
             panelVersion.Location = new Point(11, 1837);
             panelVersion.MinimumSize = new Size(0, 50);
             panelVersion.Name = "panelVersion";
-            panelVersion.Padding = new Padding(20, 5, 22, 5);
+            panelVersion.Padding = new Padding(20, 5, 24, 5);
             panelVersion.Size = new Size(827, 50);
             panelVersion.TabIndex = 10;
             // 

@@ -825,7 +825,7 @@
     <value>Slash</value>
   </data>
   <data name="SlashLoading" xml:space="preserve">
-    <value>Loading</value>
+    <value>加载中</value>
   </data>
   <data name="SlashBitStream" xml:space="preserve">
     <value>Bit Stream</value>
@@ -855,30 +855,30 @@
     <value>Ramp</value>
   </data>
   <data name="SlashGameOver" xml:space="preserve">
-    <value>Game Over</value>
+    <value>游戏结束</value>
   </data>
   <data name="SlashStart" xml:space="preserve">
-    <value>Start</value>
+    <value>启动</value>
   </data>
   <data name="SlashBuzzer" xml:space="preserve">
     <value>Buzzer</value>
   </data>
   <data name="SlashStatic" xml:space="preserve">
-    <value>Static</value>
+    <value>恒亮(静态)</value>
   </data>
   <data name="SlashBatteryLevel" xml:space="preserve">
-    <value>Battery Level</value>
+    <value>电池电量</value>
   </data>
   <data name="IntervalOff" xml:space="preserve">
     <value>Interval Off</value>
   </data>
   <data name="IntervalSeconds" xml:space="preserve">
-    <value>Interval {0}s</value>
+    <value>间隔 {0}秒</value>
   </data>
   <data name="DisableDynamicLighting" xml:space="preserve">
-    <value>Please disable Windows &gt; Dynamic Lighting</value>
+    <value>请关闭个性化 &gt; 动态光效</value>
   </data>
   <data name="AmbientModeResources" xml:space="preserve">
-    <value>Ambient mode may increase resource usage</value>
+    <value>环境模式可能会增加资源使用</value>
   </data>
 </root>

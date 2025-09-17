@@ -13,6 +13,8 @@ namespace GHelper.AutoUpdate
         SettingsForm settings;
 
         public string versionUrl = "https://github.com/seerge/g-helper/releases";
+        public bool update = false;
+
         static long lastUpdate;
 
         public AutoUpdateControl(SettingsForm settingsForm)
@@ -37,10 +39,16 @@ namespace GHelper.AutoUpdate
 
         public void Update()
         {
-            Task.Run(() =>
+            if (update)
             {
-                CheckForUpdatesAsync(true);
-            });
+                Task.Run(() =>
+                {
+                    CheckForUpdatesAsync(true);
+                });
+            } else
+            {
+                LoadReleases();
+            }
         }
 
         public void LoadReleases()
@@ -89,6 +97,7 @@ namespace GHelper.AutoUpdate
                     if (gitVersion.CompareTo(appVersion) > 0)
                     {
                         versionUrl = url;
+                        update = true;
                         settings.SetVersionLabel(Properties.Strings.DownloadUpdate + ": " + tag, true);
 
                         string[] args = Environment.GetCommandLineArgs();
@@ -141,6 +150,11 @@ namespace GHelper.AutoUpdate
 
             using (WebClient client = new WebClient())
             {
+                Logger.WriteLine(requestUri);
+                Logger.WriteLine(exeDir);
+                Logger.WriteLine(zipName);
+                Logger.WriteLine(exeName);
+
                 try
                 {
                     client.DownloadFile(uri, zipLocation);
@@ -158,11 +172,6 @@ namespace GHelper.AutoUpdate
                     }
                     return;
                 }
-
-                Logger.WriteLine(requestUri);
-                Logger.WriteLine(exeDir);
-                Logger.WriteLine(zipName);
-                Logger.WriteLine(exeName);
 
                 string command = $"$ErrorActionPreference = \"Stop\"; Set-Location -Path '{EscapeString(exeDir)}'; Wait-Process -Name \"GHelper\"; Expand-Archive \"{zipName}\" -DestinationPath . -Force; Remove-Item \"{zipName}\" -Force; \".\\{exeName}\"; ";
                 Logger.WriteLine(command);
