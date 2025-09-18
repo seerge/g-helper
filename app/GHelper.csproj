@@ -18,6 +18,11 @@
     <ProduceReferenceAssembly>False</ProduceReferenceAssembly>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
     <AssemblyVersion>0.230</AssemblyVersion>
+	<EnableMsixTooling>true</EnableMsixTooling>
+	<WindowsPackageType>None</WindowsPackageType>
+    <IncludeAllContentForSelfExtract    >true</IncludeAllContentForSelfExtract>
+	<WindowsAppSDKSelfContained>true</WindowsAppSDKSelfContained>
+    <SelfContained>true</SelfContained>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
