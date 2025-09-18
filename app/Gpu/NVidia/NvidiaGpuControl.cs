@@ -179,11 +179,19 @@ public class NvidiaGpuControl : IGpuControl
         return RunPowershellCommand(@"$device = Get-PnpDevice | Where-Object { $_.FriendlyName -imatch 'NVIDIA' -and $_.Class -eq 'Display' }; Disable-PnpDevice $device.InstanceId -Confirm:$false; Start-Sleep -Seconds 5; Enable-PnpDevice $device.InstanceId -Confirm:$false");
     }
 
-    public static bool RestartNVService()
+    public static void RestartNVService()
     {
-        return RunPowershellCommand(@"Restart-Service -Name 'NVDisplay.ContainerLocalSystem' -Force");
+        if (!ProcessHelper.IsUserAdministrator()) return;
+        RunPowershellCommand(@"Restart-Service -Name 'NVDisplay.ContainerLocalSystem' -Force");
+        RunPowershellCommand(@"Restart-Service -Name 'NvContainerLocalSystem' -Force");
     }
 
+    public static void StopNVService()
+    {
+        if (!ProcessHelper.IsUserAdministrator()) return;
+        RunPowershellCommand(@"Stop-Service -Name 'NvContainerLocalSystem' -Force");
+        RunPowershellCommand(@"Stop-Service -Name 'NVDisplay.ContainerLocalSystem' -Force");
+    }
 
     public int SetClocks(int core, int memory)
     {
