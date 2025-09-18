@@ -1198,8 +1198,8 @@ namespace GHelper
             panelSettings.Controls.Add(checkUSBC);
             panelSettings.Controls.Add(checkVariBright);
             panelSettings.Controls.Add(checkGpuApps);
-            panelSettings.Controls.Add(checkNVPlatform);
             panelSettings.Controls.Add(checkGPUFix);
+            panelSettings.Controls.Add(checkNVPlatform);
             panelSettings.Controls.Add(checkOptimalBrightness);
             panelSettings.Controls.Add(checkStatusLed);
             panelSettings.Controls.Add(checkPerKeyRGB);
@@ -1632,7 +1632,7 @@ namespace GHelper
             checkNVPlatform.Padding = new Padding(3);
             checkNVPlatform.Size = new Size(917, 42);
             checkNVPlatform.TabIndex = 15;
-            checkNVPlatform.Text = "Stop NVidia Services in Eco mode";
+            checkNVPlatform.Text = "Stop NVidia Services in Eco mode (experimental)";
             checkNVPlatform.UseVisualStyleBackColor = true;
             // 
             // Extra
