@@ -18,6 +18,8 @@ namespace GHelper.Input
         public static bool tentMode = false;
         private static bool? _fnLock = null;
 
+        private static long lastSleep;
+
         public static Keys keyProfile = (Keys)AppConfig.Get("keybind_profile", (int)Keys.F5);
         public static Keys keyApp = (Keys)AppConfig.Get("keybind_app", (int)Keys.F12);
 
@@ -703,6 +705,8 @@ namespace GHelper.Input
 
         static void SleepEvent()
         {
+            if (Math.Abs(DateTimeOffset.Now.ToUnixTimeMilliseconds() - lastSleep) < 1000) return;
+            lastSleep = DateTimeOffset.Now.ToUnixTimeMilliseconds();
             Program.acpi.DeviceSet(AsusACPI.UniversalControl, AsusACPI.KB_Sleep, "Sleep");
         }
 
@@ -936,7 +940,8 @@ namespace GHelper.Input
                     ToggleTouchpadEvent();
                     break;
                 case 108: // FN+F11
-                    SleepEvent();
+                    if (!AppConfig.IsHardwareHotkeys()) SleepEvent();
+                    else lastSleep = DateTimeOffset.Now.ToUnixTimeMilliseconds();
                     break;
                 case 106: // Screenpad button on DUO
                     if (Control.ModifierKeys == Keys.Shift)
@@ -958,7 +963,7 @@ namespace GHelper.Input
                     ToggleArrowLock();
                     return;
                 case 136:    // FN + F12
-                    if (!AppConfig.IsNoAirplaneMode()) Program.acpi.DeviceSet(AsusACPI.UniversalControl, AsusACPI.Airplane, "Airplane");
+                    if (!AppConfig.IsHardwareHotkeys()) Program.acpi.DeviceSet(AsusACPI.UniversalControl, AsusACPI.Airplane, "Airplane");
                     return;
                 case 50:
                     // Sound Mute Event

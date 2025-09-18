@@ -50,6 +50,7 @@ namespace GHelper
 
             if (action == "charge")
             {
+                if (AppConfig.IsZ13()) Aura.Init();
                 BatteryLimit();
                 InputDispatcher.StartupBacklight();
                 Application.Exit();

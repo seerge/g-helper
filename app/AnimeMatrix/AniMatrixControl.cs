@@ -425,7 +425,8 @@ namespace GHelper.AnimeMatrix
             }
 
             double[] paddedAudio = FftSharp.Pad.ZeroPad(AudioValues);
-            double[] fftMag = FftSharp.Transform.FFTmagnitude(paddedAudio);
+            var fft = FftSharp.FFT.Forward(paddedAudio);
+            double[] fftMag = FftSharp.FFT.Magnitude(fft);
 
             PresentAudio(fftMag);
         }

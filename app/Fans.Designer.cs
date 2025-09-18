@@ -236,11 +236,10 @@ namespace GHelper
             // checkFanClamp
             // 
             checkFanClamp.AutoSize = true;
-            checkFanClamp.BackColor = Color.Transparent;
             checkFanClamp.Font = new Font("Segoe UI", 8F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            checkFanClamp.Location = new Point(22, 84);
+            checkFanClamp.Location = new Point(18, 80);
             checkFanClamp.Name = "checkFanClamp";
-            checkFanClamp.Padding = new Padding(8, 4, 4, 4);
+            checkFanClamp.Padding = new Padding(8, 1, 2, 1);
             checkFanClamp.Size = new Size(193, 44);
             checkFanClamp.TabIndex = 44;
             checkFanClamp.TabStop = false;
