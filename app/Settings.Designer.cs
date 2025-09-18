@@ -30,6 +30,7 @@ namespace GHelper
         /// </summary>
         private void InitializeComponent()
         {
+            checkAutoBacklight = new CheckBox();
             panelMatrix = new Panel();
             panelMatrixAuto = new Panel();
             checkMatrixLid = new CheckBox();
@@ -137,6 +138,7 @@ namespace GHelper
             panelVersion = new Panel();
             buttonEnergySaver = new RButton();
             labelVersion = new Label();
+            
             panelMatrix.SuspendLayout();
             panelMatrixAuto.SuspendLayout();
             tableLayoutMatrix.SuspendLayout();
@@ -1210,56 +1212,12 @@ namespace GHelper
             buttonFHD.UseVisualStyleBackColor = false;
             buttonFHD.Visible = false;
             // 
-            // panelScreenTitle
-            // 
-            panelScreenTitle.Controls.Add(labelMidFan);
-            panelScreenTitle.Controls.Add(pictureScreen);
-            panelScreenTitle.Controls.Add(labelSreen);
-            panelScreenTitle.Dock = DockStyle.Top;
-            panelScreenTitle.Location = new Point(20, 11);
-            panelScreenTitle.Margin = new Padding(4);
-            panelScreenTitle.Name = "panelScreenTitle";
-            panelScreenTitle.Size = new Size(787, 40);
-            panelScreenTitle.TabIndex = 25;
-            // 
-            // labelMidFan
-            // 
-            labelMidFan.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            labelMidFan.Location = new Point(500, 0);
-            labelMidFan.Margin = new Padding(8, 0, 8, 0);
-            labelMidFan.Name = "labelMidFan";
-            labelMidFan.Size = new Size(285, 35);
-            labelMidFan.TabIndex = 28;
-            labelMidFan.Text = "         ";
-            labelMidFan.TextAlign = ContentAlignment.TopRight;
-            // 
-            // pictureScreen
-            // 
-            pictureScreen.BackgroundImage = Properties.Resources.icons8_laptop_32;
-            pictureScreen.BackgroundImageLayout = ImageLayout.Zoom;
-            pictureScreen.Location = new Point(8, 3);
-            pictureScreen.Margin = new Padding(4);
-            pictureScreen.Name = "pictureScreen";
-            pictureScreen.Size = new Size(32, 32);
-            pictureScreen.TabIndex = 27;
-            pictureScreen.TabStop = false;
-            // 
-            // labelSreen
-            // 
-            labelSreen.AutoSize = true;
-            labelSreen.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            labelSreen.Location = new Point(40, 0);
-            labelSreen.Margin = new Padding(4, 0, 4, 0);
-            labelSreen.Name = "labelSreen";
-            labelSreen.Size = new Size(176, 32);
-            labelSreen.TabIndex = 26;
-            labelSreen.Text = "Laptop Screen";
-            // 
             // panelKeyboard
             // 
             panelKeyboard.AccessibleRole = AccessibleRole.Grouping;
             panelKeyboard.AutoSize = true;
             panelKeyboard.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            panelKeyboard.Controls.Add(checkAutoBacklight);
             panelKeyboard.Controls.Add(labelBacklight);
             panelKeyboard.Controls.Add(tableLayoutKeyboard);
             panelKeyboard.Controls.Add(panelKeyboardTitle);
@@ -1268,7 +1226,7 @@ namespace GHelper
             panelKeyboard.Margin = new Padding(0);
             panelKeyboard.Name = "panelKeyboard";
             panelKeyboard.Padding = new Padding(20, 20, 20, 0);
-            panelKeyboard.Size = new Size(827, 146);
+            panelKeyboard.Size = new Size(827, 180);
             panelKeyboard.TabIndex = 4;
             panelKeyboard.TabStop = true;
             // 
@@ -1278,7 +1236,7 @@ namespace GHelper
             labelBacklight.Dock = DockStyle.Top;
             labelBacklight.Font = new Font("Segoe UI", 9F);
             labelBacklight.ForeColor = SystemColors.GrayText;
-            labelBacklight.Location = new Point(20, 112);
+            labelBacklight.Location = new Point(20, 146);
             labelBacklight.Margin = new Padding(4, 0, 4, 0);
             labelBacklight.Name = "labelBacklight";
             labelBacklight.Padding = new Padding(4, 0, 4, 0);
@@ -1956,6 +1914,21 @@ namespace GHelper
             labelVersion.Text = "v.0";
             labelVersion.TextAlign = ContentAlignment.MiddleLeft;
             // 
+            // checkAutoBacklight
+            // 
+            checkAutoBacklight.AutoSize = true;
+            checkAutoBacklight.Dock = DockStyle.Top;
+            checkAutoBacklight.ForeColor = SystemColors.GrayText;
+            checkAutoBacklight.Location = new Point(20, 112);
+            checkAutoBacklight.Margin = new Padding(8, 4, 8, 4);
+            checkAutoBacklight.Name = "checkAutoBacklight";
+            checkAutoBacklight.Padding = new Padding(4, 0, 4, 0);
+            checkAutoBacklight.Size = new Size(787, 34);
+            checkAutoBacklight.TabIndex = 44;
+            checkAutoBacklight.Text = "Auto Backlight";
+            checkAutoBacklight.UseVisualStyleBackColor = true;
+            checkAutoBacklight.Visible = false;
+            // 
             // SettingsForm
             // 
             AutoScaleDimensions = new SizeF(192F, 192F);
@@ -2128,36 +2101,37 @@ namespace GHelper
         private RButton buttonBatteryFull;
         private Panel panelAlly;
         private TableLayoutPanel tableLayoutAlly;
+        private RButton buttonController;
+        private RButton buttonBacklight;
         private RButton buttonControllerMode;
         private Panel panelAllyTitle;
         private Label labelAlly;
         private PictureBox pictureAlly;
-        private RButton buttonBacklight;
-        private TableLayoutPanel tableAMD;
         private RButton buttonFPS;
-        private RButton buttonController;
-        private RButton buttonOverlay;
-        private RComboBox comboInterval;
-        private Panel panelGamma;
-        private Slider sliderGamma;
-        private Panel panelGammaTitle;
-        private Label labelGamma;
-        private PictureBox pictureGamma;
-        private Label labelGammaTitle;
-        private CheckBox checkMatrixLid;
-        private Panel panelMatrixAuto;
-        private TableLayoutPanel tableVisual;
-        private RComboBox comboVisual;
-        private RComboBox comboGamut;
-        private RComboBox comboColorTemp;
-        private RButton buttonInstallColor;
-        private Label labelVisual;
-        private RButton buttonFHD;
+        private TableLayoutPanel tableAMD;
         private RButton buttonAutoTDP;
         private Label labelBacklight;
         private Panel panelVersion;
         private Label labelVersion;
         private RBadgeButton buttonDonate;
         private RButton buttonEnergySaver;
+        private Panel panelMatrixAuto;
+        private CheckBox checkAutoBacklight;
+        private CheckBox checkMatrixLid;
+        private RComboBox comboInterval;
+        private RButton buttonOverlay;
+        private RButton buttonFHD;
+        private Panel panelGamma;
+        private Label labelVisual;
+        private TableLayoutPanel tableVisual;
+        private RButton buttonInstallColor;
+        private RComboBox comboVisual;
+        private RComboBox comboColorTemp;
+        private RComboBox comboGamut;
+        private Slider sliderGamma;
+        private Panel panelGammaTitle;
+        private Label labelGamma;
+        private PictureBox pictureGamma;
+        private Label labelGammaTitle;
     }
 }

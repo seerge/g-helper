@@ -286,8 +286,46 @@ namespace GHelper
             labelBacklight.ForeColor = colorStandard;
             labelBacklight.Click += LabelBacklight_Click;
 
+            // Initialize auto backlight checkbox
+            checkAutoBacklight.Text = "Auto Backlight";
+            checkAutoBacklight.Visible = false; // Will be set to true if ALS is available
+            
+            // Check if ambient light sensor is available and initialize
+            Task.Run(() =>
+            {
+                try
+                {
+                    AmbientLightSensor.Initialize();
+                    bool alsAvailable = AmbientLightSensor.IsAvailable();
+                    
+                    Invoke(() =>
+                    {
+                        if (checkAutoBacklight != null)
+                        {
+                            checkAutoBacklight.Visible = alsAvailable;
+                            if (alsAvailable)
+                            {
+                                checkAutoBacklight.Checked = InputDispatcher.IsAutoBacklightEnabled();
+                                checkAutoBacklight.CheckedChanged += CheckAutoBacklight_CheckedChanged;
+                            }
+                        }
+                        
+                        Logger.WriteLine($"Auto backlight UI initialized. ALS available: {alsAvailable}");
+                    });
+                }
+                catch (Exception ex)
+                {
+                    Logger.WriteLine($"Failed to initialize auto backlight UI: {ex.Message}");
+                }
+            });
+
             panelPerformance.Focus();
             InitVisual();
+        }
+
+        private void CheckAutoBacklight_CheckedChanged(object? sender, EventArgs e)
+        {
+            InputDispatcher.ToggleAutoBacklight();
         }
 
         private void LabelBattery_Click(object? sender, EventArgs e)
@@ -665,6 +703,10 @@ namespace GHelper
                 VisualizeXGM();
                 buttonEnergySaver.Visible = PowerNative.GetBatterySaverStatus();
                 Task.Run((Action)RefreshPeripheralsBattery);
+                if (checkAutoBacklight.Visible)
+                {
+                    checkAutoBacklight.Checked = InputDispatcher.IsAutoBacklightEnabled();
+                }
                 updateControl.CheckForUpdates();
             }
         }
