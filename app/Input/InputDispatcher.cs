@@ -6,6 +6,7 @@ using Microsoft.Win32;
 using System.Diagnostics;
 using System.Management;
 using System.Text.RegularExpressions;
+using GHelper.Input;
 
 namespace GHelper.Input
 {
@@ -40,6 +41,8 @@ namespace GHelper.Input
         KeyboardListener listener;
         KeyboardHook hook = new KeyboardHook();
 
+        private static AutoBacklightController? autoBacklightController;
+
         public InputDispatcher()
         {
 
@@ -52,6 +55,16 @@ namespace GHelper.Input
             hook.KeyPressed += new EventHandler<KeyPressedEventArgs>(KeyPressed);
 
             RegisterKeys();
+
+            try
+            {
+                autoBacklightController = AutoBacklightController.Instance;
+                autoBacklightController.Initialize();
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLine($"Failed to initialize auto backlight controller: {ex.Message}");
+            }
 
             timer.Elapsed += Timer_Elapsed;
 
@@ -104,6 +117,21 @@ namespace GHelper.Input
 
             InitBacklightTimer();
             MuteLEDInit();
+            
+            // Initialize auto backlight controller
+            try
+            {
+                if (autoBacklightController == null)
+                {
+                    autoBacklightController = AutoBacklightController.Instance;
+                }
+                autoBacklightController.Initialize();
+                Logger.WriteLine("Auto backlight controller initialized successfully");
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLine($"Failed to initialize auto backlight controller: {ex.Message}");
+            }
         }
 
         public static void InitFNLock()
@@ -306,6 +334,8 @@ namespace GHelper.Input
 
         public void KeyPressed(object sender, KeyPressedEventArgs e)
         {
+
+            autoBacklightController?.NotifyUserInput();
 
             Logger.WriteLine(e.Key.ToString() + " " + e.Modifier.ToString());
 
@@ -637,6 +667,12 @@ namespace GHelper.Input
                     break;
                 case "touchscreen":
                     ToggleTouchScreen();
+                    break;
+                case "auto_backlight":
+                    ToggleAutoBacklight();
+                    break;
+                case "auto_backlight_test":
+                    TriggerAutoBacklightCheck();
                     break;
                 default:
                     break;
@@ -1037,6 +1073,9 @@ namespace GHelper.Input
 
         public static void SetBacklight(int delta, bool force = false)
         {
+            // Notify auto backlight controller of manual adjustment
+            autoBacklightController?.NotifyUserInput();
+
             int backlight_power = AppConfig.Get("keyboard_brightness", 1);
             int backlight_battery = AppConfig.Get("keyboard_brightness_ac", 1);
             bool onBattery = SystemInformation.PowerStatus.PowerLineStatus != PowerLineStatus.Online;
@@ -1255,6 +1294,60 @@ namespace GHelper.Input
             Logger.WriteLine("WMI event " + EventID);
             if (AppConfig.NoWMI()) return;
             HandleEvent(EventID);
+        }
+
+        // Auto backlight methods
+        public static void ToggleAutoBacklight()
+        {
+            if (autoBacklightController == null) 
+            {
+                Logger.WriteLine("Auto backlight controller not initialized");
+                return;
+            }
+
+            autoBacklightController.IsEnabled = !autoBacklightController.IsEnabled;
+            
+            var status = autoBacklightController.IsEnabled ? "On" : "Off";
+            Program.toast.RunToast($"Auto Backlight {status}", ToastIcon.BacklightUp);
+            
+            Logger.WriteLine($"Auto backlight toggled: {status}");
+        }
+
+        public static bool IsAutoBacklightEnabled()
+        {
+            return autoBacklightController?.IsEnabled ?? false;
+        }
+
+        public static void UpdateAutoBacklightSettings()
+        {
+            autoBacklightController?.UpdateSettings();
+        }
+
+        public static Dictionary<string, object> GetAutoBacklightStatus()
+        {
+            return autoBacklightController?.GetStatus() ?? new Dictionary<string, object>();
+        }
+
+        public static void TriggerAutoBacklightCheck()
+        {
+            try
+            {
+                if (autoBacklightController?.IsEnabled == true)
+                {
+                    // Force a sensor reading to trigger immediate evaluation
+                    Logger.WriteLine("Manual auto backlight check triggered");
+                    var currentLux = AmbientLightSensor.GetCurrentLux();
+                    Logger.WriteLine($"Current ambient light level: {currentLux} lux");
+                }
+                else
+                {
+                    Logger.WriteLine("Auto backlight is not enabled");
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLine($"Error triggering auto backlight check: {ex.Message}");
+            }
         }
     }
 }
