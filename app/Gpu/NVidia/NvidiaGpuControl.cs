@@ -179,44 +179,18 @@ public class NvidiaGpuControl : IGpuControl
         return RunPowershellCommand(@"$device = Get-PnpDevice | Where-Object { $_.FriendlyName -imatch 'NVIDIA' -and $_.Class -eq 'Display' }; Disable-PnpDevice $device.InstanceId -Confirm:$false; Start-Sleep -Seconds 5; Enable-PnpDevice $device.InstanceId -Confirm:$false");
     }
 
-    public static bool RestartNVService()
-    {
-        return RunPowershellCommand(@"Restart-Service -Name 'NVDisplay.ContainerLocalSystem' -Force");
-    }
-
-
-    public static void CheckStartNVPlatform()
-    {
-        try
-        {
-            var result = ProcessHelper.RunCMD("powershell", "Get-PnpDevice | Where-Object { $_.FriendlyName -imatch 'NVIDIA' -and $_.Class -eq 'SoftwareDevice' } | Select-Object -ExpandProperty Status");
-            if (result.Contains("Error"))
-            {
-                Logger.WriteLine("Starting NV Platform");
-                if (ProcessHelper.IsUserAdministrator())
-                {
-                    RunPowershellCommand(@"$device = Get-PnpDevice | Where-Object { $_.FriendlyName -imatch 'NVIDIA' -and $_.Class -eq 'SoftwareDevice' }; Enable-PnpDevice $device.InstanceId -Confirm:$false;");
-                    RunPowershellCommand(@"Get-Service | Where-Object { $_.DisplayName -like '*NVIDIA*' } | Start-Service");
-                }
-                else
-                {
-                    ProcessHelper.RunAsAdmin();
-                    return;
-                }
-            }
-        }
-        catch (Exception ex)
-        {
-            Logger.WriteLine(ex.ToString());
-        }
-    }
-
-    public static void StopNVPlatform()
+    public static void RestartNVService()
     {
         if (!ProcessHelper.IsUserAdministrator()) return;
-        RunPowershellCommand(@"$device = Get-PnpDevice | Where-Object { $_.FriendlyName -imatch 'NVIDIA' -and $_.Class -eq 'SoftwareDevice' }; Disable-PnpDevice $device.InstanceId -Confirm:$false;");
-        RunPowershellCommand(@"Get-Service | Where-Object { $_.DisplayName -like '*NVIDIA*' } | Stop-Service");
-        return;
+        RunPowershellCommand(@"Restart-Service -Name 'NVDisplay.ContainerLocalSystem' -Force");
+        RunPowershellCommand(@"Restart-Service -Name 'NvContainerLocalSystem' -Force");
+    }
+
+    public static void StopNVService()
+    {
+        if (!ProcessHelper.IsUserAdministrator()) return;
+        RunPowershellCommand(@"Stop-Service -Name 'NVDisplay.ContainerLocalSystem' -Force");
+        RunPowershellCommand(@"Stop-Service -Name 'NvContainerLocalSystem' -Force");
     }
 
     public int SetClocks(int core, int memory)
