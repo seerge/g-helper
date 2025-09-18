@@ -20,7 +20,7 @@ namespace GHelper.Gpu
             settings = settingsForm;
         }
 
-        public void InitGPUMode(bool init = false)
+        public void InitGPUMode()
         {
             if (AppConfig.NoGpu())
             {
