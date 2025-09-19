@@ -1150,7 +1150,7 @@ namespace GHelper.Input
             else
             {
                 string asusPath = GetAsusPath();
-                string asusExe = $"{asusPath}\\AsusSplendid.exe";
+                string asusExe = $"{asusPath}\\AsusHotkey.exe";
                 var result = ProcessHelper.RunCMD(asusExe, "-MFCameraCommand 2 1 1", asusPath);
                 Program.toast.RunToast($"Camera Toggle");
             }
