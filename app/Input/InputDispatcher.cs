@@ -17,6 +17,7 @@ namespace GHelper.Input
         public static bool lidClose = false;
         public static bool tentMode = false;
         private static bool? _fnLock = null;
+        private static string? _asusPath = null;
 
         private static long lastSleep;
 
@@ -1087,6 +1088,32 @@ namespace GHelper.Input
             ScreenControl.ToggleScreenRate();
         }
 
+
+        private static string GetAsusPath()
+        {
+            if (_asusPath == null)
+            {
+                try
+                {
+                    using (var searcher = new ManagementObjectSearcher(@"Select * from Win32_SystemDriver WHERE Name='ATKWMIACPIIO'"))
+                    {
+                        foreach (var driver in searcher.Get())
+                        {
+                            string path = driver["PathName"].ToString();
+                            _asusPath = Path.GetDirectoryName(path);
+                            break;
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Logger.WriteLine(ex.Message);
+                }
+            }
+
+            return _asusPath;
+        }
+
         public static void ToggleCamera()
         {
             int cameraShutter = Program.acpi.DeviceGet(AsusACPI.CameraShutter);
@@ -1122,32 +1149,10 @@ namespace GHelper.Input
             }
             else
             {
-                if (!ProcessHelper.IsUserAdministrator()) return;
-
-                string CameraRegistryKeyPath = @"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\CapabilityAccessManager\ConsentStore\webcam";
-                string CameraRegistryValueName = "Value";
-
-                try
-                {
-                    var status = (string?)Registry.GetValue(CameraRegistryKeyPath, CameraRegistryValueName, "");
-
-                    if (status == "Allow") status = "Deny";
-                    else if (status == "Deny") status = "Allow";
-                    else
-                    {
-                        Logger.WriteLine("Unknown camera status");
-                        return;
-                    }
-
-                    Registry.SetValue(CameraRegistryKeyPath, CameraRegistryValueName, status, RegistryValueKind.String);
-                    Program.acpi.DeviceSet(AsusACPI.CameraLed, (status == "Deny" ? 1 : 0), "Camera");
-                    Program.toast.RunToast($"Camera " + (status == "Deny" ? "Off" : "On"));
-
-                }
-                catch (Exception ex)
-                {
-                    Logger.WriteLine(ex.ToString());
-                }
+                string asusPath = GetAsusPath();
+                string asusExe = $"{asusPath}\\AsusSplendid.exe";
+                var result = ProcessHelper.RunCMD(asusExe, "-MFCameraCommand 2 1 1", asusPath);
+                Program.toast.RunToast($"Camera Toggle");
             }
         }
 
