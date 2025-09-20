@@ -121,6 +121,8 @@ namespace GHelper.Mode
                     PowerNative.SetPowerMode(AppConfig.GetModeString("powermode"));
                 else
                     PowerNative.SetPowerMode(Modes.GetBase(mode));
+
+                if (AppConfig.Is("aspm") && PowerNative.GetASPM() > 0) PowerNative.SetASPM(0);
             }
 
             // CPU Boost setting override
