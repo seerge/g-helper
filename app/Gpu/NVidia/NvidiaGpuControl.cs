@@ -26,11 +26,19 @@ public class NvidiaGpuControl : IGpuControl
     public NvidiaGpuControl()
     {
         _internalGpu = GetInternalDiscreteGpu();
-        if (IsValid && (FullName.Contains("070 Ti") || FullName.Contains("080") || FullName.Contains("090")))
+        if (IsValid)
         {
-            MaxCoreOffset = AppConfig.Get("max_gpu_core", 400);
-            MaxMemoryOffset = AppConfig.Get("max_gpu_memory", 1000);
-            Logger.WriteLine($"NVIDIA GPU: {FullName} ({MaxCoreOffset},{MaxMemoryOffset})");
+            if (FullName.Contains("5080") || FullName.Contains("5090"))
+            {
+                MaxCoreOffset = AppConfig.Get("max_gpu_core", 400);
+                MaxMemoryOffset = AppConfig.Get("max_gpu_memory", 1000);
+                Logger.WriteLine($"NVIDIA GPU: {FullName} ({MaxCoreOffset},{MaxMemoryOffset})");
+            }
+            if (FullName.Contains("5070 Ti") || FullName.Contains("4080") || FullName.Contains("4090"))
+            {
+                MaxCoreOffset = AppConfig.Get("max_gpu_core", 300);
+                Logger.WriteLine($"NVIDIA GPU: {FullName} ({MaxCoreOffset},{MaxMemoryOffset})");
+            }
         }
     }
 
