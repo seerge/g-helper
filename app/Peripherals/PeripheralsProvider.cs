@@ -278,6 +278,7 @@ namespace GHelper.Peripherals
                         var s when s.StartsWith("R6") => new GladiusIIIAimpointOmni(),                  // R60120331787
                         var s when s.StartsWith("R903") => new GladiusIIIAimpointOmni(),                // R90319215881
                         var s when s.StartsWith("R9") => new KerisWirelssAimpointOmni(),                // R90518300572
+                        var s when s.StartsWith("T5") => new HarpeAceExtremeOmni(),                      // T5MPKR018406
                         _ => new HarpeAceAimLabEditionOmni()
                     };
 
