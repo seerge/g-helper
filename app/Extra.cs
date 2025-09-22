@@ -477,7 +477,6 @@ namespace GHelper
             toolTip.SetToolTip(checkAutoToggleClamshellMode, "Disable sleep on lid close when plugged in and external monitor is connected");
 
             InitCores();
-            InitVariBright();
             InitServices();
             InitHibernate();
 
@@ -727,46 +726,6 @@ namespace GHelper
                 ServiesToggle();
             else
                 ProcessHelper.RunAsAdmin("services");
-        }
-
-        private void InitVariBright()
-        {
-            try
-            {
-
-                using (var amdControl = new AmdGpuControl())
-                {
-                    int variBrightSupported = 0, VariBrightEnabled;
-                    if (amdControl.GetVariBright(out variBrightSupported, out VariBrightEnabled))
-                    {
-                        Logger.WriteLine("Varibright: " + variBrightSupported + "," + VariBrightEnabled);
-                        checkVariBright.Checked = (VariBrightEnabled == 3);
-                    }
-
-                    checkVariBright.Visible = (variBrightSupported > 0);
-                    checkVariBright.CheckedChanged += CheckVariBright_CheckedChanged;
-                }
-
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex.ToString());
-                checkVariBright.Visible = false;
-            }
-
-
-        }
-
-        private void CheckVariBright_CheckedChanged(object? sender, EventArgs e)
-        {
-            using (var amdControl = new AmdGpuControl())
-            {
-                if (NvidiaSmi.GetDisplayActiveStatus()) return; // Skip if Nvidia GPU is active
-                var status = checkVariBright.Checked ? 1 : 0;
-                var result = amdControl.SetVariBright(status);
-                Logger.WriteLine($"VariBright {status}: {result}");
-                ProcessHelper.KillByName("RadeonSoftware");
-            }
         }
 
         private void CheckGpuApps_CheckedChanged(object? sender, EventArgs e)
