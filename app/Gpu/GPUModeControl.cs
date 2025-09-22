@@ -118,7 +118,7 @@ namespace GHelper.Gpu
             else if (GPUMode == AsusACPI.GPUModeEco)
             {
                 settings.VisualiseGPUMode(GPUMode);
-                SetGPUEco(1, true);
+                SetGPUEco(1);
                 changed = true;
             }
             else if (GPUMode == AsusACPI.GPUModeStandard)
@@ -143,7 +143,7 @@ namespace GHelper.Gpu
 
 
 
-        public void SetGPUEco(int eco, bool hardWay = false)
+        public void SetGPUEco(int eco)
         {
 
             settings.LockGPUModes();
@@ -165,9 +165,6 @@ namespace GHelper.Gpu
                 {
 
                     status = Program.acpi.SetGPUEco(eco);
-
-                    if (status == 0 && eco == 1 && hardWay) RestartGPU();
-
                     await Task.Delay(TimeSpan.FromMilliseconds(AppConfig.Get("refresh_delay", 500)));
 
                     settings.Invoke(delegate
@@ -261,39 +258,6 @@ namespace GHelper.Gpu
             }
 
             return false;
-
-        }
-
-
-        public void RestartGPU(bool confirm = true)
-        {
-            if (HardwareControl.GpuControl is null) return;
-            if (!HardwareControl.GpuControl!.IsNvidia) return;
-
-            if (confirm)
-            {
-                DialogResult dialogResult = MessageBox.Show(Properties.Strings.RestartGPU, Properties.Strings.EcoMode, MessageBoxButtons.YesNo);
-                if (dialogResult == DialogResult.No) return;
-            }
-
-            ProcessHelper.RunAsAdmin("gpurestart");
-
-            if (!ProcessHelper.IsUserAdministrator()) return;
-
-            Logger.WriteLine("Trying to restart dGPU");
-
-            Task.Run(async () =>
-            {
-                settings.LockGPUModes("Restarting GPU ...");
-
-                bool status = NvidiaGpuControl.RestartGPU();
-
-                settings.Invoke(delegate
-                {
-                    //labelTipGPU.Text = status ? "GPU Restarted, you can try Eco mode again" : "Failed to restart GPU"; TODO
-                    InitGPUMode();
-                });
-            });
 
         }
 

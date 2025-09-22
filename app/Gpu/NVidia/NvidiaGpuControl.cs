@@ -182,11 +182,6 @@ public class NvidiaGpuControl : IGpuControl
 
     }
 
-    public static bool RestartGPU()
-    {
-        return RunPowershellCommand(@"$device = Get-PnpDevice | Where-Object { $_.FriendlyName -imatch 'NVIDIA' -and $_.Class -eq 'Display' }; Disable-PnpDevice $device.InstanceId -Confirm:$false; Start-Sleep -Seconds 5; Enable-PnpDevice $device.InstanceId -Confirm:$false");
-    }
-
     public static void RestartNVService()
     {
         if (!ProcessHelper.IsUserAdministrator()) return;
