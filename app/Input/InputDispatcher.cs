@@ -105,6 +105,7 @@ namespace GHelper.Input
 
             InitBacklightTimer();
             MuteLEDInit();
+            InitCamera();
         }
 
         public static void InitFNLock()
@@ -1149,12 +1150,24 @@ namespace GHelper.Input
             }
             else
             {
-                string asusPath = GetAsusPath();
-                var result = ProcessHelper.RunCMD($"{asusPath}\\AsusHotkey.exe", "-MFCameraCommand 2 1 0", asusPath);
-                var cameraLedStatus = Program.acpi.DeviceGet(AsusACPI.CameraLed);
-                Logger.WriteLine("Camera LED: " + cameraLedStatus);
-                Program.toast.RunToast($"Camera " + ((cameraLedStatus == 0) ? "On":"Off"));
+                SetCamera(2);
             }
+        }
+
+        private static void SetCamera(int status)
+        {
+            string asusPath = GetAsusPath();
+            var result = ProcessHelper.RunCMD($"{asusPath}\\AsusHotkey.exe", $"-MFCameraCommand {status} 1 0", asusPath);
+            var cameraLedStatus = Program.acpi.DeviceGet(AsusACPI.CameraLed);
+            Logger.WriteLine("Camera LED: " + cameraLedStatus);
+            Program.toast.RunToast($"Camera " + ((cameraLedStatus == 0) ? "On" : "Off"));
+            AppConfig.Set("camera_status", cameraLedStatus == 0 ? 1 : 0);
+        }
+
+        private static void InitCamera()
+        {
+            var cameraStatus = AppConfig.Get("camera_status");
+            if (cameraStatus >= 0) SetCamera(cameraStatus);
         }
 
         private static System.Threading.Timer screenpadActionTimer;
