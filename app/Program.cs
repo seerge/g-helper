@@ -155,9 +155,6 @@ namespace GHelper
                     Startup.ReScheduleAdmin();
                     settingsForm.FansToggle(1);
                     break;
-                case "gpurestart":
-                    gpuControl.RestartGPU(false);
-                    break;
                 case "services":
                     settingsForm.extraForm = new Extra();
                     settingsForm.extraForm.Show();

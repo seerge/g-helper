@@ -212,6 +212,7 @@ namespace GHelper.Peripherals
             DetectMouse(new GladiusIIIAimpointEva2Wired());
             DetectMouse(new HarpeAceAimLabEdition());
             DetectMouse(new HarpeAceAimLabEditionWired());
+            DetectMouse(new HarpeAceExtremeWeird());
             DetectMouse(new HarpeAceMiniWired());
             DetectMouse(new TUFM3());
             DetectMouse(new TUFM3GenII());

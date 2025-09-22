@@ -117,7 +117,6 @@ namespace GHelper
             checkNoOverdrive = new CheckBox();
             checkBootSound = new CheckBox();
             checkUSBC = new CheckBox();
-            checkVariBright = new CheckBox();
             checkGpuApps = new CheckBox();
             checkGPUFix = new CheckBox();
             checkOptimalBrightness = new CheckBox();
@@ -1196,7 +1195,6 @@ namespace GHelper
             panelSettings.Controls.Add(checkNoOverdrive);
             panelSettings.Controls.Add(checkBootSound);
             panelSettings.Controls.Add(checkUSBC);
-            panelSettings.Controls.Add(checkVariBright);
             panelSettings.Controls.Add(checkGpuApps);
             panelSettings.Controls.Add(checkGPUFix);
             panelSettings.Controls.Add(checkNVPlatform);
@@ -1286,19 +1284,6 @@ namespace GHelper
             checkUSBC.TabIndex = 4;
             checkUSBC.Text = "Keep GPU disabled on USB-C charger in Optimized mode";
             checkUSBC.UseVisualStyleBackColor = true;
-            // 
-            // checkVariBright
-            // 
-            checkVariBright.AutoSize = true;
-            checkVariBright.Dock = DockStyle.Top;
-            checkVariBright.Location = new Point(21, 257);
-            checkVariBright.Margin = new Padding(5, 3, 5, 3);
-            checkVariBright.Name = "checkVariBright";
-            checkVariBright.Padding = new Padding(3);
-            checkVariBright.Size = new Size(917, 42);
-            checkVariBright.TabIndex = 3;
-            checkVariBright.Text = "AMD Display VariBright";
-            checkVariBright.UseVisualStyleBackColor = true;
             // 
             // checkGpuApps
             // 
@@ -1781,7 +1766,6 @@ namespace GHelper
         private CheckBox checkTopmost;
         private CheckBox checkNoOverdrive;
         private CheckBox checkUSBC;
-        private CheckBox checkVariBright;
         private CheckBox checkGpuApps;
         private PictureBox pictureBacklight;
         private Label labelBacklightTitle;
