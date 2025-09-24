@@ -119,6 +119,7 @@ namespace GHelper
             checkUSBC = new CheckBox();
             checkGpuApps = new CheckBox();
             checkGPUFix = new CheckBox();
+            checkNVPlatform = new CheckBox();
             checkOptimalBrightness = new CheckBox();
             checkStatusLed = new CheckBox();
             checkPerKeyRGB = new CheckBox();
@@ -143,7 +144,6 @@ namespace GHelper
             buttonACPISend = new RButton();
             pictureDebug = new PictureBox();
             labelACPITitle = new Label();
-            checkNVPlatform = new CheckBox();
             panelServices.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureService).BeginInit();
             panelBindingsHeader.SuspendLayout();
@@ -182,7 +182,7 @@ namespace GHelper
             panelServices.Controls.Add(labelServices);
             panelServices.Controls.Add(buttonServices);
             panelServices.Dock = DockStyle.Top;
-            panelServices.Location = new Point(15, 1806);
+            panelServices.Location = new Point(15, 1760);
             panelServices.Name = "panelServices";
             panelServices.Size = new Size(949, 75);
             panelServices.TabIndex = 5;
@@ -1202,17 +1202,17 @@ namespace GHelper
             panelSettings.Controls.Add(checkStatusLed);
             panelSettings.Controls.Add(checkPerKeyRGB);
             panelSettings.Dock = DockStyle.Top;
-            panelSettings.Location = new Point(15, 1196);
+            panelSettings.Location = new Point(15, 1192);
             panelSettings.Name = "panelSettings";
             panelSettings.Padding = new Padding(21, 5, 11, 5);
-            panelSettings.Size = new Size(949, 556);
+            panelSettings.Size = new Size(949, 514);
             panelSettings.TabIndex = 3;
             // 
             // checkAutoToggleClamshellMode
             // 
             checkAutoToggleClamshellMode.AutoSize = true;
             checkAutoToggleClamshellMode.Dock = DockStyle.Top;
-            checkAutoToggleClamshellMode.Location = new Point(21, 509);
+            checkAutoToggleClamshellMode.Location = new Point(21, 467);
             checkAutoToggleClamshellMode.Name = "checkAutoToggleClamshellMode";
             checkAutoToggleClamshellMode.Padding = new Padding(3);
             checkAutoToggleClamshellMode.Size = new Size(917, 42);
@@ -1224,7 +1224,7 @@ namespace GHelper
             // 
             checkBWIcon.AutoSize = true;
             checkBWIcon.Dock = DockStyle.Top;
-            checkBWIcon.Location = new Point(21, 467);
+            checkBWIcon.Location = new Point(21, 425);
             checkBWIcon.Margin = new Padding(5, 3, 5, 3);
             checkBWIcon.Name = "checkBWIcon";
             checkBWIcon.Padding = new Padding(3);
@@ -1237,7 +1237,7 @@ namespace GHelper
             // 
             checkTopmost.AutoSize = true;
             checkTopmost.Dock = DockStyle.Top;
-            checkTopmost.Location = new Point(21, 425);
+            checkTopmost.Location = new Point(21, 383);
             checkTopmost.Margin = new Padding(5, 3, 5, 3);
             checkTopmost.Name = "checkTopmost";
             checkTopmost.Padding = new Padding(3);
@@ -1250,7 +1250,7 @@ namespace GHelper
             // 
             checkNoOverdrive.AutoSize = true;
             checkNoOverdrive.Dock = DockStyle.Top;
-            checkNoOverdrive.Location = new Point(21, 383);
+            checkNoOverdrive.Location = new Point(21, 341);
             checkNoOverdrive.Margin = new Padding(5, 3, 5, 3);
             checkNoOverdrive.Name = "checkNoOverdrive";
             checkNoOverdrive.Padding = new Padding(3);
@@ -1263,7 +1263,7 @@ namespace GHelper
             // 
             checkBootSound.AutoSize = true;
             checkBootSound.Dock = DockStyle.Top;
-            checkBootSound.Location = new Point(21, 341);
+            checkBootSound.Location = new Point(21, 299);
             checkBootSound.Margin = new Padding(5, 3, 5, 3);
             checkBootSound.Name = "checkBootSound";
             checkBootSound.Padding = new Padding(3);
@@ -1276,7 +1276,7 @@ namespace GHelper
             // 
             checkUSBC.AutoSize = true;
             checkUSBC.Dock = DockStyle.Top;
-            checkUSBC.Location = new Point(21, 299);
+            checkUSBC.Location = new Point(21, 257);
             checkUSBC.Margin = new Padding(5, 3, 5, 3);
             checkUSBC.Name = "checkUSBC";
             checkUSBC.Padding = new Padding(3);
@@ -1302,7 +1302,7 @@ namespace GHelper
             // 
             checkGPUFix.AutoSize = true;
             checkGPUFix.Dock = DockStyle.Top;
-            checkGPUFix.Location = new Point(21, 131);
+            checkGPUFix.Location = new Point(21, 173);
             checkGPUFix.Margin = new Padding(5, 3, 5, 3);
             checkGPUFix.Name = "checkGPUFix";
             checkGPUFix.Padding = new Padding(3);
@@ -1310,6 +1310,19 @@ namespace GHelper
             checkGPUFix.TabIndex = 9;
             checkGPUFix.Text = "Enable GPU on shutdown (prevents issue with Eco mode)";
             checkGPUFix.UseVisualStyleBackColor = true;
+            // 
+            // checkNVPlatform
+            // 
+            checkNVPlatform.AutoSize = true;
+            checkNVPlatform.Dock = DockStyle.Top;
+            checkNVPlatform.Location = new Point(21, 131);
+            checkNVPlatform.Margin = new Padding(5, 3, 5, 3);
+            checkNVPlatform.Name = "checkNVPlatform";
+            checkNVPlatform.Padding = new Padding(3);
+            checkNVPlatform.Size = new Size(917, 42);
+            checkNVPlatform.TabIndex = 15;
+            checkNVPlatform.Text = "Stop NVidia Services in Eco mode (experimental)";
+            checkNVPlatform.UseVisualStyleBackColor = true;
             // 
             // checkOptimalBrightness
             // 
@@ -1359,7 +1372,7 @@ namespace GHelper
             panelPower.Controls.Add(labelHibernateAfter);
             panelPower.Controls.Add(pictureHibernate);
             panelPower.Dock = DockStyle.Top;
-            panelPower.Location = new Point(15, 1752);
+            panelPower.Location = new Point(15, 1706);
             panelPower.Name = "panelPower";
             panelPower.Size = new Size(949, 54);
             panelPower.TabIndex = 4;
@@ -1404,7 +1417,7 @@ namespace GHelper
             panelAPU.Controls.Add(pictureAPUMem);
             panelAPU.Controls.Add(labelAPUMem);
             panelAPU.Dock = DockStyle.Top;
-            panelAPU.Location = new Point(15, 1139);
+            panelAPU.Location = new Point(15, 1135);
             panelAPU.Name = "panelAPU";
             panelAPU.Padding = new Padding(11, 5, 11, 0);
             panelAPU.Size = new Size(949, 57);
@@ -1461,14 +1474,14 @@ namespace GHelper
             panelCores.Location = new Point(15, 1076);
             panelCores.Name = "panelCores";
             panelCores.Padding = new Padding(11, 5, 11, 0);
-            panelCores.Size = new Size(949, 63);
+            panelCores.Size = new Size(949, 59);
             panelCores.TabIndex = 47;
             panelCores.Visible = false;
             // 
             // buttonCores
             // 
             buttonCores.Activated = false;
-            buttonCores.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            buttonCores.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             buttonCores.BackColor = SystemColors.ButtonHighlight;
             buttonCores.BorderColor = Color.Transparent;
             buttonCores.BorderRadius = 2;
@@ -1477,7 +1490,7 @@ namespace GHelper
             buttonCores.Margin = new Padding(5, 3, 5, 3);
             buttonCores.Name = "buttonCores";
             buttonCores.Secondary = false;
-            buttonCores.Size = new Size(106, 46);
+            buttonCores.Size = new Size(106, 44);
             buttonCores.TabIndex = 20;
             buttonCores.Text = "Apply";
             buttonCores.UseVisualStyleBackColor = false;
@@ -1491,7 +1504,7 @@ namespace GHelper
             comboCoresP.Font = new Font("Segoe UI", 9F);
             comboCoresP.FormattingEnabled = true;
             comboCoresP.ItemHeight = 32;
-            comboCoresP.Location = new Point(509, 10);
+            comboCoresP.Location = new Point(513, 10);
             comboCoresP.Margin = new Padding(5, 11, 5, 9);
             comboCoresP.Name = "comboCoresP";
             comboCoresP.Size = new Size(150, 40);
@@ -1507,7 +1520,7 @@ namespace GHelper
             comboCoresE.Font = new Font("Segoe UI", 9F);
             comboCoresE.FormattingEnabled = true;
             comboCoresE.ItemHeight = 32;
-            comboCoresE.Location = new Point(666, 10);
+            comboCoresE.Location = new Point(674, 10);
             comboCoresE.Margin = new Padding(5, 11, 5, 9);
             comboCoresE.Name = "comboCoresE";
             comboCoresE.Size = new Size(150, 40);
@@ -1607,19 +1620,6 @@ namespace GHelper
             labelACPITitle.TabIndex = 0;
             labelACPITitle.Text = "ACPI DEVS Test";
             // 
-            // checkNVPlatform
-            // 
-            checkNVPlatform.AutoSize = true;
-            checkNVPlatform.Dock = DockStyle.Top;
-            checkNVPlatform.Location = new Point(21, 173);
-            checkNVPlatform.Margin = new Padding(5, 3, 5, 3);
-            checkNVPlatform.Name = "checkNVPlatform";
-            checkNVPlatform.Padding = new Padding(3);
-            checkNVPlatform.Size = new Size(917, 42);
-            checkNVPlatform.TabIndex = 15;
-            checkNVPlatform.Text = "Stop NVidia Services in Eco mode (experimental)";
-            checkNVPlatform.UseVisualStyleBackColor = true;
-            // 
             // Extra
             // 
             AutoScaleDimensions = new SizeF(192F, 192F);
@@ -1646,7 +1646,7 @@ namespace GHelper
             MinimizeBox = false;
             MinimumSize = new Size(1033, 71);
             Name = "Extra";
-            Padding = new Padding(15, 15, 15, 15);
+            Padding = new Padding(15);
             ShowIcon = false;
             ShowInTaskbar = false;
             Text = "Extra Settings";
