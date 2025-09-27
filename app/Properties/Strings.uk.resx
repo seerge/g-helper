@@ -819,22 +819,22 @@
     <comment>Updated</comment>
   </data>
   <data name="SlashBounce" xml:space="preserve">
-    <value>Bounce</value>
+    <value>Відскок</value>
   </data>
   <data name="SlashMode" xml:space="preserve">
-    <value>Slash</value>
+    <value>Слеш</value>
   </data>
   <data name="SlashLoading" xml:space="preserve">
-    <value>Loading</value>
+    <value>Завантаження</value>
   </data>
   <data name="SlashBitStream" xml:space="preserve">
     <value>Bit Stream</value>
   </data>
   <data name="SlashTransmission" xml:space="preserve">
-    <value>Transmission</value>
+    <value>Трансмісія</value>
   </data>
   <data name="SlashFlow" xml:space="preserve">
-    <value>Flow</value>
+    <value>Потік</value>
   </data>
   <data name="SlashFlux" xml:space="preserve">
     <value>Flux</value>
@@ -858,7 +858,7 @@
     <value>Game Over</value>
   </data>
   <data name="SlashStart" xml:space="preserve">
-    <value>Start</value>
+    <value>Почати</value>
   </data>
   <data name="SlashBuzzer" xml:space="preserve">
     <value>Buzzer</value>
@@ -867,7 +867,7 @@
     <value>Static</value>
   </data>
   <data name="SlashBatteryLevel" xml:space="preserve">
-    <value>Battery Level</value>
+    <value>Рівень заряду батареї</value>
   </data>
   <data name="IntervalOff" xml:space="preserve">
     <value>Interval Off</value>
@@ -876,9 +876,9 @@
     <value>Interval {0}s</value>
   </data>
   <data name="DisableDynamicLighting" xml:space="preserve">
-    <value>Please disable Windows &gt; Dynamic Lighting</value>
+    <value>Вимкніть Windows > &gt; Динамічне освітлення</value>
   </data>
   <data name="AmbientModeResources" xml:space="preserve">
-    <value>Ambient mode may increase resource usage</value>
+    <value>Режим Ambient може збільшити використання ресурсів</value>
   </data>
 </root>
