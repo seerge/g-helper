@@ -13,11 +13,16 @@ namespace GHelper.Helpers
         private static bool _isMonitoring = false;
         private static DateTime _lastReadingTime = DateTime.MinValue;
 
+        // Exponential smoothing parameters
+        private static double _smoothedLux = -1;
+        private static double _smoothingFactor; // Alpha
+        private static int _maxChangePerSecond;
+
         public static event EventHandler<LightLevelChangedEventArgs>? LightLevelChanged;
 
         public static int GetCurrentLux()
         {
-            return (int)_currentLuxValue;
+            return (int)Math.Round(_smoothedLux >= 0 ? _smoothedLux : _currentLuxValue);
         }
 
         public static bool IsAvailable()
@@ -60,6 +65,13 @@ namespace GHelper.Helpers
         {
             if (_isInitialized) return;
 
+            // Load smoothing settings
+            if (!AppConfig.Exists("als_smoothing_factor")) AppConfig.Set("als_smoothing_factor", 40); // 0.4
+            if (!AppConfig.Exists("als_max_change_per_sec")) AppConfig.Set("als_max_change_per_sec", 50);
+            
+            _smoothingFactor = AppConfig.Get("als_smoothing_factor", 40) / 100.0;
+            _maxChangePerSecond = AppConfig.Get("als_max_change_per_sec", 50);
+
             _sensorAvailable = IsAvailable();
 
             if (!_sensorAvailable)
@@ -79,6 +91,9 @@ namespace GHelper.Helpers
             {
                 try
                 {
+                    // Reset smoothed value on start
+                    _smoothedLux = -1;
+
                     // Subscribe to sensor reading changes
                     _lightSensor.ReadingChanged += OnSensorReadingChanged;
                     _isMonitoring = true;
@@ -125,24 +140,55 @@ namespace GHelper.Helpers
             try
             {
                 var reading = args.Reading;
-                var luxValue = reading?.IlluminanceInLux;
-                if (luxValue.HasValue)
+                var rawLuxValue = reading?.IlluminanceInLux;
+                if (rawLuxValue.HasValue)
                 {
-                    var newLuxValue = (uint)Math.Max(0, Math.Round(luxValue.Value));
+                    var newRawLux = (uint)Math.Max(0, Math.Round(rawLuxValue.Value));
+                    var previousSmoothedLux = _smoothedLux;
+                    var now = DateTime.Now;
                     
-                    // Only trigger events if the value changed significantly (hysteresis)
-                    if (Math.Abs((int)newLuxValue - (int)_currentLuxValue) >= 5 || _currentLuxValue == 0)
+                    // Initialize smoothed value on first reading
+                    if (_smoothedLux < 0)
                     {
-                        var previousValue = _currentLuxValue;
-                        _currentLuxValue = newLuxValue;
-                        _lastReadingTime = DateTime.Now;
+                        _smoothedLux = newRawLux;
+                    }
 
-                        Logger.WriteLine($"Light level changed: {previousValue} → {newLuxValue} lux");
+                    // Apply exponential smoothing
+                    var newSmoothedLux = _smoothingFactor * newRawLux + (1 - _smoothingFactor) * _smoothedLux;
+
+                    // Apply rate-of-change limiting
+                    if (previousSmoothedLux >= 0)
+                    {
+                        var timeDelta = (now - _lastReadingTime).TotalSeconds;
+                        if (timeDelta > 0)
+                        {
+                            var maxChange = _maxChangePerSecond * timeDelta;
+                            var change = newSmoothedLux - previousSmoothedLux;
+                            
+                            if (Math.Abs(change) > maxChange)
+                            {
+                                newSmoothedLux = previousSmoothedLux + Math.Sign(change) * maxChange;
+                                Logger.WriteLine($"Rate limit applied: Raw={newRawLux}, Change={change:F1}, Limited to={maxChange:F1}");
+                            }
+                        }
+                    }
+
+                    // Only trigger events if the smoothed value has changed meaningfully
+                    if (Math.Abs(newSmoothedLux - _smoothedLux) >= 1)
+                    {
+                        var previousValue = (int)Math.Round(_smoothedLux);
+                        _smoothedLux = newSmoothedLux;
+                        _currentLuxValue = newRawLux; // Keep track of raw value for logging
+                        _lastReadingTime = now;
+
+                        var finalLux = (int)Math.Round(_smoothedLux);
+
+                        Logger.WriteLine($"Light level changed: Raw={newRawLux}, Smoothed={finalLux} lux");
 
                         LightLevelChanged?.Invoke(null, new LightLevelChangedEventArgs
                         {
-                            CurrentLux = (int)newLuxValue,
-                            PreviousLux = (int)previousValue,
+                            CurrentLux = finalLux,
+                            PreviousLux = previousValue,
                             Timestamp = _lastReadingTime
                         });
                     }
@@ -169,6 +215,7 @@ namespace GHelper.Helpers
                     if (luxValue.HasValue)
                     {
                         _currentLuxValue = (uint)Math.Max(0, Math.Round(luxValue.Value));
+                        _smoothedLux = _currentLuxValue; // Initialize smoothed value
                         _lastReadingTime = DateTime.Now;
                         
                         Logger.WriteLine($"Initial sensor reading: {_currentLuxValue} lux");
