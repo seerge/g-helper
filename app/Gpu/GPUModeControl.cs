@@ -175,8 +175,9 @@ namespace GHelper.Gpu
 
                     if (eco == 0)
                     {
-                        if (AppConfig.IsNVPlatform()) NvidiaGpuControl.RestartNVService();
                         await Task.Delay(TimeSpan.FromMilliseconds(3000));
+                        if (AppConfig.IsNVPlatform()) NvidiaGpuControl.RestartNVService();
+                        await Task.Delay(TimeSpan.FromMilliseconds(1000));
                         HardwareControl.RecreateGpuControl();
                         Program.modeControl.SetGPUClocks(false);
                     }
