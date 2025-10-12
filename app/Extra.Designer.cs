@@ -1321,7 +1321,7 @@ namespace GHelper
             checkNVPlatform.Padding = new Padding(3);
             checkNVPlatform.Size = new Size(917, 42);
             checkNVPlatform.TabIndex = 15;
-            checkNVPlatform.Text = "Stop NVidia Services in Eco mode (experimental)";
+            checkNVPlatform.Text = "Stop Nvidia Services in Eco mode (experimental)";
             checkNVPlatform.UseVisualStyleBackColor = true;
             // 
             // checkOptimalBrightness
