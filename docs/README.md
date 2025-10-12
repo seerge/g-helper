@@ -142,7 +142,7 @@ Huge thanks to [@IceStormNG](https://github.com/IceStormNG) 👑 for contributio
 - ``Fn + C`` - Fn-Lock
 - ``Fn + Ctrl +  F7 / F8`` / ``Ctrl + Shift + Alt +  F7 / F8`` - Flicker-free dimming Down / Up
 - ``Fn + Shift + F7 / F8`` - Matrix / Slash Lighting brightness Down / Up
-- ``Fn + Shift + F7 / F8`` - Screenpad brightness Down / Up
+- ``Fn + Shift + F7 / F8`` / ``Ctrl + Shift + Alt +  F7 / F8`` - Screenpad brightness Down / Up
 - ``Ctrl + Shift + F20`` - Mute Microphone
 - ``Ctrl + Shift + Alt + F13`` - Toggle Display Refresh Rate
 - ``Ctrl + Shift + Alt + F14`` - Eco GPU Mode
