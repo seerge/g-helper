@@ -69,6 +69,7 @@ namespace GHelper
             }
 
             ProcessHelper.CheckAlreadyRunning();
+            ProcessHelper.SetPriority();
 
             Logger.WriteLine("------------");
             Logger.WriteLine("App launched: " + AppConfig.GetModel() + " :" + Assembly.GetExecutingAssembly().GetName().Version.ToString() + CultureInfo.CurrentUICulture + (ProcessHelper.IsUserAdministrator() ? "." : ""));
