@@ -41,6 +41,7 @@ namespace GHelper
             Title title4 = new Title();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Fans));
             panelFans = new Panel();
+            checkFanClamp = new RCheckBox();
             labelTip = new Label();
             tableFanCharts = new TableLayoutPanel();
             chartGPU = new Chart();
@@ -239,6 +240,7 @@ namespace GHelper
             // 
             panelFans.AutoSize = true;
             panelFans.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            panelFans.Controls.Add(checkFanClamp);
             panelFans.Controls.Add(labelTip);
             panelFans.Controls.Add(tableFanCharts);
             panelFans.Controls.Add(panelTitleFans);
@@ -251,6 +253,19 @@ namespace GHelper
             panelFans.Padding = new Padding(0, 0, 5, 0);
             panelFans.Size = new Size(410, 756);
             panelFans.TabIndex = 12;
+            // 
+            // checkFanClamp
+            // 
+            checkFanClamp.AutoSize = true;
+            checkFanClamp.Font = new Font("Segoe UI", 8F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            checkFanClamp.Location = new Point(18, 80);
+            checkFanClamp.Name = "checkFanClamp";
+            checkFanClamp.Padding = new Padding(8, 1, 2, 1);
+            checkFanClamp.Size = new Size(193, 44);
+            checkFanClamp.TabIndex = 44;
+            checkFanClamp.TabStop = false;
+            checkFanClamp.Text = "Clamp to Grid";
+            checkFanClamp.UseVisualStyleBackColor = false;
             // 
             // labelTip
             // 
@@ -381,7 +396,6 @@ namespace GHelper
             // 
             buttonRemove.Activated = false;
             buttonRemove.BackColor = SystemColors.ControlLight;
-            buttonRemove.Badge = 0;
             buttonRemove.BorderColor = Color.Transparent;
             buttonRemove.BorderRadius = 2;
             buttonRemove.Dock = DockStyle.Fill;
@@ -399,7 +413,6 @@ namespace GHelper
             // 
             buttonAdd.Activated = false;
             buttonAdd.BackColor = SystemColors.ControlLight;
-            buttonAdd.Badge = 0;
             buttonAdd.BorderColor = Color.Transparent;
             buttonAdd.BorderRadius = 2;
             buttonAdd.Dock = DockStyle.Fill;
@@ -417,7 +430,6 @@ namespace GHelper
             // 
             buttonRename.Activated = false;
             buttonRename.BackColor = SystemColors.ControlLight;
-            buttonRename.Badge = 0;
             buttonRename.BorderColor = Color.Transparent;
             buttonRename.BorderRadius = 2;
             buttonRename.Dock = DockStyle.Fill;
@@ -485,7 +497,6 @@ namespace GHelper
             buttonCalibrate.Activated = false;
             buttonCalibrate.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             buttonCalibrate.BackColor = SystemColors.ControlLight;
-            buttonCalibrate.Badge = 0;
             buttonCalibrate.BorderColor = Color.Transparent;
             buttonCalibrate.BorderRadius = 2;
             buttonCalibrate.FlatStyle = FlatStyle.Flat;
@@ -528,7 +539,6 @@ namespace GHelper
             buttonReset.Activated = false;
             buttonReset.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             buttonReset.BackColor = SystemColors.ControlLight;
-            buttonReset.Badge = 0;
             buttonReset.BorderColor = Color.Transparent;
             buttonReset.BorderRadius = 2;
             buttonReset.FlatStyle = FlatStyle.Flat;
@@ -633,7 +643,6 @@ namespace GHelper
             // 
             buttonApplyAdvanced.Activated = false;
             buttonApplyAdvanced.BackColor = SystemColors.ControlLight;
-            buttonApplyAdvanced.Badge = 0;
             buttonApplyAdvanced.BorderColor = Color.Transparent;
             buttonApplyAdvanced.BorderRadius = 2;
             buttonApplyAdvanced.Dock = DockStyle.Top;
@@ -902,7 +911,6 @@ namespace GHelper
             buttonDownload.AutoSize = true;
             buttonDownload.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             buttonDownload.BackColor = SystemColors.ControlLight;
-            buttonDownload.Badge = 0;
             buttonDownload.BorderColor = Color.Transparent;
             buttonDownload.BorderRadius = 2;
             buttonDownload.Dock = DockStyle.Top;
@@ -1844,7 +1852,6 @@ namespace GHelper
             // 
             buttonAdvanced.Activated = false;
             buttonAdvanced.BackColor = SystemColors.ControlLight;
-            buttonAdvanced.Badge = 0;
             buttonAdvanced.BorderColor = Color.Transparent;
             buttonAdvanced.BorderRadius = 2;
             buttonAdvanced.Dock = DockStyle.Fill;
@@ -1863,7 +1870,6 @@ namespace GHelper
             // 
             buttonGPU.Activated = false;
             buttonGPU.BackColor = SystemColors.ControlLight;
-            buttonGPU.Badge = 0;
             buttonGPU.BorderColor = Color.Transparent;
             buttonGPU.BorderRadius = 2;
             buttonGPU.Dock = DockStyle.Fill;
@@ -1882,7 +1888,6 @@ namespace GHelper
             // 
             buttonCPU.Activated = false;
             buttonCPU.BackColor = SystemColors.ControlLight;
-            buttonCPU.Badge = 0;
             buttonCPU.BorderColor = Color.Transparent;
             buttonCPU.BorderRadius = 2;
             buttonCPU.Dock = DockStyle.Fill;
@@ -2132,6 +2137,7 @@ namespace GHelper
         private Label labelGPUPowerTitle;
         private TrackBar trackGPUPower;
         private TableLayoutPanel tableLayoutModes;
+        private RCheckBox checkFanClamp;
         private Panel panelIntelGPU;
         private Panel panelIntelGPUCoreMin;
         private Label labelIntelGPUCoreMin;

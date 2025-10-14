@@ -7,7 +7,7 @@
         {
         }
 
-        protected KerisIIAceWired(ushort vendorId, bool wireless) : base(0x0B05, vendorId, "mi_00", wireless)
+        protected KerisIIAceWired(ushort productId, bool wireless, string endpoint, byte reportId) : base(0x0B05, productId, endpoint, wireless, reportId)
         {
         }
 
@@ -18,7 +18,7 @@
 
         public override string GetDisplayName()
         {
-            return "ROG Keris II Ace";
+            return "ROG Keris II Ace (Wired)";
         }
 
 
@@ -36,6 +36,8 @@
         {
             return 5;
         }
+
+
         public override int MaxDPI()
         {
             return 42_000;
@@ -63,7 +65,8 @@
                 || lightingMode == LightingMode.Breathing
                 || lightingMode == LightingMode.ColorCycle
                 || lightingMode == LightingMode.BatteryState
-                || lightingMode == LightingMode.React;
+                || lightingMode == LightingMode.React
+                || lightingMode == LightingMode.Off;
         }
 
         public override bool HasAutoPowerOff()
@@ -91,34 +94,26 @@
             return true;
         }
 
-        protected override PollingRate ParsePollingRate(byte[] packet)
+        public override int AngleTuningStep()
         {
-            if (packet[1] == 0x12 && packet[2] == 0x04 && packet[3] == 0x00)
-            {
-                if ((int)packet[13] > 7)
-                    return (PollingRate)packet[13] - 96;
-                return (PollingRate)packet[13];
-            }
-
-            return PollingRate.PR125Hz;
+            return 5;
         }
-
     }
 
-    /*
-     * 
-    Mouse uses Omni Reciever
-    public class KerisIIAce : KerisIIAce
+    public class KerisAceIIOmni : KerisIIAceWired
     {
-        public KerisIIAce() : base(0xAAAA, false)
+        public KerisAceIIOmni() : base(0x1ACE, true, "mi_02&col03", 0x03)
         {
         }
 
         public override string GetDisplayName()
         {
-            return "ROG Keris II Ace (Wired)";
+            return "ROG Keris II Ace (OMNI)";
+        }
+
+        public override int USBPacketSize()
+        {
+            return 64;
         }
     }
-    */
-
 }

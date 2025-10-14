@@ -311,7 +311,7 @@ namespace GHelper.USB
 
         public static void DirectBrightness(int brightness, string log)
         {
-            if (isACPI) Program.acpi.TUFKeyboardBrightness(brightness);
+            if (isACPI) Program.acpi.TUFKeyboardBrightness(brightness, log);
             if (AppConfig.IsInputBacklight())
                 AsusHid.WriteInput([AsusHid.INPUT_ID, 0xBA, 0xC5, 0xC4, (byte)brightness], log);
             else

@@ -1,6 +1,9 @@
 ﻿using GHelper.Peripherals.Mouse;
 using GHelper.Peripherals.Mouse.Models;
+using HidSharp;
+using System.IO;
 using System.Runtime.CompilerServices;
+using System.Text;
 
 namespace GHelper.Peripherals
 {
@@ -183,6 +186,7 @@ namespace GHelper.Peripherals
         public static void DetectAllAsusMice()
         {
             //Add one line for every supported mouse class here to support them.
+            DedectOmniMouse();
             DetectMouse(new ChakramX());
             DetectMouse(new ChakramXWired());
             DetectMouse(new GladiusIIIAimpoint());
@@ -191,11 +195,11 @@ namespace GHelper.Peripherals
             DetectMouse(new GladiusIIOriginPink());
             DetectMouse(new GladiusII());
             DetectMouse(new GladiusIIWireless());
-            DetectMouse(new ROGKerisWireless());
-            DetectMouse(new ROGKerisWirelessWired());
-            DetectMouse(new ROGKeris());
-            DetectMouse(new ROGKerisWirelessEvaEdition());
-            DetectMouse(new ROGKerisWirelessEvaEditionWired());
+            DetectMouse(new KerisWireless());
+            DetectMouse(new KerisWirelessWired());
+            DetectMouse(new Keris());
+            DetectMouse(new KerisWirelessEvaEdition());
+            DetectMouse(new KerisWirelessEvaEditionWired());
             DetectMouse(new TUFM4Air());
             DetectMouse(new TUFM4Wirelss());
             DetectMouse(new TUFM4WirelssCN());
@@ -208,13 +212,15 @@ namespace GHelper.Peripherals
             DetectMouse(new GladiusIIIAimpointEva2Wired());
             DetectMouse(new HarpeAceAimLabEdition());
             DetectMouse(new HarpeAceAimLabEditionWired());
-            DetectMouse(new HarpeAceAimLabEditionOmni());
+            DetectMouse(new HarpeAceExtremeWeird());
+            DetectMouse(new HarpeAceMiniWired());
             DetectMouse(new TUFM3());
             DetectMouse(new TUFM3GenII());
             DetectMouse(new TUFM5());
             DetectMouse(new KerisWirelssAimpoint());
             DetectMouse(new KerisWirelssAimpointWired());
             DetectMouse(new KerisIIAceWired());
+            DetectMouse(new KerisIIOriginWired()); 
             DetectMouse(new PugioII());
             DetectMouse(new PugioIIWired());
             DetectMouse(new StrixImpactII());
@@ -223,12 +229,68 @@ namespace GHelper.Peripherals
             DetectMouse(new ChakramWired());
             DetectMouse(new ChakramCore());
             DetectMouse(new SpathaX());
+            DetectMouse(new SpathaXWired());
             DetectMouse(new StrixCarry());
             DetectMouse(new StrixImpactIII());
             DetectMouse(new StrixImpact());
             DetectMouse(new TXGamingMini());
             DetectMouse(new TXGamingMiniWired());
             DetectMouse(new Pugio());
+        }
+
+        public static void DedectOmniMouse()
+        {
+            try
+            {
+                var device = DeviceList.Local.GetHidDevices(0x0B05, 0x1ACE).FirstOrDefault(x => x.DevicePath.Contains("mi_02&col03"));
+                if (device is null) return;
+
+                var config = new OpenConfiguration();
+                config.SetOption(OpenOption.Interruptible, true);
+                config.SetOption(OpenOption.Exclusive, false);
+                config.SetOption(OpenOption.Priority, 10);
+
+                using (var stream = device.Open(config))
+                {
+                    var response = new byte[64];
+                    stream.Write(new byte[] { 0x03, 0x12, 0x12, 0x02 });
+                    stream.Read(response);
+
+                    Logger.WriteLine("Omni Mouse ID: " + BitConverter.ToString(response));
+                    var signatureBytes = response.Skip(5).Take(12).ToArray();
+                    string signatureStr = Encoding.ASCII.GetString(signatureBytes);
+
+                    Logger.WriteLine("Signature: " + BitConverter.ToString(signatureBytes) + " = " + signatureStr);
+
+                    AsusMouse omniMouse = signatureStr switch
+                    {
+                        var s when s.StartsWith("B23") => new HarpeAceAimLabEditionOmni(),              // B23072800062
+                        var s when s.StartsWith("B241") => new HarpeAceAimLabEditionOmni(),             // B24122666771
+                        var s when s.StartsWith("B24") => new HarpeAceMiniOmni(),                       // B24082550833
+                        var s when s.StartsWith("B25") => new HarpeAceMiniOmni(),                       // B25030817186
+                        var s when s.StartsWith("R1") => new KerisWirelssAimpointOmni(),                // R13121351391
+                        var s when s.StartsWith("F24") => new KerisWirelssAimpointOmni(),               // F24B21DD03F4
+                        var s when s.StartsWith("FB") => new KerisWirelssAimpointOmni(),                // FBA0CC1D6F9C
+                        var s when s.StartsWith("024") => new KerisAceIIOmni(),                         // 024031316969
+                        var s when s.StartsWith("02501") => new KerisAceIIOmni(),                       // 0250105027981
+                        var s when s.StartsWith("025") => new KerisIIOriginOmni(),                      // 025050613700
+                        var s when s.StartsWith("20") => new StrixImpactIIIWirelessOmni(),              // 202405290700
+                        var s when s.StartsWith("R8") => new GladiusIIIAimpointOmni(),                  // R82020155689
+                        var s when s.StartsWith("R6") => new GladiusIIIAimpointOmni(),                  // R60120331787
+                        var s when s.StartsWith("R903") => new GladiusIIIAimpointOmni(),                // R90319215881
+                        var s when s.StartsWith("R923") => new GladiusIIIAimpointOmni(),                // R92307410710
+                        var s when s.StartsWith("R9") => new KerisWirelssAimpointOmni(),                // R90518300572
+                        var s when s.StartsWith("T5") => new HarpeAceExtremeOmni(),                      // T5MPKR018406
+                        _ => new HarpeAceAimLabEditionOmni()
+                    };
+
+                    DetectMouse(omniMouse);
+                }
+            }
+            catch
+            {
+                return;
+            }
         }
 
         public static void DetectMouse(AsusMouse am)

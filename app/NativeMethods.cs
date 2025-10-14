@@ -1,7 +1,7 @@
 ﻿using System.Runtime.InteropServices;
 
 
-public class NativeMethods
+public static class NativeMethods
 {
 
     internal struct LASTINPUTINFO
@@ -25,6 +25,9 @@ public class NativeMethods
     private const int WM_SYSCOMMAND = 0x0112;
     private const int SC_MONITORPOWER = 0xF170;
     private const int MONITOR_OFF = 2;
+
+    [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+    public static extern int RegisterWindowMessage(string lpString);
 
     [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
     private static extern IntPtr SendMessage(nint hWnd, int hMsg, int wParam, int lParam);

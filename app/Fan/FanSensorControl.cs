@@ -22,6 +22,7 @@ namespace GHelper.Fan
         static System.Timers.Timer timer = default!;
 
         static int[] _fanMax = InitFanMax();
+        static int[] _fanMin = GetDefaultMin();
         static bool _fanRpm = AppConfig.IsNotFalse("fan_rpm");
 
         public FanSensorControl(Fans fansForm)
@@ -75,6 +76,13 @@ namespace GHelper.Fan
             return new int[3] { DEFAULT_FAN_MAX, DEFAULT_FAN_MAX, DEFAULT_FAN_MAX };
         }
 
+        static int[] GetDefaultMin()
+        {
+            if (AppConfig.ContainsModel("GA403")) return new int[3] { 22, 22, 22 };
+            if (AppConfig.ContainsModel("GU605")) return new int[3] { 22, 22, 22 };
+            return new int[3] { DEFAULT_FAN_MIN, DEFAULT_FAN_MIN, DEFAULT_FAN_MIN };
+        }
+
         public static int GetFanMax(AsusFan device)
         {
             if (device == AsusFan.XGM) return XGM_FAN_MAX;
@@ -83,6 +91,12 @@ namespace GHelper.Fan
                 SetFanMax(device, DEFAULT_FAN_MAX);
 
             return _fanMax[(int)device];
+        }
+
+        public static int GetFanMin(AsusFan device)
+        {
+            if (device == AsusFan.XGM) return DEFAULT_FAN_MIN;
+            return _fanMin[(int)device];
         }
 
         public static void SetFanMax(AsusFan device, int value)

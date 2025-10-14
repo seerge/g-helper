@@ -95,6 +95,7 @@ namespace GHelper.Mode
                     await Task.Delay(TimeSpan.FromMilliseconds(1500));
                 }
 
+                if (AppConfig.Is("status_mode")) Program.acpi.DeviceSet(AsusACPI.StatusMode, [0x00, Modes.GetBase(mode) == AsusACPI.PerformanceSilent ? (byte)0x02 : (byte)0x03], "StatusMode");
                 int status = Program.acpi.DeviceSet(AsusACPI.PerformanceMode, AppConfig.IsManualModeRequired() ? AsusACPI.PerformanceManual : Modes.GetBase(mode), "Mode");
                 // Vivobook fallback
                 if (status != 1) Program.acpi.SetVivoMode(Modes.GetBase(mode));
@@ -121,6 +122,8 @@ namespace GHelper.Mode
                     PowerNative.SetPowerMode(AppConfig.GetModeString("powermode"));
                 else
                     PowerNative.SetPowerMode(Modes.GetBase(mode));
+
+                if (AppConfig.Is("aspm") && PowerNative.GetASPM() > 0) PowerNative.SetASPM(0);
             }
 
             // CPU Boost setting override
@@ -227,7 +230,7 @@ namespace GHelper.Mode
             bool applyPower = AppConfig.IsMode("auto_apply_power");
             bool applyFans = AppConfig.IsMode("auto_apply");
 
-            if (applyPower && !applyFans && (AppConfig.IsFanRequired() || AppConfig.IsManualModeRequired()))
+            if (applyPower && !applyFans && AppConfig.IsFanRequired())
             {
                 AutoFans(true);
                 Thread.Sleep(500);
@@ -507,6 +510,12 @@ namespace GHelper.Mode
 
             if (AppConfig.IsMode("auto_uv")) SetRyzen();
             else ResetRyzen();
+        }
+
+        public void ShutdownReset()
+        {
+            if (!AppConfig.IsShutdownReset()) return;
+            Program.acpi.DeviceSet(AsusACPI.PerformanceMode,AsusACPI.PerformanceBalanced, "Mode Reset");
         }
 
         public void AutoIntelGPU()

@@ -1,5 +1,7 @@
 ﻿using GHelper.UI;
+using NvAPIWrapper.Native.Display.Structures;
 using System.Diagnostics;
+using System.Diagnostics.Metrics;
 using System.Management;
 using System.Net;
 using System.Text.Json;
@@ -18,6 +20,10 @@ namespace GHelper
 
         static int updatesCount = 0;
         private static long lastUpdate;
+
+        private readonly Font _boldUnderlineFont;
+        private readonly Font _font;
+
         public struct DriverDownload
         {
             public string categoryName;
@@ -93,11 +99,20 @@ namespace GHelper
             InitializeComponent();
             InitTheme(true);
 
+            _boldUnderlineFont = new Font(Font, FontStyle.Bold | FontStyle.Underline);
+            _font = new Font(Font, FontStyle.Underline);
+
             //buttonRefresh.Visible = false;
             buttonRefresh.Click += ButtonRefresh_Click;
             Shown += Updates_Shown;
-        }
 
+            FormClosed += (s, e) =>
+            {
+                // Dispose fonts when form closes
+                _boldUnderlineFont.Dispose();
+                _font.Dispose();
+            };
+        }
 
         private void ButtonRefresh_Click(object? sender, EventArgs e)
         {
@@ -141,34 +156,45 @@ namespace GHelper
         }
 
 
+        private void _VisualiseDriver(DriverDownload driver, TableLayoutPanel table)
+        {
+            string versionText = driver.version.Replace("latest version at the ", "");
+            LinkLabel versionLabel = new LinkLabel { Text = versionText, Anchor = AnchorStyles.Left, AutoSize = true };
+
+            versionLabel.AccessibleName = driver.title;
+            versionLabel.TabStop = true;
+            versionLabel.TabIndex = table.RowCount + 1;
+
+            versionLabel.Cursor = Cursors.Hand;
+            versionLabel.Font = _font;
+            versionLabel.LinkColor = colorEco;
+            versionLabel.Padding = new Padding(5, 5, 5, 5);
+            versionLabel.LinkClicked += delegate
+            {
+                Process.Start(new ProcessStartInfo(driver.downloadUrl) { UseShellExecute = true });
+            };
+
+            table.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+            table.Controls.Add(new Label { Text = driver.categoryName, Anchor = AnchorStyles.Left, Dock = DockStyle.Fill, Padding = new Padding(5, 5, 5, 5) }, 0, table.RowCount);
+            table.Controls.Add(new Label { Text = driver.title, Anchor = AnchorStyles.Left, Dock = DockStyle.Fill, Padding = new Padding(5, 5, 5, 5) }, 1, table.RowCount);
+            table.Controls.Add(new Label { Text = driver.date, Anchor = AnchorStyles.Left, Dock = DockStyle.Fill, Padding = new Padding(5, 5, 5, 5) }, 2, table.RowCount);
+            table.Controls.Add(versionLabel, 3, table.RowCount);
+            table.RowCount++;
+        }
+
         public void VisualiseDriver(DriverDownload driver, TableLayoutPanel table)
         {
-            Invoke(delegate
+            if (InvokeRequired)
             {
-                string versionText = driver.version.Replace("latest version at the ", "");
-                LinkLabel versionLabel = new LinkLabel { Text = versionText, Anchor = AnchorStyles.Left, AutoSize = true };
-
-                versionLabel.AccessibleName = driver.title;
-                versionLabel.TabStop = true;
-                versionLabel.TabIndex = table.RowCount + 1;
-
-                versionLabel.Cursor = Cursors.Hand;
-                versionLabel.Font = new Font(versionLabel.Font, FontStyle.Underline);
-                versionLabel.LinkColor = colorEco;
-                versionLabel.Padding = new Padding(5, 5, 5, 5);
-                versionLabel.LinkClicked += delegate
+                Invoke(delegate
                 {
-                    Process.Start(new ProcessStartInfo(driver.downloadUrl) { UseShellExecute = true });
-                };
-
-                table.RowStyles.Add(new RowStyle(SizeType.AutoSize));
-                table.Controls.Add(new Label { Text = driver.categoryName, Anchor = AnchorStyles.Left, Dock = DockStyle.Fill, Padding = new Padding(5, 5, 5, 5) }, 0, table.RowCount);
-                table.Controls.Add(new Label { Text = driver.title, Anchor = AnchorStyles.Left, Dock = DockStyle.Fill, Padding = new Padding(5, 5, 5, 5) }, 1, table.RowCount);
-                table.Controls.Add(new Label { Text = driver.date, Anchor = AnchorStyles.Left, Dock = DockStyle.Fill, Padding = new Padding(5, 5, 5, 5) }, 2, table.RowCount);
-                table.Controls.Add(versionLabel, 3, table.RowCount);
-                table.RowCount++;
-
-            });
+                    _VisualiseDriver(driver, table);
+                });
+            }
+            else
+            {
+                _VisualiseDriver(driver, table);
+            }
         }
 
         public void ShowTable(TableLayoutPanel table)
@@ -191,7 +217,7 @@ namespace GHelper
                 if (newer == DRIVER_NEWER)
                 {
                     label.AccessibleName = label.AccessibleName + Properties.Strings.NewUpdates;
-                    label.Font = new Font(label.Font, FontStyle.Underline | FontStyle.Bold);
+                    label.Font = _boldUnderlineFont;
                     label.LinkColor = colorTurbo;
                 }
 
@@ -213,7 +239,6 @@ namespace GHelper
             {
                 _VisualiseNewDriver(position, newer, tip, table);
             }
-
         }
 
         public void VisualiseNewCount(int updatesCount, TableLayoutPanel table)
@@ -235,7 +260,7 @@ namespace GHelper
         {
             labelUpdates.Text = $"{Properties.Strings.NewUpdates}: {updatesCount}";
             labelUpdates.ForeColor = colorTurbo;
-            labelUpdates.Font = new Font(labelUpdates.Font, FontStyle.Bold);
+            labelUpdates.Font = _boldUnderlineFont;
             panelBios.AccessibleName = labelUpdates.Text;
         }
 

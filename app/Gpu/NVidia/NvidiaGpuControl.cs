@@ -12,8 +12,8 @@ namespace GHelper.Gpu.Nvidia;
 public class NvidiaGpuControl : IGpuControl
 {
 
-    public static int MaxCoreOffset => AppConfig.Get("max_gpu_core", 250);
-    public static int MaxMemoryOffset => AppConfig.Get("max_gpu_memory", 500);
+    public static int MaxCoreOffset = AppConfig.Get("max_gpu_core", 250);
+    public static int MaxMemoryOffset = AppConfig.Get("max_gpu_memory", 500);
 
     public static int MinCoreOffset = AppConfig.Get("min_gpu_core", -250);
     public static int MinMemoryOffset = AppConfig.Get("min_gpu_memory", -500);
@@ -26,6 +26,20 @@ public class NvidiaGpuControl : IGpuControl
     public NvidiaGpuControl()
     {
         _internalGpu = GetInternalDiscreteGpu();
+        if (IsValid)
+        {
+            if (FullName.Contains("5080") || FullName.Contains("5090"))
+            {
+                MaxCoreOffset = AppConfig.Get("max_gpu_core", 400);
+                MaxMemoryOffset = AppConfig.Get("max_gpu_memory", 1000);
+                Logger.WriteLine($"NVIDIA GPU: {FullName} ({MaxCoreOffset},{MaxMemoryOffset})");
+            }
+            if (FullName.Contains("5070 Ti") || FullName.Contains("4080") || FullName.Contains("4090"))
+            {
+                MaxCoreOffset = AppConfig.Get("max_gpu_core", 300);
+                Logger.WriteLine($"NVIDIA GPU: {FullName} ({MaxCoreOffset},{MaxMemoryOffset})");
+            }
+        }
     }
 
     public bool IsValid => _internalGpu != null;
@@ -168,16 +182,19 @@ public class NvidiaGpuControl : IGpuControl
 
     }
 
-    public static bool RestartGPU()
+    public static void RestartNVService()
     {
-        return RunPowershellCommand(@"$device = Get-PnpDevice | Where-Object { $_.FriendlyName -imatch 'NVIDIA' -and $_.Class -eq 'Display' }; Disable-PnpDevice $device.InstanceId -Confirm:$false; Start-Sleep -Seconds 5; Enable-PnpDevice $device.InstanceId -Confirm:$false");
+        if (!ProcessHelper.IsUserAdministrator()) return;
+        RunPowershellCommand(@"Restart-Service -Name 'NVDisplay.ContainerLocalSystem' -Force");
+        RunPowershellCommand(@"Restart-Service -Name 'NvContainerLocalSystem' -Force");
     }
 
-    public static bool RestartNVService()
+    public static void StopNVService()
     {
-        return RunPowershellCommand(@"Restart-Service -Name 'NVDisplay.ContainerLocalSystem' -Force");
+        if (!ProcessHelper.IsUserAdministrator()) return;
+        RunPowershellCommand(@"Stop-Service -Name 'NvContainerLocalSystem' -Force");
+        RunPowershellCommand(@"Stop-Service -Name 'NVDisplay.ContainerLocalSystem' -Force");
     }
-
 
     public int SetClocks(int core, int memory)
     {

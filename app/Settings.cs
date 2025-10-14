@@ -21,7 +21,7 @@ namespace GHelper
     public partial class SettingsForm : RForm
     {
         ContextMenuStrip contextMenuStrip = new CustomContextMenu();
-        ToolStripMenuItem menuSilent, menuBalanced, menuTurbo, menuEco, menuStandard, menuUltimate, menuOptimized;
+        ToolStripMenuItem menuEco, menuStandard, menuUltimate, menuOptimized;
 
         public GPUModeControl gpuControl;
         public AllyControl allyControl;
@@ -49,6 +49,7 @@ namespace GHelper
         bool batteryFullMouseOver = false;
 
         bool sliderGammaIgnore = false;
+        bool activateCheck = false;
 
         public SettingsForm()
         {
@@ -84,7 +85,6 @@ namespace GHelper
             labelKeyboard.Text = Properties.Strings.LaptopKeyboard;
             labelMatrix.Text = Properties.Strings.AnimeMatrix;
             labelBatteryTitle.Text = Properties.Strings.BatteryChargeLimit;
-            labelPeripherals.Text = Properties.Strings.Peripherals;
 
             checkMatrix.Text = Properties.Strings.TurnOffOnBattery;
             checkMatrixLid.Text = Properties.Strings.DisableOnLidClose;
@@ -127,6 +127,7 @@ namespace GHelper
 
             FormClosing += SettingsForm_FormClosing;
             Deactivate += SettingsForm_LostFocus;
+            Activated += SettingsForm_Focused;
 
             buttonSilent.BorderColor = colorEco;
             buttonBalanced.BorderColor = colorStandard;
@@ -143,6 +144,10 @@ namespace GHelper
             button120Hz.BorderColor = colorGray;
             buttonScreenAuto.BorderColor = colorGray;
             buttonMiniled.BorderColor = colorTurbo;
+
+            buttonEnergySaver.BackColor = colorEco;
+            buttonEnergySaver.ForeColor = SystemColors.ControlLightLight;
+            buttonEnergySaver.Click += ButtonEnergySaver_Click;
 
             buttonSilent.Click += ButtonSilent_Click;
             buttonBalanced.Click += ButtonBalanced_Click;
@@ -227,8 +232,6 @@ namespace GHelper
             sliderBattery.KeyUp += SliderBattery_KeyUp;
             sliderBattery.ValueChanged += SliderBattery_ValueChanged;
 
-            Program.trayIcon.MouseMove += TrayIcon_MouseMove;
-
             sensorTimer = new System.Timers.Timer(AppConfig.Get("sensor_timer", 1000));
             sensorTimer.Elapsed += OnTimedEvent;
             sensorTimer.Enabled = true;
@@ -263,7 +266,6 @@ namespace GHelper
 
             //This will auto position the window again when it resizes. Might mess with position if people drag the window somewhere else.
             this.Resize += SettingsForm_Resize;
-            SetContextMenu();
 
             VisualiseFnLock();
             buttonFnLock.Click += ButtonFnLock_Click;
@@ -294,6 +296,12 @@ namespace GHelper
             RefreshSensors(true);
         }
 
+        private void ButtonEnergySaver_Click(object? sender, EventArgs e)
+        {
+            KeyboardHook.KeyKeyPress(Keys.LWin, Keys.A);
+            activateCheck = true;
+        }
+
         private void ButtonDonate_Click(object? sender, EventArgs e)
         {
             AppConfig.Set("donate_click", AppConfig.Get("start_count"));
@@ -303,7 +311,7 @@ namespace GHelper
 
         private void LabelBacklight_Click(object? sender, EventArgs e)
         {
-            if (DynamicLightingHelper.IsEnabled()) DynamicLightingHelper.OpenSettings();
+            if (AppConfig.IsDynamicLighting() && DynamicLightingHelper.IsEnabled()) DynamicLightingHelper.OpenSettings();
         }
 
         private void ButtonFHD_Click(object? sender, EventArgs e)
@@ -430,15 +438,25 @@ namespace GHelper
 
         }
 
-        public void CycleVisualMode()
+        public void CycleVisualMode(int delta)
         {
 
             if (comboVisual.Items.Count < 1) return;
 
-            if (comboVisual.SelectedIndex < comboVisual.Items.Count - 1)
-                comboVisual.SelectedIndex += 1;
+            if (delta > 0)
+            {
+                if (comboVisual.SelectedIndex < comboVisual.Items.Count - 1)
+                    comboVisual.SelectedIndex += 1;
+                else
+                    comboVisual.SelectedIndex = 0;
+            }
             else
-                comboVisual.SelectedIndex = 0;
+            {
+                if (comboVisual.SelectedIndex > 0)
+                    comboVisual.SelectedIndex -= 1;
+                else
+                    comboVisual.SelectedIndex = comboVisual.Items.Count - 1;
+            }
 
             Program.toast.RunToast(comboVisual.GetItemText(comboVisual.SelectedItem), ToastIcon.BrightnessUp);
         }
@@ -575,6 +593,14 @@ namespace GHelper
             buttonAutoTDP.Activated = status;
         }
 
+        private void SettingsForm_Focused(object? sender, EventArgs e)
+        {
+            if (activateCheck)
+            {
+                buttonEnergySaver.Visible = PowerNative.GetBatterySaverStatus();
+                activateCheck = false;
+            }
+        }
         private void SettingsForm_LostFocus(object? sender, EventArgs e)
         {
             lastLostFocus = DateTimeOffset.Now.ToUnixTimeMilliseconds();
@@ -637,7 +663,7 @@ namespace GHelper
             {
                 ScreenControl.InitScreen();
                 VisualizeXGM();
-
+                buttonEnergySaver.Visible = PowerNative.GetBatterySaverStatus();
                 Task.Run((Action)RefreshPeripheralsBattery);
                 updateControl.CheckForUpdates();
             }
@@ -690,6 +716,7 @@ namespace GHelper
                             break;
                         case 1:
                             Logger.WriteLine("Lid Open");
+                            InputDispatcher.InitFNLock();
                             InputDispatcher.lidClose = AniMatrixControl.lidClose = false;
                             Aura.ApplyBrightness(InputDispatcher.GetBacklight(), "Lid");
                             matrixControl.SetLidMode();
@@ -717,6 +744,12 @@ namespace GHelper
                 m.Result = (IntPtr)1;
             }
 
+            if (m.Msg == Program.WM_TASKBARCREATED)
+            {
+                Logger.WriteLine("Taskbar created, re-creating tray icon");
+                if (Program.trayIcon is not null) Program.trayIcon.Visible = true;
+            }
+
             try
             {
                 base.WndProc(ref m);
@@ -729,10 +762,16 @@ namespace GHelper
 
         public void SetContextMenu()
         {
+            var currentMode = Modes.GetCurrent();
 
-            var mode = Modes.GetCurrent();
-
+            foreach (ToolStripItem item in contextMenuStrip.Items.Cast<ToolStripItem>().ToList())
+            {
+                if (item is ToolStripMenuItem menuItem) menuItem.Dispose();
+            }
             contextMenuStrip.Items.Clear();
+            contextMenuStrip.ShowCheckMargin = true;
+            contextMenuStrip.ImageScalingSize = new Size(16, 16);
+            contextMenuStrip.ShowImageMargin = false;
             Padding padding = new Padding(15, 5, 5, 5);
 
             var title = new ToolStripMenuItem(Properties.Strings.PerformanceMode);
@@ -740,23 +779,15 @@ namespace GHelper
             title.Enabled = false;
             contextMenuStrip.Items.Add(title);
 
-            menuSilent = new ToolStripMenuItem(Properties.Strings.Silent);
-            menuSilent.Click += ButtonSilent_Click;
-            menuSilent.Margin = padding;
-            menuSilent.Checked = (mode == AsusACPI.PerformanceSilent);
-            contextMenuStrip.Items.Add(menuSilent);
-
-            menuBalanced = new ToolStripMenuItem(Properties.Strings.Balanced);
-            menuBalanced.Click += ButtonBalanced_Click;
-            menuBalanced.Margin = padding;
-            menuBalanced.Checked = (mode == AsusACPI.PerformanceBalanced);
-            contextMenuStrip.Items.Add(menuBalanced);
-
-            menuTurbo = new ToolStripMenuItem(Properties.Strings.Turbo);
-            menuTurbo.Click += ButtonTurbo_Click;
-            menuTurbo.Margin = padding;
-            menuTurbo.Checked = (mode == AsusACPI.PerformanceTurbo);
-            contextMenuStrip.Items.Add(menuTurbo);
+            foreach (var mode in Modes.GetDictonary())
+            {
+                var menuMode = new ToolStripMenuItem(mode.Value);
+                menuMode.Tag = mode.Key;
+                menuMode.Click += (sender, args) => { Program.modeControl.SetPerformanceMode(mode.Key); };
+                menuMode.Margin = padding;
+                menuMode.Checked = (mode.Key == currentMode);
+                contextMenuStrip.Items.Add(menuMode);
+            }
 
             contextMenuStrip.Items.Add("-");
 
@@ -805,7 +836,7 @@ namespace GHelper
                 contextMenuStrip.ForeColor = this.ForeColor;
             }
 
-            Program.trayIcon.ContextMenuStrip = contextMenuStrip;
+            if (Program.trayIcon is not null) Program.trayIcon.ContextMenuStrip = contextMenuStrip;
 
 
         }
@@ -834,12 +865,7 @@ namespace GHelper
 
         private void LabelVersion_Click(object? sender, EventArgs e)
         {
-            updateControl.LoadReleases();
-        }
-
-        private static void TrayIcon_MouseMove(object? sender, MouseEventArgs e)
-        {
-            Program.settingsForm.RefreshSensors();
+            updateControl.Update();
         }
 
 
@@ -1499,7 +1525,7 @@ namespace GHelper
                 });
 
 
-            Program.trayIcon.Text = trayTip;
+            if (Program.trayIcon is not null) Program.trayIcon.Text = trayTip;
 
         }
 
@@ -1527,23 +1553,16 @@ namespace GHelper
             buttonTurbo.Activated = false;
             buttonFans.Activated = false;
 
-            menuSilent.Checked = false;
-            menuBalanced.Checked = false;
-            menuTurbo.Checked = false;
-
             switch (mode)
             {
                 case AsusACPI.PerformanceSilent:
                     buttonSilent.Activated = true;
-                    menuSilent.Checked = true;
                     break;
                 case AsusACPI.PerformanceTurbo:
                     buttonTurbo.Activated = true;
-                    menuTurbo.Checked = true;
                     break;
                 case AsusACPI.PerformanceBalanced:
                     buttonBalanced.Activated = true;
-                    menuBalanced.Checked = true;
                     break;
                 default:
                     buttonFans.Activated = true;
@@ -1554,6 +1573,14 @@ namespace GHelper
                         _ => colorStandard,
                     };
                     break;
+            }
+
+            foreach (var item in contextMenuStrip.Items)
+            {
+                if (item is ToolStripMenuItem menuItem && menuItem.Tag is not null)
+                {
+                    menuItem.Checked = ((int)menuItem.Tag == mode);
+                }
             }
         }
 
@@ -1757,6 +1784,7 @@ namespace GHelper
 
         public void VisualiseIcon()
         {
+            if (Program.trayIcon is null) return;
             int GPUMode = AppConfig.Get("gpu_mode");
             bool isDark = CheckSystemDarkModeStatus();
 
@@ -1961,6 +1989,16 @@ namespace GHelper
         private void MouseSettings_FormClosed(object? sender, FormClosedEventArgs e)
         {
             mouseSettings = null;
+        }
+
+        public void VisualiseAudio(double level)
+        {
+            int filledSquares = (int)Math.Round(level/2);
+            string squares = new string('|', filledSquares);
+            Invoke(delegate
+            {
+                labelMatrix.Text = $"Slash Lighting: {squares}";
+            });
         }
 
         public void VisualiseFnLock()

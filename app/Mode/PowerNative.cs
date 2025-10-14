@@ -64,6 +64,9 @@ namespace GHelper.Mode
         private static Guid GUID_SYSTEM_BUTTON_SUBGROUP = new Guid("4f971e89-eebd-4455-a8de-9e59040e7347");
         private static Guid GUID_LIDACTION = new Guid("5CA83367-6E45-459F-A27B-476B1D01C936");
 
+        private static Guid GUID_SUB_PCIEXPRESS = new Guid("501a4d13-42af-4429-9fd1-a8218c268e20");
+        private static Guid GUID_PCI_EXPRESS_ASPM = new Guid("ee12f906-d277-404b-b6da-e5fa1a576df5");
+
         [DllImportAttribute("powrprof.dll", EntryPoint = "PowerGetActualOverlayScheme")]
         public static extern uint PowerGetActualOverlayScheme(out Guid ActualOverlayGuid);
 
@@ -212,6 +215,34 @@ namespace GHelper.Mode
         public static void SetPowerMode(int mode)
         {
             SetPowerMode(GetDefaultPowerMode(mode));
+        }
+
+        public static int GetASPM()
+        {
+            Guid activeSchemeGuid = GetActiveScheme();
+            IntPtr activeIndex;
+
+            PowerReadACValueIndex(IntPtr.Zero,
+                    activeSchemeGuid,
+                    GUID_SUB_PCIEXPRESS,
+                    GUID_PCI_EXPRESS_ASPM, out activeIndex);
+
+            return activeIndex.ToInt32();
+        }
+
+        public static void SetASPM(int status = 0)
+        {
+            Guid activeSchemeGuid = GetActiveScheme();
+
+            var hrAC = PowerWriteACValueIndex(
+                IntPtr.Zero,
+                activeSchemeGuid,
+                GUID_SUB_PCIEXPRESS,
+                GUID_PCI_EXPRESS_ASPM,
+                status);
+
+            PowerSetActiveScheme(IntPtr.Zero, activeSchemeGuid);
+            Logger.WriteLine("Changed ASPM to " + status);
         }
 
         public static int GetLidAction(bool ac)
