@@ -166,6 +166,7 @@ namespace GHelper
             buttonScreenAuto.Click += ButtonScreenAuto_Click;
             buttonMiniled.Click += ButtonMiniled_Click;
             buttonFHD.Click += ButtonFHD_Click;
+            buttonHDRControl.Click += ButtonHDRControl_Click;
 
             buttonQuit.Click += ButtonQuit_Click;
 
@@ -317,6 +318,11 @@ namespace GHelper
         private void ButtonFHD_Click(object? sender, EventArgs e)
         {
             ScreenControl.ToogleFHD();
+        }
+
+        private void ButtonHDRControl_Click(object? sender, EventArgs e)
+        {
+            ScreenControl.ToogleHDRControl();
         }
 
         private void SliderBattery_ValueChanged(object? sender, EventArgs e)
@@ -1281,7 +1287,7 @@ namespace GHelper
 
 
 
-        public void VisualiseScreen(bool screenEnabled, bool screenAuto, int frequency, int maxFrequency, int overdrive, bool overdriveSetting, int miniled1, int miniled2, bool hdr, int fhd)
+        public void VisualiseScreen(bool screenEnabled, bool screenAuto, int frequency, int maxFrequency, int overdrive, bool overdriveSetting, int miniled1, int miniled2, bool hdr, int fhd, int hdrControl)
         {
 
             ButtonEnabled(button60Hz, screenEnabled);
@@ -1363,6 +1369,14 @@ namespace GHelper
             else
             {
                 buttonMiniled.Visible = false;
+            }
+
+            if (hdr && hdrControl >= 0)
+            {
+                buttonMiniled.Visible = false;
+                buttonHDRControl.Visible = true;
+                buttonHDRControl.Activated = hdrControl > 0;
+                buttonHDRControl.BorderColor = colorTurbo;
             }
 
             if (hdr) labelVisual.Text = Properties.Strings.VisualModesHDR;
