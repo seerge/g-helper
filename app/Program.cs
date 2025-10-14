@@ -165,6 +165,11 @@ namespace GHelper
                     settingsForm.FansToggle(2);
                     modeControl.SetRyzen();
                     break;
+                case "igpu":
+                    Startup.ReScheduleAdmin();
+                    settingsForm.FansToggle(2);
+                    modeControl.SetIntelGPUClocks();
+                    break;
                 case "colors":
                     Task.Run(async () =>
                     {
