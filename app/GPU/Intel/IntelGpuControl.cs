@@ -92,7 +92,7 @@ namespace GHelper.GPU.Intel
             max = range.Max;
         }
 
-        public void SetCoreFrequencyLimits(double min, double max)
+        public bool SetCoreFrequencyLimits(double min, double max)
         {
             try
             {
@@ -101,7 +101,9 @@ namespace GHelper.GPU.Intel
             catch (IntelLevelZero.LZException ex)
             {
                 Logger.WriteLine($"Failed to set core frequencies: {ex.Message} (Level Zero error code: {ex.ErrorCode})");
+                return false;
             }
+            return true;
         }
 
         public int? GetCurrentTemperature()

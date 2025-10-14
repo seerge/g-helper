@@ -391,12 +391,12 @@ namespace GHelper.Mode
 
                 try
                 {
-                    HardwareControl.IntelGpuControl.SetCoreFrequencyLimits(min, max);
+                    bool success = HardwareControl.IntelGpuControl.SetCoreFrequencyLimits(min, max);
+                    if (!success && launchAsAdmin) ProcessHelper.RunAsAdmin("igpu");
                 }
                 catch (Exception ex)
                 {
                     Logger.WriteLine("Intel GPU Clocks Error:" + ex.ToString());
-                    if (launchAsAdmin) ProcessHelper.RunAsAdmin("igpu");
                 }
 
                 settings.GPUInit();
