@@ -127,6 +127,7 @@ namespace GHelper.Display
             int hdrControl = Program.acpi.DeviceGet(AsusACPI.ScreenHDRControl);
             Logger.WriteLine($"HDR Control Toggle: {hdrControl}");
             Program.acpi.DeviceSet(AsusACPI.ScreenHDRControl, (hdrControl == 1) ? 0 : 1, "HDR Control");
+            Thread.Sleep(200);
             InitScreen();
         }
 
@@ -222,7 +223,7 @@ namespace GHelper.Display
             }
 
             int hdrControl = Program.acpi.DeviceGet(AsusACPI.ScreenHDRControl);
-            if (hdrControl >= 0) Logger.WriteLine($"HDR Color Control: {hdrControl}");
+            if (hdrControl >= 0) Logger.WriteLine($"HDR Control Status: {hdrControl}");
 
             AppConfig.Set("frequency", frequency);
             AppConfig.Set("overdrive", overdrive);

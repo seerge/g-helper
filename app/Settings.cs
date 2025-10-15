@@ -1377,6 +1377,9 @@ namespace GHelper
                 buttonHDRControl.Visible = true;
                 buttonHDRControl.Activated = hdrControl > 0;
                 buttonHDRControl.BorderColor = colorTurbo;
+            } else
+            {
+                buttonHDRControl.Visible = false;
             }
 
             if (hdr) labelVisual.Text = Properties.Strings.VisualModesHDR;
