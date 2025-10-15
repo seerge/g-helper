@@ -728,7 +728,7 @@ namespace GHelper.Input
             {
                 var fnLockStatus = Program.acpi.DeviceGet(AsusACPI.FnLock);
                 Logger.WriteLine("FnLock Support: " + fnLockStatus);
-                _fnLock = fnLockStatus > 0;
+                _fnLock = fnLockStatus >= 0;
             }
             return (bool)_fnLock;
         }
