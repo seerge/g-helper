@@ -126,7 +126,7 @@ namespace GHelper.Display
         {
             int hdrControl = Program.acpi.DeviceGet(AsusACPI.ScreenHDRControl);
             Logger.WriteLine($"HDR Control Toggle: {hdrControl}");
-            Program.acpi.DeviceSet(AsusACPI.ScreenHDRControl, (hdrControl == 1) ? 0 : 1, "HDR Control");
+            Program.acpi.DeviceSet(AsusACPI.ScreenHDRControl, (hdrControl == 1) ? 1 : 0, "HDR Control");
             Thread.Sleep(200);
             InitScreen();
         }

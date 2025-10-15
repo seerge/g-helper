@@ -1334,13 +1334,17 @@ namespace GHelper
                 buttonFHD.Text = fhd > 0 ? "FHD" : "UHD";
             }
 
+            bool hdrControlVisible = (hdr && hdrControl >= 0);
+
             if (miniled1 >= 0)
             {
+                buttonMiniled.Visible = !hdrControlVisible;
                 buttonMiniled.Enabled = !hdr;
                 buttonMiniled.Activated = miniled1 == 1 || hdr;
             }
             else if (miniled2 >= 0)
             {
+                buttonMiniled.Visible = !hdrControlVisible;
                 buttonMiniled.Enabled = !hdr;
                 if (hdr) miniled2 = 1; // Show HDR as Multizone Strong
 
@@ -1371,9 +1375,8 @@ namespace GHelper
                 buttonMiniled.Visible = false;
             }
 
-            if (hdr && hdrControl >= 0)
+            if (hdrControlVisible)
             {
-                buttonMiniled.Visible = false;
                 buttonHDRControl.Visible = true;
                 buttonHDRControl.Activated = hdrControl > 0;
                 buttonHDRControl.BorderColor = colorTurbo;
