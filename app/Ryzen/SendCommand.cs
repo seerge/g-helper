@@ -4,7 +4,7 @@
 //
 
 
-namespace Ryzen
+namespace GHelper.Ryzen
 {
     internal class SendCommand
     {
