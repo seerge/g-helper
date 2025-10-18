@@ -7,6 +7,23 @@ namespace GHelper.Helpers
     {
         private static long lastAdmin;
 
+        private static bool? _isSystem;
+        public static bool IsRunningAsSystem()
+        {
+            if (_isSystem.HasValue)
+                return _isSystem.Value;
+
+            using (WindowsIdentity identity = WindowsIdentity.GetCurrent())
+            {
+                if (identity == null)
+                    _isSystem = false;
+                else
+                    _isSystem = string.Equals(identity.Name, @"NT AUTHORITY\SYSTEM", StringComparison.OrdinalIgnoreCase);
+            }
+
+            return _isSystem.Value;
+        }
+
         public static void CheckAlreadyRunning()
         {
             Process currentProcess = Process.GetCurrentProcess();
