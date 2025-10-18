@@ -1,6 +1,6 @@
 ﻿using GHelper.Helpers;
 using Microsoft.Win32;
-using Ryzen;
+using GHelper.Ryzen;
 using System.Management;
 
 namespace GHelper.Display

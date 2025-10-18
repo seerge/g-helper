@@ -10,7 +10,7 @@
 
 using System.Runtime.InteropServices;
 
-namespace Ryzen
+namespace GHelper.Ryzen
 {
     public class Ols : IDisposable
     {

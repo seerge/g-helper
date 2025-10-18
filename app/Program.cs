@@ -8,7 +8,7 @@ using GHelper.Mode;
 using GHelper.Peripherals;
 using GHelper.USB;
 using Microsoft.Win32;
-using Ryzen;
+using GHelper.Ryzen;
 using System.Diagnostics;
 using System.Globalization;
 using System.Reflection;
