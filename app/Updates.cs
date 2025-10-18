@@ -1,4 +1,5 @@
-﻿using GHelper.UI;
+﻿using GHelper.Helpers;
+using GHelper.UI;
 using NvAPIWrapper.Native.Display.Structures;
 using System.Diagnostics;
 using System.Diagnostics.Metrics;
@@ -82,6 +83,8 @@ namespace GHelper
             {
                 DriversAsync($"https://rog.asus.com/support/webapi/product/GetPDDrivers?website=global&model={model}&cpu={model}&osid=52{rogParam}", 0, tableDrivers);
             });
+
+            LaptopSerialNumber();
         }
 
         private void ClearTable(TableLayoutPanel tableLayoutPanel)
@@ -127,7 +130,11 @@ namespace GHelper
             LoadUpdates(true);
         }
 
+        public void LaptopSerialNumber()
+        {
+            var output = ProcessHelper.RunCMD("powershell", "-NoProfile -Command \"(Get-WmiObject Win32_BIOS).SerialNumber\"");
 
+        }
 
         private Dictionary<string, string> GetDeviceVersions()
         {
