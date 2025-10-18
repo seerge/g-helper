@@ -129,7 +129,6 @@ public class Startup
 
             td.Principal.RunLevel = TaskRunLevel.LUA;
             td.Principal.LogonType = TaskLogonType.S4U;
-            td.Principal.UserId = WindowsIdentity.GetCurrent().Name;
 
             td.Settings.StopIfGoingOnBatteries = false;
             td.Settings.DisallowStartIfOnBatteries = false;
@@ -154,9 +153,10 @@ public class Startup
         {
 
             td.RegistrationInfo.Description = "G-Helper Auto Start";
-            td.Triggers.Add(new LogonTrigger { UserId = WindowsIdentity.GetCurrent().Name, Delay = TimeSpan.FromSeconds(2) });
+            td.Triggers.Add(new LogonTrigger { Delay = TimeSpan.FromSeconds(1) });
             td.Actions.Add(strExeFilePath);
 
+            td.Principal.LogonType = TaskLogonType.InteractiveToken;
             if (ProcessHelper.IsUserAdministrator())
                 td.Principal.RunLevel = TaskRunLevel.Highest;
 
