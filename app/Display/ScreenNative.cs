@@ -188,7 +188,7 @@ namespace GHelper.Display
             }
             catch (Exception ex)
             {
-                Logger.WriteLine(ex.ToString());
+                Logger.WriteLine(ex.Message);
             }
 
             return null;

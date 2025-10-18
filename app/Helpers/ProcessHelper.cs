@@ -108,11 +108,11 @@ namespace GHelper.Helpers
             }
         }
 
-        public static void StartEnableService(string serviceName)
+        public static void StartEnableService(string serviceName, bool automatic = true)
         {
             try
             {
-                string script = $"Set-Service -Name \"{serviceName}\" -Status running -StartupType Automatic";
+                string script = $"Set-Service -Name \"{serviceName}\" -Status running" + (automatic? " -StartupType Automatic":"");
                 Logger.WriteLine(script);
                 RunCMD("powershell", script);
             }
@@ -134,13 +134,28 @@ namespace GHelper.Helpers
             if (directory != null) cmd.StartInfo.WorkingDirectory = directory;
             cmd.Start();
 
-            Logger.WriteLine(name + " " + args);
+
+            var watch = Stopwatch.StartNew();
             string result = cmd.StandardOutput.ReadToEnd().Replace(Environment.NewLine, " ").Trim(' ');
-            Logger.WriteLine(result);
-            
+            watch.Stop();
+            Logger.WriteLine(name + " " + args);
+            Logger.WriteLine(watch.ElapsedMilliseconds + " ms: " + result);
             cmd.WaitForExit();
 
             return result;
+        }
+
+        public static void SetPriority(ProcessPriorityClass priorityClass = ProcessPriorityClass.Normal)
+        {
+            try
+            {
+                using (Process p = Process.GetCurrentProcess())
+                    p.PriorityClass = priorityClass;
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLine(ex.ToString());
+            }
         }
 
 

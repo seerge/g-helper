@@ -41,6 +41,7 @@ namespace GHelper
             Title title4 = new Title();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Fans));
             panelFans = new Panel();
+            checkFanClamp = new RCheckBox();
             labelTip = new Label();
             tableFanCharts = new TableLayoutPanel();
             chartGPU = new Chart();
@@ -48,9 +49,10 @@ namespace GHelper
             chartXGM = new Chart();
             chartMid = new Chart();
             panelTitleFans = new Panel();
-            buttonRename = new RButton();
+            tableLayoutModes = new TableLayoutPanel();
             buttonRemove = new RButton();
             buttonAdd = new RButton();
+            buttonRename = new RButton();
             comboModes = new RComboBox();
             picturePerf = new PictureBox();
             labelFans = new Label();
@@ -158,6 +160,7 @@ namespace GHelper
             ((System.ComponentModel.ISupportInitialize)chartXGM).BeginInit();
             ((System.ComponentModel.ISupportInitialize)chartMid).BeginInit();
             panelTitleFans.SuspendLayout();
+            tableLayoutModes.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)picturePerf).BeginInit();
             panelApplyFans.SuspendLayout();
             panelSliders.SuspendLayout();
@@ -216,6 +219,7 @@ namespace GHelper
             // 
             panelFans.AutoSize = true;
             panelFans.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            panelFans.Controls.Add(checkFanClamp);
             panelFans.Controls.Add(labelTip);
             panelFans.Controls.Add(tableFanCharts);
             panelFans.Controls.Add(panelTitleFans);
@@ -228,6 +232,19 @@ namespace GHelper
             panelFans.Padding = new Padding(0, 0, 10, 0);
             panelFans.Size = new Size(820, 1100);
             panelFans.TabIndex = 12;
+            // 
+            // checkFanClamp
+            // 
+            checkFanClamp.AutoSize = true;
+            checkFanClamp.Font = new Font("Segoe UI", 8F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            checkFanClamp.Location = new Point(18, 80);
+            checkFanClamp.Name = "checkFanClamp";
+            checkFanClamp.Padding = new Padding(8, 1, 2, 1);
+            checkFanClamp.Size = new Size(193, 44);
+            checkFanClamp.TabIndex = 44;
+            checkFanClamp.TabStop = false;
+            checkFanClamp.Text = "Clamp to Grid";
+            checkFanClamp.UseVisualStyleBackColor = false;
             // 
             // labelTip
             // 
@@ -323,10 +340,7 @@ namespace GHelper
             // 
             // panelTitleFans
             // 
-            panelTitleFans.Controls.Add(buttonRename);
-            panelTitleFans.Controls.Add(buttonRemove);
-            panelTitleFans.Controls.Add(buttonAdd);
-            panelTitleFans.Controls.Add(comboModes);
+            panelTitleFans.Controls.Add(tableLayoutModes);
             panelTitleFans.Controls.Add(picturePerf);
             panelTitleFans.Controls.Add(labelFans);
             panelTitleFans.Dock = DockStyle.Top;
@@ -336,68 +350,89 @@ namespace GHelper
             panelTitleFans.Size = new Size(810, 66);
             panelTitleFans.TabIndex = 42;
             // 
-            // buttonRename
+            // tableLayoutModes
             // 
-            buttonRename.Activated = false;
-            buttonRename.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            buttonRename.BackColor = SystemColors.ControlLight;
-            buttonRename.BorderColor = Color.Transparent;
-            buttonRename.BorderRadius = 2;
-            buttonRename.FlatStyle = FlatStyle.Flat;
-            buttonRename.Image = Properties.Resources.icons8_edit_32;
-            buttonRename.Location = new Point(380, 10);
-            buttonRename.Margin = new Padding(4, 2, 4, 2);
-            buttonRename.Name = "buttonRename";
-            buttonRename.Secondary = true;
-            buttonRename.Size = new Size(52, 46);
-            buttonRename.TabIndex = 45;
-            buttonRename.UseVisualStyleBackColor = false;
+            tableLayoutModes.ColumnCount = 4;
+            tableLayoutModes.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 60F));
+            tableLayoutModes.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 60F));
+            tableLayoutModes.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
+            tableLayoutModes.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 60F));
+            tableLayoutModes.Controls.Add(buttonRemove, 0, 0);
+            tableLayoutModes.Controls.Add(buttonAdd, 3, 0);
+            tableLayoutModes.Controls.Add(buttonRename, 1, 0);
+            tableLayoutModes.Controls.Add(comboModes, 2, 0);
+            tableLayoutModes.Dock = DockStyle.Right;
+            tableLayoutModes.Location = new Point(330, 0);
+            tableLayoutModes.Margin = new Padding(0);
+            tableLayoutModes.Name = "tableLayoutModes";
+            tableLayoutModes.Padding = new Padding(0, 10, 4, 10);
+            tableLayoutModes.RowCount = 1;
+            tableLayoutModes.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
+            tableLayoutModes.Size = new Size(480, 66);
+            tableLayoutModes.TabIndex = 1;
             // 
             // buttonRemove
             // 
             buttonRemove.Activated = false;
-            buttonRemove.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             buttonRemove.BackColor = SystemColors.ControlLight;
             buttonRemove.BorderColor = Color.Transparent;
             buttonRemove.BorderRadius = 2;
+            buttonRemove.Dock = DockStyle.Fill;
             buttonRemove.FlatStyle = FlatStyle.Flat;
             buttonRemove.Image = Properties.Resources.icons8_remove_64;
-            buttonRemove.Location = new Point(326, 10);
-            buttonRemove.Margin = new Padding(4, 2, 4, 2);
+            buttonRemove.Location = new Point(0, 10);
+            buttonRemove.Margin = new Padding(0, 0, 6, 0);
             buttonRemove.Name = "buttonRemove";
             buttonRemove.Secondary = true;
-            buttonRemove.Size = new Size(52, 46);
+            buttonRemove.Size = new Size(54, 46);
             buttonRemove.TabIndex = 44;
             buttonRemove.UseVisualStyleBackColor = false;
             // 
             // buttonAdd
             // 
             buttonAdd.Activated = false;
-            buttonAdd.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             buttonAdd.BackColor = SystemColors.ControlLight;
             buttonAdd.BorderColor = Color.Transparent;
             buttonAdd.BorderRadius = 2;
+            buttonAdd.Dock = DockStyle.Fill;
             buttonAdd.FlatStyle = FlatStyle.Flat;
             buttonAdd.Image = Properties.Resources.icons8_add_64;
-            buttonAdd.Location = new Point(748, 10);
-            buttonAdd.Margin = new Padding(4, 2, 4, 2);
+            buttonAdd.Location = new Point(416, 10);
+            buttonAdd.Margin = new Padding(0, 0, 6, 0);
             buttonAdd.Name = "buttonAdd";
             buttonAdd.Secondary = true;
-            buttonAdd.Size = new Size(52, 46);
+            buttonAdd.Size = new Size(54, 46);
             buttonAdd.TabIndex = 43;
             buttonAdd.UseVisualStyleBackColor = false;
             // 
+            // buttonRename
+            // 
+            buttonRename.Activated = false;
+            buttonRename.BackColor = SystemColors.ControlLight;
+            buttonRename.BorderColor = Color.Transparent;
+            buttonRename.BorderRadius = 2;
+            buttonRename.Dock = DockStyle.Fill;
+            buttonRename.FlatStyle = FlatStyle.Flat;
+            buttonRename.Image = Properties.Resources.icons8_edit_32;
+            buttonRename.Location = new Point(60, 10);
+            buttonRename.Margin = new Padding(0, 0, 6, 0);
+            buttonRename.Name = "buttonRename";
+            buttonRename.Secondary = true;
+            buttonRename.Size = new Size(54, 46);
+            buttonRename.TabIndex = 45;
+            buttonRename.UseVisualStyleBackColor = false;
+            // 
             // comboModes
             // 
-            comboModes.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             comboModes.BorderColor = Color.White;
             comboModes.ButtonColor = Color.FromArgb(255, 255, 255);
+            comboModes.Dock = DockStyle.Top;
             comboModes.FlatStyle = FlatStyle.Flat;
             comboModes.FormattingEnabled = true;
-            comboModes.Location = new Point(440, 14);
-            comboModes.Margin = new Padding(0);
+            comboModes.Location = new Point(120, 14);
+            comboModes.Margin = new Padding(0, 4, 6, 4);
             comboModes.Name = "comboModes";
-            comboModes.Size = new Size(302, 40);
+            comboModes.Size = new Size(290, 40);
             comboModes.TabIndex = 42;
             // 
             // picturePerf
@@ -1700,6 +1735,7 @@ namespace GHelper
             ((System.ComponentModel.ISupportInitialize)chartMid).EndInit();
             panelTitleFans.ResumeLayout(false);
             panelTitleFans.PerformLayout();
+            tableLayoutModes.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)picturePerf).EndInit();
             panelApplyFans.ResumeLayout(false);
             panelApplyFans.PerformLayout();
@@ -1894,5 +1930,7 @@ namespace GHelper
         private Label labelGPUPower;
         private Label labelGPUPowerTitle;
         private TrackBar trackGPUPower;
+        private TableLayoutPanel tableLayoutModes;
+        private RCheckBox checkFanClamp;
     }
 }

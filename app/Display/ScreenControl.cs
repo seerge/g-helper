@@ -2,7 +2,7 @@
 
 namespace GHelper.Display
 {
-    public class ScreenControl
+    public static class ScreenControl
     {
 
         public const int MAX_REFRESH = 1000;
@@ -15,7 +15,7 @@ namespace GHelper.Display
             else return ScreenNative.GetMaxRefreshRate(laptopScreen);
         }
 
-        public void AutoScreen(bool force = false)
+        public static void AutoScreen(bool force = false)
         {
             if (force || AppConfig.Is("screen_auto"))
             {
@@ -30,7 +30,7 @@ namespace GHelper.Display
             }
         }
 
-        public void ToggleScreenRate()
+        public static void ToggleScreenRate()
         {
             var laptopScreen = ScreenNative.FindLaptopScreen(true);
             var refreshRate = ScreenNative.GetRefreshRate(laptopScreen);
@@ -41,7 +41,7 @@ namespace GHelper.Display
         }
 
 
-        public void SetScreen(int frequency = -1, int overdrive = -1, int miniled = -1)
+        public static void SetScreen(int frequency = -1, int overdrive = -1, int miniled = -1)
         {
             var laptopScreen = ScreenNative.FindLaptopScreen(true);
             var refreshRate = ScreenNative.GetRefreshRate(laptopScreen);
@@ -72,7 +72,7 @@ namespace GHelper.Display
             InitScreen();
         }
 
-        public void SetMiniled(int miniled = -1)
+        public static void SetMiniled(int miniled = -1)
         {
             if (miniled >= 0)
             {
@@ -86,30 +86,30 @@ namespace GHelper.Display
             }
         }
 
-        public void InitMiniled()
+        public static void InitMiniled()
         {
             if (AppConfig.IsForceMiniled())
                 SetMiniled(AppConfig.Get("miniled"));
         }
 
-        public void InitOptimalBrightness()
+        public static void InitOptimalBrightness()
         {
             int optimalBrightness = AppConfig.Get("optimal_brightness");
             if (optimalBrightness >= 0) SetOptimalBrightness(optimalBrightness);
         }
 
-        public void SetOptimalBrightness(int status)
+        public static void SetOptimalBrightness(int status)
         {
             Program.acpi.DeviceSet(AsusACPI.ScreenOptimalBrightness, status, "Optimal Brightness");
             AppConfig.Set("optimal_brightness", status);
         }
 
-        public int GetOptimalBrightness()
+        public static int GetOptimalBrightness()
         {
             return Program.acpi.DeviceGet(AsusACPI.ScreenOptimalBrightness);
         }
 
-        public void ToogleFHD()
+        public static void ToogleFHD()
         {
             int fhd = Program.acpi.DeviceGet(AsusACPI.ScreenFHD);
             Logger.WriteLine($"FHD Toggle: {fhd}");
@@ -122,7 +122,16 @@ namespace GHelper.Display
             }
         }
 
-        public string ToogleMiniled()
+        public static void ToogleHDRControl()
+        {
+            int hdrControl = Program.acpi.DeviceGet(AsusACPI.ScreenHDRControl);
+            Logger.WriteLine($"HDR Control Toggle: {hdrControl}");
+            Program.acpi.DeviceSet(AsusACPI.ScreenHDRControl, (hdrControl == 1) ? 1 : 0, "HDR Control");
+            Thread.Sleep(200);
+            InitScreen();
+        }
+
+        public static string ToogleMiniled()
         {
             int miniled1 = Program.acpi.DeviceGet(AsusACPI.ScreenMiniled1);
             int miniled2 = Program.acpi.DeviceGet(AsusACPI.ScreenMiniled2);
@@ -171,7 +180,7 @@ namespace GHelper.Display
             return name;
         }
 
-        public void InitScreen()
+        public static void InitScreen()
         {
             var laptopScreen = ScreenNative.FindLaptopScreen();
             int frequency = ScreenNative.GetRefreshRate(laptopScreen);
@@ -213,6 +222,9 @@ namespace GHelper.Display
                 fhd = Program.acpi.DeviceGet(AsusACPI.ScreenFHD);
             }
 
+            int hdrControl = Program.acpi.DeviceGet(AsusACPI.ScreenHDRControl);
+            if (hdrControl >= 0) Logger.WriteLine($"HDR Control Status: {hdrControl}");
+
             AppConfig.Set("frequency", frequency);
             AppConfig.Set("overdrive", overdrive);
 
@@ -228,7 +240,8 @@ namespace GHelper.Display
                     miniled1: miniled1,
                     miniled2: miniled2,
                     hdr: hdr,
-                    fhd: fhd
+                    fhd: fhd,
+                    hdrControl: hdrControl
                 );
             });
 

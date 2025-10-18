@@ -90,7 +90,7 @@ namespace GHelper.Display
 
             if (!Directory.Exists(iccPath))
             {
-                Logger.WriteLine(iccPath + " doesn't exit");
+                Logger.WriteLine(iccPath + " doesn't exist");
                 return _modes;
             }
 
@@ -265,7 +265,7 @@ namespace GHelper.Display
         public static void SetVisual(SplendidCommand mode = SplendidCommand.Default, int whiteBalance = DefaultColorTemp, bool init = false)
         {
             if (mode == SplendidCommand.None) return;
-            if ((mode == SplendidCommand.Default || mode == SplendidCommand.VivoNormal) && init) return; // Skip default setting on init
+            if ((mode == SplendidCommand.Default || mode == SplendidCommand.VivoNormal) && whiteBalance == DefaultColorTemp && init) return; // Skip default setting on init
             if (mode == SplendidCommand.Disabled && !RyzenControl.IsAMD() && init) return; // Skip disabled setting for Intel devices
 
             AppConfig.Set("visual", (int)mode);

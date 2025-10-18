@@ -55,7 +55,7 @@ namespace GHelper.Helpers
 
         public bool IsClamshellReady()
         {
-            return IsExternalDisplayConnected() && IsChargerConnected();
+            return IsExternalDisplayConnected() && (IsChargerConnected() || AppConfig.Is("clamshell_battery"));
         }
 
         public void ToggleLidAction()
@@ -106,10 +106,10 @@ namespace GHelper.Helpers
                 ToggleLidAction();
 
             if (Program.settingsForm.Visible)
-                Program.screenControl.InitScreen();
+                ScreenControl.InitScreen();
 
-            if (AppConfig.IsForceMiniled()) 
-                Program.screenControl.InitMiniled();
+            if (AppConfig.IsForceMiniled())
+                ScreenControl.InitMiniled();
 
         }
 

@@ -295,7 +295,7 @@
     <value>Secondaire</value>
   </data>
   <data name="BiosAndDriverUpdates" xml:space="preserve">
-    <value>Mise à jour BIOS et pilotes</value>
+    <value>Mises à jour BIOS et pilotes </value>
   </data>
   <data name="Boot" xml:space="preserve">
     <value>Au démarrage</value>
@@ -361,7 +361,7 @@
     <value>Télécharger</value>
   </data>
   <data name="DriverAndSoftware" xml:space="preserve">
-    <value>Pilotes et Logiciels</value>
+    <value>Pilotes et logiciels</value>
   </data>
   <data name="EcoGPUTooltip" xml:space="preserve">
     <value>Désactive le dGPU pour préserver la batterie</value>
@@ -426,10 +426,10 @@ Voulez-vous continuer ?</value>
     <value>Traiter les raccourcis clavier Fn+F sans Fn</value>
   </data>
   <data name="FnLockOff" xml:space="preserve">
-    <value>Verrouillage FN désactivé</value>
+    <value>Verrouillage Fn désactivé</value>
   </data>
   <data name="FnLockOn" xml:space="preserve">
-    <value>Verrouillage FN activé</value>
+    <value>Verrouillage Fn activé</value>
   </data>
   <data name="GPUBoost" xml:space="preserve">
     <value>Dynamic Boost</value>
@@ -817,5 +817,68 @@ Voulez-vous continuer ?</value>
   <data name="LegendGreen" xml:space="preserve">
     <value>Mis à jour</value>
     <comment>Updated</comment>
+  </data>
+  <data name="SlashBounce" xml:space="preserve">
+    <value>Bounce</value>
+  </data>
+  <data name="SlashMode" xml:space="preserve">
+    <value>Slash</value>
+  </data>
+  <data name="SlashLoading" xml:space="preserve">
+    <value>Сhargement</value>
+  </data>
+  <data name="SlashBitStream" xml:space="preserve">
+    <value>Flux de bits</value>
+  </data>
+  <data name="SlashTransmission" xml:space="preserve">
+    <value>Transmission</value>
+  </data>
+  <data name="SlashFlow" xml:space="preserve">
+    <value>Flow</value>
+  </data>
+  <data name="SlashFlux" xml:space="preserve">
+    <value>Flux</value>
+  </data>
+  <data name="SlashPhantom" xml:space="preserve">
+    <value>Phantom</value>
+  </data>
+  <data name="SlashSpectrum" xml:space="preserve">
+    <value>Spectrum</value>
+  </data>
+  <data name="SlashHazard" xml:space="preserve">
+    <value>Hazard</value>
+  </data>
+  <data name="SlashInterfacing" xml:space="preserve">
+    <value>Interfacing</value>
+  </data>
+  <data name="SlashRamp" xml:space="preserve">
+    <value>Rampe</value>
+  </data>
+  <data name="SlashGameOver" xml:space="preserve">
+    <value>Game Over</value>
+  </data>
+  <data name="SlashStart" xml:space="preserve">
+    <value>Début</value>
+  </data>
+  <data name="SlashBuzzer" xml:space="preserve">
+    <value>Buzzer</value>
+  </data>
+  <data name="SlashStatic" xml:space="preserve">
+    <value>Statique</value>
+  </data>
+  <data name="SlashBatteryLevel" xml:space="preserve">
+    <value>Niveau de la batterie</value>
+  </data>
+  <data name="IntervalOff" xml:space="preserve">
+    <value>Intervalle désactivé</value>
+  </data>
+  <data name="IntervalSeconds" xml:space="preserve">
+    <value>Intervalle {0}s</value>
+  </data>
+  <data name="DisableDynamicLighting" xml:space="preserve">
+    <value>Veuillez désactiver l'Éclairage dynamique Windows &gt;</value>
+  </data>
+  <data name="AmbientModeResources" xml:space="preserve">
+    <value>Le mode Ambiant peut augmenter l'utilisation des ressources</value>
   </data>
 </root>

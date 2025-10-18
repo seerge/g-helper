@@ -14,10 +14,10 @@ namespace Ryzen
     {
 
         public static int MinCPUUV => AppConfig.Get("min_uv", -40);
-        public const int MaxCPUUV = 0;
+        public static int MaxCPUUV => AppConfig.Get("max_uv", 0);
 
-        public const int MinIGPUUV = -20;
-        public const int MaxIGPUUV = 0;
+        public static int MinIGPUUV = AppConfig.Get("min_igpu_uv", -30);
+        public static int MaxIGPUUV = AppConfig.Get("max_igpu_uv", 0);
 
         public static int MinTemp => AppConfig.Get("min_temp", 75);
         public const int MaxTemp = 98;
@@ -43,6 +43,8 @@ namespace Ryzen
         //MENDOCINO - 11
         //HAWKPOINT - 12
         //STRIXPOINT - 13
+        //STRIXHALO - 14
+        //FIRERANGE - 15
 
         public static void Init()
         {
@@ -104,7 +106,7 @@ namespace Ryzen
                 FAMID = 7; //CEZANNE/BARCELO
             }
 
-            if (CPUModel.Contains("Model " + Convert.ToString(64)) || CPUModel.Contains("Model " + Convert.ToString(68)))
+            if (CPUModel.Contains("Family " + Convert.ToString(25)) && (CPUModel.Contains("Model " + Convert.ToString(63)) || CPUModel.Contains("Model " + Convert.ToString(68))))
             {
                 FAMID = 8; //REMBRANDT
             }
@@ -134,6 +136,16 @@ namespace Ryzen
                 FAMID = 13; //STRIXPOINT 
             }
 
+            if (CPUModel.Contains("Family " + Convert.ToString(26)) && CPUModel.Contains("Model " + Convert.ToString(112)))
+            {
+                FAMID = 14; //STRIXHALO 
+            }
+
+            if (CPUModel.Contains("Family " + Convert.ToString(26)) && CPUModel.Contains("Model " + Convert.ToString(68)) && CPUName.Contains("HX"))
+            {
+                FAMID = 15; //FIRERANGE 
+            }
+
             Logger.WriteLine($"CPU: {FAMID} - {CPUName} - {CPUModel}");
 
             SetAddresses();
@@ -148,13 +160,13 @@ namespace Ryzen
         public static bool IsSupportedUV()
         {
             if (CPUName.Length == 0) Init();
-            return CPUName.Contains("Ryzen AI 9") || CPUName.Contains("Ryzen 9") || CPUName.Contains("4900H") || CPUName.Contains("4800H") || CPUName.Contains("4600H");
+            return CPUName.Contains("RYZEN AI MAX") || CPUName.Contains("Ryzen AI 9") || CPUName.Contains("Ryzen 9") || CPUName.Contains("4900H") || CPUName.Contains("4800H") || CPUName.Contains("4600H");
         }
 
         public static bool IsSupportedUViGPU()
         {
             if (CPUName.Length == 0) Init();
-            return CPUName.Contains("6900H") || CPUName.Contains("7945H") || CPUName.Contains("7845H");
+            return CPUName.Contains("RYZEN AI MAX") || CPUName.Contains("6900H") || CPUName.Contains("7945H") || CPUName.Contains("7845H");
         }
 
         public static bool IsRingExsists()
@@ -235,7 +247,7 @@ namespace Ryzen
                 Smu.PSMU_ADDR_RSP = 0x3B10A80;
                 Smu.PSMU_ADDR_ARG = 0x3B10A88;
             }
-            else if (FAMID == 5 || FAMID == 8 || FAMID == 9 || FAMID == 11 || FAMID == 12)
+            else if (FAMID == 5 || FAMID == 8 || FAMID == 9 || FAMID == 11 || FAMID == 12 || FAMID == 14)
             {
                 Smu.MP1_ADDR_MSG = 0x3B10528;
                 Smu.MP1_ADDR_RSP = 0x3B10578;
@@ -265,15 +277,15 @@ namespace Ryzen
                 Smu.PSMU_ADDR_RSP = 0x3B10570;
                 Smu.PSMU_ADDR_ARG = 0x3B10A40;
             }
-            else if (FAMID == 10)
+            else if (FAMID == 10 || FAMID == 15)
             {
-                Smu.MP1_ADDR_MSG = 0x3010508;
-                Smu.MP1_ADDR_RSP = 0x3010988;
-                Smu.MP1_ADDR_ARG = 0x3010984;
+                Smu.MP1_ADDR_MSG = 0x3B10530;
+                Smu.MP1_ADDR_RSP = 0x3B1057C;
+                Smu.MP1_ADDR_ARG = 0x3B109C4;
 
-                Smu.PSMU_ADDR_MSG = 0x3B10524;
-                Smu.PSMU_ADDR_RSP = 0x3B10570;
-                Smu.PSMU_ADDR_ARG = 0x3B10A40;
+                Smu.PSMU_ADDR_MSG = 0x03B10524;
+                Smu.PSMU_ADDR_RSP = 0x03B10570;
+                Smu.PSMU_ADDR_ARG = 0x03B10A40;
             }
             else
             {

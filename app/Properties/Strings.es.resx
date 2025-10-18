@@ -818,4 +818,67 @@
     <value>Actualizado</value>
     <comment>Updated</comment>
   </data>
+  <data name="SlashBounce" xml:space="preserve">
+    <value>Bote</value>
+  </data>
+  <data name="SlashMode" xml:space="preserve">
+    <value>Barra inclinada</value>
+  </data>
+  <data name="SlashLoading" xml:space="preserve">
+    <value>Cargando</value>
+  </data>
+  <data name="SlashBitStream" xml:space="preserve">
+    <value>Flujo de bits</value>
+  </data>
+  <data name="SlashTransmission" xml:space="preserve">
+    <value>Transmisión</value>
+  </data>
+  <data name="SlashFlow" xml:space="preserve">
+    <value>Fluir</value>
+  </data>
+  <data name="SlashFlux" xml:space="preserve">
+    <value>Flujo</value>
+  </data>
+  <data name="SlashPhantom" xml:space="preserve">
+    <value>Fantasma</value>
+  </data>
+  <data name="SlashSpectrum" xml:space="preserve">
+    <value>Espectro</value>
+  </data>
+  <data name="SlashHazard" xml:space="preserve">
+    <value>Peligro</value>
+  </data>
+  <data name="SlashInterfacing" xml:space="preserve">
+    <value>Interfaces</value>
+  </data>
+  <data name="SlashRamp" xml:space="preserve">
+    <value>Rampa</value>
+  </data>
+  <data name="SlashGameOver" xml:space="preserve">
+    <value>Fin de la partida</value>
+  </data>
+  <data name="SlashStart" xml:space="preserve">
+    <value>Comenzar</value>
+  </data>
+  <data name="SlashBuzzer" xml:space="preserve">
+    <value>Zumbador</value>
+  </data>
+  <data name="SlashStatic" xml:space="preserve">
+    <value>Estático</value>
+  </data>
+  <data name="SlashBatteryLevel" xml:space="preserve">
+    <value>Nivel de Batería</value>
+  </data>
+  <data name="IntervalOff" xml:space="preserve">
+    <value>Intervalo Apagado</value>
+  </data>
+  <data name="IntervalSeconds" xml:space="preserve">
+    <value>Intervalo {0}s</value>
+  </data>
+  <data name="DisableDynamicLighting" xml:space="preserve">
+    <value>Por favor, desactive Windows &gt; Iluminación dinámica</value>
+  </data>
+  <data name="AmbientModeResources" xml:space="preserve">
+    <value>El modo ambiente puede aumentar el uso de recursos</value>
+  </data>
 </root>

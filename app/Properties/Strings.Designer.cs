@@ -151,6 +151,15 @@ namespace GHelper.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ambient mode may increase resource usage.
+        /// </summary>
+        internal static string AmbientModeResources {
+            get {
+                return ResourceManager.GetString("AmbientModeResources", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Animation Speed.
         /// </summary>
         internal static string AnimationSpeed {
@@ -745,6 +754,15 @@ namespace GHelper.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Please disable Windows &gt; Dynamic Lighting.
+        /// </summary>
+        internal static string DisableDynamicLighting {
+            get {
+                return ResourceManager.GetString("DisableDynamicLighting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Disable on lid close.
         /// </summary>
         internal static string DisableOnLidClose {
@@ -1139,6 +1157,24 @@ namespace GHelper.Properties {
         internal static string Import {
             get {
                 return ResourceManager.GetString("Import", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Interval Off.
+        /// </summary>
+        internal static string IntervalOff {
+            get {
+                return ResourceManager.GetString("IntervalOff", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Interval {0}s.
+        /// </summary>
+        internal static string IntervalSeconds {
+            get {
+                return ResourceManager.GetString("IntervalSeconds", resourceCulture);
             }
         }
         
@@ -1841,6 +1877,159 @@ namespace GHelper.Properties {
         internal static string Silent {
             get {
                 return ResourceManager.GetString("Silent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Battery Level.
+        /// </summary>
+        internal static string SlashBatteryLevel {
+            get {
+                return ResourceManager.GetString("SlashBatteryLevel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bit Stream.
+        /// </summary>
+        internal static string SlashBitStream {
+            get {
+                return ResourceManager.GetString("SlashBitStream", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bounce.
+        /// </summary>
+        internal static string SlashBounce {
+            get {
+                return ResourceManager.GetString("SlashBounce", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Buzzer.
+        /// </summary>
+        internal static string SlashBuzzer {
+            get {
+                return ResourceManager.GetString("SlashBuzzer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Flow.
+        /// </summary>
+        internal static string SlashFlow {
+            get {
+                return ResourceManager.GetString("SlashFlow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Flux.
+        /// </summary>
+        internal static string SlashFlux {
+            get {
+                return ResourceManager.GetString("SlashFlux", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Game Over.
+        /// </summary>
+        internal static string SlashGameOver {
+            get {
+                return ResourceManager.GetString("SlashGameOver", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hazard.
+        /// </summary>
+        internal static string SlashHazard {
+            get {
+                return ResourceManager.GetString("SlashHazard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Interfacing.
+        /// </summary>
+        internal static string SlashInterfacing {
+            get {
+                return ResourceManager.GetString("SlashInterfacing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Loading.
+        /// </summary>
+        internal static string SlashLoading {
+            get {
+                return ResourceManager.GetString("SlashLoading", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Slash.
+        /// </summary>
+        internal static string SlashMode {
+            get {
+                return ResourceManager.GetString("SlashMode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Phantom.
+        /// </summary>
+        internal static string SlashPhantom {
+            get {
+                return ResourceManager.GetString("SlashPhantom", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ramp.
+        /// </summary>
+        internal static string SlashRamp {
+            get {
+                return ResourceManager.GetString("SlashRamp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Spectrum.
+        /// </summary>
+        internal static string SlashSpectrum {
+            get {
+                return ResourceManager.GetString("SlashSpectrum", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Start.
+        /// </summary>
+        internal static string SlashStart {
+            get {
+                return ResourceManager.GetString("SlashStart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Static.
+        /// </summary>
+        internal static string SlashStatic {
+            get {
+                return ResourceManager.GetString("SlashStatic", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Transmission.
+        /// </summary>
+        internal static string SlashTransmission {
+            get {
+                return ResourceManager.GetString("SlashTransmission", resourceCulture);
             }
         }
         

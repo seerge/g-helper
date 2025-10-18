@@ -1,6 +1,5 @@
 ﻿using HidSharp;
 using HidSharp.Reports;
-using System.Diagnostics;
 
 namespace GHelper.USB;
 public static class AsusHid
@@ -10,18 +9,37 @@ public static class AsusHid
     public const byte INPUT_ID = 0x5a;
     public const byte AURA_ID = 0x5d;
 
-    static int[] deviceIds = { 0x1a30, 0x1854, 0x1869, 0x1866, 0x19b6, 0x1822, 0x1837, 0x1854, 0x184a, 0x183d, 0x8502, 0x1807, 0x17e0, 0x18c6, 0x1abe, 0x1b4c, 0x1b6e };
+    static int[] deviceIds = { 0x1a30, 0x1854, 0x1869, 0x1866, 0x19b6, 0x1822, 0x1837, 0x1854, 0x184a, 0x183d, 0x8502, 0x1807, 0x17e0, 0x18c6, 0x1abe, 0x1b4c, 0x1b6e, 0x1b2c, 0x8854 };
 
     static HidStream? auraStream;
 
     public static IEnumerable<HidDevice>? FindDevices(byte reportId)
     {
-        HidDeviceLoader loader = new HidDeviceLoader();
         IEnumerable<HidDevice> deviceList;
 
         try
         {
-            deviceList = loader.GetDevices(ASUS_ID).Where(device => deviceIds.Contains(device.ProductID) && device.CanOpen && device.GetMaxFeatureReportLength() > 0);
+            var allDevices = DeviceList.Local.GetHidDevices(ASUS_ID);
+            var filteredDevices = new List<HidDevice>();
+
+            foreach (var device in allDevices)
+            {
+                try
+                {
+                    if (deviceIds.Contains(device.ProductID) &&
+                        device.CanOpen &&
+                        device.GetMaxFeatureReportLength() > 0)
+                    {
+                        filteredDevices.Add(device);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Logger.WriteLine($"Error checking HID device {device.ProductID:X}: {ex.Message}");
+                }
+            }
+
+            deviceList = filteredDevices;
         }
         catch (Exception ex)
         {
@@ -30,8 +48,18 @@ public static class AsusHid
         }
 
         foreach (var device in deviceList)
-            if (device.GetReportDescriptor().TryGetReport(ReportType.Feature, reportId, out _))
-                yield return device;
+        {
+            bool isValid = false;
+            try
+            {
+                isValid = device.GetReportDescriptor().TryGetReport(ReportType.Feature, reportId, out _);
+            }
+            catch (Exception ex)
+            {
+                //Logger.WriteLine($"Error getting report descriptor for device {device.ProductID.ToString("X")}: {ex.Message}");
+            }
+            if (isValid) yield return device;
+        }
     }
 
     public static HidStream? FindHidStream(byte reportId)

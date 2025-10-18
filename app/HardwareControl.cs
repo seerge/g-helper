@@ -246,7 +246,7 @@ public static class HardwareControl
     }
 
 
-    public static void ReadSensors()
+    public static void ReadSensors(bool log = false)
     {
         batteryRate = 0;
         gpuUse = -1;
@@ -257,6 +257,8 @@ public static class HardwareControl
 
         cpuTemp = GetCPUTemp();
         gpuTemp = GetGPUTemp();
+
+        if (log) Logger.WriteLine($"Temps: {cpuTemp} {gpuTemp} {cpuFan} {gpuFan} {midFan}");
 
         ReadFullChargeCapacity();
         GetBatteryStatus();

@@ -29,75 +29,75 @@
         private void InitializeComponent()
         {
             panelProfiles = new Panel();
-            comboProfile = new UI.RComboBox();
+            comboProfile = new GHelper.UI.RComboBox();
             labelProfile = new Label();
             panelPerformance = new Panel();
             panelPerformanceOther = new Panel();
             panelDeceleration = new Panel();
             labelDeceleration = new Label();
-            sliderDeceleration = new UI.Slider();
+            sliderDeceleration = new GHelper.UI.Slider();
             labelDecelerationValue = new Label();
             panelAcceleration = new Panel();
             labelAcceleration = new Label();
-            sliderAcceleration = new UI.Slider();
+            sliderAcceleration = new GHelper.UI.Slider();
             labelAccelerationValue = new Label();
             panelLiftOffDistance = new Panel();
             labelLiftOffDistance = new Label();
-            comboBoxLiftOffDistance = new UI.RComboBox();
+            comboBoxLiftOffDistance = new GHelper.UI.RComboBox();
             panelDebounce = new Panel();
             labelButtonDebounce = new Label();
-            sliderButtonDebounce = new UI.Slider();
+            sliderButtonDebounce = new GHelper.UI.Slider();
             labelButtonDebounceValue = new Label();
             panelAngleSnapping = new Panel();
-            sliderAngleAdjustment = new UI.Slider();
+            sliderAngleAdjustment = new GHelper.UI.Slider();
             checkBoxAngleSnapping = new CheckBox();
             labelAngleAdjustmentValue = new Label();
             panelPollingRate = new Panel();
             labelPollingRate = new Label();
-            comboBoxPollingRate = new UI.RComboBox();
+            comboBoxPollingRate = new GHelper.UI.RComboBox();
             panelDPISettings = new Panel();
-            sliderDPI = new UI.Slider();
+            sliderDPI = new GHelper.UI.Slider();
             tableLayoutPanel1 = new TableLayoutPanel();
             labelMinDPI = new Label();
             labelMaxDPI = new Label();
             numericUpDownCurrentDPI = new NumericUpDown();
             panelDPITile = new Panel();
             pictureDPIColor = new PictureBox();
-            buttonDPIColor = new UI.RButton();
+            buttonDPIColor = new GHelper.UI.RButton();
             labelDPI = new Label();
             tableDPI = new TableLayoutPanel();
-            buttonDPI2 = new UI.RButton();
-            buttonDPI1 = new UI.RButton();
-            buttonDPI3 = new UI.RButton();
-            buttonDPI4 = new UI.RButton();
+            buttonDPI2 = new GHelper.UI.RButton();
+            buttonDPI1 = new GHelper.UI.RButton();
+            buttonDPI3 = new GHelper.UI.RButton();
+            buttonDPI4 = new GHelper.UI.RButton();
             panelPerformanceHeader = new Panel();
             pictureKeyboard = new PictureBox();
             labelPerformance = new Label();
             panelLighting = new Panel();
             panelLightingContent = new Panel();
             tableLayoutLightingZones = new TableLayoutPanel();
-            buttonLightingZoneScroll = new UI.RButton();
-            buttonLightingZoneLogo = new UI.RButton();
-            buttonLightingZoneAll = new UI.RButton();
-            buttonLightingZoneUnderglow = new UI.RButton();
-            buttonLightingZoneDock = new UI.RButton();
-            comboBoxAnimationDirection = new UI.RComboBox();
+            buttonLightingZoneScroll = new GHelper.UI.RButton();
+            buttonLightingZoneLogo = new GHelper.UI.RButton();
+            buttonLightingZoneAll = new GHelper.UI.RButton();
+            buttonLightingZoneUnderglow = new GHelper.UI.RButton();
+            buttonLightingZoneDock = new GHelper.UI.RButton();
+            comboBoxAnimationDirection = new GHelper.UI.RComboBox();
             labelAnimationDirection = new Label();
             checkBoxRandomColor = new CheckBox();
-            comboBoxAnimationSpeed = new UI.RComboBox();
+            comboBoxAnimationSpeed = new GHelper.UI.RComboBox();
             labelAnimationSpeed = new Label();
             pictureBoxLightingColor = new PictureBox();
-            buttonLightingColor = new UI.RButton();
-            comboBoxLightingMode = new UI.RComboBox();
+            buttonLightingColor = new GHelper.UI.RButton();
+            comboBoxLightingMode = new GHelper.UI.RComboBox();
             labelLightingMode = new Label();
             panelLightingHeader = new Panel();
-            sliderBrightness = new UI.Slider();
+            sliderBrightness = new GHelper.UI.Slider();
             pictureBoxLighting = new PictureBox();
             labelLighting = new Label();
             panelEnergy = new Panel();
             labelLowBatteryWarningValue = new Label();
-            comboBoxAutoPowerOff = new UI.RComboBox();
-            sliderLowBatteryWarning = new UI.Slider();
+            comboBoxAutoPowerOff = new GHelper.UI.RComboBox();
+            sliderLowBatteryWarning = new GHelper.UI.Slider();
             labelLowBatteryWarning = new Label();
             labelAutoPowerOff = new Label();
             panelEnergyHeader = new Panel();
@@ -108,13 +108,13 @@
             labelChargingState = new Label();
             labelBatteryState = new Label();
             pictureBoxBatteryState = new PictureBox();
-            buttonSync = new UI.RButton();
+            buttonSync = new GHelper.UI.RButton();
             panelBottomButtons = new Panel();
-            buttonImport = new UI.RButton();
-            buttonExport = new UI.RButton();
+            buttonImport = new GHelper.UI.RButton();
+            buttonExport = new GHelper.UI.RButton();
             tableLayoutPanel2 = new TableLayoutPanel();
-            rButton1 = new UI.RButton();
-            rButton2 = new UI.RButton();
+            rButton1 = new GHelper.UI.RButton();
+            rButton2 = new GHelper.UI.RButton();
             panelProfiles.SuspendLayout();
             panelPerformance.SuspendLayout();
             panelPerformanceOther.SuspendLayout();
@@ -152,11 +152,11 @@
             // 
             panelProfiles.Controls.Add(comboProfile);
             panelProfiles.Controls.Add(labelProfile);
-            panelProfiles.Location = new Point(220, 2);
-            panelProfiles.Margin = new Padding(2);
-            panelProfiles.MinimumSize = new Size(227, 0);
+            panelProfiles.Location = new Point(444, 4);
+            panelProfiles.Margin = new Padding(4);
+            panelProfiles.MinimumSize = new Size(454, 0);
             panelProfiles.Name = "panelProfiles";
-            panelProfiles.Size = new Size(227, 34);
+            panelProfiles.Size = new Size(454, 68);
             panelProfiles.TabIndex = 0;
             // 
             // comboProfile
@@ -167,21 +167,21 @@
             comboProfile.DropDownStyle = ComboBoxStyle.DropDownList;
             comboProfile.FlatStyle = FlatStyle.Flat;
             comboProfile.FormattingEnabled = true;
-            comboProfile.Location = new Point(65, 7);
+            comboProfile.Location = new Point(130, 14);
             comboProfile.Margin = new Padding(0);
             comboProfile.Name = "comboProfile";
-            comboProfile.Size = new Size(153, 23);
+            comboProfile.Size = new Size(302, 40);
             comboProfile.TabIndex = 43;
             // 
             // labelProfile
             // 
             labelProfile.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
             labelProfile.AutoSize = true;
-            labelProfile.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            labelProfile.Location = new Point(2, 9);
-            labelProfile.Margin = new Padding(2, 0, 2, 0);
+            labelProfile.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            labelProfile.Location = new Point(4, 18);
+            labelProfile.Margin = new Padding(4, 0, 4, 0);
             labelProfile.Name = "labelProfile";
-            labelProfile.Size = new Size(44, 15);
+            labelProfile.Size = new Size(90, 32);
             labelProfile.TabIndex = 41;
             labelProfile.Text = "Profile";
             // 
@@ -193,11 +193,11 @@
             panelPerformance.Controls.Add(tableDPI);
             panelPerformance.Controls.Add(panelPerformanceHeader);
             panelPerformance.Dock = DockStyle.Top;
-            panelPerformance.Location = new Point(7, 45);
-            panelPerformance.Margin = new Padding(2);
+            panelPerformance.Location = new Point(14, 90);
+            panelPerformance.Margin = new Padding(4);
             panelPerformance.Name = "panelPerformance";
-            panelPerformance.Padding = new Padding(0, 7, 0, 17);
-            panelPerformance.Size = new Size(437, 370);
+            panelPerformance.Padding = new Padding(0, 14, 0, 34);
+            panelPerformance.Size = new Size(881, 733);
             panelPerformance.TabIndex = 1;
             // 
             // panelPerformanceOther
@@ -211,11 +211,11 @@
             panelPerformanceOther.Controls.Add(panelAngleSnapping);
             panelPerformanceOther.Controls.Add(panelPollingRate);
             panelPerformanceOther.Dock = DockStyle.Top;
-            panelPerformanceOther.Location = new Point(0, 161);
-            panelPerformanceOther.Margin = new Padding(2);
+            panelPerformanceOther.Location = new Point(0, 319);
+            panelPerformanceOther.Margin = new Padding(4);
             panelPerformanceOther.Name = "panelPerformanceOther";
-            panelPerformanceOther.Padding = new Padding(0, 7, 0, 7);
-            panelPerformanceOther.Size = new Size(437, 192);
+            panelPerformanceOther.Padding = new Padding(0, 14, 0, 14);
+            panelPerformanceOther.Size = new Size(881, 380);
             panelPerformanceOther.TabIndex = 49;
             // 
             // panelDeceleration
@@ -226,31 +226,31 @@
             panelDeceleration.Controls.Add(sliderDeceleration);
             panelDeceleration.Controls.Add(labelDecelerationValue);
             panelDeceleration.Dock = DockStyle.Top;
-            panelDeceleration.Location = new Point(0, 154);
-            panelDeceleration.Margin = new Padding(2);
+            panelDeceleration.Location = new Point(0, 304);
+            panelDeceleration.Margin = new Padding(4);
             panelDeceleration.Name = "panelDeceleration";
-            panelDeceleration.Padding = new Padding(3);
-            panelDeceleration.Size = new Size(437, 31);
+            panelDeceleration.Padding = new Padding(6);
+            panelDeceleration.Size = new Size(881, 62);
             panelDeceleration.TabIndex = 58;
             // 
             // labelDeceleration
             // 
-            labelDeceleration.Location = new Point(4, 5);
-            labelDeceleration.Margin = new Padding(4, 0, 4, 0);
+            labelDeceleration.Location = new Point(8, 10);
+            labelDeceleration.Margin = new Padding(8, 0, 8, 0);
             labelDeceleration.Name = "labelDeceleration";
-            labelDeceleration.Size = new Size(232, 22);
+            labelDeceleration.Size = new Size(464, 44);
             labelDeceleration.TabIndex = 52;
             labelDeceleration.Text = "Deceleration";
             // 
             // sliderDeceleration
             // 
             sliderDeceleration.AccessibleName = "DPI Slider";
-            sliderDeceleration.Location = new Point(245, 6);
-            sliderDeceleration.Margin = new Padding(2);
+            sliderDeceleration.Location = new Point(490, 12);
+            sliderDeceleration.Margin = new Padding(4);
             sliderDeceleration.Max = 9;
             sliderDeceleration.Min = 0;
             sliderDeceleration.Name = "sliderDeceleration";
-            sliderDeceleration.Size = new Size(142, 20);
+            sliderDeceleration.Size = new Size(284, 40);
             sliderDeceleration.Step = 1;
             sliderDeceleration.TabIndex = 50;
             sliderDeceleration.TabStop = false;
@@ -259,10 +259,10 @@
             // 
             // labelDecelerationValue
             // 
-            labelDecelerationValue.Location = new Point(393, 6);
-            labelDecelerationValue.Margin = new Padding(4, 0, 4, 0);
+            labelDecelerationValue.Location = new Point(786, 12);
+            labelDecelerationValue.Margin = new Padding(8, 0, 8, 0);
             labelDecelerationValue.Name = "labelDecelerationValue";
-            labelDecelerationValue.Size = new Size(40, 20);
+            labelDecelerationValue.Size = new Size(80, 40);
             labelDecelerationValue.TabIndex = 51;
             labelDecelerationValue.Text = "0";
             labelDecelerationValue.TextAlign = ContentAlignment.MiddleRight;
@@ -275,31 +275,31 @@
             panelAcceleration.Controls.Add(sliderAcceleration);
             panelAcceleration.Controls.Add(labelAccelerationValue);
             panelAcceleration.Dock = DockStyle.Top;
-            panelAcceleration.Location = new Point(0, 123);
-            panelAcceleration.Margin = new Padding(2);
+            panelAcceleration.Location = new Point(0, 242);
+            panelAcceleration.Margin = new Padding(4);
             panelAcceleration.Name = "panelAcceleration";
-            panelAcceleration.Padding = new Padding(3);
-            panelAcceleration.Size = new Size(437, 31);
+            panelAcceleration.Padding = new Padding(6);
+            panelAcceleration.Size = new Size(881, 62);
             panelAcceleration.TabIndex = 57;
             // 
             // labelAcceleration
             // 
-            labelAcceleration.Location = new Point(4, 5);
-            labelAcceleration.Margin = new Padding(4, 0, 4, 0);
+            labelAcceleration.Location = new Point(8, 10);
+            labelAcceleration.Margin = new Padding(8, 0, 8, 0);
             labelAcceleration.Name = "labelAcceleration";
-            labelAcceleration.Size = new Size(232, 22);
+            labelAcceleration.Size = new Size(464, 44);
             labelAcceleration.TabIndex = 52;
             labelAcceleration.Text = "Acceleration";
             // 
             // sliderAcceleration
             // 
             sliderAcceleration.AccessibleName = "DPI Slider";
-            sliderAcceleration.Location = new Point(245, 6);
-            sliderAcceleration.Margin = new Padding(2);
+            sliderAcceleration.Location = new Point(490, 12);
+            sliderAcceleration.Margin = new Padding(4);
             sliderAcceleration.Max = 9;
             sliderAcceleration.Min = 0;
             sliderAcceleration.Name = "sliderAcceleration";
-            sliderAcceleration.Size = new Size(142, 20);
+            sliderAcceleration.Size = new Size(284, 40);
             sliderAcceleration.Step = 1;
             sliderAcceleration.TabIndex = 50;
             sliderAcceleration.TabStop = false;
@@ -308,10 +308,10 @@
             // 
             // labelAccelerationValue
             // 
-            labelAccelerationValue.Location = new Point(393, 6);
-            labelAccelerationValue.Margin = new Padding(4, 0, 4, 0);
+            labelAccelerationValue.Location = new Point(786, 12);
+            labelAccelerationValue.Margin = new Padding(8, 0, 8, 0);
             labelAccelerationValue.Name = "labelAccelerationValue";
-            labelAccelerationValue.Size = new Size(40, 20);
+            labelAccelerationValue.Size = new Size(80, 40);
             labelAccelerationValue.TabIndex = 51;
             labelAccelerationValue.Text = "0";
             labelAccelerationValue.TextAlign = ContentAlignment.MiddleRight;
@@ -323,19 +323,19 @@
             panelLiftOffDistance.Controls.Add(labelLiftOffDistance);
             panelLiftOffDistance.Controls.Add(comboBoxLiftOffDistance);
             panelLiftOffDistance.Dock = DockStyle.Top;
-            panelLiftOffDistance.Location = new Point(0, 94);
-            panelLiftOffDistance.Margin = new Padding(2);
+            panelLiftOffDistance.Location = new Point(0, 186);
+            panelLiftOffDistance.Margin = new Padding(4);
             panelLiftOffDistance.Name = "panelLiftOffDistance";
-            panelLiftOffDistance.Padding = new Padding(3);
-            panelLiftOffDistance.Size = new Size(437, 29);
+            panelLiftOffDistance.Padding = new Padding(6);
+            panelLiftOffDistance.Size = new Size(881, 56);
             panelLiftOffDistance.TabIndex = 56;
             // 
             // labelLiftOffDistance
             // 
-            labelLiftOffDistance.Location = new Point(3, 3);
-            labelLiftOffDistance.Margin = new Padding(4, 0, 4, 0);
+            labelLiftOffDistance.Location = new Point(6, 6);
+            labelLiftOffDistance.Margin = new Padding(8, 0, 8, 0);
             labelLiftOffDistance.Name = "labelLiftOffDistance";
-            labelLiftOffDistance.Size = new Size(232, 22);
+            labelLiftOffDistance.Size = new Size(464, 44);
             labelLiftOffDistance.TabIndex = 48;
             labelLiftOffDistance.Text = "Lift Off Distance";
             // 
@@ -346,10 +346,10 @@
             comboBoxLiftOffDistance.DropDownStyle = ComboBoxStyle.DropDownList;
             comboBoxLiftOffDistance.FlatStyle = FlatStyle.Flat;
             comboBoxLiftOffDistance.FormattingEnabled = true;
-            comboBoxLiftOffDistance.Location = new Point(245, 3);
-            comboBoxLiftOffDistance.Margin = new Padding(11, 0, 11, 0);
+            comboBoxLiftOffDistance.Location = new Point(490, 6);
+            comboBoxLiftOffDistance.Margin = new Padding(22, 0, 22, 0);
             comboBoxLiftOffDistance.Name = "comboBoxLiftOffDistance";
-            comboBoxLiftOffDistance.Size = new Size(189, 23);
+            comboBoxLiftOffDistance.Size = new Size(374, 40);
             comboBoxLiftOffDistance.TabIndex = 49;
             // 
             // panelDebounce
@@ -360,31 +360,31 @@
             panelDebounce.Controls.Add(sliderButtonDebounce);
             panelDebounce.Controls.Add(labelButtonDebounceValue);
             panelDebounce.Dock = DockStyle.Top;
-            panelDebounce.Location = new Point(0, 63);
-            panelDebounce.Margin = new Padding(2);
+            panelDebounce.Location = new Point(0, 124);
+            panelDebounce.Margin = new Padding(4);
             panelDebounce.Name = "panelDebounce";
-            panelDebounce.Padding = new Padding(3);
-            panelDebounce.Size = new Size(437, 31);
+            panelDebounce.Padding = new Padding(6);
+            panelDebounce.Size = new Size(881, 62);
             panelDebounce.TabIndex = 55;
             // 
             // labelButtonDebounce
             // 
-            labelButtonDebounce.Location = new Point(4, 5);
-            labelButtonDebounce.Margin = new Padding(4, 0, 4, 0);
+            labelButtonDebounce.Location = new Point(8, 10);
+            labelButtonDebounce.Margin = new Padding(8, 0, 8, 0);
             labelButtonDebounce.Name = "labelButtonDebounce";
-            labelButtonDebounce.Size = new Size(232, 22);
+            labelButtonDebounce.Size = new Size(464, 44);
             labelButtonDebounce.TabIndex = 52;
             labelButtonDebounce.Text = "Button Response";
             // 
             // sliderButtonDebounce
             // 
             sliderButtonDebounce.AccessibleName = "DPI Slider";
-            sliderButtonDebounce.Location = new Point(245, 6);
-            sliderButtonDebounce.Margin = new Padding(2);
+            sliderButtonDebounce.Location = new Point(490, 12);
+            sliderButtonDebounce.Margin = new Padding(4);
             sliderButtonDebounce.Max = 7;
             sliderButtonDebounce.Min = 2;
             sliderButtonDebounce.Name = "sliderButtonDebounce";
-            sliderButtonDebounce.Size = new Size(142, 20);
+            sliderButtonDebounce.Size = new Size(284, 40);
             sliderButtonDebounce.Step = 1;
             sliderButtonDebounce.TabIndex = 50;
             sliderButtonDebounce.TabStop = false;
@@ -393,10 +393,10 @@
             // 
             // labelButtonDebounceValue
             // 
-            labelButtonDebounceValue.Location = new Point(393, 6);
-            labelButtonDebounceValue.Margin = new Padding(4, 0, 4, 0);
+            labelButtonDebounceValue.Location = new Point(786, 12);
+            labelButtonDebounceValue.Margin = new Padding(8, 0, 8, 0);
             labelButtonDebounceValue.Name = "labelButtonDebounceValue";
-            labelButtonDebounceValue.Size = new Size(40, 20);
+            labelButtonDebounceValue.Size = new Size(80, 40);
             labelButtonDebounceValue.TabIndex = 51;
             labelButtonDebounceValue.Text = "12ms";
             labelButtonDebounceValue.TextAlign = ContentAlignment.MiddleRight;
@@ -409,22 +409,22 @@
             panelAngleSnapping.Controls.Add(checkBoxAngleSnapping);
             panelAngleSnapping.Controls.Add(labelAngleAdjustmentValue);
             panelAngleSnapping.Dock = DockStyle.Top;
-            panelAngleSnapping.Location = new Point(0, 34);
-            panelAngleSnapping.Margin = new Padding(2);
+            panelAngleSnapping.Location = new Point(0, 66);
+            panelAngleSnapping.Margin = new Padding(4);
             panelAngleSnapping.Name = "panelAngleSnapping";
-            panelAngleSnapping.Padding = new Padding(3);
-            panelAngleSnapping.Size = new Size(437, 29);
+            panelAngleSnapping.Padding = new Padding(6);
+            panelAngleSnapping.Size = new Size(881, 58);
             panelAngleSnapping.TabIndex = 54;
             // 
             // sliderAngleAdjustment
             // 
             sliderAngleAdjustment.AccessibleName = "DPI Slider";
-            sliderAngleAdjustment.Location = new Point(264, 4);
-            sliderAngleAdjustment.Margin = new Padding(2);
+            sliderAngleAdjustment.Location = new Point(528, 8);
+            sliderAngleAdjustment.Margin = new Padding(4);
             sliderAngleAdjustment.Max = 20;
             sliderAngleAdjustment.Min = -20;
             sliderAngleAdjustment.Name = "sliderAngleAdjustment";
-            sliderAngleAdjustment.Size = new Size(139, 20);
+            sliderAngleAdjustment.Size = new Size(278, 40);
             sliderAngleAdjustment.Step = 5;
             sliderAngleAdjustment.TabIndex = 46;
             sliderAngleAdjustment.TabStop = false;
@@ -434,10 +434,10 @@
             // checkBoxAngleSnapping
             // 
             checkBoxAngleSnapping.CheckAlign = ContentAlignment.MiddleRight;
-            checkBoxAngleSnapping.Location = new Point(3, 4);
-            checkBoxAngleSnapping.Margin = new Padding(4, 0, 4, 0);
+            checkBoxAngleSnapping.Location = new Point(6, 8);
+            checkBoxAngleSnapping.Margin = new Padding(8, 0, 8, 0);
             checkBoxAngleSnapping.Name = "checkBoxAngleSnapping";
-            checkBoxAngleSnapping.Size = new Size(256, 20);
+            checkBoxAngleSnapping.Size = new Size(512, 40);
             checkBoxAngleSnapping.TabIndex = 45;
             checkBoxAngleSnapping.Text = "Angle Snapping";
             checkBoxAngleSnapping.TextAlign = ContentAlignment.TopLeft;
@@ -445,10 +445,10 @@
             // 
             // labelAngleAdjustmentValue
             // 
-            labelAngleAdjustmentValue.Location = new Point(398, 4);
-            labelAngleAdjustmentValue.Margin = new Padding(4, 0, 4, 0);
+            labelAngleAdjustmentValue.Location = new Point(796, 8);
+            labelAngleAdjustmentValue.Margin = new Padding(8, 0, 8, 0);
             labelAngleAdjustmentValue.Name = "labelAngleAdjustmentValue";
-            labelAngleAdjustmentValue.Size = new Size(32, 20);
+            labelAngleAdjustmentValue.Size = new Size(64, 40);
             labelAngleAdjustmentValue.TabIndex = 47;
             labelAngleAdjustmentValue.Text = "0°";
             labelAngleAdjustmentValue.TextAlign = ContentAlignment.MiddleRight;
@@ -460,19 +460,19 @@
             panelPollingRate.Controls.Add(labelPollingRate);
             panelPollingRate.Controls.Add(comboBoxPollingRate);
             panelPollingRate.Dock = DockStyle.Top;
-            panelPollingRate.Location = new Point(0, 7);
-            panelPollingRate.Margin = new Padding(2);
+            panelPollingRate.Location = new Point(0, 14);
+            panelPollingRate.Margin = new Padding(4);
             panelPollingRate.Name = "panelPollingRate";
-            panelPollingRate.Padding = new Padding(3);
-            panelPollingRate.Size = new Size(437, 27);
+            panelPollingRate.Padding = new Padding(6);
+            panelPollingRate.Size = new Size(881, 52);
             panelPollingRate.TabIndex = 53;
             // 
             // labelPollingRate
             // 
-            labelPollingRate.Location = new Point(4, 3);
-            labelPollingRate.Margin = new Padding(4, 0, 4, 0);
+            labelPollingRate.Location = new Point(8, 6);
+            labelPollingRate.Margin = new Padding(8, 0, 8, 0);
             labelPollingRate.Name = "labelPollingRate";
-            labelPollingRate.Size = new Size(232, 20);
+            labelPollingRate.Size = new Size(464, 40);
             labelPollingRate.TabIndex = 45;
             labelPollingRate.Text = "Polling Rate";
             // 
@@ -483,10 +483,10 @@
             comboBoxPollingRate.DropDownStyle = ComboBoxStyle.DropDownList;
             comboBoxPollingRate.FlatStyle = FlatStyle.Flat;
             comboBoxPollingRate.FormattingEnabled = true;
-            comboBoxPollingRate.Location = new Point(245, 1);
-            comboBoxPollingRate.Margin = new Padding(11, 0, 11, 0);
+            comboBoxPollingRate.Location = new Point(490, 2);
+            comboBoxPollingRate.Margin = new Padding(22, 0, 22, 0);
             comboBoxPollingRate.Name = "comboBoxPollingRate";
-            comboBoxPollingRate.Size = new Size(189, 23);
+            comboBoxPollingRate.Size = new Size(374, 40);
             comboBoxPollingRate.TabIndex = 44;
             // 
             // panelDPISettings
@@ -497,22 +497,22 @@
             panelDPISettings.Controls.Add(tableLayoutPanel1);
             panelDPISettings.Controls.Add(panelDPITile);
             panelDPISettings.Dock = DockStyle.Top;
-            panelDPISettings.Location = new Point(0, 91);
-            panelDPISettings.Margin = new Padding(2);
+            panelDPISettings.Location = new Point(0, 182);
+            panelDPISettings.Margin = new Padding(4);
             panelDPISettings.Name = "panelDPISettings";
-            panelDPISettings.Size = new Size(437, 70);
+            panelDPISettings.Size = new Size(881, 137);
             panelDPISettings.TabIndex = 44;
             // 
             // sliderDPI
             // 
             sliderDPI.AccessibleName = "DPI Slider";
             sliderDPI.Dock = DockStyle.Top;
-            sliderDPI.Location = new Point(0, 50);
-            sliderDPI.Margin = new Padding(2);
+            sliderDPI.Location = new Point(0, 97);
+            sliderDPI.Margin = new Padding(4);
             sliderDPI.Max = 35000;
             sliderDPI.Min = 100;
             sliderDPI.Name = "sliderDPI";
-            sliderDPI.Size = new Size(437, 20);
+            sliderDPI.Size = new Size(881, 40);
             sliderDPI.Step = 50;
             sliderDPI.TabIndex = 43;
             sliderDPI.TabStop = false;
@@ -532,33 +532,33 @@
             tableLayoutPanel1.Controls.Add(numericUpDownCurrentDPI, 1, 0);
             tableLayoutPanel1.Dock = DockStyle.Top;
             tableLayoutPanel1.GrowStyle = TableLayoutPanelGrowStyle.FixedSize;
-            tableLayoutPanel1.Location = new Point(0, 27);
-            tableLayoutPanel1.Margin = new Padding(2);
+            tableLayoutPanel1.Location = new Point(0, 54);
+            tableLayoutPanel1.Margin = new Padding(4);
             tableLayoutPanel1.Name = "tableLayoutPanel1";
             tableLayoutPanel1.RowCount = 1;
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            tableLayoutPanel1.Size = new Size(437, 23);
+            tableLayoutPanel1.Size = new Size(881, 43);
             tableLayoutPanel1.TabIndex = 47;
             // 
             // labelMinDPI
             // 
-            labelMinDPI.Dock = DockStyle.Fill;
+            labelMinDPI.Dock = DockStyle.Top;
             labelMinDPI.ForeColor = SystemColors.GrayText;
-            labelMinDPI.Location = new Point(4, 0);
-            labelMinDPI.Margin = new Padding(4, 0, 4, 0);
+            labelMinDPI.Location = new Point(8, 0);
+            labelMinDPI.Margin = new Padding(8, 0, 8, 0);
             labelMinDPI.Name = "labelMinDPI";
-            labelMinDPI.Size = new Size(158, 23);
+            labelMinDPI.Size = new Size(318, 40);
             labelMinDPI.TabIndex = 45;
             labelMinDPI.Text = "100";
             // 
             // labelMaxDPI
             // 
-            labelMaxDPI.Dock = DockStyle.Fill;
+            labelMaxDPI.Dock = DockStyle.Top;
             labelMaxDPI.ForeColor = SystemColors.GrayText;
-            labelMaxDPI.Location = new Point(274, 0);
-            labelMaxDPI.Margin = new Padding(4, 0, 4, 0);
+            labelMaxDPI.Location = new Point(553, 0);
+            labelMaxDPI.Margin = new Padding(8, 0, 8, 0);
             labelMaxDPI.Name = "labelMaxDPI";
-            labelMaxDPI.Size = new Size(159, 23);
+            labelMaxDPI.Size = new Size(320, 40);
             labelMaxDPI.TabIndex = 46;
             labelMaxDPI.Text = " 35000";
             labelMaxDPI.TextAlign = ContentAlignment.TopRight;
@@ -566,14 +566,14 @@
             // numericUpDownCurrentDPI
             // 
             numericUpDownCurrentDPI.BorderStyle = BorderStyle.None;
-            numericUpDownCurrentDPI.Dock = DockStyle.Fill;
+            numericUpDownCurrentDPI.Dock = DockStyle.Top;
             numericUpDownCurrentDPI.Increment = new decimal(new int[] { 50, 0, 0, 0 });
-            numericUpDownCurrentDPI.Location = new Point(168, 2);
-            numericUpDownCurrentDPI.Margin = new Padding(2);
+            numericUpDownCurrentDPI.Location = new Point(338, 4);
+            numericUpDownCurrentDPI.Margin = new Padding(4);
             numericUpDownCurrentDPI.Maximum = new decimal(new int[] { 35000, 0, 0, 0 });
             numericUpDownCurrentDPI.Minimum = new decimal(new int[] { 100, 0, 0, 0 });
             numericUpDownCurrentDPI.Name = "numericUpDownCurrentDPI";
-            numericUpDownCurrentDPI.Size = new Size(100, 19);
+            numericUpDownCurrentDPI.Size = new Size(203, 35);
             numericUpDownCurrentDPI.TabIndex = 47;
             numericUpDownCurrentDPI.TextAlign = HorizontalAlignment.Center;
             numericUpDownCurrentDPI.Value = new decimal(new int[] { 2000, 0, 0, 0 });
@@ -585,19 +585,19 @@
             panelDPITile.Controls.Add(labelDPI);
             panelDPITile.Dock = DockStyle.Top;
             panelDPITile.Location = new Point(0, 0);
-            panelDPITile.Margin = new Padding(2);
+            panelDPITile.Margin = new Padding(4);
             panelDPITile.Name = "panelDPITile";
-            panelDPITile.Padding = new Padding(0, 3, 0, 3);
-            panelDPITile.Size = new Size(437, 27);
+            panelDPITile.Padding = new Padding(0, 6, 0, 6);
+            panelDPITile.Size = new Size(881, 54);
             panelDPITile.TabIndex = 48;
             // 
             // pictureDPIColor
             // 
             pictureDPIColor.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            pictureDPIColor.Location = new Point(412, 7);
-            pictureDPIColor.Margin = new Padding(4);
+            pictureDPIColor.Location = new Point(831, 14);
+            pictureDPIColor.Margin = new Padding(8);
             pictureDPIColor.Name = "pictureDPIColor";
-            pictureDPIColor.Size = new Size(10, 10);
+            pictureDPIColor.Size = new Size(20, 20);
             pictureDPIColor.TabIndex = 46;
             pictureDPIColor.TabStop = false;
             // 
@@ -612,11 +612,11 @@
             buttonDPIColor.BorderRadius = 2;
             buttonDPIColor.FlatStyle = FlatStyle.Flat;
             buttonDPIColor.ForeColor = SystemColors.ControlText;
-            buttonDPIColor.Location = new Point(308, 1);
-            buttonDPIColor.Margin = new Padding(2, 4, 2, 4);
+            buttonDPIColor.Location = new Point(623, 2);
+            buttonDPIColor.Margin = new Padding(4, 8, 4, 8);
             buttonDPIColor.Name = "buttonDPIColor";
             buttonDPIColor.Secondary = false;
-            buttonDPIColor.Size = new Size(127, 27);
+            buttonDPIColor.Size = new Size(254, 44);
             buttonDPIColor.TabIndex = 45;
             buttonDPIColor.Text = Properties.Strings.Color;
             buttonDPIColor.UseVisualStyleBackColor = false;
@@ -625,11 +625,11 @@
             // 
             labelDPI.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
             labelDPI.AutoSize = true;
-            labelDPI.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            labelDPI.Location = new Point(4, 3);
-            labelDPI.Margin = new Padding(4, 0, 4, 0);
+            labelDPI.Font = new Font("Segoe UI", 9F);
+            labelDPI.Location = new Point(8, 6);
+            labelDPI.Margin = new Padding(8, 0, 8, 0);
             labelDPI.Name = "labelDPI";
-            labelDPI.Size = new Size(25, 15);
+            labelDPI.Size = new Size(50, 32);
             labelDPI.TabIndex = 34;
             labelDPI.Text = "DPI";
             // 
@@ -647,13 +647,13 @@
             tableDPI.Controls.Add(buttonDPI3, 1, 0);
             tableDPI.Controls.Add(buttonDPI4, 2, 0);
             tableDPI.Dock = DockStyle.Top;
-            tableDPI.Location = new Point(0, 27);
-            tableDPI.Margin = new Padding(4, 2, 4, 2);
+            tableDPI.Location = new Point(0, 54);
+            tableDPI.Margin = new Padding(8, 4, 8, 4);
             tableDPI.Name = "tableDPI";
             tableDPI.RowCount = 1;
-            tableDPI.RowStyles.Add(new RowStyle(SizeType.Absolute, 64F));
-            tableDPI.RowStyles.Add(new RowStyle(SizeType.Absolute, 64F));
-            tableDPI.Size = new Size(437, 64);
+            tableDPI.RowStyles.Add(new RowStyle(SizeType.Absolute, 128F));
+            tableDPI.RowStyles.Add(new RowStyle(SizeType.Absolute, 128F));
+            tableDPI.Size = new Size(881, 128);
             tableDPI.TabIndex = 42;
             // 
             // buttonDPI2
@@ -669,11 +669,11 @@
             buttonDPI2.ForeColor = SystemColors.ControlText;
             buttonDPI2.Image = Properties.Resources.lighting_dot_32;
             buttonDPI2.ImageAlign = ContentAlignment.BottomCenter;
-            buttonDPI2.Location = new Point(111, 2);
-            buttonDPI2.Margin = new Padding(2);
+            buttonDPI2.Location = new Point(224, 4);
+            buttonDPI2.Margin = new Padding(4);
             buttonDPI2.Name = "buttonDPI2";
             buttonDPI2.Secondary = false;
-            buttonDPI2.Size = new Size(105, 60);
+            buttonDPI2.Size = new Size(212, 120);
             buttonDPI2.TabIndex = 4;
             buttonDPI2.Text = "DPI 2\r\n1000";
             buttonDPI2.TextImageRelation = TextImageRelation.ImageAboveText;
@@ -692,11 +692,11 @@
             buttonDPI1.FlatStyle = FlatStyle.Flat;
             buttonDPI1.ForeColor = SystemColors.ControlText;
             buttonDPI1.Image = Properties.Resources.lighting_dot_32;
-            buttonDPI1.Location = new Point(2, 2);
-            buttonDPI1.Margin = new Padding(2);
+            buttonDPI1.Location = new Point(4, 4);
+            buttonDPI1.Margin = new Padding(4);
             buttonDPI1.Name = "buttonDPI1";
             buttonDPI1.Secondary = false;
-            buttonDPI1.Size = new Size(105, 60);
+            buttonDPI1.Size = new Size(212, 120);
             buttonDPI1.TabIndex = 4;
             buttonDPI1.Text = "DPI 1\r\n800";
             buttonDPI1.TextImageRelation = TextImageRelation.ImageAboveText;
@@ -715,11 +715,11 @@
             buttonDPI3.ForeColor = SystemColors.ControlText;
             buttonDPI3.Image = Properties.Resources.lighting_dot_32;
             buttonDPI3.ImageAlign = ContentAlignment.BottomCenter;
-            buttonDPI3.Location = new Point(220, 2);
-            buttonDPI3.Margin = new Padding(2);
+            buttonDPI3.Location = new Point(444, 4);
+            buttonDPI3.Margin = new Padding(4);
             buttonDPI3.Name = "buttonDPI3";
             buttonDPI3.Secondary = false;
-            buttonDPI3.Size = new Size(105, 60);
+            buttonDPI3.Size = new Size(212, 120);
             buttonDPI3.TabIndex = 5;
             buttonDPI3.Text = "DPI 3\r\n1200";
             buttonDPI3.TextImageRelation = TextImageRelation.ImageAboveText;
@@ -738,11 +738,11 @@
             buttonDPI4.ForeColor = SystemColors.ControlText;
             buttonDPI4.Image = Properties.Resources.lighting_dot_32;
             buttonDPI4.ImageAlign = ContentAlignment.BottomCenter;
-            buttonDPI4.Location = new Point(329, 2);
-            buttonDPI4.Margin = new Padding(2);
+            buttonDPI4.Location = new Point(664, 4);
+            buttonDPI4.Margin = new Padding(4);
             buttonDPI4.Name = "buttonDPI4";
             buttonDPI4.Secondary = false;
-            buttonDPI4.Size = new Size(106, 60);
+            buttonDPI4.Size = new Size(213, 120);
             buttonDPI4.TabIndex = 6;
             buttonDPI4.Text = "DPI 4\r\n1400";
             buttonDPI4.TextImageRelation = TextImageRelation.ImageAboveText;
@@ -754,31 +754,31 @@
             panelPerformanceHeader.Controls.Add(pictureKeyboard);
             panelPerformanceHeader.Controls.Add(labelPerformance);
             panelPerformanceHeader.Dock = DockStyle.Top;
-            panelPerformanceHeader.Location = new Point(0, 7);
-            panelPerformanceHeader.Margin = new Padding(2);
+            panelPerformanceHeader.Location = new Point(0, 14);
+            panelPerformanceHeader.Margin = new Padding(4);
             panelPerformanceHeader.Name = "panelPerformanceHeader";
-            panelPerformanceHeader.Size = new Size(437, 20);
+            panelPerformanceHeader.Size = new Size(881, 40);
             panelPerformanceHeader.TabIndex = 41;
             // 
             // pictureKeyboard
             // 
             pictureKeyboard.BackgroundImage = Properties.Resources.icons8_mauszeiger_50;
             pictureKeyboard.BackgroundImageLayout = ImageLayout.Zoom;
-            pictureKeyboard.Location = new Point(3, 0);
-            pictureKeyboard.Margin = new Padding(2);
+            pictureKeyboard.Location = new Point(6, 0);
+            pictureKeyboard.Margin = new Padding(4);
             pictureKeyboard.Name = "pictureKeyboard";
-            pictureKeyboard.Size = new Size(16, 16);
+            pictureKeyboard.Size = new Size(32, 32);
             pictureKeyboard.TabIndex = 35;
             pictureKeyboard.TabStop = false;
             // 
             // labelPerformance
             // 
             labelPerformance.AutoSize = true;
-            labelPerformance.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            labelPerformance.Location = new Point(22, 0);
-            labelPerformance.Margin = new Padding(4, 0, 4, 0);
+            labelPerformance.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            labelPerformance.Location = new Point(44, 0);
+            labelPerformance.Margin = new Padding(8, 0, 8, 0);
             labelPerformance.Name = "labelPerformance";
-            labelPerformance.Size = new Size(80, 15);
+            labelPerformance.Size = new Size(161, 32);
             labelPerformance.TabIndex = 34;
             labelPerformance.Text = "Performance";
             // 
@@ -789,11 +789,11 @@
             panelLighting.Controls.Add(panelLightingContent);
             panelLighting.Controls.Add(panelLightingHeader);
             panelLighting.Dock = DockStyle.Top;
-            panelLighting.Location = new Point(7, 415);
-            panelLighting.Margin = new Padding(2);
+            panelLighting.Location = new Point(14, 823);
+            panelLighting.Margin = new Padding(4);
             panelLighting.Name = "panelLighting";
-            panelLighting.Padding = new Padding(0, 0, 0, 17);
-            panelLighting.Size = new Size(437, 220);
+            panelLighting.Padding = new Padding(0, 0, 0, 34);
+            panelLighting.Size = new Size(881, 388);
             panelLighting.TabIndex = 42;
             // 
             // panelLightingContent
@@ -810,11 +810,11 @@
             panelLightingContent.Controls.Add(comboBoxLightingMode);
             panelLightingContent.Controls.Add(labelLightingMode);
             panelLightingContent.Dock = DockStyle.Top;
-            panelLightingContent.Location = new Point(0, 20);
-            panelLightingContent.Margin = new Padding(2);
+            panelLightingContent.Location = new Point(0, 40);
+            panelLightingContent.Margin = new Padding(4);
             panelLightingContent.Name = "panelLightingContent";
-            panelLightingContent.Padding = new Padding(0, 0, 0, 7);
-            panelLightingContent.Size = new Size(437, 183);
+            panelLightingContent.Padding = new Padding(0, 0, 0, 14);
+            panelLightingContent.Size = new Size(881, 314);
             panelLightingContent.TabIndex = 42;
             // 
             // tableLayoutLightingZones
@@ -834,11 +834,11 @@
             tableLayoutLightingZones.Controls.Add(buttonLightingZoneDock, 2, 0);
             tableLayoutLightingZones.Dock = DockStyle.Top;
             tableLayoutLightingZones.Location = new Point(0, 0);
-            tableLayoutLightingZones.Margin = new Padding(4, 2, 4, 2);
+            tableLayoutLightingZones.Margin = new Padding(8, 4, 8, 4);
             tableLayoutLightingZones.Name = "tableLayoutLightingZones";
             tableLayoutLightingZones.RowCount = 1;
-            tableLayoutLightingZones.RowStyles.Add(new RowStyle(SizeType.Absolute, 40F));
-            tableLayoutLightingZones.Size = new Size(437, 40);
+            tableLayoutLightingZones.RowStyles.Add(new RowStyle(SizeType.Absolute, 80F));
+            tableLayoutLightingZones.Size = new Size(881, 80);
             tableLayoutLightingZones.TabIndex = 56;
             // 
             // buttonLightingZoneScroll
@@ -855,11 +855,11 @@
             buttonLightingZoneScroll.FlatStyle = FlatStyle.Flat;
             buttonLightingZoneScroll.ForeColor = SystemColors.ControlText;
             buttonLightingZoneScroll.ImageAlign = ContentAlignment.BottomCenter;
-            buttonLightingZoneScroll.Location = new Point(176, 2);
-            buttonLightingZoneScroll.Margin = new Padding(2);
+            buttonLightingZoneScroll.Location = new Point(356, 4);
+            buttonLightingZoneScroll.Margin = new Padding(4);
             buttonLightingZoneScroll.Name = "buttonLightingZoneScroll";
             buttonLightingZoneScroll.Secondary = false;
-            buttonLightingZoneScroll.Size = new Size(83, 36);
+            buttonLightingZoneScroll.Size = new Size(168, 72);
             buttonLightingZoneScroll.TabIndex = 7;
             buttonLightingZoneScroll.Text = "Scrollwheel";
             buttonLightingZoneScroll.TextImageRelation = TextImageRelation.ImageAboveText;
@@ -879,11 +879,11 @@
             buttonLightingZoneLogo.FlatStyle = FlatStyle.Flat;
             buttonLightingZoneLogo.ForeColor = SystemColors.ControlText;
             buttonLightingZoneLogo.ImageAlign = ContentAlignment.BottomCenter;
-            buttonLightingZoneLogo.Location = new Point(89, 2);
-            buttonLightingZoneLogo.Margin = new Padding(2);
+            buttonLightingZoneLogo.Location = new Point(180, 4);
+            buttonLightingZoneLogo.Margin = new Padding(4);
             buttonLightingZoneLogo.Name = "buttonLightingZoneLogo";
             buttonLightingZoneLogo.Secondary = false;
-            buttonLightingZoneLogo.Size = new Size(83, 36);
+            buttonLightingZoneLogo.Size = new Size(168, 72);
             buttonLightingZoneLogo.TabIndex = 4;
             buttonLightingZoneLogo.Text = "Logo";
             buttonLightingZoneLogo.TextImageRelation = TextImageRelation.ImageAboveText;
@@ -903,11 +903,11 @@
             buttonLightingZoneAll.FlatAppearance.BorderSize = 0;
             buttonLightingZoneAll.FlatStyle = FlatStyle.Flat;
             buttonLightingZoneAll.ForeColor = SystemColors.ControlText;
-            buttonLightingZoneAll.Location = new Point(2, 2);
-            buttonLightingZoneAll.Margin = new Padding(2);
+            buttonLightingZoneAll.Location = new Point(4, 4);
+            buttonLightingZoneAll.Margin = new Padding(4);
             buttonLightingZoneAll.Name = "buttonLightingZoneAll";
             buttonLightingZoneAll.Secondary = false;
-            buttonLightingZoneAll.Size = new Size(83, 36);
+            buttonLightingZoneAll.Size = new Size(168, 72);
             buttonLightingZoneAll.TabIndex = 4;
             buttonLightingZoneAll.Text = "All";
             buttonLightingZoneAll.TextImageRelation = TextImageRelation.ImageAboveText;
@@ -927,11 +927,11 @@
             buttonLightingZoneUnderglow.FlatStyle = FlatStyle.Flat;
             buttonLightingZoneUnderglow.ForeColor = SystemColors.ControlText;
             buttonLightingZoneUnderglow.ImageAlign = ContentAlignment.BottomCenter;
-            buttonLightingZoneUnderglow.Location = new Point(263, 2);
-            buttonLightingZoneUnderglow.Margin = new Padding(2);
+            buttonLightingZoneUnderglow.Location = new Point(532, 4);
+            buttonLightingZoneUnderglow.Margin = new Padding(4);
             buttonLightingZoneUnderglow.Name = "buttonLightingZoneUnderglow";
             buttonLightingZoneUnderglow.Secondary = false;
-            buttonLightingZoneUnderglow.Size = new Size(83, 36);
+            buttonLightingZoneUnderglow.Size = new Size(168, 72);
             buttonLightingZoneUnderglow.TabIndex = 5;
             buttonLightingZoneUnderglow.Text = "Underglow";
             buttonLightingZoneUnderglow.TextImageRelation = TextImageRelation.ImageAboveText;
@@ -951,11 +951,11 @@
             buttonLightingZoneDock.FlatStyle = FlatStyle.Flat;
             buttonLightingZoneDock.ForeColor = SystemColors.ControlText;
             buttonLightingZoneDock.ImageAlign = ContentAlignment.BottomCenter;
-            buttonLightingZoneDock.Location = new Point(350, 2);
-            buttonLightingZoneDock.Margin = new Padding(2);
+            buttonLightingZoneDock.Location = new Point(708, 4);
+            buttonLightingZoneDock.Margin = new Padding(4);
             buttonLightingZoneDock.Name = "buttonLightingZoneDock";
             buttonLightingZoneDock.Secondary = false;
-            buttonLightingZoneDock.Size = new Size(85, 36);
+            buttonLightingZoneDock.Size = new Size(169, 72);
             buttonLightingZoneDock.TabIndex = 6;
             buttonLightingZoneDock.Text = "Dock";
             buttonLightingZoneDock.TextImageRelation = TextImageRelation.ImageAboveText;
@@ -968,27 +968,27 @@
             comboBoxAnimationDirection.DropDownStyle = ComboBoxStyle.DropDownList;
             comboBoxAnimationDirection.FlatStyle = FlatStyle.Flat;
             comboBoxAnimationDirection.FormattingEnabled = true;
-            comboBoxAnimationDirection.Location = new Point(245, 153);
-            comboBoxAnimationDirection.Margin = new Padding(11, 0, 11, 0);
+            comboBoxAnimationDirection.Location = new Point(490, 260);
+            comboBoxAnimationDirection.Margin = new Padding(22, 0, 22, 0);
             comboBoxAnimationDirection.Name = "comboBoxAnimationDirection";
-            comboBoxAnimationDirection.Size = new Size(190, 23);
+            comboBoxAnimationDirection.Size = new Size(376, 40);
             comboBoxAnimationDirection.TabIndex = 54;
             // 
             // labelAnimationDirection
             // 
-            labelAnimationDirection.Location = new Point(4, 153);
-            labelAnimationDirection.Margin = new Padding(4, 0, 4, 0);
+            labelAnimationDirection.Location = new Point(10, 256);
+            labelAnimationDirection.Margin = new Padding(8, 0, 8, 0);
             labelAnimationDirection.Name = "labelAnimationDirection";
-            labelAnimationDirection.Size = new Size(211, 22);
+            labelAnimationDirection.Size = new Size(422, 44);
             labelAnimationDirection.TabIndex = 55;
             labelAnimationDirection.Text = "Animation Direction";
             // 
             // checkBoxRandomColor
             // 
-            checkBoxRandomColor.Location = new Point(347, 74);
-            checkBoxRandomColor.Margin = new Padding(4, 0, 4, 0);
+            checkBoxRandomColor.Location = new Point(698, 144);
+            checkBoxRandomColor.Margin = new Padding(8, 0, 8, 0);
             checkBoxRandomColor.Name = "checkBoxRandomColor";
-            checkBoxRandomColor.Size = new Size(85, 25);
+            checkBoxRandomColor.Size = new Size(170, 50);
             checkBoxRandomColor.TabIndex = 53;
             checkBoxRandomColor.Text = "Random";
             checkBoxRandomColor.UseVisualStyleBackColor = true;
@@ -1000,28 +1000,28 @@
             comboBoxAnimationSpeed.DropDownStyle = ComboBoxStyle.DropDownList;
             comboBoxAnimationSpeed.FlatStyle = FlatStyle.Flat;
             comboBoxAnimationSpeed.FormattingEnabled = true;
-            comboBoxAnimationSpeed.Location = new Point(245, 125);
-            comboBoxAnimationSpeed.Margin = new Padding(11, 0, 11, 0);
+            comboBoxAnimationSpeed.Location = new Point(490, 208);
+            comboBoxAnimationSpeed.Margin = new Padding(22, 0, 22, 0);
             comboBoxAnimationSpeed.Name = "comboBoxAnimationSpeed";
-            comboBoxAnimationSpeed.Size = new Size(190, 23);
+            comboBoxAnimationSpeed.Size = new Size(376, 40);
             comboBoxAnimationSpeed.TabIndex = 51;
             // 
             // labelAnimationSpeed
             // 
-            labelAnimationSpeed.Location = new Point(4, 125);
-            labelAnimationSpeed.Margin = new Padding(4, 0, 4, 0);
+            labelAnimationSpeed.Location = new Point(10, 212);
+            labelAnimationSpeed.Margin = new Padding(8, 0, 8, 0);
             labelAnimationSpeed.Name = "labelAnimationSpeed";
-            labelAnimationSpeed.Size = new Size(211, 22);
+            labelAnimationSpeed.Size = new Size(422, 44);
             labelAnimationSpeed.TabIndex = 52;
             labelAnimationSpeed.Text = "Animation Speed";
             // 
             // pictureBoxLightingColor
             // 
             pictureBoxLightingColor.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            pictureBoxLightingColor.Location = new Point(321, 80);
-            pictureBoxLightingColor.Margin = new Padding(4);
+            pictureBoxLightingColor.Location = new Point(623, 158);
+            pictureBoxLightingColor.Margin = new Padding(8);
             pictureBoxLightingColor.Name = "pictureBoxLightingColor";
-            pictureBoxLightingColor.Size = new Size(13, 13);
+            pictureBoxLightingColor.Size = new Size(26, 26);
             pictureBoxLightingColor.TabIndex = 50;
             pictureBoxLightingColor.TabStop = false;
             // 
@@ -1035,11 +1035,11 @@
             buttonLightingColor.BorderRadius = 2;
             buttonLightingColor.FlatStyle = FlatStyle.Flat;
             buttonLightingColor.ForeColor = SystemColors.ControlText;
-            buttonLightingColor.Location = new Point(252, 74);
-            buttonLightingColor.Margin = new Padding(2, 4, 2, 4);
+            buttonLightingColor.Location = new Point(488, 145);
+            buttonLightingColor.Margin = new Padding(0);
             buttonLightingColor.Name = "buttonLightingColor";
             buttonLightingColor.Secondary = false;
-            buttonLightingColor.Size = new Size(90, 25);
+            buttonLightingColor.Size = new Size(180, 50);
             buttonLightingColor.TabIndex = 49;
             buttonLightingColor.Text = Properties.Strings.Color;
             buttonLightingColor.TextAlign = ContentAlignment.MiddleLeft;
@@ -1052,18 +1052,18 @@
             comboBoxLightingMode.DropDownStyle = ComboBoxStyle.DropDownList;
             comboBoxLightingMode.FlatStyle = FlatStyle.Flat;
             comboBoxLightingMode.FormattingEnabled = true;
-            comboBoxLightingMode.Location = new Point(245, 48);
-            comboBoxLightingMode.Margin = new Padding(11, 0, 11, 0);
+            comboBoxLightingMode.Location = new Point(490, 96);
+            comboBoxLightingMode.Margin = new Padding(22, 0, 22, 0);
             comboBoxLightingMode.Name = "comboBoxLightingMode";
-            comboBoxLightingMode.Size = new Size(191, 23);
+            comboBoxLightingMode.Size = new Size(378, 40);
             comboBoxLightingMode.TabIndex = 46;
             // 
             // labelLightingMode
             // 
-            labelLightingMode.Location = new Point(5, 48);
-            labelLightingMode.Margin = new Padding(4, 0, 4, 0);
+            labelLightingMode.Location = new Point(10, 96);
+            labelLightingMode.Margin = new Padding(8, 0, 8, 0);
             labelLightingMode.Name = "labelLightingMode";
-            labelLightingMode.Size = new Size(211, 22);
+            labelLightingMode.Size = new Size(422, 44);
             labelLightingMode.TabIndex = 47;
             labelLightingMode.Text = "Lighting Mode";
             // 
@@ -1075,20 +1075,20 @@
             panelLightingHeader.Controls.Add(labelLighting);
             panelLightingHeader.Dock = DockStyle.Top;
             panelLightingHeader.Location = new Point(0, 0);
-            panelLightingHeader.Margin = new Padding(2);
+            panelLightingHeader.Margin = new Padding(4);
             panelLightingHeader.Name = "panelLightingHeader";
-            panelLightingHeader.Size = new Size(437, 20);
+            panelLightingHeader.Size = new Size(881, 40);
             panelLightingHeader.TabIndex = 41;
             // 
             // sliderBrightness
             // 
             sliderBrightness.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right;
-            sliderBrightness.Location = new Point(246, 1);
-            sliderBrightness.Margin = new Padding(1);
+            sliderBrightness.Location = new Point(497, 2);
+            sliderBrightness.Margin = new Padding(2);
             sliderBrightness.Max = 100;
             sliderBrightness.Min = 0;
             sliderBrightness.Name = "sliderBrightness";
-            sliderBrightness.Size = new Size(189, 18);
+            sliderBrightness.Size = new Size(378, 36);
             sliderBrightness.Step = 1;
             sliderBrightness.TabIndex = 51;
             sliderBrightness.Text = "sliderBrightness";
@@ -1098,21 +1098,21 @@
             // 
             pictureBoxLighting.BackgroundImage = Properties.Resources.backlight;
             pictureBoxLighting.BackgroundImageLayout = ImageLayout.Zoom;
-            pictureBoxLighting.Location = new Point(3, 0);
-            pictureBoxLighting.Margin = new Padding(2);
+            pictureBoxLighting.Location = new Point(6, 0);
+            pictureBoxLighting.Margin = new Padding(4);
             pictureBoxLighting.Name = "pictureBoxLighting";
-            pictureBoxLighting.Size = new Size(16, 16);
+            pictureBoxLighting.Size = new Size(32, 32);
             pictureBoxLighting.TabIndex = 35;
             pictureBoxLighting.TabStop = false;
             // 
             // labelLighting
             // 
             labelLighting.AutoSize = true;
-            labelLighting.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            labelLighting.Location = new Point(22, 0);
-            labelLighting.Margin = new Padding(4, 0, 4, 0);
+            labelLighting.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            labelLighting.Location = new Point(44, 0);
+            labelLighting.Margin = new Padding(8, 0, 8, 0);
             labelLighting.Name = "labelLighting";
-            labelLighting.Size = new Size(52, 15);
+            labelLighting.Size = new Size(108, 32);
             labelLighting.TabIndex = 34;
             labelLighting.Text = "Lighting";
             // 
@@ -1127,19 +1127,19 @@
             panelEnergy.Controls.Add(labelAutoPowerOff);
             panelEnergy.Controls.Add(panelEnergyHeader);
             panelEnergy.Dock = DockStyle.Top;
-            panelEnergy.Location = new Point(7, 635);
-            panelEnergy.Margin = new Padding(2);
+            panelEnergy.Location = new Point(14, 1211);
+            panelEnergy.Margin = new Padding(4);
             panelEnergy.Name = "panelEnergy";
-            panelEnergy.Padding = new Padding(0, 0, 0, 17);
-            panelEnergy.Size = new Size(437, 96);
+            panelEnergy.Padding = new Padding(0, 0, 0, 34);
+            panelEnergy.Size = new Size(881, 192);
             panelEnergy.TabIndex = 43;
             // 
             // labelLowBatteryWarningValue
             // 
-            labelLowBatteryWarningValue.Location = new Point(401, 57);
-            labelLowBatteryWarningValue.Margin = new Padding(4, 0, 4, 0);
+            labelLowBatteryWarningValue.Location = new Point(802, 114);
+            labelLowBatteryWarningValue.Margin = new Padding(8, 0, 8, 0);
             labelLowBatteryWarningValue.Name = "labelLowBatteryWarningValue";
-            labelLowBatteryWarningValue.Size = new Size(32, 20);
+            labelLowBatteryWarningValue.Size = new Size(64, 40);
             labelLowBatteryWarningValue.TabIndex = 51;
             labelLowBatteryWarningValue.Text = "20%";
             labelLowBatteryWarningValue.TextAlign = ContentAlignment.MiddleRight;
@@ -1151,21 +1151,21 @@
             comboBoxAutoPowerOff.DropDownStyle = ComboBoxStyle.DropDownList;
             comboBoxAutoPowerOff.FlatStyle = FlatStyle.Flat;
             comboBoxAutoPowerOff.FormattingEnabled = true;
-            comboBoxAutoPowerOff.Location = new Point(241, 29);
-            comboBoxAutoPowerOff.Margin = new Padding(11, 0, 11, 0);
+            comboBoxAutoPowerOff.Location = new Point(490, 58);
+            comboBoxAutoPowerOff.Margin = new Padding(22, 0, 22, 0);
             comboBoxAutoPowerOff.Name = "comboBoxAutoPowerOff";
-            comboBoxAutoPowerOff.Size = new Size(191, 23);
+            comboBoxAutoPowerOff.Size = new Size(378, 40);
             comboBoxAutoPowerOff.TabIndex = 56;
             // 
             // sliderLowBatteryWarning
             // 
             sliderLowBatteryWarning.AccessibleName = "DPI Slider";
-            sliderLowBatteryWarning.Location = new Point(241, 57);
-            sliderLowBatteryWarning.Margin = new Padding(2);
+            sliderLowBatteryWarning.Location = new Point(482, 114);
+            sliderLowBatteryWarning.Margin = new Padding(4);
             sliderLowBatteryWarning.Max = 50;
             sliderLowBatteryWarning.Min = 0;
             sliderLowBatteryWarning.Name = "sliderLowBatteryWarning";
-            sliderLowBatteryWarning.Size = new Size(162, 20);
+            sliderLowBatteryWarning.Size = new Size(324, 40);
             sliderLowBatteryWarning.Step = 10;
             sliderLowBatteryWarning.TabIndex = 50;
             sliderLowBatteryWarning.TabStop = false;
@@ -1174,19 +1174,19 @@
             // 
             // labelLowBatteryWarning
             // 
-            labelLowBatteryWarning.Location = new Point(5, 55);
-            labelLowBatteryWarning.Margin = new Padding(4, 0, 4, 0);
+            labelLowBatteryWarning.Location = new Point(10, 110);
+            labelLowBatteryWarning.Margin = new Padding(8, 0, 8, 0);
             labelLowBatteryWarning.Name = "labelLowBatteryWarning";
-            labelLowBatteryWarning.Size = new Size(211, 22);
+            labelLowBatteryWarning.Size = new Size(422, 44);
             labelLowBatteryWarning.TabIndex = 57;
             labelLowBatteryWarning.Text = "Low Battery Warning";
             // 
             // labelAutoPowerOff
             // 
-            labelAutoPowerOff.Location = new Point(5, 29);
-            labelAutoPowerOff.Margin = new Padding(4, 0, 4, 0);
+            labelAutoPowerOff.Location = new Point(10, 58);
+            labelAutoPowerOff.Margin = new Padding(8, 0, 8, 0);
             labelAutoPowerOff.Name = "labelAutoPowerOff";
-            labelAutoPowerOff.Size = new Size(211, 22);
+            labelAutoPowerOff.Size = new Size(422, 44);
             labelAutoPowerOff.TabIndex = 56;
             labelAutoPowerOff.Text = "Auto Power Off";
             // 
@@ -1197,30 +1197,30 @@
             panelEnergyHeader.Controls.Add(labelEnergy);
             panelEnergyHeader.Dock = DockStyle.Top;
             panelEnergyHeader.Location = new Point(0, 0);
-            panelEnergyHeader.Margin = new Padding(2);
+            panelEnergyHeader.Margin = new Padding(4);
             panelEnergyHeader.Name = "panelEnergyHeader";
-            panelEnergyHeader.Size = new Size(437, 20);
+            panelEnergyHeader.Size = new Size(881, 40);
             panelEnergyHeader.TabIndex = 41;
             // 
             // pictureBoxEnergy
             // 
             pictureBoxEnergy.BackgroundImage = Properties.Resources.icons8_charging_battery_32;
             pictureBoxEnergy.BackgroundImageLayout = ImageLayout.Zoom;
-            pictureBoxEnergy.Location = new Point(3, 0);
-            pictureBoxEnergy.Margin = new Padding(2);
+            pictureBoxEnergy.Location = new Point(6, 0);
+            pictureBoxEnergy.Margin = new Padding(4);
             pictureBoxEnergy.Name = "pictureBoxEnergy";
-            pictureBoxEnergy.Size = new Size(16, 16);
+            pictureBoxEnergy.Size = new Size(32, 32);
             pictureBoxEnergy.TabIndex = 35;
             pictureBoxEnergy.TabStop = false;
             // 
             // labelEnergy
             // 
             labelEnergy.AutoSize = true;
-            labelEnergy.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            labelEnergy.Location = new Point(22, 0);
-            labelEnergy.Margin = new Padding(4, 0, 4, 0);
+            labelEnergy.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            labelEnergy.Location = new Point(44, 0);
+            labelEnergy.Margin = new Padding(8, 0, 8, 0);
             labelEnergy.Name = "labelEnergy";
-            labelEnergy.Size = new Size(45, 15);
+            labelEnergy.Size = new Size(93, 32);
             labelEnergy.TabIndex = 34;
             labelEnergy.Text = "Energy";
             // 
@@ -1234,13 +1234,13 @@
             tableLayoutProfiles.Controls.Add(panelProfiles, 1, 0);
             tableLayoutProfiles.Controls.Add(panelBatteryState, 0, 0);
             tableLayoutProfiles.Dock = DockStyle.Top;
-            tableLayoutProfiles.Location = new Point(7, 7);
-            tableLayoutProfiles.Margin = new Padding(2);
+            tableLayoutProfiles.Location = new Point(14, 14);
+            tableLayoutProfiles.Margin = new Padding(4);
             tableLayoutProfiles.Name = "tableLayoutProfiles";
             tableLayoutProfiles.RowCount = 1;
             tableLayoutProfiles.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
             tableLayoutProfiles.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            tableLayoutProfiles.Size = new Size(437, 38);
+            tableLayoutProfiles.Size = new Size(881, 76);
             tableLayoutProfiles.TabIndex = 44;
             // 
             // panelBatteryState
@@ -1248,21 +1248,21 @@
             panelBatteryState.Controls.Add(labelChargingState);
             panelBatteryState.Controls.Add(labelBatteryState);
             panelBatteryState.Controls.Add(pictureBoxBatteryState);
-            panelBatteryState.Location = new Point(2, 2);
-            panelBatteryState.Margin = new Padding(2);
+            panelBatteryState.Location = new Point(4, 4);
+            panelBatteryState.Margin = new Padding(4);
             panelBatteryState.Name = "panelBatteryState";
-            panelBatteryState.Size = new Size(200, 33);
+            panelBatteryState.Size = new Size(400, 66);
             panelBatteryState.TabIndex = 1;
             // 
             // labelChargingState
             // 
             labelChargingState.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
             labelChargingState.AutoSize = true;
-            labelChargingState.Font = new Font("Segoe UI", 10F, FontStyle.Bold, GraphicsUnit.Point);
-            labelChargingState.Location = new Point(77, 7);
-            labelChargingState.Margin = new Padding(2, 0, 2, 0);
+            labelChargingState.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            labelChargingState.Location = new Point(154, 14);
+            labelChargingState.Margin = new Padding(4, 0, 4, 0);
             labelChargingState.Name = "labelChargingState";
-            labelChargingState.Size = new Size(70, 19);
+            labelChargingState.Size = new Size(134, 37);
             labelChargingState.TabIndex = 38;
             labelChargingState.Text = "Charging";
             labelChargingState.TextAlign = ContentAlignment.MiddleLeft;
@@ -1271,11 +1271,11 @@
             // 
             labelBatteryState.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right;
             labelBatteryState.AutoSize = true;
-            labelBatteryState.Font = new Font("Segoe UI", 10F, FontStyle.Bold, GraphicsUnit.Point);
-            labelBatteryState.Location = new Point(30, 7);
-            labelBatteryState.Margin = new Padding(2, 0, 2, 0);
+            labelBatteryState.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            labelBatteryState.Location = new Point(60, 14);
+            labelBatteryState.Margin = new Padding(4, 0, 4, 0);
             labelBatteryState.Name = "labelBatteryState";
-            labelBatteryState.Size = new Size(45, 19);
+            labelBatteryState.Size = new Size(88, 37);
             labelBatteryState.TabIndex = 37;
             labelBatteryState.Text = "100%";
             labelBatteryState.TextAlign = ContentAlignment.MiddleRight;
@@ -1286,9 +1286,9 @@
             pictureBoxBatteryState.BackgroundImageLayout = ImageLayout.Zoom;
             pictureBoxBatteryState.Dock = DockStyle.Left;
             pictureBoxBatteryState.Location = new Point(0, 0);
-            pictureBoxBatteryState.Margin = new Padding(2);
+            pictureBoxBatteryState.Margin = new Padding(4);
             pictureBoxBatteryState.Name = "pictureBoxBatteryState";
-            pictureBoxBatteryState.Size = new Size(26, 33);
+            pictureBoxBatteryState.Size = new Size(52, 66);
             pictureBoxBatteryState.TabIndex = 36;
             pictureBoxBatteryState.TabStop = false;
             // 
@@ -1302,11 +1302,11 @@
             buttonSync.BorderRadius = 2;
             buttonSync.FlatStyle = FlatStyle.Flat;
             buttonSync.ForeColor = SystemColors.ControlText;
-            buttonSync.Location = new Point(5, 37);
-            buttonSync.Margin = new Padding(2, 4, 2, 4);
+            buttonSync.Location = new Point(8, 74);
+            buttonSync.Margin = new Padding(4, 8, 4, 8);
             buttonSync.Name = "buttonSync";
             buttonSync.Secondary = false;
-            buttonSync.Size = new Size(431, 25);
+            buttonSync.Size = new Size(852, 50);
             buttonSync.TabIndex = 46;
             buttonSync.Text = "Synchronize with Mouse";
             buttonSync.UseVisualStyleBackColor = false;
@@ -1319,10 +1319,10 @@
             panelBottomButtons.Controls.Add(buttonExport);
             panelBottomButtons.Controls.Add(buttonSync);
             panelBottomButtons.Dock = DockStyle.Top;
-            panelBottomButtons.Location = new Point(7, 731);
-            panelBottomButtons.Margin = new Padding(2);
+            panelBottomButtons.Location = new Point(14, 1403);
+            panelBottomButtons.Margin = new Padding(4);
             panelBottomButtons.Name = "panelBottomButtons";
-            panelBottomButtons.Size = new Size(437, 66);
+            panelBottomButtons.Size = new Size(881, 132);
             panelBottomButtons.TabIndex = 47;
             // 
             // buttonImport
@@ -1335,11 +1335,11 @@
             buttonImport.BorderRadius = 2;
             buttonImport.FlatStyle = FlatStyle.Flat;
             buttonImport.ForeColor = SystemColors.ControlText;
-            buttonImport.Location = new Point(222, 6);
-            buttonImport.Margin = new Padding(2, 4, 2, 4);
+            buttonImport.Location = new Point(440, 12);
+            buttonImport.Margin = new Padding(4, 8, 4, 8);
             buttonImport.Name = "buttonImport";
             buttonImport.Secondary = false;
-            buttonImport.Size = new Size(214, 25);
+            buttonImport.Size = new Size(420, 50);
             buttonImport.TabIndex = 48;
             buttonImport.Text = "Import Profile";
             buttonImport.UseVisualStyleBackColor = false;
@@ -1355,11 +1355,11 @@
             buttonExport.BorderRadius = 2;
             buttonExport.FlatStyle = FlatStyle.Flat;
             buttonExport.ForeColor = SystemColors.ControlText;
-            buttonExport.Location = new Point(5, 6);
-            buttonExport.Margin = new Padding(2, 4, 2, 4);
+            buttonExport.Location = new Point(8, 12);
+            buttonExport.Margin = new Padding(4, 8, 4, 8);
             buttonExport.Name = "buttonExport";
             buttonExport.Secondary = false;
-            buttonExport.Size = new Size(197, 25);
+            buttonExport.Size = new Size(420, 50);
             buttonExport.TabIndex = 47;
             buttonExport.Text = "Export Profile";
             buttonExport.UseVisualStyleBackColor = false;
@@ -1428,24 +1428,24 @@
             // 
             // AsusMouseSettings
             // 
-            AutoScaleDimensions = new SizeF(96F, 96F);
+            AutoScaleDimensions = new SizeF(192F, 192F);
             AutoScaleMode = AutoScaleMode.Dpi;
             AutoScroll = true;
             AutoSize = true;
             AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            ClientSize = new Size(451, 803);
+            ClientSize = new Size(909, 1558);
             Controls.Add(panelBottomButtons);
             Controls.Add(panelEnergy);
             Controls.Add(panelLighting);
             Controls.Add(panelPerformance);
             Controls.Add(tableLayoutProfiles);
-            Margin = new Padding(2);
+            Margin = new Padding(4);
             MaximizeBox = false;
             MdiChildrenMinimizedAnchorBottom = false;
             MinimizeBox = false;
-            MinimumSize = new Size(465, 413);
+            MinimumSize = new Size(935, 760);
             Name = "AsusMouseSettings";
-            Padding = new Padding(7);
+            Padding = new Padding(14);
             ShowIcon = false;
             ShowInTaskbar = false;
             Text = "Mouse Settings";
@@ -1522,7 +1522,6 @@
         private Panel panelDPISettings;
         private TableLayoutPanel tableLayoutPanel1;
         private Label labelMinDPI;
-        private Label labelMaxDPI;
         private Panel panelDPITile;
         private Label labelDPI;
         private TableLayoutPanel tableLayoutPollingRate;
@@ -1559,7 +1558,6 @@
         private PictureBox pictureBoxBatteryState;
         private UI.RButton buttonSync;
         private Panel panelBottomButtons;
-        private NumericUpDown numericUpDownCurrentDPI;
         private TableLayoutPanel tableLayoutLightingZones;
         private UI.RButton buttonLightingZoneScroll;
         private UI.RButton buttonLightingZoneLogo;
@@ -1586,5 +1584,7 @@
         private Label labelAccelerationValue;
         private UI.RButton buttonImport;
         private UI.RButton buttonExport;
+        private NumericUpDown numericUpDownCurrentDPI;
+        private Label labelMaxDPI;
     }
 }

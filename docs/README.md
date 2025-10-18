@@ -1,9 +1,10 @@
 # G-Helper - Lightweight control tool for Asus laptops
 [![United24](https://raw.githubusercontent.com/seerge/g-helper/main/docs/ua.png)](https://u24.gov.ua/)
 [![GitHub release](https://img.shields.io/github/release/seerge/g-helper)](https://GitHub.com/seerge/g-helper/releases/) 
-[![Github all releases](https://img.shields.io/github/downloads/seerge/g-helper/total)](https://GitHub.com/seerge/g-helper/releases/) [![GitHub stars](https://img.shields.io/github/stars/seerge/g-helper.svg?style=social)](https://GitHub.com/seerge/g-helper/stargazers/) <sup>[中文版点这里](https://github.com/seerge/g-helper/blob/main/docs/README.zh-CN.md)</sup> <sup>[日本語はこちら](https://github.com/seerge/g-helper/blob/main/docs/README.ja-JP.md)</sup>
+[![Github all releases](https://img.shields.io/github/downloads/seerge/g-helper/total)](https://GitHub.com/seerge/g-helper/releases/) [![SLSA3](https://img.shields.io/badge/SLSA-level%203-green?logo=data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAOCAMAAAAolt3jAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAABMlBMVEXvMQDvMADwMQDwMADwMADvMADvMADwMADwMQDvMQDvMQDwMADwMADvMADwMADwMADwMQDvMQDvMQDwMQDvMQDwMQDwMADwMADwMQDwMADwMADvMADvMQDvMQDwMADwMQDwMADvMQDwMADwMQDwMADwMADwMADwMADwMADwMADvMQDvMQDwMADwMQDwMADvMQDvMQDwMADvMQDvMQDwMADwMQDwMQDwMQDvMQDwMADvMADwMADwMQDvMQDwMADwMQDwMQDwMQDwMQDvMQDvMQDvMADwMADvMADvMADvMADwMQDwMQDvMADvMQDvMQDvMADvMADvMQDwMQDvMQDvMADvMADvMADvMQDwMQDvMQDvMQDvMADvMADwMADvMQDvMQDvMQDvMADwMADwMQDwMAAAAAA/HoSwAAAAY3RSTlMpsvneQlQrU/LQSWzvM5DzmzeF9Pi+N6vvrk9HuP3asTaPgkVFmO3rUrMjqvL6d0LLTVjI/PuMQNSGOWa/6YU8zNuDLihJ0e6aMGzl8s2IT7b6lIFkRj1mtvQ0eJW95rG0+Sid59x/AAAAAWJLR0Rltd2InwAAAAlwSFlzAAAOwwAADsMBx2+oZAAAAAd0SU1FB+YHGg0tGLrTaD4AAACqSURBVAjXY2BgZEqGAGYWVjYGdg4oj5OLm4eRgZcvBcThFxAUEk4WYRAVE09OlpCUkpaRTU6WY0iWV1BUUlZRVQMqUddgSE7W1NLS1gFp0NXTB3KTDQyNjE2Sk03NzC1A3GR1SytrG1s7e4dkBogtjk7OLq5uyTCuu4enl3cyhOvj66fvHxAIEmYICg4JDQuPiAQrEmGIio6JjZOFOjSegSHBBMpOToxPAgCJfDZC/m2KHgAAACV0RVh0ZGF0ZTpjcmVhdGUAMjAyMi0wNy0yNlQxMzo0NToyNCswMDowMC8AywoAAAAldEVYdGRhdGU6bW9kaWZ5ADIwMjItMDctMjZUMTM6NDU6MjQrMDA6MDBeXXO2AAAAGXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAAAABJRU5ErkJggg==)](https://github.com/seerge/g-helper/attestations) 
+ [![GitHub stars](https://img.shields.io/github/stars/seerge/g-helper.svg?style=social)](https://GitHub.com/seerge/g-helper/stargazers/) <sup>[中文版点这里](https://github.com/seerge/g-helper/blob/main/docs/README.zh-CN.md)</sup> <sup>[日本語はこちら](https://github.com/seerge/g-helper/blob/main/docs/README.ja-JP.md)</sup>
 
-Small and lightweight Armoury Crate alternative for Asus laptops offering almost same functionality with a much smaller footprint. Works with all popular models, such as ROG Zephyrus G14, G15, G16, M16, Flow X13, Flow X16, Flow Z13, DUO, TUF Series, Strix or Scar Series, ProArt, Vivobook, Zenbook, ROG Ally or Ally X and many more! 
+Small and lightweight Armoury Crate alternative for Asus laptops offering almost same functionality with a much smaller footprint. Works with all popular models, such as ROG Zephyrus G14, G15, G16, M16, Flow X13, Flow X16, Flow Z13, DUO, TUF Series, Strix or Scar Series, ProArt, Vivobook, Zenbook, Expertbook, ROG Ally or Ally X and many more! 
 
 # [:floppy_disk: Download](https://github.com/seerge/g-helper/releases/latest/download/GHelper.zip)
 **⭐ If you like the app - please spread the word about it online**
@@ -12,10 +13,10 @@ Small and lightweight Armoury Crate alternative for Asus laptops offering almost
 <tr>
    <td><b>Support Project</b></td>
    <td >
-      <a href="https://www.paypal.com/donate/?hosted_button_id=Y7UNMPRNLB5X2"><img src="https://raw.githubusercontent.com/seerge/g-helper/main/docs/paypal-eur.png" height="36" alt="PayPal EUR"></a>&nbsp;
-      <a href="https://www.paypal.com/donate/?hosted_button_id=JSMU7DFHFSJMW"><img src="https://raw.githubusercontent.com/seerge/g-helper/main/docs/paypal-usd.png" height="36" alt="PayPal USD"></a>&nbsp;
-      <a href="https://buy.stripe.com/8wM6pt8HbgK50tWbIK"><img src="https://raw.githubusercontent.com/seerge/g-helper/main/docs/stripe.png" height="36" alt="Stripe"></a>&nbsp;
-      <a href="https://buy.stripe.com/6oE29dg9D3Xj7Wo28b"><img src="https://raw.githubusercontent.com/seerge/g-helper/main/docs/alipay.png" height="36" alt="Alipay"></a>
+      <a href="https://www.paypal.com/donate/?hosted_button_id=Y7UNMPRNLB5X2"><img src="https://raw.githubusercontent.com/seerge/g-helper/main/docs/paypal-eur.png" width="150" alt="PayPal EUR"></a>&nbsp;
+      <a href="https://www.paypal.com/donate/?hosted_button_id=JSMU7DFHFSJMW"><img src="https://raw.githubusercontent.com/seerge/g-helper/main/docs/paypal-usd.png" width="150" alt="PayPal USD"></a>&nbsp;
+      <a href="https://buy.stripe.com/8wM6pt8HbgK50tWbIK"><img src="https://raw.githubusercontent.com/seerge/g-helper/main/docs/stripe.png" width="150"alt="Stripe"></a>&nbsp;
+      <a href="https://buy.stripe.com/6oE29dg9D3Xj7Wo28b"><img src="https://raw.githubusercontent.com/seerge/g-helper/main/docs/alipay.png" width="150" alt="Alipay"></a>
    </td>
 </tr>
 </table>
@@ -29,19 +30,21 @@ Small and lightweight Armoury Crate alternative for Asus laptops offering almost
 [![G-Helper Download](https://github.com/seerge/g-helper/assets/5920850/4d98465a-63a5-4498-ae14-afb3e67e7e82)](https://github.com/seerge/g-helper/releases/latest/download/GHelper.zip)
 
 ## :loudspeaker: YouTube Reviews and Guides
-| [![Youtube review Josh Cravey](https://i.ytimg.com/vi/hqe-PjuE-K8/hqdefault.jpg)](https://www.youtube.com/watch?v=hqe-PjuE-K8) | [![Youtube review cbutters Tech](https://i.ytimg.com/vi/6aVdwJKZSSc/hqdefault.jpg)](https://www.youtube.com/watch?v=6aVdwJKZSSc) |
-| ----------------- | ---------------- | 
-| [Josh Cravey](https://www.youtube.com/watch?v=hqe-PjuE-K8) | [cbutters Tech](https://www.youtube.com/watch?v=6aVdwJKZSSc) | 
+| [![Youtube review Josh Cravey](https://i.ytimg.com/vi/hqe-PjuE-K8/hqdefault.jpg)](https://www.youtube.com/watch?v=hqe-PjuE-K8) | [![Youtube review Crimson Tech](https://i.ytimg.com/vi/5XUIMUzgHU0/hqdefault.jpg)](https://www.youtube.com/watch?v=5XUIMUzgHU0) | [![Youtube review cbutters Tech](https://i.ytimg.com/vi/6aVdwJKZSSc/hqdefault.jpg)](https://www.youtube.com/watch?v=6aVdwJKZSSc) |
+| ----------------- | ---------------- | ---------------- | 
+| [Josh Cravey](https://www.youtube.com/watch?v=hqe-PjuE-K8) | [Crimson Tech](https://www.youtube.com/watch?v=5XUIMUzgHU0) | [cbutters Tech](https://www.youtube.com/watch?v=6aVdwJKZSSc) | 
 
 ## 📰 Articles
 1. https://www.digitaltrends.com/computing/g-helper-armoury-crate-alternative/
 2. https://binaryfork.com/ghelper-armoury-crate-alternative-10216/
+3. https://www.ultrabookreview.com/71392-optimized-quiet-gaming-5080-5090/
+4. https://www.lesnumeriques.com/appli-logiciel/marre-des-lenteurs-d-armoury-crate-sur-votre-pc-portable-asus-decouvrez-g-helper-l-alternative-ultra-legere-n240111.html
 
 ## :gift: Advantages 
 
 1. Seamless and automatic GPU switching
 2. All performance modes can be fully customized with power limits and fan curves
-3. Lightweight. Doesn't install anything in your system. Just a single exe to run
+3. Lightweight. Just a single exe to run. Doesn't install anything in your system. 
 4. Simple and clean native UI with easy access to all settings
 5. FN-Lock and custom hotkeys
 
@@ -100,23 +103,27 @@ Each BIOS mode is paired with matching Windows Power Mode. You can adjust this s
 ### :mouse: Asus Mouse and other peripherals support
 
 [Currently supported models](https://github.com/seerge/g-helper/discussions/900)
-- ROG Chakram X (P708)
-- ROG Chakram Core (P511)
-- ROG Gladius II and Gladius II Origin (P502 and P504)
+- ROG Chakram X 
+- ROG Chakram Core 
+- ROG Gladius II and Gladius II Origin
 - ROG Gladius II Wireless
 - ROG Gladius III
 - ROG Gladius III Wireless
+- ROG Harpe Ace Extreme
 - ROG Harpe Ace Aim Lab Edition
+- ROG Harpe Ace Mini
 - ROG Keris Wireless
 - ROG Keris II Ace
-- ROG Strix Carry (P508)
-- ROG Strix III Gladius III Aimpoint Wireless (P711)
-- ROG Strix Impact III (P518)
+- ROG Keris Wireless Aimpoint
+- ROG Strix Carry
+- ROG Strix III Gladius III Aimpoint Wireless 
+- ROG Strix Impact III
+- ROG Strix Impact III Wireless 
 - ROG Spatha X
 - ROG Strix Impact II Wireless
 - ROG Pugio
 - ROG Pugio II
-- TUF Gaming M4 Wireless (P306)
+- TUF Gaming M4 Wireless
 - TUF Gaming M3
 - TUF Gaming M3 Gen II
 - TUF Gaming M4 AIR
@@ -133,9 +140,9 @@ Huge thanks to [@IceStormNG](https://github.com/IceStormNG) 👑 for contributio
 - ``Ctrl + M1 / M2`` - Screen brightness Down / Up
 - ``Shift + M1 / M2`` - Backlight brightness Down / Up
 - ``Fn + C`` - Fn-Lock
-- ``Fn + Ctrl +  F7 / F8`` - Flicker-free dimming Down / Up
+- ``Fn + Ctrl +  F7 / F8`` / ``Ctrl + Shift + Alt +  F7 / F8`` - Flicker-free dimming Down / Up
 - ``Fn + Shift + F7 / F8`` - Matrix / Slash Lighting brightness Down / Up
-- ``Fn + Shift + F7 / F8`` - Screenpad brightness Down / Up
+- ``Fn + Shift + F7 / F8`` / ``Ctrl + Shift + Alt +  F7 / F8`` - Screenpad brightness Down / Up
 - ``Ctrl + Shift + F20`` - Mute Microphone
 - ``Ctrl + Shift + Alt + F13`` - Toggle Display Refresh Rate
 - ``Ctrl + Shift + Alt + F14`` - Eco GPU Mode
@@ -157,15 +164,15 @@ Huge thanks to [@IceStormNG](https://github.com/IceStormNG) 👑 for contributio
 
 ------------------
 
-### 🔖 Important Notice
-
-G-Helper is **NOT** an operating system, firmware, or driver. It **DOES NOT** "run" your hardware in real-time anyhow. 
-
-It's an app that lets you select one of the predefined operating modes created by manufacturer (and stored in BIOS) and optionally(!) set some settings that already exist on your device same as Armoury Crate can. It does it by using the Asus System Control Interface "driver" that Armoury uses for it.
-
-If you use equivalent mode/settings as in Armoury Crate - the performance or the behavior of your device won't be different.
-
-The role of G-Helper for your laptop is similar to the role of a remote control for your TV.
+> [!NOTE]
+> ### 🔖 Important Notice
+> G-Helper is **NOT** an operating system, firmware, or driver. It **DOES NOT** "run" your hardware in real-time anyhow.
+> 
+> It's an app that lets you select one of the predefined operating modes created by manufacturer (and stored in BIOS) and optionally(!) set some settings that already exist on your device same as Armoury Crate can. It does it by using the Asus System Control Interface "driver" that Armoury uses for it.
+> 
+> If you use equivalent mode/settings as in Armoury Crate - the performance or the behavior of your device won't be different.
+> 
+> The role of G-Helper for your laptop is similar to the role of a remote control for your TV.
 
 ### Libraries and projects used
 - [Linux Kernel](https://github.com/torvalds/linux/blob/master/include/linux/platform_data/x86/asus-wmi.h) for some basic endpoints in ASUS ACPI/WMI interface
@@ -173,6 +180,12 @@ The role of G-Helper for your laptop is similar to the role of a remote control 
 - [Starlight](https://github.com/vddCore/Starlight) for anime matrix communication protocol
 - [UXTU](https://github.com/JamesCJ60/Universal-x86-Tuning-Utility) for undervolting using Ryzen System Management Unit
 - [AsusCtl](https://gitlab.com/asus-linux/asusctl) for inspiration and some reverse engineering
+
+### Code Signing Policy
+Free code signing provided by [SignPath.io](https://about.signpath.io/), certificate by [SignPath Foundation](https://signpath.org/)
+
+### Privacy Policy
+This program will not transfer any information to other networked systems
 
 ### Disclaimers
 "Asus", "ROG", "TUF", and "Armoury Crate" are trademarked by and belong to AsusTek Computer, Inc. I make no claims to these or any assets belonging to AsusTek Computer and use them purely for informational purposes only.

@@ -818,4 +818,67 @@ Yine de devam etmek istiyor musunuz?</value>
     <value>Güncellendi</value>
     <comment>Updated</comment>
   </data>
+  <data name="SlashBounce" xml:space="preserve">
+    <value>Sıçrama</value>
+  </data>
+  <data name="SlashMode" xml:space="preserve">
+    <value>Kesik</value>
+  </data>
+  <data name="SlashLoading" xml:space="preserve">
+    <value>Yükleniyor</value>
+  </data>
+  <data name="SlashBitStream" xml:space="preserve">
+    <value>Bit Akışı</value>
+  </data>
+  <data name="SlashTransmission" xml:space="preserve">
+    <value>İletim</value>
+  </data>
+  <data name="SlashFlow" xml:space="preserve">
+    <value>Akış</value>
+  </data>
+  <data name="SlashFlux" xml:space="preserve">
+    <value>Akıntı</value>
+  </data>
+  <data name="SlashPhantom" xml:space="preserve">
+    <value>Hayalet</value>
+  </data>
+  <data name="SlashSpectrum" xml:space="preserve">
+    <value>Spektrum</value>
+  </data>
+  <data name="SlashHazard" xml:space="preserve">
+    <value>Tehlike</value>
+  </data>
+  <data name="SlashInterfacing" xml:space="preserve">
+    <value>Arayüz</value>
+  </data>
+  <data name="SlashRamp" xml:space="preserve">
+    <value>Rampa</value>
+  </data>
+  <data name="SlashGameOver" xml:space="preserve">
+    <value>Oyun Bitti</value>
+  </data>
+  <data name="SlashStart" xml:space="preserve">
+    <value>Başlat</value>
+  </data>
+  <data name="SlashBuzzer" xml:space="preserve">
+    <value>Zil</value>
+  </data>
+  <data name="SlashStatic" xml:space="preserve">
+    <value>Statik</value>
+  </data>
+  <data name="SlashBatteryLevel" xml:space="preserve">
+    <value>Pil Seviyesi</value>
+  </data>
+  <data name="IntervalOff" xml:space="preserve">
+    <value>Aralık Kapalı</value>
+  </data>
+  <data name="IntervalSeconds" xml:space="preserve">
+    <value>Aralık {0}</value>
+  </data>
+  <data name="DisableDynamicLighting" xml:space="preserve">
+    <value>Please disable Windows &gt; Dynamic Lighting</value>
+  </data>
+  <data name="AmbientModeResources" xml:space="preserve">
+    <value>Ambient mode may increase resource usage</value>
+  </data>
 </root>

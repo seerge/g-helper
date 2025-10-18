@@ -1,4 +1,5 @@
 using GHelper.Mode;
+using System.Diagnostics;
 using System.Management;
 using System.Text.Json;
 
@@ -13,6 +14,7 @@ public static class AppConfig
 
     private static Dictionary<string, object> config = new Dictionary<string, object>();
     private static System.Timers.Timer timer = new System.Timers.Timer(2000);
+    private static long lastWrite;
 
     static AppConfig()
     {
@@ -76,14 +78,15 @@ public static class AppConfig
 
         try
         {
-            File.WriteAllText(backup, jsonString);
+            File.WriteAllText(configFile, jsonString);
+            //Debug.WriteLine($"{DateTime.Now}: Config write");
         }
         catch (Exception)
         {
-            Thread.Sleep(100);
+            Thread.Sleep(1000);
             try
             {
-                File.WriteAllText(backup, jsonString);
+                File.WriteAllText(configFile, jsonString);
             }
             catch (Exception ex)
             {
@@ -92,13 +95,24 @@ public static class AppConfig
             return;
         }
 
-        Thread.Sleep(500);
+        lastWrite = DateTimeOffset.Now.ToUnixTimeMilliseconds();
 
-        var backupText = File.ReadAllText(backup);
+        Thread.Sleep(5000);
 
-        if (backupText.Contains("{") && backupText.Contains("}"))
+        if (Math.Abs(DateTimeOffset.Now.ToUnixTimeMilliseconds() - lastWrite) < 4000) return;
+
+        var backupText = File.ReadAllText(configFile);
+        bool isValid =
+            !string.IsNullOrWhiteSpace(backupText) &&
+            backupText.IndexOf('\0') == -1 &&
+            backupText.StartsWith("{") &&
+            backupText.Trim().EndsWith("}") &&
+            backupText.Length >= 10;
+
+        if (isValid)
         {
-            File.Copy(backup, configFile, true);
+            File.Copy(configFile, backup, true);
+            //Debug.WriteLine($"{DateTime.Now}: Config backup");
         }
         else
         {
@@ -183,6 +197,11 @@ public static class AppConfig
         config["performance_mode"] = 0;
         string jsonString = JsonSerializer.Serialize(config);
         File.WriteAllText(configFile, jsonString);
+    }
+
+    public static bool Exists(string name)
+    {
+        return config.ContainsKey(name);
     }
 
     public static int Get(string name, int empty = -1)
@@ -311,17 +330,17 @@ public static class AppConfig
                 switch (device)
                 {
                     case AsusFan.GPU:
-                        return StringToBytes("14-3F-44-48-4C-50-54-62-16-1F-26-2D-39-47-55-5F");
+                        return StringToBytes("1E-3F-44-48-4C-50-54-62-16-1F-26-2D-39-47-55-5F");
                     default:
-                        return StringToBytes("14-3F-44-48-4C-50-54-62-11-1A-22-29-34-43-51-5A");
+                        return StringToBytes("1E-3F-44-48-4C-50-54-62-11-1A-22-29-34-43-51-5A");
                 }
             case AsusACPI.PerformanceSilent:
                 switch (device)
                 {
                     case AsusFan.GPU:
-                        return StringToBytes("3C-41-42-46-47-4B-4C-62-08-11-11-1D-1D-26-26-2D");
+                        return StringToBytes("1E-31-3B-42-47-50-5A-64-00-00-04-11-1B-23-28-2D");
                     default:
-                        return StringToBytes("3C-41-42-46-47-4B-4C-62-03-0C-0C-16-16-22-22-29");
+                        return StringToBytes("1E-31-3B-42-47-50-5A-64-00-00-03-0C-14-1C-22-29");
                 }
             default:
                 switch (device)
@@ -383,7 +402,7 @@ public static class AppConfig
 
     public static bool IsTUF()
     {
-        return ContainsModel("TUF");
+        return ContainsModel("TUF") || ContainsModel("TX Gaming") || ContainsModel("TX Air");
     }
 
     public static bool IsProArt()
@@ -393,12 +412,12 @@ public static class AppConfig
 
     public static bool IsVivoZenbook()
     {
-        return ContainsModel("Vivobook") || ContainsModel("Zenbook");
+        return ContainsModel("Vivobook") || ContainsModel("Zenbook") || ContainsModel("EXPERTBOOK");
     }
 
     public static bool IsVivoZenPro()
     {
-        return IsProArt() || IsVivoZenbook();
+        return ContainsModel("Vivobook") || ContainsModel("Zenbook") || ContainsModel("ProArt") || ContainsModel("EXPERTBOOK");
     }
 
     public static bool IsHardwareFnLock()
@@ -409,13 +428,18 @@ public static class AppConfig
     // Devices with bugged bios command to change brightness
     public static bool SwappedBrightness()
     {
-        return ContainsModel("FA506IEB") || ContainsModel("FA506IH") || ContainsModel("FA506IC") || ContainsModel("FX506LU") || ContainsModel("FX506IC") || ContainsModel("FX506LH") || ContainsModel("FA506IV") || ContainsModel("FA706IC") || ContainsModel("FA706IH");
+        return ContainsModel("FA506IEB") || ContainsModel("FA506IH") || ContainsModel("FA506IC") || ContainsModel("FA506II") || ContainsModel("FX506LU") || ContainsModel("FX506IC") || ContainsModel("FX506LH") || ContainsModel("FA506IV") || ContainsModel("FA706IC") || ContainsModel("FA706IH");
     }
 
 
     public static bool IsDUO()
     {
-        return ContainsModel("Duo") || ContainsModel("GX550") || ContainsModel("GX650") || ContainsModel("UX840") || ContainsModel("UX482");
+        return ContainsModel("Duo") || ContainsModel("GX550") || ContainsModel("GX551") || ContainsModel("GX650") || ContainsModel("UX840") || ContainsModel("UX482");
+    }
+
+    public static bool IsM4Button()
+    {
+        return IsDUO() || ContainsModel("GZ302EA");
     }
 
     // G14 2020 has no aura, but media keys instead
@@ -434,11 +458,16 @@ public static class AppConfig
         return ContainsModel("GA401") || ContainsModel("FX517Z") || ContainsModel("FX516P") || ContainsModel("X13") || IsARCNM() || ContainsModel("FA617N") || ContainsModel("FA617X") || NoAura();
     }
 
+    public static bool IsSleepBacklight()
+    {
+        return ContainsModel("FA617") || ContainsModel("FX507");
+    }
+
     public static bool IsAnimeMatrix()
     {
-        return ContainsModel("GA401") || ContainsModel("GA402") || ContainsModel("GU604V");
+        return ContainsModel("GA401") || ContainsModel("GA402") || ContainsModel("GU604V") || ContainsModel("GU604V") || ContainsModel("G835") || ContainsModel("G815") || ContainsModel("G635") || ContainsModel("G615");
     }
-    
+
     public static bool IsSlash()
     {
         return ContainsModel("GA403") || ContainsModel("GU605") || ContainsModel("GA605");
@@ -446,7 +475,7 @@ public static class AppConfig
 
     public static bool IsSlashAura()
     {
-        return ContainsModel("GA605");
+        return ContainsModel("GA605") || ContainsModel("GU605C") || ContainsModel("GA403W") || ContainsModel("GA403UM") || ContainsModel("GA403UP") || ContainsModel("GA403UH");
     }
 
     public static bool IsInputBacklight()
@@ -456,12 +485,12 @@ public static class AppConfig
 
     public static bool IsInvertedFNLock()
     {
-        return ContainsModel("M140") || ContainsModel("S550");
+        return ContainsModel("M140") || ContainsModel("S550") || ContainsModel("P540") || ContainsModel("FA401KM");
     }
 
     public static bool IsOLED()
     {
-        return ContainsModel("OLED") || IsSlash() || ContainsModel("M7600") || ContainsModel("UX64") || ContainsModel("UX34") || ContainsModel("UX53") || ContainsModel("K360") || ContainsModel("X150") || ContainsModel("M350") || ContainsModel("K650") || ContainsModel("UM53") || ContainsModel("K660") || ContainsModel("UX84") || ContainsModel("M650") || ContainsModel("M550") || ContainsModel("M540") || ContainsModel("K340") || ContainsModel("K350") || ContainsModel("M140") || ContainsModel("UM340") || ContainsModel("S540") || ContainsModel("S550") || ContainsModel("M7400") || ContainsModel("N650") || ContainsModel("HN7306") || ContainsModel("H7606") || ContainsModel("UX5406") || ContainsModel("M5606");
+        return ContainsModel("OLED") || IsSlash() || ContainsModel("M7600") || ContainsModel("UX64") || ContainsModel("UX34") || ContainsModel("UX53") || ContainsModel("K360") || ContainsModel("X150") || ContainsModel("M340") || ContainsModel("M350") || ContainsModel("K650") || ContainsModel("UM53") || ContainsModel("K660") || ContainsModel("UX84") || ContainsModel("M650") || ContainsModel("M550") || ContainsModel("M540") || ContainsModel("K340") || ContainsModel("K350") || ContainsModel("M140") || ContainsModel("S540") || ContainsModel("S550") || ContainsModel("M7400") || ContainsModel("N650") || ContainsModel("HN7306") || ContainsModel("H760") || ContainsModel("UX5406") || ContainsModel("M5606") || ContainsModel("X513") || ContainsModel("N7400") || ContainsModel("UX760");
     }
 
     public static bool IsNoOverdrive()
@@ -491,7 +520,7 @@ public static class AppConfig
 
     public static bool IsStrixLimitedRGB()
     {
-        return ContainsModel("G512LI") || ContainsModel("G513R") || ContainsModel("G713PV") || ContainsModel("G513IE") || ContainsModel("G713RC") || ContainsModel("G713PU") || ContainsModel("G513QM") || ContainsModel("G513QC") || ContainsModel("G531G");
+        return ContainsModel("G512LI") || ContainsModel("G513R") || ContainsModel("G713QM") || ContainsModel("G713PV") || ContainsModel("G513IE") || ContainsModel("G713RC") || ContainsModel("G713PU") || ContainsModel("G513QM") || ContainsModel("G513QC") || ContainsModel("G531G") || ContainsModel("G615JMR") || ContainsModel("G815LR");
     }
 
     public static bool IsPossible4ZoneRGB()
@@ -504,7 +533,7 @@ public static class AppConfig
         return IsPossible4ZoneRGB() && !Is("per_key_rgb");
     }
 
-    public static bool IsNoAirplaneMode()
+    public static bool IsHardwareHotkeys()
     {
         return ContainsModel("FX506");
     }
@@ -522,6 +551,11 @@ public static class AppConfig
     public static bool IsStrixNumpad()
     {
         return ContainsModel("G713R");
+    }
+
+    public static bool IsZ1325()
+    {
+        return ContainsModel("GZ302E");
     }
 
     public static bool IsZ13()
@@ -561,7 +595,8 @@ public static class AppConfig
 
     public static bool DynamicBoost15()
     {
-        return ContainsModel("FX507ZC4");
+        return ContainsModel("FX507ZC4") || ContainsModel("GA403UM") || ContainsModel("GU605CP") || ContainsModel("FX608J") || ContainsModel("FX608L") || ContainsModel("FA608U") || ContainsModel("FA608P") || ContainsModel("FA608W") ||
+               ContainsModel("FA401K") || ContainsModel("FA401UM") || ContainsModel("FA401UH");
     }
 
     public static bool DynamicBoost20()
@@ -579,50 +614,10 @@ public static class AppConfig
         return ContainsModel("G614") || ContainsModel("GU604") || ContainsModel("FX507") || ContainsModel("G513") || ContainsModel("FA617") || ContainsModel("G834") || ContainsModel("GA403") || ContainsModel("GU605") || ContainsModel("GA605") || ContainsModel("GU603VV");
     }
 
-
     public static bool IsManualModeRequired()
     {
-        if (!IsMode("auto_apply_power"))
-            return false;
-
-        return
-            Is("manual_mode") ||
-            ContainsModel("GU604") ||
-            ContainsModel("G733") ||
-            ContainsModel("FX507Z");
-    }
-
-    public static bool IsFanScale()
-    {
-        if (!ContainsModel("GU604")) return false;
-
-        try
-        {
-            var (bios, model) = GetBiosAndModel();
-            return (Int32.Parse(bios) < 312);
-        }
-        catch
-        {
-            return false;
-        }
-    }
-
-    public static bool IsSwappedFans()
-    {
-        if (!ContainsModel("GA503R")) return false;
-
-        try
-        {
-            var (bios, model) = GetBiosAndModel();
-            var biosVersion = Int32.Parse(bios);
-            if (ContainsModel("GA503RM") && biosVersion == 317) return true;
-            if ((ContainsModel("GA503RS") || ContainsModel("GA503RW")) && biosVersion == 316) return true;
-            return false;
-        }
-        catch
-        {
-            return false;
-        }
+        if (!IsMode("auto_apply_power")) return false;
+        return Is("manual_mode") || ContainsModel("G733");
     }
 
     public static bool IsResetRequired()
@@ -632,7 +627,7 @@ public static class AppConfig
 
     public static bool IsFanRequired()
     {
-        return ContainsModel("GA402X") || ContainsModel("G513") || ContainsModel("G713R") || ContainsModel("G713P") || ContainsModel("GU605") || ContainsModel("GA605") || ContainsModel("G634J") || ContainsModel("G834J") || ContainsModel("G614J") || ContainsModel("G814J") || ContainsModel("FX507V");
+        return ContainsModel("GA402X") || ContainsModel("GU604") || ContainsModel("G513") || ContainsModel("G713R") || ContainsModel("G713P") || ContainsModel("GU605") || ContainsModel("GA605") || ContainsModel("G634J") || ContainsModel("G834J") || ContainsModel("G614J") || ContainsModel("G814J") || ContainsModel("FX507V") || ContainsModel("G614F") || ContainsModel("G614R") || ContainsModel("G733");
     }
 
     public static bool IsAMDLight()
@@ -648,6 +643,16 @@ public static class AppConfig
     public static bool IsGPUFix()
     {
         return Is("gpu_fix") || (ContainsModel("GA402X") && IsNotFalse("gpu_fix"));
+    }
+
+    public static bool IsShutdownReset()
+    {
+        return Is("shutdown_reset") || ContainsModel("FX507Z");
+    }
+
+    public static bool IsNVPlatform()
+    {
+        return Is("nv_platform");
     }
 
     public static bool IsForceSetGPUMode()
@@ -672,7 +677,7 @@ public static class AppConfig
 
     public static bool IsIntelHX()
     {
-        return ContainsModel("G814") || ContainsModel("G614") || ContainsModel("G834") || ContainsModel("G634");
+        return ContainsModel("G814") || ContainsModel("G614") || ContainsModel("G834") || ContainsModel("G634") || ContainsModel("G835") || ContainsModel("G635") || ContainsModel("G815") || ContainsModel("G615");
     }
 
     public static bool Is8Ecores()
@@ -706,7 +711,7 @@ public static class AppConfig
 
     public static bool IsChargeLimit6080()
     {
-        return ContainsModel("H760") || ContainsModel("GA403U") || ContainsModel("GU605") || ContainsModel("GA605") || ContainsModel("GA503R") || (IsTUF() && !(ContainsModel("FX507Z") || ContainsModel("FA617")));
+        return ContainsModel("H760") || ContainsModel("GA403") || ContainsModel("GU605") || ContainsModel("GA605") || ContainsModel("GA503R") || (IsTUF() && !(ContainsModel("FX507Z") || ContainsModel("FA617") || ContainsModel("FA607")));
 
     }
 
@@ -716,9 +721,14 @@ public static class AppConfig
         return IsSlash() || IsIntelHX() || IsTUF() || IsZ13();
     }
 
+    public static bool IsDynamicLightingInit()
+    {
+        return ContainsModel("FA608") || Is("lighting_init");
+    }
+
     public static bool IsForceMiniled()
     {
-        return ContainsModel("G834JYR") || ContainsModel("G834JZR") || Is("force_miniled");
+        return ContainsModel("G834JYR") || ContainsModel("G834JZR") || ContainsModel("G634JZR") || ContainsModel("G835LW") || Is("force_miniled");
     }
     public static bool SaveDimming()
     {
@@ -733,6 +743,11 @@ public static class AppConfig
     public static bool NoFnC()
     {
         return ContainsModel("FX507VU");
+    }
+
+    public static bool IsClampFanDots()
+    {
+        return Is("fan_clamp") || (IsTUF() && IsNotFalse("fan_clamp"));
     }
 
 }

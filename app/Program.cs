@@ -19,13 +19,7 @@ namespace GHelper
 
     static class Program
     {
-        public static NotifyIcon trayIcon = new NotifyIcon
-        {
-            Text = "G-Helper",
-            Icon = Properties.Resources.standard,
-            Visible = true
-        };
-
+        public static NotifyIcon trayIcon;
         public static AsusACPI acpi;
 
         public static SettingsForm settingsForm = new SettingsForm();
@@ -33,12 +27,12 @@ namespace GHelper
         public static ModeControl modeControl = new ModeControl();
         public static GPUModeControl gpuControl = new GPUModeControl(settingsForm);
         public static AllyControl allyControl = new AllyControl(settingsForm);
-        public static ScreenControl screenControl = new ScreenControl(); 
         public static ClamshellModeControl clamshellControl = new ClamshellModeControl();
 
         public static ToastForm toast = new ToastForm();
 
         public static IntPtr unRegPowerNotify, unRegPowerNotifyLid;
+        public static int WM_TASKBARCREATED = 0;
 
         private static long lastAuto;
         private static long lastTheme;
@@ -56,7 +50,9 @@ namespace GHelper
 
             if (action == "charge")
             {
+                if (AppConfig.IsZ13()) Aura.Init();
                 BatteryLimit();
+                InputDispatcher.StartupBacklight();
                 Application.Exit();
                 return;
             }
@@ -73,6 +69,7 @@ namespace GHelper
             }
 
             ProcessHelper.CheckAlreadyRunning();
+            ProcessHelper.SetPriority();
 
             Logger.WriteLine("------------");
             Logger.WriteLine("App launched: " + AppConfig.GetModel() + " :" + Assembly.GetExecutingAssembly().GetName().Version.ToString() + CultureInfo.CurrentUICulture + (ProcessHelper.IsUserAdministrator() ? "." : ""));
@@ -102,7 +99,20 @@ namespace GHelper
             HardwareControl.RecreateGpuControl();
             RyzenControl.Init();
 
+            trayIcon = new NotifyIcon
+            {
+                Text = "G-Helper",
+                Icon = Properties.Resources.standard,
+                Visible = true
+            };
+
+            WM_TASKBARCREATED = RegisterWindowMessage("TaskbarCreated");
+            Logger.WriteLine($"Tray Icon: {trayIcon.Visible} | {WM_TASKBARCREATED}");
+
+            settingsForm.SetContextMenu();
             trayIcon.MouseClick += TrayIcon_MouseClick;
+            trayIcon.MouseMove += TrayIcon_MouseMove;
+
 
             inputDispatcher = new InputDispatcher();
 
@@ -146,9 +156,6 @@ namespace GHelper
                     Startup.ReScheduleAdmin();
                     settingsForm.FansToggle(1);
                     break;
-                case "gpurestart":
-                    gpuControl.RestartGPU(false);
-                    break;
                 case "services":
                     settingsForm.extraForm = new Extra();
                     settingsForm.extraForm.Show();
@@ -159,8 +166,18 @@ namespace GHelper
                     settingsForm.FansToggle(2);
                     modeControl.SetRyzen();
                     break;
+                case "colors":
+                    Task.Run(async () =>
+                    {
+                        await ColorProfileHelper.InstallProfile();
+                        settingsForm.Invoke(delegate
+                        {
+                            settingsForm.InitVisual();
+                        });
+                    });
+                    break;
                 default:
-                    Startup.StartupCheck();
+                    Task.Run(Startup.StartupCheck);
                     break;
             }
 
@@ -172,6 +189,7 @@ namespace GHelper
         private static void SystemEvents_SessionEnding(object sender, SessionEndingEventArgs e)
         {
             gpuControl.StandardModeFix();
+            modeControl.ShutdownReset();
             BatteryControl.AutoBattery();
             InputDispatcher.ShutdownStatusLed();
         }
@@ -181,7 +199,7 @@ namespace GHelper
             if (e.Reason == SessionSwitchReason.SessionLogon || e.Reason == SessionSwitchReason.SessionUnlock)
             {
                 Logger.WriteLine("Session:" + e.Reason.ToString());
-                screenControl.AutoScreen();
+                ScreenControl.AutoScreen();
             }
         }
 
@@ -223,10 +241,11 @@ namespace GHelper
 
 
 
-        public static bool SetAutoModes(bool powerChanged = false, bool init = false)
+        public static bool SetAutoModes(bool powerChanged = false, bool init = false, bool wakeup = false)
         {
+            int skipDelay = wakeup ? 10000 : 3000;
 
-            if (Math.Abs(DateTimeOffset.Now.ToUnixTimeMilliseconds() - lastAuto) < 3000) return false;
+            if (Math.Abs(DateTimeOffset.Now.ToUnixTimeMilliseconds() - lastAuto) < skipDelay) return false;
             lastAuto = DateTimeOffset.Now.ToUnixTimeMilliseconds();
 
             isPlugged = SystemInformation.PowerStatus.PowerLineStatus;
@@ -234,21 +253,17 @@ namespace GHelper
 
             BatteryControl.AutoBattery(init);
             if (init) InputDispatcher.InitScreenpad();
-            screenControl.InitOptimalBrightness();
+            DynamicLightingHelper.Init();
+            ScreenControl.InitOptimalBrightness();
 
             inputDispatcher.Init();
+            //HardwareControl.ReadSensors(true);
 
             modeControl.AutoPerformance(powerChanged);
 
-            bool switched = gpuControl.AutoGPUMode();
-
-            if (!switched)
-            {
-                gpuControl.InitGPUMode();
-                screenControl.AutoScreen();
-            }
-
             settingsForm.matrixControl.SetDevice(true);
+            InputDispatcher.InitStatusLed();
+            XGM.InitLight();
 
             if (AppConfig.IsAlly())
             {
@@ -259,9 +274,14 @@ namespace GHelper
                 InputDispatcher.AutoKeyboard();
             }
 
-            screenControl.InitMiniled();
-            InputDispatcher.InitStatusLed();
-            XGM.InitLight();
+            bool switched = gpuControl.AutoGPUMode(delay: 1000);
+            if (!switched)
+            {
+                gpuControl.InitGPUMode();
+                ScreenControl.AutoScreen();
+            }
+
+            ScreenControl.InitMiniled();
             VisualControl.InitBrightness();
 
             return true;
@@ -274,6 +294,7 @@ namespace GHelper
             {
                 Logger.WriteLine("Power Mode Changed:" + e.Mode.ToString());
                 gpuControl.StandardModeFix(true);
+                modeControl.ShutdownReset();
                 InputDispatcher.ShutdownStatusLed();
             }
 
@@ -286,7 +307,7 @@ namespace GHelper
 
             if (SystemInformation.PowerStatus.PowerLineStatus == isPlugged) return;
             if (AppConfig.Is("disable_power_event")) return;
-            SetAutoModes(true);
+            SetAutoModes(powerChanged: true);
         }
 
         public static void SettingsToggle(bool checkForFocus = true, bool trayClick = false)
@@ -334,11 +355,19 @@ namespace GHelper
 
         }
 
-
+        static void TrayIcon_MouseMove(object? sender, MouseEventArgs e)
+        {
+            settingsForm.RefreshSensors();
+        }
 
         static void OnExit(object sender, EventArgs e)
         {
-            trayIcon.Visible = false;
+            if (trayIcon is not null)
+            {
+                trayIcon.Visible = false;
+                trayIcon.Dispose();
+            }
+
             PeripheralsProvider.UnregisterForDeviceEvents();
             clamshellControl.UnregisterDisplayEvents();
             NativeMethods.UnregisterPowerSettingNotification(unRegPowerNotify);
@@ -354,7 +383,10 @@ namespace GHelper
                 if (limit > 0 && limit < 100)
                 {
                     Logger.WriteLine($"------- Startup Battery Limit {limit} -------");
+                    ProcessHelper.StartEnableService("ATKWMIACPIIO", false);
+                    Logger.WriteLine($"Connecting to ACPI");
                     acpi = new AsusACPI();
+                    Logger.WriteLine($"Setting Limit");
                     acpi.DeviceSet(AsusACPI.BatteryLimit, limit, "Limit");
                 }
             }

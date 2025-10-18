@@ -22,7 +22,12 @@ namespace GHelper.AnimeMatrix
         Start,
         Buzzer,
         Static,
+        FX1,
+        FX2,
+        FX3,
         BatteryLevel,
+        Audio,
+        AudioSpectrum
     }
 
     public class SlashPacket : Packet
@@ -45,32 +50,40 @@ namespace GHelper.AnimeMatrix
 
         public static Dictionary<SlashMode, string> Modes = new Dictionary<SlashMode, string>
         {
-            { SlashMode.Bounce, "Bounce"},
-            { SlashMode.Slash, "Slash"},
-            { SlashMode.Loading, "Loading"},
+            { SlashMode.Bounce, Properties.Strings.SlashBounce},
+            { SlashMode.Slash, Properties.Strings.SlashMode},
+            { SlashMode.Loading, Properties.Strings.SlashLoading},
 
-            { SlashMode.BitStream, "Bit Stream"},
-            { SlashMode.Transmission, "Transmission"},
+            { SlashMode.BitStream, Properties.Strings.SlashBitStream},
+            { SlashMode.Transmission, Properties.Strings.SlashTransmission},
 
-            { SlashMode.Flow, "Flow"},
-            { SlashMode.Flux, "Flux"},
-            { SlashMode.Phantom, "Phantom"},
-            { SlashMode.Spectrum, "Spectrum"},
+            { SlashMode.Flow, Properties.Strings.SlashFlow},
+            { SlashMode.Flux, Properties.Strings.SlashFlux},
+            { SlashMode.Phantom, Properties.Strings.SlashPhantom},
+            { SlashMode.Spectrum, Properties.Strings.SlashSpectrum},
 
-            { SlashMode.Hazard, "Hazard"},
-            { SlashMode.Interfacing, "Interfacing"},
-            { SlashMode.Ramp, "Ramp"},
+            { SlashMode.Hazard, Properties.Strings.SlashHazard},
+            { SlashMode.Interfacing, Properties.Strings.SlashInterfacing},
+            { SlashMode.Ramp, Properties.Strings.SlashRamp},
 
-            { SlashMode.GameOver, "Game Over"},
-            { SlashMode.Start, "Start"},
-            { SlashMode.Buzzer, "Buzzer"},
+            { SlashMode.GameOver, Properties.Strings.SlashGameOver},
+            { SlashMode.Start, Properties.Strings.SlashStart},
+            { SlashMode.Buzzer, Properties.Strings.SlashBuzzer},
 
-            { SlashMode.Static, "Static"},
-            { SlashMode.BatteryLevel, "Battery Level"}
+            { SlashMode.Static, Properties.Strings.SlashStatic},
+
+            { SlashMode.FX1, "FX1"},
+            { SlashMode.FX2, "FX2"},
+            { SlashMode.FX3, "FX3"},
+
+            { SlashMode.BatteryLevel, Properties.Strings.SlashBatteryLevel},
+            { SlashMode.Audio, Properties.Strings.MatrixAudio}
+
         };
 
         private static Dictionary<SlashMode, byte> modeCodes = new Dictionary<SlashMode, byte>
         {
+            { SlashMode.Static, 0x06},
             { SlashMode.Bounce, 0x10},
             { SlashMode.Slash, 0x12},
             { SlashMode.Loading, 0x13},
@@ -90,6 +103,10 @@ namespace GHelper.AnimeMatrix
             { SlashMode.GameOver, 0x42},
             { SlashMode.Start, 0x43},
             { SlashMode.Buzzer, 0x44},
+
+            { SlashMode.FX1, 0x60},
+            { SlashMode.FX2, 0x61},
+            { SlashMode.FX3, 0x62},
         };
 
         public SlashDevice(ushort productId = 0x193B) : base(0x0B05, productId, 128)
@@ -133,12 +150,8 @@ namespace GHelper.AnimeMatrix
             }
 
             Set(CreatePacket([0xD2, 0x03, 0x00, 0x0C]), "SlashMode");
-            Set(CreatePacket([0xD3, 0x04, 0x00, 0x0C, 0x01, modeByte, 0x02, 0x19, 0x03, 0x13, 0x04, 0x11, 0x05, 0x12, 0x06, 0x13]), "SlashMode");
-        }
-
-        public void SetStatic(int brightness = 0)
-        {
-            SetCustom(Enumerable.Repeat((byte)(brightness * 85.333), 7).ToArray());
+            //Set(CreatePacket([0xD3, 0x04, 0x00, 0x0C, 0x01, modeByte, 0x02, 0x19, 0x03, 0x13, 0x04, 0x11, 0x05, 0x12, 0x06, 0x13]), "SlashMode");
+            Set(CreatePacket([0xD3, 0x04, 0x00, 0x0C, 0x01, modeByte, 0x02, 0x42, 0x03, 0x13, 0x04, 0x11, 0x05, 0x12, 0x06, 0x13]), "SlashMode");
         }
 
         public static double GetBatteryChargePercentage()
@@ -160,7 +173,7 @@ namespace GHelper.AnimeMatrix
             return batteryCharge;
         }
 
-        private byte[] GetBatteryPattern(int brightness, double percentage)
+        private byte[] GetPercentagePattern(int brightness, double percentage)
         {
             // because 7 segments, within each led segment represents a percentage bracket of (100/7 = 14.2857%)
             // set brightness to reflect battery's percentage within that range
@@ -182,15 +195,38 @@ namespace GHelper.AnimeMatrix
 
         public void SetBatteryPattern(int brightness)
         {
-            SetCustom(GetBatteryPattern(brightness, 100 * (GetBatteryChargePercentage() / AppConfig.Get("charge_limit", 100))), null);
+            SetCustom(GetPercentagePattern(brightness, 100 * (GetBatteryChargePercentage() / AppConfig.Get("charge_limit", 100))), null);
         }
+
+        public void SetEmpty()
+        {
+            SetCustom(GetPercentagePattern(0, 0));
+        }
+
+        public void SetAudioPattern(int brightness, double bass, double treble)
+        {
+            byte[] payload = new byte[7];
+            double step = 100.0 / 7.0;
+            for (int i = 0; i < 7; i++)
+            {
+                double s = step * i, e = step * (i + 1);
+                if (bass > s) payload[6 - i] |= (byte)(Math.Min((bass - s) / (e - s), 1) * brightness * 0x20);
+                if (treble > s) payload[6 - i] |= (byte)(Math.Min((treble - s) / (e - s), 1) * brightness * 0x50);
+            }
+            ContinueCustom(payload, null);
+        }
+
 
         public void SetCustom(byte[] data, string? log = "Static Data")
         {
             Set(CreatePacket([0xD2, 0x02, 0x01, 0x08, 0xAC]), null);
             Set(CreatePacket([0xD3, 0x03, 0x01, 0x08, 0xAC, 0xFF, 0xFF, 0x01, 0x05, 0xFF, 0xFF]), null);
             Set(CreatePacket([0xD4, 0x00, 0x00, 0x01, 0xAC]), null);
+            ContinueCustom(data, log);
+        }
 
+        public void ContinueCustom(byte[] data, string? log)
+        {
             byte[] payload = new byte[] { 0xD3, 0x00, 0x00, 0x07 };
             Set(CreatePacket(payload.Concat(data.Take(7)).ToArray()), log);
         }
