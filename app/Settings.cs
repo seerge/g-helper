@@ -166,6 +166,7 @@ namespace GHelper
             buttonScreenAuto.Click += ButtonScreenAuto_Click;
             buttonMiniled.Click += ButtonMiniled_Click;
             buttonFHD.Click += ButtonFHD_Click;
+            buttonHDRControl.Click += ButtonHDRControl_Click;
 
             buttonQuit.Click += ButtonQuit_Click;
 
@@ -317,6 +318,11 @@ namespace GHelper
         private void ButtonFHD_Click(object? sender, EventArgs e)
         {
             ScreenControl.ToogleFHD();
+        }
+
+        private void ButtonHDRControl_Click(object? sender, EventArgs e)
+        {
+            ScreenControl.ToogleHDRControl();
         }
 
         private void SliderBattery_ValueChanged(object? sender, EventArgs e)
@@ -716,6 +722,7 @@ namespace GHelper
                             break;
                         case 1:
                             Logger.WriteLine("Lid Open");
+                            InputDispatcher.InitFNLock();
                             InputDispatcher.lidClose = AniMatrixControl.lidClose = false;
                             Aura.ApplyBrightness(InputDispatcher.GetBacklight(), "Lid");
                             matrixControl.SetLidMode();
@@ -1280,7 +1287,7 @@ namespace GHelper
 
 
 
-        public void VisualiseScreen(bool screenEnabled, bool screenAuto, int frequency, int maxFrequency, int overdrive, bool overdriveSetting, int miniled1, int miniled2, bool hdr, int fhd)
+        public void VisualiseScreen(bool screenEnabled, bool screenAuto, int frequency, int maxFrequency, int overdrive, bool overdriveSetting, int miniled1, int miniled2, bool hdr, int fhd, int hdrControl)
         {
 
             ButtonEnabled(button60Hz, screenEnabled);
@@ -1327,13 +1334,17 @@ namespace GHelper
                 buttonFHD.Text = fhd > 0 ? "FHD" : "UHD";
             }
 
+            bool hdrControlVisible = (hdr && hdrControl >= 0);
+
             if (miniled1 >= 0)
             {
+                buttonMiniled.Visible = !hdrControlVisible;
                 buttonMiniled.Enabled = !hdr;
                 buttonMiniled.Activated = miniled1 == 1 || hdr;
             }
             else if (miniled2 >= 0)
             {
+                buttonMiniled.Visible = !hdrControlVisible;
                 buttonMiniled.Enabled = !hdr;
                 if (hdr) miniled2 = 1; // Show HDR as Multizone Strong
 
@@ -1362,6 +1373,16 @@ namespace GHelper
             else
             {
                 buttonMiniled.Visible = false;
+            }
+
+            if (hdrControlVisible)
+            {
+                buttonHDRControl.Visible = true;
+                buttonHDRControl.Activated = hdrControl > 0;
+                buttonHDRControl.BorderColor = colorTurbo;
+            } else
+            {
+                buttonHDRControl.Visible = false;
             }
 
             if (hdr) labelVisual.Text = Properties.Strings.VisualModesHDR;

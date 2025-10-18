@@ -84,6 +84,7 @@ public class AsusACPI
     public const uint ScreenMiniled1 = 0x0005001E;
     public const uint ScreenMiniled2 = 0x0005002E;
     public const uint ScreenFHD = 0x0005001C;
+    public const uint ScreenHDRControl = 0x00050071;
 
     public const uint ScreenOptimalBrightness = 0x0005002A;
     public const uint ScreenInit = 0x00050011; // ?

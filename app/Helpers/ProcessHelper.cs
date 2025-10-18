@@ -145,6 +145,19 @@ namespace GHelper.Helpers
             return result;
         }
 
+        public static void SetPriority(ProcessPriorityClass priorityClass = ProcessPriorityClass.Normal)
+        {
+            try
+            {
+                using (Process p = Process.GetCurrentProcess())
+                    p.PriorityClass = priorityClass;
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLine(ex.ToString());
+            }
+        }
+
 
     }
 }

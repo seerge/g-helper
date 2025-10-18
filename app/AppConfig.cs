@@ -422,7 +422,7 @@ public static class AppConfig
 
     public static bool IsHardwareFnLock()
     {
-        return IsVivoZenPro() || ContainsModel("GZ302EA") || ContainsModel("FA401K");
+        return IsVivoZenPro() || ContainsModel("GZ302EA");
     }
 
     // Devices with bugged bios command to change brightness
@@ -485,7 +485,7 @@ public static class AppConfig
 
     public static bool IsInvertedFNLock()
     {
-        return ContainsModel("M140") || ContainsModel("S550") || ContainsModel("P540");
+        return ContainsModel("M140") || ContainsModel("S550") || ContainsModel("P540") || ContainsModel("FA401KM");
     }
 
     public static bool IsOLED()
