@@ -152,7 +152,7 @@
                 case 2:
                     return Properties.Strings.Silent;
                 default:
-                    return AppConfig.GetString("mode_name_" + mode);
+                    return AppConfig.GetString("mode_name_" + mode) ?? Properties.Strings.Balanced;
             }
         }
 

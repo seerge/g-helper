@@ -709,6 +709,8 @@ namespace GHelper.USB
             static readonly int tempWarm = AppConfig.Get("temp_warm", 65);
             static readonly int tempHot = AppConfig.Get("temp_hot", 90);
 
+            static readonly int ambientDisplayNumber = AppConfig.Get("ambient_display", 1);
+
             static readonly Color colorFreeze = ColorTranslator.FromHtml(AppConfig.GetString("color_freeze", "#0000FF") ?? "#0000FF");
             static readonly Color colorCold = ColorTranslator.FromHtml(AppConfig.GetString("color_cold", "#008000") ?? "#008000");
             static readonly Color colorWarm = ColorTranslator.FromHtml(AppConfig.GetString("color_warm", "#FFFF00") ?? "#FFFF00");
@@ -749,7 +751,16 @@ namespace GHelper.USB
             {
                 if (!backlight) return;
 
-                var bound = Screen.GetBounds(Point.Empty);
+                Dictionary<string, int> displayList = [];
+                int previousWidth = 0;
+                Screen.AllScreens.ToList().ForEach(screen =>
+                {
+                    displayList.Add(screen.DeviceName, screen.Bounds.Width + previousWidth);
+                    previousWidth += screen.Bounds.Width;
+                });
+                int width = displayList.TryGetValue($"\\\\.\\DISPLAY{ambientDisplayNumber}", out int w) ? w : 0;
+                Point p = new(width - 1, 0);
+                var bound = Screen.GetBounds(p);
                 bound.Y += bound.Height / 3;
                 bound.Height -= (int)Math.Round(bound.Height * (0.33f + 0.022f)); // cut 1/3 of the top screen + windows panel
 
