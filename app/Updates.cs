@@ -84,7 +84,13 @@ namespace GHelper
                 DriversAsync($"https://rog.asus.com/support/webapi/product/GetPDDrivers?website=global&model={model}&cpu={model}&osid=52{rogParam}", 0, tableDrivers);
             });
 
-            LaptopSerialNumber();
+            Task.Run(async () =>
+            {
+                LaptopSerialNumber();
+            });
+
+            textSerial.BackColor = panelBios.BackColor;
+            textSerial.ForeColor = panelBios.ForeColor;
         }
 
         private void ClearTable(TableLayoutPanel tableLayoutPanel)
@@ -132,8 +138,18 @@ namespace GHelper
 
         public void LaptopSerialNumber()
         {
-            var output = ProcessHelper.RunCMD("powershell", "-NoProfile -Command \"(Get-WmiObject Win32_BIOS).SerialNumber\"");
-
+            try
+            {
+                var output = ProcessHelper.RunCMD("powershell", "-NoProfile -Command \"(Get-WmiObject Win32_BIOS).SerialNumber\"");
+                Invoke(delegate
+                {
+                    textSerial.Text = output;
+                });
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLine(ex.ToString());
+            }
         }
 
         private Dictionary<string, string> GetDeviceVersions()
