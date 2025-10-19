@@ -125,12 +125,17 @@ public class Startup
         {
             td.RegistrationInfo.Description = "G-Helper Charge Limit";
             td.Triggers.Add(new BootTrigger());
+            td.Triggers.Add(new EventTrigger
+            {
+                Subscription = "<QueryList><Query Id='0' Path='System'><Select Path='System'>*[System[Provider[@Name='Microsoft-Windows-Kernel-Boot'] and EventID=27]]</Select></Query></QueryList>"
+            }); 
             td.Actions.Add(strExeFilePath, "charge");
 
             td.Principal.UserId = "SYSTEM";
             td.Principal.LogonType = TaskLogonType.ServiceAccount;
             td.Principal.RunLevel = TaskRunLevel.Highest;
-            
+
+            td.Settings.MultipleInstances = TaskInstancesPolicy.IgnoreNew;
             td.Settings.StopIfGoingOnBatteries = false;
             td.Settings.DisallowStartIfOnBatteries = false;
             td.Settings.ExecutionTimeLimit = TimeSpan.FromSeconds(30);
