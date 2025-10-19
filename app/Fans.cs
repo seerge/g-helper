@@ -3,7 +3,7 @@ using GHelper.Gpu.NVidia;
 using GHelper.Mode;
 using GHelper.UI;
 using GHelper.USB;
-using Ryzen;
+using GHelper.Ryzen;
 using System.Diagnostics;
 using System.Management;
 using System.Windows.Forms.DataVisualization.Charting;

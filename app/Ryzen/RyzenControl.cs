@@ -8,7 +8,7 @@ using GHelper.Helpers;
 using System.Management;
 using System.Net;
 
-namespace Ryzen
+namespace GHelper.Ryzen
 {
     internal class RyzenControl
     {

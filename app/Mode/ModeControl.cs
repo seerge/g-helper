@@ -1,7 +1,7 @@
 ﻿using GHelper.Gpu.NVidia;
 using GHelper.Helpers;
 using GHelper.USB;
-using Ryzen;
+using GHelper.Ryzen;
 
 namespace GHelper.Mode
 {

@@ -6,7 +6,7 @@
 [assembly: CLSCompliant(false)]
 
 
-namespace Ryzen
+namespace GHelper.Ryzen
 {
     class Smu
     {

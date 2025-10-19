@@ -191,11 +191,20 @@ namespace GHelper.Mode
             // Skipping power modes
             if (overlays.Contains(scheme)) return;
 
-            if (scheme is null) scheme = PLAN_BALANCED;
+            scheme ??= PLAN_BALANCED;
             var activeScheme = GetActiveScheme().ToString();
             if (activeScheme == scheme) return;
 
-            uint status = PowerSetActiveScheme(IntPtr.Zero, new Guid(scheme));
+            uint status;
+            try
+            {
+                status = PowerSetActiveScheme(IntPtr.Zero, new Guid(scheme));
+            }
+            catch (Exception e)
+            {
+                Logger.WriteLine("Failed to set power plan: " + e.Message);
+                return;
+            }
             Logger.WriteLine($"Power Plan {activeScheme} -> {scheme} :" + (status == 0 ? "OK" : status));
         }
 
@@ -251,13 +260,13 @@ namespace GHelper.Mode
 
             IntPtr activeIndex;
             if (ac)
-                PowerReadACValueIndex(IntPtr.Zero,
+                _ = PowerReadACValueIndex(IntPtr.Zero,
                      activeSchemeGuid,
                      GUID_SYSTEM_BUTTON_SUBGROUP,
                      GUID_LIDACTION, out activeIndex);
 
             else
-                PowerReadDCValueIndex(IntPtr.Zero,
+                _ = PowerReadDCValueIndex(IntPtr.Zero,
                     activeSchemeGuid,
                     GUID_SYSTEM_BUTTON_SUBGROUP,
                     GUID_LIDACTION, out activeIndex);
@@ -277,15 +286,14 @@ namespace GHelper.Mode
              */
 
             Guid activeSchemeGuid = GetActiveScheme();
-
-            var hrAC = PowerWriteACValueIndex(
+            _ = PowerWriteACValueIndex(
                 IntPtr.Zero,
                 activeSchemeGuid,
                 GUID_SYSTEM_BUTTON_SUBGROUP,
                 GUID_LIDACTION,
                 action);
 
-            PowerSetActiveScheme(IntPtr.Zero, activeSchemeGuid);
+            _ = PowerSetActiveScheme(IntPtr.Zero, activeSchemeGuid);
 
             if (!acOnly)
             {
@@ -305,11 +313,10 @@ namespace GHelper.Mode
         public static int GetHibernateAfter()
         {
             Guid activeSchemeGuid = GetActiveScheme();
-            IntPtr seconds;
             PowerReadDCValueIndex(IntPtr.Zero,
                     activeSchemeGuid,
                     GUID_SLEEP_SUBGROUP,
-                    GUID_HIBERNATEIDLE, out seconds);
+                    GUID_HIBERNATEIDLE, out nint seconds);
 
             Logger.WriteLine("Hibernate after " + seconds);
             return (seconds.ToInt32() / 60);
