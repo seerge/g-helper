@@ -127,9 +127,10 @@ public class Startup
             td.Triggers.Add(new BootTrigger());
             td.Actions.Add(strExeFilePath, "charge");
 
-            td.Principal.RunLevel = TaskRunLevel.LUA;
-            td.Principal.LogonType = TaskLogonType.S4U;
-
+            td.Principal.UserId = "SYSTEM";
+            td.Principal.LogonType = TaskLogonType.ServiceAccount;
+            td.Principal.RunLevel = TaskRunLevel.Highest;
+            
             td.Settings.StopIfGoingOnBatteries = false;
             td.Settings.DisallowStartIfOnBatteries = false;
             td.Settings.ExecutionTimeLimit = TimeSpan.FromSeconds(30);
