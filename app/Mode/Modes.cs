@@ -2,7 +2,7 @@
 {
     internal class Modes
     {
-        static Dictionary<string, string> settings = new Dictionary<string, string>
+        static readonly Dictionary<string, string> settings = new()
         {
             { "mode_base", "_" },
             { "mode_name", "_" },
@@ -33,7 +33,7 @@
 
         public static Dictionary<int, string> GetDictonary()
         {
-            Dictionary<int, string> modes = new Dictionary<int, string>
+            Dictionary<int, string> modes = new()
             {
               {2, Properties.Strings.Silent},
               {0, Properties.Strings.Balanced},
@@ -50,7 +50,7 @@
 
         public static List<int> GetList()
         {
-            List<int> modes = new() { 2, 0, 1 };
+            List<int> modes = [2, 0, 1];
             for (int i = 3; i < maxModes; i++)
             {
                 if (Exists(i)) modes.Add(i);
@@ -90,9 +90,15 @@
                         if (!AppConfig.Exists(sourceKey)) continue;
 
                         if (kvp.Value == "int")
+                        {
                             AppConfig.Set(targetKey, AppConfig.Get(sourceKey));
+                        }
                         else
-                            AppConfig.Set(targetKey, AppConfig.GetString(sourceKey));
+                        {
+                            var stringValue = AppConfig.GetString(sourceKey);
+                            if (stringValue is not null)
+                                AppConfig.Set(targetKey, stringValue);
+                        }
                     }
                 }
 

@@ -746,10 +746,11 @@ namespace GHelper.Input
 
             if (IsHardwareFnLock())
                 HardwareFnLock(fnLock);
-            else
-                Program.settingsForm.BeginInvoke(Program.inputDispatcher.RegisterKeys);
+            else if (Program.settingsForm != null && Program.inputDispatcher != null)
+                _ = Program.settingsForm.BeginInvoke(Program.inputDispatcher.RegisterKeys);
 
-            Program.settingsForm.BeginInvoke(Program.settingsForm.VisualiseFnLock);
+            if (Program.settingsForm != null)
+                Program.settingsForm.BeginInvoke(Program.settingsForm.VisualiseFnLock);
 
             Program.toast.RunToast(fnLock ? Properties.Strings.FnLockOn : Properties.Strings.FnLockOff, ToastIcon.FnLock);
         }
