@@ -381,7 +381,7 @@ public static class AppConfig
 
     public static bool IsAlly()
     {
-        return ContainsModel("RC71") || ContainsModel("RC72");
+        return ContainsModel("RC7");
     }
 
     public static bool NoMKeys()
