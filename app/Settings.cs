@@ -1765,7 +1765,7 @@ namespace GHelper
                     buttonOptimized.BorderColor = colorStandard;
                     buttonStandard.Activated = !GPUAuto;
                     buttonOptimized.Activated = GPUAuto;
-                    labelGPU.Text = Properties.Strings.GPUMode + ": " + Properties.Strings.GPUModeStandard;
+                    labelGPU.Text = Properties.Strings.GPUMode + ": " + (AppConfig.IsAlwaysUltimate() ? Properties.Strings.GPUModeUltimate : Properties.Strings.GPUModeStandard);
                     panelGPU.AccessibleName = Properties.Strings.GPUMode + " - " + (GPUAuto ? Properties.Strings.Optimized : Properties.Strings.StandardMode);
                     break;
             }
