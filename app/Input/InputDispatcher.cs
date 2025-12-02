@@ -1154,21 +1154,21 @@ namespace GHelper.Input
             }
         }
 
-        private static void SetCamera(int status)
+        private static void SetCamera(int status, bool toast = true)
         {
             string asusPath = GetAsusPath();
 
             var cameraStatus = AppConfig.Get("camera_status");
             if (status == 2) status = cameraStatus > 0 ? 0 : 1;
-            var result = ProcessHelper.RunCMD($"{asusPath}\\AsusHotkey.exe", $"-MFCameraCommand {status} 1 0", asusPath);
-            Program.toast.RunToast($"Camera " + ((status == 1) ? "On" : "Off"));
+            ProcessHelper.RunCMD($"{asusPath}\\AsusHotkey.exe", $"-MFCameraCommand {status} 1 0", asusPath);
+            if (toast) Program.toast.RunToast($"Camera " + ((status == 1) ? "On" : "Off"));
             AppConfig.Set("camera_status", status);
         }
 
         private static void InitCamera()
         {
             var cameraStatus = AppConfig.Get("camera_status");
-            if (cameraStatus >= 0) SetCamera(cameraStatus);
+            if (cameraStatus >= 0) SetCamera(cameraStatus, false);
         }
 
         private static System.Threading.Timer screenpadActionTimer;
