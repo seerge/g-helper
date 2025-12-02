@@ -1164,14 +1164,17 @@ namespace GHelper.Input
             var result = ProcessHelper.RunCMD($"{asusPath}\\AsusHotkey.exe", $"-MFCameraCommand {status} 1 0", asusPath);
             var cameraLedStatus = Program.acpi.DeviceGet(AsusACPI.CameraLed);
             Logger.WriteLine("Camera LED: " + cameraLedStatus);
-            string statusText = cameraLedStatus switch
-            {
-                0 => "On",
-                1 => "Off",
-                _ => "Toggled"
-            };
-            Program.toast.RunToast($"Camera {statusText}");
             AppConfig.Set("camera_status", cameraLedStatus);
+            if (toast)
+            {
+                string statusText = cameraLedStatus switch
+                {
+                    0 => "On",
+                    1 => "Off",
+                    _ => "Toggled"
+                };
+                Program.toast.RunToast($"Camera {statusText}");
+            }
         }
 
         private static void InitCamera()
