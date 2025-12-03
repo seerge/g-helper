@@ -3,7 +3,8 @@ using GHelper.Battery;
 using GHelper.Fan;
 using GHelper.Gpu;
 using GHelper.Gpu.AMD;
-using GHelper.Gpu.NVidia;
+using GHelper.Gpu.Nvidia;
+using GHelper.GPU.Intel;
 using GHelper.Helpers;
 using System.Diagnostics;
 using System.Management;
@@ -12,6 +13,7 @@ public static class HardwareControl
 {
 
     public static IGpuControl? GpuControl;
+    public static IntelGpuControl? IntelGpuControl;
 
     public static float? cpuTemp = -1;
     public static float? gpuTemp = -1;
@@ -127,7 +129,6 @@ public static class HardwareControl
         {
             Debug.WriteLine("Full Charge Reading: " + ex.Message);
         }
-
     }
 
     public static void ReadDesignCapacity()
@@ -288,15 +289,6 @@ public static class HardwareControl
         return false;
     }
 
-
-    public static NvidiaGpuControl? GetNvidiaGpuControl()
-    {
-        if ((bool)GpuControl?.IsNvidia)
-            return (NvidiaGpuControl)GpuControl;
-        else
-            return null;
-    }
-
     public static void RecreateGpuControlWithDelay(int delay = 5)
     {
         // Re-enabling the discrete GPU takes a bit of time,
@@ -321,25 +313,39 @@ public static class HardwareControl
             {
                 GpuControl = _gpuControl;
                 Logger.WriteLine(GpuControl.FullName);
-                return;
             }
-
-            _gpuControl.Dispose();
-
-            _gpuControl = new AmdGpuControl();
-            if (_gpuControl.IsValid)
+            else
             {
-                GpuControl = _gpuControl;
-                if (GpuControl.FullName.Contains("6850M")) AppConfig.Set("xgm_special", 1);
-                Logger.WriteLine(GpuControl.FullName);
-                return;
+                _gpuControl.Dispose();
+
+                _gpuControl = new AmdGpuControl();
+                if (_gpuControl.IsValid)
+                {
+                    GpuControl = _gpuControl;
+                    if (GpuControl.FullName.Contains("6850M")) AppConfig.Set("xgm_special", 1);
+                    Logger.WriteLine(GpuControl.FullName);
+                }
+                else
+                {
+                    _gpuControl.Dispose();
+
+                    Logger.WriteLine("dGPU not found");
+                    GpuControl = null;
+                }
             }
-            _gpuControl.Dispose();
-
-            Logger.WriteLine("dGPU not found");
-            GpuControl = null;
 
 
+            IntelGpuControl intelGpuControl = new IntelGpuControl();
+            if (intelGpuControl.IsValid)
+            {
+                IntelGpuControl = intelGpuControl;
+                Logger.WriteLine(IntelGpuControl.FullName);
+            }
+            else
+            {
+                IntelGpuControl = null;
+                Logger.WriteLine("iGPU not found");
+            }
         }
         catch (Exception ex)
         {
