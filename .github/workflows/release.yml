@@ -48,8 +48,7 @@ jobs:
       env:
         GH_TOKEN: ${{ github.token }}
       run: |
-        gh release upload ${{ github.ref_name }} ./signed/GHelper.exe ./signed/GHelper.zip
-
+        gh release upload "${{ github.event.release.tag_name }}" ./signed/GHelper.exe ./signed/GHelper.zip --clobber
     - name: Generate SLSA build provenance attestation
       uses: actions/attest-build-provenance@v2
       with:
