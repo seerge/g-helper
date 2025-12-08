@@ -175,5 +175,99 @@
                 return modes[index];
             }
         }
+
+        // Swap all stored settings between two custom modes (including name and base)
+        public static bool Swap(int modeA, int modeB)
+        {
+            if (modeA == modeB) return false;
+            if (modeA <= 2 || modeB <= 2) return false; // only custom modes should be swapped
+
+            // collect current values
+            var aValues = new Dictionary<string, (bool exists, string? str, int? i)>();
+            var bValues = new Dictionary<string, (bool exists, string? str, int? i)>();
+
+            foreach (var kvp in settings)
+            {
+                string key = kvp.Key;
+                string type = kvp.Value;
+                string keyA = key + "_" + modeA;
+                string keyB = key + "_" + modeB;
+
+                bool existsA = AppConfig.Exists(keyA);
+                bool existsB = AppConfig.Exists(keyB);
+
+                if (type == "int")
+                {
+                    int valA = existsA ? AppConfig.Get(keyA) : -1;
+                    int valB = existsB ? AppConfig.Get(keyB) : -1;
+                    aValues[key] = (existsA, null, valA);
+                    bValues[key] = (existsB, null, valB);
+                }
+                else
+                {
+                    string? valA = existsA ? AppConfig.GetString(keyA) : null;
+                    string? valB = existsB ? AppConfig.GetString(keyB) : null;
+                    aValues[key] = (existsA, valA, null);
+                    bValues[key] = (existsB, valB, null);
+                }
+            }
+
+            // write swapped values
+            foreach (var kvp in settings)
+            {
+                string key = kvp.Key;
+                string type = kvp.Value;
+                string keyA = key + "_" + modeA;
+                string keyB = key + "_" + modeB;
+
+                var a = aValues[key];
+                var b = bValues[key];
+
+                // set keyA to previous B
+                if (type == "int")
+                {
+                    if (b.exists)
+                        AppConfig.Set(keyA, b.i ?? -1);
+                    else
+                        AppConfig.Remove(keyA);
+
+                    if (a.exists)
+                        AppConfig.Set(keyB, a.i ?? -1);
+                    else
+                        AppConfig.Remove(keyB);
+                }
+                else
+                {
+                    if (b.exists && b.str is not null)
+                        AppConfig.Set(keyA, b.str);
+                    else
+                        AppConfig.Remove(keyA);
+
+                    if (a.exists && a.str is not null)
+                        AppConfig.Set(keyB, a.str);
+                    else
+                        AppConfig.Remove(keyB);
+                }
+            }
+
+            return true;
+        }
+
+        // Move mode up or down in the display list by swapping with adjacent custom modes
+        public static bool Move(int mode, int direction)
+        {
+            var modes = GetList();
+            int idx = modes.IndexOf(mode);
+            if (idx < 0) return false;
+
+            int targetIdx = idx + direction;
+            if (targetIdx < 0 || targetIdx >= modes.Count) return false;
+
+            int targetMode = modes[targetIdx];
+            // only swap if target is a custom mode
+            if (targetMode <= 2) return false;
+
+            return Swap(mode, targetMode);
+        }
     }
 }
