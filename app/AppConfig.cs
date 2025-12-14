@@ -485,7 +485,7 @@ public static class AppConfig
 
     public static bool IsInvertedFNLock()
     {
-        return ContainsModel("M140") || ContainsModel("S550") || ContainsModel("P540") || ContainsModel("FA401KM") || ContainsModel("FA401U") || ContainsModel("FA608PP");
+        return ContainsModel("M140") || ContainsModel("S550") || ContainsModel("P540") || ContainsModel("FA401KM") || ContainsModel("FA401U") || ContainsModel("FA608PP") || ContainsModel("FX608JH");
     }
 
     public static bool IsOLED()
