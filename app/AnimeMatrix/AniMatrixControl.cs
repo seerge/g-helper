@@ -361,6 +361,8 @@ namespace GHelper.AnimeMatrix
             }
 
             AudioDeviceId = null;
+
+            AudioDeviceEnum?.UnregisterEndpointNotificationCallback(this);
             AudioDeviceEnum?.Dispose();
         }
 
