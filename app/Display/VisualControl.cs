@@ -80,6 +80,11 @@ namespace GHelper.Display
             return AppConfig.IsVivoZenPro() ? SplendidGamut.VivoNative : SplendidGamut.Native;
         }
 
+        public static bool IsEReading()
+        {
+            return File.Exists(AppConfig.IsVivoZenPro() ? GetVivobookPath() : GetGameVisualPath() + "\\Asus_Monochrome.icm");
+        }
+
         public static Dictionary<SplendidGamut, string> GetGamutModes()
         {
 
@@ -279,7 +284,7 @@ namespace GHelper.Display
                 if (!forceVisual && ScreenCCD.GetHDRStatus(true)) return;
                 if (!forceVisual && ScreenNative.GetRefreshRate(ScreenNative.FindLaptopScreen(true)) < 0) return;
 
-                //if (whiteBalance != DefaultColorTemp && !init) ProcessHelper.RunAsAdmin();
+                if (!init && mode == SplendidCommand.EReading && !ProcessHelper.IsUserAdministrator() && !IsEReading()) ProcessHelper.RunAsAdmin();
 
                 int param1 = 0;
                 int? param2 = null;
