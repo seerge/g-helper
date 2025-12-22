@@ -41,6 +41,7 @@ namespace GHelper.Display
         Cinema = 25,
         Vivid = 13,
         Eyecare = 17,
+        EReading = 212,
         Disabled = 18,
     }
     public static class VisualControl
@@ -168,6 +169,7 @@ namespace GHelper.Display
                     { SplendidCommand.VivoVivid, "Vivid" },
                     { SplendidCommand.VivoManual, "Manual" },
                     { SplendidCommand.VivoEycare, "Eyecare" },
+                    { SplendidCommand.EReading, "E-Reading"},
                 };
             }
 
@@ -181,6 +183,7 @@ namespace GHelper.Display
                 { SplendidCommand.Cinema, "Cinema"},
                 { SplendidCommand.Vivid, "Vivid" },
                 { SplendidCommand.Eyecare, "Eyecare"},
+                { SplendidCommand.EReading, "E-Reading"},
                 { SplendidCommand.Disabled, "Disabled"}
             };
         }
@@ -279,6 +282,7 @@ namespace GHelper.Display
                 //if (whiteBalance != DefaultColorTemp && !init) ProcessHelper.RunAsAdmin();
 
                 int? balance = null;
+                int? eReading = null;
                 int command = 0;
 
                 switch (mode)
@@ -296,12 +300,16 @@ namespace GHelper.Display
                     case SplendidCommand.VivoEycare:
                         balance = Math.Abs(whiteBalance - 50) * 4 / 50;
                         break;
+                    case SplendidCommand.EReading:
+                        balance = whiteBalance;
+                        eReading = 2;
+                        break;
                     default:
                         balance = whiteBalance;
                         break;
                 }
 
-                int result = RunSplendid(mode, command, balance);
+                int result = RunSplendid(mode, command, balance, eReading);
                 if (result == 0) return;
                 if (result == -1)
                 {
@@ -347,7 +355,7 @@ namespace GHelper.Display
             return _splendidPath;
         }
 
-        private static int RunSplendid(SplendidCommand command, int? param1 = null, int? param2 = null)
+        private static int RunSplendid(SplendidCommand command, int? param1 = null, int? param2 = null, int? param3 = null)
         {
             string splendidPath = GetSplendidPath();
             string splendidExe = $"{splendidPath}\\AsusSplendid.exe";
@@ -356,7 +364,7 @@ namespace GHelper.Display
 
             if (isSplenddid)
             {
-                var result = ProcessHelper.RunCMD(splendidExe, (int)command + " " + param1 + " " + param2, splendidPath);
+                var result = ProcessHelper.RunCMD(splendidExe, (int)command + " " + param1 + " " + param2 + " " + param3, splendidPath);
                 if (result.Contains("file not exist") || (result.Length == 0 && !isVivo)) return 1;
                 if (result.Contains("return code: -1")) return -1;
                 if (result.Contains("Visual is disabled"))
