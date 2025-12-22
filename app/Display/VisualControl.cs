@@ -281,35 +281,35 @@ namespace GHelper.Display
 
                 //if (whiteBalance != DefaultColorTemp && !init) ProcessHelper.RunAsAdmin();
 
-                int? balance = null;
-                int? eReading = null;
-                int command = 0;
+                int param1 = 0;
+                int? param2 = null;
+                int? param3 = null;
 
                 switch (mode)
                 {
                     case SplendidCommand.Disabled:
-                        command = 2;
+                        param1 = 2;
                         break;
                     case SplendidCommand.Eyecare:
-                        balance = 4;
+                        param2 = 4;
                         break;
                     case SplendidCommand.VivoNormal:
                     case SplendidCommand.VivoVivid:
-                        balance = null;
+                        param2 = null;
                         break;
                     case SplendidCommand.VivoEycare:
-                        balance = Math.Abs(whiteBalance - 50) * 4 / 50;
+                        param2 = Math.Abs(whiteBalance - 50) * 4 / 50;
                         break;
                     case SplendidCommand.EReading:
-                        balance = whiteBalance;
-                        eReading = 2;
+                        param2 = 2;            // Contrast
+                        param3 = whiteBalance; // Color Temp
                         break;
                     default:
-                        balance = whiteBalance;
+                        param2 = whiteBalance;
                         break;
                 }
 
-                int result = RunSplendid(mode, command, balance, eReading);
+                int result = RunSplendid(mode, param1, param2, param3);
                 if (result == 0) return;
                 if (result == -1)
                 {
@@ -325,7 +325,7 @@ namespace GHelper.Display
                 {
                     _init = false;
                     RunSplendid(SplendidCommand.Init);
-                    RunSplendid(mode, 0, balance);
+                    RunSplendid(mode, 0, param2, param3);
                 }
             });
         }
