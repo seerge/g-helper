@@ -362,8 +362,10 @@ namespace GHelper.AnimeMatrix
 
             AudioDeviceId = null;
 
-            AudioDeviceEnum?.UnregisterEndpointNotificationCallback(this);
-            AudioDeviceEnum?.Dispose();
+            if (AudioDeviceEnum is not null) {
+                AudioDeviceEnum?.UnregisterEndpointNotificationCallback(this);
+                AudioDeviceEnum?.Dispose();
+            }
         }
 
         void SetAudio()
