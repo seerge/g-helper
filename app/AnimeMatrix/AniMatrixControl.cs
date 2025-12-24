@@ -360,12 +360,25 @@ namespace GHelper.AnimeMatrix
                 }
             }
 
+            AudioDevice = null; // Ensure this is nulled out
             AudioDeviceId = null;
 
-            if (AudioDeviceEnum is not null) {
-                AudioDeviceEnum?.UnregisterEndpointNotificationCallback(this);
-                AudioDeviceEnum?.Dispose();
+            if (AudioDeviceEnum is not null)
+            {
+                try
+                {
+                    //wrap it in try/catch so if Windows Audio is broken (sleep/wake),
+                    // we just ignore it and continue.
+                    AudioDeviceEnum.UnregisterEndpointNotificationCallback(this);
+                    AudioDeviceEnum.Dispose();
+                }
+                catch (Exception ex)
+                {
+                    Logger.WriteLine("Failed to stop audio listener: " + ex.Message);
+                }
             }
+            //Clear the reference so we don't use a dead object later
+            AudioDeviceEnum = null; 
         }
 
         void SetAudio()
