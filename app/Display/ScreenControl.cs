@@ -100,8 +100,9 @@ namespace GHelper.Display
 
         public static void SetOptimalBrightness(int status)
         {
-            Program.acpi.DeviceSet(AsusACPI.ScreenOptimalBrightness, status, "Optimal Brightness");
             AppConfig.Set("optimal_brightness", status);
+            if (status == 2) status = SystemInformation.PowerStatus.PowerLineStatus == PowerLineStatus.Offline ? 1 : 0;
+            Program.acpi.DeviceSet(AsusACPI.ScreenOptimalBrightness, status, "Optimal Brightness");
         }
 
         public static int GetOptimalBrightness()

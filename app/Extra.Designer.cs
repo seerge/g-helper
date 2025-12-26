@@ -120,7 +120,6 @@ namespace GHelper
             checkGpuApps = new CheckBox();
             checkGPUFix = new CheckBox();
             checkNVPlatform = new CheckBox();
-            checkOptimalBrightness = new CheckBox();
             checkStatusLed = new CheckBox();
             checkPerKeyRGB = new CheckBox();
             panelPower = new Panel();
@@ -144,6 +143,10 @@ namespace GHelper
             buttonACPISend = new RButton();
             pictureDebug = new PictureBox();
             labelACPITitle = new Label();
+            panelOptimalBrightness = new Panel();
+            comboOptimalBrightness = new RComboBox();
+            pictureOptimalBrightness = new PictureBox();
+            labelOptimalBrightness = new Label();
             panelServices.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureService).BeginInit();
             panelBindingsHeader.SuspendLayout();
@@ -173,6 +176,8 @@ namespace GHelper
             ((System.ComponentModel.ISupportInitialize)pictureCores).BeginInit();
             panelACPI.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureDebug).BeginInit();
+            panelOptimalBrightness.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureOptimalBrightness).BeginInit();
             SuspendLayout();
             // 
             // panelServices
@@ -182,7 +187,7 @@ namespace GHelper
             panelServices.Controls.Add(labelServices);
             panelServices.Controls.Add(buttonServices);
             panelServices.Dock = DockStyle.Top;
-            panelServices.Location = new Point(15, 1760);
+            panelServices.Location = new Point(15, 1778);
             panelServices.Name = "panelServices";
             panelServices.Size = new Size(949, 75);
             panelServices.TabIndex = 5;
@@ -1198,21 +1203,20 @@ namespace GHelper
             panelSettings.Controls.Add(checkGpuApps);
             panelSettings.Controls.Add(checkGPUFix);
             panelSettings.Controls.Add(checkNVPlatform);
-            panelSettings.Controls.Add(checkOptimalBrightness);
             panelSettings.Controls.Add(checkStatusLed);
             panelSettings.Controls.Add(checkPerKeyRGB);
             panelSettings.Dock = DockStyle.Top;
-            panelSettings.Location = new Point(15, 1192);
+            panelSettings.Location = new Point(15, 1252);
             panelSettings.Name = "panelSettings";
             panelSettings.Padding = new Padding(21, 5, 11, 5);
-            panelSettings.Size = new Size(949, 514);
+            panelSettings.Size = new Size(949, 472);
             panelSettings.TabIndex = 3;
             // 
             // checkAutoToggleClamshellMode
             // 
             checkAutoToggleClamshellMode.AutoSize = true;
             checkAutoToggleClamshellMode.Dock = DockStyle.Top;
-            checkAutoToggleClamshellMode.Location = new Point(21, 467);
+            checkAutoToggleClamshellMode.Location = new Point(21, 425);
             checkAutoToggleClamshellMode.Name = "checkAutoToggleClamshellMode";
             checkAutoToggleClamshellMode.Padding = new Padding(3);
             checkAutoToggleClamshellMode.Size = new Size(917, 42);
@@ -1224,7 +1228,7 @@ namespace GHelper
             // 
             checkBWIcon.AutoSize = true;
             checkBWIcon.Dock = DockStyle.Top;
-            checkBWIcon.Location = new Point(21, 425);
+            checkBWIcon.Location = new Point(21, 383);
             checkBWIcon.Margin = new Padding(5, 3, 5, 3);
             checkBWIcon.Name = "checkBWIcon";
             checkBWIcon.Padding = new Padding(3);
@@ -1237,7 +1241,7 @@ namespace GHelper
             // 
             checkTopmost.AutoSize = true;
             checkTopmost.Dock = DockStyle.Top;
-            checkTopmost.Location = new Point(21, 383);
+            checkTopmost.Location = new Point(21, 341);
             checkTopmost.Margin = new Padding(5, 3, 5, 3);
             checkTopmost.Name = "checkTopmost";
             checkTopmost.Padding = new Padding(3);
@@ -1250,7 +1254,7 @@ namespace GHelper
             // 
             checkNoOverdrive.AutoSize = true;
             checkNoOverdrive.Dock = DockStyle.Top;
-            checkNoOverdrive.Location = new Point(21, 341);
+            checkNoOverdrive.Location = new Point(21, 299);
             checkNoOverdrive.Margin = new Padding(5, 3, 5, 3);
             checkNoOverdrive.Name = "checkNoOverdrive";
             checkNoOverdrive.Padding = new Padding(3);
@@ -1263,7 +1267,7 @@ namespace GHelper
             // 
             checkBootSound.AutoSize = true;
             checkBootSound.Dock = DockStyle.Top;
-            checkBootSound.Location = new Point(21, 299);
+            checkBootSound.Location = new Point(21, 257);
             checkBootSound.Margin = new Padding(5, 3, 5, 3);
             checkBootSound.Name = "checkBootSound";
             checkBootSound.Padding = new Padding(3);
@@ -1276,7 +1280,7 @@ namespace GHelper
             // 
             checkUSBC.AutoSize = true;
             checkUSBC.Dock = DockStyle.Top;
-            checkUSBC.Location = new Point(21, 257);
+            checkUSBC.Location = new Point(21, 215);
             checkUSBC.Margin = new Padding(5, 3, 5, 3);
             checkUSBC.Name = "checkUSBC";
             checkUSBC.Padding = new Padding(3);
@@ -1289,7 +1293,7 @@ namespace GHelper
             // 
             checkGpuApps.AutoSize = true;
             checkGpuApps.Dock = DockStyle.Top;
-            checkGpuApps.Location = new Point(21, 215);
+            checkGpuApps.Location = new Point(21, 173);
             checkGpuApps.Margin = new Padding(5, 3, 5, 3);
             checkGpuApps.Name = "checkGpuApps";
             checkGpuApps.Padding = new Padding(3);
@@ -1302,7 +1306,7 @@ namespace GHelper
             // 
             checkGPUFix.AutoSize = true;
             checkGPUFix.Dock = DockStyle.Top;
-            checkGPUFix.Location = new Point(21, 173);
+            checkGPUFix.Location = new Point(21, 131);
             checkGPUFix.Margin = new Padding(5, 3, 5, 3);
             checkGPUFix.Name = "checkGPUFix";
             checkGPUFix.Padding = new Padding(3);
@@ -1315,7 +1319,7 @@ namespace GHelper
             // 
             checkNVPlatform.AutoSize = true;
             checkNVPlatform.Dock = DockStyle.Top;
-            checkNVPlatform.Location = new Point(21, 131);
+            checkNVPlatform.Location = new Point(21, 89);
             checkNVPlatform.Margin = new Padding(5, 3, 5, 3);
             checkNVPlatform.Name = "checkNVPlatform";
             checkNVPlatform.Padding = new Padding(3);
@@ -1323,20 +1327,6 @@ namespace GHelper
             checkNVPlatform.TabIndex = 15;
             checkNVPlatform.Text = "Stop Nvidia Services in Eco mode (experimental)";
             checkNVPlatform.UseVisualStyleBackColor = true;
-            // 
-            // checkOptimalBrightness
-            // 
-            checkOptimalBrightness.AutoSize = true;
-            checkOptimalBrightness.Dock = DockStyle.Top;
-            checkOptimalBrightness.Location = new Point(21, 89);
-            checkOptimalBrightness.Margin = new Padding(5, 3, 5, 3);
-            checkOptimalBrightness.Name = "checkOptimalBrightness";
-            checkOptimalBrightness.Padding = new Padding(3);
-            checkOptimalBrightness.Size = new Size(917, 42);
-            checkOptimalBrightness.TabIndex = 14;
-            checkOptimalBrightness.Text = "Optimal Display Brightness";
-            checkOptimalBrightness.UseVisualStyleBackColor = true;
-            checkOptimalBrightness.Visible = false;
             // 
             // checkStatusLed
             // 
@@ -1372,7 +1362,7 @@ namespace GHelper
             panelPower.Controls.Add(labelHibernateAfter);
             panelPower.Controls.Add(pictureHibernate);
             panelPower.Dock = DockStyle.Top;
-            panelPower.Location = new Point(15, 1706);
+            panelPower.Location = new Point(15, 1724);
             panelPower.Name = "panelPower";
             panelPower.Size = new Size(949, 54);
             panelPower.TabIndex = 4;
@@ -1620,6 +1610,57 @@ namespace GHelper
             labelACPITitle.TabIndex = 0;
             labelACPITitle.Text = "ACPI DEVS Test";
             // 
+            // panelOptimalBrightness
+            // 
+            panelOptimalBrightness.AutoSize = true;
+            panelOptimalBrightness.Controls.Add(comboOptimalBrightness);
+            panelOptimalBrightness.Controls.Add(pictureOptimalBrightness);
+            panelOptimalBrightness.Controls.Add(labelOptimalBrightness);
+            panelOptimalBrightness.Dock = DockStyle.Top;
+            panelOptimalBrightness.Location = new Point(15, 1192);
+            panelOptimalBrightness.Name = "panelOptimalBrightness";
+            panelOptimalBrightness.Padding = new Padding(11, 5, 11, 0);
+            panelOptimalBrightness.Size = new Size(949, 60);
+            panelOptimalBrightness.TabIndex = 49;
+            panelOptimalBrightness.Visible = false;
+            // 
+            // comboOptimalBrightness
+            // 
+            comboOptimalBrightness.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            comboOptimalBrightness.BorderColor = Color.White;
+            comboOptimalBrightness.ButtonColor = SystemColors.ControlLight;
+            comboOptimalBrightness.FlatStyle = FlatStyle.Flat;
+            comboOptimalBrightness.Font = new Font("Segoe UI", 9F);
+            comboOptimalBrightness.FormattingEnabled = true;
+            comboOptimalBrightness.ItemHeight = 32;
+            comboOptimalBrightness.Items.AddRange(new object[] { "Off", "On Always", "On Battery" });
+            comboOptimalBrightness.Location = new Point(618, 11);
+            comboOptimalBrightness.Margin = new Padding(5, 11, 5, 9);
+            comboOptimalBrightness.Name = "comboOptimalBrightness";
+            comboOptimalBrightness.Size = new Size(309, 40);
+            comboOptimalBrightness.TabIndex = 12;
+            comboOptimalBrightness.TabStop = false;
+            // 
+            // pictureOptimalBrightness
+            // 
+            pictureOptimalBrightness.BackgroundImage = Resources.icons8_brightness_32;
+            pictureOptimalBrightness.BackgroundImageLayout = ImageLayout.Zoom;
+            pictureOptimalBrightness.Location = new Point(21, 11);
+            pictureOptimalBrightness.Name = "pictureOptimalBrightness";
+            pictureOptimalBrightness.Size = new Size(32, 32);
+            pictureOptimalBrightness.TabIndex = 1;
+            pictureOptimalBrightness.TabStop = false;
+            // 
+            // labelOptimalBrightness
+            // 
+            labelOptimalBrightness.AutoSize = true;
+            labelOptimalBrightness.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            labelOptimalBrightness.Location = new Point(64, 10);
+            labelOptimalBrightness.Name = "labelOptimalBrightness";
+            labelOptimalBrightness.Size = new Size(323, 32);
+            labelOptimalBrightness.TabIndex = 0;
+            labelOptimalBrightness.Text = "Optimal Display Brightness";
+            // 
             // Extra
             // 
             AutoScaleDimensions = new SizeF(192F, 192F);
@@ -1627,10 +1668,11 @@ namespace GHelper
             AutoScroll = true;
             AutoSize = true;
             AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            ClientSize = new Size(1013, 1787);
+            ClientSize = new Size(1013, 1759);
             Controls.Add(panelServices);
             Controls.Add(panelPower);
             Controls.Add(panelSettings);
+            Controls.Add(panelOptimalBrightness);
             Controls.Add(panelAPU);
             Controls.Add(panelCores);
             Controls.Add(panelACPI);
@@ -1692,6 +1734,9 @@ namespace GHelper
             panelACPI.ResumeLayout(false);
             panelACPI.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)pictureDebug).EndInit();
+            panelOptimalBrightness.ResumeLayout(false);
+            panelOptimalBrightness.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureOptimalBrightness).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -1808,7 +1853,10 @@ namespace GHelper
         private CheckBox checkBattery;
         private CheckBox checkBatteryLid;
         private CheckBox checkBatteryBar;
-        private CheckBox checkOptimalBrightness;
         private CheckBox checkNVPlatform;
+        private Panel panelOptimalBrightness;
+        private RComboBox comboOptimalBrightness;
+        private PictureBox pictureOptimalBrightness;
+        private Label labelOptimalBrightness;
     }
 }
