@@ -226,6 +226,7 @@ namespace GHelper.AnimeMatrix
                 }
                 else
                 {
+                    if (wakeUp) deviceMatrix.WakeUp();
                     deviceMatrix.SetDisplayState(true);
                     deviceMatrix.SetBrightness((BrightnessMode)brightness);
 
