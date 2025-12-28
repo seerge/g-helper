@@ -172,4 +172,43 @@
             return 64;
         }
     }
+
+
+    public class HarpeAceExtremeWeird : HarpeAceAimLabEdition
+    {
+        public HarpeAceExtremeWeird() : base(0x1B67, false, "mi_00", 0x00)
+        {
+        }
+        public override int MaxDPI()
+        {
+            return 42_000;
+        }
+
+        public override string GetDisplayName()
+        {
+            return "ROG Harpe Ace Extreme (Wired)";
+        }
+    }
+
+    public class HarpeAceExtremeOmni : HarpeAceAimLabEdition
+    {
+        public HarpeAceExtremeOmni() : base(0x1ACE, true, "mi_02&col03", 0x03)
+        {
+        }
+
+        public override string GetDisplayName()
+        {
+            return "ROG Harpe Ace Extreme (OMNI)";
+        }
+
+        public override int USBPacketSize()
+        {
+            return 64;
+        }
+        public override int MaxDPI()
+        {
+            return 42_000;
+        }
+    }
+
 }

@@ -40,9 +40,11 @@ namespace GHelper.UI
                 pevent.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
                 pevent.Graphics.FillEllipse(brush, badgeRect);
 
-                using (Font badgeFont = new Font(Font.FontFamily, (float)(0.8 * Font.Size), FontStyle.Bold))
+                using (Font badgeFont = new Font("Arial", (float)(0.8 * Font.Size), FontStyle.Bold))
                 using (StringFormat sf = new StringFormat { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center })
                 {
+                    badgeRect.Width = (float)Math.Ceiling(badgeRect.Width*ratio)/ratio;
+                    badgeRect.Height = (float)Math.Ceiling(badgeRect.Height*ratio)/ratio;
                     pevent.Graphics.DrawString(badge.ToString(), badgeFont, Brushes.White, badgeRect, sf);
                 }
             }

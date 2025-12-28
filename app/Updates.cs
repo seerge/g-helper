@@ -1,4 +1,5 @@
-﻿using GHelper.UI;
+﻿using GHelper.Helpers;
+using GHelper.UI;
 using NvAPIWrapper.Native.Display.Structures;
 using System.Diagnostics;
 using System.Diagnostics.Metrics;
@@ -20,6 +21,10 @@ namespace GHelper
 
         static int updatesCount = 0;
         private static long lastUpdate;
+
+        private readonly Font _boldUnderlineFont;
+        private readonly Font _font;
+
         public struct DriverDownload
         {
             public string categoryName;
@@ -78,6 +83,14 @@ namespace GHelper
             {
                 DriversAsync($"https://rog.asus.com/support/webapi/product/GetPDDrivers?website=global&model={model}&cpu={model}&osid=52{rogParam}", 0, tableDrivers);
             });
+
+            Task.Run(async () =>
+            {
+                LaptopSerialNumber();
+            });
+
+            textSerial.BackColor = panelBios.BackColor;
+            textSerial.ForeColor = panelBios.ForeColor;
         }
 
         private void ClearTable(TableLayoutPanel tableLayoutPanel)
@@ -95,11 +108,20 @@ namespace GHelper
             InitializeComponent();
             InitTheme(true);
 
+            _boldUnderlineFont = new Font(Font, FontStyle.Bold | FontStyle.Underline);
+            _font = new Font(Font, FontStyle.Underline);
+
             //buttonRefresh.Visible = false;
             buttonRefresh.Click += ButtonRefresh_Click;
             Shown += Updates_Shown;
-        }
 
+            FormClosed += (s, e) =>
+            {
+                // Dispose fonts when form closes
+                _boldUnderlineFont.Dispose();
+                _font.Dispose();
+            };
+        }
 
         private void ButtonRefresh_Click(object? sender, EventArgs e)
         {
@@ -114,7 +136,21 @@ namespace GHelper
             LoadUpdates(true);
         }
 
-
+        public void LaptopSerialNumber()
+        {
+            try
+            {
+                var output = ProcessHelper.RunCMD("powershell", "-NoProfile -Command \"(Get-WmiObject Win32_BIOS).SerialNumber\"");
+                Invoke(delegate
+                {
+                    textSerial.Text = output;
+                });
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLine(ex.ToString());
+            }
+        }
 
         private Dictionary<string, string> GetDeviceVersions()
         {
@@ -153,7 +189,7 @@ namespace GHelper
             versionLabel.TabIndex = table.RowCount + 1;
 
             versionLabel.Cursor = Cursors.Hand;
-            versionLabel.Font = new Font(versionLabel.Font, FontStyle.Underline);
+            versionLabel.Font = _font;
             versionLabel.LinkColor = colorEco;
             versionLabel.Padding = new Padding(5, 5, 5, 5);
             versionLabel.LinkClicked += delegate
@@ -204,7 +240,7 @@ namespace GHelper
                 if (newer == DRIVER_NEWER)
                 {
                     label.AccessibleName = label.AccessibleName + Properties.Strings.NewUpdates;
-                    label.Font = new Font(label.Font, FontStyle.Underline | FontStyle.Bold);
+                    label.Font = _boldUnderlineFont;
                     label.LinkColor = colorTurbo;
                 }
 
@@ -247,7 +283,7 @@ namespace GHelper
         {
             labelUpdates.Text = $"{Properties.Strings.NewUpdates}: {updatesCount}";
             labelUpdates.ForeColor = colorTurbo;
-            labelUpdates.Font = new Font(labelUpdates.Font, FontStyle.Bold);
+            labelUpdates.Font = _boldUnderlineFont;
             panelBios.AccessibleName = labelUpdates.Text;
         }
 

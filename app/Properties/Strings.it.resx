@@ -346,7 +346,7 @@
     <value>Disabilita Controller</value>
   </data>
   <data name="DisableOnLidClose" xml:space="preserve">
-    <value>Disable on lid close</value>
+    <value>Disattiva a schermo chiuso</value>
   </data>
   <data name="DisableOverdrive" xml:space="preserve">
     <value>Disabilita Overdrive Schermo</value>
@@ -498,7 +498,7 @@ Sei sicuro di voler continuare?</value>
     <value>Indicatori Di Stato LED</value>
   </data>
   <data name="Lid" xml:space="preserve">
-    <value>Lid</value>
+    <value>Schermo</value>
   </data>
   <data name="Lightbar" xml:space="preserve">
     <value>Barra Luminosa</value>
@@ -780,10 +780,10 @@ Sei sicuro di voler continuare?</value>
     <value>Visual Mode</value>
   </data>
   <data name="VisualModesHDR" xml:space="preserve">
-    <value>Visual Modes are not available when HDR is active</value>
+    <value>Le Visual Modes non sono disponibili quando l'HDR è attivo</value>
   </data>
   <data name="VisualModesScreen" xml:space="preserve">
-    <value>Visual Modes are not available when laptop screen is off</value>
+    <value>Le Visual Modes non sono disponibili quando lo schermo del portatile è spento</value>
   </data>
   <data name="VolumeDown" xml:space="preserve">
     <value>Diminuisci Volume</value>
@@ -801,13 +801,13 @@ Sei sicuro di voler continuare?</value>
     <value>Zoom</value>
   </data>
   <data name="Donate" xml:space="preserve">
-    <value>Donate</value>
+    <value>Dona</value>
   </data>
   <data name="Legend" xml:space="preserve">
     <value>Legend</value>
   </data>
   <data name="LegendGray" xml:space="preserve">
-    <value>Can't check local version</value>
+    <value>Impossibile verificare la versione locale</value>
     <comment>Can't check local version</comment>
   </data>
   <data name="LegendRed" xml:space="preserve">
@@ -819,19 +819,19 @@ Sei sicuro di voler continuare?</value>
     <comment>Updated</comment>
   </data>
   <data name="SlashBounce" xml:space="preserve">
-    <value>Bounce</value>
+    <value>Rimbalzo</value>
   </data>
   <data name="SlashMode" xml:space="preserve">
     <value>Slash</value>
   </data>
   <data name="SlashLoading" xml:space="preserve">
-    <value>Loading</value>
+    <value>Caricamento</value>
   </data>
   <data name="SlashBitStream" xml:space="preserve">
     <value>Bit Stream</value>
   </data>
   <data name="SlashTransmission" xml:space="preserve">
-    <value>Transmission</value>
+    <value>Trasmissione</value>
   </data>
   <data name="SlashFlow" xml:space="preserve">
     <value>Flow</value>
@@ -864,21 +864,21 @@ Sei sicuro di voler continuare?</value>
     <value>Buzzer</value>
   </data>
   <data name="SlashStatic" xml:space="preserve">
-    <value>Static</value>
+    <value>Statico</value>
   </data>
   <data name="SlashBatteryLevel" xml:space="preserve">
-    <value>Battery Level</value>
+    <value>Livello Batteria</value>
   </data>
   <data name="IntervalOff" xml:space="preserve">
     <value>Interval Off</value>
   </data>
   <data name="IntervalSeconds" xml:space="preserve">
-    <value>Interval {0}s</value>
+    <value>Intervallo {0}s</value>
   </data>
   <data name="DisableDynamicLighting" xml:space="preserve">
-    <value>Please disable Windows &gt; Dynamic Lighting</value>
+    <value>Per favore disabilita Windows &gt; Illuminazione Dinamica</value>
   </data>
   <data name="AmbientModeResources" xml:space="preserve">
-    <value>Ambient mode may increase resource usage</value>
+    <value>La modalità Ambient può aumentare l'utilizzo delle risorse</value>
   </data>
 </root>

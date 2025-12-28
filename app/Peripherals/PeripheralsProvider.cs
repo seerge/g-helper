@@ -212,6 +212,7 @@ namespace GHelper.Peripherals
             DetectMouse(new GladiusIIIAimpointEva2Wired());
             DetectMouse(new HarpeAceAimLabEdition());
             DetectMouse(new HarpeAceAimLabEditionWired());
+            DetectMouse(new HarpeAceExtremeWeird());
             DetectMouse(new HarpeAceMiniWired());
             DetectMouse(new TUFM3());
             DetectMouse(new TUFM3GenII());
@@ -265,11 +266,11 @@ namespace GHelper.Peripherals
                     AsusMouse omniMouse = signatureStr switch
                     {
                         var s when s.StartsWith("B23") => new HarpeAceAimLabEditionOmni(),              // B23072800062
-                        var s when s.StartsWith("B241226667") => new HarpeAceAimLabEditionOmni(),       // B24122666771
+                        var s when s.StartsWith("B241") => new HarpeAceAimLabEditionOmni(),             // B24122666771
+                        var s when s.StartsWith("B2501") => new HarpeAceAimLabEditionOmni(),            // B25010476524
                         var s when s.StartsWith("B24") => new HarpeAceMiniOmni(),                       // B24082550833
                         var s when s.StartsWith("B25") => new HarpeAceMiniOmni(),                       // B25030817186
                         var s when s.StartsWith("R1") => new KerisWirelssAimpointOmni(),                // R13121351391
-                        var s when s.StartsWith("R9") => new KerisWirelssAimpointOmni(),                // R90518300572
                         var s when s.StartsWith("F24") => new KerisWirelssAimpointOmni(),               // F24B21DD03F4
                         var s when s.StartsWith("FB") => new KerisWirelssAimpointOmni(),                // FBA0CC1D6F9C
                         var s when s.StartsWith("024") => new KerisAceIIOmni(),                         // 024031316969
@@ -277,6 +278,12 @@ namespace GHelper.Peripherals
                         var s when s.StartsWith("025") => new KerisIIOriginOmni(),                      // 025050613700
                         var s when s.StartsWith("20") => new StrixImpactIIIWirelessOmni(),              // 202405290700
                         var s when s.StartsWith("R8") => new GladiusIIIAimpointOmni(),                  // R82020155689
+                        var s when s.StartsWith("R6") => new GladiusIIIAimpointOmni(),                  // R60120331787
+                        var s when s.StartsWith("RC") => new GladiusIIIAimpointOmni(),                  // RC1519430455
+                        var s when s.StartsWith("R903") => new GladiusIIIAimpointOmni(),                // R90319215881
+                        var s when s.StartsWith("R923") => new GladiusIIIAimpointOmni(),                // R92307410710
+                        var s when s.StartsWith("R9") => new KerisWirelssAimpointOmni(),                // R90518300572
+                        var s when s.StartsWith("T5") => new HarpeAceExtremeOmni(),                      // T5MPKR018406
                         _ => new HarpeAceAimLabEditionOmni()
                     };
 

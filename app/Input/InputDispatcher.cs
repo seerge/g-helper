@@ -12,10 +12,14 @@ namespace GHelper.Input
 
     public class InputDispatcher
     {
-        System.Timers.Timer timer = new System.Timers.Timer(1000);
+        System.Timers.Timer timer = new System.Timers.Timer(AppConfig.Get("keyboard_timeout_refresh", 1000));
         public static bool backlightActivity = true;
         public static bool lidClose = false;
         public static bool tentMode = false;
+        private static bool? _fnLock = null;
+        private static string? _asusPath = null;
+
+        private static long lastSleep;
 
         public static Keys keyProfile = (Keys)AppConfig.Get("keybind_profile", (int)Keys.F5);
         public static Keys keyApp = (Keys)AppConfig.Get("keybind_app", (int)Keys.F12);
@@ -100,11 +104,13 @@ namespace GHelper.Input
             }
 
             InitBacklightTimer();
+            MuteLEDInit();
+            InitCamera();
         }
 
         public static void InitFNLock()
         {
-            if (AppConfig.IsHardwareFnLock()) HardwareFnLock(AppConfig.Is("fn_lock"));
+            if (IsHardwareFnLock()) HardwareFnLock(AppConfig.Is("fn_lock"));
         }
 
         public void InitBacklightTimer()
@@ -190,7 +196,7 @@ namespace GHelper.Input
 
             // FN-Lock group
 
-            if (AppConfig.Is("fn_lock") && !AppConfig.IsHardwareFnLock())
+            if (AppConfig.Is("fn_lock") && !IsHardwareFnLock())
                 for (Keys i = Keys.F1; i <= Keys.F11; i++) hook.RegisterHotKey(ModifierKeys.None, i);
 
             // Arrow-lock group
@@ -642,6 +648,7 @@ namespace GHelper.Input
 
         static void MuteLED()
         {
+            Thread.Sleep(500);
             Program.acpi.DeviceSet(AsusACPI.SoundMuteLed, Audio.IsMuted() ? 1 : 0, "SoundLed");
         }
 
@@ -661,6 +668,13 @@ namespace GHelper.Input
             bool muteStatus = Audio.ToggleMicMute();
             Program.toast.RunToast(muteStatus ? Properties.Strings.Muted : Properties.Strings.Unmuted, muteStatus ? ToastIcon.MicrophoneMute : ToastIcon.Microphone);
             if (AppConfig.IsVivoZenbook()) Program.acpi.DeviceSet(AsusACPI.MicMuteLed, muteStatus ? 1 : 0, "MicmuteLed");
+        }
+
+        static void MuteLEDInit()
+        {
+            if (!AppConfig.IsVivoZenbook()) return;
+            if (Program.acpi.DeviceGet(AsusACPI.MicMuteLed) >= 0) Program.acpi.DeviceSet(AsusACPI.MicMuteLed, Audio.IsMicMuted() ? 1 : 0, "MicmuteLedInit");
+            if (Program.acpi.DeviceGet(AsusACPI.SoundMuteLed) >= 0) Program.acpi.DeviceSet(AsusACPI.SoundMuteLed, Audio.IsMuted() ? 1 : 0, "SoundLedInit");
         }
 
         static bool GetTouchpadState()
@@ -693,6 +707,8 @@ namespace GHelper.Input
 
         static void SleepEvent()
         {
+            if (Math.Abs(DateTimeOffset.Now.ToUnixTimeMilliseconds() - lastSleep) < 1000) return;
+            lastSleep = DateTimeOffset.Now.ToUnixTimeMilliseconds();
             Program.acpi.DeviceSet(AsusACPI.UniversalControl, AsusACPI.KB_Sleep, "Sleep");
         }
 
@@ -703,6 +719,18 @@ namespace GHelper.Input
 
             Program.settingsForm.BeginInvoke(Program.inputDispatcher.RegisterKeys);
             Program.toast.RunToast("Arrow-Lock " + (arLock == 1 ? Properties.Strings.On : Properties.Strings.Off), ToastIcon.FnLock);
+        }
+
+        public static bool IsHardwareFnLock()
+        {
+            if (AppConfig.IsHardwareFnLock()) return true;
+            if (_fnLock is null)
+            {
+                var fnLockStatus = Program.acpi.DeviceGet(AsusACPI.FnLock);
+                Logger.WriteLine("FnLock Support: " + fnLockStatus);
+                _fnLock = fnLockStatus >= 0;
+            }
+            return (bool)_fnLock;
         }
 
         public static void HardwareFnLock(bool fnLock)
@@ -716,7 +744,7 @@ namespace GHelper.Input
             bool fnLock = !AppConfig.Is("fn_lock");
             AppConfig.Set("fn_lock", fnLock ? 1 : 0);
 
-            if (AppConfig.IsHardwareFnLock())
+            if (IsHardwareFnLock())
                 HardwareFnLock(fnLock);
             else
                 Program.settingsForm.BeginInvoke(Program.inputDispatcher.RegisterKeys);
@@ -914,7 +942,8 @@ namespace GHelper.Input
                     ToggleTouchpadEvent();
                     break;
                 case 108: // FN+F11
-                    SleepEvent();
+                    if (!AppConfig.IsHardwareHotkeys()) SleepEvent();
+                    else lastSleep = DateTimeOffset.Now.ToUnixTimeMilliseconds();
                     break;
                 case 106: // Screenpad button on DUO
                     if (Control.ModifierKeys == Keys.Shift)
@@ -936,7 +965,7 @@ namespace GHelper.Input
                     ToggleArrowLock();
                     return;
                 case 136:    // FN + F12
-                    if (!AppConfig.IsNoAirplaneMode()) Program.acpi.DeviceSet(AsusACPI.UniversalControl, AsusACPI.Airplane, "Airplane");
+                    if (!AppConfig.IsHardwareHotkeys()) Program.acpi.DeviceSet(AsusACPI.UniversalControl, AsusACPI.Airplane, "Airplane");
                     return;
                 case 50:
                     // Sound Mute Event
@@ -1060,6 +1089,32 @@ namespace GHelper.Input
             ScreenControl.ToggleScreenRate();
         }
 
+
+        private static string GetAsusPath()
+        {
+            if (_asusPath == null)
+            {
+                try
+                {
+                    using (var searcher = new ManagementObjectSearcher(@"Select * from Win32_SystemDriver WHERE Name='ATKWMIACPIIO'"))
+                    {
+                        foreach (var driver in searcher.Get())
+                        {
+                            string path = driver["PathName"].ToString();
+                            _asusPath = Path.GetDirectoryName(path);
+                            break;
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Logger.WriteLine(ex.Message);
+                }
+            }
+
+            return _asusPath;
+        }
+
         public static void ToggleCamera()
         {
             int cameraShutter = Program.acpi.DeviceGet(AsusACPI.CameraShutter);
@@ -1095,33 +1150,37 @@ namespace GHelper.Input
             }
             else
             {
-                if (!ProcessHelper.IsUserAdministrator()) return;
-
-                string CameraRegistryKeyPath = @"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\CapabilityAccessManager\ConsentStore\webcam";
-                string CameraRegistryValueName = "Value";
-
-                try
-                {
-                    var status = (string?)Registry.GetValue(CameraRegistryKeyPath, CameraRegistryValueName, "");
-
-                    if (status == "Allow") status = "Deny";
-                    else if (status == "Deny") status = "Allow";
-                    else
-                    {
-                        Logger.WriteLine("Unknown camera status");
-                        return;
-                    }
-
-                    Registry.SetValue(CameraRegistryKeyPath, CameraRegistryValueName, status, RegistryValueKind.String);
-                    Program.acpi.DeviceSet(AsusACPI.CameraLed, (status == "Deny" ? 1 : 0), "Camera");
-                    Program.toast.RunToast($"Camera " + (status == "Deny" ? "Off" : "On"));
-
-                }
-                catch (Exception ex)
-                {
-                    Logger.WriteLine(ex.ToString());
-                }
+                SetCamera(2);
             }
+        }
+
+        private static void SetCamera(int status, bool toast = true)
+        {
+            string asusPath = GetAsusPath();
+
+            var cameraStatus = AppConfig.Get("camera_status");
+            if (status == 2 && cameraStatus >= 0) status = cameraStatus > 0 ? 0 : 1;
+
+            var result = ProcessHelper.RunCMD($"{asusPath}\\AsusHotkey.exe", $"-MFCameraCommand {status} 1 0", asusPath);
+            var cameraLedStatus = Program.acpi.DeviceGet(AsusACPI.CameraLed);
+            Logger.WriteLine("Camera LED: " + cameraLedStatus);
+            AppConfig.Set("camera_status", cameraLedStatus);
+            if (toast)
+            {
+                string statusText = cameraLedStatus switch
+                {
+                    0 => "On",
+                    1 => "Off",
+                    _ => "Toggled"
+                };
+                Program.toast.RunToast($"Camera {statusText}");
+            }
+        }
+
+        private static void InitCamera()
+        {
+            var cameraStatus = AppConfig.Get("camera_status");
+            if (cameraStatus >= 0) SetCamera(cameraStatus, false);
         }
 
         private static System.Threading.Timer screenpadActionTimer;

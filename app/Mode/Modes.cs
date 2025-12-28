@@ -2,6 +2,32 @@
 {
     internal class Modes
     {
+        static Dictionary<string, string> settings = new Dictionary<string, string>
+        {
+            { "mode_base", "_" },
+            { "mode_name", "_" },
+            { "powermode", "string" },
+            { "limit_total", "int" },
+            { "limit_slow", "int" },
+            { "limit_fast", "int" },
+            { "limit_cpu", "int" },
+            { "fan_profile_cpu", "string" },
+            { "fan_profile_gpu", "string" },
+            { "fan_profile_mid", "string" }, 
+            { "gpu_power", "int" },
+            { "gpu_boost", "int" },
+            { "gpu_temp", "int" },
+            { "gpu_core", "int" },
+            { "gpu_memory", "int" },
+            { "gpu_clock_limit", "int" },
+            { "cpu_temp", "_" },
+            { "cpu_uv", "_" },
+            { "igpu_uv", "_" },
+            { "auto_boost", "int" },
+            { "auto_apply", "int" },
+            { "auto_apply_power", "int" },
+            { "auto_uv", "_" }
+        };
 
         const int maxModes = 20;
 
@@ -35,27 +61,7 @@
 
         public static void Remove(int mode)
         {
-            List<string> cleanup = new() {
-                "mode_base",
-                "mode_name",
-                "limit_total",
-                "limit_slow",
-                "limit_fast",
-                "limit_cpu",
-                "fan_profile_cpu",
-                "fan_profile_gpu",
-                "fan_profile_mid",
-                "gpu_boost",
-                "gpu_temp",
-                "gpu_core",
-                "gpu_memory",
-                "auto_boost",
-                "auto_apply",
-                "auto_apply_power",
-                "powermode"
-            };
-
-            foreach (string clean in cleanup)
+            foreach (string clean in settings.Keys)
             {
                 AppConfig.Remove(clean + "_" + mode);
             }
@@ -63,20 +69,38 @@
 
         public static int Add()
         {
+            int currentMode = GetCurrent();
+
             for (int i = 3; i < maxModes; i++)
             {
-                if (!Exists(i))
-                {
-                    int modeBase = GetCurrentBase();
-                    string nameName = "Custom " + (i - 2);
-                    AppConfig.Set("mode_base_" + i, modeBase);
-                    AppConfig.Set("mode_name_" + i, nameName);
-                    return i;
-                }
-            }
+                if (Exists(i)) continue;
 
+                AppConfig.Set("mode_base_" + i, GetCurrentBase());
+                AppConfig.Set("mode_name_" + i, "Custom " + (i - 2));
+
+                if (Exists(currentMode))
+                {
+                    foreach (var kvp in settings)
+                    {
+                        if (kvp.Value == "_") continue;
+
+                        string sourceKey = kvp.Key + "_" + currentMode;
+                        string targetKey = kvp.Key + "_" + i;
+
+                        if (!AppConfig.Exists(sourceKey)) continue;
+
+                        if (kvp.Value == "int")
+                            AppConfig.Set(targetKey, AppConfig.Get(sourceKey));
+                        else
+                            AppConfig.Set(targetKey, AppConfig.GetString(sourceKey));
+                    }
+                }
+
+                return i;
+            }
             return -1;
         }
+
 
         public static int GetCurrent()
         {

@@ -448,10 +448,13 @@ namespace GHelper
             checkStatusLed.CheckedChanged += CheckLEDStatus_CheckedChanged;
 
             var optimalBrightness = ScreenControl.GetOptimalBrightness();
-            checkOptimalBrightness.Visible = optimalBrightness >= 0;
-            checkOptimalBrightness.Checked = (optimalBrightness > 0);
-            checkOptimalBrightness.CheckedChanged += CheckOptimalBrightness_CheckedChanged;
-
+            if (optimalBrightness >= 0)
+            {
+                panelOptimalBrightness.Visible = true;
+                comboOptimalBrightness.DropDownStyle = ComboBoxStyle.DropDownList;
+                comboOptimalBrightness.SelectedIndex = AppConfig.Get("optimal_brightness", optimalBrightness);
+                comboOptimalBrightness.SelectedIndexChanged += OptimalBrightness_Changed;
+            }
 
             checkBWIcon.Checked = AppConfig.IsBWIcon();
             checkBWIcon.CheckedChanged += CheckBWIcon_CheckedChanged;
@@ -465,6 +468,11 @@ namespace GHelper
             checkGPUFix.Checked = AppConfig.IsGPUFix();
             checkGPUFix.CheckedChanged += CheckGPUFix_CheckedChanged;
 
+            checkNVPlatform.Visible = Program.acpi.IsNVidiaGPU();
+            checkNVPlatform.Checked = AppConfig.IsNVPlatform();
+            checkNVPlatform.CheckedChanged += CheckNVPlatform_CheckedChanged;
+
+
             checkPerKeyRGB.Visible = AppConfig.IsPossible4ZoneRGB();
             checkPerKeyRGB.Checked = AppConfig.Is("per_key_rgb");
             checkPerKeyRGB.CheckedChanged += CheckPerKeyRGB_CheckedChanged;
@@ -472,7 +480,6 @@ namespace GHelper
             toolTip.SetToolTip(checkAutoToggleClamshellMode, "Disable sleep on lid close when plugged in and external monitor is connected");
 
             InitCores();
-            InitVariBright();
             InitServices();
             InitHibernate();
 
@@ -480,9 +487,14 @@ namespace GHelper
 
         }
 
-        private void CheckOptimalBrightness_CheckedChanged(object? sender, EventArgs e)
+        private void CheckNVPlatform_CheckedChanged(object? sender, EventArgs e)
         {
-            ScreenControl.SetOptimalBrightness(checkOptimalBrightness.Checked ? 1 : 0);
+            AppConfig.Set("nv_platform", (checkNVPlatform.Checked ? 1 : 0));
+        }
+
+        private void OptimalBrightness_Changed(object? sender, EventArgs e)
+        {
+            ScreenControl.SetOptimalBrightness(comboOptimalBrightness.SelectedIndex);
         }
 
         private void CheckPerKeyRGB_CheckedChanged(object? sender, EventArgs e)
@@ -717,46 +729,6 @@ namespace GHelper
                 ServiesToggle();
             else
                 ProcessHelper.RunAsAdmin("services");
-        }
-
-        private void InitVariBright()
-        {
-            try
-            {
-
-                using (var amdControl = new AmdGpuControl())
-                {
-                    int variBrightSupported = 0, VariBrightEnabled;
-                    if (amdControl.GetVariBright(out variBrightSupported, out VariBrightEnabled))
-                    {
-                        Logger.WriteLine("Varibright: " + variBrightSupported + "," + VariBrightEnabled);
-                        checkVariBright.Checked = (VariBrightEnabled == 3);
-                    }
-
-                    checkVariBright.Visible = (variBrightSupported > 0);
-                    checkVariBright.CheckedChanged += CheckVariBright_CheckedChanged;
-                }
-
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex.ToString());
-                checkVariBright.Visible = false;
-            }
-
-
-        }
-
-        private void CheckVariBright_CheckedChanged(object? sender, EventArgs e)
-        {
-            using (var amdControl = new AmdGpuControl())
-            {
-                if (NvidiaSmi.GetDisplayActiveStatus()) return; // Skip if Nvidia GPU is active
-                var status = checkVariBright.Checked ? 1 : 0;
-                var result = amdControl.SetVariBright(status);
-                Logger.WriteLine($"VariBright {status}: {result}");
-                ProcessHelper.KillByName("RadeonSoftware");
-            }
         }
 
         private void CheckGpuApps_CheckedChanged(object? sender, EventArgs e)

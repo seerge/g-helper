@@ -7,6 +7,23 @@ namespace GHelper.Helpers
     {
         private static long lastAdmin;
 
+        private static bool? _isSystem;
+        public static bool IsRunningAsSystem()
+        {
+            if (_isSystem.HasValue)
+                return _isSystem.Value;
+
+            using (WindowsIdentity identity = WindowsIdentity.GetCurrent())
+            {
+                if (identity == null)
+                    _isSystem = false;
+                else
+                    _isSystem = string.Equals(identity.Name, @"NT AUTHORITY\SYSTEM", StringComparison.OrdinalIgnoreCase);
+            }
+
+            return _isSystem.Value;
+        }
+
         public static void CheckAlreadyRunning()
         {
             Process currentProcess = Process.GetCurrentProcess();
@@ -134,13 +151,28 @@ namespace GHelper.Helpers
             if (directory != null) cmd.StartInfo.WorkingDirectory = directory;
             cmd.Start();
 
-            Logger.WriteLine(name + " " + args);
+
+            var watch = Stopwatch.StartNew();
             string result = cmd.StandardOutput.ReadToEnd().Replace(Environment.NewLine, " ").Trim(' ');
-            Logger.WriteLine(result);
-            
+            watch.Stop();
+            Logger.WriteLine(name + " " + args);
+            Logger.WriteLine(watch.ElapsedMilliseconds + " ms: " + result);
             cmd.WaitForExit();
 
             return result;
+        }
+
+        public static void SetPriority(ProcessPriorityClass priorityClass = ProcessPriorityClass.Normal)
+        {
+            try
+            {
+                using (Process p = Process.GetCurrentProcess())
+                    p.PriorityClass = priorityClass;
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLine(ex.ToString());
+            }
         }
 
 
