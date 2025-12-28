@@ -44,11 +44,13 @@ namespace GHelper
             labelDrivers = new Label();
             pictureDrivers = new PictureBox();
             tableLayoutLegend = new TableLayoutPanel();
+            labelSerialTitle = new Label();
             labelLegendGreen = new Label();
             labelLegendGray = new Label();
             labelLegendRed = new Label();
             labelLegend = new Label();
             toolTip = new ToolTip(components);
+            textSerial = new TextBox();
             ((System.ComponentModel.ISupportInitialize)pictureBios).BeginInit();
             panelBiosTitle.SuspendLayout();
             panelBios.SuspendLayout();
@@ -220,19 +222,35 @@ namespace GHelper
             tableLayoutLegend.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 28.2828274F));
             tableLayoutLegend.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 28.2828274F));
             tableLayoutLegend.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 28.2828274F));
-            tableLayoutLegend.Controls.Add(labelLegendGreen, 0, 0);
-            tableLayoutLegend.Controls.Add(labelLegendGray, 0, 0);
-            tableLayoutLegend.Controls.Add(labelLegendRed, 1, 0);
-            tableLayoutLegend.Controls.Add(labelLegend, 0, 0);
+            tableLayoutLegend.Controls.Add(labelSerialTitle, 0, 0);
+            tableLayoutLegend.Controls.Add(textSerial, 1, 0);
+            tableLayoutLegend.Controls.Add(labelLegend, 0, 1);
+            tableLayoutLegend.Controls.Add(labelLegendGray, 1, 1);
+            tableLayoutLegend.Controls.Add(labelLegendGreen, 2, 1);
+            tableLayoutLegend.Controls.Add(labelLegendRed, 3, 1);
             tableLayoutLegend.Dock = DockStyle.Bottom;
-            tableLayoutLegend.Location = new Point(0, 608);
+            tableLayoutLegend.Location = new Point(0, 570);
             tableLayoutLegend.Margin = new Padding(0);
             tableLayoutLegend.Name = "tableLayoutLegend";
             tableLayoutLegend.Padding = new Padding(10, 0, 10, 20);
-            tableLayoutLegend.RowCount = 1;
-            tableLayoutLegend.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            tableLayoutLegend.Size = new Size(1236, 82);
+            tableLayoutLegend.RowCount = 2;
+            tableLayoutLegend.RowStyles.Add(new RowStyle(SizeType.Absolute, 60F));
+            tableLayoutLegend.RowStyles.Add(new RowStyle(SizeType.Absolute, 60F));
+            tableLayoutLegend.Size = new Size(1236, 120);
             tableLayoutLegend.TabIndex = 7;
+            // 
+            // labelSerialTitle
+            // 
+            labelSerialTitle.AutoSize = true;
+            labelSerialTitle.Dock = DockStyle.Top;
+            labelSerialTitle.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            labelSerialTitle.Location = new Point(20, 68);
+            labelSerialTitle.Margin = new Padding(10, 8, 10, 8);
+            labelSerialTitle.Name = "labelSerialTitle";
+            labelSerialTitle.Padding = new Padding(5);
+            labelSerialTitle.Size = new Size(164, 42);
+            labelSerialTitle.TabIndex = 5;
+            labelSerialTitle.Text = "Serial";
             // 
             // labelLegendGreen
             // 
@@ -240,8 +258,8 @@ namespace GHelper
             labelLegendGreen.BackColor = Color.Green;
             labelLegendGreen.Dock = DockStyle.Top;
             labelLegendGreen.ForeColor = Color.White;
-            labelLegendGreen.Location = new Point(547, 10);
-            labelLegendGreen.Margin = new Padding(10);
+            labelLegendGreen.Location = new Point(204, 8);
+            labelLegendGreen.Margin = new Padding(10, 8, 10, 8);
             labelLegendGreen.Name = "labelLegendGreen";
             labelLegendGreen.Padding = new Padding(5);
             labelLegendGreen.Size = new Size(323, 42);
@@ -254,8 +272,8 @@ namespace GHelper
             labelLegendGray.BackColor = Color.Gray;
             labelLegendGray.Dock = DockStyle.Top;
             labelLegendGray.ForeColor = Color.White;
-            labelLegendGray.Location = new Point(204, 10);
-            labelLegendGray.Margin = new Padding(10);
+            labelLegendGray.Location = new Point(547, 8);
+            labelLegendGray.Margin = new Padding(10, 8, 10, 8);
             labelLegendGray.Name = "labelLegendGray";
             labelLegendGray.Padding = new Padding(5);
             labelLegendGray.Size = new Size(323, 42);
@@ -268,8 +286,8 @@ namespace GHelper
             labelLegendRed.BackColor = Color.Red;
             labelLegendRed.Dock = DockStyle.Top;
             labelLegendRed.ForeColor = Color.White;
-            labelLegendRed.Location = new Point(890, 10);
-            labelLegendRed.Margin = new Padding(10);
+            labelLegendRed.Location = new Point(890, 8);
+            labelLegendRed.Margin = new Padding(10, 8, 10, 8);
             labelLegendRed.Name = "labelLegendRed";
             labelLegendRed.Padding = new Padding(5);
             labelLegendRed.Size = new Size(326, 42);
@@ -281,13 +299,24 @@ namespace GHelper
             labelLegend.AutoSize = true;
             labelLegend.Dock = DockStyle.Top;
             labelLegend.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            labelLegend.Location = new Point(20, 10);
-            labelLegend.Margin = new Padding(10);
+            labelLegend.Location = new Point(20, 8);
+            labelLegend.Margin = new Padding(10, 8, 10, 8);
             labelLegend.Name = "labelLegend";
             labelLegend.Padding = new Padding(5);
             labelLegend.Size = new Size(164, 42);
             labelLegend.TabIndex = 0;
             labelLegend.Text = "Legend";
+            // 
+            // textSerial
+            // 
+            textSerial.BackColor = SystemColors.ButtonFace;
+            textSerial.BorderStyle = BorderStyle.FixedSingle;
+            textSerial.Dock = DockStyle.Top;
+            textSerial.Location = new Point(204, 68);
+            textSerial.Margin = new Padding(10, 8, 10, 8);
+            textSerial.Name = "textSerial";
+            textSerial.Size = new Size(323, 39);
+            textSerial.TabIndex = 6;
             // 
             // Updates
             // 
@@ -342,5 +371,7 @@ namespace GHelper
         private Label labelLegendGray;
         private Label labelLegendGreen;
         private ToolTip toolTip;
+        private Label labelSerialTitle;
+        private TextBox textSerial;
     }
 }

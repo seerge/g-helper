@@ -12,6 +12,7 @@ using Ryzen;
 using System.Diagnostics;
 using System.Globalization;
 using System.Reflection;
+using System.Text;
 using static NativeMethods;
 
 namespace GHelper
@@ -32,6 +33,7 @@ namespace GHelper
         public static ToastForm toast = new ToastForm();
 
         public static IntPtr unRegPowerNotify, unRegPowerNotifyLid;
+        public static int WM_TASKBARCREATED = 0;
 
         private static long lastAuto;
         private static long lastTheme;
@@ -49,6 +51,16 @@ namespace GHelper
 
             if (action == "charge")
             {
+                if (AppConfig.IsZ13())
+                {
+                    AsusHid.Write([
+                        [AsusHid.AURA_ID, 0xB9],
+                        Encoding.ASCII.GetBytes("]ASUS Tech.Inc."),
+                        [AsusHid.AURA_ID, 0x05, 0x20, 0x31, 0, 0x1A],
+                        [AsusHid.AURA_ID, 0xC0, 0x03, 0x01]
+                    ], "Init");
+                }
+
                 BatteryLimit();
                 InputDispatcher.StartupBacklight();
                 Application.Exit();
@@ -67,6 +79,7 @@ namespace GHelper
             }
 
             ProcessHelper.CheckAlreadyRunning();
+            ProcessHelper.SetPriority();
 
             Logger.WriteLine("------------");
             Logger.WriteLine("App launched: " + AppConfig.GetModel() + " :" + Assembly.GetExecutingAssembly().GetName().Version.ToString() + CultureInfo.CurrentUICulture + (ProcessHelper.IsUserAdministrator() ? "." : ""));
@@ -103,7 +116,8 @@ namespace GHelper
                 Visible = true
             };
 
-            Logger.WriteLine($"Tray Icon: {trayIcon.Visible}");
+            WM_TASKBARCREATED = RegisterWindowMessage("TaskbarCreated");
+            Logger.WriteLine($"Tray Icon: {trayIcon.Visible} | {WM_TASKBARCREATED}");
 
             settingsForm.SetContextMenu();
             trayIcon.MouseClick += TrayIcon_MouseClick;
@@ -152,9 +166,6 @@ namespace GHelper
                     Startup.ReScheduleAdmin();
                     settingsForm.FansToggle(1);
                     break;
-                case "gpurestart":
-                    gpuControl.RestartGPU(false);
-                    break;
                 case "services":
                     settingsForm.extraForm = new Extra();
                     settingsForm.extraForm.Show();
@@ -176,7 +187,7 @@ namespace GHelper
                     });
                     break;
                 default:
-                    Startup.StartupCheck();
+                    Task.Run(Startup.StartupCheck);
                     break;
             }
 
@@ -242,8 +253,9 @@ namespace GHelper
 
         public static bool SetAutoModes(bool powerChanged = false, bool init = false, bool wakeup = false)
         {
+            int skipDelay = wakeup ? 10000 : 3000;
 
-            if (Math.Abs(DateTimeOffset.Now.ToUnixTimeMilliseconds() - lastAuto) < 3000) return false;
+            if (Math.Abs(DateTimeOffset.Now.ToUnixTimeMilliseconds() - lastAuto) < skipDelay) return false;
             lastAuto = DateTimeOffset.Now.ToUnixTimeMilliseconds();
 
             isPlugged = SystemInformation.PowerStatus.PowerLineStatus;
@@ -255,6 +267,7 @@ namespace GHelper
             ScreenControl.InitOptimalBrightness();
 
             inputDispatcher.Init();
+            //HardwareControl.ReadSensors(true);
 
             modeControl.AutoPerformance(powerChanged);
 
@@ -304,7 +317,7 @@ namespace GHelper
 
             if (SystemInformation.PowerStatus.PowerLineStatus == isPlugged) return;
             if (AppConfig.Is("disable_power_event")) return;
-            SetAutoModes(true);
+            SetAutoModes(powerChanged: true);
         }
 
         public static void SettingsToggle(bool checkForFocus = true, bool trayClick = false)

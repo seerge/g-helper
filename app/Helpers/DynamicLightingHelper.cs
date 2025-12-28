@@ -1,4 +1,5 @@
 ﻿using Microsoft.Win32;
+using System.Security.Principal;
 
 namespace GHelper.Helpers
 {
@@ -8,10 +9,13 @@ namespace GHelper.Helpers
         const string LightingKey = @"HKEY_CURRENT_USER\Software\Microsoft\Lighting";
         const string LightingValue = "AmbientLightingEnabled";
 
+
         public static bool IsEnabled()
         {
             if (Environment.OSVersion.Version.Build < 22000) return false;
-            return (int?)Registry.GetValue(LightingKey, LightingValue, 1) > 0;
+            if (ProcessHelper.IsRunningAsSystem()) return false;
+            Logger.WriteLine("Dynamic lighting status: " + Registry.GetValue(LightingKey, LightingValue, 0));
+            return (int?)Registry.GetValue(LightingKey, LightingValue, 0) > 0;
         }
 
         public static void SetRegStatus(int status = 1)

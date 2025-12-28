@@ -100,8 +100,9 @@ namespace GHelper.Display
 
         public static void SetOptimalBrightness(int status)
         {
-            Program.acpi.DeviceSet(AsusACPI.ScreenOptimalBrightness, status, "Optimal Brightness");
             AppConfig.Set("optimal_brightness", status);
+            if (status == 2) status = SystemInformation.PowerStatus.PowerLineStatus == PowerLineStatus.Offline ? 1 : 0;
+            Program.acpi.DeviceSet(AsusACPI.ScreenOptimalBrightness, status, "Optimal Brightness");
         }
 
         public static int GetOptimalBrightness()
@@ -120,6 +121,15 @@ namespace GHelper.Display
                 Program.acpi.DeviceSet(AsusACPI.ScreenFHD, (fhd == 1) ? 0 : 1, "FHD");
                 Process.Start("shutdown", "/r /t 1");
             }
+        }
+
+        public static void ToogleHDRControl()
+        {
+            int hdrControl = Program.acpi.DeviceGet(AsusACPI.ScreenHDRControl);
+            Logger.WriteLine($"HDR Control Toggle: {hdrControl}");
+            Program.acpi.DeviceSet(AsusACPI.ScreenHDRControl, (hdrControl == 1) ? 1 : 0, "HDR Control");
+            Thread.Sleep(200);
+            InitScreen();
         }
 
         public static string ToogleMiniled()
@@ -213,6 +223,9 @@ namespace GHelper.Display
                 fhd = Program.acpi.DeviceGet(AsusACPI.ScreenFHD);
             }
 
+            int hdrControl = Program.acpi.DeviceGet(AsusACPI.ScreenHDRControl);
+            if (hdrControl >= 0) Logger.WriteLine($"HDR Control Status: {hdrControl}");
+
             AppConfig.Set("frequency", frequency);
             AppConfig.Set("overdrive", overdrive);
 
@@ -228,7 +241,8 @@ namespace GHelper.Display
                     miniled1: miniled1,
                     miniled2: miniled2,
                     hdr: hdr,
-                    fhd: fhd
+                    fhd: fhd,
+                    hdrControl: hdrControl
                 );
             });
 

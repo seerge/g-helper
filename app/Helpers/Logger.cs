@@ -7,7 +7,7 @@ public static class Logger
 
     public static void WriteLine(string logMessage)
     {
-        Debug.WriteLine(logMessage);
+        Debug.WriteLine($"{DateTime.Now}: {logMessage}");
         if (!Directory.Exists(appPath)) Directory.CreateDirectory(appPath);
 
         try

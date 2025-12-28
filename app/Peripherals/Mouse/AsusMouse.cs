@@ -561,10 +561,10 @@ namespace GHelper.Peripherals.Mouse
                             + " Try " + (retries - 2) + " of 3");
 
                     long time = MeasuredIO(Write, packet);
-                    Logger.WriteLine(GetDisplayName() + ": Write took " + time + "ms");
+                    if (IsPacketLoggerEnabled()) Logger.WriteLine(GetDisplayName() + ": Write took " + time + "ms");
 
                     time = MeasuredIO(Read, response);
-                    Logger.WriteLine(GetDisplayName() + ": Read took " + time + "ms");
+                    if (IsPacketLoggerEnabled()) Logger.WriteLine(GetDisplayName() + ": Read took " + time + "ms");
 
 
                     if (IsMouseError(response))
@@ -593,7 +593,7 @@ namespace GHelper.Peripherals.Mouse
                             Logger.WriteLine(GetDisplayName() + ": Read wrong packet left in buffer: " + ByteArrayToString(response) + ". Retrying...");
                         //Read again
                         time = MeasuredIO(Read, response);
-                        Logger.WriteLine(GetDisplayName() + ": Read took " + time + "ms");
+                        if (IsPacketLoggerEnabled()) Logger.WriteLine(GetDisplayName() + ": Read took " + time + "ms");
                     }
 
                     if (IsPacketLoggerEnabled())

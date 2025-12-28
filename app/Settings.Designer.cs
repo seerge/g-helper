@@ -135,7 +135,9 @@ namespace GHelper
             pictureGamma = new PictureBox();
             labelGammaTitle = new Label();
             panelVersion = new Panel();
+            buttonEnergySaver = new RButton();
             labelVersion = new Label();
+            buttonHDRControl = new RButton();
             panelMatrix.SuspendLayout();
             panelMatrixAuto.SuspendLayout();
             tableLayoutMatrix.SuspendLayout();
@@ -221,7 +223,7 @@ namespace GHelper
             checkMatrixLid.TabIndex = 46;
             checkMatrixLid.Text = "Disable on lid close";
             checkMatrixLid.UseVisualStyleBackColor = true;
-            checkMatrixLid.Visible = false;
+            checkMatrixLid.Visible = true;
             // 
             // checkMatrix
             // 
@@ -1100,6 +1102,7 @@ namespace GHelper
             tableScreen.Controls.Add(button120Hz, 2, 0);
             tableScreen.Controls.Add(buttonMiniled, 3, 0);
             tableScreen.Controls.Add(buttonFHD, 3, 0);
+            tableScreen.Controls.Add(buttonHDRControl, 3, 0);
             tableScreen.Dock = DockStyle.Top;
             tableScreen.Location = new Point(20, 51);
             tableScreen.Margin = new Padding(8, 4, 8, 4);
@@ -1179,11 +1182,11 @@ namespace GHelper
             buttonMiniled.FlatAppearance.BorderSize = 0;
             buttonMiniled.FlatStyle = FlatStyle.Flat;
             buttonMiniled.ForeColor = SystemColors.ControlText;
-            buttonMiniled.Location = new Point(4, 84);
+            buttonMiniled.Location = new Point(592, 4);
             buttonMiniled.Margin = new Padding(4);
             buttonMiniled.Name = "buttonMiniled";
             buttonMiniled.Secondary = false;
-            buttonMiniled.Size = new Size(188, 12);
+            buttonMiniled.Size = new Size(191, 72);
             buttonMiniled.TabIndex = 12;
             buttonMiniled.Text = Properties.Strings.Multizone;
             buttonMiniled.UseVisualStyleBackColor = false;
@@ -1199,11 +1202,11 @@ namespace GHelper
             buttonFHD.FlatAppearance.BorderSize = 0;
             buttonFHD.FlatStyle = FlatStyle.Flat;
             buttonFHD.ForeColor = SystemColors.ControlText;
-            buttonFHD.Location = new Point(592, 4);
+            buttonFHD.Location = new Point(4, 84);
             buttonFHD.Margin = new Padding(4);
             buttonFHD.Name = "buttonFHD";
             buttonFHD.Secondary = false;
-            buttonFHD.Size = new Size(191, 72);
+            buttonFHD.Size = new Size(188, 12);
             buttonFHD.TabIndex = 13;
             buttonFHD.Text = "FHD";
             buttonFHD.UseVisualStyleBackColor = false;
@@ -1909,14 +1912,36 @@ namespace GHelper
             // 
             panelVersion.AutoSize = true;
             panelVersion.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            panelVersion.Controls.Add(buttonEnergySaver);
             panelVersion.Controls.Add(labelVersion);
             panelVersion.Dock = DockStyle.Top;
             panelVersion.Location = new Point(11, 1837);
             panelVersion.MinimumSize = new Size(0, 50);
             panelVersion.Name = "panelVersion";
-            panelVersion.Padding = new Padding(20, 5, 20, 5);
+            panelVersion.Padding = new Padding(20, 5, 24, 5);
             panelVersion.Size = new Size(827, 50);
             panelVersion.TabIndex = 10;
+            // 
+            // buttonEnergySaver
+            // 
+            buttonEnergySaver.Activated = false;
+            buttonEnergySaver.BackColor = SystemColors.ControlLight;
+            buttonEnergySaver.BorderColor = Color.Transparent;
+            buttonEnergySaver.BorderRadius = 2;
+            buttonEnergySaver.Dock = DockStyle.Right;
+            buttonEnergySaver.FlatAppearance.BorderSize = 0;
+            buttonEnergySaver.FlatStyle = FlatStyle.Flat;
+            buttonEnergySaver.Font = new Font("Segoe UI", 7.125F, FontStyle.Bold);
+            buttonEnergySaver.ForeColor = SystemColors.ControlDark;
+            buttonEnergySaver.ImageAlign = ContentAlignment.MiddleLeft;
+            buttonEnergySaver.Location = new Point(640, 5);
+            buttonEnergySaver.Margin = new Padding(0);
+            buttonEnergySaver.Name = "buttonEnergySaver";
+            buttonEnergySaver.Secondary = true;
+            buttonEnergySaver.Size = new Size(163, 40);
+            buttonEnergySaver.TabIndex = 39;
+            buttonEnergySaver.Text = "Energy Saver";
+            buttonEnergySaver.UseVisualStyleBackColor = false;
             // 
             // labelVersion
             // 
@@ -1932,6 +1957,27 @@ namespace GHelper
             labelVersion.TabIndex = 38;
             labelVersion.Text = "v.0";
             labelVersion.TextAlign = ContentAlignment.MiddleLeft;
+            // 
+            // buttonHDRControl
+            // 
+            buttonHDRControl.Activated = false;
+            buttonHDRControl.BackColor = SystemColors.ControlLightLight;
+            buttonHDRControl.BorderColor = Color.Transparent;
+            buttonHDRControl.BorderRadius = 5;
+            buttonHDRControl.CausesValidation = false;
+            buttonHDRControl.Dock = DockStyle.Fill;
+            buttonHDRControl.FlatAppearance.BorderSize = 0;
+            buttonHDRControl.FlatStyle = FlatStyle.Flat;
+            buttonHDRControl.ForeColor = SystemColors.ControlText;
+            buttonHDRControl.Location = new Point(200, 84);
+            buttonHDRControl.Margin = new Padding(4);
+            buttonHDRControl.Name = "buttonHDRControl";
+            buttonHDRControl.Secondary = false;
+            buttonHDRControl.Size = new Size(188, 12);
+            buttonHDRControl.TabIndex = 14;
+            buttonHDRControl.Text = "HDR Color Control";
+            buttonHDRControl.UseVisualStyleBackColor = false;
+            buttonHDRControl.Visible = false;
             // 
             // SettingsForm
             // 
@@ -2135,5 +2181,7 @@ namespace GHelper
         private Panel panelVersion;
         private Label labelVersion;
         private RBadgeButton buttonDonate;
+        private RButton buttonEnergySaver;
+        private RButton buttonHDRControl;
     }
 }
