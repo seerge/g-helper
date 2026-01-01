@@ -738,6 +738,8 @@ namespace GHelper
 
             if (mouse.HasDebounceSetting())
             {
+                sliderButtonDebounce.Min = (int)mouse.MinDebounce();
+                sliderButtonDebounce.Max = (int)mouse.MaxDebounce();
                 sliderButtonDebounce.Value = (int)mouse.Debounce;
             }
 

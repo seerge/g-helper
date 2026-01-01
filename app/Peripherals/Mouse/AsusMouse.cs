@@ -17,7 +17,8 @@ namespace GHelper.Peripherals.Mouse
 
     public enum DebounceTime
     {
-        Disabled = 0x00, //?? not sure because mice with this setting have no "disabled". But the mouse accepts and stores 0x00 just fine
+        OFF = 0x00, //?? not sure because mice with this setting have no "disabled". But the mouse accepts and stores 0x00 just fine
+        MS8 = 0x01,
         MS12 = 0x02,
         MS16 = 0x03,
         MS20 = 0x04,
@@ -1451,6 +1452,7 @@ namespace GHelper.Peripherals.Mouse
         {
             switch (dbt)
             {
+                case DebounceTime.MS8: return 8;
                 case DebounceTime.MS12: return 12;
                 case DebounceTime.MS16: return 16;
                 case DebounceTime.MS20: return 20;
@@ -1462,6 +1464,15 @@ namespace GHelper.Peripherals.Mouse
                 default: return 0;
             }
         }
+
+        public virtual DebounceTime MinDebounce()
+        {
+            return DebounceTime.MS12;
+        }
+        public virtual DebounceTime MaxDebounce()
+        {
+            return DebounceTime.MS32;
+        } 
 
         protected virtual byte[] GetReadDebouncePacket()
         {
@@ -1478,17 +1489,17 @@ namespace GHelper.Peripherals.Mouse
         {
             if (packet[1] != 0x12 || packet[2] != 0x04 || packet[3] != 0x00)
             {
-                return DebounceTime.MS12;
+                return MinDebounce();
             }
 
-            if (packet[15] < 0x02)
+            if (packet[15] < (int)MinDebounce())
             {
-                return DebounceTime.MS12;
+                return MinDebounce();
             }
 
-            if (packet[15] > 0x07)
+            if (packet[15] > (int)MaxDebounce())
             {
-                return DebounceTime.MS32;
+                return MaxDebounce();
             }
 
             return (DebounceTime)packet[15];
