@@ -59,11 +59,6 @@
             return true;
         }
 
-        public override DebounceTime MinDebounce()
-        {
-            return DebounceTime.OFF;
-        }
-
         public override bool HasLiftOffSetting()
         {
             return true;

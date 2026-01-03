@@ -17,16 +17,6 @@
             return 4;
         }
 
-        public override bool HasDebounceSetting()
-        {
-            return true;
-        }
-
-        public override DebounceTime MinDebounce()
-        {
-            return DebounceTime.OFF;
-        }
- 
         public override string GetDisplayName()
         {
             return "Harpe Ace Mini (Wired)";
