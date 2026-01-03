@@ -478,6 +478,7 @@ namespace GHelper
             checkPerKeyRGB.CheckedChanged += CheckPerKeyRGB_CheckedChanged;
 
             toolTip.SetToolTip(checkAutoToggleClamshellMode, "Disable sleep on lid close when plugged in and external monitor is connected");
+            toolTip.SetToolTip(checkNVPlatform, "Stops NVIDIA services when the discrete GPU is disabled\nand restarts them automatically when the GPU is enabled");
 
             InitCores();
             InitServices();
