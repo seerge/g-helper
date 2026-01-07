@@ -448,10 +448,13 @@ namespace GHelper
             checkStatusLed.CheckedChanged += CheckLEDStatus_CheckedChanged;
 
             var optimalBrightness = ScreenControl.GetOptimalBrightness();
-            checkOptimalBrightness.Visible = optimalBrightness >= 0;
-            checkOptimalBrightness.Checked = (optimalBrightness > 0);
-            checkOptimalBrightness.CheckedChanged += CheckOptimalBrightness_CheckedChanged;
-
+            if (optimalBrightness >= 0)
+            {
+                panelOptimalBrightness.Visible = true;
+                comboOptimalBrightness.DropDownStyle = ComboBoxStyle.DropDownList;
+                comboOptimalBrightness.SelectedIndex = AppConfig.Get("optimal_brightness", optimalBrightness);
+                comboOptimalBrightness.SelectedIndexChanged += OptimalBrightness_Changed;
+            }
 
             checkBWIcon.Checked = AppConfig.IsBWIcon();
             checkBWIcon.CheckedChanged += CheckBWIcon_CheckedChanged;
@@ -475,6 +478,7 @@ namespace GHelper
             checkPerKeyRGB.CheckedChanged += CheckPerKeyRGB_CheckedChanged;
 
             toolTip.SetToolTip(checkAutoToggleClamshellMode, "Disable sleep on lid close when plugged in and external monitor is connected");
+            toolTip.SetToolTip(checkNVPlatform, "Stops NVIDIA services when the discrete GPU is disabled\nand restarts them automatically when the GPU is enabled");
 
             InitCores();
             InitServices();
@@ -489,9 +493,9 @@ namespace GHelper
             AppConfig.Set("nv_platform", (checkNVPlatform.Checked ? 1 : 0));
         }
 
-        private void CheckOptimalBrightness_CheckedChanged(object? sender, EventArgs e)
+        private void OptimalBrightness_Changed(object? sender, EventArgs e)
         {
-            ScreenControl.SetOptimalBrightness(checkOptimalBrightness.Checked ? 1 : 0);
+            ScreenControl.SetOptimalBrightness(comboOptimalBrightness.SelectedIndex);
         }
 
         private void CheckPerKeyRGB_CheckedChanged(object? sender, EventArgs e)

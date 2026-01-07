@@ -12,7 +12,7 @@ namespace GHelper.Input
 
     public class InputDispatcher
     {
-        System.Timers.Timer timer = new System.Timers.Timer(1000);
+        System.Timers.Timer timer = new System.Timers.Timer(AppConfig.Get("keyboard_timeout_refresh", 1000));
         public static bool backlightActivity = true;
         public static bool lidClose = false;
         public static bool tentMode = false;
