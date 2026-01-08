@@ -109,6 +109,14 @@ namespace GHelper.USB
             { AuraMode.AMBIENT, "Ambient"},
         };
 
+        private static Dictionary<AuraMode, string> _modesDynamicLighting = new Dictionary<AuraMode, string>
+        {
+            { AuraMode.AuraStatic, Properties.Strings.AuraStatic },
+            { AuraMode.AuraBreathe, Properties.Strings.AuraColorCycle },
+            { AuraMode.AuraRainbow, Properties.Strings.AuraRainbow },
+            { AuraMode.AuraStrobe, Properties.Strings.AuraStrobe },
+        };
+
         private static Dictionary<AuraMode, string> _modesAlly = new Dictionary<AuraMode, string>
         {
             { AuraMode.AuraStatic, Properties.Strings.AuraStatic },
@@ -172,6 +180,11 @@ namespace GHelper.USB
             if (isSingleColor)
             {
                 return _modesSingleColor;
+            }
+
+            if (AppConfig.IsDynamicLightingOnly())
+            {
+                return _modesDynamicLighting;
             }
 
             if (AppConfig.IsAlly())
@@ -698,10 +711,7 @@ namespace GHelper.USB
                 return;
             }
 
-            int _speed = (Speed == AuraSpeed.Normal) ? 0xeb : (Speed == AuraSpeed.Fast) ? 0xf5 : 0xe1;
-            AsusHid.Write(new List<byte[]> { AuraMessage(Mode, _Color1, _Color2, _speed, isSingleColor), MESSAGE_SET, MESSAGE_APPLY });
-
-            if (DynamicLightingHelper.IsEnabled())
+            if (AppConfig.IsDynamicLightingOnly() || DynamicLightingHelper.IsEnabled())
             {
                 switch (mode)
                 {
@@ -734,7 +744,12 @@ namespace GHelper.USB
                             );
                         break;
                 }
+                return;
             }
+
+            int _speed = (Speed == AuraSpeed.Normal) ? 0xeb : (Speed == AuraSpeed.Fast) ? 0xf5 : 0xe1;
+            AsusHid.Write(new List<byte[]> { AuraMessage(Mode, _Color1, _Color2, _speed, isSingleColor), MESSAGE_SET, MESSAGE_APPLY });
+
 
             if (isACPI)
                 Program.acpi.TUFKeyboardRGB(Mode, Color1, _speed);

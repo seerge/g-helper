@@ -726,6 +726,11 @@ public static class AppConfig
         return IsSlash() || IsIntelHX() || IsTUF() || IsZ13();
     }
 
+    public static bool IsDynamicLightingOnly()
+    {
+        return ContainsModel("S560") || ContainsModel("M540");
+    }
+
     public static bool IsDynamicLightingInit()
     {
         return ContainsModel("FA608") || Is("lighting_init");
