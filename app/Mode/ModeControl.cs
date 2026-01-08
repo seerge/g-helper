@@ -106,7 +106,11 @@ namespace GHelper.Mode
                 await Task.Delay(TimeSpan.FromMilliseconds(1000));
                 AutoPower();
 
-
+                var command = AppConfig.GetModeString("mode_command");
+                if (command is not null)
+                {   Logger.WriteLine("Running mode command: " + command);
+                    RestrictedProcessHelper.RunAsRestrictedUser(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.System), "cmd.exe"), "/C " + command);
+                }
             });
 
 
