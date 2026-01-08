@@ -845,8 +845,11 @@ namespace GHelper
 
         public void InitContextMenuTheme()
         {
-            contextMenuStrip.BackColor = this.BackColor;
-            contextMenuStrip.ForeColor = this.ForeColor;
+            if (contextMenuStrip is not null)
+            {
+                contextMenuStrip.BackColor = this.BackColor;
+                contextMenuStrip.ForeColor = this.ForeColor;
+            }
         }
 
         private void ButtonXGM_Click(object? sender, EventArgs e)
