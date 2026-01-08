@@ -222,6 +222,7 @@ namespace GHelper
             {
                 case UserPreferenceCategory.General:
                     bool changed = settingsForm.InitTheme();
+                    settingsForm.InitContextMenuTheme();
                     settingsForm.VisualiseIcon();
 
                     if (changed)

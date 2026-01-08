@@ -836,15 +836,17 @@ namespace GHelper
             //contextMenuStrip.ShowCheckMargin = true;
             contextMenuStrip.RenderMode = ToolStripRenderMode.System;
 
-            if (darkTheme)
-            {
-                contextMenuStrip.BackColor = this.BackColor;
-                contextMenuStrip.ForeColor = this.ForeColor;
-            }
+            InitContextMenuTheme();
 
             if (Program.trayIcon is not null) Program.trayIcon.ContextMenuStrip = contextMenuStrip;
 
 
+        }
+
+        public void InitContextMenuTheme()
+        {
+            contextMenuStrip.BackColor = this.BackColor;
+            contextMenuStrip.ForeColor = this.ForeColor;
         }
 
         private void ButtonXGM_Click(object? sender, EventArgs e)
