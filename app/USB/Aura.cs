@@ -5,6 +5,7 @@ using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 using System.Text;
+using static GHelper.Helpers.DynamicLightingHelper;
 
 namespace GHelper.USB
 {
@@ -699,6 +700,41 @@ namespace GHelper.USB
 
             int _speed = (Speed == AuraSpeed.Normal) ? 0xeb : (Speed == AuraSpeed.Fast) ? 0xf5 : 0xe1;
             AsusHid.Write(new List<byte[]> { AuraMessage(Mode, _Color1, _Color2, _speed, isSingleColor), MESSAGE_SET, MESSAGE_APPLY });
+
+            if (DynamicLightingHelper.IsEnabled())
+            {
+                switch (mode)
+                {
+                    case AuraMode.AuraBreathe:
+                        DynamicLightingHelper.SetEffect(
+                            DynamicLightingEffect.Wave,
+                            color: _Color1,
+                            color2: _Color2,
+                            speed: (int)Speed * 5
+                            );
+                        break;
+                    case AuraMode.AuraColorCycle:
+                    case AuraMode.AuraRainbow:
+                        DynamicLightingHelper.SetEffect(
+                            DynamicLightingEffect.Rainbow,
+                            speed: (int)Speed * 5
+                            );
+                        break;
+                    case AuraMode.AuraStrobe:
+                        DynamicLightingHelper.SetEffect(
+                            DynamicLightingEffect.Breathing,
+                            color: _Color1,
+                            speed: 10
+                            );
+                        break;
+                    default:
+                        DynamicLightingHelper.SetEffect(
+                            DynamicLightingEffect.Solid,
+                            color: _Color1
+                            );
+                        break;
+                }
+            }
 
             if (isACPI)
                 Program.acpi.TUFKeyboardRGB(Mode, Color1, _speed);
