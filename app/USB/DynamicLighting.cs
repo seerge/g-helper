@@ -17,6 +17,31 @@ public static class DynamicLightingKeyboard
 
     private static readonly object _sync = new();
     private static LampArrayEffectPlaylist? _activePlaylist;
+    private static CancellationTokenSource? _softwareEffectCts;
+
+    private static void StopSoftwareEffect()
+    {
+        lock (_sync)
+        {
+            try { _softwareEffectCts?.Cancel(); } catch { /* ignore */ }
+            try { _softwareEffectCts?.Dispose(); } catch { /* ignore */ }
+            _softwareEffectCts = null;
+        }
+    }
+
+    private static CancellationToken StartSoftwareEffectToken(CancellationToken externalToken)
+    {
+        lock (_sync)
+        {
+            // Stop any previous software loop
+            StopSoftwareEffect();
+
+            // Link with the external token so either one stops the loop
+            _softwareEffectCts = CancellationTokenSource.CreateLinkedTokenSource(externalToken);
+            return _softwareEffectCts.Token;
+        }
+    }
+
 
     private static void StopActivePlaylist()
     {
@@ -27,6 +52,12 @@ public static class DynamicLightingKeyboard
         }
     }
 
+    private static void StopAllEffects()
+    {
+        StopActivePlaylist();
+        StopSoftwareEffect();
+    }
+
     private static void SetActivePlaylist(LampArrayEffectPlaylist playlist)
     {
         lock (_sync)
@@ -34,6 +65,14 @@ public static class DynamicLightingKeyboard
             try { _activePlaylist?.Stop(); } catch { /* ignore */ }
             _activePlaylist = playlist;
         }
+    }
+
+    static Windows.UI.Color ToWindowsUIColor(System.Drawing.Color c)
+    {
+        // Many System.Drawing.Color values can have A=0 (e.g. Color.Empty or transparent UI colors).
+        // For keyboard lighting, treat that as fully opaque.
+        byte a = c.A == 0 ? (byte)255 : c.A;
+        return Windows.UI.Color.FromArgb(a, c.R, c.G, c.B);
     }
 
     /// <summary>
@@ -47,11 +86,6 @@ public static class DynamicLightingKeyboard
         CancellationToken ct = default)
     {
         ct.ThrowIfCancellationRequested();
-
-        // Helper to convert System.Drawing.Color to Windows.UI.Color
-        static Windows.UI.Color ToWindowsUIColor(System.Drawing.Color c) =>
-            Windows.UI.Color.FromArgb(c.A, c.R, c.G, c.B);
-
         var winColor = ToWindowsUIColor(color);
 
         // Find LampArray devices and pick the keyboard one.
@@ -82,15 +116,17 @@ public static class DynamicLightingKeyboard
                 case AuraMode.AuraRainbow:
                 case AuraMode.AuraColorCycle:
                     {
+                        // Stop playlist effects, then start a cancellable software loop token
                         StopActivePlaylist();
-                        // speed = seconds per full hue cycle (0..360). Default: 4 seconds.
-                        var secondsPerCycle = speed.HasValue ? Math.Max(0.2, speed.Value.TotalSeconds) : 4.0;
+                        var loopToken = StartSoftwareEffectToken(ct);
 
+                        var secondsPerCycle = speed.HasValue ? Math.Max(0.2, speed.Value.TotalSeconds) : 4.0;
                         const int fps = 30;
+
                         var frameDelay = TimeSpan.FromMilliseconds(1000.0 / fps);
                         var start = DateTime.UtcNow;
 
-                        while (!ct.IsCancellationRequested)
+                        while (!loopToken.IsCancellationRequested)
                         {
                             var t = (DateTime.UtcNow - start).TotalSeconds;
                             var hue = (t / secondsPerCycle) * 360.0;
@@ -103,7 +139,7 @@ public static class DynamicLightingKeyboard
 
                             try
                             {
-                                await Task.Delay(frameDelay, ct);
+                                await Task.Delay(frameDelay, loopToken);
                             }
                             catch (TaskCanceledException)
                             {
@@ -114,13 +150,12 @@ public static class DynamicLightingKeyboard
                         return;
                     }
 
-
                 case AuraMode.AuraStrobe:
                     {
-                        var indexes = Enumerable.Range(0, lampArray.LampCount).ToArray();
-
-                        // Stop whatever was running before (important)
+                        StopSoftwareEffect();   // <--- ADD THIS
                         StopActivePlaylist();
+
+                        var indexes = Enumerable.Range(0, lampArray.LampCount).ToArray();
 
                         var blink = new LampArrayBlinkEffect(lampArray, indexes)
                         {
@@ -139,20 +174,19 @@ public static class DynamicLightingKeyboard
                         };
 
                         playlist.Append(blink);
-
-                        // Keep reference so it doesn't get GC'd
                         SetActivePlaylist(playlist);
-
                         playlist.Start();
                         return;
                     }
 
 
+
                 case AuraMode.AuraBreathe:
                     {
-                        var indexes = Enumerable.Range(0, lampArray.LampCount).ToArray();
-
+                        StopSoftwareEffect();   // <--- ADD THIS
                         StopActivePlaylist();
+
+                        var indexes = Enumerable.Range(0, lampArray.LampCount).ToArray();
 
                         var period = speed ?? TimeSpan.FromSeconds(2);
                         if (period < TimeSpan.FromMilliseconds(200))
@@ -187,14 +221,13 @@ public static class DynamicLightingKeyboard
                         playlist.Append(down);
 
                         SetActivePlaylist(playlist);
-
                         playlist.Start();
                         return;
                     }
 
-
                 default:
-                    StopActivePlaylist();
+                    StopAllEffects();
+                    Thread.Sleep(50); // give time for previous effects to stop
                     lampArray.SetColor(winColor);
                     return;
             }
