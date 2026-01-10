@@ -86,6 +86,10 @@
             return true;
         }
 
+        public override bool HasMotionSync()
+        {
+            return true;
+        }
 
         public override bool HasRGB()
         {

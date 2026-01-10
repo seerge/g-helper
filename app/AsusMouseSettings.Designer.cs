@@ -49,6 +49,8 @@
             sliderButtonDebounce = new GHelper.UI.Slider();
             labelButtonDebounceValue = new Label();
             panelAngleSnapping = new Panel();
+            panelMotionSync = new Panel();
+            checkBoxMotionSync = new CheckBox();
             sliderAngleAdjustment = new GHelper.UI.Slider();
             checkBoxAngleSnapping = new CheckBox();
             labelAngleAdjustmentValue = new Label();
@@ -123,6 +125,7 @@
             panelLiftOffDistance.SuspendLayout();
             panelDebounce.SuspendLayout();
             panelAngleSnapping.SuspendLayout();
+            panelMotionSync.SuspendLayout();
             panelPollingRate.SuspendLayout();
             panelDPISettings.SuspendLayout();
             tableLayoutPanel1.SuspendLayout();
@@ -208,6 +211,7 @@
             panelPerformanceOther.Controls.Add(panelAcceleration);
             panelPerformanceOther.Controls.Add(panelLiftOffDistance);
             panelPerformanceOther.Controls.Add(panelDebounce);
+            panelPerformanceOther.Controls.Add(panelMotionSync);
             panelPerformanceOther.Controls.Add(panelAngleSnapping);
             panelPerformanceOther.Controls.Add(panelPollingRate);
             panelPerformanceOther.Dock = DockStyle.Top;
@@ -415,6 +419,31 @@
             panelAngleSnapping.Padding = new Padding(6);
             panelAngleSnapping.Size = new Size(881, 58);
             panelAngleSnapping.TabIndex = 54;
+            // 
+            // panelMotionSync
+            // 
+            panelMotionSync.AutoSize = true;
+            panelMotionSync.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            panelMotionSync.Controls.Add(checkBoxMotionSync);
+            panelMotionSync.Dock = DockStyle.Top;
+            panelMotionSync.Location = new Point(0, 124);
+            panelMotionSync.Margin = new Padding(4);
+            panelMotionSync.Name = "panelMotionSync";
+            panelMotionSync.Padding = new Padding(6);
+            panelMotionSync.Size = new Size(881, 58);
+            panelMotionSync.TabIndex = 59;
+            // 
+            // checkBoxMotionSync
+            // 
+            checkBoxMotionSync.CheckAlign = ContentAlignment.MiddleRight;
+            checkBoxMotionSync.Location = new Point(6, 8);
+            checkBoxMotionSync.Margin = new Padding(8, 0, 8, 0);
+            checkBoxMotionSync.Name = "checkBoxMotionSync";
+            checkBoxMotionSync.Size = new Size(512, 40);
+            checkBoxMotionSync.TabIndex = 45;
+            checkBoxMotionSync.Text = "Motion Sync";
+            checkBoxMotionSync.TextAlign = ContentAlignment.TopLeft;
+            checkBoxMotionSync.UseVisualStyleBackColor = true;
             // 
             // sliderAngleAdjustment
             // 
@@ -1460,6 +1489,7 @@
             panelLiftOffDistance.ResumeLayout(false);
             panelDebounce.ResumeLayout(false);
             panelAngleSnapping.ResumeLayout(false);
+            panelMotionSync.ResumeLayout(false);
             panelPollingRate.ResumeLayout(false);
             panelDPISettings.ResumeLayout(false);
             panelDPISettings.PerformLayout();
@@ -1572,6 +1602,8 @@
         private UI.Slider sliderButtonDebounce;
         private Panel panelPollingRate;
         private Panel panelAngleSnapping;
+        private Panel panelMotionSync;
+        private CheckBox checkBoxMotionSync;
         private Panel panelLiftOffDistance;
         private Panel panelDebounce;
         private Panel panelDeceleration;

@@ -85,6 +85,8 @@ namespace GHelper
             sliderButtonDebounce.ValueChanged += SliderButtonDebounce_ValueChanged;
             sliderButtonDebounce.MouseUp += SliderButtonDebounce_MouseUp;
 
+            checkBoxMotionSync.CheckedChanged += CheckBoxMotionSync_CheckedChanged;
+
             sliderAcceleration.MouseUp += SliderAcceleration_MouseUp;
             sliderAcceleration.ValueChanged += SliderAcceleration_ValueChanged;
 
@@ -233,6 +235,7 @@ namespace GHelper
         private void ComboBoxPollingRate_DropDownClosed(object? sender, EventArgs e)
         {
             mouse.SetPollingRate(mouse.SupportedPollingrates()[comboBoxPollingRate.SelectedIndex]);
+            UpdateMotionSyncState();
         }
 
         private void ButtonDPIColor_Click(object? sender, EventArgs e)
@@ -327,7 +330,7 @@ namespace GHelper
             }
 
             var index = comboBoxLightingMode.SelectedIndex;
-            LightingMode lm = supportedLightingModes[(index >= 0 && index < supportedLightingModes.Count) ? index : 0 ];
+            LightingMode lm = supportedLightingModes[(index >= 0 && index < supportedLightingModes.Count) ? index : 0];
 
             LightingSetting? ls = mouse.LightingSettingForZone(visibleZone);
             if (ls.LightingMode == lm)
@@ -401,6 +404,11 @@ namespace GHelper
         {
             mouse.SetAngleSnapping(checkBoxAngleSnapping.Checked);
             mouse.SetAngleAdjustment((short)sliderAngleAdjustment.Value);
+        }
+
+        private void CheckBoxMotionSync_CheckedChanged(object? sender, EventArgs e)
+        {
+            mouse.SetMotionSync(checkBoxMotionSync.Checked);
         }
 
         private void SliderDPI_ValueChanged(object? sender, EventArgs e)
@@ -545,6 +553,11 @@ namespace GHelper
             if (!mouse.HasAngleTuning() && !mouse.HasAngleSnapping())
             {
                 panelAngleSnapping.Visible = false;
+            }
+
+            if (!mouse.HasMotionSync())
+            {
+                panelMotionSync.Visible = false;
             }
 
             if (mouse.HasAcceleration())
@@ -752,6 +765,23 @@ namespace GHelper
             {
                 sliderDeceleration.Value = mouse.Deceleration;
             }
+
+            if (mouse.HasMotionSync())
+            {
+                UpdateMotionSyncState();
+            }
+        }
+
+        private void UpdateMotionSyncState()
+        {
+            if (!mouse.HasMotionSync())
+            {
+                return;
+            }
+
+            bool is8000Hz = mouse.PollingRate == PollingRate.PR8000Hz;
+            checkBoxMotionSync.Enabled = !is8000Hz;
+            checkBoxMotionSync.Checked = is8000Hz ? false : mouse.MotionSync;
         }
 
         private void VisualizeBatteryState()
@@ -880,7 +910,8 @@ namespace GHelper
             try
             {
                 dpi = mouse.DpiSettings[mouse.DpiProfile - 1];
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 Logger.WriteLine($"Wrong mouse DPI: {mouse.DpiProfile} {mouse.DpiSettings.Length} {ex.Message}");
                 return;
