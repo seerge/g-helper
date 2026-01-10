@@ -91,10 +91,7 @@
             return true;
         }
 
-        public override bool HasZoneMode()
-        {
-            return true;
-        }
+
 
         public override bool HasRGB()
         {
@@ -134,6 +131,9 @@
             return "ROG HARPE II ACE (Wireless)";
         }
 
-
+        public override bool HasZoneMode()
+        {
+            return true;
+        }
     }
 }
