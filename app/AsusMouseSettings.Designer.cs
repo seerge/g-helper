@@ -51,6 +51,11 @@
             panelAngleSnapping = new Panel();
             panelMotionSync = new Panel();
             checkBoxMotionSync = new CheckBox();
+            panelZoneMode = new Panel();
+            checkBoxZoneMode = new CheckBox();
+            comboBoxZoneModePollingRate = new GHelper.UI.RComboBox();
+            sliderZoneModeDPI = new GHelper.UI.Slider();
+            labelZoneModeDPIValue = new Label();
             sliderAngleAdjustment = new GHelper.UI.Slider();
             checkBoxAngleSnapping = new CheckBox();
             labelAngleAdjustmentValue = new Label();
@@ -126,6 +131,7 @@
             panelDebounce.SuspendLayout();
             panelAngleSnapping.SuspendLayout();
             panelMotionSync.SuspendLayout();
+            panelZoneMode.SuspendLayout();
             panelPollingRate.SuspendLayout();
             panelDPISettings.SuspendLayout();
             tableLayoutPanel1.SuspendLayout();
@@ -211,6 +217,7 @@
             panelPerformanceOther.Controls.Add(panelAcceleration);
             panelPerformanceOther.Controls.Add(panelLiftOffDistance);
             panelPerformanceOther.Controls.Add(panelDebounce);
+            panelPerformanceOther.Controls.Add(panelZoneMode);
             panelPerformanceOther.Controls.Add(panelMotionSync);
             panelPerformanceOther.Controls.Add(panelAngleSnapping);
             panelPerformanceOther.Controls.Add(panelPollingRate);
@@ -444,6 +451,72 @@
             checkBoxMotionSync.Text = "Motion Sync";
             checkBoxMotionSync.TextAlign = ContentAlignment.TopLeft;
             checkBoxMotionSync.UseVisualStyleBackColor = true;
+            // 
+            // panelZoneMode
+            // 
+            panelZoneMode.AutoSize = true;
+            panelZoneMode.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            panelZoneMode.Controls.Add(labelZoneModeDPIValue);
+            panelZoneMode.Controls.Add(sliderZoneModeDPI);
+            panelZoneMode.Controls.Add(comboBoxZoneModePollingRate);
+            panelZoneMode.Controls.Add(checkBoxZoneMode);
+            panelZoneMode.Dock = DockStyle.Top;
+            panelZoneMode.Location = new Point(0, 182);
+            panelZoneMode.Margin = new Padding(4);
+            panelZoneMode.Name = "panelZoneMode";
+            panelZoneMode.Padding = new Padding(6);
+            panelZoneMode.Size = new Size(881, 116);
+            panelZoneMode.TabIndex = 60;
+            // 
+            // checkBoxZoneMode
+            // 
+            checkBoxZoneMode.CheckAlign = ContentAlignment.MiddleRight;
+            checkBoxZoneMode.Location = new Point(6, 8);
+            checkBoxZoneMode.Margin = new Padding(8, 0, 8, 0);
+            checkBoxZoneMode.Name = "checkBoxZoneMode";
+            checkBoxZoneMode.Size = new Size(200, 40);
+            checkBoxZoneMode.TabIndex = 45;
+            checkBoxZoneMode.Text = "Zone Mode";
+            checkBoxZoneMode.TextAlign = ContentAlignment.TopLeft;
+            checkBoxZoneMode.UseVisualStyleBackColor = true;
+            // 
+            // comboBoxZoneModePollingRate
+            // 
+            comboBoxZoneModePollingRate.BorderColor = Color.White;
+            comboBoxZoneModePollingRate.ButtonColor = Color.FromArgb(255, 255, 255);
+            comboBoxZoneModePollingRate.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboBoxZoneModePollingRate.FlatStyle = FlatStyle.Flat;
+            comboBoxZoneModePollingRate.FormattingEnabled = true;
+            comboBoxZoneModePollingRate.Location = new Point(220, 8);
+            comboBoxZoneModePollingRate.Margin = new Padding(22, 0, 22, 0);
+            comboBoxZoneModePollingRate.Name = "comboBoxZoneModePollingRate";
+            comboBoxZoneModePollingRate.Size = new Size(200, 40);
+            comboBoxZoneModePollingRate.TabIndex = 46;
+            // 
+            // sliderZoneModeDPI
+            // 
+            sliderZoneModeDPI.AccessibleName = "Zone Mode DPI Slider";
+            sliderZoneModeDPI.Location = new Point(6, 56);
+            sliderZoneModeDPI.Margin = new Padding(4);
+            sliderZoneModeDPI.Max = 42000;
+            sliderZoneModeDPI.Min = 400;
+            sliderZoneModeDPI.Name = "sliderZoneModeDPI";
+            sliderZoneModeDPI.Size = new Size(780, 40);
+            sliderZoneModeDPI.Step = 100;
+            sliderZoneModeDPI.TabIndex = 47;
+            sliderZoneModeDPI.TabStop = false;
+            sliderZoneModeDPI.Text = "sliderZoneModeDPI";
+            sliderZoneModeDPI.Value = 1600;
+            // 
+            // labelZoneModeDPIValue
+            // 
+            labelZoneModeDPIValue.Location = new Point(796, 56);
+            labelZoneModeDPIValue.Margin = new Padding(8, 0, 8, 0);
+            labelZoneModeDPIValue.Name = "labelZoneModeDPIValue";
+            labelZoneModeDPIValue.Size = new Size(80, 40);
+            labelZoneModeDPIValue.TabIndex = 48;
+            labelZoneModeDPIValue.Text = "1600";
+            labelZoneModeDPIValue.TextAlign = ContentAlignment.MiddleRight;
             // 
             // sliderAngleAdjustment
             // 
@@ -1490,6 +1563,7 @@
             panelDebounce.ResumeLayout(false);
             panelAngleSnapping.ResumeLayout(false);
             panelMotionSync.ResumeLayout(false);
+            panelZoneMode.ResumeLayout(false);
             panelPollingRate.ResumeLayout(false);
             panelDPISettings.ResumeLayout(false);
             panelDPISettings.PerformLayout();
@@ -1604,6 +1678,11 @@
         private Panel panelAngleSnapping;
         private Panel panelMotionSync;
         private CheckBox checkBoxMotionSync;
+        private Panel panelZoneMode;
+        private CheckBox checkBoxZoneMode;
+        private UI.RComboBox comboBoxZoneModePollingRate;
+        private UI.Slider sliderZoneModeDPI;
+        private Label labelZoneModeDPIValue;
         private Panel panelLiftOffDistance;
         private Panel panelDebounce;
         private Panel panelDeceleration;

@@ -91,6 +91,11 @@
             return true;
         }
 
+        public override bool HasZoneMode()
+        {
+            return true;
+        }
+
         public override bool HasRGB()
         {
             return true;

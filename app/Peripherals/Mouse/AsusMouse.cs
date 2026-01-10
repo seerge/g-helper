@@ -249,6 +249,9 @@ namespace GHelper.Peripherals.Mouse
         public int Acceleration { get; protected set; }
         public int Deceleration { get; protected set; }
         public bool MotionSync { get; protected set; }
+        public bool ZoneMode { get; protected set; }
+        public int ZoneModeDPI { get; set; } = 1600;
+        public PollingRate ZoneModePollingRate { get; set; } = PollingRate.PR4000Hz;
 
 
         public AsusMouse(ushort vendorId, ushort productId, string path, bool wireless) : base(vendorId, productId)
@@ -308,7 +311,7 @@ namespace GHelper.Peripherals.Mouse
 
 
 
-            data = data                                                        // = 14 Bytes
+            data = data                                                        // = 15 Bytes
                .Append((byte)PollingRate)                               // 1 Byte
                .Concat(BitConverter.GetBytes(AngleSnapping))            // 1 Byte
                .Concat(BitConverter.GetBytes(AngleAdjustmentDegrees))   // 2 Bytes
@@ -316,16 +319,17 @@ namespace GHelper.Peripherals.Mouse
                .Concat(BitConverter.GetBytes(Acceleration))             // 4 Bytes
                .Concat(BitConverter.GetBytes(Deceleration))             // 4 Bytes
                .Concat(BitConverter.GetBytes(MotionSync))               // 1 Byte
+               .Concat(BitConverter.GetBytes(ZoneMode))                 // 1 Byte
                .ToArray();
 
-            //Total length: 4 + (LightingSetting.Length * 12) + 6 + (DPIProfileCount() * 8) + 14 Bytes
+            //Total length: 4 + (LightingSetting.Length * 12) + 6 + (DPIProfileCount() * 8) + 15 Bytes
 
             return data;
         }
 
         public bool Import(byte[] blob)
         {
-            int expectedLength = 4 + (LightingSetting.Length * 12) + 6 + (DPIProfileCount() * 8) + 14;
+            int expectedLength = 4 + (LightingSetting.Length * 12) + 6 + (DPIProfileCount() * 8) + 15;
 
             if (blob.Length != expectedLength)
             {
@@ -391,6 +395,8 @@ namespace GHelper.Peripherals.Mouse
 
             MotionSync = BitConverter.ToBoolean(blob, offset++);
 
+            ZoneMode = BitConverter.ToBoolean(blob, offset++);
+
 
             //Apply Settings to the mouse
             if (HasBattery())
@@ -415,6 +421,9 @@ namespace GHelper.Peripherals.Mouse
 
             if (HasMotionSync())
                 SetMotionSync(MotionSync);
+
+            if (HasZoneMode())
+                SetZoneMode(ZoneMode);
 
             if (HasRGB())
             {
@@ -660,6 +669,7 @@ namespace GHelper.Peripherals.Mouse
             ReadAcceleration();
             ReadLightingSetting();
             ReadMotionSync();
+            ReadZoneMode();
         }
 
         // ------------------------------------------------------------------------------
@@ -1604,6 +1614,98 @@ namespace GHelper.Peripherals.Mouse
 
             MotionSync = ParseMotionSync(response);
             Logger.WriteLine(GetDisplayName() + ": Motion Sync: " + MotionSync);
+        }
+
+        // ------------------------------------------------------------------------------
+        // Zone Mode
+        // ------------------------------------------------------------------------------
+
+        public virtual bool HasZoneMode()
+        {
+            return false;
+        }
+
+        protected virtual byte[] GetUpdateZoneModePacket(bool enabled)
+        {
+            // DPI formula: (DPI - 100) / 100
+            byte dpiValue = (byte)((ZoneModeDPI - 100) / 100);
+
+            return new byte[] { reportId, 0x51, 0x44, 0x00, 0x00, 
+                (byte)(enabled ? 0x01 : 0x00), 
+                (byte)ZoneModePollingRate, 
+                dpiValue };
+        }
+
+        public void SetZoneMode(bool enabled)
+        {
+            if (!HasZoneMode())
+            {
+                return;
+            }
+
+            WriteForResponse(GetUpdateZoneModePacket(enabled));
+            FlushSettings();
+
+            Logger.WriteLine(GetDisplayName() + ": Zone Mode set to " + enabled);
+            this.ZoneMode = enabled;
+        }
+
+        public void UpdateZoneModeDPI(int dpi)
+        {
+            if (!HasZoneMode() || !ZoneMode)
+            {
+                return;
+            }
+
+            ZoneModeDPI = dpi;
+            WriteForResponse(GetUpdateZoneModePacket(true));
+            FlushSettings();
+
+            Logger.WriteLine(GetDisplayName() + ": Zone Mode DPI set to " + dpi);
+        }
+
+        public void UpdateZoneModePollingRate(PollingRate pollingRate)
+        {
+            if (!HasZoneMode() || !ZoneMode)
+            {
+                return;
+            }
+
+            ZoneModePollingRate = pollingRate;
+            WriteForResponse(GetUpdateZoneModePacket(true));
+            FlushSettings();
+
+            Logger.WriteLine(GetDisplayName() + ": Zone Mode Polling Rate set to " + pollingRate);
+        }
+
+        protected virtual byte[] GetReadZoneModePacket()
+        {
+            return new byte[] { reportId, 0x12, 0x14 };
+        }
+
+        protected virtual void ParseZoneMode(byte[] packet)
+        {
+            if (packet[1] == 0x12 && packet[2] == 0x14)
+            {
+                ZoneMode = packet[5] == 0x01;
+                ZoneModePollingRate = (PollingRate)packet[6];
+                // DPI formula: byte * 100 + 100
+                ZoneModeDPI = packet[7] * 100 + 100;
+            }
+        }
+
+        public void ReadZoneMode()
+        {
+            if (!HasZoneMode())
+            {
+                return;
+            }
+
+            byte[]? response = WriteForResponse(GetReadZoneModePacket());
+            if (response is null) return;
+
+            ParseZoneMode(response);
+            Logger.WriteLine(GetDisplayName() + ": Zone Mode: " + ZoneMode + ", DPI: " + ZoneModeDPI + ", PollingRate: " + ZoneModePollingRate);
         }
 
         // ------------------------------------------------------------------------------

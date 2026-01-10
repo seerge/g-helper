@@ -8,10 +8,11 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace GHelper.Properties {
+namespace GHelper.Properties
+{
     using System;
-    
-    
+
+
     /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.
     /// </summary>
@@ -22,2320 +23,2856 @@ namespace GHelper.Properties {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Strings {
-        
+    internal class Strings
+    {
+
         private static global::System.Resources.ResourceManager resourceMan;
-        
+
         private static global::System.Globalization.CultureInfo resourceCulture;
-        
+
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Strings() {
+        internal Strings()
+        {
         }
-        
+
         /// <summary>
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
-            get {
-                if (object.ReferenceEquals(resourceMan, null)) {
+        internal static global::System.Resources.ResourceManager ResourceManager
+        {
+            get
+            {
+                if (object.ReferenceEquals(resourceMan, null))
+                {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("GHelper.Properties.Strings", typeof(Strings).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
             }
         }
-        
+
         /// <summary>
         ///   Overrides the current thread's CurrentUICulture property for all
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
-            get {
+        internal static global::System.Globalization.CultureInfo Culture
+        {
+            get
+            {
                 return resourceCulture;
             }
-            set {
+            set
+            {
                 resourceCulture = value;
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Acceleration.
         /// </summary>
-        internal static string Acceleration {
-            get {
+        internal static string Acceleration
+        {
+            get
+            {
                 return ResourceManager.GetString("Acceleration", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Can&apos;t connect to ASUS ACPI. Application can&apos;t function without it. Try to install Asus System Control Interface.
         /// </summary>
-        internal static string ACPIError {
-            get {
+        internal static string ACPIError
+        {
+            get
+            {
                 return ResourceManager.GetString("ACPIError", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Restart your device to apply changes.
         /// </summary>
-        internal static string AlertAPUMemoryRestart {
-            get {
+        internal static string AlertAPUMemoryRestart
+        {
+            get
+            {
                 return ResourceManager.GetString("AlertAPUMemoryRestart", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Restart now?.
         /// </summary>
-        internal static string AlertAPUMemoryRestartTitle {
-            get {
+        internal static string AlertAPUMemoryRestartTitle
+        {
+            get
+            {
                 return ResourceManager.GetString("AlertAPUMemoryRestartTitle", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Looks like GPU is in heavy use, disable it?.
         /// </summary>
-        internal static string AlertDGPU {
-            get {
+        internal static string AlertDGPU
+        {
+            get
+            {
                 return ResourceManager.GetString("AlertDGPU", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Eco Mode.
         /// </summary>
-        internal static string AlertDGPUTitle {
-            get {
+        internal static string AlertDGPUTitle
+        {
+            get
+            {
                 return ResourceManager.GetString("AlertDGPUTitle", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Switching off Ultimate Mode requires restart.
         /// </summary>
-        internal static string AlertUltimateOff {
-            get {
+        internal static string AlertUltimateOff
+        {
+            get
+            {
                 return ResourceManager.GetString("AlertUltimateOff", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Ultimate Mode requires restart.
         /// </summary>
-        internal static string AlertUltimateOn {
-            get {
+        internal static string AlertUltimateOn
+        {
+            get
+            {
                 return ResourceManager.GetString("AlertUltimateOn", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Reboot now?.
         /// </summary>
-        internal static string AlertUltimateTitle {
-            get {
+        internal static string AlertUltimateTitle
+        {
+            get
+            {
                 return ResourceManager.GetString("AlertUltimateTitle", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Ally Controller.
         /// </summary>
-        internal static string AllyController {
-            get {
+        internal static string AllyController
+        {
+            get
+            {
                 return ResourceManager.GetString("AllyController", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Ambient mode may increase resource usage.
         /// </summary>
-        internal static string AmbientModeResources {
-            get {
+        internal static string AmbientModeResources
+        {
+            get
+            {
                 return ResourceManager.GetString("AmbientModeResources", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Animation Speed.
         /// </summary>
-        internal static string AnimationSpeed {
-            get {
+        internal static string AnimationSpeed
+        {
+            get
+            {
                 return ResourceManager.GetString("AnimationSpeed", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Anime Matrix.
         /// </summary>
-        internal static string AnimeMatrix {
-            get {
+        internal static string AnimeMatrix
+        {
+            get
+            {
                 return ResourceManager.GetString("AnimeMatrix", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to App already running.
         /// </summary>
-        internal static string AppAlreadyRunning {
-            get {
+        internal static string AppAlreadyRunning
+        {
+            get
+            {
                 return ResourceManager.GetString("AppAlreadyRunning", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to G-Helper is already running. Check system tray for an icon..
         /// </summary>
-        internal static string AppAlreadyRunningText {
-            get {
+        internal static string AppAlreadyRunningText
+        {
+            get
+            {
                 return ResourceManager.GetString("AppAlreadyRunningText", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Apply.
         /// </summary>
-        internal static string Apply {
-            get {
+        internal static string Apply
+        {
+            get
+            {
                 return ResourceManager.GetString("Apply", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Apply Custom Fan Curve.
         /// </summary>
-        internal static string ApplyFanCurve {
-            get {
+        internal static string ApplyFanCurve
+        {
+            get
+            {
                 return ResourceManager.GetString("ApplyFanCurve", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Apply Power Limits.
         /// </summary>
-        internal static string ApplyPowerLimits {
-            get {
+        internal static string ApplyPowerLimits
+        {
+            get
+            {
                 return ResourceManager.GetString("ApplyPowerLimits", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Auto adjust Windows Power Modes.
         /// </summary>
-        internal static string ApplyWindowsPowerPlan {
-            get {
+        internal static string ApplyWindowsPowerPlan
+        {
+            get
+            {
                 return ResourceManager.GetString("ApplyWindowsPowerPlan", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Memory Assigned to GPU.
         /// </summary>
-        internal static string APUMemory {
-            get {
+        internal static string APUMemory
+        {
+            get
+            {
                 return ResourceManager.GetString("APUMemory", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Asus Services Running.
         /// </summary>
-        internal static string AsusServicesRunning {
-            get {
+        internal static string AsusServicesRunning
+        {
+            get
+            {
                 return ResourceManager.GetString("AsusServicesRunning", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Battery State.
         /// </summary>
-        internal static string AuraBatteryState {
-            get {
+        internal static string AuraBatteryState
+        {
+            get
+            {
                 return ResourceManager.GetString("AuraBatteryState", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Breathe.
         /// </summary>
-        internal static string AuraBreathe {
-            get {
+        internal static string AuraBreathe
+        {
+            get
+            {
                 return ResourceManager.GetString("AuraBreathe", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Clockwise.
         /// </summary>
-        internal static string AuraClockwise {
-            get {
+        internal static string AuraClockwise
+        {
+            get
+            {
                 return ResourceManager.GetString("AuraClockwise", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Color Cycle.
         /// </summary>
-        internal static string AuraColorCycle {
-            get {
+        internal static string AuraColorCycle
+        {
+            get
+            {
                 return ResourceManager.GetString("AuraColorCycle", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Comet.
         /// </summary>
-        internal static string AuraComet {
-            get {
+        internal static string AuraComet
+        {
+            get
+            {
                 return ResourceManager.GetString("AuraComet", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Counterclockwise.
         /// </summary>
-        internal static string AuraCounterClockwise {
-            get {
+        internal static string AuraCounterClockwise
+        {
+            get
+            {
                 return ResourceManager.GetString("AuraCounterClockwise", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Fast.
         /// </summary>
-        internal static string AuraFast {
-            get {
+        internal static string AuraFast
+        {
+            get
+            {
                 return ResourceManager.GetString("AuraFast", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Lighting Mode.
         /// </summary>
-        internal static string AuraLightingMode {
-            get {
+        internal static string AuraLightingMode
+        {
+            get
+            {
                 return ResourceManager.GetString("AuraLightingMode", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Normal.
         /// </summary>
-        internal static string AuraNormal {
-            get {
+        internal static string AuraNormal
+        {
+            get
+            {
                 return ResourceManager.GetString("AuraNormal", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Rainbow.
         /// </summary>
-        internal static string AuraRainbow {
-            get {
+        internal static string AuraRainbow
+        {
+            get
+            {
                 return ResourceManager.GetString("AuraRainbow", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Random.
         /// </summary>
-        internal static string AuraRandomColor {
-            get {
+        internal static string AuraRandomColor
+        {
+            get
+            {
                 return ResourceManager.GetString("AuraRandomColor", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to React.
         /// </summary>
-        internal static string AuraReact {
-            get {
+        internal static string AuraReact
+        {
+            get
+            {
                 return ResourceManager.GetString("AuraReact", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Slow.
         /// </summary>
-        internal static string AuraSlow {
-            get {
+        internal static string AuraSlow
+        {
+            get
+            {
                 return ResourceManager.GetString("AuraSlow", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Static.
         /// </summary>
-        internal static string AuraStatic {
-            get {
+        internal static string AuraStatic
+        {
+            get
+            {
                 return ResourceManager.GetString("AuraStatic", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Strobe.
         /// </summary>
-        internal static string AuraStrobe {
-            get {
+        internal static string AuraStrobe
+        {
+            get
+            {
                 return ResourceManager.GetString("AuraStrobe", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to All.
         /// </summary>
-        internal static string AuraZoneAll {
-            get {
+        internal static string AuraZoneAll
+        {
+            get
+            {
                 return ResourceManager.GetString("AuraZoneAll", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Dock.
         /// </summary>
-        internal static string AuraZoneDock {
-            get {
+        internal static string AuraZoneDock
+        {
+            get
+            {
                 return ResourceManager.GetString("AuraZoneDock", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Logo.
         /// </summary>
-        internal static string AuraZoneLogo {
-            get {
+        internal static string AuraZoneLogo
+        {
+            get
+            {
                 return ResourceManager.GetString("AuraZoneLogo", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Scrollwheel.
         /// </summary>
-        internal static string AuraZoneScroll {
-            get {
+        internal static string AuraZoneScroll
+        {
+            get
+            {
                 return ResourceManager.GetString("AuraZoneScroll", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Underglow.
         /// </summary>
-        internal static string AuraZoneUnderglow {
-            get {
+        internal static string AuraZoneUnderglow
+        {
+            get
+            {
                 return ResourceManager.GetString("AuraZoneUnderglow", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Auto Apply.
         /// </summary>
-        internal static string AutoApply {
-            get {
+        internal static string AutoApply
+        {
+            get
+            {
                 return ResourceManager.GetString("AutoApply", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Auto.
         /// </summary>
-        internal static string AutoMode {
-            get {
+        internal static string AutoMode
+        {
+            get
+            {
                 return ResourceManager.GetString("AutoMode", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Sets 60Hz to save battery, and back when plugged.
         /// </summary>
-        internal static string AutoRefreshTooltip {
-            get {
+        internal static string AutoRefreshTooltip
+        {
+            get
+            {
                 return ResourceManager.GetString("AutoRefreshTooltip", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Awake.
         /// </summary>
-        internal static string Awake {
-            get {
+        internal static string Awake
+        {
+            get
+            {
                 return ResourceManager.GetString("Awake", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Low.
         /// </summary>
-        internal static string BacklightLow {
-            get {
+        internal static string BacklightLow
+        {
+            get
+            {
                 return ResourceManager.GetString("BacklightLow", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Max.
         /// </summary>
-        internal static string BacklightMax {
-            get {
+        internal static string BacklightMax
+        {
+            get
+            {
                 return ResourceManager.GetString("BacklightMax", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Mid.
         /// </summary>
-        internal static string BacklightMid {
-            get {
+        internal static string BacklightMid
+        {
+            get
+            {
                 return ResourceManager.GetString("BacklightMid", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Off.
         /// </summary>
-        internal static string BacklightOff {
-            get {
+        internal static string BacklightOff
+        {
+            get
+            {
                 return ResourceManager.GetString("BacklightOff", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Timeout plugged / on battery (0 - ON).
         /// </summary>
-        internal static string BacklightTimeout {
-            get {
+        internal static string BacklightTimeout
+        {
+            get
+            {
                 return ResourceManager.GetString("BacklightTimeout", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Backlight Timeout when on battery.
         /// </summary>
-        internal static string BacklightTimeoutBattery {
-            get {
+        internal static string BacklightTimeoutBattery
+        {
+            get
+            {
                 return ResourceManager.GetString("BacklightTimeoutBattery", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Backlight Timeout when plugged.
         /// </summary>
-        internal static string BacklightTimeoutPlugged {
-            get {
+        internal static string BacklightTimeoutPlugged
+        {
+            get
+            {
                 return ResourceManager.GetString("BacklightTimeoutPlugged", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Balanced.
         /// </summary>
-        internal static string Balanced {
-            get {
+        internal static string Balanced
+        {
+            get
+            {
                 return ResourceManager.GetString("Balanced", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Charge.
         /// </summary>
-        internal static string BatteryCharge {
-            get {
+        internal static string BatteryCharge
+        {
+            get
+            {
                 return ResourceManager.GetString("BatteryCharge", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Battery Charge Limit.
         /// </summary>
-        internal static string BatteryChargeLimit {
-            get {
+        internal static string BatteryChargeLimit
+        {
+            get
+            {
                 return ResourceManager.GetString("BatteryChargeLimit", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Battery Health.
         /// </summary>
-        internal static string BatteryHealth {
-            get {
+        internal static string BatteryHealth
+        {
+            get
+            {
                 return ResourceManager.GetString("BatteryHealth", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to One time charge to 100%.
         /// </summary>
-        internal static string BatteryLimitFull {
-            get {
+        internal static string BatteryLimitFull
+        {
+            get
+            {
                 return ResourceManager.GetString("BatteryLimitFull", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Binding.
         /// </summary>
-        internal static string Binding {
-            get {
+        internal static string Binding
+        {
+            get
+            {
                 return ResourceManager.GetString("Binding", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Primary.
         /// </summary>
-        internal static string BindingPrimary {
-            get {
+        internal static string BindingPrimary
+        {
+            get
+            {
                 return ResourceManager.GetString("BindingPrimary", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Secondary.
         /// </summary>
-        internal static string BindingSecondary {
-            get {
+        internal static string BindingSecondary
+        {
+            get
+            {
                 return ResourceManager.GetString("BindingSecondary", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to BIOS and Driver Updates.
         /// </summary>
-        internal static string BiosAndDriverUpdates {
-            get {
+        internal static string BiosAndDriverUpdates
+        {
+            get
+            {
                 return ResourceManager.GetString("BiosAndDriverUpdates", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Boot.
         /// </summary>
-        internal static string Boot {
-            get {
+        internal static string Boot
+        {
+            get
+            {
                 return ResourceManager.GetString("Boot", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Boot Sound.
         /// </summary>
-        internal static string BootSound {
-            get {
+        internal static string BootSound
+        {
+            get
+            {
                 return ResourceManager.GetString("BootSound", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Brightness.
         /// </summary>
-        internal static string Brightness {
-            get {
+        internal static string Brightness
+        {
+            get
+            {
                 return ResourceManager.GetString("Brightness", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Brightness Down.
         /// </summary>
-        internal static string BrightnessDown {
-            get {
+        internal static string BrightnessDown
+        {
+            get
+            {
                 return ResourceManager.GetString("BrightnessDown", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Brightness Up.
         /// </summary>
-        internal static string BrightnessUp {
-            get {
+        internal static string BrightnessUp
+        {
+            get
+            {
                 return ResourceManager.GetString("BrightnessUp", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Black and white tray icon.
         /// </summary>
-        internal static string BWTrayIcon {
-            get {
+        internal static string BWTrayIcon
+        {
+            get
+            {
                 return ResourceManager.GetString("BWTrayIcon", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Calibrate.
         /// </summary>
-        internal static string Calibrate {
-            get {
+        internal static string Calibrate
+        {
+            get
+            {
                 return ResourceManager.GetString("Calibrate", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Charging.
         /// </summary>
-        internal static string Charging {
-            get {
+        internal static string Charging
+        {
+            get
+            {
                 return ResourceManager.GetString("Charging", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Color.
         /// </summary>
-        internal static string Color {
-            get {
+        internal static string Color
+        {
+            get
+            {
                 return ResourceManager.GetString("Color", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Contrast.
         /// </summary>
-        internal static string Contrast {
-            get {
+        internal static string Contrast
+        {
+            get
+            {
                 return ResourceManager.GetString("Contrast", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Controller.
         /// </summary>
-        internal static string Controller {
-            get {
+        internal static string Controller
+        {
+            get
+            {
                 return ResourceManager.GetString("Controller", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to CPU Boost.
         /// </summary>
-        internal static string CPUBoost {
-            get {
+        internal static string CPUBoost
+        {
+            get
+            {
                 return ResourceManager.GetString("CPUBoost", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Custom.
         /// </summary>
-        internal static string Custom {
-            get {
+        internal static string Custom
+        {
+            get
+            {
                 return ResourceManager.GetString("Custom", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Deceleration.
         /// </summary>
-        internal static string Deceleration {
-            get {
+        internal static string Deceleration
+        {
+            get
+            {
                 return ResourceManager.GetString("Deceleration", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Default.
         /// </summary>
-        internal static string Default {
-            get {
+        internal static string Default
+        {
+            get
+            {
                 return ResourceManager.GetString("Default", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Disable Controller.
         /// </summary>
-        internal static string DisableController {
-            get {
+        internal static string DisableController
+        {
+            get
+            {
                 return ResourceManager.GetString("DisableController", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Please disable Windows &gt; Dynamic Lighting.
         /// </summary>
-        internal static string DisableDynamicLighting {
-            get {
+        internal static string DisableDynamicLighting
+        {
+            get
+            {
                 return ResourceManager.GetString("DisableDynamicLighting", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Disable on lid close.
         /// </summary>
-        internal static string DisableOnLidClose {
-            get {
+        internal static string DisableOnLidClose
+        {
+            get
+            {
                 return ResourceManager.GetString("DisableOnLidClose", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Disable screen overdrive.
         /// </summary>
-        internal static string DisableOverdrive {
-            get {
+        internal static string DisableOverdrive
+        {
+            get
+            {
                 return ResourceManager.GetString("DisableOverdrive", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Discharging.
         /// </summary>
-        internal static string Discharging {
-            get {
+        internal static string Discharging
+        {
+            get
+            {
                 return ResourceManager.GetString("Discharging", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Donate.
         /// </summary>
-        internal static string Donate {
-            get {
+        internal static string Donate
+        {
+            get
+            {
                 return ResourceManager.GetString("Donate", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Download Color Profiles.
         /// </summary>
-        internal static string DownloadColorProfiles {
-            get {
+        internal static string DownloadColorProfiles
+        {
+            get
+            {
                 return ResourceManager.GetString("DownloadColorProfiles", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Download.
         /// </summary>
-        internal static string DownloadUpdate {
-            get {
+        internal static string DownloadUpdate
+        {
+            get
+            {
                 return ResourceManager.GetString("DownloadUpdate", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Drivers and Software.
         /// </summary>
-        internal static string DriverAndSoftware {
-            get {
+        internal static string DriverAndSoftware
+        {
+            get
+            {
                 return ResourceManager.GetString("DriverAndSoftware", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Disables dGPU to save battery.
         /// </summary>
-        internal static string EcoGPUTooltip {
-            get {
+        internal static string EcoGPUTooltip
+        {
+            get
+            {
                 return ResourceManager.GetString("EcoGPUTooltip", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Eco.
         /// </summary>
-        internal static string EcoMode {
-            get {
+        internal static string EcoMode
+        {
+            get
+            {
                 return ResourceManager.GetString("EcoMode", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Enable GPU on shutdown (prevents issue with Eco mode).
         /// </summary>
-        internal static string EnableGPUOnShutdown {
-            get {
+        internal static string EnableGPUOnShutdown
+        {
+            get
+            {
                 return ResourceManager.GetString("EnableGPUOnShutdown", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Disabling the dGPU by going into Eco mode while Display Mode in NVIDIA Control Panel is not set to Optimus might cause problems with brightness controls until after the next reboot. 
         ///
         ///Do you still want to continue?.
         /// </summary>
-        internal static string EnableOptimusText {
-            get {
+        internal static string EnableOptimusText
+        {
+            get
+            {
                 return ResourceManager.GetString("EnableOptimusText", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to NVIDIA Display Mode is not set to Optimus.
         /// </summary>
-        internal static string EnableOptimusTitle {
-            get {
+        internal static string EnableOptimusTitle
+        {
+            get
+            {
                 return ResourceManager.GetString("EnableOptimusTitle", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Energy Settings.
         /// </summary>
-        internal static string EnergySettings {
-            get {
+        internal static string EnergySettings
+        {
+            get
+            {
                 return ResourceManager.GetString("EnergySettings", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Export Profile.
         /// </summary>
-        internal static string Export {
-            get {
+        internal static string Export
+        {
+            get
+            {
                 return ResourceManager.GetString("Export", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Extra.
         /// </summary>
-        internal static string Extra {
-            get {
+        internal static string Extra
+        {
+            get
+            {
                 return ResourceManager.GetString("Extra", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Extra Settings.
         /// </summary>
-        internal static string ExtraSettings {
-            get {
+        internal static string ExtraSettings
+        {
+            get
+            {
                 return ResourceManager.GetString("ExtraSettings", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Factory Defaults.
         /// </summary>
-        internal static string FactoryDefaults {
-            get {
+        internal static string FactoryDefaults
+        {
+            get
+            {
                 return ResourceManager.GetString("FactoryDefaults", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Fan Curves.
         /// </summary>
-        internal static string FanCurves {
-            get {
+        internal static string FanCurves
+        {
+            get
+            {
                 return ResourceManager.GetString("FanCurves", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to CPU Fan Profile.
         /// </summary>
-        internal static string FanProfileCPU {
-            get {
+        internal static string FanProfileCPU
+        {
+            get
+            {
                 return ResourceManager.GetString("FanProfileCPU", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to GPU Fan Profile.
         /// </summary>
-        internal static string FanProfileGPU {
-            get {
+        internal static string FanProfileGPU
+        {
+            get
+            {
                 return ResourceManager.GetString("FanProfileGPU", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Mid Fan Profile.
         /// </summary>
-        internal static string FanProfileMid {
-            get {
+        internal static string FanProfileMid
+        {
+            get
+            {
                 return ResourceManager.GetString("FanProfileMid", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Fan Profiles.
         /// </summary>
-        internal static string FanProfiles {
-            get {
+        internal static string FanProfiles
+        {
+            get
+            {
                 return ResourceManager.GetString("FanProfiles", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Fans and Power.
         /// </summary>
-        internal static string FansAndPower {
-            get {
+        internal static string FansAndPower
+        {
+            get
+            {
                 return ResourceManager.GetString("FansAndPower", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Fan.
         /// </summary>
-        internal static string FanSpeed {
-            get {
+        internal static string FanSpeed
+        {
+            get
+            {
                 return ResourceManager.GetString("FanSpeed", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Fans + Power.
         /// </summary>
-        internal static string FansPower {
-            get {
+        internal static string FansPower
+        {
+            get
+            {
                 return ResourceManager.GetString("FansPower", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Flicker-free Dimming.
         /// </summary>
-        internal static string FlickerFreeDimming {
-            get {
+        internal static string FlickerFreeDimming
+        {
+            get
+            {
                 return ResourceManager.GetString("FlickerFreeDimming", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Process Fn+F hotkeys without Fn.
         /// </summary>
-        internal static string FnLock {
-            get {
+        internal static string FnLock
+        {
+            get
+            {
                 return ResourceManager.GetString("FnLock", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to FN-Lock Off.
         /// </summary>
-        internal static string FnLockOff {
-            get {
+        internal static string FnLockOff
+        {
+            get
+            {
                 return ResourceManager.GetString("FnLockOff", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to FN-Lock On.
         /// </summary>
-        internal static string FnLockOn {
-            get {
+        internal static string FnLockOn
+        {
+            get
+            {
                 return ResourceManager.GetString("FnLockOn", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Dynamic Boost.
         /// </summary>
-        internal static string GPUBoost {
-            get {
+        internal static string GPUBoost
+        {
+            get
+            {
                 return ResourceManager.GetString("GPUBoost", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Changing.
         /// </summary>
-        internal static string GPUChanging {
-            get {
+        internal static string GPUChanging
+        {
+            get
+            {
                 return ResourceManager.GetString("GPUChanging", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Core Clock Offset.
         /// </summary>
-        internal static string GPUCoreClockOffset {
-            get {
+        internal static string GPUCoreClockOffset
+        {
+            get
+            {
                 return ResourceManager.GetString("GPUCoreClockOffset", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Memory Clock Offset.
         /// </summary>
-        internal static string GPUMemoryClockOffset {
-            get {
+        internal static string GPUMemoryClockOffset
+        {
+            get
+            {
                 return ResourceManager.GetString("GPUMemoryClockOffset", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to GPU Mode.
         /// </summary>
-        internal static string GPUMode {
-            get {
+        internal static string GPUMode
+        {
+            get
+            {
                 return ResourceManager.GetString("GPUMode", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to iGPU only.
         /// </summary>
-        internal static string GPUModeEco {
-            get {
+        internal static string GPUModeEco
+        {
+            get
+            {
                 return ResourceManager.GetString("GPUModeEco", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to iGPU + dGPU.
         /// </summary>
-        internal static string GPUModeStandard {
-            get {
+        internal static string GPUModeStandard
+        {
+            get
+            {
                 return ResourceManager.GetString("GPUModeStandard", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to dGPU exclusive.
         /// </summary>
-        internal static string GPUModeUltimate {
-            get {
+        internal static string GPUModeUltimate
+        {
+            get
+            {
                 return ResourceManager.GetString("GPUModeUltimate", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to GPU Power.
         /// </summary>
-        internal static string GPUPower {
-            get {
+        internal static string GPUPower
+        {
+            get
+            {
                 return ResourceManager.GetString("GPUPower", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to GPU Settings.
         /// </summary>
-        internal static string GPUSettings {
-            get {
+        internal static string GPUSettings
+        {
+            get
+            {
                 return ResourceManager.GetString("GPUSettings", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Temperature Target.
         /// </summary>
-        internal static string GPUTempTarget {
-            get {
+        internal static string GPUTempTarget
+        {
+            get
+            {
                 return ResourceManager.GetString("GPUTempTarget", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Minutes till Hibernation in sleep on battery (0 - OFF).
         /// </summary>
-        internal static string HibernateAfter {
-            get {
+        internal static string HibernateAfter
+        {
+            get
+            {
                 return ResourceManager.GetString("HibernateAfter", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to High.
         /// </summary>
-        internal static string High {
-            get {
+        internal static string High
+        {
+            get
+            {
                 return ResourceManager.GetString("High", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Image Rotation.
         /// </summary>
-        internal static string ImageRotation {
-            get {
+        internal static string ImageRotation
+        {
+            get
+            {
                 return ResourceManager.GetString("ImageRotation", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Import Profile.
         /// </summary>
-        internal static string Import {
-            get {
+        internal static string Import
+        {
+            get
+            {
                 return ResourceManager.GetString("Import", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Interval Off.
         /// </summary>
-        internal static string IntervalOff {
-            get {
+        internal static string IntervalOff
+        {
+            get
+            {
                 return ResourceManager.GetString("IntervalOff", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Interval {0}s.
         /// </summary>
-        internal static string IntervalSeconds {
-            get {
+        internal static string IntervalSeconds
+        {
+            get
+            {
                 return ResourceManager.GetString("IntervalSeconds", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Key Bindings.
         /// </summary>
-        internal static string KeyBindings {
-            get {
+        internal static string KeyBindings
+        {
+            get
+            {
                 return ResourceManager.GetString("KeyBindings", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Keyboard.
         /// </summary>
-        internal static string Keyboard {
-            get {
+        internal static string Keyboard
+        {
+            get
+            {
                 return ResourceManager.GetString("Keyboard", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Stop all apps using GPU when switching to Eco.
         /// </summary>
-        internal static string KillGpuApps {
-            get {
+        internal static string KillGpuApps
+        {
+            get
+            {
                 return ResourceManager.GetString("KillGpuApps", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Laptop Backlight.
         /// </summary>
-        internal static string LaptopBacklight {
-            get {
+        internal static string LaptopBacklight
+        {
+            get
+            {
                 return ResourceManager.GetString("LaptopBacklight", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Laptop Keyboard.
         /// </summary>
-        internal static string LaptopKeyboard {
-            get {
+        internal static string LaptopKeyboard
+        {
+            get
+            {
                 return ResourceManager.GetString("LaptopKeyboard", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Laptop Screen.
         /// </summary>
-        internal static string LaptopScreen {
-            get {
+        internal static string LaptopScreen
+        {
+            get
+            {
                 return ResourceManager.GetString("LaptopScreen", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to LED Status Indicators.
         /// </summary>
-        internal static string LEDStatusIndicators {
-            get {
+        internal static string LEDStatusIndicators
+        {
+            get
+            {
                 return ResourceManager.GetString("LEDStatusIndicators", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Legend.
         /// </summary>
-        internal static string Legend {
-            get {
+        internal static string Legend
+        {
+            get
+            {
                 return ResourceManager.GetString("Legend", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Can&apos;t check local version.
         /// </summary>
-        internal static string LegendGray {
-            get {
+        internal static string LegendGray
+        {
+            get
+            {
                 return ResourceManager.GetString("LegendGray", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Updated.
         /// </summary>
-        internal static string LegendGreen {
-            get {
+        internal static string LegendGreen
+        {
+            get
+            {
                 return ResourceManager.GetString("LegendGreen", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Update Available.
         /// </summary>
-        internal static string LegendRed {
-            get {
+        internal static string LegendRed
+        {
+            get
+            {
                 return ResourceManager.GetString("LegendRed", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Lid.
         /// </summary>
-        internal static string Lid {
-            get {
+        internal static string Lid
+        {
+            get
+            {
                 return ResourceManager.GetString("Lid", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Lightbar.
         /// </summary>
-        internal static string Lightbar {
-            get {
+        internal static string Lightbar
+        {
+            get
+            {
                 return ResourceManager.GetString("Lightbar", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Lighting.
         /// </summary>
-        internal static string Lighting {
-            get {
+        internal static string Lighting
+        {
+            get
+            {
                 return ResourceManager.GetString("Lighting", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Lock Screen.
         /// </summary>
-        internal static string LockScreen {
-            get {
+        internal static string LockScreen
+        {
+            get
+            {
                 return ResourceManager.GetString("LockScreen", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Logo.
         /// </summary>
-        internal static string Logo {
-            get {
+        internal static string Logo
+        {
+            get
+            {
                 return ResourceManager.GetString("Logo", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Low.
         /// </summary>
-        internal static string Low {
-            get {
+        internal static string Low
+        {
+            get
+            {
                 return ResourceManager.GetString("Low", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Left Stick Deadzones.
         /// </summary>
-        internal static string LSDeadzones {
-            get {
+        internal static string LSDeadzones
+        {
+            get
+            {
                 return ResourceManager.GetString("LSDeadzones", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Left Trigger Deadzones.
         /// </summary>
-        internal static string LTDeadzones {
-            get {
+        internal static string LTDeadzones
+        {
+            get
+            {
                 return ResourceManager.GetString("LTDeadzones", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Audio Visualizer.
         /// </summary>
-        internal static string MatrixAudio {
-            get {
+        internal static string MatrixAudio
+        {
+            get
+            {
                 return ResourceManager.GetString("MatrixAudio", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Binary Banner.
         /// </summary>
-        internal static string MatrixBanner {
-            get {
+        internal static string MatrixBanner
+        {
+            get
+            {
                 return ResourceManager.GetString("MatrixBanner", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Bright.
         /// </summary>
-        internal static string MatrixBright {
-            get {
+        internal static string MatrixBright
+        {
+            get
+            {
                 return ResourceManager.GetString("MatrixBright", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Clock.
         /// </summary>
-        internal static string MatrixClock {
-            get {
+        internal static string MatrixClock
+        {
+            get
+            {
                 return ResourceManager.GetString("MatrixClock", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Dim.
         /// </summary>
-        internal static string MatrixDim {
-            get {
+        internal static string MatrixDim
+        {
+            get
+            {
                 return ResourceManager.GetString("MatrixDim", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Rog Logo.
         /// </summary>
-        internal static string MatrixLogo {
-            get {
+        internal static string MatrixLogo
+        {
+            get
+            {
                 return ResourceManager.GetString("MatrixLogo", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Medium.
         /// </summary>
-        internal static string MatrixMedium {
-            get {
+        internal static string MatrixMedium
+        {
+            get
+            {
                 return ResourceManager.GetString("MatrixMedium", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Off.
         /// </summary>
-        internal static string MatrixOff {
-            get {
+        internal static string MatrixOff
+        {
+            get
+            {
                 return ResourceManager.GetString("MatrixOff", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Picture.
         /// </summary>
-        internal static string MatrixPicture {
-            get {
+        internal static string MatrixPicture
+        {
+            get
+            {
                 return ResourceManager.GetString("MatrixPicture", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Max refresh rate for lower latency.
         /// </summary>
-        internal static string MaxRefreshTooltip {
-            get {
+        internal static string MaxRefreshTooltip
+        {
+            get
+            {
                 return ResourceManager.GetString("MaxRefreshTooltip", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to 60Hz refresh rate to save battery.
         /// </summary>
-        internal static string MinRefreshTooltip {
-            get {
+        internal static string MinRefreshTooltip
+        {
+            get
+            {
                 return ResourceManager.GetString("MinRefreshTooltip", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Minute.
         /// </summary>
-        internal static string Minute {
-            get {
+        internal static string Minute
+        {
+            get
+            {
                 return ResourceManager.GetString("Minute", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Minutes.
         /// </summary>
-        internal static string Minutes {
-            get {
+        internal static string Minutes
+        {
+            get
+            {
                 return ResourceManager.GetString("Minutes", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Angle Snapping.
         /// </summary>
-        internal static string MouseAngleSnapping {
-            get {
+        internal static string MouseAngleSnapping
+        {
+            get
+            {
                 return ResourceManager.GetString("MouseAngleSnapping", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Auto Power Off After.
         /// </summary>
-        internal static string MouseAutoPowerOff {
-            get {
+        internal static string MouseAutoPowerOff
+        {
+            get
+            {
                 return ResourceManager.GetString("MouseAutoPowerOff", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Button Response.
         /// </summary>
-        internal static string MouseButtonResponse {
-            get {
+        internal static string MouseButtonResponse
+        {
+            get
+            {
                 return ResourceManager.GetString("MouseButtonResponse", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Import failed. Selected file is not a valid mouse profile or corrutpted..
         /// </summary>
-        internal static string MouseImportFailed {
-            get {
+        internal static string MouseImportFailed
+        {
+            get
+            {
                 return ResourceManager.GetString("MouseImportFailed", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Lift Off Distance.
         /// </summary>
-        internal static string MouseLiftOffDistance {
-            get {
+        internal static string MouseLiftOffDistance
+        {
+            get
+            {
                 return ResourceManager.GetString("MouseLiftOffDistance", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Low Battery Warning at.
         /// </summary>
-        internal static string MouseLowBatteryWarning {
-            get {
+        internal static string MouseLowBatteryWarning
+        {
+            get
+            {
                 return ResourceManager.GetString("MouseLowBatteryWarning", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Performance.
         /// </summary>
-        internal static string MousePerformance {
-            get {
+        internal static string MousePerformance
+        {
+            get
+            {
                 return ResourceManager.GetString("MousePerformance", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Synchronize with mouse.
         /// </summary>
-        internal static string MouseSynchronize {
-            get {
+        internal static string MouseSynchronize
+        {
+            get
+            {
                 return ResourceManager.GetString("MouseSynchronize", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Multi Zone.
         /// </summary>
-        internal static string Multizone {
-            get {
+        internal static string Multizone
+        {
+            get
+            {
                 return ResourceManager.GetString("Multizone", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Multi Zone Strong.
         /// </summary>
-        internal static string MultizoneStrong {
-            get {
+        internal static string MultizoneStrong
+        {
+            get
+            {
                 return ResourceManager.GetString("MultizoneStrong", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Muted.
         /// </summary>
-        internal static string Muted {
-            get {
+        internal static string Muted
+        {
+            get
+            {
                 return ResourceManager.GetString("Muted", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Mute Mic.
         /// </summary>
-        internal static string MuteMic {
-            get {
+        internal static string MuteMic
+        {
+            get
+            {
                 return ResourceManager.GetString("MuteMic", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Never.
         /// </summary>
-        internal static string Never {
-            get {
+        internal static string Never
+        {
+            get
+            {
                 return ResourceManager.GetString("Never", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to New updates.
         /// </summary>
-        internal static string NewUpdates {
-            get {
+        internal static string NewUpdates
+        {
+            get
+            {
                 return ResourceManager.GetString("NewUpdates", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to No new updates.
         /// </summary>
-        internal static string NoNewUpdates {
-            get {
+        internal static string NoNewUpdates
+        {
+            get
+            {
                 return ResourceManager.GetString("NoNewUpdates", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Not Connected.
         /// </summary>
-        internal static string NotConnected {
-            get {
+        internal static string NotConnected
+        {
+            get
+            {
                 return ResourceManager.GetString("NotConnected", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Off.
         /// </summary>
-        internal static string Off {
-            get {
+        internal static string Off
+        {
+            get
+            {
                 return ResourceManager.GetString("Off", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to On.
         /// </summary>
-        internal static string On {
-            get {
+        internal static string On
+        {
+            get
+            {
                 return ResourceManager.GetString("On", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to One Zone.
         /// </summary>
-        internal static string OneZone {
-            get {
+        internal static string OneZone
+        {
+            get
+            {
                 return ResourceManager.GetString("OneZone", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Open G-Helper window.
         /// </summary>
-        internal static string OpenGHelper {
-            get {
+        internal static string OpenGHelper
+        {
+            get
+            {
                 return ResourceManager.GetString("OpenGHelper", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Optimized.
         /// </summary>
-        internal static string Optimized {
-            get {
+        internal static string Optimized
+        {
+            get
+            {
                 return ResourceManager.GetString("Optimized", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Switch to Eco on battery and to Standard when plugged in.
         /// </summary>
-        internal static string OptimizedGPUTooltip {
-            get {
+        internal static string OptimizedGPUTooltip
+        {
+            get
+            {
                 return ResourceManager.GetString("OptimizedGPUTooltip", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Keep GPU disabled on USB-C charger in Optimized mode.
         /// </summary>
-        internal static string OptimizedUSBC {
-            get {
+        internal static string OptimizedUSBC
+        {
+            get
+            {
                 return ResourceManager.GetString("OptimizedUSBC", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Other.
         /// </summary>
-        internal static string Other {
-            get {
+        internal static string Other
+        {
+            get
+            {
                 return ResourceManager.GetString("Other", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Overdrive.
         /// </summary>
-        internal static string Overdrive {
-            get {
+        internal static string Overdrive
+        {
+            get
+            {
                 return ResourceManager.GetString("Overdrive", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Mode.
         /// </summary>
-        internal static string PerformanceMode {
-            get {
+        internal static string PerformanceMode
+        {
+            get
+            {
                 return ResourceManager.GetString("PerformanceMode", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Peripherals.
         /// </summary>
-        internal static string Peripherals {
-            get {
+        internal static string Peripherals
+        {
+            get
+            {
                 return ResourceManager.GetString("Peripherals", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Picture / Gif.
         /// </summary>
-        internal static string PictureGif {
-            get {
+        internal static string PictureGif
+        {
+            get
+            {
                 return ResourceManager.GetString("PictureGif", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Play / Pause.
         /// </summary>
-        internal static string PlayPause {
-            get {
+        internal static string PlayPause
+        {
+            get
+            {
                 return ResourceManager.GetString("PlayPause", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Polling Rate.
         /// </summary>
-        internal static string PollingRate {
-            get {
+        internal static string PollingRate
+        {
+            get
+            {
                 return ResourceManager.GetString("PollingRate", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Power Limits.
         /// </summary>
-        internal static string PowerLimits {
-            get {
+        internal static string PowerLimits
+        {
+            get
+            {
                 return ResourceManager.GetString("PowerLimits", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Power Limits is an experimental feature. Use carefully and at your own risk!.
         /// </summary>
-        internal static string PPTExperimental {
-            get {
+        internal static string PPTExperimental
+        {
+            get
+            {
                 return ResourceManager.GetString("PPTExperimental", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to PrintScreen.
         /// </summary>
-        internal static string PrintScreen {
-            get {
+        internal static string PrintScreen
+        {
+            get
+            {
                 return ResourceManager.GetString("PrintScreen", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Profile.
         /// </summary>
-        internal static string Profile {
-            get {
+        internal static string Profile
+        {
+            get
+            {
                 return ResourceManager.GetString("Profile", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Quit.
         /// </summary>
-        internal static string Quit {
-            get {
+        internal static string Quit
+        {
+            get
+            {
                 return ResourceManager.GetString("Quit", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Reset.
         /// </summary>
-        internal static string Reset {
-            get {
+        internal static string Reset
+        {
+            get
+            {
                 return ResourceManager.GetString("Reset", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Something is using dGPU and preventing Eco mode. Let G-Helper try to restart dGPU in device manager? (Please proceed at your own risk).
         /// </summary>
-        internal static string RestartGPU {
-            get {
+        internal static string RestartGPU
+        {
+            get
+            {
                 return ResourceManager.GetString("RestartGPU", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to RPM.
         /// </summary>
-        internal static string RPM {
-            get {
+        internal static string RPM
+        {
+            get
+            {
                 return ResourceManager.GetString("RPM", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Right Stick Deadzones.
         /// </summary>
-        internal static string RSDeadzones {
-            get {
+        internal static string RSDeadzones
+        {
+            get
+            {
                 return ResourceManager.GetString("RSDeadzones", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Right Trigger Deadzones.
         /// </summary>
-        internal static string RTDeadzones {
-            get {
+        internal static string RTDeadzones
+        {
+            get
+            {
                 return ResourceManager.GetString("RTDeadzones", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Run on Startup.
         /// </summary>
-        internal static string RunOnStartup {
-            get {
+        internal static string RunOnStartup
+        {
+            get
+            {
                 return ResourceManager.GetString("RunOnStartup", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Scaling Quality.
         /// </summary>
-        internal static string ScalingQuality {
-            get {
+        internal static string ScalingQuality
+        {
+            get
+            {
                 return ResourceManager.GetString("ScalingQuality", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Screenpad Brightness Down.
         /// </summary>
-        internal static string ScreenPadDown {
-            get {
+        internal static string ScreenPadDown
+        {
+            get
+            {
                 return ResourceManager.GetString("ScreenPadDown", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Screenpad Brightness Up.
         /// </summary>
-        internal static string ScreenPadUp {
-            get {
+        internal static string ScreenPadUp
+        {
+            get
+            {
                 return ResourceManager.GetString("ScreenPadUp", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Shutdown.
         /// </summary>
-        internal static string Shutdown {
-            get {
+        internal static string Shutdown
+        {
+            get
+            {
                 return ResourceManager.GetString("Shutdown", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Silent.
         /// </summary>
-        internal static string Silent {
-            get {
+        internal static string Silent
+        {
+            get
+            {
                 return ResourceManager.GetString("Silent", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Battery Level.
         /// </summary>
-        internal static string SlashBatteryLevel {
-            get {
+        internal static string SlashBatteryLevel
+        {
+            get
+            {
                 return ResourceManager.GetString("SlashBatteryLevel", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Bit Stream.
         /// </summary>
-        internal static string SlashBitStream {
-            get {
+        internal static string SlashBitStream
+        {
+            get
+            {
                 return ResourceManager.GetString("SlashBitStream", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Bounce.
         /// </summary>
-        internal static string SlashBounce {
-            get {
+        internal static string SlashBounce
+        {
+            get
+            {
                 return ResourceManager.GetString("SlashBounce", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Buzzer.
         /// </summary>
-        internal static string SlashBuzzer {
-            get {
+        internal static string SlashBuzzer
+        {
+            get
+            {
                 return ResourceManager.GetString("SlashBuzzer", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Flow.
         /// </summary>
-        internal static string SlashFlow {
-            get {
+        internal static string SlashFlow
+        {
+            get
+            {
                 return ResourceManager.GetString("SlashFlow", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Flux.
         /// </summary>
-        internal static string SlashFlux {
-            get {
+        internal static string SlashFlux
+        {
+            get
+            {
                 return ResourceManager.GetString("SlashFlux", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Game Over.
         /// </summary>
-        internal static string SlashGameOver {
-            get {
+        internal static string SlashGameOver
+        {
+            get
+            {
                 return ResourceManager.GetString("SlashGameOver", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Hazard.
         /// </summary>
-        internal static string SlashHazard {
-            get {
+        internal static string SlashHazard
+        {
+            get
+            {
                 return ResourceManager.GetString("SlashHazard", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Interfacing.
         /// </summary>
-        internal static string SlashInterfacing {
-            get {
+        internal static string SlashInterfacing
+        {
+            get
+            {
                 return ResourceManager.GetString("SlashInterfacing", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Loading.
         /// </summary>
-        internal static string SlashLoading {
-            get {
+        internal static string SlashLoading
+        {
+            get
+            {
                 return ResourceManager.GetString("SlashLoading", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Slash.
         /// </summary>
-        internal static string SlashMode {
-            get {
+        internal static string SlashMode
+        {
+            get
+            {
                 return ResourceManager.GetString("SlashMode", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Phantom.
         /// </summary>
-        internal static string SlashPhantom {
-            get {
+        internal static string SlashPhantom
+        {
+            get
+            {
                 return ResourceManager.GetString("SlashPhantom", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Ramp.
         /// </summary>
-        internal static string SlashRamp {
-            get {
+        internal static string SlashRamp
+        {
+            get
+            {
                 return ResourceManager.GetString("SlashRamp", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Spectrum.
         /// </summary>
-        internal static string SlashSpectrum {
-            get {
+        internal static string SlashSpectrum
+        {
+            get
+            {
                 return ResourceManager.GetString("SlashSpectrum", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Start.
         /// </summary>
-        internal static string SlashStart {
-            get {
+        internal static string SlashStart
+        {
+            get
+            {
                 return ResourceManager.GetString("SlashStart", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Static.
         /// </summary>
-        internal static string SlashStatic {
-            get {
+        internal static string SlashStatic
+        {
+            get
+            {
                 return ResourceManager.GetString("SlashStatic", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Transmission.
         /// </summary>
-        internal static string SlashTransmission {
-            get {
+        internal static string SlashTransmission
+        {
+            get
+            {
                 return ResourceManager.GetString("SlashTransmission", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Sleep.
         /// </summary>
-        internal static string Sleep {
-            get {
+        internal static string Sleep
+        {
+            get
+            {
                 return ResourceManager.GetString("Sleep", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Enables dGPU for standard use.
         /// </summary>
-        internal static string StandardGPUTooltip {
-            get {
+        internal static string StandardGPUTooltip
+        {
+            get
+            {
                 return ResourceManager.GetString("StandardGPUTooltip", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Standard.
         /// </summary>
-        internal static string StandardMode {
-            get {
+        internal static string StandardMode
+        {
+            get
+            {
                 return ResourceManager.GetString("StandardMode", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Start.
         /// </summary>
-        internal static string Start {
-            get {
+        internal static string Start
+        {
+            get
+            {
                 return ResourceManager.GetString("Start", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Starting Services.
         /// </summary>
-        internal static string StartingServices {
-            get {
+        internal static string StartingServices
+        {
+            get
+            {
                 return ResourceManager.GetString("StartingServices", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Startup Error.
         /// </summary>
-        internal static string StartupError {
-            get {
+        internal static string StartupError
+        {
+            get
+            {
                 return ResourceManager.GetString("StartupError", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Stop.
         /// </summary>
-        internal static string Stop {
-            get {
+        internal static string Stop
+        {
+            get
+            {
                 return ResourceManager.GetString("Stop", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Stop GPU Applications.
         /// </summary>
-        internal static string StopGPUApps {
-            get {
+        internal static string StopGPUApps
+        {
+            get
+            {
                 return ResourceManager.GetString("StopGPUApps", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Stopping Services.
         /// </summary>
-        internal static string StoppingServices {
-            get {
+        internal static string StoppingServices
+        {
+            get
+            {
                 return ResourceManager.GetString("StoppingServices", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Toggle Aura.
         /// </summary>
-        internal static string ToggleAura {
-            get {
+        internal static string ToggleAura
+        {
+            get
+            {
                 return ResourceManager.GetString("ToggleAura", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Auto Toggle Clamshell Mode.
         /// </summary>
-        internal static string ToggleClamshellMode {
-            get {
+        internal static string ToggleClamshellMode
+        {
+            get
+            {
                 return ResourceManager.GetString("ToggleClamshellMode", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Toggle Fn-Lock.
         /// </summary>
-        internal static string ToggleFnLock {
-            get {
+        internal static string ToggleFnLock
+        {
+            get
+            {
                 return ResourceManager.GetString("ToggleFnLock", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Toggle Miniled (if supported).
         /// </summary>
-        internal static string ToggleMiniled {
-            get {
+        internal static string ToggleMiniled
+        {
+            get
+            {
                 return ResourceManager.GetString("ToggleMiniled", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Toggle Screen.
         /// </summary>
-        internal static string ToggleScreen {
-            get {
+        internal static string ToggleScreen
+        {
+            get
+            {
                 return ResourceManager.GetString("ToggleScreen", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Toggle Touchscreen.
         /// </summary>
-        internal static string ToggleTouchscreen {
-            get {
+        internal static string ToggleTouchscreen
+        {
+            get
+            {
                 return ResourceManager.GetString("ToggleTouchscreen", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Touchscreen.
         /// </summary>
-        internal static string Touchscreen {
-            get {
+        internal static string Touchscreen
+        {
+            get
+            {
                 return ResourceManager.GetString("Touchscreen", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Turbo.
         /// </summary>
-        internal static string Turbo {
-            get {
+        internal static string Turbo
+        {
+            get
+            {
                 return ResourceManager.GetString("Turbo", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Turned off.
         /// </summary>
-        internal static string TurnedOff {
-            get {
+        internal static string TurnedOff
+        {
+            get
+            {
                 return ResourceManager.GetString("TurnedOff", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Disable on battery.
         /// </summary>
-        internal static string TurnOffOnBattery {
-            get {
+        internal static string TurnOffOnBattery
+        {
+            get
+            {
                 return ResourceManager.GetString("TurnOffOnBattery", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Routes laptop screen to dGPU, maximizing FPS.
         /// </summary>
-        internal static string UltimateGPUTooltip {
-            get {
+        internal static string UltimateGPUTooltip
+        {
+            get
+            {
                 return ResourceManager.GetString("UltimateGPUTooltip", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Ultimate.
         /// </summary>
-        internal static string UltimateMode {
-            get {
+        internal static string UltimateMode
+        {
+            get
+            {
                 return ResourceManager.GetString("UltimateMode", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Undervolting is an experimental and risky feature. If applied values are too low for your hardware, it can become unstable, shut down or cause data corruption. If you want to try - start from small values first, click Apply and test what works for you..
         /// </summary>
-        internal static string UndervoltingRisky {
-            get {
+        internal static string UndervoltingRisky
+        {
+            get
+            {
                 return ResourceManager.GetString("UndervoltingRisky", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Unmuted.
         /// </summary>
-        internal static string Unmuted {
-            get {
+        internal static string Unmuted
+        {
+            get
+            {
                 return ResourceManager.GetString("Unmuted", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Updates.
         /// </summary>
-        internal static string Updates {
-            get {
+        internal static string Updates
+        {
+            get
+            {
                 return ResourceManager.GetString("Updates", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Version.
         /// </summary>
-        internal static string VersionLabel {
-            get {
+        internal static string VersionLabel
+        {
+            get
+            {
                 return ResourceManager.GetString("VersionLabel", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Vibration Strength.
         /// </summary>
-        internal static string VibrationStrength {
-            get {
+        internal static string VibrationStrength
+        {
+            get
+            {
                 return ResourceManager.GetString("VibrationStrength", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Visual Mode.
         /// </summary>
-        internal static string VisualMode {
-            get {
+        internal static string VisualMode
+        {
+            get
+            {
                 return ResourceManager.GetString("VisualMode", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Visual Modes are not available when HDR is active.
         /// </summary>
-        internal static string VisualModesHDR {
-            get {
+        internal static string VisualModesHDR
+        {
+            get
+            {
                 return ResourceManager.GetString("VisualModesHDR", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Visual Modes are not available when laptop screen is off.
         /// </summary>
-        internal static string VisualModesScreen {
-            get {
+        internal static string VisualModesScreen
+        {
+            get
+            {
                 return ResourceManager.GetString("VisualModesScreen", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Volume Down.
         /// </summary>
-        internal static string VolumeDown {
-            get {
+        internal static string VolumeDown
+        {
+            get
+            {
                 return ResourceManager.GetString("VolumeDown", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Volume Mute.
         /// </summary>
-        internal static string VolumeMute {
-            get {
+        internal static string VolumeMute
+        {
+            get
+            {
                 return ResourceManager.GetString("VolumeMute", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Volume Up.
         /// </summary>
-        internal static string VolumeUp {
-            get {
+        internal static string VolumeUp
+        {
+            get
+            {
                 return ResourceManager.GetString("VolumeUp", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Keep app window always on top.
         /// </summary>
-        internal static string WindowTop {
-            get {
+        internal static string WindowTop
+        {
+            get
+            {
                 return ResourceManager.GetString("WindowTop", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Zoom.
         /// </summary>
-        internal static string Zoom {
-            get {
+        internal static string Zoom
+        {
+            get
+            {
                 return ResourceManager.GetString("Zoom", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Motion Sync.
+        /// </summary>
+        internal static string MouseMotionSync
+        {
+            get
+            {
+                return ResourceManager.GetString("MouseMotionSync", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Zone Mode.
+        /// </summary>
+        internal static string MouseZoneMode
+        {
+            get
+            {
+                return ResourceManager.GetString("MouseZoneMode", resourceCulture);
             }
         }
     }
