@@ -91,6 +91,7 @@ namespace GHelper
             checkBoxZoneMode.CheckedChanged += CheckBoxZoneMode_CheckedChanged;
             sliderZoneModeDPI.ValueChanged += SliderZoneModeDPI_ValueChanged;
             sliderZoneModeDPI.MouseUp += SliderZoneModeDPI_MouseUp;
+            numericUpDownZoneModeDPI.ValueChanged += NumericUpDownZoneModeDPI_ValueChanged;
             comboBoxZoneModePollingRate.DropDownClosed += ComboBoxZoneModePollingRate_DropDownClosed;
 
             sliderAcceleration.MouseUp += SliderAcceleration_MouseUp;
@@ -425,7 +426,7 @@ namespace GHelper
 
         private void SliderZoneModeDPI_ValueChanged(object? sender, EventArgs e)
         {
-            labelZoneModeDPIValue.Text = sliderZoneModeDPI.Value.ToString();
+            numericUpDownZoneModeDPI.Value = sliderZoneModeDPI.Value;
         }
 
         private void SliderZoneModeDPI_MouseUp(object? sender, MouseEventArgs e)
@@ -433,6 +434,16 @@ namespace GHelper
             mouse.ZoneModeDPI = sliderZoneModeDPI.Value;
             if (mouse.ZoneMode)
             {
+                mouse.UpdateZoneModeDPI(sliderZoneModeDPI.Value);
+            }
+        }
+
+        private void NumericUpDownZoneModeDPI_ValueChanged(object? sender, EventArgs e)
+        {
+            sliderZoneModeDPI.Value = (int)numericUpDownZoneModeDPI.Value;
+            if (mouse.ZoneMode && mouse.ZoneModeDPI != sliderZoneModeDPI.Value)
+            {
+                mouse.ZoneModeDPI = sliderZoneModeDPI.Value;
                 mouse.UpdateZoneModeDPI(sliderZoneModeDPI.Value);
             }
         }
@@ -829,7 +840,7 @@ namespace GHelper
             {
                 checkBoxZoneMode.Checked = mouse.ZoneMode;
                 sliderZoneModeDPI.Value = mouse.ZoneModeDPI;
-                labelZoneModeDPIValue.Text = mouse.ZoneModeDPI.ToString();
+                numericUpDownZoneModeDPI.Value = mouse.ZoneModeDPI;
                 
                 // Set Zone Mode Polling Rate combobox
                 PollingRate[] zoneModePollingRates = { PollingRate.PR1000Hz, PollingRate.PR2000Hz, PollingRate.PR4000Hz, PollingRate.PR8000Hz };
@@ -864,7 +875,7 @@ namespace GHelper
             // Zone Mode controls: enabled when Zone Mode is ON
             sliderZoneModeDPI.Enabled = zoneModeEnabled;
             comboBoxZoneModePollingRate.Enabled = zoneModeEnabled;
-            labelZoneModeDPIValue.Enabled = zoneModeEnabled;
+            numericUpDownZoneModeDPI.Enabled = zoneModeEnabled;
 
             // Normal controls: disabled when Zone Mode is ON
             panelDPISettings.Enabled = !zoneModeEnabled;

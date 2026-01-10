@@ -55,7 +55,7 @@
             checkBoxZoneMode = new CheckBox();
             comboBoxZoneModePollingRate = new GHelper.UI.RComboBox();
             sliderZoneModeDPI = new GHelper.UI.Slider();
-            labelZoneModeDPIValue = new Label();
+            numericUpDownZoneModeDPI = new NumericUpDown();
             sliderAngleAdjustment = new GHelper.UI.Slider();
             checkBoxAngleSnapping = new CheckBox();
             labelAngleAdjustmentValue = new Label();
@@ -456,7 +456,7 @@
             // 
             panelZoneMode.AutoSize = true;
             panelZoneMode.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            panelZoneMode.Controls.Add(labelZoneModeDPIValue);
+            panelZoneMode.Controls.Add(numericUpDownZoneModeDPI);
             panelZoneMode.Controls.Add(sliderZoneModeDPI);
             panelZoneMode.Controls.Add(comboBoxZoneModePollingRate);
             panelZoneMode.Controls.Add(checkBoxZoneMode);
@@ -501,22 +501,25 @@
             sliderZoneModeDPI.Max = 42000;
             sliderZoneModeDPI.Min = 400;
             sliderZoneModeDPI.Name = "sliderZoneModeDPI";
-            sliderZoneModeDPI.Size = new Size(780, 40);
-            sliderZoneModeDPI.Step = 100;
+            sliderZoneModeDPI.Size = new Size(740, 40);
+            sliderZoneModeDPI.Step = 50;
             sliderZoneModeDPI.TabIndex = 47;
             sliderZoneModeDPI.TabStop = false;
             sliderZoneModeDPI.Text = "sliderZoneModeDPI";
             sliderZoneModeDPI.Value = 1600;
             // 
-            // labelZoneModeDPIValue
+            // numericUpDownZoneModeDPI
             // 
-            labelZoneModeDPIValue.Location = new Point(796, 56);
-            labelZoneModeDPIValue.Margin = new Padding(8, 0, 8, 0);
-            labelZoneModeDPIValue.Name = "labelZoneModeDPIValue";
-            labelZoneModeDPIValue.Size = new Size(80, 40);
-            labelZoneModeDPIValue.TabIndex = 48;
-            labelZoneModeDPIValue.Text = "1600";
-            labelZoneModeDPIValue.TextAlign = ContentAlignment.MiddleRight;
+            numericUpDownZoneModeDPI.Location = new Point(756, 56);
+            numericUpDownZoneModeDPI.Margin = new Padding(8, 0, 8, 0);
+            numericUpDownZoneModeDPI.Maximum = new decimal(new int[] { 42000, 0, 0, 0 });
+            numericUpDownZoneModeDPI.Minimum = new decimal(new int[] { 400, 0, 0, 0 });
+            numericUpDownZoneModeDPI.Name = "numericUpDownZoneModeDPI";
+            numericUpDownZoneModeDPI.Size = new Size(120, 40);
+            numericUpDownZoneModeDPI.TabIndex = 48;
+            numericUpDownZoneModeDPI.TextAlign = HorizontalAlignment.Right;
+            numericUpDownZoneModeDPI.Value = new decimal(new int[] { 1600, 0, 0, 0 });
+            numericUpDownZoneModeDPI.Increment = 50;
             // 
             // sliderAngleAdjustment
             // 
@@ -1682,7 +1685,7 @@
         private CheckBox checkBoxZoneMode;
         private UI.RComboBox comboBoxZoneModePollingRate;
         private UI.Slider sliderZoneModeDPI;
-        private Label labelZoneModeDPIValue;
+        private NumericUpDown numericUpDownZoneModeDPI;
         private Panel panelLiftOffDistance;
         private Panel panelDebounce;
         private Panel panelDeceleration;
