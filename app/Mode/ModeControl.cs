@@ -1,7 +1,8 @@
-﻿using GHelper.Gpu.NVidia;
+﻿using GHelper.Gpu.Nvidia;
 using GHelper.Helpers;
 using GHelper.USB;
 using Ryzen;
+using System;
 
 namespace GHelper.Mode
 {
@@ -244,7 +245,7 @@ namespace GHelper.Mode
             Thread.Sleep(500);
             SetGPUPower();
             AutoRyzen();
-
+            AutoIntelGPU();
         }
 
         public void SetModeLabel()
@@ -257,7 +258,7 @@ namespace GHelper.Mode
             if (init) _ryzenPower = true;
 
             if (!_ryzenPower) return;
-            if (!RyzenControl.IsRingExsists()) return;
+            if (!RyzenControl.IsRingPresent()) return;
             if (!AppConfig.IsMode("auto_apply_power")) return;
 
             int limit_total = AppConfig.GetMode("limit_total");
@@ -342,7 +343,6 @@ namespace GHelper.Mode
         {
             Task.Run(() =>
             {
-
                 int core = AppConfig.GetMode("gpu_core");
                 int memory = AppConfig.GetMode("gpu_memory");
                 int clock_limit = AppConfig.GetMode("gpu_clock_limit");
@@ -370,6 +370,46 @@ namespace GHelper.Mode
 
                 settings.GPUInit();
             });
+        }
+
+        public void SetIntelGPUClocks(bool launchAsAdmin = true, bool reset = false)
+        {
+            Task.Run(() =>
+            {
+                int min = -1, max = -1;
+                
+                if (!reset)
+                {
+                    min = AppConfig.GetMode("igpu_core_min");
+                    max = AppConfig.GetMode("igpu_core_max");
+
+                    if (min == -1 && max == -1) return;
+                }
+                else
+                {
+                    AppConfig.RemoveMode("igpu_core_min");
+                    AppConfig.RemoveMode("igpu_core_max");
+                }
+
+                if (HardwareControl.IntelGpuControl is null) { Logger.WriteLine("Intel GPU Clocks Error: no Intel GPU Control."); return; }
+
+                try
+                {
+                    bool success = HardwareControl.IntelGpuControl.SetCoreFrequencyLimits(min, max);
+                    if (!success && launchAsAdmin) ProcessHelper.RunAsAdmin("igpu");
+                }
+                catch (Exception ex)
+                {
+                    Logger.WriteLine("Intel GPU Clocks Error:" + ex.ToString());
+                }
+
+                settings.GPUInit();
+            });
+        }
+
+        public void ResetIntelGPUClocks()
+        {
+            SetIntelGPUClocks(true, true);
         }
 
         public void SetGPUPower()
@@ -445,7 +485,7 @@ namespace GHelper.Mode
                 return;
             }
 
-            if (!RyzenControl.IsRingExsists()) return;
+            if (!RyzenControl.IsRingPresent()) return;
 
             try
             {
@@ -482,5 +522,10 @@ namespace GHelper.Mode
             Program.acpi.DeviceSet(AsusACPI.PerformanceMode,AsusACPI.PerformanceBalanced, "Mode Reset");
         }
 
+        public void AutoIntelGPU()
+        {
+            if (AppConfig.IsMode("auto_intel_gpu")) SetIntelGPUClocks();
+            else ResetIntelGPUClocks();
+        }
     }
 }

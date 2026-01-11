@@ -1,5 +1,6 @@
 ﻿using GHelper.Fan;
-using GHelper.Gpu.NVidia;
+using GHelper.Gpu.Nvidia;
+using GHelper.GPU.Intel;
 using GHelper.Mode;
 using GHelper.UI;
 using GHelper.USB;
@@ -22,6 +23,9 @@ namespace GHelper
         Series seriesXGM;
 
         static bool gpuVisible = true;
+        static bool intelGpuVisible = true;
+        static bool amdVisible = RyzenControl.IsAMD();
+
         static bool fanRpm = true;
 
         const int tempMin = 20;
@@ -29,7 +33,6 @@ namespace GHelper
 
         const int fansMax = 100;
 
-        NvidiaGpuControl? nvControl = null;
         ModeControl modeControl = Program.modeControl;
 
         FanSensorControl fanSensorControl;
@@ -37,6 +40,9 @@ namespace GHelper
         static int gpuPowerBase = 0;
         static bool isGPUPower => gpuPowerBase > 0;
         static bool clampFanDots = AppConfig.IsClampFanDots();
+
+        private int _currentPage = 0;
+        public int CurrentPage => _currentPage;
 
         public Fans()
         {
@@ -68,7 +74,7 @@ namespace GHelper
 
             labelRisky.Text = Properties.Strings.UndervoltingRisky;
             buttonApplyAdvanced.Text = Properties.Strings.Apply;
-            checkApplyUV.Text = Properties.Strings.AutoApply;
+            checkApplyAuto.Text = Properties.Strings.AutoApply;
 
             buttonCalibrate.Text = Properties.Strings.Calibrate;
 
@@ -170,6 +176,9 @@ namespace GHelper
             trackGPUMemory.MouseUp += TrackGPUClocks_MouseUp;
             trackGPUClockLimit.MouseUp += TrackGPUClocks_MouseUp;
 
+            trackIntelGPUCoreMin.MouseUp += TrackIntelGPUClocks_MouseUp;
+            trackIntelGPUCoreMax.MouseUp += TrackIntelGPUClocks_MouseUp;
+
             trackGPUBoost.MouseUp += TrackGPU_MouseUp;
             trackGPUTemp.MouseUp += TrackGPU_MouseUp;
             trackGPUPower.MouseUp += TrackGPU_MouseUp;
@@ -226,7 +235,7 @@ namespace GHelper
             buttonGPU.Click += ButtonGPU_Click;
             buttonAdvanced.Click += ButtonAdvanced_Click;
 
-            checkApplyUV.Click += CheckApplyUV_Click;
+            checkApplyAuto.Click += CheckApplyAuto_Click;
 
             buttonCalibrate.Click += ButtonCalibrate_Click;
 
@@ -258,7 +267,7 @@ namespace GHelper
             labelRisky.Visible = true;
             panelUViGPU.Visible = true;
             panelUV.Visible = true;
-            panelTitleAdvanced.Visible = true;
+            panelTitleUV.Visible = true;
             panelTemperature.Visible = true;
             panelTitleTemp.Visible = true;
 
@@ -291,14 +300,22 @@ namespace GHelper
 
         private void Fans_FormClosed(object? sender, FormClosedEventArgs e)
         {
-            //Because windows charts seem to eat a lot of memory :(
+            //Because windows charts seem to eat a lot of memory :( that's sad :(
             GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced);
         }
 
-        private void CheckApplyUV_Click(object? sender, EventArgs e)
+        private void CheckApplyAuto_Click(object? sender, EventArgs e)
         {
-            AppConfig.SetMode("auto_uv", checkApplyUV.Checked ? 1 : 0);
-            modeControl.AutoRyzen();
+            if (amdVisible)
+            {
+                AppConfig.SetMode("auto_uv", checkApplyAuto.Checked ? 1 : 0);
+                modeControl.AutoRyzen();
+            }
+            else if (intelGpuVisible)
+            {
+                AppConfig.SetMode("auto_intel_gpu", checkApplyAuto.Checked ? 1 : 0);
+                modeControl.AutoIntelGPU();
+            }
         }
 
         public void InitAll()
@@ -309,6 +326,7 @@ namespace GHelper
             InitPowerPlan();
             InitUV();
             InitGPU();
+            InitIntelGPU();
         }
 
         public void InitCPU()
@@ -330,8 +348,9 @@ namespace GHelper
 
         public void ToggleNavigation(int index = 0)
         {
-
             SuspendLayout();
+            
+            _currentPage = index;
 
             buttonCPU.Activated = false;
             buttonGPU.Activated = false;
@@ -339,17 +358,25 @@ namespace GHelper
 
             panelPower.Visible = false;
             panelGPU.Visible = false;
+            panelIntelGPU.Visible = false;
             panelAdvanced.Visible = false;
 
             switch (index)
             {
                 case 1:
+                    if (!gpuVisible)
+                    {
+                        ToggleNavigation();
+                        return;
+                    }
                     buttonGPU.Activated = true;
                     panelGPU.Visible = true;
                     break;
                 case 2:
                     buttonAdvanced.Activated = true;
                     panelAdvanced.Visible = true;
+                    panelTempLimit.Visible = amdVisible;
+                    panelIntelGPU.Visible = intelGpuVisible;
                     break;
                 default:
                     buttonCPU.Activated = true;
@@ -359,6 +386,11 @@ namespace GHelper
 
             ResumeLayout(false);
             PerformLayout();
+        }
+
+        public void RefreshCurrentPage()
+        {
+            ToggleNavigation(CurrentPage);
         }
 
         private void ButtonAdvanced_Click(object? sender, EventArgs e)
@@ -378,39 +410,25 @@ namespace GHelper
 
         private void ButtonApplyAdvanced_Click(object? sender, EventArgs e)
         {
-            modeControl.SetRyzen(true);
-            checkApplyUV.Enabled = true;
+            if (amdVisible)
+                modeControl.SetRyzen(true);
+            else if(intelGpuVisible)
+                modeControl.SetIntelGPUClocks();
+            checkApplyAuto.Enabled = true;
         }
 
-        public void InitUV()
+        public void UpdateVisibleNavigationButtons()
         {
-
-            //if (!ProcessHelper.IsUserAdministrator()) return;
-
-            int cpuUV = Math.Max(trackUV.Minimum, Math.Min(trackUV.Maximum, AppConfig.GetMode("cpu_uv", 0)));
-            int igpuUV = Math.Max(trackUViGPU.Minimum, Math.Min(trackUViGPU.Maximum, AppConfig.GetMode("igpu_uv", 0)));
-
-            int temp = AppConfig.GetMode("cpu_temp");
-            if (temp < RyzenControl.MinTemp || temp > RyzenControl.MaxTemp) temp = RyzenControl.MaxTemp;
-
-            checkApplyUV.Enabled = checkApplyUV.Checked = AppConfig.IsMode("auto_uv");
-
-            trackUV.Value = cpuUV;
-            trackUViGPU.Value = igpuUV;
-            trackTemp.Value = temp;
-
-            VisualiseAdvanced();
-
-            buttonAdvanced.Visible = RyzenControl.IsAMD();
-
+            buttonGPU.Visible = gpuVisible;
+            buttonAdvanced.Visible = amdVisible || intelGpuVisible;
         }
 
         private void VisualiseAdvanced()
         {
 
-            if (!RyzenControl.IsRingExsists())
+            if (!RyzenControl.IsRingPresent())
             {
-                panelTitleAdvanced.Visible = false;
+                panelTitleUV.Visible = false;
                 labelRisky.Visible = false;
                 panelUV.Visible = false;
                 panelUViGPU.Visible = false;
@@ -428,7 +446,7 @@ namespace GHelper
 
             if (!RyzenControl.IsSupportedUV())
             {
-                panelTitleAdvanced.Visible = false;
+                panelTitleUV.Visible = false;
                 labelRisky.Visible = false;
                 panelUV.Visible = false;
                 panelUViGPU.Visible = false;
@@ -443,12 +461,18 @@ namespace GHelper
             labelUViGPU.Text = trackUViGPU.Value.ToString();
 
             labelTemp.Text = (trackTemp.Value < RyzenControl.MaxTemp) ? trackTemp.Value.ToString() + "°C" : "Default";
+
+            if (intelGpuVisible)
+            {
+                labelIntelGPUCoreMax.Text = $"{trackIntelGPUCoreMax.Value} MHz";
+                labelIntelGPUCoreMin.Text = $"{trackIntelGPUCoreMin.Value} MHz";
+            }
         }
 
         private void AdvancedScroll()
         {
             AppConfig.SetMode("auto_uv", 0);
-            checkApplyUV.Enabled = checkApplyUV.Checked = false;
+            checkApplyAuto.Enabled = checkApplyAuto.Checked = false;
 
             VisualiseAdvanced();
 
@@ -461,6 +485,31 @@ namespace GHelper
         private void TrackUV_Scroll(object? sender, EventArgs e)
         {
             AdvancedScroll();
+        }
+
+        private void trackIntelGPUCoreMax_Scroll(object sender, EventArgs e)
+        {
+            if (trackIntelGPUCoreMax.Value < trackIntelGPUCoreMin.Value)
+                trackIntelGPUCoreMin.Value = trackIntelGPUCoreMax.Value;
+            VisualiseAdvanced();
+        }
+
+        private void trackIntelGPUCoreMin_Scroll(object sender, EventArgs e)
+        {
+            if (trackIntelGPUCoreMin.Value > trackIntelGPUCoreMax.Value)
+                trackIntelGPUCoreMax.Value = trackIntelGPUCoreMin.Value;
+            VisualiseAdvanced();
+        }
+
+        private void TrackIntelGPUClocks_MouseUp(object? sender, MouseEventArgs e)
+        {
+            int maxClock = trackIntelGPUCoreMax.Value;
+            int minClock = trackIntelGPUCoreMin.Value;
+
+            AppConfig.SetMode("igpu_core_max", maxClock);
+            AppConfig.SetMode("igpu_core_min", minClock);
+
+            if (checkApplyAuto.Checked) modeControl.SetIntelGPUClocks();
         }
 
         private void ComboModes_KeyPress(object? sender, KeyPressEventArgs e)
@@ -586,25 +635,16 @@ namespace GHelper
 
             if (Program.acpi.DeviceGet(AsusACPI.GPUEco) == 1)
             {
-                gpuVisible = buttonGPU.Visible = false;
+                gpuVisible = false;
                 return;
             }
 
-            if (HardwareControl.GpuControl is null || !HardwareControl.GpuControl.IsValid) HardwareControl.RecreateGpuControl();
-
-            if (HardwareControl.GpuControl is not null && HardwareControl.GpuControl.IsNvidia)
-            {
-                nvControl = (NvidiaGpuControl)HardwareControl.GpuControl;
-            }
-            else
-            {
-                gpuVisible = buttonGPU.Visible = false;
-                return;
-            }
+            if (HardwareControl.GpuControl is null || !HardwareControl.GpuControl.IsValid)
+                HardwareControl.RecreateGpuControl();
 
             try
             {
-                gpuVisible = buttonGPU.Visible = true;
+                gpuVisible = true;
 
                 int gpu_boost = AppConfig.GetMode("gpu_boost");
                 int gpu_temp = AppConfig.GetMode("gpu_temp");
@@ -620,8 +660,10 @@ namespace GHelper
                 if (memory == -1) memory = 0;
                 if (clock_limit == -1) clock_limit = NvidiaGpuControl.MaxClockLimit;
 
-                if (nvControl is not null)
+                if (HardwareControl.GpuControl is not null && HardwareControl.GpuControl.IsNvidia)
                 {
+                    NvidiaGpuControl nvControl = (NvidiaGpuControl)HardwareControl.GpuControl;
+
                     if (nvControl.GetClocks(out int current_core, out int current_memory))
                     {
                         core = current_core;
@@ -637,10 +679,7 @@ namespace GHelper
                     {
                         labelGPU.Text = nvControl.FullName;
                     }
-                    catch
-                    {
-
-                    }
+                    catch { }
                 }
 
                 trackGPUClockLimit.Value = Math.Max(Math.Min(clock_limit, NvidiaGpuControl.MaxClockLimit), NvidiaGpuControl.MinClockLimit);
@@ -662,10 +701,67 @@ namespace GHelper
             }
             catch (Exception ex)
             {
+                gpuVisible = false;
                 Logger.WriteLine(ex.ToString());
-                gpuVisible = buttonGPU.Visible = false;
             }
 
+            UpdateVisibleNavigationButtons();
+        }
+
+        public void InitUV()
+        {
+
+            //if (!ProcessHelper.IsUserAdministrator()) return;
+
+            int cpuUV = Math.Max(trackUV.Minimum, Math.Min(trackUV.Maximum, AppConfig.GetMode("cpu_uv", 0)));
+            int igpuUV = Math.Max(trackUViGPU.Minimum, Math.Min(trackUViGPU.Maximum, AppConfig.GetMode("igpu_uv", 0)));
+
+            int temp = AppConfig.GetMode("cpu_temp");
+            if (temp < RyzenControl.MinTemp || temp > RyzenControl.MaxTemp) temp = RyzenControl.MaxTemp;
+
+            checkApplyAuto.Enabled = checkApplyAuto.Checked = AppConfig.IsMode("auto_uv");
+
+            trackUV.Value = cpuUV;
+            trackUViGPU.Value = igpuUV;
+            trackTemp.Value = temp;
+
+            VisualiseAdvanced();
+
+            UpdateVisibleNavigationButtons();
+        }
+
+        public void InitIntelGPU()
+        {
+            try
+            {
+                intelGpuVisible = true;
+
+                if (HardwareControl.IntelGpuControl is null || !HardwareControl.IntelGpuControl.IsValid)
+                    throw new Exception("No valid Intel GPU control.");
+
+                IntelGpuControl intelGpu = HardwareControl.IntelGpuControl;
+
+                trackIntelGPUCoreMax.Maximum = trackIntelGPUCoreMin.Maximum = intelGpu.MaxCoreLimit;
+                trackIntelGPUCoreMax.Minimum = trackIntelGPUCoreMin.Minimum = intelGpu.MinCoreLimit;
+
+                trackIntelGPUCoreMax.Value = intelGpu.MaxCore;
+                trackIntelGPUCoreMin.Value = intelGpu.MinCore;
+                
+                checkApplyAuto.Enabled = checkApplyAuto.Checked = AppConfig.IsMode("auto_intel_gpu");
+
+                if (intelGpu.FullName != null) labelIntelGPU.Text = intelGpu.FullName;
+
+                checkApplyAuto.Enabled = true;
+            }
+            catch (Exception ex)
+            {
+                intelGpuVisible = false;
+                Logger.WriteLine(ex.ToString());
+            }
+
+            VisualiseAdvanced();
+
+            UpdateVisibleNavigationButtons();
         }
 
         private void VisualiseGPUSettings()
@@ -682,16 +778,15 @@ namespace GHelper
                 labelGPUClockLimit.Text = $"{trackGPUClockLimit.Value} MHz";
 
             labelGPUPower.Text = (gpuPowerBase + trackGPUPower.Value) + "W";
-
         }
 
         private void trackGPUClockLimit_Scroll(object? sender, EventArgs e)
         {
-
             int maxClock = (int)Math.Round((float)trackGPUClockLimit.Value / 5) * 5;
 
             trackGPUClockLimit.Value = maxClock;
             AppConfig.SetMode("gpu_clock_limit", maxClock);
+
             VisualiseGPUSettings();
         }
 
@@ -703,10 +798,8 @@ namespace GHelper
 
             AppConfig.SetMode("gpu_core", trackGPUCore.Value);
             AppConfig.SetMode("gpu_memory", trackGPUMemory.Value);
-
-
+            
             VisualiseGPUSettings();
-
         }
 
         private void trackGPUPower_Scroll(object? sender, EventArgs e)
@@ -1214,6 +1307,8 @@ namespace GHelper
                 VisualiseGPUSettings();
                 modeControl.SetGPUClocks(true, true);
                 modeControl.SetGPUPower();
+
+                modeControl.SetIntelGPUClocks(true, true);
             }
 
         }
@@ -1413,7 +1508,5 @@ namespace GHelper
                 }
             }
         }
-
     }
-
 }
