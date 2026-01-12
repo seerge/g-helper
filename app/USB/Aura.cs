@@ -53,6 +53,7 @@ namespace GHelper.USB
         HEATMAP = 20,
         GPUMODE = 21,
         AMBIENT = 22,
+        BATTERY = 23,
     }
 
     public enum AuraSpeed : int
@@ -107,6 +108,7 @@ namespace GHelper.USB
             { AuraMode.HEATMAP, "Heatmap"},
             { AuraMode.GPUMODE, "GPU Mode" },
             { AuraMode.AMBIENT, "Ambient"},
+            { AuraMode.BATTERY, "Battery"},
         };
 
         private static Dictionary<AuraMode, string> _modesDynamicLighting = new Dictionary<AuraMode, string>
@@ -124,6 +126,7 @@ namespace GHelper.USB
             { AuraMode.AuraColorCycle, Properties.Strings.AuraColorCycle },
             { AuraMode.AuraRainbow, Properties.Strings.AuraRainbow },
             { AuraMode.AuraStrobe, Properties.Strings.AuraStrobe },
+            { AuraMode.BATTERY, "Battery"},
         };
 
         private static Dictionary<AuraMode, string> _modesStrix = new Dictionary<AuraMode, string>
@@ -142,6 +145,7 @@ namespace GHelper.USB
             { AuraMode.Flash, "Flash" },
             { AuraMode.HEATMAP, "Heatmap"},
             { AuraMode.AMBIENT, "Ambient"},
+            { AuraMode.BATTERY, "Battery"},
         };
 
         static Aura()
@@ -247,6 +251,10 @@ namespace GHelper.USB
             if (Mode == AuraMode.HEATMAP)
             {
                 CustomRGB.ApplyHeatmap();
+            }
+            else if (Mode == AuraMode.BATTERY)
+            {
+                CustomRGB.ApplyBattery();
             }
             else if (Mode == AuraMode.AMBIENT)
             {
@@ -697,6 +705,14 @@ namespace GHelper.USB
                 return;
             }
 
+            if (Mode == AuraMode.BATTERY)
+            {
+                CustomRGB.ApplyBattery(true);
+                timer.Enabled = true;
+                timer.Interval = 30000;
+                return;
+            }
+
             if (Mode == AuraMode.AMBIENT)
             {
                 CustomRGB.ApplyAmbient(true);
@@ -770,6 +786,14 @@ namespace GHelper.USB
             static Color colorWarm = ColorTranslator.FromHtml(AppConfig.GetString("color_warm", "#FFFF00"));
             static Color colorHot = ColorTranslator.FromHtml(AppConfig.GetString("color_hot", "#FF0000"));
 
+            static float battLow = 20f;
+            static float battMid = 60f;
+            static float battHigh = 100f;
+
+            static Color colorLow = Color.Red;
+            static Color colorMid = Color.Yellow;
+            static Color colorHigh = Color.Lime;
+
             static Color colorUltimate = ColorTranslator.FromHtml(AppConfig.GetString("color_ultimate", "#FF0000"));
             static Color colorStandard = ColorTranslator.FromHtml(AppConfig.GetString("color_standard", "#FFFF00"));
             static Color colorEco = ColorTranslator.FromHtml(AppConfig.GetString("color_eco", "#008000"));
@@ -812,7 +836,34 @@ namespace GHelper.USB
                 ApplyDirect(color, init);
             }
 
+            public static void ApplyBattery(bool init = false)
+            {
+                float battery = (float)HardwareControl.GetBatteryChargePercentage();
+                Color color = colorLow;
 
+                if (battery < battLow)
+                {
+                    color = colorLow;
+                }
+                else if (battery < battMid)
+                {
+                    // Low → Mid
+                    float t = (battery - battLow) / (battMid - battLow);
+                    color = ColorUtils.GetWeightedAverage(colorLow, colorMid, t);
+                }
+                else if (battery < battHigh)
+                {
+                    // Mid → High
+                    float t = (battery - battMid) / (battHigh - battMid);
+                    color = ColorUtils.GetWeightedAverage(colorMid, colorHigh, t);
+                }
+                else
+                {
+                    color = colorHigh;
+                }
+
+                ApplyDirect(color, init);
+            }
 
             public static void ApplyAmbient(bool init = false)
             {

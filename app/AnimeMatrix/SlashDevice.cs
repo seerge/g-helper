@@ -154,25 +154,6 @@ namespace GHelper.AnimeMatrix
             Set(CreatePacket([0xD3, 0x04, 0x00, 0x0C, 0x01, modeByte, 0x02, 0x42, 0x03, 0x13, 0x04, 0x11, 0x05, 0x12, 0x06, 0x13]), "SlashMode");
         }
 
-        public static double GetBatteryChargePercentage()
-        {
-            double batteryCharge = 0;
-            try
-            {
-                ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT * FROM Win32_Battery");
-                foreach (ManagementObject battery in searcher.Get())
-                {
-                    batteryCharge = Convert.ToDouble(battery["EstimatedChargeRemaining"]);
-                    break; // Assuming only one battery
-                }
-            }
-            catch (ManagementException e)
-            {
-                Console.WriteLine("An error occurred while querying for WMI data: " + e.Message);
-            }
-            return batteryCharge;
-        }
-
         private byte[] GetPercentagePattern(int brightness, double percentage)
         {
             // because 7 segments, within each led segment represents a percentage bracket of (100/7 = 14.2857%)
@@ -195,7 +176,7 @@ namespace GHelper.AnimeMatrix
 
         public void SetBatteryPattern(int brightness)
         {
-            SetCustom(GetPercentagePattern(brightness, 100 * (GetBatteryChargePercentage() / AppConfig.Get("charge_limit", 100))), null);
+            SetCustom(GetPercentagePattern(brightness, 100 * (HardwareControl.GetBatteryChargePercentage() / AppConfig.Get("charge_limit", 100))), null);
         }
 
         public void SetEmpty()
