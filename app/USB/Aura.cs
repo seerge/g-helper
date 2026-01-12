@@ -711,7 +711,7 @@ namespace GHelper.USB
                 return;
             }
 
-            if (AppConfig.IsDynamicLightingOnly() || DynamicLightingHelper.IsEnabled())
+            if (AppConfig.IsDynamicLightingOnly())
             {
                 switch (mode)
                 {
