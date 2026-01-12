@@ -881,4 +881,10 @@ Vis tiek norite tęsti?</value>
   <data name="AmbientModeResources" xml:space="preserve">
     <value>„Ambient“ režimas gali padidinti energijos suvartojimą</value>
   </data>
+  <data name="MouseMotionSync" xml:space="preserve">
+    <value>Motion Sync</value>
+  </data>
+  <data name="MouseZoneMode" xml:space="preserve">
+    <value>Zone Mode</value>
+  </data>
 </root>
