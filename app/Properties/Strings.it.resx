@@ -881,4 +881,10 @@ Sei sicuro di voler continuare?</value>
   <data name="AmbientModeResources" xml:space="preserve">
     <value>La modalità Ambient può aumentare l'utilizzo delle risorse</value>
   </data>
+  <data name="MouseMotionSync" xml:space="preserve">
+    <value>Motion Sync</value>
+  </data>
+  <data name="MouseZoneMode" xml:space="preserve">
+    <value>Zone Mode</value>
+  </data>
 </root>
