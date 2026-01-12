@@ -881,4 +881,10 @@
   <data name="AmbientModeResources" xml:space="preserve">
     <value>El modo ambiente puede aumentar el uso de recursos</value>
   </data>
+  <data name="MouseMotionSync" xml:space="preserve">
+    <value>Motion Sync</value>
+  </data>
+  <data name="MouseZoneMode" xml:space="preserve">
+    <value>Zone Mode</value>
+  </data>
 </root>
