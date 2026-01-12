@@ -48,6 +48,8 @@ namespace GHelper
             labelButtonDebounce.Text = Properties.Strings.MouseButtonResponse;
             labelAcceleration.Text = Properties.Strings.Acceleration;
             labelDeceleration.Text = Properties.Strings.Deceleration;
+            checkBoxMotionSync.Text = Properties.Strings.MouseMotionSync;
+            checkBoxZoneMode.Text = Properties.Strings.MouseZoneMode;
 
             buttonLightingZoneLogo.Text = Properties.Strings.AuraZoneLogo;
             buttonLightingZoneScroll.Text = Properties.Strings.AuraZoneScroll;
@@ -84,6 +86,13 @@ namespace GHelper
             comboBoxLiftOffDistance.DropDownClosed += ComboBoxLiftOffDistance_DropDownClosed;
             sliderButtonDebounce.ValueChanged += SliderButtonDebounce_ValueChanged;
             sliderButtonDebounce.MouseUp += SliderButtonDebounce_MouseUp;
+
+            checkBoxMotionSync.CheckedChanged += CheckBoxMotionSync_CheckedChanged;
+            checkBoxZoneMode.CheckedChanged += CheckBoxZoneMode_CheckedChanged;
+            sliderZoneModeDPI.ValueChanged += SliderZoneModeDPI_ValueChanged;
+            sliderZoneModeDPI.MouseUp += SliderZoneModeDPI_MouseUp;
+            numericUpDownZoneModeDPI.ValueChanged += NumericUpDownZoneModeDPI_ValueChanged;
+            comboBoxZoneModePollingRate.DropDownClosed += ComboBoxZoneModePollingRate_DropDownClosed;
 
             sliderAcceleration.MouseUp += SliderAcceleration_MouseUp;
             sliderAcceleration.ValueChanged += SliderAcceleration_ValueChanged;
@@ -233,6 +242,7 @@ namespace GHelper
         private void ComboBoxPollingRate_DropDownClosed(object? sender, EventArgs e)
         {
             mouse.SetPollingRate(mouse.SupportedPollingrates()[comboBoxPollingRate.SelectedIndex]);
+            UpdateMotionSyncState();
         }
 
         private void ButtonDPIColor_Click(object? sender, EventArgs e)
@@ -327,7 +337,7 @@ namespace GHelper
             }
 
             var index = comboBoxLightingMode.SelectedIndex;
-            LightingMode lm = supportedLightingModes[(index >= 0 && index < supportedLightingModes.Count) ? index : 0 ];
+            LightingMode lm = supportedLightingModes[(index >= 0 && index < supportedLightingModes.Count) ? index : 0];
 
             LightingSetting? ls = mouse.LightingSettingForZone(visibleZone);
             if (ls.LightingMode == lm)
@@ -401,6 +411,54 @@ namespace GHelper
         {
             mouse.SetAngleSnapping(checkBoxAngleSnapping.Checked);
             mouse.SetAngleAdjustment((short)sliderAngleAdjustment.Value);
+        }
+
+        private void CheckBoxMotionSync_CheckedChanged(object? sender, EventArgs e)
+        {
+            mouse.SetMotionSync(checkBoxMotionSync.Checked);
+        }
+
+        private void CheckBoxZoneMode_CheckedChanged(object? sender, EventArgs e)
+        {
+            mouse.SetZoneMode(checkBoxZoneMode.Checked);
+            UpdateZoneModeUIState();
+        }
+
+        private void SliderZoneModeDPI_ValueChanged(object? sender, EventArgs e)
+        {
+            numericUpDownZoneModeDPI.Value = sliderZoneModeDPI.Value;
+        }
+
+        private void SliderZoneModeDPI_MouseUp(object? sender, MouseEventArgs e)
+        {
+            mouse.ZoneModeDPI = sliderZoneModeDPI.Value;
+            if (mouse.ZoneMode)
+            {
+                mouse.UpdateZoneModeDPI(sliderZoneModeDPI.Value);
+            }
+        }
+
+        private void NumericUpDownZoneModeDPI_ValueChanged(object? sender, EventArgs e)
+        {
+            sliderZoneModeDPI.Value = (int)numericUpDownZoneModeDPI.Value;
+            if (mouse.ZoneMode && mouse.ZoneModeDPI != sliderZoneModeDPI.Value)
+            {
+                mouse.ZoneModeDPI = sliderZoneModeDPI.Value;
+                mouse.UpdateZoneModeDPI(sliderZoneModeDPI.Value);
+            }
+        }
+
+        private void ComboBoxZoneModePollingRate_DropDownClosed(object? sender, EventArgs e)
+        {
+            PollingRate[] zoneModePollingRates = { PollingRate.PR1000Hz, PollingRate.PR2000Hz, PollingRate.PR4000Hz, PollingRate.PR8000Hz };
+            if (comboBoxZoneModePollingRate.SelectedIndex >= 0 && comboBoxZoneModePollingRate.SelectedIndex < zoneModePollingRates.Length)
+            {
+                mouse.ZoneModePollingRate = zoneModePollingRates[comboBoxZoneModePollingRate.SelectedIndex];
+                if (mouse.ZoneMode)
+                {
+                    mouse.UpdateZoneModePollingRate(mouse.ZoneModePollingRate);
+                }
+            }
         }
 
         private void SliderDPI_ValueChanged(object? sender, EventArgs e)
@@ -545,6 +603,26 @@ namespace GHelper
             if (!mouse.HasAngleTuning() && !mouse.HasAngleSnapping())
             {
                 panelAngleSnapping.Visible = false;
+            }
+
+            if (!mouse.HasMotionSync())
+            {
+                panelMotionSync.Visible = false;
+            }
+
+            if (!mouse.HasZoneMode())
+            {
+                panelZoneMode.Visible = false;
+            }
+            else
+            {
+                // Initialize Zone Mode Polling Rate combobox with limited options
+                comboBoxZoneModePollingRate.Items.Clear();
+                comboBoxZoneModePollingRate.Items.Add("1000 Hz");
+                comboBoxZoneModePollingRate.Items.Add("2000 Hz");
+                comboBoxZoneModePollingRate.Items.Add("4000 Hz");
+                comboBoxZoneModePollingRate.Items.Add("8000 Hz");
+                comboBoxZoneModePollingRate.SelectedIndex = 2; // Default to 4000Hz
             }
 
             if (mouse.HasAcceleration())
@@ -752,6 +830,57 @@ namespace GHelper
             {
                 sliderDeceleration.Value = mouse.Deceleration;
             }
+
+            if (mouse.HasMotionSync())
+            {
+                UpdateMotionSyncState();
+            }
+
+            if (mouse.HasZoneMode())
+            {
+                checkBoxZoneMode.Checked = mouse.ZoneMode;
+                sliderZoneModeDPI.Value = mouse.ZoneModeDPI;
+                numericUpDownZoneModeDPI.Value = mouse.ZoneModeDPI;
+                
+                // Set Zone Mode Polling Rate combobox
+                PollingRate[] zoneModePollingRates = { PollingRate.PR1000Hz, PollingRate.PR2000Hz, PollingRate.PR4000Hz, PollingRate.PR8000Hz };
+                int prIndex = Array.IndexOf(zoneModePollingRates, mouse.ZoneModePollingRate);
+                if (prIndex >= 0) comboBoxZoneModePollingRate.SelectedIndex = prIndex;
+                
+                UpdateZoneModeUIState();
+            }
+        }
+
+        private void UpdateMotionSyncState()
+        {
+            if (!mouse.HasMotionSync())
+            {
+                return;
+            }
+
+            bool is8000Hz = mouse.PollingRate == PollingRate.PR8000Hz;
+            checkBoxMotionSync.Enabled = !is8000Hz;
+            checkBoxMotionSync.Checked = is8000Hz ? false : mouse.MotionSync;
+        }
+
+        private void UpdateZoneModeUIState()
+        {
+            if (!mouse.HasZoneMode())
+            {
+                return;
+            }
+
+            bool zoneModeEnabled = mouse.ZoneMode;
+
+            // Zone Mode controls: enabled when Zone Mode is ON
+            sliderZoneModeDPI.Enabled = zoneModeEnabled;
+            comboBoxZoneModePollingRate.Enabled = zoneModeEnabled;
+            numericUpDownZoneModeDPI.Enabled = zoneModeEnabled;
+
+            // Normal controls: disabled when Zone Mode is ON
+            panelDPISettings.Enabled = !zoneModeEnabled;
+            tableDPI.Enabled = !zoneModeEnabled;
+            comboBoxPollingRate.Enabled = !zoneModeEnabled;
         }
 
         private void VisualizeBatteryState()
@@ -880,7 +1009,8 @@ namespace GHelper
             try
             {
                 dpi = mouse.DpiSettings[mouse.DpiProfile - 1];
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 Logger.WriteLine($"Wrong mouse DPI: {mouse.DpiProfile} {mouse.DpiSettings.Length} {ex.Message}");
                 return;

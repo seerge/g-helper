@@ -2338,5 +2338,27 @@ namespace GHelper.Properties {
                 return ResourceManager.GetString("Zoom", resourceCulture);
             }
         }
+
+                /// <summary>
+        ///   Looks up a localized string similar to Motion Sync.
+        /// </summary>
+        internal static string MouseMotionSync
+        {
+            get
+            {
+                return ResourceManager.GetString("MouseMotionSync", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Zone Mode.
+        /// </summary>
+        internal static string MouseZoneMode
+        {
+            get
+            {
+                return ResourceManager.GetString("MouseZoneMode", resourceCulture);
+            }
+        }
     }
 }
