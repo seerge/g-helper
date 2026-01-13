@@ -311,25 +311,23 @@ namespace GHelper.Peripherals.Mouse
 
 
 
-            data = data                                                        // = 15 Bytes
+            data = data                                                        // = 13 Bytes
                .Append((byte)PollingRate)                               // 1 Byte
                .Concat(BitConverter.GetBytes(AngleSnapping))            // 1 Byte
                .Concat(BitConverter.GetBytes(AngleAdjustmentDegrees))   // 2 Bytes
                .Append((byte)Debounce)                                  // 1 Byte
                .Concat(BitConverter.GetBytes(Acceleration))             // 4 Bytes
                .Concat(BitConverter.GetBytes(Deceleration))             // 4 Bytes
-               .Concat(BitConverter.GetBytes(MotionSync))               // 1 Byte
-               .Concat(BitConverter.GetBytes(ZoneMode))                 // 1 Byte
                .ToArray();
 
-            //Total length: 4 + (LightingSetting.Length * 12) + 6 + (DPIProfileCount() * 8) + 15 Bytes
+            //Total length: 4 + (LightingSetting.Length * 12) + 6 + (DPIProfileCount() + 8) + 13 Bytes
 
             return data;
         }
 
         public bool Import(byte[] blob)
         {
-            int expectedLength = 4 + (LightingSetting.Length * 12) + 6 + (DPIProfileCount() * 8) + 15;
+            int expectedLength = 4 + (LightingSetting.Length * 12) + 6 + (DPIProfileCount() * 8) + 13;
 
             if (blob.Length != expectedLength)
             {
@@ -360,6 +358,7 @@ namespace GHelper.Peripherals.Mouse
                     return false;
                 }
             }
+
 
             LowBatteryWarning = BitConverter.ToInt32(blob, offset);
             offset += 4;
@@ -393,9 +392,6 @@ namespace GHelper.Peripherals.Mouse
             Deceleration = BitConverter.ToInt32(blob, offset);
             offset += 4;
 
-            MotionSync = BitConverter.ToBoolean(blob, offset++);
-
-            ZoneMode = BitConverter.ToBoolean(blob, offset++);
 
 
             //Apply Settings to the mouse
@@ -419,11 +415,7 @@ namespace GHelper.Peripherals.Mouse
             if (HasDeceleration())
                 SetDeceleration(Deceleration);
 
-            if (HasMotionSync())
-                SetMotionSync(MotionSync);
 
-            if (HasZoneMode())
-                SetZoneMode(ZoneMode);
 
             if (HasRGB())
             {
