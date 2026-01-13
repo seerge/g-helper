@@ -799,13 +799,14 @@ namespace GHelper.USB
             static Color colorStandard = ColorTranslator.FromHtml(AppConfig.GetString("color_standard", "#FFFF00"));
             static Color colorEco = ColorTranslator.FromHtml(AppConfig.GetString("color_eco", "#008000"));
 
-            public static void ApplyGPUColor()
+            public static void ApplyGPUColor(int gpuMode = -1)
             {
                 if ((AuraMode)AppConfig.Get("aura_mode") != AuraMode.GPUMODE) return;
 
                 Color color;
 
-                switch (GPUModeControl.gpuMode)
+                if (gpuMode < 0) gpuMode = GPUModeControl.gpuMode;
+                switch (gpuMode)
                 {
                     case AsusACPI.GPUModeUltimate:
                         color = colorUltimate;
@@ -818,7 +819,7 @@ namespace GHelper.USB
                         break;
                 }
 
-                if (isACPI) Program.acpi.TUFKeyboardRGB(AuraMode.AuraStatic, color, 0xeb);
+                if (isACPI) Program.acpi.TUFKeyboardRGB(AuraMode.AuraStatic, color, 0xeb, $"TUF RGB GPU {gpuMode}");
                 AsusHid.Write(new List<byte[]> { AuraMessage(AuraMode.AuraStatic, color, color, 0xeb, isSingleColor), MESSAGE_APPLY, MESSAGE_SET });
 
             }
