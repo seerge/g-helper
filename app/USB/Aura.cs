@@ -322,7 +322,7 @@ namespace GHelper.USB
                 if (delay) await Task.Delay(TimeSpan.FromSeconds(1));
                 DirectBrightness(brightness, log);
                 if (AppConfig.IsAlly()) ApplyAura();
-                
+
                 if (brightness > 0)
                 {
                     if (!backlight) initDirect = true;
@@ -666,7 +666,17 @@ namespace GHelper.USB
 
         }
 
-        public static void ApplyAura(double colorDim = 1)
+        public static Color ColorDim(Color Color, double colorDim = 1)
+        {
+            switch (InputDispatcher.GetBacklight())
+            {
+                case 1: colorDim = 0.1; break;
+                case 2: colorDim = 0.3; break;
+            }
+            return Color.FromArgb((int)(Color.R * colorDim), (int)(Color.G * colorDim), (int)(Color.B * colorDim));
+        }
+
+        public static void ApplyAura()
         {
 
             Mode = (AuraMode)AppConfig.Get("aura_mode");
@@ -680,17 +690,8 @@ namespace GHelper.USB
             // Ally lower brightness fix
             if (AppConfig.IsAlly())
             {
-                switch (InputDispatcher.GetBacklight())
-                {
-                    case 1: colorDim = 0.1; break;
-                    case 2: colorDim = 0.3; break;
-                }
-
-                if (colorDim < 1)
-                {
-                    _Color1 = Color.FromArgb((int)(Color1.R * colorDim), (int)(Color1.G * colorDim), (int)(Color1.B * colorDim));
-                    _Color2 = Color.FromArgb((int)(Color2.R * colorDim), (int)(Color2.G * colorDim), (int)(Color2.B * colorDim));
-                }
+                _Color1 = ColorDim(_Color1);
+                _Color2 = ColorDim(_Color2);
             }
 
             timer.Enabled = false;
@@ -707,7 +708,7 @@ namespace GHelper.USB
 
             if (Mode == AuraMode.BATTERY)
             {
-                CustomRGB.ApplyBattery(true);
+                CustomRGB.ApplyBattery();
                 timer.Enabled = true;
                 timer.Interval = 30000;
                 return;
@@ -781,7 +782,7 @@ namespace GHelper.USB
             static int tempWarm = AppConfig.Get("temp_warm", 65);
             static int tempHot = AppConfig.Get("temp_hot", 90);
 
-            static Color colorFreeze = ColorTranslator.FromHtml(AppConfig.GetString("color_freeze", "#0000FF")); 
+            static Color colorFreeze = ColorTranslator.FromHtml(AppConfig.GetString("color_freeze", "#0000FF"));
             static Color colorCold = ColorTranslator.FromHtml(AppConfig.GetString("color_cold", "#008000"));
             static Color colorWarm = ColorTranslator.FromHtml(AppConfig.GetString("color_warm", "#FFFF00"));
             static Color colorHot = ColorTranslator.FromHtml(AppConfig.GetString("color_hot", "#FF0000"));
@@ -818,7 +819,6 @@ namespace GHelper.USB
                 }
 
                 if (isACPI) Program.acpi.TUFKeyboardRGB(AuraMode.AuraStatic, color, 0xeb);
-
                 AsusHid.Write(new List<byte[]> { AuraMessage(AuraMode.AuraStatic, color, color, 0xeb, isSingleColor), MESSAGE_APPLY, MESSAGE_SET });
 
             }
@@ -836,7 +836,7 @@ namespace GHelper.USB
                 ApplyDirect(color, init);
             }
 
-            public static void ApplyBattery(bool init = false)
+            public static void ApplyBattery()
             {
                 float battery = (float)HardwareControl.GetBatteryChargePercentage();
                 Color color = colorLow;
@@ -862,7 +862,9 @@ namespace GHelper.USB
                     color = colorHigh;
                 }
 
-                ApplyDirect(color, init);
+                if (AppConfig.IsAlly()) color = ColorDim(color);
+                AsusHid.Write(new List<byte[]> { AuraMessage(AuraMode.AuraStatic, color, color, 0xeb, isSingleColor), MESSAGE_APPLY, MESSAGE_SET });
+                if (isACPI) Program.acpi.TUFKeyboardRGB(AuraMode.AuraStatic, color, 0xeb);
             }
 
             public static void ApplyAmbient(bool init = false)
