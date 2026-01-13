@@ -474,7 +474,7 @@
             checkBoxZoneMode.Location = new Point(6, 8);
             checkBoxZoneMode.Margin = new Padding(8, 0, 8, 0);
             checkBoxZoneMode.Name = "checkBoxZoneMode";
-            checkBoxZoneMode.Size = new Size(200, 40);
+            checkBoxZoneMode.Size = new Size(512, 40);
             checkBoxZoneMode.TabIndex = 45;
             checkBoxZoneMode.Text = "Zone Mode";
             checkBoxZoneMode.TextAlign = ContentAlignment.TopLeft;
@@ -487,21 +487,21 @@
             comboBoxZoneModePollingRate.DropDownStyle = ComboBoxStyle.DropDownList;
             comboBoxZoneModePollingRate.FlatStyle = FlatStyle.Flat;
             comboBoxZoneModePollingRate.FormattingEnabled = true;
-            comboBoxZoneModePollingRate.Location = new Point(220, 8);
+            comboBoxZoneModePollingRate.Location = new Point(544, 8);
             comboBoxZoneModePollingRate.Margin = new Padding(22, 0, 22, 0);
             comboBoxZoneModePollingRate.Name = "comboBoxZoneModePollingRate";
-            comboBoxZoneModePollingRate.Size = new Size(200, 40);
+            comboBoxZoneModePollingRate.Size = new Size(176, 40);
             comboBoxZoneModePollingRate.TabIndex = 46;
             // 
             // sliderZoneModeDPI
             // 
             sliderZoneModeDPI.AccessibleName = "Zone Mode DPI Slider";
-            sliderZoneModeDPI.Location = new Point(6, 56);
+            sliderZoneModeDPI.Location = new Point(0, 56);
             sliderZoneModeDPI.Margin = new Padding(4);
             sliderZoneModeDPI.Max = 42000;
             sliderZoneModeDPI.Min = 400;
             sliderZoneModeDPI.Name = "sliderZoneModeDPI";
-            sliderZoneModeDPI.Size = new Size(740, 40);
+            sliderZoneModeDPI.Size = new Size(881, 40);
             sliderZoneModeDPI.Step = 50;
             sliderZoneModeDPI.TabIndex = 47;
             sliderZoneModeDPI.TabStop = false;
@@ -510,7 +510,7 @@
             // 
             // numericUpDownZoneModeDPI
             // 
-            numericUpDownZoneModeDPI.Location = new Point(756, 56);
+            numericUpDownZoneModeDPI.Location = new Point(744, 8);
             numericUpDownZoneModeDPI.Margin = new Padding(8, 0, 8, 0);
             numericUpDownZoneModeDPI.Maximum = new decimal(new int[] { 42000, 0, 0, 0 });
             numericUpDownZoneModeDPI.Minimum = new decimal(new int[] { 400, 0, 0, 0 });
