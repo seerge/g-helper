@@ -882,9 +882,9 @@
     <value>环境模式可能会增加资源使用</value>
   </data>
   <data name="MouseMotionSync" xml:space="preserve">
-    <value>Motion Sync</value>
+    <value>动态同步</value>
   </data>
   <data name="MouseZoneMode" xml:space="preserve">
-    <value>Zone Mode</value>
+    <value>Zone 模式</value>
   </data>
 </root>
