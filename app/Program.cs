@@ -62,7 +62,12 @@ namespace GHelper
                 }
 
                 BatteryLimit();
-                InputDispatcher.StartupBacklight();
+                try
+                {
+                    InputDispatcher.StartupBacklight();
+                } catch (Exception ex) { 
+                    Logger.WriteLine($"Startup Backlight: {ex.Message}");
+                }
                 Application.Exit();
                 return;
             }
