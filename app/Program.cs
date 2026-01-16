@@ -314,6 +314,9 @@ namespace GHelper
                 InputDispatcher.ShutdownStatusLed();
             }
 
+            if (SystemInformation.PowerStatus.PowerLineStatus == isPlugged) return;
+            if (AppConfig.Is("disable_power_event")) return;
+
             int delay = AppConfig.Get("charger_delay");
             if (delay > 0)
             {
@@ -321,8 +324,6 @@ namespace GHelper
                 Thread.Sleep(delay);
             }
 
-            if (SystemInformation.PowerStatus.PowerLineStatus == isPlugged) return;
-            if (AppConfig.Is("disable_power_event")) return;
             SetAutoModes(powerChanged: true);
         }
 
