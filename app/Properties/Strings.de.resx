@@ -561,7 +561,7 @@ Trotzdem fortfahren?</value>
     <value>Minuten</value>
   </data>
   <data name="MouseAngleSnapping" xml:space="preserve">
-    <value>Mausglättung</value>
+    <value>Angle Snapping / Tuning</value>
   </data>
   <data name="MouseAutoPowerOff" xml:space="preserve">
     <value>Automatisch abschalten nach</value>
