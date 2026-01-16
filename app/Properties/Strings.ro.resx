@@ -561,7 +561,7 @@
     <value>Minute</value>
   </data>
   <data name="MouseAngleSnapping" xml:space="preserve">
-    <value>Fixare mișcare la unghi</value>
+    <value>Angle Snapping / Tuning</value>
   </data>
   <data name="MouseAutoPowerOff" xml:space="preserve">
     <value>Oprire automată după</value>
