@@ -561,7 +561,7 @@ Voulez-vous continuer ?</value>
     <value>Minutes</value>
   </data>
   <data name="MouseAngleSnapping" xml:space="preserve">
-    <value>Correction d'angle</value>
+    <value>Angle Snapping / Tuning</value>
   </data>
   <data name="MouseAutoPowerOff" xml:space="preserve">
     <value>Arrêt automatique après</value>
@@ -880,5 +880,11 @@ Voulez-vous continuer ?</value>
   </data>
   <data name="AmbientModeResources" xml:space="preserve">
     <value>Le mode Ambiant peut augmenter l'utilisation des ressources</value>
+  </data>
+  <data name="MouseMotionSync" xml:space="preserve">
+    <value>Motion Sync</value>
+  </data>
+  <data name="MouseZoneMode" xml:space="preserve">
+    <value>Zone Mode</value>
   </data>
 </root>

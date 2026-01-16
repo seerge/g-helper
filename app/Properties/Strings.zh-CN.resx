@@ -561,7 +561,7 @@
     <value>分钟</value>
   </data>
   <data name="MouseAngleSnapping" xml:space="preserve">
-    <value>角度校正</value>
+    <value>Angle Snapping / Tuning</value>
   </data>
   <data name="MouseAutoPowerOff" xml:space="preserve">
     <value>自动关闭时间</value>
@@ -880,5 +880,11 @@
   </data>
   <data name="AmbientModeResources" xml:space="preserve">
     <value>环境模式可能会增加资源使用</value>
+  </data>
+  <data name="MouseMotionSync" xml:space="preserve">
+    <value>动态同步</value>
+  </data>
+  <data name="MouseZoneMode" xml:space="preserve">
+    <value>Zone 模式</value>
   </data>
 </root>
