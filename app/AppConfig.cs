@@ -728,7 +728,7 @@ public static class AppConfig
 
     public static bool IsDynamicLightingOnly()
     {
-        return ContainsModel("S560") || ContainsModel("M540");
+        return ContainsModel("S560") || ContainsModel("M540") || ContainsModel("UX760");
     }
 
     public static bool IsDynamicLightingInit()
