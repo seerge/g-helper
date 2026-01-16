@@ -305,7 +305,6 @@ namespace GHelper
 
         private static void SystemEvents_PowerModeChanged(object sender, PowerModeChangedEventArgs e)
         {
-            Logger.WriteLine($"Power Mode {e.Mode}: {SystemInformation.PowerStatus.PowerLineStatus}");
             if (e.Mode == PowerModes.Suspend)
             {
                 Logger.WriteLine("Power Mode Changed:" + e.Mode.ToString());
@@ -314,15 +313,19 @@ namespace GHelper
                 InputDispatcher.ShutdownStatusLed();
             }
 
+            if (AppConfig.Is("disable_power_event")) return;
+            if (SystemInformation.PowerStatus.PowerLineStatus == isPlugged) return;
+
+            Logger.WriteLine($"Power Mode {e.Mode}: {SystemInformation.PowerStatus.PowerLineStatus}");
+
             int delay = AppConfig.Get("charger_delay");
             if (delay > 0)
             {
                 Logger.WriteLine($"Charger Delay: {delay}");
                 Thread.Sleep(delay);
+                if (SystemInformation.PowerStatus.PowerLineStatus == isPlugged) return;
             }
 
-            if (SystemInformation.PowerStatus.PowerLineStatus == isPlugged) return;
-            if (AppConfig.Is("disable_power_event")) return;
             SetAutoModes(powerChanged: true);
         }
 
