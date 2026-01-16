@@ -561,7 +561,7 @@ Nadal chcesz kontynuować?</value>
     <value>min.</value>
   </data>
   <data name="MouseAngleSnapping" xml:space="preserve">
-    <value>Korekcja kąta ruchu</value>
+    <value>Angle Snapping / Tuning</value>
   </data>
   <data name="MouseAutoPowerOff" xml:space="preserve">
     <value>Przejście w tryb uśpienia po</value>
