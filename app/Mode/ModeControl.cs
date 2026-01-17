@@ -1,4 +1,4 @@
-﻿using GHelper.Gpu.NVidia;
+using GHelper.Gpu.NVidia;
 using GHelper.Helpers;
 using GHelper.USB;
 using Ryzen;
@@ -16,14 +16,13 @@ namespace GHelper.Mode
 
         private int _cpuUV = 0;
         private int _igpuUV = 0;
-        private bool _ryzenPower = false;
 
         static System.Timers.Timer reapplyTimer = default!;
         static System.Timers.Timer modeToggleTimer = default!;
 
         public ModeControl()
         {
-            reapplyTimer = new System.Timers.Timer(AppConfig.GetMode("reapply_time", 30) * 1000);
+            reapplyTimer = new System.Timers.Timer(AppConfig.Get("reapply_time", 30) * 1000);
             reapplyTimer.Enabled = false;
             reapplyTimer.Elapsed += ReapplyTimer_Elapsed;
         }
@@ -32,7 +31,7 @@ namespace GHelper.Mode
         private void ReapplyTimer_Elapsed(object? sender, System.Timers.ElapsedEventArgs e)
         {
             SetCPUTemp(AppConfig.GetMode("cpu_temp"));
-            SetRyzenPower();
+            if (RyzenControl.IsAMD()) SetRyzenPower();
         }
 
         public void AutoPerformance(bool powerChanged = false)
@@ -254,14 +253,13 @@ namespace GHelper.Mode
 
         public void SetRyzenPower(bool init = false)
         {
-            if (init) _ryzenPower = true;
 
-            if (!_ryzenPower) return;
             if (!RyzenControl.IsRingExsists()) return;
             if (!AppConfig.IsMode("auto_apply_power")) return;
 
             int limit_total = AppConfig.GetMode("limit_total");
             int limit_slow = AppConfig.GetMode("limit_slow", limit_total);
+            int limit_fast = AppConfig.GetMode("limit_fast", limit_total);
 
             if (limit_total > AsusACPI.MaxTotal) return;
             if (limit_total < AsusACPI.MinTotal) return;
@@ -272,8 +270,8 @@ namespace GHelper.Mode
             var slowResult = SendCommand.set_slow_limit((uint)limit_slow * 1000);
             if (init) Logger.WriteLine($"SLOW: {limit_slow} {slowResult}");
 
-            var fastResult = SendCommand.set_fast_limit((uint)limit_slow * 1000);
-            if (init) Logger.WriteLine($"FAST: {limit_slow} {fastResult}");
+            var fastResult = SendCommand.set_fast_limit((uint)limit_fast * 1000);
+            if (init) Logger.WriteLine($"FAST: {limit_fast} {fastResult}");
 
         }
 
