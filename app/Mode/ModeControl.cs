@@ -16,7 +16,8 @@ namespace GHelper.Mode
 
         private int _cpuUV = 0;
         private int _igpuUV = 0;
-        
+        private bool _ryzenPower = false;
+
         static System.Timers.Timer reapplyTimer = default!;
         static System.Timers.Timer modeToggleTimer = default!;
 
@@ -253,8 +254,9 @@ namespace GHelper.Mode
 
         public void SetRyzenPower(bool init = false)
         {
+            if (init) _ryzenPower = true;
 
-            if (!RyzenControl.IsAMD()) return;
+            if (!_ryzenPower) return;
             if (!RyzenControl.IsRingExsists()) return;
             if (!AppConfig.IsMode("auto_apply_power")) return;
 
@@ -266,13 +268,13 @@ namespace GHelper.Mode
             if (limit_total < AsusACPI.MinTotal) return;
 
             var stapmResult = SendCommand.set_stapm_limit((uint)limit_total * 1000);
-            if (init) Logger.WriteLine($"STAPM: {limit_total} {stapmResult}");
+            if (init) Logger.WriteLine($"TESTING: successfully set STAPM to {limit_total} {stapmResult}");
 
             var slowResult = SendCommand.set_slow_limit((uint)limit_slow * 1000);
-            if (init) Logger.WriteLine($"SLOW: {limit_slow} {slowResult}");
+            if (init) Logger.WriteLine($"TESTING: successfully set SLOW to {limit_slow} {slowResult}");
 
             var fastResult = SendCommand.set_fast_limit((uint)limit_slow * 1000);
-            if (init) Logger.WriteLine($"FAST: {limit_fast} {fastResult}");
+            if (init) Logger.WriteLine($"TESTING: successfully set FAST to {limit_fast} {fastResult}");
 
         }
 
