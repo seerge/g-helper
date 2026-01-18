@@ -861,11 +861,19 @@ namespace GHelper.Peripherals.Mouse
             Profile = ParseProfile(response);
             if (DPIProfileCount() > 1)
             {
-
                 DpiProfile = ParseDPIProfile(response);
+                if (CanChangeDPICount())
+                {
+                    int count = response[19];
+                    if (count >= 2 && count <= 4)
+                    {
+                         CurrentDPIProfileCount = count;
+                    }
+                }
             }
             Logger.WriteLine(GetDisplayName() + ": Active Profile " + (Profile + 1)
-                + ((DPIProfileCount() > 1 ? ", Active DPI Profile: " + DpiProfile : "")));
+                + ((DPIProfileCount() > 1 ? ", Active DPI Profile: " + DpiProfile : ""))
+                + ((CanChangeDPICount() ? ", DPI Count: " + CurrentDPIProfileCount : "")));
         }
 
         public void SetProfile(int profile)
@@ -1215,6 +1223,11 @@ namespace GHelper.Peripherals.Mouse
         public virtual bool CanChangeDPIProfile()
         {
             return DPIProfileCount() > 1;
+        }
+
+        public virtual bool CanChangeDPICount()
+        {
+            return false;
         }
 
         public virtual int MaxDPI()

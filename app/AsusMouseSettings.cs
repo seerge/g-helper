@@ -301,8 +301,9 @@ namespace GHelper
             // 3. Mouse is hovering over it
             
             int index = Array.IndexOf(dpiButtons, btn);
-            if (index == -1 || index >= mouse.CurrentDPIProfileCount) return; // Not a profile button
-            if (mouse.CurrentDPIProfileCount <= 2) return; // Can't delete if <= 2
+            if (index == -1 || index >= mouse.CurrentDPIProfileCount) return;
+            if (!mouse.CanChangeDPICount()) return;
+            if (mouse.CurrentDPIProfileCount <= 2) return;
 
             // Check if mouse is within client area to draw hover effect
             Point clientPoint = btn.PointToClient(Cursor.Position);
@@ -335,7 +336,7 @@ namespace GHelper
             if (index == -1) return;
             
             // Check for Delete Click
-            if (index < mouse.CurrentDPIProfileCount && mouse.CurrentDPIProfileCount > 2)
+            if (mouse.CanChangeDPICount() && index < mouse.CurrentDPIProfileCount && mouse.CurrentDPIProfileCount > 2)
             {
                 Point p = dpiButtons[index].PointToClient(Cursor.Position);
                 if (IsOverDeleteArea(dpiButtons[index], p))
@@ -1085,14 +1086,14 @@ namespace GHelper
                     // Clear secondary style (used for Add button)
                     dpiButtons[i].Secondary = false;
                 }
-                else if (i == mouse.CurrentDPIProfileCount)
+                else if (mouse.CanChangeDPICount() && i == mouse.CurrentDPIProfileCount)
                 {
                     // This is the "Add" slot
                     dpiButtons[i].Visible = true;
-                    dpiButtons[i].Image = null; // Or a plus icon if available? We'll use text for now
+                    dpiButtons[i].Image = null;
                     dpiButtons[i].Text = "+";
                     dpiButtons[i].Activated = false;
-                    dpiButtons[i].Secondary = true; // Use secondary style for Add
+                    dpiButtons[i].Secondary = true;
                     dpiButtons[i].BorderColor = Color.Transparent;
                 }
                 else
