@@ -240,6 +240,7 @@ namespace GHelper.Peripherals.Mouse
         public PowerOffSetting PowerOffSetting { get; protected set; }
         public LiftOffDistance LiftOffDistance { get; protected set; }
         public int DpiProfile { get; protected set; }
+        public int CurrentDPIProfileCount { get; protected set; }
         public AsusMouseDPI[] DpiSettings { get; protected set; }
         public int Profile { get; protected set; }
         public PollingRate PollingRate { get; protected set; }
@@ -259,6 +260,7 @@ namespace GHelper.Peripherals.Mouse
             this.path = path;
             this.Wireless = wireless;
             DpiSettings = new AsusMouseDPI[1];
+            CurrentDPIProfileCount = DPIProfileCount();
             if (SupportedLightingZones().Length == 0)
             {
                 LightingSetting = new LightingSetting[1];
@@ -1231,7 +1233,13 @@ namespace GHelper.Peripherals.Mouse
 
         protected virtual byte[] GetChangeDPIProfilePacket(int profile)
         {
+            //legacy function kept for TUFM3
             return new byte[] { reportId, 0x51, 0x31, 0x0A, 0x00, (byte)profile };
+        }
+
+        protected virtual byte[] GetSetDPIProfileCountPacket(int count)
+        {
+            return new byte[] { reportId, 0x51, 0x31, 0x0A, 0x00, (byte)count };
         }
 
         protected virtual byte[] GetChangeDPIProfilePacket2(int profile)
@@ -1248,15 +1256,13 @@ namespace GHelper.Peripherals.Mouse
                 return;
             }
 
-            if (profile > DPIProfileCount() || profile < 1)
+            if (profile > CurrentDPIProfileCount || profile < 1)
             {
                 Logger.WriteLine(GetDisplayName() + ": DPI Profile:" + profile + " is invalid.");
                 return;
             }
 
             //The first DPI profile is 1
-            WriteForResponse(GetChangeDPIProfilePacket(profile));
-            //For whatever reason that is required or the mouse will not store the change and reverts once you power it off.
             WriteForResponse(GetChangeDPIProfilePacket2(profile));
             FlushSettings();
 
@@ -1386,6 +1392,78 @@ namespace GHelper.Peripherals.Mouse
             Logger.WriteLine(GetDisplayName() + ": DPI for profile " + profile + " set to " + DpiSettings[profile - 1].DPI);
             //this.DpiProfile = profile;
             this.DpiSettings[profile - 1] = dpi;
+        }
+
+        public void SetDPIProfileCount(int count)
+        {
+            if (count < 2 || count > 4) return;
+
+            WriteForResponse(GetSetDPIProfileCountPacket(count));
+
+            // Resync settings for all profiles
+            for (int i = 0; i < count; i++)
+            {
+                if (DpiSettings[i] != null)
+                {
+                    WriteForResponse(GetUpdateDPIPacket(DpiSettings[i], i + 1));
+                }
+            }
+
+            FlushSettings();
+
+            CurrentDPIProfileCount = count;
+            Logger.WriteLine(GetDisplayName() + ": DPI Profile Count set to " + count);
+        }
+
+        public void AddDPIProfile()
+        {
+            if (CurrentDPIProfileCount >= 4) return;
+
+            int newIndex = CurrentDPIProfileCount;
+
+            // Set defaults for new slot
+            if (DpiSettings[newIndex] == null) DpiSettings[newIndex] = new AsusMouseDPI();
+
+            if (newIndex == 2) // Slot 3
+            {
+                DpiSettings[newIndex].DPI = 1600;
+                DpiSettings[newIndex].Color = Color.Blue;
+            }
+            else if (newIndex == 3) // Slot 4
+            {
+                DpiSettings[newIndex].DPI = 3200;
+                DpiSettings[newIndex].Color = Color.Green;
+            }
+
+            SetDPIProfileCount(CurrentDPIProfileCount + 1);
+        }
+
+        public void DeleteDPIProfile(int index)
+        {
+            if (CurrentDPIProfileCount <= 2) return;
+            if (index < 0 || index >= CurrentDPIProfileCount) return;
+
+            // Shift Logic
+            for (int i = index; i < CurrentDPIProfileCount - 1; i++)
+            {
+                // Create new object to avoid reference copy
+                if (DpiSettings[i+1] != null)
+                {
+                    DpiSettings[i] = new AsusMouseDPI 
+                    { 
+                        DPI = DpiSettings[i+1].DPI, 
+                        Color = DpiSettings[i+1].Color 
+                    };
+                }
+            }
+            
+            // Cleanup last element
+            DpiSettings[CurrentDPIProfileCount - 1] = null;
+
+            SetDPIProfileCount(CurrentDPIProfileCount - 1);
+
+            if (DpiProfile > CurrentDPIProfileCount) DpiProfile = CurrentDPIProfileCount;
+
         }
 
 
@@ -1624,9 +1702,9 @@ namespace GHelper.Peripherals.Mouse
             byte dpiLow = (byte)(dpiVal & 0xFF);
             byte dpiHigh = (byte)((dpiVal >> 8) & 0xFF);
 
-            return new byte[] { reportId, 0x51, 0x44, 0x00, 0x00, 
-                (byte)(enabled ? 0x01 : 0x00), 
-                (byte)ZoneModePollingRate, 
+            return new byte[] { reportId, 0x51, 0x44, 0x00, 0x00,
+                (byte)(enabled ? 0x01 : 0x00),
+                (byte)ZoneModePollingRate,
                 dpiLow, dpiHigh };
         }
 
