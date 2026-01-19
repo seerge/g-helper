@@ -645,6 +645,11 @@ public static class AppConfig
         return ContainsModel("FX507") || ContainsModel("FX517") || ContainsModel("FX707");
     }
 
+    public static bool IsModeReapplyRequired()
+    {
+        return Is("mode_reapply") || ContainsModel("FA401");
+    }
+
     public static bool IsGPUFix()
     {
         return Is("gpu_fix") || (ContainsModel("GA402X") && IsNotFalse("gpu_fix"));
