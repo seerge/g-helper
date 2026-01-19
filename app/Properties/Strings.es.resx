@@ -561,7 +561,7 @@
     <value>Minutos</value>
   </data>
   <data name="MouseAngleSnapping" xml:space="preserve">
-    <value>Angle Snapping / Tuning</value>
+    <value>Corrección de Ángulo / Ajuste</value>
   </data>
   <data name="MouseAutoPowerOff" xml:space="preserve">
     <value>Auto-apagar tras</value>
