@@ -104,21 +104,33 @@ _PPTs 默认在 幻14 2022版上显示, 对于其他型号 PPTs 的显示将会�
 [目前支持的型号](https://github.com/seerge/g-helper/discussions/900)
 
 *对于中国大陆发行的版本请自行参考
-- ROG Chakram X (P708)
-- ROG Chakram Core (P511)
-- ROG Gladius II and Gladius II Origin (P502 and P504)
+- ROG Chakram X 
+- ROG Chakram Core 
+- ROG Gladius II and Gladius II Origin
+- ROG Gladius II Wireless
 - ROG Gladius III
 - ROG Gladius III Wireless
+- ROG Harpe Ace Extreme
 - ROG Harpe Ace Aim Lab Edition
+- ROG Harpe Ace Mini
+- ROG Harpe II Ace
 - ROG Keris Wireless
-- ROG Strix Carry (P508)
-- ROG Strix III Gladius III Aimpoint Wireless (P711)
-- ROG Strix Impact III (P518)
-- ROG Spatha
+- ROG Keris II Ace
+- ROG Keris Wireless Aimpoint
+- ROG Strix Carry
+- ROG Strix III Gladius III Aimpoint Wireless 
+- ROG Strix Impact III
+- ROG Strix Impact III Wireless 
+- ROG Spatha X
 - ROG Strix Impact II Wireless
-- TUF Gaming M4 Wireless (P306)
+- ROG Pugio
+- ROG Pugio II
+- TUF Gaming M4 Wireless
 - TUF Gaming M3
 - TUF Gaming M3 Gen II
+- TUF Gaming M4 AIR
+- TUF Gaming M5
+- TX Gaming Mini
 
 特别感谢 [@IceStormNG](https://github.com/IceStormNG) 👑 的贡献和研究！
 
