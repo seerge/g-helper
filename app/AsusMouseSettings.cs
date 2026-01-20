@@ -60,7 +60,7 @@ namespace GHelper
             buttonExport.Text = Properties.Strings.Export;
             buttonImport.Text = Properties.Strings.Import;
 
-            InitTheme();
+            InitTheme(true);
 
             this.Text = mouse.GetDisplayName();
 
@@ -642,10 +642,10 @@ namespace GHelper
             {
                 buttonDPIColor.Visible = false;
                 pictureDPIColor.Visible = false;
-                buttonDPI1.Image = ControlHelper.TintImage(Properties.Resources.lighting_dot_24, Color.Red);
-                buttonDPI2.Image = ControlHelper.TintImage(Properties.Resources.lighting_dot_24, Color.Purple);
-                buttonDPI3.Image = ControlHelper.TintImage(Properties.Resources.lighting_dot_24, Color.Blue);
-                buttonDPI4.Image = ControlHelper.TintImage(Properties.Resources.lighting_dot_24, Color.Green);
+                buttonDPI1.Image = ControlHelper.ResizeImage(ControlHelper.TintImage(Properties.Resources.lighting_dot_32, Color.Red), ControlHelper.Scale);
+                buttonDPI2.Image = ControlHelper.ResizeImage(ControlHelper.TintImage(Properties.Resources.lighting_dot_32, Color.Purple), ControlHelper.Scale);
+                buttonDPI3.Image = ControlHelper.ResizeImage(ControlHelper.TintImage(Properties.Resources.lighting_dot_32, Color.Blue), ControlHelper.Scale);
+                buttonDPI4.Image = ControlHelper.ResizeImage(ControlHelper.TintImage(Properties.Resources.lighting_dot_32, Color.Green), ControlHelper.Scale);
 
                 buttonDPI1.BorderColor = Color.Red;
                 buttonDPI2.BorderColor = Color.Purple;
@@ -1072,7 +1072,9 @@ namespace GHelper
                     dpiButtons[i].Visible = true;
                     if (mouse.HasDPIColors())
                     {
-                        dpiButtons[i].Image = ControlHelper.TintImage(Properties.Resources.lighting_dot_24, dpi.Color);
+                        dpiButtons[i].Image = ControlHelper.ResizeImage(
+                        ControlHelper.TintImage(Properties.Resources.lighting_dot_32, dpi.Color),
+                        ControlHelper.Scale);
                         dpiButtons[i].BorderColor = dpi.Color;
                     }
                     else
