@@ -276,8 +276,9 @@ namespace GHelper
         // Logic for Delete Area
         bool IsOverDeleteArea(Control btn, Point p)
         {
-             // Top Right corner, roughly 20x20
-             if (p.X > btn.Width - 25 && p.Y < 25) return true;
+             // Top Right corner
+             float size = 16 * ControlHelper.Scale;
+             if (p.X > btn.Width - size - 5 && p.Y < size + 5) return true;
              return false;
         }
 
@@ -294,12 +295,6 @@ namespace GHelper
         {
             if (sender is not RButton btn) return;
             
-            // Should we show X?
-            // Only if:
-            // 1. It is a valid profile button (not Add button)
-            // 2. Count > 2 (Must keep at least 2)
-            // 3. Mouse is hovering over it
-            
             int index = Array.IndexOf(dpiButtons, btn);
             if (index == -1 || index >= mouse.CurrentDPIProfileCount) return;
             if (!mouse.CanChangeDPICount()) return;
@@ -309,15 +304,11 @@ namespace GHelper
             Point clientPoint = btn.PointToClient(Cursor.Position);
             if (!btn.ClientRectangle.Contains(clientPoint)) return;
 
-            // Draw X in top right
-            using (Font xFont = new Font("Segoe UI", 8, FontStyle.Bold))
-            {
-                // Check if hovering over the X specifically to highlight it?
-                bool overX = IsOverDeleteArea(btn, clientPoint);
-                Color xColor = overX ? Color.Red : Color.Gray;
-
-                TextRenderer.DrawText(e.Graphics, "✕", xFont, new Point(btn.Width - 20, 5), xColor);
-            }
+            // Draw X in top right (gray-white color)
+            Image img = ControlHelper.ResizeImage(
+                ControlHelper.TintImage(Properties.Resources.cross_23, Color.FromArgb(170, 170, 170)),
+                ControlHelper.Scale);
+            e.Graphics.DrawImage(img, new Point(btn.Width - img.Width - 5, 5));
         }
 
         private void ButtonDPI_Click(object? sender, EventArgs e)
