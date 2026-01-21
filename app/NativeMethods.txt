@@ -1,0 +1,6 @@
+﻿CreateEvent
+CreateFile
+DeviceIoControl
+WaitForSingleObject
+GENERIC_ACCESS_RIGHTS
+WIN32_ERROR

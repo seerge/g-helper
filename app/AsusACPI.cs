@@ -2,6 +2,10 @@
 using GHelper.USB;
 using System.Management;
 using System.Runtime.InteropServices;
+using Windows.Win32;
+using Windows.Win32.Foundation;
+using Windows.Win32.Storage.FileSystem;
+using Microsoft.Win32.SafeHandles;
 
 public enum AsusFan
 {
@@ -25,9 +29,8 @@ public enum AsusGPU
     Ultimate = 2
 }
 
-public class AsusACPI
+public sealed class AsusACPI : IDisposable
 {
-
     const string FILE_NAME = @"\\.\\ATKACPI";
     const uint CONTROL_CODE = 0x0022240C;
 
@@ -99,23 +102,23 @@ public class AsusACPI
     public const int Temp_CPU = 0x00120094;
     public const int Temp_GPU = 0x00120097;
 
-    public const int PPT_APUA0 = 0x001200A0;  // sPPT (slow boost limit) / PL2
-    public const int PPT_EDCA1 = 0x001200A1;  // CPU EDC
-    public const int PPT_TDCA2 = 0x001200A2;  // CPU TDC
-    public const int PPT_APUA3 = 0x001200A3;  // SPL (sustained limit) / PL1
+    public const int PPT_APUA0 = 0x001200A0; // sPPT (slow boost limit) / PL2
+    public const int PPT_EDCA1 = 0x001200A1; // CPU EDC
+    public const int PPT_TDCA2 = 0x001200A2; // CPU TDC
+    public const int PPT_APUA3 = 0x001200A3; // SPL (sustained limit) / PL1
 
-    public const int PPT_CPUB0 = 0x001200B0;  // CPU PPT on 2022 (PPT_LIMIT_APU)
-    public const int PPT_CPUB1 = 0x001200B1;  // Total PPT on 2022 (PPT_LIMIT_SLOW)
+    public const int PPT_CPUB0 = 0x001200B0; // CPU PPT on 2022 (PPT_LIMIT_APU)
+    public const int PPT_CPUB1 = 0x001200B1; // Total PPT on 2022 (PPT_LIMIT_SLOW)
 
-    public const int PPT_GPUC0 = 0x001200C0;  // NVIDIA GPU Boost
-    public const int PPT_APUC1 = 0x001200C1;  // fPPT (fast boost limit)
-    public const int PPT_GPUC2 = 0x001200C2;  // NVIDIA GPU Temp Target (75.. 87 C) 
+    public const int PPT_GPUC0 = 0x001200C0; // NVIDIA GPU Boost
+    public const int PPT_APUC1 = 0x001200C1; // fPPT (fast boost limit)
+    public const int PPT_GPUC2 = 0x001200C2; // NVIDIA GPU Temp Target (75.. 87 C) 
 
     public const uint CORES_CPU = 0x001200D2; // Intel E-core and P-core configuration in a format 0x0[E]0[P]
     public const uint CORES_MAX = 0x001200D3; // Maximum Intel E-core and P-core availability
 
-    public const uint GPU_BASE  = 0x00120099;  // Base part GPU TGP
-    public const uint GPU_POWER = 0x00120098;  // Additonal part of GPU TGP
+    public const uint GPU_BASE = 0x00120099; // Base part GPU TGP
+    public const uint GPU_POWER = 0x00120098; // Additonal part of GPU TGP
 
     public const int APU_MEM = 0x000600C1;
 
@@ -182,80 +185,47 @@ public class AsusACPI
     public const int PCoreMax = 16;
     public const int ECoreMax = 16;
 
-    private bool? _allAMD = null;
-    private bool? _overdrive = null;
+    private bool? _allAMD;
+    private bool? _overdrive;
 
     public static uint GPUEco => AppConfig.IsVivoZenPro() ? GPUEcoVivo : GPUEcoROG;
     public static uint GPUMux => AppConfig.IsVivoZenPro() ? GPUMuxVivo : GPUMuxROG;
 
-    [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
-    private static extern IntPtr CreateFile(
-        string lpFileName,
-        uint dwDesiredAccess,
-        uint dwShareMode,
-        IntPtr lpSecurityAttributes,
-        uint dwCreationDisposition,
-        uint dwFlagsAndAttributes,
-        IntPtr hTemplateFile
-    );
-
-    [DllImport("kernel32.dll", SetLastError = true)]
-    private static extern bool DeviceIoControl(
-        IntPtr hDevice,
-        uint dwIoControlCode,
-        byte[] lpInBuffer,
-        uint nInBufferSize,
-        byte[] lpOutBuffer,
-        uint nOutBufferSize,
-        ref uint lpBytesReturned,
-        IntPtr lpOverlapped
-    );
-
-    [DllImport("kernel32.dll", SetLastError = true)]
-    private static extern bool CloseHandle(IntPtr hObject);
-
-    private const uint GENERIC_READ = 0x80000000;
-    private const uint GENERIC_WRITE = 0x40000000;
-    private const uint OPEN_EXISTING = 3;
-    private const uint FILE_ATTRIBUTE_NORMAL = 0x80;
-    private const uint FILE_SHARE_READ = 1;
-    private const uint FILE_SHARE_WRITE = 2;
-
-    private IntPtr handle;
+    private SafeFileHandle? _handle;
 
     // Event handling attempt
-
-    [DllImport("kernel32.dll", SetLastError = true)]
-    private static extern IntPtr CreateEvent(IntPtr lpEventAttributes, bool bManualReset, bool bInitialState, string lpName);
-
-    [DllImport("kernel32.dll", SetLastError = true)]
-    private static extern bool WaitForSingleObject(IntPtr hHandle, int dwMilliseconds);
-
-    private IntPtr eventHandle;
-    private bool _connected = false;
+    private SafeFileHandle? _eventHandle;
+    private readonly bool _connected;
 
     // still works only with asus optimization service on , if someone knows how to get ACPI events from asus without that - let me know
+    [Obsolete]
     public void RunListener()
     {
+        _eventHandle?.Dispose();
+        _eventHandle = PInvoke.CreateEvent(null, false, false, "ATK4001");
 
-        eventHandle = CreateEvent(IntPtr.Zero, false, false, "ATK4001");
+        if (_eventHandle.IsInvalid)
+        {
+            var errorCode = (WIN32_ERROR)Marshal.GetLastPInvokeError();
+            Logger.WriteLine($"Run Listener Failed: {errorCode} (0x{(int)errorCode:X4})");
+        }
 
         byte[] outBuffer = new byte[16];
         byte[] data = new byte[8];
-        bool result;
 
-        data[0] = BitConverter.GetBytes(eventHandle.ToInt32())[0];
-        data[1] = BitConverter.GetBytes(eventHandle.ToInt32())[1];
+        var handleValue = _eventHandle.DangerousGetHandle();
+        data[0] = (byte)(handleValue & 0xFF);
+        data[1] = (byte)((handleValue >> 8) & 0xFF);
 
         Control(0x222400, data, outBuffer);
-        Logger.WriteLine("ACPI :" + BitConverter.ToString(data) + "|" + BitConverter.ToString(outBuffer));
+        Logger.WriteLine($"ACPI:{Convert.ToHexString(data)}|{Convert.ToHexString(outBuffer)}");
 
         while (true)
         {
-            WaitForSingleObject(eventHandle, Timeout.Infinite);
-            Control(0x222408, new byte[0], outBuffer);
-            int code = BitConverter.ToInt32(outBuffer);
-            Logger.WriteLine("ACPI Code: " + code);
+            PInvoke.WaitForSingleObject(_eventHandle, 0xFFFFFFFF);
+            Control(0x222408, [], outBuffer);
+            var code = BitConverter.ToInt32(outBuffer);
+            Logger.WriteLine($"ACPI Code: {code}");
         }
     }
 
@@ -266,27 +236,24 @@ public class AsusACPI
 
     public AsusACPI()
     {
-        try
-        {
-            handle = CreateFile(
-                FILE_NAME,
-                GENERIC_READ | GENERIC_WRITE,
-                FILE_SHARE_READ | FILE_SHARE_WRITE,
-                IntPtr.Zero,
-                OPEN_EXISTING,
-                FILE_ATTRIBUTE_NORMAL,
-                IntPtr.Zero
-            );
+        _handle?.Dispose();
+        _handle = PInvoke.CreateFile(
+            FILE_NAME,
+            (uint)GENERIC_ACCESS_RIGHTS.GENERIC_READ | (uint)GENERIC_ACCESS_RIGHTS.GENERIC_WRITE,
+            FILE_SHARE_MODE.FILE_SHARE_READ | FILE_SHARE_MODE.FILE_SHARE_WRITE,
+            null,
+            FILE_CREATION_DISPOSITION.OPEN_EXISTING,
+            FILE_FLAGS_AND_ATTRIBUTES.FILE_ATTRIBUTE_NORMAL
+        );
 
-            //handle = new IntPtr(-1);
-            //throw new Exception("ERROR");
-            _connected = true;
-
-        }
-        catch (Exception ex)
+        if (_handle.IsInvalid)
         {
-            Logger.WriteLine($"Can't connect to ACPI: {ex.Message}");
+            var errorCode = (WIN32_ERROR)Marshal.GetLastPInvokeError();
+            Logger.WriteLine($"ACPI Connection Failed: {errorCode} (0x{(int)errorCode:X4})");
+            _connected = false;
         }
+        else _connected = true;
+
 
         if (AppConfig.IsAdvantageEdition())
         {
@@ -339,33 +306,26 @@ public class AsusACPI
         {
             MaxTotal = 93;
         }
-
-
     }
 
-    public void Control(uint dwIoControlCode, byte[] lpInBuffer, byte[] lpOutBuffer)
+    private unsafe void Control(uint dwIoControlCode, byte[] lpInBuffer, byte[] lpOutBuffer)
     {
-
-        uint lpBytesReturned = 0;
-        DeviceIoControl(
-            handle,
+        PInvoke.DeviceIoControl(
+            _handle,
             dwIoControlCode,
             lpInBuffer,
-            (uint)lpInBuffer.Length,
-            lpOutBuffer,
-            (uint)lpOutBuffer.Length,
-            ref lpBytesReturned,
-            IntPtr.Zero
+            lpOutBuffer
         );
     }
 
-    public void Close()
+    public void Dispose()
     {
-        CloseHandle(handle);
+        _handle?.Dispose();
+        _eventHandle?.Dispose();
+        GC.SuppressFinalize(this);
     }
 
-
-    protected byte[] CallMethod(uint MethodID, byte[] args)
+    private byte[] CallMethod(uint MethodID, byte[] args)
     {
         byte[] acpiBuf = new byte[8 + args.Length];
         byte[] outBuffer = new byte[16];
@@ -379,21 +339,18 @@ public class AsusACPI
         Control(CONTROL_CODE, acpiBuf, outBuffer);
 
         return outBuffer;
-
     }
 
     public byte[] DeviceInit()
     {
         byte[] args = new byte[8];
         return CallMethod(INIT, args);
-
     }
 
     public byte[] DeviceWatchDog()
     {
         byte[] args = new byte[8];
         return CallMethod(WDOG, args);
-
     }
 
     public int DeviceSet(uint DeviceID, int Status, string? logName)
@@ -406,7 +363,7 @@ public class AsusACPI
         int result = BitConverter.ToInt32(status, 0);
 
         if (logName is not null)
-            Logger.WriteLine(logName + " = " + Status + " : " + (result == 1 ? "OK" : result));
+            Logger.WriteLine($"{logName} = {Status} : {(result == 1 ? "OK" : result)}");
 
         return result;
     }
@@ -422,7 +379,7 @@ public class AsusACPI
         int result = BitConverter.ToInt32(status, 0);
 
         if (logName is not null)
-            Logger.WriteLine(logName + " = " + BitConverter.ToString(Params) + " : " + (result == 1 ? "OK" : result));
+            Logger.WriteLine($"{logName} = {Convert.ToHexString(Params)} : {(result == 1 ? "OK" : result)}");
 
         return BitConverter.ToInt32(status, 0);
     }
@@ -431,18 +388,17 @@ public class AsusACPI
     public int DeviceGet(uint DeviceID)
     {
         byte[] args = new byte[8];
-        BitConverter.GetBytes((uint)DeviceID).CopyTo(args, 0);
+        BitConverter.GetBytes(DeviceID).CopyTo(args, 0);
         byte[] status = CallMethod(DSTS, args);
 
         return BitConverter.ToInt32(status, 0) - 65536;
-
     }
 
     public byte[] DeviceGetBuffer(uint DeviceID, uint Status = 0)
     {
         byte[] args = new byte[8];
-        BitConverter.GetBytes((uint)DeviceID).CopyTo(args, 0);
-        BitConverter.GetBytes((uint)Status).CopyTo(args, 4);
+        BitConverter.GetBytes(DeviceID).CopyTo(args, 0);
+        BitConverter.GetBytes(Status).CopyTo(args, 4);
 
         return CallMethod(DSTS, args);
     }
@@ -489,26 +445,17 @@ public class AsusACPI
 
     public int GetFan(AsusFan device)
     {
-        int fan = -1;
-
-        switch (device)
+        var fan = device switch
         {
-            case AsusFan.GPU:
-                fan = Program.acpi.DeviceGet(GPU_Fan);
-                break;
-            case AsusFan.Mid:
-                fan = Program.acpi.DeviceGet(Mid_Fan);
-                break;
-            default:
-                fan = Program.acpi.DeviceGet(CPU_Fan);
-                break;
-        }
+            AsusFan.GPU => Program.acpi.DeviceGet(GPU_Fan),
+            AsusFan.Mid => Program.acpi.DeviceGet(Mid_Fan),
+            _ => Program.acpi.DeviceGet(CPU_Fan)
+        };
 
-        if (fan < 0)
-        {
-            fan += 65536;
-            if (fan <= 0 || fan > 100) fan = -1;
-        }
+        if (fan >= 0) return fan;
+
+        fan += 65536;
+        if (fan is <= 0 or > 100) fan = -1;
 
         return fan;
     }
@@ -516,7 +463,6 @@ public class AsusACPI
 
     public int SetFanRange(AsusFan device, byte[] curve)
     {
-
         if (curve.Length != 16) return -1;
         if (curve.All(singleByte => singleByte == 0)) return -1;
 
@@ -541,7 +487,6 @@ public class AsusACPI
 
     public int SetFanCurve(AsusFan device, byte[] curve)
     {
-
         if (curve.Length != 16) return -1;
         if (curve.All(singleByte => singleByte == 0)) return -1;
 
@@ -551,7 +496,8 @@ public class AsusACPI
 
         if (fanScale != 100 && device == AsusFan.CPU) Logger.WriteLine("Custom fan scale: " + fanScale);
 
-        for (int i = 8; i < curve.Length; i++) curve[i] = (byte)(Math.Max((byte)0, Math.Min((byte)100, curve[i])) * fanScale / 100);
+        for (int i = 8; i < curve.Length; i++)
+            curve[i] = (byte)(Math.Max((byte)0, Math.Min((byte)100, curve[i])) * fanScale / 100);
 
         switch (device)
         {
@@ -571,35 +517,24 @@ public class AsusACPI
 
     public byte[] GetFanCurve(AsusFan device, int mode = 0)
     {
-        uint fan_mode;
-
         // because it's asus, and modes are swapped here
-        switch (mode)
+        uint fan_mode = mode switch
         {
-            case 1: fan_mode = 2; break;
-            case 2: fan_mode = 1; break;
-            default: fan_mode = 0; break;
-        }
+            1 => 2,
+            2 => 1,
+            _ => 0
+        };
 
-        byte[] result;
-
-        switch (device)
+        byte[] result = device switch
         {
-            case AsusFan.GPU:
-                result = DeviceGetBuffer(DevsGPUFanCurve, fan_mode);
-                break;
-            case AsusFan.Mid:
-                result = DeviceGetBuffer(DevsMidFanCurve, fan_mode);
-                break;
-            default:
-                result = DeviceGetBuffer(DevsCPUFanCurve, fan_mode);
-                break;
-        }
+            AsusFan.GPU => DeviceGetBuffer(DevsGPUFanCurve, fan_mode),
+            AsusFan.Mid => DeviceGetBuffer(DevsMidFanCurve, fan_mode),
+            _ => DeviceGetBuffer(DevsCPUFanCurve, fan_mode)
+        };
 
         //Logger.WriteLine($"GetFan {device} :" + BitConverter.ToString(result));
 
         return result;
-
     }
 
     public static bool IsInvalidCurve(byte[] curve)
@@ -619,9 +554,10 @@ public class AsusACPI
         var points = new Dictionary<byte, byte>();
         byte old = 0;
 
-        for (int i = 0; i < 8; i++)
+        for (var i = 0; i < 8; i++)
         {
-            if (curve[i] <= old) curve[i] = (byte)Math.Min(100, old + 6); // preventing 2 points in same spot from default asus profiles
+            if (curve[i] <= old)
+                curve[i] = (byte)Math.Min(100, old + 6); // preventing 2 points in same spot from default asus profiles
             points[curve[i]] = curve[i + 8];
             old = curve[i];
         }
@@ -661,7 +597,6 @@ public class AsusACPI
         }
 
         return curve;
-
     }
 
     public bool IsXGConnected()
@@ -671,13 +606,13 @@ public class AsusACPI
 
     public bool IsAllAmdPPT()
     {
-        if (_allAMD is null) _allAMD = DeviceGet(PPT_CPUB0) >= 0 && DeviceGet(PPT_GPUC0) < 0 && !AppConfig.IsAMDiGPU();
+        _allAMD ??= DeviceGet(PPT_CPUB0) >= 0 && DeviceGet(PPT_GPUC0) < 0 && !AppConfig.IsAMDiGPU();
         return (bool)_allAMD;
     }
 
     public bool IsOverdriveSupported()
     {
-        if (_overdrive is null) _overdrive = DeviceGet(ScreenOverdrive) >= 0;
+        _overdrive ??= DeviceGet(ScreenOverdrive) >= 0;
         return (bool)_overdrive;
     }
 
@@ -688,81 +623,51 @@ public class AsusACPI
 
     public void SetAPUMem(int memory = 4)
     {
-        if (memory < 0 || memory > 8) return;
+        if (memory is < 0 or > 8) return;
 
-        int mem = 0;
-
-        switch (memory)
+        var mem = memory switch
         {
-            case 0:
-                mem = 0;
-                break;
-            case 1:
-                mem = 258;
-                break;
-            case 2:
-                mem = 259;
-                break;
-            case 3:
-                mem = 260;
-                break;
-            case 4:
-                mem = 261;
-                break;
-            case 5:
-                mem = 263;
-                break;
-            case 6:
-                mem = 264;
-                break;
-            case 7:
-                mem = 265;
-                break;
-            case 8:
-                mem = 262;
-                break;
-        }
+            0 => 0,
+            1 => 258,
+            2 => 259,
+            3 => 260,
+            4 => 261,
+            5 => 263,
+            6 => 264,
+            7 => 265,
+            _ => 262
+        };
 
         Program.acpi.DeviceSet(APU_MEM, mem, "APU Mem");
     }
 
     public int GetAPUMem()
     {
-        int memory = Program.acpi.DeviceGet(APU_MEM);
+        var memory = Program.acpi.DeviceGet(APU_MEM);
         if (memory < 0) return -1;
 
-        switch (memory)
+        return memory switch
         {
-            case 256:
-                return 0;
-            case 258:
-                return 1;
-            case 259:
-                return 2;
-            case 260:
-                return 3;
-            case 261:
-                return 4;
-            case 262:
-                return 8;
-            case 263:
-                return 5;
-            case 264:
-                return 6;
-            case 265:
-                return 7;
-            default:
-                return 4;
-        }
+            256 => 0,
+            258 => 1,
+            259 => 2,
+            260 => 3,
+            261 => 4,
+            262 => 8,
+            263 => 5,
+            264 => 6,
+            265 => 7,
+            _ => 4
+        };
     }
 
     public (int, int) GetCores(bool max = false)
     {
-        int value = Program.acpi.DeviceGet(max ? CORES_MAX : CORES_CPU);
+        var value = Program.acpi.DeviceGet(max ? CORES_MAX : CORES_CPU);
         //value = max ? 0x406 : 0x605;
 
         if (value < 0) return (-1, -1);
-        Logger.WriteLine("Cores" + (max ? "Max" : "") + ": 0x" + value.ToString("X4"));
+        Logger.WriteLine($"Cores{(max ? "Max" : "")}: 0x{value:X4}");
 
         return ((value >> 8) & 0xFF, (value) & 0xFF);
     }
@@ -773,50 +678,45 @@ public class AsusACPI
         {
             Logger.WriteLine($"Incorrect Core config ({eCores}, {pCores})");
             return;
-        };
+        }
 
-        int value = (eCores << 8) | pCores;
-        Program.acpi.DeviceSet(CORES_CPU, value, "Cores (0x" + value.ToString("X4") + ")");
+        var value = (eCores << 8) | pCores;
+        Program.acpi.DeviceSet(CORES_CPU, value, $"Cores (0x{value:X4})");
     }
 
     public string ScanRange()
     {
-        int value;
-        string appPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\GHelper";
-        string logFile = appPath + "\\scan.txt";
-        using (StreamWriter w = File.AppendText(logFile))
+        var appPath = Path.Join(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "GHelper");
+        var logFile = Path.Join(appPath, "scan.txt");
+        using var w = File.AppendText(logFile);
+        w.WriteLine($"Scan started {DateTime.Now}");
+        for (uint i = 0x00000000; i <= 0x00160000; i += 0x10000)
         {
-            w.WriteLine($"Scan started {DateTime.Now}");
-            for (uint i = 0x00000000; i <= 0x00160000; i += 0x10000)
+            for (uint j = 0x00; j <= 0xFF; j++)
             {
-                for (uint j = 0x00; j <= 0xFF; j++)
+                var id = i + j;
+                var value = DeviceGet(id);
+                if (value >= 0)
                 {
-                    uint id = i + j;
-                    value = DeviceGet(id);
-                    if (value >= 0)
-                    {
-                        w.WriteLine(id.ToString("X8") + ": " + value.ToString("X4") + " (" + value + ")");
-                    }
+                    w.WriteLine($"{id:X8}: {value:X4} ({value})");
                 }
             }
-            w.WriteLine($"---------------------");
-            w.Close();
         }
 
-        return logFile;
+        w.WriteLine($"---------------------");
+        w.Close();
 
+        return logFile;
     }
 
     public void TUFKeyboardBrightness(int brightness, string log = "TUF Backlight")
     {
-        int param = 0x80 | (brightness & 0x7F);
+        var param = 0x80 | (brightness & 0x7F);
         DeviceSet(TUF_KB_BRIGHTNESS, param, log);
-
     }
 
     public void TUFKeyboardRGB(AuraMode mode, Color color, int speed, string? log = "TUF RGB")
     {
-
         byte[] setting = new byte[6];
 
         setting[0] = (byte)0xb4;
@@ -826,43 +726,42 @@ public class AsusACPI
         setting[4] = color.B;
         setting[5] = (byte)speed;
 
-        int result = DeviceSet(TUF_KB, setting, log);
-        if (result != 1)
-        {
-            setting[0] = (byte)0xb3;
-            DeviceSet(TUF_KB2, setting, log);
-            setting[0] = (byte)0xb4;
-            DeviceSet(TUF_KB2, setting, log);
-        }
-
+        var result = DeviceSet(TUF_KB, setting, log);
+        if (result == 1) return;
+        setting[0] = (byte)0xb3;
+        DeviceSet(TUF_KB2, setting, log);
+        setting[0] = (byte)0xb4;
+        DeviceSet(TUF_KB2, setting, log);
     }
 
     const int ASUS_WMI_KEYBOARD_POWER_BOOT = 0x03 << 16;
     const int ASUS_WMI_KEYBOARD_POWER_AWAKE = 0x0C << 16;
     const int ASUS_WMI_KEYBOARD_POWER_SLEEP = 0x30 << 16;
     const int ASUS_WMI_KEYBOARD_POWER_SHUTDOWN = 0xC0 << 16;
+
     public void TUFKeyboardPower(bool awake = true, bool boot = false, bool sleep = false, bool shutdown = false)
     {
-        int state = 0xbd;
+        var state = 0xbd;
 
-        if (boot) state = state | ASUS_WMI_KEYBOARD_POWER_BOOT;
-        if (awake) state = state | ASUS_WMI_KEYBOARD_POWER_AWAKE;
-        if (sleep) state = state | ASUS_WMI_KEYBOARD_POWER_SLEEP;
-        if (shutdown) state = state | ASUS_WMI_KEYBOARD_POWER_SHUTDOWN;
+        if (boot) state |= ASUS_WMI_KEYBOARD_POWER_BOOT;
+        if (awake) state |= ASUS_WMI_KEYBOARD_POWER_AWAKE;
+        if (sleep) state |= ASUS_WMI_KEYBOARD_POWER_SLEEP;
+        if (shutdown) state |= ASUS_WMI_KEYBOARD_POWER_SHUTDOWN;
 
-        state = state | 0x01 << 8;
+        state |= 0x01 << 8;
 
         DeviceSet(TUF_KB_STATE, state, "TUF_KB");
-        if (AppConfig.IsVivoZenPro() && DeviceGet(KBD_BACKLIGHT_OOBE) >= 0) DeviceSet(KBD_BACKLIGHT_OOBE, 1, "VIVO OOBE");
+        if (AppConfig.IsVivoZenPro() && DeviceGet(KBD_BACKLIGHT_OOBE) >= 0)
+            DeviceSet(KBD_BACKLIGHT_OOBE, 1, "VIVO OOBE");
     }
 
     public void SubscribeToEvents(Action<object, EventArrivedEventArgs> EventHandler)
     {
         try
         {
-            ManagementEventWatcher watcher = new ManagementEventWatcher();
+            var watcher = new ManagementEventWatcher();
             watcher.EventArrived += new EventArrivedEventHandler(EventHandler);
-            watcher.Scope = new ManagementScope("root\\wmi");
+            watcher.Scope = new ManagementScope(@"root\wmi");
             watcher.Query = new WqlEventQuery("SELECT * FROM AsusAtkWmiEvent");
             watcher.Start();
         }
@@ -871,6 +770,4 @@ public class AsusACPI
             Logger.WriteLine("Can't connect to ASUS WMI events");
         }
     }
-
-
 }
