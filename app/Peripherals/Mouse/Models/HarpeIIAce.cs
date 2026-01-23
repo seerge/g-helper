@@ -113,6 +113,12 @@
                 || lightingMode == LightingMode.BatteryState
                 || lightingMode == LightingMode.Off;
         }
+
+        public override bool CanChangeDPICount()
+        {
+            return true;
+        }
+
         public override int USBPacketSize()
         {
             return 64;

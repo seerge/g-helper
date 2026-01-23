@@ -60,7 +60,7 @@ namespace GHelper
             buttonExport.Text = Properties.Strings.Export;
             buttonImport.Text = Properties.Strings.Import;
 
-            InitTheme();
+            InitTheme(true);
 
             this.Text = mouse.GetDisplayName();
 
@@ -78,6 +78,14 @@ namespace GHelper
             buttonDPI2.Click += ButtonDPI_Click;
             buttonDPI3.Click += ButtonDPI_Click;
             buttonDPI4.Click += ButtonDPI_Click;
+
+            // Subscribe to Paint and MouseMove for Delete logic
+            foreach (var btn in dpiButtons)
+            {
+                btn.Paint += DpiButton_Paint;
+                btn.MouseMove += DpiButton_MouseMove;
+                btn.MouseLeave += (s, e) => { (s as Control)?.Invalidate(); }; 
+            }
 
             comboBoxPollingRate.DropDownClosed += ComboBoxPollingRate_DropDownClosed;
             checkBoxAngleSnapping.CheckedChanged += CheckAngleSnapping_CheckedChanged;
@@ -265,6 +273,44 @@ namespace GHelper
             }
         }
 
+        // Logic for Delete Area
+        bool IsOverDeleteArea(Control btn, Point p)
+        {
+             // Top Right corner
+             float size = 16 * ControlHelper.Scale;
+             if (p.X > btn.Width - size - 5 && p.Y < size + 5) return true;
+             return false;
+        }
+
+        private void DpiButton_MouseMove(object? sender, MouseEventArgs e)
+        {
+            if (sender is RButton btn)
+            {
+                // Trigger repaint to show/hide X
+                btn.Invalidate();
+            }
+        }
+
+        private void DpiButton_Paint(object? sender, PaintEventArgs e)
+        {
+            if (sender is not RButton btn) return;
+            
+            int index = Array.IndexOf(dpiButtons, btn);
+            if (index == -1 || index >= mouse.CurrentDPIProfileCount) return;
+            if (!mouse.CanChangeDPICount()) return;
+            if (mouse.CurrentDPIProfileCount <= 2) return;
+
+            // Check if mouse is within client area to draw hover effect
+            Point clientPoint = btn.PointToClient(Cursor.Position);
+            if (!btn.ClientRectangle.Contains(clientPoint)) return;
+
+            // Draw X in top right (gray-white color)
+            Image img = ControlHelper.ResizeImage(
+                ControlHelper.TintImage(Properties.Resources.cross_23, Color.FromArgb(170, 170, 170)),
+                ControlHelper.Scale);
+            e.Graphics.DrawImage(img, new Point(btn.Width - img.Width - 5, 5));
+        }
+
         private void ButtonDPI_Click(object? sender, EventArgs e)
         {
             int index = -1;
@@ -278,13 +324,38 @@ namespace GHelper
                 }
             }
 
-            if (index == -1)
+            if (index == -1) return;
+            
+            // Check for Delete Click
+            if (mouse.CanChangeDPICount() && index < mouse.CurrentDPIProfileCount && mouse.CurrentDPIProfileCount > 2)
             {
-                //huh?
+                Point p = dpiButtons[index].PointToClient(Cursor.Position);
+                if (IsOverDeleteArea(dpiButtons[index], p))
+                {
+                    mouse.DeleteDPIProfile(index);
+                    VisualizeDPIButtons();
+                    VisualizeCurrentDPIProfile();
+                    return;
+                }
+            }
+
+            // Logic:
+            // If index < CurrentCount -> Switch Profile
+            // If index == CurrentCount -> Add Profile
+
+            if (index < mouse.CurrentDPIProfileCount)
+            {
+                mouse.SetDPIProfile(index + 1);
+            }
+            else if (index == mouse.CurrentDPIProfileCount)
+            {
+                mouse.AddDPIProfile();
+                // Ensure UI re-renders to show new profile
+                VisualizeDPIButtons();
+                VisualizeCurrentDPIProfile();
                 return;
             }
 
-            mouse.SetDPIProfile(index + 1);
             VisualizeDPIButtons();
             VisualizeCurrentDPIProfile();
         }
@@ -562,10 +633,10 @@ namespace GHelper
             {
                 buttonDPIColor.Visible = false;
                 pictureDPIColor.Visible = false;
-                buttonDPI1.Image = ControlHelper.TintImage(Properties.Resources.lighting_dot_24, Color.Red);
-                buttonDPI2.Image = ControlHelper.TintImage(Properties.Resources.lighting_dot_24, Color.Purple);
-                buttonDPI3.Image = ControlHelper.TintImage(Properties.Resources.lighting_dot_24, Color.Blue);
-                buttonDPI4.Image = ControlHelper.TintImage(Properties.Resources.lighting_dot_24, Color.Green);
+                buttonDPI1.Image = ControlHelper.ResizeImage(ControlHelper.TintImage(Properties.Resources.lighting_dot_32, Color.Red), ControlHelper.Scale);
+                buttonDPI2.Image = ControlHelper.ResizeImage(ControlHelper.TintImage(Properties.Resources.lighting_dot_32, Color.Purple), ControlHelper.Scale);
+                buttonDPI3.Image = ControlHelper.ResizeImage(ControlHelper.TintImage(Properties.Resources.lighting_dot_32, Color.Blue), ControlHelper.Scale);
+                buttonDPI4.Image = ControlHelper.ResizeImage(ControlHelper.TintImage(Properties.Resources.lighting_dot_32, Color.Green), ControlHelper.Scale);
 
                 buttonDPI1.BorderColor = Color.Red;
                 buttonDPI2.BorderColor = Color.Purple;
@@ -841,12 +912,12 @@ namespace GHelper
                 checkBoxZoneMode.Checked = mouse.ZoneMode;
                 sliderZoneModeDPI.Value = mouse.ZoneModeDPI;
                 numericUpDownZoneModeDPI.Value = mouse.ZoneModeDPI;
-                
+
                 // Set Zone Mode Polling Rate combobox
                 PollingRate[] zoneModePollingRates = { PollingRate.PR1000Hz, PollingRate.PR2000Hz, PollingRate.PR4000Hz, PollingRate.PR8000Hz };
                 int prIndex = Array.IndexOf(zoneModePollingRates, mouse.ZoneModePollingRate);
                 if (prIndex >= 0) comboBoxZoneModePollingRate.SelectedIndex = prIndex;
-                
+
                 UpdateZoneModeUIState();
             }
         }
@@ -978,20 +1049,51 @@ namespace GHelper
 
         private void VisualizeDPIButtons()
         {
-            for (int i = 0; i < mouse.DPIProfileCount() && i < 4; ++i)
+            // Update to use CurrentDPIProfileCount
+            for (int i = 0; i < 4; ++i)
             {
-                AsusMouseDPI dpi = mouse.DpiSettings[i];
-                if (dpi is null)
+                // Slot logic: 0..Count-1 are normal profiles
+                // Slot Count is "Add" button (if Count < 4)
+
+                if (i < mouse.CurrentDPIProfileCount)
                 {
-                    continue;
+                    AsusMouseDPI dpi = mouse.DpiSettings[i];
+                    if (dpi is null) continue;
+
+                    dpiButtons[i].Visible = true;
+                    if (mouse.HasDPIColors())
+                    {
+                        dpiButtons[i].Image = ControlHelper.ResizeImage(
+                        ControlHelper.TintImage(Properties.Resources.lighting_dot_32, dpi.Color),
+                        ControlHelper.Scale);
+                        dpiButtons[i].BorderColor = dpi.Color;
+                    }
+                    else
+                    {
+                        // Fallback icon if no color support? Usually kept simple
+                    }
+
+                    dpiButtons[i].Activated = (mouse.DpiProfile - 1) == i;
+                    dpiButtons[i].Text = "DPI " + (i + 1) + "\n" + dpi.DPI;
+
+                    // Clear secondary style (used for Add button)
+                    dpiButtons[i].Secondary = false;
                 }
-                if (mouse.HasDPIColors())
+                else if (mouse.CanChangeDPICount() && i == mouse.CurrentDPIProfileCount)
                 {
-                    dpiButtons[i].Image = ControlHelper.TintImage(Properties.Resources.lighting_dot_24, dpi.Color);
-                    dpiButtons[i].BorderColor = dpi.Color;
+                    // This is the "Add" slot
+                    dpiButtons[i].Visible = true;
+                    dpiButtons[i].Image = null;
+                    dpiButtons[i].Text = "+";
+                    dpiButtons[i].Activated = false;
+                    dpiButtons[i].Secondary = true;
+                    dpiButtons[i].BorderColor = Color.Transparent;
                 }
-                dpiButtons[i].Activated = (mouse.DpiProfile - 1) == i;
-                dpiButtons[i].Text = "DPI " + (i + 1) + "\n" + dpi.DPI;
+                else
+                {
+                    // Hidden slots
+                    dpiButtons[i].Visible = false;
+                }
             }
         }
 

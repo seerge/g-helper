@@ -8,6 +8,8 @@ public static class ControlHelper
     static bool _invert = false;
     static float _scale = 1;
 
+    public static float Scale => _scale;
+
     public static void Adjust(RForm container, bool invert = false)
     {
 
@@ -149,7 +151,14 @@ public static class ControlHelper
 
     private static Image ResizeImage(Image image)
     {
-        var newSize = new Size((int)(image.Width * _scale), (int)(image.Height * _scale));
+        return ResizeImage(image, _scale);
+    }
+
+    public static Image ResizeImage(Image image, float scale)
+    {
+        if (Math.Abs(scale - 1) < 0.1) return image;
+
+        var newSize = new Size((int)(image.Width * scale), (int)(image.Height * scale));
         var pic = new Bitmap(newSize.Width, newSize.Height);
 
         using (var g = Graphics.FromImage(pic))
@@ -192,7 +201,7 @@ public static class ControlHelper
                 pic.SetPixel(x, y, Color.FromArgb(col.A, tintColor.R, tintColor.G, tintColor.B));
             }
         }
-        
+
         return pic;
     }
 
