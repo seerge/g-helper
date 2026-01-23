@@ -17,6 +17,11 @@
             return 4;
         }
 
+        public override bool CanChangeDPICount()
+        {
+            return true;
+        }
+
         public override string GetDisplayName()
         {
             return "Harpe Ace Mini (Wired)";
