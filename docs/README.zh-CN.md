@@ -302,7 +302,7 @@ G-helper是一个单文件的exe文件, 而且它不会向系统中安装任何�
 
 ### 为每一个模式自定义用户计划
 
-在 config.json (位于 %appdata/GHelper) 中你可以手动添加自定义电源设置的GUID (它既可以是"真正的"可被选择的电源计划，也可以是"覆盖式(overlay)"的电源计划，就像g-helper默认设置的那样)
+在 config.json (位于 %appdata%/GHelper) 中你可以手动添加自定义电源设置的GUID (它既可以是"真正的"可被选择的电源计划，也可以是"覆盖式(overlay)"的电源计划，就像g-helper默认设置的那样)
 
 格式如下 : "scheme_`<mode>`" : "GUID"
 
