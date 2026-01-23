@@ -112,6 +112,7 @@ Each BIOS mode is paired with matching Windows Power Mode. You can adjust this s
 - ROG Harpe Ace Extreme
 - ROG Harpe Ace Aim Lab Edition
 - ROG Harpe Ace Mini
+- ROG Harpe II Ace
 - ROG Keris Wireless
 - ROG Keris II Ace
 - ROG Keris Wireless Aimpoint

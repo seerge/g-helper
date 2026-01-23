@@ -1912,11 +1912,11 @@ namespace GHelper
                 switch (m.DeviceType())
                 {
                     case PeripheralType.Mouse:
-                        b.Image = ControlHelper.TintImage(Properties.Resources.icons8_maus_32, b.ForeColor);
+                        b.Image = ControlHelper.ResizeImage(ControlHelper.TintImage(Properties.Resources.icons8_maus_48, b.ForeColor), ControlHelper.Scale);
                         break;
 
                     case PeripheralType.Keyboard:
-                        b.Image = ControlHelper.TintImage(Properties.Resources.icons8_keyboard_32, b.ForeColor);
+                        b.Image = ControlHelper.ResizeImage(ControlHelper.TintImage(Properties.Resources.icons8_keyboard_32, b.ForeColor), ControlHelper.Scale);
                         break;
                 }
 

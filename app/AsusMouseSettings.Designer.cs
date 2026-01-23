@@ -797,6 +797,7 @@
             buttonDPI1.FlatStyle = FlatStyle.Flat;
             buttonDPI1.ForeColor = SystemColors.ControlText;
             buttonDPI1.Image = Properties.Resources.lighting_dot_32;
+            buttonDPI1.ImageAlign = ContentAlignment.BottomCenter;
             buttonDPI1.Location = new Point(4, 4);
             buttonDPI1.Margin = new Padding(4);
             buttonDPI1.Name = "buttonDPI1";
