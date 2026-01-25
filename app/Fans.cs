@@ -414,29 +414,37 @@ namespace GHelper
 
             if (Program.acpi.DeviceGet(AsusACPI.DevsCPUFanCurve) < 0) buttonCalibrate.Visible = false;
 
-            // Accessible Mode Logic
+            // Accessible Mode Logic: The "Perfect" Tab System
             if (AppConfig.IsAccessible())
             {
                 InitFanTable();
-                panelFanTable.Visible = true;
                 tableFanCharts.Visible = false;
-                buttonTable.Visible = false; // Hide toggle
+                buttonTable.Visible = false;
 
-                // Create Native TabControl for Accessibility
                 TabControl tabControl = new TabControl();
                 tabControl.Dock = DockStyle.Fill;
-                
-                // 1. CPU Tab
+                tabControl.AccessibleRole = AccessibleRole.PageTabList;
+
+                // 1. Fans Tab (Moved from the right side)
+                TabPage tabFans = new TabPage(Properties.Strings.FanCurves);
+                panelFanTable.AutoSize = false;
+                panelFanTable.Dock = DockStyle.Fill;
+                panelFanTable.Visible = true;
+                panelFanTable.Parent = tabFans;
+                tabFans.Controls.Add(panelFanTable);
+                tabControl.TabPages.Add(tabFans);
+
+                // 2. CPU / Power Tab
                 TabPage tabCPU = new TabPage("CPU");
-                panelPower.AutoSize = false; // Disable AutoSize to prevent collapse
+                panelPower.AutoSize = false;
                 panelPower.Dock = DockStyle.Fill;
                 panelPower.Visible = true;
-                panelPower.Parent = tabCPU; // Move panel to tab
+                panelPower.Parent = tabCPU;
                 tabCPU.Controls.Add(panelPower);
                 tabCPU.AutoScroll = true;
                 tabControl.TabPages.Add(tabCPU);
 
-                // 2. GPU Tab (if available)
+                // 3. GPU Tab (if available)
                 if (gpuVisible)
                 {
                     TabPage tabGPU = new TabPage("GPU");
@@ -449,7 +457,7 @@ namespace GHelper
                     tabControl.TabPages.Add(tabGPU);
                 }
 
-                // 3. Advanced Tab (if AMD)
+                // 4. Advanced Tab (if AMD)
                 if (RyzenControl.IsAMD())
                 {
                     TabPage tabAdvanced = new TabPage("Advanced");
@@ -462,8 +470,11 @@ namespace GHelper
                     tabControl.TabPages.Add(tabAdvanced);
                 }
 
-                // Hide custom nav and add standard tabs
+                // Layout transformation: Make tabs fill the whole window
                 panelNav.Visible = false;
+                panelFans.Visible = false; // Hide the right-side container
+                panelSliders.Dock = DockStyle.Fill; // Left side becomes the whole window
+                panelSliders.Padding = new Padding(0);
                 panelSliders.Controls.Add(tabControl);
                 tabControl.BringToFront();
             }
