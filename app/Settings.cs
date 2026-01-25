@@ -1410,6 +1410,7 @@ namespace GHelper
                 labelVisual.Visible = false;
             }
 
+            panelScreen.AccessibleName = labelSreen.Text + (screenAuto ? " (" + Properties.Strings.AutoMode + ")" : "");
 
         }
 
