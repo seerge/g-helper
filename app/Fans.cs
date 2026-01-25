@@ -461,12 +461,31 @@ namespace GHelper
                 if (RyzenControl.IsAMD())
                 {
                     TabPage tabAdvanced = new TabPage("Advanced");
-                    panelAdvanced.AutoSize = false;
-                    panelAdvanced.Dock = DockStyle.Fill;
-                    panelAdvanced.Visible = true;
-                    panelAdvanced.Parent = tabAdvanced;
-                    tabAdvanced.Controls.Add(panelAdvanced);
                     tabAdvanced.AutoScroll = true;
+
+                    // Move children of panelAdvanced directly to the tab to avoid container layout issues
+                    Control[] advancedControls = { 
+                        panelDownload, panelTitleTemp, panelTemperature, 
+                        panelTitleAdvanced, panelUV, panelUViGPU, 
+                        labelRisky, panelAdvancedApply, panelAdvancedAlways 
+                    };
+
+                    // Add in reverse order because Dock=Top stacks from bottom if added sequentially? 
+                    // No, let's just add them and ensure Dock is Top.
+                    // Actually, if we change Parent, we need to be careful.
+                    
+                    foreach (var ctrl in advancedControls)
+                    {
+                        ctrl.Parent = tabAdvanced;
+                        ctrl.Dock = DockStyle.Top;
+                        ctrl.Visible = true; // Force visibility
+                        if (ctrl is Panel p) p.AutoSize = true; // Internal panels usually need AutoSize to fit content
+                    }
+                    
+                    // Specific fix for labelRisky which might not be a panel
+                    labelRisky.Dock = DockStyle.Top;
+                    labelRisky.Visible = true;
+
                     tabControl.TabPages.Add(tabAdvanced);
                 }
 
