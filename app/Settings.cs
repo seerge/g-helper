@@ -89,6 +89,7 @@ namespace GHelper
             checkMatrix.Text = Properties.Strings.TurnOffOnBattery;
             checkMatrixLid.Text = Properties.Strings.DisableOnLidClose;
             checkStartup.Text = Properties.Strings.RunOnStartup;
+            checkAccessible.Text = Properties.Strings.AccessibleMode;
 
             buttonMatrix.Text = Properties.Strings.PictureGif;
             buttonQuit.Text = Properties.Strings.Quit;
@@ -194,6 +195,11 @@ namespace GHelper
 
             checkStartup.Checked = Startup.IsScheduled();
             checkStartup.CheckedChanged += CheckStartup_CheckedChanged;
+
+            checkAccessible.Checked = AppConfig.IsAccessible();
+            checkAccessible.CheckedChanged += (sender, e) => {
+                AppConfig.Set("accessible_mode", checkAccessible.Checked ? 1 : 0);
+            };
 
             labelVersion.Click += LabelVersion_Click;
             labelVersion.ForeColor = Color.FromArgb(128, Color.Gray);

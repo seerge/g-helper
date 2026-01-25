@@ -2356,5 +2356,52 @@ namespace GHelper.Properties {
                 return ResourceManager.GetString("Zoom", resourceCulture);
             }
         }
+
+        internal static string AccessibleMode {
+            get {
+                return ResourceManager.GetString("AccessibleMode", resourceCulture);
+            }
+        }
+
+        internal static string TableEditor {
+            get {
+                return ResourceManager.GetString("TableEditor", resourceCulture);
+            }
+        }
+
+        internal static string ChartView {
+            get {
+                return ResourceManager.GetString("ChartView", resourceCulture);
+            }
+        }
+
+        internal static string FanCurveWarning {
+            get {
+                return ResourceManager.GetString("FanCurveWarning", resourceCulture);
+            }
+        }
+
+        internal static string Point {
+            get {
+                return ResourceManager.GetString("Point", resourceCulture);
+            }
+        }
+
+        internal static string Temperature {
+            get {
+                return ResourceManager.GetString("Temperature", resourceCulture);
+            }
+        }
+
+        internal static string Speed {
+            get {
+                return ResourceManager.GetString("Speed", resourceCulture);
+            }
+        }
+        internal static string DisableBacklight {
+            get {
+                return ResourceManager.GetString("DisableBacklight", resourceCulture);
+            }
+        }
     }
 }

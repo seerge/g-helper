@@ -1040,6 +1040,13 @@ namespace GHelper.Input
 
         public static void SetBacklight(int delta, bool force = false)
         {
+            if (AppConfig.IsBacklightDisabled())
+            {
+                if (delta > 0) Program.toast.RunToast("Backlight Disabled", ToastIcon.BacklightDown);
+                Aura.ApplyBrightness(0);
+                return;
+            }
+
             int backlight_power = AppConfig.Get("keyboard_brightness", 1);
             int backlight_battery = AppConfig.Get("keyboard_brightness_ac", 1);
             bool onBattery = SystemInformation.PowerStatus.PowerLineStatus != PowerLineStatus.Online;

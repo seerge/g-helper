@@ -307,6 +307,17 @@ namespace GHelper
             comboKeyboardSpeed.SelectedValue = Aura.Speed;
             comboKeyboardSpeed.SelectedValueChanged += ComboKeyboardSpeed_SelectedValueChanged;
 
+            checkNoBacklight.Checked = AppConfig.IsBacklightDisabled();
+            checkNoBacklight.Text = Properties.Strings.DisableBacklight;
+            checkNoBacklight.CheckedChanged += delegate
+            {
+                AppConfig.Set("no_backlight", checkNoBacklight.Checked ? 1 : 0);
+                if (checkNoBacklight.Checked)
+                    Aura.ApplyBrightness(0);
+                else
+                    Aura.ApplyBrightness(InputDispatcher.GetBacklight());
+            };
+
             // Keyboard
             checkAwake.Checked = AppConfig.IsNotFalse("keyboard_awake");
             checkBattery.Checked = AppConfig.IsOnBattery("keyboard_awake");
