@@ -1412,6 +1412,20 @@ namespace GHelper
 
             panelScreen.AccessibleName = labelSreen.Text + (screenAuto ? " (" + Properties.Strings.AutoMode + ")" : "");
 
+            // Accessibility: Indicate active state on buttons
+            buttonScreenAuto.AccessibleName = Properties.Strings.AutoMode + (screenAuto ? " (" + Properties.Strings.On + ")" : "");
+
+            if (int.TryParse(button60Hz.Text.Replace("Hz", ""), out int freq60))
+                button60Hz.AccessibleName = button60Hz.Text + (!screenAuto && frequency == freq60 ? " (" + Properties.Strings.On + ")" : "");
+
+            // Handle potential "+ OD" suffix
+            string txt120 = button120Hz.Text.Replace(" + OD", "").Replace("Hz", "");
+            if (int.TryParse(txt120, out int freq120))
+                button120Hz.AccessibleName = button120Hz.Text + (!screenAuto && frequency == freq120 ? " (" + Properties.Strings.On + ")" : "");
+
+            if (buttonMiniled.Visible)
+                buttonMiniled.AccessibleName = buttonMiniled.Text + (buttonMiniled.Activated ? " (" + Properties.Strings.On + ")" : "");
+
         }
 
         private void ButtonQuit_Click(object? sender, EventArgs e)
