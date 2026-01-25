@@ -1909,17 +1909,26 @@ namespace GHelper
 
         public void VisualiseBatteryFull()
         {
+            string stateOn = "on";
+            string stateOff = "off";
+
+            if (AppConfig.IsAccessible())
+            {
+                stateOn = Properties.Strings.On;
+                stateOff = Properties.Strings.Off;
+            }
+
             if (BatteryControl.chargeFull)
             {
                 buttonBatteryFull.BackColor = colorStandard;
                 buttonBatteryFull.ForeColor = SystemColors.ControlLightLight;
-                buttonBatteryFull.AccessibleName = Properties.Strings.BatteryChargeLimit + "100% on";
+                buttonBatteryFull.AccessibleName = Properties.Strings.BatteryChargeLimit + " 100% " + stateOn;
             }
             else
             {
                 buttonBatteryFull.BackColor = buttonSecond;
                 buttonBatteryFull.ForeColor = SystemColors.ControlDark;
-                buttonBatteryFull.AccessibleName = Properties.Strings.BatteryChargeLimit + "100% off";
+                buttonBatteryFull.AccessibleName = Properties.Strings.BatteryChargeLimit + " 100% " + stateOff;
             }
 
         }
