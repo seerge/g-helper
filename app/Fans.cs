@@ -448,7 +448,7 @@ namespace GHelper
                 }
 
                 // 3. Advanced Tab (if AMD)
-                if (buttonAdvanced.Visible)
+                if (RyzenControl.IsAMD())
                 {
                     TabPage tabAdvanced = new TabPage("Advanced");
                     panelAdvanced.Dock = DockStyle.Fill;
