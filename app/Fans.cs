@@ -477,6 +477,9 @@ namespace GHelper
                 panelSliders.Padding = new Padding(0);
                 panelSliders.Controls.Add(tabControl);
                 tabControl.BringToFront();
+
+                // Re-initialize controls to ensure visibility in new tabs
+                InitAll();
             }
 
             FormClosed += Fans_FormClosed;
