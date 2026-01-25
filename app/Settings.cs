@@ -1412,19 +1412,29 @@ namespace GHelper
 
             panelScreen.AccessibleName = labelSreen.Text + (screenAuto ? " (" + Properties.Strings.AutoMode + ")" : "");
 
-            // Accessibility: Indicate active state on buttons
-            buttonScreenAuto.AccessibleName = Properties.Strings.AutoMode + (screenAuto ? " (" + Properties.Strings.On + ")" : "");
+            // Accessibility: Indicate active state on buttons only in Accessible Mode
+            if (AppConfig.IsAccessible())
+            {
+                buttonScreenAuto.AccessibleName = Properties.Strings.AutoMode + (screenAuto ? " (" + Properties.Strings.On + ")" : "");
 
-            if (int.TryParse(button60Hz.Text.Replace("Hz", ""), out int freq60))
-                button60Hz.AccessibleName = button60Hz.Text + (!screenAuto && frequency == freq60 ? " (" + Properties.Strings.On + ")" : "");
+                if (int.TryParse(button60Hz.Text.Replace("Hz", ""), out int freq60))
+                    button60Hz.AccessibleName = button60Hz.Text + (!screenAuto && frequency == freq60 ? " (" + Properties.Strings.On + ")" : "");
 
-            // Handle potential "+ OD" suffix
-            string txt120 = button120Hz.Text.Replace(" + OD", "").Replace("Hz", "");
-            if (int.TryParse(txt120, out int freq120))
-                button120Hz.AccessibleName = button120Hz.Text + (!screenAuto && frequency == freq120 ? " (" + Properties.Strings.On + ")" : "");
+                // Handle potential "+ OD" suffix
+                string txt120 = button120Hz.Text.Replace(" + OD", "").Replace("Hz", "");
+                if (int.TryParse(txt120, out int freq120))
+                    button120Hz.AccessibleName = button120Hz.Text + (!screenAuto && frequency == freq120 ? " (" + Properties.Strings.On + ")" : "");
 
-            if (buttonMiniled.Visible)
-                buttonMiniled.AccessibleName = buttonMiniled.Text + (buttonMiniled.Activated ? " (" + Properties.Strings.On + ")" : "");
+                if (buttonMiniled.Visible)
+                    buttonMiniled.AccessibleName = buttonMiniled.Text + (buttonMiniled.Activated ? " (" + Properties.Strings.On + ")" : "");
+            }
+            else
+            {
+                buttonScreenAuto.AccessibleName = Properties.Strings.AutoMode;
+                button60Hz.AccessibleName = button60Hz.Text; // Should imply refresh rate
+                button120Hz.AccessibleName = button120Hz.Text;
+                if (buttonMiniled.Visible) buttonMiniled.AccessibleName = buttonMiniled.Text;
+            }
 
         }
 
@@ -1627,6 +1637,20 @@ namespace GHelper
                     menuItem.Checked = ((int)menuItem.Tag == mode);
                 }
             }
+
+            if (AppConfig.IsAccessible())
+            {
+                buttonSilent.AccessibleName = Properties.Strings.Silent + (buttonSilent.Activated ? " (" + Properties.Strings.On + ")" : "");
+                buttonBalanced.AccessibleName = Properties.Strings.Balanced + (buttonBalanced.Activated ? " (" + Properties.Strings.On + ")" : "");
+                buttonTurbo.AccessibleName = Properties.Strings.Turbo + (buttonTurbo.Activated ? " (" + Properties.Strings.On + ")" : "");
+            }
+
+            if (AppConfig.IsAccessible())
+            {
+                buttonSilent.AccessibleName = Properties.Strings.Silent + (buttonSilent.Activated ? " (" + Properties.Strings.On + ")" : "");
+                buttonBalanced.AccessibleName = Properties.Strings.Balanced + (buttonBalanced.Activated ? " (" + Properties.Strings.On + ")" : "");
+                buttonTurbo.AccessibleName = Properties.Strings.Turbo + (buttonTurbo.Activated ? " (" + Properties.Strings.On + ")" : "");
+            }
         }
 
 
@@ -1804,6 +1828,14 @@ namespace GHelper
                 menuStandard.Checked = buttonStandard.Activated;
                 menuUltimate.Checked = buttonUltimate.Activated;
                 menuOptimized.Checked = buttonOptimized.Activated;
+            }
+
+            if (AppConfig.IsAccessible())
+            {
+                buttonEco.AccessibleName = Properties.Strings.EcoMode + (buttonEco.Activated ? " (" + Properties.Strings.On + ")" : "");
+                buttonStandard.AccessibleName = Properties.Strings.StandardMode + (buttonStandard.Activated ? " (" + Properties.Strings.On + ")" : "");
+                buttonUltimate.AccessibleName = Properties.Strings.UltimateMode + (buttonUltimate.Activated ? " (" + Properties.Strings.On + ")" : "");
+                buttonOptimized.AccessibleName = Properties.Strings.Optimized + (buttonOptimized.Activated ? " (" + Properties.Strings.On + ")" : "");
             }
 
             // UI Fix for small screeens
