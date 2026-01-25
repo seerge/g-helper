@@ -428,6 +428,7 @@ namespace GHelper
                 
                 // 1. CPU Tab
                 TabPage tabCPU = new TabPage("CPU");
+                panelPower.AutoSize = false; // Disable AutoSize to prevent collapse
                 panelPower.Dock = DockStyle.Fill;
                 panelPower.Visible = true;
                 panelPower.Parent = tabCPU; // Move panel to tab
@@ -439,6 +440,7 @@ namespace GHelper
                 if (gpuVisible)
                 {
                     TabPage tabGPU = new TabPage("GPU");
+                    panelGPU.AutoSize = false;
                     panelGPU.Dock = DockStyle.Fill;
                     panelGPU.Visible = true;
                     panelGPU.Parent = tabGPU;
@@ -451,6 +453,7 @@ namespace GHelper
                 if (RyzenControl.IsAMD())
                 {
                     TabPage tabAdvanced = new TabPage("Advanced");
+                    panelAdvanced.AutoSize = false;
                     panelAdvanced.Dock = DockStyle.Fill;
                     panelAdvanced.Visible = true;
                     panelAdvanced.Parent = tabAdvanced;
