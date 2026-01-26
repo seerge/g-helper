@@ -44,6 +44,9 @@ namespace GHelper
         // Helper to add accessible input fields next to sliders
         private void AddInput(TrackBar track, Label labelVal, Label labelTitle)
         {
+            if (!AppConfig.IsAccessible()) return;
+            if (track.Tag is NumericUpDown) return;
+
             NumericUpDown num = new NumericUpDown();
             num.Top = labelVal.Top;
             num.Left = labelVal.Left - 20; // Shift slightly left to fit
@@ -80,6 +83,8 @@ namespace GHelper
             labelVal.Visible = false; 
             track.Parent.Controls.Add(num);
             num.BringToFront();
+
+            track.Tag = num;
         }
 
         private void InitFanTable()
@@ -518,10 +523,10 @@ namespace GHelper
                         labelRisky, panelAdvancedApply, panelAdvancedAlways 
                     };
 
-                    // Add in reverse order because Dock=Top stacks from bottom if added sequentially? 
-                    // No, let's just add them and ensure Dock is Top.
-                    // Actually, if we change Parent, we need to be careful.
-                    
+                    buttonApplyAdvanced.AccessibleName = Properties.Strings.Apply;
+                    checkApplyUV.AccessibleName = Properties.Strings.AutoApply;
+                    buttonDownload.AccessibleName = buttonDownload.Text;
+
                     foreach (var ctrl in advancedControls)
                     {
                         ctrl.Parent = tabAdvanced;
@@ -713,6 +718,13 @@ namespace GHelper
             trackUV.Value = cpuUV;
             trackUViGPU.Value = igpuUV;
             trackTemp.Value = temp;
+
+            if (AppConfig.IsAccessible())
+            {
+                AddInput(trackUV, labelUV, labelLeftUV);
+                AddInput(trackUViGPU, labelUViGPU, labelLeftUViGPU);
+                AddInput(trackTemp, labelTemp, labelLeftTemp);
+            }
 
             VisualiseAdvanced();
 
