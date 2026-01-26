@@ -77,6 +77,15 @@ namespace GHelper.Properties {
                 return ResourceManager.GetString("ACPIError", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Advanced.
+        /// </summary>
+        internal static string Advanced {
+            get {
+                return ResourceManager.GetString("Advanced", resourceCulture);
+            }
+        }
         
         /// <summary>
         ///   Looks up a localized string similar to Restart your device to apply changes.

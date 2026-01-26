@@ -508,7 +508,7 @@ namespace GHelper
                 // 4. Advanced Tab (if AMD)
                 if (RyzenControl.IsAMD())
                 {
-                    TabPage tabAdvanced = new TabPage("Advanced");
+                    TabPage tabAdvanced = new TabPage(Properties.Strings.Advanced);
                     tabAdvanced.AutoScroll = true;
 
                     // Move children of panelAdvanced directly to the tab to avoid container layout issues

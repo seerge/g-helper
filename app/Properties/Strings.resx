@@ -911,4 +911,7 @@ Do you still want to continue?</value>
   <data name="DisableBacklight" xml:space="preserve">
     <value>Disable Backlight Completely</value>
   </data>
+  <data name="Advanced" xml:space="preserve">
+    <value>Advanced</value>
+  </data>
 </root>
