@@ -421,26 +421,68 @@ namespace GHelper
                 tableFanCharts.Visible = false;
                 buttonTable.Visible = false;
 
+                // 0. Top Panel for Mode Selection (Global context)
+                Panel panelTop = new Panel { Dock = DockStyle.Top, Height = 40, Padding = new Padding(5) };
+                Label labelMode = new Label { Text = Properties.Strings.PerformanceMode + ":", AutoSize = true, Top = 8, Left = 5 };
+
+                comboModes.Parent = panelTop;
+                comboModes.Visible = true;
+                comboModes.Left = labelMode.Right + 10;
+                comboModes.Top = 5;
+                comboModes.Width = 250;
+                comboModes.BringToFront();
+
+                panelTop.Controls.Add(labelMode);
+
                 TabControl tabControl = new TabControl();
                 tabControl.Dock = DockStyle.Fill;
                 tabControl.AccessibleRole = AccessibleRole.PageTabList;
 
                 // 1. Fans Tab (Moved from the right side)
                 TabPage tabFans = new TabPage(Properties.Strings.FanCurves);
+                
+                // Header for Fans Tab (Apply Checkbox)
+                FlowLayoutPanel panelFansHeader = new FlowLayoutPanel { Dock = DockStyle.Top, Height = 40, AutoSize = true };
+                checkApplyFans.Parent = panelFansHeader;
+                checkApplyFans.Visible = true;
+                checkApplyFans.AutoSize = true;
+                checkApplyFans.Margin = new Padding(5, 8, 10, 5);
+
+                buttonCalibrate.Parent = panelFansHeader;
+                buttonCalibrate.AutoSize = true;
+                buttonCalibrate.Margin = new Padding(0, 5, 0, 5);
+                
+                panelFansHeader.Controls.Add(checkApplyFans);
+                panelFansHeader.Controls.Add(buttonCalibrate);
+
                 panelFanTable.AutoSize = false;
                 panelFanTable.Dock = DockStyle.Fill;
                 panelFanTable.Visible = true;
                 panelFanTable.Parent = tabFans;
+                
                 tabFans.Controls.Add(panelFanTable);
+                tabFans.Controls.Add(panelFansHeader); // Add header (Dock=Top)
+
                 tabControl.TabPages.Add(tabFans);
 
                 // 2. CPU / Power Tab
                 TabPage tabCPU = new TabPage("CPU");
+                
+                // Header for Power (Apply Checkbox)
+                Panel panelPowerHeader = new Panel { Dock = DockStyle.Top, Height = 30, AutoSize = true };
+                checkApplyPower.Parent = panelPowerHeader;
+                checkApplyPower.Visible = true;
+                checkApplyPower.Location = new Point(5, 5);
+                checkApplyPower.AutoSize = true;
+                panelPowerHeader.Controls.Add(checkApplyPower);
+                
                 panelPower.AutoSize = false;
                 panelPower.Dock = DockStyle.Fill;
                 panelPower.Visible = true;
                 panelPower.Parent = tabCPU;
+                
                 tabCPU.Controls.Add(panelPower);
+                tabCPU.Controls.Add(panelPowerHeader); // Dock=Top
                 tabCPU.AutoScroll = true;
                 tabControl.TabPages.Add(tabCPU);
 
@@ -494,8 +536,13 @@ namespace GHelper
                 panelFans.Visible = false; // Hide the right-side container
                 panelSliders.Dock = DockStyle.Fill; // Left side becomes the whole window
                 panelSliders.Padding = new Padding(0);
+                
+                // Add Top Panel first (Dock=Top) then TabControl (Dock=Fill)
                 panelSliders.Controls.Add(tabControl);
+                panelSliders.Controls.Add(panelTop);
+                
                 tabControl.BringToFront();
+                panelTop.BringToFront(); // Ensure Top Panel is at the top
 
                 // Re-initialize controls to ensure visibility in new tabs
                 InitAll();
