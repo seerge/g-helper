@@ -451,9 +451,15 @@ namespace GHelper
                 buttonCalibrate.Parent = panelFansHeader;
                 buttonCalibrate.AutoSize = true;
                 buttonCalibrate.Margin = new Padding(0, 5, 0, 5);
+
+                buttonReset.Parent = panelFansHeader;
+                buttonReset.AutoSize = true;
+                buttonReset.Margin = new Padding(10, 5, 0, 5);
+                buttonReset.Visible = true;
                 
                 panelFansHeader.Controls.Add(checkApplyFans);
                 panelFansHeader.Controls.Add(buttonCalibrate);
+                panelFansHeader.Controls.Add(buttonReset);
 
                 panelFanTable.AutoSize = false;
                 panelFanTable.Dock = DockStyle.Fill;
