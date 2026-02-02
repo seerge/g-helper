@@ -1,5 +1,6 @@
 using GHelper.Ally;
 using GHelper.Battery;
+using GHelper.CompanionApp;
 using GHelper.Display;
 using GHelper.Gpu;
 using GHelper.Helpers;
@@ -41,6 +42,9 @@ namespace GHelper
         public static InputDispatcher? inputDispatcher;
 
         private static PowerLineStatus isPlugged = SystemInformation.PowerStatus.PowerLineStatus;
+
+
+        public static CompanionService companionService = new EmptyService();
 
         // The main entry point for the application
         public static void Main(string[] args)
