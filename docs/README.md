@@ -38,7 +38,8 @@ Small and lightweight Armoury Crate alternative for Asus laptops offering almost
 1. https://www.digitaltrends.com/computing/g-helper-armoury-crate-alternative/
 2. https://binaryfork.com/ghelper-armoury-crate-alternative-10216/
 3. https://www.ultrabookreview.com/71392-optimized-quiet-gaming-5080-5090/
-4. https://www.lesnumeriques.com/appli-logiciel/marre-des-lenteurs-d-armoury-crate-sur-votre-pc-portable-asus-decouvrez-g-helper-l-alternative-ultra-legere-n240111.html
+4. https://www.notebookcheck.net/Unbloated-G-Helper-The-best-open-source-alternative-to-Asus-Armoury-Crate-Part-2.1213486.0.html
+5. https://www.lesnumeriques.com/appli-logiciel/marre-des-lenteurs-d-armoury-crate-sur-votre-pc-portable-asus-decouvrez-g-helper-l-alternative-ultra-legere-n240111.html
 
 ## :gift: Advantages 
 
