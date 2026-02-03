@@ -1,76 +1,76 @@
 ﻿// Reference : thanks to https://github.com/RomanYazvinsky/ for initial discovery of XGM payloads
 
 using HidSharp;
-using System.Text;
 
-namespace GHelper.USB
+namespace GHelper.USB;
+
+public static class XGM
 {
-    public static class XGM
+    private const int ASUS_ID = 0x0b05;
+
+    private static readonly int[] deviceIds = [0x1970, 0x1a9a];
+
+    private static void Write(ReadOnlySpan<byte> data)
     {
-        const int ASUS_ID = 0x0b05;
-
-        static int[] deviceIds = { 0x1970, 0x1a9a};
-
-        public static void Write(byte[] data)
+        try
         {
-            HidDeviceLoader loader = new HidDeviceLoader();
-            try
+            var device = DeviceList.Local
+                .GetHidDevices(ASUS_ID)
+                .FirstOrDefault(device => deviceIds.Contains(device.ProductID) &&
+                                          device.CanOpen &&
+                                          device.GetMaxFeatureReportLength() >= 300);
+
+            if (device is null)
             {
-                HidDevice device = loader.GetDevices(ASUS_ID).Where(device => deviceIds.Contains(device.ProductID) && device.CanOpen && device.GetMaxFeatureReportLength() >= 300).FirstOrDefault();
-
-                if (device is null)
-                {
-                    Logger.WriteLine("XGM SUB device not found");
-                    return;
-                }
-
-                using (HidStream hidStream = device.Open())
-                {
-                    var payload = new byte[300];
-                    Array.Copy(data, payload, data.Length);
-
-                    hidStream.SetFeature(payload);
-                    Logger.WriteLine("XGM-" + device.ProductID + "|" + device.GetMaxFeatureReportLength() + ":" + BitConverter.ToString(data));
-
-                    hidStream.Close();
-                }
-            }
-            catch (Exception ex)
-            {
-                Logger.WriteLine($"Error accessing XGM device: {ex}");
+                Logger.WriteLine("XGM SUB device not found");
+                return;
             }
 
-        }
+            using var hidStream = device.Open();
+            Span<byte> payload = stackalloc byte[300];
+            payload.Clear();
+            data.CopyTo(payload);
 
-        public static void Init()
+            hidStream.SetFeature(payload.ToArray());
+            Logger.WriteLine($"XGM-{device.ProductID}|{Convert.ToHexString(payload)}");
+        }
+        catch (Exception ex)
         {
-            Write(Encoding.ASCII.GetBytes("^ASUS Tech.Inc."));
+            Logger.WriteLine($"Error accessing XGM device: {ex}");
         }
+    }
 
-        public static void Light(bool status)
-        {
-            Write(new byte[] { 0x5e, 0xc5, status ? (byte)0x50 : (byte)0 });
-        }
+    public static void Init()
+    {
+        Write("^ASUS Tech.Inc."u8);
+    }
 
-        public static void InitLight()
-        {
-            if (Program.acpi.IsXGConnected()) Light(AppConfig.Is("xmg_light"));
-        }
+    public static void Light(bool status)
+    {
+        Write([0x5e, 0xc5, status ? (byte)0x50 : (byte)0]);
+    }
 
-        public static void Reset()
-        {
-            Write(new byte[] { 0x5e, 0xd1, 0x02 });
-        }
+    public static void InitLight()
+    {
+        if (Program.acpi.IsXGConnected()) Light(AppConfig.Is("xmg_light"));
+    }
 
-        public static void SetFan(byte[] curve)
-        {
-            if (AsusACPI.IsInvalidCurve(curve)) return;
+    public static void Reset()
+    {
+        Write([0x5e, 0xd1, 0x02]);
+    }
 
-            byte[] msg = new byte[19];
-            Array.Copy(new byte[] { 0x5e, 0xd1, 0x01 }, msg, 3);
-            Array.Copy(curve, 0, msg, 3, curve.Length);
+    public static void SetFan(ReadOnlySpan<byte> curve)
+    {
+        if (AsusACPI.IsInvalidCurve(curve.ToArray())) return;
 
-            Write(msg);
-        }
+        Span<byte> msg = stackalloc byte[19];
+        msg.Clear();
+
+        ReadOnlySpan<byte> header = [0x5e, 0xd1, 0x01];
+        header.CopyTo(msg);
+        curve.CopyTo(msg[3..]);
+
+        Write(msg);
     }
 }
