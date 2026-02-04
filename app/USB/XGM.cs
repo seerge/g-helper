@@ -10,28 +10,28 @@ namespace GHelper.USB
     {
         const byte XGM_REPORT_ID = 0x5e;
         const int ASUS_ID = 0x0b05;
-        static readonly int[] deviceIds = { 0x1970, 0x1a9a, 0x1C29};
+        static readonly int[] deviceIds = { 0x1970, 0x1a9a, 0x1C29, 0x19B6};
 
         public static HidDevice? GetDevice()
         {
             try
             {
+                /*
                 var devices = DeviceList.Local.GetHidDevices(ASUS_ID).Where(device =>
                     deviceIds.Contains(device.ProductID) &&
-                    device.CanOpen);
+                    device.CanOpen &&
+                    device.GetMaxFeatureReportLength() >= 300);
 
-                /*
                 foreach (var device in devices)
                 {
                     var report = device.GetReportDescriptor().TryGetReport(ReportType.Feature, XGM_REPORT_ID, out _);
                     Logger.WriteLine($"Found XGM Device: PID={device.ProductID}, MaxFeatureReportLength={device.GetMaxFeatureReportLength()}, Report={report}");
                 }
                 */
-
                 return DeviceList.Local.GetHidDevices(ASUS_ID).FirstOrDefault(device =>
                     deviceIds.Contains(device.ProductID) &&
                     device.CanOpen &&
-                    device.GetReportDescriptor().TryGetReport(ReportType.Feature, XGM_REPORT_ID, out _));
+                    device.GetMaxFeatureReportLength() >= 300);
             }
             catch (Exception ex)
             {
@@ -58,7 +58,7 @@ namespace GHelper.USB
 
                 using (HidStream hidStream = device.Open())
                 {
-                    byte[] payload = new byte[device.GetMaxFeatureReportLength()];
+                    byte[] payload = new byte[300];
                     data.CopyTo(payload, 0);
                     hidStream.SetFeature(payload);
                     Logger.WriteLine($"XGM-{device.ProductID}|{device.GetMaxFeatureReportLength()}:{BitConverter.ToString(data)}");
