@@ -10,7 +10,7 @@ namespace GHelper.USB
     {
         const byte XGM_REPORT_ID = 0x5e;
         const int ASUS_ID = 0x0b05;
-        static readonly int[] deviceIds = { 0x1970, 0x1a9a, 0x1C29, 0x19b6};
+        static readonly int[] deviceIds = { 0x1970, 0x1a9a, 0x1C29};
 
         public static HidDevice? GetDevice()
         {
