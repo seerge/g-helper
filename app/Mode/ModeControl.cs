@@ -114,7 +114,7 @@ namespace GHelper.Mode
             });
 
 
-            if (AppConfig.Is("xgm_fan") && Program.acpi.IsXGConnected()) XGM.Reset();
+            if (AppConfig.Is("xgm_fan")) XGM.Reset();
 
             if (notify) Toast();
 
@@ -176,10 +176,10 @@ namespace GHelper.Mode
             {
 
                 bool xgmFan = false;
-                if (AppConfig.Is("xgm_fan") && Program.acpi.IsXGConnected())
+                if (AppConfig.Is("xgm_fan"))
                 {
                     XGM.SetFan(AppConfig.GetFanConfig(AsusFan.XGM));
-                    xgmFan = true;
+                    xgmFan = Program.acpi.IsXGConnected();
                 }
 
                 int cpuResult = Program.acpi.SetFanCurve(AsusFan.CPU, AppConfig.GetFanConfig(AsusFan.CPU));

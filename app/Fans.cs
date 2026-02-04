@@ -1186,7 +1186,7 @@ namespace GHelper
 
             InitPowerPlan();
 
-            if (Program.acpi.IsXGConnected()) XGM.Reset();
+            XGM.Reset();
 
 
             if (gpuVisible)

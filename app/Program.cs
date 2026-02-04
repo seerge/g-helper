@@ -134,7 +134,7 @@ namespace GHelper
             settingsForm.InitAura();
             settingsForm.InitMatrix();
 
-            gpuControl.InitXGM();
+            XGM.Init();
 
             SetAutoModes(init: true);
 
