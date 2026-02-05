@@ -192,6 +192,7 @@ namespace GHelper.Input
                 hook.RegisterHotKey(keyModifierAlt, Keys.F3);
                 hook.RegisterHotKey(keyModifierAlt, Keys.F4);
                 hook.RegisterHotKey(keyModifierAlt, Keys.F6);
+                hook.RegisterHotKey(keyModifierAlt, Keys.F9);
             }
 
             // FN-Lock group
@@ -494,6 +495,9 @@ namespace GHelper.Input
                     case Keys.F8:
                         if (AppConfig.IsDUO()) SetScreenpad(10);
                         else SetBrightnessDimming(10);
+                        break;
+                    case Keys.F9:
+                        Program.settingsForm.BeginInvoke(Program.settingsForm.allyControl.ToggleFPSLimit, true);
                         break;
                     case Keys.F13:
                         ToggleScreenRate();
