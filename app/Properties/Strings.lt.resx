@@ -190,7 +190,7 @@
     <value>Spalvų ciklas</value>
   </data>
   <data name="AuraComet" xml:space="preserve">
-    <value>Comet</value>
+    <value>Kometa</value>
   </data>
   <data name="AuraCounterClockwise" xml:space="preserve">
     <value>Prieš laikrodžio rodyklę</value>
@@ -211,7 +211,7 @@
     <value>Atsitiktinė</value>
   </data>
   <data name="AuraReact" xml:space="preserve">
-    <value>React</value>
+    <value>Reaktyvinis</value>
   </data>
   <data name="AuraSlow" xml:space="preserve">
     <value>Lėtas</value>
@@ -561,7 +561,7 @@ Vis tiek norite tęsti?</value>
     <value>min.</value>
   </data>
   <data name="MouseAngleSnapping" xml:space="preserve">
-    <value>Kampinis fiksavimas</value>
+    <value>Angle Snapping / Tuning</value>
   </data>
   <data name="MouseAutoPowerOff" xml:space="preserve">
     <value>Automatiškai išjungti po</value>
@@ -672,7 +672,7 @@ Vis tiek norite tęsti?</value>
     <value>Kažkas naudoja dGPU ir neleidžia įjungti ekonomiško režimo. Norite leisti G-Helper bandyti iš naujo paleisti dGPU įrenginių tvarkytuvėje? (Tęskite savo rizika)</value>
   </data>
   <data name="RPM" xml:space="preserve">
-    <value>RPM</value>
+    <value>aps.</value>
   </data>
   <data name="RSDeadzones" xml:space="preserve">
     <value>Dešiniojo jungiklio nejautrumo zonos</value>
@@ -819,66 +819,72 @@ Vis tiek norite tęsti?</value>
     <comment>Updated</comment>
   </data>
   <data name="SlashBounce" xml:space="preserve">
-    <value>Bounce</value>
+    <value>Atšokimas</value>
   </data>
   <data name="SlashMode" xml:space="preserve">
-    <value>Slash</value>
+    <value>Kirtis</value>
   </data>
   <data name="SlashLoading" xml:space="preserve">
-    <value>Loading</value>
+    <value>Įkėlimas</value>
   </data>
   <data name="SlashBitStream" xml:space="preserve">
-    <value>Bit Stream</value>
+    <value>Bitų srautas</value>
   </data>
   <data name="SlashTransmission" xml:space="preserve">
-    <value>Transmission</value>
+    <value>Perdavimas</value>
   </data>
   <data name="SlashFlow" xml:space="preserve">
-    <value>Flow</value>
+    <value>Srautas</value>
   </data>
   <data name="SlashFlux" xml:space="preserve">
-    <value>Flux</value>
+    <value>„Flux“</value>
   </data>
   <data name="SlashPhantom" xml:space="preserve">
-    <value>Phantom</value>
+    <value>Fantomas</value>
   </data>
   <data name="SlashSpectrum" xml:space="preserve">
-    <value>Spectrum</value>
+    <value>Spektras</value>
   </data>
   <data name="SlashHazard" xml:space="preserve">
-    <value>Hazard</value>
+    <value>Grėsmė</value>
   </data>
   <data name="SlashInterfacing" xml:space="preserve">
-    <value>Interfacing</value>
+    <value>Sąveika</value>
   </data>
   <data name="SlashRamp" xml:space="preserve">
-    <value>Ramp</value>
+    <value>Rampa</value>
   </data>
   <data name="SlashGameOver" xml:space="preserve">
-    <value>Game Over</value>
+    <value>Žaidimo pabaiga</value>
   </data>
   <data name="SlashStart" xml:space="preserve">
-    <value>Start</value>
+    <value>Pradėti</value>
   </data>
   <data name="SlashBuzzer" xml:space="preserve">
-    <value>Buzzer</value>
+    <value>„Buzzer“</value>
   </data>
   <data name="SlashStatic" xml:space="preserve">
-    <value>Static</value>
+    <value>Statinis</value>
   </data>
   <data name="SlashBatteryLevel" xml:space="preserve">
-    <value>Battery Level</value>
+    <value>Baterijos įkrovos lygis</value>
   </data>
   <data name="IntervalOff" xml:space="preserve">
-    <value>Interval Off</value>
+    <value>Intervalas išjungtas</value>
   </data>
   <data name="IntervalSeconds" xml:space="preserve">
-    <value>Interval {0}s</value>
+    <value>Intervalas {0} s.</value>
   </data>
   <data name="DisableDynamicLighting" xml:space="preserve">
-    <value>Please disable Windows &gt; Dynamic Lighting</value>
+    <value>Išjunkite „Windows“ &gt; „Dinaminis apšvietimas“</value>
   </data>
   <data name="AmbientModeResources" xml:space="preserve">
-    <value>Ambient mode may increase resource usage</value>
+    <value>„Ambient“ režimas gali padidinti energijos suvartojimą</value>
+  </data>
+  <data name="MouseMotionSync" xml:space="preserve">
+    <value>Motion Sync</value>
+  </data>
+  <data name="MouseZoneMode" xml:space="preserve">
+    <value>Zone Mode</value>
   </data>
 </root>

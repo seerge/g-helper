@@ -121,14 +121,20 @@ namespace GHelper.Helpers
                 return AppConfig.Get("clamshell_default_lid_action", -1);
             }
 
-            int val = PowerNative.GetLidAction(true);
-            //If it is 0 then it is likely already set by clamshell mdoe
-            //If 0 was set by the user, then why do they even use clamshell mode?
-            //We only care about hibernate or shutdown setting here
-            if (val == 2 || val == 3)
+            try
             {
-                AppConfig.Set("clamshell_default_lid_action", val);
-                return val;
+                int val = PowerNative.GetLidAction(true);
+                //If it is 0 then it is likely already set by clamshell mdoe
+                //If 0 was set by the user, then why do they even use clamshell mode?
+                //We only care about hibernate or shutdown setting here
+                if (val == 2 || val == 3)
+                {
+                    AppConfig.Set("clamshell_default_lid_action", val);
+                    return val;
+                }
+            } catch (Exception ex)
+            {
+                Logger.WriteLine("Can't get Lid Action: " + ex.ToString());
             }
 
             return 1;

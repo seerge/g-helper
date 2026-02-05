@@ -874,15 +874,20 @@ namespace GHelper
             //contextMenuStrip.ShowCheckMargin = true;
             contextMenuStrip.RenderMode = ToolStripRenderMode.System;
 
-            if (darkTheme)
-            {
-                contextMenuStrip.BackColor = this.BackColor;
-                contextMenuStrip.ForeColor = this.ForeColor;
-            }
+            InitContextMenuTheme();
 
             if (Program.trayIcon is not null) Program.trayIcon.ContextMenuStrip = contextMenuStrip;
 
 
+        }
+
+        public void InitContextMenuTheme()
+        {
+            if (contextMenuStrip is not null)
+            {
+                contextMenuStrip.BackColor = this.BackColor;
+                contextMenuStrip.ForeColor = this.ForeColor;
+            }
         }
 
         private void ButtonXGM_Click(object? sender, EventArgs e)
@@ -1946,11 +1951,11 @@ namespace GHelper
                 switch (m.DeviceType())
                 {
                     case PeripheralType.Mouse:
-                        b.Image = ControlHelper.TintImage(Properties.Resources.icons8_maus_32, b.ForeColor);
+                        b.Image = ControlHelper.ResizeImage(ControlHelper.TintImage(Properties.Resources.icons8_maus_48, b.ForeColor), ControlHelper.Scale);
                         break;
 
                     case PeripheralType.Keyboard:
-                        b.Image = ControlHelper.TintImage(Properties.Resources.icons8_keyboard_32, b.ForeColor);
+                        b.Image = ControlHelper.ResizeImage(ControlHelper.TintImage(Properties.Resources.icons8_keyboard_32, b.ForeColor), ControlHelper.Scale);
                         break;
                 }
 

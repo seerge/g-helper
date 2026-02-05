@@ -521,7 +521,7 @@ public static class AppConfig
 
     public static bool IsStrixLimitedRGB()
     {
-        return ContainsModel("G614PM") ||  ContainsModel("G614PR") || ContainsModel("G512LI") || ContainsModel("G513R") || ContainsModel("G713QM") || ContainsModel("G713PV") || ContainsModel("G513IE") || ContainsModel("G713RC") || ContainsModel("G713IC") || ContainsModel("G713PU") || ContainsModel("G513QM") || ContainsModel("G513QC") || ContainsModel("G531G") || ContainsModel("G615JMR") || ContainsModel("G815LR");
+        return ContainsModel("G614PM") || ContainsModel("G614PP") || ContainsModel("G614PR") || ContainsModel("G512LI") || ContainsModel("G513R") || ContainsModel("G713QM") || ContainsModel("G713PV") || ContainsModel("G513IE") || ContainsModel("G713RC") || ContainsModel("G713IC") || ContainsModel("G713PU") || ContainsModel("G513QM") || ContainsModel("G513QC") || ContainsModel("G531G") || ContainsModel("G615JMR") || ContainsModel("G615LM") || ContainsModel("G815LR");
     }
 
     public static bool IsPossible4ZoneRGB()
@@ -546,7 +546,7 @@ public static class AppConfig
 
     public static bool IsNoDirectRGB()
     {
-        return ContainsModel("GA503") || ContainsModel("G533Q") || ContainsModel("GU502") || ContainsModel("GU603") || IsSlash();
+        return ContainsModel("GA503") || ContainsModel("G533Q") || ContainsModel("GU502") || ContainsModel("GU603") || IsSlash() || IsAlly();
     }
 
     public static bool IsStrixNumpad()
@@ -669,7 +669,7 @@ public static class AppConfig
 
     public static bool IsFanRequired()
     {
-        return ContainsModel("GA402X") || ContainsModel("GU604") || ContainsModel("G513") || ContainsModel("G713R") || ContainsModel("G713P") || ContainsModel("GU605") || ContainsModel("GA605") || ContainsModel("G634J") || ContainsModel("G834J") || ContainsModel("G614J") || ContainsModel("G814J") || ContainsModel("FX507V") || ContainsModel("G614F") || ContainsModel("G614R") || ContainsModel("G733");
+        return ContainsModel("GA402X") || ContainsModel("GU604") || ContainsModel("G513") || ContainsModel("G713R") || ContainsModel("G713P") || ContainsModel("GU605") || ContainsModel("GA605") || ContainsModel("G634J") || ContainsModel("G834J") || ContainsModel("G614J") || ContainsModel("G814J") || ContainsModel("FX507V") || ContainsModel("FX507ZV") || ContainsModel("FX608J") || ContainsModel("G614F") || ContainsModel("G614R") || ContainsModel("G733") || ContainsModel("H7606");
     }
 
     public static bool IsAMDLight()
@@ -680,6 +680,11 @@ public static class AppConfig
     public static bool IsPowerRequired()
     {
         return ContainsModel("FX507") || ContainsModel("FX517") || ContainsModel("FX707");
+    }
+
+    public static bool IsModeReapplyRequired()
+    {
+        return Is("mode_reapply") || ContainsModel("FA401");
     }
 
     public static bool IsGPUFix()
@@ -761,6 +766,11 @@ public static class AppConfig
     public static bool IsDynamicLighting()
     {
         return IsSlash() || IsIntelHX() || IsTUF() || IsZ13();
+    }
+
+    public static bool IsDynamicLightingOnly()
+    {
+        return ContainsModel("S560") || ContainsModel("M540") || ContainsModel("UX760");
     }
 
     public static bool IsDynamicLightingInit()

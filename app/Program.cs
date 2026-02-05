@@ -65,7 +65,12 @@ namespace GHelper
                 }
 
                 BatteryLimit();
-                InputDispatcher.StartupBacklight();
+                try
+                {
+                    InputDispatcher.StartupBacklight();
+                } catch (Exception ex) { 
+                    Logger.WriteLine($"Startup Backlight: {ex.Message}");
+                }
                 Application.Exit();
                 return;
             }
@@ -133,7 +138,7 @@ namespace GHelper
             settingsForm.InitAura();
             settingsForm.InitMatrix();
 
-            gpuControl.InitXGM();
+            XGM.Init();
 
             SetAutoModes(init: true);
 
@@ -226,6 +231,7 @@ namespace GHelper
             {
                 case UserPreferenceCategory.General:
                     bool changed = settingsForm.InitTheme();
+                    settingsForm.InitContextMenuTheme();
                     settingsForm.VisualiseIcon();
 
                     if (changed)
@@ -303,7 +309,6 @@ namespace GHelper
 
         private static void SystemEvents_PowerModeChanged(object sender, PowerModeChangedEventArgs e)
         {
-            Logger.WriteLine($"Power Mode {e.Mode}: {SystemInformation.PowerStatus.PowerLineStatus}");
             if (e.Mode == PowerModes.Suspend)
             {
                 Logger.WriteLine("Power Mode Changed:" + e.Mode.ToString());
@@ -312,15 +317,19 @@ namespace GHelper
                 InputDispatcher.ShutdownStatusLed();
             }
 
+            if (SystemInformation.PowerStatus.PowerLineStatus == isPlugged) return;
+            Logger.WriteLine($"Power Mode {e.Mode}: {SystemInformation.PowerStatus.PowerLineStatus}");
+            
+            if (AppConfig.Is("disable_power_event")) return;
+
             int delay = AppConfig.Get("charger_delay");
             if (delay > 0)
             {
                 Logger.WriteLine($"Charger Delay: {delay}");
                 Thread.Sleep(delay);
+                if (SystemInformation.PowerStatus.PowerLineStatus == isPlugged) return;
             }
 
-            if (SystemInformation.PowerStatus.PowerLineStatus == isPlugged) return;
-            if (AppConfig.Is("disable_power_event")) return;
             SetAutoModes(powerChanged: true);
         }
 

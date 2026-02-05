@@ -561,7 +561,7 @@ Folytatni szeretnéd?</value>
     <value>perc</value>
   </data>
   <data name="MouseAngleSnapping" xml:space="preserve">
-    <value>Szögkorrekció</value>
+    <value>Angle Snapping / Tuning</value>
   </data>
   <data name="MouseAutoPowerOff" xml:space="preserve">
     <value>Automatikus kikapcsolás idő múlva</value>
@@ -880,5 +880,11 @@ Folytatni szeretnéd?</value>
   </data>
   <data name="AmbientModeResources" xml:space="preserve">
     <value>Ambient mode may increase resource usage</value>
+  </data>
+  <data name="MouseMotionSync" xml:space="preserve">
+    <value>Motion Sync</value>
+  </data>
+  <data name="MouseZoneMode" xml:space="preserve">
+    <value>Zone Mode</value>
   </data>
 </root>

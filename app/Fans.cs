@@ -1047,7 +1047,7 @@ namespace GHelper
             }
 
             // XG Mobile Fan check
-            if (Program.acpi.IsXGConnected())
+            if (Program.acpi.IsXGConnected() || XGM.IsConnected())
             {
                 AppConfig.Set("xgm_fan", 1);
                 chartCount++;
@@ -1186,7 +1186,7 @@ namespace GHelper
 
             InitPowerPlan();
 
-            if (Program.acpi.IsXGConnected()) XGM.Reset();
+            XGM.Reset();
 
 
             if (gpuVisible)
