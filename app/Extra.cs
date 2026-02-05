@@ -423,9 +423,9 @@ namespace GHelper
             sliderBrightness.Value = InputDispatcher.GetBacklight();
             sliderBrightness.ValueChanged += SliderBrightness_ValueChanged;
 
-            panelXMG.Visible = (Program.acpi.DeviceGet(AsusACPI.GPUXGConnected) == 1);
-            checkXMG.Checked = !(AppConfig.Get("xmg_light") == 0);
-            checkXMG.CheckedChanged += CheckXMG_CheckedChanged;
+            panelXGM.Visible = XGM.IsConnected();
+            checkXGM.Checked = !(AppConfig.Get("xmg_light") == 0);
+            checkXGM.CheckedChanged += CheckXGM_CheckedChanged;
 
             numericBacklightTime.Value = AppConfig.Get("keyboard_timeout", 60);
             numericBacklightPluggedTime.Value = AppConfig.Get("keyboard_ac_timeout", 0);
@@ -478,6 +478,7 @@ namespace GHelper
             checkPerKeyRGB.CheckedChanged += CheckPerKeyRGB_CheckedChanged;
 
             toolTip.SetToolTip(checkAutoToggleClamshellMode, "Disable sleep on lid close when plugged in and external monitor is connected");
+            toolTip.SetToolTip(checkNVPlatform, "Stops NVIDIA services when the discrete GPU is disabled\nand restarts them automatically when the GPU is enabled");
 
             InitCores();
             InitServices();
@@ -743,10 +744,10 @@ namespace GHelper
             Program.inputDispatcher.InitBacklightTimer();
         }
 
-        private void CheckXMG_CheckedChanged(object? sender, EventArgs e)
+        private void CheckXGM_CheckedChanged(object? sender, EventArgs e)
         {
-            AppConfig.Set("xmg_light", (checkXMG.Checked ? 1 : 0));
-            XGM.Light(checkXMG.Checked);
+            AppConfig.Set("xmg_light", (checkXGM.Checked ? 1 : 0));
+            XGM.Light(checkXGM.Checked);
         }
 
         private void CheckUSBC_CheckedChanged(object? sender, EventArgs e)

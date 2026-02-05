@@ -58,7 +58,7 @@ namespace GHelper.Gpu
             AppConfig.Set("gpu_mode", gpuMode);
             settings.VisualiseGPUMode(gpuMode);
 
-            Aura.CustomRGB.ApplyGPUColor();
+            Aura.CustomRGB.ApplyGPUColor(gpuMode);
 
         }
 
@@ -188,7 +188,7 @@ namespace GHelper.Gpu
                         Program.modeControl.SetGPUClocks(false);
                     }
 
-                    if (AppConfig.Is("mode_reapply"))
+                    if (AppConfig.IsModeReapplyRequired())
                     {
                         await Task.Delay(TimeSpan.FromMilliseconds(3000));
                         Program.modeControl.AutoPerformance();
@@ -269,16 +269,6 @@ namespace GHelper.Gpu
         }
 
 
-        public void InitXGM()
-        {
-            if (Program.acpi.IsXGConnected())
-            {
-                //Program.acpi.DeviceSet(AsusACPI.GPUXGInit, 1, "XG Init");
-                XGM.Init();
-            }
-
-        }
-
         public void ToggleXGM(bool silent = false)
         {
 
@@ -314,8 +304,7 @@ namespace GHelper.Gpu
                     else
                         Program.acpi.DeviceSet(AsusACPI.GPUXG, 1, "GPU XGM");
 
-                    InitXGM();
-                    XGM.Light(AppConfig.Is("xmg_light"));
+                    XGM.Init();
 
                     await Task.Delay(TimeSpan.FromSeconds(15));
 

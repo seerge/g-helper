@@ -106,11 +106,15 @@ namespace GHelper.Mode
                 await Task.Delay(TimeSpan.FromMilliseconds(1000));
                 AutoPower();
 
-
+                var command = AppConfig.GetModeString("mode_command");
+                if (command is not null)
+                {   Logger.WriteLine("Running mode command: " + command);
+                    RestrictedProcessHelper.RunAsRestrictedUser(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.System), "cmd.exe"), "/C " + command);
+                }
             });
 
 
-            if (AppConfig.Is("xgm_fan") && Program.acpi.IsXGConnected()) XGM.Reset();
+            if (AppConfig.Is("xgm_fan")) XGM.Reset();
 
             if (notify) Toast();
 
@@ -172,10 +176,10 @@ namespace GHelper.Mode
             {
 
                 bool xgmFan = false;
-                if (AppConfig.Is("xgm_fan") && Program.acpi.IsXGConnected())
+                if (AppConfig.Is("xgm_fan"))
                 {
                     XGM.SetFan(AppConfig.GetFanConfig(AsusFan.XGM));
-                    xgmFan = true;
+                    xgmFan = Program.acpi.IsXGConnected();
                 }
 
                 int cpuResult = Program.acpi.SetFanCurve(AsusFan.CPU, AppConfig.GetFanConfig(AsusFan.CPU));

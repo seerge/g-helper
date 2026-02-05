@@ -561,7 +561,7 @@
     <value>دقائق</value>
   </data>
   <data name="MouseAngleSnapping" xml:space="preserve">
-    <value>تعديل زاوية الماوس</value>
+    <value>Angle Snapping / Tuning</value>
   </data>
   <data name="MouseAutoPowerOff" xml:space="preserve">
     <value>إيقاف تشغيل الماوس تلقائيًا بعد</value>
@@ -880,5 +880,11 @@
   </data>
   <data name="AmbientModeResources" xml:space="preserve">
     <value>الوضع المحيط قد يزيد من استخدام الموارد</value>
+  </data>
+  <data name="MouseMotionSync" xml:space="preserve">
+    <value>Motion Sync</value>
+  </data>
+  <data name="MouseZoneMode" xml:space="preserve">
+    <value>Zone Mode</value>
   </data>
 </root>

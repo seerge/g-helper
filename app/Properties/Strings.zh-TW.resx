@@ -561,7 +561,7 @@
     <value>分鐘</value>
   </data>
   <data name="MouseAngleSnapping" xml:space="preserve">
-    <value>角度修正</value>
+    <value>直線修正/定位角度</value>
   </data>
   <data name="MouseAutoPowerOff" xml:space="preserve">
     <value>自動關閉電源</value>
@@ -873,12 +873,18 @@
     <value>Interval Off</value>
   </data>
   <data name="IntervalSeconds" xml:space="preserve">
-    <value>Interval {0}s</value>
+    <value>間隔 {0}秒</value>
   </data>
   <data name="DisableDynamicLighting" xml:space="preserve">
     <value>Please disable Windows &gt; Dynamic Lighting</value>
   </data>
   <data name="AmbientModeResources" xml:space="preserve">
     <value>Ambient mode may increase resource usage</value>
+  </data>
+  <data name="MouseMotionSync" xml:space="preserve">
+    <value>動態同步</value>
+  </data>
+  <data name="MouseZoneMode" xml:space="preserve">
+    <value>Zone 模式</value>
   </data>
 </root>

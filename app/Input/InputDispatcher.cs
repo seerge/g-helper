@@ -816,6 +816,7 @@ namespace GHelper.Input
                         return;
                     // The M4/ROG key.
                     case 56:
+                    case 147:
                         KeyProcess("m4");
                         return;
                     case 162:
