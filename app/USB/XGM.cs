@@ -10,7 +10,7 @@ namespace GHelper.USB
     {
         const byte XGM_REPORT_ID = 0x5e;
         const int ASUS_ID = 0x0b05;
-        static readonly int[] deviceIds = { 0x1970, 0x1a9a, 0x1C29, 0x19B6};
+        static readonly int[] deviceIds = { 0x1970, 0x1a9a, 0x1C29};
 
         public static HidDevice? GetDevice()
         {
@@ -108,14 +108,8 @@ namespace GHelper.USB
         {
             Task.Run(() =>
             {
-                if (IsConnected())
-                {
-                    if (AsusACPI.IsInvalidCurve(curve)) return;
-                    byte[] msg = new byte[19];
-                    Array.Copy(new byte[] { XGM_REPORT_ID, 0xd1, 0x01 }, msg, 3);
-                    Array.Copy(curve, 0, msg, 3, curve.Length);
-                    Write(msg);
-                }
+                if (AsusACPI.IsInvalidCurve(curve)) return;
+                if (IsConnected()) Write([XGM_REPORT_ID, 0xd1, 0x01, .. curve]);
             });
         }
     }
