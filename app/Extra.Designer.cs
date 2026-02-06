@@ -72,6 +72,7 @@ namespace GHelper
             pictureBacklight = new PictureBox();
             labelBacklightTitle = new Label();
             panelBacklight = new Panel();
+            checkNoBacklight = new CheckBox();
             panelBacklightExtra = new Panel();
             numericBacklightPluggedTime = new NumericUpDownWithUnit();
             numericBacklightTime = new NumericUpDownWithUnit();
@@ -684,7 +685,22 @@ namespace GHelper
             // 
             // panelBacklight
             // 
+            // 
+            // checkNoBacklight
+            // 
+            checkNoBacklight.AutoSize = true;
+            checkNoBacklight.Dock = DockStyle.Top;
+            checkNoBacklight.Location = new Point(0, 0);
+            checkNoBacklight.Margin = new Padding(4, 2, 4, 2);
+            checkNoBacklight.Name = "checkNoBacklight";
+            checkNoBacklight.Padding = new Padding(10, 10, 0, 0);
+            checkNoBacklight.Size = new Size(624, 46);
+            checkNoBacklight.TabIndex = 99;
+            checkNoBacklight.Text = "Disable Backlight";
+            checkNoBacklight.UseVisualStyleBackColor = true;
+
             panelBacklight.AutoSize = true;
+            panelBacklight.Controls.Add(checkNoBacklight);
             panelBacklight.Controls.Add(panelBacklightExtra);
             panelBacklight.Controls.Add(panelXGM);
             panelBacklight.Controls.Add(tableBacklight);
@@ -1858,5 +1874,6 @@ namespace GHelper
         private RComboBox comboOptimalBrightness;
         private PictureBox pictureOptimalBrightness;
         private Label labelOptimalBrightness;
+        private CheckBox checkNoBacklight;
     }
 }

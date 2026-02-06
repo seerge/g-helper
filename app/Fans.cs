@@ -38,10 +38,184 @@ namespace GHelper
         static bool isGPUPower => gpuPowerBase > 0;
         static bool clampFanDots = AppConfig.IsClampFanDots();
 
+        FlowLayoutPanel panelFanTable;
+        RButton buttonTable;
+
+        // Helper to add accessible input fields next to sliders
+        private void AddInput(TrackBar track, Label labelVal, Label labelTitle)
+        {
+            if (!AppConfig.IsAccessible()) return;
+            if (track.Tag is NumericUpDown) return;
+
+            NumericUpDown num = new NumericUpDown();
+            num.Top = labelVal.Top;
+            num.Left = labelVal.Left - 20; // Shift slightly left to fit
+            num.Width = labelVal.Width + 20;
+            num.Height = 30;
+            num.Font = labelVal.Font;
+            num.ForeColor = labelVal.ForeColor;
+            num.BackColor = SystemColors.ControlLightLight;
+            num.BorderStyle = BorderStyle.FixedSingle;
+            
+            num.Minimum = track.Minimum;
+            num.Maximum = track.Maximum;
+            num.Increment = track.TickFrequency > 0 ? track.TickFrequency : 1;
+            num.Value = Math.Max(num.Minimum, Math.Min(num.Maximum, track.Value));
+
+            // Sync TrackBar -> Numeric
+            track.ValueChanged += (s, e) =>
+            {
+                num.Value = Math.Max(num.Minimum, Math.Min(num.Maximum, track.Value));
+            };
+
+            // Sync Numeric -> TrackBar
+            num.ValueChanged += (s, e) =>
+            {
+                track.Value = (int)num.Value;
+                labelVal.Text = track.Value.ToString(); // Keep label updated for reference if needed, or hide it
+            };
+
+            // Accessibility
+            num.AccessibleName = labelTitle.Text;
+            track.AccessibleName = labelTitle.Text;
+
+            // Replace the visual label with the interactive input
+            labelVal.Visible = false; 
+            track.Parent.Controls.Add(num);
+            num.BringToFront();
+
+            track.Tag = num;
+        }
+
+        private void InitFanTable()
+        {
+            if (panelFanTable != null) return;
+
+            panelFanTable = new FlowLayoutPanel();
+            panelFanTable.Dock = DockStyle.Fill;
+            panelFanTable.AutoScroll = true;
+            panelFanTable.WrapContents = false;
+            panelFanTable.FlowDirection = FlowDirection.TopDown;
+            panelFanTable.Padding = new Padding(10);
+            panelFanTable.Visible = false;
+
+            panelFans.Controls.Add(panelFanTable);
+            panelFanTable.BringToFront();
+
+            List<AsusFan> fans = new List<AsusFan> { AsusFan.CPU, AsusFan.GPU };
+            if (chartMid.Visible) fans.Add(AsusFan.Mid);
+            if (chartXGM.Visible) fans.Add(AsusFan.XGM);
+
+            foreach (AsusFan fan in fans)
+            {
+                Label title = new Label();
+                title.Text = fan.ToString() + " " + Properties.Strings.FanCurveWarning;
+                title.Font = new Font(Font, FontStyle.Bold);
+                title.AutoSize = true;
+                title.Margin = new Padding(0, 10, 0, 5);
+                panelFanTable.Controls.Add(title);
+
+                TableLayoutPanel table = new TableLayoutPanel();
+                table.RowCount = 9;
+                table.ColumnCount = 3;
+                table.AutoSize = true;
+                table.CellBorderStyle = TableLayoutPanelCellBorderStyle.None;
+                
+                table.Controls.Add(new Label { Text = Properties.Strings.Point, AutoSize = true, Font = new Font(Font, FontStyle.Underline) }, 0, 0);
+                table.Controls.Add(new Label { Text = Properties.Strings.Temperature, AutoSize = true, Font = new Font(Font, FontStyle.Underline) }, 1, 0);
+                table.Controls.Add(new Label { Text = Properties.Strings.Speed, AutoSize = true, Font = new Font(Font, FontStyle.Underline) }, 2, 0);
+
+                byte[] curve = AppConfig.GetFanConfig(fan);
+                if (AsusACPI.IsInvalidCurve(curve)) curve = AppConfig.GetDefaultCurve(fan);
+                curve = AsusACPI.FixFanCurve(curve);
+
+                // Keep references to controls for validation logic
+                List<NumericUpDown> tempControls = new List<NumericUpDown>();
+
+                for (int i = 0; i < 8; i++)
+                {
+                    int index = i;
+                    Label lbl = new Label { Text = (i + 1).ToString(), AutoSize = true, Anchor = AnchorStyles.Left | AnchorStyles.Top };
+                    
+                    NumericUpDown numTemp = new NumericUpDown { Minimum = 20, Maximum = 110, Value = Math.Max(20, Math.Min(110, (int)curve[i])), Width = 80 };
+                    NumericUpDown numSpeed = new NumericUpDown { Minimum = 0, Maximum = 100, Value = curve[i + 8], Width = 80 };
+
+                    numTemp.AccessibleName = $"{fan} Point {i + 1} Temperature";
+                    numSpeed.AccessibleName = $"{fan} Point {i + 1} Speed %";
+                    
+                    tempControls.Add(numTemp);
+
+                    // Smart Validation Logic (Cascading)
+                    numTemp.ValueChanged += (s, e) => {
+                        // Prevent infinite loop by checking if value actually needs logical adjustment
+                        decimal currentVal = numTemp.Value;
+                        
+                        // 1. Push Upper Neighbors UP
+                        // If I set Point 3 to 60, Point 4 must be at least 61
+                        if (index < 7)
+                        {
+                            var nextControl = tempControls[index + 1];
+                            if (nextControl.Value <= currentVal)
+                            {
+                                nextControl.Value = Math.Min(nextControl.Maximum, currentVal + 1);
+                            }
+                        }
+
+                        // 2. Push Lower Neighbors DOWN
+                        // If I set Point 3 to 40, Point 2 must be at most 39
+                        if (index > 0)
+                        {
+                            var prevControl = tempControls[index - 1];
+                            if (prevControl.Value >= currentVal)
+                            {
+                                prevControl.Value = Math.Max(prevControl.Minimum, currentVal - 1);
+                            }
+                        }
+
+                        // Save config
+                        byte[] c = AppConfig.GetFanConfig(fan);
+                        c[index] = (byte)numTemp.Value;
+                        AppConfig.SetFanConfig(fan, c);
+                    };
+
+                    numSpeed.ValueChanged += (s, e) => {
+                        byte[] c = AppConfig.GetFanConfig(fan);
+                        c[index + 8] = (byte)numSpeed.Value;
+                        AppConfig.SetFanConfig(fan, c);
+                    };
+
+                    table.Controls.Add(lbl, 0, i + 1);
+                    table.Controls.Add(numTemp, 1, i + 1);
+                    table.Controls.Add(numSpeed, 2, i + 1);
+                }
+
+                panelFanTable.Controls.Add(table);
+            }
+        }
+
         public Fans()
         {
 
             InitializeComponent();
+
+            // Create Table Editor Toggle
+            buttonTable = new RButton();
+            buttonTable.Text = Properties.Strings.TableEditor;
+            buttonTable.AutoSize = true;
+            buttonTable.BackColor = SystemColors.ControlLight;
+            buttonTable.FlatStyle = FlatStyle.Flat;
+            buttonTable.Top = 15;
+            buttonTable.Left = 200; // Position near Profile label
+            buttonTable.Click += (s, e) => {
+                InitFanTable();
+                bool tableMode = !panelFanTable.Visible;
+                panelFanTable.Visible = tableMode;
+                tableFanCharts.Visible = !tableMode;
+                buttonTable.Text = tableMode ? Properties.Strings.ChartView : Properties.Strings.TableEditor;
+                if (!tableMode) InitFans(); // Refresh charts from config when switching back
+            };
+            panelTitleFans.Controls.Add(buttonTable);
+            buttonTable.BringToFront();
 
             fanSensorControl = new FanSensorControl(this);
 
@@ -222,6 +396,12 @@ namespace GHelper
             buttonGPU.BorderColor = colorTurbo;
             buttonAdvanced.BorderColor = Color.Gray;
 
+            // Accessibility: Treat buttons as Tabs
+            buttonCPU.AccessibleRole = AccessibleRole.PageTab;
+            buttonGPU.AccessibleRole = AccessibleRole.PageTab;
+            buttonAdvanced.AccessibleRole = AccessibleRole.PageTab;
+            tableNav.AccessibleRole = AccessibleRole.PageTabList;
+
             buttonCPU.Click += ButtonCPU_Click;
             buttonGPU.Click += ButtonGPU_Click;
             buttonAdvanced.Click += ButtonAdvanced_Click;
@@ -238,6 +418,146 @@ namespace GHelper
             ToggleNavigation(0);
 
             if (Program.acpi.DeviceGet(AsusACPI.DevsCPUFanCurve) < 0) buttonCalibrate.Visible = false;
+
+            // Accessible Mode Logic: The "Perfect" Tab System
+            if (AppConfig.IsAccessible())
+            {
+                InitFanTable();
+                tableFanCharts.Visible = false;
+                buttonTable.Visible = false;
+
+                // 0. Top Panel for Mode Selection (Global context)
+                Panel panelTop = new Panel { Dock = DockStyle.Top, Height = 40, Padding = new Padding(5) };
+                Label labelMode = new Label { Text = Properties.Strings.PerformanceMode + ":", AutoSize = true, Top = 8, Left = 5 };
+
+                comboModes.Parent = panelTop;
+                comboModes.Visible = true;
+                comboModes.Left = labelMode.Right + 10;
+                comboModes.Top = 5;
+                comboModes.Width = 250;
+                comboModes.BringToFront();
+
+                panelTop.Controls.Add(labelMode);
+
+                TabControl tabControl = new TabControl();
+                tabControl.Dock = DockStyle.Fill;
+                tabControl.AccessibleRole = AccessibleRole.PageTabList;
+
+                // 1. Fans Tab (Moved from the right side)
+                TabPage tabFans = new TabPage(Properties.Strings.FanCurves);
+                
+                // Header for Fans Tab (Apply Checkbox)
+                FlowLayoutPanel panelFansHeader = new FlowLayoutPanel { Dock = DockStyle.Top, Height = 40, AutoSize = true };
+                checkApplyFans.Parent = panelFansHeader;
+                checkApplyFans.Visible = true;
+                checkApplyFans.AutoSize = true;
+                checkApplyFans.Margin = new Padding(5, 8, 10, 5);
+
+                buttonCalibrate.Parent = panelFansHeader;
+                buttonCalibrate.AutoSize = true;
+                buttonCalibrate.Margin = new Padding(0, 5, 0, 5);
+
+                buttonReset.Parent = panelFansHeader;
+                buttonReset.AutoSize = true;
+                buttonReset.Margin = new Padding(10, 5, 0, 5);
+                buttonReset.Visible = true;
+                
+                panelFansHeader.Controls.Add(checkApplyFans);
+                panelFansHeader.Controls.Add(buttonCalibrate);
+                panelFansHeader.Controls.Add(buttonReset);
+
+                panelFanTable.AutoSize = false;
+                panelFanTable.Dock = DockStyle.Fill;
+                panelFanTable.Visible = true;
+                panelFanTable.Parent = tabFans;
+                
+                tabFans.Controls.Add(panelFanTable);
+                tabFans.Controls.Add(panelFansHeader); // Add header (Dock=Top)
+
+                tabControl.TabPages.Add(tabFans);
+
+                // 2. CPU / Power Tab
+                TabPage tabCPU = new TabPage("CPU");
+                
+                // Header for Power (Apply Checkbox)
+                Panel panelPowerHeader = new Panel { Dock = DockStyle.Top, Height = 30, AutoSize = true };
+                checkApplyPower.Parent = panelPowerHeader;
+                checkApplyPower.Visible = true;
+                checkApplyPower.Location = new Point(5, 5);
+                checkApplyPower.AutoSize = true;
+                panelPowerHeader.Controls.Add(checkApplyPower);
+                
+                panelPower.AutoSize = false;
+                panelPower.Dock = DockStyle.Fill;
+                panelPower.Visible = true;
+                panelPower.Parent = tabCPU;
+                
+                tabCPU.Controls.Add(panelPower);
+                tabCPU.Controls.Add(panelPowerHeader); // Dock=Top
+                tabCPU.AutoScroll = true;
+                tabControl.TabPages.Add(tabCPU);
+
+                // 3. GPU Tab (if available)
+                if (gpuVisible)
+                {
+                    TabPage tabGPU = new TabPage("GPU");
+                    panelGPU.AutoSize = false;
+                    panelGPU.Dock = DockStyle.Fill;
+                    panelGPU.Visible = true;
+                    panelGPU.Parent = tabGPU;
+                    tabGPU.Controls.Add(panelGPU);
+                    tabGPU.AutoScroll = true;
+                    tabControl.TabPages.Add(tabGPU);
+                }
+
+                // 4. Advanced Tab (if AMD)
+                if (RyzenControl.IsAMD())
+                {
+                    TabPage tabAdvanced = new TabPage(Properties.Strings.Advanced);
+                    tabAdvanced.AutoScroll = true;
+
+                    // Move children of panelAdvanced directly to the tab to avoid container layout issues
+                    Control[] advancedControls = { 
+                        panelDownload, panelTitleTemp, panelTemperature, 
+                        panelTitleAdvanced, panelUV, panelUViGPU, 
+                        labelRisky, panelAdvancedApply, panelAdvancedAlways 
+                    };
+
+                    buttonApplyAdvanced.AccessibleName = Properties.Strings.Apply;
+                    checkApplyUV.AccessibleName = Properties.Strings.AutoApply;
+                    buttonDownload.AccessibleName = buttonDownload.Text;
+
+                    foreach (var ctrl in advancedControls)
+                    {
+                        ctrl.Parent = tabAdvanced;
+                        ctrl.Dock = DockStyle.Top;
+                        ctrl.Visible = true; // Force visibility
+                        if (ctrl is Panel p) p.AutoSize = true; // Internal panels usually need AutoSize to fit content
+                    }
+                    
+                    // Specific fix for labelRisky which might not be a panel
+                    labelRisky.Dock = DockStyle.Top;
+                    labelRisky.Visible = true;
+
+                    tabControl.TabPages.Add(tabAdvanced);
+                }
+
+                // Layout transformation: Make tabs fill the whole window
+                panelNav.Visible = false;
+                panelFans.Visible = false; // Hide the right-side container
+                panelSliders.Dock = DockStyle.Fill; // Left side becomes the whole window
+                panelSliders.Padding = new Padding(0);
+                
+                // Add Top Panel first (Dock=Top) then TabControl (Dock=Fill)
+                panelSliders.Controls.Add(tabControl);
+                panelSliders.Controls.Add(panelTop);
+                
+                tabControl.BringToFront();
+                panelTop.BringToFront(); // Ensure Top Panel is at the top
+
+                // Re-initialize controls to ensure visibility in new tabs
+                InitAll();
+            }
 
             FormClosed += Fans_FormClosed;
 
@@ -398,6 +718,13 @@ namespace GHelper
             trackUV.Value = cpuUV;
             trackUViGPU.Value = igpuUV;
             trackTemp.Value = temp;
+
+            if (AppConfig.IsAccessible())
+            {
+                AddInput(trackUV, labelUV, labelLeftUV);
+                AddInput(trackUViGPU, labelUViGPU, labelLeftUViGPU);
+                AddInput(trackTemp, labelTemp, labelLeftTemp);
+            }
 
             VisualiseAdvanced();
 
@@ -576,6 +903,7 @@ namespace GHelper
                 Invoke(delegate
                 {
                     trackGPUPower.Value = Math.Max(Math.Min(gpu_power, AsusACPI.MaxGPUPower), AsusACPI.MinGPUPower);
+                    AddInput(trackGPUPower, labelGPUPower, labelGPUPowerTitle);
                     VisualiseGPUSettings();
                 });
             });
@@ -651,6 +979,12 @@ namespace GHelper
                 trackGPUBoost.Value = Math.Max(Math.Min(gpu_boost, AsusACPI.MaxGPUBoost), AsusACPI.MinGPUBoost);
                 trackGPUTemp.Value = Math.Max(Math.Min(gpu_temp, AsusACPI.MaxGPUTemp), AsusACPI.MinGPUTemp);
 
+                // Add accessible inputs for GPU
+                AddInput(trackGPUClockLimit, labelGPUClockLimit, labelGPUClockLimitTitle);
+                AddInput(trackGPUCore, labelGPUCore, labelGPUCoreTitle);
+                AddInput(trackGPUMemory, labelGPUMemory, labelGPUMemoryTitle);
+                AddInput(trackGPUBoost, labelGPUBoost, labelGPUBoostTitle);
+                AddInput(trackGPUTemp, labelGPUTemp, labelGPUTempTitle);
 
                 panelGPUBoost.Visible = (Program.acpi.DeviceGet(AsusACPI.PPT_GPUC0) >= 0);
                 panelGPUTemp.Visible = (Program.acpi.DeviceGet(AsusACPI.PPT_GPUC2) >= 0);
@@ -981,6 +1315,12 @@ namespace GHelper
             trackSlow.Value = limit_slow;
             trackCPU.Value = limit_cpu;
             trackFast.Value = limit_fast;
+
+            // Add accessible inputs
+            AddInput(trackTotal, labelTotal, labelLeftTotal);
+            AddInput(trackSlow, labelSlow, labelLeftSlow);
+            AddInput(trackCPU, labelCPU, labelLeftCPU);
+            AddInput(trackFast, labelFast, labelLeftFast);
 
             SavePower();
 
