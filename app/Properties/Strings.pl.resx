@@ -561,7 +561,7 @@ Nadal chcesz kontynuować?</value>
     <value>min.</value>
   </data>
   <data name="MouseAngleSnapping" xml:space="preserve">
-    <value>Korekcja kąta ruchu</value>
+    <value>Angle Snapping / Tuning</value>
   </data>
   <data name="MouseAutoPowerOff" xml:space="preserve">
     <value>Przejście w tryb uśpienia po</value>
@@ -880,5 +880,11 @@ Nadal chcesz kontynuować?</value>
   </data>
   <data name="AmbientModeResources" xml:space="preserve">
     <value>Tryb ambient może zwiększyć zużycie zasobów</value>
+  </data>
+  <data name="MouseMotionSync" xml:space="preserve">
+    <value>Motion Sync</value>
+  </data>
+  <data name="MouseZoneMode" xml:space="preserve">
+    <value>Zone Mode</value>
   </data>
 </root>

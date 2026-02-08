@@ -561,7 +561,7 @@ Yine de devam etmek istiyor musunuz?</value>
     <value>Dakika</value>
   </data>
   <data name="MouseAngleSnapping" xml:space="preserve">
-    <value>Açılı Yakalama</value>
+    <value>Angle Snapping / Tuning</value>
   </data>
   <data name="MouseAutoPowerOff" xml:space="preserve">
     <value>Sonrasında Otomatik Kapat</value>
@@ -876,9 +876,15 @@ Yine de devam etmek istiyor musunuz?</value>
     <value>Aralık {0}</value>
   </data>
   <data name="DisableDynamicLighting" xml:space="preserve">
-    <value>Please disable Windows &gt; Dynamic Lighting</value>
+    <value>Lütfen Windows &gt; Dinamik Aydınlatma'yı devre dışı bırakın</value>
   </data>
   <data name="AmbientModeResources" xml:space="preserve">
-    <value>Ambient mode may increase resource usage</value>
+    <value>Ambians modu kaynak kullanımını artırabilir</value>
+  </data>
+  <data name="MouseMotionSync" xml:space="preserve">
+    <value>Motion Sync</value>
+  </data>
+  <data name="MouseZoneMode" xml:space="preserve">
+    <value>Zone Mode</value>
   </data>
 </root>

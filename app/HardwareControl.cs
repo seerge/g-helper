@@ -278,6 +278,25 @@ public static class HardwareControl
         }
     }
 
+    public static double GetBatteryChargePercentage()
+    {
+        double batteryCharge = 0;
+        try
+        {
+            ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT * FROM Win32_Battery");
+            foreach (ManagementObject battery in searcher.Get())
+            {
+                batteryCharge = Convert.ToDouble(battery["EstimatedChargeRemaining"]);
+                break; // Assuming only one battery
+            }
+        }
+        catch (ManagementException e)
+        {
+            Console.WriteLine("An error occurred while querying for WMI data: " + e.Message);
+        }
+        return batteryCharge;
+    }
+
     public static bool IsUsedGPU(int threshold = 10)
     {
         if (GetGpuUse() > threshold)

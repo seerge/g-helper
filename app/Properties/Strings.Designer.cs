@@ -1467,7 +1467,7 @@ namespace GHelper.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Angle Snapping.
+        ///   Looks up a localized string similar to Angle Snapping / Tuning.
         /// </summary>
         internal static string MouseAngleSnapping {
             get {
@@ -1521,6 +1521,15 @@ namespace GHelper.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Motion Sync.
+        /// </summary>
+        internal static string MouseMotionSync {
+            get {
+                return ResourceManager.GetString("MouseMotionSync", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Performance.
         /// </summary>
         internal static string MousePerformance {
@@ -1535,6 +1544,15 @@ namespace GHelper.Properties {
         internal static string MouseSynchronize {
             get {
                 return ResourceManager.GetString("MouseSynchronize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Zone Mode.
+        /// </summary>
+        internal static string MouseZoneMode {
+            get {
+                return ResourceManager.GetString("MouseZoneMode", resourceCulture);
             }
         }
         

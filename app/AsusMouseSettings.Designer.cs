@@ -49,6 +49,13 @@
             sliderButtonDebounce = new GHelper.UI.Slider();
             labelButtonDebounceValue = new Label();
             panelAngleSnapping = new Panel();
+            panelMotionSync = new Panel();
+            checkBoxMotionSync = new CheckBox();
+            panelZoneMode = new Panel();
+            checkBoxZoneMode = new CheckBox();
+            comboBoxZoneModePollingRate = new GHelper.UI.RComboBox();
+            sliderZoneModeDPI = new GHelper.UI.Slider();
+            numericUpDownZoneModeDPI = new NumericUpDown();
             sliderAngleAdjustment = new GHelper.UI.Slider();
             checkBoxAngleSnapping = new CheckBox();
             labelAngleAdjustmentValue = new Label();
@@ -123,6 +130,8 @@
             panelLiftOffDistance.SuspendLayout();
             panelDebounce.SuspendLayout();
             panelAngleSnapping.SuspendLayout();
+            panelMotionSync.SuspendLayout();
+            panelZoneMode.SuspendLayout();
             panelPollingRate.SuspendLayout();
             panelDPISettings.SuspendLayout();
             tableLayoutPanel1.SuspendLayout();
@@ -208,6 +217,8 @@
             panelPerformanceOther.Controls.Add(panelAcceleration);
             panelPerformanceOther.Controls.Add(panelLiftOffDistance);
             panelPerformanceOther.Controls.Add(panelDebounce);
+            panelPerformanceOther.Controls.Add(panelZoneMode);
+            panelPerformanceOther.Controls.Add(panelMotionSync);
             panelPerformanceOther.Controls.Add(panelAngleSnapping);
             panelPerformanceOther.Controls.Add(panelPollingRate);
             panelPerformanceOther.Dock = DockStyle.Top;
@@ -415,6 +426,100 @@
             panelAngleSnapping.Padding = new Padding(6);
             panelAngleSnapping.Size = new Size(881, 58);
             panelAngleSnapping.TabIndex = 54;
+            // 
+            // panelMotionSync
+            // 
+            panelMotionSync.AutoSize = true;
+            panelMotionSync.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            panelMotionSync.Controls.Add(checkBoxMotionSync);
+            panelMotionSync.Dock = DockStyle.Top;
+            panelMotionSync.Location = new Point(0, 124);
+            panelMotionSync.Margin = new Padding(4);
+            panelMotionSync.Name = "panelMotionSync";
+            panelMotionSync.Padding = new Padding(6);
+            panelMotionSync.Size = new Size(881, 58);
+            panelMotionSync.TabIndex = 59;
+            // 
+            // checkBoxMotionSync
+            // 
+            checkBoxMotionSync.CheckAlign = ContentAlignment.MiddleRight;
+            checkBoxMotionSync.Location = new Point(6, 8);
+            checkBoxMotionSync.Margin = new Padding(8, 0, 8, 0);
+            checkBoxMotionSync.Name = "checkBoxMotionSync";
+            checkBoxMotionSync.Size = new Size(512, 40);
+            checkBoxMotionSync.TabIndex = 45;
+            checkBoxMotionSync.Text = "Motion Sync";
+            checkBoxMotionSync.TextAlign = ContentAlignment.TopLeft;
+            checkBoxMotionSync.UseVisualStyleBackColor = true;
+            // 
+            // panelZoneMode
+            // 
+            panelZoneMode.AutoSize = true;
+            panelZoneMode.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            panelZoneMode.Controls.Add(numericUpDownZoneModeDPI);
+            panelZoneMode.Controls.Add(sliderZoneModeDPI);
+            panelZoneMode.Controls.Add(comboBoxZoneModePollingRate);
+            panelZoneMode.Controls.Add(checkBoxZoneMode);
+            panelZoneMode.Dock = DockStyle.Top;
+            panelZoneMode.Location = new Point(0, 182);
+            panelZoneMode.Margin = new Padding(4);
+            panelZoneMode.Name = "panelZoneMode";
+            panelZoneMode.Padding = new Padding(6);
+            panelZoneMode.Size = new Size(881, 116);
+            panelZoneMode.TabIndex = 60;
+            // 
+            // checkBoxZoneMode
+            // 
+            checkBoxZoneMode.CheckAlign = ContentAlignment.MiddleRight;
+            checkBoxZoneMode.Location = new Point(6, 8);
+            checkBoxZoneMode.Margin = new Padding(8, 0, 8, 0);
+            checkBoxZoneMode.Name = "checkBoxZoneMode";
+            checkBoxZoneMode.Size = new Size(512, 40);
+            checkBoxZoneMode.TabIndex = 45;
+            checkBoxZoneMode.Text = "Zone Mode";
+            checkBoxZoneMode.TextAlign = ContentAlignment.TopLeft;
+            checkBoxZoneMode.UseVisualStyleBackColor = true;
+            // 
+            // comboBoxZoneModePollingRate
+            // 
+            comboBoxZoneModePollingRate.BorderColor = Color.White;
+            comboBoxZoneModePollingRate.ButtonColor = Color.FromArgb(255, 255, 255);
+            comboBoxZoneModePollingRate.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboBoxZoneModePollingRate.FlatStyle = FlatStyle.Flat;
+            comboBoxZoneModePollingRate.FormattingEnabled = true;
+            comboBoxZoneModePollingRate.Location = new Point(544, 8);
+            comboBoxZoneModePollingRate.Margin = new Padding(22, 0, 22, 0);
+            comboBoxZoneModePollingRate.Name = "comboBoxZoneModePollingRate";
+            comboBoxZoneModePollingRate.Size = new Size(176, 40);
+            comboBoxZoneModePollingRate.TabIndex = 46;
+            // 
+            // sliderZoneModeDPI
+            // 
+            sliderZoneModeDPI.AccessibleName = "Zone Mode DPI Slider";
+            sliderZoneModeDPI.Location = new Point(0, 56);
+            sliderZoneModeDPI.Margin = new Padding(4);
+            sliderZoneModeDPI.Max = 42000;
+            sliderZoneModeDPI.Min = 400;
+            sliderZoneModeDPI.Name = "sliderZoneModeDPI";
+            sliderZoneModeDPI.Size = new Size(881, 40);
+            sliderZoneModeDPI.Step = 50;
+            sliderZoneModeDPI.TabIndex = 47;
+            sliderZoneModeDPI.TabStop = false;
+            sliderZoneModeDPI.Text = "sliderZoneModeDPI";
+            sliderZoneModeDPI.Value = 1600;
+            // 
+            // numericUpDownZoneModeDPI
+            // 
+            numericUpDownZoneModeDPI.Location = new Point(744, 8);
+            numericUpDownZoneModeDPI.Margin = new Padding(8, 0, 8, 0);
+            numericUpDownZoneModeDPI.Maximum = new decimal(new int[] { 42000, 0, 0, 0 });
+            numericUpDownZoneModeDPI.Minimum = new decimal(new int[] { 400, 0, 0, 0 });
+            numericUpDownZoneModeDPI.Name = "numericUpDownZoneModeDPI";
+            numericUpDownZoneModeDPI.Size = new Size(120, 40);
+            numericUpDownZoneModeDPI.TabIndex = 48;
+            numericUpDownZoneModeDPI.TextAlign = HorizontalAlignment.Right;
+            numericUpDownZoneModeDPI.Value = new decimal(new int[] { 1600, 0, 0, 0 });
+            numericUpDownZoneModeDPI.Increment = 50;
             // 
             // sliderAngleAdjustment
             // 
@@ -692,6 +797,7 @@
             buttonDPI1.FlatStyle = FlatStyle.Flat;
             buttonDPI1.ForeColor = SystemColors.ControlText;
             buttonDPI1.Image = Properties.Resources.lighting_dot_32;
+            buttonDPI1.ImageAlign = ContentAlignment.BottomCenter;
             buttonDPI1.Location = new Point(4, 4);
             buttonDPI1.Margin = new Padding(4);
             buttonDPI1.Name = "buttonDPI1";
@@ -1460,6 +1566,8 @@
             panelLiftOffDistance.ResumeLayout(false);
             panelDebounce.ResumeLayout(false);
             panelAngleSnapping.ResumeLayout(false);
+            panelMotionSync.ResumeLayout(false);
+            panelZoneMode.ResumeLayout(false);
             panelPollingRate.ResumeLayout(false);
             panelDPISettings.ResumeLayout(false);
             panelDPISettings.PerformLayout();
@@ -1572,6 +1680,13 @@
         private UI.Slider sliderButtonDebounce;
         private Panel panelPollingRate;
         private Panel panelAngleSnapping;
+        private Panel panelMotionSync;
+        private CheckBox checkBoxMotionSync;
+        private Panel panelZoneMode;
+        private CheckBox checkBoxZoneMode;
+        private UI.RComboBox comboBoxZoneModePollingRate;
+        private UI.Slider sliderZoneModeDPI;
+        private NumericUpDown numericUpDownZoneModeDPI;
         private Panel panelLiftOffDistance;
         private Panel panelDebounce;
         private Panel panelDeceleration;

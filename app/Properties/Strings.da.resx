@@ -561,7 +561,7 @@ Vil du stadig fortsætte?</value>
     <value>minutter</value>
   </data>
   <data name="MouseAngleSnapping" xml:space="preserve">
-    <value>Vinkel-snapping</value>
+    <value>Angle Snapping / Tuning</value>
   </data>
   <data name="MouseAutoPowerOff" xml:space="preserve">
     <value>Automatisk slukning efter</value>
@@ -880,5 +880,11 @@ Vil du stadig fortsætte?</value>
   </data>
   <data name="AmbientModeResources" xml:space="preserve">
     <value>Ambient mode may increase resource usage</value>
+  </data>
+  <data name="MouseMotionSync" xml:space="preserve">
+    <value>Motion Sync</value>
+  </data>
+  <data name="MouseZoneMode" xml:space="preserve">
+    <value>Zone Mode</value>
   </data>
 </root>

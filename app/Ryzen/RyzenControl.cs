@@ -172,7 +172,7 @@ namespace Ryzen
         public static bool IsRingExsists()
         {
             string exeDir = Path.GetDirectoryName(Application.ExecutablePath);
-            return File.Exists(exeDir + "\\" + "WinRing0x64.dll");
+            return File.Exists(exeDir + "\\" + "WinRing0x64.dll") && File.Exists(exeDir + "\\" + "WinRing0x64.sys");
         }
 
         public static void DownloadRing()

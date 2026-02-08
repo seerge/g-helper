@@ -78,8 +78,8 @@ namespace GHelper
             labelBacklightTimeout = new Label();
             labelSpeed = new Label();
             comboKeyboardSpeed = new RComboBox();
-            panelXMG = new Panel();
-            checkXMG = new CheckBox();
+            panelXGM = new Panel();
+            checkXGM = new CheckBox();
             tableBacklight = new TableLayoutPanel();
             labelBacklightKeyboard = new Label();
             checkAwake = new CheckBox();
@@ -160,7 +160,7 @@ namespace GHelper
             panelBacklightExtra.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numericBacklightPluggedTime).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numericBacklightTime).BeginInit();
-            panelXMG.SuspendLayout();
+            panelXGM.SuspendLayout();
             tableBacklight.SuspendLayout();
             panelSettingsHeader.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureScan).BeginInit();
@@ -686,7 +686,7 @@ namespace GHelper
             // 
             panelBacklight.AutoSize = true;
             panelBacklight.Controls.Add(panelBacklightExtra);
-            panelBacklight.Controls.Add(panelXMG);
+            panelBacklight.Controls.Add(panelXGM);
             panelBacklight.Controls.Add(tableBacklight);
             panelBacklight.Dock = DockStyle.Top;
             panelBacklight.Location = new Point(15, 512);
@@ -773,25 +773,25 @@ namespace GHelper
             // 
             // panelXMG
             // 
-            panelXMG.Controls.Add(checkXMG);
-            panelXMG.Dock = DockStyle.Top;
-            panelXMG.Location = new Point(0, 265);
-            panelXMG.Margin = new Padding(5, 3, 5, 3);
-            panelXMG.Name = "panelXMG";
-            panelXMG.Size = new Size(949, 59);
-            panelXMG.TabIndex = 45;
+            panelXGM.Controls.Add(checkXGM);
+            panelXGM.Dock = DockStyle.Top;
+            panelXGM.Location = new Point(0, 265);
+            panelXGM.Margin = new Padding(5, 3, 5, 3);
+            panelXGM.Name = "panelXMG";
+            panelXGM.Size = new Size(949, 59);
+            panelXGM.TabIndex = 45;
             // 
             // checkXMG
             // 
-            checkXMG.AutoSize = true;
-            checkXMG.Location = new Point(5, 11);
-            checkXMG.Margin = new Padding(5, 3, 5, 3);
-            checkXMG.Name = "checkXMG";
-            checkXMG.Padding = new Padding(16, 3, 7, 3);
-            checkXMG.Size = new Size(181, 42);
-            checkXMG.TabIndex = 2;
-            checkXMG.Text = "XG Mobile";
-            checkXMG.UseVisualStyleBackColor = true;
+            checkXGM.AutoSize = true;
+            checkXGM.Location = new Point(5, 11);
+            checkXGM.Margin = new Padding(5, 3, 5, 3);
+            checkXGM.Name = "checkXMG";
+            checkXGM.Padding = new Padding(16, 3, 7, 3);
+            checkXGM.Size = new Size(181, 42);
+            checkXGM.TabIndex = 2;
+            checkXGM.Text = "XG Mobile";
+            checkXGM.UseVisualStyleBackColor = true;
             // 
             // tableBacklight
             // 
@@ -1711,8 +1711,8 @@ namespace GHelper
             panelBacklightExtra.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)numericBacklightPluggedTime).EndInit();
             ((System.ComponentModel.ISupportInitialize)numericBacklightTime).EndInit();
-            panelXMG.ResumeLayout(false);
-            panelXMG.PerformLayout();
+            panelXGM.ResumeLayout(false);
+            panelXGM.PerformLayout();
             tableBacklight.ResumeLayout(false);
             panelSettingsHeader.ResumeLayout(false);
             panelSettingsHeader.PerformLayout();
@@ -1781,8 +1781,8 @@ namespace GHelper
         private Label labelBacklightTimeout;
         private Label labelSpeed;
         private RComboBox comboKeyboardSpeed;
-        private Panel panelXMG;
-        private CheckBox checkXMG;
+        private Panel panelXGM;
+        private CheckBox checkXGM;
         private TableLayoutPanel tableBacklight;
         private Label labelBacklightKeyboard;
         private CheckBox checkAwake;
