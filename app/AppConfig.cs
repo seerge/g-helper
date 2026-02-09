@@ -672,12 +672,17 @@ public static class AppConfig
 
     public static bool IsAMDiGPU()
     {
-        return ContainsModel("GV301RA") || ContainsModel("GV302XA") || ContainsModel("GZ302") || IsAlly();
+        return ContainsModel("GV301RA") || ContainsModel("GV302XA") || ContainsModel("GZ302") || IsFA401EA() || IsAlly();
     }
 
     public static bool NoGpu()
     {
-        return Is("no_gpu") || ContainsModel("UX540") || ContainsModel("UM560") || ContainsModel("GZ302");
+        return Is("no_gpu") || ContainsModel("UX540") || ContainsModel("UM560") || ContainsModel("GZ302") || IsFA401EA();
+    }
+
+    public static bool IsFA401EA()
+    {
+        return ContainsModel("FA401EA");
     }
 
     public static bool IsHardwareTouchpadToggle()
