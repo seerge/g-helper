@@ -484,6 +484,34 @@ namespace GHelper
             VisualiseDisabled();
         }
 
+        private void OLEDHDRWashWarning(bool hdr)
+        {
+            if (AppConfig.Is("oled_hdr_wash_warning_shown")) return;
+            if (!AppConfig.IsOLED()) // varibright affects OLED panels
+            {
+                return;
+            }
+            if (SystemInformation.PowerStatus.PowerLineStatus != PowerLineStatus.Offline) // on battery power
+            {
+                return;
+            }
+            if (!(AppConfig.IsG14AMD() || AppConfig.IsAMDLight() || AppConfig.IsAMDiGPU())) // AMD varibright only on AMD hardware
+            {
+                return;
+            }
+            if (hdr) // varibright only affects when on SDR
+            {
+                return;
+            }
+
+            string message = "On battery power and using SDR, OLED screen may be washed out due to AMD OLED Power Optimization.\n\nPlease disable OLED Power Optimization in AMD Software: Adrenalin Edition -> Settings -> Display -> OLED Power Optimization.\n\nClick Cancel to not show this message again.";
+
+            if (MessageBox.Show(message, "OLED Color Issue", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning) == DialogResult.Cancel)
+            {
+                AppConfig.Set("oled_hdr_wash_warning_shown", 1);
+            }
+        }
+
         public void VisualiseBrightness()
         {
             Invoke(delegate
@@ -1293,6 +1321,8 @@ namespace GHelper
 
         public void VisualiseScreen(bool screenEnabled, bool screenAuto, int frequency, int maxFrequency, int overdrive, bool overdriveSetting, int miniled1, int miniled2, bool hdr, int fhd, int hdrControl)
         {
+
+            OLEDHDRWashWarning(hdr);
 
             ButtonEnabled(button60Hz, screenEnabled);
             ButtonEnabled(button120Hz, screenEnabled);
