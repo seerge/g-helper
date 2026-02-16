@@ -2,6 +2,7 @@
 using GHelper.AnimeMatrix;
 using GHelper.AutoUpdate;
 using GHelper.Battery;
+using GHelper.CompanionApp;
 using GHelper.Display;
 using GHelper.Fan;
 using GHelper.Gpu;
@@ -14,6 +15,7 @@ using GHelper.Properties;
 using GHelper.UI;
 using GHelper.USB;
 using System.Diagnostics;
+using System.Net.Sockets;
 using System.Timers;
 
 namespace GHelper
@@ -1464,23 +1466,23 @@ namespace GHelper
             }
         }
 
-        private void ButtonUltimate_Click(object? sender, EventArgs e)
+        public void ButtonUltimate_Click(object? sender, EventArgs e)
         {
             gpuControl.SetGPUMode(AsusACPI.GPUModeUltimate);
         }
 
-        private void ButtonStandard_Click(object? sender, EventArgs e)
+        public void ButtonStandard_Click(object? sender, EventArgs e)
         {
             gpuControl.SetGPUMode(AsusACPI.GPUModeStandard);
         }
 
-        private void ButtonEco_Click(object? sender, EventArgs e)
+        public void ButtonEco_Click(object? sender, EventArgs e)
         {
             gpuControl.SetGPUMode(AsusACPI.GPUModeEco);
         }
 
 
-        private void ButtonOptimized_Click(object? sender, EventArgs e)
+        public void ButtonOptimized_Click(object? sender, EventArgs e)
         {
             AppConfig.Set("gpu_auto", (AppConfig.Get("gpu_auto") == 1) ? 0 : 1);
             VisualiseGPUMode();
@@ -2038,7 +2040,14 @@ namespace GHelper
             InputDispatcher.ToggleFnLock();
         }
 
+        private void buttonCompanionApp_Click(object sender, EventArgs e)
+        {
+            var companionApp = new CompanionAppScreen();
+            companionApp.StartPosition = FormStartPosition.CenterParent;
+            companionApp.ShowDialog();
+
+            bool isStarted = Program.companionService.Status == CompanionService.EStatus.Started;
+            buttonCompanionApp.Activated = isStarted;
+        }
     }
-
-
 }
