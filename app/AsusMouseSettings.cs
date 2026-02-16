@@ -1043,7 +1043,16 @@ namespace GHelper
             //0x07 => 1
             //0x05 => 2
             comboBoxAnimationSpeed.SelectedIndex = 2 - ((((int)ls.AnimationSpeed) - 5) / 2);
-            comboBoxAnimationDirection.SelectedIndex = (int)ls.AnimationDirection;
+            
+            int directionIndex = (int)ls.AnimationDirection;
+            if (directionIndex >= 0 && directionIndex < comboBoxAnimationDirection.Items.Count)
+            {
+                comboBoxAnimationDirection.SelectedIndex = directionIndex;
+            }
+            else
+            {
+                comboBoxAnimationDirection.SelectedIndex = 0; // Default to first item
+            }
         }
 
 
