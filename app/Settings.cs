@@ -1,5 +1,6 @@
 ﻿using GHelper.Ally;
 using GHelper.AnimeMatrix;
+using GHelper.AutoTDP;
 using GHelper.AutoUpdate;
 using GHelper.Battery;
 using GHelper.Display;
@@ -28,6 +29,7 @@ namespace GHelper
         AutoUpdateControl updateControl;
 
         AsusMouseSettings? mouseSettings;
+        AutoTDPUI? autoTdpUi;
 
         public AniMatrixControl matrixControl;
 
@@ -262,6 +264,8 @@ namespace GHelper
             buttonAutoTDP.Click += ButtonAutoTDP_Click;
             buttonAutoTDP.BorderColor = colorTurbo;
 
+            buttonCPUAutoTDP.Click += ButtonCPUAutoTDP_Click;
+
             Text = "G-Helper " + (ProcessHelper.IsUserAdministrator() ? "—" : "-") + " " + AppConfig.GetModelShort();
             TopMost = AppConfig.Is("topmost");
 
@@ -495,6 +499,38 @@ namespace GHelper
             });
         }
 
+        private void ButtonCPUAutoTDP_Click(object? sender, EventArgs e)
+        {
+            if (autoTdpUi is not null)
+            {
+                return;
+            }
+
+            autoTdpUi = new AutoTDPUI();
+            autoTdpUi.FormClosed += AutoTdpUi_FormClosed;
+            autoTdpUi.Disposed += AutoTdpUi_Disposed;
+            autoTdpUi.TopMost = AppConfig.Is("topmost");
+
+            if (!autoTdpUi.IsDisposed)
+            {
+                autoTdpUi.Show();
+            }
+            else
+            {
+                autoTdpUi = null;
+            }
+        }
+
+        private void AutoTdpUi_Disposed(object? sender, EventArgs e)
+        {
+            autoTdpUi = null;
+        }
+
+        private void AutoTdpUi_FormClosed(object? sender, FormClosedEventArgs e)
+        {
+            autoTdpUi = null;
+        }
+
         public void VisualiseDisabled()
         {
             comboGamut.Enabled = comboColorTemp.Enabled = (SplendidCommand)AppConfig.Get("visual") != SplendidCommand.Disabled;
@@ -672,6 +708,8 @@ namespace GHelper
                 buttonEnergySaver.Visible = PowerNative.GetBatterySaverStatus();
                 Task.Run((Action)RefreshPeripheralsBattery);
                 updateControl.CheckForUpdates();
+
+                tableAdditionalCPUFeature.Visible = AutoTDPService.IsAvailable();
             }
         }
 
@@ -1409,6 +1447,7 @@ namespace GHelper
 
         private void ButtonQuit_Click(object? sender, EventArgs e)
         {
+            Program.autoTDPService.Shutdown();
             matrixControl.Dispose();
             Close();
             Program.trayIcon.Visible = false;
