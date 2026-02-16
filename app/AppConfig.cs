@@ -677,7 +677,7 @@ public static class AppConfig
 
     public static bool NoGpu()
     {
-        return Is("no_gpu") || ContainsModel("UX540") || ContainsModel("UM560") || ContainsModel("GZ302") || IsFA401EA();
+        return Is("no_gpu") || ContainsModel("UX540") || ContainsModel("M560") || ContainsModel("GZ302") || IsFA401EA();
     }
 
     public static bool IsFA401EA()
