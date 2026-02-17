@@ -352,15 +352,19 @@ namespace GHelper
             // 
             // tableLayoutModes
             // 
-            tableLayoutModes.ColumnCount = 4;
+            tableLayoutModes.ColumnCount = 6;
             tableLayoutModes.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 60F));
             tableLayoutModes.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 60F));
+            tableLayoutModes.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 36F));
+            tableLayoutModes.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 36F));
             tableLayoutModes.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
             tableLayoutModes.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 60F));
             tableLayoutModes.Controls.Add(buttonRemove, 0, 0);
-            tableLayoutModes.Controls.Add(buttonAdd, 3, 0);
             tableLayoutModes.Controls.Add(buttonRename, 1, 0);
-            tableLayoutModes.Controls.Add(comboModes, 2, 0);
+            tableLayoutModes.Controls.Add(buttonMoveUp, 2, 0);
+            tableLayoutModes.Controls.Add(buttonMoveDown, 3, 0);
+            tableLayoutModes.Controls.Add(comboModes, 4, 0);
+            tableLayoutModes.Controls.Add(buttonAdd, 5, 0);
             tableLayoutModes.Dock = DockStyle.Right;
             tableLayoutModes.Location = new Point(330, 0);
             tableLayoutModes.Margin = new Padding(0);
@@ -421,6 +425,40 @@ namespace GHelper
             buttonRename.Size = new Size(54, 46);
             buttonRename.TabIndex = 45;
             buttonRename.UseVisualStyleBackColor = false;
+            // 
+            // buttonMoveUp
+            // 
+            buttonMoveUp.Activated = false;
+            buttonMoveUp.BackColor = SystemColors.ControlLight;
+            buttonMoveUp.BorderColor = Color.Transparent;
+            buttonMoveUp.BorderRadius = 2;
+            buttonMoveUp.Dock = DockStyle.Fill;
+            buttonMoveUp.FlatStyle = FlatStyle.Flat;
+            buttonMoveUp.Text = "▲";
+            buttonMoveUp.Location = new Point(120, 10);
+            buttonMoveUp.Margin = new Padding(0, 0, 6, 0);
+            buttonMoveUp.Name = "buttonMoveUp";
+            buttonMoveUp.Secondary = true;
+            buttonMoveUp.Size = new Size(30, 46);
+            buttonMoveUp.TabIndex = 46;
+            buttonMoveUp.UseVisualStyleBackColor = false;
+            // 
+            // buttonMoveDown
+            // 
+            buttonMoveDown.Activated = false;
+            buttonMoveDown.BackColor = SystemColors.ControlLight;
+            buttonMoveDown.BorderColor = Color.Transparent;
+            buttonMoveDown.BorderRadius = 2;
+            buttonMoveDown.Dock = DockStyle.Fill;
+            buttonMoveDown.FlatStyle = FlatStyle.Flat;
+            buttonMoveDown.Text = "▼";
+            buttonMoveDown.Location = new Point(156, 10);
+            buttonMoveDown.Margin = new Padding(0, 0, 6, 0);
+            buttonMoveDown.Name = "buttonMoveDown";
+            buttonMoveDown.Secondary = true;
+            buttonMoveDown.Size = new Size(30, 46);
+            buttonMoveDown.TabIndex = 47;
+            buttonMoveDown.UseVisualStyleBackColor = false;
             // 
             // comboModes
             // 
@@ -1877,6 +1915,8 @@ namespace GHelper
         private RButton buttonAdd;
         private RButton buttonRemove;
         private RButton buttonRename;
+        private RButton buttonMoveUp;
+        private RButton buttonMoveDown;
         private Panel panelUV;
         private Label labelUV;
         private Label labelLeftUV;

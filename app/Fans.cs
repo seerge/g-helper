@@ -110,6 +110,9 @@ namespace GHelper
 
             buttonReset.Click += ButtonReset_Click;
 
+            buttonMoveUp.Click += ButtonMoveUp_Click;
+            buttonMoveDown.Click += ButtonMoveDown_Click;
+
             trackTotal.Maximum = AsusACPI.MaxTotal;
             trackTotal.Minimum = AsusACPI.MinTotal;
 
@@ -509,6 +512,9 @@ namespace GHelper
             comboModes.DataSource = new BindingSource(Modes.GetDictonary(), null);
             comboModes.DisplayMember = "Value";
             comboModes.ValueMember = "Key";
+            // show/hide controls that only apply to custom modes
+            bool isCustom = Modes.IsCurrentCustom();
+            buttonRename.Visible = buttonRemove.Visible = buttonMoveUp.Visible = buttonMoveDown.Visible = isCustom;
             if (contextMenu) Program.settingsForm.SetContextMenu();
         }
 
@@ -519,11 +525,37 @@ namespace GHelper
             modeControl.SetPerformanceMode(mode);
         }
 
+        private void ButtonMoveUp_Click(object? sender, EventArgs e)
+        {
+            var selected = comboModes.SelectedValue;
+            if (selected == null) return;
+
+            int mode = (int)selected;
+            if (Modes.Move(mode, -1))
+            {
+                FillModes();
+                comboModes.SelectedValue = mode;
+            }
+        }
+
+        private void ButtonMoveDown_Click(object? sender, EventArgs e)
+        {
+            var selected = comboModes.SelectedValue;
+            if (selected == null) return;
+
+            int mode = (int)selected;
+            if (Modes.Move(mode, +1))
+            {
+                FillModes();
+                comboModes.SelectedValue = mode;
+            }
+        }
+
         public void InitMode()
         {
             int mode = Modes.GetCurrent();
             comboModes.SelectedValue = mode;
-            buttonRename.Visible = buttonRemove.Visible = Modes.IsCurrentCustom();
+            buttonRename.Visible = buttonRemove.Visible = buttonMoveUp.Visible = buttonMoveDown.Visible = Modes.IsCurrentCustom();
         }
 
         private void ComboModes_SelectedValueChanged(object? sender, EventArgs e)
