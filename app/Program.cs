@@ -75,7 +75,14 @@ namespace GHelper
             string language = AppConfig.GetString("language");
 
             if (language != null && language.Length > 0)
-                Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo(language);
+                try
+                {
+                    Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo(language);
+                }
+                catch (CultureNotFoundException)
+                {
+                    Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo("en");
+                }
             else
             {
                 var culture = CultureInfo.CurrentUICulture;
