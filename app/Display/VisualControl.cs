@@ -371,7 +371,7 @@ namespace GHelper.Display
             {
                 Logger.WriteLine("Skipping command due to AMD OLED Power Optimization flag");
                 Program.settingsForm.VisualiseAmdOled(true);
-                return 1;
+                return 0;
             }
 
             if (isSplenddid)

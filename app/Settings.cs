@@ -151,6 +151,7 @@ namespace GHelper
 
             buttonAmdOled.BackColor = colorTurbo;
             buttonAmdOled.ForeColor = SystemColors.ControlLightLight;
+            buttonAmdOled.Visible = AmdDisplay.IsOledPowerOptimizationOnBattery();
             buttonAmdOled.Click += ButtonAmdOled_Click;
 
             buttonSilent.Click += ButtonSilent_Click;
@@ -298,6 +299,7 @@ namespace GHelper
         private void ButtonAmdOled_Click(object? sender, EventArgs e)
         {
             ProcessHelper.RunCMD(@"C:\Program Files\AMD\CNext\CNext\RadeonSoftware.exe","");
+            activateCheck = true;
         }
 
         private void LabelBattery_Click(object? sender, EventArgs e)
@@ -621,6 +623,7 @@ namespace GHelper
             if (activateCheck)
             {
                 buttonEnergySaver.Visible = PowerNative.GetBatterySaverStatus();
+                buttonAmdOled.Visible = AmdDisplay.IsOledPowerOptimizationOnBattery();
                 activateCheck = false;
             }
         }

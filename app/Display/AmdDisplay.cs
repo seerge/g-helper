@@ -14,7 +14,7 @@ namespace GHelper.Display
         {
 
             if (!AppConfig.IsOLED()) return false; 
-            if (SystemInformation.PowerStatus.PowerLineStatus != PowerLineStatus.Offline) return false;
+            //if (SystemInformation.PowerStatus.PowerLineStatus != PowerLineStatus.Offline) return false;
             if (!RyzenControl.IsAMD()) return false;
 
             try
