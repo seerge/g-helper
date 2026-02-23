@@ -149,6 +149,10 @@ namespace GHelper
             buttonEnergySaver.ForeColor = SystemColors.ControlLightLight;
             buttonEnergySaver.Click += ButtonEnergySaver_Click;
 
+            buttonAmdOled.BackColor = colorTurbo;
+            buttonAmdOled.ForeColor = SystemColors.ControlLightLight;
+            buttonAmdOled.Click += ButtonAmdOled_Click;
+
             buttonSilent.Click += ButtonSilent_Click;
             buttonBalanced.Click += ButtonBalanced_Click;
             buttonTurbo.Click += ButtonTurbo_Click;
@@ -289,6 +293,11 @@ namespace GHelper
 
             panelPerformance.Focus();
             InitVisual();
+        }
+
+        private void ButtonAmdOled_Click(object? sender, EventArgs e)
+        {
+            ProcessHelper.RunCMD(@"C:\Program Files\AMD\CNext\CNext\RadeonSoftware.exe","");
         }
 
         private void LabelBattery_Click(object? sender, EventArgs e)
@@ -492,6 +501,14 @@ namespace GHelper
                 sliderGamma.Value = VisualControl.GetBrightness();
                 labelGamma.Text = sliderGamma.Value + "%";
                 sliderGammaIgnore = false;
+            });
+        }
+
+        public void VisualiseAmdOled(bool status = false)
+        {
+            Invoke(delegate
+            {
+                buttonAmdOled.Visible = status;
             });
         }
 
