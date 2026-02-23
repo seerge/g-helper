@@ -1,5 +1,6 @@
 ﻿using Microsoft.Win32;
 using Ryzen;
+using System.Diagnostics;
 
 namespace GHelper.Display
 {
@@ -12,7 +13,6 @@ namespace GHelper.Display
 
         public static bool IsOledPowerOptimizationOnBattery()
         {
-
             if (!AppConfig.IsOLED()) return false; 
             //if (SystemInformation.PowerStatus.PowerLineStatus != PowerLineStatus.Offline) return false;
             if (!RyzenControl.IsAMD()) return false;

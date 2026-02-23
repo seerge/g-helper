@@ -272,6 +272,11 @@ namespace GHelper.Display
 
         public static void SetVisual(SplendidCommand mode = SplendidCommand.Default, int whiteBalance = DefaultColorTemp, bool init = false)
         {
+            Task.Run(async () =>
+            {
+                if (AmdDisplay.IsOledPowerOptimizationOnBattery()) Program.settingsForm.VisualiseAmdOled(true);
+            });
+
             if (mode == SplendidCommand.None) return;
             if ((mode == SplendidCommand.Default || mode == SplendidCommand.VivoNormal) && whiteBalance == DefaultColorTemp && init) return; // Skip default setting on init
             if (mode == SplendidCommand.Disabled && !RyzenControl.IsAMD() && init) return; // Skip disabled setting for Intel devices

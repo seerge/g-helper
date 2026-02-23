@@ -151,7 +151,6 @@ namespace GHelper
 
             buttonAmdOled.BackColor = colorTurbo;
             buttonAmdOled.ForeColor = SystemColors.ControlLightLight;
-            buttonAmdOled.Visible = AmdDisplay.IsOledPowerOptimizationOnBattery();
             buttonAmdOled.Click += ButtonAmdOled_Click;
 
             buttonSilent.Click += ButtonSilent_Click;
