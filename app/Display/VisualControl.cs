@@ -367,6 +367,12 @@ namespace GHelper.Display
             bool isVivo = AppConfig.IsVivoZenPro();
             bool isSplenddid = File.Exists(splendidExe);
 
+            if (AmdDisplay.IsOledPowerOptimizationOnBattery())
+            {
+                Logger.WriteLine("Skipping command due to AMD OLED Power Optimization flag");
+                return 1;
+            }
+
             if (isSplenddid)
             {
                 var result = ProcessHelper.RunCMD(splendidExe, (int)command + " " + param1 + " " + param2 + " " + param3, splendidPath);
