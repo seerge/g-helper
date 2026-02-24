@@ -152,6 +152,10 @@ namespace GHelper
             unRegPowerNotify = NativeMethods.RegisterPowerSettingNotification(settingsForm.Handle, PowerSettingGuid.ConsoleDisplayState, NativeMethods.DEVICE_NOTIFY_WINDOW_HANDLE);
             unRegPowerNotifyLid = NativeMethods.RegisterPowerSettingNotification(settingsForm.Handle, PowerSettingGuid.LIDSWITCH_STATE_CHANGE, NativeMethods.DEVICE_NOTIFY_WINDOW_HANDLE);
 
+            if (AppConfig.IsChargeLimit6080())
+            {
+                Task.Run(() => BatteryControl.Regulate6080BatteryChargeLimit(TimeSpan.FromSeconds(5)));
+            }
 
             Task task = Task.Run((Action)PeripheralsProvider.DetectAllAsusMice);
             PeripheralsProvider.RegisterForDeviceEvents();
