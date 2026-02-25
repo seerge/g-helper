@@ -911,7 +911,4 @@ Nadal chcesz kontynuować?</value>
   <data name="DisableBacklight" xml:space="preserve">
     <value>Całkowicie wyłącz podświetlenie</value>
   </data>
-  <data name="Advanced" xml:space="preserve">
-    <value>Zaawansowane</value>
-  </data>
 </root>

@@ -108,6 +108,7 @@ namespace GHelper
             pictureKeyboard = new PictureBox();
             labelKeyboard = new Label();
             panelStartup = new Panel();
+            checkAccessible = new CheckBox();
             labelCharge = new Label();
             panelPeripherals = new Panel();
             tableLayoutPeripherals = new TableLayoutPanel();
@@ -1462,6 +1463,7 @@ namespace GHelper
             // panelStartup
             // 
             panelStartup.Controls.Add(labelCharge);
+            panelStartup.Controls.Add(checkAccessible);
             panelStartup.Controls.Add(checkStartup);
             panelStartup.Dock = DockStyle.Top;
             panelStartup.Location = new Point(11, 1787);
@@ -1470,6 +1472,19 @@ namespace GHelper
             panelStartup.Padding = new Padding(20, 0, 20, 0);
             panelStartup.Size = new Size(827, 50);
             panelStartup.TabIndex = 6;
+            // 
+            // checkAccessible
+            // 
+            checkAccessible.AutoSize = true;
+            checkAccessible.Dock = DockStyle.Left;
+            checkAccessible.Location = new Point(236, 0);
+            checkAccessible.Margin = new Padding(11, 5, 11, 5);
+            checkAccessible.Name = "checkAccessible";
+            checkAccessible.Padding = new Padding(10, 0, 0, 0);
+            checkAccessible.Size = new Size(216, 50);
+            checkAccessible.TabIndex = 22;
+            checkAccessible.Text = "Accessible Mode";
+            checkAccessible.UseVisualStyleBackColor = true;
             // 
             // labelCharge
             // 
@@ -2208,5 +2223,6 @@ namespace GHelper
         private RButton buttonEnergySaver;
         private RButton buttonAmdOled;
         private RButton buttonHDRControl;
+        private CheckBox checkAccessible;
     }
 }

@@ -18,18 +18,18 @@ public static class AppConfig
 
     static AppConfig()
     {
+        string startupPath = Application.StartupPath.TrimEnd('\\');
+        string appPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "GHelper");
+        string configName = "config.json";
 
-        string startupPath = Application.StartupPath.Trim('\\');
-        string appPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\GHelper";
-        string configName = "\\config.json";
-
-        if (File.Exists(startupPath + configName))
+        string localConfig = Path.Combine(startupPath, configName);
+        if (File.Exists(localConfig))
         {
-            configFile = startupPath + configName;
+            configFile = localConfig;
         }
         else
         {
-            configFile = appPath + configName;
+            configFile = Path.Combine(appPath, configName);
         }
 
 
@@ -104,7 +104,7 @@ public static class AppConfig
         var backupText = File.ReadAllText(configFile);
         bool isValid =
             !string.IsNullOrWhiteSpace(backupText) &&
-            backupText.IndexOf('\0') == -1 &&                     
+            backupText.IndexOf('\0') == -1 &&
             backupText.StartsWith("{") &&
             backupText.Trim().EndsWith("}") &&
             backupText.Length >= 10;
@@ -221,6 +221,16 @@ public static class AppConfig
     public static bool Is(string name)
     {
         return Get(name) == 1;
+    }
+
+    public static bool IsAccessible()
+    {
+        return Get("accessible_mode") == 1;
+    }
+
+    public static bool IsBacklightDisabled()
+    {
+        return Get("no_backlight") == 1;
     }
 
     public static bool IsNotFalse(string name)
