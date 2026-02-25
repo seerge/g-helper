@@ -622,7 +622,7 @@ namespace GHelper
             if (activateCheck)
             {
                 buttonEnergySaver.Visible = PowerNative.GetBatterySaverStatus();
-                buttonAmdOled.Visible = AmdDisplay.IsOledPowerOptimizationOnBattery();
+                buttonAmdOled.Visible = AmdDisplay.IsOledPowerOptimization();
                 activateCheck = false;
             }
         }
