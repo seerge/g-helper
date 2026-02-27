@@ -73,6 +73,10 @@ namespace GHelper.Helpers
             foreach (string service in services)
             {
                 ProcessHelper.StopDisableService(service);
+                if (service == "ArmouryCrateControlInterface")
+                {
+                    ProcessHelper.KillByName("ArmouryCrateKeyControl");
+                }
             }
 
             if (AppConfig.IsStopAC())
