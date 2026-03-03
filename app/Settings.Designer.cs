@@ -136,6 +136,7 @@ namespace GHelper
             labelGammaTitle = new Label();
             panelVersion = new Panel();
             buttonEnergySaver = new RButton();
+            buttonAmdOled = new RButton();
             labelVersion = new Label();
             buttonHDRControl = new RButton();
             panelMatrix.SuspendLayout();
@@ -1913,6 +1914,7 @@ namespace GHelper
             panelVersion.AutoSize = true;
             panelVersion.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             panelVersion.Controls.Add(buttonEnergySaver);
+            panelVersion.Controls.Add(buttonAmdOled);
             panelVersion.Controls.Add(labelVersion);
             panelVersion.Dock = DockStyle.Top;
             panelVersion.Location = new Point(11, 1837);
@@ -1942,6 +1944,28 @@ namespace GHelper
             buttonEnergySaver.TabIndex = 39;
             buttonEnergySaver.Text = "Energy Saver";
             buttonEnergySaver.UseVisualStyleBackColor = false;
+            // 
+            // buttonAmdOled
+            // 
+            buttonAmdOled.Activated = false;
+            buttonAmdOled.BackColor = SystemColors.ControlLight;
+            buttonAmdOled.BorderColor = Color.Transparent;
+            buttonAmdOled.BorderRadius = 2;
+            buttonAmdOled.Dock = DockStyle.Right;
+            buttonAmdOled.FlatAppearance.BorderSize = 0;
+            buttonAmdOled.FlatStyle = FlatStyle.Flat;
+            buttonAmdOled.Font = new Font("Segoe UI", 7.125F, FontStyle.Bold);
+            buttonAmdOled.ForeColor = SystemColors.ControlDark;
+            buttonAmdOled.ImageAlign = ContentAlignment.MiddleLeft;
+            buttonAmdOled.Location = new Point(640, 5);
+            buttonAmdOled.Margin = new Padding(0);
+            buttonAmdOled.Name = "buttonAmdOled";
+            buttonAmdOled.Secondary = true;
+            buttonAmdOled.Size = new Size(180, 40);
+            buttonAmdOled.TabIndex = 39;
+            buttonAmdOled.Text = "AMD OledSaver";
+            buttonAmdOled.UseVisualStyleBackColor = false;
+            buttonAmdOled.Visible = false;
             // 
             // labelVersion
             // 
@@ -2182,6 +2206,7 @@ namespace GHelper
         private Label labelVersion;
         private RBadgeButton buttonDonate;
         private RButton buttonEnergySaver;
+        private RButton buttonAmdOled;
         private RButton buttonHDRControl;
     }
 }

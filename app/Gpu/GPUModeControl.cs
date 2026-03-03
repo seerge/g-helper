@@ -288,7 +288,12 @@ namespace GHelper.Gpu
                     }
                     else
                     {
-                        DialogResult dialogResult = MessageBox.Show("Did you close all applications running on XG Mobile?", "Disabling XG Mobile", MessageBoxButtons.YesNo);
+                        DialogResult dialogResult = DialogResult.No;
+                        settings.Invoke((MethodInvoker)delegate
+                        {
+                            dialogResult = MessageBox.Show(settings, "Did you close all applications running on XG Mobile?", "Disabling XG Mobile", MessageBoxButtons.YesNo);
+                        });
+                        
                         if (dialogResult == DialogResult.Yes)
                         {
                             Program.acpi.DeviceSet(AsusACPI.GPUXG, 0, "GPU XGM");

@@ -164,7 +164,7 @@ public class AsusACPI
     public static int DefaultTotal = 80;
 
     public const int MinCPU = 5;
-    public const int MaxCPU = 100;
+    public static int MaxCPU = 100;
     public const int DefaultCPU = 80;
 
     public const int MinGPUBoost = 5;
@@ -340,6 +340,11 @@ public class AsusACPI
             MaxTotal = 93;
         }
 
+        if (AppConfig.IsFA401EA())
+        {
+            MaxTotal = 115;
+            MaxCPU = 115;
+        }
 
     }
 

@@ -105,6 +105,7 @@ namespace GHelper.Ally
         public const string BindBrightnessUp = "04-04-8C-88-8A-06";
         public const string BindXGM = "04-04-8C-88-8A-04";
         public const string BindToggleMode = "04-04-8C-88-8A-0C";
+        public const string BindToggleFPSLimit = "04-04-8C-88-8A-01";
         public const string BindToggleTouchScreen = "04-04-8C-88-8A-0B";
 
         public const string BindOverlay = "04-03-8C-88-44";
@@ -158,6 +159,7 @@ namespace GHelper.Ally
             { BindXB, "XBox/Steam" },
 
             { BindToggleMode, "Controller Mode" },
+            { BindToggleFPSLimit, "FPS Limit" },
             { BindToggleTouchScreen, "Toggle TouchScreen" },
 
             { BindVolUp, "Vol Up" },
@@ -425,7 +427,7 @@ namespace GHelper.Ally
             settings.VisualiseFPSLimit(fpsLimit);
         }
 
-        public void ToggleFPSLimit()
+        public void ToggleFPSLimit(bool toast = false)
         {
             switch (fpsLimit)
             {
@@ -462,6 +464,7 @@ namespace GHelper.Ally
             Logger.WriteLine($"FPS Limit {fpsLimit}: {result}");
 
             settings.VisualiseFPSLimit(fpsLimit);
+            if (toast) Program.toast.RunToast("FPS Limit " + ((fpsLimit > 0 && fpsLimit <= 120) ? fpsLimit : "OFF"));
 
         }
 
