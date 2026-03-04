@@ -12,6 +12,7 @@ public static class HardwareControl
 {
 
     public static IGpuControl? GpuControl;
+    public static IFullChargingDisabler fullChargingDisabler = new TimeoutFullChargingDisabler();
 
     public static float? cpuTemp = -1;
     public static float? gpuTemp = -1;
@@ -266,7 +267,7 @@ public static class HardwareControl
         if (fullCapacity > 0 && chargeCapacity > 0)
         {
             batteryCapacity = Math.Min(100, (decimal)chargeCapacity / (decimal)fullCapacity * 100);
-            if (batteryCapacity > 99 && BatteryControl.chargeFull) BatteryControl.UnSetBatteryLimitFull();
+            fullChargingDisabler.TriggerChargingEvent(batteryRate, batteryCapacity);
             if (chargeWatt)
             {
                 batteryCharge = Math.Round((decimal)chargeCapacity / 1000, 1).ToString() + "Wh";
