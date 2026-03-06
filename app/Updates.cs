@@ -3,6 +3,7 @@ using GHelper.UI;
 using NvAPIWrapper.Native.Display.Structures;
 using System.Diagnostics;
 using System.Diagnostics.Metrics;
+using System.Globalization;
 using System.Management;
 using System.Net;
 using System.Text.Json;
@@ -152,25 +153,34 @@ namespace GHelper
             }
         }
 
-        private Dictionary<string, string> GetDeviceVersions()
+        private Dictionary<string, DateTime> GetDeviceDates()
         {
             using (ManagementObjectSearcher objSearcher = new ManagementObjectSearcher("Select * from Win32_PnPSignedDriver"))
             {
                 using (ManagementObjectCollection objCollection = objSearcher.Get())
                 {
-                    Dictionary<string, string> list = new();
+                    Dictionary<string, DateTime> list = new();
 
-                    foreach (ManagementObject obj in objCollection) if (obj["DriverVersion"] is not null)
+                    foreach (ManagementObject obj in objCollection) if (obj["DriverDate"] is not null)
                         {
+                            if (!DateTime.TryParse(obj["DriverDate"].ToString(), out DateTime driverDate))
+                            {
+                                // WMI DriverDate is typically in CIM_DATETIME format: yyyyMMddHHmmss.ffffff+zzz
+                                if (!ManagementDateTimeConverter.ToDateTime(obj["DriverDate"].ToString()).Equals(DateTime.MinValue))
+                                    driverDate = ManagementDateTimeConverter.ToDateTime(obj["DriverDate"].ToString());
+                                else
+                                    continue;
+                            }
+
                             if (obj["DeviceID"] is not null)
                             {
-                                list[obj["DeviceID"].ToString()] = obj["DriverVersion"].ToString();
+                                list[obj["DeviceID"].ToString()] = driverDate;
                             }
                             if (obj["DeviceName"] is not null)
                             {
                                 var deviceName = obj["DeviceName"].ToString();
-                                if (deviceName.Contains("DolbyAPO SWC")) list["Dolby"] = obj["DriverVersion"].ToString();
-                                if (deviceName.Contains("Fortemedia Audio")) list["Fortemedia"] = obj["DriverVersion"].ToString();
+                                if (deviceName.Contains("DolbyAPO SWC")) list["Dolby"] = driverDate;
+                                if (deviceName.Contains("Fortemedia Audio")) list["Fortemedia"] = driverDate;
                             }
                         }
                     return list;
@@ -297,6 +307,16 @@ namespace GHelper
             return input;
         }
 
+        static DateTime? ParseDriverDate(string dateString)
+        {
+            string[] formats = { "yyyy/MM/dd", "yyyy-MM-dd", "MM/dd/yyyy", "dd/MM/yyyy", "yyyy.MM.dd" };
+            if (DateTime.TryParseExact(dateString.Trim(), formats, CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime parsed))
+                return parsed;
+            if (DateTime.TryParse(dateString.Trim(), CultureInfo.InvariantCulture, DateTimeStyles.None, out parsed))
+                return parsed;
+            return null;
+        }
+
         public async void DriversAsync(string url, int type, TableLayoutPanel table)
         {
 
@@ -365,8 +385,8 @@ namespace GHelper
                     ShowTable(table);
 
 
-                    Dictionary<string, string> devices = new();
-                    if (type == 0) devices = GetDeviceVersions();
+                    Dictionary<string, DateTime> devices = new();
+                    if (type == 0) devices = GetDeviceDates();
 
                     //Debug.WriteLine(biosVersion);
 
@@ -374,21 +394,28 @@ namespace GHelper
                     foreach (var driver in drivers)
                     {
                         int newer = DRIVER_NOT_FOUND;
-                        string tip = driver.version;
+                        string tip = driver.date;
 
                         if (type == 0 && driver.hardwares.ToString().Length > 0)
+                        {
+                            DateTime? apiDate = ParseDriverDate(driver.date);
+
                             for (int k = 0; k < driver.hardwares.GetArrayLength(); k++)
                             {
                                 var deviceID = driver.hardwares[k].GetProperty("hardwareid").ToString();
                                 deviceID = CleanupDeviceId(deviceID);
-                                var localVersions = devices.Where(p => p.Key.Contains(deviceID, StringComparison.CurrentCultureIgnoreCase)).Select(p => p.Value);
-                                foreach (var localVersion in localVersions)
+                                var localDates = devices.Where(p => p.Key.Contains(deviceID, StringComparison.CurrentCultureIgnoreCase)).Select(p => p.Value);
+                                foreach (var localDate in localDates)
                                 {
-                                    newer = Math.Min(newer, new Version(driver.version).CompareTo(new Version(localVersion)));
-                                    Logger.WriteLine(driver.title + " " + deviceID + " " + driver.version + " vs " + localVersion + " = " + newer);
-                                    tip = "Download: " + driver.version + "\n" + "Installed: " + localVersion;
+                                    if (apiDate.HasValue)
+                                    {
+                                        newer = Math.Min(newer, apiDate.Value.Date.CompareTo(localDate.Date));
+                                    }
+                                    Logger.WriteLine(driver.title + " " + deviceID + " " + driver.date + " vs " + localDate.ToString("yyyy/MM/dd") + " = " + newer);
+                                    tip = "Download: " + driver.date + "\n" + "Installed: " + localDate.ToString("yyyy/MM/dd");
                                 }
                             }
+                        }
 
                         if (type == 1 && !driver.title.Contains("Firmware"))
                         {
