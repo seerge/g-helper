@@ -55,6 +55,7 @@ namespace GHelper
             buttonQuit = new RButton();
             buttonUpdates = new RButton();
             checkStartup = new CheckBox();
+            checkTrayTemps = new CheckBox();
             panelPerformance = new Panel();
             tablePerf = new TableLayoutPanel();
             buttonSilent = new RButton();
@@ -564,7 +565,19 @@ namespace GHelper
             checkStartup.TabIndex = 21;
             checkStartup.Text = Properties.Strings.RunOnStartup;
             checkStartup.UseVisualStyleBackColor = true;
-            // 
+            //
+            // checkTrayTemps
+            //
+            checkTrayTemps.AutoSize = true;
+            checkTrayTemps.Dock = DockStyle.Left;
+            checkTrayTemps.Margin = new Padding(11, 5, 11, 5);
+            checkTrayTemps.Name = "checkTrayTemps";
+            checkTrayTemps.Padding = new Padding(10, 0, 0, 0);
+            checkTrayTemps.Size = new Size(216, 50);
+            checkTrayTemps.TabIndex = 22;
+            checkTrayTemps.Text = Properties.Strings.TrayTemps;
+            checkTrayTemps.UseVisualStyleBackColor = true;
+            //
             // panelPerformance
             // 
             panelPerformance.AccessibleRole = AccessibleRole.Grouping;
@@ -1463,6 +1476,7 @@ namespace GHelper
             // 
             panelStartup.Controls.Add(labelCharge);
             panelStartup.Controls.Add(checkStartup);
+            panelStartup.Controls.Add(checkTrayTemps);
             panelStartup.Dock = DockStyle.Top;
             panelStartup.Location = new Point(11, 1787);
             panelStartup.Margin = new Padding(0);
@@ -2104,6 +2118,7 @@ namespace GHelper
         private Panel panelFooter;
         private RButton buttonQuit;
         private CheckBox checkStartup;
+        private CheckBox checkTrayTemps;
         private Panel panelPerformance;
         private TableLayoutPanel tablePerf;
         private RButton buttonTurbo;
