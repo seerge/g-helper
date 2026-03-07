@@ -153,6 +153,10 @@ namespace GHelper
             buttonAmdOled.ForeColor = SystemColors.ControlLightLight;
             buttonAmdOled.Click += ButtonAmdOled_Click;
 
+            buttonArmoury.BackColor = colorTurbo;
+            buttonArmoury.ForeColor = SystemColors.ControlLightLight;
+            buttonArmoury.Click += ButtonArmoury_Click;
+
             buttonSilent.Click += ButtonSilent_Click;
             buttonBalanced.Click += ButtonBalanced_Click;
             buttonTurbo.Click += ButtonTurbo_Click;
@@ -294,6 +298,13 @@ namespace GHelper
             panelPerformance.Focus();
             InitVisual();
         }
+
+        private void ButtonArmoury_Click(object? sender, EventArgs e)
+        {
+            var dialogResult = MessageBox.Show(this, "Armoury Crate is active, launch official uninstaller app?", "Armoury Crate", MessageBoxButtons.YesNo);
+            if (dialogResult == DialogResult.Yes) AsusService.RunArmouryUninstaller();
+        }
+
 
         private void ButtonAmdOled_Click(object? sender, EventArgs e)
         {
@@ -510,6 +521,14 @@ namespace GHelper
             Invoke(delegate
             {
                 buttonAmdOled.Visible = status;
+            });
+        }
+
+        public void VisualiseArmoury(bool status = false)
+        {
+            Invoke(delegate
+            {
+                buttonArmoury.Visible = status;
             });
         }
 
