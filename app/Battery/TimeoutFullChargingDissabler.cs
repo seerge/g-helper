@@ -7,6 +7,7 @@ public class TimeoutFullChargingDisabler : IFullChargingDisabler
 {
     private decimal lastChargingRate = 1;
     private DateTime lastChargingModeSwitch;
+    private int timeoutMinutes = AppConfig.Get("full_charging_unplugged_timeout_minutes", 5);
     
     public TimeoutFullChargingDisabler() {}
     
@@ -23,7 +24,7 @@ public class TimeoutFullChargingDisabler : IFullChargingDisabler
         }
         lastChargingRate = chargingRate ?? 0;
         
-        if (chargingRate < 0 && DateTime.Now.Subtract(lastChargingModeSwitch).TotalMinutes > 1) {
+        if (chargingRate < 0 && DateTime.Now.Subtract(lastChargingModeSwitch).TotalMinutes > timeoutMinutes) {
             SetBatteryLimitFullSafe();
         }
     }
