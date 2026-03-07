@@ -63,6 +63,14 @@ namespace GHelper.USB
         Fast = 2,
     }
 
+    public enum AuraDirection : int
+    {
+        Right = 0,
+        Left = 1,
+        Up = 2,
+        Down = 3
+    }
+
 
     public static class Aura
     {
@@ -74,6 +82,7 @@ namespace GHelper.USB
 
         private static AuraMode mode = AuraMode.AuraStatic;
         private static AuraSpeed speed = AuraSpeed.Normal;
+        private static AuraDirection direction = AuraDirection.Right;
 
         private static bool backlight = false;
         private static bool initDirect = false;
@@ -173,6 +182,16 @@ namespace GHelper.USB
             };
         }
 
+        public static Dictionary<AuraDirection, string> GetDirections()
+        {
+            return new Dictionary<AuraDirection, string>
+            {
+                { AuraDirection.Right, Properties.Strings.AuraRight },
+                { AuraDirection.Left, Properties.Strings.AuraLeft },
+                { AuraDirection.Up, Properties.Strings.AuraUp },
+                { AuraDirection.Down, Properties.Strings.AuraDown }
+            };
+        }
 
         public static Dictionary<AuraMode, string> GetModes()
         {
@@ -228,6 +247,15 @@ namespace GHelper.USB
 
         }
 
+        public static AuraDirection Direction
+        {
+            get { return direction; }
+            set
+            {
+                direction = GetDirections().ContainsKey(value) ? value : AuraDirection.Right;
+            }
+        }
+
         public static void SetColor(int colorCode)
         {
             Color1 = Color.FromArgb(colorCode);
@@ -263,7 +291,7 @@ namespace GHelper.USB
         }
 
 
-        public static byte[] AuraMessage(AuraMode mode, Color color, Color color2, int speed, bool mono = false)
+        public static byte[] AuraMessage(AuraMode mode, Color color, Color color2, int speed, int direction, bool mono = false)
         {
 
             byte[] msg = new byte[17];
@@ -275,7 +303,7 @@ namespace GHelper.USB
             msg[5] = mono ? (byte)0 : color.G; // G
             msg[6] = mono ? (byte)0 : color.B; // B
             msg[7] = (byte)speed; // aura.speed as u8;
-            msg[8] = 0x00; // aura.direction as u8;
+            msg[8] = (byte)direction; // aura.direction as u8;
             msg[9] = (color.R == 0 && color.G == 0 && color.B == 0) ? (byte)0xFF : (mode == AuraMode.AuraBreathe ? (byte)0x01 : (byte)0x00); // random color flag
             msg[10] = color2.R; // R
             msg[11] = mono ? (byte)0 : color2.G; // G
@@ -636,7 +664,7 @@ namespace GHelper.USB
 
             if (AppConfig.IsNoDirectRGB())
             {
-                AsusHid.Write(new List<byte[]> { AuraMessage(AuraMode.AuraStatic, color, color, 0xeb, isSingleColor), MESSAGE_SET }, null);
+                AsusHid.Write(new List<byte[]> { AuraMessage(AuraMode.AuraStatic, color, color, 0xeb, 0x00, isSingleColor), MESSAGE_SET }, null);
                 return;
             }
 
@@ -681,6 +709,7 @@ namespace GHelper.USB
 
             Mode = (AuraMode)AppConfig.Get("aura_mode");
             Speed = (AuraSpeed)AppConfig.Get("aura_speed");
+            Direction = (AuraDirection)AppConfig.Get("aura_direction");
             SetColor(AppConfig.Get("aura_color"));
             SetColor2(AppConfig.Get("aura_color2"));
 
@@ -765,7 +794,8 @@ namespace GHelper.USB
             }
 
             int _speed = (Speed == AuraSpeed.Normal) ? 0xeb : (Speed == AuraSpeed.Fast) ? 0xf5 : 0xe1;
-            AsusHid.Write(new List<byte[]> { AuraMessage(Mode, _Color1, _Color2, _speed, isSingleColor), MESSAGE_SET, MESSAGE_APPLY });
+            int _direction = (Direction == AuraDirection.Right) ? 0x00 : (Direction == AuraDirection.Left) ? 0x01 : (Direction == AuraDirection.Down) ? 0x02 : 0x03;
+            AsusHid.Write(new List<byte[]> { AuraMessage(Mode, _Color1, _Color2, _speed, _direction, isSingleColor), MESSAGE_SET, MESSAGE_APPLY });
 
 
             if (isACPI)
@@ -820,7 +850,7 @@ namespace GHelper.USB
                 }
 
                 if (isACPI) Program.acpi.TUFKeyboardRGB(AuraMode.AuraStatic, color, 0xeb, $"TUF RGB GPU {gpuMode}");
-                AsusHid.Write(new List<byte[]> { AuraMessage(AuraMode.AuraStatic, color, color, 0xeb, isSingleColor), MESSAGE_APPLY, MESSAGE_SET });
+                AsusHid.Write(new List<byte[]> { AuraMessage(AuraMode.AuraStatic, color, color, 0xeb, 0x00, isSingleColor), MESSAGE_APPLY, MESSAGE_SET });
 
             }
 
@@ -864,7 +894,7 @@ namespace GHelper.USB
                 }
 
                 if (AppConfig.IsAlly()) color = ColorDim(color);
-                AsusHid.Write(new List<byte[]> { AuraMessage(AuraMode.AuraStatic, color, color, 0xeb, isSingleColor), MESSAGE_APPLY, MESSAGE_SET });
+                AsusHid.Write(new List<byte[]> { AuraMessage(AuraMode.AuraStatic, color, color, 0xeb, 0x00, isSingleColor), MESSAGE_APPLY, MESSAGE_SET });
                 if (isACPI) Program.acpi.TUFKeyboardRGB(AuraMode.AuraStatic, color, 0xeb);
             }
 

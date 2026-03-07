@@ -887,4 +887,16 @@ Do you still want to continue?</value>
   <data name="MouseZoneMode" xml:space="preserve">
     <value>Zone Mode</value>
   </data>
+  <data name="AuraRight" xml:space="preserve">
+    <value>Right</value>
+  </data>
+  <data name="AuraLeft" xml:space="preserve">
+    <value>Left</value>
+  </data>
+  <data name="AuraUp" xml:space="preserve">
+    <value>Up</value>
+  </data>
+  <data name="AuraDown" xml:space="preserve">
+    <value>Down</value>
+  </data>
 </root>

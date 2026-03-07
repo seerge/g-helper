@@ -19,7 +19,7 @@ namespace GHelper.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "18.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Strings {
@@ -304,11 +304,29 @@ namespace GHelper.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Down.
+        /// </summary>
+        internal static string AuraDown {
+            get {
+                return ResourceManager.GetString("AuraDown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Fast.
         /// </summary>
         internal static string AuraFast {
             get {
                 return ResourceManager.GetString("AuraFast", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Left.
+        /// </summary>
+        internal static string AuraLeft {
+            get {
+                return ResourceManager.GetString("AuraLeft", resourceCulture);
             }
         }
         
@@ -358,6 +376,15 @@ namespace GHelper.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Right.
+        /// </summary>
+        internal static string AuraRight {
+            get {
+                return ResourceManager.GetString("AuraRight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Slow.
         /// </summary>
         internal static string AuraSlow {
@@ -381,6 +408,15 @@ namespace GHelper.Properties {
         internal static string AuraStrobe {
             get {
                 return ResourceManager.GetString("AuraStrobe", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Up.
+        /// </summary>
+        internal static string AuraUp {
+            get {
+                return ResourceManager.GetString("AuraUp", resourceCulture);
             }
         }
         
