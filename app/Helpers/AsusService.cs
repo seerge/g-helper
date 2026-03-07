@@ -50,21 +50,7 @@ namespace GHelper.Helpers
 
         public static void RunArmouryUninstaller()
         {
-            var startInfo = new ProcessStartInfo
-            {
-                FileName = @"C:\Program Files\ASUS\Armoury Crate Service\UninstallTool\Armoury Crate Uninstall Tool.exe",
-                UseShellExecute = true,
-                Verb = "runas"
-            };
-
-            try
-            {
-                Process.Start(startInfo);
-            }
-            catch (System.ComponentModel.Win32Exception)
-            {
-                Logger.WriteLine("Failed to launch Armoury Crate uninstaller.");
-            }
+            Process.Start(new ProcessStartInfo("https://dlcdnets.asus.com/pub/ASUS/mb/14Utilities/Armoury_Crate_Uninstall_Tool.zip") { UseShellExecute = true });
         }
 
         public static bool IsOSDRunning()
