@@ -4,7 +4,7 @@ public class SimpleFullChargingDisabler : IFullChargingDisabler
 {
     public void TriggerChargingEvent(decimal? chargingRate, decimal chargingPercent)
     {
-        if (chargingPercent >= 100 && BatteryControl.chargeFull)
+        if (chargingPercent > 99 && BatteryControl.chargeFull)
         {
             BatteryControl.UnSetBatteryLimitFull();
         }

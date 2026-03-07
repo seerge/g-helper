@@ -13,7 +13,7 @@ public class TimeoutFullChargingDisabler : IFullChargingDisabler
     
     public void TriggerChargingEvent(decimal? chargingRate, decimal chargingPercent)
     {
-        if (chargingPercent >= 100)
+        if (chargingPercent > 99)
         {
             SetBatteryLimitFullSafe();
         }
