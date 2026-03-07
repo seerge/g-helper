@@ -899,4 +899,7 @@ Do you still want to continue?</value>
   <data name="AuraDown" xml:space="preserve">
     <value>Down</value>
   </data>
+  <data name="AnimationDirection" xml:space="preserve">
+    <value>Animation Direction</value>
+  </data>
 </root>
