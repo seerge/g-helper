@@ -186,8 +186,8 @@ namespace GHelper.USB
         {
             return new Dictionary<AuraDirection, string>
             {
-                { AuraDirection.Right, Properties.Strings.AuraRight },
                 { AuraDirection.Left, Properties.Strings.AuraLeft },
+                { AuraDirection.Right, Properties.Strings.AuraRight },
                 { AuraDirection.Up, Properties.Strings.AuraUp },
                 { AuraDirection.Down, Properties.Strings.AuraDown }
             };
@@ -794,7 +794,7 @@ namespace GHelper.USB
             }
 
             int _speed = (Speed == AuraSpeed.Normal) ? 0xeb : (Speed == AuraSpeed.Fast) ? 0xf5 : 0xe1;
-            int _direction = (Direction == AuraDirection.Right) ? 0x00 : (Direction == AuraDirection.Left) ? 0x01 : (Direction == AuraDirection.Down) ? 0x02 : 0x03;
+            int _direction = (Direction == AuraDirection.Right) ? 0x00 : (Direction == AuraDirection.Left) ? 0x01 : (Direction == AuraDirection.Up) ? 0x02 : 0x03;
             AsusHid.Write(new List<byte[]> { AuraMessage(Mode, _Color1, _Color2, _speed, _direction, isSingleColor), MESSAGE_SET, MESSAGE_APPLY });
 
 
