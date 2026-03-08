@@ -2,7 +2,7 @@
 
 namespace GHelper.Helpers
 {
-    public static class OptimizationService
+    public static class AsusService
     {
 
         static List<string> services = new() {
@@ -35,14 +35,27 @@ namespace GHelper.Helpers
                 "LightingService",
         };
 
-        public static bool IsRunning()
+        public static bool IsAsusOptimizationRunning()
         {
-            return Process.GetProcessesByName("AsusOptimization").Count() > 0;
+            return Process.GetProcessesByName("AsusOptimization").Length > 0;
+        }
+
+        public static bool IsArmouryRunning()
+        {
+            var acService = Process.GetProcessesByName("ArmouryCrate.Service").Length > 0;
+            var lightingService = Process.GetProcessesByName("LightingService").Length > 0;   
+            Logger.WriteLine($"AC Service: {acService}, Lighting Service: {lightingService}");
+            return acService || lightingService;
+        }
+
+        public static void RunArmouryUninstaller()
+        {
+            Process.Start(new ProcessStartInfo("https://dlcdnets.asus.com/pub/ASUS/mb/14Utilities/Armoury_Crate_Uninstall_Tool.zip") { UseShellExecute = true });
         }
 
         public static bool IsOSDRunning()
         {
-            return Process.GetProcessesByName("AsusOSD").Count() > 0;
+            return Process.GetProcessesByName("AsusOSD").Length > 0;
         }
 
 
