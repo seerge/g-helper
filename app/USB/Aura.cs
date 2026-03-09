@@ -765,7 +765,9 @@ namespace GHelper.USB
             }
 
             int _speed = (Speed == AuraSpeed.Normal) ? 0xeb : (Speed == AuraSpeed.Fast) ? 0xf5 : 0xe1;
-            AsusHid.Write(new List<byte[]> { AuraMessage(Mode, _Color1, _Color2, _speed, isSingleColor), MESSAGE_SET, MESSAGE_APPLY });
+            //AsusHid.Write(new List<byte[]> { AuraMessage(Mode, _Color1, _Color2, _speed, isSingleColor), MESSAGE_SET, MESSAGE_APPLY });
+
+            DynamicLightingKeyboard.SetLaptopKeyboardLightingAsync(Mode, _Color1);
 
 
             if (isACPI)
