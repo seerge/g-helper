@@ -9,8 +9,6 @@ public class TimeoutFullChargingDisabler : IFullChargingDisabler
     private DateTime lastChargingModeSwitch;
     private int timeoutMinutes = AppConfig.Get("full_charging_unplugged_timeout_minutes", 5);
     
-    public TimeoutFullChargingDisabler() {}
-    
     public void TriggerChargingEvent(decimal? chargingRate, decimal chargingPercent)
     {
         if (chargingPercent > 99)

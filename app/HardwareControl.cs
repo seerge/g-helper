@@ -13,9 +13,9 @@ public static class HardwareControl
 
     public static IGpuControl? GpuControl;
 
-    public static IFullChargingDisabler fullChargingDisabler = AppConfig.Is("full_charger_timeout_disabling_strategy")
-        ? new SimpleFullChargingDisabler()
-        : new TimeoutFullChargingDisabler();
+    public static IFullChargingDisabler fullChargingDisabler = AppConfig.Is("full_charging_timeout_disabling_strategy")
+        ? new TimeoutFullChargingDisabler()
+        : new SimpleFullChargingDisabler();
 
     public static float? cpuTemp = -1;
     public static float? gpuTemp = -1;
