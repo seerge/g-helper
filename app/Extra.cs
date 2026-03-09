@@ -1,5 +1,4 @@
 ﻿using GHelper.Display;
-using GHelper.Gpu.AMD;
 using GHelper.Helpers;
 using GHelper.Input;
 using GHelper.Mode;
@@ -135,6 +134,8 @@ namespace GHelper
 
             labelSpeed.Text = Properties.Strings.AnimationSpeed;
             //labelBrightness.Text = Properties.Strings.Brightness;
+
+            labelDirection.Text = Properties.Strings.AnimationDirection;
 
             labelBacklightTimeout.Text = Properties.Strings.BacklightTimeout;
             //labelBacklightTimeoutPlugged.Text = Properties.Strings.BacklightTimeoutPlugged;
@@ -296,7 +297,6 @@ namespace GHelper
                 labelM4.Text = "M5/ROG";
             }
 
-
             InitTheme();
             Shown += Keyboard_Shown;
 
@@ -306,6 +306,13 @@ namespace GHelper
             comboKeyboardSpeed.ValueMember = "Key";
             comboKeyboardSpeed.SelectedValue = Aura.Speed;
             comboKeyboardSpeed.SelectedValueChanged += ComboKeyboardSpeed_SelectedValueChanged;
+
+            comboKeyboardDirection.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboKeyboardDirection.DataSource = new BindingSource(Aura.GetDirections(), null);
+            comboKeyboardDirection.DisplayMember = "Value";
+            comboKeyboardDirection.ValueMember = "Key";
+            comboKeyboardDirection.SelectedValue = Aura.Direction;
+            comboKeyboardDirection.SelectedValueChanged += ComboKeyboardDirection_SelectedValueChanged;
 
             // Keyboard
             checkAwake.Checked = AppConfig.IsNotFalse("keyboard_awake");
@@ -813,6 +820,11 @@ namespace GHelper
             Aura.ApplyAura();
         }
 
+        private void ComboKeyboardDirection_SelectedValueChanged(object? sender, EventArgs e)
+        {
+            AppConfig.Set("aura_direction", (int)comboKeyboardDirection.SelectedValue);
+            Aura.ApplyAura();
+        }
 
         private void Keyboard_Shown(object? sender, EventArgs e)
         {
