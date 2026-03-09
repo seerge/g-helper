@@ -86,6 +86,7 @@ namespace GHelper.USB
         public static void Light(bool status)
         {
             Write([XGM_REPORT_ID, 0xc5, status ? (byte)0x50 : (byte)0]);
+            Write([XGM_REPORT_ID, 0xbd, 0x00, status ? (byte)0x01 : (byte)0x00]);
         }
 
         public static void InitLight()
