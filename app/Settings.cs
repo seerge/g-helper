@@ -308,7 +308,7 @@ namespace GHelper
 
         private void ButtonAmdOled_Click(object? sender, EventArgs e)
         {
-            ProcessHelper.RunCMD(@"C:\Program Files\AMD\CNext\CNext\RadeonSoftware.exe","");
+            AmdDisplay.RunAdrenaline();
             activateCheck = true;
         }
 
