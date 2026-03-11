@@ -155,6 +155,10 @@ namespace GHelper
             buttonAmdOled.ForeColor = SystemColors.ControlLightLight;
             buttonAmdOled.Click += ButtonAmdOled_Click;
 
+            buttonArmoury.BackColor = colorTurbo;
+            buttonArmoury.ForeColor = SystemColors.ControlLightLight;
+            buttonArmoury.Click += ButtonArmoury_Click;
+
             buttonSilent.Click += ButtonSilent_Click;
             buttonBalanced.Click += ButtonBalanced_Click;
             buttonTurbo.Click += ButtonTurbo_Click;
@@ -299,9 +303,16 @@ namespace GHelper
             InitVisual();
         }
 
+        private void ButtonArmoury_Click(object? sender, EventArgs e)
+        {
+            var dialogResult = MessageBox.Show(this, "Armoury Crate is active, download official uninstaller app?", "Armoury Crate", MessageBoxButtons.YesNo);
+            if (dialogResult == DialogResult.Yes) AsusService.RunArmouryUninstaller();
+        }
+
+
         private void ButtonAmdOled_Click(object? sender, EventArgs e)
         {
-            ProcessHelper.RunCMD(@"C:\Program Files\AMD\CNext\CNext\RadeonSoftware.exe","");
+            AmdDisplay.RunAdrenaline();
             activateCheck = true;
         }
 
@@ -546,6 +557,14 @@ namespace GHelper
             Invoke(delegate
             {
                 buttonAmdOled.Visible = status;
+            });
+        }
+
+        public void VisualiseArmoury(bool status = false)
+        {
+            Invoke(delegate
+            {
+                buttonArmoury.Visible = status;
             });
         }
 

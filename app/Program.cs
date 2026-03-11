@@ -200,6 +200,11 @@ namespace GHelper
                     break;
             }
 
+            Task.Run(() =>
+            {
+                settingsForm.VisualiseArmoury(AsusService.IsArmouryRunning());
+            });
+
             Application.Run();
 
         }

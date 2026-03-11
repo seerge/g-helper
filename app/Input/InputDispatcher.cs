@@ -93,7 +93,7 @@ namespace GHelper.Input
 
             Program.acpi.DeviceInit();
 
-            if (!OptimizationService.IsRunning())
+            if (!AsusService.IsAsusOptimizationRunning())
             {
                 Program.acpi.DeviceGet(AsusACPI.CameraShutter);
                 listener = new KeyboardListener(HandleEvent);
@@ -558,7 +558,7 @@ namespace GHelper.Input
                     action = "aura";
                 if (name == "fnf5")
                     action = "performance";
-                if (name == "m3" && !OptimizationService.IsRunning())
+                if (name == "m3" && !AsusService.IsAsusOptimizationRunning())
                     action = "micmute";
                 if (name == "fnc")
                     action = "fnlock";
@@ -900,7 +900,7 @@ namespace GHelper.Input
                 }
             }
 
-            if (!OptimizationService.IsRunning())
+            if (!AsusService.IsAsusOptimizationRunning())
                 HandleOptimizationEvent(EventID);
 
         }
@@ -1061,12 +1061,12 @@ namespace GHelper.Input
             else
                 AppConfig.Set("keyboard_brightness", backlight);
 
-            if (force || !OptimizationService.IsRunning())
+            if (force || !AsusService.IsAsusOptimizationRunning())
             {
                 Aura.ApplyBrightness(backlight, "HotKey");
             }
 
-            if (!OptimizationService.IsOSDRunning())
+            if (!AsusService.IsOSDRunning())
             {
                 string[] backlightNames = new string[] { Properties.Strings.BacklightOff, Properties.Strings.BacklightLow, Properties.Strings.BacklightMid, Properties.Strings.BacklightMax };
                 Program.toast.RunToast(backlightNames[backlight], delta > 0 ? ToastIcon.BacklightUp : ToastIcon.BacklightDown);

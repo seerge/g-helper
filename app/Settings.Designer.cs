@@ -139,6 +139,7 @@ namespace GHelper
             panelVersion = new Panel();
             buttonEnergySaver = new RButton();
             buttonAmdOled = new RButton();
+            buttonArmoury = new RButton();
             labelVersion = new Label();
             buttonHDRControl = new RButton();
             panelMatrix.SuspendLayout();
@@ -1959,6 +1960,7 @@ namespace GHelper
             panelVersion.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             panelVersion.Controls.Add(buttonEnergySaver);
             panelVersion.Controls.Add(buttonAmdOled);
+            panelVersion.Controls.Add(buttonArmoury);
             panelVersion.Controls.Add(labelVersion);
             panelVersion.Dock = DockStyle.Top;
             panelVersion.Location = new Point(11, 1837);
@@ -2010,6 +2012,28 @@ namespace GHelper
             buttonAmdOled.Text = "AMD OledSaver";
             buttonAmdOled.UseVisualStyleBackColor = false;
             buttonAmdOled.Visible = false;
+            // 
+            // buttonArmoury
+            // 
+            buttonArmoury.Activated = false;
+            buttonArmoury.BackColor = SystemColors.ControlLight;
+            buttonArmoury.BorderColor = Color.Transparent;
+            buttonArmoury.BorderRadius = 2;
+            buttonArmoury.Dock = DockStyle.Right;
+            buttonArmoury.FlatAppearance.BorderSize = 0;
+            buttonArmoury.FlatStyle = FlatStyle.Flat;
+            buttonArmoury.Font = new Font("Segoe UI", 7.125F, FontStyle.Bold);
+            buttonArmoury.ForeColor = SystemColors.ControlDark;
+            buttonArmoury.ImageAlign = ContentAlignment.MiddleLeft;
+            buttonArmoury.Location = new Point(640, 5);
+            buttonArmoury.Margin = new Padding(0);
+            buttonArmoury.Name = "buttonArmoury";
+            buttonArmoury.Secondary = true;
+            buttonArmoury.Size = new Size(180, 40);
+            buttonArmoury.TabIndex = 40;
+            buttonArmoury.Text = "ArmouryCrate";
+            buttonArmoury.UseVisualStyleBackColor = false;
+            buttonArmoury.Visible = false;            
             // 
             // labelVersion
             // 
@@ -2254,6 +2278,7 @@ namespace GHelper
         private RBadgeButton buttonDonate;
         private RButton buttonEnergySaver;
         private RButton buttonAmdOled;
+        private RButton buttonArmoury;
         private RButton buttonHDRControl;
     }
 }
