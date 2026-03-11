@@ -46,7 +46,6 @@ public static class AmdDisplay
 
         try
         {
-            return true;
             string path = GetAdjustmentPath();
             if (path == null) return false;
 
