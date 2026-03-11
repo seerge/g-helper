@@ -1,7 +1,7 @@
 ﻿// Reference : thanks to https://github.com/RomanYazvinsky/ for initial discovery of XGM payloads
 
+using GHelper.Helpers;
 using HidSharp;
-using HidSharp.Reports;
 using System.Text;
 
 namespace GHelper.USB
@@ -10,7 +10,7 @@ namespace GHelper.USB
     {
         const byte XGM_REPORT_ID = 0x5e;
         const int ASUS_ID = 0x0b05;
-        static readonly int[] deviceIds = { 0x1970, 0x1a9a, 0x1C29};
+        static readonly int[] deviceIds = { 0x1970, 0x1a9a, 0x1C29 };
 
         public static HidDevice? GetDevice()
         {
@@ -86,6 +86,22 @@ namespace GHelper.USB
         public static void Light(bool status)
         {
             Write([XGM_REPORT_ID, 0xc5, status ? (byte)0x50 : (byte)0]);
+            Write([XGM_REPORT_ID, 0xbd, 0x00, status ? (byte)0x01 : (byte)0x00]);
+        }
+
+        public static void LightMode(AuraMode mode, Color color, Color color2, int speed)
+        {
+            Task.Run(() =>
+            {
+                if (IsConnected())
+                {
+                    var msg = Aura.AuraMessage(mode, color, color2, speed);
+                    msg[0] = XGM_REPORT_ID;
+                    Write(msg);
+                    Write([XGM_REPORT_ID, 0xb4]);
+                    Write([XGM_REPORT_ID, 0xb5]);
+                }
+            });
         }
 
         public static void InitLight()
