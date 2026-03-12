@@ -77,6 +77,7 @@ namespace GHelper.USB
 
         private static bool backlight = false;
         private static bool initDirect = false;
+        public static bool sessionLock = false;
 
         public static Color Color1 = Color.White;
         public static Color Color2 = Color.Black;
@@ -701,8 +702,9 @@ namespace GHelper.USB
             if (Mode == AuraMode.HEATMAP)
             {
                 CustomRGB.ApplyHeatmap(true);
-                timer.Enabled = true;
                 timer.Interval = 2000;
+                timer.Stop();
+                timer.Start();
                 return;
             }
 
@@ -870,7 +872,7 @@ namespace GHelper.USB
 
             public static void ApplyAmbient(bool init = false)
             {
-                if (!backlight) return;
+                if (!backlight || sessionLock) return;
 
                 var bound = Screen.GetBounds(Point.Empty);
                 bound.Y += bound.Height / 3;
