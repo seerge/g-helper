@@ -695,7 +695,7 @@ namespace GHelper.USB
                 _Color2 = ColorDim(_Color2);
             }
 
-            timer.Enabled = false;
+            timer.Stop();
 
             Logger.WriteLine($"AuraMode: {Mode}");
 
@@ -703,7 +703,6 @@ namespace GHelper.USB
             {
                 CustomRGB.ApplyHeatmap(true);
                 timer.Interval = 2000;
-                timer.Stop();
                 timer.Start();
                 return;
             }
@@ -711,16 +710,16 @@ namespace GHelper.USB
             if (Mode == AuraMode.BATTERY)
             {
                 CustomRGB.ApplyBattery();
-                timer.Enabled = true;
                 timer.Interval = 30000;
+                timer.Start();
                 return;
             }
 
             if (Mode == AuraMode.AMBIENT)
             {
                 CustomRGB.ApplyAmbient(true);
-                timer.Enabled = true;
                 timer.Interval = AppConfig.Get("aura_refresh", AppConfig.IsStrix() ? 100 : 300);
+                timer.Start();
                 return;
             }
 
