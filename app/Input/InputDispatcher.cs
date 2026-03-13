@@ -1035,6 +1035,7 @@ namespace GHelper.Input
         {
             if (lidClose || tentMode) return;
             Aura.ApplyBrightness(GetBacklight(), "Auto", init);
+            backlightActivity = true;
         }
 
         public static void StartupBacklight()
