@@ -255,6 +255,10 @@ namespace GHelper.Peripherals
                 using (var stream = device.Open(config))
                 {
                     var response = new byte[64];
+                    stream.Write(new byte[] { 0x03, 0x12, 0x12, 0x01 });
+                    stream.Read(response);
+                    Logger.WriteLine("Omni Mouse ID1: " + Encoding.ASCII.GetString(response.Skip(5).Take(12).ToArray()));
+
                     stream.Write(new byte[] { 0x03, 0x12, 0x12, 0x02 });
                     stream.Read(response);
 
