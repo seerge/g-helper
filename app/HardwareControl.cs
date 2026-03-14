@@ -251,6 +251,8 @@ public static class HardwareControl
         batteryRate = 0;
         gpuUse = -1;
 
+        if (Program.acpi is null) return;
+
         cpuFan = FanSensorControl.FormatFan(AsusFan.CPU, Program.acpi.GetFan(AsusFan.CPU));
         gpuFan = FanSensorControl.FormatFan(AsusFan.GPU, Program.acpi.GetFan(AsusFan.GPU));
         midFan = FanSensorControl.FormatFan(AsusFan.Mid, Program.acpi.GetFan(AsusFan.Mid));
