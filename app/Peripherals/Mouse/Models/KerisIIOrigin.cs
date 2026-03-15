@@ -16,6 +16,12 @@
             return 4;
         }
 
+        public override bool CanChangeDPICount()
+        {
+            return true;
+        }
+
+
         public override string GetDisplayName()
         {
             return "ROG Keris II Origin (Wired)";
@@ -28,7 +34,10 @@
                 PollingRate.PR125Hz,
                 PollingRate.PR250Hz,
                 PollingRate.PR500Hz,
-                PollingRate.PR1000Hz
+                PollingRate.PR1000Hz,
+                PollingRate.PR2000Hz,
+                PollingRate.PR4000Hz,
+                PollingRate.PR8000Hz
             };
         }
 
