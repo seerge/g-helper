@@ -89,7 +89,10 @@ namespace GHelper.Display
         public static void InitMiniled()
         {
             if (AppConfig.IsForceMiniled())
+            {
                 SetMiniled(AppConfig.Get("miniled"));
+                SetHDRControl(AppConfig.Get("hdr_control"));
+            }
         }
 
         public static void InitOptimalBrightness()
@@ -123,11 +126,20 @@ namespace GHelper.Display
             }
         }
 
+        public static void SetHDRControl(int status = -1)
+        {
+            if (status >= 0)
+            {
+                AppConfig.Set("hdr_control", status);
+                Program.acpi.DeviceSet(AsusACPI.ScreenHDRControl, status, "HDR Control");
+            }
+        }
+
         public static void ToogleHDRControl()
         {
             int hdrControl = Program.acpi.DeviceGet(AsusACPI.ScreenHDRControl);
             Logger.WriteLine($"HDR Control Toggle: {hdrControl}");
-            Program.acpi.DeviceSet(AsusACPI.ScreenHDRControl, (hdrControl == 1) ? 1 : 0, "HDR Control");
+            SetHDRControl((hdrControl == 1) ? 1 : 0);
             Thread.Sleep(200);
             InitScreen();
         }
