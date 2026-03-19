@@ -982,14 +982,13 @@ namespace GHelper.Peripherals.Mouse
         {
             if (packet[1] == 0x12 && packet[2] == 0x04 && packet[3] == 0x00)
             {
-                bool acceleratorConnected = packet[16] == 0x00;
                 byte raw = packet[13];
-                byte highNibble = (byte)((raw >> 4) & 0x0F);
+                byte highNibble = (byte)(raw >> 4);
 
-                if (highNibble > 0 && acceleratorConnected)
-                    return (PollingRate)highNibble; // 2000/4000/8000Hz, only valid with accelerator
-
-                return (PollingRate)(raw & 0x07); // 125/250/500/1000Hz
+                if (highNibble > 0) 
+                    return (PollingRate)highNibble; 
+                else 
+                    return (PollingRate)(raw & 0x0F);
             }
             return PollingRate.PR125Hz;
         }
