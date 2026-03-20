@@ -93,7 +93,7 @@ namespace GHelper.Input
 
             Program.acpi.DeviceInit();
 
-            if (!AsusService.IsAsusOptimizationRunning())
+            if (!OptimizationService.IsRunning())
             {
                 Program.acpi.DeviceGet(AsusACPI.CameraShutter);
                 listener = new KeyboardListener(HandleEvent);
@@ -192,7 +192,6 @@ namespace GHelper.Input
                 hook.RegisterHotKey(keyModifierAlt, Keys.F3);
                 hook.RegisterHotKey(keyModifierAlt, Keys.F4);
                 hook.RegisterHotKey(keyModifierAlt, Keys.F6);
-                hook.RegisterHotKey(keyModifierAlt, Keys.F9);
             }
 
             // FN-Lock group
@@ -496,9 +495,6 @@ namespace GHelper.Input
                         if (AppConfig.IsDUO()) SetScreenpad(10);
                         else SetBrightnessDimming(10);
                         break;
-                    case Keys.F9:
-                        Program.settingsForm.BeginInvoke(Program.settingsForm.allyControl.ToggleFPSLimit, true);
-                        break;
                     case Keys.F13:
                         ToggleScreenRate();
                         break;
@@ -558,7 +554,7 @@ namespace GHelper.Input
                     action = "aura";
                 if (name == "fnf5")
                     action = "performance";
-                if (name == "m3" && !AsusService.IsAsusOptimizationRunning())
+                if (name == "m3" && !OptimizationService.IsRunning())
                     action = "micmute";
                 if (name == "fnc")
                     action = "fnlock";
@@ -900,7 +896,7 @@ namespace GHelper.Input
                 }
             }
 
-            if (!AsusService.IsAsusOptimizationRunning())
+            if (!OptimizationService.IsRunning())
                 HandleOptimizationEvent(EventID);
 
         }
@@ -1035,7 +1031,6 @@ namespace GHelper.Input
         {
             if (lidClose || tentMode) return;
             Aura.ApplyBrightness(GetBacklight(), "Auto", init);
-            backlightActivity = true;
         }
 
         public static void StartupBacklight()
@@ -1069,12 +1064,12 @@ namespace GHelper.Input
             else
                 AppConfig.Set("keyboard_brightness", backlight);
 
-            if (force || !AsusService.IsAsusOptimizationRunning())
+            if (force || !OptimizationService.IsRunning())
             {
                 Aura.ApplyBrightness(backlight, "HotKey");
             }
 
-            if (!AsusService.IsOSDRunning())
+            if (!OptimizationService.IsOSDRunning())
             {
                 string[] backlightNames = new string[] { Properties.Strings.BacklightOff, Properties.Strings.BacklightLow, Properties.Strings.BacklightMid, Properties.Strings.BacklightMax };
                 Program.toast.RunToast(backlightNames[backlight], delta > 0 ? ToastIcon.BacklightUp : ToastIcon.BacklightDown);

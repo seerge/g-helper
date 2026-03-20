@@ -887,4 +887,31 @@ Do you still want to continue?</value>
   <data name="MouseZoneMode" xml:space="preserve">
     <value>Zone Mode</value>
   </data>
+  <data name="AccessibleMode" xml:space="preserve">
+    <value>Accessible Mode</value>
+  </data>
+  <data name="TableEditor" xml:space="preserve">
+    <value>Table Editor</value>
+  </data>
+  <data name="ChartView" xml:space="preserve">
+    <value>Chart View</value>
+  </data>
+  <data name="FanCurveWarning" xml:space="preserve">
+    <value>Fan Curve (Temps must increase)</value>
+  </data>
+  <data name="Point" xml:space="preserve">
+    <value>Point</value>
+  </data>
+  <data name="Temperature" xml:space="preserve">
+    <value>Temp (°C)</value>
+  </data>
+  <data name="Speed" xml:space="preserve">
+    <value>Speed (%)</value>
+  </data>
+  <data name="DisableBacklight" xml:space="preserve">
+    <value>Disable Backlight Completely</value>
+  </data>
+  <data name="Advanced" xml:space="preserve">
+    <value>Advanced</value>
+  </data>
 </root>
