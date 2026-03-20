@@ -172,7 +172,7 @@ public static class HardwareControl
         }
 
         decimal health = (decimal)fullCapacity / (decimal)designCapacity;
-        Logger.WriteLine("Design Capacity: " + designCapacity + "mWh, Full Charge Capacity: " + fullCapacity + "mWh, Health: " + health + "%");
+        Logger.WriteLine($"Design Capacity: {designCapacity} mWh, Full Charge Capacity: {fullCapacity} mWh, Health: {health * 100}%.");
 
         return health;
     }
