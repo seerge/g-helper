@@ -4,11 +4,11 @@ using System.Drawing.Drawing2D;
 
 namespace GHelper.Battery
 {
-    public partial class BatteryReminderForm : RForm
+    public partial class BatteryReminderForm : Form
     {
         private static BatteryReminderForm? _instance;
 
-        private readonly System.Windows.Forms.Timer _autoHideTimer;
+        private System.Windows.Forms.Timer? _autoHideTimer;
         private bool _mouseHovering;
 
         public static void ShowReminder(List<string> issues)
@@ -27,19 +27,28 @@ namespace GHelper.Battery
             }
         }
 
-        private BatteryReminderForm(List<string> issues)
+        public BatteryReminderForm()
         {
             InitializeComponent();
+        }
 
+        private BatteryReminderForm(List<string> issues)
+        {
             TopMost = true;
             Opacity = 0.95;
 
-            InitTheme();
             BackColor = RForm.formBack;
             ForeColor = RForm.foreMain;
 
+            buttonOptimize.BackColor = RForm.buttonMain;
+            buttonOptimize.ForeColor = RForm.foreMain;
+            buttonOptimize.FlatAppearance.BorderColor = RForm.borderMain;
             buttonOptimize.Activated = true;
             buttonOptimize.BorderColor = RForm.borderMain;
+
+            buttonDismiss.BackColor = RForm.buttonSecond;
+            buttonDismiss.ForeColor = RForm.foreMain;
+            buttonDismiss.FlatAppearance.BorderColor = RForm.borderMain;
             buttonDismiss.Activated = true;
             buttonDismiss.BorderColor = RForm.borderMain;
 
@@ -73,8 +82,8 @@ namespace GHelper.Battery
 
             FormClosed += (s, e) =>
             {
-                _autoHideTimer.Stop();
-                _autoHideTimer.Dispose();
+                _autoHideTimer?.Stop();
+                _autoHideTimer?.Dispose();
                 if (_instance == this) _instance = null;
             };
         }
