@@ -54,6 +54,12 @@ namespace GHelper.Battery
 
             Region = CreateRoundedRegion(ClientRectangle, 20);
 
+            labelTitle.Text = Properties.Strings.BatteryOptimization;
+            labelSubtitle.Text = Properties.Strings.BatteryOptimizationSubtitle;
+            checkAutoOptimize.Text = Properties.Strings.BatteryAutoSwitch;
+            buttonOptimize.Text = Properties.Strings.BatteryOptimizeButton;
+            buttonDismiss.Text = Properties.Strings.BatteryDontRemind;
+
             PopulateIssues(issues);
             PositionOnScreen();
 
@@ -126,7 +132,7 @@ namespace GHelper.Battery
             Task.Run(() =>
             {
                 BatteryOptimizationService.ApplyBatteryOptimizations();
-                Program.toast.RunToast("Switched to battery-optimized mode");
+                Program.toast.RunToast(Properties.Strings.BatteryOptimizedToast);
             });
         }
 

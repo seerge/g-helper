@@ -16,7 +16,7 @@ namespace GHelper.Battery
             try
             {
                 if (Modes.GetCurrentBase() == AsusACPI.PerformanceTurbo)
-                    issues.Add("Performance: Turbo");
+                    issues.Add(Properties.Strings.BatteryIssuePerformanceTurbo);
             }
             catch (Exception ex) { Logger.WriteLine($"BatteryOptCheck Turbo: {ex.Message}"); }
 
@@ -27,7 +27,7 @@ namespace GHelper.Battery
                     && !AppConfig.Is("gpu_auto")
                     && AppConfig.Get("gpu_mode") != AsusACPI.GPUModeEco)
                 {
-                    issues.Add("Discrete GPU active");
+                    issues.Add(Properties.Strings.BatteryIssueDiscreteGPU);
                 }
             }
             catch (Exception ex) { Logger.WriteLine($"BatteryOptCheck GPU: {ex.Message}"); }
@@ -42,7 +42,7 @@ namespace GHelper.Battery
                     {
                         int rate = ScreenNative.GetRefreshRate(laptopScreen);
                         if (rate > 60)
-                            issues.Add($"Display: {rate}Hz");
+                            issues.Add(string.Format(Properties.Strings.BatteryIssueDisplayRate, rate));
                     }
                 }
             }
@@ -52,7 +52,7 @@ namespace GHelper.Battery
             try
             {
                 if (AppConfig.GetMode("auto_boost") > 0)
-                    issues.Add("CPU boost enabled");
+                    issues.Add(Properties.Strings.BatteryIssueCPUBoost);
             }
             catch (Exception ex) { Logger.WriteLine($"BatteryOptCheck Boost: {ex.Message}"); }
 
@@ -63,7 +63,7 @@ namespace GHelper.Battery
                     && !AppConfig.Is("matrix_auto")
                     && AppConfig.Get("matrix_running") > 0)
                 {
-                    issues.Add("Anime Matrix active");
+                    issues.Add(Properties.Strings.BatteryIssueAnimeMatrix);
                 }
             }
             catch (Exception ex) { Logger.WriteLine($"BatteryOptCheck Matrix: {ex.Message}"); }
@@ -75,7 +75,7 @@ namespace GHelper.Battery
                     && !AppConfig.IsNoOverdrive()
                     && Program.acpi.DeviceGet(AsusACPI.ScreenOverdrive) == 1)
                 {
-                    issues.Add("Screen overdrive on");
+                    issues.Add(Properties.Strings.BatteryIssueOverdrive);
                 }
             }
             catch (Exception ex) { Logger.WriteLine($"BatteryOptCheck Overdrive: {ex.Message}"); }
@@ -84,7 +84,7 @@ namespace GHelper.Battery
             try
             {
                 if (AppConfig.Get("keyboard_timeout") <= 0)
-                    issues.Add("Keyboard backlight always on");
+                    issues.Add(Properties.Strings.BatteryIssueKeyboardBacklight);
             }
             catch (Exception ex) { Logger.WriteLine($"BatteryOptCheck Keyboard: {ex.Message}"); }
 
@@ -194,7 +194,7 @@ namespace GHelper.Battery
                 if (AppConfig.Is("battery_auto_optimize"))
                 {
                     ApplyBatteryOptimizations();
-                    Program.toast.RunToast("Switched to battery-optimized mode");
+                    Program.toast.RunToast(Properties.Strings.BatteryOptimizedToast);
                     return;
                 }
 

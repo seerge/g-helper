@@ -481,6 +481,10 @@ namespace GHelper
             toolTip.SetToolTip(checkNVPlatform, "Stops NVIDIA services when the discrete GPU is disabled\nand restarts them automatically when the GPU is enabled");
 
             // Battery optimization settings
+            labelBattery.Text = Properties.Strings.BatterySectionHeader;
+            checkBatteryRemind.Text = Properties.Strings.BatteryShowNotifications;
+            checkBatteryAutoOptimize.Text = Properties.Strings.BatteryAutoOptimize;
+
             checkBatteryRemind.Checked = AppConfig.IsNotFalse("battery_remind");
             checkBatteryAutoOptimize.Checked = AppConfig.Is("battery_auto_optimize");
             numericReminderTimeout.Value = Math.Clamp(AppConfig.Get("battery_remind_timeout", 30), 2, 120);
