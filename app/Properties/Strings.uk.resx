@@ -887,4 +887,52 @@
   <data name="MouseZoneMode" xml:space="preserve">
     <value>Zone Mode</value>
   </data>
+  <data name="BatteryAutoOptimize" xml:space="preserve">
+    <value>Автоматичне переключення в оптимізований режим при роботі від батареї</value>
+  </data>
+  <data name="BatteryAutoSwitch" xml:space="preserve">
+    <value>Завжди переключати автоматично</value>
+  </data>
+  <data name="BatteryDontRemind" xml:space="preserve">
+    <value>Не нагадувати</value>
+  </data>
+  <data name="BatteryIssueAnimeMatrix" xml:space="preserve">
+    <value>Anime Matrix активний</value>
+  </data>
+  <data name="BatteryIssueCPUBoost" xml:space="preserve">
+    <value>Прискорення CPU увімкнено</value>
+  </data>
+  <data name="BatteryIssueDiscreteGPU" xml:space="preserve">
+    <value>Дискретний GPU активний</value>
+  </data>
+  <data name="BatteryIssueDisplayRate" xml:space="preserve">
+    <value>Дисплей: {0}Hz</value>
+  </data>
+  <data name="BatteryIssueKeyboardBacklight" xml:space="preserve">
+    <value>Підсвітка клавіатури завжди увімкнена</value>
+  </data>
+  <data name="BatteryIssueOverdrive" xml:space="preserve">
+    <value>Овердрайв екрану увімкнено</value>
+  </data>
+  <data name="BatteryIssuePerformanceTurbo" xml:space="preserve">
+    <value>Продуктивність: Turbo</value>
+  </data>
+  <data name="BatteryOptimization" xml:space="preserve">
+    <value>Оптимізація батареї</value>
+  </data>
+  <data name="BatteryOptimizationSubtitle" xml:space="preserve">
+    <value>Ваші поточні налаштування можуть швидше розряджати батарею:</value>
+  </data>
+  <data name="BatteryOptimizeButton" xml:space="preserve">
+    <value>Оптимізувати для батареї</value>
+  </data>
+  <data name="BatteryOptimizedToast" xml:space="preserve">
+    <value>Переключено на режим оптимізації батареї</value>
+  </data>
+  <data name="BatterySectionHeader" xml:space="preserve">
+    <value>Батарея</value>
+  </data>
+  <data name="BatteryShowNotifications" xml:space="preserve">
+    <value>Показувати сповіщення про оптимізацію батареї</value>
+  </data>
 </root>

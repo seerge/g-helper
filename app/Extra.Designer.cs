@@ -1402,7 +1402,7 @@ namespace GHelper
             labelReminderTimeout.Margin = new Padding(5, 0, 5, 0);
             labelReminderTimeout.Name = "labelReminderTimeout";
             labelReminderTimeout.Size = new Size(613, 43);
-            labelReminderTimeout.Text = "Reminder duration (seconds)";
+            labelReminderTimeout.Text = "Notification duration (seconds)";
             //
             // numericReminderTimeout
             //

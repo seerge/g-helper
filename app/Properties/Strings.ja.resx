@@ -887,4 +887,52 @@
   <data name="MouseZoneMode" xml:space="preserve">
     <value>Zoneモード</value>
   </data>
+  <data name="BatteryAutoOptimize" xml:space="preserve">
+    <value>バッテリー使用時に最適化モードへ自動切替</value>
+  </data>
+  <data name="BatteryAutoSwitch" xml:space="preserve">
+    <value>常に自動切替</value>
+  </data>
+  <data name="BatteryDontRemind" xml:space="preserve">
+    <value>今後表示しない</value>
+  </data>
+  <data name="BatteryIssueAnimeMatrix" xml:space="preserve">
+    <value>Anime Matrixがオン</value>
+  </data>
+  <data name="BatteryIssueCPUBoost" xml:space="preserve">
+    <value>CPUブーストが有効</value>
+  </data>
+  <data name="BatteryIssueDiscreteGPU" xml:space="preserve">
+    <value>ディスクリートGPUがオン</value>
+  </data>
+  <data name="BatteryIssueDisplayRate" xml:space="preserve">
+    <value>ディスプレイ: {0}Hz</value>
+  </data>
+  <data name="BatteryIssueKeyboardBacklight" xml:space="preserve">
+    <value>キーボードバックライトが常時オン</value>
+  </data>
+  <data name="BatteryIssueOverdrive" xml:space="preserve">
+    <value>画面オーバードライブがオン</value>
+  </data>
+  <data name="BatteryIssuePerformanceTurbo" xml:space="preserve">
+    <value>パフォーマンス: Turbo</value>
+  </data>
+  <data name="BatteryOptimization" xml:space="preserve">
+    <value>バッテリー最適化</value>
+  </data>
+  <data name="BatteryOptimizationSubtitle" xml:space="preserve">
+    <value>現在の設定ではバッテリーの消耗が早くなる可能性があります:</value>
+  </data>
+  <data name="BatteryOptimizeButton" xml:space="preserve">
+    <value>バッテリー向けに最適化</value>
+  </data>
+  <data name="BatteryOptimizedToast" xml:space="preserve">
+    <value>バッテリー最適化モードに切り替えました</value>
+  </data>
+  <data name="BatterySectionHeader" xml:space="preserve">
+    <value>バッテリー</value>
+  </data>
+  <data name="BatteryShowNotifications" xml:space="preserve">
+    <value>バッテリー最適化の通知を表示</value>
+  </data>
 </root>

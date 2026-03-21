@@ -887,4 +887,52 @@ Quer prosseguir?</value>
   <data name="MouseZoneMode" xml:space="preserve">
     <value>Zone Mode</value>
   </data>
+  <data name="BatteryAutoOptimize" xml:space="preserve">
+    <value>Mudar automaticamente para o modo otimizado com bateria</value>
+  </data>
+  <data name="BatteryAutoSwitch" xml:space="preserve">
+    <value>Mudar sempre automaticamente</value>
+  </data>
+  <data name="BatteryDontRemind" xml:space="preserve">
+    <value>Não me lembrar</value>
+  </data>
+  <data name="BatteryIssueAnimeMatrix" xml:space="preserve">
+    <value>Anime Matrix ativo</value>
+  </data>
+  <data name="BatteryIssueCPUBoost" xml:space="preserve">
+    <value>Turbo do CPU ativado</value>
+  </data>
+  <data name="BatteryIssueDiscreteGPU" xml:space="preserve">
+    <value>GPU dedicada ativa</value>
+  </data>
+  <data name="BatteryIssueDisplayRate" xml:space="preserve">
+    <value>Ecrã: {0}Hz</value>
+  </data>
+  <data name="BatteryIssueKeyboardBacklight" xml:space="preserve">
+    <value>Retroiluminação do teclado sempre ligada</value>
+  </data>
+  <data name="BatteryIssueOverdrive" xml:space="preserve">
+    <value>Overdrive do ecrã ativado</value>
+  </data>
+  <data name="BatteryIssuePerformanceTurbo" xml:space="preserve">
+    <value>Desempenho: Turbo</value>
+  </data>
+  <data name="BatteryOptimization" xml:space="preserve">
+    <value>Otimização de bateria</value>
+  </data>
+  <data name="BatteryOptimizationSubtitle" xml:space="preserve">
+    <value>As suas definições atuais podem descarregar a bateria mais rapidamente:</value>
+  </data>
+  <data name="BatteryOptimizeButton" xml:space="preserve">
+    <value>Otimizar para bateria</value>
+  </data>
+  <data name="BatteryOptimizedToast" xml:space="preserve">
+    <value>Mudado para o modo otimizado de bateria</value>
+  </data>
+  <data name="BatterySectionHeader" xml:space="preserve">
+    <value>Bateria</value>
+  </data>
+  <data name="BatteryShowNotifications" xml:space="preserve">
+    <value>Mostrar notificações de otimização de bateria</value>
+  </data>
 </root>
