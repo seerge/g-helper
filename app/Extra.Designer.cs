@@ -1373,7 +1373,7 @@ namespace GHelper
             checkBatteryRemind.Padding = new Padding(3);
             checkBatteryRemind.Size = new Size(917, 42);
             checkBatteryRemind.TabIndex = 20;
-            checkBatteryRemind.Text = "Show battery optimization reminders";
+            checkBatteryRemind.Text = "Show battery optimization notifications";
             checkBatteryRemind.UseVisualStyleBackColor = true;
             //
             // checkBatteryAutoOptimize
