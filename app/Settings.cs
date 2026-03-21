@@ -40,6 +40,8 @@ namespace GHelper
         public Handheld? handheldForm;
 
         static long lastRefresh;
+        private int trayTempCounter = 0;
+        private IntPtr lastTrayIconHandle = IntPtr.Zero;
         static long lastBatteryRefresh;
         static long lastLostFocus;
 
@@ -89,6 +91,7 @@ namespace GHelper
             checkMatrix.Text = Properties.Strings.TurnOffOnBattery;
             checkMatrixLid.Text = Properties.Strings.DisableOnLidClose;
             checkStartup.Text = Properties.Strings.RunOnStartup;
+            checkTrayTemps.Text = Properties.Strings.TrayTemps;
 
             buttonMatrix.Text = Properties.Strings.PictureGif;
             buttonQuit.Text = Properties.Strings.Quit;
@@ -202,6 +205,9 @@ namespace GHelper
 
             checkStartup.Checked = Startup.IsScheduled();
             checkStartup.CheckedChanged += CheckStartup_CheckedChanged;
+
+            checkTrayTemps.Checked = AppConfig.Get("tray_temps") == 1;
+            checkTrayTemps.CheckedChanged += CheckTrayTemps_CheckedChanged;
 
             labelVersion.Click += LabelVersion_Click;
             labelVersion.ForeColor = Color.FromArgb(128, Color.Gray);
@@ -702,7 +708,7 @@ namespace GHelper
 
         private void SettingsForm_VisibleChanged(object? sender, EventArgs e)
         {
-            sensorTimer.Enabled = this.Visible;
+            sensorTimer.Enabled = this.Visible || AppConfig.Get("tray_temps") == 1;
             if (this.Visible)
             {
                 ScreenControl.InitScreen();
@@ -1002,6 +1008,24 @@ namespace GHelper
                 Startup.Schedule();
             else
                 Startup.UnSchedule();
+        }
+
+        private void CheckTrayTemps_CheckedChanged(object? sender, EventArgs e)
+        {
+            if (sender is null) return;
+            CheckBox chk = (CheckBox)sender;
+            AppConfig.Set("tray_temps", chk.Checked ? 1 : 0);
+
+            if (!chk.Checked)
+            {
+                if (lastTrayIconHandle != IntPtr.Zero)
+                {
+                    Program.trayIcon?.Icon?.Dispose();
+                    lastTrayIconHandle = IntPtr.Zero;
+                }
+                trayTempCounter = 0;
+                VisualiseIcon();
+            }
         }
 
         private void CheckMatrix_CheckedChanged(object? sender, EventArgs e)
@@ -1530,6 +1554,46 @@ namespace GHelper
             gpuControl.KillGPUApps();
         }
 
+        private void UpdateTrayTempIcon(int cpuTemp, int gpuTemp)
+        {
+            if (Program.trayIcon is null) return;
+
+            bool showGpu = gpuTemp > 0 && (trayTempCounter / 3) % 2 == 1;
+            string text = (showGpu ? gpuTemp : cpuTemp).ToString();
+
+            var iconSize = SystemInformation.SmallIconSize;
+            using var bmp = new Bitmap(iconSize.Width, iconSize.Height);
+            using var g = Graphics.FromImage(bmp);
+            g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SingleBitPerPixelGridFit;
+
+            float fontScale = text.Length > 2 ? 0.7f : 0.95f;
+            int fontSize = (int)(iconSize.Height * fontScale);
+            bool isDark = CheckSystemDarkModeStatus();
+            using var font = new Font("Segoe UI", fontSize, isDark ? FontStyle.Regular : FontStyle.Bold, GraphicsUnit.Pixel);
+            Color textColor = showGpu ? Color.DodgerBlue : (isDark ? Color.White : Color.Black);
+            using var brush = new SolidBrush(textColor);
+            using var sf = new StringFormat(StringFormat.GenericTypographic);
+            sf.Alignment = StringAlignment.Center;
+            sf.FormatFlags = StringFormatFlags.NoClip | StringFormatFlags.NoWrap;
+
+            float yOffset = iconSize.Height * -0.22f;
+            g.DrawString(text, font, brush, new RectangleF(0, yOffset, iconSize.Width, iconSize.Height), sf);
+
+            IntPtr hIcon = bmp.GetHicon();
+            using var tempIcon = Icon.FromHandle(hIcon);
+            var newIcon = (Icon)tempIcon.Clone();
+            NativeMethods.DestroyIcon(hIcon);
+
+            var oldIcon = Program.trayIcon.Icon;
+            Program.trayIcon.Icon = newIcon;
+
+            if (lastTrayIconHandle != IntPtr.Zero)
+                oldIcon?.Dispose();
+            lastTrayIconHandle = newIcon.Handle;
+
+            trayTempCounter++;
+        }
+
         public async void RefreshSensors(bool force = false)
         {
 
@@ -1587,7 +1651,20 @@ namespace GHelper
                 });
 
 
-            if (Program.trayIcon is not null) Program.trayIcon.Text = trayTip;
+            if (Program.trayIcon is not null)
+            {
+                Program.trayIcon.Text = trayTip;
+
+                var cpu = HardwareControl.cpuTemp;
+                var gpu = HardwareControl.gpuTemp;
+                if (AppConfig.Get("tray_temps") == 1 && cpu > 0)
+                {
+                    UpdateTrayTempIcon(
+                        (int)Math.Round((decimal)cpu),
+                        gpu > 0 ? (int)Math.Round((decimal)gpu) : 0
+                    );
+                }
+            }
 
         }
 
@@ -1837,6 +1914,7 @@ namespace GHelper
         public void VisualiseIcon()
         {
             if (Program.trayIcon is null) return;
+            if (AppConfig.Get("tray_temps") == 1) return;
             int GPUMode = AppConfig.Get("gpu_mode");
             bool isDark = CheckSystemDarkModeStatus();
 
