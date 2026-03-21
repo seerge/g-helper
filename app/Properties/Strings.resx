@@ -887,4 +887,53 @@ Do you still want to continue?</value>
   <data name="MouseZoneMode" xml:space="preserve">
     <value>Zone Mode</value>
   </data>
+  <data name="BatteryOptimization" xml:space="preserve">
+    <value>Battery Optimization</value>
+  </data>
+  <data name="BatteryOptimizationSubtitle" xml:space="preserve">
+    <value>Your current settings may drain battery faster:</value>
+  </data>
+  <data name="BatteryAutoSwitch" xml:space="preserve">
+    <value>Always switch automatically</value>
+  </data>
+  <data name="BatteryOptimizeButton" xml:space="preserve">
+    <value>Optimize for battery</value>
+  </data>
+  <data name="BatteryDontRemind" xml:space="preserve">
+    <value>Don't remind me</value>
+  </data>
+  <data name="BatteryOptimizedToast" xml:space="preserve">
+    <value>Switched to battery-optimized mode</value>
+  </data>
+  <data name="BatteryIssuePerformanceTurbo" xml:space="preserve">
+    <value>Performance: Turbo</value>
+  </data>
+  <data name="BatteryIssueDiscreteGPU" xml:space="preserve">
+    <value>Discrete GPU active</value>
+  </data>
+  <data name="BatteryIssueDisplayRate" xml:space="preserve">
+    <value>Display: {0}Hz</value>
+    <comment>{0} is the display refresh rate in Hz</comment>
+  </data>
+  <data name="BatteryIssueCPUBoost" xml:space="preserve">
+    <value>CPU boost enabled</value>
+  </data>
+  <data name="BatteryIssueAnimeMatrix" xml:space="preserve">
+    <value>Anime Matrix active</value>
+  </data>
+  <data name="BatteryIssueOverdrive" xml:space="preserve">
+    <value>Screen overdrive on</value>
+  </data>
+  <data name="BatteryIssueKeyboardBacklight" xml:space="preserve">
+    <value>Keyboard backlight always on</value>
+  </data>
+  <data name="BatteryShowNotifications" xml:space="preserve">
+    <value>Show battery optimization notifications</value>
+  </data>
+  <data name="BatteryAutoOptimize" xml:space="preserve">
+    <value>Auto-switch to optimized mode on battery</value>
+  </data>
+  <data name="BatterySectionHeader" xml:space="preserve">
+    <value>Battery</value>
+  </data>
 </root>

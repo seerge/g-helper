@@ -887,4 +887,52 @@ Voulez-vous continuer ?</value>
   <data name="MouseZoneMode" xml:space="preserve">
     <value>Zone Mode</value>
   </data>
+  <data name="BatteryAutoOptimize" xml:space="preserve">
+    <value>Basculer automatiquement en mode optimisé sur batterie</value>
+  </data>
+  <data name="BatteryAutoSwitch" xml:space="preserve">
+    <value>Toujours basculer automatiquement</value>
+  </data>
+  <data name="BatteryDontRemind" xml:space="preserve">
+    <value>Ne pas me rappeler</value>
+  </data>
+  <data name="BatteryIssueAnimeMatrix" xml:space="preserve">
+    <value>Anime Matrix actif</value>
+  </data>
+  <data name="BatteryIssueCPUBoost" xml:space="preserve">
+    <value>Boost CPU activé</value>
+  </data>
+  <data name="BatteryIssueDiscreteGPU" xml:space="preserve">
+    <value>GPU dédiée active</value>
+  </data>
+  <data name="BatteryIssueDisplayRate" xml:space="preserve">
+    <value>Écran : {0}Hz</value>
+  </data>
+  <data name="BatteryIssueKeyboardBacklight" xml:space="preserve">
+    <value>Rétroéclairage du clavier toujours allumé</value>
+  </data>
+  <data name="BatteryIssueOverdrive" xml:space="preserve">
+    <value>Overdrive écran activé</value>
+  </data>
+  <data name="BatteryIssuePerformanceTurbo" xml:space="preserve">
+    <value>Performance : Turbo</value>
+  </data>
+  <data name="BatteryOptimization" xml:space="preserve">
+    <value>Optimisation de la batterie</value>
+  </data>
+  <data name="BatteryOptimizationSubtitle" xml:space="preserve">
+    <value>Vos paramètres actuels peuvent décharger la batterie plus vite :</value>
+  </data>
+  <data name="BatteryOptimizeButton" xml:space="preserve">
+    <value>Optimiser pour la batterie</value>
+  </data>
+  <data name="BatteryOptimizedToast" xml:space="preserve">
+    <value>Mode optimisé pour la batterie activé</value>
+  </data>
+  <data name="BatterySectionHeader" xml:space="preserve">
+    <value>Batterie</value>
+  </data>
+  <data name="BatteryShowNotifications" xml:space="preserve">
+    <value>Afficher les notifications d'optimisation de la batterie</value>
+  </data>
 </root>

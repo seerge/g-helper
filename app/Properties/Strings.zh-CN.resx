@@ -887,4 +887,52 @@
   <data name="MouseZoneMode" xml:space="preserve">
     <value>Zone 模式</value>
   </data>
+  <data name="BatteryAutoOptimize" xml:space="preserve">
+    <value>使用电池时自动切换到优化模式</value>
+  </data>
+  <data name="BatteryAutoSwitch" xml:space="preserve">
+    <value>始终自动切换</value>
+  </data>
+  <data name="BatteryDontRemind" xml:space="preserve">
+    <value>不再提醒</value>
+  </data>
+  <data name="BatteryIssueAnimeMatrix" xml:space="preserve">
+    <value>Anime Matrix 已启用</value>
+  </data>
+  <data name="BatteryIssueCPUBoost" xml:space="preserve">
+    <value>CPU加速已启用</value>
+  </data>
+  <data name="BatteryIssueDiscreteGPU" xml:space="preserve">
+    <value>独立显卡已启用</value>
+  </data>
+  <data name="BatteryIssueDisplayRate" xml:space="preserve">
+    <value>显示: {0}Hz</value>
+  </data>
+  <data name="BatteryIssueKeyboardBacklight" xml:space="preserve">
+    <value>键盘背光常亮</value>
+  </data>
+  <data name="BatteryIssueOverdrive" xml:space="preserve">
+    <value>屏幕过驱动已开启</value>
+  </data>
+  <data name="BatteryIssuePerformanceTurbo" xml:space="preserve">
+    <value>性能: Turbo</value>
+  </data>
+  <data name="BatteryOptimization" xml:space="preserve">
+    <value>电池优化</value>
+  </data>
+  <data name="BatteryOptimizationSubtitle" xml:space="preserve">
+    <value>当前设置可能会加快电池消耗:</value>
+  </data>
+  <data name="BatteryOptimizeButton" xml:space="preserve">
+    <value>优化电池续航</value>
+  </data>
+  <data name="BatteryOptimizedToast" xml:space="preserve">
+    <value>已切换到电池优化模式</value>
+  </data>
+  <data name="BatterySectionHeader" xml:space="preserve">
+    <value>电池</value>
+  </data>
+  <data name="BatteryShowNotifications" xml:space="preserve">
+    <value>显示电池优化通知</value>
+  </data>
 </root>

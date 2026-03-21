@@ -887,4 +887,52 @@ Yine de devam etmek istiyor musunuz?</value>
   <data name="MouseZoneMode" xml:space="preserve">
     <value>Zone Mode</value>
   </data>
+  <data name="BatteryAutoOptimize" xml:space="preserve">
+    <value>Pilde otomatik olarak optimize edilmiş moda geç</value>
+  </data>
+  <data name="BatteryAutoSwitch" xml:space="preserve">
+    <value>Her zaman otomatik geçiş yap</value>
+  </data>
+  <data name="BatteryDontRemind" xml:space="preserve">
+    <value>Hatırlatma</value>
+  </data>
+  <data name="BatteryIssueAnimeMatrix" xml:space="preserve">
+    <value>Anime Matrix etkin</value>
+  </data>
+  <data name="BatteryIssueCPUBoost" xml:space="preserve">
+    <value>CPU boost etkin</value>
+  </data>
+  <data name="BatteryIssueDiscreteGPU" xml:space="preserve">
+    <value>Ayrık GPU etkin</value>
+  </data>
+  <data name="BatteryIssueDisplayRate" xml:space="preserve">
+    <value>Ekran: {0}Hz</value>
+  </data>
+  <data name="BatteryIssueKeyboardBacklight" xml:space="preserve">
+    <value>Klavye aydınlatması her zaman açık</value>
+  </data>
+  <data name="BatteryIssueOverdrive" xml:space="preserve">
+    <value>Ekran overdrive açık</value>
+  </data>
+  <data name="BatteryIssuePerformanceTurbo" xml:space="preserve">
+    <value>Performans: Turbo</value>
+  </data>
+  <data name="BatteryOptimization" xml:space="preserve">
+    <value>Pil Optimizasyonu</value>
+  </data>
+  <data name="BatteryOptimizationSubtitle" xml:space="preserve">
+    <value>Mevcut ayarlarınız pili daha hızlı tüketebilir:</value>
+  </data>
+  <data name="BatteryOptimizeButton" xml:space="preserve">
+    <value>Pil için optimize et</value>
+  </data>
+  <data name="BatteryOptimizedToast" xml:space="preserve">
+    <value>Pil için optimize edilmiş moda geçildi</value>
+  </data>
+  <data name="BatterySectionHeader" xml:space="preserve">
+    <value>Pil</value>
+  </data>
+  <data name="BatteryShowNotifications" xml:space="preserve">
+    <value>Pil optimizasyonu bildirimlerini göster</value>
+  </data>
 </root>

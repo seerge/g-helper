@@ -887,4 +887,52 @@ Vil du stadig fortsætte?</value>
   <data name="MouseZoneMode" xml:space="preserve">
     <value>Zone Mode</value>
   </data>
+  <data name="BatteryAutoOptimize" xml:space="preserve">
+    <value>Skift automatisk til optimeret tilstand på batteri</value>
+  </data>
+  <data name="BatteryAutoSwitch" xml:space="preserve">
+    <value>Skift altid automatisk</value>
+  </data>
+  <data name="BatteryDontRemind" xml:space="preserve">
+    <value>Påmind mig ikke</value>
+  </data>
+  <data name="BatteryIssueAnimeMatrix" xml:space="preserve">
+    <value>Anime Matrix aktiv</value>
+  </data>
+  <data name="BatteryIssueCPUBoost" xml:space="preserve">
+    <value>CPU boost aktiveret</value>
+  </data>
+  <data name="BatteryIssueDiscreteGPU" xml:space="preserve">
+    <value>Diskret GPU aktiv</value>
+  </data>
+  <data name="BatteryIssueDisplayRate" xml:space="preserve">
+    <value>Skærm: {0}Hz</value>
+  </data>
+  <data name="BatteryIssueKeyboardBacklight" xml:space="preserve">
+    <value>Tastaturbelysning altid tændt</value>
+  </data>
+  <data name="BatteryIssueOverdrive" xml:space="preserve">
+    <value>Skærm overdrive tændt</value>
+  </data>
+  <data name="BatteryIssuePerformanceTurbo" xml:space="preserve">
+    <value>Ydeevne: Turbo</value>
+  </data>
+  <data name="BatteryOptimization" xml:space="preserve">
+    <value>Batterioptimering</value>
+  </data>
+  <data name="BatteryOptimizationSubtitle" xml:space="preserve">
+    <value>Dine nuværende indstillinger kan dræne batteriet hurtigere:</value>
+  </data>
+  <data name="BatteryOptimizeButton" xml:space="preserve">
+    <value>Optimer til batteri</value>
+  </data>
+  <data name="BatteryOptimizedToast" xml:space="preserve">
+    <value>Skiftet til batterioptimeret tilstand</value>
+  </data>
+  <data name="BatterySectionHeader" xml:space="preserve">
+    <value>Batteri</value>
+  </data>
+  <data name="BatteryShowNotifications" xml:space="preserve">
+    <value>Vis batterioptimeringsnotifikationer</value>
+  </data>
 </root>

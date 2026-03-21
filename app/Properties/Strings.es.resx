@@ -887,4 +887,52 @@
   <data name="MouseZoneMode" xml:space="preserve">
     <value>Modo zona</value>
   </data>
+  <data name="BatteryAutoOptimize" xml:space="preserve">
+    <value>Cambiar automáticamente al modo optimizado con batería</value>
+  </data>
+  <data name="BatteryAutoSwitch" xml:space="preserve">
+    <value>Cambiar siempre automáticamente</value>
+  </data>
+  <data name="BatteryDontRemind" xml:space="preserve">
+    <value>No recordar</value>
+  </data>
+  <data name="BatteryIssueAnimeMatrix" xml:space="preserve">
+    <value>Anime Matrix activo</value>
+  </data>
+  <data name="BatteryIssueCPUBoost" xml:space="preserve">
+    <value>Turbo de CPU activado</value>
+  </data>
+  <data name="BatteryIssueDiscreteGPU" xml:space="preserve">
+    <value>GPU dedicada activa</value>
+  </data>
+  <data name="BatteryIssueDisplayRate" xml:space="preserve">
+    <value>Pantalla: {0}Hz</value>
+  </data>
+  <data name="BatteryIssueKeyboardBacklight" xml:space="preserve">
+    <value>Retroiluminación del teclado siempre encendida</value>
+  </data>
+  <data name="BatteryIssueOverdrive" xml:space="preserve">
+    <value>Sobremarcha de pantalla activada</value>
+  </data>
+  <data name="BatteryIssuePerformanceTurbo" xml:space="preserve">
+    <value>Rendimiento: Turbo</value>
+  </data>
+  <data name="BatteryOptimization" xml:space="preserve">
+    <value>Optimización de batería</value>
+  </data>
+  <data name="BatteryOptimizationSubtitle" xml:space="preserve">
+    <value>Tu configuración actual puede agotar la batería más rápido:</value>
+  </data>
+  <data name="BatteryOptimizeButton" xml:space="preserve">
+    <value>Optimizar para batería</value>
+  </data>
+  <data name="BatteryOptimizedToast" xml:space="preserve">
+    <value>Cambiado al modo optimizado de batería</value>
+  </data>
+  <data name="BatterySectionHeader" xml:space="preserve">
+    <value>Batería</value>
+  </data>
+  <data name="BatteryShowNotifications" xml:space="preserve">
+    <value>Mostrar notificaciones de optimización de batería</value>
+  </data>
 </root>

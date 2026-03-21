@@ -2356,5 +2356,149 @@ namespace GHelper.Properties {
                 return ResourceManager.GetString("Zoom", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Battery Optimization.
+        /// </summary>
+        internal static string BatteryOptimization {
+            get {
+                return ResourceManager.GetString("BatteryOptimization", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Your current settings may drain battery faster:.
+        /// </summary>
+        internal static string BatteryOptimizationSubtitle {
+            get {
+                return ResourceManager.GetString("BatteryOptimizationSubtitle", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Always switch automatically.
+        /// </summary>
+        internal static string BatteryAutoSwitch {
+            get {
+                return ResourceManager.GetString("BatteryAutoSwitch", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Optimize for battery.
+        /// </summary>
+        internal static string BatteryOptimizeButton {
+            get {
+                return ResourceManager.GetString("BatteryOptimizeButton", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Don&apos;t remind me.
+        /// </summary>
+        internal static string BatteryDontRemind {
+            get {
+                return ResourceManager.GetString("BatteryDontRemind", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Switched to battery-optimized mode.
+        /// </summary>
+        internal static string BatteryOptimizedToast {
+            get {
+                return ResourceManager.GetString("BatteryOptimizedToast", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Performance: Turbo.
+        /// </summary>
+        internal static string BatteryIssuePerformanceTurbo {
+            get {
+                return ResourceManager.GetString("BatteryIssuePerformanceTurbo", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Discrete GPU active.
+        /// </summary>
+        internal static string BatteryIssueDiscreteGPU {
+            get {
+                return ResourceManager.GetString("BatteryIssueDiscreteGPU", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Display: {0}Hz.
+        /// </summary>
+        internal static string BatteryIssueDisplayRate {
+            get {
+                return ResourceManager.GetString("BatteryIssueDisplayRate", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to CPU boost enabled.
+        /// </summary>
+        internal static string BatteryIssueCPUBoost {
+            get {
+                return ResourceManager.GetString("BatteryIssueCPUBoost", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Anime Matrix active.
+        /// </summary>
+        internal static string BatteryIssueAnimeMatrix {
+            get {
+                return ResourceManager.GetString("BatteryIssueAnimeMatrix", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Screen overdrive on.
+        /// </summary>
+        internal static string BatteryIssueOverdrive {
+            get {
+                return ResourceManager.GetString("BatteryIssueOverdrive", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Keyboard backlight always on.
+        /// </summary>
+        internal static string BatteryIssueKeyboardBacklight {
+            get {
+                return ResourceManager.GetString("BatteryIssueKeyboardBacklight", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Show battery optimization notifications.
+        /// </summary>
+        internal static string BatteryShowNotifications {
+            get {
+                return ResourceManager.GetString("BatteryShowNotifications", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Auto-switch to optimized mode on battery.
+        /// </summary>
+        internal static string BatteryAutoOptimize {
+            get {
+                return ResourceManager.GetString("BatteryAutoOptimize", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Battery.
+        /// </summary>
+        internal static string BatterySectionHeader {
+            get {
+                return ResourceManager.GetString("BatterySectionHeader", resourceCulture);
+            }
+        }
     }
 }
