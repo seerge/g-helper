@@ -61,7 +61,7 @@ namespace GHelper.Battery
             labelTitle.Name = "labelTitle";
             labelTitle.Size = new Size(472, 45);
             labelTitle.TabIndex = 1;
-            labelTitle.Text = "Battery Optimization Reminder";
+            labelTitle.Text = "Battery Optimization";
             // 
             // labelSubtitle
             // 
@@ -124,7 +124,7 @@ namespace GHelper.Battery
             buttonOptimize.Secondary = false;
             buttonOptimize.Size = new Size(332, 50);
             buttonOptimize.TabIndex = 7;
-            buttonOptimize.Text = "Optimize for Battery";
+            buttonOptimize.Text = "Optimize for battery";
             // 
             // buttonDismiss
             // 
