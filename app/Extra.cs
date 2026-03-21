@@ -480,6 +480,15 @@ namespace GHelper
             toolTip.SetToolTip(checkAutoToggleClamshellMode, "Disable sleep on lid close when plugged in and external monitor is connected");
             toolTip.SetToolTip(checkNVPlatform, "Stops NVIDIA services when the discrete GPU is disabled\nand restarts them automatically when the GPU is enabled");
 
+            // Battery optimization settings
+            checkBatteryRemind.Checked = AppConfig.IsNotFalse("battery_remind");
+            checkBatteryAutoOptimize.Checked = AppConfig.Is("battery_auto_optimize");
+            numericReminderTimeout.Value = Math.Clamp(AppConfig.Get("battery_remind_timeout", 30), 2, 120);
+
+            checkBatteryRemind.CheckedChanged += CheckBatteryRemind_CheckedChanged;
+            checkBatteryAutoOptimize.CheckedChanged += CheckBatteryAutoOptimize_CheckedChanged;
+            numericReminderTimeout.ValueChanged += NumericReminderTimeout_ValueChanged;
+
             InitCores();
             InitServices();
             InitHibernate();
@@ -853,6 +862,21 @@ namespace GHelper
                 ClamshellModeControl.DisableClamshellMode();
             }
 
+        }
+
+        private void CheckBatteryRemind_CheckedChanged(object? sender, EventArgs e)
+        {
+            AppConfig.Set("battery_remind", checkBatteryRemind.Checked ? 1 : 0);
+        }
+
+        private void CheckBatteryAutoOptimize_CheckedChanged(object? sender, EventArgs e)
+        {
+            AppConfig.Set("battery_auto_optimize", checkBatteryAutoOptimize.Checked ? 1 : 0);
+        }
+
+        private void NumericReminderTimeout_ValueChanged(object? sender, EventArgs e)
+        {
+            AppConfig.Set("battery_remind_timeout", (int)numericReminderTimeout.Value);
         }
 
         private void panelAPU_Paint(object sender, PaintEventArgs e)
