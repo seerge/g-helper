@@ -1212,9 +1212,9 @@ namespace GHelper
             panelSettings.Controls.Add(checkGPUFix);
             panelSettings.Controls.Add(checkNVPlatform);
             panelSettings.Controls.Add(checkStatusLed);
-            panelSettings.Controls.Add(panelReminderTimeout);
             panelSettings.Controls.Add(checkBatteryAutoOptimize);
             panelSettings.Controls.Add(checkBatteryRemind);
+            panelSettings.Controls.Add(panelReminderTimeout);
             panelSettings.Controls.Add(labelBattery);
             panelSettings.Controls.Add(checkPerKeyRGB);
             panelSettings.Dock = DockStyle.Top;
@@ -1390,30 +1390,29 @@ namespace GHelper
             //
             // panelReminderTimeout
             //
-            panelReminderTimeout.AutoSize = true;
-            panelReminderTimeout.Dock = DockStyle.Top;
             panelReminderTimeout.Controls.Add(numericReminderTimeout);
             panelReminderTimeout.Controls.Add(labelReminderTimeout);
+            panelReminderTimeout.Dock = DockStyle.Top;
             panelReminderTimeout.Name = "panelReminderTimeout";
-            panelReminderTimeout.Padding = new Padding(3);
-            panelReminderTimeout.Size = new Size(917, 36);
+            panelReminderTimeout.Size = new Size(917, 46);
             //
             // labelReminderTimeout
             //
-            labelReminderTimeout.AutoSize = true;
-            labelReminderTimeout.Dock = DockStyle.Left;
+            labelReminderTimeout.Location = new Point(3, 5);
+            labelReminderTimeout.Margin = new Padding(5, 0, 5, 0);
             labelReminderTimeout.Name = "labelReminderTimeout";
-            labelReminderTimeout.Padding = new Padding(3, 6, 3, 3);
+            labelReminderTimeout.Size = new Size(613, 43);
             labelReminderTimeout.Text = "Reminder duration (seconds)";
             //
             // numericReminderTimeout
             //
-            numericReminderTimeout.Dock = DockStyle.Left;
+            numericReminderTimeout.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            numericReminderTimeout.Location = new Point(789, 5);
             numericReminderTimeout.Minimum = 2;
             numericReminderTimeout.Maximum = 120;
             numericReminderTimeout.Value = 30;
             numericReminderTimeout.Name = "numericReminderTimeout";
-            numericReminderTimeout.Size = new Size(60, 30);
+            numericReminderTimeout.Size = new Size(139, 39);
             //
             // checkPerKeyRGB
             //
