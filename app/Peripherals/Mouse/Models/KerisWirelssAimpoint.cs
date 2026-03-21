@@ -28,6 +28,7 @@
 
         public override PollingRate[] SupportedPollingrates()
         {
+            if (Booster) return BoosterPollingrates();
             return new PollingRate[] {
                 PollingRate.PR125Hz,
                 PollingRate.PR250Hz,

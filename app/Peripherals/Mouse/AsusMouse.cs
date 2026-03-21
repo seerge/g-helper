@@ -254,6 +254,7 @@ namespace GHelper.Peripherals.Mouse
         public int ZoneModeDPI { get; set; } = 1600;
         public PollingRate ZoneModePollingRate { get; set; } = PollingRate.PR4000Hz;
 
+        public bool Booster = false;
 
         public AsusMouse(ushort vendorId, ushort productId, string path, bool wireless) : base(vendorId, productId)
         {
@@ -955,6 +956,19 @@ namespace GHelper.Peripherals.Mouse
 
         public abstract PollingRate[] SupportedPollingrates();
 
+        protected PollingRate[] BoosterPollingrates()
+        {
+            return new PollingRate[] {
+                PollingRate.PR125Hz,
+                PollingRate.PR250Hz,
+                PollingRate.PR500Hz,
+                PollingRate.PR1000Hz,
+                PollingRate.PR2000Hz,
+                PollingRate.PR4000Hz,
+                PollingRate.PR8000Hz
+            };
+        }
+
         public virtual bool CanSetPollingRate()
         {
             return true;
@@ -980,17 +994,31 @@ namespace GHelper.Peripherals.Mouse
 
         protected virtual PollingRate ParsePollingRate(byte[] packet)
         {
+            PollingRate result;
+
             if (packet[1] == 0x12 && packet[2] == 0x04 && packet[3] == 0x00)
             {
+                Logger.WriteLine(GetDisplayName() + ": Raw Polling Rate " + BitConverter.ToString(packet));
                 byte raw = packet[13];
                 byte highNibble = (byte)(raw >> 4);
-
                 if (highNibble > 0) 
-                    return (PollingRate)highNibble; 
+                    result = (PollingRate)(highNibble & 0x07); 
                 else 
-                    return (PollingRate)(raw & 0x0F);
+                    result = (PollingRate)(raw & 0x07);
             }
-            return PollingRate.PR125Hz;
+            else
+            {
+                result = PollingRate.PR125Hz;
+            }
+
+            if (!SupportedPollingrates().Contains(result))
+            {
+                PollingRate maxSupported = SupportedPollingrates().Max();
+                Logger.WriteLine(GetDisplayName() + ": Parsed polling rate " + result + " is not supported. Falling back to max supported: " + maxSupported);
+                return maxSupported;
+            }
+
+            return result;
         }
 
 
@@ -1025,7 +1053,11 @@ namespace GHelper.Peripherals.Mouse
             if (response is null) return;
 
             PollingRate = ParsePollingRate(response);
+            
+            
             Logger.WriteLine(GetDisplayName() + ": Pollingrate: " + PollingRateDisplayString(PollingRate) + " (" + PollingRate + ")");
+
+
 
             if (HasAngleSnapping())
             {

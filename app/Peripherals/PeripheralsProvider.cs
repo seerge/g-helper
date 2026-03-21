@@ -247,6 +247,10 @@ namespace GHelper.Peripherals
                 var device = DeviceList.Local.GetHidDevices(0x0B05, 0x1ACE).FirstOrDefault(x => x.DevicePath.Contains("mi_02&col03"));
                 if (device is null) return;
 
+                var boosterDevice = DeviceList.Local.GetHidDevices(0x0B05, 0x1ACE).FirstOrDefault(x => x.DevicePath.Contains("mi_04"));
+                var booster = boosterDevice is not null;
+                if (booster) Logger.WriteLine($"Booster Device: {boosterDevice.DevicePath}");
+
                 var config = new OpenConfiguration();
                 config.SetOption(OpenOption.Interruptible, true);
                 config.SetOption(OpenOption.Exclusive, false);
@@ -295,6 +299,7 @@ namespace GHelper.Peripherals
                         _ => new HarpeAceAimLabEditionOmni()
                     };
 
+                    omniMouse.Booster = booster;
                     DetectMouse(omniMouse);
                 }
             }
