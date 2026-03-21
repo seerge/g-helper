@@ -283,7 +283,7 @@
     <value>Salute Batteria</value>
   </data>
   <data name="BatteryLimitFull" xml:space="preserve">
-    <value>One time charge to 100%</value>
+    <value>Carica una volta al 100%</value>
   </data>
   <data name="Binding" xml:space="preserve">
     <value>Binding</value>
@@ -313,7 +313,7 @@
     <value>Aumenta Luminosità</value>
   </data>
   <data name="BWTrayIcon" xml:space="preserve">
-    <value>Black and white tray icon</value>
+    <value>Icona della barra delle applicazioni in bianco e nero</value>
   </data>
   <data name="Calibrate" xml:space="preserve">
     <value>Calibrazione</value>
@@ -420,7 +420,7 @@ Sei sicuro di voler continuare?</value>
     <value>Ventole + Alimentazione</value>
   </data>
   <data name="FlickerFreeDimming" xml:space="preserve">
-    <value>Flicker-free Dimming</value>
+    <value>Luminosità senza sfarfallio</value>
   </data>
   <data name="FnLock" xml:space="preserve">
     <value>Elabora i tasti Fn+F direttamente senza Fn</value>
@@ -498,7 +498,7 @@ Sei sicuro di voler continuare?</value>
     <value>Indicatori Di Stato LED</value>
   </data>
   <data name="Lid" xml:space="preserve">
-    <value>Schermo</value>
+    <value>Coperchio</value>
   </data>
   <data name="Lightbar" xml:space="preserve">
     <value>Barra Luminosa</value>
@@ -573,7 +573,7 @@ Sei sicuro di voler continuare?</value>
     <value>Importazione non riuscita. Il file selezionato non è un profilo di mouse valido o è corrotto.</value>
   </data>
   <data name="MouseLiftOffDistance" xml:space="preserve">
-    <value>Lift Off Distance</value>
+    <value>Distanza Di Sollevamento</value>
   </data>
   <data name="MouseLowBatteryWarning" xml:space="preserve">
     <value>Avviso Batteria Mouse in Esaurimento</value>
@@ -648,7 +648,7 @@ Sei sicuro di voler continuare?</value>
     <value>Riproduci / Pausa</value>
   </data>
   <data name="PollingRate" xml:space="preserve">
-    <value>Polling Rate</value>
+    <value>Frequenza di aggiornamento</value>
   </data>
   <data name="PowerLimits" xml:space="preserve">
     <value>Limiti di Potenza</value>
@@ -657,7 +657,7 @@ Sei sicuro di voler continuare?</value>
     <value>I Limiti di Potenza sono una funzione sperimentale. Usare con cautela e a proprio rischio!</value>
   </data>
   <data name="PrintScreen" xml:space="preserve">
-    <value>PrintScreen</value>
+    <value>CatturaSchermo</value>
   </data>
   <data name="Profile" xml:space="preserve">
     <value>Profilo</value>
@@ -684,7 +684,7 @@ Sei sicuro di voler continuare?</value>
     <value>Esegui all'Avvio</value>
   </data>
   <data name="ScalingQuality" xml:space="preserve">
-    <value>Scaling Quality</value>
+    <value>Qualità di Ridimensionamento</value>
   </data>
   <data name="ScreenPadDown" xml:space="preserve">
     <value>Riduci luminosità Screenpad</value>
@@ -777,13 +777,13 @@ Sei sicuro di voler continuare?</value>
     <value>Intensità vibrazione</value>
   </data>
   <data name="VisualMode" xml:space="preserve">
-    <value>Visual Mode</value>
+    <value>Modalità Visiva</value>
   </data>
   <data name="VisualModesHDR" xml:space="preserve">
-    <value>Le Visual Modes non sono disponibili quando l'HDR è attivo</value>
+    <value>Le Modalità Visive non sono disponibili quando l'HDR è attivo</value>
   </data>
   <data name="VisualModesScreen" xml:space="preserve">
-    <value>Le Visual Modes non sono disponibili quando lo schermo del portatile è spento</value>
+    <value>Le Modalità Visive non sono disponibili quando lo schermo del portatile è spento</value>
   </data>
   <data name="VolumeDown" xml:space="preserve">
     <value>Diminuisci Volume</value>
@@ -870,13 +870,13 @@ Sei sicuro di voler continuare?</value>
     <value>Livello Batteria</value>
   </data>
   <data name="IntervalOff" xml:space="preserve">
-    <value>Interval Off</value>
+    <value>Intervallo Disattivato</value>
   </data>
   <data name="IntervalSeconds" xml:space="preserve">
     <value>Intervallo {0}s</value>
   </data>
   <data name="DisableDynamicLighting" xml:space="preserve">
-    <value>Per favore disabilita Windows &gt; Illuminazione Dinamica</value>
+    <value>Per favore disattiva Personalizzazione &gt; Illuminazione Dinamica</value>
   </data>
   <data name="AmbientModeResources" xml:space="preserve">
     <value>La modalità Ambient può aumentare l'utilizzo delle risorse</value>
