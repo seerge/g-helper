@@ -346,7 +346,7 @@
     <value>Controller deaktivieren</value>
   </data>
   <data name="DisableOnLidClose" xml:space="preserve">
-    <value>Beim Schließen des Deckels deaktivieren</value>
+    <value>Abschalten, wenn zugeklappt</value>
   </data>
   <data name="DisableOverdrive" xml:space="preserve">
     <value>Bildschirm: Overdrive abschalten</value>
