@@ -229,21 +229,7 @@ public static class HardwareControl
         }
     }
 
-    private static BATTERY_STATUS? _lastBatteryStatus;
-    private static long _lastBatteryStatusTime;
-
     private static BATTERY_STATUS? QueryBatteryStatus()
-    {
-        var now = DateTimeOffset.Now.ToUnixTimeMilliseconds();
-        if (Math.Abs(now - _lastBatteryStatusTime) < 5000)
-            return _lastBatteryStatus;
-
-        _lastBatteryStatusTime = now;
-        _lastBatteryStatus = QueryBatteryStatusDirect();
-        return _lastBatteryStatus;
-    }
-
-    private static BATTERY_STATUS? QueryBatteryStatusDirect()
     {
         string? devicePath = GetBatteryDevicePath();
         if (devicePath == null) return null;
@@ -309,8 +295,14 @@ public static class HardwareControl
         return 0;
     }
 
+    static long _lastBatteryRead;
+
     public static void ReadBatteryState()
     {
+        var now = DateTimeOffset.Now.ToUnixTimeMilliseconds();
+        if (Math.Abs(now - _lastBatteryRead) < 5000) return;
+        _lastBatteryRead = now;
+
         batteryRate = 0;
         chargeCapacity = 0;
 
