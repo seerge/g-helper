@@ -59,9 +59,9 @@ namespace GHelper
             panelHysteresis = new Panel();
             tableHysteresis = new TableLayoutPanel();
             labelHysteresisUp = new Label();
-            trackHysteresisUp = new TrackBar();
+            trackHysteresisUp = new UI.RTrackBar();
             labelHysteresisDown = new Label();
-            trackHysteresisDown = new TrackBar();
+            trackHysteresisDown = new UI.RTrackBar();
             labelHysteresisUpValue = new Label();
             labelHysteresisDownValue = new Label();
             panelApplyFans = new Panel();
@@ -2063,9 +2063,9 @@ namespace GHelper
         private Panel panelHysteresis;
         private TableLayoutPanel tableHysteresis;
         private Label labelHysteresisUp;
-        private TrackBar trackHysteresisUp;
+        private UI.RTrackBar trackHysteresisUp;
         private Label labelHysteresisDown;
-        private TrackBar trackHysteresisDown;
+        private UI.RTrackBar trackHysteresisDown;
         private Label labelHysteresisUpValue;
         private Label labelHysteresisDownValue;
     }
