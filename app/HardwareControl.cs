@@ -7,6 +7,7 @@ using GHelper.Gpu.NVidia;
 using GHelper.Helpers;
 using System.Diagnostics;
 using System.Management;
+using System.Runtime.InteropServices;
 
 public static class HardwareControl
 {
@@ -33,9 +34,77 @@ public static class HardwareControl
     public static int? gpuUse;
 
     static long lastUpdate;
+
     static bool isPZ13 = AppConfig.IsPZ13();
 
     static bool _chargeWatt = AppConfig.Is("charge_watt");
+
+    static PerformanceCounter? _cpuTempCounter;
+
+    #region Native Battery API
+
+    [DllImport("powrprof.dll", SetLastError = true)]
+    private static extern uint CallNtPowerInformation(
+        int InformationLevel,
+        IntPtr InputBuffer,
+        uint InputBufferLength,
+        IntPtr OutputBuffer,
+        uint OutputBufferLength);
+
+    private const int SystemBatteryState = 5;
+
+    [StructLayout(LayoutKind.Sequential)]
+    private struct SYSTEM_BATTERY_STATE
+    {
+        [MarshalAs(UnmanagedType.U1)] public bool AcOnLine;
+        [MarshalAs(UnmanagedType.U1)] public bool BatteryPresent;
+        [MarshalAs(UnmanagedType.U1)] public bool Charging;
+        [MarshalAs(UnmanagedType.U1)] public bool Discharging;
+        public byte Spare1;
+        public byte Spare2;
+        public byte Spare3;
+        public byte Spare4;
+        public uint MaxCapacity;
+        public uint RemainingCapacity;
+        public int Rate;
+        public uint EstimatedTime;
+        public uint DefaultAlert1;
+        public uint DefaultAlert2;
+    }
+
+    private static SYSTEM_BATTERY_STATE? GetNativeBatteryState()
+    {
+        int size = Marshal.SizeOf<SYSTEM_BATTERY_STATE>();
+        IntPtr ptr = Marshal.AllocHGlobal(size);
+        try
+        {
+            uint status = CallNtPowerInformation(SystemBatteryState, IntPtr.Zero, 0, ptr, (uint)size);
+            if (status == 0)
+                return Marshal.PtrToStructure<SYSTEM_BATTERY_STATE>(ptr);
+            return null;
+        }
+        finally
+        {
+            Marshal.FreeHGlobal(ptr);
+        }
+    }
+
+    [DllImport("kernel32.dll", SetLastError = true)]
+    private static extern bool GetSystemPowerStatus(ref SYSTEM_POWER_STATUS lpSystemPowerStatus);
+
+    [StructLayout(LayoutKind.Sequential)]
+    private struct SYSTEM_POWER_STATUS
+    {
+        public byte ACLineStatus;
+        public byte BatteryFlag;
+        public byte BatteryLifePercent;
+        public byte SystemStatusFlag;
+        public int BatteryLifeTime;
+        public int BatteryFullLifeTime;
+    }
+
+    #endregion
+
     public static bool chargeWatt
     {
         get
@@ -74,32 +143,23 @@ public static class HardwareControl
 
         try
         {
-            ManagementScope scope = new ManagementScope("root\\WMI");
-            ObjectQuery query = new ObjectQuery("SELECT * FROM BatteryStatus");
-
-            using ManagementObjectSearcher searcher = new ManagementObjectSearcher(scope, query);
-            foreach (ManagementObject obj in searcher.Get().Cast<ManagementObject>())
+            var batteryState = GetNativeBatteryState();
+            if (batteryState.HasValue)
             {
-
-                chargeCapacity = Convert.ToDecimal(obj["RemainingCapacity"]);
-
-                decimal? discharge = Program.acpi.GetBatteryDischarge();
-                if (discharge is not null)
-                {
-                    batteryRate = discharge;
-                    return;
-                }
-
-                decimal chargeRate = Convert.ToDecimal(obj["ChargeRate"]);
-                decimal dischargeRate = Convert.ToDecimal(obj["DischargeRate"]);
-
-                if (chargeRate > 0)
-                    batteryRate = chargeRate / 1000;
-                else
-                    batteryRate = -dischargeRate / 1000;
-
+                chargeCapacity = batteryState.Value.RemainingCapacity;
             }
 
+            decimal? discharge = Program.acpi.GetBatteryDischarge();
+            if (discharge is not null)
+            {
+                batteryRate = discharge;
+                return;
+            }
+
+            if (batteryState.HasValue && batteryState.Value.Rate != 0)
+            {
+                batteryRate = (decimal)batteryState.Value.Rate / 1000;
+            }
         }
         catch (Exception ex)
         {
@@ -113,15 +173,11 @@ public static class HardwareControl
 
         try
         {
-            ManagementScope scope = new ManagementScope("root\\WMI");
-            ObjectQuery query = new ObjectQuery("SELECT * FROM BatteryFullChargedCapacity");
-
-            using ManagementObjectSearcher searcher = new ManagementObjectSearcher(scope, query);
-            foreach (ManagementObject obj in searcher.Get().Cast<ManagementObject>())
+            var state = GetNativeBatteryState();
+            if (state.HasValue && state.Value.MaxCapacity > 0)
             {
-                fullCapacity = Convert.ToDecimal(obj["FullChargedCapacity"]);
+                fullCapacity = state.Value.MaxCapacity;
             }
-
         }
         catch (Exception ex)
         {
@@ -136,13 +192,17 @@ public static class HardwareControl
 
         try
         {
+
             ManagementScope scope = new ManagementScope("root\\WMI");
-            ObjectQuery query = new ObjectQuery("SELECT * FROM BatteryStaticData");
+            ObjectQuery query = new ObjectQuery("SELECT DesignedCapacity FROM BatteryStaticData");
 
             using ManagementObjectSearcher searcher = new ManagementObjectSearcher(scope, query);
             foreach (ManagementObject obj in searcher.Get().Cast<ManagementObject>())
             {
-                designCapacity = Convert.ToDecimal(obj["DesignedCapacity"]);
+                using (obj)
+                {
+                    designCapacity = Convert.ToDecimal(obj["DesignedCapacity"]);
+                }
             }
 
         }
@@ -188,10 +248,10 @@ public static class HardwareControl
 
         if (cpuTemp < 0) try
             {
-                using (var ct = new PerformanceCounter("Thermal Zone Information", "Temperature", @"\_TZ.THRM", true))
-                {
-                    cpuTemp = ct.NextValue() - 273;
-                }
+                if (_cpuTempCounter == null)
+                    _cpuTempCounter = new PerformanceCounter("Thermal Zone Information", "Temperature", @"\_TZ.THRM", true);
+
+                cpuTemp = _cpuTempCounter.NextValue() - 273;
             }
             catch (Exception ex)
             {
@@ -282,21 +342,19 @@ public static class HardwareControl
 
     public static double GetBatteryChargePercentage()
     {
-        double batteryCharge = 0;
         try
         {
-            ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT * FROM Win32_Battery");
-            foreach (ManagementObject battery in searcher.Get())
+            SYSTEM_POWER_STATUS status = default;
+            if (GetSystemPowerStatus(ref status) && status.BatteryLifePercent != 255)
             {
-                batteryCharge = Convert.ToDouble(battery["EstimatedChargeRemaining"]);
-                break; // Assuming only one battery
+                return status.BatteryLifePercent;
             }
         }
-        catch (ManagementException e)
+        catch (Exception ex)
         {
-            Console.WriteLine("An error occurred while querying for WMI data: " + e.Message);
+            Debug.WriteLine("Battery Percentage Reading: " + ex.Message);
         }
-        return batteryCharge;
+        return 0;
     }
 
     public static bool IsUsedGPU(int threshold = 10)
