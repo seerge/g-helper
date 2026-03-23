@@ -134,10 +134,8 @@ public static class HardwareControl
         return 0;
     }
 
-
-    public static void GetBatteryStatus()
+    public static void ReadBatteryState()
     {
-
         batteryRate = 0;
         chargeCapacity = 0;
 
@@ -147,43 +145,34 @@ public static class HardwareControl
             if (batteryState.HasValue)
             {
                 chargeCapacity = batteryState.Value.RemainingCapacity;
+
+                if (fullCapacity is null or 0 && batteryState.Value.MaxCapacity > 0)
+                    fullCapacity = batteryState.Value.MaxCapacity;
             }
 
             decimal? discharge = Program.acpi.GetBatteryDischarge();
             if (discharge is not null)
             {
                 batteryRate = discharge;
-                return;
             }
-
-            if (batteryState.HasValue && batteryState.Value.Rate != 0)
+            else if (batteryState.HasValue && batteryState.Value.Rate != 0)
             {
                 batteryRate = (decimal)batteryState.Value.Rate / 1000;
             }
         }
         catch (Exception ex)
         {
-            Debug.WriteLine("Discharge Reading: " + ex.Message);
+            Debug.WriteLine("Battery Reading: " + ex.Message);
         }
 
-    }
-    public static void ReadFullChargeCapacity()
-    {
-        if (fullCapacity > 0) return;
-
-        try
+        if (fullCapacity > 0 && chargeCapacity > 0)
         {
-            var state = GetNativeBatteryState();
-            if (state.HasValue && state.Value.MaxCapacity > 0)
-            {
-                fullCapacity = state.Value.MaxCapacity;
-            }
+            batteryCapacity = Math.Min(100, (decimal)chargeCapacity / (decimal)fullCapacity * 100);
+            if (batteryCapacity > 99 && BatteryControl.chargeFull) BatteryControl.UnSetBatteryLimitFull();
+            batteryCharge = chargeWatt
+                ? Math.Round((decimal)chargeCapacity / 1000, 1) + "Wh"
+                : Math.Round(batteryCapacity, 1) + "%";
         }
-        catch (Exception ex)
-        {
-            Debug.WriteLine("Full Charge Reading: " + ex.Message);
-        }
-
     }
 
     public static void ReadDesignCapacity()
@@ -214,28 +203,20 @@ public static class HardwareControl
 
     public static void RefreshBatteryHealth()
     {
-        batteryHealth = GetBatteryHealth() * 100;
-    }
-
-
-    public static decimal GetBatteryHealth()
-    {
-        if (designCapacity is null)
-        {
-            ReadDesignCapacity();
-        }
-        ReadFullChargeCapacity();
+        if (designCapacity is null) ReadDesignCapacity();
+        if (fullCapacity is null or 0) ReadBatteryState();
 
         if (designCapacity is null || fullCapacity is null || designCapacity == 0 || fullCapacity == 0)
         {
-            return -1;
+            batteryHealth = -1;
+            return;
         }
 
         decimal health = (decimal)fullCapacity / (decimal)designCapacity;
         Logger.WriteLine("Design Capacity: " + designCapacity + "mWh, Full Charge Capacity: " + fullCapacity + "mWh, Health: " + health + "%");
-
-        return health;
+        batteryHealth = health * 100;
     }
+
 
     public static float? GetCPUTemp()
     {
@@ -311,7 +292,6 @@ public static class HardwareControl
 
     public static void ReadSensors(bool log = false)
     {
-        batteryRate = 0;
         gpuUse = -1;
 
         if (Program.acpi is null) return;
@@ -325,22 +305,7 @@ public static class HardwareControl
 
         if (log) Logger.WriteLine($"Temps: {cpuTemp} {gpuTemp} {cpuFan} {gpuFan} {midFan}");
 
-        ReadFullChargeCapacity();
-        GetBatteryStatus();
-
-        if (fullCapacity > 0 && chargeCapacity > 0)
-        {
-            batteryCapacity = Math.Min(100, (decimal)chargeCapacity / (decimal)fullCapacity * 100);
-            if (batteryCapacity > 99 && BatteryControl.chargeFull) BatteryControl.UnSetBatteryLimitFull();
-            if (chargeWatt)
-            {
-                batteryCharge = Math.Round((decimal)chargeCapacity / 1000, 1).ToString() + "Wh";
-            }
-            else
-            {
-                batteryCharge = Math.Round(batteryCapacity, 1) + "%";
-            }
-        }
+        ReadBatteryState();
     }
 
     public static double GetBatteryChargePercentage()
