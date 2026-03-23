@@ -1,4 +1,6 @@
-﻿namespace GHelper
+﻿using GHelper.UI;
+
+namespace GHelper
 {
     partial class Handheld
     {
@@ -32,28 +34,28 @@
             panelRight = new Panel();
             panelRT = new Panel();
             pictureBox4 = new PictureBox();
-            trackRTMax = new TrackBar();
+            trackRTMax = new RTrackBar();
             labelRT = new Label();
-            trackRTMin = new TrackBar();
+            trackRTMin = new RTrackBar();
             labelRTTitle = new Label();
             panelRS = new Panel();
             pictureBox1 = new PictureBox();
-            trackRSMax = new TrackBar();
+            trackRSMax = new RTrackBar();
             labelRS = new Label();
-            trackRSMin = new TrackBar();
+            trackRSMin = new RTrackBar();
             labelRSTitle = new Label();
             panelLeft = new Panel();
             panelLT = new Panel();
             pictureBox2 = new PictureBox();
-            trackLTMax = new TrackBar();
+            trackLTMax = new RTrackBar();
             labelLT = new Label();
-            trackLTMin = new TrackBar();
+            trackLTMin = new RTrackBar();
             labelLTTitle = new Label();
             panelLS = new Panel();
             pictureBox3 = new PictureBox();
-            trackLSMax = new TrackBar();
+            trackLSMax = new RTrackBar();
             labelLS = new Label();
-            trackLSMin = new TrackBar();
+            trackLSMin = new RTrackBar();
             labelLSTitle = new Label();
             buttonReset = new UI.RButton();
             panelBindings = new Panel();
@@ -87,7 +89,7 @@
             pictureBox5 = new PictureBox();
             labelVibra = new Label();
             labelVibraTitle = new Label();
-            trackVibra = new TrackBar();
+            trackVibra = new RTrackBar();
             panelDeadzones.SuspendLayout();
             panelRight.SuspendLayout();
             panelRT.SuspendLayout();
@@ -1089,28 +1091,28 @@
         private Panel panelRight;
         private Panel panelRT;
         private PictureBox pictureBox4;
-        private TrackBar trackRTMax;
+        private RTrackBar trackRTMax;
         private Label labelRT;
-        private TrackBar trackRTMin;
+        private RTrackBar trackRTMin;
         private Label labelRTTitle;
         private Panel panelRS;
         private PictureBox pictureBox1;
-        private TrackBar trackRSMax;
+        private RTrackBar trackRSMax;
         private Label labelRS;
-        private TrackBar trackRSMin;
+        private RTrackBar trackRSMin;
         private Label labelRSTitle;
         private Panel panelLeft;
         private Panel panelLT;
         private PictureBox pictureBox2;
-        private TrackBar trackLTMax;
+        private RTrackBar trackLTMax;
         private Label labelLT;
-        private TrackBar trackLTMin;
+        private RTrackBar trackLTMin;
         private Label labelLTTitle;
         private Panel panelLS;
         private PictureBox pictureBox3;
-        private TrackBar trackLSMax;
+        private RTrackBar trackLSMax;
         private Label labelLS;
-        private TrackBar trackLSMin;
+        private RTrackBar trackLSMin;
         private Label labelLSTitle;
         private Panel panelBindings;
         private PictureBox pictureAlly;
@@ -1143,7 +1145,7 @@
         private PictureBox pictureBox5;
         private Label labelVibra;
         private Label labelVibraTitle;
-        private TrackBar trackVibra;
+        private RTrackBar trackVibra;
         private UI.RCheckBox checkController;
     }
 }
