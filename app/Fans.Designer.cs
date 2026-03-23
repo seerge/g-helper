@@ -56,6 +56,12 @@ namespace GHelper
             comboModes = new RComboBox();
             picturePerf = new PictureBox();
             labelFans = new Label();
+            panelHysteresis = new Panel();
+            tableHysteresis = new TableLayoutPanel();
+            labelHysteresisUp = new Label();
+            trackHysteresisUp = new TrackBar();
+            labelHysteresisDown = new Label();
+            trackHysteresisDown = new TrackBar();
             panelApplyFans = new Panel();
             buttonCalibrate = new RButton();
             labelFansResult = new Label();
@@ -162,6 +168,10 @@ namespace GHelper
             panelTitleFans.SuspendLayout();
             tableLayoutModes.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)picturePerf).BeginInit();
+            panelHysteresis.SuspendLayout();
+            tableHysteresis.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)trackHysteresisUp).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)trackHysteresisDown).BeginInit();
             panelApplyFans.SuspendLayout();
             panelSliders.SuspendLayout();
             panelAdvanced.SuspendLayout();
@@ -223,6 +233,7 @@ namespace GHelper
             panelFans.Controls.Add(labelTip);
             panelFans.Controls.Add(tableFanCharts);
             panelFans.Controls.Add(panelTitleFans);
+            panelFans.Controls.Add(panelHysteresis);
             panelFans.Controls.Add(panelApplyFans);
             panelFans.Dock = DockStyle.Fill;
             panelFans.Location = new Point(530, 0);
@@ -457,6 +468,86 @@ namespace GHelper
             labelFans.Size = new Size(90, 32);
             labelFans.TabIndex = 40;
             labelFans.Text = "Profile";
+            // 
+            // panelHysteresis
+            // 
+            panelHysteresis.Controls.Add(tableHysteresis);
+            panelHysteresis.Dock = DockStyle.Bottom;
+            panelHysteresis.Location = new Point(0, 860);
+            panelHysteresis.Margin = new Padding(4);
+            panelHysteresis.Name = "panelHysteresis";
+            panelHysteresis.Padding = new Padding(10, 5, 10, 5);
+            panelHysteresis.Size = new Size(810, 100);
+            panelHysteresis.TabIndex = 45;
+            // 
+            // tableHysteresis
+            // 
+            tableHysteresis.ColumnCount = 2;
+            tableHysteresis.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
+            tableHysteresis.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
+            tableHysteresis.Controls.Add(labelHysteresisUp, 0, 0);
+            tableHysteresis.Controls.Add(trackHysteresisUp, 1, 0);
+            tableHysteresis.Controls.Add(labelHysteresisDown, 0, 1);
+            tableHysteresis.Controls.Add(trackHysteresisDown, 1, 1);
+            tableHysteresis.Dock = DockStyle.Fill;
+            tableHysteresis.Location = new Point(10, 5);
+            tableHysteresis.Margin = new Padding(0);
+            tableHysteresis.Name = "tableHysteresis";
+            tableHysteresis.RowCount = 2;
+            tableHysteresis.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
+            tableHysteresis.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
+            tableHysteresis.Size = new Size(790, 90);
+            tableHysteresis.TabIndex = 0;
+            // 
+            // labelHysteresisUp
+            // 
+            labelHysteresisUp.Anchor = AnchorStyles.Left;
+            labelHysteresisUp.AutoSize = true;
+            labelHysteresisUp.Location = new Point(4, 6);
+            labelHysteresisUp.Margin = new Padding(4, 0, 4, 0);
+            labelHysteresisUp.Name = "labelHysteresisUp";
+            labelHysteresisUp.Size = new Size(200, 32);
+            labelHysteresisUp.TabIndex = 0;
+            labelHysteresisUp.Text = "Fan Hysteresis Up";
+            // 
+            // trackHysteresisUp
+            // 
+            trackHysteresisUp.Dock = DockStyle.Fill;
+            trackHysteresisUp.LargeChange = 1;
+            trackHysteresisUp.Location = new Point(212, 2);
+            trackHysteresisUp.Margin = new Padding(4, 2, 4, 2);
+            trackHysteresisUp.Maximum = 5;
+            trackHysteresisUp.Minimum = 1;
+            trackHysteresisUp.Name = "trackHysteresisUp";
+            trackHysteresisUp.Size = new Size(574, 41);
+            trackHysteresisUp.TabIndex = 1;
+            trackHysteresisUp.TickFrequency = 1;
+            trackHysteresisUp.Value = 1;
+            // 
+            // labelHysteresisDown
+            // 
+            labelHysteresisDown.Anchor = AnchorStyles.Left;
+            labelHysteresisDown.AutoSize = true;
+            labelHysteresisDown.Location = new Point(4, 51);
+            labelHysteresisDown.Margin = new Padding(4, 0, 4, 0);
+            labelHysteresisDown.Name = "labelHysteresisDown";
+            labelHysteresisDown.Size = new Size(200, 32);
+            labelHysteresisDown.TabIndex = 2;
+            labelHysteresisDown.Text = "Fan Hysteresis Down";
+            // 
+            // trackHysteresisDown
+            // 
+            trackHysteresisDown.Dock = DockStyle.Fill;
+            trackHysteresisDown.LargeChange = 1;
+            trackHysteresisDown.Location = new Point(212, 47);
+            trackHysteresisDown.Margin = new Padding(4, 2, 4, 2);
+            trackHysteresisDown.Maximum = 5;
+            trackHysteresisDown.Minimum = 1;
+            trackHysteresisDown.Name = "trackHysteresisDown";
+            trackHysteresisDown.Size = new Size(574, 41);
+            trackHysteresisDown.TabIndex = 3;
+            trackHysteresisDown.TickFrequency = 1;
+            trackHysteresisDown.Value = 1;
             // 
             // panelApplyFans
             // 
@@ -1737,6 +1828,12 @@ namespace GHelper
             panelTitleFans.PerformLayout();
             tableLayoutModes.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)picturePerf).EndInit();
+            panelHysteresis.ResumeLayout(false);
+            panelHysteresis.PerformLayout();
+            tableHysteresis.ResumeLayout(false);
+            tableHysteresis.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)trackHysteresisUp).EndInit();
+            ((System.ComponentModel.ISupportInitialize)trackHysteresisDown).EndInit();
             panelApplyFans.ResumeLayout(false);
             panelApplyFans.PerformLayout();
             panelSliders.ResumeLayout(false);
@@ -1932,5 +2029,11 @@ namespace GHelper
         private TrackBar trackGPUPower;
         private TableLayoutPanel tableLayoutModes;
         private RCheckBox checkFanClamp;
+        private Panel panelHysteresis;
+        private TableLayoutPanel tableHysteresis;
+        private Label labelHysteresisUp;
+        private TrackBar trackHysteresisUp;
+        private Label labelHysteresisDown;
+        private TrackBar trackHysteresisDown;
     }
 }
