@@ -702,15 +702,20 @@ namespace GHelper
 
         private void InitHysteresis()
         {
+            var defaults = Program.acpi.GetFanHysteresis();
+            if (defaults.up < 0 || defaults.down < 0)
+            {
+                panelHysteresis.Visible = false;
+                return;
+            }
+
+            panelHysteresis.Visible = true;
+
             int up = AppConfig.GetMode("hysteresis_up");
             int down = AppConfig.GetMode("hysteresis_down");
 
-            if (up < 0 || down < 0)
-            {
-                var defaults = Program.acpi.GetFanHysteresis();
-                if (up < 0) up = defaults.up > 0 ? defaults.up : 3;
-                if (down < 0) down = defaults.down > 0 ? defaults.down : 3;
-            }
+            if (up < 0) up = defaults.up > 0 ? defaults.up : 3;
+            if (down < 0) down = defaults.down > 0 ? defaults.down : 3;
 
             trackHysteresisUp.Value = Math.Clamp(up, trackHysteresisUp.Minimum, trackHysteresisUp.Maximum);
             trackHysteresisDown.Value = Math.Clamp(down, trackHysteresisDown.Minimum, trackHysteresisDown.Maximum);
@@ -1263,9 +1268,12 @@ namespace GHelper
                 modeControl.SetGPUPower();
             }
 
-            AppConfig.RemoveMode("hysteresis_up");
-            AppConfig.RemoveMode("hysteresis_down");
-            InitHysteresis();
+            if (panelHysteresis.Visible)
+            {
+                AppConfig.RemoveMode("hysteresis_up");
+                AppConfig.RemoveMode("hysteresis_down");
+                InitHysteresis();
+            }
 
         }
 
