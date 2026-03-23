@@ -1,4 +1,4 @@
-﻿using GHelper;
+using GHelper;
 using GHelper.Battery;
 using GHelper.Fan;
 using GHelper.Gpu;
@@ -103,6 +103,181 @@ public static class HardwareControl
         public int BatteryFullLifeTime;
     }
 
+    [DllImport("setupapi.dll", CharSet = CharSet.Auto, SetLastError = true)]
+    private static extern IntPtr SetupDiGetClassDevs(
+        ref Guid classGuid, IntPtr enumerator, IntPtr hwndParent, uint flags);
+
+    [DllImport("setupapi.dll", SetLastError = true)]
+    private static extern bool SetupDiEnumDeviceInterfaces(
+        IntPtr deviceInfoSet, IntPtr deviceInfoData, ref Guid interfaceClassGuid,
+        uint memberIndex, ref SP_DEVICE_INTERFACE_DATA deviceInterfaceData);
+
+    [DllImport("setupapi.dll", CharSet = CharSet.Auto, SetLastError = true)]
+    private static extern bool SetupDiGetDeviceInterfaceDetail(
+        IntPtr deviceInfoSet, ref SP_DEVICE_INTERFACE_DATA deviceInterfaceData,
+        IntPtr deviceInterfaceDetailData, uint deviceInterfaceDetailDataSize,
+        out uint requiredSize, IntPtr deviceInfoData);
+
+    [DllImport("setupapi.dll", SetLastError = true)]
+    private static extern bool SetupDiDestroyDeviceInfoList(IntPtr deviceInfoSet);
+
+    [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+    private static extern IntPtr CreateFile(
+        string lpFileName, uint dwDesiredAccess, uint dwShareMode,
+        IntPtr lpSecurityAttributes, uint dwCreationDisposition,
+        uint dwFlagsAndAttributes, IntPtr hTemplateFile);
+
+    [DllImport("kernel32.dll", SetLastError = true)]
+    private static extern bool DeviceIoControl(
+        IntPtr hDevice, uint dwIoControlCode,
+        ref uint lpInBuffer, uint nInBufferSize,
+        ref uint lpOutBuffer, uint nOutBufferSize,
+        out uint lpBytesReturned, IntPtr lpOverlapped);
+
+    [DllImport("kernel32.dll", EntryPoint = "DeviceIoControl", SetLastError = true)]
+    private static extern bool DeviceIoControlStatus(
+        IntPtr hDevice, uint dwIoControlCode,
+        ref BATTERY_WAIT_STATUS lpInBuffer, uint nInBufferSize,
+        ref BATTERY_STATUS lpOutBuffer, uint nOutBufferSize,
+        out uint lpBytesReturned, IntPtr lpOverlapped);
+
+    [DllImport("kernel32.dll", SetLastError = true)]
+    private static extern bool CloseHandle(IntPtr hObject);
+
+    [StructLayout(LayoutKind.Sequential)]
+    private struct SP_DEVICE_INTERFACE_DATA
+    {
+        public uint cbSize;
+        public Guid InterfaceClassGuid;
+        public uint Flags;
+        public IntPtr Reserved;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    private struct BATTERY_WAIT_STATUS
+    {
+        public uint BatteryTag;
+        public uint Timeout;
+        public uint PowerState;
+        public uint LowCapacity;
+        public uint HighCapacity;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    private struct BATTERY_STATUS
+    {
+        public uint PowerState;
+        public uint Capacity;
+        public int Voltage;
+        public int Rate;
+    }
+
+    private static readonly Guid GUID_DEVINTERFACE_BATTERY = new("72631E54-78A4-11D0-BCF7-00AA00B7B32A");
+    private const uint DIGCF_PRESENT = 0x02;
+    private const uint DIGCF_DEVICEINTERFACE = 0x10;
+    private const uint GENERIC_READ = 0x80000000;
+    private const uint GENERIC_WRITE = 0x40000000;
+    private const uint FILE_SHARE_READ = 0x01;
+    private const uint FILE_SHARE_WRITE = 0x02;
+    private const uint OPEN_EXISTING = 3;
+    private const uint FILE_ATTRIBUTE_NORMAL = 0x80;
+    private static readonly IntPtr INVALID_HANDLE_VALUE = new(-1);
+
+    private const uint IOCTL_BATTERY_QUERY_TAG = 0x294040;
+    private const uint IOCTL_BATTERY_QUERY_STATUS = 0x29404C;
+
+    private static string? _batteryDevicePath;
+
+    private static string? GetBatteryDevicePath()
+    {
+        if (_batteryDevicePath != null) return _batteryDevicePath;
+
+        Guid batteryGuid = GUID_DEVINTERFACE_BATTERY;
+        IntPtr deviceInfoSet = SetupDiGetClassDevs(ref batteryGuid, IntPtr.Zero, IntPtr.Zero, DIGCF_PRESENT | DIGCF_DEVICEINTERFACE);
+        if (deviceInfoSet == INVALID_HANDLE_VALUE) return null;
+
+        try
+        {
+            SP_DEVICE_INTERFACE_DATA did = new();
+            did.cbSize = (uint)Marshal.SizeOf<SP_DEVICE_INTERFACE_DATA>();
+
+            if (!SetupDiEnumDeviceInterfaces(deviceInfoSet, IntPtr.Zero, ref batteryGuid, 0, ref did))
+                return null;
+
+            SetupDiGetDeviceInterfaceDetail(deviceInfoSet, ref did, IntPtr.Zero, 0, out uint requiredSize, IntPtr.Zero);
+            if (requiredSize == 0) return null;
+
+            IntPtr detailData = Marshal.AllocHGlobal((int)requiredSize);
+            try
+            {
+                Marshal.WriteInt32(detailData, IntPtr.Size == 8 ? 8 : 6);
+
+                if (!SetupDiGetDeviceInterfaceDetail(deviceInfoSet, ref did, detailData, requiredSize, out _, IntPtr.Zero))
+                    return null;
+
+                _batteryDevicePath = Marshal.PtrToStringAuto(detailData + 4);
+                return _batteryDevicePath;
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(detailData);
+            }
+        }
+        finally
+        {
+            SetupDiDestroyDeviceInfoList(deviceInfoSet);
+        }
+    }
+
+    private static BATTERY_STATUS? _lastBatteryStatus;
+    private static long _lastBatteryStatusTime;
+
+    private static BATTERY_STATUS? QueryBatteryStatus()
+    {
+        var now = DateTimeOffset.Now.ToUnixTimeMilliseconds();
+        if (Math.Abs(now - _lastBatteryStatusTime) < 5000)
+            return _lastBatteryStatus;
+
+        _lastBatteryStatusTime = now;
+        _lastBatteryStatus = QueryBatteryStatusDirect();
+        return _lastBatteryStatus;
+    }
+
+    private static BATTERY_STATUS? QueryBatteryStatusDirect()
+    {
+        string? devicePath = GetBatteryDevicePath();
+        if (devicePath == null) return null;
+
+        IntPtr handle = CreateFile(devicePath, GENERIC_READ | GENERIC_WRITE,
+            FILE_SHARE_READ | FILE_SHARE_WRITE, IntPtr.Zero, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, IntPtr.Zero);
+
+        if (handle == INVALID_HANDLE_VALUE) return null;
+
+        try
+        {
+            uint timeout = 0;
+            uint batteryTag = 0;
+            if (!DeviceIoControl(handle, IOCTL_BATTERY_QUERY_TAG,
+                ref timeout, 4, ref batteryTag, 4, out _, IntPtr.Zero) || batteryTag == 0)
+                return null;
+
+            BATTERY_WAIT_STATUS waitStatus = new() { BatteryTag = batteryTag };
+            BATTERY_STATUS status = new();
+
+            if (!DeviceIoControlStatus(handle, IOCTL_BATTERY_QUERY_STATUS,
+                ref waitStatus, (uint)Marshal.SizeOf<BATTERY_WAIT_STATUS>(),
+                ref status, (uint)Marshal.SizeOf<BATTERY_STATUS>(),
+                out _, IntPtr.Zero))
+                return null;
+
+            return status;
+        }
+        finally
+        {
+            CloseHandle(handle);
+        }
+    }
+
     #endregion
 
     public static bool chargeWatt
@@ -141,23 +316,40 @@ public static class HardwareControl
 
         try
         {
-            var batteryState = GetNativeBatteryState();
-            if (batteryState.HasValue)
-            {
-                chargeCapacity = batteryState.Value.RemainingCapacity;
-
-                if (fullCapacity is null or 0 && batteryState.Value.MaxCapacity > 0)
-                    fullCapacity = batteryState.Value.MaxCapacity;
-            }
-
+            // ACPI discharge exists only on ROG Ally
             decimal? discharge = Program.acpi.GetBatteryDischarge();
             if (discharge is not null)
             {
                 batteryRate = discharge;
+
+                // Capacity from cached power manager state is sufficient
+                var batteryState = GetNativeBatteryState();
+                if (batteryState.HasValue)
+                {
+                    chargeCapacity = batteryState.Value.RemainingCapacity;
+
+                    if (fullCapacity is null or 0 && batteryState.Value.MaxCapacity > 0)
+                        fullCapacity = batteryState.Value.MaxCapacity;
+                }
             }
-            else if (batteryState.HasValue && batteryState.Value.Rate != 0)
+            else
             {
-                batteryRate = (decimal)batteryState.Value.Rate / 1000;
+                // Direct IOCTL for real-time rate and capacity on all other devices
+                var directStatus = QueryBatteryStatus();
+                if (directStatus.HasValue)
+                {
+                    chargeCapacity = directStatus.Value.Capacity;
+                    if (directStatus.Value.Rate != 0)
+                        batteryRate = (decimal)directStatus.Value.Rate / 1000;
+                }
+
+                // MaxCapacity doesn't change at runtime, only need it once
+                if (fullCapacity is null or 0)
+                {
+                    var batteryState = GetNativeBatteryState();
+                    if (batteryState.HasValue && batteryState.Value.MaxCapacity > 0)
+                        fullCapacity = batteryState.Value.MaxCapacity;
+                }
             }
         }
         catch (Exception ex)
@@ -228,16 +420,16 @@ public static class HardwareControl
         cpuTemp = Program.acpi.DeviceGet(AsusACPI.Temp_CPU);
 
         if (cpuTemp < 0) try
-            {
-                if (_cpuTempCounter == null)
-                    _cpuTempCounter = new PerformanceCounter("Thermal Zone Information", "Temperature", @"\_TZ.THRM", true);
+        {
+            if (_cpuTempCounter == null)
+                _cpuTempCounter = new PerformanceCounter("Thermal Zone Information", "Temperature", @"\_TZ.THRM", true);
 
-                cpuTemp = _cpuTempCounter.NextValue() - 273;
-            }
-            catch (Exception ex)
-            {
-                //Debug.WriteLine("Failed reading CPU temp :" + ex.Message);
-            }
+            cpuTemp = _cpuTempCounter.NextValue() - 273;
+        }
+        catch (Exception ex)
+        {
+            //Debug.WriteLine("Failed reading CPU temp :" + ex.Message);
+        }
 
 
         return cpuTemp;
