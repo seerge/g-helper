@@ -62,6 +62,8 @@ namespace GHelper
             trackHysteresisUp = new TrackBar();
             labelHysteresisDown = new Label();
             trackHysteresisDown = new TrackBar();
+            labelHysteresisUpValue = new Label();
+            labelHysteresisDownValue = new Label();
             panelApplyFans = new Panel();
             buttonCalibrate = new RButton();
             labelFansResult = new Label();
@@ -477,18 +479,21 @@ namespace GHelper
             panelHysteresis.Margin = new Padding(4);
             panelHysteresis.Name = "panelHysteresis";
             panelHysteresis.Padding = new Padding(10, 5, 10, 5);
-            panelHysteresis.Size = new Size(810, 100);
+            panelHysteresis.Size = new Size(810, 130);
             panelHysteresis.TabIndex = 45;
             // 
             // tableHysteresis
             // 
-            tableHysteresis.ColumnCount = 2;
+            tableHysteresis.ColumnCount = 3;
             tableHysteresis.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
             tableHysteresis.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
+            tableHysteresis.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 120F));
             tableHysteresis.Controls.Add(labelHysteresisUp, 0, 0);
             tableHysteresis.Controls.Add(trackHysteresisUp, 1, 0);
+            tableHysteresis.Controls.Add(labelHysteresisUpValue, 2, 0);
             tableHysteresis.Controls.Add(labelHysteresisDown, 0, 1);
             tableHysteresis.Controls.Add(trackHysteresisDown, 1, 1);
+            tableHysteresis.Controls.Add(labelHysteresisDownValue, 2, 1);
             tableHysteresis.Dock = DockStyle.Fill;
             tableHysteresis.Location = new Point(10, 5);
             tableHysteresis.Margin = new Padding(0);
@@ -496,7 +501,7 @@ namespace GHelper
             tableHysteresis.RowCount = 2;
             tableHysteresis.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
             tableHysteresis.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            tableHysteresis.Size = new Size(790, 90);
+            tableHysteresis.Size = new Size(790, 120);
             tableHysteresis.TabIndex = 0;
             // 
             // labelHysteresisUp
@@ -508,20 +513,21 @@ namespace GHelper
             labelHysteresisUp.Name = "labelHysteresisUp";
             labelHysteresisUp.Size = new Size(200, 32);
             labelHysteresisUp.TabIndex = 0;
-            labelHysteresisUp.Text = "Fan Hysteresis Up";
+            labelHysteresisUp.Text = "Hysteresis Up";
             // 
             // trackHysteresisUp
             // 
-            trackHysteresisUp.Dock = DockStyle.Fill;
+            trackHysteresisUp.Anchor = AnchorStyles.Left | AnchorStyles.Right;
             trackHysteresisUp.LargeChange = 1;
-            trackHysteresisUp.Location = new Point(212, 2);
+            trackHysteresisUp.Location = new Point(162, 2);
             trackHysteresisUp.Margin = new Padding(4, 2, 4, 2);
             trackHysteresisUp.Maximum = 5;
             trackHysteresisUp.Minimum = 1;
             trackHysteresisUp.Name = "trackHysteresisUp";
-            trackHysteresisUp.Size = new Size(574, 41);
+            trackHysteresisUp.Size = new Size(500, 41);
             trackHysteresisUp.TabIndex = 1;
             trackHysteresisUp.TickFrequency = 1;
+            trackHysteresisUp.TickStyle = TickStyle.TopLeft;
             trackHysteresisUp.Value = 1;
             // 
             // labelHysteresisDown
@@ -533,21 +539,44 @@ namespace GHelper
             labelHysteresisDown.Name = "labelHysteresisDown";
             labelHysteresisDown.Size = new Size(200, 32);
             labelHysteresisDown.TabIndex = 2;
-            labelHysteresisDown.Text = "Fan Hysteresis Down";
+            labelHysteresisDown.Text = "Hysteresis Down";
             // 
             // trackHysteresisDown
             // 
-            trackHysteresisDown.Dock = DockStyle.Fill;
+            trackHysteresisDown.Anchor = AnchorStyles.Left | AnchorStyles.Right;
             trackHysteresisDown.LargeChange = 1;
-            trackHysteresisDown.Location = new Point(212, 47);
+            trackHysteresisDown.Location = new Point(162, 47);
             trackHysteresisDown.Margin = new Padding(4, 2, 4, 2);
             trackHysteresisDown.Maximum = 5;
             trackHysteresisDown.Minimum = 1;
             trackHysteresisDown.Name = "trackHysteresisDown";
-            trackHysteresisDown.Size = new Size(574, 41);
+            trackHysteresisDown.Size = new Size(500, 41);
             trackHysteresisDown.TabIndex = 3;
             trackHysteresisDown.TickFrequency = 1;
+            trackHysteresisDown.TickStyle = TickStyle.TopLeft;
             trackHysteresisDown.Value = 1;
+            // 
+            // labelHysteresisUpValue
+            // 
+            labelHysteresisUpValue.Anchor = AnchorStyles.Left;
+            labelHysteresisUpValue.AutoSize = true;
+            labelHysteresisUpValue.Location = new Point(670, 6);
+            labelHysteresisUpValue.Margin = new Padding(4, 0, 4, 0);
+            labelHysteresisUpValue.Name = "labelHysteresisUpValue";
+            labelHysteresisUpValue.Size = new Size(100, 32);
+            labelHysteresisUpValue.TabIndex = 4;
+            labelHysteresisUpValue.Text = "Very Low";
+            // 
+            // labelHysteresisDownValue
+            // 
+            labelHysteresisDownValue.Anchor = AnchorStyles.Left;
+            labelHysteresisDownValue.AutoSize = true;
+            labelHysteresisDownValue.Location = new Point(670, 51);
+            labelHysteresisDownValue.Margin = new Padding(4, 0, 4, 0);
+            labelHysteresisDownValue.Name = "labelHysteresisDownValue";
+            labelHysteresisDownValue.Size = new Size(100, 32);
+            labelHysteresisDownValue.TabIndex = 5;
+            labelHysteresisDownValue.Text = "Very Low";
             // 
             // panelApplyFans
             // 
@@ -2035,5 +2064,7 @@ namespace GHelper
         private TrackBar trackHysteresisUp;
         private Label labelHysteresisDown;
         private TrackBar trackHysteresisDown;
+        private Label labelHysteresisUpValue;
+        private Label labelHysteresisDownValue;
     }
 }

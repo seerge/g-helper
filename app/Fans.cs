@@ -174,6 +174,9 @@ namespace GHelper
             trackGPUTemp.MouseUp += TrackGPU_MouseUp;
             trackGPUPower.MouseUp += TrackGPU_MouseUp;
 
+            trackHysteresisUp.Scroll += TrackHysteresis_Scroll;
+            trackHysteresisDown.Scroll += TrackHysteresis_Scroll;
+
 
             //labelInfo.MaximumSize = new Size(280, 0);
             labelFansResult.Visible = false;
@@ -685,6 +688,21 @@ namespace GHelper
 
         }
 
+        private static readonly string[] HysteresisLabels = { "Very Low", "Low", "Medium", "High", "Very High" };
+
+        private void VisualiseHysteresis()
+        {
+            labelHysteresisUpValue.Text = HysteresisLabels[trackHysteresisUp.Value - 1];
+            labelHysteresisDownValue.Text = HysteresisLabels[trackHysteresisDown.Value - 1];
+        }
+
+        private void TrackHysteresis_Scroll(object? sender, EventArgs e)
+        {
+            AppConfig.SetMode("hysteresis_up", trackHysteresisUp.Value);
+            AppConfig.SetMode("hysteresis_down", trackHysteresisDown.Value);
+            VisualiseHysteresis();
+        }
+
         private void trackGPUClockLimit_Scroll(object? sender, EventArgs e)
         {
 
@@ -1097,6 +1115,10 @@ namespace GHelper
                 seriesMid.Color = Color.Gray;
                 seriesXGM.Color = Color.Gray;
             }
+
+            trackHysteresisUp.Value = Math.Max(trackHysteresisUp.Minimum, Math.Min(trackHysteresisUp.Maximum, AppConfig.GetMode("hysteresis_up", 1)));
+            trackHysteresisDown.Value = Math.Max(trackHysteresisDown.Minimum, Math.Min(trackHysteresisDown.Maximum, AppConfig.GetMode("hysteresis_down", 1)));
+            VisualiseHysteresis();
 
         }
 
