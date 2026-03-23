@@ -1,3 +1,4 @@
+using GHelper;
 using GHelper.Mode;
 using System.Diagnostics;
 using System.Management;
@@ -614,14 +615,50 @@ public static class AppConfig
         return ContainsModel("G614") || ContainsModel("GU604") || ContainsModel("FX507") || ContainsModel("G513") || ContainsModel("FA617") || ContainsModel("G834") || ContainsModel("GA403") || ContainsModel("GU605") || ContainsModel("GA605") || ContainsModel("GU603VV");
     }
 
+    public static bool isAutoTDP()
+    {
+        bool isAutoTDPActive = false;
+
+
+        if (Program.autoTDPService is not null)
+        {
+            //If using ASUS ACPI and AutoTDP is running right now, ignore current power mode as the auto tdp power settings are temporary
+            isAutoTDPActive = AppConfig.GetString("auto_tdp_limiter", "").Equals("asus_acpi") && Program.autoTDPService.IsActive();
+        }
+
+        return !(!IsMode("auto_apply_power") || isAutoTDPActive);
+    }
+
     public static bool IsAlwaysUltimate()
     {
-        return ContainsModel("FA507NUR") || ContainsModel("FA506NCR") || ContainsModel("FA507NVR");
+        if (!IsMode("auto_apply_power"))
+            return false;
+
+        return
+            Is("manual_mode") ||
+            ContainsModel("GU604") ||
+            ContainsModel("G733") ||
+            ContainsModel("FX507Z");
+    }
+
+    public static bool IsFanScale()
+    {
+        if (!ContainsModel("GU604")) return false;
+
+        try
+        {
+            var (bios, model) = GetBiosAndModel();
+            return (Int32.Parse(bios) < 312);
+        }
+        catch
+        {
+            return false;
+        }
     }
 
     public static bool IsManualModeRequired()
     {
-        if (!IsMode("auto_apply_power")) return false;
+        if (!IsMode("auto_apply_power") || isAutoTDP()) return false;
         return Is("manual_mode") || ContainsModel("G733");
     }
 
