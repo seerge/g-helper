@@ -267,13 +267,16 @@ public static class HardwareControl
         try
         {
             string wmiNamespace = @"root\WMI";
-            string wmiQuery = @"SELECT * FROM MSAcpi_ThermalZoneTemperature WHERE InstanceName = 'ACPI\\QCOM0C5A\\1_0'";  // ACPI\\ThermalZone\\THRM_0
+            string wmiQuery = @"SELECT CurrentTemperature FROM MSAcpi_ThermalZoneTemperature WHERE InstanceName = 'ACPI\\QCOM0C5A\\1_0'";  // ACPI\\ThermalZone\\THRM_0
             using (ManagementObjectSearcher searcher = new ManagementObjectSearcher(wmiNamespace, wmiQuery))
             {
                 foreach (ManagementObject obj in searcher.Get())
                 {
-                    double tempKelvin = Convert.ToDouble(obj["CurrentTemperature"]);
-                    return (tempKelvin / 10) - 273.15;
+                    using (obj)
+                    {
+                        double tempKelvin = Convert.ToDouble(obj["CurrentTemperature"]);
+                        return (tempKelvin / 10) - 273.15;
+                    }
                 }
             }
         }
