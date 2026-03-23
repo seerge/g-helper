@@ -1238,6 +1238,12 @@ namespace GHelper
                 modeControl.SetGPUPower();
             }
 
+            trackHysteresisUp.Value = 1;
+            trackHysteresisDown.Value = 1;
+            AppConfig.RemoveMode("hysteresis_up");
+            AppConfig.RemoveMode("hysteresis_down");
+            VisualiseHysteresis();
+
         }
 
         private void Chart_Save()
