@@ -300,7 +300,11 @@ public static class HardwareControl
     public static void ReadBatteryState()
     {
         var now = DateTimeOffset.Now.ToUnixTimeMilliseconds();
-        if (Math.Abs(now - _lastBatteryRead) < 5000) return;
+        if (Math.Abs(now - _lastBatteryRead) < 5000)
+        {
+            FormatBatteryCharge();
+            return;
+        }
         _lastBatteryRead = now;
 
         batteryRate = 0;
@@ -349,6 +353,11 @@ public static class HardwareControl
             Debug.WriteLine("Battery Reading: " + ex.Message);
         }
 
+        FormatBatteryCharge();
+    }
+
+    private static void FormatBatteryCharge()
+    {
         if (fullCapacity > 0 && chargeCapacity > 0)
         {
             batteryCapacity = Math.Min(100, (decimal)chargeCapacity / (decimal)fullCapacity * 100);
