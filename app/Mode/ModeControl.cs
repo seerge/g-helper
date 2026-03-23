@@ -208,6 +208,11 @@ namespace GHelper.Mode
                     customFans = true;
                 }
 
+                int hystUp = AppConfig.GetMode("hysteresis_up");
+                int hystDown = AppConfig.GetMode("hysteresis_down");
+                if (hystUp > 0 && hystDown > 0)
+                    Program.acpi.SetFanHysteresis(hystUp, hystDown);
+
                 // force set PPTs for missbehaving bios on FX507/517 series
                 if ((AppConfig.IsPowerRequired() || xgmFan) && !AppConfig.IsMode("auto_apply_power"))
                 {

@@ -487,7 +487,7 @@ namespace GHelper
             tableHysteresis.ColumnCount = 3;
             tableHysteresis.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
             tableHysteresis.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
-            tableHysteresis.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 120F));
+            tableHysteresis.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 160F));
             tableHysteresis.Controls.Add(labelHysteresisUp, 0, 0);
             tableHysteresis.Controls.Add(trackHysteresisUp, 1, 0);
             tableHysteresis.Controls.Add(labelHysteresisUpValue, 2, 0);
@@ -559,24 +559,26 @@ namespace GHelper
             // labelHysteresisUpValue
             // 
             labelHysteresisUpValue.Anchor = AnchorStyles.Left;
-            labelHysteresisUpValue.AutoSize = true;
+            labelHysteresisUpValue.AutoSize = false;
             labelHysteresisUpValue.Location = new Point(670, 6);
             labelHysteresisUpValue.Margin = new Padding(4, 0, 4, 0);
             labelHysteresisUpValue.Name = "labelHysteresisUpValue";
-            labelHysteresisUpValue.Size = new Size(100, 32);
+            labelHysteresisUpValue.Size = new Size(152, 32);
             labelHysteresisUpValue.TabIndex = 4;
             labelHysteresisUpValue.Text = "Very Low";
+            labelHysteresisUpValue.TextAlign = ContentAlignment.MiddleRight;
             // 
             // labelHysteresisDownValue
             // 
             labelHysteresisDownValue.Anchor = AnchorStyles.Left;
-            labelHysteresisDownValue.AutoSize = true;
+            labelHysteresisDownValue.AutoSize = false;
             labelHysteresisDownValue.Location = new Point(670, 51);
             labelHysteresisDownValue.Margin = new Padding(4, 0, 4, 0);
             labelHysteresisDownValue.Name = "labelHysteresisDownValue";
-            labelHysteresisDownValue.Size = new Size(100, 32);
+            labelHysteresisDownValue.Size = new Size(152, 32);
             labelHysteresisDownValue.TabIndex = 5;
             labelHysteresisDownValue.Text = "Very Low";
+            labelHysteresisDownValue.TextAlign = ContentAlignment.MiddleRight;
             // 
             // panelApplyFans
             // 
