@@ -487,15 +487,17 @@ public static class HardwareControl
 
     private static PerformanceCounter? _cpuPowerCounter;
     private static bool _cpuPowerCounterFailed;
+    private static bool _cpuPowerInitStarted;
     private static readonly string[] _powerCounterInstances = { "Apu Power", "RAPL_Package0_PKG", "CPU Power", "Socket Power" };
 
-    public static float? GetCPUPower()
+    public static void InitCPUPowerAsync()
     {
-        if (_cpuPowerCounterFailed) return null;
+        if (_cpuPowerInitStarted) return;
+        _cpuPowerInitStarted = true;
 
-        try
+        Task.Run(() =>
         {
-            if (_cpuPowerCounter == null)
+            try
             {
                 var category = new PerformanceCounterCategory("Energy Meter");
                 var instances = category.GetInstanceNames();
@@ -504,20 +506,29 @@ public static class HardwareControl
                 {
                     if (instances.Contains(name, StringComparer.OrdinalIgnoreCase))
                     {
-                        _cpuPowerCounter = new PerformanceCounter("Energy Meter", "Power", name, true);
-                        _cpuPowerCounter.NextValue();
+                        var counter = new PerformanceCounter("Energy Meter", "Power", name, true);
+                        counter.NextValue();
+                        _cpuPowerCounter = counter;
                         Logger.WriteLine("CPU Power source: " + name);
-                        break;
+                        return;
                     }
                 }
 
-                if (_cpuPowerCounter == null)
-                {
-                    _cpuPowerCounterFailed = true;
-                    return null;
-                }
+                _cpuPowerCounterFailed = true;
             }
+            catch
+            {
+                _cpuPowerCounterFailed = true;
+            }
+        });
+    }
 
+    public static float? GetCPUPower()
+    {
+        if (_cpuPowerCounterFailed || _cpuPowerCounter == null) return null;
+
+        try
+        {
             float mW = _cpuPowerCounter.NextValue();
             if (mW > 0) return mW / 1000f;
         }
@@ -550,6 +561,8 @@ public static class HardwareControl
         gpuUse = -1;
         cpuPower = null;
         gpuPower = null;
+
+        InitCPUPowerAsync();
 
         if (Program.acpi is null) return;
 
