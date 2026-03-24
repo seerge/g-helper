@@ -17,6 +17,8 @@ public static class HardwareControl
     public static float? cpuTemp = -1;
     public static float? gpuTemp = -1;
 
+    public static float? cpuPower;
+
     public static decimal? batteryRate = 0;
     public static decimal batteryHealth = -1;
     public static decimal batteryCapacity = -1;
@@ -482,10 +484,55 @@ public static class HardwareControl
         return gpuTemp;
     }
 
+    private static PerformanceCounter? _cpuPowerCounter;
+    private static bool _cpuPowerCounterFailed;
+    private static readonly string[] _powerCounterInstances = { "Apu Power", "RAPL_Package0_PKG", "CPU Power", "Socket Power" };
+
+    public static float? GetCPUPower()
+    {
+        if (_cpuPowerCounterFailed) return null;
+
+        try
+        {
+            if (_cpuPowerCounter == null)
+            {
+                var category = new PerformanceCounterCategory("Energy Meter");
+                var instances = category.GetInstanceNames();
+
+                foreach (var name in _powerCounterInstances)
+                {
+                    if (instances.Contains(name, StringComparer.OrdinalIgnoreCase))
+                    {
+                        _cpuPowerCounter = new PerformanceCounter("Energy Meter", "Power", name, true);
+                        _cpuPowerCounter.NextValue();
+                        Logger.WriteLine("CPU Power source: " + name);
+                        break;
+                    }
+                }
+
+                if (_cpuPowerCounter == null)
+                {
+                    _cpuPowerCounterFailed = true;
+                    return null;
+                }
+            }
+
+            float mW = _cpuPowerCounter.NextValue();
+            if (mW > 0) return mW / 1000f;
+        }
+        catch
+        {
+            _cpuPowerCounterFailed = true;
+        }
+
+        return null;
+    }
+
 
     public static void ReadSensors(bool log = false)
     {
         gpuUse = -1;
+        cpuPower = null;
 
         if (Program.acpi is null) return;
 
@@ -496,7 +543,9 @@ public static class HardwareControl
         cpuTemp = GetCPUTemp();
         gpuTemp = GetGPUTemp();
 
-        if (log) Logger.WriteLine($"Temps: {cpuTemp} {gpuTemp} {cpuFan} {gpuFan} {midFan}");
+        cpuPower = GetCPUPower();
+
+        if (log) Logger.WriteLine($"Temps: {cpuTemp} {gpuTemp} {cpuFan} {gpuFan} {midFan} CPU Power: {cpuPower}W");
 
         ReadBatteryState();
     }

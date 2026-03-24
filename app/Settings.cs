@@ -1547,6 +1547,10 @@ namespace GHelper
             if (HardwareControl.cpuTemp > 0)
                 cpuTemp = ": " + Math.Round((decimal)HardwareControl.cpuTemp).ToString() + "°C";
 
+            string cpuPower = "";
+            if (HardwareControl.cpuPower > 0)
+                cpuPower = " " + Math.Round((decimal)HardwareControl.cpuPower, 1) + "W";
+
             if (HardwareControl.batteryCapacity > 0)
             {
                 charge = Properties.Strings.BatteryCharge + ": " + HardwareControl.batteryCharge;
@@ -1563,14 +1567,14 @@ namespace GHelper
                 gpuTemp = $": {HardwareControl.gpuTemp}°C";
             }
 
-            string trayTip = "CPU" + cpuTemp + " " + HardwareControl.cpuFan;
+            string trayTip = "CPU" + cpuTemp + cpuPower + " " + HardwareControl.cpuFan;
             if (gpuTemp.Length > 0) trayTip += "\nGPU" + gpuTemp + " " + HardwareControl.gpuFan;
             if (battery.Length > 0) trayTip += "\n" + battery;
 
             if (Program.settingsForm.IsHandleCreated)
                 Program.settingsForm.BeginInvoke(delegate
                 {
-                    labelCPUFan.Text = "CPU" + cpuTemp + " " + HardwareControl.cpuFan;
+                    labelCPUFan.Text = "CPU" + cpuTemp + cpuPower + " " + HardwareControl.cpuFan;
                     labelGPUFan.Text = "GPU" + gpuTemp + " " + HardwareControl.gpuFan;
                     if (HardwareControl.gpuFan is not null && AppConfig.NoGpu())
                     {
