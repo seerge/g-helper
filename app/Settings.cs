@@ -1,4 +1,4 @@
-﻿using GHelper.Ally;
+using GHelper.Ally;
 using GHelper.AnimeMatrix;
 using GHelper.AutoUpdate;
 using GHelper.Battery;
@@ -297,6 +297,249 @@ namespace GHelper
 
             panelPerformance.Focus();
             InitVisual();
+            InitKeystoneUI();
+        }
+
+        private Panel? panelKeystone;
+        private GHelper.UI.RComboBox? comboKeystoneInsert;
+        private GHelper.UI.RComboBox? comboKeystoneRemove;
+
+        private void InitKeystoneUI()
+        {
+            if (!GHelper.USB.Keystone.IsSupported) return;
+
+            panelKeystone = new Panel
+            {
+                Dock = DockStyle.Top,
+                AutoSize = true,
+                AutoSizeMode = AutoSizeMode.GrowAndShrink,
+                Padding = new Padding(20, 20, 0, 10)
+            };
+
+            // ── Section 1: Actions ────────────────────────────────────
+            var panelTitle = new Panel { Dock = DockStyle.Top, Height = 40 };
+            var labelTitle = new Label
+            {
+                Text = "Keystone NFC Action",
+                Font = new Font("Segoe UI", 9F, FontStyle.Bold),
+                Dock = DockStyle.Left,
+                AutoSize = true
+            };
+            panelTitle.Controls.Add(labelTitle);
+
+            var buttonConfigure = new GHelper.UI.RButton
+            {
+                Text = "Configure Actions ›",
+                Dock = DockStyle.Top,
+                BorderRadius = 2,
+                FlatStyle = FlatStyle.Flat,
+                Height = 44,
+                Secondary = false,
+                UseVisualStyleBackColor = false,
+                Activated = false
+            };
+            buttonConfigure.FlatAppearance.BorderSize = 0;
+            buttonConfigure.BackColor = GHelper.UI.RForm.buttonMain;
+            buttonConfigure.ForeColor = GHelper.UI.RForm.foreMain;
+            buttonConfigure.BorderColor = GHelper.UI.RForm.borderMain;
+            buttonConfigure.Click += (s, e) => new KeystoneSettings().ShowDialog();
+
+            // ── Section 2: Driver Toggle ──────────────────────────────
+            var panelDriverTitle = new Panel { Dock = DockStyle.Top, Height = 36, Padding = new Padding(0, 10, 0, 0) };
+            panelDriverTitle.Controls.Add(new Label
+            {
+                Text = "NFC Driver Control",
+                Font = new Font("Segoe UI", 9F, FontStyle.Bold),
+                Dock = DockStyle.Left,
+                AutoSize = true
+            });
+
+            var labelDriverStatus = new Label
+            {
+                Text = "Use these buttons if the Keystone fires ghost events.",
+                Dock = DockStyle.Top,
+                Height = 24,
+                ForeColor = SystemColors.GrayText,
+                Font = new Font("Segoe UI", 8F)
+            };
+
+            var tableDriver = new TableLayoutPanel
+            {
+                Dock = DockStyle.Top,
+                ColumnCount = 2,
+                RowCount = 1,
+                AutoSize = true,
+                Margin = new Padding(0, 4, 0, 0)
+            };
+            tableDriver.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+            tableDriver.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+
+            var buttonDisable = new GHelper.UI.RButton
+            {
+                Text = "⛔  Disable NFC Driver",
+                Dock = DockStyle.Fill,
+                Height = 40,
+                BorderRadius = 2,
+                FlatStyle = FlatStyle.Flat,
+                UseVisualStyleBackColor = false,
+                Margin = new Padding(0, 0, 4, 0)
+            };
+            buttonDisable.FlatAppearance.BorderSize = 0;
+            buttonDisable.BackColor = GHelper.UI.RForm.buttonMain;
+            buttonDisable.ForeColor = GHelper.UI.RForm.foreMain;
+            buttonDisable.BorderColor = GHelper.UI.RForm.borderMain;
+            buttonDisable.Click += (s, e) => KeystoneDriverControl(false, labelDriverStatus);
+
+            var buttonEnable = new GHelper.UI.RButton
+            {
+                Text = "✅  Enable NFC Driver",
+                Dock = DockStyle.Fill,
+                Height = 40,
+                BorderRadius = 2,
+                FlatStyle = FlatStyle.Flat,
+                UseVisualStyleBackColor = false,
+                Margin = new Padding(4, 0, 0, 0)
+            };
+            buttonEnable.FlatAppearance.BorderSize = 0;
+            buttonEnable.BackColor = GHelper.UI.RForm.buttonMain;
+            buttonEnable.ForeColor = GHelper.UI.RForm.foreMain;
+            buttonEnable.BorderColor = GHelper.UI.RForm.borderMain;
+            buttonEnable.Click += (s, e) => KeystoneDriverControl(true, labelDriverStatus);
+
+            tableDriver.Controls.Add(buttonDisable, 0, 0);
+            tableDriver.Controls.Add(buttonEnable,  1, 0);
+
+            // ── Section 3: Mute Sounds ────────────────────────────────
+            bool soundsMuted = AppConfig.Get("keystone_mute_sounds", 0) == 1;
+            var checkMute = new CheckBox
+            {
+                Text = "  Mute Windows proximity sounds (stops the NFC chime)",
+                Dock = DockStyle.Top,
+                Height = 30,
+                Checked = soundsMuted,
+                Font = new Font("Segoe UI", 8.5F)
+            };
+            checkMute.CheckedChanged += (s, e) =>
+            {
+                bool mute = checkMute.Checked;
+                AppConfig.Set("keystone_mute_sounds", mute ? 1 : 0);
+                SetKeystoneSoundsMuted(mute);
+            };
+
+            // Apply saved preference on startup
+            if (soundsMuted) SetKeystoneSoundsMuted(true);
+
+            // Stack controls (DockStyle.Top renders bottom-up, so add in reverse visual order)
+            panelKeystone.Controls.Add(checkMute);
+            panelKeystone.Controls.Add(tableDriver);
+            panelKeystone.Controls.Add(labelDriverStatus);
+            panelKeystone.Controls.Add(panelDriverTitle);
+            panelKeystone.Controls.Add(buttonConfigure);
+            panelKeystone.Controls.Add(panelTitle);
+
+            Controls.Add(panelKeystone);
+            Controls.SetChildIndex(panelKeystone, Controls.GetChildIndex(panelFooter) + 1);
+        }
+
+        private static void SetKeystoneSoundsMuted(bool mute)
+        {
+            // These registry keys control the Windows proximity system sounds
+            string[] soundKeys = {
+                @"AppEvents\Schemes\Apps\.Default\ProximityArrived\.Current",
+                @"AppEvents\Schemes\Apps\.Default\ProximityReachableApp\.Current"
+            };
+
+            foreach (var key in soundKeys)
+            {
+                try
+                {
+                    using var reg = Microsoft.Win32.Registry.CurrentUser.OpenSubKey(key, writable: true);
+                    if (reg != null)
+                    {
+                        if (mute)
+                        {
+                            // Back up original value if not already backed up
+                            var original = reg.GetValue("") as string;
+                            if (!string.IsNullOrEmpty(original))
+                                reg.SetValue("_backup", original);
+                            reg.SetValue("", ""); // Clear the sound
+                        }
+                        else
+                        {
+                            // Restore backed-up value
+                            var backup = reg.GetValue("_backup") as string;
+                            if (!string.IsNullOrEmpty(backup))
+                                reg.SetValue("", backup);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Logger.WriteLine($"Keystone: Failed to set sound registry key {key}: {ex.Message}");
+                }
+            }
+        }
+
+        private void KeystoneDriverControl(bool enable, Label statusLabel)
+        {
+            const string deviceId = @"ACPI\NXP3001\1";
+            string arg = enable ? "/enable-device" : "/disable-device";
+            string verb = enable ? "Enabling" : "Disabling";
+
+            statusLabel.Text = $"{verb} NFC driver…";
+            statusLabel.ForeColor = SystemColors.GrayText;
+
+            Task.Run(() =>
+            {
+                // Suspend event processing so no actions fire while driver is toggled
+                GHelper.USB.Keystone.Suspended = true;
+                try
+                {
+                    var psi = new System.Diagnostics.ProcessStartInfo
+                    {
+                        FileName  = "pnputil",
+                        Arguments = $"{arg} \"{deviceId}\"",
+                        Verb      = "runas",
+                        UseShellExecute = true,
+                        CreateNoWindow  = true,
+                        WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden
+                    };
+                    var proc = System.Diagnostics.Process.Start(psi);
+                    proc?.WaitForExit();
+                    int exit = proc?.ExitCode ?? -1;
+
+                    // Give the NXP driver 1 second to finish sending stale events, then resume
+                    System.Threading.Thread.Sleep(1000);
+
+                    Invoke(() =>
+                    {
+                        if (exit == 0)
+                        {
+                            statusLabel.Text      = enable ? "NFC driver enabled." : "NFC driver disabled. Ghost events silenced.";
+                            statusLabel.ForeColor = enable ? Color.Green : Color.OrangeRed;
+
+                            if (!enable) GHelper.USB.Keystone.Dispose();
+                            else         GHelper.USB.Keystone.Init();
+                        }
+                        else
+                        {
+                            statusLabel.Text      = $"pnputil exited with code {exit}. Try running G-Helper as administrator.";
+                            statusLabel.ForeColor = Color.OrangeRed;
+                        }
+                    });
+                }
+                catch (Exception ex)
+                {
+                    Invoke(() => {
+                        statusLabel.Text      = $"Error: {ex.Message}";
+                        statusLabel.ForeColor = Color.OrangeRed;
+                    });
+                }
+                finally
+                {
+                    GHelper.USB.Keystone.Suspended = false;
+                }
+            });
         }
 
         private void ButtonArmoury_Click(object? sender, EventArgs e)
