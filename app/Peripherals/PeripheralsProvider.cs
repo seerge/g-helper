@@ -244,6 +244,8 @@ namespace GHelper.Peripherals
         {
             try
             {
+                //foreach (var dev in DeviceList.Local.GetHidDevices(0x0B05, 0x1ACE)) Logger.WriteLine($"1ACE : {dev.DevicePath}");
+
                 var device = DeviceList.Local.GetHidDevices(0x0B05, 0x1ACE).FirstOrDefault(x => x.DevicePath.Contains("mi_02&col03"));
                 if (device is null) return;
 
