@@ -278,68 +278,31 @@ public class NvidiaGpuControl : IGpuControl
     private static bool _nvmlInitDone;
     private static bool _nvmlFailed;
     private static nint _nvmlDevice;
-    private static bool _gpuPowerLogged;
 
     public float? GetGpuPower()
     {
         if (!IsValid) return null;
 
-        if (!_nvmlFailed)
-        {
-            try
-            {
-                if (!_nvmlInitDone)
-                {
-                    _nvmlInitDone = true;
-                    if (NvmlInit() == 0 && NvmlDeviceGetHandleByIndex(0, out _nvmlDevice) == 0)
-                    {
-                        Logger.WriteLine("NVML initialized for GPU power");
-                    }
-                    else
-                    {
-                        _nvmlFailed = true;
-                        Logger.WriteLine("NVML init failed, trying NvAPI fallback");
-                    }
-                }
-
-                if (!_nvmlFailed && NvmlDeviceGetPowerUsage(_nvmlDevice, out uint mW) == 0)
-                    return mW / 1000f;
-            }
-            catch
-            {
-                _nvmlFailed = true;
-                Logger.WriteLine("NVML not available, trying NvAPI fallback");
-            }
-        }
-
         try
         {
-            var topology = GPUApi.ClientPowerTopologyGetStatus(_internalGpu!.Handle);
-            var entries = topology.PowerPolicyStatusEntries;
+            if (NvmlInit() != 0) return null;
 
-            if (!_gpuPowerLogged)
+            try
             {
-                _gpuPowerLogged = true;
-                foreach (var entry in entries)
-                    Logger.WriteLine($"GPU Power domain: {entry.Domain} PCM: {entry.PowerUsageInPCM}");
+                if (NvmlDeviceGetHandleByIndex(0, out nint device) != 0) return null;
+                if (NvmlDeviceGetPowerUsage(device, out uint mW) != 0) return null;
+                return mW / 1000f;
             }
-
-            foreach (var entry in entries)
+            finally
             {
-                if (entry.PowerUsageInPCM > 0)
-                    return entry.PowerUsageInPCM / 1000f;
+                NvmlShutdown();
             }
         }
-        catch (Exception ex)
+        catch
         {
-            if (!_gpuPowerLogged)
-            {
-                _gpuPowerLogged = true;
-                Logger.WriteLine("GPU NvAPI Power read failed: " + ex.Message);
-            }
+            Logger.WriteLine("NVML power read failed");
+            return null;
         }
-
-        return null;
     }
 
 }
