@@ -5,6 +5,7 @@ using NvAPIWrapper.Native.GPU;
 using NvAPIWrapper.Native.GPU.Structures;
 using NvAPIWrapper.Native.Interfaces.GPU;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 using static NvAPIWrapper.Native.GPU.Structures.PerformanceStates20InfoV1;
 
 namespace GHelper.Gpu.NVidia;
@@ -260,6 +261,85 @@ public class NvidiaGpuControl : IGpuControl
 
         return (int?)gpuUsage?.Percentage;
 
+    }
+
+    [DllImport("nvml.dll", EntryPoint = "nvmlInit_v2")]
+    private static extern int NvmlInit();
+
+    [DllImport("nvml.dll", EntryPoint = "nvmlDeviceGetHandleByIndex_v2")]
+    private static extern int NvmlDeviceGetHandleByIndex(uint index, out nint device);
+
+    [DllImport("nvml.dll", EntryPoint = "nvmlDeviceGetPowerUsage")]
+    private static extern int NvmlDeviceGetPowerUsage(nint device, out uint powerMilliWatts);
+
+    [DllImport("nvml.dll", EntryPoint = "nvmlShutdown")]
+    private static extern int NvmlShutdown();
+
+    private static bool _nvmlInitDone;
+    private static bool _nvmlFailed;
+    private static nint _nvmlDevice;
+    private static bool _gpuPowerLogged;
+
+    public float? GetGpuPower()
+    {
+        if (!IsValid) return null;
+
+        if (!_nvmlFailed)
+        {
+            try
+            {
+                if (!_nvmlInitDone)
+                {
+                    _nvmlInitDone = true;
+                    if (NvmlInit() == 0 && NvmlDeviceGetHandleByIndex(0, out _nvmlDevice) == 0)
+                    {
+                        Logger.WriteLine("NVML initialized for GPU power");
+                    }
+                    else
+                    {
+                        _nvmlFailed = true;
+                        Logger.WriteLine("NVML init failed, trying NvAPI fallback");
+                    }
+                }
+
+                if (!_nvmlFailed && NvmlDeviceGetPowerUsage(_nvmlDevice, out uint mW) == 0)
+                    return mW / 1000f;
+            }
+            catch
+            {
+                _nvmlFailed = true;
+                Logger.WriteLine("NVML not available, trying NvAPI fallback");
+            }
+        }
+
+        try
+        {
+            var topology = GPUApi.ClientPowerTopologyGetStatus(_internalGpu!.Handle);
+            var entries = topology.PowerPolicyStatusEntries;
+
+            if (!_gpuPowerLogged)
+            {
+                _gpuPowerLogged = true;
+                foreach (var entry in entries)
+                    Logger.WriteLine($"GPU Power domain: {entry.Domain} PCM: {entry.PowerUsageInPCM}");
+            }
+
+            foreach (var entry in entries)
+            {
+                if (entry.PowerUsageInPCM > 0)
+                    return entry.PowerUsageInPCM / 1000f;
+            }
+        }
+        catch (Exception ex)
+        {
+            if (!_gpuPowerLogged)
+            {
+                _gpuPowerLogged = true;
+                Logger.WriteLine("GPU NvAPI Power read failed: " + ex.Message);
+            }
+        }
+
+        return null;
     }
 
 }

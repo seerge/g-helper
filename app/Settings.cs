@@ -1567,18 +1567,22 @@ namespace GHelper
                 gpuTemp = $": {HardwareControl.gpuTemp}°C";
             }
 
+            string gpuPower = "";
+            if (HardwareControl.gpuPower > 0)
+                gpuPower = " " + Math.Round((decimal)HardwareControl.gpuPower, 1) + "W";
+
             string trayTip = "CPU" + cpuTemp + cpuPower + " " + HardwareControl.cpuFan;
-            if (gpuTemp.Length > 0) trayTip += "\nGPU" + gpuTemp + " " + HardwareControl.gpuFan;
+            if (gpuTemp.Length > 0) trayTip += "\nGPU" + gpuTemp + gpuPower + " " + HardwareControl.gpuFan;
             if (battery.Length > 0) trayTip += "\n" + battery;
 
             if (Program.settingsForm.IsHandleCreated)
                 Program.settingsForm.BeginInvoke(delegate
                 {
                     labelCPUFan.Text = "CPU" + cpuTemp + cpuPower + " " + HardwareControl.cpuFan;
-                    labelGPUFan.Text = "GPU" + gpuTemp + " " + HardwareControl.gpuFan;
+                    labelGPUFan.Text = "GPU" + gpuTemp + gpuPower + " " + HardwareControl.gpuFan;
                     if (HardwareControl.gpuFan is not null && AppConfig.NoGpu())
                     {
-                        labelMidFan.Text = "GPU" + gpuTemp + " " + HardwareControl.gpuFan;
+                        labelMidFan.Text = "GPU" + gpuTemp + gpuPower + " " + HardwareControl.gpuFan;
                     }
 
                     if (HardwareControl.midFan is not null)

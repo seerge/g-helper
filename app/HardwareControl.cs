@@ -18,6 +18,7 @@ public static class HardwareControl
     public static float? gpuTemp = -1;
 
     public static float? cpuPower;
+    public static float? gpuPower;
 
     public static decimal? batteryRate = 0;
     public static decimal batteryHealth = -1;
@@ -529,10 +530,26 @@ public static class HardwareControl
     }
 
 
+    public static float? GetGPUPower()
+    {
+        try
+        {
+            if (GpuControl is NvidiaGpuControl nvidiaGpu)
+                return nvidiaGpu.GetGpuPower();
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine("Failed reading GPU power: " + ex.Message);
+        }
+
+        return null;
+    }
+
     public static void ReadSensors(bool log = false)
     {
         gpuUse = -1;
         cpuPower = null;
+        gpuPower = null;
 
         if (Program.acpi is null) return;
 
@@ -544,8 +561,9 @@ public static class HardwareControl
         gpuTemp = GetGPUTemp();
 
         cpuPower = GetCPUPower();
+        gpuPower = GetGPUPower();
 
-        if (log) Logger.WriteLine($"Temps: {cpuTemp} {gpuTemp} {cpuFan} {gpuFan} {midFan} CPU Power: {cpuPower}W");
+        if (log) Logger.WriteLine($"Temps: {cpuTemp} {gpuTemp} {cpuFan} {gpuFan} {midFan} CPU Power: {cpuPower}W GPU Power: {gpuPower}W");
 
         ReadBatteryState();
     }
