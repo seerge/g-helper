@@ -91,14 +91,46 @@ public static class Keystone
         }
     }
 
-    private static void OnCardRemoved(SmartCardReader sender, CardRemovedEventArgs args)
+    private static async void OnCardRemoved(SmartCardReader sender, CardRemovedEventArgs args)
     {
         if (Suspended) return;
-        // Removal can only be spoofed if an arrival was first accepted.
-        // Since arrivals are now ATR-validated, any removal following one is real.
-        Logger.WriteLine("Keystone: Card removed");
-        lock (_lock) _latestState = false;
-        Task.Run(ProcessState);
+
+        // Guard 1: If we never had a validated insertion, ignore this removal entirely.
+        // This catches ghost removals that fire without any real card ever being present.
+        lock (_lock)
+        {
+            if (!_isInserted) 
+            {
+                Logger.WriteLine("Keystone: CardRemoved ignored (no prior validated insert)");
+                return;
+            }
+        }
+
+        try
+        {
+            // Guard 2: Wait briefly for the driver to stabilize, then re-query
+            // the reader's actual hardware status. If the card is still physically
+            // seated, the reader will report it — meaning this was a ghost removal.
+            await Task.Delay(400);
+
+            var cards = await sender.FindAllCardsAsync();
+            if (cards.Count > 0)
+            {
+                // Card is still physically present — this was a ghost removal. Ignore.
+                Logger.WriteLine("Keystone: CardRemoved ghost detected (card still present after re-query)");
+                return;
+            }
+
+            Logger.WriteLine("Keystone: Card removal confirmed (reader reports no cards)");
+            lock (_lock) _latestState = false;
+            Task.Run(ProcessState);
+        }
+        catch (Exception ex)
+        {
+            // If the re-query itself fails, the reader is in an unstable state.
+            // Err on the side of caution: do NOT fire the remove action.
+            Logger.WriteLine($"Keystone: CardRemoved re-query failed (ignored): {ex.Message}");
+        }
     }
 
     private static async Task ProcessState()
