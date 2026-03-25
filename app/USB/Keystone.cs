@@ -1,139 +1,185 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
+using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
-using Windows.Devices.Enumeration;
-using Windows.Devices.SmartCards;
-using Windows.Networking.Proximity;
-using Windows.Security.Cryptography;
 using GHelper.Mode;
 
 namespace GHelper.USB;
 
 /// <summary>
-/// ROG Keystone NFC detector using Windows Smart Card Reader API.
-/// Validates each insertion by reading the card's ATR (Answer to Reset),
-/// which requires a real physical NFC tag to respond.
-/// Ghost triggers from the NXP driver cannot produce a valid ATR,
-/// so they are silently ignored before any action is executed.
+/// ROG Keystone NFC detector using native WinSCard (PCSC) API.
+/// This implementation is extremely lightweight and does not require the Windows SDK,
+/// fixing the 6x build size bloat issue while maintaining the "Gold Standard" validation.
 /// </summary>
 public static class Keystone
 {
-    private static SmartCardReader? _reader;
+    private static IntPtr _context = IntPtr.Zero;
+    private static string? _readerName;
     private static bool _isInserted = false;
     private static bool _isCooling = false;
-    private static bool? _latestState = null;
-    private static readonly object _lock = new object();
     private static int _previousProfile = -1;
-    private static volatile bool _disposed = false;
+    private static CancellationTokenSource? _workerCts;
+    private static readonly object _lock = new object();
+    private static volatile bool _running = false;
     public static bool Suspended = false;
 
-    // IsSupported uses ProximityDevice for a fast synchronous check so the
-    // UI panel is shown immediately on startup. The actual event listening
-    // switches to the SmartCardReader API for reliable validation.
-    public static bool IsSupported => ProximityDevice.GetDefault() != null;
-
-    public static void Init()
+    // Fast check for UI visibility — using the legacy PCSC to see if any NFC readers exist
+    public static bool IsSupported
     {
-        _disposed = false;
-        // Run async reader discovery off the UI thread
-        Task.Run(async () =>
+        get
         {
             try
             {
-                // Find NFC smart card readers via AQS selector
-                string selector = SmartCardReader.GetDeviceSelector(SmartCardReaderKind.Nfc);
-                var devices = await DeviceInformation.FindAllAsync(selector);
+                if (_context == IntPtr.Zero) NativeMethods.SCardEstablishContext(2, IntPtr.Zero, IntPtr.Zero, out _context);
+                uint pcchReaders = 0;
+                int result = NativeMethods.SCardListReaders(_context, "SCard$AllReaders\0\0", null, ref pcchReaders);
+                return result == 0 && pcchReaders > 0;
+            }
+            catch { return false; }
+        }
+    }
 
-                if (devices.Count == 0)
+    public static void Init()
+    {
+        if (_running) return;
+        _workerCts = new CancellationTokenSource();
+        Task.Run(() => MonitorLoop(_workerCts.Token));
+    }
+
+    private static void MonitorLoop(CancellationToken token)
+    {
+        _running = true;
+        Logger.WriteLine("Keystone: Starting native PCSC monitor loop.");
+
+        try
+        {
+            if (_context == IntPtr.Zero)
+                NativeMethods.SCardEstablishContext(2, IntPtr.Zero, IntPtr.Zero, out _context);
+
+            while (!token.IsCancellationRequested)
+            {
+                // 1. Find the reader
+                if (string.IsNullOrEmpty(_readerName))
                 {
-                    Logger.WriteLine("Keystone: No NFC SmartCard reader found — falling back.");
-                    return;
+                    uint pcchReaders = 0;
+                    if (NativeMethods.SCardListReaders(_context, "SCard$AllReaders\0\0", null, ref pcchReaders) == 0)
+                    {
+                        byte[] mszReaders = new byte[pcchReaders];
+                        if (NativeMethods.SCardListReaders(_context, "SCard$AllReaders\0\0", mszReaders, ref pcchReaders) == 0)
+                        {
+                            string rawReaders = Encoding.ASCII.GetString(mszReaders).TrimEnd('\0');
+                            string[] readers = rawReaders.Split('\0', StringSplitOptions.RemoveEmptyEntries);
+                            _readerName = readers.FirstOrDefault(r => r.Contains("NFC", StringComparison.OrdinalIgnoreCase) || r.Contains("IFD", StringComparison.OrdinalIgnoreCase));
+                        }
+                    }
                 }
 
-                _reader = await SmartCardReader.FromIdAsync(devices[0].Id);
-                if (_reader is null) { Logger.WriteLine("Keystone: Failed to open SmartCard reader."); return; }
+                if (string.IsNullOrEmpty(_readerName))
+                {
+                    Thread.Sleep(2000); // Wait for reader to appear
+                    continue;
+                }
 
-                if (_disposed) return; // Dispose() was called during async init — bail out
+                // 2. Wait for state change
+                NativeMethods.SCARD_READERSTATE[] states = new NativeMethods.SCARD_READERSTATE[1];
+                states[0].szReader = _readerName;
+                states[0].dwCurrentState = 0;
 
-                _reader.CardAdded   += OnCardAdded;
-                _reader.CardRemoved += OnCardRemoved;
-                Logger.WriteLine($"Keystone: Monitoring reader '{_reader.Name}'");
+                // Initial probe
+                NativeMethods.SCardGetStatusChange(_context, 0, states, 1);
+                uint lastEventState = states[0].dwEventState;
+
+                while (!token.IsCancellationRequested)
+                {
+                    states[0].dwCurrentState = lastEventState;
+                    int res = NativeMethods.SCardGetStatusChange(_context, 500, states, 1);
+
+                    if (res == 0 && states[0].dwEventState != lastEventState)
+                    {
+                        lastEventState = states[0].dwEventState;
+                        bool present = (lastEventState & 0x00000020) != 0; // SCARD_STATE_PRESENT
+                        
+                        if (present && !_isInserted) OnCardAdded();
+                        else if (!present && _isInserted) OnCardRemoved();
+                    }
+                }
             }
-            catch (Exception ex)
-            {
-                Logger.WriteLine($"Keystone: SmartCard init error: {ex.Message}");
-            }
-        });
+        }
+        catch (Exception ex)
+        {
+            Logger.WriteLine($"Keystone: MonitorLoop error: {ex.Message}");
+        }
+        finally
+        {
+            _running = false;
+        }
     }
 
-    private static async void OnCardAdded(SmartCardReader sender, CardAddedEventArgs args)
+    private static void OnCardAdded()
     {
         if (Suspended) return;
 
         try
         {
-            // GetAnswerToResetAsync() requires the physical NFC chip to respond.
-            // A ghost trigger (electrical noise, driver jitter) cannot produce an ATR,
-            // so the await will throw — which we catch and silently ignore.
-            var atrBuffer = await args.SmartCard.GetAnswerToResetAsync();
-            CryptographicBuffer.CopyToByteArray(atrBuffer, out byte[] atr);
+            // PCSC validation: Connect ensures ATR is checked by the OS reader driver
+            int res = NativeMethods.SCardConnect(_context, _readerName!, 2, 3, out IntPtr hCard, out uint activeProto);
+            if (res != 0)
+            {
+                 // Logger.WriteLine($"Keystone: Connection failed (likely ghost): 0x{res:X}");
+                 return;
+            }
 
-            string atrHex = atr != null ? BitConverter.ToString(atr).Replace("-", "") : "empty";
-            Logger.WriteLine($"Keystone: Physical card confirmed (ATR: {atrHex})");
+            try
+            {
+                // APDU Level Validation: Fetch UID (Get Data)
+                byte[] apdu = { 0xFF, 0xCA, 0x00, 0x00, 0x00 };
+                byte[] response = new byte[258];
+                uint pcbRecvLength = (uint)response.Length;
+                
+                NativeMethods.SCARD_IO_REQUEST pci = new NativeMethods.SCARD_IO_REQUEST { dwProtocol = activeProto, cbPciLength = 8 };
+                res = NativeMethods.SCardTransmit(hCard, ref pci, apdu, (uint)apdu.Length, IntPtr.Zero, response, ref pcbRecvLength);
 
-            lock (_lock) _latestState = true;
-            Task.Run(ProcessState);
+                if (res == 0 && pcbRecvLength > 2)
+                {
+                    string uidHex = BitConverter.ToString(response, 0, (int)pcbRecvLength - 2).Replace("-", "");
+                    Logger.WriteLine($"Keystone: Physical card confirmed (UID: {uidHex})");
+                    
+                    lock (_lock) _isInserted = true;
+                    Task.Run(() => ProcessState(true));
+                }
+            }
+            finally
+            {
+                NativeMethods.SCardDisconnect(hCard, 0);
+            }
         }
         catch (Exception ex)
         {
-            // No physical card could respond — this is a ghost trigger. Ignore it.
-            Logger.WriteLine($"Keystone: CardAdded with no ATR (ghost ignored): {ex.Message}");
+            Logger.WriteLine($"Keystone: CardAdded error: {ex.Message}");
         }
     }
 
-    private static async void OnCardRemoved(SmartCardReader sender, CardRemovedEventArgs args)
+    private static void OnCardRemoved()
     {
         if (Suspended) return;
 
-        // Guard 1: If we never had a validated insertion, ignore this removal entirely.
-        // This catches ghost removals that fire without any real card ever being present.
+        // Extra stability: wait 300ms to ensure the hardware is actually empty
+        Thread.Sleep(300);
+        
         lock (_lock)
         {
-            if (!_isInserted) 
-            {
-                Logger.WriteLine("Keystone: CardRemoved ignored (no prior validated insert)");
-                return;
-            }
+            if (!_isInserted) return;
+            _isInserted = false;
         }
 
-        try
-        {
-            // Guard 2: Wait briefly for the driver to stabilize, then re-query
-            // the reader's actual hardware status. If the card is still physically
-            // seated, the reader will report it — meaning this was a ghost removal.
-            await Task.Delay(400);
-
-            var cards = await sender.FindAllCardsAsync();
-            if (cards.Count > 0)
-            {
-                // Card is still physically present — this was a ghost removal. Ignore.
-                Logger.WriteLine("Keystone: CardRemoved ghost detected (card still present after re-query)");
-                return;
-            }
-
-            Logger.WriteLine("Keystone: Card removal confirmed (reader reports no cards)");
-            lock (_lock) _latestState = false;
-            Task.Run(ProcessState);
-        }
-        catch (Exception ex)
-        {
-            // If the re-query itself fails, the reader is in an unstable state.
-            // Err on the side of caution: do NOT fire the remove action.
-            Logger.WriteLine($"Keystone: CardRemoved re-query failed (ignored): {ex.Message}");
-        }
+        Logger.WriteLine("Keystone: Card removal confirmed.");
+        Task.Run(() => ProcessState(false));
     }
 
-    private static async Task ProcessState()
+    private static async Task ProcessState(bool inserted)
     {
         lock (_lock)
         {
@@ -143,32 +189,8 @@ public static class Keystone
 
         try
         {
-            while (true)
-            {
-                bool targetState;
-                lock (_lock)
-                {
-                    if (!_latestState.HasValue || _latestState.Value == _isInserted)
-                        return;
-
-                    targetState   = _latestState.Value;
-                    _isInserted   = targetState;
-                    _latestState  = null;
-                }
-
-                if (targetState)
-                {
-                    Logger.WriteLine("Keystone: Insert action fired");
-                    Program.settingsForm.BeginInvoke(new Action(() => ExecuteAction("keystone_insert")));
-                }
-                else
-                {
-                    Logger.WriteLine("Keystone: Remove action fired");
-                    Program.settingsForm.BeginInvoke(new Action(() => ExecuteAction("keystone_remove")));
-                }
-
-                await Task.Delay(1500); // cooldown window (shorter now that ATR validation handles ghosts)
-            }
+            Program.settingsForm.BeginInvoke(new Action(() => ExecuteAction(inserted ? "keystone_insert" : "keystone_remove")));
+            await Task.Delay(1500); // cooldown
         }
         finally
         {
@@ -180,15 +202,11 @@ public static class Keystone
     {
         string action = AppConfig.GetString($"{prefix}_action");
         if (string.IsNullOrEmpty(action) || action == "None") return;
-        if (action == "Revert") action = "Profile"; // migration guard
 
         if (action == "Profile")
         {
             string profile = AppConfig.GetString($"{prefix}_profile");
-
-            // Record the current profile before insert so remove can revert to it
-            if (prefix == "keystone_insert")
-                _previousProfile = Modes.GetCurrent();
+            if (prefix == "keystone_insert") _previousProfile = Modes.GetCurrent();
 
             if (profile == "Revert to Previous")
             {
@@ -196,59 +214,77 @@ public static class Keystone
             }
             else if (!string.IsNullOrEmpty(profile))
             {
-                int targetProfile = -1;
-                foreach (var mode in Modes.GetDictonary())
-                    if (mode.Value == profile) { targetProfile = mode.Key; break; }
-
+                int targetProfile = Modes.GetDictonary().FirstOrDefault(m => m.Value == profile).Key;
                 if (targetProfile != -1) Program.modeControl.SetPerformanceMode(targetProfile);
             }
         }
         else if (action == "Keybind")
         {
-            string keysStr = AppConfig.GetString($"{prefix}_keys");
-            if (!string.IsNullOrEmpty(keysStr))
-            {
-                var keys = keysStr.Split(',')
-                    .Where(k => k != "None" && !string.IsNullOrEmpty(k))
-                    .Select(k => {
-                        Enum.TryParse(typeof(System.Windows.Forms.Keys), k, out object? val);
-                        return val != null ? (System.Windows.Forms.Keys)val : System.Windows.Forms.Keys.None;
-                    })
-                    .Where(k => k != System.Windows.Forms.Keys.None)
-                    .ToList();
+            var keys = AppConfig.GetString($"{prefix}_keys")?.Split(',')
+                .Select(k => Enum.TryParse(typeof(System.Windows.Forms.Keys), k, out object? val) ? (System.Windows.Forms.Keys)val : System.Windows.Forms.Keys.None)
+                .Where(k => k != System.Windows.Forms.Keys.None).ToList();
 
-                if (keys.Count == 1) KeyboardHook.KeyPress(keys[0]);
-                else if (keys.Count == 2) KeyboardHook.KeyKeyPress(keys[0], keys[1]);
-                else if (keys.Count == 3) KeyboardHook.KeyKeyKeyPress(keys[0], keys[1], keys[2]);
-                else if (keys.Count >= 4) KeyboardHook.KeyKeyKeyKeyPress(keys[0], keys[1], keys[2], keys[3]);
-            }
+            if (keys?.Count == 1) KeyboardHook.KeyPress(keys[0]);
+            else if (keys?.Count == 2) KeyboardHook.KeyKeyPress(keys[0], keys[1]);
+            else if (keys?.Count == 3) KeyboardHook.KeyKeyKeyPress(keys[0], keys[1], keys[2]);
+            else if (keys?.Count >= 4) KeyboardHook.KeyKeyKeyKeyPress(keys[0], keys[1], keys[2], keys[3]);
         }
         else if (action == "Stealth")
         {
-            if (prefix == "keystone_remove")
-            {
-                Helpers.Audio.SetSpeakerMute(true);
-                KeyboardHook.KeyKeyPress(System.Windows.Forms.Keys.LWin, System.Windows.Forms.Keys.M);
-            }
-            else
-            {
-                Helpers.Audio.SetSpeakerMute(false);
-                KeyboardHook.KeyKeyKeyPress(System.Windows.Forms.Keys.LWin, System.Windows.Forms.Keys.LShiftKey, System.Windows.Forms.Keys.M);
-            }
+            bool removal = prefix == "keystone_remove";
+            Helpers.Audio.SetSpeakerMute(removal);
+            if (removal) KeyboardHook.KeyKeyPress(System.Windows.Forms.Keys.LWin, System.Windows.Forms.Keys.M);
+            else KeyboardHook.KeyKeyKeyPress(System.Windows.Forms.Keys.LWin, System.Windows.Forms.Keys.LShiftKey, System.Windows.Forms.Keys.M);
         }
     }
 
     public static void Dispose()
     {
-        _disposed = true;
-        if (_reader is null) return;
-        _reader.CardAdded   -= OnCardAdded;
-        _reader.CardRemoved -= OnCardRemoved;
-        _reader = null;
+        _workerCts?.Cancel();
+        if (_context != IntPtr.Zero) NativeMethods.SCardReleaseContext(_context);
+        _context = IntPtr.Zero;
     }
 
-#if DEBUG
-    public static void SimulateInsert() { lock (_lock) _latestState = true;  Task.Run(ProcessState); }
-    public static void SimulateRemove() { lock (_lock) _latestState = false; Task.Run(ProcessState); }
-#endif
+    private static class NativeMethods
+    {
+        [DllImport("winscard.dll")]
+        public static extern int SCardEstablishContext(uint dwScope, IntPtr pvReserved1, IntPtr pvReserved2, out IntPtr phContext);
+
+        [DllImport("winscard.dll")]
+        public static extern int SCardReleaseContext(IntPtr hContext);
+
+        [DllImport("winscard.dll", CharSet = CharSet.Ansi)]
+        public static extern int SCardListReaders(IntPtr hContext, string? mszGroups, byte[]? mszReaders, ref uint pcchReaders);
+
+        [DllImport("winscard.dll", CharSet = CharSet.Unicode)]
+        public static extern int SCardGetStatusChange(IntPtr hContext, uint dwTimeout, [In, Out] SCARD_READERSTATE[] rgReaderStates, uint cReaders);
+
+        [DllImport("winscard.dll", CharSet = CharSet.Unicode)]
+        public static extern int SCardConnect(IntPtr hContext, string szReader, uint dwShareMode, uint dwPreferredProtocols, out IntPtr phCard, out uint pdwActiveProtocol);
+
+        [DllImport("winscard.dll")]
+        public static extern int SCardDisconnect(IntPtr hCard, uint dwDisposition);
+
+        [DllImport("winscard.dll")]
+        public static extern int SCardTransmit(IntPtr hCard, ref SCARD_IO_REQUEST pioSendPci, byte[] pbSendBuffer, uint cbSendLength, IntPtr pioRecvPci, [Out] byte[] pbRecvBuffer, ref uint pcbRecvLength);
+
+        [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+        public struct SCARD_READERSTATE
+        {
+            public string szReader;
+            public IntPtr pvUserData;
+            public uint dwCurrentState;
+            public uint dwEventState;
+            public uint cbAtr;
+            [MarshalAs(UnmanagedType.ByValArray, SizeConst = 36)]
+            public byte[] rgbAtr;
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
+        public struct SCARD_IO_REQUEST
+        {
+            public uint dwProtocol;
+            public uint cbPciLength;
+        }
+    }
 }

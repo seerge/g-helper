@@ -497,11 +497,11 @@ namespace GHelper
                 {
                     var psi = new System.Diagnostics.ProcessStartInfo
                     {
-                        FileName  = "pnputil",
-                        Arguments = $"{arg} \"{deviceId}\"",
+                        FileName  = "cmd.exe",
+                        Arguments = $"/c pnputil {arg} \"{deviceId}\"",
                         Verb      = "runas",
                         UseShellExecute = true,
-                        CreateNoWindow  = true,
+                        // CreateNoWindow = true, <-- Removed because it frequently hides the UAC prompt on UseShellExecute
                         WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden
                     };
                     var proc = System.Diagnostics.Process.Start(psi);
