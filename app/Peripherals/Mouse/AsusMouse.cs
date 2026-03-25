@@ -1418,6 +1418,7 @@ namespace GHelper.Peripherals.Mouse
 
             for (int i = 0; i < DPIProfileCount(); ++i)
             {
+                DpiSettings[i] ??= new AsusMouseDPI();
                 Logger.WriteLine(GetDisplayName() + ": Read DPI Setting " + (i + 1) + ": " + DpiSettings[i].ToString());
             }
 
