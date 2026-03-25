@@ -282,6 +282,7 @@ public class NvidiaGpuControl : IGpuControl
     public float? GetGpuPower()
     {
         if (!IsValid) return null;
+        if (GetCurrentTemperature() is null) return null;
 
         try
         {
