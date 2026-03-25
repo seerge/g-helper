@@ -97,6 +97,15 @@ public static class Keystone
                     states[0].dwCurrentState = lastEventState;
                     int res = NativeMethods.SCardGetStatusChange(_context, 500, states, 1);
 
+                    // 0x8010000A is SCARD_E_TIMEOUT
+                    if (res != 0 && res != unchecked((int)0x8010000A))
+                    {
+                        // Reader was likely disconnected or driver crashed. Break out to rediscover.
+                        Logger.WriteLine($"Keystone: SCardGetStatusChange error: {res:X}. Reader lost, reconnecting...");
+                        _readerName = null;
+                        break;
+                    }
+
                     if (res == 0 && states[0].dwEventState != lastEventState)
                     {
                         lastEventState = states[0].dwEventState;
