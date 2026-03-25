@@ -244,46 +244,62 @@ namespace GHelper.Peripherals
         {
             try
             {
-                //foreach (var dev in DeviceList.Local.GetHidDevices(0x0B05, 0x1ACE)) Logger.WriteLine($"1ACE : {dev.DevicePath}");
 
+                var omni = DeviceList.Local.GetHidDevices(0x0B05, 0x1ACE).FirstOrDefault(x => x.DevicePath.Contains("mi_02&col01"));
                 var device = DeviceList.Local.GetHidDevices(0x0B05, 0x1ACE).FirstOrDefault(x => x.DevicePath.Contains("mi_02&col03"));
-                if (device is null) return;
-
-                var boosterDevice = DeviceList.Local.GetHidDevices(0x0B05, 0x1ACE).FirstOrDefault(x => x.DevicePath.Contains("mi_04"));
-                var booster = boosterDevice is not null;
-                if (booster) Logger.WriteLine($"Booster Device: {boosterDevice.DevicePath}");
+                if (omni is null || device is null) return;
 
                 var config = new OpenConfiguration();
                 config.SetOption(OpenOption.Interruptible, true);
                 config.SetOption(OpenOption.Exclusive, false);
                 config.SetOption(OpenOption.Priority, 10);
 
+                AsusMouse? omniMouse;
+
+                using (var stream = omni.Open(config))
+                {
+                    stream.ReadTimeout = 2000;
+                    stream.WriteTimeout = 2000;
+
+                    var response = new byte[64];
+                    stream.Write([0x01, 0xA0, 0x00, 0x00]);
+                    stream.Read(response);
+                    
+                    int mousePid = response[5] | (response[6] << 8);
+                    Logger.WriteLine($"Omni Mouse PID: {mousePid:X4} = {BitConverter.ToString(response.Skip(5).Take(12).ToArray())}");
+
+                    omniMouse = mousePid switch
+                    {
+                        0x1B65 => new HarpeAceMiniOmni(), 
+                        _ => null
+                    };
+
+                }
+
                 using (var stream = device.Open(config))
                 {
+                    stream.ReadTimeout = 2000;
+                    stream.WriteTimeout = 2000;
+
                     var response = new byte[64];
-                    stream.Write(new byte[] { 0x03, 0x12, 0x12, 0x01 });
+
+                    stream.Write([0x03, 0x7D, 0x20, 0x02]);
                     stream.Read(response);
-                    Logger.WriteLine("Omni Mouse ID1: " + Encoding.ASCII.GetString(response.Skip(5).Take(12).ToArray()));
+                    Logger.WriteLine("Booster: " + BitConverter.ToString(response.Skip(5).Take(12).ToArray()));
+                    bool booster = response[5] == 0x01;
 
-                    stream.Write(new byte[] { 0x03, 0x12, 0x12, 0x02 });
+                    stream.Write([0x03, 0x12, 0x12, 0x02]);
                     stream.Read(response);
 
-                    Logger.WriteLine("Omni Mouse ID: " + BitConverter.ToString(response));
-                    var signatureBytes = response.Skip(5).Take(12).ToArray();
-                    string signatureStr = Encoding.ASCII.GetString(signatureBytes);
+                    string signatureStr = Encoding.ASCII.GetString(response.Skip(5).Take(12).ToArray());
+                    Logger.WriteLine($"Omni Serial: {signatureStr}");
 
-                    Logger.WriteLine("Signature: " + BitConverter.ToString(signatureBytes) + " = " + signatureStr);
-
-                    AsusMouse omniMouse = signatureStr switch
+                    if (omniMouse is null) omniMouse = signatureStr switch
                     {
-                        var s when s.StartsWith("B241226660") => new HarpeAceMiniOmni(),                // B24122666061
                         var s when s.StartsWith("B23") => new HarpeAceAimLabEditionOmni(),              // B23072800062
                         var s when s.StartsWith("B241") => new HarpeAceAimLabEditionOmni(),             // B24122666771
                         var s when s.StartsWith("B2501") => new HarpeAceAimLabEditionOmni(),            // B25010476524
                         var s when s.StartsWith("B2504") => new HarpeAceAimLabEditionOmni(),            // B25043063148
-                        var s when s.StartsWith("S7") => new HarpeAceMiniOmni(),                        // S7MPKR053847
-                        var s when s.StartsWith("B24") => new HarpeAceMiniOmni(),                       // B24082550833
-                        var s when s.StartsWith("B25") => new HarpeAceMiniOmni(),                       // B25030817186
                         var s when s.StartsWith("R1") => new KerisWirelssAimpointOmni(),                // R13121351391
                         var s when s.StartsWith("F24") => new KerisWirelssAimpointOmni(),               // F24B21DD03F4
                         var s when s.StartsWith("FB") => new KerisWirelssAimpointOmni(),                // FBA0CC1D6F9C
