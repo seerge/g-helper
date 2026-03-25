@@ -495,14 +495,15 @@ namespace GHelper
                 GHelper.USB.Keystone.Suspended = true;
                 try
                 {
+                    // Use pnputil.exe directly without WindowStyle.Hidden. 
+                    // Attempting to hide the command window often causes Windows to 
+                    // silence the UAC elevation prompt, leading to silent failures.
                     var psi = new System.Diagnostics.ProcessStartInfo
                     {
-                        FileName  = "cmd.exe",
-                        Arguments = $"/c pnputil {arg} \"{deviceId}\"",
+                        FileName  = "pnputil.exe",
+                        Arguments = $"{arg} \"{deviceId}\"",
                         Verb      = "runas",
-                        UseShellExecute = true,
-                        // CreateNoWindow = true, <-- Removed because it frequently hides the UAC prompt on UseShellExecute
-                        WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden
+                        UseShellExecute = true
                     };
                     var proc = System.Diagnostics.Process.Start(psi);
                     proc?.WaitForExit();
