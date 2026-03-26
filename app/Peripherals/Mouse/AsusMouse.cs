@@ -552,7 +552,7 @@ namespace GHelper.Peripherals.Mouse
         }
 
         [MethodImpl(MethodImplOptions.Synchronized)]
-        protected virtual byte[]? WriteForResponse(byte[] packet)
+        protected virtual byte[]? WriteForResponse(byte[] packet, int matchLength = 3)
         {
             Array.Resize(ref packet, USBPacketSize());
 
@@ -598,8 +598,9 @@ namespace GHelper.Peripherals.Mouse
                         return null;
                     }
 
-                    //Not the response we were looking for, continue reading
-                    while (response[0] != packet[0] || response[1] != packet[1] || response[2] != packet[2])
+                    // ↓ only change from original: added matchLength >= 4 guard
+                    while (response[0] != packet[0] || response[1] != packet[1] || response[2] != packet[2]
+                           || (matchLength >= 4 && response[3] != packet[3]))
                     {
                         if (IsPacketLoggerEnabled())
                             Logger.WriteLine(GetDisplayName() + ": Read wrong packet left in buffer: " + ByteArrayToString(response) + ". Retrying...");
@@ -636,6 +637,7 @@ namespace GHelper.Peripherals.Mouse
             }
             return null;
         }
+
         public abstract string GetDisplayName();
 
         public PeripheralType DeviceType()
@@ -828,7 +830,7 @@ namespace GHelper.Peripherals.Mouse
             }
             Logger.WriteLine(GetDisplayName() + ": " + BitConverter.ToString(packet));
             Logger.WriteLine(GetDisplayName() + ": Failed to decode active profile");
-            return -1;
+            return 0;
         }
 
         protected virtual int ParseDPIProfile(byte[] packet)
@@ -859,19 +861,10 @@ namespace GHelper.Peripherals.Mouse
                 return;
             }
 
-            byte[]? response = WriteForResponse(GetReadProfilePacket());
+            byte[]? response = WriteForResponse(GetReadProfilePacket(), matchLength: 4);
             if (response is null) return;
 
             Profile = ParseProfile(response);
-            if (Profile < 0)
-            {
-                response = WriteForResponse(GetReadProfilePacket());
-                if (response is null) return;
-                Profile = ParseProfile(response);
-            }
-
-            if (Profile < 0) Profile = 0;
-
             if (DPIProfileCount() > 1)
             {
                 DpiProfile = ParseDPIProfile(response);
