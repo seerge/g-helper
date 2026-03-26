@@ -828,7 +828,7 @@ namespace GHelper.Peripherals.Mouse
             }
             Logger.WriteLine(GetDisplayName() + ": " + BitConverter.ToString(packet));
             Logger.WriteLine(GetDisplayName() + ": Failed to decode active profile");
-            return 0;
+            return -1;
         }
 
         protected virtual int ParseDPIProfile(byte[] packet)
@@ -863,6 +863,15 @@ namespace GHelper.Peripherals.Mouse
             if (response is null) return;
 
             Profile = ParseProfile(response);
+            if (Profile < 0)
+            {
+                response = WriteForResponse(GetReadProfilePacket());
+                if (response is null) return;
+                Profile = ParseProfile(response);
+            }
+
+            if (Profile < 0) Profile = 0;
+
             if (DPIProfileCount() > 1)
             {
                 DpiProfile = ParseDPIProfile(response);
@@ -999,9 +1008,9 @@ namespace GHelper.Peripherals.Mouse
         {
             PollingRate result;
 
+            Logger.WriteLine(GetDisplayName() + ": Raw Polling Rate " + BitConverter.ToString(packet));
             if (packet[1] == 0x12 && packet[2] == 0x04 && packet[3] == 0x00)
             {
-                Logger.WriteLine(GetDisplayName() + ": Raw Polling Rate " + BitConverter.ToString(packet));
                 byte raw = packet[13];
                 byte highNibble = (byte)(raw >> 4);
                 if (highNibble > 0)
@@ -2120,8 +2129,6 @@ namespace GHelper.Peripherals.Mouse
             { 0xF0, "Mouse Left"      },
             { 0xF1, "Mouse Right"     },
             { 0xF2, "Mouse Middle"    },
-            { 0xF3, "Mouse Forward"   }, 
-            { 0xF4, "Mouse Back"      }, 
             { 0xE4, "Mouse Back"      }, 
             { 0xE5, "Mouse Forward"   }, 
             { 0xE6, "DPI"             }, 
