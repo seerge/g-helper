@@ -254,7 +254,7 @@ namespace GHelper.Peripherals
                 config.SetOption(OpenOption.Exclusive, false);
                 config.SetOption(OpenOption.Priority, 10);
 
-                AsusMouse? omniMouse;
+                AsusMouse omniMouse;
 
                 using (var stream = omni.Open(config))
                 {
@@ -275,7 +275,11 @@ namespace GHelper.Peripherals
                         0x1A94 => new HarpeAceAimLabEditionOmni(),
                         0x1AD7 => new StrixImpactIIIWirelessOmni(),
                         0x1A72 => new GladiusIIIAimpointOmni(),
-                        _ => null
+                        0x1A68 => new KerisWirelssAimpointOmni(),
+                        0x1A6A => new KerisWirelssAimpointOmni(),
+                        0x1B1A => new KerisAceIIOmni(),
+                        0x1B68 => new HarpeAceExtremeOmni(),
+                        _ => new HarpeAceAimLabEditionOmni()
                     };
 
                 }
@@ -290,28 +294,17 @@ namespace GHelper.Peripherals
                     stream.Write([0x03, 0x7D, 0x20, 0x02]);
                     stream.Read(response);
                     Logger.WriteLine("Booster: " + BitConverter.ToString(response.Skip(5).Take(12).ToArray()));
-                    bool booster = response[5] == 0x01;
+                    omniMouse.Booster  = response[5] == 0x01;
+                    
+                    DetectMouse(omniMouse);
 
+                    /*
                     stream.Write([0x03, 0x12, 0x12, 0x02]);
                     stream.Read(response);
 
                     string signatureStr = Encoding.ASCII.GetString(response.Skip(5).Take(12).ToArray());
                     Logger.WriteLine($"Omni Serial: {signatureStr}");
-
-                    if (omniMouse is null) omniMouse = signatureStr switch
-                    {
-                        var s when s.StartsWith("R1") => new KerisWirelssAimpointOmni(),                // R13121351391
-                        var s when s.StartsWith("F24") => new KerisWirelssAimpointOmni(),               // F24B21DD03F4
-                        var s when s.StartsWith("FB") => new KerisWirelssAimpointOmni(),                // FBA0CC1D6F9C
-                        var s when s.StartsWith("024") => new KerisAceIIOmni(),                         // 024031316969
-                        var s when s.StartsWith("02501") => new KerisAceIIOmni(),                       // 0250105027981
-                        var s when s.StartsWith("R9") => new KerisWirelssAimpointOmni(),                // R90518300572
-                        var s when s.StartsWith("T5") => new HarpeAceExtremeOmni(),                     // T5MPKR018406
-                        _ => new HarpeAceAimLabEditionOmni()
-                    };
-
-                    omniMouse.Booster = booster;
-                    DetectMouse(omniMouse);
+                    */
                 }
             }
             catch
