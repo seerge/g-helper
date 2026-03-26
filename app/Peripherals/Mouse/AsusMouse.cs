@@ -825,6 +825,7 @@ namespace GHelper.Peripherals.Mouse
             {
                 return packet[11];
             }
+            Logger.WriteLine(GetDisplayName() + ": " + BitConverter.ToString(packet));            
             Logger.WriteLine(GetDisplayName() + ": Failed to decode active profile");
             return 0;
         }
@@ -835,7 +836,8 @@ namespace GHelper.Peripherals.Mouse
             {
                 return packet[12];
             }
-            Logger.WriteLine(GetDisplayName() + ": Failed to decode active profile");
+            Logger.WriteLine(GetDisplayName() + ": " + BitConverter.ToString(packet));
+            Logger.WriteLine(GetDisplayName() + ": Failed to decode active DPI profile");
             return 1;
         }
 

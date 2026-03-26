@@ -1,9 +1,7 @@
 ﻿using GHelper.Peripherals.Mouse;
 using GHelper.Peripherals.Mouse.Models;
 using HidSharp;
-using System.IO;
 using System.Runtime.CompilerServices;
-using System.Text;
 
 namespace GHelper.Peripherals
 {
@@ -222,7 +220,7 @@ namespace GHelper.Peripherals
             DetectMouse(new KerisWirelssAimpoint());
             DetectMouse(new KerisWirelssAimpointWired());
             DetectMouse(new KerisIIAceWired());
-            DetectMouse(new KerisIIOriginWired()); 
+            DetectMouse(new KerisIIOriginWired());
             DetectMouse(new PugioII());
             DetectMouse(new PugioIIWired());
             DetectMouse(new StrixImpactII());
@@ -264,7 +262,7 @@ namespace GHelper.Peripherals
                     var response = new byte[64];
                     stream.Write([0x01, 0xA0, 0x00, 0x00]);
                     stream.Read(response);
-                    
+
                     int mousePid = response[5] | (response[6] << 8);
                     Logger.WriteLine($"Omni Mouse PID: {mousePid:X4} = {BitConverter.ToString(response.Skip(5).Take(12).ToArray())}");
 
@@ -294,8 +292,8 @@ namespace GHelper.Peripherals
                     stream.Write([0x03, 0x7D, 0x20, 0x02]);
                     stream.Read(response);
                     Logger.WriteLine("Booster: " + BitConverter.ToString(response.Skip(5).Take(12).ToArray()));
-                    omniMouse.Booster  = response[5] == 0x01;
-                    
+                    omniMouse.Booster = response[5] == 0x01;
+
                     DetectMouse(omniMouse);
 
                     /*
