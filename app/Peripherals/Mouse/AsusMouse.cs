@@ -665,6 +665,7 @@ namespace GHelper.Peripherals.Mouse
             ReadLightingSetting();
             ReadMotionSync();
             ReadZoneMode();
+            ReadAndLogButtonBindings();
         }
 
         // ------------------------------------------------------------------------------
@@ -825,7 +826,7 @@ namespace GHelper.Peripherals.Mouse
             {
                 return packet[11];
             }
-            Logger.WriteLine(GetDisplayName() + ": " + BitConverter.ToString(packet));            
+            Logger.WriteLine(GetDisplayName() + ": " + BitConverter.ToString(packet));
             Logger.WriteLine(GetDisplayName() + ": Failed to decode active profile");
             return 0;
         }
@@ -870,7 +871,7 @@ namespace GHelper.Peripherals.Mouse
                     int count = response[19];
                     if (count >= 2 && count <= 4)
                     {
-                         CurrentDPIProfileCount = count;
+                        CurrentDPIProfileCount = count;
                     }
                 }
             }
@@ -1003,9 +1004,9 @@ namespace GHelper.Peripherals.Mouse
                 Logger.WriteLine(GetDisplayName() + ": Raw Polling Rate " + BitConverter.ToString(packet));
                 byte raw = packet[13];
                 byte highNibble = (byte)(raw >> 4);
-                if (highNibble > 0) 
-                    result = (PollingRate)(highNibble & 0x07); 
-                else 
+                if (highNibble > 0)
+                    result = (PollingRate)(highNibble & 0x07);
+                else
                     result = (PollingRate)(raw & 0x07);
             }
             else
@@ -1055,8 +1056,8 @@ namespace GHelper.Peripherals.Mouse
             if (response is null) return;
 
             PollingRate = ParsePollingRate(response);
-            
-            
+
+
             Logger.WriteLine(GetDisplayName() + ": Pollingrate: " + PollingRateDisplayString(PollingRate) + " (" + PollingRate + ")");
 
 
@@ -1501,16 +1502,16 @@ namespace GHelper.Peripherals.Mouse
             for (int i = index; i < CurrentDPIProfileCount - 1; i++)
             {
                 // Create new object to avoid reference copy
-                if (DpiSettings[i+1] != null)
+                if (DpiSettings[i + 1] != null)
                 {
-                    DpiSettings[i] = new AsusMouseDPI 
-                    { 
-                        DPI = DpiSettings[i+1].DPI, 
-                        Color = DpiSettings[i+1].Color 
+                    DpiSettings[i] = new AsusMouseDPI
+                    {
+                        DPI = DpiSettings[i + 1].DPI,
+                        Color = DpiSettings[i + 1].Color
                     };
                 }
             }
-            
+
             // Cleanup last element
             DpiSettings[CurrentDPIProfileCount - 1] = null;
 
@@ -2112,5 +2113,172 @@ namespace GHelper.Peripherals.Mouse
                 hex.AppendFormat("{0:x2} ", b);
             return hex.ToString();
         }
+
+        private static readonly Dictionary<byte, string> ButtonBindingCodes = new()
+        {
+            { 0x00, "Disabled"        },
+            { 0xF0, "Mouse Left"      },
+            { 0xF1, "Mouse Right"     },
+            { 0xF2, "Mouse Middle"    },
+            { 0xF3, "Mouse Forward"   }, 
+            { 0xF4, "Mouse Back"      }, 
+            { 0xE4, "Mouse Back"      }, 
+            { 0xE5, "Mouse Forward"   }, 
+            { 0xE6, "DPI"             }, 
+            { 0xE7, "DPI Target"      }, 
+            { 0xE8, "Scroll Up"       }, 
+            { 0xE9, "Scroll Down"     }, 
+            { 0xC0, "Profile 1"       },
+            { 0xC1, "Profile 2"       },
+            { 0xC2, "Profile 3"       },
+            // ── Keyboard letters (HID page 0x07) ───────────────────────────────────
+            { 0x04, "A" }, { 0x05, "B" }, { 0x06, "C" }, { 0x07, "D" },
+            { 0x08, "E" }, { 0x09, "F" }, { 0x0A, "G" }, { 0x0B, "H" },
+            { 0x0C, "I" }, { 0x0D, "J" }, { 0x0E, "K" }, { 0x0F, "L" },
+            { 0x10, "M" }, { 0x11, "N" }, { 0x12, "O" }, { 0x13, "P" },
+            { 0x14, "Q" }, { 0x15, "R" }, { 0x16, "S" }, { 0x17, "T" },
+            { 0x18, "U" }, { 0x19, "V" }, { 0x1A, "W" }, { 0x1B, "X" },
+            { 0x1C, "Y" }, { 0x1D, "Z" },
+            // ── Numbers row ─────────────────────────────────────────────────────────
+            { 0x1E, "1" }, { 0x1F, "2" }, { 0x20, "3" }, { 0x21, "4" },
+            { 0x22, "5" }, { 0x23, "6" }, { 0x24, "7" }, { 0x25, "8" },
+            { 0x26, "9" }, { 0x27, "0" },
+            // ── Common keys ─────────────────────────────────────────────────────────
+            { 0x28, "Enter"     }, { 0x29, "Escape"    }, { 0x2A, "Backspace" },
+            { 0x2B, "Tab"       }, { 0x2C, "Space"     }, { 0x2D, "-"         },
+            { 0x2E, "="         }, { 0x2F, "["         }, { 0x30, "]"         },
+            { 0x33, ";"         }, { 0x34, "'"         }, { 0x36, ","         },
+            { 0x37, "."         }, { 0x38, "/"         },
+            // ── Function keys ───────────────────────────────────────────────────────
+            { 0x3A, "F1"  }, { 0x3B, "F2"  }, { 0x3C, "F3"  }, { 0x3D, "F4"  },
+            { 0x3E, "F5"  }, { 0x3F, "F6"  }, { 0x40, "F7"  }, { 0x41, "F8"  },
+            { 0x42, "F9"  }, { 0x43, "F10" }, { 0x44, "F11" }, { 0x45, "F12" },
+            // ── Navigation ──────────────────────────────────────────────────────────
+            { 0x49, "Insert"    }, { 0x4A, "Home"      }, { 0x4B, "Page Up"   },
+            { 0x4C, "Delete"    }, { 0x4D, "End"       }, { 0x4E, "Page Down" },
+            { 0x4F, "Right"     }, { 0x50, "Left"      },
+            { 0x51, "Down"      }, { 0x52, "Up"        },
+            // ── Left modifiers ───────────────────────────────────────────────────────
+            { 0xE0, "Left Ctrl"  }, { 0xE1, "Left Shift" },
+            { 0xE2, "Left Alt"   }, { 0xE3, "Left GUI"   },
+        };
+
+        public virtual bool HasButtonBindings() => true;
+
+        // ─── Read ──────────────────────────────────────────────────────────────────────
+        public void ReadAndLogButtonBindings()
+        {
+            if (!HasButtonBindings()) return;
+
+            var buttonNames = new Dictionary<int, string>
+            {
+                { 0, "Left Click"    },
+                { 1, "Right Click"   },
+                { 2, "Middle Click"  },
+                { 3, "Forward"       },
+                { 4, "Back"          },
+                { 5, "DPI Button"    },
+                { 6, "Side Button 1" },
+                { 7, "Side Button 2" },
+            };
+
+            Logger.WriteLine(GetDisplayName() + ": ── Reading Button Bindings ──────────────────────");
+
+            byte[]? response = QueryAllButtonBindings();
+            if (response is null)
+            {
+                Logger.WriteLine(GetDisplayName() + ": No response reading button bindings");
+                return;
+            }
+
+            string rawHex = BitConverter.ToString(response, 0, Math.Min(21, response.Length)).Replace("-", " ");
+            Logger.WriteLine(GetDisplayName() + $": RAW: {rawHex}");
+
+            // Response: [0]=reportId [1]=0x12 [2]=0x05 [3][4]=0x00
+            // Then 2 bytes per button: [actionCode, 0x01] — typeCode is always 0x01
+            // Button N at offset 5 + N*2
+            foreach (var (buttonIndex, buttonName) in buttonNames)
+            {
+                int offset = 5 + buttonIndex * 2;
+                if (offset >= response.Length)
+                {
+                    Logger.WriteLine(GetDisplayName() + $": Button {buttonIndex} ({buttonName}): out of range");
+                    continue;
+                }
+
+                byte actionCode = response[offset];
+                string label = ButtonBindingCodes.TryGetValue(actionCode, out var name)
+                    ? name
+                    : $"Unknown (0x{actionCode:X2})";
+
+                Logger.WriteLine(GetDisplayName() + $": Button {buttonIndex} ({buttonName}): {label}");
+            }
+
+            Logger.WriteLine(GetDisplayName() + ": ── End Button Bindings ──────────────────────────");
+        }
+
+        private byte[]? QueryAllButtonBindings(int profileIndex = 0)
+        {
+            return WriteForResponse(new byte[]
+            {
+                reportId,
+                0x12,
+                0x05,
+                (byte)profileIndex,
+                0x00,
+                0x00
+            });
+        }
+
+        // ─── Write ─────────────────────────────────────────────────────────────────────
+        public void SetButtonBinding(byte slot, byte actionCode)
+        {
+            if (!HasButtonBindings()) return;
+
+            WriteForResponse(GetSetButtonBindingPacket(slot, actionCode));
+            FlushSettings();
+
+            string label = ButtonBindingCodes.TryGetValue(actionCode, out var name)
+                ? name
+                : $"Unknown (0x{actionCode:X2})";
+
+            Logger.WriteLine(GetDisplayName()
+                + $": Button slot 0x{slot:X2} set to {label} (0x{actionCode:X2})");
+        }
+
+        public void SetAllButtonBindings(byte[] actionCodes)
+        {
+            if (!HasButtonBindings()) return;
+            if (actionCodes.Length != 8)
+            {
+                Logger.WriteLine(GetDisplayName() + ": SetAllButtonBindings requires exactly 8 action codes");
+                return;
+            }
+
+            for (byte slot = 0; slot < 8; slot++)
+                WriteForResponse(GetSetButtonBindingPacket(slot, actionCodes[slot]));
+
+            FlushSettings();
+            Logger.WriteLine(GetDisplayName() + ": All button bindings saved");
+        }
+
+        // Confirmed from pcap: 03 51 21 [slot] 00 [actionCode] 01 [actionCode] 01
+        // 0x01 is a fixed constant — always present, never varies
+        protected virtual byte[] GetSetButtonBindingPacket(byte slot, byte actionCode)
+        {
+            return new byte[]
+            {
+                reportId,
+                0x51,
+                0x21,
+                slot,
+                0x00,
+                actionCode,
+                0x01,
+                actionCode, // firmware requires duplicate pair
+                0x01
+            };
+        }
+
     }
 }
