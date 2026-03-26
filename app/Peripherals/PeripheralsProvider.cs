@@ -270,7 +270,11 @@ namespace GHelper.Peripherals
 
                     omniMouse = mousePid switch
                     {
-                        0x1B65 => new HarpeAceMiniOmni(), 
+                        0x1B65 => new HarpeAceMiniOmni(),
+                        0x1C0E => new KerisIIOriginOmni(),
+                        0x1A94 => new HarpeAceAimLabEditionOmni(),
+                        0x1AD7 => new StrixImpactIIIWirelessOmni(),
+                        0x1A72 => new GladiusIIIAimpointOmni(),
                         _ => null
                     };
 
@@ -296,22 +300,11 @@ namespace GHelper.Peripherals
 
                     if (omniMouse is null) omniMouse = signatureStr switch
                     {
-                        var s when s.StartsWith("B23") => new HarpeAceAimLabEditionOmni(),              // B23072800062
-                        var s when s.StartsWith("B241") => new HarpeAceAimLabEditionOmni(),             // B24122666771
-                        var s when s.StartsWith("B2501") => new HarpeAceAimLabEditionOmni(),            // B25010476524
-                        var s when s.StartsWith("B2504") => new HarpeAceAimLabEditionOmni(),            // B25043063148
                         var s when s.StartsWith("R1") => new KerisWirelssAimpointOmni(),                // R13121351391
                         var s when s.StartsWith("F24") => new KerisWirelssAimpointOmni(),               // F24B21DD03F4
                         var s when s.StartsWith("FB") => new KerisWirelssAimpointOmni(),                // FBA0CC1D6F9C
                         var s when s.StartsWith("024") => new KerisAceIIOmni(),                         // 024031316969
                         var s when s.StartsWith("02501") => new KerisAceIIOmni(),                       // 0250105027981
-                        var s when s.StartsWith("025") => new KerisIIOriginOmni(),                      // 025050613700
-                        var s when s.StartsWith("20") => new StrixImpactIIIWirelessOmni(),              // 202405290700
-                        var s when s.StartsWith("R8") => new GladiusIIIAimpointOmni(),                  // R82020155689
-                        var s when s.StartsWith("R6") => new GladiusIIIAimpointOmni(),                  // R60120331787
-                        var s when s.StartsWith("RC") => new GladiusIIIAimpointOmni(),                  // RC1519430455
-                        var s when s.StartsWith("R903") => new GladiusIIIAimpointOmni(),                // R90319215881
-                        var s when s.StartsWith("R923") => new GladiusIIIAimpointOmni(),                // R92307410710
                         var s when s.StartsWith("R9") => new KerisWirelssAimpointOmni(),                // R90518300572
                         var s when s.StartsWith("T5") => new HarpeAceExtremeOmni(),                     // T5MPKR018406
                         _ => new HarpeAceAimLabEditionOmni()
