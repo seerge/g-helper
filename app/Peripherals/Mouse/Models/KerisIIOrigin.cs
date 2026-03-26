@@ -18,7 +18,7 @@
 
         public override bool CanChangeDPICount()
         {
-            return true;
+            return false;
         }
 
 

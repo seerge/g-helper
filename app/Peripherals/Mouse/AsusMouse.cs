@@ -1054,7 +1054,7 @@ namespace GHelper.Peripherals.Mouse
                 return;
             }
 
-            byte[]? response = WriteForResponse(GetReadPollingRatePacket());
+            byte[]? response = WriteForResponse(GetReadPollingRatePacket(), matchLength: 4);
             if (response is null) return;
 
             PollingRate = ParsePollingRate(response);
