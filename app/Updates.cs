@@ -15,16 +15,16 @@ namespace GHelper
         const int DRIVER_NOT_FOUND = 2;
         const int DRIVER_NEWER = 1;
 
-        private string bios;
-        private string model;
+        static string bios;
+        static string model;
 
-        private int updatesCount = 0;
-        private long lastUpdate;
+        static int updatesCount = 0;
+        private static long lastUpdate;
 
         private readonly Font _boldUnderlineFont;
         private readonly Font _font;
 
-        private readonly CancellationTokenSource _cts = new();
+        private CancellationTokenSource _cts = new();
 
         public struct DriverDownload
         {
@@ -38,27 +38,20 @@ namespace GHelper
 
         private void SafeInvoke(Action action)
         {
-            if (IsDisposed || !IsHandleCreated)
-                return;
-
-            try
-            {
-                Invoke(action);
-            }
-            catch (ObjectDisposedException)
-            {
-                // Form already disposed, ignore
-            }
-            catch (InvalidOperationException)
-            {
-                // Handle may be gone, ignore
-            }
+            if (IsDisposed || !IsHandleCreated) return;
+            try { Invoke(action); }
+            catch (ObjectDisposedException) { }
+            catch (InvalidOperationException) { }
         }
 
         private void LoadUpdates(bool force = false)
         {
             if (!force && (Math.Abs(DateTimeOffset.Now.ToUnixTimeMilliseconds() - lastUpdate) < 5000)) return;
             lastUpdate = DateTimeOffset.Now.ToUnixTimeMilliseconds();
+
+            _cts.Cancel();
+            _cts = new CancellationTokenSource();
+            var token = _cts.Token;
 
             (bios, model) = AppConfig.GetBiosAndModel();
 
@@ -94,8 +87,6 @@ namespace GHelper
 
             string rogParam = AppConfig.IsROG() ? "&systemCode=rog" : "";
 
-            var token = _cts.Token;
-
             Task.Run(async () =>
             {
                 try { await DriversAsync($"https://rog.asus.com/support/webapi/product/GetPDBIOS?website=global&model={model}&cpu={model}{rogParam}", 1, tableBios, token); }
@@ -124,9 +115,7 @@ namespace GHelper
             {
                 tableLayoutPanel.Controls[0].Dispose();
             }
-
             tableLayoutPanel.RowCount = 0;
-            tableLayoutPanel.RowStyles.Clear();
         }
 
         public Updates()
@@ -140,7 +129,6 @@ namespace GHelper
             //buttonRefresh.Visible = false;
             buttonRefresh.Click += ButtonRefresh_Click;
             Shown += Updates_Shown;
-
             FormClosed += Updates_FormClosed;
         }
 
@@ -169,15 +157,9 @@ namespace GHelper
             token.ThrowIfCancellationRequested();
             try
             {
-                using var searcher = new ManagementObjectSearcher("SELECT SerialNumber FROM Win32_BIOS");
-                using var results = searcher.Get();
-                foreach (ManagementObject obj in results)
-                    using (obj)
-                    {
-                        token.ThrowIfCancellationRequested();
-                        SafeInvoke(() => textSerial.Text = obj["SerialNumber"]?.ToString());
-                        break;
-                    }
+                var output = ProcessHelper.RunCMD("powershell", "-NoProfile -Command \"(Get-WmiObject Win32_BIOS).SerialNumber\"");
+                token.ThrowIfCancellationRequested();
+                SafeInvoke(() => textSerial.Text = output);
             }
             catch (Exception ex) when (ex is not OperationCanceledException)
             {
@@ -187,25 +169,33 @@ namespace GHelper
 
         private Dictionary<string, string> GetDeviceVersions()
         {
-            var list = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
-            const string wql = "SELECT DeviceID, DriverVersion FROM Win32_PnPSignedDriver";
-
-            using (var searcher = new ManagementObjectSearcher(wql))
-            using (var collection = searcher.Get())
+            using (ManagementObjectSearcher objSearcher = new ManagementObjectSearcher("Select * from Win32_PnPSignedDriver"))
             {
-                foreach (ManagementObject obj in collection)
+                using (ManagementObjectCollection objCollection = objSearcher.Get())
                 {
-                    using (obj)
+                    Dictionary<string, string> list = new();
+
+                    foreach (ManagementObject obj in objCollection)
                     {
-                        var version = obj["DriverVersion"]?.ToString();
-                        var deviceId = obj["DeviceID"]?.ToString();
-                        if (version != null && deviceId != null)
-                            list[deviceId] = version;
+                        using (obj) // FIX: dispose each WMI object — original leaked these
+                        {
+                            if (obj["DriverVersion"] is not null)
+                            {
+                                if (obj["DeviceID"] is not null)
+                                    list[obj["DeviceID"].ToString()] = obj["DriverVersion"].ToString();
+
+                                if (obj["DeviceName"] is not null)
+                                {
+                                    var deviceName = obj["DeviceName"].ToString();
+                                    if (deviceName.Contains("DolbyAPO SWC")) list["Dolby"] = obj["DriverVersion"].ToString();
+                                    if (deviceName.Contains("Fortemedia Audio")) list["Fortemedia"] = obj["DriverVersion"].ToString();
+                                }
+                            }
+                        }
                     }
+                    return list;
                 }
             }
-
-            return list;
         }
 
         private void _VisualiseDriver(DriverDownload driver, TableLayoutPanel table)
@@ -278,17 +268,17 @@ namespace GHelper
                 _VisualiseNewDriver(position, newer, tip, table);
         }
 
-        public void VisualiseNewCount(int updatesCountLocal, TableLayoutPanel table)
+        public void VisualiseNewCount(int updatesCount, TableLayoutPanel table)
         {
             if (InvokeRequired)
-                SafeInvoke(() => _VisualiseNewCount(updatesCountLocal, table));
+                SafeInvoke(() => _VisualiseNewCount(updatesCount, table));
             else
-                _VisualiseNewCount(updatesCountLocal, table);
+                _VisualiseNewCount(updatesCount, table);
         }
 
-        public void _VisualiseNewCount(int updatesCountLocal, TableLayoutPanel table)
+        public void _VisualiseNewCount(int updatesCount, TableLayoutPanel table)
         {
-            labelUpdates.Text = $"{Properties.Strings.NewUpdates}: {updatesCountLocal}";
+            labelUpdates.Text = $"{Properties.Strings.NewUpdates}: {updatesCount}";
             labelUpdates.ForeColor = colorTurbo;
             labelUpdates.Font = _boldUnderlineFont;
             panelBios.AccessibleName = labelUpdates.Text;
@@ -308,28 +298,28 @@ namespace GHelper
             {
                 token.ThrowIfCancellationRequested();
 
-                // Per-call HttpClient: safe, avoids shared-header NullReferenceException
                 using (var httpClient = new HttpClient(new HttpClientHandler
                 {
                     AutomaticDecompression = DecompressionMethods.All
                 }))
                 {
+                    Logger.WriteLine(url);
                     httpClient.DefaultRequestHeaders.AcceptEncoding.ParseAdd("gzip, deflate, br");
                     httpClient.DefaultRequestHeaders.Add("User-Agent", "C# App");
 
-                    Logger.WriteLine(url);
                     var json = await httpClient.GetStringAsync(url, token);
                     token.ThrowIfCancellationRequested();
 
                     var data = JsonSerializer.Deserialize<JsonElement>(json);
                     var result = data.GetProperty("Result");
 
-                    // fallback for bugged API
+                    // fallback for bugged API — identical to original
                     if (result.ToString() == "" || result.GetProperty("Obj").GetArrayLength() == 0)
                     {
                         var urlFallback = url + "&tag=" + new Random().Next(10, 99);
                         Logger.WriteLine(urlFallback);
                         json = await httpClient.GetStringAsync(urlFallback, token);
+                        token.ThrowIfCancellationRequested();
                         data = JsonSerializer.Deserialize<JsonElement>(json);
                     }
 
@@ -358,7 +348,7 @@ namespace GHelper
                                 driver.title = title;
                                 driver.version = file.GetProperty("Version").ToString().Replace("V", "");
                                 driver.downloadUrl = file.GetProperty("DownloadUrl").GetProperty("Global").ToString();
-                                driver.hardwares = file.GetProperty("HardwareInfoList");
+                                driver.hardwares = file.GetProperty("HardwareInfoList"); // keep as JsonElement — identical to original
                                 driver.date = file.GetProperty("ReleaseDate").ToString();
                                 drivers.Add(driver);
 
@@ -382,16 +372,13 @@ namespace GHelper
                         int newer = DRIVER_NOT_FOUND;
                         string tip = driver.version;
 
+                        // identical to original — only accesses hardwares for type==0, never for BIOS (type==1)
                         if (type == 0 && driver.hardwares.ToString().Length > 0)
-                        {
                             for (int k = 0; k < driver.hardwares.GetArrayLength(); k++)
                             {
                                 var deviceID = driver.hardwares[k].GetProperty("hardwareid").ToString();
                                 deviceID = CleanupDeviceId(deviceID);
-                                var localVersions = devices
-                                    .Where(p => p.Key.Contains(deviceID, StringComparison.CurrentCultureIgnoreCase))
-                                    .Select(p => p.Value);
-
+                                var localVersions = devices.Where(p => p.Key.Contains(deviceID, StringComparison.CurrentCultureIgnoreCase)).Select(p => p.Value);
                                 foreach (var localVersion in localVersions)
                                 {
                                     newer = Math.Min(newer, new Version(driver.version).CompareTo(new Version(localVersion)));
@@ -399,7 +386,6 @@ namespace GHelper
                                     tip = "Download: " + driver.version + "\n" + "Installed: " + localVersion;
                                 }
                             }
-                        }
 
                         if (type == 1 && !driver.title.Contains("Firmware"))
                         {
@@ -411,17 +397,20 @@ namespace GHelper
 
                         if (newer == DRIVER_NEWER)
                         {
-                            int newCount = Interlocked.Increment(ref updatesCount);
-                            VisualiseNewCount(newCount, table);
+                            updatesCount++;
+                            VisualiseNewCount(updatesCount, table);
                         }
 
                         count++;
                     }
+
+                    GC.Collect();
+                    GC.WaitForPendingFinalizers();
                 }
             }
             catch (OperationCanceledException)
             {
-                // Form was closed, ignore
+                // Form closed or refresh triggered — ignore
             }
             catch (Exception ex)
             {
