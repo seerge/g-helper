@@ -1,8 +1,6 @@
 ﻿using GHelper.Helpers;
 using GHelper.UI;
-using NvAPIWrapper.Native.Display.Structures;
 using System.Diagnostics;
-using System.Diagnostics.Metrics;
 using System.Management;
 using System.Net;
 using System.Text.Json;
@@ -15,6 +13,7 @@ namespace GHelper
         const int DRIVER_NOT_FOUND = 2;
         const int DRIVER_NEWER = 1;
 
+        //static int rowCount = 0;
         static string bios;
         static string model;
 
@@ -23,8 +22,6 @@ namespace GHelper
 
         private readonly Font _boldUnderlineFont;
         private readonly Font _font;
-
-        private CancellationTokenSource _cts = new();
 
         public struct DriverDownload
         {
@@ -35,23 +32,11 @@ namespace GHelper
             public string date;
             public JsonElement hardwares;
         }
-
-        private void SafeInvoke(Action action)
-        {
-            if (IsDisposed || !IsHandleCreated) return;
-            try { Invoke(action); }
-            catch (ObjectDisposedException) { }
-            catch (InvalidOperationException) { }
-        }
-
         private void LoadUpdates(bool force = false)
         {
+
             if (!force && (Math.Abs(DateTimeOffset.Now.ToUnixTimeMilliseconds() - lastUpdate) < 5000)) return;
             lastUpdate = DateTimeOffset.Now.ToUnixTimeMilliseconds();
-
-            _cts.Cancel();
-            _cts = new CancellationTokenSource();
-            var token = _cts.Token;
 
             (bios, model) = AppConfig.GetBiosAndModel();
 
@@ -89,21 +74,18 @@ namespace GHelper
 
             Task.Run(async () =>
             {
-                try { await DriversAsync($"https://rog.asus.com/support/webapi/product/GetPDBIOS?website=global&model={model}&cpu={model}{rogParam}", 1, tableBios, token); }
-                catch (OperationCanceledException) { }
-            }, token);
+                DriversAsync($"https://rog.asus.com/support/webapi/product/GetPDBIOS?website=global&model={model}&cpu={model}{rogParam}", 1, tableBios);
+            });
 
             Task.Run(async () =>
             {
-                try { await DriversAsync($"https://rog.asus.com/support/webapi/product/GetPDDrivers?website=global&model={model}&cpu={model}&osid=52{rogParam}", 0, tableDrivers, token); }
-                catch (OperationCanceledException) { }
-            }, token);
+                DriversAsync($"https://rog.asus.com/support/webapi/product/GetPDDrivers?website=global&model={model}&cpu={model}&osid=52{rogParam}", 0, tableDrivers);
+            });
 
-            Task.Run(() =>
+            Task.Run(async () =>
             {
-                try { LaptopSerialNumber(token); }
-                catch (OperationCanceledException) { }
-            }, token);
+                LaptopSerialNumber();
+            });
 
             textSerial.BackColor = panelBios.BackColor;
             textSerial.ForeColor = panelBios.ForeColor;
@@ -115,6 +97,7 @@ namespace GHelper
             {
                 tableLayoutPanel.Controls[0].Dispose();
             }
+
             tableLayoutPanel.RowCount = 0;
         }
 
@@ -129,14 +112,13 @@ namespace GHelper
             //buttonRefresh.Visible = false;
             buttonRefresh.Click += ButtonRefresh_Click;
             Shown += Updates_Shown;
-            FormClosed += Updates_FormClosed;
-        }
 
-        private void Updates_FormClosed(object? sender, FormClosedEventArgs e)
-        {
-            _cts.Cancel();
-            _boldUnderlineFont.Dispose();
-            _font.Dispose();
+            FormClosed += (s, e) =>
+            {
+                // Dispose fonts when form closes
+                _boldUnderlineFont.Dispose();
+                _font.Dispose();
+            };
         }
 
         private void ButtonRefresh_Click(object? sender, EventArgs e)
@@ -152,16 +134,17 @@ namespace GHelper
             LoadUpdates(true);
         }
 
-        public void LaptopSerialNumber(CancellationToken token)
+        public void LaptopSerialNumber()
         {
-            token.ThrowIfCancellationRequested();
             try
             {
                 var output = ProcessHelper.RunCMD("powershell", "-NoProfile -Command \"(Get-WmiObject Win32_BIOS).SerialNumber\"");
-                token.ThrowIfCancellationRequested();
-                SafeInvoke(() => textSerial.Text = output);
+                Invoke(delegate
+                {
+                    textSerial.Text = output;
+                });
             }
-            catch (Exception ex) when (ex is not OperationCanceledException)
+            catch (Exception ex)
             {
                 Logger.WriteLine(ex.ToString());
             }
@@ -175,28 +158,24 @@ namespace GHelper
                 {
                     Dictionary<string, string> list = new();
 
-                    foreach (ManagementObject obj in objCollection)
-                    {
-                        using (obj) // FIX: dispose each WMI object — original leaked these
+                    foreach (ManagementObject obj in objCollection) if (obj["DriverVersion"] is not null)
                         {
-                            if (obj["DriverVersion"] is not null)
+                            if (obj["DeviceID"] is not null)
                             {
-                                if (obj["DeviceID"] is not null)
-                                    list[obj["DeviceID"].ToString()] = obj["DriverVersion"].ToString();
-
-                                if (obj["DeviceName"] is not null)
-                                {
-                                    var deviceName = obj["DeviceName"].ToString();
-                                    if (deviceName.Contains("DolbyAPO SWC")) list["Dolby"] = obj["DriverVersion"].ToString();
-                                    if (deviceName.Contains("Fortemedia Audio")) list["Fortemedia"] = obj["DriverVersion"].ToString();
-                                }
+                                list[obj["DeviceID"].ToString()] = obj["DriverVersion"].ToString();
+                            }
+                            if (obj["DeviceName"] is not null)
+                            {
+                                var deviceName = obj["DeviceName"].ToString();
+                                if (deviceName.Contains("DolbyAPO SWC")) list["Dolby"] = obj["DriverVersion"].ToString();
+                                if (deviceName.Contains("Fortemedia Audio")) list["Fortemedia"] = obj["DriverVersion"].ToString();
                             }
                         }
-                    }
                     return list;
                 }
             }
         }
+
 
         private void _VisualiseDriver(DriverDownload driver, TableLayoutPanel table)
         {
@@ -227,14 +206,21 @@ namespace GHelper
         public void VisualiseDriver(DriverDownload driver, TableLayoutPanel table)
         {
             if (InvokeRequired)
-                SafeInvoke(() => _VisualiseDriver(driver, table));
+            {
+                Invoke(delegate
+                {
+                    _VisualiseDriver(driver, table);
+                });
+            }
             else
+            {
                 _VisualiseDriver(driver, table);
+            }
         }
 
         public void ShowTable(TableLayoutPanel table)
         {
-            SafeInvoke(() =>
+            Invoke(delegate
             {
                 table.Visible = true;
                 ResumeLayout(false);
@@ -257,23 +243,38 @@ namespace GHelper
                 }
 
                 if (newer == DRIVER_NOT_FOUND) label.LinkColor = Color.Gray;
+
             }
         }
 
         public void VisualiseNewDriver(int position, int newer, string tip, TableLayoutPanel table)
         {
             if (InvokeRequired)
-                SafeInvoke(() => _VisualiseNewDriver(position, newer, tip, table));
+            {
+                Invoke(delegate
+                {
+                    _VisualiseNewDriver(position, newer, tip, table);
+                });
+            }
             else
+            {
                 _VisualiseNewDriver(position, newer, tip, table);
+            }
         }
 
         public void VisualiseNewCount(int updatesCount, TableLayoutPanel table)
         {
             if (InvokeRequired)
-                SafeInvoke(() => _VisualiseNewCount(updatesCount, table));
+            {
+                Invoke(delegate
+                {
+                    _VisualiseNewCount(updatesCount, table);
+                });
+            }
             else
+            {
                 _VisualiseNewCount(updatesCount, table);
+            }
         }
 
         public void _VisualiseNewCount(int updatesCount, TableLayoutPanel table)
@@ -288,16 +289,17 @@ namespace GHelper
         {
             int index = input.IndexOf("&REV_");
             if (index != -1)
+            {
                 return input.Substring(0, index);
+            }
             return input;
         }
 
-        public async Task DriversAsync(string url, int type, TableLayoutPanel table, CancellationToken token)
+        public async void DriversAsync(string url, int type, TableLayoutPanel table)
         {
+
             try
             {
-                token.ThrowIfCancellationRequested();
-
                 using (var httpClient = new HttpClient(new HttpClientHandler
                 {
                     AutomaticDecompression = DecompressionMethods.All
@@ -306,24 +308,22 @@ namespace GHelper
                     Logger.WriteLine(url);
                     httpClient.DefaultRequestHeaders.AcceptEncoding.ParseAdd("gzip, deflate, br");
                     httpClient.DefaultRequestHeaders.Add("User-Agent", "C# App");
-
-                    var json = await httpClient.GetStringAsync(url, token);
-                    token.ThrowIfCancellationRequested();
+                    var json = await httpClient.GetStringAsync(url);
 
                     var data = JsonSerializer.Deserialize<JsonElement>(json);
                     var result = data.GetProperty("Result");
 
-                    // fallback for bugged API — identical to original
+                    // fallback for bugged API
                     if (result.ToString() == "" || result.GetProperty("Obj").GetArrayLength() == 0)
                     {
                         var urlFallback = url + "&tag=" + new Random().Next(10, 99);
                         Logger.WriteLine(urlFallback);
-                        json = await httpClient.GetStringAsync(urlFallback, token);
-                        token.ThrowIfCancellationRequested();
+                        json = await httpClient.GetStringAsync(urlFallback);
                         data = JsonSerializer.Deserialize<JsonElement>(json);
                     }
 
                     var groups = data.GetProperty("Result").GetProperty("Obj");
+
 
                     List<string> skipList = new() { "Armoury Crate & Aura Creator Installer", "MyASUS", "ASUS Smart Display Control", "Aura Wallpaper", "Virtual Pet", "Virtual Pet- Ultimate Edition", "ROG Font V1.5", "Armoury Crate Control Interface" };
                     List<DriverDownload> drivers = new();
@@ -332,23 +332,24 @@ namespace GHelper
                     {
                         var categoryName = groups[i].GetProperty("Name").ToString();
                         var files = groups[i].GetProperty("Files");
+
                         var oldTitle = "";
 
                         for (int j = 0; j < files.GetArrayLength(); j++)
                         {
-                            token.ThrowIfCancellationRequested();
 
                             var file = files[j];
                             var title = file.GetProperty("Title").ToString();
 
                             if (oldTitle != title && !skipList.Contains(title))
                             {
+
                                 var driver = new DriverDownload();
                                 driver.categoryName = categoryName;
                                 driver.title = title;
                                 driver.version = file.GetProperty("Version").ToString().Replace("V", "");
                                 driver.downloadUrl = file.GetProperty("DownloadUrl").GetProperty("Global").ToString();
-                                driver.hardwares = file.GetProperty("HardwareInfoList"); // keep as JsonElement — identical to original
+                                driver.hardwares = file.GetProperty("HardwareInfoList");
                                 driver.date = file.GetProperty("ReleaseDate").ToString();
                                 drivers.Add(driver);
 
@@ -361,18 +362,18 @@ namespace GHelper
 
                     ShowTable(table);
 
+
                     Dictionary<string, string> devices = new();
                     if (type == 0) devices = GetDeviceVersions();
+
+                    //Debug.WriteLine(biosVersion);
 
                     int count = 0;
                     foreach (var driver in drivers)
                     {
-                        token.ThrowIfCancellationRequested();
-
                         int newer = DRIVER_NOT_FOUND;
                         string tip = driver.version;
 
-                        // identical to original — only accesses hardwares for type==0, never for BIOS (type==1)
                         if (type == 0 && driver.hardwares.ToString().Length > 0)
                             for (int k = 0; k < driver.hardwares.GetArrayLength(); k++)
                             {
@@ -408,15 +409,12 @@ namespace GHelper
                     GC.WaitForPendingFinalizers();
                 }
             }
-            catch (OperationCanceledException)
-            {
-                // Form closed or refresh triggered — ignore
-            }
             catch (Exception ex)
             {
                 Logger.WriteLine(ex.ToString());
+
             }
+
         }
     }
-
 }
