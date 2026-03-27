@@ -14,7 +14,7 @@ public static class AppConfig
     private static string? _bios;
 
     private static Dictionary<string, object> config = new Dictionary<string, object>();
-    private static System.Timers.Timer timer = new System.Timers.Timer(2000);
+    private static System.Timers.Timer timer = new System.Timers.Timer(2000) { AutoReset = false }; 
     private static readonly object configLock = new();
 
     static AppConfig()
