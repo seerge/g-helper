@@ -1361,10 +1361,9 @@ namespace GHelper.Peripherals.Mouse
 
         protected virtual void ParseDPI(byte[] packet)
         {
-            if (packet[1] != 0x12 || packet[2] != 0x04 || (packet[3] != 0x02 && HasXYDPI()))
-            {
-                return;
-            }
+            if (packet[1] != 0x12 || packet[2] != 0x04) return;
+            byte expectedByte3 = HasXYDPI() ? (byte)0x02 : (byte)0x00;
+            if (packet[3] != expectedByte3) return;
 
             for (int i = 0; i < DPIProfileCount(); ++i)
             {
@@ -1410,13 +1409,13 @@ namespace GHelper.Peripherals.Mouse
 
         public void ReadDPI()
         {
-            byte[]? response = WriteForResponse(GetReadDPIPacket());
+            byte[]? response = WriteForResponse(GetReadDPIPacket(), matchLength: 4);
             if (response is null) return;
             ParseDPI(response);
 
             if (HasDPIColors())
             {
-                response = WriteForResponse(GetReadDPIColorsPacket());
+                response = WriteForResponse(GetReadDPIColorsPacket(), matchLength: 4);
                 if (response is null) return;
                 ParseDPIColors(response);
             }
