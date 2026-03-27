@@ -167,16 +167,17 @@ namespace GHelper
         public void LaptopSerialNumber(CancellationToken token)
         {
             token.ThrowIfCancellationRequested();
-
             try
             {
-                var output = ProcessHelper.RunCMD("powershell", "-NoProfile -Command \"(Get-WmiObject Win32_BIOS).SerialNumber\"");
-                token.ThrowIfCancellationRequested();
-
-                SafeInvoke(() =>
-                {
-                    textSerial.Text = output;
-                });
+                using var searcher = new ManagementObjectSearcher("SELECT SerialNumber FROM Win32_BIOS");
+                using var results = searcher.Get();
+                foreach (ManagementObject obj in results)
+                    using (obj)
+                    {
+                        token.ThrowIfCancellationRequested();
+                        SafeInvoke(() => textSerial.Text = obj["SerialNumber"]?.ToString());
+                        break;
+                    }
             }
             catch (Exception ex) when (ex is not OperationCanceledException)
             {
@@ -186,34 +187,25 @@ namespace GHelper
 
         private Dictionary<string, string> GetDeviceVersions()
         {
-            using (ManagementObjectSearcher objSearcher = new ManagementObjectSearcher("Select * from Win32_PnPSignedDriver"))
-            {
-                using (ManagementObjectCollection objCollection = objSearcher.Get())
-                {
-                    Dictionary<string, string> list = new();
+            var list = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+            const string wql = "SELECT DeviceID, DriverVersion FROM Win32_PnPSignedDriver";
 
-                    foreach (ManagementObject obj in objCollection)
+            using (var searcher = new ManagementObjectSearcher(wql))
+            using (var collection = searcher.Get())
+            {
+                foreach (ManagementObject obj in collection)
+                {
+                    using (obj)
                     {
-                        using (obj)
-                        {
-                            if (obj["DriverVersion"] is not null)
-                            {
-                                if (obj["DeviceID"] is not null)
-                                {
-                                    list[obj["DeviceID"].ToString()] = obj["DriverVersion"].ToString();
-                                }
-                                if (obj["DeviceName"] is not null)
-                                {
-                                    var deviceName = obj["DeviceName"].ToString();
-                                    if (deviceName.Contains("DolbyAPO SWC")) list["Dolby"] = obj["DriverVersion"].ToString();
-                                    if (deviceName.Contains("Fortemedia Audio")) list["Fortemedia"] = obj["DriverVersion"].ToString();
-                                }
-                            }
-                        }
+                        var version = obj["DriverVersion"]?.ToString();
+                        var deviceId = obj["DeviceID"]?.ToString();
+                        if (version != null && deviceId != null)
+                            list[deviceId] = version;
                     }
-                    return list;
                 }
             }
+
+            return list;
         }
 
         private void _VisualiseDriver(DriverDownload driver, TableLayoutPanel table)
