@@ -154,6 +154,7 @@ namespace GHelper
 
 
             Task task = Task.Run((Action)PeripheralsProvider.DetectAllAsusMice);
+            Task taskHeadsets = Task.Run((Action)PeripheralsProvider.DetectAllAsusHeadsets);
             PeripheralsProvider.RegisterForDeviceEvents();
 
             if (Environment.CurrentDirectory.Trim('\\') == Application.StartupPath.Trim('\\') || action.Length > 0)

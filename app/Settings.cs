@@ -1956,6 +1956,10 @@ namespace GHelper
                     case PeripheralType.Keyboard:
                         b.Image = ControlHelper.ResizeImage(ControlHelper.TintImage(Properties.Resources.icons8_keyboard_32, b.ForeColor), ControlHelper.Scale);
                         break;
+
+                    case PeripheralType.Headset:
+                        b.Image = ControlHelper.ResizeImage(ControlHelper.TintImage(Properties.Resources.icons8_headset_48, b.ForeColor), ControlHelper.Scale);
+                        break;
                 }
 
                 b.Visible = true;

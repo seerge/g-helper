@@ -1,4 +1,6 @@
-﻿using GHelper.Peripherals.Mouse;
+﻿using GHelper.Peripherals.Headset;
+using GHelper.Peripherals.Headset.Models;
+using GHelper.Peripherals.Mouse;
 using GHelper.Peripherals.Mouse.Models;
 using HidSharp;
 using System.Runtime.CompilerServices;
@@ -10,6 +12,7 @@ namespace GHelper.Peripherals
         private static readonly object _LOCK = new object();
 
         public static List<AsusMouse> ConnectedMice = new List<AsusMouse>();
+        public static List<AsusHeadset> ConnectedHeadsets = new List<AsusHeadset>();
 
         public static event EventHandler? DeviceChanged;
 
@@ -31,15 +34,22 @@ namespace GHelper.Peripherals
             }
         }
 
+        public static bool IsHeadsetConnected()
+        {
+            lock (_LOCK)
+            {
+                return ConnectedHeadsets.Count > 0;
+            }
+        }
+
         public static bool IsDeviceConnected(IPeripheral peripheral)
         {
             return AllPeripherals().Contains(peripheral);
         }
 
-        //Expand if keyboards or other device get supported later.
         public static bool IsAnyPeripheralConnect()
         {
-            return IsMouseConnected();
+            return IsMouseConnected() || IsHeadsetConnected();
         }
 
         public static List<IPeripheral> AllPeripherals()
@@ -48,6 +58,7 @@ namespace GHelper.Peripherals
             lock (_LOCK)
             {
                 l.AddRange(ConnectedMice);
+                l.AddRange(ConnectedHeadsets);
             }
             return l;
         }
@@ -91,6 +102,21 @@ namespace GHelper.Peripherals
             if (DeviceChanged is not null)
             {
                 DeviceChanged(am, EventArgs.Empty);
+            }
+        }
+
+        public static void Disconnect(AsusHeadset ah)
+        {
+            lock (_LOCK)
+            {
+                ah.Disconnect -= Headset_Disconnect;
+                ah.HeadsetReadyChanged -= HeadsetReadyChanged;
+                ah.BatteryUpdated -= BatteryUpdated;
+                ConnectedHeadsets.Remove(ah);
+            }
+            if (DeviceChanged is not null)
+            {
+                DeviceChanged(ah, EventArgs.Empty);
             }
         }
 
@@ -142,6 +168,52 @@ namespace GHelper.Peripherals
             UpdateSettingsView();
         }
 
+        public static void Connect(AsusHeadset ah)
+        {
+            if (IsDeviceConnected(ah))
+            {
+                //Headset already connected;
+                return;
+            }
+
+            try
+            {
+                ah.Connect();
+            }
+            catch (IOException e)
+            {
+                Logger.WriteLine(ah.GetDisplayName() + " failed to connect to device: " + e);
+                return;
+            }
+
+            //The headset might needs a few ms to register all its subdevices or the sync will fail.
+            //Retry 3 times. Do not call this on main thread! It would block the UI
+
+            int tries = 0;
+            while (!ah.IsDeviceReady && tries < 3)
+            {
+                Thread.Sleep(250);
+                Logger.WriteLine(ah.GetDisplayName() + " synchronising. Try " + (tries + 1));
+                ah.SynchronizeDevice();
+                ++tries;
+            }
+
+            lock (_LOCK)
+            {
+                ConnectedHeadsets.Add(ah);
+            }
+            Logger.WriteLine(ah.GetDisplayName() + " added to the list: " + ConnectedHeadsets.Count + " device are conneted.");
+
+            ah.Disconnect += Headset_Disconnect;
+            ah.HeadsetReadyChanged += HeadsetReadyChanged;
+            ah.BatteryUpdated += BatteryUpdated;
+            if (DeviceChanged is not null)
+            {
+                DeviceChanged(ah, EventArgs.Empty);
+            }
+            UpdateSettingsView();
+        }
+
         private static void BatteryUpdated(object? sender, EventArgs e)
         {
             UpdateSettingsView();
@@ -168,6 +240,30 @@ namespace GHelper.Peripherals
             Logger.WriteLine(am.GetDisplayName() + " reported disconnect. " + ConnectedMice.Count + " device are conneted.");
             am.Dispose();
 
+            UpdateSettingsView();
+        }
+
+        private static void Headset_Disconnect(object? sender, EventArgs e)
+        {
+            if (sender is null)
+            {
+                return;
+            }
+
+            AsusHeadset ah = (AsusHeadset)sender;
+            lock (_LOCK)
+            {
+                ConnectedHeadsets.Remove(ah);
+            }
+
+            Logger.WriteLine(ah.GetDisplayName() + " reported disconnect. " + ConnectedHeadsets.Count + " device are conneted.");
+            ah.Dispose();
+
+            UpdateSettingsView();
+        }
+
+        private static void HeadsetReadyChanged(object? sender, EventArgs e)
+        {
             UpdateSettingsView();
         }
 
@@ -340,7 +436,24 @@ namespace GHelper.Peripherals
             timer.Stop();
             Logger.WriteLine("HID Device Event: Checking for new ASUS Mice");
             DetectAllAsusMice();
+            DetectAllAsusHeadsets();
             if (AppConfig.IsZ13()) Program.inputDispatcher.Init();
+        }
+
+        [MethodImpl(MethodImplOptions.Synchronized)]
+        public static void DetectAllAsusHeadsets()
+        {
+            //Add one line for every supported headset class here to support them.
+            DetectHeadset(new StrixGo24());
+        }
+
+        public static void DetectHeadset(AsusHeadset ah)
+        {
+            if (ah.IsDeviceConnected() && !IsDeviceConnected(ah))
+            {
+                Logger.WriteLine("Detected a new " + ah.GetDisplayName() + ". Connecting...");
+                Connect(ah);
+            }
         }
     }
 }
