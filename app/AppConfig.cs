@@ -15,7 +15,7 @@ public static class AppConfig
 
     private static Dictionary<string, object> config = new Dictionary<string, object>();
     private static System.Timers.Timer timer = new System.Timers.Timer(2000);
-    private static long lastWrite;
+    private static readonly object configLock = new();
 
     static AppConfig()
     {
@@ -26,8 +26,8 @@ public static class AppConfig
         fallbackConfigFile = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "GHelper", configName);
 
         configFile = File.Exists(startupConfig) ? startupConfig
-                   : ProcessHelper.IsRunningAsSystem() && File.Exists(fallbackConfigFile) ? fallbackConfigFile
-                   : Path.Combine(appPath, configName);
+        : ProcessHelper.IsRunningAsSystem() && File.Exists(fallbackConfigFile) ? fallbackConfigFile
+        : Path.Combine(appPath, configName);
 
         Directory.CreateDirectory(appPath);
 
@@ -52,63 +52,34 @@ public static class AppConfig
         }
     }
 
-
     private static void Timer_Elapsed(object? sender, System.Timers.ElapsedEventArgs e)
     {
-
         timer.Stop();
-        string jsonString = JsonSerializer.Serialize(config, new JsonSerializerOptions { WriteIndented = true });
-        var backup = configFile + ".bak";
-
+        string jsonString;
+        lock (configLock) jsonString = JsonSerializer.Serialize(config, new JsonSerializerOptions { WriteIndented = true });
         try
         {
-            File.WriteAllText(configFile, jsonString);
-            //Debug.WriteLine($"{DateTime.Now}: Config write");
-        }
-        catch (Exception)
-        {
-            Thread.Sleep(1000);
-            try
-            {
-                File.WriteAllText(configFile, jsonString);
-            }
-            catch (Exception ex)
-            {
-                Logger.WriteLine(ex.Message);
-            }
-            return;
-        }
-
-        lastWrite = DateTimeOffset.Now.ToUnixTimeMilliseconds();
-
-        Thread.Sleep(5000);
-
-        if (Math.Abs(DateTimeOffset.Now.ToUnixTimeMilliseconds() - lastWrite) < 4000) return;
-
-        var backupText = File.ReadAllText(configFile);
-        bool isValid =
-            !string.IsNullOrWhiteSpace(backupText) &&
-            backupText.IndexOf('\0') == -1 &&
-            backupText.StartsWith("{") &&
-            backupText.Trim().EndsWith("}") &&
-            backupText.Length >= 10;
-
-        if (isValid)
-        {
-            File.Copy(configFile, backup, true);
+            WriteAtomic(configFile, jsonString);
             SyncFallbackConfig();
         }
-        else
-        {
-            Logger.WriteLine("Error writing config");
-        }
+        catch (Exception ex) { Logger.WriteLine("Config write failed: " + ex.Message); }
+    }
 
+    private static void WriteAtomic(string path, string content)
+    {
+        string tmp = path + ".tmp";
+        File.WriteAllText(tmp, content);
+        using (var fs = new FileStream(tmp, FileMode.Open, FileAccess.Write))
+            fs.Flush(flushToDisk: true);
+        if (File.Exists(path))
+            File.Replace(tmp, path, path + ".bak");
+        else
+            File.Move(tmp, path);
     }
 
     private static void SyncFallbackConfig()
     {
         if (fallbackConfigFile is null || fallbackConfigFile == configFile) return;
-
         try
         {
             Directory.CreateDirectory(Path.GetDirectoryName(fallbackConfigFile));
@@ -189,7 +160,6 @@ public static class AppConfig
         return (_model is not null && _model.ToLower().Contains(contains.ToLower()));
     }
 
-
     private static void Init()
     {
         config = new Dictionary<string, object>();
@@ -200,21 +170,14 @@ public static class AppConfig
 
     public static bool Exists(string name)
     {
-        return config.ContainsKey(name);
+        lock (configLock) return config.ContainsKey(name);
     }
 
     public static int Get(string name, int empty = -1)
     {
-        if (config.ContainsKey(name))
-        {
-            //Debug.WriteLine(name);
-            return int.Parse(config[name].ToString());
-        }
-        else
-        {
-            //Debug.WriteLine(name + "E");
-            return empty;
-        }
+        lock (configLock)
+            return config.TryGetValue(name, out var val) && int.TryParse(val?.ToString(), out int result)
+            ? result : empty;
     }
 
     public static bool Is(string name)
@@ -234,9 +197,8 @@ public static class AppConfig
 
     public static string GetString(string name, string empty = null)
     {
-        if (config.ContainsKey(name))
-            return config[name].ToString();
-        else return empty;
+        lock (configLock)
+            return config.TryGetValue(name, out var val) ? val?.ToString() : empty;
     }
 
     private static void Write()
@@ -247,18 +209,19 @@ public static class AppConfig
 
     public static void Set(string name, int value)
     {
-        config[name] = value;
+        lock (configLock) config[name] = value;
         Write();
     }
 
     public static void Set(string name, string value)
     {
-        config[name] = value;
+        lock (configLock) config[name] = value;
         Write();
     }
+
     public static void Remove(string name)
     {
-        config.Remove(name);
+        lock (configLock) config.Remove(name);
         Write();
     }
 
@@ -286,7 +249,6 @@ public static class AppConfig
             default:
                 name = "cpu";
                 break;
-
         }
 
         return paramName + "_" + name + "_" + mode;
@@ -308,7 +270,6 @@ public static class AppConfig
         string bitCurve = BitConverter.ToString(curve);
         Set(GgetParamName(device), bitCurve);
     }
-
 
     public static byte[] StringToBytes(string str)
     {
@@ -350,7 +311,6 @@ public static class AppConfig
                         return StringToBytes("3A-3D-40-44-48-4D-51-62-08-11-16-1A-22-29-30-45");
                 }
         }
-
     }
 
     public static string GetModeString(string name)
@@ -386,12 +346,12 @@ public static class AppConfig
     public static bool NoMKeys()
     {
         return (ContainsModel("Z13") && !IsARCNM()) ||
-               ContainsModel("FX706") ||
-               ContainsModel("FA706") ||
-               ContainsModel("FA506") ||
-               ContainsModel("FX506") ||
-               ContainsModel("Duo") ||
-               ContainsModel("FX505");
+        ContainsModel("FX706") ||
+        ContainsModel("FA706") ||
+        ContainsModel("FA506") ||
+        ContainsModel("FX506") ||
+        ContainsModel("Duo") ||
+        ContainsModel("FX505");
     }
 
     public static bool IsARCNM()
@@ -429,7 +389,6 @@ public static class AppConfig
     {
         return ContainsModel("FA506IEB") || ContainsModel("FA506IH") || ContainsModel("FA506IC") || ContainsModel("FA506II") || ContainsModel("FX506LU") || ContainsModel("FX506IC") || ContainsModel("FX506LH") || ContainsModel("FA506IV") || ContainsModel("FA706IC") || ContainsModel("FA706IH");
     }
-
 
     public static bool IsDUO()
     {
@@ -595,7 +554,7 @@ public static class AppConfig
     public static bool DynamicBoost15()
     {
         return ContainsModel("FX507ZC4") || ContainsModel("GA403UM") || ContainsModel("GU605CP") || ContainsModel("FX608J") || ContainsModel("FX608L") || ContainsModel("FA608U") || ContainsModel("FA608P") || ContainsModel("FA608W") ||
-               ContainsModel("FA401K") || ContainsModel("FA401UM") || ContainsModel("FA401UH");
+        ContainsModel("FA401K") || ContainsModel("FA401UM") || ContainsModel("FA401UH");
     }
 
     public static bool DynamicBoost20()
