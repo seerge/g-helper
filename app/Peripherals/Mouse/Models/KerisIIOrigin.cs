@@ -81,6 +81,11 @@
                 || lightingMode == LightingMode.Off;
         }
 
+        public override bool IsLightingModeSupportedForZone(LightingMode lm, LightingZone lz)
+        {
+            return true;
+        }
+
         public override bool HasAutoPowerOff()
         {
             return true;
