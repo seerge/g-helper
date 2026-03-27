@@ -1,5 +1,5 @@
+using GHelper.Helpers;
 using GHelper.Mode;
-using System.Diagnostics;
 using System.Management;
 using System.Text.Json;
 
@@ -7,6 +7,7 @@ public static class AppConfig
 {
 
     private static string configFile;
+    private static string fallbackConfigFile;
 
     private static string? _model;
     private static string? _modelShort;
@@ -18,56 +19,39 @@ public static class AppConfig
 
     static AppConfig()
     {
+        string configName = "config.json";
+        string appPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "GHelper");
+        string startupConfig = Path.Combine(Application.StartupPath.Trim('\\'), configName);
 
-        string startupPath = Application.StartupPath.Trim('\\');
-        string appPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\GHelper";
-        string configName = "\\config.json";
+        fallbackConfigFile = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "GHelper", configName);
 
-        if (File.Exists(startupPath + configName))
-        {
-            configFile = startupPath + configName;
-        }
-        else
-        {
-            configFile = appPath + configName;
-        }
+        configFile = File.Exists(startupConfig) ? startupConfig
+                   : ProcessHelper.IsRunningAsSystem() && File.Exists(fallbackConfigFile) ? fallbackConfigFile
+                   : Path.Combine(appPath, configName);
 
+        Directory.CreateDirectory(appPath);
 
-        if (!System.IO.Directory.Exists(appPath))
-            System.IO.Directory.CreateDirectory(appPath);
-
-        if (File.Exists(configFile))
-        {
-            string text = File.ReadAllText(configFile);
-            try
-            {
-                config = JsonSerializer.Deserialize<Dictionary<string, object>>(text);
-            }
-            catch (Exception ex)
-            {
-                Logger.WriteLine($"Broken config: {ex.Message} {text}");
-                try
-                {
-                    text = File.ReadAllText(configFile + ".bak");
-                    config = JsonSerializer.Deserialize<Dictionary<string, object>>(text);
-                }
-                catch (Exception exb)
-                {
-                    Logger.WriteLine($"Broken backup config: {exb.Message} {text}");
-                    File.Copy(configFile, configFile + ".old", true);
-                    File.Copy(configFile + ".bak", configFile + ".bak.old", true);
-                    Init();
-                }
-            }
-        }
-        else
-        {
-            Init();
-        }
+        if (!TryLoadConfig(configFile) && !TryLoadConfig(configFile + ".bak") && !TryLoadConfig(fallbackConfigFile)) Init();
 
         timer.Elapsed += Timer_Elapsed;
-
     }
+
+    private static bool TryLoadConfig(string path)
+    {
+        if (!File.Exists(path)) return false;
+        try
+        {
+            config = JsonSerializer.Deserialize<Dictionary<string, object>>(File.ReadAllText(path));
+            Logger.WriteLine($"Config loaded from {path}");
+            return true;
+        }
+        catch (Exception ex)
+        {
+            Logger.WriteLine($"Broken config {path}: {ex.Message}");
+            return false;
+        }
+    }
+
 
     private static void Timer_Elapsed(object? sender, System.Timers.ElapsedEventArgs e)
     {
@@ -104,7 +88,7 @@ public static class AppConfig
         var backupText = File.ReadAllText(configFile);
         bool isValid =
             !string.IsNullOrWhiteSpace(backupText) &&
-            backupText.IndexOf('\0') == -1 &&                     
+            backupText.IndexOf('\0') == -1 &&
             backupText.StartsWith("{") &&
             backupText.Trim().EndsWith("}") &&
             backupText.Length >= 10;
@@ -112,13 +96,28 @@ public static class AppConfig
         if (isValid)
         {
             File.Copy(configFile, backup, true);
-            //Debug.WriteLine($"{DateTime.Now}: Config backup");
+            SyncFallbackConfig();
         }
         else
         {
             Logger.WriteLine("Error writing config");
         }
 
+    }
+
+    private static void SyncFallbackConfig()
+    {
+        if (fallbackConfigFile is null || fallbackConfigFile == configFile) return;
+
+        try
+        {
+            Directory.CreateDirectory(Path.GetDirectoryName(fallbackConfigFile));
+            File.Copy(configFile, fallbackConfigFile, overwrite: true);
+        }
+        catch (Exception ex)
+        {
+            //Logger.WriteLine("Can't sync fallback config: " + ex.Message);
+        }
     }
 
     public static string GetModel()
@@ -467,7 +466,7 @@ public static class AppConfig
     {
         return ContainsModel("GA401") || ContainsModel("GA402") || ContainsModel("GU604V") || ContainsModel("GU604V") || ContainsModel("G835") || ContainsModel("G815") || ContainsModel("G635") || ContainsModel("G615");
     }
-    
+
     public static bool IsSlash()
     {
         return ContainsModel("GA403") || ContainsModel("GU605") || ContainsModel("GA605");
