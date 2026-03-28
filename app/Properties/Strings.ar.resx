@@ -887,4 +887,52 @@
   <data name="MouseZoneMode" xml:space="preserve">
     <value>Zone Mode</value>
   </data>
+  <data name="BatteryAutoOptimize" xml:space="preserve">
+    <value>التبديل التلقائي إلى الوضع المحسّن عند استخدام البطارية</value>
+  </data>
+  <data name="BatteryAutoSwitch" xml:space="preserve">
+    <value>التبديل تلقائياً دائماً</value>
+  </data>
+  <data name="BatteryDontRemind" xml:space="preserve">
+    <value>لا تذكرني</value>
+  </data>
+  <data name="BatteryIssueAnimeMatrix" xml:space="preserve">
+    <value>Anime Matrix نشط</value>
+  </data>
+  <data name="BatteryIssueCPUBoost" xml:space="preserve">
+    <value>تعزيز CPU مفعّل</value>
+  </data>
+  <data name="BatteryIssueDiscreteGPU" xml:space="preserve">
+    <value>GPU المنفصل نشط</value>
+  </data>
+  <data name="BatteryIssueDisplayRate" xml:space="preserve">
+    <value>الشاشة: {0}Hz</value>
+  </data>
+  <data name="BatteryIssueKeyboardBacklight" xml:space="preserve">
+    <value>إضاءة لوحة المفاتيح مفعّلة دائماً</value>
+  </data>
+  <data name="BatteryIssueOverdrive" xml:space="preserve">
+    <value>تسريع الشاشة مفعّل</value>
+  </data>
+  <data name="BatteryIssuePerformanceTurbo" xml:space="preserve">
+    <value>الأداء: Turbo</value>
+  </data>
+  <data name="BatteryOptimization" xml:space="preserve">
+    <value>تحسين البطارية</value>
+  </data>
+  <data name="BatteryOptimizationSubtitle" xml:space="preserve">
+    <value>إعداداتك الحالية قد تستنزف البطارية بشكل أسرع:</value>
+  </data>
+  <data name="BatteryOptimizeButton" xml:space="preserve">
+    <value>تحسين لاستخدام البطارية</value>
+  </data>
+  <data name="BatteryOptimizedToast" xml:space="preserve">
+    <value>تم التبديل إلى وضع تحسين البطارية</value>
+  </data>
+  <data name="BatterySectionHeader" xml:space="preserve">
+    <value>البطارية</value>
+  </data>
+  <data name="BatteryShowNotifications" xml:space="preserve">
+    <value>إظهار إشعارات تحسين البطارية</value>
+  </data>
 </root>

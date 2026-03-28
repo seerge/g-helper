@@ -887,4 +887,52 @@ Bạn có muốn tiếp tục không?</value>
   <data name="MouseZoneMode" xml:space="preserve">
     <value>Zone Mode</value>
   </data>
+  <data name="BatteryAutoOptimize" xml:space="preserve">
+    <value>Tự động chuyển sang chế độ tối ưu khi dùng pin</value>
+  </data>
+  <data name="BatteryAutoSwitch" xml:space="preserve">
+    <value>Luôn tự động chuyển</value>
+  </data>
+  <data name="BatteryDontRemind" xml:space="preserve">
+    <value>Không nhắc lại</value>
+  </data>
+  <data name="BatteryIssueAnimeMatrix" xml:space="preserve">
+    <value>Anime Matrix đang bật</value>
+  </data>
+  <data name="BatteryIssueCPUBoost" xml:space="preserve">
+    <value>Tăng cường CPU đang bật</value>
+  </data>
+  <data name="BatteryIssueDiscreteGPU" xml:space="preserve">
+    <value>GPU rời đang hoạt động</value>
+  </data>
+  <data name="BatteryIssueDisplayRate" xml:space="preserve">
+    <value>Màn hình: {0}Hz</value>
+  </data>
+  <data name="BatteryIssueKeyboardBacklight" xml:space="preserve">
+    <value>Đèn nền bàn phím luôn bật</value>
+  </data>
+  <data name="BatteryIssueOverdrive" xml:space="preserve">
+    <value>Overdrive màn hình đang bật</value>
+  </data>
+  <data name="BatteryIssuePerformanceTurbo" xml:space="preserve">
+    <value>Hiệu năng: Turbo</value>
+  </data>
+  <data name="BatteryOptimization" xml:space="preserve">
+    <value>Tối ưu hóa pin</value>
+  </data>
+  <data name="BatteryOptimizationSubtitle" xml:space="preserve">
+    <value>Cài đặt hiện tại của bạn có thể tiêu hao pin nhanh hơn:</value>
+  </data>
+  <data name="BatteryOptimizeButton" xml:space="preserve">
+    <value>Tối ưu cho pin</value>
+  </data>
+  <data name="BatteryOptimizedToast" xml:space="preserve">
+    <value>Đã chuyển sang chế độ tối ưu pin</value>
+  </data>
+  <data name="BatterySectionHeader" xml:space="preserve">
+    <value>Pin</value>
+  </data>
+  <data name="BatteryShowNotifications" xml:space="preserve">
+    <value>Hiển thị thông báo tối ưu hóa pin</value>
+  </data>
 </root>

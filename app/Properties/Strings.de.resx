@@ -887,4 +887,52 @@ Trotzdem fortfahren?</value>
   <data name="MouseZoneMode" xml:space="preserve">
     <value>Zone Mode</value>
   </data>
+  <data name="BatteryAutoOptimize" xml:space="preserve">
+    <value>Automatisch in optimierten Modus wechseln im Akkubetrieb</value>
+  </data>
+  <data name="BatteryAutoSwitch" xml:space="preserve">
+    <value>Immer automatisch wechseln</value>
+  </data>
+  <data name="BatteryDontRemind" xml:space="preserve">
+    <value>Nicht erinnern</value>
+  </data>
+  <data name="BatteryIssueAnimeMatrix" xml:space="preserve">
+    <value>Anime Matrix aktiv</value>
+  </data>
+  <data name="BatteryIssueCPUBoost" xml:space="preserve">
+    <value>CPU-Boost aktiviert</value>
+  </data>
+  <data name="BatteryIssueDiscreteGPU" xml:space="preserve">
+    <value>Dedizierte GPU aktiv</value>
+  </data>
+  <data name="BatteryIssueDisplayRate" xml:space="preserve">
+    <value>Anzeige: {0}Hz</value>
+  </data>
+  <data name="BatteryIssueKeyboardBacklight" xml:space="preserve">
+    <value>Tastaturbeleuchtung immer an</value>
+  </data>
+  <data name="BatteryIssueOverdrive" xml:space="preserve">
+    <value>Bildschirm-Overdrive an</value>
+  </data>
+  <data name="BatteryIssuePerformanceTurbo" xml:space="preserve">
+    <value>Leistung: Turbo</value>
+  </data>
+  <data name="BatteryOptimization" xml:space="preserve">
+    <value>Akkuoptimierung</value>
+  </data>
+  <data name="BatteryOptimizationSubtitle" xml:space="preserve">
+    <value>Ihre aktuellen Einstellungen können den Akku schneller entladen:</value>
+  </data>
+  <data name="BatteryOptimizeButton" xml:space="preserve">
+    <value>Für Akkubetrieb optimieren</value>
+  </data>
+  <data name="BatteryOptimizedToast" xml:space="preserve">
+    <value>In akkuoptimierten Modus gewechselt</value>
+  </data>
+  <data name="BatterySectionHeader" xml:space="preserve">
+    <value>Akku</value>
+  </data>
+  <data name="BatteryShowNotifications" xml:space="preserve">
+    <value>Akkuoptimierungs-Benachrichtigungen anzeigen</value>
+  </data>
 </root>

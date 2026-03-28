@@ -887,4 +887,52 @@ Folytatni szeretnéd?</value>
   <data name="MouseZoneMode" xml:space="preserve">
     <value>Zone Mode</value>
   </data>
+  <data name="BatteryAutoOptimize" xml:space="preserve">
+    <value>Automatikus váltás optimalizált módra akkumulátoron</value>
+  </data>
+  <data name="BatteryAutoSwitch" xml:space="preserve">
+    <value>Mindig automatikusan váltson</value>
+  </data>
+  <data name="BatteryDontRemind" xml:space="preserve">
+    <value>Ne emlékeztess</value>
+  </data>
+  <data name="BatteryIssueAnimeMatrix" xml:space="preserve">
+    <value>Anime Matrix aktív</value>
+  </data>
+  <data name="BatteryIssueCPUBoost" xml:space="preserve">
+    <value>CPU boost engedélyezve</value>
+  </data>
+  <data name="BatteryIssueDiscreteGPU" xml:space="preserve">
+    <value>Dedikált GPU aktív</value>
+  </data>
+  <data name="BatteryIssueDisplayRate" xml:space="preserve">
+    <value>Kijelző: {0}Hz</value>
+  </data>
+  <data name="BatteryIssueKeyboardBacklight" xml:space="preserve">
+    <value>Billentyűzet háttérvilágítás mindig bekapcsolva</value>
+  </data>
+  <data name="BatteryIssueOverdrive" xml:space="preserve">
+    <value>Képernyő overdrive bekapcsolva</value>
+  </data>
+  <data name="BatteryIssuePerformanceTurbo" xml:space="preserve">
+    <value>Teljesítmény: Turbo</value>
+  </data>
+  <data name="BatteryOptimization" xml:space="preserve">
+    <value>Akkumulátor optimalizálás</value>
+  </data>
+  <data name="BatteryOptimizationSubtitle" xml:space="preserve">
+    <value>A jelenlegi beállítások gyorsabban meríthetik az akkumulátort:</value>
+  </data>
+  <data name="BatteryOptimizeButton" xml:space="preserve">
+    <value>Optimalizálás akkumulátorra</value>
+  </data>
+  <data name="BatteryOptimizedToast" xml:space="preserve">
+    <value>Átváltva akkumulátor-optimalizált módra</value>
+  </data>
+  <data name="BatterySectionHeader" xml:space="preserve">
+    <value>Akkumulátor</value>
+  </data>
+  <data name="BatteryShowNotifications" xml:space="preserve">
+    <value>Akkumulátor optimalizálási értesítések megjelenítése</value>
+  </data>
 </root>

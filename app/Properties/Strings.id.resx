@@ -887,4 +887,52 @@ Apakah Anda masih ingin melanjutkan?</value>
   <data name="MouseZoneMode" xml:space="preserve">
     <value>Zone Mode</value>
   </data>
+  <data name="BatteryAutoOptimize" xml:space="preserve">
+    <value>Beralih otomatis ke mode optimal saat menggunakan baterai</value>
+  </data>
+  <data name="BatteryAutoSwitch" xml:space="preserve">
+    <value>Selalu beralih otomatis</value>
+  </data>
+  <data name="BatteryDontRemind" xml:space="preserve">
+    <value>Jangan ingatkan saya</value>
+  </data>
+  <data name="BatteryIssueAnimeMatrix" xml:space="preserve">
+    <value>Anime Matrix aktif</value>
+  </data>
+  <data name="BatteryIssueCPUBoost" xml:space="preserve">
+    <value>CPU boost diaktifkan</value>
+  </data>
+  <data name="BatteryIssueDiscreteGPU" xml:space="preserve">
+    <value>GPU diskrit aktif</value>
+  </data>
+  <data name="BatteryIssueDisplayRate" xml:space="preserve">
+    <value>Layar: {0}Hz</value>
+  </data>
+  <data name="BatteryIssueKeyboardBacklight" xml:space="preserve">
+    <value>Lampu latar keyboard selalu menyala</value>
+  </data>
+  <data name="BatteryIssueOverdrive" xml:space="preserve">
+    <value>Overdrive layar aktif</value>
+  </data>
+  <data name="BatteryIssuePerformanceTurbo" xml:space="preserve">
+    <value>Performa: Turbo</value>
+  </data>
+  <data name="BatteryOptimization" xml:space="preserve">
+    <value>Optimasi Baterai</value>
+  </data>
+  <data name="BatteryOptimizationSubtitle" xml:space="preserve">
+    <value>Pengaturan Anda saat ini dapat menguras baterai lebih cepat:</value>
+  </data>
+  <data name="BatteryOptimizeButton" xml:space="preserve">
+    <value>Optimalkan untuk baterai</value>
+  </data>
+  <data name="BatteryOptimizedToast" xml:space="preserve">
+    <value>Beralih ke mode hemat baterai</value>
+  </data>
+  <data name="BatterySectionHeader" xml:space="preserve">
+    <value>Baterai</value>
+  </data>
+  <data name="BatteryShowNotifications" xml:space="preserve">
+    <value>Tampilkan notifikasi optimasi baterai</value>
+  </data>
 </root>

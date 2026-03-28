@@ -311,6 +311,8 @@ namespace GHelper
             ScreenControl.InitMiniled();
             VisualControl.InitBrightness();
 
+            Task.Run(() => Battery.BatteryOptimizationService.CheckAndNotify(init));
+
             return true;
         }
 
