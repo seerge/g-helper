@@ -1,8 +1,6 @@
 ﻿using GHelper.Helpers;
 using GHelper.UI;
-using NvAPIWrapper.Native.Display.Structures;
 using System.Diagnostics;
-using System.Diagnostics.Metrics;
 using System.Management;
 using System.Net;
 using System.Text.Json;

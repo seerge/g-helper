@@ -944,15 +944,15 @@ namespace GHelper
                 if (RyzenControl.IsAMD())
                 {
                     labelLeftTotal.Text = "SPL (CPU sustained)";
-                    labelLeftSlow.Text = "sPPT (CPU 2 min boost)";
-                    labelLeftFast.Text = "fPPT (CPU 2 sec boost)";
+                    labelLeftSlow.Text = "sPPT (CPU long boost)";
+                    labelLeftFast.Text = "fPPT (CPU short boost)";
                     panelFast.Visible = modeC1;
 
                 }
                 else
                 {
                     labelLeftTotal.Text = "PL1 (CPU sustained)";
-                    labelLeftSlow.Text = "PL2 (CPU 2 min boost)";
+                    labelLeftSlow.Text = "PL2 (CPU long boost)";
                     panelFast.Visible = false;
                 }
 
