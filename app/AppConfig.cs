@@ -720,7 +720,7 @@ public static class AppConfig
 
     public static bool IsClampFanDots()
     {
-        return Is("fan_clamp") || (IsTUF() && IsNotFalse("fan_clamp"));
+        return IsNotFalse("fan_clamp");
     }
 
 
