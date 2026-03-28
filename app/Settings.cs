@@ -243,7 +243,7 @@ namespace GHelper
 
             sensorTimer = new System.Timers.Timer(AppConfig.Get("sensor_timer", 1000));
             sensorTimer.Elapsed += OnTimedEvent;
-            sensorTimer.Enabled = true;
+            sensorTimer.Enabled = false;
 
             labelCharge.MouseEnter += PanelBattery_MouseEnter;
             labelCharge.MouseLeave += PanelBattery_MouseLeave;
