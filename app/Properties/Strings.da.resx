@@ -780,7 +780,7 @@ Vil du stadig fortsætte?</value>
     <value>Visuel tilstand</value>
   </data>
   <data name="VisualModesHDR" xml:space="preserve">
-    <value>Visuelle tilstande er ikke tilgængelige, når HDR er aktiv</value>
+    <value>Visual Modes are not available when HDR or ACM is active</value>
   </data>
   <data name="VisualModesScreen" xml:space="preserve">
     <value>Visuelle tilstande er ikke tilgængelige, når laptopskærmen er slukket</value>
