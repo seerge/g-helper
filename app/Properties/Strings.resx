@@ -887,4 +887,7 @@ Do you still want to continue?</value>
   <data name="MouseZoneMode" xml:space="preserve">
     <value>Zone Mode</value>
   </data>
+  <data name="TrayTemps" xml:space="preserve">
+    <value>Tray Temps</value>
+  </data>
 </root>

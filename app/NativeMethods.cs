@@ -13,6 +13,9 @@ public static class NativeMethods
     [DllImport("User32.dll")]
     private static extern bool GetLastInputInfo(ref LASTINPUTINFO plii);
 
+    [DllImport("user32.dll", SetLastError = true)]
+    public static extern bool DestroyIcon(IntPtr handle);
+
     public static TimeSpan GetIdleTime()
     {
         LASTINPUTINFO lastInPut = new LASTINPUTINFO();
