@@ -428,12 +428,12 @@ public static class AppConfig
 
     public static bool IsSlash()
     {
-        return ContainsModel("GA403") || ContainsModel("GU605") || ContainsModel("GA605");
+        return ContainsModel("GA403") || ContainsModel("GU605") || ContainsModel("GA605") || ContainsModel("GU405") || ContainsModel("GU606");
     }
 
     public static bool IsSlashAura()
     {
-        return ContainsModel("GA605") || ContainsModel("GU605C") || ContainsModel("GA403W") || ContainsModel("GA403UM") || ContainsModel("GA403UP") || ContainsModel("GA403UH");
+        return ContainsModel("GA605") || ContainsModel("GU605C") || ContainsModel("GA403W") || ContainsModel("GA403UM") || ContainsModel("GA403UP") || ContainsModel("GA403UH") || ContainsModel("GU405") || ContainsModel("GU606");
     }
 
     public static bool IsInputBacklight()
@@ -569,7 +569,7 @@ public static class AppConfig
 
     public static bool NoAutoUltimate()
     {
-        return ContainsModel("G614") || ContainsModel("GU604") || ContainsModel("FX507") || ContainsModel("G513") || ContainsModel("FA617") || ContainsModel("G834") || ContainsModel("GA403") || ContainsModel("GU605") || ContainsModel("GA605") || ContainsModel("GU603VV");
+        return ContainsModel("G614") || ContainsModel("GU604") || ContainsModel("FX507") || ContainsModel("G513") || ContainsModel("FA617") || ContainsModel("G834") || ContainsModel("GA403") || ContainsModel("GU605") || ContainsModel("GA605") || ContainsModel("GU603VV") || ContainsModel("GU405") || ContainsModel("GU606");
     }
 
     public static bool IsAlwaysUltimate()
@@ -684,7 +684,7 @@ public static class AppConfig
 
     public static bool IsChargeLimit6080()
     {
-        return ContainsModel("H760") || ContainsModel("GA403") || ContainsModel("GU605") || ContainsModel("GA605") || ContainsModel("GA503R") || (IsTUF() && !(ContainsModel("FX507Z") || ContainsModel("FA617") || ContainsModel("FA607")));
+        return  ContainsModel("GU405") || ContainsModel("GU606") || ContainsModel("H760") || ContainsModel("GA403") || ContainsModel("GU605") || ContainsModel("GA605") || ContainsModel("GA503R") || (IsTUF() && !(ContainsModel("FX507Z") || ContainsModel("FA617") || ContainsModel("FA607")));
 
     }
 
