@@ -782,7 +782,7 @@ namespace GHelper.Input
 
             if (slateState >= 0) SetSlateMode(slateState);
             if (tabletState && touchpadState || !tabletState && !touchpadState) ToggleTouchpad();
-
+            InitFNLock();
         }
 
         static int GetTentState()
