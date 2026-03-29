@@ -780,7 +780,7 @@ Sei sicuro di voler continuare?</value>
     <value>Modalità Visiva</value>
   </data>
   <data name="VisualModesHDR" xml:space="preserve">
-    <value>Le Modalità Visive non sono disponibili quando l'HDR è attivo</value>
+    <value>Visual Modes are not available when HDR or ACM is active</value>
   </data>
   <data name="VisualModesScreen" xml:space="preserve">
     <value>Le Modalità Visive non sono disponibili quando lo schermo del portatile è spento</value>
