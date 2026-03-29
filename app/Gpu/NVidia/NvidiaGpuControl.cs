@@ -5,6 +5,7 @@ using NvAPIWrapper.Native.GPU;
 using NvAPIWrapper.Native.GPU.Structures;
 using NvAPIWrapper.Native.Interfaces.GPU;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 using static NvAPIWrapper.Native.GPU.Structures.PerformanceStates20InfoV1;
 
 namespace GHelper.Gpu.NVidia;
@@ -260,6 +261,49 @@ public class NvidiaGpuControl : IGpuControl
 
         return (int?)gpuUsage?.Percentage;
 
+    }
+
+    [DllImport("nvml.dll", EntryPoint = "nvmlInit_v2")]
+    private static extern int NvmlInit();
+
+    [DllImport("nvml.dll", EntryPoint = "nvmlDeviceGetHandleByIndex_v2")]
+    private static extern int NvmlDeviceGetHandleByIndex(uint index, out nint device);
+
+    [DllImport("nvml.dll", EntryPoint = "nvmlDeviceGetPowerUsage")]
+    private static extern int NvmlDeviceGetPowerUsage(nint device, out uint powerMilliWatts);
+
+    [DllImport("nvml.dll", EntryPoint = "nvmlShutdown")]
+    private static extern int NvmlShutdown();
+
+    private static bool _nvmlInitDone;
+    private static bool _nvmlFailed;
+    private static nint _nvmlDevice;
+
+    public float? GetGpuPower()
+    {
+        if (!IsValid) return null;
+        if (GetCurrentTemperature() is null) return null;
+
+        try
+        {
+            if (NvmlInit() != 0) return null;
+
+            try
+            {
+                if (NvmlDeviceGetHandleByIndex(0, out nint device) != 0) return null;
+                if (NvmlDeviceGetPowerUsage(device, out uint mW) != 0) return null;
+                return mW / 1000f;
+            }
+            finally
+            {
+                NvmlShutdown();
+            }
+        }
+        catch
+        {
+            Logger.WriteLine("NVML power read failed");
+            return null;
+        }
     }
 
 }

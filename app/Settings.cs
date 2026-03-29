@@ -1547,6 +1547,10 @@ namespace GHelper
             if (HardwareControl.cpuTemp > 0)
                 cpuTemp = ": " + Math.Round((decimal)HardwareControl.cpuTemp).ToString() + "°C";
 
+            string cpuPower = "";
+            if (HardwareControl.cpuPower > 0)
+                cpuPower = " " + Math.Round((decimal)HardwareControl.cpuPower, 1) + "W";
+
             if (HardwareControl.batteryCapacity > 0)
             {
                 charge = Properties.Strings.BatteryCharge + ": " + HardwareControl.batteryCharge;
@@ -1563,18 +1567,22 @@ namespace GHelper
                 gpuTemp = $": {HardwareControl.gpuTemp}°C";
             }
 
-            string trayTip = "CPU" + cpuTemp + " " + HardwareControl.cpuFan;
-            if (gpuTemp.Length > 0) trayTip += "\nGPU" + gpuTemp + " " + HardwareControl.gpuFan;
+            string gpuPower = "";
+            if (HardwareControl.gpuPower > 0)
+                gpuPower = " " + Math.Round((decimal)HardwareControl.gpuPower, 1) + "W";
+
+            string trayTip = "CPU" + cpuTemp + cpuPower + " " + HardwareControl.cpuFan;
+            if (gpuTemp.Length > 0) trayTip += "\nGPU" + gpuTemp + gpuPower + " " + HardwareControl.gpuFan;
             if (battery.Length > 0) trayTip += "\n" + battery;
 
             if (Program.settingsForm.IsHandleCreated)
                 Program.settingsForm.BeginInvoke(delegate
                 {
-                    labelCPUFan.Text = "CPU" + cpuTemp + " " + HardwareControl.cpuFan;
-                    labelGPUFan.Text = "GPU" + gpuTemp + " " + HardwareControl.gpuFan;
+                    labelCPUFan.Text = "CPU" + cpuTemp + cpuPower + " " + HardwareControl.cpuFan;
+                    labelGPUFan.Text = "GPU" + gpuTemp + gpuPower + " " + HardwareControl.gpuFan;
                     if (HardwareControl.gpuFan is not null && AppConfig.NoGpu())
                     {
-                        labelMidFan.Text = "GPU" + gpuTemp + " " + HardwareControl.gpuFan;
+                        labelMidFan.Text = "GPU" + gpuTemp + gpuPower + " " + HardwareControl.gpuFan;
                     }
 
                     if (HardwareControl.midFan is not null)
