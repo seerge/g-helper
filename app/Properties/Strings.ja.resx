@@ -780,7 +780,7 @@
     <value>ビジュアルモード</value>
   </data>
   <data name="VisualModesHDR" xml:space="preserve">
-    <value>HDRがアクティブな場合、ビジュアルモードは利用できません</value>
+    <value>Visual Modes are not available when HDR or ACM is active</value>
   </data>
   <data name="VisualModesScreen" xml:space="preserve">
     <value>ラップトップ画面がオフの場合、ビジュアルモードは使用できません</value>
