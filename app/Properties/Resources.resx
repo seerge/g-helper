@@ -136,6 +136,9 @@
   <data name="icons8_microphone_96" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\icons8-microphone-96.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="icons8_headset_48" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\icons8-headset-48.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="icons8_maus_48" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\icons8-maus-48.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
