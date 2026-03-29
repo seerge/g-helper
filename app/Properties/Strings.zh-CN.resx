@@ -780,7 +780,7 @@
     <value>色域模式</value>
   </data>
   <data name="VisualModesHDR" xml:space="preserve">
-    <value>HDR 开启时不支持色域模式</value>
+    <value>Visual Modes are not available when HDR or ACM is active</value>
   </data>
   <data name="VisualModesScreen" xml:space="preserve">
     <value>笔记本自带屏幕关闭时不支持色域模式</value>
