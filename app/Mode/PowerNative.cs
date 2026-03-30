@@ -233,6 +233,8 @@ namespace GHelper.Mode
         public static void SetASPM(int status = 0)
         {
             Guid activeSchemeGuid = GetActiveScheme();
+            var currentASPM = GetASPM();
+            if (currentASPM == status) return;
 
             var hrAC = PowerWriteACValueIndex(
                 IntPtr.Zero,
@@ -242,7 +244,13 @@ namespace GHelper.Mode
                 status);
 
             PowerSetActiveScheme(IntPtr.Zero, activeSchemeGuid);
-            Logger.WriteLine("Changed ASPM to " + status);
+            Logger.WriteLine($"Changed AC ASPM {currentASPM} -> {status}");
+        }
+
+        public static void AutoSetBalancedASPM(int status = 0)
+        {
+            if (GetActiveScheme().ToString() != PLAN_BALANCED) return;
+            if (AppConfig.IsAutoASPM() || status > 0) SetASPM(status);
         }
 
         public static int GetLidAction(bool ac)

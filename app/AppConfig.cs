@@ -718,5 +718,10 @@ public static class AppConfig
         return IsNotFalse("fan_clamp");
     }
 
+    public static bool IsAutoASPM()
+    {
+        return IsNotFalse("aspm");
+    }
+
 
 }
