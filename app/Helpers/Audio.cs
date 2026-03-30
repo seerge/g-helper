@@ -1,4 +1,4 @@
-﻿using NAudio.CoreAudioApi;
+using NAudio.CoreAudioApi;
 
 namespace GHelper.Helpers
 {
@@ -57,6 +57,22 @@ namespace GHelper.Helpers
             {
                 Logger.WriteLine("Error checking mute status: " + ex.Message);
                 return false; // Assume not muted in case of error
+            }
+        }
+
+        public static void SetSpeakerMute(bool mute)
+        {
+            try
+            {
+                using (var deviceEnumerator = new MMDeviceEnumerator())
+                {
+                    var defaultDevice = deviceEnumerator.GetDefaultAudioEndpoint(DataFlow.Render, Role.Multimedia);
+                    defaultDevice.AudioEndpointVolume.Mute = mute;
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLine("Error setting mute status: " + ex.Message);
             }
         }
     }
