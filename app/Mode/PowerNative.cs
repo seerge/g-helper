@@ -247,10 +247,10 @@ namespace GHelper.Mode
             Logger.WriteLine($"Changed AC ASPM {currentASPM} -> {status}");
         }
 
-        public static void AutoSetBalancedASPM(int status = 0)
+        public static void SetBalancedASPM(int status = 0)
         {
             if (GetActiveScheme().ToString() != PLAN_BALANCED) return;
-            if (AppConfig.IsAutoASPM() || status > 0) SetASPM(status);
+            SetASPM(status);
         }
 
         public static int GetLidAction(bool ac)

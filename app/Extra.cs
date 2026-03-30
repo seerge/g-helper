@@ -495,7 +495,7 @@ namespace GHelper
         private void CheckAspm_CheckedChanged(object? sender, EventArgs e)
         {
             AppConfig.Set("aspm", (checkAspm.Checked ? 1 : 0));
-            PowerNative.AutoSetBalancedASPM(checkAspm.Checked ? 0 : 2);
+            PowerNative.SetBalancedASPM(checkAspm.Checked ? 0 : 2);
         }
 
         private void CheckNVPlatform_CheckedChanged(object? sender, EventArgs e)
