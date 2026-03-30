@@ -780,7 +780,7 @@ Folytatni szeretnéd?</value>
     <value>Képernyőszín Mód</value>
   </data>
   <data name="VisualModesHDR" xml:space="preserve">
-    <value>Visual Modes are not available when HDR is active</value>
+    <value>Visual Modes are not available when HDR or ACM is active</value>
   </data>
   <data name="VisualModesScreen" xml:space="preserve">
     <value>Visual Modes are not available when laptop screen is off</value>

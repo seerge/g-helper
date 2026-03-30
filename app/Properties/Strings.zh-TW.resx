@@ -780,7 +780,7 @@
     <value>色域模式</value>
   </data>
   <data name="VisualModesHDR" xml:space="preserve">
-    <value>HDR開啟時不支援色域模式</value>
+    <value>Visual Modes are not available when HDR or ACM is active</value>
   </data>
   <data name="VisualModesScreen" xml:space="preserve">
     <value>筆電螢幕闔上時不支援色域模式</value>

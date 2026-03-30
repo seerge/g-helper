@@ -780,7 +780,7 @@ Apakah Anda masih ingin melanjutkan?</value>
     <value>Mode Visual</value>
   </data>
   <data name="VisualModesHDR" xml:space="preserve">
-    <value>Mode Visual tidak tersedia saat HDR aktif</value>
+    <value>Visual Modes are not available when HDR or ACM is active</value>
   </data>
   <data name="VisualModesScreen" xml:space="preserve">
     <value>Mode Visual tidak tersedia saat layar laptop mati</value>

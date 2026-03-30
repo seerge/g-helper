@@ -780,7 +780,7 @@ Trotzdem fortfahren?</value>
     <value>Darstellungsmodus</value>
   </data>
   <data name="VisualModesHDR" xml:space="preserve">
-    <value>Darstellungsmodi sind nicht verfügbar, wenn HDR aktiv ist.</value>
+    <value>Visual Modes are not available when HDR or ACM is active</value>
   </data>
   <data name="VisualModesScreen" xml:space="preserve">
     <value>Modi nicht verfügbar, wenn Laptop-Bildschirm aus ist.</value>
