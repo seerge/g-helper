@@ -1,0 +1,890 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Acceleration" xml:space="preserve">
+    <value>Zrychlení</value>
+  </data>
+  <data name="ACPIError" xml:space="preserve">
+    <value>Nelze se připojit k rozhraní ASUS ACPI. Aplikace bez něj nemůže fungovat. Zkuste nainstalovat rozhraní Asus System Control Interface.</value>
+  </data>
+  <data name="AlertAPUMemoryRestart" xml:space="preserve">
+    <value>K aplikování změn restartujte zařízení</value>
+  </data>
+  <data name="AlertAPUMemoryRestartTitle" xml:space="preserve">
+    <value>Restartovat nyní?</value>
+  </data>
+  <data name="AlertDGPU" xml:space="preserve">
+    <value>Vypadá to, že dGPU je silně vytížená, chcete ji deaktivovat?</value>
+  </data>
+  <data name="AlertDGPUTitle" xml:space="preserve">
+    <value>Eco režim</value>
+  </data>
+  <data name="AlertUltimateOff" xml:space="preserve">
+    <value>Vypnutí režimu Ultimate vyžaduje restartování</value>
+  </data>
+  <data name="AlertUltimateOn" xml:space="preserve">
+    <value>Režim Ultimate vyžaduje restartování</value>
+  </data>
+  <data name="AlertUltimateTitle" xml:space="preserve">
+    <value>Restartovat nyní?</value>
+  </data>
+  <data name="AllyController" xml:space="preserve">
+    <value>Ovladač Ally</value>
+  </data>
+  <data name="AnimationSpeed" xml:space="preserve">
+    <value>Rychlost animace</value>
+  </data>
+  <data name="AnimeMatrix" xml:space="preserve">
+    <value>AniMe Matrix</value>
+  </data>
+  <data name="AppAlreadyRunning" xml:space="preserve">
+    <value>Aplikace je již spuštěna</value>
+  </data>
+  <data name="AppAlreadyRunningText" xml:space="preserve">
+    <value>Aplikace G-Helper je již spuštěna. Zkontrolujte, zda se v systémové liště nachází její ikona.</value>
+  </data>
+  <data name="Apply" xml:space="preserve">
+    <value>Použít</value>
+  </data>
+  <data name="ApplyFanCurve" xml:space="preserve">
+    <value>Použít vlastní křivku ventilátoru</value>
+  </data>
+  <data name="ApplyPowerLimits" xml:space="preserve">
+    <value>Použít Power Limity</value>
+  </data>
+  <data name="ApplyWindowsPowerPlan" xml:space="preserve">
+    <value>Automaticky přizpůsobit režimy napájení systému Windows</value>
+  </data>
+  <data name="APUMemory" xml:space="preserve">
+    <value>Paměť přidělená GPU</value>
+  </data>
+  <data name="AsusServicesRunning" xml:space="preserve">
+    <value>Spuštěno služeb Asus</value>
+  </data>
+  <data name="AuraBatteryState" xml:space="preserve">
+    <value>Stav baterie</value>
+  </data>
+  <data name="AuraBreathe" xml:space="preserve">
+    <value>Dýchání</value>
+  </data>
+  <data name="AuraClockwise" xml:space="preserve">
+    <value>Po směru</value>
+  </data>
+  <data name="AuraColorCycle" xml:space="preserve">
+    <value>Barevný cyklus</value>
+  </data>
+  <data name="AuraComet" xml:space="preserve">
+    <value>Kometa</value>
+  </data>
+  <data name="AuraCounterClockwise" xml:space="preserve">
+    <value>Proti směru</value>
+  </data>
+  <data name="AuraFast" xml:space="preserve">
+    <value>Vysoká</value>
+  </data>
+  <data name="AuraLightingMode" xml:space="preserve">
+    <value>Režim osvětlení</value>
+  </data>
+  <data name="AuraNormal" xml:space="preserve">
+    <value>Normální</value>
+  </data>
+  <data name="AuraRainbow" xml:space="preserve">
+    <value>Duha</value>
+  </data>
+  <data name="AuraRandomColor" xml:space="preserve">
+    <value>Náhodný</value>
+  </data>
+  <data name="AuraReact" xml:space="preserve">
+    <value>React</value>
+  </data>
+  <data name="AuraSlow" xml:space="preserve">
+    <value>Nízká</value>
+  </data>
+  <data name="AuraStatic" xml:space="preserve">
+    <value>Statický</value>
+  </data>
+  <data name="AuraStrobe" xml:space="preserve">
+    <value>Stroboskop</value>
+  </data>
+  <data name="AuraZoneAll" xml:space="preserve">
+    <value>Vše</value>
+  </data>
+  <data name="AuraZoneDock" xml:space="preserve">
+    <value>Dok</value>
+  </data>
+  <data name="AuraZoneLogo" xml:space="preserve">
+    <value>Logo</value>
+  </data>
+  <data name="AuraZoneScroll" xml:space="preserve">
+    <value>Kolečko</value>
+  </data>
+  <data name="AuraZoneUnderglow" xml:space="preserve">
+    <value>Podsvícení</value>
+  </data>
+  <data name="AutoApply" xml:space="preserve">
+    <value>Použít automaticky</value>
+  </data>
+  <data name="AutoMode" xml:space="preserve">
+    <value>Auto</value>
+  </data>
+  <data name="AutoRefreshTooltip" xml:space="preserve">
+    <value>Nastaví 60 Hz pro úsporu baterie a vrátí se zpět při připojení k napájení</value>
+  </data>
+  <data name="Awake" xml:space="preserve">
+    <value>V provozu</value>
+  </data>
+  <data name="BacklightLow" xml:space="preserve">
+    <value>Nízké</value>
+  </data>
+  <data name="BacklightMax" xml:space="preserve">
+    <value>Maximální</value>
+  </data>
+  <data name="BacklightMid" xml:space="preserve">
+    <value>Střední</value>
+  </data>
+  <data name="BacklightOff" xml:space="preserve">
+    <value>Vypnuto</value>
+  </data>
+  <data name="BacklightTimeout" xml:space="preserve">
+    <value>Časový limit při připojení k napájení / na baterii (0 - Zapnuto)</value>
+  </data>
+  <data name="BacklightTimeoutBattery" xml:space="preserve">
+    <value>Časový limit podsvícení na baterii</value>
+  </data>
+  <data name="BacklightTimeoutPlugged" xml:space="preserve">
+    <value>Časový limit podsvícení při připojení k napájení</value>
+  </data>
+  <data name="Balanced" xml:space="preserve">
+    <value>Vyvážený</value>
+  </data>
+  <data name="BatteryCharge" xml:space="preserve">
+    <value>Nabito</value>
+  </data>
+  <data name="BatteryChargeLimit" xml:space="preserve">
+    <value>Limit nabití baterie</value>
+  </data>
+  <data name="BatteryHealth" xml:space="preserve">
+    <value>Zdraví baterie</value>
+  </data>
+  <data name="BatteryLimitFull" xml:space="preserve">
+    <value>Jednorázově nabít na 100 %</value>
+  </data>
+  <data name="Binding" xml:space="preserve">
+    <value>Zkratka</value>
+  </data>
+  <data name="BindingPrimary" xml:space="preserve">
+    <value>Primární</value>
+  </data>
+  <data name="BindingSecondary" xml:space="preserve">
+    <value>Sekundární</value>
+  </data>
+  <data name="BiosAndDriverUpdates" xml:space="preserve">
+    <value>Aktualizace BIOSu a ovladačů</value>
+  </data>
+  <data name="Boot" xml:space="preserve">
+    <value>Spouštění</value>
+  </data>
+  <data name="BootSound" xml:space="preserve">
+    <value>Zvuk při spuštění</value>
+  </data>
+  <data name="Brightness" xml:space="preserve">
+    <value>Jas</value>
+  </data>
+  <data name="BrightnessDown" xml:space="preserve">
+    <value>Snížit jas</value>
+  </data>
+  <data name="BrightnessUp" xml:space="preserve">
+    <value>Zvýšit jas</value>
+  </data>
+  <data name="BWTrayIcon" xml:space="preserve">
+    <value>Černobílá ikona v systémové liště</value>
+  </data>
+  <data name="Calibrate" xml:space="preserve">
+    <value>Kalibrace</value>
+  </data>
+  <data name="Charging" xml:space="preserve">
+    <value>Nabíjení</value>
+  </data>
+  <data name="Color" xml:space="preserve">
+    <value>Barva</value>
+  </data>
+  <data name="Contrast" xml:space="preserve">
+    <value>Kontrast</value>
+  </data>
+  <data name="Controller" xml:space="preserve">
+    <value>Ovladač</value>
+  </data>
+  <data name="CPUBoost" xml:space="preserve">
+    <value>CPU Boost</value>
+  </data>
+  <data name="Custom" xml:space="preserve">
+    <value>Vlastní</value>
+  </data>
+  <data name="Deceleration" xml:space="preserve">
+    <value>Zpomalení</value>
+  </data>
+  <data name="Default" xml:space="preserve">
+    <value>Výchozí</value>
+  </data>
+  <data name="DisableController" xml:space="preserve">
+    <value>Vypnout ovladač</value>
+  </data>
+  <data name="DisableOnLidClose" xml:space="preserve">
+    <value>Vypnout při zavření víka</value>
+  </data>
+  <data name="DisableOverdrive" xml:space="preserve">
+    <value>Vypnout funkci Overdrive</value>
+  </data>
+  <data name="Discharging" xml:space="preserve">
+    <value>Vybíjení</value>
+  </data>
+  <data name="DownloadColorProfiles" xml:space="preserve">
+    <value>Stáhnout barevné profily</value>
+  </data>
+  <data name="DownloadUpdate" xml:space="preserve">
+    <value>Stáhnout</value>
+  </data>
+  <data name="DriverAndSoftware" xml:space="preserve">
+    <value>Ovladače a Software</value>
+  </data>
+  <data name="EcoGPUTooltip" xml:space="preserve">
+    <value>Vypnout dGPU pro úsporu baterie</value>
+  </data>
+  <data name="EcoMode" xml:space="preserve">
+    <value>Eco</value>
+  </data>
+  <data name="EnableGPUOnShutdown" xml:space="preserve">
+    <value>Zapnout GPU při vypínání (zabrání problému s režimem Eco)</value>
+  </data>
+  <data name="EnableOptimusText" xml:space="preserve">
+    <value>Vypnutí dGPU přepnutím do režimu Eco, když není režim zobrazení v ovládacím panelu NVIDIA nastaven na Optimus, může způsobit potíže s ovládáním jasu až do dalšího restartu.  
+
+Chcete přesto pokračovat?</value>
+  </data>
+  <data name="EnableOptimusTitle" xml:space="preserve">
+    <value>Režim zobrazení NVIDIA není nastaven na Optimus</value>
+  </data>
+  <data name="EnergySettings" xml:space="preserve">
+    <value>Nastavení spotřeby energie</value>
+  </data>
+  <data name="Export" xml:space="preserve">
+    <value>Export Profilu</value>
+  </data>
+  <data name="Extra" xml:space="preserve">
+    <value>Extra</value>
+  </data>
+  <data name="ExtraSettings" xml:space="preserve">
+    <value>Extra nastavení</value>
+  </data>
+  <data name="FactoryDefaults" xml:space="preserve">
+    <value>Výchozí nastavení</value>
+  </data>
+  <data name="FanCurves" xml:space="preserve">
+    <value>Křivky ventilátoru</value>
+  </data>
+  <data name="FanProfileCPU" xml:space="preserve">
+    <value>Profil CPU ventilátoru</value>
+  </data>
+  <data name="FanProfileGPU" xml:space="preserve">
+    <value>Profil GPU ventilátoru</value>
+  </data>
+  <data name="FanProfileMid" xml:space="preserve">
+    <value>Profil středního ventilátoru</value>
+  </data>
+  <data name="FanProfiles" xml:space="preserve">
+    <value>Profily ventilátorů</value>
+  </data>
+  <data name="FansAndPower" xml:space="preserve">
+    <value>Ventilátory a výkon</value>
+  </data>
+  <data name="FanSpeed" xml:space="preserve">
+    <value>Ventilátor</value>
+  </data>
+  <data name="FansPower" xml:space="preserve">
+    <value>Ventilátory + výkon</value>
+  </data>
+  <data name="FlickerFreeDimming" xml:space="preserve">
+    <value>Flicker-free Dimming</value>
+  </data>
+  <data name="FnLock" xml:space="preserve">
+    <value>Používat klávesové zkratky Fn+F bez klávesy Fn</value>
+  </data>
+  <data name="FnLockOff" xml:space="preserve">
+    <value>FN-Lock vypnuto</value>
+  </data>
+  <data name="FnLockOn" xml:space="preserve">
+    <value>FN-Lock zapnuto</value>
+  </data>
+  <data name="GPUBoost" xml:space="preserve">
+    <value>Dynamický Boost</value>
+  </data>
+  <data name="GPUChanging" xml:space="preserve">
+    <value>Přepínaní</value>
+  </data>
+  <data name="GPUCoreClockOffset" xml:space="preserve">
+    <value>Offset frekvence jádra</value>
+  </data>
+  <data name="GPUMemoryClockOffset" xml:space="preserve">
+    <value>Offset frekvence paměti</value>
+  </data>
+  <data name="GPUMode" xml:space="preserve">
+    <value>GPU režim</value>
+  </data>
+  <data name="GPUModeEco" xml:space="preserve">
+    <value>jen iGPU</value>
+  </data>
+  <data name="GPUModeStandard" xml:space="preserve">
+    <value>iGPU + dGPU</value>
+  </data>
+  <data name="GPUModeUltimate" xml:space="preserve">
+    <value>Výhradně dGPU</value>
+  </data>
+  <data name="GPUPower" xml:space="preserve">
+    <value>Výkon GPU</value>
+  </data>
+  <data name="GPUSettings" xml:space="preserve">
+    <value>Nastavení GPU</value>
+  </data>
+  <data name="GPUTempTarget" xml:space="preserve">
+    <value>Cílová teplota</value>
+  </data>
+  <data name="HibernateAfter" xml:space="preserve">
+    <value>Čas do hibernace při spánku na baterii (0 - Vypnuto)</value>
+  </data>
+  <data name="High" xml:space="preserve">
+    <value>Vysoký</value>
+  </data>
+  <data name="ImageRotation" xml:space="preserve">
+    <value>Otočení obrázku</value>
+  </data>
+  <data name="Import" xml:space="preserve">
+    <value>Import Profilu</value>
+  </data>
+  <data name="KeyBindings" xml:space="preserve">
+    <value>Klávesové zkratky</value>
+  </data>
+  <data name="Keyboard" xml:space="preserve">
+    <value>Klávesnice</value>
+  </data>
+  <data name="KillGpuApps" xml:space="preserve">
+    <value>Zastavit všechny aplikace využívající GPU při přepnutí do režimu Eco</value>
+  </data>
+  <data name="LaptopBacklight" xml:space="preserve">
+    <value>Podsvícení notebooku</value>
+  </data>
+  <data name="LaptopKeyboard" xml:space="preserve">
+    <value>Klávesnice notebooku</value>
+  </data>
+  <data name="LaptopScreen" xml:space="preserve">
+    <value>Displej notebooku</value>
+  </data>
+  <data name="LEDStatusIndicators" xml:space="preserve">
+    <value>LED indikátory stavu</value>
+  </data>
+  <data name="Lid" xml:space="preserve">
+    <value>Víko</value>
+  </data>
+  <data name="Lightbar" xml:space="preserve">
+    <value>Světelná lišta</value>
+  </data>
+  <data name="Lighting" xml:space="preserve">
+    <value>Osvětlení</value>
+  </data>
+  <data name="LockScreen" xml:space="preserve">
+    <value>Zamknutá obrazovka</value>
+  </data>
+  <data name="Logo" xml:space="preserve">
+    <value>Logo</value>
+  </data>
+  <data name="Low" xml:space="preserve">
+    <value>Nízký</value>
+  </data>
+  <data name="LSDeadzones" xml:space="preserve">
+    <value>Mrtvé zóny levé páčky</value>
+  </data>
+  <data name="LTDeadzones" xml:space="preserve">
+    <value>Mrtvé zóny levého tlačítka</value>
+  </data>
+  <data name="MatrixAudio" xml:space="preserve">
+    <value>Audiovizualizér</value>
+  </data>
+  <data name="MatrixBanner" xml:space="preserve">
+    <value>Binární banner</value>
+  </data>
+  <data name="MatrixBright" xml:space="preserve">
+    <value>Jasné</value>
+  </data>
+  <data name="MatrixClock" xml:space="preserve">
+    <value>Hodiny</value>
+  </data>
+  <data name="MatrixDim" xml:space="preserve">
+    <value>Tlumené</value>
+  </data>
+  <data name="MatrixLogo" xml:space="preserve">
+    <value>Rog Logo</value>
+  </data>
+  <data name="MatrixMedium" xml:space="preserve">
+    <value>Střední</value>
+  </data>
+  <data name="MatrixOff" xml:space="preserve">
+    <value>Vypnuto</value>
+  </data>
+  <data name="MatrixPicture" xml:space="preserve">
+    <value>Obrázek</value>
+  </data>
+  <data name="MaxRefreshTooltip" xml:space="preserve">
+    <value>Max. obnovovací frekvence pro nižší latenci</value>
+  </data>
+  <data name="MinRefreshTooltip" xml:space="preserve">
+    <value>60 Hz obnovovací frekvence pro úsporu baterie</value>
+  </data>
+  <data name="Minute" xml:space="preserve">
+    <value>Minuta</value>
+  </data>
+  <data name="Minutes" xml:space="preserve">
+    <value>Minut/y</value>
+  </data>
+  <data name="MouseAngleSnapping" xml:space="preserve">
+    <value>Angle Snapping / Ladění</value>
+  </data>
+  <data name="MouseAutoPowerOff" xml:space="preserve">
+    <value>Automatické vypnutí po</value>
+  </data>
+  <data name="MouseButtonResponse" xml:space="preserve">
+    <value>Odezva tlačítek</value>
+  </data>
+  <data name="MouseImportFailed" xml:space="preserve">
+    <value>Import se nezdařil. Vybraný soubor není platným profilem myši nebo je poškozený.</value>
+  </data>
+  <data name="MouseLiftOffDistance" xml:space="preserve">
+    <value>Vzdálenost zvednutí (LOD)</value>
+  </data>
+  <data name="MouseLowBatteryWarning" xml:space="preserve">
+    <value>Upozornit na vybitou baterii při</value>
+  </data>
+  <data name="MousePerformance" xml:space="preserve">
+    <value>Vlastnosti</value>
+  </data>
+  <data name="MouseSynchronize" xml:space="preserve">
+    <value>Synchronizovat s myší</value>
+  </data>
+  <data name="Multizone" xml:space="preserve">
+    <value>Více zón</value>
+  </data>
+  <data name="MultizoneStrong" xml:space="preserve">
+    <value>Více zón, vysoký výkon</value>
+  </data>
+  <data name="Muted" xml:space="preserve">
+    <value>Vypnut</value>
+  </data>
+  <data name="MuteMic" xml:space="preserve">
+    <value>Vypnutí mikrofonu</value>
+  </data>
+  <data name="Never" xml:space="preserve">
+    <value>Nikdy</value>
+  </data>
+  <data name="NewUpdates" xml:space="preserve">
+    <value>Nové aktualizace</value>
+  </data>
+  <data name="NoNewUpdates" xml:space="preserve">
+    <value>Žádné nové aktualizace</value>
+  </data>
+  <data name="NotConnected" xml:space="preserve">
+    <value>Bez připojení</value>
+  </data>
+  <data name="Off" xml:space="preserve">
+    <value>Vypnuto</value>
+  </data>
+  <data name="On" xml:space="preserve">
+    <value>Zapnuto</value>
+  </data>
+  <data name="OneZone" xml:space="preserve">
+    <value>Jedna zóna</value>
+  </data>
+  <data name="OpenGHelper" xml:space="preserve">
+    <value>Otevřít okno G-Helper</value>
+  </data>
+  <data name="Optimized" xml:space="preserve">
+    <value>Optimalizovaný</value>
+  </data>
+  <data name="OptimizedGPUTooltip" xml:space="preserve">
+    <value>Na baterii se přepne na Eco a při připojení k síti na Standardní</value>
+  </data>
+  <data name="OptimizedUSBC" xml:space="preserve">
+    <value>Ponechat GPU vypnutou při nabíjení přes USB-C v režimu Optimalizovaný</value>
+  </data>
+  <data name="Other" xml:space="preserve">
+    <value>Ostatní</value>
+  </data>
+  <data name="Overdrive" xml:space="preserve">
+    <value>Overdrive</value>
+  </data>
+  <data name="PerformanceMode" xml:space="preserve">
+    <value>Režim</value>
+  </data>
+  <data name="Peripherals" xml:space="preserve">
+    <value>Periferní zařízení</value>
+  </data>
+  <data name="PictureGif" xml:space="preserve">
+    <value>Obrázek / GIF</value>
+  </data>
+  <data name="PlayPause" xml:space="preserve">
+    <value>Přehrát / Pozastavit</value>
+  </data>
+  <data name="PollingRate" xml:space="preserve">
+    <value>Frekvence snímání</value>
+  </data>
+  <data name="PowerLimits" xml:space="preserve">
+    <value>Power Limity</value>
+  </data>
+  <data name="PPTExperimental" xml:space="preserve">
+    <value>Funkce Power Limity je experimentální. Používejte opatrně a na vlastní odpovědnost!</value>
+  </data>
+  <data name="PrintScreen" xml:space="preserve">
+    <value>PrintScreen</value>
+  </data>
+  <data name="Profile" xml:space="preserve">
+    <value>Profil</value>
+  </data>
+  <data name="Quit" xml:space="preserve">
+    <value>Ukončit</value>
+  </data>
+  <data name="Reset" xml:space="preserve">
+    <value>Obnovit</value>
+  </data>
+  <data name="RestartGPU" xml:space="preserve">
+    <value>Něco používá dGPU a brání přepnutí do Eco režimu. Povolit G-Helperu pokusit se restartovat dGPU ve Správci zařízení? (Pokračujte na vlastní odpovědnost)</value>
+  </data>
+  <data name="RPM" xml:space="preserve">
+    <value>Otáček za minutu</value>
+  </data>
+  <data name="RSDeadzones" xml:space="preserve">
+    <value>Mrtvé zóny pravé páčky</value>
+  </data>
+  <data name="RTDeadzones" xml:space="preserve">
+    <value>Mrtvé zóny pravého tlačítka</value>
+  </data>
+  <data name="RunOnStartup" xml:space="preserve">
+    <value>Spustit při spuštění systému</value>
+  </data>
+  <data name="ScalingQuality" xml:space="preserve">
+    <value>Kvalita škálování</value>
+  </data>
+  <data name="ScreenPadDown" xml:space="preserve">
+    <value>Snížit jas Screenpadu</value>
+  </data>
+  <data name="ScreenPadUp" xml:space="preserve">
+    <value>Zvýšit jas Screenpadu</value>
+  </data>
+  <data name="Shutdown" xml:space="preserve">
+    <value>Vypnutí</value>
+  </data>
+  <data name="Silent" xml:space="preserve">
+    <value>Tichý</value>
+  </data>
+  <data name="Sleep" xml:space="preserve">
+    <value>Spánek</value>
+  </data>
+  <data name="StandardGPUTooltip" xml:space="preserve">
+    <value>Zapne dGPU pro běžné použití</value>
+  </data>
+  <data name="StandardMode" xml:space="preserve">
+    <value>Standardní</value>
+  </data>
+  <data name="Start" xml:space="preserve">
+    <value>Spustit</value>
+  </data>
+  <data name="StartingServices" xml:space="preserve">
+    <value>Spouštění služeb</value>
+  </data>
+  <data name="StartupError" xml:space="preserve">
+    <value>Chyba při spouštění</value>
+  </data>
+  <data name="Stop" xml:space="preserve">
+    <value>Stop</value>
+  </data>
+  <data name="StopGPUApps" xml:space="preserve">
+    <value>Ukončit GPU aplikace</value>
+  </data>
+  <data name="StoppingServices" xml:space="preserve">
+    <value>Zastavování služeb</value>
+  </data>
+  <data name="ToggleAura" xml:space="preserve">
+    <value>Přepnout Auru</value>
+  </data>
+  <data name="ToggleClamshellMode" xml:space="preserve">
+    <value>Automatické přepínání do režimu Clamshell</value>
+  </data>
+  <data name="ToggleFnLock" xml:space="preserve">
+    <value>Přepnutí Fn-Lock</value>
+  </data>
+  <data name="ToggleMiniled" xml:space="preserve">
+    <value>Přepnutí Miniled (je-li podporováno)</value>
+  </data>
+  <data name="ToggleScreen" xml:space="preserve">
+    <value>Přepnutí obrazovky</value>
+  </data>
+  <data name="ToggleTouchscreen" xml:space="preserve">
+    <value>Přepnutí dotykového displeje</value>
+  </data>
+  <data name="Touchscreen" xml:space="preserve">
+    <value>Dotykový displej</value>
+  </data>
+  <data name="Turbo" xml:space="preserve">
+    <value>Turbo</value>
+  </data>
+  <data name="TurnedOff" xml:space="preserve">
+    <value>Vypnuto</value>
+  </data>
+  <data name="TurnOffOnBattery" xml:space="preserve">
+    <value>Vypnout při provozu na baterii</value>
+  </data>
+  <data name="UltimateGPUTooltip" xml:space="preserve">
+    <value>Přesměruje obraz z notebooku na dGPU, čímž maximalizuje počet snímků za sekundu</value>
+  </data>
+  <data name="UltimateMode" xml:space="preserve">
+    <value>Ultimátní</value>
+  </data>
+  <data name="UndervoltingRisky" xml:space="preserve">
+    <value>Podvoltování je experimentální a riskantní funkce. Pokud jsou nastavené hodnoty pro váš hardware příliš nízké, může dojít k nestabilitě, vypnutí zařízení nebo poškození dat. Pokud to chcete vyzkoušet, začněte nejprve s nízkými hodnotami, klikněte na „Použít“ a otestujte, co vám vyhovuje.</value>
+  </data>
+  <data name="Unmuted" xml:space="preserve">
+    <value>Zapnut</value>
+  </data>
+  <data name="Updates" xml:space="preserve">
+    <value>Aktualizace</value>
+  </data>
+  <data name="VersionLabel" xml:space="preserve">
+    <value>Verze</value>
+  </data>
+  <data name="VibrationStrength" xml:space="preserve">
+    <value>Síla vibrací</value>
+  </data>
+  <data name="VisualMode" xml:space="preserve">
+    <value>Vizuální režim</value>
+  </data>
+  <data name="VisualModesHDR" xml:space="preserve">
+    <value>Vizuální režimy nejsou k dispozici, pokud je aktivní HDR nebo ACM</value>
+  </data>
+  <data name="VisualModesScreen" xml:space="preserve">
+    <value>Vizuální režimy nejsou k dispozici, pokud je obrazovka notebooku vypnutá</value>
+  </data>
+  <data name="VolumeDown" xml:space="preserve">
+    <value>Snížit hlasitost</value>
+  </data>
+  <data name="VolumeMute" xml:space="preserve">
+    <value>Ztlumit zvuk</value>
+  </data>
+  <data name="VolumeUp" xml:space="preserve">
+    <value>Zvýšit hlasitost</value>
+  </data>
+  <data name="WindowTop" xml:space="preserve">
+    <value>Nechat okno aplikace vždy nahoře</value>
+  </data>
+  <data name="Zoom" xml:space="preserve">
+    <value>Zoom</value>
+  </data>
+  <data name="Donate" xml:space="preserve">
+    <value>Podpořit</value>
+  </data>
+  <data name="Legend" xml:space="preserve">
+    <value>Nápověda</value>
+  </data>
+  <data name="LegendGray" xml:space="preserve">
+    <value>Nelze zkontrolovat místní verzi</value>
+    <comment>Nelze zkontrolovat místní verzi</comment>
+  </data>
+  <data name="LegendRed" xml:space="preserve">
+    <value>Aktualizace k dispozici</value>
+    <comment>Aktualizace k dispozici</comment>
+  </data>
+  <data name="LegendGreen" xml:space="preserve">
+    <value>Aktualizováno</value>
+    <comment>Aktualizováno</comment>
+  </data>
+  <data name="SlashBounce" xml:space="preserve">
+    <value>Bounce</value>
+  </data>
+  <data name="SlashMode" xml:space="preserve">
+    <value>Slash</value>
+  </data>
+  <data name="SlashLoading" xml:space="preserve">
+    <value>Načítání</value>
+  </data>
+  <data name="SlashBitStream" xml:space="preserve">
+    <value>Bitový proud</value>
+  </data>
+  <data name="SlashTransmission" xml:space="preserve">
+    <value>Přenos</value>
+  </data>
+  <data name="SlashFlow" xml:space="preserve">
+    <value>Tok</value>
+  </data>
+  <data name="SlashFlux" xml:space="preserve">
+    <value>Proud</value>
+  </data>
+  <data name="SlashPhantom" xml:space="preserve">
+    <value>Fantom</value>
+  </data>
+  <data name="SlashSpectrum" xml:space="preserve">
+    <value>Spektrum</value>
+  </data>
+  <data name="SlashHazard" xml:space="preserve">
+    <value>Hazard</value>
+  </data>
+  <data name="SlashInterfacing" xml:space="preserve">
+    <value>Propojení</value>
+  </data>
+  <data name="SlashRamp" xml:space="preserve">
+    <value>Rampa</value>
+  </data>
+  <data name="SlashGameOver" xml:space="preserve">
+    <value>Konec hry</value>
+  </data>
+  <data name="SlashStart" xml:space="preserve">
+    <value>Start</value>
+  </data>
+  <data name="SlashBuzzer" xml:space="preserve">
+    <value>Bzučák</value>
+  </data>
+  <data name="SlashStatic" xml:space="preserve">
+    <value>Statický</value>
+  </data>
+  <data name="SlashBatteryLevel" xml:space="preserve">
+    <value>Úroveň baterie</value>
+  </data>
+  <data name="IntervalOff" xml:space="preserve">
+    <value>Interval vypnut</value>
+  </data>
+  <data name="IntervalSeconds" xml:space="preserve">
+    <value>Interval {0}s</value>
+  </data>
+  <data name="DisableDynamicLighting" xml:space="preserve">
+    <value>Vypněte prosím možnost Windows &gt; Dynamické osvětlení</value>
+  </data>
+  <data name="AmbientModeResources" xml:space="preserve">
+    <value>Ambientní režim může zvýšit spotřebu systémových prostředků</value>
+  </data>
+  <data name="MouseMotionSync" xml:space="preserve">
+    <value>Synchronizace pohybu</value>
+  </data>
+  <data name="MouseZoneMode" xml:space="preserve">
+    <value>Režim zóny</value>
+  </data>
+</root>
