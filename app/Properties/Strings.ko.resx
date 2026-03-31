@@ -780,7 +780,7 @@
     <value>비주얼 모드</value>
   </data>
   <data name="VisualModesHDR" xml:space="preserve">
-    <value>Visual Modes are not available when HDR or ACM is active</value>
+    <value>HDR이 켜져 있을 때에는 비주얼 모드를 사용할 수 없습니다.</value>
   </data>
   <data name="VisualModesScreen" xml:space="preserve">
     <value>노트북 화면이 꺼져 있을 때는 비주얼 모드 사용 불가</value>
