@@ -780,7 +780,7 @@ Yine de devam etmek istiyor musunuz?</value>
     <value>Görsel Mod</value>
   </data>
   <data name="VisualModesHDR" xml:space="preserve">
-    <value>Visual Modes are not available when HDR or ACM is active</value>
+    <value>HDR etkin olduğunda Görsel Modlar kullanılamaz</value>
   </data>
   <data name="VisualModesScreen" xml:space="preserve">
     <value>Bilgisayar ekranı kapalı olduğunda Görsel Modlar kullanılamaz</value>
