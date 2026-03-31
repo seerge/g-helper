@@ -780,7 +780,7 @@ Quer prosseguir?</value>
     <value>Modo Visual</value>
   </data>
   <data name="VisualModesHDR" xml:space="preserve">
-    <value>Visual Modes are not available when HDR or ACM is active</value>
+    <value>Os Modos Visuais não estão disponíveis quando o HDR está ativo</value>
   </data>
   <data name="VisualModesScreen" xml:space="preserve">
     <value>Os Modos Visuais não estão disponíveis quando o ecrã do portátil está desligado</value>
