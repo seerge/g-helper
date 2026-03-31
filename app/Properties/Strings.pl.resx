@@ -780,7 +780,7 @@ Nadal chcesz kontynuować?</value>
     <value>Tryb wyświetlania</value>
   </data>
   <data name="VisualModesHDR" xml:space="preserve">
-    <value>Visual Modes are not available when HDR or ACM is active</value>
+    <value>Tryby wyświetlania nie są dostępne, kiedy HDR jest włączone</value>
   </data>
   <data name="VisualModesScreen" xml:space="preserve">
     <value>Tryby wyświetlania nie są dostępne, kiedy ekran laptopa jest wyłączony</value>
