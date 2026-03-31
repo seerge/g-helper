@@ -780,7 +780,7 @@
     <value>Візуальний режим</value>
   </data>
   <data name="VisualModesHDR" xml:space="preserve">
-    <value>Visual Modes are not available when HDR or ACM is active</value>
+    <value>Візуальні режими недоступні, коли HDR активний</value>
   </data>
   <data name="VisualModesScreen" xml:space="preserve">
     <value>Візуальні режими недоступні, коли екран вимкнений</value>
