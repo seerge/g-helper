@@ -780,7 +780,7 @@
     <value>وضع العرض</value>
   </data>
   <data name="VisualModesHDR" xml:space="preserve">
-    <value>Visual Modes are not available when HDR or ACM is active</value>
+    <value>أوضاع العرض غير متاحة عندما يكون HDR نشطًا</value>
   </data>
   <data name="VisualModesScreen" xml:space="preserve">
     <value>أوضاع العرض غير متاحة عندما تكون شاشة الحاسوب المحمول مطفأة</value>
