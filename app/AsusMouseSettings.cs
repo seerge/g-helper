@@ -132,12 +132,12 @@ namespace GHelper
             ToggleBindingsPanel(true);
         }
 
-        private const int PanelLeftWidth = 900;
-
         public void ToggleBindingsPanel(bool show)
         {
-            if (show == panelLeft.Visible) return;
-            Width += show ? PanelLeftWidth : -PanelLeftWidth;
+            if (!mouse.HasButtonBindings()) show = false;
+            tableRoot.ColumnStyles[0] = show
+                ? new ColumnStyle(SizeType.AutoSize)
+                : new ColumnStyle(SizeType.Absolute, 0);
             panelLeft.Visible = show;
         }
 

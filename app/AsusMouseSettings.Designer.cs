@@ -124,6 +124,7 @@
             rButton2 = new GHelper.UI.RButton();
             panelRight = new Panel();
             panelLeft = new Panel();
+            tableRoot = new TableLayoutPanel();
             panelProfiles.SuspendLayout();
             panelPerformance.SuspendLayout();
             panelPerformanceOther.SuspendLayout();
@@ -201,6 +202,7 @@
             // panelPerformance
             // 
             panelPerformance.AutoSize = true;
+            panelPerformance.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             panelPerformance.Controls.Add(panelPerformanceOther);
             panelPerformance.Controls.Add(panelDPISettings);
             panelPerformance.Controls.Add(tableDPI);
@@ -1424,6 +1426,7 @@
             // 
             // panelBottomButtons
             // 
+            panelBottomButtons.AutoSize = true;
             panelBottomButtons.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             panelBottomButtons.Controls.Add(buttonImport);
             panelBottomButtons.Controls.Add(buttonExport);
@@ -1545,23 +1548,38 @@
             panelRight.Controls.Add(panelLighting);
             panelRight.Controls.Add(panelPerformance);
             panelRight.Controls.Add(tableLayoutProfiles);
-            panelRight.Dock = DockStyle.Left;
-            panelRight.Location = new Point(600, 0);
+            panelRight.Anchor = AnchorStyles.Top | AnchorStyles.Left;
+            panelRight.Location = new Point(603, 0);
             panelRight.MinimumSize = new Size(900, 0);
             panelRight.Name = "panelRight";
             panelRight.Padding = new Padding(14);
-            panelRight.Size = new Size(900, 1716);
+            panelRight.Size = new Size(900, 900);
             panelRight.TabIndex = 201;
             // 
             // panelLeft
             // 
-            panelLeft.Dock = DockStyle.Left;
+            panelLeft.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             panelLeft.Location = new Point(0, 0);
-            panelLeft.MinimumSize = new Size(600, 0);
             panelLeft.Name = "panelLeft";
-            panelLeft.Size = new Size(600, 1716);
+            panelLeft.Size = new Size(600, 400);
             panelLeft.TabIndex = 200;
-            panelLeft.Visible = false;
+            // 
+            // tableRoot
+            // 
+            tableRoot.AutoSize = true;
+            tableRoot.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            tableRoot.ColumnCount = 2;
+            tableRoot.ColumnStyles.Add(new ColumnStyle());
+            tableRoot.ColumnStyles.Add(new ColumnStyle());
+            tableRoot.RowCount = 1;
+            tableRoot.RowStyles.Add(new RowStyle());
+            tableRoot.Controls.Add(panelLeft, 0, 0);
+            tableRoot.Controls.Add(panelRight, 1, 0);
+            tableRoot.Location = new Point(0, 0);
+            tableRoot.Margin = new Padding(0);
+            tableRoot.Name = "tableRoot";
+            tableRoot.Size = new Size(900, 900);
+            tableRoot.TabIndex = 202;
             // 
             // AsusMouseSettings
             // 
@@ -1569,14 +1587,12 @@
             AutoScaleMode = AutoScaleMode.Dpi;
             AutoSize = true;
             AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            ClientSize = new Size(1505, 1716);
-            Controls.Add(panelRight);
-            Controls.Add(panelLeft);
+            ClientSize = new Size(900, 900);
+            Controls.Add(tableRoot);
             Margin = new Padding(4);
             MaximizeBox = false;
             MdiChildrenMinimizedAnchorBottom = false;
             MinimizeBox = false;
-            MinimumSize = new Size(900, 760);
             Name = "AsusMouseSettings";
             ShowIcon = false;
             ShowInTaskbar = false;
@@ -1629,6 +1645,8 @@
             tableLayoutPanel2.ResumeLayout(false);
             panelRight.ResumeLayout(false);
             panelRight.PerformLayout();
+            tableRoot.ResumeLayout(false);
+            tableRoot.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -1732,6 +1750,7 @@
         private Label labelMaxDPI;
         private Panel panelLeft;
         private Panel panelRight;
+        private TableLayoutPanel tableRoot;
         private Label labelBinding0, labelBinding1, labelBinding2, labelBinding3, labelBinding4, labelBinding5, labelBinding6;
         private GHelper.UI.RComboBox comboBinding0, comboBinding1, comboBinding2, comboBinding3, comboBinding4, comboBinding5, comboBinding6;
     }
