@@ -136,20 +136,9 @@ namespace GHelper
 
         public void ToggleBindingsPanel(bool show)
         {
-            SuspendLayout();
-            if (show)
-            {
-                panelLeft.Size = new Size(PanelLeftWidth, ClientSize.Height);
-                panelLeft.Location = new Point(0, 0);
-                panelLeft.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Bottom;
-                Padding = new Padding(14 + PanelLeftWidth, 14, 14, 14);
-            }
-            else
-            {
-                Padding = new Padding(14);
-            }
+            if (show == panelLeft.Visible) return;
+            Width += show ? PanelLeftWidth : -PanelLeftWidth;
             panelLeft.Visible = show;
-            ResumeLayout(true);
         }
 
         private void SliderAcceleration_MouseUp(object? sender, MouseEventArgs e)
@@ -826,6 +815,78 @@ namespace GHelper
             {
                 panelLighting.Visible = false;
             }
+
+            if (mouse.HasButtonBindings())
+                InitBindingCombos();
+        }
+
+        private void InitBindingCombos()
+        {
+            string[] names = { "Left Click", "Right Click", "Middle Click", "Forward", "Back", "DPI Button", "Side Button" };
+            var items = AsusMouse.ButtonBindingCodes
+                .Select(kv => new BindingItem(kv.Key, kv.Value))
+                .ToArray();
+
+            for (int i = 0; i < 7; i++)
+            {
+                int y = 14 + i * 56;
+                var lbl = new Label { Text = names[i], Location = new Point(14, y + 12), Size = new Size(200, 32), TextAlign = ContentAlignment.MiddleLeft };
+                var cmb = new UI.RComboBox
+                {
+                    Location = new Point(220, y + 8), Size = new Size(340, 40),
+                    DropDownStyle = ComboBoxStyle.DropDownList, FlatStyle = FlatStyle.Flat,
+                    DisplayMember = nameof(BindingItem.DisplayName), ValueMember = nameof(BindingItem.Code)
+                };
+                cmb.Items.AddRange(items);
+                cmb.Tag = i;
+                cmb.SelectedIndexChanged += BindingCombo_Changed;
+                panelLeft.Controls.Add(lbl);
+                panelLeft.Controls.Add(cmb);
+                switch (i)
+                {
+                    case 0: labelBinding0 = lbl; comboBinding0 = cmb; break;
+                    case 1: labelBinding1 = lbl; comboBinding1 = cmb; break;
+                    case 2: labelBinding2 = lbl; comboBinding2 = cmb; break;
+                    case 3: labelBinding3 = lbl; comboBinding3 = cmb; break;
+                    case 4: labelBinding4 = lbl; comboBinding4 = cmb; break;
+                    case 5: labelBinding5 = lbl; comboBinding5 = cmb; break;
+                    case 6: labelBinding6 = lbl; comboBinding6 = cmb; break;
+                }
+            }
+        }
+
+        private bool _updatingBindings;
+
+        private void BindingCombo_Changed(object? sender, EventArgs e)
+        {
+            if (_updatingBindings || sender is not UI.RComboBox cmb || cmb.Tag is not int slot) return;
+            if (cmb.SelectedItem is BindingItem item)
+                mouse.SetButtonBinding((byte)slot, item.Code);
+        }
+
+        private void VisualizeButtonBindings()
+        {
+            if (!mouse.HasButtonBindings()) return;
+            UI.RComboBox[] combos = { comboBinding0, comboBinding1, comboBinding2,
+                                      comboBinding3, comboBinding4, comboBinding5, comboBinding6 };
+            _updatingBindings = true;
+            for (int i = 0; i < combos.Length; i++)
+            {
+                if (combos[i] == null) continue;
+                byte code = mouse.ButtonBindings[i];
+                for (int j = 0; j < combos[i].Items.Count; j++)
+                    if (combos[i].Items[j] is BindingItem item && item.Code == code)
+                    { combos[i].SelectedIndex = j; break; }
+            }
+            _updatingBindings = false;
+        }
+
+        private sealed class BindingItem
+        {
+            public byte   Code        { get; }
+            public string DisplayName { get; }
+            public BindingItem(byte code, string name) { Code = code; DisplayName = name; }
+            public override string ToString() => DisplayName;
         }
 
         private void InitLightingModes()
@@ -941,6 +1002,9 @@ namespace GHelper
 
                 UpdateZoneModeUIState();
             }
+
+            if (mouse.HasButtonBindings())
+                VisualizeButtonBindings();
         }
 
         private void UpdateMotionSyncState()
