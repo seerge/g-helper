@@ -253,6 +253,7 @@ namespace GHelper.Peripherals.Mouse
         public bool ZoneMode { get; protected set; }
         public int ZoneModeDPI { get; set; } = 1600;
         public PollingRate ZoneModePollingRate { get; set; } = PollingRate.PR4000Hz;
+        public byte[] ButtonBindings { get; protected set; } = new byte[8];
 
         public bool Booster = false;
 
@@ -2115,7 +2116,7 @@ namespace GHelper.Peripherals.Mouse
             return hex.ToString();
         }
 
-        private static readonly Dictionary<byte, string> ButtonBindingCodes = new()
+        public static readonly Dictionary<byte, string> ButtonBindingCodes = new()
         {
             { 0x00, "Disabled"        },
             { 0xF0, "Mouse Left"      },
@@ -2193,9 +2194,6 @@ namespace GHelper.Peripherals.Mouse
             string rawHex = BitConverter.ToString(response, 0, Math.Min(21, response.Length)).Replace("-", " ");
             Logger.WriteLine(GetDisplayName() + $": RAW: {rawHex}");
 
-            // Response: [0]=reportId [1]=0x12 [2]=0x05 [3][4]=0x00
-            // Then 2 bytes per button: [actionCode, 0x01] — typeCode is always 0x01
-            // Button N at offset 5 + N*2
             foreach (var (buttonIndex, buttonName) in buttonNames)
             {
                 int offset = 5 + buttonIndex * 2;
@@ -2206,6 +2204,8 @@ namespace GHelper.Peripherals.Mouse
                 }
 
                 byte actionCode = response[offset];
+                ButtonBindings[buttonIndex] = actionCode;
+
                 string label = ButtonBindingCodes.TryGetValue(actionCode, out var name)
                     ? name
                     : $"Unknown (0x{actionCode:X2})";

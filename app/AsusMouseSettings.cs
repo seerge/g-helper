@@ -129,6 +129,27 @@ namespace GHelper
             InitMouseCapabilities();
             Logger.WriteLine(mouse.GetDisplayName() + " (GUI): Initialized capabilities. Synchronizing mouse data");
             RefreshMouseData();
+            ToggleBindingsPanel(true);
+        }
+
+        private const int PanelLeftWidth = 900;
+
+        public void ToggleBindingsPanel(bool show)
+        {
+            SuspendLayout();
+            if (show)
+            {
+                panelLeft.Size = new Size(PanelLeftWidth, ClientSize.Height);
+                panelLeft.Location = new Point(0, 0);
+                panelLeft.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Bottom;
+                Padding = new Padding(14 + PanelLeftWidth, 14, 14, 14);
+            }
+            else
+            {
+                Padding = new Padding(14);
+            }
+            panelLeft.Visible = show;
+            ResumeLayout(true);
         }
 
         private void SliderAcceleration_MouseUp(object? sender, MouseEventArgs e)

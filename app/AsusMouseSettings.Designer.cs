@@ -122,6 +122,7 @@
             tableLayoutPanel2 = new TableLayoutPanel();
             rButton1 = new GHelper.UI.RButton();
             rButton2 = new GHelper.UI.RButton();
+            panelLeft = new Panel();
             panelProfiles.SuspendLayout();
             panelPerformance.SuspendLayout();
             panelPerformanceOther.SuspendLayout();
@@ -1532,6 +1533,12 @@
             rButton2.TextImageRelation = TextImageRelation.ImageAboveText;
             rButton2.UseVisualStyleBackColor = false;
             // 
+            // panelLeft
+            // 
+            panelLeft.Name = "panelLeft";
+            panelLeft.TabIndex = 100;
+            panelLeft.Visible = false;
+            // 
             // AsusMouseSettings
             // 
             AutoScaleDimensions = new SizeF(192F, 192F);
@@ -1545,6 +1552,7 @@
             Controls.Add(panelLighting);
             Controls.Add(panelPerformance);
             Controls.Add(tableLayoutProfiles);
+            Controls.Add(panelLeft);
             Margin = new Padding(4);
             MaximizeBox = false;
             MdiChildrenMinimizedAnchorBottom = false;
@@ -1675,6 +1683,7 @@
         private TableLayoutPanel tableLayoutPanel2;
         private UI.RButton rButton1;
         private UI.RButton rButton2;
+        private Panel panelLeft;
         private Label labelButtonDebounce;
         private Label labelButtonDebounceValue;
         private UI.Slider sliderButtonDebounce;
