@@ -820,73 +820,146 @@ namespace GHelper
                 InitBindingCombos();
         }
 
+        private bool _updatingBindings;
+        private readonly List<UI.RComboBox> _bindingCombos = new();
+
+        // Pre-built item list shared by every binding combo (separators + items).
+        private static readonly object[] _bindingComboItems = BuildBindingComboItems();
+
+        private static object[] BuildBindingComboItems()
+        {
+            var list = new List<object>();
+            foreach (var (groupLabel, items) in AsusMouse.ButtonBindingGroups)
+            {
+                list.Add(new BindingSeparator(groupLabel));
+                foreach (var (code, name) in items)
+                    list.Add(new BindingItem(code, name));
+            }
+            return list.ToArray();
+        }
+
         private void InitBindingCombos()
         {
-            string[] names = { "Left Click", "Right Click", "Middle Click", "Forward", "Back", "DPI Button", "Side Button" };
-            var items = AsusMouse.ButtonBindingCodes
-                .Select(kv => new BindingItem(kv.Key, kv.Value))
-                .ToArray();
-
-            for (int i = 0; i < 7; i++)
+            var slots = mouse.ButtonSlots;
+            int row = 0;
+            foreach (var (slot, (_, name)) in slots)
             {
-                int y = 14 + i * 56;
-                var lbl = new Label { Text = names[i], Location = new Point(14, y + 12), Size = new Size(200, 32), TextAlign = ContentAlignment.MiddleLeft };
+                int y = 14 + row * 56;
+                var lbl = new Label
+                {
+                    Text = name,
+                    Location = new Point(14, y + 12),
+                    Size = new Size(200, 32),
+                    TextAlign = ContentAlignment.MiddleLeft,
+                    ForeColor = RForm.foreMain,
+                };
                 var cmb = new UI.RComboBox
                 {
-                    Location = new Point(220, y + 8), Size = new Size(340, 40),
-                    DropDownStyle = ComboBoxStyle.DropDownList, FlatStyle = FlatStyle.Flat,
-                    DisplayMember = nameof(BindingItem.DisplayName), ValueMember = nameof(BindingItem.Code)
+                    Location = new Point(220, y + 8),
+                    Size = new Size(290, 40),
+                    Padding = new Padding(0, 4, 6, 4),
+                    DropDownStyle = ComboBoxStyle.DropDownList,
+                    FlatStyle = FlatStyle.Flat,
+                    DrawMode = DrawMode.OwnerDrawFixed,
+                    ItemHeight = 40,
+                    BackColor = RForm.buttonMain,
+                    ForeColor = RForm.foreMain,
+                    BorderColor = RForm.buttonMain,
+                    ButtonColor = RForm.buttonMain,
+                    ArrowColor = RForm.foreMain,
                 };
-                cmb.Items.AddRange(items);
-                cmb.Tag = i;
+                cmb.Items.AddRange(_bindingComboItems);
+                cmb.Tag = slot;
+                cmb.DrawItem += BindingCombo_DrawItem;
                 cmb.SelectedIndexChanged += BindingCombo_Changed;
                 panelLeft.Controls.Add(lbl);
                 panelLeft.Controls.Add(cmb);
-                switch (i)
-                {
-                    case 0: labelBinding0 = lbl; comboBinding0 = cmb; break;
-                    case 1: labelBinding1 = lbl; comboBinding1 = cmb; break;
-                    case 2: labelBinding2 = lbl; comboBinding2 = cmb; break;
-                    case 3: labelBinding3 = lbl; comboBinding3 = cmb; break;
-                    case 4: labelBinding4 = lbl; comboBinding4 = cmb; break;
-                    case 5: labelBinding5 = lbl; comboBinding5 = cmb; break;
-                    case 6: labelBinding6 = lbl; comboBinding6 = cmb; break;
-                }
+                _bindingCombos.Add(cmb);
+                row++;
             }
         }
 
-        private bool _updatingBindings;
+        private static void BindingCombo_DrawItem(object? sender, DrawItemEventArgs e)
+        {
+            if (e.Index < 0 || sender is not ComboBox cmb) return;
+
+            object obj = cmb.Items[e.Index];
+            bool isSep = obj is BindingSeparator;
+
+            Color back = isSep ? RForm.buttonSecond : RForm.buttonMain;
+            Color fore = isSep ? RForm.foreMain     : RForm.foreMain;
+
+            if (!isSep && (e.State & DrawItemState.Selected) != 0)
+                back = RForm.borderMain;
+
+            using var backBrush = new SolidBrush(back);
+            e.Graphics.FillRectangle(backBrush, e.Bounds);
+
+            string text = obj.ToString() ?? string.Empty;
+            Font font = isSep
+                ? new Font(e.Font ?? SystemFonts.DefaultFont, FontStyle.Bold)
+                : (e.Font ?? SystemFonts.DefaultFont);
+
+            int indent = isSep ? 6 : 14;
+            var textRect = new Rectangle(e.Bounds.X + indent, e.Bounds.Y,
+                                         e.Bounds.Width - indent, e.Bounds.Height);
+
+            using var foreBrush = new SolidBrush(fore);
+            e.Graphics.DrawString(text, font, foreBrush, textRect,
+                new StringFormat { LineAlignment = StringAlignment.Center });
+
+            if (isSep) font.Dispose();
+        }
 
         private void BindingCombo_Changed(object? sender, EventArgs e)
         {
             if (_updatingBindings || sender is not UI.RComboBox cmb || cmb.Tag is not int slot) return;
+            if (cmb.SelectedItem is BindingSeparator)
+            {
+                // Separator selected — step forward to first real item in group
+                int next = cmb.SelectedIndex + 1;
+                if (next < cmb.Items.Count && cmb.Items[next] is BindingItem)
+                    cmb.SelectedIndex = next;
+                return;
+            }
             if (cmb.SelectedItem is BindingItem item)
-                mouse.SetButtonBinding((byte)slot, item.Code);
+                mouse.SetButtonBinding(slot, item.Code);
         }
 
         private void VisualizeButtonBindings()
         {
             if (!mouse.HasButtonBindings()) return;
-            UI.RComboBox[] combos = { comboBinding0, comboBinding1, comboBinding2,
-                                      comboBinding3, comboBinding4, comboBinding5, comboBinding6 };
+            var slots = mouse.ButtonSlots;
             _updatingBindings = true;
-            for (int i = 0; i < combos.Length; i++)
+            int row = 0;
+            foreach (var slot in slots.Keys)
             {
-                if (combos[i] == null) continue;
-                byte code = mouse.ButtonBindings[i];
-                for (int j = 0; j < combos[i].Items.Count; j++)
-                    if (combos[i].Items[j] is BindingItem item && item.Code == code)
-                    { combos[i].SelectedIndex = j; break; }
+                if (row >= _bindingCombos.Count) break;
+                var cmb = _bindingCombos[row];
+                ushort code = mouse.ButtonBindings[slot];
+                for (int j = 0; j < cmb.Items.Count; j++)
+                {
+                    if (cmb.Items[j] is BindingItem item && item.Code == code)
+                    { cmb.SelectedIndex = j; break; }
+                }
+                row++;
             }
             _updatingBindings = false;
         }
 
         private sealed class BindingItem
         {
-            public byte   Code        { get; }
+            public ushort Code        { get; }
             public string DisplayName { get; }
-            public BindingItem(byte code, string name) { Code = code; DisplayName = name; }
+            public BindingItem(ushort code, string name) { Code = code; DisplayName = name; }
             public override string ToString() => DisplayName;
+        }
+
+        private sealed class BindingSeparator
+        {
+            public string Label { get; }
+            public BindingSeparator(string label) { Label = label; }
+            public override string ToString() => Label;
         }
 
         private void InitLightingModes()
