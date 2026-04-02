@@ -2245,22 +2245,6 @@ namespace GHelper.Peripherals.Mouse
                 + $": Button slot 0x{slot:X2} set to {label} (0x{actionCode:X2})");
         }
 
-        public void SetAllButtonBindings(byte[] actionCodes)
-        {
-            if (!HasButtonBindings()) return;
-            if (actionCodes.Length != 8)
-            {
-                Logger.WriteLine(GetDisplayName() + ": SetAllButtonBindings requires exactly 8 action codes");
-                return;
-            }
-
-            for (byte slot = 0; slot < 8; slot++)
-                WriteForResponse(GetSetButtonBindingPacket(slot, actionCodes[slot]));
-
-            FlushSettings();
-            Logger.WriteLine(GetDisplayName() + ": All button bindings saved");
-        }
-
         // Confirmed from pcap: 03 51 21 [slot] 00 [actionCode] 01 [actionCode] 01
         // 0x01 is a fixed constant — always present, never varies
         protected virtual byte[] GetSetButtonBindingPacket(byte slot, byte actionCode)
