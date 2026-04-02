@@ -1,4 +1,4 @@
-﻿namespace GHelper
+namespace GHelper
 {
     partial class AsusMouseSettings
     {
@@ -48,14 +48,14 @@
             labelButtonDebounce = new Label();
             sliderButtonDebounce = new GHelper.UI.Slider();
             labelButtonDebounceValue = new Label();
-            panelAngleSnapping = new Panel();
+            panelZoneMode = new Panel();
+            numericUpDownZoneModeDPI = new NumericUpDown();
+            sliderZoneModeDPI = new GHelper.UI.Slider();
+            comboBoxZoneModePollingRate = new GHelper.UI.RComboBox();
+            checkBoxZoneMode = new CheckBox();
             panelMotionSync = new Panel();
             checkBoxMotionSync = new CheckBox();
-            panelZoneMode = new Panel();
-            checkBoxZoneMode = new CheckBox();
-            comboBoxZoneModePollingRate = new GHelper.UI.RComboBox();
-            sliderZoneModeDPI = new GHelper.UI.Slider();
-            numericUpDownZoneModeDPI = new NumericUpDown();
+            panelAngleSnapping = new Panel();
             sliderAngleAdjustment = new GHelper.UI.Slider();
             checkBoxAngleSnapping = new CheckBox();
             labelAngleAdjustmentValue = new Label();
@@ -122,6 +122,14 @@
             tableLayoutPanel2 = new TableLayoutPanel();
             rButton1 = new GHelper.UI.RButton();
             rButton2 = new GHelper.UI.RButton();
+            panelRight = new Panel();
+            panelLeft = new Panel();
+            panelGap = new Panel();
+            pictureMouseLayout = new PictureBox();
+            panelBindingsHeader = new Panel();
+            pictureBindigs = new PictureBox();
+            labelBindingsTitle = new Label();
+            tableRoot = new TableLayoutPanel();
             panelProfiles.SuspendLayout();
             panelPerformance.SuspendLayout();
             panelPerformanceOther.SuspendLayout();
@@ -129,9 +137,10 @@
             panelAcceleration.SuspendLayout();
             panelLiftOffDistance.SuspendLayout();
             panelDebounce.SuspendLayout();
-            panelAngleSnapping.SuspendLayout();
-            panelMotionSync.SuspendLayout();
             panelZoneMode.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numericUpDownZoneModeDPI).BeginInit();
+            panelMotionSync.SuspendLayout();
+            panelAngleSnapping.SuspendLayout();
             panelPollingRate.SuspendLayout();
             panelDPISettings.SuspendLayout();
             tableLayoutPanel1.SuspendLayout();
@@ -155,13 +164,19 @@
             ((System.ComponentModel.ISupportInitialize)pictureBoxBatteryState).BeginInit();
             panelBottomButtons.SuspendLayout();
             tableLayoutPanel2.SuspendLayout();
+            panelRight.SuspendLayout();
+            panelLeft.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureMouseLayout).BeginInit();
+            panelBindingsHeader.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureBindigs).BeginInit();
+            tableRoot.SuspendLayout();
             SuspendLayout();
             // 
             // panelProfiles
             // 
             panelProfiles.Controls.Add(comboProfile);
             panelProfiles.Controls.Add(labelProfile);
-            panelProfiles.Location = new Point(444, 4);
+            panelProfiles.Location = new Point(440, 4);
             panelProfiles.Margin = new Padding(4);
             panelProfiles.MinimumSize = new Size(454, 0);
             panelProfiles.Name = "panelProfiles";
@@ -197,6 +212,7 @@
             // panelPerformance
             // 
             panelPerformance.AutoSize = true;
+            panelPerformance.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             panelPerformance.Controls.Add(panelPerformanceOther);
             panelPerformance.Controls.Add(panelDPISettings);
             panelPerformance.Controls.Add(tableDPI);
@@ -206,7 +222,7 @@
             panelPerformance.Margin = new Padding(4);
             panelPerformance.Name = "panelPerformance";
             panelPerformance.Padding = new Padding(0, 14, 0, 34);
-            panelPerformance.Size = new Size(881, 733);
+            panelPerformance.Size = new Size(872, 893);
             panelPerformance.TabIndex = 1;
             // 
             // panelPerformanceOther
@@ -226,7 +242,7 @@
             panelPerformanceOther.Margin = new Padding(4);
             panelPerformanceOther.Name = "panelPerformanceOther";
             panelPerformanceOther.Padding = new Padding(0, 14, 0, 14);
-            panelPerformanceOther.Size = new Size(881, 380);
+            panelPerformanceOther.Size = new Size(872, 540);
             panelPerformanceOther.TabIndex = 49;
             // 
             // panelDeceleration
@@ -237,11 +253,11 @@
             panelDeceleration.Controls.Add(sliderDeceleration);
             panelDeceleration.Controls.Add(labelDecelerationValue);
             panelDeceleration.Dock = DockStyle.Top;
-            panelDeceleration.Location = new Point(0, 304);
+            panelDeceleration.Location = new Point(0, 464);
             panelDeceleration.Margin = new Padding(4);
             panelDeceleration.Name = "panelDeceleration";
             panelDeceleration.Padding = new Padding(6);
-            panelDeceleration.Size = new Size(881, 62);
+            panelDeceleration.Size = new Size(872, 62);
             panelDeceleration.TabIndex = 58;
             // 
             // labelDeceleration
@@ -286,11 +302,11 @@
             panelAcceleration.Controls.Add(sliderAcceleration);
             panelAcceleration.Controls.Add(labelAccelerationValue);
             panelAcceleration.Dock = DockStyle.Top;
-            panelAcceleration.Location = new Point(0, 242);
+            panelAcceleration.Location = new Point(0, 402);
             panelAcceleration.Margin = new Padding(4);
             panelAcceleration.Name = "panelAcceleration";
             panelAcceleration.Padding = new Padding(6);
-            panelAcceleration.Size = new Size(881, 62);
+            panelAcceleration.Size = new Size(872, 62);
             panelAcceleration.TabIndex = 57;
             // 
             // labelAcceleration
@@ -334,11 +350,11 @@
             panelLiftOffDistance.Controls.Add(labelLiftOffDistance);
             panelLiftOffDistance.Controls.Add(comboBoxLiftOffDistance);
             panelLiftOffDistance.Dock = DockStyle.Top;
-            panelLiftOffDistance.Location = new Point(0, 186);
+            panelLiftOffDistance.Location = new Point(0, 346);
             panelLiftOffDistance.Margin = new Padding(4);
             panelLiftOffDistance.Name = "panelLiftOffDistance";
             panelLiftOffDistance.Padding = new Padding(6);
-            panelLiftOffDistance.Size = new Size(881, 56);
+            panelLiftOffDistance.Size = new Size(872, 56);
             panelLiftOffDistance.TabIndex = 56;
             // 
             // labelLiftOffDistance
@@ -371,11 +387,11 @@
             panelDebounce.Controls.Add(sliderButtonDebounce);
             panelDebounce.Controls.Add(labelButtonDebounceValue);
             panelDebounce.Dock = DockStyle.Top;
-            panelDebounce.Location = new Point(0, 124);
+            panelDebounce.Location = new Point(0, 284);
             panelDebounce.Margin = new Padding(4);
             panelDebounce.Name = "panelDebounce";
             panelDebounce.Padding = new Padding(6);
-            panelDebounce.Size = new Size(881, 62);
+            panelDebounce.Size = new Size(872, 62);
             panelDebounce.TabIndex = 55;
             // 
             // labelButtonDebounce
@@ -412,46 +428,6 @@
             labelButtonDebounceValue.Text = "12ms";
             labelButtonDebounceValue.TextAlign = ContentAlignment.MiddleRight;
             // 
-            // panelAngleSnapping
-            // 
-            panelAngleSnapping.AutoSize = true;
-            panelAngleSnapping.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            panelAngleSnapping.Controls.Add(sliderAngleAdjustment);
-            panelAngleSnapping.Controls.Add(checkBoxAngleSnapping);
-            panelAngleSnapping.Controls.Add(labelAngleAdjustmentValue);
-            panelAngleSnapping.Dock = DockStyle.Top;
-            panelAngleSnapping.Location = new Point(0, 66);
-            panelAngleSnapping.Margin = new Padding(4);
-            panelAngleSnapping.Name = "panelAngleSnapping";
-            panelAngleSnapping.Padding = new Padding(6);
-            panelAngleSnapping.Size = new Size(881, 58);
-            panelAngleSnapping.TabIndex = 54;
-            // 
-            // panelMotionSync
-            // 
-            panelMotionSync.AutoSize = true;
-            panelMotionSync.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            panelMotionSync.Controls.Add(checkBoxMotionSync);
-            panelMotionSync.Dock = DockStyle.Top;
-            panelMotionSync.Location = new Point(0, 124);
-            panelMotionSync.Margin = new Padding(4);
-            panelMotionSync.Name = "panelMotionSync";
-            panelMotionSync.Padding = new Padding(6);
-            panelMotionSync.Size = new Size(881, 58);
-            panelMotionSync.TabIndex = 59;
-            // 
-            // checkBoxMotionSync
-            // 
-            checkBoxMotionSync.CheckAlign = ContentAlignment.MiddleRight;
-            checkBoxMotionSync.Location = new Point(6, 8);
-            checkBoxMotionSync.Margin = new Padding(8, 0, 8, 0);
-            checkBoxMotionSync.Name = "checkBoxMotionSync";
-            checkBoxMotionSync.Size = new Size(512, 40);
-            checkBoxMotionSync.TabIndex = 45;
-            checkBoxMotionSync.Text = "Motion Sync";
-            checkBoxMotionSync.TextAlign = ContentAlignment.TopLeft;
-            checkBoxMotionSync.UseVisualStyleBackColor = true;
-            // 
             // panelZoneMode
             // 
             panelZoneMode.AutoSize = true;
@@ -461,37 +437,25 @@
             panelZoneMode.Controls.Add(comboBoxZoneModePollingRate);
             panelZoneMode.Controls.Add(checkBoxZoneMode);
             panelZoneMode.Dock = DockStyle.Top;
-            panelZoneMode.Location = new Point(0, 182);
+            panelZoneMode.Location = new Point(0, 178);
             panelZoneMode.Margin = new Padding(4);
             panelZoneMode.Name = "panelZoneMode";
             panelZoneMode.Padding = new Padding(6);
-            panelZoneMode.Size = new Size(881, 116);
+            panelZoneMode.Size = new Size(872, 106);
             panelZoneMode.TabIndex = 60;
             // 
-            // checkBoxZoneMode
+            // numericUpDownZoneModeDPI
             // 
-            checkBoxZoneMode.CheckAlign = ContentAlignment.MiddleRight;
-            checkBoxZoneMode.Location = new Point(6, 8);
-            checkBoxZoneMode.Margin = new Padding(8, 0, 8, 0);
-            checkBoxZoneMode.Name = "checkBoxZoneMode";
-            checkBoxZoneMode.Size = new Size(512, 40);
-            checkBoxZoneMode.TabIndex = 45;
-            checkBoxZoneMode.Text = "Zone Mode";
-            checkBoxZoneMode.TextAlign = ContentAlignment.TopLeft;
-            checkBoxZoneMode.UseVisualStyleBackColor = true;
-            // 
-            // comboBoxZoneModePollingRate
-            // 
-            comboBoxZoneModePollingRate.BorderColor = Color.White;
-            comboBoxZoneModePollingRate.ButtonColor = Color.FromArgb(255, 255, 255);
-            comboBoxZoneModePollingRate.DropDownStyle = ComboBoxStyle.DropDownList;
-            comboBoxZoneModePollingRate.FlatStyle = FlatStyle.Flat;
-            comboBoxZoneModePollingRate.FormattingEnabled = true;
-            comboBoxZoneModePollingRate.Location = new Point(544, 8);
-            comboBoxZoneModePollingRate.Margin = new Padding(22, 0, 22, 0);
-            comboBoxZoneModePollingRate.Name = "comboBoxZoneModePollingRate";
-            comboBoxZoneModePollingRate.Size = new Size(176, 40);
-            comboBoxZoneModePollingRate.TabIndex = 46;
+            numericUpDownZoneModeDPI.Increment = new decimal(new int[] { 50, 0, 0, 0 });
+            numericUpDownZoneModeDPI.Location = new Point(744, 8);
+            numericUpDownZoneModeDPI.Margin = new Padding(8, 0, 8, 0);
+            numericUpDownZoneModeDPI.Maximum = new decimal(new int[] { 42000, 0, 0, 0 });
+            numericUpDownZoneModeDPI.Minimum = new decimal(new int[] { 400, 0, 0, 0 });
+            numericUpDownZoneModeDPI.Name = "numericUpDownZoneModeDPI";
+            numericUpDownZoneModeDPI.Size = new Size(120, 39);
+            numericUpDownZoneModeDPI.TabIndex = 48;
+            numericUpDownZoneModeDPI.TextAlign = HorizontalAlignment.Right;
+            numericUpDownZoneModeDPI.Value = new decimal(new int[] { 1600, 0, 0, 0 });
             // 
             // sliderZoneModeDPI
             // 
@@ -508,18 +472,70 @@
             sliderZoneModeDPI.Text = "sliderZoneModeDPI";
             sliderZoneModeDPI.Value = 1600;
             // 
-            // numericUpDownZoneModeDPI
+            // comboBoxZoneModePollingRate
             // 
-            numericUpDownZoneModeDPI.Location = new Point(744, 8);
-            numericUpDownZoneModeDPI.Margin = new Padding(8, 0, 8, 0);
-            numericUpDownZoneModeDPI.Maximum = new decimal(new int[] { 42000, 0, 0, 0 });
-            numericUpDownZoneModeDPI.Minimum = new decimal(new int[] { 400, 0, 0, 0 });
-            numericUpDownZoneModeDPI.Name = "numericUpDownZoneModeDPI";
-            numericUpDownZoneModeDPI.Size = new Size(120, 40);
-            numericUpDownZoneModeDPI.TabIndex = 48;
-            numericUpDownZoneModeDPI.TextAlign = HorizontalAlignment.Right;
-            numericUpDownZoneModeDPI.Value = new decimal(new int[] { 1600, 0, 0, 0 });
-            numericUpDownZoneModeDPI.Increment = 50;
+            comboBoxZoneModePollingRate.BorderColor = Color.White;
+            comboBoxZoneModePollingRate.ButtonColor = Color.FromArgb(255, 255, 255);
+            comboBoxZoneModePollingRate.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboBoxZoneModePollingRate.FlatStyle = FlatStyle.Flat;
+            comboBoxZoneModePollingRate.FormattingEnabled = true;
+            comboBoxZoneModePollingRate.Location = new Point(544, 8);
+            comboBoxZoneModePollingRate.Margin = new Padding(22, 0, 22, 0);
+            comboBoxZoneModePollingRate.Name = "comboBoxZoneModePollingRate";
+            comboBoxZoneModePollingRate.Size = new Size(176, 40);
+            comboBoxZoneModePollingRate.TabIndex = 46;
+            // 
+            // checkBoxZoneMode
+            // 
+            checkBoxZoneMode.CheckAlign = ContentAlignment.MiddleRight;
+            checkBoxZoneMode.Location = new Point(6, 8);
+            checkBoxZoneMode.Margin = new Padding(8, 0, 8, 0);
+            checkBoxZoneMode.Name = "checkBoxZoneMode";
+            checkBoxZoneMode.Size = new Size(512, 40);
+            checkBoxZoneMode.TabIndex = 45;
+            checkBoxZoneMode.Text = "Zone Mode";
+            checkBoxZoneMode.TextAlign = ContentAlignment.TopLeft;
+            checkBoxZoneMode.UseVisualStyleBackColor = true;
+            // 
+            // panelMotionSync
+            // 
+            panelMotionSync.AutoSize = true;
+            panelMotionSync.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            panelMotionSync.Controls.Add(checkBoxMotionSync);
+            panelMotionSync.Dock = DockStyle.Top;
+            panelMotionSync.Location = new Point(0, 124);
+            panelMotionSync.Margin = new Padding(4);
+            panelMotionSync.Name = "panelMotionSync";
+            panelMotionSync.Padding = new Padding(6);
+            panelMotionSync.Size = new Size(872, 54);
+            panelMotionSync.TabIndex = 59;
+            // 
+            // checkBoxMotionSync
+            // 
+            checkBoxMotionSync.CheckAlign = ContentAlignment.MiddleRight;
+            checkBoxMotionSync.Location = new Point(6, 8);
+            checkBoxMotionSync.Margin = new Padding(8, 0, 8, 0);
+            checkBoxMotionSync.Name = "checkBoxMotionSync";
+            checkBoxMotionSync.Size = new Size(512, 40);
+            checkBoxMotionSync.TabIndex = 45;
+            checkBoxMotionSync.Text = "Motion Sync";
+            checkBoxMotionSync.TextAlign = ContentAlignment.TopLeft;
+            checkBoxMotionSync.UseVisualStyleBackColor = true;
+            // 
+            // panelAngleSnapping
+            // 
+            panelAngleSnapping.AutoSize = true;
+            panelAngleSnapping.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            panelAngleSnapping.Controls.Add(sliderAngleAdjustment);
+            panelAngleSnapping.Controls.Add(checkBoxAngleSnapping);
+            panelAngleSnapping.Controls.Add(labelAngleAdjustmentValue);
+            panelAngleSnapping.Dock = DockStyle.Top;
+            panelAngleSnapping.Location = new Point(0, 66);
+            panelAngleSnapping.Margin = new Padding(4);
+            panelAngleSnapping.Name = "panelAngleSnapping";
+            panelAngleSnapping.Padding = new Padding(6);
+            panelAngleSnapping.Size = new Size(872, 58);
+            panelAngleSnapping.TabIndex = 54;
             // 
             // sliderAngleAdjustment
             // 
@@ -555,7 +571,7 @@
             labelAngleAdjustmentValue.Name = "labelAngleAdjustmentValue";
             labelAngleAdjustmentValue.Size = new Size(64, 40);
             labelAngleAdjustmentValue.TabIndex = 47;
-            labelAngleAdjustmentValue.Text = "0°";
+            labelAngleAdjustmentValue.Text = "0�";
             labelAngleAdjustmentValue.TextAlign = ContentAlignment.MiddleRight;
             // 
             // panelPollingRate
@@ -569,7 +585,7 @@
             panelPollingRate.Margin = new Padding(4);
             panelPollingRate.Name = "panelPollingRate";
             panelPollingRate.Padding = new Padding(6);
-            panelPollingRate.Size = new Size(881, 52);
+            panelPollingRate.Size = new Size(872, 52);
             panelPollingRate.TabIndex = 53;
             // 
             // labelPollingRate
@@ -605,7 +621,7 @@
             panelDPISettings.Location = new Point(0, 182);
             panelDPISettings.Margin = new Padding(4);
             panelDPISettings.Name = "panelDPISettings";
-            panelDPISettings.Size = new Size(881, 137);
+            panelDPISettings.Size = new Size(872, 137);
             panelDPISettings.TabIndex = 44;
             // 
             // sliderDPI
@@ -617,7 +633,7 @@
             sliderDPI.Max = 35000;
             sliderDPI.Min = 100;
             sliderDPI.Name = "sliderDPI";
-            sliderDPI.Size = new Size(881, 40);
+            sliderDPI.Size = new Size(872, 40);
             sliderDPI.Step = 50;
             sliderDPI.TabIndex = 43;
             sliderDPI.TabStop = false;
@@ -642,7 +658,7 @@
             tableLayoutPanel1.Name = "tableLayoutPanel1";
             tableLayoutPanel1.RowCount = 1;
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            tableLayoutPanel1.Size = new Size(881, 43);
+            tableLayoutPanel1.Size = new Size(872, 43);
             tableLayoutPanel1.TabIndex = 47;
             // 
             // labelMinDPI
@@ -652,7 +668,7 @@
             labelMinDPI.Location = new Point(8, 0);
             labelMinDPI.Margin = new Padding(8, 0, 8, 0);
             labelMinDPI.Name = "labelMinDPI";
-            labelMinDPI.Size = new Size(318, 40);
+            labelMinDPI.Size = new Size(315, 40);
             labelMinDPI.TabIndex = 45;
             labelMinDPI.Text = "100";
             // 
@@ -660,10 +676,10 @@
             // 
             labelMaxDPI.Dock = DockStyle.Top;
             labelMaxDPI.ForeColor = SystemColors.GrayText;
-            labelMaxDPI.Location = new Point(553, 0);
+            labelMaxDPI.Location = new Point(548, 0);
             labelMaxDPI.Margin = new Padding(8, 0, 8, 0);
             labelMaxDPI.Name = "labelMaxDPI";
-            labelMaxDPI.Size = new Size(320, 40);
+            labelMaxDPI.Size = new Size(316, 40);
             labelMaxDPI.TabIndex = 46;
             labelMaxDPI.Text = " 35000";
             labelMaxDPI.TextAlign = ContentAlignment.TopRight;
@@ -673,12 +689,12 @@
             numericUpDownCurrentDPI.BorderStyle = BorderStyle.None;
             numericUpDownCurrentDPI.Dock = DockStyle.Top;
             numericUpDownCurrentDPI.Increment = new decimal(new int[] { 50, 0, 0, 0 });
-            numericUpDownCurrentDPI.Location = new Point(338, 4);
+            numericUpDownCurrentDPI.Location = new Point(335, 4);
             numericUpDownCurrentDPI.Margin = new Padding(4);
             numericUpDownCurrentDPI.Maximum = new decimal(new int[] { 35000, 0, 0, 0 });
             numericUpDownCurrentDPI.Minimum = new decimal(new int[] { 100, 0, 0, 0 });
             numericUpDownCurrentDPI.Name = "numericUpDownCurrentDPI";
-            numericUpDownCurrentDPI.Size = new Size(203, 35);
+            numericUpDownCurrentDPI.Size = new Size(201, 35);
             numericUpDownCurrentDPI.TabIndex = 47;
             numericUpDownCurrentDPI.TextAlign = HorizontalAlignment.Center;
             numericUpDownCurrentDPI.Value = new decimal(new int[] { 2000, 0, 0, 0 });
@@ -693,13 +709,13 @@
             panelDPITile.Margin = new Padding(4);
             panelDPITile.Name = "panelDPITile";
             panelDPITile.Padding = new Padding(0, 6, 0, 6);
-            panelDPITile.Size = new Size(881, 54);
+            panelDPITile.Size = new Size(872, 54);
             panelDPITile.TabIndex = 48;
             // 
             // pictureDPIColor
             // 
             pictureDPIColor.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            pictureDPIColor.Location = new Point(831, 14);
+            pictureDPIColor.Location = new Point(822, 14);
             pictureDPIColor.Margin = new Padding(8);
             pictureDPIColor.Name = "pictureDPIColor";
             pictureDPIColor.Size = new Size(20, 20);
@@ -717,7 +733,7 @@
             buttonDPIColor.BorderRadius = 2;
             buttonDPIColor.FlatStyle = FlatStyle.Flat;
             buttonDPIColor.ForeColor = SystemColors.ControlText;
-            buttonDPIColor.Location = new Point(623, 2);
+            buttonDPIColor.Location = new Point(614, 2);
             buttonDPIColor.Margin = new Padding(4, 8, 4, 8);
             buttonDPIColor.Name = "buttonDPIColor";
             buttonDPIColor.Secondary = false;
@@ -758,7 +774,7 @@
             tableDPI.RowCount = 1;
             tableDPI.RowStyles.Add(new RowStyle(SizeType.Absolute, 128F));
             tableDPI.RowStyles.Add(new RowStyle(SizeType.Absolute, 128F));
-            tableDPI.Size = new Size(881, 128);
+            tableDPI.Size = new Size(872, 128);
             tableDPI.TabIndex = 42;
             // 
             // buttonDPI2
@@ -774,11 +790,11 @@
             buttonDPI2.ForeColor = SystemColors.ControlText;
             buttonDPI2.Image = Properties.Resources.lighting_dot_32;
             buttonDPI2.ImageAlign = ContentAlignment.BottomCenter;
-            buttonDPI2.Location = new Point(224, 4);
+            buttonDPI2.Location = new Point(222, 4);
             buttonDPI2.Margin = new Padding(4);
             buttonDPI2.Name = "buttonDPI2";
             buttonDPI2.Secondary = false;
-            buttonDPI2.Size = new Size(212, 120);
+            buttonDPI2.Size = new Size(210, 120);
             buttonDPI2.TabIndex = 4;
             buttonDPI2.Text = "DPI 2\r\n1000";
             buttonDPI2.TextImageRelation = TextImageRelation.ImageAboveText;
@@ -802,7 +818,7 @@
             buttonDPI1.Margin = new Padding(4);
             buttonDPI1.Name = "buttonDPI1";
             buttonDPI1.Secondary = false;
-            buttonDPI1.Size = new Size(212, 120);
+            buttonDPI1.Size = new Size(210, 120);
             buttonDPI1.TabIndex = 4;
             buttonDPI1.Text = "DPI 1\r\n800";
             buttonDPI1.TextImageRelation = TextImageRelation.ImageAboveText;
@@ -821,11 +837,11 @@
             buttonDPI3.ForeColor = SystemColors.ControlText;
             buttonDPI3.Image = Properties.Resources.lighting_dot_32;
             buttonDPI3.ImageAlign = ContentAlignment.BottomCenter;
-            buttonDPI3.Location = new Point(444, 4);
+            buttonDPI3.Location = new Point(440, 4);
             buttonDPI3.Margin = new Padding(4);
             buttonDPI3.Name = "buttonDPI3";
             buttonDPI3.Secondary = false;
-            buttonDPI3.Size = new Size(212, 120);
+            buttonDPI3.Size = new Size(210, 120);
             buttonDPI3.TabIndex = 5;
             buttonDPI3.Text = "DPI 3\r\n1200";
             buttonDPI3.TextImageRelation = TextImageRelation.ImageAboveText;
@@ -844,11 +860,11 @@
             buttonDPI4.ForeColor = SystemColors.ControlText;
             buttonDPI4.Image = Properties.Resources.lighting_dot_32;
             buttonDPI4.ImageAlign = ContentAlignment.BottomCenter;
-            buttonDPI4.Location = new Point(664, 4);
+            buttonDPI4.Location = new Point(658, 4);
             buttonDPI4.Margin = new Padding(4);
             buttonDPI4.Name = "buttonDPI4";
             buttonDPI4.Secondary = false;
-            buttonDPI4.Size = new Size(213, 120);
+            buttonDPI4.Size = new Size(210, 120);
             buttonDPI4.TabIndex = 6;
             buttonDPI4.Text = "DPI 4\r\n1400";
             buttonDPI4.TextImageRelation = TextImageRelation.ImageAboveText;
@@ -863,14 +879,14 @@
             panelPerformanceHeader.Location = new Point(0, 14);
             panelPerformanceHeader.Margin = new Padding(4);
             panelPerformanceHeader.Name = "panelPerformanceHeader";
-            panelPerformanceHeader.Size = new Size(881, 40);
+            panelPerformanceHeader.Size = new Size(872, 40);
             panelPerformanceHeader.TabIndex = 41;
             // 
             // pictureKeyboard
             // 
             pictureKeyboard.BackgroundImage = Properties.Resources.icons8_mauszeiger_50;
             pictureKeyboard.BackgroundImageLayout = ImageLayout.Zoom;
-            pictureKeyboard.Location = new Point(6, 0);
+            pictureKeyboard.Location = new Point(6, 3);
             pictureKeyboard.Margin = new Padding(4);
             pictureKeyboard.Name = "pictureKeyboard";
             pictureKeyboard.Size = new Size(32, 32);
@@ -895,11 +911,11 @@
             panelLighting.Controls.Add(panelLightingContent);
             panelLighting.Controls.Add(panelLightingHeader);
             panelLighting.Dock = DockStyle.Top;
-            panelLighting.Location = new Point(14, 823);
+            panelLighting.Location = new Point(14, 983);
             panelLighting.Margin = new Padding(4);
             panelLighting.Name = "panelLighting";
             panelLighting.Padding = new Padding(0, 0, 0, 34);
-            panelLighting.Size = new Size(881, 388);
+            panelLighting.Size = new Size(872, 388);
             panelLighting.TabIndex = 42;
             // 
             // panelLightingContent
@@ -920,7 +936,7 @@
             panelLightingContent.Margin = new Padding(4);
             panelLightingContent.Name = "panelLightingContent";
             panelLightingContent.Padding = new Padding(0, 0, 0, 14);
-            panelLightingContent.Size = new Size(881, 314);
+            panelLightingContent.Size = new Size(872, 314);
             panelLightingContent.TabIndex = 42;
             // 
             // tableLayoutLightingZones
@@ -944,7 +960,7 @@
             tableLayoutLightingZones.Name = "tableLayoutLightingZones";
             tableLayoutLightingZones.RowCount = 1;
             tableLayoutLightingZones.RowStyles.Add(new RowStyle(SizeType.Absolute, 80F));
-            tableLayoutLightingZones.Size = new Size(881, 80);
+            tableLayoutLightingZones.Size = new Size(872, 80);
             tableLayoutLightingZones.TabIndex = 56;
             // 
             // buttonLightingZoneScroll
@@ -961,11 +977,11 @@
             buttonLightingZoneScroll.FlatStyle = FlatStyle.Flat;
             buttonLightingZoneScroll.ForeColor = SystemColors.ControlText;
             buttonLightingZoneScroll.ImageAlign = ContentAlignment.BottomCenter;
-            buttonLightingZoneScroll.Location = new Point(356, 4);
+            buttonLightingZoneScroll.Location = new Point(352, 4);
             buttonLightingZoneScroll.Margin = new Padding(4);
             buttonLightingZoneScroll.Name = "buttonLightingZoneScroll";
             buttonLightingZoneScroll.Secondary = false;
-            buttonLightingZoneScroll.Size = new Size(168, 72);
+            buttonLightingZoneScroll.Size = new Size(166, 72);
             buttonLightingZoneScroll.TabIndex = 7;
             buttonLightingZoneScroll.Text = "Scrollwheel";
             buttonLightingZoneScroll.TextImageRelation = TextImageRelation.ImageAboveText;
@@ -985,11 +1001,11 @@
             buttonLightingZoneLogo.FlatStyle = FlatStyle.Flat;
             buttonLightingZoneLogo.ForeColor = SystemColors.ControlText;
             buttonLightingZoneLogo.ImageAlign = ContentAlignment.BottomCenter;
-            buttonLightingZoneLogo.Location = new Point(180, 4);
+            buttonLightingZoneLogo.Location = new Point(178, 4);
             buttonLightingZoneLogo.Margin = new Padding(4);
             buttonLightingZoneLogo.Name = "buttonLightingZoneLogo";
             buttonLightingZoneLogo.Secondary = false;
-            buttonLightingZoneLogo.Size = new Size(168, 72);
+            buttonLightingZoneLogo.Size = new Size(166, 72);
             buttonLightingZoneLogo.TabIndex = 4;
             buttonLightingZoneLogo.Text = "Logo";
             buttonLightingZoneLogo.TextImageRelation = TextImageRelation.ImageAboveText;
@@ -1013,7 +1029,7 @@
             buttonLightingZoneAll.Margin = new Padding(4);
             buttonLightingZoneAll.Name = "buttonLightingZoneAll";
             buttonLightingZoneAll.Secondary = false;
-            buttonLightingZoneAll.Size = new Size(168, 72);
+            buttonLightingZoneAll.Size = new Size(166, 72);
             buttonLightingZoneAll.TabIndex = 4;
             buttonLightingZoneAll.Text = "All";
             buttonLightingZoneAll.TextImageRelation = TextImageRelation.ImageAboveText;
@@ -1033,11 +1049,11 @@
             buttonLightingZoneUnderglow.FlatStyle = FlatStyle.Flat;
             buttonLightingZoneUnderglow.ForeColor = SystemColors.ControlText;
             buttonLightingZoneUnderglow.ImageAlign = ContentAlignment.BottomCenter;
-            buttonLightingZoneUnderglow.Location = new Point(532, 4);
+            buttonLightingZoneUnderglow.Location = new Point(526, 4);
             buttonLightingZoneUnderglow.Margin = new Padding(4);
             buttonLightingZoneUnderglow.Name = "buttonLightingZoneUnderglow";
             buttonLightingZoneUnderglow.Secondary = false;
-            buttonLightingZoneUnderglow.Size = new Size(168, 72);
+            buttonLightingZoneUnderglow.Size = new Size(166, 72);
             buttonLightingZoneUnderglow.TabIndex = 5;
             buttonLightingZoneUnderglow.Text = "Underglow";
             buttonLightingZoneUnderglow.TextImageRelation = TextImageRelation.ImageAboveText;
@@ -1057,11 +1073,11 @@
             buttonLightingZoneDock.FlatStyle = FlatStyle.Flat;
             buttonLightingZoneDock.ForeColor = SystemColors.ControlText;
             buttonLightingZoneDock.ImageAlign = ContentAlignment.BottomCenter;
-            buttonLightingZoneDock.Location = new Point(708, 4);
+            buttonLightingZoneDock.Location = new Point(700, 4);
             buttonLightingZoneDock.Margin = new Padding(4);
             buttonLightingZoneDock.Name = "buttonLightingZoneDock";
             buttonLightingZoneDock.Secondary = false;
-            buttonLightingZoneDock.Size = new Size(169, 72);
+            buttonLightingZoneDock.Size = new Size(168, 72);
             buttonLightingZoneDock.TabIndex = 6;
             buttonLightingZoneDock.Text = "Dock";
             buttonLightingZoneDock.TextImageRelation = TextImageRelation.ImageAboveText;
@@ -1124,7 +1140,7 @@
             // pictureBoxLightingColor
             // 
             pictureBoxLightingColor.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            pictureBoxLightingColor.Location = new Point(623, 158);
+            pictureBoxLightingColor.Location = new Point(614, 158);
             pictureBoxLightingColor.Margin = new Padding(8);
             pictureBoxLightingColor.Name = "pictureBoxLightingColor";
             pictureBoxLightingColor.Size = new Size(26, 26);
@@ -1141,7 +1157,7 @@
             buttonLightingColor.BorderRadius = 2;
             buttonLightingColor.FlatStyle = FlatStyle.Flat;
             buttonLightingColor.ForeColor = SystemColors.ControlText;
-            buttonLightingColor.Location = new Point(488, 145);
+            buttonLightingColor.Location = new Point(479, 145);
             buttonLightingColor.Margin = new Padding(0);
             buttonLightingColor.Name = "buttonLightingColor";
             buttonLightingColor.Secondary = false;
@@ -1183,13 +1199,13 @@
             panelLightingHeader.Location = new Point(0, 0);
             panelLightingHeader.Margin = new Padding(4);
             panelLightingHeader.Name = "panelLightingHeader";
-            panelLightingHeader.Size = new Size(881, 40);
+            panelLightingHeader.Size = new Size(872, 40);
             panelLightingHeader.TabIndex = 41;
             // 
             // sliderBrightness
             // 
             sliderBrightness.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right;
-            sliderBrightness.Location = new Point(497, 2);
+            sliderBrightness.Location = new Point(488, 2);
             sliderBrightness.Margin = new Padding(2);
             sliderBrightness.Max = 100;
             sliderBrightness.Min = 0;
@@ -1233,11 +1249,11 @@
             panelEnergy.Controls.Add(labelAutoPowerOff);
             panelEnergy.Controls.Add(panelEnergyHeader);
             panelEnergy.Dock = DockStyle.Top;
-            panelEnergy.Location = new Point(14, 1211);
+            panelEnergy.Location = new Point(14, 1371);
             panelEnergy.Margin = new Padding(4);
             panelEnergy.Name = "panelEnergy";
             panelEnergy.Padding = new Padding(0, 0, 0, 34);
-            panelEnergy.Size = new Size(881, 192);
+            panelEnergy.Size = new Size(872, 192);
             panelEnergy.TabIndex = 43;
             // 
             // labelLowBatteryWarningValue
@@ -1305,7 +1321,7 @@
             panelEnergyHeader.Location = new Point(0, 0);
             panelEnergyHeader.Margin = new Padding(4);
             panelEnergyHeader.Name = "panelEnergyHeader";
-            panelEnergyHeader.Size = new Size(881, 40);
+            panelEnergyHeader.Size = new Size(872, 40);
             panelEnergyHeader.TabIndex = 41;
             // 
             // pictureBoxEnergy
@@ -1346,7 +1362,7 @@
             tableLayoutProfiles.RowCount = 1;
             tableLayoutProfiles.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
             tableLayoutProfiles.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            tableLayoutProfiles.Size = new Size(881, 76);
+            tableLayoutProfiles.Size = new Size(872, 76);
             tableLayoutProfiles.TabIndex = 44;
             // 
             // panelBatteryState
@@ -1408,7 +1424,7 @@
             buttonSync.BorderRadius = 2;
             buttonSync.FlatStyle = FlatStyle.Flat;
             buttonSync.ForeColor = SystemColors.ControlText;
-            buttonSync.Location = new Point(8, 74);
+            buttonSync.Location = new Point(-1, 74);
             buttonSync.Margin = new Padding(4, 8, 4, 8);
             buttonSync.Name = "buttonSync";
             buttonSync.Secondary = false;
@@ -1420,15 +1436,16 @@
             // 
             // panelBottomButtons
             // 
+            panelBottomButtons.AutoSize = true;
             panelBottomButtons.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             panelBottomButtons.Controls.Add(buttonImport);
             panelBottomButtons.Controls.Add(buttonExport);
             panelBottomButtons.Controls.Add(buttonSync);
             panelBottomButtons.Dock = DockStyle.Top;
-            panelBottomButtons.Location = new Point(14, 1403);
+            panelBottomButtons.Location = new Point(14, 1563);
             panelBottomButtons.Margin = new Padding(4);
             panelBottomButtons.Name = "panelBottomButtons";
-            panelBottomButtons.Size = new Size(881, 132);
+            panelBottomButtons.Size = new Size(872, 132);
             panelBottomButtons.TabIndex = 47;
             // 
             // buttonImport
@@ -1441,7 +1458,7 @@
             buttonImport.BorderRadius = 2;
             buttonImport.FlatStyle = FlatStyle.Flat;
             buttonImport.ForeColor = SystemColors.ControlText;
-            buttonImport.Location = new Point(440, 12);
+            buttonImport.Location = new Point(431, 12);
             buttonImport.Margin = new Padding(4, 8, 4, 8);
             buttonImport.Name = "buttonImport";
             buttonImport.Secondary = false;
@@ -1461,7 +1478,7 @@
             buttonExport.BorderRadius = 2;
             buttonExport.FlatStyle = FlatStyle.Flat;
             buttonExport.ForeColor = SystemColors.ControlText;
-            buttonExport.Location = new Point(8, 12);
+            buttonExport.Location = new Point(-1, 12);
             buttonExport.Margin = new Padding(4, 8, 4, 8);
             buttonExport.Name = "buttonExport";
             buttonExport.Secondary = false;
@@ -1532,26 +1549,118 @@
             rButton2.TextImageRelation = TextImageRelation.ImageAboveText;
             rButton2.UseVisualStyleBackColor = false;
             // 
+            // panelRight
+            // 
+            panelRight.AutoSize = true;
+            panelRight.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            panelRight.Controls.Add(panelBottomButtons);
+            panelRight.Controls.Add(panelEnergy);
+            panelRight.Controls.Add(panelLighting);
+            panelRight.Controls.Add(panelPerformance);
+            panelRight.Controls.Add(tableLayoutProfiles);
+            panelRight.Location = new Point(509, 3);
+            panelRight.MinimumSize = new Size(900, 0);
+            panelRight.Name = "panelRight";
+            panelRight.Padding = new Padding(14);
+            panelRight.Size = new Size(900, 1709);
+            panelRight.TabIndex = 201;
+            // 
+            // panelLeft
+            // 
+            panelLeft.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            panelLeft.AutoSize = true;
+            panelLeft.Controls.Add(pictureMouseLayout);
+            panelLeft.Controls.Add(panelGap);
+            panelLeft.Controls.Add(panelBindingsHeader);
+            panelLeft.Location = new Point(3, 3);
+            panelLeft.MinimumSize = new Size(500, 0);
+            panelLeft.Name = "panelLeft";
+            panelLeft.Padding = new Padding(10);
+            panelLeft.Size = new Size(500, 1709);
+            panelLeft.TabIndex = 200;
+            // 
+            // pictureMouseLayout
+            // 
+            pictureMouseLayout.BackgroundImage = Properties.Resources.mouse_layout;
+            pictureMouseLayout.BackgroundImageLayout = ImageLayout.Zoom;
+            pictureMouseLayout.Dock = DockStyle.Top;
+            pictureMouseLayout.Location = new Point(10, 58);
+            pictureMouseLayout.Name = "pictureMouseLayout";
+            pictureMouseLayout.Size = new Size(480, 296);
+            pictureMouseLayout.TabIndex = 43;
+            pictureMouseLayout.TabStop = false;
+            // 
+            // panelGap
+            // 
+            panelGap.Dock = DockStyle.Top;
+            panelGap.Name = "panelGap";
+            panelGap.Size = new Size(480, 16);
+            panelGap.TabIndex = 201;
+            // 
+            // panelBindingsHeader
+            //
+            panelBindingsHeader.BackColor = SystemColors.ControlLight;
+            panelBindingsHeader.Controls.Add(pictureBindigs);
+            panelBindingsHeader.Controls.Add(labelBindingsTitle);
+            panelBindingsHeader.Dock = DockStyle.Top;
+            panelBindingsHeader.Location = new Point(10, 10);
+            panelBindingsHeader.Margin = new Padding(4);
+            panelBindingsHeader.Name = "panelBindingsHeader";
+            panelBindingsHeader.Size = new Size(480, 48);
+            panelBindingsHeader.TabIndex = 42;
+            // 
+            // pictureBindigs
+            // 
+            pictureBindigs.BackgroundImage = Properties.Resources.icons8_natural_user_interface_48;
+            pictureBindigs.BackgroundImageLayout = ImageLayout.Zoom;
+            pictureBindigs.Location = new Point(6, 8);
+            pictureBindigs.Margin = new Padding(4);
+            pictureBindigs.Name = "pictureBindigs";
+            pictureBindigs.Size = new Size(32, 32);
+            pictureBindigs.TabIndex = 35;
+            pictureBindigs.TabStop = false;
+            // 
+            // labelBindingsTitle
+            // 
+            labelBindingsTitle.AutoSize = true;
+            labelBindingsTitle.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            labelBindingsTitle.Location = new Point(44, 7);
+            labelBindingsTitle.Margin = new Padding(8, 0, 8, 0);
+            labelBindingsTitle.Name = "labelBindingsTitle";
+            labelBindingsTitle.Size = new Size(114, 32);
+            labelBindingsTitle.TabIndex = 34;
+            labelBindingsTitle.Text = "Bindings";
+            // 
+            // tableRoot
+            // 
+            tableRoot.AutoSize = true;
+            tableRoot.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            tableRoot.ColumnCount = 2;
+            tableRoot.ColumnStyles.Add(new ColumnStyle());
+            tableRoot.ColumnStyles.Add(new ColumnStyle());
+            tableRoot.Controls.Add(panelLeft, 0, 0);
+            tableRoot.Controls.Add(panelRight, 1, 0);
+            tableRoot.Location = new Point(0, 0);
+            tableRoot.Margin = new Padding(0);
+            tableRoot.Name = "tableRoot";
+            tableRoot.RowCount = 1;
+            tableRoot.RowStyles.Add(new RowStyle());
+            tableRoot.Size = new Size(1412, 1715);
+            tableRoot.TabIndex = 202;
+            // 
             // AsusMouseSettings
             // 
             AutoScaleDimensions = new SizeF(192F, 192F);
             AutoScaleMode = AutoScaleMode.Dpi;
-            AutoScroll = true;
             AutoSize = true;
             AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            ClientSize = new Size(909, 1558);
-            Controls.Add(panelBottomButtons);
-            Controls.Add(panelEnergy);
-            Controls.Add(panelLighting);
-            Controls.Add(panelPerformance);
-            Controls.Add(tableLayoutProfiles);
+            ClientSize = new Size(900, 900);
+            Controls.Add(tableRoot);
             Margin = new Padding(4);
             MaximizeBox = false;
             MdiChildrenMinimizedAnchorBottom = false;
             MinimizeBox = false;
-            MinimumSize = new Size(935, 760);
             Name = "AsusMouseSettings";
-            Padding = new Padding(14);
             ShowIcon = false;
             ShowInTaskbar = false;
             Text = "Mouse Settings";
@@ -1565,9 +1674,10 @@
             panelAcceleration.ResumeLayout(false);
             panelLiftOffDistance.ResumeLayout(false);
             panelDebounce.ResumeLayout(false);
-            panelAngleSnapping.ResumeLayout(false);
-            panelMotionSync.ResumeLayout(false);
             panelZoneMode.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)numericUpDownZoneModeDPI).EndInit();
+            panelMotionSync.ResumeLayout(false);
+            panelAngleSnapping.ResumeLayout(false);
             panelPollingRate.ResumeLayout(false);
             panelDPISettings.ResumeLayout(false);
             panelDPISettings.PerformLayout();
@@ -1600,6 +1710,16 @@
             ((System.ComponentModel.ISupportInitialize)pictureBoxBatteryState).EndInit();
             panelBottomButtons.ResumeLayout(false);
             tableLayoutPanel2.ResumeLayout(false);
+            panelRight.ResumeLayout(false);
+            panelRight.PerformLayout();
+            panelLeft.ResumeLayout(false);
+            panelGap.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)pictureMouseLayout).EndInit();
+            panelBindingsHeader.ResumeLayout(false);
+            panelBindingsHeader.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureBindigs).EndInit();
+            tableRoot.ResumeLayout(false);
+            tableRoot.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -1701,5 +1821,15 @@
         private UI.RButton buttonExport;
         private NumericUpDown numericUpDownCurrentDPI;
         private Label labelMaxDPI;
+        private Panel panelLeft;
+        private Panel panelRight;
+        private Panel panelGap;
+        private TableLayoutPanel tableRoot;
+        private Label labelBinding0, labelBinding1, labelBinding2, labelBinding3, labelBinding4, labelBinding5, labelBinding6;
+        private GHelper.UI.RComboBox comboBinding0, comboBinding1, comboBinding2, comboBinding3, comboBinding4, comboBinding5, comboBinding6;
+        private Panel panelBindingsHeader;
+        private PictureBox pictureBindigs;
+        private Label labelBindingsTitle;
+        private PictureBox pictureMouseLayout;
     }
 }
