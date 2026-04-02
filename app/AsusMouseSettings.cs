@@ -129,7 +129,6 @@ namespace GHelper
             InitMouseCapabilities();
             Logger.WriteLine(mouse.GetDisplayName() + " (GUI): Initialized capabilities. Synchronizing mouse data");
             RefreshMouseData();
-            ToggleBindingsPanel(true);
         }
 
         public void ToggleBindingsPanel(bool show)
@@ -612,6 +611,7 @@ namespace GHelper
 
             VisualizeMouseSettings();
             VisualizeBatteryState();
+            ToggleBindingsPanel(mouse.ButtonBindingsReady);
         }
 
         private void InitMouseCapabilities()

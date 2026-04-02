@@ -254,6 +254,7 @@ namespace GHelper.Peripherals.Mouse
         public int ZoneModeDPI { get; set; } = 1600;
         public PollingRate ZoneModePollingRate { get; set; } = PollingRate.PR4000Hz;
         public ushort[] ButtonBindings { get; protected set; } = new ushort[8];
+        public bool ButtonBindingsReady { get; private set; }
 
         public bool Booster = false;
 
@@ -2137,13 +2138,13 @@ namespace GHelper.Peripherals.Mouse
             }),
             ("Multimedia", new List<(ushort, string)>
             {
-                (0x00F6, "Volume Up"              ),
-                (0x00F5, "Volume Down"            ),
-                (0x00F2, "Next Track"             ),
-                (0x00F3, "Previous Track"         ),
-                (0x00F4, "Mute/Unmute Microphone" ),
-                (0x00F0, "Play/Pause"             ),
-                (0x00F1, "Stop"                   ),
+                (0x00F6, "Volume Up"    ),
+                (0x00F5, "Volume Down"  ),
+                (0x00F2, "Next Track"   ),
+                (0x00F3, "Previous Track"),
+                (0x00F4, "Mute"         ),
+                (0x00F0, "Play/Pause"   ),
+                (0x00F1, "Stop"         ),
             }),
             ("Keyboard", new List<(ushort, string)>
             {
@@ -2208,6 +2209,7 @@ namespace GHelper.Peripherals.Mouse
         {
             if (!HasButtonBindings()) return;
 
+            ButtonBindingsReady = false;
             Logger.WriteLine(GetDisplayName() + ": ── Reading Button Bindings ──");
 
             byte[]? response = QueryAllButtonBindings();
@@ -2220,6 +2222,13 @@ namespace GHelper.Peripherals.Mouse
             string rawHex = BitConverter.ToString(response, 0, Math.Min(21, response.Length))
                                         .Replace("-", " ");
             Logger.WriteLine(GetDisplayName() + $": RAW: {rawHex}");
+
+            // Validate packet structure: expect 0x12 0x05 header
+            if (response.Length < 6 || response[1] != 0x12 || response[2] != 0x05)
+            {
+                Logger.WriteLine(GetDisplayName() + ": Button bindings packet header mismatch — hiding bindings panel");
+                return;
+            }
 
             var slots = ButtonSlots;
             int slotCount = Math.Min(ButtonBindings.Length, slots.Count);
@@ -2241,6 +2250,7 @@ namespace GHelper.Peripherals.Mouse
                     + $": Slot {slot} ({slotName}): {LabelForActionCode(actionCode)} (0x{actionCode:X4})");
             }
 
+            ButtonBindingsReady = true;
             Logger.WriteLine(GetDisplayName() + ": ── End Button Bindings ──");
         }
 
@@ -2294,7 +2304,6 @@ namespace GHelper.Peripherals.Mouse
                 (byte)((sourceCode >> 8)  & 0xFF), // src high byte
                 (byte)( destCode          & 0xFF), // dst low  byte
                 (byte)((destCode   >> 8)  & 0xFF), // dst high byte
-                // remaining bytes zero-padded to 65 total by WriteForResponse()
             };
         }
 
