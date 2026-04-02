@@ -136,10 +136,10 @@
     <value>Eco režim</value>
   </data>
   <data name="AlertUltimateOff" xml:space="preserve">
-    <value>Vypnutí režimu Ultimate vyžaduje restartování</value>
+    <value>Vypnutí Ultimátního režimu vyžaduje restartování</value>
   </data>
   <data name="AlertUltimateOn" xml:space="preserve">
-    <value>Režim Ultimate vyžaduje restartování</value>
+    <value>Ultimátní režim vyžaduje restartování</value>
   </data>
   <data name="AlertUltimateTitle" xml:space="preserve">
     <value>Restartovat nyní?</value>
@@ -166,7 +166,7 @@
     <value>Použít vlastní křivku ventilátoru</value>
   </data>
   <data name="ApplyPowerLimits" xml:space="preserve">
-    <value>Použít Power Limity</value>
+    <value>Použít výkonové limity</value>
   </data>
   <data name="ApplyWindowsPowerPlan" xml:space="preserve">
     <value>Automaticky přizpůsobit režimy napájení systému Windows</value>
@@ -444,7 +444,7 @@ Chcete přesto pokračovat?</value>
     <value>Offset frekvence paměti</value>
   </data>
   <data name="GPUMode" xml:space="preserve">
-    <value>GPU režim</value>
+    <value>Režim GPU</value>
   </data>
   <data name="GPUModeEco" xml:space="preserve">
     <value>jen iGPU</value>
@@ -651,10 +651,10 @@ Chcete přesto pokračovat?</value>
     <value>Frekvence snímání</value>
   </data>
   <data name="PowerLimits" xml:space="preserve">
-    <value>Power Limity</value>
+    <value>Výkonové limity</value>
   </data>
   <data name="PPTExperimental" xml:space="preserve">
-    <value>Funkce Power Limity je experimentální. Používejte opatrně a na vlastní odpovědnost!</value>
+    <value>Funkce Výkonové limity je experimentální. Používejte opatrně a na vlastní odpovědnost!</value>
   </data>
   <data name="PrintScreen" xml:space="preserve">
     <value>PrintScreen</value>
