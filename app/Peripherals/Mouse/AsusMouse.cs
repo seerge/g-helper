@@ -2272,7 +2272,13 @@ namespace GHelper.Peripherals.Mouse
             if (!HasButtonBindings()) return;
             Logger.WriteLine(GetDisplayName() + ": Resetting all button bindings to defaults");
             foreach (var (slot, slotDef) in ButtonSlots)
-                SetButtonBinding(slot, slotDef.SourceCode);
+            {
+                WriteForResponse(GetSetButtonBindingPacket(slotDef.SourceCode, slotDef.SourceCode));
+                ButtonBindings[slot] = slotDef.SourceCode;
+                Logger.WriteLine(GetDisplayName()
+                    + $": Slot {slot} ({slotDef.Name}) → default (0x{slotDef.SourceCode:X4})");
+            }
+            FlushSettings();
         }
 
         public void SetButtonBinding(int slot, ushort actionCode)
