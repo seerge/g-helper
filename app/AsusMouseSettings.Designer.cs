@@ -1,4 +1,4 @@
-﻿namespace GHelper
+namespace GHelper
 {
     partial class AsusMouseSettings
     {
@@ -124,6 +124,10 @@
             rButton2 = new GHelper.UI.RButton();
             panelRight = new Panel();
             panelLeft = new Panel();
+            pictureMouseLayout = new PictureBox();
+            panelBindingsHeader = new Panel();
+            pictureBindigs = new PictureBox();
+            labelBindingsTitle = new Label();
             tableRoot = new TableLayoutPanel();
             panelProfiles.SuspendLayout();
             panelPerformance.SuspendLayout();
@@ -160,6 +164,11 @@
             panelBottomButtons.SuspendLayout();
             tableLayoutPanel2.SuspendLayout();
             panelRight.SuspendLayout();
+            panelLeft.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureMouseLayout).BeginInit();
+            panelBindingsHeader.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureBindigs).BeginInit();
+            tableRoot.SuspendLayout();
             SuspendLayout();
             // 
             // panelProfiles
@@ -561,7 +570,7 @@
             labelAngleAdjustmentValue.Name = "labelAngleAdjustmentValue";
             labelAngleAdjustmentValue.Size = new Size(64, 40);
             labelAngleAdjustmentValue.TabIndex = 47;
-            labelAngleAdjustmentValue.Text = "0°";
+            labelAngleAdjustmentValue.Text = "0�";
             labelAngleAdjustmentValue.TextAlign = ContentAlignment.MiddleRight;
             // 
             // panelPollingRate
@@ -876,7 +885,7 @@
             // 
             pictureKeyboard.BackgroundImage = Properties.Resources.icons8_mauszeiger_50;
             pictureKeyboard.BackgroundImageLayout = ImageLayout.Zoom;
-            pictureKeyboard.Location = new Point(6, 0);
+            pictureKeyboard.Location = new Point(6, 3);
             pictureKeyboard.Margin = new Padding(4);
             pictureKeyboard.Name = "pictureKeyboard";
             pictureKeyboard.Size = new Size(32, 32);
@@ -1548,21 +1557,70 @@
             panelRight.Controls.Add(panelLighting);
             panelRight.Controls.Add(panelPerformance);
             panelRight.Controls.Add(tableLayoutProfiles);
-            panelRight.Anchor = AnchorStyles.Top | AnchorStyles.Left;
-            panelRight.Location = new Point(603, 0);
+            panelRight.Location = new Point(509, 3);
             panelRight.MinimumSize = new Size(900, 0);
             panelRight.Name = "panelRight";
             panelRight.Padding = new Padding(14);
-            panelRight.Size = new Size(900, 900);
+            panelRight.Size = new Size(900, 1709);
             panelRight.TabIndex = 201;
             // 
             // panelLeft
             // 
             panelLeft.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            panelLeft.Location = new Point(0, 0);
+            panelLeft.AutoSize = true;
+            panelLeft.Controls.Add(pictureMouseLayout);
+            panelLeft.Controls.Add(panelBindingsHeader);
+            panelLeft.Location = new Point(3, 3);
+            panelLeft.MinimumSize = new Size(500, 0);
             panelLeft.Name = "panelLeft";
-            panelLeft.Size = new Size(600, 400);
+            panelLeft.Padding = new Padding(10);
+            panelLeft.Size = new Size(500, 1709);
             panelLeft.TabIndex = 200;
+            // 
+            // pictureMouseLayout
+            // 
+            pictureMouseLayout.BackgroundImage = Properties.Resources.mouse_layout;
+            pictureMouseLayout.BackgroundImageLayout = ImageLayout.Zoom;
+            pictureMouseLayout.Dock = DockStyle.Top;
+            pictureMouseLayout.Location = new Point(10, 58);
+            pictureMouseLayout.Name = "pictureMouseLayout";
+            pictureMouseLayout.Size = new Size(480, 296);
+            pictureMouseLayout.TabIndex = 43;
+            pictureMouseLayout.TabStop = false;
+            // 
+            // panelBindingsHeader
+            // 
+            panelBindingsHeader.BackColor = SystemColors.ControlLight;
+            panelBindingsHeader.Controls.Add(pictureBindigs);
+            panelBindingsHeader.Controls.Add(labelBindingsTitle);
+            panelBindingsHeader.Dock = DockStyle.Top;
+            panelBindingsHeader.Location = new Point(10, 10);
+            panelBindingsHeader.Margin = new Padding(4);
+            panelBindingsHeader.Name = "panelBindingsHeader";
+            panelBindingsHeader.Size = new Size(480, 48);
+            panelBindingsHeader.TabIndex = 42;
+            // 
+            // pictureBindigs
+            // 
+            pictureBindigs.BackgroundImage = Properties.Resources.icons8_natural_user_interface_48;
+            pictureBindigs.BackgroundImageLayout = ImageLayout.Zoom;
+            pictureBindigs.Location = new Point(6, 8);
+            pictureBindigs.Margin = new Padding(4);
+            pictureBindigs.Name = "pictureBindigs";
+            pictureBindigs.Size = new Size(32, 32);
+            pictureBindigs.TabIndex = 35;
+            pictureBindigs.TabStop = false;
+            // 
+            // labelBindingsTitle
+            // 
+            labelBindingsTitle.AutoSize = true;
+            labelBindingsTitle.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            labelBindingsTitle.Location = new Point(44, 7);
+            labelBindingsTitle.Margin = new Padding(8, 0, 8, 0);
+            labelBindingsTitle.Name = "labelBindingsTitle";
+            labelBindingsTitle.Size = new Size(114, 32);
+            labelBindingsTitle.TabIndex = 34;
+            labelBindingsTitle.Text = "Bindings";
             // 
             // tableRoot
             // 
@@ -1571,14 +1629,14 @@
             tableRoot.ColumnCount = 2;
             tableRoot.ColumnStyles.Add(new ColumnStyle());
             tableRoot.ColumnStyles.Add(new ColumnStyle());
-            tableRoot.RowCount = 1;
-            tableRoot.RowStyles.Add(new RowStyle());
             tableRoot.Controls.Add(panelLeft, 0, 0);
             tableRoot.Controls.Add(panelRight, 1, 0);
             tableRoot.Location = new Point(0, 0);
             tableRoot.Margin = new Padding(0);
             tableRoot.Name = "tableRoot";
-            tableRoot.Size = new Size(900, 900);
+            tableRoot.RowCount = 1;
+            tableRoot.RowStyles.Add(new RowStyle());
+            tableRoot.Size = new Size(1412, 1715);
             tableRoot.TabIndex = 202;
             // 
             // AsusMouseSettings
@@ -1645,6 +1703,11 @@
             tableLayoutPanel2.ResumeLayout(false);
             panelRight.ResumeLayout(false);
             panelRight.PerformLayout();
+            panelLeft.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)pictureMouseLayout).EndInit();
+            panelBindingsHeader.ResumeLayout(false);
+            panelBindingsHeader.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureBindigs).EndInit();
             tableRoot.ResumeLayout(false);
             tableRoot.PerformLayout();
             ResumeLayout(false);
@@ -1753,5 +1816,9 @@
         private TableLayoutPanel tableRoot;
         private Label labelBinding0, labelBinding1, labelBinding2, labelBinding3, labelBinding4, labelBinding5, labelBinding6;
         private GHelper.UI.RComboBox comboBinding0, comboBinding1, comboBinding2, comboBinding3, comboBinding4, comboBinding5, comboBinding6;
+        private Panel panelBindingsHeader;
+        private PictureBox pictureBindigs;
+        private Label labelBindingsTitle;
+        private PictureBox pictureMouseLayout;
     }
 }

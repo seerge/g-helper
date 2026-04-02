@@ -817,7 +817,10 @@ namespace GHelper
             }
 
             if (mouse.HasButtonBindings())
+            {
                 InitBindingCombos();
+                ControlHelper.Adjust(this);
+            }
         }
 
         private bool _updatingBindings;
@@ -841,27 +844,28 @@ namespace GHelper
         private void InitBindingCombos()
         {
             var slots = mouse.ButtonSlots;
+            // Start below whichever is lower: the header or the mouse layout picture
+            int startY = Math.Max(panelBindingsHeader.Bottom, pictureMouseLayout.Bottom) + 12;
+            int rowHeight = 52;
             int row = 0;
             foreach (var (slot, (_, name)) in slots)
             {
-                int y = 14 + row * 56;
+                int y = startY + row * rowHeight;
                 var lbl = new Label
                 {
                     Text = name,
-                    Location = new Point(14, y + 12),
+                    Location = new Point(14, y + 14),
                     Size = new Size(200, 32),
                     TextAlign = ContentAlignment.MiddleLeft,
                     ForeColor = RForm.foreMain,
                 };
                 var cmb = new UI.RComboBox
                 {
-                    Location = new Point(220, y + 8),
-                    Size = new Size(290, 40),
-                    Padding = new Padding(0, 4, 6, 4),
+                    Location = new Point(220, y + 10),
+                    Size = new Size(260, 40),
+                    Margin = new Padding(0, 6, 6, 6),
                     DropDownStyle = ComboBoxStyle.DropDownList,
                     FlatStyle = FlatStyle.Flat,
-                    DrawMode = DrawMode.OwnerDrawFixed,
-                    ItemHeight = 40,
                     BackColor = RForm.buttonMain,
                     ForeColor = RForm.foreMain,
                     BorderColor = RForm.buttonMain,
@@ -870,13 +874,32 @@ namespace GHelper
                 };
                 cmb.Items.AddRange(_bindingComboItems);
                 cmb.Tag = slot;
-                cmb.DrawItem += BindingCombo_DrawItem;
                 cmb.SelectedIndexChanged += BindingCombo_Changed;
                 panelLeft.Controls.Add(lbl);
                 panelLeft.Controls.Add(cmb);
                 _bindingCombos.Add(cmb);
                 row++;
             }
+
+            // Reset Bindings button below all rows
+            int btnY = startY + row * rowHeight + 8;
+            var btnReset = new UI.RButton
+            {
+                Text = "Reset Bindings",
+                Location = new Point(14, btnY),
+                Size = new Size(466, 50),
+                FlatStyle = FlatStyle.Flat,
+                Margin = new Padding(4, 8, 4, 8),
+                BackColor = SystemColors.ButtonHighlight,
+                ForeColor = SystemColors.ControlText,
+                BorderColor = Color.Transparent,
+                BorderRadius = 2,
+                Activated = false,
+                Secondary = false,
+                UseVisualStyleBackColor = false,
+            };
+            btnReset.Click += ButtonResetBindings_Click;
+            panelLeft.Controls.Add(btnReset);
         }
 
         private static void BindingCombo_DrawItem(object? sender, DrawItemEventArgs e)
@@ -909,6 +932,12 @@ namespace GHelper
                 new StringFormat { LineAlignment = StringAlignment.Center });
 
             if (isSep) font.Dispose();
+        }
+
+        private void ButtonResetBindings_Click(object? sender, EventArgs e)
+        {
+            mouse.ResetButtonBindings();
+            VisualizeButtonBindings();
         }
 
         private void BindingCombo_Changed(object? sender, EventArgs e)
