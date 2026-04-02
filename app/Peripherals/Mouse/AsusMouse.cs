@@ -2116,62 +2116,69 @@ namespace GHelper.Peripherals.Mouse
             return hex.ToString();
         }
 
+        // Mouse bindings
+
         public static readonly IReadOnlyList<(string GroupLabel, IReadOnlyList<(ushort Code, string Name)> Items)>
-            ButtonBindingGroups = new List<(string, IReadOnlyList<(ushort, string)>)>
+        ButtonBindingGroups = new List<(string, IReadOnlyList<(ushort, string)>)>
         {
             ("Mouse", new List<(ushort, string)>
             {
                 (0x01F0, "Mouse Left"   ),
                 (0x01F1, "Mouse Right"  ),
                 (0x01F2, "Mouse Middle" ),
+                (0x01E3, "Double Click" ),
                 (0x01E4, "Mouse Back"   ),
                 (0x01E5, "Mouse Forward"),
-                (0x01E6, "DPI"          ),
-                (0x01E7, "DPI Target"   ),
+                (0x01E6, "DPI Switch"   ),
+                (0x01E7, "Target Focus" ),
                 (0x01E8, "Scroll Up"    ),
                 (0x01E9, "Scroll Down"  ),
-                (0x0000, "Disabled"),
+                (0x0000, "Disabled"     ),
             }),
-            ("Profiles", new List<(ushort, string)>
+            ("Multimedia", new List<(ushort, string)>
             {
-                (0x01C0, "Profile 1"),
-                (0x01C1, "Profile 2"),
-                (0x01C2, "Profile 3"),
+                (0x00F6, "Volume Up"              ),
+                (0x00F5, "Volume Down"            ),
+                (0x00F2, "Next Track"             ),
+                (0x00F3, "Previous Track"         ),
+                (0x00F4, "Mute/Unmute Microphone" ),
+                (0x00F0, "Play/Pause"             ),
+                (0x00F1, "Stop"                   ),
             }),
             ("Keyboard", new List<(ushort, string)>
             {
                 // letters
-                (0x0704, "A"), (0x0705, "B"), (0x0706, "C"), (0x0707, "D"),
-                (0x0708, "E"), (0x0709, "F"), (0x070A, "G"), (0x070B, "H"),
-                (0x070C, "I"), (0x070D, "J"), (0x070E, "K"), (0x070F, "L"),
-                (0x0710, "M"), (0x0711, "N"), (0x0712, "O"), (0x0713, "P"),
-                (0x0714, "Q"), (0x0715, "R"), (0x0716, "S"), (0x0717, "T"),
-                (0x0718, "U"), (0x0719, "V"), (0x071A, "W"), (0x071B, "X"),
-                (0x071C, "Y"), (0x071D, "Z"),
+                (0x0004, "A"), (0x0005, "B"), (0x0006, "C"), (0x0007, "D"),
+                (0x0008, "E"), (0x0009, "F"), (0x000A, "G"), (0x000B, "H"),
+                (0x000C, "I"), (0x000D, "J"), (0x000E, "K"), (0x000F, "L"),
+                (0x0010, "M"), (0x0011, "N"), (0x0012, "O"), (0x0013, "P"),
+                (0x0014, "Q"), (0x0015, "R"), (0x0016, "S"), (0x0017, "T"),
+                (0x0018, "U"), (0x0019, "V"), (0x001A, "W"), (0x001B, "X"),
+                (0x001C, "Y"), (0x001D, "Z"),
                 // number row
-                (0x071E, "1"), (0x071F, "2"), (0x0720, "3"), (0x0721, "4"),
-                (0x0722, "5"), (0x0723, "6"), (0x0724, "7"), (0x0725, "8"),
-                (0x0726, "9"), (0x0727, "0"),
+                (0x001E, "1"), (0x001F, "2"), (0x0020, "3"), (0x0021, "4"),
+                (0x0022, "5"), (0x0023, "6"), (0x0024, "7"), (0x0025, "8"),
+                (0x0026, "9"), (0x0027, "0"),
                 // common
-                (0x0728, "Enter"    ), (0x0729, "Escape"   ), (0x072A, "Backspace"),
-                (0x072B, "Tab"      ), (0x072C, "Space"    ), (0x072D, "-"        ),
-                (0x072E, "="        ), (0x072F, "["        ), (0x0730, "]"        ),
-                (0x0733, ";"        ), (0x0734, "'"        ), (0x0736, ","        ),
-                (0x0737, "."        ), (0x0738, "/"        ),
+                (0x0028, "Enter"    ), (0x0029, "Escape"   ), (0x002A, "Backspace"),
+                (0x002B, "Tab"      ), (0x002C, "Space"    ), (0x002D, "-"        ),
+                (0x002E, "="        ), (0x002F, "["        ), (0x0030, "]"        ),
+                (0x0033, ";"        ), (0x0034, "'"        ), (0x0036, ","        ),
+                (0x0037, "."        ), (0x0038, "/"        ),
                 // function keys
-                (0x073A, "F1" ), (0x073B, "F2" ), (0x073C, "F3" ), (0x073D, "F4" ),
-                (0x073E, "F5" ), (0x073F, "F6" ), (0x0740, "F7" ), (0x0741, "F8" ),
-                (0x0742, "F9" ), (0x0743, "F10"), (0x0744, "F11"), (0x0745, "F12"),
+                (0x003A, "F1" ), (0x003B, "F2" ), (0x003C, "F3" ), (0x003D, "F4" ),
+                (0x003E, "F5" ), (0x003F, "F6" ), (0x0040, "F7" ), (0x0041, "F8" ),
+                (0x0042, "F9" ), (0x0043, "F10"), (0x0044, "F11"), (0x0045, "F12"),
                 // navigation
-                (0x0749, "Insert"   ), (0x074A, "Home"     ), (0x074B, "Page Up"  ),
-                (0x074C, "Delete"   ), (0x074D, "End"      ), (0x074E, "Page Down"),
-                (0x074F, "Right"    ), (0x0750, "Left"     ),
-                (0x0751, "Down"     ), (0x0752, "Up"       ),
-                // modifiers
-                (0x07E0, "Left Ctrl" ), (0x07E1, "Left Shift" ),
-                (0x07E2, "Left Alt"  ), (0x07E3, "Left GUI"   ),
-                (0x07E4, "Right Ctrl"), (0x07E5, "Right Shift"),
-                (0x07E6, "Right Alt" ), (0x07E7, "Right GUI"  ),
+                (0x0049, "Insert"   ), (0x004A, "Home"     ), (0x004B, "Page Up"  ),
+                (0x004C, "Delete"   ), (0x004D, "End"      ), (0x004E, "Page Down"),
+                (0x004F, "Right"    ), (0x0050, "Left"     ),
+                (0x0051, "Down"     ), (0x0052, "Up"       ),
+                // modifiers (usage page 0x07, 0xE0–0xE7)
+                (0x00E0, "Left Ctrl" ), (0x00E1, "Left Shift" ),
+                (0x00E2, "Left Alt"  ), (0x00E3, "Left Win"   ),
+                (0x00E4, "Right Ctrl"), (0x00E5, "Right Shift"),
+                (0x00E6, "Right Alt" ), (0x00E7, "Right Win"  ),
             }),
         };
 
