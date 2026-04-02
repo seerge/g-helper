@@ -124,6 +124,7 @@ namespace GHelper
             rButton2 = new GHelper.UI.RButton();
             panelRight = new Panel();
             panelLeft = new Panel();
+            panelGap = new Panel();
             pictureMouseLayout = new PictureBox();
             panelBindingsHeader = new Panel();
             pictureBindigs = new PictureBox();
@@ -1569,6 +1570,7 @@ namespace GHelper
             panelLeft.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             panelLeft.AutoSize = true;
             panelLeft.Controls.Add(pictureMouseLayout);
+            panelLeft.Controls.Add(panelGap);
             panelLeft.Controls.Add(panelBindingsHeader);
             panelLeft.Location = new Point(3, 3);
             panelLeft.MinimumSize = new Size(500, 0);
@@ -1588,8 +1590,15 @@ namespace GHelper
             pictureMouseLayout.TabIndex = 43;
             pictureMouseLayout.TabStop = false;
             // 
-            // panelBindingsHeader
+            // panelGap
             // 
+            panelGap.Dock = DockStyle.Top;
+            panelGap.Name = "panelGap";
+            panelGap.Size = new Size(480, 16);
+            panelGap.TabIndex = 201;
+            // 
+            // panelBindingsHeader
+            //
             panelBindingsHeader.BackColor = SystemColors.ControlLight;
             panelBindingsHeader.Controls.Add(pictureBindigs);
             panelBindingsHeader.Controls.Add(labelBindingsTitle);
@@ -1704,6 +1713,7 @@ namespace GHelper
             panelRight.ResumeLayout(false);
             panelRight.PerformLayout();
             panelLeft.ResumeLayout(false);
+            panelGap.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)pictureMouseLayout).EndInit();
             panelBindingsHeader.ResumeLayout(false);
             panelBindingsHeader.PerformLayout();
@@ -1813,6 +1823,7 @@ namespace GHelper
         private Label labelMaxDPI;
         private Panel panelLeft;
         private Panel panelRight;
+        private Panel panelGap;
         private TableLayoutPanel tableRoot;
         private Label labelBinding0, labelBinding1, labelBinding2, labelBinding3, labelBinding4, labelBinding5, labelBinding6;
         private GHelper.UI.RComboBox comboBinding0, comboBinding1, comboBinding2, comboBinding3, comboBinding4, comboBinding5, comboBinding6;

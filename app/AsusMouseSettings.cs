@@ -866,6 +866,8 @@ namespace GHelper
                     Margin = new Padding(0, 6, 6, 6),
                     DropDownStyle = ComboBoxStyle.DropDownList,
                     FlatStyle = FlatStyle.Flat,
+                    DrawMode = DrawMode.OwnerDrawFixed,
+                    ItemHeight = comboProfile.ItemHeight,
                     BackColor = RForm.buttonMain,
                     ForeColor = RForm.foreMain,
                     BorderColor = RForm.buttonMain,
@@ -874,6 +876,7 @@ namespace GHelper
                 };
                 cmb.Items.AddRange(_bindingComboItems);
                 cmb.Tag = slot;
+                cmb.DrawItem += BindingCombo_DrawItem;
                 cmb.SelectedIndexChanged += BindingCombo_Changed;
                 panelLeft.Controls.Add(lbl);
                 panelLeft.Controls.Add(cmb);
