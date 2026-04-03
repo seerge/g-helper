@@ -253,7 +253,7 @@ namespace GHelper.Peripherals.Mouse
         public bool ZoneMode { get; protected set; }
         public int ZoneModeDPI { get; set; } = 1600;
         public PollingRate ZoneModePollingRate { get; set; } = PollingRate.PR4000Hz;
-        public ushort[] ButtonBindings { get; protected set; } = new ushort[16];
+public ushort[] ButtonBindings { get; protected set; } = new ushort[16];
         public bool ButtonBindingsReady { get; private set; }
 
         public bool Booster = false;
@@ -2117,10 +2117,10 @@ namespace GHelper.Peripherals.Mouse
             return hex.ToString();
         }
 
-        // Mouse bindings — New protocol (Harpe Ace / Keris II / Gladius III etc.)
+// Mouse bindings — New protocol (Harpe Ace / Keris II / Gladius III etc.)
 
-        public static readonly IReadOnlyList<(string GroupLabel, IReadOnlyList<(ushort Code, string Name)> Items)>
-        NewProtocolBindingGroups = new List<(string, IReadOnlyList<(ushort, string)>)>
+public static readonly IReadOnlyList<(string GroupLabel, IReadOnlyList<(ushort Code, string Name)> Items)>
+NewProtocolBindingGroups = new List<(string, IReadOnlyList<(ushort, string)>)>
         {
             ("Mouse", new List<(ushort, string)>
             {
@@ -2175,7 +2175,7 @@ namespace GHelper.Peripherals.Mouse
                 (0x004C, "Delete"   ), (0x004D, "End"      ), (0x004E, "Page Down"),
                 (0x004F, "Right"    ), (0x0050, "Left"     ),
                 (0x0051, "Down"     ), (0x0052, "Up"       ),
-                // modifiers
+// modifiers
                 (0x00E0, "Left Ctrl" ), (0x00E1, "Left Shift" ),
                 (0x00E2, "Left Alt"  ), (0x00E3, "Left Win"   ),
                 (0x00E4, "Right Ctrl"), (0x00E5, "Right Shift"),
