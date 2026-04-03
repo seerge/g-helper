@@ -92,6 +92,8 @@ namespace GHelper.Peripherals.Mouse.Models
 
         public override ButtonBindingProtocol BindingProtocol => ButtonBindingProtocol.Old;
 
+        public override HashSet<int> WriteOnlySlots => [6, 7, 8, 9];
+
         // Slots 0-2: raw pos 0-2. Slots 3-7: raw pos 5-9 (skip unmapped positions 3+4).
         protected override int ButtonSlotResponseOffset(int slot)
             => slot < 3 ? 5 + slot * 2 : 5 + (slot + 2) * 2;
@@ -117,6 +119,7 @@ namespace GHelper.Peripherals.Mouse.Models
             WriteForResponse(GetSetButtonBindingPacket(def.SourceCode, actionCode, group));
             FlushSettings();
             ButtonBindings[slot] = actionCode;
+            if (WriteOnlySlots.Contains(slot)) SaveWriteOnlySlot(slot, actionCode);
             Logger.WriteLine(GetDisplayName() + $": Slot {slot} ({def.Name}) → {LabelForActionCode(actionCode)} (group {group})");
         }
 
@@ -160,6 +163,9 @@ namespace GHelper.Peripherals.Mouse.Models
                     continue;
                 }
                 ushort code = (ushort)(resp[rawPos] | (resp[rawPos + 1] << 8));
+                // Write-only slots: device always returns 0x0000 — load from config or fall back to default.
+                if (code == 0x0000 && WriteOnlySlots.Contains(slot))
+                    code = LoadWriteOnlySlot(slot, def.SourceCode);
                 ButtonBindings[slot] = code;
                 Logger.WriteLine(GetDisplayName() + $": Slot {slot} ({def.Name}): {LabelForActionCode(code)} (0x{code:X4})");
             }

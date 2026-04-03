@@ -2293,6 +2293,18 @@ NewProtocolBindingGroups = new List<(string, IReadOnlyList<(ushort, string)>)>
         public virtual ButtonBindingProtocol BindingProtocol => ButtonBindingProtocol.Old;
         public bool HasButtonBindings() => BindingProtocol != ButtonBindingProtocol.None;
 
+        // Slots whose bindings cannot be read back from device — always written, never reliably read.
+        public virtual HashSet<int> WriteOnlySlots => [];
+
+        private string WriteOnlySlotConfigKey(int slot) =>
+            $"mouse_binding_{_productId:X4}_{slot}";
+
+        protected void SaveWriteOnlySlot(int slot, ushort code) =>
+            AppConfig.Set(WriteOnlySlotConfigKey(slot), (int)code);
+
+        protected ushort LoadWriteOnlySlot(int slot, ushort fallback) =>
+            (ushort)AppConfig.Get(WriteOnlySlotConfigKey(slot), fallback);
+
         public virtual void ReadAndLogButtonBindings()
         {
             if (!HasButtonBindings()) return;
