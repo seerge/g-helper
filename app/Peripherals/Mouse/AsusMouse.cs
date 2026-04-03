@@ -254,7 +254,7 @@ namespace GHelper.Peripherals.Mouse
         public int ZoneModeDPI { get; set; } = 1600;
         public PollingRate ZoneModePollingRate { get; set; } = PollingRate.PR4000Hz;
 public ushort[] ButtonBindings { get; protected set; } = new ushort[16];
-        public bool ButtonBindingsReady { get; private set; }
+        public bool ButtonBindingsReady { get; protected set; }
 
         public bool Booster = false;
 
@@ -2175,6 +2175,11 @@ NewProtocolBindingGroups = new List<(string, IReadOnlyList<(ushort, string)>)>
                 (0x004C, "Delete"   ), (0x004D, "End"      ), (0x004E, "Page Down"),
                 (0x004F, "Right"    ), (0x0050, "Left"     ),
                 (0x0051, "Down"     ), (0x0052, "Up"       ),
+                // numpad
+                (0x0059, "Num 1"), (0x005A, "Num 2"), (0x005B, "Num 3"),
+                (0x005C, "Num 4"), (0x005D, "Num 5"), (0x005E, "Num 6"),
+                (0x005F, "Num 7"), (0x0060, "Num 8"), (0x0061, "Num 9"),
+                (0x0062, "Num 0"), (0x0063, "Num ." ),
 // modifiers
                 (0x00E0, "Left Ctrl" ), (0x00E1, "Left Shift" ),
                 (0x00E2, "Left Alt"  ), (0x00E3, "Left Win"   ),
@@ -2239,6 +2244,11 @@ NewProtocolBindingGroups = new List<(string, IReadOnlyList<(ushort, string)>)>
                 (0x004C, "Delete"   ), (0x004D, "End"      ), (0x004E, "Page Down"),
                 (0x004F, "Right"    ), (0x0050, "Left"     ),
                 (0x0051, "Down"     ), (0x0052, "Up"       ),
+                // numpad
+                (0x0059, "Num 1"), (0x005A, "Num 2"), (0x005B, "Num 3"),
+                (0x005C, "Num 4"), (0x005D, "Num 5"), (0x005E, "Num 6"),
+                (0x005F, "Num 7"), (0x0060, "Num 8"), (0x0061, "Num 9"),
+                (0x0062, "Num 0"), (0x0063, "Num ." ),
                 // modifiers
                 (0x00E0, "Left Ctrl" ), (0x00E1, "Left Shift" ),
                 (0x00E2, "Left Alt"  ), (0x00E3, "Left Win"   ),
@@ -2283,7 +2293,7 @@ NewProtocolBindingGroups = new List<(string, IReadOnlyList<(ushort, string)>)>
         public virtual ButtonBindingProtocol BindingProtocol => ButtonBindingProtocol.Old;
         public bool HasButtonBindings() => BindingProtocol != ButtonBindingProtocol.None;
 
-        public void ReadAndLogButtonBindings()
+        public virtual void ReadAndLogButtonBindings()
         {
             if (!HasButtonBindings()) return;
 
@@ -2336,14 +2346,14 @@ NewProtocolBindingGroups = new List<(string, IReadOnlyList<(ushort, string)>)>
         // Override when the device response has unmapped/gap positions.
         protected virtual int ButtonSlotResponseOffset(int slot) => 5 + slot * 2;
 
-        private byte[]? QueryAllButtonBindings(int profileIndex = 0)
+        protected virtual byte[]? QueryAllButtonBindings(int group = 0)
         {
             return WriteForResponse(new byte[]
             {
                 reportId,
                 0x12,
                 0x05,
-                (byte)profileIndex,
+                (byte)group,
                 0x00,
                 0x00,
             });
@@ -2363,7 +2373,7 @@ NewProtocolBindingGroups = new List<(string, IReadOnlyList<(ushort, string)>)>
             FlushSettings();
         }
 
-        public void SetButtonBinding(int slot, ushort actionCode)
+        public virtual void SetButtonBinding(int slot, ushort actionCode)
         {
             if (!HasButtonBindings()) return;
 

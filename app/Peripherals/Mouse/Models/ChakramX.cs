@@ -92,10 +92,81 @@ namespace GHelper.Peripherals.Mouse.Models
 
         public override ButtonBindingProtocol BindingProtocol => ButtonBindingProtocol.Old;
 
-        // Raw response positions 3 and 4 are unmapped (0x0000 in libratbag ButtonMapping).
-        // Slots 0-2 map to raw positions 0-2, slots 3-7 map to raw positions 5-9.
+        // Slots 0-2: raw pos 0-2. Slots 3-7: raw pos 5-9 (skip unmapped positions 3+4).
         protected override int ButtonSlotResponseOffset(int slot)
             => slot < 3 ? 5 + slot * 2 : 5 + (slot + 2) * 2;
+
+        protected byte[] GetSetButtonBindingPacket(ushort sourceCode, ushort destCode, byte group) =>
+            new byte[]
+            {
+                reportId,
+                0x51, 0x21,
+                group,
+                0x00,
+                (byte)( sourceCode       & 0xFF),
+                (byte)((sourceCode >> 8) & 0xFF),
+                (byte)( destCode         & 0xFF),
+                (byte)((destCode   >> 8) & 0xFF),
+            };
+
+        public override void SetButtonBinding(int slot, ushort actionCode)
+        {
+            if (!HasButtonBindings()) return;
+            if (!ButtonSlots.TryGetValue(slot, out var def)) return;
+            byte group = slot >= 8 ? (byte)1 : (byte)0;
+            WriteForResponse(GetSetButtonBindingPacket(def.SourceCode, actionCode, group));
+            FlushSettings();
+            ButtonBindings[slot] = actionCode;
+            Logger.WriteLine(GetDisplayName() + $": Slot {slot} ({def.Name}) → {LabelForActionCode(actionCode)} (group {group})");
+        }
+
+        // Slots 0-7 are in group 0 (primary), slots 8-13 are in group 1 (secondary).
+        // Secondary ButtonMapping: 0;0;ea;eb;ec;ed — skip first 2 unmapped positions.
+        public override void ReadAndLogButtonBindings()
+        {
+            if (!HasButtonBindings()) return;
+            ButtonBindingsReady = false;
+            Logger.WriteLine(GetDisplayName() + ": ── Reading Button Bindings ──");
+
+            // Group 0: primary slots 0-7
+            byte[]? r0 = QueryAllButtonBindings(0);
+            if (r0 is null || r0.Length < 6 || r0[1] != 0x12 || r0[2] != 0x05)
+            {
+                Logger.WriteLine(GetDisplayName() + ": Group 0 read failed");
+                return;
+            }
+            string raw0 = BitConverter.ToString(r0, 0, Math.Min(32, r0.Length)).Replace("-", " ");
+            Logger.WriteLine(GetDisplayName() + $": RAW group 0: {raw0}");
+
+            // Group 1: secondary slots 8-11
+            byte[]? r1 = QueryAllButtonBindings(1);
+            if (r1 is null || r1.Length < 6 || r1[1] != 0x12 || r1[2] != 0x05)
+            {
+                Logger.WriteLine(GetDisplayName() + ": Group 1 read failed");
+                return;
+            }
+            string raw1 = BitConverter.ToString(r1, 0, Math.Min(32, r1.Length)).Replace("-", " ");
+            Logger.WriteLine(GetDisplayName() + $": RAW group 1: {raw1}");
+
+            var slots = ButtonSlots;
+            foreach (var (slot, def) in slots)
+            {
+                byte[] resp = slot < 8 ? r0 : r1;
+                // Group 0: skip positions 3+4 (unmapped). Group 1: skip positions 0+1 (unmapped).
+                int rawPos = slot < 8 ? ButtonSlotResponseOffset(slot) : 5 + (slot - 8 + 2) * 2;
+                if (rawPos + 1 >= resp.Length)
+                {
+                    Logger.WriteLine(GetDisplayName() + $": Slot {slot} ({def.Name}): out of range");
+                    continue;
+                }
+                ushort code = (ushort)(resp[rawPos] | (resp[rawPos + 1] << 8));
+                ButtonBindings[slot] = code;
+                Logger.WriteLine(GetDisplayName() + $": Slot {slot} ({def.Name}): {LabelForActionCode(code)} (0x{code:X4})");
+            }
+
+            ButtonBindingsReady = true;
+            Logger.WriteLine(GetDisplayName() + ": ── End Button Bindings ──");
+        }
 
         private static readonly IReadOnlyList<(string GroupLabel, IReadOnlyList<(ushort Code, string Name)> Items)>
         ChakramXBindingGroups = new List<(string, IReadOnlyList<(ushort, string)>)>
@@ -163,6 +234,11 @@ namespace GHelper.Peripherals.Mouse.Models
                 (0x004C, "Delete"   ), (0x004D, "End"      ), (0x004E, "Page Down"),
                 (0x004F, "Right"    ), (0x0050, "Left"     ),
                 (0x0051, "Down"     ), (0x0052, "Up"       ),
+                // numpad
+                (0x0059, "Num 1"), (0x005A, "Num 2"), (0x005B, "Num 3"),
+                (0x005C, "Num 4"), (0x005D, "Num 5"), (0x005E, "Num 6"),
+                (0x005F, "Num 7"), (0x0060, "Num 8"), (0x0061, "Num 9"),
+                (0x0062, "Num 0"), (0x0063, "Num ." ),
                 (0x00E0, "Left Ctrl" ), (0x00E1, "Left Shift" ),
                 (0x00E2, "Left Alt"  ), (0x00E3, "Left Win"   ),
                 (0x00E4, "Right Ctrl"), (0x00E5, "Right Shift"),
@@ -182,14 +258,20 @@ namespace GHelper.Peripherals.Mouse.Models
 
         public override Dictionary<int, (ushort SourceCode, string Name)> ButtonSlots => new()
         {
+            // Group 0 primary (ButtonMapping: f0;f1;f2;0;0;e6;e8;e9;d0;d1)
             { 0, (0x01F0, "Left Click"   ) },
             { 1, (0x01F1, "Right Click"  ) },
             { 2, (0x01F2, "Scroll Click" ) },
-            { 3, (0x01E6, "DPI Button"   ) },
-            { 4, (0x01E8, "Scroll Up"    ) },
-            { 5, (0x01E9, "Scroll Down"  ) },
-            { 6, (0x01D0, "Joystick Up"  ) },
-            { 7, (0x01D1, "Joystick Down") },
+            { 3, (0x01E6, "DPI Button"   ) },  // raw pos 5 (skip unmapped 3+4)
+            { 4, (0x01E8, "Scroll Up"    ) },  // raw pos 6
+            { 5, (0x01E9, "Scroll Down"  ) },  // raw pos 7
+            { 6, (0x01D0, "Joystick Up"  ) },  // raw pos 8
+            { 7, (0x01D1, "Joystick Down") },  // raw pos 9
+            // Group 1 secondary (ButtonMappingSecondary: 0;0;ea;eb;ec;ed)
+            { 8, (0x01EA, "Side Button A") },  // raw pos 2 (skip unmapped 0+1)
+            { 9, (0x01EB, "Side Button B") },  // raw pos 3
+            {10, (0x01EC, "Side Button C") },  // raw pos 4
+            {11, (0x01ED, "Side Button D") },  // raw pos 5
         };
     }
 
