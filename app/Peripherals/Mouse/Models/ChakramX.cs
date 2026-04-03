@@ -113,7 +113,7 @@ namespace GHelper.Peripherals.Mouse.Models
         {
             if (!HasButtonBindings()) return;
             if (!ButtonSlots.TryGetValue(slot, out var def)) return;
-            byte group = slot >= 8 ? (byte)1 : (byte)0;
+            byte group = slot >= 10 ? (byte)1 : (byte)0;
             WriteForResponse(GetSetButtonBindingPacket(def.SourceCode, actionCode, group));
             FlushSettings();
             ButtonBindings[slot] = actionCode;
@@ -151,9 +151,9 @@ namespace GHelper.Peripherals.Mouse.Models
             var slots = ButtonSlots;
             foreach (var (slot, def) in slots)
             {
-                byte[] resp = slot < 8 ? r0 : r1;
+                byte[] resp = slot < 10 ? r0 : r1;
                 // Group 0: skip positions 3+4 (unmapped). Group 1: skip positions 0+1 (unmapped).
-                int rawPos = slot < 8 ? ButtonSlotResponseOffset(slot) : 5 + (slot - 8 + 2) * 2;
+                int rawPos = slot < 10 ? ButtonSlotResponseOffset(slot) : 5 + (slot - 10 + 2) * 2;
                 if (rawPos + 1 >= resp.Length)
                 {
                     Logger.WriteLine(GetDisplayName() + $": Slot {slot} ({def.Name}): out of range");
@@ -267,11 +267,13 @@ namespace GHelper.Peripherals.Mouse.Models
             { 5, (0x01E9, "Scroll Down"  ) },  // raw pos 7
             { 6, (0x01D0, "Joystick Up"  ) },  // raw pos 8
             { 7, (0x01D1, "Joystick Down") },  // raw pos 9
+            { 8, (0x01D2, "Joystick Fwd" ) },  // write-only, reads back as 0x0000
+            { 9, (0x01D3, "Joystick Back") },  // write-only, reads back as 0x0000
             // Group 1 secondary (ButtonMappingSecondary: 0;0;ea;eb;ec;ed)
-            { 8, (0x01EA, "Side Button A") },  // raw pos 2 (skip unmapped 0+1)
-            { 9, (0x01EB, "Side Button B") },  // raw pos 3
-            {10, (0x01EC, "Side Button C") },  // raw pos 4
-            {11, (0x01ED, "Side Button D") },  // raw pos 5
+            {10, (0x01EA, "Side Button A") },  // raw pos 2 (skip unmapped 0+1)
+            {11, (0x01EB, "Side Button B") },  // raw pos 3
+            {12, (0x01EC, "Side Button C") },  // raw pos 4
+            {13, (0x01ED, "Side Button D") },  // raw pos 5
         };
     }
 
