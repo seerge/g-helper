@@ -21,6 +21,8 @@
             return "ROG Keris II Ace (Wired)";
         }
 
+        public override ButtonBindingProtocol BindingProtocol => ButtonBindingProtocol.New;
+
 
         public override PollingRate[] SupportedPollingrates()
         {

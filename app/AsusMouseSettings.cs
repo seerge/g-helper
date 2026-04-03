@@ -825,14 +825,12 @@ namespace GHelper
 
         private bool _updatingBindings;
         private readonly List<UI.RComboBox> _bindingCombos = new();
+        private object[] _bindingComboItems = [];
 
-        // Pre-built item list shared by every binding combo (separators + items).
-        private static readonly object[] _bindingComboItems = BuildBindingComboItems();
-
-        private static object[] BuildBindingComboItems()
+        private object[] BuildBindingComboItems()
         {
             var list = new List<object>();
-            foreach (var (groupLabel, items) in AsusMouse.ButtonBindingGroups)
+            foreach (var (groupLabel, items) in mouse.InstanceBindingGroups)
             {
                 list.Add(new BindingSeparator(groupLabel));
                 foreach (var (code, name) in items)
@@ -844,6 +842,7 @@ namespace GHelper
         private void InitBindingCombos()
         {
             var slots = mouse.ButtonSlots;
+            _bindingComboItems = BuildBindingComboItems();
             // Start below whichever is lower: the header or the mouse layout picture
             int startY = Math.Max(panelBindingsHeader.Bottom, pictureMouseLayout.Bottom) + 12;
             int rowHeight = 52;

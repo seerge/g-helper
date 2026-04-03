@@ -21,6 +21,8 @@
             return "ROG Harpe Ace Aim Lab Edition (Wireless)";
         }
 
+        public override ButtonBindingProtocol BindingProtocol => ButtonBindingProtocol.New;
+
 
         public override PollingRate[] SupportedPollingrates()
         {

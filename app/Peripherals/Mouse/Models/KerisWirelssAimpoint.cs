@@ -25,6 +25,8 @@
             return "ROG Keris Wireless Aimpoint (Wireless)";
         }
 
+        public override ButtonBindingProtocol BindingProtocol => ButtonBindingProtocol.New;
+
 
         public override PollingRate[] SupportedPollingrates()
         {

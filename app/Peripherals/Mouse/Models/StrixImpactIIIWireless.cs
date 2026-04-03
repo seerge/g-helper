@@ -18,6 +18,8 @@
             return "Strix Impact III Wireless (OMNI)";
         }
 
+        public override ButtonBindingProtocol BindingProtocol => ButtonBindingProtocol.New;
+
         public override PollingRate[] SupportedPollingrates()
         {
             return new PollingRate[] {

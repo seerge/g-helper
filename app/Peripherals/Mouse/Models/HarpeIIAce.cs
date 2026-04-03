@@ -16,6 +16,8 @@
             return "ROG HARPE II ACE (Wired)";
         }
 
+        public override ButtonBindingProtocol BindingProtocol => ButtonBindingProtocol.New;
+
         public override int DPIProfileCount()
         {
             return 4;
