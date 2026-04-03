@@ -2312,7 +2312,7 @@ NewProtocolBindingGroups = new List<(string, IReadOnlyList<(ushort, string)>)>
             int slotCount = Math.Min(ButtonBindings.Length, slots.Count);
             for (int slot = 0; slot < slotCount; slot++)
             {
-                int offset = 5 + slot * 2;
+                int offset = ButtonSlotResponseOffset(slot);
                 string slotName = slots.TryGetValue(slot, out var def) ? def.Name : $"Slot {slot}";
                 if (offset + 1 >= response.Length)
                 {
@@ -2331,6 +2331,10 @@ NewProtocolBindingGroups = new List<(string, IReadOnlyList<(ushort, string)>)>
             ButtonBindingsReady = true;
             Logger.WriteLine(GetDisplayName() + ": ── End Button Bindings ──");
         }
+
+        // Returns the byte offset in the read response for a given slot index.
+        // Override when the device response has unmapped/gap positions.
+        protected virtual int ButtonSlotResponseOffset(int slot) => 5 + slot * 2;
 
         private byte[]? QueryAllButtonBindings(int profileIndex = 0)
         {

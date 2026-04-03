@@ -92,6 +92,11 @@ namespace GHelper.Peripherals.Mouse.Models
 
         public override ButtonBindingProtocol BindingProtocol => ButtonBindingProtocol.Old;
 
+        // Raw response positions 3 and 4 are unmapped (0x0000 in libratbag ButtonMapping).
+        // Slots 0-2 map to raw positions 0-2, slots 3-7 map to raw positions 5-9.
+        protected override int ButtonSlotResponseOffset(int slot)
+            => slot < 3 ? 5 + slot * 2 : 5 + (slot + 2) * 2;
+
         private static readonly IReadOnlyList<(string GroupLabel, IReadOnlyList<(ushort Code, string Name)> Items)>
         ChakramXBindingGroups = new List<(string, IReadOnlyList<(ushort, string)>)>
         {
@@ -185,12 +190,6 @@ namespace GHelper.Peripherals.Mouse.Models
             { 5, (0x01E9, "Scroll Down"  ) },
             { 6, (0x01D0, "Joystick Up"  ) },
             { 7, (0x01D1, "Joystick Down") },
-            { 8, (0x01D2, "Joystick Fwd" ) },
-            { 9, (0x01D3, "Joystick Back") },
-            {10, (0x01EA, "Side Button A") },
-            {11, (0x01EB, "Side Button B") },
-            {12, (0x01EC, "Side Button C") },
-            {13, (0x01ED, "Side Button D") },
         };
     }
 
