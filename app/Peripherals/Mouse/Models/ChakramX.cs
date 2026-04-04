@@ -92,15 +92,15 @@ namespace GHelper.Peripherals.Mouse.Models
 
         public override HashSet<int> WriteOnlySlots => [6, 7, 8, 9];
 
-        // Slots 0-7 are in group 0 (primary), slots 10-13 are in group 1 (secondary).
-        // Secondary ButtonMapping: 0;0;ea;eb;ec;ed — skip first 2 unmapped positions.
+        // Group 0: 6 readable slots (0-5), 4 write-only joystick slots (6-9).
+        // Group 1: 4 secondary side button slots (10-13), skip 2 unmapped positions.
         public override void ReadAndLogButtonBindings()
         {
             if (!HasButtonBindings()) return;
             ButtonBindingsReady = false;
             Logger.WriteLine(GetDisplayName() + ": ── Reading Button Bindings ──");
 
-            // Group 0: primary slots 0-7
+            // Group 0: readable slots 0-5
             byte[]? r0 = QueryAllButtonBindings(0);
             if (r0 is null || r0.Length < 6 || r0[1] != 0x12 || r0[2] != 0x05)
             {
@@ -131,10 +131,10 @@ namespace GHelper.Peripherals.Mouse.Models
                     continue;
                 }
 
-                byte[] resp = slot < 10 ? r0 : r1;
+                byte[] resp = slot < 6 ? r0 : r1;
                 // Group 0: slots 0-2 → raw pos 0-2, slots 3-5 → raw pos 5-7 (skip unmapped pos 3+4).
                 // Group 1: slots 10-13 → raw pos 2-5 (skip unmapped pos 0+1).
-                int rawPos = slot < 10
+                int rawPos = slot < 6
                     ? 5 + (slot < 3 ? slot : slot + 2) * 2
                     : 5 + (slot - 10 + 2) * 2;
                 if (rawPos + 1 >= resp.Length)
