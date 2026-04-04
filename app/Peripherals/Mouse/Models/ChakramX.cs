@@ -127,7 +127,7 @@ namespace GHelper.Peripherals.Mouse.Models
                 if (WriteOnlySlots.Contains(slot))
                 {
                     ButtonBindings[slot] = LoadWriteOnlySlot(slot, def.SourceCode);
-                    Logger.WriteLine(GetDisplayName() + $": Slot {slot} ({def.Name}): {LabelForActionCode(ButtonBindings[slot])} (0x{ButtonBindings[slot]:X4}) [write-only]");
+                    Logger.WriteLine(GetDisplayName() + $": Slot {slot} ({def.Name}): {(AsusMouse.BindingCodes.TryGetValue(ButtonBindings[slot], out var wn) ? wn : "Unknown")} (0x{ButtonBindings[slot]:X4}) [write-only]");
                     continue;
                 }
 
@@ -144,7 +144,7 @@ namespace GHelper.Peripherals.Mouse.Models
                 }
                 ushort code = (ushort)(resp[rawPos] | (resp[rawPos + 1] << 8));
                 ButtonBindings[slot] = code;
-                Logger.WriteLine(GetDisplayName() + $": Slot {slot} ({def.Name}): {LabelForActionCode(code)} (0x{code:X4})");
+                Logger.WriteLine(GetDisplayName() + $": Slot {slot} ({def.Name}): {(AsusMouse.BindingCodes.TryGetValue(code, out var cn) ? cn : "Unknown")} (0x{code:X4})");
             }
 
             ButtonBindingsReady = true;
@@ -187,15 +187,8 @@ namespace GHelper.Peripherals.Mouse.Models
             ("Keyboard",   AsusMouse.KeyboardBindings  ),
         };
 
-        private static readonly Dictionary<ushort, string> ChakramXBindingCodes =
-            ChakramXBindingGroups.SelectMany(g => g.Items)
-                .ToDictionary(e => e.Code, e => e.Name);
-
         public override IReadOnlyList<(string GroupLabel, IReadOnlyList<(ushort Code, string Name)> Items)>
-            InstanceBindingGroups => ChakramXBindingGroups;
-
-        public override string LabelForActionCode(ushort code)
-            => ChakramXBindingCodes.TryGetValue(code, out var n) ? n : $"Unknown (0x{code:X4})";
+            BindingGroups => ChakramXBindingGroups;
 
         public override Dictionary<int, (ushort SourceCode, string Name)> ButtonSlots => new()
         {

@@ -2186,7 +2186,7 @@ public ushort[] ButtonBindings { get; protected set; } = new ushort[16];
         };
 
         public static readonly IReadOnlyList<(string GroupLabel, IReadOnlyList<(ushort Code, string Name)> Items)>
-        BindingGroups = new List<(string, IReadOnlyList<(ushort, string)>)>
+        DefaultBindingGroups = new List<(string, IReadOnlyList<(ushort, string)>)>
         {
             ("Mouse",      MouseBindings     ),
             ("Multimedia", MultimediaBindings),
@@ -2194,15 +2194,11 @@ public ushort[] ButtonBindings { get; protected set; } = new ushort[16];
         };
 
         public static readonly Dictionary<ushort, string> BindingCodes =
-            BindingGroups.SelectMany(g => g.Items)
+            DefaultBindingGroups.SelectMany(g => g.Items)
                 .ToDictionary(e => e.Code, e => e.Name);
 
-        // Per-instance resolved groups — override in subclass to add device-specific entries
         public virtual IReadOnlyList<(string GroupLabel, IReadOnlyList<(ushort Code, string Name)> Items)>
-            InstanceBindingGroups => BindingGroups;
-
-        public virtual string LabelForActionCode(ushort code)
-            => BindingCodes.TryGetValue(code, out var n) ? n : $"Unknown (0x{code:X4})";
+            BindingGroups => DefaultBindingGroups;
 
         public virtual Dictionary<int, (ushort SourceCode, string Name)> ButtonSlots => new()
         {
@@ -2272,7 +2268,7 @@ public ushort[] ButtonBindings { get; protected set; } = new ushort[16];
                 ButtonBindings[slot] = actionCode;
 
                 Logger.WriteLine(GetDisplayName()
-                    + $": Slot {slot} ({slotName}): {LabelForActionCode(actionCode)} (0x{actionCode:X4})");
+                    + $": Slot {slot} ({slotName}): {(BindingCodes.TryGetValue(actionCode, out var n) ? n : "Unknown")} (0x{actionCode:X4})");
             }
 
             ButtonBindingsReady = true;
@@ -2324,8 +2320,7 @@ public ushort[] ButtonBindings { get; protected set; } = new ushort[16];
             FlushSettings();
 
             Logger.WriteLine(GetDisplayName()
-                + $": Slot {slot} ({slotDef.Name}) → {LabelForActionCode(actionCode)}"
-                + $" (src=0x{sourceCode:X4}, dst=0x{actionCode:X4})");
+                + $": Slot {slot} ({slotDef.Name}) → {(BindingCodes.TryGetValue(actionCode, out var lbl) ? lbl : "Unknown")} (0x{actionCode:X4})");
 
             ButtonBindings[slot] = actionCode;
             if (WriteOnlySlots.Contains(slot)) SaveWriteOnlySlot(slot, actionCode);

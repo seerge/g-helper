@@ -830,7 +830,7 @@ namespace GHelper
         private object[] BuildBindingComboItems()
         {
             var list = new List<object>();
-            foreach (var (groupLabel, items) in mouse.InstanceBindingGroups)
+            foreach (var (groupLabel, items) in mouse.BindingGroups)
             {
                 list.Add(new BindingSeparator(groupLabel));
                 foreach (var (code, name) in items)
