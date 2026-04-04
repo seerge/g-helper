@@ -2197,6 +2197,9 @@ public ushort[] ButtonBindings { get; protected set; } = new ushort[16];
             DefaultBindingGroups.SelectMany(g => g.Items)
                 .ToDictionary(e => e.Code, e => e.Name);
 
+        public static string LabelForActionCode(ushort code)
+            => BindingCodes.TryGetValue(code, out var n) ? n : $"Unknown (0x{code:X4})";
+
         public virtual IReadOnlyList<(string GroupLabel, IReadOnlyList<(ushort Code, string Name)> Items)>
             BindingGroups => DefaultBindingGroups;
 
@@ -2268,7 +2271,7 @@ public ushort[] ButtonBindings { get; protected set; } = new ushort[16];
                 ButtonBindings[slot] = actionCode;
 
                 Logger.WriteLine(GetDisplayName()
-                    + $": Slot {slot} ({slotName}): {(BindingCodes.TryGetValue(actionCode, out var n) ? n : "Unknown")} (0x{actionCode:X4})");
+                    + $": Slot {slot} ({slotName}): {LabelForActionCode(actionCode)} (0x{actionCode:X4})");
             }
 
             ButtonBindingsReady = true;
@@ -2320,7 +2323,8 @@ public ushort[] ButtonBindings { get; protected set; } = new ushort[16];
             FlushSettings();
 
             Logger.WriteLine(GetDisplayName()
-                + $": Slot {slot} ({slotDef.Name}) → {(BindingCodes.TryGetValue(actionCode, out var lbl) ? lbl : "Unknown")} (0x{actionCode:X4})");
+                + $": Slot {slot} ({slotDef.Name}) → {LabelForActionCode(actionCode)}"
+                + $" (src=0x{sourceCode:X4}, dst=0x{actionCode:X4})");
 
             ButtonBindings[slot] = actionCode;
             if (WriteOnlySlots.Contains(slot)) SaveWriteOnlySlot(slot, actionCode);

@@ -127,7 +127,7 @@ namespace GHelper.Peripherals.Mouse.Models
                 if (WriteOnlySlots.Contains(slot))
                 {
                     ButtonBindings[slot] = LoadWriteOnlySlot(slot, def.SourceCode);
-                    Logger.WriteLine(GetDisplayName() + $": Slot {slot} ({def.Name}): {(AsusMouse.BindingCodes.TryGetValue(ButtonBindings[slot], out var wn) ? wn : "Unknown")} (0x{ButtonBindings[slot]:X4}) [write-only]");
+                    Logger.WriteLine(GetDisplayName() + $": Slot {slot} ({def.Name}): {AsusMouse.LabelForActionCode(ButtonBindings[slot])} (0x{ButtonBindings[slot]:X4}) [write-only]");
                     continue;
                 }
 
@@ -144,7 +144,7 @@ namespace GHelper.Peripherals.Mouse.Models
                 }
                 ushort code = (ushort)(resp[rawPos] | (resp[rawPos + 1] << 8));
                 ButtonBindings[slot] = code;
-                Logger.WriteLine(GetDisplayName() + $": Slot {slot} ({def.Name}): {(AsusMouse.BindingCodes.TryGetValue(code, out var cn) ? cn : "Unknown")} (0x{code:X4})");
+                Logger.WriteLine(GetDisplayName() + $": Slot {slot} ({def.Name}): {AsusMouse.LabelForActionCode(code)} (0x{code:X4})");
             }
 
             ButtonBindingsReady = true;
