@@ -27,7 +27,6 @@
             return "ROG Keris II Origin (Wired)";
         }
 
-        public override ButtonBindingProtocol BindingProtocol => ButtonBindingProtocol.New;
 
 
         public override PollingRate[] SupportedPollingrates()

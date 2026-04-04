@@ -25,7 +25,6 @@
             return "ROG Gladius III Aimpoint (Wireless)";
         }
 
-        public override ButtonBindingProtocol BindingProtocol => ButtonBindingProtocol.New;
 
 
         public override PollingRate[] SupportedPollingrates()

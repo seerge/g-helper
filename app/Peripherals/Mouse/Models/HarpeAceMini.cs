@@ -22,7 +22,6 @@
             return "Harpe Ace Mini (Wired)";
         }
 
-        public override ButtonBindingProtocol BindingProtocol => ButtonBindingProtocol.New;
 
         public override bool CanChangeDPICount()
         {
