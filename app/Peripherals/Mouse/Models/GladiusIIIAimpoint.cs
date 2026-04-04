@@ -26,7 +26,6 @@
         }
 
 
-
         public override PollingRate[] SupportedPollingrates()
         {
             return new PollingRate[] {

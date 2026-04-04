@@ -22,7 +22,6 @@
             return "Harpe Ace Mini (Wired)";
         }
 
-
         public override bool CanChangeDPICount()
         {
             return true;

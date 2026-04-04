@@ -16,7 +16,6 @@
             return "ROG HARPE II ACE (Wired)";
         }
 
-
         public override int DPIProfileCount()
         {
             return 4;

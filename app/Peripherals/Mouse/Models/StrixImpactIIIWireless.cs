@@ -18,7 +18,6 @@
             return "Strix Impact III Wireless (OMNI)";
         }
 
-
         public override PollingRate[] SupportedPollingrates()
         {
             return new PollingRate[] {

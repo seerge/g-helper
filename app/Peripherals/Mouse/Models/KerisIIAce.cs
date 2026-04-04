@@ -22,7 +22,6 @@
         }
 
 
-
         public override PollingRate[] SupportedPollingrates()
         {
             if (Booster) return BoosterPollingrates();

@@ -2117,8 +2117,6 @@ public ushort[] ButtonBindings { get; protected set; } = new ushort[16];
             return hex.ToString();
         }
 
-        // Mouse bindings — New protocol (Harpe Ace / Keris II / Gladius III etc.)
-
         // Shared across all protocols
         public static readonly IReadOnlyList<(ushort, string)> MultimediaBindings = new List<(ushort, string)>
         {
@@ -2261,7 +2259,7 @@ public ushort[] ButtonBindings { get; protected set; } = new ushort[16];
             int slotCount = Math.Min(ButtonBindings.Length, slots.Count);
             for (int slot = 0; slot < slotCount; slot++)
             {
-                int offset = ButtonSlotResponseOffset(slot);
+                int offset = 5 + slot * 2;
                 string slotName = slots.TryGetValue(slot, out var def) ? def.Name : $"Slot {slot}";
                 if (offset + 1 >= response.Length)
                 {
@@ -2280,10 +2278,6 @@ public ushort[] ButtonBindings { get; protected set; } = new ushort[16];
             ButtonBindingsReady = true;
             Logger.WriteLine(GetDisplayName() + ": ── End Button Bindings ──");
         }
-
-        // Returns the byte offset in the read response for a given slot index.
-        // Override when the device response has unmapped/gap positions.
-        protected virtual int ButtonSlotResponseOffset(int slot) => 5 + slot * 2;
 
         protected virtual byte[]? QueryAllButtonBindings(int group = 0)
         {
@@ -2334,6 +2328,7 @@ public ushort[] ButtonBindings { get; protected set; } = new ushort[16];
                 + $" (src=0x{sourceCode:X4}, dst=0x{actionCode:X4})");
 
             ButtonBindings[slot] = actionCode;
+            if (WriteOnlySlots.Contains(slot)) SaveWriteOnlySlot(slot, actionCode);
         }
 
         protected virtual byte[] GetSetButtonBindingPacket(ushort sourceCode, ushort destCode)

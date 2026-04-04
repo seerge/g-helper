@@ -92,36 +92,7 @@ namespace GHelper.Peripherals.Mouse.Models
 
         public override HashSet<int> WriteOnlySlots => [6, 7, 8, 9];
 
-        // Slots 0-2: raw pos 0-2. Slots 3-7: raw pos 5-9 (skip unmapped positions 3+4).
-        protected override int ButtonSlotResponseOffset(int slot)
-            => slot < 3 ? 5 + slot * 2 : 5 + (slot + 2) * 2;
-
-        protected byte[] GetSetButtonBindingPacket(ushort sourceCode, ushort destCode, byte group) =>
-            new byte[]
-            {
-                reportId,
-                0x51, 0x21,
-                group,
-                0x00,
-                (byte)( sourceCode       & 0xFF),
-                (byte)((sourceCode >> 8) & 0xFF),
-                (byte)( destCode         & 0xFF),
-                (byte)((destCode   >> 8) & 0xFF),
-            };
-
-        public override void SetButtonBinding(int slot, ushort actionCode)
-        {
-            if (!HasButtonBindings()) return;
-            if (!ButtonSlots.TryGetValue(slot, out var def)) return;
-            byte group = slot >= 10 ? (byte)1 : (byte)0;
-            WriteForResponse(GetSetButtonBindingPacket(def.SourceCode, actionCode, group));
-            FlushSettings();
-            ButtonBindings[slot] = actionCode;
-            if (WriteOnlySlots.Contains(slot)) SaveWriteOnlySlot(slot, actionCode);
-            Logger.WriteLine(GetDisplayName() + $": Slot {slot} ({def.Name}) → {LabelForActionCode(actionCode)} (group {group})");
-        }
-
-        // Slots 0-7 are in group 0 (primary), slots 8-13 are in group 1 (secondary).
+        // Slots 0-7 are in group 0 (primary), slots 10-13 are in group 1 (secondary).
         // Secondary ButtonMapping: 0;0;ea;eb;ec;ed — skip first 2 unmapped positions.
         public override void ReadAndLogButtonBindings()
         {
@@ -152,18 +123,26 @@ namespace GHelper.Peripherals.Mouse.Models
             var slots = ButtonSlots;
             foreach (var (slot, def) in slots)
             {
+                // Write-only slots: load from config or fall back to default source code.
+                if (WriteOnlySlots.Contains(slot))
+                {
+                    ButtonBindings[slot] = LoadWriteOnlySlot(slot, def.SourceCode);
+                    Logger.WriteLine(GetDisplayName() + $": Slot {slot} ({def.Name}): {LabelForActionCode(ButtonBindings[slot])} (0x{ButtonBindings[slot]:X4}) [write-only]");
+                    continue;
+                }
+
                 byte[] resp = slot < 10 ? r0 : r1;
-                // Group 0: skip positions 3+4 (unmapped). Group 1: skip positions 0+1 (unmapped).
-                int rawPos = slot < 10 ? ButtonSlotResponseOffset(slot) : 5 + (slot - 10 + 2) * 2;
+                // Group 0: slots 0-2 → raw pos 0-2, slots 3-5 → raw pos 5-7 (skip unmapped pos 3+4).
+                // Group 1: slots 10-13 → raw pos 2-5 (skip unmapped pos 0+1).
+                int rawPos = slot < 10
+                    ? 5 + (slot < 3 ? slot : slot + 2) * 2
+                    : 5 + (slot - 10 + 2) * 2;
                 if (rawPos + 1 >= resp.Length)
                 {
                     Logger.WriteLine(GetDisplayName() + $": Slot {slot} ({def.Name}): out of range");
                     continue;
                 }
                 ushort code = (ushort)(resp[rawPos] | (resp[rawPos + 1] << 8));
-                // Write-only slots: device always returns 0x0000 — load from config or fall back to default.
-                if (code == 0x0000 && WriteOnlySlots.Contains(slot))
-                    code = LoadWriteOnlySlot(slot, def.SourceCode);
                 ButtonBindings[slot] = code;
                 Logger.WriteLine(GetDisplayName() + $": Slot {slot} ({def.Name}): {LabelForActionCode(code)} (0x{code:X4})");
             }
@@ -216,21 +195,22 @@ namespace GHelper.Peripherals.Mouse.Models
             InstanceBindingGroups => ChakramXBindingGroups;
 
         public override string LabelForActionCode(ushort code)
-            => ChakramXBindingCodes.TryGetValue(code, out var n) ? n : AsusMouse.BindingCodes.TryGetValue(code, out n) ? n : $"Unknown (0x{code:X4})";
+            => ChakramXBindingCodes.TryGetValue(code, out var n) ? n : $"Unknown (0x{code:X4})";
 
         public override Dictionary<int, (ushort SourceCode, string Name)> ButtonSlots => new()
         {
-            // Group 0 primary (ButtonMapping: f0;f1;f2;0;0;e6;e8;e9;d0;d1)
-            { 0, (0x01F0, "Left Click"   ) },
-            { 1, (0x01F1, "Right Click"  ) },
-            { 2, (0x01F2, "Scroll Click" ) },
-            { 3, (0x01E6, "DPI Button"   ) },  // raw pos 5 (skip unmapped 3+4)
+            // Group 0 — 8 positions, pos 3+4 are FF FF (unmapped), pos 5-7 are readable
+            { 0, (0x01F0, "Left Click"   ) },  // raw pos 0
+            { 1, (0x01F1, "Right Click"  ) },  // raw pos 1
+            { 2, (0x01F2, "Scroll Click" ) },  // raw pos 2
+            { 3, (0x01E6, "DPI Button"   ) },  // raw pos 5
             { 4, (0x01E8, "Scroll Up"    ) },  // raw pos 6
             { 5, (0x01E9, "Scroll Down"  ) },  // raw pos 7
-            { 6, (0x01D0, "Joystick Up"  ) },  // raw pos 8
-            { 7, (0x01D1, "Joystick Down") },  // raw pos 9
-            { 8, (0x01D2, "Joystick Fwd" ) },  // write-only, reads back as 0x0000
-            { 9, (0x01D3, "Joystick Back") },  // write-only, reads back as 0x0000
+            // Joystick directions — write-only, not returned in any read response
+            { 6, (0x01D0, "Joystick Up"  ) },
+            { 7, (0x01D1, "Joystick Down") },
+            { 8, (0x01D2, "Joystick Fwd" ) },
+            { 9, (0x01D3, "Joystick Back") },
             // Group 1 secondary (ButtonMappingSecondary: 0;0;ea;eb;ec;ed)
             {10, (0x01EA, "Side Button A") },  // raw pos 2 (skip unmapped 0+1)
             {11, (0x01EB, "Side Button B") },  // raw pos 3
