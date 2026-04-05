@@ -118,6 +118,9 @@ namespace GHelper.Ally
         public const string BindVolDown = "05-02";
 
         public const string BindPrintScrn = "02-C3";
+        public const string BindPause = "02-91";         // Pause/Break key
+        public const string BindWinP = "04-02-82-4D";   // Win+P  (display/project mode)
+        public const string BindWinH = "04-02-82-33";   // Win+H  (dictation)
 
         public const string BindScreenshot = "04-03-82-88-1B";
         public const string BindShowDesktop = "04-02-82-23";
@@ -179,7 +182,6 @@ namespace GHelper.Ally
             { BindWinTab, "Win-Tab" },
             { BindXGM, "XGM Toggle" },
 
-
             { BindEsc, "Esc" },
             { BindBack, "Backspace" },
             { BindTab, "Tab" },
@@ -187,8 +189,9 @@ namespace GHelper.Ally
             { BindShift, "LShift" },
             { BindAlt, "LAlt" },
             { BindCtrl, "LCtl" },
-            { BindWin, "WIN" },
+            { BindWin, "Win" },
             { BindPrintScrn, "PrntScn" },
+            { BindPause,  "Pause" },
 
             { BindPgU, "PgUp" },
             { BindPgD, "PgDwn" },
@@ -291,8 +294,9 @@ namespace GHelper.Ally
 
             //{ "05-16", "Screenshot" },
             //{ "05-1C", "Show desktop" },
+            { BindWinP,   "Project Mode"   },
 
-            { "05-1E", "Begin recording" },
+            { "05-1E", "Begin Recording" },
             { "05-01", "Mic off" },
 
         };
