@@ -721,6 +721,34 @@ namespace GHelper.Ally
             });
         }
 
+        public static void EmitStick(int stick, float x, float y)
+        {
+            byte[] r = new byte[64];
+            r[0] = AsusHid.INPUT_ID;
+            r[1] = 0xD1;
+            r[2] = 0x15;
+            r[3] = (byte)stick;   // 0 = left, 1 = right
+            r[4] = 0x04;
+            r[5] = 0x00;
+
+            short sx = ToInt16(x);
+            short sy = ToInt16(y);
+
+            r[6] = (byte)((sx >> 8) & 0xFF);
+            r[7] = (byte)(sx & 0xFF);
+            r[8] = (byte)((sy >> 8) & 0xFF);
+            r[9] = (byte)(sy & 0xFF);
+
+            AsusHid.WriteInput(r, null);
+        }
+
+        static short ToInt16(float v)
+        {
+            if (v > 1f) v = 1f;
+            if (v < -1f) v = -1f;
+            return v <= -1f ? short.MinValue : (short)(v * 32767f);
+        }
+
         private void SetMode(ControllerMode mode, bool init = false)
         {
 
