@@ -782,7 +782,6 @@ namespace GHelper.Input
 
             if (slateState >= 0) SetSlateMode(slateState);
             if (tabletState && touchpadState || !tabletState && !touchpadState) ToggleTouchpad();
-
         }
 
         static int GetTentState()
@@ -874,7 +873,7 @@ namespace GHelper.Input
                         KeyProcess("fnc");
                         return;
                     case 189: // Tablet mode
-                        TabletMode();
+                        AutoKeyboard();
                         return;
                     case 197: // FN+F2
                         SetBacklight(-1);

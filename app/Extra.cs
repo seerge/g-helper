@@ -477,8 +477,12 @@ namespace GHelper
             checkPerKeyRGB.Checked = AppConfig.Is("per_key_rgb");
             checkPerKeyRGB.CheckedChanged += CheckPerKeyRGB_CheckedChanged;
 
+            checkAspm.Checked = AppConfig.IsAutoASPM();
+            checkAspm.CheckedChanged += CheckAspm_CheckedChanged;
+
             toolTip.SetToolTip(checkAutoToggleClamshellMode, "Disable sleep on lid close when plugged in and external monitor is connected");
             toolTip.SetToolTip(checkNVPlatform, "Stops NVIDIA services when the discrete GPU is disabled\nand restarts them automatically when the GPU is enabled");
+            toolTip.SetToolTip(checkAspm, "Prevents PCIe devices from entering low-power idle states.\nRecommended if you experience random hangs or unresponsive hardware.");
 
             InitCores();
             InitServices();
@@ -486,6 +490,12 @@ namespace GHelper
 
             InitACPITesting();
 
+        }
+
+        private void CheckAspm_CheckedChanged(object? sender, EventArgs e)
+        {
+            AppConfig.Set("aspm", (checkAspm.Checked ? 1 : 0));
+            PowerNative.SetBalancedASPM(checkAspm.Checked ? 0 : 2);
         }
 
         private void CheckNVPlatform_CheckedChanged(object? sender, EventArgs e)
