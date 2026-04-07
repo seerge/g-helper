@@ -124,8 +124,8 @@ namespace GHelper
             rButton2 = new GHelper.UI.RButton();
             panelRight = new Panel();
             panelLeft = new Panel();
-            panelGap = new Panel();
             pictureMouseLayout = new PictureBox();
+            panelGap = new Panel();
             panelBindingsHeader = new Panel();
             pictureBindigs = new PictureBox();
             labelBindingsTitle = new Label();
@@ -1157,7 +1157,7 @@ namespace GHelper
             buttonLightingColor.BorderRadius = 2;
             buttonLightingColor.FlatStyle = FlatStyle.Flat;
             buttonLightingColor.ForeColor = SystemColors.ControlText;
-            buttonLightingColor.Location = new Point(479, 145);
+            buttonLightingColor.Location = new Point(487, 145);
             buttonLightingColor.Margin = new Padding(0);
             buttonLightingColor.Name = "buttonLightingColor";
             buttonLightingColor.Secondary = false;
@@ -1584,7 +1584,7 @@ namespace GHelper
             pictureMouseLayout.BackgroundImage = Properties.Resources.mouse_layout;
             pictureMouseLayout.BackgroundImageLayout = ImageLayout.Zoom;
             pictureMouseLayout.Dock = DockStyle.Top;
-            pictureMouseLayout.Location = new Point(10, 58);
+            pictureMouseLayout.Location = new Point(10, 74);
             pictureMouseLayout.Name = "pictureMouseLayout";
             pictureMouseLayout.Size = new Size(480, 296);
             pictureMouseLayout.TabIndex = 43;
@@ -1593,12 +1593,13 @@ namespace GHelper
             // panelGap
             // 
             panelGap.Dock = DockStyle.Top;
+            panelGap.Location = new Point(10, 58);
             panelGap.Name = "panelGap";
             panelGap.Size = new Size(480, 16);
             panelGap.TabIndex = 201;
             // 
             // panelBindingsHeader
-            //
+            // 
             panelBindingsHeader.BackColor = SystemColors.ControlLight;
             panelBindingsHeader.Controls.Add(pictureBindigs);
             panelBindingsHeader.Controls.Add(labelBindingsTitle);
@@ -1654,7 +1655,7 @@ namespace GHelper
             AutoScaleMode = AutoScaleMode.Dpi;
             AutoSize = true;
             AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            ClientSize = new Size(900, 900);
+            ClientSize = new Size(1412, 1712);
             Controls.Add(tableRoot);
             Margin = new Padding(4);
             MaximizeBox = false;
@@ -1713,7 +1714,6 @@ namespace GHelper
             panelRight.ResumeLayout(false);
             panelRight.PerformLayout();
             panelLeft.ResumeLayout(false);
-            panelGap.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)pictureMouseLayout).EndInit();
             panelBindingsHeader.ResumeLayout(false);
             panelBindingsHeader.PerformLayout();

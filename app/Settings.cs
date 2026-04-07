@@ -775,6 +775,7 @@ namespace GHelper
                         case 0:
                             Logger.WriteLine("Monitor Power Off");
                             Aura.SleepBrightness();
+                            Program.modeControl.SleepReset();
                             break;
                         case 1:
                             Logger.WriteLine("Monitor Power On");

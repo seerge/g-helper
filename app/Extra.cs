@@ -480,6 +480,10 @@ namespace GHelper
             checkAspm.Checked = AppConfig.IsAutoASPM();
             checkAspm.CheckedChanged += CheckAspm_CheckedChanged;
 
+            checkKeystoneSound.Visible = AppConfig.IsKeystone();
+            checkKeystoneSound.Checked = Keystone.IsEnabled();
+            checkKeystoneSound.CheckedChanged += CheckKeystoneSoundCheckedChanged;
+
             toolTip.SetToolTip(checkAutoToggleClamshellMode, "Disable sleep on lid close when plugged in and external monitor is connected");
             toolTip.SetToolTip(checkNVPlatform, "Stops NVIDIA services when the discrete GPU is disabled\nand restarts them automatically when the GPU is enabled");
             toolTip.SetToolTip(checkAspm, "Prevents PCIe devices from entering low-power idle states.\nRecommended if you experience random hangs or unresponsive hardware.");
@@ -490,6 +494,11 @@ namespace GHelper
 
             InitACPITesting();
 
+        }
+
+        private void CheckKeystoneSoundCheckedChanged(object? sender, EventArgs e)
+        {
+            Keystone.SetEnabled(checkKeystoneSound.Checked);
         }
 
         private void CheckAspm_CheckedChanged(object? sender, EventArgs e)
