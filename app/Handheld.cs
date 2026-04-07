@@ -85,6 +85,9 @@ namespace GHelper
 
             ComboBinding(comboPrimary);
             ComboBinding(comboSecondary);
+            
+            ComboTurbo(comboTurboPrimary);
+            ComboTurbo(comboTurboSecondary);
 
             checkController.Checked = AppConfig.Is("controller_disabled");
             checkController.CheckedChanged += CheckController_CheckedChanged;
@@ -110,6 +113,23 @@ namespace GHelper
 
         }
 
+        private void ComboTurbo(RComboBox combo)
+        {
+            combo.DropDownStyle = ComboBoxStyle.DropDownList;
+            combo.DisplayMember = "Value";
+            combo.ValueMember = "Key";
+            combo.Items.Add(new KeyValuePair<int, string>(0, "Off"));
+            combo.Items.Add(new KeyValuePair<int, string>(50, "50ms"));
+            combo.Items.Add(new KeyValuePair<int, string>(100, "100ms"));
+            combo.Items.Add(new KeyValuePair<int, string>(150, "150ms"));
+            combo.Items.Add(new KeyValuePair<int, string>(200, "200ms"));
+            combo.Items.Add(new KeyValuePair<int, string>(250, "250ms"));
+            combo.Items.Add(new KeyValuePair<int, string>(300, "300ms"));
+            combo.Items.Add(new KeyValuePair<int, string>(400, "400ms"));
+            combo.Items.Add(new KeyValuePair<int, string>(500, "500ms"));
+            combo.SelectedValueChanged += TurboSelectedValueChanged;
+        }
+
         private void Binding_SelectedValueChanged(object? sender, EventArgs e)
         {
             if (sender is null) return;
@@ -126,6 +146,17 @@ namespace GHelper
             AllyControl.ApplyMode();
         }
 
+        private void TurboSelectedValueChanged(object? sender, EventArgs e)
+        {
+            if (sender is null) return;
+            RComboBox combo = (RComboBox)sender;
+            int ms = ((KeyValuePair<int, string>)combo.SelectedItem).Key;
+            string key = (combo.Name == "comboTurboPrimary" ? "turbo_" : "turbo2_") + activeBinding;
+            if (ms > 0) AppConfig.Set(key, ms);
+            else AppConfig.Remove(key);
+            AllyControl.ApplyMode();
+        }
+
         private void SetComboValue(RComboBox combo, string value)
         {
             foreach (var item in AllyControl.BindCodes)
@@ -135,6 +166,14 @@ namespace GHelper
                     return;
                 }
 
+            combo.SelectedIndex = 0;
+        }
+
+        private void SetTurboValue(RComboBox combo, int ms)
+        {
+            foreach (var item in combo.Items)
+                if (((KeyValuePair<int, string>)item).Key == ms)
+                { combo.SelectedItem = item; return; }
             combo.SelectedIndex = 0;
         }
 
@@ -178,6 +217,8 @@ namespace GHelper
             SetComboValue(comboPrimary, AppConfig.GetString("bind_" + binding, ""));
             SetComboValue(comboSecondary, AppConfig.GetString("bind2_" + binding, ""));
 
+            SetTurboValue(comboTurboPrimary, AppConfig.Get("turbo_" + binding, 0));
+            SetTurboValue(comboTurboSecondary, AppConfig.Get("turbo2_" + binding, 0));
         }
 
 

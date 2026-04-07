@@ -118,6 +118,9 @@ namespace GHelper.Ally
         public const string BindVolDown = "05-02";
 
         public const string BindPrintScrn = "02-C3";
+        public const string BindPause = "02-91";         // Pause/Break key
+        public const string BindWinP = "04-02-82-4D";   // Win+P  (display/project mode)
+        public const string BindWinH = "04-02-82-33";   // Win+H  (dictation)
 
         public const string BindScreenshot = "04-03-82-88-1B";
         public const string BindShowDesktop = "04-02-82-23";
@@ -125,7 +128,6 @@ namespace GHelper.Ally
         public const string BindShowKeyboard = "05-19";
 
         static byte[] CommandReady = new byte[] { AsusHid.INPUT_ID, 0xD1, 0x0A, 0x01 };
-        static byte[] CommandSave = new byte[] { AsusHid.INPUT_ID, 0xD1, 0x0F, 0x20 };
 
         public static Dictionary<string, string> BindCodes = new Dictionary<string, string>
         {
@@ -179,7 +181,6 @@ namespace GHelper.Ally
             { BindWinTab, "Win-Tab" },
             { BindXGM, "XGM Toggle" },
 
-
             { BindEsc, "Esc" },
             { BindBack, "Backspace" },
             { BindTab, "Tab" },
@@ -187,8 +188,9 @@ namespace GHelper.Ally
             { BindShift, "LShift" },
             { BindAlt, "LAlt" },
             { BindCtrl, "LCtl" },
-            { BindWin, "WIN" },
+            { BindWin, "Win" },
             { BindPrintScrn, "PrntScn" },
+            { BindPause,  "Pause" },
 
             { BindPgU, "PgUp" },
             { BindPgD, "PgDwn" },
@@ -291,8 +293,9 @@ namespace GHelper.Ally
 
             //{ "05-16", "Screenshot" },
             //{ "05-1C", "Show desktop" },
+            { BindWinP,   "Project Mode"   },
 
-            { "05-1E", "Begin recording" },
+            { "05-1E", "Begin Recording" },
             { "05-01", "Mic off" },
 
         };
@@ -598,6 +601,38 @@ namespace GHelper.Ally
 
         }
 
+        static private void SetTurbo()
+        {
+            byte[] turbo = new byte[64];
+            turbo[0] = AsusHid.INPUT_ID;
+            turbo[1] = 0xD1;
+            turbo[2] = 0x0F;
+            turbo[3] = 0x20;
+
+            // offset = 4 + (zone - 1) * 4,  layout: [L1, L2, R1, R2]
+            // value = ms / 50  (0 = off, 1 = 50ms, 2 = 100ms ... 10 = 500ms)
+            void Z(int zone, string l1, string l2, string r1, string r2)
+            {
+                int o = 4 + (zone - 1) * 4;
+                turbo[o] = (byte)(AppConfig.Get(l1, 0) / 50);
+                turbo[o + 1] = (byte)(AppConfig.Get(l2, 0) / 50);
+                turbo[o + 2] = (byte)(AppConfig.Get(r1, 0) / 50);
+                turbo[o + 3] = (byte)(AppConfig.Get(r2, 0) / 50);
+            }
+
+            Z(1, "turbo_du", "turbo2_du", "turbo_dd", "turbo2_dd");
+            Z(2, "turbo_dl", "turbo2_dl", "turbo_dr", "turbo2_dr");
+            Z(3, "turbo_ls", "turbo2_ls", "turbo_rs", "turbo2_rs");
+            Z(4, "turbo_lb", "turbo2_lb", "turbo_rb", "turbo2_rb");
+            Z(5, "turbo_a", "turbo2_a", "turbo_b", "turbo2_b");
+            Z(6, "turbo_x", "turbo2_x", "turbo_y", "turbo2_y");
+            Z(7, "turbo_vb", "turbo2_vb", "turbo_mb", "turbo2_mb");
+            Z(8, "turbo_m2", "turbo2_m2", "turbo_m1", "turbo2_m1");
+            Z(9, "turbo_lt", "turbo2_lt", "turbo_rt", "turbo2_rt");
+
+            AsusHid.WriteInput(turbo, null);
+        }
+
         static void WakeUp()
         {
             AsusHid.WriteInput(Encoding.ASCII.GetBytes("ZASUS Tech.Inc."), "Init");
@@ -662,7 +697,6 @@ namespace GHelper.Ally
                 }
 
                 AsusHid.WriteInput([AsusHid.INPUT_ID, 0xD1, 0x01, 0x01, (byte)_applyMode], "Controller");
-                //AsusHid.WriteInput(CommandSave, null);
 
                 BindZone(BindingZone.M1M2);
                 BindZone(BindingZone.DPadUpDown);
@@ -674,8 +708,7 @@ namespace GHelper.Ally
                 BindZone(BindingZone.ViewMenu);
                 BindZone(BindingZone.Trigger);
 
-                AsusHid.WriteInput(CommandSave, null);
-
+                SetTurbo();
                 SetDeadzones();
 
                 if (init && AppConfig.Is("controller_disabled"))
@@ -686,6 +719,34 @@ namespace GHelper.Ally
                 }
 
             });
+        }
+
+        public static void EmitStick(int stick, float x, float y)
+        {
+            byte[] r = new byte[64];
+            r[0] = AsusHid.INPUT_ID;
+            r[1] = 0xD1;
+            r[2] = 0x15;
+            r[3] = (byte)stick;   // 0 = left, 1 = right
+            r[4] = 0x04;
+            r[5] = 0x00;
+
+            short sx = ToInt16(x);
+            short sy = ToInt16(y);
+
+            r[6] = (byte)((sx >> 8) & 0xFF);
+            r[7] = (byte)(sx & 0xFF);
+            r[8] = (byte)((sy >> 8) & 0xFF);
+            r[9] = (byte)(sy & 0xFF);
+
+            AsusHid.WriteInput(r, null);
+        }
+
+        static short ToInt16(float v)
+        {
+            if (v > 1f) v = 1f;
+            if (v < -1f) v = -1f;
+            return v <= -1f ? short.MinValue : (short)(v * 32767f);
         }
 
         private void SetMode(ControllerMode mode, bool init = false)
