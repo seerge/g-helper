@@ -703,6 +703,14 @@ public static class AppConfig
     {
         return ContainsModel("G834JYR") || ContainsModel("G834JZR") || ContainsModel("G634JZR") || ContainsModel("G835LW") || ContainsModel("G835LX") || ContainsModel("G635LW") || ContainsModel("G635LX") || Is("force_miniled");
     }
+
+    public static bool IsKeystone()
+    {
+        return ContainsModel("G531") || ContainsModel("G731") ||
+               ContainsModel("G532") || ContainsModel("G732") ||
+               ContainsModel("G533") || ContainsModel("G733");
+    }
+
     public static bool SaveDimming()
     {
         return Is("save_dimming");
