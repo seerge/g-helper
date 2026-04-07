@@ -181,7 +181,7 @@
     <value>Stav baterie</value>
   </data>
   <data name="AuraBreathe" xml:space="preserve">
-    <value>Dýchání</value>
+    <value>Pulzující</value>
   </data>
   <data name="AuraClockwise" xml:space="preserve">
     <value>Po směru</value>
@@ -301,7 +301,7 @@
     <value>Spouštění</value>
   </data>
   <data name="BootSound" xml:space="preserve">
-    <value>Zvuk při spuštění</value>
+    <value>Přehrát zvuk při spuštění</value>
   </data>
   <data name="Brightness" xml:space="preserve">
     <value>Jas</value>
@@ -417,7 +417,7 @@ Chcete přesto pokračovat?</value>
     <value>Ventilátor</value>
   </data>
   <data name="FansPower" xml:space="preserve">
-    <value>Ventilátory + výkon</value>
+    <value>Vent. + výkon</value>
   </data>
   <data name="FlickerFreeDimming" xml:space="preserve">
     <value>Flicker-free Dimming</value>
@@ -495,7 +495,7 @@ Chcete přesto pokračovat?</value>
     <value>Displej ntb</value>
   </data>
   <data name="LEDStatusIndicators" xml:space="preserve">
-    <value>LED indikátory stavu</value>
+    <value>LED indikátory sdtavu</value>
   </data>
   <data name="Lid" xml:space="preserve">
     <value>Víko</value>
@@ -594,7 +594,7 @@ Chcete přesto pokračovat?</value>
     <value>Vypnut</value>
   </data>
   <data name="MuteMic" xml:space="preserve">
-    <value>Vypnout mikrofon</value>
+    <value>Zap./vyp. mikrofon</value>
   </data>
   <data name="Never" xml:space="preserve">
     <value>Nikdy</value>
@@ -618,7 +618,7 @@ Chcete přesto pokračovat?</value>
     <value>Jedna zóna</value>
   </data>
   <data name="OpenGHelper" xml:space="preserve">
-    <value>Otevřít okno G-Helper</value>
+    <value>Otevřít okno G-Helperu</value>
   </data>
   <data name="Optimized" xml:space="preserve">
     <value>Optimalizovaný</value>
@@ -789,7 +789,7 @@ Chcete přesto pokračovat?</value>
     <value>Snížit hlasitost</value>
   </data>
   <data name="VolumeMute" xml:space="preserve">
-    <value>Ztlumit zvuk</value>
+    <value>Zap./vyp. zvuk</value>
   </data>
   <data name="VolumeUp" xml:space="preserve">
     <value>Zvýšit hlasitost</value>
