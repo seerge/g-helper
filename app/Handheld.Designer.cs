@@ -55,35 +55,38 @@
             labelLS = new Label();
             trackLSMin = new TrackBar();
             labelLSTitle = new Label();
-            buttonReset = new UI.RButton();
+            buttonReset = new GHelper.UI.RButton();
             panelBindings = new Panel();
             panelBinding = new Panel();
             labelBinding = new Label();
             labelSecondary = new Label();
             labelPrimary = new Label();
-            comboSecondary = new UI.RComboBox();
-            comboPrimary = new UI.RComboBox();
-            buttonView = new UI.RButton();
-            buttonLS = new UI.RButton();
-            buttonLT = new UI.RButton();
-            buttonLB = new UI.RButton();
-            buttonDPR = new UI.RButton();
-            buttonDPL = new UI.RButton();
-            buttonDPD = new UI.RButton();
-            buttonDPU = new UI.RButton();
-            buttonM2 = new UI.RButton();
-            buttonM1 = new UI.RButton();
-            buttonRS = new UI.RButton();
-            buttonMenu = new UI.RButton();
-            buttonRT = new UI.RButton();
-            buttonRB = new UI.RButton();
-            buttonB = new UI.RButton();
-            buttonA = new UI.RButton();
-            buttonY = new UI.RButton();
-            buttonX = new UI.RButton();
+            comboSecondary = new GHelper.UI.RComboBox();
+            comboPrimary = new GHelper.UI.RComboBox();
+            labelTurbo = new Label();
+            comboTurboPrimary = new GHelper.UI.RComboBox();
+            comboTurboSecondary = new GHelper.UI.RComboBox();
+            buttonView = new GHelper.UI.RButton();
+            buttonLS = new GHelper.UI.RButton();
+            buttonLT = new GHelper.UI.RButton();
+            buttonLB = new GHelper.UI.RButton();
+            buttonDPR = new GHelper.UI.RButton();
+            buttonDPL = new GHelper.UI.RButton();
+            buttonDPD = new GHelper.UI.RButton();
+            buttonDPU = new GHelper.UI.RButton();
+            buttonM2 = new GHelper.UI.RButton();
+            buttonM1 = new GHelper.UI.RButton();
+            buttonRS = new GHelper.UI.RButton();
+            buttonMenu = new GHelper.UI.RButton();
+            buttonRT = new GHelper.UI.RButton();
+            buttonRB = new GHelper.UI.RButton();
+            buttonB = new GHelper.UI.RButton();
+            buttonA = new GHelper.UI.RButton();
+            buttonY = new GHelper.UI.RButton();
+            buttonX = new GHelper.UI.RButton();
             pictureAlly = new PictureBox();
             panelVibra = new Panel();
-            checkController = new UI.RCheckBox();
+            checkController = new GHelper.UI.RCheckBox();
             pictureBox5 = new PictureBox();
             labelVibra = new Label();
             labelVibraTitle = new Label();
@@ -122,7 +125,7 @@
             panelDeadzones.Dock = DockStyle.Top;
             panelDeadzones.Location = new Point(10, 527);
             panelDeadzones.Name = "panelDeadzones";
-            panelDeadzones.Size = new Size(1123, 258);
+            panelDeadzones.Size = new Size(1200, 258);
             panelDeadzones.TabIndex = 0;
             // 
             // panelRight
@@ -131,10 +134,10 @@
             panelRight.Controls.Add(panelRT);
             panelRight.Controls.Add(panelRS);
             panelRight.Dock = DockStyle.Left;
-            panelRight.Location = new Point(560, 0);
-            panelRight.MinimumSize = new Size(560, 0);
+            panelRight.Location = new Point(600, 0);
+            panelRight.MinimumSize = new Size(600, 0);
             panelRight.Name = "panelRight";
-            panelRight.Size = new Size(560, 258);
+            panelRight.Size = new Size(600, 258);
             panelRight.TabIndex = 48;
             // 
             // panelRT
@@ -151,7 +154,7 @@
             panelRT.Margin = new Padding(4);
             panelRT.MaximumSize = new Size(0, 124);
             panelRT.Name = "panelRT";
-            panelRT.Size = new Size(560, 124);
+            panelRT.Size = new Size(600, 124);
             panelRT.TabIndex = 51;
             // 
             // pictureBox4
@@ -169,13 +172,13 @@
             // 
             // trackRTMax
             // 
-            trackRTMax.Location = new Point(272, 48);
+            trackRTMax.Location = new Point(294, 48);
             trackRTMax.Margin = new Padding(4, 2, 4, 2);
             trackRTMax.Maximum = 100;
             trackRTMax.Minimum = 50;
             trackRTMax.Name = "trackRTMax";
             trackRTMax.RightToLeft = RightToLeft.No;
-            trackRTMax.Size = new Size(280, 90);
+            trackRTMax.Size = new Size(300, 90);
             trackRTMax.TabIndex = 30;
             trackRTMax.TickFrequency = 5;
             trackRTMax.TickStyle = TickStyle.TopLeft;
@@ -183,8 +186,8 @@
             // 
             // labelRT
             // 
-            labelRT.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            labelRT.Location = new Point(363, 13);
+            labelRT.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            labelRT.Location = new Point(402, 13);
             labelRT.Margin = new Padding(4, 0, 4, 0);
             labelRT.Name = "labelRT";
             labelRT.Size = new Size(176, 32);
@@ -195,12 +198,12 @@
             // trackRTMin
             // 
             trackRTMin.LargeChange = 100;
-            trackRTMin.Location = new Point(6, 48);
+            trackRTMin.Location = new Point(5, 48);
             trackRTMin.Margin = new Padding(4, 2, 4, 2);
             trackRTMin.Maximum = 50;
             trackRTMin.Name = "trackRTMin";
             trackRTMin.RightToLeft = RightToLeft.No;
-            trackRTMin.Size = new Size(280, 90);
+            trackRTMin.Size = new Size(300, 90);
             trackRTMin.SmallChange = 10;
             trackRTMin.TabIndex = 18;
             trackRTMin.TickFrequency = 5;
@@ -230,7 +233,7 @@
             panelRS.Margin = new Padding(4);
             panelRS.MaximumSize = new Size(0, 124);
             panelRS.Name = "panelRS";
-            panelRS.Size = new Size(560, 124);
+            panelRS.Size = new Size(600, 124);
             panelRS.TabIndex = 50;
             // 
             // pictureBox1
@@ -248,13 +251,13 @@
             // 
             // trackRSMax
             // 
-            trackRSMax.Location = new Point(272, 48);
+            trackRSMax.Location = new Point(294, 48);
             trackRSMax.Margin = new Padding(4, 2, 4, 2);
             trackRSMax.Maximum = 100;
             trackRSMax.Minimum = 50;
             trackRSMax.Name = "trackRSMax";
             trackRSMax.RightToLeft = RightToLeft.No;
-            trackRSMax.Size = new Size(280, 90);
+            trackRSMax.Size = new Size(300, 90);
             trackRSMax.TabIndex = 30;
             trackRSMax.TickFrequency = 5;
             trackRSMax.TickStyle = TickStyle.TopLeft;
@@ -262,8 +265,8 @@
             // 
             // labelRS
             // 
-            labelRS.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            labelRS.Location = new Point(363, 13);
+            labelRS.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            labelRS.Location = new Point(402, 13);
             labelRS.Margin = new Padding(4, 0, 4, 0);
             labelRS.Name = "labelRS";
             labelRS.Size = new Size(176, 32);
@@ -274,12 +277,12 @@
             // trackRSMin
             // 
             trackRSMin.LargeChange = 100;
-            trackRSMin.Location = new Point(6, 48);
+            trackRSMin.Location = new Point(5, 48);
             trackRSMin.Margin = new Padding(4, 2, 4, 2);
             trackRSMin.Maximum = 50;
             trackRSMin.Name = "trackRSMin";
             trackRSMin.RightToLeft = RightToLeft.No;
-            trackRSMin.Size = new Size(280, 90);
+            trackRSMin.Size = new Size(300, 90);
             trackRSMin.SmallChange = 10;
             trackRSMin.TabIndex = 18;
             trackRSMin.TickFrequency = 5;
@@ -303,10 +306,10 @@
             panelLeft.Dock = DockStyle.Left;
             panelLeft.Location = new Point(0, 0);
             panelLeft.Margin = new Padding(4);
-            panelLeft.MinimumSize = new Size(560, 0);
+            panelLeft.MinimumSize = new Size(600, 0);
             panelLeft.Name = "panelLeft";
             panelLeft.Padding = new Padding(0, 0, 0, 18);
-            panelLeft.Size = new Size(560, 258);
+            panelLeft.Size = new Size(600, 258);
             panelLeft.TabIndex = 47;
             // 
             // panelLT
@@ -323,7 +326,7 @@
             panelLT.Margin = new Padding(4);
             panelLT.MaximumSize = new Size(0, 124);
             panelLT.Name = "panelLT";
-            panelLT.Size = new Size(560, 124);
+            panelLT.Size = new Size(600, 124);
             panelLT.TabIndex = 51;
             // 
             // pictureBox2
@@ -341,13 +344,13 @@
             // 
             // trackLTMax
             // 
-            trackLTMax.Location = new Point(272, 48);
+            trackLTMax.Location = new Point(295, 48);
             trackLTMax.Margin = new Padding(4, 2, 4, 2);
             trackLTMax.Maximum = 100;
             trackLTMax.Minimum = 50;
             trackLTMax.Name = "trackLTMax";
             trackLTMax.RightToLeft = RightToLeft.No;
-            trackLTMax.Size = new Size(280, 90);
+            trackLTMax.Size = new Size(300, 90);
             trackLTMax.TabIndex = 30;
             trackLTMax.TickFrequency = 5;
             trackLTMax.TickStyle = TickStyle.TopLeft;
@@ -355,8 +358,8 @@
             // 
             // labelLT
             // 
-            labelLT.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            labelLT.Location = new Point(363, 13);
+            labelLT.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            labelLT.Location = new Point(402, 13);
             labelLT.Margin = new Padding(4, 0, 4, 0);
             labelLT.Name = "labelLT";
             labelLT.Size = new Size(176, 32);
@@ -367,12 +370,12 @@
             // trackLTMin
             // 
             trackLTMin.LargeChange = 100;
-            trackLTMin.Location = new Point(6, 48);
+            trackLTMin.Location = new Point(5, 48);
             trackLTMin.Margin = new Padding(4, 2, 4, 2);
             trackLTMin.Maximum = 50;
             trackLTMin.Name = "trackLTMin";
             trackLTMin.RightToLeft = RightToLeft.No;
-            trackLTMin.Size = new Size(280, 90);
+            trackLTMin.Size = new Size(300, 90);
             trackLTMin.SmallChange = 10;
             trackLTMin.TabIndex = 18;
             trackLTMin.TickFrequency = 5;
@@ -402,7 +405,7 @@
             panelLS.Margin = new Padding(4);
             panelLS.MaximumSize = new Size(0, 124);
             panelLS.Name = "panelLS";
-            panelLS.Size = new Size(560, 124);
+            panelLS.Size = new Size(600, 124);
             panelLS.TabIndex = 48;
             // 
             // pictureBox3
@@ -420,13 +423,13 @@
             // 
             // trackLSMax
             // 
-            trackLSMax.Location = new Point(272, 48);
+            trackLSMax.Location = new Point(295, 48);
             trackLSMax.Margin = new Padding(4, 2, 4, 2);
             trackLSMax.Maximum = 100;
             trackLSMax.Minimum = 50;
             trackLSMax.Name = "trackLSMax";
             trackLSMax.RightToLeft = RightToLeft.No;
-            trackLSMax.Size = new Size(280, 90);
+            trackLSMax.Size = new Size(300, 90);
             trackLSMax.TabIndex = 30;
             trackLSMax.TickFrequency = 5;
             trackLSMax.TickStyle = TickStyle.TopLeft;
@@ -434,8 +437,8 @@
             // 
             // labelLS
             // 
-            labelLS.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            labelLS.Location = new Point(363, 13);
+            labelLS.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            labelLS.Location = new Point(402, 13);
             labelLS.Margin = new Padding(4, 0, 4, 0);
             labelLS.Name = "labelLS";
             labelLS.Size = new Size(176, 32);
@@ -446,12 +449,12 @@
             // trackLSMin
             // 
             trackLSMin.LargeChange = 100;
-            trackLSMin.Location = new Point(6, 48);
+            trackLSMin.Location = new Point(5, 48);
             trackLSMin.Margin = new Padding(4, 2, 4, 2);
             trackLSMin.Maximum = 50;
             trackLSMin.Name = "trackLSMin";
             trackLSMin.RightToLeft = RightToLeft.No;
-            trackLSMin.Size = new Size(280, 90);
+            trackLSMin.Size = new Size(300, 90);
             trackLSMin.SmallChange = 10;
             trackLSMin.TabIndex = 18;
             trackLSMin.TickFrequency = 5;
@@ -475,7 +478,7 @@
             buttonReset.BorderColor = Color.Transparent;
             buttonReset.BorderRadius = 2;
             buttonReset.FlatStyle = FlatStyle.Flat;
-            buttonReset.Location = new Point(944, 39);
+            buttonReset.Location = new Point(1011, 38);
             buttonReset.Margin = new Padding(4, 2, 4, 2);
             buttonReset.Name = "buttonReset";
             buttonReset.Secondary = true;
@@ -509,7 +512,7 @@
             panelBindings.Dock = DockStyle.Top;
             panelBindings.Location = new Point(10, 10);
             panelBindings.Name = "panelBindings";
-            panelBindings.Size = new Size(1123, 517);
+            panelBindings.Size = new Size(1200, 517);
             panelBindings.TabIndex = 1;
             // 
             // panelBinding
@@ -519,17 +522,20 @@
             panelBinding.Controls.Add(labelPrimary);
             panelBinding.Controls.Add(comboSecondary);
             panelBinding.Controls.Add(comboPrimary);
-            panelBinding.Location = new Point(372, 174);
+            panelBinding.Controls.Add(labelTurbo);
+            panelBinding.Controls.Add(comboTurboPrimary);
+            panelBinding.Controls.Add(comboTurboSecondary);
+            panelBinding.Location = new Point(363, 160);
             panelBinding.Name = "panelBinding";
-            panelBinding.Size = new Size(400, 186);
+            panelBinding.Size = new Size(483, 203);
             panelBinding.TabIndex = 37;
             panelBinding.Visible = false;
             // 
             // labelBinding
             // 
             labelBinding.AutoSize = true;
-            labelBinding.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            labelBinding.Location = new Point(2, 11);
+            labelBinding.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            labelBinding.Location = new Point(10, 15);
             labelBinding.Name = "labelBinding";
             labelBinding.Size = new Size(183, 32);
             labelBinding.TabIndex = 31;
@@ -538,7 +544,7 @@
             // labelSecondary
             // 
             labelSecondary.AutoSize = true;
-            labelSecondary.Location = new Point(2, 122);
+            labelSecondary.Location = new Point(8, 123);
             labelSecondary.Name = "labelSecondary";
             labelSecondary.Size = new Size(125, 32);
             labelSecondary.TabIndex = 30;
@@ -547,7 +553,7 @@
             // labelPrimary
             // 
             labelPrimary.AutoSize = true;
-            labelPrimary.Location = new Point(2, 63);
+            labelPrimary.Location = new Point(8, 65);
             labelPrimary.Name = "labelPrimary";
             labelPrimary.Size = new Size(94, 32);
             labelPrimary.TabIndex = 29;
@@ -558,13 +564,13 @@
             comboSecondary.BorderColor = Color.White;
             comboSecondary.ButtonColor = Color.FromArgb(255, 255, 255);
             comboSecondary.FlatStyle = FlatStyle.Flat;
-            comboSecondary.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            comboSecondary.Font = new Font("Segoe UI", 9F);
             comboSecondary.FormattingEnabled = true;
             comboSecondary.ItemHeight = 32;
-            comboSecondary.Location = new Point(133, 121);
+            comboSecondary.Location = new Point(138, 121);
             comboSecondary.Margin = new Padding(4, 11, 4, 8);
             comboSecondary.Name = "comboSecondary";
-            comboSecondary.Size = new Size(254, 40);
+            comboSecondary.Size = new Size(232, 40);
             comboSecondary.TabIndex = 28;
             // 
             // comboPrimary
@@ -572,14 +578,51 @@
             comboPrimary.BorderColor = Color.White;
             comboPrimary.ButtonColor = Color.FromArgb(255, 255, 255);
             comboPrimary.FlatStyle = FlatStyle.Flat;
-            comboPrimary.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            comboPrimary.Font = new Font("Segoe UI", 9F);
             comboPrimary.FormattingEnabled = true;
             comboPrimary.ItemHeight = 32;
-            comboPrimary.Location = new Point(133, 60);
+            comboPrimary.Location = new Point(138, 60);
             comboPrimary.Margin = new Padding(4, 11, 4, 8);
             comboPrimary.Name = "comboPrimary";
-            comboPrimary.Size = new Size(254, 40);
+            comboPrimary.Size = new Size(232, 40);
             comboPrimary.TabIndex = 27;
+            // 
+            // labelTurbo
+            // 
+            labelTurbo.AutoSize = true;
+            labelTurbo.Location = new Point(378, 15);
+            labelTurbo.Name = "labelTurbo";
+            labelTurbo.Size = new Size(77, 32);
+            labelTurbo.TabIndex = 35;
+            labelTurbo.Text = "Turbo";
+            // 
+            // comboTurboPrimary
+            // 
+            comboTurboPrimary.BorderColor = Color.White;
+            comboTurboPrimary.ButtonColor = Color.FromArgb(255, 255, 255);
+            comboTurboPrimary.FlatStyle = FlatStyle.Flat;
+            comboTurboPrimary.Font = new Font("Segoe UI", 9F);
+            comboTurboPrimary.FormattingEnabled = true;
+            comboTurboPrimary.ItemHeight = 32;
+            comboTurboPrimary.Location = new Point(378, 60);
+            comboTurboPrimary.Margin = new Padding(4, 11, 4, 8);
+            comboTurboPrimary.Name = "comboTurboPrimary";
+            comboTurboPrimary.Size = new Size(90, 40);
+            comboTurboPrimary.TabIndex = 36;
+            // 
+            // comboTurboSecondary
+            // 
+            comboTurboSecondary.BorderColor = Color.White;
+            comboTurboSecondary.ButtonColor = Color.FromArgb(255, 255, 255);
+            comboTurboSecondary.FlatStyle = FlatStyle.Flat;
+            comboTurboSecondary.Font = new Font("Segoe UI", 9F);
+            comboTurboSecondary.FormattingEnabled = true;
+            comboTurboSecondary.ItemHeight = 32;
+            comboTurboSecondary.Location = new Point(378, 121);
+            comboTurboSecondary.Margin = new Padding(4, 11, 4, 8);
+            comboTurboSecondary.Name = "comboTurboSecondary";
+            comboTurboSecondary.Size = new Size(90, 40);
+            comboTurboSecondary.TabIndex = 37;
             // 
             // buttonView
             // 
@@ -771,7 +814,7 @@
             buttonM1.FlatStyle = FlatStyle.Flat;
             buttonM1.ForeColor = SystemColors.ControlText;
             buttonM1.ImageAlign = ContentAlignment.MiddleRight;
-            buttonM1.Location = new Point(650, 26);
+            buttonM1.Location = new Point(717, 26);
             buttonM1.Margin = new Padding(4);
             buttonM1.Name = "buttonM1";
             buttonM1.Secondary = true;
@@ -791,7 +834,7 @@
             buttonRS.FlatStyle = FlatStyle.Flat;
             buttonRS.ForeColor = SystemColors.ControlText;
             buttonRS.ImageAlign = ContentAlignment.MiddleRight;
-            buttonRS.Location = new Point(962, 403);
+            buttonRS.Location = new Point(1029, 403);
             buttonRS.Margin = new Padding(4);
             buttonRS.Name = "buttonRS";
             buttonRS.Secondary = true;
@@ -811,7 +854,7 @@
             buttonMenu.FlatStyle = FlatStyle.Flat;
             buttonMenu.ForeColor = SystemColors.ControlText;
             buttonMenu.ImageAlign = ContentAlignment.MiddleRight;
-            buttonMenu.Location = new Point(805, 26);
+            buttonMenu.Location = new Point(872, 26);
             buttonMenu.Margin = new Padding(4);
             buttonMenu.Name = "buttonMenu";
             buttonMenu.Secondary = true;
@@ -831,7 +874,7 @@
             buttonRT.FlatStyle = FlatStyle.Flat;
             buttonRT.ForeColor = SystemColors.ControlText;
             buttonRT.ImageAlign = ContentAlignment.MiddleRight;
-            buttonRT.Location = new Point(962, 88);
+            buttonRT.Location = new Point(1029, 88);
             buttonRT.Margin = new Padding(4);
             buttonRT.Name = "buttonRT";
             buttonRT.Secondary = true;
@@ -851,7 +894,7 @@
             buttonRB.FlatStyle = FlatStyle.Flat;
             buttonRB.ForeColor = SystemColors.ControlText;
             buttonRB.ImageAlign = ContentAlignment.MiddleRight;
-            buttonRB.Location = new Point(962, 25);
+            buttonRB.Location = new Point(1029, 25);
             buttonRB.Margin = new Padding(4);
             buttonRB.Name = "buttonRB";
             buttonRB.Secondary = true;
@@ -871,7 +914,7 @@
             buttonB.FlatStyle = FlatStyle.Flat;
             buttonB.ForeColor = SystemColors.ControlText;
             buttonB.ImageAlign = ContentAlignment.MiddleRight;
-            buttonB.Location = new Point(962, 340);
+            buttonB.Location = new Point(1029, 340);
             buttonB.Margin = new Padding(4);
             buttonB.Name = "buttonB";
             buttonB.Secondary = true;
@@ -891,7 +934,7 @@
             buttonA.FlatStyle = FlatStyle.Flat;
             buttonA.ForeColor = SystemColors.ControlText;
             buttonA.ImageAlign = ContentAlignment.MiddleRight;
-            buttonA.Location = new Point(962, 277);
+            buttonA.Location = new Point(1029, 277);
             buttonA.Margin = new Padding(4);
             buttonA.Name = "buttonA";
             buttonA.Secondary = true;
@@ -911,7 +954,7 @@
             buttonY.FlatStyle = FlatStyle.Flat;
             buttonY.ForeColor = SystemColors.ControlText;
             buttonY.ImageAlign = ContentAlignment.MiddleRight;
-            buttonY.Location = new Point(962, 214);
+            buttonY.Location = new Point(1029, 214);
             buttonY.Margin = new Padding(4);
             buttonY.Name = "buttonY";
             buttonY.Secondary = true;
@@ -931,7 +974,7 @@
             buttonX.FlatStyle = FlatStyle.Flat;
             buttonX.ForeColor = SystemColors.ControlText;
             buttonX.ImageAlign = ContentAlignment.MiddleRight;
-            buttonX.Location = new Point(962, 151);
+            buttonX.Location = new Point(1029, 151);
             buttonX.Margin = new Padding(4);
             buttonX.Name = "buttonX";
             buttonX.Secondary = true;
@@ -947,7 +990,7 @@
             pictureAlly.BackgroundImageLayout = ImageLayout.Zoom;
             pictureAlly.Location = new Point(185, 97);
             pictureAlly.Name = "pictureAlly";
-            pictureAlly.Size = new Size(767, 354);
+            pictureAlly.Size = new Size(834, 354);
             pictureAlly.TabIndex = 0;
             pictureAlly.TabStop = false;
             // 
@@ -966,7 +1009,7 @@
             panelVibra.Margin = new Padding(4);
             panelVibra.MaximumSize = new Size(0, 124);
             panelVibra.Name = "panelVibra";
-            panelVibra.Size = new Size(1123, 124);
+            panelVibra.Size = new Size(1200, 124);
             panelVibra.TabIndex = 47;
             // 
             // checkController
@@ -974,7 +1017,7 @@
             checkController.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             checkController.AutoSize = true;
             checkController.BackColor = SystemColors.ControlLight;
-            checkController.Location = new Point(650, 41);
+            checkController.Location = new Point(717, 40);
             checkController.Margin = new Padding(0);
             checkController.Name = "checkController";
             checkController.Padding = new Padding(16, 6, 16, 6);
@@ -998,7 +1041,7 @@
             // 
             // labelVibra
             // 
-            labelVibra.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            labelVibra.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             labelVibra.Location = new Point(408, 14);
             labelVibra.Margin = new Padding(4, 0, 4, 0);
             labelVibra.Name = "labelVibra";
@@ -1023,7 +1066,7 @@
             trackVibra.Margin = new Padding(4, 2, 4, 2);
             trackVibra.Maximum = 100;
             trackVibra.Name = "trackVibra";
-            trackVibra.Size = new Size(546, 90);
+            trackVibra.Size = new Size(589, 90);
             trackVibra.TabIndex = 42;
             trackVibra.TickFrequency = 5;
             trackVibra.TickStyle = TickStyle.TopLeft;
@@ -1034,7 +1077,7 @@
             AutoScaleDimensions = new SizeF(13F, 32F);
             AutoScaleMode = AutoScaleMode.Font;
             AutoSize = true;
-            ClientSize = new Size(1143, 912);
+            ClientSize = new Size(1220, 912);
             Controls.Add(panelVibra);
             Controls.Add(panelDeadzones);
             Controls.Add(panelBindings);
@@ -1145,5 +1188,8 @@
         private Label labelVibraTitle;
         private TrackBar trackVibra;
         private UI.RCheckBox checkController;
+        private Label labelTurbo;
+        private UI.RComboBox comboTurboPrimary;
+        private UI.RComboBox comboTurboSecondary;
     }
 }
