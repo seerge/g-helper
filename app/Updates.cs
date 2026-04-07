@@ -99,6 +99,7 @@ namespace GHelper
             }
 
             tableLayoutPanel.RowCount = 0;
+            tableLayoutPanel.RowStyles.Clear();
         }
 
         public Updates()
@@ -158,19 +159,19 @@ namespace GHelper
                 {
                     Dictionary<string, string> list = new();
 
-                    foreach (ManagementObject obj in objCollection) if (obj["DriverVersion"] is not null)
-                        {
-                            if (obj["DeviceID"] is not null)
+                    foreach (ManagementObject obj in objCollection) using (obj) if (obj["DriverVersion"] is not null)
                             {
-                                list[obj["DeviceID"].ToString()] = obj["DriverVersion"].ToString();
+                                if (obj["DeviceID"] is not null)
+                                {
+                                    list[obj["DeviceID"].ToString()] = obj["DriverVersion"].ToString();
+                                }
+                                if (obj["DeviceName"] is not null)
+                                {
+                                    var deviceName = obj["DeviceName"].ToString();
+                                    if (deviceName.Contains("DolbyAPO SWC")) list["Dolby"] = obj["DriverVersion"].ToString();
+                                    if (deviceName.Contains("Fortemedia Audio")) list["Fortemedia"] = obj["DriverVersion"].ToString();
+                                }
                             }
-                            if (obj["DeviceName"] is not null)
-                            {
-                                var deviceName = obj["DeviceName"].ToString();
-                                if (deviceName.Contains("DolbyAPO SWC")) list["Dolby"] = obj["DriverVersion"].ToString();
-                                if (deviceName.Contains("Fortemedia Audio")) list["Fortemedia"] = obj["DriverVersion"].ToString();
-                            }
-                        }
                     return list;
                 }
             }
@@ -205,39 +206,27 @@ namespace GHelper
 
         public void VisualiseDriver(DriverDownload driver, TableLayoutPanel table)
         {
-            if (IsDisposed || !IsHandleCreated) return;
-            try
+            if (InvokeRequired)
             {
-                if (InvokeRequired)
-                {
-                    Invoke(delegate
-                    {
-                        _VisualiseDriver(driver, table);
-                    });
-                }
-                else
+                Invoke(delegate
                 {
                     _VisualiseDriver(driver, table);
-                }
+                });
             }
-            catch (ObjectDisposedException) { }
-            catch (InvalidOperationException) { }
+            else
+            {
+                _VisualiseDriver(driver, table);
+            }
         }
 
         public void ShowTable(TableLayoutPanel table)
         {
-            if (IsDisposed || !IsHandleCreated) return;
-            try
+            Invoke(delegate
             {
-                Invoke(delegate
-                {
-                    table.Visible = true;
-                    ResumeLayout(false);
-                    PerformLayout();
-                });
-            }
-            catch (ObjectDisposedException) { }
-            catch (InvalidOperationException) { }
+                table.Visible = true;
+                ResumeLayout(false);
+                PerformLayout();
+            });
         }
 
         private void _VisualiseNewDriver(int position, int newer, string tip, TableLayoutPanel table)
@@ -261,44 +250,32 @@ namespace GHelper
 
         public void VisualiseNewDriver(int position, int newer, string tip, TableLayoutPanel table)
         {
-            if (IsDisposed || !IsHandleCreated) return;
-            try
+            if (InvokeRequired)
             {
-                if (InvokeRequired)
-                {
-                    Invoke(delegate
-                    {
-                        _VisualiseNewDriver(position, newer, tip, table);
-                    });
-                }
-                else
+                Invoke(delegate
                 {
                     _VisualiseNewDriver(position, newer, tip, table);
-                }
+                });
             }
-            catch (ObjectDisposedException) { }
-            catch (InvalidOperationException) { }
+            else
+            {
+                _VisualiseNewDriver(position, newer, tip, table);
+            }
         }
 
         public void VisualiseNewCount(int updatesCount, TableLayoutPanel table)
         {
-            if (IsDisposed || !IsHandleCreated) return;
-            try
+            if (InvokeRequired)
             {
-                if (InvokeRequired)
-                {
-                    Invoke(delegate
-                    {
-                        _VisualiseNewCount(updatesCount, table);
-                    });
-                }
-                else
+                Invoke(delegate
                 {
                     _VisualiseNewCount(updatesCount, table);
-                }
+                });
             }
-            catch (ObjectDisposedException) { }
-            catch (InvalidOperationException) { }
+            else
+            {
+                _VisualiseNewCount(updatesCount, table);
+            }
         }
 
         public void _VisualiseNewCount(int updatesCount, TableLayoutPanel table)
