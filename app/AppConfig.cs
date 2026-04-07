@@ -711,6 +711,11 @@ public static class AppConfig
                ContainsModel("G533") || ContainsModel("G733");
     }
 
+    public static bool IsSleepReset()
+    {
+        return ContainsModel("GU605MI") || ContainsModel("GU605MV");
+    }
+
     public static bool SaveDimming()
     {
         return Is("save_dimming");
