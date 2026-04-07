@@ -22,6 +22,7 @@ namespace GHelper
 
         private readonly Font _boldUnderlineFont;
         private readonly Font _font;
+        private CancellationTokenSource _cts = new();
 
         public struct DriverDownload
         {
@@ -75,12 +76,12 @@ namespace GHelper
             Task.Run(async () =>
             {
                 DriversAsync($"https://rog.asus.com/support/webapi/product/GetPDBIOS?website=global&model={model}&cpu={model}{rogParam}", 1, tableBios);
-            });
+            }, _cts.Token);
 
             Task.Run(async () =>
             {
                 DriversAsync($"https://rog.asus.com/support/webapi/product/GetPDDrivers?website=global&model={model}&cpu={model}&osid=52{rogParam}", 0, tableDrivers);
-            });
+            }, _cts.Token);
 
             Task.Run(async () =>
             {
@@ -116,6 +117,8 @@ namespace GHelper
 
             FormClosed += (s, e) =>
             {
+                _cts.Cancel();
+                _cts.Dispose();
                 // Dispose fonts when form closes
                 _boldUnderlineFont.Dispose();
                 _font.Dispose();
@@ -160,18 +163,18 @@ namespace GHelper
                     Dictionary<string, string> list = new();
 
                     foreach (ManagementObject obj in objCollection) using (obj) if (obj["DriverVersion"] is not null)
+                        {
+                            if (obj["DeviceID"] is not null)
                             {
-                                if (obj["DeviceID"] is not null)
-                                {
-                                    list[obj["DeviceID"].ToString()] = obj["DriverVersion"].ToString();
-                                }
-                                if (obj["DeviceName"] is not null)
-                                {
-                                    var deviceName = obj["DeviceName"].ToString();
-                                    if (deviceName.Contains("DolbyAPO SWC")) list["Dolby"] = obj["DriverVersion"].ToString();
-                                    if (deviceName.Contains("Fortemedia Audio")) list["Fortemedia"] = obj["DriverVersion"].ToString();
-                                }
+                                list[obj["DeviceID"].ToString()] = obj["DriverVersion"].ToString();
                             }
+                            if (obj["DeviceName"] is not null)
+                            {
+                                var deviceName = obj["DeviceName"].ToString();
+                                if (deviceName.Contains("DolbyAPO SWC")) list["Dolby"] = obj["DriverVersion"].ToString();
+                                if (deviceName.Contains("Fortemedia Audio")) list["Fortemedia"] = obj["DriverVersion"].ToString();
+                            }
+                        }
                     return list;
                 }
             }
@@ -375,7 +378,7 @@ namespace GHelper
                         int newer = DRIVER_NOT_FOUND;
                         string tip = driver.version;
 
-                        if (type == 0 && driver.hardwares.ToString().Length > 0)
+                        if (type == 0 && driver.hardwares.GetArrayLength() > 0)
                             for (int k = 0; k < driver.hardwares.GetArrayLength(); k++)
                             {
                                 var deviceID = driver.hardwares[k].GetProperty("hardwareid").ToString();
