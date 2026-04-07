@@ -205,27 +205,39 @@ namespace GHelper
 
         public void VisualiseDriver(DriverDownload driver, TableLayoutPanel table)
         {
-            if (InvokeRequired)
+            if (IsDisposed || !IsHandleCreated) return;
+            try
             {
-                Invoke(delegate
+                if (InvokeRequired)
+                {
+                    Invoke(delegate
+                    {
+                        _VisualiseDriver(driver, table);
+                    });
+                }
+                else
                 {
                     _VisualiseDriver(driver, table);
-                });
+                }
             }
-            else
-            {
-                _VisualiseDriver(driver, table);
-            }
+            catch (ObjectDisposedException) { }
+            catch (InvalidOperationException) { }
         }
 
         public void ShowTable(TableLayoutPanel table)
         {
-            Invoke(delegate
+            if (IsDisposed || !IsHandleCreated) return;
+            try
             {
-                table.Visible = true;
-                ResumeLayout(false);
-                PerformLayout();
-            });
+                Invoke(delegate
+                {
+                    table.Visible = true;
+                    ResumeLayout(false);
+                    PerformLayout();
+                });
+            }
+            catch (ObjectDisposedException) { }
+            catch (InvalidOperationException) { }
         }
 
         private void _VisualiseNewDriver(int position, int newer, string tip, TableLayoutPanel table)
@@ -249,32 +261,44 @@ namespace GHelper
 
         public void VisualiseNewDriver(int position, int newer, string tip, TableLayoutPanel table)
         {
-            if (InvokeRequired)
+            if (IsDisposed || !IsHandleCreated) return;
+            try
             {
-                Invoke(delegate
+                if (InvokeRequired)
+                {
+                    Invoke(delegate
+                    {
+                        _VisualiseNewDriver(position, newer, tip, table);
+                    });
+                }
+                else
                 {
                     _VisualiseNewDriver(position, newer, tip, table);
-                });
+                }
             }
-            else
-            {
-                _VisualiseNewDriver(position, newer, tip, table);
-            }
+            catch (ObjectDisposedException) { }
+            catch (InvalidOperationException) { }
         }
 
         public void VisualiseNewCount(int updatesCount, TableLayoutPanel table)
         {
-            if (InvokeRequired)
+            if (IsDisposed || !IsHandleCreated) return;
+            try
             {
-                Invoke(delegate
+                if (InvokeRequired)
+                {
+                    Invoke(delegate
+                    {
+                        _VisualiseNewCount(updatesCount, table);
+                    });
+                }
+                else
                 {
                     _VisualiseNewCount(updatesCount, table);
-                });
+                }
             }
-            else
-            {
-                _VisualiseNewCount(updatesCount, table);
-            }
+            catch (ObjectDisposedException) { }
+            catch (InvalidOperationException) { }
         }
 
         public void _VisualiseNewCount(int updatesCount, TableLayoutPanel table)
