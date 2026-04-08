@@ -112,12 +112,22 @@ namespace PawnIO
         public bool Initialize(byte[] moduleData)
         {
             if (_init) return true;
-            if (!_io.Connect() || !_io.LoadModule(moduleData)) return false;
+            if (_io.Connect() != PawnIOWrapper.ConnectResult.OK || !_io.LoadModule(moduleData)) return false;
 
             GetCodeName(out _cpu);
             GetSmuVersion(out _smuVer);
             _init = true;
             return true;
+        }
+
+        // Probes whether the PawnIO driver is installed without loading the module.
+        // Returns false only when the device is genuinely absent (not installed).
+        // Returns true when present but access is denied (needs admin) or fully accessible.
+        public static bool IsPawnInstalled()
+        {
+            using var probe = new PawnIOWrapper();
+            var result = probe.Connect();
+            return result != PawnIOWrapper.ConnectResult.NotInstalled;
         }
 
         public bool Initialize(Assembly assembly)

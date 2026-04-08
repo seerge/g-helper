@@ -39,18 +39,26 @@ namespace PawnIO
         public bool IsConnected    => _raw != IntPtr.Zero && _raw.ToInt64() != -1;
         public bool IsModuleLoaded => _loaded && _safe != null && !_safe.IsInvalid;
 
-        public bool Connect()
+        public enum ConnectResult { OK, NotInstalled, AccessDenied, OtherError }
+
+        public ConnectResult Connect()
         {
-            if (IsConnected) return true;
+            if (IsConnected) return ConnectResult.OK;
 
             const string path = @"\\?\GLOBALROOT\Device\PawnIO";
             _raw = CreateFile(path, 0xC0000000u, 0x3, IntPtr.Zero, 3, 0, IntPtr.Zero);
             if (_raw == IntPtr.Zero || _raw.ToInt64() == -1)
             {
+                int err = Marshal.GetLastWin32Error();
                 _raw = IntPtr.Zero;
-                return false;
+                return err switch
+                {
+                    2 or 3 => ConnectResult.NotInstalled,  // ERROR_FILE_NOT_FOUND / ERROR_PATH_NOT_FOUND
+                    5      => ConnectResult.AccessDenied,  // ERROR_ACCESS_DENIED
+                    _      => ConnectResult.OtherError,
+                };
             }
-            return true;
+            return ConnectResult.OK;
         }
 
         public bool LoadModule(byte[] data)

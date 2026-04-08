@@ -37,7 +37,8 @@ namespace GHelper.Mode
             }
         }
 
-        public static bool IsPawnAvailable() => GetSmu() != null;
+        public static bool IsPawnAvailable()  => GetSmu() != null;
+        public static bool IsPawnInstalled()   => RyzenSmuService.IsPawnInstalled();
 
         static System.Timers.Timer reapplyTimer = default!;
         static System.Timers.Timer modeToggleTimer = default!;

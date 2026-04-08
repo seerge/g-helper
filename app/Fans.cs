@@ -400,10 +400,12 @@ namespace GHelper
         private void VisualiseAdvanced()
         {
             bool available = ModeControl.IsPawnAvailable();
-            panelPawnIO.Visible  = available;
-            panelDownload.Visible = !available;
+            bool installed = available || ModeControl.IsPawnInstalled();
 
-            if (available)
+            panelPawnIO.Visible   = installed;
+            panelDownload.Visible = !installed;
+
+            if (installed)
             {
                 panelTitleAdvanced.Visible = CpuInfo.IsSupportedUV();
                 labelRisky.Visible         = CpuInfo.IsSupportedUV();
@@ -411,10 +413,10 @@ namespace GHelper
                 panelUViGPU.Visible        = CpuInfo.IsSupportedUViGPU();
             }
 
-            labelUV.Text    = trackUV.Value.ToString();
+            labelUV.Text     = trackUV.Value.ToString();
             labelUViGPU.Text = trackUViGPU.Value.ToString();
 
-            labelTemp.Text = (trackTemp.Value < CpuInfo.MaxTemp) ? trackTemp.Value.ToString() + "°C" : "Default";
+            labelTemp.Text = (trackTemp.Value < CpuInfo.MaxTemp) ? trackTemp.Value.ToString() + "\u00b0C" : "Default";
         }
 
         private void AdvancedScroll()
