@@ -1,4 +1,4 @@
-﻿using GHelper.Gpu.NVidia;
+using GHelper.Gpu.NVidia;
 using GHelper.Helpers;
 using GHelper.USB;
 using PawnIO;
@@ -298,7 +298,7 @@ namespace GHelper.Mode
         {
 
             bool allAMD = Program.acpi.IsAllAmdPPT();
-            bool isAMD = CpuInfo.IsAMD();
+            bool isAMD = CpuInfo.IsAMD;
 
             int limit_total = AppConfig.GetMode("limit_total");
             int limit_cpu = AppConfig.GetMode("limit_cpu");
@@ -425,7 +425,7 @@ namespace GHelper.Mode
                 var smu = GetSmu();
                 if (smu == null) return;
                 SmuStatus status = smu.SetThm((int)cpuTemp);
-                if (init) Logger.WriteLine($"CPU Temp: {cpuTemp}°C {status}");
+                if (init) Logger.WriteLine($"CPU Temp: {cpuTemp}�C {status}");
                 if (status == SmuStatus.OK) customTemp = cpuTemp != CpuInfo.DefaultTemp;
             }
         }
@@ -492,7 +492,7 @@ namespace GHelper.Mode
 
         public void AutoRyzen()
         {
-            if (!CpuInfo.IsAMD()) return;
+            if (!CpuInfo.IsAMD) return;
 
             if (AppConfig.IsMode("auto_uv")) SetRyzen();
             else ResetRyzen();

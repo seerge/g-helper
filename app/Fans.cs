@@ -1,4 +1,4 @@
-ï»¿using GHelper.Fan;
+using GHelper.Fan;
 using GHelper.Gpu.NVidia;
 using GHelper.Mode;
 using GHelper.UI;
@@ -399,7 +399,7 @@ namespace GHelper
 
             VisualiseAdvanced();
 
-            buttonAdvanced.Visible = CpuInfo.IsAMD();
+            buttonAdvanced.Visible = CpuInfo.IsAMD;
 
         }
 
@@ -440,7 +440,7 @@ namespace GHelper
             labelUV.Text = trackUV.Value.ToString();
             labelUViGPU.Text = trackUViGPU.Value.ToString();
 
-            labelTemp.Text = (trackTemp.Value < CpuInfo.MaxTemp) ? trackTemp.Value.ToString() + "Â°C" : "Default";
+            labelTemp.Text = (trackTemp.Value < CpuInfo.MaxTemp) ? trackTemp.Value.ToString() + "°C" : "Default";
         }
 
         private void AdvancedScroll()
@@ -672,7 +672,7 @@ namespace GHelper
             labelGPUMemory.Text = $"{trackGPUMemory.Value} MHz";
 
             labelGPUBoost.Text = $"{trackGPUBoost.Value}W";
-            labelGPUTemp.Text = $"{trackGPUTemp.Value}Â°C";
+            labelGPUTemp.Text = $"{trackGPUTemp.Value}°C";
 
             if (trackGPUClockLimit.Value >= NvidiaGpuControl.MaxClockLimit)
                 labelGPUClockLimit.Text = "Default";
@@ -748,7 +748,7 @@ namespace GHelper
         {
 
             string title = "";
-            string scale = ", RPM/Â°C";
+            string scale = ", RPM/°C";
 
             switch (device)
             {
@@ -917,7 +917,7 @@ namespace GHelper
         public void InitPower()
         {
 
-            bool modeA = Program.acpi.DeviceGet(AsusACPI.PPT_APUA0) >= 0 || CpuInfo.IsAMD();
+            bool modeA = Program.acpi.DeviceGet(AsusACPI.PPT_APUA0) >= 0 || CpuInfo.IsAMD;
             bool modeB0 = Program.acpi.IsAllAmdPPT();
             bool modeC1 = Program.acpi.DeviceGet(AsusACPI.PPT_APUC1) >= 0;
 
@@ -939,7 +939,7 @@ namespace GHelper
             {
                 panelSlow.Visible = modeA;
 
-                if (CpuInfo.IsAMD())
+                if (CpuInfo.IsAMD)
                 {
                     labelLeftTotal.Text = "SPL (CPU sustained)";
                     labelLeftSlow.Text = "sPPT (CPU long boost)";

@@ -1,4 +1,4 @@
-﻿using Microsoft.Win32;
+using Microsoft.Win32;
 using PawnIO;
 using System.Diagnostics;
 
@@ -42,7 +42,7 @@ public static class AmdDisplay
 
     public static bool IsOledPowerOptimization()
     {
-        if (!AppConfig.IsOLED() || !CpuInfo.IsAMD()) return false;
+        if (!AppConfig.IsOLED() || !CpuInfo.IsAMD) return false;
 
         try
         {

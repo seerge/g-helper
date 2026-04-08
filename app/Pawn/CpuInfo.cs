@@ -1,5 +1,6 @@
 using System;
 using System.Management;
+using System.Runtime.Intrinsics.X86;
 using System.Threading;
 
 namespace PawnIO
@@ -9,8 +10,18 @@ namespace PawnIO
     // Does not require administrator rights.
     public static class CpuInfo
     {
-        private static string? _name;
-        private static string? _caption;
+        // Vendor check via CPUID leaf 0 — single CPU instruction, no I/O, no WMI.
+        // AMD always reports "AuthenticAMD" in ebx/edx/ecx.
+        public static readonly bool IsAMD = DetectAMD();
+
+        private static bool DetectAMD()
+        {
+            if (!X86Base.IsSupported) return false;
+            var (_, ebx, ecx, edx) = X86Base.CpuId(0, 0);
+            // "Auth" = ebx, "enti" = edx, "cAMD" = ecx
+            return ebx == 0x68747541u && edx == 0x69746E65u && ecx == 0x444D4163u;
+        }
+
         private static readonly Lazy<(string Name, string Caption)> _data =
             new Lazy<(string, string)>(Load, LazyThreadSafetyMode.ExecutionAndPublication);
 
@@ -26,12 +37,6 @@ namespace PawnIO
         public static int MinTemp    => AppConfig.Get("min_temp",      75);
         public const  int MaxTemp    = 98;
         public const  int DefaultTemp= 96;
-
-        public static bool IsAMD()
-            => Name.Contains("AMD")    ||
-               Name.Contains("Ryzen") ||
-               Name.Contains("Athlon") ||
-               Name.Contains("Radeon");
 
         public static bool IsSupportedUV()
             => Name.Contains("RYZEN AI MAX") ||

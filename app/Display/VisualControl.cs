@@ -1,4 +1,4 @@
-﻿using GHelper.Helpers;
+using GHelper.Helpers;
 using Microsoft.Win32;
 using PawnIO;
 using System.Management;
@@ -279,7 +279,7 @@ namespace GHelper.Display
 
             if (mode == SplendidCommand.None) return;
             if ((mode == SplendidCommand.Default || mode == SplendidCommand.VivoNormal) && whiteBalance == DefaultColorTemp && init) return; // Skip default setting on init
-            if (mode == SplendidCommand.Disabled && !CpuInfo.IsAMD() && init) return; // Skip disabled setting for Intel devices
+            if (mode == SplendidCommand.Disabled && !CpuInfo.IsAMD && init) return; // Skip disabled setting for Intel devices
 
             AppConfig.Set("visual", (int)mode);
             AppConfig.Set("color_temp", whiteBalance);
