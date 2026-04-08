@@ -240,6 +240,7 @@ namespace GHelper
             if (Program.acpi.DeviceGet(AsusACPI.DevsCPUFanCurve) < 0) buttonCalibrate.Visible = false;
 
             FormClosed += Fans_FormClosed;
+            Activated  += (_, _) => VisualiseAdvanced();
 
         }
 
@@ -251,16 +252,7 @@ namespace GHelper
 
         private void ButtonDownload_Click(object? sender, EventArgs e)
         {
-            panelAdvancedAlways.Visible = true;
-            panelAdvancedApply.Visible = true;
-            labelRisky.Visible = true;
-            panelUViGPU.Visible = true;
-            panelUV.Visible = true;
-            panelTitleAdvanced.Visible = true;
-            panelTemperature.Visible = true;
-            panelTitleTemp.Visible = true;
-
-            VisualiseAdvanced();
+            Process.Start(new ProcessStartInfo("https://pawnio.eu/") { UseShellExecute = true });
         }
 
         private void ButtonCalibrate_Click(object? sender, EventArgs e)
@@ -405,39 +397,19 @@ namespace GHelper
 
         private void VisualiseAdvanced()
         {
+            bool available = ModeControl.IsPawnAvailable();
+            panelPawnIO.Visible  = available;
+            panelDownload.Visible = !available;
 
-            if (!ModeControl.IsPawnAvailable())
+            if (available)
             {
-                panelTitleAdvanced.Visible = false;
-                labelRisky.Visible = false;
-                panelUV.Visible = false;
-                panelUViGPU.Visible = false;
-                panelTitleTemp.Visible = false;
-                panelTemperature.Visible = false;
-                panelAdvancedAlways.Visible = false;
-                panelAdvancedApply.Visible = false;
-                panelDownload.Visible = true;
-
-            }
-            else
-            {
-                panelDownload.Visible = false;
+                panelTitleAdvanced.Visible = CpuInfo.IsSupportedUV();
+                labelRisky.Visible         = CpuInfo.IsSupportedUV();
+                panelUV.Visible            = CpuInfo.IsSupportedUV();
+                panelUViGPU.Visible        = CpuInfo.IsSupportedUViGPU();
             }
 
-            if (!CpuInfo.IsSupportedUV())
-            {
-                panelTitleAdvanced.Visible = false;
-                labelRisky.Visible = false;
-                panelUV.Visible = false;
-                panelUViGPU.Visible = false;
-            }
-
-            if (!CpuInfo.IsSupportedUViGPU())
-            {
-                panelUViGPU.Visible = false;
-            }
-
-            labelUV.Text = trackUV.Value.ToString();
+            labelUV.Text    = trackUV.Value.ToString();
             labelUViGPU.Text = trackUViGPU.Value.ToString();
 
             labelTemp.Text = (trackTemp.Value < CpuInfo.MaxTemp) ? trackTemp.Value.ToString() + "°C" : "Default";
