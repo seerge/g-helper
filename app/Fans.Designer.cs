@@ -68,6 +68,7 @@ namespace GHelper
             checkApplyUV = new RCheckBox();
             panelAdvancedApply = new Panel();
             buttonApplyAdvanced = new RButton();
+            labelSmuResult = new Label();
             labelRisky = new Label();
             panelUViGPU = new Panel();
             labelUViGPU = new Label();
@@ -577,6 +578,7 @@ namespace GHelper
             // panelAdvancedAlways
             // 
             panelAdvancedAlways.AutoSize = true;
+            panelAdvancedAlways.Controls.Add(labelSmuResult);
             panelAdvancedAlways.Controls.Add(checkApplyUV);
             panelAdvancedAlways.Dock = DockStyle.Top;
             panelAdvancedAlways.Location = new Point(0, 931);
@@ -628,6 +630,16 @@ namespace GHelper
             buttonApplyAdvanced.Text = "Apply";
             buttonApplyAdvanced.TextImageRelation = TextImageRelation.ImageBeforeText;
             buttonApplyAdvanced.UseVisualStyleBackColor = false;
+            // 
+            // labelSmuResult
+            // 
+            labelSmuResult.AutoSize = true;
+            labelSmuResult.Dock = DockStyle.Top;
+            labelSmuResult.Name = "labelSmuResult";
+            labelSmuResult.Padding = new Padding(16, 6, 16, 6);
+            labelSmuResult.TabIndex = 50;
+            labelSmuResult.Text = "";
+            labelSmuResult.Visible = false;
             // 
             // labelRisky
             // 
@@ -1898,6 +1910,7 @@ namespace GHelper
         private PictureBox pictureUV;
         private Label labelTitleUV;
         private RButton buttonApplyAdvanced;
+        private Label labelSmuResult;
         private Panel panelApplyPower;
         private Panel panelAdvanced;
         private Panel panelAdvancedApply;

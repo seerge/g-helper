@@ -368,8 +368,10 @@ namespace GHelper
 
         private void ButtonApplyAdvanced_Click(object? sender, EventArgs e)
         {
-            modeControl.SetRyzen(true);
+            string result = modeControl.SetRyzen(true);
             checkApplyUV.Enabled = true;
+            labelSmuResult.Text    = result;
+            labelSmuResult.Visible = result.Length > 0;
         }
 
         public void InitUV()

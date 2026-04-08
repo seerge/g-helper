@@ -458,22 +458,47 @@ namespace GHelper.Mode
             }
         }
 
-        public void SetRyzen(bool launchAsAdmin = false)
+        public string SetRyzen(bool launchAsAdmin = false)
         {
             if (!ProcessHelper.IsUserAdministrator())
             {
                 if (launchAsAdmin) ProcessHelper.RunAsAdmin("uv");
-                return;
+                return string.Empty;
             }
 
             var smu = GetSmu();
-            if (smu == null) return;
+            if (smu == null) return string.Empty;
 
+            var lines = new System.Text.StringBuilder();
             try
             {
-                SetUV(AppConfig.GetMode("cpu_uv", 0));
-                SetUViGPU(AppConfig.GetMode("igpu_uv", 0));
-                SetCPUTemp(AppConfig.GetMode("cpu_temp"), true);
+                int cpuUV   = AppConfig.GetMode("cpu_uv",   0);
+                int igpuUV  = AppConfig.GetMode("igpu_uv",  0);
+                int cpuTemp = AppConfig.GetMode("cpu_temp");
+
+                if (CpuInfo.IsSupportedUV() && cpuUV >= CpuInfo.MinCPUUV && cpuUV <= CpuInfo.MaxCPUUV)
+                {
+                    SmuStatus s = smu.SetCoAll(cpuUV);
+                    Logger.WriteLine($"UV: {cpuUV} {s}");
+                    if (s == SmuStatus.OK) _cpuUV = cpuUV;
+                    lines.AppendLine($"CPU UV {cpuUV}: {s}");
+                }
+
+                if (CpuInfo.IsSupportedUViGPU() && igpuUV >= CpuInfo.MinIGPUUV && igpuUV <= CpuInfo.MaxIGPUUV)
+                {
+                    SmuStatus s = smu.SetCoGfx(igpuUV);
+                    Logger.WriteLine($"iGPU UV: {igpuUV} {s}");
+                    if (s == SmuStatus.OK) _igpuUV = igpuUV;
+                    lines.AppendLine($"iGPU UV {igpuUV}: {s}");
+                }
+
+                if (cpuTemp >= CpuInfo.MinTemp && cpuTemp < CpuInfo.MaxTemp)
+                {
+                    SmuStatus s = smu.SetThm(cpuTemp);
+                    Logger.WriteLine($"CPU Temp: {cpuTemp}°C {s}");
+                    if (s == SmuStatus.OK) customTemp = cpuTemp != CpuInfo.DefaultTemp;
+                    lines.AppendLine($"CPU Temp {cpuTemp}°C: {s}");
+                }
             }
             catch (Exception ex)
             {
@@ -481,6 +506,7 @@ namespace GHelper.Mode
             }
 
             reapplyTimer.Enabled = AppConfig.IsMode("auto_uv");
+            return lines.ToString().TrimEnd();
         }
 
         public void ResetRyzen()
