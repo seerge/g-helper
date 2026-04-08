@@ -3,7 +3,7 @@ using GHelper.Gpu.NVidia;
 using GHelper.Mode;
 using GHelper.UI;
 using GHelper.USB;
-using Ryzen;
+using PawnIO;
 using System.Diagnostics;
 using System.Management;
 using System.Windows.Forms.DataVisualization.Charting;
@@ -179,14 +179,14 @@ namespace GHelper
             labelFansResult.Visible = false;
 
 
-            trackUV.Minimum = RyzenControl.MinCPUUV;
-            trackUV.Maximum = RyzenControl.MaxCPUUV;
+            trackUV.Minimum = CpuInfo.MinCPUUV;
+            trackUV.Maximum = CpuInfo.MaxCPUUV;
 
-            trackUViGPU.Minimum = RyzenControl.MinIGPUUV;
-            trackUViGPU.Maximum = RyzenControl.MaxIGPUUV;
+            trackUViGPU.Minimum = CpuInfo.MinIGPUUV;
+            trackUViGPU.Maximum = CpuInfo.MaxIGPUUV;
 
-            trackTemp.Minimum = RyzenControl.MinTemp;
-            trackTemp.Maximum = RyzenControl.MaxTemp;
+            trackTemp.Minimum = CpuInfo.MinTemp;
+            trackTemp.Maximum = CpuInfo.MaxTemp;
 
             comboPowerMode.DropDownStyle = ComboBoxStyle.DropDownList;
             comboPowerMode.DataSource = new BindingSource(PowerNative.powerModes, null);
@@ -251,8 +251,6 @@ namespace GHelper
 
         private void ButtonDownload_Click(object? sender, EventArgs e)
         {
-            RyzenControl.DownloadRing();
-
             panelAdvancedAlways.Visible = true;
             panelAdvancedApply.Visible = true;
             labelRisky.Visible = true;
@@ -391,7 +389,7 @@ namespace GHelper
             int igpuUV = Math.Max(trackUViGPU.Minimum, Math.Min(trackUViGPU.Maximum, AppConfig.GetMode("igpu_uv", 0)));
 
             int temp = AppConfig.GetMode("cpu_temp");
-            if (temp < RyzenControl.MinTemp || temp > RyzenControl.MaxTemp) temp = RyzenControl.MaxTemp;
+            if (temp < CpuInfo.MinTemp || temp > CpuInfo.MaxTemp) temp = CpuInfo.MaxTemp;
 
             checkApplyUV.Enabled = checkApplyUV.Checked = AppConfig.IsMode("auto_uv");
 
@@ -401,14 +399,14 @@ namespace GHelper
 
             VisualiseAdvanced();
 
-            buttonAdvanced.Visible = RyzenControl.IsAMD();
+            buttonAdvanced.Visible = CpuInfo.IsAMD();
 
         }
 
         private void VisualiseAdvanced()
         {
 
-            if (!RyzenControl.IsRingExsists())
+            if (!ModeControl.IsPawnAvailable())
             {
                 panelTitleAdvanced.Visible = false;
                 labelRisky.Visible = false;
@@ -426,7 +424,7 @@ namespace GHelper
                 panelDownload.Visible = false;
             }
 
-            if (!RyzenControl.IsSupportedUV())
+            if (!CpuInfo.IsSupportedUV())
             {
                 panelTitleAdvanced.Visible = false;
                 labelRisky.Visible = false;
@@ -434,7 +432,7 @@ namespace GHelper
                 panelUViGPU.Visible = false;
             }
 
-            if (!RyzenControl.IsSupportedUViGPU())
+            if (!CpuInfo.IsSupportedUViGPU())
             {
                 panelUViGPU.Visible = false;
             }
@@ -442,7 +440,7 @@ namespace GHelper
             labelUV.Text = trackUV.Value.ToString();
             labelUViGPU.Text = trackUViGPU.Value.ToString();
 
-            labelTemp.Text = (trackTemp.Value < RyzenControl.MaxTemp) ? trackTemp.Value.ToString() + "°C" : "Default";
+            labelTemp.Text = (trackTemp.Value < CpuInfo.MaxTemp) ? trackTemp.Value.ToString() + "°C" : "Default";
         }
 
         private void AdvancedScroll()
@@ -919,7 +917,7 @@ namespace GHelper
         public void InitPower()
         {
 
-            bool modeA = Program.acpi.DeviceGet(AsusACPI.PPT_APUA0) >= 0 || RyzenControl.IsAMD();
+            bool modeA = Program.acpi.DeviceGet(AsusACPI.PPT_APUA0) >= 0 || CpuInfo.IsAMD();
             bool modeB0 = Program.acpi.IsAllAmdPPT();
             bool modeC1 = Program.acpi.DeviceGet(AsusACPI.PPT_APUC1) >= 0;
 
@@ -941,7 +939,7 @@ namespace GHelper
             {
                 panelSlow.Visible = modeA;
 
-                if (RyzenControl.IsAMD())
+                if (CpuInfo.IsAMD())
                 {
                     labelLeftTotal.Text = "SPL (CPU sustained)";
                     labelLeftSlow.Text = "sPPT (CPU long boost)";
@@ -1175,9 +1173,9 @@ namespace GHelper
             AppConfig.SetMode("auto_apply", 0);
             AppConfig.SetMode("auto_apply_power", 0);
 
-            trackUV.Value = RyzenControl.MaxCPUUV;
-            trackUViGPU.Value = RyzenControl.MaxIGPUUV;
-            trackTemp.Value = RyzenControl.MaxTemp;
+            trackUV.Value = CpuInfo.MaxCPUUV;
+            trackUViGPU.Value = CpuInfo.MaxIGPUUV;
+            trackTemp.Value = CpuInfo.MaxTemp;
 
             AdvancedScroll();
             AppConfig.RemoveMode("cpu_temp");

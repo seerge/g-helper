@@ -1,4 +1,4 @@
-﻿using Ryzen;
+﻿using PawnIO;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
 
@@ -7,7 +7,7 @@ public static class NvidiaSmi
     public static bool GetDisplayActiveStatus()
     {
         // Non AMD devices doesn't seem to be affected
-        if (!RyzenControl.IsAMD()) return false;
+        if (!CpuInfo.IsAMD()) return false;
 
         string commandOutput = RunNvidiaSmiCommand();
 
