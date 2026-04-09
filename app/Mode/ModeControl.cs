@@ -520,7 +520,7 @@ namespace GHelper.Mode
                 PowerLimits? lim = smu.GetPowerLimits();
                 if (lim == null) return string.Empty;
 
-                string line = $"SPL: {lim.Stapm:F1}W  sPPT: {lim.Slow:F1}W  fPPT: {lim.Fast:F1}W  Temp: {lim.TctlTemp:F0}°C";
+                string line = $"Limits: {lim.Stapm:F1}W | {lim.Slow:F1}W | {lim.Fast:F1}W, Temp: {lim.TctlTemp:F0}°C";
                 Logger.WriteLine("Ryzen Limits: " + line);
                 return line;
             }
