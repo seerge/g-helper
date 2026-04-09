@@ -1,5 +1,6 @@
 ﻿using GHelper.Fan;
 using GHelper.Gpu.NVidia;
+using GHelper.Helpers;
 using GHelper.Mode;
 using GHelper.UI;
 using GHelper.USB;
@@ -38,10 +39,17 @@ namespace GHelper
         static bool isGPUPower => gpuPowerBase > 0;
         static bool clampFanDots = AppConfig.IsClampFanDots();
 
+        private bool _fanModeClickFix = false;
+        private Font? _fanModeNormalFont;
+        private Font? _fanModeLinkFont;
+
         public Fans()
         {
 
             InitializeComponent();
+
+            _fanModeNormalFont = labelFanMode.Font;
+            _fanModeLinkFont = new Font(labelFanMode.Font, FontStyle.Bold | FontStyle.Underline);
 
             fanSensorControl = new FanSensorControl(this);
 
@@ -229,6 +237,7 @@ namespace GHelper
             checkApplyUV.Click += CheckApplyUV_Click;
 
             buttonCalibrate.Click += ButtonCalibrate_Click;
+            labelFanMode.Click += LabelFanMode_Click;
 
             buttonDownload.Click += ButtonDownload_Click;
 
@@ -237,7 +246,9 @@ namespace GHelper
 
             ToggleNavigation(0);
 
-            if (Program.acpi.DeviceGet(AsusACPI.DevsCPUFanCurve) < 0) buttonCalibrate.Visible = false;
+            bool canAccessFanCurves = Program.acpi.CanAccessFanDriver();
+            buttonCalibrate.Visible = canAccessFanCurves;
+            UpdateFanModeStatus();
 
             FormClosed += Fans_FormClosed;
 
@@ -291,6 +302,10 @@ namespace GHelper
 
         private void Fans_FormClosed(object? sender, FormClosedEventArgs e)
         {
+            try { _fanModeLinkFont?.Dispose(); } catch { }
+            _fanModeLinkFont = null;
+            _fanModeNormalFont = null;
+
             //Because windows charts seem to eat a lot of memory :(
             GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced);
         }
@@ -915,6 +930,89 @@ namespace GHelper
             });
         }
 
+        public void UpdateFanModeStatus()
+        {
+            if (this == null || this.Text == "") return;
+
+            if (InvokeRequired)
+            {
+                try { Invoke(UpdateFanModeStatus); } catch { }
+                return;
+            }
+
+            bool manualActive = ModeControl.IsWinIoFallbackActive;
+            bool isSystem = ProcessHelper.IsRunningAsSystem();
+            bool canAccessFanCurves = Program.acpi.CanAccessFanDriver();
+            bool winIoFallbackEnabled = AppConfig.IsNotFalse("fan_winio_fallback");
+            bool canRelaunchAsSystem = !isSystem && Environment.UserInteractive && Program.FindPsExecPath() is not null;
+
+            _fanModeClickFix = false;
+            labelFanMode.Cursor = Cursors.Default;
+            if (_fanModeNormalFont is not null) labelFanMode.Font = _fanModeNormalFont;
+
+            if (manualActive)
+            {
+                labelFanMode.Text = "Manual (WinIO)";
+                labelFanMode.ForeColor = colorCustom;
+            }
+            else if (canAccessFanCurves)
+            {
+                labelFanMode.Text = "Standard (BIOS)";
+                labelFanMode.ForeColor = colorStandard;
+            }
+            else if (winIoFallbackEnabled && !isSystem)
+            {
+                labelFanMode.ForeColor = darkTheme ? Color.Gold : Color.DarkOrange;
+
+                if (canRelaunchAsSystem)
+                {
+                    labelFanMode.Text = "Requires SYSTEM — click to fix";
+                    labelFanMode.Cursor = Cursors.Hand;
+                    if (_fanModeLinkFont is not null) labelFanMode.Font = _fanModeLinkFont;
+                    _fanModeClickFix = true;
+                }
+                else
+                {
+                    labelFanMode.Text = "Requires SYSTEM (PsExec missing)";
+                }
+            }
+            else
+            {
+                labelFanMode.Text = "Standard (BIOS)";
+                labelFanMode.ForeColor = colorStandard;
+            }
+
+            labelFanMode.Visible = true;
+        }
+
+        private void LabelFanMode_Click(object? sender, EventArgs e)
+        {
+            if (!_fanModeClickFix) return;
+
+            string[] currentArgs = Environment.GetCommandLineArgs().Skip(1).ToArray();
+            if (currentArgs.Length == 0) currentArgs = ["cpu"];
+
+            if (Program.TryRelaunchAsSystemViaPsExec(currentArgs))
+            {
+                Application.Exit();
+                return;
+            }
+
+            if (!Environment.UserInteractive)
+            {
+                LabelFansResult("SYSTEM relaunch is not available in non-interactive context");
+                return;
+            }
+
+            if (Program.FindPsExecPath() is null)
+            {
+                LabelFansResult($"PsExec not found. Place PsExec64.exe (or PsExec.exe) in:\n{AppDomain.CurrentDomain.BaseDirectory}");
+                return;
+            }
+
+            LabelFansResult("Failed to relaunch as SYSTEM (UAC prompt cancelled?)");
+        }
+
 
         public void InitPower()
         {
@@ -1098,6 +1196,7 @@ namespace GHelper
                 seriesXGM.Color = Color.Gray;
             }
 
+            UpdateFanModeStatus();
         }
 
 

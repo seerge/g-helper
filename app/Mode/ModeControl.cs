@@ -21,6 +21,13 @@ namespace GHelper.Mode
         static System.Timers.Timer reapplyTimer = default!;
         static System.Timers.Timer modeToggleTimer = default!;
 
+        private static readonly object _winIoFanLock = new();
+        private static WinIOFanControl? _winIoFanControl;
+        private static System.Threading.Timer? _winIoFanTimer;
+        private static bool _winIoFallbackActive;
+
+        public static bool IsWinIoFallbackActive => _winIoFallbackActive;
+
         public ModeControl()
         {
             reapplyTimer = new System.Timers.Timer(AppConfig.GetMode("reapply_time", 30) * 1000);
@@ -172,57 +179,238 @@ namespace GHelper.Mode
         {
             customFans = false;
 
-            if (AppConfig.IsMode("auto_apply") || force)
+            bool applyFans = AppConfig.IsMode("auto_apply") || force;
+            if (!applyFans)
             {
+                StopWinIoFanControl();
+                SetModeLabel();
+                return;
+            }
 
-                bool xgmFan = false;
-                if (AppConfig.Is("xgm_fan"))
+            // Mode changes should release any previously acquired manual (WinIO) fan control.
+            if (!force) StopWinIoFanControl();
+
+            bool canAccessFanDriver = Program.acpi.CanAccessFanDriver();
+            bool winIoFallbackEnabled = AppConfig.IsNotFalse("fan_winio_fallback");
+
+            bool xgmFan = false;
+            if (AppConfig.Is("xgm_fan"))
+            {
+                XGM.SetFan(AppConfig.GetFanConfig(AsusFan.XGM));
+                xgmFan = Program.acpi.IsXGConnected();
+            }
+
+            int cpuResult = Program.acpi.SetFanCurve(AsusFan.CPU, AppConfig.GetFanConfig(AsusFan.CPU));
+            int gpuResult = Program.acpi.SetFanCurve(AsusFan.GPU, AppConfig.GetFanConfig(AsusFan.GPU));
+
+            if (AppConfig.Is("mid_fan"))
+                Program.acpi.SetFanCurve(AsusFan.Mid, AppConfig.GetFanConfig(AsusFan.Mid));
+
+            // Alternative way to set fan curve
+            if (cpuResult != 1 || gpuResult != 1)
+            {
+                cpuResult = Program.acpi.SetFanRange(AsusFan.CPU, AppConfig.GetFanConfig(AsusFan.CPU));
+                gpuResult = Program.acpi.SetFanRange(AsusFan.GPU, AppConfig.GetFanConfig(AsusFan.GPU));
+            }
+
+            // Standard (BIOS) fan curves succeeded
+            if (cpuResult == 1 && gpuResult == 1)
+            {
+                StopWinIoFanControl();
+                settings.LabelFansResult("");
+                customFans = true;
+            }
+            else
+            {
+                // Fallback to manual fan control via AsusWinIO64.dll (SYSTEM-only on newer ASUS drivers)
+                if (winIoFallbackEnabled && ProcessHelper.IsRunningAsSystem() && StartWinIoFanControl())
                 {
-                    XGM.SetFan(AppConfig.GetFanConfig(AsusFan.XGM));
-                    xgmFan = Program.acpi.IsXGConnected();
+                    settings.LabelFansResult("");
+                    customFans = true;
                 }
-
-                int cpuResult = Program.acpi.SetFanCurve(AsusFan.CPU, AppConfig.GetFanConfig(AsusFan.CPU));
-                int gpuResult = Program.acpi.SetFanCurve(AsusFan.GPU, AppConfig.GetFanConfig(AsusFan.GPU));
-
-                if (AppConfig.Is("mid_fan"))
-                    Program.acpi.SetFanCurve(AsusFan.Mid, AppConfig.GetFanConfig(AsusFan.Mid));
-
-
-                // Alternative way to set fan curve
-                if (cpuResult != 1 || gpuResult != 1)
+                else
                 {
-                    cpuResult = Program.acpi.SetFanRange(AsusFan.CPU, AppConfig.GetFanConfig(AsusFan.CPU));
-                    gpuResult = Program.acpi.SetFanRange(AsusFan.GPU, AppConfig.GetFanConfig(AsusFan.GPU));
+                    StopWinIoFanControl();
 
-                    // Something went wrong, resetting to default profile
-                    if (cpuResult != 1 || gpuResult != 1)
+                    // If we can't access the fan driver and we are not SYSTEM, don't misreport as unsupported.
+                    if (winIoFallbackEnabled && !canAccessFanDriver && !ProcessHelper.IsRunningAsSystem())
+                    {
+                        settings.LabelFansResult("");
+                    }
+                    else
                     {
                         Program.acpi.DeviceSet(AsusACPI.PerformanceMode, Modes.GetCurrentBase(), "Reset Mode");
                         settings.LabelFansResult("Model doesn't support custom fan curves");
                     }
                 }
-                else
-                {
-                    settings.LabelFansResult("");
-                    customFans = true;
-                }
+            }
 
-                // force set PPTs for missbehaving bios on FX507/517 series
-                if ((AppConfig.IsPowerRequired() || xgmFan) && !AppConfig.IsMode("auto_apply_power"))
+            // force set PPTs for missbehaving bios on FX507/517 series
+            if ((AppConfig.IsPowerRequired() || xgmFan) && !AppConfig.IsMode("auto_apply_power"))
+            {
+                Task.Run(async () =>
                 {
-                    Task.Run(async () =>
-                    {
-                        await Task.Delay(TimeSpan.FromSeconds(1));
-                        Program.acpi.DeviceSet(AsusACPI.PPT_APUA0, 80, "PowerLimit Fix A0");
-                        Program.acpi.DeviceSet(AsusACPI.PPT_APUA3, 80, "PowerLimit Fix A3");
-                    });
-                }
-
+                    await Task.Delay(TimeSpan.FromSeconds(1));
+                    Program.acpi.DeviceSet(AsusACPI.PPT_APUA0, 80, "PowerLimit Fix A0");
+                    Program.acpi.DeviceSet(AsusACPI.PPT_APUA3, 80, "PowerLimit Fix A3");
+                });
             }
 
             SetModeLabel();
 
+        }
+
+        public static void StopWinIoFanControl()
+        {
+            lock (_winIoFanLock)
+            {
+                _winIoFallbackActive = false;
+
+                try
+                {
+                    _winIoFanTimer?.Change(Timeout.Infinite, Timeout.Infinite);
+                    _winIoFanTimer?.Dispose();
+                }
+                catch (Exception ex)
+                {
+                    Logger.WriteLine($"WinIO Fan timer stop failed: {ex.Message}");
+                }
+                finally
+                {
+                    _winIoFanTimer = null;
+                }
+
+                try
+                {
+                    _winIoFanControl?.ReleaseControl();
+                }
+                catch (Exception ex)
+                {
+                    Logger.WriteLine($"WinIO Fan release failed: {ex.Message}");
+                }
+                finally
+                {
+                    _winIoFanControl = null;
+                }
+            }
+
+            try
+            {
+                if (settings?.fansForm is not null && settings.fansForm.Text != "")
+                    settings.fansForm.UpdateFanModeStatus();
+            }
+            catch { }
+        }
+
+        private static bool StartWinIoFanControl()
+        {
+            lock (_winIoFanLock)
+            {
+                if (_winIoFanControl is null || !_winIoFanControl.IsAvailable)
+                {
+                    _winIoFanControl?.ReleaseControl();
+                    _winIoFanControl = new WinIOFanControl();
+                }
+
+                if (_winIoFanControl is null || !_winIoFanControl.IsAvailable)
+                    return false;
+
+                if (_winIoFanTimer is null)
+                    _winIoFanTimer = new System.Threading.Timer(WinIoFanTick, null, dueTime: 0, period: 1000);
+                else
+                    _winIoFanTimer.Change(dueTime: 0, period: 1000);
+
+                _winIoFallbackActive = true;
+            }
+
+            try
+            {
+                if (settings?.fansForm is not null && settings.fansForm.Text != "")
+                    settings.fansForm.UpdateFanModeStatus();
+            }
+            catch { }
+
+            return true;
+        }
+
+        private static void WinIoFanTick(object? state)
+        {
+            lock (_winIoFanLock)
+            {
+                if (!_winIoFallbackActive) return;
+                if (_winIoFanControl is null || !_winIoFanControl.IsAvailable) return;
+
+                try
+                {
+                    float? cpuTemp = HardwareControl.GetCPUTemp();
+                    float? gpuTemp = HardwareControl.GetGPUTemp();
+
+                    if (cpuTemp is null || cpuTemp < 0) return;
+
+                    int cpuPercent = InterpolateFanPercent(AppConfig.GetFanConfig(AsusFan.CPU), cpuTemp.Value);
+                    int gpuPercent = InterpolateFanPercent(AppConfig.GetFanConfig(AsusFan.GPU), (gpuTemp is null || gpuTemp < 0) ? cpuTemp.Value : gpuTemp.Value);
+
+                    cpuPercent = ApplyCpuFanScale(cpuPercent);
+
+                    _winIoFanControl.SetFanSpeed((int)AsusFan.CPU, cpuPercent);
+                    _winIoFanControl.SetFanSpeed((int)AsusFan.GPU, gpuPercent);
+
+                    if (AppConfig.Is("mid_fan") && _winIoFanControl.FanCount > (int)AsusFan.Mid)
+                    {
+                        int midPercent = InterpolateFanPercent(AppConfig.GetFanConfig(AsusFan.Mid), cpuTemp.Value);
+                        _winIoFanControl.SetFanSpeed((int)AsusFan.Mid, midPercent);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Logger.WriteLine($"WinIO Fan tick failed: {ex.Message}");
+                }
+            }
+        }
+
+        private static int ApplyCpuFanScale(int percent)
+        {
+            int fanScale = AppConfig.Get("fan_scale", 100);
+            if (fanScale == 100) return percent;
+            return Math.Clamp(percent * fanScale / 100, 0, 100);
+        }
+
+        private static int InterpolateFanPercent(byte[] curve, float temperature)
+        {
+            if (AsusACPI.IsInvalidCurve(curve)) return 0;
+
+            int[] temps = new int[8];
+            int[] speeds = new int[8];
+
+            for (int i = 0; i < 8; i++)
+            {
+                temps[i] = curve[i];
+                speeds[i] = curve[i + 8];
+            }
+
+            Array.Sort(temps, speeds);
+
+            if (temperature <= temps[0]) return Math.Clamp(speeds[0], 0, 100);
+            if (temperature >= temps[7]) return Math.Clamp(speeds[7], 0, 100);
+
+            for (int i = 0; i < 7; i++)
+            {
+                int t0 = temps[i];
+                int t1 = temps[i + 1];
+                int s0 = speeds[i];
+                int s1 = speeds[i + 1];
+
+                if (temperature < t0) continue;
+                if (temperature > t1) continue;
+
+                if (t1 == t0) return Math.Clamp(s1, 0, 100);
+
+                float fraction = (temperature - t0) / (t1 - t0);
+                int value = (int)Math.Round(s0 + (s1 - s0) * fraction);
+                return Math.Clamp(value, 0, 100);
+            }
+
+            return Math.Clamp(speeds[7], 0, 100);
         }
 
         public void AutoPower(bool launchAsAdmin = false)

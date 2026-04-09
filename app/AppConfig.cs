@@ -164,6 +164,7 @@ public static class AppConfig
     {
         config = new Dictionary<string, object>();
         config["performance_mode"] = 0;
+        config["fan_winio_fallback"] = 1;
         string jsonString = JsonSerializer.Serialize(config);
         File.WriteAllText(configFile, jsonString);
     }
@@ -205,6 +206,22 @@ public static class AppConfig
     {
         timer.Stop();
         timer.Start();
+    }
+
+    public static void Flush()
+    {
+        timer.Stop();
+        string jsonString;
+        lock (configLock) jsonString = JsonSerializer.Serialize(config, new JsonSerializerOptions { WriteIndented = true });
+        try
+        {
+            WriteAtomic(configFile, jsonString);
+            SyncFallbackConfig();
+        }
+        catch (Exception ex)
+        {
+            Logger.WriteLine("Config flush failed: " + ex.Message);
+        }
     }
 
     public static void Set(string name, int value)

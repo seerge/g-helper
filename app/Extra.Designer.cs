@@ -111,6 +111,9 @@ namespace GHelper
             pictureSettings = new PictureBox();
             labelSettings = new Label();
             panelSettings = new Panel();
+            panelTheme = new Panel();
+            labelTheme = new Label();
+            comboTheme = new RComboBox();
             checkAutoToggleClamshellMode = new CheckBox();
             checkBWIcon = new CheckBox();
             checkTopmost = new CheckBox();
@@ -169,6 +172,7 @@ namespace GHelper
             ((System.ComponentModel.ISupportInitialize)pictureLog).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureSettings).BeginInit();
             panelSettings.SuspendLayout();
+            panelTheme.SuspendLayout();
             panelPower.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numericHibernateAfter).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureHibernate).BeginInit();
@@ -1209,12 +1213,52 @@ namespace GHelper
             panelSettings.Controls.Add(checkStatusLed);
             panelSettings.Controls.Add(checkPerKeyRGB);
             panelSettings.Controls.Add(checkAspm);
+            panelSettings.Controls.Add(panelTheme);
             panelSettings.Dock = DockStyle.Top;
             panelSettings.Location = new Point(15, 1252);
             panelSettings.Name = "panelSettings";
             panelSettings.Padding = new Padding(21, 5, 11, 5);
             panelSettings.Size = new Size(949, 472);
             panelSettings.TabIndex = 3;
+            // 
+            // panelTheme
+            // 
+            panelTheme.AutoSize = true;
+            panelTheme.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            panelTheme.Controls.Add(comboTheme);
+            panelTheme.Controls.Add(labelTheme);
+            panelTheme.Dock = DockStyle.Top;
+            panelTheme.Location = new Point(21, 5);
+            panelTheme.Margin = new Padding(5, 3, 5, 3);
+            panelTheme.Name = "panelTheme";
+            panelTheme.Padding = new Padding(0, 0, 0, 5);
+            panelTheme.Size = new Size(917, 63);
+            panelTheme.TabIndex = 17;
+            // 
+            // labelTheme
+            // 
+            labelTheme.Location = new Point(0, 11);
+            labelTheme.Margin = new Padding(5, 0, 5, 0);
+            labelTheme.Name = "labelTheme";
+            labelTheme.Size = new Size(613, 43);
+            labelTheme.TabIndex = 0;
+            labelTheme.Text = "Theme";
+            // 
+            // comboTheme
+            // 
+            comboTheme.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            comboTheme.BorderColor = Color.White;
+            comboTheme.ButtonColor = SystemColors.ControlLight;
+            comboTheme.FlatStyle = FlatStyle.Flat;
+            comboTheme.Font = new Font("Segoe UI", 9F);
+            comboTheme.FormattingEnabled = true;
+            comboTheme.ItemHeight = 32;
+            comboTheme.Location = new Point(624, 8);
+            comboTheme.Margin = new Padding(5, 11, 5, 9);
+            comboTheme.Name = "comboTheme";
+            comboTheme.Size = new Size(293, 40);
+            comboTheme.TabIndex = 1;
+            comboTheme.TabStop = false;
             // 
             // checkAutoToggleClamshellMode
             // 
@@ -1751,6 +1795,8 @@ namespace GHelper
             ((System.ComponentModel.ISupportInitialize)pictureScan).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureLog).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureSettings).EndInit();
+            panelTheme.ResumeLayout(false);
+            panelTheme.PerformLayout();
             panelSettings.ResumeLayout(false);
             panelSettings.PerformLayout();
             panelPower.ResumeLayout(false);
@@ -1840,6 +1886,9 @@ namespace GHelper
         private PictureBox pictureSettings;
         private Label labelSettings;
         private Panel panelSettings;
+        private Panel panelTheme;
+        private Label labelTheme;
+        private RComboBox comboTheme;
         private CheckBox checkTopmost;
         private CheckBox checkNoOverdrive;
         private CheckBox checkUSBC;

@@ -125,6 +125,7 @@ namespace GHelper
             labelBindings.Text = Properties.Strings.KeyBindings;
             labelBacklightTitle.Text = Properties.Strings.LaptopBacklight;
             labelSettings.Text = Properties.Strings.Other;
+            labelTheme.Text = "Theme";
 
             checkAwake.Text = Properties.Strings.Awake;
             checkSleep.Text = Properties.Strings.Sleep;
@@ -178,6 +179,7 @@ namespace GHelper
 
             comboKeyboardSpeed.AccessibleName = Properties.Strings.LaptopBacklight + " " + Properties.Strings.AnimationSpeed;
             comboAPU.AccessibleName = Properties.Strings.LaptopBacklight + " " + Properties.Strings.AnimationSpeed;
+            comboTheme.AccessibleName = "Theme";
 
             checkBoot.AccessibleName = Properties.Strings.Boot + " " + Properties.Strings.LaptopBacklight;
             checkAwake.AccessibleName = Properties.Strings.Awake + " " + Properties.Strings.LaptopBacklight;
@@ -296,7 +298,7 @@ namespace GHelper
                 labelM4.Text = "M5/ROG";
             }
 
-
+            InitThemeSelector();
             InitTheme();
             Shown += Keyboard_Shown;
 
@@ -858,6 +860,57 @@ namespace GHelper
             Left = Program.settingsForm.Left - Width - 5;
         }
 
+        private void InitThemeSelector()
+        {
+            try
+            {
+                comboTheme.DropDownStyle = ComboBoxStyle.DropDownList;
+                comboTheme.Items.Clear();
+                comboTheme.Items.Add("Auto (Windows)");
+                comboTheme.Items.Add("Dark");
+                comboTheme.Items.Add("Light");
+
+                string? uiMode = AppConfig.GetString("ui_mode");
+                int idx = 0;
+                if (string.Equals(uiMode, "dark", StringComparison.OrdinalIgnoreCase)) idx = 1;
+                else if (string.Equals(uiMode, "light", StringComparison.OrdinalIgnoreCase)) idx = 2;
+                else idx = 0;
+
+                comboTheme.SelectedIndexChanged -= ComboTheme_SelectedIndexChanged;
+                comboTheme.SelectedIndex = idx;
+                comboTheme.SelectedIndexChanged += ComboTheme_SelectedIndexChanged;
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLine("Theme selector init failed: " + ex.Message);
+                panelTheme.Visible = false;
+            }
+        }
+
+        private void ComboTheme_SelectedIndexChanged(object? sender, EventArgs e)
+        {
+            try
+            {
+                switch (comboTheme.SelectedIndex)
+                {
+                    case 1:
+                        AppConfig.Set("ui_mode", "dark");
+                        break;
+                    case 2:
+                        AppConfig.Set("ui_mode", "light");
+                        break;
+                    default:
+                        AppConfig.Remove("ui_mode");
+                        break;
+                }
+
+                Program.RefreshTheme(updateLastTheme: true);
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLine("Theme change failed: " + ex.Message);
+            }
+        }
 
         private void checkAutoToggleClamshellMode_CheckedChanged(object? sender, EventArgs e)
         {

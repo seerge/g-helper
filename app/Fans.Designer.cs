@@ -58,6 +58,7 @@ namespace GHelper
             labelFans = new Label();
             panelApplyFans = new Panel();
             buttonCalibrate = new RButton();
+            labelFanMode = new Label();
             labelFansResult = new Label();
             checkApplyFans = new RCheckBox();
             buttonReset = new RButton();
@@ -461,6 +462,7 @@ namespace GHelper
             // panelApplyFans
             // 
             panelApplyFans.Controls.Add(buttonCalibrate);
+            panelApplyFans.Controls.Add(labelFanMode);
             panelApplyFans.Controls.Add(labelFansResult);
             panelApplyFans.Controls.Add(checkApplyFans);
             panelApplyFans.Controls.Add(buttonReset);
@@ -488,15 +490,29 @@ namespace GHelper
             buttonCalibrate.Text = "Calibrate";
             buttonCalibrate.UseVisualStyleBackColor = false;
             // 
+            // labelFanMode
+            // 
+            labelFanMode.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            labelFanMode.AutoEllipsis = true;
+            labelFanMode.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            labelFanMode.ForeColor = SystemColors.ControlDarkDark;
+            labelFanMode.Location = new Point(18, 2);
+            labelFanMode.Margin = new Padding(4, 0, 4, 0);
+            labelFanMode.Name = "labelFanMode";
+            labelFanMode.Size = new Size(771, 22);
+            labelFanMode.TabIndex = 44;
+            labelFanMode.Text = "Standard (BIOS)";
+            labelFanMode.TextAlign = ContentAlignment.MiddleLeft;
+            // 
             // labelFansResult
             // 
             labelFansResult.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             labelFansResult.ForeColor = Color.Red;
-            labelFansResult.Location = new Point(18, 2);
+            labelFansResult.Location = new Point(18, 24);
             labelFansResult.Margin = new Padding(4, 0, 4, 0);
             labelFansResult.Name = "labelFansResult";
-            labelFansResult.Size = new Size(771, 32);
-            labelFansResult.TabIndex = 42;
+            labelFansResult.Size = new Size(771, 20);
+            labelFansResult.TabIndex = 45;
             labelFansResult.Visible = false;
             // 
             // checkApplyFans
@@ -1861,6 +1877,7 @@ namespace GHelper
         private TrackBar trackGPUTemp;
         private Panel panelTitleFans;
         private Panel panelApplyFans;
+        private Label labelFanMode;
         private Label labelFansResult;
         private RCheckBox checkApplyFans;
         private RButton buttonReset;

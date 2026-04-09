@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Runtime.InteropServices;
 using System.Security.Principal;
 
 namespace GHelper.Helpers
@@ -15,13 +16,151 @@ namespace GHelper.Helpers
 
             using (WindowsIdentity identity = WindowsIdentity.GetCurrent())
             {
-                if (identity == null)
-                    _isSystem = false;
-                else
-                    _isSystem = string.Equals(identity.Name, @"NT AUTHORITY\SYSTEM", StringComparison.OrdinalIgnoreCase);
+                _isSystem = identity != null && identity.IsSystem;
             }
 
             return _isSystem.Value;
+        }
+
+        private static string? _interactiveUserSid;
+        private static int _interactiveUserSidSessionId = -1;
+
+        private enum WTS_INFO_CLASS
+        {
+            WTSUserName = 5,
+            WTSDomainName = 7,
+        }
+
+        [DllImport("kernel32.dll")]
+        private static extern uint WTSGetActiveConsoleSessionId();
+
+        [DllImport("wtsapi32.dll", SetLastError = true)]
+        private static extern bool WTSQueryUserToken(int sessionId, out IntPtr phToken);
+
+        [DllImport("kernel32.dll", SetLastError = true)]
+        private static extern bool CloseHandle(IntPtr hObject);
+
+        [DllImport("wtsapi32.dll", SetLastError = true)]
+        private static extern bool WTSQuerySessionInformation(
+            IntPtr hServer,
+            int sessionId,
+            WTS_INFO_CLASS wtsInfoClass,
+            out IntPtr ppBuffer,
+            out int pBytesReturned
+        );
+
+        [DllImport("wtsapi32.dll")]
+        private static extern void WTSFreeMemory(IntPtr pMemory);
+
+        public static string? GetInteractiveUserSid()
+        {
+            try
+            {
+                int sessionId = Process.GetCurrentProcess().SessionId;
+                if (_interactiveUserSid != null && _interactiveUserSidSessionId == sessionId)
+                    return _interactiveUserSid;
+
+                _interactiveUserSidSessionId = sessionId;
+                _interactiveUserSid = GetUserSidForSession(sessionId);
+                if (!string.IsNullOrWhiteSpace(_interactiveUserSid))
+                    return _interactiveUserSid;
+
+                uint activeSession = WTSGetActiveConsoleSessionId();
+                if (activeSession == 0xFFFFFFFF) return null;
+
+                _interactiveUserSid = GetUserSidForSession((int)activeSession);
+                return _interactiveUserSid;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        private static string? GetUserSidForSession(int sessionId)
+        {
+            string? sidFromToken = GetUserSidFromToken(sessionId);
+            if (!string.IsNullOrWhiteSpace(sidFromToken)) return sidFromToken;
+
+            string? user = QueryWtsString(sessionId, WTS_INFO_CLASS.WTSUserName);
+            if (string.IsNullOrWhiteSpace(user)) return null;
+
+            string? domain = QueryWtsString(sessionId, WTS_INFO_CLASS.WTSDomainName);
+
+            try
+            {
+                NTAccount account = string.IsNullOrWhiteSpace(domain) ? new NTAccount(user) : new NTAccount(domain, user);
+                var sid = (SecurityIdentifier)account.Translate(typeof(SecurityIdentifier));
+                return sid.Value;
+            }
+            catch
+            {
+                try
+                {
+                    string full = string.IsNullOrWhiteSpace(domain) ? user : $"{domain}\\{user}";
+                    var sid = (SecurityIdentifier)new NTAccount(full).Translate(typeof(SecurityIdentifier));
+                    return sid.Value;
+                }
+                catch
+                {
+                    return null;
+                }
+            }
+        }
+
+        private static string? GetUserSidFromToken(int sessionId)
+        {
+            IntPtr token = IntPtr.Zero;
+            try
+            {
+                if (!WTSQueryUserToken(sessionId, out token) || token == IntPtr.Zero)
+                    return null;
+
+                using var identity = new WindowsIdentity(token);
+                token = IntPtr.Zero; // WindowsIdentity owns the handle
+                return identity.User?.Value;
+            }
+            catch
+            {
+                return null;
+            }
+            finally
+            {
+                if (token != IntPtr.Zero)
+                {
+                    try { CloseHandle(token); } catch { }
+                }
+            }
+        }
+
+        private static string? QueryWtsString(int sessionId, WTS_INFO_CLASS infoClass)
+        {
+            IntPtr buffer = IntPtr.Zero;
+            int bytesReturned = 0;
+
+            try
+            {
+                if (!WTSQuerySessionInformation(IntPtr.Zero, sessionId, infoClass, out buffer, out bytesReturned))
+                    return null;
+
+                if (buffer == IntPtr.Zero || bytesReturned <= 1)
+                    return null;
+
+                string? result = Marshal.PtrToStringUni(buffer);
+                if (string.IsNullOrWhiteSpace(result)) return null;
+                return result;
+            }
+            catch
+            {
+                return null;
+            }
+            finally
+            {
+                if (buffer != IntPtr.Zero)
+                {
+                    try { WTSFreeMemory(buffer); } catch { }
+                }
+            }
         }
 
         public static void CheckAlreadyRunning()

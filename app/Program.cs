@@ -20,6 +20,8 @@ namespace GHelper
 
     static class Program
     {
+        private const string PsExecRelaunchFlag = "--psexec-relaunch";
+
         public static NotifyIcon trayIcon;
         public static AsusACPI acpi;
 
@@ -46,8 +48,8 @@ namespace GHelper
         public static void Main(string[] args)
         {
 
-            string action = "";
-            if (args.Length > 0) action = args[0];
+            bool isPsExecRelaunch = args.Any(a => string.Equals(a, PsExecRelaunchFlag, StringComparison.OrdinalIgnoreCase));
+            string action = args.FirstOrDefault(a => !string.Equals(a, PsExecRelaunchFlag, StringComparison.OrdinalIgnoreCase)) ?? "";
 
             if (action == "charge")
             {
@@ -107,9 +109,23 @@ namespace GHelper
                 return;
             }
 
+            // Fan driver access can be restricted to LocalSystem by ASUSSystemControlInterface 3.1.41.0+
+            // Relaunch via PsExec as SYSTEM to restore access (skip in service context and avoid loops).
+            if (!isPsExecRelaunch
+                && Environment.UserInteractive
+                && AppConfig.IsASUS()
+                && AppConfig.IsNotFalse("fan_winio_fallback")
+                && !ProcessHelper.IsRunningAsSystem()
+                && !acpi.CanAccessFanDriver())
+            {
+                if (TryRelaunchAsSystemViaPsExec(args))
+                    return;
+            }
+
             ProcessHelper.KillByName("ASUSSmartDisplayControl");
 
             Application.EnableVisualStyles();
+            Application.ApplicationExit += (_, __) => ModeControl.StopWinIoFanControl();
 
             HardwareControl.RecreateGpuControl();
             RyzenControl.Init();
@@ -205,6 +221,88 @@ namespace GHelper
 
         }
 
+        public static string? FindPsExecPath()
+        {
+            string baseDir = AppDomain.CurrentDomain.BaseDirectory;
+            string[] candidates =
+            {
+                "PsExec64.exe",
+                "PsExec.exe",
+                "psexec64.exe",
+                "psexec.exe",
+                "PsExec64",
+                "PsExec",
+                "psexec64",
+                "psexec"
+            };
+
+            foreach (string candidate in candidates)
+            {
+                string path = Path.Combine(baseDir, candidate);
+                if (File.Exists(path)) return path;
+            }
+
+            return null;
+        }
+
+        public static bool TryRelaunchAsSystemViaPsExec(string[] args)
+        {
+            if (!Environment.UserInteractive) return false;
+            if (ProcessHelper.IsRunningAsSystem()) return false;
+
+            string? psExecPath = FindPsExecPath();
+            if (psExecPath is null)
+            {
+                Logger.WriteLine($"PsExec relaunch: missing PsExec64.exe / PsExec.exe in {AppDomain.CurrentDomain.BaseDirectory}");
+                return false;
+            }
+
+            string exePath = Application.ExecutablePath;
+            if (!File.Exists(exePath))
+            {
+                Logger.WriteLine($"PsExec relaunch: invalid exe path {exePath}");
+                return false;
+            }
+
+            try
+            {
+                AppConfig.Flush();
+
+                string[] forwardArgs = args
+                    .Where(a => !string.Equals(a, PsExecRelaunchFlag, StringComparison.OrdinalIgnoreCase))
+                    .Concat([PsExecRelaunchFlag])
+                    .ToArray();
+
+                string forwarded = string.Join(" ", forwardArgs.Select(QuoteArg));
+                int sessionId = Process.GetCurrentProcess().SessionId;
+
+                var psi = new ProcessStartInfo
+                {
+                    FileName = psExecPath,
+                    Arguments = $"-accepteula -d -s -i {sessionId} \"{exePath}\" {forwarded}",
+                    UseShellExecute = true,
+                    Verb = "runas",
+                    WorkingDirectory = AppDomain.CurrentDomain.BaseDirectory
+                };
+
+                Logger.WriteLine("PsExec relaunch: " + psi.FileName + " " + psi.Arguments);
+                Process.Start(psi);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLine($"PsExec relaunch failed: {ex.Message}");
+                return false;
+            }
+        }
+
+        private static string QuoteArg(string arg)
+        {
+            if (string.IsNullOrEmpty(arg)) return "\"\"";
+            if (!arg.Contains(' ') && !arg.Contains('"')) return arg;
+            return "\"" + arg.Replace("\"", "\\\"") + "\"";
+        }
+
 
         private static void SystemEvents_SessionEnding(object sender, SessionEndingEventArgs e)
         {
@@ -237,33 +335,40 @@ namespace GHelper
             switch (e.Category)
             {
                 case UserPreferenceCategory.General:
-                    bool changed = settingsForm.InitTheme();
-                    settingsForm.InitContextMenuTheme();
-                    settingsForm.VisualiseIcon();
-
-                    if (changed)
-                    {
-                        Debug.WriteLine("Theme Changed");
-                        lastTheme = DateTimeOffset.Now.ToUnixTimeMilliseconds();
-                    }
-
-                    if (settingsForm.fansForm is not null && settingsForm.fansForm.Text != "")
-                        settingsForm.fansForm.InitTheme();
-
-                    if (settingsForm.extraForm is not null && settingsForm.extraForm.Text != "")
-                        settingsForm.extraForm.InitTheme();
-
-                    if (settingsForm.updatesForm is not null && settingsForm.updatesForm.Text != "")
-                        settingsForm.updatesForm.InitTheme();
-
-                    if (settingsForm.matrixForm is not null && settingsForm.matrixForm.Text != "")
-                        settingsForm.matrixForm.InitTheme();
-
-                    if (settingsForm.handheldForm is not null && settingsForm.handheldForm.Text != "")
-                        settingsForm.handheldForm.InitTheme();
-
+                    bool changed = RefreshTheme();
+                    if (changed) Debug.WriteLine("Theme Changed");
                     break;
             }
+        }
+
+        public static bool RefreshTheme(bool updateLastTheme = false)
+        {
+            bool changed = settingsForm.InitTheme();
+            settingsForm.InitContextMenuTheme();
+            settingsForm.VisualiseIcon();
+
+            if (settingsForm.fansForm is not null && settingsForm.fansForm.Text != "")
+            {
+                settingsForm.fansForm.InitTheme();
+                try { settingsForm.fansForm.UpdateFanModeStatus(); } catch { }
+            }
+
+            if (settingsForm.extraForm is not null && settingsForm.extraForm.Text != "")
+                settingsForm.extraForm.InitTheme();
+
+            if (settingsForm.updatesForm is not null && settingsForm.updatesForm.Text != "")
+                settingsForm.updatesForm.InitTheme();
+
+            if (settingsForm.matrixForm is not null && settingsForm.matrixForm.Text != "")
+                settingsForm.matrixForm.InitTheme();
+
+            if (settingsForm.handheldForm is not null && settingsForm.handheldForm.Text != "")
+                settingsForm.handheldForm.InitTheme();
+
+            if (updateLastTheme || changed)
+                lastTheme = DateTimeOffset.Now.ToUnixTimeMilliseconds();
+
+            return changed;
         }
 
 

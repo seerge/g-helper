@@ -1,4 +1,5 @@
 ﻿using Microsoft.Win32;
+using GHelper.Helpers;
 using System.Runtime.InteropServices;
 
 namespace GHelper.UI
@@ -81,16 +82,37 @@ namespace GHelper.UI
                 return false;
             }
 
-            if (uiMode is not null && uiMode.ToLower() == "windows")
+            // "windows" follows the OS app theme (same as auto-detection below).
+            // When running as SYSTEM, we explicitly read the interactive user's registry hive.
+
+            object? registryValueObject = null;
+
+            // When running as SYSTEM (PsExec relaunch), Registry.CurrentUser points to SYSTEM.
+            // Prefer the interactive user's theme setting so UI doesn't unexpectedly switch themes.
+            if (ProcessHelper.IsRunningAsSystem())
             {
-                return CheckSystemDarkModeStatus();
+                try
+                {
+                    string? sid = ProcessHelper.GetInteractiveUserSid();
+                    if (!string.IsNullOrWhiteSpace(sid))
+                    {
+                        using var userKey = Registry.Users.OpenSubKey($@"{sid}\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize");
+                        registryValueObject = userKey?.GetValue("AppsUseLightTheme");
+                    }
+                }
+                catch { }
             }
 
-            using var key = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Themes\Personalize");
-            var registryValueObject = key?.GetValue("AppsUseLightTheme");
+            if (registryValueObject == null)
+            {
+                using var key = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Themes\Personalize");
+                registryValueObject = key?.GetValue("AppsUseLightTheme");
+            }
 
-            if (registryValueObject == null) return false;
-            return (int)registryValueObject <= 0;
+            if (registryValueObject == null)
+                return CheckSystemDarkModeStatus();
+            if (registryValueObject is int intValue) return intValue <= 0;
+            return int.TryParse(registryValueObject.ToString(), out int parsed) && parsed <= 0;
         }
 
         public bool InitTheme(bool setDPI = false)

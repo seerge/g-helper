@@ -69,6 +69,7 @@ Small and lightweight Armoury Crate alternative for Asus laptops offering almost
 14. Asus Mice settings
 15. Mini-led multi-zone switch
 16. Flicker-free dimming and Visual Modes
+17. App theme selector (Auto / Dark / Light)
 
 ### :gear: Automation
 - Performance Mode switching when on battery or plugged in
@@ -88,6 +89,19 @@ Each BIOS mode is paired with matching Windows Power Mode. You can adjust this s
 2. **Balanced** (Performance in AC) in BIOS  + **Balanced** power mode
 3. **Turbo** in BIOS + **Best performance** power mode
    
+### 🌀 Fan Curves (BIOS / Manual fallback)
+
+G-Helper normally applies custom fan curves via the standard ASUS ACPI/WMI interface (**Standard (BIOS)**).
+
+On some newer ASUS System Control Interface driver versions (3.1.41.0+), ASUS restricts low-level fan access to **LocalSystem** processes. If fan curve writes fail, G-Helper can fall back to a manual control path (**Manual (WinIO)**) using `AsusWinIO64.dll` (the same library MyASUS uses for fan diagnostics).
+
+To use the manual fallback:
+1. Place `AsusWinIO64.dll` next to `GHelper.exe` (same folder).
+2. (Optional) Place `PsExec64.exe` or `PsExec.exe` next to `GHelper.exe` for one-click SYSTEM relaunch.
+3. In `Fans + Power`, if you see **"Requires SYSTEM — click to fix"**, click it and accept the UAC prompt. G-Helper relaunches itself as SYSTEM (interactive only) and continues normally.
+
+Advanced: set `fan_winio_fallback` to `false` in `config.json` to disable this behavior.
+
 
 ### :video_game: GPU Modes
 

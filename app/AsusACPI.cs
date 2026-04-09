@@ -264,6 +264,19 @@ public class AsusACPI
         return _connected;
     }
 
+    public bool CanAccessFanDriver()
+    {
+        try
+        {
+            return DeviceGet(DevsCPUFanCurve) >= 0;
+        }
+        catch (Exception ex)
+        {
+            Logger.WriteLine($"ACPI: CanAccessFanDriver failed: {ex.Message}");
+            return false;
+        }
+    }
+
     public AsusACPI()
     {
         try
