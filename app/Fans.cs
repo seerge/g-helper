@@ -24,6 +24,8 @@ namespace GHelper
         static bool gpuVisible = true;
         static bool fanRpm = true;
 
+        static readonly Font _axisFont = new Font("Arial", 7F);
+
         const int tempMin = 20;
         const int tempMax = 110;
 
@@ -760,7 +762,7 @@ namespace GHelper
             chart.ChartAreas[0].AxisY.Minimum = 0;
             chart.ChartAreas[0].AxisY.Maximum = fansMax;
 
-            chart.ChartAreas[0].AxisY.LabelStyle.Font = new Font("Arial", 7F);
+            chart.ChartAreas[0].AxisY.LabelStyle.Font = _axisFont;
 
             chart.ChartAreas[0].AxisX.MajorGrid.LineColor = chartGrid;
             chart.ChartAreas[0].AxisY.MajorGrid.LineColor = chartGrid;
