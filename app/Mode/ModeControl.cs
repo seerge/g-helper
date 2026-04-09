@@ -510,6 +510,27 @@ namespace GHelper.Mode
             return lines.ToString().TrimEnd();
         }
 
+        public string ReadRyzenLimits()
+        {
+            var smu = GetSmu();
+            if (smu == null) return string.Empty;
+
+            try
+            {
+                PowerLimits? lim = smu.GetPowerLimits();
+                if (lim == null) return string.Empty;
+
+                string line = $"SPL: {lim.Stapm:F1}W  sPPT: {lim.Slow:F1}W  fPPT: {lim.Fast:F1}W  Temp: {lim.TctlTemp:F0}°C";
+                Logger.WriteLine("Ryzen Limits: " + line);
+                return line;
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLine("ReadRyzenLimits Error: " + ex.ToString());
+                return string.Empty;
+            }
+        }
+
         public void ResetRyzen()
         {
             if (_cpuUV != 0) SetUV(0);

@@ -370,8 +370,17 @@ namespace GHelper
         {
             string result = modeControl.SetRyzen(true);
             checkApplyUV.Enabled = true;
-            labelSmuResult.Text    = result;
-            labelSmuResult.Visible = result.Length > 0;
+
+            string limits = modeControl.ReadRyzenLimits();
+            var sections = new List<string>();
+            if (result.Length > 0) sections.Add(result);
+            if (limits.Length > 0) sections.Add(limits);
+
+            if (sections.Count > 0)
+            {
+                labelRisky.Text = string.Join(Environment.NewLine + Environment.NewLine, sections);
+                labelRisky.Visible = true;
+            }
         }
 
         public void InitUV()
