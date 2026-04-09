@@ -177,11 +177,12 @@ namespace PawnIO
             return Family switch
             {
                 // RyzenAdj: _do_adjust(0x64) — MP1 only
-                CpuFamily.Renoir                         => SendMp1(0x64, v),
-                // RyzenAdj: _do_adjust_psmu(0xB7) — PSMU only
-                // Note: StrixPoint/KrackanPoint not in RyzenAdj; StrixHalo explicitly unsupported
-                CpuFamily.Mobile                         => SendPsmu(0xB7, v),
-                _                                        => SmuStatus.Failed,
+                CpuFamily.Renoir                                 => SendMp1(0x64, v),
+                // UXTU Socket_FT6_FP7_FP8: set-cogfx false 0xB7 — PSMU
+                // Covers Mobile (Phoenix, HawkPoint, Rembrandt…) and StrixHalo (Ryzen AI MAX)
+                CpuFamily.Mobile or CpuFamily.StrixHalo          => SendPsmu(0xB7, v),
+                // StrixPoint/KrackanPoint: no set-cogfx in UXTU or RyzenAdj
+                _                                                => SmuStatus.Failed,
             };
         }
 

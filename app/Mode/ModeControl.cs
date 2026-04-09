@@ -33,6 +33,10 @@ namespace GHelper.Mode
                     _smu.Dispose();
                     _smu = null;
                 }
+                else
+                {
+                    Logger.WriteLine($"SMU Init: {_smu.CpuCodeName} ({_smu.Family}), SMU v{_smu.SmuVersion >> 16}.{(_smu.SmuVersion >> 8) & 0xFF}.{_smu.SmuVersion & 0xFF}");
+                }
                 return _smu;
             }
         }
