@@ -91,7 +91,8 @@ namespace PawnIO
         float Stapm,
         float Fast,
         float Slow,
-        float TctlTemp
+        float TctlTemp,
+        float? CpuLimit = null   // populated on Rembrandt/Mobile with AMD dGPU (table ver 0x380904+)
     );
 
     public sealed class RyzenSmuService : IDisposable
@@ -236,22 +237,25 @@ namespace PawnIO
         //   3. ioctl_read_pm_table     — reads from the physical address
         public PowerLimits? GetPowerLimits()
         {
+            // StrixHalo tctl is at float index 22; all other families at 16.
             int thmIdx = Family == CpuFamily.StrixHalo ? 22 : 16;
 
-            // Step 1: resolve — sets internal g_table_base; returns [version, base]
+            // Step 1: resolve — returns [version, base].
+            // The version discriminates PM table layout variants.
             ulong[] resolveOut = new ulong[2];
             if (!_io.Execute("ioctl_resolve_pm_table", null, resolveOut))
                 return null;
+
+            uint tableVersion = (uint)resolveOut[0];
 
             // Step 2: transfer current SMU values to DRAM
             if (!_io.Execute("ioctl_update_pm_table", null, null))
                 return null;
 
-            // Step 3: read — out_size controls how many qwords (8 bytes each) to read.
-            // We need at least (thmIdx + 1) floats = (thmIdx + 1) * 4 bytes.
-            int neededBytes  = (thmIdx + 1) * 4;
-            int neededQwords = (neededBytes + 7) / 8;
-            ulong[] tableWords = new ulong[neededQwords];
+            // Step 3: always read 128 floats (64 qwords = 512 bytes) so we can see
+            // every field without truncating the table on any layout variant.
+            const int READ_FLOATS = 128;
+            ulong[] tableWords = new ulong[READ_FLOATS / 2];
             if (!_io.Execute("ioctl_read_pm_table", null, tableWords))
                 return null;
 
@@ -263,19 +267,33 @@ namespace PawnIO
             if (floats.Length <= thmIdx)
                 return null;
 
-            // Fixed byte offsets from RyzenAdj api.c (universal across all families):
-            //   stapm_limit = 0x00 (float index 0)
-            //   fast_limit  = 0x08 (float index 2)
-            //   slow_limit  = 0x10 (float index 4)
-            //   tctl_temp   = 0x40 (float index 16) — all APUs
-            //   tctl_temp   = 0x58 (float index 22) — StrixHalo only
+            // PM table layout reference (libryzenadj / RyzenAdj api.c):
+            //
+            // Rembrandt APU-only  (ver 0x380804):
+            //   [0]  stapm_limit   [2]  fast_limit   [4]  slow_limit   [16] tctl_temp
+            //
+            // Rembrandt + AMD dGPU (ver 0x380904):
+            //   [0]  stapm_limit   [2]  fast_limit (platform PPT)
+            //   [4]  slow_limit    [6]  cpu_limit  (CPU-only PPT)   [16] tctl_temp
+            //
+            // All other Mobile/StrixPoint/StrixHalo share the APU-only layout at [0/2/4/16(or 22)].
+            bool hasCpuLimit = HasCpuLimitField(tableVersion);
+            float? cpuLimit = (hasCpuLimit && floats.Length > 6) ? floats[6] : null;
+
             return new PowerLimits(
                 Stapm:    floats[0],
                 Fast:     floats[2],
                 Slow:     floats[4],
-                TctlTemp: floats[thmIdx]
+                TctlTemp: floats[thmIdx],
+                CpuLimit: cpuLimit
             );
         }
+
+        // Returns true for PM table versions that include a dedicated cpu_limit field
+        // at float index 6 (offset 0x18). This corresponds to Rembrandt and later
+        // Mobile-family APUs paired with a discrete AMD GPU (table ver >= 0x380900).
+        private static bool HasCpuLimitField(uint tableVersion) =>
+            (tableVersion & 0xFFFF00) >= 0x380900;
 
         public static CpuFamily GetFamily(CpuCodeName cpu) => cpu switch
         {
