@@ -38,13 +38,9 @@ public static class NvidiaSmi
             CreateNoWindow = true
         };
 
-        Process process = new Process
-        {
-            StartInfo = startInfo
-        };
-
         try
         {
+            using var process = new Process { StartInfo = startInfo };
             process.Start();
             string output = process.StandardOutput.ReadToEnd();
             process.WaitForExit();

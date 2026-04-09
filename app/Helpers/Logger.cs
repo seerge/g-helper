@@ -5,6 +5,8 @@ public static class Logger
     public static string appPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\GHelper";
     public static string logFile = appPath + "\\log.txt";
 
+    private static readonly Random _random = new Random();
+
     public static void WriteLine(string logMessage)
     {
         Debug.WriteLine($"{DateTime.Now}: {logMessage}");
@@ -20,7 +22,7 @@ public static class Logger
         }
         catch { }
 
-        if (new Random().Next(100) == 1) Cleanup();
+        if (_random.Next(100) == 1) Cleanup();
 
 
     }
