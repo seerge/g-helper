@@ -425,7 +425,7 @@ namespace GHelper
             sliderBattery.Max = 100;
             sliderBattery.Min = 40;
             sliderBattery.Name = "sliderBattery";
-            sliderBattery.Size = new Size(554, 40);
+            sliderBattery.Size = new Size(566, 40);
             sliderBattery.Step = 5;
             sliderBattery.TabIndex = 20;
             sliderBattery.Text = "sliderBattery";
@@ -490,6 +490,7 @@ namespace GHelper
             panelFooter.AutoSize = true;
             panelFooter.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             panelFooter.Controls.Add(tableButtons);
+            panelFooter.Controls.Add(panelVersion);
             panelFooter.Dock = DockStyle.Top;
             panelFooter.Location = new Point(11, 1887);
             panelFooter.Margin = new Padding(0);
@@ -2062,7 +2063,6 @@ namespace GHelper
             AutoSizeMode = AutoSizeMode.GrowAndShrink;
             ClientSize = new Size(800, 1600); // height not used, AutoSize drives actual height
             Controls.Add(panelFooter);
-            Controls.Add(panelVersion);
             Controls.Add(panelStartup);
             Controls.Add(panelBattery);
             Controls.Add(panelPeripherals);

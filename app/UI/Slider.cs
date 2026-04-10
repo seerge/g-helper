@@ -125,13 +125,25 @@ namespace GHelper.UI
             base.OnKeyDown(e);
         }
 
+        protected override void OnGotFocus(EventArgs e)
+        {
+            base.OnGotFocus(e);
+            Invalidate();
+        }
+
+        protected override void OnLostFocus(EventArgs e)
+        {
+            base.OnLostFocus(e);
+            Invalidate();
+        }
+
         protected override void OnPaint(PaintEventArgs e)
         {
             base.OnPaint(e);
 
             Brush brushAccent = new SolidBrush(accentColor);
             Brush brushEmpty = new SolidBrush(Color.Gray);
-            Brush brushBorder = new SolidBrush(borderColor);
+            Brush brushBorder = new SolidBrush(Focused ? accentColor : borderColor);
 
             e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
             e.Graphics.FillRectangle(brushEmpty,
