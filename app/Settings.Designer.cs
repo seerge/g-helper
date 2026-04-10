@@ -396,7 +396,7 @@ namespace GHelper
             buttonBatteryFull.FlatAppearance.BorderSize = 0;
             buttonBatteryFull.FlatStyle = FlatStyle.Flat;
             buttonBatteryFull.ForeColor = SystemColors.ControlDark;
-            buttonBatteryFull.Location = new Point(638, 58);
+            buttonBatteryFull.Location = new Point(658, 58);
             buttonBatteryFull.Margin = new Padding(0);
             buttonBatteryFull.Name = "buttonBatteryFull";
             buttonBatteryFull.Secondary = true;
