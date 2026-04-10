@@ -1,5 +1,4 @@
-﻿using GHelper.Helpers;
-using GHelper.UI;
+﻿using GHelper.UI;
 using System.Diagnostics;
 using System.Management;
 using System.Net;
@@ -142,11 +141,14 @@ namespace GHelper
         {
             try
             {
-                var output = ProcessHelper.RunCMD("powershell", "-NoProfile -Command \"(Get-WmiObject Win32_BIOS).SerialNumber\"");
-                Invoke(delegate
+                string serial = string.Empty;
+                using var searcher = new ManagementObjectSearcher("SELECT SerialNumber FROM Win32_BIOS");
+                foreach (ManagementObject obj in searcher.Get())
                 {
-                    textSerial.Text = output;
-                });
+                    serial = obj["SerialNumber"]?.ToString()?.Trim() ?? string.Empty;
+                    break;
+                }
+                Invoke(() => textSerial.Text = serial);
             }
             catch (Exception ex)
             {
@@ -163,18 +165,18 @@ namespace GHelper
                     Dictionary<string, string> list = new();
 
                     foreach (ManagementObject obj in objCollection) using (obj) if (obj["DriverVersion"] is not null)
-                        {
-                            if (obj["DeviceID"] is not null)
                             {
-                                list[obj["DeviceID"].ToString()] = obj["DriverVersion"].ToString();
+                                if (obj["DeviceID"] is not null)
+                                {
+                                    list[obj["DeviceID"].ToString()] = obj["DriverVersion"].ToString();
+                                }
+                                if (obj["DeviceName"] is not null)
+                                {
+                                    var deviceName = obj["DeviceName"].ToString();
+                                    if (deviceName.Contains("DolbyAPO SWC")) list["Dolby"] = obj["DriverVersion"].ToString();
+                                    if (deviceName.Contains("Fortemedia Audio")) list["Fortemedia"] = obj["DriverVersion"].ToString();
+                                }
                             }
-                            if (obj["DeviceName"] is not null)
-                            {
-                                var deviceName = obj["DeviceName"].ToString();
-                                if (deviceName.Contains("DolbyAPO SWC")) list["Dolby"] = obj["DriverVersion"].ToString();
-                                if (deviceName.Contains("Fortemedia Audio")) list["Fortemedia"] = obj["DriverVersion"].ToString();
-                            }
-                        }
                     return list;
                 }
             }
