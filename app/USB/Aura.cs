@@ -256,10 +256,7 @@ namespace GHelper.USB
             }
             else if (Mode == AuraMode.AMBIENT)
             {
-                var prev = Thread.CurrentThread.Priority;
-                Thread.CurrentThread.Priority = ThreadPriority.BelowNormal;
-                try   { CustomRGB.ApplyAmbient(); }
-                finally { Thread.CurrentThread.Priority = prev; }
+                CustomRGB.ApplyAmbient();
             }
         }
 
@@ -875,9 +872,9 @@ namespace GHelper.USB
 
                 var bound = Screen.GetBounds(Point.Empty);
                 bound.Y += bound.Height / 3;
-                bound.Height -= (int)Math.Round(bound.Height * (0.33f + 0.022f)); // cut 1/3 of the top screen + windows panel
+                bound.Height -= (int)Math.Round(bound.Height * (0.33f + 0.022f));
 
-                AmbientData.Sampler.Capture(bound);
+                AmbientData.Sampler.Capture(bound); // updates source rect for the capture thread
 
                 int zones = AURA_ZONES;
 

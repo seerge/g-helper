@@ -5,10 +5,11 @@ using System.Runtime.InteropServices;
 namespace GHelper.USB
 {
     // -------------------------------------------------------------------------
-    // Screen capture using the Windows Desktop Duplication API (DXGI 1.2+).
-    // IDXGIOutputDuplication reads frames directly from the compositor's own
-    // surface — it never stalls DWM and has near-zero CPU overhead between
-    // frames because it only wakes up when something on screen actually changes.
+    // Screen capture via DXGI Desktop Duplication, driven by a dedicated thread
+    // that BLOCKS on AcquireNextFrame — it only wakes when DWM delivers a new
+    // composed frame. Between frames the thread is fully asleep: zero CPU, zero
+    // GPU. Sampling happens on that thread; the public _pixels array is updated
+    // under a lock and read by the ambient timer without any GPU involvement.
     // -------------------------------------------------------------------------
     public sealed class ScreenCaptureSampler : IDisposable
     {
@@ -62,22 +63,13 @@ namespace GHelper.USB
             public uint   RowPitch, DepthPitch;
         }
 
-        // Minimal vtable offsets for the COM interfaces we use.
-        // All counts are zero-based from IUnknown (QI=0, AddRef=1, Release=2).
-
-        // IDXGIFactory1  vtable:  EnumAdapters=7
-        // IDXGIAdapter   vtable:  EnumOutputs=7
-        // IDXGIOutput    vtable:  GetDesc=7, QueryInterface inherited
-        // IDXGIOutput1   vtable:  DuplicateOutput=22
-        // IDXGIOutputDuplication vtable: GetDesc=7, AcquireNextFrame=8, GetFrameDirtyRects=9,
-        //                                GetFrameMoveRects=10, GetFramePointerShape=11,
-        //                                MapDesktopSurface=12, UnMapDesktopSurface=13, ReleaseFrame=14
-        // ID3D11Device   vtable:  CreateTexture2D=5
-        // ID3D11DeviceContext vtable: CopySubresourceRegion=46(?), Map=14, Unmap=15
-        //   (exact offsets confirmed against SDK headers below)
-
-        // Helper: call a COM vtable slot with given args via function pointer.
-        // Using unsafe + calli for zero-overhead COM dispatch.
+        // DXGI_MAPPED_RECT — returned by MapDesktopSurface
+        [StructLayout(LayoutKind.Sequential)]
+        struct DXGI_MAPPED_RECT
+        {
+            public int    Pitch;
+            public IntPtr pBits;
+        }
 
         #endregion
 
@@ -93,15 +85,6 @@ namespace GHelper.USB
         #endregion
 
         #region Vtable dispatch helpers (unsafe)
-
-        // IDXGIFactory1::EnumAdapters(UINT, IDXGIAdapter**)  slot 7
-        static unsafe int Factory_EnumAdapters(IntPtr factory, uint idx, out IntPtr adapter)
-        {
-            adapter = IntPtr.Zero;
-            IntPtr* vtbl = *(IntPtr**)factory;
-            var fn = (delegate* unmanaged[Stdcall]<IntPtr, uint, IntPtr*, int>)vtbl[7];
-            fixed (IntPtr* p = &adapter) return fn(factory, idx, p);
-        }
 
         // IDXGIAdapter::EnumOutputs(UINT, IDXGIOutput**) slot 7
         static unsafe int Adapter_EnumOutputs(IntPtr adapter, uint idx, out IntPtr output)
@@ -121,7 +104,7 @@ namespace GHelper.USB
             fixed (IntPtr* p = &dupl) return fn(output1, device, p);
         }
 
-        // IDXGIOutputDuplication::AcquireNextFrame(UINT timeout, DXGI_OUTDUPL_FRAME_INFO*, IDXGIResource**) slot 8
+        // IDXGIOutputDuplication::AcquireNextFrame(UINT timeout, info*, IDXGIResource**) slot 8
         static unsafe int Dupl_AcquireNextFrame(IntPtr dupl, uint timeout,
             out DXGI_OUTDUPL_FRAME_INFO info, out IntPtr resource)
         {
@@ -134,6 +117,25 @@ namespace GHelper.USB
                 return fn(dupl, timeout, pi, pr);
         }
 
+        // IDXGIOutputDuplication::MapDesktopSurface(DXGI_MAPPED_RECT*) slot 12
+        // Only works when the desktop surface is in system memory (iGPU / WARP).
+        // Returns DXGI_ERROR_UNSUPPORTED on discrete GPU — we fall back to CopyResource.
+        static unsafe int Dupl_MapDesktopSurface(IntPtr dupl, out DXGI_MAPPED_RECT rect)
+        {
+            rect = default;
+            IntPtr* vtbl = *(IntPtr**)dupl;
+            var fn = (delegate* unmanaged[Stdcall]<IntPtr, DXGI_MAPPED_RECT*, int>)vtbl[12];
+            fixed (DXGI_MAPPED_RECT* p = &rect) return fn(dupl, p);
+        }
+
+        // IDXGIOutputDuplication::UnMapDesktopSurface() slot 13
+        static unsafe int Dupl_UnMapDesktopSurface(IntPtr dupl)
+        {
+            IntPtr* vtbl = *(IntPtr**)dupl;
+            var fn = (delegate* unmanaged[Stdcall]<IntPtr, int>)vtbl[13];
+            return fn(dupl);
+        }
+
         // IDXGIOutputDuplication::ReleaseFrame() slot 14
         static unsafe int Dupl_ReleaseFrame(IntPtr dupl)
         {
@@ -142,7 +144,7 @@ namespace GHelper.USB
             return fn(dupl);
         }
 
-        // ID3D11Device::CreateTexture2D(desc, null, ID3D11Texture2D**) slot 5
+        // ID3D11Device::CreateTexture2D slot 5
         static unsafe int Device_CreateTexture2D(IntPtr device,
             in D3D11_TEXTURE2D_DESC desc, out IntPtr tex)
         {
@@ -154,7 +156,7 @@ namespace GHelper.USB
                 return fn(device, pd, IntPtr.Zero, pt);
         }
 
-        // ID3D11DeviceContext::CopyResource(dst, src) slot 47
+        // ID3D11DeviceContext::CopyResource slot 47
         static unsafe void Context_CopyResource(IntPtr ctx, IntPtr dst, IntPtr src)
         {
             IntPtr* vtbl = *(IntPtr**)ctx;
@@ -162,7 +164,35 @@ namespace GHelper.USB
             fn(ctx, dst, src);
         }
 
-        // ID3D11DeviceContext::Map(resource, sub, mapType, flags, MappedSubresource*) slot 14
+        // ID3D11DeviceContext::GenerateMips(ID3D11ShaderResourceView*) slot 54
+        static unsafe void Context_GenerateMips(IntPtr ctx, IntPtr srv)
+        {
+            IntPtr* vtbl = *(IntPtr**)ctx;
+            var fn = (delegate* unmanaged[Stdcall]<IntPtr, IntPtr, void>)vtbl[54];
+            fn(ctx, srv);
+        }
+
+        // ID3D11DeviceContext::CopySubresourceRegion slot 46
+        // Used to copy a single mip level from the mip-chain texture to the tiny staging.
+        static unsafe void Context_CopySubresourceRegion(IntPtr ctx,
+            IntPtr dst, uint dstSub, uint dstX, uint dstY, uint dstZ,
+            IntPtr src, uint srcSub, IntPtr pSrcBox)
+        {
+            IntPtr* vtbl = *(IntPtr**)ctx;
+            var fn = (delegate* unmanaged[Stdcall]<IntPtr, IntPtr, uint, uint, uint, uint, IntPtr, uint, IntPtr, void>)vtbl[46];
+            fn(ctx, dst, dstSub, dstX, dstY, dstZ, src, srcSub, pSrcBox);
+        }
+
+        // ID3D11Device::CreateShaderResourceView(resource, desc*, SRV**) slot 7
+        static unsafe int Device_CreateSRV(IntPtr device, IntPtr resource, IntPtr pDesc, out IntPtr srv)
+        {
+            srv = IntPtr.Zero;
+            IntPtr* vtbl = *(IntPtr**)device;
+            var fn = (delegate* unmanaged[Stdcall]<IntPtr, IntPtr, IntPtr, IntPtr*, int>)vtbl[7];
+            fixed (IntPtr* p = &srv) return fn(device, resource, pDesc, p);
+        }
+
+        // ID3D11DeviceContext::Map slot 14
         static unsafe int Context_Map(IntPtr ctx, IntPtr resource, uint sub,
             int mapType, uint flags, out D3D11_MAPPED_SUBRESOURCE mapped)
         {
@@ -173,7 +203,7 @@ namespace GHelper.USB
                 return fn(ctx, resource, sub, mapType, flags, pm);
         }
 
-        // ID3D11DeviceContext::Unmap(resource, sub) slot 15
+        // ID3D11DeviceContext::Unmap slot 15
         static unsafe void Context_Unmap(IntPtr ctx, IntPtr resource, uint sub)
         {
             IntPtr* vtbl = *(IntPtr**)ctx;
@@ -188,27 +218,35 @@ namespace GHelper.USB
         public readonly int Width;
         public readonly int Height;
 
-        // Sampled pixel grid: BGRA, [y * Width + x] * 4
+        // Latest sampled pixels — written by the capture thread, read by the ambient timer.
         private readonly byte[] _pixels;
+        private readonly object _pixelsLock = new();
 
-        // DXGI / D3D11 objects (all raw COM pointers)
+        // DXGI / D3D11 COM objects
         private IntPtr _device;
         private IntPtr _context;
-        private IntPtr _dupl;           // IDXGIOutputDuplication
-        private IntPtr _staging;        // CPU-readable ID3D11Texture2D (staging)
+        private IntPtr _dupl;
+        private IntPtr _mipTex;     // D3D11_USAGE_DEFAULT + MipLevels=0 + GenerateMips flag
+        private IntPtr _mipSRV;     // shader resource view for GenerateMips
+        private IntPtr _mipStaging; // tiny CPU-readable texture for the last mip level
+        private uint   _mipLevel;   // index of the mip that is closest to Width×Height
+        private uint   _mipW, _mipH;
 
-        // Screen dimensions at the time of initialisation (needed for sampling math)
         private int _screenW, _screenH;
 
+        // The source rectangle to sample — set by the caller, read by the capture thread.
+        private Rectangle _source;
+        private readonly object _sourceLock = new();
+
         private bool _disposed;
-        private bool _dxgiFailed;       // fallback flag: if DXGI init failed, do nothing
+        private Thread? _thread;
+        private volatile bool _stopThread;
 
         public ScreenCaptureSampler(int width, int height)
         {
             Width   = width;
             Height  = height;
             _pixels = new byte[width * height * 4];
-
             TryInitDxgi();
         }
 
@@ -216,20 +254,16 @@ namespace GHelper.USB
         {
             try
             {
-                // 1. Create D3D11 device on the default hardware adapter
                 int hr = D3D11CreateDevice(
                     IntPtr.Zero, D3D_DRIVER_TYPE_HARDWARE, IntPtr.Zero, 0,
                     IntPtr.Zero, 0, D3D11_SDK_VERSION,
                     out _device, out _, out _context);
-                if (hr < 0) { Logger.WriteLine($"DXGI: D3D11CreateDevice failed hr=0x{hr:X8}"); _dxgiFailed = true; return; }
+                if (hr < 0) { Logger.WriteLine($"DXGI: D3D11CreateDevice hr=0x{hr:X8}"); return; }
 
-                // 2. Get IDXGIDevice from the D3D device, walk up to IDXGIAdapter → IDXGIOutput
-                var dxgiDeviceGuid = new Guid("54ec77fa-1377-44e6-8c32-88fd5f44c84c"); // IDXGIDevice
+                var dxgiDeviceGuid = new Guid("54ec77fa-1377-44e6-8c32-88fd5f44c84c");
                 hr = Marshal.QueryInterface(_device, ref dxgiDeviceGuid, out IntPtr dxgiDevice);
-                if (hr < 0) { Logger.WriteLine($"DXGI: QI IDXGIDevice failed hr=0x{hr:X8}"); _dxgiFailed = true; return; }
+                if (hr < 0) { Logger.WriteLine($"DXGI: QI IDXGIDevice hr=0x{hr:X8}"); return; }
 
-                // IDXGIDevice::GetAdapter — slot 7
-                // vtable: QI=0,AddRef=1,Release=2,SetPriv=3,SetPrivIface=4,GetPriv=5,GetParent=6,GetAdapter=7
                 IntPtr adapter;
                 unsafe
                 {
@@ -240,188 +274,258 @@ namespace GHelper.USB
                     adapter = tmp;
                 }
                 Marshal.Release(dxgiDevice);
-                if (hr < 0) { Logger.WriteLine($"DXGI: GetAdapter failed hr=0x{hr:X8}"); _dxgiFailed = true; return; }
+                if (hr < 0) { Logger.WriteLine($"DXGI: GetAdapter hr=0x{hr:X8}"); return; }
 
-                // 3. Enumerate first output of this adapter
                 hr = Adapter_EnumOutputs(adapter, 0, out IntPtr output);
                 Marshal.Release(adapter);
-                if (hr < 0) { Logger.WriteLine($"DXGI: EnumOutputs failed hr=0x{hr:X8}"); _dxgiFailed = true; return; }
+                if (hr < 0) { Logger.WriteLine($"DXGI: EnumOutputs hr=0x{hr:X8}"); return; }
 
-                // 4. Get screen dimensions from DXGI_OUTPUT_DESC
-                //    Layout: DeviceName[32 WCHARs=64 bytes] | DesktopCoordinates RECT(16 bytes) | ...
                 unsafe
                 {
                     byte* desc = stackalloc byte[256];
                     IntPtr* vtbl = *(IntPtr**)output;
-                    var fn = (delegate* unmanaged[Stdcall]<IntPtr, byte*, int>)vtbl[7]; // GetDesc
+                    var fn = (delegate* unmanaged[Stdcall]<IntPtr, byte*, int>)vtbl[7];
                     fn(output, desc);
-                    // DesktopCoordinates RECT starts at byte offset 64 (after 32 WCHARs)
                     int* rc = (int*)(desc + 64);
-                    _screenW = rc[2] - rc[0]; // right - left
-                    _screenH = rc[3] - rc[1]; // bottom - top
+                    _screenW = rc[2] - rc[0];
+                    _screenH = rc[3] - rc[1];
                 }
                 Logger.WriteLine($"DXGI: screen {_screenW}x{_screenH}");
 
-                // 5. QI output for IDXGIOutput1 to get DuplicateOutput
-                var output1Guid = new Guid("00cddea8-939b-4b83-a340-a685226666cc"); // IID_IDXGIOutput1 (dxgi1_2.h)
+                var output1Guid = new Guid("00cddea8-939b-4b83-a340-a685226666cc");
                 hr = Marshal.QueryInterface(output, ref output1Guid, out IntPtr output1);
                 Marshal.Release(output);
-                if (hr < 0) { Logger.WriteLine($"DXGI: QI IDXGIOutput1 failed hr=0x{hr:X8}"); _dxgiFailed = true; return; }
+                if (hr < 0) { Logger.WriteLine($"DXGI: QI IDXGIOutput1 hr=0x{hr:X8}"); return; }
 
-                // 6. Create the duplication
                 hr = Output1_DuplicateOutput(output1, _device, out _dupl);
                 Marshal.Release(output1);
-                if (hr < 0) { Logger.WriteLine($"DXGI: DuplicateOutput failed hr=0x{hr:X8}"); _dxgiFailed = true; return; }
+                if (hr < 0) { Logger.WriteLine($"DXGI: DuplicateOutput hr=0x{hr:X8}"); return; }
 
-                // 7. Create a CPU-readable staging texture matching the full screen
-                var desc2d = new D3D11_TEXTURE2D_DESC
+                // Choose the mip level whose dimensions are closest to Width×Height.
+                // Each mip halves both dimensions: mip N = (screenW>>N) x (screenH>>N).
+                // We want the last mip where both dimensions are >= Width and >= Height.
+                _mipLevel = 0;
+                while ((_screenW >> (int)(_mipLevel + 1)) >= Width &&
+                       (_screenH >> (int)(_mipLevel + 1)) >= Height)
+                    _mipLevel++;
+                _mipW = (uint)(_screenW >> (int)_mipLevel);
+                _mipH = (uint)(_screenH >> (int)_mipLevel);
+                Logger.WriteLine($"DXGI: using mip {_mipLevel} = {_mipW}x{_mipH}");
+
+                // Full mip-chain texture: D3D11_USAGE_DEFAULT, BIND_SHADER_RESOURCE,
+                // D3D11_RESOURCE_MISC_GENERATE_MIPS, MipLevels=0 (full chain).
+                var mipDesc = new D3D11_TEXTURE2D_DESC
                 {
-                    Width             = (uint)_screenW,
-                    Height            = (uint)_screenH,
-                    MipLevels         = 1,
-                    ArraySize         = 1,
-                    Format            = 87,    // DXGI_FORMAT_B8G8R8A8_UNORM
-                    SampleDescCount   = 1,
-                    SampleDescQuality = 0,
-                    Usage             = 3,     // D3D11_USAGE_STAGING
-                    BindFlags         = 0,
-                    CPUAccessFlags    = 131072, // D3D11_CPU_ACCESS_READ (0x20000)
-                    MiscFlags         = 0,
+                    Width = (uint)_screenW, Height = (uint)_screenH,
+                    MipLevels = 0,           // 0 = full chain
+                    ArraySize = 1,
+                    Format = 87,             // DXGI_FORMAT_B8G8R8A8_UNORM
+                    SampleDescCount = 1,
+                    Usage = 0,               // D3D11_USAGE_DEFAULT
+                    BindFlags = 0x8 | 0x20,  // BIND_SHADER_RESOURCE | BIND_RENDER_TARGET
+                    MiscFlags = 1,           // D3D11_RESOURCE_MISC_GENERATE_MIPS
                 };
-                hr = Device_CreateTexture2D(_device, in desc2d, out _staging);
-                if (hr < 0) { Logger.WriteLine($"DXGI: CreateTexture2D staging failed hr=0x{hr:X8}"); _dxgiFailed = true; return; }
+                hr = Device_CreateTexture2D(_device, in mipDesc, out _mipTex);
+                if (hr < 0) { Logger.WriteLine($"DXGI: CreateTexture2D mip hr=0x{hr:X8}"); return; }
 
-                Logger.WriteLine($"DXGI: ScreenCaptureSampler ready");
+                hr = Device_CreateSRV(_device, _mipTex, IntPtr.Zero, out _mipSRV);
+                if (hr < 0) { Logger.WriteLine($"DXGI: CreateSRV hr=0x{hr:X8}"); return; }
+
+                // Tiny staging texture sized to the chosen mip level.
+                var stagDesc = new D3D11_TEXTURE2D_DESC
+                {
+                    Width = _mipW, Height = _mipH,
+                    MipLevels = 1, ArraySize = 1,
+                    Format = 87,
+                    SampleDescCount = 1,
+                    Usage = 3,               // D3D11_USAGE_STAGING
+                    CPUAccessFlags = 131072, // D3D11_CPU_ACCESS_READ
+                };
+                hr = Device_CreateTexture2D(_device, in stagDesc, out _mipStaging);
+                if (hr < 0) { Logger.WriteLine($"DXGI: CreateTexture2D staging hr=0x{hr:X8}"); return; }
+
+                // Start the dedicated blocking capture thread
+                _stopThread = false;
+                _thread = new Thread(CaptureThreadProc)
+                {
+                    IsBackground = true,
+                    Priority = ThreadPriority.BelowNormal,
+                    Name = "AmbientCapture"
+                };
+                _thread.Start();
+                Logger.WriteLine("DXGI: capture thread started");
             }
             catch (Exception ex)
             {
                 Logger.WriteLine($"DXGI: TryInitDxgi exception: {ex.Message}");
-                _dxgiFailed = true;
             }
         }
 
-        // Capture and downsample the given screen rectangle into the Width×Height pixel grid.
-        public unsafe void Capture(Rectangle source)
+        private unsafe void CaptureThreadProc()
         {
-            if (_dxgiFailed || _disposed) return;
+            const int TIMEOUT_MS   = 500;  // blocking wait for next frame
+            const int THROTTLE_MS  = 100;  // ~10 fps max for ambient lighting
 
-            // Acquire the latest composed frame from DWM (0 ms timeout = non-blocking)
-            int hr = Dupl_AcquireNextFrame(_dupl, 0, out var frameInfo, out IntPtr resource);
-
-            if (hr == DXGI_ERROR_WAIT_TIMEOUT)
-                return; // nothing changed on screen — keep previous pixels
-
-            if (hr == DXGI_ERROR_ACCESS_LOST)
+            while (!_stopThread && !_disposed)
             {
-                // Desktop switch / UAC / lock screen — recreate duplication
-                ReinitDuplication();
-                return;
-            }
-
-            if (hr < 0) return;
-
-            // ReleaseFrame must always be called after a successful AcquireNextFrame,
-            // regardless of AccumulatedFrames — failing to do so permanently breaks
-            // subsequent AcquireNextFrame calls with DXGI_ERROR_INVALID_CALL.
-            try
-            {
-                if (frameInfo.LastPresentTime == 0 || resource == IntPtr.Zero)
-                    return; // no new visual content, but ReleaseFrame still runs in finally
-
-                // QI IDXGIResource → ID3D11Texture2D
-                var tex2dGuid = new Guid("6f15aaf2-d208-4e89-9ab4-489535d34f9c");
-                hr = Marshal.QueryInterface(resource, ref tex2dGuid, out IntPtr tex);
-                if (hr < 0) return;
-
-                try
+                Rectangle source;
+                lock (_sourceLock) { source = _source; }
+                if (source.Width <= 0 || source.Height <= 0)
                 {
-                    // Copy GPU texture → staging (CPU-accessible)
-                    Context_CopyResource(_context, _staging, tex);
+                    Thread.Sleep(50);
+                    continue;
                 }
-                finally { Marshal.Release(tex); }
 
-                // Map staging to get a CPU pointer
-                hr = Context_Map(_context, _staging, 0, 1 /*D3D11_MAP_READ*/, 0, out var mapped);
-                if (hr < 0) return;
+                int hr = Dupl_AcquireNextFrame(_dupl, (uint)TIMEOUT_MS,
+                    out var frameInfo, out IntPtr resource);
+
+                if (hr == DXGI_ERROR_WAIT_TIMEOUT) continue;
+
+                if (hr == DXGI_ERROR_ACCESS_LOST)
+                {
+                    SafeRelease(ref _mipStaging);
+                    SafeRelease(ref _mipSRV);
+                    SafeRelease(ref _mipTex);
+                    SafeRelease(ref _dupl);
+                    SafeRelease(ref _context);
+                    SafeRelease(ref _device);
+                    TryInitDxgi();
+                    return;
+                }
+
+                if (hr < 0) { Thread.Sleep(50); continue; }
 
                 try
                 {
-                    // Downsample source rectangle into Width×Height by sampling the center of each cell
-                    byte* src = (byte*)mapped.pData;
-                    int rowPitch = (int)mapped.RowPitch;
+                    if (frameInfo.LastPresentTime == 0 || resource == IntPtr.Zero) continue;
 
-                    int srcX = Math.Max(0, source.X);
-                    int srcY = Math.Max(0, source.Y);
-                    int srcW = Math.Min(source.Width,  _screenW - srcX);
-                    int srcH = Math.Min(source.Height, _screenH - srcY);
+                    // QI IDXGIResource → ID3D11Texture2D
+                    var tex2dGuid = new Guid("6f15aaf2-d208-4e89-9ab4-489535d34f9c");
+                    hr = Marshal.QueryInterface(resource, ref tex2dGuid, out IntPtr tex);
+                    if (hr < 0) continue;
 
-                    float cellW = (float)srcW / Width;
-                    float cellH = (float)srcH / Height;
-
-                    for (int py = 0; py < Height; py++)
+                    try
                     {
-                        int sy = srcY + (int)(cellH * (py + 0.5f));
-                        sy = Math.Clamp(sy, 0, _screenH - 1);
-                        byte* row = src + sy * rowPitch;
-
-                        for (int px = 0; px < Width; px++)
-                        {
-                            int sx = srcX + (int)(cellW * (px + 0.5f));
-                            sx = Math.Clamp(sx, 0, _screenW - 1);
-
-                            byte* pixel = row + sx * 4;
-                            int i = (py * Width + px) * 4;
-                            _pixels[i]     = pixel[0]; // B
-                            _pixels[i + 1] = pixel[1]; // G
-                            _pixels[i + 2] = pixel[2]; // R
-                            _pixels[i + 3] = pixel[3]; // A
-                        }
+                        Context_CopySubresourceRegion(_context,
+                            _mipTex, 0, 0, 0, 0,
+                            tex,     0, IntPtr.Zero);
                     }
+                    finally { Marshal.Release(tex); }
+
+                    Context_GenerateMips(_context, _mipSRV);
+
+                    Context_CopySubresourceRegion(_context,
+                        _mipStaging, 0, 0, 0, 0,
+                        _mipTex, _mipLevel, IntPtr.Zero);
+
+                    hr = Context_Map(_context, _mipStaging, 0, 1, 0, out var mapped);
+                    if (hr < 0) continue;
+                    try   { SamplePixels((byte*)mapped.pData, (int)mapped.RowPitch, source); }
+                    finally { Context_Unmap(_context, _mipStaging, 0); }
                 }
-                finally { Context_Unmap(_context, _staging, 0); }
+                finally
+                {
+                    Dupl_ReleaseFrame(_dupl);
+                    if (resource != IntPtr.Zero) Marshal.Release(resource);
+                }
+
+                // Throttle to ~10 fps. Sleep here — DWM keeps compositing normally,
+                // and the next AcquireNextFrame will just return the latest frame.
+                Thread.Sleep(THROTTLE_MS);
             }
-            finally
+        }
+
+        // Sample the tiny mip-level texture into _pixels.
+        // The mip already represents the entire screen downsampled by the GPU.
+        // We just evenly pick Width*Height cells from it.
+        private unsafe void SamplePixels(byte* data, int rowPitch, Rectangle source)
+        {
+            // Map the mip coords to the source sub-region (lower portion of screen).
+            // source is in screen-space; convert to mip-space.
+            float scaleX = (float)_mipW / _screenW;
+            float scaleY = (float)_mipH / _screenH;
+
+            int srcX = (int)(Math.Max(0, source.X)               * scaleX);
+            int srcY = (int)(Math.Max(0, source.Y)               * scaleY);
+            int srcW = (int)(Math.Min(source.Width,  _screenW)   * scaleX);
+            int srcH = (int)(Math.Min(source.Height, _screenH)   * scaleY);
+            srcW = Math.Max(1, srcW);
+            srcH = Math.Max(1, srcH);
+
+            float cellW = (float)srcW / Width;
+            float cellH = (float)srcH / Height;
+
+            Span<byte> tmp = stackalloc byte[Width * Height * 4];
+            for (int py = 0; py < Height; py++)
             {
-                Dupl_ReleaseFrame(_dupl);
-                if (resource != IntPtr.Zero) Marshal.Release(resource);
+                int sy = Math.Clamp(srcY + (int)(cellH * (py + 0.5f)), 0, (int)_mipH - 1);
+                byte* row = data + sy * rowPitch;
+                for (int px = 0; px < Width; px++)
+                {
+                    int sx = Math.Clamp(srcX + (int)(cellW * (px + 0.5f)), 0, (int)_mipW - 1);
+                    byte* pixel = row + sx * 4;
+                    int i = (py * Width + px) * 4;
+                    tmp[i]     = pixel[0]; // B
+                    tmp[i + 1] = pixel[1]; // G
+                    tmp[i + 2] = pixel[2]; // R
+                    tmp[i + 3] = pixel[3];
+                }
             }
+            lock (_pixelsLock) tmp.CopyTo(_pixels);
+        }
+
+        // Called by the ambient timer to set the region of interest.
+        // The actual capture happens on the background thread.
+        public void Capture(Rectangle source)
+        {
+            lock (_sourceLock) { _source = source; }
         }
 
         private void ReinitDuplication()
         {
-            SafeRelease(ref _staging);
+            SafeRelease(ref _mipStaging);
+            SafeRelease(ref _mipSRV);
+            SafeRelease(ref _mipTex);
             SafeRelease(ref _dupl);
             SafeRelease(ref _context);
             SafeRelease(ref _device);
-            _dxgiFailed = false;
             TryInitDxgi();
         }
 
         public Color GetPixel(int x, int y)
         {
-            int i = (y * Width + x) * 4;
-            return Color.FromArgb(_pixels[i + 2], _pixels[i + 1], _pixels[i]);
+            lock (_pixelsLock)
+            {
+                int i = (y * Width + x) * 4;
+                return Color.FromArgb(_pixels[i + 2], _pixels[i + 1], _pixels[i]);
+            }
         }
 
-        // Averages all sampled pixels directly from the raw buffer.
         public Color GetAverageColor()
         {
-            int r = 0, g = 0, b = 0;
-            int total = _pixels.Length / 4;
-            for (int i = 0; i < _pixels.Length; i += 4)
+            lock (_pixelsLock)
             {
-                b += _pixels[i];
-                g += _pixels[i + 1];
-                r += _pixels[i + 2];
+                int r = 0, g = 0, b = 0;
+                int total = _pixels.Length / 4;
+                for (int i = 0; i < _pixels.Length; i += 4)
+                {
+                    b += _pixels[i];
+                    g += _pixels[i + 1];
+                    r += _pixels[i + 2];
+                }
+                return Color.FromArgb(r / total, g / total, b / total);
             }
-            return Color.FromArgb(r / total, g / total, b / total);
         }
 
         public void Dispose()
         {
             if (_disposed) return;
             _disposed = true;
-            SafeRelease(ref _staging);
+            _stopThread = true;
+            _thread?.Join(2000);
+            SafeRelease(ref _mipStaging);
+            SafeRelease(ref _mipSRV);
+            SafeRelease(ref _mipTex);
             SafeRelease(ref _dupl);
             SafeRelease(ref _context);
             SafeRelease(ref _device);
