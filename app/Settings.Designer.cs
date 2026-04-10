@@ -359,14 +359,14 @@ namespace GHelper
             // 
             // labelMatrix
             // 
-            labelMatrix.AutoSize = true;
             labelMatrix.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             labelMatrix.Location = new Point(44, 0);
             labelMatrix.Margin = new Padding(4, 0, 4, 0);
             labelMatrix.Name = "labelMatrix";
-            labelMatrix.Size = new Size(170, 32);
+            labelMatrix.Size = new Size(350, 40);
             labelMatrix.TabIndex = 40;
             labelMatrix.Text = "Anime Matrix";
+            labelMatrix.TextAlign = ContentAlignment.MiddleLeft;
             // 
             // panelBattery
             // 
@@ -480,9 +480,10 @@ namespace GHelper
             labelBatteryTitle.Location = new Point(43, 0);
             labelBatteryTitle.Margin = new Padding(4, 0, 4, 0);
             labelBatteryTitle.Name = "labelBatteryTitle";
-            labelBatteryTitle.Size = new Size(427, 32);
+            labelBatteryTitle.Size = new Size(427, 40);
             labelBatteryTitle.TabIndex = 37;
             labelBatteryTitle.Text = "Battery Charge Limit";
+            labelBatteryTitle.TextAlign = ContentAlignment.MiddleLeft;
             // 
             // panelFooter
             // 
@@ -774,15 +775,15 @@ namespace GHelper
             // labelPerf
             // 
             labelPerf.AccessibleRole = AccessibleRole.Caret;
-            labelPerf.AutoSize = true;
             labelPerf.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             labelPerf.LiveSetting = System.Windows.Forms.Automation.AutomationLiveSetting.Polite;
             labelPerf.Location = new Point(43, 0);
             labelPerf.Margin = new Padding(4, 0, 4, 0);
             labelPerf.Name = "labelPerf";
-            labelPerf.Size = new Size(234, 32);
+            labelPerf.Size = new Size(350, 40);
             labelPerf.TabIndex = 0;
             labelPerf.Text = "Performance Mode";
+            labelPerf.TextAlign = ContentAlignment.MiddleLeft;
             // 
             // labelCPUFan
             // 
@@ -1097,14 +1098,14 @@ namespace GHelper
             // 
             // labelGPU
             // 
-            labelGPU.AutoSize = true;
             labelGPU.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             labelGPU.Location = new Point(43, 0);
             labelGPU.Margin = new Padding(4, 0, 4, 0);
             labelGPU.Name = "labelGPU";
-            labelGPU.Size = new Size(136, 32);
+            labelGPU.Size = new Size(350, 40);
             labelGPU.TabIndex = 21;
             labelGPU.Text = "GPU Mode";
+            labelGPU.TextAlign = ContentAlignment.MiddleLeft;
             // 
             // labelGPUFan
             // 
@@ -1302,14 +1303,14 @@ namespace GHelper
             // 
             // labelScreen
             // 
-            labelScreen.AutoSize = true;
             labelScreen.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             labelScreen.Location = new Point(43, 0);
             labelScreen.Margin = new Padding(4, 0, 4, 0);
             labelScreen.Name = "labelScreen";
-            labelScreen.Size = new Size(176, 32);
+            labelScreen.Size = new Size(350, 40);
             labelScreen.TabIndex = 26;
             labelScreen.Text = "Laptop Screen";
+            labelScreen.TextAlign = ContentAlignment.MiddleLeft;
             // 
             // panelKeyboard
             // 
@@ -1477,14 +1478,14 @@ namespace GHelper
             // 
             // labelKeyboard
             // 
-            labelKeyboard.AutoSize = true;
             labelKeyboard.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             labelKeyboard.Location = new Point(43, 0);
             labelKeyboard.Margin = new Padding(4, 0, 4, 0);
             labelKeyboard.Name = "labelKeyboard";
-            labelKeyboard.Size = new Size(210, 32);
+            labelKeyboard.Size = new Size(350, 40);
             labelKeyboard.TabIndex = 34;
             labelKeyboard.Text = "Laptop Keyboard";
+            labelKeyboard.TextAlign = ContentAlignment.MiddleLeft;
             // 
             // panelStartup
             // 
@@ -1929,9 +1930,10 @@ namespace GHelper
             labelGammaTitle.Location = new Point(43, 0);
             labelGammaTitle.Margin = new Padding(4, 0, 4, 0);
             labelGammaTitle.Name = "labelGammaTitle";
-            labelGammaTitle.Size = new Size(540, 32);
+            labelGammaTitle.Size = new Size(540, 40);
             labelGammaTitle.TabIndex = 37;
             labelGammaTitle.Text = "Flicker-free Dimming";
+            labelGammaTitle.TextAlign = ContentAlignment.MiddleLeft;
             // 
             // panelVersion
             // 
