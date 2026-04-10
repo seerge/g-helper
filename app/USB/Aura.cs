@@ -693,6 +693,7 @@ namespace GHelper.USB
             }
 
             timer.Stop();
+            CustomRGB.ReleaseAmbient();
 
             Logger.WriteLine($"AuraMode: {Mode}");
 
@@ -714,8 +715,8 @@ namespace GHelper.USB
 
             if (Mode == AuraMode.AMBIENT)
             {
-                CustomRGB.ApplyAmbient(true);
                 timer.Interval = AppConfig.Get("aura_refresh", AppConfig.IsStrix() ? 100 : 300);
+                CustomRGB.ApplyAmbient(true);
                 timer.Start();
                 return;
             }
@@ -774,6 +775,8 @@ namespace GHelper.USB
 
         public static class CustomRGB
         {
+
+            public static void ReleaseAmbient() => AmbientData.Release();
 
             static int tempFreeze = AppConfig.Get("temp_freeze", 20);
             static int tempCold = AppConfig.Get("temp_cold", 40);
@@ -873,8 +876,15 @@ namespace GHelper.USB
                 var bound = Screen.GetBounds(Point.Empty);
                 bound.Y += bound.Height / 3;
                 bound.Height -= (int)Math.Round(bound.Height * (0.33f + 0.022f));
-
                 AmbientData.Sampler.Capture(bound); // updates source rect for the capture thread
+
+                // Sync capture throttle to the ambient timer interval on first call.
+                if (init) AmbientData.Sampler.IntervalMs = (int)timer.Interval;
+
+                // Skip if the capture thread hasn't delivered a new frame since last call.
+                // This avoids redundant USB sends when the screen content hasn't changed.
+                if (!init && !AmbientData.Sampler.HasNewFrame) return;
+                AmbientData.Sampler.HasNewFrame = false;
 
                 int zones = AURA_ZONES;
 
@@ -917,10 +927,16 @@ namespace GHelper.USB
 
             static class AmbientData
             {
-
                 private static ScreenCaptureSampler? _sampler;
                 public static ScreenCaptureSampler Sampler =>
                     _sampler ??= new ScreenCaptureSampler(4, 2);
+
+                public static void Release()
+                {
+                    if (_sampler == null) return;
+                    _sampler.Dispose();
+                    _sampler = null;
+                }
 
                 static public Color[] result = new Color[AURA_ZONES];
                 static public ColorUtils.SmoothColor[] Colors = Enumerable.Repeat(0, AURA_ZONES).

@@ -222,6 +222,13 @@ namespace GHelper.USB
         private readonly byte[] _pixels;
         private readonly object _pixelsLock = new();
 
+        // Set by the capture thread each time new pixels are written.
+        // Cleared by the caller after reading. Avoids redundant USB sends when screen is static.
+        public volatile bool HasNewFrame;
+
+        // Interval between captures in ms — should match the ambient timer interval.
+        public int IntervalMs = 100;
+
         // DXGI / D3D11 COM objects
         private IntPtr _device;
         private IntPtr _context;
@@ -241,6 +248,7 @@ namespace GHelper.USB
         private bool _disposed;
         private Thread? _thread;
         private volatile bool _stopThread;
+        private readonly ManualResetEventSlim _stopEvent = new(false);
 
         public ScreenCaptureSampler(int width, int height)
         {
@@ -364,7 +372,6 @@ namespace GHelper.USB
         private unsafe void CaptureThreadProc()
         {
             const int TIMEOUT_MS   = 500;  // blocking wait for next frame
-            const int THROTTLE_MS  = 100;  // ~10 fps max for ambient lighting
 
             while (!_stopThread && !_disposed)
             {
@@ -379,10 +386,13 @@ namespace GHelper.USB
                 int hr = Dupl_AcquireNextFrame(_dupl, (uint)TIMEOUT_MS,
                     out var frameInfo, out IntPtr resource);
 
+                if (_stopThread) break; // _dupl may have been released by Dispose()
+
                 if (hr == DXGI_ERROR_WAIT_TIMEOUT) continue;
 
                 if (hr == DXGI_ERROR_ACCESS_LOST)
                 {
+                    if (_stopThread) break;
                     SafeRelease(ref _mipStaging);
                     SafeRelease(ref _mipSRV);
                     SafeRelease(ref _mipTex);
@@ -425,13 +435,13 @@ namespace GHelper.USB
                 }
                 finally
                 {
-                    Dupl_ReleaseFrame(_dupl);
+                    if (_dupl != IntPtr.Zero) Dupl_ReleaseFrame(_dupl);
                     if (resource != IntPtr.Zero) Marshal.Release(resource);
                 }
 
-                // Throttle to ~10 fps. Sleep here — DWM keeps compositing normally,
-                // and the next AcquireNextFrame will just return the latest frame.
-                Thread.Sleep(THROTTLE_MS);
+                // Throttle to match the ambient timer interval.
+                // Uses a waitable event so Dispose() can wake us immediately.
+                _stopEvent.Wait(IntervalMs);
             }
         }
 
@@ -472,6 +482,7 @@ namespace GHelper.USB
                 }
             }
             lock (_pixelsLock) tmp.CopyTo(_pixels);
+            HasNewFrame = true;
         }
 
         // Called by the ambient timer to set the region of interest.
@@ -522,11 +533,13 @@ namespace GHelper.USB
             if (_disposed) return;
             _disposed = true;
             _stopThread = true;
+            _stopEvent.Set();
+            SafeRelease(ref _dupl);
             _thread?.Join(2000);
+            _stopEvent.Dispose();
             SafeRelease(ref _mipStaging);
             SafeRelease(ref _mipSRV);
             SafeRelease(ref _mipTex);
-            SafeRelease(ref _dupl);
             SafeRelease(ref _context);
             SafeRelease(ref _device);
         }
