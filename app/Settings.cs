@@ -274,7 +274,6 @@ namespace GHelper
             buttonBatteryFull.MouseMove += (s, e) => labelTipBattery.Text = "One time charge to 100%";
             buttonBatteryFull.MouseLeave += (s, e) => labelTipBattery.Text = "";
 
-            buttonGammaFull.Click += ButtonGammaFull_Click;
 
             buttonControllerMode.Click += ButtonControllerMode_Click;
             buttonBacklight.Click += ButtonBacklight_Click;
@@ -401,7 +400,6 @@ namespace GHelper
             {
                 panelGamma.Visible = true;
                 sliderGamma.Visible = true;
-                buttonGammaFull.Visible = true;
                 labelGammaTitle.Text = Properties.Strings.FlickerFreeDimming + " / " + Properties.Strings.VisualMode;
 
                 VisualiseBrightness();
@@ -671,12 +669,6 @@ namespace GHelper
             BatteryControl.ToggleBatteryLimitFull();
         }
 
-        private void ButtonGammaFull_Click(object? sender, EventArgs e)
-        {
-            sliderGamma.Value = 100;
-            labelGamma.Text = "100%";
-            VisualControl.SetBrightness(100);
-        }
 
         private void ButtonBatteryFull_MouseLeave(object? sender, EventArgs e)
         {

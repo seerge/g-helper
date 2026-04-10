@@ -133,7 +133,6 @@ namespace GHelper
             comboColorTemp = new RComboBox();
             comboGamut = new RComboBox();
             sliderGamma = new Slider();
-            buttonGammaFull = new RButton();
             panelGammaTitle = new Panel();
             labelGamma = new Label();
             pictureGamma = new PictureBox();
@@ -1760,7 +1759,6 @@ namespace GHelper
             panelGamma.Controls.Add(labelVisual);
             panelGamma.Controls.Add(tableVisual);
             panelGamma.Controls.Add(sliderGamma);
-            panelGamma.Controls.Add(buttonGammaFull);
             panelGamma.Controls.Add(panelGammaTitle);
             panelGamma.Dock = DockStyle.Top;
             panelGamma.Location = new Point(11, 838);
@@ -1878,26 +1876,6 @@ namespace GHelper
             comboGamut.TabIndex = 3;
             comboGamut.Visible = false;
             //
-            // buttonGammaFull
-            //
-            buttonGammaFull.Activated = false;
-            buttonGammaFull.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            buttonGammaFull.BackColor = SystemColors.ControlLight;
-            buttonGammaFull.BorderColor = Color.Transparent;
-            buttonGammaFull.BorderRadius = 2;
-            buttonGammaFull.FlatAppearance.BorderSize = 0;
-            buttonGammaFull.FlatStyle = FlatStyle.Flat;
-            buttonGammaFull.ForeColor = SystemColors.ControlDark;
-            buttonGammaFull.Location = new Point(677, 53);
-            buttonGammaFull.Margin = new Padding(0);
-            buttonGammaFull.Name = "buttonGammaFull";
-            buttonGammaFull.Secondary = true;
-            buttonGammaFull.Size = new Size(73, 36);
-            buttonGammaFull.TabIndex = 5;
-            buttonGammaFull.Text = "100%";
-            buttonGammaFull.UseVisualStyleBackColor = false;
-            buttonGammaFull.Visible = false;
-            //
             // sliderGamma
             //
             sliderGamma.Dock = DockStyle.Top;
@@ -1905,7 +1883,7 @@ namespace GHelper
             sliderGamma.Max = 100;
             sliderGamma.Min = 0;
             sliderGamma.Name = "sliderGamma";
-            sliderGamma.Size = new Size(738, 40);
+            sliderGamma.Size = new Size(630, 40);
             sliderGamma.Step = 5;
             sliderGamma.TabIndex = 0;
             sliderGamma.Text = "sliderGamma";
@@ -2259,7 +2237,6 @@ namespace GHelper
         private RComboBox comboInterval;
         private Panel panelGamma;
         private Slider sliderGamma;
-        private RButton buttonGammaFull;
         private Label labelTipBattery;
         private Label labelSliderBatteryMin;
         private Panel panelGammaTitle;
