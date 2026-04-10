@@ -521,6 +521,11 @@ public static class AppConfig
         return ContainsModel("Z13");
     }
 
+    public static bool HasRearLight()
+    {
+        return IsZ13();
+    }
+
     public static bool IsPZ13()
     {
         return ContainsModel("PZ13");
