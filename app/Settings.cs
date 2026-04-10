@@ -77,11 +77,11 @@ namespace GHelper
             buttonMiniled.Text = Properties.Strings.Multizone;
 
             buttonKeyboardColor.Text = Properties.Strings.Color;
-            buttonKeyboard.Text = Properties.Strings.Extra;
+            buttonSettings.Text = Properties.Strings.Extra;
 
             labelPerf.Text = Properties.Strings.PerformanceMode;
             labelGPU.Text = Properties.Strings.GPUMode;
-            labelSreen.Text = Properties.Strings.LaptopScreen;
+            labelScreen.Text = Properties.Strings.LaptopScreen;
             labelKeyboard.Text = Properties.Strings.LaptopKeyboard;
             labelMatrix.Text = Properties.Strings.AnimeMatrix;
             labelBatteryTitle.Text = Properties.Strings.BatteryChargeLimit;
@@ -102,6 +102,7 @@ namespace GHelper
 
             panelMatrix.AccessibleName = Properties.Strings.AnimeMatrix;
             sliderBattery.AccessibleName = Properties.Strings.BatteryChargeLimit;
+            labelSliderBatteryMin.Text = sliderBattery.Min + "%";
             buttonQuit.AccessibleName = Properties.Strings.Quit;
             buttonUpdates.AccessibleName = Properties.Strings.BiosAndDriverUpdates;
             panelPerformance.AccessibleName = Properties.Strings.PerformanceMode;
@@ -121,7 +122,7 @@ namespace GHelper
             //button120Hz.AccessibleName = "Maximum Refresh Rate";
 
             panelKeyboard.AccessibleName = Properties.Strings.LaptopKeyboard;
-            buttonKeyboard.AccessibleName = Properties.Strings.ExtraSettings;
+            buttonSettings.AccessibleName = Properties.Strings.Extra;
             buttonKeyboardColor.AccessibleName = Properties.Strings.LaptopKeyboard + " " + Properties.Strings.Color;
             comboKeyboard.AccessibleName = Properties.Strings.LaptopBacklight;
 
@@ -157,6 +158,15 @@ namespace GHelper
             buttonArmoury.ForeColor = SystemColors.ControlLightLight;
             buttonArmoury.Click += ButtonArmoury_Click;
 
+            buttonSilent.MouseMove += ButtonSilent_MouseHover;
+            buttonBalanced.MouseMove += ButtonBalanced_MouseHover;
+            buttonTurbo.MouseMove += ButtonTurbo_MouseHover;
+            buttonFans.MouseMove += ButtonFans_MouseHover;
+            buttonSilent.MouseLeave += ButtonPerf_MouseLeave;
+            buttonBalanced.MouseLeave += ButtonPerf_MouseLeave;
+            buttonTurbo.MouseLeave += ButtonPerf_MouseLeave;
+            buttonFans.MouseLeave += ButtonPerf_MouseLeave;
+
             buttonSilent.Click += ButtonSilent_Click;
             buttonBalanced.Click += ButtonBalanced_Click;
             buttonTurbo.Click += ButtonTurbo_Click;
@@ -181,7 +191,7 @@ namespace GHelper
             buttonKeyboardColor.Click += ButtonKeyboardColor_Click;
 
             buttonFans.Click += ButtonFans_Click;
-            buttonKeyboard.Click += ButtonKeyboard_Click;
+            buttonSettings.Click += ButtonKeyboard_Click;
             buttonController.Click += ButtonHandheld_Click;
 
             pictureColor.Click += PictureColor_Click;
@@ -260,6 +270,11 @@ namespace GHelper
             buttonBatteryFull.MouseEnter += ButtonBatteryFull_MouseEnter;
             buttonBatteryFull.MouseLeave += ButtonBatteryFull_MouseLeave;
             buttonBatteryFull.Click += ButtonBatteryFull_Click;
+
+            buttonBatteryFull.MouseMove += (s, e) => labelTipBattery.Text = "One time charge to 100%";
+            buttonBatteryFull.MouseLeave += (s, e) => labelTipBattery.Text = "";
+
+            buttonGammaFull.Click += ButtonGammaFull_Click;
 
             buttonControllerMode.Click += ButtonControllerMode_Click;
             buttonBacklight.Click += ButtonBacklight_Click;
@@ -386,6 +401,7 @@ namespace GHelper
             {
                 panelGamma.Visible = true;
                 sliderGamma.Visible = true;
+                buttonGammaFull.Visible = true;
                 labelGammaTitle.Text = Properties.Strings.FlickerFreeDimming + " / " + Properties.Strings.VisualMode;
 
                 VisualiseBrightness();
@@ -655,6 +671,13 @@ namespace GHelper
             BatteryControl.ToggleBatteryLimitFull();
         }
 
+        private void ButtonGammaFull_Click(object? sender, EventArgs e)
+        {
+            sliderGamma.Value = 100;
+            labelGamma.Text = "100%";
+            VisualControl.SetBrightness(100);
+        }
+
         private void ButtonBatteryFull_MouseLeave(object? sender, EventArgs e)
         {
             batteryFullMouseOver = false;
@@ -664,7 +687,6 @@ namespace GHelper
         private void ButtonBatteryFull_MouseEnter(object? sender, EventArgs e)
         {
             batteryFullMouseOver = true;
-            labelCharge.Text = Properties.Strings.BatteryLimitFull;
         }
 
         private void SettingsForm_Resize(object? sender, EventArgs e)
@@ -947,6 +969,31 @@ namespace GHelper
         private void ButtonScreenAuto_MouseHover(object? sender, EventArgs e)
         {
             labelTipScreen.Text = Properties.Strings.AutoRefreshTooltip.Replace("60", ScreenControl.MIN_RATE.ToString());
+        }
+
+        private void ButtonSilent_MouseHover(object? sender, EventArgs e)
+        {
+            labelTipPerf.Text = "Low CPU power, quiet fans, best for battery life";
+        }
+
+        private void ButtonBalanced_MouseHover(object? sender, EventArgs e)
+        {
+            labelTipPerf.Text = "Balanced performance and battery life";
+        }
+
+        private void ButtonTurbo_MouseHover(object? sender, EventArgs e)
+        {
+            labelTipPerf.Text = "Maximum performance, full CPU and fan speed";
+        }
+
+        private void ButtonFans_MouseHover(object? sender, EventArgs e)
+        {
+            labelTipPerf.Text = "Open fan curves and power limit settings";
+        }
+
+        private void ButtonPerf_MouseLeave(object? sender, EventArgs e)
+        {
+            labelTipPerf.Text = "";
         }
 
         private void ButtonUltimate_MouseHover(object? sender, EventArgs e)
@@ -1338,7 +1385,7 @@ namespace GHelper
             ButtonEnabled(buttonScreenAuto, screenEnabled);
             ButtonEnabled(buttonMiniled, screenEnabled);
 
-            labelSreen.Text = screenEnabled
+            labelScreen.Text = screenEnabled
                 ? Properties.Strings.LaptopScreen + ": " + frequency + "Hz" + ((overdrive == 1) ? " + " + Properties.Strings.Overdrive : "")
                 : Properties.Strings.LaptopScreen + ": " + Properties.Strings.TurnedOff;
 
@@ -1827,8 +1874,10 @@ namespace GHelper
             // UI Fix for small screeens
             if (Top < 0)
             {
+                labelTipPerf.Visible = false;
                 labelTipGPU.Visible = false;
                 labelTipScreen.Visible = false;
+                labelTipBattery.Visible = false;
                 Top = 5;
             }
 
