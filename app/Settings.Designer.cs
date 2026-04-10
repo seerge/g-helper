@@ -139,6 +139,7 @@ namespace GHelper
             pictureGamma = new PictureBox();
             labelGammaTitle = new Label();
             panelVersion = new Panel();
+            tableVersion = new TableLayoutPanel();
             buttonEnergySaver = new RButton();
             buttonAmdOled = new RButton();
             buttonArmoury = new RButton();
@@ -604,11 +605,11 @@ namespace GHelper
             //
             // checkStartup
             // 
+            checkStartup.Anchor = AnchorStyles.Right | AnchorStyles.Top;
             checkStartup.AutoSize = true;
-            checkStartup.Dock = DockStyle.Right;
-            checkStartup.Margin = new Padding(11, 11, 11, 5);
+            checkStartup.Margin = new Padding(4, 0, 4, 0);
             checkStartup.Name = "checkStartup";
-            checkStartup.Padding = new Padding(0, 0, 5, 0);
+            checkStartup.Padding = new Padding(0, 0, 0, 0);
             checkStartup.Size = new Size(216, 40);
             checkStartup.TabIndex = 21;
             checkStartup.Text = Properties.Strings.RunOnStartup;
@@ -1952,37 +1953,52 @@ namespace GHelper
             // 
             panelVersion.AutoSize = true;
             panelVersion.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            panelVersion.Controls.Add(buttonEnergySaver);
-            panelVersion.Controls.Add(buttonAmdOled);
-            panelVersion.Controls.Add(buttonArmoury);
-            panelVersion.Controls.Add(checkStartup);
-            panelVersion.Controls.Add(labelVersion);
+            panelVersion.Controls.Add(tableVersion);
             panelVersion.Dock = DockStyle.Top;
             panelVersion.Location = new Point(11, 1837);
             panelVersion.Margin = new Padding(11, 11, 11, 4);
-            panelVersion.MinimumSize = new Size(0, 50);
+            panelVersion.MinimumSize = new Size(0, 48);
             panelVersion.Name = "panelVersion";
-            panelVersion.Padding = new Padding(20, 20, 24, 5);
+            panelVersion.Padding = new Padding(0, 4, 0, 8);
             panelVersion.Size = new Size(778, 50);
             panelVersion.TabIndex = 10;
-            // 
+            //
+            // tableVersion
+            //
+            tableVersion.ColumnCount = 3;
+            tableVersion.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33F));
+            tableVersion.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 34F));
+            tableVersion.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33F));
+            tableVersion.Controls.Add(labelVersion, 0, 0);
+            tableVersion.Controls.Add(buttonArmoury, 1, 0);
+            tableVersion.Controls.Add(buttonAmdOled, 1, 0);
+            tableVersion.Controls.Add(buttonEnergySaver, 1, 0);
+            tableVersion.Controls.Add(checkStartup, 2, 0);
+            tableVersion.Dock = DockStyle.Top;
+            tableVersion.Margin = new Padding(0);
+            tableVersion.Name = "tableVersion";
+            tableVersion.RowCount = 1;
+            tableVersion.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
+            tableVersion.Size = new Size(738, 40);
+            tableVersion.TabIndex = 50;
+            //
             // buttonEnergySaver
             // 
             buttonEnergySaver.Activated = false;
             buttonEnergySaver.BackColor = SystemColors.ControlLight;
             buttonEnergySaver.BorderColor = Color.Transparent;
             buttonEnergySaver.BorderRadius = 2;
-            buttonEnergySaver.Dock = DockStyle.Right;
+            buttonEnergySaver.Anchor = AnchorStyles.None;
             buttonEnergySaver.FlatAppearance.BorderSize = 0;
             buttonEnergySaver.FlatStyle = FlatStyle.Flat;
-            buttonEnergySaver.Font = new Font("Segoe UI", 7.125F, FontStyle.Bold);
+            buttonEnergySaver.Font = new Font("Segoe UI", 9F);
             buttonEnergySaver.ForeColor = SystemColors.ControlDark;
             buttonEnergySaver.ImageAlign = ContentAlignment.MiddleLeft;
-            buttonEnergySaver.Location = new Point(640, 5);
+            buttonEnergySaver.Location = new Point(281, 4);
             buttonEnergySaver.Margin = new Padding(0);
             buttonEnergySaver.Name = "buttonEnergySaver";
             buttonEnergySaver.Secondary = true;
-            buttonEnergySaver.Size = new Size(163, 40);
+            buttonEnergySaver.Size = new Size(180, 40);
             buttonEnergySaver.TabIndex = 39;
             buttonEnergySaver.Text = "Energy Saver";
             buttonEnergySaver.UseVisualStyleBackColor = false;
@@ -1993,17 +2009,17 @@ namespace GHelper
             buttonAmdOled.BackColor = SystemColors.ControlLight;
             buttonAmdOled.BorderColor = Color.Transparent;
             buttonAmdOled.BorderRadius = 2;
-            buttonAmdOled.Dock = DockStyle.Right;
+            buttonAmdOled.Anchor = AnchorStyles.None;
             buttonAmdOled.FlatAppearance.BorderSize = 0;
             buttonAmdOled.FlatStyle = FlatStyle.Flat;
-            buttonAmdOled.Font = new Font("Segoe UI", 7.125F, FontStyle.Bold);
+            buttonAmdOled.Font = new Font("Segoe UI", 9F);
             buttonAmdOled.ForeColor = SystemColors.ControlDark;
             buttonAmdOled.ImageAlign = ContentAlignment.MiddleLeft;
-            buttonAmdOled.Location = new Point(640, 5);
+            buttonAmdOled.Location = new Point(281, 4);
             buttonAmdOled.Margin = new Padding(0);
             buttonAmdOled.Name = "buttonAmdOled";
             buttonAmdOled.Secondary = true;
-            buttonAmdOled.Size = new Size(180, 40);
+            buttonAmdOled.Size = new Size(190, 40);
             buttonAmdOled.TabIndex = 39;
             buttonAmdOled.Text = "AMD OledSaver";
             buttonAmdOled.UseVisualStyleBackColor = false;
@@ -2015,33 +2031,35 @@ namespace GHelper
             buttonArmoury.BackColor = SystemColors.ControlLight;
             buttonArmoury.BorderColor = Color.Transparent;
             buttonArmoury.BorderRadius = 2;
-            buttonArmoury.Dock = DockStyle.Right;
+            buttonArmoury.Anchor = AnchorStyles.None;
+            buttonArmoury.AutoSize = false;
             buttonArmoury.FlatAppearance.BorderSize = 0;
             buttonArmoury.FlatStyle = FlatStyle.Flat;
-            buttonArmoury.Font = new Font("Segoe UI", 7.125F, FontStyle.Bold);
+            buttonArmoury.Font = new Font("Segoe UI", 9F);
             buttonArmoury.ForeColor = SystemColors.ControlDark;
             buttonArmoury.ImageAlign = ContentAlignment.MiddleLeft;
-            buttonArmoury.Location = new Point(640, 5);
+            buttonArmoury.Location = new Point(281, 4);
             buttonArmoury.Margin = new Padding(0);
             buttonArmoury.Name = "buttonArmoury";
             buttonArmoury.Secondary = true;
             buttonArmoury.Size = new Size(180, 40);
             buttonArmoury.TabIndex = 40;
             buttonArmoury.Text = "ArmouryCrate";
+            buttonArmoury.TextAlign = ContentAlignment.MiddleCenter;
             buttonArmoury.UseVisualStyleBackColor = false;
             buttonArmoury.Visible = false;            
             // 
             // labelVersion
             // 
             labelVersion.Cursor = Cursors.Hand;
-            labelVersion.Dock = DockStyle.Left;
+            labelVersion.Dock = DockStyle.Fill;
             labelVersion.Font = new Font("Segoe UI", 9F, FontStyle.Underline);
             labelVersion.ForeColor = SystemColors.ControlDark;
             labelVersion.Location = new Point(20, 5);
             labelVersion.Margin = new Padding(0);
             labelVersion.Name = "labelVersion";
             labelVersion.Padding = new Padding(5, 0, 5, 0);
-            labelVersion.Size = new Size(399, 40);
+            labelVersion.Size = new Size(240, 40);
             labelVersion.TabIndex = 38;
             labelVersion.Text = "v.0";
             labelVersion.TextAlign = ContentAlignment.MiddleLeft;
@@ -2270,6 +2288,7 @@ namespace GHelper
         private RButton buttonAutoTDP;
         private Label labelBacklight;
         private Panel panelVersion;
+        private TableLayoutPanel tableVersion;
         private Label labelVersion;
         private RBadgeButton buttonDonate;
         private RButton buttonEnergySaver;
