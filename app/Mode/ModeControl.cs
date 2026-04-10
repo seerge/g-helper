@@ -1,7 +1,7 @@
-ï»¿using GHelper.Gpu.NVidia;
+using GHelper.Gpu.NVidia;
 using GHelper.Helpers;
 using GHelper.USB;
-using Ryzen;
+using PawnIO;
 
 namespace GHelper.Mode
 {
@@ -17,6 +17,32 @@ namespace GHelper.Mode
         private int _cpuUV = 0;
         private int _igpuUV = 0;
         private bool _ryzenPower = false;
+
+        private static RyzenSmuService? _smu;
+        private static readonly object _smuLock = new();
+
+        private static RyzenSmuService? GetSmu()
+        {
+            lock (_smuLock)
+            {
+                if (_smu != null && _smu.IsInitialized) return _smu;
+                _smu?.Dispose();
+                _smu = new RyzenSmuService();
+                if (!_smu.Initialize(System.Reflection.Assembly.GetExecutingAssembly()))
+                {
+                    _smu.Dispose();
+                    _smu = null;
+                }
+                else
+                {
+                    Logger.WriteLine($"SMU Init: {_smu.CpuCodeName} ({_smu.Family}), SMU v{_smu.SmuVersion >> 16}.{(_smu.SmuVersion >> 8) & 0xFF}.{_smu.SmuVersion & 0xFF}");
+                }
+                return _smu;
+            }
+        }
+
+        public static bool IsPawnAvailable()  => GetSmu() != null;
+        public static bool IsPawnInstalled()   => RyzenSmuService.IsPawnInstalled();
 
         static System.Timers.Timer reapplyTimer = default!;
         static System.Timers.Timer modeToggleTimer = default!;
@@ -257,8 +283,10 @@ namespace GHelper.Mode
             if (init) _ryzenPower = true;
 
             if (!_ryzenPower) return;
-            if (!RyzenControl.IsRingExsists()) return;
             if (!AppConfig.IsMode("auto_apply_power")) return;
+
+            var smu = GetSmu();
+            if (smu == null) return;
 
             int limit_total = AppConfig.GetMode("limit_total");
             int limit_slow = AppConfig.GetMode("limit_slow", limit_total);
@@ -266,22 +294,16 @@ namespace GHelper.Mode
             if (limit_total > AsusACPI.MaxTotal) return;
             if (limit_total < AsusACPI.MinTotal) return;
 
-            var stapmResult = SendCommand.set_stapm_limit((uint)limit_total * 1000);
-            if (init) Logger.WriteLine($"STAPM: {limit_total} {stapmResult}");
-
-            var slowResult = SendCommand.set_slow_limit((uint)limit_slow * 1000);
-            if (init) Logger.WriteLine($"SLOW: {limit_slow} {slowResult}");
-
-            var fastResult = SendCommand.set_fast_limit((uint)limit_slow * 1000);
-            if (init) Logger.WriteLine($"FAST: {limit_slow} {fastResult}");
-
+            smu.SetAllLimits(limit_total, limit_slow, limit_slow,
+                out SmuStatus stapm, out SmuStatus fast, out SmuStatus slow);
+            if (init) Logger.WriteLine($"STAPM: {limit_total}W {stapm} | FAST: {limit_slow}W {fast} | SLOW: {limit_slow}W {slow}");
         }
 
         public void SetPower(bool launchAsAdmin = false)
         {
 
             bool allAMD = Program.acpi.IsAllAmdPPT();
-            bool isAMD = RyzenControl.IsAMD();
+            bool isAMD = CpuInfo.IsAMD;
 
             int limit_total = AppConfig.GetMode("limit_total");
             int limit_cpu = AppConfig.GetMode("limit_cpu");
@@ -311,7 +333,6 @@ namespace GHelper.Mode
             }
             else if (isAMD)
             {
-
                 if (ProcessHelper.IsUserAdministrator())
                 {
                     SetRyzenPower(true);
@@ -398,60 +419,91 @@ namespace GHelper.Mode
 
         public void SetCPUTemp(int? cpuTemp, bool init = false)
         {
-            if (cpuTemp == RyzenControl.MaxTemp && customTemp)
+            if (cpuTemp == CpuInfo.MaxTemp && customTemp)
             {
-                cpuTemp = RyzenControl.DefaultTemp;
+                cpuTemp = CpuInfo.DefaultTemp;
                 Logger.WriteLine($"Custom CPU Temp reset");
             }
 
-            if (cpuTemp >= RyzenControl.MinTemp && cpuTemp < RyzenControl.MaxTemp)
+            if (cpuTemp >= CpuInfo.MinTemp && cpuTemp < CpuInfo.MaxTemp)
             {
-                var resultCPU = SendCommand.set_tctl_temp((uint)cpuTemp);
-                if (init) Logger.WriteLine($"CPU Temp: {cpuTemp} {resultCPU}");
-                if (resultCPU == Smu.Status.OK) customTemp = cpuTemp != RyzenControl.DefaultTemp;
+                var smu = GetSmu();
+                if (smu == null) return;
+                SmuStatus status = smu.SetThm((int)cpuTemp);
+                if (init) Logger.WriteLine($"CPU Temp: {cpuTemp}°C {status}");
+                if (status == SmuStatus.OK) customTemp = cpuTemp != CpuInfo.DefaultTemp;
             }
         }
 
         public void SetUV(int cpuUV)
         {
-            if (!RyzenControl.IsSupportedUV()) return;
+            if (!CpuInfo.IsSupportedUV()) return;
 
-            if (cpuUV >= RyzenControl.MinCPUUV && cpuUV <= RyzenControl.MaxCPUUV)
+            if (cpuUV >= CpuInfo.MinCPUUV && cpuUV <= CpuInfo.MaxCPUUV)
             {
-                var uvResult = SendCommand.set_coall(cpuUV);
-                Logger.WriteLine($"UV: {cpuUV} {uvResult}");
-                if (uvResult == Smu.Status.OK) _cpuUV = cpuUV;
+                var smu = GetSmu();
+                if (smu == null) return;
+                SmuStatus status = smu.SetCoAll(cpuUV);
+                Logger.WriteLine($"UV: {cpuUV} {status}");
+                if (status == SmuStatus.OK) _cpuUV = cpuUV;
             }
         }
 
         public void SetUViGPU(int igpuUV)
         {
-            if (!RyzenControl.IsSupportedUViGPU()) return;
+            if (!CpuInfo.IsSupportedUViGPU()) return;
 
-            if (igpuUV >= RyzenControl.MinIGPUUV && igpuUV <= RyzenControl.MaxIGPUUV)
+            if (igpuUV >= CpuInfo.MinIGPUUV && igpuUV <= CpuInfo.MaxIGPUUV)
             {
-                var iGPUResult = SendCommand.set_cogfx(igpuUV);
-                Logger.WriteLine($"iGPU UV: {igpuUV} {iGPUResult}");
-                if (iGPUResult == Smu.Status.OK) _igpuUV = igpuUV;
+                var smu = GetSmu();
+                if (smu == null) return;
+                SmuStatus status = smu.SetCoGfx(igpuUV);
+                Logger.WriteLine($"iGPU UV: {igpuUV} {status}");
+                if (status == SmuStatus.OK) _igpuUV = igpuUV;
             }
         }
 
-
-        public void SetRyzen(bool launchAsAdmin = false)
+        public string SetRyzen(bool launchAsAdmin = false)
         {
             if (!ProcessHelper.IsUserAdministrator())
             {
                 if (launchAsAdmin) ProcessHelper.RunAsAdmin("uv");
-                return;
+                return string.Empty;
             }
 
-            if (!RyzenControl.IsRingExsists()) return;
+            var smu = GetSmu();
+            if (smu == null) return string.Empty;
 
+            var lines = new System.Text.StringBuilder();
             try
             {
-                SetUV(AppConfig.GetMode("cpu_uv", 0));
-                SetUViGPU(AppConfig.GetMode("igpu_uv", 0));
-                SetCPUTemp(AppConfig.GetMode("cpu_temp"), true);
+                int cpuUV   = AppConfig.GetMode("cpu_uv",   0);
+                int igpuUV  = AppConfig.GetMode("igpu_uv",  0);
+                int cpuTemp = AppConfig.GetMode("cpu_temp");
+
+                if (CpuInfo.IsSupportedUV() && cpuUV >= CpuInfo.MinCPUUV && cpuUV <= CpuInfo.MaxCPUUV)
+                {
+                    SmuStatus s = smu.SetCoAll(cpuUV);
+                    Logger.WriteLine($"UV: {cpuUV} {s}");
+                    if (s == SmuStatus.OK) _cpuUV = cpuUV;
+                    lines.AppendLine($"CPU UV {cpuUV}: {s}");
+                }
+
+                if (CpuInfo.IsSupportedUViGPU() && igpuUV >= CpuInfo.MinIGPUUV && igpuUV <= CpuInfo.MaxIGPUUV)
+                {
+                    SmuStatus s = smu.SetCoGfx(igpuUV);
+                    Logger.WriteLine($"iGPU UV: {igpuUV} {s}");
+                    if (s == SmuStatus.OK) _igpuUV = igpuUV;
+                    lines.AppendLine($"iGPU UV {igpuUV}: {s}");
+                }
+
+                if (cpuTemp >= CpuInfo.MinTemp && cpuTemp < CpuInfo.MaxTemp)
+                {
+                    SmuStatus s = smu.SetThm(cpuTemp);
+                    Logger.WriteLine($"CPU Temp: {cpuTemp}°C {s}");
+                    if (s == SmuStatus.OK) customTemp = cpuTemp != CpuInfo.DefaultTemp;
+                    lines.AppendLine($"CPU Temp {cpuTemp}°C: {s}");
+                }
             }
             catch (Exception ex)
             {
@@ -459,6 +511,29 @@ namespace GHelper.Mode
             }
 
             reapplyTimer.Enabled = AppConfig.IsMode("auto_uv");
+            return lines.ToString().TrimEnd();
+        }
+
+        public string ReadRyzenLimits()
+        {
+            var smu = GetSmu();
+            if (smu == null) return string.Empty;
+
+            try
+            {
+                PowerLimits? lim = smu.GetPowerLimits();
+                if (lim == null) return string.Empty;
+
+                string cpuField = lim.CpuLimit.HasValue ? $"{lim.CpuLimit.Value:F1}W" : $"{lim.Stapm:F1}W";
+                                string line = $"Limits: {cpuField} | {lim.Slow:F1}W | {lim.Fast:F1}W, Temp: {lim.TctlTemp:F0}°C";
+                Logger.WriteLine("Ryzen Limits: " + line);
+                return line;
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLine("ReadRyzenLimits Error: " + ex.ToString());
+                return string.Empty;
+            }
         }
 
         public void ResetRyzen()
@@ -470,7 +545,7 @@ namespace GHelper.Mode
 
         public void AutoRyzen()
         {
-            if (!RyzenControl.IsAMD()) return;
+            if (!CpuInfo.IsAMD) return;
 
             if (AppConfig.IsMode("auto_uv")) SetRyzen();
             else ResetRyzen();

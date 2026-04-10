@@ -600,4 +600,10 @@ public static class HardwareControl
             GpuControl.KillGPUApps();
         }
     }
+
+    public static void Dispose()
+    {
+        _cpuTempCounter?.Dispose();
+        _cpuTempCounter = null;
+    }
 }
