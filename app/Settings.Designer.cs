@@ -126,6 +126,7 @@ namespace GHelper
             pictureAlly = new PictureBox();
             labelAlly = new Label();
             panelGamma = new Panel();
+            panelSliderGamma = new Panel();
             labelVisual = new Label();
             tableVisual = new TableLayoutPanel();
             buttonInstallColor = new RButton();
@@ -384,7 +385,7 @@ namespace GHelper
             panelBattery.Name = "panelBattery";
             panelBattery.TabIndex = 6;
             panelBattery.Padding = new Padding(20, 4, 20, 0);
-            panelBattery.Size = new Size(778, 132);
+            panelBattery.Size = new Size(778, 138);
             //
             // buttonBatteryFull
             //
@@ -400,7 +401,7 @@ namespace GHelper
             buttonBatteryFull.Margin = new Padding(0);
             buttonBatteryFull.Name = "buttonBatteryFull";
             buttonBatteryFull.Secondary = true;
-            buttonBatteryFull.Size = new Size(100, 36);
+            buttonBatteryFull.Size = new Size(100, 40);
             buttonBatteryFull.TabIndex = 41;
             buttonBatteryFull.Text = "100%";
             buttonBatteryFull.UseVisualStyleBackColor = false;
@@ -435,7 +436,7 @@ namespace GHelper
             //
             labelTipBattery.Anchor = AnchorStyles.Top | AnchorStyles.Left;
             labelTipBattery.ForeColor = SystemColors.GrayText;
-            labelTipBattery.Location = new Point(20, 96);
+            labelTipBattery.Location = new Point(20, 102);
             labelTipBattery.Name = "labelTipBattery";
             labelTipBattery.Size = new Size(438, 36);
             labelTipBattery.TabIndex = 45;
@@ -1504,7 +1505,7 @@ namespace GHelper
             labelCharge.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             labelCharge.Cursor = Cursors.Hand;
             labelCharge.ForeColor = SystemColors.ControlDark;
-            labelCharge.Location = new Point(478, 96);
+            labelCharge.Location = new Point(478, 102);
             labelCharge.Margin = new Padding(0);
             labelCharge.Name = "labelCharge";
             labelCharge.Size = new Size(280, 36);
@@ -1760,13 +1761,13 @@ namespace GHelper
             panelGamma.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             panelGamma.Controls.Add(labelVisual);
             panelGamma.Controls.Add(tableVisual);
-            panelGamma.Controls.Add(sliderGamma);
+            panelGamma.Controls.Add(panelSliderGamma);
             panelGamma.Controls.Add(panelGammaTitle);
             panelGamma.Dock = DockStyle.Top;
             panelGamma.Location = new Point(11, 838);
             panelGamma.Margin = new Padding(0);
             panelGamma.Name = "panelGamma";
-            panelGamma.Padding = new Padding(20, 51, 28, 0);
+            panelGamma.Padding = new Padding(20, 51, 20, 0);
             panelGamma.Size = new Size(778, 233);
             panelGamma.TabIndex = 3;
             panelGamma.Visible = false;
@@ -1880,17 +1881,28 @@ namespace GHelper
             //
             // sliderGamma
             //
+            // panelSliderGamma
+            //
+            panelSliderGamma.Controls.Add(sliderGamma);
+            panelSliderGamma.Dock = DockStyle.Top;
+            panelSliderGamma.Margin = new Padding(0);
+            panelSliderGamma.Name = "panelSliderGamma";
+            panelSliderGamma.Padding = new Padding(8, 0, 8, 0);
+            panelSliderGamma.Size = new Size(738, 40);
+            panelSliderGamma.Visible = false;
+            //
+            // sliderGamma
+            //
             sliderGamma.Dock = DockStyle.Top;
-            sliderGamma.Margin = new Padding(12, 4, 16, 4);
+            sliderGamma.Margin = new Padding(0);
             sliderGamma.Max = 100;
             sliderGamma.Min = 0;
             sliderGamma.Name = "sliderGamma";
-            sliderGamma.Size = new Size(630, 40);
+            sliderGamma.Size = new Size(730, 40);
             sliderGamma.Step = 5;
             sliderGamma.TabIndex = 0;
             sliderGamma.Text = "sliderGamma";
             sliderGamma.Value = 100;
-            sliderGamma.Visible = false;
             //
             // panelGammaTitle
             //
@@ -2238,6 +2250,7 @@ namespace GHelper
         private RButton buttonOverlay;
         private RComboBox comboInterval;
         private Panel panelGamma;
+        private Panel panelSliderGamma;
         private Slider sliderGamma;
         private Label labelTipBattery;
         private Label labelSliderBatteryMin;

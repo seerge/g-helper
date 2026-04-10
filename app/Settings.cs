@@ -400,6 +400,7 @@ namespace GHelper
             {
                 panelGamma.Visible = true;
                 sliderGamma.Visible = true;
+                panelSliderGamma.Visible = true;
                 labelGammaTitle.Text = Properties.Strings.FlickerFreeDimming + " / " + Properties.Strings.VisualMode;
 
                 VisualiseBrightness();

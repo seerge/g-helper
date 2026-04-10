@@ -652,12 +652,12 @@ namespace GHelper
             // sliderBrightness
             // 
             sliderBrightness.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            sliderBrightness.Location = new Point(433, 5);
+            sliderBrightness.Location = new Point(441, 5);
             sliderBrightness.Margin = new Padding(0);
             sliderBrightness.Max = 3;
             sliderBrightness.Min = 0;
             sliderBrightness.Name = "sliderBrightness";
-            sliderBrightness.Size = new Size(501, 40);
+            sliderBrightness.Size = new Size(493, 40);
             sliderBrightness.Step = 1;
             sliderBrightness.TabIndex = 50;
             sliderBrightness.TabStop = false;
