@@ -819,7 +819,7 @@ Folytatni szeretnéd?</value>
     <comment>Updated</comment>
   </data>
   <data name="SlashBounce" xml:space="preserve">
-    <value>Pattogás</value>
+    <value>Hullámzás</value>
   </data>
   <data name="SlashMode" xml:space="preserve">
     <value>Slash világítás</value>
