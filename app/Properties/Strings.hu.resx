@@ -151,10 +151,10 @@
     <value>Animáció sebessége</value>
   </data>
   <data name="AnimeMatrix" xml:space="preserve">
-    <value>Anime Matrix</value>
+    <value>AniMe Matrix kijelző</value>
   </data>
   <data name="AppAlreadyRunning" xml:space="preserve">
-    <value>Az alkalmazás már el lett inítva</value>
+    <value>Az alkalmazás már el lett indítva</value>
   </data>
   <data name="AppAlreadyRunningText" xml:space="preserve">
     <value>A G-Helper már fut. A rendszertárcán megtalálod az alkalmazás ikonját.</value>
@@ -367,7 +367,7 @@
     <value>Letiltja a dGPU-t, hogy spóroljon az akkuval</value>
   </data>
   <data name="EcoMode" xml:space="preserve">
-    <value>Eco</value>
+    <value>Takarékos mód</value>
   </data>
   <data name="EnableGPUOnShutdown" xml:space="preserve">
     <value>GPU engedélyezése kikapcsoláskor (megakadályozza az Eco mód problémát)</value>
@@ -561,7 +561,7 @@ Folytatni szeretnéd?</value>
     <value>perc</value>
   </data>
   <data name="MouseAngleSnapping" xml:space="preserve">
-    <value>Angle Snapping / Tuning</value>
+    <value>Szögbeállítás / hangolás</value>
   </data>
   <data name="MouseAutoPowerOff" xml:space="preserve">
     <value>Automatikus kikapcsolás idő múlva</value>
@@ -648,7 +648,7 @@ Folytatni szeretnéd?</value>
     <value>Indít / Megállít</value>
   </data>
   <data name="PollingRate" xml:space="preserve">
-    <value>Polling Rate</value>
+    <value>Lekérdezési gyakoriság</value>
   </data>
   <data name="PowerLimits" xml:space="preserve">
     <value>Teljesítménykorlátok</value>
@@ -678,13 +678,13 @@ Folytatni szeretnéd?</value>
     <value>Jobb kar irányító holtjátékai</value>
   </data>
   <data name="RTDeadzones" xml:space="preserve">
-    <value>Right Trigger Deadzones</value>
+    <value>Jobb ravasz holtzónái</value>
   </data>
   <data name="RunOnStartup" xml:space="preserve">
     <value>Indítás a rendszerrel</value>
   </data>
   <data name="ScalingQuality" xml:space="preserve">
-    <value>Scaling Quality</value>
+    <value>Méretezési minőség</value>
   </data>
   <data name="ScreenPadDown" xml:space="preserve">
     <value>Screenpad fényerő csökkentése</value>
@@ -729,7 +729,7 @@ Folytatni szeretnéd?</value>
     <value>AURA ki-/bekapcsolása</value>
   </data>
   <data name="ToggleClamshellMode" xml:space="preserve">
-    <value>Auto Toggle Clamshell Mode</value>
+    <value>Alvás letiltása lecsukott fedélnél</value>
   </data>
   <data name="ToggleFnLock" xml:space="preserve">
     <value>Fn-Lock ki-/bekapcsolása</value>
@@ -744,7 +744,7 @@ Folytatni szeretnéd?</value>
     <value>Érintőképernyő ki-/bekapcsolása</value>
   </data>
   <data name="Touchscreen" xml:space="preserve">
-    <value>Touchscreen</value>
+    <value>Érintőképernyő</value>
   </data>
   <data name="Turbo" xml:space="preserve">
     <value>Turbó</value>
@@ -759,10 +759,10 @@ Folytatni szeretnéd?</value>
     <value>A jobb FPS érdekében a laptop kijelzőt közvetlenül a GPU-n keresztül működteti</value>
   </data>
   <data name="UltimateMode" xml:space="preserve">
-    <value>Ultimate</value>
+    <value>Legjobb</value>
   </data>
   <data name="UndervoltingRisky" xml:space="preserve">
-    <value>Undervolting is an experimental and risky feature. If applied values are too low for your hardware, it can become unstable, shut down or cause data corruption. If you want to try - start from small values first, click Apply and test what works for you.</value>
+    <value>Az alacsonyabb feszültségű üzemmód egy kísérleti és kockázatos funkció. Ha a beállított értékek a hardverhez képest túl alacsonyak, a rendszer instabillá válhat, leállhat, vagy az adatok megsérülhetnek. Ha ki szeretné próbálni, kezdjen először alacsony értékekkel, kattintson az „Alkalmaz” gombra, és tesztelje, miként működik.</value>
   </data>
   <data name="Unmuted" xml:space="preserve">
     <value>Mikrofon Be</value>
@@ -774,16 +774,16 @@ Folytatni szeretnéd?</value>
     <value>Verzió</value>
   </data>
   <data name="VibrationStrength" xml:space="preserve">
-    <value>Vibration Strength</value>
+    <value>Rezgés erőssége</value>
   </data>
   <data name="VisualMode" xml:space="preserve">
     <value>Képernyőszín Mód</value>
   </data>
   <data name="VisualModesHDR" xml:space="preserve">
-    <value>Visual Modes are not available when HDR or ACM is active</value>
+    <value>A képernyőmódok nem érhetőek el aktív HDR vagy ACM mellett</value>
   </data>
   <data name="VisualModesScreen" xml:space="preserve">
-    <value>Visual Modes are not available when laptop screen is off</value>
+    <value>A képernyőmódok nem érhetőek el, ha a laptop kijelzője ki van kapcsolva</value>
   </data>
   <data name="VolumeDown" xml:space="preserve">
     <value>Lehalkítás</value>
@@ -798,93 +798,93 @@ Folytatni szeretnéd?</value>
     <value>Alkalmazás maradjon mindig felül</value>
   </data>
   <data name="Zoom" xml:space="preserve">
-    <value>Zoom</value>
+    <value>Nagyítás</value>
   </data>
   <data name="Donate" xml:space="preserve">
-    <value>Donate</value>
+    <value>Támogatás</value>
   </data>
   <data name="Legend" xml:space="preserve">
-    <value>Legend</value>
+    <value>Jelmagyarázat</value>
   </data>
   <data name="LegendGray" xml:space="preserve">
-    <value>Can't check local version</value>
+    <value>Helyi verzió ellenőrzése sikertelen</value>
     <comment>Can't check local version</comment>
   </data>
   <data name="LegendRed" xml:space="preserve">
-    <value>Update Available</value>
+    <value>Frissítés elérhető</value>
     <comment>Update Available</comment>
   </data>
   <data name="LegendGreen" xml:space="preserve">
-    <value>Updated</value>
+    <value>Naprakész</value>
     <comment>Updated</comment>
   </data>
   <data name="SlashBounce" xml:space="preserve">
-    <value>Bounce</value>
+    <value>Hullámzás</value>
   </data>
   <data name="SlashMode" xml:space="preserve">
-    <value>Slash</value>
+    <value>Slash világítás</value>
   </data>
   <data name="SlashLoading" xml:space="preserve">
-    <value>Loading</value>
+    <value>Betöltés</value>
   </data>
   <data name="SlashBitStream" xml:space="preserve">
-    <value>Bit Stream</value>
+    <value>Bitfolyam</value>
   </data>
   <data name="SlashTransmission" xml:space="preserve">
-    <value>Transmission</value>
+    <value>Átvitel</value>
   </data>
   <data name="SlashFlow" xml:space="preserve">
-    <value>Flow</value>
+    <value>Áramlás</value>
   </data>
   <data name="SlashFlux" xml:space="preserve">
-    <value>Flux</value>
+    <value>Fluxus</value>
   </data>
   <data name="SlashPhantom" xml:space="preserve">
-    <value>Phantom</value>
+    <value>Fantom</value>
   </data>
   <data name="SlashSpectrum" xml:space="preserve">
-    <value>Spectrum</value>
+    <value>Spektrum</value>
   </data>
   <data name="SlashHazard" xml:space="preserve">
-    <value>Hazard</value>
+    <value>Veszély</value>
   </data>
   <data name="SlashInterfacing" xml:space="preserve">
-    <value>Interfacing</value>
+    <value>Összekapcsolás</value>
   </data>
   <data name="SlashRamp" xml:space="preserve">
-    <value>Ramp</value>
+    <value>Fokozatos</value>
   </data>
   <data name="SlashGameOver" xml:space="preserve">
-    <value>Game Over</value>
+    <value>Játék vége</value>
   </data>
   <data name="SlashStart" xml:space="preserve">
-    <value>Start</value>
+    <value>Indítás</value>
   </data>
   <data name="SlashBuzzer" xml:space="preserve">
-    <value>Buzzer</value>
+    <value>Vibrálás </value>
   </data>
   <data name="SlashStatic" xml:space="preserve">
-    <value>Static</value>
+    <value>Statikus</value>
   </data>
   <data name="SlashBatteryLevel" xml:space="preserve">
-    <value>Battery Level</value>
+    <value>Akkumulátor szint</value>
   </data>
   <data name="IntervalOff" xml:space="preserve">
-    <value>Interval Off</value>
+    <value>Időköz kikapcsolva</value>
   </data>
   <data name="IntervalSeconds" xml:space="preserve">
-    <value>Interval {0}s</value>
+    <value>{0} mp időköz</value>
   </data>
   <data name="DisableDynamicLighting" xml:space="preserve">
-    <value>Please disable Windows &gt; Dynamic Lighting</value>
+    <value>Kérjük, tiltsd le a Windows Dinamikus megvilágítás funkcióját</value>
   </data>
   <data name="AmbientModeResources" xml:space="preserve">
-    <value>Ambient mode may increase resource usage</value>
+    <value>Az Ambient (környezeti) mód növelheti az erőforrás-használatot</value>
   </data>
   <data name="MouseMotionSync" xml:space="preserve">
-    <value>Motion Sync</value>
+    <value>Mozgás szinkronizálása</value>
   </data>
   <data name="MouseZoneMode" xml:space="preserve">
-    <value>Zone Mode</value>
+    <value>Zóna mód</value>
   </data>
 </root>

@@ -9,11 +9,12 @@ public static class AsusHid
     public const byte INPUT_ID = 0x5a;
     public const byte AURA_ID = 0x5d;
 
-    static int[] deviceIds = { 0x1a30, 0x1854, 0x1869, 0x1866, 0x19b6, 0x1822, 0x1837, 0x1854, 0x184a, 0x183d, 0x8502, 0x1807, 0x17e0, 0x18c6, 0x1abe, 0x1b4c, 0x1b6e, 0x1b2c, 0x8854 };
+    static int[] deviceIds = { 0x1a30, 0x1854, 0x1869, 0x1866, 0x19b6, 0x1822, 0x1837, 0x1854, 0x184a, 0x183d, 0x8502, 0x1807, 0x17e0, 0x1abe, 0x1b4c, 0x1b6e, 0x1b2c, 0x8854 };
+    public static int[] REAR_LIGHT_PIDS = { 0x18c6 };
 
     static HidStream? auraStream;
 
-    public static IEnumerable<HidDevice>? FindDevices(byte reportId)
+    public static IEnumerable<HidDevice>? FindDevices(byte reportId, int[]? pids = null)
     {
         IEnumerable<HidDevice> deviceList;
 
@@ -26,7 +27,7 @@ public static class AsusHid
             {
                 try
                 {
-                    if (deviceIds.Contains(device.ProductID) &&
+                    if ((pids != null ? pids.Contains(device.ProductID) : deviceIds.Contains(device.ProductID)) &&
                         device.CanOpen &&
                         device.GetMaxFeatureReportLength() > 0)
                     {
@@ -121,9 +122,9 @@ public static class AsusHid
         Write(new List<byte[]> { data }, log);
     }
 
-    public static void Write(List<byte[]> dataList, string log = "USB")
+    public static void Write(List<byte[]> dataList, string log = "USB", int[]? pids = null)
     {
-        var devices = FindDevices(AURA_ID);
+        var devices = FindDevices(AURA_ID, pids);
         if (devices is null) return;
 
         foreach (var device in devices)
