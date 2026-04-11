@@ -561,7 +561,7 @@ Folytatni szeretnéd?</value>
     <value>perc</value>
   </data>
   <data name="MouseAngleSnapping" xml:space="preserve">
-    <value>Angle Snapping / Tuning</value>
+    <value>Szögbeállítás / hangolás</value>
   </data>
   <data name="MouseAutoPowerOff" xml:space="preserve">
     <value>Automatikus kikapcsolás idő múlva</value>
@@ -678,13 +678,13 @@ Folytatni szeretnéd?</value>
     <value>Jobb kar irányító holtjátékai</value>
   </data>
   <data name="RTDeadzones" xml:space="preserve">
-    <value>Right Trigger Deadzones</value>
+    <value>Jobb ravasz holtzónái</value>
   </data>
   <data name="RunOnStartup" xml:space="preserve">
     <value>Indítás a rendszerrel</value>
   </data>
   <data name="ScalingQuality" xml:space="preserve">
-    <value>Scaling Quality</value>
+    <value>Méretezési minőség</value>
   </data>
   <data name="ScreenPadDown" xml:space="preserve">
     <value>Screenpad fényerő csökkentése</value>
@@ -729,7 +729,7 @@ Folytatni szeretnéd?</value>
     <value>AURA ki-/bekapcsolása</value>
   </data>
   <data name="ToggleClamshellMode" xml:space="preserve">
-    <value>Auto Toggle Clamshell Mode</value>
+    <value>Alvás letiltása lecsukott fedélnél</value>
   </data>
   <data name="ToggleFnLock" xml:space="preserve">
     <value>Fn-Lock ki-/bekapcsolása</value>
@@ -744,7 +744,7 @@ Folytatni szeretnéd?</value>
     <value>Érintőképernyő ki-/bekapcsolása</value>
   </data>
   <data name="Touchscreen" xml:space="preserve">
-    <value>Touchscreen</value>
+    <value>Érintőképernyő</value>
   </data>
   <data name="Turbo" xml:space="preserve">
     <value>Turbó</value>
@@ -762,7 +762,7 @@ Folytatni szeretnéd?</value>
     <value>Ultimate</value>
   </data>
   <data name="UndervoltingRisky" xml:space="preserve">
-    <value>Undervolting is an experimental and risky feature. If applied values are too low for your hardware, it can become unstable, shut down or cause data corruption. If you want to try - start from small values first, click Apply and test what works for you.</value>
+    <value>Az alacsonyabb feszültségű üzemmód egy kísérleti és kockázatos funkció. Ha a beállított értékek a hardverhez képest túl alacsonyak, a rendszer instabillá válhat, leállhat, vagy az adatok megsérülhetnek. Ha ki szeretné próbálni, kezdjen először alacsony értékekkel, kattintson az „Alkalmaz” gombra, és tesztelje, miként működik.</value>
   </data>
   <data name="Unmuted" xml:space="preserve">
     <value>Mikrofon Be</value>
@@ -774,16 +774,16 @@ Folytatni szeretnéd?</value>
     <value>Verzió</value>
   </data>
   <data name="VibrationStrength" xml:space="preserve">
-    <value>Vibration Strength</value>
+    <value>Rezgés erőssége</value>
   </data>
   <data name="VisualMode" xml:space="preserve">
     <value>Képernyőszín Mód</value>
   </data>
   <data name="VisualModesHDR" xml:space="preserve">
-    <value>Visual Modes are not available when HDR or ACM is active</value>
+    <value>A képernyőmódok nem érhetőek el aktív HDR vagy ACM mellett</value>
   </data>
   <data name="VisualModesScreen" xml:space="preserve">
-    <value>Visual Modes are not available when laptop screen is off</value>
+    <value>A képernyőmódok nem érhetőek el, ha a laptop kijelzője ki van kapcsolva</value>
   </data>
   <data name="VolumeDown" xml:space="preserve">
     <value>Lehalkítás</value>
@@ -798,16 +798,16 @@ Folytatni szeretnéd?</value>
     <value>Alkalmazás maradjon mindig felül</value>
   </data>
   <data name="Zoom" xml:space="preserve">
-    <value>Zoom</value>
+    <value>Nagyítás</value>
   </data>
   <data name="Donate" xml:space="preserve">
-    <value>Donate</value>
+    <value>Támogatás</value>
   </data>
   <data name="Legend" xml:space="preserve">
-    <value>Legend</value>
+    <value>Jelmagyarázat</value>
   </data>
   <data name="LegendGray" xml:space="preserve">
-    <value>Can't check local version</value>
+    <value>Helyi verzió ellenőrzése sikertelen</value>
     <comment>Can't check local version</comment>
   </data>
   <data name="LegendRed" xml:space="preserve">
