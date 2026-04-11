@@ -1594,7 +1594,7 @@ namespace GHelper
 
         public void LabelFansResult(string text)
         {
-            if (fansForm != null && fansForm.Text != "")
+            if (fansForm != null && !fansForm.IsDisposed && fansForm.Text != "")
                 fansForm.LabelFansResult(text);
         }
 

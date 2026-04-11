@@ -891,13 +891,16 @@ namespace GHelper
         {
             if (text.Length > 0) Logger.WriteLine(text);
 
-            if (this == null || this.Text == "") return;
+            if (this.IsDisposed || !this.IsHandleCreated || this.Text == "") return;
 
-            Invoke(delegate
-            {
-                labelFansResult.Text = text;
-                labelFansResult.Visible = (text.Length > 0);
-            });
+            try { 
+                BeginInvoke(delegate
+                {
+                    labelFansResult.Text = text;
+                    labelFansResult.Visible = (text.Length > 0);
+                });
+            }
+            catch (ObjectDisposedException) { }
         }
 
 
