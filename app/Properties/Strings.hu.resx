@@ -154,7 +154,7 @@
     <value>AniMe Matrix kijelző</value>
   </data>
   <data name="AppAlreadyRunning" xml:space="preserve">
-    <value>Az alkalmazás már el lett inítva</value>
+    <value>Az alkalmazás már el lett indítva</value>
   </data>
   <data name="AppAlreadyRunningText" xml:space="preserve">
     <value>A G-Helper már fut. A rendszertárcán megtalálod az alkalmazás ikonját.</value>
