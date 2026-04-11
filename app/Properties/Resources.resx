@@ -316,6 +316,9 @@
   <data name="icons8-keyboard-32" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\icons8-keyboard-32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="icons8-show-right-side-panel-48" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\icons8-show-right-side-panel-48.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="MFont" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Font.otf;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
