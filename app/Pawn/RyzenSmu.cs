@@ -256,16 +256,47 @@ namespace PawnIO
             // every field without truncating the table on any layout variant.
             const int READ_FLOATS = 128;
             ulong[] tableWords = new ulong[READ_FLOATS / 2];
-            if (!_io.Execute("ioctl_read_pm_table", null, tableWords))
+
+            const int READ_RETRIES = 3;
+            bool readOk = false;
+            byte[] tableBytes = new byte[READ_FLOATS * sizeof(float)];
+            for (int attempt = 0; attempt < READ_RETRIES; attempt++)
+            {
+                if (attempt > 0)
+                {
+                    Thread.Sleep(50);
+                    _io.Execute("ioctl_update_pm_table", null, null);
+                }
+
+                if (!_io.Execute("ioctl_read_pm_table", null, tableWords))
+                    return null;
+
+                Buffer.BlockCopy(tableWords, 0, tableBytes, 0, tableBytes.Length);
+                ReadOnlySpan<float> check = MemoryMarshal.Cast<byte, float>(tableBytes);
+
+                // Consider the table populated when STAPM (index 0) is non-zero.
+                if (check.Length > 0 && check[0] != 0f)
+                {
+                    readOk = true;
+                    break;
+                }
+            }
+
+            if (!readOk)
                 return null;
 
             // Reinterpret as floats
-            byte[] tableBytes = new byte[tableWords.Length * 8];
-            Buffer.BlockCopy(tableWords, 0, tableBytes, 0, tableBytes.Length);
             ReadOnlySpan<float> floats = MemoryMarshal.Cast<byte, float>(tableBytes);
 
             if (floats.Length <= thmIdx)
                 return null;
+
+            // Log full PM table for debugging.
+            var sb = new System.Text.StringBuilder();
+            sb.Append($"PMTable ver=0x{tableVersion:X6} floats:");
+            for (int i = 0; i < floats.Length; i++)
+                sb.Append($" [{i}]={floats[i]:G6}");
+            Logger.WriteLine(sb.ToString());
 
             // PM table layout reference (libryzenadj / RyzenAdj api.c):
             //
@@ -277,7 +308,7 @@ namespace PawnIO
             //   [4]  slow_limit    [6]  cpu_limit  (CPU-only PPT)   [16] tctl_temp
             //
             // All other Mobile/StrixPoint/StrixHalo share the APU-only layout at [0/2/4/16(or 22)].
-            bool hasCpuLimit = HasCpuLimitField(tableVersion);
+            bool hasCpuLimit = HasCpuLimitField(tableVersion, Family);
             float? cpuLimit = (hasCpuLimit && floats.Length > 6) ? floats[6] : null;
 
             return new PowerLimits(
@@ -290,10 +321,14 @@ namespace PawnIO
         }
 
         // Returns true for PM table versions that include a dedicated cpu_limit field
-        // at float index 6 (offset 0x18). This corresponds to Rembrandt and later
-        // Mobile-family APUs paired with a discrete AMD GPU (table ver >= 0x380900).
-        private static bool HasCpuLimitField(uint tableVersion) =>
-            (tableVersion & 0xFFFF00) >= 0x380900;
+        // at float index 6 (offset 0x18). This is specific to Rembrandt (Mobile family,
+        // table ver 0x38xxxx) APUs paired with a discrete AMD GPU (sub-version >= 0x0900).
+        // Other families (e.g. StrixPoint 0x5D0009) have a different layout where
+        // index 6 is unrelated and must not be treated as a CPU limit.
+        private static bool HasCpuLimitField(uint tableVersion, CpuFamily family) =>
+            family == CpuFamily.Mobile
+            && (tableVersion >> 16) == 0x38
+            && (tableVersion & 0xFFFF) >= 0x0900;
 
         public static CpuFamily GetFamily(CpuCodeName cpu) => cpu switch
         {
