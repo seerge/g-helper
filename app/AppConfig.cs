@@ -563,7 +563,7 @@ public static class AppConfig
 
     public static bool IsResetRequired()
     {
-        return ContainsModel("GA403") || ContainsModel("FA507XV");
+        return ContainsModel("GA403UI") || ContainsModel("GA403UU") || ContainsModel("GA403UV") || ContainsModel("FA507XV");
     }
 
     public static bool IsFanRequired()
