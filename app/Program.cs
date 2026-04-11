@@ -22,14 +22,14 @@ namespace GHelper
         public static NotifyIcon trayIcon;
         public static AsusACPI acpi;
 
-        public static SettingsForm settingsForm = new SettingsForm();
+        public static SettingsForm settingsForm;
 
-        public static ModeControl modeControl = new ModeControl();
-        public static GPUModeControl gpuControl = new GPUModeControl(settingsForm);
-        public static AllyControl allyControl = new AllyControl(settingsForm);
-        public static ClamshellModeControl clamshellControl = new ClamshellModeControl();
+        public static ModeControl modeControl;
+        public static GPUModeControl gpuControl;
+        public static AllyControl allyControl;
+        public static ClamshellModeControl clamshellControl;
 
-        public static ToastForm toast = new ToastForm();
+        public static ToastForm toast;
 
         public static IntPtr unRegPowerNotify, unRegPowerNotifyLid;
         public static int WM_TASKBARCREATED = 0;
@@ -70,6 +70,15 @@ namespace GHelper
                 Application.Exit();
                 return;
             }
+
+            settingsForm = new SettingsForm();
+
+            modeControl = new ModeControl();
+            gpuControl = new GPUModeControl(settingsForm);
+            allyControl = new AllyControl(settingsForm);
+            clamshellControl = new ClamshellModeControl();
+
+            toast = new ToastForm();
 
             string language = AppConfig.GetString("language");
 

@@ -88,11 +88,12 @@ namespace PawnIO
 
     // Current power limits read from the PM table, in watts.
     public sealed record PowerLimits(
-        float Stapm,
-        float Fast,
-        float Slow,
-        float TctlTemp,
-        float? CpuLimit = null   // populated on Rembrandt/Mobile with AMD dGPU (table ver 0x380904+)
+        float Stapm,       // offset 0x00 — stable across all table versions
+        float Fast,        // offset 0x08 — stable across all table versions
+        float Slow,        // offset 0x10 — stable across all table versions
+        float TctlTemp,    // offset varies by table version (see GetTctlIndex)
+        float? ApuSlow = null  // offset 0x18 — apu_slow_limit; present on 0x37xxxx+ APU tables,
+                               // absent on Raven (0x1Exxxx) and Raphael (0x54xxxx)
     );
 
     public sealed class RyzenSmuService : IDisposable
@@ -237,9 +238,6 @@ namespace PawnIO
         //   3. ioctl_read_pm_table     — reads from the physical address
         public PowerLimits? GetPowerLimits()
         {
-            // StrixHalo tctl is at float index 22; all other families at 16.
-            int thmIdx = Family == CpuFamily.StrixHalo ? 22 : 16;
-
             // Step 1: resolve — returns [version, base].
             // The version discriminates PM table layout variants.
             ulong[] resolveOut = new ulong[2];
@@ -288,9 +286,6 @@ namespace PawnIO
             // Reinterpret as floats
             ReadOnlySpan<float> floats = MemoryMarshal.Cast<byte, float>(tableBytes);
 
-            if (floats.Length <= thmIdx)
-                return null;
-
             // Log full PM table for debugging.
             var sb = new System.Text.StringBuilder();
             sb.Append($"PMTable ver=0x{tableVersion:X6} floats:");
@@ -298,37 +293,74 @@ namespace PawnIO
                 sb.Append($" [{i}]={floats[i]:G6}");
             Logger.WriteLine(sb.ToString());
 
-            // PM table layout reference (libryzenadj / RyzenAdj api.c):
+            // PM table layout — tctl_temp byte offset per RyzenAdj api.c get_tctl_temp():
             //
-            // Rembrandt APU-only  (ver 0x380804):
-            //   [0]  stapm_limit   [2]  fast_limit   [4]  slow_limit   [16] tctl_temp
+            //  ver 0x1Exxxx  (Raven/Picasso/Dali)           : offset 0x58 = float index 22
+            //  ver 0x37xxxx–0x5Dxxxx                        : offset 0x40 = float index 16
+            //    covers: Renoir(0x37), Lucienne/Cezanne(0x3F/0x40), Rembrandt(0x45),
+            //            Phoenix/HawkPoint(0x4C), StrixPoint/KrackanPoint(0x5D)
+            //  ver 0x64020C  (StrixHalo)                    : offset 0x58 = float index 22
+            //  ver 0x54xxxx  (DragonRange/Raphael)          : not in RyzenAdj;
+            //                                                 empirically index 10 from user data
             //
-            // Rembrandt + AMD dGPU (ver 0x380904):
-            //   [0]  stapm_limit   [2]  fast_limit (platform PPT)
-            //   [4]  slow_limit    [6]  cpu_limit  (CPU-only PPT)   [16] tctl_temp
+            // Power limits are at fixed offsets for all known versions:
+            //   [0] stapm_limit  [2] fast_limit  [4] slow_limit
             //
-            // All other Mobile/StrixPoint/StrixHalo share the APU-only layout at [0/2/4/16(or 22)].
-            bool hasCpuLimit = HasCpuLimitField(tableVersion, Family);
-            float? cpuLimit = (hasCpuLimit && floats.Length > 6) ? floats[6] : null;
+            // Rembrandt + AMD dGPU (ver 0x380904+):
+            //   [6] cpu_limit (CPU-only PPT, distinct from platform PPT at [2])
+            int thmIdx = GetTctlIndex(tableVersion);
+            if (thmIdx < 0 || floats.Length <= thmIdx)
+                return null;
+
+            float? apuSlow = HasApuSlowField(tableVersion) ? floats[6] : null;
 
             return new PowerLimits(
                 Stapm:    floats[0],
                 Fast:     floats[2],
                 Slow:     floats[4],
                 TctlTemp: floats[thmIdx],
-                CpuLimit: cpuLimit
+                ApuSlow:  apuSlow
             );
         }
 
-        // Returns true for PM table versions that include a dedicated cpu_limit field
-        // at float index 6 (offset 0x18). This is specific to Rembrandt (Mobile family,
-        // table ver 0x38xxxx) APUs paired with a discrete AMD GPU (sub-version >= 0x0900).
-        // Other families (e.g. StrixPoint 0x5D0009) have a different layout where
-        // index 6 is unrelated and must not be treated as a CPU limit.
-        private static bool HasCpuLimitField(uint tableVersion, CpuFamily family) =>
-            family == CpuFamily.Mobile
-            && (tableVersion >> 16) == 0x38
-            && (tableVersion & 0xFFFF) >= 0x0900;
+        // Returns the float index of tctl_temp for a given PM table version,
+        // matching the switch in RyzenAdj api.c get_tctl_temp().
+        // Returns -1 for completely unknown versions.
+        private static int GetTctlIndex(uint tableVersion)
+        {
+            uint hi = tableVersion >> 16;
+            return hi switch
+            {
+                // Raven / Picasso / Dali  (0x1Exxxx)
+                // StrixHalo               (0x64xxxx)
+                // RyzenAdj: offset 0x58 = float index 22
+                0x1E or 0x64 => 22,
+
+                // Renoir/Lucienne        (0x37xxxx)
+                // Cezanne                (0x3Fxxxx)
+                // Rembrandt / Phoenix    (0x40xxxx, 0x45xxxx, 0x4Cxxxx)
+                // StrixPoint/KrackanPt   (0x5Dxxxx, 0x65xxxx)
+                // RyzenAdj: offset 0x40 = float index 16
+                0x37 or 0x3F or 0x40 or 0x45 or 0x4C or 0x5D or 0x65 => 16,
+
+                // DragonRange / Raphael  (0x54xxxx)
+                // Not in RyzenAdj; empirically confirmed at float index 10
+                // from user PMTable log: [10]=95 matches known tctl limit.
+                0x54 => 10,
+
+                _ => 16,   // safe fallback for any future unknown version
+            };
+        }
+
+        // Returns true when the PM table includes apu_slow_limit at float index 6 (offset 0x18).
+        // Per RyzenAdj api.c get_apu_slow_limit(): present on all mobile APU tables from
+        // 0x37xxxx onwards (Renoir, Cezanne, Rembrandt, Phoenix, StrixPoint, StrixHalo, …).
+        // Absent on Raven (0x1Exxxx) and Raphael/DragonRange (0x54xxxx).
+        private static bool HasApuSlowField(uint tableVersion)
+        {
+            uint hi = tableVersion >> 16;
+            return hi != 0x1E && hi != 0x54;
+        }
 
         public static CpuFamily GetFamily(CpuCodeName cpu) => cpu switch
         {
