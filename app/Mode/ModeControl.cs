@@ -46,6 +46,7 @@ namespace GHelper.Mode
 
         static System.Timers.Timer reapplyTimer = default!;
         static System.Timers.Timer modeToggleTimer = default!;
+        static CancellationTokenSource _modeCts = new();
 
         public ModeControl()
         {
@@ -103,41 +104,56 @@ namespace GHelper.Mode
             Modes.SetCurrent(mode);
 
 
+            _modeCts.Cancel();
+            _modeCts = new CancellationTokenSource();
+            var ct = _modeCts.Token;
+
             Task.Run(async () =>
             {
-                bool reset = AppConfig.IsResetRequired() && (Modes.GetBase(oldMode) == Modes.GetBase(mode)) && customPower > 0 && !AppConfig.IsMode("auto_apply_power");
-
-                customFans = false;
-                customPower = 0;
-                customTemp = false;
-
-                SetModeLabel();
-
-                // Workaround for not properly resetting limits on G14 2024
-                if (reset)
+                try
                 {
-                    Program.acpi.DeviceSet(AsusACPI.PerformanceMode, (Modes.GetBase(oldMode) != 1) ? AsusACPI.PerformanceTurbo : AsusACPI.PerformanceBalanced, "ModeReset");
-                    await Task.Delay(TimeSpan.FromMilliseconds(1500));
+                    bool reset = AppConfig.IsResetRequired() && (Modes.GetBase(oldMode) == Modes.GetBase(mode)) && customPower > 0 && !AppConfig.IsMode("auto_apply_power");
+
+                    customFans = false;
+                    customPower = 0;
+                    customTemp = false;
+
+                    SetModeLabel();
+
+                    // Workaround for not properly resetting limits on G14 2024
+                    if (reset)
+                    {
+                        Program.acpi.DeviceSet(AsusACPI.PerformanceMode, (Modes.GetBase(oldMode) != 1) ? AsusACPI.PerformanceTurbo : AsusACPI.PerformanceBalanced, "ModeReset");
+                        await Task.Delay(TimeSpan.FromMilliseconds(1500), ct);
+                    }
+
+                    ct.ThrowIfCancellationRequested();
+
+                    if (AppConfig.Is("status_mode")) Program.acpi.DeviceSet(AsusACPI.StatusMode, [0x00, Modes.GetBase(mode) == AsusACPI.PerformanceSilent ? (byte)0x02 : (byte)0x03], "StatusMode");
+                    int status = Program.acpi.DeviceSet(AsusACPI.PerformanceMode, AppConfig.IsManualModeRequired() ? AsusACPI.PerformanceManual : Modes.GetBase(mode), "Mode");
+                    // Vivobook fallback
+                    if (status != 1) Program.acpi.SetVivoMode(Modes.GetBase(mode));
+
+                    SetGPUClocks();
+
+                    await Task.Delay(TimeSpan.FromMilliseconds(100), ct);
+                    ct.ThrowIfCancellationRequested();
+                    AutoFans();
+                    await Task.Delay(TimeSpan.FromMilliseconds(1000), ct);
+                    ct.ThrowIfCancellationRequested();
+                    AutoPower();
+
+                    var command = AppConfig.GetModeString("mode_command");
+                    if (command is not null)
+                    {   Logger.WriteLine("Running mode command: " + command);
+                        RestrictedProcessHelper.RunAsRestrictedUser(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.System), "cmd.exe"), "/C " + command);
+                    }
                 }
-
-                if (AppConfig.Is("status_mode")) Program.acpi.DeviceSet(AsusACPI.StatusMode, [0x00, Modes.GetBase(mode) == AsusACPI.PerformanceSilent ? (byte)0x02 : (byte)0x03], "StatusMode");
-                int status = Program.acpi.DeviceSet(AsusACPI.PerformanceMode, AppConfig.IsManualModeRequired() ? AsusACPI.PerformanceManual : Modes.GetBase(mode), "Mode");
-                // Vivobook fallback
-                if (status != 1) Program.acpi.SetVivoMode(Modes.GetBase(mode));
-
-                SetGPUClocks();
-
-                await Task.Delay(TimeSpan.FromMilliseconds(100));
-                AutoFans();
-                await Task.Delay(TimeSpan.FromMilliseconds(1000));
-                AutoPower();
-
-                var command = AppConfig.GetModeString("mode_command");
-                if (command is not null)
-                {   Logger.WriteLine("Running mode command: " + command);
-                    RestrictedProcessHelper.RunAsRestrictedUser(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.System), "cmd.exe"), "/C " + command);
+                catch (OperationCanceledException)
+                {
+                    Logger.WriteLine($"SetPerformanceMode cancelled (mode {mode})");
                 }
-            });
+            }, ct);
 
 
             if (AppConfig.Is("xgm_fan")) XGM.Reset();
@@ -166,32 +182,25 @@ namespace GHelper.Mode
         private void ModeToggleTimer_Elapsed(object? sender, System.Timers.ElapsedEventArgs e)
         {
             modeToggleTimer.Stop();
-            Logger.WriteLine($"Timed mode: {Modes.GetCurrent()}");
+            Logger.WriteLine($"Hotkey mode: {Modes.GetCurrent()}");
             SetPerformanceMode();
 
         }
 
         public void CyclePerformanceMode(bool back = false)
         {
-            int delay = AppConfig.Get("mode_delay");
-            if (delay > 0)
-            {
-                if (modeToggleTimer is null)
-                {
-                    modeToggleTimer = new System.Timers.Timer(delay);
-                    modeToggleTimer.Elapsed += ModeToggleTimer_Elapsed;
-                }
+            int delay = AppConfig.Get("mode_delay", 1000);
 
-                modeToggleTimer.Stop();
-                modeToggleTimer.Start();
-                Modes.SetCurrent(Modes.GetNext(back));
-                Toast();
-            }
-            else
+            if (modeToggleTimer is null)
             {
-                SetPerformanceMode(Modes.GetNext(back), true);
+                modeToggleTimer = new System.Timers.Timer(delay);
+                modeToggleTimer.Elapsed += ModeToggleTimer_Elapsed;
             }
 
+            modeToggleTimer.Stop();
+            modeToggleTimer.Start();
+            Modes.SetCurrent(Modes.GetNext(back));
+            Toast();
         }
 
         public void AutoFans(bool force = false)
