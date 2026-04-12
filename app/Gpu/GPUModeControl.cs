@@ -96,19 +96,17 @@ namespace GHelper.Gpu
                 DialogResult dialogResult = MessageBox.Show(Properties.Strings.AlertUltimateOn, Properties.Strings.AlertUltimateTitle, MessageBoxButtons.YesNo);
                 if (dialogResult == DialogResult.Yes)
                 {
-                    if (AppConfig.NoAutoUltimate())
-                    {
-                        Program.acpi.SetGPUEco(0);
-                        Thread.Sleep(500);
+                    Program.acpi.SetGPUEco(0);
+                    Thread.Sleep(500);
 
-                        int eco = Program.acpi.DeviceGet(AsusACPI.GPUEco);
-                        Logger.WriteLine("Eco flag : " + eco);
-                        if (eco == 1)
-                        {
-                            settings.VisualiseGPUMode();
-                            return;
-                        }
+                    int eco = Program.acpi.DeviceGet(AsusACPI.GPUEco);
+                    Logger.WriteLine("Eco flag : " + eco);
+                    if (eco == 1)
+                    {
+                        settings.VisualiseGPUMode();
+                        return;
                     }
+
                     status = Program.acpi.DeviceSet(AsusACPI.GPUMux, 0, "GPUMux");
                     restart = true;
                     changed = true;

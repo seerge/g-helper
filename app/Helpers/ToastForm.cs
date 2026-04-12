@@ -70,56 +70,35 @@ namespace GHelper.Helpers
             timer.Interval = 2000;
         }
 
+        private static readonly Font _toastFont = new Font("Segoe UI", 36f, FontStyle.Bold, GraphicsUnit.Pixel);
+        private static readonly SolidBrush _toastBrush = new SolidBrush(Color.FromArgb(150, Color.Black));
+        private static readonly SolidBrush _toastTextBrush = new SolidBrush(Color.White);
+        private static readonly StringFormat _toastFormat = new StringFormat
+        {
+            LineAlignment = StringAlignment.Center,
+            Alignment = StringAlignment.Center
+        };
+
         protected override void PerformPaint(PaintEventArgs e)
         {
-            Brush brush = new SolidBrush(Color.FromArgb(150, Color.Black));
-
             e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
-            e.Graphics.FillRoundedRectangle(brush, Bound, 10);
+            e.Graphics.FillRoundedRectangle(_toastBrush, Bound, 10);
 
-            StringFormat format = new StringFormat();
-            format.LineAlignment = StringAlignment.Center;
-            format.Alignment = StringAlignment.Center;
-
-            Bitmap? icon = null;
-
-            switch (toastIcon)
+            Bitmap? icon = toastIcon switch
             {
-                case ToastIcon.BrightnessUp:
-                    icon = Properties.Resources.brightness_up;
-                    break;
-                case ToastIcon.BrightnessDown:
-                    icon = Properties.Resources.brightness_down;
-                    break;
-                case ToastIcon.BacklightUp:
-                    icon = Properties.Resources.backlight_up;
-                    break;
-                case ToastIcon.BacklightDown:
-                    icon = Properties.Resources.backlight_down;
-                    break;
-                case ToastIcon.Microphone:
-                    icon = Properties.Resources.icons8_microphone_96;
-                    break;
-                case ToastIcon.MicrophoneMute:
-                    icon = Properties.Resources.icons8_mute_unmute_96;
-                    break;
-                case ToastIcon.Touchpad:
-                    icon = Properties.Resources.icons8_touchpad_96;
-                    break;
-                case ToastIcon.FnLock:
-                    icon = Properties.Resources.icons8_function;
-                    break;
-                case ToastIcon.Battery:
-                    icon = Properties.Resources.icons8_charged_battery_96;
-                    break;
-                case ToastIcon.Charger:
-                    icon = Properties.Resources.icons8_charging_battery_96;
-                    break;
-                case ToastIcon.Controller:
-                    icon = Properties.Resources.icons8_controller_96;
-                    break;
-
-            }
+                ToastIcon.BrightnessUp   => Properties.Resources.brightness_up,
+                ToastIcon.BrightnessDown => Properties.Resources.brightness_down,
+                ToastIcon.BacklightUp    => Properties.Resources.backlight_up,
+                ToastIcon.BacklightDown  => Properties.Resources.backlight_down,
+                ToastIcon.Microphone     => Properties.Resources.icons8_microphone_96,
+                ToastIcon.MicrophoneMute => Properties.Resources.icons8_mute_unmute_96,
+                ToastIcon.Touchpad       => Properties.Resources.icons8_touchpad_96,
+                ToastIcon.FnLock         => Properties.Resources.icons8_function,
+                ToastIcon.Battery        => Properties.Resources.icons8_charged_battery_96,
+                ToastIcon.Charger        => Properties.Resources.icons8_charging_battery_96,
+                ToastIcon.Controller     => Properties.Resources.icons8_controller_96,
+                _                        => null
+            };
 
             int shiftX = 0;
 
@@ -129,12 +108,8 @@ namespace GHelper.Helpers
                 shiftX = 40;
             }
 
-            e.Graphics.DrawString(toastText,
-                new Font("Segoe UI", 36f, FontStyle.Bold, GraphicsUnit.Pixel),
-                new SolidBrush(Color.White),
-                new PointF(Bound.Width / 2 + shiftX, Bound.Height / 2),
-            format);
-
+            e.Graphics.DrawString(toastText, _toastFont, _toastTextBrush,
+                new PointF(Bound.Width / 2 + shiftX, Bound.Height / 2), _toastFormat);
         }
 
         public static void ReadText(string text)

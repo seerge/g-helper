@@ -1,6 +1,6 @@
 using GHelper.Helpers;
 using GHelper.Mode;
-using System.Management;
+using Microsoft.Win32;
 using System.Text.Json;
 
 public static class AppConfig
@@ -9,12 +9,8 @@ public static class AppConfig
     private static string configFile;
     private static string fallbackConfigFile;
 
-    private static string? _model;
-    private static string? _modelShort;
-    private static string? _bios;
-
     private static Dictionary<string, object> config = new Dictionary<string, object>();
-    private static System.Timers.Timer timer = new System.Timers.Timer(2000) { AutoReset = false }; 
+    private static System.Timers.Timer timer = new System.Timers.Timer(2000) { AutoReset = false };
     private static readonly object configLock = new();
 
     static AppConfig()
@@ -91,74 +87,61 @@ public static class AppConfig
         }
     }
 
-    public static string GetModel()
+    // Model Detection Routine
+
+    private static readonly Lazy<string> _model =
+        new Lazy<string>(LoadModel, LazyThreadSafetyMode.ExecutionAndPublication);
+
+    private static readonly Lazy<(string Bios, string ModelShort)> _biosData =
+        new Lazy<(string, string)>(LoadBios, LazyThreadSafetyMode.ExecutionAndPublication);
+
+    private const string BiosRegKey = @"HARDWARE\DESCRIPTION\System\BIOS";
+
+    private static string LoadModel()
     {
-        if (_model is null)
+        try
         {
-            _model = "";
-            try
-            {
-                using (var searcher = new ManagementObjectSearcher(@"Select * from Win32_ComputerSystem"))
-                {
-                    foreach (var process in searcher.Get())
-                    {
-                        _model = process["Model"].ToString();
-                        break;
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Logger.WriteLine(ex.Message);
-            }
+            using var key = Registry.LocalMachine.OpenSubKey(BiosRegKey);
+            return key?.GetValue("SystemProductName")?.ToString()?.Trim() ?? string.Empty;
         }
-
-        //if (_model.Contains("GA402RK")) _model = "ROG Flow Z13 GZ302EA"; // Debug Purposes
-
-        return _model;
-    }
-
-    public static (string, string) GetBiosAndModel()
-    {
-        if (_bios is not null && _modelShort is not null) return (_bios, _modelShort);
-
-        using (ManagementObjectSearcher objSearcher = new ManagementObjectSearcher(@"SELECT * FROM Win32_BIOS"))
+        catch (Exception ex)
         {
-            using (ManagementObjectCollection objCollection = objSearcher.Get())
-            {
-                foreach (ManagementObject obj in objCollection)
-                    if (obj["SMBIOSBIOSVersion"] is not null)
-                    {
-                        string[] results = obj["SMBIOSBIOSVersion"].ToString().Split(".");
-                        if (results.Length > 1)
-                        {
-                            _modelShort = results[0];
-                            _bios = results[1];
-                        }
-                        else
-                        {
-                            _modelShort = obj["SMBIOSBIOSVersion"].ToString();
-                        }
-                    }
-
-                return (_bios, _modelShort);
-            }
+            Logger.WriteLine(ex.Message);
+            return string.Empty;
         }
     }
+
+    private static (string Bios, string ModelShort) LoadBios()
+    {
+        try
+        {
+            using var key = Registry.LocalMachine.OpenSubKey(BiosRegKey);
+            string raw = key?.GetValue("BIOSVersion")?.ToString()?.Trim() ?? string.Empty;
+            string[] parts = raw.Split('.');
+            return parts.Length > 1
+                ? (parts[1], parts[0])
+                : (string.Empty, raw);
+        }
+        catch (Exception ex)
+        {
+            Logger.WriteLine(ex.Message);
+            return (string.Empty, string.Empty);
+        }
+    }
+
+    public static string GetModel() => _model.Value;
+
+    public static (string, string) GetBiosAndModel() => (_biosData.Value.Bios, _biosData.Value.ModelShort);
 
     public static string GetModelShort()
     {
         string model = GetModel();
-        int trim = model.LastIndexOf("_");
-        if (trim > 0) model = model.Substring(0, trim);
-        return model;
+        int trim = model.LastIndexOf('_');
+        return trim > 0 ? model[..trim] : model;
     }
 
     public static bool ContainsModel(string contains)
-    {
-        GetModel();
-        return (_model is not null && _model.ToLower().Contains(contains.ToLower()));
-    }
+        => _model.Value.Contains(contains, StringComparison.OrdinalIgnoreCase);
 
     private static void Init()
     {
@@ -428,12 +411,12 @@ public static class AppConfig
 
     public static bool IsSlash()
     {
-        return ContainsModel("GA403") || ContainsModel("GU605") || ContainsModel("GA605");
+        return ContainsModel("GA403") || ContainsModel("GU605") || ContainsModel("GA605") || ContainsModel("GU405") || ContainsModel("GU606");
     }
 
     public static bool IsSlashAura()
     {
-        return ContainsModel("GA605") || ContainsModel("GU605C") || ContainsModel("GA403W") || ContainsModel("GA403UM") || ContainsModel("GA403UP") || ContainsModel("GA403UH");
+        return ContainsModel("GA605") || ContainsModel("GU605C") || ContainsModel("GA403W") || ContainsModel("GA403UM") || ContainsModel("GA403UP") || ContainsModel("GA403UH") || ContainsModel("GU405") || ContainsModel("GU606");
     }
 
     public static bool IsInputBacklight()
@@ -521,6 +504,11 @@ public static class AppConfig
         return ContainsModel("Z13");
     }
 
+    public static bool HasRearLight()
+    {
+        return IsZ13();
+    }
+
     public static bool IsPZ13()
     {
         return ContainsModel("PZ13");
@@ -567,11 +555,6 @@ public static class AppConfig
         return ContainsModel("13QY");
     }
 
-    public static bool NoAutoUltimate()
-    {
-        return ContainsModel("G614") || ContainsModel("GU604") || ContainsModel("FX507") || ContainsModel("G513") || ContainsModel("FA617") || ContainsModel("G834") || ContainsModel("GA403") || ContainsModel("GU605") || ContainsModel("GA605") || ContainsModel("GU603VV");
-    }
-
     public static bool IsAlwaysUltimate()
     {
         return ContainsModel("FA507NUR") || ContainsModel("FA506NCR") || ContainsModel("FA507NVR");
@@ -585,7 +568,7 @@ public static class AppConfig
 
     public static bool IsResetRequired()
     {
-        return ContainsModel("GA403") || ContainsModel("FA507XV");
+        return ContainsModel("GA403UI") || ContainsModel("GA403UU") || ContainsModel("GA403UV") || ContainsModel("FA507XV");
     }
 
     public static bool IsFanRequired()
@@ -593,9 +576,9 @@ public static class AppConfig
         return ContainsModel("GA402X") || ContainsModel("GU604") || ContainsModel("G513") || ContainsModel("G713R") || ContainsModel("G713P") || ContainsModel("GU605") || ContainsModel("GA605") || ContainsModel("G634J") || ContainsModel("G834J") || ContainsModel("G614J") || ContainsModel("G814J") || ContainsModel("FX507V") || ContainsModel("FX507ZV") || ContainsModel("FX608") || ContainsModel("FA608P") || ContainsModel("G614F") || ContainsModel("G614R") || ContainsModel("G733") || ContainsModel("H7606");
     }
 
-    public static bool IsAMDLight()
+    public static bool IsCPULight()
     {
-        return ContainsModel("GA402X") || ContainsModel("GA605") || ContainsModel("GA403") || ContainsModel("FA507N") || ContainsModel("FA507X") || ContainsModel("FA707N") || ContainsModel("FA707X") || ContainsModel("GZ302");
+        return ContainsModel("GA402X") || ContainsModel("GA605") || ContainsModel("GA403") || ContainsModel("FA507N") || ContainsModel("FA507X") || ContainsModel("FA707N") || ContainsModel("FA707X") || ContainsModel("GZ302") || ContainsModel("GU405");
     }
 
     public static bool IsPowerRequired()
@@ -684,7 +667,7 @@ public static class AppConfig
 
     public static bool IsChargeLimit6080()
     {
-        return ContainsModel("H760") || ContainsModel("GA403") || ContainsModel("GU605") || ContainsModel("GA605") || ContainsModel("GA503R") || (IsTUF() && !(ContainsModel("FX507Z") || ContainsModel("FA617") || ContainsModel("FA607")));
+        return ContainsModel("GU405") || ContainsModel("GU606") || ContainsModel("H760") || ContainsModel("GA403") || ContainsModel("GU605") || ContainsModel("GA605") || ContainsModel("GA503R") || (IsTUF() && !(ContainsModel("FX507Z") || ContainsModel("FA617") || ContainsModel("FA607")));
 
     }
 
@@ -708,6 +691,19 @@ public static class AppConfig
     {
         return ContainsModel("G834JYR") || ContainsModel("G834JZR") || ContainsModel("G634JZR") || ContainsModel("G835LW") || ContainsModel("G835LX") || ContainsModel("G635LW") || ContainsModel("G635LX") || Is("force_miniled");
     }
+
+    public static bool IsKeystone()
+    {
+        return ContainsModel("G531") || ContainsModel("G731") ||
+               ContainsModel("G532") || ContainsModel("G732") ||
+               ContainsModel("G533") || ContainsModel("G733");
+    }
+
+    public static bool IsSleepReset()
+    {
+        return ContainsModel("GU605MI") || ContainsModel("GU605MV");
+    }
+
     public static bool SaveDimming()
     {
         return Is("save_dimming");
@@ -721,6 +717,11 @@ public static class AppConfig
     public static bool IsClampFanDots()
     {
         return IsNotFalse("fan_clamp");
+    }
+
+    public static bool IsAutoASPM()
+    {
+        return IsNotFalse("aspm");
     }
 
 

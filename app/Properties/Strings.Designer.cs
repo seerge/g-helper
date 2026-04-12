@@ -2295,7 +2295,7 @@ namespace GHelper.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Visual Modes are not available when HDR is active.
+        ///   Looks up a localized string similar to Visual Modes are not available when HDR or ACM is active.
         /// </summary>
         internal static string VisualModesHDR {
             get {

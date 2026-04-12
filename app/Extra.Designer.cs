@@ -116,12 +116,14 @@ namespace GHelper
             checkTopmost = new CheckBox();
             checkNoOverdrive = new CheckBox();
             checkBootSound = new CheckBox();
+            checkKeystoneSound = new CheckBox();
             checkUSBC = new CheckBox();
             checkGpuApps = new CheckBox();
             checkGPUFix = new CheckBox();
             checkNVPlatform = new CheckBox();
             checkStatusLed = new CheckBox();
             checkPerKeyRGB = new CheckBox();
+            checkAspm = new CheckBox();
             panelPower = new Panel();
             numericHibernateAfter = new NumericUpDownWithUnit();
             labelHibernateAfter = new Label();
@@ -1198,6 +1200,7 @@ namespace GHelper
             panelSettings.Controls.Add(checkBWIcon);
             panelSettings.Controls.Add(checkTopmost);
             panelSettings.Controls.Add(checkNoOverdrive);
+            panelSettings.Controls.Add(checkKeystoneSound);
             panelSettings.Controls.Add(checkBootSound);
             panelSettings.Controls.Add(checkUSBC);
             panelSettings.Controls.Add(checkGpuApps);
@@ -1205,6 +1208,7 @@ namespace GHelper
             panelSettings.Controls.Add(checkNVPlatform);
             panelSettings.Controls.Add(checkStatusLed);
             panelSettings.Controls.Add(checkPerKeyRGB);
+            panelSettings.Controls.Add(checkAspm);
             panelSettings.Dock = DockStyle.Top;
             panelSettings.Location = new Point(15, 1252);
             panelSettings.Name = "panelSettings";
@@ -1275,6 +1279,20 @@ namespace GHelper
             checkBootSound.TabIndex = 10;
             checkBootSound.Text = "Boot Sound";
             checkBootSound.UseVisualStyleBackColor = true;
+            //
+            // checkKeystoneSound
+            //
+            checkKeystoneSound.AutoSize = true;
+            checkKeystoneSound.Dock = DockStyle.Top;
+            checkKeystoneSound.Location = new Point(21, 299);
+            checkKeystoneSound.Margin = new Padding(5, 3, 5, 3);
+            checkKeystoneSound.Name = "checkKeystoneSound";
+            checkKeystoneSound.Padding = new Padding(3);
+            checkKeystoneSound.Size = new Size(917, 42);
+            checkKeystoneSound.TabIndex = 16;
+            checkKeystoneSound.Text = "Keystone Sound";
+            checkKeystoneSound.UseVisualStyleBackColor = true;
+            checkKeystoneSound.Visible = false;
             // 
             // checkUSBC
             // 
@@ -1355,6 +1373,20 @@ namespace GHelper
             checkPerKeyRGB.Text = "Per-Key RGB Keyboard";
             checkPerKeyRGB.UseVisualStyleBackColor = true;
             checkPerKeyRGB.Visible = false;
+            // 
+            // checkAspm
+            // 
+            checkAspm.AutoSize = true;
+            checkAspm.Dock = DockStyle.Top;
+            checkAspm.Location = new Point(21, 5);
+            checkAspm.Margin = new Padding(5, 3, 5, 3);
+            checkAspm.Name = "checkAspm";
+            checkAspm.Padding = new Padding(3);
+            checkAspm.Size = new Size(917, 42);
+            checkAspm.TabIndex = 13;
+            checkAspm.Text = "Disable PCIe Link State Management (plugged in)";
+            checkAspm.UseVisualStyleBackColor = true;
+            checkAspm.Visible = true;
             // 
             // panelPower
             // 
@@ -1829,6 +1861,7 @@ namespace GHelper
         private CheckBox checkGPUFix;
         private ToolTip toolTip;
         private CheckBox checkBootSound;
+        private CheckBox checkKeystoneSound;
         private Panel panelAPU;
         private PictureBox pictureAPUMem;
         private Label labelAPUMem;
@@ -1849,6 +1882,7 @@ namespace GHelper
         private CheckBox checkBWIcon;
         private CheckBox checkStatusLed;
         private CheckBox checkPerKeyRGB;
+        private CheckBox checkAspm;
         private CheckBox checkBatteryLogo;
         private CheckBox checkBattery;
         private CheckBox checkBatteryLid;

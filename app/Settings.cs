@@ -775,6 +775,7 @@ namespace GHelper
                         case 0:
                             Logger.WriteLine("Monitor Power Off");
                             Aura.SleepBrightness();
+                            Program.modeControl.SleepReset();
                             break;
                         case 1:
                             Logger.WriteLine("Monitor Power On");
@@ -1139,11 +1140,11 @@ namespace GHelper
             FansToggle();
         }
 
-        private void SetColorPicker(string colorField = "aura_color")
+        private void SetColorPicker(string colorField = "aura_color", PictureBox? preview = null)
         {
             ColorDialog colorDlg = new ColorDialog();
             colorDlg.AllowFullOpen = true;
-            colorDlg.Color = pictureColor.BackColor;
+            colorDlg.Color = (preview ?? pictureColor).BackColor;
 
             try
             {
@@ -1162,6 +1163,44 @@ namespace GHelper
         private void ButtonKeyboardColor_Click(object? sender, EventArgs e)
         {
             SetColorPicker("aura_color");
+        }
+
+        private void ButtonRearColor_Click(object? sender, EventArgs e)
+        {
+            SetColorPicker("rear_color", pictureRearColor);
+        }
+
+        private void PictureRearColor_Click(object? sender, EventArgs e)
+        {
+            SetColorPicker("rear_color", pictureRearColor);
+        }
+
+        private void ComboRearLight_SelectedValueChanged(object? sender, EventArgs e)
+        {
+            AppConfig.Set("rear_mode", (int)comboRearLight.SelectedValue);
+            SetAura();
+        }
+
+        public void InitRearLight()
+        {
+            if (!AppConfig.HasRearLight())
+                return;
+
+            Aura.RearMode = (AuraMode)AppConfig.Get("rear_mode");
+            Aura.SetRearColor(AppConfig.Get("rear_color"));
+
+            comboRearLight.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboRearLight.DataSource = new BindingSource(Aura.GetRearModes(), null);
+            comboRearLight.DisplayMember = "Value";
+            comboRearLight.ValueMember = "Key";
+            comboRearLight.SelectedValue = Aura.RearMode;
+            comboRearLight.SelectedValueChanged += ComboRearLight_SelectedValueChanged;
+
+            buttonRearColor.Click += ButtonRearColor_Click;
+            pictureRearColor.Click += PictureRearColor_Click;
+
+            pictureRearColor.BackColor = Aura.RearColor;
+            panelRearLight.Visible = true;
         }
 
         public void InitAura()
@@ -1191,6 +1230,7 @@ namespace GHelper
 
             VisualiseAura();
 
+            InitRearLight();
         }
 
         public void SetAura()
@@ -1601,7 +1641,7 @@ namespace GHelper
 
         public void LabelFansResult(string text)
         {
-            if (fansForm != null && fansForm.Text != "")
+            if (fansForm != null && !fansForm.IsDisposed && fansForm.Text != "")
                 fansForm.LabelFansResult(text);
         }
 
@@ -1848,18 +1888,16 @@ namespace GHelper
             int GPUMode = AppConfig.Get("gpu_mode");
             bool isDark = CheckSystemDarkModeStatus();
 
-            switch (GPUMode)
+            Icon newIcon = GPUMode switch
             {
-                case AsusACPI.GPUModeEco:
-                    Program.trayIcon.Icon = AppConfig.IsBWIcon() ? (!isDark ? Properties.Resources.dark_eco : Properties.Resources.light_eco) : Properties.Resources.eco;
-                    break;
-                case AsusACPI.GPUModeUltimate:
-                    Program.trayIcon.Icon = AppConfig.IsBWIcon() ? (!isDark ? Properties.Resources.dark_standard : Properties.Resources.light_standard) : Properties.Resources.ultimate;
-                    break;
-                default:
-                    Program.trayIcon.Icon = AppConfig.IsBWIcon() ? (!isDark ? Properties.Resources.dark_standard : Properties.Resources.light_standard) : Properties.Resources.standard;
-                    break;
-            }
+                AsusACPI.GPUModeEco => AppConfig.IsBWIcon() ? (!isDark ? Properties.Resources.dark_eco : Properties.Resources.light_eco) : Properties.Resources.eco,
+                AsusACPI.GPUModeUltimate => AppConfig.IsBWIcon() ? (!isDark ? Properties.Resources.dark_standard : Properties.Resources.light_standard) : Properties.Resources.ultimate,
+                _ => AppConfig.IsBWIcon() ? (!isDark ? Properties.Resources.dark_standard : Properties.Resources.light_standard) : Properties.Resources.standard,
+            };
+
+            Icon? oldIcon = Program.trayIcon.Icon;
+            Program.trayIcon.Icon = newIcon;
+            oldIcon?.Dispose();
         }
 
         private void ButtonSilent_Click(object? sender, EventArgs e)

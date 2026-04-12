@@ -12,11 +12,15 @@ namespace GHelper.UI
 
         public CustomContextMenu()
         {
-            var preference = DWM_WINDOW_CORNER_PREFERENCE.DWMWCP_ROUNDSMALL;     //change as you want
-            DwmSetWindowAttribute(Handle,
-                                  DWMWINDOWATTRIBUTE.DWMWA_WINDOW_CORNER_PREFERENCE,
-                                  ref preference,
-                                  sizeof(uint));
+            try
+            {
+                var preference = DWM_WINDOW_CORNER_PREFERENCE.DWMWCP_ROUNDSMALL;     //change as you want
+                DwmSetWindowAttribute(Handle,
+                                      DWMWINDOWATTRIBUTE.DWMWA_WINDOW_CORNER_PREFERENCE,
+                                      ref preference,
+                                      sizeof(uint));
+            }
+            catch { }
         }
 
         public enum DWMWINDOWATTRIBUTE

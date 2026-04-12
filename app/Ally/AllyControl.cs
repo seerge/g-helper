@@ -118,6 +118,9 @@ namespace GHelper.Ally
         public const string BindVolDown = "05-02";
 
         public const string BindPrintScrn = "02-C3";
+        public const string BindPause = "02-91";         // Pause/Break key
+        public const string BindWinP = "04-02-82-4D";   // Win+P  (display/project mode)
+        public const string BindWinH = "04-02-82-33";   // Win+H  (dictation)
 
         public const string BindScreenshot = "04-03-82-88-1B";
         public const string BindShowDesktop = "04-02-82-23";
@@ -125,177 +128,184 @@ namespace GHelper.Ally
         public const string BindShowKeyboard = "05-19";
 
         static byte[] CommandReady = new byte[] { AsusHid.INPUT_ID, 0xD1, 0x0A, 0x01 };
-        static byte[] CommandSave = new byte[] { AsusHid.INPUT_ID, 0xD1, 0x0F, 0x20 };
 
-        public static Dictionary<string, string> BindCodes = new Dictionary<string, string>
-        {
-            { "", "--------" },
-            { "00-00", "[ Disabled ]" },
-
-            { BindM1, "M1" },
-            { BindM2, "M2" },
-
-            { BindA, "A" },
-            { BindB, "B" },
-
-            { BindX, "X" },
-            { BindY, "Y" },
-
-            { BindLB, "Left Bumper" },
-            { BindRB, "Right Bumper" },
-
-            { BindLS, "Left Stick Click" },
-            { BindRS, "Right Stick Click" },
-
-            { BindDU, "DPad Up" },
-            { BindDD, "DPad Down" },
-
-            { BindDL, "DPad Left" },
-            { BindDR, "DPad Right" },
-
-            { BindVB, "View Button" },
-            { BindMB, "Menu Button" },
-
-            { BindXB, "XBox/Steam" },
-
-            { BindToggleMode, "Controller Mode" },
-            { BindToggleFPSLimit, "FPS Limit" },
-            { BindToggleTouchScreen, "Toggle TouchScreen" },
-
-            { BindVolUp, "Vol Up" },
-            { BindVolDown, "Vol Down" },
-            { BindBrightnessUp, "Bright Up" },
-            { BindBrightnessDown, "Bright Down" },
-
-            { BindShowKeyboard, "Show Keyboard" },
-            { BindShowDesktop, "Show Desktop" },
-            { BindScreenshot, "Screenshot" },
-
-            { BindOverlay, "AMD Overlay" },
-            { BindTaskManager, "Task Manager" },
-            { BindCloseWindow, "Close Window" },
-            { BindShiftTab, "Shift-Tab" },
-            { BindAltTab, "Alt-Tab" },
-            { BindWinTab, "Win-Tab" },
-            { BindXGM, "XGM Toggle" },
-
-
-            { BindEsc, "Esc" },
-            { BindBack, "Backspace" },
-            { BindTab, "Tab" },
-            { BindEnter, "Enter" },
-            { BindShift, "LShift" },
-            { BindAlt, "LAlt" },
-            { BindCtrl, "LCtl" },
-            { BindWin, "WIN" },
-            { BindPrintScrn, "PrntScn" },
-
-            { BindPgU, "PgUp" },
-            { BindPgD, "PgDwn" },
-            { BindKBU, "UpArrow" },
-            { BindKBD, "DownArrow" },
-            { BindKBL, "LeftArrow" },
-            { BindKBR, "RightArrow" },
-
-            { "02-05", "F1" },
-            { "02-06", "F2" },
-            { "02-04", "F3" },
-            { "02-0C", "F4" },
-            { "02-03", "F5" },
-            { "02-0B", "F6" },
-            { "02-80", "F7" },
-            { "02-0A", "F8" },
-            { "02-01", "F9" },
-            { "02-09", "F10" },
-            { "02-78", "F11" },
-            { "02-07", "F12" },
-            { "02-0E", "`" },
-            { "02-16", "1" },
-            { "02-1E", "2" },
-            { "02-26", "3" },
-            { "02-25", "4" },
-            { "02-2E", "5" },
-            { "02-36", "6" },
-            { "02-3D", "7" },
-            { "02-3E", "8" },
-            { "02-46", "9" },
-            { "02-45", "0" },
-            { "02-4E", "-" },
-            { "02-55", "=" },
-            { "02-15", "Q" },
-            { "02-1D", "W" },
-            { "02-24", "E" },
-            { "02-2D", "R" },
-            { "02-2C", "T" },
-            { "02-35", "Y" },
-            { "02-3C", "U" },
-            { "02-44", "O" },
-            { "02-4D", "P" },
-            { "02-54", "[" },
-            { "02-5B", "]" },
-            { "02-5D", "|" },
-            { "02-58", "Caps" },
-            { "02-1C", "A" },
-            { "02-1B", "S" },
-            { "02-23", "D" },
-            { "02-2B", "F" },
-            { "02-34", "G" },
-            { "02-33", "H" },
-            { "02-3B", "J" },
-            { "02-42", "k" },
-            { "02-4B", "l" },
-            { "02-4C", ";" },
-            { "02-52", "'" },
-            { "02-22", "X" },
-            { "02-1A", "Z" },
-            { "02-21", "C" },
-            { "02-2A", "V" },
-            { "02-32", "B" },
-            { "02-31", "N" },
-            { "02-3A", "M" },
-            { "02-41", "," },
-            { "02-49", "." },
-            { "02-89", "RShift" },
-            { "02-29", "Space" },
-            { "02-8B", "RAlt" },
-            { "02-84", "App menu" },
-            { "02-8D", "RCtl" },
-            { "02-7E", "ScrLk" },
-            { "02-C2", "Insert" },
-            { "02-C0", "Delete" },
-            { "02-94", "Home" },
-            { "02-95", "End" },
-            { "02-77", "NumLock" },
-            { "02-90", "NumSlash" },
-            { "02-7C", "NumStar" },
-            { "02-7B", "NumHyphen" },
-            { "02-70", "Num0" },
-            { "02-69", "Num1" },
-            { "02-72", "Num2" },
-            { "02-7A", "Num3" },
-            { "02-6B", "Num4" },
-            { "02-73", "Num5" },
-            { "02-74", "Num6" },
-            { "02-6C", "Num7" },
-            { "02-75", "Num8" },
-            { "02-7D", "Num9" },
-            { "02-79", "NumPlus" },
-            { "02-81", "NumEnter" },
-            { "02-71", "NumPeriod" },
-
-            { BindMouseL, "Mouse left click" },
-            { BindMouseR, "Mouse right click" },
-            { "03-03", "Mouse middle click" },
-            { "03-04", "Mouse scroll up" },
-            { "03-05", "Mouse scroll down" },
-
-            //{ "05-16", "Screenshot" },
-            //{ "05-1C", "Show desktop" },
-
-            { "05-1E", "Begin recording" },
-            { "05-01", "Mic off" },
-
-        };
+        public static IReadOnlyList<(string GroupLabel, IReadOnlyList<(string Code, string Name)> Items)> BindingGroups { get; } =
+        [
+            ("", new (string, string)[]
+            {
+                ("",      "----------"),
+                ("00-00", "[ Disabled ]"),
+            }),
+            ("Controller", new (string, string)[]
+            {
+                (BindA,  "A"),
+                (BindB,  "B"),
+                (BindX,  "X"),
+                (BindY,  "Y"),
+                (BindLT, "L-Trigger"),
+                (BindRT, "R-Trigger"),
+                (BindLB, "L-Bumper"),
+                (BindRB, "R-Bumper"),
+                (BindLS, "L-Stick Click"),
+                (BindRS, "R-Stick Click"),
+                (BindDU, "D-Pad Up"),
+                (BindDD, "D-Pad Down"),
+                (BindDL, "D-Pad Left"),
+                (BindDR, "D-Pad Right"),
+                (BindVB, "View Button"),
+                (BindMB, "Menu Button"),
+                (BindXB, "XBox/Steam"),
+                (BindM1, "M1"),
+                (BindM2, "M2"),
+            }),
+            ("Mouse", new (string, string)[]
+            {
+                (BindMouseL,  "Left Click"),
+                (BindMouseR,  "Right Click"),
+                ("03-03",     "Middle Click"),
+                ("03-04",     "Scroll Up"),
+                ("03-05",     "Scroll Down"),
+            }),
+            ("System", new (string, string)[]
+            {
+                (BindToggleMode,        "ControllerMode"),
+                (BindToggleFPSLimit,    "FPS Limit"),
+                (BindToggleTouchScreen, "TouchScr.Toggle"),
+                (BindVolUp,             "Vol Up"),
+                (BindVolDown,           "Vol Down"),
+                (BindBrightnessUp,      "Bright Up"),
+                (BindBrightnessDown,    "Bright Down"),
+                (BindShowKeyboard,      "Show Keyboard"),
+                (BindShowDesktop,       "Show Desktop"),
+                (BindScreenshot,        "Screenshot"),
+                (BindOverlay,           "AMD Overlay"),
+                (BindTaskManager,       "Task Manager"),
+                (BindCloseWindow,       "Close Window"),
+                (BindShiftTab,          "Shift-Tab"),
+                (BindAltTab,            "Alt-Tab"),
+                (BindWinTab,            "Win-Tab"),
+                (BindXGM,               "XGM Toggle"),
+                (BindWinP,              "Project Mode"),
+                ("05-1E",               "Start Recording"),
+                ("05-01",               "Mic off"),
+            }),
+            ("Modifiers", new (string, string)[]
+            {
+                (BindEsc,   "Esc"),
+                (BindBack,  "Backspace"),
+                (BindTab,   "Tab"),
+                (BindEnter, "Enter"),
+                (BindShift, "L-Shift"),
+                (BindAlt,   "L-Alt"),
+                (BindCtrl,  "L-Ctl"),
+                (BindWin,   "Win"),
+                ("02-89",   "R-Shift"),
+                ("02-8B",   "R-Alt"),
+                ("02-8D",   "R-Ctl"),
+                ("02-84",   "App menu"),
+                ("02-58",   "Caps"),
+                ("02-29",   "Space"),
+                (BindPrintScrn, "PrntScn"),
+                (BindPause,     "Pause"),
+                ("02-7E",   "ScrLk"),
+            }),
+            ("Navigation", new (string, string)[]
+            {
+                (BindPgU, "Pg-Up"),
+                (BindPgD, "Pg-Dwn"),
+                (BindKBU, "Up-Arrow"),
+                (BindKBD, "Down-Arrow"),
+                (BindKBL, "Left-Arrow"),
+                (BindKBR, "Right-Arrow"),
+                ("02-C2", "Insert"),
+                ("02-C0", "Delete"),
+                ("02-94", "Home"),
+                ("02-95", "End"),
+            }),
+            ("Function Keys", new (string, string)[]
+            {
+                ("02-05", "F1"),
+                ("02-06", "F2"),
+                ("02-04", "F3"),
+                ("02-0C", "F4"),
+                ("02-03", "F5"),
+                ("02-0B", "F6"),
+                ("02-80", "F7"),
+                ("02-0A", "F8"),
+                ("02-01", "F9"),
+                ("02-09", "F10"),
+                ("02-78", "F11"),
+                ("02-07", "F12"),
+            }),
+            ("Keyboard", new (string, string)[]
+            {
+                ("02-0E", "`"),
+                ("02-16", "1"),
+                ("02-1E", "2"),
+                ("02-26", "3"),
+                ("02-25", "4"),
+                ("02-2E", "5"),
+                ("02-36", "6"),
+                ("02-3D", "7"),
+                ("02-3E", "8"),
+                ("02-46", "9"),
+                ("02-45", "0"),
+                ("02-4E", "-"),
+                ("02-55", "="),
+                ("02-15", "Q"),
+                ("02-1D", "W"),
+                ("02-24", "E"),
+                ("02-2D", "R"),
+                ("02-2C", "T"),
+                ("02-35", "Y"),
+                ("02-3C", "U"),
+                ("02-44", "O"),
+                ("02-4D", "P"),
+                ("02-54", "["),
+                ("02-5B", "]"),
+                ("02-5D", "|"),
+                ("02-1C", "A"),
+                ("02-1B", "S"),
+                ("02-23", "D"),
+                ("02-2B", "F"),
+                ("02-34", "G"),
+                ("02-33", "H"),
+                ("02-3B", "J"),
+                ("02-42", "k"),
+                ("02-4B", "l"),
+                ("02-4C", ";"),
+                ("02-52", "'"),
+                ("02-22", "X"),
+                ("02-1A", "Z"),
+                ("02-21", "C"),
+                ("02-2A", "V"),
+                ("02-32", "B"),
+                ("02-31", "N"),
+                ("02-3A", "M"),
+                ("02-41", ","),
+                ("02-49", "."),
+            }),
+            ("Numpad", new (string, string)[]
+            {
+                ("02-77", "NumLock"),
+                ("02-90", "NumSlash"),
+                ("02-7C", "NumStar"),
+                ("02-7B", "NumHyphen"),
+                ("02-79", "NumPlus"),
+                ("02-81", "NumEnter"),
+                ("02-71", "NumPeriod"),
+                ("02-70", "Num0"),
+                ("02-69", "Num1"),
+                ("02-72", "Num2"),
+                ("02-7A", "Num3"),
+                ("02-6B", "Num4"),
+                ("02-73", "Num5"),
+                ("02-74", "Num6"),
+                ("02-6C", "Num7"),
+                ("02-75", "Num8"),
+                ("02-7D", "Num9"),
+            }),
+        ];
 
         public AllyControl(SettingsForm settingsForm)
         {
@@ -598,6 +608,38 @@ namespace GHelper.Ally
 
         }
 
+        static private void SetTurbo()
+        {
+            byte[] turbo = new byte[64];
+            turbo[0] = AsusHid.INPUT_ID;
+            turbo[1] = 0xD1;
+            turbo[2] = 0x0F;
+            turbo[3] = 0x20;
+
+            // offset = 4 + (zone - 1) * 4,  layout: [L1, L2, R1, R2]
+            // value = ms / 50  (0 = off, 1 = 50ms, 2 = 100ms ... 10 = 500ms)
+            void Z(int zone, string l1, string l2, string r1, string r2)
+            {
+                int o = 4 + (zone - 1) * 4;
+                turbo[o] = (byte)(AppConfig.Get(l1, 0) / 50);
+                turbo[o + 1] = (byte)(AppConfig.Get(l2, 0) / 50);
+                turbo[o + 2] = (byte)(AppConfig.Get(r1, 0) / 50);
+                turbo[o + 3] = (byte)(AppConfig.Get(r2, 0) / 50);
+            }
+
+            Z(1, "turbo_du", "turbo2_du", "turbo_dd", "turbo2_dd");
+            Z(2, "turbo_dl", "turbo2_dl", "turbo_dr", "turbo2_dr");
+            Z(3, "turbo_ls", "turbo2_ls", "turbo_rs", "turbo2_rs");
+            Z(4, "turbo_lb", "turbo2_lb", "turbo_rb", "turbo2_rb");
+            Z(5, "turbo_a", "turbo2_a", "turbo_b", "turbo2_b");
+            Z(6, "turbo_x", "turbo2_x", "turbo_y", "turbo2_y");
+            Z(7, "turbo_vb", "turbo2_vb", "turbo_mb", "turbo2_mb");
+            Z(8, "turbo_m2", "turbo2_m2", "turbo_m1", "turbo2_m1");
+            Z(9, "turbo_lt", "turbo2_lt", "turbo_rt", "turbo2_rt");
+
+            AsusHid.WriteInput(turbo, null);
+        }
+
         static void WakeUp()
         {
             AsusHid.WriteInput(Encoding.ASCII.GetBytes("ZASUS Tech.Inc."), "Init");
@@ -662,7 +704,6 @@ namespace GHelper.Ally
                 }
 
                 AsusHid.WriteInput([AsusHid.INPUT_ID, 0xD1, 0x01, 0x01, (byte)_applyMode], "Controller");
-                //AsusHid.WriteInput(CommandSave, null);
 
                 BindZone(BindingZone.M1M2);
                 BindZone(BindingZone.DPadUpDown);
@@ -674,8 +715,7 @@ namespace GHelper.Ally
                 BindZone(BindingZone.ViewMenu);
                 BindZone(BindingZone.Trigger);
 
-                AsusHid.WriteInput(CommandSave, null);
-
+                SetTurbo();
                 SetDeadzones();
 
                 if (init && AppConfig.Is("controller_disabled"))
@@ -686,6 +726,34 @@ namespace GHelper.Ally
                 }
 
             });
+        }
+
+        public static void EmitStick(int stick, float x, float y)
+        {
+            byte[] r = new byte[64];
+            r[0] = AsusHid.INPUT_ID;
+            r[1] = 0xD1;
+            r[2] = 0x15;
+            r[3] = (byte)stick;   // 0 = left, 1 = right
+            r[4] = 0x04;
+            r[5] = 0x00;
+
+            short sx = ToInt16(x);
+            short sy = ToInt16(y);
+
+            r[6] = (byte)((sx >> 8) & 0xFF);
+            r[7] = (byte)(sx & 0xFF);
+            r[8] = (byte)((sy >> 8) & 0xFF);
+            r[9] = (byte)(sy & 0xFF);
+
+            AsusHid.WriteInput(r, null);
+        }
+
+        static short ToInt16(float v)
+        {
+            if (v > 1f) v = 1f;
+            if (v < -1f) v = -1f;
+            return v <= -1f ? short.MinValue : (short)(v * 32767f);
         }
 
         private void SetMode(ControllerMode mode, bool init = false)
