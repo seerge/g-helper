@@ -116,7 +116,7 @@ namespace GHelper.Overlay
         private static double D(object? v) { try { return v is null ? 0.0 : Convert.ToDouble(v); } catch { return 0.0; } }
 
         private static string FmtTemp(double t) =>
-        t > 0 ? ((int)Math.Round(t) + "°").PadLeft(4) : "    ";
+        t > 0 ? ((int)Math.Round(t) + "°").PadLeft(4) : " -- ";
 
         private static string FmtPow(double p) =>
         p > 0 ? Math.Round(p, 1).ToString("F1") + "W" : "";
@@ -149,16 +149,22 @@ namespace GHelper.Overlay
 
             HardwareControl.ReadSensorsOverlay();
 
+            // gpuActive gates power, fan and chart history — when the GPU is disabled
+            // its sensors return stale non-zero values, so we zero them out explicitly.
+            double gpuTemp = D(HardwareControl.gpuTemp);
+            double cpuTemp = D(HardwareControl.cpuTemp);
+            bool gpuActive = gpuTemp > 0;
+
             // Trailing space is the separator between temp and fan number
-            _gpuTempStr = "GPU:" + FmtTemp(D(HardwareControl.gpuTemp)) + " ";
-            _cpuTempStr = "CPU:" + FmtTemp(D(HardwareControl.cpuTemp)) + " ";
+            _gpuTempStr = "GPU:" + FmtTemp(gpuTemp) + " ";
+            _cpuTempStr = "CPU:" + FmtTemp(cpuTemp) + " ";
             _gpuFanNum = FormatFan(HardwareControl.gpuFanRPM);
             _cpuFanNum = FormatFan(HardwareControl.cpuFanRPM);
-            _gpuPow = FmtPow(D(HardwareControl.gpuPower));
+            _gpuPow = gpuActive ? FmtPow(D(HardwareControl.gpuPower)) : "";
             _cpuPow = FmtPow(D(HardwareControl.cpuPower));
 
             _cpuHistory[_historyHead] = (float)Math.Max(0, D(HardwareControl.cpuPower));
-            _gpuHistory[_historyHead] = (float)Math.Max(0, D(HardwareControl.gpuPower));
+            _gpuHistory[_historyHead] = gpuActive ? (float)Math.Max(0, D(HardwareControl.gpuPower)) : 0f;
             _historyHead = (_historyHead + 1) % HistoryLength;
 
             Invalidate();
