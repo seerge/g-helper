@@ -1,5 +1,4 @@
-﻿using GHelper.UI;
-
+using GHelper.UI;
 namespace GHelper
 {
     partial class Matrix
