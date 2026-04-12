@@ -1,4 +1,5 @@
 using GHelper.Helpers;
+using GHelper.Helpers;
 using System.Drawing.Drawing2D;
 using System.Drawing.Text;
 using System.Runtime.InteropServices;
@@ -52,6 +53,14 @@ namespace GHelper.Overlay
 
         private readonly System.Timers.Timer _timer = new(1000) { AutoReset = true };
         private FpsCounter? _fps;
+        private bool _active;  // true while overlay should be visible
+
+        [DllImport("user32.dll")]
+        private static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int x, int y, int w, int h, uint flags);
+        private static readonly IntPtr HWND_TOPMOST = new(-1);
+        private const uint SWP_NOMOVE = 0x0002;
+        private const uint SWP_NOSIZE = 0x0001;
+        private const uint SWP_NOACTIVATE = 0x0010;
 
         public HardwareOverlay()
         {
@@ -60,6 +69,28 @@ namespace GHelper.Overlay
             // All text and chart pixels use alpha=255 ? fully opaque.
             Alpha = 255;
             _timer.Elapsed += (_, _) => Tick();
+        }
+
+        // When Cyberpunk (or any game) switches DWM mode, Windows sends WM_NCDESTROY to
+        // layered WS_EX_TOPMOST windows. NativeWindow destroys the handle. We re-create it
+        // only if _active=true (i.e. the user hasn’t toggled the overlay off).
+        private const int WM_NCDESTROY = 0x0082;
+        protected override void WndProc(ref Message m)
+        {
+            if (m.Msg == WM_NCDESTROY)
+            {
+                base.WndProc(ref m);   // let NativeWindow zero the handle
+                if (_active)
+                {
+                    Program.settingsForm?.BeginInvoke(() =>
+                    {
+                        PositionAtTopLeft();
+                        base.Show();
+                    });
+                }
+                return;
+            }
+            base.WndProc(ref m);
         }
 
         // ?? DPI ??????????????????????????????????????????????????????????????
@@ -78,13 +109,10 @@ namespace GHelper.Overlay
         // ?? Tick ?????????????????????????????????????????????????????????????
         private void Tick()
         {
-            // A fullscreen exclusive game can destroy the layered window handle.
-            // Re-create and re-show it so the overlay recovers automatically.
-            if (Handle == nint.Zero)
-            {
-                PositionAtTopLeft();
-                base.Show();
-            }
+            // Re-assert HWND_TOPMOST every second so the overlay stays above fullscreen games
+            if (Handle != nint.Zero)
+                SetWindowPos(Handle, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE);
+
             HardwareControl.ReadSensorsOverlay();
 
             string cpuTemp  = HardwareControl.cpuTemp > 0
@@ -243,6 +271,7 @@ namespace GHelper.Overlay
 
         public void StartOverlay()
         {
+            _active = true;
             _fps?.Dispose();
             _fps = new FpsCounter();
             _fps.Start();
@@ -260,6 +289,7 @@ namespace GHelper.Overlay
 
         public void StopOverlay()
         {
+            _active = false;
             _timer.Stop();
             _fps?.Dispose();
             _fps = null;
