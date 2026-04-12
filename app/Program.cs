@@ -5,6 +5,7 @@ using GHelper.Gpu;
 using GHelper.Helpers;
 using GHelper.Input;
 using GHelper.Mode;
+using GHelper.Overlay;
 using GHelper.Peripherals;
 using GHelper.USB;
 using Microsoft.Win32;
@@ -30,6 +31,8 @@ namespace GHelper
         public static ClamshellModeControl clamshellControl;
 
         public static ToastForm toast;
+
+        public static HardwareOverlay? hardwareOverlay;
 
         public static IntPtr unRegPowerNotify, unRegPowerNotifyLid;
         public static int WM_TASKBARCREATED = 0;
@@ -79,6 +82,8 @@ namespace GHelper
             clamshellControl = new ClamshellModeControl();
 
             toast = new ToastForm();
+
+            hardwareOverlay = new HardwareOverlay();
 
             string language = AppConfig.GetString("language");
 
@@ -207,6 +212,9 @@ namespace GHelper
             {
                 settingsForm.VisualiseArmoury(AsusService.IsArmouryRunning());
             });
+
+            if (AppConfig.Is("overlay"))
+                hardwareOverlay?.StartOverlay();
 
             Application.Run();
 

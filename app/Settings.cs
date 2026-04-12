@@ -867,6 +867,13 @@ namespace GHelper
             }
 
 
+            var menuOverlay = new ToolStripMenuItem("Hardware Overlay");
+            menuOverlay.Click += (sender, args) => ToggleOverlay();
+            menuOverlay.Margin = padding;
+            menuOverlay.Checked = AppConfig.Is("overlay");
+            contextMenuStrip.Items.Add("-");
+            contextMenuStrip.Items.Add(menuOverlay);
+
             var quit = new ToolStripMenuItem(Properties.Strings.Quit);
             quit.Click += ButtonQuit_Click;
             quit.Margin = padding;
@@ -1643,6 +1650,17 @@ namespace GHelper
         {
             if (fansForm != null && !fansForm.IsDisposed && fansForm.Text != "")
                 fansForm.LabelFansResult(text);
+        }
+
+        public void ToggleOverlay()
+        {
+            bool enable = !AppConfig.Is("overlay");
+            AppConfig.Set("overlay", enable ? 1 : 0);
+            if (enable)
+                Program.hardwareOverlay?.StartOverlay();
+            else
+                Program.hardwareOverlay?.StopOverlay();
+            SetContextMenu();
         }
 
         public void ShowMode(int mode)
