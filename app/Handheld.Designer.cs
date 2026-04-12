@@ -535,7 +535,7 @@
             // 
             labelBinding.AutoSize = true;
             labelBinding.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            labelBinding.Location = new Point(10, 15);
+            labelBinding.Location = new Point(8, 15);
             labelBinding.Name = "labelBinding";
             labelBinding.Size = new Size(183, 32);
             labelBinding.TabIndex = 31;
@@ -570,7 +570,7 @@
             comboSecondary.Location = new Point(138, 121);
             comboSecondary.Margin = new Padding(4, 11, 4, 8);
             comboSecondary.Name = "comboSecondary";
-            comboSecondary.Size = new Size(232, 40);
+            comboSecondary.Size = new Size(235, 40);
             comboSecondary.TabIndex = 28;
             // 
             // comboPrimary
@@ -584,17 +584,20 @@
             comboPrimary.Location = new Point(138, 60);
             comboPrimary.Margin = new Padding(4, 11, 4, 8);
             comboPrimary.Name = "comboPrimary";
-            comboPrimary.Size = new Size(232, 40);
+            comboPrimary.Size = new Size(235, 40);
             comboPrimary.TabIndex = 27;
             // 
             // labelTurbo
             // 
+            labelTurbo.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             labelTurbo.AutoSize = true;
-            labelTurbo.Location = new Point(378, 15);
+            labelTurbo.ForeColor = SystemColors.ControlDarkDark;
+            labelTurbo.Location = new Point(329, 14);
             labelTurbo.Name = "labelTurbo";
-            labelTurbo.Size = new Size(77, 32);
+            labelTurbo.Size = new Size(139, 32);
             labelTurbo.TabIndex = 35;
-            labelTurbo.Text = "Turbo";
+            labelTurbo.Text = "Repeat (ms)";
+            labelTurbo.TextAlign = ContentAlignment.TopRight;
             // 
             // comboTurboPrimary
             // 
@@ -604,10 +607,10 @@
             comboTurboPrimary.Font = new Font("Segoe UI", 9F);
             comboTurboPrimary.FormattingEnabled = true;
             comboTurboPrimary.ItemHeight = 32;
-            comboTurboPrimary.Location = new Point(378, 60);
+            comboTurboPrimary.Location = new Point(381, 60);
             comboTurboPrimary.Margin = new Padding(4, 11, 4, 8);
             comboTurboPrimary.Name = "comboTurboPrimary";
-            comboTurboPrimary.Size = new Size(90, 40);
+            comboTurboPrimary.Size = new Size(87, 40);
             comboTurboPrimary.TabIndex = 36;
             // 
             // comboTurboSecondary
@@ -618,10 +621,10 @@
             comboTurboSecondary.Font = new Font("Segoe UI", 9F);
             comboTurboSecondary.FormattingEnabled = true;
             comboTurboSecondary.ItemHeight = 32;
-            comboTurboSecondary.Location = new Point(378, 121);
+            comboTurboSecondary.Location = new Point(381, 121);
             comboTurboSecondary.Margin = new Padding(4, 11, 4, 8);
             comboTurboSecondary.Name = "comboTurboSecondary";
-            comboTurboSecondary.Size = new Size(90, 40);
+            comboTurboSecondary.Size = new Size(87, 40);
             comboTurboSecondary.TabIndex = 37;
             // 
             // buttonView
