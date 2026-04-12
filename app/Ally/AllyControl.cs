@@ -143,17 +143,20 @@ namespace GHelper.Ally
             { BindX, "X" },
             { BindY, "Y" },
 
+            { BindLT, "Left Trigger" },
+            { BindRT, "Right Trigger" },
+
             { BindLB, "Left Bumper" },
             { BindRB, "Right Bumper" },
 
             { BindLS, "Left Stick Click" },
             { BindRS, "Right Stick Click" },
 
-            { BindDU, "DPad Up" },
-            { BindDD, "DPad Down" },
+            { BindDU, "D-Pad Up" },
+            { BindDD, "D-Pad Down" },
 
-            { BindDL, "DPad Left" },
-            { BindDR, "DPad Right" },
+            { BindDL, "D-Pad Left" },
+            { BindDR, "D-Pad Right" },
 
             { BindVB, "View Button" },
             { BindMB, "Menu Button" },
@@ -291,8 +294,6 @@ namespace GHelper.Ally
             { "03-04", "Mouse scroll up" },
             { "03-05", "Mouse scroll down" },
 
-            //{ "05-16", "Screenshot" },
-            //{ "05-1C", "Show desktop" },
             { BindWinP,   "Project Mode"   },
 
             { "05-1E", "Begin Recording" },
