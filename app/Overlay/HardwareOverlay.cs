@@ -129,11 +129,9 @@ namespace GHelper.Overlay
 
         private void Tick()
         {
-            /*
             if (Handle != nint.Zero)
                 SetWindowPos(Handle, HWND_TOPMOST, 0, 0, 0, 0,
                 SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE);
-            */
 
             // Pin FPS counter to foreground process — queried every second so
             // switching games is handled automatically without manual configuration.

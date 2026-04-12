@@ -11,6 +11,7 @@ namespace GHelper.Overlay
         private const byte TRACE_LEVEL_INFORMATION = 4;
         private const uint PROCESS_TRACE_MODE_REAL_TIME = 0x00000100;
         private const uint PROCESS_TRACE_MODE_EVENT_RECORD = 0x10000000;
+        private const uint PROCESS_TRACE_MODE_RAW_TIMESTAMP = 0x00001000; // EventHeader.TimeStamp = raw QPC ticks
         private const uint WNODE_FLAG_TRACED_GUID = 0x00020000;
         private const int EVENT_DXGI_PRESENT_START = 42;
 
@@ -82,7 +83,7 @@ namespace GHelper.Overlay
             public ushort EventProperty;
             public uint ThreadId;
             public uint ProcessId;
-            public long TimeStamp;
+            public long TimeStamp; // raw QPC ticks when PROCESS_TRACE_MODE_RAW_TIMESTAMP is set
             public Guid ProviderId;
             public ushort Id; // 42 = PresentStart
             public byte Version;
@@ -170,12 +171,14 @@ namespace GHelper.Overlay
         private volatile int _targetPid; // written by overlay timer thread, read by ETW callback thread
         private int _lastTargetPid;      // detects PID switches so the window can be reset
 
-        // Rolling-window FPS: store the last N frame timestamps and compute
-        // fps = (N-1) / (newest_ts - oldest_ts). This matches how Steam overlay works —
-        // no bucket boundaries, no 1-second jumps.
-        private const int RollingWindowSize = 60;          // ~0.75 s at 80 fps
+        // Rolling-window FPS using EventHeader.TimeStamp (raw QPC ticks at Present call time).
+        // Critical: ETW batches events and delivers them all at once, so Stopwatch.GetTimestamp()
+        // at callback time is nearly identical for every frame in the batch — causing fps = N/~0.
+        // EventHeader.TimeStamp is stamped by the kernel when Present() actually fired, so it
+        // correctly reflects the real inter-frame spacing regardless of delivery batching.
+        private const int RollingWindowSize = 120;         // frames — ~0.7 s at 170 fps
         private readonly long[] _frameTimes = new long[RollingWindowSize];
-        private int _frameHead = 0;                     // next write slot
+        private int _frameHead = 0;                    // next write slot
         private int _framesFilled = 0;                    // valid entries (capped at RollingWindowSize)
         private long _lastEventTick = 0;                   // throttle FpsUpdated to ~5× per second
 
@@ -213,6 +216,8 @@ namespace GHelper.Overlay
             // 3. Open the real-time consumer using explicit-layout struct.
             // LoggerName and EventRecordCallback are marshaled as raw IntPtrs to
             // guarantee correct placement at the native 64-bit offsets.
+            // PROCESS_TRACE_MODE_RAW_TIMESTAMP makes EventHeader.TimeStamp a raw QPC
+            // value (same units as Stopwatch.Frequency) instead of low-res system time.
             _callbackRef = OnEventRecord;
             IntPtr loggerNamePtr = Marshal.StringToHGlobalUni(SessionName);
             try
@@ -221,7 +226,8 @@ namespace GHelper.Overlay
                 {
                     LoggerName = loggerNamePtr,
                     ProcessTraceMode = PROCESS_TRACE_MODE_REAL_TIME |
-                PROCESS_TRACE_MODE_EVENT_RECORD,
+                PROCESS_TRACE_MODE_EVENT_RECORD |
+                PROCESS_TRACE_MODE_RAW_TIMESTAMP,
                     EventRecordCallback = Marshal.GetFunctionPointerForDelegate(_callbackRef),
                 };
 
@@ -267,22 +273,20 @@ namespace GHelper.Overlay
                 return;
             }
 
-            // Record this frame's high-resolution timestamp
-            long now = Stopwatch.GetTimestamp();
+            // EventHeader.TimeStamp = kernel QPC tick at the moment Present() was called.
+            // This is NOT affected by ETW delivery batching, giving accurate inter-frame timing.
+            long now = record.EventHeader.TimeStamp;
             _frameTimes[_frameHead] = now;
             _frameHead = (_frameHead + 1) % RollingWindowSize;
             if (_framesFilled < RollingWindowSize) _framesFilled++;
 
-            // Need at least 2 frames to compute FPS
             if (_framesFilled < 2) return;
 
-            // Throttle FpsUpdated to ~5× per second — plenty for smooth display,
-            // without hammering the UI thread on every single Present call.
-            long freq = Stopwatch.Frequency;
+            // Throttle FpsUpdated to ~5× per second
+            long freq = Stopwatch.Frequency; // same units as raw QPC ticks
             if (_lastEventTick != 0 && (now - _lastEventTick) < freq / 5) return;
             _lastEventTick = now;
 
-            // fps = (frames - 1) intervals over the window duration
             int oldestIdx = (_frameHead - _framesFilled + RollingWindowSize) % RollingWindowSize;
             double elapsed = (double)(now - _frameTimes[oldestIdx]) / freq;
             if (elapsed <= 0) return;
@@ -297,6 +301,7 @@ namespace GHelper.Overlay
             {
                 BufferSize = (uint)Marshal.SizeOf<EVENT_TRACE_PROPERTIES>(),
                 Flags = WNODE_FLAG_TRACED_GUID,
+                ClientContext = 0, // 0 = QPC — same frequency as Stopwatch.Frequency
             },
             LogFileMode = 0x00000100, // EVENT_TRACE_REAL_TIME_MODE
             LogFileNameOffset = 0,
