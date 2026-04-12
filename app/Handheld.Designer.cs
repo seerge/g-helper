@@ -1,4 +1,5 @@
-﻿namespace GHelper
+using GHelper.UI;
+namespace GHelper
 {
     partial class Handheld
     {
@@ -32,28 +33,28 @@
             panelRight = new Panel();
             panelRT = new Panel();
             pictureBox4 = new PictureBox();
-            trackRTMax = new TrackBar();
+            trackRTMax = new RTrackBar();
             labelRT = new Label();
-            trackRTMin = new TrackBar();
+            trackRTMin = new RTrackBar();
             labelRTTitle = new Label();
             panelRS = new Panel();
             pictureBox1 = new PictureBox();
-            trackRSMax = new TrackBar();
+            trackRSMax = new RTrackBar();
             labelRS = new Label();
-            trackRSMin = new TrackBar();
+            trackRSMin = new RTrackBar();
             labelRSTitle = new Label();
             panelLeft = new Panel();
             panelLT = new Panel();
             pictureBox2 = new PictureBox();
-            trackLTMax = new TrackBar();
+            trackLTMax = new RTrackBar();
             labelLT = new Label();
-            trackLTMin = new TrackBar();
+            trackLTMin = new RTrackBar();
             labelLTTitle = new Label();
             panelLS = new Panel();
             pictureBox3 = new PictureBox();
-            trackLSMax = new TrackBar();
+            trackLSMax = new RTrackBar();
             labelLS = new Label();
-            trackLSMin = new TrackBar();
+            trackLSMin = new RTrackBar();
             labelLSTitle = new Label();
             buttonReset = new GHelper.UI.RButton();
             panelBindings = new Panel();
@@ -90,7 +91,7 @@
             pictureBox5 = new PictureBox();
             labelVibra = new Label();
             labelVibraTitle = new Label();
-            trackVibra = new TrackBar();
+            trackVibra = new RTrackBar();
             panelDeadzones.SuspendLayout();
             panelRight.SuspendLayout();
             panelRT.SuspendLayout();
@@ -535,7 +536,7 @@
             // 
             labelBinding.AutoSize = true;
             labelBinding.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            labelBinding.Location = new Point(10, 15);
+            labelBinding.Location = new Point(8, 15);
             labelBinding.Name = "labelBinding";
             labelBinding.Size = new Size(183, 32);
             labelBinding.TabIndex = 31;
@@ -570,7 +571,7 @@
             comboSecondary.Location = new Point(138, 121);
             comboSecondary.Margin = new Padding(4, 11, 4, 8);
             comboSecondary.Name = "comboSecondary";
-            comboSecondary.Size = new Size(232, 40);
+            comboSecondary.Size = new Size(235, 40);
             comboSecondary.TabIndex = 28;
             // 
             // comboPrimary
@@ -584,17 +585,20 @@
             comboPrimary.Location = new Point(138, 60);
             comboPrimary.Margin = new Padding(4, 11, 4, 8);
             comboPrimary.Name = "comboPrimary";
-            comboPrimary.Size = new Size(232, 40);
+            comboPrimary.Size = new Size(235, 40);
             comboPrimary.TabIndex = 27;
             // 
             // labelTurbo
             // 
+            labelTurbo.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             labelTurbo.AutoSize = true;
-            labelTurbo.Location = new Point(378, 15);
+            labelTurbo.ForeColor = SystemColors.ControlDarkDark;
+            labelTurbo.Location = new Point(329, 14);
             labelTurbo.Name = "labelTurbo";
-            labelTurbo.Size = new Size(77, 32);
+            labelTurbo.Size = new Size(139, 32);
             labelTurbo.TabIndex = 35;
-            labelTurbo.Text = "Turbo";
+            labelTurbo.Text = "Repeat (ms)";
+            labelTurbo.TextAlign = ContentAlignment.TopRight;
             // 
             // comboTurboPrimary
             // 
@@ -604,10 +608,10 @@
             comboTurboPrimary.Font = new Font("Segoe UI", 9F);
             comboTurboPrimary.FormattingEnabled = true;
             comboTurboPrimary.ItemHeight = 32;
-            comboTurboPrimary.Location = new Point(378, 60);
+            comboTurboPrimary.Location = new Point(381, 60);
             comboTurboPrimary.Margin = new Padding(4, 11, 4, 8);
             comboTurboPrimary.Name = "comboTurboPrimary";
-            comboTurboPrimary.Size = new Size(90, 40);
+            comboTurboPrimary.Size = new Size(87, 40);
             comboTurboPrimary.TabIndex = 36;
             // 
             // comboTurboSecondary
@@ -618,10 +622,10 @@
             comboTurboSecondary.Font = new Font("Segoe UI", 9F);
             comboTurboSecondary.FormattingEnabled = true;
             comboTurboSecondary.ItemHeight = 32;
-            comboTurboSecondary.Location = new Point(378, 121);
+            comboTurboSecondary.Location = new Point(381, 121);
             comboTurboSecondary.Margin = new Padding(4, 11, 4, 8);
             comboTurboSecondary.Name = "comboTurboSecondary";
-            comboTurboSecondary.Size = new Size(90, 40);
+            comboTurboSecondary.Size = new Size(87, 40);
             comboTurboSecondary.TabIndex = 37;
             // 
             // buttonView
@@ -1132,28 +1136,28 @@
         private Panel panelRight;
         private Panel panelRT;
         private PictureBox pictureBox4;
-        private TrackBar trackRTMax;
+        private RTrackBar trackRTMax;
         private Label labelRT;
-        private TrackBar trackRTMin;
+        private RTrackBar trackRTMin;
         private Label labelRTTitle;
         private Panel panelRS;
         private PictureBox pictureBox1;
-        private TrackBar trackRSMax;
+        private RTrackBar trackRSMax;
         private Label labelRS;
-        private TrackBar trackRSMin;
+        private RTrackBar trackRSMin;
         private Label labelRSTitle;
         private Panel panelLeft;
         private Panel panelLT;
         private PictureBox pictureBox2;
-        private TrackBar trackLTMax;
+        private RTrackBar trackLTMax;
         private Label labelLT;
-        private TrackBar trackLTMin;
+        private RTrackBar trackLTMin;
         private Label labelLTTitle;
         private Panel panelLS;
         private PictureBox pictureBox3;
-        private TrackBar trackLSMax;
+        private RTrackBar trackLSMax;
         private Label labelLS;
-        private TrackBar trackLSMin;
+        private RTrackBar trackLSMin;
         private Label labelLSTitle;
         private Panel panelBindings;
         private PictureBox pictureAlly;
@@ -1186,7 +1190,7 @@
         private PictureBox pictureBox5;
         private Label labelVibra;
         private Label labelVibraTitle;
-        private TrackBar trackVibra;
+        private RTrackBar trackVibra;
         private UI.RCheckBox checkController;
         private Label labelTurbo;
         private UI.RComboBox comboTurboPrimary;

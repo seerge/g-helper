@@ -100,17 +100,57 @@ namespace GHelper
             AllyControl.DisableXBoxController(checkController.Checked);
         }
 
+        private static object[] BuildBindingComboItems()
+        {
+            var list = new List<object>();
+            foreach (var (groupLabel, items) in AllyControl.BindingGroups)
+            {
+                if (groupLabel != "")
+                    list.Add(new BindingSeparator(groupLabel));
+                foreach (var (code, name) in items)
+                    list.Add(new BindingItem(code, name));
+            }
+            return list.ToArray();
+        }
+
         private void ComboBinding(RComboBox combo)
         {
-
             combo.DropDownStyle = ComboBoxStyle.DropDownList;
-            combo.DisplayMember = "Value";
-            combo.ValueMember = "Key";
-            foreach (var item in AllyControl.BindCodes)
-                combo.Items.Add(new KeyValuePair<string, string>(item.Key, item.Value));
-
+            combo.DrawMode = DrawMode.OwnerDrawFixed;
+            combo.Items.AddRange(BuildBindingComboItems());
+            combo.DrawItem += BindingCombo_DrawItem;
             combo.SelectedValueChanged += Binding_SelectedValueChanged;
+        }
 
+        private static void BindingCombo_DrawItem(object? sender, DrawItemEventArgs e)
+        {
+            if (e.Index < 0 || sender is not ComboBox cmb) return;
+
+            object obj = cmb.Items[e.Index];
+            bool isSep = obj is BindingSeparator;
+
+            Color back = isSep ? RForm.buttonSecond : RForm.buttonMain;
+
+            if (!isSep && (e.State & DrawItemState.Selected) != 0)
+                back = RForm.borderMain;
+
+            using var backBrush = new SolidBrush(back);
+            e.Graphics.FillRectangle(backBrush, e.Bounds);
+
+            string text = obj.ToString() ?? string.Empty;
+            Font font = isSep
+                ? new Font(e.Font ?? SystemFonts.DefaultFont, FontStyle.Bold)
+                : (e.Font ?? SystemFonts.DefaultFont);
+
+            int indent = isSep ? 2 : 10;
+            var textRect = new Rectangle(e.Bounds.X + indent, e.Bounds.Y,
+                                         e.Bounds.Width - indent, e.Bounds.Height);
+
+            using var foreBrush = new SolidBrush(RForm.foreMain);
+            e.Graphics.DrawString(text, font, foreBrush, textRect,
+                new StringFormat { LineAlignment = StringAlignment.Center });
+
+            if (isSep) font.Dispose();
         }
 
         private void ComboTurbo(RComboBox combo)
@@ -119,26 +159,37 @@ namespace GHelper
             combo.DisplayMember = "Value";
             combo.ValueMember = "Key";
             combo.Items.Add(new KeyValuePair<int, string>(0, "Off"));
-            combo.Items.Add(new KeyValuePair<int, string>(50, "50ms"));
-            combo.Items.Add(new KeyValuePair<int, string>(100, "100ms"));
-            combo.Items.Add(new KeyValuePair<int, string>(150, "150ms"));
-            combo.Items.Add(new KeyValuePair<int, string>(200, "200ms"));
-            combo.Items.Add(new KeyValuePair<int, string>(250, "250ms"));
-            combo.Items.Add(new KeyValuePair<int, string>(300, "300ms"));
-            combo.Items.Add(new KeyValuePair<int, string>(400, "400ms"));
-            combo.Items.Add(new KeyValuePair<int, string>(500, "500ms"));
+            combo.Items.Add(new KeyValuePair<int, string>(50, "50"));
+            combo.Items.Add(new KeyValuePair<int, string>(100, "100"));
+            combo.Items.Add(new KeyValuePair<int, string>(150, "150"));
+            combo.Items.Add(new KeyValuePair<int, string>(200, "200"));
+            combo.Items.Add(new KeyValuePair<int, string>(250, "250"));
+            combo.Items.Add(new KeyValuePair<int, string>(300, "300"));
+            combo.Items.Add(new KeyValuePair<int, string>(400, "400"));
+            combo.Items.Add(new KeyValuePair<int, string>(500, "500"));
             combo.SelectedValueChanged += TurboSelectedValueChanged;
         }
 
+        private bool _updatingBindings;
+
         private void Binding_SelectedValueChanged(object? sender, EventArgs e)
         {
-            if (sender is null) return;
+            if (_updatingBindings || sender is null) return;
             RComboBox combo = (RComboBox)sender;
 
-            string value = ((KeyValuePair<string, string>)combo.SelectedItem).Key;
+            if (combo.SelectedItem is BindingSeparator)
+            {
+                int next = combo.SelectedIndex + 1;
+                if (next < combo.Items.Count && combo.Items[next] is BindingItem)
+                    combo.SelectedIndex = next;
+                return;
+            }
+
+            if (combo.SelectedItem is not BindingItem item) return;
+
             string binding = "bind" + (combo.Name == "comboPrimary" ? "" : "2") + "_" + activeBinding;
 
-            if (value != "") AppConfig.Set(binding, value);
+            if (item.Code != "") AppConfig.Set(binding, item.Code);
             else AppConfig.Remove(binding);
 
             VisualiseButton(activeButton, activeBinding);
@@ -159,14 +210,16 @@ namespace GHelper
 
         private void SetComboValue(RComboBox combo, string value)
         {
-            foreach (var item in AllyControl.BindCodes)
-                if (item.Key == value)
+            _updatingBindings = true;
+            foreach (var obj in combo.Items)
+                if (obj is BindingItem item && item.Code == value)
                 {
                     combo.SelectedItem = item;
+                    _updatingBindings = false;
                     return;
                 }
-
             combo.SelectedIndex = 0;
+            _updatingBindings = false;
         }
 
         private void SetTurboValue(RComboBox combo, int ms)
@@ -310,5 +363,19 @@ namespace GHelper
             Left = Program.settingsForm.Left - Width - 5;
         }
 
+            private sealed class BindingItem
+            {
+                public string Code        { get; }
+                public string DisplayName { get; }
+                public BindingItem(string code, string name) { Code = code; DisplayName = name; }
+                public override string ToString() => DisplayName;
+            }
+
+            private sealed class BindingSeparator
+            {
+                public string Label { get; }
+                public BindingSeparator(string label) { Label = label; }
+                public override string ToString() => Label;
+            }
+        }
     }
-}

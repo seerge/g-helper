@@ -533,10 +533,8 @@ namespace GHelper.Mode
                 PowerLimits? lim = smu.GetPowerLimits();
                 if (lim == null) return string.Empty;
 
-                // Display: STAPM | Fast | Slow [| APU slow if present], Temp
-                string line = $"Limits: {lim.Stapm:F1}W | {lim.Fast:F1}W | {lim.Slow:F1}W";
-                if (lim.ApuSlow.HasValue)
-                    line += $" | APU {lim.ApuSlow.Value:F1}W";
+                string line = $"SPL: {lim.Stapm:F1}W | sPPT {lim.Slow:F1}W | fPPT {lim.Fast:F1}W";
+                if (lim.ApuSlow.HasValue) line += $" | APU {lim.ApuSlow.Value:F1}W";
                 line += $", Temp: {lim.TctlTemp:F0}°C";
                 Logger.WriteLine("Ryzen Limits: " + line);
                 return line;
