@@ -871,7 +871,6 @@ namespace GHelper
             menuOverlay.Click += (sender, args) => ToggleOverlay();
             menuOverlay.Margin = padding;
             menuOverlay.Checked = AppConfig.Is("overlay");
-            contextMenuStrip.Items.Add("-");
             contextMenuStrip.Items.Add(menuOverlay);
 
             var quit = new ToolStripMenuItem(Properties.Strings.Quit);

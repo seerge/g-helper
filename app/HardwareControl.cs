@@ -581,6 +581,48 @@ public static class HardwareControl
         ReadBatteryState();
     }
 
+    // Lightweight sensor read used by the overlay timer — skips battery health, WMI and design capacity
+    public static void ReadSensorsOverlay()
+    {
+        InitCPUPowerAsync();
+
+        if (Program.acpi is null) return;
+
+        cpuFan = FanSensorControl.FormatFan(AsusFan.CPU, Program.acpi.GetFan(AsusFan.CPU));
+        gpuFan = FanSensorControl.FormatFan(AsusFan.GPU, Program.acpi.GetFan(AsusFan.GPU));
+
+        cpuTemp = GetCPUTemp();
+        gpuTemp = GetGPUTemp();
+
+        // Only overwrite with a new reading when the counter returns a valid value;
+        // keep the previous reading on ticks where the ETW-backed counter returns 0.
+        float? newCpu = GetCPUPower();
+        if (newCpu > 0) cpuPower = newCpu;
+
+        float? newGpu = GetGPUPower();
+        if (newGpu > 0) gpuPower = newGpu;
+
+        // Read only the fast IOCTL battery rate — skip health, WMI and design capacity queries
+        try
+        {
+            decimal? discharge = Program.acpi.GetBatteryDischarge();
+            if (discharge is not null)
+            {
+                batteryRate = discharge;
+            }
+            else
+            {
+                var directStatus = QueryBatteryStatus();
+                if (directStatus.HasValue && directStatus.Value.Rate != 0)
+                    batteryRate = (decimal)directStatus.Value.Rate / 1000;
+            }
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine("Overlay battery read: " + ex.Message);
+        }
+    }
+
     public static double GetBatteryChargePercentage()
     {
         try
