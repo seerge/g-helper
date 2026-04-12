@@ -7,7 +7,6 @@ namespace GHelper.Overlay
 {
     public class HardwareOverlay : OSDNativeForm
     {
-        // DPI
         [DllImport("user32.dll")]
         private static extern IntPtr MonitorFromPoint(POINT pt, uint dwFlags);
         [DllImport("shcore.dll")]
@@ -18,48 +17,50 @@ namespace GHelper.Overlay
 
         // ── Layout constants (base = 96 dpi) ─────────────────────────────────
         //
-        //  ┌─padX─┬─fpsCol─┬─gap─┬─── leftCol ────┬─gap─┬─chartCol─┬─gap─┬─powCol─┬─padX─┐
-        //  │      │  144   │     │ GPU:68° 2500RPM│     │  chart   │     │ 19.6W  │      │
-        //  │      │  fps   │     │ CPU:53° 2100RPM│     │          │     │  6.7W  │      │
-        //  └──────┴────────┴─────┴────────────────┴─────┴──────────┴─────┴────────┴──────┘
+        //  ┌─padX─┬─fpsCol─┬─gap─┬─── leftCol ────┬─gap─┬─chartCol─┬─pwrGap─┬─powCol─┬─padX─┐
+        //  │      │  194   │     │ GPU: 82° 5300RPM│     │  chart   │        │ 111.3W │      │
+        //  │      │  fps   │     │ CPU: 78° 4500RPM│     │          │        │  16.9W │      │
+        //  └──────┴────────┴─────┴────────────────┴─────┴──────────┴────────┴────────┴──────┘
         //
-        //  BaseWidth = 8 + 52 + 8 + 128 + 8 + 80 + 8 + 50 + 8 = 350
+        //  BaseWidth = 8 + 52 + 8 + 128 + 8 + 120 + 4 + 50 + 8 = 386
         //
         private const float BaseFontSize = 13f;
+        private const float BaseRpmFontSize = 8.5f;
         private const int BaseLineHeight = 18;
         private const int BaseLineSpacing = 1;
         private const int BasePadX = 8;
-        private const int BasePadY = 6;
-        private const int BaseWidth = 350;
+        private const int BasePadY = 4;
+        private const int BaseWidth = 386;
         private const int BaseFpsColWidth = 52;
-        private const int BaseLeftColWidth = 128;  // temp + fan
-        private const int BaseChartColWidth = 80;
-        private const int BasePowerColWidth = 50;   // power draw (right of chart)
+        private const int BaseLeftColWidth = 128;
+        private const int BaseChartColWidth = 120;
+        private const int BasePowerGap = 4;
+        private const int BasePowerColWidth = 50;
         private const int BaseColGap = 8;
         private const int CornerRadius = 3;
         private const int MarginFromEdge = 10;
 
-        // ── Colours — GPU = green, CPU = cyan ────────────────────────────────
         private static readonly SolidBrush _bgBrush = new(Color.FromArgb(128, 0, 0, 0));
         private static readonly SolidBrush _gpuBrush = new(Color.FromArgb(255, 0, 255, 80));
         private static readonly SolidBrush _cpuBrush = new(Color.FromArgb(255, 60, 220, 255));
         private static readonly Pen _gpuLinePen = new(Color.FromArgb(255, 0, 255, 80), 1.5f);
         private static readonly Pen _cpuLinePen = new(Color.FromArgb(255, 60, 220, 255), 1.5f);
-        private static readonly SolidBrush _gpuFillBrush = new(Color.FromArgb(128, 0, 255 / 3, 80 / 3));
-        private static readonly SolidBrush _cpuFillBrush = new(Color.FromArgb(128, 60 / 3, 220 / 3, 255 / 3));
+        private static readonly SolidBrush _gpuFillBrush = new(Color.FromArgb(128, 0, 85, 27));
+        private static readonly SolidBrush _cpuFillBrush = new(Color.FromArgb(128, 20, 73, 85));
 
-        // ── Data ─────────────────────────────────────────────────────────────
-        private string _gpuLeft = "";   // "GPU: 68° 2500RPM"
-        private string _cpuLeft = "";   // "CPU: 53° 2100RPM"
-        private string _gpuPow = "";   // " 19.6W"
-        private string _cpuPow = "";   // "  6.7W"
+        // _gpuTempStr includes a trailing space so fan number has breathing room
+        private string _gpuTempStr = "";
+        private string _cpuTempStr = "";
+        private string _gpuFanNum = "";
+        private string _cpuFanNum = "";
+        private string _gpuPow = "";
+        private string _cpuPow = "";
 
         private const int HistoryLength = 60;
         private readonly float[] _cpuHistory = new float[HistoryLength];
         private readonly float[] _gpuHistory = new float[HistoryLength];
         private int _historyHead = 0;
 
-        // ── Timers / monitors ────────────────────────────────────────────────
         private readonly System.Timers.Timer _timer = new(1000) { AutoReset = true };
         private EtwFpsMonitor? _fps;
         private Task? _fpsTask;
@@ -94,7 +95,6 @@ namespace GHelper.Overlay
             base.WndProc(ref m);
         }
 
-        // ── DPI ──────────────────────────────────────────────────────────────
         private float GetDpiScale()
         {
             Screen screen = Screen.PrimaryScreen ?? Screen.AllScreens[0];
@@ -106,30 +106,20 @@ namespace GHelper.Overlay
         }
 
         private static int S(float sc, int v) => (int)(v * sc);
-
-        // ── Safe value conversion ─────────────────────────────────────────────
         private static double D(object? v) { try { return v is null ? 0.0 : Convert.ToDouble(v); } catch { return 0.0; } }
 
-        // ── Fixed-width formatters ────────────────────────────────────────────
-        // Temp:  4 chars  →  " 68°"  / "100°"  / "    "
-        // Power: 6 chars  →  "  3.1W" / "120.4W" / "      "
-        // Fan:   7 chars  →  "   0RPM" / "6000RPM" / "       "
         private static string FmtTemp(double t) =>
             t > 0 ? ((int)Math.Round(t) + "°").PadLeft(4) : "    ";
 
         private static string FmtPow(double p) =>
-            p > 0 ? (Math.Round(p, 1).ToString("F1") + "W").PadLeft(6) : "      ";
+            p > 0 ? Math.Round(p, 1).ToString("F1") + "W" : "";
 
-        private static string FmtFan(string? fan)
+        private static string FormatFan(int? fan)
         {
-            if (string.IsNullOrWhiteSpace(fan)) return "       ";
-            var digits = new string(fan.Trim().TakeWhile(char.IsDigit).ToArray());
-            if (int.TryParse(digits, out int rpm))
-                return (rpm + "RPM").PadLeft(7);
-            return fan.Trim().PadLeft(7);
+            if (fan is null || fan < 0) return "";
+            return fan.ToString();
         }
 
-        // ── Tick ─────────────────────────────────────────────────────────────
         private void Tick()
         {
             if (Handle != nint.Zero)
@@ -138,13 +128,11 @@ namespace GHelper.Overlay
 
             HardwareControl.ReadSensorsOverlay();
 
-            // Left column: label + temp + fan
-            _gpuLeft = "GPU:" + FmtTemp(D(HardwareControl.gpuTemp))
-                     + " " + FmtFan(HardwareControl.gpuFan);
-            _cpuLeft = "CPU:" + FmtTemp(D(HardwareControl.cpuTemp))
-                     + " " + FmtFan(HardwareControl.cpuFan);
-
-            // Power column: right of chart
+            // Trailing space is the separator between temp and fan number
+            _gpuTempStr = "GPU:" + FmtTemp(D(HardwareControl.gpuTemp)) + " ";
+            _cpuTempStr = "CPU:" + FmtTemp(D(HardwareControl.cpuTemp)) + " ";
+            _gpuFanNum = FormatFan(HardwareControl.gpuFanRPM);
+            _cpuFanNum = FormatFan(HardwareControl.cpuFanRPM);
             _gpuPow = FmtPow(D(HardwareControl.gpuPower));
             _cpuPow = FmtPow(D(HardwareControl.cpuPower));
 
@@ -155,7 +143,6 @@ namespace GHelper.Overlay
             Invalidate();
         }
 
-        // ── Paint ────────────────────────────────────────────────────────────
         protected override void PerformPaint(PaintEventArgs e)
         {
             float sc = GetDpiScale();
@@ -167,10 +154,10 @@ namespace GHelper.Overlay
             int width = S(sc, BaseWidth);
             int radius = S(sc, CornerRadius);
             int fpsColW = S(sc, BaseFpsColWidth);
-            int leftColW = S(sc, BaseLeftColWidth);
             int chartColW = S(sc, BaseChartColWidth);
             int powColW = S(sc, BasePowerColWidth);
             int colGap = S(sc, BaseColGap);
+            int powGap = S(sc, BasePowerGap);
 
             int innerH = lineH * 2 + lineGap;
             int totalH = padY * 2 + innerH;
@@ -185,38 +172,57 @@ namespace GHelper.Overlay
             g.FillRoundedRectangle(_bgBrush, Bound, radius);
 
             using var font = new Font("Consolas", BaseFontSize * sc, FontStyle.Regular, GraphicsUnit.Pixel);
+            using var rpmFont = new Font("Consolas", BaseRpmFontSize * sc, FontStyle.Regular, GraphicsUnit.Pixel);
             using var fpsBold = new Font("Consolas", innerH / 1.15f, FontStyle.Bold, GraphicsUnit.Pixel);
 
-            // Column X origins
+            // Differential trick: MeasureString("XX") - MeasureString("X") cancels the
+            // fixed GDI+ padding, giving the true per-character advance width for Consolas.
+            float charW = g.MeasureString("XX", font).Width - g.MeasureString("X", font).Width;
+
             int leftX = padX + fpsColW + colGap;
-            int chartX = leftX + leftColW + colGap;
-            int powX = chartX + chartColW + colGap;
+            int chartX = leftX + S(sc, BaseLeftColWidth);
+            int powX = chartX + chartColW + powGap;
             int topY = padY;
 
-            // ── FPS — horizontally centred in fpsCol ──────────────────────────
+            // FPS
             string fpsStr = _currentFps > 0 ? _currentFps.ToString() : "--";
             float fpsW = g.MeasureString(fpsStr, fpsBold).Width;
             g.DrawString(fpsStr, fpsBold, _gpuBrush,
                 new PointF(padX + (fpsColW - fpsW) / 2f, topY));
 
-            // ── Left column: temp + fan ───────────────────────────────────────
-            g.DrawString(_gpuLeft, font, _gpuBrush, new PointF(leftX, topY));
-            g.DrawString(_cpuLeft, font, _cpuBrush, new PointF(leftX, topY + lineH + lineGap));
+            // Left column: "GPU: 82° " then "5300" then "RPM" superscript
+            DrawTempFan(g, font, rpmFont, charW, sc, leftX, topY, _gpuTempStr, _gpuFanNum, _gpuBrush);
+            DrawTempFan(g, font, rpmFont, charW, sc, leftX, topY + lineH + lineGap, _cpuTempStr, _cpuFanNum, _cpuBrush);
 
-            // ── Chart ─────────────────────────────────────────────────────────
+            // Chart
             DrawStackedChart(g, chartX, topY, chartColW, innerH, sc);
 
-            // ── Power column: right-aligned in powCol ─────────────────────────
-            float gpuPowW = g.MeasureString(_gpuPow, font).Width;
-            float cpuPowW = g.MeasureString(_cpuPow, font).Width;
-            g.DrawString(_gpuPow, font, _gpuBrush,
-                new PointF(powX + powColW - gpuPowW, topY));
-            g.DrawString(_cpuPow, font, _cpuBrush,
-                new PointF(powX + powColW - cpuPowW, topY + lineH + lineGap));
+            // Power — right-aligned
+            if (_gpuPow.Length > 0)
+                g.DrawString(_gpuPow, font, _gpuBrush,
+                    new PointF(powX + powColW - g.MeasureString(_gpuPow, font).Width, topY));
+            if (_cpuPow.Length > 0)
+                g.DrawString(_cpuPow, font, _cpuBrush,
+                    new PointF(powX + powColW - g.MeasureString(_cpuPow, font).Width, topY + lineH + lineGap));
         }
 
-        // ── Stacked power chart ───────────────────────────────────────────────
-        // CPU at bottom (cyan), GPU stacked on top (green)
+        // tempStr already has a trailing space — natural separator from fan number.
+        // 2px gap added before "RPM" superscript so it doesn't glue to the digits.
+        private static void DrawTempFan(Graphics g, Font font, Font rpmFont, float charW, float sc,
+            float x, float y, string tempStr, string fanNum, SolidBrush brush)
+        {
+            g.DrawString(tempStr, font, brush, new PointF(x, y));
+
+            if (fanNum.Length == 0) return;
+
+            float numX = x + charW * tempStr.Length;
+            g.DrawString(fanNum, font, brush, new PointF(numX, y));
+
+            // 2px gap between digits and "RPM" label
+            float rpmX = numX + charW * fanNum.Length + 2f * sc;
+            g.DrawString("RPM", rpmFont, brush, new PointF(rpmX, y));
+        }
+
         private void DrawStackedChart(Graphics g, int x, int y, int w, int h, float sc)
         {
             float peak = 10f;
@@ -247,7 +253,6 @@ namespace GHelper.Overlay
 
             FillArea(g, cpuPts, basePts, _cpuFillBrush);
             g.DrawLines(_cpuLinePen, cpuPts);
-
             FillArea(g, gpuPts, cpuPts, _gpuFillBrush);
             g.DrawLines(_gpuLinePen, gpuPts);
 
@@ -269,7 +274,6 @@ namespace GHelper.Overlay
             g.FillPolygon(brush, poly);
         }
 
-        // ── Lifecycle ────────────────────────────────────────────────────────
         private void PositionAtTopLeft()
         {
             Screen screen = Screen.PrimaryScreen ?? Screen.AllScreens[0];
@@ -279,13 +283,14 @@ namespace GHelper.Overlay
         public void StartOverlay()
         {
             _active = true;
+            _smoothFps = 0;
 
             _fps?.Dispose();
             _currentFps = 0;
             _fps = new EtwFpsMonitor();
             _fps.FpsUpdated += d =>
             {
-                _smoothFps = _smoothFps < 1.0 ? d : _smoothFps * 0.7 + d * 0.3;
+                _smoothFps = _smoothFps < 1.0 ? d : _smoothFps * 0.5 + d * 0.5;
                 _currentFps = (int)Math.Round(_smoothFps);
             };
             _fpsTask = Task.Run(() => _fps.Start());
@@ -303,11 +308,11 @@ namespace GHelper.Overlay
         public void StopOverlay()
         {
             _active = false;
+            _smoothFps = 0;
             _timer.Stop();
             _fps?.Dispose();
             _fps = null;
             _currentFps = 0;
-            _smoothFps = 0;
             base.Hide();
         }
     }

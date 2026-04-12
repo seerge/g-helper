@@ -34,6 +34,9 @@ public static class HardwareControl
     public static string? gpuFan;
     public static string? midFan;
 
+    public static int? cpuFanRPM;
+    public static int? gpuFanRPM;
+
     public static int? gpuUse;
 
     static long lastUpdate;
@@ -577,12 +580,12 @@ public static class HardwareControl
     // Lightweight sensor read used by the overlay timer — skips battery health, WMI and design capacity
     public static void ReadSensorsOverlay()
     {
-        InitCPUPowerAsync();
-
         if (Program.acpi is null) return;
 
-        cpuFan = FanSensorControl.FormatFan(AsusFan.CPU, Program.acpi.GetFan(AsusFan.CPU));
-        gpuFan = FanSensorControl.FormatFan(AsusFan.GPU, Program.acpi.GetFan(AsusFan.GPU));
+        InitCPUPowerAsync();
+
+        cpuFanRPM = Program.acpi.GetFan(AsusFan.CPU) * 100;
+        gpuFanRPM = Program.acpi.GetFan(AsusFan.GPU) * 100;
 
         cpuTemp = GetCPUTemp();
         gpuTemp = GetGPUTemp();
