@@ -11,18 +11,25 @@ namespace GHelper.Overlay
         private static extern IntPtr MonitorFromPoint(POINT pt, uint dwFlags);
         [DllImport("shcore.dll")]
         private static extern int GetDpiForMonitor(IntPtr hMonitor, int dpiType, out uint dpiX, out uint dpiY);
+
+        // Foreground window — used to pin FPS measurement to the active process
+        [DllImport("user32.dll")]
+        private static extern IntPtr GetForegroundWindow();
+        [DllImport("user32.dll")]
+        private static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint processId);
+
         private const uint MONITOR_DEFAULTTOPRIMARY = 1;
         private const int MDT_EFFECTIVE_DPI = 0;
         private const int BaseDpi = 96;
 
         // ── Layout constants (base = 96 dpi) ─────────────────────────────────
         //
-        //  ┌─padX─┬─fpsCol─┬─gap─┬─── leftCol ────┬─gap─┬─chartCol─┬─pwrGap─┬─powCol─┬─padX─┐
-        //  │      │  194   │     │ GPU: 82° 5300RPM│     │  chart   │        │ 111.3W │      │
-        //  │      │  fps   │     │ CPU: 78° 4500RPM│     │          │        │  16.9W │      │
-        //  └──────┴────────┴─────┴────────────────┴─────┴──────────┴────────┴────────┴──────┘
+        // ┌─padX─┬─fpsCol─┬─gap─┬─── leftCol ────┬─gap─┬─chartCol─┬─pwrGap─┬─powCol─┬─padX─┐
+        // │      │  194   │     │ GPU: 82° 5300RPM│     │  chart   │        │ 111.3W │      │
+        // │      │  fps   │     │ CPU: 78° 4500RPM│     │          │        │  16.9W │      │
+        // └──────┴────────┴─────┴────────────────┴─────┴──────────┴────────┴────────┴──────┘
         //
-        //  BaseWidth = 8 + 52 + 8 + 128 + 8 + 120 + 4 + 50 + 8 = 386
+        // BaseWidth = 8 + 52 + 8 + 128 + 8 + 120 + 4 + 50 + 8 = 386
         //
         private const float BaseFontSize = 13f;
         private const float BaseRpmFontSize = 8.5f;
@@ -65,12 +72,12 @@ namespace GHelper.Overlay
         private EtwFpsMonitor? _fps;
         private Task? _fpsTask;
         private volatile int _currentFps;
-        private double _smoothFps;
+        private int _lastFgPid;
         private bool _active;
 
         [DllImport("user32.dll")]
         private static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter,
-            int x, int y, int w, int h, uint flags);
+        int x, int y, int w, int h, uint flags);
         private static readonly IntPtr HWND_TOPMOST = new(-1);
         private const uint SWP_NOMOVE = 0x0002;
         private const uint SWP_NOSIZE = 0x0001;
@@ -109,10 +116,10 @@ namespace GHelper.Overlay
         private static double D(object? v) { try { return v is null ? 0.0 : Convert.ToDouble(v); } catch { return 0.0; } }
 
         private static string FmtTemp(double t) =>
-            t > 0 ? ((int)Math.Round(t) + "°").PadLeft(4) : "    ";
+        t > 0 ? ((int)Math.Round(t) + "°").PadLeft(4) : "    ";
 
         private static string FmtPow(double p) =>
-            p > 0 ? Math.Round(p, 1).ToString("F1") + "W" : "";
+        p > 0 ? Math.Round(p, 1).ToString("F1") + "W" : "";
 
         private static string FormatFan(int? fan)
         {
@@ -122,9 +129,25 @@ namespace GHelper.Overlay
 
         private void Tick()
         {
+            /*
             if (Handle != nint.Zero)
                 SetWindowPos(Handle, HWND_TOPMOST, 0, 0, 0, 0,
-                    SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE);
+                SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE);
+            */
+
+            // Pin FPS counter to foreground process — queried every second so
+            // switching games is handled automatically without manual configuration.
+            if (_fps != null)
+            {
+                GetWindowThreadProcessId(GetForegroundWindow(), out uint fgPid);
+                int pid = (int)fgPid;
+                if (pid != Environment.ProcessId && pid != _lastFgPid)
+                {
+                    _lastFgPid = pid;
+                    _currentFps = 0;
+                    _fps.TargetPid = pid;
+                }
+            }
 
             HardwareControl.ReadSensorsOverlay();
 
@@ -188,7 +211,7 @@ namespace GHelper.Overlay
             string fpsStr = _currentFps > 0 ? _currentFps.ToString() : "--";
             float fpsW = g.MeasureString(fpsStr, fpsBold).Width;
             g.DrawString(fpsStr, fpsBold, _gpuBrush,
-                new PointF(padX + (fpsColW - fpsW) / 2f, topY));
+            new PointF(padX + (fpsColW - fpsW) / 2f, topY));
 
             // Left column: "GPU: 82° " then "5300" then "RPM" superscript
             DrawTempFan(g, font, rpmFont, charW, sc, leftX, topY, _gpuTempStr, _gpuFanNum, _gpuBrush);
@@ -200,16 +223,16 @@ namespace GHelper.Overlay
             // Power — right-aligned
             if (_gpuPow.Length > 0)
                 g.DrawString(_gpuPow, font, _gpuBrush,
-                    new PointF(powX + powColW - g.MeasureString(_gpuPow, font).Width, topY));
+                new PointF(powX + powColW - g.MeasureString(_gpuPow, font).Width, topY));
             if (_cpuPow.Length > 0)
                 g.DrawString(_cpuPow, font, _cpuBrush,
-                    new PointF(powX + powColW - g.MeasureString(_cpuPow, font).Width, topY + lineH + lineGap));
+                new PointF(powX + powColW - g.MeasureString(_cpuPow, font).Width, topY + lineH + lineGap));
         }
 
         // tempStr already has a trailing space — natural separator from fan number.
         // 2px gap added before "RPM" superscript so it doesn't glue to the digits.
         private static void DrawTempFan(Graphics g, Font font, Font rpmFont, float charW, float sc,
-            float x, float y, string tempStr, string fanNum, SolidBrush brush)
+        float x, float y, string tempStr, string fanNum, SolidBrush brush)
         {
             g.DrawString(tempStr, font, brush, new PointF(x, y));
 
@@ -283,15 +306,14 @@ namespace GHelper.Overlay
         public void StartOverlay()
         {
             _active = true;
-            _smoothFps = 0;
+            _lastFgPid = 0;
 
             _fps?.Dispose();
             _currentFps = 0;
             _fps = new EtwFpsMonitor();
             _fps.FpsUpdated += d =>
             {
-                _smoothFps = _smoothFps < 1.0 ? d : _smoothFps * 0.5 + d * 0.5;
-                _currentFps = (int)Math.Round(_smoothFps);
+                _currentFps = (int)Math.Round(d);
             };
             _fpsTask = Task.Run(() => _fps.Start());
 
@@ -308,7 +330,6 @@ namespace GHelper.Overlay
         public void StopOverlay()
         {
             _active = false;
-            _smoothFps = 0;
             _timer.Stop();
             _fps?.Dispose();
             _fps = null;

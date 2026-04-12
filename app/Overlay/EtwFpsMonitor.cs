@@ -16,7 +16,7 @@ namespace GHelper.Overlay
 
         // Microsoft-Windows-DXGI provider
         private static readonly Guid DxgiProviderId =
-            new("CA11C036-0102-4A2D-A6AD-F03CFED5D3C9");
+        new("CA11C036-0102-4A2D-A6AD-F03CFED5D3C9");
 
         private const string SessionName = "FpsMonitorSession";
 
@@ -84,7 +84,7 @@ namespace GHelper.Overlay
             public uint ProcessId;
             public long TimeStamp;
             public Guid ProviderId;
-            public ushort Id;       // 42 = PresentStart
+            public ushort Id; // 42 = PresentStart
             public byte Version;
             public byte Channel;
             public byte Level;
@@ -107,33 +107,33 @@ namespace GHelper.Overlay
         // ── EVENT_TRACE_LOGFILE — explicit layout with correct 64-bit offsets ───
         //
         // Native field map (x64):
-        //   offset   0 : LPWSTR          LogFileName
-        //   offset   8 : LPWSTR          LoggerName
-        //   offset  16 : LONGLONG        CurrentTime
-        //   offset  24 : ULONG           BuffersRead
-        //   offset  28 : ULONG           ProcessTraceMode   ← we set this
-        //   offset  32 : EVENT_TRACE     CurrentEvent        (88 bytes)
-        //   offset 120 : TRACE_LOGFILE_HEADER LogfileHeader  (280 bytes)
-        //   offset 400 : PTR             BufferCallback
-        //   offset 408 : ULONG           BufferSize
-        //   offset 412 : ULONG           Filled
-        //   offset 416 : ULONG           EventsLost
-        //   offset 420 : (4-byte pad)
-        //   offset 424 : PTR             EventRecordCallback ← we set this
-        //   offset 432 : ULONG           IsKernelTrace
-        //   offset 436 : (4-byte pad)
-        //   offset 440 : PVOID           Context
-        //   total  448 bytes
+        // offset 0 : LPWSTR LogFileName
+        // offset 8 : LPWSTR LoggerName
+        // offset 16 : LONGLONG CurrentTime
+        // offset 24 : ULONG BuffersRead
+        // offset 28 : ULONG ProcessTraceMode ← we set this
+        // offset 32 : EVENT_TRACE CurrentEvent (88 bytes)
+        // offset 120 : TRACE_LOGFILE_HEADER LogfileHeader (280 bytes)
+        // offset 400 : PTR BufferCallback
+        // offset 408 : ULONG BufferSize
+        // offset 412 : ULONG Filled
+        // offset 416 : ULONG EventsLost
+        // offset 420 : (4-byte pad)
+        // offset 424 : PTR EventRecordCallback ← we set this
+        // offset 432 : ULONG IsKernelTrace
+        // offset 436 : (4-byte pad)
+        // offset 440 : PVOID Context
+        // total 448 bytes
         //
         // We use IntPtr for pointer fields to avoid marshaler interference.
         [StructLayout(LayoutKind.Explicit, Size = 448)]
         private struct EVENT_TRACE_LOGFILE
         {
-            [FieldOffset(8)] public IntPtr LoggerName;           // LPWSTR — set via Marshal.StringToHGlobalUni
+            [FieldOffset(8)] public IntPtr LoggerName; // LPWSTR — set via Marshal.StringToHGlobalUni
             [FieldOffset(28)] public uint ProcessTraceMode;
-            [FieldOffset(400)] public IntPtr BufferCallback;       // unused, zero
-            [FieldOffset(424)] public IntPtr EventRecordCallback;  // set via Marshal.GetFunctionPointerForDelegate
-            [FieldOffset(440)] public IntPtr Context;              // unused, zero
+            [FieldOffset(400)] public IntPtr BufferCallback; // unused, zero
+            [FieldOffset(424)] public IntPtr EventRecordCallback; // set via Marshal.GetFunctionPointerForDelegate
+            [FieldOffset(440)] public IntPtr Context; // unused, zero
         }
 
         // Callback delegate — must match PEVENT_RECORD_CALLBACK signature exactly
@@ -142,24 +142,24 @@ namespace GHelper.Overlay
         // ── P/Invoke Functions ───────────────────────────────────────────────────
         [DllImport("advapi32.dll", CharSet = CharSet.Unicode)]
         private static extern uint StartTrace(out long sessionHandle,
-            string sessionName, ref EVENT_TRACE_PROPERTIES properties);
+        string sessionName, ref EVENT_TRACE_PROPERTIES properties);
 
         [DllImport("advapi32.dll", CharSet = CharSet.Unicode)]
         private static extern uint StopTrace(long sessionHandle,
-            string sessionName, ref EVENT_TRACE_PROPERTIES properties);
+        string sessionName, ref EVENT_TRACE_PROPERTIES properties);
 
         [DllImport("advapi32.dll")]
         private static extern uint EnableTraceEx2(long sessionHandle,
-            in Guid providerId, uint controlCode, byte level,
-            ulong matchAnyKeyword, ulong matchAllKeyword,
-            uint timeout, IntPtr enableParameters);
+        in Guid providerId, uint controlCode, byte level,
+        ulong matchAnyKeyword, ulong matchAllKeyword,
+        uint timeout, IntPtr enableParameters);
 
         [DllImport("advapi32.dll", CharSet = CharSet.Unicode)]
         private static extern long OpenTrace(ref EVENT_TRACE_LOGFILE logfile);
 
         [DllImport("advapi32.dll")]
         private static extern uint ProcessTrace(long[] handles, uint count,
-            IntPtr startTime, IntPtr endTime);
+        IntPtr startTime, IntPtr endTime);
 
         [DllImport("advapi32.dll")]
         private static extern uint CloseTrace(long traceHandle);
@@ -167,21 +167,34 @@ namespace GHelper.Overlay
         // ── State ────────────────────────────────────────────────────────────────
         private long _sessionHandle;
         private long _traceHandle;
-        private int _targetPid;      // 0 = monitor all DXGI processes
-        private int _frameCount;
-        private readonly Stopwatch _stopwatch = new();
+        private volatile int _targetPid; // written by overlay timer thread, read by ETW callback thread
+        private int _lastTargetPid;      // detects PID switches so the window can be reset
+
+        // Rolling-window FPS: store the last N frame timestamps and compute
+        // fps = (N-1) / (newest_ts - oldest_ts). This matches how Steam overlay works —
+        // no bucket boundaries, no 1-second jumps.
+        private const int RollingWindowSize = 60;          // ~0.75 s at 80 fps
+        private readonly long[] _frameTimes = new long[RollingWindowSize];
+        private int _frameHead = 0;                     // next write slot
+        private int _framesFilled = 0;                    // valid entries (capped at RollingWindowSize)
+        private long _lastEventTick = 0;                   // throttle FpsUpdated to ~5× per second
+
         private EventRecordCallback? _callbackRef; // keep delegate alive — prevents GC collection
 
-        /// <summary>Fires approximately every second with the measured FPS value.</summary>
+        /// Fires approximately 5× per second with the rolling-window FPS value.
         public event Action<double>? FpsUpdated;
+
+        /// Set to the foreground process PID to filter events.
+        /// 0 = no target, no events counted (overlay shows "--").
+        public int TargetPid { get => _targetPid; set => _targetPid = value; }
 
         // ── Public API ───────────────────────────────────────────────────────────
 
-        /// <summary>
+        /// 
         /// Starts the ETW session. Blocks the calling thread — always run via Task.Run.
         /// Requires Administrator privileges.
-        /// </summary>
-        /// <param name="targetPid">Process ID to monitor. 0 (default) = all DXGI processes.</param>
+        /// 
+        /// Process ID to monitor. 0 (default) = set later via TargetPid.
         public void Start(int targetPid = 0)
         {
             _targetPid = targetPid;
@@ -194,12 +207,12 @@ namespace GHelper.Overlay
 
             // 2. Subscribe to the DXGI provider
             EnableTraceEx2(_sessionHandle, DxgiProviderId,
-                EVENT_CONTROL_CODE_ENABLE_PROVIDER,
-                TRACE_LEVEL_INFORMATION, 0, 0, 0, IntPtr.Zero);
+            EVENT_CONTROL_CODE_ENABLE_PROVIDER,
+            TRACE_LEVEL_INFORMATION, 0, 0, 0, IntPtr.Zero);
 
             // 3. Open the real-time consumer using explicit-layout struct.
-            //    LoggerName and EventRecordCallback are marshaled as raw IntPtrs to
-            //    guarantee correct placement at the native 64-bit offsets.
+            // LoggerName and EventRecordCallback are marshaled as raw IntPtrs to
+            // guarantee correct placement at the native 64-bit offsets.
             _callbackRef = OnEventRecord;
             IntPtr loggerNamePtr = Marshal.StringToHGlobalUni(SessionName);
             try
@@ -208,7 +221,7 @@ namespace GHelper.Overlay
                 {
                     LoggerName = loggerNamePtr,
                     ProcessTraceMode = PROCESS_TRACE_MODE_REAL_TIME |
-                                         PROCESS_TRACE_MODE_EVENT_RECORD,
+                PROCESS_TRACE_MODE_EVENT_RECORD,
                     EventRecordCallback = Marshal.GetFunctionPointerForDelegate(_callbackRef),
                 };
 
@@ -219,8 +232,6 @@ namespace GHelper.Overlay
                 // OpenTrace copies the name internally — safe to free immediately
                 Marshal.FreeHGlobal(loggerNamePtr);
             }
-
-            _stopwatch.Start();
 
             // 4. Blocking pump — returns when CloseTrace() is called from Stop()/Dispose()
             ProcessTrace(new[] { _traceHandle }, 1, IntPtr.Zero, IntPtr.Zero);
@@ -242,18 +253,42 @@ namespace GHelper.Overlay
             if (record.EventHeader.ProviderId != DxgiProviderId) return;
             if (record.EventHeader.Id != EVENT_DXGI_PRESENT_START) return;
 
-            // _targetPid == 0 means accept events from any process
-            if (_targetPid != 0 && (int)record.EventHeader.ProcessId != _targetPid) return;
+            int targetPid = _targetPid;
+            if (targetPid == 0) return;                                   // no foreground target yet
+            if ((int)record.EventHeader.ProcessId != targetPid) return;  // wrong process
 
-            Interlocked.Increment(ref _frameCount);
-
-            if (_stopwatch.Elapsed.TotalSeconds >= 1.0)
+            // PID changed — reset rolling window so stale timestamps don't pollute new readings
+            if (targetPid != _lastTargetPid)
             {
-                double fps = _frameCount / _stopwatch.Elapsed.TotalSeconds;
-                _frameCount = 0;
-                _stopwatch.Restart();
-                FpsUpdated?.Invoke(fps);
+                _lastTargetPid = targetPid;
+                _frameHead = 0;
+                _framesFilled = 0;
+                _lastEventTick = 0;
+                return;
             }
+
+            // Record this frame's high-resolution timestamp
+            long now = Stopwatch.GetTimestamp();
+            _frameTimes[_frameHead] = now;
+            _frameHead = (_frameHead + 1) % RollingWindowSize;
+            if (_framesFilled < RollingWindowSize) _framesFilled++;
+
+            // Need at least 2 frames to compute FPS
+            if (_framesFilled < 2) return;
+
+            // Throttle FpsUpdated to ~5× per second — plenty for smooth display,
+            // without hammering the UI thread on every single Present call.
+            long freq = Stopwatch.Frequency;
+            if (_lastEventTick != 0 && (now - _lastEventTick) < freq / 5) return;
+            _lastEventTick = now;
+
+            // fps = (frames - 1) intervals over the window duration
+            int oldestIdx = (_frameHead - _framesFilled + RollingWindowSize) % RollingWindowSize;
+            double elapsed = (double)(now - _frameTimes[oldestIdx]) / freq;
+            if (elapsed <= 0) return;
+
+            double fps = (_framesFilled - 1) / elapsed;
+            FpsUpdated?.Invoke(fps);
         }
 
         private static EVENT_TRACE_PROPERTIES BuildSessionProperties() => new()
@@ -266,7 +301,7 @@ namespace GHelper.Overlay
             LogFileMode = 0x00000100, // EVENT_TRACE_REAL_TIME_MODE
             LogFileNameOffset = 0,
             LoggerNameOffset = (uint)Marshal.OffsetOf<EVENT_TRACE_PROPERTIES>(
-                                    nameof(EVENT_TRACE_PROPERTIES.LoggerName)),
+        nameof(EVENT_TRACE_PROPERTIES.LoggerName)),
         };
     }
 }
