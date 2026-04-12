@@ -97,6 +97,7 @@ namespace GHelper
             labelTempLimit = new Label();
             panelDownload = new Panel();
             buttonDownload = new RButton();
+            panelPawnIO = new Panel();
             panelPower = new Panel();
             panelApplyPower = new Panel();
             checkApplyPower = new RCheckBox();
@@ -190,6 +191,7 @@ namespace GHelper
             panelTitleTemp.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureTemp).BeginInit();
             panelDownload.SuspendLayout();
+            panelPawnIO.SuspendLayout();
             panelPower.SuspendLayout();
             panelApplyPower.SuspendLayout();
             panelCPU.SuspendLayout();
@@ -685,14 +687,7 @@ namespace GHelper
             // 
             panelAdvanced.AutoSize = true;
             panelAdvanced.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            panelAdvanced.Controls.Add(panelAdvancedAlways);
-            panelAdvanced.Controls.Add(panelAdvancedApply);
-            panelAdvanced.Controls.Add(labelRisky);
-            panelAdvanced.Controls.Add(panelUViGPU);
-            panelAdvanced.Controls.Add(panelUV);
-            panelAdvanced.Controls.Add(panelTitleAdvanced);
-            panelAdvanced.Controls.Add(panelTemperature);
-            panelAdvanced.Controls.Add(panelTitleTemp);
+            panelAdvanced.Controls.Add(panelPawnIO);
             panelAdvanced.Controls.Add(panelDownload);
             panelAdvanced.Dock = DockStyle.Top;
             panelAdvanced.Location = new Point(10, 1768);
@@ -981,6 +976,23 @@ namespace GHelper
             // 
             // panelDownload
             // 
+            // 
+            // panelPawnIO
+            // 
+            panelPawnIO.AutoSize = true;
+            panelPawnIO.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            panelPawnIO.Controls.Add(panelAdvancedAlways);
+            panelPawnIO.Controls.Add(panelAdvancedApply);
+            panelPawnIO.Controls.Add(labelRisky);
+            panelPawnIO.Controls.Add(panelUViGPU);
+            panelPawnIO.Controls.Add(panelUV);
+            panelPawnIO.Controls.Add(panelTitleAdvanced);
+            panelPawnIO.Controls.Add(panelTemperature);
+            panelPawnIO.Controls.Add(panelTitleTemp);
+            panelPawnIO.Dock = DockStyle.Top;
+            panelPawnIO.Name = "panelPawnIO";
+            panelPawnIO.TabIndex = 53;
+            // 
             panelDownload.AutoSize = true;
             panelDownload.Controls.Add(buttonDownload);
             panelDownload.Dock = DockStyle.Top;
@@ -1008,7 +1020,7 @@ namespace GHelper
             buttonDownload.Secondary = true;
             buttonDownload.Size = new Size(480, 64);
             buttonDownload.TabIndex = 19;
-            buttonDownload.Text = "Download Advanced Settings Plugin";
+            buttonDownload.Text = "Install PawnIO Driver (pawnio.eu)";
             buttonDownload.UseVisualStyleBackColor = false;
             // 
             // panelPower
@@ -1890,6 +1902,8 @@ namespace GHelper
             ((System.ComponentModel.ISupportInitialize)pictureTemp).EndInit();
             panelDownload.ResumeLayout(false);
             panelDownload.PerformLayout();
+            panelPawnIO.ResumeLayout(false);
+            panelPawnIO.PerformLayout();
             panelPower.ResumeLayout(false);
             panelPower.PerformLayout();
             panelApplyPower.ResumeLayout(false);
@@ -2054,6 +2068,7 @@ namespace GHelper
         private RTrackBar trackSlow;
         private Panel panelDownload;
         private RButton buttonDownload;
+        private Panel panelPawnIO;
         private Panel panelGPUPower;
         private Label labelGPUPower;
         private Label labelGPUPowerTitle;

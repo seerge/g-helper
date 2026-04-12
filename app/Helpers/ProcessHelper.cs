@@ -49,7 +49,7 @@ namespace GHelper.Helpers
 
         public static bool IsUserAdministrator()
         {
-            WindowsIdentity identity = WindowsIdentity.GetCurrent();
+            using WindowsIdentity identity = WindowsIdentity.GetCurrent();
             WindowsPrincipal principal = new WindowsPrincipal(identity);
             return principal.IsInRole(WindowsBuiltInRole.Administrator);
         }
@@ -141,7 +141,7 @@ namespace GHelper.Helpers
 
         public static string RunCMD(string name, string args, string? directory = null)
         {
-            var cmd = new Process();
+            using var cmd = new Process();
             cmd.StartInfo.UseShellExecute = false;
             cmd.StartInfo.CreateNoWindow = true;
             cmd.StartInfo.RedirectStandardOutput = true;

@@ -348,6 +348,10 @@ namespace GHelper.AnimeMatrix
         public void Dispose()
         {
             StopAudio();
+            matrixTimer?.Stop();
+            matrixTimer?.Dispose();
+            slashTimer?.Stop();
+            slashTimer?.Dispose();
         }
 
         void StopAudio()
