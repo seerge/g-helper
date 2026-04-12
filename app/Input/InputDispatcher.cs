@@ -177,7 +177,7 @@ namespace GHelper.Input
                 hook.RegisterHotKey(ModifierKeys.Shift, Keys.VolumeDown);
                 hook.RegisterHotKey(ModifierKeys.Shift, Keys.VolumeUp);
                 hook.RegisterHotKey(keyModifier, Keys.F20);
-                hook.RegisterHotKey(ModifierKeys.Control | ModifierKeys.Shift | ModifierKeys.Alt, Keys.O);
+                hook.RegisterHotKey(keyModifierAlt, Keys.O);
             }
 
             if (!AppConfig.IsZ13() && !AppConfig.IsAlly() && !AppConfig.IsVivoZenPro())
@@ -511,14 +511,10 @@ namespace GHelper.Input
                         Program.toast.RunToast(Properties.Strings.StandardMode);
                         Program.settingsForm.gpuControl.SetGPUMode(AsusACPI.GPUModeStandard);
                         break;
+                    case Keys.O:
+                        Program.settingsForm.BeginInvoke(Program.settingsForm.ToggleOverlay);
+                        break;
                 }
-            }
-
-
-            if (e.Modifier == (ModifierKeys.Control | ModifierKeys.Shift | ModifierKeys.Alt))
-            {
-                if (e.Key == Keys.O)
-                    Program.settingsForm.BeginInvoke(Program.settingsForm.ToggleOverlay);
             }
 
             if (e.Modifier == (ModifierKeys.Control))

@@ -1584,6 +1584,11 @@ namespace GHelper
 
             string cpuTemp = "";
             string gpuTemp = "";
+
+            string cpuFan = "";
+            string gpuFan = "";
+            string midFan = "";
+
             string battery = "";
             string charge = "";
 
@@ -1609,29 +1614,29 @@ namespace GHelper
                 gpuTemp = $": {HardwareControl.gpuTemp}°C";
             }
 
-            string trayTip = "CPU" + cpuTemp + " " + HardwareControl.cpuFan;
-            if (gpuTemp.Length > 0) trayTip += "\nGPU" + gpuTemp + " " + HardwareControl.gpuFan;
-            if (battery.Length > 0) trayTip += "\n" + battery;
+            if (HardwareControl.cpuFan is not null) cpuFan = Strings.FanSpeed + ": " + HardwareControl.cpuFan;
+            if (HardwareControl.gpuFan is not null) gpuFan = Strings.FanSpeed + ": " + HardwareControl.gpuFan;
+            if (HardwareControl.midFan is not null) midFan = Strings.FanSpeed + ": " + HardwareControl.midFan;
 
+            string trayTip = "CPU" + cpuTemp + " " + cpuFan;
+            if (gpuTemp.Length > 0) trayTip += "\nGPU" + gpuTemp + " " + gpuFan;
+            if (battery.Length > 0) trayTip += "\n" + battery;
+            
             if (Program.settingsForm.IsHandleCreated)
                 Program.settingsForm.BeginInvoke(delegate
                 {
-                    labelCPUFan.Text = "CPU" + cpuTemp + " " + HardwareControl.cpuFan;
-                    labelGPUFan.Text = "GPU" + gpuTemp + " " + HardwareControl.gpuFan;
+                    labelCPUFan.Text = "CPU" + cpuTemp + "  " + cpuFan;
+                    labelGPUFan.Text = "GPU" + gpuTemp + "  " + gpuFan;
+
                     if (HardwareControl.gpuFan is not null && AppConfig.NoGpu())
-                    {
-                        labelMidFan.Text = "GPU" + gpuTemp + " " + HardwareControl.gpuFan;
-                    }
+                        labelMidFan.Text = "GPU" + gpuTemp + " " + gpuFan;
 
-                    if (HardwareControl.midFan is not null)
-                        labelMidFan.Text = "Mid " + HardwareControl.midFan;
-
+                    if (HardwareControl.midFan is not null) 
+                        labelMidFan.Text = "Mid " + midFan;
+                    
                     labelBattery.Text = battery;
                     if (!batteryMouseOver && !batteryFullMouseOver) labelCharge.Text = charge;
-
-                    //panelPerformance.AccessibleName = labelPerf.Text + " " + trayTip;
                 });
-
 
             if (Program.trayIcon is not null) Program.trayIcon.Text = trayTip;
 

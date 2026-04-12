@@ -559,10 +559,6 @@ public static class HardwareControl
     public static void ReadSensors(bool log = false)
     {
         gpuUse = -1;
-        cpuPower = null;
-        gpuPower = null;
-
-        InitCPUPowerAsync();
 
         if (Program.acpi is null) return;
 
