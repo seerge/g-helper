@@ -3,19 +3,28 @@ using System.Runtime.InteropServices;
 
 namespace GHelper.Overlay
 {
-    // Measures system-wide game FPS using D3DKMT vblank events and GPU Engine Running Time counters.
-    // Runs entirely on a background thread; Sample() returns the latest computed value instantly.
+    // Measures system-wide game FPS using D3DKMT vblank sync + GPU Engine Running Time counters.
+    //
+    // Architecture: two threads that never block each other.
+    //   • VBlank thread  – calls D3DKMTWaitForVerticalBlankEvent in a tight loop (~8ms cadence),
+    //                      reads RawValue on the currently-active counter and counts frames.
+    //                      Never sleeps, never touches PDH enumeration.
+    //   • Scout thread   – enumerates GPU Engine instances every ~2 s, takes two snapshots
+    //                      300 ms apart, picks the process with the largest delta (= game),
+    //                      and atomically publishes the new counter reference via a lock.
+    //
+    // This separation is critical: the 300 ms sleep in the scout must not stall the vblank loop,
+    // otherwise prevRaw is reset mid-window and the frame count drops to near zero.
+
     internal sealed class FpsCounter : IDisposable
     {
-        // ?? D3DKMT ???????????????????????????????????????????????????????????
+        // ?? Win32 ?????????????????????????????????????????????????????????????
         [DllImport("gdi32.dll")]
         private static extern int D3DKMTOpenAdapterFromLuid(ref LUIDOPEN p);
         [DllImport("gdi32.dll")]
         private static extern int D3DKMTCloseAdapter(ref CLOSEADAPTER p);
         [DllImport("gdi32.dll")]
         private static extern int D3DKMTWaitForVerticalBlankEvent(ref WAITVBLANK p);
-        [DllImport("gdi32.dll")]
-        private static extern int D3DKMTGetScanLine(ref GETSCANLINE p);
         [DllImport("user32.dll")]
         private static extern IntPtr GetDC(IntPtr hWnd);
         [DllImport("user32.dll")]
@@ -29,106 +38,109 @@ namespace GHelper.Overlay
         private struct CLOSEADAPTER { public uint hAdapter; }
         [StructLayout(LayoutKind.Sequential)]
         private struct WAITVBLANK { public uint hAdapter; public uint hDevice; public uint VidPnSourceId; }
-        [StructLayout(LayoutKind.Sequential)]
-        private struct GETSCANLINE { public uint hAdapter; public uint VidPnSourceId; public uint ScanLine; public bool InVerticalBlank; }
 
-        private const int VREFRESH = 116; // GetDeviceCaps index for refresh rate
+        private const int VREFRESH = 116;
 
-        // ?? State ?????????????????????????????????????????????????????????????
+        // ?? Shared state between the two threads (lock-protected) ?????????????
+        private readonly object _ctrLock = new();
+        private PerformanceCounter? _activeCtr;   // written by scout, read by vblank loop
+        private bool _ctrPending;                 // scout has a new counter ready to swap in
+
+        // ?? Output ????????????????????????????????????????????????????????????
         private volatile int  _fps = -1;
         private volatile bool _stop;
-        private Thread?       _thread;
+        private Thread?       _vblankThread;
+        private Thread?       _scoutThread;
 
-        public FpsCounter() { }
+        public int Sample() => _fps;
 
         public void Start()
         {
-            _stop   = false;
-            _thread = new Thread(WorkerLoop) { IsBackground = true, Name = "FpsCounter" };
-            _thread.Start();
-        }
+            _stop = false;
 
-        // Returns the latest FPS value (updated every second). -1 = not available.
-        public int Sample() => _fps;
+            _vblankThread = new Thread(VBlankLoop)  { IsBackground = true, Name = "FpsVBlank" };
+            _scoutThread  = new Thread(ScoutLoop)   { IsBackground = true, Name = "FpsScout"  };
+
+            // Scout starts first so it has a counter ready before the vblank loop needs it
+            _scoutThread.Start();
+            Thread.Sleep(50); // give scout a head-start before vblank loop launches
+            _vblankThread.Start();
+        }
 
         public void Dispose()
         {
             _stop = true;
-            // Thread will exit on its own next vblank cycle (? ~17ms at 60Hz)
+            lock (_ctrLock)
+            {
+                _activeCtr?.Dispose();
+                _activeCtr = null;
+            }
         }
 
-        // ?? Background worker ?????????????????????????????????????????????????
-        private void WorkerLoop()
+        // ?? VBlank loop ???????????????????????????????????????????????????????
+        // Runs at display refresh rate (~8ms per iteration at 120Hz).
+        // NEVER sleeps or blocks on anything except the hardware vblank event.
+        private void VBlankLoop()
         {
             try
             {
-                // ?? Get display refresh rate ??????????????????????????????????
                 IntPtr hdc = GetDC(IntPtr.Zero);
                 int refreshRate = GetDeviceCaps(hdc, VREFRESH);
                 ReleaseDC(IntPtr.Zero, hdc);
                 if (refreshRate <= 0) refreshRate = 60;
 
-                // ?? Open adapter from the NVIDIA dGPU LUID ????????????????????
-                // We enumerate all 3D instances, find the LUID of the GPU with the
-                // most accumulated running time (= the active GPU rendering the game).
-                uint hAdapter = OpenBestAdapter();
+                uint hAdapter = OpenDGpuAdapter();
                 if (hAdapter == 0) { _fps = -1; return; }
 
-                // ?? Build PerformanceCounter for the busiest 3D process ????????
-                // Threshold: a real rendered frame occupies at least 45% of one vblank
-                // interval in GPU time. At 120Hz one interval = 10,000,000/120 = 83,333 ticks.
                 long frameThreshold = (long)(10_000_000.0 / refreshRate * 0.45);
 
                 var vb  = new WAITVBLANK { hAdapter = hAdapter, hDevice = 0, VidPnSourceId = 0 };
                 var cl  = new CLOSEADAPTER { hAdapter = hAdapter };
 
-                // Rolling window: count frames in the last 'windowVBlanks' vblanks (?1 second)
-                int windowVBlanks = refreshRate;
-                var window        = new bool[windowVBlanks];   // true = frame presented this vblank
-                int windowIdx     = 0;
-
-                PerformanceCounter? ctr = null;
-                long prevRaw            = 0;
-                long ctrRefreshAt       = 0;  // Stopwatch ticks when we last rebuilt the counter
-
-                var sw = Stopwatch.StartNew();
+                bool[]  window    = new bool[refreshRate];
+                int     windowIdx = 0;
+                long    prevRaw   = 0;
+                bool    prevRawValid = false;
 
                 while (!_stop)
                 {
                     if (D3DKMTWaitForVerticalBlankEvent(ref vb) != 0) break;
 
-                    // Rebuild the counter for the busiest process every ~2 seconds
-                    if (sw.ElapsedMilliseconds - ctrRefreshAt > 2000)
+                    // Atomically pick up a new counter if the scout has one ready
+                    lock (_ctrLock)
                     {
-                        ctr          = FindBusiestCounter();
-                        prevRaw      = ctr?.RawValue ?? 0;
-                        ctrRefreshAt = sw.ElapsedMilliseconds;
+                        if (_ctrPending)
+                        {
+                            // Reset prevRaw from the new counter so the first delta is clean
+                            prevRaw      = _activeCtr?.RawValue ?? 0;
+                            prevRawValid = _activeCtr != null;
+                            _ctrPending  = false;
+                        }
                     }
 
                     bool framePresented = false;
-                    if (ctr != null)
+                    if (prevRawValid)
                     {
-                        try
+                        long cur;
+                        lock (_ctrLock)
                         {
-                            long cur   = ctr.RawValue;
-                            long delta = cur - prevRaw;
-                            prevRaw    = cur;
-                            framePresented = delta >= frameThreshold;
+                            if (_activeCtr == null) { prevRawValid = false; goto done; }
+                            try   { cur = _activeCtr.RawValue; }
+                            catch { _activeCtr = null; prevRawValid = false; goto done; }
                         }
-                        catch
-                        {
-                            ctr = null;
-                        }
+                        long delta    = cur - prevRaw;
+                        prevRaw       = cur;
+                        framePresented = delta >= frameThreshold;
                     }
 
-                    window[windowIdx % windowVBlanks] = framePresented;
+                    done:
+                    window[windowIdx % refreshRate] = framePresented;
                     windowIdx++;
 
-                    // Publish FPS once per second (every refreshRate vblanks)
                     if (windowIdx % refreshRate == 0)
                     {
                         int frames = 0;
-                        for (int i = 0; i < windowVBlanks; i++)
+                        for (int i = 0; i < refreshRate; i++)
                             if (window[i]) frames++;
                         _fps = frames;
                     }
@@ -142,9 +154,38 @@ namespace GHelper.Overlay
             }
         }
 
-        // Opens a D3DKMT adapter handle for the GPU LUID that has the most Running Time
-        // among all active 3D GPU Engine instances (= the GPU the game is rendering on).
-        private static uint OpenBestAdapter()
+        // ?? Scout loop ????????????????????????????????????????????????????????
+        // Runs every ~2 s. Takes two PDH snapshots 300 ms apart (sleeps are fine here)
+        // and publishes the busiest 3D process counter for the vblank loop to pick up.
+        private void ScoutLoop()
+        {
+            while (!_stop)
+            {
+                try
+                {
+                    PerformanceCounter? found = FindBusiestCounter();
+                    if (found != null)
+                    {
+                        lock (_ctrLock)
+                        {
+                            _activeCtr?.Dispose();
+                            _activeCtr  = found;
+                            _ctrPending = true;   // signal vblank loop to re-baseline prevRaw
+                        }
+                    }
+                }
+                catch { }
+
+                // Re-scan every 2 s to pick up newly launched games
+                for (int i = 0; i < 20 && !_stop; i++)
+                    Thread.Sleep(100);
+            }
+        }
+
+        // ?? Helpers ???????????????????????????????????????????????????????????
+
+        // Opens a D3DKMT adapter for the dGPU LUID (the GPU with highest total 3D RawValue).
+        private static uint OpenDGpuAdapter()
         {
             try
             {
@@ -152,9 +193,7 @@ namespace GHelper.Overlay
                 var names = cat.GetInstanceNames()
                                .Where(n => n.Contains("3D", StringComparison.OrdinalIgnoreCase))
                                .ToArray();
-                if (names.Length == 0) return 0;
 
-                // Extract all unique LUIDs and pick the one with most total running time
                 var luidTotals = new Dictionary<long, long>();
                 foreach (var name in names)
                 {
@@ -163,9 +202,9 @@ namespace GHelper.Overlay
                     try
                     {
                         using var c = new PerformanceCounter("GPU Engine", "Running Time", name, true);
-                        long val    = c.RawValue;
-                        luidTotals.TryGetValue(luid, out long cur);
-                        luidTotals[luid] = cur + val;
+                        long val = c.RawValue;
+                        luidTotals.TryGetValue(luid, out long existing);
+                        luidTotals[luid] = existing + val;
                     }
                     catch { }
                 }
@@ -179,63 +218,70 @@ namespace GHelper.Overlay
             catch { return 0; }
         }
 
-        // Finds a PerformanceCounter for the process with the highest Running Time
-        // on any active GPU (= most likely the foreground game).
+        // Takes two RawValue snapshots 300 ms apart and returns a counter for the
+        // instance with the largest delta (= the process doing the most 3D work right now).
         private static PerformanceCounter? FindBusiestCounter()
         {
-            try
+            var cat   = new PerformanceCounterCategory("GPU Engine");
+            var names = cat.GetInstanceNames()
+                           .Where(n => n.Contains("3D", StringComparison.OrdinalIgnoreCase))
+                           .ToArray();
+
+            // Snapshot 1
+            var snap = new Dictionary<string, long>(names.Length);
+            foreach (var name in names)
             {
-                var cat   = new PerformanceCounterCategory("GPU Engine");
-                var names = cat.GetInstanceNames()
-                               .Where(n => n.Contains("3D", StringComparison.OrdinalIgnoreCase))
-                               .ToArray();
-
-                string?  bestName  = null;
-                long     bestValue = 0;
-
-                foreach (var name in names)
+                try
                 {
-                    try
-                    {
-                        using var c = new PerformanceCounter("GPU Engine", "Running Time", name, true);
-                        long val    = c.RawValue;
-                        if (val > bestValue) { bestValue = val; bestName = name; }
-                    }
-                    catch { }
+                    using var c = new PerformanceCounter("GPU Engine", "Running Time", name, true);
+                    snap[name] = c.RawValue;
                 }
-
-                if (bestName == null) return null;
-                var result = new PerformanceCounter("GPU Engine", "Running Time", bestName, true);
-                result.NextValue(); // prime
-                return result;
+                catch { }
             }
-            catch { return null; }
+
+            Thread.Sleep(300);  // fine here — scout thread, not the vblank thread
+
+            // Snapshot 2 — find the largest delta
+            string? bestName  = null;
+            long    bestDelta = 0;
+            foreach (var name in names)
+            {
+                if (!snap.TryGetValue(name, out long v1)) continue;
+                try
+                {
+                    using var c   = new PerformanceCounter("GPU Engine", "Running Time", name, true);
+                    long      delta = c.RawValue - v1;
+                    if (delta > bestDelta) { bestDelta = delta; bestName = name; }
+                }
+                catch { }
+            }
+
+            if (bestName == null) return null;
+
+            var result = new PerformanceCounter("GPU Engine", "Running Time", bestName, true);
+            result.NextValue(); // prime the counter
+            return result;
         }
 
         // Extracts the full 64-bit LUID from a GPU Engine instance name.
         // Format: pid_NNN_luid_0xHIGH32_0xLOW32_phys_...
-        // e.g.  pid_18384_luid_0x00000000_0x00FA3E7C_phys_0_eng_0_engtype_3D
-        //       ? high = 0x00000000, low = 0x00FA3E7C ? luid = 0x0000000000FA3E7C
         private static long ExtractLuid(string name)
         {
             try
             {
-                // Locate "luid_0x"
                 int luidStart = name.IndexOf("luid_0x", StringComparison.OrdinalIgnoreCase);
                 if (luidStart < 0) return 0;
 
-                // First hex part starts after "luid_0x"
-                int high32Start = luidStart + 7;                          // past "luid_0x"
-                int high32End   = name.IndexOf('_', high32Start);
+                int    high32Start = luidStart + 7;
+                int    high32End   = name.IndexOf('_', high32Start);
                 if (high32End < 0) return 0;
-                string highHex  = name.Substring(high32Start, high32End - high32Start);
+                string highHex     = name.Substring(high32Start, high32End - high32Start);
 
-                // Second hex part starts after "_0x" that follows the first hex group
-                int secondPart  = name.IndexOf("_0x", high32End, StringComparison.OrdinalIgnoreCase);
+                int    secondPart  = name.IndexOf("_0x", high32End, StringComparison.OrdinalIgnoreCase);
                 if (secondPart < 0) return 0;
-                int low32Start  = secondPart + 3;
-                int low32End    = name.IndexOf('_', low32Start);
-                string lowHex   = low32End > low32Start
+                int    low32Start  = secondPart + 3;
+                int    low32End    = name.IndexOf('_', low32Start);
+                string lowHex      = low32End > low32Start
                     ? name.Substring(low32Start, low32End - low32Start)
                     : name.Substring(low32Start);
 
