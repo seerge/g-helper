@@ -1,4 +1,5 @@
-﻿namespace GHelper
+using GHelper.UI;
+namespace GHelper
 {
     partial class Matrix
     {
@@ -29,7 +30,7 @@
         private void InitializeComponent()
         {
             pictureMatrix = new PictureBox();
-            trackZoom = new TrackBar();
+            trackZoom = new RTrackBar();
             buttonPicture = new UI.RButton();
             panelPicture = new Panel();
             panelMain = new Panel();
@@ -38,11 +39,11 @@
             panelGamma = new Panel();
             labelGamma = new Label();
             labelGammaTitle = new Label();
-            trackGamma = new TrackBar();
+            trackGamma = new RTrackBar();
             panelContrast = new Panel();
             labelContrast = new Label();
             labelContrastTitle = new Label();
-            trackContrast = new TrackBar();
+            trackContrast = new RTrackBar();
             panelRotation = new Panel();
             comboRotation = new UI.RComboBox();
             labelRotation = new Label();
@@ -398,7 +399,7 @@
         #endregion
 
         private PictureBox pictureMatrix;
-        private TrackBar trackZoom;
+        private RTrackBar trackZoom;
         private UI.RButton buttonPicture;
         private Panel panelPicture;
         private Panel panelMain;
@@ -416,10 +417,10 @@
         private Panel panelContrast;
         private Label labelContrast;
         private Label labelContrastTitle;
-        private TrackBar trackContrast;
+        private RTrackBar trackContrast;
         private Panel panelGamma;
         private Label labelGamma;
         private Label labelGammaTitle;
-        private TrackBar trackGamma;
+        private RTrackBar trackGamma;
     }
 }
