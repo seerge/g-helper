@@ -1,5 +1,4 @@
 using GHelper.Helpers;
-using GHelper.Helpers;
 using System.Drawing.Drawing2D;
 using System.Drawing.Text;
 using System.Runtime.InteropServices;
@@ -8,7 +7,6 @@ namespace GHelper.Overlay
 {
     public class HardwareOverlay : OSDNativeForm
     {
-        // DPI
         [DllImport("user32.dll")]
         private static extern IntPtr MonitorFromPoint(POINT pt, uint dwFlags);
         [DllImport("shcore.dll")]
@@ -35,14 +33,15 @@ namespace GHelper.Overlay
         private static readonly SolidBrush _dimTextBrush = new(Color.FromArgb(255, 0, 180, 56));
         private static readonly Pen _cpuLinePen = new(Color.FromArgb(255, 0, 255, 80), 1.5f);
         private static readonly Pen _gpuLinePen = new(Color.FromArgb(255, 60, 220, 255), 1.5f);
-        private static readonly SolidBrush _cpuFillBrush = new(Color.FromArgb(255, 0, 80, 30));
-        private static readonly SolidBrush _gpuFillBrush = new(Color.FromArgb(255, 20, 70, 90));
-        private static readonly SolidBrush _totalFillBrush = new(Color.FromArgb(80, 255, 255, 255));
+        private static readonly SolidBrush _cpuFillBrush = new(Color.FromArgb(128, 0, 80, 30));
+        private static readonly SolidBrush _gpuFillBrush = new(Color.FromArgb(128, 20, 70, 90));
 
         // Text lines
         private string _line1 = "";
         private string _line2 = "";
-        private string _line3 = "";
+        private string _line3 = "";   // combined for has3 check
+        private string _fpsPart = "";   // drawn bold + _textBrush
+        private string _batPart = "";   // drawn regular + _dimTextBrush
 
         // Power history
         private const int HistoryLength = 60;
@@ -54,8 +53,8 @@ namespace GHelper.Overlay
         private readonly System.Timers.Timer _timer = new(1000) { AutoReset = true };
         private EtwFpsMonitor? _fps;
         private Task? _fpsTask;
-        private volatile int _currentFps;   // written by ETW thread, read by Tick()
-        private bool _active;        // true while overlay should be visible
+        private volatile int _currentFps;
+        private bool _active;
 
         [DllImport("user32.dll")]
         private static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter,
@@ -67,16 +66,10 @@ namespace GHelper.Overlay
 
         public HardwareOverlay()
         {
-            // Alpha=255: per-pixel alpha in the bitmap fully controls transparency.
-            // Background is painted with Color.FromArgb(128,...) → 50% transparent.
-            // All text and chart pixels use alpha=255 → fully opaque.
             Alpha = 255;
             _timer.Elapsed += (_, _) => Tick();
         }
 
-        // When a game switches DWM mode, Windows sends WM_NCDESTROY to layered
-        // WS_EX_TOPMOST windows. NativeWindow destroys the handle. We re-create it
-        // only if _active=true (i.e. the user hasn't toggled the overlay off).
         private const int WM_NCDESTROY = 0x0082;
         protected override void WndProc(ref Message m)
         {
@@ -112,7 +105,6 @@ namespace GHelper.Overlay
         // Tick
         private void Tick()
         {
-            // Re-assert HWND_TOPMOST every second so the overlay stays above fullscreen games
             if (Handle != nint.Zero)
                 SetWindowPos(Handle, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE);
 
@@ -126,18 +118,18 @@ namespace GHelper.Overlay
             _line1 = "CPU" + cpuTemp + cpuPower + " " + HardwareControl.cpuFan;
             _line2 = "GPU" + gpuTemp + gpuPower + " " + HardwareControl.gpuFan;
 
-            // FPS — read the value last pushed by the ETW background thread
+            // FPS — bold, same green as main text
             int fps = _currentFps;
-            string fpsStr = fps > 0 ? fps + " FPS" : "";
+            _fpsPart = fps > 0 ? fps + " FPS" : "";
 
-            // Battery
-            string batStr = "";
+            // Battery — dim text
+            _batPart = "";
             if (HardwareControl.batteryRate < 0)
-                batStr = Math.Round(-(decimal)HardwareControl.batteryRate, 1) + "W 🔋";
+                _batPart = Math.Round(-(decimal)HardwareControl.batteryRate, 1) + "W 🔋";
             else if (HardwareControl.batteryRate > 0)
-                batStr = Math.Round((decimal)HardwareControl.batteryRate, 1) + "W ⚡";
+                _batPart = Math.Round((decimal)HardwareControl.batteryRate, 1) + "W ⚡";
 
-            _line3 = string.Join(" ", new[] { fpsStr, batStr }.Where(s => s.Length > 0));
+            _line3 = string.Join(" ", new[] { _fpsPart, _batPart }.Where(s => s.Length > 0));
 
             // Power history
             float cpuW = HardwareControl.cpuPower > 0 ? (float)HardwareControl.cpuPower : 0f;
@@ -177,15 +169,32 @@ namespace GHelper.Overlay
             g.FillRoundedRectangle(_bgBrush, Bound, radius);
 
             using var font = new Font("Consolas", BaseFontSize * sc, FontStyle.Regular, GraphicsUnit.Pixel);
+            using var boldFont = new Font("Consolas", BaseFontSize * sc, FontStyle.Bold, GraphicsUnit.Pixel);
 
             int y = padY;
             g.DrawString(_line1, font, _textBrush, new PointF(padX, y));
             y += lineH + lineGap;
             g.DrawString(_line2, font, _textBrush, new PointF(padX, y));
+
             if (has3)
             {
                 y += lineH + lineGap;
-                g.DrawString(_line3, font, _dimTextBrush, new PointF(padX, y));
+                float xPos = padX;
+
+                // FPS: bold, full green
+                if (_fpsPart.Length > 0)
+                {
+                    g.DrawString(_fpsPart, boldFont, _textBrush, new PointF(xPos, y));
+                    xPos += g.MeasureString(_fpsPart, boldFont).Width;
+                }
+
+                // Battery: regular, dim green — positioned right after FPS
+                if (_batPart.Length > 0)
+                {
+                    if (_fpsPart.Length > 0)
+                        xPos += g.MeasureString(" ", font).Width;
+                    g.DrawString(_batPart, font, _dimTextBrush, new PointF(xPos, y));
+                }
             }
 
             int chartTop = padY + lineH * tLines + lineGap * (tLines - 1) + chartGap;
@@ -194,7 +203,7 @@ namespace GHelper.Overlay
         }
 
         // Stacked power chart
-        // Bottom layer: GPU (cyan fill), stacked on top: CPU (green fill).
+        // Bottom layer: CPU (green fill), stacked on top: GPU (cyan fill).
         private void DrawStackedChart(Graphics g, int x, int y, int w, int h, float sc)
         {
             float peak = 10f;
@@ -207,34 +216,38 @@ namespace GHelper.Overlay
             float stepX = (float)w / (HistoryLength - 1);
             int Idx(int i) => (_historyHead + i) % HistoryLength;
 
-            var gpuPts = new PointF[HistoryLength];
-            var cpuPts = new PointF[HistoryLength];
-            var basePts = new PointF[HistoryLength];
+            var cpuPts = new PointF[HistoryLength];   // top edge of CPU layer  (bottom layer)
+            var gpuPts = new PointF[HistoryLength];   // top edge of GPU layer  (stacked above CPU)
+            var basePts = new PointF[HistoryLength];   // baseline (bottom of chart)
 
             for (int i = 0; i < HistoryLength; i++)
             {
                 int idx = Idx(i);
                 float px = x + i * stepX;
-                float gpuH = (_gpuHistory[idx] / peak) * h;
                 float cpuH = (_cpuHistory[idx] / peak) * h;
+                float gpuH = (_gpuHistory[idx] / peak) * h;
 
                 basePts[i] = new PointF(px, y + h);
-                gpuPts[i] = new PointF(px, y + h - gpuH);
-                cpuPts[i] = new PointF(px, y + h - gpuH - cpuH);
+                cpuPts[i] = new PointF(px, y + h - cpuH);              // CPU from baseline up
+                gpuPts[i] = new PointF(px, y + h - cpuH - gpuH);       // GPU stacked above CPU
             }
 
-            FillArea(g, gpuPts, basePts, _gpuFillBrush);
-            g.DrawLines(_gpuLinePen, gpuPts);
-
-            FillArea(g, cpuPts, gpuPts, _cpuFillBrush);
+            // CPU fill — bottom layer (baseline → cpuPts)
+            FillArea(g, cpuPts, basePts, _cpuFillBrush);
             g.DrawLines(_cpuLinePen, cpuPts);
 
+            // GPU fill — stacked on top of CPU (cpuPts → gpuPts)
+            FillArea(g, gpuPts, cpuPts, _gpuFillBrush);
+            g.DrawLines(_gpuLinePen, gpuPts);
+
+            // Dotted total line at the very top of the stack
             using var totalPen = new Pen(Color.FromArgb(255, 200, 200, 200), sc * 0.75f)
             {
                 DashStyle = DashStyle.Dot
             };
-            g.DrawLines(totalPen, cpuPts);
+            g.DrawLines(totalPen, gpuPts);
 
+            // Baseline
             using var axPen = new Pen(Color.FromArgb(255, 80, 80, 80), sc * 0.5f);
             g.DrawLine(axPen, x, y + h, x + w, y + h);
         }
@@ -260,13 +273,11 @@ namespace GHelper.Overlay
         {
             _active = true;
 
-            // Start ETW FPS monitor on a background thread (Start() blocks internally).
-            // targetPid=0 → monitor all DXGI processes (picks up whichever game is running).
             _fps?.Dispose();
             _currentFps = 0;
             _fps = new EtwFpsMonitor();
             _fps.FpsUpdated += d => _currentFps = (int)d;
-            _fpsTask = Task.Run(() => _fps.Start());   // non-blocking for the UI thread
+            _fpsTask = Task.Run(() => _fps.Start());
 
             float sc = GetDpiScale();
             Size = new Size(
@@ -284,7 +295,7 @@ namespace GHelper.Overlay
         {
             _active = false;
             _timer.Stop();
-            _fps?.Dispose();   // calls CloseTrace → ProcessTrace unblocks → _fpsTask completes
+            _fps?.Dispose();
             _fps = null;
             _currentFps = 0;
             base.Hide();

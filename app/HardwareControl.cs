@@ -573,10 +573,7 @@ public static class HardwareControl
         cpuTemp = GetCPUTemp();
         gpuTemp = GetGPUTemp();
 
-        cpuPower = GetCPUPower();
-        gpuPower = GetGPUPower();
-
-        if (log) Logger.WriteLine($"Temps: {cpuTemp} {gpuTemp} {cpuFan} {gpuFan} {midFan} CPU Power: {cpuPower}W GPU Power: {gpuPower}W");
+        if (log) Logger.WriteLine($"Temps: {cpuTemp} {gpuTemp} {cpuFan} {gpuFan} {midFan}");
 
         ReadBatteryState();
     }
