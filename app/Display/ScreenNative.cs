@@ -291,13 +291,8 @@ namespace GHelper.Display
             if (0 != EnumDisplaySettingsEx(laptopScreen, ENUM_CURRENT_SETTINGS, ref dm))
             {
                 dm.dmDisplayFrequency = frequency;
-                int iRet = -1;
-                for (int attempt = 0; attempt < 3 && iRet != 0; attempt++)
-                {
-                    if (attempt > 0) Thread.Sleep(500); // wait for driver to settle
-                    iRet = ChangeDisplaySettingsEx(laptopScreen, ref dm, IntPtr.Zero, DisplaySettingsFlags.CDS_UPDATEREGISTRY, IntPtr.Zero);
-                    Logger.WriteLine("Screen = " + frequency.ToString() + "Hz : " + (iRet == 0 ? "OK" : iRet));
-                }
+                int iRet = ChangeDisplaySettingsEx(laptopScreen, ref dm, IntPtr.Zero, DisplaySettingsFlags.CDS_UPDATEREGISTRY, IntPtr.Zero);
+                Logger.WriteLine("Screen = " + frequency.ToString() + "Hz : " + (iRet == 0 ? "OK" : iRet));
                 return iRet;
             }
 
