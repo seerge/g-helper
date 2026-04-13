@@ -160,17 +160,24 @@ namespace PawnIO
         public SmuStatus SetCoAll(int value)
         {
             uint v = EncodeCurve(value);
-            return Family switch
+            switch (Family)
             {
                 // RyzenAdj: _do_adjust(0x55) — MP1 only
-                CpuFamily.Renoir                         => SendMp1(0x55, v),
+                case CpuFamily.Renoir:
+                    return SendMp1(0x55, v);
                 // RyzenAdj: _do_adjust(0x4C) — MP1 only
-                CpuFamily.Mobile or CpuFamily.StrixPoint
-                or CpuFamily.StrixHalo                   => SendMp1(0x4C, v),
+                case CpuFamily.Mobile or CpuFamily.StrixPoint:
+                    return SendMp1(0x4C, v);
+                // StrixHalo (Ryzen AI MAX): MP1 0x4C + PSMU 0x5D required as prerequisite for iGPU UV (0xB7)
+                case CpuFamily.StrixHalo:
+                    SendMp1(0x4C, v);
+                    return SendPsmu(0x5D, v);
                 // RyzenAdj: _do_adjust_psmu(0x07) — PSMU only
-                CpuFamily.Raphael                        => SendPsmu(0x07, v),
-                _                                        => SmuStatus.Failed,
-            };
+                case CpuFamily.Raphael:
+                    return SendPsmu(0x07, v);
+                default:
+                    return SmuStatus.Failed;
+            }
         }
 
         public SmuStatus SetCoGfx(int value)
