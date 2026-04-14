@@ -38,6 +38,12 @@ public class NumericUpDownWithUnit : NumericUpDown
 
     #region| Methods |
 
+    protected override void OnMouseWheel(MouseEventArgs e)
+    {
+        if (ContainsFocus)
+            base.OnMouseWheel(e);
+    }
+
     /// <summary>
     /// Method called when updating the numeric updown text.
     /// </summary>
