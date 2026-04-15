@@ -115,7 +115,11 @@ namespace GHelper.UI
 
             bool mica = true;
             if (mica)
+            {
                 DwmSetWindowAttribute(this.Handle, 38, new[] { 2 }, 4);
+                BackColor = Color.Black;
+                TransparencyKey = Color.Black;
+            }
 
 
             return changed;
