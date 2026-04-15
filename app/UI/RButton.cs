@@ -62,8 +62,7 @@ namespace GHelper.UI
 
             FlatStyle = FlatStyle.Flat;
             FlatAppearance.BorderSize = 0;
-            FlatAppearance.MouseDownBackColor = Color.FromArgb(50, 255, 255, 255);
-            FlatAppearance.MouseOverBackColor = Color.FromArgb(30, 255, 255, 255);
+            BackColor = Color.FromArgb(255, 1, 1, 1);
             BackColor = Color.Transparent;
         }
 

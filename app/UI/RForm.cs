@@ -40,8 +40,8 @@ namespace GHelper.UI
         {
             if (darkTheme)
             {
-                buttonMain = Color.FromArgb(10, 55, 55, 55);
-                buttonSecond = Color.FromArgb(10, 38, 38, 38);
+                buttonMain = Color.FromArgb(255, 55, 55, 55);
+                buttonSecond = Color.FromArgb(255, 38, 38, 38);
 
                 formBack = Color.FromArgb(255, 28, 28, 28);
                 foreMain = Color.FromArgb(255, 240, 240, 240);
@@ -105,16 +105,15 @@ namespace GHelper.UI
 
             if (changed)
             {
-                NativeMethods.DwmSetWindowAttribute(Handle, 20, new[] { darkTheme ? 1 : 0 }, 4);
+                NativeMethods.DwmSetWindowAttribute(Handle, 20, [darkTheme ? 1 : 0], 4);
                 ControlHelper.Adjust(this, changed);
                 Invalidate();
             }
 
             if (mica)
             {
-                NativeMethods.DwmSetWindowAttribute(Handle, 38, new[] { 2 }, 4);
-                BackColor = Color.Black;
-                TransparencyKey = Color.Black;
+                NativeMethods.DwmSetWindowAttribute(Handle, 38, [2], 4);
+                BackColor = TransparencyKey = Color.Black;
             }
 
 
