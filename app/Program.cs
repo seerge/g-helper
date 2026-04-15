@@ -102,6 +102,8 @@ namespace GHelper
             Logger.WriteLine("------------");
             Logger.WriteLine("App launched: " + AppConfig.GetModel() + " :" + Assembly.GetExecutingAssembly().GetName().Version.ToString() + CultureInfo.CurrentUICulture + (ProcessHelper.IsUserAdministrator() ? "." : ""));
 
+            CleanupLegacyFiles();
+
             var startCount = AppConfig.Get("start_count") + 1;
             AppConfig.Set("start_count", startCount);
             Logger.WriteLine("Start Count: " + startCount);
@@ -438,6 +440,29 @@ namespace GHelper
             catch (Exception ex)
             {
                 Logger.WriteLine("Startup Battery Limit Error: " + ex.Message);
+            }
+        }
+
+        static void CleanupLegacyFiles()
+        {
+            string appDir = Path.GetDirectoryName(Application.ExecutablePath) ?? "";
+            string[] legacyFiles = ["WinRing0x64.sys", "WinRing0x64.dll"];
+
+            foreach (string fileName in legacyFiles)
+            {
+                string filePath = Path.Combine(appDir, fileName);
+                if (File.Exists(filePath))
+                {
+                    try
+                    {
+                        File.Delete(filePath);
+                        Logger.WriteLine($"Deleted legacy file: {fileName}");
+                    }
+                    catch (Exception ex)
+                    {
+                        Logger.WriteLine($"Failed to delete legacy file {fileName}: {ex.Message}");
+                    }
+                }
             }
         }
 
