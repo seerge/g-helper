@@ -145,6 +145,28 @@ namespace GHelper
             checkUSBC.Text = Properties.Strings.OptimizedUSBC;
             checkAutoToggleClamshellMode.Text = Properties.Strings.ToggleClamshellMode;
 
+            CheckBox? checkNoBacklight = panelSettings.Controls["checkNoBacklight"] as CheckBox;
+            if (checkNoBacklight == null)
+            {
+                checkNoBacklight = new CheckBox();
+                checkNoBacklight.Name = "checkNoBacklight";
+                checkNoBacklight.Text = Properties.Strings.ResourceManager.GetString("DisableBacklight") ?? "Disable Backlight";
+                checkNoBacklight.AccessibleName = checkNoBacklight.Text;
+                checkNoBacklight.AutoSize = true;
+                checkNoBacklight.Location = new Point(checkNoOverdrive.Left, checkAutoToggleClamshellMode.Bottom + 5);
+                checkNoBacklight.Checked = AppConfig.IsBacklightDisabled();
+                checkNoBacklight.CheckedChanged += (sender, e) =>
+                {
+                    AppConfig.Set("no_backlight", checkNoBacklight.Checked ? 1 : 0);
+                    Aura.ApplyAura();
+                };
+                panelSettings.Controls.Add(checkNoBacklight);
+            }
+            else
+            {
+                checkNoBacklight.Checked = AppConfig.IsBacklightDisabled();
+            }
+
             labelBacklightKeyboard.Text = Properties.Strings.Keyboard;
             labelBacklightBar.Text = Properties.Strings.Lightbar;
             labelBacklightLid.Text = Properties.Strings.Lid;

@@ -168,6 +168,16 @@ public static class AppConfig
         return Get(name) == 1;
     }
 
+    public static bool IsAccessible()
+    {
+        return Get("accessible_mode") == 1;
+    }
+
+    public static bool IsBacklightDisabled()
+    {
+        return Get("no_backlight") == 1;
+    }
+
     public static bool IsNotFalse(string name)
     {
         return Get(name) != 0;

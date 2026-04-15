@@ -887,4 +887,13 @@ Do you still want to continue?</value>
   <data name="MouseZoneMode" xml:space="preserve">
     <value>Zone Mode</value>
   </data>
-</root>
+  <data name="AccessibleMode" xml:space="preserve">
+    <value>Accessible Mode</value>
+  </data>
+  <data name="DisableBacklight" xml:space="preserve">
+    <value>Disable Backlight</value>
+  </data>
+  <data name="FanCurvesTable" xml:space="preserve">
+    <value>Edit Fan Curves as Table</value>
+  </data>
+  </root>

@@ -114,43 +114,70 @@ namespace GHelper.Helpers
 
         public static void ReadText(string text)
         {
-            ProcessStartInfo startInfo = new ProcessStartInfo();
-            startInfo.FileName = "PowerShell.exe";
-            startInfo.Arguments = $"-Command \"Add-Type -AssemblyName System.Speech; (New-Object System.Speech.Synthesis.SpeechSynthesizer).Speak('{text}')\"";
-            startInfo.CreateNoWindow = true;
-            Process.Start(startInfo);
+            try
+            {
+                Task.Run(() =>
+                {
+                    try
+                    {
+                        dynamic? spVoice = Activator.CreateInstance(Type.GetTypeFromProgID("SAPI.SpVoice")!);
+                        spVoice?.Speak(text);
+                    }
+                    catch (Exception ex)
+                    {
+                        Logger.WriteLine("SAPI SpVoice failed: " + ex.Message);
+                    }
+                });
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLine("Toast speech fallback failed: " + ex.Message);
+            }
         }
 
 
         public void RunToast(string text, ToastIcon? icon = null)
         {
-
-            if (AppConfig.Is("disable_osd")) return;
-
             Program.settingsForm.Invoke(delegate
             {
-                //Hide();
+                bool visualToastEnabled = !AppConfig.Is("disable_osd");
                 timer.Stop();
 
-                toastText = text;
-                toastIcon = icon;
+                if (visualToastEnabled)
+                {
+                    toastText = text;
+                    toastIcon = icon;
 
-                Screen screen1 = Screen.FromHandle(Handle);
+                    Screen screen1 = Screen.FromHandle(Handle);
 
-                Width = Math.Max(300, 100 + toastText.Length * 22);
-                Height = 100;
-                X = (screen1.Bounds.Width - Width) / 2;
-                Y = screen1.Bounds.Height - 300 - Height;
+                    Width = Math.Max(300, 100 + toastText.Length * 22);
+                    Height = 100;
+                    X = (screen1.Bounds.Width - Width) / 2;
+                    Y = screen1.Bounds.Height - 300 - Height;
 
-                Show();
-                timer.Start();
+                    Show();
+                    timer.Start();
+                }
+                else
+                {
+                    Hide();
+                }
 
-                //if (AppConfig.Is("narrator")) ReadText(text);
-
-                Program.settingsForm.AccessibilityObject.RaiseAutomationNotification(
-                    System.Windows.Forms.Automation.AutomationNotificationKind.ActionCompleted,
-                    System.Windows.Forms.Automation.AutomationNotificationProcessing.MostRecent,
-                    text);
+                if (AppConfig.IsAccessible())
+                {
+                    try
+                    {
+                        Program.settingsForm.AccessibilityObject.RaiseAutomationNotification(
+                            System.Windows.Forms.Automation.AutomationNotificationKind.ActionCompleted,
+                            System.Windows.Forms.Automation.AutomationNotificationProcessing.MostRecent,
+                            text);
+                    }
+                    catch (Exception ex)
+                    {
+                        Logger.WriteLine("UI Automation toast announcement failed: " + ex.Message);
+                        ReadText(text);
+                    }
+                }
 
             });
 

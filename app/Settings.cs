@@ -123,7 +123,9 @@ namespace GHelper
             panelKeyboard.AccessibleName = Properties.Strings.LaptopKeyboard;
             buttonKeyboard.AccessibleName = Properties.Strings.ExtraSettings;
             buttonKeyboardColor.AccessibleName = Properties.Strings.LaptopKeyboard + " " + Properties.Strings.Color;
-            comboKeyboard.AccessibleName = Properties.Strings.LaptopBacklight;
+            
+            comboKeyboard.AccessibleName = Properties.Strings.LaptopKeyboard + " Mode";
+            comboRearLight.AccessibleName = Properties.Strings.Lightbar + " Mode";
 
             FormClosing += SettingsForm_FormClosing;
             Deactivate += SettingsForm_LostFocus;
@@ -202,6 +204,30 @@ namespace GHelper
 
             checkStartup.Checked = Startup.IsScheduled();
             checkStartup.CheckedChanged += CheckStartup_CheckedChanged;
+
+            CheckBox? checkAccessible = panelPerformance.Controls["checkAccessible"] as CheckBox;
+            if (checkAccessible == null)
+            {
+                checkAccessible = new CheckBox();
+                checkAccessible.Name = "checkAccessible";
+                checkAccessible.Text = Properties.Strings.ResourceManager.GetString("AccessibleMode") ?? "Accessible Mode";
+                checkAccessible.AccessibleName = checkAccessible.Text;
+                checkAccessible.AutoSize = true;
+                checkAccessible.Location = new Point(checkStartup.Left, checkStartup.Bottom + 5);
+                checkAccessible.Checked = AppConfig.IsAccessible();
+                checkAccessible.CheckedChanged += (sender, e) =>
+                {
+                    AppConfig.Set("accessible_mode", checkAccessible.Checked ? 1 : 0);
+                    VisualiseMode(Modes.GetCurrent());
+                    VisualiseGPUMode();
+                    ScreenControl.InitScreen();
+                };
+                panelPerformance.Controls.Add(checkAccessible);
+            }
+            else
+            {
+                checkAccessible.Checked = AppConfig.IsAccessible();
+            }
 
             labelVersion.Click += LabelVersion_Click;
             labelVersion.ForeColor = Color.FromArgb(128, Color.Gray);
@@ -634,6 +660,10 @@ namespace GHelper
         {
             Logger.WriteLine($"Auto TDP: {status}");
             buttonAutoTDP.Activated = status;
+            if (AppConfig.IsAccessible())
+            {
+                buttonAutoTDP.AccessibleName = "Auto TDP" + (status ? " (" + Properties.Strings.On + ")" : " (" + Properties.Strings.Off + ")");
+            }
         }
 
         private void SettingsForm_Focused(object? sender, EventArgs e)
@@ -1416,6 +1446,13 @@ namespace GHelper
                 buttonFHD.Text = fhd > 0 ? "FHD" : "UHD";
             }
 
+            if (AppConfig.IsAccessible())
+            {
+                button60Hz.AccessibleName = button60Hz.Text + (button60Hz.Activated ? " (" + Properties.Strings.On + ")" : "");
+                button120Hz.AccessibleName = button120Hz.Text + (button120Hz.Activated ? " (" + Properties.Strings.On + ")" : "");
+                buttonScreenAuto.AccessibleName = Properties.Strings.AutoMode + (buttonScreenAuto.Activated ? " (" + Properties.Strings.On + ")" : "");
+            }
+
             bool hdrControlVisible = (hdr && hdrControl >= 0);
 
             if (miniled1 >= 0)
@@ -1677,6 +1714,14 @@ namespace GHelper
                     break;
             }
 
+            if (AppConfig.IsAccessible())
+            {
+                buttonSilent.AccessibleName = Properties.Strings.Silent + (buttonSilent.Activated ? " (" + Properties.Strings.On + ")" : "");
+                buttonBalanced.AccessibleName = Properties.Strings.Balanced + (buttonBalanced.Activated ? " (" + Properties.Strings.On + ")" : "");
+                buttonTurbo.AccessibleName = Properties.Strings.Turbo + (buttonTurbo.Activated ? " (" + Properties.Strings.On + ")" : "");
+                buttonFans.AccessibleName = Properties.Strings.FansPower + (buttonFans.Activated ? " (" + Properties.Strings.On + ")" : "");
+            }
+
             foreach (var item in contextMenuStrip.Items)
             {
                 if (item is ToolStripMenuItem menuItem && menuItem.Tag is not null)
@@ -1855,6 +1900,15 @@ namespace GHelper
             VisualiseIcon();
             VisualizeXGM(GPUMode);
 
+            if (AppConfig.IsAccessible())
+            {
+                buttonEco.AccessibleName = Properties.Strings.EcoMode + (buttonEco.Activated ? " (" + Properties.Strings.On + ")" : "");
+                buttonStandard.AccessibleName = Properties.Strings.StandardMode + (buttonStandard.Activated ? " (" + Properties.Strings.On + ")" : "");
+                buttonUltimate.AccessibleName = Properties.Strings.UltimateMode + (buttonUltimate.Activated ? " (" + Properties.Strings.On + ")" : "");
+                buttonOptimized.AccessibleName = Properties.Strings.Optimized + (buttonOptimized.Activated ? " (" + Properties.Strings.On + ")" : "");
+                buttonXGM.AccessibleName = "XG Mobile" + (buttonXGM.Activated ? " (" + Properties.Strings.On + ")" : "");
+            }
+
             if (isGpuSection)
             {
                 menuEco.Checked = buttonEco.Activated;
@@ -1936,13 +1990,13 @@ namespace GHelper
             {
                 buttonBatteryFull.BackColor = colorStandard;
                 buttonBatteryFull.ForeColor = SystemColors.ControlLightLight;
-                buttonBatteryFull.AccessibleName = Properties.Strings.BatteryChargeLimit + "100% on";
+                buttonBatteryFull.AccessibleName = Properties.Strings.BatteryChargeLimit + " 100% (" + Properties.Strings.On + ")";
             }
             else
             {
                 buttonBatteryFull.BackColor = buttonSecond;
                 buttonBatteryFull.ForeColor = SystemColors.ControlDark;
-                buttonBatteryFull.AccessibleName = Properties.Strings.BatteryChargeLimit + "100% off";
+                buttonBatteryFull.AccessibleName = Properties.Strings.BatteryChargeLimit + " 100% (" + Properties.Strings.Off + ")";
             }
 
         }
@@ -2098,13 +2152,13 @@ namespace GHelper
             {
                 buttonFnLock.BackColor = colorStandard;
                 buttonFnLock.ForeColor = SystemColors.ControlLightLight;
-                buttonFnLock.AccessibleName = "Fn-Lock on";
+                buttonFnLock.AccessibleName = "Fn-Lock (" + Properties.Strings.On + ")";
             }
             else
             {
                 buttonFnLock.BackColor = buttonSecond;
                 buttonFnLock.ForeColor = SystemColors.ControlDark;
-                buttonFnLock.AccessibleName = "Fn-Lock off";
+                buttonFnLock.AccessibleName = "Fn-Lock (" + Properties.Strings.Off + ")";
             }
         }
 

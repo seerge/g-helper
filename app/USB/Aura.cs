@@ -54,6 +54,7 @@ namespace GHelper.USB
         GPUMODE = 21,
         AMBIENT = 22,
         BATTERY = 23,
+        AuraOff = 99,
     }
 
     public enum AuraSpeed : int
@@ -84,11 +85,6 @@ namespace GHelper.USB
 
         public static Color RearColor = Color.White;
         private static AuraMode rearMode = AuraMode.AuraStatic;
-        public static AuraMode RearMode
-        {
-            get { return rearMode; }
-            set { rearMode = GetModes().ContainsKey(value) ? value : AuraMode.AuraStatic; }
-        }
 
         static bool isACPI = AppConfig.IsTUF() || AppConfig.IsVivoZenPro();
         static bool isStrix = AppConfig.IsAdvancedRGB() && !AppConfig.IsNoDirectRGB();
@@ -105,6 +101,7 @@ namespace GHelper.USB
             { AuraMode.AuraStatic, Properties.Strings.AuraStatic },
             { AuraMode.AuraBreathe, Properties.Strings.AuraBreathe },
             { AuraMode.AuraStrobe, Properties.Strings.AuraStrobe },
+            { AuraMode.AuraOff, Properties.Strings.Off },
         };
 
         private static Dictionary<AuraMode, string> _modes = new Dictionary<AuraMode, string>
@@ -118,6 +115,7 @@ namespace GHelper.USB
             { AuraMode.GPUMODE, "GPU Mode" },
             { AuraMode.AMBIENT, "Ambient"},
             { AuraMode.BATTERY, "Battery"},
+            { AuraMode.AuraOff, Properties.Strings.Off },
         };
 
         private static Dictionary<AuraMode, string> _modesDynamicLighting = new Dictionary<AuraMode, string>
@@ -126,6 +124,7 @@ namespace GHelper.USB
             { AuraMode.AuraBreathe, Properties.Strings.AuraColorCycle },
             { AuraMode.AuraRainbow, Properties.Strings.AuraRainbow },
             { AuraMode.AuraStrobe, Properties.Strings.AuraStrobe },
+            { AuraMode.AuraOff, Properties.Strings.Off },
         };
 
         private static Dictionary<AuraMode, string> _modesAlly = new Dictionary<AuraMode, string>
@@ -136,6 +135,7 @@ namespace GHelper.USB
             { AuraMode.AuraRainbow, Properties.Strings.AuraRainbow },
             { AuraMode.AuraStrobe, Properties.Strings.AuraStrobe },
             { AuraMode.BATTERY, "Battery"},
+            { AuraMode.AuraOff, Properties.Strings.Off },
         };
 
         private static Dictionary<AuraMode, string> _modesStrix = new Dictionary<AuraMode, string>
@@ -155,6 +155,7 @@ namespace GHelper.USB
             { AuraMode.HEATMAP, "Heatmap"},
             { AuraMode.AMBIENT, "Ambient"},
             { AuraMode.BATTERY, "Battery"},
+            { AuraMode.AuraOff, Properties.Strings.Off },
         };
 
         static Aura()
@@ -225,11 +226,21 @@ namespace GHelper.USB
             { AuraMode.AuraColorCycle, Properties.Strings.AuraColorCycle },
             { AuraMode.AuraRainbow, Properties.Strings.AuraRainbow },
             { AuraMode.AuraStrobe, Properties.Strings.AuraStrobe },
+            { AuraMode.AuraOff, Properties.Strings.Off },
         };
 
         public static Dictionary<AuraMode, string> GetRearModes()
         {
             return _modesRear;
+        }
+
+        public static AuraMode RearMode
+        {
+            get { return rearMode; }
+            set
+            {
+                rearMode = _modesRear.ContainsKey(value) ? value : AuraMode.AuraStatic;
+            }
         }
         public static AuraMode Mode
         {
@@ -723,6 +734,13 @@ namespace GHelper.USB
 
             Color _Color1 = Color1;
             Color _Color2 = Color2;
+
+            if (AppConfig.IsBacklightDisabled() || Mode == AuraMode.AuraOff)
+            {
+                _Color1 = Color.Black;
+                _Color2 = Color.Black;
+                Mode = AuraMode.AuraStatic;
+            }
 
             // Ally lower brightness fix
             if (AppConfig.IsAlly())
