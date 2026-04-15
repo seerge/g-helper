@@ -22,13 +22,10 @@ namespace GHelper.UI
         public static Color chartMain;
         public static Color chartGrid;
 
-        [DllImport("UXTheme.dll", SetLastError = true, EntryPoint = "#138")]
-        public static extern bool CheckSystemDarkModeStatus();
-
-        [DllImport("DwmApi")] //System.Runtime.InteropServices
-        private static extern int DwmSetWindowAttribute(nint hwnd, int attr, int[] attrValue, int attrSize);
-
         public bool darkTheme = false;
+
+        public bool mica = true;
+
         protected override CreateParams CreateParams
         {
             get
@@ -108,15 +105,14 @@ namespace GHelper.UI
 
             if (changed)
             {
-                DwmSetWindowAttribute(Handle, 20, new[] { darkTheme ? 1 : 0 }, 4);
+                NativeMethods.DwmSetWindowAttribute(Handle, 20, new[] { darkTheme ? 1 : 0 }, 4);
                 ControlHelper.Adjust(this, changed);
-                this.Invalidate();
+                Invalidate();
             }
 
-            bool mica = false;
             if (mica)
             {
-                DwmSetWindowAttribute(this.Handle, 38, new[] { 2 }, 4);
+                NativeMethods.DwmSetWindowAttribute(Handle, 38, new[] { 2 }, 4);
                 BackColor = Color.Black;
                 TransparencyKey = Color.Black;
             }
