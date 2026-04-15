@@ -57,6 +57,14 @@ namespace GHelper.UI
             DoubleBuffered = true;
             FlatStyle = FlatStyle.Flat;
             FlatAppearance.BorderSize = 0;
+
+            SetStyle(ControlStyles.SupportsTransparentBackColor, true);
+
+            FlatStyle = FlatStyle.Flat;
+            FlatAppearance.BorderSize = 0;
+            FlatAppearance.MouseDownBackColor = Color.FromArgb(50, 255, 255, 255);
+            FlatAppearance.MouseOverBackColor = Color.FromArgb(30, 255, 255, 255);
+            BackColor = Color.Transparent;
         }
 
         private GraphicsPath GetFigurePath(Rectangle rect, int radius)

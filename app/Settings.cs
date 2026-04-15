@@ -1878,7 +1878,7 @@ namespace GHelper
         {
             if (Program.trayIcon is null) return;
             int GPUMode = AppConfig.Get("gpu_mode");
-            bool isDark = CheckSystemDarkModeStatus();
+            bool isDark = NativeMethods.CheckSystemDarkModeStatus();
 
             Icon newIcon = GPUMode switch
             {
