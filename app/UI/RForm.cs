@@ -46,7 +46,7 @@ namespace GHelper.UI
                 buttonMain = Color.FromArgb(255, 55, 55, 55);
                 buttonSecond = Color.FromArgb(255, 38, 38, 38);
 
-                formBack = Color.FromArgb(255, 28, 28, 28);
+                formBack = Color.FromArgb(0, 28, 28, 28);
                 foreMain = Color.FromArgb(255, 240, 240, 240);
                 borderMain = Color.FromArgb(255, 50, 50, 50);
 
@@ -99,6 +99,8 @@ namespace GHelper.UI
             bool changed = darkTheme != newDarkTheme;
             darkTheme = newDarkTheme;
 
+            SetStyle(ControlStyles.SupportsTransparentBackColor, true);
+
             InitColors(darkTheme);
 
             if (setDPI)
@@ -110,6 +112,10 @@ namespace GHelper.UI
                 ControlHelper.Adjust(this, changed);
                 this.Invalidate();
             }
+
+            bool mica = true;
+            if (mica)
+                DwmSetWindowAttribute(this.Handle, 38, new[] { 2 }, 4);
 
 
             return changed;
