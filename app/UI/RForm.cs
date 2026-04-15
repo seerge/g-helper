@@ -80,7 +80,7 @@ namespace GHelper.UI
 
             if (uiMode is not null && uiMode.ToLower() == "windows")
             {
-                return CheckSystemDarkModeStatus();
+                return NativeMethods.CheckSystemDarkModeStatus();
             }
 
             using var key = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Themes\Personalize");
