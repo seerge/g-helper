@@ -24,10 +24,10 @@ namespace GHelper.Overlay
 
         // ── Layout constants (base = 96 dpi) ─────────────────────────────────
         //
-        // ┌─padX─┬─fpsCol─┬─gap─┬─── leftCol ────┬─gap─┬─chartCol─┬─pwrGap─┬─powCol─┬─padX─┐
+        // ┌─padX─┬─fpsCol─┬─gap─┬─── leftCol ─────┬─gap─┬─chartCol─┬─pwrGap─┬─powCol─┬─padX─┐
         // │      │  194   │     │ GPU: 82° 5300RPM│     │  chart   │        │ 111.3W │      │
         // │      │  fps   │     │ CPU: 78° 4500RPM│     │          │        │  16.9W │      │
-        // └──────┴────────┴─────┴────────────────┴─────┴──────────┴────────┴────────┴──────┘
+        // └──────┴────────┴─────┴─────────────────┴─────┴──────────┴────────┴────────┴──────┘
         //
         // BaseWidth = 8 + 52 + 8 + 128 + 8 + 120 + 4 + 50 + 8 = 386
         //
