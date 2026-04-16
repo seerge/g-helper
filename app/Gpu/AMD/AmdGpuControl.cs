@@ -9,6 +9,7 @@ public class AmdGpuControl : IGpuControl
 {
     private bool _isReady;
     private nint _adlContextHandle;
+    private bool _pmLogStarted;
 
     private readonly ADLAdapterInfo _internalDiscreteAdapter;
     private readonly ADLAdapterInfo? _iGPU;
@@ -79,6 +80,7 @@ public class AmdGpuControl : IGpuControl
         {
             _internalDiscreteAdapter = (ADLAdapterInfo)internalDiscreteAdapter;
             _isReady = true;
+            StartPMLog();
         }
 
         _iGPU = FindByType(ADLAsicFamilyType.Integrated);
@@ -86,6 +88,33 @@ public class AmdGpuControl : IGpuControl
     }
 
     public bool IsValid => _isReady && _adlContextHandle != nint.Zero;
+
+    private void StartPMLog()
+    {
+        var input = new ADLPMLogStartInput
+        {
+            usSensors = new uint[Adl2.ADL_PMLOG_MAX_SENSORS],
+            ulSampleRate = 1000
+        };
+
+        // Populate sensors we need; array is 0-terminated
+        uint[] desired = [
+            (uint)ADLSensorType.PMLOG_TEMPERATURE_EDGE,
+            (uint)ADLSensorType.PMLOG_INFO_ACTIVITY_GFX,
+            (uint)ADLSensorType.PMLOG_ASIC_POWER,
+            (uint)ADLSensorType.PMLOG_GFX_POWER,
+            (uint)ADLSensorType.PMLOG_BOARD_POWER,
+        ];
+        for (int i = 0; i < desired.Length; i++)
+            input.usSensors[i] = desired[i];
+        // remaining entries are already 0 (terminator)
+
+        int result = ADL2_Adapter_PMLog_Start(_adlContextHandle, _internalDiscreteAdapter.AdapterIndex, ref input, out _, 0);
+        if (result == Adl2.ADL_SUCCESS)
+            _pmLogStarted = true;
+        else
+            Logger.WriteLine($"ADL2_Adapter_PMLog_Start failed: {result}");
+    }
 
     public int? GetCurrentTemperature()
     {
@@ -130,16 +159,31 @@ public class AmdGpuControl : IGpuControl
 
     }
 
-    public int? GetGpuPower()
+    public float? GetGpuPower()
     {
-        if (_adlContextHandle == nint.Zero || _iGPU == null) return null;
-        if (ADL2_New_QueryPMLogData_Get(_adlContextHandle, ((ADLAdapterInfo)_iGPU).AdapterIndex, out ADLPMLogDataOutput adlpmLogDataOutput) != Adl2.ADL_SUCCESS) return null;
+        if (!IsValid) return null;
+        if (ADL2_New_QueryPMLogData_Get(_adlContextHandle, _internalDiscreteAdapter.AdapterIndex, out ADLPMLogDataOutput adlpmLogDataOutput) != Adl2.ADL_SUCCESS) return null;
+
+        foreach (var sensorType in new[] { ADLSensorType.PMLOG_ASIC_POWER, ADLSensorType.PMLOG_GFX_POWER, ADLSensorType.PMLOG_BOARD_POWER })
+        {
+            ADLSingleSensorData sensor = adlpmLogDataOutput.Sensors[(int)sensorType];
+            if (sensor.Supported != 0 && sensor.Value > 0)
+                return sensor.Value;
+        }
+
+        return null;
+    }
+
+    // Used by ROG Ally (iGPU-only) for auto-TDP logic — queries the integrated GPU adapter
+    public int GetiGpuPower()
+    {
+        if (_adlContextHandle == nint.Zero || _iGPU == null) return 0;
+        if (ADL2_New_QueryPMLogData_Get(_adlContextHandle, ((ADLAdapterInfo)_iGPU).AdapterIndex, out ADLPMLogDataOutput adlpmLogDataOutput) != Adl2.ADL_SUCCESS) return 0;
 
         ADLSingleSensorData gpuUsage = adlpmLogDataOutput.Sensors[(int)ADLSensorType.PMLOG_ASIC_POWER];
-        if (gpuUsage.Supported == 0) return null;
+        if (gpuUsage.Supported == 0) return 0;
 
         return gpuUsage.Value;
-
     }
 
 
@@ -294,6 +338,11 @@ public class AmdGpuControl : IGpuControl
     {
         if (_adlContextHandle != nint.Zero)
         {
+            if (_pmLogStarted)
+            {
+                ADL2_Adapter_PMLog_Stop(_adlContextHandle, _internalDiscreteAdapter.AdapterIndex, 0);
+                _pmLogStarted = false;
+            }
             ADL2_Main_Control_Destroy(_adlContextHandle);
             _adlContextHandle = nint.Zero;
             _isReady = false;

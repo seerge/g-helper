@@ -548,8 +548,8 @@ public static class HardwareControl
     {
         try
         {
-            if (GpuControl is NvidiaGpuControl nvidiaGpu)
-                return nvidiaGpu.GetGpuPower();
+            float? power = GpuControl?.GetGpuPower();
+            if (power is not null) return power.Value;
         }
         catch (Exception ex)
         {
