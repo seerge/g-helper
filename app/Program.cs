@@ -130,6 +130,10 @@ namespace GHelper
                 Visible = true
             };
 
+            var trayRetry = new System.Windows.Forms.Timer { Interval = 5000 };
+            trayRetry.Tick += (_, _) => { trayRetry.Dispose(); trayIcon.Visible = false; trayIcon.Visible = true; };
+            trayRetry.Start();
+
             WM_TASKBARCREATED = RegisterWindowMessage("TaskbarCreated");
             Logger.WriteLine($"Tray Icon: {trayIcon.Visible} | {WM_TASKBARCREATED}");
 
@@ -211,7 +215,6 @@ namespace GHelper
             });
 
             Application.Run();
-            trayIcon.Visible = true;
         }
 
 
