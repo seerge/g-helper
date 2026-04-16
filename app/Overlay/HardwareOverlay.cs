@@ -178,9 +178,21 @@ namespace GHelper.Overlay
                                 Math.Abs(upCursor.Y - _dragCursorStart.Y) <= 5;
                 if (wasClick)
                 {
+                    // Determine right-side anchor BEFORE the width changes
+                    Point center = new Point(Location.X + Width / 2, Location.Y + Height / 2);
+                    Screen screen = Screen.FromPoint(center);
+                    bool isRight = center.X > screen.Bounds.X + screen.Bounds.Width / 2;
+                    int rightEdge = Location.X + Width;
+
                     _lightMode = !_lightMode;
                     AppConfig.Set("overlay_light_mode", _lightMode ? 1 : 0);
-                    Invalidate();
+                    Invalidate(); // resizes the window synchronously via PerformPaint → Size.set
+
+                    if (isRight)
+                    {
+                        Location = new Point(rightEdge - Width, Location.Y);
+                        SavePosition();
+                    }
                 }
                 else
                 {
@@ -234,6 +246,7 @@ namespace GHelper.Overlay
             {
                 _dragModeActive = keysDown;
                 SetTransparentStyle(!keysDown);
+                Cursor.Current = keysDown ? Cursors.Hand : Cursors.Default;
             }
 
             if (Handle != nint.Zero)
