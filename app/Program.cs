@@ -211,7 +211,7 @@ namespace GHelper
             });
 
             Application.Run();
-
+            trayIcon.Visible = true;
         }
 
 
