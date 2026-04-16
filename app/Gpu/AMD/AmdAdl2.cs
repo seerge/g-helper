@@ -363,20 +363,6 @@ public struct ADLDisplayInfo
 
 #endregion ADLDisplayInfo
 
-[StructLayout(LayoutKind.Sequential)]
-public struct ADLPMLogStartInput
-{
-    [MarshalAs(UnmanagedType.ByValArray, SizeConst = Adl2.ADL_PMLOG_MAX_SENSORS)]
-    public uint[] usSensors;   // sensor IDs to enable, 0-terminated
-    public uint ulSampleRate;  // sampling period in ms
-}
-
-[StructLayout(LayoutKind.Sequential)]
-public struct ADLPMLogStartOutput
-{
-    public IntPtr pLoggingAddress; // shared-memory pointer written by driver
-}
-
 #endregion Export Struct
 
 public class Adl2
@@ -540,14 +526,6 @@ public class Adl2
 
         [DllImport(Atiadlxx_FileName)]
         public static extern int ADL2_New_QueryPMLogData_Get(nint adlContextHandle, int adapterIndex, out ADLPMLogDataOutput adlpmLogDataOutput);
-
-        // Start continuous PM log sampling for an adapter. hDevice = 0 for default.
-        [DllImport(Atiadlxx_FileName)]
-        public static extern int ADL2_Adapter_PMLog_Start(nint adlContextHandle, int adapterIndex, ref ADLPMLogStartInput pInput, out ADLPMLogStartOutput pOutput, uint hDevice);
-
-        // Stop PM log sampling started with ADL2_Adapter_PMLog_Start.
-        [DllImport(Atiadlxx_FileName)]
-        public static extern int ADL2_Adapter_PMLog_Stop(nint adlContextHandle, int adapterIndex, uint hDevice);
 
         [DllImport(Atiadlxx_FileName)]
         public static extern int ADL2_Adapter_ASICFamilyType_Get(nint adlContextHandle, int adapterIndex, out ADLAsicFamilyType asicFamilyType, out int asicFamilyTypeValids);
