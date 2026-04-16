@@ -491,7 +491,7 @@ public static class HardwareControl
     private static PerformanceCounter? _cpuPowerCounter;
     private static bool _cpuPowerCounterFailed;
     private static bool _cpuPowerInitStarted;
-    private static readonly string[] _powerCounterInstances = { "Apu Power", "RAPL_Package0_PKG", "CPU Power", "Socket Power" };
+    private static readonly string[] _powerCounterInstances = { "Apu Power", "RAPL_Package0_PKG", "CPU Power", "Socket Power", "Current Socket Power" };
 
     public static void InitCPUPowerAsync()
     {
@@ -548,8 +548,8 @@ public static class HardwareControl
     {
         try
         {
-            if (GpuControl is NvidiaGpuControl nvidiaGpu)
-                return nvidiaGpu.GetGpuPower();
+            float? power = GpuControl?.GetGpuPower();
+            if (power is not null) return power.Value;
         }
         catch (Exception ex)
         {
