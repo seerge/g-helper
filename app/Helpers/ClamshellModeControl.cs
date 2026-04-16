@@ -105,7 +105,9 @@ namespace GHelper.Helpers
             if (IsClamshellEnabled())
                 ToggleLidAction();
 
-            if (Program.settingsForm.Visible)
+            if (AppConfig.Is("screen_force"))
+                ScreenControl.AutoScreen();
+            else if (Program.settingsForm.Visible)
                 ScreenControl.InitScreen();
 
             if (AppConfig.IsForceMiniled())
