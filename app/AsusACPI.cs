@@ -340,7 +340,7 @@ public class AsusACPI
             MaxTotal = 93;
         }
 
-        if (AppConfig.IsFA401EA())
+        if (AppConfig.IsOnlyAIMAX())
         {
             MaxTotal = 115;
             MaxCPU = 115;
