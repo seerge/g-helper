@@ -18,18 +18,52 @@ namespace GHelper.Overlay
         [DllImport("user32.dll")]
         private static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint processId);
 
+        // Drag support
+        [DllImport("user32.dll")]
+        private static extern int GetWindowLong(IntPtr hWnd, int nIndex);
+        [DllImport("user32.dll")]
+        private static extern int SetWindowLong(IntPtr hWnd, int nIndex, int dwNewLong);
+        [DllImport("user32.dll")]
+        private static extern bool SetCapture(IntPtr hWnd);
+        [DllImport("user32.dll")]
+        private static extern bool ReleaseCapture();
+        [DllImport("user32.dll")]
+        private static extern short GetAsyncKeyState(int vKey);
+
         private const uint MONITOR_DEFAULTTOPRIMARY = 1;
         private const int MDT_EFFECTIVE_DPI = 0;
         private const int BaseDpi = 96;
 
+        private const int GWL_EXSTYLE        = -20;
+        private const int WS_EX_TRANSPARENT_FLAG = 0x00000020;
+        private const int WM_LBUTTONDOWN     = 0x0201;
+        private const int WM_MOUSEMOVE       = 0x0200;
+        private const int WM_LBUTTONUP       = 0x0202;
+        private const int VK_CONTROL         = 0x11;
+        private const int VK_SHIFT           = 0x10;
+        private const int VK_MENU            = 0x12; // ALT
+
+        private bool _dragging;
+        private Point _dragCursorStart;
+        private Point _dragWindowStart;
+        private bool _dragModeActive;
+        private bool _lightMode;
+
         // ── Layout constants (base = 96 dpi) ─────────────────────────────────
         //
+        // Full mode:
         // ┌─padX─┬─fpsCol─┬─gap─┬─── leftCol ─────┬─gap─┬─chartCol─┬─pwrGap─┬─powCol─┬─padX─┐
-        // │      │  194   │     │ GPU: 82° 5300RPM│     │  chart   │        │ 111.3W │      │
-        // │      │  fps   │     │ CPU: 78° 4500RPM│     │          │        │  16.9W │      │
+        // │      │  fps   │     │ GPU: 82° 5300RPM│     │  chart   │        │ 111.3W │      │
+        // │      │        │     │ CPU: 78° 4500RPM│     │          │        │  16.9W │      │
         // └──────┴────────┴─────┴─────────────────┴─────┴──────────┴────────┴────────┴──────┘
-        //
         // BaseWidth = 8 + 52 + 8 + 128 + 8 + 120 + 4 + 50 + 8 = 386
+        //
+        // Light mode (no chart, no fan RPM — narrower left col fits "GPU: 82° "):
+        // ┌─padX─┬─fpsCol─┬─gap─┬─lightCol─┬─pwrGap─┬─powCol─┬─padX─┐
+        // │      │  fps   │     │ GPU: 82° │        │ 111.3W │      │
+        // │      │        │     │ CPU: 78° │        │  16.9W │      │
+        // └──────┴────────┴─────┴──────────┴────────┴────────┴──────┘
+        // BaseLightWidth = 8 + 52 + 8 + 76 + 4 + 50 + 8 = 206
         //
         private const float BaseFontSize = 13f;
         private const float BaseRpmFontSize = 8.5f;
@@ -46,6 +80,8 @@ namespace GHelper.Overlay
         private const int BaseColGap = 8;
         private const int CornerRadius = 3;
         private const int MarginFromEdge = 10;
+        private const int BaseLightLeftColWidth = 76; // fits "GPU: 82° " (9 Consolas chars) with a little breathing room
+        private const int BaseLightWidth = BasePadX + BaseFpsColWidth + BaseColGap + BaseLightLeftColWidth + BasePowerGap + BasePowerColWidth + BasePadX; // 206
 
         private static readonly SolidBrush _bgBrush = new(Color.FromArgb(128, 0, 0, 0));
         private static readonly SolidBrush _gpuBrush = new(Color.FromArgb(255, 0, 255, 80));
@@ -90,15 +126,76 @@ namespace GHelper.Overlay
         }
 
         private const int WM_NCDESTROY = 0x0082;
+        private const int WM_SETCURSOR  = 0x0020;
         protected override void WndProc(ref Message m)
         {
             if (m.Msg == WM_NCDESTROY)
             {
                 base.WndProc(ref m);
                 if (_active)
-                    Program.settingsForm?.BeginInvoke(() => { PositionAtTopLeft(); base.Show(); });
+                    Program.settingsForm?.BeginInvoke(() => { RestorePosition(); base.Show(); });
                 return;
             }
+
+            if (m.Msg == WM_SETCURSOR)
+            {
+                Cursor.Current = _dragging ? Cursors.SizeAll : Cursors.Hand;
+                m.Result = (IntPtr)1; // prevent DefWindowProc from overriding the cursor
+                return;
+            }
+
+            if (m.Msg == WM_LBUTTONDOWN && _dragModeActive)
+            {
+                _dragging = true;
+                _dragCursorStart = Cursor.Position;
+                _dragWindowStart = Location;
+                SetCapture(Handle);
+                m.Result = IntPtr.Zero;
+                return;
+            }
+
+            if (m.Msg == WM_MOUSEMOVE && _dragging)
+            {
+                Point cursor = Cursor.Position;
+                int newX = _dragWindowStart.X + cursor.X - _dragCursorStart.X;
+                int newY = _dragWindowStart.Y + cursor.Y - _dragCursorStart.Y;
+                Screen screen = Screen.FromPoint(cursor);
+                const int margin = 5;
+                newX = Math.Clamp(newX, screen.Bounds.Left + margin, screen.Bounds.Right  - Width  - margin);
+                newY = Math.Clamp(newY, screen.Bounds.Top  + margin, screen.Bounds.Bottom - Height - margin);
+                Location = new Point(newX, newY);
+                m.Result = IntPtr.Zero;
+                return;
+            }
+
+            if (m.Msg == WM_LBUTTONUP && _dragging)
+            {
+                _dragging = false;
+                ReleaseCapture();
+
+                Point upCursor = Cursor.Position;
+                bool wasClick = Math.Abs(upCursor.X - _dragCursorStart.X) <= 5 &&
+                                Math.Abs(upCursor.Y - _dragCursorStart.Y) <= 5;
+                if (wasClick)
+                {
+                    _lightMode = !_lightMode;
+                    AppConfig.Set("overlay_light_mode", _lightMode ? 1 : 0);
+                    Invalidate();
+                }
+                else
+                {
+                    SavePosition();
+                }
+
+                if (!AreDragKeysDown())
+                {
+                    _dragModeActive = false;
+                    SetTransparentStyle(true);
+                }
+                m.Result = IntPtr.Zero;
+                return;
+            }
+
             base.WndProc(ref m);
         }
 
@@ -129,6 +226,16 @@ namespace GHelper.Overlay
 
         private void Tick()
         {
+            // Drag-mode detection: only activate when the cursor is already over the
+            // overlay, preventing CTRL+SHIFT+ALT used in games from toggling drag mode.
+            bool mouseOver = new Rectangle(Location, Size).Contains(Cursor.Position);
+            bool keysDown = mouseOver && AreDragKeysDown();
+            if (keysDown != _dragModeActive && !_dragging)
+            {
+                _dragModeActive = keysDown;
+                SetTransparentStyle(!keysDown);
+            }
+
             if (Handle != nint.Zero)
                 SetWindowPos(Handle, HWND_TOPMOST, 0, 0, 0, 0,
                 SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE);
@@ -178,7 +285,7 @@ namespace GHelper.Overlay
             int padY = S(sc, BasePadY);
             int lineH = S(sc, BaseLineHeight);
             int lineGap = S(sc, BaseLineSpacing);
-            int width = S(sc, BaseWidth);
+            int width = S(sc, _lightMode ? BaseLightWidth : BaseWidth);
             int radius = S(sc, CornerRadius);
             int fpsColW = S(sc, BaseFpsColWidth);
             int chartColW = S(sc, BaseChartColWidth);
@@ -207,8 +314,8 @@ namespace GHelper.Overlay
             float charW = g.MeasureString("XX", font).Width - g.MeasureString("X", font).Width;
 
             int leftX = padX + fpsColW + colGap;
-            int chartX = leftX + S(sc, BaseLeftColWidth);
-            int powX = chartX + chartColW + powGap;
+            int chartX = leftX + S(sc, _lightMode ? BaseLightLeftColWidth : BaseLeftColWidth);
+            int powX = _lightMode ? chartX + powGap : chartX + chartColW + powGap;
             int topY = padY;
 
             // FPS
@@ -217,12 +324,13 @@ namespace GHelper.Overlay
             g.DrawString(fpsStr, fpsBold, _gpuBrush,
             new PointF(padX + (fpsColW - fpsW) / 2f, topY));
 
-            // Left column: "GPU: 82° " then "5300" then "RPM" superscript
-            DrawTempFan(g, font, rpmFont, charW, sc, leftX, topY, _gpuTempStr, _gpuFanNum, _gpuBrush);
-            DrawTempFan(g, font, rpmFont, charW, sc, leftX, topY + lineH + lineGap, _cpuTempStr, _cpuFanNum, _cpuBrush);
+            // Left column: fan RPM only in full mode
+            DrawTempFan(g, font, rpmFont, charW, sc, leftX, topY, _gpuTempStr, _lightMode ? "" : _gpuFanNum, _gpuBrush);
+            DrawTempFan(g, font, rpmFont, charW, sc, leftX, topY + lineH + lineGap, _cpuTempStr, _lightMode ? "" : _cpuFanNum, _cpuBrush);
 
-            // Chart
-            DrawStackedChart(g, chartX, topY, chartColW, innerH, sc);
+            // Chart — full mode only
+            if (!_lightMode)
+                DrawStackedChart(g, chartX, topY, chartColW, innerH, sc);
 
             // Power — right-aligned
             if (_gpuPow.Length > 0)
@@ -307,10 +415,55 @@ namespace GHelper.Overlay
             Location = new Point(screen.Bounds.X + MarginFromEdge, screen.Bounds.Y + MarginFromEdge);
         }
 
+        private bool AreDragKeysDown() =>
+            (GetAsyncKeyState(VK_CONTROL) & 0x8000) != 0 &&
+            (GetAsyncKeyState(VK_SHIFT)   & 0x8000) != 0 &&
+            (GetAsyncKeyState(VK_MENU)    & 0x8000) != 0;
+
+        private void SetTransparentStyle(bool transparent)
+        {
+            if (Handle == nint.Zero) return;
+            int style = GetWindowLong(Handle, GWL_EXSTYLE);
+            style = transparent ? (style | WS_EX_TRANSPARENT_FLAG) : (style & ~WS_EX_TRANSPARENT_FLAG);
+            SetWindowLong(Handle, GWL_EXSTYLE, style);
+        }
+
+        private void SavePosition()
+        {
+            Point center = new Point(Location.X + Width / 2, Location.Y + Height / 2);
+            Screen screen = Screen.FromPoint(center);
+            bool isRight  = center.X > screen.Bounds.X + screen.Bounds.Width  / 2;
+            bool isBottom = center.Y > screen.Bounds.Y + screen.Bounds.Height / 2;
+            int anchor  = (isBottom ? 2 : 0) | (isRight ? 1 : 0);
+            int offsetX = isRight  ? screen.Bounds.Right  - Location.X - Width  : Location.X - screen.Bounds.X;
+            int offsetY = isBottom ? screen.Bounds.Bottom - Location.Y - Height : Location.Y - screen.Bounds.Y;
+            AppConfig.Set("overlay_anchor",   anchor);
+            AppConfig.Set("overlay_offset_x", offsetX);
+            AppConfig.Set("overlay_offset_y", offsetY);
+        }
+
+        private void RestorePosition()
+        {
+            int anchor = AppConfig.Get("overlay_anchor", -1);
+            if (anchor < 0) { PositionAtTopLeft(); return; }
+            int offsetX = AppConfig.Get("overlay_offset_x", MarginFromEdge);
+            int offsetY = AppConfig.Get("overlay_offset_y", MarginFromEdge);
+            Screen screen = Screen.PrimaryScreen ?? Screen.AllScreens[0];
+            bool isRight  = (anchor & 1) != 0;
+            bool isBottom = (anchor & 2) != 0;
+            int x = isRight  ? screen.Bounds.Right  - Width  - offsetX : screen.Bounds.X + offsetX;
+            int y = isBottom ? screen.Bounds.Bottom - Height - offsetY : screen.Bounds.Y + offsetY;
+            const int margin = 5;
+            x = Math.Clamp(x, screen.Bounds.Left + margin, screen.Bounds.Right  - Width  - margin);
+            y = Math.Clamp(y, screen.Bounds.Top  + margin, screen.Bounds.Bottom - Height - margin);
+            Location = new Point(x, y);
+        }
+
         public void StartOverlay()
         {
             _active = true;
             _lastFgPid = 0;
+            _lightMode = AppConfig.Is("overlay_light_mode");
 
             _fps?.Dispose();
             _currentFps = 0;
@@ -325,7 +478,7 @@ namespace GHelper.Overlay
             int innerH = S(sc, BaseLineHeight) * 2 + S(sc, BaseLineSpacing);
             Size = new Size(S(sc, BaseWidth), S(sc, BasePadY) * 2 + innerH);
 
-            PositionAtTopLeft();
+            RestorePosition();
             base.Show();
             Tick();
             _timer.Start();
@@ -335,6 +488,8 @@ namespace GHelper.Overlay
         {
             _active = false;
             _timer.Stop();
+            _dragModeActive = false;
+            _dragging = false;
             _fps?.Dispose();
             _fps = null;
             _currentFps = 0;
