@@ -205,8 +205,8 @@ namespace PawnIO
                 // RyzenAdj: _do_adjust(0x19) — MP1 only
                 CpuFamily.Renoir or CpuFamily.Mobile
                 or CpuFamily.StrixPoint or CpuFamily.StrixHalo => SendMp1(0x19, v),
-                // RyzenAdj: _do_adjust(0x23) — MP1 only
-                CpuFamily.Matisse                        => SendMp1(0x23, v),
+                // RyzenAdj: _do_adjust(0x3E) — MP1 only
+                CpuFamily.Matisse                        => SendMp1(0x3E, v),
                 // RyzenAdj: _do_adjust(0x3F) — MP1 only
                 CpuFamily.Raphael                        => SendMp1(0x3F, v),
                 _                                        => SmuStatus.Failed,
