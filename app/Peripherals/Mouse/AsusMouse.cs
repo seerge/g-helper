@@ -1007,11 +1007,15 @@ public ushort[] ButtonBindings { get; protected set; } = new ushort[16];
             if (packet[1] == 0x12 && packet[2] == 0x04 && packet[3] == 0x00)
             {
                 byte raw = packet[13];
-                byte highNibble = (byte)(raw >> 4);
-                if (highNibble > 0)
-                    result = (PollingRate)(highNibble & 0x07);
+                if (Booster)
+                {
+                    byte highNibble = (byte)((raw >> 4) & 0x0F);
+                    result = highNibble > 0 ? (PollingRate)highNibble : (PollingRate)(raw & 0x07);
+                }
                 else
+                {
                     result = (PollingRate)(raw & 0x07);
+                }
             }
             else
             {

@@ -354,12 +354,12 @@ public static class AppConfig
 
     public static bool IsVivoZenbook()
     {
-        return ContainsModel("Vivobook") || ContainsModel("Zenbook") || ContainsModel("EXPERTBOOK") || ContainsModel(" V16");
+        return ContainsModel("Vivobook") || ContainsModel("Zenbook") || ContainsModel("EXPERTBOOK") || ContainsModel(" V16") || ContainsModel("ASUSLaptop");
     }
 
     public static bool IsVivoZenPro()
     {
-        return ContainsModel("Vivobook") || ContainsModel("Zenbook") || ContainsModel("ProArt") || ContainsModel("EXPERTBOOK") || ContainsModel(" V16");
+        return ContainsModel("Vivobook") || ContainsModel("Zenbook") || ContainsModel("ProArt") || ContainsModel("EXPERTBOOK") || ContainsModel(" V16") || ContainsModel("ASUSLaptop");
     }
 
     public static bool IsHardwareFnLock()
@@ -431,7 +431,7 @@ public static class AppConfig
 
     public static bool IsOLED()
     {
-        return ContainsModel("OLED") || IsSlash() || ContainsModel("M7600") || ContainsModel("UX64") || ContainsModel("UX34") || ContainsModel("UX53") || ContainsModel("K360") || ContainsModel("X150") || ContainsModel("M340") || ContainsModel("M350") || ContainsModel("K650") || ContainsModel("UM53") || ContainsModel("K660") || ContainsModel("UX84") || ContainsModel("M650") || ContainsModel("M550") || ContainsModel("M540") || ContainsModel("K340") || ContainsModel("K350") || ContainsModel("M140") || ContainsModel("S540") || ContainsModel("S550") || ContainsModel("M7400") || ContainsModel("N650") || ContainsModel("HN7306") || ContainsModel("H760") || ContainsModel("UX5406") || ContainsModel("M5606") || ContainsModel("X513") || ContainsModel("N7400") || ContainsModel("UX760");
+        return ContainsModel("OLED") || IsSlash() || ContainsModel("M7600") || ContainsModel("UX64") || ContainsModel("UX34") || ContainsModel("UX53") || ContainsModel("K360") || ContainsModel("X150") || ContainsModel("M340") || ContainsModel("M350") || ContainsModel("K650") || ContainsModel("UM53") || ContainsModel("K660") || ContainsModel("UX84") || ContainsModel("M650") || ContainsModel("M550") || ContainsModel("M540") || ContainsModel("K340") || ContainsModel("K350") || ContainsModel("M140") || ContainsModel("S540") || ContainsModel("S550") || ContainsModel("M7400") || ContainsModel("N650") || ContainsModel("HN7306") || ContainsModel("H760") || ContainsModel("UX5406") || ContainsModel("M5606") || ContainsModel("X513") || ContainsModel("N7400") || ContainsModel("UX760") || ContainsModel("Q530VJ");
     }
 
     public static bool IsNoOverdrive()
@@ -461,7 +461,7 @@ public static class AppConfig
 
     public static bool IsStrixLimitedRGB()
     {
-        return ContainsModel("G614PM") || ContainsModel("G614PP") || ContainsModel("G614PR") || ContainsModel("G512LI") || ContainsModel("G513R") || ContainsModel("G713QM") || ContainsModel("G713PV") || ContainsModel("G513IE") || ContainsModel("G713RC") || ContainsModel("G713IC") || ContainsModel("G713PU") || ContainsModel("G513QM") || ContainsModel("G513QC") || ContainsModel("G531G") || ContainsModel("G615JMR") || ContainsModel("G615LM") || ContainsModel("G815LR");
+        return ContainsModel("G614PM") || ContainsModel("G614PP") || ContainsModel("G614PR") || ContainsModel("G512LI") || ContainsModel("G513R") || ContainsModel("G713QM") || ContainsModel("G713PV") || ContainsModel("G513IE") || ContainsModel("G513IC") || ContainsModel("G713RC") || ContainsModel("G713IC") || ContainsModel("G713PU") || ContainsModel("G513QE") || ContainsModel("G513QM") || ContainsModel("G513QC") || ContainsModel("G531G") || ContainsModel("G615JMR") || ContainsModel("G615LM") || ContainsModel("G815LR");
     }
 
     public static bool IsPossible4ZoneRGB()
@@ -613,17 +613,17 @@ public static class AppConfig
 
     public static bool IsAMDiGPU()
     {
-        return ContainsModel("GV301RA") || ContainsModel("GV302XA") || ContainsModel("GZ302") || IsFA401EA() || IsAlly();
+        return ContainsModel("GV301RA") || ContainsModel("GV302XA") || ContainsModel("GZ302") || IsOnlyAIMAX() || IsAlly();
     }
 
     public static bool NoGpu()
     {
-        return Is("no_gpu") || ContainsModel("UX540") || ContainsModel("M560") || ContainsModel("GZ302") || IsFA401EA();
+        return Is("no_gpu") || ContainsModel("UX540") || ContainsModel("M560") || ContainsModel("GZ302") || IsOnlyAIMAX();
     }
 
-    public static bool IsFA401EA()
+    public static bool IsOnlyAIMAX()
     {
-        return ContainsModel("FA401EA");
+        return ContainsModel("FA401EA") || ContainsModel("HN7306EA");
     }
 
     public static bool IsHardwareTouchpadToggle()

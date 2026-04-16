@@ -843,9 +843,12 @@ namespace GHelper
         {
             var slots = mouse.ButtonSlots;
             _bindingComboItems = BuildBindingComboItems();
+
+            float s = DeviceDpi / 192f;
+
             // Start below whichever is lower: the header or the mouse layout picture
-            int startY = Math.Max(panelBindingsHeader.Bottom, pictureMouseLayout.Bottom) + 12;
-            int rowHeight = 52;
+            int startY = Math.Max(panelBindingsHeader.Bottom, pictureMouseLayout.Bottom) + (int)(12 * s);
+            int rowHeight = (int)(52 * s);
             int row = 0;
             foreach (var (slot, (_, name)) in slots)
             {
@@ -853,16 +856,16 @@ namespace GHelper
                 var lbl = new Label
                 {
                     Text = name,
-                    Location = new Point(14, y + 14),
-                    Size = new Size(200, 32),
+                    Location = new Point((int)(14 * s), y + (int)(14 * s)),
+                    Size = new Size((int)(200 * s), (int)(32 * s)),
                     TextAlign = ContentAlignment.MiddleLeft,
                     ForeColor = RForm.foreMain,
                 };
                 var cmb = new UI.RComboBox
                 {
-                    Location = new Point(220, y + 10),
-                    Size = new Size(260, 40),
-                    Margin = new Padding(0, 6, 6, 6),
+                    Location = new Point((int)(220 * s), y + (int)(10 * s)),
+                    Size = new Size((int)(260 * s), (int)(40 * s)),
+                    Margin = new Padding(0, (int)(6 * s), (int)(6 * s), (int)(6 * s)),
                     DropDownStyle = ComboBoxStyle.DropDownList,
                     FlatStyle = FlatStyle.Flat,
                     DrawMode = DrawMode.OwnerDrawFixed,
@@ -884,14 +887,14 @@ namespace GHelper
             }
 
             // Reset Bindings button below all rows
-            int btnY = startY + row * rowHeight + 8;
+            int btnY = startY + row * rowHeight + (int)(8 * s);
             var btnReset = new UI.RButton
             {
                 Text = "Reset Bindings",
-                Location = new Point(14, btnY),
-                Size = new Size(466, 50),
+                Location = new Point((int)(14 * s), btnY),
+                Size = new Size((int)(466 * s), (int)(50 * s)),
                 FlatStyle = FlatStyle.Flat,
-                Margin = new Padding(4, 8, 4, 8),
+                Margin = new Padding((int)(4 * s), (int)(8 * s), (int)(4 * s), (int)(8 * s)),
                 BackColor = SystemColors.ButtonHighlight,
                 ForeColor = SystemColors.ControlText,
                 BorderColor = Color.Transparent,
