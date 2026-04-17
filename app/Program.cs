@@ -152,6 +152,7 @@ namespace GHelper
             SetAutoModes(init: true);
 
             // Subscribing for system power change events
+            Application.ApplicationExit += OnExit;
             SystemEvents.PowerModeChanged += SystemEvents_PowerModeChanged;
             SystemEvents.UserPreferenceChanged += SystemEvents_UserPreferenceChanged;
 
@@ -404,17 +405,27 @@ namespace GHelper
 
         static void OnExit(object sender, EventArgs e)
         {
+            Application.ApplicationExit -= OnExit;
+            SystemEvents.PowerModeChanged -= SystemEvents_PowerModeChanged;
+            SystemEvents.UserPreferenceChanged -= SystemEvents_UserPreferenceChanged;
+            SystemEvents.SessionSwitch -= SystemEvents_SessionSwitch;
+            SystemEvents.SessionEnding -= SystemEvents_SessionEnding;
+
             if (trayIcon is not null)
             {
                 trayIcon.Visible = false;
                 trayIcon.Dispose();
             }
 
+            inputDispatcher?.Dispose();
+            HardwareControl.Dispose();
+            settingsForm?.Dispose();
+            toast?.Dispose();
+
             PeripheralsProvider.UnregisterForDeviceEvents();
             clamshellControl.UnregisterDisplayEvents();
             NativeMethods.UnregisterPowerSettingNotification(unRegPowerNotify);
             NativeMethods.UnregisterPowerSettingNotification(unRegPowerNotifyLid);
-            Application.Exit();
         }
 
         static void BatteryLimit()

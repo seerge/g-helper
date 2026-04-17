@@ -887,4 +887,13 @@ Nadal chcesz kontynuować?</value>
   <data name="MouseZoneMode" xml:space="preserve">
     <value>Zone Mode</value>
   </data>
-</root>
+  <data name="AccessibleMode" xml:space="preserve">
+    <value>Tryb Dostępności</value>
+  </data>
+  <data name="DisableBacklight" xml:space="preserve">
+    <value>Całkowicie wyłącz podświetlenie</value>
+  </data>
+  <data name="FanCurvesTable" xml:space="preserve">
+    <value>Edycja krzywych wentylatorów (Tabela)</value>
+  </data>
+  </root>

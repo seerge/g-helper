@@ -10,7 +10,7 @@ using System.Text.RegularExpressions;
 namespace GHelper.Input
 {
 
-    public class InputDispatcher
+    public class InputDispatcher : IDisposable
     {
         System.Timers.Timer timer = new System.Timers.Timer(AppConfig.Get("keyboard_timeout_refresh", 1000));
         public static bool backlightActivity = true;
@@ -106,6 +106,15 @@ namespace GHelper.Input
             InitBacklightTimer();
             MuteLEDInit();
             InitCamera();
+        }
+
+        public void Dispose()
+        {
+            timer.Stop();
+            timer.Dispose();
+
+            if (listener is not null) listener.Dispose();
+            hook.Dispose();
         }
 
         public static void InitFNLock()

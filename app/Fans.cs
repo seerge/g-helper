@@ -7,6 +7,7 @@ using PawnIO;
 using System.Diagnostics;
 using System.Management;
 using System.Windows.Forms.DataVisualization.Charting;
+using System.Linq;
 
 namespace GHelper
 {
@@ -39,6 +40,162 @@ namespace GHelper
         static int gpuPowerBase = 0;
         static bool isGPUPower => gpuPowerBase > 0;
         static bool clampFanDots = AppConfig.IsClampFanDots();
+
+        FlowLayoutPanel panelFanTable;
+        RButton buttonTable;
+
+        // Helper to add accessible input fields next to sliders
+        private void AddInput(TrackBar track, Label labelVal, Label labelTitle, EventHandler? onScroll = null)
+        {
+            if (!AppConfig.IsAccessible()) return;
+            if (track.Tag is NumericUpDown) return;
+
+            NumericUpDown num = new NumericUpDown();
+            num.Top = labelVal.Top;
+            num.Left = labelVal.Left - 20; // Shift slightly left to fit
+            num.Width = labelVal.Width + 20;
+            num.Height = 30;
+            num.Font = labelVal.Font;
+            num.ForeColor = labelVal.ForeColor;
+            num.BackColor = SystemColors.ControlLightLight;
+            num.BorderStyle = BorderStyle.FixedSingle;
+            
+            num.Minimum = track.Minimum;
+            num.Maximum = track.Maximum;
+            num.Increment = track.TickFrequency > 0 ? track.TickFrequency : 1;
+            num.Value = Math.Max(num.Minimum, Math.Min(num.Maximum, track.Value));
+
+            // Sync TrackBar -> Numeric
+            track.ValueChanged += (sender, e) =>
+            {
+                num.Value = Math.Max(num.Minimum, Math.Min(num.Maximum, track.Value));
+            };
+
+            // Sync Numeric -> TrackBar
+            num.ValueChanged += (sender, e) =>
+            {
+                track.Value = (int)num.Value;
+                labelVal.Text = track.Value.ToString(); 
+                onScroll?.Invoke(track, EventArgs.Empty);
+            };
+
+            // Accessibility
+            num.AccessibleName = labelTitle.Text;
+            track.AccessibleName = labelTitle.Text;
+
+            // Replace the visual label with the interactive input
+            labelVal.Visible = false; 
+            track.Parent.Controls.Add(num);
+            num.BringToFront();
+
+            track.Tag = num;
+        }
+
+        private void InitFanTable(AsusFan device, FlowLayoutPanel panel)
+        {
+            panel.Controls.Clear();
+            byte[] curve = AppConfig.GetFanConfig(device);
+            if (curve.Length < 16) curve = AppConfig.GetDefaultCurve(device);
+            NumericUpDown[] tempInputs = new NumericUpDown[8];
+            bool syncingTemps = false;
+
+            void SaveValidatedCurve()
+            {
+                AppConfig.SetFanConfig(device, curve);
+                InitFans();
+                modeControl.AutoFans();
+            }
+
+            void SyncTempInputs()
+            {
+                syncingTemps = true;
+                try
+                {
+                    for (int j = 0; j < tempInputs.Length; j++)
+                    {
+                        if (tempInputs[j] is not null && tempInputs[j].Value != curve[j])
+                            tempInputs[j].Value = curve[j];
+                    }
+                }
+                finally
+                {
+                    syncingTemps = false;
+                }
+            }
+
+            string deviceName = device switch { AsusFan.CPU => "Procesor", AsusFan.GPU => "Karta Graficzna", _ => "Środek" };
+
+            for (int i = 0; i < 8; i++)
+            {
+                FlowLayoutPanel row = new FlowLayoutPanel { Width = panel.Width - 40, Height = 45, WrapContents = false };
+                
+                Label lbl = new Label { Text = $"Punkt {i + 1}:", Width = 70, Padding = new Padding(0, 8, 0, 0) };
+                lbl.AccessibleName = $"{deviceName} Wentylator Punkt {i + 1}";
+                
+                NumericUpDown numTemp = new NumericUpDown { Minimum = 20, Maximum = 110, Value = Math.Max(20, Math.Min(110, (int)curve[i])), Width = 80 };
+                tempInputs[i] = numTemp;
+                numTemp.AccessibleName = $"{deviceName} Wentylator Punkt {i + 1} Temperatura Celsius";
+                
+                Label lblDegree = new Label { Text = "°C", Width = 30, Padding = new Padding(0, 8, 0, 0) };
+                
+                NumericUpDown numSpeed = new NumericUpDown { Minimum = 0, Maximum = 100, Value = curve[index_speed(i)], Width = 80 };
+                numSpeed.AccessibleName = $"{deviceName} Wentylator Punkt {i + 1} Prędkość Procenty";
+                
+                Label lblPercent = new Label { Text = "% Prędkość", Width = 80, Padding = new Padding(0, 8, 0, 0) };
+
+                int index = i;
+                numTemp.ValueChanged += (s, e) => {
+                    if (syncingTemps) return;
+
+                    curve[index] = (byte)numTemp.Value;
+
+                    for (int j = index + 1; j < 8; j++)
+                    {
+                        if (curve[j] < curve[j - 1])
+                            curve[j] = curve[j - 1];
+                    }
+
+                    for (int j = index - 1; j >= 0; j--)
+                    {
+                        if (curve[j] > curve[j + 1])
+                            curve[j] = curve[j + 1];
+                    }
+
+                    SyncTempInputs();
+                    SaveValidatedCurve();
+                };
+
+                numSpeed.ValueChanged += (s, e) => {
+                    curve[index_speed(index)] = (byte)numSpeed.Value;
+                    SaveValidatedCurve();
+                };
+
+                row.Controls.Add(lbl);
+                row.Controls.Add(numTemp);
+                row.Controls.Add(lblDegree);
+                row.Controls.Add(numSpeed);
+                row.Controls.Add(lblPercent);
+                panel.Controls.Add(row);
+            }
+        }
+
+        private static Control? GetFirstFocusableControl(Control parent)
+        {
+            foreach (Control child in parent.Controls.Cast<Control>().OrderBy(control => control.TabIndex))
+            {
+                if (!child.Visible || !child.Enabled) continue;
+
+                Control? nested = GetFirstFocusableControl(child);
+                if (nested is not null) return nested;
+
+                if (child.TabStop && child.CanSelect && child is not Label)
+                    return child;
+            }
+
+            return parent.TabStop && parent.CanSelect && parent is not Label ? parent : null;
+        }
+
+        private int index_speed(int i) => i + 8;
 
         public Fans()
         {
@@ -239,6 +396,123 @@ namespace GHelper
 
             ToggleNavigation(0);
 
+            if (AppConfig.IsAccessible())
+            {
+                TabControl tabControl = new TabControl { Dock = DockStyle.Fill, TabStop = true, AccessibleRole = AccessibleRole.PageTabList, Name = "tabControlAccessible" };
+                
+                void AddAccessibleFanSection(TabPage tabPage, AsusFan fan, string title)
+                {
+                    Label label = new Label { Text = title, Dock = DockStyle.Top, Height = 30, TextAlign = ContentAlignment.MiddleLeft, Font = new Font(Font, FontStyle.Bold), Margin = new Padding(0, 20, 0, 0) };
+                    tabPage.Controls.Add(label);
+
+                    FlowLayoutPanel fanPanel = new FlowLayoutPanel { Dock = DockStyle.Top, Height = 350, BackColor = BackColor, AutoScroll = true, WrapContents = false, FlowDirection = FlowDirection.TopDown, Padding = new Padding(10), Name = "fanPanel" + fan };
+                    InitFanTable(fan, fanPanel);
+                    tabPage.Controls.Add(fanPanel);
+                }
+                
+                // 1. Karta: Krzywe wentylatorów
+                TabPage tabFans = new TabPage(Properties.Strings.FanCurves) { AccessibleName = Properties.Strings.FanCurves };
+                tabFans.AutoScroll = true;
+                
+                FlowLayoutPanel panelFansHeader = new FlowLayoutPanel { Dock = DockStyle.Top, Height = 45, AutoSize = true, WrapContents = false };
+                checkApplyFans.Visible = true;
+                buttonCalibrate.Visible = true;
+                buttonReset.Visible = true;
+                panelFansHeader.Controls.Add(checkApplyFans);
+                panelFansHeader.Controls.Add(buttonCalibrate);
+                panelFansHeader.Controls.Add(buttonReset);
+                tabFans.Controls.Add(panelFansHeader);
+
+                AddAccessibleFanSection(tabFans, AsusFan.CPU, "CPU (Table)");
+                AddAccessibleFanSection(tabFans, AsusFan.GPU, "GPU (Table)");
+
+                if (AppConfig.Is("mid_fan"))
+                    AddAccessibleFanSection(tabFans, AsusFan.Mid, "Mid Fan (Table)");
+
+                if (AppConfig.Is("xgm_fan"))
+                    AddAccessibleFanSection(tabFans, AsusFan.XGM, "XG Mobile Fan (Table)");
+                
+                tabControl.TabPages.Add(tabFans);
+
+                // 2. Karta: Procesor / Power
+                TabPage tabCPU = new TabPage(Properties.Strings.PerformanceMode) { AccessibleName = Properties.Strings.PerformanceMode };
+                tabCPU.AutoScroll = true;
+                
+                Panel panelPowerHeader = new Panel { Dock = DockStyle.Top, Height = 40 };
+                checkApplyPower.Visible = true;
+                checkApplyPower.Location = new Point(10, 10);
+                panelPowerHeader.Controls.Add(checkApplyPower);
+                tabCPU.Controls.Add(panelPowerHeader);
+
+                panelPower.Visible = true;
+                panelPower.Dock = DockStyle.Top;
+                tabCPU.Controls.Add(panelPower);
+                tabControl.TabPages.Add(tabCPU);
+
+                // 3. Karta: Zaawansowane / GPU
+                TabPage tabAdvancedFull = new TabPage(Properties.Strings.ExtraSettings) { AccessibleName = Properties.Strings.ExtraSettings };
+                tabAdvancedFull.AutoScroll = true;
+                
+                // Forced visibility for GPU and UV
+                panelGPU.Visible = true;
+                panelGPU.Dock = DockStyle.Top;
+                tabAdvancedFull.Controls.Add(panelGPU);
+
+                panelAdvanced.Visible = true;
+                panelAdvanced.Dock = DockStyle.Top;
+                panelPawnIO.Visible = true; 
+                tabAdvancedFull.Controls.Add(panelAdvanced);
+                
+                tabControl.TabPages.Add(tabAdvancedFull);
+
+                tabControl.SelectedIndexChanged += (s, e) =>
+                {
+                    if (tabControl.SelectedTab == null) return;
+
+                    tabControl.BeginInvoke(() =>
+                    {
+                        Control? first = GetFirstFocusableControl(tabControl.SelectedTab);
+                        first?.Focus();
+                    });
+                };
+
+                // Hide original visual elements
+                buttonCPU.Visible = buttonGPU.Visible = buttonAdvanced.Visible = false;
+                chartCPU.Visible = chartGPU.Visible = chartMid.Visible = chartXGM.Visible = false;
+                
+                Controls.Add(tabControl);
+                tabControl.BringToFront();
+                
+                BeginInvoke(() =>
+                {
+                    tabControl.Focus();
+                    GetFirstFocusableControl(tabControl.SelectedTab ?? tabFans)?.Focus();
+                });
+
+                buttonReset.AccessibleName = Properties.Strings.FactoryDefaults;
+                buttonCalibrate.AccessibleName = Properties.Strings.Calibrate;
+                buttonDownload.AccessibleName = "Pobierz sterownik undervoltingu PawnIO";
+                buttonApplyAdvanced.AccessibleName = Properties.Strings.Apply;
+
+                // Setup numeric inputs with explicit sync and real impact
+                AddInput(trackTotal, labelTotal, labelLeftTotal, (s, e) => { TrackTotal_Scroll(s, e); modeControl.AutoPower(true); });
+                AddInput(trackSlow, labelSlow, labelLeftSlow, (s, e) => { TrackSlow_Scroll(s, e); modeControl.AutoPower(true); });
+                AddInput(trackCPU, labelCPU, labelLeftCPU, (s, e) => { TrackCPU_Scroll(s, e); modeControl.AutoPower(true); });
+                AddInput(trackFast, labelFast, labelLeftFast, (s, e) => { TrackFast_Scroll(s, e); modeControl.AutoPower(true); });
+
+                AddInput(trackGPUClockLimit, labelGPUClockLimit, labelGPUClockLimitTitle, (s, e) => { trackGPUClockLimit_Scroll(s, e); modeControl.SetGPUClocks(true); });
+                AddInput(trackGPUCore, labelGPUCore, labelGPUCoreTitle, (s, e) => { trackGPU_Scroll(s, e); modeControl.SetGPUClocks(true); });
+                AddInput(trackGPUMemory, labelGPUMemory, labelGPUMemoryTitle, (s, e) => { trackGPU_Scroll(s, e); modeControl.SetGPUClocks(true); });
+                
+                AddInput(trackGPUBoost, labelGPUBoost, labelGPUBoostTitle, (s, e) => { trackGPUPower_Scroll(s, e); modeControl.SetGPUPower(); });
+                AddInput(trackGPUTemp, labelGPUTemp, labelGPUTempTitle, (s, e) => { trackGPUPower_Scroll(s, e); modeControl.SetGPUPower(); });
+                AddInput(trackGPUPower, labelGPUPower, labelGPUPowerTitle, (s, e) => { trackGPUPower_Scroll(s, e); modeControl.SetGPUPower(); });
+
+                AddInput(trackUV, labelUV, labelLeftUV, (s, e) => { TrackUV_Scroll(s, e); });
+                AddInput(trackUViGPU, labelUViGPU, labelLeftUViGPU, (s, e) => { TrackUV_Scroll(s, e); });
+                AddInput(trackTemp, labelTemp, labelLeftTemp, (s, e) => { TrackUV_Scroll(s, e); });
+            }
+
             if (Program.acpi.DeviceGet(AsusACPI.DevsCPUFanCurve) < 0) buttonCalibrate.Visible = false;
 
             FormClosed += Fans_FormClosed;
@@ -309,14 +583,17 @@ namespace GHelper
             {
                 string CPUName;
                 using (ManagementObjectSearcher myProcessorObject = new ManagementObjectSearcher("select * from Win32_Processor"))
-                    foreach (ManagementObject obj in myProcessorObject.Get())
+                {
+                    foreach (ManagementBaseObject obj in myProcessorObject.Get())
                     {
-                        CPUName = obj["Name"].ToString();
+                        CPUName = obj["Name"]?.ToString() ?? "CPU";
                         Invoke(delegate
                         {
                             Text = Properties.Strings.FansAndPower + " - " + CPUName;
                         });
+                        obj.Dispose();
                     }
+                }
             });
         }
 
@@ -382,6 +659,7 @@ namespace GHelper
             {
                 labelRisky.Text = string.Join(Environment.NewLine + Environment.NewLine, sections);
                 labelRisky.Visible = true;
+                Program.toast.RunToast(sections[0].Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries)[0]);
             }
         }
 
@@ -413,18 +691,50 @@ namespace GHelper
             bool available = ModeControl.IsPawnAvailable();
             bool installed = available || ModeControl.IsPawnInstalled();
 
-            panelPawnIO.Visible   = installed;
-            panelDownload.Visible = !installed;
-
-            if (installed)
+            if (AppConfig.IsAccessible())
             {
-                panelTitleAdvanced.Visible = CpuInfo.IsSupportedUV();
-                labelRisky.Visible         = CpuInfo.IsSupportedUV();
-                panelUV.Visible            = CpuInfo.IsSupportedUV();
-                panelUViGPU.Visible        = CpuInfo.IsSupportedUViGPU();
+                // In Accessible Mode, we show settings only if the driver is installed
+                // Otherwise, we show a clear warning and download button
+                panelPawnIO.Visible = installed;
+                panelDownload.Visible = !installed;
+                
+                if (!installed)
+                {
+                    buttonDownload.Text = "Pobierz sterownik PawnIO (Wymagany do undervoltingu)";
+                    buttonDownload.AccessibleName = "Pobierz sterownik PawnIO. Jest on wymagany, aby odblokować funkcje undervoltingu w tej zakładce.";
+                    labelRisky.Text = "Undervolting i limit temperatury wymagają zainstalowanego sterownika PawnIO.";
+                }
+                else if (string.IsNullOrWhiteSpace(labelRisky.Text) || labelRisky.Text.Contains("PawnIO"))
+                {
+                    labelRisky.Text = Properties.Strings.UndervoltingRisky;
+                }
+
+                // Title and risk label are always visible to provide context
+                panelTitleAdvanced.Visible = true;
+                labelRisky.Visible = true;
+
+                // GPU settings are independent of PawnIO, so we keep them visible
+                panelGPU.Visible = true; 
+
+                // UV sliders depend on the driver
+                panelUV.Visible = installed;
+                panelUViGPU.Visible = installed;
+            }
+            else
+            {
+                panelPawnIO.Visible = installed;
+                panelDownload.Visible = !installed;
+
+                if (installed)
+                {
+                    panelTitleAdvanced.Visible = CpuInfo.IsSupportedUV();
+                    labelRisky.Visible = CpuInfo.IsSupportedUV();
+                    panelUV.Visible = CpuInfo.IsSupportedUV();
+                    panelUViGPU.Visible = CpuInfo.IsSupportedUViGPU();
+                }
             }
 
-            labelUV.Text     = trackUV.Value.ToString();
+            labelUV.Text = trackUV.Value.ToString();
             labelUViGPU.Text = trackUViGPU.Value.ToString();
 
             labelTemp.Text = (trackTemp.Value < CpuInfo.MaxTemp) ? trackTemp.Value.ToString() + "\u00b0C" : "Default";
@@ -659,7 +969,7 @@ namespace GHelper
             labelGPUMemory.Text = $"{trackGPUMemory.Value} MHz";
 
             labelGPUBoost.Text = $"{trackGPUBoost.Value}W";
-            labelGPUTemp.Text = $"{trackGPUTemp.Value}�C";
+            labelGPUTemp.Text = $"{trackGPUTemp.Value}�C";
 
             if (trackGPUClockLimit.Value >= NvidiaGpuControl.MaxClockLimit)
                 labelGPUClockLimit.Text = "Default";
@@ -735,7 +1045,7 @@ namespace GHelper
         {
 
             string title = "";
-            string scale = ", RPM/�C";
+            string scale = ", RPM/�C";
 
             switch (device)
             {
