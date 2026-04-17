@@ -45,8 +45,7 @@ namespace PawnIO
                Name.Contains("4600H");
 
         public static bool IsSupportedUViGPU()
-            => Name.Contains("RYZEN AI MAX") ||
-               Name.Contains("7945H") ||
+            => Name.Contains("7945H") ||
                Name.Contains("7845H") ||
                Name.Contains("6900H");
 
