@@ -181,6 +181,7 @@ Huge thanks to [@IceStormNG](https://github.com/IceStormNG) 👑 for contributio
 - [NvAPIWrapper](https://github.com/falahati/NvAPIWrapper) for accessing Nvidia API
 - [Starlight](https://github.com/vddCore/Starlight) for anime matrix communication protocol
 - [UXTU](https://github.com/JamesCJ60/Universal-x86-Tuning-Utility) for undervolting using Ryzen System Management Unit
+- [PawnIO](https://github.com/namazso/PawnIO) for access to RyzenSMU
 - [AsusCtl](https://gitlab.com/asus-linux/asusctl) for inspiration and some reverse engineering
 
 ### Code Signing Policy

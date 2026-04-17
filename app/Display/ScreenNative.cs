@@ -1,233 +1,30 @@
-ï»¿using System.Collections;
+using System.ComponentModel;
 using System.Runtime.InteropServices;
-using static GHelper.Display.ScreenInterrogatory;
 
 namespace GHelper.Display
 {
 
-    class DeviceComparer : IComparer
+    internal static class ScreenNative
     {
-        public int Compare(object x, object y)
-        {
-            uint displayX = ((DISPLAYCONFIG_TARGET_DEVICE_NAME)x).connectorInstance;
-            uint displayY = ((DISPLAYCONFIG_TARGET_DEVICE_NAME)y).connectorInstance;
-
-            if (displayX > displayY)
-                return 1;
-            if (displayX < displayY)
-                return -1;
-            else
-                return 0;
-        }
-    }
-
-    class ScreenComparer : IComparer
-    {
-        public int Compare(object x, object y)
-        {
-            int displayX = Int32.Parse(((Screen)x).DeviceName.Replace(@"\\.\DISPLAY", ""));
-            int displayY = Int32.Parse(((Screen)y).DeviceName.Replace(@"\\.\DISPLAY", ""));
-            return (new CaseInsensitiveComparer()).Compare(displayX, displayY);
-        }
-    }
-    internal class ScreenNative
-    {
-
-        [DllImport("gdi32", CharSet = CharSet.Unicode)]
-        internal static extern IntPtr CreateDC(string driver, string device, string port, IntPtr deviceMode);
-
-        [DllImport("gdi32")]
-        internal static extern bool SetDeviceGammaRamp(IntPtr dcHandle, ref GammaRamp ramp);
-
-        [DllImport("gdi32")]
-        internal static extern bool GetDeviceGammaRamp(IntPtr dcHandle, ref GammaRamp ramp);
-
-        [DllImport("gdi32", CharSet = CharSet.Unicode)]
-        internal static extern bool SetICMProfileW(IntPtr dcHandle, string lpFileName);
-
-        [DllImport("gdi32", CharSet = CharSet.Unicode)]
-        internal static extern bool SetICMMode(IntPtr dcHandle, int mode);
-
-        [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
-        public struct DEVMODE
-        {
-            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)]
-            public string dmDeviceName;
-
-            public short dmSpecVersion;
-            public short dmDriverVersion;
-            public short dmSize;
-            public short dmDriverExtra;
-            public int dmFields;
-            public int dmPositionX;
-            public int dmPositionY;
-            public int dmDisplayOrientation;
-            public int dmDisplayFixedOutput;
-            public short dmColor;
-            public short dmDuplex;
-            public short dmYResolution;
-            public short dmTTOption;
-            public short dmCollate;
-
-            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)]
-            public string dmFormName;
-
-            public short dmLogPixels;
-            public short dmBitsPerPel;
-            public int dmPelsWidth;
-            public int dmPelsHeight;
-            public int dmDisplayFlags;
-            public int dmDisplayFrequency;
-            public int dmICMMethod;
-            public int dmICMIntent;
-            public int dmMediaType;
-            public int dmDitherType;
-            public int dmReserved1;
-            public int dmReserved2;
-            public int dmPanningWidth;
-            public int dmPanningHeight;
-        };
-
-        [Flags()]
-        public enum DisplaySettingsFlags : int
-        {
-            CDS_UPDATEREGISTRY = 1,
-            CDS_TEST = 2,
-            CDS_FULLSCREEN = 4,
-            CDS_GLOBAL = 8,
-            CDS_SET_PRIMARY = 0x10,
-            CDS_RESET = 0x40000000,
-            CDS_NORESET = 0x10000000
-        }
-
-        // PInvoke declaration for EnumDisplaySettings Win32 API
-        [DllImport("user32.dll")]
-        public static extern int EnumDisplaySettingsEx(
-             string lpszDeviceName,
-             int iModeNum,
-             ref DEVMODE lpDevMode);
-
-        // PInvoke declaration for ChangeDisplaySettings Win32 API
-        [DllImport("user32.dll")]
-        public static extern int ChangeDisplaySettingsEx(
-                string lpszDeviceName, ref DEVMODE lpDevMode, IntPtr hwnd,
-                DisplaySettingsFlags dwflags, IntPtr lParam);
-
-        public static DEVMODE CreateDevmode()
-        {
-            DEVMODE dm = new DEVMODE();
-            dm.dmDeviceName = new String(new char[32]);
-            dm.dmFormName = new String(new char[32]);
-            dm.dmSize = (short)Marshal.SizeOf(dm);
-            return dm;
-        }
-
-        public enum COLORPROFILETYPE
-        {
-            CPT_ICC,
-            CPT_DMP,
-            CPT_CAMP,
-            CPT_GMMP
-        }
-        public enum COLORPROFILESUBTYPE
-        {
-            CPST_PERCEPTUAL,
-            CPST_RELATIVE_COLORIMETRIC,
-            CPST_SATURATION,
-            CPST_ABSOLUTE_COLORIMETRIC,
-            CPST_NONE,
-            CPST_RGB_WORKING_SPACE,
-            CPST_CUSTOM_WORKING_SPACE,
-            CPST_STANDARD_DISPLAY_COLOR_MODE,
-            CPST_EXTENDED_DISPLAY_COLOR_MODE
-        }
-        public enum WCS_PROFILE_MANAGEMENT_SCOPE
-        {
-            WCS_PROFILE_MANAGEMENT_SCOPE_SYSTEM_WIDE,
-            WCS_PROFILE_MANAGEMENT_SCOPE_CURRENT_USER
-        }
-
-        [DllImport("mscms.dll", CharSet = CharSet.Unicode)]
-        public static extern bool WcsSetDefaultColorProfile(
-            WCS_PROFILE_MANAGEMENT_SCOPE scope,
-            string pDeviceName,
-            COLORPROFILETYPE cptColorProfileType,
-            COLORPROFILESUBTYPE cpstColorProfileSubType,
-            uint dwProfileID,
-            string pProfileName
-        );
-
-
         public const int ENUM_CURRENT_SETTINGS = -1;
-        public const string defaultDevice = @"\\.\DISPLAY1";
+        public const string DefaultDevice = @"\\.\DISPLAY1";
 
-
-        public static string? FindInternalName(bool log = false)
+        /// <summary>
+        /// Returns true if at least one active display is not the built-in internal panel.
+        /// </summary>
+        public static bool IsExternalDisplayConnected(bool log = false)
         {
             try
             {
-                var devicesList = GetAllDevices();
-                var devices = devicesList.ToArray();
-                string internalName = AppConfig.GetString("internal_display");
-
-                foreach (var device in devices)
+                string? internalName = AppConfig.GetString("internal_display");
+                foreach (var device in GetAllDevices())
                 {
-                    if (device.outputTechnology == DISPLAYCONFIG_VIDEO_OUTPUT_TECHNOLOGY.DISPLAYCONFIG_OUTPUT_TECHNOLOGY_INTERNAL ||
-                        device.outputTechnology == DISPLAYCONFIG_VIDEO_OUTPUT_TECHNOLOGY.DISPLAYCONFIG_OUTPUT_TECHNOLOGY_DISPLAYPORT_EMBEDDED ||
-                        device.monitorFriendlyDeviceName == internalName)
+                    if (device.outputTechnology != DisplayNative.DISPLAYCONFIG_VIDEO_OUTPUT_TECHNOLOGY.DISPLAYCONFIG_OUTPUT_TECHNOLOGY_INTERNAL &&
+                        device.outputTechnology != DisplayNative.DISPLAYCONFIG_VIDEO_OUTPUT_TECHNOLOGY.DISPLAYCONFIG_OUTPUT_TECHNOLOGY_DISPLAYPORT_EMBEDDED &&
+                        device.monitorFriendlyDeviceName != internalName)
                     {
-                        if (log) Logger.WriteLine(device.monitorDevicePath + " " + device.outputTechnology);
-
-                        AppConfig.Set("internal_display", device.monitorFriendlyDeviceName);
-                        var names = device.monitorDevicePath.Split("#");
-                        
-                        if (names.Length > 1) return names[1];
-                        else return "";
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Logger.WriteLine(ex.Message);
-            }
-
-            return null;
-        }
-
-        static string ExtractDisplay(string input)
-        {
-            int index = input.IndexOf('\\', 4); // Start searching from index 4 to skip ""
-
-            if (index != -1)
-            {
-                string extracted = input.Substring(0, index);
-                return extracted;
-            }
-
-            return input;
-        }
-
-        public static string? FindLaptopScreen(bool log = false)
-        {
-            string? laptopScreen = null;
-            string? internalName = FindInternalName(log);
-
-            if (internalName == null)
-            {
-                Logger.WriteLine("Internal screen off");
-                return null;
-            }
-
-            try
-            {
-                var displays = GetDisplayDevices().ToArray();
-                foreach (var display in displays)
-                {
-                    if (log) Logger.WriteLine(display.DeviceID + " " + display.DeviceName);
-                    if (display.DeviceID.Contains(internalName))
-                    {
-                        laptopScreen = ExtractDisplay(display.DeviceName);
-                        break;
+                        if (log) Logger.WriteLine("Found external screen: " + device.monitorFriendlyDeviceName + ":" + device.outputTechnology);
+                        return true;
                     }
                 }
             }
@@ -236,26 +33,117 @@ namespace GHelper.Display
                 Logger.WriteLine(ex.ToString());
             }
 
-            if (laptopScreen is null)
-            {
-                Logger.WriteLine("Default internal screen");
-                laptopScreen = Screen.PrimaryScreen.DeviceName;
-            }
-
-            return laptopScreen;
+            return false;
         }
 
+        private static bool IsInternalDisplay(DisplayNative.DISPLAYCONFIG_TARGET_DEVICE_NAME device)
+        {
+            string? internalName = AppConfig.GetString("internal_display");
+            return device.outputTechnology == DisplayNative.DISPLAYCONFIG_VIDEO_OUTPUT_TECHNOLOGY.DISPLAYCONFIG_OUTPUT_TECHNOLOGY_INTERNAL
+                || device.outputTechnology == DisplayNative.DISPLAYCONFIG_VIDEO_OUTPUT_TECHNOLOGY.DISPLAYCONFIG_OUTPUT_TECHNOLOGY_DISPLAYPORT_EMBEDDED
+                || device.monitorFriendlyDeviceName == internalName;
+        }
+
+        /// <summary>
+        /// Returns all active display target device names.
+        /// </summary>
+        public static IEnumerable<DisplayNative.DISPLAYCONFIG_TARGET_DEVICE_NAME> GetAllDevices()
+        {
+            var err = DisplayNative.GetDisplayConfigBufferSizes(
+                DisplayNative.QUERY_DEVICE_CONFIG_FLAGS.QDC_ONLY_ACTIVE_PATHS, out uint pathCount, out uint modeCount);
+            if (err != 0) throw new Win32Exception(err);
+
+            var paths = new DisplayNative.DISPLAYCONFIG_PATH_INFO[pathCount];
+            var modes = new DisplayNative.DISPLAYCONFIG_MODE_INFO[modeCount];
+            err = DisplayNative.QueryDisplayConfig(
+                DisplayNative.QUERY_DEVICE_CONFIG_FLAGS.QDC_ONLY_ACTIVE_PATHS,
+                ref pathCount, paths, ref modeCount, modes, nint.Zero);
+            if (err != 0) throw new Win32Exception(err);
+
+            for (int i = 0; i < modeCount; i++)
+            {
+                if (modes[i].infoType != DisplayNative.DISPLAYCONFIG_MODE_INFO_TYPE.DISPLAYCONFIG_MODE_INFO_TYPE_TARGET)
+                    continue;
+
+                var deviceName = new DisplayNative.DISPLAYCONFIG_TARGET_DEVICE_NAME();
+                deviceName.header.type = DisplayNative.DISPLAYCONFIG_DEVICE_INFO_TYPE.DISPLAYCONFIG_DEVICE_INFO_GET_TARGET_NAME;
+                deviceName.header.size = (uint)Marshal.SizeOf(deviceName);
+                deviceName.header.adapterId = modes[i].adapterId;
+                deviceName.header.id = modes[i].id;
+
+                err = DisplayNative.DisplayConfigGetDeviceInfo(ref deviceName);
+                if (err == 0)
+                    yield return deviceName;
+                else
+                    Logger.WriteLine("DisplayConfigGetDeviceInfo error: " + new Win32Exception(err).Message);
+            }
+        }
+
+        /// <summary>
+        /// Finds the GDI device name of the internal laptop screen (e.g. \\.\DISPLAY1).
+        /// Optimized: single QueryDisplayConfig pass resolves the GDI name via
+        /// DISPLAYCONFIG_SOURCE_DEVICE_NAME, eliminating the EnumDisplayDevices loop.
+        /// </summary>
+        public static string? FindLaptopScreen(bool log = false)
+        {
+            try
+            {
+                var err = DisplayNative.GetDisplayConfigBufferSizes(
+                    DisplayNative.QUERY_DEVICE_CONFIG_FLAGS.QDC_ONLY_ACTIVE_PATHS, out uint pathCount, out uint modeCount);
+                if (err != 0) throw new Win32Exception(err);
+
+                var paths = new DisplayNative.DISPLAYCONFIG_PATH_INFO[pathCount];
+                var modes = new DisplayNative.DISPLAYCONFIG_MODE_INFO[modeCount];
+                err = DisplayNative.QueryDisplayConfig(
+                    DisplayNative.QUERY_DEVICE_CONFIG_FLAGS.QDC_ONLY_ACTIVE_PATHS,
+                    ref pathCount, paths, ref modeCount, modes, nint.Zero);
+                if (err != 0) throw new Win32Exception(err);
+
+                foreach (var path in paths)
+                {
+                    var targetName = new DisplayNative.DISPLAYCONFIG_TARGET_DEVICE_NAME();
+                    targetName.header.type = DisplayNative.DISPLAYCONFIG_DEVICE_INFO_TYPE.DISPLAYCONFIG_DEVICE_INFO_GET_TARGET_NAME;
+                    targetName.header.size = (uint)Marshal.SizeOf(targetName);
+                    targetName.header.adapterId = path.targetInfo.adapterId;
+                    targetName.header.id = path.targetInfo.id;
+
+                    if (DisplayNative.DisplayConfigGetDeviceInfo(ref targetName) != 0) continue;
+                    if (!IsInternalDisplay(targetName)) continue;
+
+                    if (log) Logger.WriteLine(targetName.monitorDevicePath + " " + targetName.outputTechnology);
+                    AppConfig.Set("internal_display", targetName.monitorFriendlyDeviceName);
+
+                    // Resolve GDI device name directly from the source path entry — no EnumDisplayDevices needed
+                    var sourceName = new DisplayNative.DISPLAYCONFIG_SOURCE_DEVICE_NAME();
+                    sourceName.header.type = DisplayNative.DISPLAYCONFIG_DEVICE_INFO_TYPE.DISPLAYCONFIG_DEVICE_INFO_GET_SOURCE_NAME;
+                    sourceName.header.size = (uint)Marshal.SizeOf(sourceName);
+                    sourceName.header.adapterId = path.sourceInfo.adapterId;
+                    sourceName.header.id = path.sourceInfo.id;
+
+                    if (DisplayNative.DisplayConfigGetDeviceInfo(ref sourceName) == 0)
+                        return ExtractDisplay(sourceName.viewGdiDeviceName);
+
+                    return Screen.PrimaryScreen?.DeviceName;
+                }
+
+                if (log) Logger.WriteLine("Internal screen off");
+                return null;
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLine(ex.Message);
+                return null;
+            }
+        }
 
         public static int GetMaxRefreshRate(string? laptopScreen)
         {
-
             if (laptopScreen is null) return -1;
 
-            DEVMODE dm = CreateDevmode();
+            var dm = CreateDevmode();
             int frequency = -1;
-
             int i = 0;
-            while (0 != EnumDisplaySettingsEx(laptopScreen, i, ref dm))
+            while (DisplayNative.EnumDisplaySettingsEx(laptopScreen, i, ref dm) != 0)
             {
                 if (dm.dmDisplayFrequency > frequency) frequency = dm.dmDisplayFrequency;
                 i++;
@@ -265,39 +153,46 @@ namespace GHelper.Display
             else frequency = AppConfig.Get("screen_max");
 
             return frequency;
-
         }
 
         public static int GetRefreshRate(string? laptopScreen)
         {
-
             if (laptopScreen is null) return -1;
 
-            DEVMODE dm = CreateDevmode();
-            int frequency = -1;
-
-            if (0 != EnumDisplaySettingsEx(laptopScreen, ENUM_CURRENT_SETTINGS, ref dm))
-            {
-                frequency = dm.dmDisplayFrequency;
-            }
-
-            return frequency;
+            var dm = CreateDevmode();
+            return DisplayNative.EnumDisplaySettingsEx(laptopScreen, ENUM_CURRENT_SETTINGS, ref dm) != 0
+                ? dm.dmDisplayFrequency
+                : -1;
         }
 
         public static int SetRefreshRate(string laptopScreen, int frequency = 120)
         {
-            DEVMODE dm = CreateDevmode();
+            var dm = CreateDevmode();
+            if (DisplayNative.EnumDisplaySettingsEx(laptopScreen, ENUM_CURRENT_SETTINGS, ref dm) == 0) return 0;
 
-            if (0 != EnumDisplaySettingsEx(laptopScreen, ENUM_CURRENT_SETTINGS, ref dm))
+            dm.dmDisplayFrequency = frequency;
+            int result = DisplayNative.ChangeDisplaySettingsEx(
+                laptopScreen, ref dm, IntPtr.Zero, DisplayNative.DisplaySettingsFlags.CDS_UPDATEREGISTRY, IntPtr.Zero);
+            Logger.WriteLine("Screen = " + frequency + "Hz : " + (result == 0 ? "OK" : result));
+            return result;
+        }
+
+        public static DisplayNative.DEVMODE CreateDevmode()
+        {
+            var dm = new DisplayNative.DEVMODE
             {
-                dm.dmDisplayFrequency = frequency;
-                int iRet = ChangeDisplaySettingsEx(laptopScreen, ref dm, IntPtr.Zero, DisplaySettingsFlags.CDS_UPDATEREGISTRY, IntPtr.Zero);
-                Logger.WriteLine("Screen = " + frequency.ToString() + "Hz : " + (iRet == 0 ? "OK" : iRet));
-                return iRet;
-            }
+                dmDeviceName = new string(new char[32]),
+                dmFormName = new string(new char[32]),
+            };
+            dm.dmSize = (short)Marshal.SizeOf(dm);
+            return dm;
+        }
 
-            return 0;
-
+        private static string ExtractDisplay(string input)
+        {
+            // Find the first backslash after the UNC prefix (\\.\)
+            int index = input.IndexOf((char)92, 4);
+            return index != -1 ? input.Substring(0, index) : input;
         }
     }
 }

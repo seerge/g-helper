@@ -401,7 +401,7 @@ public static class AppConfig
 
     public static bool IsSleepBacklight()
     {
-        return ContainsModel("FA617") || ContainsModel("FX507");
+        return ContainsModel("FA617") || ContainsModel("FX507") || ContainsModel("FA507");
     }
 
     public static bool IsAnimeMatrix()
