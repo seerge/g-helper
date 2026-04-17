@@ -690,8 +690,8 @@ namespace GHelper
             var defaults = Program.acpi.GetFanHysteresis();
             if (defaults.up < 0 || defaults.down < 0)
             {
-                panelHysteresis.Visible = false;
-                return;
+                //panelHysteresis.Visible = false;
+                //return;
             }
 
             panelHysteresis.Visible = true;

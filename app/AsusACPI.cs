@@ -96,7 +96,8 @@ public class AsusACPI
     public const uint DevsGPUFanCurve = 0x00110025;
     public const uint DevsMidFanCurve = 0x00110032;
 
-    public const uint FanHysteresis = 0x00110034;
+    public const uint FanHysteresisCPU = 0x00110034;
+    public const uint FanHysteresisGPU = 0x00110035;
 
     public const int Temp_CPU = 0x00120094;
     public const int Temp_GPU = 0x00120097;
@@ -621,7 +622,7 @@ public class AsusACPI
 
     public (int up, int down) GetFanHysteresis()
     {
-        int value = DeviceGet(FanHysteresis);
+        int value = DeviceGet(FanHysteresisCPU);
         if (value < 0)
         {
             Logger.WriteLine($"FanHysteresis Read: not supported ({value})");
@@ -637,7 +638,9 @@ public class AsusACPI
     {
         int value = (down << 8) | up;
         Logger.WriteLine($"FanHysteresis Write: up={up} down={down} (payload=0x{value:X4})");
-        return DeviceSet(FanHysteresis, value, "FanHysteresis");
+        var cpuResult = DeviceSet(FanHysteresisCPU, value, "FanHysteresis CPU");
+        var gpuResult = DeviceSet(FanHysteresisGPU, value, "FanHysteresis GPU");
+        return cpuResult;
     }
 
     public static byte[] FixFanCurve(byte[] curve)
