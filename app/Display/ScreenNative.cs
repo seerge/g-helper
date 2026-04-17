@@ -33,7 +33,7 @@ namespace GHelper.Display
         /// <summary>
         /// Returns true if at least one active display is not the built-in internal panel.
         /// </summary>
-        public static bool IsExternalDisplayConnected()
+        public static bool IsExternalDisplayConnected(bool log = false)
         {
             try
             {
@@ -44,7 +44,7 @@ namespace GHelper.Display
                         device.outputTechnology != DisplayNative.DISPLAYCONFIG_VIDEO_OUTPUT_TECHNOLOGY.DISPLAYCONFIG_OUTPUT_TECHNOLOGY_DISPLAYPORT_EMBEDDED &&
                         device.monitorFriendlyDeviceName != internalName)
                     {
-                        Logger.WriteLine("Found external screen: " + device.monitorFriendlyDeviceName + ":" + device.outputTechnology);
+                        if (log) Logger.WriteLine("Found external screen: " + device.monitorFriendlyDeviceName + ":" + device.outputTechnology);
                         return true;
                     }
                 }
@@ -147,7 +147,7 @@ namespace GHelper.Display
                     return Screen.PrimaryScreen?.DeviceName;
                 }
 
-                Logger.WriteLine("Internal screen off");
+                if (log) Logger.WriteLine("Internal screen off");
                 return null;
             }
             catch (Exception ex)
