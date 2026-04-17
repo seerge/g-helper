@@ -46,8 +46,6 @@ namespace GHelper.Display
     }
     public static class VisualControl
     {
-        public static DisplayGammaRamp? gammaRamp;
-
         private static int _brightness = 100;
         private static bool _init = true;
         private static bool _download = true;
@@ -412,8 +410,6 @@ namespace GHelper.Display
                 if (RunSplendid(dimmingCommand, 0, dimmingLevel) == 0) return;
             }
 
-            // GammaRamp Fallback
-            SetGamma(_brightness);
         }
 
         public static void InitBrightness()
@@ -462,49 +458,6 @@ namespace GHelper.Display
                 Program.settingsForm.VisualiseGamut();
                 skipGamut = false;
             }
-        }
-
-
-        public static void SetGamma(int brightness = 100)
-        {
-            var bright = Math.Round((float)brightness / 200 + 0.5, 2);
-
-            var screenName = ScreenNative.FindLaptopScreen();
-            if (screenName is null) return;
-
-            try
-            {
-                var handle = ScreenNative.CreateDC(screenName, screenName, null, IntPtr.Zero);
-                if (gammaRamp is null)
-                {
-                    var gammaDump = new GammaRamp();
-                    if (ScreenNative.GetDeviceGammaRamp(handle, ref gammaDump))
-                    {
-                        gammaRamp = new DisplayGammaRamp(gammaDump);
-                        //Logger.WriteLine("Gamma R: " + string.Join("-", gammaRamp.Red));
-                        //Logger.WriteLine("Gamma G: " + string.Join("-", gammaRamp.Green));
-                        //Logger.WriteLine("Gamma B: " + string.Join("-", gammaRamp.Blue));
-                    }
-                }
-
-                if (gammaRamp is null || !gammaRamp.IsOriginal())
-                {
-                    Logger.WriteLine("Not default Gamma");
-                    gammaRamp = new DisplayGammaRamp();
-                }
-
-                var ramp = gammaRamp.AsBrightnessRamp(bright);
-                bool result = ScreenNative.SetDeviceGammaRamp(handle, ref ramp);
-
-                Logger.WriteLine("Gamma " + bright.ToString() + ": " + result);
-
-            }
-            catch (Exception ex)
-            {
-                Logger.WriteLine(ex.ToString());
-            }
-
-            //ScreenBrightness.Set(60 + (int)(40 * bright));
         }
 
     }

@@ -36,12 +36,6 @@ namespace GHelper.Display
         [DllImport("gdi32", CharSet = CharSet.Unicode)]
         internal static extern IntPtr CreateDC(string driver, string device, string port, IntPtr deviceMode);
 
-        [DllImport("gdi32")]
-        internal static extern bool SetDeviceGammaRamp(IntPtr dcHandle, ref GammaRamp ramp);
-
-        [DllImport("gdi32")]
-        internal static extern bool GetDeviceGammaRamp(IntPtr dcHandle, ref GammaRamp ramp);
-
         [DllImport("gdi32", CharSet = CharSet.Unicode)]
         internal static extern bool SetICMProfileW(IntPtr dcHandle, string lpFileName);
 
