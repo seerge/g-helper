@@ -1,29 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
 
 namespace GHelper.Display
 {
-    class DeviceComparer : IComparer
-    {
-        public int Compare(object? x, object? y)
-        {
-            uint displayX = ((DisplayNative.DISPLAYCONFIG_TARGET_DEVICE_NAME)x!).connectorInstance;
-            uint displayY = ((DisplayNative.DISPLAYCONFIG_TARGET_DEVICE_NAME)y!).connectorInstance;
-            return displayX.CompareTo(displayY);
-        }
-    }
-
-    class ScreenComparer : IComparer
-    {
-        public int Compare(object? x, object? y)
-        {
-            int displayX = int.Parse(((Screen)x!).DeviceName.Replace(@"\\.\DISPLAY", ""));
-            int displayY = int.Parse(((Screen)y!).DeviceName.Replace(@"\\.\DISPLAY", ""));
-            return displayX.CompareTo(displayY);
-        }
-    }
 
     internal static class ScreenNative
     {
