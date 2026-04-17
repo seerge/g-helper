@@ -91,6 +91,20 @@ namespace GHelper.Overlay
         private static readonly SolidBrush _gpuFillBrush = new(Color.FromArgb(128, 0, 85, 27));
         private static readonly SolidBrush _cpuFillBrush = new(Color.FromArgb(128, 20, 73, 85));
 
+        // Cached per-DPI drawing resources — recreated only when DPI scale changes
+        private float _lastDpiScale = 0f;
+        private Font? _font;
+        private Font? _rpmFont;
+        private Font? _fpsBold;
+        private Pen? _totalPen;
+        private Pen? _axPen;
+
+        // Pre-allocated chart point arrays — reused every repaint to avoid GC pressure
+        private readonly PointF[] _basePts = new PointF[HistoryLength];
+        private readonly PointF[] _cpuPts  = new PointF[HistoryLength];
+        private readonly PointF[] _gpuPts  = new PointF[HistoryLength];
+        private readonly PointF[] _polyPts = new PointF[HistoryLength * 2];
+
         // _gpuTempStr includes a trailing space so fan number has breathing room
         private string _gpuTempStr = "";
         private string _cpuTempStr = "";
@@ -318,9 +332,19 @@ namespace GHelper.Overlay
 
             g.FillRoundedRectangle(_bgBrush, Bound, radius);
 
-            using var font = new Font("Consolas", BaseFontSize * sc, FontStyle.Regular, GraphicsUnit.Pixel);
-            using var rpmFont = new Font("Consolas", BaseRpmFontSize * sc, FontStyle.Regular, GraphicsUnit.Pixel);
-            using var fpsBold = new Font("Consolas", innerH / 1.15f, FontStyle.Bold, GraphicsUnit.Pixel);
+            if (sc != _lastDpiScale)
+            {
+                _lastDpiScale = sc;
+                _font?.Dispose();    _font    = new Font("Consolas", BaseFontSize * sc, FontStyle.Regular, GraphicsUnit.Pixel);
+                _rpmFont?.Dispose(); _rpmFont = new Font("Consolas", BaseRpmFontSize * sc, FontStyle.Regular, GraphicsUnit.Pixel);
+                _fpsBold?.Dispose(); _fpsBold = new Font("Consolas", innerH / 1.15f, FontStyle.Bold, GraphicsUnit.Pixel);
+                _totalPen?.Dispose(); _totalPen = new Pen(Color.FromArgb(255, 200, 200, 200), sc * 0.75f) { DashStyle = DashStyle.Dot };
+                _axPen?.Dispose();    _axPen    = new Pen(Color.FromArgb(255, 80, 80, 80), sc * 0.5f);
+            }
+
+            var font    = _font!;
+            var rpmFont = _rpmFont!;
+            var fpsBold = _fpsBold!;
 
             // Differential trick: MeasureString("XX") - MeasureString("X") cancels the
             // fixed GDI+ padding, giving the true per-character advance width for Consolas.
@@ -383,10 +407,6 @@ namespace GHelper.Overlay
             float stepX = (float)w / (HistoryLength - 1);
             int Idx(int i) => (_historyHead + i) % HistoryLength;
 
-            var basePts = new PointF[HistoryLength];
-            var cpuPts = new PointF[HistoryLength];
-            var gpuPts = new PointF[HistoryLength];
-
             for (int i = 0; i < HistoryLength; i++)
             {
                 int idx = Idx(i);
@@ -394,32 +414,27 @@ namespace GHelper.Overlay
                 float cpuH = (_cpuHistory[idx] / peak) * h;
                 float gpuH = (_gpuHistory[idx] / peak) * h;
 
-                basePts[i] = new PointF(px, y + h);
-                cpuPts[i] = new PointF(px, y + h - cpuH);
-                gpuPts[i] = new PointF(px, y + h - cpuH - gpuH);
+                _basePts[i] = new PointF(px, y + h);
+                _cpuPts[i]  = new PointF(px, y + h - cpuH);
+                _gpuPts[i]  = new PointF(px, y + h - cpuH - gpuH);
             }
 
-            FillArea(g, cpuPts, basePts, _cpuFillBrush);
-            g.DrawLines(_cpuLinePen, cpuPts);
-            FillArea(g, gpuPts, cpuPts, _gpuFillBrush);
-            g.DrawLines(_gpuLinePen, gpuPts);
+            FillArea(g, _cpuPts, _basePts, _cpuFillBrush);
+            g.DrawLines(_cpuLinePen, _cpuPts);
+            FillArea(g, _gpuPts, _cpuPts, _gpuFillBrush);
+            g.DrawLines(_gpuLinePen, _gpuPts);
 
-            using var totalPen = new Pen(Color.FromArgb(255, 200, 200, 200), sc * 0.75f)
-            { DashStyle = DashStyle.Dot };
-            g.DrawLines(totalPen, gpuPts);
-
-            using var axPen = new Pen(Color.FromArgb(255, 80, 80, 80), sc * 0.5f);
-            g.DrawLine(axPen, x, y + h, x + w, y + h);
+            g.DrawLines(_totalPen!, _gpuPts);
+            g.DrawLine(_axPen!, x, y + h, x + w, y + h);
         }
 
-        private static void FillArea(Graphics g, PointF[] topLine, PointF[] bottomLine, SolidBrush brush)
+        private void FillArea(Graphics g, PointF[] topLine, PointF[] bottomLine, SolidBrush brush)
         {
             int n = topLine.Length;
-            var poly = new PointF[n * 2];
-            topLine.CopyTo(poly, 0);
+            topLine.CopyTo(_polyPts, 0);
             for (int i = 0; i < n; i++)
-                poly[n + i] = bottomLine[n - 1 - i];
-            g.FillPolygon(brush, poly);
+                _polyPts[n + i] = bottomLine[n - 1 - i];
+            g.FillPolygon(brush, _polyPts);
         }
 
         private void PositionAtTopLeft()
@@ -503,9 +518,25 @@ namespace GHelper.Overlay
             _timer.Stop();
             _dragModeActive = false;
             _dragging = false;
+
+            // Dispose triggers CloseTrace + StopTrace inside EtwFpsMonitor, which unblocks
+            // ProcessTrace so the background task thread can exit.
             _fps?.Dispose();
             _fps = null;
             _currentFps = 0;
+
+            // Wait for the ETW pump thread to actually finish before we trim memory,
+            // otherwise its kernel ring buffers are still mapped into our working set.
+            Task? task = _fpsTask;
+            _fpsTask = null;
+            MemoryHelper.TrimAfter(task);
+
+            _font?.Dispose();     _font     = null;
+            _rpmFont?.Dispose();  _rpmFont  = null;
+            _fpsBold?.Dispose();  _fpsBold  = null;
+            _totalPen?.Dispose(); _totalPen = null;
+            _axPen?.Dispose();    _axPen    = null;
+            _lastDpiScale = 0f;
             base.Hide();
         }
     }

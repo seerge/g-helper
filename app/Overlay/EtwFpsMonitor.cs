@@ -355,6 +355,9 @@ namespace GHelper.Overlay
             LogFileNameOffset = 0,
             LoggerNameOffset = (uint)Marshal.OffsetOf<EVENT_TRACE_PROPERTIES>(
                 nameof(EVENT_TRACE_PROPERTIES.LoggerName)),
+            BufferSize = 4,           // 4 KB per buffer (minimum)
+            MinimumBuffers = 2,
+            MaximumBuffers = 4,
         };
     }
 }
