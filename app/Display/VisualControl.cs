@@ -377,6 +377,12 @@ namespace GHelper.Display
                 return 0;
             }
 
+            if (ScreenNative.FindLaptopScreen() == null && ScreenNative.IsExternalDisplayConnected())
+            {
+                Logger.WriteLine("Skipping Splendid: internal display is off with external display connected");
+                return 0;
+            }
+
             if (isSplenddid)
             {
                 var result = ProcessHelper.RunCMD(splendidExe, (int)command + " " + param1 + " " + param2 + " " + param3, splendidPath);
