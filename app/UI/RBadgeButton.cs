@@ -5,6 +5,7 @@ namespace GHelper.UI
     public class RBadgeButton : RButton
     {
         private int badge = 0;
+        [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
         public int Badge
         {
             get => badge;

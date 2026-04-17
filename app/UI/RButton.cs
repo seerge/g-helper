@@ -9,6 +9,7 @@ namespace GHelper.UI
         private int borderSize = 5;
 
         private int borderRadius = 5;
+        [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
         public int BorderRadius
         {
             get { return borderRadius; }
@@ -19,6 +20,7 @@ namespace GHelper.UI
         }
 
         private Color borderColor = Color.Transparent;
+        [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
         public Color BorderColor
         {
             get { return borderColor; }
@@ -30,6 +32,7 @@ namespace GHelper.UI
 
 
         private bool activated = false;
+        [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
         public bool Activated
         {
             get { return activated; }
@@ -43,6 +46,7 @@ namespace GHelper.UI
         }
 
         private bool secondary = false;
+        [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
         public bool Secondary
         {
             get { return secondary; }

@@ -41,6 +41,7 @@ namespace GHelper.UI
 
 
         private int _min = 0;
+        [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
         public int Min
         {
             get => _min;
@@ -52,6 +53,7 @@ namespace GHelper.UI
         }
 
         private int _max = 100;
+        [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
         public int Max
         {
             get => _max;
@@ -64,6 +66,7 @@ namespace GHelper.UI
 
 
         private int _step = 1;
+        [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
         public int Step
         {
             get => _step;
@@ -73,6 +76,7 @@ namespace GHelper.UI
             }
         }
         private int _value = 50;
+        [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
         public int Value
         {
             get => _value;

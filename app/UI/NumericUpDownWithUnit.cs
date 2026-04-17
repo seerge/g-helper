@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using System.ComponentModel;
+using System.Globalization;
 using System.Text.RegularExpressions;
 
 public class NumericUpDownWithUnit : NumericUpDown
@@ -12,6 +13,7 @@ public class NumericUpDownWithUnit : NumericUpDown
 
     #region| Properties |
 
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public string Unit
     {
         get => unit;
@@ -23,6 +25,7 @@ public class NumericUpDownWithUnit : NumericUpDown
         }
     }
 
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public bool UnitFirst
     {
         get => unitFirst;

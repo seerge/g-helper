@@ -1,5 +1,4 @@
 ﻿using GHelper.Display;
-using GHelper.Display;
 using GHelper.Mode;
 using Microsoft.Win32;
 
