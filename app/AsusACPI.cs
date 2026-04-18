@@ -646,7 +646,7 @@ public class AsusACPI
         var cpuResult = DeviceSet(FanHysteresisCPU, value, "FanHysteresis CPU");
         var gpuResult = DeviceSet(FanHysteresisGPU, value, "FanHysteresis GPU");
         
-        if (IsMidFanSupported())
+        if (DeviceGet(FanHysteresisMid) >= 0)
         {
             var midResult = DeviceSet(FanHysteresisMid, value, "FanHysteresis Mid");
         }
