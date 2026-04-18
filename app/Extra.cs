@@ -535,7 +535,7 @@ namespace GHelper
 
         private void InitACPITesting()
         {
-            //if (!AppConfig.Is("debug")) return;
+            if (!AppConfig.Is("debug")) return;
 
             pictureScan.Visible = true;
             panelACPI.Visible = true;
