@@ -491,6 +491,7 @@ public static class HardwareControl
     private static PerformanceCounter? _cpuPowerCounter;
     private static bool _cpuPowerCounterFailed;
     private static bool _cpuPowerInitStarted;
+    private static int _cpuPowerNullTicks;
     private static readonly string[] _powerCounterInstances = { "Apu Power", "RAPL_Package0_PKG", "CPU Power", "Socket Power", "Current Socket Power" };
 
     public static void InitCPUPowerAsync()
@@ -537,7 +538,12 @@ public static class HardwareControl
         }
         catch
         {
-            _cpuPowerCounterFailed = true;
+            // Counter became invalid (e.g. after a fullscreen game exits on Intel).
+            // Reset so InitCPUPowerAsync can reinitialize it on the next overlay tick.
+            _cpuPowerCounter?.Dispose();
+            _cpuPowerCounter = null;
+            _cpuPowerCounterFailed = false;
+            _cpuPowerInitStarted = false;
         }
 
         return null;
@@ -590,10 +596,21 @@ public static class HardwareControl
         cpuTemp = GetCPUTemp();
         gpuTemp = GetGPUTemp();
 
-        // Only overwrite with a new reading when the counter returns a valid value;
-        // keep the previous reading on ticks where the ETW-backed counter returns 0.
+        // Only overwrite with a new reading when the counter returns a valid value.
+        // If the counter is absent or returns 0 for several consecutive ticks (e.g. after
+        // a game exits and invalidates the Intel Energy Meter counter), clear the stale
+        // value so the overlay shows "--" rather than the last-seen wattage.
         float? newCpu = GetCPUPower();
-        if (newCpu > 0) cpuPower = newCpu;
+        if (newCpu > 0)
+        {
+            cpuPower = newCpu;
+            _cpuPowerNullTicks = 0;
+        }
+        else
+        {
+            if (++_cpuPowerNullTicks >= 5)
+                cpuPower = null;
+        }
 
         float? newGpu = GetGPUPower();
         if (newGpu > 0) gpuPower = newGpu;
