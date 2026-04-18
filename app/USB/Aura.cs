@@ -54,6 +54,7 @@ namespace GHelper.USB
         GPUMODE = 21,
         AMBIENT = 22,
         BATTERY = 23,
+        GRADIENT = 24,
     }
 
     public enum AuraSpeed : int
@@ -155,6 +156,7 @@ namespace GHelper.USB
             { AuraMode.HEATMAP, "Heatmap"},
             { AuraMode.AMBIENT, "Ambient"},
             { AuraMode.BATTERY, "Battery"},
+            { AuraMode.GRADIENT, "Gradient"},
         };
 
         static Aura()
@@ -267,7 +269,7 @@ namespace GHelper.USB
 
         public static bool HasSecondColor()
         {
-            return mode == AuraMode.AuraBreathe && !isACPI;
+            return (mode == AuraMode.AuraBreathe || mode == AuraMode.GRADIENT) && !isACPI;
         }
 
         private static void Timer_Elapsed(object? sender, System.Timers.ElapsedEventArgs e)
@@ -759,6 +761,12 @@ namespace GHelper.USB
                 return;
             }
 
+            if (Mode == AuraMode.GRADIENT)
+            {
+                CustomRGB.ApplyGradient();
+                return;
+            }
+
             if (Mode == AuraMode.GPUMODE)
             {
                 CustomRGB.ApplyGPUColor();
@@ -837,6 +845,33 @@ namespace GHelper.USB
             static Color colorUltimate = ColorTranslator.FromHtml(AppConfig.GetString("color_ultimate", "#FF0000"));
             static Color colorStandard = ColorTranslator.FromHtml(AppConfig.GetString("color_standard", "#FFFF00"));
             static Color colorEco = ColorTranslator.FromHtml(AppConfig.GetString("color_eco", "#008000"));
+
+            public static void ApplyGradient()
+            {
+                if (!isStrix && !isStrix4Zone)
+                {
+                    ApplyDirect(Aura.Color1, true);
+                    return;
+                }
+
+                Color[] colors = new Color[AURA_ZONES];
+
+                // keyboard zones 0-3: left (Color2) to right (Color1)
+                for (int z = 0; z < 4; z++)
+                {
+                    float t = z / 3f;
+                    colors[z] = ColorUtils.GetWeightedAverage(Aura.Color2, Aura.Color1, t);
+                }
+
+                // lightbar zones 4-7: left (Color2) to right (Color1)
+                for (int z = 4; z < AURA_ZONES; z++)
+                {
+                    float t = (z - 4) / 3f;
+                    colors[z] = ColorUtils.GetWeightedAverage(Aura.Color2, Aura.Color1, t);
+                }
+
+                ApplyDirect(colors, true);
+            }
 
             public static void ApplyGPUColor(int gpuMode = -1)
             {
