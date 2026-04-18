@@ -26,7 +26,9 @@
             { "auto_boost", "int" },
             { "auto_apply", "int" },
             { "auto_apply_power", "int" },
-            { "auto_uv", "_" }
+            { "auto_uv", "_" },
+            { "hysteresis_up", "int" },
+            { "hysteresis_down", "int" }
         };
 
         const int maxModes = 20;

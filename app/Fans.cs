@@ -176,6 +176,12 @@ namespace GHelper
             trackGPUTemp.MouseUp += TrackGPU_MouseUp;
             trackGPUPower.MouseUp += TrackGPU_MouseUp;
 
+            trackHysteresisUp.Scroll += TrackHysteresis_Scroll;
+            trackHysteresisDown.Scroll += TrackHysteresis_Scroll;
+
+            trackHysteresisUp.MouseUp += TrackHysteresis_MouseUp;
+            trackHysteresisDown.MouseUp += TrackHysteresis_MouseUp;
+
 
             //labelInfo.MaximumSize = new Size(280, 0);
             labelFansResult.Visible = false;
@@ -301,6 +307,7 @@ namespace GHelper
             InitPowerPlan();
             InitUV();
             InitGPU();
+            InitHysteresis();
         }
 
         public void InitCPU()
@@ -670,6 +677,49 @@ namespace GHelper
 
         }
 
+        private static readonly string[] HysteresisLabels = { "Very Low", "Low", "Medium", "High", "Very High" };
+
+        private void VisualiseHysteresis()
+        {
+            labelHysteresisUpValue.Text = HysteresisLabels[trackHysteresisUp.Value - 1];
+            labelHysteresisDownValue.Text = HysteresisLabels[trackHysteresisDown.Value - 1];
+        }
+
+        private void InitHysteresis()
+        {
+            var defaults = Program.acpi.GetFanHysteresis();
+            if (defaults.up < 0 || defaults.down < 0)
+            {
+                panelHysteresis.Visible = false;
+                return;
+            }
+
+            panelHysteresis.Visible = true;
+
+            int up = AppConfig.GetMode("hysteresis_up");
+            int down = AppConfig.GetMode("hysteresis_down");
+
+            if (up < 0) up = defaults.up > 0 ? defaults.up : 3;
+            if (down < 0) down = defaults.down > 0 ? defaults.down : 3;
+
+            trackHysteresisUp.Value = Math.Clamp(up, trackHysteresisUp.Minimum, trackHysteresisUp.Maximum);
+            trackHysteresisDown.Value = Math.Clamp(down, trackHysteresisDown.Minimum, trackHysteresisDown.Maximum);
+            VisualiseHysteresis();
+        }
+
+        private void TrackHysteresis_Scroll(object? sender, EventArgs e)
+        {
+            AppConfig.SetMode("hysteresis_up", trackHysteresisUp.Value);
+            AppConfig.SetMode("hysteresis_down", trackHysteresisDown.Value);
+            VisualiseHysteresis();
+        }
+
+        private void TrackHysteresis_MouseUp(object? sender, MouseEventArgs e)
+        {
+            Program.acpi.SetFanHysteresis(trackHysteresisUp.Value, trackHysteresisDown.Value);
+        }
+
+
         private void trackGPUClockLimit_Scroll(object? sender, EventArgs e)
         {
 
@@ -1021,7 +1071,7 @@ namespace GHelper
             int chartCount = 2;
 
             // Middle / system fan check
-            if (!AsusACPI.IsEmptyCurve(Program.acpi.GetFanCurve(AsusFan.Mid)) || Program.acpi.GetFan(AsusFan.Mid) >= 0)
+            if (!AsusACPI.IsEmptyCurve(Program.acpi.GetFanCurve(AsusFan.Mid)) || Program.acpi.IsMidFanSupported())
             {
                 AppConfig.Set("mid_fan", 1);
                 chartCount++;
@@ -1085,6 +1135,8 @@ namespace GHelper
                 seriesMid.Color = Color.Gray;
                 seriesXGM.Color = Color.Gray;
             }
+
+            InitHysteresis();
 
         }
 
@@ -1202,6 +1254,13 @@ namespace GHelper
                 VisualiseGPUSettings();
                 modeControl.SetGPUClocks(true, true);
                 modeControl.SetGPUPower();
+            }
+
+            if (panelHysteresis.Visible)
+            {
+                AppConfig.RemoveMode("hysteresis_up");
+                AppConfig.RemoveMode("hysteresis_down");
+                InitHysteresis();
             }
 
         }
