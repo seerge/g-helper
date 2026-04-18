@@ -98,6 +98,7 @@ public class AsusACPI
 
     public const uint FanHysteresisCPU = 0x00110034;
     public const uint FanHysteresisGPU = 0x00110035;
+    public const uint FanHysteresisMid = 0x00110036; // Mid fan hysteresis candidate
 
     public const int Temp_CPU = 0x00120094;
     public const int Temp_GPU = 0x00120097;
@@ -521,6 +522,10 @@ public class AsusACPI
         return fan;
     }
 
+    public bool IsMidFanSupported()
+    {
+        return DeviceGet(Mid_Fan) >= 0;
+    }
 
     public int SetFanRange(AsusFan device, byte[] curve)
     {
@@ -640,6 +645,12 @@ public class AsusACPI
         Logger.WriteLine($"FanHysteresis Write: up={up} down={down} (payload=0x{value:X4})");
         var cpuResult = DeviceSet(FanHysteresisCPU, value, "FanHysteresis CPU");
         var gpuResult = DeviceSet(FanHysteresisGPU, value, "FanHysteresis GPU");
+        
+        if (IsMidFanSupported())
+        {
+            var midResult = DeviceSet(FanHysteresisMid, value, "FanHysteresis Mid");
+        }
+
         return cpuResult;
     }
 

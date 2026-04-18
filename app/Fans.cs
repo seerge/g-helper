@@ -1071,7 +1071,7 @@ namespace GHelper
             int chartCount = 2;
 
             // Middle / system fan check
-            if (!AsusACPI.IsEmptyCurve(Program.acpi.GetFanCurve(AsusFan.Mid)) || Program.acpi.GetFan(AsusFan.Mid) >= 0)
+            if (!AsusACPI.IsEmptyCurve(Program.acpi.GetFanCurve(AsusFan.Mid)) || Program.acpi.IsMidFanSupported())
             {
                 AppConfig.Set("mid_fan", 1);
                 chartCount++;
