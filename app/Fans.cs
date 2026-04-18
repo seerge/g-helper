@@ -1308,13 +1308,33 @@ namespace GHelper
 
             bool tip = false;
 
-            HitTestResult hit = chart.HitTest(e.X, e.Y);
             Series series = chart.Series[0];
 
-            if (hit.Series is not null && hit.PointIndex >= 0)
+            if (!e.Button.HasFlag(MouseButtons.Left) || curPoint == null)
             {
-                curIndex = hit.PointIndex;
-                curPoint = hit.Series.Points[curIndex];
+                try
+                {
+                    HitTestResult hit = chart.HitTest(e.X, e.Y);
+                    if (hit.Series is not null && hit.PointIndex >= 0 && hit.PointIndex < hit.Series.Points.Count)
+                    {
+                        curIndex = hit.PointIndex;
+                        curPoint = hit.Series.Points[curIndex];
+                        tip = true;
+                    }
+                    else if (!e.Button.HasFlag(MouseButtons.Left))
+                    {
+                        curPoint = null;
+                        curIndex = -1;
+                    }
+                }
+                catch
+                {
+                    curPoint = null;
+                    curIndex = -1;
+                }
+            }
+            else
+            {
                 tip = true;
             }
 
