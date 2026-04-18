@@ -540,8 +540,8 @@ namespace GHelper
             pictureScan.Visible = true;
             panelACPI.Visible = true;
 
-            textACPICommand.Text = "120098";
-            textACPIParam.Text = "25";
+            textACPICommand.Text = "110034";
+            textACPIParam.Text = "0x0303";
 
             buttonACPISend.Click += ButtonACPISend_Click;
             pictureScan.Click += PictureScan_Click;

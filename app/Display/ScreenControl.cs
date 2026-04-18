@@ -90,8 +90,8 @@ namespace GHelper.Display
         {
             if (AppConfig.IsForceMiniled())
             {
-                SetMiniled(AppConfig.Get("miniled"));
                 SetHDRControl(AppConfig.Get("hdr_control"));
+                SetMiniled(AppConfig.Get("miniled"));
             }
         }
 
