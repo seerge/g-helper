@@ -236,6 +236,7 @@ namespace GHelper.Peripherals
             DetectMouse(new TXGamingMini());
             DetectMouse(new TXGamingMiniWired());
             DetectMouse(new Pugio());
+            DetectMouse(new MD200());
         }
 
         public static void DedectOmniMouse()
