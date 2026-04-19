@@ -1583,7 +1583,7 @@ namespace GHelper
             string battery = "";
             string charge = "";
 
-            HardwareControl.ReadSensors();
+            await Task.Run(() => HardwareControl.ReadSensors());
             Task.Run((Action)PeripheralsProvider.RefreshBatteryForAllDevices);
 
             if (HardwareControl.cpuTemp > 0)
