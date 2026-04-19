@@ -540,17 +540,17 @@ namespace PawnIO
             switch (Family)
             {
                 case CpuFamily.Zen1Desktop:
-                    cmd = 0x03B10528; rsp = 0x03B10564; arg = 0x03B10998; return;
+                    cmd = 0x03B10528; rsp = 0x03B10564; arg = 0x03B10598; return;
 
                 case CpuFamily.Raven:
                 case CpuFamily.Renoir:
                     cmd = 0x03B10528; rsp = 0x03B10564; arg = 0x03B10998; return;
 
                 case CpuFamily.Mobile:
-                case CpuFamily.StrixHalo:
                     cmd = 0x03B10528; rsp = 0x03B10578; arg = 0x03B10998; return;
 
                 case CpuFamily.StrixPoint:
+                case CpuFamily.StrixHalo:
                     cmd = 0x03B10928; rsp = 0x03B10978; arg = 0x03B10998; return;
 
                 case CpuFamily.Matisse:
