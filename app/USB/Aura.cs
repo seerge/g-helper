@@ -863,11 +863,12 @@ namespace GHelper.USB
                     colors[z] = ColorUtils.GetWeightedAverage(Aura.Color2, Aura.Color1, t);
                 }
 
-                // lightbar zones 4-7: left (Color2) to right (Color1)
-                for (int z = 4; z < AURA_ZONES; z++)
+                // lightbar physical left-to-right order is zone 5, 4, 6, 7
+                int[] lightbarOrder = new int[] { 5, 4, 6, 7 };
+                for (int i = 0; i < lightbarOrder.Length; i++)
                 {
-                    float t = (z - 4) / 3f;
-                    colors[z] = ColorUtils.GetWeightedAverage(Aura.Color2, Aura.Color1, t);
+                    float t = i / 3f;
+                    colors[lightbarOrder[i]] = ColorUtils.GetWeightedAverage(Aura.Color2, Aura.Color1, t);
                 }
 
                 ApplyDirect(colors, true);

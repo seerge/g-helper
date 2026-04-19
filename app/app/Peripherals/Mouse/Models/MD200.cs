@@ -2,7 +2,7 @@ namespace GHelper.Peripherals.Mouse.Models
 {
     public class MD200 : AsusMouse
     {
-        public MD200() : base(0x0B05, 0x1A24, "mi_00", true)
+        public MD200() : base(0x0B05, 0x1A24, "mi_02", true)
         {
         }
 
