@@ -3,6 +3,9 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
+# JetBrains Rider
+*.idea
+
 # User-specific files
 *.rsuser
 *.suo
