@@ -630,7 +630,7 @@ public class AsusACPI
         int value = DeviceGet(FanHysteresisCPU);
         if (value < 0)
         {
-            Logger.WriteLine($"FanHysteresis Read: not supported ({value})");
+            //Logger.WriteLine($"FanHysteresis Read: not supported ({value})");
             return (-1, -1);
         }
         int up = value & 0xFF;
