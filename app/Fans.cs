@@ -307,7 +307,6 @@ namespace GHelper
             InitPowerPlan();
             InitUV();
             InitGPU();
-            InitHysteresis();
         }
 
         public void InitCPU()
