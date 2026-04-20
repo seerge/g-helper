@@ -114,7 +114,7 @@ namespace GHelper
             // 
             // labelUpdates
             // 
-            labelUpdates.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            labelUpdates.Anchor = AnchorStyles.Top | AnchorStyles.Left;
             labelUpdates.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             labelUpdates.Location = new Point(864, 19);
             labelUpdates.Name = "labelUpdates";
@@ -324,6 +324,7 @@ namespace GHelper
             AutoScaleMode = AutoScaleMode.Dpi;
             AutoScroll = true;
             ClientSize = new Size(1236, 690);
+            MinimumSize = new Size(1236, 0);
             Controls.Add(tableLayoutLegend);
             Controls.Add(panelDrivers);
             Controls.Add(panelDriversTitle);
